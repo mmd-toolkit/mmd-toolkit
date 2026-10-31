@@ -5,16 +5,17 @@ This private package builds the
 with VitePress.
 
 ```sh
-pnpm --filter @mmd-toolkit/parser --filter @mmd-toolkit/eslint-plugin build
+pnpm --filter @mmd-toolkit/parser --filter @mmd-toolkit/eslint-plugin --filter @mmd-toolkit/textmate-grammar build
 pnpm --filter @mmd-toolkit/docs dev
 pnpm --filter @mmd-toolkit/docs build
 pnpm --filter @mmd-toolkit/docs preview
 pnpm --filter @mmd-toolkit/docs test
 ```
 
-Build the parser and linter before running the site or its tests. Diagnostic
-markers execute the workspace linter while rendering pages; rebuild those
-packages after changing their implementation.
+Build the parser, the linter and the TextMate grammar before running the site or
+its tests. Diagnostic markers execute the workspace linter while rendering
+pages, and code blocks are colored with the built grammar; rebuild those
+packages after changing them.
 
 `mmd` code fences containing `%% eslint @mmd-toolkit/` use `twoslash-eslint` to
 show actual ESLint diagnostics on hover. Enable the rules an example

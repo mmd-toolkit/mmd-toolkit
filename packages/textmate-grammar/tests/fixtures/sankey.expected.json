@@ -20,7 +20,17 @@
     ["124.729", "string.unquoted.mermaid"],
     ["Bio-conversion, liquid", "string.quoted.double.mermaid"],
     ["Liquid", "variable.mermaid"],
-    ["0.597", "string.unquoted.mermaid"]
+    ["0.597", "string.unquoted.mermaid"],
+    ["Source", "variable.mermaid", 16],
+    ["Target", "variable.mermaid", 16],
+    ["123", "string.unquoted.mermaid", 16],
+    ["\"", "punctuation.definition.string.begin.mermaid", 17],
+    ["\"", "string.quoted.double.mermaid", 17],
+    ["Source", "string.quoted.double.mermaid", 17],
+    ["\"", "punctuation.definition.string.end.mermaid", 18],
+    ["\"", "string.quoted.double.mermaid", 18],
+    ["Target", "variable.mermaid", 18],
+    ["123", "string.unquoted.mermaid", 18]
   ],
   "absentOnLine": [
     [5, "comment.line.percentage.mermaid"],
@@ -30,7 +40,8 @@
   "absent": [
     ["<b title=\"x\">", "punctuation.definition.string.end.mermaid", 7],
     ["wrap", "punctuation.definition.string.end.mermaid", 10],
-    ["124.729", "constant.numeric.mermaid"]
+    ["124.729", "constant.numeric.mermaid"],
+    ["123", "constant.numeric.mermaid", 16]
   ],
   "escapedInputs": [
     {

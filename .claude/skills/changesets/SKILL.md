@@ -3,28 +3,30 @@ name: changesets
 description:
   Add the changeset that a change to a released package needs, in the same
   change. Use when a change touches `packages/parser`,
-  `packages/prettier-plugin-mmd`, or `packages/eslint-plugin` in a way a user of
-  the package can see, when a change touches `packages/spec`, and before opening
-  or updating a pull request.
+  `packages/prettier-plugin-mmd`, `packages/eslint-plugin`, or
+  `packages/textmate-grammar` in a way a user of the package can see, when a
+  change touches `packages/spec`, and before opening or updating a pull request.
 ---
 
 # Changesets
 
-The packages `@mmd-toolkit/parser`, `prettier-plugin-mmd`, and
-`@mmd-toolkit/eslint-plugin` are published from `main` with Changesets
-(CONTRIBUTING.md, Releases). The specification, `@mmd-toolkit/spec`, is not
-published to npm but is released the same way: a release gives it a version, a
-changelog entry, and the git tag `@mmd-toolkit/spec@<version>`, so that an
-implementation can name the version of the specification it follows and read
-what changed since. A change to one of these four ships with a changeset in the
-same pull request; without it, the change is left out of the next version's
-changelog and its version bump.
+The packages `@mmd-toolkit/parser`, `prettier-plugin-mmd`,
+`@mmd-toolkit/eslint-plugin`, and `@mmd-toolkit/textmate-grammar` are published
+from `main` with Changesets (CONTRIBUTING.md, Releases). The specification,
+`@mmd-toolkit/spec`, is not published to npm but is released the same way: a
+release gives it a version, a changelog entry, and the git tag
+`@mmd-toolkit/spec@<version>`, so that an implementation can name the version of
+the specification it follows and read what changed since. A change to one of
+these five ships with a changeset in the same pull request; without it, the
+change is left out of the next version's changelog and its version bump.
 
 ## When a changeset is needed
 
 - A change to what a published package does: what the parser accepts or puts in
   the tree, what the formatter prints, what a lint rule reports or fixes, a
-  message, a rule added or removed, an option, an exported type or function.
+  message, a rule added or removed, an option, an exported type or function,
+  what the grammar colors a unit as, a scope, the version of the specification
+  that the grammar follows.
 - Any change to `packages/spec`.
 - Not needed: a change only to tests, fixtures, the private packages that have
   no versions (`tests`, `docs`, `playground`; the `ignore` list of

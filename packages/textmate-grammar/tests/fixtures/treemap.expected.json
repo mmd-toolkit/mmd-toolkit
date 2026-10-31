@@ -62,7 +62,21 @@
     ["Sales", "string.unquoted.mermaid"],
     ["highlight", "variable.mermaid", 10],
     ["{", "punctuation.definition.description.begin.mermaid", 4],
-    ["}", "punctuation.definition.description.end.mermaid", 4]
+    ["}", "punctuation.definition.description.end.mermaid", 4],
+    ["stroke-dasharray", "support.type.property-name.mermaid", 29],
+    ["5", "support.constant.property-value.mermaid", 29],
+    ["\\,", "support.constant.property-value.mermaid", 29],
+    ["7", "support.constant.property-value.mermaid", 29],
+    [",", "punctuation.separator.comma.mermaid", 29],
+    ["fill", "support.type.property-name.mermaid", 29],
+    ["red", "support.constant.property-value.mermaid", 29],
+    ["1x", "support.type.property-name.mermaid", 30],
+    ["red", "support.constant.property-value.mermaid", 30],
+    ["--色", "support.type.property-name.mermaid", 31],
+    ["red", "support.constant.property-value.mermaid", 31],
+    [":::", "punctuation.separator.class.mermaid", 32],
+    ["wrap", "entity.name.function.directive.mermaid", 32],
+    ["hot", "variable.mermaid", 32]
   ],
   "absent": [
     ["#amp;", "punctuation.separator.semicolon.mermaid", 22],
@@ -73,7 +87,11 @@
     ["2", "string.quoted.double.mermaid", 26],
     ["style", "keyword.control.mermaid", 28],
     ["#f9f", "constant.numeric.mermaid", 10],
-    ["#333;", "constant.numeric.mermaid", 10]
+    ["#333;", "constant.numeric.mermaid", 10],
+    ["5", "constant.numeric.mermaid", 29],
+    ["\\,", "constant.numeric.mermaid", 29],
+    ["7", "constant.numeric.mermaid", 29],
+    ["\\,", "punctuation.separator.comma.mermaid", 29]
   ],
   "escapedInputs": [
     {
@@ -92,6 +110,22 @@
       ],
       "absent": [
         ["%% style comment", "support.constant.property-value.mermaid"]
+      ]
+    },
+    {
+      "code": "treemap\nclassDef hot stroke-dasharray:5\\%%{wrap}%%,7,fill:red;\n",
+      "scopes": [
+        ["5", "support.constant.property-value.mermaid"],
+        ["\\", "support.constant.property-value.mermaid"],
+        ["wrap", "entity.name.function.directive.mermaid"],
+        [",", "support.constant.property-value.mermaid"],
+        ["7", "support.constant.property-value.mermaid"],
+        ["fill", "support.type.property-name.mermaid"],
+        ["red", "support.constant.property-value.mermaid"]
+      ],
+      "absent": [
+        [",", "punctuation.separator.comma.mermaid"],
+        ["7", "constant.numeric.mermaid"]
       ]
     }
   ]

@@ -75,8 +75,8 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Build parser for rule document checks
         run: pnpm --filter @mmd-toolkit/parser run build
-      - name: Japanese document check
-        run: pnpm run lint:ja
+      - name: Markdown document check
+        run: pnpm run lint:md
       - name: Document check
         run: pnpm run lint:docs
       - name: Invisible character check

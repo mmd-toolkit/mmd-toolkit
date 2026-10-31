@@ -1,7 +1,16 @@
 {
   "variables": {
     "c4-argument-padding": "(?:[ ]|{{directive}})*",
-    "c4-name-argument": "(?:\"(?:{{htmlTag}}|{{directive}}|(?!{{directiveStart}})[^\"\\r\\n])*\"|(?!{{c4-argument-padding}}\\$)(?:{{directive}}|(?!{{directiveStart}})[^,\\r\\n])+)"
+    "c4-element-calls": "Person_Ext|Person|SystemQueue_Ext|SystemDb_Ext|System_Ext|SystemQueue|SystemDb|System|Boundary|Enterprise_Boundary|System_Boundary|ContainerQueue_Ext|ContainerDb_Ext|Container_Ext|ContainerQueue|ContainerDb|Container|Container_Boundary|ComponentQueue_Ext|ComponentDb_Ext|Component_Ext|ComponentQueue|ComponentDb|Component|Deployment_Node|Node|Node_L|Node_R|UpdateElementStyle",
+    "c4-relation-calls": "Rel|BiRel|Rel_Up|Rel_U|Rel_Down|Rel_D|Rel_Left|Rel_L|Rel_Right|Rel_R|Rel_Back|UpdateRelStyle",
+    "c4-call-keywords": "{{c4-element-calls}}|{{c4-relation-calls}}|RelIndex|UpdateLayoutConfig",
+    "c4-quoted-argument": "{{c4-argument-padding}}\"(?:{{htmlTag}}|{{directive}}|(?!{{directiveStart}})[^\"\\r\\n])*\"",
+    "c4-named-argument": "{{c4-argument-padding}}\\$(?:{{directive}}|(?!{{directiveStart}})[^=\\r\\n])*={{c4-quoted-argument}}",
+    "c4-bare-argument": "(?!{{c4-argument-padding}}[\"$]|\\)|,)(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^,\\r\\n])+",
+    "c4-argument": "(?>{{c4-quoted-argument}}|{{c4-named-argument}}|{{c4-bare-argument}})",
+    "c4-first-argument": "(?>{{c4-argument-padding}},|{{c4-argument}})",
+    "c4-next-argument": "(?:{{directives}},{{directives}},|{{c4-argument}})",
+    "c4-argument-separator": "{{directives}}(?:,(?!{{directives}},){{directives}})?"
   },
   "patterns": [
     {
@@ -10,7 +19,7 @@
   ],
   "repository": {
     "c4": {
-      "comment": "Detection.md entry 7: `C4Context`, `C4Container`, `C4Component`, `C4Dynamic`, `C4Deployment`. rule 6: `C4Context`, `C4Container`, `C4Component`, `C4Dynamic`, and `C4Deployment`, in that order, read a header keyword not followed by a word character. c4.md#the-top-level-context: `C4Context`, `C4Container`, `C4Component`, `C4Dynamic`, and `C4Deployment`, in that order, read a header keyword not followed by a word character. c4.md#the-keyword-and-argument-contexts: A keyword context tries end of text, `(` followed by ASCII spaces and `,`, ordinary `(`, and `)`, in that order.",
+      "comment": "Detection.md entry 7: `C4Context`, `C4Container`, `C4Component`, `C4Dynamic`, `C4Deployment`. rule 6: `C4Context`, `C4Container`, `C4Component`, `C4Dynamic`, and `C4Deployment`, in that order, read a header keyword not followed by a word character. Follows c4.md#the-top-level-context.",
       "begin": "{{diagramStart}}(C4Context|C4Container|C4Component|C4Dynamic|C4Deployment){{wordEnd}}",
       "beginCaptures": {
         "1": {
@@ -27,10 +36,10 @@
         },
         {
           "include": "#native-percent-comment",
-          "comment": "A diagram comment has the mark %% and the text after it up to the line terminator as its value; U+2028 and U+2029 inside a diagram comment do not end it. c4.md#comments: A diagram comment has the mark `%%` and the text after it up to the line terminator as its value; the line terminator remains outside the comment and can separate statements. c4.md#the-keyword-and-argument-contexts: A keyword context tries end of text, `(` followed by ASCII spaces and `,`, ordinary `(`, and `)`, in that order."
+          "comment": "A diagram comment has the mark %% and the text after it up to the line terminator as its value; U+2028 and U+2029 inside a diagram comment do not end it. Follows c4.md#comments."
         },
         {
-          "comment": "Rule 2: title and accDescription, each followed by one whitespace character and nonempty text without #, ;, or LF, make their whole line-value unit. Quotes and percent pairs are text. The whole remainder of an accepted title line is its value; the excluded converted characters are not validated here. Directives inside titles are trivia within their values, including before the separator. Retain this local context: permits Notation whitespace, including line terminators, around the delimiter and preserves inline percent pairs in the value. Retain this local title form: uses exactly one Notation whitespace separator and preserves percent pairs in its line value. A common comment after a line separator or paragraph separator ends this value before the separator. c4.md#the-top-level-context: `title` and `accDescription`, each followed by one whitespace character and nonempty text without `#`, `;`, or LF, make their whole line-value unit. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "comment": "Rule 2: title and accDescription, each followed by one whitespace character and nonempty text without #, ;, or LF, make their whole line-value unit. Quotes and percent pairs are text. The whole remainder of an accepted title line is its value; the excluded converted characters are not validated here. Directives inside titles are trivia within their values, including before the separator. Retain this local context: permits Notation whitespace, including line terminators, around the delimiter and preserves inline percent pairs in the value. Retain this local title form: uses exactly one Notation whitespace separator and preserves percent pairs in its line value. A common comment after a line separator or paragraph separator ends this value before the separator. Follows c4.md#the-top-level-context and common.md#comment-lines.",
           "begin": "(title|accDescription){{wordEnd}}",
           "beginCaptures": {
             "1": {
@@ -49,7 +58,7 @@
           ]
         },
         {
-          "comment": "Rule 3: accTitle and accDescr enter their value context at the colon, and accDescr enters its block context at the opening brace. A directive between two complete units is allowed. The keyword context reads either delimiter after whitespace and directives; bare words inside text contexts stay text. Retain this local context: permits Notation whitespace, including line terminators, around the delimiter and preserves inline percent pairs in the value. A common comment after a line separator or paragraph separator ends this value before the separator. c4.md#the-top-level-context: `accTitle` with optional whitespace, `:`, and optional whitespace enters its line-value context; `accDescr` with the same colon form follows it, then `accDescr` with optional whitespace, `{`, and optional whitespace enters the block context. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "comment": "Rule 3: accTitle and accDescr enter their value context at the colon, and accDescr enters its block context at the opening brace. A directive between two complete units is allowed. The keyword context reads either delimiter after whitespace and directives; bare words inside text contexts stay text. Retain this local context: permits Notation whitespace, including line terminators, around the delimiter and preserves inline percent pairs in the value. A common comment after a line separator or paragraph separator ends this value before the separator. Follows c4.md#the-top-level-context and common.md#comment-lines.",
           "begin": "(accTitle|accDescr){{wordEnd}}",
           "beginCaptures": {
             "1": {
@@ -73,41 +82,28 @@
           ]
         },
         {
-          "comment": "Read the positional alias or endpoints before the remaining call arguments. c4.md#the-keyword-and-argument-contexts: A later apparent call may be part of the same argument sequence until a closing parenthesis is read at a unit start. c4.md#the-keyword-and-argument-contexts: A keyword context tries end of text, `(` followed by ASCII spaces and `,`, ordinary `(`, and `)`, in that order.",
-          "begin": "(RelIndex){{wordEnd}}(\\()({{c4-name-argument}})(,)({{c4-name-argument}})(,)({{c4-name-argument}})(,)",
+          "comment": "Read the positional alias or endpoints without requiring surplus commas or arguments. Directives between the call keyword and opener keep their own scopes. Follows c4.md#rejections-outside-the-grammar and c4.md#calls-and-arguments.",
+          "begin": "(RelIndex){{wordEnd}}({{directives}})(\\()({{c4-first-argument}})(?:({{c4-argument-separator}})({{c4-next-argument}})(?:({{c4-argument-separator}})({{c4-next-argument}}))?)?",
           "beginCaptures": {
             "1": {
               "name": "keyword.control.mermaid"
             },
             "2": {
-              "name": "punctuation.section.arguments.begin.mermaid"
-            },
-            "3": {
               "patterns": [
                 {
                   "include": "#directive"
-                },
-                {
-                  "include": "#string-plain-double"
-                },
-                {
-                  "match": "(?:{{directive}}|(?!{{directiveStart}})[^\"\\r\\n])+",
-                  "name": "string.unquoted.mermaid",
-                  "captures": {
-                    "0": {
-                      "patterns": [
-                        {
-                          "include": "#directive"
-                        }
-                      ]
-                    }
-                  },
-                  "comment": "Retain the relationship index as its written argument text. c4.md#calls-and-arguments: The tree keeps all arguments, including the index of `RelIndex`, sprite arguments of deployment nodes, and excess arguments."
                 }
               ]
             },
+            "3": {
+              "name": "punctuation.section.arguments.begin.mermaid"
+            },
             "4": {
-              "name": "punctuation.separator.comma.mermaid"
+              "patterns": [
+                {
+                  "include": "#c4-call-arguments"
+                }
+              ]
             },
             "5": {
               "patterns": [
@@ -115,26 +111,16 @@
                   "include": "#directive"
                 },
                 {
-                  "include": "#string-plain-double"
-                },
-                {
-                  "match": "(?:{{directive}}|(?!{{directiveStart}})[^\"\\r\\n])+",
-                  "name": "variable.mermaid",
-                  "captures": {
-                    "0": {
-                      "patterns": [
-                        {
-                          "include": "#directive"
-                        }
-                      ]
-                    }
-                  },
-                  "comment": "Read an element alias or a relationship endpoint. c4.md#the-keyword-and-argument-contexts: A later apparent call may be part of the same argument sequence until a closing parenthesis is read at a unit start. c4.md#the-keyword-and-argument-contexts: A keyword context tries end of text, `(` followed by ASCII spaces and `,`, ordinary `(`, and `)`, in that order."
+                  "include": "#c4-comma"
                 }
               ]
             },
             "6": {
-              "name": "punctuation.separator.comma.mermaid"
+              "patterns": [
+                {
+                  "include": "#c4-name-argument"
+                }
+              ]
             },
             "7": {
               "patterns": [
@@ -142,26 +128,16 @@
                   "include": "#directive"
                 },
                 {
-                  "include": "#string-plain-double"
-                },
-                {
-                  "match": "(?:{{directive}}|(?!{{directiveStart}})[^\"\\r\\n])+",
-                  "name": "variable.mermaid",
-                  "captures": {
-                    "0": {
-                      "patterns": [
-                        {
-                          "include": "#directive"
-                        }
-                      ]
-                    }
-                  },
-                  "comment": "Read an element alias or a relationship endpoint. c4.md#the-keyword-and-argument-contexts: A later apparent call may be part of the same argument sequence until a closing parenthesis is read at a unit start. c4.md#the-keyword-and-argument-contexts: A keyword context tries end of text, `(` followed by ASCII spaces and `,`, ordinary `(`, and `)`, in that order."
+                  "include": "#c4-comma"
                 }
               ]
             },
             "8": {
-              "name": "punctuation.separator.comma.mermaid"
+              "patterns": [
+                {
+                  "include": "#c4-name-argument"
+                }
+              ]
             }
           },
           "end": "(\\))",
@@ -177,41 +153,28 @@
           ]
         },
         {
-          "comment": "Read the positional alias or endpoints before the remaining call arguments. c4.md#the-keyword-and-argument-contexts: A later apparent call may be part of the same argument sequence until a closing parenthesis is read at a unit start. c4.md#the-keyword-and-argument-contexts: A keyword context tries end of text, `(` followed by ASCII spaces and `,`, ordinary `(`, and `)`, in that order.",
-          "begin": "(Rel|BiRel|Rel_Up|Rel_U|Rel_Down|Rel_D|Rel_Left|Rel_L|Rel_Right|Rel_R|Rel_Back|UpdateRelStyle){{wordEnd}}(\\()({{c4-name-argument}})(,)({{c4-name-argument}})(,)",
+          "comment": "Read the positional alias or endpoints without requiring surplus commas or arguments. Directives between the call keyword and opener keep their own scopes. Follows c4.md#rejections-outside-the-grammar and c4.md#calls-and-arguments.",
+          "begin": "({{c4-relation-calls}}){{wordEnd}}({{directives}})(\\()({{c4-first-argument}})(?:({{c4-argument-separator}})({{c4-next-argument}}))?",
           "beginCaptures": {
             "1": {
               "name": "keyword.control.mermaid"
             },
             "2": {
-              "name": "punctuation.section.arguments.begin.mermaid"
-            },
-            "3": {
               "patterns": [
                 {
                   "include": "#directive"
-                },
-                {
-                  "include": "#string-plain-double"
-                },
-                {
-                  "match": "(?:{{directive}}|(?!{{directiveStart}})[^\"\\r\\n])+",
-                  "name": "variable.mermaid",
-                  "captures": {
-                    "0": {
-                      "patterns": [
-                        {
-                          "include": "#directive"
-                        }
-                      ]
-                    }
-                  },
-                  "comment": "Read an element alias or a relationship endpoint. c4.md#the-keyword-and-argument-contexts: A later apparent call may be part of the same argument sequence until a closing parenthesis is read at a unit start. c4.md#the-keyword-and-argument-contexts: A keyword context tries end of text, `(` followed by ASCII spaces and `,`, ordinary `(`, and `)`, in that order."
                 }
               ]
             },
+            "3": {
+              "name": "punctuation.section.arguments.begin.mermaid"
+            },
             "4": {
-              "name": "punctuation.separator.comma.mermaid"
+              "patterns": [
+                {
+                  "include": "#c4-name-argument"
+                }
+              ]
             },
             "5": {
               "patterns": [
@@ -219,26 +182,16 @@
                   "include": "#directive"
                 },
                 {
-                  "include": "#string-plain-double"
-                },
-                {
-                  "match": "(?:{{directive}}|(?!{{directiveStart}})[^\"\\r\\n])+",
-                  "name": "variable.mermaid",
-                  "captures": {
-                    "0": {
-                      "patterns": [
-                        {
-                          "include": "#directive"
-                        }
-                      ]
-                    }
-                  },
-                  "comment": "Read an element alias or a relationship endpoint. c4.md#the-keyword-and-argument-contexts: A later apparent call may be part of the same argument sequence until a closing parenthesis is read at a unit start. c4.md#the-keyword-and-argument-contexts: A keyword context tries end of text, `(` followed by ASCII spaces and `,`, ordinary `(`, and `)`, in that order."
+                  "include": "#c4-comma"
                 }
               ]
             },
             "6": {
-              "name": "punctuation.separator.comma.mermaid"
+              "patterns": [
+                {
+                  "include": "#c4-name-argument"
+                }
+              ]
             }
           },
           "end": "(\\))",
@@ -254,41 +207,28 @@
           ]
         },
         {
-          "comment": "Read the positional alias or endpoints before the remaining call arguments. c4.md#the-keyword-and-argument-contexts: A later apparent call may be part of the same argument sequence until a closing parenthesis is read at a unit start. c4.md#the-keyword-and-argument-contexts: A keyword context tries end of text, `(` followed by ASCII spaces and `,`, ordinary `(`, and `)`, in that order.",
-          "begin": "(Person_Ext|Person|SystemQueue_Ext|SystemDb_Ext|System_Ext|SystemQueue|SystemDb|System|Boundary|Enterprise_Boundary|System_Boundary|ContainerQueue_Ext|ContainerDb_Ext|Container_Ext|ContainerQueue|ContainerDb|Container|Container_Boundary|ComponentQueue_Ext|ComponentDb_Ext|Component_Ext|ComponentQueue|ComponentDb|Component|Deployment_Node|Node|Node_L|Node_R|UpdateElementStyle){{wordEnd}}(\\()({{c4-name-argument}})(,)",
+          "comment": "Read the positional alias or endpoints without requiring surplus commas or arguments. Directives between the call keyword and opener keep their own scopes. Follows c4.md#rejections-outside-the-grammar and c4.md#calls-and-arguments.",
+          "begin": "({{c4-element-calls}}){{wordEnd}}({{directives}})(\\()({{c4-first-argument}})",
           "beginCaptures": {
             "1": {
               "name": "keyword.control.mermaid"
             },
             "2": {
-              "name": "punctuation.section.arguments.begin.mermaid"
-            },
-            "3": {
               "patterns": [
                 {
                   "include": "#directive"
-                },
-                {
-                  "include": "#string-plain-double"
-                },
-                {
-                  "match": "(?:{{directive}}|(?!{{directiveStart}})[^\"\\r\\n])+",
-                  "name": "variable.mermaid",
-                  "captures": {
-                    "0": {
-                      "patterns": [
-                        {
-                          "include": "#directive"
-                        }
-                      ]
-                    }
-                  },
-                  "comment": "Read an element alias or a relationship endpoint. c4.md#the-keyword-and-argument-contexts: A later apparent call may be part of the same argument sequence until a closing parenthesis is read at a unit start. c4.md#the-keyword-and-argument-contexts: A keyword context tries end of text, `(` followed by ASCII spaces and `,`, ordinary `(`, and `)`, in that order."
                 }
               ]
             },
+            "3": {
+              "name": "punctuation.section.arguments.begin.mermaid"
+            },
             "4": {
-              "name": "punctuation.separator.comma.mermaid"
+              "patterns": [
+                {
+                  "include": "#c4-name-argument"
+                }
+              ]
             }
           },
           "end": "(\\))",
@@ -304,11 +244,21 @@
           ]
         },
         {
-          "comment": "Rule 7: The call keywords are tried in the listed order, each in exact case and not followed by a word character. A keyword context reads (, entering the argument context; ) at a unit start closes both contexts. c4.md#the-top-level-context: The call keywords are tried in the order shown below, each in exact case and not followed by a word character. c4.md#the-keyword-and-argument-contexts: A keyword context tries end of text, `(` followed by ASCII spaces and `,`, ordinary `(`, and `)`, in that order.",
-          "begin": "(Person_Ext|Person|SystemQueue_Ext|SystemDb_Ext|System_Ext|SystemQueue|SystemDb|System|Boundary|Enterprise_Boundary|System_Boundary|ContainerQueue_Ext|ContainerDb_Ext|Container_Ext|ContainerQueue|ContainerDb|Container|Container_Boundary|ComponentQueue_Ext|ComponentDb_Ext|Component_Ext|ComponentQueue|ComponentDb|Component|Deployment_Node|Node|Node_L|Node_R|Rel|BiRel|Rel_Up|Rel_U|Rel_Down|Rel_D|Rel_Left|Rel_L|Rel_Right|Rel_R|Rel_Back|RelIndex|UpdateElementStyle|UpdateRelStyle|UpdateLayoutConfig){{wordEnd}}",
+          "comment": "Rule 7: The call keywords are tried in the listed order, each in exact case and not followed by a word character. A keyword context reads (, entering the argument context; ) at a unit start closes both contexts. Follows c4.md#the-top-level-context and c4.md#the-keyword-and-argument-contexts.",
+          "begin": "({{c4-call-keywords}}){{wordEnd}}({{directives}})(\\()",
           "beginCaptures": {
             "1": {
               "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.section.arguments.begin.mermaid"
             }
           },
           "end": "(\\))",
@@ -324,7 +274,7 @@
           ]
         },
         {
-          "comment": "Rule 8: { and } read their units. Each boundary keyword requires a body ending with }. c4.md#the-top-level-context: `{`, `}`, and the end of text read their units. c4.md#the-keyword-and-argument-contexts: A keyword context tries end of text, `(` followed by ASCII spaces and `,`, ordinary `(`, and `)`, in that order.",
+          "comment": "Rule 8: { and } read their units. Each boundary keyword requires a body ending with }. Follows c4.md#boundaries.",
           "match": "(\\{)|(\\})",
           "captures": {
             "1": {
@@ -338,7 +288,7 @@
       ]
     },
     "c4-colon-value": {
-      "comment": "A colon enters the line-value context, whose value is the rest of the line after optional whitespace. Leave the following whitespace outside the begin match so a separator before a common comment remains available to #comment-line. c4.md#title-and-accessibility-contexts: In a colon accessibility context, the value is the rest of the line, including `#`, `;`, quotes, and percent pairs, without exterior whitespace. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "comment": "A colon enters the line-value context, whose value is the rest of the line after optional whitespace. Leave the following whitespace outside the begin match so a separator before a common comment remains available to #comment-line. Follows c4.md#title-and-accessibility-contexts and common.md#comment-lines.",
       "begin": "(:)",
       "beginCaptures": {
         "1": {
@@ -357,7 +307,7 @@
       ]
     },
     "c4-brace-value": {
-      "comment": "The description block reads through the first closing brace; interior opening braces and percent pairs are text. Leave the following whitespace outside the begin match so a separator before a common comment remains available to #comment-line. c4.md#title-and-accessibility-contexts: The rest of that line-value unit preserves additional leading and trailing whitespace and treats quotes and percent pairs as text. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "comment": "The description block reads through the first closing brace; interior opening braces and percent pairs are text. Leave the following whitespace outside the begin match so a separator before a common comment remains available to #comment-line. Follows c4.md#title-and-accessibility-contexts.",
       "begin": "(\\{)",
       "beginCaptures": {
         "1": {
@@ -381,11 +331,11 @@
       ]
     },
     "c4-string-argument": {
-      "comment": "Rules 3 and 4: ASCII spaces before a double quote are padding, including when directives separate them. A tab before a quote instead starts bare text. Read the padding separately so adjacent strings each use the shared string rule. c4.md#the-keyword-and-argument-contexts: A tab before a quote starts bare text, and spaces after a string before `)` also start bare text. c4.md#the-keyword-and-argument-contexts: A keyword context tries end of text, `(` followed by ASCII spaces and `,`, ordinary `(`, and `)`, in that order.",
+      "comment": "Rules 3 and 4: ASCII spaces before a double quote are padding, including when directives separate them. A tab before a quote instead starts bare text. Read the padding separately so adjacent strings each use the shared string rule. Follows c4.md#the-keyword-and-argument-contexts.",
       "patterns": [
         {
           "match": "(?!\"){{c4-argument-padding}}(?=\")",
-          "comment": "Only ASCII spaces before a quoted argument are padding; global directives may separate these components. c4.md#the-keyword-and-argument-contexts: ASCII spaces followed by `\"\"` supply an empty StringLiteral argument. c4.md#the-keyword-and-argument-contexts: A keyword context tries end of text, `(` followed by ASCII spaces and `,`, ordinary `(`, and `)`, in that order.",
+          "comment": "Only ASCII spaces before a quoted argument are padding; global directives may separate these components. Follows c4.md#the-keyword-and-argument-contexts.",
           "captures": {
             "0": {
               "patterns": [
@@ -398,12 +348,12 @@
         },
         {
           "include": "#string-plain-double",
-          "comment": "In a quoted argument the next double quote closes the string; backslash does not escape it. c4.md#strings-and-named-attributes: A backslash does not escape a quote, and every accepted string has its closing quote. c4.md#the-keyword-and-argument-contexts: A keyword context tries end of text, `(` followed by ASCII spaces and `,`, ordinary `(`, and `)`, in that order."
+          "comment": "In a quoted argument the next double quote closes the string; backslash does not escape it. Follows c4.md#strings-and-named-attributes."
         }
       ]
     },
     "c4-call-arguments": {
-      "comment": "Read the remaining argument units of each call. c4.md#the-keyword-and-argument-contexts: A keyword context tries end of text, `(` followed by ASCII spaces and `,`, ordinary `(`, and `)`, in that order.",
+      "comment": "Read the remaining argument units of each call. Follows c4.md#calls-and-arguments.",
       "patterns": [
         {
           "include": "#comment-line"
@@ -412,52 +362,17 @@
           "include": "#directive"
         },
         {
-          "comment": "Ordinary ( enters the argument context; the opening form (, with ASCII spaces before its comma supplies one null argument. c4.md#the-keyword-and-argument-contexts: The opening form `(,`, with ASCII spaces allowed before its comma, supplies one null argument and enters the argument context; ordinary `(` enters it without supplying an argument. c4.md#the-keyword-and-argument-contexts: A keyword context tries end of text, `(` followed by ASCII spaces and `,`, ordinary `(`, and `)`, in that order.",
-          "match": "\\(",
-          "name": "punctuation.section.arguments.begin.mermaid"
-        },
-        {
-          "comment": "Rule 2: A double comma supplies one null argument; a lone comma supplies none. c4.md#the-keyword-and-argument-contexts: `,,` supplies one null argument; a lone `,` supplies none. c4.md#the-keyword-and-argument-contexts: A keyword context tries end of text, `(` followed by ASCII spaces and `,`, ordinary `(`, and `)`, in that order.",
-          "match": ",",
-          "name": "punctuation.separator.comma.mermaid"
+          "include": "#c4-comma"
         },
         {
           "include": "#c4-string-argument",
-          "comment": "Rules 3 and 4: ASCII spaces followed by a double quote enter a quoted argument, including an empty string. c4.md#the-keyword-and-argument-contexts: ASCII spaces followed by `\"\"` supply an empty StringLiteral argument. c4.md#the-keyword-and-argument-contexts: A keyword context tries end of text, `(` followed by ASCII spaces and `,`, ordinary `(`, and `)`, in that order."
+          "comment": "Rules 3 and 4: ASCII spaces followed by a double quote enter a quoted argument, including an empty string. Follows c4.md#the-keyword-and-argument-contexts."
         },
         {
-          "comment": "Rule 5: ASCII spaces followed by $ enter the named-key context. After $, the key is every character up to the next =, including commas, ), whitespace, and line terminators, and may be empty. A common comment after a line separator or paragraph separator ends this value before the separator. c4.md#the-keyword-and-argument-contexts: ASCII spaces followed by `$` enter the named-key context. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
-          "begin": "({{c4-argument-padding}})(\\$)",
-          "beginCaptures": {
-            "1": {
-              "patterns": [
-                {
-                  "include": "#directive"
-                }
-              ]
-            },
-            "2": {
-              "name": "punctuation.definition.attribute.begin.mermaid"
-            }
-          },
-          "end": "(=)|{{separatorCommentEnd}}",
-          "endCaptures": {
-            "1": {
-              "name": "punctuation.separator.key-value.mermaid"
-            }
-          },
-          "contentName": "storage.modifier.mermaid",
-          "patterns": [
-            {
-              "include": "#comment-line"
-            },
-            {
-              "include": "#directive"
-            }
-          ]
+          "include": "#c4-named-key"
         },
         {
-          "comment": "Rule 6: Bare text takes the longest nonempty run of characters other than a comma, including whitespace, quotes, braces, ), and line terminators. A closing parenthesis after its beginning belongs to the value. A common comment after a line separator or paragraph separator ends this value before the separator. c4.md#the-keyword-and-argument-contexts: Bare text takes the longest nonempty run of characters other than a comma, including whitespace, quotes, braces, `)`, and line terminators. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "comment": "Rule 6: Bare text takes the longest nonempty run of characters other than a comma, including whitespace, quotes, braces, ), and line terminators. A closing parenthesis after its beginning belongs to the value. A common comment after a line separator or paragraph separator ends this value before the separator. Follows c4.md#the-keyword-and-argument-contexts and common.md#comment-lines.",
           "begin": "(?!{{separatorCommentEnd}})(?=[^,])",
           "end": "(?=,)|{{separatorCommentEnd}}",
           "contentName": "string.unquoted.mermaid",
@@ -469,6 +384,76 @@
               "include": "#directive"
             }
           ]
+        }
+      ]
+    },
+    "c4-named-key": {
+      "comment": "Rule 5: ASCII spaces followed by $ enter the named-key context. After $, the key is every character up to the next =, including commas, ), whitespace, and line terminators, and may be empty. A common comment after a line separator or paragraph separator ends this value before the separator. Follows c4.md#strings-and-named-attributes.",
+      "begin": "({{c4-argument-padding}})(\\$)",
+      "beginCaptures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "punctuation.definition.attribute.begin.mermaid"
+        }
+      },
+      "end": "(=)|{{separatorCommentEnd}}",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.separator.key-value.mermaid"
+        }
+      },
+      "contentName": "support.type.property-name.mermaid",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        }
+      ]
+    },
+    "c4-comma": {
+      "comment": "Read a comma between arguments or in a null entry. Follows c4.md#the-keyword-and-argument-contexts.",
+      "match": ",",
+      "name": "punctuation.separator.comma.mermaid"
+    },
+    "c4-name-argument": {
+      "comment": "Read one positional argument, preserving strings and named keys while scoping bare aliases and endpoints as element names. Follows c4.md#rejections-outside-the-grammar.",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#c4-string-argument"
+        },
+        {
+          "include": "#c4-named-key"
+        },
+        {
+          "include": "#c4-comma"
+        },
+        {
+          "comment": "Read the entire bare alias or endpoint, including quotes that do not delimit a string. Follows c4.md#the-keyword-and-argument-contexts.",
+          "match": "{{c4-bare-argument}}",
+          "name": "variable.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
         }
       ]
     }

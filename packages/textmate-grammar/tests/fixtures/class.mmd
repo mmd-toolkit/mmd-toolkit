@@ -117,3 +117,10 @@ classDef Boundary style
 class DivisionProbe { foo(a(b)) }
 class ScopeMember { +field$ }
 style Animal fill:#43a047
+ScopeMember : +field$
+Animal : +call(note) string
+Animal : <<interface>>
+class ReturnClassifier { +foo()$ int* }
+Animal : +foo()$ int*
+class ReturnSuffix { +foo() int* }
+style Animal fi ll:red

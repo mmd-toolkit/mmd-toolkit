@@ -96,9 +96,9 @@
   "task1" variable.mermaid
   "call" keyword.control.mermaid
   "handler" entity.name.function.mermaid
-  "(" punctuation.section.parens.begin.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
   "\"title\",123" string.unquoted.mermaid
-  ")" punctuation.section.parens.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
   "href" keyword.control.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "https://example.com/call" string.quoted.double.mermaid
@@ -112,8 +112,8 @@
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
   "call" keyword.control.mermaid
   "handler" entity.name.function.mermaid
-  "(" punctuation.section.parens.begin.mermaid
-  ")" punctuation.section.parens.end.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  ")" punctuation.section.arguments.end.mermaid
 >   titleLong : 1d
   "titleLong " string.unquoted.mermaid
   ":" punctuation.separator.colon.mermaid
@@ -213,7 +213,7 @@
   "{}" meta.directive.mermaid string.unquoted.directive.mermaid
   "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
   "g" entity.name.function.mermaid
-  "(" punctuation.section.parens.begin.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
   "1" string.unquoted.mermaid
   "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
@@ -222,7 +222,7 @@
   "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
   "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
   "2" string.unquoted.mermaid
-  ")" punctuation.section.parens.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
 >   click task1 href "u%%{init: {}}%%v"
   "click" keyword.control.mermaid
   "task1" variable.mermaid
@@ -249,9 +249,9 @@
   "task1" variable.mermaid
   "call" keyword.control.mermaid
   "f" entity.name.function.mermaid
-  "(" punctuation.section.parens.begin.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
   "a(b" string.unquoted.mermaid
-  ")" punctuation.section.parens.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
 >   WEEKDAY MONDAY
   "WEEKDAY" keyword.control.mermaid
   "MONDAY" constant.language.mermaid
@@ -262,8 +262,8 @@
   "task1" variable.mermaid
   "CALL" keyword.control.mermaid
   "f" entity.name.function.mermaid
-  "(" punctuation.section.parens.begin.mermaid
-  ")" punctuation.section.parens.end.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  ")" punctuation.section.arguments.end.mermaid
   "HREF" keyword.control.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "u" string.quoted.double.mermaid
@@ -273,9 +273,9 @@
   "x" variable.mermaid
   "call" keyword.control.mermaid
   "a)b" entity.name.function.mermaid
-  "(" punctuation.section.parens.begin.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
   "1" string.unquoted.mermaid
-  ")" punctuation.section.parens.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
 >   click %%{init: {}}%%x href "u"
   "click" keyword.control.mermaid
   "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
@@ -329,9 +329,9 @@
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
   "call" keyword.control.mermaid
   "f" entity.name.function.mermaid
-  "(" punctuation.section.parens.begin.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
   "c>" string.unquoted.mermaid
-  ")" punctuation.section.parens.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
 >   accTitle%%{init: {}}%%: T
   "accTitle" keyword.control.mermaid
   "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
@@ -448,9 +448,9 @@
   "{}" meta.directive.mermaid string.unquoted.directive.mermaid
   "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
   "f" entity.name.function.mermaid
-  "(" punctuation.section.parens.begin.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
   "2" string.unquoted.mermaid
-  ")" punctuation.section.parens.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
 >   Task : #a%%{init: {}}%%mp;call f()
   "Task " string.unquoted.mermaid
   ":" punctuation.separator.colon.mermaid
@@ -606,8 +606,8 @@
   "b" variable.mermaid
   "call" keyword.control.mermaid
   "f" entity.name.function.mermaid
-  "(" punctuation.section.parens.begin.mermaid
-  ")" punctuation.section.parens.end.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  ")" punctuation.section.arguments.end.mermaid
 >   includes monday,tuesday
   "includes" keyword.control.mermaid
   "monday" string.unquoted.mermaid
@@ -649,9 +649,9 @@
   "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
   "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
   "g" entity.name.function.mermaid
-  "(" punctuation.section.parens.begin.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
   "1" string.unquoted.mermaid
-  ")" punctuation.section.parens.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
 > 
 >   %%{wrap}%%title T
   "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid

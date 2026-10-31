@@ -85,7 +85,7 @@
     ["style", "keyword.control.mermaid", 80],
     ["style", "keyword.control.mermaid", 80],
     ["classDef", "keyword.control.mermaid", 82],
-    ["style", "keyword.control.mermaid", 82],
+    ["style", "support.constant.property-value.mermaid", 82],
     [",", "punctuation.separator.comma.mermaid", 78],
     ["<<", "punctuation.definition.annotation.begin.mermaid", 84],
     [">>", "punctuation.definition.annotation.end.mermaid", 84],
@@ -99,7 +99,7 @@
     ["wrap", "entity.name.function.directive.mermaid", 94],
     [" tail", "comment.line.percentage.mermaid", 94],
     ["wrap", "entity.name.function.directive.mermaid", 114],
-    ["style", "keyword.control.mermaid", 115],
+    ["style", "support.constant.property-value.mermaid", 115],
     ["(", "punctuation.section.arguments.begin.mermaid", 116],
     [")", "punctuation.section.arguments.end.mermaid", 116],
     ["note \"x ", "comment.block.ignored.mermaid", 51],
@@ -115,7 +115,31 @@
     [" owns note and click", "string.unquoted.mermaid", 23],
     ["onClick", "entity.name.function.mermaid", 31],
     ["$", "storage.modifier.mermaid", 117],
-    ["#43a047", "support.constant.property-value.mermaid", 118]
+    ["#43a047", "support.constant.property-value.mermaid", 118],
+    ["[", "punctuation.definition.label.begin.mermaid", 5],
+    ["]", "punctuation.definition.label.end.mermaid", 5],
+    ["field", "variable.mermaid", 117],
+    ["+", "storage.modifier.mermaid", 117],
+    ["field", "variable.mermaid", 119],
+    ["+", "storage.modifier.mermaid", 119],
+    ["$", "storage.modifier.mermaid", 119],
+    ["+", "storage.modifier.mermaid", 8],
+    ["note", "string.unquoted.mermaid", 8],
+    ["call", "variable.mermaid", 120],
+    ["+", "storage.modifier.mermaid", 120],
+    ["(", "punctuation.section.arguments.begin.mermaid", 120],
+    ["note", "string.unquoted.mermaid", 120],
+    [")", "punctuation.section.arguments.end.mermaid", 120],
+    ["string", "entity.name.type.mermaid", 120],
+    ["<<", "punctuation.definition.annotation.begin.mermaid", 121],
+    ["interface", "storage.modifier.mermaid", 121],
+    [">>", "punctuation.definition.annotation.end.mermaid", 121],
+    ["fill", "support.type.property-name.mermaid", 118],
+    ["$", "storage.modifier.mermaid", 122],
+    ["int*", "entity.name.type.mermaid", 122],
+    ["int*", "entity.name.type.mermaid", 123],
+    ["*", "storage.modifier.mermaid", 124],
+    ["fi ll", "support.type.property-name.mermaid", 125]
   ],
   "absent": [
     ["className", "keyword.control.mermaid"],
@@ -129,7 +153,12 @@
     ["y", "keyword.control.mermaid", 71],
     ["call", "keyword.control.mermaid", 74],
     ["note", "keyword.control.mermaid", 90],
-    ["style", "keyword.control.mermaid", 114]
+    ["style", "keyword.control.mermaid", 114],
+    ["field", "string.unquoted.mermaid", 119],
+    ["call", "string.unquoted.mermaid", 120],
+    [" owns note and click", "variable.mermaid", 23],
+    ["int*", "storage.modifier.mermaid", 122],
+    ["int*", "storage.modifier.mermaid", 123]
   ],
   "absentOnLine": [
     [7, "keyword.control.mermaid"],
@@ -297,6 +326,37 @@
         ["foo", "variable.mermaid"],
         ["(", "punctuation.section.arguments.begin.mermaid"],
         [")", "punctuation.section.arguments.end.mermaid"]
+      ]
+    },
+    {
+      "code": "classDiagram\nclick A call\nfn\n(a)\n",
+      "scopes": [
+        ["call", "keyword.control.mermaid", 1],
+        ["fn", "entity.name.function.mermaid", 2],
+        ["a", "string.unquoted.mermaid", 3],
+        ["(", "punctuation.section.arguments.begin.mermaid", 3],
+        [")", "punctuation.section.arguments.end.mermaid", 3]
+      ]
+    },
+    {
+      "code": "classDiagram\nclass Body { +na%%{wrap}%%me$ }\nBody : +na%%{wrap}%%me$\nclass Method {text\u2028foo(a(b)) }\nMethod :text\u2028foo(a(b))\nBody : +field{part}$\n",
+      "scopes": [
+        ["na", "variable.mermaid", 1],
+        ["me", "variable.mermaid", 1],
+        ["$", "storage.modifier.mermaid", 1],
+        ["wrap", "entity.name.function.directive.mermaid", 1],
+        ["na", "variable.mermaid", 2],
+        ["me", "variable.mermaid", 2],
+        ["$", "storage.modifier.mermaid", 2],
+        ["wrap", "entity.name.function.directive.mermaid", 2],
+        ["text", "comment.block.ignored.mermaid", 3],
+        ["foo(a", "variable.mermaid", 3],
+        ["b)", "string.unquoted.mermaid", 3],
+        ["text", "comment.block.ignored.mermaid", 4],
+        ["foo(a", "variable.mermaid", 4],
+        ["b)", "string.unquoted.mermaid", 4],
+        ["field{part}", "variable.mermaid", 5],
+        ["$", "storage.modifier.mermaid", 5]
       ]
     }
   ]

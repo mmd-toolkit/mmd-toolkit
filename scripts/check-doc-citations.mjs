@@ -1,11 +1,12 @@
-// Fails when the documents that define the syntax and the tree are
-// inconsistent: the specification (packages/spec) and the documents of the
-// parser and of the tests that it points to (packages/parser/docs,
-// packages/tests/docs). It reports a relative link whose file or anchor does
-// not exist, and a fixture citation (`[fixture: <diagram>/<name>]`) whose
-// fixture does not exist. A Japanese version that cites other fixtures than its
-// English original, or whose headings have other levels, is listed as
-// information: it is behind the English, which is not an error.
+// Fails when the documents that define the syntax and the tree cite a fixture
+// that does not exist: the specification (packages/spec) and the documents of
+// the parser and of the tests that it points to (packages/parser/docs,
+// packages/tests/docs). It reports a fixture citation
+// (`[fixture: <diagram>/<name>]`) whose fixture does not exist. Links and their
+// anchors are checked in every document by `pnpm run lint:md`. A Japanese
+// version that cites other fixtures than its English original, or whose
+// headings have other levels, is listed as information: it is behind the
+// English, which is not an error.
 import { existsSync, readFileSync, readdirSync } from "node:fs"
 import path from "node:path"
 
@@ -45,28 +46,6 @@ function headingLines(file) {
 }
 
 /**
- * The anchors GitHub gives the headings of a document: lower case, without
- * punctuation, whitespace as `-`, and `-1`, `-2` for a repeated heading.
- */
-function anchorsOf(file) {
-  const anchors = new Set()
-  const timesSeen = new Map()
-  for (const heading of headingLines(file)) {
-    const text = heading.replace(/^#+\s+/u, "").replaceAll("`", "")
-    let anchor = text
-      .trim()
-      .toLowerCase()
-      .replace(/[^\s\p{L}\p{N}\-_]/gu, "")
-      .replace(/\s/gu, "-")
-    const seen = timesSeen.get(anchor)
-    timesSeen.set(anchor, (seen ?? -1) + 1)
-    if (seen !== undefined) anchor = `${anchor}-${seen + 1}`
-    anchors.add(anchor)
-  }
-  return anchors
-}
-
-/**
  * The heading levels of a document, in order, as one string to compare.
  */
 function headingLevels(file) {
@@ -81,21 +60,6 @@ const files = documentRoots.flatMap((root) => markdownFiles(root))
 for (const file of files) {
   const text = readFileSync(file, "utf8")
   const shown = path.relative(repositoryRoot, file)
-  for (const match of text.matchAll(/\]\(([^\s)]+)\)/gu)) {
-    const [linkedPath, anchor] = match[1].split("#")
-    if (linkedPath.startsWith("http")) continue
-    const target =
-      linkedPath === "" ? file : path.resolve(path.dirname(file), linkedPath)
-    if (!existsSync(target)) {
-      problems.push(`missing file: ${shown} -> ${match[1]}`)
-    } else if (
-      anchor !== undefined &&
-      target.endsWith(".md") &&
-      !anchorsOf(target).has(decodeURIComponent(anchor))
-    ) {
-      problems.push(`missing anchor: ${shown} -> ${match[1]}`)
-    }
-  }
   // Prettier may break the line after "[fixture:", so the citation is read
   // across whitespace. A placeholder such as "[fixture: <category>/<name>]" is
   // not a citation.

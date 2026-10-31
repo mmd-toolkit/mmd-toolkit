@@ -33,8 +33,8 @@
     ["o{", "keyword.operator.arrow.mermaid"],
     ["1", "keyword.operator.arrow.mermaid", 29],
     ["u", "keyword.operator.arrow.mermaid"],
-    ["12", "constant.numeric.mermaid"],
-    ["2.5", "constant.numeric.mermaid"],
+    ["12", "variable.mermaid"],
+    ["2.5", "variable.mermaid"],
     ["Person label", "string.quoted.double.mermaid"],
     ["An attribute comment", "string.quoted.double.mermaid"],
     ["type with spaces", "entity.name.type.mermaid"],
@@ -45,7 +45,7 @@
     ["%% an ER comment", "comment.line.percentage.mermaid"],
     ["%%{", "meta.directive.mermaid", 41],
     ["#f00", "support.constant.property-value.mermaid"],
-    [";", "punctuation.terminator.statement.mermaid"],
+    [";", "punctuation.separator.semicolon.mermaid"],
     ["O{", "keyword.operator.arrow.mermaid", 50],
     ["|O", "keyword.operator.arrow.mermaid", 51],
     ["O|", "keyword.operator.arrow.mermaid", 51],
@@ -87,7 +87,13 @@
     ["}", "keyword.operator.block.end.mermaid", 14],
     ["fill", "support.type.property-name.mermaid", 48],
     ["#f00", "support.constant.property-value.mermaid", 48],
-    ["``", "comment.block.ignored.mermaid", 87]
+    ["``", "comment.block.ignored.mermaid", 87],
+    ["12", "variable.mermaid", 88],
+    ["2.5", "variable.mermaid", 89],
+    ["fi ll", "support.type.property-name.mermaid", 90],
+    ["étoile", "support.type.property-name.mermaid", 91],
+    ["*", "support.type.property-name.mermaid", 92],
+    ["values~T~", "variable.mermaid", 93]
   ],
   "absent": [
     ["ending", "keyword.control.mermaid"],
@@ -98,16 +104,18 @@
     ["ones", "keyword.control.mermaid"],
     ["subgraph1", "keyword.control.mermaid"],
     ["PKx", "keyword.control.mermaid"],
-    ["title", "keyword.control.mermaid", 40]
+    ["title", "keyword.control.mermaid", 40],
+    ["12", "constant.numeric.mermaid", 88],
+    ["2.5", "constant.numeric.mermaid", 89]
   ],
   "absentOnLine": [
     [10, "keyword.control.mermaid"],
     [11, "keyword.control.mermaid"],
     [48, "constant.numeric.mermaid"],
     [54, "punctuation.definition.color.mermaid"],
-    [54, "punctuation.terminator.statement.mermaid"],
-    [65, "punctuation.terminator.statement.mermaid"],
-    [84, "punctuation.terminator.statement.mermaid"]
+    [54, "punctuation.separator.semicolon.mermaid"],
+    [65, "punctuation.separator.semicolon.mermaid"],
+    [84, "punctuation.separator.semicolon.mermaid"]
   ],
   "unscoped": [],
   "escapedInputs": [

@@ -27,7 +27,7 @@
   "}" punctuation.definition.description.end.mermaid
 >   commit id%%{x y : "root" msg: "branch and commit" tag: 'start' type: NORMAL
   "commit" keyword.control.mermaid
-  "id" storage.modifier.mermaid
+  "id" keyword.control.mermaid
   "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "x" meta.directive.mermaid entity.name.function.directive.mermaid
   " " meta.directive.mermaid
@@ -37,33 +37,33 @@
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "root" string.quoted.double.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
-  "msg" storage.modifier.mermaid
+  "msg" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "branch and commit" string.quoted.double.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
-  "tag" storage.modifier.mermaid
+  "tag" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "'" string.quoted.single.mermaid punctuation.definition.string.begin.mermaid
   "start" string.quoted.single.mermaid
   "'" string.quoted.single.mermaid punctuation.definition.string.end.mermaid
-  "type" storage.modifier.mermaid
+  "type" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "NORMAL" constant.language.mermaid
 >   branch commitLong order: 2
   "branch" keyword.control.mermaid
   "commitLong" variable.mermaid
-  "order" storage.modifier.mermaid
+  "order" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "2" constant.numeric.mermaid
 >   commit id: "feature" type: REVERSE
   "commit" keyword.control.mermaid
-  "id" storage.modifier.mermaid
+  "id" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "feature" string.quoted.double.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
-  "type" storage.modifier.mermaid
+  "type" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "REVERSE" constant.language.mermaid
 >   checkout main
@@ -71,27 +71,27 @@
   "main" variable.mermaid
 >   commit id: "main-tip" type: HIGHLIGHT
   "commit" keyword.control.mermaid
-  "id" storage.modifier.mermaid
+  "id" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "main-tip" string.quoted.double.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
-  "type" storage.modifier.mermaid
+  "type" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "HIGHLIGHT" constant.language.mermaid
 >   cherry-pick id: "feature" parent: "root" tag: "picked"
   "cherry-pick" keyword.control.mermaid
-  "id" storage.modifier.mermaid
+  "id" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "feature" string.quoted.double.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
-  "parent" storage.modifier.mermaid
+  "parent" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "root" string.quoted.double.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
-  "tag" storage.modifier.mermaid
+  "tag" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "picked" string.quoted.double.mermaid
@@ -99,17 +99,17 @@
 >   merge commitLong id: "merged" tag: "joined" type: NORMAL
   "merge" keyword.control.mermaid
   "commitLong" variable.mermaid
-  "id" storage.modifier.mermaid
+  "id" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "merged" string.quoted.double.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
-  "tag" storage.modifier.mermaid
+  "tag" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "joined" string.quoted.double.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
-  "type" storage.modifier.mermaid
+  "type" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "NORMAL" constant.language.mermaid
 >   switch commitLong
@@ -123,12 +123,12 @@
 >   branch LRname order: 3
   "branch" keyword.control.mermaid
   "LRname" variable.mermaid
-  "order" storage.modifier.mermaid
+  "order" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "3" constant.numeric.mermaid
 >   commit id%%{init: {}}%%: "split-option"
   "commit" keyword.control.mermaid
-  "id" storage.modifier.mermaid
+  "id" keyword.control.mermaid
   "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "init" meta.directive.mermaid entity.name.function.directive.mermaid
   ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
@@ -186,7 +186,7 @@
   "}" punctuation.definition.description.end.mermaid
 >   commit msg: "A%%{init: {}}%%B"
   "commit" keyword.control.mermaid
-  "msg" storage.modifier.mermaid
+  "msg" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "A" string.quoted.double.mermaid
@@ -265,7 +265,7 @@
   "}" punctuation.definition.description.end.mermaid
 >   commit id%%{x y : "word-gap"
   "commit" keyword.control.mermaid
-  "id" storage.modifier.mermaid
+  "id" keyword.control.mermaid
   "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "x" meta.directive.mermaid entity.name.function.directive.mermaid
   " " meta.directive.mermaid
@@ -277,7 +277,7 @@
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
 >   commit msg: "<b title="x">y</b>"
   "commit" keyword.control.mermaid
-  "msg" storage.modifier.mermaid
+  "msg" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "<b title=\"x\">" string.quoted.double.mermaid
@@ -285,13 +285,13 @@
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
 >   commit msg: "a<b" tag: "c>"
   "commit" keyword.control.mermaid
-  "msg" storage.modifier.mermaid
+  "msg" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "a" string.quoted.double.mermaid
   "<b" string.quoted.double.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
-  "tag" storage.modifier.mermaid
+  "tag" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "c>" string.quoted.double.mermaid
@@ -308,7 +308,7 @@
 >   branch directiveName order: 4%%{wrap}%%
   "branch" keyword.control.mermaid
   "directiveName" variable.mermaid
-  "order" storage.modifier.mermaid
+  "order" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "4" constant.numeric.mermaid
   "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
@@ -370,7 +370,7 @@
   "% native split mark" comment.line.percentage.mermaid
 >   commit msg: "escaped\nmessage"
   "commit" keyword.control.mermaid
-  "msg" storage.modifier.mermaid
+  "msg" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "escaped" string.quoted.double.mermaid

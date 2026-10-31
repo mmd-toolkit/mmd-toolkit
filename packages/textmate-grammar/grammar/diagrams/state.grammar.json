@@ -10,7 +10,9 @@
     "state-value-padding": "(?:(?!{{separatorCommentEnd}})(?:[{{ws}}]|{{directive}}))*",
     "state-floating-id": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\r\\n])*",
     "state-required-padding": "(?={{requiredGap}}){{state-value-padding}}",
-    "state-alias-end": "{{lineValueEnd}}|(?={{nonDirectivePercentPair}}|\\{)"
+    "state-alias-end": "{{lineValueEnd}}|(?={{nonDirectivePercentPair}}|\\{)",
+    "state-note-space": "(?!{{separatorCommentEnd}})[{{ws}}]",
+    "state-style-value-end": "(?={{lineGap}}(?:,|$))|{{separatorCommentEnd}}"
   },
   "patterns": [
     {
@@ -19,7 +21,7 @@
   ],
   "repository": {
     "state": {
-      "comment": "Detection.md entry 20: `stateDiagram`, exact. The lexer then reads the header again, case-insensitively and followed by whitespace. So `stateDiagram-V2` is a header. state.md#detection: The lexer then reads the header again, case-insensitively and followed by whitespace (see [The statement context](#the-statement-context)). So `stateDiagram-V2` is a header, while `stateDiagramX` and `stateDiagram-v3` are detected as state diagrams and rejected. The whitespace after the header may be a line break or not: a statement may follow the header on its line, and the header alone is accepted, also without a line feed after it, because the lexer reads a line feed after the last character (see [End of text](../common.md#end-of-text)).",
+      "comment": "Detection.md entry 20: `stateDiagram`, exact. The lexer then reads the header again, case-insensitively and followed by whitespace. So `stateDiagram-V2` is a header. Follows state.md#detection.",
       "begin": "{{diagramStart}}(stateDiagram(?i:-v2)?)(?={{directives}}(?:[{{ws}}]|$))",
       "beginCaptures": {
         "1": {
@@ -35,7 +37,7 @@
           "include": "#directive"
         },
         {
-          "comment": "Rules 1 and 2: bounded click and href are keyword units; strings precede direction lines. state.md#the-statement-context: The keyword `click`: a `click` unit.",
+          "comment": "Rules 1 and 2: bounded click and href are keyword units; strings precede direction lines. Follows state.md#the-statement-context.",
           "match": "(?i:click|href){{wordEnd}}",
           "name": "keyword.control.mermaid"
         },
@@ -58,7 +60,7 @@
           "include": "#state-scale"
         },
         {
-          "comment": "Rule 21: hide empty description, with exactly one space between words and a final word boundary, is the hide, empty and description-word units. state.md#the-statement-context: The words of rules 10 to 21 are compared case-insensitively, as everywhere in this diagram; the whitespace after them, line feeds included, belongs to no unit. The units `default`, `href` outside a click statement, `string` outside a click statement, and `invalid` are taken by no rule of the grammar, so an input with one of them is rejected.",
+          "comment": "Rule 21: hide empty description, with exactly one space between words and a final word boundary, is the hide, empty and description-word units. Follows state.md#the-statement-context.",
           "match": "((?i:hide))({{spaceSeparator}})((?i:empty))({{spaceSeparator}})((?i:description)){{wordEnd}}",
           "captures": {
             "1": {
@@ -101,7 +103,7 @@
       ]
     },
     "state-direction": {
-      "comment": "TB, BT, RL and LR are tried in this order, at the last direction for that value; the surrounding runs are direction-text. directives inside direction-text join its parts; between direction and the value they are trivia. A directive is read whole, so its argument cannot supply direction or its value. Runs stop before separator-led common comments, and padding never consumes their separator. state.md#the-statement-context: **The direction line.** Compared case-insensitively: from the current position, a run of characters without line feeds, U+2028, or U+2029, the longest one that the rest can follow; then `direction`; then one or more whitespace characters; then one of `TB`, `BT`, `RL`, and `LR`, tried in this order; and then every character up to the next line feed. The rule reads `direction` as a `direction` unit, the value as a `direction-value` unit, and the characters before `direction` and after the value as `direction-text` units, which mermaid.js does not read. The rule is tried before the id rule, so it takes the whole line: `B : x direction LR` sets the direction and has no state, and so does `A --> B direction LR`, and `Direction lr` is a direction line. It is also tried before the comment rules, so the text after the value may hold `%%`: `direction LR %% c` sets the direction `LR`, and `%% c` is a `direction-text` unit, not a comment. Neither does the value need to end at a word boundary: `direction TBX` sets `TB`, and `X` is a `direction-text` unit. The values are tried in the order given: if the line has `direction`, whitespace, and `TB` anywhere, the value is `TB`; otherwise `BT` is tried, and so on. For a value, the lexer takes the last `direction` of the run that the value follows. So `direction TB x direction TB` is read at its last `direction`, and `direction TB x` is a `direction-text` unit, while `direction TB x direction LR` sets `TB` and is read at its first `direction`, with `x direction LR` as a `direction-text` unit. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "comment": "TB, BT, RL and LR are tried in this order, at the last direction for that value; the surrounding runs are direction-text. directives inside direction-text join its parts; between direction and the value they are trivia. A directive is read whole, so its argument cannot supply direction or its value. Runs stop before separator-led common comments, and padding never consumes their separator. Follows state.md#the-statement-context and common.md#comment-lines.",
       "match": "(?i:{{state-direction-head}}(TB)({{state-direction-tail}})|{{state-direction-head}}(BT)({{state-direction-tail}})|{{state-direction-head}}(RL)({{state-direction-tail}})|{{state-direction-head}}(LR)({{state-direction-tail}}))",
       "captures": {
         "1": {
@@ -217,20 +219,34 @@
     "state-string": {
       "patterns": [
         {
-          "comment": "A double quote starts a string ending at the next double quote, with no escape mechanism. state.md#the-statement-context: - A directive starts at `%%{` only when zero or more whitespace characters and then a name, a word, follow it (see [Where a directive is](../common.md#where-a-directive-is)), and a comment starts at `%%` only when no `{` follows it. So `%%{}` and `%%{ }` are neither: their `%%` is an `ignored-text` unit, which the grammar takes only before the `{` of a body (see [Grammar](#composite-states-aliases-and-pseudostates)). `state X` followed by a line `%%{}`, `%%{ }`, or `%%{}%%` is the composite state X with an empty body, while after `A` the `{` is rejected; and after `state X`, a line `%%{init: {}}%%` or `%%{` followed by a line `A` is a directive, and `%% {}` is a comment, so X has no body.",
+          "comment": "A double quote starts a string ending at the next double quote, with no escape mechanism. Follows state.md#the-statement-context.",
           "include": "#string-plain-double"
         }
       ]
     },
     "state-comments": {
-      "comment": "Hash and percent-percent not followed by { start comments only at unit starts; ids consume an internal hash and end before an internal percent pair. Entities do not start hash comments. Native comment text ends before a separator-led common comment; neither percent of its mark may belong to a directive. state.md#comments: `#` and `%%` start a diagram comment where the comment rule of the current context is tried before a unit starts: at the start of a unit in the statement context, the composite body context, and the state context, and after an id and a `floating-note-id`, which end before a `%%` after their first character, and after an `alias-id`, which ends before any `%%`. After a `note-id`, the note text context has no comment rule. A comment after a statement is read so: `A --> B # c`, `A --> B %% c`, and `A --> B%% c` have the transition from A to B and a comment. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "comment": "Hash and percent-percent not followed by { start comments only at unit starts; ids consume an internal hash and end before an internal percent pair. Entities do not start hash comments. Native comment text ends before a separator-led common comment; neither percent of its mark may belong to a directive. Follows state.md#comments and common.md#comment-lines.",
       "patterns": [
         {
-          "comment": "An entity is converted before lexical reading and cannot start a hash comment. state.md#states-and-transitions: A state is written by its id, or as `[*]`, the start or the end. A `description` after a state is its description, and after a transition, the label of the transition. The second state of a transition is on the line of the arrow: `A -->`, a line break, and `B` is rejected.",
+          "comment": "An entity is converted before lexical reading and cannot start a hash comment. Follows state.md#comments.",
           "include": "#entity"
         },
         {
-          "comment": "Rule 8: hash and the rest of the line are a diagram comment. state.md#the-statement-context: The words of rules 10 to 21 are compared case-insensitively, as everywhere in this diagram; the whitespace after them, line feeds included, belongs to no unit. The units `default`, `href` outside a click statement, `string` outside a click statement, and `invalid` are taken by no rule of the grammar, so an input with one of them is rejected.",
+          "comment": "Read the ignored percent pair directly before a composite body opener. Follows state.md#the-statement-context and state.md#composite-states-aliases-and-pseudostates.",
+          "match": "{{nonDirectivePercentPair}}(?={{directives}}\\{)",
+          "name": "comment.block.ignored.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Rule 8: hash and the rest of the line are a diagram comment. Follows state.md#the-statement-context.",
           "name": "comment.line.number-sign.mermaid",
           "match": "#(?:{{directive}}|(?!{{directiveStart}}|{{lineValueEnd}})[^\\r\\n])*",
           "captures": {
@@ -244,7 +260,7 @@
           }
         },
         {
-          "comment": "Rule 9: percent-percent not followed by { and the rest of its line are a diagram comment. state.md#the-statement-context: The words of rules 10 to 21 are compared case-insensitively, as everywhere in this diagram; the whitespace after them, line feeds included, belongs to no unit. The units `default`, `href` outside a click statement, `string` outside a click statement, and `invalid` are taken by no rule of the grammar, so an input with one of them is rejected.",
+          "comment": "Rule 9: percent-percent not followed by { and the rest of its line are a diagram comment. Follows state.md#the-statement-context.",
           "name": "comment.line.percentage.mermaid",
           "match": "{{state-percent-comment}}",
           "captures": {
@@ -260,7 +276,7 @@
       ]
     },
     "state-scale": {
-      "comment": "Scale and whitespace enter the scale context, ASCII digits form a number, and whitespace followed by bounded width leaves it. state.md#the-scale-context: `scale` enters the scale context: one or more ASCII digits are a `number` unit, and one or more whitespace characters followed by the keyword `width` are a `width` unit, which leaves the scale context; `scale 3 widthx` is rejected. `scale 350 width` is accepted, and `scale 350` is rejected.",
+      "comment": "Scale and whitespace enter the scale context, ASCII digits form a number, and whitespace followed by bounded width leaves it. Follows state.md#the-scale-context.",
       "match": "((?i:scale))({{state-required-padding}})([0-9]+)({{state-required-padding}})((?i:width)){{wordEnd}}",
       "captures": {
         "1": {
@@ -289,7 +305,7 @@
       }
     },
     "state-context-statements": {
-      "comment": "Rule 4: classDef, class, style and state precede the direction line in a composite body. state.md#the-composite-body-context: The other rules of the statement context are not tried here: `click`, `href`, `default`, `\"`, `accTitle`, `accDescr`, `scale`, `hide empty description`, and the header. Their words are ids in a composite body: `click B href \"u\"` is four states, `click`, `B`, `href`, and `\"u\"`; `accTitle: x` is the state `accTitle` with the description `x`; and `hide empty description` is three states.",
+      "comment": "Rule 4: classDef, class, style and state precede the direction line in a composite body. Follows state.md#the-composite-body-context.",
       "patterns": [
         {
           "include": "#state-style"
@@ -311,7 +327,7 @@
               ]
             }
           },
-          "comment": "Read state before a following body opener as ignored text. state.md#the-statement-context: When the first unit after it that is not an `empty-string` unit is a `{` unit, an `ignored-text` unit, or another `ignored-state` unit, it is an `ignored-state` unit instead: mermaid.js reads no token for `state`, so that `{` starts the body of the statement before it (see [Composite states, aliases, and pseudostates](#composite-states-aliases-and-pseudostates))."
+          "comment": "Read state before a following body opener as ignored text. Follows state.md#the-statement-context."
         },
         {
           "include": "#state-declaration"
@@ -319,7 +335,7 @@
       ]
     },
     "state-style": {
-      "comment": "ClassDef reads one word class name and whitespace; style reads word characters and commas followed by whitespace; both then read comma-separated style-text to line end. state.md#the-classdef-class-and-style-contexts: Each of these contexts leaves when its rule has read. The **styles context** then reads the rest of the line, up to the line feed, and divides it at each `,` into `style-text` units, without the whitespace at their ends, and `,` units; the **class name context** reads the rest of the line as one `css-class` unit, without the whitespace at its ends. Either may be empty, and each leaves when it has read.",
+      "comment": "ClassDef reads one word class name and whitespace; style reads word characters and commas followed by whitespace; both then read comma-separated style-text to line end. Follows state.md#the-classdef-class-and-style-contexts.",
       "begin": "((?i:classDef))({{state-required-padding}})({{state-word}})({{state-required-padding}})|((?i:style))({{state-required-padding}})({{state-style-ids}})({{state-required-padding}})",
       "beginCaptures": {
         "1": {
@@ -380,8 +396,8 @@
           "include": "#directive"
         },
         {
-          "comment": "Read a style property name before its colon. state.md#the-classdef-class-and-style-contexts: Each of these contexts leaves when its rule has read. The **styles context** then reads the rest of the line, up to the line feed, and divides it at each `,` into `style-text` units, without the whitespace at their ends, and `,` units; the **class name context** reads the rest of the line as one `css-class` unit, without the whitespace at its ends. Either may be empty, and each leaves when it has read.",
-          "match": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[A-Za-z0-9_-])+(?={{gap}}:)",
+          "comment": "Read a style property name before its colon. Follows state.md#the-classdef-class-and-style-contexts.",
+          "match": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^,:\\r\\n])+(?=:)",
           "captures": {
             "0": {
               "name": "support.type.property-name.mermaid",
@@ -394,14 +410,14 @@
           }
         },
         {
-          "comment": "Read the colon and the entire property value, including color and numeric text. state.md#the-classdef-class-and-style-contexts: Each of these contexts leaves when its rule has read. The **styles context** then reads the rest of the line, up to the line feed, and divides it at each `,` into `style-text` units, without the whitespace at their ends, and `,` units; the **class name context** reads the rest of the line as one `css-class` unit, without the whitespace at its ends. Either may be empty, and each leaves when it has read.",
+          "comment": "Read one whole style property value, leaving trailing whitespace outside its scope. Follows state.md#the-classdef-class-and-style-contexts.",
           "begin": "(:)",
           "beginCaptures": {
             "1": {
               "name": "punctuation.separator.key-value.mermaid"
             }
           },
-          "end": "(?=,)|{{lineValueEnd}}",
+          "end": "{{state-style-value-end}}",
           "contentName": "support.constant.property-value.mermaid",
           "patterns": [
             {
@@ -410,28 +426,26 @@
           ]
         },
         {
-          "comment": "Read the comma between styles. state.md#the-classdef-class-and-style-contexts: Each of these contexts leaves when its rule has read. The **styles context** then reads the rest of the line, up to the line feed, and divides it at each `,` into `style-text` units, without the whitespace at their ends, and `,` units; the **class name context** reads the rest of the line as one `css-class` unit, without the whitespace at its ends. Either may be empty, and each leaves when it has read.",
-          "match": ",",
-          "name": "punctuation.separator.comma.mermaid"
+          "include": "#state-comma"
         },
         {
-          "comment": "Read a style without a colon as its complete value. state.md#the-classdef-class-and-style-contexts: Each of these contexts leaves when its rule has read. The **styles context** then reads the rest of the line, up to the line feed, and divides it at each `,` into `style-text` units, without the whitespace at their ends, and `,` units; the **class name context** reads the rest of the line as one `css-class` unit, without the whitespace at its ends. Either may be empty, and each leaves when it has read.",
-          "match": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^,:\\r\\n])+",
-          "captures": {
-            "0": {
-              "name": "support.constant.property-value.mermaid",
-              "patterns": [
-                {
-                  "include": "#directive"
-                }
-              ]
+          "comment": "Read a whole style without a property colon as one value, leaving trailing whitespace outside it. Follows state.md#the-classdef-class-and-style-contexts.",
+          "begin": "(?![{{ws}}]|[:,]|{{directiveStart}}|{{separatorCommentEnd}})(?=.)",
+          "end": "{{state-style-value-end}}",
+          "contentName": "support.constant.property-value.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#entity"
             }
-          }
+          ]
         }
       ]
     },
     "state-class": {
-      "comment": "Class reads word ids separated by commas followed by optional whitespace, then the rest of the line as one css-class text, which can contain spaces and keywords. state.md#the-classdef-class-and-style-contexts: Each of these contexts leaves when its rule has read. The **styles context** then reads the rest of the line, up to the line feed, and divides it at each `,` into `style-text` units, without the whitespace at their ends, and `,` units; the **class name context** reads the rest of the line as one `css-class` unit, without the whitespace at its ends. Either may be empty, and each leaves when it has read.",
+      "comment": "Class reads word ids separated by commas followed by optional whitespace, then the rest of the line as one css-class text, which can contain spaces and keywords. Follows state.md#the-classdef-class-and-style-contexts.",
       "begin": "((?i:class))({{state-required-padding}})({{state-word}}(?:{{directives}},{{state-value-padding}}{{state-word}})*)",
       "beginCaptures": {
         "1": {
@@ -468,7 +482,7 @@
       ]
     },
     "state-declaration": {
-      "comment": "Rule 17 and state followed by whitespace enters the state context; a line feed leaves it and { enters a composite body. A state directly before { is ignored text rather than a keyword, so that spelling is left uncolored. state.md#the-statement-context: - A directive starts at `%%{` only when zero or more whitespace characters and then a name, a word, follow it (see [Where a directive is](../common.md#where-a-directive-is)), and a comment starts at `%%` only when no `{` follows it. So `%%{}` and `%%{ }` are neither: their `%%` is an `ignored-text` unit, which the grammar takes only before the `{` of a body (see [Grammar](#composite-states-aliases-and-pseudostates)). `state X` followed by a line `%%{}`, `%%{ }`, or `%%{}%%` is the composite state X with an empty body, while after `A` the `{` is rejected; and after `state X`, a line `%%{init: {}}%%` or `%%{` followed by a line `A` is a directive, and `%% {}` is a comment, so X has no body.",
+      "comment": "Read state and its required whitespace before its names, alias, pseudostate or body. Follows state.md#the-statement-context.",
       "begin": "((?i:state))({{state-required-padding}})(?!{{state-value-padding}}\\{)",
       "beginCaptures": {
         "1": {
@@ -496,13 +510,13 @@
         {
           "match": "\"\"",
           "name": "comment.block.ignored.mermaid",
-          "comment": "Read an empty string in the state context as ignored text. state.md#composite-states-aliases-and-pseudostates: So the empty strings are accepted wherever they lie in the state context, as in mermaid.js, and they change nothing in the Db."
+          "comment": "Read an empty string in the state context as ignored text. Follows state.md#composite-states-aliases-and-pseudostates."
         },
         {
           "include": "#state-string"
         },
         {
-          "comment": "Without a body the first colon separates the alias id and second-description; later colons belong to ignored text. A same-line body keeps the entire alias id. Multiline body lookahead is beyond the line-by-line limit. state.md#the-state-context: **The alias id context.** Zero or more characters other than line feed and `{` are an `alias-id` unit, without the whitespace at its ends; it ends before the first `%%`, also when that is its first character. It leaves the alias id context, so the state context reads on, where the `%%` starts a comment unless `{` follows. So the id after `as` may hold whitespace and `:`: `state \"d\" as my id` has the id `my id`, and the id may be empty: before a `{`, and before a `%%`, so that `state \"d\" as %% c` and `state \"d\" as %%A` are alias definitions with the empty id followed by a comment.",
+          "comment": "Read an alias id and its optional description, retaining percent text before a same-line composite body as ignored text. Follows state.md#the-state-context and state.md#composite-states-aliases-and-pseudostates.",
           "begin": "((?i:as))({{state-required-padding}})",
           "beginCaptures": {
             "1": {
@@ -516,10 +530,24 @@
               ]
             }
           },
-          "end": "{{state-alias-end}}",
+          "end": "{{lineValueEnd}}|(?=\\{)|(?={{nonDirectivePercentPair}})(?!(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\r\\n{])*\\{)",
           "patterns": [
             {
               "include": "#directive"
+            },
+            {
+              "comment": "Read ignored percent text before an alias body, leaving its brace for the composite context. Follows state.md#the-state-context and state.md#composite-states-aliases-and-pseudostates.",
+              "match": "{{nonDirectivePercentPair}}(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^{\\r\\n])*(?=\\{)",
+              "name": "comment.block.ignored.mermaid",
+              "captures": {
+                "0": {
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              }
             },
             {
               "match": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}}|{{nonDirectivePercentPair}})[^{\\r\\n])+(?=\\{)",
@@ -533,10 +561,10 @@
                   ]
                 }
               },
-              "comment": "Keep colons inside a composite alias's id. state.md#the-state-context: The alias id is then not divided: `state \"d\" as A : x {`, and `state \"d\" as A : x` followed by a line `{`, define the composite state `A : x`, while after an empty line the `{` starts no body, and the input is rejected; a line of only whitespace, which rule 7 of the statement context reads with its line feed, makes no unit and changes nothing."
+              "comment": "Keep colons inside a composite alias's id. Follows state.md#the-state-context."
             },
             {
-              "comment": "Divide only the first colon of an alias without a following body; directives and entity semicolons belong to text. state.md#the-state-context: **The alias id context.** Zero or more characters other than line feed and `{` are an `alias-id` unit, without the whitespace at its ends; it ends before the first `%%`, also when that is its first character. It leaves the alias id context, so the state context reads on, where the `%%` starts a comment unless `{` follows. So the id after `as` may hold whitespace and `:`: `state \"d\" as my id` has the id `my id`, and the id may be empty: before a `{`, and before a `%%`, so that `state \"d\" as %% c` and `state \"d\" as %%A` are alias definitions with the empty id followed by a comment.",
+              "comment": "Divide only the first colon of an alias without a following body; directives and entity semicolons belong to text. Follows state.md#the-state-context.",
               "begin": ":(?!(?:{{directive}}|(?!{{directiveStart}}|{{nonDirectivePercentPair}})[^{\\r\\n])*\\{)",
               "beginCaptures": {
                 "0": {
@@ -557,7 +585,7 @@
                       "include": "#directive"
                     }
                   ],
-                  "comment": "Retain the suffix from the second colon as one ignored unit. state.md#the-state-context: When the alias statement has no body, the lexer divides the `alias-id` at its first `:`: the text before it is the `alias-id`, the `:` is a `:` unit, the text between it and the second `:`, or the end, is a `second-description` unit, which may be empty or all whitespace, and the text from the second `:` is an `ignored-text` unit, which mermaid.js does not read ([`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L233-L243)). It has a body when a `{` follows the `alias-id`, on its line or after the line feed of its line and only line whitespace and comment lines, with only units between them that the grammar takes before the `{` of a body: empty description blocks, an `ignored-state` unit and empty strings, or a `%%` right before the `{` (see [Composite states, aliases, and pseudostates](#composite-states-aliases-and-pseudostates)). So `state \"d\" as A : x` followed by a line `%%{}` or `accDescr {} %%{}` defines the composite state `A : x` with an empty body."
+                  "comment": "Retain the suffix from the second colon as one ignored unit. Follows state.md#the-state-context."
                 },
                 {
                   "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}}|{{nonDirectivePercentPair}})[^:{\\r\\n])+",
@@ -571,7 +599,7 @@
                       ]
                     }
                   },
-                  "comment": "Read an alias's second description. state.md#the-state-context: The state context is entered by `state`. The whitespace after `state` may hold line feeds, so the name may be on the next line."
+                  "comment": "Read an alias's second description. Follows state.md#the-state-context."
                 }
               ]
             },
@@ -587,12 +615,12 @@
                   ]
                 }
               },
-              "comment": "Read the alias id before its description. state.md#the-state-context: When the alias statement has no body, the lexer divides the `alias-id` at its first `:`: the text before it is the `alias-id`, the `:` is a `:` unit, the text between it and the second `:`, or the end, is a `second-description` unit, which may be empty or all whitespace, and the text from the second `:` is an `ignored-text` unit, which mermaid.js does not read ([`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L233-L243)). It has a body when a `{` follows the `alias-id`, on its line or after the line feed of its line and only line whitespace and comment lines, with only units between them that the grammar takes before the `{` of a body: empty description blocks, an `ignored-state` unit and empty strings, or a `%%` right before the `{` (see [Composite states, aliases, and pseudostates](#composite-states-aliases-and-pseudostates)). So `state \"d\" as A : x` followed by a line `%%{}` or `accDescr {} %%{}` defines the composite state `A : x` with an empty body."
+              "comment": "Read the alias id before its description. Follows state.md#the-state-context."
             }
           ]
         },
         {
-          "comment": "Rule 8: state-name is one or more characters other than line feed, whitespace and {; embedded percent pairs, quotes and keyword-like suffixes are name characters. Directives end a name run. state.md#the-state-context: One or more whitespace characters other than line feed: nothing.",
+          "comment": "Rule 8: state-name is one or more characters other than line feed, whitespace and {; embedded percent pairs, quotes and keyword-like suffixes are name characters. Directives end a name run. Follows state.md#the-state-context.",
           "match": "(?:(?!{{directiveStart}})[^{{ws}}\\r\\n{])+",
           "captures": {
             "0": {
@@ -618,19 +646,7 @@
         "2": {
           "patterns": [
             {
-              "match": "<<|\\[\\[",
-              "name": "keyword.operator.shape.begin.mermaid",
-              "comment": "Read the opening pseudostate delimiter. state.md#the-state-context: - The text before a pseudostate mark is its name, whitespace included: `state f 1 <<fork>>` is the fork `f 1`, and `state \"Some::call()\" as one <<choice>>` is the choice `\"Some::call()\" as one`, because rule 4 comes before the string. Nothing before the mark is allowed too: `state <<join>>` is a join with the empty id. A later mark of an earlier kind wins: `state a <<join>> b <<fork>>` is the fork `a <<join>> b`."
-            },
-            {
-              "match": ">>|\\]\\]",
-              "name": "keyword.operator.shape.end.mermaid",
-              "comment": "Read the closing pseudostate delimiter. state.md#the-state-context: - The text before a pseudostate mark is its name, whitespace included: `state f 1 <<fork>>` is the fork `f 1`, and `state \"Some::call()\" as one <<choice>>` is the choice `\"Some::call()\" as one`, because rule 4 comes before the string. Nothing before the mark is allowed too: `state <<join>>` is a join with the empty id. A later mark of an earlier kind wins: `state a <<join>> b <<fork>>` is the fork `a <<join>> b`."
-            },
-            {
-              "match": "(?i:fork|join|choice)",
-              "name": "constant.language.mermaid",
-              "comment": "Read the pseudostate kind. state.md#the-state-context: - The text before a pseudostate mark is its name, whitespace included: `state f 1 <<fork>>` is the fork `f 1`, and `state \"Some::call()\" as one <<choice>>` is the choice `\"Some::call()\" as one`, because rule 4 comes before the string. Nothing before the mark is allowed too: `state <<join>>` is a join with the empty id. A later mark of an earlier kind wins: `state a <<join>> b <<fork>>` is the fork `a <<join>> b`."
+              "include": "#state-pseudostate-mark"
             }
           ]
         },
@@ -645,19 +661,7 @@
         "4": {
           "patterns": [
             {
-              "match": "<<|\\[\\[",
-              "name": "keyword.operator.shape.begin.mermaid",
-              "comment": "Read the opening pseudostate delimiter. state.md#the-state-context: - The text before a pseudostate mark is its name, whitespace included: `state f 1 <<fork>>` is the fork `f 1`, and `state \"Some::call()\" as one <<choice>>` is the choice `\"Some::call()\" as one`, because rule 4 comes before the string. Nothing before the mark is allowed too: `state <<join>>` is a join with the empty id. A later mark of an earlier kind wins: `state a <<join>> b <<fork>>` is the fork `a <<join>> b`."
-            },
-            {
-              "match": ">>|\\]\\]",
-              "name": "keyword.operator.shape.end.mermaid",
-              "comment": "Read the closing pseudostate delimiter. state.md#the-state-context: - The text before a pseudostate mark is its name, whitespace included: `state f 1 <<fork>>` is the fork `f 1`, and `state \"Some::call()\" as one <<choice>>` is the choice `\"Some::call()\" as one`, because rule 4 comes before the string. Nothing before the mark is allowed too: `state <<join>>` is a join with the empty id. A later mark of an earlier kind wins: `state a <<join>> b <<fork>>` is the fork `a <<join>> b`."
-            },
-            {
-              "match": "(?i:fork|join|choice)",
-              "name": "constant.language.mermaid",
-              "comment": "Read the pseudostate kind. state.md#the-state-context: - The text before a pseudostate mark is its name, whitespace included: `state f 1 <<fork>>` is the fork `f 1`, and `state \"Some::call()\" as one <<choice>>` is the choice `\"Some::call()\" as one`, because rule 4 comes before the string. Nothing before the mark is allowed too: `state <<join>>` is a join with the empty id. A later mark of an earlier kind wins: `state a <<join>> b <<fork>>` is the fork `a <<join>> b`."
+              "include": "#state-pseudostate-mark"
             }
           ]
         },
@@ -672,19 +676,7 @@
         "6": {
           "patterns": [
             {
-              "match": "<<|\\[\\[",
-              "name": "keyword.operator.shape.begin.mermaid",
-              "comment": "Read the opening pseudostate delimiter. state.md#the-state-context: - The text before a pseudostate mark is its name, whitespace included: `state f 1 <<fork>>` is the fork `f 1`, and `state \"Some::call()\" as one <<choice>>` is the choice `\"Some::call()\" as one`, because rule 4 comes before the string. Nothing before the mark is allowed too: `state <<join>>` is a join with the empty id. A later mark of an earlier kind wins: `state a <<join>> b <<fork>>` is the fork `a <<join>> b`."
-            },
-            {
-              "match": ">>|\\]\\]",
-              "name": "keyword.operator.shape.end.mermaid",
-              "comment": "Read the closing pseudostate delimiter. state.md#the-state-context: - The text before a pseudostate mark is its name, whitespace included: `state f 1 <<fork>>` is the fork `f 1`, and `state \"Some::call()\" as one <<choice>>` is the choice `\"Some::call()\" as one`, because rule 4 comes before the string. Nothing before the mark is allowed too: `state <<join>>` is a join with the empty id. A later mark of an earlier kind wins: `state a <<join>> b <<fork>>` is the fork `a <<join>> b`."
-            },
-            {
-              "match": "(?i:fork|join|choice)",
-              "name": "constant.language.mermaid",
-              "comment": "Read the pseudostate kind. state.md#the-state-context: - The text before a pseudostate mark is its name, whitespace included: `state f 1 <<fork>>` is the fork `f 1`, and `state \"Some::call()\" as one <<choice>>` is the choice `\"Some::call()\" as one`, because rule 4 comes before the string. Nothing before the mark is allowed too: `state <<join>>` is a join with the empty id. A later mark of an earlier kind wins: `state a <<join>> b <<fork>>` is the fork `a <<join>> b`."
+              "include": "#state-pseudostate-mark"
             }
           ]
         },
@@ -699,19 +691,7 @@
         "8": {
           "patterns": [
             {
-              "match": "<<|\\[\\[",
-              "name": "keyword.operator.shape.begin.mermaid",
-              "comment": "Read the opening pseudostate delimiter. state.md#the-state-context: - The text before a pseudostate mark is its name, whitespace included: `state f 1 <<fork>>` is the fork `f 1`, and `state \"Some::call()\" as one <<choice>>` is the choice `\"Some::call()\" as one`, because rule 4 comes before the string. Nothing before the mark is allowed too: `state <<join>>` is a join with the empty id. A later mark of an earlier kind wins: `state a <<join>> b <<fork>>` is the fork `a <<join>> b`."
-            },
-            {
-              "match": ">>|\\]\\]",
-              "name": "keyword.operator.shape.end.mermaid",
-              "comment": "Read the closing pseudostate delimiter. state.md#the-state-context: - The text before a pseudostate mark is its name, whitespace included: `state f 1 <<fork>>` is the fork `f 1`, and `state \"Some::call()\" as one <<choice>>` is the choice `\"Some::call()\" as one`, because rule 4 comes before the string. Nothing before the mark is allowed too: `state <<join>>` is a join with the empty id. A later mark of an earlier kind wins: `state a <<join>> b <<fork>>` is the fork `a <<join>> b`."
-            },
-            {
-              "match": "(?i:fork|join|choice)",
-              "name": "constant.language.mermaid",
-              "comment": "Read the pseudostate kind. state.md#the-state-context: - The text before a pseudostate mark is its name, whitespace included: `state f 1 <<fork>>` is the fork `f 1`, and `state \"Some::call()\" as one <<choice>>` is the choice `\"Some::call()\" as one`, because rule 4 comes before the string. Nothing before the mark is allowed too: `state <<join>>` is a join with the empty id. A later mark of an earlier kind wins: `state a <<join>> b <<fork>>` is the fork `a <<join>> b`."
+              "include": "#state-pseudostate-mark"
             }
           ]
         },
@@ -726,19 +706,7 @@
         "10": {
           "patterns": [
             {
-              "match": "<<|\\[\\[",
-              "name": "keyword.operator.shape.begin.mermaid",
-              "comment": "Read the opening pseudostate delimiter. state.md#the-state-context: - The text before a pseudostate mark is its name, whitespace included: `state f 1 <<fork>>` is the fork `f 1`, and `state \"Some::call()\" as one <<choice>>` is the choice `\"Some::call()\" as one`, because rule 4 comes before the string. Nothing before the mark is allowed too: `state <<join>>` is a join with the empty id. A later mark of an earlier kind wins: `state a <<join>> b <<fork>>` is the fork `a <<join>> b`."
-            },
-            {
-              "match": ">>|\\]\\]",
-              "name": "keyword.operator.shape.end.mermaid",
-              "comment": "Read the closing pseudostate delimiter. state.md#the-state-context: - The text before a pseudostate mark is its name, whitespace included: `state f 1 <<fork>>` is the fork `f 1`, and `state \"Some::call()\" as one <<choice>>` is the choice `\"Some::call()\" as one`, because rule 4 comes before the string. Nothing before the mark is allowed too: `state <<join>>` is a join with the empty id. A later mark of an earlier kind wins: `state a <<join>> b <<fork>>` is the fork `a <<join>> b`."
-            },
-            {
-              "match": "(?i:fork|join|choice)",
-              "name": "constant.language.mermaid",
-              "comment": "Read the pseudostate kind. state.md#the-state-context: - The text before a pseudostate mark is its name, whitespace included: `state f 1 <<fork>>` is the fork `f 1`, and `state \"Some::call()\" as one <<choice>>` is the choice `\"Some::call()\" as one`, because rule 4 comes before the string. Nothing before the mark is allowed too: `state <<join>>` is a join with the empty id. A later mark of an earlier kind wins: `state a <<join>> b <<fork>>` is the fork `a <<join>> b`."
+              "include": "#state-pseudostate-mark"
             }
           ]
         },
@@ -753,26 +721,14 @@
         "12": {
           "patterns": [
             {
-              "match": "<<|\\[\\[",
-              "name": "keyword.operator.shape.begin.mermaid",
-              "comment": "Read the opening pseudostate delimiter. state.md#the-state-context: - The text before a pseudostate mark is its name, whitespace included: `state f 1 <<fork>>` is the fork `f 1`, and `state \"Some::call()\" as one <<choice>>` is the choice `\"Some::call()\" as one`, because rule 4 comes before the string. Nothing before the mark is allowed too: `state <<join>>` is a join with the empty id. A later mark of an earlier kind wins: `state a <<join>> b <<fork>>` is the fork `a <<join>> b`."
-            },
-            {
-              "match": ">>|\\]\\]",
-              "name": "keyword.operator.shape.end.mermaid",
-              "comment": "Read the closing pseudostate delimiter. state.md#the-state-context: - The text before a pseudostate mark is its name, whitespace included: `state f 1 <<fork>>` is the fork `f 1`, and `state \"Some::call()\" as one <<choice>>` is the choice `\"Some::call()\" as one`, because rule 4 comes before the string. Nothing before the mark is allowed too: `state <<join>>` is a join with the empty id. A later mark of an earlier kind wins: `state a <<join>> b <<fork>>` is the fork `a <<join>> b`."
-            },
-            {
-              "match": "(?i:fork|join|choice)",
-              "name": "constant.language.mermaid",
-              "comment": "Read the pseudostate kind. state.md#the-state-context: - The text before a pseudostate mark is its name, whitespace included: `state f 1 <<fork>>` is the fork `f 1`, and `state \"Some::call()\" as one <<choice>>` is the choice `\"Some::call()\" as one`, because rule 4 comes before the string. Nothing before the mark is allowed too: `state <<join>>` is a join with the empty id. A later mark of an earlier kind wins: `state a <<join>> b <<fork>>` is the fork `a <<join>> b`."
+              "include": "#state-pseudostate-mark"
             }
           ]
         }
       }
     },
     "state-body": {
-      "comment": "{ starts a composite body, } closes it, and its rules include comments, classDef, class, style, state, direction, notes, terminals, ids, descriptions, arrows, dividers and class separators. Root-only accessibility, click, scale and hide keywords are ids here. state.md#the-composite-body-context: The other rules of the statement context are not tried here: `click`, `href`, `default`, `\"`, `accTitle`, `accDescr`, `scale`, `hide empty description`, and the header. Their words are ids in a composite body: `click B href \"u\"` is four states, `click`, `B`, `href`, and `\"u\"`; `accTitle: x` is the state `accTitle` with the description `x`; and `hide empty description` is three states.",
+      "comment": "{ starts a composite body, } closes it, and its rules include comments, classDef, class, style, state, direction, notes, terminals, ids, descriptions, arrows, dividers and class separators. Root-only accessibility, click, scale and hide keywords are ids here. Follows state.md#the-composite-body-context.",
       "begin": "\\{",
       "beginCaptures": {
         "0": {
@@ -793,7 +749,7 @@
           "include": "#directive"
         },
         {
-          "comment": "Rule 1: whitespace other than line feed is read before comments, state statements and direction lines. state.md#the-composite-body-context: One or more whitespace characters other than line feed: nothing.",
+          "comment": "Rule 1: whitespace other than line feed is read before comments, state statements and direction lines. Follows state.md#the-composite-body-context.",
           "match": "(?:(?!{{separatorCommentEnd}})[{{lws}}])+"
         },
         {
@@ -809,7 +765,7 @@
           "include": "#state-notes"
         },
         {
-          "comment": "Rule 13: -- is a divider unit in a composite body. state.md#the-composite-body-context: The other rules of the statement context are not tried here: `click`, `href`, `default`, `\"`, `accTitle`, `accDescr`, `scale`, `hide empty description`, and the header. Their words are ids in a composite body: `click B href \"u\"` is four states, `click`, `B`, `href`, and `\"u\"`; `accTitle: x` is the state `accTitle` with the description `x`; and `hide empty description` is three states.",
+          "comment": "Rule 13: -- is a divider unit in a composite body. Follows state.md#the-composite-body-context.",
           "match": "--(?!{{directives}}>)",
           "name": "punctuation.separator.divider.mermaid"
         },
@@ -819,20 +775,20 @@
       ]
     },
     "state-units": {
-      "comment": "Rules 22 to 26: terminals, ids, descriptions, transition arrows and class separators; ordinary ids are consumed without a scope to protect embedded keyword-like words. state.md#the-statement-context: The words of rules 10 to 21 are compared case-insensitively, as everywhere in this diagram; the whitespace after them, line feeds included, belongs to no unit. The units `default`, `href` outside a click statement, `string` outside a click statement, and `invalid` are taken by no rule of the grammar, so an input with one of them is rejected.",
+      "comment": "Read terminals, ids, descriptions, transition arrows and class separators. Follows state.md#states-and-transitions.",
       "patterns": [
         {
-          "comment": "[*] is a start or end terminal. state.md#states-and-transitions: A state is written by its id, or as `[*]`, the start or the end. A `description` after a state is its description, and after a transition, the label of the transition. The second state of a transition is on the line of the arrow: `A -->`, a line break, and `B` is rejected.",
+          "comment": "Read the terminal state reference in an id position. Follows state.md#states-and-transitions.",
           "match": "\\[\\*\\]",
-          "name": "constant.language.mermaid"
+          "name": "variable.mermaid"
         },
         {
-          "comment": "Rule 25: --> is the transition arrow. state.md#the-statement-context: The words of rules 10 to 21 are compared case-insensitively, as everywhere in this diagram; the whitespace after them, line feeds included, belongs to no unit. The units `default`, `href` outside a click statement, `string` outside a click statement, and `invalid` are taken by no rule of the grammar, so an input with one of them is rejected.",
+          "comment": "Rule 25: --> is the transition arrow. Follows state.md#the-statement-context.",
           "match": "-->",
           "name": "keyword.operator.arrow.mermaid"
         },
         {
-          "comment": "Rule 26: ::: is a class separator. state.md#the-statement-context: The words of rules 10 to 21 are compared case-insensitively, as everywhere in this diagram; the whitespace after them, line feeds included, belongs to no unit. The units `default`, `href` outside a click statement, `string` outside a click statement, and `invalid` are taken by no rule of the grammar, so an input with one of them is rejected.",
+          "comment": "Rule 26: ::: is a class separator. Follows state.md#the-statement-context.",
           "match": ":::",
           "name": "punctuation.separator.class.mermaid"
         },
@@ -840,7 +796,7 @@
           "include": "#state-description"
         },
         {
-          "comment": "An id is a maximal run excluding colon, whitespace, line feed, hyphen and {; internal percent pairs end it and internal hashes are characters. Ids have no added scope. state.md#units-and-contexts: **Ids.** In several contexts, the same rule reads an id: one or more characters other than `:`, line feed, whitespace, `-`, and `{`, as many as possible, makes an `id` unit. When the characters read contain `%%` after their first character, the unit ends before that `%%`, and the lexer reads on from the `%%` in the context that the rule leaves it in: in the statement, composite body, and state contexts, the `%%` starts a diagram comment (see [Comments](#comments)), while after a `note-id`, the note text context has no comment rule, and `note left of A%% c : hi` is rejected.",
+          "comment": "An id is a maximal run excluding colon, whitespace, line feed, hyphen and {; internal percent pairs end it and internal hashes are characters. Ids carry the element-name scope. Follows state.md#units-and-contexts.",
           "match": "(?:{{entity}}|(?!{{directiveStart}}|{{nonDirectivePercentPair}})[^:{{ws}}\\r\\n{\\-])+",
           "captures": {
             "0": {
@@ -856,7 +812,7 @@
       ]
     },
     "state-description": {
-      "comment": "Rule 24: colon introduces a description of non-colon/non-semicolon/non-line-feed characters or a colon followed by such a character; percent pairs, hashes and keywords are text. state.md#the-statement-context: **The direction line.** Compared case-insensitively: from the current position, a run of characters without line feeds, U+2028, or U+2029, the longest one that the rest can follow; then `direction`; then one or more whitespace characters; then one of `TB`, `BT`, `RL`, and `LR`, tried in this order; and then every character up to the next line feed. The rule reads `direction` as a `direction` unit, the value as a `direction-value` unit, and the characters before `direction` and after the value as `direction-text` units, which mermaid.js does not read. The rule is tried before the id rule, so it takes the whole line: `B : x direction LR` sets the direction and has no state, and so does `A --> B direction LR`, and `Direction lr` is a direction line. It is also tried before the comment rules, so the text after the value may hold `%%`: `direction LR %% c` sets the direction `LR`, and `%% c` is a `direction-text` unit, not a comment. Neither does the value need to end at a word boundary: `direction TBX` sets `TB`, and `X` is a `direction-text` unit. The values are tried in the order given: if the line has `direction`, whitespace, and `TB` anywhere, the value is `TB`; otherwise `BT` is tried, and so on. For a value, the lexer takes the last `direction` of the run that the value follows. So `direction TB x direction TB` is read at its last `direction`, and `direction TB x` is a `direction-text` unit, while `direction TB x direction LR` sets `TB` and is read at its first `direction`, with `x direction LR` as a `direction-text` unit.",
+      "comment": "Rule 24: colon introduces a description of non-colon/non-semicolon/non-line-feed characters or a colon followed by such a character; percent pairs, hashes and keywords are text. Follows state.md#the-statement-context.",
       "begin": "(:)(?={{directives}}(?:{{entity}}|[^:;\\r\\n]|:{{directives}}(?:{{entity}}|[^:;\\r\\n])))",
       "beginCaptures": {
         "1": {
@@ -873,14 +829,14 @@
           "include": "#directive"
         },
         {
-          "comment": "The semicolon of an entity is part of description text. state.md#states-and-transitions: A state is written by its id, or as `[*]`, the start or the end. A `description` after a state is its description, and after a transition, the label of the transition. The second state of a transition is on the line of the arrow: `A -->`, a line break, and `B` is rejected.",
+          "comment": "Read one entity on one line without a scope of its own, retaining the surrounding text scope and the scopes of internal directives. Follows common.md#entities.",
           "include": "#entity"
         }
       ]
     },
     "state-note-line": {
-      "comment": "Note and whitespace, left or right, exactly one space, and of enter the note id context; an immediate percent run after of is ignored text. A colon after the id starts note text ending at colon, semicolon or line feed. Directives between these units are trivia. state.md#the-note-contexts: The keyword `left of` or `right of`, with one space between the words, the **position**: a `position` unit for `left` or `right` and an `of` unit; enters the note id context.",
-      "begin": "{{state-note-header}}({{state-value-padding}})(:)",
+      "comment": "Read a positioned line note, preserving its gap before the colon to scope a retained colon as text or an immediately dropped character as ignored text. Follows state.md#the-note-contexts.",
+      "begin": "{{state-note-header}}(?:({{directives}}(?:{{state-note-space}}{{directives}}){2,})(:)|({{whitespaceSeparator}})(:)|({{directives}})(:)((?:{{directive}})*(?!{{directiveStart}})[^{{ws}}:;\\r\\n])?)",
       "beginCaptures": {
         "1": {
           "name": "keyword.control.mermaid"
@@ -938,7 +894,35 @@
           ]
         },
         "11": {
+          "name": "string.unquoted.mermaid"
+        },
+        "12": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "13": {
           "name": "punctuation.separator.colon.mermaid"
+        },
+        "14": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "15": {
+          "name": "punctuation.separator.colon.mermaid"
+        },
+        "16": {
+          "name": "comment.block.ignored.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
         }
       },
       "end": "{{lineValueEnd}}|{{state-colon-or-semicolon-end}}",
@@ -951,13 +935,13 @@
           "include": "#directive"
         },
         {
-          "comment": "The semicolon of an entity is part of note text. state.md#the-note-contexts: Zero or more whitespace, `as`, and zero or more whitespace: an `as` unit; leaves the context and enters the floating note id context.",
+          "comment": "Read one entity on one line without a scope of its own, retaining the surrounding text scope and the scopes of internal directives. Follows common.md#entities.",
           "include": "#entity"
         }
       ]
     },
     "state-note-block": {
-      "comment": "A positioned note reads the same header as a line note, then text through a line feed, whitespace and bounded end note with exactly one space. Directives next to that space lie between the end and note units. state.md#the-note-contexts: The **note id context** reads zero or more whitespace characters, line feeds included, and then an id of characters other than `:`, line feed, whitespace, and `-`: a `note-id` unit, which ends before the first `%%`, also when that is its first character, and is then empty. Without such a `%%`, it needs one or more characters: `note left of : x` is rejected.",
+      "comment": "A positioned note reads the same header as a line note, then text through a line feed, whitespace and bounded end note with exactly one space. Directives next to that space lie between the end and note units. Follows state.md#the-note-contexts.",
       "begin": "{{state-note-header}}",
       "beginCaptures": {
         "1": {
@@ -1040,7 +1024,7 @@
           "include": "#directive"
         },
         {
-          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. state.md#the-note-contexts: The **note id context** reads zero or more whitespace characters, line feeds included, and then an id of characters other than `:`, line feed, whitespace, and `-`: a `note-id` unit, which ends before the first `%%`, also when that is its first character, and is then empty. Without such a `%%`, it needs one or more characters: `note left of : x` is rejected. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. Follows state.md#the-note-contexts.",
           "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[\\s\\S])+",
           "name": "string.unquoted.mermaid",
           "captures": {
@@ -1056,7 +1040,7 @@
       ]
     },
     "state-floating-note": {
-      "comment": "Note followed by one or more quotes, one floating-note-text and one or more quotes precedes as and a floating-note-id read to line end or a percent pair after its first character. Padding before an empty id stops before a separator-led common comment. state.md#the-note-contexts: The **note id context** reads zero or more whitespace characters, line feeds included, and then an id of characters other than `:`, line feed, whitespace, and `-`: a `note-id` unit, which ends before the first `%%`, also when that is its first character, and is then empty. Without such a `%%`, it needs one or more characters: `note left of : x` is rejected. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "comment": "Note followed by one or more quotes, one floating-note-text and one or more quotes precedes as and a floating-note-id read to line end or a percent pair after its first character. Padding before an empty id stops before a separator-led common comment. Follows state.md#the-note-contexts.",
       "begin": "((?i:note))({{state-required-padding}})(\"+)",
       "beginCaptures": {
         "1": {
@@ -1070,13 +1054,13 @@
           ]
         },
         "3": {
-          "name": "punctuation.definition.string.begin.mermaid"
+          "name": "string.quoted.double.mermaid punctuation.definition.string.begin.mermaid"
         }
       },
       "end": "(\"+)({{state-value-padding}})((?i:as))({{state-value-padding}})({{state-floating-id}})(?={{lineValueEnd}})",
       "endCaptures": {
         "1": {
-          "name": "punctuation.definition.string.end.mermaid"
+          "name": "string.quoted.double.mermaid punctuation.definition.string.end.mermaid"
         },
         "2": {
           "patterns": [
@@ -1117,7 +1101,7 @@
                   ]
                 }
               },
-              "comment": "Read the floating note id up to a percent pair after its first character, then the native comment independently. state.md#the-note-contexts: `note` enters the **note context**:"
+              "comment": "Read the floating note id up to a percent pair after its first character, then the native comment independently. Follows state.md#the-note-contexts."
             }
           ]
         }
@@ -1130,7 +1114,7 @@
           "include": "#directive"
         },
         {
-          "comment": "Floating note text ends at its quotes; excludes separator-led comments from the text run while the note context remains open. state.md#the-note-contexts: Zero or more whitespace, `as`, and zero or more whitespace: an `as` unit; leaves the context and enters the floating note id context. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "comment": "Floating note text ends at its quotes; excludes separator-led comments from the text run while the note context remains open. Follows state.md#the-note-contexts.",
           "match": "(?:{{htmlTag}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\"])+",
           "name": "string.quoted.double.mermaid",
           "captures": {
@@ -1149,7 +1133,7 @@
       ]
     },
     "state-acc-descr-block": {
-      "comment": "Read the state-acc-descr-block form. state.md#the-statement-context: The words of rules 10 to 21 are compared case-insensitively, as everywhere in this diagram; the whitespace after them, line feeds included, belongs to no unit. The units `default`, `href` outside a click statement, `string` outside a click statement, and `invalid` are taken by no rule of the grammar, so an input with one of them is rejected.",
+      "comment": "Read the state-acc-descr-block form. Follows state.md#the-statement-context.",
       "begin": "((?i:accDescr))({{state-value-padding}})(\\{)({{state-value-padding}})",
       "beginCaptures": {
         "1": {
@@ -1187,7 +1171,7 @@
           "include": "#directive"
         },
         {
-          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. state.md#accessibility-values: In the title context and in the description context, the rest of the line, zero or more characters other than line feed, is a `title-text` or `description-text` unit, and the context is left. `#`, `;`, and `%%` are characters of it: `accTitle: a;b #c %% d` has the title `a;b #c %% d`. The whitespace after `:` is read with the `:` unit, line feeds included (rules 11 and 12 of the statement context), so the text may be on the next line. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. Follows state.md#accessibility-values.",
           "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^}])+",
           "name": "string.unquoted.mermaid",
           "captures": {
@@ -1203,7 +1187,7 @@
       ]
     },
     "state-accessibility-line": {
-      "comment": "Read the state-accessibility-line form. state.md#the-statement-context: - A directive starts at `%%{` only when zero or more whitespace characters and then a name, a word, follow it (see [Where a directive is](../common.md#where-a-directive-is)), and a comment starts at `%%` only when no `{` follows it. So `%%{}` and `%%{ }` are neither: their `%%` is an `ignored-text` unit, which the grammar takes only before the `{` of a body (see [Grammar](#composite-states-aliases-and-pseudostates)). `state X` followed by a line `%%{}`, `%%{ }`, or `%%{}%%` is the composite state X with an empty body, while after `A` the `{` is rejected; and after `state X`, a line `%%{init: {}}%%` or `%%{` followed by a line `A` is a directive, and `%% {}` is a comment, so X has no body. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "comment": "Read the state-accessibility-line form. Follows state.md#the-statement-context.",
       "begin": "((?i:accTitle|accDescr))({{state-value-padding}})(:)({{state-value-padding}})",
       "beginCaptures": {
         "1": {
@@ -1236,7 +1220,7 @@
       ]
     },
     "state-notes": {
-      "comment": "Rule 19 and #the-composite-body-context rule 8: note enters the positioned or floating note contexts; in a composite body it follows the direction line. state.md#the-statement-context: - A directive starts at `%%{` only when zero or more whitespace characters and then a name, a word, follow it (see [Where a directive is](../common.md#where-a-directive-is)), and a comment starts at `%%` only when no `{` follows it. So `%%{}` and `%%{ }` are neither: their `%%` is an `ignored-text` unit, which the grammar takes only before the `{` of a body (see [Grammar](#composite-states-aliases-and-pseudostates)). `state X` followed by a line `%%{}`, `%%{ }`, or `%%{}%%` is the composite state X with an empty body, while after `A` the `{` is rejected; and after `state X`, a line `%%{init: {}}%%` or `%%{` followed by a line `A` is a directive, and `%% {}` is a comment, so X has no body.",
+      "comment": "Rule 19 and #the-composite-body-context rule 8: note enters the positioned or floating note contexts; in a composite body it follows the direction line. Follows state.md#the-statement-context.",
       "patterns": [
         {
           "include": "#state-note-line"
@@ -1250,12 +1234,12 @@
       ]
     },
     "state-comma": {
-      "comment": "Each comma among ids is an id-comma unit and each comma among styles is a comma unit. state.md#the-classdef-class-and-style-contexts: One or more word characters and `,`, and one or more whitespace characters, line feeds included: an `id` unit for each run of word characters and an `id-comma` unit for each `,`; enters the styles context.",
+      "comment": "Each comma among ids is an id-comma unit and each comma among styles is a comma unit. Follows state.md#the-classdef-class-and-style-contexts.",
       "match": ",",
       "name": "punctuation.separator.comma.mermaid"
     },
     "state-direction-text": {
-      "comment": "Read the nonblank ignored text around a direction while retaining directives. state.md#the-statement-context: **The direction line.** Compared case-insensitively: from the current position, a run of characters without line feeds, U+2028, or U+2029, the longest one that the rest can follow; then `direction`; then one or more whitespace characters; then one of `TB`, `BT`, `RL`, and `LR`, tried in this order; and then every character up to the next line feed. The rule reads `direction` as a `direction` unit, the value as a `direction-value` unit, and the characters before `direction` and after the value as `direction-text` units, which mermaid.js does not read. The rule is tried before the id rule, so it takes the whole line: `B : x direction LR` sets the direction and has no state, and so does `A --> B direction LR`, and `Direction lr` is a direction line. It is also tried before the comment rules, so the text after the value may hold `%%`: `direction LR %% c` sets the direction `LR`, and `%% c` is a `direction-text` unit, not a comment. Neither does the value need to end at a word boundary: `direction TBX` sets `TB`, and `X` is a `direction-text` unit. The values are tried in the order given: if the line has `direction`, whitespace, and `TB` anywhere, the value is `TB`; otherwise `BT` is tried, and so on. For a value, the lexer takes the last `direction` of the run that the value follows. So `direction TB x direction TB` is read at its last `direction`, and `direction TB x` is a `direction-text` unit, while `direction TB x direction LR` sets `TB` and is read at its first `direction`, with `x direction LR` as a `direction-text` unit.",
+      "comment": "Read the nonblank ignored text around a direction while retaining directives. Follows state.md#the-statement-context.",
       "patterns": [
         {
           "include": "#directive"
@@ -1272,10 +1256,30 @@
               ]
             }
           },
-          "comment": "Read a nonblank direction-text unit. state.md#the-statement-context: **The direction line.** Compared case-insensitively: from the current position, a run of characters without line feeds, U+2028, or U+2029, the longest one that the rest can follow; then `direction`; then one or more whitespace characters; then one of `TB`, `BT`, `RL`, and `LR`, tried in this order; and then every character up to the next line feed. The rule reads `direction` as a `direction` unit, the value as a `direction-value` unit, and the characters before `direction` and after the value as `direction-text` units, which mermaid.js does not read. The rule is tried before the id rule, so it takes the whole line: `B : x direction LR` sets the direction and has no state, and so does `A --> B direction LR`, and `Direction lr` is a direction line. It is also tried before the comment rules, so the text after the value may hold `%%`: `direction LR %% c` sets the direction `LR`, and `%% c` is a `direction-text` unit, not a comment. Neither does the value need to end at a word boundary: `direction TBX` sets `TB`, and `X` is a `direction-text` unit. The values are tried in the order given: if the line has `direction`, whitespace, and `TB` anywhere, the value is `TB`; otherwise `BT` is tried, and so on. For a value, the lexer takes the last `direction` of the run that the value follows. So `direction TB x direction TB` is read at its last `direction`, and `direction TB x` is a `direction-text` unit, while `direction TB x direction LR` sets `TB` and is read at its first `direction`, with `x direction LR` as a `direction-text` unit."
+          "comment": "Read a nonblank direction-text unit. Follows state.md#the-statement-context."
+        }
+      ]
+    },
+    "state-pseudostate-mark": {
+      "comment": "Read a pseudostate's delimiters and fixed kind. Follows state.md#the-state-context.",
+      "patterns": [
+        {
+          "match": "<<|\\[\\[",
+          "name": "keyword.operator.shape.begin.mermaid",
+          "comment": "Read the opening pseudostate delimiter. Follows state.md#the-state-context."
+        },
+        {
+          "match": ">>|\\]\\]",
+          "name": "keyword.operator.shape.end.mermaid",
+          "comment": "Read the closing pseudostate delimiter. Follows state.md#the-state-context."
+        },
+        {
+          "match": "(?i:fork|join|choice)",
+          "name": "constant.language.mermaid",
+          "comment": "Read the pseudostate kind. Follows state.md#the-state-context."
         }
       ]
     }
   },
-  "comment": "The local padding variables retain the whitespace required by this type's unit rules, stopping before separator-led comments. Text and context variables below name the corresponding rules of this diagram. state.md#lexical-structure: The lexer of mermaid.js for this diagram compares letters case-insensitively (see [Notation](../common.md#notation)): `STATE A {`, `Note Left Of A : x`, and `HIDE EMPTY DESCRIPTION` are read as with the lower-case words. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in."
+  "comment": "The local padding variables retain the whitespace required by this type's unit rules, stopping before separator-led comments. Text and context variables below name the corresponding rules of this diagram. Follows state.md#units-and-contexts."
 }

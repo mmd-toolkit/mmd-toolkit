@@ -57,7 +57,7 @@
     ["tag", "variable.mermaid"],
     ["other", "variable.mermaid"],
     ["[|", "keyword.operator.shape.begin.mermaid"],
-    ["name", "storage.modifier.mermaid"],
+    ["name", "support.type.property-name.mermaid"],
     ["value", "string.unquoted.mermaid"],
     ["property", "string.unquoted.mermaid"],
     ["lean", "string.unquoted.mermaid"],
@@ -65,7 +65,7 @@
     ["bottom", "string.unquoted.mermaid"],
     ["top", "string.unquoted.mermaid"],
     ["ellipse", "string.unquoted.mermaid"],
-    ["data } class", "string.quoted.double.mermaid"],
+    ["data } class", "string.unquoted.mermaid"],
     ["callback", "entity.name.function.mermaid"],
     ["class, 42", "string.unquoted.mermaid"],
     ["cb)name", "entity.name.function.mermaid"],
@@ -118,7 +118,7 @@
     ["interpolate", "keyword.control.mermaid", 94],
     ["basis", "variable.mermaid", 94],
     ["stroke", "support.type.property-name.mermaid", 94],
-    ["name", "storage.modifier.mermaid", 95],
+    ["name", "support.type.property-name.mermaid", 95],
     ["value", "string.unquoted.mermaid", 95],
     ["init", "entity.name.function.directive.mermaid", 95],
     ["property", "string.unquoted.mermaid", 95],
@@ -181,7 +181,7 @@
       143
     ],
     ["callbackName", "entity.name.function.mermaid"],
-    ["S ", "string.unquoted.mermaid", 7],
+    ["S ", "variable.mermaid", 7],
     ["[", "keyword.operator.shape.begin.mermaid", 9],
     ["]", "keyword.operator.shape.end.mermaid", 9],
     ["#amp;", "string.unquoted.mermaid", 62],
@@ -283,7 +283,8 @@
         ["x---", "keyword.operator.arrow.mermaid", 51],
         ["x.-", "keyword.operator.arrow.mermaid", 52],
         ["-)", "keyword.operator.shape.end.mermaid", 53],
-        ["}", "punctuation.section.data.end.mermaid", 54]
+        ["}", "punctuation.section.data.end.mermaid", 54],
+        ["%% data comment", "string.unquoted.mermaid", 30]
       ],
       "absent": [
         ["%% title separator comment", "string.unquoted.mermaid", 1],
@@ -298,7 +299,6 @@
         ["%% ellipse comment", "string.unquoted.mermaid", 24],
         ["%% pipe comment", "string.unquoted.mermaid", 26],
         ["%% property comment", "string.unquoted.mermaid", 28],
-        ["%% data comment", "string.unquoted.mermaid", 30],
         ["%% data string comment", "string.quoted.double.mermaid", 32],
         ["%% callback name comment", "string.unquoted.mermaid", 34],
         ["%% callback argument comment", "string.unquoted.mermaid", 36],
@@ -347,6 +347,65 @@
         ["#43a047", "support.constant.property-value.mermaid"]
       ],
       "absent": [["#43a047", "constant.numeric.mermaid"]]
+    },
+    {
+      "code": "flowchart TD;subgraph S[Title];A;end\nsubgraph Display name\nB\nend\n",
+      "scopes": [
+        ["S", "variable.mermaid"],
+        ["Title", "string.unquoted.mermaid"],
+        ["Display name", "string.unquoted.mermaid"]
+      ],
+      "absent": [["S", "string.unquoted.mermaid"]]
+    },
+    {
+      "code": "flowchart TD\nA-->B\nstyle A fill :red\nclassDef c fill %%{wrap}%%:blue\nlinkStyle 0 stroke :2px\nclassDef joined fill :x\\,y\n",
+      "scopes": [
+        ["fill", "support.type.property-name.mermaid", 2],
+        ["red", "support.constant.property-value.mermaid"],
+        ["fill", "support.type.property-name.mermaid", 3],
+        ["wrap", "entity.name.function.directive.mermaid"],
+        ["blue", "support.constant.property-value.mermaid"],
+        ["stroke", "support.type.property-name.mermaid"],
+        ["2px", "support.constant.property-value.mermaid"],
+        ["x", "support.constant.property-value.mermaid"],
+        ["\\,", "support.constant.property-value.mermaid"]
+      ],
+      "absent": [["2px", "constant.numeric.mermaid"]]
+    },
+    {
+      "code": "flowchart TD;A@{shape: rect, label: \"Data\"}\n",
+      "scopes": [
+        ["shape: rect, label: ", "string.unquoted.mermaid"],
+        ["Data", "string.unquoted.mermaid"],
+        ["@{", "meta.data.mermaid"]
+      ],
+      "absentOnLine": [[0, "support.type.property-name.mermaid"]]
+    },
+    {
+      "code": "flowchart TD\nA[#amp; text]-->B\nclick A cb \"Tip\"\naccTitle: Heading\naccDescr { Description }\nclass A,B c\nlinkStyle 0 interpolate basis stroke:red\n",
+      "scopes": [
+        ["#amp;", "string.unquoted.mermaid"],
+        ["A", "variable.mermaid", 2],
+        ["cb", "entity.name.function.mermaid"],
+        ["Heading", "string.unquoted.mermaid"],
+        ["Description ", "string.unquoted.mermaid"],
+        ["basis", "variable.mermaid"],
+        ["0", "constant.numeric.mermaid"]
+      ]
+    },
+    {
+      "code": "flowchart TD\nA[\"Quoted\n\"]\nB[\"`Markdown\n`\"]\nC@{label:\"Data\n\"}\nD[\"`split`%%{wrap}%%\"]\n",
+      "scopes": [
+        ["\"", "string.quoted.double.mermaid", 1],
+        ["\"", "string.quoted.double.mermaid", 2],
+        ["\"`", "string.quoted.other.markdown.mermaid", 3],
+        ["`\"", "string.quoted.other.markdown.mermaid", 4],
+        ["\"", "string.unquoted.mermaid", 5],
+        ["\"", "string.unquoted.mermaid", 6],
+        ["`", "string.quoted.other.markdown.mermaid", 7],
+        ["\"", "string.quoted.other.markdown.mermaid", 7],
+        ["wrap", "entity.name.function.directive.mermaid", 7]
+      ]
     }
   ]
 }

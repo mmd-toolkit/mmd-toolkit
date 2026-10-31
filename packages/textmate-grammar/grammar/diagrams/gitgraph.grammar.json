@@ -6,7 +6,7 @@
   ],
   "repository": {
     "gitgraph": {
-      "comment": "Read the exact gitGraph header, including its joined colon, and retain any inline direction in the body. gitgraph.md#detection: The written header is `gitGraph`, `gitGraph:`, `gitGraph :`, or `gitGraph` followed by `LR`, `TB` or `BT` and a required colon. gitgraph.md#keywords-and-components: Only the separate `gitGraph` word requires immediately following common whitespace, end of text or `%%`.",
+      "comment": "Read the exact gitGraph header, including its joined colon, and retain any inline direction in the body. Follows gitgraph.md#detection and gitgraph.md#keywords-and-components.",
       "begin": "{{diagramStart}}(gitGraph)(?:(:)|(?={{directives}}(?:[{{ws}}]|:|%%|$)))",
       "beginCaptures": {
         "1": {
@@ -25,26 +25,26 @@
           "include": "#directive"
         },
         {
-          "comment": "Read case-sensitive statement keywords only when a longer reference does not own their spelling. gitgraph.md#keywords-and-components: Keywords are case-sensitive. gitgraph.md#keywords-and-components: Other word keywords yield to a longer complete bare-reference match, but not to an equally long one.",
+          "comment": "Read case-sensitive statement keywords only when a longer reference does not own their spelling. Follows gitgraph.md#keywords-and-components.",
           "match": "(?:cherry-pick|checkout|commit|branch|switch|merge){{gitgraph-reference-end}}",
           "name": "keyword.control.mermaid"
         },
         {
-          "comment": "Read listed commit display values as fixed values. gitgraph.md#ordered-rules: Keywords, in order: `cherry-pick`, `gitGraph:`, `HIGHLIGHT`, `gitGraph`, `checkout`, `REVERSE`, `parent:`, `commit`, `NORMAL`, `branch`, `order:`, `switch`, `type:`, `merge`, `msg:`, `tag:`, `id:`, `LR`, `TB`, `BT`, `:`.",
+          "comment": "Read listed commit display values as fixed values. Follows gitgraph.md#ordered-rules.",
           "match": "(?:HIGHLIGHT|REVERSE|NORMAL){{gitgraph-reference-end}}",
           "name": "constant.language.mermaid"
         },
         {
-          "comment": "Read the listed header direction as a fixed value. gitgraph.md#detection: The written header is `gitGraph`, `gitGraph:`, `gitGraph :`, or `gitGraph` followed by `LR`, `TB` or `BT` and a required colon.",
+          "comment": "Read the listed header direction as a fixed value. Follows gitgraph.md#detection.",
           "match": "(?:LR|TB|BT){{gitgraph-reference-end}}",
           "name": "constant.language.mermaid"
         },
         {
-          "comment": "Read each option key and its separate colon, preserving directives between those components. gitgraph.md#keywords-and-components: The option words `id`, `msg`, `tag`, `type`, `parent` and `order` and their colons are separate authored components.",
+          "comment": "Read each option key and its separate colon, preserving directives between those components. Follows gitgraph.md#keywords-and-components.",
           "match": "(id|msg|tag|type|parent|order)({{directives}})(:)",
           "captures": {
             "1": {
-              "name": "storage.modifier.mermaid"
+              "name": "keyword.control.mermaid"
             },
             "2": {
               "patterns": [
@@ -59,37 +59,37 @@
           }
         },
         {
-          "comment": "Reuse the shared title and accessibility forms. gitgraph.md#composite-common-forms: At any unit start, optional ASCII indentation may precede a common form. `title-line` reads `title` alone, or `title`, one ASCII space/tab, and possibly empty line text. `acc-title-line` reads `accTitle`, zero or more ASCII spaces/tabs, colon and possibly empty line text; `acc-descr-line` does so with `accDescr`. Line text ends at the first `%%` or physical line end. None takes a value from the next line. Unicode colon-gap whitespace rejects. gitgraph.md#composite-common-forms: The block alternative instead reads `accDescr`, common whitespace including newlines and Unicode separators, `{`, and content through the first `}`.",
+          "comment": "Reuse the shared title and accessibility forms. Follows gitgraph.md#composite-common-forms.",
           "include": "#common-statements"
         },
         {
-          "comment": "Read an unsigned order number before the reference fallback. gitgraph.md#numbers-and-references: An unsigned integer is zero alone, or a nonzero ASCII digit followed by zero or more ASCII digits whose chosen end is not immediately before a dot. gitgraph.md#numbers-and-references: The zero alternative has no dot test.",
+          "comment": "Read an unsigned order number before the reference fallback. Follows gitgraph.md#numbers-and-references.",
           "match": "(?:0|[1-9][0-9]*(?!{{directives}}\\.))",
           "name": "constant.numeric.mermaid"
         },
         {
-          "comment": "Reuse the shared matching-quote strings and backslash escapes. gitgraph.md#strings: A string opens and closes with matching single or double quotes and may be empty. Content is any character other than that matching quote and backslash, or a backslash paired with its next character. The paired character cannot be LF, CR, LS or PS. An escaped matching quote does not close the string. Unescaped physical line breaks, LS and PS are content. The closing quote is required; the tree keeps escape spelling without decoding.",
+          "comment": "Reuse the shared matching-quote strings and backslash escapes. Follows gitgraph.md#strings.",
           "include": "#string-escaped"
         },
         {
-          "comment": "Reuse the native hidden YAML form. gitgraph.md#hidden-yaml: At a unit start, `---`, zero or more ASCII spaces/tabs and LF open hidden YAML, even off a physical line start. gitgraph.md#hidden-yaml: Try the body-present form first: read as few arbitrary characters as possible through a subsequent LF followed by an unindented `---` whose next character is LF, common whitespace or EOF.",
+          "comment": "Reuse the native hidden YAML form. Follows gitgraph.md#hidden-yaml.",
           "include": "#hidden-yaml"
         },
         {
-          "comment": "Reuse the native hidden directive form. gitgraph.md#hidden-directive-and-line-endings: After optional ASCII padding, `%%{` opens hidden DIRECTIVE. gitgraph.md#hidden-directive-and-line-endings: Read arbitrary characters through the earliest `}%%` followed by LF, common whitespace or EOF.",
+          "comment": "Reuse the native hidden directive form. Follows gitgraph.md#hidden-directive-and-line-endings.",
           "include": "#hidden-directive"
         },
         {
-          "comment": "Reuse the native percent comment without taking its preceding character. gitgraph.md#whitespace-and-comments: A native diagram comment reads optional ASCII indentation, `%%`, and the maximal text before physical EOL.",
+          "comment": "Reuse the native percent comment without taking its preceding character. Follows gitgraph.md#whitespace-and-comments.",
           "include": "#native-percent-comment"
         },
         {
-          "comment": "Read a bare branch reference as an element name. gitgraph.md#numbers-and-references: A bare reference starts with an ASCII word character. gitgraph.md#numbers-and-references: Later characters are ASCII word characters, dash, slash or dot; a multi-character match must end with a word character or dash.",
+          "comment": "Read a bare branch reference as an element name. Follows gitgraph.md#numbers-and-references.",
           "match": "[A-Za-z0-9_](?:[A-Za-z0-9_./-]*[A-Za-z0-9_-])?",
           "name": "variable.mermaid"
         },
         {
-          "comment": "Read the separate header colon. gitgraph.md#detection: The colon closes the header; it is not part of a direction or a statement.",
+          "comment": "Read the separate header colon. Follows gitgraph.md#detection.",
           "match": ":",
           "name": "punctuation.separator.colon.mermaid"
         }

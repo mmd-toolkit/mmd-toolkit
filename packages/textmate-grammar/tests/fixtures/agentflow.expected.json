@@ -114,15 +114,15 @@
     ["12", "variable.mermaid", 70],
     ["accDescr", "keyword.control.mermaid", 70],
     ["[|", "keyword.operator.shape.begin.mermaid", 71],
-    ["borders", "storage.modifier.mermaid", 71],
+    ["borders", "support.type.property-name.mermaid", 71],
     ["lt", "string.unquoted.mermaid", 71],
-    [":", "punctuation.separator.colon.mermaid", 71],
+    [":", "punctuation.separator.key-value.mermaid", 71],
     ["|", "punctuation.separator.label.mermaid", 71],
     ["2px", "support.constant.property-value.mermaid", 72],
-    [":", "punctuation.separator.colon.mermaid", 72],
+    [":", "punctuation.separator.key-value.mermaid", 72],
     [",", "punctuation.separator.comma.mermaid", 72],
     ["2px", "support.constant.property-value.mermaid", 73],
-    [":", "punctuation.separator.colon.mermaid", 73],
+    [":", "punctuation.separator.key-value.mermaid", 73],
     ["2px", "support.constant.property-value.mermaid", 74],
     [",", "punctuation.separator.comma.mermaid", 74],
     ["2px", "support.constant.property-value.mermaid", 75],
@@ -177,7 +177,7 @@
     ["style", "support.type.property-name.mermaid", 123],
     ["%", "variable.mermaid", 112],
     ["-->", "keyword.operator.arrow.mermaid", 112],
-    ["red", "string.unquoted.mermaid", 113],
+    ["red", "support.constant.property-value.mermaid", 113],
     ["accDescr {}", "comment.block.ignored.mermaid", 117],
     ["accDescr {}", "comment.block.ignored.mermaid", 118],
     ["accDescr", "comment.block.ignored.mermaid", 119],
@@ -188,7 +188,7 @@
     ["%% c \">", "comment.line.percentage.mermaid", 122],
     ["style", "string.unquoted.mermaid", 124],
     ["A", "variable.mermaid", 5],
-    ["Main ", "string.unquoted.mermaid", 3],
+    ["Main ", "variable.mermaid", 3],
     ["cb", "entity.name.function.mermaid", 87],
     ["]", "keyword.operator.shape.end.mermaid", 5],
     ["(", "punctuation.section.arguments.begin.mermaid", 87],
@@ -289,6 +289,98 @@
         ["&", "keyword.operator.mermaid", 3]
       ],
       "absent": [["#43a047", "constant.numeric.mermaid"]]
+    },
+    {
+      "code": "agentflow-beta TD;flow S[Title];A;end\nconnector T[Connector]\nconnector Display name\n",
+      "scopes": [
+        ["S", "variable.mermaid"],
+        ["Title", "string.unquoted.mermaid"],
+        ["T", "variable.mermaid"],
+        ["Connector", "string.unquoted.mermaid"],
+        ["Display name", "string.unquoted.mermaid"]
+      ],
+      "absent": [
+        ["S", "string.unquoted.mermaid"],
+        ["T", "string.unquoted.mermaid"]
+      ]
+    },
+    {
+      "code": "agentflow-beta TD\nconnector accDescr {}C\nflow accDescr {}F\nA\nend\nconnector click \"\"A\n",
+      "scopes": [
+        ["accDescr {}", "comment.block.ignored.mermaid", 1],
+        ["C", "string.unquoted.mermaid"],
+        ["accDescr {}", "comment.block.ignored.mermaid", 2],
+        ["F", "string.unquoted.mermaid"],
+        ["click", "comment.block.ignored.mermaid", 5],
+        ["\"\"", "comment.block.ignored.mermaid", 5],
+        ["A", "string.unquoted.mermaid", 5]
+      ],
+      "absentOnLine": [
+        [1, "punctuation.definition.description.begin.mermaid"],
+        [2, "punctuation.definition.description.begin.mermaid"]
+      ]
+    },
+    {
+      "code": "agentflow-beta TD\nA-->B\nstyle A fill :red\nclassDef c fill %%{wrap}%%:blue\nlinkStyle 0 stroke :2px\nclassDef joined fill :x\\,y\n",
+      "scopes": [
+        ["fill", "support.type.property-name.mermaid", 2],
+        ["red", "support.constant.property-value.mermaid"],
+        ["fill", "support.type.property-name.mermaid", 3],
+        ["wrap", "entity.name.function.directive.mermaid"],
+        ["blue", "support.constant.property-value.mermaid"],
+        ["stroke", "support.type.property-name.mermaid"],
+        ["2px", "support.constant.property-value.mermaid"],
+        ["\\,", "support.constant.property-value.mermaid"]
+      ]
+    },
+    {
+      "code": "agentflow-beta TD;A@{shape: rect, label: \"Data\"}\n",
+      "scopes": [
+        ["shape: rect, label: ", "string.unquoted.mermaid"],
+        ["Data", "string.unquoted.mermaid"],
+        ["@{", "meta.data.mermaid"]
+      ],
+      "absentOnLine": [[0, "support.type.property-name.mermaid"]]
+    },
+    {
+      "code": "agentflow-beta TD\nA %% statement comment\nB[\"quoted\" %% label comment\ncontinued]\naccTitle: Heading\naccDescr { Description }\nclick A cb \"Tip\"\n",
+      "scopes": [
+        ["%% statement comment", "comment.line.percentage.mermaid"],
+        ["%% label comment", "comment.line.percentage.mermaid"],
+        ["Heading", "string.unquoted.mermaid"],
+        ["Description ", "string.unquoted.mermaid"],
+        ["cb", "entity.name.function.mermaid"]
+      ]
+    },
+    {
+      "code": "agentflow-beta TD\nflow F[Title]accDescr {}\nend\nconnector C[Title]accDescr {}\nconnector D@{shape: rect}accDescr {}\nflow E@{shape: rect}accDescr {}\nend\n",
+      "scopes": [
+        ["F", "variable.mermaid", 1],
+        ["accDescr", "keyword.control.mermaid", 1],
+        ["accDescr", "keyword.control.mermaid", 3],
+        ["accDescr", "keyword.control.mermaid", 4],
+        ["accDescr", "keyword.control.mermaid", 5]
+      ],
+      "absentOnLine": [
+        [1, "comment.block.ignored.mermaid"],
+        [3, "comment.block.ignored.mermaid"],
+        [4, "comment.block.ignored.mermaid"],
+        [5, "comment.block.ignored.mermaid"]
+      ]
+    },
+    {
+      "code": "agentflow-beta TD\nA[\"Quoted\n\"]\nB[\"`Markdown\n`\"]\nC@{label:\"Data\n\"}\nD[\"`split`%%{wrap}%%\"]\n",
+      "scopes": [
+        ["\"", "string.quoted.double.mermaid", 1],
+        ["\"", "string.quoted.double.mermaid", 2],
+        ["\"`", "string.quoted.other.markdown.mermaid", 3],
+        ["`\"", "string.quoted.other.markdown.mermaid", 4],
+        ["\"", "string.unquoted.mermaid", 5],
+        ["\"", "string.unquoted.mermaid", 6],
+        ["`", "string.quoted.other.markdown.mermaid", 7],
+        ["\"", "string.quoted.other.markdown.mermaid", 7],
+        ["wrap", "entity.name.function.directive.mermaid", 7]
+      ]
     }
   ]
 }

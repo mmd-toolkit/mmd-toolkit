@@ -37,6 +37,6 @@ describe("Mermaid code blocks", () => {
     )
     expect(html).toMatch(/<span[^>]*>title<\/span>/u)
     expect(html).toMatch(/<span[^>]*>flowchart<\/span>/u)
-    expect(html).toMatch(/<span[^>]*>(?:-->|--&gt;)<\/span>/u)
+    expect(html).toMatch(/<span[^>]*>\s*(?:-->|--&gt;)<\/span>/u)
   })
 })

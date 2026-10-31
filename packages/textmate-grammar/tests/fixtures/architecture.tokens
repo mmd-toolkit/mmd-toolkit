@@ -3,7 +3,7 @@
   "group" keyword.control.mermaid
   "cloud" variable.mermaid
   "(" punctuation.section.icon.begin.mermaid
-  "cloud" variable.mermaid
+  "cloud" string.unquoted.mermaid
   ")" punctuation.section.icon.end.mermaid
   "[" punctuation.definition.label.begin.mermaid
   "Cloud" string.unquoted.mermaid
@@ -28,7 +28,7 @@
   "group" keyword.control.mermaid
   "nested" variable.mermaid
   "(" punctuation.section.icon.begin.mermaid
-  "database" variable.mermaid
+  "database" string.unquoted.mermaid
   ")" punctuation.section.icon.end.mermaid
   "[" punctuation.definition.label.begin.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
@@ -41,7 +41,7 @@
   "service" keyword.control.mermaid
   "api" variable.mermaid
   "(" punctuation.section.icon.begin.mermaid
-  "server" variable.mermaid
+  "server" string.unquoted.mermaid
   ")" punctuation.section.icon.end.mermaid
   "[" punctuation.definition.label.begin.mermaid
   "API" string.unquoted.mermaid
@@ -65,7 +65,7 @@
   "service" keyword.control.mermaid
   "serviceLong" variable.mermaid
   "(" punctuation.section.icon.begin.mermaid
-  "custom" variable.mermaid
+  "custom" string.unquoted.mermaid
   ")" punctuation.section.icon.end.mermaid
   "[" punctuation.definition.label.begin.mermaid
   "Long keyword-like ID" string.unquoted.mermaid
@@ -79,7 +79,7 @@
   "service" keyword.control.mermaid
   "123" variable.mermaid
   "(" punctuation.section.icon.begin.mermaid
-  "-:A_" variable.mermaid
+  "-:A_" string.unquoted.mermaid
   ")" punctuation.section.icon.end.mermaid
   "[" punctuation.definition.label.begin.mermaid
   "Numeric ID" string.unquoted.mermaid

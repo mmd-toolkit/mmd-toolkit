@@ -90,7 +90,8 @@
     ["]", "keyword.operator.shape.end.mermaid", 3],
     ["fill", "support.type.property-name.mermaid", 16],
     ["red", "support.constant.property-value.mermaid", 16],
-    [")", "punctuation.section.directions.end.mermaid", 8]
+    [")", "punctuation.section.directions.end.mermaid", 8],
+    ["\"", "string.quoted.double.mermaid", 3]
   ],
   "absent": [
     ["Other", "string.quoted.double.mermaid", 38],
@@ -130,9 +131,34 @@
       "scopes": [
         ["fill", "support.type.property-name.mermaid"],
         ["#43a047", "support.constant.property-value.mermaid"],
-        ["opaque", "string.unquoted.mermaid", 3]
+        ["opaque", "support.constant.property-value.mermaid", 3]
       ],
       "absent": [["#43a047", "constant.numeric.mermaid"]]
+    },
+    {
+      "code": "block-beta A,B\nstyle A,B fill :red\nclassDef c fill %%{wrap}%%:blue\n",
+      "scopes": [
+        ["A,B", "variable.mermaid", 0],
+        ["A,B", "variable.mermaid", 1],
+        ["fill", "support.type.property-name.mermaid", 1],
+        ["red", "support.constant.property-value.mermaid"],
+        ["fill", "support.type.property-name.mermaid", 2],
+        ["blue", "support.constant.property-value.mermaid"],
+        ["wrap", "entity.name.function.directive.mermaid"]
+      ],
+      "absentOnLine": [[1, "punctuation.separator.comma.mermaid"]]
+    },
+    {
+      "code": "block-beta columns auto space:2 block:Group A[\"Label\"]:3 end\n",
+      "scopes": [
+        ["columns", "keyword.control.mermaid"],
+        ["space", "keyword.control.mermaid"],
+        ["block:", "keyword.control.mermaid"],
+        ["Group", "variable.mermaid"],
+        ["A", "variable.mermaid"],
+        ["3", "constant.numeric.mermaid"],
+        ["Label", "string.quoted.double.mermaid"]
+      ]
     }
   ]
 }

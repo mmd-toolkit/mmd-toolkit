@@ -6,7 +6,7 @@
   ],
   "repository": {
     "pie": {
-      "comment": "Begin pie at its lowercase header and retain its keyword boundary through following directives. pie.md#detection: Entry 13 of [detection.md](../detection.md) selects pie for the exact lower-case prefix `pie`. pie.md#keyword-boundaries: The words `pie` and `showData` are case-sensitive and must be followed immediately by common whitespace, the end of text, or `%%`, judged on the text with common directives removed.",
+      "comment": "Begin pie at its lowercase header and retain its keyword boundary through following directives. Follows pie.md#detection and pie.md#keyword-boundaries.",
       "begin": "{{diagramStart}}(pie){{pie-keyword-end}}",
       "beginCaptures": {
         "1": {
@@ -22,38 +22,38 @@
           "include": "#directive"
         },
         {
-          "comment": "Read the bounded showData flag. pie.md#keyword-boundaries: The words `pie` and `showData` are case-sensitive and must be followed immediately by common whitespace, the end of text, or `%%`, judged on the text with common directives removed.",
+          "comment": "Read the bounded showData flag. Follows pie.md#keyword-boundaries.",
           "match": "showData{{pie-keyword-end}}",
           "name": "keyword.control.mermaid"
         },
         {
-          "comment": "Reuse the common title and accessibility forms. pie.md#composite-common-forms: The composite common forms below may begin at any unit position, with optional leading ASCII spaces/tabs. pie.md#composite-common-forms: `title-line` reads `title` followed by either one ASCII space/tab and all remaining line text, or nothing. pie.md#composite-common-forms: `acc-title-line` reads `accTitle`, zero or more ASCII spaces/tabs, a colon, and the same possibly empty line text. `acc-descr-line` does so with `accDescr`. pie.md#composite-common-forms: The block alternative reads `accDescr`, zero or more common whitespace characters, `{`, and any characters through the first `}`.",
+          "comment": "Reuse the common title and accessibility forms. Follows pie.md#composite-common-forms.",
           "include": "#common-statements"
         },
         {
-          "comment": "Reuse matching quoted strings and backslash escapes. pie.md#strings: A `string` opens and closes with matching single or double quotes and may be empty. Between them read any character except the matching quote and backslash, or a backslash and its next character. That next character must not be a physical line break, U+2028 or U+2029; an escaped matching quote does not close the string. A closing quote is required.",
+          "comment": "Reuse matching quoted strings and backslash escapes. Follows pie.md#strings.",
           "include": "#string-escaped"
         },
         {
-          "comment": "Read a numeric section value and check the dot boundary through following directives. pie.md#numbers: A `pie-number` is an optional minus followed by either a fraction or an integer. A fraction has one or more ASCII digits, a dot, and one or more digits; leading zeroes are allowed. An integer is zero alone or a nonzero digit followed by zero or more digits. The chosen match cannot end immediately before a dot. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text.",
+          "comment": "Read a numeric section value and check the dot boundary through following directives. Follows pie.md#numbers and common.md#a-directive-is-a-token-boundary.",
           "match": "-?(?:[0-9]+\\.[0-9]+|0|[1-9][0-9]*)(?!{{directives}}\\.)",
           "name": "constant.numeric.mermaid"
         },
         {
-          "comment": "Read the separator between a section label and its value. pie.md#grammar: A section requires a string, colon, number and EOL.",
+          "comment": "Read the separator between a section label and its value. Follows pie.md#grammar.",
           "match": ":",
           "name": "punctuation.separator.colon.mermaid"
         },
         {
-          "comment": "Reuse the native hidden YAML context, including its shared line-based approximation. pie.md#hidden-yaml: At a unit position, `---`, zero or more ASCII spaces/tabs and LF open hidden YAML; the opener need not start a physical line. Try the body-present form first: read as few arbitrary characters as possible, including LF, LS and PS, through a subsequent LF followed by an unindented `---` whose next character is LF, common whitespace or end of text. Only when no body-present match works, try an empty body whose closer immediately follows the opening LF. No YAML content validation occurs.",
+          "comment": "Reuse the native hidden YAML context, including its shared line-based approximation. Follows pie.md#hidden-yaml.",
           "include": "#hidden-yaml"
         },
         {
-          "comment": "Reuse the native hidden directive form. pie.md#hidden-directive: After common directive removal, at a unit position read `%%{` and arbitrary text, including LF, LS and PS, through the earliest `}%%` followed by a line break, common whitespace or end of text. Empty and punctuation-only bodies are allowed. Consume an immediately following LF; other whitespace is only looked at. These are PieIgnoredText with kind `directive`, not common Directive records.",
+          "comment": "Reuse the native hidden directive form. Follows pie.md#hidden-directive.",
           "include": "#hidden-directive"
         },
         {
-          "comment": "Reuse the native percent comment form. pie.md#comments: The last rule reads `%%` with optional preceding ASCII spaces/tabs, then the maximal text before the next physical line break. Its mark is `%%`, its value is the text after the mark, and the terminating LF is not consumed.",
+          "comment": "Reuse the native percent comment form. Follows pie.md#comments.",
           "include": "#native-percent-comment"
         }
       ]

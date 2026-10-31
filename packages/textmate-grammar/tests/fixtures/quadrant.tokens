@@ -46,11 +46,11 @@
   "classDef" keyword.control.mermaid
   "hot" variable.mermaid
   "color" support.type.property-name.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" punctuation.separator.key-value.mermaid
   "#f00" support.constant.property-value.mermaid
   "," punctuation.separator.comma.mermaid
   "radius" support.type.property-name.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" punctuation.separator.key-value.mermaid
   "5" support.constant.property-value.mermaid
 >   Point:::hot: [0.3, 0.6] color: #0f0, stroke-width: 2px
   "Point" string.unquoted.mermaid
@@ -63,11 +63,11 @@
   "0.6" constant.numeric.mermaid
   "]" punctuation.section.brackets.end.mermaid
   "color" support.type.property-name.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" punctuation.separator.key-value.mermaid
   "#0f0" support.constant.property-value.mermaid
   "," punctuation.separator.comma.mermaid
   "stroke-width" support.type.property-name.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" punctuation.separator.key-value.mermaid
   "2px" support.constant.property-value.mermaid
 >   "title and classDef": [0, 1]; Titles: [1, 0]
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
@@ -236,11 +236,11 @@
   "0.6" constant.numeric.mermaid
   "]" punctuation.section.brackets.end.mermaid
   "color" support.type.property-name.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" punctuation.separator.key-value.mermaid
   "#f00" support.constant.property-value.mermaid
   "," punctuation.separator.comma.mermaid
   "radius" support.type.property-name.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" punctuation.separator.key-value.mermaid
   "5" support.constant.property-value.mermaid
 >   A: [0,%%{init: {}}%%3, 0.6]
   "A" string.unquoted.mermaid
@@ -397,11 +397,11 @@
   "{}" meta.directive.mermaid string.unquoted.directive.mermaid
   "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
   "color" support.type.property-name.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" punctuation.separator.key-value.mermaid
   "#f00" support.constant.property-value.mermaid
   "," punctuation.separator.comma.mermaid
   "radius" support.type.property-name.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" punctuation.separator.key-value.mermaid
   "5" support.constant.property-value.mermaid
 >   A%%{init: {}}%%title: [0.3, 0.6]
   "A" string.unquoted.mermaid
@@ -433,11 +433,11 @@
   "{}" meta.directive.mermaid string.unquoted.directive.mermaid
   "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
   "color" support.type.property-name.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" punctuation.separator.key-value.mermaid
   "#f00" support.constant.property-value.mermaid
   "," punctuation.separator.comma.mermaid
   "radius" support.type.property-name.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" punctuation.separator.key-value.mermaid
   "5" support.constant.property-value.mermaid
 >   title%%{wrap}%%1: [0.3, 0.6]
   "title" string.unquoted.mermaid
@@ -464,11 +464,11 @@
   "classDef" keyword.control.mermaid
   "a" variable.mermaid
   "color" support.type.property-name.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" punctuation.separator.key-value.mermaid
   "#f00" support.constant.property-value.mermaid
   "," punctuation.separator.comma.mermaid
   "radius" support.type.property-name.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" punctuation.separator.key-value.mermaid
   "5" support.constant.property-value.mermaid
 >   A: [0.3, 0.6]color:#f00,radius:5
   "A" string.unquoted.mermaid
@@ -479,17 +479,17 @@
   "0.6" constant.numeric.mermaid
   "]" punctuation.section.brackets.end.mermaid
   "color" support.type.property-name.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" punctuation.separator.key-value.mermaid
   "#f00" support.constant.property-value.mermaid
   "," punctuation.separator.comma.mermaid
   "radius" support.type.property-name.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" punctuation.separator.key-value.mermaid
   "5" support.constant.property-value.mermaid
 >   classDef b	color:#f00
   "classDef" keyword.control.mermaid
   "b" variable.mermaid
   "color" support.type.property-name.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" punctuation.separator.key-value.mermaid
   "#f00" support.constant.property-value.mermaid
 > 
 >   %%{wrap}%%accTitle: T

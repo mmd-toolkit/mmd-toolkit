@@ -7,7 +7,7 @@
     [":::", "punctuation.separator.class.mermaid"],
     ["entry", "variable.mermaid"],
     ["icon", "keyword.control.mermaid"],
-    ["fa:file", "variable.mermaid"],
+    ["fa:file", "string.unquoted.mermaid"],
     ["##", "storage.modifier.mermaid"],
     ["├──", "keyword.operator.mermaid"],
     ["index.ts", "string.quoted.double.mermaid"],
@@ -22,7 +22,7 @@
     ["wrap", "entity.name.function.directive.mermaid", 14],
     ["tag", "variable.mermaid", 15],
     ["icon", "keyword.control.mermaid", 16],
-    ["fa:file", "variable.mermaid", 16],
+    ["fa:file", "string.unquoted.mermaid", 16],
     ["##", "storage.modifier.mermaid", 17],
     ["b", "string.unquoted.mermaid", 17],
     ["%% class boundary comment", "comment.line.percentage.mermaid", 18],
@@ -36,11 +36,11 @@
     [":::", "punctuation.separator.class.mermaid", 29],
     ["tag", "variable.mermaid", 29],
     ["icon", "keyword.control.mermaid", 29],
-    ["fa:file", "variable.mermaid", 29],
+    ["fa:file", "string.unquoted.mermaid", 29],
     ["wrap", "entity.name.function.directive.mermaid", 31],
     ["├──", "keyword.operator.mermaid", 31],
     ["icon", "keyword.control.mermaid", 32],
-    ["fa:file", "variable.mermaid", 32],
+    ["fa:file", "string.unquoted.mermaid", 32],
     ["wrap", "entity.name.function.directive.mermaid", 33],
     ["name", "string.unquoted.mermaid", 15],
     ["─X", "string.unquoted.mermaid", 20],
@@ -54,9 +54,13 @@
     ["src", "string.unquoted.mermaid", 5],
     ["single.ts", "string.quoted.single.mermaid"],
     ["───", "comment.block.ignored.mermaid"],
-    ["(", "punctuation.section.parens.begin.mermaid", 6],
-    [")", "punctuation.section.parens.end.mermaid", 6],
-    [" main entry", "string.unquoted.mermaid", 6]
+    ["(", "punctuation.section.icon.begin.mermaid", 6],
+    [")", "punctuation.section.icon.end.mermaid", 6],
+    [" main entry", "string.unquoted.mermaid", 6],
+    ["│", "comment.block.ignored.mermaid", 36],
+    ["┃", "comment.block.ignored.mermaid", 37],
+    ["  │  ", "comment.block.ignored.mermaid", 38],
+    ["  ┃  ", "comment.block.ignored.mermaid", 39]
   ],
   "absentOnLine": [
     [10, "string.quoted.double.mermaid"],
@@ -76,7 +80,7 @@
   ],
   "escapedInputs": [
     {
-      "code": "treeView-beta%%{wrap}%%\n└── Separator ## text\u2028%% description comment\n\n├── Bare text\u2028%% bare comment\n\u00a0title Keep ├── Content\n\n",
+      "code": "treeView-beta%%{wrap}%%\n└── Separator ## text\u2028%% description comment\n\n├── Bare text\u2028%% bare comment\n\u00A0title Keep ├── Content\n\n",
       "scopes": [
         [" text", "string.unquoted.mermaid", 1],
         ["%% description comment", "comment.line.percentage.mermaid", 1],

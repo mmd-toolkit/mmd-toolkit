@@ -48,11 +48,11 @@
   "classDef" keyword.control.mermaid
   "highlight" variable.mermaid
   "fill" support.type.property-name.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" punctuation.separator.key-value.mermaid
   "#f9f" support.constant.property-value.mermaid
   "," punctuation.separator.comma.mermaid
   "stroke" support.type.property-name.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" punctuation.separator.key-value.mermaid
   "#333;" support.constant.property-value.mermaid
 > %% a comment line
   "%% a comment line" comment.line.percentage.mermaid
@@ -131,7 +131,7 @@
   "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
   "custom" variable.mermaid
   "fill" support.type.property-name.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" punctuation.separator.key-value.mermaid
   "red" support.constant.property-value.mermaid
 > classDef custom%%{init: {}}%% fill:blue
   "classDef" keyword.control.mermaid
@@ -143,7 +143,7 @@
   "{}" meta.directive.mermaid string.unquoted.directive.mermaid
   "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
   "fill" support.type.property-name.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" punctuation.separator.key-value.mermaid
   "blue" support.constant.property-value.mermaid
 > "Marked":::%%{init: {}}%%custom
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
@@ -161,7 +161,7 @@
   "classDef" keyword.control.mermaid
   "entity" variable.mermaid
   "color" support.type.property-name.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" punctuation.separator.key-value.mermaid
   "#amp;" support.constant.property-value.mermaid
   ";" punctuation.separator.semicolon.mermaid
 > classDef%%{init: {}}%% bare;
@@ -188,7 +188,7 @@
   "classDef" keyword.control.mermaid
   "entity" variable.mermaid
   "color" support.type.property-name.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" punctuation.separator.key-value.mermaid
   "#a" support.constant.property-value.mermaid
   "%%{" support.constant.property-value.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "init" support.constant.property-value.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
@@ -239,4 +239,40 @@
   "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
   "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
   "style" string.unquoted.mermaid
+> classDef hot stroke-dasharray:5\,7,fill:red;
+  "classDef" keyword.control.mermaid
+  "hot" variable.mermaid
+  "stroke-dasharray" support.type.property-name.mermaid
+  ":" punctuation.separator.key-value.mermaid
+  "5" support.constant.property-value.mermaid
+  "\\," support.constant.property-value.mermaid
+  "7" support.constant.property-value.mermaid
+  "," punctuation.separator.comma.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" punctuation.separator.key-value.mermaid
+  "red" support.constant.property-value.mermaid
+  ";" punctuation.separator.semicolon.mermaid
+> classDef hot 1x:red;
+  "classDef" keyword.control.mermaid
+  "hot" variable.mermaid
+  "1x" support.type.property-name.mermaid
+  ":" punctuation.separator.key-value.mermaid
+  "red" support.constant.property-value.mermaid
+  ";" punctuation.separator.semicolon.mermaid
+> classDef hot --色:red;
+  "classDef" keyword.control.mermaid
+  "hot" variable.mermaid
+  "--色" support.type.property-name.mermaid
+  ":" punctuation.separator.key-value.mermaid
+  "red" support.constant.property-value.mermaid
+  ";" punctuation.separator.semicolon.mermaid
+> "Selector":::%%{wrap}%%hot
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Selector" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ":::" punctuation.separator.class.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "hot" variable.mermaid
 > 

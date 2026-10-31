@@ -23,3 +23,10 @@ set Close [<b title="] :1 %% c">
 set Rgba:1
 style Rgba fill:rgba(1,2,3,0.5)
 style A fill:#43a047, stroke-width:1red#abc, font-family:"Trebuchet MS"
+style A fill:red %% comment set B
+style A fill:red @%% c
+style A fill:red X%% swallowed
+style A fill:rgba(1,2,3,0.5),stroke-width:1red#abc
+style A fill:"kept %% set B"
+set Empty [""]
+style A fill:red set Next:4

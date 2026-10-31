@@ -23,9 +23,10 @@ Viteがブラウザーを自動で開きます。
 hostの指定は不要です。
 Node.jsの要件は[package.json](../package.json)に記録しています。
 
-開発時も本番ビルド時も、パーサーとフォーマッターの参照先は、
+開発時も本番ビルド時も、パーサー、フォーマッター、TextMate文法の参照先は、
 ワークスペースの公開ソースエントリーポイントです。
-実装を変更するとホット更新され、現在の入力を再解析します。
+パーサーかフォーマッターの実装を変更するとホット更新され、
+現在の入力を再解析します。
 Formattedの表示中なら再整形もします。
 ソースエディターとUndo履歴は維持されます。
 ライブラリーの再ビルドや、別のwatchプロセスは不要です。
@@ -112,14 +113,12 @@ pnpm --filter @mmd-toolkit/playground preview
 
 Previewは、本番ビルドをブラウザーで自動表示します。
 
-[pages.yml](../../../.github/workflows_bk/pages.yml)は、
-開発中のためバックアップディレクトリーに置いています。
-`.github/workflows/`で有効にすると、 PRを検証し、
+[pages.yml](../../../.github/workflows/pages.yml)は、 PRを検証し、
 mainの変更と手動実行でビルドします。
 ドキュメントとPlaygroundのビルドジョブは独立して実行します。
 mainではドキュメントを成果物のルートに、
 このアプリケーションの`lib/`を`playground/`にまとめて配置し、
 `github-pages`環境から公開します。
-公開前に、リポジトリのPages sourceを**GitHub Actions**に設定します。
+リポジトリのPages sourceは**GitHub Actions**にしておきます。
 ワークフローはリポジトリの設定を変更しません。
-公開するのはmainだけで、公開ジョブは直列化し、実行中の公開は中断しません。
+公開するのはmainだけで、新しい公開は実行中の公開を中断します。

@@ -6,7 +6,7 @@
   ],
   "repository": {
     "packet": {
-      "comment": "Begin packet at either accepted lowercase header, retaining the boundary required only by packet. packet.md#detection: Detection alone does not accept `packetx`, `packet2`, or `packet-BETA`. packet.md#header-boundaries-and-gaps: Only `packet` requires immediate common whitespace, `%%` or end of text. packet.md#header-boundaries-and-gaps: `packet-beta` has no such check and may touch a block or common form. common.md#leading-whitespace: Whitespace, line terminators, directives, and comment regions before the first unit of the diagram's lexer are trivia and are not seen by the diagram's grammar.",
+      "comment": "Begin packet at either accepted lowercase header, retaining the boundary required only by packet. Follows packet.md#detection, packet.md#header-boundaries-and-gaps, and common.md#leading-whitespace.",
       "begin": "{{diagramStart}}(packet-beta|packet(?={{directives}}(?:[{{ws}}]|%%|$)))",
       "beginCaptures": {
         "1": {
@@ -23,31 +23,31 @@
         },
         {
           "include": "#hidden-yaml",
-          "comment": "Reuse hidden YAML before the range-dash rule. packet.md#ordered-rules: The range dash has an explicit longer alternative: choose a whole hidden YAML match instead when one starts there. packet.md#hidden-forms: At any unit start, hidden YAML starts with `---`, zero or more ASCII spaces/tabs and LF, even off a physical line start."
+          "comment": "Reuse hidden YAML before the range-dash rule. Follows packet.md#ordered-rules and packet.md#hidden-forms."
         },
         {
           "include": "#hidden-directive",
-          "comment": "Reuse the native hidden directive form. packet.md#hidden-forms: After optional ASCII padding, native hidden DIRECTIVE starts with `%%{` and takes as few arbitrary characters as possible through `}%%` followed by LF, common whitespace or EOF."
+          "comment": "Reuse the native hidden directive form. Follows packet.md#hidden-forms."
         },
         {
           "include": "#native-percent-comment",
-          "comment": "Reuse native percent comments. packet.md#comments-and-common-trivia: Native comments read optional ASCII indentation, `%%` and maximal content before physical LF/CR; LS/PS remain content."
+          "comment": "Reuse native percent comments. Follows packet.md#comments-and-common-trivia."
         },
         {
-          "comment": "Reuse the common title and accessibility forms. packet.md#composite-common-forms: Optional ASCII indentation may precede each common form. `title-line` is `title` alone or followed by one ASCII space/tab and possibly empty line text. `acc-title-line` is `accTitle`, zero or more ASCII spaces/tabs, colon and possibly empty line text; `acc-descr-line` uses `accDescr`. packet.md#composite-common-forms: `acc-descr-block` is `accDescr`, zero or more common whitespace characters, `{`, and arbitrary text through the first required `}`.",
+          "comment": "Reuse the common title and accessibility forms. Follows packet.md#composite-common-forms.",
           "include": "#common-statements"
         },
         {
-          "comment": "Read an unsigned integer and check its following boundary through directives. packet.md#numbers-and-strings: An integer is `0`, or a nonzero ASCII digit followed by as many ASCII digits as possible while the next character is not a dot. The zero alternative ends after one digit. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text.",
+          "comment": "Read an unsigned integer and check its following boundary through directives. Follows packet.md#numbers-and-strings and common.md#a-directive-is-a-token-boundary.",
           "match": "(?<![0-9])(0|[1-9][0-9]*)(?!{{directives}}[0-9.])",
           "name": "constant.numeric.mermaid"
         },
         {
           "include": "#string-escaped",
-          "comment": "Reuse quoted strings with backslash escapes. packet.md#numbers-and-strings: A string starts with either quote and requires the same closing quote. It contains zero or more ordinary characters other than that quote/backslash, or a backslash and one character other than LF, CR, LS or PS; take as many complete components as possible."
+          "comment": "Reuse quoted strings with backslash escapes. Follows packet.md#numbers-and-strings."
         },
         {
-          "comment": "Read the range and relative operators and the label separator. packet.md#grammar: A missing endpoint, colon or quoted label rejects, as do adjacent same-line blocks or a common statement after a completed block.",
+          "comment": "Read the range and relative operators and the label separator. Follows packet.md#ordered-rules.",
           "match": "(-)|(\\+)|(:)",
           "captures": {
             "1": {

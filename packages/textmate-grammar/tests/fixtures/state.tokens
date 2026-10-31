@@ -64,7 +64,7 @@
   "choice" constant.language.mermaid
   "]]" keyword.operator.shape.end.mermaid
 > [*] --> Alias
-  "[*]" constant.language.mermaid
+  "[*]" variable.mermaid
   "-->" keyword.operator.arrow.mermaid
   "Alias" variable.mermaid
 > Alias:::marked --> Done : state class note
@@ -149,9 +149,9 @@
   "note" keyword.control.mermaid
 > note "floating class" as Floating
   "note" keyword.control.mermaid
-  "\"" punctuation.definition.string.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "floating class" string.quoted.double.mermaid
-  "\"" punctuation.definition.string.end.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
   "as" keyword.control.mermaid
   "Floating" variable.mermaid
 > state Parent {
@@ -159,7 +159,7 @@
   "Parent" variable.mermaid
   "{" keyword.operator.block.begin.mermaid
 >   [*] --> Child
-  "[*]" constant.language.mermaid
+  "[*]" variable.mermaid
   "-->" keyword.operator.arrow.mermaid
   "Child" variable.mermaid
 >   state Child
@@ -244,9 +244,9 @@
   "noteX" variable.mermaid
 > note "floating state" as state class note
   "note" keyword.control.mermaid
-  "\"" punctuation.definition.string.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "floating state" string.quoted.double.mermaid
-  "\"" punctuation.definition.string.end.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
   "as" keyword.control.mermaid
   "state class note" variable.mermaid
 > note left of Alias : text %%{init: {}}%% class
@@ -300,16 +300,16 @@
   "note" keyword.control.mermaid
 > note "x" as %%Name
   "note" keyword.control.mermaid
-  "\"" punctuation.definition.string.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "x" string.quoted.double.mermaid
-  "\"" punctuation.definition.string.end.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
   "as" keyword.control.mermaid
   "%%Name" variable.mermaid
 > note "x" as N%% floating comment
   "note" keyword.control.mermaid
-  "\"" punctuation.definition.string.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "x" string.quoted.double.mermaid
-  "\"" punctuation.definition.string.end.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
   "as" keyword.control.mermaid
   "N" variable.mermaid
   "%% floating comment" comment.line.percentage.mermaid
@@ -510,11 +510,11 @@
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
 > note "Hi<b title="x">tag</b>" as HtmlNote
   "note" keyword.control.mermaid
-  "\"" punctuation.definition.string.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "Hi" string.quoted.double.mermaid
   "<b title=\"x\">" string.quoted.double.mermaid
   "tag</b>" string.quoted.double.mermaid
-  "\"" punctuation.definition.string.end.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
   "as" keyword.control.mermaid
   "HtmlNote" variable.mermaid
 > state Named%%{init: {}}%% { A }
@@ -828,9 +828,9 @@
   " boundary note" string.unquoted.mermaid
 > note "boundary" as %%%{wrap}%%
   "note" keyword.control.mermaid
-  "\"" punctuation.definition.string.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "boundary" string.quoted.double.mermaid
-  "\"" punctuation.definition.string.end.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
   "as" keyword.control.mermaid
   "%" variable.mermaid
   "%%{" variable.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid

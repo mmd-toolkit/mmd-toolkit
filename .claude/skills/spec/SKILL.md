@@ -214,12 +214,14 @@ skill `conventions`):
 ```sh
 npx prettier --write packages/spec
 npx prettier --check packages/spec
+pnpm run -s lint:md
 pnpm run -s lint:docs
 pnpm run -s lint:chars
 ```
 
-`pnpm run lint:docs` fails when a link, an anchor, or a fixture citation in the
-documents of the specification, the parser, or the tests points to nothing
+`pnpm run lint:md` fails when a link or its anchor points to nothing.
+`pnpm run lint:docs` fails when a fixture citation in the documents of the
+specification, the parser, or the tests points to nothing
 (`scripts/check-doc-citations.mjs`; it also reads citations wrapped after
 `[fixture:`, which a line-by-line search misses), when a link to mermaid.js does
 not point to the commit recorded in `packages/spec/docs/index.md`

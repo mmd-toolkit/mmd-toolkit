@@ -6,7 +6,7 @@
   ],
   "repository": {
     "treeview": {
-      "comment": "Read the exact detected header after common leading trivia; keep the body in the treeview grammar. treeview.md#header-boundary: The [header matcher][keyword] requires common Notation whitespace, `%%` or end of text immediately after the exact keyword.",
+      "comment": "Read the exact detected header after common leading trivia; keep the body in the treeview grammar. Follows treeview.md#header-boundary.",
       "begin": "{{diagramStart}}(treeView-beta)(?={{directives}}(?:[{{ws}}]|%%|$))",
       "beginCaptures": {
         "1": {
@@ -16,12 +16,12 @@
       "end": "(?!)",
       "patterns": [
         {
-          "comment": "Read branchless box rows containing a horizontal bar as decorations; these rows themselves select box mode. A vertical-only row depends on mode selected on other lines, which this line rule cannot determine. treeview.md#line-classification-and-errors: Mode detection and decoration classification are different: a lone vertical bar does not select the mode, whereas a lone horizontal dash can select it and then denote decoration.",
-          "match": "^(?=[─━│┃{{lws}}]*[─━])[─━│┃{{lws}}]+$",
+          "comment": "Read a line made only of box bars and whitespace as decoration, requiring at least one bar. This leaves out the whole-tree mode test and colors vertical-only lines as decoration even without other box characters. Follows treeview.md#scope-and-mode and treeview.md#line-classification-and-errors.",
+          "match": "^(?=[─━│┃{{lws}}]*[─━│┃])[─━│┃{{lws}}]+$",
           "name": "comment.block.ignored.mermaid"
         },
         {
-          "comment": "Read an authored branch prefix as a structural operator, retaining internal directives. Comment-shaped and metadata-shaped rows keep their ordinary reading. The rule recognizes branch rows without tracking the globally selected box mode. treeview.md#columns-and-prefix-indentation: The prefix consists of all characters through the first branch, then the maximal immediately adjacent run of `─` and `━`, then the following ASCII spaces, with tabs read as four spaces. treeview.md#columns-and-prefix-indentation: After those spaces, another dash is content, not prefix. treeview.md#line-classification-and-errors: Prefix text before the branch is text, not reclassified as earlier-looking keywords or annotations.",
+          "comment": "Read an authored branch prefix as a structural operator, retaining internal directives. Comment-shaped and metadata-shaped rows keep their ordinary reading. The rule recognizes branch rows without tracking the globally selected box mode. Follows treeview.md#columns-and-prefix-indentation and treeview.md#line-classification-and-errors.",
           "match": "^(?!{{gap}}(?:{{nonDirectivePercentPair}}|title{{requiredAsciiGap}}|accTitle{{asciiGap}}:|accDescr{{asciiGap}}[:{]))((?:{{directive}}|{{entity}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\r\\n└┗├┣])*?)([└┗├┣](?:[─━]|{{directive}})*)",
           "captures": {
             "1": {
@@ -30,7 +30,7 @@
                   "include": "#directive"
                 },
                 {
-                  "comment": "Read non-whitespace authored prefix characters as structural operators rather than labels or annotations. treeview.md#line-classification-and-errors: Prefix text before the branch is text, not reclassified as earlier-looking keywords or annotations.",
+                  "comment": "Read non-whitespace authored prefix characters as structural operators rather than labels or annotations. Follows treeview.md#line-classification-and-errors.",
                   "match": "[^ \\t]+",
                   "name": "keyword.operator.mermaid"
                 }
@@ -54,10 +54,10 @@
         },
         {
           "include": "#common-statements",
-          "comment": "Reuse shared title and accessibility forms before node content. treeview.md#common-forms: The four common statement forms can read preceding ASCII spaces/tabs. treeview.md#common-forms: An acc-descr-block reads `accDescr`, zero or more common Notation whitespace characters, `{`, any characters through before the first `}`, then that required closer."
+          "comment": "Reuse shared title and accessibility forms before node content. Follows treeview.md#common-forms."
         },
         {
-          "comment": "Read a class annotation as a separator and a referenced style-class name; keep directives in complete-component gaps. treeview.md#annotations: Each annotation begins with one or more ASCII spaces/tabs. A class-annotation then reads `:::`, zero or more ASCII spaces/tabs, an ASCII letter or underscore, and zero or more ASCII word characters or dashes. The name can be one character. treeview.md#comments-and-boundaries: Allow common trivia between complete authored components, such as keyword and colon, `icon` and `(`, marker and name, or reference and `)`, without supplying missing whitespace.",
+          "comment": "Read a class annotation as a separator and a referenced style-class name; keep directives in complete-component gaps. Follows treeview.md#annotations and treeview.md#comments-and-boundaries.",
           "match": "({{treeview-annotation-prefix}}){{treeview-class-opener}}({{treeview-class-name}})({{asciiGap}}(?={{nonDirectivePercentPair}}).*)?",
           "captures": {
             "1": {
@@ -89,7 +89,7 @@
                   "include": "#directive"
                 },
                 {
-                  "comment": "Reuse native percent comments after a complete class name. treeview.md#comments-and-boundaries: At a native unit start, `%%` reads a shared Comment through before the next LF. Its mark is `%%`; value excludes the mark, and range includes the mark but excludes LF. U+2028/U+2029 and any apparent `}%%` closers stay inside the comment. Hidden newline reads LF separately, including the logical LF at EOF.",
+                  "comment": "Reuse native percent comments after a complete class name. Follows treeview.md#comments-and-boundaries.",
                   "include": "#native-percent-comment"
                 }
               ]
@@ -97,7 +97,7 @@
           }
         },
         {
-          "comment": "Read the icon annotation keyword, argument brackets and complete icon reference; preserve directives between components. treeview.md#annotations: An icon-annotation reads exact lowercase `icon`, `(`, a reference and `)`, without internal whitespace. The reference is zero or more ASCII word characters or dashes, optionally followed by one colon and one or more of those characters. Empty references and `:file` are allowed; a trailing colon, second colon, quoted reference or internal space is not. A following suffix may begin another node.",
+          "comment": "Read an icon annotation's keyword, icon brackets and retained reference text. Follows treeview.md#annotations.",
           "match": "({{treeview-annotation-prefix}}){{treeview-icon-opener}}({{directives}})([A-Za-z0-9_-]*(?::[A-Za-z0-9_-]+)?)({{directives}})(\\))",
           "captures": {
             "1": {
@@ -118,7 +118,7 @@
               ]
             },
             "4": {
-              "name": "punctuation.section.parens.begin.mermaid"
+              "name": "punctuation.section.icon.begin.mermaid"
             },
             "5": {
               "patterns": [
@@ -128,7 +128,7 @@
               ]
             },
             "6": {
-              "name": "variable.mermaid"
+              "name": "string.unquoted.mermaid"
             },
             "7": {
               "patterns": [
@@ -138,12 +138,12 @@
               ]
             },
             "8": {
-              "name": "punctuation.section.parens.end.mermaid"
+              "name": "punctuation.section.icon.end.mermaid"
             }
           }
         },
         {
-          "comment": "Read a description annotation modifier followed by unquoted text through line end or a common-comment boundary. treeview.md#annotations: A description-annotation reads `##` and all following characters before CR/LF, possibly none. It includes U+2028/U+2029, percent text and later annotation-looking text on that line. Repeated annotations and any ordering are allowed; a description on a later line is another annotation. A hidden newline or a removed comment line does not detach an annotation from the preceding node.",
+          "comment": "Read a description annotation modifier followed by unquoted text through line end or a common-comment boundary. Follows treeview.md#annotations.",
           "begin": "({{treeview-annotation-prefix}})({{treeview-description-opener}})",
           "beginCaptures": {
             "1": {
@@ -166,27 +166,27 @@
           ]
         },
         {
-          "comment": "Reuse the plain double-quoted node label without backslash escapes. treeview.md#names: A quoted-name starts with a single or double quote and closes at the next matching quote under the common and box-drawing rules. Its interior can be empty, cross line feeds, and contain U+2028/U+2029. Backslashes neither protect quotes nor decode escapes. Quotes inside an already-started bare name are ordinary characters.",
+          "comment": "Reuse the plain double-quoted node label without backslash escapes. Follows treeview.md#names.",
           "include": "#string-plain-double"
         },
         {
-          "comment": "Reuse the plain single-quoted node label without backslash escapes. treeview.md#names: A quoted-name starts with a single or double quote and closes at the next matching quote under the common and box-drawing rules. Its interior can be empty, cross line feeds, and contain U+2028/U+2029. Backslashes neither protect quotes nor decode escapes. Quotes inside an already-started bare name are ordinary characters.",
+          "comment": "Reuse the plain single-quoted node label without backslash escapes. Follows treeview.md#names.",
           "include": "#string-plain-single"
         },
         {
-          "comment": "Read a native percent comment at a unit start, including after a quoted node or icon. treeview.md#comments-and-boundaries: At a native unit start, `%%` reads a shared Comment through before the next LF. Its mark is `%%`; value excludes the mark, and range includes the mark but excludes LF. U+2028/U+2029 and any apparent `}%%` closers stay inside the comment. Hidden newline reads LF separately, including the logical LF at EOF.",
-          "begin": "(?:^|\\G|(?<=[\"')]))[ \\t]*(?={{nonDirectivePercentPair}})",
+          "comment": "Read a native comment after ASCII padding at a line, header, quoted-name, icon or directive boundary. Follows treeview.md#comments-and-boundaries and common.md#a-directive-is-a-token-boundary.",
+          "begin": "{{treeview-statement-start}}(?={{nonDirectivePercentPair}})",
           "end": "{{lineValueEnd}}",
           "patterns": [
             {
-              "comment": "Reuse native percent-comment content through the physical line end. treeview.md#comments-and-boundaries: At a native unit start, `%%` reads a shared Comment through before the next LF. Its mark is `%%`; value excludes the mark, and range includes the mark but excludes LF. U+2028/U+2029 and any apparent `}%%` closers stay inside the comment. Hidden newline reads LF separately, including the logical LF at EOF.",
+              "comment": "Reuse native percent-comment content through the physical line end. Follows treeview.md#comments-and-boundaries.",
               "include": "#native-percent-comment"
             }
           ]
         },
         {
-          "comment": "Read a bare node as its displayed label, keeping interior quotes and directives in the label and stopping before annotations or common comments. treeview.md#names: A bare-name begins with any character except ASCII space/tab, CR/LF, single quote or double quote, provided `:::`, `icon(` and `##` do not begin there. Read through before CR/LF, but stop before ASCII space/tab followed by one of: `:::` and optional ASCII space/tab and an ASCII letter or underscore; `icon(`; or `##`. The name may otherwise contain whitespace, quotes, percent text, punctuation and Unicode characters.",
-          "match": "{{treeview-node-start}}(?!:::|{{treeview-icon-opener}}|{{treeview-description-opener}}|[\"' \\t\\r\\n]|{{separatorCommentEnd}})(?:(?!{{treeview-annotation-prefix}}{{treeview-annotation-start}}|{{separatorCommentEnd}})(?:{{directive}}|{{entity}}|(?!{{directiveStart}})[^\\r\\n]))+",
+          "comment": "Read a bare node name without claiming leading directives or metadata after them; annotations and comments retain their own boundaries. Follows treeview.md#names, treeview.md#common-forms, and common.md#a-directive-is-a-token-boundary.",
+          "match": "{{treeview-node-start}}(?!{{directiveStart}}|:::|{{treeview-icon-opener}}|{{treeview-description-opener}}|[\"' \\t\\r\\n]|{{separatorCommentEnd}})(?:(?!{{treeview-annotation-prefix}}{{treeview-annotation-start}}|{{separatorCommentEnd}})(?:{{directive}}|{{entity}}|(?!{{directiveStart}})[^\\r\\n]))+",
           "captures": {
             "0": {
               "patterns": [
@@ -202,12 +202,13 @@
     }
   },
   "variables": {
-    "treeview-node-start": "(?:^{{asciiGap}}|(?<=[└┗├┣─━]){{asciiGap}}|(?<=[\"'])|(?<=\\}%%){{asciiGap}})",
+    "treeview-node-start": "(?:^[ \\t]*|(?<=[└┗├┣─━]){{asciiGap}}|(?<=[\"'])|(?<=\\}%%)[ \\t]*)",
     "treeview-annotation-prefix": "[ \\t]+(?:{{directive}}[ \\t]*)*",
     "treeview-annotation-start": "(?:{{treeview-class-opener}}|{{treeview-icon-opener}}|{{treeview-description-opener}})",
     "treeview-class-opener": "(:::)({{asciiGap}})(?={{treeview-class-name}})",
     "treeview-icon-opener": "(icon)({{directives}})(\\()",
     "treeview-description-opener": "#(?!{{entity}})#",
-    "treeview-class-name": "[A-Za-z_][A-Za-z0-9_-]*"
+    "treeview-class-name": "[A-Za-z_][A-Za-z0-9_-]*",
+    "treeview-statement-start": "(?:^|\\G|(?<=[\"')])|(?<=\\}%%))[ \\t]*"
   }
 }

@@ -57,8 +57,8 @@
     ["12", "variable.mermaid"],
     ["1", "string.unquoted.mermaid", 61],
     ["3", "string.quoted.double.mermaid", 64],
-    ["bgColor", "storage.modifier.mermaid"],
-    ["name, ) with spaces", "storage.modifier.mermaid"],
+    ["bgColor", "support.type.property-name.mermaid"],
+    ["name, ) with spaces", "support.type.property-name.mermaid"],
     ["Backslash\\", "string.quoted.double.mermaid"],
     ["(", "punctuation.section.arguments.begin.mermaid"],
     [")", "punctuation.section.arguments.end.mermaid"],
@@ -84,7 +84,7 @@
     [",", "punctuation.separator.comma.mermaid", 79],
     ["c>", "string.quoted.double.mermaid", 79],
     ["Rel", "variable.mermaid", 80],
-    ["Color", "storage.modifier.mermaid", 81],
+    ["Color", "support.type.property-name.mermaid", 81],
     ["init", "entity.name.function.directive.mermaid", 81],
     [" Person is description text", "string.unquoted.mermaid", 82],
     ["init", "entity.name.function.directive.mermaid", 82],
@@ -112,7 +112,18 @@
     ["system", "variable.mermaid", 50],
     ["{", "keyword.operator.block.begin.mermaid", 14],
     ["}", "keyword.operator.block.end.mermaid", 16],
-    ["Uses", "string.quoted.double.mermaid", 50]
+    ["Uses", "string.quoted.double.mermaid", 50],
+    ["a", "variable.mermaid", 92],
+    ["a", "variable.mermaid", 93],
+    ["a", "variable.mermaid", 94],
+    ["a", "variable.mermaid", 95],
+    ["b", "variable.mermaid", 95],
+    ["a\"x\"", "variable.mermaid", 96],
+    ["alias", "support.type.property-name.mermaid", 97],
+    ["b", "variable.mermaid", 98],
+    ["b", "variable.mermaid", 99],
+    ["b", "string.unquoted.mermaid", 100],
+    [" Description ", "string.unquoted.mermaid", 101]
   ],
   "absent": [
     ["PersonLong", "keyword.control.mermaid"],
@@ -128,7 +139,8 @@
     ["Rel", "keyword.control.mermaid", 80],
     [" Person is description text", "keyword.control.mermaid", 82],
     ["<b", "punctuation.definition.string.end.mermaid", 79],
-    [",", "string.quoted.double.mermaid", 90]
+    [",", "string.quoted.double.mermaid", 90],
+    ["a\"x\"", "string.quoted.double.mermaid", 96]
   ],
   "absentOnLine": [
     [1, "comment.line.percentage.mermaid"],

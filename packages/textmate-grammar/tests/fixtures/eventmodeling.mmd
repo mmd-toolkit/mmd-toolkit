@@ -47,3 +47,7 @@ tf 26%%{wrap}%%evt Boundary
 
 /%%{wrap}%%* kept %%{x: */}%% when *%%{wrap}%%/ tf 82 evt Retained
 tf 83 evt Single 'payload'
+tf 84 evt LeadingComment `/* c */json` {}
+tf 85 evt TrailingComment `json/* c */` {}
+tf 86 evt LeadingHidden `%%{!}%% json` {}
+tf 87 evt TrailingHidden `json%%{!}%% ` {}

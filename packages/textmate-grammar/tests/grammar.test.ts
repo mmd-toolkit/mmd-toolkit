@@ -5,8 +5,41 @@ import { createHighlighterCore } from "shiki/core"
 import { createOnigurumaEngine } from "shiki/engine/oniguruma"
 import yaml from "shiki/langs/yaml.mjs"
 import light from "shiki/themes/github-light.mjs"
+import type { DiagramType } from "@mmd-toolkit/tests"
+import { loadFixture } from "@mmd-toolkit/tests"
 import { beforeAll, describe, expect, it } from "vitest"
-import mermaid from "../index.js"
+import { createGrammar } from "../src/grammar.ts"
+import mermaid from "../src/index.ts"
+
+const grammar = createGrammar()
+
+it("builds a TextMate grammar with resolved ASCII-folding patterns", () => {
+  expect(grammar.name).toBe("Mermaid")
+  expect(grammar.scopeName).toBe("source.mermaid")
+  expect(grammar.patterns).toEqual(expect.any(Array))
+  expect(grammar.repository).toEqual(expect.any(Object))
+
+  /** Checks every expression, including those inside captures and nested rules. */
+  function checkPatterns(value: unknown): void {
+    if (Array.isArray(value)) {
+      for (const item of value) checkPatterns(item)
+    } else if (value !== null && typeof value === "object") {
+      for (const [key, item] of Object.entries(value)) {
+        if (["match", "begin", "end", "while"].includes(key)) {
+          expect(item).toBeTypeOf("string")
+          if (typeof item === "string") {
+            expect(item.startsWith("(?I)")).toBe(true)
+            expect(item).not.toContain("{{")
+          }
+        } else {
+          checkPatterns(item)
+        }
+      }
+    }
+  }
+
+  checkPatterns(grammar)
+})
 
 /** The root scope of the grammar, which every token has and the tests omit. */
 const rootScope = "source.mermaid"
@@ -14,14 +47,6 @@ const rootScope = "source.mermaid"
 /** Resolves a path under `tests/fixtures/`. */
 function fixture(name: string): string {
   return fileURLToPath(new URL(`./fixtures/${name}`, import.meta.url))
-}
-
-/** Reads the input of a fixture of the conformance corpus, `<diagram>/<name>`. */
-function corpusInput(name: string): string {
-  return readFileSync(
-    new URL(`../../tests/fixtures/${name}/input.mmd`, import.meta.url),
-    "utf8",
-  )
 }
 
 let highlighter: HighlighterCore
@@ -161,72 +186,77 @@ describe("the fixtures of the diagram types", () => {
 })
 
 /**
- * detection.md: "Each entry except entry 2 has a minimal input that mermaid.js
- * accepts as that id", with its fixtures, and the further header spellings
- * that the documents of the diagram types accept, with the fixture that the
- * sentence cites (or, for `graph`, an accepted fixture that starts with it).
+ * The header inputs: the fixtures of the minimal input of each entry of
+ * detection.md#the-detectors (every entry but entry 2 has one), and for each
+ * further header spelling that the document of a diagram type accepts, the
+ * fixture that its sentence cites (or, for `graph`, an accepted fixture that
+ * starts with it).
  */
-const headerFixtures = [
-  "common/detect-minimal-agentflow",
-  "common/detect-minimal-architecture",
-  "common/detect-minimal-block",
-  "common/detect-minimal-c4",
-  "common/detect-minimal-c4-component",
-  "common/detect-minimal-c4-container",
-  "common/detect-minimal-c4-deployment",
-  "common/detect-minimal-c4-dynamic",
-  "common/detect-minimal-class-diagram",
-  "common/detect-minimal-cynefin",
-  "common/detect-minimal-er",
-  "common/detect-minimal-eventmodeling",
-  "common/detect-minimal-flowchart-elk",
-  "common/detect-minimal-flowchart-v2",
-  "common/detect-minimal-gantt",
-  "common/detect-minimal-git-graph",
-  "common/detect-minimal-info",
-  "common/detect-minimal-ishikawa",
-  "common/detect-minimal-journey",
-  "common/detect-minimal-kanban",
-  "common/detect-minimal-mindmap",
-  "common/detect-minimal-packet",
-  "common/detect-minimal-pie",
-  "common/detect-minimal-quadrant-chart",
-  "common/detect-minimal-radar",
-  "common/detect-minimal-railroad",
-  "common/detect-minimal-railroad-abnf",
-  "common/detect-minimal-railroad-ebnf",
-  "common/detect-minimal-railroad-peg",
-  "common/detect-minimal-requirement",
-  "common/detect-minimal-sankey",
-  "common/detect-minimal-sequence",
-  "common/detect-minimal-state-diagram",
-  "common/detect-minimal-swimlane",
-  "common/detect-minimal-timeline",
-  "common/detect-minimal-tree-view",
-  "common/detect-minimal-treemap",
-  "common/detect-minimal-usecase",
-  "common/detect-minimal-venn",
-  "common/detect-minimal-wardley",
-  "common/detect-minimal-xychart",
-  "common/detect-cynefin-colon",
-  "sankey/db-header-beta",
-  "packet/spec-packet-c4580507",
-  "treemap/header-beta",
-  "ishikawa/header-beta-mixed-case",
-  "block/header-block-beta",
-  "xychart/db-header-beta-only",
-  "state/header-v2",
-  "class/header-v2",
-  "radar/header-colon-inline",
-  "flowchart/demo-flowchart-06b5149f",
+const headerFixtures: readonly (readonly [DiagramType, string])[] = [
+  ["common", "detect-minimal-agentflow"],
+  ["common", "detect-minimal-architecture"],
+  ["common", "detect-minimal-block"],
+  ["common", "detect-minimal-c4"],
+  ["common", "detect-minimal-c4-component"],
+  ["common", "detect-minimal-c4-container"],
+  ["common", "detect-minimal-c4-deployment"],
+  ["common", "detect-minimal-c4-dynamic"],
+  ["common", "detect-minimal-class-diagram"],
+  ["common", "detect-minimal-cynefin"],
+  ["common", "detect-minimal-er"],
+  ["common", "detect-minimal-eventmodeling"],
+  ["common", "detect-minimal-flowchart-elk"],
+  ["common", "detect-minimal-flowchart-v2"],
+  ["common", "detect-minimal-gantt"],
+  ["common", "detect-minimal-git-graph"],
+  ["common", "detect-minimal-info"],
+  ["common", "detect-minimal-ishikawa"],
+  ["common", "detect-minimal-journey"],
+  ["common", "detect-minimal-kanban"],
+  ["common", "detect-minimal-mindmap"],
+  ["common", "detect-minimal-packet"],
+  ["common", "detect-minimal-pie"],
+  ["common", "detect-minimal-quadrant-chart"],
+  ["common", "detect-minimal-radar"],
+  ["common", "detect-minimal-railroad"],
+  ["common", "detect-minimal-railroad-abnf"],
+  ["common", "detect-minimal-railroad-ebnf"],
+  ["common", "detect-minimal-railroad-peg"],
+  ["common", "detect-minimal-requirement"],
+  ["common", "detect-minimal-sankey"],
+  ["common", "detect-minimal-sequence"],
+  ["common", "detect-minimal-state-diagram"],
+  ["common", "detect-minimal-swimlane"],
+  ["common", "detect-minimal-timeline"],
+  ["common", "detect-minimal-tree-view"],
+  ["common", "detect-minimal-treemap"],
+  ["common", "detect-minimal-usecase"],
+  ["common", "detect-minimal-venn"],
+  ["common", "detect-minimal-wardley"],
+  ["common", "detect-minimal-xychart"],
+  ["common", "detect-cynefin-colon"],
+  ["sankey", "db-header-beta"],
+  ["packet", "spec-packet-c4580507"],
+  ["treemap", "header-beta"],
+  ["ishikawa", "header-beta-mixed-case"],
+  ["block", "header-block-beta"],
+  ["xychart", "db-header-beta-only"],
+  ["state", "header-v2"],
+  ["class", "header-v2"],
+  ["radar", "header-colon-inline"],
+  ["flowchart", "demo-flowchart-06b5149f"],
 ]
 
 describe("the headers of every diagram type", () => {
-  it.each(headerFixtures)("colors the header of %s", (name) => {
-    const [first] = tokenLines(corpusInput(name))
-    const header = first?.find((token) => token.content.trim() !== "")
-    expect(header?.scopes).toContain("keyword.control.mermaid")
-  })
+  it.each(headerFixtures)(
+    "colors the header of %s/%s",
+    async (diagram, name) => {
+      const { input } = await loadFixture(diagram, name)
+      const [first] = tokenLines(input)
+      const header = first?.find((token) => token.content.trim() !== "")
+      expect(header?.scopes).toContain("keyword.control.mermaid")
+    },
+  )
 })
 
 describe("the leading trivia", () => {
@@ -284,8 +314,8 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: 'railroad-beta\nr=terminal("<b \\"text>");',
     scopes: [
       ['<b \\"text>', "string.quoted.double.mermaid"],
-      [")", "punctuation.section.parens.end.mermaid"],
-      [";", "punctuation.terminator.rule.mermaid"],
+      [")", "punctuation.section.arguments.end.mermaid"],
+      [";", "punctuation.separator.rule.mermaid"],
     ],
     absent: [[")", "string.quoted.double.mermaid"]],
   },
@@ -295,7 +325,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       ["wrap", "entity.name.function.directive.mermaid"],
       ['"text>', "string.quoted.double.mermaid"],
-      [";", "punctuation.terminator.rule.mermaid"],
+      [";", "punctuation.separator.rule.mermaid"],
     ],
     absent: [[";", "string.quoted.double.mermaid"]],
   },
@@ -303,7 +333,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
   {
     name: "a usecase JSON HTML tag keeps an escaped non-attribute quote",
     code: 'usecase-beta\njson J @ {"x":"<b \\"text>"}',
-    scopes: [['<b \\"text>', "string.quoted.double.mermaid"]],
+    scopes: [['<b \\"text>', "string.unquoted.mermaid"]],
     absent: [["}", "string.quoted.double.mermaid"]],
   },
   {
@@ -311,7 +341,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: 'usecase-beta\njson J @ {"x":"<b \\%%{wrap}%%"text>"}',
     scopes: [
       ["wrap", "entity.name.function.directive.mermaid"],
-      ['"text>', "string.quoted.double.mermaid"],
+      ['"text>', "string.unquoted.mermaid"],
     ],
     absent: [["}", "string.quoted.double.mermaid"]],
   },
@@ -324,7 +354,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ['<b` x="`">', "string.quoted.other.markdown.mermaid"],
       ["z", "string.quoted.other.markdown.mermaid"],
       ['`"', "punctuation.definition.string.end.mermaid"],
-      [")", "keyword.control.mermaid"],
+      [")", "keyword.operator.shape.end.mermaid"],
     ],
     absent: [[")", "string.quoted.other.markdown.mermaid"]],
   },
@@ -335,7 +365,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ['<b " x="`">', "string.quoted.other.markdown.mermaid"],
       ["z", "string.quoted.other.markdown.mermaid"],
       ['`"', "punctuation.definition.string.end.mermaid"],
-      [")", "keyword.control.mermaid"],
+      [")", "keyword.operator.shape.end.mermaid"],
     ],
     absent: [[")", "string.quoted.other.markdown.mermaid"]],
   },
@@ -370,7 +400,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
   {
     name: "a usecase JSON HTML quoted value ends at a quote after a backslash",
     code: 'usecase-beta\njson J @ {"x":"<b x="v\\"tail>"}',
-    scopes: [['<b x="v\\"tail>', "string.quoted.double.mermaid"]],
+    scopes: [['<b x="v\\"tail>', "string.unquoted.mermaid"]],
     absent: [["}", "string.quoted.double.mermaid"]],
   },
   {
@@ -382,7 +412,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
   {
     name: "a usecase JSON HTML tag finds a quoted value after a backslash",
     code: 'usecase-beta\njson J @ {"x":"<b \\="v">"}',
-    scopes: [['<b \\="v">', "string.quoted.double.mermaid"]],
+    scopes: [['<b \\="v">', "string.unquoted.mermaid"]],
     absent: [["}", "string.quoted.double.mermaid"]],
   },
   // usecase.md#json-context permits escapes of both Unicode separators,
@@ -390,13 +420,13 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
   {
     name: "a usecase JSON HTML tag keeps an escaped line separator",
     code: 'usecase-beta\njson J @ {"x":"<b \\\u2028text>"}',
-    scopes: [["<b \\\u2028text>", "string.quoted.double.mermaid"]],
+    scopes: [["<b \\\u2028text>", "string.unquoted.mermaid"]],
     absent: [["}", "string.quoted.double.mermaid"]],
   },
   {
     name: "a usecase JSON HTML tag keeps an escaped paragraph separator",
     code: 'usecase-beta\njson J @ {"x":"<b \\\u2029text>"}',
-    scopes: [["<b \\\u2029text>", "string.quoted.double.mermaid"]],
+    scopes: [["<b \\\u2029text>", "string.unquoted.mermaid"]],
     absent: [["}", "string.quoted.double.mermaid"]],
   },
   // common.md#html-attribute-quotes ends the tag at its first greater-than
@@ -406,7 +436,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: 'packet 0:"<b \\>"\n1:"x"',
     scopes: [
       ["\\>", "constant.character.escape.mermaid"],
-      ["1", "constant.numeric.decimal.mermaid"],
+      ["1", "constant.numeric.mermaid"],
       ["x", "string.quoted.double.mermaid"],
     ],
     absent: [["1", "string.quoted.double.mermaid"]],
@@ -417,7 +447,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       [">", "string.unquoted.directive.mermaid"],
       ["text", "string.quoted.double.mermaid"],
-      ["1", "constant.numeric.decimal.mermaid"],
+      ["1", "constant.numeric.mermaid"],
       ["x", "string.quoted.double.mermaid", 1],
     ],
     absent: [["1", "string.quoted.double.mermaid"]],
@@ -441,7 +471,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       ["`", "punctuation.definition.string.end.mermaid"],
       ["wrap", "entity.name.function.directive.mermaid"],
-      [")", "keyword.control.mermaid", 1],
+      [")", "keyword.operator.shape.end.mermaid", 1],
       [">", "string.unquoted.mermaid"],
     ],
     absent: [[")", "string.quoted.other.markdown.mermaid", 1]],
@@ -479,25 +509,31 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     name: "flowchart markdown closes before its shape and arrow after an HTML opener",
     code: 'flowchart LR;A["`<b`"] --> B[>]',
     scopes: [
-      ["<b", "string.quoted.double.mermaid"],
+      ["<b", "string.quoted.other.markdown.mermaid"],
       ['`"', "punctuation.definition.string.end.mermaid"],
-      ["]", "punctuation.definition.label.end.mermaid"],
+      ["]", "keyword.operator.shape.end.mermaid"],
       ["-->", "keyword.operator.arrow.mermaid"],
-      ["B", "variable.other.id.mermaid"],
+      ["B", "variable.mermaid"],
     ],
-    absent: [["-->", "string.quoted.double.mermaid"]],
+    absent: [
+      ["-->", "string.quoted.other.markdown.mermaid"],
+      ["-->", "string.quoted.double.mermaid"],
+    ],
   },
   {
     // agentflow.md#names-strings-and-click-text retains flowchart's rules.
     name: "agentflow markdown closes before its shape and comment after an HTML opener",
     code: 'agentflow-beta LR;A["`<b`"]%% >',
     scopes: [
-      ["<b", "string.quoted.double.mermaid"],
+      ["<b", "string.quoted.other.markdown.mermaid"],
       ['`"', "punctuation.definition.string.end.mermaid"],
-      ["]", "punctuation.definition.label.end.mermaid"],
+      ["]", "keyword.operator.shape.end.mermaid"],
       ["%% >", "comment.line.percentage.mermaid"],
     ],
-    absent: [["%% >", "string.quoted.double.mermaid"]],
+    absent: [
+      ["%% >", "string.quoted.other.markdown.mermaid"],
+      ["%% >", "string.quoted.double.mermaid"],
+    ],
   },
   {
     name: "a flowchart HTML tag keeps a closing quote inside its directive",
@@ -506,7 +542,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ['>"', "string.unquoted.directive.mermaid"],
       ["}%%", "punctuation.definition.directive.end.mermaid"],
       ["text", "string.quoted.double.mermaid"],
-      ["]", "punctuation.definition.label.end.mermaid"],
+      ["]", "keyword.operator.shape.end.mermaid"],
     ],
     absentOnLine: [[0, "comment.line.percentage.mermaid"]],
   },
@@ -517,7 +553,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ['>"', "string.unquoted.directive.mermaid"],
       ["}%%", "punctuation.definition.directive.end.mermaid"],
       ["text", "string.quoted.double.mermaid"],
-      ["]", "punctuation.definition.label.end.mermaid"],
+      ["]", "keyword.operator.shape.end.mermaid"],
     ],
     absentOnLine: [[0, "comment.line.percentage.mermaid"]],
   },
@@ -528,7 +564,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ['> "axis"', "string.unquoted.directive.mermaid"],
       ["}%%", "punctuation.definition.directive.end.mermaid"],
       ["foo", "string.quoted.double.mermaid"],
-      ["]", "punctuation.section.brackets.end.mermaid"],
+      ["]", "punctuation.definition.label.end.mermaid"],
     ],
   },
   {
@@ -548,7 +584,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ['>"', "string.unquoted.directive.mermaid"],
       ["}%%", "punctuation.definition.directive.end.mermaid"],
       ["x", "string.quoted.double.mermaid"],
-      [";", "punctuation.terminator.rule.mermaid"],
+      [";", "punctuation.separator.rule.mermaid"],
     ],
     absentOnLine: [[0, "comment.line.percentage.mermaid"]],
   },
@@ -570,7 +606,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ["}%%", "punctuation.definition.directive.end.mermaid"],
       ["foo", "string.quoted.other.markdown.mermaid"],
       ['`"', "punctuation.definition.string.end.mermaid"],
-      [")", "keyword.control.mermaid"],
+      [")", "keyword.operator.shape.end.mermaid"],
     ],
     absentOnLine: [[1, "comment.line.percentage.mermaid"]],
   },
@@ -581,7 +617,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ['<b x="`">', "string.quoted.other.markdown.mermaid"],
       ["z", "string.quoted.other.markdown.mermaid"],
       ['`"', "punctuation.definition.string.end.mermaid"],
-      [")", "keyword.control.mermaid"],
+      [")", "keyword.operator.shape.end.mermaid"],
     ],
     absent: [['<b x="`">', "punctuation.definition.string.end.mermaid"]],
   },
@@ -622,7 +658,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       ["wrap", "entity.name.function.directive.mermaid"],
       ["tf", "keyword.control.mermaid"],
-      ["Kept", "variable.other.id.mermaid"],
+      ["Kept", "variable.mermaid"],
     ],
     absent: [["tf", "comment.block.ignored.mermaid"]],
   },
@@ -631,8 +667,8 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: 'railroad-beta\n---\nx\n%%{wrap}%%---\nr=terminal("x");',
     scopes: [
       ["wrap", "entity.name.function.directive.mermaid"],
-      ["terminal", "support.function.mermaid"],
-      [";", "punctuation.terminator.rule.mermaid"],
+      ["terminal", "keyword.control.mermaid"],
+      [";", "punctuation.separator.rule.mermaid"],
     ],
     absent: [["terminal", "comment.block.ignored.mermaid"]],
   },
@@ -650,7 +686,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: 'cynefin-beta\n---\nx\n%%{wrap}%%---\ncomplex "x"',
     scopes: [
       ["wrap", "entity.name.function.directive.mermaid"],
-      ["complex", "keyword.control.mermaid"],
+      ["complex", "constant.language.mermaid"],
     ],
     absent: [["complex", "comment.block.ignored.mermaid"]],
   },
@@ -661,7 +697,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: 'kanban A[<b x="y] %% >',
     scopes: [
       ['<b x="y', "string.unquoted.mermaid"],
-      ["]", "keyword.control.mermaid"],
+      ["]", "keyword.operator.shape.end.mermaid"],
       ["%% >", "comment.line.percentage.mermaid"],
     ],
     absentOnLine: [[0, "string.quoted.double.mermaid"]],
@@ -671,7 +707,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: 'mindmap A[<b x="y] %% >',
     scopes: [
       ['<b x="y', "string.unquoted.mermaid"],
-      ["]", "punctuation.definition.shape.end.mermaid"],
+      ["]", "keyword.operator.shape.end.mermaid"],
       ["%% >", "comment.line.percentage.mermaid"],
     ],
     absentOnLine: [[0, "string.quoted.double.mermaid"]],
@@ -683,7 +719,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ["wrap", "entity.name.function.directive.mermaid"],
       ["<b", "string.quoted.other.markdown.mermaid"],
       ['`"', "punctuation.definition.string.end.mermaid"],
-      ["]", "keyword.control.mermaid"],
+      ["]", "keyword.operator.shape.end.mermaid"],
       ["%% >", "comment.line.percentage.mermaid"],
     ],
     absent: [["%% >", "string.quoted.other.markdown.mermaid"]],
@@ -695,7 +731,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ["wrap", "entity.name.function.directive.mermaid"],
       ["<b", "string.quoted.other.markdown.mermaid"],
       ['`"', "punctuation.definition.string.end.mermaid"],
-      ["]", "punctuation.definition.shape.end.mermaid"],
+      ["]", "keyword.operator.shape.end.mermaid"],
       ["%% >", "comment.line.percentage.mermaid"],
     ],
     absent: [["%% >", "string.quoted.other.markdown.mermaid"]],
@@ -707,9 +743,9 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     name: "a flowchart data tag ends inside a directive before a quoted value",
     code: 'flowchart LR\nA@{<b %%{init: >}%% t="q"}',
     scopes: [
-      ["q", "string.quoted.double.mermaid"],
+      ["q", "string.unquoted.mermaid"],
       ["init", "entity.name.function.directive.mermaid"],
-      ["}", "punctuation.section.braces.end.mermaid"],
+      ["}", "punctuation.section.data.end.mermaid"],
     ],
     absentOnLine: [[1, "comment.line.percentage.mermaid"]],
   },
@@ -717,9 +753,9 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     name: "an agentflow data tag ends inside a directive before a quoted value",
     code: 'agentflow-beta LR\nA@{<b %%{init: >}%% t="q"}',
     scopes: [
-      ["q", "string.quoted.double.mermaid"],
+      ["q", "string.unquoted.mermaid"],
       ["init", "entity.name.function.directive.mermaid"],
-      ["}", "punctuation.section.braces.end.mermaid"],
+      ["}", "punctuation.section.data.end.mermaid"],
     ],
     absentOnLine: [[1, "comment.line.percentage.mermaid"]],
   },
@@ -730,7 +766,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: 'agentflow-beta LR\nA@{<b %%{wrap}%% t="q">}',
     scopes: [
       ["wrap", "entity.name.function.directive.mermaid"],
-      ["}", "punctuation.section.braces.end.mermaid"],
+      ["}", "punctuation.section.data.end.mermaid"],
     ],
     absentOnLine: [[1, "string.quoted.double.mermaid"]],
   },
@@ -750,7 +786,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       [",", "punctuation.separator.comma.mermaid"],
       ["y", "string.quoted.double.mermaid"],
-      [";", "punctuation.terminator.rule.mermaid"],
+      [";", "punctuation.separator.rule.mermaid"],
     ],
     absent: [[",", "string.quoted.double.mermaid"]],
   },
@@ -758,7 +794,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     name: "an agentflow HTML tag ends before a shape closer and native comment",
     code: 'agentflow-beta LR;A["<b %%{init: >}%% t="]%% c ">',
     scopes: [
-      ["]", "punctuation.definition.label.end.mermaid"],
+      ["]", "keyword.operator.shape.end.mermaid"],
       ['%% c ">', "comment.line.percentage.mermaid"],
     ],
     absent: [["]", "string.quoted.double.mermaid"]],
@@ -810,7 +846,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ["--", "comment.block.ignored.mermaid"],
       ["x", "comment.block.ignored.mermaid"],
     ],
-    absentOnLine: [[1, "keyword.operator.range.mermaid"]],
+    absentOnLine: [[1, "keyword.operator.mermaid"]],
   },
   {
     name: "a hidden YAML closer reads directives between its dashes",
@@ -935,7 +971,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       ["wrap", "entity.name.function.directive.mermaid"],
       ["axis", "keyword.control.mermaid"],
-      ["a", "variable.other.id.mermaid"],
+      ["a", "variable.mermaid"],
     ],
     absent: [["axis", "comment.block.ignored.mermaid"]],
     absentOnLine: [[0, "comment.line.percentage.mermaid"]],
@@ -946,7 +982,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       ["wrap", "entity.name.function.directive.mermaid"],
       ["axis", "keyword.control.mermaid"],
-      ["a", "variable.other.id.mermaid"],
+      ["a", "variable.mermaid"],
     ],
     absent: [["axis", "comment.block.ignored.mermaid"]],
     absentOnLine: [[0, "comment.line.percentage.mermaid"]],
@@ -1038,7 +1074,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: 'agentflow-beta\nA["<b title="x\u2028%% kept "y>"]\n',
     scopes: [
       ['<b title="x\u2028%% kept "y>', "string.quoted.double.mermaid"],
-      ["]", "punctuation.definition.label.end.mermaid"],
+      ["]", "keyword.operator.shape.end.mermaid"],
     ],
     absentOnLine: [[1, "comment.line.percentage.mermaid"]],
   },
@@ -1053,8 +1089,8 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: "eventmodeling\ntf 01 evt E {} accDescr { before\u2028%% description content\n after }\ndata Block {\nbefore\u2029%% data content\nafter\n}\n",
     scopes: [
       [" before\u2028%% description content", "string.unquoted.mermaid"],
-      ["before\u2029%% data content", "string.unquoted.data.mermaid"],
-      ["after", "string.unquoted.data.mermaid"],
+      ["before\u2029%% data content", "string.unquoted.mermaid"],
+      ["after", "string.unquoted.mermaid"],
     ],
     absentOnLine: [
       [1, "comment.line.percentage.mermaid"],
@@ -1245,10 +1281,13 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
   {
     name: "ordinary text follows a word argument outside its directive",
     code: "timeline\n%%{init: dark foo}%% %% common\nPeriod : Event\n",
-    scopes: [["dark", "string.unquoted.directive.mermaid"]],
+    scopes: [
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["foo}%% %% common", "string.unquoted.mermaid"],
+    ],
     absent: [
-      ["foo}", "meta.directive.mermaid"],
-      ["foo}", "comment.line.percentage.mermaid"],
+      ["foo}%% %% common", "meta.directive.mermaid"],
+      ["foo}%% %% common", "comment.line.percentage.mermaid"],
     ],
   },
   {
@@ -1341,8 +1380,8 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     name: "kanban quoted data protects a brace and caret across a line feed",
     code: 'kanban\nA@{x: "}^\n\\%%{wrap}%%"}%% c\n',
     scopes: [
-      ["}^", "string.quoted.double.mermaid"],
-      ["\\", "string.quoted.double.mermaid"],
+      ["}^", "string.unquoted.mermaid"],
+      ["\\", "string.unquoted.mermaid"],
       ["wrap", "entity.name.function.directive.mermaid"],
       ["}", "punctuation.section.data.end.mermaid"],
       ["%% c", "comment.line.percentage.mermaid"],
@@ -1427,31 +1466,31 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
   {
     name: "a longer eventmodeling identifier",
     code: "eventmodeling\ntf 01 evt evtLong\n",
-    scopes: [["evtLong", "variable.other.id.mermaid"]],
+    scopes: [["evtLong", "variable.mermaid"]],
     absent: [["evtLong", "keyword.control.mermaid"]],
   },
   {
     name: "a longer radar identifier",
     code: "radar-beta\naxis axisLong\ncurve curveLong{1}\n",
-    scopes: [["axisLong", "variable.other.id.mermaid"]],
+    scopes: [["axisLong", "variable.mermaid"]],
     absent: [["axisLong", "keyword.control.mermaid"]],
   },
   {
     name: "a longer venn identifier",
     code: "venn-beta\nset setter:2\nset unionized:3\n",
-    scopes: [["setter", "variable.other.id.mermaid"]],
+    scopes: [["setter", "variable.mermaid"]],
     absent: [["setter", "keyword.control.mermaid"]],
   },
   {
     name: "a longer usecase identifier",
     code: "usecase-beta\nactor actorLong\nactorLong --> node(noteLong)\n",
-    scopes: [["actorLong", "variable.other.id.mermaid"]],
+    scopes: [["actorLong", "variable.mermaid"]],
     absent: [["actorLong", "keyword.control.mermaid"]],
   },
   {
     name: "a longer agentflow identifier",
     code: "agentflow-beta\nclassLong --> styleLong\n",
-    scopes: [["classLong", "variable.other.id.mermaid"]],
+    scopes: [["classLong", "variable.mermaid"]],
     absent: [["classLong", "keyword.control.mermaid"]],
   },
   {
@@ -1488,7 +1527,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: "kanban\n A\n\uFEFF:::tag\n",
     scopes: [
       [":::", "punctuation.separator.class.mermaid"],
-      ["tag", "entity.name.type.class.mermaid"],
+      ["tag", "variable.mermaid"],
     ],
   },
   {
@@ -1517,7 +1556,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       [":", "punctuation.separator.colon.mermaid"],
       [" Title", "string.unquoted.mermaid"],
     ],
-    absent: [["accTitle", "variable.other.rule.mermaid"]],
+    absent: [["accTitle", "variable.mermaid"]],
   },
   {
     // common.md#a-directive-is-a-token-boundary; railroad.md#metadata-units.
@@ -1565,8 +1604,14 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     // common.md#entities; railroad.md#ebnf-units.
     name: "an entity semicolon inside an EBNF special sequence",
     code: "railroad-ebnf-beta\nentity = ? #amp; ? ;\n",
-    scopes: [["? #amp; ?", "string.other.special-sequence.mermaid"]],
-    absent: [["? #amp; ?", "punctuation.terminator.rule.mermaid"]],
+    scopes: [
+      ["?", "punctuation.definition.special-sequence.begin.mermaid"],
+      [" #amp; ", "string.unquoted.mermaid"],
+    ],
+    absent: [
+      ["?", "punctuation.separator.rule.mermaid"],
+      [" #amp; ", "punctuation.separator.rule.mermaid"],
+    ],
   },
   {
     // common.md#entities: A directive may lie right before the semicolon.
@@ -1574,9 +1619,12 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: "railroad-ebnf-beta\nentity = ? #amp%%{wrap}%%; ? ;\n",
     scopes: [
       ["wrap", "entity.name.function.directive.mermaid"],
-      ["; ?", "string.other.special-sequence.mermaid"],
+      ["; ", "string.unquoted.mermaid"],
     ],
-    absent: [["; ?", "punctuation.terminator.rule.mermaid"]],
+    absent: [
+      ["; ", "punctuation.separator.rule.mermaid"],
+      ["?", "punctuation.separator.rule.mermaid"],
+    ],
   },
   {
     // treeview.md#names: Backslashes neither protect quotes nor decode escapes.
@@ -1611,9 +1659,888 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     ],
     absent: [[">", "string.quoted.single.mermaid"]],
   },
+  // Review boundaries from the diagram specifications and common.md.
+
+  {
+    name: "gitgraph metadata after directives",
+    code: "gitGraph\n  %%{x}%%title t\n%%{x}%%accTitle: t\n%%{x}%% title t",
+    scopes: [
+      ["title", "keyword.control.mermaid", 1],
+      ["accTitle", "keyword.control.mermaid", 2],
+      ["title", "keyword.control.mermaid", 3],
+    ],
+  },
+  {
+    name: "architecture metadata after directives",
+    code: "architecture-beta\n  %%{x}%%title t\n%%{x}%%accTitle: t\n%%{x}%%accDescr {d}\n%%{x}%% title t",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title", "keyword.control.mermaid", 1],
+      ["accTitle", "keyword.control.mermaid", 2],
+      ["title", "keyword.control.mermaid", 4],
+    ],
+  },
+  {
+    name: "radar metadata after directives",
+    code: "radar-beta\n  %%{x}%%title t\n%%{x}%%accTitle: t\n%%{x}%% title t",
+    scopes: [
+      ["title", "keyword.control.mermaid", 1],
+      ["accTitle", "keyword.control.mermaid", 2],
+      ["title", "keyword.control.mermaid", 3],
+    ],
+  },
+  {
+    name: "railroad metadata after directives",
+    code: 'railroad-beta\n  %%{x}%%title t\n%%{x}%%accTitle: t\n%%{x}%% title t\na = terminal("x");',
+    scopes: [
+      ["title", "keyword.control.mermaid", 1],
+      ["accTitle", "keyword.control.mermaid", 2],
+      ["title", "keyword.control.mermaid", 3],
+    ],
+  },
+  {
+    name: "wardley metadata and anchor after directives",
+    code: "wardley-beta\n  %%{x}%%title t\n%%{x}%%accTitle: t\n%%{x}%% title t\n%%{init: {}}%% anchor A [0.1,0.2]",
+    scopes: [
+      ["anchor", "keyword.control.mermaid"],
+      ["title", "keyword.control.mermaid", 1],
+      ["accTitle", "keyword.control.mermaid", 2],
+      ["title", "keyword.control.mermaid", 3],
+    ],
+  },
+  {
+    name: "journey metadata after directives",
+    code: "journey\n  %%{x}%%title t\n%%{x}%%accTitle: t\n%%{x}%% title t",
+    scopes: [
+      ["title", "keyword.control.mermaid", 1],
+      ["accTitle", "keyword.control.mermaid", 2],
+      ["title", "keyword.control.mermaid", 3],
+    ],
+  },
+  {
+    name: "pie metadata after directives",
+    code: "pie\n  %%{x}%%title t\n%%{x}%%accTitle: t\n%%{x}%% title t",
+    scopes: [
+      ["title", "keyword.control.mermaid", 1],
+      ["accTitle", "keyword.control.mermaid", 2],
+      ["title", "keyword.control.mermaid", 3],
+    ],
+  },
+  {
+    name: "packet metadata after directives",
+    code: "packet\n  %%{x}%%title t\n%%{x}%%accTitle: t\n%%{x}%% title t",
+    scopes: [
+      ["title", "keyword.control.mermaid", 1],
+      ["accTitle", "keyword.control.mermaid", 2],
+      ["title", "keyword.control.mermaid", 3],
+    ],
+  },
+  {
+    name: "treemap metadata and class definition after directives",
+    code: 'treemap\n  %%{x}%%title t\n%%{x}%%accTitle: t\n%%{x}%% title t\n%%{init: {}}%% classDef ab fill:red\n"Leaf": 1',
+    scopes: [
+      ["classDef", "keyword.control.mermaid"],
+      ["fill", "support.type.property-name.mermaid"],
+      ["title", "keyword.control.mermaid", 1],
+      ["accTitle", "keyword.control.mermaid", 2],
+      ["title", "keyword.control.mermaid", 3],
+    ],
+  },
+  {
+    name: "cynefin metadata after directives",
+    code: "cynefin-beta\n  %%{x}%%title t\n%%{x}%%accTitle: t\n%%{x}%% title t",
+    scopes: [
+      ["title", "keyword.control.mermaid", 1],
+      ["accTitle", "keyword.control.mermaid", 2],
+      ["title", "keyword.control.mermaid", 3],
+    ],
+  },
+  {
+    name: "treeview metadata after directives",
+    code: "treeView-beta\n  %%{x}%%title t\n%%{x}%%accTitle: t\n%%{x}%% title t\nroot",
+    scopes: [
+      ["title", "keyword.control.mermaid", 1],
+      ["accTitle", "keyword.control.mermaid", 2],
+      ["title", "keyword.control.mermaid", 3],
+    ],
+  },
+  {
+    name: "info metadata after directives",
+    code: "info\n  %%{x}%%title t\n%%{x}%%accTitle: t\n%%{x}%% title t",
+    scopes: [
+      ["title", "keyword.control.mermaid", 1],
+      ["accTitle", "keyword.control.mermaid", 2],
+      ["title", "keyword.control.mermaid", 3],
+    ],
+  },
+  {
+    name: "mindmap icon and class after directives",
+    code: "mindmap\n  r\n    %%{init: {}}%%::icon(x)\n    %%{init: {}}%%:::c",
+    scopes: [
+      ["::icon(", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+      [":::", "punctuation.separator.class.mermaid"],
+      ["c", "variable.mermaid"],
+    ],
+  },
+  {
+    name: "requirement direction after a directive",
+    code: "requirementDiagram\n%%{wrap}%%direction LR",
+    scopes: [
+      ["direction", "keyword.control.mermaid"],
+      ["LR", "constant.language.mermaid"],
+    ],
+  },
+  {
+    name: "eventmodeling padded metadata after a directive",
+    code: "eventmodeling%%{wrap}%% title t",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "timeline metadata after a directive",
+    code: "timeline\n%%{wrap}%%title t\nPeriod : Event",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "kanban icon after a directive",
+    code: "kanban\n A\n %%{wrap}%%::icon(x)",
+    scopes: [
+      ["::icon(", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "usecase metadata after a directive",
+    code: "usecase-beta\n%%{wrap}%%accTitle: t",
+    scopes: [["accTitle", "keyword.control.mermaid"]],
+  },
+  {
+    name: "ishikawa comment after a directive",
+    code: "ishikawa\nRoot\n%%{wrap}%%%% c",
+    scopes: [["%% c", "comment.line.percentage.mermaid"]],
+  },
+  {
+    name: "a directive within a wardley spaced name does not start metadata",
+    code: "wardley-beta\nA%%{wrap}%% title B -> C",
+    scopes: [[" title B", "variable.mermaid"]],
+    absent: [[" title B", "keyword.control.mermaid"]],
+  },
+  {
+    name: "a directive within a journey task does not start metadata",
+    code: "journey\nA%%{wrap}%% title B: 5: C",
+    scopes: [[" title B", "string.unquoted.mermaid"]],
+    absent: [[" title B", "keyword.control.mermaid"]],
+  },
+  {
+    name: "a directive between gitgraph id units does not start metadata",
+    code: 'gitGraph\ncommit id: %%{wrap}%%"title"',
+    scopes: [["title", "string.quoted.double.mermaid"]],
+    absent: [["title", "keyword.control.mermaid"]],
+  },
+  {
+    name: "a radar joined header and title",
+    code: "radar-beta: title x",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "a radar joined header and accessibility title",
+    code: "radar-beta:accTitle: x",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      [" x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "a radar joined header and description block",
+    code: "radar-beta:accDescr {x}",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "a radar padded header colon and title",
+    code: "radar-beta :title x",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "a radar directive before its header colon",
+    code: "radar-beta%%{x}%%:title x",
+    scopes: [["title", "keyword.control.mermaid"]],
+  },
+  {
+    name: "wardley title prefixes remain names",
+    code: "wardley-beta\ntitlex -> b\ntitle_x -> b\ntitle-->b\ntitles +<> b",
+    scopes: [
+      ["titlex", "variable.mermaid"],
+      ["title_x", "variable.mermaid"],
+      ["title-", "variable.mermaid"],
+      ["titles", "variable.mermaid"],
+    ],
+    absentOnLine: [
+      [1, "keyword.control.mermaid"],
+      [2, "keyword.control.mermaid"],
+      [3, "keyword.control.mermaid"],
+      [4, "keyword.control.mermaid"],
+    ],
+  },
+  {
+    name: "state percent text before a next-line body",
+    code: "stateDiagram-v2\nstate X\n%%{}",
+    scopes: [
+      ["%%", "comment.block.ignored.mermaid"],
+      ["{", "keyword.operator.block.begin.mermaid"],
+      ["}", "keyword.operator.block.end.mermaid"],
+    ],
+  },
+  {
+    name: "state percent text before an alias body",
+    code: 'stateDiagram-v2\nstate "d" as %% c {\n}',
+    scopes: [
+      ["%% c ", "comment.block.ignored.mermaid"],
+      ["{", "keyword.operator.block.begin.mermaid"],
+      ["}", "keyword.operator.block.end.mermaid"],
+    ],
+    absentOnLine: [[1, "comment.line.percentage.mermaid"]],
+  },
+  {
+    name: "flowchart listed Unicode letters remain inside ids",
+    code: "flowchart TD\nA\u1885B-->C\nA\u1886B-->C\nA\u0527B-->C\nA\u0531B-->C\nL[\u0528]",
+    scopes: [
+      ["A\u1885B", "variable.mermaid"],
+      ["A\u1886B", "variable.mermaid"],
+      ["A\u0527B", "variable.mermaid"],
+      ["A\u0531B", "variable.mermaid"],
+      ["\u0528", "string.unquoted.mermaid"],
+    ],
+    absent: [["\u0528", "variable.mermaid"]],
+  },
+  {
+    name: "agentflow uses the listed flowchart Unicode letters",
+    code: "agentflow-beta\nA\u1885B-->C\nA\u1886B-->C\nL[\u0528]",
+    scopes: [
+      ["A\u1885B", "variable.mermaid"],
+      ["A\u1886B", "variable.mermaid"],
+      ["\u0528", "string.unquoted.mermaid"],
+    ],
+    absent: [["\u0528", "variable.mermaid"]],
+  },
+  {
+    name: "a mindmap directive-only line has no node text",
+    code: "mindmap\n  r\n    %%{init: {}}%%\n    b",
+    scopes: [
+      ["init", "meta.directive.mermaid"],
+      ["b", "string.unquoted.mermaid"],
+    ],
+    absentOnLine: [[2, "string.unquoted.mermaid"]],
+  },
+  {
+    name: "a flowchart directive preserves the ampersand gap",
+    code: "flowchart TD\nA %%{x}%%& B",
+    scopes: [["&", "keyword.operator.mermaid"]],
+    absent: [["&", "variable.mermaid"]],
+  },
+  {
+    name: "an agentflow directive preserves the ampersand gap",
+    code: "agentflow-beta\nA %%{x}%%& B",
+    scopes: [["&", "keyword.operator.mermaid"]],
+    absent: [["&", "variable.mermaid"]],
+  },
+  {
+    name: "flowchart style lists keep commas and bare values",
+    code: "flowchart TD\nclassDef a bold,fill:red\nstyle A fill:red,bold,stroke:blue\nstyle A #fff\nlinkStyle default bold,stroke:red",
+    scopes: [
+      ["bold", "support.constant.property-value.mermaid"],
+      [",", "punctuation.separator.comma.mermaid"],
+      ["fill", "support.type.property-name.mermaid"],
+      [":", "punctuation.separator.key-value.mermaid"],
+      ["#fff", "support.constant.property-value.mermaid"],
+      ["stroke", "support.type.property-name.mermaid"],
+    ],
+  },
+  {
+    name: "agentflow style lists keep commas and bare values",
+    code: "agentflow-beta\nclassDef a bold,fill:red\nstyle A fill:red,bold,stroke:blue\nstyle A #fff\nlinkStyle default bold,stroke:red",
+    scopes: [
+      ["bold", "support.constant.property-value.mermaid"],
+      [",", "punctuation.separator.comma.mermaid"],
+      ["fill", "support.type.property-name.mermaid"],
+      [":", "punctuation.separator.key-value.mermaid"],
+      ["#fff", "support.constant.property-value.mermaid"],
+      ["stroke", "support.type.property-name.mermaid"],
+    ],
+  },
+  {
+    name: "classDef keeps an escaped comma in a bare flowchart style",
+    code: "flowchart TD\nclassDef a bold\\,wide,fill:x\\%%{wrap}%%,y\nstyle A bold\\,wide\nlinkStyle default bold\\,wide\nclassDef b bold\\%%{wrap}%%,wide",
+    scopes: [
+      ["\\,", "support.constant.property-value.mermaid"],
+      ["wide", "support.constant.property-value.mermaid"],
+      ["wrap", "meta.directive.mermaid"],
+      [",", "punctuation.separator.comma.mermaid", 2],
+      [",", "punctuation.separator.comma.mermaid", 3],
+      [",", "support.constant.property-value.mermaid", 4],
+    ],
+    absent: [["\\,", "punctuation.separator.comma.mermaid"]],
+  },
+  {
+    name: "classDef keeps an escaped comma in a bare agentflow style",
+    code: "agentflow-beta\nclassDef a bold\\,wide,fill:x\\%%{wrap}%%,y\nstyle A bold\\,wide\nlinkStyle default bold\\,wide\nclassDef b bold\\%%{wrap}%%,wide",
+    scopes: [
+      ["\\,", "support.constant.property-value.mermaid"],
+      ["wide", "support.constant.property-value.mermaid"],
+      ["wrap", "meta.directive.mermaid"],
+      [",", "punctuation.separator.comma.mermaid", 2],
+      [",", "punctuation.separator.comma.mermaid", 3],
+      [",", "support.constant.property-value.mermaid", 4],
+    ],
+    absent: [["\\,", "punctuation.separator.comma.mermaid"]],
+  },
+  {
+    name: "flowchart style values leave trailing whitespace",
+    code: "flowchart TD\nstyle A fill:red  ,  bold  \nclassDef a fill:red  ,  bold  \nlinkStyle default fill:red  ,  bold  ",
+    scopes: [
+      ["red", "support.constant.property-value.mermaid"],
+      ["bold", "support.constant.property-value.mermaid"],
+    ],
+    absent: [
+      ["  ", "support.constant.property-value.mermaid", 1],
+      ["  ", "support.constant.property-value.mermaid", 2],
+      ["  ", "support.constant.property-value.mermaid", 3],
+    ],
+  },
+  {
+    name: "agentflow style values leave trailing whitespace",
+    code: "agentflow-beta\nstyle A fill:red  ,  bold  \nclassDef a fill:red  ,  bold  \nlinkStyle default fill:red  ,  bold  ",
+    scopes: [
+      ["red", "support.constant.property-value.mermaid"],
+      ["bold", "support.constant.property-value.mermaid"],
+    ],
+    absent: [
+      ["  ", "support.constant.property-value.mermaid", 1],
+      ["  ", "support.constant.property-value.mermaid", 2],
+      ["  ", "support.constant.property-value.mermaid", 3],
+    ],
+  },
+  {
+    name: "block styles use whole bare values",
+    code: "block-beta\nA\nstyle A bold,fill:red,#fff\nclassDef a bold,fill:red",
+    scopes: [
+      ["bold", "support.constant.property-value.mermaid"],
+      ["fill", "support.type.property-name.mermaid"],
+      ["#fff", "support.constant.property-value.mermaid"],
+      [",", "punctuation.separator.comma.mermaid"],
+      [":", "punctuation.separator.key-value.mermaid"],
+    ],
+  },
+  {
+    name: "class styles use whole bare values",
+    code: "classDiagram\nclass A\nstyle A bold,fill:red\nclassDef a bold,fill:red\nclassDef c style",
+    scopes: [
+      ["bold", "support.constant.property-value.mermaid"],
+      ["fill", "support.type.property-name.mermaid"],
+      [",", "punctuation.separator.comma.mermaid"],
+      [":", "punctuation.separator.key-value.mermaid"],
+      ["style", "support.constant.property-value.mermaid", 4],
+    ],
+  },
+  {
+    name: "er styles use whole bare values",
+    code: "erDiagram\nA\nstyle A bold,fill:red\nclassDef a bold,fill:red",
+    scopes: [
+      ["bold", "support.constant.property-value.mermaid"],
+      ["fill", "support.type.property-name.mermaid"],
+      [",", "punctuation.separator.comma.mermaid"],
+      [":", "punctuation.separator.key-value.mermaid"],
+    ],
+  },
+  {
+    name: "state styles use whole bare values",
+    code: "stateDiagram-v2\nA\nstyle A bold,fill:red\nclassDef a bold,fill:red",
+    scopes: [
+      ["bold", "support.constant.property-value.mermaid"],
+      ["fill", "support.type.property-name.mermaid"],
+      [",", "punctuation.separator.comma.mermaid"],
+      [":", "punctuation.separator.key-value.mermaid"],
+    ],
+  },
+  {
+    name: "requirement styles use whole bare values",
+    code: "requirementDiagram\nstyle A bold,fill:red\nclassDef a bold,fill:red",
+    scopes: [
+      ["bold", "support.constant.property-value.mermaid"],
+      ["fill", "support.type.property-name.mermaid"],
+      [",", "punctuation.separator.comma.mermaid"],
+      [":", "punctuation.separator.key-value.mermaid"],
+    ],
+  },
+  {
+    name: "venn style properties preserve their value boundaries",
+    code: "venn-beta\nset A\nstyle A fill:red,stroke:blue",
+    scopes: [
+      ["fill", "support.type.property-name.mermaid"],
+      ["red", "support.constant.property-value.mermaid"],
+      ["stroke", "support.type.property-name.mermaid"],
+      [",", "punctuation.separator.comma.mermaid"],
+      [":", "punctuation.separator.key-value.mermaid"],
+    ],
+  },
+  {
+    name: "usecase styles require property colons",
+    code: "usecase-beta\nactor A\nstyle A fill:red,stroke:blue\nclassDef a fill:red,stroke:blue",
+    scopes: [
+      ["fill", "support.type.property-name.mermaid"],
+      ["red", "support.constant.property-value.mermaid"],
+      ["stroke", "support.type.property-name.mermaid"],
+      [",", "punctuation.separator.comma.mermaid"],
+      [":", "punctuation.separator.key-value.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant style properties use key-value colons",
+    code: "quadrantChart\nA: [0.1,0.2] color: #f00, radius: 4\nclassDef a color:#f00,radius:4",
+    scopes: [
+      ["color", "support.type.property-name.mermaid"],
+      ["#f00", "support.constant.property-value.mermaid"],
+      ["radius", "support.type.property-name.mermaid"],
+      [":", "punctuation.separator.key-value.mermaid", 2],
+      [",", "punctuation.separator.comma.mermaid"],
+    ],
+  },
+  {
+    name: "treemap retains its documented style-text reading",
+    code: 'treemap\nclassDef ab fill:red,stroke:blue\n"Leaf":1',
+    scopes: [
+      ["fill", "support.type.property-name.mermaid"],
+      ["red", "support.constant.property-value.mermaid"],
+      ["stroke", "support.type.property-name.mermaid"],
+      [",", "punctuation.separator.comma.mermaid"],
+      [":", "punctuation.separator.key-value.mermaid"],
+    ],
+  },
+  {
+    name: "pie retained second-scan directive before its header",
+    code: "%%{%%{wrap}%%wrap}%%\npie",
+    scopes: [
+      ["%%{", "comment.block.ignored.mermaid"],
+      ["wrap", "meta.directive.mermaid"],
+      ["pie", "keyword.control.mermaid"],
+    ],
+    absentOnLine: [[0, "comment.line.percentage.mermaid"]],
+  },
+  {
+    name: "gitgraph retained second-scan directive before its header",
+    code: "%%{%%{wrap}%%wrap}%%\ngitGraph",
+    scopes: [
+      ["%%{", "comment.block.ignored.mermaid"],
+      ["wrap", "meta.directive.mermaid"],
+      ["gitGraph", "keyword.control.mermaid"],
+    ],
+    absentOnLine: [[0, "comment.line.percentage.mermaid"]],
+  },
+  {
+    name: "info retained second-scan directive before its header",
+    code: "%%{%%{wrap}%%wrap}%%\ninfo",
+    scopes: [
+      ["%%{", "comment.block.ignored.mermaid"],
+      ["wrap", "meta.directive.mermaid"],
+      ["info", "keyword.control.mermaid"],
+    ],
+    absentOnLine: [[0, "comment.line.percentage.mermaid"]],
+  },
+  {
+    name: "packet retained second-scan directive before its header",
+    code: "%%{%%{wrap}%%wrap}%%\npacket",
+    scopes: [
+      ["%%{", "comment.block.ignored.mermaid"],
+      ["wrap", "meta.directive.mermaid"],
+      ["packet", "keyword.control.mermaid"],
+    ],
+    absentOnLine: [[0, "comment.line.percentage.mermaid"]],
+  },
+  {
+    name: "architecture retained second-scan directive before its header",
+    code: "%%{%%{wrap}%%wrap}%%\narchitecture-beta",
+    scopes: [
+      ["%%{", "comment.block.ignored.mermaid"],
+      ["wrap", "meta.directive.mermaid"],
+      ["architecture-beta", "keyword.control.mermaid"],
+    ],
+    absentOnLine: [[0, "comment.line.percentage.mermaid"]],
+  },
+  {
+    name: "radar retained second-scan directive before its header",
+    code: "%%{%%{wrap}%%wrap}%%\nradar-beta",
+    scopes: [
+      ["%%{", "comment.block.ignored.mermaid"],
+      ["wrap", "meta.directive.mermaid"],
+      ["radar-beta", "keyword.control.mermaid"],
+    ],
+    absentOnLine: [[0, "comment.line.percentage.mermaid"]],
+  },
+  {
+    name: "railroad retained second-scan directive before its header",
+    code: '%%{%%{wrap}%%wrap}%%\nrailroad-beta\na = terminal("x");',
+    scopes: [
+      ["%%{", "comment.block.ignored.mermaid"],
+      ["wrap", "meta.directive.mermaid"],
+      ["railroad-beta", "keyword.control.mermaid"],
+    ],
+    absentOnLine: [[0, "comment.line.percentage.mermaid"]],
+  },
+  {
+    name: "wardley retained second-scan directive before its header",
+    code: "%%{%%{wrap}%%wrap}%%\nwardley-beta",
+    scopes: [
+      ["%%{", "comment.block.ignored.mermaid"],
+      ["wrap", "meta.directive.mermaid"],
+      ["wardley-beta", "keyword.control.mermaid"],
+    ],
+    absentOnLine: [[0, "comment.line.percentage.mermaid"]],
+  },
+  {
+    name: "cynefin retained second-scan directive before its header",
+    code: "%%{%%{wrap}%%wrap}%%\ncynefin-beta",
+    scopes: [
+      ["%%{", "comment.block.ignored.mermaid"],
+      ["wrap", "meta.directive.mermaid"],
+      ["cynefin-beta", "keyword.control.mermaid"],
+    ],
+    absentOnLine: [[0, "comment.line.percentage.mermaid"]],
+  },
+  {
+    name: "eventmodeling retained second-scan directive before its header",
+    code: "%%{%%{wrap}%%wrap}%%\neventmodeling",
+    scopes: [
+      ["%%{", "comment.block.ignored.mermaid"],
+      ["wrap", "meta.directive.mermaid"],
+      ["eventmodeling", "keyword.control.mermaid"],
+    ],
+    absentOnLine: [[0, "comment.line.percentage.mermaid"]],
+  },
+  {
+    name: "a class relation can end with an empty description block",
+    code: "classDiagram\nclass A\nA <|-- B accDescr {}",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["{", "punctuation.definition.description.begin.mermaid"],
+      ["}", "punctuation.definition.description.end.mermaid"],
+    ],
+  },
+  {
+    name: "a directive word argument begins on the next line",
+    code: 'cynefin-beta\ncomplex\n%%{wrap\nclear "a"\n"b"',
+    scopes: [
+      ["clear", "string.unquoted.directive.mermaid"],
+      ["a", "string.quoted.double.mermaid"],
+      ["b", "string.quoted.double.mermaid"],
+    ],
+    absent: [
+      ["a", "meta.directive.mermaid"],
+      ["b", "meta.directive.mermaid"],
+    ],
+  },
+  {
+    name: "a directive takes only the next-line vertex word",
+    code: "flowchart LR\nStart\n%%{wrap\nA-->B",
+    scopes: [
+      ["A", "string.unquoted.directive.mermaid"],
+      ["-->", "keyword.operator.arrow.mermaid", 3],
+      ["B", "variable.mermaid"],
+    ],
+    absent: [["B", "meta.directive.mermaid"]],
+  },
+  {
+    name: "a directive takes an indented next-line word and closer",
+    code: 'cynefin-beta\ncomplex\n%%{wrap:\n   clear }%%"a"\n"b"',
+    scopes: [
+      ["clear", "string.unquoted.directive.mermaid"],
+      ["}%%", "punctuation.definition.directive.end.mermaid"],
+      ["a", "string.quoted.double.mermaid"],
+      ["b", "string.quoted.double.mermaid"],
+    ],
+    absent: [
+      ["a", "meta.directive.mermaid"],
+      ["b", "meta.directive.mermaid"],
+    ],
+  },
+  {
+    name: "a three-line init keeps its free-text argument",
+    code: 'flowchart LR\n%%{init: {\n"theme": "dark"\n}}%%\nA-->B',
+    scopes: [
+      ['"theme": "dark"', "string.unquoted.directive.mermaid"],
+      ["A", "variable.mermaid"],
+      ["B", "variable.mermaid"],
+    ],
+    absent: [["A", "meta.directive.mermaid"]],
+  },
+  {
+    name: "an unclosed free-text directive keeps the remaining lines",
+    code: 'flowchart LR\n%%{init: {"theme": "dark"}}\nA-->B',
+    scopes: [["A-->B", "string.unquoted.directive.mermaid"]],
+    absentOnLine: [[2, "variable.mermaid"]],
+  },
+  {
+    name: "a delayed free-text directive keeps later word-looking lines",
+    code: 'flowchart LR\n%%{init:\n{\n"theme": "dark"\n}}%%\nA-->B',
+    scopes: [
+      ['"theme": "dark"', "string.unquoted.directive.mermaid"],
+      ["A", "variable.mermaid"],
+    ],
+  },
+  {
+    name: "a flowchart rectangle property uses the table scopes",
+    code: "flowchart TD\nA[|borders:lt|text]",
+    scopes: [
+      ["borders", "support.type.property-name.mermaid"],
+      [":", "punctuation.separator.key-value.mermaid"],
+      ["lt", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "an agentflow rectangle property uses the table scopes",
+    code: "agentflow-beta\nA[|borders:lt|text]",
+    scopes: [
+      ["borders", "support.type.property-name.mermaid"],
+      [":", "punctuation.separator.key-value.mermaid"],
+      ["lt", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "an architecture icon name is retained text",
+    code: "architecture-beta\nservice s(server)",
+    scopes: [
+      ["server", "string.unquoted.mermaid"],
+      ["(", "punctuation.section.icon.begin.mermaid"],
+      [")", "punctuation.section.icon.end.mermaid"],
+    ],
+    absent: [["server", "variable.mermaid"]],
+  },
+  {
+    name: "a treeview icon has icon brackets and retained reference",
+    code: "treeView-beta\nroot icon(fa:x)",
+    scopes: [
+      ["fa:x", "string.unquoted.mermaid"],
+      ["(", "punctuation.section.icon.begin.mermaid"],
+      [")", "punctuation.section.icon.end.mermaid"],
+    ],
+  },
+  {
+    name: "a state terminal is a state reference",
+    code: "stateDiagram-v2\n[*] --> A",
+    scopes: [["[*]", "variable.mermaid"]],
+    absent: [["[*]", "constant.language.mermaid"]],
+  },
+  {
+    name: "a usecase JSON value is opaque data",
+    code: 'usecase-beta\njson J @ {"a": {"nested": "v}"}, "b": 1}\nactor A',
+    scopes: [
+      ["@", "meta.data.mermaid"],
+      ["{", "punctuation.section.data.begin.mermaid"],
+      ["A", "variable.mermaid"],
+    ],
+    absentOnLine: [
+      [1, "string.quoted.double.mermaid"],
+      [1, "support.type.property-name.mermaid"],
+      [1, "meta.structure.dictionary.mermaid"],
+    ],
+  },
+  {
+    name: "usecase native metadata keeps property keys",
+    code: "usecase-beta\nactor A@{ type: normal }",
+    scopes: [
+      ["type", "support.type.property-name.mermaid"],
+      [":", "punctuation.separator.key-value.mermaid"],
+      ["normal", "constant.language.mermaid", 1],
+    ],
+  },
+  {
+    name: "requirement element type is a text field",
+    code: "requirementDiagram\nelement A {\ntype: software\n}",
+    scopes: [["software", "string.unquoted.mermaid"]],
+    absent: [["software", "entity.name.type.mermaid"]],
+  },
+  {
+    name: "eventmodeling type and data-tag words are keywords",
+    code: 'eventmodeling\ntf 01 cmd A\ntf 02 evt B\ntf 03 evt C `json` {"a":1}',
+    scopes: [
+      ["cmd", "keyword.control.mermaid"],
+      ["evt", "keyword.control.mermaid"],
+      ["json", "keyword.control.mermaid"],
+      ["{", "meta.data.mermaid"],
+    ],
+  },
+  {
+    name: "eventmodeling block data has a data wrapper",
+    code: "eventmodeling\ndata D {\ntext\n}\n",
+    scopes: [
+      ["{", "meta.data.mermaid"],
+      ["text", "string.unquoted.mermaid"],
+      ["}", "meta.data.mermaid"],
+    ],
+  },
+  {
+    name: "kanban data quotes remain opaque text",
+    code: 'kanban\nA\n b[y]@{"k": "v}"}',
+    scopes: [["@{", "meta.data.mermaid"]],
+    absentOnLine: [
+      [2, "string.quoted.double.mermaid"],
+      [2, "support.type.property-name.mermaid"],
+    ],
+  },
+  {
+    name: "flowchart data quotes remain opaque text",
+    code: 'flowchart TD\nC@{ shape: rect, label: "x" }',
+    scopes: [["@{", "meta.data.mermaid"]],
+    absentOnLine: [
+      [1, "string.quoted.double.mermaid"],
+      [1, "support.type.property-name.mermaid"],
+    ],
+  },
+  {
+    name: "agentflow data quotes remain opaque text",
+    code: 'agentflow-beta\nC@{ shape: rect, label: "x" }',
+    scopes: [["@{", "meta.data.mermaid"]],
+    absentOnLine: [
+      [1, "string.quoted.double.mermaid"],
+      [1, "support.type.property-name.mermaid"],
+    ],
+  },
+  {
+    name: "flowchart link targets remain fixed values",
+    code: 'flowchart TD\nclick A href "url" _self\nclick B href "url" _blank\nclick C href "url" _parent\nclick D href "url" _top',
+    scopes: [
+      ["_self", "constant.language.mermaid"],
+      ["_blank", "constant.language.mermaid"],
+      ["_parent", "constant.language.mermaid"],
+      ["_top", "constant.language.mermaid"],
+    ],
+  },
+  {
+    name: "agentflow link targets remain fixed values",
+    code: 'agentflow-beta\nclick A href "url" _self\nclick B href "url" _blank\nclick C href "url" _parent\nclick D href "url" _top',
+    scopes: [
+      ["_self", "constant.language.mermaid"],
+      ["_blank", "constant.language.mermaid"],
+      ["_parent", "constant.language.mermaid"],
+      ["_top", "constant.language.mermaid"],
+    ],
+  },
+  {
+    name: "gantt callback brackets are argument brackets",
+    code: "gantt\nTask : a, 1d\nclick a call cb(x)",
+    scopes: [
+      ["(", "punctuation.section.arguments.begin.mermaid"],
+      [")", "punctuation.section.arguments.end.mermaid"],
+    ],
+  },
+  {
+    name: "eventmodeling body metadata after a directive",
+    code: "eventmodeling\ndata D {\nx\n}\n%%{wrap}%% title t",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "a wardley title immediately before coordinates is a name",
+    code: "wardley-beta\ncomponent %%{wrap}%%title[0.1,0.2]",
+    scopes: [["title", "variable.mermaid"]],
+    absent: [["title", "keyword.control.mermaid"]],
+  },
+  {
+    name: "a kanban native comment after a midline directive",
+    code: "kanban\n A[y]%%{wrap}%%%% native",
+    scopes: [["%% native", "comment.line.percentage.mermaid"]],
+  },
+  {
+    name: "a treeview native comment after a midline directive",
+    code: "treeView-beta\nroot icon(fa:x)%%{wrap}%%%% native",
+    scopes: [["%% native", "comment.line.percentage.mermaid"]],
+  },
+  {
+    name: "a delayed word directive keeps its next-line closer",
+    code: 'cynefin-beta\ncomplex\n%%{wrap\nclear\n}%%"a"\n"b"',
+    scopes: [
+      ["clear", "string.unquoted.directive.mermaid"],
+      ["}%%", "punctuation.definition.directive.end.mermaid"],
+      ["a", "string.quoted.double.mermaid"],
+      ["b", "string.quoted.double.mermaid"],
+    ],
+    absent: [
+      ["a", "meta.directive.mermaid"],
+      ["b", "meta.directive.mermaid"],
+    ],
+  },
+  {
+    name: "a delayed word directive leaves the next body line outside",
+    code: 'cynefin-beta\ncomplex\n%%{wrap\nclear\n"a"\n"b"',
+    scopes: [
+      ["clear", "string.unquoted.directive.mermaid"],
+      ["a", "string.quoted.double.mermaid"],
+      ["b", "string.quoted.double.mermaid"],
+    ],
+    absent: [
+      ["a", "meta.directive.mermaid"],
+      ["b", "meta.directive.mermaid"],
+    ],
+  },
 ]
 
 describe("the lexical boundaries", () => {
+  it("keeps only the outer JSON braces as data delimiters", () => {
+    const input = boundaries.find(
+      (boundary) => boundary.name === "a usecase JSON value is opaque data",
+    )
+    if (!input) throw new Error("missing fixed JSON input")
+    const line = tokenLines(input.code)[1] ?? []
+    const begin = line.findIndex((token) =>
+      token.scopes.includes("punctuation.section.data.begin.mermaid"),
+    )
+    const end = line.findIndex((token) =>
+      token.scopes.includes("punctuation.section.data.end.mermaid"),
+    )
+    expect(begin).toBeGreaterThan(0)
+    expect(end).toBe(line.length - 1)
+    for (const token of line.slice(begin + 1, end)) {
+      expect(token.scopes, token.content).toEqual([
+        "meta.data.mermaid",
+        "string.unquoted.mermaid",
+      ])
+    }
+  })
+
+  it("keeps both EBNF special-sequence delimiters separate from rule terminators", () => {
+    for (const name of [
+      "an entity semicolon inside an EBNF special sequence",
+      "an entity with a directive before its semicolon inside a special sequence",
+    ]) {
+      const input = boundaries.find((boundary) => boundary.name === name)
+      if (!input) throw new Error(`missing fixed input: ${name}`)
+      expect(
+        tokenLines(input.code)
+          .flat()
+          .filter((token) => token.content === "?")
+          .map((token) => token.scopes),
+      ).toEqual([
+        ["punctuation.definition.special-sequence.begin.mermaid"],
+        ["punctuation.definition.special-sequence.end.mermaid"],
+      ])
+    }
+  })
+
   it("ends a treemap HTML tag at a directive's first closing angle bracket", () => {
     // common.md#html-attribute-quotes: The attribute part ends at the first >.
     const code = 'treemap "<b %%{x: >}%%x=":1 "title":2'

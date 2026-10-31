@@ -178,9 +178,9 @@
   ":" punctuation.separator.colon.mermaid
   "links" string.unquoted.mermaid
 > 12
-  "12" constant.numeric.mermaid
+  "12" variable.mermaid
 > 2.5
-  "2.5" constant.numeric.mermaid
+  "2.5" variable.mermaid
 > ending
   "ending" variable.mermaid
 > classes
@@ -269,7 +269,7 @@
   "fill" support.type.property-name.mermaid
   ":" punctuation.separator.key-value.mermaid
   "red" support.constant.property-value.mermaid
-  ";" punctuation.terminator.statement.mermaid
+  ";" punctuation.separator.semicolon.mermaid
 > A ||--O{ B : x
   "A" variable.mermaid
   "||" keyword.operator.arrow.mermaid
@@ -486,5 +486,33 @@
   "Ignored" variable.mermaid
   "{" keyword.operator.block.begin.mermaid
   "``" comment.block.ignored.mermaid
+  "}" keyword.operator.block.end.mermaid
+> 12
+  "12" variable.mermaid
+> 2.5
+  "2.5" variable.mermaid
+> classDef a fi ll:red
+  "classDef" keyword.control.mermaid
+  "a" variable.mermaid
+  "fi ll" support.type.property-name.mermaid
+  ":" punctuation.separator.key-value.mermaid
+  "red" support.constant.property-value.mermaid
+> classDef c étoile:red
+  "classDef" keyword.control.mermaid
+  "c" variable.mermaid
+  "étoile" support.type.property-name.mermaid
+  ":" punctuation.separator.key-value.mermaid
+  "red" support.constant.property-value.mermaid
+> classDef c *:red
+  "classDef" keyword.control.mermaid
+  "c" variable.mermaid
+  "*" support.type.property-name.mermaid
+  ":" punctuation.separator.key-value.mermaid
+  "red" support.constant.property-value.mermaid
+> TildeName { int values~T~ }
+  "TildeName" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+  "int" entity.name.type.mermaid
+  "values~T~" variable.mermaid
   "}" keyword.operator.block.end.mermaid
 > 

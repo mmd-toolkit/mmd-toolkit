@@ -29,9 +29,9 @@
   ":::" punctuation.separator.class.mermaid
   "entry" variable.mermaid
   "icon" keyword.control.mermaid
-  "(" punctuation.section.parens.begin.mermaid
-  "fa:file" variable.mermaid
-  ")" punctuation.section.parens.end.mermaid
+  "(" punctuation.section.icon.begin.mermaid
+  "fa:file" string.unquoted.mermaid
+  ")" punctuation.section.icon.end.mermaid
   "##" storage.modifier.mermaid
   " main entry" string.unquoted.mermaid
 > └── utils
@@ -64,9 +64,9 @@
   "└──" keyword.operator.mermaid
   " Item" string.unquoted.mermaid
   "icon" keyword.control.mermaid
-  "(" punctuation.section.parens.begin.mermaid
-  "fa:file" variable.mermaid
-  ")" punctuation.section.parens.end.mermaid
+  "(" punctuation.section.icon.begin.mermaid
+  "fa:file" string.unquoted.mermaid
+  ")" punctuation.section.icon.end.mermaid
   "%% icon comment" comment.line.percentage.mermaid
 > ├── "a<b title="x">y</b>" :::%%{wrap}%%html
   "├──" keyword.operator.mermaid
@@ -102,15 +102,15 @@
   "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
   "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
-  "(" punctuation.section.parens.begin.mermaid
+  "(" punctuation.section.icon.begin.mermaid
   "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
   "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
-  "fa:file" variable.mermaid
+  "fa:file" string.unquoted.mermaid
   "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
   "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
-  ")" punctuation.section.parens.end.mermaid
+  ")" punctuation.section.icon.end.mermaid
 > ├── Text %%{wrap}%%##a%%{wrap}%%b
   "├──" keyword.operator.mermaid
   " Text" string.unquoted.mermaid
@@ -184,9 +184,9 @@
   "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
   "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
-  "(" punctuation.section.parens.begin.mermaid
-  "fa:file" variable.mermaid
-  ")" punctuation.section.parens.end.mermaid
+  "(" punctuation.section.icon.begin.mermaid
+  "fa:file" string.unquoted.mermaid
+  ")" punctuation.section.icon.end.mermaid
 > 
 > %%{wrap}%%"prefix ├── Tail"
   "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
@@ -201,15 +201,15 @@
   "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
   "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
-  "(" punctuation.section.parens.begin.mermaid
+  "(" punctuation.section.icon.begin.mermaid
   "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
   "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
-  "fa:file" variable.mermaid
+  "fa:file" string.unquoted.mermaid
   "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
   "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
-  ")" punctuation.section.parens.end.mermaid
+  ")" punctuation.section.icon.end.mermaid
 > joined%%{wrap}%%icon(fa:file)
   "joined" string.unquoted.mermaid
   "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
@@ -223,4 +223,12 @@
   "'" string.quoted.single.mermaid punctuation.definition.string.end.mermaid
 > ───
   "───" comment.block.ignored.mermaid
+> │
+  "│" comment.block.ignored.mermaid
+> ┃
+  "┃" comment.block.ignored.mermaid
+>   │  
+  "  │  " comment.block.ignored.mermaid
+>   ┃  
+  "  ┃  " comment.block.ignored.mermaid
 > 

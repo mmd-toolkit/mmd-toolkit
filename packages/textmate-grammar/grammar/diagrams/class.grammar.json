@@ -6,7 +6,7 @@
   ],
   "repository": {
     "class": {
-      "comment": "Detection.md entry 9: `classDiagram`, exact. The grammar then reads the header keyword again, `classDiagram-v2` or `classDiagram`, not followed by a word character. class.md#detection: Detection only looks at the detection point (see [Diagram detection](../common.md#diagram-detection)). The grammar then reads the header keyword again, `classDiagram-v2` or `classDiagram`, not followed by a word character (see [The statement context](#the-statement-context)), and then a `newline` unit. So `classDiagram-v2` is a header of the same diagram, while `classDiagramX`, `classDiagram-v3`, and `classDiagram class A` are detected as class diagrams and rejected. The header alone is rejected too, because the grammar needs at least one statement.",
+      "comment": "Detection.md entry 9: `classDiagram`, exact. The grammar then reads the header keyword again, `classDiagram-v2` or `classDiagram`, not followed by a word character. Follows class.md#detection.",
       "begin": "{{diagramStart}}(classDiagram-v2|classDiagram){{wordEnd}}",
       "beginCaptures": {
         "1": {
@@ -46,12 +46,15 @@
           "include": "#class-call"
         },
         {
+          "include": "#class-member-label"
+        },
+        {
           "include": "#class-shared"
         }
       ]
     },
     "class-direction": {
-      "comment": "TB, BT, RL and LR are tried in this order, at the last direction for that value; the surrounding runs are direction-text. directives inside direction-text join its parts; between direction and the value they are trivia. A directive is read whole, so its argument cannot supply direction or its value. Runs stop before separator-led common comments, and padding never consumes their separator. class.md#the-statement-context: A **direction line** (see below). common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "comment": "TB, BT, RL and LR are tried in this order, at the last direction for that value; the surrounding runs are direction-text. directives inside direction-text join its parts; between direction and the value they are trivia. A directive is read whole, so its argument cannot supply direction or its value. Runs stop before separator-led common comments, and padding never consumes their separator. Follows class.md#the-statement-context.",
       "match": "{{class-direction-head}}(TB)({{class-direction-tail}})|{{class-direction-head}}(BT)({{class-direction-tail}})|{{class-direction-head}}(RL)({{class-direction-tail}})|{{class-direction-head}}(LR)({{class-direction-tail}})",
       "captures": {
         "1": {
@@ -165,7 +168,7 @@
       }
     },
     "class-comment": {
-      "comment": "Rule 2: A native percent pair starts a comment through line feed; permits directives between the mark characters and inside comment text. End before a separator-led common comment, whose following directives remain comment text. class.md#the-statement-context: A **direction line** (see below). common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "comment": "Rule 2: A native percent pair starts a comment through line feed; permits directives between the mark characters and inside comment text. End before a separator-led common comment, whose following directives remain comment text. Follows class.md#the-statement-context.",
       "match": "{{nonDirectivePercentPair}}(?:{{directive}}|(?!{{directiveStart}}|{{lineValueEnd}})[^\\r\\n])*",
       "name": "comment.line.percentage.mermaid",
       "captures": {
@@ -179,7 +182,7 @@
       }
     },
     "class-declaration": {
-      "comment": "Rule 14 and the bounded keyword class enters the class context, which reads strings, whitespace, a member body and the shared rules until a line feed; } can also close a namespace. class.md#the-statement-context: **The direction line.** From the current position: a run of characters without line feeds, U+2028, or U+2029, the longest one that the rest can follow; then `direction`; then one or more whitespace characters, line feeds included; then one of `TB`, `BT`, `RL`, and `LR`; and then every character up to the next line feed, which is not included. The rule reads the characters before `direction` as a `direction-text` unit, `direction` as a `direction` unit, the value as a `direction-value` unit, and the characters after the value as another `direction-text` unit; a `direction-text` unit that would be empty or all whitespace is left out. mermaid.js does not read the `direction-text` units. The values are tried in the order given: if the line has `direction` followed by `TB` anywhere, the value is `TB`; otherwise `BT` is tried, and so on. For a value, the lexer takes the last `direction` of the run that it follows, and the unit ends at the end of the line on which the value stands. So `direction TB x direction TB` is read at its last `direction`, and `direction TB x` is a `direction-text` unit.",
+      "comment": "Rule 14 and the bounded keyword class enters the class context, which reads strings, whitespace, a member body and the shared rules until a line feed; } can also close a namespace. Follows class.md#the-statement-context.",
       "begin": "(class){{wordEnd}}",
       "beginCaptures": {
         "1": {
@@ -203,7 +206,7 @@
       ]
     },
     "class-namespace": {
-      "comment": "And namespace enters the name context; { enters a body holding class statements, notes and nested namespaces, and } closes it. The header and body share only the rules listed there. class.md#the-namespace-context: The `{` must be on the line of the name: `namespace A`, a line break, and `{` is rejected.",
+      "comment": "And namespace enters the name context; { enters a body holding class statements, notes and nested namespaces, and } closes it. The header and body share only the rules listed there. Follows class.md#the-namespace-context and class.md#namespaces.",
       "begin": "(namespace){{wordEnd}}",
       "beginCaptures": {
         "1": {
@@ -230,7 +233,7 @@
       ]
     },
     "class-members": {
-      "comment": "Read the class-members form. class.md#the-member-context: So a member line ends at a line feed, `{`, or `}`: `class A { +x }` has the member `+x`, and `class A {+x`, a line break, and `+y}` the members `+x` and `+y`.",
+      "comment": "Read the class-members form. Follows class.md#the-member-context.",
       "begin": "\\{",
       "beginCaptures": {
         "0": {
@@ -251,99 +254,22 @@
           "include": "#directive"
         },
         {
-          "comment": "Rule 1: Trimmed member text beginning with << and ending with >> is an annotation; percent characters and directives belong to its annotation-name. class.md#member-lines: The member text starts with `<<` and ends with `>>`: an **annotation line**. `<<` and `>>` are units named by their text, and the text between them, when it is not empty, is an `annotation-name` unit, whitespace included.",
-          "match": "{{class-value-padding}}(<<)((?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^{}\\r\\n])*?)(>>){{class-value-padding}}{{class-member-end}}",
+          "comment": "Bound a body member at a brace or physical line end, then apply the shared member division. Follows class.md#the-member-context.",
+          "match": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^{}\\r\\n])+",
           "captures": {
-            "1": {
-              "name": "punctuation.definition.annotation.begin.mermaid"
-            },
-            "2": {
-              "name": "storage.modifier.mermaid",
+            "0": {
               "patterns": [
                 {
-                  "include": "#directive"
+                  "include": "#class-member-line"
                 }
               ]
-            },
-            "3": {
-              "name": "punctuation.definition.annotation.end.mermaid"
             }
           }
-        },
-        {
-          "comment": "Only a member whose first non-whitespace character is not ) and that contains ) is a method line. Classify the whole member before looking for its first divisible segment; an attribute stays an attribute across line and paragraph separators. class.md#member-lines: mermaid.js divides a method line with a pattern whose characters do not match U+2028 and U+2029, and reads one part of the line. When a method line has either character, the parts of its member text between them are its **segments**, and the division above is applied to the first segment that can be divided, instead of to the whole member text. A segment is divided as it is written, with the whitespace at its start: a visibility mark is set apart only when it is the first character of the segment, and a `(` after that whitespace is not the first character. `x`, U+2028, and `+b(c)` is the method `b` with the visibility `+`, while `x`, U+2028, and ` +b(c)` is the method `+b` without visibility, and `x`, U+2028, and ` (c)` is a method whose name is the space before the `(`.",
-          "begin": "(?!{{class-value-padding}}\\))(?=(?:{{class-member-character}})*\\))",
-          "end": "{{class-member-end}}",
-          "patterns": [
-            {
-              "include": "#comment-line"
-            },
-            {
-              "include": "#class-method-segment"
-            },
-            {
-              "include": "#directive"
-            },
-            {
-              "comment": "Retain text before the first divisible method segment. class.md#member-lines: mermaid.js divides a method line with a pattern whose characters do not match U+2028 and U+2029, and reads one part of the line. When a method line has either character, the parts of its member text between them are its **segments**, and the division above is applied to the first segment that can be divided, instead of to the whole member text. A segment is divided as it is written, with the whitespace at its start: a visibility mark is set apart only when it is the first character of the segment, and a `(` after that whitespace is not the first character. `x`, U+2028, and `+b(c)` is the method `b` with the visibility `+`, while `x`, U+2028, and ` +b(c)` is the method `+b` without visibility, and `x`, U+2028, and ` (c)` is a method whose name is the space before the `(`.",
-              "match": "(?:{{class-member-segment-character}})+",
-              "captures": {
-                "0": {
-                  "name": "comment.block.ignored.mermaid",
-                  "patterns": [
-                    {
-                      "include": "#directive"
-                    }
-                  ]
-                }
-              }
-            }
-          ]
-        },
-        {
-          "comment": "Read an attribute's visibility, name, and classifier without interpreting keyword-looking member text as statements. class.md#member-lines: mermaid.js reads a member line as one text and divides it into its parts when it adds the member ([`addMember`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/classDb.ts#L277-L297), [`ClassMember`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/classTypes.ts#L80-L134)). The division depends on the text alone, so the lexer makes it, and each part is a unit. The whitespace at the ends of the line belongs to no unit; a line of only whitespace makes a `blank-member` unit, which no node holds. The rest, the **member text**, is divided by the first of these that applies:",
-          "begin": "(?!{{separatorCommentEnd}})(?=[^{}\\r\\n])",
-          "end": "{{class-member-end}}",
-          "patterns": [
-            {
-              "include": "#comment-line"
-            },
-            {
-              "include": "#directive"
-            },
-            {
-              "comment": "Read an attribute's visibility, name, and trailing classifier. class.md#member-lines: An attribute line is divided into a `visibility` unit for a visibility mark at its start, a `classifier` unit for a classifier mark at its end, and the `member-name` unit of its member name text.",
-              "match": "\\G({{class-value-padding}})([+#~\\-])?((?:{{class-member-character}})*?)([$*])?{{class-value-padding}}{{class-member-end}}",
-              "captures": {
-                "1": {
-                  "patterns": [
-                    {
-                      "include": "#directive"
-                    }
-                  ]
-                },
-                "2": {
-                  "name": "storage.modifier.mermaid"
-                },
-                "3": {
-                  "name": "variable.mermaid",
-                  "patterns": [
-                    {
-                      "include": "#directive"
-                    }
-                  ]
-                },
-                "4": {
-                  "name": "storage.modifier.mermaid"
-                }
-              }
-            }
-          ]
         }
       ]
     },
     "class-style": {
-      "comment": "Style is followed by a word and styles; classDef by a comma-separated list of words and styles. Styles consist of word, colon, hash, percent, style and label units. A label retains its internal commas as text. class.md#other-statements: The id after `style` and the names after `classDef` are each one word: `style A-B fill:red` is rejected. A style is made of words, `:`, `#`, `%`, the keyword `style`, and labels; a `-` outside a label is not part of it, so `style A stroke-width:2px` is rejected, while `style A fill:#f00,stroke-width:2px` is accepted, because the `-` lies in the label `:#f00,stroke-width`.",
+      "comment": "Style is followed by a word and styles; classDef by a comma-separated list of words and styles. Styles consist of word, colon, hash, percent, style and label units. A label retains its internal commas as text. Follows class.md#other-statements.",
       "begin": "(style|classDef){{wordEnd}}({{class-value-padding}})([A-Za-z0-9_]+(?:{{directives}},{{class-value-padding}}[A-Za-z0-9_]+)*)({{class-value-padding}})",
       "beginCaptures": {
         "1": {
@@ -387,8 +313,8 @@
           "include": "#class-acc-descr-block"
         },
         {
-          "comment": "Read a style property name before its colon. class.md#other-statements: The text of a note, the URL of a link, the function name of `callback`, and the ids of `cssClass` are strings that are not empty; the second string of a click statement, its tooltip, may be empty.",
-          "match": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[A-Za-z0-9_-])+(?={{gap}}:)",
+          "comment": "Read a style property name before its colon. Follows class.md#other-statements.",
+          "match": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}}|accDescr{{gap}}\\{)[^,:\\r\\n])+(?=:)",
           "captures": {
             "0": {
               "name": "support.type.property-name.mermaid",
@@ -401,14 +327,14 @@
           }
         },
         {
-          "comment": "Read the colon and the entire property value, including color and numeric text. class.md#other-statements: The text of a note, the URL of a link, the function name of `callback`, and the ids of `cssClass` are strings that are not empty; the second string of a click statement, its tooltip, may be empty.",
+          "comment": "Read one whole style property value, leaving trailing whitespace outside its scope. Follows class.md#other-statements.",
           "begin": "(:)",
           "beginCaptures": {
             "1": {
               "name": "punctuation.separator.key-value.mermaid"
             }
           },
-          "end": "(?=,)|{{lineValueEnd}}",
+          "end": "{{class-style-value-end}}",
           "contentName": "support.constant.property-value.mermaid",
           "patterns": [
             {
@@ -417,33 +343,26 @@
           ]
         },
         {
-          "comment": "Read the comma between styles. class.md#other-statements: The text of a note, the URL of a link, the function name of `callback`, and the ids of `cssClass` are strings that are not empty; the second string of a click statement, its tooltip, may be empty.",
-          "match": ",",
-          "name": "punctuation.separator.comma.mermaid"
+          "include": "#class-comma"
         },
         {
-          "match": "style{{wordEnd}}",
-          "name": "keyword.control.mermaid",
-          "comment": "Read a whole style keyword unit. class.md#the-statement-context: The keywords `style` and `classDef`: a unit named by the keyword."
-        },
-        {
-          "comment": "Read a style without a colon as its complete value. class.md#other-statements: The id after `style` and the names after `classDef` are each one word: `style A-B fill:red` is rejected. A style is made of words, `:`, `#`, `%`, the keyword `style`, and labels; a `-` outside a label is not part of it, so `style A stroke-width:2px` is rejected, while `style A fill:#f00,stroke-width:2px` is accepted, because the `-` lies in the label `:#f00,stroke-width`.",
-          "match": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}}|accDescr{{gap}}\\{)[^,:\\r\\n])+",
-          "captures": {
-            "0": {
-              "name": "support.constant.property-value.mermaid",
-              "patterns": [
-                {
-                  "include": "#directive"
-                }
-              ]
+          "comment": "Read a whole style without a colon, leaving trailing whitespace and a following description block outside its value. Follows class.md#other-statements and class.md#empty-description-blocks.",
+          "begin": "(?![{{ws}}]|[:,;]|accDescr{{gap}}\\{|{{directiveStart}}|{{separatorCommentEnd}})(?=.)",
+          "end": "{{class-style-value-end}}",
+          "contentName": "support.constant.property-value.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#entity"
             }
-          }
+          ]
         }
       ]
     },
     "class-shared": {
-      "comment": "Class, namespace and statement contexts share the listed strings, keywords, names, labels, generics, relation ends and punctuation. class.md#the-shared-rules: The keyword `note for`, with one space between the two words: a `note` unit and a `for` unit. The keywords `cssClass`, `callback`, `link`, `click`, and `note`: a unit named by the keyword.",
+      "comment": "Class, namespace and statement contexts share the listed strings, keywords, names, labels, generics, relation ends and punctuation. Follows class.md#the-shared-rules.",
       "patterns": [
         {
           "include": "#class-string"
@@ -452,7 +371,7 @@
           "include": "#class-backquote"
         },
         {
-          "comment": "The keyword note for has exactly one space between its words; directives next to that space lie between the note and for units. class.md#the-shared-rules: The keyword `note for`, with one space between the two words: a `note` unit and a `for` unit. The keywords `cssClass`, `callback`, `link`, `click`, and `note`: a unit named by the keyword.",
+          "comment": "The keyword note for has exactly one space between its words; directives next to that space lie between the note and for units. Follows class.md#the-shared-rules.",
           "match": "(note)({{spaceSeparator}})(for){{wordEnd}}",
           "captures": {
             "1": {
@@ -471,12 +390,12 @@
           }
         },
         {
-          "comment": "Items 1, 3 and 6: bounded note for (with one space), cssClass, callback, link, click, note, href and the four link targets are units named by the keyword. class.md#the-shared-rules: The keyword `note for`, with one space between the two words: a `note` unit and a `for` unit. The keywords `cssClass`, `callback`, `link`, `click`, and `note`: a unit named by the keyword.",
+          "comment": "Read the bounded statement keywords and href. Follows class.md#the-shared-rules.",
           "match": "(cssClass|callback|link|click|note|href){{wordEnd}}",
           "name": "keyword.control.mermaid"
         },
         {
-          "comment": "Read one of the four fixed link targets. class.md#the-shared-rules: The keyword `note for`, with one space between the two words: a `note` unit and a `for` unit. The keywords `cssClass`, `callback`, `link`, `click`, and `note`: a unit named by the keyword.",
+          "comment": "Read one of the four fixed link targets. Follows class.md#the-shared-rules.",
           "match": "(_self|_blank|_parent|_top){{wordEnd}}",
           "name": "constant.language.mermaid"
         },
@@ -487,7 +406,7 @@
           "include": "#class-label"
         },
         {
-          "comment": "Item 2: << and >> are units named by their text. class.md#the-shared-rules: The keyword `note for`, with one space between the two words: a `note` unit and a `for` unit. The keywords `cssClass`, `callback`, `link`, `click`, and `note`: a unit named by the keyword.",
+          "comment": "Item 2: << and >> are units named by their text. Follows class.md#the-shared-rules.",
           "begin": "<<",
           "beginCaptures": {
             "0": {
@@ -508,26 +427,55 @@
           ]
         },
         {
-          "comment": "Items 7 and 8: relation ends are <|, |>, >, <, *, bounded o and (); a line is -- or two dots. class.md#the-shared-rules: The keyword `note for`, with one space between the two words: a `note` unit and a `for` unit. The keywords `cssClass`, `callback`, `link`, `click`, and `note`: a unit named by the keyword.",
-          "match": "<\\||\\|>|--|\\.\\.|[<>*]|o{{wordEnd}}|\\(\\)",
-          "name": "keyword.operator.arrow.mermaid"
+          "comment": "Read a relation tail with labels and accessibility description blocks. Follows class.md#the-shared-rules and class.md#the-statement-context.",
+          "begin": "<\\||\\|>|--|\\.\\.|[<>*]|o{{wordEnd}}|\\(\\)",
+          "beginCaptures": {
+            "0": {
+              "name": "keyword.operator.arrow.mermaid"
+            }
+          },
+          "end": "(?=;)|{{lineValueEnd}}",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#class-comment"
+            },
+            {
+              "include": "#class-acc-descr-block"
+            },
+            {
+              "include": "#class-shared"
+            }
+          ]
         },
         {
-          "comment": "Item 10: ::: is a unit named by its text. class.md#the-shared-rules: The keyword `note for`, with one space between the two words: a `note` unit and a `for` unit. The keywords `cssClass`, `callback`, `link`, `click`, and `note`: a unit named by the keyword.",
+          "comment": "Item 10: ::: is a unit named by its text. Follows class.md#the-shared-rules.",
           "match": ":::",
           "name": "punctuation.separator.class.mermaid"
         },
         {
-          "comment": "Item 13: [ and ] are units named by their text. class.md#the-shared-rules: The keyword `note for`, with one space between the two words: a `note` unit and a `for` unit. The keywords `cssClass`, `callback`, `link`, `click`, and `note`: a unit named by the keyword.",
-          "match": "\\[|\\]",
-          "name": "punctuation.definition.label.mermaid"
+          "comment": "Item 13: [ and ] are units named by their text. Follows class.md#the-shared-rules.",
+          "match": "(\\[)|(\\])",
+          "captures": {
+            "1": {
+              "name": "punctuation.definition.label.begin.mermaid"
+            },
+            "2": {
+              "name": "punctuation.definition.label.end.mermaid"
+            }
+          }
         },
         {
-          "comment": "Rule 3 and rule 7: whitespace lies between name parts and belongs to no unit. class.md#the-class-context: The statement context's own rules do not apply here: `class A %% c` and `class A : x` are rejected.",
+          "comment": "Rule 3 and rule 7: whitespace lies between name parts and belongs to no unit. Follows class.md#units-and-contexts.",
           "match": "(?:(?!{{separatorCommentEnd}})[{{ws}}])+"
         },
         {
-          "comment": "Words, hyphens and Unicode letters are name parts, optionally separated by a dot; digit runs are words, not numeric units. Name parts are consumed whole so keyword suffixes are not recolored. class.md#class-names: A class name is made of name parts, with whitespace or a `.` between them, and may end with a backquoted name and a generic type. The whitespace between the parts is not part of the name: `class Foo Bar` declares the class `FooBar`, and `A - B --> C` has a relation from `A-B`.",
+          "comment": "Words, hyphens and Unicode letters are name parts, optionally separated by a dot; digit runs are words, not numeric units. Name parts are consumed whole so keyword suffixes are not recolored. Follows class.md#class-names.",
           "match": "(?:[A-Za-z0-9_]|{{directive}})+|[-.]|(?!{{separatorCommentEnd}})[^\\x{00}-\\x{7F}]",
           "captures": {
             "0": {
@@ -545,13 +493,13 @@
     "class-string": {
       "patterns": [
         {
-          "comment": "A double quote starts a string ending at the next double quote, with no escape mechanism. class.md#strings-backquoted-names-and-generic-types: A `\"` (rule 11 of the statement context, and rule 1 of the class, member, namespace, and namespace body contexts) starts a string: the `\"`, the characters up to the next `\"`, line feeds included, and that `\"` are a `string` unit. The string is **empty** when nothing is between the quotes. A string may span lines, and `;` and `#` are characters of it. When the text has no `\"` after the first, the input is rejected.",
+          "comment": "A double quote starts a string ending at the next double quote, with no escape mechanism. Follows class.md#strings-backquoted-names-and-generic-types.",
           "include": "#string-plain-double"
         }
       ]
     },
     "class-backquote": {
-      "comment": "A backquote starts a unit whose text runs to the next matching delimiter, with no escape mechanism. class.md#strings-backquoted-names-and-generic-types: A `\"` (rule 11 of the statement context, and rule 1 of the class, member, namespace, and namespace body contexts) starts a string: the `\"`, the characters up to the next `\"`, line feeds included, and that `\"` are a `string` unit. The string is **empty** when nothing is between the quotes. A string may span lines, and `;` and `#` are characters of it. When the text has no `\"` after the first, the input is rejected.",
+      "comment": "A backquote starts a unit whose text runs to the next matching delimiter, with no escape mechanism. Follows class.md#strings-backquoted-names-and-generic-types.",
       "begin": "`",
       "beginCaptures": {
         "0": {
@@ -572,7 +520,7 @@
           "include": "#directive"
         },
         {
-          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. class.md#strings-backquoted-names-and-generic-types: A backquoted name and the text of a generic type may start with any character. In its backquote and generic states, the lexer of mermaid.js tries the rules for `\"`, for `~` (in a backquote), for `<<` and `>>`, and for the keywords `cssClass`, `callback`, `link`, `click`, `note`, and `href` before its rule for the text ([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L89-L112)). Where the text starts with one of these, which for a keyword means that no word character follows it, mermaid.js reads that unit instead of a name, and reads the text only after it. These inputs are the known divergence `name-start-reads-unit` (see [Known divergences](#known-divergences)). So ``class `note` ``, which writes the keyword `note` as a class name with backquotes, declares the class `note` here, while mermaid.js rejects it; `` class `\"x` `` and `class A~note x~` are accepted here with the name `\"x` and the type `note x`. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. Follows class.md#strings-backquoted-names-and-generic-types.",
           "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^`])+",
           "name": "variable.mermaid",
           "captures": {
@@ -588,7 +536,7 @@
       ]
     },
     "class-generic": {
-      "comment": "~ enters the generic context; another ~ leaves it, and other characters form generic-text. class.md#strings-backquoted-names-and-generic-types: A `~` (shared rule 4) is a `~` unit and enters the generic context. There, `~` is a `~` unit and leaves the context, and one or more other characters, line feeds included, are a `generic-text` unit.",
+      "comment": "~ enters the generic context; another ~ leaves it, and other characters form generic-text. Follows class.md#strings-backquoted-names-and-generic-types.",
       "begin": "~",
       "beginCaptures": {
         "0": {
@@ -609,7 +557,7 @@
           "include": "#directive"
         },
         {
-          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. class.md#strings-backquoted-names-and-generic-types: A backquoted name and the text of a generic type may start with any character. In its backquote and generic states, the lexer of mermaid.js tries the rules for `\"`, for `~` (in a backquote), for `<<` and `>>`, and for the keywords `cssClass`, `callback`, `link`, `click`, `note`, and `href` before its rule for the text ([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L89-L112)). Where the text starts with one of these, which for a keyword means that no word character follows it, mermaid.js reads that unit instead of a name, and reads the text only after it. These inputs are the known divergence `name-start-reads-unit` (see [Known divergences](#known-divergences)). So ``class `note` ``, which writes the keyword `note` as a class name with backquotes, declares the class `note` here, while mermaid.js rejects it; `` class `\"x` `` and `class A~note x~` are accepted here with the name `\"x` and the type `note x`. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. Follows class.md#strings-backquoted-names-and-generic-types.",
           "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^~])+",
           "name": "entity.name.type.mermaid",
           "captures": {
@@ -625,7 +573,7 @@
       ]
     },
     "class-label": {
-      "comment": "Item 9: colon and one or more characters other than colon, semicolon and line feed make a label; percent pairs and keyword-like words are label text. class.md#the-shared-rules: The keyword `note for`, with one space between the two words: a `note` unit and a `for` unit. The keywords `cssClass`, `callback`, `link`, `click`, and `note`: a unit named by the keyword.",
+      "comment": "Item 9: colon and one or more characters other than colon, semicolon and line feed make a label; percent pairs and keyword-like words are label text. Follows class.md#the-shared-rules.",
       "begin": "(:)(?={{directives}}(?:{{entity}}|[^:;\\r\\n]))",
       "beginCaptures": {
         "1": {
@@ -641,7 +589,7 @@
           "include": "#directive"
         },
         {
-          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. class.md#the-shared-rules: The keyword `note for`, with one space between the two words: a `note` unit and a `for` unit. The keywords `cssClass`, `callback`, `link`, `click`, and `note`: a unit named by the keyword. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. Follows class.md#the-shared-rules.",
           "match": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^:;\\r\\n])+",
           "name": "string.unquoted.mermaid",
           "captures": {
@@ -660,31 +608,8 @@
       ]
     },
     "class-call": {
-      "comment": "Callback-name is one or more characters other than (, so ) is part of the name; ( enters arguments and the first ) after it closes the callback. Directives inside the name and arguments join their text. class.md#the-callback-contexts: In the callback arguments context, `)` is a `)` unit and leaves the context, and one or more other characters, line feeds included, are a `callback-arguments` unit. A callback name and its arguments may therefore span lines.",
-      "begin": "(call)({{class-required-padding}})((?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^(\\r\\n])+)(\\()",
-      "beginCaptures": {
-        "1": {
-          "name": "keyword.control.mermaid"
-        },
-        "2": {
-          "patterns": [
-            {
-              "include": "#directive"
-            }
-          ]
-        },
-        "3": {
-          "name": "entity.name.function.mermaid",
-          "patterns": [
-            {
-              "include": "#directive"
-            }
-          ]
-        },
-        "4": {
-          "name": "punctuation.section.arguments.begin.mermaid"
-        }
-      },
+      "comment": "Read a callback name and its argument text in successive contexts, retaining the name's physical lines. Follows class.md#the-callback-contexts.",
+      "begin": "(?=call{{class-required-padding}})",
       "end": "(\\))",
       "endCaptures": {
         "1": {
@@ -693,13 +618,16 @@
       },
       "patterns": [
         {
+          "include": "#class-callback-name"
+        },
+        {
           "include": "#comment-line"
         },
         {
           "include": "#directive"
         },
         {
-          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. class.md#the-callback-contexts: `(`, zero or more whitespace, and `)`: a `(` unit and a `)` unit; leaves the context. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. Follows class.md#the-callback-contexts.",
           "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^)])+",
           "name": "string.unquoted.mermaid",
           "captures": {
@@ -715,7 +643,7 @@
       ]
     },
     "class-acc-descr-block": {
-      "comment": "Read the class-acc-descr-block form. class.md#the-statement-context: **The direction line.** From the current position: a run of characters without line feeds, U+2028, or U+2029, the longest one that the rest can follow; then `direction`; then one or more whitespace characters, line feeds included; then one of `TB`, `BT`, `RL`, and `LR`; and then every character up to the next line feed, which is not included. The rule reads the characters before `direction` as a `direction-text` unit, `direction` as a `direction` unit, the value as a `direction-value` unit, and the characters after the value as another `direction-text` unit; a `direction-text` unit that would be empty or all whitespace is left out. mermaid.js does not read the `direction-text` units. The values are tried in the order given: if the line has `direction` followed by `TB` anywhere, the value is `TB`; otherwise `BT` is tried, and so on. For a value, the lexer takes the last `direction` of the run that it follows, and the unit ends at the end of the line on which the value stands. So `direction TB x direction TB` is read at its last `direction`, and `direction TB x` is a `direction-text` unit.",
+      "comment": "Read the class-acc-descr-block form. Follows class.md#the-statement-context.",
       "begin": "(accDescr)({{class-value-padding}})(\\{)({{class-value-padding}})",
       "beginCaptures": {
         "1": {
@@ -753,7 +681,7 @@
           "include": "#directive"
         },
         {
-          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. class.md#accessibility-values: In the title context and in the description context, the rest of the line, which may be empty, is a `title-text` or `description-text` unit, and the context is left; `#` and `;` are characters of it. In the description block context, `}` is a `}` unit and leaves the context, and one or more other characters are a `description-block-text` unit. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. Follows class.md#accessibility-values and common.md#comment-lines.",
           "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^}])+",
           "name": "string.unquoted.mermaid",
           "captures": {
@@ -769,7 +697,7 @@
       ]
     },
     "class-accessibility-line": {
-      "comment": "Read the class-accessibility-line form. class.md#the-statement-context: **The direction line.** From the current position: a run of characters without line feeds, U+2028, or U+2029, the longest one that the rest can follow; then `direction`; then one or more whitespace characters, line feeds included; then one of `TB`, `BT`, `RL`, and `LR`; and then every character up to the next line feed, which is not included. The rule reads the characters before `direction` as a `direction-text` unit, `direction` as a `direction` unit, the value as a `direction-value` unit, and the characters after the value as another `direction-text` unit; a `direction-text` unit that would be empty or all whitespace is left out. mermaid.js does not read the `direction-text` units. The values are tried in the order given: if the line has `direction` followed by `TB` anywhere, the value is `TB`; otherwise `BT` is tried, and so on. For a value, the lexer takes the last `direction` of the run that it follows, and the unit ends at the end of the line on which the value stands. So `direction TB x direction TB` is read at its last `direction`, and `direction TB x` is a `direction-text` unit. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "comment": "Read the class-accessibility-line form. Follows class.md#the-statement-context and class.md#accessibility-values.",
       "begin": "(accTitle|accDescr)({{class-value-padding}})(:)({{class-value-padding}})",
       "beginCaptures": {
         "1": {
@@ -802,12 +730,12 @@
       ]
     },
     "class-comma": {
-      "comment": "Commas separate classDef names and styles. class.md#other-statements: The id after `style` and the names after `classDef` are each one word: `style A-B fill:red` is rejected. A style is made of words, `:`, `#`, `%`, the keyword `style`, and labels; a `-` outside a label is not part of it, so `style A stroke-width:2px` is rejected, while `style A fill:#f00,stroke-width:2px` is accepted, because the `-` lies in the label `:#f00,stroke-width`.",
+      "comment": "Commas separate classDef names and styles. Follows class.md#the-statement-context.",
       "match": ",",
       "name": "punctuation.separator.comma.mermaid"
     },
     "class-namespace-body": {
-      "comment": "Only the body enables class declarations; namespace names use the namespace context and shared rules. class.md#the-namespace-body-context: After the `}` of a body, the lexer is back in the namespace context, which the line feed after the `}` leaves. The statement context's own rules do not apply in a body: a comment after a note there is rejected, and so are `style` and the direction line.",
+      "comment": "Only the body enables class declarations; namespace names use the namespace context and shared rules. Follows class.md#the-namespace-body-context.",
       "begin": "\\{",
       "beginCaptures": {
         "0": {
@@ -839,7 +767,7 @@
       ]
     },
     "class-method-segment": {
-      "comment": "Within a method line, divide its first divisible segment at the last noninitial opening parenthesis before its last closing parenthesis; earlier parentheses are name or parameter text. The enclosing method-line rule has classified the whole member, so an attribute cannot enter this rule. A directive is trivia and not diagram text. Try the segment before the standalone directive so leading directives remain available to its padding capture. class.md#member-lines: An attribute line is divided into a `visibility` unit for a visibility mark at its start, a `classifier` unit for a classifier mark at its end, and the `member-name` unit of its member name text.",
+      "comment": "Within a method line, divide its first divisible segment at the last noninitial opening parenthesis before its last closing parenthesis; earlier parentheses are name or parameter text. The enclosing method-line rule has classified the whole member, so an attribute cannot enter this rule. A directive is trivia and not diagram text. Try the segment before the standalone directive so leading directives remain available to its padding capture. Follows class.md#member-lines.",
       "begin": "(?:\\G|(?<=[{{separators}}])){{class-method}}",
       "beginCaptures": {
         "1": {
@@ -884,8 +812,8 @@
           "include": "#directive"
         },
         {
-          "comment": "Read the classifier and return type after the method's last closing parenthesis. class.md#member-lines: - `+foo(a(b)) int` is the method `foo(a` with the parameters `b)` and the return type `int`.",
-          "match": "\\G([$*])?({{class-value-padding}})((?:{{class-member-segment-character}})*?)([$*])?{{class-value-padding}}(?=[{{separators}}]|{{class-member-end}})",
+          "comment": "Read the classifier and return type after the method's last closing parenthesis. Follows class.md#member-lines.",
+          "match": "\\G([$*])?({{class-value-padding}})((?:{{class-member-segment-character}})*?)(?(1)|([$*])?){{class-value-padding}}(?=[{{separators}}]|{{class-member-end}})",
           "captures": {
             "1": {
               "name": "storage.modifier.mermaid"
@@ -911,7 +839,7 @@
           }
         },
         {
-          "comment": "Retain the unread suffix of a method line as ignored text. class.md#member-lines: A **visibility mark** is one of `+`, `-`, `#`, and `~` at the start of a method or attribute line; a **classifier mark** is `$` or `*`.",
+          "comment": "Retain the unread suffix of a method line as ignored text. Follows class.md#member-lines.",
           "match": "(?:{{class-member-character}})+",
           "captures": {
             "0": {
@@ -927,7 +855,7 @@
       ]
     },
     "class-direction-text": {
-      "comment": "Read the nonblank ignored text around a direction while retaining directives. class.md#the-statement-context: **The direction line.** From the current position: a run of characters without line feeds, U+2028, or U+2029, the longest one that the rest can follow; then `direction`; then one or more whitespace characters, line feeds included; then one of `TB`, `BT`, `RL`, and `LR`; and then every character up to the next line feed, which is not included. The rule reads the characters before `direction` as a `direction-text` unit, `direction` as a `direction` unit, the value as a `direction-value` unit, and the characters after the value as another `direction-text` unit; a `direction-text` unit that would be empty or all whitespace is left out. mermaid.js does not read the `direction-text` units. The values are tried in the order given: if the line has `direction` followed by `TB` anywhere, the value is `TB`; otherwise `BT` is tried, and so on. For a value, the lexer takes the last `direction` of the run that it follows, and the unit ends at the end of the line on which the value stands. So `direction TB x direction TB` is read at its last `direction`, and `direction TB x` is a `direction-text` unit.",
+      "comment": "Read the nonblank ignored text around a direction while retaining directives. Follows class.md#the-statement-context.",
       "patterns": [
         {
           "include": "#directive"
@@ -944,21 +872,177 @@
               ]
             }
           },
-          "comment": "Read a nonblank direction-text unit. class.md#the-statement-context: **The direction line.** From the current position: a run of characters without line feeds, U+2028, or U+2029, the longest one that the rest can follow; then `direction`; then one or more whitespace characters, line feeds included; then one of `TB`, `BT`, `RL`, and `LR`; and then every character up to the next line feed, which is not included. The rule reads the characters before `direction` as a `direction-text` unit, `direction` as a `direction` unit, the value as a `direction-value` unit, and the characters after the value as another `direction-text` unit; a `direction-text` unit that would be empty or all whitespace is left out. mermaid.js does not read the `direction-text` units. The values are tried in the order given: if the line has `direction` followed by `TB` anywhere, the value is `TB`; otherwise `BT` is tried, and so on. For a value, the lexer takes the last `direction` of the run that it follows, and the unit ends at the end of the line on which the value stands. So `direction TB x direction TB` is read at its last `direction`, and `direction TB x` is a `direction-text` unit."
+          "comment": "Read a nonblank direction-text unit. Follows class.md#the-statement-context."
         }
       ]
+    },
+    "class-callback-name": {
+      "comment": "Enter the callback name at call, retain its text across physical lines, and return at the opening parenthesis. Follows class.md#the-callback-contexts.",
+      "begin": "\\G(call)({{class-required-padding}})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "(\\()",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.section.arguments.begin.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^(])+",
+          "name": "entity.name.function.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "comment": "Read callback-name text through physical lines, leaving its opening parenthesis and common comment boundary for their rules. Follows class.md#the-callback-contexts."
+        }
+      ]
+    },
+    "class-member-line": {
+      "comment": "Divide member text identically in a member statement and a class body, after its enclosing rule has bounded the text. Follows class.md#member-lines.",
+      "patterns": [
+        {
+          "comment": "Rule 1: Trimmed member text beginning with << and ending with >> is an annotation; percent characters and directives belong to its annotation-name. Follows class.md#member-lines.",
+          "match": "{{class-value-padding}}(<<)((?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\r\\n])*?)(>>){{class-value-padding}}{{class-member-end}}",
+          "captures": {
+            "1": {
+              "name": "punctuation.definition.annotation.begin.mermaid"
+            },
+            "2": {
+              "name": "storage.modifier.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.definition.annotation.end.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Only a member whose first non-whitespace character is not ) and that contains ) is a method line. Classify the whole member before looking for its first divisible segment; an attribute stays an attribute across line and paragraph separators. Follows class.md#member-lines.",
+          "begin": "(?!{{class-value-padding}}\\))(?=(?:{{class-member-character}})*\\))",
+          "end": "{{class-member-end}}",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#class-method-segment"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Retain text before the first divisible method segment. Follows class.md#member-lines.",
+              "match": "(?:{{class-member-segment-character}})+",
+              "captures": {
+                "0": {
+                  "name": "comment.block.ignored.mermaid",
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "comment": "Read an attribute's visibility, name, and classifier without interpreting keyword-looking member text as statements. Follows class.md#member-lines.",
+          "begin": "(?!{{separatorCommentEnd}})(?=[^\\r\\n])",
+          "end": "{{class-member-end}}",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read an attribute's visibility, name, and trailing classifier. Follows class.md#member-lines.",
+              "match": "\\G({{class-value-padding}})([+#~\\-])?((?:{{class-member-character}})*?)([$*])?{{class-value-padding}}{{class-member-end}}",
+              "captures": {
+                "1": {
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                },
+                "2": {
+                  "name": "storage.modifier.mermaid"
+                },
+                "3": {
+                  "name": "variable.mermaid",
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                },
+                "4": {
+                  "name": "storage.modifier.mermaid"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "class-member-label": {
+      "comment": "Read a member statement's colon and divide its text with the same rules as a body member. Relation tails retain the label rule in their own context. Follows class.md#members-and-annotations.",
+      "match": "(:)((?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^:;\\r\\n])+)",
+      "captures": {
+        "1": {
+          "name": "punctuation.separator.colon.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#class-member-line"
+            }
+          ]
+        }
+      }
     }
   },
   "variables": {
     "class-member-text": "(?:{{class-member-segment-character}})*",
-    "class-member-end": "(?:{{lineValueEnd}}|(?=[{}]))",
+    "class-member-end": "{{lineValueEnd}}",
     "class-direction-head": "({{lineText}})(direction)({{class-required-padding}})",
     "class-direction-tail": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\r\\n])*",
     "class-method": "({{class-value-padding}})(?:(?!{{entity}})([+#~\\-]))?((?:{{class-member-segment-character}})+)(\\()({{class-member-text}})(\\))",
     "class-value-padding": "(?:(?!{{separatorCommentEnd}})(?:[{{ws}}]|{{directive}}))*",
     "class-required-padding": "(?={{requiredGap}}){{class-value-padding}}",
-    "class-member-character": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^{}\\r\\n])",
-    "class-member-segment-character": "(?![{{separators}}]){{class-member-character}}"
+    "class-member-character": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\r\\n])",
+    "class-member-segment-character": "(?![{{separators}}]){{class-member-character}}",
+    "class-style-value-end": "(?={{lineGap}}(?:,|accDescr{{gap}}\\{|$))|{{separatorCommentEnd}}"
   },
-  "comment": "The local padding variables retain the whitespace required by this type's unit rules, stopping before separator-led comments. Text and context variables below name the corresponding rules of this diagram. class.md#lexical-structure: The lexer of mermaid.js for this diagram compares letters as they are written: `Class A` is no class statement but the name `ClassA` alone, and `Note \"x\"` is rejected. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in."
+  "comment": "The local padding variables retain the whitespace required by this type's unit rules, stopping before separator-led comments. Text and context variables below name the corresponding rules of this diagram. Follows class.md#units-and-contexts and class.md#member-lines."
 }

@@ -344,6 +344,30 @@
         ["\"\"", "comment.block.ignored.mermaid"],
         ["state", "comment.block.ignored.mermaid", 3]
       ]
+    },
+    {
+      "code": "stateDiagram\nnote left of A:hi\nnote left of A:h\nnote left of A :hi\nnote left of A  :hi\nnote left of A   :hi\nnote left of A: hi\nnote left of A%%{wrap}%%:hi\nnote left of A %%{wrap}%% :hi\nstyle A fi ll:red\nstyle A étoile:red\nstate f <<fork>>\nnote \"text\" as N\n",
+      "scopes": [
+        ["h", "comment.block.ignored.mermaid", 1],
+        ["i", "string.unquoted.mermaid", 1],
+        ["h", "comment.block.ignored.mermaid", 2],
+        ["hi", "string.unquoted.mermaid", 3],
+        [":", "string.unquoted.mermaid", 4],
+        [":", "string.unquoted.mermaid", 5],
+        [" hi", "string.unquoted.mermaid", 6],
+        ["h", "comment.block.ignored.mermaid", 7],
+        [":", "string.unquoted.mermaid", 8],
+        ["wrap", "entity.name.function.directive.mermaid", 8],
+        ["fi ll", "support.type.property-name.mermaid", 9],
+        ["étoile", "support.type.property-name.mermaid", 10],
+        ["fork", "constant.language.mermaid", 11],
+        ["N", "variable.mermaid", 12],
+        ["\"", "string.quoted.double.mermaid", 12]
+      ],
+      "absent": [
+        [":", "punctuation.separator.colon.mermaid", 4],
+        [":", "punctuation.separator.colon.mermaid", 5]
+      ]
     }
   ]
 }

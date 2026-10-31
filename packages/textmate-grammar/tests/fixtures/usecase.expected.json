@@ -34,7 +34,7 @@
     ["c>", "string.quoted.double.mermaid", 23],
     ["<b title=\"x\">", "string.quoted.double.mermaid", 24],
     ["ConfigHtml", "variable.mermaid", 25],
-    ["<b title=\"x\">", "string.quoted.double.mermaid", 25],
+    ["<b title=\"x\">", "string.unquoted.mermaid", 25],
     ["wrap", "entity.name.function.directive.mermaid", 25],
     ["primary", "variable.mermaid", 26],
     ["fill", "support.type.property-name.mermaid", 26],
@@ -44,9 +44,9 @@
     ["d", "support.constant.property-value.mermaid", 28],
     ["b", "storage.modifier.mermaid", 29],
     ["init", "entity.name.function.directive.mermaid", 29],
-    ["\\", "constant.character.escape.mermaid", 30],
+    ["\\", "string.unquoted.mermaid", 30],
     ["wrap", "entity.name.function.directive.mermaid", 30],
-    ["b", "string.quoted.double.mermaid", 30],
+    ["b", "string.unquoted.mermaid", 30],
     [",", "punctuation.separator.comma.mermaid", 26],
     ["wrap", "entity.name.function.directive.mermaid", 0],
     ["LR", "constant.language.mermaid", 3],
@@ -81,8 +81,8 @@
     ["-->", "keyword.operator.arrow.mermaid", 52],
     ["B", "variable.mermaid", 52],
     ["x", "string.quoted.double.mermaid", 53],
-    ["x", "string.quoted.double.mermaid", 54],
-    ["x", "meta.structure.dictionary.mermaid", 54],
+    ["x", "string.unquoted.mermaid", 54],
+    ["x", "meta.data.mermaid", 54],
     ["style", "string.unquoted.mermaid", 55],
     ["style ", "string.unquoted.mermaid", 56],
     ["<b", "string.unquoted.mermaid", 43],
@@ -104,7 +104,29 @@
     ["{", "punctuation.section.data.begin.mermaid", 13],
     ["Single label", "string.quoted.single.mermaid", 59],
     ["Markdown label", "string.quoted.other.markdown.mermaid", 60],
-    ["#43a047", "support.constant.property-value.mermaid", 61]
+    ["#43a047", "support.constant.property-value.mermaid", 61],
+    ["@", "meta.data.mermaid", 13],
+    ["normal", "constant.language.mermaid", 62],
+    ["hollow", "constant.language.mermaid", 63],
+    ["awesome", "constant.language.mermaid", 64],
+    ["hollow", "string.unquoted.mermaid", 65],
+    ["hollow", "string.quoted.double.mermaid", 66],
+    ["package", "constant.language.mermaid", 67],
+    ["rect", "constant.language.mermaid", 69],
+    ["fast", "constant.language.mermaid", 72],
+    ["slow", "constant.language.mermaid", 74],
+    ["red,blue", "support.constant.property-value.mermaid", 75],
+    ["red,blue", "support.constant.property-value.mermaid", 76],
+    ["foo", "string.unquoted.mermaid", 77],
+    ["-->", "keyword.operator.arrow.mermaid", 77],
+    ["1.5px", "string.unquoted.mermaid", 78],
+    ["-->", "keyword.operator.arrow.mermaid", 78],
+    ["box", "string.unquoted.mermaid", 79],
+    ["\"", "support.constant.property-value.mermaid", 80],
+    ["'", "string.quoted.single.mermaid", 59],
+    ["\"", "string.quoted.double.mermaid", 53],
+    ["\"", "support.constant.property-value.mermaid", 75],
+    ["'", "support.constant.property-value.mermaid", 76]
   ],
   "absent": [
     ["Later", "string.quoted.double.mermaid", 23],
@@ -119,7 +141,9 @@
     ["style", "keyword.control.mermaid", 55],
     ["style ", "keyword.control.mermaid", 56],
     ["-->", "string.unquoted.mermaid", 57],
-    ["Target", "string.unquoted.mermaid", 57]
+    ["Target", "string.unquoted.mermaid", 57],
+    ["hollow", "constant.language.mermaid", 65],
+    ["hollow", "constant.language.mermaid", 66]
   ],
   "absentOnLine": [
     [34, "constant.language.mermaid"],
@@ -137,7 +161,7 @@
         ["%% description comment", "comment.line.percentage.mermaid", 6],
         ["two ", "string.unquoted.mermaid", 7],
         ["%% JSON comment", "comment.line.percentage.mermaid", 8],
-        ["b", "string.quoted.double.mermaid", 9],
+        ["b", "string.unquoted.mermaid", 9],
         ["%% note comment", "comment.line.percentage.mermaid", 18],
         ["%% stereotype comment", "comment.line.percentage.mermaid", 15],
         ["two", "storage.modifier.mermaid", 16],
@@ -191,10 +215,10 @@
     {
       "code": "usecase-beta\njson J @ {\"x\":\"<b \\\u2028%% c\nx>\"}",
       "scopes": [
-        ["\\\u2028", "constant.character.escape.mermaid", 1],
+        ["\\\u2028", "string.unquoted.mermaid", 1],
         ["%% c", "comment.line.percentage.mermaid", 1],
-        ["x>", "string.quoted.double.mermaid", 2],
-        ["}", "meta.structure.dictionary.mermaid", 2]
+        ["x>", "string.unquoted.mermaid", 2],
+        ["}", "meta.data.mermaid", 2]
       ],
       "absent": [
         ["%% c", "constant.character.escape.mermaid", 1],
@@ -204,10 +228,10 @@
     {
       "code": "usecase-beta\njson J @ {\"x\":\"<b \\\u2029%% c\nx>\"}",
       "scopes": [
-        ["\\\u2029", "constant.character.escape.mermaid", 1],
+        ["\\\u2029", "string.unquoted.mermaid", 1],
         ["%% c", "comment.line.percentage.mermaid", 1],
-        ["x>", "string.quoted.double.mermaid", 2],
-        ["}", "meta.structure.dictionary.mermaid", 2]
+        ["x>", "string.unquoted.mermaid", 2],
+        ["}", "meta.data.mermaid", 2]
       ],
       "absent": [
         ["%% c", "constant.character.escape.mermaid", 1],
@@ -217,10 +241,10 @@
     {
       "code": "usecase-beta\njson J @ {\"x\":\"\\\u2028%% c\nx\"}",
       "scopes": [
-        ["\\\u2028", "constant.character.escape.mermaid", 1],
+        ["\\\u2028", "string.unquoted.mermaid", 1],
         ["%% c", "comment.line.percentage.mermaid", 1],
-        ["x", "string.quoted.double.mermaid", 2],
-        ["}", "meta.structure.dictionary.mermaid", 2]
+        ["x", "string.unquoted.mermaid", 2],
+        ["}", "meta.data.mermaid", 2]
       ],
       "absent": [
         ["%% c", "constant.character.escape.mermaid", 1],
@@ -230,13 +254,13 @@
     {
       "code": "usecase-beta\njson J @ {\"x\":\"\\%%{init: \"}%%\u2028%% c\nx\"}",
       "scopes": [
-        ["\\", "constant.character.escape.mermaid", 1],
+        ["\\", "string.unquoted.mermaid", 1],
         ["init", "entity.name.function.directive.mermaid", 1],
         ["}%%", "punctuation.definition.directive.end.mermaid", 1],
-        ["\u2028", "constant.character.escape.mermaid", 1],
+        ["\u2028", "string.unquoted.mermaid", 1],
         ["%% c", "comment.line.percentage.mermaid", 1],
-        ["x", "string.quoted.double.mermaid", 2],
-        ["}", "meta.structure.dictionary.mermaid", 2]
+        ["x", "string.unquoted.mermaid", 2],
+        ["}", "meta.data.mermaid", 2]
       ],
       "absent": [
         ["%% c", "constant.character.escape.mermaid", 1],
@@ -247,13 +271,13 @@
     {
       "code": "usecase-beta\njson J @ {\"x\":\"\\%%{init: \"}%%\u2029%% c\nx\"}",
       "scopes": [
-        ["\\", "constant.character.escape.mermaid", 1],
+        ["\\", "string.unquoted.mermaid", 1],
         ["init", "entity.name.function.directive.mermaid", 1],
         ["}%%", "punctuation.definition.directive.end.mermaid", 1],
-        ["\u2029", "constant.character.escape.mermaid", 1],
+        ["\u2029", "string.unquoted.mermaid", 1],
         ["%% c", "comment.line.percentage.mermaid", 1],
-        ["x", "string.quoted.double.mermaid", 2],
-        ["}", "meta.structure.dictionary.mermaid", 2]
+        ["x", "string.unquoted.mermaid", 2],
+        ["}", "meta.data.mermaid", 2]
       ],
       "absent": [
         ["%% c", "constant.character.escape.mermaid", 1],
@@ -264,13 +288,13 @@
     {
       "code": "usecase-beta\njson J @ {\"x\":\"<b \\%%{init: \"}%%\u2028%% c\nx>\"}",
       "scopes": [
-        ["\\", "constant.character.escape.mermaid", 1],
+        ["\\", "string.unquoted.mermaid", 1],
         ["init", "entity.name.function.directive.mermaid", 1],
         ["}%%", "punctuation.definition.directive.end.mermaid", 1],
-        ["\u2028", "constant.character.escape.mermaid", 1],
+        ["\u2028", "string.unquoted.mermaid", 1],
         ["%% c", "comment.line.percentage.mermaid", 1],
-        ["x>", "string.quoted.double.mermaid", 2],
-        ["}", "meta.structure.dictionary.mermaid", 2]
+        ["x>", "string.unquoted.mermaid", 2],
+        ["}", "meta.data.mermaid", 2]
       ],
       "absent": [
         ["%% c", "constant.character.escape.mermaid", 1],
@@ -281,13 +305,13 @@
     {
       "code": "usecase-beta\njson J @ {\"x\":\"<b \\%%{init: \"}%%\u2029%% c\nx>\"}",
       "scopes": [
-        ["\\", "constant.character.escape.mermaid", 1],
+        ["\\", "string.unquoted.mermaid", 1],
         ["init", "entity.name.function.directive.mermaid", 1],
         ["}%%", "punctuation.definition.directive.end.mermaid", 1],
-        ["\u2029", "constant.character.escape.mermaid", 1],
+        ["\u2029", "string.unquoted.mermaid", 1],
         ["%% c", "comment.line.percentage.mermaid", 1],
-        ["x>", "string.quoted.double.mermaid", 2],
-        ["}", "meta.structure.dictionary.mermaid", 2]
+        ["x>", "string.unquoted.mermaid", 2],
+        ["}", "meta.data.mermaid", 2]
       ],
       "absent": [
         ["%% c", "constant.character.escape.mermaid", 1],
@@ -298,10 +322,10 @@
     {
       "code": "usecase-beta\njson J @ {\"x\":\"\\\u2028%% c\n\"}",
       "scopes": [
-        ["\\\u2028", "constant.character.escape.mermaid", 1],
+        ["\\\u2028", "string.unquoted.mermaid", 1],
         ["%% c", "comment.line.percentage.mermaid", 1],
-        ["\"", "string.quoted.double.mermaid", 2],
-        ["}", "meta.structure.dictionary.mermaid", 2]
+        ["\"", "string.unquoted.mermaid", 2],
+        ["}", "meta.data.mermaid", 2]
       ],
       "absent": [
         ["%% c", "constant.character.escape.mermaid", 1],
@@ -312,10 +336,10 @@
     {
       "code": "usecase-beta\njson J @ {\"x\":\"\\\u2029%% c\n\"}",
       "scopes": [
-        ["\\\u2029", "constant.character.escape.mermaid", 1],
+        ["\\\u2029", "string.unquoted.mermaid", 1],
         ["%% c", "comment.line.percentage.mermaid", 1],
-        ["\"", "string.quoted.double.mermaid", 2],
-        ["}", "meta.structure.dictionary.mermaid", 2]
+        ["\"", "string.unquoted.mermaid", 2],
+        ["}", "meta.data.mermaid", 2]
       ],
       "absent": [
         ["%% c", "constant.character.escape.mermaid", 1],
@@ -326,16 +350,27 @@
     {
       "code": "usecase-beta\njson J @ {\"x\":\"\\\u2029%% c\nx\"}",
       "scopes": [
-        ["\\\u2029", "constant.character.escape.mermaid", 1],
+        ["\\\u2029", "string.unquoted.mermaid", 1],
         ["%% c", "comment.line.percentage.mermaid", 1],
-        ["x", "string.quoted.double.mermaid", 2],
-        ["}", "meta.structure.dictionary.mermaid", 2]
+        ["x", "string.unquoted.mermaid", 2],
+        ["}", "meta.data.mermaid", 2]
       ],
       "absent": [
         ["%% c", "constant.character.escape.mermaid", 1],
         ["}", "string.quoted.double.mermaid", 2]
       ],
       "absentOnLine": [[2, "variable.mermaid"]]
+    },
+    {
+      "code": "usecase-beta\nA edge@--> B\njson J @ {}\n",
+      "scopes": [
+        ["@", "punctuation.separator.at.mermaid", 1],
+        ["@", "meta.data.mermaid", 2]
+      ],
+      "absentOnLine": [
+        [1, "keyword.operator.at.mermaid"],
+        [2, "keyword.operator.at.mermaid"]
+      ]
     }
   ]
 }
