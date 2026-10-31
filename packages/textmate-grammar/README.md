@@ -117,8 +117,11 @@ YAML grammar for `source.yaml`.
 
 ### VS Code extension
 
-Copy `lib/mermaid.tmLanguage.json` of the package into the extension, and
-contribute it in the extension's `package.json`:
+Add this package to the extension's `dependencies`, then register the grammar in
+its `package.json`.
+[`vsce`](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#using-vscodeignore)
+includes production dependencies in the VSIX by default, so `path` can point
+directly into `node_modules`:
 
 ```json
 {
@@ -134,12 +137,20 @@ contribute it in the extension's `package.json`:
       {
         "language": "mermaid",
         "scopeName": "source.mermaid",
-        "path": "./syntaxes/mermaid.tmLanguage.json"
+        "path": "./node_modules/@mmd-toolkit/textmate-grammar/lib/mermaid.tmLanguage.json"
       }
     ]
   }
 }
 ```
+
+`path` is relative to the extension root. If you use `.vscodeignore`, keep this
+grammar file included.
+
+To include only the grammar file, you can instead add the package to
+`devDependencies` and copy its `lib/mermaid.tmLanguage.json` to
+`syntaxes/mermaid.tmLanguage.json` in the extension. Set `path` to
+`"./syntaxes/mermaid.tmLanguage.json"`.
 
 ## Scopes
 
