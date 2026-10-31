@@ -63,6 +63,8 @@ git のタグ `@mmd-toolkit/spec@<版>` が付きます。
 | `packages/parser`              | パーサー。                                     |
 | `packages/prettier-plugin-mmd` | Prettier のプラグイン。                        |
 | `packages/eslint-plugin`       | ESLint のプラグイン。                          |
+| `packages/textmate-grammar`    | TextMate の文法。                              |
+| `.claude`                      | Claude Code のスキル、設定、hook。             |
 | `tools`                        | fixture を保守するコマンドラインの道具。       |
 | `scripts`                      | `pnpm run lint` が実行する検査。               |
 

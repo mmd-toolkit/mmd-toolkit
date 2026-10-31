@@ -21,8 +21,8 @@
     ["Text icon", "string.quoted.single.mermaid"],
     ["Nested [group]", "string.quoted.double.mermaid"],
     ["Store", "string.quoted.single.mermaid"],
-    ["server", "variable.mermaid"],
-    ["-:A_", "variable.mermaid"],
+    ["server", "string.unquoted.mermaid"],
+    ["-:A_", "string.unquoted.mermaid"],
     ["R", "constant.language.mermaid"],
     ["L", "constant.language.mermaid"],
     ["B", "constant.language.mermaid", 14],
@@ -124,7 +124,11 @@
     ["group", "storage.modifier.mermaid", 15],
     ["{", "punctuation.definition.modifier.begin.mermaid", 15],
     ["}", "punctuation.definition.modifier.end.mermaid", 15],
-    ["cloud", "variable.mermaid", 0]
+    ["cloud", "variable.mermaid", 0],
+    ["(", "punctuation.section.icon.begin.mermaid", 0],
+    [")", "punctuation.section.icon.end.mermaid", 0],
+    ["\"", "string.quoted.double.mermaid", 18],
+    ["'", "string.quoted.single.mermaid", 7]
   ],
   "absent": [
     ["serviceLong", "keyword.control.mermaid"],
@@ -195,6 +199,19 @@
         ["%% title comment", "string.unquoted.mermaid"],
         ["%% accessibility comment", "string.unquoted.mermaid"],
         ["%% description comment", "string.unquoted.mermaid"]
+      ]
+    },
+    {
+      "code": "architecture-beta\ngroup api(cloud)[API]\nservice a \"A\\\"B\"['Title']\na{group}:R>--<L:a{group}\n",
+      "scopes": [
+        ["(", "punctuation.section.icon.begin.mermaid"],
+        [")", "punctuation.section.icon.end.mermaid"],
+        ["cloud", "string.unquoted.mermaid"],
+        ["API", "string.unquoted.mermaid"],
+        ["\\\"", "constant.character.escape.mermaid"],
+        ["Title", "string.quoted.single.mermaid"],
+        ["group", "storage.modifier.mermaid", 3],
+        ["--", "keyword.operator.arrow.mermaid"]
       ]
     }
   ]

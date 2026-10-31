@@ -507,7 +507,7 @@
   "person" variable.mermaid
   "," punctuation.separator.comma.mermaid
   "$" punctuation.definition.attribute.begin.mermaid
-  "bgColor" storage.modifier.mermaid
+  "bgColor" support.type.property-name.mermaid
   "=" punctuation.separator.key-value.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "blue" string.quoted.double.mermaid
@@ -521,7 +521,7 @@
   "system" variable.mermaid
   "," punctuation.separator.comma.mermaid
   "$" punctuation.definition.attribute.begin.mermaid
-  "textColor" storage.modifier.mermaid
+  "textColor" support.type.property-name.mermaid
   "=" punctuation.separator.key-value.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "green" string.quoted.double.mermaid
@@ -531,7 +531,7 @@
   "UpdateLayoutConfig" keyword.control.mermaid
   "(" punctuation.section.arguments.begin.mermaid
   "$" punctuation.definition.attribute.begin.mermaid
-  "c4ShapeInRow" storage.modifier.mermaid
+  "c4ShapeInRow" support.type.property-name.mermaid
   "=" punctuation.separator.key-value.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "3" string.quoted.double.mermaid
@@ -612,7 +612,7 @@
   "person" variable.mermaid
   "," punctuation.separator.comma.mermaid
   "$" punctuation.definition.attribute.begin.mermaid
-  "name, ) with spaces" storage.modifier.mermaid
+  "name, ) with spaces" support.type.property-name.mermaid
   "=" punctuation.separator.key-value.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "value" string.quoted.double.mermaid
@@ -716,14 +716,14 @@
   "person" variable.mermaid
   "," punctuation.separator.comma.mermaid
   "$" punctuation.definition.attribute.begin.mermaid
-  "bg" storage.modifier.mermaid
-  "%%{" storage.modifier.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
-  "init" storage.modifier.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" storage.modifier.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
-  " " storage.modifier.mermaid meta.directive.mermaid
-  "{}" storage.modifier.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
-  "}%%" storage.modifier.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
-  "Color" storage.modifier.mermaid
+  "bg" support.type.property-name.mermaid
+  "%%{" support.type.property-name.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" support.type.property-name.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" support.type.property-name.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " support.type.property-name.mermaid meta.directive.mermaid
+  "{}" support.type.property-name.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" support.type.property-name.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "Color" support.type.property-name.mermaid
   "=" punctuation.separator.key-value.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "red" string.quoted.double.mermaid
@@ -747,7 +747,7 @@
   "{}" meta.directive.mermaid string.unquoted.directive.mermaid
   "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
   "(" punctuation.section.arguments.begin.mermaid
-  "gap" string.unquoted.mermaid
+  "gap" variable.mermaid
   "," punctuation.separator.comma.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "A" string.quoted.double.mermaid
@@ -857,4 +857,111 @@
   "wrap" comment.line.percentage.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
   "}%%" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
   " tail" comment.line.percentage.mermaid
+> Rel(a,"b")
+  "Rel" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "a" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "b" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> RelIndex(1,a,"b")
+  "RelIndex" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "1" string.unquoted.mermaid
+  "," punctuation.separator.comma.mermaid
+  "a" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "b" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Person%%{wrap}%%(a,"Label")
+  "Person" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "a" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Label" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Rel%%{wrap}%%(a,b,"Label")
+  "Rel" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "a" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "b" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Label" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Person(a"x",)
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "a\"x\"" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Person(a,"Label",$alias="renamed")
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "a" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Label" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "," punctuation.separator.comma.mermaid
+  "$" punctuation.definition.attribute.begin.mermaid
+  "alias" support.type.property-name.mermaid
+  "=" punctuation.separator.key-value.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "renamed" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Rel("a"b,"Label")
+  "Rel" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "b" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Label" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Rel(,b,"Label")
+  "Rel" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "," punctuation.separator.comma.mermaid
+  "b" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Label" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Rel(a,,b,"Label")
+  "Rel" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "a" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "," punctuation.separator.comma.mermaid
+  "b" string.unquoted.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Label" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> accDescr { Description }
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  " Description " string.unquoted.mermaid
+  "}" punctuation.definition.description.end.mermaid
 > 

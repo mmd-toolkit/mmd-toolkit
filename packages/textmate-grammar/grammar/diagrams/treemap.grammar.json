@@ -1,7 +1,8 @@
 {
   "variables": {
-    "treemap-class-definition-head": "(?:^|\\G)(?:(?!{{separatorCommentEnd}})[{{ws}}])*(classDef)({{requiredGap}})([A-Za-z_][A-Za-z0-9_]+)",
-    "treemap-style-gap": "(?:(?!{{separatorCommentEnd}})[{{lws}}]|{{directive}})*"
+    "treemap-class-definition-head": "{{treemap-statement-start}}(classDef)({{requiredGap}})([A-Za-z_][A-Za-z0-9_]+)",
+    "treemap-style-gap": "(?:(?!{{separatorCommentEnd}})[{{lws}}]|{{directive}})*",
+    "treemap-statement-start": "(?:^|\\G|(?<=\\}%%))(?:(?!{{separatorCommentEnd}})[{{ws}}])*"
   },
   "patterns": [
     {
@@ -10,7 +11,7 @@
   ],
   "repository": {
     "treemap": {
-      "comment": "Begin treemap at either lowercase header without imposing a suffix boundary. treemap.md#detection: Accepted headers are `treemap-beta` and `treemap`; both report diagram id `treemap`. treemap.md#headers-and-indentation: Neither header requires a word or whitespace boundary. common.md#leading-whitespace: Whitespace, line terminators, directives, and comment regions before the first unit of the diagram's lexer are trivia and are not seen by the diagram's grammar.",
+      "comment": "Begin treemap at either lowercase header without imposing a suffix boundary. Follows treemap.md#detection, treemap.md#headers-and-indentation, and common.md#leading-whitespace.",
       "begin": "{{diagramStart}}(treemap-beta|treemap)",
       "beginCaptures": {
         "1": {
@@ -27,17 +28,17 @@
         },
         {
           "include": "#native-percent-comment",
-          "comment": "Reuse native percent comments. treemap.md#comments-and-authored-boundaries: At a native unit start, a percent pair reads a Comment through before the next LF; in source terms CR, CRLF and LF end it after common line conversion."
+          "comment": "Reuse native percent comments. Follows treemap.md#comments-and-authored-boundaries."
         },
         {
           "include": "#common-statements",
-          "comment": "Reuse title and accessibility composites without imposing a following EOL. treemap.md#common-forms: The three common terminals have the same character rules as [common.langium][common], but this diagram does not import its fragment: no EOL is required after a common form. treemap.md#common-forms: An acc-descr-block reads `accDescr`, zero or more common Notation whitespace characters, `{`, any characters up to the first `}`, and that required closer."
+          "comment": "Reuse title and accessibility composites without imposing a following EOL. Follows treemap.md#common-forms."
         },
         {
-          "comment": "Read a class definition with or without style text, preserving its name and optional final semicolon. treemap.md#class-definitions: A class-definition unit consists of `classDef`, one or more common Notation whitespace characters, a class name, an optional whitespace-led style text and at most one final semicolon. treemap.md#class-definitions: Without intervening whitespace, a styleless class name may be followed immediately by a quoted row.",
+          "comment": "Read a class definition with or without style text, preserving its name and optional final semicolon. Follows treemap.md#class-definitions.",
           "patterns": [
             {
-              "comment": "Read class style after its required whitespace, recognizing property names and whole values while retaining other accepted style text. treemap.md#class-definitions: The separating whitespace is read maximally before style text. It can cross line feeds and blank lines, so a following quoted row or classDef can be the style rather than a new statement. Style text itself runs through all characters before the first semicolon or line terminator, including commas, colons, quotes, percent pairs, U+2028 and U+2029. Empty style is allowed. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+              "comment": "Read class style after its required whitespace, recognizing property names and whole values while retaining other accepted style text. Follows treemap.md#class-definitions and common.md#comment-lines.",
               "begin": "{{treemap-class-definition-head}}(?={{whitespaceStart}})",
               "beginCaptures": {
                 "1": {
@@ -65,7 +66,7 @@
                   "include": "#directive"
                 },
                 {
-                  "comment": "Read an entity whole so its semicolon does not end a style. treemap.md#comments-and-authored-boundaries: Class style, common value text and string interiors are text/string positions; whitespace-only parts are transparent. common.md#entities: A directive right after the `#` or right before the `;` lies inside the entity, which is read in the text without its directives, and so do two directives right before the `;`.",
+                  "comment": "Read an entity whole so its semicolon does not end a style. Follows treemap.md#comments-and-authored-boundaries and common.md#entities.",
                   "match": "{{entity}}",
                   "name": "string.unquoted.mermaid",
                   "captures": {
@@ -88,7 +89,7 @@
               "applyEndPatternLast": true
             },
             {
-              "comment": "Read a styleless class definition without a value scope. treemap.md#class-definitions: Without intervening whitespace, a styleless class name may be followed immediately by a quoted row. treemap.md#class-definitions: A terminating semicolon may likewise precede the next row.",
+              "comment": "Read a styleless class definition without a value scope. Follows treemap.md#class-definitions.",
               "match": "{{treemap-class-definition-head}}({{directives}})(;)?",
               "captures": {
                 "1": {
@@ -119,7 +120,7 @@
           ]
         },
         {
-          "comment": "Read a selector separator and its class element name, retaining intervening directives. treemap.md#names-numbers-and-strings: An identifier starts with an ASCII letter or underscore and continues with zero or more ASCII letters, digits or underscores. treemap.md#comments-and-authored-boundaries: A directive between a common keyword and colon, or a classDef keyword and name with its required whitespace, is permitted. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text.",
+          "comment": "Read a selector separator and its class element name, retaining intervening directives. Follows treemap.md#names-numbers-and-strings, treemap.md#headers-and-indentation, and common.md#a-directive-is-a-token-boundary.",
           "match": "(:::)({{directives}})([A-Za-z_][A-Za-z0-9_]*)",
           "captures": {
             "1": {
@@ -139,19 +140,19 @@
         },
         {
           "include": "#string-plain-double",
-          "comment": "Reuse plain double-quoted row labels. treemap.md#names-numbers-and-strings: A string opens with a double or single quote and closes at the next same quote. It may be empty and may include opposite quotes, backslashes, line terminators, U+2028 and U+2029. Backslashes do not escape quotes or decode characters, and a backslash followed by a physical line feed is allowed. An unclosed string rejects. Preserve source quotes and line endings in StringLiteral.raw."
+          "comment": "Reuse plain double-quoted row labels. Follows treemap.md#names-numbers-and-strings."
         },
         {
           "include": "#string-plain-single",
-          "comment": "Reuse plain single-quoted row labels. treemap.md#names-numbers-and-strings: A string opens with a double or single quote and closes at the next same quote. It may be empty and may include opposite quotes, backslashes, line terminators, U+2028 and U+2029. Backslashes do not escape quotes or decode characters, and a backslash followed by a physical line feed is allowed. An unclosed string rejects. Preserve source quotes and line endings in StringLiteral.raw."
+          "comment": "Reuse plain single-quoted row labels. Follows treemap.md#names-numbers-and-strings."
         },
         {
-          "comment": "Read a numeric leaf value, keeping its commas and underscores whole after its first digit or dot. treemap.md#names-numbers-and-strings: A number unit takes as many digits, underscores, dots and commas as possible. Identifier and comma rules have priority at its start: `_12` is an identifier and `,12` starts with a comma, so neither is a leaf number. Once a digit or dot starts the number, later commas and underscores stay inside it, including trailing commas before the next quoted row.",
+          "comment": "Read a numeric leaf value, keeping its commas and underscores whole after its first digit or dot. Follows treemap.md#names-numbers-and-strings.",
           "match": "(?<![A-Za-z0-9_])[0-9.][0-9_.,]*",
           "name": "constant.numeric.mermaid"
         },
         {
-          "comment": "Read either leaf value separator. treemap.md#grammar: Take the leaf reading when the complete leaf production matches; otherwise a quoted name with its optional selector is a section.",
+          "comment": "Read either leaf value separator. Follows treemap.md#grammar.",
           "match": "(:)|(,)",
           "captures": {
             "1": {
@@ -165,8 +166,8 @@
       ]
     },
     "treemap-style": {
-      "comment": "Read a style property name and its whole value; an entity remains part of the value, with no numeric subscopes. treemap.md#class-definitions: Style text itself runs through all characters before the first semicolon or line terminator, including commas, colons, quotes, percent pairs, U+2028 and U+2029. treemap.md#class-definitions: Unknown CSS, unused definitions, repeated definitions and unresolved selectors are not rejection conditions. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
-      "begin": "([A-Za-z_-](?:[A-Za-z0-9_-]|{{directive}})*)({{treemap-style-gap}})(:)({{treemap-style-gap}})",
+      "comment": "Split opaque style text into a property name and value for the README's scope reading; this split is not a syntax unit of the document. Keep escaped commas inside the value. Follows treemap.md#class-definitions.",
+      "begin": "((?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^,:;{{ws}}])+)({{treemap-style-gap}})(:)({{treemap-style-gap}})",
       "beginCaptures": {
         "1": {
           "name": "support.type.property-name.mermaid",
@@ -184,7 +185,7 @@
           ]
         },
         "3": {
-          "name": "punctuation.separator.colon.mermaid"
+          "name": "punctuation.separator.key-value.mermaid"
         },
         "4": {
           "patterns": [
@@ -201,12 +202,25 @@
           "include": "#directive"
         },
         {
+          "comment": "Keep an escaped comma inside its style value, including directives between the backslash and comma. Follows treemap.md#class-definitions and common.md#a-directive-is-a-token-boundary.",
+          "match": "\\\\{{directives}},",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
           "include": "#entity"
         }
       ]
     },
     "treemap-style-text": {
-      "comment": "Read style separators and accepted opaque text that has no property colon. treemap.md#class-definitions: Unknown CSS, unused definitions, repeated definitions and unresolved selectors are not rejection conditions. treemap.md#class-definitions: Preserve each definition's whole style text; splitting and merging styles belong to the tests summary.",
+      "comment": "Read style separators and accepted opaque text outside a property pair. Follows treemap.md#class-definitions.",
       "patterns": [
         {
           "match": ",",

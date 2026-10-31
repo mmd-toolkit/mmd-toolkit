@@ -4,7 +4,8 @@
     "block-class-ids": "{{block-class-id}}(?:{{directives}},{{gap}}{{block-class-id}})*",
     "block-class-arguments": "({{requiredGap}})({{block-class-ids}})",
     "block-integer": "[0-9]+",
-    "block-header": "(?:block-beta|block){{wordEnd}}"
+    "block-header": "(?:block-beta|block){{wordEnd}}",
+    "block-style-value-end": "(?={{lineGap}}(?:,|$))|{{separatorCommentEnd}}"
   },
   "patterns": [
     {
@@ -13,7 +14,7 @@
   ],
   "repository": {
     "block": {
-      "comment": "Read the block header and its body. block.md#detection: On the line of the header, a statement may follow the header after whitespace, and a `;` or `%%` after it is a node, not a separator or a comment. common.md#leading-whitespace: Whitespace, line terminators, directives, and comment regions before the first unit of the diagram's lexer are trivia and are not seen by the diagram's grammar.",
+      "comment": "Read the block header and its body. Follows block.md#the-statement-context, block.md#detection, and common.md#leading-whitespace.",
       "begin": "{{diagramStart}}({{block-header}})",
       "beginCaptures": {
         "1": {
@@ -29,7 +30,7 @@
           "include": "#directive"
         },
         {
-          "comment": "Columns, whitespace, and digits, or columns, whitespace, and auto: a columns unit with the number or auto. A directive between two complete components is allowed. block.md#the-statement-context: `columns`, whitespace, and digits: a `columns` unit with the number, and `columns`, whitespace, and `auto`: a `columns` unit with `auto`. block.md#directives-inside-units: A directive between two units, also glued to them, is allowed: `A%%{init: {}}%%` followed by `:2`, `-->B`, or a line feed, `space:` followed by it and `2`, and one between the string of a shape or a block arrow and its opening or closing.",
+          "comment": "Columns, whitespace, and digits, or columns, whitespace, and auto: a columns unit with the number or auto. A directive between two complete components is allowed. Follows block.md#the-statement-context and block.md#directives-inside-units.",
           "match": "(columns)({{requiredGap}})(?:({{block-integer}})|(auto))",
           "captures": {
             "1": {
@@ -51,7 +52,7 @@
           }
         },
         {
-          "comment": "Space: and digits, and space not followed by a word character: a space unit. block.md#the-statement-context: `columns`, whitespace, and digits: a `columns` unit with the number, and `columns`, whitespace, and `auto`: a `columns` unit with `auto`.",
+          "comment": "Space: and digits, and space not followed by a word character: a space unit. Follows block.md#the-statement-context.",
           "match": "(space)(?:(:)({{directives}})({{block-integer}})|{{wordEnd}})",
           "captures": {
             "1": {
@@ -73,7 +74,7 @@
           }
         },
         {
-          "comment": "After classDef and whitespace, the class definition context reads one or more ASCII word characters as class-id, whitespace, then the rest of the line as styles. A common comment after a line separator or paragraph separator ends this value before the separator. The required whitespace after the class-id is checked without consuming it, so a separator before a common comment remains outside the begin. block.md#classes-and-styles: The styles are the parts between `,` of the rest of the line without the whitespace at its ends; the class name of `class` is the rest of the line as one text, which may be empty and may hold whitespace, so `class A c d` gives the class `c d`. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "comment": "After classDef and whitespace, the class definition context reads one or more ASCII word characters as class-id, whitespace, then the rest of the line as styles. A common comment after a line separator or paragraph separator ends this value before the separator. The required whitespace after the class-id is checked without consuming it, so a separator before a common comment remains outside the begin. Follows block.md#classes-and-styles and common.md#comment-lines.",
           "begin": "(classDef)({{requiredGap}})({{block-class-id}})(?={{whitespaceStart}})",
           "end": "{{lineValueEnd}}",
           "beginCaptures": {
@@ -98,7 +99,7 @@
           ]
         },
         {
-          "comment": "After class and whitespace, read ASCII word runs separated by commas and whitespace as class-ids, then the rest of the line as one class name. A common comment after a line separator or paragraph separator ends this value before the separator. block.md#classes-and-styles: The styles are the parts between `,` of the rest of the line without the whitespace at its ends; the class name of `class` is the rest of the line as one text, which may be empty and may hold whitespace, so `class A c d` gives the class `c d`. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "comment": "After class and whitespace, read ASCII word runs separated by commas and whitespace as class-ids, then the rest of the line as one class name. A common comment after a line separator or paragraph separator ends this value before the separator. Follows block.md#classes-and-styles and common.md#comment-lines.",
           "begin": "(class){{block-class-arguments}}",
           "end": "{{lineValueEnd}}",
           "beginCaptures": {
@@ -128,7 +129,7 @@
           ]
         },
         {
-          "comment": "After style and whitespace, read ASCII word runs separated by commas and whitespace as class-ids, then the rest of the line as comma-separated styles. A common comment after a line separator or paragraph separator ends this value before the separator. block.md#classes-and-styles: The styles are the parts between `,` of the rest of the line without the whitespace at its ends; the class name of `class` is the rest of the line as one text, which may be empty and may hold whitespace, so `class A c d` gives the class `c d`. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "comment": "After style and whitespace, read ASCII word runs separated by commas and whitespace as class-ids, then the rest of the line as comma-separated styles. A common comment after a line separator or paragraph separator ends this value before the separator. Follows block.md#classes-and-styles and common.md#comment-lines.",
           "begin": "(style){{block-class-arguments}}",
           "end": "{{lineValueEnd}}",
           "beginCaptures": {
@@ -143,9 +144,10 @@
               ]
             },
             "3": {
+              "name": "variable.mermaid",
               "patterns": [
                 {
-                  "include": "#block-class-ids"
+                  "include": "#directive"
                 }
               ]
             }
@@ -157,7 +159,7 @@
           ]
         },
         {
-          "comment": "Rules 1 and 9: block-beta and block, not followed by a word character, or block: open a composite; end, not followed by a word character, closes it. block.md#the-statement-context: `columns`, whitespace, and digits: a `columns` unit with the number, and `columns`, whitespace, and `auto`: a `columns` unit with `auto`.",
+          "comment": "Rules 1 and 9: block-beta and block, not followed by a word character, or block: open a composite; end, not followed by a word character, closes it. Follows block.md#the-statement-context.",
           "match": "(block:|{{block-header}}|end{{wordEnd}})",
           "captures": {
             "1": {
@@ -166,7 +168,7 @@
           }
         },
         {
-          "comment": "AccDescr, whitespace, {, whitespace and } is an empty description block where a statement starts; a block with text is rejected. Retain this local form: rejects a block with text and permits an empty block after a node; it is not the common accessibility statement. A common comment after a line separator or paragraph separator ends this value before the separator. block.md#empty-description-blocks: An **empty description block** is a statement where a statement starts: on the line of the header, between two statements, before the first, and inside a composite, with whitespace inside it or a line feed, as in `A accDescr {} B`. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "comment": "AccDescr, whitespace, {, whitespace and } is an empty description block where a statement starts; a block with text is rejected. Retain this local form: rejects a block with text and permits an empty block after a node; it is not the common accessibility statement. A common comment after a line separator or paragraph separator ends this value before the separator. Follows block.md#empty-description-blocks and common.md#comment-lines.",
           "begin": "(accDescr)({{gap}})(\\{)",
           "beginCaptures": {
             "1": {
@@ -197,7 +199,7 @@
           ]
         },
         {
-          "comment": "<[ enters the block arrow context, which reads a string, then ]>, whitespace and (, then one or more directions and ). A direction is right, left, up, down, x or y; comma and whitespace may precede a direction. A common comment after a line separator or paragraph separator ends this value before the separator. block.md#block-arrows: A direction is `right`, `left`, `up`, `down`, `x`, or `y`, in lower case; a `,` and whitespace may stand before a direction, line feeds included, and two directions need nothing between them: `(right down)`, `(right, down)`, and `(rightdown)` are the directions `right` and `down`. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "comment": "<[ enters the block arrow context, which reads a string, then ]>, whitespace and (, then one or more directions and ). A direction is right, left, up, down, x or y; comma and whitespace may precede a direction. A common comment after a line separator or paragraph separator ends this value before the separator. Follows block.md#block-arrows and common.md#comment-lines.",
           "begin": "<\\[",
           "beginCaptures": {
             "0": {
@@ -216,10 +218,10 @@
             },
             {
               "include": "#string-plain-double",
-              "comment": "A double quote enters the string context, which reads all characters up to the next double quote; a string has no escape. block.md#strings: A string has no escape, and a string that is not closed makes the input rejected."
+              "comment": "A double quote enters the string context, which reads all characters up to the next double quote; a string has no escape. Follows block.md#strings."
             },
             {
-              "comment": "The string is followed by ]>, whitespace and ( before the directions. block.md#block-arrows: A direction is `right`, `left`, `up`, `down`, `x`, or `y`, in lower case; a `,` and whitespace may stand before a direction, line feeds included, and two directions need nothing between them: `(right down)`, `(right, down)`, and `(rightdown)` are the directions `right` and `down`.",
+              "comment": "The string is followed by ]>, whitespace and ( before the directions. Follows block.md#block-arrows.",
               "match": "(\\]>)({{gap}})(\\()",
               "captures": {
                 "1": {
@@ -238,19 +240,19 @@
               }
             },
             {
-              "comment": "A direction is right, left, up, down, x or y; two directions need nothing between them. block.md#block-arrows: A direction is `right`, `left`, `up`, `down`, `x`, or `y`, in lower case; a `,` and whitespace may stand before a direction, line feeds included, and two directions need nothing between them: `(right down)`, `(right, down)`, and `(rightdown)` are the directions `right` and `down`.",
+              "comment": "A direction is right, left, up, down, x or y; two directions need nothing between them. Follows block.md#block-arrows.",
               "match": "right|left|up|down|x|y",
               "name": "constant.language.mermaid"
             },
             {
-              "comment": "A comma and whitespace may stand before a direction. block.md#block-arrows: A direction is `right`, `left`, `up`, `down`, `x`, or `y`, in lower case; a `,` and whitespace may stand before a direction, line feeds included, and two directions need nothing between them: `(right down)`, `(right, down)`, and `(rightdown)` are the directions `right` and `down`.",
+              "comment": "A comma and whitespace may stand before a direction. Follows block.md#block-arrows.",
               "match": ",",
               "name": "punctuation.separator.comma.mermaid"
             }
           ]
         },
         {
-          "comment": "An opening enters the shape context, which reads a string and then a closing. Openings and closings are tried in their listed order, and any opening may meet any closing. A common comment after a line separator or paragraph separator ends this value before the separator. block.md#shapes: Any opening may meet any closing: a pair that is no shape of mermaid.js, such as `[\"x\")`, `(\"x\"]`, `-)\"x\"(-`, and `[|\"x\"]`, is accepted and has no type in the Db. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "comment": "An opening enters the shape context, which reads a string and then a closing. Openings and closings are tried in their listed order, and any opening may meet any closing. A common comment after a line separator or paragraph separator ends this value before the separator. Follows block.md#shapes and common.md#comment-lines.",
           "begin": "-\\)|\\(-|\\)\\)|\\)|\\(\\(\\(|\\(\\(|\\{\\{|\\{|>|\\(\\[|\\(|\\[\\[|\\[\\||\\[\\(|\\[\\\\|\\[/|\\[",
           "beginCaptures": {
             "0": {
@@ -269,16 +271,16 @@
             },
             {
               "include": "#string-plain-double",
-              "comment": "A double quote enters the string context, which reads all characters up to the next double quote; a string has no escape. block.md#strings: A string has no escape, and a string that is not closed makes the input rejected."
+              "comment": "A double quote enters the string context, which reads all characters up to the next double quote; a string has no escape. Follows block.md#strings."
             }
           ]
         },
         {
           "include": "#string-plain-double",
-          "comment": "A double quote enters the string context, which reads all characters up to the next double quote; a string has no escape. block.md#strings: A string has no escape, and a string that is not closed makes the input rejected."
+          "comment": "A double quote enters the string context, which reads all characters up to the next double quote; a string has no escape. Follows block.md#strings."
         },
         {
-          "comment": "A width is and digits, with no whitespace after the colon; what follows the digits is read on its own. block.md#nodes-and-widths: A node is an id with a shape, a block arrow, or neither.",
+          "comment": "Read a width colon followed by digits without whitespace after the colon. Follows block.md#the-statement-context and block.md#nodes-and-widths.",
           "match": "(:)({{directives}})({{block-integer}})",
           "captures": {
             "1": {
@@ -297,19 +299,19 @@
           }
         },
         {
-          "comment": "An id is one or more characters other than Notation whitespace, parentheses, opening bracket, dash, braces, angle brackets, colon and equals. It is tried before an arrow and holds quotes and punctuation inside an already-started id. An id stops before a directive, also when the directive is glued to its width, edge or following whitespace. block.md#the-statement-context: `columns`, whitespace, and digits: a `columns` unit with the number, and `columns`, whitespace, and `auto`: a `columns` unit with `auto`. block.md#directives-inside-units: A directive between two units, also glued to them, is allowed: `A%%{init: {}}%%` followed by `:2`, `-->B`, or a line feed, `space:` followed by it and `2`, and one between the string of a shape or a block arrow and its opening or closing.",
+          "comment": "An id is one or more characters other than Notation whitespace, parentheses, opening bracket, dash, braces, angle brackets, colon and equals. It is tried before an arrow and holds quotes and punctuation inside an already-started id. An id stops before a directive, also when the directive is glued to its width, edge or following whitespace. Follows block.md#the-statement-context and block.md#directives-inside-units.",
           "match": "(?:(?!{{directiveStart}})[^{{ws}}(\\[\\-){\\}<>:=])+",
           "name": "variable.mermaid"
         },
         {
-          "comment": "An arrow is an optional < before a solid line (two or more dashes with a dash, x, o or > end), a thick line (two or more equals with an equals, x, o or > end), or a dotted line (optional dash, dots, dash and optional x, o or >). An opening arrow is --, == or -. after optional <; its label is a string followed by an arrow. block.md#edges: The arrow may have another line than the opening arrow: `A -- \"x\" ==> B` is accepted.",
+          "comment": "An arrow is an optional < before a solid line (two or more dashes with a dash, x, o or > end), a thick line (two or more equals with an equals, x, o or > end), or a dotted line (optional dash, dots, dash and optional x, o or >). An opening arrow is --, == or -. after optional <; its label is a string followed by an arrow. Follows block.md#edges.",
           "match": "<?(?:-{2,}[-xo>]|={2,}[=xo>]|-?\\.+-[xo>]?|--|==|-\\.)",
           "name": "keyword.operator.arrow.mermaid"
         }
       ]
     },
     "block-class-ids": {
-      "comment": "The class and style contexts read ASCII word runs separated by commas and whitespace as class-ids. Directives may separate these components. block.md#classes-and-styles: The styles are the parts between `,` of the rest of the line without the whitespace at its ends; the class name of `class` is the rest of the line as one text, which may be empty and may hold whitespace, so `class A c d` gives the class `c d`.",
+      "comment": "The class and style contexts read ASCII word runs separated by commas and whitespace as class-ids. Directives may separate these components. Follows block.md#classes-and-styles.",
       "patterns": [
         {
           "include": "#directive"
@@ -317,17 +319,17 @@
         {
           "match": "{{block-class-id}}",
           "name": "variable.mermaid",
-          "comment": "The class and style contexts read ASCII word characters as class-ids. block.md#classes-and-styles: The styles are the parts between `,` of the rest of the line without the whitespace at its ends; the class name of `class` is the rest of the line as one text, which may be empty and may hold whitespace, so `class A c d` gives the class `c d`."
+          "comment": "The class and style contexts read ASCII word characters as class-ids. Follows block.md#classes-and-styles."
         },
         {
           "match": ",",
           "name": "punctuation.separator.comma.mermaid",
-          "comment": "Class-ids may continue with a comma, whitespace and word characters. block.md#classes-and-styles: The styles are the parts between `,` of the rest of the line without the whitespace at its ends; the class name of `class` is the rest of the line as one text, which may be empty and may hold whitespace, so `class A c d` gives the class `c d`."
+          "comment": "Class-ids may continue with a comma, whitespace and word characters. Follows block.md#classes-and-styles."
         }
       ]
     },
     "block-styles": {
-      "comment": "The styles are the parts between commas of the rest of the line. block.md#classes-and-styles: The styles are the parts between `,` of the rest of the line without the whitespace at its ends; the class name of `class` is the rest of the line as one text, which may be empty and may hold whitespace, so `class A c d` gives the class `c d`.",
+      "comment": "The styles are the parts between commas of the rest of the line. Follows block.md#classes-and-styles.",
       "patterns": [
         {
           "include": "#directive"
@@ -335,11 +337,11 @@
         {
           "match": ",",
           "name": "punctuation.separator.comma.mermaid",
-          "comment": "The styles are the parts between commas of the rest of the line. block.md#classes-and-styles: The styles are the parts between `,` of the rest of the line without the whitespace at its ends; the class name of `class` is the rest of the line as one text, which may be empty and may hold whitespace, so `class A c d` gives the class `c d`."
+          "comment": "The styles are the parts between commas of the rest of the line. Follows block.md#classes-and-styles."
         },
         {
-          "comment": "Read each style property as its name, colon and complete value. block.md#classes-and-styles: The styles are the parts between `,` of the rest of the line without the whitespace at its ends; the class name of `class` is the rest of the line as one text, which may be empty and may hold whitespace, so `class A c d` gives the class `c d`.",
-          "begin": "((?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^:{{ws}},])+)(:)",
+          "comment": "Read one whole style property value, leaving trailing whitespace outside its scope. Follows block.md#classes-and-styles.",
+          "begin": "((?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^:{{ws}},])+)({{lineGap}})(:)",
           "beginCaptures": {
             "1": {
               "name": "support.type.property-name.mermaid",
@@ -350,10 +352,17 @@
               ]
             },
             "2": {
-              "name": "punctuation.separator.colon.mermaid"
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.separator.key-value.mermaid"
             }
           },
-          "end": "(?=,)|{{lineValueEnd}}",
+          "end": "{{block-style-value-end}}",
           "contentName": "support.constant.property-value.mermaid",
           "patterns": [
             {
@@ -362,9 +371,18 @@
           ]
         },
         {
-          "comment": "Read style text without a property colon. block.md#classes-and-styles: The styles are the parts between `,` of the rest of the line without the whitespace at its ends; the class name of `class` is the rest of the line as one text, which may be empty and may hold whitespace, so `class A c d` gives the class `c d`.",
-          "match": "(?:(?!{{directiveStart}}|{{separatorCommentEnd}})[^,{{ws}}])+",
-          "name": "string.unquoted.mermaid"
+          "comment": "Read a whole style without a property colon as one value, leaving trailing whitespace outside it. Follows block.md#classes-and-styles.",
+          "begin": "(?![{{ws}}]|[:,]|{{directiveStart}}|{{separatorCommentEnd}})(?=.)",
+          "end": "{{block-style-value-end}}",
+          "contentName": "support.constant.property-value.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#entity"
+            }
+          ]
         }
       ]
     }

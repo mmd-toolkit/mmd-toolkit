@@ -60,7 +60,9 @@
     ["root", "string.unquoted.mermaid", 0],
     ["circle", "variable.mermaid", 4],
     ["hex", "variable.mermaid", 7],
-    [")", "punctuation.section.icon.end.mermaid", 17]
+    [")", "punctuation.section.icon.end.mermaid", 17],
+    ["\"", "string.quoted.double.mermaid", 4],
+    ["\"`", "string.quoted.other.markdown.mermaid", 12]
   ],
   "absent": [
     ["mindmapLong", "keyword.control.mermaid"],
@@ -151,6 +153,19 @@
         ["%% node end %%{wrap}%%", "comment.line.percentage.mermaid", 1]
       ],
       "absentOnLine": [[1, "meta.directive.mermaid"]]
+    },
+    {
+      "code": "mindmap root\n  id((Label))\n  ::icon(book)\n  :::className\n  markdown[\"`Markdown`\"]\n  quoted[\"Quoted\"]\n  Bare child\n",
+      "scopes": [
+        ["id", "variable.mermaid"],
+        ["Label", "string.unquoted.mermaid"],
+        ["::icon(", "keyword.control.mermaid"],
+        ["book", "string.unquoted.mermaid"],
+        ["className", "variable.mermaid"],
+        ["Markdown", "string.quoted.other.markdown.mermaid"],
+        ["Quoted", "string.quoted.double.mermaid"],
+        ["Bare child", "string.unquoted.mermaid"]
+      ]
     }
   ]
 }

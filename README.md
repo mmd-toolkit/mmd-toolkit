@@ -37,15 +37,16 @@ formatting options, and applying the formatted result.
 
 ## Packages
 
-| Package                                                  | What it is for                                                                         |
-| -------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| [`prettier-plugin-mmd`](./packages/prettier-plugin-mmd)  | Format `.mmd` files and `mermaid` code blocks in Markdown with Prettier.               |
-| [`@mmd-toolkit/eslint-plugin`](./packages/eslint-plugin) | Lint `.mmd` files and `mermaid` code blocks in Markdown with ESLint.                   |
-| [`@mmd-toolkit/parser`](./packages/parser)               | Parse Mermaid text into a syntax tree with positions, for linters and other tools.     |
-| [`@mmd-toolkit/spec`](./packages/spec)                   | Read how Mermaid text is parsed, as a specification independent of any implementation. |
-| [`@mmd-toolkit/tests`](./packages/tests)                 | Test an implementation of the syntax against what mermaid.js does.                     |
-| [`@mmd-toolkit/docs`](./packages/docs)                   | Build the documentation site: the guides and the documents of the lint rules.          |
-| [`@mmd-toolkit/playground`](./packages/playground)       | Try the parser and the formatter in the browser.                                       |
+| Package                                                        | What it is for                                                                                   |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| [`prettier-plugin-mmd`](./packages/prettier-plugin-mmd)        | Format `.mmd` files and `mermaid` code blocks in Markdown with Prettier.                         |
+| [`@mmd-toolkit/eslint-plugin`](./packages/eslint-plugin)       | Lint `.mmd` files and `mermaid` code blocks in Markdown with ESLint.                             |
+| [`@mmd-toolkit/parser`](./packages/parser)                     | Parse Mermaid text into a syntax tree with positions, for linters and other tools.               |
+| [`@mmd-toolkit/textmate-grammar`](./packages/textmate-grammar) | Color Mermaid text in Shiki, Monaco and VS Code, with a TextMate grammar for every diagram type. |
+| [`@mmd-toolkit/spec`](./packages/spec)                         | Read how Mermaid text is parsed, as a specification independent of any implementation.           |
+| [`@mmd-toolkit/tests`](./packages/tests)                       | Test an implementation of the syntax against what mermaid.js does.                               |
+| [`@mmd-toolkit/docs`](./packages/docs)                         | Build the documentation site: the guides and the documents of the lint rules.                    |
+| [`@mmd-toolkit/playground`](./packages/playground)             | Try the parser and the formatter in the browser.                                                 |
 
 ## What you can rely on
 

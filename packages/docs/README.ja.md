@@ -5,17 +5,18 @@
 VitePressで構築します。
 
 ```sh
-pnpm --filter @mmd-toolkit/parser --filter @mmd-toolkit/eslint-plugin build
+pnpm --filter @mmd-toolkit/parser --filter @mmd-toolkit/eslint-plugin --filter @mmd-toolkit/textmate-grammar build
 pnpm --filter @mmd-toolkit/docs dev
 pnpm --filter @mmd-toolkit/docs build
 pnpm --filter @mmd-toolkit/docs preview
 pnpm --filter @mmd-toolkit/docs test
 ```
 
-サイトやテストを実行する前に、パーサーとリンターをビルドします。
+サイトやテストを実行する前に、パーサー、リンター、TextMate文法をビルドします。
 診断マーカーは、
 ページの表示内容を生成するときにワークスペースのリンターを実行します。
-これらのパッケージの実装を変更した後も、再ビルドしてください。
+コードブロックは、ビルドした文法で色付けします。
+これらのパッケージを変更した後も、再ビルドしてください。
 
 `%% eslint @mmd-toolkit/`を含む`mmd`コードブロックには、
 `twoslash-eslint`で実際のESLintの診断を生成し、ホバーで表示します。

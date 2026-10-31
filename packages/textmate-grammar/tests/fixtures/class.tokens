@@ -18,11 +18,11 @@
 > class Animal["Animal label"] {
   "class" keyword.control.mermaid
   "Animal" variable.mermaid
-  "[" punctuation.definition.label.mermaid
+  "[" punctuation.definition.label.begin.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "Animal label" string.quoted.double.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
-  "]" punctuation.definition.label.mermaid
+  "]" punctuation.definition.label.end.mermaid
   "{" keyword.operator.block.begin.mermaid
 >   <<interface>>
   "<<" punctuation.definition.annotation.begin.mermaid
@@ -64,11 +64,11 @@
 > namespace Zoo["A namespace"] {
   "namespace" keyword.control.mermaid
   "Zoo" variable.mermaid
-  "[" punctuation.definition.label.mermaid
+  "[" punctuation.definition.label.begin.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "A namespace" string.quoted.double.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
-  "]" punctuation.definition.label.mermaid
+  "]" punctuation.definition.label.end.mermaid
   "{" keyword.operator.block.begin.mermaid
 >   class Bird
   "class" keyword.control.mermaid
@@ -408,7 +408,7 @@
 > style Animal fill red accDescr {}
   "style" keyword.control.mermaid
   "Animal" variable.mermaid
-  "fill red " support.constant.property-value.mermaid
+  "fill red" support.constant.property-value.mermaid
   "accDescr" keyword.control.mermaid
   "{" punctuation.definition.description.begin.mermaid
   "}" punctuation.definition.description.end.mermaid
@@ -525,12 +525,12 @@
 > style A style
   "style" keyword.control.mermaid
   "A" variable.mermaid
-  "style" keyword.control.mermaid
+  "style" support.constant.property-value.mermaid
 > 
 > classDef C style
   "classDef" keyword.control.mermaid
   "C" variable.mermaid
-  "style" keyword.control.mermaid
+  "style" support.constant.property-value.mermaid
 > 
 > class PercentAnnotation { <<a%>> }
   "class" keyword.control.mermaid
@@ -638,7 +638,7 @@
 > classDef Boundary style
   "classDef" keyword.control.mermaid
   "Boundary" variable.mermaid
-  "style" keyword.control.mermaid
+  "style" support.constant.property-value.mermaid
 > class DivisionProbe { foo(a(b)) }
   "class" keyword.control.mermaid
   "DivisionProbe" variable.mermaid
@@ -662,4 +662,62 @@
   "fill" support.type.property-name.mermaid
   ":" punctuation.separator.key-value.mermaid
   "#43a047" support.constant.property-value.mermaid
+> ScopeMember : +field$
+  "ScopeMember" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "+" storage.modifier.mermaid
+  "field" variable.mermaid
+  "$" storage.modifier.mermaid
+> Animal : +call(note) string
+  "Animal" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "+" storage.modifier.mermaid
+  "call" variable.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "note" string.unquoted.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+  "string" entity.name.type.mermaid
+> Animal : <<interface>>
+  "Animal" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "<<" punctuation.definition.annotation.begin.mermaid
+  "interface" storage.modifier.mermaid
+  ">>" punctuation.definition.annotation.end.mermaid
+> class ReturnClassifier { +foo()$ int* }
+  "class" keyword.control.mermaid
+  "ReturnClassifier" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+  "+" storage.modifier.mermaid
+  "foo" variable.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+  "$" storage.modifier.mermaid
+  "int*" entity.name.type.mermaid
+  "}" keyword.operator.block.end.mermaid
+> Animal : +foo()$ int*
+  "Animal" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "+" storage.modifier.mermaid
+  "foo" variable.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+  "$" storage.modifier.mermaid
+  "int*" entity.name.type.mermaid
+> class ReturnSuffix { +foo() int* }
+  "class" keyword.control.mermaid
+  "ReturnSuffix" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+  "+" storage.modifier.mermaid
+  "foo" variable.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+  "int" entity.name.type.mermaid
+  "*" storage.modifier.mermaid
+  "}" keyword.operator.block.end.mermaid
+> style Animal fi ll:red
+  "style" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "fi ll" support.type.property-name.mermaid
+  ":" punctuation.separator.key-value.mermaid
+  "red" support.constant.property-value.mermaid
 > 

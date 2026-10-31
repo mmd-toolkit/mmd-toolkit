@@ -4,7 +4,7 @@
     ["[", "keyword.operator.shape.begin.mermaid"],
     ["Create documentation", "string.unquoted.mermaid"],
     [" ticket: MC-2037, assigned: ", "string.unquoted.mermaid"],
-    ["knsv", "string.quoted.double.mermaid"],
+    ["knsv", "string.unquoted.mermaid"],
     [":::", "punctuation.separator.class.mermaid"],
     ["urgent", "variable.mermaid"],
     ["::icon(", "keyword.control.mermaid"],
@@ -52,7 +52,9 @@
     ["fa fa-book", "string.unquoted.mermaid", 8],
     ["}", "punctuation.section.data.end.mermaid", 2],
     ["@{", "meta.data.mermaid", 2],
-    [")", "punctuation.section.icon.end.mermaid", 8]
+    [")", "punctuation.section.icon.end.mermaid", 8],
+    ["\"", "string.unquoted.mermaid", 2],
+    ["\"`", "string.quoted.other.markdown.mermaid", 7]
   ],
   "unscoped": [],
   "absent": [
@@ -89,22 +91,22 @@
         ["%% kanban icon boundary", "comment.line.percentage.mermaid", 8],
         ["text\u2028", "string.quoted.other.markdown.mermaid", 11],
         ["%% kanban markdown boundary", "comment.line.percentage.mermaid", 11],
-        ["more", "string.quoted.other.markdown.mermaid", 12]
+        ["more", "string.quoted.other.markdown.mermaid", 12],
+        ["%% kanban data boundary", "string.unquoted.mermaid", 4],
+        ["\u2029", "string.unquoted.mermaid", 4]
       ],
       "absent": [
         ["%% kanban shape boundary", "string.unquoted.mermaid", 1],
         ["%% kanban shape boundary", "string.quoted.double.mermaid", 1],
         ["%% kanban shape boundary", "string.quoted.other.mermaid", 1],
         ["%% kanban shape boundary", "variable.mermaid", 1],
-        ["%% kanban data boundary", "string.unquoted.mermaid", 4],
         ["%% kanban data boundary", "string.quoted.double.mermaid", 4],
         ["%% kanban data boundary", "string.quoted.other.mermaid", 4],
         ["%% kanban data boundary", "variable.mermaid", 4],
         ["%% kanban icon boundary", "string.unquoted.mermaid", 8],
         ["%% kanban icon boundary", "string.quoted.double.mermaid", 8],
         ["%% kanban icon boundary", "string.quoted.other.mermaid", 8],
-        ["%% kanban icon boundary", "variable.mermaid", 8],
-        ["\u2029", "string.unquoted.mermaid", 4]
+        ["%% kanban icon boundary", "variable.mermaid", 8]
       ],
       "absentOnLine": [],
       "unscoped": [
@@ -129,6 +131,23 @@
         ["%% common %%{wrap}%%", "comment.line.percentage.mermaid"]
       ],
       "absentOnLine": [[0, "meta.directive.mermaid"]]
+    },
+    {
+      "code": "kanban\n  id[Label]@{key: true, n: 42, label: \"Data\"}\n  markdown[\"`Markdown`\"]\n  ::icon(book)\n  :::className\n",
+      "scopes": [
+        ["id", "variable.mermaid"],
+        ["Label", "string.unquoted.mermaid"],
+        ["key: true, n: 42, label: ", "string.unquoted.mermaid"],
+        ["Data", "string.unquoted.mermaid"],
+        ["Markdown", "string.quoted.other.markdown.mermaid"],
+        ["book", "string.unquoted.mermaid"],
+        ["className", "variable.mermaid"]
+      ],
+      "absentOnLine": [
+        [1, "support.type.property-name.mermaid"],
+        [1, "constant.numeric.mermaid"],
+        [1, "constant.language.mermaid"]
+      ]
     }
   ]
 }

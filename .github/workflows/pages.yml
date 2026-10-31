@@ -26,8 +26,9 @@ jobs:
           node-version: "lts/*"
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      # Diagnostic markers execute the workspace linter during docs rendering.
-      - run: pnpm --filter @mmd-toolkit/parser --filter @mmd-toolkit/eslint-plugin run build
+      # Diagnostic markers execute the workspace linter during docs rendering,
+      # and code blocks are colored with the built grammar.
+      - run: pnpm --filter @mmd-toolkit/parser --filter @mmd-toolkit/eslint-plugin --filter @mmd-toolkit/textmate-grammar run build
       - run: pnpm exec eslint packages/docs
       - run: pnpm exec prettier --check packages/docs .github/workflows/pages.yml
       - run: pnpm --filter @mmd-toolkit/docs run test

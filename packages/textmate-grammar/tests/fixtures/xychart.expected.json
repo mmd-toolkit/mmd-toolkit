@@ -77,7 +77,17 @@
     ["% native ", "comment.line.percentage.mermaid", 35],
     ["title", "string.unquoted.mermaid", 36],
     ["wrap", "entity.name.function.directive.mermaid", 36],
-    ["1", "constant.numeric.mermaid", 36]
+    ["1", "constant.numeric.mermaid", 36],
+    ["[", "punctuation.section.brackets.begin.mermaid", 37],
+    ["]", "punctuation.section.brackets.end.mermaid", 37],
+    ["First", "string.unquoted.mermaid", 37],
+    ["2", "string.unquoted.mermaid", 37],
+    [",", "punctuation.separator.comma.mermaid", 37],
+    ["[", "punctuation.section.brackets.begin.mermaid", 38],
+    ["]", "punctuation.section.brackets.end.mermaid", 38],
+    ["1", "constant.numeric.mermaid", 38],
+    ["2", "constant.numeric.mermaid", 38],
+    [",", "punctuation.separator.comma.mermaid", 38]
   ],
   "absent": [
     ["TitleLong", "keyword.control.mermaid"],
@@ -97,7 +107,8 @@
     ["line", "keyword.control.mermaid", 32],
     ["line", "keyword.control.mermaid", 33],
     ["bar", "keyword.control.mermaid", 34],
-    ["title", "keyword.control.mermaid", 36]
+    ["title", "keyword.control.mermaid", 36],
+    ["2", "constant.numeric.mermaid", 37]
   ],
   "absentOnLine": [
     [5, "comment.line.percentage.mermaid"],

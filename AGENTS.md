@@ -6,16 +6,17 @@ version is `AGENTS.ja.md`.
 ## Project
 
 A third-party project unrelated to mermaid-js. For the Mermaid text syntax
-(`.mmd`), covering every diagram type that mermaid.js has, it builds these five
+(`.mmd`), covering every diagram type that mermaid.js has, it builds these six
 things.
 
-| Package                        | npm name                     | Contents                             |
-| ------------------------------ | ---------------------------- | ------------------------------------ |
-| `packages/spec`                | `@mmd-toolkit/spec`          | Syntax specification (private)       |
-| `packages/tests`               | `@mmd-toolkit/tests`         | Conformance corpus (private)         |
-| `packages/parser`              | `@mmd-toolkit/parser`        | Parser that returns an AST           |
-| `packages/prettier-plugin-mmd` | `prettier-plugin-mmd`        | Formatter, as a Prettier plugin      |
-| `packages/eslint-plugin`       | `@mmd-toolkit/eslint-plugin` | Linter, as an ESLint language plugin |
+| Package                        | npm name                        | Contents                             |
+| ------------------------------ | ------------------------------- | ------------------------------------ |
+| `packages/spec`                | `@mmd-toolkit/spec`             | Syntax specification (private)       |
+| `packages/tests`               | `@mmd-toolkit/tests`            | Conformance corpus (private)         |
+| `packages/parser`              | `@mmd-toolkit/parser`           | Parser that returns an AST           |
+| `packages/prettier-plugin-mmd` | `prettier-plugin-mmd`           | Formatter, as a Prettier plugin      |
+| `packages/eslint-plugin`       | `@mmd-toolkit/eslint-plugin`    | Linter, as an ESLint language plugin |
+| `packages/textmate-grammar`    | `@mmd-toolkit/textmate-grammar` | Highlighting, as a TextMate grammar  |
 
 Correctness is defined by the pinned mermaid.js.
 
@@ -107,21 +108,26 @@ package.
   reads as something other than what was meant. Which rules exist is decided
   with the skill `rule-ideas`; their documents follow the skill `eslint-plugin`,
   and their implementation the skill `eslint-plugin-rules`.
+- `packages/textmate-grammar`: the TextMate grammar that colors Mermaid text in
+  editors and on sites (Shiki, VS Code, Monaco). Its rules come from the
+  specification alone, never from another grammar of Mermaid. It follows a
+  released version of the specification, named in its README, and catches up
+  with later versions on its own schedule. Skill `textmate-grammar`.
 
 ## Shared interfaces
 
 A change to one of these reaches the packages that use it; change them in the
 same change.
 
-| Interface                                       | Defined in | Used by                                |
-| ----------------------------------------------- | ---------- | -------------------------------------- |
-| Fixture format and loader                       | tests      | spec, parser, prettier-plugin          |
-| Function that extracts mermaid's Db             | tests      | parser, prettier-plugin                |
-| Fixture CLIs (`tools/fixtures.ts`)              | tests      | spec, parser                           |
-| Db summaries and the checks of recorded trees   | tests      | parser                                 |
-| AST definition (`docs/ast.md`, `docs/ast/*.md`) | spec       | parser, prettier-plugin, eslint-plugin |
-| Tokens and positions (`docs/tokens.md`, …)      | parser     | tests, prettier-plugin, eslint-plugin  |
-| The parser API (`parse()`, errors, traversal)   | parser     | prettier-plugin, eslint-plugin         |
+| Interface                                       | Defined in | Used by                                         |
+| ----------------------------------------------- | ---------- | ----------------------------------------------- |
+| Fixture format and loader                       | tests      | spec, parser, prettier-plugin, textmate-grammar |
+| Function that extracts mermaid's Db             | tests      | parser, prettier-plugin                         |
+| Fixture CLIs (`tools/fixtures.ts`)              | tests      | spec, parser                                    |
+| Db summaries and the checks of recorded trees   | tests      | parser                                          |
+| AST definition (`docs/ast.md`, `docs/ast/*.md`) | spec       | parser, prettier-plugin, eslint-plugin          |
+| Tokens and positions (`docs/tokens.md`, …)      | parser     | tests, prettier-plugin, eslint-plugin           |
+| The parser API (`parse()`, errors, traversal)   | parser     | prettier-plugin, eslint-plugin                  |
 
 ## Principles
 
@@ -135,10 +141,18 @@ same change.
 - Always put readability first. Prefer an explicit definition that a reader
   understands on sight over tricks such as inferring types from values or
   over-generalizing. Keep duplicates consistent with types and tests.
-- Always build the proper form, not a form that merely works. Do not leave a
-  structure that repeats the same decision in several places, relies on callers
-  keeping an unwritten promise, or reproduces a foreign pipeline where a direct
-  rule would do. When the proper form is unclear, ask before writing it.
+- Always build the proper form, not a form that merely works. Before adding a
+  mechanism (a check, a tool, a dependency, a file), ask yourself whether what
+  it maintains is needed at all. If the only reason for adding it is an earlier
+  decision of your own, reconsider that decision first. If it is needed, follow
+  the form the repository already uses for the same kind of thing. Do not leave
+  a structure that repeats the same decision in several places, relies on
+  callers keeping an unwritten promise, or reproduces a foreign pipeline where a
+  direct rule would do. When the proper form is unclear, ask before writing it.
+  In Claude Code, a hook of this repository checks the end of each turn that
+  added a file or changed the scripts or dependencies of a `package.json`, and
+  asks for a line that starts with `Proper-form check:` stating what the
+  addition maintains, why it is needed, and its precedent.
 - The conventions for code and documents are in the skill `conventions`. Read it
   before writing code or a Markdown document. In short:
   - No regular expressions in `packages/parser` and
@@ -154,7 +168,7 @@ same change.
     (`pnpm run lint:docs`).
   - Prose is wrapped at 80 columns: in English by Prettier
     (`pnpm run format:check`), in Japanese by the author and checked by
-    `pnpm run lint:ja`.
+    `pnpm run lint:md`.
   - A code block of Mermaid text has the info string `mmd` and is written as the
     formatter prints it, unless the example is there to show a way of writing.
   - Run the tests that a change can affect, and the whole suite of the package

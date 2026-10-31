@@ -6,7 +6,7 @@
   ],
   "repository": {
     "cynefin": {
-      "comment": "Read the bare or colon header; preserve directives between its components. cynefin.md#detection: The [grammar][grammar] accepts exactly cynefin-beta and cynefin-beta: as headers. Neither requires a following EOL. The bare form has a custom boundary of common whitespace, end of text or %%; the colon form has no following-boundary test. Spaces or native hidden forms between the word and colon do not make a colon header. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text.",
+      "comment": "Read the bare or colon header; preserve directives between its components. Follows cynefin.md#detection and common.md#a-directive-is-a-token-boundary.",
       "begin": "{{diagramStart}}(cynefin-beta)(?:({{directives}})(:)|(?={{directives}}(?:[{{ws}}]|%%|$)))",
       "beginCaptures": {
         "1": {
@@ -33,38 +33,38 @@
         },
         {
           "include": "#hidden-yaml",
-          "comment": "Read native hidden YAML. cynefin.md#native-hidden-forms-and-eol: native-yaml reads exactly three dashes, optional ASCII space/tab, a newline, an optional body ending with a newline, then three unindented closing dashes. The closer either consumes a following newline or requires common whitespace/end of text without consuming that boundary. The body-present alternative is tried before the empty-body alternative, each lazily: three adjacent fences can form one match, and a nonqualifying closer can make the match continue to a later one. Two nonempty blocks can remain two matches. Four dashes, an indented closer, a missing closer or a nonwhitespace closer suffix fails this form."
+          "comment": "Read native hidden YAML. Follows cynefin.md#native-hidden-forms-and-eol."
         },
         {
           "include": "#hidden-directive",
-          "comment": "Read native hidden directives. cynefin.md#native-hidden-forms-and-eol: native-directive reads optional ASCII padding, %%{, any characters lazily through a }%% whose following boundary qualifies, then either consumes a following newline or checks common whitespace/end of text. A closer joined to a nonwhitespace character can defer the match to a later closer. If the whole form fails, native-comment can read the line instead. These forms are not global directives. Earlier strings and common values enclose native-looking text, so no ignored node is made inside them."
+          "comment": "Read native hidden directives. Follows cynefin.md#native-hidden-forms-and-eol."
         },
         {
           "include": "#native-percent-comment",
-          "comment": "Read native percent comments. cynefin.md#native-hidden-forms-and-eol: native-comment reads an optional ASCII padding prefix and %% through before CR or LF, leaving that newline visible; a single percent sign is not its mark."
+          "comment": "Read native percent comments. Follows cynefin.md#native-hidden-forms-and-eol."
         },
         {
           "include": "#common-statements",
-          "comment": "Read metadata line and block values. cynefin.md#strings-and-common-values: title-line reads title followed by either nothing or exactly one ASCII space/tab separator and the rest of that line. It needs no word boundary, so titleX leaves an unread suffix rather than a title value. acc-title-line and the line alternative of acc-descr-form permit ASCII space/tab before their colon and read from immediately after it. Line values stop before CR, LF or the first %%, but include U+2028, U+2029, quotes and braces as ordinary text. In particular accDescr: {x} is a line value. cynefin.md#strings-and-common-values: The block alternative reads accDescr, zero or more common whitespace characters, an opening brace, any characters through the first closing brace, and that closer. It includes CR/LF and U+2028/U+2029 inside the body; quotes and backslashes do not protect a closing brace. A missing closer rejects. Empty and whitespace-only blocks are complete statements. Common directives and comment regions can leave a block empty; native-looking forms inside the enclosing block remain value text."
+          "comment": "Read metadata line and block values. Follows cynefin.md#strings-and-common-values."
         },
         {
-          "comment": "Read the five fixed domain values. cynefin.md#grammar: A transition requires two fixed domain words and -->, optionally followed by colon and a string together, then EOL. cynefin.md#ordered-units: Domain words and common keywords are case-sensitive. A domain word has no word-end boundary: complexclear is two domains, and complextitle T is a domain followed by title. An unknown suffix still causes a lexer error. --> is one indivisible arrow; colon is a separate unit only outside enclosing forms. Other arrows, arbitrary domain names and unquoted items are not units.",
+          "comment": "Read the five fixed domain values. Follows cynefin.md#grammar and cynefin.md#ordered-units.",
           "match": "complex|complicated|clear|chaotic|confusion",
           "name": "constant.language.mermaid"
         },
         {
-          "comment": "Read an indivisible transition arrow. cynefin.md#ordered-units: --> is one indivisible arrow; colon is a separate unit only outside enclosing forms.",
+          "comment": "Read an indivisible transition arrow. Follows cynefin.md#ordered-units.",
           "match": "-->",
           "name": "keyword.operator.arrow.mermaid"
         },
         {
-          "comment": "Read the transition-label separator. cynefin.md#grammar: A transition requires two fixed domain words and -->, optionally followed by colon and a string together, then EOL.",
+          "comment": "Read the transition-label separator. Follows cynefin.md#grammar.",
           "match": ":",
           "name": "punctuation.separator.colon.mermaid"
         },
         {
           "include": "#string-escaped",
-          "comment": "Read an item or transition-label string. cynefin.md#strings-and-common-values: A string uses matching single or double quotes and can be empty. Inside it, read any character other than its own quote or backslash, including LF, U+2028 and U+2029; a backslash instead requires one following character other than CR, LF, U+2028 or U+2029. A bare backslash, escaped line terminator or missing matching closer rejects. An opposite quote does not close it. Global common removals still apply inside it."
+          "comment": "Read an item or transition-label string. Follows cynefin.md#strings-and-common-values."
         }
       ]
     }

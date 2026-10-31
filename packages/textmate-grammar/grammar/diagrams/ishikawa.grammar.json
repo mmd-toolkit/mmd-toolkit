@@ -6,7 +6,7 @@
   ],
   "repository": {
     "ishikawa": {
-      "comment": "Read the beta header before the stable-header fallback. ishikawa.md#units-and-contexts: 2. `ishikawa-beta`, then `ishikawa`, case-insensitively, are `header` units. A header unit must not be followed by a word character. The beta form is tried first. Thus `ishikawa-betaX`, `ishikawa-beta1`, and `ishikawa-beta_` start with the stable header and have node text beginning `-beta`; `ishikawa-beta-x` uses the beta header and begins its text at `-x`.",
+      "comment": "Read the beta header before the stable-header fallback. Follows ishikawa.md#units-and-contexts.",
       "begin": "{{diagramStart}}((?i:ishikawa-beta|ishikawa)){{wordEnd}}",
       "beginCaptures": {
         "1": {
@@ -19,8 +19,8 @@
           "include": "#comment-line"
         },
         {
-          "comment": "Read a native comment only at a unit start; preserve directives in padding and content. ishikawa.md#units-and-contexts: 1. After zero or more whitespace characters, `%%` starts a diagram comment. Its body is the longest run before a line break, U+2028, U+2029, or the end of text. The whitespace before its marker is trivia. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
-          "match": "(?:^|\\G)(?!{{gap}}{{separatorCommentEnd}})({{gap}})({{nonDirectivePercentPair}}(?:{{directive}}|[^\\r\\n{{separators}}])*)",
+          "comment": "Read a native percent comment at a statement start, also after a directive. Follows ishikawa.md#comments and common.md#a-directive-is-a-token-boundary.",
+          "match": "{{ishikawa-statement-start}}(?!{{gap}}{{separatorCommentEnd}})({{gap}})({{nonDirectivePercentPair}}(?:{{directive}}|[^\\r\\n{{separators}}])*)",
           "captures": {
             "1": {
               "patterns": [
@@ -43,7 +43,7 @@
           "include": "#directive"
         },
         {
-          "comment": "Read node text as an unquoted label; preserve directives and stop before a common comment. ishikawa.md#units-and-contexts: 5. `node-text` is one or more characters other than a line break, read as far as possible. It includes internal whitespace, U+2028 and U+2029, punctuation, quotes, backticks, backslashes, NUL, U+0085, and U+200B. U+0085 and U+200B are text even at the start; they are not indentation. There is no quoted-string context and no escape syntax. ishikawa.md#units-and-contexts: Once `node-text` has begun, a header spelling, `%%`, and an unselected `;` remain part of that text. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "comment": "Read node text as an unquoted label; preserve directives and stop before a common comment. Follows ishikawa.md#units-and-contexts, common.md#a-directive-is-a-token-boundary, and common.md#comment-lines.",
           "match": "(?:(?!{{separatorCommentEnd}})(?:{{directive}}|(?!{{directiveStart}})[^\\r\\n]))+",
           "captures": {
             "0": {
@@ -58,5 +58,8 @@
         }
       ]
     }
+  },
+  "variables": {
+    "ishikawa-statement-start": "(?:^|\\G|(?<=\\}%%))"
   }
 }

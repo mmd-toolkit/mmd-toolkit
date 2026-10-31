@@ -6,7 +6,7 @@
   ],
   "repository": {
     "venn": {
-      "comment": "Read the exact lowercase detector header and its keyword boundary. venn.md#detection: Detection requires the exact lower-case prefix `venn-beta` and has no following-character boundary. venn.md#units-and-contexts: A bounded keyword is not followed by an ASCII letter, digit, or underscore.",
+      "comment": "Read the exact lowercase detector header and its keyword boundary. Follows venn.md#detection and venn.md#units-and-contexts.",
       "begin": "{{diagramStart}}(venn-beta){{wordEnd}}",
       "beginCaptures": {
         "1": {
@@ -22,11 +22,11 @@
           "include": "#directive"
         },
         {
-          "comment": "Read native comments and any preceding swallowed fragment. venn.md#units-and-contexts: 2. One UTF-16 code unit other than `}`, immediately followed by `%%`, is swallowed with the following diagram comment. venn.md#units-and-contexts: 9. Any remaining `%%`, including `%%{` that starts no common directive, starts a diagram comment through the characters before the next line feed or end.",
+          "comment": "Read native comments and any preceding swallowed fragment. Follows venn.md#units-and-contexts.",
           "patterns": [
             {
-              "comment": "Read a swallowed prefix separately from the comment; scope only non-whitespace as ignored text. venn.md#units-and-contexts: 2. One UTF-16 code unit other than `}`, immediately followed by `%%`, is swallowed with the following diagram comment. venn.md#comments-and-swallowed-fragments: A swallowed non-whitespace prefix is an `ignored-text` unit and a VennIgnoredText node when the remaining input is accepted. venn.md#comments-and-swallowed-fragments: A whitespace character swallowed by rule 2 is trivia and makes no node.",
-              "begin": "(?!{{directiveStart}}|{{entity}}|{{separatorCommentEnd}})[^}\\r\\n](?={{directives}}{{nonDirectivePercentPair}})",
+              "comment": "Read a swallowed prefix separately from the comment; scope only non-whitespace as ignored text. Follows venn.md#units-and-contexts and venn.md#comments-and-swallowed-fragments.",
+              "begin": "{{venn-swallowed-prefix}}",
               "beginCaptures": {
                 "0": {
                   "patterns": [
@@ -36,7 +36,7 @@
                     {
                       "match": "[^{{ws}}]",
                       "name": "comment.block.ignored.mermaid",
-                      "comment": "Mark only a swallowed non-whitespace prefix as ignored text. venn.md#comments-and-swallowed-fragments: A swallowed non-whitespace prefix is an `ignored-text` unit and a VennIgnoredText node when the remaining input is accepted. venn.md#comments-and-swallowed-fragments: A whitespace character swallowed by rule 2 is trivia and makes no node."
+                      "comment": "Mark only a swallowed non-whitespace prefix as ignored text. Follows venn.md#comments-and-swallowed-fragments."
                     }
                   ]
                 }
@@ -52,13 +52,13 @@
               ]
             },
             {
-              "comment": "Read a native diagram comment. venn.md#units-and-contexts: 9. Any remaining `%%`, including `%%{` that starts no common directive, starts a diagram comment through the characters before the next line feed or end.",
+              "comment": "Read a native diagram comment. Follows venn.md#units-and-contexts.",
               "include": "#native-percent-comment"
             }
           ]
         },
         {
-          "comment": "Read title text after its keyword and one whitespace separator. venn.md#units-and-contexts: 12. `title`, one whitespace character of [Notation](../common.md#notation), and nonempty text without a converted `#`, line feed, or `;` make one `title-line` unit, taking as many characters as possible. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text.",
+          "comment": "Read title text after its keyword and one whitespace separator. Follows venn.md#units-and-contexts and common.md#a-directive-is-a-token-boundary.",
           "begin": "((?i:title))({{directives}})(?!{{separatorCommentEnd}})[{{ws}}](?={{directives}}(?:{{entity}}|(?!{{directiveStart}})[^#;\\n]))",
           "beginCaptures": {
             "1": {
@@ -79,7 +79,7 @@
               "include": "#directive"
             },
             {
-              "comment": "Keep an entity inside the surrounding text scope. common.md#entities: A directive right after the `#` or right before the `;` lies inside the entity, which is read in the text without its directives, and so do two directives right before the `;`.",
+              "comment": "Keep an entity inside the surrounding text scope. Follows common.md#entities.",
               "include": "#entity"
             }
           ],
@@ -89,8 +89,8 @@
           "include": "#venn-style"
         },
         {
-          "comment": "Read bounded statement keywords. venn.md#units-and-contexts: 13. The bounded keywords `venn-beta`, `set`, `union`, `text`, and `style` make `header`, `set-keyword`, `union-keyword`, `text-keyword`, and `style-keyword` units respectively. venn.md#units-and-contexts: Keyword letters, including those of `title`, `rgb`, and `rgba`, are compared case-insensitively.",
-          "match": "((?i:set|union|text|style)){{wordEnd}}",
+          "comment": "Read bounded statement keywords. Follows venn.md#units-and-contexts.",
+          "match": "({{venn-statement-keyword}}){{wordEnd}}",
           "captures": {
             "1": {
               "name": "keyword.control.mermaid"
@@ -98,30 +98,40 @@
           }
         },
         {
-          "comment": "Read quoted and bare bracket labels. venn.md#units-and-contexts: 14. `[\"`, any number of characters other than `\"`, and `\"]` make a `quoted-label` unit. venn.md#units-and-contexts: 15. `[`, one or more characters other than `]` or `\"`, and `]` make a `bare-label` unit.",
+          "comment": "Read quoted and bare bracket labels. Follows venn.md#units-and-contexts.",
           "patterns": [
             {
-              "comment": "Read a quoted label and its delimiters; HTML attribute quotes remain content. venn.md#units-and-contexts: 14. `[\"`, any number of characters other than `\"`, and `\"]` make a `quoted-label` unit. common.md#html-attribute-quotes: The lexer reads the two `\"` of each quoted value as `'`. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
-              "begin": "(\\[{{directives}}\")",
+              "comment": "Read a quoted label and its delimiters; HTML attribute quotes remain content. Follows venn.md#units-and-contexts, common.md#html-attribute-quotes, common.md#a-directive-is-a-token-boundary, and common.md#comment-lines.",
+              "begin": "(\\[)({{directives}})(\")",
               "beginCaptures": {
                 "1": {
-                  "name": "punctuation.definition.label.begin.mermaid",
+                  "name": "punctuation.definition.label.begin.mermaid"
+                },
+                "2": {
                   "patterns": [
                     {
                       "include": "#directive"
                     }
                   ]
+                },
+                "3": {
+                  "name": "string.quoted.double.mermaid punctuation.definition.string.begin.mermaid"
                 }
               },
-              "end": "(\"{{directives}}\\])",
+              "end": "(\")({{directives}})(\\])",
               "endCaptures": {
                 "1": {
-                  "name": "punctuation.definition.label.end.mermaid",
+                  "name": "string.quoted.double.mermaid punctuation.definition.string.end.mermaid"
+                },
+                "2": {
                   "patterns": [
                     {
                       "include": "#directive"
                     }
                   ]
+                },
+                "3": {
+                  "name": "punctuation.definition.label.end.mermaid"
                 }
               },
               "patterns": [
@@ -132,9 +142,9 @@
                   "include": "#directive"
                 },
                 {
-                  "comment": "Read quoted-label content up to its closer or a common-comment boundary. venn.md#units-and-contexts: 14. `[\"`, any number of characters other than `\"`, and `\"]` make a `quoted-label` unit. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
-                  "begin": "(?!{{separatorCommentEnd}}|\"{{directives}}\\])(?=.)",
-                  "end": "(?=\"{{directives}}\\])|{{separatorCommentEnd}}",
+                  "comment": "Read quoted-label content up to its closer or a common-comment boundary. Follows venn.md#units-and-contexts and common.md#comment-lines.",
+                  "begin": "(?!{{separatorCommentEnd}}|{{venn-quoted-label-end}})(?=.)",
+                  "end": "(?={{venn-quoted-label-end}})|{{separatorCommentEnd}}",
                   "contentName": "string.quoted.double.mermaid",
                   "patterns": [
                     {
@@ -148,7 +158,7 @@
               ]
             },
             {
-              "comment": "Read a bare label and its delimiters; a closing bracket still ends the label inside a tag. venn.md#units-and-contexts: 15. `[`, one or more characters other than `]` or `\"`, and `]` make a `bare-label` unit. common.md#html-attribute-quotes: The lexer reads the two `\"` of each quoted value as `'`. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+              "comment": "Read a bare label and its delimiters; a closing bracket still ends the label inside a tag. Follows venn.md#units-and-contexts, common.md#html-attribute-quotes, common.md#a-directive-is-a-token-boundary, and common.md#comment-lines.",
               "begin": "(\\[)(?={{directives}}[^\\]\"])",
               "beginCaptures": {
                 "1": {
@@ -169,7 +179,7 @@
                   "include": "#directive"
                 },
                 {
-                  "comment": "Read bare-label content up to its closer or a common-comment boundary. venn.md#units-and-contexts: 15. `[`, one or more characters other than `]` or `\"`, and `]` make a `bare-label` unit. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+                  "comment": "Read bare-label content up to its closer or a common-comment boundary. Follows venn.md#units-and-contexts and common.md#comment-lines.",
                   "begin": "(?!{{separatorCommentEnd}})(?=[^\\]\"])",
                   "end": "(?=[\\]\"])|{{separatorCommentEnd}}",
                   "contentName": "string.unquoted.mermaid",
@@ -187,13 +197,13 @@
           ]
         },
         {
-          "comment": "Read a numeric size or text identifier. venn.md#units-and-contexts: 16. An optional sign followed by a decimal integer, optionally followed by a dot and one or more fractional digits, makes a `number` unit.",
-          "match": "[+-]?(?:[0-9]+(?:\\.[0-9]+)?|\\.[0-9]+)",
+          "comment": "Read a numeric size or text identifier. Follows venn.md#units-and-contexts.",
+          "match": "{{venn-number}}",
           "name": "constant.numeric.mermaid"
         },
         {
-          "comment": "Read a whole hexadecimal color value, retaining directives. venn.md#units-and-contexts: 17. `#` and three through eight hexadecimal digits make a `hex-color` unit, taking as many digits as possible. venn.md#directives-and-ignored-semicolons: Strings, label content, title content, and whole color units are text or string units that can contain directives.",
-          "match": "#{{directives}}(?:[0-9A-Fa-f]{{directives}}){3,8}",
+          "comment": "Read a whole hexadecimal color value, retaining directives. Follows venn.md#units-and-contexts and venn.md#directives-and-ignored-semicolons.",
+          "match": "{{venn-hex-color}}",
           "name": "support.constant.property-value.mermaid",
           "captures": {
             "0": {
@@ -206,8 +216,8 @@
           }
         },
         {
-          "comment": "Read an RGB or RGBA color value as a whole, protecting its commas and retaining directives. venn.md#units-and-contexts: 18. `rgba(`, four nonempty runs of digits or dots separated by commas, and `)` make an `rgba-color` unit. venn.md#units-and-contexts: 19. `rgb(` with three such runs and `)` makes an `rgb-color` unit. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text.",
-          "match": "(?i:rgba?)\\((?:(?!{{separatorCommentEnd}})(?:{{directive}}|(?!{{directiveStart}})[^)\\n]))*\\)",
+          "comment": "Read an RGB or RGBA color value as a whole, protecting its commas and retaining directives. Follows venn.md#units-and-contexts and common.md#a-directive-is-a-token-boundary.",
+          "match": "{{venn-rgb-color}}",
           "name": "support.constant.property-value.mermaid",
           "captures": {
             "0": {
@@ -220,20 +230,20 @@
           }
         },
         {
-          "comment": "Read a bare element name or text identifier. venn.md#units-and-contexts: 20. An ASCII letter or underscore followed by as many ASCII letters, digits, hyphens, or underscores as possible makes an `identifier` unit.",
-          "match": "[A-Za-z_][A-Za-z0-9_-]*",
+          "comment": "Read a bare element name or text identifier. Follows venn.md#units-and-contexts.",
+          "match": "{{venn-identifier}}",
           "name": "variable.mermaid"
         },
         {
-          "comment": "Keep an HTML tag inside the surrounding text scope. common.md#html-attribute-quotes: The lexer reads the two `\"` of each quoted value as `'`.",
+          "comment": "Keep an HTML tag inside the surrounding text scope. Follows common.md#html-attribute-quotes.",
           "include": "#html-tag"
         },
         {
-          "comment": "Read a plain double-quoted name or text. venn.md#units-and-contexts: 21. `\"`, any number of characters other than `\"`, and `\"` make a `string` unit.",
+          "comment": "Read a plain double-quoted name or text. Follows venn.md#units-and-contexts.",
           "include": "#string-plain-double"
         },
         {
-          "comment": "Read list and value separators. venn.md#units-and-contexts: 22. `,` and `:` make the units `\",\"` and `\":\"`.",
+          "comment": "Read list and value separators. Follows venn.md#units-and-contexts.",
           "match": "(,)|(:)",
           "captures": {
             "1": {
@@ -247,7 +257,7 @@
       ]
     },
     "venn-html-tag": {
-      "comment": "Read a bare-label HTML tag, leaving a closing bracket or a non-attribute quote for the enclosing label. venn.md#units-and-contexts: 15. `[`, one or more characters other than `]` or `\"`, and `]` make a `bare-label` unit. common.md#html-attribute-quotes: The lexer reads the two `\"` of each quoted value as `'`.",
+      "comment": "Read a bare-label HTML tag, leaving a closing bracket or a non-attribute quote for the enclosing label. Follows venn.md#units-and-contexts and common.md#html-attribute-quotes.",
       "begin": "{{htmlTagStart}}",
       "end": "{{htmlTagEnd}}|(?=[\\]\"])|{{separatorCommentEnd}}",
       "endCaptures": {
@@ -264,7 +274,7 @@
           "include": "#directive"
         },
         {
-          "comment": "Read a quoted HTML attribute value inside a bare label, leaving a closing bracket for that label. common.md#html-attribute-quotes: The lexer reads the two `\"` of each quoted value as `'`. venn.md#units-and-contexts: 15. `[`, one or more characters other than `]` or `\"`, and `]` make a `bare-label` unit.",
+          "comment": "Read a quoted HTML attribute value inside a bare label, leaving a closing bracket for that label. Follows common.md#html-attribute-quotes and venn.md#units-and-contexts.",
           "begin": "{{htmlQuotedValueStart}}",
           "end": "\"|(?=\\])|(?={{htmlTagEnd}})|{{separatorCommentEnd}}",
           "patterns": [
@@ -276,14 +286,14 @@
       ]
     },
     "venn-style": {
-      "comment": "Read a style statement, keeping target names separate from properties. venn.md#styles: `style` requires a nonempty target list and at least one comma-separated property.",
+      "comment": "Read a style statement, keeping target names separate from properties. Follows venn.md#styles, venn.md#units-and-contexts, and venn.md#comments-and-swallowed-fragments.",
       "begin": "((?i:style)){{wordEnd}}",
       "beginCaptures": {
         "1": {
           "name": "keyword.control.mermaid"
         }
       },
-      "end": "(?=(?i:set|union|text|style){{wordEnd}}|(?i:title){{requiredGap}})|$",
+      "end": "{{venn-style-end}}",
       "patterns": [
         {
           "include": "#comment-line"
@@ -298,20 +308,20 @@
           "include": "#string-plain-double"
         },
         {
-          "match": "[A-Za-z_][A-Za-z0-9_-]*",
+          "match": "{{venn-identifier}}",
           "name": "variable.mermaid",
-          "comment": "Read a bare style target name. venn.md#units-and-contexts: 20. An ASCII letter or underscore followed by as many ASCII letters, digits, hyphens, or underscores as possible makes an `identifier` unit."
+          "comment": "Read a bare style target name. Follows venn.md#units-and-contexts."
         },
         {
           "match": ",",
           "name": "punctuation.separator.comma.mermaid",
-          "comment": "Read a target or property-list comma. venn.md#units-and-contexts: 22. `,` and `:` make the units `\",\"` and `\":\"`."
+          "comment": "Read a target or property-list comma. Follows venn.md#units-and-contexts."
         }
       ]
     },
     "venn-style-property": {
-      "comment": "Read a style property name and one entire value; do not scope numbers inside the value. venn.md#styles: Each property key is a bare identifier followed by a colon and a value. venn.md#styles: A style value is one complete quoted string, which may be empty, or a nonempty sequence of style atoms. venn.md#styles: Adjacent bare style atoms need no whitespace, as in `1red#abc`; the VennLiteral keeps their written spelling and spacing.",
-      "begin": "([A-Za-z_][A-Za-z0-9_-]*)({{asciiGap}})(:)({{asciiGap}})",
+      "comment": "Read one whole style property value, leaving trailing whitespace outside its scope. Follows venn.md#styles, venn.md#units-and-contexts, and venn.md#comments-and-swallowed-fragments.",
+      "begin": "({{venn-identifier}})({{asciiGap}})(:)({{asciiGap}})",
       "beginCaptures": {
         "1": {
           "name": "support.type.property-name.mermaid"
@@ -324,7 +334,7 @@
           ]
         },
         "3": {
-          "name": "punctuation.separator.colon.mermaid"
+          "name": "punctuation.separator.key-value.mermaid"
         },
         "4": {
           "patterns": [
@@ -334,7 +344,7 @@
           ]
         }
       },
-      "end": "(?=(?i:set|union|text|style){{wordEnd}}|(?i:title){{requiredGap}})|(?=,)|{{lineValueEnd}}",
+      "end": "{{venn-style-value-end}}",
       "contentName": "support.constant.property-value.mermaid",
       "patterns": [
         {
@@ -344,7 +354,7 @@
           "include": "#directive"
         },
         {
-          "comment": "Read a complete bare property value as one text run, retaining directives and protecting color commas. venn.md#styles: A style value is one complete quoted string, which may be empty, or a nonempty sequence of style atoms. venn.md#styles: Adjacent bare style atoms need no whitespace, as in `1red#abc`; the VennLiteral keeps their written spelling and spacing.",
+          "comment": "Read a complete bare property value as one text run, retaining directives and protecting color commas. Follows venn.md#styles.",
           "match": "{{venn-style-atom}}(?:{{asciiGap}}{{venn-style-atom}})*",
           "captures": {
             "0": {
@@ -364,6 +374,17 @@
     }
   },
   "variables": {
-    "venn-style-atom": "(?:#{{directives}}(?:[0-9A-Fa-f]{{directives}}){3,8}|(?i:rgba?)\\((?:(?!{{separatorCommentEnd}})(?:{{directive}}|(?!{{directiveStart}})[^)\\n]))*\\)|(?!(?i:set|union|text|style){{wordEnd}}|(?i:title){{requiredGap}})[A-Za-z_][A-Za-z0-9_-]*|[+-]?(?:[0-9]+(?:\\.[0-9]+)?|\\.[0-9]+))"
+    "venn-identifier": "[A-Za-z_][A-Za-z0-9_-]*",
+    "venn-number": "[+-]?(?:[0-9]+(?:\\.[0-9]+)?|\\.[0-9]+)",
+    "venn-hex-color": "#{{directives}}(?:[0-9A-Fa-f]{{directives}}){3,8}",
+    "venn-rgb-color": "(?i:rgba?)\\((?:(?!{{separatorCommentEnd}})(?:{{directive}}|(?!{{directiveStart}})[^)\\n]))*\\)",
+    "venn-statement-start": "(?:{{venn-statement-keyword}}{{wordEnd}}|(?i:title){{requiredGap}})",
+    "venn-swallowed-prefix": "(?!{{directiveStart}}|{{entity}}|{{separatorCommentEnd}})[^}\\r\\n](?={{directives}}{{nonDirectivePercentPair}})",
+    "venn-native-comment-start": "(?:{{nonDirectivePercentPair}}|{{venn-swallowed-prefix}})",
+    "venn-style-end": "(?={{venn-statement-start}}|{{venn-native-comment-start}})|{{lineValueEnd}}",
+    "venn-style-atom": "(?!{{venn-native-comment-start}})(?:{{venn-hex-color}}|{{venn-rgb-color}}|(?!{{venn-statement-start}}){{venn-identifier}}|{{venn-number}})",
+    "venn-quoted-label-end": "\"{{directives}}\\]",
+    "venn-statement-keyword": "(?i:set|union|text|style)",
+    "venn-style-value-end": "(?={{lineGap}}(?:,|{{venn-statement-start}}|{{venn-native-comment-start}}|$))|{{separatorCommentEnd}}"
   }
 }

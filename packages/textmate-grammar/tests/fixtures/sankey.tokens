@@ -132,4 +132,19 @@
   "target" variable.mermaid
   "," punctuation.separator.comma.mermaid
   "7" string.unquoted.mermaid
+> Source,Target,123
+  "Source" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "Target" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "123" string.unquoted.mermaid
+> "Source
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Source" string.quoted.double.mermaid
+> ",Target,123
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "," punctuation.separator.comma.mermaid
+  "Target" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "123" string.unquoted.mermaid
 > 

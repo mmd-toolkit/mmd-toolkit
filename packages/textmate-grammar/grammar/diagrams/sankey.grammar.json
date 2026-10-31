@@ -6,7 +6,7 @@
   ],
   "repository": {
     "sankey": {
-      "comment": "Begin sankey at its lowercase detector prefix, accepting either bounded beta spelling. sankey.md#detection: The lexer then reads the header, the keyword `sankey-beta` or the keyword `sankey`, compared case-insensitively and not followed by a word character (see [The record context](#the-record-context)). common.md#leading-whitespace: Whitespace, line terminators, directives, and comment regions before the first unit of the diagram's lexer are trivia and are not seen by the diagram's grammar.",
+      "comment": "Begin sankey at its lowercase detector prefix, accepting either bounded beta spelling. Follows sankey.md#detection and common.md#leading-whitespace.",
       "begin": "{{diagramStart}}(sankey(?:-(?i:beta))?){{wordEnd}}",
       "beginCaptures": {
         "1": {
@@ -22,7 +22,7 @@
           "include": "#directive"
         },
         {
-          "comment": "Track the three fields of each record, retaining that position across multiline strings. sankey.md#diagram-and-records: The diagram is the header, a `newline` unit, and one or more records, each on a line of its own; a `newline` unit stands for one or more line feeds, so empty lines between records, after the header, and at the end change nothing. sankey.md#ids-and-values: The first two fields are the ids of the source and the target node, and the third is the value of the link; every record is a link.",
+          "comment": "Track the three fields of each record, retaining that position across multiline strings. Follows sankey.md#diagram-and-records and sankey.md#ids-and-values.",
           "begin": "(?!{{separatorCommentEnd}})(?=.)",
           "end": "{{lineValueEnd}}",
           "patterns": [
@@ -33,7 +33,7 @@
               "include": "#directive"
             },
             {
-              "comment": "After the first comma, read the target and then the value field. sankey.md#diagram-and-records: A record is exactly three fields with a `,` between each two: one or two fields, four fields, a `,` at the end, and a line of commas only are rejected, and so is an empty field, since a field is one unit: `,b,1`, `a,,1`, and `a,b,` at the end of the text. A field of spaces only is a field.",
+              "comment": "After the first comma, read the target and then the value field. Follows sankey.md#diagram-and-records.",
               "begin": ",",
               "beginCaptures": {
                 "0": {
@@ -49,7 +49,7 @@
                   "include": "#directive"
                 },
                 {
-                  "comment": "After the second comma, read the link value rather than an element name. sankey.md#ids-and-values: The first two fields are the ids of the source and the target node, and the third is the value of the link; every record is a link.",
+                  "comment": "After the second comma, read the link value rather than an element name. Follows sankey.md#ids-and-values.",
                   "begin": ",",
                   "beginCaptures": {
                     "0": {
@@ -91,7 +91,7 @@
       ]
     },
     "sankey-html-tag": {
-      "comment": "Reuse shared HTML tag parts; paired quotes crossing the tag end or a common comment remain available to the surrounding CSV string. common.md#html-attribute-quotes: The lexer reads the two `\"` of each quoted value as `'`. sankey.md#strings: So `\"a,b\"` has a comma, `\"a\"\"b\"` a doubled quote, `\"\"\"\"` one doubled quote, and a string may hold line feeds and lines. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "comment": "Reuse shared HTML tag parts; paired quotes crossing the tag end or a common comment remain available to the surrounding CSV string. Follows common.md#html-attribute-quotes, sankey.md#strings, common.md#a-directive-is-a-token-boundary, and common.md#comment-lines.",
       "match": "{{htmlTagStart}}(?:{{htmlQuotedValue}}|{{htmlTagDirective}}|{{sankey-html-doubled-quote}}|{{htmlTagCharacter}})*(?:{{htmlTagEnd}}|(?=\")|{{separatorCommentEnd}})",
       "captures": {
         "0": {
@@ -104,7 +104,7 @@
       }
     },
     "sankey-string": {
-      "comment": "Read CSV quoted strings with doubled quotes and multiline content. sankey.md#strings: The string context is entered after a `\"` (rule 5 of the record context). It reads one `string` unit: one or more characters, each a character from U+0020 to U+007E other than `\"`, a `,`, a line feed, or `\"\"`, and then a `\"` that no `\"` follows, which leaves the context.",
+      "comment": "Read CSV quoted strings with doubled quotes and multiline content. Follows sankey.md#strings.",
       "begin": "\"",
       "beginCaptures": {
         "0": {
@@ -125,7 +125,7 @@
           "include": "#directive"
         },
         {
-          "comment": "Read quoted content while leaving common-comment boundaries to the enclosing context. sankey.md#strings: The text of the string is what lies between its quotes, `\"\"` as written. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "comment": "Read quoted content while leaving common-comment boundaries to the enclosing context. Follows sankey.md#strings and common.md#comment-lines.",
           "begin": "(?!{{separatorCommentEnd}})(?=.)",
           "end": "(?={{sankey-string-end}})|{{separatorCommentEnd}}",
           "contentName": "string.quoted.double.mermaid",
@@ -134,13 +134,13 @@
               "include": "#directive"
             },
             {
-              "comment": "Reuse shared HTML parts while protecting doubled quotes. sankey.md#lexical-structure: The attribute quotes of an HTML tag are read as `'` as in every diagram type (see [HTML attribute quotes](../common.md#html-attribute-quotes)), so a field `<a b=\"c\">d` holds no `\"` and is the text `<a b='c'>d`, and so is a tag with quotes inside a string.",
+              "comment": "Reuse shared HTML parts while protecting doubled quotes. Follows sankey.md#lexical-structure.",
               "include": "#sankey-html-tag"
             },
             {
               "match": "{{sankey-doubled-quote}}",
               "name": "constant.character.escape.mermaid",
-              "comment": "Read doubled quotes as a string escape, including directives between their characters. sankey.md#strings: So `\"a,b\"` has a comma, `\"a\"\"b\"` a doubled quote, `\"\"\"\"` one doubled quote, and a string may hold line feeds and lines. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text.",
+              "comment": "Read doubled quotes as a string escape, including directives between their characters. Follows sankey.md#strings and common.md#a-directive-is-a-token-boundary.",
               "captures": {
                 "1": {
                   "patterns": [
@@ -156,9 +156,9 @@
       ]
     },
     "sankey-name": {
-      "comment": "Read an unquoted source or target id as an element name, retaining authored HTML quote text inside the field. sankey.md#ids-and-values: The first two fields are the ids of the source and the target node, and the third is the value of the link; every record is a link. sankey.md#the-record-context: A `field-text` unit takes the spaces around a field and every printable character of ASCII but `\"` and `,`: `%%`, `#`, `;`, `'`, `&`, `<`, `>`, `/`, `\\`, `-`, and `_` are characters of it, so no comment starts inside a record, `a %% c` is a field, and `b;` keeps its `;`. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
-      "begin": "(?!{{separatorCommentEnd}})(?=[^\",\\r\\n])",
-      "end": "(?=,)|{{lineValueEnd}}",
+      "comment": "Read an unquoted source or target id as an element name, retaining authored HTML quote text inside the field. Follows sankey.md#ids-and-values, sankey.md#the-record-context, and common.md#comment-lines.",
+      "begin": "{{sankey-field-start}}",
+      "end": "{{sankey-field-end}}",
       "patterns": [
         {
           "include": "#directive"
@@ -167,9 +167,9 @@
       "contentName": "variable.mermaid"
     },
     "sankey-value": {
-      "comment": "Read an unquoted link value as text, even when its spelling looks numeric. sankey.md#ids-and-values: The value may be any text: the grammar asks for no number, so `abc` and a field of spaces only are accepted as values. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
-      "begin": "(?!{{separatorCommentEnd}})(?=[^\",\\r\\n])",
-      "end": "(?=,)|{{lineValueEnd}}",
+      "comment": "Read an unquoted link value as text, even when its spelling looks numeric. Follows sankey.md#ids-and-values and common.md#comment-lines.",
+      "begin": "{{sankey-field-start}}",
+      "end": "{{sankey-field-end}}",
       "patterns": [
         {
           "include": "#directive"
@@ -179,6 +179,8 @@
     }
   },
   "variables": {
+    "sankey-field-start": "(?!{{separatorCommentEnd}})(?=[^\",\\r\\n])",
+    "sankey-field-end": "(?=,)|{{lineValueEnd}}",
     "sankey-doubled-quote": "\"({{directives}})\"",
     "sankey-html-doubled-quote": "\"(?:{{htmlTagDirective}})*\"",
     "sankey-string-end": "(?!{{sankey-doubled-quote}})\""

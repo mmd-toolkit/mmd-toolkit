@@ -95,8 +95,8 @@
     ["Task with title and \"quotes\" ", "string.unquoted.mermaid", 23],
     ["{", "punctuation.definition.description.begin.mermaid", 4],
     ["}", "punctuation.definition.description.end.mermaid", 4],
-    ["(", "punctuation.section.parens.begin.mermaid", 25],
-    [")", "punctuation.section.parens.end.mermaid", 25],
+    ["(", "punctuation.section.arguments.begin.mermaid", 25],
+    [")", "punctuation.section.arguments.end.mermaid", 25],
     ["\"", "punctuation.definition.string.begin.mermaid", 24],
     ["weekends", "string.unquoted.mermaid", 10]
   ],
@@ -211,7 +211,7 @@
         ["resumed ", "string.unquoted.mermaid", 2],
         ["}", "punctuation.definition.description.end.mermaid", 2],
         ["2", "string.unquoted.mermaid", 14],
-        [")", "punctuation.section.parens.end.mermaid", 14]
+        [")", "punctuation.section.arguments.end.mermaid", 14]
       ],
       "absent": [
         ["%% block comment }", "string.unquoted.mermaid", 1],

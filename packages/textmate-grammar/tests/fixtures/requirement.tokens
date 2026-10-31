@@ -27,39 +27,39 @@
   "hot " variable.mermaid
   "{" keyword.operator.block.begin.mermaid
 >     id: 123
-  "id" storage.modifier.mermaid
+  "id" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "123" string.unquoted.mermaid
 >     text: A test with low risk and 456
-  "text" storage.modifier.mermaid
+  "text" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "A test with low risk and 456" string.unquoted.mermaid
 >     risk: low
-  "risk" storage.modifier.mermaid
+  "risk" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "low" constant.language.mermaid
 >     risk: medium
-  "risk" storage.modifier.mermaid
+  "risk" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "medium" constant.language.mermaid
 >     risk: high
-  "risk" storage.modifier.mermaid
+  "risk" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "high" constant.language.mermaid
 >     verifyMethod: analysis
-  "verifyMethod" storage.modifier.mermaid
+  "verifyMethod" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "analysis" constant.language.mermaid
 >     verifyMethod: demonstration
-  "verifyMethod" storage.modifier.mermaid
+  "verifyMethod" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "demonstration" constant.language.mermaid
 >     verifyMethod: inspection
-  "verifyMethod" storage.modifier.mermaid
+  "verifyMethod" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "inspection" constant.language.mermaid
 >     verifyMethod: test
-  "verifyMethod" storage.modifier.mermaid
+  "verifyMethod" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "test" constant.language.mermaid
 >   }
@@ -99,11 +99,11 @@
   "elem " variable.mermaid
   "{" keyword.operator.block.begin.mermaid
 >     type: software
-  "type" storage.modifier.mermaid
+  "type" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
-  "software" entity.name.type.mermaid
+  "software" string.unquoted.mermaid
 >     docref: "https://example.com/text"
-  "docref" storage.modifier.mermaid
+  "docref" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "https://example.com/text" string.quoted.double.mermaid
@@ -223,7 +223,7 @@
   "b " variable.mermaid
   "{" keyword.operator.block.begin.mermaid
 >     text: A%%{init: {}}%%B
-  "text" storage.modifier.mermaid
+  "text" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "A" string.unquoted.mermaid
   "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
@@ -255,7 +255,7 @@
   "upper " variable.mermaid
   "{" keyword.operator.block.begin.mermaid
 >     RISK: HIGH
-  "RISK" storage.modifier.mermaid
+  "RISK" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "HIGH" constant.language.mermaid
 >   }
@@ -332,7 +332,7 @@
   "html " variable.mermaid
   "{" keyword.operator.block.begin.mermaid
 >     text: "<b title="x">y</b>"
-  "text" storage.modifier.mermaid
+  "text" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "<b title=\"x\">" string.quoted.double.mermaid
@@ -345,7 +345,7 @@
   "tag " variable.mermaid
   "{" keyword.operator.block.begin.mermaid
 >     text: "a<b" %% later >
-  "text" storage.modifier.mermaid
+  "text" keyword.control.mermaid
   ":" punctuation.separator.colon.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "a" string.quoted.double.mermaid
@@ -497,4 +497,38 @@
   "fill" support.type.property-name.mermaid
   ":" punctuation.separator.key-value.mermaid
   "#43a047" support.constant.property-value.mermaid
+> style req fi ll:red
+  "style" keyword.control.mermaid
+  "req" variable.mermaid
+  "fi ll" support.type.property-name.mermaid
+  ":" punctuation.separator.key-value.mermaid
+  "red" support.constant.property-value.mermaid
+> style req-x fill:red
+  "style" keyword.control.mermaid
+  "req" variable.mermaid
+  "-x fill" support.type.property-name.mermaid
+  ":" punctuation.separator.key-value.mermaid
+  "red" support.constant.property-value.mermaid
+> element LocalType {
+  "element" keyword.control.mermaid
+  "LocalType " variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+> type: custom
+  "type" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "custom" string.unquoted.mermaid
+> docref: local
+  "docref" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "local" string.unquoted.mermaid
+> }
+  "}" keyword.operator.block.end.mermaid
+> class r,e a,b
+  "class" keyword.control.mermaid
+  "r" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "e" variable.mermaid
+  "a" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "b" variable.mermaid
 > 

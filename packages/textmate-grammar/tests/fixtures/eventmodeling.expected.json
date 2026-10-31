@@ -10,11 +10,11 @@
     ["given", "keyword.control.mermaid"],
     ["when", "keyword.control.mermaid"],
     ["then", "keyword.control.mermaid"],
-    ["ui", "entity.name.type.mermaid"],
-    ["evt", "entity.name.type.mermaid"],
-    ["cmd", "entity.name.type.mermaid"],
-    ["rmo", "entity.name.type.mermaid"],
-    ["json", "entity.name.type.mermaid"],
+    ["ui", "keyword.control.mermaid"],
+    ["evt", "keyword.control.mermaid"],
+    ["cmd", "keyword.control.mermaid"],
+    ["rmo", "keyword.control.mermaid"],
+    ["json", "keyword.control.mermaid"],
     ["->>", "keyword.operator.arrow.mermaid"],
     ["01", "variable.mermaid"],
     [" a slash comment", "comment.line.double-slash.mermaid"],
@@ -22,10 +22,10 @@
     ["title", "keyword.control.mermaid"],
     ["accTitle", "keyword.control.mermaid"],
     ["accDescr", "keyword.control.mermaid", 25],
-    ["evt", "entity.name.type.mermaid", 2],
+    ["evt", "keyword.control.mermaid", 2],
     [" Events", "string.unquoted.mermaid"],
     ["wrap", "entity.name.function.directive.mermaid", 27],
-    ["json", "entity.name.type.mermaid", 27],
+    ["json", "keyword.control.mermaid", 27],
     ["<b title=\"x\">", "string.quoted.double.mermaid", 28],
     ["init", "entity.name.function.directive.mermaid", 28],
     ["wrap", "entity.name.function.directive.mermaid", 29],
@@ -33,27 +33,27 @@
     ["}", "punctuation.section.data.end.mermaid", 31],
     ["timeframe", "keyword.control.mermaid", 17],
     ["resetframe", "keyword.control.mermaid", 18],
-    ["readmodel", "entity.name.type.mermaid", 19],
-    ["processor", "entity.name.type.mermaid", 20],
-    ["command", "entity.name.type.mermaid", 18],
-    ["event", "entity.name.type.mermaid", 17],
-    ["pcr", "entity.name.type.mermaid", 21],
+    ["readmodel", "keyword.control.mermaid", 19],
+    ["processor", "keyword.control.mermaid", 20],
+    ["command", "keyword.control.mermaid", 18],
+    ["event", "keyword.control.mermaid", 17],
+    ["pcr", "keyword.control.mermaid", 21],
     ["tf", "keyword.control.mermaid", 32],
     ["tf", "keyword.control.mermaid", 33],
     ["tf", "keyword.control.mermaid", 34],
     [" tf 16 evt Commented", "comment.line.double-slash.mermaid", 35],
-    ["jsobj", "entity.name.type.mermaid", 36],
-    ["figma", "entity.name.type.mermaid", 37],
-    ["salt", "entity.name.type.mermaid", 38],
-    ["uri", "entity.name.type.mermaid", 39],
-    ["md", "entity.name.type.mermaid", 40],
-    ["html", "entity.name.type.mermaid", 41],
-    ["text", "entity.name.type.mermaid", 42],
+    ["jsobj", "keyword.control.mermaid", 36],
+    ["figma", "keyword.control.mermaid", 37],
+    ["salt", "keyword.control.mermaid", 38],
+    ["uri", "keyword.control.mermaid", 39],
+    ["md", "keyword.control.mermaid", 40],
+    ["html", "keyword.control.mermaid", 41],
+    ["text", "keyword.control.mermaid", 42],
     ["accDescr", "keyword.control.mermaid", 43],
     [" Native description", "string.unquoted.mermaid", 43],
     ["26", "variable.mermaid", 45],
     ["wrap", "entity.name.function.directive.mermaid", 45],
-    ["evt", "entity.name.type.mermaid", 45],
+    ["evt", "keyword.control.mermaid", 45],
     ["wrap", "entity.name.function.directive.mermaid", 47],
     [" when ", "comment.block.mermaid", 47],
     ["Retained", "variable.mermaid", 47],
@@ -73,9 +73,30 @@
     ["---", "comment.block.ignored.mermaid"],
     ["%%{!}%%", "comment.block.ignored.mermaid"],
     ["%% a comment line", "comment.line.percentage.mermaid"],
-    ["payload", "string.quoted.single.mermaid"]
+    ["payload", "string.quoted.single.mermaid"],
+    ["json", "keyword.control.mermaid", 49],
+    ["json", "keyword.control.mermaid", 50],
+    ["json", "keyword.control.mermaid", 51],
+    ["json", "keyword.control.mermaid", 52],
+    ["`", "punctuation.definition.tag.begin.mermaid", 49],
+    ["`", "punctuation.definition.tag.begin.mermaid", 50],
+    ["`", "punctuation.definition.tag.begin.mermaid", 51],
+    ["`", "punctuation.definition.tag.begin.mermaid", 52],
+    [" c ", "comment.block.mermaid", 49],
+    [" c ", "comment.block.mermaid", 50],
+    ["%%{!}%%", "comment.block.ignored.mermaid", 51],
+    ["%%{!}%%", "comment.block.ignored.mermaid", 52],
+    ["'", "string.quoted.single.mermaid", 48],
+    ["'", "punctuation.definition.string.begin.mermaid", 48],
+    ["\"", "string.quoted.double.mermaid", 28]
   ],
-  "absent": [["init", "string.quoted.double.mermaid", 28]],
+  "absent": [
+    ["init", "string.quoted.double.mermaid", 28],
+    ["json", "variable.mermaid", 49],
+    ["json", "variable.mermaid", 50],
+    ["json", "variable.mermaid", 51],
+    ["json", "variable.mermaid", 52]
+  ],
   "absentOnLine": [
     [32, "comment.line.percentage.mermaid"],
     [33, "comment.line.percentage.mermaid"],
@@ -151,6 +172,53 @@
       ],
       "absentOnLine": [[1, "comment.line.percentage.mermaid"]],
       "absent": [["Tail", "comment.block.ignored.mermaid", 1]]
+    },
+    {
+      "code": "eventmodeling tf 01 evt A `/* c */\u2028json\u00A0/* c */` {}",
+      "scopes": [
+        ["`", "punctuation.definition.tag.begin.mermaid"],
+        ["json", "keyword.control.mermaid"],
+        [" c ", "comment.block.mermaid"],
+        ["{", "punctuation.section.data.begin.mermaid"]
+      ],
+      "absent": [["json", "variable.mermaid"]]
+    },
+    {
+      "code": "eventmodeling tf 01 evt A `// tag gap\njson` {}",
+      "scopes": [
+        ["`", "punctuation.definition.tag.begin.mermaid", 0],
+        ["//", "comment.line.double-slash.mermaid", 0],
+        ["json", "keyword.control.mermaid", 1],
+        ["`", "punctuation.definition.tag.end.mermaid", 1]
+      ]
+    },
+    {
+      "code": "eventmodeling tf 01 evt A `%% tag gap\njson` {}",
+      "scopes": [
+        ["`", "punctuation.definition.tag.begin.mermaid", 0],
+        ["%% tag gap", "comment.line.percentage.mermaid", 0],
+        ["json", "keyword.control.mermaid", 1],
+        ["`", "punctuation.definition.tag.end.mermaid", 1]
+      ]
+    },
+    {
+      "code": "eventmodeling tf 01 evt A `\n---\ntag: ignored\n---\njson` {}",
+      "scopes": [
+        ["`", "punctuation.definition.tag.begin.mermaid", 0],
+        ["tag: ignored", "comment.block.ignored.mermaid", 2],
+        ["json", "keyword.control.mermaid", 4],
+        ["`", "punctuation.definition.tag.end.mermaid", 4]
+      ]
+    },
+    {
+      "code": "eventmodeling tf 01 evt A `/* ` */json\n` {}",
+      "scopes": [
+        ["`", "punctuation.definition.tag.begin.mermaid", 0],
+        [" ` ", "comment.block.mermaid", 0],
+        ["json", "keyword.control.mermaid", 0],
+        ["`", "punctuation.definition.tag.end.mermaid", 1]
+      ],
+      "absent": [["json", "variable.mermaid", 0]]
     }
   ]
 }

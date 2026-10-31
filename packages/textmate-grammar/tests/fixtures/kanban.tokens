@@ -9,9 +9,9 @@
   "]" keyword.operator.shape.end.mermaid
   "@{" meta.data.mermaid punctuation.section.data.begin.mermaid
   " ticket: MC-2037, assigned: " meta.data.mermaid string.unquoted.mermaid
-  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
-  "knsv" meta.data.mermaid string.quoted.double.mermaid
-  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "\"" meta.data.mermaid string.unquoted.mermaid
+  "knsv" meta.data.mermaid string.unquoted.mermaid
+  "\"" meta.data.mermaid string.unquoted.mermaid
   ", priority: 'High' " meta.data.mermaid string.unquoted.mermaid
   "}" meta.data.mermaid punctuation.section.data.end.mermaid
 >     blog(Create blog about the new diagram)
@@ -59,24 +59,24 @@
   "Data" string.unquoted.mermaid
   "@{" meta.data.mermaid punctuation.section.data.begin.mermaid
   " 1key: " meta.data.mermaid string.unquoted.mermaid
-  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
-  "value" meta.data.mermaid string.quoted.double.mermaid
-  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "\"" meta.data.mermaid string.unquoted.mermaid
+  "value" meta.data.mermaid string.unquoted.mermaid
+  "\"" meta.data.mermaid string.unquoted.mermaid
   ", " meta.data.mermaid string.unquoted.mermaid
-  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
-  "quoted-key" meta.data.mermaid string.quoted.double.mermaid
-  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "\"" meta.data.mermaid string.unquoted.mermaid
+  "quoted-key" meta.data.mermaid string.unquoted.mermaid
+  "\"" meta.data.mermaid string.unquoted.mermaid
   ": " meta.data.mermaid string.unquoted.mermaid
-  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
-  "A" meta.data.mermaid string.quoted.double.mermaid
-  "%%{" meta.data.mermaid string.quoted.double.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
-  "init" meta.data.mermaid string.quoted.double.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" meta.data.mermaid string.quoted.double.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
-  " " meta.data.mermaid string.quoted.double.mermaid meta.directive.mermaid
-  "{}" meta.data.mermaid string.quoted.double.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
-  "}%%" meta.data.mermaid string.quoted.double.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
-  "B" meta.data.mermaid string.quoted.double.mermaid
-  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "\"" meta.data.mermaid string.unquoted.mermaid
+  "A" meta.data.mermaid string.unquoted.mermaid
+  "%%{" meta.data.mermaid string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.data.mermaid string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.data.mermaid string.unquoted.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.data.mermaid string.unquoted.mermaid meta.directive.mermaid
+  "{}" meta.data.mermaid string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.data.mermaid string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "B" meta.data.mermaid string.unquoted.mermaid
+  "\"" meta.data.mermaid string.unquoted.mermaid
   " " meta.data.mermaid string.unquoted.mermaid
   "}" meta.data.mermaid punctuation.section.data.end.mermaid
 >   directed["%%{init: {}}%%`x`"]
@@ -119,9 +119,9 @@
   "]" keyword.operator.shape.end.mermaid
   "@{" meta.data.mermaid punctuation.section.data.begin.mermaid
   " ticket: " meta.data.mermaid string.unquoted.mermaid
-  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
-  "c>" meta.data.mermaid string.quoted.double.mermaid
-  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "\"" meta.data.mermaid string.unquoted.mermaid
+  "c>" meta.data.mermaid string.unquoted.mermaid
+  "\"" meta.data.mermaid string.unquoted.mermaid
   " " meta.data.mermaid string.unquoted.mermaid
   "}" meta.data.mermaid punctuation.section.data.end.mermaid
 >   bare[text%%{init: {}}%%note<b title="x">tag</b>]

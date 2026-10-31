@@ -368,4 +368,18 @@
   "[" punctuation.section.brackets.begin.mermaid
   "1" constant.numeric.mermaid
   "]" punctuation.section.brackets.end.mermaid
+> x-axis [First, 2]
+  "x-axis" keyword.control.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "First" string.unquoted.mermaid
+  "," punctuation.separator.comma.mermaid
+  "2" string.unquoted.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+> line [1, 2]
+  "line" keyword.control.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "1" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "2" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
 > 

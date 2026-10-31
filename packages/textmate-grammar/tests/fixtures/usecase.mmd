@@ -60,3 +60,22 @@ style Word fill:blue
 'Single label'
 "`Markdown label`"
 style Customer fill:#43a047
+actor FixedNormal@{type:normal}
+actor FixedHollow@{type:hollow}
+actor FixedAwesome@{type:awesome}
+actor IconText@{icon:hollow}
+actor QuotedType@{type:"hollow"}
+systemBoundary FixedPackage@{type:package}
+end
+systemBoundary FixedRect@{'type':rect}
+end
+A edgeSpeed@--> B
+edgeSpeed@{animation:fast,animate:true}
+A edgeSlow@--> B
+edgeSlow@{"animation":slow}
+style A color:"red,blue",fill:green
+style A color:'red,blue',fill:green
+A --foo--> B
+A --1.5px--> B
+A --box--> B
+style A color:"",fill:green

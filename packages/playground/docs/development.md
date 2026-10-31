@@ -21,11 +21,12 @@ Vite opens the browser automatically. Its default address is
 chooses another. No host override is required. Node.js requirements are recorded
 in [package.json](../package.json).
 
-The parser and formatter resolve to their workspace source entry points in both
-development and production builds. Editing either implementation triggers hot
-updates that reparse and, when Formatted is visible, reformat the current input.
-The source editor and its undo history stay mounted. Rebuilding library packages
-or running a second watch process is unnecessary.
+The parser, the formatter and the TextMate grammar resolve to their workspace
+source entry points in both development and production builds. Editing the
+parser or the formatter triggers hot updates that reparse and, when Formatted is
+visible, reformat the current input. The source editor and its undo history stay
+mounted. Rebuilding library packages or running a second watch process is
+unnecessary.
 
 ## Browser implementation
 
@@ -100,12 +101,10 @@ pnpm --filter @mmd-toolkit/playground preview
 
 Preview opens the production build in the browser automatically.
 
-[pages.yml](../../../.github/workflows_bk/pages.yml) is kept in the backup
-directory during development. When enabled under `.github/workflows/`, it
-validates pull requests and builds on main and manual runs. Documentation and
-Playground build jobs run independently. Main runs combine the documentation at
-the artifact root and this application's `lib/` in `playground/`, then deploy
-through the `github-pages` environment. Set the repository's Pages source to
-**GitHub Actions** before deployment. The workflow does not change repository
-settings. Only main deploys; deployment jobs are serialized and an active
-deployment is not cancelled.
+[pages.yml](../../../.github/workflows/pages.yml) validates pull requests and
+builds on main and manual runs. Documentation and Playground build jobs run
+independently. Main runs combine the documentation at the artifact root and this
+application's `lib/` in `playground/`, then deploy through the `github-pages`
+environment. The repository's Pages source must be **GitHub Actions**; the
+workflow does not change repository settings. Only main deploys, and a newer
+deployment cancels one in progress.
