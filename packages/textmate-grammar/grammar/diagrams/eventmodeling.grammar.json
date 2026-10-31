@@ -147,7 +147,7 @@
           }
         },
         {
-          "comment": "Read block data through an unindented closing brace in the text without directives, retaining directives before that closer. Follows eventmodeling.md#data and common.md#a-directive-is-a-token-boundary.",
+          "comment": "Read block data through an unindented closing brace in the text without directives, retaining directives before that closer. Follows eventmodeling.md#data, common.md#a-directive-is-a-token-boundary.",
           "begin": "(\\{)({{asciiGap}})$",
           "beginCaptures": {
             "1": {

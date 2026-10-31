@@ -2124,11 +2124,10 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: 'treemap\nclassDef ab fill:red,stroke:blue\n"Leaf":1',
     scopes: [
       ["fill", "support.type.property-name.mermaid"],
-      ["red", "support.constant.property-value.mermaid"],
-      ["stroke", "support.type.property-name.mermaid"],
-      [",", "punctuation.separator.comma.mermaid"],
+      ["red,stroke:blue", "support.constant.property-value.mermaid"],
       [":", "punctuation.separator.key-value.mermaid"],
     ],
+    absentOnLine: [[1, "punctuation.separator.comma.mermaid"]],
   },
   {
     name: "pie retained second-scan directive before its header",
@@ -2497,6 +2496,1117 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ["b", "meta.directive.mermaid"],
     ],
   },
+  {
+    name: "follow-up: agentflow accTitle retains a midline directive and title-looking value",
+    code: "agentflow-beta\naccTitle: a %%{x}%%title b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: agentflow accDescr retains a midline directive and title-looking value",
+    code: "agentflow-beta\naccDescr: a %%{x}%%title b",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: architecture title retains a midline directive and title-looking value",
+    code: "architecture-beta\ntitle a %%{x}%%title b",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: architecture accTitle retains a midline directive and title-looking value",
+    code: "architecture-beta\naccTitle: a %%{x}%%title b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: architecture accDescr retains a midline directive and title-looking value",
+    code: "architecture-beta\naccDescr: a %%{x}%%title b",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: c4 title retains a midline directive and title-looking value",
+    code: "C4Context\ntitle a %%{x}%%title b",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: c4 accTitle retains a midline directive and title-looking value",
+    code: "C4Context\naccTitle: a %%{x}%%title b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: c4 accDescr retains a midline directive and title-looking value",
+    code: "C4Context\naccDescr: a %%{x}%%title b",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: c4 accDescription retains a midline directive and title-looking value",
+    code: "C4Context\naccDescription a %%{x}%%title b",
+    scopes: [
+      ["accDescription", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: class accTitle retains a midline directive and title-looking value",
+    code: "classDiagram\naccTitle: a %%{x}%%title b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: class accDescr retains a midline directive and title-looking value",
+    code: "classDiagram\naccDescr: a %%{x}%%title b",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: cynefin title retains a midline directive and title-looking value",
+    code: "cynefin-beta\ntitle a %%{x}%%title b",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: cynefin accTitle retains a midline directive and title-looking value",
+    code: "cynefin-beta\naccTitle: a %%{x}%%title b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: cynefin accDescr retains a midline directive and title-looking value",
+    code: "cynefin-beta\naccDescr: a %%{x}%%title b",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: er accTitle retains a midline directive and title-looking value",
+    code: "erDiagram\naccTitle: a %%{x}%%title b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: er accDescr retains a midline directive and title-looking value",
+    code: "erDiagram\naccDescr: a %%{x}%%title b",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: eventmodeling title retains a midline directive and title-looking value",
+    code: "eventmodeling title a %%{x}%%title b",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: eventmodeling accTitle retains a midline directive and title-looking value",
+    code: "eventmodeling accTitle: a %%{x}%%title b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: eventmodeling accDescr retains a midline directive and title-looking value",
+    code: "eventmodeling accDescr: a %%{x}%%title b",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: flowchart accTitle retains a midline directive and title-looking value",
+    code: "flowchart TD\naccTitle: a %%{x}%%title b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: flowchart accDescr retains a midline directive and title-looking value",
+    code: "flowchart TD\naccDescr: a %%{x}%%title b",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: gantt title retains a midline directive and title-looking value",
+    code: "gantt\ntitle a %%{x}%%title b",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: gantt accTitle retains a midline directive and title-looking value",
+    code: "gantt\naccTitle: a %%{x}%%title b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: gantt accDescr retains a midline directive and title-looking value",
+    code: "gantt\naccDescr: a %%{x}%%title b",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: gitgraph title retains a midline directive and title-looking value",
+    code: "gitGraph\ntitle a %%{x}%%title b",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: gitgraph accTitle retains a midline directive and title-looking value",
+    code: "gitGraph\naccTitle: a %%{x}%%title b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: gitgraph accDescr retains a midline directive and title-looking value",
+    code: "gitGraph\naccDescr: a %%{x}%%title b",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: info title retains a midline directive and title-looking value",
+    code: "info\ntitle a %%{x}%%title b",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: info accTitle retains a midline directive and title-looking value",
+    code: "info\naccTitle: a %%{x}%%title b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: info accDescr retains a midline directive and title-looking value",
+    code: "info\naccDescr: a %%{x}%%title b",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: journey title retains a midline directive and title-looking value",
+    code: "journey\ntitle a %%{x}%%title b",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: journey accTitle retains a midline directive and title-looking value",
+    code: "journey\naccTitle: a %%{x}%%title b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: journey accDescr retains a midline directive and title-looking value",
+    code: "journey\naccDescr: a %%{x}%%title b",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: packet title retains a midline directive and title-looking value",
+    code: "packet\ntitle a %%{x}%%title b",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: packet accTitle retains a midline directive and title-looking value",
+    code: "packet\naccTitle: a %%{x}%%title b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: packet accDescr retains a midline directive and title-looking value",
+    code: "packet\naccDescr: a %%{x}%%title b",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: pie title retains a midline directive and title-looking value",
+    code: "pie\ntitle a %%{x}%%title b",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: pie accTitle retains a midline directive and title-looking value",
+    code: "pie\naccTitle: a %%{x}%%title b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: pie accDescr retains a midline directive and title-looking value",
+    code: "pie\naccDescr: a %%{x}%%title b",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: quadrant title retains a midline directive and title-looking value",
+    code: "quadrantChart\ntitle a %%{x}%%title b",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: quadrant accTitle retains a midline directive and title-looking value",
+    code: "quadrantChart\naccTitle: a %%{x}%%title b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: quadrant accDescr retains a midline directive and title-looking value",
+    code: "quadrantChart\naccDescr: a %%{x}%%title b",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: radar title retains a midline directive and title-looking value",
+    code: "radar-beta\ntitle a %%{x}%%title b",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: radar accTitle retains a midline directive and title-looking value",
+    code: "radar-beta\naccTitle: a %%{x}%%title b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: radar accDescr retains a midline directive and title-looking value",
+    code: "radar-beta\naccDescr: a %%{x}%%title b",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: railroad title retains a midline directive and title-looking value",
+    code: 'railroad-beta\ntitle a %%{x}%%title b\na = terminal("x");',
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: railroad accTitle retains a midline directive and title-looking value",
+    code: 'railroad-beta\naccTitle: a %%{x}%%title b\na = terminal("x");',
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: railroad accDescr retains a midline directive and title-looking value",
+    code: 'railroad-beta\naccDescr: a %%{x}%%title b\na = terminal("x");',
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: requirement accTitle retains a midline directive and title-looking value",
+    code: "requirementDiagram\naccTitle: a %%{x}%%title b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: requirement accDescr retains a midline directive and title-looking value",
+    code: "requirementDiagram\naccDescr: a %%{x}%%title b",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: sequence title retains a midline directive and title-looking value",
+    code: "sequenceDiagram\ntitle a %%{x}%%title b",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: sequence accTitle retains a midline directive and title-looking value",
+    code: "sequenceDiagram\naccTitle: a %%{x}%%title b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: sequence accDescr retains a midline directive and title-looking value",
+    code: "sequenceDiagram\naccDescr: a %%{x}%%title b",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: state accTitle retains a midline directive and title-looking value",
+    code: "stateDiagram-v2\naccTitle: a %%{x}%%title b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: state accDescr retains a midline directive and title-looking value",
+    code: "stateDiagram-v2\naccDescr: a %%{x}%%title b",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: timeline title retains a midline directive and title-looking value",
+    code: "timeline\ntitle a %%{x}%%title b",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: timeline accTitle retains a midline directive and title-looking value",
+    code: "timeline\naccTitle: a %%{x}%%title b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: timeline accDescr retains a midline directive and title-looking value",
+    code: "timeline\naccDescr: a %%{x}%%title b",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: treemap title retains a midline directive and title-looking value",
+    code: "treemap\ntitle a %%{x}%%title b",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: treemap accTitle retains a midline directive and title-looking value",
+    code: "treemap\naccTitle: a %%{x}%%title b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: treemap accDescr retains a midline directive and title-looking value",
+    code: "treemap\naccDescr: a %%{x}%%title b",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: treeview title retains a midline directive and title-looking value",
+    code: "treeView-beta\ntitle a %%{x}%%title b",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: treeview accTitle retains a midline directive and title-looking value",
+    code: "treeView-beta\naccTitle: a %%{x}%%title b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: treeview accDescr retains a midline directive and title-looking value",
+    code: "treeView-beta\naccDescr: a %%{x}%%title b",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: usecase accTitle retains a midline directive and title-looking value",
+    code: "usecase-beta\naccTitle: a %%{x}%%title b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: usecase accDescr retains a midline directive and title-looking value",
+    code: "usecase-beta\naccDescr: a %%{x}%%title b",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: venn title retains a midline directive and title-looking value",
+    code: "venn-beta\ntitle a %%{x}%%title b",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: wardley title retains a midline directive and title-looking value",
+    code: "wardley-beta\ntitle a %%{x}%%title b",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: wardley accTitle retains a midline directive and title-looking value",
+    code: "wardley-beta\naccTitle: a %%{x}%%title b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: wardley accDescr retains a midline directive and title-looking value",
+    code: "wardley-beta\naccDescr: a %%{x}%%title b",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: xychart title starts a second statement after a directive",
+    code: "xychart-beta\ntitle a %%{x}%%title b",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["a", "string.unquoted.mermaid"],
+      ["b", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "follow-up: xychart accTitle retains a midline directive and title-looking value",
+    code: "xychart-beta\naccTitle: a %%{x}%%title b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: xychart accDescr retains a midline directive and title-looking value",
+    code: "xychart-beta\naccDescr: a %%{x}%%title b",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["title b", "string.unquoted.mermaid"],
+    ],
+    absent: [["title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: gantt starts a title after a weekday and directive",
+    code: "gantt\nweekday monday %%{x}%%title t",
+    scopes: [
+      ["monday", "constant.language.mermaid"],
+      ["title", "keyword.control.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "follow-up: treeview reads a quoted branch name after a directive",
+    code: "treeView-beta\nroot\n├── %%{x}%%\"a\"\n└── %%{x}%%'b'",
+    scopes: [
+      ["a", "string.quoted.double.mermaid"],
+      ["b", "string.quoted.single.mermaid"],
+    ],
+    absent: [
+      ["a", "string.unquoted.mermaid"],
+      ["b", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "follow-up: class retains a directive after an attribute classifier",
+    code: "classDiagram\nclass A { +f$ %%{x}%%}",
+    scopes: [
+      ["x", "meta.directive.mermaid"],
+      ["$", "storage.modifier.mermaid"],
+      ["}", "keyword.operator.block.end.mermaid"],
+    ],
+  },
+  {
+    name: "follow-up: class retains a directive after a method classifier",
+    code: "classDiagram\nclass A { +f() T$ %%{x}%%}",
+    scopes: [
+      ["x", "meta.directive.mermaid"],
+      ["T", "entity.name.type.mermaid"],
+      ["$", "storage.modifier.mermaid"],
+    ],
+  },
+  {
+    name: "follow-up: class retains directives around a member annotation",
+    code: "classDiagram\nclass A { %%{a}%%<<anno>> %%{b}%%}",
+    scopes: [
+      ["a", "meta.directive.mermaid"],
+      ["b", "meta.directive.mermaid"],
+      ["anno", "storage.modifier.mermaid"],
+    ],
+  },
+  {
+    name: "follow-up: eventmodeling closes block data after a directive",
+    code: "eventmodeling\ndata D {\nx\n%%{x}%%}\n title t",
+    scopes: [
+      ["}", "punctuation.section.data.end.mermaid"],
+      ["title", "keyword.control.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+    ],
+    absent: [["title", "meta.data.mermaid"]],
+  },
+  {
+    name: "follow-up: an unclosed word directive retains the statement-start limit",
+    code: "pie\n%%{init: dark title t",
+    scopes: [["dark", "string.unquoted.directive.mermaid"]],
+    unscoped: [["title t"]],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: an unclosed free-text directive retains the LS statement-start limit",
+    code: "pie\n%%{init: {}\u2028title t",
+    scopes: [["{}", "string.unquoted.directive.mermaid"]],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: an unclosed free-text directive retains the PS statement-start limit",
+    code: "pie\n%%{init: {}\u2029title t",
+    scopes: [["{}", "string.unquoted.directive.mermaid"]],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: treeview decoration permits directives before after and between bars",
+    code: "treeView-beta\nroot\n├── a\n│ %%{x}%%\n %%{x}%%│\n┃%%{x}%%┃\n─%%{x}%%━\n└── b",
+    scopes: [
+      ["│ ", "comment.block.ignored.mermaid", 3],
+      ["│", "comment.block.ignored.mermaid", 4],
+      ["┃", "comment.block.ignored.mermaid", 5],
+      ["─", "comment.block.ignored.mermaid", 6],
+      ["x", "meta.directive.mermaid", 3],
+      ["x", "meta.directive.mermaid", 4],
+      ["x", "meta.directive.mermaid", 5],
+      ["x", "meta.directive.mermaid", 6],
+    ],
+    absentOnLine: [
+      [3, "string.unquoted.mermaid"],
+      [4, "string.unquoted.mermaid"],
+      [5, "string.unquoted.mermaid"],
+      [6, "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "follow-up: class separates only commas before the first style colon",
+    code: "classDiagram\nclass A\nstyle A bold,fill:red,stroke:blue:wide",
+    scopes: [
+      ["bold", "support.constant.property-value.mermaid"],
+      [",", "punctuation.separator.comma.mermaid"],
+      ["fill", "support.type.property-name.mermaid"],
+      [":", "punctuation.separator.key-value.mermaid"],
+      ["red,stroke:blue:wide", "support.constant.property-value.mermaid"],
+    ],
+  },
+  {
+    name: "follow-up: class style values retain entity and ignored semicolons",
+    code: "classDiagram\nclass A\nstyle A a:#b; class X\nstyle A a:#b;c;d",
+    scopes: [
+      ["#b; class X", "support.constant.property-value.mermaid"],
+      ["#b;c;d", "support.constant.property-value.mermaid"],
+    ],
+    absent: [["#b; class X", "keyword.control.mermaid"]],
+  },
+  {
+    name: "follow-up: class style values retain description-looking text",
+    code: "classDiagram\nclass A\nstyle A fill:red accDescr {}",
+    scopes: [["red accDescr {}", "support.constant.property-value.mermaid"]],
+    absentOnLine: [[2, "punctuation.definition.description.begin.mermaid"]],
+  },
+  {
+    name: "follow-up: class bare styles still leave a description block",
+    code: "classDiagram\nclass A\nstyle A bold accDescr {}",
+    scopes: [
+      ["bold", "support.constant.property-value.mermaid"],
+      ["accDescr", "keyword.control.mermaid"],
+      ["{", "punctuation.definition.description.begin.mermaid"],
+    ],
+  },
+  {
+    name: "follow-up: class classDef values retain commas after the first colon",
+    code: "classDiagram\nclass A\nclassDef aa bold,fill:red,stroke:blue",
+    scopes: [
+      ["bold", "support.constant.property-value.mermaid"],
+      [",", "punctuation.separator.comma.mermaid"],
+      ["fill", "support.type.property-name.mermaid"],
+      ["red,stroke:blue", "support.constant.property-value.mermaid"],
+    ],
+  },
+  {
+    name: "follow-up: treemap keeps commas after the first style colon",
+    code: "treemap\nclassDef aa fill:red,stroke:x",
+    scopes: [
+      ["fill", "support.type.property-name.mermaid"],
+      [":", "punctuation.separator.key-value.mermaid"],
+      ["red,stroke:x", "support.constant.property-value.mermaid"],
+    ],
+    absentOnLine: [[1, "punctuation.separator.comma.mermaid"]],
+  },
+  {
+    name: "follow-up: venn keeps a multiline RGB atom inside one style value",
+    code: "venn-beta\nset A\nstyle A fill:rgb(1, 2,\n 3) red",
+    scopes: [
+      ["rgb(", "support.constant.property-value.mermaid"],
+      ["1, 2,", "support.constant.property-value.mermaid"],
+      [" 3", "support.constant.property-value.mermaid"],
+      ["red", "support.constant.property-value.mermaid"],
+    ],
+    absentOnLine: [
+      [2, "punctuation.separator.comma.mermaid"],
+      [3, "punctuation.separator.comma.mermaid"],
+      [3, "keyword.control.mermaid"],
+    ],
+  },
+  {
+    name: "follow-up: venn keeps a multiline RGBA atom before the next property",
+    code: "venn-beta\nset A\nstyle A fill:rgba(1,2,\n3,0.5),stroke:blue",
+    scopes: [
+      ["rgba(", "support.constant.property-value.mermaid"],
+      ["3,0.5", "support.constant.property-value.mermaid"],
+      ["stroke", "support.type.property-name.mermaid"],
+      ["blue", "support.constant.property-value.mermaid"],
+      [",", "punctuation.separator.comma.mermaid", 3],
+    ],
+  },
+  {
+    name: "follow-up: usecase keeps escaped commas in style and classDef",
+    code: "usecase-beta\nactor A\nstyle A font:x\\,y,fill:red\nclassDef aa font:x\\,y,fill:red",
+    scopes: [
+      ["x", "support.constant.property-value.mermaid"],
+      ["\\,", "support.constant.property-value.mermaid"],
+      ["y", "support.constant.property-value.mermaid"],
+      [",", "punctuation.separator.comma.mermaid"],
+    ],
+    absent: [["\\,", "punctuation.separator.comma.mermaid"]],
+  },
+  {
+    name: "follow-up: flowchart keeps the classDef-only escaped comma distinction",
+    code: "flowchart TD\nA-->B\nclassDef aa bold\\,wide,fill:red\nstyle A bold\\,wide\nlinkStyle 0 bold\\,wide",
+    scopes: [
+      ["\\,", "support.constant.property-value.mermaid", 2],
+      [",", "punctuation.separator.comma.mermaid", 3],
+      [",", "punctuation.separator.comma.mermaid", 4],
+    ],
+    absent: [["\\,", "punctuation.separator.comma.mermaid", 2]],
+  },
+  {
+    name: "follow-up: agentflow keeps the classDef-only escaped comma distinction",
+    code: "agentflow-beta\nA-->B\nclassDef aa bold\\,wide,fill:red\nstyle A bold\\,wide\nlinkStyle 0 bold\\,wide",
+    scopes: [
+      ["\\,", "support.constant.property-value.mermaid", 2],
+      [",", "punctuation.separator.comma.mermaid", 3],
+      [",", "punctuation.separator.comma.mermaid", 4],
+    ],
+    absent: [["\\,", "punctuation.separator.comma.mermaid", 2]],
+  },
+  {
+    name: "follow-up: a word argument after a blank line",
+    code: "pie\n%%{wrap\n\nclear\ntitle t",
+    scopes: [
+      ["clear", "string.unquoted.directive.mermaid"],
+      ["title", "keyword.control.mermaid"],
+    ],
+    absent: [["title", "meta.directive.mermaid"]],
+  },
+  {
+    name: "follow-up: a colon on a later line",
+    code: "pie\n%%{init\n: dark\n}%%\ntitle t",
+    scopes: [
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["title", "keyword.control.mermaid"],
+      ["}%%", "punctuation.definition.directive.end.mermaid"],
+    ],
+    absent: [["title", "meta.directive.mermaid"]],
+  },
+  {
+    name: "follow-up: a second colon starts free text",
+    code: "pie\n%%{init:\n:x}%%\ntitle t",
+    scopes: [
+      [":x", "string.unquoted.directive.mermaid"],
+      ["title", "keyword.control.mermaid"],
+      ["}%%", "punctuation.definition.directive.end.mermaid"],
+    ],
+    absent: [["title", "meta.directive.mermaid"]],
+  },
+  {
+    name: "follow-up: an indented word closes before the next statement",
+    code: "pie\n%%{init:\n  dark\n}%%\ntitle t",
+    scopes: [
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["title", "keyword.control.mermaid"],
+      ["}%%", "punctuation.definition.directive.end.mermaid"],
+    ],
+    absent: [["title", "meta.directive.mermaid"]],
+  },
+  {
+    name: "follow-up: a same-line word keeps its later closer",
+    code: "pie\n%%{init: dark\n}%%\ntitle t",
+    scopes: [
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["title", "keyword.control.mermaid"],
+      ["}%%", "punctuation.definition.directive.end.mermaid"],
+    ],
+    absent: [["title", "meta.directive.mermaid"]],
+  },
+  {
+    name: "follow-up: a next-line vertex word is the argument",
+    code: "flowchart LR\nStart\n%%{wrap\nA-->B",
+    scopes: [
+      ["A", "string.unquoted.directive.mermaid"],
+      ["B", "variable.mermaid"],
+    ],
+    absent: [["B", "meta.directive.mermaid"]],
+  },
+  {
+    name: "follow-up: a provisional opener reads its next-line name",
+    code: 'pie\n%%{\n  init: {"theme": "dark"}\n}%%\ntitle t',
+    scopes: [
+      ["init", "entity.name.function.directive.mermaid"],
+      ['{"theme": "dark"}', "string.unquoted.directive.mermaid"],
+      ["title", "keyword.control.mermaid"],
+      ["}%%", "punctuation.definition.directive.end.mermaid"],
+    ],
+    absent: [["title", "meta.directive.mermaid"]],
+  },
+  {
+    name: "follow-up: a three-line init keeps free text",
+    code: 'flowchart LR\n%%{init: {\n"theme": "dark"\n}}%%\nA-->B',
+    scopes: [
+      ['"theme": "dark"', "string.unquoted.directive.mermaid"],
+      ["A", "variable.mermaid"],
+    ],
+    absent: [["B", "meta.directive.mermaid"]],
+  },
+  {
+    name: "follow-up: a same-line word leaves the next line as body",
+    code: "flowchart TD\n%%{init: dark\nx",
+    scopes: [
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["x", "variable.mermaid"],
+    ],
+    absent: [["x", "meta.directive.mermaid"]],
+  },
+  {
+    name: "follow-up: a provisional opener works before the header",
+    code: '%%{\n  init: {"theme": "dark"}\n}%%\npie\ntitle t',
+    scopes: [
+      ["init", "entity.name.function.directive.mermaid"],
+      ["pie", "keyword.control.mermaid"],
+      ["title", "keyword.control.mermaid"],
+    ],
+  },
+  {
+    name: "follow-up: a provisional opener ends before a non-word body line",
+    code: 'pie\n%%{\n"x":1',
+    scopes: [
+      ["%%{", "punctuation.definition.directive.begin.mermaid"],
+      ["x", "string.quoted.double.mermaid"],
+    ],
+    absent: [["x", "meta.directive.mermaid"]],
+  },
+  {
+    name: "follow-up: a free-text LS stop leaves a next-line closer outside its scope",
+    code: "pie\n%%{init: {}\u2028\n}%%\ntitle t",
+    scopes: [
+      ["{}", "string.unquoted.directive.mermaid"],
+      ["title", "keyword.control.mermaid"],
+    ],
+    absentOnLine: [[2, "punctuation.definition.directive.end.mermaid"]],
+  },
+  {
+    name: "follow-up: a free-text PS stop leaves a next-line closer outside its scope",
+    code: "pie\n%%{init: {}\u2029\n}%%\ntitle t",
+    scopes: [
+      ["{}", "string.unquoted.directive.mermaid"],
+      ["title", "keyword.control.mermaid"],
+    ],
+    absentOnLine: [[2, "punctuation.definition.directive.end.mermaid"]],
+  },
+  {
+    name: "follow-up: opaque kanban data has one unquoted scope per token",
+    code: 'kanban\nA\n b[y]@{ assigned: "k" }',
+    scopes: [["@{", "meta.data.mermaid"]],
+    absentOnLine: [
+      [2, "string.quoted.double.mermaid"],
+      [2, "support.type.property-name.mermaid"],
+    ],
+  },
+  {
+    name: "follow-up: opaque flowchart data has one unquoted scope per token",
+    code: 'flowchart TD\nA@{ assigned: "k" }',
+    scopes: [["@{", "meta.data.mermaid"]],
+    absentOnLine: [
+      [1, "string.quoted.double.mermaid"],
+      [1, "support.type.property-name.mermaid"],
+    ],
+  },
+  {
+    name: "follow-up: opaque agentflow data has one unquoted scope per token",
+    code: 'agentflow-beta\nA@{ assigned: "k" }',
+    scopes: [["@{", "meta.data.mermaid"]],
+    absentOnLine: [
+      [1, "string.quoted.double.mermaid"],
+      [1, "support.type.property-name.mermaid"],
+    ],
+  },
+  {
+    name: "follow-up: opaque sequence data has one unquoted scope per token",
+    code: 'sequenceDiagram\nparticipant A@{ assigned: "k" }',
+    scopes: [["@{", "meta.data.mermaid"]],
+    absentOnLine: [
+      [1, "string.quoted.double.mermaid"],
+      [1, "support.type.property-name.mermaid"],
+    ],
+  },
+  {
+    name: "follow-up: opaque usecase data has one unquoted scope per token",
+    code: 'usecase-beta\njson J @ {"assigned": {"name": "k}"}}',
+    scopes: [["{", "meta.data.mermaid"]],
+    absentOnLine: [
+      [1, "string.quoted.double.mermaid"],
+      [1, "support.type.property-name.mermaid"],
+    ],
+  },
+  {
+    name: "follow-up: opaque eventmodeling data has one unquoted scope per token",
+    code: 'eventmodeling\ntf 01 evt A {"assigned": {"name": "k}"}}',
+    scopes: [["{", "meta.data.mermaid"]],
+    absentOnLine: [
+      [1, "string.quoted.double.mermaid"],
+      [1, "support.type.property-name.mermaid"],
+    ],
+  },
+  {
+    name: "follow-up: usecase JSON at remains its own unit",
+    code: 'usecase-beta\njson J @ {"a": 1}',
+    scopes: [
+      ["@", "punctuation.separator.at.mermaid"],
+      ["@", "meta.data.mermaid"],
+    ],
+  },
+  {
+    name: "follow-up: eventmodeling quoted inline values remain strings",
+    code: 'eventmodeling\ntf 01 evt A "double"\ntf 02 evt B \'single\'\ntf 03 evt C {"k":"v"}',
+    scopes: [
+      ["double", "string.quoted.double.mermaid"],
+      ["single", "string.quoted.single.mermaid"],
+      ['"k":"v"', "string.unquoted.mermaid"],
+      ["{", "meta.data.mermaid"],
+    ],
+    absent: [
+      ["double", "meta.data.mermaid"],
+      ["single", "meta.data.mermaid"],
+    ],
+  },
+  {
+    name: "follow-up: a directive separator is a colon after its name",
+    code: "pie\n%%{init: dark}%%\ntitle t",
+    scopes: [
+      [":", "punctuation.separator.colon.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+    ],
+    absent: [[":", "punctuation.separator.key-value.mermaid"]],
+  },
+  {
+    name: "follow-up: venn recognizes multiline RGB after other value atoms",
+    code: "venn-beta\nset A\nstyle A fill:red rgb(1,2,\n3),stroke:blue\nstyle A fill:1 rgba(1,2,\n3,0.5)",
+    scopes: [
+      ["red", "support.constant.property-value.mermaid"],
+      ["rgb(", "support.constant.property-value.mermaid"],
+      ["3", "support.constant.property-value.mermaid", 3],
+      ["stroke", "support.type.property-name.mermaid"],
+      ["rgba(", "support.constant.property-value.mermaid"],
+      ["3,0.5", "support.constant.property-value.mermaid", 5],
+    ],
+    absentOnLine: [
+      [2, "punctuation.separator.comma.mermaid"],
+      [5, "constant.numeric.mermaid"],
+    ],
+  },
+  {
+    name: "follow-up: pending colon and closer cross blank lines",
+    code: "pie\n%%{init\n\n: dark\n\n}%%\ntitle t",
+    scopes: [
+      [":", "punctuation.separator.colon.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["}%%", "punctuation.definition.directive.end.mermaid"],
+      ["title", "keyword.control.mermaid"],
+    ],
+    absent: [["title", "meta.directive.mermaid"]],
+  },
+  {
+    name: "follow-up: word argument whitespace retains a closer after blank lines",
+    code: "pie\n%%{init: dark\n\n\n}%%\ntitle t",
+    scopes: [
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["}%%", "punctuation.definition.directive.end.mermaid"],
+      ["title", "keyword.control.mermaid"],
+    ],
+    absent: [["title", "meta.directive.mermaid"]],
+  },
 ]
 
 describe("the lexical boundaries", () => {
@@ -2562,9 +3672,61 @@ describe("the lexical boundaries", () => {
         .filter(
           (token) =>
             token.content === ":" &&
-            token.scopes.includes("punctuation.separator.colon.mermaid"),
+            token.scopes.includes("punctuation.separator.colon.mermaid") &&
+            !token.scopes.includes("meta.directive.mermaid"),
         ),
     ).toHaveLength(2)
+  })
+
+  it("reads both xychart titles separated by a directive", () => {
+    const input = boundaries.find(
+      (boundary) =>
+        boundary.name ===
+        "follow-up: xychart title starts a second statement after a directive",
+    )
+    if (!input) throw new Error("missing fixed xychart input")
+    expect(
+      tokenLines(input.code)
+        .flat()
+        .filter(
+          (token) =>
+            token.content === "title" &&
+            token.scopes.includes("keyword.control.mermaid"),
+        ),
+    ).toHaveLength(2)
+  })
+
+  it("keeps each opaque data interior in one unquoted scope per token", () => {
+    for (const name of [
+      "follow-up: opaque kanban data has one unquoted scope per token",
+      "follow-up: opaque flowchart data has one unquoted scope per token",
+      "follow-up: opaque agentflow data has one unquoted scope per token",
+      "follow-up: opaque sequence data has one unquoted scope per token",
+      "follow-up: opaque usecase data has one unquoted scope per token",
+      "follow-up: opaque eventmodeling data has one unquoted scope per token",
+    ]) {
+      const input = boundaries.find((boundary) => boundary.name === name)
+      if (!input) throw new Error(`missing fixed data input: ${name}`)
+      const line = tokenLines(input.code).find((lineTokens) =>
+        lineTokens.some((token) =>
+          token.scopes.includes("punctuation.section.data.begin.mermaid"),
+        ),
+      )
+      if (!line) throw new Error(`missing data delimiters: ${name}`)
+      const begin = line.findIndex((token) =>
+        token.scopes.includes("punctuation.section.data.begin.mermaid"),
+      )
+      const end = line.findIndex((token) =>
+        token.scopes.includes("punctuation.section.data.end.mermaid"),
+      )
+      expect(end, name).toBeGreaterThan(begin + 1)
+      for (const token of line.slice(begin + 1, end)) {
+        expect(token.scopes, token.content).toEqual([
+          "meta.data.mermaid",
+          "string.unquoted.mermaid",
+        ])
+      }
+    }
   })
 
   it.each(boundaries)("colors $name", ({ code, ...expected }) => {

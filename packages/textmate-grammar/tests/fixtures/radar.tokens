@@ -124,7 +124,7 @@
   "title" keyword.control.mermaid
   "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "init" meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
   " " meta.directive.mermaid
   "{}" meta.directive.mermaid string.unquoted.directive.mermaid
   "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
@@ -133,7 +133,7 @@
   "accTitle" keyword.control.mermaid
   "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "init" meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
   " " meta.directive.mermaid
   "{}" meta.directive.mermaid string.unquoted.directive.mermaid
   "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
@@ -143,7 +143,7 @@
   "accDescr" keyword.control.mermaid
   "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "init" meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
   " " meta.directive.mermaid
   "{}" meta.directive.mermaid string.unquoted.directive.mermaid
   "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
@@ -153,7 +153,7 @@
   "accDescr" keyword.control.mermaid
   "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "init" meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
   " " meta.directive.mermaid
   "{}" meta.directive.mermaid string.unquoted.directive.mermaid
   "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
@@ -164,7 +164,7 @@
   "m" variable.mermaid
   "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "init" meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
   " " meta.directive.mermaid
   "{}" meta.directive.mermaid string.unquoted.directive.mermaid
   "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
@@ -182,7 +182,7 @@
   "\\" string.quoted.double.mermaid constant.character.escape.mermaid
   "%%{" string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "init" string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  ":" string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
   " " string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid
   "{}" string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
   "}%%" string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid

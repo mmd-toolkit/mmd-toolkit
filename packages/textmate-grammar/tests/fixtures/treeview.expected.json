@@ -60,7 +60,16 @@
     ["│", "comment.block.ignored.mermaid", 36],
     ["┃", "comment.block.ignored.mermaid", 37],
     ["  │  ", "comment.block.ignored.mermaid", 38],
-    ["  ┃  ", "comment.block.ignored.mermaid", 39]
+    ["  ┃  ", "comment.block.ignored.mermaid", 39],
+    ["│ ", "comment.block.ignored.mermaid", 40],
+    ["│", "comment.block.ignored.mermaid", 41],
+    ["┃", "comment.block.ignored.mermaid", 42],
+    ["─", "comment.block.ignored.mermaid", 43],
+    ["━", "comment.block.ignored.mermaid", 43],
+    ["x", "meta.directive.mermaid", 40],
+    ["x", "meta.directive.mermaid", 41],
+    ["x", "meta.directive.mermaid", 42],
+    ["x", "meta.directive.mermaid", 43]
   ],
   "absentOnLine": [
     [10, "string.quoted.double.mermaid"],
@@ -71,7 +80,11 @@
     [24, "string.quoted.double.mermaid"],
     [28, "storage.modifier.mermaid"],
     [31, "string.quoted.double.mermaid"],
-    [33, "keyword.control.mermaid"]
+    [33, "keyword.control.mermaid"],
+    [40, "string.unquoted.mermaid"],
+    [41, "string.unquoted.mermaid"],
+    [42, "string.unquoted.mermaid"],
+    [43, "string.unquoted.mermaid"]
   ],
   "unscoped": [],
   "absent": [
@@ -80,7 +93,7 @@
   ],
   "escapedInputs": [
     {
-      "code": "treeView-beta%%{wrap}%%\n└── Separator ## text\u2028%% description comment\n\n├── Bare text\u2028%% bare comment\n\u00A0title Keep ├── Content\n\n",
+      "code": "treeView-beta%%{wrap}%%\n└── Separator ## text\u2028%% description comment\n\n├── Bare text\u2028%% bare comment\n\u00a0title Keep ├── Content\n\n",
       "scopes": [
         [" text", "string.unquoted.mermaid", 1],
         ["%% description comment", "comment.line.percentage.mermaid", 1],

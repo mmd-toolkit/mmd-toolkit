@@ -327,7 +327,7 @@
           }
         },
         {
-          "comment": "After a style's first colon, read the remaining physical line as one value, including commas, further colons, semicolons and description-looking text. Leave trailing whitespace and separator-led comments outside its scope. Follows class.md#other-statements and ast/class.md#classstylestatement.",
+          "comment": "After a style's first colon, read the remaining physical line as one value, including commas, further colons, semicolons and description-looking text. Leave trailing whitespace and separator-led comments outside its scope. Follows class.md#other-statements, ast/class.md#classstylestatement.",
           "begin": "(:)",
           "beginCaptures": {
             "1": {
@@ -346,7 +346,7 @@
           "include": "#class-comma"
         },
         {
-          "comment": "Read a style before its first colon or without a colon, ending at a comma or a following description block as well as the line boundary. Follows class.md#other-statements and ast/class.md#classstylestatement.",
+          "comment": "Read a style before its first colon or without a colon, ending at a comma or a following description block as well as the line boundary. Follows class.md#other-statements, ast/class.md#classstylestatement.",
           "begin": "(?![{{ws}}]|[:,;]|accDescr{{gap}}\\{|{{directiveStart}}|{{separatorCommentEnd}})(?=.)",
           "end": "{{class-style-bare-end}}",
           "contentName": "support.constant.property-value.mermaid",
@@ -812,7 +812,7 @@
           "include": "#directive"
         },
         {
-          "comment": "Read the member's name or return type and classifier, retaining directives in trailing whitespace. Follows class.md#member-lines and common.md#a-directive-is-a-token-boundary.",
+          "comment": "Read the classifier and return type after the method's last closing parenthesis, retaining directives in trailing whitespace. Follows class.md#member-lines, common.md#a-directive-is-a-token-boundary.",
           "match": "\\G([$*])?({{class-value-padding}})((?:{{class-member-segment-character}})*?)(?(1)|([$*])?)({{class-value-padding}})(?=[{{separators}}]|{{class-member-end}})",
           "captures": {
             "1": {
@@ -931,7 +931,7 @@
       "comment": "Divide member text identically in a member statement and a class body, after its enclosing rule has bounded the text. Follows class.md#member-lines.",
       "patterns": [
         {
-          "comment": "Read a member annotation with directives in its leading and trailing whitespace, retaining its annotation text. Follows class.md#member-lines and common.md#a-directive-is-a-token-boundary.",
+          "comment": "Read a member annotation with directives in its leading and trailing whitespace, retaining its annotation text. Follows class.md#member-lines, common.md#a-directive-is-a-token-boundary.",
           "match": "({{class-value-padding}})(<<)((?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\r\\n])*?)(>>)({{class-value-padding}}){{class-member-end}}",
           "captures": {
             "1": {
@@ -1006,7 +1006,7 @@
               "include": "#directive"
             },
             {
-              "comment": "Read the member's name or return type and classifier, retaining directives in trailing whitespace. Follows class.md#member-lines and common.md#a-directive-is-a-token-boundary.",
+              "comment": "Read an attribute's visibility, name and classifier, retaining directives in trailing whitespace. Follows class.md#member-lines, common.md#a-directive-is-a-token-boundary.",
               "match": "\\G({{class-value-padding}})([+#~\\-])?((?:{{class-member-character}})*?)([$*])?({{class-value-padding}}){{class-member-end}}",
               "captures": {
                 "1": {

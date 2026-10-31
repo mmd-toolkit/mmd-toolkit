@@ -357,7 +357,7 @@
           "include": "#venn-style-rgb"
         },
         {
-          "comment": "Read adjacent bare style atoms and their spacing; the RGB context owns its own parentheses and commas across lines. Follows venn.md#styles.",
+          "comment": "Read adjacent bare style atoms and their spacing, stopping before an RGB opener so its context owns the parentheses and commas across lines. Follows venn.md#styles.",
           "match": "{{venn-style-atom}}(?:{{asciiGap}}{{venn-style-atom}})*",
           "captures": {
             "0": {
@@ -376,8 +376,8 @@
       "applyEndPatternLast": true
     },
     "venn-style-rgb": {
-      "comment": "Read one RGB or RGBA style atom through its closing parenthesis across physical lines, keeping commas inside the value and inheriting its property-value scope. Follows venn.md#units-and-contexts and venn.md#styles.",
-      "begin": "(?i:rgba?)\\(",
+      "comment": "Read one RGB or RGBA style atom through its closing parenthesis across physical lines, keeping commas inside the value and inheriting its property-value scope. Follows venn.md#units-and-contexts, venn.md#styles.",
+      "begin": "{{venn-rgb-start}}",
       "end": "\\)",
       "patterns": [
         {
@@ -397,10 +397,11 @@
     "venn-swallowed-prefix": "(?!{{directiveStart}}|{{entity}}|{{separatorCommentEnd}})[^}\\r\\n](?={{directives}}{{nonDirectivePercentPair}})",
     "venn-native-comment-start": "(?:{{nonDirectivePercentPair}}|{{venn-swallowed-prefix}})",
     "venn-style-end": "(?={{venn-statement-start}}|{{venn-native-comment-start}})|{{lineValueEnd}}",
-    "venn-style-atom": "(?!{{venn-native-comment-start}})(?:{{venn-hex-color}}|(?!{{venn-statement-start}}){{venn-identifier}}|{{venn-number}})",
+    "venn-style-atom": "(?!{{venn-native-comment-start}})(?:{{venn-hex-color}}|(?!{{venn-rgb-start}}|{{venn-statement-start}}){{venn-identifier}}|{{venn-number}})",
     "venn-quoted-label-end": "\"{{directives}}\\]",
     "venn-statement-keyword": "(?i:set|union|text|style)",
     "venn-style-value-end": "(?={{lineGap}}(?:,|{{venn-statement-start}}|{{venn-native-comment-start}}|$))|{{separatorCommentEnd}}",
-    "venn-rgb-color": "(?i:rgba?)\\((?:(?!{{separatorCommentEnd}})(?:{{directive}}|(?!{{directiveStart}})[^)\\n]))*\\)"
+    "venn-rgb-color": "{{venn-rgb-start}}(?:(?!{{separatorCommentEnd}})(?:{{directive}}|(?!{{directiveStart}})[^)\\n]))*\\)",
+    "venn-rgb-start": "(?i:rgba?)\\("
   }
 }

@@ -75,7 +75,7 @@
               "include": "#directive"
             },
             {
-              "comment": "Read the JSON at unit inside the data wrapper, then its outer braces and opaque balanced interior. Follows usecase.md#ordered-default-context-rules and usecase.md#json-context.",
+              "comment": "Read the JSON at unit inside the data wrapper, then its outer braces and opaque balanced interior. Follows usecase.md#ordered-default-context-rules, usecase.md#json-context.",
               "begin": "(@)({{asciiGap}})(\\{)",
               "beginCaptures": {
                 "1": {

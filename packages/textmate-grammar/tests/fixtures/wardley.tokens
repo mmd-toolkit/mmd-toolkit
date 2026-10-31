@@ -60,7 +60,7 @@
   " a link label" string.unquoted.mermaid
   "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
   " " string.unquoted.mermaid meta.directive.mermaid
   "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
   "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
@@ -264,7 +264,7 @@
   "a" string.quoted.single.mermaid
   "%%{" string.quoted.single.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "init" string.quoted.single.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" string.quoted.single.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  ":" string.quoted.single.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
   " " string.quoted.single.mermaid meta.directive.mermaid
   "{\"end\": \">\"}" string.quoted.single.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
   "}%%" string.quoted.single.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid

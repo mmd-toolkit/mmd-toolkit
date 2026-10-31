@@ -38,7 +38,7 @@
   "A" string.quoted.double.mermaid
   "%%{" string.quoted.double.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "init" string.quoted.double.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" string.quoted.double.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  ":" string.quoted.double.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
   " " string.quoted.double.mermaid meta.directive.mermaid
   "{}" string.quoted.double.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
   "}%%" string.quoted.double.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid

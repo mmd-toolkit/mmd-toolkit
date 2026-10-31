@@ -126,7 +126,7 @@
   " text" comment.line.semicolon.mermaid
   "%%{" comment.line.semicolon.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "init" comment.line.semicolon.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" comment.line.semicolon.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  ":" comment.line.semicolon.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
   " " comment.line.semicolon.mermaid meta.directive.mermaid
   "{\"mark\":\";\"}" comment.line.semicolon.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
   "}%%" comment.line.semicolon.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid

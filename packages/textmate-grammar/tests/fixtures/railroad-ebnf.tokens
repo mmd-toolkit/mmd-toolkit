@@ -84,7 +84,7 @@
   " a" string.unquoted.mermaid
   "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
   " " string.unquoted.mermaid meta.directive.mermaid
   "{\"end\":\"?;\"}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
   "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
@@ -126,7 +126,7 @@
   " a" comment.block.mermaid
   "%%{" comment.block.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "x" comment.block.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" comment.block.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  ":" comment.block.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
   " " comment.block.mermaid meta.directive.mermaid
   "*)" comment.block.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
   "}%%" comment.block.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid

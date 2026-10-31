@@ -10,7 +10,7 @@
     ["Beta", "string.unquoted.mermaid"],
     ["10", "constant.numeric.mermaid"],
     ["#ff0000", "support.constant.property-value.mermaid"],
-    ["rgb(0, 0, 0)", "support.constant.property-value.mermaid"],
+    ["0, 0, 0", "support.constant.property-value.mermaid"],
     ["set", "keyword.control.mermaid", 8],
     ["title", "keyword.control.mermaid", 11],
     ["wrap", "entity.name.function.directive.mermaid", 11],
@@ -20,7 +20,7 @@
     ["<b", "string.unquoted.mermaid", 13],
     ["a", "string.quoted.double.mermaid", 14],
     ["wrap", "entity.name.function.directive.mermaid", 14],
-    ["2,3)", "support.constant.property-value.mermaid", 15],
+    ["2,3", "support.constant.property-value.mermaid", 15],
     ["00", "support.constant.property-value.mermaid", 15],
     ["init", "entity.name.function.directive.mermaid", 15],
     ["<b", "string.quoted.double.mermaid", 16],
@@ -32,7 +32,7 @@
     ["1", "constant.numeric.mermaid", 19],
     ["wrap", "entity.name.function.directive.mermaid", 21],
     ["#amp;", "string.unquoted.mermaid", 21],
-    ["rgba(1,2,3,0.5)", "support.constant.property-value.mermaid", 23],
+    ["1,2,3,0.5", "support.constant.property-value.mermaid", 23],
     ["A", "variable.mermaid", 2],
     ["fill", "support.type.property-name.mermaid", 6],
     ["stroke", "support.type.property-name.mermaid", 6],
@@ -51,7 +51,7 @@
     ["X", "comment.block.ignored.mermaid", 27],
     ["%% swallowed", "comment.line.percentage.mermaid", 27],
     ["fill", "support.type.property-name.mermaid", 28],
-    ["rgba(1,2,3,0.5)", "support.constant.property-value.mermaid", 28],
+    ["1,2,3,0.5", "support.constant.property-value.mermaid", 28],
     ["stroke-width", "support.type.property-name.mermaid", 28],
     ["1red#abc", "support.constant.property-value.mermaid", 28],
     ["kept %% set B", "string.quoted.double.mermaid", 29],
@@ -74,7 +74,7 @@
     ["%% c", "support.constant.property-value.mermaid", 26],
     ["X", "support.constant.property-value.mermaid", 27],
     ["%% swallowed", "support.constant.property-value.mermaid", 27],
-    ["rgba(1,2,3,0.5)", "constant.numeric.mermaid", 28],
+    ["1,2,3,0.5", "constant.numeric.mermaid", 28],
     ["1red#abc", "constant.numeric.mermaid", 28],
     ["[", "string.quoted.double.mermaid", 2],
     ["]", "string.quoted.double.mermaid", 2]
@@ -96,16 +96,17 @@
         ["title", "keyword.control.mermaid", 5],
         ["%% title comment", "comment.line.percentage.mermaid", 5],
         ["#amp; actor", "string.unquoted.mermaid", 6],
-        ["%% ) color comment", "comment.line.percentage.mermaid", 7]
+        ["%% ) color comment", "comment.line.percentage.mermaid", 7],
+        ["%% ) color comment", "support.constant.property-value.mermaid", 7],
+        [")", "support.constant.property-value.mermaid", 8]
       ],
       "absent": [
         ["%% label comment", "string.unquoted.mermaid", 1],
         ["%% quoted comment", "string.quoted.double.mermaid", 3],
-        ["%% title comment", "string.unquoted.mermaid", 5],
-        ["%% ) color comment", "support.constant.property-value.mermaid", 7]
+        ["%% title comment", "string.unquoted.mermaid", 5]
       ],
       "absentOnLine": [],
-      "unscoped": [[")", 8]]
+      "unscoped": []
     },
     {
       "code": "venn-beta\n1%% native\u2028%% common %%{wrap}%%\n\nset A:1\n",
