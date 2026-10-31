@@ -69,6 +69,9 @@ against the pinned mermaid.js and the fixtures.
   fields of the tree with their reasons, and how the lexer reads the text.
 - Every claim in the specification has a fixture, added through the tests
   package's generator.
+- The specification has versions. A change to `packages/spec` ships with a
+  changeset for `@mmd-toolkit/spec` in the same pull request; the changesets
+  skill says which bump.
 - The specification introduces no single-letter or abbreviated symbols (no "let
   _T_ be the text", no italic one-letter names, no subscripts). Every concept is
   named in words each time, or given a meaningful multi-word name at the start

@@ -50,6 +50,9 @@ pnpm run format:check
 `changeset version` の後に `pnpm run update` を実行するので、
 その中の生成するファイルは最新です。
 その pull request をマージすると、パッケージが公開されます。
+仕様の `@mmd-toolkit/spec` は npm に公開しません。
+リリースで、版と変更履歴の項目と、
+git のタグ `@mmd-toolkit/spec@<版>` が付きます。
 
 ## 置き場所
 

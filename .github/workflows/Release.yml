@@ -39,12 +39,11 @@ jobs:
       - name: Build
         run: pnpm run build
       - name: Create Release Pull Request or Publish to npm
-        uses: changesets/action@v1
+        uses: changesets/action@v2
         with:
-          version: pnpm run version:ci
-          publish: pnpm run release
-          commit: "chore: release"
-          title: "chore: release"
+          version-script: pnpm run version:ci
+          publish-script: pnpm run release
+          commit-message: "chore: release"
+          pr-title: "chore: release"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
