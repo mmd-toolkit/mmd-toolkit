@@ -338,7 +338,7 @@
     }
   },
   "variables": {
-    "journey-statement-start": "(?:^|\\G|(?<=\\}%%)|(?<=\\}))(?:(?!{{separatorCommentEnd}})[{{ws}}])*",
+    "journey-statement-start": "(?:^|\\G|{{afterDirectiveEnd}}|(?<=\\}))(?:(?!{{separatorCommentEnd}})[{{ws}}])*",
     "journey-text-end": "{{lineValueEnd}}|(?=[#;])",
     "journey-value-padding": "(?:(?!{{separatorCommentEnd}})(?:[{{ws}}]|{{directive}}))*"
   },

@@ -2,7 +2,7 @@
   "variables": {
     "treemap-class-definition-head": "{{treemap-statement-start}}(classDef)({{requiredGap}})([A-Za-z_][A-Za-z0-9_]+)",
     "treemap-style-gap": "(?:(?!{{separatorCommentEnd}})[{{lws}}]|{{directive}})*",
-    "treemap-statement-start": "(?:^|\\G|(?<=\\}%%))(?:(?!{{separatorCommentEnd}})[{{ws}}])*"
+    "treemap-statement-start": "(?:^|\\G|{{afterDirectiveEnd}})(?:(?!{{separatorCommentEnd}})[{{ws}}])*"
   },
   "patterns": [
     {
@@ -166,7 +166,7 @@
       ]
     },
     "treemap-style": {
-      "comment": "Split opaque style text into a property name and value for the README's scope reading; this split is not a syntax unit of the document. Keep escaped commas inside the value. Follows treemap.md#class-definitions.",
+      "comment": "For the README's scope reading, split opaque style text at its first property colon, keeping every following comma and colon in one value through the style-text boundary. The document itself reads one style-text unit. Follows treemap.md#class-definitions.",
       "begin": "((?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^,:;{{ws}}])+)({{treemap-style-gap}})(:)({{treemap-style-gap}})",
       "beginCaptures": {
         "1": {
@@ -195,7 +195,7 @@
           ]
         }
       },
-      "end": "(?=,|;)|{{lineValueEnd}}",
+      "end": "(?=;)|{{lineValueEnd}}",
       "contentName": "support.constant.property-value.mermaid",
       "patterns": [
         {

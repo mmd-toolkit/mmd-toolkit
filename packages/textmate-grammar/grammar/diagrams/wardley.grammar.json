@@ -263,6 +263,6 @@
     "wardley-parenthesized-value-start": "(\\()({{asciiGap}})",
     "wardley-nonzero-integer": "[1-9][0-9]*",
     "wardley-number-end": "(?!{{directives}}[0-9.])",
-    "wardley-statement-start": "(?:^|\\G|(?<=\\}%%))[ \\t]*"
+    "wardley-statement-start": "(?:^|\\G|{{afterDirectiveEnd}})[ \\t]*"
   }
 }

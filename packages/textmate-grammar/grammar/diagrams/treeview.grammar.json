@@ -16,9 +16,18 @@
       "end": "(?!)",
       "patterns": [
         {
-          "comment": "Read a line made only of box bars and whitespace as decoration, requiring at least one bar. This leaves out the whole-tree mode test and colors vertical-only lines as decoration even without other box characters. Follows treeview.md#scope-and-mode and treeview.md#line-classification-and-errors.",
-          "match": "^(?=[─━│┃{{lws}}]*[─━│┃])[─━│┃{{lws}}]+$",
-          "name": "comment.block.ignored.mermaid"
+          "comment": "Read box bars and whitespace as one decoration line, with directives anywhere between them and at least one bar outside directives. This leaves out the whole-tree mode test, so vertical-only lines are always decoration. Follows treeview.md#scope-and-mode, treeview.md#line-classification-and-errors, and common.md#a-directive-is-a-token-boundary.",
+          "match": "^(?=(?:{{directive}}|[─━│┃{{lws}}])*[─━│┃])(?:{{directive}}|[─━│┃{{lws}}])+$",
+          "name": "comment.block.ignored.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
         },
         {
           "comment": "Read an authored branch prefix as a structural operator, retaining internal directives. Comment-shaped and metadata-shaped rows keep their ordinary reading. The rule recognizes branch rows without tracking the globally selected box mode. Follows treeview.md#columns-and-prefix-indentation and treeview.md#line-classification-and-errors.",
@@ -185,7 +194,7 @@
           ]
         },
         {
-          "comment": "Read a bare node name without claiming leading directives or metadata after them; annotations and comments retain their own boundaries. Follows treeview.md#names, treeview.md#common-forms, and common.md#a-directive-is-a-token-boundary.",
+          "comment": "Read a bare name after its own indentation or directive boundary, leaving leading directives and quoted names for their rules. Follows treeview.md#names, treeview.md#columns-and-prefix-indentation, and common.md#a-directive-is-a-token-boundary.",
           "match": "{{treeview-node-start}}(?!{{directiveStart}}|:::|{{treeview-icon-opener}}|{{treeview-description-opener}}|[\"' \\t\\r\\n]|{{separatorCommentEnd}})(?:(?!{{treeview-annotation-prefix}}{{treeview-annotation-start}}|{{separatorCommentEnd}})(?:{{directive}}|{{entity}}|(?!{{directiveStart}})[^\\r\\n]))+",
           "captures": {
             "0": {
@@ -202,13 +211,13 @@
     }
   },
   "variables": {
-    "treeview-node-start": "(?:^[ \\t]*|(?<=[└┗├┣─━]){{asciiGap}}|(?<=[\"'])|(?<=\\}%%)[ \\t]*)",
+    "treeview-node-start": "(?:^[ \\t]*|(?<=[└┗├┣─━])[ \\t]*|(?<=[\"'])|{{afterDirectiveEnd}}[ \\t]*)",
     "treeview-annotation-prefix": "[ \\t]+(?:{{directive}}[ \\t]*)*",
     "treeview-annotation-start": "(?:{{treeview-class-opener}}|{{treeview-icon-opener}}|{{treeview-description-opener}})",
     "treeview-class-opener": "(:::)({{asciiGap}})(?={{treeview-class-name}})",
     "treeview-icon-opener": "(icon)({{directives}})(\\()",
     "treeview-description-opener": "#(?!{{entity}})#",
     "treeview-class-name": "[A-Za-z_][A-Za-z0-9_-]*",
-    "treeview-statement-start": "(?:^|\\G|(?<=[\"')])|(?<=\\}%%))[ \\t]*"
+    "treeview-statement-start": "(?:^|\\G|(?<=[\"')])|{{afterDirectiveEnd}})[ \\t]*"
   }
 }

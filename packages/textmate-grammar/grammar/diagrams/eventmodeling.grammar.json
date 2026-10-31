@@ -147,7 +147,7 @@
           }
         },
         {
-          "comment": "Read multiline braced data with an opaque text interior and its own data wrapper. Follows eventmodeling.md#data.",
+          "comment": "Read block data through an unindented closing brace in the text without directives, retaining directives before that closer. Follows eventmodeling.md#data and common.md#a-directive-is-a-token-boundary.",
           "begin": "(\\{)({{asciiGap}})$",
           "beginCaptures": {
             "1": {
@@ -161,9 +161,16 @@
               ]
             }
           },
-          "end": "^(\\})(?={{directives}}(?:[{{ws}}]|$))",
+          "end": "^({{directives}})(\\})(?={{directives}}(?:[{{ws}}]|$))",
           "endCaptures": {
             "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
               "name": "punctuation.section.data.end.mermaid"
             }
           },
@@ -432,7 +439,7 @@
     }
   },
   "variables": {
-    "eventmodeling-metadata-start": "(?:^|\\G|(?<=\\}%%)|(?<=\\}))(?={{requiredAsciiGap}})",
+    "eventmodeling-metadata-start": "(?:^|\\G|{{afterDirectiveEnd}}|(?<=\\}))(?={{requiredAsciiGap}})",
     "eventmodeling-line-value-end": "(?={{nonDirectivePercentPair}}|$)"
   }
 }

@@ -271,7 +271,7 @@
     }
   },
   "variables": {
-    "timeline-statement-start": "(?:^|\\G|(?<=\\}%%)|(?<=\\})){{timeline-value-gap}}",
+    "timeline-statement-start": "(?:^|\\G|{{afterDirectiveEnd}}|(?<=\\})){{timeline-value-gap}}",
     "timeline-value-gap": "(?:(?!{{separatorCommentEnd}})(?:[{{ws}}]|{{directive}}))*"
   }
 }

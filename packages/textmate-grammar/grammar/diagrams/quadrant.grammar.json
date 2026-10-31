@@ -357,7 +357,7 @@
   },
   "variables": {
     "quadrant-space": "{{directives}}[{{quadrant-ws}}]{{directives}}",
-    "quadrant-statement-start": "(?:^|\\G|(?<=\\})|(?<=\\}%%))[{{quadrant-ws}}]*",
+    "quadrant-statement-start": "(?:^|\\G|(?<=\\})|{{afterDirectiveEnd}})[{{quadrant-ws}}]*",
     "quadrant-style-end": "(?={{nonDirectivePercentPair}}|;)|{{lineValueEnd}}",
     "quadrant-ws": " \\t\\x{B}\\x{C}",
     "quadrant-style-gap": "(?:(?!{{separatorCommentEnd}})[{{quadrant-ws}}]|{{directive}})*",

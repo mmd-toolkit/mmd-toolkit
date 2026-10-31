@@ -354,7 +354,10 @@
           "include": "#directive"
         },
         {
-          "comment": "Read a complete bare property value as one text run, retaining directives and protecting color commas. Follows venn.md#styles.",
+          "include": "#venn-style-rgb"
+        },
+        {
+          "comment": "Read adjacent bare style atoms and their spacing; the RGB context owns its own parentheses and commas across lines. Follows venn.md#styles.",
           "match": "{{venn-style-atom}}(?:{{asciiGap}}{{venn-style-atom}})*",
           "captures": {
             "0": {
@@ -371,20 +374,33 @@
         }
       ],
       "applyEndPatternLast": true
+    },
+    "venn-style-rgb": {
+      "comment": "Read one RGB or RGBA style atom through its closing parenthesis across physical lines, keeping commas inside the value and inheriting its property-value scope. Follows venn.md#units-and-contexts and venn.md#styles.",
+      "begin": "(?i:rgba?)\\(",
+      "end": "\\)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        }
+      ]
     }
   },
   "variables": {
     "venn-identifier": "[A-Za-z_][A-Za-z0-9_-]*",
     "venn-number": "[+-]?(?:[0-9]+(?:\\.[0-9]+)?|\\.[0-9]+)",
     "venn-hex-color": "#{{directives}}(?:[0-9A-Fa-f]{{directives}}){3,8}",
-    "venn-rgb-color": "(?i:rgba?)\\((?:(?!{{separatorCommentEnd}})(?:{{directive}}|(?!{{directiveStart}})[^)\\n]))*\\)",
     "venn-statement-start": "(?:{{venn-statement-keyword}}{{wordEnd}}|(?i:title){{requiredGap}})",
     "venn-swallowed-prefix": "(?!{{directiveStart}}|{{entity}}|{{separatorCommentEnd}})[^}\\r\\n](?={{directives}}{{nonDirectivePercentPair}})",
     "venn-native-comment-start": "(?:{{nonDirectivePercentPair}}|{{venn-swallowed-prefix}})",
     "venn-style-end": "(?={{venn-statement-start}}|{{venn-native-comment-start}})|{{lineValueEnd}}",
-    "venn-style-atom": "(?!{{venn-native-comment-start}})(?:{{venn-hex-color}}|{{venn-rgb-color}}|(?!{{venn-statement-start}}){{venn-identifier}}|{{venn-number}})",
+    "venn-style-atom": "(?!{{venn-native-comment-start}})(?:{{venn-hex-color}}|(?!{{venn-statement-start}}){{venn-identifier}}|{{venn-number}})",
     "venn-quoted-label-end": "\"{{directives}}\\]",
     "venn-statement-keyword": "(?i:set|union|text|style)",
-    "venn-style-value-end": "(?={{lineGap}}(?:,|{{venn-statement-start}}|{{venn-native-comment-start}}|$))|{{separatorCommentEnd}}"
+    "venn-style-value-end": "(?={{lineGap}}(?:,|{{venn-statement-start}}|{{venn-native-comment-start}}|$))|{{separatorCommentEnd}}",
+    "venn-rgb-color": "(?i:rgba?)\\((?:(?!{{separatorCommentEnd}})(?:{{directive}}|(?!{{directiveStart}})[^)\\n]))*\\)"
   }
 }

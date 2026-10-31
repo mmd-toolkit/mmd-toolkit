@@ -60,6 +60,6 @@
     }
   },
   "variables": {
-    "ishikawa-statement-start": "(?:^|\\G|(?<=\\}%%))"
+    "ishikawa-statement-start": "(?:^|\\G|{{afterDirectiveEnd}})"
   }
 }
