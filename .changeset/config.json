@@ -15,8 +15,7 @@
   "ignore": [
     "@mmd-toolkit/docs",
     "@mmd-toolkit/playground",
-    "@mmd-toolkit/tests",
-    "@mmd-toolkit/textmate-grammar"
+    "@mmd-toolkit/tests"
   ],
   "privatePackages": {
     "version": true,

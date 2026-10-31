@@ -27,7 +27,7 @@ Changesets で `main` から公開する（CONTRIBUTING.md の Releases）。
 - 要らないもの。
   テスト、fixture、リポジトリの文書やスキル、道具、CI だけの変更。
   版を持たない private のパッケージだけの変更も要らない。
-  `tests`、`docs`、`playground`、`textmate-grammar` がそれで、
+  `tests`、`docs`、`playground` がそれで、
   `.changeset/config.json` の `ignore` に並べてある。
 
 プルリクエストの前に `pnpm exec changeset status --since=origin/main`

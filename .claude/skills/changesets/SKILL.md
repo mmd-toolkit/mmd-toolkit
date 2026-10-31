@@ -27,9 +27,9 @@ changelog and its version bump.
   message, a rule added or removed, an option, an exported type or function.
 - Any change to `packages/spec`.
 - Not needed: a change only to tests, fixtures, the private packages that have
-  no versions (`tests`, `docs`, `playground`, `textmate-grammar`; the `ignore`
-  list of `.changeset/config.json`), the repository's documents and skills,
-  tooling, or CI.
+  no versions (`tests`, `docs`, `playground`; the `ignore` list of
+  `.changeset/config.json`), the repository's documents and skills, tooling, or
+  CI.
 
 Check before the pull request: `pnpm exec changeset status --since=origin/main`
 fails when a package changed on the branch has no changeset, and lists the bumps
