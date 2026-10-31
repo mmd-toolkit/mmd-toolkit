@@ -16,7 +16,7 @@
       "end": "(?!)",
       "patterns": [
         {
-          "comment": "Read box bars and whitespace as one decoration line, with directives anywhere between them and at least one bar outside directives. This leaves out the whole-tree mode test, so vertical-only lines are always decoration. Follows treeview.md#scope-and-mode, treeview.md#line-classification-and-errors, and common.md#a-directive-is-a-token-boundary.",
+          "comment": "Read box bars and whitespace as one decoration line, with directives anywhere between them and at least one bar outside directives. This leaves out the whole-tree mode test, so vertical-only lines are always decoration. Follows treeview.md#scope-and-mode, treeview.md#line-classification-and-errors, common.md#a-directive-is-a-token-boundary.",
           "match": "^(?=(?:{{directive}}|[─━│┃{{lws}}])*[─━│┃])(?:{{directive}}|[─━│┃{{lws}}])+$",
           "name": "comment.block.ignored.mermaid",
           "captures": {
@@ -194,7 +194,7 @@
           ]
         },
         {
-          "comment": "Read a bare name after its own indentation or directive boundary, leaving leading directives and quoted names for their rules. Follows treeview.md#names, treeview.md#columns-and-prefix-indentation, and common.md#a-directive-is-a-token-boundary.",
+          "comment": "Read a bare name after its own indentation or directive boundary, leaving leading directives and quoted names for their rules. Follows treeview.md#names, treeview.md#columns-and-prefix-indentation, common.md#a-directive-is-a-token-boundary.",
           "match": "{{treeview-node-start}}(?!{{directiveStart}}|:::|{{treeview-icon-opener}}|{{treeview-description-opener}}|[\"' \\t\\r\\n]|{{separatorCommentEnd}})(?:(?!{{treeview-annotation-prefix}}{{treeview-annotation-start}}|{{separatorCommentEnd}})(?:{{directive}}|{{entity}}|(?!{{directiveStart}})[^\\r\\n]))+",
           "captures": {
             "0": {

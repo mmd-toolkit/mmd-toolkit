@@ -231,4 +231,27 @@
   "  │  " comment.block.ignored.mermaid
 >   ┃  
   "  ┃  " comment.block.ignored.mermaid
+> │ %%{x}%%
+  "│ " comment.block.ignored.mermaid
+  "%%{" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "x" comment.block.ignored.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+>  %%{x}%%│
+  " " comment.block.ignored.mermaid
+  "%%{" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "x" comment.block.ignored.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "│" comment.block.ignored.mermaid
+> ┃%%{x}%%┃
+  "┃" comment.block.ignored.mermaid
+  "%%{" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "x" comment.block.ignored.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "┃" comment.block.ignored.mermaid
+> ─%%{x}%%━
+  "─" comment.block.ignored.mermaid
+  "%%{" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "x" comment.block.ignored.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "━" comment.block.ignored.mermaid
 > 

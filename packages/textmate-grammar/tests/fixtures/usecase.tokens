@@ -83,7 +83,7 @@
 > json Config @ {"theme": "dark", "nested": {"braces": "} {"}}
   "json" keyword.control.mermaid
   "Config" variable.mermaid
-  "@" meta.data.mermaid
+  "@" meta.data.mermaid punctuation.separator.at.mermaid
   " " meta.data.mermaid
   "{" meta.data.mermaid punctuation.section.data.begin.mermaid
   "\"" meta.data.mermaid string.unquoted.mermaid
@@ -198,7 +198,7 @@
   "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
   "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
-  "@" meta.data.mermaid
+  "@" meta.data.mermaid punctuation.separator.at.mermaid
   "%%{" meta.data.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "wrap" meta.data.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
   "}%%" meta.data.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
@@ -270,7 +270,7 @@
   "a" storage.modifier.mermaid
   "%%{" storage.modifier.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "init" storage.modifier.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" storage.modifier.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  ":" storage.modifier.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
   " " storage.modifier.mermaid meta.directive.mermaid
   "{\"end\": \">>\"}" storage.modifier.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
   "}%%" storage.modifier.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
@@ -279,7 +279,7 @@
 > json Escaped @ {"text":"a\%%{wrap}%%"b"}
   "json" keyword.control.mermaid
   "Escaped" variable.mermaid
-  "@" meta.data.mermaid
+  "@" meta.data.mermaid punctuation.separator.at.mermaid
   " " meta.data.mermaid
   "{" meta.data.mermaid punctuation.section.data.begin.mermaid
   "\"" meta.data.mermaid string.unquoted.mermaid
@@ -401,7 +401,7 @@
   "DirectiveTarget" variable.mermaid
   "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
   "x" meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
   " " meta.directive.mermaid
   "-->" meta.directive.mermaid string.unquoted.directive.mermaid
   "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
@@ -424,7 +424,7 @@
 > json J @ {"text":"x"}
   "json" keyword.control.mermaid
   "J" variable.mermaid
-  "@" meta.data.mermaid
+  "@" meta.data.mermaid punctuation.separator.at.mermaid
   " " meta.data.mermaid
   "{" meta.data.mermaid punctuation.section.data.begin.mermaid
   "\"" meta.data.mermaid string.unquoted.mermaid
