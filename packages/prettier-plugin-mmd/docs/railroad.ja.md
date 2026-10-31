@@ -733,14 +733,18 @@ railroad-peg-beta
 
 ### 長い行
 
-通常の IR 呼出しを printWidth に収めます。
+通常の IR 複合呼出しを printWidth に収めます。
 収まる呼出しは1行に保ちますが、引数が複数あり、
 元が複数行だった呼出しは改行を残します。
 収まらない呼出しや、その改行を残す呼出しは、引数を1段深く、
 1行に一つずつ置きます。
 閉じ括弧は呼出しと同じ段に置きます。
-引数が一つの呼出しも含め、入れ子の呼出しにも同じ判断を適用します。
+入れ子の複合呼出しにも同じ判断を適用します。
 末尾 comma は加えません。
+`terminal`、`nonterminal`、`special` は引用値と一つの単位として、
+printWidth を超えても同じ行に保ちます。
+分割しても値は短くならず、縦に長くなるためです。
+値やコメントの隙間に実際にある改行は保ちます。
 構造を保ちながら長い式を読みやすくし、書かれたまとまりを残すためです。
 文字列の内容は分割せず、継続行の元の列を保ちます。
 
@@ -758,9 +762,11 @@ railroad-peg-beta
 
 [fixture: railroad/multiline-values/ir-columns]
 
-コメント、directive、hidden form、保護された semicolon のある規則には、
-既存の gap 配置を適用します。
-保持すべき境界を折返しで変えないためです。
+通常のコメント、global directive、値の中の semicolon は、
+呼出しの折返しを止めません。
+trivia は[コメント](#コメント)と[共有 directive](#共有-directive)の規則で、
+引数との境界に保ちます。
+native hidden form と無視される semicolon は、既存の保護した配置を使います。
 EBNF、ABNF、PEG の規則は printWidth によらず平坦な配置を保ちます。
 
 [fixture: railroad/long-lines/ir-comments-kept]
@@ -790,16 +796,10 @@ EBNF、ABNF、PEG の規則は printWidth によらず平坦な配置を保ち�
 ```mmd
 railroad-beta
   r = sequence(
-    terminal(
-      "first long terminal"
-    ),
+    terminal("first long terminal"),
     choice(
-      terminal(
-        "second long terminal"
-      ),
-      nonterminal(
-        "reference"
-      )
+      terminal("second long terminal"),
+      nonterminal("reference")
     )
   );
 ```
@@ -934,12 +934,10 @@ railroad-peg-beta
 
 ```mmd
 railroad-beta
-  r = terminal(
-    "first
+  r = terminal("first
    continuation
 
-last"
-  );
+last");
 ```
 
 入力（escape 表記）:
@@ -1258,7 +1256,7 @@ railroad-peg-beta
 ### コメント
 
 独立したコメントは本文で1段、見出し前で第1列に置きます。
-inline は左右と行、接触と分離を保ち、通常の分離 gap は1 space にします。
+inline は左右と接触と分離を保ち、通常の分離 gap は1 space にします。
 mark、内容、末尾空白、block の継続列、順序を保ちます。
 line comment の後の operand と終端は次行に残します。
 全方言に `%%`、IR に `/* */`、EBNF に `/* */` と `(* *)`、
@@ -1266,6 +1264,28 @@ ABNF に `;` の行コメント、PEG に `#` の行コメントがあります�
 裸の ABNF `;` は句読点であり、`//` は native comment ではありません。
 値が所有する文字は値のままにします。
 所有位置を保ち、line comment がコードを取り込むのを防ぐためです。
+
+通常の IR 呼出しの中では、引数前の block comment を、
+折返し時に引数と一緒に移します。
+comma や閉じ括弧の前のコメントは引数の後ろに残します。
+line comment の後ろのトークンは後の行に置きます。
+独立したコメント行は引数の段に順序を保って置き、空行は1つまでにします。
+constructor と開き括弧の間のコメントは、その間に残します。
+タブや幅0の字下げでも、コメントの内容と末尾空白を保ちます。
+
+[fixture: railroad/long-lines/ir-comments-kept]
+
+[fixture: railroad/comments/ir-call-inline-boundaries]
+
+[fixture: railroad/comments/ir-call-comment-lines]
+
+[fixture: railroad/comments/ir-call-own-lines]
+
+[fixture: railroad/comments/ir-leaf-value-comments]
+
+[test: railroad/comments/ir-call-comment-tail-tabs]
+
+[test: railroad/comments/ir-call-comment-tail-zero]
 
 [fixture: railroad/comments/abnf-before-terminator]
 
@@ -1369,6 +1389,13 @@ Root directive を source span から元の所有位置に1回印字します。
 内容の JSON 整形や見出し前への収集はしません。
 一律の空白追加が、共有処理後の文字列、repeat の部品、numeric value、
 predicate の operand を変えるためです。
+
+通常の IR 呼出しの隙間は、コメントと同じ折返し位置を使います。
+directive を引数のそばに保ち、呼出しの折返しを止めません。
+
+[fixture: railroad/long-lines/ir-directive-kept]
+
+[fixture: railroad/global-directives/ir-call-boundaries]
 
 [fixture: railroad/global-directives/between-rules]
 
@@ -1737,10 +1764,14 @@ railroad-peg-beta
 書かれた semicolon をすべて保ちます。
 規則の必須の可視終端と ABNF の native comment mark は文法の句読点として、
 共有の text-prefix scan から除きます。
+通常の IR 規則は、値の中の semicolon をテキストとして保ち、
+呼出しの折返しを止めません。
 その他の semicolon は、交差する値や trivia 全体まで元の区間を保護します。
-最初の行は他の平坦な図種と同じく本文の1段に揃えます。
+保護した区間の最初の行は、他の平坦な図種と同じく本文の1段に揃えます。
 最初の行の列に文法上の意味はありません。
 2行目以降は書かれた列を保ち、字下げを足しません。
+
+[fixture: railroad/long-lines/ir-semicolon-kept]
 
 railroad では、global directive を除いた後の原文の行に、
 文字列 style または classDef があれば、その行を書かれたまま保ちます。
@@ -2169,7 +2200,7 @@ railroad-abnf-beta
 
 ```mmd
 railroad-beta
-  r=terminal("a;b");
+  r = terminal("a;b");
 ```
 
 入力（escape 表記）: `"railroad-beta\n   r=terminal(\n \"a;b\"\n);"`。
@@ -2179,9 +2210,7 @@ railroad-beta
 
 ```mmd
 railroad-beta
-  r=terminal(
- "a;b"
-);
+  r = terminal("a;b");
 ```
 
 入力（escape 表記）: `"railroad-beta\n/*style*/r=terminal(\":\"\n)/*#*/;"`。
@@ -2968,6 +2997,8 @@ host 全体の出力と本文の Db 保持を別に検査します。
 [test: railroad Markdown: ir-top-level]
 
 [test: railroad Markdown: ir-wrapped-list]
+
+[test: railroad Markdown: ir-wrapped-comment]
 
 [test: railroad Markdown: ebnf-list]
 

@@ -24,8 +24,8 @@ both diagrams, reformatted indentation uses the character selected by `useTabs`.
 
 ## Line width
 
-`printWidth` wraps ordinary calls in `railroad-beta` to show their nesting.
-Quoted contents remain as written. Rules with comments, directives, hidden
-forms, or protected semicolons keep their existing layout. Other diagram lines
-are not wrapped. Prettier's formatting of Markdown and YAML frontmatter can also
-use `printWidth`.
+`printWidth` wraps composite calls in `railroad-beta` to show their nesting,
+keeping each quoted value with its constructor. Quoted contents remain as
+written. Hidden forms and protected lines retain their existing layout. Other
+diagram lines are not wrapped. Prettier's formatting of Markdown and YAML
+frontmatter can also use `printWidth`.

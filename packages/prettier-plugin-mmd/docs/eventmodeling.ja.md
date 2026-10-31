@@ -454,6 +454,10 @@ data と note の本文は `{` から `}` までそのまま保ちます。
 見かけの文、入れ子風の text、直後の閉じ風の行も、
 body を持つ形の規則が後の閉じまで読む場合は保ちます。
 
+本文が行頭から始まる場合もその列を保つため、
+本文と閉じ波括弧の両方が無字下げの配置も残ります。
+[fixture: eventmodeling/final-newline/final-block-padding-kept]
+
 [fixture: eventmodeling/data-blocks/block-interior-unchanged]
 
 [fixture: eventmodeling/data-blocks/block-empty-kept]

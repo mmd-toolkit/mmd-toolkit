@@ -455,6 +455,10 @@ terminal. Preserve apparent statements, nested-looking text and an adjacent
 closing-looking line when the block's body-present rule reads through it to a
 later closer.
 
+Body text written at column one stays at column one, so the formatter can leave
+the body and closing brace visually unindented. [fixture:
+eventmodeling/final-newline/final-block-padding-kept]
+
 [fixture: eventmodeling/data-blocks/block-interior-unchanged]
 
 [fixture: eventmodeling/data-blocks/block-empty-kept]

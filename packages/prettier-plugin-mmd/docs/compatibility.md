@@ -2161,11 +2161,13 @@ railroad/source-order/ebnf-duplicates] [fixture:
 railroad/source-order/abnf-duplicates] [fixture:
 railroad/source-order/peg-duplicates] [fixture: railroad/title/ir-trim]
 
-Ordinary IR calls wrap at printWidth along their nested argument structure,
-without splitting values or adding trailing commas. Calls with multiple
-arguments retain authored multiline grouping. Rules containing comments,
-directives, hidden forms or protected semicolons retain their existing gap
-layout. EBNF, ABNF and PEG keep their flat layout. [fixture:
+Ordinary composite IR calls wrap at printWidth along their nested argument
+structure, without splitting values or adding trailing commas. Calls with
+multiple arguments retain authored multiline grouping. Leaf constructors stay
+together with their quoted values. Ordinary comments and global directives
+retain their argument boundaries while the call wraps; semicolons inside values
+do not prevent wrapping. Native hidden forms and ignored semicolons retain their
+protected layout. EBNF, ABNF and PEG keep their flat layout. [fixture:
 railroad/long-lines/ir-expression-grammar] [fixture:
 railroad/long-lines/ir-written-breaks] [fixture:
 railroad/long-lines/ir-unary-width] [fixture:
@@ -2200,14 +2202,16 @@ Comment forms and contents remain written: all four dialects have `%%`, IR has C
 comments, EBNF has C and ISO comments, ABNF has semicolon line comments and PEG
 has hash line comments. LS/PS remain native line-comment content. A bare ABNF
 `;` is punctuation; its terminator must meet LF or EOF immediately. Every rule's
-required visible `;` stays attached where safe, and every other authored
-semicolon stays under shared segment protection, including crossing values. The
-first line uses one body step, matching other flat diagrams; later lines keep
-their written columns. Railroad lines containing the literal string `style` or
-`classDef` after global directive removal stay as written, including every
-statement, comment, native hidden form and inner gap. They do not join their
-neighbors. A removed directive forming a word across lines keeps all those
-lines. [fixture: railroad/semicolons/ir-word-unclosed-directive-lines] [fixture:
+required visible `;` stays attached where safe. Ordinary IR rules retain
+semicolons inside values without freezing their layout; every other authored
+semicolon stays under shared segment protection, including crossing values. Each
+protected segment's first line uses one body step, matching other flat diagrams;
+its later lines keep their written columns. Railroad lines containing the
+literal string `style` or `classDef` after global directive removal stay as
+written, including every statement, comment, native hidden form and inner gap.
+They do not join their neighbors. A removed directive forming a word across
+lines keeps all those lines. [fixture:
+railroad/semicolons/ir-word-unclosed-directive-lines] [fixture:
 railroad/semicolons/ebnf-word-unclosed-directive-lines] [fixture:
 railroad/semicolons/abnf-word-unclosed-directive-lines] [fixture:
 railroad/semicolons/peg-word-unclosed-directive-lines] A line is the complete

@@ -526,10 +526,11 @@ title の後ろの event を読む人がどう読むかは、整形の問題で�
 [fixture: event-statements/directive-line-before]
 [fixture: event-statements/empty-lines-before]
 
-event の文の event は、period の event と同じに並べます。
-書かれた行に残し、文の 2 行目以降は 1 行目より 1 段深く置きます。
-[fixture: event-statements/several-events]
+period の event と同じく、各 event は書かれた行に残します。
+後ろの event 行も文の字下げで始め、同列の event が入れ子に見えないようにします。
+section の中でも同じです。 [fixture: event-statements/several-events]
 [fixture: event-statements/events-of-an-event-statement-on-the-line]
+[fixture: event-statements/several-events-in-a-section]
 
 入力
 ([event-statements/after-title-input.mmd](../tests/fixtures/timeline/event-statements/after-title-input.mmd)):
@@ -572,7 +573,7 @@ timeline
   2004 : a
   title T
   : e1
-    : e2 : e3
+  : e2 : e3
 ```
 
 ### title と section

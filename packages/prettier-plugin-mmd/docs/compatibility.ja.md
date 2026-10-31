@@ -2315,11 +2315,13 @@ railroad/source-order/ir-duplicates]
 [fixture: railroad/source-order/abnf-duplicates] [fixture:
 railroad/source-order/peg-duplicates] [fixture: railroad/title/ir-trim]
 
-通常の IR 呼出しは入れ子の引数構造に沿って printWidth で折り返します。
+通常の IR 複合呼出しは入れ子の引数構造に沿って printWidth で折り返します。
 値は分割せず、末尾 comma は加えません。
 引数が複数ある呼出しは、元の複数行のまとまりを保ちます。
-コメント、directive、hidden form、保護された semicolon のある規則には、
-既存の gap 配置を適用します。
+leaf constructor は引用値と一緒に保ちます。
+通常のコメントと global directive は、引数との境界を保ちながら折り返します。
+値の中の semicolon は折返しを止めません。
+native hidden form と無視される semicolon は、保護した配置を使います。
 EBNF、ABNF、PEG は平坦な配置を保ちます。
 [fixture: railroad/long-lines/ir-expression-grammar]
 [fixture: railroad/long-lines/ir-written-breaks]
@@ -2361,8 +2363,9 @@ ABNF の semicolon 行コメント、PEG の hash 行コメントが対象です
 LS と PS は native line comment の内容として保ちます。
 裸の ABNF `;` は句読点であり、終端の直後は LF または EOF にします。
 規則の必須の可視 `;` は安全な場所で定義に付けます。
+通常の IR 規則は、値の中の semicolon によって配置を固定しません。
 その他の semicolon は共有の区間保護に従い、交差する値も保ちます。
-最初の行は他の平坦な図種と同じく本文の1段に揃え、
+保護した区間の最初の行は他の平坦な図種と同じく本文の1段に揃え、
 2行目以降は書かれた列を保ちます。
 global directive を除いた後に文字列 style または classDef を含む原文の行は、
 すべての文、コメント、native hidden form、内部の空白を書かれたまま保ちます。

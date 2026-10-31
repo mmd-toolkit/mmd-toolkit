@@ -508,10 +508,11 @@ event-statements/comment-line-before] [fixture:
 event-statements/directive-line-before] [fixture:
 event-statements/empty-lines-before]
 
-The events of an event statement are laid out as those of a period: they stay on
-the line on which they were written, and the later lines of the statement stand
-one level deeper than its first. [fixture: event-statements/several-events]
-[fixture: event-statements/events-of-an-event-statement-on-the-line]
+As for a period, each event stays on the line on which it was written. Later
+event lines use the statement's indentation, so peer events do not look nested.
+This also applies within a section. [fixture: event-statements/several-events]
+[fixture: event-statements/events-of-an-event-statement-on-the-line] [fixture:
+event-statements/several-events-in-a-section]
 
 Input
 ([event-statements/after-title-input.mmd](../tests/fixtures/timeline/event-statements/after-title-input.mmd)):
@@ -554,7 +555,7 @@ timeline
   2004 : a
   title T
   : e1
-    : e2 : e3
+  : e2 : e3
 ```
 
 ### Titles and sections

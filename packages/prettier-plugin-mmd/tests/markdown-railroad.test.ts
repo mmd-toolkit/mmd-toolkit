@@ -44,6 +44,18 @@ const cases: readonly MarkdownCase[] = [
     options: { printWidth: 30 },
   },
   {
+    name: "railroad Markdown: ir-wrapped-comment",
+    input:
+      '```mermaid\nrailroad-beta\nr=sequence(/* keep */ terminal("first terminal"), terminal("second terminal"));\n```\n',
+    output:
+      '```mermaid\nrailroad-beta\n  r = sequence(\n    /* keep */ terminal("first terminal"),\n    terminal("second terminal")\n  );\n```\n',
+    payloadInput:
+      'railroad-beta\nr=sequence(/* keep */ terminal("first terminal"), terminal("second terminal"));',
+    payloadOutput:
+      'railroad-beta\n  r = sequence(\n    /* keep */ terminal("first terminal"),\n    terminal("second terminal")\n  );\n',
+    options: { printWidth: 20 },
+  },
+  {
     name: "railroad Markdown: ebnf-list",
     input:
       '- item\n\n  ```mermaid\n  railroad-ebnf-beta\n  accDescr {\n   first\n     continuation\n  }\n  r::=( "fenced" );\n  ```\n',

@@ -192,6 +192,7 @@ function layoutEvents(
   const rules = new Map<number, GapRule>()
   const joinedBefore = new Set<number>()
   const alignedColons = new Set<number>()
+  const outdented = new Set<number>()
   let statementPadding: string | undefined
   for (const event of statement.events) {
     const eventIndex = atoms.findIndex((atom) => atom.start === event.range[0])
@@ -201,6 +202,8 @@ function layoutEvents(
         `prettier-plugin-mmd: no colon before the event at offset ${event.range[0]}`,
       )
     }
+    // Events without a period are peers (docs/timeline.md, Event statements).
+    if (statement.type === "TimelineEventStatement") outdented.add(colon.start)
     if (
       event === statement.events[0] &&
       statement.type === "TimelinePeriodStatement"
@@ -236,7 +239,7 @@ function layoutEvents(
       alignedColons.has(atom.start) ? { ...atom, statementPadding } : atom,
     ),
     rules,
-    outdented: new Set(),
+    outdented,
     lineBreaks: "kept",
     joinedBefore,
   }
