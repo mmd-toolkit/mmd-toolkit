@@ -127,8 +127,8 @@ vscode-textmateとvscode-onigurumaのような、ほかのTextMateのホスト�
 
 拡張機能の`dependencies`にこのパッケージを追加し、
 `package.json`で文法を登録します。
-[`vsce`](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#using-vscodeignore)は、
-既定で本番用の依存パッケージをVSIXに含めるので、
+[`vsce`](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#using-vscodeignore)
+は、既定で本番用の依存パッケージをVSIXに含めるので、
 `path`で`node_modules`内の文法を直接指定できます。
 
 ```json
