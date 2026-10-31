@@ -1,0 +1,34 @@
+{
+  "name": "@mmd-toolkit/textmate-grammar",
+  "version": "0.0.0",
+  "description": "TextMate grammar for Mermaid text, written from the specification of this repository for every diagram type, used by the playground and the documentation site",
+  "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mmd-toolkit/mmd-toolkit.git",
+    "directory": "packages/textmate-grammar"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    }
+  },
+  "engines": {
+    "node": "^22.18.0 || ^24.11.0 || >=26.0.0"
+  },
+  "scripts": {
+    "build": "echo \"nothing to build\"",
+    "clean": "echo \"nothing to clean\"",
+    "test": "vitest run",
+    "test:update": "vitest run -u"
+  },
+  "dependencies": {
+    "@shikijs/types": "^4.5.0"
+  },
+  "devDependencies": {
+    "shiki": "^4.5.0"
+  }
+}

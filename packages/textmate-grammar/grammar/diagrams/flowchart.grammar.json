@@ -1,0 +1,2089 @@
+{
+  "variables": {
+    "flowchart-field": "(?:{{flowchart-number}}(?={{flowchart-subgraph-description-start}})|(?:(?!{{directiveStart}}|{{separatorCommentEnd}})[^{{ws}};])+)",
+    "flowchart-id-start": "{{flowchart-id-character}}|{{flowchart-id-hyphen}}|[\\p{L}\\p{N}]|:(?!::)|,",
+    "flowchart-id-end": "(?={{directiveStart}})|(?!{{flowchart-id-start}})|{{separatorCommentEnd}}",
+    "flowchart-bar-name": "(?:(?!{{directiveStart}})(?:{{flowchart-id-character}}|{{flowchart-id-hyphen}}))+",
+    "flowchart-list-comma": "{{directives}},{{directives}}",
+    "flowchart-id-list-field": "(?:(?!{{directiveStart}}|{{separatorCommentEnd}})[^,{{ws}};]|{{flowchart-list-comma}})+",
+    "flowchart-click-ids": "(?>(?:{{entity}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^,{{ws}}]|{{flowchart-list-comma}}))+",
+    "flowchart-id-character": "[A-Za-z0-9!\"#$%&'*+.\\x{60}?\\\\_/]",
+    "flowchart-id-hyphen": "-(?!{{directives}}[>\\-.])",
+    "flowchart-list-name": "(?:(?!{{directiveStart}}|{{separatorCommentEnd}})[^,])+",
+    "flowchart-dash-arrow": "[xo<]?(?:-{2,}[xo>]|-{3,})",
+    "flowchart-thick-arrow": "[xo<]?(?:={2,}[xo>]|={3,})",
+    "flowchart-dotted-arrow": "[xo<]?-?\\.+-[xo>]?",
+    "flowchart-edge-id": "(?:(?!{{directiveStart}}|{{separatorCommentEnd}})[^{{ws}}\"])+",
+    "flowchart-slanted-text-character": "[^\\\\\\[\\](){}\\/]",
+    "flowchart-number": "[0-9]+",
+    "flowchart-link-indices": "{{flowchart-number}}(?:{{lineGap}},{{lineGap}}{{flowchart-number}})*",
+    "flowchart-header-keywords": "flowchart-elk|swimlane-beta|graph|flowchart",
+    "flowchart-class-arguments": "{{wordEnd}}({{requiredLineGap}})({{flowchart-id-list-field}})({{requiredLineGap}})",
+    "flowchart-subgraph-description-start": "accDescr{{lineGap}}\\{",
+    "flowchart-direction-head": "({{lineText}})(direction)({{requiredLineGap}})",
+    "flowchart-header-direction": "(?:({{lineGap}})((?:LR|RL|TB|BT|TD|BR|v){{wordEnd}}|[<>^]))?",
+    "flowchart-edge-id-suffix": "({{directives}})(@)(?={{directives}}[^{\"\\r\\n])",
+    "flowchart-id-run-start": "(?={{flowchart-id-start}})",
+    "flowchart-statement-end": "(?=[;\\r\\n])|{{lineValueEnd}}",
+    "flowchart-class-name": "(?:{{flowchart-number}}(?={{flowchart-subgraph-description-start}})|(?:(?!@\\{|{{directiveStart}})[^{{ws}};\\[(){}|<>\\-]|{{flowchart-id-hyphen}})+)",
+    "flowchart-label-closer": "[)\\]}|]",
+    "flowchart-markdown-string-begin": "\"({{directives}})`",
+    "flowchart-markdown-string-end": "({{markdownStringEnd}})",
+    "flowchart-data-begin": "(@\\{)",
+    "flowchart-data-end": "(\\})",
+    "flowchart-callback-begin": "(call)({{requiredLineGap}})",
+    "flowchart-callback-end": "(?<=\\))",
+    "flowchart-acc-descr-block-begin": "(accDescr)({{lineGap}})(\\{)({{lineGap}})",
+    "flowchart-acc-descr-block-end": "(\\})",
+    "flowchart-accessibility-line-begin": "(accTitle|accDescr)({{lineGap}})(:)({{lineGap}})",
+    "flowchart-accessibility-line-end": "(?=\\r?$)",
+    "flowchart-callback-name-begin": "(?=[^(])",
+    "flowchart-callback-name-end": "(?=\\()",
+    "flowchart-callback-arguments-begin": "(\\()",
+    "flowchart-callback-arguments-end": "(\\))",
+    "flowchart-shape-begin": "(\\(\\(\\(|\\(\\(|\\{\\{|\\(\\[|\\[\\[|\\[\\(|>|\\[|\\(|\\{)",
+    "flowchart-shape-end": "(\\)\\)\\)|\\)\\)|\\}\\}|\\]\\)|\\]\\]|\\)\\]|[)\\]}])",
+    "flowchart-slanted-shape-begin": "(\\[[/\\\\])",
+    "flowchart-slanted-shape-end": "([\\\\(?=\\])/]\\])",
+    "flowchart-ellipse-begin": "(\\(-)",
+    "flowchart-ellipse-end": "([-\\/)]\\))",
+    "flowchart-pipe-label-begin": "(\\|)",
+    "flowchart-pipe-label-end": "(\\|)",
+    "flowchart-bar-shape-begin": "(\\[\\|)({{lineGap}})({{flowchart-bar-name}})({{lineGap}})(:)({{lineGap}})({{flowchart-bar-name}})({{lineGap}})(\\|)",
+    "flowchart-bar-shape-end": "(\\])",
+    "flowchart-direction-line": "(?:{{flowchart-direction-head}}(TB)({{physicalLineText}})|{{flowchart-direction-head}}(BT)({{physicalLineText}})|{{flowchart-direction-head}}(RL)({{physicalLineText}})|{{flowchart-direction-head}}(LR)({{physicalLineText}})|{{flowchart-direction-head}}(TD)({{physicalLineText}}))$",
+    "flowchart-string-quote": "\"",
+    "flowchart-quoted-text-start": "(?!\"|{{separatorCommentEnd}})(?=.)",
+    "flowchart-quoted-text-end": "(?=\")|{{separatorCommentEnd}}",
+    "flowchart-link-gap": "(?:(?!{{separatorCommentEnd}})(?:[{{lws}}]|{{directive}}))*",
+    "flowchart-style-key": "(?:{{directive}}|{{entity}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^:{{ws}},;])+"
+  },
+  "patterns": [
+    {
+      "include": "#flowchart"
+    }
+  ],
+  "repository": {
+    "flowchart": {
+      "comment": "Read the flowchart header and its body, including the optional fixed header direction. flowchart.md#detection: Three entries of [detection.md](../detection.md) select this grammar: entry 3 (`flowchart-elk`, id `flowchart-elk`), entry 16 (`swimlane-beta`, id `swimlane`), and entry 17 (`graph` or `flowchart`, id `flowchart-v2`). flowchart.md#the-header-context: Zero or more whitespace, then `LR`, `RL`, `TB`, `BT`, `TD`, `BR`, or `v`, not followed by a word character, or `<`, `>`, or `^`: a `header-direction` unit of the direction; leaves the context. common.md#leading-whitespace: Whitespace, line terminators, directives, and comment regions before the first unit of the diagram's lexer are trivia and are not seen by the diagram's grammar. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text.",
+      "begin": "{{diagramStart}}({{flowchart-header-keywords}}){{wordEnd}}{{flowchart-header-direction}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "constant.language.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive",
+          "comment": "Directives are read before diagram units. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text."
+        },
+        {
+          "include": "#flowchart-name-entity",
+          "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+        },
+        {
+          "include": "#flowchart-acc-descr-block"
+        },
+        {
+          "include": "#flowchart-accessibility-line"
+        },
+        {
+          "include": "#flowchart-data"
+        },
+        {
+          "include": "#flowchart-callback"
+        },
+        {
+          "include": "#flowchart-string"
+        },
+        {
+          "include": "#flowchart-style"
+        },
+        {
+          "include": "#flowchart-classdef"
+        },
+        {
+          "include": "#flowchart-class"
+        },
+        {
+          "include": "#flowchart-linkstyle"
+        },
+        {
+          "comment": "Rule 7 reads bounded `style`, `default`, `linkStyle`, `interpolate`, `classDef`, and `class`. A longer id run is not a keyword. Complete style statements above protect style text. flowchart.md#the-statement-context: An id run: one or more characters, as many as possible, each of which is an ASCII letter or digit, one of `!` `\"` `#` `$` `%` `&` `'` `*` `+` `.` `` ` `` `?` `\\` `_` `/`, or a `-` followed by a character other than `>`, `-`, and `.`.",
+          "match": "(?:style|linkStyle|interpolate|classDef|class){{wordEnd}}",
+          "name": "keyword.control.mermaid"
+        },
+        {
+          "comment": "Read click ids before their URL or callback; a bare callback is a function name. flowchart.md#click-statements: The first alternative calls the function named after `call`, with the arguments in the parentheses after it, or in those after a second `call` when the first ones are empty (see [Click and callbacks](#click-and-callbacks)); the second links to the URL in the first string, with an optional tooltip and target; the third calls the function named by a name.",
+          "match": "(click)({{requiredLineGap}})({{flowchart-click-ids}})({{requiredLineGap}})(?!(?:call|href)(?={{whitespaceStart}})|\\\")({{flowchart-field}})",
+          "captures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#flowchart-id-list"
+                },
+                {
+                  "match": "{{flowchart-list-name}}",
+                  "name": "variable.mermaid"
+                }
+              ]
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "5": {
+              "name": "entity.name.function.mermaid"
+            }
+          }
+        },
+        {
+          "include": "#flowchart-click"
+        },
+        {
+          "comment": "Read a listed link target. flowchart.md#style-class-and-link-style-statements: In the tree, a style is its written text, which starts right after the `,` before it, with the whitespace there, and ends at its last character that is not whitespace: `style A fill:#f00 ,  stroke:#333 ` has the styles `fill:#f00` and `stroke:#333` after two spaces, and a style that is all whitespace is null (see [ast/flowchart.md](../ast/flowchart.md#flowchartstylestatement)).",
+          "match": "_(?:self|blank|parent|top){{wordEnd}}",
+          "name": "constant.language.mermaid"
+        },
+        {
+          "comment": "Rule 8 reads `href` only before whitespace; rule 13 reads bounded `_self`, `_blank`, `_parent`, and `_top` as link targets. flowchart.md#the-statement-context: An id run: one or more characters, as many as possible, each of which is an ASCII letter or digit, one of `!` `\"` `#` `$` `%` `&` `'` `*` `+` `.` `` ` `` `?` `\\` `_` `/`, or a `-` followed by a character other than `>`, `-`, and `.`.",
+          "match": "href(?={{whitespaceStart}})|_(?:self|blank|parent|top){{wordEnd}}",
+          "name": "keyword.control.mermaid"
+        },
+        {
+          "comment": "`subgraph` space subgraph-name optionally followed by a bracketed title starts a subgraph. Its name is a label and may contain keyword units without becoming statement keywords. This same-line scope stops at the subgraph statement separator. Directives may separate complete units or occur in their surrounding whitespace; gap captures include the shared directive rule. flowchart.md#subgraphs: The name is a label of its own: it is a string, a markdown string, or a name piece, followed by any further name pieces; its kind is `string`, `markdown`, or `text` as for a label, and its value is defined as for a label. flowchart.md#directives-inside-units: A directive in whitespace that a unit reads at its start or its end changes nothing: in `A --> %%{init: {}}%% B`, the directive lies in the whitespace of the arrow unit.",
+          "begin": "(subgraph){{wordEnd}}({{requiredLineGap}})",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "{{flowchart-statement-end}}",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#flowchart-label-entity",
+              "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+            },
+            {
+              "include": "#flowchart-acc-descr-block"
+            },
+            {
+              "include": "#flowchart-string"
+            },
+            {
+              "include": "#flowchart-heading-title"
+            },
+            {
+              "include": "#flowchart-subgraph-name"
+            }
+          ]
+        },
+        {
+          "comment": "Rules 10 and 12 read bounded exact-case header keywords in the body and `end`; `end` also takes following whitespace. flowchart.md#the-statement-context: An id run: one or more characters, as many as possible, each of which is an ASCII letter or digit, one of `!` `\"` `#` `$` `%` `&` `'` `*` `+` `.` `` ` `` `?` `\\` `_` `/`, or a `-` followed by a character other than `>`, `-`, and `.`.",
+          "match": "(?:{{flowchart-header-keywords}}|end){{wordEnd}}",
+          "name": "keyword.control.mermaid"
+        },
+        {
+          "include": "#flowchart-direction-line"
+        },
+        {
+          "include": "#flowchart-edge-id"
+        },
+        {
+          "include": "#flowchart-class-suffix"
+        },
+        {
+          "comment": "Read the ampersand between spaced vertex groups. flowchart.md#vertex-statements: A vertex group is one or more vertices joined by `&`, which needs whitespace on both sides.",
+          "match": "(?<=[{{ws}}])&(?={{whitespaceStart}})",
+          "name": "keyword.operator.mermaid"
+        },
+        {
+          "comment": "Read a statement separator. flowchart.md#diagram-and-statements: Every other `;` that the grammar reads is an empty statement: a second `;` after a separator, a `;` on a line of its own, and a `;` right after a statement that takes no separator.",
+          "match": ";",
+          "name": "punctuation.separator.statement.mermaid"
+        },
+        {
+          "comment": "Rule 17 reads `#`, `:::`, `:`, `&`, `;`, `,`, and `*` at a unit start. Within an id run these characters belong to the id. flowchart.md#the-statement-context: An id run: one or more characters, as many as possible, each of which is an ASCII letter or digit, one of `!` `\"` `#` `$` `%` `&` `'` `*` `+` `.` `` ` `` `?` `\\` `_` `/`, or a `-` followed by a character other than `>`, `-`, and `.`.",
+          "match": "(:::)",
+          "captures": {
+            "1": {
+              "name": "punctuation.separator.class.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Closed dash, thick, dotted, and invisible arrows are tried before the corresponding opening arrows; all dashes, equals signs, dots, and tildes of the arrow are taken. flowchart.md#arrows: Every arrow, closed or opening, is read with zero or more whitespace before it and zero or more whitespace after it; the whitespace on both sides, line feeds included, is part of its unit.",
+          "match": "{{flowchart-dash-arrow}}|{{flowchart-thick-arrow}}|{{flowchart-dotted-arrow}}|~{3,}",
+          "name": "keyword.operator.arrow.mermaid"
+        },
+        {
+          "include": "#flowchart-dash-link-text"
+        },
+        {
+          "include": "#flowchart-thick-link-text"
+        },
+        {
+          "include": "#flowchart-dotted-link-text"
+        },
+        {
+          "include": "#flowchart-ellipse"
+        },
+        {
+          "include": "#flowchart-slanted-shape"
+        },
+        {
+          "include": "#flowchart-bar-shape"
+        },
+        {
+          "include": "#flowchart-shape"
+        },
+        {
+          "include": "#flowchart-pipe-label"
+        },
+        {
+          "comment": "Rules 20 to 23: `v`, id runs, a lone hyphen, and Unicode letters are id pieces. An id run takes quotes and keyword-like words inside it, and ends before an arrow or a shape. Direction-looking text in a label was already handled by the earlier direction-line rule. Numeric id pieces keep the scope of the complete element name. flowchart.md#the-statement-context: An id run: one or more characters, as many as possible, each of which is an ASCII letter or digit, one of `!` `\"` `#` `$` `%` `&` `'` `*` `+` `.` `` ` `` `?` `\\` `_` `/`, or a `-` followed by a character other than `>`, `-`, and `.`. flowchart.md#vertex-statements: A vertex statement is a chain of vertex groups joined by links.",
+          "begin": "{{flowchart-id-run-start}}",
+          "end": "{{flowchart-id-end}}",
+          "contentName": "variable.mermaid",
+          "patterns": [
+            {
+              "include": "#flowchart-id-run"
+            }
+          ]
+        }
+      ]
+    },
+    "flowchart-string": {
+      "comment": "A quote starts a string, or a markdown string when a backtick follows it. Quotes can enter further string contexts. Delimiters are left out of its content; there is no escape rule. flowchart.md#strings: The whole string, from the opening `\"` to its closing `\"`, is one unit.",
+      "patterns": [
+        {
+          "include": "#flowchart-markdown-string"
+        },
+        {
+          "include": "#flowchart-plain-string"
+        }
+      ]
+    },
+    "flowchart-plain-string": {
+      "comment": "In the string context, a quote followed by a backtick enters the markdown string context; a quote alone leaves it; other characters are content. flowchart.md#strings: The whole string, from the opening `\"` to its closing `\"`, is one unit.",
+      "begin": "{{flowchart-string-quote}}",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.mermaid"
+        }
+      },
+      "end": "{{flowchart-string-quote}}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.end.mermaid"
+        }
+      },
+      "applyEndPatternLast": true,
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#flowchart-markdown-string"
+        },
+        {
+          "include": "#flowchart-plain-string-text"
+        }
+      ]
+    },
+    "flowchart-markdown-string": {
+      "comment": "In the markdown string context, a backtick followed by a quote leaves it; a quote followed by a backtick enters another markdown string context; a quote enters the string context. A directive between quote and backquote lies inside the string, at either delimiter. flowchart.md#strings: The whole string, from the opening `\"` to its closing `\"`, is one unit. flowchart.md#directives-inside-units: A directive in whitespace that a unit reads at its start or its end changes nothing: in `A --> %%{init: {}}%% B`, the directive lies in the whitespace of the arrow unit.",
+      "begin": "{{flowchart-markdown-string-begin}}",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.mermaid"
+        },
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "{{flowchart-markdown-string-end}}",
+      "endCaptures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#markdown-string-end-scopes"
+            }
+          ]
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#flowchart-markdown-string"
+        },
+        {
+          "include": "#flowchart-plain-string"
+        },
+        {
+          "include": "#flowchart-markdown-string-text"
+        }
+      ]
+    },
+    "flowchart-shape": {
+      "comment": "The bracketed shapes open with `[`, `(`, `((`, `(((`, `{`, `{{`, `([`, `[[`, `[(`, or `>` and close with their corresponding delimiters. strings protect closing delimiters; other label text is read without keywords. flowchart.md#shapes: A rectangle written with `[|` carries one property, a name and a value, each a single id run: `A[|borders:lt|text]` has the property `borders` with the value `lt`. flowchart.md#the-label-context: So a label ends at the first `]`, `)`, `}`, or `|` outside a string, and which closing unit the lexer reads depends on the character after it: `A[x])` reads `])`, which does not close a rectangle, and is rejected.",
+      "begin": "{{flowchart-shape-begin}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.operator.shape.begin.mermaid"
+        }
+      },
+      "end": "{{flowchart-shape-end}}",
+      "endCaptures": {
+        "1": {
+          "name": "keyword.operator.shape.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#flowchart-label-entity",
+          "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+        },
+        {
+          "include": "#flowchart-html-tag"
+        },
+        {
+          "include": "#flowchart-string"
+        },
+        {
+          "include": "#flowchart-label-text"
+        }
+      ]
+    },
+    "flowchart-slanted-shape": {
+      "comment": "`[/` or `[backslash` enters the slanted context. A backslash, `(`, `?`, `=`, `]`, or `)` followed by `]`, or `/]`, closes it. Strings start only at a unit start; quotes inside an ordinary text run stay text. flowchart.md#the-slanted-context: Rule 5 reads a `/` or `\\` as a text run of its own, so a unit can start at a `?` or `=`: `A[/a/?]` is a trapezoid with the label `a/`, while `A[/a?]` is rejected, because the text run `a?` takes the `?`.",
+      "begin": "{{flowchart-slanted-shape-begin}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.operator.shape.begin.mermaid"
+        }
+      },
+      "end": "{{flowchart-slanted-shape-end}}",
+      "endCaptures": {
+        "1": {
+          "name": "keyword.operator.shape.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#flowchart-string"
+        },
+        {
+          "include": "#flowchart-slanted-text"
+        }
+      ]
+    },
+    "flowchart-ellipse": {
+      "comment": "`(-` enters the ellipse context. `-`, `/`, or `)` followed by `)` closes it; a string starts at a quote, and each other allowed character is label text. flowchart.md#the-ellipse-context: `-`, `/`, or `)`, followed by `)`: an `ellipse-end` unit; leaves the context.",
+      "begin": "{{flowchart-ellipse-begin}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.operator.shape.begin.mermaid"
+        }
+      },
+      "end": "{{flowchart-ellipse-end}}",
+      "endCaptures": {
+        "1": {
+          "name": "keyword.operator.shape.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#flowchart-string"
+        },
+        {
+          "include": "#flowchart-ellipse-text"
+        }
+      ]
+    },
+    "flowchart-bar-shape": {
+      "comment": "A rectangle may be written `[|` id-run `:` id-run `|` label `]`; the property has a name and a complete value, and the label follows the second bar. A directive may lie between a complete operand and its colon or bar, but not inside an operand. flowchart.md#shapes: A rectangle written with `[|` carries one property, a name and a value, each a single id run: `A[|borders:lt|text]` has the property `borders` with the value `lt`. flowchart.md#directives-inside-units: A directive in whitespace that a unit reads at its start or its end changes nothing: in `A --> %%{init: {}}%% B`, the directive lies in the whitespace of the arrow unit.",
+      "begin": "{{flowchart-bar-shape-begin}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.operator.shape.begin.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "storage.modifier.mermaid"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "5": {
+          "name": "punctuation.separator.colon.mermaid"
+        },
+        "6": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "7": {
+          "name": "string.unquoted.mermaid"
+        },
+        "8": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "9": {
+          "name": "punctuation.separator.label.mermaid"
+        }
+      },
+      "end": "{{flowchart-bar-shape-end}}",
+      "endCaptures": {
+        "1": {
+          "name": "keyword.operator.shape.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#flowchart-label-entity",
+          "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+        },
+        {
+          "include": "#flowchart-html-tag"
+        },
+        {
+          "include": "#flowchart-string"
+        },
+        {
+          "include": "#flowchart-label-text"
+        }
+      ]
+    },
+    "flowchart-pipe-label": {
+      "comment": "A link may have a label between `|` after its arrow. strings protect the closer, and text runs contain no label delimiters. flowchart.md#links: A link has an arrow, and optionally an edge id before it and a label, either between `|` after the arrow or between an opening arrow and the closing arrow. flowchart.md#the-label-context: So a label ends at the first `]`, `)`, `}`, or `|` outside a string, and which closing unit the lexer reads depends on the character after it: `A[x])` reads `])`, which does not close a rectangle, and is rejected.",
+      "begin": "{{flowchart-pipe-label-begin}}",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.definition.label.begin.mermaid"
+        }
+      },
+      "end": "{{flowchart-pipe-label-end}}",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.definition.label.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#flowchart-label-entity",
+          "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+        },
+        {
+          "include": "#flowchart-html-tag"
+        },
+        {
+          "include": "#flowchart-string"
+        },
+        {
+          "include": "#flowchart-label-text"
+        }
+      ]
+    },
+    "flowchart-dash-link-text": {
+      "comment": "An opening dash arrow enters its link text context. A closed arrow of the same kind, including its surrounding whitespace, leaves it; a string can start at a quote, and the other characters are link text. The closing arrow is tried first, so its head letter belongs to the arrow. The whitespace surrounding each arrow is read through directives. That whitespace stops before a separator-led common comment. flowchart.md#the-link-text-contexts: An opening arrow enters the link text context of its kind: dash, thick, or dotted. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "begin": "([xo<]?--)({{flowchart-link-gap}})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.operator.arrow.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "({{flowchart-link-gap}})({{flowchart-dash-arrow}})({{flowchart-link-gap}})",
+      "endCaptures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.operator.arrow.mermaid"
+        },
+        "3": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#flowchart-string"
+        },
+        {
+          "include": "#flowchart-dash-link-content"
+        }
+      ]
+    },
+    "flowchart-thick-link-text": {
+      "comment": "An opening thick arrow enters its link text context. A closed arrow of the same kind, including its surrounding whitespace, leaves it; a string can start at a quote, and the other characters are link text. The closing arrow is tried first, so its head letter belongs to the arrow. The whitespace surrounding each arrow is read through directives. That whitespace stops before a separator-led common comment. flowchart.md#the-link-text-contexts: An opening arrow enters the link text context of its kind: dash, thick, or dotted. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "begin": "([xo<]?==)({{flowchart-link-gap}})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.operator.arrow.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "({{flowchart-link-gap}})({{flowchart-thick-arrow}})({{flowchart-link-gap}})",
+      "endCaptures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.operator.arrow.mermaid"
+        },
+        "3": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#flowchart-string"
+        },
+        {
+          "include": "#flowchart-thick-link-content"
+        }
+      ]
+    },
+    "flowchart-dotted-link-text": {
+      "comment": "An opening dotted arrow enters its link text context. A closed arrow of the same kind, including its surrounding whitespace, leaves it; a string can start at a quote, and the other characters are link text. The closing arrow is tried first, so its head letter belongs to the arrow. The whitespace surrounding each arrow is read through directives. That whitespace stops before a separator-led common comment. flowchart.md#the-link-text-contexts: An opening arrow enters the link text context of its kind: dash, thick, or dotted. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "begin": "([xo<]?\\-\\.)({{flowchart-link-gap}})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.operator.arrow.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "({{flowchart-link-gap}})({{flowchart-dotted-arrow}})({{flowchart-link-gap}})",
+      "endCaptures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.operator.arrow.mermaid"
+        },
+        "3": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#flowchart-string"
+        },
+        {
+          "include": "#flowchart-dotted-link-content"
+        }
+      ]
+    },
+    "flowchart-data": {
+      "comment": "`@{` enters the data context. A quote enters the data string context, whose next quote leaves it. The first `}` outside a data string leaves the data context; the content is data text. flowchart.md#data-blocks: So a data block ends at the first `}` outside a quoted string, and `^` is rejected outside a quoted string.",
+      "begin": "{{flowchart-data-begin}}",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.section.data.begin.mermaid"
+        }
+      },
+      "end": "{{flowchart-data-end}}",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.section.data.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#flowchart-data-string"
+        },
+        {
+          "include": "#flowchart-data-text"
+        }
+      ],
+      "name": "meta.data.mermaid"
+    },
+    "flowchart-callback": {
+      "comment": "`call` and whitespace enter the callback name context; the name is every character before `(`. Parentheses enter and leave the arguments context, whose text ends at the next `)`. Directives may separate complete units or occur in their surrounding whitespace; gap captures include the shared directive rule. flowchart.md#click-and-callbacks: In the callback arguments context, `)` is a `)` unit and leaves the context, and one or more other characters are a `callback-arguments` unit. flowchart.md#directives-inside-units: A directive in whitespace that a unit reads at its start or its end changes nothing: in `A --> %%{init: {}}%% B`, the directive lies in the whitespace of the arrow unit.",
+      "begin": "{{flowchart-callback-begin}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "{{flowchart-callback-end}}",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#entity",
+          "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+        },
+        {
+          "include": "#flowchart-callback-name"
+        },
+        {
+          "include": "#flowchart-callback-arguments"
+        }
+      ]
+    },
+    "flowchart-styles": {
+      "comment": "A style consists of number, id-run, colon, hash, space, or `style` units; commas divide styles. Keyword-like words in its text are not statement keywords. Empty description blocks before its separator are separate statements. flowchart.md#style-class-and-link-style-statements: In the tree, a style is its written text, which starts right after the `,` before it, with the whitespace there, and ends at its last character that is not whitespace: `style A fill:#f00 ,  stroke:#333 ` has the styles `fill:#f00` and `stroke:#333` after two spaces, and a style that is all whitespace is null (see [ast/flowchart.md](../ast/flowchart.md#flowchartstylestatement)).",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#entity",
+          "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+        },
+        {
+          "include": "#flowchart-acc-descr-block"
+        },
+        {
+          "include": "#flowchart-style-property"
+        },
+        {
+          "include": "#flowchart-style-separators"
+        },
+        {
+          "include": "#flowchart-style-id"
+        },
+        {
+          "include": "#flowchart-style-whitespace"
+        }
+      ]
+    },
+    "flowchart-acc-descr-block": {
+      "comment": "Rule 3: `accDescr`, whitespace, `{`, and whitespace enter the description block context. the first `}` closes the block, and the closer may be absent at the end of text. Directives may separate complete units or occur in their surrounding whitespace; gap captures include the shared directive rule. Retain this local context: keeps inline percent pairs, reads leading value whitespace with the delimiter and allows a block without its closer at end of text. flowchart.md#the-statement-context: An id run: one or more characters, as many as possible, each of which is an ASCII letter or digit, one of `!` `\"` `#` `$` `%` `&` `'` `*` `+` `.` `` ` `` `?` `\\` `_` `/`, or a `-` followed by a character other than `>`, `-`, and `.`. flowchart.md#accessibility-values: In the description block context, `}` is a `}` unit and leaves the context, and one or more other characters are a `description-block-text` unit. flowchart.md#directives-inside-units: A directive in whitespace that a unit reads at its start or its end changes nothing: in `A --> %%{init: {}}%% B`, the directive lies in the whitespace of the arrow unit.",
+      "begin": "(accDescr)({{flowchart-link-gap}})(\\{)({{flowchart-link-gap}})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "punctuation.definition.description.begin.mermaid"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "{{flowchart-acc-descr-block-end}}",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.definition.description.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#flowchart-acc-descr-block-text"
+        }
+      ]
+    },
+    "flowchart-accessibility-line": {
+      "comment": "Rules 1 and 2: `accTitle` or `accDescr`, whitespace, `:`, and whitespace enter the title or description context. the rest of the line, including semicolons and hash signs, is text. A common comment after a line or paragraph separator ends the value before that separator; inline percent pairs remain text. Directives may separate complete units or occur in their surrounding whitespace; gap captures include the shared directive rule. Retain this local context: keeps inline percent pairs, reads leading value whitespace with the delimiter and allows a block without its closer at end of text. flowchart.md#the-statement-context: An id run: one or more characters, as many as possible, each of which is an ASCII letter or digit, one of `!` `\"` `#` `$` `%` `&` `'` `*` `+` `.` `` ` `` `?` `\\` `_` `/`, or a `-` followed by a character other than `>`, `-`, and `.`. flowchart.md#accessibility-values: In the description block context, `}` is a `}` unit and leaves the context, and one or more other characters are a `description-block-text` unit. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in. flowchart.md#directives-inside-units: A directive in whitespace that a unit reads at its start or its end changes nothing: in `A --> %%{init: {}}%% B`, the directive lies in the whitespace of the arrow unit.",
+      "begin": "(accTitle|accDescr)({{flowchart-link-gap}})(:)({{flowchart-link-gap}})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "punctuation.separator.colon.mermaid"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "{{lineValueEnd}}",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#flowchart-accessibility-line-text"
+        }
+      ]
+    },
+    "flowchart-id-list": {
+      "comment": "Commas separate id-list parts or click ids, including empty parts. Shared trivia and commas are read before the caller colors the remaining name runs through flowchart-list-name, so a comma has no name scope. flowchart.md#style-class-and-link-style-statements: In the tree, a style is its written text, which starts right after the `,` before it, with the whitespace there, and ends at its last character that is not whitespace: `style A fill:#f00 ,  stroke:#333 ` has the styles `fill:#f00` and `stroke:#333` after two spaces, and a style that is all whitespace is null (see [ast/flowchart.md](../ast/flowchart.md#flowchartstylestatement)). flowchart.md#click-and-callbacks: In the callback arguments context, `)` is a `)` unit and leaves the context, and one or more other characters are a `callback-arguments` unit.",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#flowchart-name-entity",
+          "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+        },
+        {
+          "match": ",",
+          "name": "punctuation.separator.comma.mermaid",
+          "comment": "Id-list = ( id-list-part | comma )+; commas separate the name parts. flowchart.md#style-class-and-link-style-statements: In the tree, a style is its written text, which starts right after the `,` before it, with the whitespace there, and ends at its last character that is not whitespace: `style A fill:#f00 ,  stroke:#333 ` has the styles `fill:#f00` and `stroke:#333` after two spaces, and a style that is all whitespace is null (see [ast/flowchart.md](../ast/flowchart.md#flowchartstylestatement))."
+        }
+      ]
+    },
+    "flowchart-direction-line": {
+      "comment": "The direction line, From the current position, try TB, BT, RL, LR, TD in that order, taking the last direction for the selected family. Text before the keyword excludes line and paragraph separators; text after the value runs to LF. Directives are atomic alternatives, so their arguments never supply a keyword, value or whitespace. Earlier statement rules win at the same position by block pattern order; indentation can expose this rule before those statements. No start anchor is needed: the rule reads the remaining line from the first position at which no earlier rule applies, including after an earlier unit. Empty or all-whitespace direction text has no string scope. flowchart.md#the-statement-context: The rule reads the characters before `direction` as a `direction-text` unit, `direction` as a `direction` unit, the value as a `direction-value` unit, and the characters after the value as another `direction-text` unit; a `direction-text` unit that would be empty or all whitespace is left out. flowchart.md#the-statement-context: mermaid.js does not read the `direction-text` units; in the tree they are the `textBefore` and `textAfter` of the [FlowchartDirectionStatement](../ast/flowchart.md#flowchartdirectionstatement).",
+      "match": "{{flowchart-direction-line}}",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#flowchart-direction-text"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.control.mermaid"
+        },
+        "3": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "4": {
+          "name": "constant.language.mermaid"
+        },
+        "5": {
+          "patterns": [
+            {
+              "include": "#flowchart-direction-text"
+            }
+          ]
+        },
+        "6": {
+          "patterns": [
+            {
+              "include": "#flowchart-direction-text"
+            }
+          ]
+        },
+        "7": {
+          "name": "keyword.control.mermaid"
+        },
+        "8": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "9": {
+          "name": "constant.language.mermaid"
+        },
+        "10": {
+          "patterns": [
+            {
+              "include": "#flowchart-direction-text"
+            }
+          ]
+        },
+        "11": {
+          "patterns": [
+            {
+              "include": "#flowchart-direction-text"
+            }
+          ]
+        },
+        "12": {
+          "name": "keyword.control.mermaid"
+        },
+        "13": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "14": {
+          "name": "constant.language.mermaid"
+        },
+        "15": {
+          "patterns": [
+            {
+              "include": "#flowchart-direction-text"
+            }
+          ]
+        },
+        "16": {
+          "patterns": [
+            {
+              "include": "#flowchart-direction-text"
+            }
+          ]
+        },
+        "17": {
+          "name": "keyword.control.mermaid"
+        },
+        "18": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "19": {
+          "name": "constant.language.mermaid"
+        },
+        "20": {
+          "patterns": [
+            {
+              "include": "#flowchart-direction-text"
+            }
+          ]
+        },
+        "21": {
+          "patterns": [
+            {
+              "include": "#flowchart-direction-text"
+            }
+          ]
+        },
+        "22": {
+          "name": "keyword.control.mermaid"
+        },
+        "23": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "24": {
+          "name": "constant.language.mermaid"
+        },
+        "25": {
+          "patterns": [
+            {
+              "include": "#flowchart-direction-text"
+            }
+          ]
+        }
+      }
+    },
+    "flowchart-direction-text": {
+      "comment": "The direction line: A direction-text unit that is empty or all whitespace is left out; otherwise all its text is retained. Directives keep their scopes and do not make whitespace into text. flowchart.md#the-statement-context: The rule reads the characters before `direction` as a `direction-text` unit, `direction` as a `direction` unit, the value as a `direction-value` unit, and the characters after the value as another `direction-text` unit; a `direction-text` unit that would be empty or all whitespace is left out. flowchart.md#the-statement-context: mermaid.js does not read the `direction-text` units; in the tree they are the `textBefore` and `textAfter` of the [FlowchartDirectionStatement](../ast/flowchart.md#flowchartdirectionstatement).",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "begin": "(?!{{separatorCommentEnd}})(?={{lineGap}}(?!{{directiveStart}})[^{{ws}}])",
+          "end": "{{lineValueEnd}}",
+          "contentName": "comment.block.ignored.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#entity",
+              "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+            }
+          ],
+          "comment": "The direction line: A direction-text unit that is empty or all whitespace is left out; otherwise its text is retained. flowchart.md#the-statement-context: An id run: one or more characters, as many as possible, each of which is an ASCII letter or digit, one of `!` `\"` `#` `$` `%` `&` `'` `*` `+` `.` `` ` `` `?` `\\` `_` `/`, or a `-` followed by a character other than `>`, `-`, and `.`."
+        }
+      ]
+    },
+    "flowchart-id-run": {
+      "comment": "An id run contains ASCII letters, digits and admitted punctuation, or a hyphen not starting an arrow; Unicode letters are additional id pieces. Stop before a directive, leaving its boundary to the enclosing context. An entity is one placeholder, so its semicolon stays in the run. flowchart.md#the-statement-context: An id run: one or more characters, as many as possible, each of which is an ASCII letter or digit, one of `!` `\"` `#` `$` `%` `&` `'` `*` `+` `.` `` ` `` `?` `\\` `_` `/`, or a `-` followed by a character other than `>`, `-`, and `.`.",
+      "patterns": [
+        {
+          "include": "#entity",
+          "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+        },
+        {
+          "match": "(?:(?!{{directiveStart}}|#)(?:{{flowchart-id-start}}))+",
+          "comment": "Read the admitted identifier characters and hyphens; Unicode letters are additional id pieces. flowchart.md#the-statement-context: An id run: one or more characters, as many as possible, each of which is an ASCII letter or digit, one of `!` `\"` `#` `$` `%` `&` `'` `*` `+` `.` `` ` `` `?` `\\` `_` `/`, or a `-` followed by a character other than `>`, `-`, and `.`."
+        },
+        {
+          "match": "#",
+          "comment": "A number sign inside an id run is an identifier character, unless the earlier entity rule reads its whole placeholder. flowchart.md#the-statement-context: An id run: one or more characters, as many as possible, each of which is an ASCII letter or digit, one of `!` `\"` `#` `$` `%` `&` `'` `*` `+` `.` `` ` `` `?` `\\` `_` `/`, or a `-` followed by a character other than `>`, `-`, and `.`."
+        }
+      ]
+    },
+    "flowchart-label-text": {
+      "comment": "Text contains no label delimiters or double quote. Stop before a directive or HTML tag so their shared rules read them; a directive inside the text does not start a keyword. flowchart.md#the-label-context: So a label ends at the first `]`, `)`, `}`, or `|` outside a string, and which closing unit the lexer reads depends on the character after it: `A[x])` reads `])`, which does not close a rectangle, and is rejected.",
+      "match": "(?:(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\[\\](){}|\"<#])+|<|#",
+      "name": "string.unquoted.mermaid"
+    },
+    "flowchart-click": {
+      "comment": "`click` and whitespace enter the click context, which reads ids up to the next whitespace, split at commas. A click id may contain quotes, brackets, and arrow characters; they are name text here. The click-id run stops before a directive; a directive after it lies in the following whitespace. flowchart.md#click-and-callbacks: In the callback arguments context, `)` is a `)` unit and leaves the context, and one or more other characters are a `callback-arguments` unit. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text.",
+      "match": "(click)({{requiredLineGap}})({{flowchart-click-ids}})({{requiredLineGap}})",
+      "captures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "patterns": [
+            {
+              "include": "#flowchart-id-list"
+            },
+            {
+              "match": "{{flowchart-list-name}}",
+              "name": "variable.mermaid",
+              "comment": "A click-id is the maximal run before whitespace or a comma. flowchart.md#click-and-callbacks: In the callback arguments context, `)` is a `)` unit and leaves the context, and one or more other characters are a `callback-arguments` unit."
+            }
+          ]
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      }
+    },
+    "flowchart-number": {
+      "comment": "Read a numeric linkStyle index. flowchart.md#the-statement-context: One or more ASCII digits: a `number` unit.",
+      "match": "{{flowchart-number}}",
+      "name": "constant.numeric.mermaid"
+    },
+    "flowchart-slanted-text": {
+      "comment": "A slash or backslash not followed by the closer is one text unit; an ordinary run excludes brackets, parentheses, braces, slash and backslash. Quotes inside that run stay text, also after a directive (). flowchart.md#the-slanted-context: Rule 5 reads a `/` or `\\` as a text run of its own, so a unit can start at a `?` or `=`: `A[/a/?]` is a trapezoid with the label `a/`, while `A[/a?]` is rejected, because the text run `a?` takes the `?`. flowchart.md#directives-inside-units: A directive in whitespace that a unit reads at its start or its end changes nothing: in `A --> %%{init: {}}%% B`, the directive lies in the whitespace of the arrow unit.",
+      "patterns": [
+        {
+          "include": "#flowchart-slanted-slash"
+        },
+        {
+          "begin": "(?!{{directiveStart}}|{{separatorCommentEnd}})(?={{flowchart-slanted-text-character}})",
+          "end": "(?!{{flowchart-slanted-text-character}})|{{lineValueEnd}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#flowchart-slanted-html-tag"
+            },
+            {
+              "include": "#entity"
+            }
+          ],
+          "comment": "An ordinary text run includes quotes and entities, including at its start; only a quote at a unit start enters a string. flowchart.md#the-slanted-context: Rule 5 reads a `/` or `\\` as a text run of its own, so a unit can start at a `?` or `=`: `A[/a/?]` is a trapezoid with the label `a/`, while `A[/a?]` is rejected, because the text run `a?` takes the `?`."
+        }
+      ]
+    },
+    "flowchart-subgraph-name": {
+      "comment": "A subgraph name consists of text name pieces; a quote inside an id run remains name text, including after a directive inside that run. Stop before an empty description block, which starts a statement of the body. flowchart.md#subgraphs: The name is a label of its own: it is a string, a markdown string, or a name piece, followed by any further name pieces; its kind is `string`, `markdown`, or `text` as for a label, and its value is defined as for a label. flowchart.md#empty-description-blocks-before-a-separator: Each is a description block statement without text, a statement of its own after that statement, and changes nothing.",
+      "begin": "(?!{{separatorCommentEnd}}|{{directiveStart}}|{{flowchart-subgraph-description-start}})(?=[^;\\r\\n\\[\"])",
+      "end": "(?=[;\\r\\n\\[]|{{flowchart-subgraph-description-start}})|{{lineValueEnd}}",
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#entity",
+          "comment": "Each entity is one placeholder in converted text. flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+        }
+      ]
+    },
+    "flowchart-slanted-slash": {
+      "match": "[/\\\\](?!{{directives}}\\])",
+      "name": "string.unquoted.mermaid",
+      "comment": "Slash or backslash not followed by the closer is one text unit, also in . flowchart.md#the-slanted-context: Rule 5 reads a `/` or `\\` as a text run of its own, so a unit can start at a `?` or `=`: `A[/a/?]` is a trapezoid with the label `a/`, while `A[/a?]` is rejected, because the text run `a?` takes the `?`. agentflow.md#shared-units-and-ordered-contexts: Reuse the statement context in its existing order, the header context, Unicode-letter ranges, strings and markdown strings, shape/property delimiters, data and double-quoted data contexts, callback-name and callback-argument contexts, and accessibility contexts."
+    },
+    "flowchart-link-selector": {
+      "comment": "A link style selects default or numeric link indices separated by commas. Directives between complete numbers and commas keep their own scopes. flowchart.md#style-class-and-link-style-statements: In the tree, a style is its written text, which starts right after the `,` before it, with the whitespace there, and ends at its last character that is not whitespace: `style A fill:#f00 ,  stroke:#333 ` has the styles `fill:#f00` and `stroke:#333` after two spaces, and a style that is all whitespace is null (see [ast/flowchart.md](../ast/flowchart.md#flowchartstylestatement)).",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#flowchart-number"
+        },
+        {
+          "match": "(default)|(,)",
+          "captures": {
+            "1": {
+              "name": "constant.language.mermaid"
+            },
+            "2": {
+              "name": "punctuation.separator.comma.mermaid"
+            }
+          },
+          "comment": "A link style selects default or number units separated by commas. flowchart.md#style-class-and-link-style-statements: In the tree, a style is its written text, which starts right after the `,` before it, with the whitespace there, and ends at its last character that is not whitespace: `style A fill:#f00 ,  stroke:#333 ` has the styles `fill:#f00` and `stroke:#333` after two spaces, and a style that is all whitespace is null (see [ast/flowchart.md](../ast/flowchart.md#flowchartstylestatement))."
+        }
+      ]
+    },
+    "flowchart-style": {
+      "comment": "`style` space id space styles applies styles to a vertex. The id is a name and the styles are text, so keyword-like words inside them are not statement keywords. Directives may separate complete units or occur in their surrounding whitespace; gap captures include the shared directive rule. flowchart.md#style-class-and-link-style-statements: In the tree, a style is its written text, which starts right after the `,` before it, with the whitespace there, and ends at its last character that is not whitespace: `style A fill:#f00 ,  stroke:#333 ` has the styles `fill:#f00` and `stroke:#333` after two spaces, and a style that is all whitespace is null (see [ast/flowchart.md](../ast/flowchart.md#flowchartstylestatement)). flowchart.md#directives-inside-units: A directive in whitespace that a unit reads at its start or its end changes nothing: in `A --> %%{init: {}}%% B`, the directive lies in the whitespace of the arrow unit.",
+      "begin": "(style){{wordEnd}}({{requiredLineGap}})({{flowchart-field}})({{requiredLineGap}})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "variable.mermaid",
+          "patterns": [
+            {
+              "include": "#entity",
+              "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+            }
+          ]
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "{{flowchart-statement-end}}",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#entity",
+          "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+        },
+        {
+          "include": "#flowchart-styles"
+        }
+      ]
+    },
+    "flowchart-classdef": {
+      "comment": "`classDef` space id-list space styles defines classes. Each comma-delimited name belongs to the id list; styles continue to the statement separator. Directives may separate complete units or occur in their surrounding whitespace; gap captures include the shared directive rule. flowchart.md#style-class-and-link-style-statements: In the tree, a style is its written text, which starts right after the `,` before it, with the whitespace there, and ends at its last character that is not whitespace: `style A fill:#f00 ,  stroke:#333 ` has the styles `fill:#f00` and `stroke:#333` after two spaces, and a style that is all whitespace is null (see [ast/flowchart.md](../ast/flowchart.md#flowchartstylestatement)). flowchart.md#directives-inside-units: A directive in whitespace that a unit reads at its start or its end changes nothing: in `A --> %%{init: {}}%% B`, the directive lies in the whitespace of the arrow unit.",
+      "begin": "(classDef){{flowchart-class-arguments}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "patterns": [
+            {
+              "include": "#flowchart-id-list"
+            },
+            {
+              "match": "{{flowchart-list-name}}",
+              "name": "variable.mermaid",
+              "comment": "Each id-list part is a name; commas are separate units. flowchart.md#style-class-and-link-style-statements: In the tree, a style is its written text, which starts right after the `,` before it, with the whitespace there, and ends at its last character that is not whitespace: `style A fill:#f00 ,  stroke:#333 ` has the styles `fill:#f00` and `stroke:#333` after two spaces, and a style that is all whitespace is null (see [ast/flowchart.md](../ast/flowchart.md#flowchartstylestatement))."
+            }
+          ]
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "{{flowchart-statement-end}}",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#entity",
+          "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+        },
+        {
+          "include": "#flowchart-classdef-styles"
+        }
+      ]
+    },
+    "flowchart-class": {
+      "comment": "`class` space id-list space id assigns a class. The last id is one class name even when it contains a comma. Directives may separate complete units or occur in their surrounding whitespace; gap captures include the shared directive rule. flowchart.md#style-class-and-link-style-statements: In the tree, a style is its written text, which starts right after the `,` before it, with the whitespace there, and ends at its last character that is not whitespace: `style A fill:#f00 ,  stroke:#333 ` has the styles `fill:#f00` and `stroke:#333` after two spaces, and a style that is all whitespace is null (see [ast/flowchart.md](../ast/flowchart.md#flowchartstylestatement)). flowchart.md#directives-inside-units: A directive in whitespace that a unit reads at its start or its end changes nothing: in `A --> %%{init: {}}%% B`, the directive lies in the whitespace of the arrow unit.",
+      "match": "(class){{flowchart-class-arguments}}({{flowchart-field}})",
+      "captures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "patterns": [
+            {
+              "include": "#flowchart-id-list"
+            },
+            {
+              "match": "{{flowchart-list-name}}",
+              "name": "variable.mermaid",
+              "comment": "Each id-list part is a name; commas are separate units. flowchart.md#style-class-and-link-style-statements: In the tree, a style is its written text, which starts right after the `,` before it, with the whitespace there, and ends at its last character that is not whitespace: `style A fill:#f00 ,  stroke:#333 ` has the styles `fill:#f00` and `stroke:#333` after two spaces, and a style that is all whitespace is null (see [ast/flowchart.md](../ast/flowchart.md#flowchartstylestatement))."
+            }
+          ]
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "5": {
+          "name": "variable.mermaid",
+          "patterns": [
+            {
+              "include": "#entity",
+              "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+            }
+          ]
+        }
+      }
+    },
+    "flowchart-linkstyle": {
+      "comment": "`linkStyle` selects `default` or a comma-separated list of number units, then optionally `interpolate` and a name, and styles. Directives may separate complete units or occur in their surrounding whitespace; gap captures include the shared directive rule. flowchart.md#style-class-and-link-style-statements: In the tree, a style is its written text, which starts right after the `,` before it, with the whitespace there, and ends at its last character that is not whitespace: `style A fill:#f00 ,  stroke:#333 ` has the styles `fill:#f00` and `stroke:#333` after two spaces, and a style that is all whitespace is null (see [ast/flowchart.md](../ast/flowchart.md#flowchartstylestatement)). flowchart.md#directives-inside-units: A directive in whitespace that a unit reads at its start or its end changes nothing: in `A --> %%{init: {}}%% B`, the directive lies in the whitespace of the arrow unit.",
+      "begin": "(linkStyle){{wordEnd}}({{requiredLineGap}})(default|{{flowchart-link-indices}})({{requiredLineGap}})(?:(interpolate){{wordEnd}}({{requiredLineGap}})({{flowchart-field}})({{lineGap}}))?",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "patterns": [
+            {
+              "include": "#flowchart-link-selector"
+            }
+          ]
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "5": {
+          "name": "keyword.control.mermaid"
+        },
+        "6": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "7": {
+          "name": "variable.mermaid",
+          "patterns": [
+            {
+              "include": "#entity",
+              "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+            }
+          ]
+        },
+        "8": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "{{flowchart-statement-end}}",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#entity",
+          "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+        },
+        {
+          "include": "#flowchart-styles"
+        }
+      ]
+    },
+    "flowchart-edge-id": {
+      "comment": "Rule 15 reads an edge id through the last `@` before whitespace or quote when that `@` is followed by a character other than `{` or quote. flowchart.md#the-statement-context: An id run: one or more characters, as many as possible, each of which is an ASCII letter or digit, one of `!` `\"` `#` `$` `%` `&` `'` `*` `+` `.` `` ` `` `?` `\\` `_` `/`, or a `-` followed by a character other than `>`, `-`, and `.`.",
+      "match": "({{flowchart-edge-id}}){{flowchart-edge-id-suffix}}",
+      "captures": {
+        "1": {
+          "name": "variable.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "punctuation.separator.edge.mermaid"
+        }
+      }
+    },
+    "flowchart-class-suffix": {
+      "comment": "A vertex may have `:::` id after its shape and before data; that id names a class, not a keyword. Directives may separate complete units or occur in their surrounding whitespace; gap captures include the shared directive rule. flowchart.md#vertex-statements: A vertex statement is a chain of vertex groups joined by links. flowchart.md#directives-inside-units: A directive in whitespace that a unit reads at its start or its end changes nothing: in `A --> %%{init: {}}%% B`, the directive lies in the whitespace of the arrow unit.",
+      "match": "(:::)({{lineGap}})({{flowchart-class-name}})",
+      "captures": {
+        "1": {
+          "name": "punctuation.separator.class.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "variable.mermaid",
+          "patterns": [
+            {
+              "include": "#entity",
+              "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+            }
+          ]
+        }
+      }
+    },
+    "flowchart-html-tag": {
+      "comment": "Changes only attribute quotes; this context still ends at its closer, including inside a quoted attribute value. Directives are read whole. The attribute part ends at the first >. Read a directive whole; one containing > ends the tag after that directive. flowchart.md#the-label-context: So a label ends at the first `]`, `)`, `}`, or `|` outside a string, and which closing unit the lexer reads depends on the character after it: `A[x])` reads `])`, which does not close a rectangle, and is rejected. common.md#html-attribute-quotes: The attribute part may span lines, and it ends at the first `>`. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text.",
+      "begin": "{{htmlTagStart}}",
+      "end": "{{htmlTagEnd}}|(?=\"|{{flowchart-label-closer}})|{{separatorCommentEnd}}",
+      "endCaptures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "A converted attribute quote does not protect this context’s closer; a directive is read whole. flowchart.md#the-label-context: So a label ends at the first `]`, `)`, `}`, or `|` outside a string, and which closing unit the lexer reads depends on the character after it: `A[x])` reads `])`, which does not close a rectangle, and is rejected.",
+          "begin": "{{htmlQuotedValueStart}}",
+          "end": "\"|(?={{flowchart-label-closer}})|{{separatorCommentEnd}}|(?={{htmlTagEnd}})",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      ],
+      "name": "string.unquoted.mermaid"
+    },
+    "flowchart-data-string": {
+      "comment": "In the data string context a quote leaves the context; other characters are data text, with no escape rule. flowchart.md#data-blocks: So a data block ends at the first `}` outside a quoted string, and `^` is rejected outside a quoted string.",
+      "begin": "{{flowchart-string-quote}}",
+      "end": "{{flowchart-string-quote}}",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.mermaid"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#flowchart-data-string-text"
+        }
+      ]
+    },
+    "flowchart-ellipse-html-tag": {
+      "comment": "Changes only attribute quotes; this context still ends at its closer, including inside a quoted attribute value. Directives are read whole. The attribute part ends at the first >. Read a directive whole; one containing > ends the tag after that directive. flowchart.md#the-ellipse-context: `-`, `/`, or `)`, followed by `)`: an `ellipse-end` unit; leaves the context. common.md#html-attribute-quotes: The attribute part may span lines, and it ends at the first `>`. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text.",
+      "begin": "{{htmlTagStart}}",
+      "end": "{{htmlTagEnd}}|(?=\"|{{flowchart-ellipse-end}})|{{separatorCommentEnd}}",
+      "endCaptures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "A converted attribute quote does not protect this context’s closer; a directive is read whole. flowchart.md#the-ellipse-context: `-`, `/`, or `)`, followed by `)`: an `ellipse-end` unit; leaves the context.",
+          "begin": "{{htmlQuotedValueStart}}",
+          "end": "\"|(?={{flowchart-ellipse-end}})|{{separatorCommentEnd}}|(?={{htmlTagEnd}})",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      ]
+    },
+    "flowchart-dash-html-tag": {
+      "comment": "Changes only attribute quotes; this context still ends at its closer, including inside a quoted attribute value. Directives are read whole. The attribute part ends at the first >. Read a directive whole; one containing > ends the tag after that directive. flowchart.md#the-link-text-contexts: An opening arrow enters the link text context of its kind: dash, thick, or dotted. common.md#html-attribute-quotes: The attribute part may span lines, and it ends at the first `>`. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text.",
+      "begin": "{{htmlTagStart}}",
+      "end": "{{htmlTagEnd}}|(?=\"|{{flowchart-dash-arrow}})|{{separatorCommentEnd}}",
+      "endCaptures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "A converted attribute quote does not protect this context’s closer; a directive is read whole. flowchart.md#the-link-text-contexts: An opening arrow enters the link text context of its kind: dash, thick, or dotted.",
+          "begin": "{{htmlQuotedValueStart}}",
+          "end": "\"|(?={{flowchart-dash-arrow}})|{{separatorCommentEnd}}|(?={{htmlTagEnd}})",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      ]
+    },
+    "flowchart-dotted-html-tag": {
+      "comment": "Changes only attribute quotes; this context still ends at its closer, including inside a quoted attribute value. Directives are read whole. The attribute part ends at the first >. Read a directive whole; one containing > ends the tag after that directive. flowchart.md#the-link-text-contexts: An opening arrow enters the link text context of its kind: dash, thick, or dotted. common.md#html-attribute-quotes: The attribute part may span lines, and it ends at the first `>`. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text.",
+      "begin": "{{htmlTagStart}}",
+      "end": "{{htmlTagEnd}}|(?=\"|{{flowchart-dotted-arrow}})|{{separatorCommentEnd}}",
+      "endCaptures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "A converted attribute quote does not protect this context’s closer; a directive is read whole. flowchart.md#the-link-text-contexts: An opening arrow enters the link text context of its kind: dash, thick, or dotted.",
+          "begin": "{{htmlQuotedValueStart}}",
+          "end": "\"|(?={{flowchart-dotted-arrow}})|{{separatorCommentEnd}}|(?={{htmlTagEnd}})",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      ]
+    },
+    "flowchart-style-separators": {
+      "comment": "Colons and hash units belong to a style, and commas separate styles. A comma right after a backslash in classDef is still a comma unit, though the tree keeps it in one style. flowchart.md#style-class-and-link-style-statements: In the tree, a style is its written text, which starts right after the `,` before it, with the whitespace there, and ends at its last character that is not whitespace: `style A fill:#f00 ,  stroke:#333 ` has the styles `fill:#f00` and `stroke:#333` after two spaces, and a style that is all whitespace is null (see [ast/flowchart.md](../ast/flowchart.md#flowchartstylestatement)).",
+      "match": "(:)|(,)|(#)",
+      "captures": {
+        "1": {
+          "name": "punctuation.separator.colon.mermaid"
+        },
+        "2": {
+          "name": "punctuation.separator.comma.mermaid"
+        },
+        "3": {
+          "name": "punctuation.separator.id.mermaid"
+        }
+      }
+    },
+    "flowchart-style-id": {
+      "comment": "An id run takes its maximal ASCII letters, digits, and admitted punctuation, or a hyphen not followed by `>`, `-`, or dot; digits inside it are not separate number units. These units, including the word `style`, are style text. flowchart.md#the-statement-context: An id run: one or more characters, as many as possible, each of which is an ASCII letter or digit, one of `!` `\"` `#` `$` `%` `&` `'` `*` `+` `.` `` ` `` `?` `\\` `_` `/`, or a `-` followed by a character other than `>`, `-`, and `.`. flowchart.md#style-class-and-link-style-statements: In the tree, a style is its written text, which starts right after the `,` before it, with the whitespace there, and ends at its last character that is not whitespace: `style A fill:#f00 ,  stroke:#333 ` has the styles `fill:#f00` and `stroke:#333` after two spaces, and a style that is all whitespace is null (see [ast/flowchart.md](../ast/flowchart.md#flowchartstylestatement)).",
+      "begin": "{{flowchart-id-run-start}}",
+      "end": "{{flowchart-id-end}}",
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#flowchart-id-run"
+        }
+      ]
+    },
+    "flowchart-style-whitespace": {
+      "comment": "Spaces are allowed in a style, and a style consisting only of whitespace has no value. flowchart.md#style-class-and-link-style-statements: In the tree, a style is its written text, which starts right after the `,` before it, with the whitespace there, and ends at its last character that is not whitespace: `style A fill:#f00 ,  stroke:#333 ` has the styles `fill:#f00` and `stroke:#333` after two spaces, and a style that is all whitespace is null (see [ast/flowchart.md](../ast/flowchart.md#flowchartstylestatement)).",
+      "match": "(?:(?!{{separatorCommentEnd}})[{{lws}}])+",
+      "name": "string.unquoted.mermaid"
+    },
+    "flowchart-plain-string-text": {
+      "comment": "In the string context, a quote followed by a backtick enters the markdown string context; a quote alone leaves it; other characters are content. The value stops before a separator-led common comment; the enclosing context retains its closer after the comment. flowchart.md#strings: The whole string, from the opening `\"` to its closing `\"`, is one unit. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "begin": "{{flowchart-quoted-text-start}}",
+      "end": "{{flowchart-quoted-text-end}}",
+      "contentName": "string.quoted.double.mermaid",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#html-tag"
+        },
+        {
+          "include": "#entity",
+          "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+        },
+        {
+          "include": "#flowchart-markdown-string"
+        }
+      ]
+    },
+    "flowchart-markdown-string-text": {
+      "comment": "In the markdown string context, a backtick followed by a quote leaves it; a quote followed by a backtick enters another markdown string context; a quote enters the string context. A directive between quote and backquote lies inside the string, at either delimiter. The value stops before a separator-led common comment; the enclosing context retains its closer after the comment. flowchart.md#strings: The whole string, from the opening `\"` to its closing `\"`, is one unit. flowchart.md#directives-inside-units: A directive in whitespace that a unit reads at its start or its end changes nothing: in `A --> %%{init: {}}%% B`, the directive lies in the whitespace of the arrow unit. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "begin": "(?!{{markdownStringEnd}}|\"|{{separatorCommentEnd}})(?=.)",
+      "end": "(?={{markdownStringEnd}}|\")|{{separatorCommentEnd}}",
+      "contentName": "string.quoted.other.markdown.mermaid",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#markdown-html-tag"
+        },
+        {
+          "include": "#entity",
+          "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+        },
+        {
+          "include": "#flowchart-markdown-string"
+        },
+        {
+          "include": "#flowchart-plain-string"
+        }
+      ]
+    },
+    "flowchart-data-string-text": {
+      "comment": "In the data string context a quote leaves the context; other characters are data text, with no escape rule. The value stops before a separator-led common comment; the enclosing context retains its closer after the comment. flowchart.md#data-blocks: So a data block ends at the first `}` outside a quoted string, and `^` is rejected outside a quoted string. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "begin": "{{flowchart-quoted-text-start}}",
+      "end": "{{flowchart-quoted-text-end}}",
+      "contentName": "string.quoted.double.mermaid",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#html-tag"
+        },
+        {
+          "include": "#entity"
+        }
+      ]
+    },
+    "flowchart-acc-descr-block-text": {
+      "comment": "Rule 3: `accDescr`, whitespace, `{`, and whitespace enter the description block context. the first `}` closes the block, and the closer may be absent at the end of text. Directives may separate complete units or occur in their surrounding whitespace; gap captures include the shared directive rule. Retain this local context: keeps inline percent pairs, reads leading value whitespace with the delimiter and allows a block without its closer at end of text. The value stops before a separator-led common comment; the enclosing context retains its closer after the comment. flowchart.md#the-statement-context: An id run: one or more characters, as many as possible, each of which is an ASCII letter or digit, one of `!` `\"` `#` `$` `%` `&` `'` `*` `+` `.` `` ` `` `?` `\\` `_` `/`, or a `-` followed by a character other than `>`, `-`, and `.`. flowchart.md#accessibility-values: In the description block context, `}` is a `}` unit and leaves the context, and one or more other characters are a `description-block-text` unit. flowchart.md#directives-inside-units: A directive in whitespace that a unit reads at its start or its end changes nothing: in `A --> %%{init: {}}%% B`, the directive lies in the whitespace of the arrow unit. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "begin": "(?!\\}|{{separatorCommentEnd}})(?=.)",
+      "end": "(?=\\})|{{separatorCommentEnd}}",
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#entity",
+          "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+        }
+      ]
+    },
+    "flowchart-accessibility-line-text": {
+      "comment": "Rules 1 and 2: `accTitle` or `accDescr`, whitespace, `:`, and whitespace enter the title or description context. the rest of the line, including semicolons and hash signs, is text. A common comment after a line or paragraph separator ends the value before that separator; inline percent pairs remain text. Directives may separate complete units or occur in their surrounding whitespace; gap captures include the shared directive rule. Retain this local context: keeps inline percent pairs, reads leading value whitespace with the delimiter and allows a block without its closer at end of text. The value stops before a separator-led common comment; the enclosing context retains its closer after the comment. flowchart.md#the-statement-context: An id run: one or more characters, as many as possible, each of which is an ASCII letter or digit, one of `!` `\"` `#` `$` `%` `&` `'` `*` `+` `.` `` ` `` `?` `\\` `_` `/`, or a `-` followed by a character other than `>`, `-`, and `.`. flowchart.md#accessibility-values: In the description block context, `}` is a `}` unit and leaves the context, and one or more other characters are a `description-block-text` unit. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in. flowchart.md#directives-inside-units: A directive in whitespace that a unit reads at its start or its end changes nothing: in `A --> %%{init: {}}%% B`, the directive lies in the whitespace of the arrow unit.",
+      "begin": "(?!{{lineValueEnd}})(?=.)",
+      "end": "{{lineValueEnd}}",
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#entity",
+          "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+        }
+      ]
+    },
+    "flowchart-data-text": {
+      "comment": "`@{` enters the data context. A quote enters the data string context, whose next quote leaves it. The first `}` outside a data string leaves the data context; the content is data text. The value stops before a separator-led common comment; the enclosing context retains its closer after the comment. flowchart.md#data-blocks: So a data block ends at the first `}` outside a quoted string, and `^` is rejected outside a quoted string. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "begin": "(?!\\}|\"|{{separatorCommentEnd}})(?=.)",
+      "end": "(?=\\}|\")|{{separatorCommentEnd}}",
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#flowchart-data-html-tag"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#entity",
+          "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+        },
+        {
+          "include": "#flowchart-data-string",
+          "comment": "In the data string context a quote leaves the context; other characters are data text, with no escape rule. flowchart.md#data-blocks: So a data block ends at the first `}` outside a quoted string, and `^` is rejected outside a quoted string."
+        }
+      ]
+    },
+    "flowchart-ellipse-text": {
+      "comment": "`(-` enters the ellipse context. `-`, `/`, or `)` followed by `)` closes it; a string starts at a quote, and each other allowed character is label text. The value stops before a separator-led common comment; the enclosing context retains its closer after the comment. flowchart.md#the-ellipse-context: `-`, `/`, or `)`, followed by `)`: an `ellipse-end` unit; leaves the context. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "begin": "(?!{{flowchart-ellipse-end}}|\"|{{separatorCommentEnd}})(?=.)",
+      "end": "(?={{flowchart-ellipse-end}}|\")|{{separatorCommentEnd}}",
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#flowchart-ellipse-html-tag"
+        },
+        {
+          "include": "#entity",
+          "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+        },
+        {
+          "include": "#flowchart-string"
+        }
+      ]
+    },
+    "flowchart-callback-name": {
+      "comment": "In the callback name context one or more characters other than `(` are a callback-name unit; even closing parentheses belong to its text. flowchart.md#click-and-callbacks: In the callback arguments context, `)` is a `)` unit and leaves the context, and one or more other characters are a `callback-arguments` unit.",
+      "begin": "{{flowchart-callback-name-begin}}",
+      "end": "{{flowchart-callback-name-end}}",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#flowchart-callback-name-text"
+        }
+      ]
+    },
+    "flowchart-callback-name-text": {
+      "comment": "Read the callback name before its opening argument parenthesis. flowchart.md#click-and-callbacks: One or more characters other than `(`: a `callback-name` unit.",
+      "begin": "(?!\\(|{{separatorCommentEnd}})(?=.)",
+      "end": "(?=\\()|{{separatorCommentEnd}}",
+      "contentName": "entity.name.function.mermaid",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#entity",
+          "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+        }
+      ]
+    },
+    "flowchart-callback-arguments": {
+      "comment": "In the callback arguments context `)` leaves the context, and every other character is callback arguments; an empty pair of parentheses is also read. flowchart.md#click-and-callbacks: In the callback arguments context, `)` is a `)` unit and leaves the context, and one or more other characters are a `callback-arguments` unit.",
+      "begin": "{{flowchart-callback-arguments-begin}}",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.section.arguments.begin.mermaid"
+        }
+      },
+      "end": "{{flowchart-callback-arguments-end}}",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.section.arguments.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#flowchart-callback-arguments-text"
+        }
+      ]
+    },
+    "flowchart-callback-arguments-text": {
+      "comment": "In the callback arguments context `)` leaves the context, and every other character is callback arguments; an empty pair of parentheses is also read. The value stops before a separator-led common comment; the enclosing context retains its closer after the comment. flowchart.md#click-and-callbacks: In the callback arguments context, `)` is a `)` unit and leaves the context, and one or more other characters are a `callback-arguments` unit. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "begin": "(?!\\)|{{separatorCommentEnd}})(?=.)",
+      "end": "(?=\\))|{{separatorCommentEnd}}",
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#entity",
+          "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+        }
+      ]
+    },
+    "flowchart-dash-link-content": {
+      "comment": "An opening dash arrow enters its link text context. A closed arrow of the same kind, including its surrounding whitespace, leaves it; a string can start at a quote, and the other characters are link text. The closing arrow is tried first, so its head letter belongs to the arrow. The value stops before a separator-led common comment; the enclosing context retains its closer after the comment. flowchart.md#the-link-text-contexts: An opening arrow enters the link text context of its kind: dash, thick, or dotted. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "begin": "(?!{{flowchart-link-gap}}{{flowchart-dash-arrow}}|\"|{{separatorCommentEnd}})(?=.)",
+      "end": "(?={{flowchart-link-gap}}{{flowchart-dash-arrow}}|\")|{{separatorCommentEnd}}",
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#flowchart-dash-html-tag"
+        },
+        {
+          "include": "#entity",
+          "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+        },
+        {
+          "include": "#flowchart-string"
+        }
+      ]
+    },
+    "flowchart-thick-link-content": {
+      "comment": "An opening thick arrow enters its link text context. A closed arrow of the same kind, including its surrounding whitespace, leaves it; a string can start at a quote, and the other characters are link text. The closing arrow is tried first, so its head letter belongs to the arrow. The value stops before a separator-led common comment; the enclosing context retains its closer after the comment. flowchart.md#the-link-text-contexts: An opening arrow enters the link text context of its kind: dash, thick, or dotted. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "begin": "(?!{{flowchart-link-gap}}{{flowchart-thick-arrow}}|\"|{{separatorCommentEnd}})(?=.)",
+      "end": "(?={{flowchart-link-gap}}{{flowchart-thick-arrow}}|\")|{{separatorCommentEnd}}",
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#entity",
+          "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+        },
+        {
+          "include": "#flowchart-string"
+        }
+      ]
+    },
+    "flowchart-dotted-link-content": {
+      "comment": "An opening dotted arrow enters its link text context. A closed arrow of the same kind, including its surrounding whitespace, leaves it; a string can start at a quote, and the other characters are link text. The closing arrow is tried first, so its head letter belongs to the arrow. The value stops before a separator-led common comment; the enclosing context retains its closer after the comment. flowchart.md#the-link-text-contexts: An opening arrow enters the link text context of its kind: dash, thick, or dotted. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "begin": "(?!{{flowchart-link-gap}}{{flowchart-dotted-arrow}}|\"|{{separatorCommentEnd}})(?=.)",
+      "end": "(?={{flowchart-link-gap}}{{flowchart-dotted-arrow}}|\")|{{separatorCommentEnd}}",
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#flowchart-dotted-html-tag"
+        },
+        {
+          "include": "#entity",
+          "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+        },
+        {
+          "include": "#flowchart-string"
+        }
+      ]
+    },
+    "flowchart-data-html-tag": {
+      "comment": "A quote outside an HTML attribute starts a data string. changes attribute quotes only; the data closer still ends the block inside a tag or quoted attribute value. The attribute part ends at the first >. Read a directive whole; one containing > ends the tag after that directive. flowchart.md#data-blocks: So a data block ends at the first `}` outside a quoted string, and `^` is rejected outside a quoted string. common.md#html-attribute-quotes: The attribute part may span lines, and it ends at the first `>`. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text.",
+      "begin": "{{htmlTagStart}}",
+      "end": "{{htmlTagEnd}}|(?=\"|\\})|{{separatorCommentEnd}}",
+      "endCaptures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "A converted attribute quote does not protect the closing data brace; directives are read whole. flowchart.md#data-blocks: So a data block ends at the first `}` outside a quoted string, and `^` is rejected outside a quoted string.",
+          "begin": "{{htmlQuotedValueStart}}",
+          "end": "\"|(?=\\})|{{separatorCommentEnd}}|(?={{htmlTagEnd}})",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      ]
+    },
+    "flowchart-slanted-html-tag": {
+      "comment": "Converts attribute quotes to single quotes, including after a slash or backslash that starts a new text unit. A converted quote does not protect the slanted closer; the enclosing ordinary run continues after the tag. The attribute part ends at the first >. Read a directive whole; one containing > ends the tag after that directive. flowchart.md#the-slanted-context: Rule 5 reads a `/` or `\\` as a text run of its own, so a unit can start at a `?` or `=`: `A[/a/?]` is a trapezoid with the label `a/`, while `A[/a?]` is rejected, because the text run `a?` takes the `?`. common.md#html-attribute-quotes: The attribute part may span lines, and it ends at the first `>`. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text.",
+      "begin": "{{htmlTagStart}}",
+      "end": "{{htmlTagEnd}}|(?=\"|{{flowchart-slanted-shape-end}})|{{separatorCommentEnd}}",
+      "endCaptures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "A slash or backslash inside a converted HTML attribute leaves its closing quote as ordinary label text, while a slanted closer still ends the label. flowchart.md#the-slanted-context: Rule 5 reads a `/` or `\\` as a text run of its own, so a unit can start at a `?` or `=`: `A[/a/?]` is a trapezoid with the label `a/`, while `A[/a?]` is rejected, because the text run `a?` takes the `?`.",
+          "begin": "{{htmlQuotedValueStart}}",
+          "end": "\"|(?={{flowchart-slanted-shape-end}})|{{separatorCommentEnd}}|(?={{htmlTagEnd}})",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      ]
+    },
+    "flowchart-style-property": {
+      "comment": "Read a style property name and colon before its one complete value. flowchart.md#style-class-and-link-style-statements: In the tree, a style is its written text, which starts right after the `,` before it, with the whitespace there, and ends at its last character that is not whitespace: `style A fill:#f00 ,  stroke:#333 ` has the styles `fill:#f00` and `stroke:#333` after two spaces, and a style that is all whitespace is null (see [ast/flowchart.md](../ast/flowchart.md#flowchartstylestatement)).",
+      "begin": "({{flowchart-style-key}})(:)",
+      "beginCaptures": {
+        "1": {
+          "name": "support.type.property-name.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "punctuation.separator.colon.mermaid"
+        }
+      },
+      "end": "(?=,|;|{{flowchart-subgraph-description-start}})|{{lineValueEnd}}",
+      "contentName": "support.constant.property-value.mermaid",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#entity"
+        }
+      ]
+    },
+    "flowchart-classdef-style-property": {
+      "comment": "Read a style property name and colon before its one complete value. flowchart.md#style-class-and-link-style-statements: In the tree, a style is its written text, which starts right after the `,` before it, with the whitespace there, and ends at its last character that is not whitespace: `style A fill:#f00 ,  stroke:#333 ` has the styles `fill:#f00` and `stroke:#333` after two spaces, and a style that is all whitespace is null (see [ast/flowchart.md](../ast/flowchart.md#flowchartstylestatement)).",
+      "begin": "({{flowchart-style-key}})(:)",
+      "beginCaptures": {
+        "1": {
+          "name": "support.type.property-name.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "punctuation.separator.colon.mermaid"
+        }
+      },
+      "end": "(?=,|;|{{flowchart-subgraph-description-start}})|{{lineValueEnd}}",
+      "contentName": "support.constant.property-value.mermaid",
+      "patterns": [
+        {
+          "comment": "Keep a classDef comma immediately after a backslash in the same property value, including intervening directives. flowchart.md#style-class-and-link-style-statements: In a `classDef` statement, a `,` right after a `\\` in the diagram text does not separate two styles of the tree: the styles on its two sides, with the `,`, are one style.",
+          "match": "\\\\{{directives}},",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#entity"
+        }
+      ]
+    },
+    "flowchart-classdef-styles": {
+      "comment": "A style consists of number, id-run, colon, hash, space, or `style` units; commas divide styles. Keyword-like words in its text are not statement keywords. Empty description blocks before its separator are separate statements. flowchart.md#style-class-and-link-style-statements: In the tree, a style is its written text, which starts right after the `,` before it, with the whitespace there, and ends at its last character that is not whitespace: `style A fill:#f00 ,  stroke:#333 ` has the styles `fill:#f00` and `stroke:#333` after two spaces, and a style that is all whitespace is null (see [ast/flowchart.md](../ast/flowchart.md#flowchartstylestatement)).",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#entity",
+          "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+        },
+        {
+          "include": "#flowchart-acc-descr-block"
+        },
+        {
+          "include": "#flowchart-classdef-style-property"
+        },
+        {
+          "include": "#flowchart-style-separators"
+        },
+        {
+          "include": "#flowchart-style-id"
+        },
+        {
+          "include": "#flowchart-style-whitespace"
+        }
+      ]
+    },
+    "flowchart-label-entity": {
+      "comment": "Give an entity the surrounding label scope, keeping internal directives independent. common.md#entities: A directive right after the `#` or right before the `;` lies inside the entity, which is read in the text without its directives, and so do two directives right before the `;`.",
+      "match": "{{entity}}",
+      "name": "string.unquoted.mermaid",
+      "captures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#entity"
+            }
+          ]
+        }
+      }
+    },
+    "flowchart-name-entity": {
+      "comment": "Give an entity the surrounding name scope, keeping internal directives independent. common.md#entities: A directive right after the `#` or right before the `;` lies inside the entity, which is read in the text without its directives, and so do two directives right before the `;`.",
+      "match": "{{entity}}",
+      "name": "variable.mermaid",
+      "captures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#entity"
+            }
+          ]
+        }
+      }
+    },
+    "flowchart-heading-title": {
+      "comment": "Read the optional subgraph title between label delimiters. flowchart.md#subgraphs: A `space` before `[` is a `name-piece` of the grammar, though not part of the value of the name (see [FlowchartSubgraphStatement](../ast/flowchart.md#flowchartsubgraphstatement)), and nothing may follow the closing `]` but the separator: `subgraph S [t]` is accepted, and `subgraph S[t]` followed by a space and a line break is rejected.",
+      "begin": "(\\[)",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.definition.label.begin.mermaid"
+        }
+      },
+      "end": "(\\])",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.definition.label.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#flowchart-label-entity",
+          "comment": "Each entity is read as its placeholder (). flowchart.md#lexical-structure: This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source)."
+        },
+        {
+          "include": "#flowchart-html-tag"
+        },
+        {
+          "include": "#flowchart-string"
+        },
+        {
+          "include": "#flowchart-label-text"
+        }
+      ]
+    }
+  }
+}

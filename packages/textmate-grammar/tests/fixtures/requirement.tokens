@@ -1,0 +1,500 @@
+> requirementdiagram
+  "requirementdiagram" keyword.control.mermaid
+>   accTitle: An accessible title
+  "accTitle" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "An accessible title" string.unquoted.mermaid
+>   accDescr: A line description
+  "accDescr" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "A line description" string.unquoted.mermaid
+>   accDescr { A block with requirement and 123 }
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  " A block with requirement and 123 " string.unquoted.mermaid
+  "}" punctuation.definition.description.end.mermaid
+>   accDescr {}
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  "}" punctuation.definition.description.end.mermaid
+>   direction LR
+  "direction" keyword.control.mermaid
+  "LR" constant.language.mermaid
+>   requirement req:::hot {
+  "requirement" keyword.control.mermaid
+  "req" variable.mermaid
+  ":::" punctuation.separator.class.mermaid
+  "hot " variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>     id: 123
+  "id" storage.modifier.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "123" string.unquoted.mermaid
+>     text: A test with low risk and 456
+  "text" storage.modifier.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "A test with low risk and 456" string.unquoted.mermaid
+>     risk: low
+  "risk" storage.modifier.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "low" constant.language.mermaid
+>     risk: medium
+  "risk" storage.modifier.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "medium" constant.language.mermaid
+>     risk: high
+  "risk" storage.modifier.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "high" constant.language.mermaid
+>     verifyMethod: analysis
+  "verifyMethod" storage.modifier.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "analysis" constant.language.mermaid
+>     verifyMethod: demonstration
+  "verifyMethod" storage.modifier.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "demonstration" constant.language.mermaid
+>     verifyMethod: inspection
+  "verifyMethod" storage.modifier.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "inspection" constant.language.mermaid
+>     verifyMethod: test
+  "verifyMethod" storage.modifier.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "test" constant.language.mermaid
+>   }
+  "}" keyword.operator.block.end.mermaid
+>   functionalRequirement functional {
+  "functionalRequirement" keyword.control.mermaid
+  "functional " variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>   }
+  "}" keyword.operator.block.end.mermaid
+>   interfaceRequirement interface {
+  "interfaceRequirement" keyword.control.mermaid
+  "interface " variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>   }
+  "}" keyword.operator.block.end.mermaid
+>   performanceRequirement performance {
+  "performanceRequirement" keyword.control.mermaid
+  "performance " variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>   }
+  "}" keyword.operator.block.end.mermaid
+>   physicalRequirement physical {
+  "physicalRequirement" keyword.control.mermaid
+  "physical " variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>   }
+  "}" keyword.operator.block.end.mermaid
+>   designConstraint design {
+  "designConstraint" keyword.control.mermaid
+  "design " variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>   }
+  "}" keyword.operator.block.end.mermaid
+>   element elem {
+  "element" keyword.control.mermaid
+  "elem " variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>     type: software
+  "type" storage.modifier.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "software" entity.name.type.mermaid
+>     docref: "https://example.com/text"
+  "docref" storage.modifier.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "https://example.com/text" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+>   }
+  "}" keyword.operator.block.end.mermaid
+>   req - contains -> elem
+  "req " variable.mermaid
+  "-" keyword.operator.arrow.mermaid
+  "contains" keyword.operator.arrow.mermaid
+  "->" keyword.operator.arrow.mermaid
+  "elem" variable.mermaid
+>   req - copies -> elem
+  "req " variable.mermaid
+  "-" keyword.operator.arrow.mermaid
+  "copies" keyword.operator.arrow.mermaid
+  "->" keyword.operator.arrow.mermaid
+  "elem" variable.mermaid
+>   req - derives -> elem
+  "req " variable.mermaid
+  "-" keyword.operator.arrow.mermaid
+  "derives" keyword.operator.arrow.mermaid
+  "->" keyword.operator.arrow.mermaid
+  "elem" variable.mermaid
+>   req - satisfies -> elem
+  "req " variable.mermaid
+  "-" keyword.operator.arrow.mermaid
+  "satisfies" keyword.operator.arrow.mermaid
+  "->" keyword.operator.arrow.mermaid
+  "elem" variable.mermaid
+>   req - verifies -> elem
+  "req " variable.mermaid
+  "-" keyword.operator.arrow.mermaid
+  "verifies" keyword.operator.arrow.mermaid
+  "->" keyword.operator.arrow.mermaid
+  "elem" variable.mermaid
+>   req - refines -> elem
+  "req " variable.mermaid
+  "-" keyword.operator.arrow.mermaid
+  "refines" keyword.operator.arrow.mermaid
+  "->" keyword.operator.arrow.mermaid
+  "elem" variable.mermaid
+>   req <- traces - elem
+  "req " variable.mermaid
+  "<-" keyword.operator.arrow.mermaid
+  "traces" keyword.operator.arrow.mermaid
+  "-" keyword.operator.arrow.mermaid
+  "elem" variable.mermaid
+>   classDef hot fill:red,stroke:blue;
+  "classDef" keyword.control.mermaid
+  "hot" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" punctuation.separator.key-value.mermaid
+  "red" support.constant.property-value.mermaid
+  "," punctuation.separator.comma.mermaid
+  "stroke" support.type.property-name.mermaid
+  ":" punctuation.separator.key-value.mermaid
+  "blue;" support.constant.property-value.mermaid
+>   style req fill:red
+  "style" keyword.control.mermaid
+  "req" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" punctuation.separator.key-value.mermaid
+  "red" support.constant.property-value.mermaid
+>   class req hot
+  "class" keyword.control.mermaid
+  "req" variable.mermaid
+  "hot" variable.mermaid
+>   req:::hot
+  "req" variable.mermaid
+  ":::" punctuation.separator.class.mermaid
+  "hot" variable.mermaid
+>   tests - satisfies -> styleLong
+  "tests " variable.mermaid
+  "-" keyword.operator.arrow.mermaid
+  "satisfies" keyword.operator.arrow.mermaid
+  "->" keyword.operator.arrow.mermaid
+  "styleLong" variable.mermaid
+>   requirementLong - satisfies -> elem
+  "requirementLong " variable.mermaid
+  "-" keyword.operator.arrow.mermaid
+  "satisfies" keyword.operator.arrow.mermaid
+  "->" keyword.operator.arrow.mermaid
+  "elem" variable.mermaid
+>   accTitle: A%%{init: {}}%%B
+  "accTitle" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "A" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "B" string.unquoted.mermaid
+>   accDescr { A%%{init: {}}%%B }
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  " A" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "B " string.unquoted.mermaid
+  "}" punctuation.definition.description.end.mermaid
+>   requirement a%%{init: {}}%%b {
+  "requirement" keyword.control.mermaid
+  "a" variable.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" variable.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " variable.mermaid meta.directive.mermaid
+  "{}" variable.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "b " variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>     text: A%%{init: {}}%%B
+  "text" storage.modifier.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "A" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "B" string.unquoted.mermaid
+>   }
+  "}" keyword.operator.block.end.mermaid
+>   foo direction LRX
+  "  foo " comment.block.ignored.mermaid
+  "direction" keyword.control.mermaid
+  "LR" constant.language.mermaid
+  "X" comment.block.ignored.mermaid
+>   # a hash comment
+  "#" comment.line.number-sign.mermaid
+  " a hash comment" comment.line.number-sign.mermaid
+>   % a native comment
+  "%" comment.line.percentage.mermaid
+  " a native comment" comment.line.percentage.mermaid
+>   %%
+  "%%" comment.line.percentage.mermaid
+>   %% a common comment
+  "%% a common comment" comment.line.percentage.mermaid
+>   REQUIREMENT upper {
+  "REQUIREMENT" keyword.control.mermaid
+  "upper " variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>     RISK: HIGH
+  "RISK" storage.modifier.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "HIGH" constant.language.mermaid
+>   }
+  "}" keyword.operator.block.end.mermaid
+>   DIRECTION TB
+  "DIRECTION" keyword.control.mermaid
+  "TB" constant.language.mermaid
+>   direction BT
+  "direction" keyword.control.mermaid
+  "BT" constant.language.mermaid
+>   direction RL
+  "direction" keyword.control.mermaid
+  "RL" constant.language.mermaid
+>   accTitle: direction LR
+  "  accTitle: " comment.block.ignored.mermaid
+  "direction" keyword.control.mermaid
+  "LR" constant.language.mermaid
+>   accDescr { direction LR }
+  "  accDescr { " comment.block.ignored.mermaid
+  "direction" keyword.control.mermaid
+  "LR" constant.language.mermaid
+  " }" comment.block.ignored.mermaid
+> accTitle: direction LR
+  "accTitle" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "direction LR" string.unquoted.mermaid
+> accDescr { direction LR }
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  " direction LR " string.unquoted.mermaid
+  "}" punctuation.definition.description.end.mermaid
+>   accTitle%%{init: {}}%%: T
+  "accTitle" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "T" string.unquoted.mermaid
+>   accDescr%%{init: {}}%%: D
+  "accDescr" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "D" string.unquoted.mermaid
+>   accDescr%%{init: {}}%%{ B }
+  "accDescr" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  " B " string.unquoted.mermaid
+  "}" punctuation.definition.description.end.mermaid
+>   direction%%{init: {}}%% TB
+  "direction" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "TB" constant.language.mermaid
+>   requirement html {
+  "requirement" keyword.control.mermaid
+  "html " variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>     text: "<b title="x">y</b>"
+  "text" storage.modifier.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "<b title=\"x\">" string.quoted.double.mermaid
+  "y</b>" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+>   }
+  "}" keyword.operator.block.end.mermaid
+>   requirement tag {
+  "requirement" keyword.control.mermaid
+  "tag " variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>     text: "a<b" %% later >
+  "text" storage.modifier.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "<b" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "%%" comment.line.percentage.mermaid
+  " later >" comment.line.percentage.mermaid
+>   }
+  "}" keyword.operator.block.end.mermaid
+> foo%%{x: "direction TB"}%% direction LR
+  "foo" comment.block.ignored.mermaid
+  "%%{" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "x" comment.block.ignored.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" comment.block.ignored.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " comment.block.ignored.mermaid meta.directive.mermaid
+  "\"direction TB\"" comment.block.ignored.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  " " comment.block.ignored.mermaid
+  "direction" keyword.control.mermaid
+  "LR" constant.language.mermaid
+>   direction TB x direction LR
+  "direction" keyword.control.mermaid
+  "TB" constant.language.mermaid
+  " x direction LR" comment.block.ignored.mermaid
+>   direction BT x direction BT
+  "  direction BT x " comment.block.ignored.mermaid
+  "direction" keyword.control.mermaid
+  "BT" constant.language.mermaid
+>   test%%{wrap}%%_x - satisfies -> b
+  "test" variable.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "_x " variable.mermaid
+  "-" keyword.operator.arrow.mermaid
+  "satisfies" keyword.operator.arrow.mermaid
+  "->" keyword.operator.arrow.mermaid
+  "b" variable.mermaid
+>   style%%{wrap}%%Long - satisfies -> r
+  "style" variable.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "Long " variable.mermaid
+  "-" keyword.operator.arrow.mermaid
+  "satisfies" keyword.operator.arrow.mermaid
+  "->" keyword.operator.arrow.mermaid
+  "r" variable.mermaid
+>   classDef%%{wrap}%%Long - satisfies -> r
+  "classDef" variable.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "Long " variable.mermaid
+  "-" keyword.operator.arrow.mermaid
+  "satisfies" keyword.operator.arrow.mermaid
+  "->" keyword.operator.arrow.mermaid
+  "r" variable.mermaid
+>   class%%{wrap}%%Long - satisfies -> r
+  "class" variable.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "Long " variable.mermaid
+  "-" keyword.operator.arrow.mermaid
+  "satisfies" keyword.operator.arrow.mermaid
+  "->" keyword.operator.arrow.mermaid
+  "r" variable.mermaid
+> 
+>   class r a,b
+  "class" keyword.control.mermaid
+  "r" variable.mermaid
+  "a" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "b" variable.mermaid
+>   r:::a,b
+  "r" variable.mermaid
+  ":::" punctuation.separator.class.mermaid
+  "a" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "b" variable.mermaid
+>   style r fill:#amp;
+  "style" keyword.control.mermaid
+  "r" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" punctuation.separator.key-value.mermaid
+  "#amp;" support.constant.property-value.mermaid
+> 
+>   a - satisfies -> "b"%%%{wrap}%%% native split mark
+  "a " variable.mermaid
+  "-" keyword.operator.arrow.mermaid
+  "satisfies" keyword.operator.arrow.mermaid
+  "->" keyword.operator.arrow.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "b" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "%" comment.line.percentage.mermaid
+  "%%{" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.line.percentage.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "%" comment.line.percentage.mermaid
+  " native split mark" comment.line.percentage.mermaid
+> %%{wrap}%%accTitle: direction LR
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "accTitle" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "direction LR" string.unquoted.mermaid
+> 
+>   style r fill:#a%%{wrap}%%mp;
+  "style" keyword.control.mermaid
+  "r" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" punctuation.separator.key-value.mermaid
+  "#a" support.constant.property-value.mermaid
+  "%%{" support.constant.property-value.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" support.constant.property-value.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" support.constant.property-value.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "mp;" support.constant.property-value.mermaid
+>   "a" - satisfies -> "b"%%%{wrap}%% native single mark
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "-" keyword.operator.arrow.mermaid
+  "satisfies" keyword.operator.arrow.mermaid
+  "->" keyword.operator.arrow.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "b" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "%" comment.line.percentage.mermaid
+  "%%{" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.line.percentage.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  " native single mark" comment.line.percentage.mermaid
+>   foo%%{wrap}%%style - satisfies -> b
+  "foo" variable.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "style " variable.mermaid
+  "-" keyword.operator.arrow.mermaid
+  "satisfies" keyword.operator.arrow.mermaid
+  "->" keyword.operator.arrow.mermaid
+  "b" variable.mermaid
+> style req fill:#43a047
+  "style" keyword.control.mermaid
+  "req" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" punctuation.separator.key-value.mermaid
+  "#43a047" support.constant.property-value.mermaid
+> 

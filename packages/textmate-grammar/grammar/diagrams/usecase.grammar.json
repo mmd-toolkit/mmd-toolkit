@@ -1,0 +1,846 @@
+{
+  "patterns": [
+    {
+      "include": "#usecase"
+    }
+  ],
+  "repository": {
+    "usecase": {
+      "comment": "Detection.md entry 39 and exact lower-case `usecase-beta` ... followed by common whitespace or end of text. Header/body statements must be on separate physical lines. Whitespace, line terminators, directives, and comment regions before the first unit are trivia. usecase.md#detection: Select `usecase` for exact lower-case `usecase-beta` at the position reached in [detection.md](../detection.md) (entry 39), followed by common whitespace or end of text. Any following character outside that whitespace set prevents detection. The header unit can begin a longer spelling, but detection requires this boundary. A Unicode space may pass detection yet fail the usecase grammar. Header/body statements must be on separate physical lines.",
+      "begin": "{{diagramStart}}(usecase-beta)(?={{directives}}(?:[{{ws}}]|$))",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "comment": "Rule 4: diagram-comment: `%%` at an ASCII-space/tab-only physical-line start; up to but excluding LF. A bare %% or a non-directive %%{...} line after the header is a native comment. usecase.md#ordered-default-context-rules: **diagram-comment**: `%%` at an ASCII-space/tab-only physical-line start; up to but excluding LF.",
+          "begin": "^({{asciiGap}})(?={{nonDirectivePercentPair}})",
+          "end": "{{lineValueEnd}}",
+          "patterns": [
+            {
+              "comment": "A bare percent pair or nondirective percent-brace line after the header is a native comment through before LF. usecase.md#whitespace-comments-and-directives-in-every-context: Common comment regions are recognized in all contexts, including strings, metadata, JSON, and accessibility blocks. They can remove entire comment lines and preceding blank lines. Native comments are different: only default context recognizes a physical line whose prefix before %% contains ASCII spaces/tabs only. Its mark is %% and its value runs through the physical line, excluding LF; neither U+2028 nor U+2029 ends it. A bare %% or a non-directive %%{...} line after the header is a native comment. Native comments supply a comment line, not an inline statement suffix.",
+              "include": "#native-percent-comment"
+            }
+          ],
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "include": "#usecase-accessibility"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Rule 9: json-prefix is json, positive HWS, raw word id, HWS, @, HWS, with { next; enter JSON. Outside a double-quoted region, { increases depth and } decreases it; the first } returning depth to zero closes the unit. The json word, id and at sign are separate structural components; directives may lie in their HWS or between the id, at sign and opening brace. usecase.md#ordered-default-context-rules: **json-prefix**: json, positive HWS, raw word id, HWS, @, HWS, with { next; enter JSON.",
+          "begin": "(?:^|\\G)[ \\t]*(json)({{requiredAsciiGap}})({{usecase-id}})({{asciiGap}})(@)({{asciiGap}})(?=\\{)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "variable.mermaid"
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "5": {
+              "name": "keyword.operator.at.mermaid"
+            },
+            "6": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "(?<=\\})",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#usecase-object"
+            }
+          ]
+        },
+        {
+          "comment": "Class-def-statement = \"classDef\" id ( \",\" id )* styles line-end; style-statement = \"style\" id styles line-end; styles = style-declaration ( \",\" style-declaration )*. The styles are colored as a string. Directives can separate complete keywords, class names, ids and punctuation, and can occur in CSS value text. HWS is trivia except where a prefix expressly requires it; no HWS is required between the final id and its style declarations. The value ends before a separator-led common comment. usecase.md#grammar: These productions use [common notation](../common.md#notation) and the ordered units above. HWS is trivia except where a prefix rule or line-start condition expressly requires it. `id` means an exact identifier unit; `raw-json-id` is the positive ASCII word run inside the JSON prefix. Every unit must belong to the grammar; text left after a complete diagram rejects the input. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "begin": "(?:(classDef){{wordEnd}}({{requiredAsciiGap}})({{usecase-class-list}})|(style){{wordEnd}}({{requiredAsciiGap}})({{usecase-id}}))({{asciiGap}})",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#usecase-class-names"
+                }
+              ]
+            },
+            "4": {
+              "name": "keyword.control.mermaid"
+            },
+            "5": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "6": {
+              "name": "variable.mermaid"
+            },
+            "7": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "{{lineValueEnd}}",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read a CSS property word, hyphenated identifier, or markerless prefix and word. usecase.md#ordered-default-context-rules: Whitespace between a markerless dash prefix and its following CSS property-name word is ASCII HWS.",
+              "match": "(?:--{{asciiGap}})?[A-Za-z0-9_-]+(?={{asciiGap}}:)",
+              "captures": {
+                "0": {
+                  "name": "support.type.property-name.mermaid",
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "comment": "Read a CSS colon and its complete value, keeping escaped commas within the value. usecase.md#ordered-default-context-rules: **comma, colon**: One comma, then one colon.",
+              "begin": ":",
+              "beginCaptures": {
+                "0": {
+                  "name": "punctuation.separator.key-value.mermaid"
+                }
+              },
+              "end": "(?=(?<!\\\\),)|{{lineValueEnd}}",
+              "contentName": "support.constant.property-value.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                },
+                {
+                  "match": "\\\\{{directives}},",
+                  "comment": "Read an escaped comma inside the one property value. usecase.md#ordered-default-context-rules: **comma, colon**: One comma, then one colon.",
+                  "captures": {
+                    "0": {
+                      "patterns": [
+                        {
+                          "include": "#directive"
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "match": ",",
+              "name": "punctuation.separator.comma.mermaid",
+              "comment": "Read the separator between style declarations. usecase.md#ordered-default-context-rules: Whitespace between a markerless dash prefix and its following CSS property-name word is ASCII HWS."
+            }
+          ]
+        },
+        {
+          "comment": "Note-statement is note, for, id and node-label through line-end; Word keywords and booleans inside the label are text. Directives can stand between complete components. A separator-led comment ends the value. usecase.md#grammar: These productions use [common notation](../common.md#notation) and the ordered units above. HWS is trivia except where a prefix rule or line-start condition expressly requires it. `id` means an exact identifier unit; `raw-json-id` is the positive ASCII word run inside the JSON prefix. Every unit must belong to the grammar; text left after a complete diagram rejects the input. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "begin": "(note){{wordEnd}}({{asciiGap}})(for){{wordEnd}}({{asciiGap}})({{usecase-id}})({{asciiGap}})",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "keyword.control.mermaid"
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "5": {
+              "name": "variable.mermaid"
+            },
+            "6": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "{{lineValueEnd}}",
+          "patterns": [
+            {
+              "include": "#usecase-label"
+            }
+          ]
+        },
+        {
+          "comment": "A split-association has a markerless, backward, circle or cross opener, edge-label text, then the closing relationship operator. Word keywords and booleans in the label are text; complete arrows remain indivisible. usecase.md#grammar: These productions use [common notation](../common.md#notation) and the ordered units above. HWS is trivia except where a prefix rule or line-start condition expressly requires it. `id` means an exact identifier unit; `raw-json-id` is the positive ASCII word run inside the JSON prefix. Every unit must belong to the grammar; text left after a complete diagram rejects the input.",
+          "begin": "(<--|o--|x--|--)(?![-|>ox])(?=(?:(?!{{usecase-arrow}}|{{separatorCommentEnd}})(?:{{directive}}|{{entity}}|(?!{{directiveStart}}|{{entity}})[^()\\[\\]\"'\\r\\n]))+(?:{{usecase-arrow}}|{{separatorCommentEnd}}))",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.operator.arrow.mermaid"
+            }
+          },
+          "end": "(?={{usecase-arrow}})",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#usecase-label"
+            }
+          ]
+        },
+        {
+          "comment": "Rule 10: Keyword order is `usecase-beta`, `actor`, `systemBoundary`, `end`, `direction`, `TD`, `TB`, `BT`, `LR`, `RL`, `note`, `for`, `json`, `classDef`, `class`, `style`, `include`, `extend`, `true`, `false`. Only include/extend are case-insensitive. A longer Identifier wins over a keyword. The style declaration rule above owns classDef and style, so their spelling is not repeated here. usecase.md#ordered-default-context-rules: Keyword order is `usecase-beta`, `actor`, `systemBoundary`, `end`, `direction`, `TD`, `TB`, `BT`, `LR`, `RL`, `note`, `for`, `json`, `classDef`, `class`, `style`, `include`, `extend`, `true`, `false`. Only include/extend are case-insensitive. A longer Identifier wins over a keyword; a hyphen or non-ASCII suffix does not extend an ASCII word. Consequently `actorName` is an id, `actor-name` starts with actor and a dash, and `actor\"A\"` needs no space. The keyword's longer alternative is not a recursive longest-match search.",
+          "match": "(actor|systemBoundary|end|direction|note|for|json|class){{wordEnd}}",
+          "captures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          }
+        },
+        {
+          "match": "(?:TD|TB|BT|LR|RL){{wordEnd}}",
+          "name": "constant.language.mermaid",
+          "comment": "Read a listed layout direction. usecase.md#ordered-default-context-rules: A css-identifier is either two dashes followed by an ASCII letter/underscore and then ASCII word characters/dashes, or an ASCII letter/underscore followed by word characters and one or more hyphen-plus-positive-word groups. Earlier keyword and markerless rules still win: `--custom` is read as markerless and a word, and `actor-name` starts with actor, so it is not one CSS property unit. A property starting `my-actor` is one CSS unit."
+        },
+        {
+          "match": "(?i:include|extend){{wordEnd}}",
+          "name": "keyword.operator.arrow.mermaid",
+          "comment": "Read the semantic dependency relation. usecase.md#ordered-default-context-rules: A css-identifier is either two dashes followed by an ASCII letter/underscore and then ASCII word characters/dashes, or an ASCII letter/underscore followed by word characters and one or more hyphen-plus-positive-word groups. Earlier keyword and markerless rules still win: `--custom` is read as markerless and a word, and `actor-name` starts with actor, so it is not one CSS property unit. A property starting `my-actor` is one CSS unit."
+        },
+        {
+          "include": "#usecase-boolean"
+        },
+        {
+          "comment": "Rule 13: stereotype-open: <<; enter stereotype context. take all characters through immediately before the first `>>`, provided that text contains no physical line break and is not all common whitespace. Stereotype interiors are text; a closer inside a directive does not end the unit. usecase.md#ordered-default-context-rules: **stereotype-open**: <<; enter stereotype context.",
+          "begin": "(<<)",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.definition.stereotype.begin.mermaid"
+            }
+          },
+          "end": "(>>)",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.stereotype.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Stereotype text runs through before the first double angle closer. A separator-led comment ends the current value run while the stereotype context remains open. usecase.md#stereotype-context: Try `>>` first and return to default context. Otherwise take all characters through immediately before the first `>>`, provided that text contains no physical line break and is not all common whitespace. Then the closer is tried at its next position. On failure the unclosed-text fallback consumes a maximal non-LF run and leaves the context; the grammar rejects that fallback. Thus empty, whitespace-only, multiline, and unclosed stereotypes are rejected. U+2028/U+2029 can be text; nested `<<`, quotes, braces, punctuation, and backslashes are ordinary content. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+              "begin": "(?!{{separatorCommentEnd}})(?=.)",
+              "end": "(?=>>)|{{separatorCommentEnd}}",
+              "contentName": "storage.modifier.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "comment": "Rules 11, 12 and 15 to 21: generalization `--|>`, dependency-arrow `..>`, forward-solid (two or more dashes followed by >), backward-solid (< followed by two or more dashes), forward-circle `--o`, backward-circle `o--`, forward-cross `--x`, backward-cross `x--`, markerless-solid (two or more dashes). usecase.md#ordered-default-context-rules: **forward-solid**: Two or more dashes followed by >.",
+          "match": "{{usecase-arrow}}",
+          "name": "keyword.operator.arrow.mermaid"
+        },
+        {
+          "comment": "Rule 14: class-separator: `:::`. class-suffix = \":::\" id ( \",\" id )*. ASCII space/tab may stand between the units. Directives may separate the class marker, complete class names and commas. usecase.md#ordered-default-context-rules: Whitespace between a markerless dash prefix and its following CSS property-name word is ASCII HWS.",
+          "match": "(:::)({{asciiGap}})({{usecase-class-list}})",
+          "captures": {
+            "1": {
+              "name": "punctuation.separator.class.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#usecase-class-names"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "include": "#usecase-metadata"
+        },
+        {
+          "comment": "Rules 25 and 26: brackets [, then ]; parentheses (, then ). actor-name = id ( \"(\" node-label \")\" )? ...; entity-name = ( id ( \"(\" node-label \")\" | \"[\" node-label \"]\" )? ... ). The label inside is colored as a string. usecase.md#ordered-default-context-rules: **brackets**: [, then ].",
+          "begin": "(\\(|\\[)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.operator.shape.begin.mermaid"
+            }
+          },
+          "end": "(\\)|\\])",
+          "endCaptures": {
+            "1": {
+              "name": "keyword.operator.shape.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#usecase-label"
+            }
+          ]
+        },
+        {
+          "comment": "Rule 28: hash-color: # and a positive run of ASCII hexadecimal digits. usecase.md#ordered-default-context-rules: **hash-color**: # and a positive run of ASCII hexadecimal digits.",
+          "match": "#[0-9A-Fa-f]+",
+          "name": "constant.other.color.mermaid"
+        },
+        {
+          "comment": "A tag owns its quoted attribute values before a double quote starts a string. usecase.md#ordered-default-context-rules: **markdown-string**: Double quote plus backtick through the first backtick plus double quote; any characters, including physical line breaks and Unicode separators, may lie between them.",
+          "include": "#html-tag"
+        },
+        {
+          "include": "#markdown-string",
+          "comment": "Rules 2 and 29: A string reads through its matching delimiter without escapes; markdown strings end at a backtick followed by a double quote. usecase.md#ordered-default-context-rules: Plain strings may be empty. They stop at the next matching quote, accept U+2028/U+2029, and do not escape a quote after backslash. They reject physical CR/LF. Markdown strings may contain all line breaks, either quote, and Unicode separators, and close at the first backtick/double-quote pair even after a backslash. A markdown opener without that close is not retried as a plain string."
+        },
+        {
+          "include": "#usecase-plain-string"
+        },
+        {
+          "comment": "Rule 32: The number rule reads digits with an optional decimal fraction having digits on both sides, or a leading dot and digits; it can then take ASCII letters as a unit suffix. The Identifier rule is earlier, so `1mg` is an id while `1.5px` is a number unit. usecase.md#ordered-default-context-rules: The number rule reads digits with an optional decimal fraction having digits on both sides, or a leading dot and digits; it can then take ASCII letters as a unit suffix. It has no sign or exponent. The Identifier rule is earlier, so `1mg` is an id while `1.5px` is a number unit. Neither fact makes a native metadata value NumericLiteral: a decimal is rejected there.",
+          "match": "(?:[0-9]+\\.[0-9]+|\\.[0-9]+)[A-Za-z]*",
+          "name": "constant.numeric.mermaid"
+        },
+        {
+          "comment": "Rule 31: identifier: Maximal positive ASCII word run. usecase.md#ordered-default-context-rules: **identifier**: Maximal positive ASCII word run; longer alternative number.",
+          "match": "{{usecase-id}}",
+          "name": "variable.mermaid"
+        },
+        {
+          "comment": "Rules 23, 24 and 27: at `@`; braces {, then }; comma, colon. usecase.md#ordered-default-context-rules: **comma, colon**: One comma, then one colon.",
+          "match": "(@)|(\\{)|(\\})|(,)|(:)",
+          "captures": {
+            "1": {
+              "name": "keyword.operator.at.mermaid"
+            },
+            "2": {
+              "name": "keyword.operator.block.begin.mermaid"
+            },
+            "3": {
+              "name": "keyword.operator.block.end.mermaid"
+            },
+            "4": {
+              "name": "punctuation.separator.comma.mermaid"
+            },
+            "5": {
+              "name": "punctuation.separator.colon.mermaid"
+            }
+          }
+        }
+      ]
+    },
+    "usecase-object": {
+      "comment": "Start at {. Outside a double-quoted region, { increases depth and } decreases it; the first } returning depth to zero closes the unit. Inside double quotes, backslash protects exactly the next character; otherwise the next double quote ends that region. usecase.md#json-context: Only the balanced-object rule and its unclosed-object fallback are active. Start at {. Outside a double-quoted region, { increases depth and } decreases it; the first } returning depth to zero closes the unit and returns to default context. Inside double quotes, backslash protects exactly the next character; otherwise the next double quote ends that region. Braces inside that region do not affect depth. Single quotes, brackets, comments, and native keywords do not have special meaning for balancing. All whitespace, LF, CR, U+2028/U+2029, and punctuation are raw content here. Common preprocessing still applies first.",
+      "begin": "\\{",
+      "end": "\\}",
+      "name": "meta.structure.dictionary.mermaid",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Inside double quotes, backslash protects exactly the next character; braces inside that region do not affect depth. usecase.md#json-context: Only the balanced-object rule and its unclosed-object fallback are active. Start at {. Outside a double-quoted region, { increases depth and } decreases it; the first } returning depth to zero closes the unit and returns to default context. Inside double quotes, backslash protects exactly the next character; otherwise the next double quote ends that region. Braces inside that region do not affect depth. Single quotes, brackets, comments, and native keywords do not have special meaning for balancing. All whitespace, LF, CR, U+2028/U+2029, and punctuation are raw content here. Common preprocessing still applies first.",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "comment": "JSON string text keeps its quote context across removed comment regions. A value run ends before a separator-led comment unless a preceding escape has already consumed the separator. Read the comment through #comment-line inside that value run and continue the same string after it. usecase.md#json-context: Only the balanced-object rule and its unclosed-object fallback are active. Start at {. Outside a double-quoted region, { increases depth and } decreases it; the first } returning depth to zero closes the unit and returns to default context. Inside double quotes, backslash protects exactly the next character; otherwise the next double quote ends that region. Braces inside that region do not affect depth. Single quotes, brackets, comments, and native keywords do not have special meaning for balancing. All whitespace, LF, CR, U+2028/U+2029, and punctuation are raw content here. Common preprocessing still applies first. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+              "begin": "(?!{{separatorCommentEnd}})(?=[^\"])",
+              "end": "{{usecase-double-value-end}}",
+              "contentName": "string.quoted.double.mermaid",
+              "patterns": [
+                {
+                  "include": "#comment-line"
+                },
+                {
+                  "include": "#directive"
+                },
+                {
+                  "comment": "The two double quotes of each quoted attribute value belong to the tag. usecase.md#json-context: Only the balanced-object rule and its unclosed-object fallback are active. Start at {. Outside a double-quoted region, { increases depth and } decreases it; the first } returning depth to zero closes the unit and returns to default context. Inside double quotes, backslash protects exactly the next character; otherwise the next double quote ends that region. Braces inside that region do not affect depth. Single quotes, brackets, comments, and native keywords do not have special meaning for balancing. All whitespace, LF, CR, U+2028/U+2029, and punctuation are raw content here. Common preprocessing still applies first.",
+                  "include": "#usecase-json-html-tag"
+                },
+                {
+                  "comment": "Inside double quotes, backslash protects exactly the next character, including a line separator or paragraph separator. A comment region starts after that separator, so the separator remains the escaped character; #comment-line reads the following comment independently of the string context. A directive inside JSON text does not consume the character escaped by the preceding backslash. usecase.md#json-context: Only the balanced-object rule and its unclosed-object fallback are active. Start at {. Outside a double-quoted region, { increases depth and } decreases it; the first } returning depth to zero closes the unit and returns to default context. Inside double quotes, backslash protects exactly the next character; otherwise the next double quote ends that region. Braces inside that region do not affect depth. Single quotes, brackets, comments, and native keywords do not have special meaning for balancing. All whitespace, LF, CR, U+2028/U+2029, and punctuation are raw content here. Common preprocessing still applies first. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+                  "match": "{{usecase-string-escape}}",
+                  "name": "constant.character.escape.mermaid",
+                  "captures": {
+                    "1": {
+                      "patterns": [
+                        {
+                          "include": "#directive"
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          ],
+          "beginCaptures": {
+            "0": {
+              "name": "string.quoted.double.mermaid"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "string.quoted.double.mermaid"
+            }
+          }
+        },
+        {
+          "include": "#usecase-object"
+        }
+      ],
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.section.data.begin.mermaid"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.section.data.end.mermaid"
+        }
+      }
+    },
+    "usecase-json-html-tag": {
+      "comment": "Tags and quoted values are found as written, and only quoted attribute values change their quotes. Outside quoted values, a backslash protects exactly the next character, through directives. usecase-html-string-escape reads a backslash, zero or more htmlTagDirective directives without a tag end, and one character other than a closing angle bracket or physical line terminator. The character cannot start a directive or a separator-led common comment; line and paragraph separators otherwise remain valid JSON escapes. A backslash before an attribute opener leaves that opener for conversion; an escape crossing the tag end or a common-comment boundary is left whole for the enclosing string. Inside a quoted value, the first double quote ends it even after a backslash. Reuse the shared tag parts; directives inside the match retain their scopes. usecase.md#json-context: Only the balanced-object rule and its unclosed-object fallback are active. Start at {. Outside a double-quoted region, { increases depth and } decreases it; the first } returning depth to zero closes the unit and returns to default context. Inside double quotes, backslash protects exactly the next character; otherwise the next double quote ends that region. Braces inside that region do not affect depth. Single quotes, brackets, comments, and native keywords do not have special meaning for balancing. All whitespace, LF, CR, U+2028/U+2029, and punctuation are raw content here. Common preprocessing still applies first.",
+      "match": "{{htmlTagStart}}(?:{{htmlQuotedValue}}|{{htmlTagDirective}}|{{htmlTagBackslashBeforeQuotedValue}}|{{usecase-html-string-escape}}|(?!{{usecase-string-escape}}){{htmlTagCharacter}})*(?:{{htmlTagEnd}}|(?={{usecase-string-escape}}|\")|{{separatorCommentEnd}})",
+      "captures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      }
+    },
+    "usecase-boolean": {
+      "comment": "Rule 10: true and false are keywords, with Identifier as their longer alternative. metadata-property = ( id | plain-string ) \":\" ( id | plain-string | \"true\" | \"false\" ). usecase.md#ordered-default-context-rules: **keywords**: Ordered list below, each with the Identifier longer alternative.",
+      "match": "(true|false){{wordEnd}}",
+      "captures": {
+        "1": {
+          "name": "constant.language.mermaid"
+        }
+      }
+    },
+    "usecase-class-names": {
+      "comment": "A class list consists of whole ids separated by commas; Directives may lie between its complete names and punctuation. usecase.md#grammar: An initial/doubled comma, a trailing comma placed after a newline without another property, or two properties separated only by HWS is rejected. No scalar/array/mapping value grammar is imported from YAML or JSON.",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Each class in class-suffix is an id, with ASCII space/tab permitted between units. usecase.md#grammar: These productions use [common notation](../common.md#notation) and the ordered units above. HWS is trivia except where a prefix rule or line-start condition expressly requires it. `id` means an exact identifier unit; `raw-json-id` is the positive ASCII word run inside the JSON prefix. Every unit must belong to the grammar; text left after a complete diagram rejects the input.",
+          "match": "{{usecase-id}}",
+          "name": "variable.mermaid"
+        },
+        {
+          "comment": "Class-suffix = \":::\" id ( \",\" id )*, with ASCII space/tab allowed between units. usecase.md#grammar: Count the line breaks after the common comment-region and line-terminator rules. Between the last property and `}`, the optional trailing comma and physical line breaks total at most two, with the comma allowed only before the line breaks.",
+          "match": ",",
+          "name": "punctuation.separator.comma.mermaid"
+        }
+      ]
+    },
+    "usecase-metadata": {
+      "comment": "Metadata is contiguous @{, optional properties separated by commas or newlines, and a closing brace. A property has an exact id or plain-string key, colon, and id, plain-string or boolean value. usecase.md#grammar: An initial/doubled comma, a trailing comma placed after a newline without another property, or two properties separated only by HWS is rejected. No scalar/array/mapping value grammar is imported from YAML or JSON.",
+      "begin": "(@\\{)",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.section.data.begin.mermaid"
+        }
+      },
+      "end": "(\\})",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.section.data.end.mermaid"
+        }
+      },
+      "name": "meta.data.mermaid",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#usecase-plain-string"
+        },
+        {
+          "match": "({{usecase-id}})({{gap}})(:)",
+          "captures": {
+            "1": {
+              "name": "support.type.property-name.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.separator.key-value.mermaid"
+            }
+          },
+          "comment": "An unquoted metadata key is an exact id followed by a colon. Directives may stand in the whitespace between the whole id and colon. usecase.md#grammar: Top-level target immediately followed by metadata-open selects metadata-assignment before entity-statement. It must end after that block. An explicit shape label before metadata avoids that guard. Inside a boundary, the same bare-id metadata spelling is an entity declaration."
+        },
+        {
+          "match": ",",
+          "name": "punctuation.separator.comma.mermaid",
+          "comment": "Metadata properties are separated by commas. usecase.md#grammar: An initial/doubled comma, a trailing comma placed after a newline without another property, or two properties separated only by HWS is rejected. No scalar/array/mapping value grammar is imported from YAML or JSON."
+        },
+        {
+          "include": "#usecase-boolean"
+        },
+        {
+          "comment": "Metadata-property is an id or plain-string key, a colon, then an id, plain-string, true or false value; quoted keys precede the colon. usecase.md#grammar: An empty plain-string is a value component: `color:\"\"` is valid and keeps the quotes in the CSS text. HWS alone after the colon supplies no component.",
+          "match": ":",
+          "name": "punctuation.separator.key-value.mermaid"
+        },
+        {
+          "match": "{{usecase-id}}",
+          "name": "string.unquoted.mermaid",
+          "comment": "Read a bare native metadata text value. usecase.md#rejections-outside-the-grammar: A text value may be a non-keyword bare Identifier or a plain quoted string. Bare keyword booleans are boolean values; quoted booleans are strings. Keys are case-sensitive; unknown keys and wrong value types always reject, including an empty unknown key/value. Metadata permits no markdown strings."
+        }
+      ]
+    },
+    "usecase-accessibility": {
+      "comment": "Rules 6 to 8: Accessibility forms start at an ASCII-HWS-only physical-line start. Colon values take the remainder of the physical line, including inline percent pairs. The block closes at its first brace. A separator-led common comment ends the surrounding value. usecase.md#ordered-default-context-rules: **acc-title-line**: At that line start, `accTitle`, zero or more HWS, colon, remainder of line. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "patterns": [
+        {
+          "comment": "Rule 6: accDescr, optional ASCII HWS and an opening brace start the description block at physical line start. usecase.md#ordered-default-context-rules: **newline**: One physical line break.",
+          "begin": "^({{asciiGap}})(accDescr)({{asciiGap}})(\\{)",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.control.mermaid"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "4": {
+              "name": "punctuation.definition.description.begin.mermaid"
+            }
+          },
+          "end": "(\\})",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.description.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Rule 6: Description text ends at the first closing brace. A comment region is trivia inside the block and ends the current value run. usecase.md#ordered-default-context-rules: A physical line terminator inside common trivia is not string content. This also applies to single-quoted native metadata: the comment-region case leaves U+2028 in the value, whereas a physical LF left in the string is rejected. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+              "begin": "(?!{{separatorCommentEnd}})(?=[^}])",
+              "end": "(?=\\})|{{separatorCommentEnd}}",
+              "contentName": "string.unquoted.mermaid",
+              "patterns": [
+                {
+                  "include": "#comment-line"
+                },
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "comment": "Rules 7 and 8: accTitle or accDescr, optional ASCII HWS, a colon and the whole remaining line form an accessibility value, including inline percent pairs. usecase.md#ordered-default-context-rules: **acc-title-line**: At that line start, `accTitle`, zero or more HWS, colon, remainder of line.",
+          "begin": "^({{asciiGap}})(accTitle|accDescr)({{asciiGap}})(:)",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.control.mermaid"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "4": {
+              "name": "punctuation.separator.colon.mermaid"
+            }
+          },
+          "end": "{{lineValueEnd}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      ]
+    },
+    "usecase-plain-string": {
+      "comment": "Rule 29: Plain strings have matching quotes without escapes and no physical LF in the text read by the lexer. A common region can remove an authored LF; keep the enclosing quote context while value runs stop before separator-led comments. An unclosed or otherwise rejected string may stay open under the common grammar limits. usecase.md#ordered-default-context-rules: Plain strings may be empty. They stop at the next matching quote, accept U+2028/U+2029, and do not escape a quote after backslash. They reject physical CR/LF. Markdown strings may contain all line breaks, either quote, and Unicode separators, and close at the first backtick/double-quote pair even after a backslash. A markdown opener without that close is not retried as a plain string. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "patterns": [
+        {
+          "comment": "Rule 29: The matching quote ends this plain string; common comment regions do not supply a closing quote. usecase.md#ordered-default-context-rules: Plain strings may be empty. They stop at the next matching quote, accept U+2028/U+2029, and do not escape a quote after backslash. They reject physical CR/LF. Markdown strings may contain all line breaks, either quote, and Unicode separators, and close at the first backtick/double-quote pair even after a backslash. A markdown opener without that close is not retried as a plain string.",
+          "begin": "(\")",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.definition.string.begin.mermaid"
+            }
+          },
+          "end": "(\")",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.string.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Rule 29: Read plain-string content without quote escapes. End this value run before a separator-led common comment and resume within the quote context. usecase.md#ordered-default-context-rules: A physical line terminator inside common trivia is not string content. This also applies to single-quoted native metadata: the comment-region case leaves U+2028 in the value, whereas a physical LF left in the string is rejected. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+              "begin": "(?!{{separatorCommentEnd}})(?=[^\"\\r\\n])",
+              "end": "{{usecase-double-value-end}}",
+              "contentName": "string.quoted.double.mermaid",
+              "patterns": [
+                {
+                  "include": "#comment-line"
+                },
+                {
+                  "include": "#directive"
+                },
+                {
+                  "comment": "The two double quotes of each quoted attribute value belong to the tag. usecase.md#ordered-default-context-rules: A physical line terminator inside common trivia is not string content. This also applies to single-quoted native metadata: the comment-region case leaves U+2028 in the value, whereas a physical LF left in the string is rejected.",
+                  "include": "#html-tag"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "comment": "Rule 29: The matching quote ends this plain string; common comment regions do not supply a closing quote. usecase.md#ordered-default-context-rules: Plain strings may be empty. They stop at the next matching quote, accept U+2028/U+2029, and do not escape a quote after backslash. They reject physical CR/LF. Markdown strings may contain all line breaks, either quote, and Unicode separators, and close at the first backtick/double-quote pair even after a backslash. A markdown opener without that close is not retried as a plain string.",
+          "begin": "(')",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.definition.string.begin.mermaid"
+            }
+          },
+          "end": "(')",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.string.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Rule 29: Read plain-string content without quote escapes. End this value run before a separator-led common comment and resume within the quote context. usecase.md#ordered-default-context-rules: A physical line terminator inside common trivia is not string content. This also applies to single-quoted native metadata: the comment-region case leaves U+2028 in the value, whereas a physical LF left in the string is rejected. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+              "begin": "(?!{{separatorCommentEnd}})(?=[^'\\r\\n])",
+              "end": "(?=')|{{separatorCommentEnd}}",
+              "contentName": "string.quoted.single.mermaid",
+              "patterns": [
+                {
+                  "include": "#comment-line"
+                },
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "usecase-label": {
+      "comment": "Word keywords and booleans in node-label and edge-label are text. Strings are separate alternatives; an HTML attribute quote is changed before it can start a string. usecase.md#categories-and-unquoted-text: Word includes Identifier and the listed keywords. LabelText includes Word, number, at, comma, colon, hash-color, css-identifier, escaped-comma, dash, dot, percent, css-punctuation, label-punctuation, and label-symbol. Strings are separate alternatives, not LabelText members. Native ids/classes/metadata words usually demand the exact Identifier unit, not Word. A keyword can be a label or CSS word but cannot thereby become an id. The raw id inside json-prefix is the explicit exception.",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#markdown-string"
+        },
+        {
+          "include": "#usecase-plain-string"
+        },
+        {
+          "comment": "An unquoted label needs at least one LabelText unit and keeps interior spaces; strings are separate alternatives. Tags inside label text own their attribute quotes; an unrelated quote ends the text context. End before a separator-led common comment. In an edge label, relationship operators end the text. usecase.md#categories-and-unquoted-text: LabelText excludes shape delimiters, operators, stereotype-open, metadata-open, and class-separator. An unquoted label needs at least one such unit and cannot mix in a subsequent quoted string. The source between its first and last units keeps interior spaces. Semicolons, lone angle brackets, backslash, backtick, NUL, other controls, Unicode spaces, and supplementary text can be label text; quotes cannot be standalone fallback text. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "begin": "(?!{{separatorCommentEnd}})(?=[^()\\[\\]\"'\\r\\n])",
+          "end": "{{usecase-label-end}}|{{lineValueEnd}}",
+          "applyEndPatternLast": true,
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#usecase-html-tag"
+            },
+            {
+              "include": "#entity"
+            }
+          ]
+        }
+      ]
+    },
+    "usecase-html-tag": {
+      "comment": "Only attribute quotes change; label delimiters and relationship operators still end label text, including inside a quoted attribute. Shape delimiters and operators are not LabelText; an unrelated quote starts a string. usecase.md#categories-and-unquoted-text: LabelText excludes shape delimiters, operators, stereotype-open, metadata-open, and class-separator. An unquoted label needs at least one such unit and cannot mix in a subsequent quoted string. The source between its first and last units keeps interior spaces. Semicolons, lone angle brackets, backslash, backtick, NUL, other controls, Unicode spaces, and supplementary text can be label text; quotes cannot be standalone fallback text.",
+      "begin": "{{htmlTagStart}}",
+      "end": "{{htmlTagEnd}}|{{usecase-label-end}}|{{lineValueEnd}}",
+      "endCaptures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Equals and a paired double quote open an attribute value. Label delimiters and relationship operators still end the surrounding text. usecase.md#categories-and-unquoted-text: LabelText excludes shape delimiters, operators, stereotype-open, metadata-open, and class-separator. An unquoted label needs at least one such unit and cannot mix in a subsequent quoted string. The source between its first and last units keeps interior spaces. Semicolons, lone angle brackets, backslash, backtick, NUL, other controls, Unicode spaces, and supplementary text can be label text; quotes cannot be standalone fallback text.",
+          "begin": "{{htmlQuotedValueStart}}",
+          "end": "\"|(?={{htmlTagEnd}})|{{usecase-label-end}}|{{lineValueEnd}}",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "variables": {
+    "usecase-id": "[A-Za-z0-9_]+",
+    "usecase-class-list": "{{usecase-id}}(?:{{asciiGap}},{{asciiGap}}{{usecase-id}})*",
+    "usecase-arrow": "(?:--\\|>|\\.\\.>|-{2,}>|<-{2,}|--o|o--|--x|x--|-{2,})",
+    "usecase-double-value-end": "(?=\")|{{separatorCommentEnd}}",
+    "usecase-string-escape": "\\\\({{directives}}).",
+    "usecase-html-string-escape": "\\\\(?:{{htmlTagDirective}})*(?!{{directiveStart}}|{{separatorCommentEnd}})[^>\\r\\n]",
+    "usecase-label-end": "(?=[()\\[\\]\"']|{{usecase-arrow}})"
+  }
+}

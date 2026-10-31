@@ -1,0 +1,146 @@
+flowchart %%{init: {}}%%LR
+accTitle: A class title # text; end
+accDescr: A style description # text; subgraph
+accDescr { block class
+  end style }
+accDescr {}
+%% a flowchart comment
+subgraph S [class style linkStyle]
+  direction TB
+  A[style class end 42] -->|linkStyle class| B("quoted class")
+  B -- dash class --> C{{choice}}
+  C == thick style ==> D[[frame]]
+  D -. dotted class .-> E[(store)]
+  A <--> B
+  B o--o C
+  C --x D
+  D === E
+  E -.-> F((circle))
+  F ~~~ G(((double)))
+  G --> H([stadium])
+  H --> I{diamond}
+  I --> J>odd]
+  J --> K[/lean/]
+  K --> L[\left\]
+  L --> M[/bottom\]
+  M --> N[\top/]
+  N --> O(-ellipse-)
+  O --> P[|name:value|property]
+  P e1@--> Q@{ shape: rect, label: "data } class" }
+  A & B --> C & D
+  A:::tag-->B
+end
+classDef tag,other fill:red,stroke:blue
+class A,B tag
+style A fill:red,style:blue,stroke-width:2px
+linkStyle 0,1 stroke:red
+linkStyle default interpolate basis stroke:blue
+click A href "https://example.test" "tooltip class" _blank
+click B "https://example.test" _self
+click C href "https://example.test" _parent
+click D href "https://example.test" _top
+click A call callback(class, 42) "callback tooltip"
+click B callbackName "plain callback tooltip"
+12 --> A
+classLong --> styleLong
+accTitleLong --> endLong
+A"class" --> B
+A["`markdown class`"] --> B
+A["class" tail] --> B
+A[before%%{init: {"theme": "dark"}}%%after] --> B
+accTitle: before%%{init: {}}%%after
+accDescr { before%%{init: {}}%%after }
+style A fill:re%%{init: {}}%%d
+subgraph class style
+  direction LR; A-->B
+end
+A[direction RL]-->B
+A-->B direction TD
+click;call;href;
+#hash --> %percent
+;
+accTitle: entity #amp; text
+A[#amp; class]-->B
+style A fill:#amp;red
+direction TB %% remains direction text
+direction TB text direction BT
+A-- box-->B
+A-. dot%%{init: {}}%%text .->B
+A["before%%{init: {"theme": "dark"}}%%after"]-->B
+A[""`nested markdown`""]-->B
+click A call cb)name(before%%{init: {}}%%after)
+A-->B %%{init: {}}%% direction TB
+P spaced@ --> Q
+direction TB  
+style A fill:red accDescr {}
+classDef tag fill:red accDescr {}
+linkStyle 0 stroke:red accDescr {}
+subgraph Extra accDescr {}
+end
+accTitle%%{init: {}}%%: separated title
+A["a<b title="x">b"] --> B
+A[before<b title="x">after] --> B
+A["a<b"] --> C["c>"]
+A[#am%%{init: {}}%%p; class] --> B
+click A%%{init: {}}%% href "u"
+A:::c@{ shape: rect }
+A[x]:::12-->B
+style 12 fill:red
+A["`x`%%{init: {}}%%"] --> B
+A["%%{init: {}}%%`open`"] --> B
+
+style%%{init: {}}%% A%%{init: {}}%% fill:red
+classDef tag,%%{init: {}}%%other fill:blue
+class A,B%%{init: {}}%% tag
+linkStyle%%{init: {}}%% 0%%{init: {}}%% interpolate%%{init: {}}%% basis stroke:red
+P[|name%%{init: {}}%%:%%{init: {}}%%value|property] --> Q
+A[before%%{init: {}}%%class style] --> B
+A-->B %%{init: {"direction TB": "direction LR"}}%% direction RL
+direction LR %%{init: {"direction TB": "direction TB"}}%% suffix
+direction TB before%%{init: {}}%%direction BT
+direction%%{init: {}}%% TB
+accTitle: t direction LR
+  accTitle: t direction LR
+P e1%%{init: {}}%%@-->Q
+%%{init: {}}%%direction TB
+subgraph Prefix
+end;direction TB
+A[/before%%{init: {}}%%"after/]
+subgraph before%%{init: {}}%%"after
+end
+linkStyle 0,%%{init: {}}%%1 stroke:red
+A[/<b>"x/]
+A[/#amp;"x/]
+class A 12accDescr {}
+A:::12accDescr {}
+linkStyle default interpolate 12accDescr{}
+class A,B extra
+A eProbe@-->B
+A[plain]-->B
+
+class%%{wrap}%% A extra
+click A href%%{wrap}%% "u"
+
+A(-<b title="a|b">-)
+click A#amp; href "u"
+
+
+
+
+A--%%{wrap}%% dash%%{wrap}%% -->B
+A==%%{wrap}%% thick%%{wrap}%% ==>B
+A-.%%{wrap}%% dotted%%{wrap}%% .->B
+
+A@{label:<b title="x">}
+A[/<b a="/">slash/]
+A[/<b a="\">backslash/]
+A[/<b /a="/">"tail/]
+accTitle%%{wrap}%%: gap title
+accDescr%%{wrap}%%{%%{wrap}%% gap block }
+A(-<b title="more|text">-)
+classDef joined foo%%{wrap}%%style:red
+subgraph foo%%{wrap}%%style
+end
+%%%{wrap}%%% common flow comment %%{wrap}%%
+
+accDescr { unclosed class description

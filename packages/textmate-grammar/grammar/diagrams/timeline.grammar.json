@@ -1,0 +1,277 @@
+{
+  "patterns": [
+    {
+      "include": "#timeline"
+    }
+  ],
+  "repository": {
+    "timeline": {
+      "comment": "Read the exact detected header and its optional ASCII-separated direction; statement-prefix directives retain their scopes. timeline.md#detection: The header may carry a **direction**: one or more spaces or tabs after `timeline` and then the keyword `LR` or `TD`, compared case-insensitively and not followed by a word character.",
+      "begin": "{{diagramStart}}(timeline){{wordEnd}}(?:({{requiredAsciiGap}})((?i:LR|TD)){{wordEnd}})?",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "constant.language.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "comment": "Read a native hash comment only outside entity text; values in other contexts keep their hashes. timeline.md#the-statement-context: A `#` ends a period and starts a comment, so `a #c : e` has the period `a ` and no event, while a `#` inside a title text, a section text, an event text, or an accessibility text is a character: `title T # c`, `section S # c`, `a : e # c`, `a : #`, and `title #my#title#` keep it.",
+          "begin": "(?=(?!{{entity}})#)",
+          "end": "{{lineValueEnd}}",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ],
+          "contentName": "comment.line.number-sign.mermaid"
+        },
+        {
+          "comment": "Read a native percent comment without exposing a directive as its mark. timeline.md#the-statement-context: `%`, not followed by `{`: a diagram comment, from the `%` to the end of the line (see [Comments](#comments)): `% c`, `%c`, and `%` alone are comments, also between a period and its event line and after the header.",
+          "begin": "({{timeline-statement-start}})(?=(?!{{directiveStart}})%(?!{{directives}}\\{))",
+          "end": "{{lineValueEnd}}",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ],
+          "contentName": "comment.line.percentage.mermaid",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Read title after its one required whitespace character and nonempty text, leaving a separator-led comment boundary outside the value. timeline.md#the-statement-context: `title`, one whitespace character, line feed included, and one or more characters other than a line feed: a `title` unit and a `title-text` unit, whose text is the characters after the one whitespace character.",
+          "begin": "({{timeline-statement-start}})((?i:title))((?!{{directives}}{{separatorCommentEnd}}){{whitespaceSeparator}})(?!{{directiveStart}}|$)(?=.)",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.control.mermaid"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "{{lineValueEnd}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": "Read section after its one required whitespace character and nonempty text up to colon; a bare word remains period text. timeline.md#the-statement-context: `section`, one whitespace character, line feed included, and one or more characters other than `:` and a line feed: a `section` unit and a `section-text` unit, whose text is the characters after the one whitespace character.",
+          "begin": "({{timeline-statement-start}})((?i:section))((?!{{directives}}{{separatorCommentEnd}}){{whitespaceSeparator}})(?!{{directiveStart}}|$)(?=[^:\\r\\n])",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.control.mermaid"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "(?=:)|{{lineValueEnd}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": "Read a case-insensitive description block and its text delimiters after leading padding; stop value scope at a separator-led comment boundary. timeline.md#the-statement-context: `accDescr`, zero or more whitespace characters, line feeds included, `{`, and zero or more whitespace characters, line feeds included: an `accDescr` unit and a `{` unit; enters the description block context. timeline.md#accessibility-values: `}`: a `}` unit; leaves the context.",
+          "begin": "({{timeline-statement-start}})((?i:accDescr))({{gap}})(\\{)({{timeline-value-gap}})",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.control.mermaid"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "4": {
+              "name": "punctuation.definition.description.begin.mermaid"
+            },
+            "5": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "(\\})",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.description.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read description text up to the first closing brace or common-comment boundary, keeping the enclosing block open across the comment. timeline.md#accessibility-values: One or more characters other than `}`, line feeds included: an `acc-description-block-text` unit.",
+              "begin": "(?!{{separatorCommentEnd}})(?=[^}\\r\\n])",
+              "end": "(?=\\})|{{lineValueEnd}}",
+              "contentName": "string.unquoted.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "comment": "Read accessibility line text with case-insensitive keywords, leaving padding outside the value and keeping inline percent pairs. timeline.md#accessibility-values: In the title context and in the description context, the one rule is: one or more characters other than a line feed: an `acc-title-text` unit in the title context, an `acc-description-text` unit in the description context; leaves the context.",
+          "begin": "({{timeline-statement-start}})((?i:accTitle|accDescr))({{gap}})(:)({{timeline-value-gap}})",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.control.mermaid"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "4": {
+              "name": "punctuation.separator.colon.mermaid"
+            },
+            "5": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "{{lineValueEnd}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": "Read an event colon and its one required whitespace character, ending the text at a following event colon or common-comment boundary. timeline.md#the-statement-context: `:`, one whitespace character, line feed included, and the **event text**: one or more characters, each a character other than `:` and a line feed or a `:` that no whitespace follows: a `:` unit and an `event-text` unit.",
+          "begin": "(:)(?={{whitespaceStart}})((?!{{directives}}{{separatorCommentEnd}}){{whitespaceSeparator}})?",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.separator.colon.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "(?=:{{whitespaceStart}})|{{lineValueEnd}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": "Read a complete period as unquoted text, keeping joined directives and entities inside the period rather than exposing keywords or comments. timeline.md#periods-and-events: A period is the text of its unit as written, the whitespace before the colon, `#`, or line feed included, which the Db keeps; the whitespace before it is outside it.",
+          "begin": "({{timeline-statement-start}})(?![{{ws}}]|{{directiveStart}}|{{separatorCommentEnd}})(?={{entity}}|[^#:\\r\\n])",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "(?=(?!{{entity}})[#:])|{{lineValueEnd}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#entity"
+            }
+          ],
+          "applyEndPatternLast": true
+        },
+        {
+          "include": "#directive"
+        }
+      ]
+    }
+  },
+  "variables": {
+    "timeline-statement-start": "(?:^|\\G|(?<=\\})){{timeline-value-gap}}",
+    "timeline-value-gap": "(?:(?!{{separatorCommentEnd}})(?:[{{ws}}]|{{directive}}))*"
+  }
+}

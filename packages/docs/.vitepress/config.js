@@ -1,6 +1,7 @@
 import { fileURLToPath } from "node:url"
 import { defineConfig } from "vitepress"
 import { eslintCodeTransformer } from "./eslint.js"
+import { languages } from "./highlighting.js"
 import {
   collectDiagrams,
   collectDocuments,
@@ -35,7 +36,7 @@ export default defineConfig({
   rewrites: rewritePagePath,
   markdown: {
     anchor: { slugify: documentAnchor },
-    languageAlias: { mmd: "mermaid" },
+    languages,
     codeTransformers: [eslintCodeTransformer],
     config(md) {
       configureDocumentMarkdown(md, documents, repositoryRoot)

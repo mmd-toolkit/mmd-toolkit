@@ -1,0 +1,35 @@
+packet%%{wrap}%%
+title TCP Packet
+accTitle: Packet
+accDescr: Header fields
+%% a comment line
+0-15: "Source Port"
+16-31: "Destination Port"
++32: 'Sequence Number'
+accDescr { Packet block }
+---
+ignored: packet
+---
+%%{!}%%
++8: "<b title="x">y</b>"
++8: "a<b" %% later >
+accTitle%%{init: {}}%%: T
+accDescr%%{init: {}}%%: D
+accDescr%%{init: {}}%%{ B }
+title%%{init: {}}%% T
++8%%{wrap}%%: "directive boundary"
+
+-%%{wrap}%%--
+x
+---
+
+---
+x
+-%%{wrap}%%--
+
+title After split YAML
+%%%{wrap}%%%{!}%%
+%%{!}%%%{wrap}%%%
+
+  accDescr {}%%%{wrap}%%% native split mark
++1: "Escaped \"quote\""

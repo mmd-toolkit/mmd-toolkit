@@ -1,0 +1,860 @@
+> C4Context
+  "C4Context" keyword.control.mermaid
+> title Person and Rel are title text
+  "title" keyword.control.mermaid
+  " Person and Rel are title text" string.unquoted.mermaid
+> accDescription System is description text
+  "accDescription" keyword.control.mermaid
+  " System is description text" string.unquoted.mermaid
+> accTitle: Boundary %% title text
+  "accTitle" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " Boundary %% title text" string.unquoted.mermaid
+> accDescr: UpdateLayoutConfig is description text
+  "accDescr" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " UpdateLayoutConfig is description text" string.unquoted.mermaid
+> accDescr { Person { and title are block text }
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  " Person { and title are block text " string.unquoted.mermaid
+  "}" punctuation.definition.description.end.mermaid
+> Person(person,"Person")
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "person" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Person" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Person_Ext(personExt,"External person")
+  "Person_Ext" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "personExt" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "External person" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> SystemQueue_Ext(queueExt,"Queue")
+  "SystemQueue_Ext" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "queueExt" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Queue" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> SystemDb_Ext(dbExt,"Database")
+  "SystemDb_Ext" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "dbExt" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Database" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> System_Ext(systemExt,"External system")
+  "System_Ext" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "systemExt" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "External system" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> SystemQueue(queue,"Queue")
+  "SystemQueue" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "queue" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Queue" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> SystemDb(db,"Database")
+  "SystemDb" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "db" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Database" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> System(system,"System")
+  "System" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "system" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "System" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Boundary(boundary,"Boundary") {
+  "Boundary" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "boundary" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Boundary" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>   Person(child,"Child")
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "child" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Child" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> }
+  "}" keyword.operator.block.end.mermaid
+> Enterprise_Boundary(enterprise,"Enterprise") {
+  "Enterprise_Boundary" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "enterprise" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Enterprise" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>   Person(enterpriseChild,"Child")
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "enterpriseChild" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Child" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> }
+  "}" keyword.operator.block.end.mermaid
+> System_Boundary(systemBoundary,"System boundary") {
+  "System_Boundary" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "systemBoundary" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "System boundary" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>   Person(systemChild,"Child")
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "systemChild" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Child" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> }
+  "}" keyword.operator.block.end.mermaid
+> ContainerQueue_Ext(containerQueueExt,"Queue")
+  "ContainerQueue_Ext" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "containerQueueExt" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Queue" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> ContainerDb_Ext(containerDbExt,"Database")
+  "ContainerDb_Ext" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "containerDbExt" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Database" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Container_Ext(containerExt,"External container")
+  "Container_Ext" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "containerExt" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "External container" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> ContainerQueue(containerQueue,"Queue")
+  "ContainerQueue" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "containerQueue" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Queue" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> ContainerDb(containerDb,"Database")
+  "ContainerDb" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "containerDb" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Database" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Container(container,"Container")
+  "Container" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "container" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Container" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Container_Boundary(containerBoundary,"Container boundary") {
+  "Container_Boundary" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "containerBoundary" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Container boundary" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>   Person(containerChild,"Child")
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "containerChild" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Child" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> }
+  "}" keyword.operator.block.end.mermaid
+> ComponentQueue_Ext(componentQueueExt,"Queue")
+  "ComponentQueue_Ext" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "componentQueueExt" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Queue" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> ComponentDb_Ext(componentDbExt,"Database")
+  "ComponentDb_Ext" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "componentDbExt" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Database" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Component_Ext(componentExt,"External component")
+  "Component_Ext" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "componentExt" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "External component" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> ComponentQueue(componentQueue,"Queue")
+  "ComponentQueue" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "componentQueue" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Queue" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> ComponentDb(componentDb,"Database")
+  "ComponentDb" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "componentDb" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Database" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Component(component,"Component")
+  "Component" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "component" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Component" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Deployment_Node(deployment,"Deployment") {
+  "Deployment_Node" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "deployment" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Deployment" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>   Person(deploymentChild,"Child")
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "deploymentChild" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Child" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> }
+  "}" keyword.operator.block.end.mermaid
+> Node(node,"Node") {
+  "Node" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "node" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Node" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>   Person(nodeChild,"Child")
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "nodeChild" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Child" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> }
+  "}" keyword.operator.block.end.mermaid
+> Node_L(nodeLeft,"Left node") {
+  "Node_L" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "nodeLeft" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Left node" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>   Person(leftChild,"Child")
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "leftChild" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Child" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> }
+  "}" keyword.operator.block.end.mermaid
+> Node_R(nodeRight,"Right node") {
+  "Node_R" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "nodeRight" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Right node" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>   Person(rightChild,"Child")
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "rightChild" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Child" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> }
+  "}" keyword.operator.block.end.mermaid
+> Rel(person,system,"Uses")
+  "Rel" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "person" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "system" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Uses" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> BiRel(person,system,"Exchanges")
+  "BiRel" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "person" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "system" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Exchanges" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Rel_Up(person,system,"Up")
+  "Rel_Up" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "person" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "system" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Up" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Rel_U(person,system,"Up")
+  "Rel_U" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "person" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "system" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Up" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Rel_Down(person,system,"Down")
+  "Rel_Down" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "person" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "system" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Down" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Rel_D(person,system,"Down")
+  "Rel_D" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "person" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "system" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Down" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Rel_Left(person,system,"Left")
+  "Rel_Left" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "person" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "system" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Left" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Rel_L(person,system,"Left")
+  "Rel_L" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "person" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "system" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Left" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Rel_Right(person,system,"Right")
+  "Rel_Right" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "person" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "system" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Right" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Rel_R(person,system,"Right")
+  "Rel_R" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "person" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "system" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Right" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Rel_Back(person,system,"Back")
+  "Rel_Back" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "person" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "system" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Back" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> RelIndex(1,person,system,"Indexed")
+  "RelIndex" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "1" string.unquoted.mermaid
+  "," punctuation.separator.comma.mermaid
+  "person" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "system" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Indexed" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> UpdateElementStyle(person,$bgColor="blue")
+  "UpdateElementStyle" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "person" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "$" punctuation.definition.attribute.begin.mermaid
+  "bgColor" storage.modifier.mermaid
+  "=" punctuation.separator.key-value.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "blue" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> UpdateRelStyle(person,system,$textColor="green")
+  "UpdateRelStyle" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "person" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "system" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "$" punctuation.definition.attribute.begin.mermaid
+  "textColor" storage.modifier.mermaid
+  "=" punctuation.separator.key-value.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "green" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> UpdateLayoutConfig($c4ShapeInRow="3")
+  "UpdateLayoutConfig" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "$" punctuation.definition.attribute.begin.mermaid
+  "c4ShapeInRow" storage.modifier.mermaid
+  "=" punctuation.separator.key-value.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "3" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Person(PersonLong,"Rel and title %% remain string text")%% native comment
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "PersonLong" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Rel and title %% remain string text" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+  "%% native comment" comment.line.percentage.mermaid
+> Person(12,"Number-looking alias")
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "12" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Number-looking alias" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Person(a) Rel(title,ignored,"Bare text crosses a parenthesis",)
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "a) Rel(title" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "ignored" string.unquoted.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Bare text crosses a parenthesis" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "," punctuation.separator.comma.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Person(a,"A%%{init: {}}%%B")
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "a" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "A" string.quoted.double.mermaid
+  "%%{" string.quoted.double.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.quoted.double.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.quoted.double.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.quoted.double.mermaid meta.directive.mermaid
+  "{}" string.quoted.double.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.quoted.double.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "B" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> title A%%{init: {}}%%B
+  "title" keyword.control.mermaid
+  " A" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "B" string.unquoted.mermaid
+> accDescr {}Person(emptyBlock,"After empty block")
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  "}" punctuation.definition.description.end.mermaid
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "emptyBlock" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "After empty block" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> UpdateElementStyle(person,$name, ) with spaces="value")
+  "UpdateElementStyle" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "person" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "$" punctuation.definition.attribute.begin.mermaid
+  "name, ) with spaces" storage.modifier.mermaid
+  "=" punctuation.separator.key-value.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "value" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Person("Backslash\","No escape")
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Backslash\\" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "No escape" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> title T #35; U
+  "title" keyword.control.mermaid
+  " T #35; U" string.unquoted.mermaid
+> accDescription #amp; Person
+  "accDescription" keyword.control.mermaid
+  " #amp; Person" string.unquoted.mermaid
+> title%%{init: {}}%% Person is title text
+  "title" keyword.control.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  " Person is title text" string.unquoted.mermaid
+> accTitle%%{init: {}}%%: Rel is title text
+  "accTitle" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " Rel is title text" string.unquoted.mermaid
+> accDescr%%{init: {}}%% { Block text }Person(gap,"After block")
+  "accDescr" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  " Block text " string.unquoted.mermaid
+  "}" punctuation.definition.description.end.mermaid
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "gap" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "After block" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Person(html,"<b title="x">Person</b>")
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "html" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "<b title=\"x\">" string.quoted.double.mermaid
+  "Person</b>" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Person(short,"a<b","c>")
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "short" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "<b" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "c>" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Person(bare%%{init: {}}%%Rel,)
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "bare" variable.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" variable.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " variable.mermaid meta.directive.mermaid
+  "{}" variable.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "Rel" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> UpdateElementStyle(person,$bg%%{init: {}}%%Color="red")
+  "UpdateElementStyle" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "person" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "$" punctuation.definition.attribute.begin.mermaid
+  "bg" storage.modifier.mermaid
+  "%%{" storage.modifier.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" storage.modifier.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" storage.modifier.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " storage.modifier.mermaid meta.directive.mermaid
+  "{}" storage.modifier.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" storage.modifier.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "Color" storage.modifier.mermaid
+  "=" punctuation.separator.key-value.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "red" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> accDescription%%{init: {}}%% Person is description text
+  "accDescription" keyword.control.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  " Person is description text" string.unquoted.mermaid
+> Person%%{init: {}}%%(gap,"A")
+  "Person" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "gap" string.unquoted.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "A" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Person(padded, %%{init: {}}%%"Quoted after directive")%%
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "padded" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Quoted after directive" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+  "%%" comment.line.percentage.mermaid
+> accTitle:%%{init: {}}%% Person is text
+  "accTitle" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  " Person is text" string.unquoted.mermaid
+> accDescr {%%{init: {}}%% Block text }
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  " Block text " string.unquoted.mermaid
+  "}" punctuation.definition.description.end.mermaid
+> Person("First""Second")
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "First" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Second" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Person(a, "B")
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "a" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "B" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Person(pad, %%{wrap}%% "Padding")
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "pad" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Padding" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Person("<b %%{x: >}%%x=","Person")
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "<b " string.quoted.double.mermaid
+  "%%{" string.quoted.double.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "x" string.quoted.double.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.quoted.double.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.quoted.double.mermaid meta.directive.mermaid
+  ">" string.quoted.double.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.quoted.double.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "x=" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Person" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+> Person(split,"Split")%%%{wrap}%%% native %%{wrap}%% tail
+  "Person" keyword.control.mermaid
+  "(" punctuation.section.arguments.begin.mermaid
+  "split" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Split" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.arguments.end.mermaid
+  "%" comment.line.percentage.mermaid
+  "%%{" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.line.percentage.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "% native " comment.line.percentage.mermaid
+  "%%{" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.line.percentage.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  " tail" comment.line.percentage.mermaid
+> 

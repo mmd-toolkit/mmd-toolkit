@@ -1,0 +1,60 @@
+quadrantChart
+  title A title with x-axis and 123
+  accTitle: An accessible title
+  accDescr: A line description
+  accDescr { A block with classDef and 123 }
+  accDescr {}
+  x-axis Low --> High
+  y-axis Small ---> Large
+  quadrant-1 First
+  quadrant-2 Second
+  quadrant-3 Third
+  quadrant-4 Fourth
+  classDef hot color: #f00, radius: 5
+  Point:::hot: [0.3, 0.6] color: #0f0, stroke-width: 2px
+  "title and classDef": [0, 1]; Titles: [1, 0]
+  "`x-axis and quadrant-1`": [0.2, 0.8]
+  titleLong: [0.4, 0.5]
+  classDefs: [0.5, 0.4]
+  x-axisL --> R
+  quadrant-11
+  title A%%{init: {}}%%B
+  accTitle: A%%{init: {}}%%B
+  accDescr { A%%{init: {}}%%B }
+  "A%%{init: {}}%%B": [0.%%{init: {}}%%3, 0.6]
+  quadrant-1 Alpha%% an inline comment
+  %%
+  %% a common comment
+  X-AXIS L --> R
+  TITLE Upper title
+  "Directive at comma": [0.3%%{init: {}}%%, 0.6]
+  "Comma coordinate": [0,%%{init: {}}%%3, 0.6]
+  A: [0.3, 0.6]color:#f00,radius:5
+  A: [0,%%{init: {}}%%3, 0.6]
+  A: [0.3,%%{init: {}}%% 0.6]
+  "<b title="x">y</b>": [0.3, 0.6]
+  "`<b title="x">y</b>`": [0.3, 0.6]
+  "a<b": [0.3, 0.6] %% later >
+  #a%%{init: {}}%%mp;: [0.3, 0.6]
+  accTitle%%{init: {}}%%: T
+  accDescr%%{init: {}}%%: D
+  accDescr%%{init: {}}%%{ B }
+  A:%%{init: {}}%% [0.3, 0.6]
+  A:::%%{init: {}}%%hot: [0.3, 0.6]
+  classDef%%{init: {}}%% hot%%{init: {}}%% color:#f00,radius:5
+  A%%{init: {}}%%title: [0.3, 0.6]
+  A: [0.3, 0.6]%%{init: {}}%%color:#f00,radius:5
+  title%%{wrap}%%1: [0.3, 0.6]
+
+  #amp;: [0.3, 0.6]
+  classDef a color: #f00,radius:5
+  A: [0.3, 0.6]color:#f00,radius:5
+  classDef b	color:#f00
+
+  %%{wrap}%%accTitle: T
+
+  quadrant-1 "`<b`";title >
+  quadrant-1 foo%%{wrap}%%title
+  accDescr {}%%%{wrap}%%% native split mark
+  quadrant-1 "%%{wrap}%%`x`"
+  quadrant-1 "`x`%%{wrap}%%";title AfterMarkdown

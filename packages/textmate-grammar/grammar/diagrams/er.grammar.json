@@ -1,0 +1,735 @@
+{
+  "variables": {
+    "er-tilde-edge": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^{{ws}}])*",
+    "er-direction-head": "({{lineText}})(direction)({{er-required-padding}})",
+    "er-direction-tail": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\r\\n])*",
+    "er-value-padding": "(?:(?!{{separatorCommentEnd}})(?:[{{ws}}]|{{directive}}))*",
+    "er-required-padding": "(?={{requiredGap}}){{er-value-padding}}",
+    "er-style-name": "(?:{{entity}}|(?!{{directiveStart}}|{{separatorCommentEnd}})(?:[^\\x{00}-\\x{7F}]|[A-Za-z0-9_*-]))+",
+    "er-attribute-word": "(?:{{er-tilde-edge}}~{{lineText}}~{{er-tilde-edge}}|`(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^`])+`|(?!{{separatorCommentEnd}})[A-Za-z_*\\x{C0}-\\x{10FFFF}](?:(?!{{directiveStart}}|{{separatorCommentEnd}})[A-Za-z0-9_\\x{C0}-\\x{10FFFF}\\[\\]().,*-])*)"
+  },
+  "patterns": [
+    {
+      "include": "#er"
+    }
+  ],
+  "repository": {
+    "er": {
+      "comment": "Detection.md entry 10: `erDiagram`, exact. The lexer then reads the header again, case-insensitively and not followed by a word character. er.md#detection: The lexer then reads the header again, case-insensitively and not followed by a word character (see [The statement context](#the-statement-context)). So `erDiagramX` is detected as an ER diagram and rejected, while `erDiagram-x` is the header followed by the entity `-x`. A statement may follow the header on its line, after whitespace or not, and the header alone is accepted, also without a line feed after it.",
+      "begin": "{{diagramStart}}(erDiagram){{wordEnd}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "A line or paragraph separator leading through whitespace and directives to a common comment is trivia rather than the non-ASCII part of an ER name. er.md#entities: - The alias is an entity name between `[` and `]`, with whitespace around it or not: `p[Person]`, `p [ Person ]`, `p[\"Per son\"]`, `p[12]`, `p[1]`, `\"A\"[P]`, `12[P]`, and `1[P]` are entities with an alias. `p[]` and `p[A B]` are rejected. The alias comes before the classes, and an entity with an alias takes no relationship on its line: `A:::c[P]`, `p[P] ||--o{ B : x`, `p[P]:::c ||--o{ B : x`, `A ||--o{ p[P] : x`, and `A:::c ||--o{ p[P] : x` are rejected, while `p[P]:::c`, `p[P] { … }`, `p[P]:::c { … }`, and `p[P]:::c {}` are accepted. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "match": "(?={{commonLineValueEnd}})[{{separators}}]"
+        },
+        {
+          "include": "#er-acc-descr-block"
+        },
+        {
+          "include": "#er-accessibility-line"
+        },
+        {
+          "include": "#er-direction"
+        },
+        {
+          "include": "#er-string"
+        },
+        {
+          "include": "#er-attributes"
+        },
+        {
+          "include": "#er-style"
+        },
+        {
+          "comment": "Rules 19 to 21: bounded class, subgraph and end are keywords, compared case-insensitively. er.md#the-statement-context: **The cardinalities, numbers, and relationship lines.** Rule 22 tries these rules in order; each makes one unit named after the cardinality or the line, whatever its spelling: `zero-or-one`, `zero-or-more`, `one-or-more`, `only-one`, and `md-parent` for a cardinality, `identifying` and `non-identifying` for a relationship line, and `number` for a number. The keywords among them are compared case-insensitively and are not followed by a word character; the spellings that end with a symbol may be followed by anything.",
+          "match": "(?i:class|subgraph|end){{wordEnd}}",
+          "name": "keyword.control.mermaid"
+        },
+        {
+          "include": "#er-relationships"
+        },
+        {
+          "comment": "Decimal digit runs, optionally with a dot and nonempty fraction, are numbers after the cardinality rules have been tried. er.md#the-statement-context: **The cardinalities, numbers, and relationship lines.** Rule 22 tries these rules in order; each makes one unit named after the cardinality or the line, whatever its spelling: `zero-or-one`, `zero-or-more`, `one-or-more`, `only-one`, and `md-parent` for a cardinality, `identifying` and `non-identifying` for a relationship line, and `number` for a number. The keywords among them are compared case-insensitively and are not followed by a word character; the spellings that end with a symbol may be followed by anything.",
+          "match": "[0-9]+(?:\\.[0-9]+)?",
+          "name": "constant.numeric.mermaid"
+        },
+        {
+          "include": "#er-punctuation"
+        },
+        {
+          "comment": "Names contain non-ASCII characters, word characters, hyphens, stars and dots. an entity continues a name without exposing its hash or semicolon. A directive ends a name run. er.md#units-and-contexts: **Names.** In the statement context, one or more characters each of which is a character outside ASCII, a word character, `-`, `*`, or `.`, as many as possible, make a `name` unit: `ÀB-c.d*e`, `_a`, an emoji, and `C4Context` are names, while `#`, `,`, `;`, `'`, `(`, `)`, `[`, `]`, `{`, `}`, `|`, `:`, `=`, `+`, `/`, `&`, `@`, `$`, `!`, `^`, `` ` ``, `~`, and `?` are not characters of a name; a line that holds a name and one of them is rejected, as the `?` of `Blo?rf` is, unless the character starts a unit of its own.",
+          "begin": "(?=[^\\x{00}-\\x{7F}]|[A-Za-z0-9_.*-]|#)",
+          "end": "{{separatorCommentEnd}}|(?={{directiveStart}}|[^\\x{80}-\\x{10FFFF}A-Za-z0-9_.*#-]|$)",
+          "contentName": "variable.mermaid",
+          "patterns": [
+            {
+              "comment": "An entity placeholder is part of a name. er.md#units-and-contexts: **Names.** In the statement context, one or more characters each of which is a character outside ASCII, a word character, `-`, `*`, or `.`, as many as possible, make a `name` unit: `ÀB-c.d*e`, `_a`, an emoji, and `C4Context` are names, while `#`, `,`, `;`, `'`, `(`, `)`, `[`, `]`, `{`, `}`, `|`, `:`, `=`, `+`, `/`, `&`, `@`, `$`, `!`, `^`, `` ` ``, `~`, and `?` are not characters of a name; a line that holds a name and one of them is rejected, as the `?` of `Blo?rf` is, unless the character starts a unit of its own.",
+              "include": "#entity"
+            }
+          ]
+        }
+      ]
+    },
+    "er-direction": {
+      "comment": "TB, BT, RL and LR are tried in this order, at the last direction for that value; surrounding runs are direction-text. Directives inside those runs join their parts and cannot supply direction or its value; directives between components are trivia. Runs stop before separator-led common comments, and padding never consumes their separator. er.md#the-statement-context: **The direction line.** Compared case-insensitively: from the current position, a run of characters without line feeds, U+2028, or U+2029, the longest one that the rest can follow; then `direction`; then one or more whitespace characters, line feeds included; then one of `TB`, `BT`, `RL`, and `LR`, tried in this order; and then every character up to the next line feed. The rule reads `direction` as a `direction` unit, the value as a `direction-value` unit, and the characters before `direction` and after the value as `direction-text` units, which mermaid.js does not read. The rule is tried before the whitespace and name rules, so it takes the whole line: `A direction LR` sets the direction and has no entity, and so do `A ||--o{ B : x direction LR` and `A ||--o{ B : direction TB`; `Direction lr` and `DIRECTION tb` are direction lines, and the indentation before `direction` is part of the run. It is also tried before the keyword rules that follow it: `classDef a direction LR` sets the direction and defines no class, `A accTitle: direction LR` sets the direction, and `subgraph direction LR` is a direction line, so that the `end` after it closes nothing and is rejected; only rules 1 to 3 come before it, so `accTitle: direction LR` is a title. Neither does the value need to end at a word boundary: `direction LRX` sets `LR`, and `X` is a `direction-text` unit; `direction LR %% c` sets `LR` with the text `%% c`, and `direction LR;` with the text `;`. The values are tried in the order given: if the line has `direction`, whitespace, and `TB` anywhere, the value is `TB`; otherwise `BT` is tried, and so on. For a value, the lexer takes the last `direction` of the run that the value follows. So `direction TB x direction TB` is read at its last `direction`, and `direction TB x` is a `direction-text` unit, while `direction TB x direction LR` and `direction TBx direction RL` set `TB` and are read at their first `direction`, with the rest as a `direction-text` unit. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "match": "(?i:{{er-direction-head}}(TB)({{er-direction-tail}})|{{er-direction-head}}(BT)({{er-direction-tail}})|{{er-direction-head}}(RL)({{er-direction-tail}})|{{er-direction-head}}(LR)({{er-direction-tail}}))",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#er-direction-text"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.control.mermaid"
+        },
+        "3": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "4": {
+          "name": "constant.language.mermaid"
+        },
+        "5": {
+          "patterns": [
+            {
+              "include": "#er-direction-text"
+            }
+          ]
+        },
+        "6": {
+          "patterns": [
+            {
+              "include": "#er-direction-text"
+            }
+          ]
+        },
+        "7": {
+          "name": "keyword.control.mermaid"
+        },
+        "8": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "9": {
+          "name": "constant.language.mermaid"
+        },
+        "10": {
+          "patterns": [
+            {
+              "include": "#er-direction-text"
+            }
+          ]
+        },
+        "11": {
+          "patterns": [
+            {
+              "include": "#er-direction-text"
+            }
+          ]
+        },
+        "12": {
+          "name": "keyword.control.mermaid"
+        },
+        "13": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "14": {
+          "name": "constant.language.mermaid"
+        },
+        "15": {
+          "patterns": [
+            {
+              "include": "#er-direction-text"
+            }
+          ]
+        },
+        "16": {
+          "patterns": [
+            {
+              "include": "#er-direction-text"
+            }
+          ]
+        },
+        "17": {
+          "name": "keyword.control.mermaid"
+        },
+        "18": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "19": {
+          "name": "constant.language.mermaid"
+        },
+        "20": {
+          "patterns": [
+            {
+              "include": "#er-direction-text"
+            }
+          ]
+        }
+      }
+    },
+    "er-string": {
+      "patterns": [
+        {
+          "comment": "Rule 8: a double quote, zero or more characters other than double quote, and a double quote make a string with no escape. er.md#the-statement-context: The units `#`, `invalid`, a `string` where no role is read, and a `newline` where the grammar does not take one are taken by no rule of the grammar, so an input with one of them is rejected: `A # c`, `A 'x'`, `\"A` and `A ||--o{ B : \"x` without their closing quote, and `A`, a line break, and `||--o{ B : x` are rejected.",
+          "include": "#string-plain-double"
+        }
+      ]
+    },
+    "er-relationships": {
+      "comment": "The ordered cardinality rules precede numbers and names, and relationship lines follow the cardinalities. er.md#the-statement-context: **The cardinalities, numbers, and relationship lines.** Rule 22 tries these rules in order; each makes one unit named after the cardinality or the line, whatever its spelling: `zero-or-one`, `zero-or-more`, `one-or-more`, `only-one`, and `md-parent` for a cardinality, `identifying` and `non-identifying` for a relationship line, and `number` for a number. The keywords among them are compared case-insensitively and are not followed by a word character; the spellings that end with a symbol may be followed by anything.",
+      "patterns": [
+        {
+          "comment": "Symbol cardinalities, many(0), many(1), contextual 1, u before dot/hyphen/bar, and two-character relationship lines are relationship units. er.md#the-statement-context: **The cardinalities, numbers, and relationship lines.** Rule 22 tries these rules in order; each makes one unit named after the cardinality or the line, whatever its spelling: `zero-or-one`, `zero-or-more`, `one-or-more`, `only-one`, and `md-parent` for a cardinality, `identifying` and `non-identifying` for a relationship line, and `number` for a number. The keywords among them are compared case-insensitively and are not followed by a word character; the spellings that end with a symbol may be followed by anything.",
+          "match": "(?i:many\\([01]\\)|u(?={{directives}}[.\\-|])|[|}]o{{wordEnd}}|o\\||o\\{)|[01]\\+|\\}\\||\\|\\||\\|\\{|1(?={{directives}}(?:{{er-required-padding}}[A-Za-z_\"'0-9]|--|\\.\\.|\\.-|-\\.))|--|\\.\\.|\\.-|-\\.",
+          "name": "keyword.operator.arrow.mermaid"
+        },
+        {
+          "comment": "Bounded word cardinalities and to or optionally to are case-insensitive keywords, with one space between words. er.md#the-statement-context: **The cardinalities, numbers, and relationship lines.** Rule 22 tries these rules in order; each makes one unit named after the cardinality or the line, whatever its spelling: `zero-or-one`, `zero-or-more`, `one-or-more`, `only-one`, and `md-parent` for a cardinality, `identifying` and `non-identifying` for a relationship line, and `number` for a number. The keywords among them are compared case-insensitively and are not followed by a word character; the spellings that end with a symbol may be followed by anything.",
+          "match": "(?i:one or zero|one or more|one or many|zero or one|zero or more|zero or many|only one|many|one|optionally to|to){{wordEnd}}",
+          "name": "keyword.operator.arrow.mermaid"
+        }
+      ]
+    },
+    "er-punctuation": {
+      "comment": "Rules 12 to 16: comma, class separator, colon and alias/title brackets are punctuation units. er.md#the-statement-context: **The direction line.** Compared case-insensitively: from the current position, a run of characters without line feeds, U+2028, or U+2029, the longest one that the rest can follow; then `direction`; then one or more whitespace characters, line feeds included; then one of `TB`, `BT`, `RL`, and `LR`, tried in this order; and then every character up to the next line feed. The rule reads `direction` as a `direction` unit, the value as a `direction-value` unit, and the characters before `direction` and after the value as `direction-text` units, which mermaid.js does not read. The rule is tried before the whitespace and name rules, so it takes the whole line: `A direction LR` sets the direction and has no entity, and so do `A ||--o{ B : x direction LR` and `A ||--o{ B : direction TB`; `Direction lr` and `DIRECTION tb` are direction lines, and the indentation before `direction` is part of the run. It is also tried before the keyword rules that follow it: `classDef a direction LR` sets the direction and defines no class, `A accTitle: direction LR` sets the direction, and `subgraph direction LR` is a direction line, so that the `end` after it closes nothing and is rejected; only rules 1 to 3 come before it, so `accTitle: direction LR` is a title. Neither does the value need to end at a word boundary: `direction LRX` sets `LR`, and `X` is a `direction-text` unit; `direction LR %% c` sets `LR` with the text `%% c`, and `direction LR;` with the text `;`. The values are tried in the order given: if the line has `direction`, whitespace, and `TB` anywhere, the value is `TB`; otherwise `BT` is tried, and so on. For a value, the lexer takes the last `direction` of the run that the value follows. So `direction TB x direction TB` is read at its last `direction`, and `direction TB x` is a `direction-text` unit, while `direction TB x direction LR` and `direction TBx direction RL` set `TB` and are read at their first `direction`, with the rest as a `direction-text` unit.",
+      "patterns": [
+        {
+          "comment": "Rule 13: ::: is a unit. er.md#the-statement-context: **The cardinalities, numbers, and relationship lines.** Rule 22 tries these rules in order; each makes one unit named after the cardinality or the line, whatever its spelling: `zero-or-one`, `zero-or-more`, `one-or-more`, `only-one`, and `md-parent` for a cardinality, `identifying` and `non-identifying` for a relationship line, and `number` for a number. The keywords among them are compared case-insensitively and are not followed by a word character; the spellings that end with a symbol may be followed by anything.",
+          "match": ":::",
+          "name": "punctuation.separator.class.mermaid"
+        },
+        {
+          "include": "#er-comma"
+        },
+        {
+          "comment": "Rule 14: colon is a unit. er.md#the-statement-context: **The cardinalities, numbers, and relationship lines.** Rule 22 tries these rules in order; each makes one unit named after the cardinality or the line, whatever its spelling: `zero-or-one`, `zero-or-more`, `one-or-more`, `only-one`, and `md-parent` for a cardinality, `identifying` and `non-identifying` for a relationship line, and `number` for a number. The keywords among them are compared case-insensitively and are not followed by a word character; the spellings that end with a symbol may be followed by anything.",
+          "begin": "(:)({{asciiGap}})",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.colon.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "{{lineValueEnd}}|(?<=\"|\\])|(?={{directiveStart}}|[ \\t])",
+          "patterns": [
+            {
+              "include": "#er-string"
+            },
+            {
+              "match": "(?:{{entity}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\x{00}-\\x{7F}]|[A-Za-z0-9_.*-])+",
+              "name": "string.unquoted.mermaid",
+              "comment": "Read one unquoted relationship role. er.md#entities: - The alias is an entity name between `[` and `]`, with whitespace around it or not: `p[Person]`, `p [ Person ]`, `p[\"Per son\"]`, `p[12]`, `p[1]`, `\"A\"[P]`, `12[P]`, and `1[P]` are entities with an alias. `p[]` and `p[A B]` are rejected. The alias comes before the classes, and an entity with an alias takes no relationship on its line: `A:::c[P]`, `p[P] ||--o{ B : x`, `p[P]:::c ||--o{ B : x`, `A ||--o{ p[P] : x`, and `A:::c ||--o{ p[P] : x` are rejected, while `p[P]:::c`, `p[P] { … }`, `p[P]:::c { … }`, and `p[P]:::c {}` are accepted."
+            }
+          ]
+        },
+        {
+          "comment": "Rules 15 and 16: brackets delimit an alias or subgraph title. er.md#the-statement-context: `accTitle`, zero or more whitespace characters, line feeds included, `:`, and zero or more whitespace characters, line feeds included: an `accTitle` unit and a `:` unit; enters the title context.",
+          "begin": "\\[",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.label.begin.mermaid"
+            }
+          },
+          "end": "\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.label.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#er-string"
+            },
+            {
+              "match": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\]\"\\r\\n])+",
+              "name": "string.unquoted.mermaid",
+              "captures": {
+                "0": {
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              },
+              "comment": "Read the unquoted alias or subgraph title as label text. er.md#entities: ```text entity-statement = entity-name alias? class-list? attribute-block? entity-name = name | number | quoted-name alias = \"[\" entity-name \"]\" class-list = \":::\" name ( \",\" name )* attribute-block = \"{\" block-item* \"}\" ```"
+            }
+          ]
+        }
+      ]
+    },
+    "er-style": {
+      "comment": "Rules 17 and 18 and bounded style and classDef enter a style context with no keyword rules; colon, comma, hash, semicolon and style-text are its units until a line feed. er.md#the-statement-context: The units `#`, `invalid`, a `string` where no role is read, and a `newline` where the grammar does not take one are taken by no rule of the grammar, so an input with one of them is rejected: `A # c`, `A 'x'`, `\"A` and `A ||--o{ B : \"x` without their closing quote, and `A`, a line break, and `||--o{ B : x` are rejected.",
+      "begin": "((?i:style|classDef)){{wordEnd}}({{er-value-padding}})({{er-style-name}}(?:{{er-value-padding}},{{er-value-padding}}{{er-style-name}})*)({{er-value-padding}})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "variable.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#er-comma"
+            }
+          ]
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "{{lineValueEnd}}",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Read a style property name before its colon. er.md#other-statements: - A direction statement sets the direction of the diagram, or, in a subgraph, of that subgraph, and may be written more than once. `direction LR` at the end of the text is one.",
+          "match": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[A-Za-z0-9_-])+(?={{gap}}:)",
+          "captures": {
+            "0": {
+              "name": "support.type.property-name.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "match": ";",
+          "name": "punctuation.terminator.statement.mermaid",
+          "comment": "Read the style statement separator. er.md#other-statements: - A direction statement sets the direction of the diagram, or, in a subgraph, of that subgraph, and may be written more than once. `direction LR` at the end of the text is one."
+        },
+        {
+          "comment": "Read the colon and the entire property value, including color and numeric text. er.md#other-statements: - A direction statement sets the direction of the diagram, or, in a subgraph, of that subgraph, and may be written more than once. `direction LR` at the end of the text is one.",
+          "begin": "(:)",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.separator.key-value.mermaid"
+            }
+          },
+          "end": "(?=[,;])|{{lineValueEnd}}",
+          "contentName": "support.constant.property-value.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": "Read the comma between styles. er.md#other-statements: - A direction statement sets the direction of the diagram, or, in a subgraph, of that subgraph, and may be written more than once. `direction LR` at the end of the text is one.",
+          "match": ",",
+          "name": "punctuation.separator.comma.mermaid"
+        },
+        {
+          "comment": "Read a style without a colon as its complete value. er.md#other-statements: - A direction statement sets the direction of the diagram, or, in a subgraph, of that subgraph, and may be written more than once. `direction LR` at the end of the text is one.",
+          "match": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^,:\\r\\n])+",
+          "captures": {
+            "0": {
+              "name": "support.constant.property-value.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "er-attributes": {
+      "comment": "{ enters attributes and } leaves them; statement keywords are words here, while PK, FK and UK are key units. Tilde words precede quoted and backquoted words. er.md#the-attribute-block-context: The rules of the statement context are not tried here: `end`, `direction LR`, and `accDescr { x }` after `{` are words, so `end a` is an attribute, `direction LR` is the attribute of type `direction`, and `accDescr { x }` is rejected at its `{`.",
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.operator.block.begin.mermaid"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "keyword.operator.block.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Rule 1: one or more whitespace characters, line feeds included, are nothing and precede keys and words. er.md#the-attribute-block-context: One or more whitespace characters, line feeds included: nothing. A line feed makes no unit here, so the attributes need no line structure: `string a` and `string b` on one line are two attributes, and `string` and `a` on two lines are one.",
+          "match": "(?:(?!{{separatorCommentEnd}})[{{ws}}])+"
+        },
+        {
+          "comment": "Rule 2: PK, FK and UK, compared case-insensitively and not followed by a word character, are keys. er.md#the-attribute-block-context: One or more whitespace characters, line feeds included: nothing. A line feed makes no unit here, so the attributes need no line structure: `string a` and `string b` on one line are two attributes, and `string` and `a` on two lines are one.",
+          "match": "(?i:PK|FK|UK){{wordEnd}}",
+          "name": "storage.modifier.mermaid"
+        },
+        {
+          "match": "``",
+          "name": "comment.block.ignored.mermaid",
+          "comment": "Retain an empty backquoted block item as ignored text. er.md#the-attribute-block-context: Two backquotes with nothing between them are an `empty-backquotes` unit, for which mermaid.js reads no token (see [Attributes](#attributes))."
+        },
+        {
+          "comment": "Read an attribute type, then its optional mark and name, across whitespace. er.md#the-attribute-block-context: The rules of the statement context are not tried here: `end`, `direction LR`, and `accDescr { x }` after `{` are words, so `end a` is an attribute, `direction LR` is the attribute of type `direction`, and `accDescr { x }` is rejected at its `{`.",
+          "begin": "({{er-attribute-word}})",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                },
+                {
+                  "match": "{{er-tilde-edge}}~{{lineText}}~{{er-tilde-edge}}",
+                  "name": "entity.name.type.mermaid",
+                  "captures": {
+                    "0": {
+                      "patterns": [
+                        {
+                          "include": "#directive"
+                        }
+                      ]
+                    }
+                  },
+                  "comment": "Read a complete tilde word in its attribute role. er.md#the-attribute-block-context: The attribute block context is entered by `{` in the statement context. It reads the attributes of an entity:"
+                },
+                {
+                  "begin": "`",
+                  "beginCaptures": {
+                    "0": {
+                      "name": "punctuation.definition.string.begin.mermaid"
+                    }
+                  },
+                  "end": "`",
+                  "endCaptures": {
+                    "0": {
+                      "name": "punctuation.definition.string.end.mermaid"
+                    }
+                  },
+                  "contentName": "entity.name.type.mermaid",
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ],
+                  "comment": "Read backquoted attribute text in its type or name role. er.md#the-attribute-block-context: The attribute block context is entered by `{` in the statement context. It reads the attributes of an entity:"
+                },
+                {
+                  "match": ".+",
+                  "name": "entity.name.type.mermaid",
+                  "captures": {
+                    "0": {
+                      "patterns": [
+                        {
+                          "include": "#directive"
+                        }
+                      ]
+                    }
+                  },
+                  "comment": "Read the ordinary attribute word in its type or name role. er.md#the-attribute-block-context: The attribute block context is entered by `{` in the statement context. It reads the attributes of an entity:"
+                }
+              ]
+            }
+          },
+          "end": "({{er-attribute-word}})",
+          "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                },
+                {
+                  "match": "{{er-tilde-edge}}~{{lineText}}~{{er-tilde-edge}}",
+                  "name": "variable.mermaid",
+                  "captures": {
+                    "0": {
+                      "patterns": [
+                        {
+                          "include": "#directive"
+                        }
+                      ]
+                    }
+                  },
+                  "comment": "Read a complete tilde word in its attribute role. er.md#the-attribute-block-context: The attribute block context is entered by `{` in the statement context. It reads the attributes of an entity:"
+                },
+                {
+                  "begin": "`",
+                  "beginCaptures": {
+                    "0": {
+                      "name": "punctuation.definition.string.begin.mermaid"
+                    }
+                  },
+                  "end": "`",
+                  "endCaptures": {
+                    "0": {
+                      "name": "punctuation.definition.string.end.mermaid"
+                    }
+                  },
+                  "contentName": "variable.mermaid",
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ],
+                  "comment": "Read backquoted attribute text in its type or name role. er.md#the-attribute-block-context: The attribute block context is entered by `{` in the statement context. It reads the attributes of an entity:"
+                },
+                {
+                  "match": ".+",
+                  "name": "variable.mermaid",
+                  "captures": {
+                    "0": {
+                      "patterns": [
+                        {
+                          "include": "#directive"
+                        }
+                      ]
+                    }
+                  },
+                  "comment": "Read the ordinary attribute word in its type or name role. er.md#the-attribute-block-context: The attribute block context is entered by `{` in the statement context. It reads the attributes of an entity:"
+                }
+              ]
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "match": "\\?",
+              "name": "storage.modifier.mermaid",
+              "comment": "Read the optional type modifier. er.md#the-attribute-block-context: The rules of the statement context are not tried here: `end`, `direction LR`, and `accDescr { x }` after `{` are words, so `end a` is an attribute, `direction LR` is the attribute of type `direction`, and `accDescr { x }` is rejected at its `{`."
+            }
+          ]
+        },
+        {
+          "include": "#er-backquote"
+        },
+        {
+          "include": "#er-string"
+        },
+        {
+          "comment": "Rule 8: question mark is the optional attribute mark. er.md#the-attribute-block-context: The rules of the statement context are not tried here: `end`, `direction LR`, and `accDescr { x }` after `{` are words, so `end a` is an attribute, `direction LR` is the attribute of type `direction`, and `accDescr { x }` is rejected at its `{`.",
+          "match": "\\?",
+          "name": "storage.modifier.mermaid"
+        },
+        {
+          "include": "#er-comma"
+        }
+      ],
+      "applyEndPatternLast": true
+    },
+    "er-backquote": {
+      "comment": "A backquote starts a unit whose text runs to the next matching delimiter, with no escape mechanism. er.md#the-attribute-block-context: One or more whitespace characters, line feeds included: nothing. A line feed makes no unit here, so the attributes need no line structure: `string a` and `string b` on one line are two attributes, and `string` and `a` on two lines are one.",
+      "begin": "`",
+      "beginCaptures": {
+        "0": {
+          "name": "string.quoted.other.mermaid punctuation.definition.string.begin.mermaid"
+        }
+      },
+      "end": "`",
+      "endCaptures": {
+        "0": {
+          "name": "string.quoted.other.mermaid punctuation.definition.string.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. er.md#the-attribute-block-context: One or more whitespace characters, line feeds included: nothing. A line feed makes no unit here, so the attributes need no line structure: `string a` and `string b` on one line are two attributes, and `string` and `a` on two lines are one. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^`])+",
+          "name": "variable.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "er-acc-descr-block": {
+      "comment": "Read the er-acc-descr-block form. er.md#the-statement-context: `accTitle`, zero or more whitespace characters, line feeds included, `:`, and zero or more whitespace characters, line feeds included: an `accTitle` unit and a `:` unit; enters the title context.",
+      "begin": "((?i:accDescr))({{er-value-padding}})(\\{)({{er-value-padding}})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "punctuation.definition.description.begin.mermaid"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "(\\})",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.definition.description.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. er.md#accessibility-values: In the description block context, `}` is a `}` unit and leaves the context, and one or more characters other than `}`, line feeds included, are a `description-block-text` unit. The whitespace after `{`, line feeds included, is read with the `{` unit (rule 3 of the statement context), so the text starts at the first character that is not whitespace, and `accDescr {}`, `accDescr { }`, `accDescr {`, a line of spaces, and `}`, and a block whose braces hold only a directive or only a comment line have no text and make no token in mermaid.js: an **empty description block** (see [Empty description blocks](#empty-description-blocks)). The text runs to the first `}`, whitespace at its end included: `accDescr { a {b }` has the description `a {b`, `accDescr { D }` the description `D`, and `accDescr { direction LR }` the description `direction LR`. The text may not end in this context: `accDescr {`, `accDescr { D`, and `accDescr { D` followed by a line `A` are rejected. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^}])+",
+          "name": "string.unquoted.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "er-accessibility-line": {
+      "comment": "Accessibility line text runs to the line feed, including inline percent pairs. the value ends before a line or paragraph separator when only whitespace and directives lead to a common comment. Retain this local context: reads whitespace after the delimiter with that delimiter and keeps inline percent pairs; its keywords are case-insensitive. er.md#accessibility-values: In the description block context, `}` is a `}` unit and leaves the context, and one or more characters other than `}`, line feeds included, are a `description-block-text` unit. The whitespace after `{`, line feeds included, is read with the `{` unit (rule 3 of the statement context), so the text starts at the first character that is not whitespace, and `accDescr {}`, `accDescr { }`, `accDescr {`, a line of spaces, and `}`, and a block whose braces hold only a directive or only a comment line have no text and make no token in mermaid.js: an **empty description block** (see [Empty description blocks](#empty-description-blocks)). The text runs to the first `}`, whitespace at its end included: `accDescr { a {b }` has the description `a {b`, `accDescr { D }` the description `D`, and `accDescr { direction LR }` the description `direction LR`. The text may not end in this context: `accDescr {`, `accDescr { D`, and `accDescr { D` followed by a line `A` are rejected. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "begin": "((?i:accTitle|accDescr))({{er-value-padding}})(:)({{er-value-padding}})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "punctuation.separator.colon.mermaid"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "{{lineValueEnd}}",
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#directive"
+        }
+      ]
+    },
+    "er-comma": {
+      "comment": "Rule 12 and #the-attribute-block-context rule 8: a comma is a separator outside an attribute word. er.md#the-statement-context: **The cardinalities, numbers, and relationship lines.** Rule 22 tries these rules in order; each makes one unit named after the cardinality or the line, whatever its spelling: `zero-or-one`, `zero-or-more`, `one-or-more`, `only-one`, and `md-parent` for a cardinality, `identifying` and `non-identifying` for a relationship line, and `number` for a number. The keywords among them are compared case-insensitively and are not followed by a word character; the spellings that end with a symbol may be followed by anything.",
+      "match": ",",
+      "name": "punctuation.separator.comma.mermaid"
+    },
+    "er-direction-text": {
+      "comment": "Read the nonblank ignored text around a direction while retaining directives. er.md#the-statement-context: **The direction line.** Compared case-insensitively: from the current position, a run of characters without line feeds, U+2028, or U+2029, the longest one that the rest can follow; then `direction`; then one or more whitespace characters, line feeds included; then one of `TB`, `BT`, `RL`, and `LR`, tried in this order; and then every character up to the next line feed. The rule reads `direction` as a `direction` unit, the value as a `direction-value` unit, and the characters before `direction` and after the value as `direction-text` units, which mermaid.js does not read. The rule is tried before the whitespace and name rules, so it takes the whole line: `A direction LR` sets the direction and has no entity, and so do `A ||--o{ B : x direction LR` and `A ||--o{ B : direction TB`; `Direction lr` and `DIRECTION tb` are direction lines, and the indentation before `direction` is part of the run. It is also tried before the keyword rules that follow it: `classDef a direction LR` sets the direction and defines no class, `A accTitle: direction LR` sets the direction, and `subgraph direction LR` is a direction line, so that the `end` after it closes nothing and is rejected; only rules 1 to 3 come before it, so `accTitle: direction LR` is a title. Neither does the value need to end at a word boundary: `direction LRX` sets `LR`, and `X` is a `direction-text` unit; `direction LR %% c` sets `LR` with the text `%% c`, and `direction LR;` with the text `;`. The values are tried in the order given: if the line has `direction`, whitespace, and `TB` anywhere, the value is `TB`; otherwise `BT` is tried, and so on. For a value, the lexer takes the last `direction` of the run that the value follows. So `direction TB x direction TB` is read at its last `direction`, and `direction TB x` is a `direction-text` unit, while `direction TB x direction LR` and `direction TBx direction RL` set `TB` and are read at their first `direction`, with the rest as a `direction-text` unit.",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "match": "(?=(?:{{directive}}|[{{ws}}])*(?!{{directiveStart}})[^{{ws}}])(?:{{directive}}|(?!{{directiveStart}}).)+",
+          "name": "comment.block.ignored.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "comment": "Read a nonblank direction-text unit. er.md#the-statement-context: **The direction line.** Compared case-insensitively: from the current position, a run of characters without line feeds, U+2028, or U+2029, the longest one that the rest can follow; then `direction`; then one or more whitespace characters, line feeds included; then one of `TB`, `BT`, `RL`, and `LR`, tried in this order; and then every character up to the next line feed. The rule reads `direction` as a `direction` unit, the value as a `direction-value` unit, and the characters before `direction` and after the value as `direction-text` units, which mermaid.js does not read. The rule is tried before the whitespace and name rules, so it takes the whole line: `A direction LR` sets the direction and has no entity, and so do `A ||--o{ B : x direction LR` and `A ||--o{ B : direction TB`; `Direction lr` and `DIRECTION tb` are direction lines, and the indentation before `direction` is part of the run. It is also tried before the keyword rules that follow it: `classDef a direction LR` sets the direction and defines no class, `A accTitle: direction LR` sets the direction, and `subgraph direction LR` is a direction line, so that the `end` after it closes nothing and is rejected; only rules 1 to 3 come before it, so `accTitle: direction LR` is a title. Neither does the value need to end at a word boundary: `direction LRX` sets `LR`, and `X` is a `direction-text` unit; `direction LR %% c` sets `LR` with the text `%% c`, and `direction LR;` with the text `;`. The values are tried in the order given: if the line has `direction`, whitespace, and `TB` anywhere, the value is `TB`; otherwise `BT` is tried, and so on. For a value, the lexer takes the last `direction` of the run that the value follows. So `direction TB x direction TB` is read at its last `direction`, and `direction TB x` is a `direction-text` unit, while `direction TB x direction LR` and `direction TBx direction RL` set `TB` and are read at their first `direction`, with the rest as a `direction-text` unit."
+        }
+      ]
+    }
+  },
+  "comment": "The local padding variables retain the whitespace required by this type's unit rules, stopping before separator-led comments. Text and context variables below name the corresponding rules of this diagram. er.md#lexical-structure: The lexer reads the [diagram text](../common.md#reading-a-source) in [converted form](../common.md#reading-a-source): each line terminator as `\\n`, each attribute quote as `'`, each entity as its placeholder, and through comment regions and the `;` that the line rule ignores as if they were not there. The `\\n` that the lexer reads after the last character ([End of text](../common.md#end-of-text)) is part of the diagram text. This section describes the diagram's own unit rules, item 4 of [Reading a source](../common.md#reading-a-source). common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in."
+}

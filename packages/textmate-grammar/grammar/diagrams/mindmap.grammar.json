@@ -1,0 +1,203 @@
+{
+  "patterns": [
+    {
+      "include": "#mindmap"
+    }
+  ],
+  "repository": {
+    "mindmap": {
+      "comment": "Read the mindmap header and its body. mindmap.md#detection: The first node may stand on the line of the header, after whitespace or right after it if it starts with a shape or a character other than a word character.",
+      "begin": "{{diagramStart}}(mindmap){{wordEnd}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "A diagram comment starts at %% where a unit starts in the statement context and runs to the end of its line segment; LF, U+2028, or U+2029 ends it. Node text, shape text, and class text own percent pairs inside them. Padding stops before separator-led common comments, which own their following directive-looking text. Neither percent sign of the mark belongs to a directive. mindmap.md#comments: The **mark** of a diagram comment is `%%`, and its value is the text after it. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text.",
+          "match": "({{mindmap-comment-padding}})({{nonDirectivePercentPair}}(?:{{directive}}|(?!{{directiveStart}})[^\\r\\n{{separators}}])*)",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
+              "name": "comment.line.percentage.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Read the class marker and the following class name. mindmap.md#the-statement-context: `:::`: a `:::` unit; enters the class context. mindmap.md#the-icon-and-class-contexts: So a class line takes the rest of its line segment: `:::c ::icon(x)` has the class `c ::icon(x)`, and `:::a`, U+2028, `b` is a class and a node text on one line, which is rejected.",
+          "begin": "{{mindmap-statement-start}}(:::)",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.separator.class.mermaid"
+            }
+          },
+          "end": "(?=[{{separators}}]|$)",
+          "contentName": "variable.mermaid",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": ":icon(, compared case-insensitively, enters the icon context. ) leaves the context; one or more characters other than ) are icon text. mindmap.md#the-statement-context: `:::`: a `:::` unit; enters the class context. mindmap.md#the-icon-and-class-contexts: So a class line takes the rest of its line segment: `:::c ::icon(x)` has the class `c ::icon(x)`, and `:::a`, U+2028, `b` is a class and a node text on one line, which is rejected.",
+          "begin": "{{mindmap-statement-start}}((?i:::icon\\())",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          },
+          "end": "(\\))",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.section.icon.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+              "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^)])+",
+              "name": "string.unquoted.mermaid",
+              "captures": {
+                "0": {
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "comment": "The openers are -), (-, )), ), ((, {{, (, and [, in that order. rule 3: The closers are )), ), ], }}, (-, -), ((, and (, in that order. The closer need not match the opener. Strings start only at a unit start, right after the opener; shape text keeps quotes after its first character and has no HTML rule. mindmap.md#the-statement-context: `:::`: a `:::` unit; enters the class context. mindmap.md#the-shape-context: A `\"` is a string only where a unit starts, right after the opener: `a[ \"x\" ]` has the text `\"x\"`. mindmap.md#nodes-and-shapes: The node text before a shape keeps its whitespace: `a (x)` has the id `a `.",
+          "begin": "[{{ws}}]*(-\\)|\\(-|\\)\\)|\\)|\\(\\(|\\{\\{|\\(|\\[)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.operator.shape.begin.mermaid"
+            }
+          },
+          "end": "(\\)\\)|\\)|\\]|\\}\\}|\\(-|-\\)|\\(\\(|\\()",
+          "endCaptures": {
+            "1": {
+              "name": "keyword.operator.shape.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "A quote and backtick start a markdown string, closed by backtick and quote. mindmap.md#the-shape-context: A `\"` is a string only where a unit starts, right after the opener: `a[ \"x\" ]` has the text `\"x\"`.",
+              "include": "#markdown-string"
+            },
+            {
+              "comment": "A double quote starts a string ending at the next double quote, without escapes. mindmap.md#the-shape-context: A `\"` is a string only where a unit starts, right after the opener: `a[ \"x\" ]` has the text `\"x\"`.",
+              "include": "#string-plain-double"
+            },
+            {
+              "comment": "Shape text takes as many characters other than ), ], (, and } as possible; quotes, percent pairs, {, and [ after its first character are text. mindmap.md#the-shape-context: A `\"` is a string only where a unit starts, right after the opener: `a[ \"x\" ]` has the text `\"x\"`.",
+              "begin": "(?=[^)\\](}])",
+              "end": "(?=[)\\](}])",
+              "patterns": [
+                {
+                  "include": "#comment-line"
+                },
+                {
+                  "include": "#directive"
+                },
+                {
+                  "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+                  "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^)\\](}])+",
+                  "name": "string.unquoted.mermaid",
+                  "captures": {
+                    "0": {
+                      "patterns": [
+                        {
+                          "include": "#directive"
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "comment": "Read node text before a shape as the element name; bare nodes remain labels. mindmap.md#nodes-and-shapes: The node text before a shape keeps its whitespace: `a (x)` has the id `a `.",
+          "begin": "(?:^|\\G)((?>{{lineGap}}))(?=(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^(\\[){}\\r\\n])+[({\\[)])",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "(?=[(\\[){}\\r\\n])|{{lineValueEnd}}",
+          "contentName": "variable.mermaid",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": "Node texts: One or more characters other than (, [, ), {, }, and LF, as many as possible, make node text. Quotes, percent pairs, ::, and keyword-like words after its first character are text. rule 7: Whitespace other than LF lies between units. mindmap.md#units-and-contexts: An entity is one placeholder (see [Entities](../common.md#entities)). mindmap.md#the-statement-context: `:::`: a `:::` unit; enters the class context.",
+          "begin": "{{mindmap-statement-start}}+(?=[^(\\[){}\\r\\n])",
+          "end": "{{lineValueEnd}}|(?=[(\\[){}\\r\\n])",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "variables": {
+    "mindmap-statement-start": "(?:^|\\G|(?<=[{{separators}}]))(?:(?!{{separatorCommentEnd}})[{{ws}}])*",
+    "mindmap-comment-padding": "(?:(?!{{separatorCommentEnd}})(?:[{{lws}}]|{{directive}}))*"
+  }
+}

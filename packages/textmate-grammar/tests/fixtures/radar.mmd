@@ -1,0 +1,41 @@
+radar-beta%%{wrap}%%:
+  title Grades
+  accTitle: Radar
+  axis m["Math"], s["Science"]
+  curve a["Alice"]{85, 90}
+  curve b["Bob"]{m: 70, s: 65.5}
+  showLegend true
+  ticks 5, max 100, min 0
+  graticule polygon
+  %% a comment line
+  accDescr: Radar description
+  accDescr { Radar block }
+  ticks 5max 100
+---
+ignored: radar
+---
+%%{!}%%
+axis m["<b title="x">Radar</b>"]
+axis m["a<b"], s["c>"]
+title%%{init: {}}%% axis is title text
+accTitle%%{init: {}}%%: curve is title text
+accDescr%%{init: {}}%%: axis is description text
+accDescr%%{init: {}}%%{}
+axis m%%{init: {}}%%["Label"]
+axis m["A\%%{init: {}}%%"B"]
+axis m["\<b title="axis">"]
+graticule circle
+showLegend false
+ticks 5%%{wrap}%%max 10
+axis%%{wrap}%% m["Boundary"]
+%%%{wrap}%%%{! }%% ticks 6
+%%{! }%%%{wrap}%%% max 110
+---%%{wrap}%%
+hidden: opener
+---
+min 0
+---
+hidden: closer
+-%%{wrap}%%--
+showLegend true
+ticks 6%%%{wrap}%%% native %%{wrap}%% tail

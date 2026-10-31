@@ -31,9 +31,12 @@ or running a second watch process is unnecessary.
 
 The application uses Vue 3.6 RC with Vapor components, Monaco Editor, Shiki and
 the [shine-and-bright](https://github.com/ota-meshi/shine-and-bright) theme
-switch. The lockfile records dependency versions, including Vue's RC, and CI
-installs with `--frozen-lockfile`. Every Vue SFC uses
-`<script setup lang="ts" vapor>`; the root mounts with `createVaporApp`.
+switch. Monaco tokenizes Mermaid text through Shiki with the grammar of
+[`@mmd-toolkit/textmate-grammar`](../../textmate-grammar/README.md), loaded in
+`src/editor.ts` with the `yaml` grammar it embeds. The lockfile records
+dependency versions, including Vue's RC, and CI installs with
+`--frozen-lockfile`. Every Vue SFC uses `<script setup lang="ts" vapor>`; the
+root mounts with `createVaporApp`.
 
 Parsing follows edits after 150 ms. AST traversal uses the parser's public
 `visitorKeys`; tokens, comments, directives and frontmatter are auxiliary

@@ -24,6 +24,17 @@ pnpm --filter @mmd-toolkit/docs test
 表示用の設定はMermaid言語を登録しますが、既定ではルールを有効にしません。
 それ以外のコードブロックには、通常の構文ハイライトだけを適用します。
 
+`mmd`と`mermaid`のコードブロックの色は、
+[`@mmd-toolkit/textmate-grammar`](../textmate-grammar/README.ja.md)の
+TextMate文法で付けます。
+`.vitepress/highlighting.js`に、
+`.vitepress/config.js`とテストが使う言語一覧を置きます。
+この一覧には、この文法をhighlighterの`mermaid`言語として含め、
+埋め込む`yaml`の文法も含めます。
+この文法は、このリポジトリの仕様から全図種について書いたものです。
+`languages`に`mermaid`を名前でも並べないでください。
+Shikiの同名のバンドル済み文法がこの文法を置き換えます。
+
 `packages/eslint-plugin/docs/rules/` では、英日とも、
 すべての `mmd` の例を `%% eslint @mmd-toolkit/<規則>: error` で始めます。
 そのページが説明する規則を指定し、字下げせず、

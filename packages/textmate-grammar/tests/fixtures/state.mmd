@@ -1,0 +1,153 @@
+stateDiagram-V2%%{wrap}%%
+%% a state comment
+# a hash comment
+accTitle: state and class
+accDescr: note and click
+accDescr { scale and hide }
+state "A state label" as Alias
+state Fork <<fork>>
+state Join <<join>>
+state Choice <<choice>>
+state SquareFork [[fork]]
+state SquareJoin [[join]]
+state SquareChoice [[choice]]
+[*] --> Alias
+Alias:::marked --> Done : state class note
+click Alias href "https://example.com"
+click Done "url" "tooltip"
+classDef marked fill:red,stroke:blue
+class Alias,Done marked
+style Alias,Done fill:green,stroke:black
+scale 350 width
+hide empty description
+direction LR
+note left of Alias : a note about state
+note right of Done
+  state classDef note
+end note
+note "floating class" as Floating
+state Parent {
+  [*] --> Child
+  state Child
+  --
+  classDef inner fill:blue
+  class Child inner
+  style Child fill:red
+  direction TB
+  accTitle: class style note
+  hide empty description
+  click B href "u"
+}
+clickable
+notes
+classical
+stateful
+A#1
+A;B
+Done %% inline percent comment
+state "label %%{init: {}}%% state" as WithDirective
+accDescr {} Fresh
+scaleX
+classDefinition
+state noteX
+note "floating state" as state class note
+note left of Alias : text %%{init: {}}%% class
+A : x:y
+A::c
+A : x;y
+direction LR %% direction text
+note left of%%x Alias : a note
+note right of %% c S
+  state note text
+end note
+note "x" as %%Name
+note "x" as N%% floating comment
+state F%%{init: "<<fork>>"}%% G <<choice>>
+accTitle: x %%{init: 'direction TB'}%% y
+state BodyProbe {
+  state B direction LR
+  # text direction TB
+}
+state A%% c
+A : #amp; scale 3 width
+note left of Alias : #amp; scale 3 width
+state "x"%%{init: {}}%% as Pseudo <<choice>>
+
+hide%%{init: {}}%% empty description
+scale%%{init: {}}%% 3 width
+scale 3%%{init: {}}%% width
+note left%%{init: {}}%% of Alias : payload
+note %%{init: {}}%%left %%{init: {}}%%of%%{init: {}}%% Alias%%{init: {}}%% : text
+note right of Alias
+  a block note
+end%%{init: {}}%% note
+note left of Alias
+  another block note
+end %%{init: {}}%%note
+state "Hi<b title="x">tag</b>" as HtmlAlias
+click Alias "a<b" "c>"
+note "Hi<b title="x">tag</b>" as HtmlNote
+state Named%%{init: {}}%% { A }
+classDef extra%%{init: {}}%% fill:red
+class%%{init: {}}%% Alias%%{init: {}}%%,Done extra
+style%%{init: {}}%% Alias%%{init: {}}%%%%{wrap}%%,Done%%{init: {}}%% fill:red
+state "alias" as A%%{init: {}}%% : label
+A : #%%{init: {}}%%amp; scale 3 width
+direction%%{init: {}}%% LR
+state NotePrecedence {
+  note left of Alias : direction LR
+}
+state BodyDone {} accTitle: T
+
+state BodyScale {}scale 3 width
+
+note left of%%{} Alias : braces in prefix
+
+state "d" as A : x
+
+state "d" as A : x : ignored
+
+state "d" as A : x {}
+
+state ForkDone <<fork>>scale 4 width
+
+A %%%{wrap}%%% native %%{init: "-->"}%% tail
+
+A # native %%{wrap}%% tail
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+note left of#amp; : entity note
+
+state Divider { --%%{wrap}%% A }
+
+state HeaderGap {} state%%{wrap}%% Continued
+
+
+
+state "entity" as A#amp; : text
+note right of%%{} Alias
+text
+end note
+
+
+state "alias" as Boundary %%%{wrap}%%% native alias
+
+A%%%{wrap}%%
+note left of%%%{wrap}%% : boundary note
+note "boundary" as %%%{wrap}%%
+accDescr { unclosed description

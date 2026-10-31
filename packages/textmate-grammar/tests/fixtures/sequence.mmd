@@ -1,0 +1,165 @@
+sequenceDiagram autonumber 1 0.5
+TITLE Main participant title
+Title: Legacy loop title
+accTitle: A participant title # text; end
+accDescr: A loop description # text; actor
+accDescr { block participant
+  end loop }
+accDescr {}
+%% a sequence comment
+# a hash comment
+% a single percent comment
+box rgb(1, 2, 3) participant group
+  participant A as actor loop
+  actor B
+end
+participant Queue@{ "type": "queue" } as Queue alias
+participant as
+participant A B as C
+autonumber off
+autonumber .25 2
+A->>+B: wrap:participant message %% text # inline hash
+B-->>-A: :nowrap:response
+activate A
+deactivate A
+Note left of A: loop note
+note right of B: actor note
+note over A,B: participant note
+links A: {"Docs":"https://example.test"}
+link A: Docs@https://example.test
+properties A: {"owner":"team"}
+details A: {"name":"detail"}
+create participant C
+A->>C:created
+destroy C
+C->>A:destroyed
+loop wrap:loop caption
+A->>B: loop class
+end
+rect rgb(0, 0, 0)
+end
+opt optional actor
+end
+alt condition participant
+else alternative loop
+end
+par parallel participant
+and parallel actor
+end
+par_over overlap participant
+and overlap actor
+end
+critical operation participant
+option failure loop
+end
+break stop participant
+end
+A<<->>B:reverse
+A<<-->>B:reverse dotted
+A->B:open
+A-->B:open dotted
+A-xB:cross
+A--xB:cross dotted
+A-)B:async
+A--)B:async dotted
+A--|\B:half
+A--|/B:half
+A--\\B:half
+A--//B:half
+A/|--B:half
+A\|--B:half
+A//--B:half
+A\\--B:half
+A-|\B:half
+A-|/B:half
+A-\\B:half
+A-//B:half
+A/|-B:half
+A\|-B:half
+A//-B:half
+A\\-B:half
+A()->>()B:central
+1->>2:numeric names
+ender->>notes: keyword boundary
+link ->>B: identifier link
+A->>link: target link
+A->>B: WRAP:loop
+A->>B: before%%{init: {"theme": "dark"}}%%after
+Al%%{init: {}}%%ice->>B: directive id
+participant A%%{init: {}}%%B
+accTitle: before%%{init: {}}%%after
+accDescr { before%%{init: {}}%%after }
+loop before%%{init: {}}%%after
+end A->>B: after end
+A->>B:semicolon;A->>B:next
+)
+autonumber 10%% after number
+A->>B: entity #amp; text
+title Entity #amp; text
+participant A(x)()
+A(x)()->>B: continuation
+Note over link,A: link stays an id
+participant A%%{init: {}}%%lias as participant alias
+accTitle%%{init: {}}%%: separated title
+link %%{init: {}}%%->>B: gap arrow
+A->>B: %%{init: {}}%%wrap: prefix after directive
+participant %X
+participant A # c <x
+participant A # b # c <x
+A->>B: #am%%{init: {}}%%p; note
+A->>B: before #am%%{init: {}}%%p; note
+ACCTITLE%%{init: {}}%%: note
+
+Note left%%{init: {}}%% of A: text
+Note right %%{init: {}}%%of B: text
+link%%{init: {}}%% A: Docs@https://example.test
+participant A%%{init: {}}%% @{ "type": "queue" }
+participant A %%{init: {}}%%as participant alias
+A->>B: before%%{init: {}}%%loop participant
+participant A # c
+A#am%%{init: {}}%%p;->>B: id entity
+A->>B: <b title="x">note</b>
+participant A # c ;
+
+participant%%{wrap}%%X->>B: x
+box%%{wrap}%%X->>B: x
+autonumber%%{wrap}%%X->>B: x
+loop%%{wrap}%%X->>B: x
+1%%{wrap}%%->>B: x
+;%%%{wrap}%%{->>B: x
+A(x)%%{init: {}}%%()->>B: x
+A(/x)#amp;()->>B: x
+A(/x)%y()->>B: x
+participant A#amp; as B
+participant A#amp;@{ x } as B
+A->>B:#amp;wrap:x
+loop #amp;wrap:x;end
+participant A as #amp;nowrap:x
+participant A@{ x } as #amp;wrap:x
+
+participant A@{ x } as Alias
+link ->>B: x
+autonumber 2%%{wrap}%% %% number comment
+A(x)#amp;%%{wrap}%%()->>B: x
+A#amp;(x)()->>B: x
+A(x)-%%{wrap}%%(y)()->>B: x
+participant #amp; as Entity
+A->>B:%%{wrap}%%#amp;wrap:x
+A->>B: x # comment %%{init: {}}%% tail
+% comment %%{wrap}%% tail
+
+
+
+
+participant #amp;
+#amp;(x)()->>B: x
+;1%%%{wrap}%%->>B: single percent id
+autonumber 3%%%{wrap}%%% number comment
+foo%%{wrap}%%participant->>B: joined id
+participant A as foo%%{wrap}%%loop
+A->>B: before%%{wrap}%%wrap: tail
+ACCTITLE%%{wrap}%%: gap title
+ACCDESCR%%{wrap}%%{%%{wrap}%% gap block }
+%%%{wrap}%%% common sequence %%{wrap}%%
+
+accDescr { unclosed participant description

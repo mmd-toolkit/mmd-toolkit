@@ -1,0 +1,47 @@
+block-beta
+columns 3
+columns auto
+A["Start"]:2
+space
+space:2
+block:Group
+  B("Round")
+  C<["Move"]>(right, left up down x y)
+end
+block
+  D{{"Hexagon"}}
+end
+A --> B
+B -- "edge label" ==> D
+D -.-> E["End"]
+classDef hot fill:red,stroke:black
+class A hot
+style B fill:blue
+accDescr {}
+%% a block comment line
+A%%{init: {}}%%:2
+A%%{init: {}}%% B
+columns %%{init: {}}%%2
+space:%%{init: {}}%%2
+A:%%{init: {}}%%2
+classDef%%{init: {}}%% c fill:red
+class%%{init: {}}%% A c
+style%%{init: {}}%% A fill:red
+classDef c%%{init: {}}%% fill:red
+accDescr%%{init: {}}%% {}
+block:more
+  N
+end
+A<["x"]>%%{init: {}}%%(right)
+classDef c fill:red,stroke:blue
+style A fill:red,stroke:blue
+Html["<b title="x">Block</b>"]
+Short["a<b"] Other["c>"]
+class A%%{init: {}}%%, B c
+style A%%{init: {}}%% fill:green
+class A c
+block A end
+classDef d foo%%{wrap}%%style:red
+class A foo%%{wrap}%%style
+style A foo%%{wrap}%%style:red
+%%%{wrap}%%% common block comment %%{wrap}%%

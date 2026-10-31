@@ -1,0 +1,99 @@
+{
+  "patterns": [
+    {
+      "include": "#radar"
+    }
+  ],
+  "repository": {
+    "radar": {
+      "comment": "Begin radar at its lowercase header, allowing its joined or separate colon. radar.md#detection: Accepted headers are radar-beta, radar-beta: and radar-beta followed by a separate colon. radar.md#names-and-keyword-boundaries: The joined radar-beta: form has no additional boundary: it can touch axis, title or hidden-yaml. common.md#leading-whitespace: Whitespace, line terminators, directives, and comment regions before the first unit of the diagram's lexer are trivia and are not seen by the diagram's grammar.",
+      "begin": "{{diagramStart}}(radar-beta)(?={{directives}}(?:[{{ws}}]|:|%%|$))",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#hidden-yaml",
+          "comment": "Reuse hidden YAML and its shared line-based approximation. radar.md#hidden-forms-and-comments: After ASCII padding, hidden-yaml starts with ---, optional ASCII padding and LF. Try a body ending in LF before its closing --- first, taking as few body characters as permit that match; only if that fails try adjacent empty fences. Content can include LF, LS and PS. A closer starts immediately after a body LF, without indentation, and ends before LF, common Notation whitespace or EOF. A nonqualifying closer may be passed for a later qualifying one."
+        },
+        {
+          "include": "#hidden-directive",
+          "comment": "Reuse the native hidden directive form. radar.md#hidden-forms-and-comments: After optional ASCII padding, hidden-directive reads %%{ and arbitrary content, including LF/LS/PS or an empty/nonword body, through the earliest }%% ending before LF, common Notation whitespace or EOF. A nonqualifying closer can be passed."
+        },
+        {
+          "include": "#native-percent-comment",
+          "comment": "Reuse native percent comments. radar.md#hidden-forms-and-comments: A native comment reads optional ASCII padding, %%, and maximal content before physical EOL."
+        },
+        {
+          "include": "#common-statements",
+          "comment": "Reuse the title and accessibility composites. radar.md#composite-common-forms: A title is title alone, or title followed by exactly one ASCII space/tab and a line value. Remaining padding belongs to the value. An accessibility title is accTitle, optional ASCII padding, colon and a line value. radar.md#composite-common-forms: A description line is the same form with accDescr. radar.md#composite-common-forms: A description block is accDescr, optional common Notation whitespace, an opening brace, arbitrary characters through the first closing brace, and that closer."
+        },
+        {
+          "comment": "Read word keywords before ids, leaving a longer id whole. radar.md#names-and-keyword-boundaries: A longer name such as axisX is an id rather than axis. radar.md#names-and-keyword-boundaries: The same longer-id rule applies to axis, curve and all five option keywords.",
+          "match": "(showLegend|graticule|curve|ticks|axis|max|min){{wordEnd}}(?!{{directives}}-)",
+          "captures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read the listed graticule and boolean values before ids. radar.md#names-and-keyword-boundaries: Boolean and graticule values have no suffix boundary. radar.md#grammar: showLegend takes only the fixed lowercase boolean words true/false; ticks, max and min take number; graticule takes only the unquoted lowercase words circle/polygon.",
+          "match": "(circle|polygon|true|false)",
+          "captures": {
+            "1": {
+              "name": "constant.language.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read unsigned decimal numbers before ids, checking the dot boundary through following directives. radar.md#numbers-and-strings: The number rule first tries one or more ASCII digits, a dot and one or more ASCII digits, with no dot immediately after that candidate. Otherwise it tries the single digit zero, or a nonzero digit and further digits, again with no immediately following dot for the nonzero form. Repetitions take as many digits as the remaining condition permits. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text.",
+          "match": "(?<![A-Za-z0-9_.-])([0-9]+\\.[0-9]+|0|[1-9][0-9]*)(?!{{directives}}[0-9.])",
+          "name": "constant.numeric.mermaid"
+        },
+        {
+          "include": "#string-escaped",
+          "comment": "Reuse matching quoted labels and backslash escapes. radar.md#numbers-and-strings: A string opens with a single or double quote and closes with the matching quote. It may be empty. Inside it, take characters other than that quote or backslash, including LF, LS and PS; a backslash instead takes the next character, which must not be LF, CR, LS or PS. An unclosed string rejects."
+        },
+        {
+          "comment": "Read separators, label delimiters and entry-list braces; description braces are read by the common form. radar.md#grammar: Each declaration has one id and an optional bracketed string label; a missing label differs from an empty string. radar.md#grammar: A curve requires braces and nonempty entries. radar.md#grammar: Commas separate members in the written group; empty members and trailing commas reject. radar.md#grammar: A named entry's colon is optional and its presence stays in the written punctuation; lexical priority still applies.",
+          "match": "(:)|(,)|(\\[)|(\\])|(\\{)|(\\})",
+          "captures": {
+            "1": {
+              "name": "punctuation.separator.colon.mermaid"
+            },
+            "2": {
+              "name": "punctuation.separator.comma.mermaid"
+            },
+            "3": {
+              "name": "punctuation.definition.label.begin.mermaid"
+            },
+            "4": {
+              "name": "punctuation.definition.label.end.mermaid"
+            },
+            "5": {
+              "name": "punctuation.section.braces.begin.mermaid"
+            },
+            "6": {
+              "name": "punctuation.section.braces.end.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read declared axis and curve ids and named-entry references. radar.md#names-and-keyword-boundaries: An id starts with an ASCII letter, digit or underscore, continues with those characters or dash, and cannot end with dash.",
+          "match": "[A-Za-z0-9_][A-Za-z0-9_-]*(?<!-)",
+          "name": "variable.mermaid"
+        }
+      ]
+    }
+  }
+}

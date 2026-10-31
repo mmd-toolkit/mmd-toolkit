@@ -1,0 +1,52 @@
+kanban
+  Todo
+    docs[Create documentation]@{ ticket: MC-2037, assigned: "knsv", priority: 'High' }
+    blog(Create blog about the new diagram)
+  [In progress]
+    renderer((Create renderer))
+      :::urgent
+    label("`Markdown *label*`")
+      ::icon(fa fa-book)
+  %% a comment line
+  Literal ::icon(x)
+  Tagged[Label] %% shape comment
+  Data@{ 1key: "value", "quoted-key": "A%%{init: {}}%%B" }
+  directed["%%{init: {}}%%`x`"]
+  html["<b title="x">label</b>"]
+  markdownHtml["`<b title="x">label</b>`"]
+  partial["a<b"]@{ ticket: "c>" }
+  bare[text%%{init: {}}%%note<b title="x">tag</b>]
+    :::a%%{init: {}}%%note
+    ::icon(a%%{init: {}}%%b)
+  directedCloser["`x`%%{init: {}}%%"]
+  SingleData@{x: 'a}%% single quote closes
+
+  OpaqueData@{key: true, other: false}
+
+  HtmlCloser[<b x=")%% close">
+
+  BareCloser[text<b x=")%% bare close">
+
+  HtmlBracket[<b x="]%% bracket close">
+
+  HtmlParen[<b x="(%% paren close">
+
+  HtmlBrace[<b x="}}%% brace close">
+
+
+
+
+
+
+
+  Indentation
+  %%{wrap}%%  :::tag
+  %%{wrap}%%  ::ICON(x)
+
+  Native[Label]%%%{wrap}%%% native %%{init: ")"}%% tail
+
+  Entity[<b x="#amp;">]
+
+  :::title ::icon(x)
+
+  Padded[Label] %%{wrap}%% %% native after padding

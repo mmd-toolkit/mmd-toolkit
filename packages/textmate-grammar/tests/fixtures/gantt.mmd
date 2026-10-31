@@ -1,0 +1,97 @@
+gantt
+  title Project title weekday monday
+  accTitle: An accessible title
+  accDescr: A line description
+  accDescr { A block with title and 123 }
+  accDescr {}
+  dateFormat YYYY-MM-DD
+  axisFormat %m/%d
+  tickInterval 1week
+  includes monday,tuesday
+  excludes weekends,2026-11-01
+  todayMarker stroke:#f00,stroke-width:2px
+  weekday monday
+  weekday tuesday
+  weekday wednesday
+  weekday thursday
+  weekday friday
+  weekday saturday
+  weekday sunday
+  weekend friday
+  weekend saturday
+  inclusiveEndDates
+  section Development click title
+  Task with title and "quotes" : done, task1, 2026-11-01, 2d
+  click task1 href "https://example.com/title"
+  click task1 call handler("title",123) href "https://example.com/call"
+  click task1 href "u" call handler()
+  titleLong : 1d
+  clickLong : 1d
+  inclusiveEndDatesLong : 1d
+  weekday mondayLong : 1d
+  title A%%{init: {}}%%B
+  section A%%{init: {}}%%B
+  dateFormat YY%%{init: {}}%%YY
+  accTitle: A%%{init: {}}%%B
+  accDescr { A%%{init: {}}%%B }
+  Task%%{init: {}}%%name : 1%%{init: {}}%%d
+  click task1 call f%%{init: {}}%%g(1%%{init: {}}%%2)
+  click task1 href "u%%{init: {}}%%v"
+  % a native comment
+  %%
+  %% a common comment
+  click task1 call f(a(b)
+  WEEKDAY MONDAY
+  INCLUSIVEENDDATES
+  CLICK task1 CALL f() HREF "u"
+  click x call a)b(1)
+  click %%{init: {}}%%x href "u"
+  includes monday%%{init: {}}%%,tuesday
+  dateFormat #a%%{init: {}}%%mp;call f()
+  click x href "<b title="x">y</b>"
+  click x href "a<b" call f(c>)
+  accTitle%%{init: {}}%%: T
+  accDescr%%{init: {}}%%: D
+  accDescr%%{init: {}}%%{ B }
+  weekday%%{init: {}}%% monday
+  weekend %%{init: {}}%%saturday
+  title%%{init: {}}%% T
+  section%%{init: {}}%% S
+  dateFormat%%{init: {}}%% YYYY
+  includes%%{init: {}}%% monday
+  todayMarker%%{init: {}}%% stroke:#amp;
+  click x href%%{init: {}}%% "v" call%%{init: {}}%% f(2)
+  Task : #a%%{init: {}}%%mp;call f()
+  todayMarker #a%%{init: {}}%%mp;call f()
+  dateFormat #x : 1d
+  axisFormat #x : 1d
+  tickInterval #x : 1d
+  includes #x : 1d
+  excludes #x : 1d
+  dateFormat #amp; YYYY
+  dateFormat #amp;x : 1d
+  dateFormat %%{init: {}}%%#x : 1d
+  dateFormat ;x : 1d
+  inclusiveEndDates%%{wrap}%%Long : 1d
+  weekday monday%%{wrap}%%Long : 1d
+  weekend friday%%{wrap}%%Long : 1d
+  weekday tuesday%%{wrap}%%Long : 1d
+  weekday wednesday%%{wrap}%%Long : 1d
+  weekday thursday%%{wrap}%%Long : 1d
+  weekday friday%%{wrap}%%Long : 1d
+  weekday saturday%%{wrap}%%Long : 1d
+  weekday sunday%%{wrap}%%Long : 1d
+  weekend saturday%%{wrap}%%Long : 1d
+
+  click a,b call f()
+  includes monday,tuesday
+  a: 1d,2d
+  click a%%{wrap}%% href "u"
+
+  accDescr {}%%%{wrap}%%% native split mark
+  click a call f)%%{wrap}%%g(1)
+
+  %%{wrap}%%title T
+
+  accDescr {}%%%{wrap}%% native single mark
+  foo%%{wrap}%%title : 1d

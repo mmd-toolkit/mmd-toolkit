@@ -1,0 +1,267 @@
+{
+  "patterns": [
+    {
+      "include": "#wardley"
+    }
+  ],
+  "repository": {
+    "wardley": {
+      "comment": "Read the lowercase header, allowing an attached statement. wardley.md#detection: The grammar accepts only the lowercase header. wardley.md#detection: The header needs no EOL: a following statement can be glued directly to it.",
+      "begin": "{{diagramStart}}(wardley-beta)",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#hidden-yaml",
+          "comment": "Read native hidden YAML. wardley.md#native-padding-hidden-forms-and-eol: Hidden-yaml starts with three dashes, optional ASCII space/tab and a line break. Try a body ending in a line break before the empty-body alternative; within that first alternative take as little body as allows a qualifying closer. A closer is three dashes at the beginning of a line, followed by a consumed line break or a nonconsumed common-whitespace/end boundary. It need not use the opener’s indentation. An indented closer or four closing dashes is not that closer."
+        },
+        {
+          "include": "#hidden-directive",
+          "comment": "Read native hidden directives. wardley.md#native-padding-hidden-forms-and-eol: Hidden-directive starts with optional ASCII space/tab and %%{, reads any characters as few as possible through a qualifying }%%, then consumes a following line break or only tests a common-whitespace/end boundary. If an early closer is glued to nonwhitespace, try a later qualifying closer. If the whole rule fails, native-comment can read the percent pair and the rest of its line, including apparent following syntax. A native comment stops before CR/LF and consumes no line break. Its mark is %%; a single percent is not a comment."
+        },
+        {
+          "include": "#native-percent-comment",
+          "comment": "Read native percent comments. wardley.md#native-padding-hidden-forms-and-eol: A native comment stops before CR/LF and consumes no line break. wardley.md#native-padding-hidden-forms-and-eol: Its mark is %%; a single percent is not a comment."
+        },
+        {
+          "include": "#common-statements",
+          "comment": "Read metadata text and its delimiters. wardley.md#common-metadata-values: Title-line is title and an optional separator of exactly one ASCII space/tab followed by line content. Acc-title-line and acc-descr-line have their exact keyword, optional space/tab, colon and line content. Line content stops immediately before the first %% or CR/LF; quotes are ordinary text and need not close. Title-colon is not a title form. Earlier spaced-name exclusions still apply. wardley.md#common-metadata-values: Acc-descr-block has accDescr, optional common whitespace, opening brace and content through the first closing brace. The closer is required. Quotes and backslashes do not protect a closing brace. Internal line breaks, indentation, bare percent lines and native-looking YAML remain content unless a shared removal applies; native-directive-looking text can instead close the block at its first brace."
+        },
+        {
+          "comment": "Read command keywords at a statement start, including glued names and annotation numbers. wardley.md#keyword-and-name-boundaries: All Wardley command/header keywords and strategy values use their exact lowercase spelling without a word or whitespace boundary. Thus componentA and anchor_A split at their keyword prefixes; annotations precedes annotation. A global directive glued after a complete keyword does not add a boundary requirement after its removal. A split keyword instead follows the atomic divergence below.",
+          "match": "(?:^|\\G)[ \\t]*(size|evolution|anchor|component|evolve|pipeline|note|annotations|accelerator|deaccelerator|annotation)(?:(?<=annotation)({{asciiGap}})(0|{{wardley-nonzero-integer}}){{wardley-number-end}})?",
+          "captures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "constant.numeric.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read the label-offset keyword after coordinates. wardley.md#grammar: A component has at most one label offset, one source strategy and one inertia decoration, in that order. wardley.md#common-boundaries-in-authored-components: Global directives and semicolons actually selected by the shared line rule may lie between complete authored components. A coordinate pair has bracket, number, comma, number and bracket components; offset sign and integer are separate; strategy and parenthesized inertia have parenthesis, fixed word and parenthesis components. Stage names, @, boundary, slash and second name also have separate boundaries. Common metadata separates its complete word from colon, brace or title separator.",
+          "match": "(\\])({{asciiGap}})(label)",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#wardley-closing-delimiter"
+                }
+              ]
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "keyword.control.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read an inertia decoration after coordinates or strategy, or inside parentheses. wardley.md#grammar: Inertia can be bare or parenthesized. wardley.md#common-boundaries-in-authored-components: Global directives and semicolons actually selected by the shared line rule may lie between complete authored components. A coordinate pair has bracket, number, comma, number and bracket components; offset sign and integer are separate; strategy and parenthesized inertia have parenthesis, fixed word and parenthesis components. Stage names, @, boundary, slash and second name also have separate boundaries. Common metadata separates its complete word from colon, brace or title separator.",
+          "match": "([\\])])({{asciiGap}})(inertia)|{{wardley-parenthesized-value-start}}(inertia)",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#wardley-closing-delimiter"
+                }
+              ]
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "keyword.control.mermaid"
+            },
+            "4": {
+              "name": "punctuation.section.parens.begin.mermaid"
+            },
+            "5": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "6": {
+              "name": "keyword.control.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read a source-strategy value after its parenthesis. wardley.md#keyword-and-name-boundaries: A strategy is build, buy, outsource or market, in that priority order. wardley.md#common-boundaries-in-authored-components: Global directives and semicolons actually selected by the shared line rule may lie between complete authored components. A coordinate pair has bracket, number, comma, number and bracket components; offset sign and integer are separate; strategy and parenthesized inertia have parenthesis, fixed word and parenthesis components. Stage names, @, boundary, slash and second name also have separate boundaries. Common metadata separates its complete word from colon, brace or title separator.",
+          "match": "{{wardley-parenthesized-value-start}}(build|buy|outsource|market)",
+          "captures": {
+            "1": {
+              "name": "punctuation.section.parens.begin.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "constant.language.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read unsigned integer or decimal units; offset signs stay separate. wardley.md#numbers: A decimal is a nonempty ASCII digit run, one dot and a nonempty ASCII digit run. Leading zeros are allowed. An integer is 0, tried first, or a nonzero ASCII digit followed by as many ASCII digits as possible without ending immediately before a dot. Decimal precedes integer. Leading-zero integers consequently split and reject where one integer is required. Plus, negative decimals, exponent notation, a missing side of the dot, NaN and Infinity spellings are not numeric units. wardley.md#numbers: Coordinates of anchors, components, notes and forces, pipeline evolution values, evolve targets and stage boundaries require decimal. Annotation and annotations-box coordinates allow decimal or integer. Size dimensions, annotation numbers and offset magnitudes require integer. An offset minus is separate punctuation, so space/tab or whole hidden forms may separate it from the unsigned magnitude. A decimal offset or size dimension rejects.",
+          "match": "([0-9]+\\.[0-9]+|0|{{wardley-nonzero-integer}}){{wardley-number-end}}",
+          "name": "constant.numeric.mermaid"
+        },
+        {
+          "comment": "Read the separate flow opener, quoted label and arrow marker. wardley.md#strings-and-link-labels: A port is +<>, +> or +<, in that priority order. A dependency-arrow is ->. A link-arrow is -->, -.->, >, or a labeled flow consisting of +, single-quoted content and the marker <>, < or >. Flow content contains any characters except single quote, including line breaks and U+2028/U+2029, and may be empty. Backslash is ordinary there and cannot escape a quote. Its label does not use the string escape conversion. wardley.md#common-boundaries-in-authored-components: A labeled flow has +, its whole quoted label and its ending marker as authored components. Global trivia may separate those components and may lie inside label text. A dependency arrow, a whole port and the <> marker are indivisible glyphs. A fixed keyword, strategy word, integer, decimal or id-name is also indivisible. A spaced-name is a text unit and can contain shared removals. Internal atom splits reject under the two atomic divergences below.",
+          "begin": "(\\+)({{directives}})(?=')",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.operator.arrow.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "(<>|<|>)",
+          "endCaptures": {
+            "1": {
+              "name": "keyword.operator.arrow.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read a flow label without backslash escapes. wardley.md#strings-and-link-labels: Flow content contains any characters except single quote, including line breaks and U+2028/U+2029, and may be empty. wardley.md#strings-and-link-labels: Backslash is ordinary there and cannot escape a quote.",
+              "include": "#string-plain-single"
+            }
+          ]
+        },
+        {
+          "comment": "Read ports and unlabeled arrows without splitting an earlier name. wardley.md#strings-and-link-labels: A port is +<>, +> or +<, in that priority order. A dependency-arrow is ->. A link-arrow is -->, -.->, >, or a labeled flow consisting of +, single-quoted content and the marker <>, < or >. Flow content contains any characters except single quote, including line breaks and U+2028/U+2029, and may be empty. Backslash is ordinary there and cannot escape a quote. Its label does not use the string escape conversion.",
+          "match": "\\+<>|\\+>|\\+<|(?:-->|-\\.->)|->|>",
+          "name": "keyword.operator.arrow.mermaid"
+        },
+        {
+          "comment": "Read a semicolon-delimited link label through the physical line end. wardley.md#strings-and-link-labels: A link-label is a semicolon followed by one or more characters other than CR/LF, taking the rest of that physical line. Bare semicolon rejects; semicolon-space is a nonempty authored literal even when its derived value is empty, and two semicolons give content consisting of the second one. U+2028/U+2029 and native-looking hidden forms remain label content. Keep this label separately even when a flow label takes precedence in the Db. Derived label and flow rules belong to the tests summary, not the authored arrow fields. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "begin": "(;)(?=.)",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.separator.label.mermaid"
+            }
+          },
+          "end": "{{lineValueEnd}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "include": "#string-escaped",
+          "comment": "Read a quoted name or text. wardley.md#strings-and-link-labels: A string uses matching single or double quotes, may be empty and must close. Read nonmatching-quote, nonbackslash characters or a backslash with exactly one following character until the unescaped matching quote. The character after a backslash cannot be a normalized LF, U+2028 or U+2029. Unescaped physical line breaks and both separators are content. A missing closer or dangling backslash rejects. Common quote conversion applies before this matching; authored quotes and escape spelling remain in StringLiteral.raw."
+        },
+        {
+          "comment": "Read a whole bare name, protecting internal keywords and retaining directives. wardley.md#keyword-and-name-boundaries: An id-name starts with an ASCII letter, digit or underscore, continues with those characters or hyphens and ends with a word character. Earlier rules still win: integer takes the 9 of 9a, whereas _a is a name. Non-ASCII bare names reject. Quoting a name avoids these keyword and bare-name restrictions. wardley.md#keyword-and-name-boundaries: A spaced-name starts with an ASCII letter. Continue with ASCII letters, digits, underscore, parentheses, ampersand, or a hyphen not immediately followed by >. Then repeat a nonempty space/tab run and another part starting with an ASCII letter or opening parenthesis, followed by the same continuation characters. Take as much as this form allows. Internal space/tab is authored name text; trailing padding is outside the name. A space followed by ampersand cannot start another part. wardley.md#common-boundaries-in-authored-components: A spaced-name is a text unit and can contain shared removals. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text.",
+          "match": "[A-Za-z]{{wardley-name-character}}*(?:{{requiredAsciiGap}}[A-Za-z(]{{wardley-name-character}}*)*|[A-Za-z0-9_](?:[A-Za-z0-9_-]*[A-Za-z0-9_])?",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "name": "variable.mermaid"
+        },
+        {
+          "comment": "Read coordinate and strategy brackets, separators, offset and stage operators, and pipeline block braces. wardley.md#common-boundaries-in-authored-components: Global directives and semicolons actually selected by the shared line rule may lie between complete authored components. A coordinate pair has bracket, number, comma, number and bracket components; offset sign and integer are separate; strategy and parenthesized inertia have parenthesis, fixed word and parenthesis components. Stage names, @, boundary, slash and second name also have separate boundaries. Common metadata separates its complete word from colon, brace or title separator. wardley.md#grammar: Pipeline body contains one or more pipeline components, not nested pipeline statements or common metadata.",
+          "match": "(\\[)|(,)|(@)|(/)|(\\()|(-)|(\\{)|(\\})",
+          "captures": {
+            "1": {
+              "name": "punctuation.section.brackets.begin.mermaid"
+            },
+            "2": {
+              "name": "punctuation.separator.comma.mermaid"
+            },
+            "3": {
+              "name": "keyword.operator.mermaid"
+            },
+            "4": {
+              "name": "keyword.operator.mermaid"
+            },
+            "5": {
+              "name": "punctuation.section.parens.begin.mermaid"
+            },
+            "6": {
+              "name": "keyword.operator.mermaid"
+            },
+            "7": {
+              "name": "keyword.operator.block.begin.mermaid"
+            },
+            "8": {
+              "name": "keyword.operator.block.end.mermaid"
+            }
+          }
+        },
+        {
+          "include": "#wardley-closing-delimiter"
+        }
+      ]
+    },
+    "wardley-closing-delimiter": {
+      "comment": "Read coordinate and strategy closing delimiters, including captures before decorations. wardley.md#common-boundaries-in-authored-components: Global directives and semicolons actually selected by the shared line rule may lie between complete authored components. A coordinate pair has bracket, number, comma, number and bracket components; offset sign and integer are separate; strategy and parenthesized inertia have parenthesis, fixed word and parenthesis components. Stage names, @, boundary, slash and second name also have separate boundaries. Common metadata separates its complete word from colon, brace or title separator.",
+      "patterns": [
+        {
+          "match": "\\]",
+          "name": "punctuation.section.brackets.end.mermaid"
+        },
+        {
+          "match": "\\)",
+          "name": "punctuation.section.parens.end.mermaid"
+        }
+      ]
+    }
+  },
+  "variables": {
+    "wardley-name-character": "(?:[A-Za-z0-9_()&]|-(?!{{directives}}>)|{{directive}})",
+    "wardley-parenthesized-value-start": "(\\()({{asciiGap}})",
+    "wardley-nonzero-integer": "[1-9][0-9]*",
+    "wardley-number-end": "(?!{{directives}}[0-9.])"
+  }
+}

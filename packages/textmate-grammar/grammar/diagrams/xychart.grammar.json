@@ -1,0 +1,301 @@
+{
+  "variables": {
+    "xychart-statement-end": "(?:(?=(?i:{{xychart-header}}|title|x-axis|y-axis|line|bar){{wordEnd}}|(?i:{{xychart-accessibility-keywords}}){{gap}}[:{]|;)|{{lineValueEnd}})",
+    "xychart-orientation-value": "(?i:vertical|horizontal)",
+    "xychart-accessibility-keywords": "accTitle|accDescr",
+    "xychart-header": "xychart(?i:-beta)?"
+  },
+  "patterns": [
+    {
+      "include": "#xychart"
+    }
+  ],
+  "repository": {
+    "xychart": {
+      "comment": "Begin at the lowercase detector prefix and accept either bounded beta spelling. xychart.md#detection: The lexer then reads the header, the keyword `xychart-beta` or the keyword `xychart`, compared case-insensitively and not followed by a word character (see [The statement context](#the-statement-context)).",
+      "begin": "{{diagramStart}}({{xychart-header}}){{wordEnd}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#xychart-comment"
+        },
+        {
+          "comment": "Read another bounded header before statements. xychart.md#diagram-and-statements: A header may follow another, on its line or on a later one, and may carry an orientation, but no header follows a statement.",
+          "match": "((?i:{{xychart-header}})){{wordEnd}}",
+          "captures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read the orientation as a listed fixed value; enclosing text contexts keep quoted words as text. xychart.md#detection: The **orientation** is the keyword `vertical` or `horizontal`, compared case-insensitively, right after a header, with whitespace other than a line feed between them, or with whitespace and line feeds after whitespace between them (see [Line breaks](#units-and-contexts)); a statement may follow it on its line.",
+          "match": "{{xychart-orientation-value}}",
+          "name": "constant.language.mermaid"
+        },
+        {
+          "comment": "Read an accessibility keyword and its delimiter in the local context, retaining its distinct whitespace and end-of-text rules. xychart.md#accessibility-values: `accTitle` and `:` enter the accessibility title context, and `accDescr` and `:` the accessibility description context. Each reads the whitespace after the `:`, line feeds included, and then the rest of the line as an `acc-title-text` or an `acc-description-text` unit, and leaves. xychart.md#accessibility-values: Without a `}`, the text runs to the end of the text. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "begin": "((?i:{{xychart-accessibility-keywords}})){{wordEnd}}",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          },
+          "end": "(?<=\\})|{{lineValueEnd}}",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read the colon and line value without consuming a possible comment boundary in the opening gap. xychart.md#accessibility-values: `accTitle` and `:` enter the accessibility title context, and `accDescr` and `:` the accessibility description context. Each reads the whitespace after the `:`, line feeds included, and then the rest of the line as an `acc-title-text` or an `acc-description-text` unit, and leaves. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+              "begin": "(:)",
+              "beginCaptures": {
+                "1": {
+                  "name": "punctuation.separator.colon.mermaid"
+                }
+              },
+              "end": "{{lineValueEnd}}",
+              "contentName": "string.unquoted.mermaid",
+              "patterns": [
+                {
+                  "include": "#comment-line"
+                },
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            {
+              "comment": "Read description text through its first closing brace, leaving separator-led common comments outside the value. xychart.md#accessibility-values: `accDescr`, whitespace, and `{` enter the description block context, which reads the whitespace after the `{` and then every character up to the next `}` as a `description-block-text` unit, empty when the `}` follows the whitespace, reads the `}` as a `}` unit, and leaves. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+              "begin": "(\\{)",
+              "beginCaptures": {
+                "1": {
+                  "name": "punctuation.definition.description.begin.mermaid"
+                }
+              },
+              "end": "(\\})|{{separatorCommentEnd}}",
+              "endCaptures": {
+                "1": {
+                  "name": "punctuation.definition.description.end.mermaid"
+                }
+              },
+              "contentName": "string.unquoted.mermaid",
+              "patterns": [
+                {
+                  "include": "#comment-line"
+                },
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "comment": "Read a chart title until the next statement, separator or physical line end. xychart.md#titles: The title is words or one string, not both, and never empty: `title` alone, `title` and a space at the end of the text, and `title \"\"` are rejected. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "begin": "((?i:title)){{wordEnd}}",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          },
+          "end": "{{xychart-statement-end}}",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#xychart-comment"
+            },
+            {
+              "include": "#xychart-string"
+            },
+            {
+              "include": "#xychart-word"
+            }
+          ]
+        },
+        {
+          "comment": "Read an axis title and data in the axis context, keeping category digits as text. xychart.md#the-axis-context: `x-axis` and `y-axis` enter the axis context. xychart.md#the-axis-context: It ends at the end of its statement: a line break leaves it and is a `newline` unit, and a `;` and a keyword leave it and are read in the context below, but for `accDescr` with `{`, which enters the description block context on top of it, so that the axis context goes on after the `}`. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "begin": "((?i:x-axis|y-axis)){{wordEnd}}",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          },
+          "end": "{{xychart-statement-end}}",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#xychart-comment"
+            },
+            {
+              "comment": "Read a category list with textual digits. xychart.md#the-category-context: `[` in the axis context enters the category context, and `]` leaves it. xychart.md#the-category-context: So digits are words there: `[Q1]`, `[1, 2]`, `[-1, +2, .5]`, and `[1.5, -2]` are categories, and the words of a category, with whitespace between them or not, are one category.",
+              "begin": "(\\[)",
+              "beginCaptures": {
+                "1": {
+                  "name": "punctuation.section.brackets.begin.mermaid"
+                }
+              },
+              "end": "(\\])",
+              "endCaptures": {
+                "1": {
+                  "name": "punctuation.section.brackets.end.mermaid"
+                }
+              },
+              "patterns": [
+                {
+                  "include": "#comment-line"
+                },
+                {
+                  "include": "#directive"
+                },
+                {
+                  "include": "#xychart-string"
+                },
+                {
+                  "include": "#xychart-word"
+                },
+                {
+                  "include": "#xychart-list-separator"
+                }
+              ]
+            },
+            {
+              "include": "#xychart-string"
+            },
+            {
+              "comment": "Read the three-character range arrow. xychart.md#the-axis-context: A range needs the three characters of the arrow together: `1-->-2` is a range, and `1 - -> 2`, `1 -- > 2`, and `1 -> 2` are rejected.",
+              "match": "-->",
+              "name": "keyword.operator.arrow.mermaid"
+            },
+            {
+              "include": "#xychart-number"
+            },
+            {
+              "include": "#xychart-word"
+            }
+          ]
+        },
+        {
+          "comment": "Read a plot title and its values, keeping title digits as text. xychart.md#the-plot-context: `line` and `bar` enter the plot context. xychart.md#the-plot-context: So digits are words in the title of a plot: `line Q1 [1]`, `bar 2024 [1]`, `line a-1 [1]`, `line -5 [2]`, and `line 1.5 [2]` have the titles `Q1`, `2024`, `a-1`, `-5`, and `1.5`. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "begin": "((?i:line|bar)){{wordEnd}}",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          },
+          "end": "{{xychart-statement-end}}",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#xychart-comment"
+            },
+            {
+              "comment": "Read a plot's bracketed values and optional quoted labels. xychart.md#plots: A plot statement is `line` or `bar`, a title or none, and one or more values in brackets, separated by commas. xychart.md#plots: A value may be followed by a label, a string, with or without whitespace between them, on a line and on a bar.",
+              "begin": "(\\[)",
+              "beginCaptures": {
+                "1": {
+                  "name": "punctuation.section.brackets.begin.mermaid"
+                }
+              },
+              "end": "(\\])",
+              "endCaptures": {
+                "1": {
+                  "name": "punctuation.section.brackets.end.mermaid"
+                }
+              },
+              "patterns": [
+                {
+                  "include": "#comment-line"
+                },
+                {
+                  "include": "#directive"
+                },
+                {
+                  "include": "#xychart-number"
+                },
+                {
+                  "include": "#xychart-string"
+                },
+                {
+                  "include": "#xychart-list-separator"
+                }
+              ]
+            },
+            {
+              "include": "#xychart-string"
+            },
+            {
+              "include": "#xychart-word"
+            }
+          ]
+        },
+        {
+          "comment": "Read a semicolon as a statement separator. xychart.md#diagram-and-statements: A `;` ends a line as a line feed does, and empty lines and empty statements change nothing.",
+          "match": ";",
+          "name": "punctuation.separator.semicolon.mermaid"
+        }
+      ]
+    },
+    "xychart-string": {
+      "comment": "Reuse plain double-quoted strings without escapes. xychart.md#strings: A string has no escape: a second `\"` ends it, so `\"a\"\"b\"` is two strings.",
+      "include": "#string-plain-double"
+    },
+    "xychart-word": {
+      "comment": "Read word units as labels, preserving directives inside a run of letters or digits. xychart.md#the-statement-context: So a text without quotes is made of letters of ASCII, digits, and `-`, `_`, `.`, `+`, `=`, `*`, `&`, and `#`, a `#` being no comment: `title T # c` has the title `T#c`. xychart.md#directives-inside-units: The **text units** are a `word`, an `acc-title-text`, an `acc-description-text`, and a `description-block-text`. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text.",
+      "match": "[A-Za-z]+(?:{{directives}}[A-Za-z]+)*|[0-9]+(?:{{directives}}[0-9]+)*|[-_.+=*&#]",
+      "name": "string.unquoted.mermaid",
+      "captures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      }
+    },
+    "xychart-number": {
+      "comment": "Read a number in axis ranges and plot values. xychart.md#the-axis-context: A number has no exponent and no `.` without digits after it: `1e3 --> 5` and `1. --> 2` are rejected, while `.5`, `007`, `-0`, `+1`, and a number of twenty digits are numbers.",
+      "match": "[+-]?(?:[0-9]+(?:\\.[0-9]+)?|\\.[0-9]+)",
+      "name": "constant.numeric.mermaid"
+    },
+    "xychart-comment": {
+      "comment": "Reuse native percent comments outside value text. xychart.md#comments: A comment starts at `%%` where a unit starts and runs to the end of its line, the line feed left out; it belongs to no unit.",
+      "include": "#native-percent-comment"
+    },
+    "xychart-list-separator": {
+      "comment": "Read the separator of categories and plot values. xychart.md#plots: A plot statement is `line` or `bar`, a title or none, and one or more values in brackets, separated by commas.",
+      "match": ",",
+      "name": "punctuation.separator.comma.mermaid"
+    }
+  }
+}

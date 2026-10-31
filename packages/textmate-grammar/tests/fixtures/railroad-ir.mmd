@@ -1,0 +1,25 @@
+railroad-beta%%{wrap}%%
+accTitle: Grammar title
+accDescr: Grammar description
+accDescr { Grammar block }
+title Grammar
+expr = sequence(terminal("a"), choice(nonterminal("b"), optional(special('c'))));
+list = oneOrMore(zeroOrMore(terminal("x")));
+/* a block comment */
+%% a comment line
+---
+ignored: railroad
+---
+%%{!}%%
+html = terminal("a<b title="x">y</b>");
+partial = sequence(terminal("a<b"), terminal("c>"));
+/* a%%{x: */}%%terminal */ native = terminal("x");
+/%%{wrap}%%* terminal */ opened = terminal("x");
+/* text *%%{wrap}%%/ closed = terminal("x");
+boundary = terminal%%{wrap}%%("x");
+checkedHtml = sequence(terminal("<b %%{x: >}%%x="),terminal("y"));
+/%%{wrap}%%* terminal *%%{wrap}%%/ joined = terminal("x");
+/* block
+%% common */ %%{wrap}%%
+ terminal */ commentLine = terminal("x");
+escaped = terminal("a\nb");

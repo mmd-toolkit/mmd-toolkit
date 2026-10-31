@@ -1,0 +1,31 @@
+railroad-ebnf-beta%%{wrap}%%
+title Grammar
+accTitle: Grammar title
+accDescr: Grammar description
+accDescr { Grammar block }
+digit = "0" | "1" ;
+number ::= digit, { digit } ;
+value = [ "-" ] number - "0" ;
+item = ? special sequence ? , value+ ;
+(* an iso comment *)
+%% a comment line
+---
+ignored: railroad
+---
+%%{!}%%
+probe = ? a%%{init: {"end":"?;"}}%%b ? ;
+html = "a<b title="x">y</b>" ;
+postfix = "a"? ?;
+directivesOnly = "a"?%%{wrap}%% ?;
+(* a%%{x: *)}%%terminal *) native = "x";
+(%%{wrap}%%* set *) opened = "x";
+(* text *%%{wrap}%%) closed = "x";
+entity = ? #amp; ?;
+
+empty = "a"??;
+
+(%%{wrap}%%* text *%%{wrap}%%) joined = "x";
+/* block
+%% common */ %%{wrap}%%
+ set */ commentLine = "x";
+escaped = 'a\nb';

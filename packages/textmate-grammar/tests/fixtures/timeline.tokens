@@ -1,0 +1,306 @@
+> %% a comment line
+  "%% a comment line" comment.line.percentage.mermaid
+> timeline%%{init: {}}%% TD
+  "timeline" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "TD" constant.language.mermaid
+>   title History of Social Media
+  "title" keyword.control.mermaid
+  "History of Social Media" string.unquoted.mermaid
+>   accTitle: Social media
+  "accTitle" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "Social media" string.unquoted.mermaid
+>   accDescr: The years of the big platforms
+  "accDescr" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "The years of the big platforms" string.unquoted.mermaid
+>   accDescr { A description
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  "A description" string.unquoted.mermaid
+>     over two lines }
+  "    over two lines " string.unquoted.mermaid
+  "}" punctuation.definition.description.end.mermaid
+>   section Early years
+  "section" keyword.control.mermaid
+  "Early years" string.unquoted.mermaid
+>     2002 : LinkedIn
+  "2002 " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "LinkedIn" string.unquoted.mermaid
+>     2004 : Facebook : Google
+  "2004 " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "Facebook " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "Google" string.unquoted.mermaid
+>   # a hash comment
+  "# a hash comment" comment.line.number-sign.mermaid
+>   % a percent comment
+  "% a percent comment" comment.line.percentage.mermaid
+>   section Later
+  "section" keyword.control.mermaid
+  "Later" string.unquoted.mermaid
+>     2005 : YouTube
+  "2005 " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "YouTube" string.unquoted.mermaid
+>   titlex
+  "titlex" string.unquoted.mermaid
+>   sectionx
+  "sectionx" string.unquoted.mermaid
+>   title 
+  "title " string.unquoted.mermaid
+>   section 
+  "section " string.unquoted.mermaid
+>   period # an inline hash comment
+  "period " string.unquoted.mermaid
+  "# an inline hash comment" comment.line.number-sign.mermaid
+>   period #amp; : Event%%{init: {}}%% text
+  "period " string.unquoted.mermaid
+  "#amp;" string.unquoted.mermaid
+  " " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "Event" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  " text" string.unquoted.mermaid
+>   title A%%{init: {}}%%B
+  "title" keyword.control.mermaid
+  "A" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "B" string.unquoted.mermaid
+> title%%{init: {}}%% Directive title
+  "title" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "Directive title" string.unquoted.mermaid
+> section%%{init: {}}%% Directive section : Event
+  "section" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "Directive section " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "Event" string.unquoted.mermaid
+> accTitle%%{init: {}}%%: Directive accessibility title
+  "accTitle" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "Directive accessibility title" string.unquoted.mermaid
+> accDescr%%{init: {}}%%: Directive description
+  "accDescr" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "Directive description" string.unquoted.mermaid
+> accDescr%%{init: {}}%%{Directive block}
+  "accDescr" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  "Directive block" string.unquoted.mermaid
+  "}" punctuation.definition.description.end.mermaid
+> Period:%%{init: {}}%% Event
+  "Period" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "Event" string.unquoted.mermaid
+> Period : first:%%{init: {}}%% second
+  "Period " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "first" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "second" string.unquoted.mermaid
+> Period : first:%%{init: {}}%%word
+  "Period " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "first:" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "word" string.unquoted.mermaid
+> #%%{init: {}}%%amp; : Entity event
+  "#" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "amp;" string.unquoted.mermaid
+  " " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "Entity event" string.unquoted.mermaid
+> title
+  "title" string.unquoted.mermaid
+> 
+> section
+  "section" string.unquoted.mermaid
+> 
+> accDescr {}%%%{wrap}%%{period}
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  "}" punctuation.definition.description.end.mermaid
+  "%" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "{period}" string.unquoted.mermaid
+> accDescr {}%%%{wrap}%%% native %%{wrap}%% end
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  "}" punctuation.definition.description.end.mermaid
+  "%" comment.line.percentage.mermaid
+  "%%{" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.line.percentage.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "% native " comment.line.percentage.mermaid
+  "%%{" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.line.percentage.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  " end" comment.line.percentage.mermaid
+> accDescr {}# native %%{wrap}%% end
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  "}" punctuation.definition.description.end.mermaid
+  "# native " comment.line.number-sign.mermaid
+  "%%{" comment.line.number-sign.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.line.number-sign.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.line.number-sign.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  " end" comment.line.number-sign.mermaid
+> #%%{wrap}%%amp%%{wrap}%%; : Entity continuation
+  "#" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "amp" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  ";" string.unquoted.mermaid
+  " " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "Entity continuation" string.unquoted.mermaid
+> Period:%%{wrap}%% Event after directive
+  "Period" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "Event after directive" string.unquoted.mermaid
+>   %%{wrap}%%title Leading directive
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "title" keyword.control.mermaid
+  "Leading directive" string.unquoted.mermaid
+>   %%{wrap}%%section Leading section
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "section" keyword.control.mermaid
+  "Leading section" string.unquoted.mermaid
+>   %%{wrap}%%accTitle: Leading accessibility title
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "accTitle" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "Leading accessibility title" string.unquoted.mermaid
+>   %%{wrap}%%accDescr: Leading description
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "accDescr" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "Leading description" string.unquoted.mermaid
+>   %%{wrap}%%accDescr { Leading block }
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  "Leading block " string.unquoted.mermaid
+  "}" punctuation.definition.description.end.mermaid
+>   %%{wrap}%%% native percent
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "% native percent" comment.line.percentage.mermaid
+> period%%{wrap}%%title Still period
+  "period" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "title Still period" string.unquoted.mermaid
+> period%%{wrap}%%section Still period
+  "period" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "section Still period" string.unquoted.mermaid
+> period%%{wrap}%%accTitle: Event
+  "period" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "accTitle" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "Event" string.unquoted.mermaid
+> period%%{wrap}%%%still period
+  "period" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "%still period" string.unquoted.mermaid
+> 

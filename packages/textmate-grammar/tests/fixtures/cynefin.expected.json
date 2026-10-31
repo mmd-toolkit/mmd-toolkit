@@ -1,0 +1,54 @@
+{
+  "header": "cynefin-beta",
+  "scopes": [
+    ["complex", "constant.language.mermaid"],
+    ["complicated", "constant.language.mermaid"],
+    ["-->", "keyword.operator.arrow.mermaid"],
+    ["Experiment", "string.quoted.double.mermaid"],
+    ["Analyze", "string.quoted.single.mermaid"],
+    ["title", "keyword.control.mermaid"],
+    ["accTitle", "keyword.control.mermaid"],
+    ["accDescr", "keyword.control.mermaid", 10],
+    ["accDescr", "keyword.control.mermaid", 11],
+    ["wrap", "entity.name.function.directive.mermaid", 0],
+    [":", "punctuation.separator.colon.mermaid", 0],
+    ["<b title=\"x\">", "string.quoted.double.mermaid", 16],
+    ["c>", "string.quoted.double.mermaid", 17],
+    ["clear", "constant.language.mermaid", 18],
+    ["chaotic", "constant.language.mermaid", 18],
+    ["confusion", "constant.language.mermaid", 18],
+    ["Decisions", "string.unquoted.mermaid"],
+    ["\\n", "constant.character.escape.mermaid"],
+    ["Learn", "string.quoted.double.mermaid"],
+    ["{", "punctuation.definition.description.begin.mermaid"],
+    ["}", "punctuation.definition.description.end.mermaid"],
+    ["---", "comment.block.ignored.mermaid"],
+    ["%%{!}%%", "comment.block.ignored.mermaid"],
+    ["%% a comment line", "comment.line.percentage.mermaid"]
+  ],
+  "absent": [
+    ["<b title=\"x\">", "punctuation.definition.string.end.mermaid", 16]
+  ],
+  "escapedInputs": [
+    {
+      "code": "cynefin-beta%%{wrap}%%:\naccTitle: Domains\u2029%% separator comment\n\n",
+      "scopes": [
+        [" Domains", "string.unquoted.mermaid", 1],
+        ["%% separator comment", "comment.line.percentage.mermaid", 1]
+      ],
+      "absent": [["%% separator comment", "string.unquoted.mermaid", 1]],
+      "absentOnLine": [],
+      "unscoped": []
+    },
+    {
+      "code": "cynefin-beta%%%{wrap}%%% native\u2028%% common %%{wrap}%%\n\ncomplex \"kept\"\n",
+      "scopes": [
+        ["% native", "comment.line.percentage.mermaid", 0],
+        ["wrap", "entity.name.function.directive.mermaid", 0],
+        ["%% common %%{wrap}%%", "comment.line.percentage.mermaid", 0],
+        ["kept", "string.quoted.double.mermaid", 2]
+      ],
+      "absent": [["%% common %%{wrap}%%", "meta.directive.mermaid", 0]]
+    }
+  ]
+}

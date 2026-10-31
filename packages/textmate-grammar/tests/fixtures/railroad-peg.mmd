@@ -1,0 +1,19 @@
+railroad-peg-beta%%{wrap}%%
+title Grammar
+accTitle: Grammar title
+accDescr: Grammar description
+accDescr { Grammar block }
+Expr <- Sum ;
+Sum <- Product (('+' / '-') Product)* ;
+Value <- &Digit !"x" . 'a'? "b"+ ;
+# a hash comment
+%% a comment line
+---
+ignored: railroad
+---
+%%{!}%%
+Html <- "a<b title="x">y</b>" ;
+Partial <- "a<b" "c>" ;
+# text%%{init: {"mark":"#"}}%% tail
+# D2 line end %%{wrap}%%
+Escaped <- "a\nb";

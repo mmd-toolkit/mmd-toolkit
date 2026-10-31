@@ -1,0 +1,770 @@
+{
+  "patterns": [
+    {
+      "include": "#requirement"
+    }
+  ],
+  "repository": {
+    "requirement": {
+      "comment": "Detection.md entry 14 and The exact requirement prefix selects the type; the lexer reads requirementDiagram case-insensitively and not followed by an ASCII word character, so requirementdiagram is also a header. A newline unit must follow it, with only comments, directives or empty description blocks before it. requirement.md#detection: The lexer then reads the header, the keyword `requirementDiagram`, case-insensitively and not followed by a word character (see [The statement context](#the-statement-context)). So `requirementdiagram` is the header, while `requirement` alone, `requirementDiagramX`, and `requirementDiagram2` are detected and rejected, the first because it is the keyword `requirement`, the others because they are names. The header must be followed by a `newline` unit, before which only comments, directives, and empty description blocks may stand on its line: `requirementDiagram #c`, `requirementDiagram %c`, and `requirementDiagram accDescr {}`, each followed by a line break, are accepted, while a statement after the header on its line, as in `requirementDiagram element e {`, is rejected, and so are a description block with text, an `accTitle` line, `requirementDiagram-x`, and `requirementDiagram;`. Whitespace after the header that starts with a space or a tab takes the line feed after it (see [Units and contexts](#units-and-contexts)), so `requirementDiagram` followed by two spaces or a tab and a line break is rejected, and so is `requirementDiagram %%{init: {}}%%` followed by a line break, which is read without its directive. The header alone is accepted, also without a line feed after it, as the lexer reads a line feed after the last character (see [End of text](../common.md#end-of-text)), while the header followed by two spaces at the end of the text is rejected.",
+      "begin": "{{diagramStart}}(requirement(?i:Diagram)){{wordEnd}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Try TB, BT, RL and LR in that order, before every rule but rules 1 to 4. Those rules read no leading indentation, so an indented accessibility-looking line is a direction line; an unindented accessibility form keeps precedence. Directives inside direction-text join its parts, and directives may lie in the gap before the direction value. Value scopes and text runs end before a separator-led common comment; the enclosing context reads that comment independently. requirement.md#the-statement-context: **The direction line.** Compared case-insensitively: from the current position, a run of characters without line feeds, U+2028, or U+2029, the longest one that the rest can follow; then `direction`; then one or more whitespace characters, line feeds included; then one of `TB`, `BT`, `RL`, and `LR`, tried in this order; and then every character up to the next line feed. The rule reads `direction` as a `direction` unit, the value as a `direction-value` unit, and the characters before `direction` and after the value as `direction-text` units, which mermaid.js does not read. The rule is tried before every rule but rules 1 to 4, so it takes the whole line, a string on it included, while a line that rule 1 reads is a `title` unit: `title direction LR` is rejected, and so is `requirement \"direction LR\" {`; `foo direction LR bar` and `mydirection RL` are direction lines, `a - satisfies -> direction LR` sets the direction and has no relationship, `classDef a direction LR` defines no class, and `requirement direction LR {` is a direction line, after which the `}` on the next line closes nothing; `accTitle: direction LR` is a title, and a block `accDescr {`, `direction LR`, and `}` on three lines has the description `direction LR`. A direction line inside a body takes its whole line: `text: direction TB` in a body, and `} direction LR` at its end, are direction lines, which no body takes, and the input is rejected. The rule also comes before the comment rules: `% direction LR` and `# c direction LR` set the direction, while a comment line `%% direction LR` is removed before the lexer reads the text. Neither does the value need to end at a word boundary: `direction LRX` sets `LR`, with `X` as a `direction-text` unit, and `direction LR %% c` sets `LR` with the text `%% c`. The values are tried in the order given: if the line has `direction`, whitespace, and `TB` anywhere, the value is `TB`, so `direction LR x direction TB` sets `TB`; otherwise `BT` is tried, and so on. For a value, the lexer takes the last `direction` of the run that the value follows: `direction BT x direction BT` is read at its last `direction`, with `direction BT x` as a `direction-text` unit. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "match": "{{requirement-direction-prefix}}((?i:TB)){{requirement-direction-suffix}}",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#requirement-direction-text"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.control.mermaid"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "4": {
+              "name": "constant.language.mermaid"
+            },
+            "5": {
+              "patterns": [
+                {
+                  "include": "#requirement-direction-text"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Try TB, BT, RL and LR in that order, before every rule but rules 1 to 4. Those rules read no leading indentation, so an indented accessibility-looking line is a direction line; an unindented accessibility form keeps precedence. Directives inside direction-text join its parts, and directives may lie in the gap before the direction value. Value scopes and text runs end before a separator-led common comment; the enclosing context reads that comment independently. requirement.md#the-statement-context: **The direction line.** Compared case-insensitively: from the current position, a run of characters without line feeds, U+2028, or U+2029, the longest one that the rest can follow; then `direction`; then one or more whitespace characters, line feeds included; then one of `TB`, `BT`, `RL`, and `LR`, tried in this order; and then every character up to the next line feed. The rule reads `direction` as a `direction` unit, the value as a `direction-value` unit, and the characters before `direction` and after the value as `direction-text` units, which mermaid.js does not read. The rule is tried before every rule but rules 1 to 4, so it takes the whole line, a string on it included, while a line that rule 1 reads is a `title` unit: `title direction LR` is rejected, and so is `requirement \"direction LR\" {`; `foo direction LR bar` and `mydirection RL` are direction lines, `a - satisfies -> direction LR` sets the direction and has no relationship, `classDef a direction LR` defines no class, and `requirement direction LR {` is a direction line, after which the `}` on the next line closes nothing; `accTitle: direction LR` is a title, and a block `accDescr {`, `direction LR`, and `}` on three lines has the description `direction LR`. A direction line inside a body takes its whole line: `text: direction TB` in a body, and `} direction LR` at its end, are direction lines, which no body takes, and the input is rejected. The rule also comes before the comment rules: `% direction LR` and `# c direction LR` set the direction, while a comment line `%% direction LR` is removed before the lexer reads the text. Neither does the value need to end at a word boundary: `direction LRX` sets `LR`, with `X` as a `direction-text` unit, and `direction LR %% c` sets `LR` with the text `%% c`. The values are tried in the order given: if the line has `direction`, whitespace, and `TB` anywhere, the value is `TB`, so `direction LR x direction TB` sets `TB`; otherwise `BT` is tried, and so on. For a value, the lexer takes the last `direction` of the run that the value follows: `direction BT x direction BT` is read at its last `direction`, with `direction BT x` as a `direction-text` unit. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "match": "{{requirement-direction-prefix}}((?i:BT)){{requirement-direction-suffix}}",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#requirement-direction-text"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.control.mermaid"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "4": {
+              "name": "constant.language.mermaid"
+            },
+            "5": {
+              "patterns": [
+                {
+                  "include": "#requirement-direction-text"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Try TB, BT, RL and LR in that order, before every rule but rules 1 to 4. Those rules read no leading indentation, so an indented accessibility-looking line is a direction line; an unindented accessibility form keeps precedence. Directives inside direction-text join its parts, and directives may lie in the gap before the direction value. Value scopes and text runs end before a separator-led common comment; the enclosing context reads that comment independently. requirement.md#the-statement-context: **The direction line.** Compared case-insensitively: from the current position, a run of characters without line feeds, U+2028, or U+2029, the longest one that the rest can follow; then `direction`; then one or more whitespace characters, line feeds included; then one of `TB`, `BT`, `RL`, and `LR`, tried in this order; and then every character up to the next line feed. The rule reads `direction` as a `direction` unit, the value as a `direction-value` unit, and the characters before `direction` and after the value as `direction-text` units, which mermaid.js does not read. The rule is tried before every rule but rules 1 to 4, so it takes the whole line, a string on it included, while a line that rule 1 reads is a `title` unit: `title direction LR` is rejected, and so is `requirement \"direction LR\" {`; `foo direction LR bar` and `mydirection RL` are direction lines, `a - satisfies -> direction LR` sets the direction and has no relationship, `classDef a direction LR` defines no class, and `requirement direction LR {` is a direction line, after which the `}` on the next line closes nothing; `accTitle: direction LR` is a title, and a block `accDescr {`, `direction LR`, and `}` on three lines has the description `direction LR`. A direction line inside a body takes its whole line: `text: direction TB` in a body, and `} direction LR` at its end, are direction lines, which no body takes, and the input is rejected. The rule also comes before the comment rules: `% direction LR` and `# c direction LR` set the direction, while a comment line `%% direction LR` is removed before the lexer reads the text. Neither does the value need to end at a word boundary: `direction LRX` sets `LR`, with `X` as a `direction-text` unit, and `direction LR %% c` sets `LR` with the text `%% c`. The values are tried in the order given: if the line has `direction`, whitespace, and `TB` anywhere, the value is `TB`, so `direction LR x direction TB` sets `TB`; otherwise `BT` is tried, and so on. For a value, the lexer takes the last `direction` of the run that the value follows: `direction BT x direction BT` is read at its last `direction`, with `direction BT x` as a `direction-text` unit. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "match": "{{requirement-direction-prefix}}((?i:RL)){{requirement-direction-suffix}}",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#requirement-direction-text"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.control.mermaid"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "4": {
+              "name": "constant.language.mermaid"
+            },
+            "5": {
+              "patterns": [
+                {
+                  "include": "#requirement-direction-text"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Try TB, BT, RL and LR in that order, before every rule but rules 1 to 4. Those rules read no leading indentation, so an indented accessibility-looking line is a direction line; an unindented accessibility form keeps precedence. Directives inside direction-text join its parts, and directives may lie in the gap before the direction value. Value scopes and text runs end before a separator-led common comment; the enclosing context reads that comment independently. requirement.md#the-statement-context: **The direction line.** Compared case-insensitively: from the current position, a run of characters without line feeds, U+2028, or U+2029, the longest one that the rest can follow; then `direction`; then one or more whitespace characters, line feeds included; then one of `TB`, `BT`, `RL`, and `LR`, tried in this order; and then every character up to the next line feed. The rule reads `direction` as a `direction` unit, the value as a `direction-value` unit, and the characters before `direction` and after the value as `direction-text` units, which mermaid.js does not read. The rule is tried before every rule but rules 1 to 4, so it takes the whole line, a string on it included, while a line that rule 1 reads is a `title` unit: `title direction LR` is rejected, and so is `requirement \"direction LR\" {`; `foo direction LR bar` and `mydirection RL` are direction lines, `a - satisfies -> direction LR` sets the direction and has no relationship, `classDef a direction LR` defines no class, and `requirement direction LR {` is a direction line, after which the `}` on the next line closes nothing; `accTitle: direction LR` is a title, and a block `accDescr {`, `direction LR`, and `}` on three lines has the description `direction LR`. A direction line inside a body takes its whole line: `text: direction TB` in a body, and `} direction LR` at its end, are direction lines, which no body takes, and the input is rejected. The rule also comes before the comment rules: `% direction LR` and `# c direction LR` set the direction, while a comment line `%% direction LR` is removed before the lexer reads the text. Neither does the value need to end at a word boundary: `direction LRX` sets `LR`, with `X` as a `direction-text` unit, and `direction LR %% c` sets `LR` with the text `%% c`. The values are tried in the order given: if the line has `direction`, whitespace, and `TB` anywhere, the value is `TB`, so `direction LR x direction TB` sets `TB`; otherwise `BT` is tried, and so on. For a value, the lexer takes the last `direction` of the run that the value follows: `direction BT x direction BT` is read at its last `direction`, with `direction BT x` as a `direction-text` unit. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "match": "{{requirement-direction-prefix}}((?i:LR)){{requirement-direction-suffix}}",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#requirement-direction-text"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.control.mermaid"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "4": {
+              "name": "constant.language.mermaid"
+            },
+            "5": {
+              "patterns": [
+                {
+                  "include": "#requirement-direction-text"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "AccDescr, zero or more common whitespace characters, an opening brace, and text through the first closing brace form a description block; braces do not nest. Common directives may lie between the keyword and brace. Retain this local context: reads Notation whitespace after the delimiter with the delimiter and keeps inline percent pairs; its keywords are case-insensitive. Value scopes and text runs end before a separator-led common comment; the enclosing context reads that comment independently. requirement.md#accessibility-values: In the description block context, `}` is a `}` unit and leaves the context, and one or more characters other than `}`, line feeds included, are a `description-block-text` unit. The whitespace after `{`, line feeds included, is read with the `{` unit (rule 4 of the statement context), so the text starts at the first character that is not whitespace, and `accDescr {}`, and a block whose braces hold only a directive or only a comment line, have no text and make no token in mermaid.js: an **empty description block** (see [Empty description blocks](#empty-description-blocks)). The text runs to the first `}`: `accDescr { a {b }` has the description `a {b`. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "begin": "{{requirement-statement-start}}((?i:accDescr))({{gap}})(\\{)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.definition.description.begin.mermaid"
+            }
+          },
+          "end": "(\\})",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.description.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Description block text runs to the first closing brace; quotes are ordinary text. A common comment is trivia in every context. requirement.md#accessibility-values: In the description block context, `}` is a `}` unit and leaves the context, and one or more characters other than `}`, line feeds included, are a `description-block-text` unit. The whitespace after `{`, line feeds included, is read with the `{` unit (rule 4 of the statement context), so the text starts at the first character that is not whitespace, and `accDescr {}`, and a block whose braces hold only a directive or only a comment line, have no text and make no token in mermaid.js: an **empty description block** (see [Empty description blocks](#empty-description-blocks)). The text runs to the first `}`: `accDescr { a {b }` has the description `a {b`. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+              "begin": "(?!{{separatorCommentEnd}})(?=[^}\\r\\n])",
+              "end": "(?=})|{{lineValueEnd}}",
+              "contentName": "string.unquoted.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "comment": "AccTitle and accDescr enter their line-value contexts after the colon and common whitespace; each reads the rest of its line as text. Common directives may lie between the keyword and colon. Retain this local context: reads Notation whitespace after the delimiter with the delimiter and keeps inline percent pairs; its keywords are case-insensitive. Value scopes and text runs end before a separator-led common comment; the enclosing context reads that comment independently. requirement.md#accessibility-values: In the title context, zero or more characters other than line feed are a `title-text` unit, and the context is left; the description context reads a `description-text` unit in the same way. The whitespace after the `:`, line feeds included, is read with the `:` unit (rules 2 and 3 of the statement context), so the text starts at the first character that is not whitespace, which may be on a later line: `accTitle:`, a line break, and `T` has the title `T`. At the end of the text the input is rejected (see [Units and contexts](#units-and-contexts)). `;`, `#`, and `%%` are characters of the text: `accTitle: a;b #c %% d` has the title `a;b #c %% d`. The whitespace at the end of the text is read into the unit and left out of the value (see [RequirementLiteral](../ast/requirement.md#requirementliteral)). An `accTitle` line may start wherever a statement starts: right after `}`, after a directive, and after a comment line. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "begin": "{{requirement-statement-start}}((?i:accTitle|accDescr))({{gap}})(:)(?:(?!{{separatorCommentEnd}})[{{ws}}])*",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.separator.colon.mermaid"
+            }
+          },
+          "end": "{{lineValueEnd}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": "Bounded style, classDef and class enter a context lasting through the line feed, where ASCII word characters and strings are values, and colon, comma, semicolon, dash and hash have style-unit meanings. Value scopes and text runs end before a separator-led common comment; the enclosing context reads that comment independently. The keyword boundary reads through following directives. requirement.md#the-style-context: One or more ASCII word characters: a `style-word` unit. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "begin": "((?i:style|classDef)){{wordEnd}}({{gap}})((?:[A-Za-z0-9_]+|\"[^\"]+\")(?:{{gap}},{{gap}}(?:[A-Za-z0-9_]+|\"[^\"]+\"))*)({{gap}})",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                },
+                {
+                  "include": "#string-plain-double"
+                },
+                {
+                  "include": "#requirement-comma"
+                },
+                {
+                  "match": "[A-Za-z0-9_]+",
+                  "name": "variable.mermaid",
+                  "comment": "Read a style target or style class name. requirement.md#requirements: - The `{` follows the name or the classes on their line, with whitespace or without, and a `newline` unit follows the `{`: `requirement r{` is accepted, while `requirement r` followed by `{` on the next line, `requirement r {}`, and `requirement r { id: 1` are rejected. A comment may stand between `{` and its line feed."
+                }
+              ]
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "{{lineValueEnd}}",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read a property name before a style colon. requirement.md#requirements: - The `{` follows the name or the classes on their line, with whitespace or without, and a `newline` unit follows the `{`: `requirement r{` is accepted, while `requirement r` followed by `{` on the next line, `requirement r {}`, and `requirement r { id: 1` are rejected. A comment may stand between `{` and its line feed.",
+              "match": "(?:[A-Za-z0-9_-]|{{directive}})+(?={{asciiGap}}:)",
+              "captures": {
+                "0": {
+                  "name": "support.type.property-name.mermaid",
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "comment": "Read the colon and one entire style value. requirement.md#requirements: A requirement statement may leave out any field, write a field twice, and repeat the name of an earlier requirement with other fields and classes, and `__proto__` and `constructor` are names like any other. The kinds, the risks, and the methods may be written in any case. How mermaid.js reads the requirements, their fields, and their classes into its Db is in the summary of the tests package.",
+              "begin": ":",
+              "beginCaptures": {
+                "0": {
+                  "name": "punctuation.separator.key-value.mermaid"
+                }
+              },
+              "end": "(?=,)|{{lineValueEnd}}",
+              "contentName": "support.constant.property-value.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            {
+              "include": "#requirement-comma"
+            },
+            {
+              "comment": "Read a style with no colon as one value. requirement.md#requirements: - The `{` follows the name or the classes on their line, with whitespace or without, and a `newline` unit follows the `{`: `requirement r{` is accepted, while `requirement r` followed by `{` on the next line, `requirement r {}`, and `requirement r { id: 1` are rejected. A comment may stand between `{` and its line feed.",
+              "match": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^,:\\r\\n])+",
+              "captures": {
+                "0": {
+                  "name": "support.constant.property-value.mermaid",
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "comment": "Read class application names in the style context. requirement.md#requirements: A requirement statement may leave out any field, write a field twice, and repeat the name of an earlier requirement with other fields and classes, and `__proto__` and `constructor` are names like any other. The kinds, the risks, and the methods may be written in any case. How mermaid.js reads the requirements, their fields, and their classes into its Db is in the summary of the tests package.",
+          "begin": "((?i:class)){{wordEnd}}",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          },
+          "end": "{{lineValueEnd}}",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#string-plain-double"
+            },
+            {
+              "include": "#requirement-comma"
+            },
+            {
+              "match": "[A-Za-z0-9_]+",
+              "name": "variable.mermaid",
+              "comment": "Read a target or style class name. requirement.md#requirements: - The `{` follows the name or the classes on their line, with whitespace or without, and a `newline` unit follows the `{`: `requirement r{` is accepted, while `requirement r` followed by `{` on the next line, `requirement r {}`, and `requirement r { id: 1` are rejected. A comment may stand between `{` and its line feed."
+            }
+          ]
+        },
+        {
+          "include": "#requirement-type-field"
+        },
+        {
+          "include": "#requirement-field"
+        },
+        {
+          "comment": "Read a relation name between its arrow parts. requirement.md#requirements: - The `{` follows the name or the classes on their line, with whitespace or without, and a `newline` unit follows the `{`: `requirement r{` is accepted, while `requirement r` followed by `{` on the next line, `requirement r {}`, and `requirement r { id: 1` are rejected. A comment may stand between `{` and its line feed.",
+          "match": "(?i:contains|copies|derives|satisfies|verifies|refines|traces){{wordEnd}}",
+          "name": "keyword.operator.arrow.mermaid"
+        },
+        {
+          "comment": "Rule 15: The bounded case-insensitive keywords are id, text, risk, verifyMethod; the six requirement kinds; low, medium, high; analysis, demonstration, inspection, test; element; contains, copies, derives, satisfies, verifies, refines, traces; type and docref. The keyword boundary reads through following directives. requirement.md#the-statement-context: - A keyword is a keyword wherever a unit starts, and a name or a value may not start with one: `requirement test req {`, `text: test`, `text: high risk`, and `a - satisfies -> element` are rejected, while `test_x` and `tests` are a name and a value.",
+          "match": "(?i:functionalRequirement|interfaceRequirement|performanceRequirement|physicalRequirement|designConstraint|requirement|element){{wordEnd}}",
+          "name": "keyword.control.mermaid"
+        },
+        {
+          "comment": "Double quotes enclose text other than double quotes, without escapes; an empty string is rejected. requirement.md#units-and-contexts: **Strings.** In the statement context and in the style context, `\"`, zero or more characters other than `\"`, line feeds included, and `\"` are a `string` unit when a character lies between the quotes, and an `empty-string` unit otherwise. The text of a `string` is the characters between the quotes, so `#`, `%`, `:`, `,`, `-`, `{`, and `}` are characters of it, and an attribute quote of an HTML tag inside it is read as `'`, so that the string runs to its last quote: `text: \"<b a=\"x\">t</b>\"` has the text `<b a='x'>t</b>`.",
+          "include": "#string-plain-double"
+        },
+        {
+          "comment": "A relationship is name, dash, relation, right arrow, name; or name, left arrow, relation, dash, name; whitespace is optional. requirement.md#relationships: A relationship statement goes from the left name to the right one for `-` and `->`, and from the right name to the left one for `<-` and `-`; the names need not be those of a requirement or an element, and the same relationship may be written twice. The units need no whitespace between them: `a-satisfies->b` and `a<-satisfies-b` are relationships. `a - likes -> b`, `a - satisfies - > b`, and `- satisfies -> b` are rejected.",
+          "match": "<-|->|-",
+          "name": "keyword.operator.arrow.mermaid"
+        },
+        {
+          "comment": "And A triple colon introduces a comma-separated class list on a definition or in class shorthand. requirement.md#requirements: A requirement statement may leave out any field, write a field twice, and repeat the name of an earlier requirement with other fields and classes, and `__proto__` and `constructor` are names like any other. The kinds, the risks, and the methods may be written in any case. How mermaid.js reads the requirements, their fields, and their classes into its Db is in the summary of the tests package.",
+          "match": ":::",
+          "name": "punctuation.separator.class.mermaid"
+        },
+        {
+          "include": "#requirement-body"
+        },
+        {
+          "comment": "Rules 11, 12 and 14: Opening brace, closing brace and colon are units of their characters. requirement.md#the-statement-context: **The direction line.** Compared case-insensitively: from the current position, a run of characters without line feeds, U+2028, or U+2029, the longest one that the rest can follow; then `direction`; then one or more whitespace characters, line feeds included; then one of `TB`, `BT`, `RL`, and `LR`, tried in this order; and then every character up to the next line feed. The rule reads `direction` as a `direction` unit, the value as a `direction-value` unit, and the characters before `direction` and after the value as `direction-text` units, which mermaid.js does not read. The rule is tried before every rule but rules 1 to 4, so it takes the whole line, a string on it included, while a line that rule 1 reads is a `title` unit: `title direction LR` is rejected, and so is `requirement \"direction LR\" {`; `foo direction LR bar` and `mydirection RL` are direction lines, `a - satisfies -> direction LR` sets the direction and has no relationship, `classDef a direction LR` defines no class, and `requirement direction LR {` is a direction line, after which the `}` on the next line closes nothing; `accTitle: direction LR` is a title, and a block `accDescr {`, `direction LR`, and `}` on three lines has the description `direction LR`. A direction line inside a body takes its whole line: `text: direction TB` in a body, and `} direction LR` at its end, are direction lines, which no body takes, and the input is rejected. The rule also comes before the comment rules: `% direction LR` and `# c direction LR` set the direction, while a comment line `%% direction LR` is removed before the lexer reads the text. Neither does the value need to end at a word boundary: `direction LRX` sets `LR`, with `X` as a `direction-text` unit, and `direction LR %% c` sets `LR` with the text `%% c`. The values are tried in the order given: if the line has `direction`, whitespace, and `TB` anywhere, the value is `TB`, so `direction LR x direction TB` sets `TB`; otherwise `BT` is tried, and so on. For a value, the lexer takes the last `direction` of the run that the value follows: `direction BT x direction BT` is read at its last `direction`, with `direction BT x` as a `direction-text` unit.",
+          "match": "(\\{)|(\\})|(:)",
+          "captures": {
+            "1": {
+              "name": "keyword.operator.block.begin.mermaid"
+            },
+            "2": {
+              "name": "keyword.operator.block.end.mermaid"
+            },
+            "3": {
+              "name": "punctuation.separator.colon.mermaid"
+            }
+          }
+        },
+        {
+          "include": "#requirement-comma"
+        },
+        {
+          "comment": "At a unit start in the statement context a hash or percent begins a comment through the physical line end; neither starts a comment inside unquoted text, a string or style context. Directives in comment text are read whole. Value scopes and text runs end before a separator-led common comment; the enclosing context reads that comment independently. requirement.md#comments: Besides units, the lexer reads **diagram comments**: text that runs to the end of its line and that mermaid.js reads as nothing. They are not the comment lines of [common.md](../common.md#comment-lines), which are removed before the lexer reads the text; a diagram comment can start in the middle of a line, and a line `%%` alone, `% c`, or `%%{ }%%` after the header is a diagram comment, not a comment line. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "patterns": [
+            {
+              "begin": "#",
+              "end": "{{lineValueEnd}}",
+              "name": "comment.line.number-sign.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ],
+              "comment": "A hash starts a native comment; makes separator-led common comments independent trivia. requirement.md#comments: Besides units, the lexer reads **diagram comments**: text that runs to the end of its line and that mermaid.js reads as nothing. They are not the comment lines of [common.md](../common.md#comment-lines), which are removed before the lexer reads the text; a diagram comment can start in the middle of a line, and a line `%%` alone, `% c`, or `%%{ }%%` after the header is a diagram comment, not a comment line. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in."
+            },
+            {
+              "begin": "(?!{{directiveStart}})(?:{{nonDirectivePercentPair}}|%)",
+              "end": "{{lineValueEnd}}",
+              "name": "comment.line.percentage.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ],
+              "comment": "A percent starts a native comment; reads directives in its body whole. Neither character of a percent pair belongs to a directive; a lone text percent before a directive keeps the single-percent mark. requirement.md#comments: Besides units, the lexer reads **diagram comments**: text that runs to the end of its line and that mermaid.js reads as nothing. They are not the comment lines of [common.md](../common.md#comment-lines), which are removed before the lexer reads the text; a diagram comment can start in the middle of a line, and a line `%%` alone, `% c`, or `%%{ }%%` after the header is a diagram comment, not a comment line.",
+              "beginCaptures": {
+                "0": {
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "comment": "An ASCII word character starts unquoted text that takes as many characters as possible other than colon, comma, line feed, opening brace, angle brackets, dash and equals; keyword-like words, quotes, hash, percent and closing braces inside it remain text. Value scopes and text runs end before a separator-led common comment; the enclosing context reads that comment independently. requirement.md#units-and-contexts: **Names and values.** In the statement context, an ASCII word character followed by zero or more characters other than `:`, `,`, line feed, `{`, `<`, `>`, `-`, and `=`, as many as possible, is an `unquoted-text` unit (rule 23). It is a name or a value, depending on where the grammar takes it. Its written text leaves out the whitespace at its end, which the rule reads, as mermaid.js trims it, and keeps the whitespace between its characters, U+00A0 and U+2028 included: `requirement spaced name {` is the requirement `spaced name`, `a`, U+00A0, and `b` one name, and `a` followed by U+00A0 and `{` the name `a`. `#`, `%`, `;`, `}`, and `.` are characters of the unit after its first character: `r#1`, `r}`, `r.1`, `r %c`, `1r`, and `b # c` are names, and `a #b`, `1;`, and `1 %c` values. A name or a value starts with an ASCII word character, and `=`, `-`, `:`, and `,` end it: `é`, `-r`, and `a=b` are rejected as names, and `a-b`, `a:b`, `a,b`, `a > b`, and `été` as values; a string may hold any of them (see [Requirements](#requirements)). The placeholder of an entity is made of characters outside ASCII (see [Entities](../common.md#entities)), so `a#amp; b` is one name or value, `aﬂ°amp¶ß b`, while a name may not start with an entity. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "begin": "(?=[A-Za-z0-9_])",
+          "end": "(?=[:,{<>=-])|{{lineValueEnd}}",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ],
+          "contentName": "variable.mermaid"
+        }
+      ]
+    },
+    "requirement-comma": {
+      "comment": "Rule 10 and rule 24: A comma is a comma unit in either context. requirement.md#the-style-context: One or more ASCII word characters: a `style-word` unit.",
+      "match": ",",
+      "name": "punctuation.separator.comma.mermaid"
+    },
+    "requirement-direction-text": {
+      "comment": "Read the nonblank ignored text around a direction while retaining directives. requirement.md#the-statement-context: **The direction line.** Compared case-insensitively: from the current position, a run of characters without line feeds, U+2028, or U+2029, the longest one that the rest can follow; then `direction`; then one or more whitespace characters, line feeds included; then one of `TB`, `BT`, `RL`, and `LR`, tried in this order; and then every character up to the next line feed. The rule reads `direction` as a `direction` unit, the value as a `direction-value` unit, and the characters before `direction` and after the value as `direction-text` units, which mermaid.js does not read. The rule is tried before every rule but rules 1 to 4, so it takes the whole line, a string on it included, while a line that rule 1 reads is a `title` unit: `title direction LR` is rejected, and so is `requirement \"direction LR\" {`; `foo direction LR bar` and `mydirection RL` are direction lines, `a - satisfies -> direction LR` sets the direction and has no relationship, `classDef a direction LR` defines no class, and `requirement direction LR {` is a direction line, after which the `}` on the next line closes nothing; `accTitle: direction LR` is a title, and a block `accDescr {`, `direction LR`, and `}` on three lines has the description `direction LR`. A direction line inside a body takes its whole line: `text: direction TB` in a body, and `} direction LR` at its end, are direction lines, which no body takes, and the input is rejected. The rule also comes before the comment rules: `% direction LR` and `# c direction LR` set the direction, while a comment line `%% direction LR` is removed before the lexer reads the text. Neither does the value need to end at a word boundary: `direction LRX` sets `LR`, with `X` as a `direction-text` unit, and `direction LR %% c` sets `LR` with the text `%% c`. The values are tried in the order given: if the line has `direction`, whitespace, and `TB` anywhere, the value is `TB`, so `direction LR x direction TB` sets `TB`; otherwise `BT` is tried, and so on. For a value, the lexer takes the last `direction` of the run that the value follows: `direction BT x direction BT` is read at its last `direction`, with `direction BT x` as a `direction-text` unit.",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "match": "(?=(?:{{directive}}|[{{ws}}])*(?!{{directiveStart}})[^{{ws}}])(?:{{directive}}|(?!{{directiveStart}}).)+",
+          "name": "comment.block.ignored.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "comment": "Read a nonblank direction-text unit. requirement.md#the-statement-context: **The direction line.** Compared case-insensitively: from the current position, a run of characters without line feeds, U+2028, or U+2029, the longest one that the rest can follow; then `direction`; then one or more whitespace characters, line feeds included; then one of `TB`, `BT`, `RL`, and `LR`, tried in this order; and then every character up to the next line feed. The rule reads `direction` as a `direction` unit, the value as a `direction-value` unit, and the characters before `direction` and after the value as `direction-text` units, which mermaid.js does not read. The rule is tried before every rule but rules 1 to 4, so it takes the whole line, a string on it included, while a line that rule 1 reads is a `title` unit: `title direction LR` is rejected, and so is `requirement \"direction LR\" {`; `foo direction LR bar` and `mydirection RL` are direction lines, `a - satisfies -> direction LR` sets the direction and has no relationship, `classDef a direction LR` defines no class, and `requirement direction LR {` is a direction line, after which the `}` on the next line closes nothing; `accTitle: direction LR` is a title, and a block `accDescr {`, `direction LR`, and `}` on three lines has the description `direction LR`. A direction line inside a body takes its whole line: `text: direction TB` in a body, and `} direction LR` at its end, are direction lines, which no body takes, and the input is rejected. The rule also comes before the comment rules: `% direction LR` and `# c direction LR` set the direction, while a comment line `%% direction LR` is removed before the lexer reads the text. Neither does the value need to end at a word boundary: `direction LRX` sets `LR`, with `X` as a `direction-text` unit, and `direction LR %% c` sets `LR` with the text `%% c`. The values are tried in the order given: if the line has `direction`, whitespace, and `TB` anywhere, the value is `TB`, so `direction LR x direction TB` sets `TB`; otherwise `BT` is tried, and so on. For a value, the lexer takes the last `direction` of the run that the value follows: `direction BT x direction BT` is read at its last `direction`, with `direction BT x` as a `direction-text` unit."
+        }
+      ]
+    },
+    "requirement-type-field": {
+      "comment": "Read an element's type field. requirement.md#requirements: A requirement statement may leave out any field, write a field twice, and repeat the name of an earlier requirement with other fields and classes, and `__proto__` and `constructor` are names like any other. The kinds, the risks, and the methods may be written in any case. How mermaid.js reads the requirements, their fields, and their classes into its Db is in the summary of the tests package.",
+      "begin": "((?i:type)){{wordEnd}}({{gap}})(:)({{gap}})",
+      "beginCaptures": {
+        "1": {
+          "name": "storage.modifier.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "punctuation.separator.colon.mermaid"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "(?<=\")|{{lineValueEnd}}",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "At a unit start in the statement context a hash or percent begins a comment through the physical line end; neither starts a comment inside unquoted text, a string or style context. Directives in comment text are read whole. Value scopes and text runs end before a separator-led common comment; the enclosing context reads that comment independently. requirement.md#comments: Besides units, the lexer reads **diagram comments**: text that runs to the end of its line and that mermaid.js reads as nothing. They are not the comment lines of [common.md](../common.md#comment-lines), which are removed before the lexer reads the text; a diagram comment can start in the middle of a line, and a line `%%` alone, `% c`, or `%%{ }%%` after the header is a diagram comment, not a comment line. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "patterns": [
+            {
+              "begin": "#",
+              "end": "{{lineValueEnd}}",
+              "name": "comment.line.number-sign.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ],
+              "comment": "A hash starts a native comment; makes separator-led common comments independent trivia. requirement.md#comments: Besides units, the lexer reads **diagram comments**: text that runs to the end of its line and that mermaid.js reads as nothing. They are not the comment lines of [common.md](../common.md#comment-lines), which are removed before the lexer reads the text; a diagram comment can start in the middle of a line, and a line `%%` alone, `% c`, or `%%{ }%%` after the header is a diagram comment, not a comment line. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in."
+            },
+            {
+              "begin": "(?!{{directiveStart}})(?:{{nonDirectivePercentPair}}|%)",
+              "end": "{{lineValueEnd}}",
+              "name": "comment.line.percentage.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ],
+              "comment": "A percent starts a native comment; reads directives in its body whole. Neither character of a percent pair belongs to a directive; a lone text percent before a directive keeps the single-percent mark. requirement.md#comments: Besides units, the lexer reads **diagram comments**: text that runs to the end of its line and that mermaid.js reads as nothing. They are not the comment lines of [common.md](../common.md#comment-lines), which are removed before the lexer reads the text; a diagram comment can start in the middle of a line, and a line `%%` alone, `% c`, or `%%{ }%%` after the header is a diagram comment, not a comment line.",
+              "beginCaptures": {
+                "0": {
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "include": "#string-plain-double"
+        },
+        {
+          "match": "(?i:low|medium|high|analysis|demonstration|inspection|test){{wordEnd}}",
+          "name": "constant.language.mermaid",
+          "comment": "Read a listed risk or verification method. requirement.md#requirements: A requirement statement may leave out any field, write a field twice, and repeat the name of an earlier requirement with other fields and classes, and `__proto__` and `constructor` are names like any other. The kinds, the risks, and the methods may be written in any case. How mermaid.js reads the requirements, their fields, and their classes into its Db is in the summary of the tests package."
+        },
+        {
+          "match": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\r\\n])+",
+          "captures": {
+            "0": {
+              "name": "entity.name.type.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "comment": "Read the field's unquoted text value. requirement.md#requirements: A requirement statement may leave out any field, write a field twice, and repeat the name of an earlier requirement with other fields and classes, and `__proto__` and `constructor` are names like any other. The kinds, the risks, and the methods may be written in any case. How mermaid.js reads the requirements, their fields, and their classes into its Db is in the summary of the tests package."
+        }
+      ]
+    },
+    "requirement-field": {
+      "comment": "Read a field key and its value. requirement.md#requirements: A requirement statement may leave out any field, write a field twice, and repeat the name of an earlier requirement with other fields and classes, and `__proto__` and `constructor` are names like any other. The kinds, the risks, and the methods may be written in any case. How mermaid.js reads the requirements, their fields, and their classes into its Db is in the summary of the tests package.",
+      "begin": "((?i:id|text|type|docref|risk|verifyMethod)){{wordEnd}}({{gap}})(:)({{gap}})",
+      "beginCaptures": {
+        "1": {
+          "name": "storage.modifier.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "punctuation.separator.colon.mermaid"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "(?<=\")|{{lineValueEnd}}",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "At a unit start in the statement context a hash or percent begins a comment through the physical line end; neither starts a comment inside unquoted text, a string or style context. Directives in comment text are read whole. Value scopes and text runs end before a separator-led common comment; the enclosing context reads that comment independently. requirement.md#comments: Besides units, the lexer reads **diagram comments**: text that runs to the end of its line and that mermaid.js reads as nothing. They are not the comment lines of [common.md](../common.md#comment-lines), which are removed before the lexer reads the text; a diagram comment can start in the middle of a line, and a line `%%` alone, `% c`, or `%%{ }%%` after the header is a diagram comment, not a comment line. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "patterns": [
+            {
+              "begin": "#",
+              "end": "{{lineValueEnd}}",
+              "name": "comment.line.number-sign.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ],
+              "comment": "A hash starts a native comment; makes separator-led common comments independent trivia. requirement.md#comments: Besides units, the lexer reads **diagram comments**: text that runs to the end of its line and that mermaid.js reads as nothing. They are not the comment lines of [common.md](../common.md#comment-lines), which are removed before the lexer reads the text; a diagram comment can start in the middle of a line, and a line `%%` alone, `% c`, or `%%{ }%%` after the header is a diagram comment, not a comment line. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in."
+            },
+            {
+              "begin": "(?!{{directiveStart}})(?:{{nonDirectivePercentPair}}|%)",
+              "end": "{{lineValueEnd}}",
+              "name": "comment.line.percentage.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ],
+              "comment": "A percent starts a native comment; reads directives in its body whole. Neither character of a percent pair belongs to a directive; a lone text percent before a directive keeps the single-percent mark. requirement.md#comments: Besides units, the lexer reads **diagram comments**: text that runs to the end of its line and that mermaid.js reads as nothing. They are not the comment lines of [common.md](../common.md#comment-lines), which are removed before the lexer reads the text; a diagram comment can start in the middle of a line, and a line `%%` alone, `% c`, or `%%{ }%%` after the header is a diagram comment, not a comment line.",
+              "beginCaptures": {
+                "0": {
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "include": "#string-plain-double"
+        },
+        {
+          "match": "(?i:low|medium|high|analysis|demonstration|inspection|test){{wordEnd}}",
+          "name": "constant.language.mermaid",
+          "comment": "Read a listed risk or verification method. requirement.md#requirements: A requirement statement may leave out any field, write a field twice, and repeat the name of an earlier requirement with other fields and classes, and `__proto__` and `constructor` are names like any other. The kinds, the risks, and the methods may be written in any case. How mermaid.js reads the requirements, their fields, and their classes into its Db is in the summary of the tests package."
+        },
+        {
+          "match": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\r\\n])+",
+          "captures": {
+            "0": {
+              "name": "string.unquoted.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "comment": "Read the field's unquoted text value. requirement.md#requirements: A requirement statement may leave out any field, write a field twice, and repeat the name of an earlier requirement with other fields and classes, and `__proto__` and `constructor` are names like any other. The kinds, the risks, and the methods may be written in any case. How mermaid.js reads the requirements, their fields, and their classes into its Db is in the summary of the tests package."
+        }
+      ]
+    },
+    "requirement-body": {
+      "comment": "Read a requirement or element body, keeping its empty description blocks as ignored text. requirement.md#requirements: ```text requirement-statement = requirement-kind name class-list? requirement-body requirement-kind = \"requirement\" | \"functionalRequirement\" | \"interfaceRequirement\" | \"performanceRequirement\" | \"physicalRequirement\" | \"designConstraint\" class-list = \":::\" name ( \",\" name )* requirement-body = \"{\" empty-description-block* newline requirement-line* empty-description-block* \"}\" requirement-line = empty-description-block* requirement-field? empty-description-block* newline requirement-field = ( \"id\" | \"text\" ) \":\" field-value | \"risk\" \":\" ( \"low\" | \"medium\" | \"high\" ) | \"verifyMethod\" \":\" ( \"analysis\" | \"demonstration\" | \"inspection\" | \"test\" ) field-value = unquoted-text | string ```",
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.operator.block.begin.mermaid"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "keyword.operator.block.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "begin": "(?i:accDescr){{gap}}\\{",
+          "end": "\\}",
+          "name": "comment.block.ignored.mermaid",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            }
+          ],
+          "comment": "Read an empty description block in a body as an ignored item. requirement.md#empty-description-blocks: On a line of the body of a requirement or an element, it is an item of the body, which mermaid.js does not read: right after `{`, before a field, after a field whose value is a string or a keyword, before `}`, and alone on its line, also over several lines and with a comment line inside, and two of them are two items."
+        },
+        {
+          "include": "#requirement-type-field"
+        },
+        {
+          "match": "((?i:risk|verifyMethod)){{wordEnd}}({{gap}})(:)({{gap}})((?i:low|medium|high|analysis|demonstration|inspection|test)){{wordEnd}}",
+          "captures": {
+            "1": {
+              "name": "storage.modifier.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.separator.colon.mermaid"
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "5": {
+              "name": "constant.language.mermaid"
+            }
+          },
+          "comment": "Read the complete fixed-value field so a following empty block remains an ignored body item. requirement.md#requirements: ```text requirement-statement = requirement-kind name class-list? requirement-body requirement-kind = \"requirement\" | \"functionalRequirement\" | \"interfaceRequirement\" | \"performanceRequirement\" | \"physicalRequirement\" | \"designConstraint\" class-list = \":::\" name ( \",\" name )* requirement-body = \"{\" empty-description-block* newline requirement-line* empty-description-block* \"}\" requirement-line = empty-description-block* requirement-field? empty-description-block* newline requirement-field = ( \"id\" | \"text\" ) \":\" field-value | \"risk\" \":\" ( \"low\" | \"medium\" | \"high\" ) | \"verifyMethod\" \":\" ( \"analysis\" | \"demonstration\" | \"inspection\" | \"test\" ) field-value = unquoted-text | string ```"
+        },
+        {
+          "include": "#requirement-field"
+        },
+        {
+          "comment": "At a unit start in the statement context a hash or percent begins a comment through the physical line end; neither starts a comment inside unquoted text, a string or style context. Directives in comment text are read whole. Value scopes and text runs end before a separator-led common comment; the enclosing context reads that comment independently. requirement.md#comments: Besides units, the lexer reads **diagram comments**: text that runs to the end of its line and that mermaid.js reads as nothing. They are not the comment lines of [common.md](../common.md#comment-lines), which are removed before the lexer reads the text; a diagram comment can start in the middle of a line, and a line `%%` alone, `% c`, or `%%{ }%%` after the header is a diagram comment, not a comment line. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "patterns": [
+            {
+              "begin": "#",
+              "end": "{{lineValueEnd}}",
+              "name": "comment.line.number-sign.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ],
+              "comment": "A hash starts a native comment; makes separator-led common comments independent trivia. requirement.md#comments: Besides units, the lexer reads **diagram comments**: text that runs to the end of its line and that mermaid.js reads as nothing. They are not the comment lines of [common.md](../common.md#comment-lines), which are removed before the lexer reads the text; a diagram comment can start in the middle of a line, and a line `%%` alone, `% c`, or `%%{ }%%` after the header is a diagram comment, not a comment line. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in."
+            },
+            {
+              "begin": "(?!{{directiveStart}})(?:{{nonDirectivePercentPair}}|%)",
+              "end": "{{lineValueEnd}}",
+              "name": "comment.line.percentage.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ],
+              "comment": "A percent starts a native comment; reads directives in its body whole. Neither character of a percent pair belongs to a directive; a lone text percent before a directive keeps the single-percent mark. requirement.md#comments: Besides units, the lexer reads **diagram comments**: text that runs to the end of its line and that mermaid.js reads as nothing. They are not the comment lines of [common.md](../common.md#comment-lines), which are removed before the lexer reads the text; a diagram comment can start in the middle of a line, and a line `%%` alone, `% c`, or `%%{ }%%` after the header is a diagram comment, not a comment line.",
+              "beginCaptures": {
+                "0": {
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "variables": {
+    "requirement-direction-prefix": "(?:^|\\G)(?!{{directives}}(?:(?i:accTitle){{gap}}:|(?i:accDescr){{gap}}[:{]))({{lineText}})((?i:direction))({{requiredGap}})",
+    "requirement-direction-suffix": "((?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}}).)*){{lineValueEnd}}",
+    "requirement-statement-start": "(?:^|\\G|(?<=\\})|(?<=\\}%%))(?:(?!{{separatorCommentEnd}})[{{ws}}])*"
+  }
+}

@@ -41,6 +41,14 @@ Source or change **Indent** and **Use tabs**.
 You can undo the replacement with the editor's normal Undo command. Loading a
 sample is also undoable.
 
+## Syntax highlighting
+
+Source is colored by the editor's tokenizer, Shiki, with the TextMate grammar of
+[`@mmd-toolkit/textmate-grammar`](../textmate-grammar/README.md), written for
+every diagram type from the specification of this repository. The colors come
+from the grammar alone, not from the parser, so text that the parser rejects
+keeps its colors while you edit.
+
 ## Share an input
 
 Choose **Share**, then **Copy Link**, or copy the displayed URL manually. The

@@ -1,0 +1,106 @@
+{
+  "header": "pie",
+  "scopes": [
+    ["showData", "keyword.control.mermaid"],
+    ["title", "keyword.control.mermaid"],
+    ["accTitle", "keyword.control.mermaid"],
+    ["accDescr", "keyword.control.mermaid"],
+    ["accDescr", "keyword.control.mermaid", 4],
+    ["accDescr", "keyword.control.mermaid", 5],
+    ["showData and title", "string.quoted.double.mermaid"],
+    ["titleLong", "string.quoted.single.mermaid"],
+    ["12.50", "constant.numeric.mermaid"],
+    ["-0", "constant.numeric.mermaid"],
+    [":", "punctuation.separator.colon.mermaid"],
+    ["%% an inline comment", "comment.line.percentage.mermaid"],
+    ["%%", "comment.line.percentage.mermaid"],
+    ["%%{!}%%", "comment.block.ignored.mermaid"],
+    ["init", "entity.name.function.directive.mermaid"],
+    ["accTitle", "keyword.control.mermaid", 24],
+    ["accDescr", "keyword.control.mermaid", 25],
+    ["accDescr", "keyword.control.mermaid", 26],
+    ["title", "keyword.control.mermaid", 27],
+    ["init", "entity.name.function.directive.mermaid", 24],
+    [" T", "string.unquoted.mermaid", 24],
+    [" D", "string.unquoted.mermaid", 25],
+    [" B ", "string.unquoted.mermaid", 26],
+    ["T", "string.unquoted.mermaid", 27],
+    ["<b title=\"x\">", "string.quoted.double.mermaid", 22],
+    ["%% later >", "comment.line.percentage.mermaid", 23],
+    ["2", "constant.numeric.mermaid", 28],
+    ["wrap", "entity.name.function.directive.mermaid", 28],
+    ["-", "comment.block.ignored.mermaid", 30],
+    ["--", "comment.block.ignored.mermaid", 30],
+    ["wrap", "entity.name.function.directive.mermaid", 30],
+    ["x", "comment.block.ignored.mermaid", 31],
+    ["---", "comment.block.ignored.mermaid", 32],
+    ["x", "comment.block.ignored.mermaid", 35],
+    ["--", "comment.block.ignored.mermaid", 36],
+    ["wrap", "entity.name.function.directive.mermaid", 36],
+    ["title", "keyword.control.mermaid", 38],
+    ["After split YAML", "string.unquoted.mermaid", 38],
+    ["%", "comment.block.ignored.mermaid", 39],
+    ["%{!}%%", "comment.block.ignored.mermaid", 39],
+    ["wrap", "entity.name.function.directive.mermaid", 39],
+    ["%%{!}%", "comment.block.ignored.mermaid", 40],
+    ["%", "comment.block.ignored.mermaid", 40],
+    ["wrap", "entity.name.function.directive.mermaid", 40],
+    ["%", "comment.line.percentage.mermaid", 42],
+    ["wrap", "entity.name.function.directive.mermaid", 42],
+    ["% native split mark", "comment.line.percentage.mermaid", 42],
+    ["Slices showData 123", "string.unquoted.mermaid"],
+    ["\\\"", "constant.character.escape.mermaid", 8],
+    ["{", "punctuation.definition.description.begin.mermaid", 4],
+    ["}", "punctuation.definition.description.end.mermaid", 4],
+    ["\"", "punctuation.definition.string.begin.mermaid", 6]
+  ],
+  "absent": [
+    ["titleLong", "keyword.control.mermaid"],
+    ["showData and title", "keyword.control.mermaid"],
+    ["init", "string.unquoted.mermaid", 24],
+    ["<b title=\"x\">", "punctuation.definition.string.end.mermaid", 22],
+    ["%% later >", "string.quoted.double.mermaid", 23],
+    ["title", "comment.block.ignored.mermaid", 38]
+  ],
+  "absentOnLine": [
+    [6, "keyword.control.mermaid"],
+    [7, "keyword.control.mermaid"],
+    [1, "constant.numeric.mermaid"],
+    [39, "comment.line.percentage.mermaid"],
+    [40, "comment.line.percentage.mermaid"]
+  ],
+  "escapedInputs": [
+    {
+      "code": "pie%%{wrap}%% showData%%{wrap}%% \n  title T\u2028%% title comment\n  accTitle: T\u2029%% title comment\n\n",
+      "scopes": [
+        ["%% title comment", "comment.line.percentage.mermaid", 1],
+        ["%% title comment", "comment.line.percentage.mermaid", 2]
+      ],
+      "absent": [],
+      "absentOnLine": [],
+      "unscoped": []
+    },
+    {
+      "code": "pie\n---\nX\u2028%% c --- %%{wrap}%%\nY\u2029%% p --- %%{wrap}%%\n\n---\n\ntitle After separator comments\naccDescr {}%% native\u2028%% common line %%{wrap}%%\naccDescr {}%% native\u2029%% common paragraph %%{wrap}%%\n",
+      "scopes": [
+        ["X\u2028", "comment.block.ignored.mermaid", 2],
+        ["Y\u2029", "comment.block.ignored.mermaid", 3],
+        ["%% c --- %%{wrap}%%", "comment.line.percentage.mermaid", 2],
+        ["%% p --- %%{wrap}%%", "comment.line.percentage.mermaid", 3],
+        ["title", "keyword.control.mermaid", 7],
+        ["After separator comments", "string.unquoted.mermaid", 7],
+        ["%% native", "comment.line.percentage.mermaid", 8],
+        ["%% native", "comment.line.percentage.mermaid", 9],
+        ["%% common line %%{wrap}%%", "comment.line.percentage.mermaid", 8],
+        ["%% common paragraph %%{wrap}%%", "comment.line.percentage.mermaid", 9]
+      ],
+      "absent": [["title", "comment.block.ignored.mermaid", 7]],
+      "absentOnLine": [
+        [2, "meta.directive.mermaid"],
+        [3, "meta.directive.mermaid"],
+        [8, "meta.directive.mermaid"],
+        [9, "meta.directive.mermaid"]
+      ]
+    }
+  ]
+}

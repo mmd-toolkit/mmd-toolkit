@@ -1,0 +1,88 @@
+{
+  "header": "railroad-ebnf-beta",
+  "scopes": [
+    ["::=", "keyword.operator.mermaid"],
+    ["|", "keyword.operator.mermaid"],
+    ["+", "keyword.operator.mermaid"],
+    [" special sequence ", "string.unquoted.mermaid"],
+    ["(*", "comment.block.mermaid"],
+    ["title", "keyword.control.mermaid"],
+    ["accTitle", "keyword.control.mermaid"],
+    ["accDescr", "keyword.control.mermaid", 3],
+    ["accDescr", "keyword.control.mermaid", 4],
+    ["init", "entity.name.function.directive.mermaid", 15],
+    ["b ", "string.unquoted.mermaid", 15],
+    ["<b title=\"x\">", "string.quoted.double.mermaid", 16],
+    ["wrap", "entity.name.function.directive.mermaid", 0],
+    ["?", "keyword.operator.mermaid", 17],
+    ["?", "keyword.operator.mermaid", 18],
+    ["terminal ", "comment.block.mermaid", 19],
+    ["native", "variable.mermaid", 19],
+    [" set ", "comment.block.mermaid", 20],
+    ["opened", "variable.mermaid", 20],
+    ["closed", "variable.mermaid", 21],
+    ["wrap", "entity.name.function.directive.mermaid", 21],
+    [" #amp; ", "string.unquoted.mermaid", 22],
+    ["?", "keyword.operator.mermaid", 24],
+    ["wrap", "entity.name.function.directive.mermaid", 26],
+    ["joined", "variable.mermaid", 26],
+    ["%% common */ %%{wrap}%%", "comment.line.percentage.mermaid", 28],
+    [" set ", "comment.block.mermaid", 29],
+    ["commentLine", "variable.mermaid", 29],
+    ["digit", "variable.mermaid"],
+    ["Grammar", "string.unquoted.mermaid"],
+    ["0", "string.quoted.double.mermaid", 5],
+    ["a", "string.quoted.single.mermaid", 30],
+    ["\\n", "constant.character.escape.mermaid"],
+    ["?", "punctuation.definition.special-sequence.begin.mermaid", 8],
+    ["{", "punctuation.section.group.begin.mermaid", 6],
+    ["}", "punctuation.section.group.end.mermaid", 6],
+    ["[", "punctuation.section.group.begin.mermaid"],
+    ["]", "punctuation.section.group.end.mermaid"],
+    [",", "punctuation.separator.comma.mermaid"],
+    [";", "punctuation.separator.rule.mermaid"],
+    ["---", "comment.block.ignored.mermaid"],
+    ["%%{!}%%", "comment.block.ignored.mermaid"],
+    ["%% a comment line", "comment.line.percentage.mermaid"]
+  ],
+  "absent": [["init", "punctuation.separator.rule.mermaid", 15]],
+  "absentOnLine": [
+    [17, "string.unquoted.mermaid"],
+    [18, "string.unquoted.mermaid"],
+    [19, "comment.line.percentage.mermaid"],
+    [20, "punctuation.section.group.begin.mermaid"],
+    [21, "comment.line.percentage.mermaid"],
+    [24, "string.unquoted.mermaid"],
+    [28, "meta.directive.mermaid"]
+  ],
+  "escapedInputs": [
+    {
+      "code": "railroad-ebnf-beta%%{wrap}%%\nboundary = ? text\u2028%% ? special comment\ntail ? ;\n\n",
+      "scopes": [
+        ["%% ? special comment", "comment.line.percentage.mermaid", 1]
+      ],
+      "absent": [["%% ? special comment", "string.unquoted.mermaid", 1]],
+      "absentOnLine": [[2, "comment.line.percentage.mermaid"]],
+      "unscoped": []
+    },
+    {
+      "code": "railroad-ebnf-beta (* a\u2029%% c *) %%{wrap}%%\n set *) r=\"x\";",
+      "scopes": [
+        ["%% c *) %%{wrap}%%", "comment.line.percentage.mermaid", 0],
+        [" set ", "comment.block.mermaid", 1],
+        ["r", "variable.mermaid", 1]
+      ],
+      "absent": [[" set ", "variable.mermaid", 1]],
+      "absentOnLine": [[0, "meta.directive.mermaid"]]
+    },
+    {
+      "code": "railroad-ebnf-beta\ntabs = \"a\"? \t?;\n",
+      "scopes": [
+        ["tabs", "variable.mermaid"],
+        ["a", "string.quoted.double.mermaid"],
+        ["?", "keyword.operator.mermaid"]
+      ],
+      "absentOnLine": [[1, "string.unquoted.mermaid"]]
+    }
+  ]
+}

@@ -1,0 +1,142 @@
+{
+  "header": "radar-beta",
+  "scopes": [
+    ["axis", "keyword.control.mermaid"],
+    ["curve", "keyword.control.mermaid"],
+    ["showLegend", "keyword.control.mermaid"],
+    ["ticks", "keyword.control.mermaid"],
+    ["max", "keyword.control.mermaid"],
+    ["min", "keyword.control.mermaid"],
+    ["graticule", "keyword.control.mermaid"],
+    ["true", "constant.language.mermaid"],
+    ["polygon", "constant.language.mermaid"],
+    ["65.5", "constant.numeric.mermaid"],
+    ["Alice", "string.quoted.double.mermaid"],
+    ["m", "variable.mermaid"],
+    ["title", "keyword.control.mermaid"],
+    ["accTitle", "keyword.control.mermaid"],
+    ["accDescr", "keyword.control.mermaid", 10],
+    ["accDescr", "keyword.control.mermaid", 11],
+    ["max", "keyword.control.mermaid", 12],
+    ["<b title=\"x\">", "string.quoted.double.mermaid", 17],
+    ["Radar</b>", "string.quoted.double.mermaid", 17],
+    ["<b", "string.quoted.double.mermaid", 18],
+    ["s", "variable.mermaid", 18],
+    ["title", "keyword.control.mermaid", 19],
+    ["init", "entity.name.function.directive.mermaid", 19],
+    ["axis is title text", "string.unquoted.mermaid", 19],
+    ["accTitle", "keyword.control.mermaid", 20],
+    ["init", "entity.name.function.directive.mermaid", 20],
+    [" curve is title text", "string.unquoted.mermaid", 20],
+    ["accDescr", "keyword.control.mermaid", 21],
+    ["init", "entity.name.function.directive.mermaid", 21],
+    [" axis is description text", "string.unquoted.mermaid", 21],
+    ["accDescr", "keyword.control.mermaid", 22],
+    ["init", "entity.name.function.directive.mermaid", 22],
+    ["{", "punctuation.definition.description.begin.mermaid", 22],
+    ["}", "punctuation.definition.description.end.mermaid", 22],
+    ["m", "variable.mermaid", 23],
+    ["init", "entity.name.function.directive.mermaid", 23],
+    ["Label", "string.quoted.double.mermaid", 23],
+    ["\\", "constant.character.escape.mermaid", 24],
+    ["init", "entity.name.function.directive.mermaid", 24],
+    ["B", "string.quoted.double.mermaid", 24],
+    ["wrap", "entity.name.function.directive.mermaid", 0],
+    [":", "punctuation.separator.colon.mermaid", 0],
+    ["<b title=\"axis\">", "string.quoted.double.mermaid", 25],
+    ["circle", "constant.language.mermaid", 26],
+    ["false", "constant.language.mermaid", 27],
+    ["5", "constant.numeric.mermaid", 28],
+    ["max", "keyword.control.mermaid", 28],
+    ["wrap", "entity.name.function.directive.mermaid", 28],
+    ["axis", "keyword.control.mermaid", 29],
+    ["wrap", "entity.name.function.directive.mermaid", 29],
+    ["wrap", "entity.name.function.directive.mermaid", 30],
+    ["ticks", "keyword.control.mermaid", 30],
+    ["max", "keyword.control.mermaid", 31],
+    ["hidden: opener", "comment.block.ignored.mermaid", 33],
+    ["min", "keyword.control.mermaid", 35],
+    ["wrap", "entity.name.function.directive.mermaid", 38],
+    ["showLegend", "keyword.control.mermaid", 39],
+    ["%", "comment.line.percentage.mermaid", 40],
+    ["wrap", "entity.name.function.directive.mermaid", 40],
+    ["% native ", "comment.line.percentage.mermaid", 40],
+    ["a", "variable.mermaid", 4],
+    ["m", "variable.mermaid", 5],
+    ["Grades", "string.unquoted.mermaid"],
+    ["[", "punctuation.definition.label.begin.mermaid", 3],
+    ["]", "punctuation.definition.label.end.mermaid", 3],
+    ["{", "punctuation.section.braces.begin.mermaid", 4],
+    ["}", "punctuation.section.braces.end.mermaid", 4],
+    [",", "punctuation.separator.comma.mermaid", 3],
+    ["{", "punctuation.definition.description.begin.mermaid", 11],
+    ["}", "punctuation.definition.description.end.mermaid", 11]
+  ],
+  "absent": [
+    ["s", "string.quoted.double.mermaid", 18],
+    ["axis is title text", "keyword.control.mermaid", 19],
+    [" curve is title text", "keyword.control.mermaid", 20],
+    [" axis is description text", "keyword.control.mermaid", 21],
+    ["<b title=\"x\">", "punctuation.definition.string.end.mermaid", 17],
+    ["<b title=\"axis\">", "keyword.control.mermaid", 25],
+    ["ticks", "comment.block.ignored.mermaid", 30],
+    ["max", "comment.block.ignored.mermaid", 31],
+    ["min", "comment.block.ignored.mermaid", 35],
+    ["showLegend", "comment.block.ignored.mermaid", 39]
+  ],
+  "absentOnLine": [
+    [30, "comment.line.percentage.mermaid"],
+    [31, "comment.line.percentage.mermaid"]
+  ],
+  "escapedInputs": [
+    {
+      "code": "radar-beta %% native\u2029%% common %%{wrap}%%\naxis a\n",
+      "scopes": [
+        ["%% native", "comment.line.percentage.mermaid"],
+        ["%% common %%{wrap}%%", "comment.line.percentage.mermaid"]
+      ],
+      "absentOnLine": [[0, "meta.directive.mermaid"]]
+    },
+    {
+      "code": "radar-beta %%{! x\u2028%% }%% axis wrong\n",
+      "scopes": [
+        ["%%{! x", "comment.line.percentage.mermaid"],
+        ["%% }%% axis wrong", "comment.line.percentage.mermaid"]
+      ],
+      "absent": [["%% }%% axis wrong", "keyword.control.mermaid"]]
+    },
+    {
+      "code": "radar-beta\n---\nX\u2028%% common --- %%{wrap}%%\n\n---\naxis a\n",
+      "scopes": [
+        ["%% common --- %%{wrap}%%", "comment.line.percentage.mermaid"],
+        ["axis", "keyword.control.mermaid"]
+      ],
+      "absentOnLine": [[2, "meta.directive.mermaid"]],
+      "absent": [["axis", "comment.block.ignored.mermaid"]]
+    },
+    {
+      "code": "radar-beta\naxis a[\"foo%%{wrap}%%axisLabel\"]\n",
+      "scopes": [
+        ["axisLabel", "string.quoted.double.mermaid", 1],
+        ["wrap", "entity.name.function.directive.mermaid"]
+      ],
+      "absent": [["axisLabel", "keyword.control.mermaid", 1]]
+    },
+    {
+      "code": "radar-beta\ntitle T\u2028%% title comment\n\naccTitle: A\u2029%% accessibility comment\n\naccDescr: B\u2028%% description comment\n\naxis a\n",
+      "scopes": [
+        ["T", "string.unquoted.mermaid"],
+        [" A", "string.unquoted.mermaid"],
+        [" B", "string.unquoted.mermaid"],
+        ["%% title comment", "comment.line.percentage.mermaid"],
+        ["%% accessibility comment", "comment.line.percentage.mermaid"],
+        ["%% description comment", "comment.line.percentage.mermaid"]
+      ],
+      "absent": [
+        ["%% title comment", "string.unquoted.mermaid"],
+        ["%% accessibility comment", "string.unquoted.mermaid"],
+        ["%% description comment", "string.unquoted.mermaid"]
+      ]
+    }
+  ]
+}

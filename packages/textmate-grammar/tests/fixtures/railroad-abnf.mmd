@@ -1,0 +1,20 @@
+railroad-abnf-beta%%{wrap}%%
+title Grammar
+accTitle: Grammar title
+accDescr: Grammar description
+accDescr { Grammar block }
+rule = "a" / %x41-5A / 1*3DIGIT ;
+other = [ rule ] *( "b" ) ;
+; a semicolon comment
+%% a comment line
+---
+ignored: railroad
+---
+%%{!}%%
+probe = %%%{wrap}%%x%%{wrap}%%41%%{wrap}%%-%%{wrap}%%5A ;
+repeat = 1%%{wrap}%%*%%{wrap}%%3"a" ;
+html = "a<b title="x">y</b>" ;
+bounds = 2%%{wrap}%%*%%{wrap}%%4"a" ;
+; text%%{init: {"mark":";"}}%% tail
+tail = "a";%%{wrap}%%
+; D2 line end %%{wrap}%%
