@@ -1,0 +1,81 @@
+usecase-beta%%{wrap}%%
+accTitle: Shop
+accDescr: Actors and use cases
+direction LR
+actor Customer <<Person>> :::primary, secondary
+actor Admin, Guest
+Customer --> Browse(Browse Items)
+Customer --|> Admin
+Checkout(Checkout) ..> : include Pay(Pay)
+systemBoundary Shop
+  Browse(Browse Items)
+end
+Customer@{ icon: "user", business: false }
+json Config @ {"theme": "dark", "nested": {"braces": "} {"}}
+classDef primary fill:#f9f,color:#333
+note for Customer "VIP"
+%% a comment line
+accDescr { Usecase block }
+class Customer primary
+style Browse fill:red
+Checkout ..> : extend Pay
+Html["a<b title="x">y</b>"]
+Bare[a<b>y</b>]
+Partial["a<b"] --> Later["c>"]
+note for Customer "a<b title="x">y</b>"
+json%%{wrap}%% ConfigHtml%%{wrap}%%@%%{wrap}%%{"html":"a<b title="x">y</b>"}
+classDef%%{wrap}%% primary%%{wrap}%%,%%{wrap}%%secondary%%{wrap}%% fill:red
+Classed:::%%{wrap}%%primary%%{wrap}%%,%%{wrap}%%secondary
+style%%{wrap}%% Classed%%{wrap}%% fill:re%%{wrap}%%d
+Tagged <<a%%{init: {"end": ">>"}}%%b>>
+json Escaped @ {"text":"a\%%{wrap}%%"b"}
+accTitle: A %% actor
+accDescr: A %% actor
+note for Customer actor direction LR
+note for Customer true false
+Customer -- actor direction LR --> NoteTarget
+Customer -- true false --> BooleanTarget
+style Customer--actor:red
+direction TD
+direction TB
+direction BT
+direction RL
+actor Business@{business%%{wrap}%%:true%%{wrap}%%}
+TagClose[<b] --> TagTail[>]
+
+EntityLabel[#amp; actor direction]
+Customer -- SoleTarget
+%%{wrap}%% %%
+%%{wrap}%%accTitle%%{wrap}%%: Directive prefix
+
+Customer -- DirectiveTarget%%{x: -->}%%
+
+A -- <b --> B
+A("x")
+json J @ {"text":"x"}
+Word[foo%%{wrap}%%style]
+A -- foo%%{wrap}%%style --> B
+Tight --<b--> Target
+style Word fill:blue
+'Single label'
+"`Markdown label`"
+style Customer fill:#43a047
+actor FixedNormal@{type:normal}
+actor FixedHollow@{type:hollow}
+actor FixedAwesome@{type:awesome}
+actor IconText@{icon:hollow}
+actor QuotedType@{type:"hollow"}
+systemBoundary FixedPackage@{type:package}
+end
+systemBoundary FixedRect@{'type':rect}
+end
+A edgeSpeed@--> B
+edgeSpeed@{animation:fast,animate:true}
+A edgeSlow@--> B
+edgeSlow@{"animation":slow}
+style A color:"red,blue",fill:green
+style A color:'red,blue',fill:green
+A --foo--> B
+A --1.5px--> B
+A --box--> B
+style A color:"",fill:green

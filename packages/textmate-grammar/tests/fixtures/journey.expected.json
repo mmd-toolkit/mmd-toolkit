@@ -1,0 +1,205 @@
+{
+  "header": "journey",
+  "scopes": [
+    ["journey", "keyword.control.mermaid"],
+    ["title", "keyword.control.mermaid"],
+    ["section", "keyword.control.mermaid"],
+    ["accTitle", "keyword.control.mermaid"],
+    ["accDescr", "keyword.control.mermaid", 7],
+    ["accDescr", "keyword.control.mermaid", 8],
+    ["accDescr", "keyword.control.mermaid", 26],
+    ["Read a \"string\"", "string.unquoted.mermaid"],
+    [" 5", "string.unquoted.mermaid", 9],
+    [":", "punctuation.separator.colon.mermaid"],
+    [",", "punctuation.separator.comma.mermaid", 9],
+    ["%% a journey comment", "comment.line.percentage.mermaid"],
+    ["% a percent comment", "comment.line.percentage.mermaid"],
+    ["# a hash comment", "comment.line.number-sign.mermaid"],
+    ["# inline hash comment", "comment.line.number-sign.mermaid"],
+    ["%%{", "meta.directive.mermaid", 29],
+    ["title", "keyword.control.mermaid", 33],
+    ["section", "keyword.control.mermaid", 34],
+    ["Task", "string.unquoted.mermaid", 35],
+    [":", "punctuation.separator.colon.mermaid", 35],
+    ["Task", "string.unquoted.mermaid", 36],
+    ["init", "entity.name.function.directive.mermaid", 36],
+    [" section", "string.unquoted.mermaid", 37],
+    ["Me", "string.unquoted.mermaid", 38],
+    ["title", "keyword.control.mermaid", 39],
+    ["section", "keyword.control.mermaid", 40],
+    ["accTitle", "keyword.control.mermaid", 41],
+    ["accDescr", "keyword.control.mermaid", 42],
+    ["{", "punctuation.definition.description.begin.mermaid", 42],
+    ["}", "punctuation.definition.description.end.mermaid", 42],
+    ["wrap", "entity.name.function.directive.mermaid", 55],
+    [" comment", "comment.line.percentage.mermaid", 55],
+    [" comment", "comment.line.number-sign.mermaid", 57],
+    ["%{left}", "string.unquoted.mermaid", 59],
+    ["data", "comment.block.ignored.mermaid", 65],
+    ["wrap", "entity.name.function.directive.mermaid", 66],
+    [":", "punctuation.separator.colon.mermaid", 66],
+    ["accTitle", "keyword.control.mermaid", 67],
+    ["boundary title", "string.unquoted.mermaid", 67],
+    ["accDescr", "keyword.control.mermaid", 68],
+    ["boundary description", "string.unquoted.mermaid", 68],
+    [" Me", "string.unquoted.mermaid", 9],
+    [" ignored, title: section", "comment.block.ignored.mermaid", 10],
+    ["A title with section and accTitle", "string.unquoted.mermaid", 4]
+  ],
+  "absent": [
+    ["TitleX", "keyword.control.mermaid"],
+    ["sectionx", "keyword.control.mermaid"],
+    ["title-x", "keyword.control.mermaid"],
+    ["accTitlex", "keyword.control.mermaid"],
+    ["accDescrx", "keyword.control.mermaid"],
+    ["title", "keyword.control.mermaid", 18],
+    ["section", "keyword.control.mermaid", 19],
+    [" 5", "constant.numeric.mermaid", 9],
+    ["Read a \"string\"", "string.quoted.double.mermaid"]
+  ],
+  "absentOnLine": [
+    [9, "keyword.control.mermaid"],
+    [10, "keyword.control.mermaid"],
+    [12, "keyword.control.mermaid"],
+    [20, "comment.line.percentage.mermaid"],
+    [21, "comment.line.percentage.mermaid"],
+    [23, "punctuation.separator.comma.mermaid"],
+    [25, "keyword.control.mermaid"],
+    [35, "comment.line.number-sign.mermaid"],
+    [36, "comment.line.number-sign.mermaid"],
+    [37, "comment.line.number-sign.mermaid"],
+    [38, "comment.line.number-sign.mermaid"],
+    [59, "comment.line.percentage.mermaid"],
+    [65, "comment.line.number-sign.mermaid"],
+    [66, "comment.line.percentage.mermaid"]
+  ],
+  "unscoped": [["  ", 32]],
+  "escapedInputs": [
+    {
+      "code": "journey\naccTitle: a\u2028 %%{init: {}}%% %% journey separator comment\naccDescr: d\u2029 %% journey paragraph comment\ntitle T\u2028%% journey title boundary\n\nsection S\u2029%% journey section boundary\n\nA: 5\u2028%% journey score boundary\n\nA: 3: Person\u2029%% journey people boundary\n\nA: 3: P: ignored\u2028%% journey ignored boundary\n\nTask text\u2029%% journey task boundary\n: 5\n\naccTitle:\u2028%% journey empty title boundary\nTitle after comment\n\naccDescr { text\u2029%% journey block boundary\nend }\n\n",
+      "scopes": [
+        ["%% journey separator comment", "comment.line.percentage.mermaid", 1],
+        ["%% journey paragraph comment", "comment.line.percentage.mermaid", 2],
+        ["%% journey title boundary", "comment.line.percentage.mermaid", 3],
+        ["%% journey section boundary", "comment.line.percentage.mermaid", 5],
+        ["%% journey score boundary", "comment.line.percentage.mermaid", 7],
+        ["%% journey people boundary", "comment.line.percentage.mermaid", 9],
+        ["%% journey ignored boundary", "comment.line.percentage.mermaid", 11],
+        ["%% journey task boundary", "comment.line.percentage.mermaid", 13],
+        [
+          "%% journey empty title boundary",
+          "comment.line.percentage.mermaid",
+          16
+        ],
+        ["%% journey block boundary", "comment.line.percentage.mermaid", 19],
+        ["T", "string.unquoted.mermaid", 3],
+        ["S", "string.unquoted.mermaid", 5],
+        [" 5", "string.unquoted.mermaid", 7],
+        [" Person", "string.unquoted.mermaid", 9],
+        [" ignored", "comment.block.ignored.mermaid", 11],
+        ["Task text", "string.unquoted.mermaid", 13]
+      ],
+      "absent": [
+        ["%% journey separator comment", "string.unquoted.mermaid", 1],
+        ["init", "string.unquoted.mermaid", 1],
+        ["%% journey paragraph comment", "string.unquoted.mermaid", 2],
+        ["%% journey title boundary", "string.unquoted.mermaid", 3],
+        ["%% journey title boundary", "string.quoted.double.mermaid", 3],
+        ["%% journey title boundary", "string.quoted.other.mermaid", 3],
+        ["%% journey title boundary", "variable.mermaid", 3],
+        ["%% journey section boundary", "string.unquoted.mermaid", 5],
+        ["%% journey section boundary", "string.quoted.double.mermaid", 5],
+        ["%% journey section boundary", "string.quoted.other.mermaid", 5],
+        ["%% journey section boundary", "variable.mermaid", 5],
+        ["%% journey score boundary", "string.unquoted.mermaid", 7],
+        ["%% journey score boundary", "string.quoted.double.mermaid", 7],
+        ["%% journey score boundary", "string.quoted.other.mermaid", 7],
+        ["%% journey score boundary", "variable.mermaid", 7],
+        ["%% journey people boundary", "string.unquoted.mermaid", 9],
+        ["%% journey people boundary", "string.quoted.double.mermaid", 9],
+        ["%% journey people boundary", "string.quoted.other.mermaid", 9],
+        ["%% journey people boundary", "variable.mermaid", 9],
+        ["%% journey ignored boundary", "string.unquoted.mermaid", 11],
+        ["%% journey ignored boundary", "string.quoted.double.mermaid", 11],
+        ["%% journey ignored boundary", "string.quoted.other.mermaid", 11],
+        ["%% journey ignored boundary", "variable.mermaid", 11],
+        ["%% journey task boundary", "string.unquoted.mermaid", 13],
+        ["%% journey task boundary", "string.quoted.double.mermaid", 13],
+        ["%% journey task boundary", "string.quoted.other.mermaid", 13],
+        ["%% journey task boundary", "variable.mermaid", 13],
+        ["%% journey empty title boundary", "string.unquoted.mermaid", 16],
+        ["%% journey empty title boundary", "string.quoted.double.mermaid", 16],
+        ["%% journey empty title boundary", "string.quoted.other.mermaid", 16],
+        ["%% journey empty title boundary", "variable.mermaid", 16],
+        ["%% journey block boundary", "string.unquoted.mermaid", 19],
+        ["%% journey block boundary", "string.quoted.double.mermaid", 19],
+        ["%% journey block boundary", "string.quoted.other.mermaid", 19],
+        ["%% journey block boundary", "variable.mermaid", 19]
+      ],
+      "absentOnLine": [],
+      "unscoped": [
+        ["\u2028", 3],
+        ["\u2029", 5],
+        ["\u2028", 7],
+        ["\u2029", 9],
+        ["\u2028", 11],
+        ["\u2029", 13],
+        ["\u2028", 16],
+        ["\u2029", 19]
+      ]
+    },
+    {
+      "code": "journey A: 5 # native\u2029%% common %%{wrap}%%\n",
+      "scopes": [
+        ["# native", "comment.line.number-sign.mermaid"],
+        ["%% common %%{wrap}%%", "comment.line.percentage.mermaid"]
+      ],
+      "absentOnLine": [[0, "meta.directive.mermaid"]]
+    },
+    {
+      "code": "journey % native\u2028%% common %%{wrap}%%\n",
+      "scopes": [
+        ["% native", "comment.line.percentage.mermaid"],
+        ["%% common %%{wrap}%%", "comment.line.percentage.mermaid"]
+      ],
+      "absentOnLine": [[0, "meta.directive.mermaid"]]
+    },
+    {
+      "code": "journey\u2029 %% common %%{wrap}%%\nA: 5\n",
+      "scopes": [["%% common %%{wrap}%%", "comment.line.percentage.mermaid"]],
+      "absentOnLine": [[0, "meta.directive.mermaid"]]
+    },
+    {
+      "code": "journey\naccTitle: t\u2028%% title boundary %%{wrap}%%\naccDescr: d\u2029%% description boundary %%{wrap}%%\n",
+      "scopes": [
+        ["t", "string.unquoted.mermaid", 1],
+        ["d", "string.unquoted.mermaid", 2],
+        ["%% title boundary %%{wrap}%%", "comment.line.percentage.mermaid", 1],
+        [
+          "%% description boundary %%{wrap}%%",
+          "comment.line.percentage.mermaid",
+          2
+        ]
+      ],
+      "absentOnLine": [
+        [1, "meta.directive.mermaid"],
+        [2, "meta.directive.mermaid"]
+      ]
+    },
+    {
+      "code": "journey\ntitle T\u2028%% title end %%{wrap}%%\n\nsection S\u2029%% section end %%{wrap}%%\n\nTask: 5: Person: ignored\u2028%% data end %%{wrap}%%\n\nTask text\u2029%% task end %%{wrap}%%\n: 5\n",
+      "scopes": [
+        ["%% title end %%{wrap}%%", "comment.line.percentage.mermaid", 1],
+        ["%% section end %%{wrap}%%", "comment.line.percentage.mermaid", 3],
+        ["%% data end %%{wrap}%%", "comment.line.percentage.mermaid", 5],
+        ["%% task end %%{wrap}%%", "comment.line.percentage.mermaid", 7]
+      ],
+      "absentOnLine": [
+        [1, "meta.directive.mermaid"],
+        [3, "meta.directive.mermaid"],
+        [5, "meta.directive.mermaid"],
+        [7, "meta.directive.mermaid"]
+      ]
+    }
+  ]
+}

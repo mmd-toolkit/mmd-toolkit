@@ -1,0 +1,26 @@
+> ---
+  "---" meta.frontmatter.mermaid punctuation.definition.frontmatter.begin.mermaid
+> title: Hello
+  "t" meta.frontmatter.mermaid meta.embedded.block.yaml string.unquoted.plain.out.yaml entity.name.tag.yaml
+  "itle" meta.frontmatter.mermaid meta.embedded.block.yaml string.unquoted.plain.out.yaml entity.name.tag.yaml
+  ":" meta.frontmatter.mermaid meta.embedded.block.yaml punctuation.separator.key-value.mapping.yaml
+  " " meta.frontmatter.mermaid meta.embedded.block.yaml
+  "H" meta.frontmatter.mermaid meta.embedded.block.yaml string.unquoted.plain.out.yaml
+  "ello" meta.frontmatter.mermaid meta.embedded.block.yaml string.unquoted.plain.out.yaml
+> ---
+  "---" meta.frontmatter.mermaid punctuation.definition.frontmatter.end.mermaid
+> %% a comment line
+  "%% a comment line" comment.line.percentage.mermaid
+> %%{init: {"theme": "dark"}}%%
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " meta.directive.mermaid
+  "{\"theme\": \"dark\"}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+> timeline
+  "timeline" keyword.control.mermaid
+>   title T
+  "title" keyword.control.mermaid
+  "T" string.unquoted.mermaid
+> 

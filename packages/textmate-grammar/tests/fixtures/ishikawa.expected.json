@@ -1,0 +1,63 @@
+{
+  "header": "ishikawa-beta",
+  "scopes": [
+    ["%% a comment line", "comment.line.percentage.mermaid"],
+    ["%% a native comment", "comment.line.percentage.mermaid"],
+    ["%%%{wrap}%%% separated comment", "comment.line.percentage.mermaid", 8],
+    ["wrap", "entity.name.function.directive.mermaid", 11],
+    ["%% common %%{wrap}%%", "comment.line.percentage.mermaid", 12],
+    ["  #amp; %% remains text", "string.unquoted.mermaid", 10],
+    ["%% stays text", "string.unquoted.mermaid", 11],
+    ["Root problem", "string.unquoted.mermaid"],
+    ["  Cause one", "string.unquoted.mermaid"],
+    ["    Detail", "string.unquoted.mermaid"],
+    ["  Percent %% stays in node text", "string.unquoted.mermaid"]
+  ],
+  "escapedInputs": [
+    {
+      "code": "ishikawa-beta\nRoot problem\n  Node\u2028%% separator comment\n\n",
+      "scopes": [
+        ["%% separator comment", "comment.line.percentage.mermaid", 2]
+      ],
+      "absent": [],
+      "absentOnLine": []
+    },
+    {
+      "code": "ishikawa %%{wrap}%% Root",
+      "scopes": [
+        ["wrap", "entity.name.function.directive.mermaid"],
+        [" Root", "string.unquoted.mermaid"]
+      ],
+      "absentOnLine": [[0, "comment.line.percentage.mermaid"]]
+    },
+    {
+      "code": "ishikawa%%%{wrap}%%% native %%{wrap}%%\nRoot\n",
+      "scopes": [
+        ["wrap", "entity.name.function.directive.mermaid", 0],
+        ["% native ", "comment.line.percentage.mermaid", 0],
+        ["Root", "string.unquoted.mermaid", 1]
+      ]
+    },
+    {
+      "code": "ishikawa %% native\u2028%% common %%{wrap}%%\nRoot\n",
+      "scopes": [
+        ["%% native", "comment.line.percentage.mermaid", 0],
+        ["%% common %%{wrap}%%", "comment.line.percentage.mermaid", 0]
+      ],
+      "absentOnLine": [[0, "meta.directive.mermaid"]]
+    },
+    {
+      "code": "ishikawa\u2028%% common %%{wrap}%%\nRoot\n",
+      "scopes": [
+        ["%% common %%{wrap}%%", "comment.line.percentage.mermaid", 0],
+        ["Root", "string.unquoted.mermaid", 1]
+      ],
+      "absentOnLine": [[0, "meta.directive.mermaid"]]
+    }
+  ],
+  "absentOnLine": [
+    [8, "meta.directive.mermaid"],
+    [11, "comment.line.percentage.mermaid"],
+    [12, "meta.directive.mermaid"]
+  ]
+}

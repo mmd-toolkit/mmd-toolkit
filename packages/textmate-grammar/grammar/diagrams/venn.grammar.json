@@ -1,0 +1,407 @@
+{
+  "patterns": [
+    {
+      "include": "#venn"
+    }
+  ],
+  "repository": {
+    "venn": {
+      "comment": "Read the exact lowercase detector header and its keyword boundary. Follows venn.md#detection and venn.md#units-and-contexts.",
+      "begin": "{{diagramStart}}(venn-beta){{wordEnd}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Read native comments and any preceding swallowed fragment. Follows venn.md#units-and-contexts.",
+          "patterns": [
+            {
+              "comment": "Read a swallowed prefix separately from the comment; scope only non-whitespace as ignored text. Follows venn.md#units-and-contexts and venn.md#comments-and-swallowed-fragments.",
+              "begin": "{{venn-swallowed-prefix}}",
+              "beginCaptures": {
+                "0": {
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    },
+                    {
+                      "match": "[^{{ws}}]",
+                      "name": "comment.block.ignored.mermaid",
+                      "comment": "Mark only a swallowed non-whitespace prefix as ignored text. Follows venn.md#comments-and-swallowed-fragments."
+                    }
+                  ]
+                }
+              },
+              "end": "{{lineValueEnd}}",
+              "patterns": [
+                {
+                  "include": "#directive"
+                },
+                {
+                  "include": "#native-percent-comment"
+                }
+              ]
+            },
+            {
+              "comment": "Read a native diagram comment. Follows venn.md#units-and-contexts.",
+              "include": "#native-percent-comment"
+            }
+          ]
+        },
+        {
+          "comment": "Read title text after its keyword and one whitespace separator. Follows venn.md#units-and-contexts and common.md#a-directive-is-a-token-boundary.",
+          "begin": "((?i:title))({{directives}})(?!{{separatorCommentEnd}})[{{ws}}](?={{directives}}(?:{{entity}}|(?!{{directiveStart}})[^#;\\n]))",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "(?=[#;])|{{lineValueEnd}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Keep an entity inside the surrounding text scope. Follows common.md#entities.",
+              "include": "#entity"
+            }
+          ],
+          "applyEndPatternLast": true
+        },
+        {
+          "include": "#venn-style"
+        },
+        {
+          "comment": "Read bounded statement keywords. Follows venn.md#units-and-contexts.",
+          "match": "({{venn-statement-keyword}}){{wordEnd}}",
+          "captures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read quoted and bare bracket labels. Follows venn.md#units-and-contexts.",
+          "patterns": [
+            {
+              "comment": "Read a quoted label and its delimiters; HTML attribute quotes remain content. Follows venn.md#units-and-contexts, common.md#html-attribute-quotes, common.md#a-directive-is-a-token-boundary, and common.md#comment-lines.",
+              "begin": "(\\[)({{directives}})(\")",
+              "beginCaptures": {
+                "1": {
+                  "name": "punctuation.definition.label.begin.mermaid"
+                },
+                "2": {
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                },
+                "3": {
+                  "name": "string.quoted.double.mermaid punctuation.definition.string.begin.mermaid"
+                }
+              },
+              "end": "(\")({{directives}})(\\])",
+              "endCaptures": {
+                "1": {
+                  "name": "string.quoted.double.mermaid punctuation.definition.string.end.mermaid"
+                },
+                "2": {
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                },
+                "3": {
+                  "name": "punctuation.definition.label.end.mermaid"
+                }
+              },
+              "patterns": [
+                {
+                  "include": "#comment-line"
+                },
+                {
+                  "include": "#directive"
+                },
+                {
+                  "comment": "Read quoted-label content up to its closer or a common-comment boundary. Follows venn.md#units-and-contexts and common.md#comment-lines.",
+                  "begin": "(?!{{separatorCommentEnd}}|{{venn-quoted-label-end}})(?=.)",
+                  "end": "(?={{venn-quoted-label-end}})|{{separatorCommentEnd}}",
+                  "contentName": "string.quoted.double.mermaid",
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    },
+                    {
+                      "include": "#html-tag"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "comment": "Read a bare label and its delimiters; a closing bracket still ends the label inside a tag. Follows venn.md#units-and-contexts, common.md#html-attribute-quotes, common.md#a-directive-is-a-token-boundary, and common.md#comment-lines.",
+              "begin": "(\\[)(?={{directives}}[^\\]\"])",
+              "beginCaptures": {
+                "1": {
+                  "name": "punctuation.definition.label.begin.mermaid"
+                }
+              },
+              "end": "(\\])|(?=\")",
+              "endCaptures": {
+                "1": {
+                  "name": "punctuation.definition.label.end.mermaid"
+                }
+              },
+              "patterns": [
+                {
+                  "include": "#comment-line"
+                },
+                {
+                  "include": "#directive"
+                },
+                {
+                  "comment": "Read bare-label content up to its closer or a common-comment boundary. Follows venn.md#units-and-contexts and common.md#comment-lines.",
+                  "begin": "(?!{{separatorCommentEnd}})(?=[^\\]\"])",
+                  "end": "(?=[\\]\"])|{{separatorCommentEnd}}",
+                  "contentName": "string.unquoted.mermaid",
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    },
+                    {
+                      "include": "#venn-html-tag"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "comment": "Read a numeric size or text identifier. Follows venn.md#units-and-contexts.",
+          "match": "{{venn-number}}",
+          "name": "constant.numeric.mermaid"
+        },
+        {
+          "comment": "Read a whole hexadecimal color value, retaining directives. Follows venn.md#units-and-contexts and venn.md#directives-and-ignored-semicolons.",
+          "match": "{{venn-hex-color}}",
+          "name": "support.constant.property-value.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Read an RGB or RGBA color value as a whole, protecting its commas and retaining directives. Follows venn.md#units-and-contexts and common.md#a-directive-is-a-token-boundary.",
+          "match": "{{venn-rgb-color}}",
+          "name": "support.constant.property-value.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Read a bare element name or text identifier. Follows venn.md#units-and-contexts.",
+          "match": "{{venn-identifier}}",
+          "name": "variable.mermaid"
+        },
+        {
+          "comment": "Keep an HTML tag inside the surrounding text scope. Follows common.md#html-attribute-quotes.",
+          "include": "#html-tag"
+        },
+        {
+          "comment": "Read a plain double-quoted name or text. Follows venn.md#units-and-contexts.",
+          "include": "#string-plain-double"
+        },
+        {
+          "comment": "Read list and value separators. Follows venn.md#units-and-contexts.",
+          "match": "(,)|(:)",
+          "captures": {
+            "1": {
+              "name": "punctuation.separator.comma.mermaid"
+            },
+            "2": {
+              "name": "punctuation.separator.colon.mermaid"
+            }
+          }
+        }
+      ]
+    },
+    "venn-html-tag": {
+      "comment": "Read a bare-label HTML tag, leaving a closing bracket or a non-attribute quote for the enclosing label. Follows venn.md#units-and-contexts and common.md#html-attribute-quotes.",
+      "begin": "{{htmlTagStart}}",
+      "end": "{{htmlTagEnd}}|(?=[\\]\"])|{{separatorCommentEnd}}",
+      "endCaptures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Read a quoted HTML attribute value inside a bare label, leaving a closing bracket for that label. Follows common.md#html-attribute-quotes and venn.md#units-and-contexts.",
+          "begin": "{{htmlQuotedValueStart}}",
+          "end": "\"|(?=\\])|(?={{htmlTagEnd}})|{{separatorCommentEnd}}",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      ]
+    },
+    "venn-style": {
+      "comment": "Read a style statement, keeping target names separate from properties. Follows venn.md#styles, venn.md#units-and-contexts, and venn.md#comments-and-swallowed-fragments.",
+      "begin": "((?i:style)){{wordEnd}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "{{venn-style-end}}",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#venn-style-property"
+        },
+        {
+          "include": "#string-plain-double"
+        },
+        {
+          "match": "{{venn-identifier}}",
+          "name": "variable.mermaid",
+          "comment": "Read a bare style target name. Follows venn.md#units-and-contexts."
+        },
+        {
+          "match": ",",
+          "name": "punctuation.separator.comma.mermaid",
+          "comment": "Read a target or property-list comma. Follows venn.md#units-and-contexts."
+        }
+      ]
+    },
+    "venn-style-property": {
+      "comment": "Read one whole style property value, leaving trailing whitespace outside its scope. Follows venn.md#styles, venn.md#units-and-contexts, and venn.md#comments-and-swallowed-fragments.",
+      "begin": "({{venn-identifier}})({{asciiGap}})(:)({{asciiGap}})",
+      "beginCaptures": {
+        "1": {
+          "name": "support.type.property-name.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "punctuation.separator.key-value.mermaid"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "{{venn-style-value-end}}",
+      "contentName": "support.constant.property-value.mermaid",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#venn-style-rgb"
+        },
+        {
+          "comment": "Read adjacent bare style atoms and their spacing, stopping before an RGB opener so its context owns the parentheses and commas across lines. Follows venn.md#styles.",
+          "match": "{{venn-style-atom}}(?:{{asciiGap}}{{venn-style-atom}})*",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "include": "#string-plain-double"
+        }
+      ],
+      "applyEndPatternLast": true
+    },
+    "venn-style-rgb": {
+      "comment": "Read one RGB or RGBA style atom through its closing parenthesis across physical lines, keeping commas inside the value and inheriting its property-value scope. Follows venn.md#units-and-contexts, venn.md#styles.",
+      "begin": "{{venn-rgb-start}}",
+      "end": "\\)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        }
+      ]
+    }
+  },
+  "variables": {
+    "venn-identifier": "[A-Za-z_][A-Za-z0-9_-]*",
+    "venn-number": "[+-]?(?:[0-9]+(?:\\.[0-9]+)?|\\.[0-9]+)",
+    "venn-hex-color": "#{{directives}}(?:[0-9A-Fa-f]{{directives}}){3,8}",
+    "venn-statement-start": "(?:{{venn-statement-keyword}}{{wordEnd}}|(?i:title){{requiredGap}})",
+    "venn-swallowed-prefix": "(?!{{directiveStart}}|{{entity}}|{{separatorCommentEnd}})[^}\\r\\n](?={{directives}}{{nonDirectivePercentPair}})",
+    "venn-native-comment-start": "(?:{{nonDirectivePercentPair}}|{{venn-swallowed-prefix}})",
+    "venn-style-end": "(?={{venn-statement-start}}|{{venn-native-comment-start}})|{{lineValueEnd}}",
+    "venn-style-atom": "(?!{{venn-native-comment-start}})(?:{{venn-hex-color}}|(?!{{venn-rgb-start}}|{{venn-statement-start}}){{venn-identifier}}|{{venn-number}})",
+    "venn-quoted-label-end": "\"{{directives}}\\]",
+    "venn-statement-keyword": "(?i:set|union|text|style)",
+    "venn-style-value-end": "(?={{lineGap}}(?:,|{{venn-statement-start}}|{{venn-native-comment-start}}|$))|{{separatorCommentEnd}}",
+    "venn-rgb-color": "{{venn-rgb-start}}(?:(?!{{separatorCommentEnd}})(?:{{directive}}|(?!{{directiveStart}})[^)\\n]))*\\)",
+    "venn-rgb-start": "(?i:rgba?)\\("
+  }
+}

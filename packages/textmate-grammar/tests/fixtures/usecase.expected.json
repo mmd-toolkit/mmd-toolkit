@@ -1,0 +1,376 @@
+{
+  "header": "usecase-beta",
+  "scopes": [
+    ["accTitle", "keyword.control.mermaid"],
+    ["accDescr", "keyword.control.mermaid"],
+    ["direction", "keyword.control.mermaid"],
+    ["actor", "keyword.control.mermaid"],
+    ["systemBoundary", "keyword.control.mermaid"],
+    ["end", "keyword.control.mermaid"],
+    ["json", "keyword.control.mermaid"],
+    ["classDef", "keyword.control.mermaid"],
+    ["note", "keyword.control.mermaid"],
+    ["for", "keyword.control.mermaid"],
+    ["include", "keyword.operator.arrow.mermaid"],
+    ["Person", "storage.modifier.mermaid"],
+    ["-->", "keyword.operator.arrow.mermaid"],
+    ["--|>", "keyword.operator.arrow.mermaid"],
+    ["..>", "keyword.operator.arrow.mermaid"],
+    ["primary", "variable.mermaid"],
+    ["Browse Items", "string.unquoted.mermaid"],
+    ["fill", "support.type.property-name.mermaid"],
+    ["#f9f", "support.constant.property-value.mermaid"],
+    ["color", "support.type.property-name.mermaid"],
+    ["#333", "support.constant.property-value.mermaid"],
+    ["false", "constant.language.mermaid"],
+    ["(", "keyword.operator.shape.begin.mermaid"],
+    ["secondary", "variable.mermaid"],
+    ["style", "keyword.control.mermaid"],
+    ["class", "keyword.control.mermaid"],
+    ["accDescr", "keyword.control.mermaid", 17],
+    ["<b title=\"x\">", "string.quoted.double.mermaid", 21],
+    ["<b", "string.unquoted.mermaid", 22],
+    ["Later", "variable.mermaid", 23],
+    ["c>", "string.quoted.double.mermaid", 23],
+    ["<b title=\"x\">", "string.quoted.double.mermaid", 24],
+    ["ConfigHtml", "variable.mermaid", 25],
+    ["<b title=\"x\">", "string.unquoted.mermaid", 25],
+    ["wrap", "entity.name.function.directive.mermaid", 25],
+    ["primary", "variable.mermaid", 26],
+    ["fill", "support.type.property-name.mermaid", 26],
+    ["red", "support.constant.property-value.mermaid", 26],
+    ["secondary", "variable.mermaid", 27],
+    ["wrap", "entity.name.function.directive.mermaid", 27],
+    ["d", "support.constant.property-value.mermaid", 28],
+    ["b", "storage.modifier.mermaid", 29],
+    ["init", "entity.name.function.directive.mermaid", 29],
+    ["\\", "string.unquoted.mermaid", 30],
+    ["wrap", "entity.name.function.directive.mermaid", 30],
+    ["b", "string.unquoted.mermaid", 30],
+    [",", "punctuation.separator.comma.mermaid", 26],
+    ["wrap", "entity.name.function.directive.mermaid", 0],
+    ["LR", "constant.language.mermaid", 3],
+    ["extend", "keyword.operator.arrow.mermaid", 20],
+    [" A %% actor", "string.unquoted.mermaid", 31],
+    [" A %% actor", "string.unquoted.mermaid", 32],
+    ["actor direction LR", "string.unquoted.mermaid", 33],
+    ["true false", "string.unquoted.mermaid", 34],
+    [" actor direction LR ", "string.unquoted.mermaid", 35],
+    [" true false ", "string.unquoted.mermaid", 36],
+    ["--actor", "support.type.property-name.mermaid", 37],
+    ["red", "support.constant.property-value.mermaid", 37],
+    ["TD", "constant.language.mermaid", 38],
+    ["TB", "constant.language.mermaid", 39],
+    ["BT", "constant.language.mermaid", 40],
+    ["RL", "constant.language.mermaid", 41],
+    ["business", "support.type.property-name.mermaid", 42],
+    ["true", "constant.language.mermaid", 42],
+    ["wrap", "entity.name.function.directive.mermaid", 42],
+    ["-->", "keyword.operator.arrow.mermaid", 43],
+    ["TagTail", "variable.mermaid", 43],
+    ["#amp;", "string.unquoted.mermaid", 45],
+    ["SoleTarget", "variable.mermaid", 46],
+    ["wrap", "entity.name.function.directive.mermaid", 47],
+    ["%%", "comment.line.percentage.mermaid", 47],
+    ["accTitle", "keyword.control.mermaid", 48],
+    ["wrap", "entity.name.function.directive.mermaid", 48],
+    [" Directive prefix", "string.unquoted.mermaid", 48],
+    ["DirectiveTarget", "variable.mermaid", 50],
+    ["x", "entity.name.function.directive.mermaid", 50],
+    ["<b", "string.unquoted.mermaid", 52],
+    ["-->", "keyword.operator.arrow.mermaid", 52],
+    ["B", "variable.mermaid", 52],
+    ["x", "string.quoted.double.mermaid", 53],
+    ["x", "string.unquoted.mermaid", 54],
+    ["x", "meta.data.mermaid", 54],
+    ["style", "string.unquoted.mermaid", 55],
+    ["style ", "string.unquoted.mermaid", 56],
+    ["<b", "string.unquoted.mermaid", 43],
+    ["<b", "string.unquoted.mermaid", 57],
+    ["-->", "keyword.operator.arrow.mermaid", 57],
+    ["Target", "variable.mermaid", 57],
+    ["fill", "support.type.property-name.mermaid", 58],
+    ["blue", "support.constant.property-value.mermaid", 58],
+    ["Customer", "variable.mermaid", 6],
+    ["Shop", "variable.mermaid", 9],
+    [")", "keyword.operator.shape.end.mermaid", 6],
+    ["[", "keyword.operator.shape.begin.mermaid", 21],
+    ["]", "keyword.operator.shape.end.mermaid", 21],
+    ["<<", "punctuation.definition.stereotype.begin.mermaid", 4],
+    [">>", "punctuation.definition.stereotype.end.mermaid", 4],
+    ["icon", "support.type.property-name.mermaid", 12],
+    ["@{", "punctuation.section.data.begin.mermaid", 12],
+    ["}", "punctuation.section.data.end.mermaid", 12],
+    ["{", "punctuation.section.data.begin.mermaid", 13],
+    ["Single label", "string.quoted.single.mermaid", 59],
+    ["Markdown label", "string.quoted.other.markdown.mermaid", 60],
+    ["#43a047", "support.constant.property-value.mermaid", 61],
+    ["@", "meta.data.mermaid", 13],
+    ["normal", "constant.language.mermaid", 62],
+    ["hollow", "constant.language.mermaid", 63],
+    ["awesome", "constant.language.mermaid", 64],
+    ["hollow", "string.unquoted.mermaid", 65],
+    ["hollow", "string.quoted.double.mermaid", 66],
+    ["package", "constant.language.mermaid", 67],
+    ["rect", "constant.language.mermaid", 69],
+    ["fast", "constant.language.mermaid", 72],
+    ["slow", "constant.language.mermaid", 74],
+    ["red,blue", "support.constant.property-value.mermaid", 75],
+    ["red,blue", "support.constant.property-value.mermaid", 76],
+    ["foo", "string.unquoted.mermaid", 77],
+    ["-->", "keyword.operator.arrow.mermaid", 77],
+    ["1.5px", "string.unquoted.mermaid", 78],
+    ["-->", "keyword.operator.arrow.mermaid", 78],
+    ["box", "string.unquoted.mermaid", 79],
+    ["\"", "support.constant.property-value.mermaid", 80],
+    ["'", "string.quoted.single.mermaid", 59],
+    ["\"", "string.quoted.double.mermaid", 53],
+    ["\"", "support.constant.property-value.mermaid", 75],
+    ["'", "support.constant.property-value.mermaid", 76]
+  ],
+  "absent": [
+    ["Later", "string.quoted.double.mermaid", 23],
+    ["<b title=\"x\">", "punctuation.definition.string.end.mermaid", 24],
+    ["wrap", "string.quoted.double.mermaid", 25],
+    [",", "variable.mermaid", 26],
+    ["SoleTarget", "string.unquoted.mermaid", 46],
+    [" actor direction", "keyword.control.mermaid", 45],
+    ["DirectiveTarget", "string.unquoted.mermaid", 50],
+    ["-->", "string.unquoted.mermaid", 52],
+    ["B", "string.unquoted.mermaid", 52],
+    ["style", "keyword.control.mermaid", 55],
+    ["style ", "keyword.control.mermaid", 56],
+    ["-->", "string.unquoted.mermaid", 57],
+    ["Target", "string.unquoted.mermaid", 57],
+    ["hollow", "constant.language.mermaid", 65],
+    ["hollow", "constant.language.mermaid", 66]
+  ],
+  "absentOnLine": [
+    [34, "constant.language.mermaid"],
+    [36, "constant.language.mermaid"],
+    [37, "keyword.operator.arrow.mermaid"]
+  ],
+  "escapedInputs": [
+    {
+      "code": "usecase-beta%%{wrap}%%\nactor Customer\nLabelSeparator[one\u2028%% label comment\ntwo]\nCustomer -- actor\u2028%% edge comment\ndirection LR --> EdgeTarget\naccDescr { one\u2028%% description comment\ntwo }\njson Separator @ {\"text\":\"a\u2029%% JSON comment\nb\"}\n\nactor MetadataSeparator@{icon:\"a\u2028%% metadata comment\nb\"}\nPlainSeparator[\"a\u2029%% plain comment\nb\"]\nSeparatorTag <<one\u2028%% stereotype comment\ntwo>>\n\nnote for Customer actor\u2029%% note comment\n\n",
+      "scopes": [
+        ["%% label comment", "comment.line.percentage.mermaid", 2],
+        ["two", "string.unquoted.mermaid", 3],
+        ["%% edge comment", "comment.line.percentage.mermaid", 4],
+        ["direction LR ", "string.unquoted.mermaid", 5],
+        ["%% description comment", "comment.line.percentage.mermaid", 6],
+        ["two ", "string.unquoted.mermaid", 7],
+        ["%% JSON comment", "comment.line.percentage.mermaid", 8],
+        ["b", "string.unquoted.mermaid", 9],
+        ["%% note comment", "comment.line.percentage.mermaid", 18],
+        ["%% stereotype comment", "comment.line.percentage.mermaid", 15],
+        ["two", "storage.modifier.mermaid", 16],
+        ["%% plain comment", "comment.line.percentage.mermaid", 13],
+        ["b", "string.quoted.double.mermaid", 14],
+        ["%% metadata comment", "comment.line.percentage.mermaid", 11],
+        ["b", "string.quoted.double.mermaid", 12]
+      ],
+      "absent": [
+        ["%% label comment", "string.unquoted.mermaid", 2],
+        ["%% edge comment", "string.unquoted.mermaid", 4],
+        ["%% description comment", "string.unquoted.mermaid", 6],
+        ["%% JSON comment", "string.quoted.double.mermaid", 8],
+        ["%% note comment", "string.unquoted.mermaid", 18],
+        ["%% stereotype comment", "entity.name.tag.stereotype.mermaid", 15],
+        ["%% plain comment", "string.quoted.double.mermaid", 13],
+        ["%% metadata comment", "string.quoted.double.mermaid", 11]
+      ],
+      "absentOnLine": [[5, "keyword.control.mermaid"]],
+      "unscoped": []
+    },
+    {
+      "code": "usecase-beta\n%%{! native\u2029%% common %%{wrap}%%\n\nactor A\nnote for A label\u2028%% note common %%{wrap}%%\n\naccTitle: title\u2029%% title common %%{wrap}%%\n\naccDescr: description\u2028%% description common %%{wrap}%%\n\n",
+      "scopes": [
+        ["%%{! native", "comment.line.percentage.mermaid", 1],
+        ["%% common %%{wrap}%%", "comment.line.percentage.mermaid", 1],
+        ["A", "variable.mermaid", 3],
+        ["label", "string.unquoted.mermaid", 4],
+        ["%% note common %%{wrap}%%", "comment.line.percentage.mermaid", 4],
+        [" title", "string.unquoted.mermaid", 6],
+        ["%% title common %%{wrap}%%", "comment.line.percentage.mermaid", 6],
+        [" description", "string.unquoted.mermaid", 8],
+        [
+          "%% description common %%{wrap}%%",
+          "comment.line.percentage.mermaid",
+          8
+        ]
+      ],
+      "absent": [
+        ["%% note common %%{wrap}%%", "string.unquoted.mermaid", 4],
+        ["%% title common %%{wrap}%%", "string.unquoted.mermaid", 6],
+        ["%% description common %%{wrap}%%", "string.unquoted.mermaid", 8]
+      ],
+      "absentOnLine": [
+        [1, "meta.directive.mermaid"],
+        [4, "meta.directive.mermaid"],
+        [6, "meta.directive.mermaid"],
+        [8, "meta.directive.mermaid"]
+      ]
+    },
+    {
+      "code": "usecase-beta\njson J @ {\"x\":\"<b \\\u2028%% c\nx>\"}",
+      "scopes": [
+        ["\\\u2028", "string.unquoted.mermaid", 1],
+        ["%% c", "comment.line.percentage.mermaid", 1],
+        ["x>", "string.unquoted.mermaid", 2],
+        ["}", "meta.data.mermaid", 2]
+      ],
+      "absent": [
+        ["%% c", "constant.character.escape.mermaid", 1],
+        ["}", "string.quoted.double.mermaid", 2]
+      ]
+    },
+    {
+      "code": "usecase-beta\njson J @ {\"x\":\"<b \\\u2029%% c\nx>\"}",
+      "scopes": [
+        ["\\\u2029", "string.unquoted.mermaid", 1],
+        ["%% c", "comment.line.percentage.mermaid", 1],
+        ["x>", "string.unquoted.mermaid", 2],
+        ["}", "meta.data.mermaid", 2]
+      ],
+      "absent": [
+        ["%% c", "constant.character.escape.mermaid", 1],
+        ["}", "string.quoted.double.mermaid", 2]
+      ]
+    },
+    {
+      "code": "usecase-beta\njson J @ {\"x\":\"\\\u2028%% c\nx\"}",
+      "scopes": [
+        ["\\\u2028", "string.unquoted.mermaid", 1],
+        ["%% c", "comment.line.percentage.mermaid", 1],
+        ["x", "string.unquoted.mermaid", 2],
+        ["}", "meta.data.mermaid", 2]
+      ],
+      "absent": [
+        ["%% c", "constant.character.escape.mermaid", 1],
+        ["}", "string.quoted.double.mermaid", 2]
+      ]
+    },
+    {
+      "code": "usecase-beta\njson J @ {\"x\":\"\\%%{init: \"}%%\u2028%% c\nx\"}",
+      "scopes": [
+        ["\\", "string.unquoted.mermaid", 1],
+        ["init", "entity.name.function.directive.mermaid", 1],
+        ["}%%", "punctuation.definition.directive.end.mermaid", 1],
+        ["\u2028", "string.unquoted.mermaid", 1],
+        ["%% c", "comment.line.percentage.mermaid", 1],
+        ["x", "string.unquoted.mermaid", 2],
+        ["}", "meta.data.mermaid", 2]
+      ],
+      "absent": [
+        ["%% c", "constant.character.escape.mermaid", 1],
+        ["}", "string.quoted.double.mermaid", 2]
+      ],
+      "absentOnLine": [[2, "variable.mermaid"]]
+    },
+    {
+      "code": "usecase-beta\njson J @ {\"x\":\"\\%%{init: \"}%%\u2029%% c\nx\"}",
+      "scopes": [
+        ["\\", "string.unquoted.mermaid", 1],
+        ["init", "entity.name.function.directive.mermaid", 1],
+        ["}%%", "punctuation.definition.directive.end.mermaid", 1],
+        ["\u2029", "string.unquoted.mermaid", 1],
+        ["%% c", "comment.line.percentage.mermaid", 1],
+        ["x", "string.unquoted.mermaid", 2],
+        ["}", "meta.data.mermaid", 2]
+      ],
+      "absent": [
+        ["%% c", "constant.character.escape.mermaid", 1],
+        ["}", "string.quoted.double.mermaid", 2]
+      ],
+      "absentOnLine": [[2, "variable.mermaid"]]
+    },
+    {
+      "code": "usecase-beta\njson J @ {\"x\":\"<b \\%%{init: \"}%%\u2028%% c\nx>\"}",
+      "scopes": [
+        ["\\", "string.unquoted.mermaid", 1],
+        ["init", "entity.name.function.directive.mermaid", 1],
+        ["}%%", "punctuation.definition.directive.end.mermaid", 1],
+        ["\u2028", "string.unquoted.mermaid", 1],
+        ["%% c", "comment.line.percentage.mermaid", 1],
+        ["x>", "string.unquoted.mermaid", 2],
+        ["}", "meta.data.mermaid", 2]
+      ],
+      "absent": [
+        ["%% c", "constant.character.escape.mermaid", 1],
+        ["}", "string.quoted.double.mermaid", 2]
+      ],
+      "absentOnLine": [[2, "variable.mermaid"]]
+    },
+    {
+      "code": "usecase-beta\njson J @ {\"x\":\"<b \\%%{init: \"}%%\u2029%% c\nx>\"}",
+      "scopes": [
+        ["\\", "string.unquoted.mermaid", 1],
+        ["init", "entity.name.function.directive.mermaid", 1],
+        ["}%%", "punctuation.definition.directive.end.mermaid", 1],
+        ["\u2029", "string.unquoted.mermaid", 1],
+        ["%% c", "comment.line.percentage.mermaid", 1],
+        ["x>", "string.unquoted.mermaid", 2],
+        ["}", "meta.data.mermaid", 2]
+      ],
+      "absent": [
+        ["%% c", "constant.character.escape.mermaid", 1],
+        ["}", "string.quoted.double.mermaid", 2]
+      ],
+      "absentOnLine": [[2, "variable.mermaid"]]
+    },
+    {
+      "code": "usecase-beta\njson J @ {\"x\":\"\\\u2028%% c\n\"}",
+      "scopes": [
+        ["\\\u2028", "string.unquoted.mermaid", 1],
+        ["%% c", "comment.line.percentage.mermaid", 1],
+        ["\"", "string.unquoted.mermaid", 2],
+        ["}", "meta.data.mermaid", 2]
+      ],
+      "absent": [
+        ["%% c", "constant.character.escape.mermaid", 1],
+        ["}", "string.quoted.double.mermaid", 2]
+      ],
+      "absentOnLine": [[2, "variable.mermaid"]]
+    },
+    {
+      "code": "usecase-beta\njson J @ {\"x\":\"\\\u2029%% c\n\"}",
+      "scopes": [
+        ["\\\u2029", "string.unquoted.mermaid", 1],
+        ["%% c", "comment.line.percentage.mermaid", 1],
+        ["\"", "string.unquoted.mermaid", 2],
+        ["}", "meta.data.mermaid", 2]
+      ],
+      "absent": [
+        ["%% c", "constant.character.escape.mermaid", 1],
+        ["}", "string.quoted.double.mermaid", 2]
+      ],
+      "absentOnLine": [[2, "variable.mermaid"]]
+    },
+    {
+      "code": "usecase-beta\njson J @ {\"x\":\"\\\u2029%% c\nx\"}",
+      "scopes": [
+        ["\\\u2029", "string.unquoted.mermaid", 1],
+        ["%% c", "comment.line.percentage.mermaid", 1],
+        ["x", "string.unquoted.mermaid", 2],
+        ["}", "meta.data.mermaid", 2]
+      ],
+      "absent": [
+        ["%% c", "constant.character.escape.mermaid", 1],
+        ["}", "string.quoted.double.mermaid", 2]
+      ],
+      "absentOnLine": [[2, "variable.mermaid"]]
+    },
+    {
+      "code": "usecase-beta\nA edge@--> B\njson J @ {}\n",
+      "scopes": [
+        ["@", "punctuation.separator.at.mermaid", 1],
+        ["@", "meta.data.mermaid", 2]
+      ],
+      "absentOnLine": [
+        [1, "keyword.operator.at.mermaid"],
+        [2, "keyword.operator.at.mermaid"]
+      ]
+    }
+  ]
+}

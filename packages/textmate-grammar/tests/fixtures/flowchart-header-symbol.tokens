@@ -1,0 +1,17 @@
+> flowchart %%{init: {}}%%>
+  "flowchart" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  ">" constant.language.mermaid
+> A[direction label]-->B
+  "A" variable.mermaid
+  "[" keyword.operator.shape.begin.mermaid
+  "direction label" string.unquoted.mermaid
+  "]" keyword.operator.shape.end.mermaid
+  "-->" keyword.operator.arrow.mermaid
+  "B" variable.mermaid
+> 

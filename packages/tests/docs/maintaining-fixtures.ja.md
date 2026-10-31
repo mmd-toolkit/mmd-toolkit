@@ -257,9 +257,7 @@ pnpm run fixtures:set-note notes.json --dry-run
   [expected-results.ja.md](./expected-results.ja.md) の「拒否か、
   ブラウザの機能の欠如か」を参照。
 
-ワークフロー `NodeCI.yml` は `.github/workflows_bk/` にあり、
-今は有効なワークフローがありません。
-その `fixtures` ジョブは全 `expected.json` を作り直し、
+ワークフロー `NodeCI.yml` の `fixtures` ジョブは全 `expected.json` を作り直し、
 差分か新しいファイルが出れば失敗します。
 そのため、mermaid.js の挙動の変化は差分として現れます。
 

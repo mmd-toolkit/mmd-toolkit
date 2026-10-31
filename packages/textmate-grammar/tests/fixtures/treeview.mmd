@@ -1,0 +1,44 @@
+treeView-beta%%{wrap}%%
+title Project
+accTitle: Tree
+accDescr { Files }
+accDescr: Tree description
+src
+├── "index.ts" :::entry icon(fa:file) ## main entry
+└── utils
+    └── helpers.ts
+%% a comment line
+├── bare"quote"
+├── "first""second"%% quoted comment
+├── Item :::tag%% class comment
+└── Item icon(fa:file)%% icon comment
+├── "a<b title="x">y</b>" :::%%{wrap}%%html
+├── bare%%{wrap}%%name %%{wrap}%%:::%%{wrap}%%tag
+├── Item icon%%{wrap}%%(%%{wrap}%%fa:file%%{wrap}%%)
+├── Text %%{wrap}%%##a%%{wrap}%%b
+└── Item :::%%{wrap}%%tag%% class boundary comment
+├── "a<b" ## text >
+─X
+│X
+A icon(fa:file) ├── X
+A :::entry ├── X
+"prefix ├── X"
+
+├── Entity#amp;name
+└%%{wrap}%%── Branch
+├── Hash ##amp; actor
+└── Shared :::%%{wrap}%%tag icon%%{wrap}%%(fa:file)
+
+%%{wrap}%%"prefix ├── Tail"
+Item icon%%{wrap}%%(%%{wrap}%%fa:file%%{wrap}%%)
+joined%%{wrap}%%icon(fa:file)
+├── 'single.ts'
+───
+│
+┃
+  │  
+  ┃  
+│ %%{x}%%
+ %%{x}%%│
+┃%%{x}%%┃
+─%%{x}%%━

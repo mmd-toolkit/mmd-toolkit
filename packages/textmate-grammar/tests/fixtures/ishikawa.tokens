@@ -1,0 +1,30 @@
+> %% a comment line
+  "%% a comment line" comment.line.percentage.mermaid
+> ishikawa-beta
+  "ishikawa-beta" keyword.control.mermaid
+> Root problem
+  "Root problem" string.unquoted.mermaid
+>   Cause one
+  "  Cause one" string.unquoted.mermaid
+>     Detail
+  "    Detail" string.unquoted.mermaid
+>   Cause two
+  "  Cause two" string.unquoted.mermaid
+>   Percent %% stays in node text
+  "  Percent %% stays in node text" string.unquoted.mermaid
+>   %% a native comment
+  "%% a native comment" comment.line.percentage.mermaid
+>   %%%{wrap}%%% separated comment
+  "%%%{wrap}%%% separated comment" comment.line.percentage.mermaid
+> 
+>   #amp; %% remains text
+  "  #amp; %% remains text" string.unquoted.mermaid
+> Root%%{wrap}%%%% stays text
+  "Root" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "%% stays text" string.unquoted.mermaid
+> %% common %%{wrap}%%
+  "%% common %%{wrap}%%" comment.line.percentage.mermaid
+> 

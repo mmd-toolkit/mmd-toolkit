@@ -15,6 +15,7 @@
   "devDependencies": {
     "@eslint/markdown": "^8.0.3",
     "@mmd-toolkit/eslint-plugin": "workspace:*",
+    "@mmd-toolkit/textmate-grammar": "workspace:*",
     "@shikijs/vitepress-twoslash": "4.5.0",
     "eslint": "^10.11.0",
     "twoslash-eslint": "0.3.9",

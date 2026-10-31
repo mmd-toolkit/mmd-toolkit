@@ -1,0 +1,400 @@
+> wardley-betaanchor Glued [0.8, 0.7]
+  "wardley-beta" keyword.control.mermaid
+  "anchor" keyword.control.mermaid
+  "Glued" variable.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "0.8" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "0.7" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+> title Tea Shop
+  "title" keyword.control.mermaid
+  "Tea Shop" string.unquoted.mermaid
+> anchor Business [0.95, 0.63]
+  "anchor" keyword.control.mermaid
+  "Business" variable.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "0.95" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "0.63" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+> component Cup of Tea [0.79, 0.61] label [19, -4] (buy) inertia
+  "component" keyword.control.mermaid
+  "Cup of Tea" variable.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "0.79" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "0.61" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+  "label" keyword.control.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "19" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "-" keyword.operator.mermaid
+  "4" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+  "(" punctuation.section.parens.begin.mermaid
+  "buy" constant.language.mermaid
+  ")" punctuation.section.parens.end.mermaid
+  "inertia" keyword.control.mermaid
+> component Kettle [0.43, 0.35] (build)
+  "component" keyword.control.mermaid
+  "Kettle" variable.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "0.43" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "0.35" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+  "(" punctuation.section.parens.begin.mermaid
+  "build" constant.language.mermaid
+  ")" punctuation.section.parens.end.mermaid
+> Cup of Tea -> Kettle
+  "Cup of Tea" variable.mermaid
+  "->" keyword.operator.arrow.mermaid
+  "Kettle" variable.mermaid
+> Kettle +<> Power; a link label%%{init: {}}%% suffix
+  "Kettle" variable.mermaid
+  "+<>" keyword.operator.arrow.mermaid
+  "Power" variable.mermaid
+  ";" punctuation.separator.label.mermaid
+  " a link label" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  " suffix" string.unquoted.mermaid
+> Kettle +'flow'> Water
+  "Kettle" variable.mermaid
+  "+" keyword.operator.arrow.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.begin.mermaid
+  "flow" string.quoted.single.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.end.mermaid
+  ">" keyword.operator.arrow.mermaid
+  "Water" variable.mermaid
+> evolve Kettle 0.62
+  "evolve" keyword.control.mermaid
+  "Kettle" variable.mermaid
+  "0.62" constant.numeric.mermaid
+> pipeline Kettle {
+  "pipeline" keyword.control.mermaid
+  "Kettle" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>   component Campfire [0.35]
+  "component" keyword.control.mermaid
+  "Campfire" variable.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "0.35" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+> }
+  "}" keyword.operator.block.end.mermaid
+> note "A note" [0.23, 0.33]
+  "note" keyword.control.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "A note" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "0.23" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "0.33" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+> annotations [0.2, 0.3]
+  "annotations" keyword.control.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "0.2" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "0.3" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+> annotation 1,[0.5, 0.5] "First"
+  "annotation" keyword.control.mermaid
+  "1" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "0.5" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "0.5" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "First" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> evolution Genesis -> Custom @0.25 / Built -> Product
+  "evolution" keyword.control.mermaid
+  "Genesis" variable.mermaid
+  "->" keyword.operator.arrow.mermaid
+  "Custom" variable.mermaid
+  "@" keyword.operator.mermaid
+  "0.25" constant.numeric.mermaid
+  "/" keyword.operator.mermaid
+  "Built" variable.mermaid
+  "->" keyword.operator.arrow.mermaid
+  "Product" variable.mermaid
+> size [1024, 768]
+  "size" keyword.control.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "1024" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "768" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+> %% a comment line
+  "%% a comment line" comment.line.percentage.mermaid
+> annotation1,[0.4, 0.5] "Glued annotation"
+  "annotation" keyword.control.mermaid
+  "1" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "0.4" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "0.5" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Glued annotation" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> component My builder [0.4, 0.5]
+  "component" keyword.control.mermaid
+  "My builder" variable.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "0.4" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "0.5" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+> component My inertia [0.3, 0.4]
+  "component" keyword.control.mermaid
+  "My inertia" variable.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "0.3" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "0.4" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+> accelerator Fast [0.4, 0.6]
+  "accelerator" keyword.control.mermaid
+  "Fast" variable.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "0.4" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "0.6" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+> deaccelerator Slow [0.2, 0.3]
+  "deaccelerator" keyword.control.mermaid
+  "Slow" variable.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "0.2" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "0.3" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+> accTitle: Map title
+  "accTitle" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " Map title" string.unquoted.mermaid
+> accDescr: Map description
+  "accDescr" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " Map description" string.unquoted.mermaid
+> accDescr { Map block }
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  " Map block " string.unquoted.mermaid
+  "}" punctuation.definition.description.end.mermaid
+> ---
+  "---" comment.block.ignored.mermaid
+> ignored: wardley
+  "ignored: wardley" comment.block.ignored.mermaid
+> ---
+  "---" comment.block.ignored.mermaid
+> %%{!}%%
+  "%%{!}%%" comment.block.ignored.mermaid
+> component My (buy) [0.3, 0.5]
+  "component" keyword.control.mermaid
+  "My (buy)" variable.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "0.3" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "0.5" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+> Glued-->Kettle
+  "Glued-" variable.mermaid
+  "->" keyword.operator.arrow.mermaid
+  "Kettle" variable.mermaid
+> Glued --> Kettle
+  "Glued" variable.mermaid
+  "-->" keyword.operator.arrow.mermaid
+  "Kettle" variable.mermaid
+> component Across %%{wrap}%%builder [0.4, 0.5]%%{wrap}%%label [1, 2] (%%{wrap}%%buy)%%{wrap}%%inertia
+  "component" keyword.control.mermaid
+  "Across " variable.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "builder" variable.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "0.4" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "0.5" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "label" keyword.control.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "1" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "2" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+  "(" punctuation.section.parens.begin.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "buy" constant.language.mermaid
+  ")" punctuation.section.parens.end.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "inertia" keyword.control.mermaid
+> Across %%{wrap}%%builder +%%{wrap}%%'a%%{init: {"end": ">"}}%%b'%%{wrap}%%> Kettle
+  "Across " variable.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "builder" variable.mermaid
+  "+" keyword.operator.arrow.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.single.mermaid
+  "%%{" string.quoted.single.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.quoted.single.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.quoted.single.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " string.quoted.single.mermaid meta.directive.mermaid
+  "{\"end\": \">\"}" string.quoted.single.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.quoted.single.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "b" string.quoted.single.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.end.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  ">" keyword.operator.arrow.mermaid
+  "Kettle" variable.mermaid
+> annotation%%{wrap}%%1,[0.4, 0.5] "Boundary"
+  "annotation" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "1" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "0.4" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "0.5" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Boundary" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> note "a<b title="x">y</b>" [0.2, 0.4]
+  "note" keyword.control.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "<b title=\"x\">" string.quoted.double.mermaid
+  "y</b>" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "0.2" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "0.4" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+> component Joined%%{wrap}%%(buy) [0.3, 0.5]
+  "component" keyword.control.mermaid
+  "Joined" variable.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "(buy)" variable.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "0.3" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "0.5" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+> component Outsourced [0.2,0.4](outsource)
+  "component" keyword.control.mermaid
+  "Outsourced" variable.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "0.2" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "0.4" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+  "(" punctuation.section.parens.begin.mermaid
+  "outsource" constant.language.mermaid
+  ")" punctuation.section.parens.end.mermaid
+> component Marketplace [0.2,0.4](market)
+  "component" keyword.control.mermaid
+  "Marketplace" variable.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "0.2" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "0.4" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+  "(" punctuation.section.parens.begin.mermaid
+  "market" constant.language.mermaid
+  ")" punctuation.section.parens.end.mermaid
+> component Gap%%{wrap}%% builder [0.4%%{wrap}%%,0.5]label[1%%{wrap}%%,2](buy)inertia
+  "component" keyword.control.mermaid
+  "Gap" variable.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  " builder" variable.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "0.4" constant.numeric.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "," punctuation.separator.comma.mermaid
+  "0.5" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+  "label" keyword.control.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "1" constant.numeric.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "," punctuation.separator.comma.mermaid
+  "2" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+  "(" punctuation.section.parens.begin.mermaid
+  "buy" constant.language.mermaid
+  ")" punctuation.section.parens.end.mermaid
+  "inertia" keyword.control.mermaid
+> 
+> Glued%%{wrap}%%-->Kettle
+  "Glued" variable.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "-" variable.mermaid
+  "->" keyword.operator.arrow.mermaid
+  "Kettle" variable.mermaid
+> component foo%%{wrap}%%inertia [0.2,0.4]
+  "component" keyword.control.mermaid
+  "foo" variable.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "inertia" variable.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "0.2" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "0.4" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+> note 'Escaped\ntext' [0.2, 0.4]
+  "note" keyword.control.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.begin.mermaid
+  "Escaped" string.quoted.single.mermaid
+  "\\n" string.quoted.single.mermaid constant.character.escape.mermaid
+  "text" string.quoted.single.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.end.mermaid
+  "[" punctuation.section.brackets.begin.mermaid
+  "0.2" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "0.4" constant.numeric.mermaid
+  "]" punctuation.section.brackets.end.mermaid
+> 

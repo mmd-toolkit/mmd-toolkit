@@ -1,0 +1,102 @@
+C4Context
+title Person and Rel are title text
+accDescription System is description text
+accTitle: Boundary %% title text
+accDescr: UpdateLayoutConfig is description text
+accDescr { Person { and title are block text }
+Person(person,"Person")
+Person_Ext(personExt,"External person")
+SystemQueue_Ext(queueExt,"Queue")
+SystemDb_Ext(dbExt,"Database")
+System_Ext(systemExt,"External system")
+SystemQueue(queue,"Queue")
+SystemDb(db,"Database")
+System(system,"System")
+Boundary(boundary,"Boundary") {
+  Person(child,"Child")
+}
+Enterprise_Boundary(enterprise,"Enterprise") {
+  Person(enterpriseChild,"Child")
+}
+System_Boundary(systemBoundary,"System boundary") {
+  Person(systemChild,"Child")
+}
+ContainerQueue_Ext(containerQueueExt,"Queue")
+ContainerDb_Ext(containerDbExt,"Database")
+Container_Ext(containerExt,"External container")
+ContainerQueue(containerQueue,"Queue")
+ContainerDb(containerDb,"Database")
+Container(container,"Container")
+Container_Boundary(containerBoundary,"Container boundary") {
+  Person(containerChild,"Child")
+}
+ComponentQueue_Ext(componentQueueExt,"Queue")
+ComponentDb_Ext(componentDbExt,"Database")
+Component_Ext(componentExt,"External component")
+ComponentQueue(componentQueue,"Queue")
+ComponentDb(componentDb,"Database")
+Component(component,"Component")
+Deployment_Node(deployment,"Deployment") {
+  Person(deploymentChild,"Child")
+}
+Node(node,"Node") {
+  Person(nodeChild,"Child")
+}
+Node_L(nodeLeft,"Left node") {
+  Person(leftChild,"Child")
+}
+Node_R(nodeRight,"Right node") {
+  Person(rightChild,"Child")
+}
+Rel(person,system,"Uses")
+BiRel(person,system,"Exchanges")
+Rel_Up(person,system,"Up")
+Rel_U(person,system,"Up")
+Rel_Down(person,system,"Down")
+Rel_D(person,system,"Down")
+Rel_Left(person,system,"Left")
+Rel_L(person,system,"Left")
+Rel_Right(person,system,"Right")
+Rel_R(person,system,"Right")
+Rel_Back(person,system,"Back")
+RelIndex(1,person,system,"Indexed")
+UpdateElementStyle(person,$bgColor="blue")
+UpdateRelStyle(person,system,$textColor="green")
+UpdateLayoutConfig($c4ShapeInRow="3")
+Person(PersonLong,"Rel and title %% remain string text")%% native comment
+Person(12,"Number-looking alias")
+Person(a) Rel(title,ignored,"Bare text crosses a parenthesis",)
+Person(a,"A%%{init: {}}%%B")
+title A%%{init: {}}%%B
+accDescr {}Person(emptyBlock,"After empty block")
+UpdateElementStyle(person,$name, ) with spaces="value")
+Person("Backslash\","No escape")
+title T #35; U
+accDescription #amp; Person
+title%%{init: {}}%% Person is title text
+accTitle%%{init: {}}%%: Rel is title text
+accDescr%%{init: {}}%% { Block text }Person(gap,"After block")
+Person(html,"<b title="x">Person</b>")
+Person(short,"a<b","c>")
+Person(bare%%{init: {}}%%Rel,)
+UpdateElementStyle(person,$bg%%{init: {}}%%Color="red")
+accDescription%%{init: {}}%% Person is description text
+Person%%{init: {}}%%(gap,"A")
+Person(padded, %%{init: {}}%%"Quoted after directive")%%
+accTitle:%%{init: {}}%% Person is text
+accDescr {%%{init: {}}%% Block text }
+Person("First""Second")
+Person(a, "B")
+Person(pad, %%{wrap}%% "Padding")
+Person("<b %%{x: >}%%x=","Person")
+Person(split,"Split")%%%{wrap}%%% native %%{wrap}%% tail
+Rel(a,"b")
+RelIndex(1,a,"b")
+Person%%{wrap}%%(a,"Label")
+Rel%%{wrap}%%(a,b,"Label")
+Person(a"x",)
+Person(a,"Label",$alias="renamed")
+Rel("a"b,"Label")
+Rel(,b,"Label")
+Rel(a,,b,"Label")
+accDescr { Description }

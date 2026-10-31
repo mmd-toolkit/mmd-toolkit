@@ -1,0 +1,102 @@
+{
+  "patterns": [
+    {
+      "include": "#gitgraph"
+    }
+  ],
+  "repository": {
+    "gitgraph": {
+      "comment": "Read the exact gitGraph header, including its joined colon, and retain any inline direction in the body. Follows gitgraph.md#detection and gitgraph.md#keywords-and-components.",
+      "begin": "{{diagramStart}}(gitGraph)(?:(:)|(?={{directives}}(?:[{{ws}}]|:|%%|$)))",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "name": "punctuation.separator.colon.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Read case-sensitive statement keywords only when a longer reference does not own their spelling. Follows gitgraph.md#keywords-and-components.",
+          "match": "(?:cherry-pick|checkout|commit|branch|switch|merge){{gitgraph-reference-end}}",
+          "name": "keyword.control.mermaid"
+        },
+        {
+          "comment": "Read listed commit display values as fixed values. Follows gitgraph.md#ordered-rules.",
+          "match": "(?:HIGHLIGHT|REVERSE|NORMAL){{gitgraph-reference-end}}",
+          "name": "constant.language.mermaid"
+        },
+        {
+          "comment": "Read the listed header direction as a fixed value. Follows gitgraph.md#detection.",
+          "match": "(?:LR|TB|BT){{gitgraph-reference-end}}",
+          "name": "constant.language.mermaid"
+        },
+        {
+          "comment": "Read each option key and its separate colon, preserving directives between those components. Follows gitgraph.md#keywords-and-components.",
+          "match": "(id|msg|tag|type|parent|order)({{directives}})(:)",
+          "captures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.separator.colon.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Reuse the shared title and accessibility forms. Follows gitgraph.md#composite-common-forms.",
+          "include": "#common-statements"
+        },
+        {
+          "comment": "Read an unsigned order number before the reference fallback. Follows gitgraph.md#numbers-and-references.",
+          "match": "(?:0|[1-9][0-9]*(?!{{directives}}\\.))",
+          "name": "constant.numeric.mermaid"
+        },
+        {
+          "comment": "Reuse the shared matching-quote strings and backslash escapes. Follows gitgraph.md#strings.",
+          "include": "#string-escaped"
+        },
+        {
+          "comment": "Reuse the native hidden YAML form. Follows gitgraph.md#hidden-yaml.",
+          "include": "#hidden-yaml"
+        },
+        {
+          "comment": "Reuse the native hidden directive form. Follows gitgraph.md#hidden-directive-and-line-endings.",
+          "include": "#hidden-directive"
+        },
+        {
+          "comment": "Reuse the native percent comment without taking its preceding character. Follows gitgraph.md#whitespace-and-comments.",
+          "include": "#native-percent-comment"
+        },
+        {
+          "comment": "Read a bare branch reference as an element name. Follows gitgraph.md#numbers-and-references.",
+          "match": "[A-Za-z0-9_](?:[A-Za-z0-9_./-]*[A-Za-z0-9_-])?",
+          "name": "variable.mermaid"
+        },
+        {
+          "comment": "Read the separate header colon. Follows gitgraph.md#detection.",
+          "match": ":",
+          "name": "punctuation.separator.colon.mermaid"
+        }
+      ]
+    }
+  },
+  "variables": {
+    "gitgraph-reference-end": "(?!{{directives}}[A-Za-z0-9_./-])"
+  }
+}

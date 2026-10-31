@@ -59,6 +59,8 @@ git tag `@mmd-toolkit/spec@<version>`.
 | `packages/parser`              | The parser.                                                        |
 | `packages/prettier-plugin-mmd` | The Prettier plugin.                                               |
 | `packages/eslint-plugin`       | The ESLint plugin.                                                 |
+| `packages/textmate-grammar`    | The TextMate grammar.                                              |
+| `.claude`                      | The skills, settings and hooks of Claude Code.                     |
 | `tools`                        | Command-line tools that maintain the fixtures.                     |
 | `scripts`                      | The checks that `pnpm run lint` runs.                              |
 

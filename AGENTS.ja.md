@@ -6,15 +6,16 @@
 ## プロジェクト
 
 mermaid-js とは無関係の第三者プロジェクト。
-Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象に次の 5 つを作る。
+Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象に次の 6 つを作る。
 
-| パッケージ                     | npm 名                       | 内容                                |
-| ------------------------------ | ---------------------------- | ----------------------------------- |
-| `packages/spec`                | `@mmd-toolkit/spec`          | 構文仕様（private）                 |
-| `packages/tests`               | `@mmd-toolkit/tests`         | 適合性コーパス（private）           |
-| `packages/parser`              | `@mmd-toolkit/parser`        | AST を返すパーサー                  |
-| `packages/prettier-plugin-mmd` | `prettier-plugin-mmd`        | Prettier プラグインのフォーマッター |
-| `packages/eslint-plugin`       | `@mmd-toolkit/eslint-plugin` | ESLint の言語プラグインのリンター   |
+| パッケージ                     | npm 名                          | 内容                                |
+| ------------------------------ | ------------------------------- | ----------------------------------- |
+| `packages/spec`                | `@mmd-toolkit/spec`             | 構文仕様（private）                 |
+| `packages/tests`               | `@mmd-toolkit/tests`            | 適合性コーパス（private）           |
+| `packages/parser`              | `@mmd-toolkit/parser`           | AST を返すパーサー                  |
+| `packages/prettier-plugin-mmd` | `prettier-plugin-mmd`           | Prettier プラグインのフォーマッター |
+| `packages/eslint-plugin`       | `@mmd-toolkit/eslint-plugin`    | ESLint の言語プラグインのリンター   |
+| `packages/textmate-grammar`    | `@mmd-toolkit/textmate-grammar` | TextMate 文法の色付け               |
 
 正しさの基準は pin した mermaid.js 本体。
 
@@ -112,21 +113,27 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
   どの規則を持つかは SKILL `rule-ideas` で決め、
   規則の文書は SKILL `eslint-plugin` に、
   規則の実装は SKILL `eslint-plugin-rules` に従う。
+- `packages/textmate-grammar`: エディターやサイト（Shiki、VS Code、
+  Monaco）で Mermaid のテキストに色を付ける TextMate 文法。
+  規則は仕様だけから取り、Mermaid のほかの文法からは取らない。
+  README が名指す、リリースされた仕様の版に従い、
+  それより後の版には自分の時期に追いつく。
+  SKILL は `textmate-grammar`。
 
 ## 共有するインターフェース
 
 これらを変えると使う側のパッケージも変わる。
 同じ変更で直す。
 
-| インターフェース                             | 定義する側 | 使う側                                 |
-| -------------------------------------------- | ---------- | -------------------------------------- |
-| fixture の形式とローダー                     | tests      | spec、parser、prettier-plugin          |
-| mermaid の Db を取り出す関数                 | tests      | parser、prettier-plugin                |
-| fixture の CLI（`tools/fixtures.ts`）        | tests      | spec、parser                           |
-| Db の要約と、記録した木の確かめ              | tests      | parser                                 |
-| AST の定義（`docs/ast.md`、`docs/ast/*.md`） | spec       | parser、prettier-plugin、eslint-plugin |
-| トークンと位置（`docs/tokens.md` ほか）      | parser     | tests、prettier-plugin、eslint-plugin  |
-| parser の API（`parse()`、エラー、木の走査） | parser     | prettier-plugin、eslint-plugin         |
+| インターフェース                             | 定義する側 | 使う側                                          |
+| -------------------------------------------- | ---------- | ----------------------------------------------- |
+| fixture の形式とローダー                     | tests      | spec、parser、prettier-plugin、textmate-grammar |
+| mermaid の Db を取り出す関数                 | tests      | parser、prettier-plugin                         |
+| fixture の CLI（`tools/fixtures.ts`）        | tests      | spec、parser                                    |
+| Db の要約と、記録した木の確かめ              | tests      | parser                                          |
+| AST の定義（`docs/ast.md`、`docs/ast/*.md`） | spec       | parser、prettier-plugin、eslint-plugin          |
+| トークンと位置（`docs/tokens.md` ほか）      | parser     | tests、prettier-plugin、eslint-plugin           |
+| parser の API（`parse()`、エラー、木の走査） | parser     | prettier-plugin、eslint-plugin                  |
 
 ## 行動原則
 
@@ -142,10 +149,18 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
   定義を見ただけで分かる明示的な書き方を選ぶ。
   重複の整合は型付けやテストで守る。
 - 常に「あるべき形」で作り、「動くだけの形」にしない。
+  仕組み（検査、道具、依存、ファイル）を足す前に、
+  それが保つものがそもそも要るかを自分に問う。
+  足す理由が以前に自分で下した決定だけなら、まずその決定を考え直す。
+  要るなら、リポジトリが同じ種類のものにすでに使っている形に従う。
   同じ判定を複数の場所で繰り返す構造、
   呼び出し側が書かれていない約束を守ることに頼る構造、
   直接の規則で書けるところに外部のパイプラインを模した構造を残さない。
   あるべき形が分からないときは、書く前に尋ねる。
+  Claude Code では、このリポジトリの hook が、ファイルを足したか、
+  `package.json` の scripts か依存を変えたターンの終わりを確かめ、
+  足したものが何を保つか、なぜ要るか、前例は何かを述べる、
+  `Proper-form check:` で始まる行を求める。
 - コードと文書の決まりは、SKILL `conventions` にある。
   コードや Markdown 文書を書く前に読む。
   要点は次のとおり。
@@ -163,7 +178,7 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
     pin したコミットのパーマリンクにする（`pnpm run lint:docs`）。
   - 文章は 80 桁で折り返す。
     英語は Prettier が折り返す（`pnpm run format:check`）。
-    日本語は書き手が折り返し、`pnpm run lint:ja` が確かめる。
+    日本語は書き手が折り返し、`pnpm run lint:md` が確かめる。
   - Mermaid のテキストのコードブロックの info string は `mmd` にし、
     フォーマッターが印字する形で書く。
     例外は、書き方そのものを示すための例である。

@@ -1,0 +1,43 @@
+pie%%{wrap}%% showData%%{wrap}%% 
+  title Slices showData 123
+  accTitle: Pie title
+  accDescr: A line description
+  accDescr { A block with showData and 123 }
+  accDescr {}
+  "showData and title": 12.50
+  'titleLong': 0
+  "Escaped \"quote\"": -0
+  title A%%{init: {}}%%B %% an inline comment
+  accTitle: A%%{init: {}}%%B
+  accDescr: A%%{init: {}}%%B
+  accDescr { A%%{init: {}}%%B }
+  "A%%{init: {}}%%B": 1
+---
+ignored: true
+---
+
+  "After YAML": 2
+  "After hidden directive": 3 %%{!}%% 
+  %%
+  %% a common comment
+  "<b title="x">y</b>": 1
+  "a<b": 1 %% later >
+  accTitle%%{init: {}}%%: T
+  accDescr%%{init: {}}%%: D
+  accDescr%%{init: {}}%%{ B }
+  title%%{init: {}}%% T
+  "directive boundary": 2%%{wrap}%%
+
+-%%{wrap}%%--
+x
+---
+
+---
+x
+-%%{wrap}%%--
+
+title After split YAML
+%%%{wrap}%%%{!}%%
+%%{!}%%%{wrap}%%%
+
+  accDescr {}%%%{wrap}%%% native split mark

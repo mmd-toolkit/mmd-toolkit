@@ -1,0 +1,281 @@
+> kanban
+  "kanban" keyword.control.mermaid
+>   Todo
+  "Todo" string.unquoted.mermaid
+>     docs[Create documentation]@{ ticket: MC-2037, assigned: "knsv", priority: 'High' }
+  "docs" variable.mermaid
+  "[" keyword.operator.shape.begin.mermaid
+  "Create documentation" string.unquoted.mermaid
+  "]" keyword.operator.shape.end.mermaid
+  "@{" meta.data.mermaid punctuation.section.data.begin.mermaid
+  " ticket: MC-2037, assigned: " meta.data.mermaid string.unquoted.mermaid
+  "\"" meta.data.mermaid string.unquoted.mermaid
+  "knsv" meta.data.mermaid string.unquoted.mermaid
+  "\"" meta.data.mermaid string.unquoted.mermaid
+  ", priority: 'High' " meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid punctuation.section.data.end.mermaid
+>     blog(Create blog about the new diagram)
+  "blog" variable.mermaid
+  "(" keyword.operator.shape.begin.mermaid
+  "Create blog about the new diagram" string.unquoted.mermaid
+  ")" keyword.operator.shape.end.mermaid
+>   [In progress]
+  "[" keyword.operator.shape.begin.mermaid
+  "In progress" string.unquoted.mermaid
+  "]" keyword.operator.shape.end.mermaid
+>     renderer((Create renderer))
+  "renderer" variable.mermaid
+  "((" keyword.operator.shape.begin.mermaid
+  "Create renderer" string.unquoted.mermaid
+  "))" keyword.operator.shape.end.mermaid
+>       :::urgent
+  ":::" punctuation.separator.class.mermaid
+  "urgent" variable.mermaid
+>     label("`Markdown *label*`")
+  "label" variable.mermaid
+  "(" keyword.operator.shape.begin.mermaid
+  "\"`" string.quoted.other.markdown.mermaid punctuation.definition.string.begin.mermaid
+  "Markdown *label*" string.quoted.other.markdown.mermaid
+  "`\"" string.quoted.other.markdown.mermaid punctuation.definition.string.end.mermaid
+  ")" keyword.operator.shape.end.mermaid
+>       ::icon(fa fa-book)
+  "::icon(" keyword.control.mermaid
+  "fa fa-book" string.unquoted.mermaid
+  ")" punctuation.section.icon.end.mermaid
+>   %% a comment line
+  "%% a comment line" comment.line.percentage.mermaid
+>   Literal ::icon(x)
+  "Literal ::icon" variable.mermaid
+  "(" keyword.operator.shape.begin.mermaid
+  "x" string.unquoted.mermaid
+  ")" keyword.operator.shape.end.mermaid
+>   Tagged[Label] %% shape comment
+  "Tagged" variable.mermaid
+  "[" keyword.operator.shape.begin.mermaid
+  "Label" string.unquoted.mermaid
+  "]" keyword.operator.shape.end.mermaid
+  "%% shape comment" comment.line.percentage.mermaid
+>   Data@{ 1key: "value", "quoted-key": "A%%{init: {}}%%B" }
+  "Data" string.unquoted.mermaid
+  "@{" meta.data.mermaid punctuation.section.data.begin.mermaid
+  " 1key: " meta.data.mermaid string.unquoted.mermaid
+  "\"" meta.data.mermaid string.unquoted.mermaid
+  "value" meta.data.mermaid string.unquoted.mermaid
+  "\"" meta.data.mermaid string.unquoted.mermaid
+  ", " meta.data.mermaid string.unquoted.mermaid
+  "\"" meta.data.mermaid string.unquoted.mermaid
+  "quoted-key" meta.data.mermaid string.unquoted.mermaid
+  "\"" meta.data.mermaid string.unquoted.mermaid
+  ": " meta.data.mermaid string.unquoted.mermaid
+  "\"" meta.data.mermaid string.unquoted.mermaid
+  "A" meta.data.mermaid string.unquoted.mermaid
+  "%%{" meta.data.mermaid string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.data.mermaid string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.data.mermaid string.unquoted.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " meta.data.mermaid string.unquoted.mermaid meta.directive.mermaid
+  "{}" meta.data.mermaid string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.data.mermaid string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "B" meta.data.mermaid string.unquoted.mermaid
+  "\"" meta.data.mermaid string.unquoted.mermaid
+  " " meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid punctuation.section.data.end.mermaid
+>   directed["%%{init: {}}%%`x`"]
+  "directed" variable.mermaid
+  "[" keyword.operator.shape.begin.mermaid
+  "\"" string.quoted.other.markdown.mermaid punctuation.definition.string.begin.mermaid
+  "%%{" string.quoted.other.markdown.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.quoted.other.markdown.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.quoted.other.markdown.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " string.quoted.other.markdown.mermaid meta.directive.mermaid
+  "{}" string.quoted.other.markdown.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.quoted.other.markdown.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "`" string.quoted.other.markdown.mermaid punctuation.definition.string.begin.mermaid
+  "x" string.quoted.other.markdown.mermaid
+  "`\"" string.quoted.other.markdown.mermaid punctuation.definition.string.end.mermaid
+  "]" keyword.operator.shape.end.mermaid
+>   html["<b title="x">label</b>"]
+  "html" variable.mermaid
+  "[" keyword.operator.shape.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "<b title=\"x\">" string.quoted.double.mermaid
+  "label</b>" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" keyword.operator.shape.end.mermaid
+>   markdownHtml["`<b title="x">label</b>`"]
+  "markdownHtml" variable.mermaid
+  "[" keyword.operator.shape.begin.mermaid
+  "\"`" string.quoted.other.markdown.mermaid punctuation.definition.string.begin.mermaid
+  "<b title=\"x\">" string.quoted.other.markdown.mermaid
+  "label</b>" string.quoted.other.markdown.mermaid
+  "`\"" string.quoted.other.markdown.mermaid punctuation.definition.string.end.mermaid
+  "]" keyword.operator.shape.end.mermaid
+>   partial["a<b"]@{ ticket: "c>" }
+  "partial" variable.mermaid
+  "[" keyword.operator.shape.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "<b" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" keyword.operator.shape.end.mermaid
+  "@{" meta.data.mermaid punctuation.section.data.begin.mermaid
+  " ticket: " meta.data.mermaid string.unquoted.mermaid
+  "\"" meta.data.mermaid string.unquoted.mermaid
+  "c>" meta.data.mermaid string.unquoted.mermaid
+  "\"" meta.data.mermaid string.unquoted.mermaid
+  " " meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid punctuation.section.data.end.mermaid
+>   bare[text%%{init: {}}%%note<b title="x">tag</b>]
+  "bare" variable.mermaid
+  "[" keyword.operator.shape.begin.mermaid
+  "text" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "note<b title=\"x\">tag</b>" string.unquoted.mermaid
+  "]" keyword.operator.shape.end.mermaid
+>     :::a%%{init: {}}%%note
+  ":::" punctuation.separator.class.mermaid
+  "a" variable.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" variable.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " variable.mermaid meta.directive.mermaid
+  "{}" variable.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "note" variable.mermaid
+>     ::icon(a%%{init: {}}%%b)
+  "::icon(" keyword.control.mermaid
+  "a" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "b" string.unquoted.mermaid
+  ")" punctuation.section.icon.end.mermaid
+>   directedCloser["`x`%%{init: {}}%%"]
+  "directedCloser" variable.mermaid
+  "[" keyword.operator.shape.begin.mermaid
+  "\"`" string.quoted.other.markdown.mermaid punctuation.definition.string.begin.mermaid
+  "x" string.quoted.other.markdown.mermaid
+  "`" string.quoted.other.markdown.mermaid punctuation.definition.string.end.mermaid
+  "%%{" string.quoted.other.markdown.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.quoted.other.markdown.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.quoted.other.markdown.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " string.quoted.other.markdown.mermaid meta.directive.mermaid
+  "{}" string.quoted.other.markdown.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.quoted.other.markdown.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "\"" string.quoted.other.markdown.mermaid punctuation.definition.string.end.mermaid
+  "]" keyword.operator.shape.end.mermaid
+>   SingleData@{x: 'a}%% single quote closes
+  "SingleData" string.unquoted.mermaid
+  "@{" meta.data.mermaid punctuation.section.data.begin.mermaid
+  "x: 'a" meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid punctuation.section.data.end.mermaid
+  "%% single quote closes" comment.line.percentage.mermaid
+> 
+>   OpaqueData@{key: true, other: false}
+  "OpaqueData" string.unquoted.mermaid
+  "@{" meta.data.mermaid punctuation.section.data.begin.mermaid
+  "key: true, other: false" meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid punctuation.section.data.end.mermaid
+> 
+>   HtmlCloser[<b x=")%% close">
+  "HtmlCloser" variable.mermaid
+  "[" keyword.operator.shape.begin.mermaid
+  "<b x=\"" string.unquoted.mermaid
+  ")" keyword.operator.shape.end.mermaid
+  "%% close\">" comment.line.percentage.mermaid
+> 
+>   BareCloser[text<b x=")%% bare close">
+  "BareCloser" variable.mermaid
+  "[" keyword.operator.shape.begin.mermaid
+  "text<b x=\"" string.unquoted.mermaid
+  ")" keyword.operator.shape.end.mermaid
+  "%% bare close\">" comment.line.percentage.mermaid
+> 
+>   HtmlBracket[<b x="]%% bracket close">
+  "HtmlBracket" variable.mermaid
+  "[" keyword.operator.shape.begin.mermaid
+  "<b x=\"" string.unquoted.mermaid
+  "]" keyword.operator.shape.end.mermaid
+  "%% bracket close\">" comment.line.percentage.mermaid
+> 
+>   HtmlParen[<b x="(%% paren close">
+  "HtmlParen" variable.mermaid
+  "[" keyword.operator.shape.begin.mermaid
+  "<b x=\"" string.unquoted.mermaid
+  "(" keyword.operator.shape.end.mermaid
+  "%% paren close\">" comment.line.percentage.mermaid
+> 
+>   HtmlBrace[<b x="}}%% brace close">
+  "HtmlBrace" variable.mermaid
+  "[" keyword.operator.shape.begin.mermaid
+  "<b x=\"" string.unquoted.mermaid
+  "}}" keyword.operator.shape.end.mermaid
+  "%% brace close\">" comment.line.percentage.mermaid
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+>   Indentation
+  "Indentation" string.unquoted.mermaid
+>   %%{wrap}%%  :::tag
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  ":::" punctuation.separator.class.mermaid
+  "tag" variable.mermaid
+>   %%{wrap}%%  ::ICON(x)
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "::ICON(" keyword.control.mermaid
+  "x" string.unquoted.mermaid
+  ")" punctuation.section.icon.end.mermaid
+> 
+>   Native[Label]%%%{wrap}%%% native %%{init: ")"}%% tail
+  "Native" variable.mermaid
+  "[" keyword.operator.shape.begin.mermaid
+  "Label" string.unquoted.mermaid
+  "]" keyword.operator.shape.end.mermaid
+  "%" comment.line.percentage.mermaid
+  "%%{" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.line.percentage.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "% native " comment.line.percentage.mermaid
+  "%%{" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" comment.line.percentage.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" comment.line.percentage.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " comment.line.percentage.mermaid meta.directive.mermaid
+  "\")\"" comment.line.percentage.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  " tail" comment.line.percentage.mermaid
+> 
+>   Entity[<b x="#amp;">]
+  "Entity" variable.mermaid
+  "[" keyword.operator.shape.begin.mermaid
+  "<b x=\"#amp;\">" string.unquoted.mermaid
+  "]" keyword.operator.shape.end.mermaid
+> 
+>   :::title ::icon(x)
+  ":::" punctuation.separator.class.mermaid
+  "title ::icon(x)" variable.mermaid
+> 
+>   Padded[Label] %%{wrap}%% %% native after padding
+  "Padded" variable.mermaid
+  "[" keyword.operator.shape.begin.mermaid
+  "Label" string.unquoted.mermaid
+  "]" keyword.operator.shape.end.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "%% native after padding" comment.line.percentage.mermaid
+> 

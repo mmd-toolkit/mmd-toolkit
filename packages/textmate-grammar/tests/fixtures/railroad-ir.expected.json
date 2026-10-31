@@ -1,0 +1,74 @@
+{
+  "header": "railroad-beta",
+  "scopes": [
+    ["sequence", "keyword.control.mermaid"],
+    ["terminal", "keyword.control.mermaid"],
+    ["choice", "keyword.control.mermaid"],
+    ["nonterminal", "keyword.control.mermaid"],
+    ["optional", "keyword.control.mermaid"],
+    ["special", "keyword.control.mermaid"],
+    ["oneOrMore", "keyword.control.mermaid"],
+    ["zeroOrMore", "keyword.control.mermaid"],
+    ["expr", "variable.mermaid"],
+    ["=", "keyword.operator.mermaid"],
+    ["/*", "comment.block.mermaid"],
+    ["title", "keyword.control.mermaid"],
+    ["accTitle", "keyword.control.mermaid"],
+    ["accDescr", "keyword.control.mermaid", 2],
+    ["accDescr", "keyword.control.mermaid", 3],
+    ["<b title=\"x\">", "string.quoted.double.mermaid", 13],
+    ["c>", "string.quoted.double.mermaid", 14],
+    ["wrap", "entity.name.function.directive.mermaid", 0],
+    ["terminal ", "comment.block.mermaid", 15],
+    ["terminal", "keyword.control.mermaid", 15],
+    [" terminal ", "comment.block.mermaid", 16],
+    ["opened", "variable.mermaid", 16],
+    ["closed", "variable.mermaid", 17],
+    ["wrap", "entity.name.function.directive.mermaid", 17],
+    ["terminal", "keyword.control.mermaid", 18],
+    ["y", "string.quoted.double.mermaid", 19],
+    [",", "punctuation.separator.comma.mermaid", 19],
+    ["terminal", "keyword.control.mermaid", 19],
+    ["wrap", "entity.name.function.directive.mermaid", 20],
+    ["joined", "variable.mermaid", 20],
+    ["%% common */ %%{wrap}%%", "comment.line.percentage.mermaid", 22],
+    [" terminal ", "comment.block.mermaid", 23],
+    ["commentLine", "variable.mermaid", 23],
+    ["a", "string.quoted.double.mermaid", 5],
+    ["c", "string.quoted.single.mermaid", 5],
+    ["Grammar", "string.unquoted.mermaid", 4],
+    ["\\n", "constant.character.escape.mermaid"],
+    ["(", "punctuation.section.arguments.begin.mermaid"],
+    [")", "punctuation.section.arguments.end.mermaid"],
+    [",", "punctuation.separator.comma.mermaid"],
+    [";", "punctuation.separator.rule.mermaid"],
+    ["{", "punctuation.definition.description.begin.mermaid"],
+    ["}", "punctuation.definition.description.end.mermaid"],
+    ["---", "comment.block.ignored.mermaid"],
+    ["%%{!}%%", "comment.block.ignored.mermaid"],
+    ["%% a comment line", "comment.line.percentage.mermaid"]
+  ],
+  "absent": [
+    ["<b title=\"x\">", "punctuation.definition.string.end.mermaid", 13],
+    [",", "string.quoted.double.mermaid", 19],
+    [" terminal ", "keyword.control.mermaid", 23]
+  ],
+  "absentOnLine": [
+    [15, "comment.line.percentage.mermaid"],
+    [16, "comment.line.percentage.mermaid"],
+    [17, "comment.line.percentage.mermaid"],
+    [22, "meta.directive.mermaid"]
+  ],
+  "escapedInputs": [
+    {
+      "code": "railroad-beta /* a\u2028%% c */ %%{wrap}%%\n terminal */ r=terminal(\"x\");",
+      "scopes": [
+        ["%% c */ %%{wrap}%%", "comment.line.percentage.mermaid", 0],
+        [" terminal ", "comment.block.mermaid", 1],
+        ["r", "variable.mermaid", 1]
+      ],
+      "absent": [[" terminal ", "keyword.control.mermaid", 1]],
+      "absentOnLine": [[0, "meta.directive.mermaid"]]
+    }
+  ]
+}

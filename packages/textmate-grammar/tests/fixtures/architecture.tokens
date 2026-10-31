@@ -1,0 +1,568 @@
+> architecture-beta group cloud(cloud)[Cloud]
+  "architecture-beta" keyword.control.mermaid
+  "group" keyword.control.mermaid
+  "cloud" variable.mermaid
+  "(" punctuation.section.icon.begin.mermaid
+  "cloud" string.unquoted.mermaid
+  ")" punctuation.section.icon.end.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "Cloud" string.unquoted.mermaid
+  "]" punctuation.definition.label.end.mermaid
+> title service and group are title text
+  "title" keyword.control.mermaid
+  "service and group are title text" string.unquoted.mermaid
+> accTitle: Architecture title
+  "accTitle" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " Architecture title" string.unquoted.mermaid
+> accDescr: Architecture description
+  "accDescr" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " Architecture description" string.unquoted.mermaid
+> accDescr { service and group %% are block text }
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  " service and group %% are block text " string.unquoted.mermaid
+  "}" punctuation.definition.description.end.mermaid
+> group nested(database)["Nested [group]"] in cloud
+  "group" keyword.control.mermaid
+  "nested" variable.mermaid
+  "(" punctuation.section.icon.begin.mermaid
+  "database" string.unquoted.mermaid
+  ")" punctuation.section.icon.end.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Nested [group]" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+  "in" keyword.control.mermaid
+  "cloud" variable.mermaid
+> service api(server)[API] in nested
+  "service" keyword.control.mermaid
+  "api" variable.mermaid
+  "(" punctuation.section.icon.begin.mermaid
+  "server" string.unquoted.mermaid
+  ")" punctuation.section.icon.end.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "API" string.unquoted.mermaid
+  "]" punctuation.definition.label.end.mermaid
+  "in" keyword.control.mermaid
+  "nested" variable.mermaid
+> service store 'Text icon'['Store'] in cloud
+  "service" keyword.control.mermaid
+  "store" variable.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.begin.mermaid
+  "Text icon" string.quoted.single.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.end.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.begin.mermaid
+  "Store" string.quoted.single.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+  "in" keyword.control.mermaid
+  "cloud" variable.mermaid
+> service serviceLong(custom)[Long keyword-like ID]
+  "service" keyword.control.mermaid
+  "serviceLong" variable.mermaid
+  "(" punctuation.section.icon.begin.mermaid
+  "custom" string.unquoted.mermaid
+  ")" punctuation.section.icon.end.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "Long keyword-like ID" string.unquoted.mermaid
+  "]" punctuation.definition.label.end.mermaid
+> junction hub in cloud
+  "junction" keyword.control.mermaid
+  "hub" variable.mermaid
+  "in" keyword.control.mermaid
+  "cloud" variable.mermaid
+> service 123(-:A_)[Numeric ID]
+  "service" keyword.control.mermaid
+  "123" variable.mermaid
+  "(" punctuation.section.icon.begin.mermaid
+  "-:A_" string.unquoted.mermaid
+  ")" punctuation.section.icon.end.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "Numeric ID" string.unquoted.mermaid
+  "]" punctuation.definition.label.end.mermaid
+> service columnar[align row are label text]
+  "service" keyword.control.mermaid
+  "columnar" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "align row are label text" string.unquoted.mermaid
+  "]" punctuation.definition.label.end.mermaid
+> service in-house["open]
+  "service" keyword.control.mermaid
+  "in-house" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "\"open" string.unquoted.mermaid
+  "]" punctuation.definition.label.end.mermaid
+> api:R-->L:store
+  "api" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "R" constant.language.mermaid
+  "--" keyword.operator.arrow.mermaid
+  ">" keyword.operator.arrow.mermaid
+  "L" constant.language.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "store" variable.mermaid
+> hub:B<-->T:api
+  "hub" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "B" constant.language.mermaid
+  "<" keyword.operator.arrow.mermaid
+  "--" keyword.operator.arrow.mermaid
+  ">" keyword.operator.arrow.mermaid
+  "T" constant.language.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "api" variable.mermaid
+> api{group}:R-["Link"]->L:123{group}
+  "api" variable.mermaid
+  "{" punctuation.definition.modifier.begin.mermaid
+  "group" storage.modifier.mermaid
+  "}" punctuation.definition.modifier.end.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "R" constant.language.mermaid
+  "-" keyword.operator.arrow.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Link" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+  "-" keyword.operator.arrow.mermaid
+  ">" keyword.operator.arrow.mermaid
+  "L" constant.language.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "123" variable.mermaid
+  "{" punctuation.definition.modifier.begin.mermaid
+  "group" storage.modifier.mermaid
+  "}" punctuation.definition.modifier.end.mermaid
+> align row api store
+  "align" keyword.control.mermaid
+  "row" constant.language.mermaid
+  "api" variable.mermaid
+  "store" variable.mermaid
+> align column hub api
+  "align" keyword.control.mermaid
+  "column" constant.language.mermaid
+  "hub" variable.mermaid
+  "api" variable.mermaid
+> service escaped "A\"B"[Escaped icon]
+  "service" keyword.control.mermaid
+  "escaped" variable.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "A" string.quoted.double.mermaid
+  "\\\"" string.quoted.double.mermaid constant.character.escape.mermaid
+  "B" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "Escaped icon" string.unquoted.mermaid
+  "]" punctuation.definition.label.end.mermaid
+> service labels[A"B]
+  "service" keyword.control.mermaid
+  "labels" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "A\"B" string.unquoted.mermaid
+  "]" punctuation.definition.label.end.mermaid
+> service directive[A%%{init: {}}%%B]
+  "service" keyword.control.mermaid
+  "directive" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "A" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "B" string.unquoted.mermaid
+  "]" punctuation.definition.label.end.mermaid
+> service quoted["A%%{init: {}}%%B"]
+  "service" keyword.control.mermaid
+  "quoted" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "A" string.quoted.double.mermaid
+  "%%{" string.quoted.double.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.quoted.double.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.quoted.double.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " string.quoted.double.mermaid meta.directive.mermaid
+  "{}" string.quoted.double.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.quoted.double.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "B" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+> title A%%{init: {}}%%B%% native comment
+  "title" keyword.control.mermaid
+  "A" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "B" string.unquoted.mermaid
+  "%% native comment" comment.line.percentage.mermaid
+> accTitle: A%%{init: {}}%%B%% another comment
+  "accTitle" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " A" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "B" string.unquoted.mermaid
+  "%% another comment" comment.line.percentage.mermaid
+> accDescr {}
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  "}" punctuation.definition.description.end.mermaid
+> service afterBlock
+  "service" keyword.control.mermaid
+  "afterBlock" variable.mermaid
+> %%{ }%%
+  "%%{ }%%" comment.block.ignored.mermaid
+> ---
+  "---" comment.block.ignored.mermaid
+> hidden: service group
+  "hidden: service group" comment.block.ignored.mermaid
+> ---
+  "---" comment.block.ignored.mermaid
+> 
+> title
+  "title" keyword.control.mermaid
+> service quotedDirective["[group]%%{init: {"theme": "dark"}}%%"] in cloud
+  "service" keyword.control.mermaid
+  "quotedDirective" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "[group]" string.quoted.double.mermaid
+  "%%{" string.quoted.double.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.quoted.double.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.quoted.double.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " string.quoted.double.mermaid meta.directive.mermaid
+  "{\"theme\": \"dark\"}" string.quoted.double.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.quoted.double.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+  "in" keyword.control.mermaid
+  "cloud" variable.mermaid
+> service escapeDirective "A\%%{init: {}}%%"B"[Escaped across directive]
+  "service" keyword.control.mermaid
+  "escapeDirective" variable.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "A" string.quoted.double.mermaid
+  "\\" string.quoted.double.mermaid constant.character.escape.mermaid
+  "%%{" string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid
+  "{}" string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "\"" string.quoted.double.mermaid constant.character.escape.mermaid
+  "B" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "Escaped across directive" string.unquoted.mermaid
+  "]" punctuation.definition.label.end.mermaid
+> service htmlLabel['<a href="x">']
+  "service" keyword.control.mermaid
+  "htmlLabel" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.begin.mermaid
+  "<a href=\"x\">" string.quoted.single.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+> service semicolonLabel['style:#x\;']
+  "service" keyword.control.mermaid
+  "semicolonLabel" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.begin.mermaid
+  "style:#x" string.quoted.single.mermaid
+  "\\;" string.quoted.single.mermaid constant.character.escape.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+> service escapeLabel["A\%%{init: {}}%%"]
+  "service" keyword.control.mermaid
+  "escapeLabel" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "\"A\\" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "\"" string.unquoted.mermaid
+  "]" punctuation.definition.label.end.mermaid
+> accTitle%%{init: {}}%%: service and group are text
+  "accTitle" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " service and group are text" string.unquoted.mermaid
+> service accDescr%%{init: {}}%% in cloud
+  "service" keyword.control.mermaid
+  "accDescr" variable.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "in" keyword.control.mermaid
+  "cloud" variable.mermaid
+> title%%{init: {}}%% service
+  "title" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "service" string.unquoted.mermaid
+> accDescr%%{init: {}}%%{}
+  "accDescr" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  "}" punctuation.definition.description.end.mermaid
+> service afterDirectiveBlock
+  "service" keyword.control.mermaid
+  "afterDirectiveBlock" variable.mermaid
+> service labeled["title"]%% foo
+  "service" keyword.control.mermaid
+  "labeled" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "title" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+  "%% foo" comment.line.percentage.mermaid
+> service single['A;B'] in cloud
+  "service" keyword.control.mermaid
+  "single" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.begin.mermaid
+  "A;B" string.quoted.single.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+  "in" keyword.control.mermaid
+  "cloud" variable.mermaid
+> service bare["open] in cloud
+  "service" keyword.control.mermaid
+  "bare" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "\"open" string.unquoted.mermaid
+  "]" punctuation.definition.label.end.mermaid
+  "in" keyword.control.mermaid
+  "cloud" variable.mermaid
+> service htmlQuoted["<b title="x">Label</b>"] in cloud
+  "service" keyword.control.mermaid
+  "htmlQuoted" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "<b title=\"x\">" string.quoted.double.mermaid
+  "Label</b>" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+  "in" keyword.control.mermaid
+  "cloud" variable.mermaid
+> service htmlIcon "<b title="x">Icon</b>"[Icon] in cloud
+  "service" keyword.control.mermaid
+  "htmlIcon" variable.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "<b title=\"x\">" string.quoted.double.mermaid
+  "Icon</b>" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "Icon" string.unquoted.mermaid
+  "]" punctuation.definition.label.end.mermaid
+  "in" keyword.control.mermaid
+  "cloud" variable.mermaid
+> service shortIcon "a<b"[Bare] in cloud %% later >
+  "service" keyword.control.mermaid
+  "shortIcon" variable.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "<b" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "Bare" string.unquoted.mermaid
+  "]" punctuation.definition.label.end.mermaid
+  "in" keyword.control.mermaid
+  "cloud" variable.mermaid
+  "%% later >" comment.line.percentage.mermaid
+> service edge%%{init: {}}%%[Directive before label] in cloud
+  "service" keyword.control.mermaid
+  "edge" variable.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "Directive before label" string.unquoted.mermaid
+  "]" punctuation.definition.label.end.mermaid
+  "in" keyword.control.mermaid
+  "cloud" variable.mermaid
+> service labelGap[%%{init: {}}%%"Label"%%{init: {}}%%] in cloud
+  "service" keyword.control.mermaid
+  "labelGap" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Label" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+  "in" keyword.control.mermaid
+  "cloud" variable.mermaid
+> service notTag['< ="x']
+  "service" keyword.control.mermaid
+  "notTag" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.begin.mermaid
+  "< =\"x" string.quoted.single.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+> service bareCloser[<a x=]%% c>
+  "service" keyword.control.mermaid
+  "bareCloser" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "<a x=" string.unquoted.mermaid
+  "]" punctuation.definition.label.end.mermaid
+  "%% c>" comment.line.percentage.mermaid
+> service iconEscaped "\<b title="group">"
+  "service" keyword.control.mermaid
+  "iconEscaped" variable.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "\\" string.quoted.double.mermaid
+  "<b title=\"group\">" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> service escapedLabel["a\"b"]
+  "service" keyword.control.mermaid
+  "escapedLabel" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "\\\"" string.quoted.double.mermaid constant.character.escape.mermaid
+  "b" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+> service%%{wrap}%% boundary[Boundary]
+  "service" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "boundary" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "Boundary" string.unquoted.mermaid
+  "]" punctuation.definition.label.end.mermaid
+> service incompleteTag['<b ="x']
+  "service" keyword.control.mermaid
+  "incompleteTag" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.begin.mermaid
+  "<b =\"x" string.quoted.single.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+> %%%{wrap}%%%{! }%% service splitOpen
+  "%" comment.block.ignored.mermaid
+  "%%{" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.block.ignored.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "%{! }%%" comment.block.ignored.mermaid
+  "service" keyword.control.mermaid
+  "splitOpen" variable.mermaid
+> %%{! }%%%{wrap}%%% service splitClose
+  "%%{! }%" comment.block.ignored.mermaid
+  "%%{" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.block.ignored.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "%" comment.block.ignored.mermaid
+  "service" keyword.control.mermaid
+  "splitClose" variable.mermaid
+> ---%%{wrap}%%
+  "---" comment.block.ignored.mermaid
+  "%%{" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.block.ignored.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+> hidden: opener
+  "hidden: opener" comment.block.ignored.mermaid
+> ---
+  "---" comment.block.ignored.mermaid
+> service afterOpen
+  "service" keyword.control.mermaid
+  "afterOpen" variable.mermaid
+> ---
+  "---" comment.block.ignored.mermaid
+> hidden: closer
+  "hidden: closer" comment.block.ignored.mermaid
+> -%%{wrap}%%--
+  "-" comment.block.ignored.mermaid
+  "%%{" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.block.ignored.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "--" comment.block.ignored.mermaid
+> service afterClose
+  "service" keyword.control.mermaid
+  "afterClose" variable.mermaid
+> service splitComment%%%{wrap}%%% native %%{wrap}%% tail
+  "service" keyword.control.mermaid
+  "splitComment" variable.mermaid
+  "%" comment.line.percentage.mermaid
+  "%%{" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.line.percentage.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "% native " comment.line.percentage.mermaid
+  "%%{" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.line.percentage.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  " tail" comment.line.percentage.mermaid
+> service run[foo%%{wrap}%%group]
+  "service" keyword.control.mermaid
+  "run" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "foo" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "group" string.unquoted.mermaid
+  "]" punctuation.definition.label.end.mermaid
+> service htmlBoundary["<b %%{x: >}%%x="]
+  "service" keyword.control.mermaid
+  "htmlBoundary" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "<b " string.quoted.double.mermaid
+  "%%{" string.quoted.double.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "x" string.quoted.double.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.quoted.double.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " string.quoted.double.mermaid meta.directive.mermaid
+  ">" string.quoted.double.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.quoted.double.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "x=" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+> 

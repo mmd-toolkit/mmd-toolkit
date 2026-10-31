@@ -1,0 +1,390 @@
+{
+  "variables": {
+    "block-class-id": "[A-Za-z0-9_]+",
+    "block-class-ids": "{{block-class-id}}(?:{{directives}},{{gap}}{{block-class-id}})*",
+    "block-class-arguments": "({{requiredGap}})({{block-class-ids}})",
+    "block-integer": "[0-9]+",
+    "block-header": "(?:block-beta|block){{wordEnd}}",
+    "block-style-value-end": "(?={{lineGap}}(?:,|$))|{{separatorCommentEnd}}"
+  },
+  "patterns": [
+    {
+      "include": "#block"
+    }
+  ],
+  "repository": {
+    "block": {
+      "comment": "Read the block header and its body. Follows block.md#the-statement-context, block.md#detection, and common.md#leading-whitespace.",
+      "begin": "{{diagramStart}}({{block-header}})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Columns, whitespace, and digits, or columns, whitespace, and auto: a columns unit with the number or auto. A directive between two complete components is allowed. Follows block.md#the-statement-context and block.md#directives-inside-units.",
+          "match": "(columns)({{requiredGap}})(?:({{block-integer}})|(auto))",
+          "captures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "constant.numeric.mermaid"
+            },
+            "4": {
+              "name": "constant.language.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Space: and digits, and space not followed by a word character: a space unit. Follows block.md#the-statement-context.",
+          "match": "(space)(?:(:)({{directives}})({{block-integer}})|{{wordEnd}})",
+          "captures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "name": "punctuation.separator.colon.mermaid"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "4": {
+              "name": "constant.numeric.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "After classDef and whitespace, the class definition context reads one or more ASCII word characters as class-id, whitespace, then the rest of the line as styles. A common comment after a line separator or paragraph separator ends this value before the separator. The required whitespace after the class-id is checked without consuming it, so a separator before a common comment remains outside the begin. Follows block.md#classes-and-styles and common.md#comment-lines.",
+          "begin": "(classDef)({{requiredGap}})({{block-class-id}})(?={{whitespaceStart}})",
+          "end": "{{lineValueEnd}}",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "variable.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#block-styles"
+            }
+          ]
+        },
+        {
+          "comment": "After class and whitespace, read ASCII word runs separated by commas and whitespace as class-ids, then the rest of the line as one class name. A common comment after a line separator or paragraph separator ends this value before the separator. Follows block.md#classes-and-styles and common.md#comment-lines.",
+          "begin": "(class){{block-class-arguments}}",
+          "end": "{{lineValueEnd}}",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#block-class-ids"
+                }
+              ]
+            }
+          },
+          "contentName": "variable.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": "After style and whitespace, read ASCII word runs separated by commas and whitespace as class-ids, then the rest of the line as comma-separated styles. A common comment after a line separator or paragraph separator ends this value before the separator. Follows block.md#classes-and-styles and common.md#comment-lines.",
+          "begin": "(style){{block-class-arguments}}",
+          "end": "{{lineValueEnd}}",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "variable.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "patterns": [
+            {
+              "include": "#block-styles"
+            }
+          ]
+        },
+        {
+          "comment": "Rules 1 and 9: block-beta and block, not followed by a word character, or block: open a composite; end, not followed by a word character, closes it. Follows block.md#the-statement-context.",
+          "match": "(block:|{{block-header}}|end{{wordEnd}})",
+          "captures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "AccDescr, whitespace, {, whitespace and } is an empty description block where a statement starts; a block with text is rejected. Retain this local form: rejects a block with text and permits an empty block after a node; it is not the common accessibility statement. A common comment after a line separator or paragraph separator ends this value before the separator. Follows block.md#empty-description-blocks and common.md#comment-lines.",
+          "begin": "(accDescr)({{gap}})(\\{)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.definition.description.begin.mermaid"
+            }
+          },
+          "end": "(\\})|{{separatorCommentEnd}}",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.description.end.mermaid"
+            }
+          },
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": "<[ enters the block arrow context, which reads a string, then ]>, whitespace and (, then one or more directions and ). A direction is right, left, up, down, x or y; comma and whitespace may precede a direction. A common comment after a line separator or paragraph separator ends this value before the separator. Follows block.md#block-arrows and common.md#comment-lines.",
+          "begin": "<\\[",
+          "beginCaptures": {
+            "0": {
+              "name": "keyword.operator.shape.begin.mermaid"
+            }
+          },
+          "end": "\\)|{{separatorCommentEnd}}",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.directions.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#string-plain-double",
+              "comment": "A double quote enters the string context, which reads all characters up to the next double quote; a string has no escape. Follows block.md#strings."
+            },
+            {
+              "comment": "The string is followed by ]>, whitespace and ( before the directions. Follows block.md#block-arrows.",
+              "match": "(\\]>)({{gap}})(\\()",
+              "captures": {
+                "1": {
+                  "name": "keyword.operator.shape.end.mermaid"
+                },
+                "2": {
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                },
+                "3": {
+                  "name": "punctuation.section.directions.begin.mermaid"
+                }
+              }
+            },
+            {
+              "comment": "A direction is right, left, up, down, x or y; two directions need nothing between them. Follows block.md#block-arrows.",
+              "match": "right|left|up|down|x|y",
+              "name": "constant.language.mermaid"
+            },
+            {
+              "comment": "A comma and whitespace may stand before a direction. Follows block.md#block-arrows.",
+              "match": ",",
+              "name": "punctuation.separator.comma.mermaid"
+            }
+          ]
+        },
+        {
+          "comment": "An opening enters the shape context, which reads a string and then a closing. Openings and closings are tried in their listed order, and any opening may meet any closing. A common comment after a line separator or paragraph separator ends this value before the separator. Follows block.md#shapes and common.md#comment-lines.",
+          "begin": "-\\)|\\(-|\\)\\)|\\)|\\(\\(\\(|\\(\\(|\\{\\{|\\{|>|\\(\\[|\\(|\\[\\[|\\[\\||\\[\\(|\\[\\\\|\\[/|\\[",
+          "beginCaptures": {
+            "0": {
+              "name": "keyword.operator.shape.begin.mermaid"
+            }
+          },
+          "end": "\\(\\(\\(|\\)\\)\\)|\\)\\)|\\}\\}|\\}|\\(-|-\\)|\\(\\(|\\]\\]|\\(|\\]\\)|\\\\\\]|/\\]|\\)\\]|\\)|\\]>|\\]|{{separatorCommentEnd}}",
+          "endCaptures": {
+            "0": {
+              "name": "keyword.operator.shape.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#string-plain-double",
+              "comment": "A double quote enters the string context, which reads all characters up to the next double quote; a string has no escape. Follows block.md#strings."
+            }
+          ]
+        },
+        {
+          "include": "#string-plain-double",
+          "comment": "A double quote enters the string context, which reads all characters up to the next double quote; a string has no escape. Follows block.md#strings."
+        },
+        {
+          "comment": "Read a width colon followed by digits without whitespace after the colon. Follows block.md#the-statement-context and block.md#nodes-and-widths.",
+          "match": "(:)({{directives}})({{block-integer}})",
+          "captures": {
+            "1": {
+              "name": "punctuation.separator.colon.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "constant.numeric.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "An id is one or more characters other than Notation whitespace, parentheses, opening bracket, dash, braces, angle brackets, colon and equals. It is tried before an arrow and holds quotes and punctuation inside an already-started id. An id stops before a directive, also when the directive is glued to its width, edge or following whitespace. Follows block.md#the-statement-context and block.md#directives-inside-units.",
+          "match": "(?:(?!{{directiveStart}})[^{{ws}}(\\[\\-){\\}<>:=])+",
+          "name": "variable.mermaid"
+        },
+        {
+          "comment": "An arrow is an optional < before a solid line (two or more dashes with a dash, x, o or > end), a thick line (two or more equals with an equals, x, o or > end), or a dotted line (optional dash, dots, dash and optional x, o or >). An opening arrow is --, == or -. after optional <; its label is a string followed by an arrow. Follows block.md#edges.",
+          "match": "<?(?:-{2,}[-xo>]|={2,}[=xo>]|-?\\.+-[xo>]?|--|==|-\\.)",
+          "name": "keyword.operator.arrow.mermaid"
+        }
+      ]
+    },
+    "block-class-ids": {
+      "comment": "The class and style contexts read ASCII word runs separated by commas and whitespace as class-ids. Directives may separate these components. Follows block.md#classes-and-styles.",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "match": "{{block-class-id}}",
+          "name": "variable.mermaid",
+          "comment": "The class and style contexts read ASCII word characters as class-ids. Follows block.md#classes-and-styles."
+        },
+        {
+          "match": ",",
+          "name": "punctuation.separator.comma.mermaid",
+          "comment": "Class-ids may continue with a comma, whitespace and word characters. Follows block.md#classes-and-styles."
+        }
+      ]
+    },
+    "block-styles": {
+      "comment": "The styles are the parts between commas of the rest of the line. Follows block.md#classes-and-styles.",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "match": ",",
+          "name": "punctuation.separator.comma.mermaid",
+          "comment": "The styles are the parts between commas of the rest of the line. Follows block.md#classes-and-styles."
+        },
+        {
+          "comment": "Read one whole style property value, leaving trailing whitespace outside its scope. Follows block.md#classes-and-styles.",
+          "begin": "((?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^:{{ws}},])+)({{lineGap}})(:)",
+          "beginCaptures": {
+            "1": {
+              "name": "support.type.property-name.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.separator.key-value.mermaid"
+            }
+          },
+          "end": "{{block-style-value-end}}",
+          "contentName": "support.constant.property-value.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": "Read a whole style without a property colon as one value, leaving trailing whitespace outside it. Follows block.md#classes-and-styles.",
+          "begin": "(?![{{ws}}]|[:,]|{{directiveStart}}|{{separatorCommentEnd}})(?=.)",
+          "end": "{{block-style-value-end}}",
+          "contentName": "support.constant.property-value.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#entity"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

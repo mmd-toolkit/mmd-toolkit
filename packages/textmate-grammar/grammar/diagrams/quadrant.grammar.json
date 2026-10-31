@@ -1,0 +1,366 @@
+{
+  "patterns": [
+    {
+      "include": "#quadrant"
+    }
+  ],
+  "repository": {
+    "quadrant": {
+      "comment": "Begin quadrantChart at its exact detector prefix; a statement may touch the header. Follows quadrant.md#detection.",
+      "begin": "{{diagramStart}}(quadrantChart)",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "comment": "Read point styles after the coordinate list, keeping directives in their opening gap. Follows quadrant.md#points and common.md#comment-lines.",
+          "begin": "(?<=\\])((?:[{{quadrant-ws}}]|{{directive}})*)(?=[A-Za-z])",
+          "end": "{{quadrant-style-end}}",
+          "applyEndPatternLast": true,
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#quadrant-style"
+            },
+            {
+              "include": "#quadrant-style-separators"
+            }
+          ],
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Read a local description block with case-insensitive keyword and Notation whitespace, keeping inline percent pairs as text. Follows quadrant.md#accessibility-values and common.md#comment-lines.",
+          "begin": "{{quadrant-statement-start}}((?i:accDescr))({{gap}})(\\{)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.definition.description.begin.mermaid"
+            }
+          },
+          "end": "(\\})",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.description.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read a description text run, stopping before a common comment or the closing brace. Follows quadrant.md#accessibility-values and common.md#comment-lines.",
+              "begin": "(?!{{separatorCommentEnd}})(?=[^}\\r\\n])",
+              "end": "(?=})|{{lineValueEnd}}",
+              "contentName": "string.unquoted.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "comment": "Read the local accessibility line forms with Notation whitespace and literal inline percent pairs. Follows quadrant.md#accessibility-values and common.md#comment-lines.",
+          "begin": "{{quadrant-statement-start}}((?i:accTitle|accDescr))({{gap}})(:)(?:(?!{{separatorCommentEnd}})[{{ws}}])*",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.separator.colon.mermaid"
+            }
+          },
+          "end": "{{lineValueEnd}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": "Read a bounded title and its remaining line, including punctuation and percent pairs. Follows quadrant.md#the-title-context, common.md#a-directive-is-a-token-boundary, and common.md#comment-lines.",
+          "begin": "((?i:title)){{wordEnd}}",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          },
+          "end": "{{lineValueEnd}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": "Read a class definition's element name and its properties, with exactly one diagram whitespace character on each side of the name. Follows quadrant.md#classes and common.md#comment-lines.",
+          "begin": "((?i:classDef)){{wordEnd}}({{quadrant-space}})((?:(?!{{directiveStart}})[^{{quadrant-ws}}])+)({{quadrant-space}})",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "variable.mermaid"
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "{{quadrant-style-end}}",
+          "applyEndPatternLast": true,
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#quadrant-style"
+            },
+            {
+              "include": "#quadrant-style-separators"
+            }
+          ]
+        },
+        {
+          "comment": "Read axis and quadrant keywords, including a keyword touching its text. Follows quadrant.md#the-statement-context.",
+          "match": "(?i:x-axis|y-axis|quadrant-[1-4])",
+          "name": "keyword.control.mermaid"
+        },
+        {
+          "comment": "Read an axis arrow as one relation operator. Follows quadrant.md#axes.",
+          "match": "-{2,}>",
+          "name": "keyword.operator.arrow.mermaid"
+        },
+        {
+          "comment": "Reuse the shared HTML tag reader for converted attribute quotes. Follows common.md#html-attribute-quotes.",
+          "include": "#html-tag"
+        },
+        {
+          "comment": "Read an entity as label text, preserving its directives. Follows quadrant.md#units-and-contexts.",
+          "match": "{{entity}}",
+          "name": "string.unquoted.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Reuse the shared markdown delimiter reader; invalid interior quotes and backquotes are not validated. Follows quadrant.md#strings.",
+          "include": "#markdown-string"
+        },
+        {
+          "comment": "Reuse the plain double-quoted label form. Follows quadrant.md#strings.",
+          "include": "#string-plain-double"
+        },
+        {
+          "comment": "Read a class selector as a separator and an element name. Follows quadrant.md#the-class-name-context.",
+          "match": "(:::)({{directives}})([A-Za-z0-9_]+)",
+          "captures": {
+            "1": {
+              "name": "punctuation.separator.class.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "variable.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read the point's colon and coordinate-list brackets. Follows quadrant.md#the-point-context.",
+          "begin": "(:)({{gap}})(\\[)",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.separator.colon.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.section.brackets.begin.mermaid"
+            }
+          },
+          "end": "(\\])",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.section.brackets.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read a coordinate as one numeric text unit, including its internal directives. Follows quadrant.md#the-point-context and common.md#a-directive-is-a-token-boundary.",
+              "match": "(?:0(?:{{directives}}(?!{{directiveStart}})[^\\r\\n{{separators}}]{{directives}}[0-9](?:[0-9]|{{directive}})*)?|1)",
+              "name": "constant.numeric.mermaid",
+              "captures": {
+                "0": {
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "comment": "Read the separator between coordinates. Follows quadrant.md#the-point-context.",
+              "match": ",",
+              "name": "punctuation.separator.comma.mermaid"
+            }
+          ]
+        },
+        {
+          "comment": "Reuse native percent comments outside label text. Follows quadrant.md#comments.",
+          "include": "#native-percent-comment"
+        },
+        {
+          "comment": "Read a semicolon as a statement separator. Follows quadrant.md#diagram-and-statements.",
+          "match": ";",
+          "name": "punctuation.separator.semicolon.mermaid"
+        },
+        {
+          "comment": "Read unquoted axis, quadrant and point labels while preserving maximal word runs through directives. Follows quadrant.md#texts, quadrant.md#the-statement-context, and common.md#a-directive-is-a-token-boundary.",
+          "match": "[A-Za-z](?:[A-Za-z]|{{directive}})*|[0-9](?:[0-9]|{{directive}})*|[^\\x{0}-\\x{7F}](?:[^\\x{0}-\\x{7F}]|{{directive}})*|[!$%&'*+,./=?\\\\_#`-]",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "name": "string.unquoted.mermaid"
+        }
+      ]
+    },
+    "quadrant-style-separators": {
+      "comment": "Read the property colon and style-list comma outside values. Follows quadrant.md#points and quadrant.md#rejections-outside-the-grammar.",
+      "match": "(:)|(,)",
+      "captures": {
+        "1": {
+          "name": "punctuation.separator.key-value.mermaid"
+        },
+        "2": {
+          "name": "punctuation.separator.comma.mermaid"
+        }
+      }
+    },
+    "quadrant-style": {
+      "comment": "Read one whole style property value, leaving trailing whitespace outside its scope. Follows quadrant.md#rejections-outside-the-grammar, common.md#a-directive-is-a-token-boundary, and common.md#comment-lines.",
+      "begin": "([A-Za-z-](?:[A-Za-z-]|{{directive}})*)({{quadrant-style-gap}})(:)({{quadrant-style-gap}})",
+      "beginCaptures": {
+        "1": {
+          "name": "support.type.property-name.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "punctuation.separator.key-value.mermaid"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "{{quadrant-style-value-end}}",
+      "contentName": "support.constant.property-value.mermaid",
+      "patterns": [
+        {
+          "include": "#directive"
+        }
+      ]
+    }
+  },
+  "variables": {
+    "quadrant-space": "{{directives}}[{{quadrant-ws}}]{{directives}}",
+    "quadrant-statement-start": "(?:^|\\G|(?<=\\})|{{afterDirectiveEnd}})[{{quadrant-ws}}]*",
+    "quadrant-style-end": "(?={{nonDirectivePercentPair}}|;)|{{lineValueEnd}}",
+    "quadrant-ws": " \\t\\x{B}\\x{C}",
+    "quadrant-style-gap": "(?:(?!{{separatorCommentEnd}})[{{quadrant-ws}}]|{{directive}})*",
+    "quadrant-style-value-end": "(?={{quadrant-style-gap}}(?:,|;|{{nonDirectivePercentPair}}|$))|{{separatorCommentEnd}}"
+  }
+}

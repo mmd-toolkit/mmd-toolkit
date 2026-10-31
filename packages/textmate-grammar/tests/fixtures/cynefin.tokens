@@ -1,0 +1,85 @@
+> cynefin-beta%%{wrap}%%:
+  "cynefin-beta" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  ":" punctuation.separator.colon.mermaid
+> title Decisions
+  "title" keyword.control.mermaid
+  "Decisions" string.unquoted.mermaid
+> complex
+  "complex" constant.language.mermaid
+>   "Experiment"
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Experiment" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+>   "Probe"
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Probe" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> complicated
+  "complicated" constant.language.mermaid
+>   'Analyze'
+  "'" string.quoted.single.mermaid punctuation.definition.string.begin.mermaid
+  "Analyze" string.quoted.single.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.end.mermaid
+> complex --> complicated: "Learn"
+  "complex" constant.language.mermaid
+  "-->" keyword.operator.arrow.mermaid
+  "complicated" constant.language.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Learn" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> %% a comment line
+  "%% a comment line" comment.line.percentage.mermaid
+> accTitle: Domains
+  "accTitle" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " Domains" string.unquoted.mermaid
+> accDescr: Domain description
+  "accDescr" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " Domain description" string.unquoted.mermaid
+> accDescr { Domain block }
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  " Domain block " string.unquoted.mermaid
+  "}" punctuation.definition.description.end.mermaid
+> ---
+  "---" comment.block.ignored.mermaid
+> ignored: cynefin
+  "ignored: cynefin" comment.block.ignored.mermaid
+> ---
+  "---" comment.block.ignored.mermaid
+> %%{!}%%
+  "%%{!}%%" comment.block.ignored.mermaid
+> complex "a<b title="x">y</b>"
+  "complex" constant.language.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "<b title=\"x\">" string.quoted.double.mermaid
+  "y</b>" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> complex "a<b" "c>"
+  "complex" constant.language.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "<b" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "c>" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> clear chaotic confusion
+  "clear" constant.language.mermaid
+  "chaotic" constant.language.mermaid
+  "confusion" constant.language.mermaid
+> 
+> complex "Escaped\ntext"
+  "complex" constant.language.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Escaped" string.quoted.double.mermaid
+  "\\n" string.quoted.double.mermaid constant.character.escape.mermaid
+  "text" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> 

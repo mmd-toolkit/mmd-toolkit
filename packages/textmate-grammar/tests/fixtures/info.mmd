@@ -1,0 +1,28 @@
+info%%{wrap}%% showInfo%%{wrap}%% 
+title Info
+accTitle: Info title
+accDescr: Info description
+accDescr { Info block }
+%% a comment line
+---
+ignored: info
+---
+%%{!}%%
+accTitle%%{init: {}}%%: T
+accDescr%%{init: {}}%%: D
+accDescr%%{init: {}}%%{ B }
+title%%{init: {}}%% T
+
+-%%{wrap}%%--
+x
+---
+
+---
+x
+-%%{wrap}%%--
+
+title After split YAML
+%%%{wrap}%%%{!}%%
+%%{!}%%%{wrap}%%%
+
+  accDescr {}%%%{wrap}%%% native split mark

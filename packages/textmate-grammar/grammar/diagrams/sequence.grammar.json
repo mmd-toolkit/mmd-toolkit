@@ -1,0 +1,548 @@
+{
+  "variables": {
+    "sequence-id-word": "(?>(?:{{entity}}|{{directive}}|(?!{{directiveStart}})[^<>:,;@{{ws}}]))+",
+    "sequence-id-comment-end": "(?={{lineGap}}(?!{{entity}})#(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{entity}}|{{separatorCommentEnd}})[^#<>:,;@\\r\\n])*[<>:,@])",
+    "sequence-line-text-end": "(?=(?!{{entity}})[#;\\r\\n])|{{lineValueEnd}}",
+    "sequence-id-end": "(?=[;\\r\\n])|{{sequence-id-comment-end}}|{{lineValueEnd}}",
+    "sequence-alias-start": "({{requiredLineGap}})((?i:as))(?={{whitespaceStart}})",
+    "sequence-id-text": "(?>(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^+<>:,;\\r\\n\\-]))+",
+    "sequence-text-start": "(?={{entity}}|[^#;\\r\\n])",
+    "sequence-id-start": "(?!{{directiveStart}})(?:{{entity}}|[^/\\\\+()<>:,;\\-{{ws}}])",
+    "sequence-id-initial": "(?>(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^/\\\\+()<>:,;\\r\\n\\-]))+",
+    "sequence-continuation-stop": "(?={{directives}}(?:[+<>:,;\\r\\n]|->|--|-(?i:x)|-[)\\\\/]|-\\|[\\\\/]|[/\\\\]\\|-|//-|\\\\\\\\-|\\(\\)))",
+    "sequence-accessibility-gap": "(?:(?!{{separatorCommentEnd}})(?:[{{lws}}]|{{directive}}))*"
+  },
+  "patterns": [
+    {
+      "include": "#sequence"
+    }
+  ],
+  "repository": {
+    "sequence-comment": {
+      "comment": "Collect native hash and percent comments. Follows sequence.md#units-and-contexts.",
+      "patterns": [
+        {
+          "include": "#sequence-hash-comment"
+        },
+        {
+          "comment": "Read a percent comment through whole directives, stopping before a separator-led common comment. Follows sequence.md#the-statement-context.",
+          "begin": "(?=(?!{{directiveStart}})%(?!{{directives}}\\{))",
+          "end": "{{lineValueEnd}}",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ],
+          "contentName": "comment.line.percentage.mermaid"
+        }
+      ]
+    },
+    "sequence-text-part": {
+      "comment": "Read leading whitespace, a case-sensitive wrap modifier and unquoted text up to hash, semicolon or line end. Follows sequence.md#text-parts.",
+      "begin": "(?!{{sequence-line-text-end}})(?:(?!{{separatorCommentEnd}})[{{lws}}])*(?:(:?(?:wrap|nowrap):)|(?!(?:[{{lws}}]|{{directiveStart}})){{sequence-text-start}})",
+      "beginCaptures": {
+        "1": {
+          "name": "storage.modifier.mermaid"
+        }
+      },
+      "end": "{{sequence-line-text-end}}",
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#entity",
+          "comment": "Read an entity whole and preserve the enclosing value scope and internal directive scopes. Follows common.md#entities."
+        }
+      ],
+      "applyEndPatternLast": true
+    },
+    "sequence-data": {
+      "comment": "Read the opaque data block through its first closing brace; do not interpret its payload as YAML properties. Follows sequence.md#the-data-context and sequence.md#participants-and-boxes.",
+      "begin": "(@\\{)",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.section.data.begin.mermaid"
+        }
+      },
+      "end": "(\\})",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.section.data.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#sequence-braced-text"
+        }
+      ],
+      "name": "meta.data.mermaid"
+    },
+    "sequence-id-context": {
+      "comment": "Read the id and optional data and alias after the participant, actor, destroy and activation keywords. Follows sequence.md#the-id-context.",
+      "begin": "((?i:participant|actor|destroy|activate|deactivate)){{wordEnd}}(?:(?!{{separatorCommentEnd}})[{{lws}}])*",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "{{sequence-id-end}}|(?<=\\})(?!{{sequence-alias-start}})",
+      "patterns": [
+        {
+          "comment": "Read an alias after a data block, retaining directive scopes in the gap. Follows sequence.md#the-data-context.",
+          "begin": "(?<=\\}){{sequence-alias-start}}",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.control.mermaid"
+            }
+          },
+          "end": "{{sequence-line-text-end}}",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#sequence-text-part"
+            }
+          ],
+          "applyEndPatternLast": true
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#sequence-hash-comment"
+        },
+        {
+          "comment": "Read the id and its alias keyword, allowing directives in the id and gaps. Follows sequence.md#the-id-context.",
+          "begin": "({{sequence-id-word}}){{sequence-alias-start}}",
+          "beginCaptures": {
+            "1": {
+              "name": "variable.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                },
+                {
+                  "include": "#entity",
+                  "comment": "Read an entity whole and preserve the enclosing value scope and internal directive scopes. Follows common.md#entities."
+                }
+              ]
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "keyword.control.mermaid"
+            }
+          },
+          "end": "{{sequence-line-text-end}}",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#sequence-text-part"
+            }
+          ],
+          "applyEndPatternLast": true
+        },
+        {
+          "comment": "Read a single-word id before its data block. Follows sequence.md#the-id-context.",
+          "match": "({{sequence-id-word}})(?={{lineGap}}@\\{)",
+          "captures": {
+            "1": {
+              "name": "variable.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                },
+                {
+                  "include": "#entity",
+                  "comment": "Read an entity whole and preserve the enclosing value scope and internal directive scopes. Follows common.md#entities."
+                }
+              ]
+            }
+          }
+        },
+        {
+          "include": "#sequence-data"
+        },
+        {
+          "comment": "Read the longest id up to its separator or last eligible hash comment, leaving embedded hashes in the id. Follows sequence.md#the-id-context.",
+          "begin": "(?={{entity}}|[^{{ws}}#])",
+          "end": "{{sequence-id-end}}",
+          "contentName": "variable.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#entity",
+              "comment": "Read an entity whole and preserve the enclosing value scope and internal directive scopes. Follows common.md#entities."
+            }
+          ]
+        }
+      ]
+    },
+    "sequence-id-run": {
+      "comment": "Read one participant reference through its maximal initial run and continuations, keeping internal whitespace and directives. Follows sequence.md#id-runs.",
+      "begin": "(?={{sequence-id-start}})",
+      "end": "{{sequence-continuation-stop}}|{{separatorCommentEnd}}",
+      "contentName": "variable.mermaid",
+      "patterns": [
+        {
+          "comment": "Read the initial run atomically before any continuation. Follows sequence.md#id-runs.",
+          "match": "{{sequence-id-initial}}",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                },
+                {
+                  "include": "#entity"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Read a maximal continuation unless an arrow or empty connection begins there. Follows sequence.md#id-runs.",
+          "match": "(?!{{sequence-continuation-stop}})-*{{sequence-id-text}}",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                },
+                {
+                  "include": "#entity"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "sequence": {
+      "comment": "Read the exact detected sequence header and its bounded body keyword, allowing an inline first statement. Follows sequence.md#detection.",
+      "begin": "{{diagramStart}}(sequenceDiagram){{wordEnd}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive",
+          "comment": "Read shared directives independently of diagram units. Follows common.md#a-directive-is-a-token-boundary."
+        },
+        {
+          "include": "#sequence-comment"
+        },
+        {
+          "comment": "Skip whitespace outside value units. Follows sequence.md#the-statement-context.",
+          "match": "(?:(?!{{separatorCommentEnd}})[{{ws}}])+"
+        },
+        {
+          "comment": "Read an autonumber number only before a space, line feed or non-directive percent pair. Follows sequence.md#the-statement-context.",
+          "match": "(?:[0-9]+(?:\\.[0-9]{1,2})?|\\.[0-9]{1,2})(?={{directives}}(?: |\\r?$|{{nonDirectivePercentPair}}))",
+          "name": "constant.numeric.mermaid"
+        },
+        {
+          "comment": "Read the box colour candidate and caption as text, without interpreting the candidate as style properties. Follows sequence.md#text-parts.",
+          "begin": "((?i:box)){{wordEnd}}(?:(?!{{separatorCommentEnd}})[{{lws}}])*",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          },
+          "end": "{{sequence-line-text-end}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#entity",
+              "comment": "Read an entity whole and preserve the enclosing value scope and internal directive scopes. Follows common.md#entities."
+            }
+          ],
+          "applyEndPatternLast": true
+        },
+        {
+          "include": "#sequence-id-context"
+        },
+        {
+          "comment": "Read the create keyword. Follows sequence.md#the-statement-context.",
+          "match": "(?i:create){{wordEnd}}",
+          "name": "keyword.control.mermaid"
+        },
+        {
+          "comment": "Read a block or section keyword and its text part. Follows sequence.md#the-statement-context.",
+          "begin": "((?i:loop|rect|opt|alt|else|par_over|par|and|critical|option|break)){{wordEnd}}",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          },
+          "end": "{{sequence-line-text-end}}",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#sequence-text-part"
+            }
+          ],
+          "applyEndPatternLast": true
+        },
+        {
+          "comment": "Read end and note keywords and note-position values, retaining the required space before of. Follows sequence.md#the-statement-context.",
+          "match": "((?i:end|note)){{wordEnd}}|((?i:over)){{wordEnd}}|((?i:left|right))({{spaceSeparator}})((?i:of)){{wordEnd}}",
+          "captures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "name": "constant.language.mermaid"
+            },
+            "3": {
+              "name": "constant.language.mermaid"
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "5": {
+              "name": "keyword.control.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read link-related keywords only before the required gap and a participant id. Follows sequence.md#the-statement-context.",
+          "match": "(?i:links|link|properties|details)(?={{requiredAsciiGap}}{{sequence-id-start}})",
+          "name": "keyword.control.mermaid"
+        },
+        {
+          "comment": "Read either title spelling with one whitespace character and nonempty title text. Follows sequence.md#the-statement-context.",
+          "begin": "((?i:title))(:)?({{directives}})(?!{{separatorCommentEnd}})[{{ws}}]{{sequence-text-start}}",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "name": "punctuation.separator.colon.mermaid"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "{{sequence-line-text-end}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#entity",
+              "comment": "Read an entity whole and preserve the enclosing value scope and internal directive scopes. Follows common.md#entities."
+            }
+          ],
+          "applyEndPatternLast": true
+        },
+        {
+          "comment": "Read case-insensitive accDescr and its text delimiters, allowing an unclosed final block; leading padding stays outside text. Follows sequence.md#the-statement-context.",
+          "begin": "((?i:accDescr))({{sequence-accessibility-gap}})(\\{)({{sequence-accessibility-gap}})",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.definition.description.begin.mermaid"
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "(\\})",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.description.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#sequence-braced-text"
+            }
+          ]
+        },
+        {
+          "comment": "Read case-insensitive accessibility line values, retaining inline hashes and semicolons and leaving leading padding outside text. Follows sequence.md#accessibility-values.",
+          "begin": "((?i:accTitle|accDescr))({{sequence-accessibility-gap}})(:)({{sequence-accessibility-gap}})",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.separator.colon.mermaid"
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "{{lineValueEnd}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#entity",
+              "comment": "Read an entity whole and preserve the enclosing value scope and internal directive scopes. Follows common.md#entities."
+            }
+          ]
+        },
+        {
+          "comment": "Read the header and autonumber keywords or the listed off setting. Follows sequence.md#the-statement-context.",
+          "match": "((?i:sequenceDiagram|autonumber)){{wordEnd}}|((?i:off)){{wordEnd}}",
+          "captures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "name": "constant.language.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read comma and statement separators. Follows sequence.md#the-statement-context.",
+          "match": "(,)|(;)",
+          "captures": {
+            "1": {
+              "name": "punctuation.separator.comma.mermaid"
+            },
+            "2": {
+              "name": "punctuation.separator.statement.mermaid"
+            }
+          }
+        },
+        {
+          "include": "#sequence-id-run"
+        },
+        {
+          "comment": "Read each message arrow as one operator. Follows sequence.md#the-statement-context.",
+          "match": "(?i:<<-->>|<<->>|-->>|->>|->|--x|-x|--\\)|-\\)|--\\|\\\\|--\\|/|--\\\\\\\\|--//|/\\|--|\\\\\\|--|//--|\\\\\\\\--|-\\|\\\\|-\\|/|-\\\\\\\\|-//|/\\|-|\\\\\\|-|//-|\\\\\\\\-|-->)",
+          "name": "keyword.operator.arrow.mermaid"
+        },
+        {
+          "comment": "Read the colon and following text part; percent signs remain in that text. Follows sequence.md#the-statement-context.",
+          "begin": "(:)",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.separator.colon.mermaid"
+            }
+          },
+          "end": "{{sequence-line-text-end}}",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#sequence-text-part"
+            }
+          ],
+          "applyEndPatternLast": true
+        },
+        {
+          "comment": "Read activation and central-connection operators. Follows sequence.md#messages.",
+          "match": "[+-]|\\(\\)",
+          "name": "keyword.operator.mermaid"
+        },
+        {
+          "comment": "Read accepted invalid characters as ignored text. Follows sequence.md#diagram-and-statements.",
+          "match": "[/\\\\()<>]",
+          "name": "comment.block.ignored.mermaid"
+        }
+      ]
+    },
+    "sequence-braced-text": {
+      "comment": "Read opaque data or description text up to the first brace or common-comment boundary. Follows sequence.md#the-data-context and sequence.md#accessibility-values.",
+      "begin": "(?!\\}|{{separatorCommentEnd}})(?=.)",
+      "end": "(?=\\})|{{separatorCommentEnd}}",
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#entity",
+          "comment": "Read an entity whole and preserve the enclosing value scope and internal directive scopes. Follows common.md#entities."
+        }
+      ]
+    },
+    "sequence-hash-comment": {
+      "comment": "Read a native hash comment without mistaking an entity for its mark. Follows sequence.md#the-statement-context.",
+      "begin": "(?=(?!{{entity}})#)",
+      "end": "{{lineValueEnd}}",
+      "patterns": [
+        {
+          "include": "#directive"
+        }
+      ],
+      "contentName": "comment.line.number-sign.mermaid"
+    }
+  }
+}

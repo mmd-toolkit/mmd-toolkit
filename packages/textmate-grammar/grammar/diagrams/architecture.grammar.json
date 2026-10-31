@@ -1,0 +1,201 @@
+{
+  "variables": {
+    "architecture-label-double": "\"(?>\\\\(?={{directives}}{{htmlTagEscaped}})|{{htmlTagEscaped}}|{{directive}}|{{stringEscape}}|[^\"\\\\\\r\\n])*\"",
+    "architecture-label-single": "'(?>{{directive}}|{{stringEscape}}|[^'\\\\\\r\\n])*'",
+    "architecture-id-end": "{{wordEnd}}(?!{{directives}}-+[A-Za-z0-9_])"
+  },
+  "patterns": [
+    {
+      "include": "#architecture"
+    }
+  ],
+  "repository": {
+    "architecture": {
+      "comment": "Read the architecture header and its body. Follows architecture.md#detection and architecture.md#names-keyword-boundaries-and-directions.",
+      "begin": "{{diagramStart}}(architecture-beta){{architecture-id-end}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#common-statements",
+          "comment": "A title-line has an optional single ASCII separator and line value; accessibility line forms require a colon, and a description block reads through its first closing brace. Follows architecture.md#composite-common-forms."
+        },
+        {
+          "include": "#hidden-yaml",
+          "comment": "Hidden YAML opens with three dashes, optional ASCII space/tab and LF; an unindented three-dash closer needs following common whitespace or EOF. The body-present alternative precedes the adjacent empty closer; this scope closes at the first qualifying closing line instead. Follows architecture.md#hidden-forms-and-comments."
+        },
+        {
+          "comment": "A native hidden DIRECTIVE starts with optional ASCII space/tab and percent-pair plus opening brace, then reads through the first percent-pair closer satisfying the whitespace or EOF boundary. Follows architecture.md#hidden-forms-and-comments.",
+          "include": "#hidden-directive"
+        },
+        {
+          "include": "#native-percent-comment",
+          "comment": "A native comment has mark %% and reads through the end of its line, excluding LF/CR but including U+2028 and U+2029. Earlier strings, labels, and common values own text they enclose. Follows architecture.md#hidden-forms-and-comments."
+        },
+        {
+          "comment": "A label first tries a complete double-quoted string followed immediately by the closing bracket, then the same with single quotes. Choose the label alternative on the common converted diagram text: makes a complete HTML tag own its quoted attribute values before the lookahead tests the closing string quote. The string rule reads the authored quotes, escapes and directives. A common comment after a line separator or paragraph separator ends this value before the separator. The lookahead reads each content alternative whole; a backslash before an HTML tag remains ordinary text so that the tag owns its attribute quotes. Follows architecture.md#icons-strings-and-bracketed-labels, common.md#html-attribute-quotes, and common.md#comment-lines.",
+          "begin": "(\\[)({{directives}})(?=(?:{{architecture-label-double}}|{{architecture-label-single}}){{directives}}\\])",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.definition.label.begin.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "(\\])|{{separatorCommentEnd}}",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.label.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#architecture-string",
+              "comment": "String escape recognition applies to the complete quoted alternatives of a bracketed label. Follows architecture.md#icons-strings-and-bracketed-labels."
+            }
+          ]
+        },
+        {
+          "comment": "When neither complete quoted alternative matches, the bare label reads characters other than either bracket, CR or LF. Quotes and backslashes remain bare text, and the closing bracket leaves the following in keyword outside the label. A bare label treats quotes as ordinary characters, so no HTML rule can extend it beyond its closing bracket. A common comment after a line separator or paragraph separator ends this value before the separator. Follows architecture.md#icons-strings-and-bracketed-labels and common.md#comment-lines.",
+          "begin": "(\\[)",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.definition.label.begin.mermaid"
+            }
+          },
+          "end": "(\\])|{{separatorCommentEnd}}",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.label.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ],
+          "contentName": "string.unquoted.mermaid"
+        },
+        {
+          "comment": "A string is single-quoted or double-quoted, closes with the same quote, and may be empty. Backslash takes a following character other than LF, CR, U+2028, or U+2029. A service accepts the string as a text icon. Follows architecture.md#icons-strings-and-bracketed-labels.",
+          "include": "#architecture-string"
+        },
+        {
+          "comment": "Read an icon's separate brackets and retained name text. Follows architecture.md#icons-strings-and-bracketed-labels.",
+          "begin": "(\\()",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.section.icon.begin.mermaid"
+            }
+          },
+          "end": "(\\))|{{separatorCommentEnd}}",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.section.icon.end.mermaid"
+            }
+          },
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": "Read a group modifier with independent directive scopes between its components. Follows architecture.md#names-keyword-boundaries-and-directions and common.md#a-directive-is-a-token-boundary.",
+          "match": "(\\{)({{directives}})(group)({{directives}})(\\})",
+          "captures": {
+            "1": {
+              "name": "punctuation.definition.modifier.begin.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "storage.modifier.mermaid"
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "5": {
+              "name": "punctuation.definition.modifier.end.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read a listed alignment orientation. Follows architecture.md#grammar.",
+          "match": "(?:row|column){{architecture-id-end}}",
+          "name": "constant.language.mermaid"
+        },
+        {
+          "comment": "And: Keywords junction, service, column, group, align, row, and in have a longer-ID alternative; longer names such as serviceX and columnar are IDs. An ID cannot end with dash. Follows architecture.md#ordered-rules.",
+          "match": "(?:junction|service|group|align|in){{architecture-id-end}}",
+          "name": "keyword.control.mermaid"
+        },
+        {
+          "comment": "A port direction is exactly L, R, T, or B, and its initial character is taken without a word boundary. Follows architecture.md#names-keyword-boundaries-and-directions.",
+          "match": "[LRTB]",
+          "name": "constant.language.mermaid"
+        },
+        {
+          "comment": "An ID starts with an ASCII letter, digit or underscore, continues with those characters or dash, and cannot end with dash. Take as many characters as this form permits; numeric-looking IDs remain text. Follows architecture.md#names-keyword-boundaries-and-directions and architecture.md#ordered-rules.",
+          "match": "[A-Za-z0-9_](?:[A-Za-z0-9_-]*[A-Za-z0-9_])?",
+          "name": "variable.mermaid"
+        },
+        {
+          "comment": "And: Either < or > is accepted at either end of an arrow independently; a line is contiguous double dash or a label between two single dashes. Follows architecture.md#names-keyword-boundaries-and-directions and architecture.md#grammar.",
+          "match": "--|[-<>]",
+          "name": "keyword.operator.arrow.mermaid"
+        },
+        {
+          "comment": "The arrow has a colon before its first port direction and after its second; group-modifier is opening brace, group, and closing brace. Follows architecture.md#icons-strings-and-bracketed-labels and architecture.md#grammar.",
+          "match": "(:)|(\\{)|(\\})",
+          "captures": {
+            "1": {
+              "name": "punctuation.separator.colon.mermaid"
+            },
+            "2": {
+              "name": "punctuation.definition.modifier.begin.mermaid"
+            },
+            "3": {
+              "name": "punctuation.definition.modifier.end.mermaid"
+            }
+          }
+        }
+      ]
+    },
+    "architecture-string": {
+      "comment": "A string is single-quoted or double-quoted, closes with the same quote, and may be empty; backslash takes the next character other than LF, CR, LS or PS. Follows architecture.md#icons-strings-and-bracketed-labels.",
+      "include": "#string-escaped"
+    }
+  }
+}

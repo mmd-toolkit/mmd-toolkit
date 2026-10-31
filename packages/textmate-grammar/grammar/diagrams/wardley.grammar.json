@@ -1,0 +1,268 @@
+{
+  "patterns": [
+    {
+      "include": "#wardley"
+    }
+  ],
+  "repository": {
+    "wardley": {
+      "comment": "Read the lowercase header, allowing an attached statement. Follows wardley.md#detection.",
+      "begin": "{{diagramStart}}(wardley-beta)",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#hidden-yaml",
+          "comment": "Read native hidden YAML. Follows wardley.md#native-padding-hidden-forms-and-eol."
+        },
+        {
+          "include": "#hidden-directive",
+          "comment": "Read native hidden directives. Follows wardley.md#native-padding-hidden-forms-and-eol."
+        },
+        {
+          "include": "#native-percent-comment",
+          "comment": "Read native percent comments. Follows wardley.md#native-padding-hidden-forms-and-eol."
+        },
+        {
+          "include": "#common-statements",
+          "comment": "Read metadata text and its delimiters. Follows wardley.md#common-metadata-values."
+        },
+        {
+          "comment": "Read statement keywords at line, header or directive boundaries, with optional annotation number. Follows wardley.md#keyword-and-name-boundaries and common.md#a-directive-is-a-token-boundary.",
+          "match": "{{wardley-statement-start}}(size|evolution|anchor|component|evolve|pipeline|note|annotations|accelerator|deaccelerator|annotation)(?:(?<=annotation)({{asciiGap}})(0|{{wardley-nonzero-integer}}){{wardley-number-end}})?",
+          "captures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "constant.numeric.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read the label-offset keyword after coordinates. Follows wardley.md#grammar and wardley.md#common-boundaries-in-authored-components.",
+          "match": "(\\])({{asciiGap}})(label)",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#wardley-closing-delimiter"
+                }
+              ]
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "keyword.control.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read an inertia decoration after coordinates or strategy, or inside parentheses. Follows wardley.md#grammar and wardley.md#common-boundaries-in-authored-components.",
+          "match": "([\\])])({{asciiGap}})(inertia)|{{wardley-parenthesized-value-start}}(inertia)",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#wardley-closing-delimiter"
+                }
+              ]
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "keyword.control.mermaid"
+            },
+            "4": {
+              "name": "punctuation.section.parens.begin.mermaid"
+            },
+            "5": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "6": {
+              "name": "keyword.control.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read a source-strategy value after its parenthesis. Follows wardley.md#keyword-and-name-boundaries and wardley.md#common-boundaries-in-authored-components.",
+          "match": "{{wardley-parenthesized-value-start}}(build|buy|outsource|market)",
+          "captures": {
+            "1": {
+              "name": "punctuation.section.parens.begin.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "constant.language.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read unsigned integer or decimal units; offset signs stay separate. Follows wardley.md#numbers.",
+          "match": "([0-9]+\\.[0-9]+|0|{{wardley-nonzero-integer}}){{wardley-number-end}}",
+          "name": "constant.numeric.mermaid"
+        },
+        {
+          "comment": "Read the separate flow opener, quoted label and arrow marker. Follows wardley.md#strings-and-link-labels and wardley.md#common-boundaries-in-authored-components.",
+          "begin": "(\\+)({{directives}})(?=')",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.operator.arrow.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "(<>|<|>)",
+          "endCaptures": {
+            "1": {
+              "name": "keyword.operator.arrow.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read a flow label without backslash escapes. Follows wardley.md#strings-and-link-labels.",
+              "include": "#string-plain-single"
+            }
+          ]
+        },
+        {
+          "comment": "Read ports and unlabeled arrows without splitting an earlier name. Follows wardley.md#strings-and-link-labels.",
+          "match": "\\+<>|\\+>|\\+<|(?:-->|-\\.->)|->|>",
+          "name": "keyword.operator.arrow.mermaid"
+        },
+        {
+          "comment": "Read a semicolon-delimited link label through the physical line end. Follows wardley.md#strings-and-link-labels and common.md#comment-lines.",
+          "begin": "(;)(?=.)",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.separator.label.mermaid"
+            }
+          },
+          "end": "{{lineValueEnd}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "include": "#string-escaped",
+          "comment": "Read a quoted name or text. Follows wardley.md#strings-and-link-labels."
+        },
+        {
+          "comment": "Read a whole bare name, protecting internal keywords and retaining directives. Follows wardley.md#keyword-and-name-boundaries, wardley.md#common-boundaries-in-authored-components, and common.md#a-directive-is-a-token-boundary.",
+          "match": "[A-Za-z]{{wardley-name-character}}*(?:{{requiredAsciiGap}}[A-Za-z(]{{wardley-name-character}}*)*|[A-Za-z0-9_](?:[A-Za-z0-9_-]*[A-Za-z0-9_])?",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "name": "variable.mermaid"
+        },
+        {
+          "comment": "Read coordinate and strategy brackets, separators, offset and stage operators, and pipeline block braces. Follows wardley.md#common-boundaries-in-authored-components and wardley.md#grammar.",
+          "match": "(\\[)|(,)|(@)|(/)|(\\()|(-)|(\\{)|(\\})",
+          "captures": {
+            "1": {
+              "name": "punctuation.section.brackets.begin.mermaid"
+            },
+            "2": {
+              "name": "punctuation.separator.comma.mermaid"
+            },
+            "3": {
+              "name": "keyword.operator.mermaid"
+            },
+            "4": {
+              "name": "keyword.operator.mermaid"
+            },
+            "5": {
+              "name": "punctuation.section.parens.begin.mermaid"
+            },
+            "6": {
+              "name": "keyword.operator.mermaid"
+            },
+            "7": {
+              "name": "keyword.operator.block.begin.mermaid"
+            },
+            "8": {
+              "name": "keyword.operator.block.end.mermaid"
+            }
+          }
+        },
+        {
+          "include": "#wardley-closing-delimiter"
+        }
+      ]
+    },
+    "wardley-closing-delimiter": {
+      "comment": "Read coordinate and strategy closing delimiters, including captures before decorations. Follows wardley.md#common-boundaries-in-authored-components.",
+      "patterns": [
+        {
+          "match": "\\]",
+          "name": "punctuation.section.brackets.end.mermaid"
+        },
+        {
+          "match": "\\)",
+          "name": "punctuation.section.parens.end.mermaid"
+        }
+      ]
+    }
+  },
+  "variables": {
+    "wardley-name-character": "(?:[A-Za-z0-9_()&]|-(?!{{directives}}>)|{{directive}})",
+    "wardley-parenthesized-value-start": "(\\()({{asciiGap}})",
+    "wardley-nonzero-integer": "[1-9][0-9]*",
+    "wardley-number-end": "(?!{{directives}}[0-9.])",
+    "wardley-statement-start": "(?:^|\\G|{{afterDirectiveEnd}})[ \\t]*"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "patterns": [
+    {
+      "include": "#packet"
+    }
+  ],
+  "repository": {
+    "packet": {
+      "comment": "Begin packet at either accepted lowercase header, retaining the boundary required only by packet. Follows packet.md#detection, packet.md#header-boundaries-and-gaps, and common.md#leading-whitespace.",
+      "begin": "{{diagramStart}}(packet-beta|packet(?={{directives}}(?:[{{ws}}]|%%|$)))",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#hidden-yaml",
+          "comment": "Reuse hidden YAML before the range-dash rule. Follows packet.md#ordered-rules and packet.md#hidden-forms."
+        },
+        {
+          "include": "#hidden-directive",
+          "comment": "Reuse the native hidden directive form. Follows packet.md#hidden-forms."
+        },
+        {
+          "include": "#native-percent-comment",
+          "comment": "Reuse native percent comments. Follows packet.md#comments-and-common-trivia."
+        },
+        {
+          "comment": "Reuse the common title and accessibility forms. Follows packet.md#composite-common-forms.",
+          "include": "#common-statements"
+        },
+        {
+          "comment": "Read an unsigned integer and check its following boundary through directives. Follows packet.md#numbers-and-strings and common.md#a-directive-is-a-token-boundary.",
+          "match": "(?<![0-9])(0|[1-9][0-9]*)(?!{{directives}}[0-9.])",
+          "name": "constant.numeric.mermaid"
+        },
+        {
+          "include": "#string-escaped",
+          "comment": "Reuse quoted strings with backslash escapes. Follows packet.md#numbers-and-strings."
+        },
+        {
+          "comment": "Read the range and relative operators and the label separator. Follows packet.md#ordered-rules.",
+          "match": "(-)|(\\+)|(:)",
+          "captures": {
+            "1": {
+              "name": "keyword.operator.mermaid"
+            },
+            "2": {
+              "name": "keyword.operator.mermaid"
+            },
+            "3": {
+              "name": "punctuation.separator.colon.mermaid"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

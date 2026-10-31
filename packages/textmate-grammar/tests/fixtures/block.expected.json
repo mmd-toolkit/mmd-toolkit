@@ -1,0 +1,164 @@
+{
+  "header": "block-beta",
+  "scopes": [
+    ["columns", "keyword.control.mermaid"],
+    ["auto", "constant.language.mermaid"],
+    ["space", "keyword.control.mermaid"],
+    ["block:", "keyword.control.mermaid"],
+    ["block", "keyword.control.mermaid"],
+    ["end", "keyword.control.mermaid"],
+    ["classDef", "keyword.control.mermaid"],
+    ["class", "keyword.control.mermaid"],
+    ["style", "keyword.control.mermaid"],
+    ["accDescr", "keyword.control.mermaid"],
+    ["2", "constant.numeric.mermaid"],
+    ["right", "constant.language.mermaid"],
+    ["[", "keyword.operator.shape.begin.mermaid"],
+    ["<[", "keyword.operator.shape.begin.mermaid"],
+    ["Start", "string.quoted.double.mermaid"],
+    ["edge label", "string.quoted.double.mermaid"],
+    ["-->", "keyword.operator.arrow.mermaid"],
+    ["==>", "keyword.operator.arrow.mermaid"],
+    ["-.->", "keyword.operator.arrow.mermaid"],
+    ["%% a block comment line", "comment.line.percentage.mermaid"],
+    ["]>", "keyword.operator.shape.end.mermaid", 8],
+    ["(", "punctuation.section.directions.begin.mermaid", 8],
+    ["A", "variable.mermaid", 21],
+    ["init", "entity.name.function.directive.mermaid", 21],
+    ["2", "constant.numeric.mermaid", 21],
+    ["B", "variable.mermaid", 22],
+    ["init", "entity.name.function.directive.mermaid", 22],
+    ["columns", "keyword.control.mermaid", 23],
+    ["init", "entity.name.function.directive.mermaid", 23],
+    ["2", "constant.numeric.mermaid", 23],
+    ["space", "keyword.control.mermaid", 24],
+    ["init", "entity.name.function.directive.mermaid", 24],
+    ["2", "constant.numeric.mermaid", 24],
+    ["2", "constant.numeric.mermaid", 25],
+    ["init", "entity.name.function.directive.mermaid", 25],
+    ["classDef", "keyword.control.mermaid", 26],
+    ["c", "variable.mermaid", 26],
+    ["init", "entity.name.function.directive.mermaid", 26],
+    ["fill", "support.type.property-name.mermaid", 26],
+    ["class", "keyword.control.mermaid", 27],
+    ["A", "variable.mermaid", 27],
+    [" c", "variable.mermaid", 27],
+    ["init", "entity.name.function.directive.mermaid", 27],
+    ["style", "keyword.control.mermaid", 28],
+    ["A", "variable.mermaid", 28],
+    ["fill", "support.type.property-name.mermaid", 28],
+    ["init", "entity.name.function.directive.mermaid", 28],
+    ["c", "variable.mermaid", 29],
+    ["init", "entity.name.function.directive.mermaid", 29],
+    ["fill", "support.type.property-name.mermaid", 29],
+    ["accDescr", "keyword.control.mermaid", 30],
+    ["init", "entity.name.function.directive.mermaid", 30],
+    ["{", "punctuation.definition.description.begin.mermaid", 30],
+    ["}", "punctuation.definition.description.end.mermaid", 30],
+    ["block:", "keyword.control.mermaid", 31],
+    ["]>", "keyword.operator.shape.end.mermaid", 34],
+    ["init", "entity.name.function.directive.mermaid", 34],
+    ["(", "punctuation.section.directions.begin.mermaid", 34],
+    ["right", "constant.language.mermaid", 34],
+    [",", "punctuation.separator.comma.mermaid", 35],
+    [",", "punctuation.separator.comma.mermaid", 36],
+    ["<b title=\"x\">", "string.quoted.double.mermaid", 37],
+    ["Block</b>", "string.quoted.double.mermaid", 37],
+    ["<b", "string.quoted.double.mermaid", 38],
+    ["Other", "variable.mermaid", 38],
+    ["B", "variable.mermaid", 39],
+    [",", "punctuation.separator.comma.mermaid", 39],
+    ["init", "entity.name.function.directive.mermaid", 39],
+    [" c", "variable.mermaid", 39],
+    ["init", "entity.name.function.directive.mermaid", 40],
+    ["fill", "support.type.property-name.mermaid", 40],
+    [":", "punctuation.separator.colon.mermaid", 25],
+    ["A", "variable.mermaid", 41],
+    [" c", "variable.mermaid", 41],
+    ["block", "keyword.control.mermaid", 42],
+    ["end", "keyword.control.mermaid", 42],
+    ["style", "support.type.property-name.mermaid", 43],
+    ["wrap", "entity.name.function.directive.mermaid", 43],
+    ["style", "variable.mermaid", 44],
+    ["foo", "support.type.property-name.mermaid", 45],
+    [
+      "%%%{wrap}%%% common block comment %%{wrap}%%",
+      "comment.line.percentage.mermaid",
+      46
+    ],
+    ["A", "variable.mermaid", 3],
+    ["]", "keyword.operator.shape.end.mermaid", 3],
+    ["fill", "support.type.property-name.mermaid", 16],
+    ["red", "support.constant.property-value.mermaid", 16],
+    [")", "punctuation.section.directions.end.mermaid", 8],
+    ["\"", "string.quoted.double.mermaid", 3]
+  ],
+  "absent": [
+    ["Other", "string.quoted.double.mermaid", 38],
+    ["<b title=\"x\">", "punctuation.definition.string.end.mermaid", 37],
+    ["red", "keyword.control.mermaid", 43],
+    ["red", "keyword.control.mermaid", 45],
+    ["style", "keyword.control.mermaid", 44]
+  ],
+  "absentOnLine": [[46, "meta.directive.mermaid"]],
+  "escapedInputs": [
+    {
+      "code": "block-beta\nA\nclassDef c fill:red\u2028%% definition comment\nclass A c\u2029%% class comment\nstyle A fill:blue\u2028%% style comment\n",
+      "scopes": [
+        ["fill", "support.type.property-name.mermaid"],
+        [" c", "variable.mermaid"],
+        ["fill", "support.type.property-name.mermaid"],
+        ["%% definition comment", "comment.line.percentage.mermaid"],
+        ["%% class comment", "comment.line.percentage.mermaid"],
+        ["%% style comment", "comment.line.percentage.mermaid"]
+      ],
+      "absent": [
+        ["%% definition comment", "string.unquoted.style.mermaid"],
+        ["%% class comment", "variable.mermaid"],
+        ["%% style comment", "string.unquoted.style.mermaid"]
+      ]
+    },
+    {
+      "code": "block-beta\nA[\"before\u2028%% plain comment \"\nafter\"]\n",
+      "scopes": [
+        ["%% plain comment \"", "comment.line.percentage.mermaid"],
+        ["after", "string.quoted.double.mermaid"]
+      ],
+      "absentOnLine": [[1, "meta.directive.mermaid"]]
+    },
+    {
+      "code": "block-beta\nA[\"Node\"]\nstyle A fill:#43a047\nstyle A opaque\n",
+      "scopes": [
+        ["fill", "support.type.property-name.mermaid"],
+        ["#43a047", "support.constant.property-value.mermaid"],
+        ["opaque", "support.constant.property-value.mermaid", 3]
+      ],
+      "absent": [["#43a047", "constant.numeric.mermaid"]]
+    },
+    {
+      "code": "block-beta A,B\nstyle A,B fill :red\nclassDef c fill %%{wrap}%%:blue\n",
+      "scopes": [
+        ["A,B", "variable.mermaid", 0],
+        ["A,B", "variable.mermaid", 1],
+        ["fill", "support.type.property-name.mermaid", 1],
+        ["red", "support.constant.property-value.mermaid"],
+        ["fill", "support.type.property-name.mermaid", 2],
+        ["blue", "support.constant.property-value.mermaid"],
+        ["wrap", "entity.name.function.directive.mermaid"]
+      ],
+      "absentOnLine": [[1, "punctuation.separator.comma.mermaid"]]
+    },
+    {
+      "code": "block-beta columns auto space:2 block:Group A[\"Label\"]:3 end\n",
+      "scopes": [
+        ["columns", "keyword.control.mermaid"],
+        ["space", "keyword.control.mermaid"],
+        ["block:", "keyword.control.mermaid"],
+        ["Group", "variable.mermaid"],
+        ["A", "variable.mermaid"],
+        ["3", "constant.numeric.mermaid"],
+        ["Label", "string.quoted.double.mermaid"]
+      ]
+    }
+  ]
+}

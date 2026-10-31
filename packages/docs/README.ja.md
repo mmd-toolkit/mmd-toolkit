@@ -5,17 +5,18 @@
 VitePressで構築します。
 
 ```sh
-pnpm --filter @mmd-toolkit/parser --filter @mmd-toolkit/eslint-plugin build
+pnpm --filter @mmd-toolkit/parser --filter @mmd-toolkit/eslint-plugin --filter @mmd-toolkit/textmate-grammar build
 pnpm --filter @mmd-toolkit/docs dev
 pnpm --filter @mmd-toolkit/docs build
 pnpm --filter @mmd-toolkit/docs preview
 pnpm --filter @mmd-toolkit/docs test
 ```
 
-サイトやテストを実行する前に、パーサーとリンターをビルドします。
+サイトやテストを実行する前に、パーサー、リンター、TextMate文法をビルドします。
 診断マーカーは、
 ページの表示内容を生成するときにワークスペースのリンターを実行します。
-これらのパッケージの実装を変更した後も、再ビルドしてください。
+コードブロックは、ビルドした文法で色付けします。
+これらのパッケージを変更した後も、再ビルドしてください。
 
 `%% eslint @mmd-toolkit/`を含む`mmd`コードブロックには、
 `twoslash-eslint`で実際のESLintの診断を生成し、ホバーで表示します。
@@ -23,6 +24,17 @@ pnpm --filter @mmd-toolkit/docs test
 例で示すルールは、`%% eslint <rule>: <config>`コメントで有効にします。
 表示用の設定はMermaid言語を登録しますが、既定ではルールを有効にしません。
 それ以外のコードブロックには、通常の構文ハイライトだけを適用します。
+
+`mmd`と`mermaid`のコードブロックの色は、
+[`@mmd-toolkit/textmate-grammar`](../textmate-grammar/README.ja.md)の
+TextMate文法で付けます。
+`.vitepress/highlighting.js`に、
+`.vitepress/config.js`とテストが使う言語一覧を置きます。
+この一覧には、この文法をhighlighterの`mermaid`言語として含め、
+埋め込む`yaml`の文法も含めます。
+この文法は、このリポジトリの仕様から全図種について書いたものです。
+`languages`に`mermaid`を名前でも並べないでください。
+Shikiの同名のバンドル済み文法がこの文法を置き換えます。
 
 `packages/eslint-plugin/docs/rules/` では、英日とも、
 すべての `mmd` の例を `%% eslint @mmd-toolkit/<規則>: error` で始めます。

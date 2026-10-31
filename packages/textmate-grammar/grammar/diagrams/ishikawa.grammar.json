@@ -1,0 +1,65 @@
+{
+  "patterns": [
+    {
+      "include": "#ishikawa"
+    }
+  ],
+  "repository": {
+    "ishikawa": {
+      "comment": "Read the beta header before the stable-header fallback. Follows ishikawa.md#units-and-contexts.",
+      "begin": "{{diagramStart}}((?i:ishikawa-beta|ishikawa)){{wordEnd}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "comment": "Read a native percent comment at a statement start, also after a directive. Follows ishikawa.md#comments and common.md#a-directive-is-a-token-boundary.",
+          "match": "{{ishikawa-statement-start}}(?!{{gap}}{{separatorCommentEnd}})({{gap}})({{nonDirectivePercentPair}}(?:{{directive}}|[^\\r\\n{{separators}}])*)",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
+              "name": "comment.line.percentage.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Read node text as an unquoted label; preserve directives and stop before a common comment. Follows ishikawa.md#units-and-contexts, common.md#a-directive-is-a-token-boundary, and common.md#comment-lines.",
+          "match": "(?:(?!{{separatorCommentEnd}})(?:{{directive}}|(?!{{directiveStart}})[^\\r\\n]))+",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "name": "string.unquoted.mermaid"
+        }
+      ]
+    }
+  },
+  "variables": {
+    "ishikawa-statement-start": "(?:^|\\G|{{afterDirectiveEnd}})"
+  }
+}

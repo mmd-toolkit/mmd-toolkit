@@ -1,0 +1,397 @@
+> eventmodeling title Orders
+  "eventmodeling" keyword.control.mermaid
+  "title" keyword.control.mermaid
+  "Orders" string.unquoted.mermaid
+> tf 01 ui User.Login ->> 02 [[Payload]] {"id": 1}
+  "tf" keyword.control.mermaid
+  "01" variable.mermaid
+  "ui" keyword.control.mermaid
+  "User" variable.mermaid
+  "." punctuation.separator.dot.mermaid
+  "Login" variable.mermaid
+  "->>" keyword.operator.arrow.mermaid
+  "02" variable.mermaid
+  "[[" punctuation.section.brackets.begin.mermaid
+  "Payload" variable.mermaid
+  "]]" punctuation.section.brackets.end.mermaid
+  "{" meta.data.mermaid punctuation.section.data.begin.mermaid
+  "\"id\": 1" meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid punctuation.section.data.end.mermaid
+> tf 02evt OrderPlaced
+  "tf" keyword.control.mermaid
+  "02" variable.mermaid
+  "evt" keyword.control.mermaid
+  "OrderPlaced" variable.mermaid
+> rf 03 cmd PlaceOrder ->> 02
+  "rf" keyword.control.mermaid
+  "03" variable.mermaid
+  "cmd" keyword.control.mermaid
+  "PlaceOrder" variable.mermaid
+  "->>" keyword.operator.arrow.mermaid
+  "02" variable.mermaid
+> tf 04 rmo Orders.View `json` {"x": 1}
+  "tf" keyword.control.mermaid
+  "04" variable.mermaid
+  "rmo" keyword.control.mermaid
+  "Orders" variable.mermaid
+  "." punctuation.separator.dot.mermaid
+  "View" variable.mermaid
+  "`" punctuation.definition.tag.begin.mermaid
+  "json" keyword.control.mermaid
+  "`" punctuation.definition.tag.end.mermaid
+  "{" meta.data.mermaid punctuation.section.data.begin.mermaid
+  "\"x\": 1" meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid punctuation.section.data.end.mermaid
+> entity Order.Line
+  "entity" keyword.control.mermaid
+  "Order" variable.mermaid
+  "." punctuation.separator.dot.mermaid
+  "Line" variable.mermaid
+> data Payload `json` {
+  "data" keyword.control.mermaid
+  "Payload" variable.mermaid
+  "`" punctuation.definition.tag.begin.mermaid
+  "json" keyword.control.mermaid
+  "`" punctuation.definition.tag.end.mermaid
+  "{" meta.data.mermaid punctuation.section.data.begin.mermaid
+>   "a": 1
+  "  \"a\": 1" meta.data.mermaid string.unquoted.mermaid
+> }
+  "}" meta.data.mermaid punctuation.section.data.end.mermaid
+>  accTitle: Event title
+  "accTitle" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " Event title" string.unquoted.mermaid
+> note 01 {
+  "note" keyword.control.mermaid
+  "01" variable.mermaid
+  "{" meta.data.mermaid punctuation.section.data.begin.mermaid
+>   A note
+  "  A note" meta.data.mermaid string.unquoted.mermaid
+> }
+  "}" meta.data.mermaid punctuation.section.data.end.mermaid
+> gwt 05 given evt OrderPlaced when cmd PlaceOrder then evt Shipped
+  "gwt" keyword.control.mermaid
+  "05" variable.mermaid
+  "given" keyword.control.mermaid
+  "evt" keyword.control.mermaid
+  "OrderPlaced" variable.mermaid
+  "when" keyword.control.mermaid
+  "cmd" keyword.control.mermaid
+  "PlaceOrder" variable.mermaid
+  "then" keyword.control.mermaid
+  "evt" keyword.control.mermaid
+  "Shipped" variable.mermaid
+> %% a comment line
+  "%% a comment line" comment.line.percentage.mermaid
+> // a slash comment
+  "//" comment.line.double-slash.mermaid
+  " a slash comment" comment.line.double-slash.mermaid
+> /* a block comment */
+  "/*" comment.block.mermaid
+  " a block comment " comment.block.mermaid
+  "*/" comment.block.mermaid
+> timeframe 06 event Later
+  "timeframe" keyword.control.mermaid
+  "06" variable.mermaid
+  "event" keyword.control.mermaid
+  "Later" variable.mermaid
+> resetframe 07 command Reset
+  "resetframe" keyword.control.mermaid
+  "07" variable.mermaid
+  "command" keyword.control.mermaid
+  "Reset" variable.mermaid
+> tf 08 readmodel View
+  "tf" keyword.control.mermaid
+  "08" variable.mermaid
+  "readmodel" keyword.control.mermaid
+  "View" variable.mermaid
+> tf 09 processor Handler
+  "tf" keyword.control.mermaid
+  "09" variable.mermaid
+  "processor" keyword.control.mermaid
+  "Handler" variable.mermaid
+> tf 10 pcr Worker
+  "tf" keyword.control.mermaid
+  "10" variable.mermaid
+  "pcr" keyword.control.mermaid
+  "Worker" variable.mermaid
+> ---
+  "---" comment.block.ignored.mermaid
+> ignored: events
+  "ignored: events" comment.block.ignored.mermaid
+> ---
+  "---" comment.block.ignored.mermaid
+>  accDescr { Event block } accDescr: Events
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  " Event block " string.unquoted.mermaid
+  "}" punctuation.definition.description.end.mermaid
+  "accDescr" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " Events" string.unquoted.mermaid
+> %%{!}%%
+  "%%{!}%%" comment.block.ignored.mermaid
+>  tf 11 evt Tagged `%%{wrap}%%json%%{wrap}%%` {"x": 1}
+  "tf" keyword.control.mermaid
+  "11" variable.mermaid
+  "evt" keyword.control.mermaid
+  "Tagged" variable.mermaid
+  "`" punctuation.definition.tag.begin.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "json" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "`" punctuation.definition.tag.end.mermaid
+  "{" meta.data.mermaid punctuation.section.data.begin.mermaid
+  "\"x\": 1" meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid punctuation.section.data.end.mermaid
+>  tf 12 evt Html "a<b title="x">y</b>"%%{init: {"closer": "x"}}%%
+  "tf" keyword.control.mermaid
+  "12" variable.mermaid
+  "evt" keyword.control.mermaid
+  "Html" variable.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "<b title=\"x\">" string.quoted.double.mermaid
+  "y</b>" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " meta.directive.mermaid
+  "{\"closer\": \"x\"}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+> data Block {%%{wrap}%%
+  "data" keyword.control.mermaid
+  "Block" variable.mermaid
+  "{" meta.data.mermaid punctuation.section.data.begin.mermaid
+  "%%{" meta.data.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.data.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.data.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+>   x
+  "  x" meta.data.mermaid string.unquoted.mermaid
+> }
+  "}" meta.data.mermaid punctuation.section.data.end.mermaid
+> /* a%%{x: */}%%when */ tf 13 evt Native
+  "/*" comment.block.mermaid
+  " a" comment.block.mermaid
+  "%%{" comment.block.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "x" comment.block.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" comment.block.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " comment.block.mermaid meta.directive.mermaid
+  "*/" comment.block.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" comment.block.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "when " comment.block.mermaid
+  "*/" comment.block.mermaid
+  "tf" keyword.control.mermaid
+  "13" variable.mermaid
+  "evt" keyword.control.mermaid
+  "Native" variable.mermaid
+> /%%{wrap}%%* when */ tf 14 evt Opened
+  "/" comment.block.mermaid
+  "%%{" comment.block.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.block.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.block.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "*" comment.block.mermaid
+  " when " comment.block.mermaid
+  "*/" comment.block.mermaid
+  "tf" keyword.control.mermaid
+  "14" variable.mermaid
+  "evt" keyword.control.mermaid
+  "Opened" variable.mermaid
+> /* text *%%{wrap}%%/ tf 15 evt Closed
+  "/*" comment.block.mermaid
+  " text " comment.block.mermaid
+  "*" comment.block.mermaid
+  "%%{" comment.block.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.block.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.block.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "/" comment.block.mermaid
+  "tf" keyword.control.mermaid
+  "15" variable.mermaid
+  "evt" keyword.control.mermaid
+  "Closed" variable.mermaid
+> /%%{wrap}%%/ tf 16 evt Commented
+  "/" comment.line.double-slash.mermaid
+  "%%{" comment.line.double-slash.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.line.double-slash.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.line.double-slash.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "/" comment.line.double-slash.mermaid
+  " tf 16 evt Commented" comment.line.double-slash.mermaid
+> tf 17 evt Jsobj `jsobj` {}
+  "tf" keyword.control.mermaid
+  "17" variable.mermaid
+  "evt" keyword.control.mermaid
+  "Jsobj" variable.mermaid
+  "`" punctuation.definition.tag.begin.mermaid
+  "jsobj" keyword.control.mermaid
+  "`" punctuation.definition.tag.end.mermaid
+  "{" meta.data.mermaid punctuation.section.data.begin.mermaid
+  "}" meta.data.mermaid punctuation.section.data.end.mermaid
+> tf 18 evt Figma `figma` {}
+  "tf" keyword.control.mermaid
+  "18" variable.mermaid
+  "evt" keyword.control.mermaid
+  "Figma" variable.mermaid
+  "`" punctuation.definition.tag.begin.mermaid
+  "figma" keyword.control.mermaid
+  "`" punctuation.definition.tag.end.mermaid
+  "{" meta.data.mermaid punctuation.section.data.begin.mermaid
+  "}" meta.data.mermaid punctuation.section.data.end.mermaid
+> tf 19 evt Salt `salt` {}
+  "tf" keyword.control.mermaid
+  "19" variable.mermaid
+  "evt" keyword.control.mermaid
+  "Salt" variable.mermaid
+  "`" punctuation.definition.tag.begin.mermaid
+  "salt" keyword.control.mermaid
+  "`" punctuation.definition.tag.end.mermaid
+  "{" meta.data.mermaid punctuation.section.data.begin.mermaid
+  "}" meta.data.mermaid punctuation.section.data.end.mermaid
+> tf 20 evt Uri `uri` {}
+  "tf" keyword.control.mermaid
+  "20" variable.mermaid
+  "evt" keyword.control.mermaid
+  "Uri" variable.mermaid
+  "`" punctuation.definition.tag.begin.mermaid
+  "uri" keyword.control.mermaid
+  "`" punctuation.definition.tag.end.mermaid
+  "{" meta.data.mermaid punctuation.section.data.begin.mermaid
+  "}" meta.data.mermaid punctuation.section.data.end.mermaid
+> tf 21 evt Markdown `md` {}
+  "tf" keyword.control.mermaid
+  "21" variable.mermaid
+  "evt" keyword.control.mermaid
+  "Markdown" variable.mermaid
+  "`" punctuation.definition.tag.begin.mermaid
+  "md" keyword.control.mermaid
+  "`" punctuation.definition.tag.end.mermaid
+  "{" meta.data.mermaid punctuation.section.data.begin.mermaid
+  "}" meta.data.mermaid punctuation.section.data.end.mermaid
+> tf 22 evt HtmlTag `html` {}
+  "tf" keyword.control.mermaid
+  "22" variable.mermaid
+  "evt" keyword.control.mermaid
+  "HtmlTag" variable.mermaid
+  "`" punctuation.definition.tag.begin.mermaid
+  "html" keyword.control.mermaid
+  "`" punctuation.definition.tag.end.mermaid
+  "{" meta.data.mermaid punctuation.section.data.begin.mermaid
+  "}" meta.data.mermaid punctuation.section.data.end.mermaid
+> tf 23 evt TextTag `text` {}
+  "tf" keyword.control.mermaid
+  "23" variable.mermaid
+  "evt" keyword.control.mermaid
+  "TextTag" variable.mermaid
+  "`" punctuation.definition.tag.begin.mermaid
+  "text" keyword.control.mermaid
+  "`" punctuation.definition.tag.end.mermaid
+  "{" meta.data.mermaid punctuation.section.data.begin.mermaid
+  "}" meta.data.mermaid punctuation.section.data.end.mermaid
+> tf 24 evt Meta {} accDescr%%{wrap}%%: Native description
+  "tf" keyword.control.mermaid
+  "24" variable.mermaid
+  "evt" keyword.control.mermaid
+  "Meta" variable.mermaid
+  "{" meta.data.mermaid punctuation.section.data.begin.mermaid
+  "}" meta.data.mermaid punctuation.section.data.end.mermaid
+  "accDescr" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " Native description" string.unquoted.mermaid
+> 
+> tf 26%%{wrap}%%evt Boundary
+  "tf" keyword.control.mermaid
+  "26" variable.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "evt" keyword.control.mermaid
+  "Boundary" variable.mermaid
+> 
+> /%%{wrap}%%* kept %%{x: */}%% when *%%{wrap}%%/ tf 82 evt Retained
+  "/" comment.block.mermaid
+  "%%{" comment.block.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.block.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.block.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "*" comment.block.mermaid
+  " kept " comment.block.mermaid
+  "%%{" comment.block.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "x" comment.block.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" comment.block.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " comment.block.mermaid meta.directive.mermaid
+  "*/" comment.block.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" comment.block.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  " when " comment.block.mermaid
+  "*" comment.block.mermaid
+  "%%{" comment.block.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.block.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.block.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "/" comment.block.mermaid
+  "tf" keyword.control.mermaid
+  "82" variable.mermaid
+  "evt" keyword.control.mermaid
+  "Retained" variable.mermaid
+> tf 83 evt Single 'payload'
+  "tf" keyword.control.mermaid
+  "83" variable.mermaid
+  "evt" keyword.control.mermaid
+  "Single" variable.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.begin.mermaid
+  "payload" string.quoted.single.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.end.mermaid
+> tf 84 evt LeadingComment `/* c */json` {}
+  "tf" keyword.control.mermaid
+  "84" variable.mermaid
+  "evt" keyword.control.mermaid
+  "LeadingComment" variable.mermaid
+  "`" punctuation.definition.tag.begin.mermaid
+  "/*" comment.block.mermaid
+  " c " comment.block.mermaid
+  "*/" comment.block.mermaid
+  "json" keyword.control.mermaid
+  "`" punctuation.definition.tag.end.mermaid
+  "{" meta.data.mermaid punctuation.section.data.begin.mermaid
+  "}" meta.data.mermaid punctuation.section.data.end.mermaid
+> tf 85 evt TrailingComment `json/* c */` {}
+  "tf" keyword.control.mermaid
+  "85" variable.mermaid
+  "evt" keyword.control.mermaid
+  "TrailingComment" variable.mermaid
+  "`" punctuation.definition.tag.begin.mermaid
+  "json" keyword.control.mermaid
+  "/*" comment.block.mermaid
+  " c " comment.block.mermaid
+  "*/" comment.block.mermaid
+  "`" punctuation.definition.tag.end.mermaid
+  "{" meta.data.mermaid punctuation.section.data.begin.mermaid
+  "}" meta.data.mermaid punctuation.section.data.end.mermaid
+> tf 86 evt LeadingHidden `%%{!}%% json` {}
+  "tf" keyword.control.mermaid
+  "86" variable.mermaid
+  "evt" keyword.control.mermaid
+  "LeadingHidden" variable.mermaid
+  "`" punctuation.definition.tag.begin.mermaid
+  "%%{!}%%" comment.block.ignored.mermaid
+  "json" keyword.control.mermaid
+  "`" punctuation.definition.tag.end.mermaid
+  "{" meta.data.mermaid punctuation.section.data.begin.mermaid
+  "}" meta.data.mermaid punctuation.section.data.end.mermaid
+> tf 87 evt TrailingHidden `json%%{!}%% ` {}
+  "tf" keyword.control.mermaid
+  "87" variable.mermaid
+  "evt" keyword.control.mermaid
+  "TrailingHidden" variable.mermaid
+  "`" punctuation.definition.tag.begin.mermaid
+  "json" keyword.control.mermaid
+  "%%{!}%%" comment.block.ignored.mermaid
+  "`" punctuation.definition.tag.end.mermaid
+  "{" meta.data.mermaid punctuation.section.data.begin.mermaid
+  "}" meta.data.mermaid punctuation.section.data.end.mermaid
+> 

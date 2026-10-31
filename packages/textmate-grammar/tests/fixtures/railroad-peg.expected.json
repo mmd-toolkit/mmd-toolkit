@@ -1,0 +1,49 @@
+{
+  "header": "railroad-peg-beta",
+  "scopes": [
+    ["<-", "keyword.operator.arrow.mermaid"],
+    ["&", "keyword.operator.mermaid"],
+    ["!", "keyword.operator.mermaid"],
+    ["?", "keyword.operator.mermaid"],
+    [".", "keyword.operator.mermaid"],
+    [" a hash comment", "comment.line.number-sign.mermaid"],
+    ["title", "keyword.control.mermaid"],
+    ["accTitle", "keyword.control.mermaid"],
+    ["accDescr", "keyword.control.mermaid", 3],
+    ["accDescr", "keyword.control.mermaid", 4],
+    ["<b title=\"x\">", "string.quoted.double.mermaid", 14],
+    ["c>", "string.quoted.double.mermaid", 15],
+    ["wrap", "entity.name.function.directive.mermaid", 0],
+    ["init", "entity.name.function.directive.mermaid", 16],
+    [" tail", "comment.line.number-sign.mermaid", 16],
+    [" D2 line end ", "comment.line.number-sign.mermaid", 17],
+    ["wrap", "entity.name.function.directive.mermaid", 17],
+    ["Expr", "variable.mermaid"],
+    ["Grammar", "string.unquoted.mermaid"],
+    ["x", "string.quoted.double.mermaid", 7],
+    ["a", "string.quoted.single.mermaid", 7],
+    ["\\n", "constant.character.escape.mermaid"],
+    ["(", "punctuation.section.group.begin.mermaid"],
+    [")", "punctuation.section.group.end.mermaid"],
+    [";", "punctuation.separator.rule.mermaid"],
+    ["---", "comment.block.ignored.mermaid"],
+    ["%%{!}%%", "comment.block.ignored.mermaid"],
+    ["%% a comment line", "comment.line.percentage.mermaid"]
+  ],
+  "absent": [
+    ["<b title=\"x\">", "punctuation.definition.string.end.mermaid", 14]
+  ],
+  "escapedInputs": [
+    {
+      "code": "railroad-peg-beta\n# native\u2028%% common %%{wrap}%%\n\nr <- \"a\";\n",
+      "scopes": [
+        [" native", "comment.line.number-sign.mermaid", 1],
+        ["%% common %%{wrap}%%", "comment.line.percentage.mermaid", 1]
+      ],
+      "absent": [
+        ["%% common %%{wrap}%%", "comment.line.number-sign.mermaid", 1]
+      ],
+      "absentOnLine": [[1, "meta.directive.mermaid"]]
+    }
+  ]
+}

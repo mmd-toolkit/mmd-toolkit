@@ -222,12 +222,14 @@ pnpm run -s fixtures:check
 ```sh
 npx prettier --write packages/spec
 npx prettier --check packages/spec
+pnpm run -s lint:md
 pnpm run -s lint:docs
 pnpm run -s lint:chars
 ```
 
-`pnpm run lint:docs` は、仕様、parser、tests の文書のリンク、アンカー、
-fixture の引用が何も指さないとき、
+`pnpm run lint:md` は、リンクかそのアンカーが何も指さないときに失敗する。
+`pnpm run lint:docs` は、
+仕様と parser と tests の文書の fixture の引用が何も指さないとき、
 mermaid.js へのリンクが pin した commit を指さないとき、
 英語の原本のない `.ja.md` があるときに失敗する。
 pin した commit は `packages/spec/docs/index.md` に記録してある。

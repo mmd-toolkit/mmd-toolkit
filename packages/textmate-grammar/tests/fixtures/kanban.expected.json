@@ -1,0 +1,153 @@
+{
+  "header": "kanban",
+  "scopes": [
+    ["[", "keyword.operator.shape.begin.mermaid"],
+    ["Create documentation", "string.unquoted.mermaid"],
+    [" ticket: MC-2037, assigned: ", "string.unquoted.mermaid"],
+    ["knsv", "string.unquoted.mermaid"],
+    [":::", "punctuation.separator.class.mermaid"],
+    ["urgent", "variable.mermaid"],
+    ["::icon(", "keyword.control.mermaid"],
+    ["Markdown *label*", "string.quoted.other.markdown.mermaid"],
+    [" 1key: ", "string.unquoted.mermaid"],
+    ["%% shape comment", "comment.line.percentage.mermaid"],
+    ["x", "string.quoted.other.markdown.mermaid", 13],
+    ["%%{", "meta.directive.mermaid", 13],
+    ["<b title=\"x\">", "string.quoted.double.mermaid", 14],
+    ["label</b>", "string.quoted.double.mermaid", 14],
+    ["<b title=\"x\">", "string.quoted.other.markdown.mermaid", 15],
+    ["<b", "string.quoted.double.mermaid", 16],
+    [" ticket: ", "string.unquoted.mermaid", 16],
+    ["note<b title=\"x\">tag</b>", "string.unquoted.mermaid", 17],
+    ["note", "variable.mermaid", 18],
+    ["b", "string.unquoted.mermaid", 19],
+    ["x", "string.quoted.other.markdown.mermaid", 20],
+    ["%%{", "meta.directive.mermaid", 20],
+    [")", "keyword.operator.shape.end.mermaid", 25],
+    ["%% close\">", "comment.line.percentage.mermaid", 25],
+    [")", "keyword.operator.shape.end.mermaid", 27],
+    ["%% bare close\">", "comment.line.percentage.mermaid", 27],
+    ["]", "keyword.operator.shape.end.mermaid", 29],
+    ["%% bracket close\">", "comment.line.percentage.mermaid", 29],
+    ["(", "keyword.operator.shape.end.mermaid", 31],
+    ["%% paren close\">", "comment.line.percentage.mermaid", 31],
+    ["}}", "keyword.operator.shape.end.mermaid", 33],
+    ["%% brace close\">", "comment.line.percentage.mermaid", 33],
+    ["title ::icon(x)", "variable.mermaid", 49],
+    [" tail", "comment.line.percentage.mermaid", 45],
+    ["wrap", "entity.name.function.directive.mermaid", 45],
+    ["x: 'a", "string.unquoted.mermaid", 21],
+    ["}", "punctuation.section.data.end.mermaid", 21],
+    ["%% single quote closes", "comment.line.percentage.mermaid", 21],
+    ["key: true, other: false", "string.unquoted.mermaid", 23],
+    [":::", "punctuation.separator.class.mermaid", 42],
+    ["::ICON(", "keyword.control.mermaid", 43],
+    ["wrap", "entity.name.function.directive.mermaid", 42],
+    ["wrap", "entity.name.function.directive.mermaid", 51],
+    ["%% native after padding", "comment.line.percentage.mermaid", 51],
+    ["Literal ::icon", "variable.mermaid", 10],
+    ["Todo", "string.unquoted.mermaid", 1],
+    ["docs", "variable.mermaid", 2],
+    ["]", "keyword.operator.shape.end.mermaid", 2],
+    ["fa fa-book", "string.unquoted.mermaid", 8],
+    ["}", "punctuation.section.data.end.mermaid", 2],
+    ["@{", "meta.data.mermaid", 2],
+    [")", "punctuation.section.icon.end.mermaid", 8],
+    ["\"", "string.unquoted.mermaid", 2],
+    ["\"`", "string.quoted.other.markdown.mermaid", 7]
+  ],
+  "unscoped": [],
+  "absent": [
+    ["<b title=\"x\">", "punctuation.definition.string.end.mermaid", 14],
+    [" ticket: ", "string.quoted.double.mermaid", 16]
+  ],
+  "absentOnLine": [
+    [17, "string.quoted.double.mermaid"],
+    [18, "keyword.control.mermaid"],
+    [2, "support.type.property-name.mermaid"],
+    [2, "punctuation.separator.key-value.mermaid"],
+    [2, "punctuation.separator.comma.mermaid"],
+    [2, "string.quoted.single.mermaid"],
+    [12, "support.type.property-name.mermaid"],
+    [16, "support.type.property-name.mermaid"],
+    [25, "string.quoted.double.mermaid"],
+    [27, "string.quoted.double.mermaid"],
+    [29, "string.quoted.double.mermaid"],
+    [31, "string.quoted.double.mermaid"],
+    [33, "string.quoted.double.mermaid"],
+    [47, "punctuation.definition.string.begin.mermaid"],
+    [21, "string.quoted.single.mermaid"],
+    [23, "support.type.property-name.mermaid"],
+    [23, "constant.language.mermaid"],
+    [23, "punctuation.separator.comma.mermaid"],
+    [23, "punctuation.separator.key-value.mermaid"]
+  ],
+  "escapedInputs": [
+    {
+      "code": "kanban\n  ShapeComments[text\u2028%% kanban shape boundary\nmore]\n\n  DataComments@{text\u2029%% kanban data boundary\nmore}\n\n  IconComments\n    ::icon(text\u2028%% kanban icon boundary\nmore)\n\n  DirectedBoundary[\"%%{wrap}%%`text\u2028%% kanban markdown boundary\nmore`\"]\n\n",
+      "scopes": [
+        ["%% kanban shape boundary", "comment.line.percentage.mermaid", 1],
+        ["%% kanban data boundary", "comment.line.percentage.mermaid", 4],
+        ["%% kanban icon boundary", "comment.line.percentage.mermaid", 8],
+        ["text\u2028", "string.quoted.other.markdown.mermaid", 11],
+        ["%% kanban markdown boundary", "comment.line.percentage.mermaid", 11],
+        ["more", "string.quoted.other.markdown.mermaid", 12],
+        ["%% kanban data boundary", "string.unquoted.mermaid", 4],
+        ["\u2029", "string.unquoted.mermaid", 4]
+      ],
+      "absent": [
+        ["%% kanban shape boundary", "string.unquoted.mermaid", 1],
+        ["%% kanban shape boundary", "string.quoted.double.mermaid", 1],
+        ["%% kanban shape boundary", "string.quoted.other.mermaid", 1],
+        ["%% kanban shape boundary", "variable.mermaid", 1],
+        ["%% kanban data boundary", "string.quoted.double.mermaid", 4],
+        ["%% kanban data boundary", "string.quoted.other.mermaid", 4],
+        ["%% kanban data boundary", "variable.mermaid", 4],
+        ["%% kanban icon boundary", "string.unquoted.mermaid", 8],
+        ["%% kanban icon boundary", "string.quoted.double.mermaid", 8],
+        ["%% kanban icon boundary", "string.quoted.other.mermaid", 8],
+        ["%% kanban icon boundary", "variable.mermaid", 8]
+      ],
+      "absentOnLine": [],
+      "unscoped": [
+        ["\u2028", 1],
+        ["\u2028", 8]
+      ]
+    },
+    {
+      "code": "kanban %%%{wrap}%%\n",
+      "scopes": [["wrap", "entity.name.function.directive.mermaid"]],
+      "absentOnLine": [[0, "comment.line.percentage.mermaid"]]
+    },
+    {
+      "code": "kanban A[x]\u2028%% common %%{wrap}%%\n",
+      "scopes": [["%% common %%{wrap}%%", "comment.line.percentage.mermaid"]],
+      "absentOnLine": [[0, "meta.directive.mermaid"]]
+    },
+    {
+      "code": "kanban A[x] %% native\u2029 %% common %%{wrap}%%\n",
+      "scopes": [
+        ["%% native", "comment.line.percentage.mermaid"],
+        ["%% common %%{wrap}%%", "comment.line.percentage.mermaid"]
+      ],
+      "absentOnLine": [[0, "meta.directive.mermaid"]]
+    },
+    {
+      "code": "kanban\n  id[Label]@{key: true, n: 42, label: \"Data\"}\n  markdown[\"`Markdown`\"]\n  ::icon(book)\n  :::className\n",
+      "scopes": [
+        ["id", "variable.mermaid"],
+        ["Label", "string.unquoted.mermaid"],
+        ["key: true, n: 42, label: ", "string.unquoted.mermaid"],
+        ["Data", "string.unquoted.mermaid"],
+        ["Markdown", "string.quoted.other.markdown.mermaid"],
+        ["book", "string.unquoted.mermaid"],
+        ["className", "variable.mermaid"]
+      ],
+      "absentOnLine": [
+        [1, "support.type.property-name.mermaid"],
+        [1, "constant.numeric.mermaid"],
+        [1, "constant.language.mermaid"]
+      ]
+    }
+  ]
+}

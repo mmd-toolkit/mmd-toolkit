@@ -1,0 +1,171 @@
+{
+  "header": "mindmap",
+  "scopes": [
+    ["::ICON(", "keyword.control.mermaid"],
+    ["::icon(", "keyword.control.mermaid"],
+    [":::", "punctuation.separator.class.mermaid"],
+    ["classLong title ::icon(x)", "variable.mermaid"],
+    ["Circle", "string.quoted.double.mermaid"],
+    ["Markdown", "string.quoted.other.markdown.mermaid"],
+    ["Square", "string.unquoted.mermaid"],
+    ["fa:fa-book", "string.unquoted.mermaid"],
+    ["((", "keyword.operator.shape.begin.mermaid", 4],
+    ["))", "keyword.operator.shape.end.mermaid", 4],
+    ["[", "keyword.operator.shape.begin.mermaid", 5],
+    ["]", "keyword.operator.shape.end.mermaid", 5],
+    ["(", "keyword.operator.shape.begin.mermaid", 6],
+    [")", "keyword.operator.shape.end.mermaid", 6],
+    ["{{", "keyword.operator.shape.begin.mermaid"],
+    ["}}", "keyword.operator.shape.end.mermaid"],
+    [")", "keyword.operator.shape.begin.mermaid", 8],
+    ["(", "keyword.operator.shape.end.mermaid", 8],
+    ["))", "keyword.operator.shape.begin.mermaid", 9],
+    ["((", "keyword.operator.shape.end.mermaid", 9],
+    ["-)", "keyword.operator.shape.begin.mermaid", 10],
+    ["(-", "keyword.operator.shape.end.mermaid", 10],
+    ["(-", "keyword.operator.shape.begin.mermaid", 11],
+    ["-)", "keyword.operator.shape.end.mermaid", 11],
+    ["%% native comment", "comment.line.percentage.mermaid"],
+    ["%%{ }%%", "comment.line.percentage.mermaid"],
+    ["B", "string.unquoted.mermaid", 19],
+    ["b", "string.unquoted.mermaid", 20],
+    ["b", "variable.mermaid", 21],
+    ["text", "string.unquoted.mermaid", 22],
+    ["r-", "variable.mermaid", 28],
+    ["B", "string.quoted.double.mermaid", 29],
+    ["x", "string.quoted.other.markdown.mermaid", 30],
+    ["%%{", "meta.directive.mermaid", 30],
+    ["<b title=\"x\">", "string.quoted.double.mermaid", 31],
+    ["label</b>", "string.quoted.double.mermaid", 31],
+    ["<b title=\"x\">", "string.quoted.other.markdown.mermaid", 32],
+    ["a<b", "string.quoted.double.mermaid", 33],
+    ["note<b title=\"x\">tag</b>", "string.unquoted.mermaid", 34],
+    ["x", "string.quoted.other.markdown.mermaid", 35],
+    ["%%{", "meta.directive.mermaid", 35],
+    [")", "keyword.operator.shape.end.mermaid", 36],
+    ["%% close\">", "comment.line.percentage.mermaid", 36],
+    [")", "keyword.operator.shape.end.mermaid", 38],
+    ["%% bare close\">", "comment.line.percentage.mermaid", 38],
+    ["]", "keyword.operator.shape.end.mermaid", 40],
+    ["%% bracket close\">", "comment.line.percentage.mermaid", 40],
+    ["(", "keyword.operator.shape.end.mermaid", 42],
+    ["%% paren close\">", "comment.line.percentage.mermaid", 42],
+    ["}}", "keyword.operator.shape.end.mermaid", 44],
+    ["%% brace close\">", "comment.line.percentage.mermaid", 44],
+    ["title ::icon(x)", "variable.mermaid", 54],
+    [" tail", "comment.line.percentage.mermaid", 50],
+    ["wrap", "entity.name.function.directive.mermaid", 50],
+    ["wrap", "entity.name.function.directive.mermaid", 56],
+    ["%% native after padding", "comment.line.percentage.mermaid", 56],
+    ["root", "string.unquoted.mermaid", 0],
+    ["circle", "variable.mermaid", 4],
+    ["hex", "variable.mermaid", 7],
+    [")", "punctuation.section.icon.end.mermaid", 17],
+    ["\"", "string.quoted.double.mermaid", 4],
+    ["\"`", "string.quoted.other.markdown.mermaid", 12]
+  ],
+  "absent": [
+    ["mindmapLong", "keyword.control.mermaid"],
+    ["accTitle: title is node text", "keyword.control.mermaid"],
+    ["accDescr: title is also node text", "keyword.control.mermaid"],
+    ["root ::icon", "keyword.control.mermaid"],
+    ["classLong title ::icon(x)", "keyword.control.mermaid"],
+    ["Quoted %% title", "comment.line.percentage.mermaid"],
+    [" title ::icon %% text", "comment.line.percentage.mermaid"],
+    ["123", "constant.numeric.mermaid"],
+    ["--> is node text", "keyword.operator.arrow.mermaid"],
+    ["a:::b", "punctuation.separator.class.mermaid"],
+    ["::x", "keyword.control.mermaid"],
+    ["<b title=\"x\">", "punctuation.definition.string.end.mermaid", 31]
+  ],
+  "absentOnLine": [
+    [1, "keyword.control.mermaid"],
+    [2, "keyword.control.mermaid"],
+    [3, "keyword.control.mermaid"],
+    [14, "keyword.control.mermaid"],
+    [15, "keyword.control.mermaid"],
+    [18, "keyword.control.mermaid"],
+    [29, "comment.line.percentage.mermaid"],
+    [34, "string.quoted.double.mermaid"],
+    [34, "keyword.control.mermaid"],
+    [36, "string.quoted.double.mermaid"],
+    [38, "string.quoted.double.mermaid"],
+    [40, "string.quoted.double.mermaid"],
+    [42, "string.quoted.double.mermaid"],
+    [44, "string.quoted.double.mermaid"],
+    [52, "punctuation.definition.string.begin.mermaid"]
+  ],
+  "unscoped": [["  ", 1]],
+  "escapedInputs": [
+    {
+      "code": "mindmap root\n  ShapeComments[text\u2028%% mindmap shape boundary\nmore]\n\n  ::icon(text\u2029%% mindmap icon boundary\nmore)\n\n  Node text\u2028%% mindmap node boundary\n\n  DirectedBoundary[\"%%{wrap}%%`text\u2029%% mindmap markdown boundary\nmore`\"]\n\n",
+      "scopes": [
+        ["%% mindmap shape boundary", "comment.line.percentage.mermaid", 1],
+        ["%% mindmap icon boundary", "comment.line.percentage.mermaid", 4],
+        ["%% mindmap node boundary", "comment.line.percentage.mermaid", 7],
+        ["text\u2029", "string.quoted.other.markdown.mermaid", 9],
+        ["%% mindmap markdown boundary", "comment.line.percentage.mermaid", 9],
+        ["more", "string.quoted.other.markdown.mermaid", 10]
+      ],
+      "absent": [
+        ["%% mindmap shape boundary", "string.unquoted.mermaid", 1],
+        ["%% mindmap shape boundary", "string.quoted.double.mermaid", 1],
+        ["%% mindmap shape boundary", "string.quoted.other.mermaid", 1],
+        ["%% mindmap shape boundary", "variable.mermaid", 1],
+        ["%% mindmap icon boundary", "string.unquoted.mermaid", 4],
+        ["%% mindmap icon boundary", "string.quoted.double.mermaid", 4],
+        ["%% mindmap icon boundary", "string.quoted.other.mermaid", 4],
+        ["%% mindmap icon boundary", "variable.mermaid", 4],
+        ["%% mindmap node boundary", "string.unquoted.mermaid", 7],
+        ["%% mindmap node boundary", "string.quoted.double.mermaid", 7],
+        ["%% mindmap node boundary", "string.quoted.other.mermaid", 7],
+        ["%% mindmap node boundary", "variable.mermaid", 7]
+      ],
+      "absentOnLine": [],
+      "unscoped": [
+        ["\u2028", 1],
+        ["\u2029", 4],
+        ["\u2028", 7]
+      ]
+    },
+    {
+      "code": "mindmap %%%{wrap}%%\n",
+      "scopes": [["wrap", "entity.name.function.directive.mermaid"]],
+      "absentOnLine": [[0, "comment.line.percentage.mermaid"]]
+    },
+    {
+      "code": "mindmap A[x]\u2028%% common %%{wrap}%%\n",
+      "scopes": [["%% common %%{wrap}%%", "comment.line.percentage.mermaid"]],
+      "absentOnLine": [[0, "meta.directive.mermaid"]]
+    },
+    {
+      "code": "mindmap A[x] %% native\u2029 %% common %%{wrap}%%\n",
+      "scopes": [
+        ["%% native", "comment.line.percentage.mermaid"],
+        ["%% common %%{wrap}%%", "comment.line.percentage.mermaid"]
+      ],
+      "absentOnLine": [[0, "meta.directive.mermaid"]]
+    },
+    {
+      "code": "mindmap root\n  Node value\u2028%% node end %%{wrap}%%\n",
+      "scopes": [
+        ["Node value", "string.unquoted.mermaid", 1],
+        ["%% node end %%{wrap}%%", "comment.line.percentage.mermaid", 1]
+      ],
+      "absentOnLine": [[1, "meta.directive.mermaid"]]
+    },
+    {
+      "code": "mindmap root\n  id((Label))\n  ::icon(book)\n  :::className\n  markdown[\"`Markdown`\"]\n  quoted[\"Quoted\"]\n  Bare child\n",
+      "scopes": [
+        ["id", "variable.mermaid"],
+        ["Label", "string.unquoted.mermaid"],
+        ["::icon(", "keyword.control.mermaid"],
+        ["book", "string.unquoted.mermaid"],
+        ["className", "variable.mermaid"],
+        ["Markdown", "string.quoted.other.markdown.mermaid"],
+        ["Quoted", "string.quoted.double.mermaid"],
+        ["Bare child", "string.unquoted.mermaid"]
+      ]
+    }
+  ]
+}

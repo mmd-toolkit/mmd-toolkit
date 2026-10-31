@@ -39,15 +39,16 @@ Prettierによる整形結果を確認できます。
 
 ## パッケージ
 
-| パッケージ                                               | 何のためのものか                                                                     |
-| -------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| [`prettier-plugin-mmd`](./packages/prettier-plugin-mmd)  | `.mmd` ファイルと、Markdown の中の `mermaid` コードブロックを、Prettier で整形する。 |
-| [`@mmd-toolkit/eslint-plugin`](./packages/eslint-plugin) | `.mmd` ファイルと、Markdown の中の `mermaid` コードブロックを、ESLint で検査する。   |
-| [`@mmd-toolkit/parser`](./packages/parser)               | Mermaid のテキストを、位置を持つ構文木にする。リンターなどのツールのためのもの。     |
-| [`@mmd-toolkit/spec`](./packages/spec)                   | Mermaid のテキストがどう解析されるかを、実装によらない仕様として読む。               |
-| [`@mmd-toolkit/tests`](./packages/tests)                 | 構文の実装を、mermaid.js の実際の挙動と比べてテストする。                            |
-| [`@mmd-toolkit/docs`](./packages/docs)                   | ガイドと lint の規則の文書から、ドキュメントサイトを作る。                           |
-| [`@mmd-toolkit/playground`](./packages/playground)       | ブラウザーでパーサーとフォーマッターを試す。                                         |
+| パッケージ                                                     | 何のためのものか                                                                         |
+| -------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| [`prettier-plugin-mmd`](./packages/prettier-plugin-mmd)        | `.mmd` ファイルと、Markdown の中の `mermaid` コードブロックを、Prettier で整形する。     |
+| [`@mmd-toolkit/eslint-plugin`](./packages/eslint-plugin)       | `.mmd` ファイルと、Markdown の中の `mermaid` コードブロックを、ESLint で検査する。       |
+| [`@mmd-toolkit/parser`](./packages/parser)                     | Mermaid のテキストを、位置を持つ構文木にする。リンターなどのツールのためのもの。         |
+| [`@mmd-toolkit/textmate-grammar`](./packages/textmate-grammar) | 全図種の TextMate 文法で、Shiki、Monaco、VS Code の中の Mermaid のテキストに色を付ける。 |
+| [`@mmd-toolkit/spec`](./packages/spec)                         | Mermaid のテキストがどう解析されるかを、実装によらない仕様として読む。                   |
+| [`@mmd-toolkit/tests`](./packages/tests)                       | 構文の実装を、mermaid.js の実際の挙動と比べてテストする。                                |
+| [`@mmd-toolkit/docs`](./packages/docs)                         | ガイドと lint の規則の文書から、ドキュメントサイトを作る。                               |
+| [`@mmd-toolkit/playground`](./packages/playground)             | ブラウザーでパーサーとフォーマッターを試す。                                             |
 
 ## 保証していること
 

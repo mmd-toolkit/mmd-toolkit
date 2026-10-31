@@ -1,0 +1,343 @@
+> journey
+  "journey" keyword.control.mermaid
+> %% a journey comment
+  "%% a journey comment" comment.line.percentage.mermaid
+> % a percent comment
+  "% a percent comment" comment.line.percentage.mermaid
+> # a hash comment
+  "# a hash comment" comment.line.number-sign.mermaid
+> title A title with section and accTitle
+  "title" keyword.control.mermaid
+  "A title with section and accTitle" string.unquoted.mermaid
+> section A section with title
+  "section" keyword.control.mermaid
+  "A section with title" string.unquoted.mermaid
+> accTitle: title section # and ; %% text
+  "accTitle" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "title section # and ; %% text" string.unquoted.mermaid
+> accDescr: section title
+  "accDescr" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "section title" string.unquoted.mermaid
+> accDescr { title and section }
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  "title and section " string.unquoted.mermaid
+  "}" punctuation.definition.description.end.mermaid
+> Read a "string": 5: Me, You
+  "Read a \"string\"" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 5" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " Me" string.unquoted.mermaid
+  "," punctuation.separator.comma.mermaid
+  " You" string.unquoted.mermaid
+> Plan title section: 3: Alice,,Bob: ignored, title: section
+  "Plan title section" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 3" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " Alice" string.unquoted.mermaid
+  "," punctuation.separator.comma.mermaid
+  "," punctuation.separator.comma.mermaid
+  "Bob" string.unquoted.mermaid
+  ":" comment.block.ignored.mermaid
+  " ignored, title: section" comment.block.ignored.mermaid
+> section Planning
+  "section" keyword.control.mermaid
+  "Planning" string.unquoted.mermaid
+> Task with #amp; entity: 4: Person#amp;Name
+  "Task with " string.unquoted.mermaid
+  "#amp;" string.unquoted.mermaid
+  " entity" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 4" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " Person" string.unquoted.mermaid
+  "#amp;" string.unquoted.mermaid
+  "Name" string.unquoted.mermaid
+> TitleX: 2
+  "TitleX" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 2" string.unquoted.mermaid
+> sectionx: 2
+  "sectionx" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 2" string.unquoted.mermaid
+> title-x: 2
+  "title-x" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 2" string.unquoted.mermaid
+> accTitlex: 2
+  "accTitlex" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 2" string.unquoted.mermaid
+> accDescrx: 2
+  "accDescrx" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 2" string.unquoted.mermaid
+> title: text
+  "title" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " text" string.unquoted.mermaid
+> section: score
+  "section" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " score" string.unquoted.mermaid
+> %{x}: 5
+  "%{x}" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 5" string.unquoted.mermaid
+> Task A%%B: 5
+  "Task A%%B" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 5" string.unquoted.mermaid
+> A: abc
+  "A" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " abc" string.unquoted.mermaid
+> A: 5, 6
+  "A" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 5, 6" string.unquoted.mermaid
+> A: 5 B: 3
+  "A" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 5 B" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 3" string.unquoted.mermaid
+> A: 5 accDescr {}
+  "A" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 5 accDescr {}" string.unquoted.mermaid
+> accDescr {} Task after block: 1
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  "}" punctuation.definition.description.end.mermaid
+  "Task after block" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 1" string.unquoted.mermaid
+> title title %%{init: {}}%% section
+  "title" keyword.control.mermaid
+  "title " string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  " section" string.unquoted.mermaid
+> section section %%{init: {}}%% title
+  "section" keyword.control.mermaid
+  "section " string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  " title" string.unquoted.mermaid
+> Task %%{init: {}}%% title: 1%%{init: {}}%%0: Me%%{init: {}}%%You
+  "Task " string.unquoted.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  " title" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 1" string.unquoted.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "0" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " Me" string.unquoted.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "You" string.unquoted.mermaid
+> accDescr { text %%{init: {}}%% section }
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  "text " string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  " section " string.unquoted.mermaid
+  "}" punctuation.definition.description.end.mermaid
+> Task: 5 # inline hash comment
+  "Task" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 5 " string.unquoted.mermaid
+  "# inline hash comment" comment.line.number-sign.mermaid
+>   Indented: 2
+  "Indented" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 2" string.unquoted.mermaid
+> title #amp; section
+  "title" keyword.control.mermaid
+  "#amp;" string.unquoted.mermaid
+  " section" string.unquoted.mermaid
+> section #amp; title
+  "section" keyword.control.mermaid
+  "#amp;" string.unquoted.mermaid
+  " title" string.unquoted.mermaid
+> #amp;Task: 5
+  "#amp;" string.unquoted.mermaid
+  "Task" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 5" string.unquoted.mermaid
+> #%%{init: {}}%%amp;Task: 5
+  "#" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "amp;" string.unquoted.mermaid
+  "Task" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 5" string.unquoted.mermaid
+> title #%%{init: {}}%%amp; section
+  "title" keyword.control.mermaid
+  "#" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "amp;" string.unquoted.mermaid
+  " section" string.unquoted.mermaid
+> Task #amp;: 5: #amp;Me
+  "Task " string.unquoted.mermaid
+  "#amp;" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 5" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " " string.unquoted.mermaid
+  "#amp;" string.unquoted.mermaid
+  "Me" string.unquoted.mermaid
+> title%%{init: {}}%% T
+  "title" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "T" string.unquoted.mermaid
+> section%%{init: {}}%% S
+  "section" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "S" string.unquoted.mermaid
+> accTitle%%{init: {}}%%: T
+  "accTitle" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "T" string.unquoted.mermaid
+> accDescr%%{init: {}}%%{ d }
+  "accDescr" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  "d " string.unquoted.mermaid
+  "}" punctuation.definition.description.end.mermaid
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> % native %%{wrap}%% comment
+  "% native " comment.line.percentage.mermaid
+  "%%{" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.line.percentage.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  " comment" comment.line.percentage.mermaid
+> 
+> # native %%{init: ":"}%% comment
+  "# native " comment.line.number-sign.mermaid
+  "%%{" comment.line.number-sign.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" comment.line.number-sign.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" comment.line.number-sign.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  " " comment.line.number-sign.mermaid meta.directive.mermaid
+  "\":\"" comment.line.number-sign.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" comment.line.number-sign.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  " comment" comment.line.number-sign.mermaid
+> 
+> %{left}: 3
+  "%{left}" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 3" string.unquoted.mermaid
+> 
+> 
+> 
+> 
+> 
+> Task: #amp;: Person#amp;Name: ignored#amp;data
+  "Task" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " " string.unquoted.mermaid
+  "#amp;" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " Person" string.unquoted.mermaid
+  "#amp;" string.unquoted.mermaid
+  "Name" string.unquoted.mermaid
+  ":" comment.block.ignored.mermaid
+  " ignored" comment.block.ignored.mermaid
+  "#amp;" comment.block.ignored.mermaid
+  "data" comment.block.ignored.mermaid
+> accDescr {}%%%{wrap}%%{left}: 3
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  "}" punctuation.definition.description.end.mermaid
+  "%" string.unquoted.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "{left}" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 3" string.unquoted.mermaid
+> accTitle: boundary title
+  "accTitle" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "boundary title" string.unquoted.mermaid
+> accDescr: boundary description
+  "accDescr" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "boundary description" string.unquoted.mermaid
+> 

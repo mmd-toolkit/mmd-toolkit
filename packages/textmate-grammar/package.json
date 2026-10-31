@@ -1,0 +1,51 @@
+{
+  "name": "@mmd-toolkit/textmate-grammar",
+  "version": "0.0.0",
+  "description": "TextMate grammar for Mermaid text covering every diagram type in the specification, for Shiki, Monaco and VS Code",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mmd-toolkit/mmd-toolkit.git",
+    "directory": "packages/textmate-grammar"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.mts",
+      "default": "./lib/index.mjs"
+    },
+    "./mermaid.tmLanguage.json": "./lib/mermaid.tmLanguage.json",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib"
+  ],
+  "engines": {
+    "node": "^20.19.0 || ^22.13.0 || >=24"
+  },
+  "keywords": [
+    "mermaid",
+    "mmd",
+    "textmate",
+    "tmlanguage",
+    "grammar",
+    "syntax-highlighting",
+    "shiki"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "clean": "rimraf lib",
+    "test": "vitest run",
+    "test:update": "vitest run -u"
+  },
+  "dependencies": {
+    "@shikijs/types": "^4.5.0"
+  },
+  "devDependencies": {
+    "@mmd-toolkit/tests": "workspace:*",
+    "shiki": "^4.5.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

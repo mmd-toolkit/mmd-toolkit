@@ -1,0 +1,223 @@
+{
+  "patterns": [
+    {
+      "include": "#treeview"
+    }
+  ],
+  "repository": {
+    "treeview": {
+      "comment": "Read the exact detected header after common leading trivia; keep the body in the treeview grammar. Follows treeview.md#header-boundary.",
+      "begin": "{{diagramStart}}(treeView-beta)(?={{directives}}(?:[{{ws}}]|%%|$))",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "comment": "Read box bars and whitespace as one decoration line, with directives anywhere between them and at least one bar outside directives. This leaves out the whole-tree mode test, so vertical-only lines are always decoration. Follows treeview.md#scope-and-mode, treeview.md#line-classification-and-errors, common.md#a-directive-is-a-token-boundary.",
+          "match": "^(?=(?:{{directive}}|[─━│┃{{lws}}])*[─━│┃])(?:{{directive}}|[─━│┃{{lws}}])+$",
+          "name": "comment.block.ignored.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Read an authored branch prefix as a structural operator, retaining internal directives. Comment-shaped and metadata-shaped rows keep their ordinary reading. The rule recognizes branch rows without tracking the globally selected box mode. Follows treeview.md#columns-and-prefix-indentation and treeview.md#line-classification-and-errors.",
+          "match": "^(?!{{gap}}(?:{{nonDirectivePercentPair}}|title{{requiredAsciiGap}}|accTitle{{asciiGap}}:|accDescr{{asciiGap}}[:{]))((?:{{directive}}|{{entity}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\r\\n└┗├┣])*?)([└┗├┣](?:[─━]|{{directive}})*)",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                },
+                {
+                  "comment": "Read non-whitespace authored prefix characters as structural operators rather than labels or annotations. Follows treeview.md#line-classification-and-errors.",
+                  "match": "[^ \\t]+",
+                  "name": "keyword.operator.mermaid"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.operator.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#common-statements",
+          "comment": "Reuse shared title and accessibility forms before node content. Follows treeview.md#common-forms."
+        },
+        {
+          "comment": "Read a class annotation as a separator and a referenced style-class name; keep directives in complete-component gaps. Follows treeview.md#annotations and treeview.md#comments-and-boundaries.",
+          "match": "({{treeview-annotation-prefix}}){{treeview-class-opener}}({{treeview-class-name}})({{asciiGap}}(?={{nonDirectivePercentPair}}).*)?",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
+              "name": "punctuation.separator.class.mermaid"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "4": {
+              "name": "variable.mermaid"
+            },
+            "5": {
+              "patterns": [
+                {
+                  "include": "#comment-line"
+                },
+                {
+                  "include": "#directive"
+                },
+                {
+                  "comment": "Reuse native percent comments after a complete class name. Follows treeview.md#comments-and-boundaries.",
+                  "include": "#native-percent-comment"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Read an icon annotation's keyword, icon brackets and retained reference text. Follows treeview.md#annotations.",
+          "match": "({{treeview-annotation-prefix}}){{treeview-icon-opener}}({{directives}})([A-Za-z0-9_-]*(?::[A-Za-z0-9_-]+)?)({{directives}})(\\))",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.control.mermaid"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "4": {
+              "name": "punctuation.section.icon.begin.mermaid"
+            },
+            "5": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "6": {
+              "name": "string.unquoted.mermaid"
+            },
+            "7": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "8": {
+              "name": "punctuation.section.icon.end.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read a description annotation modifier followed by unquoted text through line end or a common-comment boundary. Follows treeview.md#annotations.",
+          "begin": "({{treeview-annotation-prefix}})({{treeview-description-opener}})",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
+              "name": "storage.modifier.mermaid"
+            }
+          },
+          "end": "{{lineValueEnd}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": "Reuse the plain double-quoted node label without backslash escapes. Follows treeview.md#names.",
+          "include": "#string-plain-double"
+        },
+        {
+          "comment": "Reuse the plain single-quoted node label without backslash escapes. Follows treeview.md#names.",
+          "include": "#string-plain-single"
+        },
+        {
+          "comment": "Read a native comment after ASCII padding at a line, header, quoted-name, icon or directive boundary. Follows treeview.md#comments-and-boundaries and common.md#a-directive-is-a-token-boundary.",
+          "begin": "{{treeview-statement-start}}(?={{nonDirectivePercentPair}})",
+          "end": "{{lineValueEnd}}",
+          "patterns": [
+            {
+              "comment": "Reuse native percent-comment content through the physical line end. Follows treeview.md#comments-and-boundaries.",
+              "include": "#native-percent-comment"
+            }
+          ]
+        },
+        {
+          "comment": "Read a bare name after its own indentation or directive boundary, leaving leading directives and quoted names for their rules. Follows treeview.md#names, treeview.md#columns-and-prefix-indentation, common.md#a-directive-is-a-token-boundary.",
+          "match": "{{treeview-node-start}}(?!{{directiveStart}}|:::|{{treeview-icon-opener}}|{{treeview-description-opener}}|[\"' \\t\\r\\n]|{{separatorCommentEnd}})(?:(?!{{treeview-annotation-prefix}}{{treeview-annotation-start}}|{{separatorCommentEnd}})(?:{{directive}}|{{entity}}|(?!{{directiveStart}})[^\\r\\n]))+",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ],
+              "name": "string.unquoted.mermaid"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "variables": {
+    "treeview-node-start": "(?:^[ \\t]*|(?<=[└┗├┣─━])[ \\t]*|(?<=[\"'])|{{afterDirectiveEnd}}[ \\t]*)",
+    "treeview-annotation-prefix": "[ \\t]+(?:{{directive}}[ \\t]*)*",
+    "treeview-annotation-start": "(?:{{treeview-class-opener}}|{{treeview-icon-opener}}|{{treeview-description-opener}})",
+    "treeview-class-opener": "(:::)({{asciiGap}})(?={{treeview-class-name}})",
+    "treeview-icon-opener": "(icon)({{directives}})(\\()",
+    "treeview-description-opener": "#(?!{{entity}})#",
+    "treeview-class-name": "[A-Za-z_][A-Za-z0-9_-]*",
+    "treeview-statement-start": "(?:^|\\G|(?<=[\"')])|{{afterDirectiveEnd}})[ \\t]*"
+  }
+}

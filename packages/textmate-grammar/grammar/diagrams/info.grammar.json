@@ -1,0 +1,51 @@
+{
+  "patterns": [
+    {
+      "include": "#info"
+    }
+  ],
+  "repository": {
+    "info": {
+      "comment": "Begin info at its lowercase bounded header through following directives. Follows info.md#detection, info.md#keyword-boundaries, common.md#leading-whitespace, and common.md#a-directive-is-a-token-boundary.",
+      "begin": "{{diagramStart}}(info){{info-keyword-end}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#hidden-yaml",
+          "comment": "Reuse hidden YAML and its shared line-based approximation. Follows info.md#hidden-yaml."
+        },
+        {
+          "include": "#hidden-directive",
+          "comment": "Reuse the native hidden directive form. Follows info.md#hidden-directive-and-line-endings."
+        },
+        {
+          "include": "#native-percent-comment",
+          "comment": "Reuse native percent comments. Follows info.md#comments-and-common-trivia."
+        },
+        {
+          "comment": "Read the bounded showInfo flag through following directives. Follows info.md#keyword-boundaries and common.md#a-directive-is-a-token-boundary.",
+          "match": "showInfo{{info-keyword-end}}",
+          "name": "keyword.control.mermaid"
+        },
+        {
+          "comment": "Reuse the common title and accessibility forms. Follows info.md#composite-common-forms.",
+          "include": "#common-statements"
+        }
+      ]
+    }
+  },
+  "variables": {
+    "info-keyword-end": "(?={{directives}}(?:[{{ws}}]|%%|$))"
+  }
+}

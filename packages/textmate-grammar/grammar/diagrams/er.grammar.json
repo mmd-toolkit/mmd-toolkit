@@ -1,0 +1,735 @@
+{
+  "variables": {
+    "er-tilde-edge": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^{{ws}}])*",
+    "er-direction-head": "({{lineText}})(direction)({{er-required-padding}})",
+    "er-direction-tail": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\r\\n])*",
+    "er-value-padding": "(?:(?!{{separatorCommentEnd}})(?:[{{ws}}]|{{directive}}))*",
+    "er-required-padding": "(?={{requiredGap}}){{er-value-padding}}",
+    "er-style-name": "(?:{{entity}}|(?!{{directiveStart}}|{{separatorCommentEnd}})(?:[^\\x{00}-\\x{7F}]|[A-Za-z0-9_*-]))+",
+    "er-attribute-word": "(?:{{er-tilde-word}}|`(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^`])+`|(?!{{separatorCommentEnd}})[A-Za-z_*\\x{C0}-\\x{10FFFF}](?:(?!{{directiveStart}}|{{separatorCommentEnd}})[A-Za-z0-9_\\x{C0}-\\x{10FFFF}\\[\\]().,*-])*)",
+    "er-tilde-word": "{{er-tilde-edge}}~{{lineText}}~{{er-tilde-edge}}",
+    "er-style-value-end": "(?={{lineGap}}(?:[,;]|$))|{{separatorCommentEnd}}"
+  },
+  "patterns": [
+    {
+      "include": "#er"
+    }
+  ],
+  "repository": {
+    "er": {
+      "comment": "Detection.md entry 10: `erDiagram`, exact. The lexer then reads the header again, case-insensitively and not followed by a word character. Follows er.md#detection.",
+      "begin": "{{diagramStart}}(erDiagram){{wordEnd}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Read trivia before a separator-led common comment. Follows common.md#comment-lines.",
+          "match": "(?={{commonLineValueEnd}})[{{separators}}]"
+        },
+        {
+          "include": "#er-acc-descr-block"
+        },
+        {
+          "include": "#er-accessibility-line"
+        },
+        {
+          "include": "#er-direction"
+        },
+        {
+          "include": "#er-string"
+        },
+        {
+          "include": "#er-attributes"
+        },
+        {
+          "include": "#er-style"
+        },
+        {
+          "comment": "Rules 19 to 21: bounded class, subgraph and end are keywords, compared case-insensitively. Follows er.md#the-statement-context.",
+          "match": "(?i:class|subgraph|end){{wordEnd}}",
+          "name": "keyword.control.mermaid"
+        },
+        {
+          "include": "#er-relationships"
+        },
+        {
+          "comment": "Decimal digit runs, optionally with a dot and nonempty fraction, are numbers after the cardinality rules have been tried. Follows er.md#the-statement-context.",
+          "match": "[0-9]+(?:\\.[0-9]+)?",
+          "name": "variable.mermaid"
+        },
+        {
+          "include": "#er-punctuation"
+        },
+        {
+          "comment": "Names contain non-ASCII characters, word characters, hyphens, stars and dots. an entity continues a name without exposing its hash or semicolon. A directive ends a name run. Follows er.md#units-and-contexts.",
+          "begin": "(?=[^\\x{00}-\\x{7F}]|[A-Za-z0-9_.*-]|#)",
+          "end": "{{separatorCommentEnd}}|(?={{directiveStart}}|[^\\x{80}-\\x{10FFFF}A-Za-z0-9_.*#-]|$)",
+          "contentName": "variable.mermaid",
+          "patterns": [
+            {
+              "comment": "An entity placeholder is part of a name. Follows er.md#units-and-contexts.",
+              "include": "#entity"
+            }
+          ]
+        }
+      ]
+    },
+    "er-direction": {
+      "comment": "TB, BT, RL and LR are tried in this order, at the last direction for that value; surrounding runs are direction-text. Directives inside those runs join their parts and cannot supply direction or its value; directives between components are trivia. Runs stop before separator-led common comments, and padding never consumes their separator. Follows er.md#the-statement-context and common.md#comment-lines.",
+      "match": "(?i:{{er-direction-head}}(TB)({{er-direction-tail}})|{{er-direction-head}}(BT)({{er-direction-tail}})|{{er-direction-head}}(RL)({{er-direction-tail}})|{{er-direction-head}}(LR)({{er-direction-tail}}))",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#er-direction-text"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.control.mermaid"
+        },
+        "3": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "4": {
+          "name": "constant.language.mermaid"
+        },
+        "5": {
+          "patterns": [
+            {
+              "include": "#er-direction-text"
+            }
+          ]
+        },
+        "6": {
+          "patterns": [
+            {
+              "include": "#er-direction-text"
+            }
+          ]
+        },
+        "7": {
+          "name": "keyword.control.mermaid"
+        },
+        "8": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "9": {
+          "name": "constant.language.mermaid"
+        },
+        "10": {
+          "patterns": [
+            {
+              "include": "#er-direction-text"
+            }
+          ]
+        },
+        "11": {
+          "patterns": [
+            {
+              "include": "#er-direction-text"
+            }
+          ]
+        },
+        "12": {
+          "name": "keyword.control.mermaid"
+        },
+        "13": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "14": {
+          "name": "constant.language.mermaid"
+        },
+        "15": {
+          "patterns": [
+            {
+              "include": "#er-direction-text"
+            }
+          ]
+        },
+        "16": {
+          "patterns": [
+            {
+              "include": "#er-direction-text"
+            }
+          ]
+        },
+        "17": {
+          "name": "keyword.control.mermaid"
+        },
+        "18": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "19": {
+          "name": "constant.language.mermaid"
+        },
+        "20": {
+          "patterns": [
+            {
+              "include": "#er-direction-text"
+            }
+          ]
+        }
+      }
+    },
+    "er-string": {
+      "patterns": [
+        {
+          "comment": "Rule 8: a double quote, zero or more characters other than double quote, and a double quote make a string with no escape. Follows er.md#the-statement-context.",
+          "include": "#string-plain-double"
+        }
+      ]
+    },
+    "er-relationships": {
+      "comment": "The ordered cardinality rules precede numbers and names, and relationship lines follow the cardinalities. Follows er.md#the-statement-context.",
+      "patterns": [
+        {
+          "comment": "Symbol cardinalities, many(0), many(1), contextual 1, u before dot/hyphen/bar, and two-character relationship lines are relationship units. Follows er.md#the-statement-context.",
+          "match": "(?i:many\\([01]\\)|u(?={{directives}}[.\\-|])|[|}]o{{wordEnd}}|o\\||o\\{)|[01]\\+|\\}\\||\\|\\||\\|\\{|1(?={{directives}}(?:{{er-required-padding}}[A-Za-z_\"'0-9]|--|\\.\\.|\\.-|-\\.))|--|\\.\\.|\\.-|-\\.",
+          "name": "keyword.operator.arrow.mermaid"
+        },
+        {
+          "comment": "Bounded word cardinalities and to or optionally to are case-insensitive keywords, with one space between words. Follows er.md#the-statement-context.",
+          "match": "(?i:one or zero|one or more|one or many|zero or one|zero or more|zero or many|only one|many|one|optionally to|to){{wordEnd}}",
+          "name": "keyword.operator.arrow.mermaid"
+        }
+      ]
+    },
+    "er-punctuation": {
+      "comment": "Rules 12 to 16: comma, class separator, colon and alias/title brackets are punctuation units. Follows er.md#the-statement-context.",
+      "patterns": [
+        {
+          "comment": "Rule 13: ::: is a unit. Follows er.md#the-statement-context.",
+          "match": ":::",
+          "name": "punctuation.separator.class.mermaid"
+        },
+        {
+          "include": "#er-comma"
+        },
+        {
+          "comment": "Rule 14: colon is a unit. Follows er.md#the-statement-context.",
+          "begin": "(:)({{asciiGap}})",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.colon.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "{{lineValueEnd}}|(?<=\"|\\])|(?={{directiveStart}}|[ \\t])",
+          "patterns": [
+            {
+              "include": "#er-string"
+            },
+            {
+              "match": "(?:{{entity}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\x{00}-\\x{7F}]|[A-Za-z0-9_.*-])+",
+              "name": "string.unquoted.mermaid",
+              "comment": "Read one unquoted relationship role. Follows er.md#relationships."
+            }
+          ]
+        },
+        {
+          "comment": "Rules 15 and 16: brackets delimit an alias or subgraph title. Follows er.md#entities.",
+          "begin": "\\[",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.label.begin.mermaid"
+            }
+          },
+          "end": "\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.label.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#er-string"
+            },
+            {
+              "match": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\]\"\\r\\n])+",
+              "name": "string.unquoted.mermaid",
+              "captures": {
+                "0": {
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              },
+              "comment": "Read the unquoted alias or subgraph title as label text. Follows er.md#subgraphs."
+            }
+          ]
+        }
+      ]
+    },
+    "er-style": {
+      "comment": "Rules 17 and 18 and bounded style and classDef enter a style context with no keyword rules; colon, comma, hash, semicolon and style-text are its units until a line feed. Follows er.md#the-statement-context.",
+      "begin": "((?i:style|classDef)){{wordEnd}}({{er-value-padding}})({{er-style-name}}(?:{{er-value-padding}},{{er-value-padding}}{{er-style-name}})*)({{er-value-padding}})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "variable.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#er-comma"
+            }
+          ]
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "{{lineValueEnd}}",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Read a style property name before its colon. Follows er.md#other-statements.",
+          "match": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^,:;\\r\\n])+(?=:)",
+          "captures": {
+            "0": {
+              "name": "support.type.property-name.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "match": ";",
+          "name": "punctuation.separator.semicolon.mermaid",
+          "comment": "Read the style statement separator. Follows er.md#the-style-context."
+        },
+        {
+          "comment": "Read one whole style property value, leaving trailing whitespace outside its scope. Follows er.md#other-statements.",
+          "begin": "(:)",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.separator.key-value.mermaid"
+            }
+          },
+          "end": "{{er-style-value-end}}",
+          "contentName": "support.constant.property-value.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "include": "#er-comma"
+        },
+        {
+          "comment": "Read a whole style without a property colon as one value, leaving trailing whitespace outside it. Follows er.md#other-statements.",
+          "begin": "(?![{{ws}}]|[:,;]|{{directiveStart}}|{{separatorCommentEnd}})(?=.)",
+          "end": "{{er-style-value-end}}",
+          "contentName": "support.constant.property-value.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#entity"
+            }
+          ]
+        }
+      ]
+    },
+    "er-attributes": {
+      "comment": "{ enters attributes and } leaves them; statement keywords are words here, while PK, FK and UK are key units. Tilde words precede quoted and backquoted words. Follows er.md#the-attribute-block-context.",
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.operator.block.begin.mermaid"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "keyword.operator.block.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Rule 1: one or more whitespace characters, line feeds included, are nothing and precede keys and words. Follows er.md#the-attribute-block-context.",
+          "match": "(?:(?!{{separatorCommentEnd}})[{{ws}}])+"
+        },
+        {
+          "comment": "Rule 2: PK, FK and UK, compared case-insensitively and not followed by a word character, are keys. Follows er.md#the-attribute-block-context.",
+          "match": "(?i:PK|FK|UK){{wordEnd}}",
+          "name": "storage.modifier.mermaid"
+        },
+        {
+          "match": "``",
+          "name": "comment.block.ignored.mermaid",
+          "comment": "Retain an empty backquoted block item as ignored text. Follows er.md#the-attribute-block-context."
+        },
+        {
+          "comment": "Read an attribute type and then its optional modifier and name; the type's complete lexical form must fit on a physical line. Follows er.md#attributes.",
+          "begin": "({{er-attribute-word}})",
+          "end": "({{er-attribute-word}})",
+          "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                },
+                {
+                  "match": "{{er-tilde-word}}",
+                  "name": "variable.mermaid",
+                  "captures": {
+                    "0": {
+                      "patterns": [
+                        {
+                          "include": "#directive"
+                        }
+                      ]
+                    }
+                  },
+                  "comment": "Read a complete tilde word in its attribute role. Follows er.md#the-attribute-block-context."
+                },
+                {
+                  "begin": "`",
+                  "beginCaptures": {
+                    "0": {
+                      "name": "punctuation.definition.string.begin.mermaid"
+                    }
+                  },
+                  "end": "`",
+                  "endCaptures": {
+                    "0": {
+                      "name": "punctuation.definition.string.end.mermaid"
+                    }
+                  },
+                  "contentName": "variable.mermaid",
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ],
+                  "comment": "Read backquoted attribute text in its type or name role. Follows er.md#the-attribute-block-context."
+                },
+                {
+                  "match": ".+",
+                  "name": "variable.mermaid",
+                  "captures": {
+                    "0": {
+                      "patterns": [
+                        {
+                          "include": "#directive"
+                        }
+                      ]
+                    }
+                  },
+                  "comment": "Read the ordinary attribute word in its type or name role. Follows er.md#the-attribute-block-context."
+                }
+              ]
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "match": "\\?",
+              "name": "storage.modifier.mermaid",
+              "comment": "Read the optional type modifier. Follows er.md#the-attribute-block-context."
+            }
+          ],
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                },
+                {
+                  "match": "{{er-tilde-word}}",
+                  "name": "entity.name.type.mermaid",
+                  "captures": {
+                    "0": {
+                      "patterns": [
+                        {
+                          "include": "#directive"
+                        }
+                      ]
+                    }
+                  },
+                  "comment": "Read a complete tilde word in its attribute role. Follows er.md#the-attribute-block-context."
+                },
+                {
+                  "begin": "`",
+                  "beginCaptures": {
+                    "0": {
+                      "name": "punctuation.definition.string.begin.mermaid"
+                    }
+                  },
+                  "end": "`",
+                  "endCaptures": {
+                    "0": {
+                      "name": "punctuation.definition.string.end.mermaid"
+                    }
+                  },
+                  "contentName": "entity.name.type.mermaid",
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ],
+                  "comment": "Read backquoted attribute text in its type or name role. Follows er.md#the-attribute-block-context."
+                },
+                {
+                  "match": ".+",
+                  "name": "entity.name.type.mermaid",
+                  "captures": {
+                    "0": {
+                      "patterns": [
+                        {
+                          "include": "#directive"
+                        }
+                      ]
+                    }
+                  },
+                  "comment": "Read the ordinary attribute word in its type or name role. Follows er.md#the-attribute-block-context."
+                }
+              ]
+            }
+          }
+        },
+        {
+          "include": "#er-backquote"
+        },
+        {
+          "include": "#er-string"
+        },
+        {
+          "comment": "Rule 8: question mark is the optional attribute mark. Follows er.md#the-attribute-block-context.",
+          "match": "\\?",
+          "name": "storage.modifier.mermaid"
+        },
+        {
+          "include": "#er-comma"
+        }
+      ],
+      "applyEndPatternLast": true
+    },
+    "er-backquote": {
+      "comment": "A backquote starts a unit whose text runs to the next matching delimiter, with no escape mechanism. Follows er.md#the-attribute-block-context.",
+      "begin": "`",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.mermaid"
+        }
+      },
+      "end": "`",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. Follows er.md#the-attribute-block-context.",
+          "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^`])+",
+          "name": "variable.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "er-acc-descr-block": {
+      "comment": "Read the er-acc-descr-block form. Follows er.md#the-statement-context.",
+      "begin": "((?i:accDescr))({{er-value-padding}})(\\{)({{er-value-padding}})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "punctuation.definition.description.begin.mermaid"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "(\\})",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.definition.description.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. Follows er.md#accessibility-values and common.md#comment-lines.",
+          "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^}])+",
+          "name": "string.unquoted.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "er-accessibility-line": {
+      "comment": "Accessibility line text runs to the line feed, including inline percent pairs. the value ends before a line or paragraph separator when only whitespace and directives lead to a common comment. Retain this local context: reads whitespace after the delimiter with that delimiter and keeps inline percent pairs; its keywords are case-insensitive. Follows er.md#accessibility-values.",
+      "begin": "((?i:accTitle|accDescr))({{er-value-padding}})(:)({{er-value-padding}})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "punctuation.separator.colon.mermaid"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "{{lineValueEnd}}",
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#directive"
+        }
+      ]
+    },
+    "er-comma": {
+      "comment": "Rule 12 and #the-attribute-block-context rule 8: a comma is a separator outside an attribute word. Follows er.md#the-statement-context.",
+      "match": ",",
+      "name": "punctuation.separator.comma.mermaid"
+    },
+    "er-direction-text": {
+      "comment": "Read the nonblank ignored text around a direction while retaining directives. Follows er.md#the-statement-context.",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "match": "(?=(?:{{directive}}|[{{ws}}])*(?!{{directiveStart}})[^{{ws}}])(?:{{directive}}|(?!{{directiveStart}}).)+",
+          "name": "comment.block.ignored.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "comment": "Read a nonblank direction-text unit. Follows er.md#the-statement-context."
+        }
+      ]
+    }
+  },
+  "comment": "The local padding variables retain the whitespace required by this type's unit rules, stopping before separator-led comments. Text and context variables below name the corresponding rules of this diagram. Follows er.md#lexical-structure and common.md#comment-lines."
+}

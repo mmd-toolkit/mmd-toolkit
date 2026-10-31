@@ -1,0 +1,1077 @@
+{
+  "patterns": [
+    {
+      "include": "#class"
+    }
+  ],
+  "repository": {
+    "class": {
+      "comment": "Detection.md entry 9: `classDiagram`, exact. The grammar then reads the header keyword again, `classDiagram-v2` or `classDiagram`, not followed by a word character. Follows class.md#detection.",
+      "begin": "{{diagramStart}}(classDiagram-v2|classDiagram){{wordEnd}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#class-direction"
+        },
+        {
+          "include": "#class-comment"
+        },
+        {
+          "include": "#class-acc-descr-block"
+        },
+        {
+          "include": "#class-accessibility-line"
+        },
+        {
+          "include": "#class-declaration"
+        },
+        {
+          "include": "#class-namespace"
+        },
+        {
+          "include": "#class-style"
+        },
+        {
+          "include": "#class-call"
+        },
+        {
+          "include": "#class-member-label"
+        },
+        {
+          "include": "#class-shared"
+        }
+      ]
+    },
+    "class-direction": {
+      "comment": "TB, BT, RL and LR are tried in this order, at the last direction for that value; the surrounding runs are direction-text. directives inside direction-text join its parts; between direction and the value they are trivia. A directive is read whole, so its argument cannot supply direction or its value. Runs stop before separator-led common comments, and padding never consumes their separator. Follows class.md#the-statement-context.",
+      "match": "{{class-direction-head}}(TB)({{class-direction-tail}})|{{class-direction-head}}(BT)({{class-direction-tail}})|{{class-direction-head}}(RL)({{class-direction-tail}})|{{class-direction-head}}(LR)({{class-direction-tail}})",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#class-direction-text"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.control.mermaid"
+        },
+        "3": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "4": {
+          "name": "constant.language.mermaid"
+        },
+        "5": {
+          "patterns": [
+            {
+              "include": "#class-direction-text"
+            }
+          ]
+        },
+        "6": {
+          "patterns": [
+            {
+              "include": "#class-direction-text"
+            }
+          ]
+        },
+        "7": {
+          "name": "keyword.control.mermaid"
+        },
+        "8": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "9": {
+          "name": "constant.language.mermaid"
+        },
+        "10": {
+          "patterns": [
+            {
+              "include": "#class-direction-text"
+            }
+          ]
+        },
+        "11": {
+          "patterns": [
+            {
+              "include": "#class-direction-text"
+            }
+          ]
+        },
+        "12": {
+          "name": "keyword.control.mermaid"
+        },
+        "13": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "14": {
+          "name": "constant.language.mermaid"
+        },
+        "15": {
+          "patterns": [
+            {
+              "include": "#class-direction-text"
+            }
+          ]
+        },
+        "16": {
+          "patterns": [
+            {
+              "include": "#class-direction-text"
+            }
+          ]
+        },
+        "17": {
+          "name": "keyword.control.mermaid"
+        },
+        "18": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "19": {
+          "name": "constant.language.mermaid"
+        },
+        "20": {
+          "patterns": [
+            {
+              "include": "#class-direction-text"
+            }
+          ]
+        }
+      }
+    },
+    "class-comment": {
+      "comment": "Rule 2: A native percent pair starts a comment through line feed; permits directives between the mark characters and inside comment text. End before a separator-led common comment, whose following directives remain comment text. Follows class.md#the-statement-context.",
+      "match": "{{nonDirectivePercentPair}}(?:{{directive}}|(?!{{directiveStart}}|{{lineValueEnd}})[^\\r\\n])*",
+      "name": "comment.line.percentage.mermaid",
+      "captures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      }
+    },
+    "class-declaration": {
+      "comment": "Rule 14 and the bounded keyword class enters the class context, which reads strings, whitespace, a member body and the shared rules until a line feed; } can also close a namespace. Follows class.md#the-statement-context.",
+      "begin": "(class){{wordEnd}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "$|(?=\\})",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#class-members"
+        },
+        {
+          "include": "#class-shared"
+        }
+      ]
+    },
+    "class-namespace": {
+      "comment": "And namespace enters the name context; { enters a body holding class statements, notes and nested namespaces, and } closes it. The header and body share only the rules listed there. Follows class.md#the-namespace-context and class.md#namespaces.",
+      "begin": "(namespace){{wordEnd}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "$|(?=\\})",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#class-namespace"
+        },
+        {
+          "include": "#class-namespace-body"
+        },
+        {
+          "include": "#class-shared"
+        }
+      ]
+    },
+    "class-members": {
+      "comment": "Read the class-members form. Follows class.md#the-member-context.",
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.operator.block.begin.mermaid"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "keyword.operator.block.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Bound a body member at a brace or physical line end, then apply the shared member division. Follows class.md#the-member-context.",
+          "match": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^{}\\r\\n])+",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#class-member-line"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "class-style": {
+      "comment": "Style is followed by a word and styles; classDef by a comma-separated list of words and styles. Styles consist of word, colon, hash, percent, style and label units. A label retains its internal commas as text. Follows class.md#other-statements.",
+      "begin": "(style|classDef){{wordEnd}}({{class-value-padding}})([A-Za-z0-9_]+(?:{{directives}},{{class-value-padding}}[A-Za-z0-9_]+)*)({{class-value-padding}})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "variable.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#class-comma"
+            }
+          ]
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "{{lineValueEnd}}",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#class-acc-descr-block"
+        },
+        {
+          "comment": "Read a style property name before its colon. Follows class.md#other-statements.",
+          "match": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}}|accDescr{{gap}}\\{)[^,:\\r\\n])+(?=:)",
+          "captures": {
+            "0": {
+              "name": "support.type.property-name.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "After a style's first colon, read the remaining physical line as one value, including commas, further colons, semicolons and description-looking text. Leave trailing whitespace and separator-led comments outside its scope. Follows class.md#other-statements, ast/class.md#classstylestatement.",
+          "begin": "(:)",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.separator.key-value.mermaid"
+            }
+          },
+          "end": "{{class-style-value-end}}",
+          "contentName": "support.constant.property-value.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "include": "#class-comma"
+        },
+        {
+          "comment": "Read a style before its first colon or without a colon, ending at a comma or a following description block as well as the line boundary. Follows class.md#other-statements, ast/class.md#classstylestatement.",
+          "begin": "(?![{{ws}}]|[:,;]|accDescr{{gap}}\\{|{{directiveStart}}|{{separatorCommentEnd}})(?=.)",
+          "end": "{{class-style-bare-end}}",
+          "contentName": "support.constant.property-value.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#entity"
+            }
+          ]
+        }
+      ]
+    },
+    "class-shared": {
+      "comment": "Class, namespace and statement contexts share the listed strings, keywords, names, labels, generics, relation ends and punctuation. Follows class.md#the-shared-rules.",
+      "patterns": [
+        {
+          "include": "#class-string"
+        },
+        {
+          "include": "#class-backquote"
+        },
+        {
+          "comment": "The keyword note for has exactly one space between its words; directives next to that space lie between the note and for units. Follows class.md#the-shared-rules.",
+          "match": "(note)({{spaceSeparator}})(for){{wordEnd}}",
+          "captures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "keyword.control.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read the bounded statement keywords and href. Follows class.md#the-shared-rules.",
+          "match": "(cssClass|callback|link|click|note|href){{wordEnd}}",
+          "name": "keyword.control.mermaid"
+        },
+        {
+          "comment": "Read one of the four fixed link targets. Follows class.md#the-shared-rules.",
+          "match": "(_self|_blank|_parent|_top){{wordEnd}}",
+          "name": "constant.language.mermaid"
+        },
+        {
+          "include": "#class-generic"
+        },
+        {
+          "include": "#class-label"
+        },
+        {
+          "comment": "Item 2: << and >> are units named by their text. Follows class.md#the-shared-rules.",
+          "begin": "<<",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.annotation.begin.mermaid"
+            }
+          },
+          "end": ">>",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.annotation.end.mermaid"
+            }
+          },
+          "contentName": "storage.modifier.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": "Read a relation tail with labels and accessibility description blocks. Follows class.md#the-shared-rules and class.md#the-statement-context.",
+          "begin": "<\\||\\|>|--|\\.\\.|[<>*]|o{{wordEnd}}|\\(\\)",
+          "beginCaptures": {
+            "0": {
+              "name": "keyword.operator.arrow.mermaid"
+            }
+          },
+          "end": "(?=;)|{{lineValueEnd}}",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#class-comment"
+            },
+            {
+              "include": "#class-acc-descr-block"
+            },
+            {
+              "include": "#class-shared"
+            }
+          ]
+        },
+        {
+          "comment": "Item 10: ::: is a unit named by its text. Follows class.md#the-shared-rules.",
+          "match": ":::",
+          "name": "punctuation.separator.class.mermaid"
+        },
+        {
+          "comment": "Item 13: [ and ] are units named by their text. Follows class.md#the-shared-rules.",
+          "match": "(\\[)|(\\])",
+          "captures": {
+            "1": {
+              "name": "punctuation.definition.label.begin.mermaid"
+            },
+            "2": {
+              "name": "punctuation.definition.label.end.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Rule 3 and rule 7: whitespace lies between name parts and belongs to no unit. Follows class.md#units-and-contexts.",
+          "match": "(?:(?!{{separatorCommentEnd}})[{{ws}}])+"
+        },
+        {
+          "comment": "Words, hyphens and Unicode letters are name parts, optionally separated by a dot; digit runs are words, not numeric units. Name parts are consumed whole so keyword suffixes are not recolored. Follows class.md#class-names.",
+          "match": "(?:[A-Za-z0-9_]|{{directive}})+|[-.]|(?!{{separatorCommentEnd}})[^\\x{00}-\\x{7F}]",
+          "captures": {
+            "0": {
+              "name": "variable.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "class-string": {
+      "patterns": [
+        {
+          "comment": "A double quote starts a string ending at the next double quote, with no escape mechanism. Follows class.md#strings-backquoted-names-and-generic-types.",
+          "include": "#string-plain-double"
+        }
+      ]
+    },
+    "class-backquote": {
+      "comment": "A backquote starts a unit whose text runs to the next matching delimiter, with no escape mechanism. Follows class.md#strings-backquoted-names-and-generic-types.",
+      "begin": "`",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.mermaid"
+        }
+      },
+      "end": "`",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. Follows class.md#strings-backquoted-names-and-generic-types.",
+          "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^`])+",
+          "name": "variable.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "class-generic": {
+      "comment": "~ enters the generic context; another ~ leaves it, and other characters form generic-text. Follows class.md#strings-backquoted-names-and-generic-types.",
+      "begin": "~",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.generic.begin.mermaid"
+        }
+      },
+      "end": "~",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.generic.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. Follows class.md#strings-backquoted-names-and-generic-types.",
+          "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^~])+",
+          "name": "entity.name.type.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "class-label": {
+      "comment": "Item 9: colon and one or more characters other than colon, semicolon and line feed make a label; percent pairs and keyword-like words are label text. Follows class.md#the-shared-rules.",
+      "begin": "(:)(?={{directives}}(?:{{entity}}|[^:;\\r\\n]))",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.separator.colon.mermaid"
+        }
+      },
+      "end": "(?=[:;]|$)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. Follows class.md#the-shared-rules.",
+          "match": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^:;\\r\\n])+",
+          "name": "string.unquoted.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                },
+                {
+                  "include": "#entity"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "class-call": {
+      "comment": "Read a callback name and its argument text in successive contexts, retaining the name's physical lines. Follows class.md#the-callback-contexts.",
+      "begin": "(?=call{{class-required-padding}})",
+      "end": "(\\))",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.section.arguments.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#class-callback-name"
+        },
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. Follows class.md#the-callback-contexts.",
+          "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^)])+",
+          "name": "string.unquoted.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "class-acc-descr-block": {
+      "comment": "Read the class-acc-descr-block form. Follows class.md#the-statement-context.",
+      "begin": "(accDescr)({{class-value-padding}})(\\{)({{class-value-padding}})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "punctuation.definition.description.begin.mermaid"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "(\\})",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.definition.description.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. Follows class.md#accessibility-values and common.md#comment-lines.",
+          "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^}])+",
+          "name": "string.unquoted.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "class-accessibility-line": {
+      "comment": "Read the class-accessibility-line form. Follows class.md#the-statement-context and class.md#accessibility-values.",
+      "begin": "(accTitle|accDescr)({{class-value-padding}})(:)({{class-value-padding}})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "punctuation.separator.colon.mermaid"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "{{lineValueEnd}}",
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#directive"
+        }
+      ]
+    },
+    "class-comma": {
+      "comment": "Commas separate classDef names and styles. Follows class.md#the-statement-context.",
+      "match": ",",
+      "name": "punctuation.separator.comma.mermaid"
+    },
+    "class-namespace-body": {
+      "comment": "Only the body enables class declarations; namespace names use the namespace context and shared rules. Follows class.md#the-namespace-body-context.",
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.operator.block.begin.mermaid"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "keyword.operator.block.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#class-namespace"
+        },
+        {
+          "include": "#class-declaration"
+        },
+        {
+          "include": "#class-shared"
+        }
+      ]
+    },
+    "class-method-segment": {
+      "comment": "Within a method line, divide its first divisible segment at the last noninitial opening parenthesis before its last closing parenthesis; earlier parentheses are name or parameter text. The enclosing method-line rule has classified the whole member, so an attribute cannot enter this rule. A directive is trivia and not diagram text. Try the segment before the standalone directive so leading directives remain available to its padding capture. Follows class.md#member-lines.",
+      "begin": "(?:\\G|(?<=[{{separators}}])){{class-method}}",
+      "beginCaptures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "storage.modifier.mermaid"
+        },
+        "3": {
+          "name": "variable.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "4": {
+          "name": "punctuation.section.arguments.begin.mermaid"
+        },
+        "5": {
+          "name": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "6": {
+          "name": "punctuation.section.arguments.end.mermaid"
+        }
+      },
+      "end": "{{class-member-end}}",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Read the classifier and return type after the method's last closing parenthesis, retaining directives in trailing whitespace. Follows class.md#member-lines, common.md#a-directive-is-a-token-boundary.",
+          "match": "\\G([$*])?({{class-value-padding}})((?:{{class-member-segment-character}})*?)(?(1)|([$*])?)({{class-value-padding}})(?=[{{separators}}]|{{class-member-end}})",
+          "captures": {
+            "1": {
+              "name": "storage.modifier.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "entity.name.type.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "4": {
+              "name": "storage.modifier.mermaid"
+            },
+            "5": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Retain the unread suffix of a method line as ignored text. Follows class.md#member-lines.",
+          "match": "(?:{{class-member-character}})+",
+          "captures": {
+            "0": {
+              "name": "comment.block.ignored.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "class-direction-text": {
+      "comment": "Read the nonblank ignored text around a direction while retaining directives. Follows class.md#the-statement-context.",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "match": "(?=(?:{{directive}}|[{{ws}}])*(?!{{directiveStart}})[^{{ws}}])(?:{{directive}}|(?!{{directiveStart}}).)+",
+          "name": "comment.block.ignored.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "comment": "Read a nonblank direction-text unit. Follows class.md#the-statement-context."
+        }
+      ]
+    },
+    "class-callback-name": {
+      "comment": "Enter the callback name at call, retain its text across physical lines, and return at the opening parenthesis. Follows class.md#the-callback-contexts.",
+      "begin": "\\G(call)({{class-required-padding}})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "(\\()",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.section.arguments.begin.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^(])+",
+          "name": "entity.name.function.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "comment": "Read callback-name text through physical lines, leaving its opening parenthesis and common comment boundary for their rules. Follows class.md#the-callback-contexts."
+        }
+      ]
+    },
+    "class-member-line": {
+      "comment": "Divide member text identically in a member statement and a class body, after its enclosing rule has bounded the text. Follows class.md#member-lines.",
+      "patterns": [
+        {
+          "comment": "Read a member annotation with directives in its leading and trailing whitespace, retaining its annotation text. Follows class.md#member-lines, common.md#a-directive-is-a-token-boundary.",
+          "match": "({{class-value-padding}})(<<)((?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\r\\n])*?)(>>)({{class-value-padding}}){{class-member-end}}",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
+              "name": "punctuation.definition.annotation.begin.mermaid"
+            },
+            "3": {
+              "name": "storage.modifier.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "4": {
+              "name": "punctuation.definition.annotation.end.mermaid"
+            },
+            "5": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Only a member whose first non-whitespace character is not ) and that contains ) is a method line. Classify the whole member before looking for its first divisible segment; an attribute stays an attribute across line and paragraph separators. Follows class.md#member-lines.",
+          "begin": "(?!{{class-value-padding}}\\))(?=(?:{{class-member-character}})*\\))",
+          "end": "{{class-member-end}}",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#class-method-segment"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Retain text before the first divisible method segment. Follows class.md#member-lines.",
+              "match": "(?:{{class-member-segment-character}})+",
+              "captures": {
+                "0": {
+                  "name": "comment.block.ignored.mermaid",
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "comment": "Read an attribute's visibility, name, and classifier without interpreting keyword-looking member text as statements. Follows class.md#member-lines.",
+          "begin": "(?!{{separatorCommentEnd}})(?=[^\\r\\n])",
+          "end": "{{class-member-end}}",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read an attribute's visibility, name and classifier, retaining directives in trailing whitespace. Follows class.md#member-lines, common.md#a-directive-is-a-token-boundary.",
+              "match": "\\G({{class-value-padding}})([+#~\\-])?((?:{{class-member-character}})*?)([$*])?({{class-value-padding}}){{class-member-end}}",
+              "captures": {
+                "1": {
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                },
+                "2": {
+                  "name": "storage.modifier.mermaid"
+                },
+                "3": {
+                  "name": "variable.mermaid",
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                },
+                "4": {
+                  "name": "storage.modifier.mermaid"
+                },
+                "5": {
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "class-member-label": {
+      "comment": "Read a member statement's colon and divide its text with the same rules as a body member. Relation tails retain the label rule in their own context. Follows class.md#members-and-annotations.",
+      "match": "(:)((?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^:;\\r\\n])+)",
+      "captures": {
+        "1": {
+          "name": "punctuation.separator.colon.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#class-member-line"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "variables": {
+    "class-member-text": "(?:{{class-member-segment-character}})*",
+    "class-member-end": "{{lineValueEnd}}",
+    "class-direction-head": "({{lineText}})(direction)({{class-required-padding}})",
+    "class-direction-tail": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\r\\n])*",
+    "class-method": "({{class-value-padding}})(?:(?!{{entity}})([+#~\\-]))?((?:{{class-member-segment-character}})+)(\\()({{class-member-text}})(\\))",
+    "class-value-padding": "(?:(?!{{separatorCommentEnd}})(?:[{{ws}}]|{{directive}}))*",
+    "class-required-padding": "(?={{requiredGap}}){{class-value-padding}}",
+    "class-member-character": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\r\\n])",
+    "class-member-segment-character": "(?![{{separators}}]){{class-member-character}}",
+    "class-style-value-end": "(?={{lineGap}}$)|{{separatorCommentEnd}}",
+    "class-style-bare-end": "(?={{lineGap}}(?:,|accDescr{{gap}}\\{|$))|{{separatorCommentEnd}}"
+  },
+  "comment": "The local padding variables retain the whitespace required by this type's unit rules, stopping before separator-led comments. Text and context variables below name the corresponding rules of this diagram. Follows class.md#units-and-contexts and class.md#member-lines."
+}

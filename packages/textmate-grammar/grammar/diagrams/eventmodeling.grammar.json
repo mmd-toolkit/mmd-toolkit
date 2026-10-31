@@ -1,0 +1,445 @@
+{
+  "patterns": [
+    {
+      "include": "#eventmodeling"
+    }
+  ],
+  "repository": {
+    "eventmodeling": {
+      "comment": "Read the eventmodeling header and its required following boundary. Follows eventmodeling.md#header-boundary.",
+      "begin": "{{diagramStart}}(eventmodeling)(?={{directives}}(?:[{{ws}}]|%%|$))",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#eventmodeling-trivia"
+        },
+        {
+          "include": "#eventmodeling-statements",
+          "comment": "Read the diagram-specific padded metadata forms. Follows eventmodeling.md#common-statements."
+        },
+        {
+          "comment": "Read statement and clause keywords, leaving longer identifiers whole. Follows eventmodeling.md#ordered-units.",
+          "match": "(resetframe|timeframe|entity|given|data|note|when|then|gwt|tf|rf){{wordEnd}}",
+          "captures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read the listed entity keywords without continuing a longer name. Follows eventmodeling.md#ordered-units.",
+          "match": "(readmodel|processor|command|event|rmo|cmd|evt|pcr|ui){{wordEnd}}",
+          "captures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read separate type-tag delimiters and the data type. Follows eventmodeling.md#data and common.md#a-directive-is-a-token-boundary.",
+          "begin": "`",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.tag.begin.mermaid"
+            }
+          },
+          "end": "`",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.tag.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#eventmodeling-trivia"
+            },
+            {
+              "comment": "Read the listed data-tag keyword. Follows eventmodeling.md#data.",
+              "match": "(json|jsobj|figma|salt|uri|md|html|text){{wordEnd}}",
+              "name": "keyword.control.mermaid"
+            }
+          ]
+        },
+        {
+          "comment": "Read source arrows, data-reference brackets and qualified-name dots. Follows eventmodeling.md#authored-component-boundaries.",
+          "match": "(->>)|(\\[\\[)|(\\]\\])|(\\.)",
+          "captures": {
+            "1": {
+              "name": "keyword.operator.arrow.mermaid"
+            },
+            "2": {
+              "name": "punctuation.section.brackets.begin.mermaid"
+            },
+            "3": {
+              "name": "punctuation.section.brackets.end.mermaid"
+            },
+            "4": {
+              "name": "punctuation.separator.dot.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read a frame name, retaining leading zeros. Follows eventmodeling.md#names-and-references.",
+          "match": "[0-9]{1,3}(?!{{directives}}[0-9])",
+          "name": "variable.mermaid"
+        },
+        {
+          "comment": "Read inline braced data as an opaque text block through its last same-line closer. Follows eventmodeling.md#data.",
+          "match": "(\\{)({{lineText}})(\\})",
+          "name": "meta.data.mermaid",
+          "captures": {
+            "1": {
+              "name": "punctuation.section.data.begin.mermaid"
+            },
+            "2": {
+              "name": "string.unquoted.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.section.data.end.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read quoted inline data through its last same-line matching quote. Follows eventmodeling.md#data.",
+          "match": "(\")({{lineText}})(\")|(')({{lineText}})(')",
+          "captures": {
+            "1": {
+              "name": "string.quoted.double.mermaid punctuation.definition.string.begin.mermaid"
+            },
+            "2": {
+              "name": "string.quoted.double.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                },
+                {
+                  "include": "#html-tag-preserved-comments"
+                }
+              ]
+            },
+            "3": {
+              "name": "string.quoted.double.mermaid punctuation.definition.string.end.mermaid"
+            },
+            "4": {
+              "name": "string.quoted.single.mermaid punctuation.definition.string.begin.mermaid"
+            },
+            "5": {
+              "name": "string.quoted.single.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "6": {
+              "name": "string.quoted.single.mermaid punctuation.definition.string.end.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read block data through an unindented closing brace in the text without directives, retaining directives before that closer. Follows eventmodeling.md#data, common.md#a-directive-is-a-token-boundary.",
+          "begin": "(\\{)({{asciiGap}})$",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.section.data.begin.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "^({{directives}})(\\})(?={{directives}}(?:[{{ws}}]|$))",
+          "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
+              "name": "punctuation.section.data.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ],
+          "contentName": "string.unquoted.mermaid",
+          "name": "meta.data.mermaid"
+        },
+        {
+          "comment": "Read an identifier segment or data-reference name. Follows eventmodeling.md#names-and-references.",
+          "match": "[A-Za-z_][A-Za-z0-9_]*",
+          "name": "variable.mermaid"
+        }
+      ]
+    },
+    "eventmodeling-statements": {
+      "comment": "Collect the padded title and accessibility forms. Follows eventmodeling.md#common-statements.",
+      "patterns": [
+        {
+          "comment": "Read a padded accessibility line and its value. Follows eventmodeling.md#common-statements and common.md#a-directive-is-a-token-boundary.",
+          "begin": "{{eventmodeling-metadata-start}}({{asciiGap}})(accTitle|accDescr)({{asciiGap}})(:)",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.control.mermaid"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "4": {
+              "name": "punctuation.separator.colon.mermaid"
+            }
+          },
+          "end": "{{eventmodeling-line-value-end}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": "Read a padded description block; its braces delimit text. Follows eventmodeling.md#common-statements and common.md#a-directive-is-a-token-boundary.",
+          "begin": "{{eventmodeling-metadata-start}}({{asciiGap}})(accDescr)({{gap}})(\\{)",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.control.mermaid"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "4": {
+              "name": "punctuation.definition.description.begin.mermaid"
+            }
+          },
+          "end": "(\\})",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.description.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ],
+          "contentName": "string.unquoted.mermaid"
+        },
+        {
+          "comment": "Read a padded title and its line value. Follows eventmodeling.md#common-statements and common.md#a-directive-is-a-token-boundary.",
+          "begin": "{{eventmodeling-metadata-start}}({{asciiGap}})(title)({{directives}})[ \\t]",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.control.mermaid"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "{{eventmodeling-line-value-end}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": "Read a bare padded title without continuing an identifier. Follows eventmodeling.md#common-statements.",
+          "match": "{{eventmodeling-metadata-start}}({{asciiGap}})(title)(?={{directives}}(?:[{{ws}}]|{{nonDirectivePercentPair}}|$))",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.control.mermaid"
+            }
+          }
+        }
+      ]
+    },
+    "eventmodeling-native-percent-comment-preserved-comments": {
+      "comment": "Read native percent comments without a common-comment boundary; preserve global directives. Follows eventmodeling.md#native-hidden-forms-and-comments and common.md#a-directive-is-a-token-boundary.",
+      "match": "{{nonDirectivePercentPair}}{{physicalLineText}}",
+      "name": "comment.line.percentage.mermaid",
+      "captures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      }
+    },
+    "eventmodeling-hidden-directive-preserved-comments": {
+      "comment": "Read a native hidden directive, retaining comment-looking text and global directives. Follows eventmodeling.md#native-hidden-forms-and-comments and common.md#a-directive-is-a-token-boundary.",
+      "name": "comment.block.ignored.mermaid",
+      "match": "{{hiddenDirectiveStart}}(?:{{directive}}|(?!{{directiveStart}}).)*?{{hiddenDirectiveEnd}}",
+      "captures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      }
+    },
+    "eventmodeling-hidden-yaml-preserved-comments": {
+      "comment": "Read native hidden YAML, retaining comment-looking text and global directives. Follows eventmodeling.md#native-hidden-forms-and-comments and common.md#a-directive-is-a-token-boundary.",
+      "begin": "{{hiddenYamlBegin}}",
+      "beginCaptures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "{{hiddenYamlEnd}}",
+      "endCaptures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "name": "comment.block.ignored.mermaid",
+      "patterns": [
+        {
+          "include": "#directive"
+        }
+      ]
+    },
+    "eventmodeling-trivia": {
+      "comment": "Read the global directives and native hidden forms or comments that can separate complete units, including type-tag components. Follows eventmodeling.md#grammar and common.md#a-directive-is-a-token-boundary.",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#eventmodeling-hidden-yaml-preserved-comments",
+          "comment": "Read native hidden YAML. Follows eventmodeling.md#native-hidden-forms-and-comments."
+        },
+        {
+          "include": "#eventmodeling-hidden-directive-preserved-comments",
+          "comment": "Read native hidden directives. Follows eventmodeling.md#native-hidden-forms-and-comments."
+        },
+        {
+          "include": "#eventmodeling-native-percent-comment-preserved-comments",
+          "comment": "Read native percent comments, retaining comment-looking text. Follows eventmodeling.md#native-hidden-forms-and-comments."
+        },
+        {
+          "comment": "Read slash comments; whole directives preserve their own scopes. Follows eventmodeling.md#native-hidden-forms-and-comments and common.md#a-directive-is-a-token-boundary.",
+          "begin": "/{{directives}}\\*",
+          "end": "\\*{{directives}}/",
+          "name": "comment.block.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ],
+          "beginCaptures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Read slash comments; whole directives preserve their own scopes. Follows eventmodeling.md#native-hidden-forms-and-comments and common.md#a-directive-is-a-token-boundary.",
+          "name": "comment.line.double-slash.mermaid",
+          "begin": "/{{directives}}/",
+          "beginCaptures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "$",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "variables": {
+    "eventmodeling-metadata-start": "(?:^|\\G|{{afterDirectiveEnd}}|(?<=\\}))(?={{requiredAsciiGap}})",
+    "eventmodeling-line-value-end": "(?={{nonDirectivePercentPair}}|$)"
+  }
+}

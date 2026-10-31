@@ -15,6 +15,7 @@ import path from "node:path"
 import { fileURLToPath } from "node:url"
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest"
 import { createMarkdownRenderer, disposeMdItInstance } from "vitepress"
+import { languages } from "../.vitepress/highlighting.js"
 import {
   collectDiagrams,
   collectDocuments,
@@ -591,7 +592,7 @@ describe("rendered document links and examples", () => {
       repositoryRoot,
       {
         anchor: { slugify: documentAnchor },
-        languageAlias: { mmd: "mermaid" },
+        languages,
         config(md) {
           configureDocumentMarkdown(md, documents, repositoryRoot)
         },

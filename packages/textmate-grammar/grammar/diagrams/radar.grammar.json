@@ -1,0 +1,109 @@
+{
+  "patterns": [
+    {
+      "include": "#radar"
+    }
+  ],
+  "repository": {
+    "radar": {
+      "comment": "Read the header together with its optional joined or ASCII-padded colon, retaining directives in the gap. Follows radar.md#detection, radar.md#names-and-keyword-boundaries, and common.md#a-directive-is-a-token-boundary.",
+      "begin": "{{diagramStart}}(radar-beta)(?:({{asciiGap}})(:)|(?={{directives}}(?:[{{ws}}]|%%|$)))",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "punctuation.separator.colon.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#hidden-yaml",
+          "comment": "Reuse hidden YAML and its shared line-based approximation. Follows radar.md#hidden-forms-and-comments."
+        },
+        {
+          "include": "#hidden-directive",
+          "comment": "Reuse the native hidden directive form. Follows radar.md#hidden-forms-and-comments."
+        },
+        {
+          "include": "#native-percent-comment",
+          "comment": "Reuse native percent comments. Follows radar.md#hidden-forms-and-comments."
+        },
+        {
+          "include": "#common-statements",
+          "comment": "Reuse the title and accessibility composites. Follows radar.md#composite-common-forms."
+        },
+        {
+          "comment": "Read word keywords before ids, leaving a longer id whole. Follows radar.md#names-and-keyword-boundaries.",
+          "match": "(showLegend|graticule|curve|ticks|axis|max|min){{wordEnd}}(?!{{directives}}-)",
+          "captures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read the listed graticule and boolean values before ids. Follows radar.md#names-and-keyword-boundaries and radar.md#grammar.",
+          "match": "(circle|polygon|true|false)",
+          "captures": {
+            "1": {
+              "name": "constant.language.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read unsigned decimal numbers before ids, checking the dot boundary through following directives. Follows radar.md#numbers-and-strings and common.md#a-directive-is-a-token-boundary.",
+          "match": "(?<![A-Za-z0-9_.-])([0-9]+\\.[0-9]+|0|[1-9][0-9]*)(?!{{directives}}[0-9.])",
+          "name": "constant.numeric.mermaid"
+        },
+        {
+          "include": "#string-escaped",
+          "comment": "Reuse matching quoted labels and backslash escapes. Follows radar.md#numbers-and-strings."
+        },
+        {
+          "comment": "Read separators, label delimiters and entry-list braces; description braces are read by the common form. Follows radar.md#grammar.",
+          "match": "(:)|(,)|(\\[)|(\\])|(\\{)|(\\})",
+          "captures": {
+            "1": {
+              "name": "punctuation.separator.colon.mermaid"
+            },
+            "2": {
+              "name": "punctuation.separator.comma.mermaid"
+            },
+            "3": {
+              "name": "punctuation.definition.label.begin.mermaid"
+            },
+            "4": {
+              "name": "punctuation.definition.label.end.mermaid"
+            },
+            "5": {
+              "name": "punctuation.section.braces.begin.mermaid"
+            },
+            "6": {
+              "name": "punctuation.section.braces.end.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read declared axis and curve ids and named-entry references. Follows radar.md#names-and-keyword-boundaries.",
+          "match": "[A-Za-z0-9_][A-Za-z0-9_-]*(?<!-)",
+          "name": "variable.mermaid"
+        }
+      ]
+    }
+  }
+}

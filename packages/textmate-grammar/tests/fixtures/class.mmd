@@ -1,0 +1,126 @@
+classDiagram-v2
+%% a class comment
+accTitle: class and namespace
+accDescr: note and click
+accDescr { classDef and style }
+class Animal["Animal label"] {
+  <<interface>>
+  +name
+  +call(note) string
+  +class and namespace
+}
+class Duck~List~
+class className
+class noteX
+class order
+class callX
+namespace Zoo["A namespace"] {
+  class Bird
+  note for Bird "A bird note"
+  namespace Inner {
+    class Nest
+  }
+}
+Animal "1" <|-- Duck : owns note and click
+Duck o-- Bird
+Duck ..> Nest
+<<abstract>> Animal
+note "A plain note"
+note for Animal "A note %% inside"
+callback Animal "onClick" "callback tooltip"
+link Animal "https://example.com" "link tooltip" _self
+click Animal call onClick("class", 12) "call tooltip"
+click Duck href "https://example.org" "href tooltip" _blank
+link Bird "bird" "" _parent
+link Nest "nest" "" _top
+cssClass "Animal,Duck" highlighted
+classDef highlighted fill:red
+style Animal fill:blue
+DirectionName
+title Animals
+direction LR
+note "directive %%{init: {}}%% text"
+Animal --> Duck : text %%{init: {}}%% class
+Animal --> Duck %% inline class comment
+accDescr {} class AfterBlock
+class Styled:::highlighted {
+  +x
+}
+class `backquoted class`
+classDef highlighted,extra fill:red
+direction TB x direction LR
+note "x direction TB"
+class DirectiveMembers {
+  +na%%{init: {}}%%me
+  +foo(%%{init: {}}%%note)
+}
+click Animal call cb)name(x)
+note "x %%{init: 'direction TB'}%% y"
+Animal --> Duck : #amp; note
+Animal --> Duck : #%%{init: {}}%%amp; note
+note%%{init: {}}%% for Animal "x"
+note %%{init: {}}%%for Animal "y"
+accTitle%%{init: {}}%%: note
+accDescr%%{init: {}}%%{} class DirectedBlock
+style Animal fill red accDescr {}
+note "<b title="x">tag</b>"
+click Animal href "a<b" "c>"
+class Na%%{init: {}}%%note
+style Animal%%{init: {}}%% fill red
+classDef highlighted%%{init: {}}%%,extra fill red
+
+click Animal call%%{init: {}}%% cb%%{init: {}}%%)name(x%%{init: {}}%%y)
+namespace class { note "x" }
+
+class call A~(x)~
+
+style A:x
+
+classDef A,B:red
+
+style A style
+
+classDef C style
+
+class PercentAnnotation { <<a%>> }
+
+class NumericMethod { 12(x) }
+
+class NestedMethod { foo(a(b)) }
+
+class note%%{wrap}%%Long
+
+style A style%%{wrap}%%Long
+
+A --> B %%%{wrap}%%% native %%{init: ">>"}%% tail
+
+
+
+
+
+
+
+
+
+
+
+
+
+class EntityMethod { #amp;(x) }
+
+
+class AttributeParens { )x() }
+
+
+classDef A foo%%{wrap}%%style
+classDef Boundary style
+class DivisionProbe { foo(a(b)) }
+class ScopeMember { +field$ }
+style Animal fill:#43a047
+ScopeMember : +field$
+Animal : +call(note) string
+Animal : <<interface>>
+class ReturnClassifier { +foo()$ int* }
+Animal : +foo()$ int*
+class ReturnSuffix { +foo() int* }
+style Animal fi ll:red

@@ -1,0 +1,130 @@
+{
+  "header": "treemap-beta",
+  "scopes": [
+    ["title", "keyword.control.mermaid"],
+    ["classDef", "keyword.control.mermaid"],
+    ["highlight", "variable.mermaid"],
+    ["Category A", "string.quoted.double.mermaid"],
+    ["Item B1", "string.quoted.single.mermaid"],
+    ["20.5", "constant.numeric.mermaid"],
+    [":", "punctuation.separator.colon.mermaid"],
+    ["accTitle", "keyword.control.mermaid"],
+    ["accDescr", "keyword.control.mermaid", 3],
+    ["accDescr", "keyword.control.mermaid", 4],
+    ["<b title=\"x\">", "string.quoted.double.mermaid", 12],
+    ["Label</b>", "string.quoted.double.mermaid", 12],
+    ["<b", "string.quoted.double.mermaid", 13],
+    [":", "punctuation.separator.colon.mermaid", 13],
+    ["title", "keyword.control.mermaid", 15],
+    ["init", "entity.name.function.directive.mermaid", 15],
+    ["classDef is title text", "string.unquoted.mermaid", 15],
+    ["accTitle", "keyword.control.mermaid", 16],
+    ["init", "entity.name.function.directive.mermaid", 16],
+    [" Sales title", "string.unquoted.mermaid", 16],
+    ["accDescr", "keyword.control.mermaid", 17],
+    ["init", "entity.name.function.directive.mermaid", 17],
+    [" Sales description", "string.unquoted.mermaid", 17],
+    ["accDescr", "keyword.control.mermaid", 18],
+    ["init", "entity.name.function.directive.mermaid", 18],
+    ["{", "punctuation.definition.description.begin.mermaid", 18],
+    ["}", "punctuation.definition.description.end.mermaid", 18],
+    ["classDef", "keyword.control.mermaid", 19],
+    ["custom", "variable.mermaid", 19],
+    ["init", "entity.name.function.directive.mermaid", 19],
+    ["red", "support.constant.property-value.mermaid", 19],
+    ["custom", "variable.mermaid", 20],
+    ["init", "entity.name.function.directive.mermaid", 20],
+    ["blue", "support.constant.property-value.mermaid", 20],
+    [":::", "punctuation.separator.class.mermaid", 21],
+    ["init", "entity.name.function.directive.mermaid", 21],
+    ["custom", "variable.mermaid", 21],
+    ["#amp;", "support.constant.property-value.mermaid", 22],
+    [";", "punctuation.separator.semicolon.mermaid", 22],
+    ["bare", "variable.mermaid", 23],
+    ["init", "entity.name.function.directive.mermaid", 23],
+    ["terminal", "variable.mermaid", 24],
+    ["init", "entity.name.function.directive.mermaid", 24],
+    ["c>", "string.quoted.double.mermaid", 13],
+    ["init", "entity.name.function.directive.mermaid", 25],
+    ["mp;", "support.constant.property-value.mermaid", 25],
+    ["1", "constant.numeric.mermaid", 26],
+    ["2", "constant.numeric.mermaid", 26],
+    ["title", "string.quoted.double.mermaid", 26],
+    ["%", "comment.line.percentage.mermaid", 27],
+    ["wrap", "entity.name.function.directive.mermaid", 27],
+    ["% native ", "comment.line.percentage.mermaid", 27],
+    ["style", "string.unquoted.mermaid", 28],
+    ["fill", "support.type.property-name.mermaid", 10],
+    ["#f9f,stroke:", "support.constant.property-value.mermaid", 10],
+    ["#333;", "support.constant.property-value.mermaid", 10],
+    ["fill", "support.type.property-name.mermaid", 19],
+    ["Sales", "string.unquoted.mermaid"],
+    ["highlight", "variable.mermaid", 10],
+    ["{", "punctuation.definition.description.begin.mermaid", 4],
+    ["}", "punctuation.definition.description.end.mermaid", 4],
+    ["stroke-dasharray", "support.type.property-name.mermaid", 29],
+    ["5", "support.constant.property-value.mermaid", 29],
+    ["\\,", "support.constant.property-value.mermaid", 29],
+    ["7,fill:red", "support.constant.property-value.mermaid", 29],
+    ["1x", "support.type.property-name.mermaid", 30],
+    ["red", "support.constant.property-value.mermaid", 30],
+    ["--色", "support.type.property-name.mermaid", 31],
+    ["red", "support.constant.property-value.mermaid", 31],
+    [":::", "punctuation.separator.class.mermaid", 32],
+    ["wrap", "entity.name.function.directive.mermaid", 32],
+    ["hot", "variable.mermaid", 32]
+  ],
+  "absent": [
+    ["#amp;", "punctuation.separator.semicolon.mermaid", 22],
+    ["classDef is title text", "keyword.control.mermaid", 15],
+    ["<b title=\"x\">", "punctuation.definition.string.end.mermaid", 12],
+    ["mp;", "punctuation.separator.semicolon.mermaid", 25],
+    ["1", "string.quoted.double.mermaid", 26],
+    ["2", "string.quoted.double.mermaid", 26],
+    ["style", "keyword.control.mermaid", 28],
+    ["#f9f,stroke:", "constant.numeric.mermaid", 10],
+    ["#333;", "constant.numeric.mermaid", 10],
+    ["5", "constant.numeric.mermaid", 29],
+    ["\\,", "constant.numeric.mermaid", 29],
+    ["7,fill:red", "constant.numeric.mermaid", 29],
+    ["\\,", "punctuation.separator.comma.mermaid", 29]
+  ],
+  "escapedInputs": [
+    {
+      "code": "treemap\n\"Leaf\":1%% native\u2028%% common %%{wrap}%%\n",
+      "scopes": [
+        ["%% native", "comment.line.percentage.mermaid"],
+        ["%% common %%{wrap}%%", "comment.line.percentage.mermaid"]
+      ],
+      "absentOnLine": [[1, "meta.directive.mermaid"]]
+    },
+    {
+      "code": "treemap\nclassDef custom fill:red\u2029%% style comment\n\"Leaf\":1\n",
+      "scopes": [
+        ["red", "support.constant.property-value.mermaid"],
+        ["%% style comment", "comment.line.percentage.mermaid"]
+      ],
+      "absent": [
+        ["%% style comment", "support.constant.property-value.mermaid"]
+      ]
+    },
+    {
+      "code": "treemap\nclassDef hot stroke-dasharray:5\\%%{wrap}%%,7,fill:red;\n",
+      "scopes": [
+        ["5", "support.constant.property-value.mermaid"],
+        ["\\", "support.constant.property-value.mermaid"],
+        ["wrap", "entity.name.function.directive.mermaid"],
+        [",", "support.constant.property-value.mermaid"],
+        ["7,fill:red", "support.constant.property-value.mermaid"]
+      ],
+      "absent": [
+        [",", "punctuation.separator.comma.mermaid"],
+        ["7,fill:red", "constant.numeric.mermaid"]
+      ]
+    }
+  ],
+  "absentOnLine": [
+    [10, "punctuation.separator.comma.mermaid"],
+    [29, "punctuation.separator.comma.mermaid"]
+  ]
+}

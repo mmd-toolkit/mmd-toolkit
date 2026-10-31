@@ -1,0 +1,32 @@
+venn-beta
+title Sets
+set A ["Alpha"] : 10
+set B [Beta]: 5
+union A, B ["Both"] : 2
+text A "Alpha only"
+style A fill: #ff0000, stroke: rgb(0, 0, 0)
+%% a comment line
+set C:2set D:3
+set E [A%%{init: {}}%%B]:1
+set F ["A%%{init: {"theme": "dark"}}%%B"]:1
+ title%%{wrap}%% A #amp; B
+set Html ["a<b title="x">y</b>"]:1
+set Bare [a<b title="x">y</b>]:2
+set Gap [%%{wrap}%%"a"%%{wrap}%%]:3
+style Html fill: rgb(1,%%{init: {"end": ")"}}%%2,3), stroke: #f%%{wrap}%%00
+set Partial ["a<b"]:1 set Later ["c>"]:2
+1%%{}%%
+;%% comment
+set Close [<b title="] :1 %% c">
+
+ title %%{wrap}%%#amp; Value
+set Rgba:1
+style Rgba fill:rgba(1,2,3,0.5)
+style A fill:#43a047, stroke-width:1red#abc, font-family:"Trebuchet MS"
+style A fill:red %% comment set B
+style A fill:red @%% c
+style A fill:red X%% swallowed
+style A fill:rgba(1,2,3,0.5),stroke-width:1red#abc
+style A fill:"kept %% set B"
+set Empty [""]
+style A fill:red set Next:4

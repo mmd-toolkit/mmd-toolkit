@@ -1,0 +1,1285 @@
+{
+  "variables": {
+    "state-note-header": "((?i:note))({{state-required-padding}})((?i:left|right))({{spaceSeparator}})((?i:of)){{wordEnd}}(?:({{nonDirectivePercentPair}}(?:{{entity}}|{{directive}}|(?!{{directiveStart}})[^:{{ws}}\\r\\n-])*)({{state-required-padding}}))?({{state-value-padding}})((?:{{entity}}|(?!{{directives}}{{nonDirectivePercentPair}}|{{directiveStart}})[^:{{ws}}\\r\\n-])+|(?={{directives}}{{nonDirectivePercentPair}}))",
+    "state-word": "[A-Za-z0-9_]+",
+    "state-style-ids": "(?:{{state-word}}|,)(?:{{directives}}(?:{{state-word}}|,))*",
+    "state-direction-head": "({{lineText}})(direction)({{state-required-padding}})",
+    "state-percent-comment": "{{nonDirectivePercentPair}}(?!{{directives}}\\{)(?:{{directive}}|(?!{{directiveStart}}|{{lineValueEnd}})[^\\r\\n])*",
+    "state-colon-or-semicolon-end": "(?=[:;]|$)",
+    "state-direction-tail": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\r\\n])*",
+    "state-value-padding": "(?:(?!{{separatorCommentEnd}})(?:[{{ws}}]|{{directive}}))*",
+    "state-floating-id": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\r\\n])*",
+    "state-required-padding": "(?={{requiredGap}}){{state-value-padding}}",
+    "state-alias-end": "{{lineValueEnd}}|(?={{nonDirectivePercentPair}}|\\{)",
+    "state-note-space": "(?!{{separatorCommentEnd}})[{{ws}}]",
+    "state-style-value-end": "(?={{lineGap}}(?:,|$))|{{separatorCommentEnd}}"
+  },
+  "patterns": [
+    {
+      "include": "#state"
+    }
+  ],
+  "repository": {
+    "state": {
+      "comment": "Detection.md entry 20: `stateDiagram`, exact. The lexer then reads the header again, case-insensitively and followed by whitespace. So `stateDiagram-V2` is a header. Follows state.md#detection.",
+      "begin": "{{diagramStart}}(stateDiagram(?i:-v2)?)(?={{directives}}(?:[{{ws}}]|$))",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Rules 1 and 2: bounded click and href are keyword units; strings precede direction lines. Follows state.md#the-statement-context.",
+          "match": "(?i:click|href){{wordEnd}}",
+          "name": "keyword.control.mermaid"
+        },
+        {
+          "include": "#state-string"
+        },
+        {
+          "include": "#state-direction"
+        },
+        {
+          "include": "#state-comments"
+        },
+        {
+          "include": "#state-acc-descr-block"
+        },
+        {
+          "include": "#state-accessibility-line"
+        },
+        {
+          "include": "#state-scale"
+        },
+        {
+          "comment": "Rule 21: hide empty description, with exactly one space between words and a final word boundary, is the hide, empty and description-word units. Follows state.md#the-statement-context.",
+          "match": "((?i:hide))({{spaceSeparator}})((?i:empty))({{spaceSeparator}})((?i:description)){{wordEnd}}",
+          "captures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "keyword.control.mermaid"
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "5": {
+              "name": "keyword.control.mermaid"
+            }
+          }
+        },
+        {
+          "include": "#state-context-statements"
+        },
+        {
+          "include": "#state-notes"
+        },
+        {
+          "include": "#state-body"
+        },
+        {
+          "include": "#state-units"
+        }
+      ]
+    },
+    "state-direction": {
+      "comment": "TB, BT, RL and LR are tried in this order, at the last direction for that value; the surrounding runs are direction-text. directives inside direction-text join its parts; between direction and the value they are trivia. A directive is read whole, so its argument cannot supply direction or its value. Runs stop before separator-led common comments, and padding never consumes their separator. Follows state.md#the-statement-context and common.md#comment-lines.",
+      "match": "(?i:{{state-direction-head}}(TB)({{state-direction-tail}})|{{state-direction-head}}(BT)({{state-direction-tail}})|{{state-direction-head}}(RL)({{state-direction-tail}})|{{state-direction-head}}(LR)({{state-direction-tail}}))",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#state-direction-text"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.control.mermaid"
+        },
+        "3": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "4": {
+          "name": "constant.language.mermaid"
+        },
+        "5": {
+          "patterns": [
+            {
+              "include": "#state-direction-text"
+            }
+          ]
+        },
+        "6": {
+          "patterns": [
+            {
+              "include": "#state-direction-text"
+            }
+          ]
+        },
+        "7": {
+          "name": "keyword.control.mermaid"
+        },
+        "8": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "9": {
+          "name": "constant.language.mermaid"
+        },
+        "10": {
+          "patterns": [
+            {
+              "include": "#state-direction-text"
+            }
+          ]
+        },
+        "11": {
+          "patterns": [
+            {
+              "include": "#state-direction-text"
+            }
+          ]
+        },
+        "12": {
+          "name": "keyword.control.mermaid"
+        },
+        "13": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "14": {
+          "name": "constant.language.mermaid"
+        },
+        "15": {
+          "patterns": [
+            {
+              "include": "#state-direction-text"
+            }
+          ]
+        },
+        "16": {
+          "patterns": [
+            {
+              "include": "#state-direction-text"
+            }
+          ]
+        },
+        "17": {
+          "name": "keyword.control.mermaid"
+        },
+        "18": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "19": {
+          "name": "constant.language.mermaid"
+        },
+        "20": {
+          "patterns": [
+            {
+              "include": "#state-direction-text"
+            }
+          ]
+        }
+      }
+    },
+    "state-string": {
+      "patterns": [
+        {
+          "comment": "A double quote starts a string ending at the next double quote, with no escape mechanism. Follows state.md#the-statement-context.",
+          "include": "#string-plain-double"
+        }
+      ]
+    },
+    "state-comments": {
+      "comment": "Hash and percent-percent not followed by { start comments only at unit starts; ids consume an internal hash and end before an internal percent pair. Entities do not start hash comments. Native comment text ends before a separator-led common comment; neither percent of its mark may belong to a directive. Follows state.md#comments and common.md#comment-lines.",
+      "patterns": [
+        {
+          "comment": "An entity is converted before lexical reading and cannot start a hash comment. Follows state.md#comments.",
+          "include": "#entity"
+        },
+        {
+          "comment": "Read the ignored percent pair directly before a composite body opener. Follows state.md#the-statement-context and state.md#composite-states-aliases-and-pseudostates.",
+          "match": "{{nonDirectivePercentPair}}(?={{directives}}\\{)",
+          "name": "comment.block.ignored.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Rule 8: hash and the rest of the line are a diagram comment. Follows state.md#the-statement-context.",
+          "name": "comment.line.number-sign.mermaid",
+          "match": "#(?:{{directive}}|(?!{{directiveStart}}|{{lineValueEnd}})[^\\r\\n])*",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Rule 9: percent-percent not followed by { and the rest of its line are a diagram comment. Follows state.md#the-statement-context.",
+          "name": "comment.line.percentage.mermaid",
+          "match": "{{state-percent-comment}}",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "state-scale": {
+      "comment": "Scale and whitespace enter the scale context, ASCII digits form a number, and whitespace followed by bounded width leaves it. Follows state.md#the-scale-context.",
+      "match": "((?i:scale))({{state-required-padding}})([0-9]+)({{state-required-padding}})((?i:width)){{wordEnd}}",
+      "captures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "constant.numeric.mermaid"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "5": {
+          "name": "keyword.control.mermaid"
+        }
+      }
+    },
+    "state-context-statements": {
+      "comment": "Rule 4: classDef, class, style and state precede the direction line in a composite body. Follows state.md#the-composite-body-context.",
+      "patterns": [
+        {
+          "include": "#state-style"
+        },
+        {
+          "include": "#state-class"
+        },
+        {
+          "match": "((?i:state))({{state-required-padding}})(?=(?:\"\"{{state-value-padding}})*\\{)",
+          "captures": {
+            "1": {
+              "name": "comment.block.ignored.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "comment": "Read state before a following body opener as ignored text. Follows state.md#the-statement-context."
+        },
+        {
+          "include": "#state-declaration"
+        }
+      ]
+    },
+    "state-style": {
+      "comment": "ClassDef reads one word class name and whitespace; style reads word characters and commas followed by whitespace; both then read comma-separated style-text to line end. Follows state.md#the-classdef-class-and-style-contexts.",
+      "begin": "((?i:classDef))({{state-required-padding}})({{state-word}})({{state-required-padding}})|((?i:style))({{state-required-padding}})({{state-style-ids}})({{state-required-padding}})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "variable.mermaid"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "5": {
+          "name": "keyword.control.mermaid"
+        },
+        "6": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "7": {
+          "name": "variable.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#state-comma"
+            }
+          ]
+        },
+        "8": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "{{lineValueEnd}}",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Read a style property name before its colon. Follows state.md#the-classdef-class-and-style-contexts.",
+          "match": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^,:\\r\\n])+(?=:)",
+          "captures": {
+            "0": {
+              "name": "support.type.property-name.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Read one whole style property value, leaving trailing whitespace outside its scope. Follows state.md#the-classdef-class-and-style-contexts.",
+          "begin": "(:)",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.separator.key-value.mermaid"
+            }
+          },
+          "end": "{{state-style-value-end}}",
+          "contentName": "support.constant.property-value.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "include": "#state-comma"
+        },
+        {
+          "comment": "Read a whole style without a property colon as one value, leaving trailing whitespace outside it. Follows state.md#the-classdef-class-and-style-contexts.",
+          "begin": "(?![{{ws}}]|[:,]|{{directiveStart}}|{{separatorCommentEnd}})(?=.)",
+          "end": "{{state-style-value-end}}",
+          "contentName": "support.constant.property-value.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#entity"
+            }
+          ]
+        }
+      ]
+    },
+    "state-class": {
+      "comment": "Class reads word ids separated by commas followed by optional whitespace, then the rest of the line as one css-class text, which can contain spaces and keywords. Follows state.md#the-classdef-class-and-style-contexts.",
+      "begin": "((?i:class))({{state-required-padding}})({{state-word}}(?:{{directives}},{{state-value-padding}}{{state-word}})*)",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "variable.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#state-comma"
+            }
+          ]
+        }
+      },
+      "end": "{{lineValueEnd}}",
+      "contentName": "variable.mermaid",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        }
+      ]
+    },
+    "state-declaration": {
+      "comment": "Read state and its required whitespace before its names, alias, pseudostate or body. Follows state.md#the-statement-context.",
+      "begin": "((?i:state))({{state-required-padding}})(?!{{state-value-padding}}\\{)",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "({{lineText}})(?i:(<<fork>>))|({{lineText}})(?i:(<<join>>))|({{lineText}})(?i:(<<choice>>))|({{lineText}})(?i:(\\[\\[fork\\]\\]))|({{lineText}})(?i:(\\[\\[join\\]\\]))|({{lineText}})(?i:(\\[\\[choice\\]\\]))|$|(?=\\{)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#state-comments"
+        },
+        {
+          "match": "\"\"",
+          "name": "comment.block.ignored.mermaid",
+          "comment": "Read an empty string in the state context as ignored text. Follows state.md#composite-states-aliases-and-pseudostates."
+        },
+        {
+          "include": "#state-string"
+        },
+        {
+          "comment": "Read an alias id and its optional description, retaining percent text before a same-line composite body as ignored text. Follows state.md#the-state-context and state.md#composite-states-aliases-and-pseudostates.",
+          "begin": "((?i:as))({{state-required-padding}})",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "{{lineValueEnd}}|(?=\\{)|(?={{nonDirectivePercentPair}})(?!(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\r\\n{])*\\{)",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read ignored percent text before an alias body, leaving its brace for the composite context. Follows state.md#the-state-context and state.md#composite-states-aliases-and-pseudostates.",
+              "match": "{{nonDirectivePercentPair}}(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^{\\r\\n])*(?=\\{)",
+              "name": "comment.block.ignored.mermaid",
+              "captures": {
+                "0": {
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "match": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}}|{{nonDirectivePercentPair}})[^{\\r\\n])+(?=\\{)",
+              "captures": {
+                "0": {
+                  "name": "variable.mermaid",
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              },
+              "comment": "Keep colons inside a composite alias's id. Follows state.md#the-state-context."
+            },
+            {
+              "comment": "Divide only the first colon of an alias without a following body; directives and entity semicolons belong to text. Follows state.md#the-state-context.",
+              "begin": ":(?!(?:{{directive}}|(?!{{directiveStart}}|{{nonDirectivePercentPair}})[^{\\r\\n])*\\{)",
+              "beginCaptures": {
+                "0": {
+                  "name": "punctuation.separator.colon.mermaid"
+                }
+              },
+              "end": "{{state-alias-end}}",
+              "patterns": [
+                {
+                  "include": "#directive"
+                },
+                {
+                  "begin": ":",
+                  "name": "comment.block.ignored.mermaid",
+                  "end": "{{state-alias-end}}",
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ],
+                  "comment": "Retain the suffix from the second colon as one ignored unit. Follows state.md#the-state-context."
+                },
+                {
+                  "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}}|{{nonDirectivePercentPair}})[^:{\\r\\n])+",
+                  "name": "string.unquoted.mermaid",
+                  "captures": {
+                    "0": {
+                      "patterns": [
+                        {
+                          "include": "#directive"
+                        }
+                      ]
+                    }
+                  },
+                  "comment": "Read an alias's second description. Follows state.md#the-state-context."
+                }
+              ]
+            },
+            {
+              "match": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}}|{{nonDirectivePercentPair}})[^:{\\r\\n])+",
+              "captures": {
+                "0": {
+                  "name": "variable.mermaid",
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              },
+              "comment": "Read the alias id before its description. Follows state.md#the-state-context."
+            }
+          ]
+        },
+        {
+          "comment": "Rule 8: state-name is one or more characters other than line feed, whitespace and {; embedded percent pairs, quotes and keyword-like suffixes are name characters. Directives end a name run. Follows state.md#the-state-context.",
+          "match": "(?:(?!{{directiveStart}})[^{{ws}}\\r\\n{])+",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ],
+              "name": "variable.mermaid"
+            }
+          }
+        }
+      ],
+      "endCaptures": {
+        "1": {
+          "name": "variable.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#state-pseudostate-mark"
+            }
+          ]
+        },
+        "3": {
+          "name": "variable.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#state-pseudostate-mark"
+            }
+          ]
+        },
+        "5": {
+          "name": "variable.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "6": {
+          "patterns": [
+            {
+              "include": "#state-pseudostate-mark"
+            }
+          ]
+        },
+        "7": {
+          "name": "variable.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "8": {
+          "patterns": [
+            {
+              "include": "#state-pseudostate-mark"
+            }
+          ]
+        },
+        "9": {
+          "name": "variable.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "10": {
+          "patterns": [
+            {
+              "include": "#state-pseudostate-mark"
+            }
+          ]
+        },
+        "11": {
+          "name": "variable.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "12": {
+          "patterns": [
+            {
+              "include": "#state-pseudostate-mark"
+            }
+          ]
+        }
+      }
+    },
+    "state-body": {
+      "comment": "{ starts a composite body, } closes it, and its rules include comments, classDef, class, style, state, direction, notes, terminals, ids, descriptions, arrows, dividers and class separators. Root-only accessibility, click, scale and hide keywords are ids here. Follows state.md#the-composite-body-context.",
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.operator.block.begin.mermaid"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "keyword.operator.block.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Rule 1: whitespace other than line feed is read before comments, state statements and direction lines. Follows state.md#the-composite-body-context.",
+          "match": "(?:(?!{{separatorCommentEnd}})[{{lws}}])+"
+        },
+        {
+          "include": "#state-comments"
+        },
+        {
+          "include": "#state-context-statements"
+        },
+        {
+          "include": "#state-direction"
+        },
+        {
+          "include": "#state-notes"
+        },
+        {
+          "comment": "Rule 13: -- is a divider unit in a composite body. Follows state.md#the-composite-body-context.",
+          "match": "--(?!{{directives}}>)",
+          "name": "punctuation.separator.divider.mermaid"
+        },
+        {
+          "include": "#state-units"
+        }
+      ]
+    },
+    "state-units": {
+      "comment": "Read terminals, ids, descriptions, transition arrows and class separators. Follows state.md#states-and-transitions.",
+      "patterns": [
+        {
+          "comment": "Read the terminal state reference in an id position. Follows state.md#states-and-transitions.",
+          "match": "\\[\\*\\]",
+          "name": "variable.mermaid"
+        },
+        {
+          "comment": "Rule 25: --> is the transition arrow. Follows state.md#the-statement-context.",
+          "match": "-->",
+          "name": "keyword.operator.arrow.mermaid"
+        },
+        {
+          "comment": "Rule 26: ::: is a class separator. Follows state.md#the-statement-context.",
+          "match": ":::",
+          "name": "punctuation.separator.class.mermaid"
+        },
+        {
+          "include": "#state-description"
+        },
+        {
+          "comment": "An id is a maximal run excluding colon, whitespace, line feed, hyphen and {; internal percent pairs end it and internal hashes are characters. Ids carry the element-name scope. Follows state.md#units-and-contexts.",
+          "match": "(?:{{entity}}|(?!{{directiveStart}}|{{nonDirectivePercentPair}})[^:{{ws}}\\r\\n{\\-])+",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ],
+              "name": "variable.mermaid"
+            }
+          }
+        }
+      ]
+    },
+    "state-description": {
+      "comment": "Rule 24: colon introduces a description of non-colon/non-semicolon/non-line-feed characters or a colon followed by such a character; percent pairs, hashes and keywords are text. Follows state.md#the-statement-context.",
+      "begin": "(:)(?={{directives}}(?:{{entity}}|[^:;\\r\\n]|:{{directives}}(?:{{entity}}|[^:;\\r\\n])))",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.separator.colon.mermaid"
+        }
+      },
+      "end": "{{lineValueEnd}}|(?=;|:{{state-colon-or-semicolon-end}})",
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Read one entity on one line without a scope of its own, retaining the surrounding text scope and the scopes of internal directives. Follows common.md#entities.",
+          "include": "#entity"
+        }
+      ]
+    },
+    "state-note-line": {
+      "comment": "Read a positioned line note, preserving its gap before the colon to scope a retained colon as text or an immediately dropped character as ignored text. Follows state.md#the-note-contexts.",
+      "begin": "{{state-note-header}}(?:({{directives}}(?:{{state-note-space}}{{directives}}){2,})(:)|({{whitespaceSeparator}})(:)|({{directives}})(:)((?:{{directive}})*(?!{{directiveStart}})[^{{ws}}:;\\r\\n])?)",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "constant.language.mermaid"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "5": {
+          "name": "keyword.control.mermaid"
+        },
+        "6": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ],
+          "name": "comment.block.ignored.mermaid"
+        },
+        "7": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "8": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "9": {
+          "name": "variable.mermaid"
+        },
+        "10": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "11": {
+          "name": "string.unquoted.mermaid"
+        },
+        "12": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "13": {
+          "name": "punctuation.separator.colon.mermaid"
+        },
+        "14": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "15": {
+          "name": "punctuation.separator.colon.mermaid"
+        },
+        "16": {
+          "name": "comment.block.ignored.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "{{lineValueEnd}}|{{state-colon-or-semicolon-end}}",
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Read one entity on one line without a scope of its own, retaining the surrounding text scope and the scopes of internal directives. Follows common.md#entities.",
+          "include": "#entity"
+        }
+      ]
+    },
+    "state-note-block": {
+      "comment": "A positioned note reads the same header as a line note, then text through a line feed, whitespace and bounded end note with exactly one space. Directives next to that space lie between the end and note units. Follows state.md#the-note-contexts.",
+      "begin": "{{state-note-header}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "constant.language.mermaid"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "5": {
+          "name": "keyword.control.mermaid"
+        },
+        "6": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ],
+          "name": "comment.block.ignored.mermaid"
+        },
+        "7": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "8": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "9": {
+          "name": "variable.mermaid"
+        }
+      },
+      "end": "^({{gap}})((?i:end))({{spaceSeparator}})((?i:note)){{wordEnd}}",
+      "endCaptures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.control.mermaid"
+        },
+        "3": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "4": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. Follows state.md#the-note-contexts.",
+          "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[\\s\\S])+",
+          "name": "string.unquoted.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "state-floating-note": {
+      "comment": "Note followed by one or more quotes, one floating-note-text and one or more quotes precedes as and a floating-note-id read to line end or a percent pair after its first character. Padding before an empty id stops before a separator-led common comment. Follows state.md#the-note-contexts.",
+      "begin": "((?i:note))({{state-required-padding}})(\"+)",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "string.quoted.double.mermaid punctuation.definition.string.begin.mermaid"
+        }
+      },
+      "end": "(\"+)({{state-value-padding}})((?i:as))({{state-value-padding}})({{state-floating-id}})(?={{lineValueEnd}})",
+      "endCaptures": {
+        "1": {
+          "name": "string.quoted.double.mermaid punctuation.definition.string.end.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "keyword.control.mermaid"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "5": {
+          "patterns": [
+            {
+              "match": "((?:{{entity}}|{{directive}}|(?!{{directiveStart}}).)(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{nonDirectivePercentPair}}).)*)({{state-percent-comment}})?",
+              "captures": {
+                "1": {
+                  "name": "variable.mermaid",
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                },
+                "2": {
+                  "name": "comment.line.percentage.mermaid",
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              },
+              "comment": "Read the floating note id up to a percent pair after its first character, then the native comment independently. Follows state.md#the-note-contexts."
+            }
+          ]
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Floating note text ends at its quotes; excludes separator-led comments from the text run while the note context remains open. Follows state.md#the-note-contexts.",
+          "match": "(?:{{htmlTag}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\"])+",
+          "name": "string.quoted.double.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                },
+                {
+                  "include": "#html-tag"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "state-acc-descr-block": {
+      "comment": "Read the state-acc-descr-block form. Follows state.md#the-statement-context.",
+      "begin": "((?i:accDescr))({{state-value-padding}})(\\{)({{state-value-padding}})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "punctuation.definition.description.begin.mermaid"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "(\\})",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.definition.description.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. Follows state.md#accessibility-values.",
+          "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^}])+",
+          "name": "string.unquoted.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "state-accessibility-line": {
+      "comment": "Read the state-accessibility-line form. Follows state.md#the-statement-context.",
+      "begin": "((?i:accTitle|accDescr))({{state-value-padding}})(:)({{state-value-padding}})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "punctuation.separator.colon.mermaid"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "{{lineValueEnd}}",
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#directive"
+        }
+      ]
+    },
+    "state-notes": {
+      "comment": "Rule 19 and #the-composite-body-context rule 8: note enters the positioned or floating note contexts; in a composite body it follows the direction line. Follows state.md#the-statement-context.",
+      "patterns": [
+        {
+          "include": "#state-note-line"
+        },
+        {
+          "include": "#state-note-block"
+        },
+        {
+          "include": "#state-floating-note"
+        }
+      ]
+    },
+    "state-comma": {
+      "comment": "Each comma among ids is an id-comma unit and each comma among styles is a comma unit. Follows state.md#the-classdef-class-and-style-contexts.",
+      "match": ",",
+      "name": "punctuation.separator.comma.mermaid"
+    },
+    "state-direction-text": {
+      "comment": "Read the nonblank ignored text around a direction while retaining directives. Follows state.md#the-statement-context.",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "match": "(?=(?:{{directive}}|[{{ws}}])*(?!{{directiveStart}})[^{{ws}}])(?:{{directive}}|(?!{{directiveStart}}).)+",
+          "name": "comment.block.ignored.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "comment": "Read a nonblank direction-text unit. Follows state.md#the-statement-context."
+        }
+      ]
+    },
+    "state-pseudostate-mark": {
+      "comment": "Read a pseudostate's delimiters and fixed kind. Follows state.md#the-state-context.",
+      "patterns": [
+        {
+          "match": "<<|\\[\\[",
+          "name": "keyword.operator.shape.begin.mermaid",
+          "comment": "Read the opening pseudostate delimiter. Follows state.md#the-state-context."
+        },
+        {
+          "match": ">>|\\]\\]",
+          "name": "keyword.operator.shape.end.mermaid",
+          "comment": "Read the closing pseudostate delimiter. Follows state.md#the-state-context."
+        },
+        {
+          "match": "(?i:fork|join|choice)",
+          "name": "constant.language.mermaid",
+          "comment": "Read the pseudostate kind. Follows state.md#the-state-context."
+        }
+      ]
+    }
+  },
+  "comment": "The local padding variables retain the whitespace required by this type's unit rules, stopping before separator-led comments. Text and context variables below name the corresponding rules of this diagram. Follows state.md#units-and-contexts."
+}

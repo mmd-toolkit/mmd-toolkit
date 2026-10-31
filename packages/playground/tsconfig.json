@@ -6,7 +6,8 @@
     "isolatedDeclarations": false,
     "paths": {
       "@mmd-toolkit/parser": ["../parser/src/index.ts"],
-      "prettier-plugin-mmd": ["../prettier-plugin-mmd/src/index.ts"]
+      "prettier-plugin-mmd": ["../prettier-plugin-mmd/src/index.ts"],
+      "@mmd-toolkit/textmate-grammar": ["../textmate-grammar/src/index.ts"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.vue", "tests/**/*.ts", "*.ts"],

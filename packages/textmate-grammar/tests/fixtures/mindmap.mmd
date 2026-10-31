@@ -1,0 +1,57 @@
+mindmap root
+  mindmapLong
+  accTitle: title is node text
+  accDescr: title is also node text
+  circle(("Circle"))
+  square[Square]
+  rounded(Rounded)
+  hex{{Hexagon}}
+  cloud)Cloud(
+  bang))Bang((
+  -)Alone(-
+  (-"Quoted cloud"-)
+  markdown["`Markdown`"]
+  quote["Quoted %% title"]
+  ordinary[ title ::icon %% text]
+  root ::icon(x)
+  child[Label]%% native comment
+  ::ICON(fa:fa-book)
+  :::classLong title ::icon(x)
+  directive[A%%{init: {}}%%B]
+  ::icon(a%%{init: {}}%%b)
+  :::a%%{init: {}}%%b
+  plain%%{init: {}}%%text
+  123
+  --> is node text
+  %%{ }%%
+  a:::b
+  ::x
+  r-)text(-
+  directedString["A%%{init: {"theme": "dark"}}%%B"]
+  directed["%%{init: {}}%%`x`"]
+  html["<b title="x">label</b>"]
+  markdownHtml["`<b title="x">label</b>`"]
+  partial["a<b"]
+  bare[text%%{init: {}}%%note<b title="x">tag</b>]
+  directedCloser["`x`%%{init: {}}%%"]
+  HtmlCloser[<b x=")%% close">
+
+  BareCloser[text<b x=")%% bare close">
+
+  HtmlBracket[<b x="]%% bracket close">
+
+  HtmlParen[<b x="(%% paren close">
+
+  HtmlBrace[<b x="}}%% brace close">
+
+
+
+
+
+  Native[Label]%%%{wrap}%%% native %%{init: ")"}%% tail
+
+  Entity[<b x="#amp;">]
+
+  :::title ::icon(x)
+
+  Padded[Label] %%{wrap}%% %% native after padding

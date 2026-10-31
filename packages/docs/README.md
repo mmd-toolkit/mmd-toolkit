@@ -5,22 +5,32 @@ This private package builds the
 with VitePress.
 
 ```sh
-pnpm --filter @mmd-toolkit/parser --filter @mmd-toolkit/eslint-plugin build
+pnpm --filter @mmd-toolkit/parser --filter @mmd-toolkit/eslint-plugin --filter @mmd-toolkit/textmate-grammar build
 pnpm --filter @mmd-toolkit/docs dev
 pnpm --filter @mmd-toolkit/docs build
 pnpm --filter @mmd-toolkit/docs preview
 pnpm --filter @mmd-toolkit/docs test
 ```
 
-Build the parser and linter before running the site or its tests. Diagnostic
-markers execute the workspace linter while rendering pages; rebuild those
-packages after changing their implementation.
+Build the parser, the linter and the TextMate grammar before running the site or
+its tests. Diagnostic markers execute the workspace linter while rendering
+pages, and code blocks are colored with the built grammar; rebuild those
+packages after changing them.
 
 `mmd` code fences containing `%% eslint @mmd-toolkit/` use `twoslash-eslint` to
 show actual ESLint diagnostics on hover. Enable the rules an example
 demonstrates with `%% eslint <rule>: <config>` comments; the renderer registers
 the Mermaid language without enabling rules by default. Other fences are left as
 normal syntax-highlighted examples.
+
+`mmd` and `mermaid` code blocks are colored with the TextMate grammar of
+[`@mmd-toolkit/textmate-grammar`](../textmate-grammar/README.md).
+`.vitepress/highlighting.js` holds the language list used by
+`.vitepress/config.js` and the tests, with this grammar as the highlighter's
+`mermaid` language and the `yaml` grammar it embeds. The grammar is written for
+every diagram type from the specification of this repository. Do not also list
+`mermaid` by name in `languages`: Shiki's bundled grammar of that name would
+replace it.
 
 In `packages/eslint-plugin/docs/rules/`, begin every `mmd` example in both
 languages with `%% eslint @mmd-toolkit/<rule>: error`, using the rule described

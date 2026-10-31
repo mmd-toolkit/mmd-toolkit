@@ -1,0 +1,72 @@
+{
+  "patterns": [
+    {
+      "include": "#cynefin"
+    }
+  ],
+  "repository": {
+    "cynefin": {
+      "comment": "Read the bare or colon header; preserve directives between its components. Follows cynefin.md#detection and common.md#a-directive-is-a-token-boundary.",
+      "begin": "{{diagramStart}}(cynefin-beta)(?:({{directives}})(:)|(?={{directives}}(?:[{{ws}}]|%%|$)))",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "punctuation.separator.colon.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#hidden-yaml",
+          "comment": "Read native hidden YAML. Follows cynefin.md#native-hidden-forms-and-eol."
+        },
+        {
+          "include": "#hidden-directive",
+          "comment": "Read native hidden directives. Follows cynefin.md#native-hidden-forms-and-eol."
+        },
+        {
+          "include": "#native-percent-comment",
+          "comment": "Read native percent comments. Follows cynefin.md#native-hidden-forms-and-eol."
+        },
+        {
+          "include": "#common-statements",
+          "comment": "Read metadata line and block values. Follows cynefin.md#strings-and-common-values."
+        },
+        {
+          "comment": "Read the five fixed domain values. Follows cynefin.md#grammar and cynefin.md#ordered-units.",
+          "match": "complex|complicated|clear|chaotic|confusion",
+          "name": "constant.language.mermaid"
+        },
+        {
+          "comment": "Read an indivisible transition arrow. Follows cynefin.md#ordered-units.",
+          "match": "-->",
+          "name": "keyword.operator.arrow.mermaid"
+        },
+        {
+          "comment": "Read the transition-label separator. Follows cynefin.md#grammar.",
+          "match": ":",
+          "name": "punctuation.separator.colon.mermaid"
+        },
+        {
+          "include": "#string-escaped",
+          "comment": "Read an item or transition-label string. Follows cynefin.md#strings-and-common-values."
+        }
+      ]
+    }
+  }
+}

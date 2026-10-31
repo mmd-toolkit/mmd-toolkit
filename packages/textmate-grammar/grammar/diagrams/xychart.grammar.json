@@ -1,0 +1,303 @@
+{
+  "variables": {
+    "xychart-statement-end": "(?:(?=(?i:{{xychart-header}}|title|x-axis|y-axis|line|bar){{wordEnd}}|(?i:{{xychart-accessibility-keywords}}){{gap}}[:{]|;)|{{lineValueEnd}})",
+    "xychart-orientation-value": "(?i:vertical|horizontal)",
+    "xychart-accessibility-keywords": "accTitle|accDescr",
+    "xychart-header": "xychart(?i:-beta)?",
+    "xychart-list-begin": "(\\[)",
+    "xychart-list-end": "(\\])"
+  },
+  "patterns": [
+    {
+      "include": "#xychart"
+    }
+  ],
+  "repository": {
+    "xychart": {
+      "comment": "Begin at the lowercase detector prefix and accept either bounded beta spelling. Follows xychart.md#detection.",
+      "begin": "{{diagramStart}}({{xychart-header}}){{wordEnd}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#xychart-comment"
+        },
+        {
+          "comment": "Read another bounded header before statements. Follows xychart.md#diagram-and-statements.",
+          "match": "((?i:{{xychart-header}})){{wordEnd}}",
+          "captures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read the orientation as a listed fixed value; enclosing text contexts keep quoted words as text. Follows xychart.md#detection.",
+          "match": "{{xychart-orientation-value}}",
+          "name": "constant.language.mermaid"
+        },
+        {
+          "comment": "Read an accessibility keyword and its delimiter in the local context, retaining its distinct whitespace and end-of-text rules. Follows xychart.md#accessibility-values and common.md#comment-lines.",
+          "begin": "((?i:{{xychart-accessibility-keywords}})){{wordEnd}}",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          },
+          "end": "(?<=\\})|{{lineValueEnd}}",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read the colon and line value without consuming a possible comment boundary in the opening gap. Follows xychart.md#accessibility-values and common.md#comment-lines.",
+              "begin": "(:)",
+              "beginCaptures": {
+                "1": {
+                  "name": "punctuation.separator.colon.mermaid"
+                }
+              },
+              "end": "{{lineValueEnd}}",
+              "contentName": "string.unquoted.mermaid",
+              "patterns": [
+                {
+                  "include": "#comment-line"
+                },
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            {
+              "comment": "Read description text through its first closing brace, leaving separator-led common comments outside the value. Follows xychart.md#accessibility-values and common.md#comment-lines.",
+              "begin": "(\\{)",
+              "beginCaptures": {
+                "1": {
+                  "name": "punctuation.definition.description.begin.mermaid"
+                }
+              },
+              "end": "(\\})|{{separatorCommentEnd}}",
+              "endCaptures": {
+                "1": {
+                  "name": "punctuation.definition.description.end.mermaid"
+                }
+              },
+              "contentName": "string.unquoted.mermaid",
+              "patterns": [
+                {
+                  "include": "#comment-line"
+                },
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "comment": "Read a chart title until the next statement, separator or physical line end. Follows xychart.md#titles and common.md#comment-lines.",
+          "begin": "((?i:title)){{wordEnd}}",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          },
+          "end": "{{xychart-statement-end}}",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#xychart-comment"
+            },
+            {
+              "include": "#xychart-string"
+            },
+            {
+              "include": "#xychart-word"
+            }
+          ]
+        },
+        {
+          "comment": "Read an axis title and data in the axis context, keeping category digits as text. Follows xychart.md#the-axis-context and common.md#comment-lines.",
+          "begin": "((?i:x-axis|y-axis)){{wordEnd}}",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          },
+          "end": "{{xychart-statement-end}}",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#xychart-comment"
+            },
+            {
+              "comment": "Read a category list with textual digits. Follows xychart.md#the-category-context.",
+              "begin": "{{xychart-list-begin}}",
+              "beginCaptures": {
+                "1": {
+                  "name": "punctuation.section.brackets.begin.mermaid"
+                }
+              },
+              "end": "{{xychart-list-end}}",
+              "endCaptures": {
+                "1": {
+                  "name": "punctuation.section.brackets.end.mermaid"
+                }
+              },
+              "patterns": [
+                {
+                  "include": "#comment-line"
+                },
+                {
+                  "include": "#directive"
+                },
+                {
+                  "include": "#xychart-string"
+                },
+                {
+                  "include": "#xychart-word"
+                },
+                {
+                  "include": "#xychart-list-separator"
+                }
+              ]
+            },
+            {
+              "include": "#xychart-string"
+            },
+            {
+              "comment": "Read the three-character range arrow. Follows xychart.md#the-axis-context.",
+              "match": "-->",
+              "name": "keyword.operator.arrow.mermaid"
+            },
+            {
+              "include": "#xychart-number"
+            },
+            {
+              "include": "#xychart-word"
+            }
+          ]
+        },
+        {
+          "comment": "Read a plot title and its values, keeping title digits as text. Follows xychart.md#the-plot-context and common.md#comment-lines.",
+          "begin": "((?i:line|bar)){{wordEnd}}",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          },
+          "end": "{{xychart-statement-end}}",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#xychart-comment"
+            },
+            {
+              "comment": "Read a plot's bracketed values and optional quoted labels. Follows xychart.md#plots.",
+              "begin": "{{xychart-list-begin}}",
+              "beginCaptures": {
+                "1": {
+                  "name": "punctuation.section.brackets.begin.mermaid"
+                }
+              },
+              "end": "{{xychart-list-end}}",
+              "endCaptures": {
+                "1": {
+                  "name": "punctuation.section.brackets.end.mermaid"
+                }
+              },
+              "patterns": [
+                {
+                  "include": "#comment-line"
+                },
+                {
+                  "include": "#directive"
+                },
+                {
+                  "include": "#xychart-number"
+                },
+                {
+                  "include": "#xychart-string"
+                },
+                {
+                  "include": "#xychart-list-separator"
+                }
+              ]
+            },
+            {
+              "include": "#xychart-string"
+            },
+            {
+              "include": "#xychart-word"
+            }
+          ]
+        },
+        {
+          "comment": "Read a semicolon as a statement separator. Follows xychart.md#diagram-and-statements.",
+          "match": ";",
+          "name": "punctuation.separator.semicolon.mermaid"
+        }
+      ]
+    },
+    "xychart-string": {
+      "comment": "Reuse plain double-quoted strings without escapes. Follows xychart.md#strings.",
+      "include": "#string-plain-double"
+    },
+    "xychart-word": {
+      "comment": "Read word units as labels, preserving directives inside a run of letters or digits. Follows xychart.md#the-statement-context, xychart.md#directives-inside-units, and common.md#a-directive-is-a-token-boundary.",
+      "match": "[A-Za-z]+(?:{{directives}}[A-Za-z]+)*|[0-9]+(?:{{directives}}[0-9]+)*|[-_.+=*&#]",
+      "name": "string.unquoted.mermaid",
+      "captures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      }
+    },
+    "xychart-number": {
+      "comment": "Read a number in axis ranges and plot values. Follows xychart.md#the-axis-context.",
+      "match": "[+-]?(?:[0-9]+(?:\\.[0-9]+)?|\\.[0-9]+)",
+      "name": "constant.numeric.mermaid"
+    },
+    "xychart-comment": {
+      "comment": "Reuse native percent comments outside value text. Follows xychart.md#comments.",
+      "include": "#native-percent-comment"
+    },
+    "xychart-list-separator": {
+      "comment": "Read the separator of categories and plot values. Follows xychart.md#plots, xychart.md#the-category-context, and xychart.md#the-statement-context.",
+      "match": ",",
+      "name": "punctuation.separator.comma.mermaid"
+    }
+  }
+}

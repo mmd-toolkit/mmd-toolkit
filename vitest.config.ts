@@ -14,7 +14,7 @@ const config: ViteUserConfig = defineConfig({
       {
         test: {
           name: "scripts",
-          include: ["scripts/**/*.test.mjs"],
+          include: ["scripts/**/*.test.mjs", ".claude/hooks/**/*.test.mjs"],
         },
       },
     ],

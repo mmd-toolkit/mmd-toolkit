@@ -1,0 +1,65 @@
+{
+  "patterns": [
+    {
+      "include": "#pie"
+    }
+  ],
+  "repository": {
+    "pie": {
+      "comment": "Begin pie at its lowercase header and retain its keyword boundary through following directives. Follows pie.md#detection and pie.md#keyword-boundaries.",
+      "begin": "{{diagramStart}}(pie){{pie-keyword-end}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Read the bounded showData flag. Follows pie.md#keyword-boundaries.",
+          "match": "showData{{pie-keyword-end}}",
+          "name": "keyword.control.mermaid"
+        },
+        {
+          "comment": "Reuse the common title and accessibility forms. Follows pie.md#composite-common-forms.",
+          "include": "#common-statements"
+        },
+        {
+          "comment": "Reuse matching quoted strings and backslash escapes. Follows pie.md#strings.",
+          "include": "#string-escaped"
+        },
+        {
+          "comment": "Read a numeric section value and check the dot boundary through following directives. Follows pie.md#numbers and common.md#a-directive-is-a-token-boundary.",
+          "match": "-?(?:[0-9]+\\.[0-9]+|0|[1-9][0-9]*)(?!{{directives}}\\.)",
+          "name": "constant.numeric.mermaid"
+        },
+        {
+          "comment": "Read the separator between a section label and its value. Follows pie.md#grammar.",
+          "match": ":",
+          "name": "punctuation.separator.colon.mermaid"
+        },
+        {
+          "comment": "Reuse the native hidden YAML context, including its shared line-based approximation. Follows pie.md#hidden-yaml.",
+          "include": "#hidden-yaml"
+        },
+        {
+          "comment": "Reuse the native hidden directive form. Follows pie.md#hidden-directive.",
+          "include": "#hidden-directive"
+        },
+        {
+          "comment": "Reuse the native percent comment form. Follows pie.md#comments.",
+          "include": "#native-percent-comment"
+        }
+      ]
+    }
+  },
+  "variables": {
+    "pie-keyword-end": "(?={{directives}}(?:[{{ws}}]|%%|$))"
+  }
+}

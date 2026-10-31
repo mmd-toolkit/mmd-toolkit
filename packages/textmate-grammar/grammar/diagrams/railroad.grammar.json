@@ -1,0 +1,462 @@
+{
+  "patterns": [
+    {
+      "include": "#railroad-ir"
+    },
+    {
+      "include": "#railroad-ebnf"
+    },
+    {
+      "include": "#railroad-abnf"
+    },
+    {
+      "include": "#railroad-peg"
+    }
+  ],
+  "repository": {
+    "railroad-ir": {
+      "comment": "Read the lowercase IR header and its following boundary. Follows railroad.md#shared-scanning-and-header-boundaries.",
+      "begin": "{{diagramStart}}(railroad-beta){{railroad-header-end}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#hidden-yaml",
+          "comment": "Read native hidden YAML. Follows railroad.md#native-hidden-forms."
+        },
+        {
+          "include": "#hidden-directive",
+          "comment": "Read a native hidden directive. Follows railroad.md#native-hidden-forms."
+        },
+        {
+          "include": "#native-percent-comment",
+          "comment": "Read native percent comments. Follows railroad.md#native-comments."
+        },
+        {
+          "include": "#railroad-c-comment"
+        },
+        {
+          "include": "#common-statements",
+          "comment": "Read title and accessibility metadata. Follows railroad.md#metadata-units."
+        },
+        {
+          "comment": "Read the eight IR constructor keywords. Follows railroad.md#ir-units.",
+          "match": "(nonterminal|zeroOrMore|oneOrMore|sequence|optional|terminal|special|choice){{wordEnd}}(?!{{directives}}-)",
+          "captures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read rule separators and the brackets and commas of IR calls. Follows railroad.md#ir-units.",
+          "match": "(=)|(;)|(\\()|(,)|(\\))",
+          "captures": {
+            "1": {
+              "name": "keyword.operator.mermaid"
+            },
+            "2": {
+              "name": "punctuation.separator.rule.mermaid"
+            },
+            "3": {
+              "name": "punctuation.section.arguments.begin.mermaid"
+            },
+            "4": {
+              "name": "punctuation.separator.comma.mermaid"
+            },
+            "5": {
+              "name": "punctuation.section.arguments.end.mermaid"
+            }
+          }
+        },
+        {
+          "include": "#string-escaped",
+          "comment": "Read quoted strings with the dialect's escape rules. Follows railroad.md#ir-units."
+        },
+        {
+          "comment": "Read a rule name or reference. Follows railroad.md#ir-units.",
+          "include": "#railroad-name"
+        }
+      ]
+    },
+    "railroad-ebnf": {
+      "comment": "Read the lowercase EBNF header and its following boundary. Follows railroad.md#shared-scanning-and-header-boundaries.",
+      "begin": "{{diagramStart}}(railroad-ebnf-beta){{railroad-header-end}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#hidden-yaml",
+          "comment": "Read native hidden YAML. Follows railroad.md#native-hidden-forms."
+        },
+        {
+          "include": "#hidden-directive",
+          "comment": "Read a native hidden directive. Follows railroad.md#native-hidden-forms."
+        },
+        {
+          "include": "#native-percent-comment",
+          "comment": "Read native percent comments. Follows railroad.md#native-comments."
+        },
+        {
+          "include": "#railroad-c-comment"
+        },
+        {
+          "comment": "Read an ISO block comment; read directives whole and common comments independently. Follows railroad.md#native-comments, common.md#a-directive-is-a-token-boundary, and common.md#comment-lines.",
+          "begin": "\\({{directives}}\\*",
+          "end": "\\*{{directives}}\\)",
+          "name": "comment.block.mermaid",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            }
+          ],
+          "beginCaptures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "include": "#common-statements",
+          "comment": "Read title and accessibility metadata. Follows railroad.md#metadata-units."
+        },
+        {
+          "comment": "Read special-sequence text, retaining directives and entities. Follows railroad.md#ebnf-units and common.md#a-directive-is-a-token-boundary.",
+          "match": "(\\?)((?={{gap}}(?:{{entity}}|(?!{{directiveStart}})[^{{ws}}?;]))(?:(?!{{separatorCommentEnd}})(?:{{directive}}|{{entity}}|(?!{{directiveStart}})[^?;\\r\\n]))+)(\\?)",
+          "captures": {
+            "1": {
+              "name": "punctuation.definition.special-sequence.begin.mermaid"
+            },
+            "2": {
+              "name": "string.unquoted.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.definition.special-sequence.end.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read operators, separators and grouping delimiters. Follows railroad.md#ebnf-units.",
+          "match": "(::=|=)|(;)|(\\|)|(,)|([(\\[{])|([)\\]}])|([?*+-])",
+          "captures": {
+            "1": {
+              "name": "keyword.operator.mermaid"
+            },
+            "2": {
+              "name": "punctuation.separator.rule.mermaid"
+            },
+            "3": {
+              "name": "keyword.operator.mermaid"
+            },
+            "4": {
+              "name": "punctuation.separator.comma.mermaid"
+            },
+            "5": {
+              "name": "punctuation.section.group.begin.mermaid"
+            },
+            "6": {
+              "name": "punctuation.section.group.end.mermaid"
+            },
+            "7": {
+              "name": "keyword.operator.mermaid"
+            }
+          }
+        },
+        {
+          "include": "#string-escaped",
+          "comment": "Read quoted strings with the dialect's escape rules. Follows railroad.md#ebnf-units."
+        },
+        {
+          "comment": "Read a rule name or reference. Follows railroad.md#ebnf-units.",
+          "include": "#railroad-name"
+        }
+      ]
+    },
+    "railroad-abnf": {
+      "comment": "Read the lowercase ABNF header and its following boundary. Follows railroad.md#shared-scanning-and-header-boundaries.",
+      "begin": "{{diagramStart}}(railroad-abnf-beta){{railroad-header-end}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Read an ABNF numeric-value spelling as text, retaining directives. Follows railroad.md#abnf-units and common.md#a-directive-is-a-token-boundary.",
+          "match": "%{{directives}}[xXdDbB]{{directives}}{{railroad-abnf-digits}}(?:[-.]{{directives}}{{railroad-abnf-digits}})*",
+          "name": "string.unquoted.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "include": "#hidden-yaml",
+          "comment": "Read native hidden YAML. Follows railroad.md#native-hidden-forms."
+        },
+        {
+          "include": "#hidden-directive",
+          "comment": "Read a native hidden directive. Follows railroad.md#native-hidden-forms."
+        },
+        {
+          "include": "#native-percent-comment",
+          "comment": "Read native percent comments. Follows railroad.md#native-comments."
+        },
+        {
+          "comment": "Read ABNF semicolon comments when longer than a terminator. Follows railroad.md#native-comments.",
+          "name": "comment.line.semicolon.mermaid",
+          "begin": ";(?={{directives}}(?!{{directiveStart}})[^\\r\\n])",
+          "end": "{{lineValueEnd}}",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "include": "#common-statements",
+          "comment": "Read title and accessibility metadata. Follows railroad.md#metadata-units."
+        },
+        {
+          "comment": "Read ABNF repeat bounds and a separate repeat operator. Follows railroad.md#abnf-units and railroad.md#common-directive-and-semicolon-boundaries.",
+          "match": "([0-9]*)({{directives}})(\\*)({{directives}})([0-9]*)|([0-9]+)",
+          "captures": {
+            "1": {
+              "name": "constant.numeric.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "keyword.operator.mermaid"
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "5": {
+              "name": "constant.numeric.mermaid"
+            },
+            "6": {
+              "name": "constant.numeric.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read operators, separators and grouping delimiters. Follows railroad.md#abnf-units.",
+          "match": "(=)|(;)|(/)|([(\\[])|([)\\]])",
+          "captures": {
+            "1": {
+              "name": "keyword.operator.mermaid"
+            },
+            "2": {
+              "name": "punctuation.separator.rule.mermaid"
+            },
+            "3": {
+              "name": "keyword.operator.mermaid"
+            },
+            "4": {
+              "name": "punctuation.section.group.begin.mermaid"
+            },
+            "5": {
+              "name": "punctuation.section.group.end.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read quoted strings with the dialect's escape rules. Follows railroad.md#abnf-units.",
+          "include": "#string-plain-double"
+        },
+        {
+          "comment": "Read a rule name or reference. Follows railroad.md#abnf-units.",
+          "match": "[A-Za-z][A-Za-z0-9-]*",
+          "name": "variable.mermaid"
+        }
+      ]
+    },
+    "railroad-peg": {
+      "comment": "Read the lowercase PEG header and its following boundary. Follows railroad.md#shared-scanning-and-header-boundaries.",
+      "begin": "{{diagramStart}}(railroad-peg-beta){{railroad-header-end}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#hidden-yaml",
+          "comment": "Read native hidden YAML. Follows railroad.md#native-hidden-forms."
+        },
+        {
+          "include": "#hidden-directive",
+          "comment": "Read a native hidden directive. Follows railroad.md#native-hidden-forms."
+        },
+        {
+          "include": "#native-percent-comment",
+          "comment": "Read native percent comments. Follows railroad.md#native-comments."
+        },
+        {
+          "comment": "Read PEG hash comments outside entities. Follows railroad.md#native-comments.",
+          "name": "comment.line.number-sign.mermaid",
+          "begin": "(?!{{entity}})#",
+          "end": "{{lineValueEnd}}",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "include": "#common-statements",
+          "comment": "Read title and accessibility metadata. Follows railroad.md#metadata-units."
+        },
+        {
+          "comment": "Read operators, separators and grouping delimiters. Follows railroad.md#peg-units.",
+          "match": "(<-)|(;)|(/)|([&!])|([?*+])|(\\()|(\\))|(\\.)",
+          "captures": {
+            "1": {
+              "name": "keyword.operator.arrow.mermaid"
+            },
+            "2": {
+              "name": "punctuation.separator.rule.mermaid"
+            },
+            "3": {
+              "name": "keyword.operator.mermaid"
+            },
+            "4": {
+              "name": "keyword.operator.mermaid"
+            },
+            "5": {
+              "name": "keyword.operator.mermaid"
+            },
+            "6": {
+              "name": "punctuation.section.group.begin.mermaid"
+            },
+            "7": {
+              "name": "punctuation.section.group.end.mermaid"
+            },
+            "8": {
+              "name": "keyword.operator.mermaid"
+            }
+          }
+        },
+        {
+          "include": "#string-escaped",
+          "comment": "Read quoted strings with the dialect's escape rules. Follows railroad.md#peg-units."
+        },
+        {
+          "comment": "Read a rule name or reference. Follows railroad.md#peg-units.",
+          "include": "#railroad-name"
+        }
+      ]
+    },
+    "railroad-c-comment": {
+      "comment": "Read a C block comment with independent directives and common comments. Follows railroad.md#native-comments, common.md#a-directive-is-a-token-boundary, and common.md#comment-lines.",
+      "begin": "/{{directives}}\\*",
+      "end": "\\*{{directives}}/",
+      "name": "comment.block.mermaid",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        }
+      ],
+      "beginCaptures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      }
+    },
+    "railroad-name": {
+      "comment": "Read a name in IR, EBNF or PEG. Follows railroad.md#ir-units, railroad.md#ebnf-units, and railroad.md#peg-units.",
+      "match": "[A-Za-z_][A-Za-z0-9_-]*",
+      "name": "variable.mermaid"
+    }
+  },
+  "variables": {
+    "railroad-abnf-digits": "[0-9A-Fa-f](?:[0-9A-Fa-f]|{{directive}})*",
+    "railroad-header-end": "(?={{directives}}(?:[{{ws}}]|%%|$))"
+  }
+}
