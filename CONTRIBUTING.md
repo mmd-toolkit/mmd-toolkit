@@ -46,7 +46,9 @@ On a push to `main`, the Release workflow opens a pull request that bumps the
 versions and writes the changelogs. It makes that pull request with
 `pnpm run version:ci`, which runs `changeset version` and then
 `pnpm run update`, so the generated files in it are up to date. Merging that
-pull request publishes the packages.
+pull request publishes the packages. The specification, `@mmd-toolkit/spec`, is
+not published to npm; a release gives it a version, a changelog entry, and the
+git tag `@mmd-toolkit/spec@<version>`.
 
 ## Where things are
 
