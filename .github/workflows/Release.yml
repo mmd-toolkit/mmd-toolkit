@@ -38,10 +38,6 @@ jobs:
       # built parser; the publish step builds again through `prerelease`.
       - name: Build
         run: pnpm run build
-      # Version 2 of the action reads what `changeset publish` (Changesets 3)
-      # released from the file named by CHANGESETS_OUTPUT, which the publish
-      # script passes on, and pushes the tags and creates the GitHub releases
-      # of those packages.
       - name: Create Release Pull Request or Publish to npm
         uses: changesets/action@v2
         with:
