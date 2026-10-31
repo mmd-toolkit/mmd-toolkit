@@ -1,0 +1,462 @@
+{
+  "patterns": [
+    {
+      "include": "#railroad-ir"
+    },
+    {
+      "include": "#railroad-ebnf"
+    },
+    {
+      "include": "#railroad-abnf"
+    },
+    {
+      "include": "#railroad-peg"
+    }
+  ],
+  "repository": {
+    "railroad-ir": {
+      "comment": "Read the lowercase IR header and its following boundary. railroad.md#shared-scanning-and-header-boundaries: Their only custom keyword is their header. It must end immediately before `%%`, common Notation whitespace or EOF; the boundary is not consumed. Keywords otherwise use exact case.",
+      "begin": "{{diagramStart}}(railroad-beta){{railroad-header-end}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#hidden-yaml",
+          "comment": "Read native hidden YAML. railroad.md#native-hidden-forms: At a unit boundary, hidden-yaml starts with `---`, zero or more ASCII spaces/tabs and LF; raw CRLF is equivalent after common line conversion. An optional body ends with LF before the closing `---`. Try the body-present alternative first, taking as few body characters as allow a qualifying closer; only if that fails use the empty-body alternative. Thus adjacent fences can pass an apparent closer and hide intervening rules when a later closer exists."
+        },
+        {
+          "include": "#hidden-directive",
+          "comment": "Read a native hidden directive. railroad.md#native-hidden-forms: A hidden-directive starts with `%%{` and ends at the first `}%%` followed by LF, Notation whitespace or EOF. Consume an immediately following LF; the other boundary characters are only looked at. A closer without that boundary is passed in search of a later qualifying closer. If no native directive matches, native-percent-comment may take its opening line instead."
+        },
+        {
+          "include": "#native-percent-comment",
+          "comment": "Read native percent comments. railroad.md#native-comments: A native-percent-comment starts with `%%` and reads to CR/LF or EOF, excluding that line terminator; even bare `%%` qualifies."
+        },
+        {
+          "include": "#railroad-c-comment"
+        },
+        {
+          "include": "#common-statements",
+          "comment": "Read title and accessibility metadata. railroad.md#metadata-units: All four grammars try title-line, acc-title-line, then acc-descr-line or acc-descr-block before names. A title-line is `title`, optionally followed by exactly one ASCII space/tab separator and line content. Content extends to CR/LF or the first `%%`, whichever comes first. The separator is required for nonempty title content; bare `title` is still a complete unit and has no word boundary."
+        },
+        {
+          "comment": "Read the eight IR constructor keywords. railroad.md#ir-units: IR tries its header first, then the constructors `nonterminal`, `zeroOrMore`, `oneOrMore`, `sequence`, `optional`, `terminal`, `special`, `choice`, then `= ; ( , )`, metadata, ir-name, ir-string, native padding, hidden-yaml, hidden-directive, native-percent-comment and C-comment, in that order. The header and constructors have ir-name as their longer alternative; other punctuation has none.",
+          "match": "(nonterminal|zeroOrMore|oneOrMore|sequence|optional|terminal|special|choice){{wordEnd}}(?!{{directives}}-)",
+          "captures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read operators, separators and grouping delimiters. railroad.md#ir-units: IR tries its header first, then the constructors `nonterminal`, `zeroOrMore`, `oneOrMore`, `sequence`, `optional`, `terminal`, `special`, `choice`, then `= ; ( , )`, metadata, ir-name, ir-string, native padding, hidden-yaml, hidden-directive, native-percent-comment and C-comment, in that order. The header and constructors have ir-name as their longer alternative; other punctuation has none.",
+          "match": "(=)|(;)|(\\()|(,)|(\\))",
+          "captures": {
+            "1": {
+              "name": "keyword.operator.mermaid"
+            },
+            "2": {
+              "name": "punctuation.separator.rule.mermaid"
+            },
+            "3": {
+              "name": "punctuation.section.parens.begin.mermaid"
+            },
+            "4": {
+              "name": "punctuation.separator.comma.mermaid"
+            },
+            "5": {
+              "name": "punctuation.section.parens.end.mermaid"
+            }
+          }
+        },
+        {
+          "include": "#string-escaped",
+          "comment": "Read quoted strings with the dialect's escape rules. railroad.md#ir-units: An ir-string uses matching single or double quotes. It may be empty and may contain physical line breaks. Read nonquote, nonbackslash characters, or a backslash and one following character, until the matching unescaped quote. The character after a backslash cannot be CR, LF, U+2028 or U+2029. A missing quote rejects; there are no number units in IR."
+        },
+        {
+          "comment": "Read a rule name or reference. railroad.md#ir-units: An ir-name starts with an ASCII letter or underscore and continues with word characters or hyphens, taking as many as possible. A constructor prefix followed by more name characters is a name; an exact constructor cannot be a rule name. The earlier metadata title prefix still takes `title` from a longer name, as described below.",
+          "include": "#railroad-name"
+        }
+      ]
+    },
+    "railroad-ebnf": {
+      "comment": "Read the lowercase EBNF header and its following boundary. railroad.md#shared-scanning-and-header-boundaries: Their only custom keyword is their header. It must end immediately before `%%`, common Notation whitespace or EOF; the boundary is not consumed. Keywords otherwise use exact case.",
+      "begin": "{{diagramStart}}(railroad-ebnf-beta){{railroad-header-end}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#hidden-yaml",
+          "comment": "Read native hidden YAML. railroad.md#native-hidden-forms: At a unit boundary, hidden-yaml starts with `---`, zero or more ASCII spaces/tabs and LF; raw CRLF is equivalent after common line conversion. An optional body ends with LF before the closing `---`. Try the body-present alternative first, taking as few body characters as allow a qualifying closer; only if that fails use the empty-body alternative. Thus adjacent fences can pass an apparent closer and hide intervening rules when a later closer exists."
+        },
+        {
+          "include": "#hidden-directive",
+          "comment": "Read a native hidden directive. railroad.md#native-hidden-forms: A hidden-directive starts with `%%{` and ends at the first `}%%` followed by LF, Notation whitespace or EOF. Consume an immediately following LF; the other boundary characters are only looked at. A closer without that boundary is passed in search of a later qualifying closer. If no native directive matches, native-percent-comment may take its opening line instead."
+        },
+        {
+          "include": "#native-percent-comment",
+          "comment": "Read native percent comments. railroad.md#native-comments: A native-percent-comment starts with `%%` and reads to CR/LF or EOF, excluding that line terminator; even bare `%%` qualifies."
+        },
+        {
+          "include": "#railroad-c-comment"
+        },
+        {
+          "comment": "Read an ISO block comment; read directives whole and common comments independently. railroad.md#native-comments: EBNF also has ISO-comment, `(*` through the first `*)`. railroad.md#native-comments: Block comments do not nest, can contain all line-separator characters and require their closer. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "begin": "\\({{directives}}\\*",
+          "end": "\\*{{directives}}\\)",
+          "name": "comment.block.mermaid",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            }
+          ],
+          "beginCaptures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "include": "#common-statements",
+          "comment": "Read title and accessibility metadata. railroad.md#metadata-units: All four grammars try title-line, acc-title-line, then acc-descr-line or acc-descr-block before names. A title-line is `title`, optionally followed by exactly one ASCII space/tab separator and line content. Content extends to CR/LF or the first `%%`, whichever comes first. The separator is required for nonempty title content; bare `title` is still a complete unit and has no word boundary."
+        },
+        {
+          "comment": "Read special-sequence text, retaining directives and entities. railroad.md#ebnf-units: A special-sequence is `?`, content with no `?` or `;` and at least one nonwhitespace character, then the first `?`. Its content can include physical newlines, U+2028 and U+2029; backslashes and quotes do not protect a closer. Empty or whitespace-only content does not make this unit. A longer special-sequence wins over postfix `?`, so `\"a\"? \"b\"?` is a sequence of a string and a special sequence, not two optional strings. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text.",
+          "match": "(\\?)((?={{gap}}(?:{{entity}}|(?!{{directiveStart}})[^{{ws}}?;]))(?:(?!{{separatorCommentEnd}})(?:{{directive}}|{{entity}}|(?!{{directiveStart}})[^?;\\r\\n]))+)(\\?)",
+          "captures": {
+            "1": {
+              "name": "punctuation.definition.special-sequence.begin.mermaid"
+            },
+            "2": {
+              "name": "string.unquoted.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.definition.special-sequence.end.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read operators, separators and grouping delimiters. railroad.md#ebnf-units: EBNF tries its header, `::=`, `= ; | , ( ) [ ] { } ? * + -`, metadata, ebnf-name, ebnf-string, special-sequence, native padding, hidden-yaml, hidden-directive, native-percent-comment, C-comment and ISO-comment. Its header has ebnf-name as a longer alternative; `(` has ISO-comment, `?` has special-sequence and `-` has hidden-yaml. No other EBNF punctuation has a longer alternative.",
+          "match": "(::=|=)|(;)|(\\|)|(,)|([(\\[{])|([)\\]}])|([?*+-])",
+          "captures": {
+            "1": {
+              "name": "keyword.operator.mermaid"
+            },
+            "2": {
+              "name": "punctuation.separator.rule.mermaid"
+            },
+            "3": {
+              "name": "keyword.operator.mermaid"
+            },
+            "4": {
+              "name": "punctuation.separator.comma.mermaid"
+            },
+            "5": {
+              "name": "punctuation.section.group.begin.mermaid"
+            },
+            "6": {
+              "name": "punctuation.section.group.end.mermaid"
+            },
+            "7": {
+              "name": "keyword.operator.mermaid"
+            }
+          }
+        },
+        {
+          "include": "#string-escaped",
+          "comment": "Read quoted strings with the dialect's escape rules. railroad.md#ebnf-units: An ebnf-string has matching single or double quotes, can be empty and can contain physical line breaks. A backslash takes exactly the next character except CR, LF, U+2028 and U+2029; an unescaped matching quote closes it. Unclosed strings reject. There is no independent EBNF number unit."
+        },
+        {
+          "comment": "Read a rule name or reference. railroad.md#ebnf-units: An ebnf-name starts with an ASCII letter or underscore and continues maximally with word characters or hyphens. In particular, `A-B` is one name; `A - B` has an exception operator. Without the required colon or brace, an accTitle/accDescr prefix can be a name, whereas the earlier title prefix is taken even from a longer name.",
+          "include": "#railroad-name"
+        }
+      ]
+    },
+    "railroad-abnf": {
+      "comment": "Read the lowercase ABNF header and its following boundary. railroad.md#shared-scanning-and-header-boundaries: Their only custom keyword is their header. It must end immediately before `%%`, common Notation whitespace or EOF; the boundary is not consumed. Keywords otherwise use exact case.",
+      "begin": "{{diagramStart}}(railroad-abnf-beta){{railroad-header-end}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Read an ABNF numeric-value spelling as text, retaining directives. railroad.md#abnf-units: An abnf-numeric-value is `%`, one of `x X d D b B`, a nonempty maximal run of hexadecimal digits, then zero or more `-` or `.` separators each followed by another nonempty run of hexadecimal digits. Here hexadecimal digits are ASCII `0`–`9`, `A`–`F` and `a`–`f`. Do not validate digits against the base letter or range order. Preserve the whole spelling as text; `%x41Z` is followed by a separate reference Z. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text.",
+          "match": "%{{directives}}[xXdDbB]{{directives}}{{railroad-abnf-digits}}(?:[-.]{{directives}}{{railroad-abnf-digits}})*",
+          "name": "string.unquoted.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "include": "#hidden-yaml",
+          "comment": "Read native hidden YAML. railroad.md#native-hidden-forms: At a unit boundary, hidden-yaml starts with `---`, zero or more ASCII spaces/tabs and LF; raw CRLF is equivalent after common line conversion. An optional body ends with LF before the closing `---`. Try the body-present alternative first, taking as few body characters as allow a qualifying closer; only if that fails use the empty-body alternative. Thus adjacent fences can pass an apparent closer and hide intervening rules when a later closer exists."
+        },
+        {
+          "include": "#hidden-directive",
+          "comment": "Read a native hidden directive. railroad.md#native-hidden-forms: A hidden-directive starts with `%%{` and ends at the first `}%%` followed by LF, Notation whitespace or EOF. Consume an immediately following LF; the other boundary characters are only looked at. A closer without that boundary is passed in search of a later qualifying closer. If no native directive matches, native-percent-comment may take its opening line instead."
+        },
+        {
+          "include": "#native-percent-comment",
+          "comment": "Read native percent comments. railroad.md#native-comments: A native-percent-comment starts with `%%` and reads to CR/LF or EOF, excluding that line terminator; even bare `%%` qualifies."
+        },
+        {
+          "comment": "Read ABNF semicolon comments when longer than a terminator. railroad.md#native-comments: In ABNF, semicolon-comment starts with `;` and reads to CR/LF or EOF. Only a match longer than the single-character terminator wins its longer alternative. A bare `;` is therefore punctuation, whereas `;` followed by a space or other line text becomes a comment, including where a rule terminator was intended.",
+          "name": "comment.line.semicolon.mermaid",
+          "begin": ";(?={{directives}}(?!{{directiveStart}})[^\\r\\n])",
+          "end": "{{lineValueEnd}}",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "include": "#common-statements",
+          "comment": "Read title and accessibility metadata. railroad.md#metadata-units: All four grammars try title-line, acc-title-line, then acc-descr-line or acc-descr-block before names. A title-line is `title`, optionally followed by exactly one ASCII space/tab separator and line content. Content extends to CR/LF or the first `%%`, whichever comes first. The separator is required for nonempty title content; bare `title` is still a complete unit and has no word boundary."
+        },
+        {
+          "comment": "Read ABNF repeat bounds and a separate repeat operator. railroad.md#abnf-units: An abnf-count is a maximal nonempty run of ASCII decimal digits. A star-repeat consists of an optional count, `*`, and an optional count; an exact-repeat consists of one count. Ordinary whitespace and native hidden forms cannot occur within either repeat, but can occur between a complete repeat and its primary. Both counts may be omitted, and leading zeroes are allowed. railroad.md#common-directive-and-semicolon-boundaries: The pieces of an ABNF repeat are its decimal bounds and star, even though native matching requires them to be adjacent.",
+          "match": "([0-9]*)({{directives}})(\\*)({{directives}})([0-9]*)|([0-9]+)",
+          "captures": {
+            "1": {
+              "name": "constant.numeric.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "keyword.operator.mermaid"
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "5": {
+              "name": "constant.numeric.mermaid"
+            },
+            "6": {
+              "name": "constant.numeric.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read operators, separators and grouping delimiters. railroad.md#abnf-units: ABNF tries its header, `= ; / ( ) [ ]`, metadata, abnf-name, abnf-string, abnf-numeric-value, star-repeat, exact-repeat, native padding, hidden-yaml, hidden-directive, native-percent-comment and semicolon-comment. Its header has abnf-name as a longer alternative; `;` has semicolon-comment. There are no other longer alternatives.",
+          "match": "(=)|(;)|(/)|([(\\[])|([)\\]])",
+          "captures": {
+            "1": {
+              "name": "keyword.operator.mermaid"
+            },
+            "2": {
+              "name": "punctuation.separator.rule.mermaid"
+            },
+            "3": {
+              "name": "keyword.operator.mermaid"
+            },
+            "4": {
+              "name": "punctuation.section.group.begin.mermaid"
+            },
+            "5": {
+              "name": "punctuation.section.group.end.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read quoted strings with the dialect's escape rules. railroad.md#abnf-units: An abnf-string starts with a double quote and takes every character through the next double quote; it can be empty and include physical newlines, U+2028 and U+2029. Backslash is ordinary content and never protects a quote. Single quotes and a missing closing double quote reject.",
+          "include": "#string-plain-double"
+        },
+        {
+          "comment": "Read a rule name or reference. railroad.md#abnf-units: An abnf-name starts with an ASCII letter, then takes as many ASCII letters, digits or hyphens as possible. Underscores and non-ASCII letters are not name characters. The earlier metadata prefix rules apply before names, including references.",
+          "match": "[A-Za-z][A-Za-z0-9-]*",
+          "name": "variable.mermaid"
+        }
+      ]
+    },
+    "railroad-peg": {
+      "comment": "Read the lowercase PEG header and its following boundary. railroad.md#shared-scanning-and-header-boundaries: Their only custom keyword is their header. It must end immediately before `%%`, common Notation whitespace or EOF; the boundary is not consumed. Keywords otherwise use exact case.",
+      "begin": "{{diagramStart}}(railroad-peg-beta){{railroad-header-end}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#hidden-yaml",
+          "comment": "Read native hidden YAML. railroad.md#native-hidden-forms: At a unit boundary, hidden-yaml starts with `---`, zero or more ASCII spaces/tabs and LF; raw CRLF is equivalent after common line conversion. An optional body ends with LF before the closing `---`. Try the body-present alternative first, taking as few body characters as allow a qualifying closer; only if that fails use the empty-body alternative. Thus adjacent fences can pass an apparent closer and hide intervening rules when a later closer exists."
+        },
+        {
+          "include": "#hidden-directive",
+          "comment": "Read a native hidden directive. railroad.md#native-hidden-forms: A hidden-directive starts with `%%{` and ends at the first `}%%` followed by LF, Notation whitespace or EOF. Consume an immediately following LF; the other boundary characters are only looked at. A closer without that boundary is passed in search of a later qualifying closer. If no native directive matches, native-percent-comment may take its opening line instead."
+        },
+        {
+          "include": "#native-percent-comment",
+          "comment": "Read native percent comments. railroad.md#native-comments: A native-percent-comment starts with `%%` and reads to CR/LF or EOF, excluding that line terminator; even bare `%%` qualifies."
+        },
+        {
+          "comment": "Read PEG hash comments outside entities. railroad.md#native-comments: PEG hash-comment starts with `#` and reads to CR/LF or EOF, excluding that terminator; a bare hash also matches. U+2028 and U+2029 do not terminate native line comments. Hash comments are not IR, EBNF or ABNF comments; C comments are not ABNF or PEG comments, and ISO comments are EBNF-only.",
+          "name": "comment.line.number-sign.mermaid",
+          "begin": "(?!{{entity}})#",
+          "end": "{{lineValueEnd}}",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "include": "#common-statements",
+          "comment": "Read title and accessibility metadata. railroad.md#metadata-units: All four grammars try title-line, acc-title-line, then acc-descr-line or acc-descr-block before names. A title-line is `title`, optionally followed by exactly one ASCII space/tab separator and line content. Content extends to CR/LF or the first `%%`, whichever comes first. The separator is required for nonempty title content; bare `title` is still a complete unit and has no word boundary."
+        },
+        {
+          "comment": "Read operators, separators and grouping delimiters. railroad.md#peg-units: PEG tries its header, `<- ; / & ! ? * + ( ) .`, metadata, peg-name, peg-string, native padding, hidden-yaml, hidden-directive, native-percent-comment and hash-comment. Only its header has a longer alternative, peg-name. The assignment arrow is one authored delimiter; prefix and postfix operators are separate punctuation.",
+          "match": "(<-)|(;)|(/)|([&!])|([?*+])|(\\()|(\\))|(\\.)",
+          "captures": {
+            "1": {
+              "name": "keyword.operator.arrow.mermaid"
+            },
+            "2": {
+              "name": "punctuation.separator.rule.mermaid"
+            },
+            "3": {
+              "name": "keyword.operator.mermaid"
+            },
+            "4": {
+              "name": "keyword.operator.mermaid"
+            },
+            "5": {
+              "name": "keyword.operator.mermaid"
+            },
+            "6": {
+              "name": "punctuation.section.group.begin.mermaid"
+            },
+            "7": {
+              "name": "punctuation.section.group.end.mermaid"
+            },
+            "8": {
+              "name": "keyword.operator.mermaid"
+            }
+          }
+        },
+        {
+          "include": "#string-escaped",
+          "comment": "Read quoted strings with the dialect's escape rules. railroad.md#peg-units: A peg-string uses matching single or double quotes, may be empty and may contain physical newlines, U+2028 and U+2029. An escaped pair is a backslash and exactly one following character other than CR, LF, U+2028 or U+2029. An unescaped matching quote closes the string; an unclosed string rejects. PEG has no number unit."
+        },
+        {
+          "comment": "Read a rule name or reference. railroad.md#peg-units: A peg-name starts with an ASCII letter or underscore and continues maximally with word characters or hyphens. Metadata is tried before names, so title-prefixed references reject but accTitle-prefixed references without a colon can be names.",
+          "include": "#railroad-name"
+        }
+      ]
+    },
+    "railroad-c-comment": {
+      "comment": "Read a C block comment with independent directives and common comments. railroad.md#native-comments: In IR and EBNF, a C-comment is `/*` through the first `*/`. railroad.md#native-comments: Block comments do not nest, can contain all line-separator characters and require their closer. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "begin": "/{{directives}}\\*",
+      "end": "\\*{{directives}}/",
+      "name": "comment.block.mermaid",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        }
+      ],
+      "beginCaptures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      }
+    },
+    "railroad-name": {
+      "comment": "Read a name in IR, EBNF or PEG. railroad.md#ir-units: An ir-name starts with an ASCII letter or underscore and continues with word characters or hyphens, taking as many as possible. A constructor prefix followed by more name characters is a name; an exact constructor cannot be a rule name. The earlier metadata title prefix still takes `title` from a longer name, as described below. railroad.md#ebnf-units: An ebnf-name starts with an ASCII letter or underscore and continues maximally with word characters or hyphens. In particular, `A-B` is one name; `A - B` has an exception operator. Without the required colon or brace, an accTitle/accDescr prefix can be a name, whereas the earlier title prefix is taken even from a longer name. railroad.md#peg-units: A peg-name starts with an ASCII letter or underscore and continues maximally with word characters or hyphens. Metadata is tried before names, so title-prefixed references reject but accTitle-prefixed references without a colon can be names.",
+      "match": "[A-Za-z_][A-Za-z0-9_-]*",
+      "name": "variable.mermaid"
+    }
+  },
+  "variables": {
+    "railroad-abnf-digits": "[0-9A-Fa-f](?:[0-9A-Fa-f]|{{directive}})*",
+    "railroad-header-end": "(?={{directives}}(?:[{{ws}}]|%%|$))"
+  }
+}

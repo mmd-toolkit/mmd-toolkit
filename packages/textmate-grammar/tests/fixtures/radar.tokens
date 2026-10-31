@@ -1,0 +1,280 @@
+> radar-beta%%{wrap}%%:
+  "radar-beta" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  ":" punctuation.separator.colon.mermaid
+>   title Grades
+  "title" keyword.control.mermaid
+  "Grades" string.unquoted.mermaid
+>   accTitle: Radar
+  "accTitle" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " Radar" string.unquoted.mermaid
+>   axis m["Math"], s["Science"]
+  "axis" keyword.control.mermaid
+  "m" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Math" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+  "," punctuation.separator.comma.mermaid
+  "s" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Science" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+>   curve a["Alice"]{85, 90}
+  "curve" keyword.control.mermaid
+  "a" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Alice" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+  "{" punctuation.section.braces.begin.mermaid
+  "85" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "90" constant.numeric.mermaid
+  "}" punctuation.section.braces.end.mermaid
+>   curve b["Bob"]{m: 70, s: 65.5}
+  "curve" keyword.control.mermaid
+  "b" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Bob" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+  "{" punctuation.section.braces.begin.mermaid
+  "m" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "70" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "s" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "65.5" constant.numeric.mermaid
+  "}" punctuation.section.braces.end.mermaid
+>   showLegend true
+  "showLegend" keyword.control.mermaid
+  "true" constant.language.mermaid
+>   ticks 5, max 100, min 0
+  "ticks" keyword.control.mermaid
+  "5" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "max" keyword.control.mermaid
+  "100" constant.numeric.mermaid
+  "," punctuation.separator.comma.mermaid
+  "min" keyword.control.mermaid
+  "0" constant.numeric.mermaid
+>   graticule polygon
+  "graticule" keyword.control.mermaid
+  "polygon" constant.language.mermaid
+>   %% a comment line
+  "%% a comment line" comment.line.percentage.mermaid
+>   accDescr: Radar description
+  "accDescr" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " Radar description" string.unquoted.mermaid
+>   accDescr { Radar block }
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  " Radar block " string.unquoted.mermaid
+  "}" punctuation.definition.description.end.mermaid
+>   ticks 5max 100
+  "ticks" keyword.control.mermaid
+  "5" constant.numeric.mermaid
+  "max" keyword.control.mermaid
+  "100" constant.numeric.mermaid
+> ---
+  "---" comment.block.ignored.mermaid
+> ignored: radar
+  "ignored: radar" comment.block.ignored.mermaid
+> ---
+  "---" comment.block.ignored.mermaid
+> %%{!}%%
+  "%%{!}%%" comment.block.ignored.mermaid
+> axis m["<b title="x">Radar</b>"]
+  "axis" keyword.control.mermaid
+  "m" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "<b title=\"x\">" string.quoted.double.mermaid
+  "Radar</b>" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+> axis m["a<b"], s["c>"]
+  "axis" keyword.control.mermaid
+  "m" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "<b" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+  "," punctuation.separator.comma.mermaid
+  "s" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "c>" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+> title%%{init: {}}%% axis is title text
+  "title" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "axis is title text" string.unquoted.mermaid
+> accTitle%%{init: {}}%%: curve is title text
+  "accTitle" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " curve is title text" string.unquoted.mermaid
+> accDescr%%{init: {}}%%: axis is description text
+  "accDescr" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " axis is description text" string.unquoted.mermaid
+> accDescr%%{init: {}}%%{}
+  "accDescr" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  "}" punctuation.definition.description.end.mermaid
+> axis m%%{init: {}}%%["Label"]
+  "axis" keyword.control.mermaid
+  "m" variable.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Label" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+> axis m["A\%%{init: {}}%%"B"]
+  "axis" keyword.control.mermaid
+  "m" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "A" string.quoted.double.mermaid
+  "\\" string.quoted.double.mermaid constant.character.escape.mermaid
+  "%%{" string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid
+  "{}" string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "\"" string.quoted.double.mermaid constant.character.escape.mermaid
+  "B" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+> axis m["\<b title="axis">"]
+  "axis" keyword.control.mermaid
+  "m" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "\\" string.quoted.double.mermaid
+  "<b title=\"axis\">" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+> graticule circle
+  "graticule" keyword.control.mermaid
+  "circle" constant.language.mermaid
+> showLegend false
+  "showLegend" keyword.control.mermaid
+  "false" constant.language.mermaid
+> ticks 5%%{wrap}%%max 10
+  "ticks" keyword.control.mermaid
+  "5" constant.numeric.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "max" keyword.control.mermaid
+  "10" constant.numeric.mermaid
+> axis%%{wrap}%% m["Boundary"]
+  "axis" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "m" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Boundary" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+> %%%{wrap}%%%{! }%% ticks 6
+  "%" comment.block.ignored.mermaid
+  "%%{" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.block.ignored.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "%{! }%%" comment.block.ignored.mermaid
+  "ticks" keyword.control.mermaid
+  "6" constant.numeric.mermaid
+> %%{! }%%%{wrap}%%% max 110
+  "%%{! }%" comment.block.ignored.mermaid
+  "%%{" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.block.ignored.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "%" comment.block.ignored.mermaid
+  "max" keyword.control.mermaid
+  "110" constant.numeric.mermaid
+> ---%%{wrap}%%
+  "---" comment.block.ignored.mermaid
+  "%%{" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.block.ignored.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+> hidden: opener
+  "hidden: opener" comment.block.ignored.mermaid
+> ---
+  "---" comment.block.ignored.mermaid
+> min 0
+  "min" keyword.control.mermaid
+  "0" constant.numeric.mermaid
+> ---
+  "---" comment.block.ignored.mermaid
+> hidden: closer
+  "hidden: closer" comment.block.ignored.mermaid
+> -%%{wrap}%%--
+  "-" comment.block.ignored.mermaid
+  "%%{" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.block.ignored.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "--" comment.block.ignored.mermaid
+> showLegend true
+  "showLegend" keyword.control.mermaid
+  "true" constant.language.mermaid
+> ticks 6%%%{wrap}%%% native %%{wrap}%% tail
+  "ticks" keyword.control.mermaid
+  "6" constant.numeric.mermaid
+  "%" comment.line.percentage.mermaid
+  "%%{" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.line.percentage.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "% native " comment.line.percentage.mermaid
+  "%%{" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.line.percentage.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  " tail" comment.line.percentage.mermaid
+> 

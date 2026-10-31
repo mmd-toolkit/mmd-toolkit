@@ -35,6 +35,10 @@ Formattedの表示中なら再整形もします。
 Vue 3.6 RCのVaporコンポーネント、Monaco Editor、Shikiを使い、
 テーマスイッチには、
 [shine-and-bright](https://github.com/ota-meshi/shine-and-bright)を使います。
+MonacoはShikiを通じて、
+[`@mmd-toolkit/textmate-grammar`](../../textmate-grammar/README.ja.md)の文法で
+Mermaidのテキストをトークン化します。
+この文法は`src/editor.ts`で、埋め込む`yaml`の文法とともに読み込みます。
 VueのRC版を含む依存バージョンはロックファイルに記録し、
 CIでは`--frozen-lockfile`でインストールします。
 すべてのVue SFCは`<script setup lang="ts" vapor>`を使い、

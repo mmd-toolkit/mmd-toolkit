@@ -1,0 +1,127 @@
+agentflow-beta %%{init: {}}%%LR
+accTitle: Agents
+accDescr { A description }
+flow Main [Main flow]
+  before direction LR middle direction TB ignored direction TB trailing
+  A[Planner] -->|plan| B("Executor")
+  B -- result --> C{{Review}}
+  B -.- D[[Store]]
+  C --x E
+end
+connector Hub [Hub]
+global
+end
+classDef hot fill:#f96
+class A hot
+style B fill:#ccf
+linkStyle 0 stroke:#333
+click A href "https://example.com" _blank
+E:::done
+%% a comment line
+A edge1@--> B
+linkStyle default interpolate basis stroke:red
+S[/slanted/]
+T[\slanted\]
+U(-ellipse/)
+P -->|"a|b"| Q
+X --"a-->b"--> Y
+Comma:::hot,cool
+Id"quote"&tail --> B
+accDescr: Agent description
+Directive[before%%{init: {}}%%after]
+A["a<b title="x">b"] --> B
+A[before<b title="x">after] --> B
+A["a<b"] --> C["c>"]
+A[#am%%{init: {}}%%p; class] --> B
+click A%%{init: {}}%% href "u"
+A:::c@{ shape: rect }
+A["`x`%%{init: {}}%%"] --> B
+accTitle%%{init: {}}%%: separated agent title
+accDescr%%{init: {}}%%{ separated block }
+
+style%%{init: {}}%% A%%{init: {}}%% fill:red
+classDef hot,%%{init: {}}%%cool fill:blue
+class A,B%%{init: {}}%% hot
+linkStyle%%{init: {}}%% 0%%{init: {}}%% interpolate%%{init: {}}%% basis stroke:red
+A-->B %%{init: {"direction TB": "direction LR"}}%% direction RL
+direction LR %%{init: {"direction TB": "direction TB"}}%% suffix
+direction TB before%%{init: {}}%%direction BT
+accTitle: t direction LR
+  accTitle: t direction LR
+flow before%%{init: {}}%%flow name
+end
+A:::%%{init: {}}%%hot --> B
+A[before%%{init: {}}%%class style] --> B
+A["#am%%{init: {}}%%p; data"] --> B
+Commented["quoted" %% label comment
+continued]
+P e1%%{init: {}}%%@-->Q
+%%{init: {}}%%direction TB
+flow Prefix
+end;direction TB
+A[/before%%{init: {}}%%"after/]
+flow before%%{init: {}}%%"after
+end
+linkStyle 0,%%{init: {}}%%1 stroke:red
+%%%%{wrap}%%{x}
+A[/<b>"x/]
+A[/#amp;"x/]
+class A 12accDescr {}
+A:::12accDescr {}
+linkStyle default interpolate 12accDescr{}
+P[|borders:lt|text]
+style A stroke-width:2px,style:red
+classDef extra stroke-width:2px,style:red
+linkStyle default stroke-width:2px,style:red
+linkStyle default interpolate basis stroke:2px,style:red %% interpolation comment
+style A fill:red accDescr {}
+classDef extra fill:red accDescr {}
+linkStyle default stroke:red accDescr {}
+style A fill:red %% style comment
+classDef extra fill:red %% class comment
+linkStyle default stroke:red %% link comment
+flow F@{label:x}
+end
+connector C@{ label: x }
+connector C["class"]@{ label: x }
+connector C %% heading comment
+click A call cb(x)
+linkStyle default interpolate basis
+accDescr {}
+class A,B extra
+A eProbe@-->B
+A[plain]-->B
+style%%{wrap}%% A fill:red
+A[<b title="x] %% attribute end "y>
+A-->|<b title="x|B %% pipe attribute end "y>
+A(-<b title="a|b">-)
+%NotComment-->B
+A %%%{wrap}%%% native split mark
+
+A["quoted"%%%{wrap}%%% label split comment
+continued]
+A[<b title="x%% tag comment "y>
+continued]
+click A#amp; href "u"
+style A fill:#amp;red
+A--%%{wrap}%% result%%{wrap}%% -->B
+
+A--<b title="t--xB %% solid attribute end "y>
+A(-<b title="x-) %% ellipse attribute end "y>
+A@{label:<b title="x} %% data attribute end "y>
+A@{label:<b title="x">}
+%%%{wrap}%%-->B
+style A %%%{wrap}%%red
+A[/<b a="/">slash/]
+A[/<b a="\">backslash/]
+A[/<b /a="/">"tail/]
+connector C accDescr {}
+flow F accDescr {};end
+connector C accDescr%%{wrap}%%{%%{wrap}%%}D
+flow F accDescr {} accDescr {};end
+A(-<b title="more|text">-)
+A["<b %%{init: >}%% t="]%% c ">
+classDef joined foo%%{wrap}%%style:red
+connector foo%%{wrap}%%style
+
+accDescr { open

@@ -43,6 +43,15 @@ Sourceの編集や、**Indent**・**Use tabs**の変更に合わせて更新さ�
 エディターの通常のUndoで戻せます。
 サンプルの読み込みもUndoできます。
 
+## 構文の色付け
+
+Sourceの色は、エディターのトークナイザーであるShikiが、
+[`@mmd-toolkit/textmate-grammar`](../textmate-grammar/README.ja.md)の
+TextMate文法で付けます。
+この文法は、このリポジトリの仕様から全図種について書いたものです。
+色は文法だけで決まり、パーサーには依存しないので、
+パーサーが拒否するテキストも編集中に色を保ちます。
+
 ## 入力を共有する
 
 **Share**を選び、**Copy Link**でコピーするか、

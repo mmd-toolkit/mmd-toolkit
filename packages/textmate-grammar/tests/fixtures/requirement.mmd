@@ -1,0 +1,93 @@
+requirementdiagram
+  accTitle: An accessible title
+  accDescr: A line description
+  accDescr { A block with requirement and 123 }
+  accDescr {}
+  direction LR
+  requirement req:::hot {
+    id: 123
+    text: A test with low risk and 456
+    risk: low
+    risk: medium
+    risk: high
+    verifyMethod: analysis
+    verifyMethod: demonstration
+    verifyMethod: inspection
+    verifyMethod: test
+  }
+  functionalRequirement functional {
+  }
+  interfaceRequirement interface {
+  }
+  performanceRequirement performance {
+  }
+  physicalRequirement physical {
+  }
+  designConstraint design {
+  }
+  element elem {
+    type: software
+    docref: "https://example.com/text"
+  }
+  req - contains -> elem
+  req - copies -> elem
+  req - derives -> elem
+  req - satisfies -> elem
+  req - verifies -> elem
+  req - refines -> elem
+  req <- traces - elem
+  classDef hot fill:red,stroke:blue;
+  style req fill:red
+  class req hot
+  req:::hot
+  tests - satisfies -> styleLong
+  requirementLong - satisfies -> elem
+  accTitle: A%%{init: {}}%%B
+  accDescr { A%%{init: {}}%%B }
+  requirement a%%{init: {}}%%b {
+    text: A%%{init: {}}%%B
+  }
+  foo direction LRX
+  # a hash comment
+  % a native comment
+  %%
+  %% a common comment
+  REQUIREMENT upper {
+    RISK: HIGH
+  }
+  DIRECTION TB
+  direction BT
+  direction RL
+  accTitle: direction LR
+  accDescr { direction LR }
+accTitle: direction LR
+accDescr { direction LR }
+  accTitle%%{init: {}}%%: T
+  accDescr%%{init: {}}%%: D
+  accDescr%%{init: {}}%%{ B }
+  direction%%{init: {}}%% TB
+  requirement html {
+    text: "<b title="x">y</b>"
+  }
+  requirement tag {
+    text: "a<b" %% later >
+  }
+foo%%{x: "direction TB"}%% direction LR
+  direction TB x direction LR
+  direction BT x direction BT
+  test%%{wrap}%%_x - satisfies -> b
+  style%%{wrap}%%Long - satisfies -> r
+  classDef%%{wrap}%%Long - satisfies -> r
+  class%%{wrap}%%Long - satisfies -> r
+
+  class r a,b
+  r:::a,b
+  style r fill:#amp;
+
+  a - satisfies -> "b"%%%{wrap}%%% native split mark
+%%{wrap}%%accTitle: direction LR
+
+  style r fill:#a%%{wrap}%%mp;
+  "a" - satisfies -> "b"%%%{wrap}%% native single mark
+  foo%%{wrap}%%style - satisfies -> b
+style req fill:#43a047

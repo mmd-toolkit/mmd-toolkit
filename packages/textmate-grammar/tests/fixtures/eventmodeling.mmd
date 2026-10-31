@@ -1,0 +1,49 @@
+eventmodeling title Orders
+tf 01 ui User.Login ->> 02 [[Payload]] {"id": 1}
+tf 02evt OrderPlaced
+rf 03 cmd PlaceOrder ->> 02
+tf 04 rmo Orders.View `json` {"x": 1}
+entity Order.Line
+data Payload `json` {
+  "a": 1
+}
+ accTitle: Event title
+note 01 {
+  A note
+}
+gwt 05 given evt OrderPlaced when cmd PlaceOrder then evt Shipped
+%% a comment line
+// a slash comment
+/* a block comment */
+timeframe 06 event Later
+resetframe 07 command Reset
+tf 08 readmodel View
+tf 09 processor Handler
+tf 10 pcr Worker
+---
+ignored: events
+---
+ accDescr { Event block } accDescr: Events
+%%{!}%%
+ tf 11 evt Tagged `%%{wrap}%%json%%{wrap}%%` {"x": 1}
+ tf 12 evt Html "a<b title="x">y</b>"%%{init: {"closer": "x"}}%%
+data Block {%%{wrap}%%
+  x
+}
+/* a%%{x: */}%%when */ tf 13 evt Native
+/%%{wrap}%%* when */ tf 14 evt Opened
+/* text *%%{wrap}%%/ tf 15 evt Closed
+/%%{wrap}%%/ tf 16 evt Commented
+tf 17 evt Jsobj `jsobj` {}
+tf 18 evt Figma `figma` {}
+tf 19 evt Salt `salt` {}
+tf 20 evt Uri `uri` {}
+tf 21 evt Markdown `md` {}
+tf 22 evt HtmlTag `html` {}
+tf 23 evt TextTag `text` {}
+tf 24 evt Meta {} accDescr%%{wrap}%%: Native description
+
+tf 26%%{wrap}%%evt Boundary
+
+/%%{wrap}%%* kept %%{x: */}%% when *%%{wrap}%%/ tf 82 evt Retained
+tf 83 evt Single 'payload'

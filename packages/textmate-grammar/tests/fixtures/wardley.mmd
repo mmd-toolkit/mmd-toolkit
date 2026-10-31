@@ -1,0 +1,45 @@
+wardley-betaanchor Glued [0.8, 0.7]
+title Tea Shop
+anchor Business [0.95, 0.63]
+component Cup of Tea [0.79, 0.61] label [19, -4] (buy) inertia
+component Kettle [0.43, 0.35] (build)
+Cup of Tea -> Kettle
+Kettle +<> Power; a link label%%{init: {}}%% suffix
+Kettle +'flow'> Water
+evolve Kettle 0.62
+pipeline Kettle {
+  component Campfire [0.35]
+}
+note "A note" [0.23, 0.33]
+annotations [0.2, 0.3]
+annotation 1,[0.5, 0.5] "First"
+evolution Genesis -> Custom @0.25 / Built -> Product
+size [1024, 768]
+%% a comment line
+annotation1,[0.4, 0.5] "Glued annotation"
+component My builder [0.4, 0.5]
+component My inertia [0.3, 0.4]
+accelerator Fast [0.4, 0.6]
+deaccelerator Slow [0.2, 0.3]
+accTitle: Map title
+accDescr: Map description
+accDescr { Map block }
+---
+ignored: wardley
+---
+%%{!}%%
+component My (buy) [0.3, 0.5]
+Glued-->Kettle
+Glued --> Kettle
+component Across %%{wrap}%%builder [0.4, 0.5]%%{wrap}%%label [1, 2] (%%{wrap}%%buy)%%{wrap}%%inertia
+Across %%{wrap}%%builder +%%{wrap}%%'a%%{init: {"end": ">"}}%%b'%%{wrap}%%> Kettle
+annotation%%{wrap}%%1,[0.4, 0.5] "Boundary"
+note "a<b title="x">y</b>" [0.2, 0.4]
+component Joined%%{wrap}%%(buy) [0.3, 0.5]
+component Outsourced [0.2,0.4](outsource)
+component Marketplace [0.2,0.4](market)
+component Gap%%{wrap}%% builder [0.4%%{wrap}%%,0.5]label[1%%{wrap}%%,2](buy)inertia
+
+Glued%%{wrap}%%-->Kettle
+component foo%%{wrap}%%inertia [0.2,0.4]
+note 'Escaped\ntext' [0.2, 0.4]

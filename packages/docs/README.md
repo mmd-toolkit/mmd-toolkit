@@ -22,6 +22,15 @@ demonstrates with `%% eslint <rule>: <config>` comments; the renderer registers
 the Mermaid language without enabling rules by default. Other fences are left as
 normal syntax-highlighted examples.
 
+`mmd` and `mermaid` code blocks are colored with the TextMate grammar of
+[`@mmd-toolkit/textmate-grammar`](../textmate-grammar/README.md).
+`.vitepress/highlighting.js` holds the language list used by
+`.vitepress/config.js` and the tests, with this grammar as the highlighter's
+`mermaid` language and the `yaml` grammar it embeds. The grammar is written for
+every diagram type from the specification of this repository. Do not also list
+`mermaid` by name in `languages`: Shiki's bundled grammar of that name would
+replace it.
+
 In `packages/eslint-plugin/docs/rules/`, begin every `mmd` example in both
 languages with `%% eslint @mmd-toolkit/<rule>: error`, using the rule described
 by that page. Put the comment before the diagram header and Mermaid directives,

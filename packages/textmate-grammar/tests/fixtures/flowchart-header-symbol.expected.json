@@ -1,0 +1,13 @@
+{
+  "header": "flowchart",
+  "scopes": [
+    ["init", "entity.name.function.directive.mermaid"],
+    [">", "constant.language.mermaid"],
+    ["direction label", "string.unquoted.mermaid"],
+    ["-->", "keyword.operator.arrow.mermaid"],
+    ["A", "variable.mermaid", 1],
+    ["[", "keyword.operator.shape.begin.mermaid", 1],
+    ["]", "keyword.operator.shape.end.mermaid", 1]
+  ],
+  "absent": [[">", "punctuation.definition.label.begin.mermaid"]]
+}

@@ -1,0 +1,189 @@
+{
+  "header": "timeline",
+  "scopes": [
+    ["TD", "constant.language.mermaid"],
+    ["title", "keyword.control.mermaid"],
+    ["section", "keyword.control.mermaid"],
+    ["accTitle", "keyword.control.mermaid"],
+    ["accDescr", "keyword.control.mermaid"],
+    [":", "punctuation.separator.colon.mermaid", 3],
+    ["# a hash comment", "comment.line.number-sign.mermaid"],
+    ["% a percent comment", "comment.line.percentage.mermaid"],
+    ["accDescr", "keyword.control.mermaid", 5],
+    ["# an inline hash comment", "comment.line.number-sign.mermaid"],
+    ["init", "entity.name.function.directive.mermaid", 1],
+    ["title", "keyword.control.mermaid", 21],
+    ["init", "entity.name.function.directive.mermaid", 21],
+    ["Directive title", "string.unquoted.mermaid", 21],
+    ["section", "keyword.control.mermaid", 22],
+    ["init", "entity.name.function.directive.mermaid", 22],
+    ["Directive section ", "string.unquoted.mermaid", 22],
+    ["Event", "string.unquoted.mermaid", 22],
+    ["accTitle", "keyword.control.mermaid", 23],
+    ["init", "entity.name.function.directive.mermaid", 23],
+    ["Directive accessibility title", "string.unquoted.mermaid", 23],
+    ["accDescr", "keyword.control.mermaid", 24],
+    ["init", "entity.name.function.directive.mermaid", 24],
+    ["Directive description", "string.unquoted.mermaid", 24],
+    ["accDescr", "keyword.control.mermaid", 25],
+    ["init", "entity.name.function.directive.mermaid", 25],
+    ["{", "punctuation.definition.description.begin.mermaid", 25],
+    ["Directive block", "string.unquoted.mermaid", 25],
+    ["}", "punctuation.definition.description.end.mermaid", 25],
+    [":", "punctuation.separator.colon.mermaid", 26],
+    ["init", "entity.name.function.directive.mermaid", 26],
+    ["Event", "string.unquoted.mermaid", 26],
+    ["first", "string.unquoted.mermaid", 27],
+    [":", "punctuation.separator.colon.mermaid", 27],
+    ["init", "entity.name.function.directive.mermaid", 27],
+    ["second", "string.unquoted.mermaid", 27],
+    ["first:", "string.unquoted.mermaid", 28],
+    ["init", "entity.name.function.directive.mermaid", 28],
+    ["word", "string.unquoted.mermaid", 28],
+    ["Entity event", "string.unquoted.mermaid", 29],
+    ["init", "entity.name.function.directive.mermaid", 29],
+    ["%", "comment.line.percentage.mermaid", 35],
+    ["wrap", "entity.name.function.directive.mermaid", 35],
+    ["# native ", "comment.line.number-sign.mermaid", 36],
+    ["wrap", "entity.name.function.directive.mermaid", 36],
+    ["Entity continuation", "string.unquoted.mermaid", 37],
+    ["wrap", "entity.name.function.directive.mermaid", 37],
+    [":", "punctuation.separator.colon.mermaid", 38],
+    ["wrap", "entity.name.function.directive.mermaid", 38],
+    ["Event after directive", "string.unquoted.mermaid", 38],
+    ["title", "keyword.control.mermaid", 39],
+    ["wrap", "entity.name.function.directive.mermaid", 39],
+    ["Leading directive", "string.unquoted.mermaid", 39],
+    ["section", "keyword.control.mermaid", 40],
+    ["Leading section", "string.unquoted.mermaid", 40],
+    ["accTitle", "keyword.control.mermaid", 41],
+    ["Leading accessibility title", "string.unquoted.mermaid", 41],
+    ["accDescr", "keyword.control.mermaid", 42],
+    ["Leading description", "string.unquoted.mermaid", 42],
+    ["accDescr", "keyword.control.mermaid", 43],
+    ["Leading block ", "string.unquoted.mermaid", 43],
+    ["wrap", "entity.name.function.directive.mermaid", 44],
+    ["% native percent", "comment.line.percentage.mermaid", 44],
+    ["Event", "string.unquoted.mermaid", 47],
+    ["title", "string.unquoted.mermaid", 30],
+    ["section", "string.unquoted.mermaid", 32],
+    ["%", "string.unquoted.mermaid", 34],
+    ["{period}", "string.unquoted.mermaid", 34],
+    ["title Still period", "string.unquoted.mermaid", 45],
+    ["section Still period", "string.unquoted.mermaid", 46],
+    ["accTitle", "string.unquoted.mermaid", 47],
+    ["%still period", "string.unquoted.mermaid", 48],
+    ["2002 ", "string.unquoted.mermaid", 8],
+    ["LinkedIn", "string.unquoted.mermaid", 8]
+  ],
+  "absentOnLine": [
+    [14, "keyword.control.mermaid"],
+    [15, "keyword.control.mermaid"],
+    [16, "keyword.control.mermaid"],
+    [17, "keyword.control.mermaid"],
+    [19, "comment.line.number-sign.mermaid"],
+    [30, "keyword.control.mermaid"],
+    [32, "keyword.control.mermaid"],
+    [34, "comment.line.percentage.mermaid"],
+    [37, "comment.line.number-sign.mermaid"],
+    [39, "comment.line.percentage.mermaid"],
+    [40, "comment.line.percentage.mermaid"],
+    [41, "comment.line.percentage.mermaid"],
+    [42, "comment.line.percentage.mermaid"],
+    [43, "comment.line.percentage.mermaid"],
+    [45, "keyword.control.mermaid"],
+    [46, "keyword.control.mermaid"],
+    [47, "keyword.control.mermaid"],
+    [48, "comment.line.percentage.mermaid"]
+  ],
+  "absent": [
+    ["first:", "punctuation.separator.colon.mermaid", 28],
+    ["#", "comment.line.number-sign.mermaid", 29]
+  ],
+  "unscoped": [],
+  "escapedInputs": [
+    {
+      "code": "timeline\ntitle\u2028%% title comment\nsection\u2029%% section comment\n",
+      "scopes": [
+        ["%% title comment", "comment.line.percentage.mermaid"],
+        ["%% section comment", "comment.line.percentage.mermaid"]
+      ],
+      "absentOnLine": [
+        [1, "keyword.control.mermaid"],
+        [2, "keyword.control.mermaid"]
+      ]
+    },
+    {
+      "code": "timeline\ntitle %%{wrap}%%\u2028%% title comment\nsection%%{wrap}%%\u2029%%{wrap}%% %% section comment\n",
+      "scopes": [
+        ["wrap", "entity.name.function.directive.mermaid"],
+        ["%% title comment", "comment.line.percentage.mermaid"],
+        ["%% section comment", "comment.line.percentage.mermaid"],
+        ["title", "keyword.control.mermaid", 1]
+      ],
+      "absentOnLine": [[2, "keyword.control.mermaid"]]
+    },
+    {
+      "code": "timeline\ntitle\u2028Text\nsection\u2029Section\n",
+      "scopes": [
+        ["title", "keyword.control.mermaid"],
+        ["Text", "string.unquoted.mermaid"],
+        ["section", "keyword.control.mermaid"],
+        ["Section", "string.unquoted.mermaid"]
+      ]
+    },
+    {
+      "code": "timeline\ntitle T\u2028%% title comment\nsection S\u2029%% section comment\nPeriod: Event\u2028%% event comment\naccTitle: A\u2029%% accessibility comment\naccDescr: B\u2028%% description comment\n# native\u2029%% common %%{wrap}%%\n% native\u2028%% other common %%{wrap}%%\n",
+      "scopes": [
+        ["T", "string.unquoted.mermaid"],
+        ["S", "string.unquoted.mermaid"],
+        ["Event", "string.unquoted.mermaid"],
+        ["A", "string.unquoted.mermaid"],
+        ["B", "string.unquoted.mermaid"],
+        ["%% title comment", "comment.line.percentage.mermaid"],
+        ["%% section comment", "comment.line.percentage.mermaid"],
+        ["%% event comment", "comment.line.percentage.mermaid"],
+        ["%% accessibility comment", "comment.line.percentage.mermaid"],
+        ["%% description comment", "comment.line.percentage.mermaid"],
+        ["# native", "comment.line.number-sign.mermaid"],
+        ["% native", "comment.line.percentage.mermaid"],
+        ["%% common %%{wrap}%%", "comment.line.percentage.mermaid"],
+        ["%% other common %%{wrap}%%", "comment.line.percentage.mermaid"]
+      ],
+      "absent": [
+        ["%% title comment", "string.unquoted.mermaid"],
+        ["%% section comment", "string.unquoted.mermaid"],
+        ["%% event comment", "string.unquoted.mermaid"],
+        ["%% accessibility comment", "string.unquoted.mermaid"],
+        ["%% description comment", "string.unquoted.mermaid"]
+      ],
+      "absentOnLine": [
+        [6, "meta.directive.mermaid"],
+        [7, "meta.directive.mermaid"]
+      ]
+    },
+    {
+      "code": "timeline title \u2028%% c",
+      "scopes": [
+        ["title", "keyword.control.mermaid"],
+        ["%% c", "comment.line.percentage.mermaid"]
+      ]
+    },
+    {
+      "code": "timeline section \u2029%% c",
+      "scopes": [
+        ["section", "keyword.control.mermaid"],
+        ["%% c", "comment.line.percentage.mermaid"]
+      ]
+    },
+    {
+      "code": "timeline\naccDescr { text\u2028%% block comment }\nresumed }\n",
+      "scopes": [
+        ["%% block comment }", "comment.line.percentage.mermaid", 1],
+        ["resumed ", "string.unquoted.mermaid", 2],
+        ["}", "punctuation.definition.description.end.mermaid", 2]
+      ],
+      "absent": [["%% block comment }", "string.unquoted.mermaid", 1]]
+    }
+  ]
+}

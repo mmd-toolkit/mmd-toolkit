@@ -1,0 +1,226 @@
+> treeView-beta%%{wrap}%%
+  "treeView-beta" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+> title Project
+  "title" keyword.control.mermaid
+  "Project" string.unquoted.mermaid
+> accTitle: Tree
+  "accTitle" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " Tree" string.unquoted.mermaid
+> accDescr { Files }
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  " Files " string.unquoted.mermaid
+  "}" punctuation.definition.description.end.mermaid
+> accDescr: Tree description
+  "accDescr" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " Tree description" string.unquoted.mermaid
+> src
+  "src" string.unquoted.mermaid
+> ├── "index.ts" :::entry icon(fa:file) ## main entry
+  "├──" keyword.operator.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "index.ts" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ":::" punctuation.separator.class.mermaid
+  "entry" variable.mermaid
+  "icon" keyword.control.mermaid
+  "(" punctuation.section.parens.begin.mermaid
+  "fa:file" variable.mermaid
+  ")" punctuation.section.parens.end.mermaid
+  "##" storage.modifier.mermaid
+  " main entry" string.unquoted.mermaid
+> └── utils
+  "└──" keyword.operator.mermaid
+  " utils" string.unquoted.mermaid
+>     └── helpers.ts
+  "└──" keyword.operator.mermaid
+  " helpers.ts" string.unquoted.mermaid
+> %% a comment line
+  "%% a comment line" comment.line.percentage.mermaid
+> ├── bare"quote"
+  "├──" keyword.operator.mermaid
+  " bare\"quote\"" string.unquoted.mermaid
+> ├── "first""second"%% quoted comment
+  "├──" keyword.operator.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "first" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "second" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "%% quoted comment" comment.line.percentage.mermaid
+> ├── Item :::tag%% class comment
+  "├──" keyword.operator.mermaid
+  " Item" string.unquoted.mermaid
+  ":::" punctuation.separator.class.mermaid
+  "tag" variable.mermaid
+  "%% class comment" comment.line.percentage.mermaid
+> └── Item icon(fa:file)%% icon comment
+  "└──" keyword.operator.mermaid
+  " Item" string.unquoted.mermaid
+  "icon" keyword.control.mermaid
+  "(" punctuation.section.parens.begin.mermaid
+  "fa:file" variable.mermaid
+  ")" punctuation.section.parens.end.mermaid
+  "%% icon comment" comment.line.percentage.mermaid
+> ├── "a<b title="x">y</b>" :::%%{wrap}%%html
+  "├──" keyword.operator.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "<b title=\"x\">" string.quoted.double.mermaid
+  "y</b>" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ":::" punctuation.separator.class.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "html" variable.mermaid
+> ├── bare%%{wrap}%%name %%{wrap}%%:::%%{wrap}%%tag
+  "├──" keyword.operator.mermaid
+  " bare" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "name" string.unquoted.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  ":::" punctuation.separator.class.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "tag" variable.mermaid
+> ├── Item icon%%{wrap}%%(%%{wrap}%%fa:file%%{wrap}%%)
+  "├──" keyword.operator.mermaid
+  " Item" string.unquoted.mermaid
+  "icon" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "(" punctuation.section.parens.begin.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "fa:file" variable.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  ")" punctuation.section.parens.end.mermaid
+> ├── Text %%{wrap}%%##a%%{wrap}%%b
+  "├──" keyword.operator.mermaid
+  " Text" string.unquoted.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "##" storage.modifier.mermaid
+  "a" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "b" string.unquoted.mermaid
+> └── Item :::%%{wrap}%%tag%% class boundary comment
+  "└──" keyword.operator.mermaid
+  " Item" string.unquoted.mermaid
+  ":::" punctuation.separator.class.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "tag" variable.mermaid
+  "%% class boundary comment" comment.line.percentage.mermaid
+> ├── "a<b" ## text >
+  "├──" keyword.operator.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "<b" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "##" storage.modifier.mermaid
+  " text >" string.unquoted.mermaid
+> ─X
+  "─X" string.unquoted.mermaid
+> │X
+  "│X" string.unquoted.mermaid
+> A icon(fa:file) ├── X
+  "A" keyword.operator.mermaid
+  "icon(fa:file)" keyword.operator.mermaid
+  "├──" keyword.operator.mermaid
+  " X" string.unquoted.mermaid
+> A :::entry ├── X
+  "A" keyword.operator.mermaid
+  ":::entry" keyword.operator.mermaid
+  "├──" keyword.operator.mermaid
+  " X" string.unquoted.mermaid
+> "prefix ├── X"
+  "\"prefix" keyword.operator.mermaid
+  "├──" keyword.operator.mermaid
+  " X\"" string.unquoted.mermaid
+> 
+> ├── Entity#amp;name
+  "├──" keyword.operator.mermaid
+  " Entity#amp;name" string.unquoted.mermaid
+> └%%{wrap}%%── Branch
+  "└" keyword.operator.mermaid
+  "%%{" keyword.operator.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" keyword.operator.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" keyword.operator.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "──" keyword.operator.mermaid
+  " Branch" string.unquoted.mermaid
+> ├── Hash ##amp; actor
+  "├──" keyword.operator.mermaid
+  " Hash ##amp; actor" string.unquoted.mermaid
+> └── Shared :::%%{wrap}%%tag icon%%{wrap}%%(fa:file)
+  "└──" keyword.operator.mermaid
+  " Shared" string.unquoted.mermaid
+  ":::" punctuation.separator.class.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "tag" variable.mermaid
+  "icon" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "(" punctuation.section.parens.begin.mermaid
+  "fa:file" variable.mermaid
+  ")" punctuation.section.parens.end.mermaid
+> 
+> %%{wrap}%%"prefix ├── Tail"
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "\"prefix" keyword.operator.mermaid
+  "├──" keyword.operator.mermaid
+  " Tail\"" string.unquoted.mermaid
+> Item icon%%{wrap}%%(%%{wrap}%%fa:file%%{wrap}%%)
+  "Item" string.unquoted.mermaid
+  "icon" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "(" punctuation.section.parens.begin.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "fa:file" variable.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  ")" punctuation.section.parens.end.mermaid
+> joined%%{wrap}%%icon(fa:file)
+  "joined" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "icon(fa:file)" string.unquoted.mermaid
+> ├── 'single.ts'
+  "├──" keyword.operator.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.begin.mermaid
+  "single.ts" string.quoted.single.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.end.mermaid
+> ───
+  "───" comment.block.ignored.mermaid
+> 

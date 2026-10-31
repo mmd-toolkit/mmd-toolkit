@@ -1,0 +1,51 @@
+{
+  "patterns": [
+    {
+      "include": "#info"
+    }
+  ],
+  "repository": {
+    "info": {
+      "comment": "Begin info at its lowercase bounded header through following directives. info.md#detection: Entry 12 of [detection.md](../detection.md) selects the exact lower-case prefix `info`, without a suffix boundary. info.md#keyword-boundaries: Both fixed keywords are case-sensitive and require immediate common whitespace, `%%` or end of text. common.md#leading-whitespace: Whitespace, line terminators, directives, and comment regions before the first unit of the diagram's lexer are trivia and are not seen by the diagram's grammar. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text.",
+      "begin": "{{diagramStart}}(info){{info-keyword-end}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#hidden-yaml",
+          "comment": "Reuse hidden YAML and its shared line-based approximation. info.md#hidden-yaml: At a unit start, `---`, zero or more ASCII spaces/tabs and LF open hidden YAML, even off a physical line start."
+        },
+        {
+          "include": "#hidden-directive",
+          "comment": "Reuse the native hidden directive form. info.md#hidden-directive-and-line-endings: After optional ASCII padding, hidden DIRECTIVE reads `%%{` and arbitrary content through the earliest `}%%` followed by LF, common whitespace or EOF."
+        },
+        {
+          "include": "#native-percent-comment",
+          "comment": "Reuse native percent comments. info.md#comments-and-common-trivia: The native comment rule reads optional ASCII indentation, `%%` and maximal text before physical EOL."
+        },
+        {
+          "comment": "Read the bounded showInfo flag through following directives. info.md#keyword-boundaries: Both fixed keywords are case-sensitive and require immediate common whitespace, `%%` or end of text. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text.",
+          "match": "showInfo{{info-keyword-end}}",
+          "name": "keyword.control.mermaid"
+        },
+        {
+          "comment": "Reuse the common title and accessibility forms. info.md#composite-common-forms: At any unit start optional ASCII indentation may precede a common form. `title-line` reads `title` alone, or `title`, one ASCII space/tab and possibly empty line text. `acc-title-line` reads `accTitle`, zero or more ASCII spaces/tabs, a colon and possibly empty line text; `acc-descr-line` does so with `accDescr`. info.md#composite-common-forms: The block alternative reads `accDescr`, zero or more common whitespace characters, `{` and arbitrary content through the first `}`.",
+          "include": "#common-statements"
+        }
+      ]
+    }
+  },
+  "variables": {
+    "info-keyword-end": "(?={{directives}}(?:[{{ws}}]|%%|$))"
+  }
+}

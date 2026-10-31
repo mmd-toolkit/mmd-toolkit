@@ -1,0 +1,365 @@
+{
+  "patterns": [
+    {
+      "include": "#quadrant"
+    }
+  ],
+  "repository": {
+    "quadrant": {
+      "comment": "Begin quadrantChart at its exact detector prefix; a statement may touch the header. quadrant.md#detection: The header may be the whole text. quadrant.md#detection: On the line of the header, the first statement may follow the header, after spaces, after a tab, or with nothing between them, and so may a `;`, a comment, or a directive: `quadrantChart title T`, `quadrantChart;title T`, and `quadrantChartA: [0.3, 0.6]` are accepted.",
+      "begin": "{{diagramStart}}(quadrantChart)",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "comment": "Read point styles after the coordinate list, keeping directives in their opening gap. quadrant.md#points: A point is a name, a class name after `:::` or none, and two coordinates in brackets, with styles after the `]` or none. quadrant.md#points: The styles are separated by `,`, with whitespace around it or not, and may follow the `]` with no space. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "begin": "(?<=\\])((?:[{{quadrant-ws}}]|{{directive}})*)(?=[A-Za-z])",
+          "end": "{{quadrant-style-end}}",
+          "applyEndPatternLast": true,
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#quadrant-style"
+            },
+            {
+              "include": "#quadrant-style-separators"
+            }
+          ],
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Read a local description block with case-insensitive keyword and Notation whitespace, keeping inline percent pairs as text. quadrant.md#accessibility-values: `accDescr`, whitespace, and `{` enter the description block context, which reads the whitespace after the `{` and then every character up to the next `}` as a `description-block-text` unit, reads the `}` as a `}` unit, and leaves; the whitespace before the `}` is part of the text. When only whitespace lies between the `{` and the `}`, there is no `description-block-text` unit. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "begin": "{{quadrant-statement-start}}((?i:accDescr))({{gap}})(\\{)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.definition.description.begin.mermaid"
+            }
+          },
+          "end": "(\\})",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.description.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read a description text run, stopping before a common comment or the closing brace. quadrant.md#accessibility-values: The text may hold line feeds, `#`, `;`, quotes, keywords, and `%%`; a CRLF or a lone CR in it is a line feed. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+              "begin": "(?!{{separatorCommentEnd}})(?=[^}\\r\\n])",
+              "end": "(?=})|{{lineValueEnd}}",
+              "contentName": "string.unquoted.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "comment": "Read the local accessibility line forms with Notation whitespace and literal inline percent pairs. quadrant.md#accessibility-values: `accTitle` and `:` enter the accessibility title context, and `accDescr` and `:` the accessibility description context. Each reads the whitespace after the `:`, line feeds included, and then the rest of the line as an `acc-title-text` or an `acc-description-text` unit, and leaves. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "begin": "{{quadrant-statement-start}}((?i:accTitle|accDescr))({{gap}})(:)(?:(?!{{separatorCommentEnd}})[{{ws}}])*",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.separator.colon.mermaid"
+            }
+          },
+          "end": "{{lineValueEnd}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": "Read a bounded title and its remaining line, including punctuation and percent pairs. quadrant.md#the-title-context: `title` enters the title context, which reads the rest of the line as a `title-text` unit and leaves; the unit is empty when the line ends after the keyword. quadrant.md#the-title-context: Every character up to the line feed is a character of the title: a `;`, a `#`, `%%` and what follows it, quotes, a colon, keywords, and a text that looks like a point. So `title T; quadrant-1 A` is the title `T; quadrant-1 A`, and `title: [0.3, 0.6]` is a title. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "begin": "((?i:title)){{wordEnd}}",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          },
+          "end": "{{lineValueEnd}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": "Read a class definition's element name and its properties, with exactly one diagram whitespace character on each side of the name. quadrant.md#classes: A class definition is `classDef`, one whitespace character, the name, one whitespace character, and the styles of a point. quadrant.md#classes: Two whitespace characters before the name are rejected, while whitespace after the second one belongs to the first style. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+          "begin": "((?i:classDef)){{wordEnd}}({{quadrant-space}})((?:(?!{{directiveStart}})[^{{quadrant-ws}}])+)({{quadrant-space}})",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "variable.mermaid"
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "{{quadrant-style-end}}",
+          "applyEndPatternLast": true,
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#quadrant-style"
+            },
+            {
+              "include": "#quadrant-style-separators"
+            }
+          ]
+        },
+        {
+          "comment": "Read axis and quadrant keywords, including a keyword touching its text. quadrant.md#the-statement-context: `x-axis`, `y-axis`, `quadrant-1` to `quadrant-4`, and the header need nothing after them: `x-axisL`, `x-axis1`, `x-axis_x`, and `x-axisé` are the x axis with a text, and `quadrant-11` is `quadrant-1` with the text `1`, while `x-axis-x` and `quadrant-1-x` are a keyword and a text that starts with a dash, which is rejected.",
+          "match": "(?i:x-axis|y-axis|quadrant-[1-4])",
+          "name": "keyword.control.mermaid"
+        },
+        {
+          "comment": "Read an axis arrow as one relation operator. quadrant.md#axes: The arrow is two dashes or more and `>`, with spaces around it or not: `L-->R` and `L ---> R` have the texts `L` and `R`, while `L -> R`, `L -- > R`, a second arrow, an arrow with no text before it, and the keyword alone are rejected, and so are a tab between the keyword and the text and a tab around the arrow, which are `space` units.",
+          "match": "-{2,}>",
+          "name": "keyword.operator.arrow.mermaid"
+        },
+        {
+          "comment": "Reuse the shared HTML tag reader for converted attribute quotes. common.md#html-attribute-quotes: The lexer reads the two `\"` of each quoted value as `'`.",
+          "include": "#html-tag"
+        },
+        {
+          "comment": "Read an entity as label text, preserving its directives. quadrant.md#units-and-contexts: An entity is read as its placeholder (see [Entities](../common.md#entities)), which is made of characters outside ASCII, so it is a character of every text, name, title, and accessibility text, and of the name of a class of `classDef`, while the class name of a point and a style take no placeholder: `#f00;` in a style is an entity, so `A: [0.3, 0.6] color: #f00;` is rejected, while `A: [0.3, 0.6] color: #f00 ;` has the colour `#f00`.",
+          "match": "{{entity}}",
+          "name": "string.unquoted.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Reuse the shared markdown delimiter reader; invalid interior quotes and backquotes are not validated. quadrant.md#strings: A quote followed by a backquote enters the markdown string context, which reads the characters up to the next backquote as a `markdown-string` unit and leaves at the backquote and the quote after it. The text holds no backquote and no quote: ``quadrant-1 \"`a\"b`\"`` is rejected. A markdown string that is not closed makes the input rejected.",
+          "include": "#markdown-string"
+        },
+        {
+          "comment": "Reuse the plain double-quoted label form. quadrant.md#strings: `\"` enters the string context, which reads all the characters up to the next `\"` as a `string` unit, whose text is what lies between the quotes, and leaves the context at that `\"`. quadrant.md#strings: A string has no escape, and a string that is not closed makes the input rejected.",
+          "include": "#string-plain-double"
+        },
+        {
+          "comment": "Read a class selector as a separator and an element name. quadrant.md#the-class-name-context: `:::` enters the class name context, which reads one or more word characters of ASCII (letters, digits, and `_`) as a `class-name` unit and leaves; the `:` of the point follows it.",
+          "match": "(:::)({{directives}})([A-Za-z0-9_]+)",
+          "captures": {
+            "1": {
+              "name": "punctuation.separator.class.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "variable.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read the point's colon and coordinate-list brackets. quadrant.md#the-point-context: A `:` and a `[` with whitespace around them enter the point context (rule 6 of the statement context); the whitespace is any whitespace character of [Notation](../common.md#notation), line feeds, U+00A0, U+2028, U+2029, U+3000, and U+FEFF included, so `A`, U+00A0, and `: [0.3, 0.6]`, and `A:`, U+3000, and `[0.3, 0.6]` are the point `A`. quadrant.md#the-point-context: The `,` after the first coordinate, with whitespace of any kind around it, is a `,` unit, and `]` with the spaces after it is a `]` unit, which leaves the context; whitespace of any kind after the `[` and before the `]` is allowed.",
+          "begin": "(:)({{gap}})(\\[)",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.separator.colon.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.section.brackets.begin.mermaid"
+            }
+          },
+          "end": "(\\])",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.section.brackets.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read a coordinate as one numeric text unit, including its internal directives. quadrant.md#the-point-context: In the point context, a **coordinate** is a `coordinate` unit: `1`, or `0` optionally followed by one character other than a line feed, U+2028, and U+2029, and one or more digits. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text.",
+              "match": "(?:0(?:{{directives}}(?!{{directiveStart}})[^\\r\\n{{separators}}]{{directives}}[0-9](?:[0-9]|{{directive}})*)?|1)",
+              "name": "constant.numeric.mermaid",
+              "captures": {
+                "0": {
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "comment": "Read the separator between coordinates. quadrant.md#the-point-context: The `,` after the first coordinate, with whitespace of any kind around it, is a `,` unit, and `]` with the spaces after it is a `]` unit, which leaves the context; whitespace of any kind after the `[` and before the `]` is allowed.",
+              "match": ",",
+              "name": "punctuation.separator.comma.mermaid"
+            }
+          ]
+        },
+        {
+          "comment": "Reuse native percent comments outside label text. quadrant.md#comments: A comment starts at `%%` where a unit starts in the statement context and runs to the end of its line, the line feed left out; it belongs to no unit.",
+          "include": "#native-percent-comment"
+        },
+        {
+          "comment": "Read a semicolon as a statement separator. quadrant.md#diagram-and-statements: The diagram is the header and then the lines, separated by line breaks and `;`; the first line starts right after the header.",
+          "match": ";",
+          "name": "punctuation.separator.semicolon.mermaid"
+        },
+        {
+          "comment": "Read unquoted axis, quadrant and point labels while preserving maximal word runs through directives. quadrant.md#texts: A **text** is the text of an axis, of a quadrant, and the name of a point. quadrant.md#the-statement-context: So a text without quotes is made of words, `-`, and whitespace. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text.",
+          "match": "[A-Za-z](?:[A-Za-z]|{{directive}})*|[0-9](?:[0-9]|{{directive}})*|[^\\x{0}-\\x{7F}](?:[^\\x{0}-\\x{7F}]|{{directive}})*|[!$%&'*+,./=?\\\\_#`-]",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "name": "string.unquoted.mermaid"
+        }
+      ]
+    },
+    "quadrant-style-separators": {
+      "comment": "Read style colons and commas outside property values. quadrant.md#rejections-outside-the-grammar: A style is a name, a `:`, and a value, with whitespace around the `:` or not; a second `:` after the value, and what follows it, is allowed. quadrant.md#points: The styles are separated by `,`, with whitespace around it or not, and may follow the `]` with no space.",
+      "match": "(:)|(,)",
+      "captures": {
+        "1": {
+          "name": "punctuation.separator.colon.mermaid"
+        },
+        "2": {
+          "name": "punctuation.separator.comma.mermaid"
+        }
+      }
+    },
+    "quadrant-style": {
+      "comment": "Read one style property name and its whole value, without numeric scopes inside the value. quadrant.md#rejections-outside-the-grammar: A style is a name, a `:`, and a value, with whitespace around the `:` or not; a second `:` after the value, and what follows it, is allowed. common.md#a-directive-is-a-token-boundary: A directive is trivia and not diagram text. common.md#comment-lines: Comment lines are recognized independently of the diagram's syntax and of the context the lexer is in.",
+      "begin": "([A-Za-z-](?:[A-Za-z-]|{{directive}})*)({{quadrant-style-gap}})(:)({{quadrant-style-gap}})",
+      "beginCaptures": {
+        "1": {
+          "name": "support.type.property-name.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "punctuation.separator.colon.mermaid"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "(?=,)|{{quadrant-style-end}}",
+      "contentName": "support.constant.property-value.mermaid",
+      "patterns": [
+        {
+          "include": "#directive"
+        }
+      ]
+    }
+  },
+  "variables": {
+    "quadrant-space": "{{directives}}[{{quadrant-ws}}]{{directives}}",
+    "quadrant-statement-start": "(?:^|\\G|(?<=\\})|(?<=\\}%%))[{{quadrant-ws}}]*",
+    "quadrant-style-end": "(?={{nonDirectivePercentPair}}|;)|{{lineValueEnd}}",
+    "quadrant-ws": " \\t\\x{B}\\x{C}",
+    "quadrant-style-gap": "(?:(?!{{separatorCommentEnd}})[{{quadrant-ws}}]|{{directive}})*"
+  }
+}

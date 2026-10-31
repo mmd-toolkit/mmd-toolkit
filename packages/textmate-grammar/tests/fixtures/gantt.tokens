@@ -1,0 +1,680 @@
+> gantt
+  "gantt" keyword.control.mermaid
+>   title Project title weekday monday
+  "title" keyword.control.mermaid
+  "Project title weekday monday" string.unquoted.mermaid
+>   accTitle: An accessible title
+  "accTitle" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "An accessible title" string.unquoted.mermaid
+>   accDescr: A line description
+  "accDescr" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "A line description" string.unquoted.mermaid
+>   accDescr { A block with title and 123 }
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  " A block with title and 123 " string.unquoted.mermaid
+  "}" punctuation.definition.description.end.mermaid
+>   accDescr {}
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  "}" punctuation.definition.description.end.mermaid
+>   dateFormat YYYY-MM-DD
+  "dateFormat" keyword.control.mermaid
+  "YYYY-MM-DD" string.unquoted.mermaid
+>   axisFormat %m/%d
+  "axisFormat" keyword.control.mermaid
+  "%m/%d" string.unquoted.mermaid
+>   tickInterval 1week
+  "tickInterval" keyword.control.mermaid
+  "1week" string.unquoted.mermaid
+>   includes monday,tuesday
+  "includes" keyword.control.mermaid
+  "monday" string.unquoted.mermaid
+  "," punctuation.separator.comma.mermaid
+  "tuesday" string.unquoted.mermaid
+>   excludes weekends,2026-11-01
+  "excludes" keyword.control.mermaid
+  "weekends" string.unquoted.mermaid
+  "," punctuation.separator.comma.mermaid
+  "2026-11-01" string.unquoted.mermaid
+>   todayMarker stroke:#f00,stroke-width:2px
+  "todayMarker" keyword.control.mermaid
+  "stroke:#f00,stroke-width:2px" string.unquoted.mermaid
+>   weekday monday
+  "weekday" keyword.control.mermaid
+  "monday" constant.language.mermaid
+>   weekday tuesday
+  "weekday" keyword.control.mermaid
+  "tuesday" constant.language.mermaid
+>   weekday wednesday
+  "weekday" keyword.control.mermaid
+  "wednesday" constant.language.mermaid
+>   weekday thursday
+  "weekday" keyword.control.mermaid
+  "thursday" constant.language.mermaid
+>   weekday friday
+  "weekday" keyword.control.mermaid
+  "friday" constant.language.mermaid
+>   weekday saturday
+  "weekday" keyword.control.mermaid
+  "saturday" constant.language.mermaid
+>   weekday sunday
+  "weekday" keyword.control.mermaid
+  "sunday" constant.language.mermaid
+>   weekend friday
+  "weekend" keyword.control.mermaid
+  "friday" constant.language.mermaid
+>   weekend saturday
+  "weekend" keyword.control.mermaid
+  "saturday" constant.language.mermaid
+>   inclusiveEndDates
+  "inclusiveEndDates" keyword.control.mermaid
+>   section Development click title
+  "section" keyword.control.mermaid
+  "Development click title" string.unquoted.mermaid
+>   Task with title and "quotes" : done, task1, 2026-11-01, 2d
+  "Task with title and \"quotes\" " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "done" storage.modifier.mermaid
+  "," punctuation.separator.comma.mermaid
+  " task1" string.unquoted.mermaid
+  "," punctuation.separator.comma.mermaid
+  " 2026-11-01" string.unquoted.mermaid
+  "," punctuation.separator.comma.mermaid
+  " 2d" string.unquoted.mermaid
+>   click task1 href "https://example.com/title"
+  "click" keyword.control.mermaid
+  "task1" variable.mermaid
+  "href" keyword.control.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "https://example.com/title" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+>   click task1 call handler("title",123) href "https://example.com/call"
+  "click" keyword.control.mermaid
+  "task1" variable.mermaid
+  "call" keyword.control.mermaid
+  "handler" entity.name.function.mermaid
+  "(" punctuation.section.parens.begin.mermaid
+  "\"title\",123" string.unquoted.mermaid
+  ")" punctuation.section.parens.end.mermaid
+  "href" keyword.control.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "https://example.com/call" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+>   click task1 href "u" call handler()
+  "click" keyword.control.mermaid
+  "task1" variable.mermaid
+  "href" keyword.control.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "u" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "call" keyword.control.mermaid
+  "handler" entity.name.function.mermaid
+  "(" punctuation.section.parens.begin.mermaid
+  ")" punctuation.section.parens.end.mermaid
+>   titleLong : 1d
+  "titleLong " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 1d" string.unquoted.mermaid
+>   clickLong : 1d
+  "clickLong " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 1d" string.unquoted.mermaid
+>   inclusiveEndDatesLong : 1d
+  "inclusiveEndDatesLong " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 1d" string.unquoted.mermaid
+>   weekday mondayLong : 1d
+  "weekday mondayLong " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 1d" string.unquoted.mermaid
+>   title A%%{init: {}}%%B
+  "title" keyword.control.mermaid
+  "A" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "B" string.unquoted.mermaid
+>   section A%%{init: {}}%%B
+  "section" keyword.control.mermaid
+  "A" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "B" string.unquoted.mermaid
+>   dateFormat YY%%{init: {}}%%YY
+  "dateFormat" keyword.control.mermaid
+  "YY" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "YY" string.unquoted.mermaid
+>   accTitle: A%%{init: {}}%%B
+  "accTitle" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "A" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "B" string.unquoted.mermaid
+>   accDescr { A%%{init: {}}%%B }
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  " A" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "B " string.unquoted.mermaid
+  "}" punctuation.definition.description.end.mermaid
+>   Task%%{init: {}}%%name : 1%%{init: {}}%%d
+  "Task" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "name " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 1" string.unquoted.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "d" string.unquoted.mermaid
+>   click task1 call f%%{init: {}}%%g(1%%{init: {}}%%2)
+  "click" keyword.control.mermaid
+  "task1" variable.mermaid
+  "call" keyword.control.mermaid
+  "f" entity.name.function.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "g" entity.name.function.mermaid
+  "(" punctuation.section.parens.begin.mermaid
+  "1" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "2" string.unquoted.mermaid
+  ")" punctuation.section.parens.end.mermaid
+>   click task1 href "u%%{init: {}}%%v"
+  "click" keyword.control.mermaid
+  "task1" variable.mermaid
+  "href" keyword.control.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "u" string.quoted.double.mermaid
+  "%%{" string.quoted.double.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.quoted.double.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.quoted.double.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.quoted.double.mermaid meta.directive.mermaid
+  "{}" string.quoted.double.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.quoted.double.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "v" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+>   % a native comment
+  "%" comment.line.percentage.mermaid
+  " a native comment" comment.line.percentage.mermaid
+>   %%
+  "%%" comment.line.percentage.mermaid
+>   %% a common comment
+  "%% a common comment" comment.line.percentage.mermaid
+>   click task1 call f(a(b)
+  "click" keyword.control.mermaid
+  "task1" variable.mermaid
+  "call" keyword.control.mermaid
+  "f" entity.name.function.mermaid
+  "(" punctuation.section.parens.begin.mermaid
+  "a(b" string.unquoted.mermaid
+  ")" punctuation.section.parens.end.mermaid
+>   WEEKDAY MONDAY
+  "WEEKDAY" keyword.control.mermaid
+  "MONDAY" constant.language.mermaid
+>   INCLUSIVEENDDATES
+  "INCLUSIVEENDDATES" keyword.control.mermaid
+>   CLICK task1 CALL f() HREF "u"
+  "CLICK" keyword.control.mermaid
+  "task1" variable.mermaid
+  "CALL" keyword.control.mermaid
+  "f" entity.name.function.mermaid
+  "(" punctuation.section.parens.begin.mermaid
+  ")" punctuation.section.parens.end.mermaid
+  "HREF" keyword.control.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "u" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+>   click x call a)b(1)
+  "click" keyword.control.mermaid
+  "x" variable.mermaid
+  "call" keyword.control.mermaid
+  "a)b" entity.name.function.mermaid
+  "(" punctuation.section.parens.begin.mermaid
+  "1" string.unquoted.mermaid
+  ")" punctuation.section.parens.end.mermaid
+>   click %%{init: {}}%%x href "u"
+  "click" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "x" variable.mermaid
+  "href" keyword.control.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "u" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+>   includes monday%%{init: {}}%%,tuesday
+  "includes" keyword.control.mermaid
+  "monday" string.unquoted.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "," punctuation.separator.comma.mermaid
+  "tuesday" string.unquoted.mermaid
+>   dateFormat #a%%{init: {}}%%mp;call f()
+  "dateFormat" keyword.control.mermaid
+  "#a" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "mp;" string.unquoted.mermaid
+  "call f()" string.unquoted.mermaid
+>   click x href "<b title="x">y</b>"
+  "click" keyword.control.mermaid
+  "x" variable.mermaid
+  "href" keyword.control.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "<b title=\"x\">" string.quoted.double.mermaid
+  "y</b>" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+>   click x href "a<b" call f(c>)
+  "click" keyword.control.mermaid
+  "x" variable.mermaid
+  "href" keyword.control.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "<b" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "call" keyword.control.mermaid
+  "f" entity.name.function.mermaid
+  "(" punctuation.section.parens.begin.mermaid
+  "c>" string.unquoted.mermaid
+  ")" punctuation.section.parens.end.mermaid
+>   accTitle%%{init: {}}%%: T
+  "accTitle" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "T" string.unquoted.mermaid
+>   accDescr%%{init: {}}%%: D
+  "accDescr" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "D" string.unquoted.mermaid
+>   accDescr%%{init: {}}%%{ B }
+  "accDescr" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  " B " string.unquoted.mermaid
+  "}" punctuation.definition.description.end.mermaid
+>   weekday%%{init: {}}%% monday
+  "weekday" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "monday" constant.language.mermaid
+>   weekend %%{init: {}}%%saturday
+  "weekend" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "saturday" constant.language.mermaid
+>   title%%{init: {}}%% T
+  "title" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "T" string.unquoted.mermaid
+>   section%%{init: {}}%% S
+  "section" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "S" string.unquoted.mermaid
+>   dateFormat%%{init: {}}%% YYYY
+  "dateFormat" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "YYYY" string.unquoted.mermaid
+>   includes%%{init: {}}%% monday
+  "includes" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "monday" string.unquoted.mermaid
+>   todayMarker%%{init: {}}%% stroke:#amp;
+  "todayMarker" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "stroke:" string.unquoted.mermaid
+  "#amp;" string.unquoted.mermaid
+>   click x href%%{init: {}}%% "v" call%%{init: {}}%% f(2)
+  "click" keyword.control.mermaid
+  "x" variable.mermaid
+  "href" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "v" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "call" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "f" entity.name.function.mermaid
+  "(" punctuation.section.parens.begin.mermaid
+  "2" string.unquoted.mermaid
+  ")" punctuation.section.parens.end.mermaid
+>   Task : #a%%{init: {}}%%mp;call f()
+  "Task " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " " string.unquoted.mermaid
+  "#a" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "mp;" string.unquoted.mermaid
+  "call f()" string.unquoted.mermaid
+>   todayMarker #a%%{init: {}}%%mp;call f()
+  "todayMarker" keyword.control.mermaid
+  "#a" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "mp;" string.unquoted.mermaid
+  "call f()" string.unquoted.mermaid
+>   dateFormat #x : 1d
+  "dateFormat #x " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 1d" string.unquoted.mermaid
+>   axisFormat #x : 1d
+  "axisFormat #x " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 1d" string.unquoted.mermaid
+>   tickInterval #x : 1d
+  "tickInterval #x " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 1d" string.unquoted.mermaid
+>   includes #x : 1d
+  "includes #x " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 1d" string.unquoted.mermaid
+>   excludes #x : 1d
+  "excludes #x " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 1d" string.unquoted.mermaid
+>   dateFormat #amp; YYYY
+  "dateFormat" keyword.control.mermaid
+  "#amp;" string.unquoted.mermaid
+  " YYYY" string.unquoted.mermaid
+>   dateFormat #amp;x : 1d
+  "dateFormat" keyword.control.mermaid
+  "#amp;" string.unquoted.mermaid
+  "x : 1d" string.unquoted.mermaid
+>   dateFormat %%{init: {}}%%#x : 1d
+  "dateFormat " string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "#x " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 1d" string.unquoted.mermaid
+>   dateFormat ;x : 1d
+  "dateFormat ;x " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 1d" string.unquoted.mermaid
+>   inclusiveEndDates%%{wrap}%%Long : 1d
+  "inclusiveEndDates" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "Long " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 1d" string.unquoted.mermaid
+>   weekday monday%%{wrap}%%Long : 1d
+  "weekday monday" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "Long " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 1d" string.unquoted.mermaid
+>   weekend friday%%{wrap}%%Long : 1d
+  "weekend friday" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "Long " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 1d" string.unquoted.mermaid
+>   weekday tuesday%%{wrap}%%Long : 1d
+  "weekday tuesday" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "Long " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 1d" string.unquoted.mermaid
+>   weekday wednesday%%{wrap}%%Long : 1d
+  "weekday wednesday" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "Long " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 1d" string.unquoted.mermaid
+>   weekday thursday%%{wrap}%%Long : 1d
+  "weekday thursday" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "Long " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 1d" string.unquoted.mermaid
+>   weekday friday%%{wrap}%%Long : 1d
+  "weekday friday" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "Long " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 1d" string.unquoted.mermaid
+>   weekday saturday%%{wrap}%%Long : 1d
+  "weekday saturday" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "Long " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 1d" string.unquoted.mermaid
+>   weekday sunday%%{wrap}%%Long : 1d
+  "weekday sunday" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "Long " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 1d" string.unquoted.mermaid
+>   weekend saturday%%{wrap}%%Long : 1d
+  "weekend saturday" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "Long " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 1d" string.unquoted.mermaid
+> 
+>   click a,b call f()
+  "click" keyword.control.mermaid
+  "a" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "b" variable.mermaid
+  "call" keyword.control.mermaid
+  "f" entity.name.function.mermaid
+  "(" punctuation.section.parens.begin.mermaid
+  ")" punctuation.section.parens.end.mermaid
+>   includes monday,tuesday
+  "includes" keyword.control.mermaid
+  "monday" string.unquoted.mermaid
+  "," punctuation.separator.comma.mermaid
+  "tuesday" string.unquoted.mermaid
+>   a: 1d,2d
+  "a" string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 1d" string.unquoted.mermaid
+  "," punctuation.separator.comma.mermaid
+  "2d" string.unquoted.mermaid
+>   click a%%{wrap}%% href "u"
+  "click" keyword.control.mermaid
+  "a" variable.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "href" keyword.control.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "u" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> 
+>   accDescr {}%%%{wrap}%%% native split mark
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  "}" punctuation.definition.description.end.mermaid
+  "%" comment.line.percentage.mermaid
+  "%%{" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.line.percentage.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "%" comment.line.percentage.mermaid
+  " native split mark" comment.line.percentage.mermaid
+>   click a call f)%%{wrap}%%g(1)
+  "click" keyword.control.mermaid
+  "a" variable.mermaid
+  "call" keyword.control.mermaid
+  "f)" entity.name.function.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "g" entity.name.function.mermaid
+  "(" punctuation.section.parens.begin.mermaid
+  "1" string.unquoted.mermaid
+  ")" punctuation.section.parens.end.mermaid
+> 
+>   %%{wrap}%%title T
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "title" keyword.control.mermaid
+  "T" string.unquoted.mermaid
+> 
+>   accDescr {}%%%{wrap}%% native single mark
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  "}" punctuation.definition.description.end.mermaid
+  "%" comment.line.percentage.mermaid
+  "%%{" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.line.percentage.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  " native single mark" comment.line.percentage.mermaid
+>   foo%%{wrap}%%title : 1d
+  "foo" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "title " string.unquoted.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " 1d" string.unquoted.mermaid
+> 

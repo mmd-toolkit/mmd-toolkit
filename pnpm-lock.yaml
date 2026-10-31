@@ -92,6 +92,9 @@ importers:
       '@mmd-toolkit/eslint-plugin':
         specifier: workspace:*
         version: link:../eslint-plugin
+      '@mmd-toolkit/textmate-grammar':
+        specifier: workspace:*
+        version: link:../textmate-grammar
       '@shikijs/vitepress-twoslash':
         specifier: 4.5.0
         version: 4.5.0(typescript@6.0.3)
@@ -150,6 +153,9 @@ importers:
       '@mmd-toolkit/parser':
         specifier: workspace:*
         version: link:../parser
+      '@mmd-toolkit/textmate-grammar':
+        specifier: workspace:*
+        version: link:../textmate-grammar
       '@shikijs/monaco':
         specifier: ^4.5.0
         version: 4.5.0
@@ -226,6 +232,16 @@ importers:
       mermaid:
         specifier: 12.2.0
         version: 12.2.0
+
+  packages/textmate-grammar:
+    dependencies:
+      '@shikijs/types':
+        specifier: ^4.5.0
+        version: 4.5.0
+    devDependencies:
+      shiki:
+        specifier: ^4.5.0
+        version: 4.5.0
 
 packages:
 

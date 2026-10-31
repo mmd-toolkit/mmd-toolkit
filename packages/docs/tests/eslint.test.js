@@ -6,6 +6,7 @@ import mmdToolkit from "@mmd-toolkit/eslint-plugin"
 import { afterAll, beforeAll, describe, expect, it } from "vitest"
 import { createMarkdownRenderer, disposeMdItInstance } from "vitepress"
 import { eslintCodeTransformer } from "../.vitepress/eslint.js"
+import { languages } from "../.vitepress/highlighting.js"
 
 const repositoryRoot = fileURLToPath(new URL("../../../", import.meta.url))
 
@@ -32,8 +33,7 @@ describe("ESLint diagnostic rendering", () => {
   beforeAll(async () => {
     disposeMdItInstance()
     markdown = await createMarkdownRenderer(repositoryRoot, {
-      languageAlias: { mmd: "mermaid" },
-      languages: ["mermaid", "js", "sh"],
+      languages,
       codeTransformers: [eslintCodeTransformer],
     })
   })

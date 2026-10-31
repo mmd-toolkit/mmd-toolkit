@@ -1,0 +1,55 @@
+{
+  "header": "sankey-beta",
+  "scopes": [
+    [",", "punctuation.separator.comma.mermaid"],
+    ["\"\"", "constant.character.escape.mermaid"],
+    ["<b title=\"x\">", "string.quoted.double.mermaid", 7],
+    ["B", "string.quoted.double.mermaid", 10],
+    ["wrap", "entity.name.function.directive.mermaid", 10],
+    [",", "punctuation.separator.comma.mermaid", 11],
+    ["D", "string.quoted.double.mermaid", 12],
+    ["wrap", "entity.name.function.directive.mermaid", 12],
+    ["wrap", "constant.character.escape.mermaid", 12],
+    ["wrap", "constant.character.escape.mermaid", 14],
+    ["quote", "string.quoted.double.mermaid", 14],
+    ["<b title=\"x\">y</b>", "variable.mermaid", 8],
+    ["Later>", "variable.mermaid", 9],
+    ["sankey", "variable.mermaid", 15],
+    ["Agricultural 'waste'", "variable.mermaid"],
+    ["Bio-conversion", "variable.mermaid"],
+    ["124.729", "string.unquoted.mermaid"],
+    ["Bio-conversion, liquid", "string.quoted.double.mermaid"],
+    ["Liquid", "variable.mermaid"],
+    ["0.597", "string.unquoted.mermaid"]
+  ],
+  "absentOnLine": [
+    [5, "comment.line.percentage.mermaid"],
+    [11, "string.quoted.double.mermaid"],
+    [15, "keyword.control.mermaid"]
+  ],
+  "absent": [
+    ["<b title=\"x\">", "punctuation.definition.string.end.mermaid", 7],
+    ["wrap", "punctuation.definition.string.end.mermaid", 10],
+    ["124.729", "constant.numeric.mermaid"]
+  ],
+  "escapedInputs": [
+    {
+      "code": "sankey-beta\n<b title=\"more,fields\">,1\u2028%% separator comment\n\n",
+      "scopes": [
+        ["%% separator comment", "comment.line.percentage.mermaid", 1],
+        [",", "punctuation.separator.comma.mermaid", 1]
+      ],
+      "absent": [],
+      "absentOnLine": [[1, "string.quoted.double.mermaid"]]
+    },
+    {
+      "code": "sankey-beta\nValue,Target,1\u2029%%{wrap}%% %% common %%{wrap}%%\n",
+      "scopes": [
+        ["wrap", "entity.name.function.directive.mermaid", 1],
+        ["%% common %%{wrap}%%", "comment.line.percentage.mermaid", 1],
+        ["1", "string.unquoted.mermaid", 1]
+      ],
+      "absent": [["%% common %%{wrap}%%", "meta.directive.mermaid", 1]]
+    }
+  ]
+}

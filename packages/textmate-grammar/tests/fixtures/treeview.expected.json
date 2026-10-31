@@ -1,0 +1,119 @@
+{
+  "header": "treeView-beta",
+  "scopes": [
+    ["title", "keyword.control.mermaid"],
+    ["accTitle", "keyword.control.mermaid"],
+    ["accDescr", "keyword.control.mermaid"],
+    [":::", "punctuation.separator.class.mermaid"],
+    ["entry", "variable.mermaid"],
+    ["icon", "keyword.control.mermaid"],
+    ["fa:file", "variable.mermaid"],
+    ["##", "storage.modifier.mermaid"],
+    ["├──", "keyword.operator.mermaid"],
+    ["index.ts", "string.quoted.double.mermaid"],
+    ["accDescr", "keyword.control.mermaid", 4],
+    ["first", "string.quoted.double.mermaid"],
+    ["second", "string.quoted.double.mermaid"],
+    ["%% quoted comment", "comment.line.percentage.mermaid"],
+    ["%% class comment", "comment.line.percentage.mermaid"],
+    ["%% icon comment", "comment.line.percentage.mermaid"],
+    ["<b title=\"x\">", "string.quoted.double.mermaid", 14],
+    ["html", "variable.mermaid", 14],
+    ["wrap", "entity.name.function.directive.mermaid", 14],
+    ["tag", "variable.mermaid", 15],
+    ["icon", "keyword.control.mermaid", 16],
+    ["fa:file", "variable.mermaid", 16],
+    ["##", "storage.modifier.mermaid", 17],
+    ["b", "string.unquoted.mermaid", 17],
+    ["%% class boundary comment", "comment.line.percentage.mermaid", 18],
+    ["<b", "string.quoted.double.mermaid", 19],
+    [" text >", "string.unquoted.mermaid", 19],
+    ["wrap", "entity.name.function.directive.mermaid", 0],
+    ["├──", "keyword.operator.mermaid", 22],
+    ["├──", "keyword.operator.mermaid", 23],
+    ["├──", "keyword.operator.mermaid", 24],
+    ["wrap", "entity.name.function.directive.mermaid", 27],
+    [":::", "punctuation.separator.class.mermaid", 29],
+    ["tag", "variable.mermaid", 29],
+    ["icon", "keyword.control.mermaid", 29],
+    ["fa:file", "variable.mermaid", 29],
+    ["wrap", "entity.name.function.directive.mermaid", 31],
+    ["├──", "keyword.operator.mermaid", 31],
+    ["icon", "keyword.control.mermaid", 32],
+    ["fa:file", "variable.mermaid", 32],
+    ["wrap", "entity.name.function.directive.mermaid", 33],
+    ["name", "string.unquoted.mermaid", 15],
+    ["─X", "string.unquoted.mermaid", 20],
+    ["│X", "string.unquoted.mermaid", 21],
+    ["icon(fa:file)", "keyword.operator.mermaid", 22],
+    [":::entry", "keyword.operator.mermaid", 23],
+    ["\"prefix", "keyword.operator.mermaid", 24],
+    [" Entity#amp;name", "string.unquoted.mermaid", 26],
+    [" Hash ##amp; actor", "string.unquoted.mermaid", 28],
+    ["icon(fa:file)", "string.unquoted.mermaid", 33],
+    ["src", "string.unquoted.mermaid", 5],
+    ["single.ts", "string.quoted.single.mermaid"],
+    ["───", "comment.block.ignored.mermaid"],
+    ["(", "punctuation.section.parens.begin.mermaid", 6],
+    [")", "punctuation.section.parens.end.mermaid", 6],
+    [" main entry", "string.unquoted.mermaid", 6]
+  ],
+  "absentOnLine": [
+    [10, "string.quoted.double.mermaid"],
+    [20, "keyword.operator.mermaid"],
+    [21, "keyword.operator.mermaid"],
+    [22, "keyword.control.mermaid"],
+    [23, "variable.mermaid"],
+    [24, "string.quoted.double.mermaid"],
+    [28, "storage.modifier.mermaid"],
+    [31, "string.quoted.double.mermaid"],
+    [33, "keyword.control.mermaid"]
+  ],
+  "unscoped": [],
+  "absent": [
+    ["<b title=\"x\">", "punctuation.definition.string.end.mermaid", 14],
+    [" text >", "string.quoted.double.mermaid", 19]
+  ],
+  "escapedInputs": [
+    {
+      "code": "treeView-beta%%{wrap}%%\n└── Separator ## text\u2028%% description comment\n\n├── Bare text\u2028%% bare comment\n\u00a0title Keep ├── Content\n\n",
+      "scopes": [
+        [" text", "string.unquoted.mermaid", 1],
+        ["%% description comment", "comment.line.percentage.mermaid", 1],
+        ["%% bare comment", "comment.line.percentage.mermaid", 3]
+      ],
+      "absent": [["%% description comment", "string.unquoted.mermaid", 1]],
+      "absentOnLine": [[4, "keyword.operator.mermaid"]],
+      "unscoped": []
+    },
+    {
+      "code": "treeView-beta\nItem :::tag%% native\u2028%% common %%{wrap}%%\n\nNext icon(fa:file)%% native\u2029%% common %%{wrap}%%\n\nDescription ## text\u2029%% description common %%{wrap}%%\n",
+      "scopes": [
+        ["tag", "variable.mermaid", 1],
+        ["%% native", "comment.line.percentage.mermaid", 1],
+        ["%% common %%{wrap}%%", "comment.line.percentage.mermaid", 1],
+        ["icon", "keyword.control.mermaid", 3],
+        ["%% native", "comment.line.percentage.mermaid", 3],
+        ["%% common %%{wrap}%%", "comment.line.percentage.mermaid", 3],
+        [" text", "string.unquoted.mermaid", 5],
+        [
+          "%% description common %%{wrap}%%",
+          "comment.line.percentage.mermaid",
+          5
+        ]
+      ],
+      "absentOnLine": [
+        [1, "meta.directive.mermaid"],
+        [3, "meta.directive.mermaid"],
+        [5, "meta.directive.mermaid"]
+      ],
+      "absent": [
+        ["%% description common %%{wrap}%%", "string.unquoted.mermaid", 5]
+      ]
+    },
+    {
+      "code": "treeView-beta\nRoot\n│──\n",
+      "scopes": [["│──", "comment.block.ignored.mermaid", 2]]
+    }
+  ]
+}

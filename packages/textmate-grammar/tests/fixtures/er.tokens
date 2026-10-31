@@ -1,0 +1,490 @@
+> erDiagram
+  "erDiagram" keyword.control.mermaid
+> %% an ER comment
+  "%% an ER comment" comment.line.percentage.mermaid
+> accTitle: class and subgraph
+  "accTitle" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "class and subgraph" string.unquoted.mermaid
+> accDescr: style and direction
+  "accDescr" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "style and direction" string.unquoted.mermaid
+> accDescr { classDef and end }
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  "classDef and end " string.unquoted.mermaid
+  "}" punctuation.definition.description.end.mermaid
+> direction LR
+  "direction" keyword.control.mermaid
+  "LR" constant.language.mermaid
+> subgraph Group [Group title]
+  "subgraph" keyword.control.mermaid
+  "Group" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "Group title" string.unquoted.mermaid
+  "]" punctuation.definition.label.end.mermaid
+>   Person["Person label"]:::highlighted {
+  "Person" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Person label" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+  ":::" punctuation.separator.class.mermaid
+  "highlighted" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>     int id PK, FK, UK "An attribute comment"
+  "int" entity.name.type.mermaid
+  "id" variable.mermaid
+  "PK" storage.modifier.mermaid
+  "," punctuation.separator.comma.mermaid
+  "FK" storage.modifier.mermaid
+  "," punctuation.separator.comma.mermaid
+  "UK" storage.modifier.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "An attribute comment" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+>     string? nickname
+  "string" entity.name.type.mermaid
+  "?" storage.modifier.mermaid
+  "nickname" variable.mermaid
+>     string PKx
+  "string" entity.name.type.mermaid
+  "PKx" variable.mermaid
+>     direction LR
+  "direction" entity.name.type.mermaid
+  "LR" variable.mermaid
+>     List~int~ values
+  "List~int~" entity.name.type.mermaid
+  "values" variable.mermaid
+>     `type with spaces` field
+  "`" punctuation.definition.string.begin.mermaid
+  "type with spaces" entity.name.type.mermaid
+  "`" punctuation.definition.string.end.mermaid
+  "field" variable.mermaid
+>   }
+  "}" keyword.operator.block.end.mermaid
+>   Account
+  "Account" variable.mermaid
+> end
+  "end" keyword.control.mermaid
+> classDef highlighted fill:red
+  "classDef" keyword.control.mermaid
+  "highlighted" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" punctuation.separator.key-value.mermaid
+  "red" support.constant.property-value.mermaid
+> style Person fill:blue
+  "style" keyword.control.mermaid
+  "Person" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" punctuation.separator.key-value.mermaid
+  "blue" support.constant.property-value.mermaid
+> class Person,Account highlighted
+  "class" keyword.control.mermaid
+  "Person" variable.mermaid
+  "," punctuation.separator.comma.mermaid
+  "Account" variable.mermaid
+  "highlighted" variable.mermaid
+> Person ||--o{ Account : owns
+  "Person" variable.mermaid
+  "||" keyword.operator.arrow.mermaid
+  "--" keyword.operator.arrow.mermaid
+  "o{" keyword.operator.arrow.mermaid
+  "Account" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "owns" string.unquoted.mermaid
+> Person one or zero to zero or many Account : "A role"
+  "Person" variable.mermaid
+  "one or zero" keyword.operator.arrow.mermaid
+  "to" keyword.operator.arrow.mermaid
+  "zero or many" keyword.operator.arrow.mermaid
+  "Account" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "A role" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> Person one or more optionally to only one Account : links
+  "Person" variable.mermaid
+  "one or more" keyword.operator.arrow.mermaid
+  "optionally to" keyword.operator.arrow.mermaid
+  "only one" keyword.operator.arrow.mermaid
+  "Account" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "links" string.unquoted.mermaid
+> Person one or many to zero or one Account : links
+  "Person" variable.mermaid
+  "one or many" keyword.operator.arrow.mermaid
+  "to" keyword.operator.arrow.mermaid
+  "zero or one" keyword.operator.arrow.mermaid
+  "Account" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "links" string.unquoted.mermaid
+> Person many(0)..many(1) Account : links
+  "Person" variable.mermaid
+  "many(0)" keyword.operator.arrow.mermaid
+  ".." keyword.operator.arrow.mermaid
+  "many(1)" keyword.operator.arrow.mermaid
+  "Account" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "links" string.unquoted.mermaid
+> Person 1+.-0+ Account : links
+  "Person" variable.mermaid
+  "1+" keyword.operator.arrow.mermaid
+  ".-" keyword.operator.arrow.mermaid
+  "0+" keyword.operator.arrow.mermaid
+  "Account" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "links" string.unquoted.mermaid
+> Person }o-.}| Account : links
+  "Person" variable.mermaid
+  "}o" keyword.operator.arrow.mermaid
+  "-." keyword.operator.arrow.mermaid
+  "}|" keyword.operator.arrow.mermaid
+  "Account" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "links" string.unquoted.mermaid
+> Person |o--|{ Account : links
+  "Person" variable.mermaid
+  "|o" keyword.operator.arrow.mermaid
+  "--" keyword.operator.arrow.mermaid
+  "|{" keyword.operator.arrow.mermaid
+  "Account" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "links" string.unquoted.mermaid
+> Person o|--|| Account : links
+  "Person" variable.mermaid
+  "o|" keyword.operator.arrow.mermaid
+  "--" keyword.operator.arrow.mermaid
+  "||" keyword.operator.arrow.mermaid
+  "Account" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "links" string.unquoted.mermaid
+> Person 1--1 Account : links
+  "Person" variable.mermaid
+  "1" keyword.operator.arrow.mermaid
+  "--" keyword.operator.arrow.mermaid
+  "1" keyword.operator.arrow.mermaid
+  "Account" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "links" string.unquoted.mermaid
+> Person u--o{ Account : links
+  "Person" variable.mermaid
+  "u" keyword.operator.arrow.mermaid
+  "--" keyword.operator.arrow.mermaid
+  "o{" keyword.operator.arrow.mermaid
+  "Account" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "links" string.unquoted.mermaid
+> 12
+  "12" constant.numeric.mermaid
+> 2.5
+  "2.5" constant.numeric.mermaid
+> ending
+  "ending" variable.mermaid
+> classes
+  "classes" variable.mermaid
+> styles
+  "styles" variable.mermaid
+> manyx
+  "manyx" variable.mermaid
+> tomato
+  "tomato" variable.mermaid
+> ones
+  "ones" variable.mermaid
+> subgraph1
+  "subgraph1" variable.mermaid
+> title T
+  "title" variable.mermaid
+  "T" variable.mermaid
+> "quoted %%{init: {}}%% entity"
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "quoted " string.quoted.double.mermaid
+  "%%{" string.quoted.double.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.quoted.double.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.quoted.double.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.quoted.double.mermaid meta.directive.mermaid
+  "{}" string.quoted.double.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.quoted.double.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  " entity" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> Person ||--o{ Account : "role %%{init: {}}%% class"
+  "Person" variable.mermaid
+  "||" keyword.operator.arrow.mermaid
+  "--" keyword.operator.arrow.mermaid
+  "o{" keyword.operator.arrow.mermaid
+  "Account" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "role " string.quoted.double.mermaid
+  "%%{" string.quoted.double.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" string.quoted.double.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.quoted.double.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " string.quoted.double.mermaid meta.directive.mermaid
+  "{}" string.quoted.double.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.quoted.double.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  " class" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> accDescr {} Extra
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  "}" punctuation.definition.description.end.mermaid
+  "Extra" variable.mermaid
+> Person many to one Account : links
+  "Person" variable.mermaid
+  "many" keyword.operator.arrow.mermaid
+  "to" keyword.operator.arrow.mermaid
+  "one" keyword.operator.arrow.mermaid
+  "Account" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "links" string.unquoted.mermaid
+> Person zero or more to many Account : links
+  "Person" variable.mermaid
+  "zero or more" keyword.operator.arrow.mermaid
+  "to" keyword.operator.arrow.mermaid
+  "many" keyword.operator.arrow.mermaid
+  "Account" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "links" string.unquoted.mermaid
+> classDef end note:class
+  "classDef" keyword.control.mermaid
+  "end" variable.mermaid
+  "note" support.type.property-name.mermaid
+  ":" punctuation.separator.key-value.mermaid
+  "class" support.constant.property-value.mermaid
+> classDef a direction LR
+  "classDef a " comment.block.ignored.mermaid
+  "direction" keyword.control.mermaid
+  "LR" constant.language.mermaid
+> classDef colored fill:#f00
+  "classDef" keyword.control.mermaid
+  "colored" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" punctuation.separator.key-value.mermaid
+  "#f00" support.constant.property-value.mermaid
+> classDef plain fill:red;
+  "classDef" keyword.control.mermaid
+  "plain" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" punctuation.separator.key-value.mermaid
+  "red" support.constant.property-value.mermaid
+  ";" punctuation.terminator.statement.mermaid
+> A ||--O{ B : x
+  "A" variable.mermaid
+  "||" keyword.operator.arrow.mermaid
+  "--" keyword.operator.arrow.mermaid
+  "O{" keyword.operator.arrow.mermaid
+  "B" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "x" string.unquoted.mermaid
+> A |O--O| B : x
+  "A" variable.mermaid
+  "|O" keyword.operator.arrow.mermaid
+  "--" keyword.operator.arrow.mermaid
+  "O|" keyword.operator.arrow.mermaid
+  "B" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "x" string.unquoted.mermaid
+> A { }~a~ b }
+  "A" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+  "}~a~" entity.name.type.mermaid
+  "b" variable.mermaid
+  "}" keyword.operator.block.end.mermaid
+> 
+> classDef #foo; fill:red
+  "classDef" keyword.control.mermaid
+  "#foo;" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" punctuation.separator.key-value.mermaid
+  "red" support.constant.property-value.mermaid
+> A 1%%{init: {}}%%--1 B : x
+  "A" variable.mermaid
+  "1" keyword.operator.arrow.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "--" keyword.operator.arrow.mermaid
+  "1" keyword.operator.arrow.mermaid
+  "B" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "x" string.unquoted.mermaid
+> A u%%{init: {}}%%--o{ B : x
+  "A" variable.mermaid
+  "u" keyword.operator.arrow.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "--" keyword.operator.arrow.mermaid
+  "o{" keyword.operator.arrow.mermaid
+  "B" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "x" string.unquoted.mermaid
+> A ||%%{init: {}}%%--o{ B : x
+  "A" variable.mermaid
+  "||" keyword.operator.arrow.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "--" keyword.operator.arrow.mermaid
+  "o{" keyword.operator.arrow.mermaid
+  "B" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "x" string.unquoted.mermaid
+> accTitle%%{init: {}}%%: note
+  "accTitle" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "note" string.unquoted.mermaid
+> accDescr%%{init: {}}%%{ text }
+  "accDescr" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  "text " string.unquoted.mermaid
+  "}" punctuation.definition.description.end.mermaid
+> direction%%{init: {}}%% LR
+  "direction" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "LR" constant.language.mermaid
+> X%%{init: {}}%% { string%%{init: {}}%%? a }
+  "X" variable.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "{" keyword.operator.block.begin.mermaid
+  "string" entity.name.type.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "?" storage.modifier.mermaid
+  "a" variable.mermaid
+  "}" keyword.operator.block.end.mermaid
+> A { List%%{init: {}}%%~int~ values }
+  "A" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+  "List" entity.name.type.mermaid
+  "%%{" entity.name.type.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" entity.name.type.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" entity.name.type.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " entity.name.type.mermaid meta.directive.mermaid
+  "{}" entity.name.type.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" entity.name.type.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "~int~" entity.name.type.mermaid
+  "values" variable.mermaid
+  "}" keyword.operator.block.end.mermaid
+> Html["<b title="x">label</b>"]
+  "Html" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "<b title=\"x\">" string.quoted.double.mermaid
+  "label</b>" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+> Html["a<b"] { string x "c>" }
+  "Html" variable.mermaid
+  "[" punctuation.definition.label.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "<b" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" punctuation.definition.label.end.mermaid
+  "{" keyword.operator.block.begin.mermaid
+  "string" entity.name.type.mermaid
+  "x" variable.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "c>" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "}" keyword.operator.block.end.mermaid
+> Name#amp;
+  "Name" variable.mermaid
+  "#amp;" variable.mermaid
+> classDef styled fill%%{init: {}}%%:red
+  "classDef" keyword.control.mermaid
+  "styled" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  "%%{" support.type.property-name.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" support.type.property-name.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" support.type.property-name.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " support.type.property-name.mermaid meta.directive.mermaid
+  "{}" support.type.property-name.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" support.type.property-name.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  ":" punctuation.separator.key-value.mermaid
+  "red" support.constant.property-value.mermaid
+> 
+> A ||--|o%%{wrap}%% B : x
+  "A" variable.mermaid
+  "||" keyword.operator.arrow.mermaid
+  "--" keyword.operator.arrow.mermaid
+  "|o" keyword.operator.arrow.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "B" variable.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "x" string.unquoted.mermaid
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> BoundaryTilde { T~#amp;~ field }
+  "BoundaryTilde" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+  "T~#amp;~" entity.name.type.mermaid
+  "field" variable.mermaid
+  "}" keyword.operator.block.end.mermaid
+> accTitle: boundary title
+  "accTitle" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "boundary title" string.unquoted.mermaid
+> accDescr: boundary description
+  "accDescr" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  "boundary description" string.unquoted.mermaid
+> Ignored { `` }
+  "Ignored" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+  "``" comment.block.ignored.mermaid
+  "}" keyword.operator.block.end.mermaid
+> 

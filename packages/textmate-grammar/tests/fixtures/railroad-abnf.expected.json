@@ -1,0 +1,65 @@
+{
+  "header": "railroad-abnf-beta",
+  "scopes": [
+    ["/", "keyword.operator.mermaid"],
+    ["%x41-5A", "string.unquoted.mermaid"],
+    ["*", "keyword.operator.mermaid"],
+    ["DIGIT", "variable.mermaid"],
+    [" a semicolon comment", "comment.line.semicolon.mermaid"],
+    ["title", "keyword.control.mermaid"],
+    ["accTitle", "keyword.control.mermaid"],
+    ["accDescr", "keyword.control.mermaid", 3],
+    ["accDescr", "keyword.control.mermaid", 4],
+    ["%", "string.unquoted.mermaid", 13],
+    ["x", "string.unquoted.mermaid", 13],
+    ["41", "string.unquoted.mermaid", 13],
+    ["5A", "string.unquoted.mermaid", 13],
+    ["wrap", "entity.name.function.directive.mermaid", 13],
+    ["*", "keyword.operator.mermaid", 14],
+    ["3", "constant.numeric.mermaid", 14],
+    ["wrap", "entity.name.function.directive.mermaid", 14],
+    ["<b title=\"x\">", "string.quoted.double.mermaid", 15],
+    ["wrap", "entity.name.function.directive.mermaid", 0],
+    ["2", "constant.numeric.mermaid", 16],
+    ["4", "constant.numeric.mermaid", 16],
+    ["init", "entity.name.function.directive.mermaid", 17],
+    [" tail", "comment.line.semicolon.mermaid", 17],
+    [";", "punctuation.separator.rule.mermaid", 18],
+    ["wrap", "entity.name.function.directive.mermaid", 18],
+    [" D2 line end ", "comment.line.semicolon.mermaid", 19],
+    ["wrap", "entity.name.function.directive.mermaid", 19],
+    ["rule", "variable.mermaid"],
+    ["Grammar", "string.unquoted.mermaid"],
+    ["a", "string.quoted.double.mermaid", 5],
+    ["1", "constant.numeric.mermaid", 5],
+    ["=", "keyword.operator.mermaid"],
+    ["[", "punctuation.section.group.begin.mermaid"],
+    ["]", "punctuation.section.group.end.mermaid"],
+    [";", "punctuation.separator.rule.mermaid", 5],
+    ["---", "comment.block.ignored.mermaid"],
+    ["%%{!}%%", "comment.block.ignored.mermaid"],
+    ["%% a comment line", "comment.line.percentage.mermaid"]
+  ],
+  "absentOnLine": [
+    [13, "comment.line.percentage.mermaid"],
+    [18, "comment.line.semicolon.mermaid"]
+  ],
+  "escapedInputs": [
+    {
+      "code": "railroad-abnf-beta\n; native\u2028%% common %%{wrap}%%\n\nr=\"a\";\n;\u2029%% bare %%{wrap}%%\n",
+      "scopes": [
+        [" native", "comment.line.semicolon.mermaid", 1],
+        ["%% common %%{wrap}%%", "comment.line.percentage.mermaid", 1],
+        ["%% bare %%{wrap}%%", "comment.line.percentage.mermaid", 4]
+      ],
+      "absent": [
+        ["%% common %%{wrap}%%", "comment.line.semicolon.mermaid", 1],
+        ["%% bare %%{wrap}%%", "comment.line.semicolon.mermaid", 4]
+      ],
+      "absentOnLine": [
+        [1, "meta.directive.mermaid"],
+        [4, "meta.directive.mermaid"]
+      ]
+    }
+  ]
+}

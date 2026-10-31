@@ -1,0 +1,492 @@
+{
+  "patterns": [
+    {
+      "include": "#gantt"
+    }
+  ],
+  "repository": {
+    "gantt": {
+      "comment": "Read the exact detected header and its body, permitting an inline first statement. gantt.md#detection: The lexer then reads the header again, case-insensitively and not followed by a word character (see [The statement context](#the-statement-context)).",
+      "begin": "{{diagramStart}}(gantt){{wordEnd}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Read a case-insensitive accessibility description with text delimiters; common comments and directives remain independent. gantt.md#the-statement-context: `accDescr`, zero or more whitespace characters, line feeds included, `{`, and zero or more whitespace characters, line feeds included: an `accDescr` unit and a `{` unit; enters the description block context. gantt.md#accessibility-values: The whitespace after the `{`, line feeds included, is read with the brace, so a block text starts at a character that is not whitespace and ends right before the `}`, the whitespace before the `}` included; a block with only whitespace between its braces has no text unit (see [Empty description blocks](#empty-description-blocks)).",
+          "begin": "{{gantt-statement-start}}((?i:accDescr))({{gap}})(\\{)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.definition.description.begin.mermaid"
+            }
+          },
+          "end": "(\\})",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.description.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read description text through the first brace, stopping before common-comment boundaries. gantt.md#accessibility-values: One or more characters other than `}`, line feeds included: an `acc-description-block-text` unit.",
+              "begin": "(?!{{separatorCommentEnd}})(?=[^}\\r\\n])",
+              "end": "(?=})|{{lineValueEnd}}",
+              "contentName": "string.unquoted.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "comment": "Read case-insensitive accessibility line text, keeping inline percent pairs as text. gantt.md#accessibility-values: In the title context and in the description context, the one rule is: one or more characters other than a line feed: an `acc-title-text` unit in the title context, an `acc-description-text` unit in the description context; leaves the context.",
+          "begin": "{{gantt-statement-start}}((?i:accTitle|accDescr))({{gap}})(:)(?:(?!{{separatorCommentEnd}})[{{ws}}])*",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.separator.colon.mermaid"
+            }
+          },
+          "end": "{{lineValueEnd}}",
+          "applyEndPatternLast": true,
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": "Read a native percent comment at a statement start, keeping directives whole and stopping before common comments. gantt.md#comments: A diagram comment starts at a `%` where a unit starts in the statement context (rule 4) and runs to the line feed, which is not part of it.",
+          "begin": "{{gantt-statement-start}}(?!{{directiveStart}})({{nonDirectivePercentPair}}|%)",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ],
+              "name": "comment.line.percentage.mermaid"
+            }
+          },
+          "end": "{{lineValueEnd}}",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ],
+          "contentName": "comment.line.percentage.mermaid"
+        },
+        {
+          "comment": "Read href and its quoted URL after required whitespace. gantt.md#the-statement-context: `href`, one or more whitespace characters, line feeds included, and `\"`: an `href` unit and a `\"` unit; enters the href context.",
+          "begin": "[{{ws}}]*((?i:href))({{gantt-spaces}})(?=\")",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "(?<=\")",
+          "patterns": [
+            {
+              "comment": "Reuse the plain double-quoted string for a URL without escapes. gantt.md#the-href-context: One or more characters other than `\"`, line feeds included: a `url-text` unit.",
+              "include": "#string-plain-double"
+            }
+          ]
+        },
+        {
+          "comment": "Read call and the callback name through the first opening parenthesis, keeping directives and common comments independent. gantt.md#the-statement-context: `call` and one or more whitespace characters, line feeds included: a `call` unit; enters the callback name context. gantt.md#the-callback-contexts: One or more characters other than `(`, line feeds included: a `callback-name` unit.",
+          "begin": "[{{ws}}]*((?i:call))({{gantt-spaces}})",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "(?=\\()",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Color callback name text as a function, retaining its closing parentheses and whitespace. gantt.md#the-callback-contexts: A `callback-name` runs to the first `(`, whitespace and line feeds at its end included: `call f ()` has the name `f` and a space, and `call f`, a line feed, and `()` the name `f` and a line feed.",
+              "match": "(?:(?!{{directiveStart}}|{{separatorCommentEnd}})[^(\\r\\n])+",
+              "name": "entity.name.function.mermaid"
+            }
+          ]
+        },
+        {
+          "include": "#gantt-callback-arguments"
+        },
+        {
+          "comment": "Read click and its comma-separated element references until the first whitespace. gantt.md#the-click-context: The id text ends at the first whitespace character, which leaves the context and is no `newline` unit: `click id1`, a line feed, and `href \"u\"` is one click statement, also with whitespace before `href`, while `click id1`, a space, a line feed, and `href \"u\"`, and `click id1`, two line feeds, and `href \"u\"`, are rejected, because the second whitespace character starts a `newline` unit in the statement context, and `click id1, id2 href \"u\"` is rejected, because the ids end at the space and `id2 href \"u\"` is a task text without data.",
+          "begin": "{{gantt-statement-start}}((?i:click))({{gantt-spaces}})",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "(?={{directives}}[{{ws}}]|$)",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#gantt-comma"
+            },
+            {
+              "comment": "Read each non-whitespace click reference between commas. gantt.md#the-click-context: The **id text**, one or more characters that are not whitespace: a `,` unit for each `,`, and an `id` unit for each maximal run of other characters.",
+              "match": "(?:(?!{{directiveStart}})[^,{{ws}}])+",
+              "name": "variable.mermaid"
+            }
+          ]
+        },
+        {
+          "comment": "Read format and interval texts after one required whitespace character, leaving hashes and semicolons of entities inside the text. gantt.md#the-statement-context: `dateFormat`, one whitespace character, line feed included, and one or more characters other than `#`, `;`, and a line feed: a `dateFormat` unit and a `setting-text` unit, whose text is the characters after the one whitespace character. gantt.md#the-statement-context: `axisFormat`, one whitespace character, and one or more characters other than `#`, `;`, and a line feed, as in rule 11: an `axisFormat` unit and a `setting-text` unit. gantt.md#the-statement-context: `tickInterval`, one whitespace character, and one or more characters other than `#`, `;`, and a line feed: a `tickInterval` unit and a `setting-text` unit.",
+          "begin": "{{gantt-statement-start}}((?i:dateFormat|axisFormat|tickInterval)){{gantt-setting-text-gap}}",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "{{gantt-text-end}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read an entity whole and preserve the enclosing value scope and internal directive scopes. common.md#entities: Entities do not overlap.",
+              "include": "#entity"
+            }
+          ],
+          "applyEndPatternLast": true
+        },
+        {
+          "comment": "Read includes and excludes setting lists, with separate comma delimiters; these items do not refer to diagram elements. gantt.md#the-statement-context: `includes`, one whitespace character, and the **list text**, one or more characters other than `#`, `;`, and a line feed: an `includes` unit and the units of the list text: a `,` unit for each `,`, and a `list-item` unit for each maximal run of characters that are neither whitespace nor `,`; the whitespace of the list text belongs to no unit. A list text of whitespace only has no unit. gantt.md#the-statement-context: `excludes`, one whitespace character, and the list text, as in rule 16: an `excludes` unit and the units of the list text.",
+          "begin": "{{gantt-statement-start}}((?i:includes|excludes)){{gantt-setting-text-gap}}",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "{{gantt-text-end}}",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read an entity whole and preserve the enclosing value scope and internal directive scopes. common.md#entities: Entities do not overlap.",
+              "match": "{{entity}}",
+              "name": "string.unquoted.mermaid",
+              "captures": {
+                "0": {
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "include": "#gantt-comma"
+            },
+            {
+              "comment": "Read a setting list item as text, without treating dates or day spellings as element references. gantt.md#settings: The items of `includes` and `excludes` are the `list-item` units of their list text, as written, and there may be none.",
+              "match": "(?:(?!{{directiveStart}})[^{{ws}},#;])+",
+              "name": "string.unquoted.mermaid"
+            }
+          ],
+          "applyEndPatternLast": true
+        },
+        {
+          "comment": "Read opaque todayMarker text, keeping hashes in the text rather than subdividing its style-looking content. gantt.md#the-statement-context: `todayMarker`, one whitespace character, and one or more characters other than `;` and a line feed: a `todayMarker` unit and a `marker-text` unit, whose text may hold `#`.",
+          "begin": "{{gantt-statement-start}}((?i:todayMarker))((?!{{directives}}{{separatorCommentEnd}}){{whitespaceSeparator}})",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "(?=;)|{{lineValueEnd}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read an entity whole and preserve the enclosing value scope and internal directive scopes. common.md#entities: Entities do not overlap.",
+              "include": "#entity"
+            }
+          ],
+          "applyEndPatternLast": true
+        },
+        {
+          "comment": "Read weekday and weekend keywords with their listed day values. gantt.md#the-statement-context: `weekday`, one or more whitespace characters, line feeds included, and one of the keywords `monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday`, and `sunday`: a `weekday` unit and a `day` unit. gantt.md#the-statement-context: `weekend`, one or more whitespace characters, line feeds included, and one of the keywords `friday` and `saturday`: a `weekend` unit and a `day` unit.",
+          "match": "{{gantt-statement-start}}(?:((?i:weekday))({{gantt-spaces}})((?i:monday|tuesday|wednesday|thursday|friday|saturday|sunday))|((?i:weekend))({{gantt-spaces}})((?i:friday|saturday))){{wordEnd}}",
+          "captures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "constant.language.mermaid"
+            },
+            "4": {
+              "name": "keyword.control.mermaid"
+            },
+            "5": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "6": {
+              "name": "constant.language.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read the bounded inclusiveEndDates keyword. gantt.md#the-statement-context: The keyword `inclusiveEndDates`: an `inclusiveEndDates` unit.",
+          "match": "{{gantt-statement-start}}((?i:inclusiveEndDates)){{wordEnd}}",
+          "captures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read title and section text through line end, including hashes, colons, semicolons and percent signs. gantt.md#the-statement-context: `title`, one whitespace character, line feed included, and one or more characters other than a line feed: a `title` unit and a `title-text` unit, whose text is the characters after the one whitespace character, to the end of the line, `:`, `#`, `;`, and `%%` included. gantt.md#the-statement-context: `section`, one whitespace character, line feed included, and one or more characters other than a line feed: a `section` unit and a `section-text` unit, whose text is the characters after the one whitespace character, to the end of the line.",
+          "begin": "{{gantt-statement-start}}((?i:title|section))((?!{{directives}}{{separatorCommentEnd}}){{whitespaceSeparator}})",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "{{lineValueEnd}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": "Read task descriptions as text, leaving leading whitespace outside the description. gantt.md#the-statement-context: One or more characters other than `:` and a line feed: a `task-text` unit.",
+          "begin": "{{gantt-statement-start}}(?![{{ws}}]|{{directiveStart}}|{{separatorCommentEnd}})(?=[^:\\r\\n])",
+          "end": "(?=:)|{{lineValueEnd}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": "Read task data as opaque text items, with modifiers only for the consecutive front tags and separate comma delimiters. An empty or ordinary item ends the front-tag run. gantt.md#tasks: The **tags** are taken from the front ([`getTaskTags()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L885-L899)): as long as the first remaining item is one of the words `active`, `done`, `crit`, `milestone`, and `vert`, in exactly this case, it is a tag and sets its flag, also when it repeats; an empty item, a word in another case, and two tag words in one item are no tag and end the tags, and a tag word after another item is an item. gantt.md#tasks: The items after the tags are the `items` of the task, each as written: `after` and ids, `until` and an id, a date, a length, and an id with spaces are each one item.",
+          "begin": "(:)((?:{{gap}}{{gantt-tag}}{{gap}},)*)",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.separator.colon.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                },
+                {
+                  "include": "#gantt-comma"
+                },
+                {
+                  "comment": "Read one of the listed front tags as a modifier. gantt.md#tasks: The **tags** are taken from the front ([`getTaskTags()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L885-L899)): as long as the first remaining item is one of the words `active`, `done`, `crit`, `milestone`, and `vert`, in exactly this case, it is a tag and sets its flag, also when it repeats; an empty item, a word in another case, and two tag words in one item are no tag and end the tags, and a tag word after another item is an item.",
+                  "match": "{{gantt-tag}}",
+                  "captures": {
+                    "0": {
+                      "patterns": [
+                        {
+                          "include": "#directive"
+                        },
+                        {
+                          "comment": "Read one of the listed front tags as a modifier. gantt.md#tasks: The **tags** are taken from the front ([`getTaskTags()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L885-L899)): as long as the first remaining item is one of the words `active`, `done`, `crit`, `milestone`, and `vert`, in exactly this case, it is a tag and sets its flag, also when it repeats; an empty item, a word in another case, and two tag words in one item are no tag and end the tags, and a tag word after another item is an item.",
+                          "match": "[a-z]+",
+                          "name": "storage.modifier.mermaid"
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "end": "{{gantt-text-end}}",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#gantt-comma"
+            },
+            {
+              "comment": "Read a data item as text without subdividing its date, length or id spelling. gantt.md#tasks: The items after the tags are the `items` of the task, each as written: `after` and ids, `until` and an id, a date, a length, and an id with spaces are each one item.",
+              "match": "(?:{{entity}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^,#;\\r\\n])+",
+              "name": "string.unquoted.mermaid",
+              "captures": {
+                "0": {
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    },
+                    {
+                      "include": "#entity"
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "applyEndPatternLast": true
+        }
+      ]
+    },
+    "gantt-comma": {
+      "comment": "Read commas separating click references, settings and task items. gantt.md#the-click-context: The **id text**, one or more characters that are not whitespace: a `,` unit for each `,`, and an `id` unit for each maximal run of other characters. gantt.md#the-statement-context: `:` and the **data text**, one or more characters other than `#`, `;`, and a line feed: a `:` unit and the units of the data text: a `,` unit for each `,`, and, for each stretch of the data text between the `:`, the commas, and its end, a `data-item` unit whose text is the stretch without the whitespace at its ends, or no unit when the stretch holds only whitespace.",
+      "match": ",",
+      "name": "punctuation.separator.comma.mermaid"
+    },
+    "gantt-callback-arguments": {
+      "comment": "Read arguments through the first closing parenthesis; quotes do not protect it. gantt.md#the-callback-contexts: The arguments end at the first `)`, also inside quotes: `call f(\"a)b\")` is rejected.",
+      "begin": "(\\()",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.section.parens.begin.mermaid"
+        }
+      },
+      "end": "(\\))",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.section.parens.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Read callback arguments as opaque text, keeping internal directives independent. gantt.md#the-callback-contexts: One or more characters other than `)`, line feeds included: a `callback-arguments` unit.",
+          "begin": "(?!{{separatorCommentEnd}})(?=[^\\)\\r\\n])",
+          "end": "(?=\\))|{{lineValueEnd}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "variables": {
+    "gantt-spaces": "(?!{{gap}}{{separatorCommentEnd}}){{whitespaceSeparator}}{{gap}}",
+    "gantt-setting-text-start": "(?!{{separatorCommentEnd}})(?:{{entity}}|(?!{{directiveStart}})[^#;\\r\\n])",
+    "gantt-setting-text-gap": "(?!{{directives}}{{separatorCommentEnd}})({{whitespaceSeparator}})(?={{gantt-setting-text-start}})",
+    "gantt-statement-start": "(?:^|\\G|(?<=\\})|(?<=\\}%%))(?:(?!{{separatorCommentEnd}})[{{ws}}])*",
+    "gantt-text-end": "(?=[#;])|{{lineValueEnd}}",
+    "gantt-tag": "(?:a{{directives}}c{{directives}}t{{directives}}i{{directives}}v{{directives}}e|d{{directives}}o{{directives}}n{{directives}}e|c{{directives}}r{{directives}}i{{directives}}t|m{{directives}}i{{directives}}l{{directives}}e{{directives}}s{{directives}}t{{directives}}o{{directives}}n{{directives}}e|v{{directives}}e{{directives}}r{{directives}}t)"
+  }
+}

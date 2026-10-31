@@ -1,0 +1,150 @@
+> railroad-abnf-beta%%{wrap}%%
+  "railroad-abnf-beta" keyword.control.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+> title Grammar
+  "title" keyword.control.mermaid
+  "Grammar" string.unquoted.mermaid
+> accTitle: Grammar title
+  "accTitle" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " Grammar title" string.unquoted.mermaid
+> accDescr: Grammar description
+  "accDescr" keyword.control.mermaid
+  ":" punctuation.separator.colon.mermaid
+  " Grammar description" string.unquoted.mermaid
+> accDescr { Grammar block }
+  "accDescr" keyword.control.mermaid
+  "{" punctuation.definition.description.begin.mermaid
+  " Grammar block " string.unquoted.mermaid
+  "}" punctuation.definition.description.end.mermaid
+> rule = "a" / %x41-5A / 1*3DIGIT ;
+  "rule" variable.mermaid
+  "=" keyword.operator.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "/" keyword.operator.mermaid
+  "%x41-5A" string.unquoted.mermaid
+  "/" keyword.operator.mermaid
+  "1" constant.numeric.mermaid
+  "*" keyword.operator.mermaid
+  "3" constant.numeric.mermaid
+  "DIGIT" variable.mermaid
+  ";" punctuation.separator.rule.mermaid
+> other = [ rule ] *( "b" ) ;
+  "other" variable.mermaid
+  "=" keyword.operator.mermaid
+  "[" punctuation.section.group.begin.mermaid
+  "rule" variable.mermaid
+  "]" punctuation.section.group.end.mermaid
+  "*" keyword.operator.mermaid
+  "(" punctuation.section.group.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "b" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" punctuation.section.group.end.mermaid
+  ";" punctuation.separator.rule.mermaid
+> ; a semicolon comment
+  ";" comment.line.semicolon.mermaid
+  " a semicolon comment" comment.line.semicolon.mermaid
+> %% a comment line
+  "%% a comment line" comment.line.percentage.mermaid
+> ---
+  "---" comment.block.ignored.mermaid
+> ignored: railroad
+  "ignored: railroad" comment.block.ignored.mermaid
+> ---
+  "---" comment.block.ignored.mermaid
+> %%{!}%%
+  "%%{!}%%" comment.block.ignored.mermaid
+> probe = %%%{wrap}%%x%%{wrap}%%41%%{wrap}%%-%%{wrap}%%5A ;
+  "probe" variable.mermaid
+  "=" keyword.operator.mermaid
+  "%" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "x" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "41" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "-" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "5A" string.unquoted.mermaid
+  ";" punctuation.separator.rule.mermaid
+> repeat = 1%%{wrap}%%*%%{wrap}%%3"a" ;
+  "repeat" variable.mermaid
+  "=" keyword.operator.mermaid
+  "1" constant.numeric.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "*" keyword.operator.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "3" constant.numeric.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ";" punctuation.separator.rule.mermaid
+> html = "a<b title="x">y</b>" ;
+  "html" variable.mermaid
+  "=" keyword.operator.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "<b title=\"x\">" string.quoted.double.mermaid
+  "y</b>" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ";" punctuation.separator.rule.mermaid
+> bounds = 2%%{wrap}%%*%%{wrap}%%4"a" ;
+  "bounds" variable.mermaid
+  "=" keyword.operator.mermaid
+  "2" constant.numeric.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "*" keyword.operator.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "4" constant.numeric.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ";" punctuation.separator.rule.mermaid
+> ; text%%{init: {"mark":";"}}%% tail
+  ";" comment.line.semicolon.mermaid
+  " text" comment.line.semicolon.mermaid
+  "%%{" comment.line.semicolon.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "init" comment.line.semicolon.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" comment.line.semicolon.mermaid meta.directive.mermaid punctuation.separator.key-value.mermaid
+  " " comment.line.semicolon.mermaid meta.directive.mermaid
+  "{\"mark\":\";\"}" comment.line.semicolon.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" comment.line.semicolon.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  " tail" comment.line.semicolon.mermaid
+> tail = "a";%%{wrap}%%
+  "tail" variable.mermaid
+  "=" keyword.operator.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ";" punctuation.separator.rule.mermaid
+  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+> ; D2 line end %%{wrap}%%
+  ";" comment.line.semicolon.mermaid
+  " D2 line end " comment.line.semicolon.mermaid
+  "%%{" comment.line.semicolon.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "wrap" comment.line.semicolon.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.line.semicolon.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+> 
