@@ -1,0 +1,20 @@
+eventmodeling
+entity Shop.AddItem
+tf 01 cmd Shop.AddItem [[AddItem]]
+
+data AddItem {
+  sku: 'SHIRT-M'
+  quantity: 2
+}
+
+note 01 {
+  Submit an item
+}
+
+gwt 01
+  given
+    evt StockAvailable
+  when
+    command AddItem
+  then
+    evt ItemAdded

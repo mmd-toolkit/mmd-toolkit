@@ -2706,8 +2706,12 @@ native data は埋め込まれた設定として評価せず、 source から直
 [test: eventmodeling/line-terminators-and-unicode/block-ls-boundary-stays-outside-value]
 [fixture: eventmodeling/final-newline/final-block-padding-kept]
 
-通常の `data` 宣言と `note` は行頭から始め、payload の字下げを変えず、
-ヘッダーをその閉じと揃えます。
+普通のトップレベルの文は第 1 列から始め、 frame、model entity、data、
+note の宣言を、無字下げ必須の閉じ波括弧と同じ段にそろえます。
+GWT の clause と item は設定の字下げで入れ子にし、
+data の本文は原文の列を保ちます。
+[fixture: eventmodeling/indentation/mixed-top-level-blocks]
+[fixture: eventmodeling/indentation/gwt-four-spaces]
 [fixture: eventmodeling/indentation/data-declaration-column-one]
 [fixture: eventmodeling/indentation/note-column-one]
 

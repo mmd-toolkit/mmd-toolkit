@@ -44,6 +44,8 @@ type HiddenBodyLayout<Statement extends Node> =
 interface FlatHiddenLayouts<Diagram extends Node, Statement extends Node> {
   readonly type: Diagram["type"]
   readonly ignoredType: Statement["type"]
+  /** Top-level body depth; one unless this diagram uses unindented statements. */
+  readonly bodyDepth?: 0 | 1
   /**
    * The first atom starts at the header keyword. The printer uses its start
    * as the end of the retained prefix.
@@ -63,8 +65,6 @@ interface FlatHiddenLayouts<Diagram extends Node, Statement extends Node> {
   readonly suffixes?: (statement: Statement) => readonly Node[]
   /** Ordinary gaps when protection keeps neighboring statements on one line. */
   readonly inlineGapBefore?: (statement: Node) => GapRule | undefined
-  /** Explicit columns for an ordinary statement's first line. */
-  readonly writtenIndentationOf?: (statement: Statement) => string | undefined
 }
 
 /** The printer and the root-prefix constraint selected with it. */
@@ -133,11 +133,12 @@ export function createFlatHiddenDiagramPrinter<
       headerHiddenEnds.add(item.range[1])
       headerEnd = item.range[1]
     }
+    const bodyDepth = layouts.bodyDepth ?? 1
     const block = printBody(
       diagram.body,
       findLayoutEnd(headerLayout),
       source.text.length,
-      1,
+      bodyDepth,
       true,
       headerHiddenEnds,
     )
@@ -148,7 +149,7 @@ export function createFlatHiddenDiagramPrinter<
     )
     return [
       printAsWritten(source, diagram.range[0], first.start),
-      printDiagramBlock(source, header, block, options),
+      printDiagramBlock(source, header, block, options, bodyDepth),
     ]
 
     /** Only authored body boundaries join lines; inner component gaps do not. */
@@ -344,12 +345,6 @@ export function createFlatHiddenDiagramPrinter<
           ...(layouts.inlineGapBefore === undefined
             ? {}
             : { inlineGapBefore: layouts.inlineGapBefore }),
-          writtenIndentationOf: (item) => {
-            const statement = bodyStatements.get(item)
-            return statement === undefined
-              ? undefined
-              : layouts.writtenIndentationOf?.(statement)
-          },
           holdsStatements: (item) => nested.has(item),
         },
       )

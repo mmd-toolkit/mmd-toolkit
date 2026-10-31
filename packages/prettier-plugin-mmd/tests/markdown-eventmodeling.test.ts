@@ -26,9 +26,9 @@ const cases: readonly MarkdownCase[] = [
   {
     name: "eventmodeling Markdown: top-level",
     input: "```mermaid\neventmodeling tf 083evt Fenced\n```\n",
-    output: "```mermaid\neventmodeling\n  tf 083 evt Fenced\n```\n",
+    output: "```mermaid\neventmodeling\ntf 083 evt Fenced\n```\n",
     payloadInput: "eventmodeling tf 083evt Fenced",
-    payloadOutput: "eventmodeling\n  tf 083 evt Fenced\n",
+    payloadOutput: "eventmodeling\ntf 083 evt Fenced\n",
     options: {},
   },
   {
@@ -36,10 +36,9 @@ const cases: readonly MarkdownCase[] = [
     input:
       "- item\n\n  ```mermaid\n  eventmodeling tf 074evt Host [[D]]\n    data D {\n     x\n  }\n  ```\n",
     output:
-      "- item\n\n  ```mermaid\n  eventmodeling\n    tf 074 evt Host [[D]]\n  data D {\n     x\n  }\n  ```\n",
+      "- item\n\n  ```mermaid\n  eventmodeling\n  tf 074 evt Host [[D]]\n  data D {\n     x\n  }\n  ```\n",
     payloadInput: "eventmodeling tf 074evt Host [[D]]\n  data D {\n   x\n}",
-    payloadOutput:
-      "eventmodeling\n  tf 074 evt Host [[D]]\ndata D {\n   x\n}\n",
+    payloadOutput: "eventmodeling\ntf 074 evt Host [[D]]\ndata D {\n   x\n}\n",
     options: {},
   },
   {
@@ -47,10 +46,10 @@ const cases: readonly MarkdownCase[] = [
     input:
       "- item\n\n  ```mermaid\n  eventmodeling gwt 082 given evt Before then cmd After\n  ```\n",
     output:
-      "- item\n\n  ```mermaid\n  eventmodeling\n    gwt 082\n      given\n        evt Before\n      then\n        cmd After\n  ```\n",
+      "- item\n\n  ```mermaid\n  eventmodeling\n  gwt 082\n    given\n      evt Before\n    then\n      cmd After\n  ```\n",
     payloadInput: "eventmodeling gwt 082 given evt Before then cmd After",
     payloadOutput:
-      "eventmodeling\n  gwt 082\n    given\n      evt Before\n    then\n      cmd After\n",
+      "eventmodeling\ngwt 082\n  given\n    evt Before\n  then\n    cmd After\n",
     options: {},
   },
   {
@@ -78,10 +77,10 @@ const cases: readonly MarkdownCase[] = [
     input:
       "```mermaid\neventmodeling gwt 079 given evt TabBefore then ui TabAfter\n```\n",
     output:
-      "```mermaid\neventmodeling\n\tgwt 079\n\t\tgiven\n\t\t\tevt TabBefore\n\t\tthen\n\t\t\tui TabAfter\n```\n",
+      "```mermaid\neventmodeling\ngwt 079\n\tgiven\n\t\tevt TabBefore\n\tthen\n\t\tui TabAfter\n```\n",
     payloadInput: "eventmodeling gwt 079 given evt TabBefore then ui TabAfter",
     payloadOutput:
-      "eventmodeling\n\tgwt 079\n\t\tgiven\n\t\t\tevt TabBefore\n\t\tthen\n\t\t\tui TabAfter\n",
+      "eventmodeling\ngwt 079\n\tgiven\n\t\tevt TabBefore\n\tthen\n\t\tui TabAfter\n",
     options: {
       useTabs: true,
     },
@@ -91,11 +90,11 @@ const cases: readonly MarkdownCase[] = [
     input:
       "```mermaid\neventmodeling tf 078evt Metadata \t%%{wrap}%%  accDescr: Exact\n```\n",
     output:
-      "```mermaid\neventmodeling\n  tf 078 evt Metadata \t%%{wrap}%%  accDescr: Exact\n```\n",
+      "```mermaid\neventmodeling\ntf 078 evt Metadata \t%%{wrap}%%  accDescr: Exact\n```\n",
     payloadInput:
       "eventmodeling tf 078evt Metadata \t%%{wrap}%%  accDescr: Exact",
     payloadOutput:
-      "eventmodeling\n  tf 078 evt Metadata \t%%{wrap}%%  accDescr: Exact\n",
+      "eventmodeling\ntf 078 evt Metadata \t%%{wrap}%%  accDescr: Exact\n",
     options: {},
   },
   {
@@ -103,9 +102,9 @@ const cases: readonly MarkdownCase[] = [
     input:
       "```mermaid\neventmodeling\n%%{{host}}%%\n \taccDescr: Hidden\n```\n",
     output:
-      "```mermaid\neventmodeling\n  %%{{host}}%%\n \taccDescr: Hidden\n```\n",
+      "```mermaid\neventmodeling\n%%{{host}}%%\n \taccDescr: Hidden\n```\n",
     payloadInput: "eventmodeling\n%%{{host}}%%\n \taccDescr: Hidden",
-    payloadOutput: "eventmodeling\n  %%{{host}}%%\n \taccDescr: Hidden\n",
+    payloadOutput: "eventmodeling\n%%{{host}}%%\n \taccDescr: Hidden\n",
     options: {},
   },
   {
@@ -113,11 +112,11 @@ const cases: readonly MarkdownCase[] = [
     input:
       "```mermaid\n\n---\ntitle: Ignored host event\n---\neventmodeling tf 077evt Prefix\n```\n",
     output:
-      "```mermaid\n\n---\ntitle: Ignored host event\n---\neventmodeling\n  tf 077 evt Prefix\n```\n",
+      "```mermaid\n\n---\ntitle: Ignored host event\n---\neventmodeling\ntf 077 evt Prefix\n```\n",
     payloadInput:
       "\n---\ntitle: Ignored host event\n---\neventmodeling tf 077evt Prefix",
     payloadOutput:
-      "\n---\ntitle: Ignored host event\n---\neventmodeling\n  tf 077 evt Prefix\n",
+      "\n---\ntitle: Ignored host event\n---\neventmodeling\ntf 077 evt Prefix\n",
     options: {},
   },
   {
@@ -125,18 +124,18 @@ const cases: readonly MarkdownCase[] = [
     input:
       "```mermaid\n---\ntitle:   Host YAML\n---\neventmodeling tf 076evt Yaml\n```\n",
     output:
-      "```mermaid\n---\ntitle: Host YAML\n---\neventmodeling\n  tf 076 evt Yaml\n```\n",
+      "```mermaid\n---\ntitle: Host YAML\n---\neventmodeling\ntf 076 evt Yaml\n```\n",
     payloadInput: "---\ntitle:   Host YAML\n---\neventmodeling tf 076evt Yaml",
     payloadOutput:
-      "---\ntitle: Host YAML\n---\neventmodeling\n  tf 076 evt Yaml\n",
+      "---\ntitle: Host YAML\n---\neventmodeling\ntf 076 evt Yaml\n",
     options: {},
   },
   {
     name: "eventmodeling Markdown: final-hidden-padding",
     input: "```mermaid\neventmodeling\n%%{{final host}}%% \t\n```\n",
-    output: "```mermaid\neventmodeling\n  %%{{final host}}%%\n```\n",
+    output: "```mermaid\neventmodeling\n%%{{final host}}%%\n```\n",
     payloadInput: "eventmodeling\n%%{{final host}}%% \t",
-    payloadOutput: "eventmodeling\n  %%{{final host}}%%\n",
+    payloadOutput: "eventmodeling\n%%{{final host}}%%\n",
     options: {},
     hostTrims: true,
   },

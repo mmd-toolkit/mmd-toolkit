@@ -2518,8 +2518,12 @@ eventmodeling/data-boundaries/same-line-block-successor] [test:
 eventmodeling/line-terminators-and-unicode/block-ls-boundary-stays-outside-value]
 [fixture: eventmodeling/final-newline/final-block-padding-kept]
 
-An ordinary `data` declaration or `note` starts at column one, aligning its
-header with that closer without reindenting the payload. [fixture:
+Ordinary top-level statements start at column one, keeping frames, model
+entities, data and note declarations at the same level as the required
+unindented block closers. GWT clauses and items remain nested using the
+configured indentation, and data bodies keep their authored columns. [fixture:
+eventmodeling/indentation/mixed-top-level-blocks] [fixture:
+eventmodeling/indentation/gwt-four-spaces] [fixture:
 eventmodeling/indentation/data-declaration-column-one] [fixture:
 eventmodeling/indentation/note-column-one]
 

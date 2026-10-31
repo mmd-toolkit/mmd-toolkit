@@ -51,7 +51,7 @@ Output
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha
+tf 01 evt Alpha
 ```
 
 Input (escaped): `"eventmodeling tf 01 evt A %%{{x}}%%\n"`.
@@ -65,15 +65,18 @@ eventmodeling tf 01 evt A %%{{x}}%%
 
 ### Indentation
 
-Use one configured step for ordinary body statements, two for GWT clauses and
-three for GWT items. Structural continuation lines stand one step deeper than
-their statement. The first line of an ordinary `data` declaration or `note`
-instead stands at column one, aligning it with the required unindented closing
-brace while its body keeps its authored columns. A continued `data` header still
-uses the ordinary continuation level. Columns do not define parents, so
-`tabWidth: 0` adds no spaces; `useTabs` adds one tab per step even at width
-zero. Value continuations, metadata padding and hidden consumed-LF boundaries
-retain their authored columns.
+Start ordinary top-level statements at column one: frames, model entities,
+`data`, `note` and `gwt`. This keeps their declarations at the same level as the
+required unindented block closers without changing the data bodies. GWT clauses
+use one configured step and items two. Structural continuation lines stand one
+step deeper than their statement, including continued `data` headers. Columns do
+not define parents, so `tabWidth: 0` adds no spaces; `useTabs` adds one tab per
+step even at width zero. Value continuations, metadata padding and hidden
+consumed-LF boundaries retain their authored columns.
+
+[fixture: eventmodeling/indentation/mixed-top-level-blocks]
+
+[fixture: eventmodeling/indentation/gwt-four-spaces]
 
 [fixture: eventmodeling/indentation/body-four-spaces]
 
@@ -102,8 +105,8 @@ Output
 
 ```mmd
 eventmodeling
-    tf 01 evt Alpha
-    rf 02 cmd Beta
+tf 01 evt Alpha
+rf 02 cmd Beta
 ```
 
 Output
@@ -157,9 +160,9 @@ Output
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha
-  rf 02 cmd Beta
-  entity Shop.Beta
+tf 01 evt Alpha
+rf 02 cmd Beta
+entity Shop.Beta
 ```
 
 ### Frame components
@@ -195,7 +198,7 @@ Output
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha
+tf 01 evt Alpha
 ```
 
 ### Source references
@@ -218,7 +221,7 @@ Output
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha ->> 02 ->> 001
+tf 01 evt Alpha ->> 02 ->> 001
 ```
 
 ### Data references
@@ -245,7 +248,7 @@ Output
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha [[D]]
+tf 01 evt Alpha [[D]]
 ```
 
 ### Type tags
@@ -275,7 +278,7 @@ Output
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha `json` { x }
+tf 01 evt Alpha `json` { x }
 ```
 
 ### Qualified names
@@ -308,8 +311,8 @@ Output
 
 ```mmd
 eventmodeling
-  rf 02 cmd Shop.Buy
-  entity Root.Child
+rf 02 cmd Shop.Buy
+entity Root.Child
 ```
 
 ### Authored spellings
@@ -338,8 +341,8 @@ Output
 
 ```mmd
 eventmodeling
-  timeframe 001 event Alpha
-  resetframe 02 command Beta
+timeframe 001 event Alpha
+resetframe 02 command Beta
 ```
 
 ### Declarations and notes
@@ -365,12 +368,12 @@ Output
 
 ```mmd
 eventmodeling
-  entity Shop.Buy
+entity Shop.Buy
 ```
 
 ### Gwt clauses and items
 
-Put `gwt 99` at body depth, each clause keyword one step deeper and every item
+Put `gwt 99` at column one, each clause keyword one step deeper and every item
 another step deeper. This shows the authored clause/item relationship without
 inventing closing punctuation. Keep required given/then, optional when, item
 order, repetition and type words. Ordinary item components use one space;
@@ -402,16 +405,16 @@ Output
 
 ```mmd
 eventmodeling
-  gwt 99
-    given
-      evt Alpha
-      cmd Beta
-    when
-      command Buy
-    then
-      ui Screen
-      rmo View
-  tf 01 evt End
+gwt 99
+  given
+    evt Alpha
+    cmd Beta
+  when
+    command Buy
+  then
+    ui Screen
+    rmo View
+tf 01 evt End
 ```
 
 ### Inline data
@@ -443,7 +446,7 @@ Output
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha { 	 x  }
+tf 01 evt Alpha { 	 x  }
 ```
 
 ### Data blocks
@@ -455,9 +458,11 @@ terminal. Preserve apparent statements, nested-looking text and an adjacent
 closing-looking line when the block's body-present rule reads through it to a
 later closer.
 
-Body text written at column one stays at column one, so the formatter can leave
-the body and closing brace visually unindented. [fixture:
-eventmodeling/final-newline/final-block-padding-kept]
+Mermaid accepts indentation inside a body, but that whitespace is part of its
+raw value and can affect rendering, for example with an HTML line break. Body
+text written at column one therefore stays there. [fixture:
+eventmodeling/final-newline/final-block-padding-kept] [fixture:
+eventmodeling/data-blocks/html-line-break-indentation-kept]
 
 [fixture: eventmodeling/data-blocks/block-interior-unchanged]
 
@@ -476,7 +481,7 @@ Output
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha [[D]]
+tf 01 evt Alpha [[D]]
 data D {
 x
 }
@@ -518,7 +523,7 @@ Output
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha [[D]]
+tf 01 evt Alpha [[D]]
 data D {
 x
 }
@@ -559,7 +564,7 @@ Output
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha 	%%{init:{}}%%  accDescr: D
+tf 01 evt Alpha 	%%{init:{}}%%  accDescr: D
 ```
 
 ### Title
@@ -584,7 +589,7 @@ Output
 
 ```mmd
 eventmodeling title
-  tf 01 evt Alpha
+tf 01 evt Alpha
 ```
 
 ### Accessibility lines
@@ -615,7 +620,7 @@ Output
 
 ```mmd
 eventmodeling accTitle: First
-  tf 01 evt Alpha accTitle:
+tf 01 evt Alpha accTitle:
 ```
 
 ### Description blocks
@@ -714,7 +719,7 @@ Output
 eventmodeling tf 01 evt Alpha ---
 x
 ---
-  tf 02 evt Beta
+tf 02 evt Beta
 ```
 
 ### Comments
@@ -782,8 +787,8 @@ Output
 
 ```mmd
 eventmodeling
-  tf 01 evt A
-  /*c*/ tf 02 evt B
+tf 01 evt A
+/*c*/ tf 02 evt B
 ```
 
 ### Default size branches
@@ -856,7 +861,7 @@ Output
 
 ```mmd
 eventmodeling
-  tf%%{wrap}%% 01 evt Alpha%%{wrap}%%->>%%{wrap}%%02
+tf%%{wrap}%% 01 evt Alpha%%{wrap}%%->>%%{wrap}%%02
 ```
 
 ### Semicolons
@@ -934,9 +939,9 @@ Output
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha
+tf 01 evt Alpha
 
-  rf 02 cmd Beta
+rf 02 cmd Beta
 ```
 
 ### Trailing whitespace
@@ -962,8 +967,8 @@ Output
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha
-  entity Shop.Buy
+tf 01 evt Alpha
+entity Shop.Buy
 ```
 
 ### Long lines
@@ -989,7 +994,7 @@ Output
 
 ```mmd
 eventmodeling
-  tf 001 evt VeryLongNamespace.VeryLongEventName ->> 002 ->> 003 ->> 004 [[LongDataName]] `text` {a very long authored payload}
+tf 001 evt VeryLongNamespace.VeryLongEventName ->> 002 ->> 003 ->> 004 [[LongDataName]] `text` {a very long authored payload}
 ```
 
 ### Frontmatter yaml
@@ -1027,7 +1032,7 @@ title: "YamlTitle"
 config: { eventmodeling: { padding: 12 } }
 ---
 eventmodeling
-  tf 01 evt Alpha
+tf 01 evt Alpha
 ```
 
 ### Line terminators and unicode
@@ -1099,17 +1104,17 @@ Output
 
 ```mmd
 eventmodeling
-  entity Shop.Alpha
-  entity Shop.Alpha
+entity Shop.Alpha
+entity Shop.Alpha
 note 99 {
 unused
 }
-  gwt 99
-    given
-      evt Alpha
-    then
-      cmd Beta
-  tf 01 evt Alpha ->> 02 ->> 02 [[D]] {unused}
+gwt 99
+  given
+    evt Alpha
+  then
+    cmd Beta
+tf 01 evt Alpha ->> 02 ->> 02 [[D]] {unused}
 data D {
 first
 }

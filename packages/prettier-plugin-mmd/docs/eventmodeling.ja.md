@@ -52,7 +52,7 @@ hidden form、保持 prefix、保護行は共有の規則に従い、
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha
+tf 01 evt Alpha
 ```
 
 入力（escape 表記）: `"eventmodeling tf 01 evt A %%{{x}}%%\n"`
@@ -66,15 +66,18 @@ eventmodeling tf 01 evt A %%{{x}}%%
 
 ### Indentation
 
-普通の本文は設定の 1 段、GWT clause は 2 段、item は 3 段にします。
-構造の継続行はその文より 1 段深くします。
-ただし通常の `data` 宣言と `note` の最初の行は、
-無字下げ必須の閉じ波括弧と揃えて行頭に置きます。
-本文は原文の列を保ちます。
-`data` ヘッダーの継続行は通常の継続段のままです。
+普通のトップレベルの文は、第 1 列から始めます。
+frame、model entity、`data`、`note`、`gwt` が対象です。
+data の本文を変えず、無字下げ必須の閉じ波括弧と宣言の段をそろえるためです。
+GWT clause は設定の 1 段、item は 2 段にします。
+構造の継続行は、`data` ヘッダーの継続も含め、その文より 1 段深くします。
 列は親子を決めないため、`tabWidth: 0` では空白を足しません。
 `useTabs` では幅が 0 でも 1 段に tab を 1 個使います。
 値の継続列、metadata の空白、hidden が消費する LF の境界は保ちます。
+
+[fixture: eventmodeling/indentation/mixed-top-level-blocks]
+
+[fixture: eventmodeling/indentation/gwt-four-spaces]
 
 [fixture: eventmodeling/indentation/body-four-spaces]
 
@@ -103,8 +106,8 @@ eventmodeling tf 01 evt A %%{{x}}%%
 
 ```mmd
 eventmodeling
-    tf 01 evt Alpha
-    rf 02 cmd Beta
+tf 01 evt Alpha
+rf 02 cmd Beta
 ```
 
 出力
@@ -157,9 +160,9 @@ greedy な inline data の中の見かけの文は、その値の一部のまま
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha
-  rf 02 cmd Beta
-  entity Shop.Beta
+tf 01 evt Alpha
+rf 02 cmd Beta
+entity Shop.Beta
 ```
 
 ### Frame components
@@ -194,7 +197,7 @@ required identifier がちょうど `title` のときは成立する境界を保
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha
+tf 01 evt Alpha
 ```
 
 ### Source references
@@ -217,7 +220,7 @@ hidden の gap と global trivia は保護された境界を保ちます。
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha ->> 02 ->> 001
+tf 01 evt Alpha ->> 02 ->> 001
 ```
 
 ### Data references
@@ -245,7 +248,7 @@ data reference の前は普通の 1 space、内側は `[[D]]` と詰め、
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha [[D]]
+tf 01 evt Alpha [[D]]
 ```
 
 ### Type tags
@@ -276,7 +279,7 @@ hidden と global trivia の境界は保ちます。
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha `json` { x }
+tf 01 evt Alpha `json` { x }
 ```
 
 ### Qualified names
@@ -309,8 +312,8 @@ hidden の消費 LF の後の `title` segment に空白を足しません。
 
 ```mmd
 eventmodeling
-  rf 02 cmd Shop.Buy
-  entity Root.Child
+rf 02 cmd Shop.Buy
+entity Root.Child
 ```
 
 ### Authored spellings
@@ -338,8 +341,8 @@ entity-type の別名は Db に残り、`1`、`01`、`001` は別の frame 名�
 
 ```mmd
 eventmodeling
-  timeframe 001 event Alpha
-  resetframe 02 command Beta
+timeframe 001 event Alpha
+resetframe 02 command Beta
 ```
 
 ### Declarations and notes
@@ -365,12 +368,12 @@ required name の `title` は frame と同じく安全な前方境界を保ち�
 
 ```mmd
 eventmodeling
-  entity Shop.Buy
+entity Shop.Buy
 ```
 
 ### Gwt clauses and items
 
-`gwt 99` は本文の段、clause keyword はさらに 1 段、
+`gwt 99` は第 1 列、clause keyword はさらに 1 段、
 各 item はさらに 1 段深くします。
 架空の閉じ記号を足さず、書かれた clause と item の関係を見せます。
 必須の given・then、任意の when、item の順序・反復・型語を保ちます。
@@ -401,16 +404,16 @@ eventmodeling
 
 ```mmd
 eventmodeling
-  gwt 99
-    given
-      evt Alpha
-      cmd Beta
-    when
-      command Buy
-    then
-      ui Screen
-      rmo View
-  tf 01 evt End
+gwt 99
+  given
+    evt Alpha
+    cmd Beta
+  when
+    command Buy
+  then
+    ui Screen
+    rmo View
+tf 01 evt End
 ```
 
 ### Inline data
@@ -443,7 +446,7 @@ trim、引用符の変更、分割は Db の raw terminal を変えます。
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha { 	 x  }
+tf 01 evt Alpha { 	 x  }
 ```
 
 ### Data blocks
@@ -454,9 +457,12 @@ data と note の本文は `{` から `}` までそのまま保ちます。
 見かけの文、入れ子風の text、直後の閉じ風の行も、
 body を持つ形の規則が後の閉じまで読む場合は保ちます。
 
-本文が行頭から始まる場合もその列を保つため、
-本文と閉じ波括弧の両方が無字下げの配置も残ります。
+Mermaid は本文内の字下げを受理します。
+その空白は raw value の一部で、HTML の改行を含む場合など、
+描画を変えることがあります。
+行頭から始まる本文も、その列のまま残します。
 [fixture: eventmodeling/final-newline/final-block-padding-kept]
+[fixture: eventmodeling/data-blocks/html-line-break-indentation-kept]
 
 [fixture: eventmodeling/data-blocks/block-interior-unchanged]
 
@@ -475,7 +481,7 @@ body を持つ形の規則が後の閉じまで読む場合は保ちます。
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha [[D]]
+tf 01 evt Alpha [[D]]
 data D {
 x
 }
@@ -515,7 +521,7 @@ EOF の論理 LF は明示的な末尾 LF 1 個にできます。
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha [[D]]
+tf 01 evt Alpha [[D]]
 data D {
 x
 }
@@ -554,7 +560,7 @@ accTitle の setter が一部の前置空白を落としても、
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha 	%%{init:{}}%%  accDescr: D
+tf 01 evt Alpha 	%%{init:{}}%%  accDescr: D
 ```
 
 ### Title
@@ -580,7 +586,7 @@ title の前置空白、1 個の separator、payload、末尾 text を原文ど�
 
 ```mmd
 eventmodeling title
-  tf 01 evt Alpha
+tf 01 evt Alpha
 ```
 
 ### Accessibility lines
@@ -611,7 +617,7 @@ EM_ACC_TITLE と EM_ACC_DESCR はこれらも値に含むためです。
 
 ```mmd
 eventmodeling accTitle: First
-  tf 01 evt Alpha accTitle:
+tf 01 evt Alpha accTitle:
 ```
 
 ### Description blocks
@@ -709,7 +715,7 @@ item の移動によって次の整形で外側の開きの保護が失われな
 eventmodeling tf 01 evt Alpha ---
 x
 ---
-  tf 02 evt Beta
+tf 02 evt Beta
 ```
 
 ### Comments
@@ -777,8 +783,8 @@ metadata や required `title` の境界を優先します。
 
 ```mmd
 eventmodeling
-  tf 01 evt A
-  /*c*/ tf 02 evt B
+tf 01 evt A
+/*c*/ tf 02 evt B
 ```
 
 ### Default size branches
@@ -852,7 +858,7 @@ frontmatter の場合も含めて確かめます。
 
 ```mmd
 eventmodeling
-  tf%%{wrap}%% 01 evt Alpha%%{wrap}%%->>%%{wrap}%%02
+tf%%{wrap}%% 01 evt Alpha%%{wrap}%%->>%%{wrap}%%02
 ```
 
 ### Semicolons
@@ -928,9 +934,9 @@ data、description、hidden、directive の内部、保持 prefix、
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha
+tf 01 evt Alpha
 
-  rf 02 cmd Beta
+rf 02 cmd Beta
 ```
 
 ### Trailing whitespace
@@ -955,8 +961,8 @@ hidden・data の閉じの境界、保護区間は、
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha
-  entity Shop.Buy
+tf 01 evt Alpha
+entity Shop.Buy
 ```
 
 ### Long lines
@@ -982,7 +988,7 @@ trivia の継続行は構造上の段を保ちます。
 
 ```mmd
 eventmodeling
-  tf 001 evt VeryLongNamespace.VeryLongEventName ->> 002 ->> 003 ->> 004 [[LongDataName]] `text` {a very long authored payload}
+tf 001 evt VeryLongNamespace.VeryLongEventName ->> 002 ->> 003 ->> 004 [[LongDataName]] `text` {a very long authored payload}
 ```
 
 ### Frontmatter yaml
@@ -1021,7 +1027,7 @@ title: "YamlTitle"
 config: { eventmodeling: { padding: 12 } }
 ---
 eventmodeling
-  tf 01 evt Alpha
+tf 01 evt Alpha
 ```
 
 ### Line terminators and unicode
@@ -1088,17 +1094,17 @@ data の並べ替えは最初の検索結果も変える場合があります。
 
 ```mmd
 eventmodeling
-  entity Shop.Alpha
-  entity Shop.Alpha
+entity Shop.Alpha
+entity Shop.Alpha
 note 99 {
 unused
 }
-  gwt 99
-    given
-      evt Alpha
-    then
-      cmd Beta
-  tf 01 evt Alpha ->> 02 ->> 02 [[D]] {unused}
+gwt 99
+  given
+    evt Alpha
+  then
+    cmd Beta
+tf 01 evt Alpha ->> 02 ->> 02 [[D]] {unused}
 data D {
 first
 }
