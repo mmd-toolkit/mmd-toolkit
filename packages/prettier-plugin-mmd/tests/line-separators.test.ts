@@ -1138,6 +1138,16 @@ const timelineLineSeparatorExamples: readonly (readonly [
   string,
 ])[] = [
   [
+    "U+2028 inside a description line",
+    "timeline\naccDescr {\n  a\u2028   b\n c\n}\n",
+    "timeline\n  accDescr {\n    a\u2028   b\n    c\n  }\n",
+  ],
+  [
+    "U+2029 inside a description line",
+    "timeline\naccDescr {\n  a\u2029   b\n c\n}\n",
+    "timeline\n  accDescr {\n    a\u2029   b\n    c\n  }\n",
+  ],
+  [
     "U+2028 between the header and a statement",
     "timeline\u2028title T\n",
     "timeline\n  title T\n",
@@ -1156,6 +1166,16 @@ const timelineLineSeparatorExamples: readonly (readonly [
     "U+2028 inside a period",
     "timeline\na\u2028b : e\n",
     "timeline\n  a\u2028b : e\n",
+  ],
+  [
+    "U+2028 inside a period before a later event",
+    "timeline\na\u2028b : e\n: f\n",
+    "timeline\n  a\u2028b : e\n    : f\n",
+  ],
+  [
+    "U+2029 inside a period before a later event",
+    "timeline\na\u2029b : e\n: f\n",
+    "timeline\n  a\u2029b : e\n    : f\n",
   ],
   [
     "U+2028 before the colon of an event",

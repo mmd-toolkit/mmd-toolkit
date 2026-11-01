@@ -1,9 +1,9 @@
 /**
  * Checks each formatting fixture: the input formats to the output, the
- * output is already formatted, the Db that the tree denotes is the same for
- * both, source comparison ignores frontmatter and whitespace and allows only
- * semicolon removals, and the embedded data is as written in both (see
- * `db-reading.ts`).
+ * output is already formatted, and the Db and embedded data stay the same
+ * except for eventmodeling's explicitly checked data margins. Source comparison
+ * ignores frontmatter and whitespace and allows only semicolon removals
+ * (see `db-reading.ts` and `eventmodeling-data-margins.ts`).
  * The outputs are written by
  * `pnpm --filter prettier-plugin-mmd run test:update` and reviewed as diffs;
  * this test never writes them.
@@ -20,6 +20,10 @@ import {
   writtenEmbeddedTexts,
   writtenTextKeptUpToSemicolons,
 } from "./db-reading.ts"
+import {
+  eventmodelingDbForFormattingComparison,
+  eventmodelingEmbeddedForFormattingComparison,
+} from "./eventmodeling-data-margins.ts"
 
 /** Formats a fixture text with the fixture's options. */
 function format(fixture: FormatFixture, text: string): Promise<string> {
@@ -53,12 +57,24 @@ describe("formatting fixtures", () => {
         true,
       )
       const embedded = defaultEmbedded()
-      expect(dbOfText(output, embedded)).toEqual(
-        dbOfText(fixture.input, embedded),
-      )
-      expect(writtenEmbeddedTexts(output)).toEqual(
-        writtenEmbeddedTexts(fixture.input),
-      )
+      const dbBefore = dbOfText(fixture.input, embedded)
+      const dbAfter = dbOfText(output, embedded)
+      const writtenBefore = writtenEmbeddedTexts(fixture.input)
+      const writtenAfter = writtenEmbeddedTexts(output)
+      const isEventmodeling = fixture.id.startsWith("eventmodeling/")
+      expect(
+        isEventmodeling
+          ? eventmodelingDbForFormattingComparison(dbBefore, dbAfter)
+          : dbAfter,
+      ).toEqual(dbBefore)
+      expect(
+        isEventmodeling
+          ? eventmodelingEmbeddedForFormattingComparison(
+              writtenBefore,
+              writtenAfter,
+            )
+          : writtenAfter,
+      ).toEqual(writtenBefore)
       expect(
         await describeFrontmatterChange(fixture.input, output, fixture.options),
       ).toBeNull()

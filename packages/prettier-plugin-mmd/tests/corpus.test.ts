@@ -4,8 +4,9 @@
  * changes nothing, source comparison ignores frontmatter and whitespace and
  * allows only semicolon removals, and the embedded data is as written (see
  * `writtenEmbeddedTexts`).
- * The Db that the tree of the formatted text denotes is the Db that the corpus
- * records for the input, as mermaid.js reads it as the specification does. The
+ * The Db that the tree of the formatted text denotes matches the corpus's
+ * recorded Db except for eventmodeling's permitted data margins, which are
+ * checked independently before comparing its Db and embedded blocks. The
  * formatted texts are not stored; the fixtures under `tests/fixtures/` show the
  * formatting itself.
  */
@@ -20,6 +21,10 @@ import {
   writtenEmbeddedTexts,
   writtenTextKeptUpToSemicolons,
 } from "./db-reading.ts"
+import {
+  eventmodelingDbForFormattingComparison,
+  eventmodelingEmbeddedForFormattingComparison,
+} from "./eventmodeling-data-margins.ts"
 
 /**
  * Whether the plugin formats the input, rather than printing it as written
@@ -109,23 +114,38 @@ describe("the conformance corpus", () => {
     fixtures.map(
       (fixture) => [`${fixture.diagram}/${fixture.name}`, fixture] as const,
     ),
-  )("%s: formatting is idempotent and keeps the Db", async (_name, fixture) => {
+  )("%s: idempotence and permitted Db changes", async (_name, fixture) => {
     const input = withoutByteOrderMark(fixture.input)
     const output = await formatMermaid(fixture.input)
     const twice = await formatMermaid(output)
     expect(twice).toBe(output)
     expect(await formatMermaid(twice)).toBe(twice)
     const formatted = withoutByteOrderMark(output)
-    expect(writtenEmbeddedTexts(formatted), output).toEqual(
-      writtenEmbeddedTexts(input),
-    )
+    const writtenBefore = writtenEmbeddedTexts(input)
+    const writtenAfter = writtenEmbeddedTexts(formatted)
+    const isEventmodeling = fixture.diagram === "eventmodeling"
+    expect(
+      isEventmodeling
+        ? eventmodelingEmbeddedForFormattingComparison(
+            writtenBefore,
+            writtenAfter,
+          )
+        : writtenAfter,
+      output,
+    ).toEqual(writtenBefore)
     expect(await describeFrontmatterChange(input, formatted)).toBeNull()
     expect(writtenTextKeptUpToSemicolons(input, formatted), output).toBe(true)
     const recorded = fixture.specified ?? fixture.expected
     const embedded = embeddedValuesOf(fixture, recorded)
     if (!recorded.accepted || recorded.db === null || embedded === undefined)
       return
-    expect(dbOfText(formatted, embedded), output).toEqual(recorded.db)
+    const formattedDb = dbOfText(formatted, embedded)
+    expect(
+      isEventmodeling
+        ? eventmodelingDbForFormattingComparison(recorded.db, formattedDb)
+        : formattedDb,
+      output,
+    ).toEqual(recorded.db)
   })
 })
 

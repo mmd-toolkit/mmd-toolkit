@@ -10,6 +10,38 @@ interface RailroadCase {
 
 export const railroadCases: readonly RailroadCase[] = [
   {
+    name: "railroad/comments/ir-call-constructor-break-tabs",
+    input:
+      'railroad-beta\nr=sequence%% constructor  \n(terminal("a"),terminal("b"));\n',
+    output:
+      'railroad-beta\n\tr = sequence %% constructor  \n\t\t(\n\t\t\tterminal("a"),\n\t\t\tterminal("b")\n\t\t);\n',
+    options: { useTabs: true, tabWidth: 0, printWidth: 30 },
+  },
+  {
+    name: "railroad/comments/ir-call-constructor-break-zero",
+    input:
+      'railroad-beta\nr=sequence%% constructor  \n(terminal("a"),terminal("b"));\n',
+    output:
+      'railroad-beta\nr = sequence %% constructor  \n(\nterminal("a"),\nterminal("b")\n);\n',
+    options: { tabWidth: 0, printWidth: 30 },
+  },
+  {
+    name: "railroad/comments/ir-call-comment-tail-tabs",
+    input:
+      'railroad-beta\nr=sequence( %% opening  \nterminal("a"), %% next\t\nterminal("b") %% close  \n);\n',
+    output:
+      'railroad-beta\n\tr = sequence( %% opening  \n\t\tterminal("a"), %% next\t\n\t\tterminal("b") %% close  \n\t);\n',
+    options: { useTabs: true, tabWidth: 0, printWidth: 30 },
+  },
+  {
+    name: "railroad/comments/ir-call-comment-tail-zero",
+    input:
+      'railroad-beta\nr=sequence( %% opening  \nterminal("a"), %% next\t\nterminal("b") %% close  \n);\n',
+    output:
+      'railroad-beta\nr = sequence( %% opening  \nterminal("a"), %% next\t\nterminal("b") %% close  \n);\n',
+    options: { tabWidth: 0, printWidth: 30 },
+  },
+  {
     name: "railroad/semicolons/ir-style-comment-before-ls",
     input: 'railroad-beta\n   r=terminal("left\u2028%% before\n     style" );',
     output:

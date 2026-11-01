@@ -76,6 +76,10 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
    空白と行終端子はノードにしない。
    ソースの文字列と範囲があれば、入力をバイト単位で再現できる。
 4. 整形は冪等で、整形前後で Db が変わらない。
+   ただし formatter の
+   [Data blocks](packages/prettier-plugin-mmd/docs/eventmodeling.ja.md#data-blocks)
+   が定める eventmodeling のブロック本文の ASCII 空白 margin 変更は除く。
+   この例外では、描画を保つ場合に限り raw Db 値の差を許容する。
 
 ## 各パッケージの責務
 

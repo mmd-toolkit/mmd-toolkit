@@ -19,7 +19,7 @@ describe("a timeline in a Markdown code block", () => {
         "# Title\n\n```mermaid\ntimeline TD\ntitle   T\nsection S\n2004: Facebook\n  : Google\n```\n",
       ),
     ).toBe(
-      "# Title\n\n```mermaid\ntimeline TD\n  title   T\n  section S\n    2004: Facebook\n      : Google\n```\n",
+      "# Title\n\n```mermaid\ntimeline TD\n  title   T\n  section S\n    2004: Facebook\n        : Google\n```\n",
     )
   })
 
@@ -37,5 +37,15 @@ describe("a timeline in a Markdown code block", () => {
     expect(
       await formatTwice("```mermaid\ntimeline\na : e  \nb : f\n```\n"),
     ).toBe("```mermaid\ntimeline\n  a : e  \n  b : f\n```\n")
+  })
+
+  it("indents description text in a list item and keeps its trailing spaces", async () => {
+    expect(
+      await formatTwice(
+        "- item\n\n  ```mermaid\n  timeline\n  section S\n  accDescr {\n  first  \n   second\n  }\n  ```\n",
+      ),
+    ).toBe(
+      "- item\n\n  ```mermaid\n  timeline\n    section S\n      accDescr {\n        first  \n        second\n      }\n  ```\n",
+    )
   })
 })

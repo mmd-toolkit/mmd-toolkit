@@ -1,3 +1,5 @@
+import type { Doc, ParserOptions } from "prettier"
+import { utils } from "prettier/doc"
 import type {
   Node,
   EventmodelingDiagram,
@@ -16,6 +18,7 @@ import type {
   EventmodelingModelEntityStatement,
   EventmodelingIgnoredText,
 } from "@mmd-toolkit/parser"
+import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import type { HiddenOpenBlockLayout } from "./flat-hidden-diagram.ts"
 import { protectHiddenGaps } from "./hidden-forms.ts"
@@ -29,12 +32,14 @@ import {
   spansLinesThatCannotJoin,
   walk,
 } from "./layout.ts"
+import { printAsWritten } from "./lines.ts"
 import type { Source } from "./source.ts"
 import {
   findStructuralToken,
   findTokenStartingAt,
   findTokensBetween,
   findTriviaBetween,
+  isWhitespace,
 } from "./source.ts"
 
 /** Values retain their written spelling, including leading zeroes and quotes. */
@@ -131,6 +136,7 @@ export function layoutEventmodelingHeader(
 export function layoutEventmodelingStatement(
   source: Source,
   statement: EventmodelingStatement,
+  options: ParserOptions<MermaidAst>,
 ): AtomLayout | HiddenOpenBlockLayout<EventmodelingStatement> {
   const [start, end] = statement.range
   const selected = classifyEventmodelingStatement(statement)
@@ -141,7 +147,13 @@ export function layoutEventmodelingStatement(
     case "gwt": {
       const gwt = selected.statement
       return {
-        header: layoutComponents(source, gwt, start, gwt.sourceFrame.range[1]),
+        header: layoutComponents(
+          source,
+          gwt,
+          start,
+          gwt.sourceFrame.range[1],
+          options.tabWidth,
+        ),
         body: [gwt.given, ...(gwt.when === null ? [] : [gwt.when]), gwt.then],
         end,
       }
@@ -156,14 +168,20 @@ export function layoutEventmodelingStatement(
         "a GWT clause",
       )
       return {
-        header: layoutComponents(source, clause, start, keyword.range[1]),
+        header: layoutComponents(
+          source,
+          clause,
+          start,
+          keyword.range[1],
+          options.tabWidth,
+        ),
         body: clause.body,
         end,
       }
     }
     case "ordinary":
     case "data":
-      return layoutComponents(source, statement, start, end)
+      return layoutComponents(source, statement, start, end, options.tabWidth)
     default:
       throw new Error(
         `prettier-plugin-mmd: unknown eventmodeling kind ${JSON.stringify(selected satisfies never)}`,
@@ -182,6 +200,7 @@ function layoutComponents(
   statement: EventmodelingStatement,
   start: number,
   end: number,
+  tabWidth: number,
 ): AtomLayout {
   const values = collectValueNodes(
     statement,
@@ -202,7 +221,14 @@ function layoutComponents(
             ),
         "a data body",
       )
-      kept.push({ start: opening.range[0], end: node.range[1] })
+      const doc =
+        node.type === "EventmodelingDataBlock"
+          ? indentedDataBlock(
+              source.text.slice(opening.range[0], node.range[1]),
+              tabWidth,
+            )
+          : undefined
+      kept.push({ start: opening.range[0], end: node.range[1], doc })
     }
   })
   const atoms = collectAtoms(source, start, end, values, kept)
@@ -266,7 +292,17 @@ function layoutComponents(
     const last = layout.atoms.at(-1)!
     layout = {
       ...layout,
-      atoms: [...layout.atoms.slice(0, -1), { ...last, end: paddedEnd }],
+      atoms: [
+        ...layout.atoms.slice(0, -1),
+        {
+          ...last,
+          end: paddedEnd,
+          doc:
+            last.doc === undefined
+              ? undefined
+              : [last.doc, printAsWritten(source, last.end, paddedEnd)],
+        },
+      ],
     }
   }
   return {
@@ -276,4 +312,45 @@ function layoutComponents(
       ...writtenGapsBefore,
     ]),
   }
+}
+
+/**
+ * Only change a common ASCII-space margin whose space-separated words stay
+ * the same in Mermaid's data label. A new space on a later physical line
+ * adds a visible nonbreaking space; tabs, markup and padded openers also
+ * need their authored text (docs/eventmodeling.md, Data blocks).
+ */
+function indentedDataBlock(text: string, tabWidth: number): Doc | undefined {
+  if (
+    tabWidth === 0 ||
+    !text.startsWith("{\n") ||
+    !text.endsWith("\n}") ||
+    text.includes("<") ||
+    text.includes("&") ||
+    text.includes("%%{")
+  )
+    return undefined
+
+  const rows = text.slice(2, -2).split("\n")
+  const margins = rows.map((row) => {
+    let margin = 0
+    while (row[margin] === " ") margin++
+    return margin
+  })
+  let commonMargin = Infinity
+  for (const [index, row] of rows.entries()) {
+    if (row.trim() === "") continue
+    const margin = margins[index]
+    if (isWhitespace(row[margin]) || (index > 0 && margin === 0))
+      return undefined
+    commonMargin = Math.min(commonMargin, margin)
+  }
+  if (commonMargin === Infinity || commonMargin === tabWidth) return undefined
+
+  const delta = tabWidth - commonMargin
+  const indented = rows.map((row, index) => {
+    if (row.trim() === "") return row
+    return " ".repeat(margins[index] + delta) + row.slice(margins[index])
+  })
+  return utils.replaceEndOfLine(`{\n${indented.join("\n")}\n}`)
 }

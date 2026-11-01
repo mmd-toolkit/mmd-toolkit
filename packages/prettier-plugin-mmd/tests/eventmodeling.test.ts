@@ -13,6 +13,10 @@ import {
 } from "./db-reading.ts"
 import { eventmodelingCases } from "./eventmodeling-cases.ts"
 import { loadFormatFixtures } from "./fixtures.ts"
+import {
+  eventmodelingDbForFormattingComparison,
+  eventmodelingEmbeddedForFormattingComparison,
+} from "./eventmodeling-data-margins.ts"
 
 /** Owner paths and source text must survive moving ordinary clause/item lines. */
 function hiddenOwners(text: string): readonly (readonly [string, string])[] {
@@ -53,8 +57,20 @@ describe("eventmodeling escaped cases", () => {
     const before = parserText(input)
     const after = parserText(output)
     const embedded = defaultEmbedded()
-    expect(dbOfText(after, embedded)).toEqual(dbOfText(before, embedded))
-    expect(writtenEmbeddedTexts(after)).toEqual(writtenEmbeddedTexts(before))
+    const dbBefore = dbOfText(before, embedded)
+    expect(
+      eventmodelingDbForFormattingComparison(
+        dbBefore,
+        dbOfText(after, embedded),
+      ),
+    ).toEqual(dbBefore)
+    const writtenBefore = writtenEmbeddedTexts(before)
+    expect(
+      eventmodelingEmbeddedForFormattingComparison(
+        writtenBefore,
+        writtenEmbeddedTexts(after),
+      ),
+    ).toEqual(writtenBefore)
     expect(await describeFrontmatterChange(before, after, options)).toBeNull()
     expect(writtenTextKeptUpToSemicolons(before, after)).toBe(true)
     expect(treeProblemsOfText(before)).toEqual([])

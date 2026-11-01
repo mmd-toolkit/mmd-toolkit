@@ -13,6 +13,7 @@ export const eventmodelingPrinter: FlatHiddenPrinter =
   createFlatHiddenDiagramPrinter<EventmodelingDiagram, EventmodelingStatement>({
     type: "EventmodelingDiagram",
     ignoredType: "EventmodelingIgnoredText",
+    bodyDepth: 0,
     header: layoutEventmodelingHeader,
     statement: layoutEventmodelingStatement,
     writtenGapBefore: (source, item) =>

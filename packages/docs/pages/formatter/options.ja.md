@@ -22,7 +22,9 @@ Kanbanでは各ノードのインデントの文字数を保持するため、
 
 ## 行の長さ
 
-`printWidth`は、図の行を折り返しません。
+`printWidth`は図の改行位置を決めません。
+`railroad-beta`の複合呼び出しは、常に文法の入れ子を改行で示します。
+引用符の内側は書かれたまま保ちます。
 MarkdownやYAML frontmatterの整形では、
 Prettierが`printWidth`を使う場合があります。
 

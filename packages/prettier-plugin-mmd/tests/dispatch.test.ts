@@ -46,7 +46,7 @@ describe("dispatch to diagram printers", () => {
     )
     parse.mockImplementation(actual.parse)
     expect(await formatMermaid("eventmodeling tf 007evt Dispatch")).toBe(
-      "eventmodeling\n  tf 007 evt Dispatch\n",
+      "eventmodeling\ntf 007 evt Dispatch\n",
     )
   })
   it("registers both cynefin header forms", async () => {

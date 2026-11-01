@@ -51,7 +51,7 @@ Output
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha
+tf 01 evt Alpha
 ```
 
 Input (escaped): `"eventmodeling tf 01 evt A %%{{x}}%%\n"`.
@@ -65,12 +65,27 @@ eventmodeling tf 01 evt A %%{{x}}%%
 
 ### Indentation
 
-Use one configured step for ordinary body statements, two for GWT clauses and
-three for GWT items. Structural continuation lines stand one step deeper than
-their statement. Columns do not define parents, so `tabWidth: 0` adds no spaces;
-`useTabs` adds one tab per step even at width zero. Value continuations,
-metadata padding and hidden consumed-LF boundaries retain their authored
-columns.
+Start ordinary top-level statements at column one: frames, model entities,
+`data`, `note` and `gwt`.
+
+The pinned Mermaid requires `data` and `note` block closers at column one; the
+formatter aligns their headers there and keeps peer statements at the same level
+to avoid suggesting a hierarchy. Reconsider this choice if the pinned Mermaid
+later accepts whitespace before block closers, checking that raw body values and
+rendering remain unchanged.
+
+GWT clauses use one configured step and items two. Structural continuation lines
+stand one step deeper than their statement, including continued `data` headers.
+Columns do not define parents, so `tabWidth: 0` adds no spaces; `useTabs` adds
+one tab per step even at width zero. Value continuations, metadata padding and
+hidden consumed-LF boundaries retain their authored columns, apart from the
+block-body margin adjustment in [Data blocks](#data-blocks).
+
+[fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]
+
+[fixture: eventmodeling/indentation/mixed-top-level-blocks]
+
+[fixture: eventmodeling/indentation/gwt-four-spaces]
 
 [fixture: eventmodeling/indentation/body-four-spaces]
 
@@ -82,6 +97,16 @@ columns.
 
 [fixture: eventmodeling/indentation/zero-width-tabs]
 
+[fixture: eventmodeling/indentation/data-declaration-column-one]
+
+[fixture: eventmodeling/indentation/data-declaration-four-spaces]
+
+[fixture: eventmodeling/indentation/data-declaration-tabs]
+
+[fixture: eventmodeling/indentation/note-column-one]
+
+[fixture: eventmodeling/declarations-and-notes/data-name-title-keep-lf]
+
 Input (escaped): `"eventmodeling\ntf 01 evt Alpha\nrf 02 cmd Beta"`.
 
 Output
@@ -89,8 +114,29 @@ Output
 
 ```mmd
 eventmodeling
-    tf 01 evt Alpha
-    rf 02 cmd Beta
+tf 01 evt Alpha
+rf 02 cmd Beta
+```
+
+Output
+([indentation/data-declaration-column-one-output.mmd](../tests/fixtures/eventmodeling/indentation/data-declaration-column-one-output.mmd)):
+
+```mmd
+eventmodeling
+data AddItem01 {
+  sku: 'SHIRT-M'
+  quantity: 2
+}
+```
+
+Output
+([indentation/note-column-one-output.mmd](../tests/fixtures/eventmodeling/indentation/note-column-one-output.mmd)):
+
+```mmd
+eventmodeling
+note 01 {
+  explanation
+}
 ```
 
 ### Statements one per line
@@ -123,9 +169,9 @@ Output
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha
-  rf 02 cmd Beta
-  entity Shop.Beta
+tf 01 evt Alpha
+rf 02 cmd Beta
+entity Shop.Beta
 ```
 
 ### Frame components
@@ -161,7 +207,7 @@ Output
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha
+tf 01 evt Alpha
 ```
 
 ### Source references
@@ -184,7 +230,7 @@ Output
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha ->> 02 ->> 001
+tf 01 evt Alpha ->> 02 ->> 001
 ```
 
 ### Data references
@@ -211,7 +257,7 @@ Output
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha [[D]]
+tf 01 evt Alpha [[D]]
 ```
 
 ### Type tags
@@ -241,7 +287,7 @@ Output
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha `json` { x }
+tf 01 evt Alpha `json` { x }
 ```
 
 ### Qualified names
@@ -274,8 +320,8 @@ Output
 
 ```mmd
 eventmodeling
-  rf 02 cmd Shop.Buy
-  entity Root.Child
+rf 02 cmd Shop.Buy
+entity Root.Child
 ```
 
 ### Authored spellings
@@ -304,8 +350,8 @@ Output
 
 ```mmd
 eventmodeling
-  timeframe 001 event Alpha
-  resetframe 02 command Beta
+timeframe 001 event Alpha
+resetframe 02 command Beta
 ```
 
 ### Declarations and notes
@@ -331,12 +377,12 @@ Output
 
 ```mmd
 eventmodeling
-  entity Shop.Buy
+entity Shop.Buy
 ```
 
 ### Gwt clauses and items
 
-Put `gwt 99` at body depth, each clause keyword one step deeper and every item
+Put `gwt 99` at column one, each clause keyword one step deeper and every item
 another step deeper. This shows the authored clause/item relationship without
 inventing closing punctuation. Keep required given/then, optional when, item
 order, repetition and type words. Ordinary item components use one space;
@@ -368,16 +414,16 @@ Output
 
 ```mmd
 eventmodeling
-  gwt 99
-    given
-      evt Alpha
-      cmd Beta
-    when
-      command Buy
-    then
-      ui Screen
-      rmo View
-  tf 01 evt End
+gwt 99
+  given
+    evt Alpha
+    cmd Beta
+  when
+    command Buy
+  then
+    ui Screen
+    rmo View
+tf 01 evt End
 ```
 
 ### Inline data
@@ -409,19 +455,45 @@ Output
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha { 	 x  }
+tf 01 evt Alpha { 	 x  }
 ```
 
 ### Data blocks
 
-Keep data and note bodies exactly from `{` through `}`, including opening
-padding, interior blank lines, authored columns and the unindented closer.
-Indenting that closer can reject the input; reindenting the body changes its raw
-terminal. Preserve apparent statements, nested-looking text and an adjacent
+For ordinary data and note blocks written as `{` immediately followed by LF and
+closed by LF followed by `}`, adjust the common margin of ASCII spaces (U+0020)
+to `tabWidth` where the conditions below permit it. Take the smallest
+leading-space count among nonblank lines as the common margin. Apply the same
+change to each nonblank body line, preserving their relative indentation. Use
+spaces even with `useTabs`; at `tabWidth: 0`, keep the body as written.
+
+[fixture: eventmodeling/data-blocks/body-common-margin]
+
+[fixture: eventmodeling/indentation/data-declaration-four-spaces]
+
+[fixture: eventmodeling/indentation/data-declaration-tabs]
+
+[fixture: eventmodeling/data-blocks/body-zero-width]
+
+Only the first physical body line may gain a space prefix where it had none.
+Every later nonblank physical line must have at least one leading ASCII space
+both before and after the change. Otherwise keep the complete body as written:
+adding the first space on a later line can change the rendered label. A leading
+empty line does not make the next line the first physical line.
+
+[fixture: eventmodeling/data-blocks/body-first-line-zero-margin]
+
+[fixture: eventmodeling/data-blocks/body-later-zero-margin-kept]
+
+[fixture: eventmodeling/data-blocks/body-after-empty-first-row-kept]
+
+Keep blank and whitespace-only lines, line breaks, trailing spaces and tabs, and
+every character after each line's leading margin. The closing brace stays at
+column one. Preserve apparent statements, nested-looking text and an adjacent
 closing-looking line when the block's body-present rule reads through it to a
 later closer.
 
-[fixture: eventmodeling/data-blocks/block-interior-unchanged]
+[fixture: eventmodeling/data-blocks/body-whitespace-kept]
 
 [fixture: eventmodeling/data-blocks/block-empty-kept]
 
@@ -431,6 +503,33 @@ later closer.
 
 [fixture: eventmodeling/data-blocks/block-nested-text]
 
+Keep the entire body as written if the opener has padding before LF, the body
+contains `<`, `&` or `%%{`, or a nonblank line starts with a tab or other
+whitespace after its ASCII-space prefix. HTML, entities and directive-looking
+text can make indentation affect rendering. Existing semicolon protection and
+default-size rules also take precedence.
+
+[fixture: eventmodeling/data-blocks/block-interior-unchanged]
+
+[fixture: eventmodeling/data-blocks/html-line-break-indentation-kept]
+
+[fixture: eventmodeling/data-blocks/body-entity-kept]
+
+[fixture: eventmodeling/data-blocks/body-native-directive-kept]
+
+[fixture: eventmodeling/data-blocks/body-leading-tab-kept]
+
+[test: eventmodeling/data-blocks/body-leading-nbsp-kept]
+
+[fixture: eventmodeling/data-blocks/body-style-semicolon-kept]
+
+Mermaid accepts body indentation and includes it in the raw value. The permitted
+common-margin adjustment can therefore change raw Db values while preserving the
+rendered diagram. This is an explicit formatter exception; it changes no parser,
+specification or recorded Mermaid Db reading.
+
+[fixture: eventmodeling/final-newline/final-block-padding-kept]
+
 Input (escaped): `"eventmodeling tf 01 evt Alpha [[D]] data D {\nx\n}\n"`.
 
 Output
@@ -438,9 +537,9 @@ Output
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha [[D]]
-  data D {
-x
+tf 01 evt Alpha [[D]]
+data D {
+  x
 }
 ```
 
@@ -480,9 +579,9 @@ Output
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha [[D]]
-  data D {
-x
+tf 01 evt Alpha [[D]]
+data D {
+  x
 }
 ```
 
@@ -521,7 +620,7 @@ Output
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha 	%%{init:{}}%%  accDescr: D
+tf 01 evt Alpha 	%%{init:{}}%%  accDescr: D
 ```
 
 ### Title
@@ -546,7 +645,7 @@ Output
 
 ```mmd
 eventmodeling title
-  tf 01 evt Alpha
+tf 01 evt Alpha
 ```
 
 ### Accessibility lines
@@ -577,7 +676,7 @@ Output
 
 ```mmd
 eventmodeling accTitle: First
-  tf 01 evt Alpha accTitle:
+tf 01 evt Alpha accTitle:
 ```
 
 ### Description blocks
@@ -676,7 +775,7 @@ Output
 eventmodeling tf 01 evt Alpha ---
 x
 ---
-  tf 02 evt Beta
+tf 02 evt Beta
 ```
 
 ### Comments
@@ -689,7 +788,8 @@ directives. Use this shared placement so the same comments are treated alike
 across diagram types. Keep marks, contents, trailing padding and block-comment
 continuation columns. Native `//` and `%%` run through LS/PS to physical LF. A
 `%%` comment line inside a data block, a note, an `accDescr` block, a slash
-block comment or a hidden form is part of that text and keeps its columns.
+block comment or a hidden form is part of that text. Its columns stay written
+except for the block-body margin adjustment in [Data blocks](#data-blocks).
 Boundaries needed for metadata or a required `title` take precedence. Slash
 comments are not moved before the header, where detection would reject them.
 
@@ -744,8 +844,8 @@ Output
 
 ```mmd
 eventmodeling
-  tf 01 evt A
-  /*c*/ tf 02 evt B
+tf 01 evt A
+/*c*/ tf 02 evt B
 ```
 
 ### Default size branches
@@ -818,7 +918,7 @@ Output
 
 ```mmd
 eventmodeling
-  tf%%{wrap}%% 01 evt Alpha%%{wrap}%%->>%%{wrap}%%02
+tf%%{wrap}%% 01 evt Alpha%%{wrap}%%->>%%{wrap}%%02
 ```
 
 ### Semicolons
@@ -872,9 +972,10 @@ eventmodeling tf 01 evt Alpha "style:#x" ;rf 02 cmd Beta
 
 Keep at most one ordinary ASCII blank line between statements or items and
 remove ordinary blanks at document/body edges. This keeps separation without
-unlimited vertical space. Whitespace-only ordinary lines become empty; data,
-description, hidden and directive interiors, retained prefixes and common
-consumed-LF boundaries remain as written.
+unlimited vertical space. Whitespace-only ordinary lines become empty; data
+interiors follow [Data blocks](#data-blocks). Description, hidden and directive
+interiors, retained prefixes and common consumed-LF boundaries remain as
+written.
 
 [fixture: eventmodeling/blank-lines/ordinary-blanks-bounded]
 
@@ -896,18 +997,18 @@ Output
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha
+tf 01 evt Alpha
 
-  rf 02 cmd Beta
+rf 02 cmd Beta
 ```
 
 ### Trailing whitespace
 
 Remove only harmless exterior ASCII padding after the header or structural
 components. Decide by ownership rather than trimming every physical line. Keep
-metadata values and prefixes, data interiors, comment/directive tails,
-hidden/data closing boundaries and protected stretches; their whitespace can be
-content or determine acceptance.
+metadata values and prefixes, data interiors apart from the permitted margin
+adjustment, comment/directive tails, hidden/data closing boundaries and
+protected stretches; their whitespace can be content or determine acceptance.
 
 [fixture: eventmodeling/trailing-whitespace/harmless-trailing-structure]
 
@@ -924,8 +1025,8 @@ Output
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha
-  entity Shop.Buy
+tf 01 evt Alpha
+entity Shop.Buy
 ```
 
 ### Long lines
@@ -933,9 +1034,10 @@ eventmodeling
 Do not wrap by `printWidth`. Ordinary whitespace-only component newlines follow
 their spacing rules, while trivia continuations retain structural depth. Only
 GWT's decided clause/item layout adds structural splits. Values, hidden forms,
-metadata and protected boundaries retain their contents. Avoiding
-width-dependent choices keeps those lexical boundaries explicit and never
-inserts a forbidden LF into inline data.
+metadata and protected boundaries retain their contents, apart from the limited
+block-body margin in [Data blocks](#data-blocks). Avoiding width-dependent
+choices keeps those lexical boundaries explicit and never inserts a forbidden LF
+into inline data.
 
 [fixture: eventmodeling/long-lines/long-structural-line-no-wrap]
 
@@ -951,7 +1053,7 @@ Output
 
 ```mmd
 eventmodeling
-  tf 001 evt VeryLongNamespace.VeryLongEventName ->> 002 ->> 003 ->> 004 [[LongDataName]] `text` {a very long authored payload}
+tf 001 evt VeryLongNamespace.VeryLongEventName ->> 002 ->> 003 ->> 004 [[LongDataName]] `text` {a very long authored payload}
 ```
 
 ### Frontmatter yaml
@@ -989,7 +1091,7 @@ title: "YamlTitle"
 config: { eventmodeling: { padding: 12 } }
 ---
 eventmodeling
-  tf 01 evt Alpha
+tf 01 evt Alpha
 ```
 
 ### Line terminators and unicode
@@ -1032,9 +1134,10 @@ eventmodeling/line-terminators-and-unicode/block-ls-boundary-stays-outside-value
 
 Retain every occurrence in source order, including unused model entities/data,
 notes, GWT, type tags, repeated sources, later same-name data, overwritten
-common forms and inline data alongside a reference. Only their decided outer
-layout changes. An equal comparison Db after deduplication would still lose
-authored occurrences; reordering data can also change the first lookup.
+common forms and inline data alongside a reference. Only their decided layout
+changes, including the permitted block-body margins. An equal comparison Db
+after deduplication would still lose authored occurrences; reordering data can
+also change the first lookup.
 
 [fixture: eventmodeling/source-order/all-occurrences-retained]
 
@@ -1061,25 +1164,25 @@ Output
 
 ```mmd
 eventmodeling
-  entity Shop.Alpha
-  entity Shop.Alpha
-  note 99 {
-unused
+entity Shop.Alpha
+entity Shop.Alpha
+note 99 {
+  unused
 }
-  gwt 99
-    given
-      evt Alpha
-    then
-      cmd Beta
-  tf 01 evt Alpha ->> 02 ->> 02 [[D]] {unused}
-  data D {
-first
+gwt 99
+  given
+    evt Alpha
+  then
+    cmd Beta
+tf 01 evt Alpha ->> 02 ->> 02 [[D]] {unused}
+data D {
+  first
 }
-  data D {
-second
+data D {
+  second
 }
-  data Unused {
-x
+data Unused {
+  x
 }
 ```
 
@@ -1139,6 +1242,8 @@ padding lacks the standalone guarantee. Rejected payloads use Prettier's
 ordinary code handling.
 
 [test: eventmodeling Markdown: top-level]
+
+[test: eventmodeling Markdown: data-declaration]
 
 [test: eventmodeling Markdown: list]
 

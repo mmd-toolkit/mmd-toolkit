@@ -44,6 +44,8 @@ type HiddenBodyLayout<Statement extends Node> =
 interface FlatHiddenLayouts<Diagram extends Node, Statement extends Node> {
   readonly type: Diagram["type"]
   readonly ignoredType: Statement["type"]
+  /** Top-level body depth; one unless this diagram uses unindented statements. */
+  readonly bodyDepth?: 0 | 1
   /**
    * The first atom starts at the header keyword. The printer uses its start
    * as the end of the retained prefix.
@@ -52,6 +54,7 @@ interface FlatHiddenLayouts<Diagram extends Node, Statement extends Node> {
   readonly statement: (
     source: Source,
     statement: Statement,
+    options: ParserOptions<MermaidAst>,
   ) => AtomLayout | HiddenBodyLayout<Statement>
   /** Keep the complete source gap attached to this unit, including its LF. */
   readonly writtenGapBefore?: (source: Source, statement: Statement) => boolean
@@ -131,11 +134,12 @@ export function createFlatHiddenDiagramPrinter<
       headerHiddenEnds.add(item.range[1])
       headerEnd = item.range[1]
     }
+    const bodyDepth = layouts.bodyDepth ?? 1
     const block = printBody(
       diagram.body,
       findLayoutEnd(headerLayout),
       source.text.length,
-      1,
+      bodyDepth,
       true,
       headerHiddenEnds,
     )
@@ -146,7 +150,7 @@ export function createFlatHiddenDiagramPrinter<
     )
     return [
       printAsWritten(source, diagram.range[0], first.start),
-      printDiagramBlock(source, header, block, options),
+      printDiagramBlock(source, header, block, options, bodyDepth),
     ]
 
     /** Only authored body boundaries join lines; inner component gaps do not. */
@@ -155,7 +159,7 @@ export function createFlatHiddenDiagramPrinter<
         appendItems(allHidden, layouts.prefixes?.(item) ?? [])
         if (item.type === layouts.ignoredType) allHidden.push(item)
         appendItems(allHidden, layouts.suffixes?.(item) ?? item.textAfter ?? [])
-        const selected = layouts.statement(source, item)
+        const selected = layouts.statement(source, item, options)
         if ("body" in selected) collectBodyHidden(selected.body)
       }
     }
@@ -186,7 +190,7 @@ export function createFlatHiddenDiagramPrinter<
       )
       const nested = new Map<Node, HiddenBodyLayout<Statement>>()
       for (const item of body) {
-        let selected = layouts.statement(source, item)
+        let selected = layouts.statement(source, item, options)
         const prefixes = layouts.prefixes?.(item) ?? []
         const prefixEnd = prefixes.at(-1)?.range[1]
         const ownedHeader = "body" in selected ? selected.header : selected

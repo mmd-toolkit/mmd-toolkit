@@ -24,5 +24,7 @@ both diagrams, reformatted indentation uses the character selected by `useTabs`.
 
 ## Line width
 
-`printWidth` does not wrap diagram lines. Prettier's formatting of Markdown and
-YAML frontmatter can still use `printWidth`.
+`printWidth` does not control diagram line breaks. `railroad-beta` composite
+calls always use nested lines to show the grammar structure. Quoted contents
+remain as written. Prettier's formatting of Markdown and YAML frontmatter can
+still use `printWidth`.

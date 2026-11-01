@@ -1,4 +1,4 @@
-import type { Range, Token } from "@mmd-toolkit/parser"
+import type { Node, Range, Token } from "@mmd-toolkit/parser"
 import type { Doc } from "prettier"
 import { utils } from "prettier/doc"
 import { isDroppedSemicolon } from "./kept-lines.ts"
@@ -7,6 +7,7 @@ import {
   findCoveringRange,
   findCommentEndingAt,
   findDirectiveEndingAt,
+  findFirstIndex,
   isCommentLine,
   findTokenStartingAt,
   findTriviaBetween,
@@ -19,12 +20,13 @@ const { replaceEndOfLine } = utils
  * What a gap prints: comments, directives, and the tokens that the grammar
  * reads past. The tree lists comments, and directives as tokens, but places
  * them in no node (see `Trivia`). The other tokens are the `;` that the
- * line rule ignores (`ignoredSemicolons`): no node contains them. All of
- * them are printed as written, and on each side of each, whitespace is
+ * line rule ignores (`ignoredSemicolons`): no node contains them. A caller
+ * can also supply complete opaque AST nodes for retained source forms. All
+ * items are printed as written, and on each side of each, whitespace is
  * printed where the source has it and nothing where it has none
  * (docs/flowchart.md, Directives and Semicolons).
  */
-export type GapItem = Trivia | Token
+export type GapItem = Trivia | Token | Node
 
 /**
  * Items written next to each other on one line, printed as written: one
@@ -173,9 +175,9 @@ interface ScannedLine {
  * real comments, while still keeping them before directives.
  *
  * Throws when the gap holds any other text than whitespace, line
- * terminators, comments, directives, and `;` tokens: the tree places every
- * other token in a node, so such text means that the printer was given
- * wrong bounds.
+ * terminators, comments, directives, `;` tokens, and supplied opaque nodes:
+ * the tree places every other token in a node, so such text means that the
+ * printer was given wrong bounds.
  */
 export function readGap(
   source: Source,
@@ -190,6 +192,8 @@ export function readGap(
     readonly relocatedWhitespace?: readonly Range[]
     /** Disjoint source-ordered ranges replaced by the statement docs. */
     readonly omitted?: readonly Range[]
+    /** Complete, disjoint opaque nodes sorted by source range start. */
+    readonly opaqueNodes?: readonly Node[]
   } = {},
 ): Gap {
   const {
@@ -204,6 +208,7 @@ export function readGap(
     keepsSeparators,
     options.relocatedWhitespace ?? [],
     options.omitted ?? [],
+    options.opaqueNodes ?? [],
   )
   if (lines.length === 1) {
     return readSingleLine(
@@ -355,8 +360,8 @@ function readSingleLine(
 /**
  * What starts at an offset between the things that the printers print:
  *
- * - `item`: a comment, a directive, or a token that the grammar reads past
- *   (see `GapItem`).
+ * - `item`: a comment, a directive, a token that the grammar reads past, or
+ *   a supplied opaque node (see `GapItem`).
  * - `separator`: a `;` that separates statements, other than one that
  *   starts where a comment ends. A comment ends before a `;` only where
  *   the line rule ignores it, and no characters of the comment follow it
@@ -384,11 +389,20 @@ export type GapElement =
   | { readonly kind: "whitespace"; readonly breaksLine: boolean }
   | { readonly kind: "text" }
 
-/** Reads the element that starts at `offset`, and where it ends. */
+/**
+ * Reads the element that starts at `offset`, and where it ends. Opaque nodes
+ * are complete, disjoint and source-ordered; their internal trivia belongs
+ * to their retained source instead of becoming separate gap items.
+ */
 export function readGapElement(
   source: Source,
   offset: number,
+  opaqueNodes: readonly Node[] = [],
 ): { readonly element: GapElement; readonly end: number } {
+  const opaque =
+    opaqueNodes[findFirstIndex(opaqueNodes, (node) => node.range[0] >= offset)]
+  if (opaque?.range[0] === offset)
+    return { element: { kind: "item", item: opaque }, end: opaque.range[1] }
   const trivia = findTriviaBetween(source, offset, offset + 1).at(0)
   if (trivia !== undefined) {
     return { element: { kind: "item", item: trivia }, end: trivia.range[1] }
@@ -467,6 +481,7 @@ function scanLines(
   keepsSeparators: boolean,
   relocatedWhitespace: readonly Range[],
   omittedRanges: readonly Range[],
+  opaqueNodes: readonly Node[],
 ): ScannedLine[] {
   const lines: ScannedLine[] = [newLine()]
   let current = lines[0]
@@ -496,7 +511,11 @@ function scanLines(
       offset = Math.min(end, omitted[1])
       continue
     }
-    const { element, end: elementEnd } = readGapElement(source, offset)
+    const { element, end: elementEnd } = readGapElement(
+      source,
+      offset,
+      opaqueNodes,
+    )
     switch (element.kind) {
       case "item":
         if (

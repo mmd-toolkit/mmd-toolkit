@@ -865,6 +865,12 @@ formatting keeps them as they are written. See
   timeline/multi-line-statements/comment-line-inside-kept] [fixture:
   timeline/statements-one-per-line/ignored-semicolon-line-kept]
 
+An `accDescr` block indents later text lines by replacing only spaces and tabs
+immediately after LF, which the Db setter discards. Its text, line breaks,
+trailing whitespace and directive contents remain as written. [fixture:
+timeline/multi-line-values/description-line-ending-whitespace] [fixture:
+timeline/multi-line-values/description-directive-lines]
+
 ## Sankey lines that the characters or the quotes decide
 
 mermaid.js reads a sankey diagram as CSV: it rejects a tab, a character outside
@@ -2161,6 +2167,37 @@ railroad/source-order/ebnf-duplicates] [fixture:
 railroad/source-order/abnf-duplicates] [fixture:
 railroad/source-order/peg-duplicates] [fixture: railroad/title/ir-trim]
 
+Ordinary composite IR calls always use nested argument lines, independently of
+`printWidth` and authored padding line breaks, to show the grammar hierarchy.
+Values remain whole and trailing commas are not added. Plain `terminal`,
+`nonterminal` and `special` calls keep their quoted values compact; a comment,
+global directive or native hidden form at a call boundary makes a leaf call
+multiline too. Call gaps use canonical outside spaces while preserving trivia
+contents, internal contacts and written trivia line breaks. Native hidden forms
+remain complete opaque items, including global directives inside them, while the
+grammar around them receives structural indentation. After a line break
+following a constructor, both parentheses use continuation indentation, with
+their arguments one level deeper. Semicolons inside values do not prevent this
+layout; lines containing `style` or `classDef` and ignored semicolons retain
+their protected layout. EBNF, ABNF and PEG keep their flat layout. [fixture:
+railroad/comments/ir-leaf-value-comments] [fixture:
+railroad/comments/ir-leaf-boundary-comments] [fixture:
+railroad/hidden-forms/ir-call-global-inside-native] [fixture:
+railroad/hidden-forms/ir-call-native-yaml] [fixture:
+railroad/long-lines/ir-expression-grammar] [fixture:
+railroad/long-lines/ir-written-breaks] [fixture:
+railroad/long-lines/ir-unary-width] [fixture:
+railroad/long-lines/ir-comments-kept] [fixture:
+railroad/comments/ir-call-inline-spacing] [fixture:
+railroad/comments/ir-call-comment-lines] [fixture:
+railroad/comments/ir-call-constructor-nested] [fixture:
+railroad/global-directives/ir-call-boundaries] [fixture:
+railroad/long-lines/ir-directive-kept] [fixture:
+railroad/long-lines/ir-hidden-kept] [fixture:
+railroad/long-lines/ir-semicolon-kept] [fixture: railroad/long-lines/ebnf-width]
+[fixture: railroad/long-lines/abnf-width] [fixture:
+railroad/long-lines/peg-width]
+
 Strings keep their complete source spans, including quotes, empty and
 whitespace-only values, escape spelling, HTML, entities and continuation
 columns. singleQuote does not rewrite them. ABNF backslash is ordinary content;
@@ -2185,14 +2222,16 @@ Comment forms and contents remain written: all four dialects have `%%`, IR has C
 comments, EBNF has C and ISO comments, ABNF has semicolon line comments and PEG
 has hash line comments. LS/PS remain native line-comment content. A bare ABNF
 `;` is punctuation; its terminator must meet LF or EOF immediately. Every rule's
-required visible `;` stays attached where safe, and every other authored
-semicolon stays under shared segment protection, including crossing values. The
-first line uses one body step, matching other flat diagrams; later lines keep
-their written columns. Railroad lines containing the literal string `style` or
-`classDef` after global directive removal stay as written, including every
-statement, comment, native hidden form and inner gap. They do not join their
-neighbors. A removed directive forming a word across lines keeps all those
-lines. [fixture: railroad/semicolons/ir-word-unclosed-directive-lines] [fixture:
+required visible `;` stays attached where safe. Ordinary IR rules retain
+semicolons inside values without freezing their layout; every other authored
+semicolon stays under shared segment protection, including crossing values. Each
+protected segment's first line uses one body step, matching other flat diagrams;
+its later lines keep their written columns. Railroad lines containing the
+literal string `style` or `classDef` after global directive removal stay as
+written, including every statement, comment, native hidden form and inner gap.
+They do not join their neighbors. A removed directive forming a word across
+lines keeps all those lines. [fixture:
+railroad/semicolons/ir-word-unclosed-directive-lines] [fixture:
 railroad/semicolons/ebnf-word-unclosed-directive-lines] [fixture:
 railroad/semicolons/abnf-word-unclosed-directive-lines] [fixture:
 railroad/semicolons/peg-word-unclosed-directive-lines] A line is the complete
@@ -2473,18 +2512,31 @@ final-hidden-padding] [test: cynefin Markdown: rejected]
 
 ## Eventmodeling terminals and source boundaries
 
-The [eventmodeling rules](./eventmodeling.md) preserve complete inline and block
-data bodies. Tags can format, but their payloads are raw terminals, including
-quotes, braces, padding and apparent following statements. Block-data consumes
-an immediately following LF; other whitespace is lookahead. Closing padding and
-LS/PS boundaries stay written, including at EOF. Reindenting a block closer can
-reject input, and replacing closing lookahead with LF can change the comparison
-Db. Native data is read directly from source rather than evaluated as embedded
-configuration. [fixture: eventmodeling/inline-data/greedy-apparent-frames-kept]
-[fixture: eventmodeling/data-blocks/block-closer-indent-unsafe] [fixture:
+The [eventmodeling rules](./eventmodeling.md) preserve inline data and block
+contents, except for the restricted ASCII-space margin adjustment in
+[Data blocks](./eventmodeling.md#data-blocks). That adjustment preserves
+rendering but may change raw Db values; it changes no parser, specification or
+recorded Mermaid reading. Other payload characters, quotes, braces, blank lines,
+trailing whitespace and apparent following statements remain as written. Tags
+can still format. Block-data consumes an immediately following LF; other
+whitespace is lookahead. Closing padding and LS/PS boundaries stay written,
+including at EOF. Reindenting a block closer can reject input, and replacing
+closing lookahead with LF can change the comparison Db. Native data is read
+directly from source rather than evaluated as embedded configuration. [fixture:
+eventmodeling/inline-data/greedy-apparent-frames-kept] [fixture:
+eventmodeling/data-blocks/block-closer-indent-unsafe] [fixture:
 eventmodeling/data-boundaries/same-line-block-successor] [test:
 eventmodeling/line-terminators-and-unicode/block-ls-boundary-stays-outside-value]
 [fixture: eventmodeling/final-newline/final-block-padding-kept]
+
+Ordinary top-level statements start at column one, keeping frames, model
+entities, data and note declarations at the same level as the required
+unindented block closers. GWT clauses and items remain nested using the
+configured indentation. Data bodies outside the margin rule keep their authored
+columns. [fixture: eventmodeling/indentation/mixed-top-level-blocks] [fixture:
+eventmodeling/indentation/gwt-four-spaces] [fixture:
+eventmodeling/indentation/data-declaration-column-one] [fixture:
+eventmodeling/indentation/note-column-one]
 
 Common EM terminals retain keyword, delimiter and leading ASCII padding as
 values. Preserve their complete source and preceding interval, including across
@@ -2506,13 +2558,13 @@ eventmodeling/frame-components/hidden-before-required-title-identifier-keep-zero
 Eventmodeling keeps comment lines in its Db unless the source is longer than
 `maxTextSize`, 50000 UTF-16 code units by default. At normal size a `%%` comment
 line inside a data block, a note, a description block, a slash block comment or
-a hidden form is part of that text and stays as written. At or above 50000
-normalized units after frontmatter and directive removal, retain the complete
-diagram text and ending. Below it, ordinary layout is applied only if its
-planned measurement stays strictly below 50000, so that indentation or the final
-line break cannot move the text across the limit and drop those comment lines
-from the Db. [fixture: eventmodeling/default-size-branches/size-utf16-surrogate]
-[fixture:
+a hidden form is part of that text and stays as written, apart from the
+permitted block-body margin adjustment. At or above 50000 normalized units after
+frontmatter and directive removal, retain the complete diagram text and ending.
+Below it, ordinary layout is applied only if its planned measurement stays
+strictly below 50000, so that indentation or the final line break cannot move
+the text across the limit and drop those comment lines from the Db. [fixture:
+eventmodeling/default-size-branches/size-utf16-surrogate] [fixture:
 eventmodeling/default-size-branches/size-preserving-to-fallback-unsafe]
 [fixture: eventmodeling/default-size-branches/size-below-planned-crossing]
 [fixture: eventmodeling/comments/comment-line-inside-data-block-kept]

@@ -1,5 +1,6 @@
 import type {
   Node,
+  TimelineAccDescrBlockStatement,
   TimelineAccDescrStatement,
   TimelineAccTitleStatement,
   TimelineEventStatement,
@@ -9,6 +10,7 @@ import type {
   TimelineTitleStatement,
   Token,
 } from "@mmd-toolkit/parser"
+import { util } from "prettier"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { readGap } from "./gap.ts"
 import {
@@ -16,6 +18,7 @@ import {
   collectValueNodes,
   expectToken,
   expectValue,
+  findAccDescrBlockClosing,
   keptAsWritten,
   layoutDescriptionBlock,
   spansLinesThatCannotJoin,
@@ -23,7 +26,7 @@ import {
 } from "./layout.ts"
 import { accessibilityRules } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
-import { findStructuralToken } from "./source.ts"
+import { findStructuralToken, findTriviaBetween } from "./source.ts"
 
 /**
  * The node types of a timeline whose text is a value, printed as written:
@@ -89,9 +92,10 @@ export function layoutTimelineHeader(
  * - A period with its events, and the events after another statement, keep
  *   the line breaks between the units: a period and an event keep their
  *   whitespace as their text, so no event moves from line to line. The later
- *   lines of such a statement stand one level deeper (docs/timeline.md,
- *   Periods and events). The line break that is the one whitespace character
- *   after the `:` of an event is not one of them (see `layoutEvents`).
+ *   event colons align under the period's colon when it immediately follows
+ *   the period on its line (docs/timeline.md, Periods and events). The line
+ *   break that is the one whitespace character after the `:` of an event is
+ *   not one of them (see `layoutEvents`).
  * - A title, a section, and an accessibility statement written over several
  *   lines stand on one line where the lexer reads the line break as
  *   whitespace, which it does only right after a keyword; one with a comment
@@ -107,12 +111,7 @@ export function layoutTimelineStatement(
   const start = statement.range[0]
   switch (statement.type) {
     case "TimelineAccDescrBlockStatement":
-      return layoutDescriptionBlock(
-        source,
-        statement,
-        end,
-        timelineValueNodeTypes,
-      )
+      return layoutTimelineDescriptionBlock(source, statement, end)
     case "TimelinePeriodStatement":
     case "TimelineEventStatement":
       return layoutEvents(source, statement, end)
@@ -135,6 +134,62 @@ export function layoutTimelineStatement(
     outdented: new Set(),
     lineBreaks: "joined",
   }
+}
+
+/**
+ * Align description lines one level inside their statement. Indentation after
+ * LF is absent from the Db, so normalize those columns while preserving written
+ * line breaks and trailing whitespace (docs/timeline.md, Multi-line values).
+ * Reuse the shared block layout, splitting its retained atoms only at those safe
+ * LFs; directives keep their complete written contents.
+ */
+function layoutTimelineDescriptionBlock(
+  source: Source,
+  statement: TimelineAccDescrBlockStatement,
+  end: number,
+): AtomLayout {
+  const layout = layoutDescriptionBlock(
+    source,
+    statement,
+    end,
+    timelineValueNodeTypes,
+  )
+  const atoms: Atom[] = []
+  const keptBreaksBefore = new Set<number>()
+  const outdented = new Set(layout.outdented)
+  const closing = findAccDescrBlockClosing(source, {
+    range: statement.range,
+    value: statement.value,
+    closed: true,
+  })
+  if (closing !== null) outdented.add(closing)
+  for (const atom of layout.atoms) {
+    const trivia = findTriviaBetween(source, atom.start, atom.end)
+    let start = atom.start
+    for (let offset = atom.start; offset < atom.end; offset++) {
+      if (source.text[offset] !== "\n") continue
+      if (
+        trivia.some(
+          (item) => item.range[0] <= offset && offset < item.range[1],
+        ) ||
+        source.removedLineFeeds.has(offset)
+      ) {
+        continue
+      }
+      if (start < offset) atoms.push({ start, end: offset })
+      start = offset + 1
+      while (
+        start < atom.end &&
+        (source.text[start] === " " || source.text[start] === "\t")
+      )
+        start++
+      if (start < atom.end && source.text[start] !== "\n")
+        keptBreaksBefore.add(start)
+      offset = start - 1
+    }
+    if (start < atom.end) atoms.push({ ...atom, start })
+  }
+  return { ...layout, atoms, keptBreaksBefore, outdented }
 }
 
 /** The gap rules of a title, a section, or an accessibility statement. */
@@ -189,6 +244,9 @@ function layoutEvents(
   )
   const rules = new Map<number, GapRule>()
   const joinedBefore = new Set<number>()
+  const alignedColons = new Set<number>()
+  let statementPadding: string | undefined =
+    statement.type === "TimelineEventStatement" ? "" : undefined
   for (const event of statement.events) {
     const eventIndex = atoms.findIndex((atom) => atom.start === event.range[0])
     const colon = eventIndex < 1 ? undefined : atoms[eventIndex - 1]
@@ -196,6 +254,28 @@ function layoutEvents(
       throw new Error(
         `prettier-plugin-mmd: no colon before the event at offset ${event.range[0]}`,
       )
+    }
+    if (
+      event === statement.events[0] &&
+      statement.type === "TimelinePeriodStatement"
+    ) {
+      const writtenPeriod = source.text.slice(...statement.period.range)
+      if (
+        colon.start === statement.period.range[1] &&
+        !writtenPeriod.includes("\n") &&
+        !writtenPeriod.includes("\u2028") &&
+        !writtenPeriod.includes("\u2029")
+      ) {
+        // Keep tabs as tab stops and replace each remaining span by its display
+        // width, so later colons align without changing the period's value
+        // (docs/timeline.md, Periods and events).
+        statementPadding = writtenPeriod
+          .split("\t")
+          .map((part) => " ".repeat(util.getStringWidth(part)))
+          .join("\t")
+      }
+    } else if (statementPadding !== undefined) {
+      alignedColons.add(colon.start)
     }
     if (readGap(source, colon.end, event.range[0], true).breaksLine) {
       joinedBefore.add(event.range[0])
@@ -206,7 +286,9 @@ function layoutEvents(
     return keptAsWritten(start, end)
   }
   return {
-    atoms,
+    atoms: atoms.map((atom) =>
+      alignedColons.has(atom.start) ? { ...atom, statementPadding } : atom,
+    ),
     rules,
     outdented: new Set(),
     lineBreaks: "kept",

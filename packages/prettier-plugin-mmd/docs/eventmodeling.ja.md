@@ -52,7 +52,7 @@ hidden form、保持 prefix、保護行は共有の規則に従い、
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha
+tf 01 evt Alpha
 ```
 
 入力（escape 表記）: `"eventmodeling tf 01 evt A %%{{x}}%%\n"`
@@ -66,11 +66,28 @@ eventmodeling tf 01 evt A %%{{x}}%%
 
 ### Indentation
 
-普通の本文は設定の 1 段、GWT clause は 2 段、item は 3 段にします。
-構造の継続行はその文より 1 段深くします。
+普通のトップレベルの文は、第 1 列から始めます。
+frame、model entity、`data`、`note`、`gwt` が対象です。
+
+固定している Mermaid は `data` と `note`
+の閉じ波括弧の前の空白を受理しないため、見出しを閉じ波括弧にそろえ、
+同じ階層の文も字下げせず、存在しない親子関係を示さないようにします。
+固定している Mermaid が閉じ波括弧の前の空白を受理するようになったら、
+本文の raw value と描画が変わらないことを確かめた上で、
+トップレベルの字下げを再検討します。
+
+GWT clause は設定の 1 段、item は 2 段にします。
+構造の継続行は、`data` ヘッダーの継続も含め、その文より 1 段深くします。
 列は親子を決めないため、`tabWidth: 0` では空白を足しません。
 `useTabs` では幅が 0 でも 1 段に tab を 1 個使います。
-値の継続列、metadata の空白、hidden が消費する LF の境界は保ちます。
+値の継続列、metadata の空白、hidden が消費する LF の境界は、
+[Data blocks](#data-blocks) の本文 margin 変更を除いて保ちます。
+
+[fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]
+
+[fixture: eventmodeling/indentation/mixed-top-level-blocks]
+
+[fixture: eventmodeling/indentation/gwt-four-spaces]
 
 [fixture: eventmodeling/indentation/body-four-spaces]
 
@@ -82,6 +99,16 @@ eventmodeling tf 01 evt A %%{{x}}%%
 
 [fixture: eventmodeling/indentation/zero-width-tabs]
 
+[fixture: eventmodeling/indentation/data-declaration-column-one]
+
+[fixture: eventmodeling/indentation/data-declaration-four-spaces]
+
+[fixture: eventmodeling/indentation/data-declaration-tabs]
+
+[fixture: eventmodeling/indentation/note-column-one]
+
+[fixture: eventmodeling/declarations-and-notes/data-name-title-keep-lf]
+
 入力（escape 表記）: `"eventmodeling\ntf 01 evt Alpha\nrf 02 cmd Beta"`
 
 出力
@@ -89,8 +116,29 @@ eventmodeling tf 01 evt A %%{{x}}%%
 
 ```mmd
 eventmodeling
-    tf 01 evt Alpha
-    rf 02 cmd Beta
+tf 01 evt Alpha
+rf 02 cmd Beta
+```
+
+出力
+([indentation/data-declaration-column-one-output.mmd](../tests/fixtures/eventmodeling/indentation/data-declaration-column-one-output.mmd)):
+
+```mmd
+eventmodeling
+data AddItem01 {
+  sku: 'SHIRT-M'
+  quantity: 2
+}
+```
+
+出力
+([indentation/note-column-one-output.mmd](../tests/fixtures/eventmodeling/indentation/note-column-one-output.mmd)):
+
+```mmd
+eventmodeling
+note 01 {
+  explanation
+}
 ```
 
 ### Statements one per line
@@ -122,9 +170,9 @@ greedy な inline data の中の見かけの文は、その値の一部のまま
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha
-  rf 02 cmd Beta
-  entity Shop.Beta
+tf 01 evt Alpha
+rf 02 cmd Beta
+entity Shop.Beta
 ```
 
 ### Frame components
@@ -159,7 +207,7 @@ required identifier がちょうど `title` のときは成立する境界を保
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha
+tf 01 evt Alpha
 ```
 
 ### Source references
@@ -182,7 +230,7 @@ hidden の gap と global trivia は保護された境界を保ちます。
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha ->> 02 ->> 001
+tf 01 evt Alpha ->> 02 ->> 001
 ```
 
 ### Data references
@@ -210,7 +258,7 @@ data reference の前は普通の 1 space、内側は `[[D]]` と詰め、
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha [[D]]
+tf 01 evt Alpha [[D]]
 ```
 
 ### Type tags
@@ -241,7 +289,7 @@ hidden と global trivia の境界は保ちます。
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha `json` { x }
+tf 01 evt Alpha `json` { x }
 ```
 
 ### Qualified names
@@ -274,8 +322,8 @@ hidden の消費 LF の後の `title` segment に空白を足しません。
 
 ```mmd
 eventmodeling
-  rf 02 cmd Shop.Buy
-  entity Root.Child
+rf 02 cmd Shop.Buy
+entity Root.Child
 ```
 
 ### Authored spellings
@@ -303,8 +351,8 @@ entity-type の別名は Db に残り、`1`、`01`、`001` は別の frame 名�
 
 ```mmd
 eventmodeling
-  timeframe 001 event Alpha
-  resetframe 02 command Beta
+timeframe 001 event Alpha
+resetframe 02 command Beta
 ```
 
 ### Declarations and notes
@@ -330,12 +378,12 @@ required name の `title` は frame と同じく安全な前方境界を保ち�
 
 ```mmd
 eventmodeling
-  entity Shop.Buy
+entity Shop.Buy
 ```
 
 ### Gwt clauses and items
 
-`gwt 99` は本文の段、clause keyword はさらに 1 段、
+`gwt 99` は第 1 列、clause keyword はさらに 1 段、
 各 item はさらに 1 段深くします。
 架空の閉じ記号を足さず、書かれた clause と item の関係を見せます。
 必須の given・then、任意の when、item の順序・反復・型語を保ちます。
@@ -366,16 +414,16 @@ eventmodeling
 
 ```mmd
 eventmodeling
-  gwt 99
-    given
-      evt Alpha
-      cmd Beta
-    when
-      command Buy
-    then
-      ui Screen
-      rmo View
-  tf 01 evt End
+gwt 99
+  given
+    evt Alpha
+    cmd Beta
+  when
+    command Buy
+  then
+    ui Screen
+    rmo View
+tf 01 evt End
 ```
 
 ### Inline data
@@ -408,18 +456,45 @@ trim、引用符の変更、分割は Db の raw terminal を変えます。
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha { 	 x  }
+tf 01 evt Alpha { 	 x  }
 ```
 
 ### Data blocks
 
-data と note の本文は `{` から `}` までそのまま保ちます。
-開きの空白、内部の空行と列、無字下げの閉じも含みます。
-閉じを字下げすると拒否され、本文の字下げ変更は raw terminal を変えます。
+`{` の直後が LF で、LF の直後の `}` で閉じる通常の data と note は、
+次の条件を満たす場合、
+ASCII 空白（U+0020）の共通 margin を `tabWidth` にそろえます。
+空でない本文行の行頭空白数の最小値を共通 margin とします。
+空でない各本文行を同じ量だけ動かし、相対的な字下げを保ちます。
+`useTabs` でも空白を使い、`tabWidth: 0` では本文を書かれたまま残します。
+
+[fixture: eventmodeling/data-blocks/body-common-margin]
+
+[fixture: eventmodeling/indentation/data-declaration-four-spaces]
+
+[fixture: eventmodeling/indentation/data-declaration-tabs]
+
+[fixture: eventmodeling/data-blocks/body-zero-width]
+
+元にない行頭の空白を加えられるのは、本文の第 1 物理行だけです。
+それ以降の空でない物理行は、変更前後とも行頭に ASCII 空白が 1 個以上必要です。
+満たさない場合は本文全体を書かれたまま残します。
+後の行に初めて空白を加えると、描画するラベルが変わる場合があるためです。
+先頭が空行でも、その次の行が第 1 物理行になるわけではありません。
+
+[fixture: eventmodeling/data-blocks/body-first-line-zero-margin]
+
+[fixture: eventmodeling/data-blocks/body-later-zero-margin-kept]
+
+[fixture: eventmodeling/data-blocks/body-after-empty-first-row-kept]
+
+空行、空白だけの行、改行、行末の空白とタブ、
+行頭の margin より後の文字は保ちます。
+閉じ波括弧は第 1 列に残します。
 見かけの文、入れ子風の text、直後の閉じ風の行も、
 body を持つ形の規則が後の閉じまで読む場合は保ちます。
 
-[fixture: eventmodeling/data-blocks/block-interior-unchanged]
+[fixture: eventmodeling/data-blocks/body-whitespace-kept]
 
 [fixture: eventmodeling/data-blocks/block-empty-kept]
 
@@ -429,6 +504,33 @@ body を持つ形の規則が後の閉じまで読む場合は保ちます。
 
 [fixture: eventmodeling/data-blocks/block-nested-text]
 
+開きの LF の前に空白がある場合、本文が `<`、`&`、`%%{` を含む場合、
+空でない行の ASCII 空白 prefix の後がタブなどの空白の場合は、
+本文全体を書かれたまま残します。
+HTML、entity、directive 風の text は、字下げで描画が変わる場合があるためです。
+既存の semicolon 保護と既定のサイズ上限の規則も優先します。
+
+[fixture: eventmodeling/data-blocks/block-interior-unchanged]
+
+[fixture: eventmodeling/data-blocks/html-line-break-indentation-kept]
+
+[fixture: eventmodeling/data-blocks/body-entity-kept]
+
+[fixture: eventmodeling/data-blocks/body-native-directive-kept]
+
+[fixture: eventmodeling/data-blocks/body-leading-tab-kept]
+
+[test: eventmodeling/data-blocks/body-leading-nbsp-kept]
+
+[fixture: eventmodeling/data-blocks/body-style-semicolon-kept]
+
+Mermaid は本文内の字下げを受理し、raw value に含めます。
+そのため、この共通 margin の変更では、描画を保ちながら raw Db 値が変わります。
+これは formatter の明示的な例外で、parser、仕様、
+記録された Mermaid の Db の読みは変えません。
+
+[fixture: eventmodeling/final-newline/final-block-padding-kept]
+
 入力（escape 表記）: `"eventmodeling tf 01 evt Alpha [[D]] data D {\nx\n}\n"`
 
 出力
@@ -436,9 +538,9 @@ body を持つ形の規則が後の閉じまで読む場合は保ちます。
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha [[D]]
-  data D {
-x
+tf 01 evt Alpha [[D]]
+data D {
+  x
 }
 ```
 
@@ -476,9 +578,9 @@ EOF の論理 LF は明示的な末尾 LF 1 個にできます。
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha [[D]]
-  data D {
-x
+tf 01 evt Alpha [[D]]
+data D {
+  x
 }
 ```
 
@@ -515,7 +617,7 @@ accTitle の setter が一部の前置空白を落としても、
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha 	%%{init:{}}%%  accDescr: D
+tf 01 evt Alpha 	%%{init:{}}%%  accDescr: D
 ```
 
 ### Title
@@ -541,7 +643,7 @@ title の前置空白、1 個の separator、payload、末尾 text を原文ど�
 
 ```mmd
 eventmodeling title
-  tf 01 evt Alpha
+tf 01 evt Alpha
 ```
 
 ### Accessibility lines
@@ -572,7 +674,7 @@ EM_ACC_TITLE と EM_ACC_DESCR はこれらも値に含むためです。
 
 ```mmd
 eventmodeling accTitle: First
-  tf 01 evt Alpha accTitle:
+tf 01 evt Alpha accTitle:
 ```
 
 ### Description blocks
@@ -670,7 +772,7 @@ item の移動によって次の整形で外側の開きの保護が失われな
 eventmodeling tf 01 evt Alpha ---
 x
 ---
-  tf 02 evt Beta
+tf 02 evt Beta
 ```
 
 ### Comments
@@ -683,7 +785,8 @@ x
 mark、内容、末尾空白、block comment の継続列を保ちます。
 native の `//` と `%%` は LS・PS を越えて物理 LF まで読みます。
 data block、note、`accDescr` block、slash block comment、
-hidden 形の内部の `%%` のコメント行は、その text の一部で、列を保ちます。
+hidden 形の内部の `%%` のコメント行は、その text の一部です。
+列は [Data blocks](#data-blocks) の本文 margin 変更を除いて保ちます。
 metadata や required `title` の境界を優先します。
 検出が拒否するため、slash comment を見出し前へ移しません。
 
@@ -738,8 +841,8 @@ metadata や required `title` の境界を優先します。
 
 ```mmd
 eventmodeling
-  tf 01 evt A
-  /*c*/ tf 02 evt B
+tf 01 evt A
+/*c*/ tf 02 evt B
 ```
 
 ### Default size branches
@@ -813,7 +916,7 @@ frontmatter の場合も含めて確かめます。
 
 ```mmd
 eventmodeling
-  tf%%{wrap}%% 01 evt Alpha%%{wrap}%%->>%%{wrap}%%02
+tf%%{wrap}%% 01 evt Alpha%%{wrap}%%->>%%{wrap}%%02
 ```
 
 ### Semicolons
@@ -868,7 +971,8 @@ eventmodeling tf 01 evt Alpha "style:#x" ;rf 02 cmd Beta
 文・item 間の普通の ASCII 空行は最大 1 行、文書・本文の端は削除します。
 無制限に広げず区切りを残すためです。
 普通の空白だけの行は空にします。
-data、description、hidden、directive の内部、保持 prefix、
+data の内部は [Data blocks](#data-blocks) の規則に従います。
+description、hidden、directive の内部、保持 prefix、
 共通文の消費 LF 境界は原文どおりです。
 
 [fixture: eventmodeling/blank-lines/ordinary-blanks-bounded]
@@ -889,17 +993,17 @@ data、description、hidden、directive の内部、保持 prefix、
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha
+tf 01 evt Alpha
 
-  rf 02 cmd Beta
+rf 02 cmd Beta
 ```
 
 ### Trailing whitespace
 
 見出しや構造部品の後の、害のない外側の ASCII 空白だけを削ります。
 物理行ごとの trim ではなく owner で判断します。
-metadata の値と prefix、data 内部、comment・directive の末尾、
-hidden・data の閉じの境界、保護区間は、
+metadata の値と prefix、許容した margin 変更以外の data 内部、
+comment・directive の末尾、 hidden・data の閉じの境界、保護区間は、
 空白が内容や受理条件になりうるため保ちます。
 
 [fixture: eventmodeling/trailing-whitespace/harmless-trailing-structure]
@@ -916,8 +1020,8 @@ hidden・data の閉じの境界、保護区間は、
 
 ```mmd
 eventmodeling
-  tf 01 evt Alpha
-  entity Shop.Buy
+tf 01 evt Alpha
+entity Shop.Buy
 ```
 
 ### Long lines
@@ -926,7 +1030,8 @@ eventmodeling
 普通の whitespace だけの部品間改行は空白規則に従い、
 trivia の継続行は構造上の段を保ちます。
 構造上の分割を加えるのは決定済みの GWT clause・item 配置です。
-値、hidden、metadata、保護境界の内容は保ちます。
+値、hidden、metadata、保護境界の内容は、
+[Data blocks](#data-blocks) の限定的な本文 margin 変更を除いて保ちます。
 幅に依存する選択を避けて字句境界を明示し、inline data に禁止 LF を足しません。
 
 [fixture: eventmodeling/long-lines/long-structural-line-no-wrap]
@@ -943,7 +1048,7 @@ trivia の継続行は構造上の段を保ちます。
 
 ```mmd
 eventmodeling
-  tf 001 evt VeryLongNamespace.VeryLongEventName ->> 002 ->> 003 ->> 004 [[LongDataName]] `text` {a very long authored payload}
+tf 001 evt VeryLongNamespace.VeryLongEventName ->> 002 ->> 003 ->> 004 [[LongDataName]] `text` {a very long authored payload}
 ```
 
 ### Frontmatter yaml
@@ -982,7 +1087,7 @@ title: "YamlTitle"
 config: { eventmodeling: { padding: 12 } }
 ---
 eventmodeling
-  tf 01 evt Alpha
+tf 01 evt Alpha
 ```
 
 ### Line terminators and unicode
@@ -1023,7 +1128,7 @@ Prettier の先頭 BOM の扱いは既存の制限に従います。
 
 未使用の model entity・data、note、GWT、型タグ、重複 source、後続の同名 data、
 上書きされた共通文、参照と併記した inline data も含め、全出現を原順に保ちます。
-変えるのは決定済みの外側の配置だけです。
+変えるのは許容した本文 margin も含む、決定済みの配置だけです。
 重複削除で比較 Db が等しくても authored な出現を失い、
 data の並べ替えは最初の検索結果も変える場合があります。
 
@@ -1049,25 +1154,25 @@ data の並べ替えは最初の検索結果も変える場合があります。
 
 ```mmd
 eventmodeling
-  entity Shop.Alpha
-  entity Shop.Alpha
-  note 99 {
-unused
+entity Shop.Alpha
+entity Shop.Alpha
+note 99 {
+  unused
 }
-  gwt 99
-    given
-      evt Alpha
-    then
-      cmd Beta
-  tf 01 evt Alpha ->> 02 ->> 02 [[D]] {unused}
-  data D {
-first
+gwt 99
+  given
+    evt Alpha
+  then
+    cmd Beta
+tf 01 evt Alpha ->> 02 ->> 02 [[D]] {unused}
+data D {
+  first
 }
-  data D {
-second
+data D {
+  second
 }
-  data Unused {
-x
+data Unused {
+  x
 }
 ```
 
@@ -1128,6 +1233,8 @@ host は埋め込んだ出力の末尾改行と最後の code 行の padding を
 拒否された payload は Prettier の通常の code 処理に任せます。
 
 [test: eventmodeling Markdown: top-level]
+
+[test: eventmodeling Markdown: data-declaration]
 
 [test: eventmodeling Markdown: list]
 

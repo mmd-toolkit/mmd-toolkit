@@ -145,7 +145,10 @@ flowchart LR
 
 - `useTabs` and `tabWidth` set the indentation. The default is two spaces.
 - `endOfLine` sets the line endings.
-- `printWidth` has no effect: lines are never wrapped.
+- `printWidth` does not control diagram line breaks. `railroad-beta` calls
+  follow their grammar structure; see
+  [Long lines](./docs/railroad.md#long-lines). Prettier can still use it for
+  Markdown and YAML frontmatter.
 
 ## When a diagram is not formatted
 
@@ -164,16 +167,21 @@ flowchart LR
 
 ## Guarantees and limitations
 
-- Formatting does not change the diagram: mermaid.js reads the same diagram
-  before and after.
-- One exception: whitespace at the end of a `style`, `classDef`, or `linkStyle`
-  line is removed. mermaid.js keeps it at the end of the last style.
+- Formatting preserves what mermaid.js reads, apart from the documented
+  whitespace changes below.
+- Whitespace at the end of a `style`, `classDef`, or `linkStyle` line is
+  removed. mermaid.js keeps it at the end of the last style.
+- For `eventmodeling` block data and notes, the
+  [Data blocks](./docs/eventmodeling.md#data-blocks) rule permits a restricted
+  ASCII space margin adjustment. This can change raw Db values while preserving
+  the rendered diagram.
 - Formatting a formatted diagram again changes nothing.
 - The content of directives, of opaque `@{ ... }` data blocks, and of the
   frontmatter is not checked. A diagram that mermaid.js rejects because of that
-  content is still formatted. Directives and data blocks are kept as written;
-  the frontmatter is formatted only when Prettier can read it as YAML. Native
-  usecase metadata properties are parsed and validated as syntax.
+  content is still formatted. Directives and opaque `@{ ... }` data blocks are
+  kept as written; the frontmatter is formatted only when Prettier can read it
+  as YAML. Native usecase metadata properties are parsed and validated as
+  syntax.
 - A flowchart with more edges than mermaid.js allows, 500 by default (its
   `maxEdges` site setting), is rejected by mermaid.js but still formatted: the
   plugin does not know the site settings.

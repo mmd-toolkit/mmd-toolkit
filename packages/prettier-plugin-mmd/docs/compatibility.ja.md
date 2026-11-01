@@ -927,6 +927,12 @@ mermaid.js は、timeline の period、event、title、section の名前の空�
   [fixture: timeline/multi-line-statements/comment-line-inside-kept]
   [fixture: timeline/statements-one-per-line/ignored-semicolon-line-kept]
 
+`accDescr` ブロックの後ろのテキスト行は、
+Db の setter が捨てる LF 直後の空白とタブだけを置き換えて字下げします。
+テキスト、改行、行末の空白、指令の内容は書かれたまま残します。
+[fixture: timeline/multi-line-values/description-line-ending-whitespace]
+[fixture: timeline/multi-line-values/description-directive-lines]
+
 ## 文字や引用符で決まる sankey の行
 
 mermaid.js は sankey 図を CSV として読みます。
@@ -2315,6 +2321,41 @@ railroad/source-order/ir-duplicates]
 [fixture: railroad/source-order/abnf-duplicates] [fixture:
 railroad/source-order/peg-duplicates] [fixture: railroad/title/ir-trim]
 
+通常の IR 複合呼出しは、文法の階層を示すため、常に引数を入れ子の行にします。
+`printWidth` や元の空白による改行には依存しません。
+値は分割せず、末尾 comma は加えません。
+通常の `terminal`、`nonterminal`、`special` は引用値とコンパクトにまとめます。
+呼出しの境界にコメント、global directive、native hidden form があれば、
+その leaf 呼出しも複数行にします。
+呼出しの隙間では外側の空白を統一し、trivia の内容、内部の接触、
+元の改行を保ちます。
+native hidden form は内部の global directive も含めて全体を opaque
+な項目として保ち、周囲の文法を構造に沿って字下げします。
+constructor の後ろに改行があれば、両方の括弧を継続行として字下げし、
+引数をさらに1段深く置きます。
+値の中の semicolon は、この配置を妨げません。
+`style` や `classDef` を含む行と無視される semicolon は、
+保護した配置を使います。
+EBNF、ABNF、PEG は平坦な配置を保ちます。
+[fixture: railroad/comments/ir-leaf-value-comments]
+[fixture: railroad/comments/ir-leaf-boundary-comments]
+[fixture: railroad/hidden-forms/ir-call-global-inside-native]
+[fixture: railroad/hidden-forms/ir-call-native-yaml]
+[fixture: railroad/long-lines/ir-expression-grammar]
+[fixture: railroad/long-lines/ir-written-breaks]
+[fixture: railroad/long-lines/ir-unary-width]
+[fixture: railroad/long-lines/ir-comments-kept]
+[fixture: railroad/comments/ir-call-inline-spacing]
+[fixture: railroad/comments/ir-call-comment-lines]
+[fixture: railroad/comments/ir-call-constructor-nested]
+[fixture: railroad/global-directives/ir-call-boundaries]
+[fixture: railroad/long-lines/ir-directive-kept]
+[fixture: railroad/long-lines/ir-hidden-kept]
+[fixture: railroad/long-lines/ir-semicolon-kept]
+[fixture: railroad/long-lines/ebnf-width]
+[fixture: railroad/long-lines/abnf-width]
+[fixture: railroad/long-lines/peg-width]
+
 文字列は source span 全体を保ちます。
 引用符、空値、空白だけの値、escape、HTML、entity、継続列も対象です。
 singleQuote では書き換えません。
@@ -2344,8 +2385,9 @@ ABNF の semicolon 行コメント、PEG の hash 行コメントが対象です
 LS と PS は native line comment の内容として保ちます。
 裸の ABNF `;` は句読点であり、終端の直後は LF または EOF にします。
 規則の必須の可視 `;` は安全な場所で定義に付けます。
+通常の IR 規則は、値の中の semicolon によって配置を固定しません。
 その他の semicolon は共有の区間保護に従い、交差する値も保ちます。
-最初の行は他の平坦な図種と同じく本文の1段に揃え、
+保護した区間の最初の行は他の平坦な図種と同じく本文の1段に揃え、
 2行目以降は書かれた列を保ちます。
 global directive を除いた後に文字列 style または classDef を含む原文の行は、
 すべての文、コメント、native hidden form、内部の空白を書かれたまま保ちます。
@@ -2657,10 +2699,14 @@ Markdown は最終 code line の hidden padding を削りますが、単独整�
 
 ## Eventmodeling terminals and source boundaries
 
-eventmodeling の[規則](./eventmodeling.ja.md)は inline・block data
-の本文全体を保ちます。
-tag は整形できますが、payload は引用符、波括弧、空白、
-見かけの後続文も含む raw terminal です。
+eventmodeling の[規則](./eventmodeling.ja.md)は、
+[Data blocks](./eventmodeling.ja.md#data-blocks) の限定的な ASCII 空白 margin
+変更を除き、 inline data と block の内容を保ちます。
+この変更は描画を保ちながら raw Db 値を変える場合がありますが、 parser、仕様、
+記録された Mermaid の読みは変えません。
+ほかの payload の文字、引用符、波括弧、空行、行末の空白、
+見かけの後続文は保ちます。
+tag は引き続き整形できます。
 block-data は直後の LF を消費し、それ以外の空白は lookahead です。
 閉じの空白と LS・PS の境界は EOF でも保ちます。
 block closer の字下げは拒否を、
@@ -2671,6 +2717,15 @@ native data は埋め込まれた設定として評価せず、 source から直
 [fixture: eventmodeling/data-boundaries/same-line-block-successor]
 [test: eventmodeling/line-terminators-and-unicode/block-ls-boundary-stays-outside-value]
 [fixture: eventmodeling/final-newline/final-block-padding-kept]
+
+普通のトップレベルの文は第 1 列から始め、 frame、model entity、data、
+note の宣言を、無字下げ必須の閉じ波括弧と同じ段にそろえます。
+GWT の clause と item は設定の字下げで入れ子にします。
+margin の規則の対象外である data の本文は、原文の列を保ちます。
+[fixture: eventmodeling/indentation/mixed-top-level-blocks]
+[fixture: eventmodeling/indentation/gwt-four-spaces]
+[fixture: eventmodeling/indentation/data-declaration-column-one]
+[fixture: eventmodeling/indentation/note-column-one]
 
 共通の EM terminal は keyword、delimiter、前置 ASCII 空白も値に含みます。
 global directive と選ばれた semicolon を挟む場合も、
@@ -2692,7 +2747,7 @@ source が `maxTextSize` （既定は UTF-16 コード単位で 50000）を超�
 コメント行を残します。
 通常の大きさでは、data block、note、description block、slash block comment、
 hidden 形の内部の `%%` のコメント行は、その text の一部で、
-原文どおりに保ちます。
+許容されたブロック本文の margin 変更を除き、原文どおりに保ちます。
 frontmatter と directive を除いた後の正規化した単位数が 50000 以上のときは、
 図の text 全体とその終わりを保ちます。
 それ未満のときは、印字する計画の長さも 50000 未満に収まる場合だけ、

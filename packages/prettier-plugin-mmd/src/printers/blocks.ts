@@ -979,10 +979,10 @@ export function openingLine(
 
 /**
  * Prints a diagram from its header line: its statements one level deeper,
- * or at the level of the header with `bodyDepth` 0 (a sankey diagram, whose
- * lines cannot be indented), and the end of the text. The statements run to
- * the end of the text, so comments and directives after the last one stand
- * at its level, and what stands on the last line is a line of its own.
+ * or at the level of the header with `bodyDepth` 0 (eventmodeling and sankey).
+ * The statements run to the end of the text, so comments and directives after
+ * the last one stand at its level, and what stands on the last line is a line
+ * of its own.
  */
 export function printDiagramBlock(
   source: Source,
