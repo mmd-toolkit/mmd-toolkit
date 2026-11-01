@@ -22,7 +22,7 @@ const { indent } = builders
 export interface Atom {
   readonly start: number
   readonly end: number
-  /** A planned structural layout; values continue to print their source. */
+  /** A planned layout, including an explicitly permitted data-margin change. */
   readonly doc?: Doc
   /** Indentation before a later-line atom; empty when its range owns it. */
   readonly writtenIndentation?: string

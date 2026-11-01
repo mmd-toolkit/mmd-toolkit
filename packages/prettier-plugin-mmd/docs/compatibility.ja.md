@@ -2699,10 +2699,14 @@ Markdown は最終 code line の hidden padding を削りますが、単独整�
 
 ## Eventmodeling terminals and source boundaries
 
-eventmodeling の[規則](./eventmodeling.ja.md)は inline・block data
-の本文全体を保ちます。
-tag は整形できますが、payload は引用符、波括弧、空白、
-見かけの後続文も含む raw terminal です。
+eventmodeling の[規則](./eventmodeling.ja.md)は、
+[Data blocks](./eventmodeling.ja.md#data-blocks) の限定的な ASCII 空白 margin
+変更を除き、 inline data と block の内容を保ちます。
+この変更は描画を保ちながら raw Db 値を変える場合がありますが、 parser、仕様、
+記録された Mermaid の読みは変えません。
+ほかの payload の文字、引用符、波括弧、空行、行末の空白、
+見かけの後続文は保ちます。
+tag は引き続き整形できます。
 block-data は直後の LF を消費し、それ以外の空白は lookahead です。
 閉じの空白と LS・PS の境界は EOF でも保ちます。
 block closer の字下げは拒否を、
@@ -2716,8 +2720,8 @@ native data は埋め込まれた設定として評価せず、 source から直
 
 普通のトップレベルの文は第 1 列から始め、 frame、model entity、data、
 note の宣言を、無字下げ必須の閉じ波括弧と同じ段にそろえます。
-GWT の clause と item は設定の字下げで入れ子にし、
-data の本文は原文の列を保ちます。
+GWT の clause と item は設定の字下げで入れ子にします。
+margin の規則の対象外である data の本文は、原文の列を保ちます。
 [fixture: eventmodeling/indentation/mixed-top-level-blocks]
 [fixture: eventmodeling/indentation/gwt-four-spaces]
 [fixture: eventmodeling/indentation/data-declaration-column-one]
@@ -2743,7 +2747,7 @@ source が `maxTextSize` （既定は UTF-16 コード単位で 50000）を超�
 コメント行を残します。
 通常の大きさでは、data block、note、description block、slash block comment、
 hidden 形の内部の `%%` のコメント行は、その text の一部で、
-原文どおりに保ちます。
+許容されたブロック本文の margin 変更を除き、原文どおりに保ちます。
 frontmatter と directive を除いた後の正規化した単位数が 50000 以上のときは、
 図の text 全体とその終わりを保ちます。
 それ未満のときは、印字する計画の長さも 50000 未満に収まる場合だけ、

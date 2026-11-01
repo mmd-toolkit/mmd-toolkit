@@ -2512,15 +2512,19 @@ final-hidden-padding] [test: cynefin Markdown: rejected]
 
 ## Eventmodeling terminals and source boundaries
 
-The [eventmodeling rules](./eventmodeling.md) preserve complete inline and block
-data bodies. Tags can format, but their payloads are raw terminals, including
-quotes, braces, padding and apparent following statements. Block-data consumes
-an immediately following LF; other whitespace is lookahead. Closing padding and
-LS/PS boundaries stay written, including at EOF. Reindenting a block closer can
-reject input, and replacing closing lookahead with LF can change the comparison
-Db. Native data is read directly from source rather than evaluated as embedded
-configuration. [fixture: eventmodeling/inline-data/greedy-apparent-frames-kept]
-[fixture: eventmodeling/data-blocks/block-closer-indent-unsafe] [fixture:
+The [eventmodeling rules](./eventmodeling.md) preserve inline data and block
+contents, except for the restricted ASCII-space margin adjustment in
+[Data blocks](./eventmodeling.md#data-blocks). That adjustment preserves
+rendering but may change raw Db values; it changes no parser, specification or
+recorded Mermaid reading. Other payload characters, quotes, braces, blank lines,
+trailing whitespace and apparent following statements remain as written. Tags
+can still format. Block-data consumes an immediately following LF; other
+whitespace is lookahead. Closing padding and LS/PS boundaries stay written,
+including at EOF. Reindenting a block closer can reject input, and replacing
+closing lookahead with LF can change the comparison Db. Native data is read
+directly from source rather than evaluated as embedded configuration. [fixture:
+eventmodeling/inline-data/greedy-apparent-frames-kept] [fixture:
+eventmodeling/data-blocks/block-closer-indent-unsafe] [fixture:
 eventmodeling/data-boundaries/same-line-block-successor] [test:
 eventmodeling/line-terminators-and-unicode/block-ls-boundary-stays-outside-value]
 [fixture: eventmodeling/final-newline/final-block-padding-kept]
@@ -2528,8 +2532,8 @@ eventmodeling/line-terminators-and-unicode/block-ls-boundary-stays-outside-value
 Ordinary top-level statements start at column one, keeping frames, model
 entities, data and note declarations at the same level as the required
 unindented block closers. GWT clauses and items remain nested using the
-configured indentation, and data bodies keep their authored columns. [fixture:
-eventmodeling/indentation/mixed-top-level-blocks] [fixture:
+configured indentation. Data bodies outside the margin rule keep their authored
+columns. [fixture: eventmodeling/indentation/mixed-top-level-blocks] [fixture:
 eventmodeling/indentation/gwt-four-spaces] [fixture:
 eventmodeling/indentation/data-declaration-column-one] [fixture:
 eventmodeling/indentation/note-column-one]
@@ -2554,13 +2558,13 @@ eventmodeling/frame-components/hidden-before-required-title-identifier-keep-zero
 Eventmodeling keeps comment lines in its Db unless the source is longer than
 `maxTextSize`, 50000 UTF-16 code units by default. At normal size a `%%` comment
 line inside a data block, a note, a description block, a slash block comment or
-a hidden form is part of that text and stays as written. At or above 50000
-normalized units after frontmatter and directive removal, retain the complete
-diagram text and ending. Below it, ordinary layout is applied only if its
-planned measurement stays strictly below 50000, so that indentation or the final
-line break cannot move the text across the limit and drop those comment lines
-from the Db. [fixture: eventmodeling/default-size-branches/size-utf16-surrogate]
-[fixture:
+a hidden form is part of that text and stays as written, apart from the
+permitted block-body margin adjustment. At or above 50000 normalized units after
+frontmatter and directive removal, retain the complete diagram text and ending.
+Below it, ordinary layout is applied only if its planned measurement stays
+strictly below 50000, so that indentation or the final line break cannot move
+the text across the limit and drop those comment lines from the Db. [fixture:
+eventmodeling/default-size-branches/size-utf16-surrogate] [fixture:
 eventmodeling/default-size-branches/size-preserving-to-fallback-unsafe]
 [fixture: eventmodeling/default-size-branches/size-below-planned-crossing]
 [fixture: eventmodeling/comments/comment-line-inside-data-block-kept]

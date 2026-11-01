@@ -211,16 +211,18 @@ flowchart LR
 
 ## 保証と制限
 
-- 整形で図は変わりません。
-  mermaid.js は、整形の前と後で同じ図を読みます。
-- 例外が 1 つあります。
-  `style`、`classDef`、`linkStyle` の行の末尾の空白を取り除きます。
+- 次に記す空白の変更を除き、mermaid.js の読み取りを保ちます。
+- `style`、`classDef`、`linkStyle` の行の末尾の空白を取り除きます。
   mermaid.js は、その空白を最後のスタイルの末尾に残します。
+- `eventmodeling` の block data と note は、
+  [Data blocks](./docs/eventmodeling.ja.md#data-blocks) の規則で、
+  ASCII 空白の margin を限定的に変更します。
+  描画を保ちながら、raw Db 値が変わる場合があります。
 - 整形した図をもう一度整形しても、何も変わりません。
 - ディレクティブ、不透明な `@{ ... }` のデータブロック、
   フロントマターの中身は検査しません。
   その中身のために mermaid.js が拒否する図も整形します。
-  ディレクティブとデータブロックは書かれたまま残し、
+  ディレクティブと不透明な `@{ ... }` データブロックは書かれたまま残し、
   フロントマターは Prettier が YAML として読めるときだけ整形します。
   usecase の native metadata は構文として解析し、プロパティを検証します。
 - mermaid.js が許すより多くの辺を持つ flowchart は、mermaid.js は拒否しますが、

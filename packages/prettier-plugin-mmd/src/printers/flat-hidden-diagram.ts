@@ -54,6 +54,7 @@ interface FlatHiddenLayouts<Diagram extends Node, Statement extends Node> {
   readonly statement: (
     source: Source,
     statement: Statement,
+    options: ParserOptions<MermaidAst>,
   ) => AtomLayout | HiddenBodyLayout<Statement>
   /** Keep the complete source gap attached to this unit, including its LF. */
   readonly writtenGapBefore?: (source: Source, statement: Statement) => boolean
@@ -158,7 +159,7 @@ export function createFlatHiddenDiagramPrinter<
         appendItems(allHidden, layouts.prefixes?.(item) ?? [])
         if (item.type === layouts.ignoredType) allHidden.push(item)
         appendItems(allHidden, layouts.suffixes?.(item) ?? item.textAfter ?? [])
-        const selected = layouts.statement(source, item)
+        const selected = layouts.statement(source, item, options)
         if ("body" in selected) collectBodyHidden(selected.body)
       }
     }
@@ -189,7 +190,7 @@ export function createFlatHiddenDiagramPrinter<
       )
       const nested = new Map<Node, HiddenBodyLayout<Statement>>()
       for (const item of body) {
-        let selected = layouts.statement(source, item)
+        let selected = layouts.statement(source, item, options)
         const prefixes = layouts.prefixes?.(item) ?? []
         const prefixEnd = prefixes.at(-1)?.range[1]
         const ownedHeader = "body" in selected ? selected.header : selected

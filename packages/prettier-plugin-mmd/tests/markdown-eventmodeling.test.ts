@@ -11,6 +11,10 @@ import {
   describeFrontmatterChange,
 } from "./db-reading.ts"
 import { formatMarkdownWithoutPlugin } from "./helpers.ts"
+import {
+  eventmodelingDbForFormattingComparison,
+  eventmodelingEmbeddedForFormattingComparison,
+} from "./eventmodeling-data-margins.ts"
 
 interface MarkdownCase {
   readonly name: string
@@ -36,9 +40,9 @@ const cases: readonly MarkdownCase[] = [
     input:
       "- item\n\n  ```mermaid\n  eventmodeling tf 074evt Host [[D]]\n    data D {\n     x\n  }\n  ```\n",
     output:
-      "- item\n\n  ```mermaid\n  eventmodeling\n  tf 074 evt Host [[D]]\n  data D {\n     x\n  }\n  ```\n",
+      "- item\n\n  ```mermaid\n  eventmodeling\n  tf 074 evt Host [[D]]\n  data D {\n    x\n  }\n  ```\n",
     payloadInput: "eventmodeling tf 074evt Host [[D]]\n  data D {\n   x\n}",
-    payloadOutput: "eventmodeling\ntf 074 evt Host [[D]]\ndata D {\n   x\n}\n",
+    payloadOutput: "eventmodeling\ntf 074 evt Host [[D]]\ndata D {\n  x\n}\n",
     options: {},
   },
   {
@@ -57,9 +61,9 @@ const cases: readonly MarkdownCase[] = [
     input:
       "> ```mmd\n> eventmodeling note 081 {\n>    written columns\n> }\n> ```\n",
     output:
-      "> ```mmd\n> eventmodeling\n> note 081 {\n>    written columns\n> }\n> ```\n",
+      "> ```mmd\n> eventmodeling\n> note 081 {\n>   written columns\n> }\n> ```\n",
     payloadInput: "eventmodeling note 081 {\n   written columns\n}",
-    payloadOutput: "eventmodeling\nnote 081 {\n   written columns\n}\n",
+    payloadOutput: "eventmodeling\nnote 081 {\n  written columns\n}\n",
     options: {},
   },
   {
@@ -182,12 +186,20 @@ describe("eventmodeling in Markdown", () => {
         fixture.options,
       ),
     ).toBeNull()
-    expect(dbOfText(fixture.payloadOutput, embedded)).toEqual(
-      dbOfText(fixture.payloadInput, embedded),
-    )
-    expect(writtenEmbeddedTexts(fixture.payloadOutput)).toEqual(
-      writtenEmbeddedTexts(fixture.payloadInput),
-    )
+    const dbBefore = dbOfText(fixture.payloadInput, embedded)
+    expect(
+      eventmodelingDbForFormattingComparison(
+        dbBefore,
+        dbOfText(fixture.payloadOutput, embedded),
+      ),
+    ).toEqual(dbBefore)
+    const writtenBefore = writtenEmbeddedTexts(fixture.payloadInput)
+    expect(
+      eventmodelingEmbeddedForFormattingComparison(
+        writtenBefore,
+        writtenEmbeddedTexts(fixture.payloadOutput),
+      ),
+    ).toEqual(writtenBefore)
     expect(treeProblemsOfText(fixture.payloadInput)).toEqual([])
     expect(treeProblemsOfText(fixture.payloadOutput)).toEqual([])
   })

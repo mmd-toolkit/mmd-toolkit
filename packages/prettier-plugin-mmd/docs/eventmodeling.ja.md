@@ -80,7 +80,8 @@ GWT clause は設定の 1 段、item は 2 段にします。
 構造の継続行は、`data` ヘッダーの継続も含め、その文より 1 段深くします。
 列は親子を決めないため、`tabWidth: 0` では空白を足しません。
 `useTabs` では幅が 0 でも 1 段に tab を 1 個使います。
-値の継続列、metadata の空白、hidden が消費する LF の境界は保ちます。
+値の継続列、metadata の空白、hidden が消費する LF の境界は、
+[Data blocks](#data-blocks) の本文 margin 変更を除いて保ちます。
 
 [fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]
 
@@ -460,20 +461,40 @@ tf 01 evt Alpha { 	 x  }
 
 ### Data blocks
 
-data と note の本文は `{` から `}` までそのまま保ちます。
-開きの空白、内部の空行と列、無字下げの閉じも含みます。
-閉じを字下げすると拒否され、本文の字下げ変更は raw terminal を変えます。
+`{` の直後が LF で、LF の直後の `}` で閉じる通常の data と note は、
+次の条件を満たす場合、
+ASCII 空白（U+0020）の共通 margin を `tabWidth` にそろえます。
+空でない本文行の行頭空白数の最小値を共通 margin とします。
+空でない各本文行を同じ量だけ動かし、相対的な字下げを保ちます。
+`useTabs` でも空白を使い、`tabWidth: 0` では本文を書かれたまま残します。
+
+[fixture: eventmodeling/data-blocks/body-common-margin]
+
+[fixture: eventmodeling/indentation/data-declaration-four-spaces]
+
+[fixture: eventmodeling/indentation/data-declaration-tabs]
+
+[fixture: eventmodeling/data-blocks/body-zero-width]
+
+元にない行頭の空白を加えられるのは、本文の第 1 物理行だけです。
+それ以降の空でない物理行は、変更前後とも行頭に ASCII 空白が 1 個以上必要です。
+満たさない場合は本文全体を書かれたまま残します。
+後の行に初めて空白を加えると、描画するラベルが変わる場合があるためです。
+先頭が空行でも、その次の行が第 1 物理行になるわけではありません。
+
+[fixture: eventmodeling/data-blocks/body-first-line-zero-margin]
+
+[fixture: eventmodeling/data-blocks/body-later-zero-margin-kept]
+
+[fixture: eventmodeling/data-blocks/body-after-empty-first-row-kept]
+
+空行、空白だけの行、改行、行末の空白とタブ、
+行頭の margin より後の文字は保ちます。
+閉じ波括弧は第 1 列に残します。
 見かけの文、入れ子風の text、直後の閉じ風の行も、
 body を持つ形の規則が後の閉じまで読む場合は保ちます。
 
-Mermaid は本文内の字下げを受理します。
-その空白は raw value の一部で、HTML の改行を含む場合など、
-描画を変えることがあります。
-行頭から始まる本文も、その列のまま残します。
-[fixture: eventmodeling/final-newline/final-block-padding-kept]
-[fixture: eventmodeling/data-blocks/html-line-break-indentation-kept]
-
-[fixture: eventmodeling/data-blocks/block-interior-unchanged]
+[fixture: eventmodeling/data-blocks/body-whitespace-kept]
 
 [fixture: eventmodeling/data-blocks/block-empty-kept]
 
@@ -482,6 +503,33 @@ Mermaid は本文内の字下げを受理します。
 [fixture: eventmodeling/data-blocks/later-closer-owns-apparent-text]
 
 [fixture: eventmodeling/data-blocks/block-nested-text]
+
+開きの LF の前に空白がある場合、本文が `<`、`&`、`%%{` を含む場合、
+空でない行の ASCII 空白 prefix の後がタブなどの空白の場合は、
+本文全体を書かれたまま残します。
+HTML、entity、directive 風の text は、字下げで描画が変わる場合があるためです。
+既存の semicolon 保護と既定のサイズ上限の規則も優先します。
+
+[fixture: eventmodeling/data-blocks/block-interior-unchanged]
+
+[fixture: eventmodeling/data-blocks/html-line-break-indentation-kept]
+
+[fixture: eventmodeling/data-blocks/body-entity-kept]
+
+[fixture: eventmodeling/data-blocks/body-native-directive-kept]
+
+[fixture: eventmodeling/data-blocks/body-leading-tab-kept]
+
+[test: eventmodeling/data-blocks/body-leading-nbsp-kept]
+
+[fixture: eventmodeling/data-blocks/body-style-semicolon-kept]
+
+Mermaid は本文内の字下げを受理し、raw value に含めます。
+そのため、この共通 margin の変更では、描画を保ちながら raw Db 値が変わります。
+これは formatter の明示的な例外で、parser、仕様、
+記録された Mermaid の Db の読みは変えません。
+
+[fixture: eventmodeling/final-newline/final-block-padding-kept]
 
 入力（escape 表記）: `"eventmodeling tf 01 evt Alpha [[D]] data D {\nx\n}\n"`
 
@@ -492,7 +540,7 @@ Mermaid は本文内の字下げを受理します。
 eventmodeling
 tf 01 evt Alpha [[D]]
 data D {
-x
+  x
 }
 ```
 
@@ -532,7 +580,7 @@ EOF の論理 LF は明示的な末尾 LF 1 個にできます。
 eventmodeling
 tf 01 evt Alpha [[D]]
 data D {
-x
+  x
 }
 ```
 
@@ -737,7 +785,8 @@ tf 02 evt Beta
 mark、内容、末尾空白、block comment の継続列を保ちます。
 native の `//` と `%%` は LS・PS を越えて物理 LF まで読みます。
 data block、note、`accDescr` block、slash block comment、
-hidden 形の内部の `%%` のコメント行は、その text の一部で、列を保ちます。
+hidden 形の内部の `%%` のコメント行は、その text の一部です。
+列は [Data blocks](#data-blocks) の本文 margin 変更を除いて保ちます。
 metadata や required `title` の境界を優先します。
 検出が拒否するため、slash comment を見出し前へ移しません。
 
@@ -922,7 +971,8 @@ eventmodeling tf 01 evt Alpha "style:#x" ;rf 02 cmd Beta
 文・item 間の普通の ASCII 空行は最大 1 行、文書・本文の端は削除します。
 無制限に広げず区切りを残すためです。
 普通の空白だけの行は空にします。
-data、description、hidden、directive の内部、保持 prefix、
+data の内部は [Data blocks](#data-blocks) の規則に従います。
+description、hidden、directive の内部、保持 prefix、
 共通文の消費 LF 境界は原文どおりです。
 
 [fixture: eventmodeling/blank-lines/ordinary-blanks-bounded]
@@ -952,8 +1002,8 @@ rf 02 cmd Beta
 
 見出しや構造部品の後の、害のない外側の ASCII 空白だけを削ります。
 物理行ごとの trim ではなく owner で判断します。
-metadata の値と prefix、data 内部、comment・directive の末尾、
-hidden・data の閉じの境界、保護区間は、
+metadata の値と prefix、許容した margin 変更以外の data 内部、
+comment・directive の末尾、 hidden・data の閉じの境界、保護区間は、
 空白が内容や受理条件になりうるため保ちます。
 
 [fixture: eventmodeling/trailing-whitespace/harmless-trailing-structure]
@@ -980,7 +1030,8 @@ entity Shop.Buy
 普通の whitespace だけの部品間改行は空白規則に従い、
 trivia の継続行は構造上の段を保ちます。
 構造上の分割を加えるのは決定済みの GWT clause・item 配置です。
-値、hidden、metadata、保護境界の内容は保ちます。
+値、hidden、metadata、保護境界の内容は、
+[Data blocks](#data-blocks) の限定的な本文 margin 変更を除いて保ちます。
 幅に依存する選択を避けて字句境界を明示し、inline data に禁止 LF を足しません。
 
 [fixture: eventmodeling/long-lines/long-structural-line-no-wrap]
@@ -1077,7 +1128,7 @@ Prettier の先頭 BOM の扱いは既存の制限に従います。
 
 未使用の model entity・data、note、GWT、型タグ、重複 source、後続の同名 data、
 上書きされた共通文、参照と併記した inline data も含め、全出現を原順に保ちます。
-変えるのは決定済みの外側の配置だけです。
+変えるのは許容した本文 margin も含む、決定済みの配置だけです。
 重複削除で比較 Db が等しくても authored な出現を失い、
 data の並べ替えは最初の検索結果も変える場合があります。
 
@@ -1106,7 +1157,7 @@ eventmodeling
 entity Shop.Alpha
 entity Shop.Alpha
 note 99 {
-unused
+  unused
 }
 gwt 99
   given
@@ -1115,13 +1166,13 @@ gwt 99
     cmd Beta
 tf 01 evt Alpha ->> 02 ->> 02 [[D]] {unused}
 data D {
-first
+  first
 }
 data D {
-second
+  second
 }
 data Unused {
-x
+  x
 }
 ```
 

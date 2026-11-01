@@ -11,7 +11,9 @@ import { treeviewBoxCharacters } from "../src/printers/treeview-characters.ts"
  * records them (`embeddedValuesOf`), and another text has the defaults. A
  * formatted text is given the values of its input, which holds for formatting
  * only if it keeps the embedded data as written, so that is checked as well:
- * `writtenEmbeddedTexts` is the same before and after.
+ * `writtenEmbeddedTexts` exposes the complete raw values before and after.
+ * Eventmodeling's permitted native-data margin difference is checked by
+ * `eventmodeling-data-margins.ts`; this module preserves that difference.
  */
 import type {
   CheckedRoot,
@@ -109,8 +111,8 @@ function walk(node: unknown, visit: (node: { type: string }) => void): void {
 /**
  * The text of each piece of embedded data of a text other than the
  * frontmatter, as written, in source order: the directives and the data
- * blocks (the nodes of `DATA_BLOCK_NODE_TYPES`). The printers print
- * these as written, so the list is the same before and after formatting.
+ * blocks (the nodes of `DATA_BLOCK_NODE_TYPES`). Eventmodeling's comparison
+ * checks its permitted body-margin changes separately from this raw list.
  */
 export function writtenEmbeddedTexts(
   text: string,
@@ -122,7 +124,8 @@ export function writtenEmbeddedTexts(
     if (isDataBlock(node)) {
       if (isNativeDataBlock(node)) {
         // The optional tag and named gaps can format; only the complete brace
-        // body is opaque (docs/eventmodeling.md, Data blocks).
+        // body is compared, including its margin (docs/eventmodeling.md,
+        // Data blocks).
         const block = node
         const opening = root.tokens.find(
           (token) =>
