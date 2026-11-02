@@ -48,7 +48,6 @@
     "eslint-plugin-jsdoc": "^64.0.0",
     "eslint-plugin-json-schema-validator": "^6.0.0",
     "eslint-plugin-jsonc": "^3.0.0",
-    "eslint-plugin-markdown": "^5.1.0",
     "eslint-plugin-n": "^18.0.0",
     "eslint-plugin-node-dependencies": "^2.0.0",
     "eslint-plugin-prettier": "^5.0.0",
