@@ -228,7 +228,7 @@ built is in `docs/development.md`.
   Mermaid-derived titles and other settings.
 - Formatted cases without a comparison Db remain explicit in the tests and
   report, and still receive the shared idempotence and written-text checks.
-- `tests/format.test.ts` and `tests/corpus.test.ts` apply
+- `tests/format.test.ts` and the shared `tests/corpus.ts` apply
   `writtenTextKeptUpToSemicolons` from `tests/db-reading.ts` to every diagram,
   comparing text outside frontmatter and whitespace and allowing only removal of
   input `;`, even when Db comparison is unavailable. This shared check does not
@@ -238,10 +238,12 @@ built is in `docs/development.md`.
   (`tests/dispatch.test.ts`, `failure.test.ts`, `markdown.test.ts`,
   `markdown-flowchart.test.ts`). For a new diagram type, add an example that is
   formatted inside Markdown.
-- The corpus: `tests/corpus.test.ts` checks, on every fixture of the diagram
-  type in `@mmd-toolkit/tests` that the plugin formats, that formatting does not
-  throw, is idempotent, and keeps the Db and the embedded data. Add the diagram
-  type to what it loads.
+- The corpus: `tests/corpus.test.ts` loads common fixtures of
+  `@mmd-toolkit/tests`, and `tests/corpus/<diagram>.test.ts` loads that
+  package's fixtures of the named diagram. Each calls `testCorpus` in
+  `tests/corpus.ts` to check, on every fixture that the plugin formats, that
+  formatting does not throw, is idempotent, and keeps the Db and the embedded
+  data. Add a file for a new diagram type.
 - A failure of the printer is guarded by a fixture of the corpus, made in
   `@mmd-toolkit/tests`. A failure that `pnpm run lint` rules out (an array
   spread into the arguments of a call, in the `conventions` skill) is guarded by
@@ -273,9 +275,11 @@ Running tests; this is what belongs to this package):
 - The part of the code and the test files that a change to it can affect. Run
   these while working, with
   `pnpm vitest run --project prettier-plugin-mmd <files>`. `-t <diagram>` (lower
-  case) narrows only two files, whose test names carry the diagram: `format` and
-  `corpus` (the names start with `<diagram>/`). With `-t`, every other file is
-  skipped whole and nothing fails, so run the other files without it.
+  case) narrows fixture cases in `format` and the `corpus` files, whose fixture
+  test names start with `<diagram>/`. For a corpus-only run, pass
+  `tests/corpus/<diagram>.test.ts` (`tests/corpus.test.ts` for common fixtures).
+  With `-t`, every other file is skipped whole and nothing fails, so run the
+  other files without it.
 
   - A shared module (`blocks.ts`, `atoms.ts`, `gap.ts`, `layout.ts`, `lines.ts`,
     `source.ts`, `kept-lines.ts`, `common-layout.ts`, `hidden-forms.ts`,

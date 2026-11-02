@@ -53,7 +53,7 @@ formatted, and the parser also accepts a data block with invalid YAML as opaque
 text, although mermaid.js rejects it (known divergence
 [`embedded-data-opaque`](../../spec/docs/known-divergences/embedded-data-opaque.md)),
 and keeps it without checking or repairing it. The rejected inputs of the
-conformance corpus are checked by `corpus.test.ts`.
+conformance corpus are checked by `corpus/kanban.test.ts`.
 
 Each rule below shows its formatting with examples: the text before formatting,
 and the text that the plugin prints. The examples are the fixtures that the
