@@ -39,6 +39,23 @@ pnpm run format:check
   the list of the rules of `@mmd-toolkit/eslint-plugin` and the generated parts
   of its rule documents. `pnpm run lint` fails when they are out of date.
 
+## GitHub Actions dependencies
+
+Workflows use numeric version tags, and
+[`.github/workflows/actions.lock`](./.github/workflows/actions.lock) pins their
+direct and transitive action dependencies to commits. After changing `uses:`
+references or adding a workflow, regenerate the lockfile with the official
+[GitHub CLI extension](https://github.com/github/gh-actions-lock):
+
+```sh
+gh extension install github/gh-actions-lock --pin v0.4.0
+gh actions-lock
+gh actions-lock --verify
+```
+
+Review and commit the workflow changes together with the lockfile. CI verifies
+that they agree. Renovate updates the lockfile when it updates action versions.
+
 ## Releases
 
 Releases are made with [Changesets](https://github.com/changesets/changesets).

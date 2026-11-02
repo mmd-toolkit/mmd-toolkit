@@ -19,24 +19,79 @@ env:
   MMD_TOOLKIT_MERMAID_CACHE: disabled
 
 jobs:
+  action-lock:
+    name: Verify action lockfile
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Verify action lockfile
+        run: |
+          gh extension install github/gh-actions-lock --pin v0.4.0
+          gh actions-lock --verify
+        env:
+          GH_TOKEN: ${{ github.token }}
+
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-        with:
-          # The document check reads the commit history to list the Japanese
-          # versions that are older than their English original.
-          fetch-depth: 0
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@v7.0.1
+      - uses: pnpm/action-setup@v4.3.0
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: "lts/*"
       - name: Install Packages
         run: pnpm install --frozen-lockfile
-      - name: Build
-        run: pnpm run build
-      - name: Lint
-        run: pnpm run lint
+      - name: Build workspace dependencies
+        run: pnpm --filter @mmd-toolkit/eslint-plugin... run build
+      - name: ESLint
+        run: pnpm run lint:es
+
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: pnpm/action-setup@v4.3.0
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: "lts/*"
+      - name: Install Packages
+        run: pnpm install --frozen-lockfile
+      - name: Type check
+        run: pnpm run lint:ts
+
+  documents:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          # The document check reads the commit history to list the Japanese
+          # versions that are older than their English original.
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4.3.0
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: "lts/*"
+      - name: Install Packages
+        run: pnpm install --frozen-lockfile
+      - name: Build parser for rule document checks
+        run: pnpm --filter @mmd-toolkit/parser run build
+      - name: Japanese document check
+        run: pnpm run lint:ja
+      - name: Document check
+        run: pnpm run lint:docs
+      - name: Invisible character check
+        run: pnpm run lint:chars
+
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: pnpm/action-setup@v4.3.0
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: "lts/*"
+      - name: Install Packages
+        run: pnpm install --frozen-lockfile
       - name: Format check
         run: pnpm run format:check
 
@@ -48,9 +103,9 @@ jobs:
         os: [ubuntu-latest, windows-latest]
         node: [22.x, 24.x]
     steps:
-      - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@v7.0.1
+      - uses: pnpm/action-setup@v4.3.0
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: ${{ matrix.node }}
       - name: Install Packages
@@ -64,9 +119,9 @@ jobs:
     name: Fixtures match mermaid
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@v7.0.1
+      - uses: pnpm/action-setup@v4.3.0
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: "lts/*"
       - name: Install Packages
