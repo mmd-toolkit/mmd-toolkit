@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/mindmap-no-duplicate-decoration
 
 Japanese version:
@@ -86,6 +90,14 @@ mindmap
 ## Options
 
 This rule has no options.
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

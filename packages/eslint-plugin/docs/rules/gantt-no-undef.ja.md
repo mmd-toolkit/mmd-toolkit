@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/gantt-no-undef
 
 英語版: [gantt-no-undef.md](./gantt-no-undef.md)
@@ -93,6 +97,14 @@ gantt
 ## 参考
 
 - [Issue #4424: gantt の `after` が考慮されないことがある](https://github.com/mermaid-js/mermaid/issues/4424)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

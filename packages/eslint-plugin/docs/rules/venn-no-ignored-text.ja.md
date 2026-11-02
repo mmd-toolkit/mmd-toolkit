@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/venn-no-ignored-text
 
 英語版: [venn-no-ignored-text.md](./venn-no-ignored-text.md)
@@ -47,6 +51,14 @@ set A:20 %% size
 ## オプション
 
 この規則にはオプションがない。
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

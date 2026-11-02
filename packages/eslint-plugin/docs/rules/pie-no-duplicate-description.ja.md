@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/pie-no-duplicate-description
 
 英語版: [pie-no-duplicate-description.md](./pie-no-duplicate-description.md)
@@ -67,6 +71,14 @@ pie
 
 - [pie-no-duplicate-title](./pie-no-duplicate-title.ja.md)
 - [pie-no-empty-description-block](./pie-no-empty-description-block.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

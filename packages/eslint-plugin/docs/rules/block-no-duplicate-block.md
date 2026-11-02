@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/block-no-duplicate-block
 
 Japanese version:
@@ -78,6 +82,14 @@ This rule has no options.
 
 - [block-no-useless-width](./block-no-useless-width.md)
 - [block-no-undef](./block-no-undef.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

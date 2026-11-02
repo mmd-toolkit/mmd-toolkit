@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/requirement-no-empty-description-block
 
 Japanese version:
@@ -88,6 +92,14 @@ This rule has no options.
 - [er-no-empty-description-block](./er-no-empty-description-block.md)
 - [requirement-no-duplicate-description](./requirement-no-duplicate-description.md)
 - [requirement-no-ignored-text](./requirement-no-ignored-text.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

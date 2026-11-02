@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/class-no-duplicate-title
 
 Japanese version:
@@ -61,6 +65,14 @@ This rule has no options.
 - [class-no-duplicate-description](./class-no-duplicate-description.md)
 - [flowchart-no-duplicate-title](./flowchart-no-duplicate-title.md)
 - [sequence-no-duplicate-title](./sequence-no-duplicate-title.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

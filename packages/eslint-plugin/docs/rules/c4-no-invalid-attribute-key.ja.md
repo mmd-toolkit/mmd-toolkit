@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/c4-no-invalid-attribute-key
 
 英語版: [c4-no-invalid-attribute-key.md](./c4-no-invalid-attribute-key.md)
@@ -66,6 +70,14 @@ C4Context
 
 - [c4-no-undef](./c4-no-undef.ja.md)
 - [c4-no-useless-argument](./c4-no-useless-argument.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

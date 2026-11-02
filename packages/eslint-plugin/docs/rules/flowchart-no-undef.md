@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/flowchart-no-undef
 
 Japanese version: [flowchart-no-undef.ja.md](./flowchart-no-undef.ja.md)
@@ -98,6 +102,14 @@ This rule has no options.
 ## Related Rules
 
 - [class-no-undef](./class-no-undef.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

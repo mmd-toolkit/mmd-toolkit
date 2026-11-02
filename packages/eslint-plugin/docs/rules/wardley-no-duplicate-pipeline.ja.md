@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/wardley-no-duplicate-pipeline
 
 英語版: [wardley-no-duplicate-pipeline.md](./wardley-no-duplicate-pipeline.md)
@@ -61,6 +65,14 @@ wardley-beta
 
 - [wardley-no-redefined-node](./wardley-no-redefined-node.ja.md)
 - [wardley-no-undef](./wardley-no-undef.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

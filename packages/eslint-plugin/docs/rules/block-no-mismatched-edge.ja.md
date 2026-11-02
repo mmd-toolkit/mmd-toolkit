@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/block-no-mismatched-edge
 
 英語版: [block-no-mismatched-edge.md](./block-no-mismatched-edge.md)
@@ -63,6 +67,14 @@ block
 ## 関連する規則
 
 - [block-no-mismatched-shape](./block-no-mismatched-shape.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

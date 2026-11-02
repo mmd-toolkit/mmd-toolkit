@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/xychart-no-duplicate-title
 
 英語版: [xychart-no-duplicate-title.md](./xychart-no-duplicate-title.md)
@@ -83,6 +87,14 @@ xychart
 
 - [timeline-no-duplicate-title](./timeline-no-duplicate-title.ja.md)
 - [xychart-no-duplicate-description](./xychart-no-duplicate-description.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

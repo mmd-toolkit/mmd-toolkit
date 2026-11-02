@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/architecture-no-duplicate-description
 
 Japanese version:
@@ -71,6 +75,14 @@ This rule has no options.
 
 - [architecture-no-duplicate-title](./architecture-no-duplicate-title.md)
 - [architecture-no-empty-description-block](./architecture-no-empty-description-block.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

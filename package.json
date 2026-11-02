@@ -32,7 +32,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "update": "pnpm --filter \"./packages/*\" run --if-present update",
-    "version:ci": "changeset version && pnpm run update",
+    "version:ci": "changeset version && pnpm run update --release",
     "prerelease": "pnpm run build",
     "release": "node scripts/copy-license.mjs && changeset publish"
   },

@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/wardley-no-redefined-node
 
 英語版: [wardley-no-redefined-node.md](./wardley-no-redefined-node.md)
@@ -59,6 +63,14 @@ wardley-beta
 ## 関連する規則
 
 - [wardley-no-undef](./wardley-no-undef.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

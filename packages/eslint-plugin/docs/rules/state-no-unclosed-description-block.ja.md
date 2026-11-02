@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/state-no-unclosed-description-block
 
 英語版:
@@ -70,6 +74,14 @@ stateDiagram-v2
 - [flowchart-no-unclosed-description-block](./flowchart-no-unclosed-description-block.ja.md)
 - [state-no-empty-description-block](./state-no-empty-description-block.ja.md)
 - [state-no-duplicate-description](./state-no-duplicate-description.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

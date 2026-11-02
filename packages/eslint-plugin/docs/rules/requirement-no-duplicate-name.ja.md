@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/requirement-no-duplicate-name
 
 英語版: [requirement-no-duplicate-name.md](./requirement-no-duplicate-name.md)
@@ -90,6 +94,14 @@ requirementDiagram
 - [er-no-redefined-entity](./er-no-redefined-entity.ja.md)
 - [requirement-no-undef](./requirement-no-undef.ja.md)
 - [requirement-no-duplicate-field](./requirement-no-duplicate-field.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

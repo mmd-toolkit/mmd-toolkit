@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/er-no-redefined-entity
 
 英語版: [er-no-redefined-entity.md](./er-no-redefined-entity.md)
@@ -53,6 +57,14 @@ erDiagram
 
 - [flowchart-no-redefined-vertex](./flowchart-no-redefined-vertex.ja.md)
 - [class-no-redefined-class](./class-no-redefined-class.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/journey-no-ignored-text
 
 英語版: [journey-no-ignored-text.md](./journey-no-ignored-text.md)
@@ -61,6 +65,14 @@ journey
 
 - [flowchart-no-ignored-text](./flowchart-no-ignored-text.ja.md)
 - [journey-no-invalid-score](./journey-no-invalid-score.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

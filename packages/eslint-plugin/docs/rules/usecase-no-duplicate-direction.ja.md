@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/usecase-no-duplicate-direction
 
 英語版: [usecase-no-duplicate-direction.md](./usecase-no-duplicate-direction.md)
@@ -51,6 +55,14 @@ usecase-beta
 ## オプション
 
 この規則にはオプションがない。
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

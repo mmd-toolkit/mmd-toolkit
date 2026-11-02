@@ -216,6 +216,45 @@ describe("canonical documents", () => {
   )
 
   it.each([
+    ["rule.md", "Japanese version: [rule.ja.md](./rule.ja.md)", "\n"],
+    ["rule.ja.md", "英語版:\r\n[rule.md](./rule.md)", "\r\n"],
+  ])(
+    "preserves frontmatter while omitting the language notice in %s",
+    (name, notice, newline) => {
+      const { root, output } = temporaryRepository()
+      const mapping = new Map([
+        ["packages/eslint-plugin/docs/rules/rule.md", "linter/rules/rule.md"],
+        [
+          "packages/eslint-plugin/docs/rules/rule.ja.md",
+          "linter/rules/rule.ja.md",
+        ],
+      ])
+      for (const source of mapping.keys()) write(root, source, "# Rule\n")
+      const source = `packages/eslint-plugin/docs/rules/${name}`
+      const prefix = [
+        "---",
+        "since: v0.1.0",
+        'description: "# Metadata"',
+        "---",
+        "",
+        "# Rule",
+        "",
+        "",
+      ].join(newline)
+      const body = `Rule details.${newline}${newline}trailing spaces  ${newline}`
+      const content = `${prefix}${notice}${newline}${newline}${body}`
+      write(root, source, content)
+      syncDocuments(root, mapping, output)
+      expect(readFileSync(path.join(output, mapping.get(source)))).toEqual(
+        Buffer.from(prefix + body),
+      )
+      expect(readFileSync(path.join(root, source))).toEqual(
+        Buffer.from(content),
+      )
+    },
+  )
+
+  it.each([
     [
       "packages/parser/docs/tokens.md",
       "Japanese version: [positions.ja.md](./positions.ja.md)",

@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/journey-no-empty-person
 
 英語版: [journey-no-empty-person.md](./journey-no-empty-person.md)
@@ -66,6 +70,14 @@ journey
 ## 関連する規則
 
 - [journey-no-ignored-text](./journey-no-ignored-text.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

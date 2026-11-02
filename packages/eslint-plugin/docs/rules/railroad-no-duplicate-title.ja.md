@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/railroad-no-duplicate-title
 
 英語版: [railroad-no-duplicate-title.md](./railroad-no-duplicate-title.md)
@@ -67,6 +71,14 @@ railroad-ebnf-beta
 ## 関連する規則
 
 - [railroad-no-duplicate-description](./railroad-no-duplicate-description.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

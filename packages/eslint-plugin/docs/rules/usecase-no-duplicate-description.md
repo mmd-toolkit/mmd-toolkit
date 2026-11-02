@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/usecase-no-duplicate-description
 
 Japanese version:
@@ -65,6 +69,14 @@ This rule has no options.
 - [usecase-no-duplicate-title](./usecase-no-duplicate-title.md)
 - [usecase-no-empty-description-block](./usecase-no-empty-description-block.md)
 - [usecase-no-unclosed-description-block](./usecase-no-unclosed-description-block.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

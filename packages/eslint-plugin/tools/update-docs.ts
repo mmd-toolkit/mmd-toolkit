@@ -11,12 +11,19 @@
  * With `--check`, it writes nothing either. It lists the mismatches and the
  * documents whose generated parts are out of date, and fails when there is
  * one: `pnpm --filter @mmd-toolkit/eslint-plugin run check:docs`.
+ *
+ * During `version:ci`, `--release` stamps rules that have no
+ * first released version yet, using the package version after Changesets.
  */
 /* eslint-disable no-console -- a command-line tool reports on the console */
 import { readFileSync, writeFileSync } from "node:fs"
+import packageJson from "../package.json" with { type: "json" }
 import { mismatches, renderDocuments } from "./rule-docs.ts"
 
 const check = process.argv.includes("--check")
+const releaseVersion = process.argv.includes("--release")
+  ? `v${packageJson.version}`
+  : undefined
 const problems = mismatches()
 for (const problem of problems) console.error(problem)
 const outdated: string[] = []
@@ -26,7 +33,11 @@ if (problems.length > 0) {
   )
   process.exitCode = 1
 } else {
-  for (const [path, content] of await renderDocuments()) {
+  for (const [path, content] of await renderDocuments(
+    undefined,
+    undefined,
+    releaseVersion,
+  )) {
     if (readFileSync(path, "utf8") === content) continue
     if (check) {
       outdated.push(path)

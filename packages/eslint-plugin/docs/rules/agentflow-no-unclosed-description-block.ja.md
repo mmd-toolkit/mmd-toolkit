@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/agentflow-no-unclosed-description-block
 
 英語版:
@@ -83,6 +87,14 @@ agentflow-beta TB
 
 - [agentflow-no-empty-description-block](./agentflow-no-empty-description-block.ja.md)
 - [agentflow-no-duplicate-description](./agentflow-no-duplicate-description.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

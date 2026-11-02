@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/state-no-duplicate-description
 
 Japanese version:
@@ -83,6 +87,14 @@ This rule has no options.
 - [state-no-duplicate-title](./state-no-duplicate-title.md)
 - [state-no-empty-description-block](./state-no-empty-description-block.md)
 - [state-no-unclosed-description-block](./state-no-unclosed-description-block.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

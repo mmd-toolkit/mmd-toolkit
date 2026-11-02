@@ -218,9 +218,10 @@ export function sourceForPage(documents, page) {
 
 /**
  * Removes a language notice only from an imported document's site copy. The
- * repository layout is a title followed by a paragraph ending in a single
- * relative link to its imported translation; labels and link captions may vary.
- * Later paragraphs and the canonical source bytes are left unchanged.
+ * repository layout is optional frontmatter, then a title followed by a
+ * paragraph ending in a single relative link to its imported translation;
+ * labels and link captions may vary. Frontmatter, later paragraphs and the
+ * canonical source bytes are left unchanged.
  */
 function removeLanguageNotice(content, source, documents) {
   if (source.startsWith("packages/docs/pages/")) return content
@@ -230,11 +231,20 @@ function removeLanguageNotice(content, source, documents) {
     : `${source.slice(0, -3)}.ja.md`
   if (!documents.has(counterpart)) return content
   const text = content.toString("utf8")
-  if (!text.startsWith("# ")) return content
   const lineEnd = text.indexOf("\n")
   const newline = text[lineEnd - 1] === "\r" ? "\r\n" : "\n"
   const separator = newline + newline
-  const headingEnd = text.indexOf(separator)
+  let headingStart = 0
+  if (text.startsWith(`---${newline}`)) {
+    const delimiter = `${newline}---${newline}`
+    const frontmatterEnd = text.indexOf(delimiter, 3)
+    if (frontmatterEnd < 0) return content
+    headingStart = frontmatterEnd + delimiter.length
+    while (text.startsWith(newline, headingStart))
+      headingStart += newline.length
+  }
+  if (!text.startsWith("# ", headingStart)) return content
+  const headingEnd = text.indexOf(separator, headingStart)
   if (headingEnd < 0) return content
   const start = headingEnd + separator.length
   const end = text.indexOf(separator, start)

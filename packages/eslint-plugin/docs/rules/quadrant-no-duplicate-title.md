@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/quadrant-no-duplicate-title
 
 Japanese version:
@@ -77,6 +81,14 @@ This rule has no options.
 
 - [quadrant-no-duplicate-description](./quadrant-no-duplicate-description.md)
 - [xychart-no-duplicate-title](./xychart-no-duplicate-title.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

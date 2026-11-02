@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/eventmodeling-no-unclosed-description-block
 
 英語版:
@@ -75,6 +79,14 @@ eventmodeling accDescr {
 
 - [eventmodeling-no-empty-description-block](./eventmodeling-no-empty-description-block.ja.md)
 - [eventmodeling-no-duplicate-description](./eventmodeling-no-duplicate-description.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

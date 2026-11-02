@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/packet-no-duplicate-title
 
 Japanese version:
@@ -63,6 +67,14 @@ This rule has no options.
 ## Related Rules
 
 - [packet-no-duplicate-description](./packet-no-duplicate-description.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

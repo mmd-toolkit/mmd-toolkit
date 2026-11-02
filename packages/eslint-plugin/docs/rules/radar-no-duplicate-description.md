@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/radar-no-duplicate-description
 
 Japanese version:
@@ -72,6 +76,14 @@ This rule has no options.
 - [radar-no-duplicate-title](./radar-no-duplicate-title.md)
 - [radar-no-empty-description-block](./radar-no-empty-description-block.md)
 - [radar-no-unclosed-description-block](./radar-no-unclosed-description-block.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

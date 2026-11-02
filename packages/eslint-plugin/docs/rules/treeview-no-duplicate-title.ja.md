@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/treeview-no-duplicate-title
 
 英語版: [treeview-no-duplicate-title.md](./treeview-no-duplicate-title.md)
@@ -68,6 +72,14 @@ treeView-beta
 ## 関連する規則
 
 - [treeview-no-duplicate-description](./treeview-no-duplicate-description.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

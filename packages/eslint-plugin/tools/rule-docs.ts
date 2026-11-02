@@ -1,7 +1,7 @@
 /**
  * Renders the parts of the rule documents that come from the rules of the
  * plugin: the list of the rules in `docs/rules/index.md` and `index.ja.md`,
- * and in each rule document its title and whether the `recommended`
+ * and in each rule document its title, version, and whether the `recommended`
  * configuration enables the rule. The rest of the documents is written by
  * hand. `update-docs.ts` writes the result, and `update-docs.ts --check` checks
  * that the documents hold it.
@@ -40,6 +40,10 @@ const LIST_END = "<!-- end auto-generated rules list -->"
 const NOTICE_BEGIN = "<!-- begin auto-generated rule notice -->"
 const NOTICE_END = "<!-- end auto-generated rule notice -->"
 
+/** The markers around the generated version section of a rule document. */
+const VERSION_BEGIN = "<!-- begin auto-generated rule version -->"
+const VERSION_END = "<!-- end auto-generated rule version -->"
+
 /**
  * The markers around the generated section of a rule document that links to
  * the source and the test of a rule.
@@ -75,6 +79,9 @@ const WORDS: Record<
     readonly notEnabled: string
     readonly fix: string
     readonly suggestions: string
+    readonly version: string
+    readonly introduced: (version: string) => string
+    readonly unreleased: string
     readonly resources: string
     readonly ruleSource: string
     readonly testsSource: string
@@ -91,6 +98,10 @@ const WORDS: Record<
     notEnabled: "The `recommended` configuration does not enable this rule.",
     fix: `🔧 This rule is automatically fixable by the [\`--fix\` CLI option](${FIX_URL}).`,
     suggestions: `💡 This rule is manually fixable by [editor suggestions](${SUGGESTIONS_URL}).`,
+    version: "Version",
+    introduced: (version) =>
+      `This rule was introduced in \`@mmd-toolkit/eslint-plugin\` ${version}.`,
+    unreleased: "This rule has not been released yet.",
     resources: "Resources",
     ruleSource: "Rule source",
     testsSource: "Tests source",
@@ -106,6 +117,10 @@ const WORDS: Record<
     notEnabled: "`recommended` の設定は、この規則を有効にしない。",
     fix: `🔧\n[\`--fix\` オプション](${FIX_URL})\nで自動修正できる。`,
     suggestions: `💡\n[エディターの修正候補](${SUGGESTIONS_URL})\nを選んで適用できる。`,
+    version: "バージョン",
+    introduced: (version) =>
+      `この規則は、\`@mmd-toolkit/eslint-plugin\` ${version} で追加された。`,
+    unreleased: "この規則は、まだリリースされていない。",
     resources: "リソース",
     ruleSource: "規則のソース",
     testsSource: "テストのソース",
@@ -151,13 +166,36 @@ function siblingLinks(document: string): string[] {
 /** The words that open the line that links to the other language. */
 const LANGUAGE_LINE_STARTS = ["Japanese version:", "英語版:"]
 
+/** The initial YAML frontmatter, including its delimiters, or an empty text. */
+function frontmatterOf(document: string): string {
+  if (!document.startsWith("---\n")) return ""
+  const end = document.indexOf("\n---\n", 3)
+  if (end === -1) throw new Error("A rule document has unclosed frontmatter")
+  return document.slice(0, end + "\n---\n".length)
+}
+
+/** The first released version, persisted as an unquoted `since: vX.Y.Z`. */
+function versionOf(document: string): string | undefined {
+  const since = frontmatterOf(document)
+    .split("\n")
+    .find((line) => line.startsWith("since:"))
+  if (since === undefined) return undefined
+  const version = since.slice("since:".length).trim()
+  if (!/^v\d+\.\d+\.\d+(?:-[\d\-.A-Za-z]+)?$/u.test(version)) {
+    throw new Error(`Invalid rule version: ${since}`)
+  }
+  return version
+}
+
 /**
  * The first paragraph of a rule document, after its title and the line that
  * links to the other language, which an English document has only when its
  * Japanese version exists: the one sentence that describes the rule.
  */
 export function firstParagraph(document: string): string {
-  const paragraphs = paragraphsOf(document)
+  const paragraphs = paragraphsOf(
+    document.slice(frontmatterOf(document).length),
+  )
   const hasLanguageLine = LANGUAGE_LINE_STARTS.some((start) =>
     paragraphs[1]?.startsWith(start),
   )
@@ -425,7 +463,8 @@ function replaceBetween(
 
 /**
  * A rule document with its generated parts: the title, which is the rule id;
- * the notice, which follows the first paragraph; and the resources at the end.
+ * the notice, which follows the first paragraph; the version; and the resources
+ * at the end. The version is also saved in the frontmatter.
  * A document without the markers of the notice gets them after its first
  * paragraph, and one without the markers of the resources gets them at its end.
  */
@@ -433,13 +472,24 @@ function renderRuleDocument(
   docsDir: string,
   name: string,
   language: DocumentLanguage,
+  version: string | undefined,
 ): string {
   const path = ruleDocumentPath(docsDir, name, language)
   const document = readFileSync(path, "utf8")
-  const titleEnd = document.indexOf("\n")
-  const withTitle = `# ${NAMESPACE}/${name}${document.slice(titleEnd)}`
+  const frontmatter = frontmatterOf(document)
+  const metadata = frontmatter
+    .trimEnd()
+    .split("\n")
+    .slice(1, -1)
+    .filter((line) => !line.startsWith("since:"))
+  if (version !== undefined) metadata.push(`since: ${version}`)
+  const prefix =
+    metadata.length > 0 ? `---\n${metadata.join("\n")}\n---\n\n` : ""
+  const body = document.slice(frontmatter.length).trimStart()
+  const titleEnd = body.indexOf("\n")
+  const withTitle = `${prefix}# ${NAMESPACE}/${name}${body.slice(titleEnd)}`
   const notice = renderNotice(name, language)
-  let withNotice: string
+  let withNotice: string, withVersion: string
   if (withTitle.includes(NOTICE_BEGIN)) {
     withNotice = replaceBetween(
       withTitle,
@@ -453,17 +503,40 @@ function renderRuleDocument(
     const paragraphEnd = withTitle.indexOf(paragraph) + paragraph.length
     withNotice = `${withTitle.slice(0, paragraphEnd)}\n\n${notice}${withTitle.slice(paragraphEnd)}`
   }
-  const resources = renderResources(name, language)
-  if (withNotice.includes(RESOURCES_BEGIN)) {
-    return replaceBetween(
+  const words = WORDS[language]
+  const versionSection = [
+    VERSION_BEGIN,
+    "",
+    `## ${words.version}`,
+    "",
+    version === undefined ? words.unreleased : words.introduced(version),
+    "",
+    VERSION_END,
+  ].join("\n")
+  if (withNotice.includes(VERSION_BEGIN)) {
+    withVersion = replaceBetween(
       withNotice,
+      VERSION_BEGIN,
+      VERSION_END,
+      versionSection,
+      path,
+    )
+  } else {
+    const resourcesStart = withNotice.indexOf(RESOURCES_BEGIN)
+    const insertAt = resourcesStart === -1 ? withNotice.length : resourcesStart
+    withVersion = `${withNotice.slice(0, insertAt).trimEnd()}\n\n${versionSection}\n\n${withNotice.slice(insertAt)}`
+  }
+  const resources = renderResources(name, language)
+  if (withVersion.includes(RESOURCES_BEGIN)) {
+    return replaceBetween(
+      withVersion,
       RESOURCES_BEGIN,
       RESOURCES_END,
       resources,
       path,
     )
   }
-  return `${withNotice.trimEnd()}\n\n${resources}\n`
+  return `${withVersion.trimEnd()}\n\n${resources}\n`
 }
 
 /** `text` formatted as Prettier formats the Markdown file at `path`. */
@@ -477,13 +550,21 @@ async function formatMarkdown(text: string, path: string): Promise<string> {
  * index and the document of every rule in `names` (all the rules by default)
  * under `docsDir`, in each language in which it exists. The English documents
  * are the originals; a Japanese document is rendered when it exists. Render
- * only when `mismatches` finds nothing.
+ * only when `mismatches` finds nothing. The English frontmatter owns the first
+ * released version; an absent version is stamped only when `releaseVersion`
+ * is supplied (with its `v` prefix), after Changesets has updated the package.
  */
 export async function renderDocuments(
   docsDir: string = RULE_DOCS_DIR,
   names: readonly string[] = Object.keys(rules),
+  releaseVersion?: string,
 ): Promise<Map<string, string>> {
   const documents = new Map<string, string>()
+  const versions = new Map<string, string | undefined>()
+  for (const name of names) {
+    const english = readFileSync(ruleDocumentPath(docsDir, name, "en"), "utf8")
+    versions.set(name, versionOf(english) ?? releaseVersion)
+  }
   for (const language of ["en", "ja"] as const) {
     const path = indexPath(docsDir, language)
     if (!existsSync(path)) continue
@@ -501,7 +582,7 @@ export async function renderDocuments(
       documents.set(
         rulePath,
         await formatMarkdown(
-          renderRuleDocument(docsDir, name, language),
+          renderRuleDocument(docsDir, name, language, versions.get(name)),
           rulePath,
         ),
       )

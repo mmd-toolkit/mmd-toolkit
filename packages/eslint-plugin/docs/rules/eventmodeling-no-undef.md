@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/eventmodeling-no-undef
 
 Japanese version: [eventmodeling-no-undef.ja.md](./eventmodeling-no-undef.ja.md)
@@ -77,6 +81,14 @@ This rule has no options.
 ## Related Rules
 
 - [eventmodeling-no-redefined-data](./eventmodeling-no-redefined-data.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/eventmodeling-no-empty-description-block
 
 Japanese version:
@@ -64,6 +68,14 @@ This rule has no options.
 ## Related Rules
 
 - [eventmodeling-no-duplicate-description](./eventmodeling-no-duplicate-description.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

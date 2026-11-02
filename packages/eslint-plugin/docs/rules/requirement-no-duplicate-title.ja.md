@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/requirement-no-duplicate-title
 
 英語版: [requirement-no-duplicate-title.md](./requirement-no-duplicate-title.md)
@@ -75,6 +79,14 @@ requirementDiagram
 
 - [er-no-duplicate-title](./er-no-duplicate-title.ja.md)
 - [requirement-no-duplicate-description](./requirement-no-duplicate-description.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

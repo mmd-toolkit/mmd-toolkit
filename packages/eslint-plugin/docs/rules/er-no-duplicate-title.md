@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/er-no-duplicate-title
 
 Japanese version: [er-no-duplicate-title.ja.md](./er-no-duplicate-title.ja.md)
@@ -67,6 +71,14 @@ This rule has no options.
 
 - [flowchart-no-duplicate-title](./flowchart-no-duplicate-title.md)
 - [er-no-duplicate-description](./er-no-duplicate-description.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

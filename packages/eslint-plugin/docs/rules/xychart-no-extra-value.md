@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/xychart-no-extra-value
 
 Japanese version: [xychart-no-extra-value.ja.md](./xychart-no-extra-value.ja.md)
@@ -65,6 +69,14 @@ This rule has no options.
 ## Further Reading
 
 - [#7798](https://github.com/mermaid-js/mermaid/pull/7798)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

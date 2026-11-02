@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/quadrant-no-duplicate-title
 
 英語版: [quadrant-no-duplicate-title.md](./quadrant-no-duplicate-title.md)
@@ -81,6 +85,14 @@ quadrantChart
 
 - [quadrant-no-duplicate-description](./quadrant-no-duplicate-description.ja.md)
 - [xychart-no-duplicate-title](./xychart-no-duplicate-title.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

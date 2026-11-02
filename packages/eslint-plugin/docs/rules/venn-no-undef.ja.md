@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/venn-no-undef
 
 英語版: [venn-no-undef.md](./venn-no-undef.md)
@@ -74,6 +78,14 @@ style A1 color:red
 ## オプション
 
 この規則にはオプションがない。
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/pie-no-duplicate-description
 
 Japanese version:
@@ -65,6 +69,14 @@ This rule has no options.
 
 - [pie-no-duplicate-title](./pie-no-duplicate-title.md)
 - [pie-no-empty-description-block](./pie-no-empty-description-block.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

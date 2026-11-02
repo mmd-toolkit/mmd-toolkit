@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/venn-no-invalid-style-key
 
 英語版: [venn-no-invalid-style-key.md](./venn-no-invalid-style-key.md)
@@ -65,6 +69,14 @@ style A fill:red, fill-opacity:0.5
 ## 参考
 
 - [venn 図の構文: スタイル](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/venn.md#L125-L145)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

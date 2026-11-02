@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/gantt-no-duplicate-title
 
 英語版: [gantt-no-duplicate-title.md](./gantt-no-duplicate-title.md)
@@ -86,6 +90,14 @@ gantt
 - [flowchart-no-duplicate-title](./flowchart-no-duplicate-title.ja.md)
 - [sequence-no-duplicate-title](./sequence-no-duplicate-title.ja.md)
 - [gantt-no-duplicate-description](./gantt-no-duplicate-description.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

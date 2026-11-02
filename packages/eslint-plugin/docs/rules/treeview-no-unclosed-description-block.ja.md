@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/treeview-no-unclosed-description-block
 
 英語版:
@@ -52,6 +56,14 @@ treeView-beta
 
 - [treeview-no-empty-description-block](./treeview-no-empty-description-block.ja.md)
 - [treeview-no-duplicate-description](./treeview-no-duplicate-description.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

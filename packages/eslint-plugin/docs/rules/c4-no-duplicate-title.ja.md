@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/c4-no-duplicate-title
 
 英語版: [c4-no-duplicate-title.md](./c4-no-duplicate-title.md)
@@ -72,6 +76,14 @@ C4Context
 
 - [issue #8040: C4: accTitle sets the visible title instead of the accessible title](https://github.com/mermaid-js/mermaid/issues/8040)
 - [プルリクエスト #8041: fix(c4): send accTitle to the accessible title](https://github.com/mermaid-js/mermaid/pull/8041)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

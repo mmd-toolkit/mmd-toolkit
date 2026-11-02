@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/xychart-no-extra-value
 
 英語版: [xychart-no-extra-value.md](./xychart-no-extra-value.md)
@@ -69,6 +73,14 @@ xychart
 ## 参考
 
 - [#7798](https://github.com/mermaid-js/mermaid/pull/7798)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

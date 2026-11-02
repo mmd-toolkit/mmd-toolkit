@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/gantt-no-undef
 
 Japanese version: [gantt-no-undef.ja.md](./gantt-no-undef.ja.md)
@@ -88,6 +92,14 @@ This rule has no options.
 ## Further Reading
 
 - [Issue #4424: gantt `after` not always taken into account](https://github.com/mermaid-js/mermaid/issues/4424)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

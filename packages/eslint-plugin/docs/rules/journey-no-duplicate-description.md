@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/journey-no-duplicate-description
 
 Japanese version:
@@ -75,6 +79,14 @@ This rule has no options.
 - [flowchart-no-duplicate-description](./flowchart-no-duplicate-description.md)
 - [journey-no-duplicate-title](./journey-no-duplicate-title.md)
 - [journey-no-empty-description-block](./journey-no-empty-description-block.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

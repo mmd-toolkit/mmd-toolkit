@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/sankey-no-empty-node
 
 Japanese version: [sankey-no-empty-node.ja.md](./sankey-no-empty-node.ja.md)
@@ -54,6 +58,14 @@ This rule has no options.
 
 - [journey-no-empty-person](./journey-no-empty-person.md)
 - [sankey-no-invalid-value](./sankey-no-invalid-value.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

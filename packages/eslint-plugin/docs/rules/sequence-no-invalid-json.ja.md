@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/sequence-no-invalid-json
 
 英語版: [sequence-no-invalid-json.md](./sequence-no-invalid-json.md)
@@ -73,6 +77,14 @@ sequenceDiagram
 ## 参考
 
 - [Issue #5419: `sequenceDiagram` のテキストの `#`](https://github.com/mermaid-js/mermaid/issues/5419)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

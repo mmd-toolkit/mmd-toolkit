@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/state-no-undef
 
 英語版: [state-no-undef.md](./state-no-undef.md)
@@ -65,6 +69,14 @@ stateDiagram-v2
 
 - [flowchart-no-undef](./flowchart-no-undef.ja.md)
 - [class-no-undef](./class-no-undef.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

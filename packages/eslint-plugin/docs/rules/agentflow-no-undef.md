@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/agentflow-no-undef
 
 Japanese version: [agentflow-no-undef.ja.md](./agentflow-no-undef.ja.md)
@@ -74,6 +78,14 @@ agentflow-beta TB
 ## Options
 
 This rule has no options.
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

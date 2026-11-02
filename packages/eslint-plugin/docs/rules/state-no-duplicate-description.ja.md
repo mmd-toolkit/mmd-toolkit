@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/state-no-duplicate-description
 
 英語版: [state-no-duplicate-description.md](./state-no-duplicate-description.md)
@@ -83,6 +87,14 @@ stateDiagram-v2
 - [state-no-duplicate-title](./state-no-duplicate-title.ja.md)
 - [state-no-empty-description-block](./state-no-empty-description-block.ja.md)
 - [state-no-unclosed-description-block](./state-no-unclosed-description-block.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

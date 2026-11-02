@@ -15,8 +15,10 @@ import { rules } from "../src/rules/index.ts"
 import {
   DIAGRAM_ORDER,
   diagramOf,
+  firstParagraph,
   mismatches,
   mmdCodeBlocks,
+  oneLine,
   RULE_DOCS_DIR,
   renderDocuments,
   ruleDocumentPath,
@@ -71,6 +73,133 @@ describe("the order of the diagrams in the list of the rules", () => {
     for (const diagram of DIAGRAM_ORDER) {
       expect(astDocuments, diagram).toContain(diagram)
     }
+  })
+})
+
+describe("the first released version of a rule", () => {
+  const name = "flowchart-no-undef"
+  let directory: string, englishPath: string, japanesePath: string
+
+  beforeEach(() => {
+    directory = `${mkdtempSync(join(tmpdir(), "mmd-rule-version-"))}/`
+    englishPath = ruleDocumentPath(directory, name, "en")
+    japanesePath = ruleDocumentPath(directory, name, "ja")
+    const index =
+      "# Rules\n\n<!-- begin auto-generated rules list -->\n<!-- end auto-generated rules list -->\n"
+    writeFileSync(`${directory}index.md`, index)
+    writeFileSync(`${directory}index.ja.md`, index)
+    writeFileSync(
+      englishPath,
+      "# A placeholder title\n\nJapanese version: [flowchart-no-undef.ja.md](./flowchart-no-undef.ja.md)\n\nDisallow a `style`, `class`, or `click` statement that names an id that the diagram does not define.\n\n## Rule Details\n\nRule details.\n",
+    )
+    writeFileSync(
+      japanesePath,
+      "# 仮の見出し\n\n英語版: [flowchart-no-undef.md](./flowchart-no-undef.md)\n\n図が定義していない id を指す `style`、`class`、`click` の文を禁止する。\n\n## 規則の詳細\n\n規則の説明。\n",
+    )
+  })
+
+  afterEach(() => rmSync(directory, { recursive: true, force: true }))
+
+  it("leaves an unreleased rule unstamped during an ordinary update", async () => {
+    const documents = await renderDocuments(directory, [name])
+    const english = documents.get(englishPath) ?? ""
+    const japanese = documents.get(japanesePath) ?? ""
+    expect(english).not.toContain("since:")
+    expect(japanese).not.toContain("since:")
+    expect(english).toContain("This rule has not been released yet.")
+    expect(japanese).toContain("この規則は、まだリリースされていない。")
+  })
+
+  it("stamps both languages with the release being prepared", async () => {
+    const documents = await renderDocuments(directory, [name], "v0.3.0")
+    const english = documents.get(englishPath) ?? ""
+    const japanese = documents.get(japanesePath) ?? ""
+    expect(english).toContain("since: v0.3.0\n")
+    expect(japanese).toContain("since: v0.3.0\n")
+    expect(oneLine(english)).toContain(
+      "This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.3.0.",
+    )
+    expect(oneLine(japanese)).toContain(
+      "この規則は、`@mmd-toolkit/eslint-plugin` v0.3.0 で追加された。",
+    )
+    expect(english).toContain("## Version\n")
+    expect(english.indexOf("## Version")).toBeLessThan(
+      english.indexOf("## Resources"),
+    )
+  })
+
+  it("stamps a rule whose frontmatter is empty", async () => {
+    writeFileSync(
+      englishPath,
+      `---\n---\n\n${readFileSync(englishPath, "utf8")}`,
+    )
+    const documents = await renderDocuments(directory, [name], "v0.3.0")
+    expect(documents.get(englishPath)).toContain("since: v0.3.0\n")
+  })
+
+  it("preserves the first version on subsequent releases and ordinary updates", async () => {
+    const firstRelease = await renderDocuments(directory, [name], "v0.3.0")
+    for (const [path, document] of firstRelease) writeFileSync(path, document)
+    expect(await renderDocuments(directory, [name], "v0.4.0")).toEqual(
+      firstRelease,
+    )
+    expect(await renderDocuments(directory, [name])).toEqual(firstRelease)
+  })
+
+  it("takes the English version as authoritative for the Japanese document", async () => {
+    writeFileSync(
+      englishPath,
+      `---\nsince: v0.1.0\n---\n\n${readFileSync(englishPath, "utf8")}`,
+    )
+    writeFileSync(
+      japanesePath,
+      `---\nsince: v0.2.0\n---\n\n${readFileSync(japanesePath, "utf8")}`,
+    )
+    const documents = await renderDocuments(directory, [name], "v0.3.0")
+    expect(documents.get(englishPath)).toContain("since: v0.1.0\n")
+    expect(documents.get(japanesePath)).toContain("since: v0.1.0\n")
+    expect(documents.get(japanesePath)).not.toContain("v0.2.0")
+  })
+
+  it("does not create a missing Japanese document when assigning the version", async () => {
+    rmSync(japanesePath)
+    writeFileSync(
+      englishPath,
+      readFileSync(englishPath, "utf8").replace(
+        "Japanese version: [flowchart-no-undef.ja.md](./flowchart-no-undef.ja.md)\n\n",
+        "",
+      ),
+    )
+    const documents = await renderDocuments(directory, [name], "v0.3.0")
+    expect(documents.get(englishPath)).toContain("since: v0.3.0\n")
+    expect(documents.has(japanesePath)).toBe(false)
+    expect(existsSync(japanesePath)).toBe(false)
+  })
+
+  it("preserves other metadata and reads the title and description after it", async () => {
+    writeFileSync(
+      englishPath,
+      `---\npageClass: rule-details\nsince: v0.2.0\n---\n\n${readFileSync(englishPath, "utf8")}`,
+    )
+    const documents = await renderDocuments(directory, [name])
+    const english = documents.get(englishPath) ?? ""
+    expect(english).toContain("pageClass: rule-details\n")
+    expect(english).toContain("since: v0.2.0\n")
+    expect(english).toContain("\n# @mmd-toolkit/flowchart-no-undef\n")
+    expect(english).not.toContain("A placeholder title")
+    expect(oneLine(firstParagraph(english))).toBe(
+      rules[name]?.meta?.docs?.description,
+    )
+  })
+
+  it("rejects malformed persisted version metadata", async () => {
+    writeFileSync(
+      englishPath,
+      `---\nsince: next\n---\n\n${readFileSync(englishPath, "utf8")}`,
+    )
+    await expect(renderDocuments(directory, [name])).rejects.toThrow(
+      "Invalid rule version: since: next",
+    )
   })
 })
 

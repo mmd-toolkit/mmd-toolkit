@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/eventmodeling-no-undef
 
 英語版: [eventmodeling-no-undef.md](./eventmodeling-no-undef.md)
@@ -83,6 +87,14 @@ items
 ## 関連する規則
 
 - [eventmodeling-no-redefined-data](./eventmodeling-no-redefined-data.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

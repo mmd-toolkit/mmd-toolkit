@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/xychart-no-duplicate-description
 
 Japanese version:
@@ -75,6 +79,14 @@ This rule has no options.
 - [timeline-no-duplicate-description](./timeline-no-duplicate-description.md)
 - [xychart-no-duplicate-title](./xychart-no-duplicate-title.md)
 - [xychart-no-empty-description-block](./xychart-no-empty-description-block.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

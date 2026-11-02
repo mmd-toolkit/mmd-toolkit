@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/block-no-undef
 
 英語版: [block-no-undef.md](./block-no-undef.md)
@@ -59,6 +63,14 @@ block
 
 - [block-no-spaced-class-id](./block-no-spaced-class-id.ja.md)
 - [block-no-duplicate-block](./block-no-duplicate-block.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

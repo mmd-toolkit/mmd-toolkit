@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/state-no-duplicate-title
 
 英語版: [state-no-duplicate-title.md](./state-no-duplicate-title.md)
@@ -66,6 +70,14 @@ stateDiagram-v2
 
 - [flowchart-no-duplicate-title](./flowchart-no-duplicate-title.ja.md)
 - [state-no-duplicate-description](./state-no-duplicate-description.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

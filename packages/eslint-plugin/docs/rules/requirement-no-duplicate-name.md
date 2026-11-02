@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/requirement-no-duplicate-name
 
 Japanese version:
@@ -92,6 +96,14 @@ This rule has no options.
 - [er-no-redefined-entity](./er-no-redefined-entity.md)
 - [requirement-no-undef](./requirement-no-undef.md)
 - [requirement-no-duplicate-field](./requirement-no-duplicate-field.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

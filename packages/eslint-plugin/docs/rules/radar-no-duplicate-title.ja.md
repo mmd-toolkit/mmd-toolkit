@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/radar-no-duplicate-title
 
 英語版: [radar-no-duplicate-title.md](./radar-no-duplicate-title.md)
@@ -72,6 +76,14 @@ radar-beta
 ## 関連する規則
 
 - [radar-no-duplicate-description](./radar-no-duplicate-description.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

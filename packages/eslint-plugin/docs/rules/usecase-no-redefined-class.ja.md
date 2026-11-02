@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/usecase-no-redefined-class
 
 英語版: [usecase-no-redefined-class.md](./usecase-no-redefined-class.md)
@@ -54,6 +58,14 @@ usecase-beta
 ## オプション
 
 この規則にはオプションがない。
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

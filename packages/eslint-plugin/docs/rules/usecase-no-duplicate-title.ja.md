@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/usecase-no-duplicate-title
 
 英語版: [usecase-no-duplicate-title.md](./usecase-no-duplicate-title.md)
@@ -57,6 +61,14 @@ usecase-beta
 ## 関連する規則
 
 - [usecase-no-duplicate-description](./usecase-no-duplicate-description.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/requirement-no-duplicate-field
 
 Japanese version:
@@ -70,6 +74,14 @@ This rule has no options.
 ## Related Rules
 
 - [requirement-no-duplicate-name](./requirement-no-duplicate-name.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

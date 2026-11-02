@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/c4-no-invalid-attribute-key
 
 Japanese version:
@@ -66,6 +70,14 @@ This rule has no options.
 
 - [c4-no-undef](./c4-no-undef.md)
 - [c4-no-useless-argument](./c4-no-useless-argument.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

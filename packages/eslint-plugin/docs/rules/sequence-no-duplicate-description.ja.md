@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/sequence-no-duplicate-description
 
 英語版:
@@ -92,6 +96,14 @@ sequenceDiagram
 - [sequence-no-duplicate-title](./sequence-no-duplicate-title.ja.md)
 - [sequence-no-empty-description-block](./sequence-no-empty-description-block.ja.md)
 - [sequence-no-unclosed-description-block](./sequence-no-unclosed-description-block.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 
