@@ -406,24 +406,27 @@ describe("fixtures", () => {
     }
   })
 
-  it(
-    "stores every expected.json in canonical form",
-    async () => {
-      for (const fixture of allFixtures) {
-        const file = path.join(
-          getFixturesRoot(),
-          fixture.diagram,
-          fixture.name,
-          "expected.json",
-        )
-        const json = await readFile(file, "utf8")
-        expect(
-          serializeExpectedFile(parseExpectedFile(json, fixture.name)),
-        ).toBe(json)
-      }
-    },
-    READS_EVERY_FIXTURE,
-  )
+  // Give each diagram its own deadline instead of accumulating all corpus I/O.
+  for (const diagram of DIAGRAMS) {
+    it(
+      `stores every ${diagram} expected.json in canonical form`,
+      async () => {
+        for (const fixture of fixturesOf(diagram)) {
+          const file = path.join(
+            getFixturesRoot(),
+            fixture.diagram,
+            fixture.name,
+            "expected.json",
+          )
+          const json = await readFile(file, "utf8")
+          expect(
+            serializeExpectedFile(parseExpectedFile(json, fixture.name)),
+          ).toBe(json)
+        }
+      },
+      READS_EVERY_FIXTURE,
+    )
+  }
 
   it("keeps knownDivergence in the hand-written head, after config", () => {
     const json = serializeExpectedFile({

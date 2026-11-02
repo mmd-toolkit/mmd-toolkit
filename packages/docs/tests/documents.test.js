@@ -68,6 +68,33 @@ function referenceRepository() {
   return repository
 }
 
+/**
+ * Keeps watcher tests independent of the size of the repository's documents;
+ * document discovery is checked separately with the complete reference tree.
+ */
+function navigationRepository() {
+  const repository = temporaryRepository()
+  for (const [source, content] of [
+    ["packages/docs/pages/formatter/compatibility.md", "# Compatibility\n"],
+    ["packages/docs/pages/formatter/compatibility.ja.md", "# 互換性\n"],
+    [
+      "packages/eslint-plugin/docs/rules/flowchart-no-undef.md",
+      "# flowchart-no-undef\n",
+    ],
+    [
+      "packages/eslint-plugin/docs/rules/flowchart-no-undef.ja.md",
+      "# flowchart-no-undef\n",
+    ],
+    ["packages/spec/docs/diagrams/flowchart.md", "# Flowchart\n"],
+    ["packages/spec/docs/diagrams/flowchart.ja.md", "# フローチャート\n"],
+    ["packages/spec/docs/diagrams/er.md", "# Entity relationship\n"],
+    ["packages/spec/docs/diagrams/er.ja.md", "# ER\n"],
+  ]) {
+    write(repository.root, source, content)
+  }
+  return repository
+}
+
 afterEach(() => {
   vi.useRealTimers()
   for (const directory of temporaryDirectories.splice(0)) {
@@ -372,7 +399,7 @@ describe("rule sidebar", () => {
 
   it("refreshes rule navigation on additions and removals, while body edits keep hot updates", () => {
     vi.useFakeTimers()
-    const { root, output } = referenceRepository()
+    const { root, output } = navigationRepository()
     const diagrams = collectDiagrams(root)
     const mapping = collectDocuments(root)
     const watcher = new EventEmitter()
@@ -500,7 +527,7 @@ describe("additional diagram types", () => {
 
   it("refreshes diagram navigation while ignoring formatter specifications", () => {
     vi.useFakeTimers()
-    const { root, output } = referenceRepository()
+    const { root, output } = navigationRepository()
     const diagrams = collectDiagrams(root)
     const mapping = collectDocuments(root)
     const watcher = new EventEmitter()
