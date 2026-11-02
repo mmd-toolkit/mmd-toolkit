@@ -39,7 +39,7 @@ Prettierによる整形結果を確認できます。
 
 lint の診断、自動修正、エディターの修正候補は、
 ESLint Online Playground の
-[ESLint サンプル](https://eslint-online-playground.netlify.app/#https://github.com/mmd-toolkit/mmd-toolkit/tree/main/examples/eslint)
+[ESLint サンプル](https://eslint-online-playground.netlify.app/#@mmd-toolkit/eslint-plugin)
 で試せます。
 [サンプルプロジェクト](./examples/eslint)には、`.mmd`、
 `.mermaid` のファイルと Markdown のコードブロックがあります。

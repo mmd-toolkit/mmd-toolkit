@@ -17,6 +17,9 @@ mermaid-js とは関係のない第三者のプロジェクトです。
 ここでいう `mmd` は Mermaid の図の記法のことで、
 MultiMarkdown や MikuMikuDance ではありません。
 
+[ESLint Online Playground](https://eslint-online-playground.netlify.app/#@mmd-toolkit/eslint-plugin)
+で、診断、自動修正、エディターの修正候補を試せます。
+
 ## 導入
 
 このパッケージは、ESLint 10 と一緒に入れます。

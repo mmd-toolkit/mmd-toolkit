@@ -3,6 +3,9 @@
 `@mmd-toolkit/eslint-plugin`は、
 ESLintでMermaidの図の構文エラーと書き間違いを検出するプラグインです。
 
+[ESLint Online Playground](https://eslint-online-playground.netlify.app/#@mmd-toolkit/eslint-plugin)
+で、診断、自動修正、エディターの修正候補を試せます。
+
 ## インストールと設定
 
 プロジェクトにESLint 10とプラグイン、`@eslint/markdown`をインストールします。
