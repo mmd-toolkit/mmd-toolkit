@@ -13,6 +13,19 @@
     {
       "matchManagers": ["github-actions", "devcontainer"],
       "automerge": true
+    },
+    {
+      "matchDatasources": ["npm"],
+      "minimumReleaseAge": "1 day"
+    },
+    {
+      "matchDatasources": ["npm"],
+      "matchPackageNames": [
+        "@ota-meshi/*",
+        "@mmd-toolkit/*",
+        "prettier-plugin-mmd"
+      ],
+      "minimumReleaseAge": null
     }
   ]
 }
