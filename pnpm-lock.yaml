@@ -102,7 +102,7 @@ importers:
         specifier: 0.3.9
         version: 0.3.9(eslint@10.11.0)
       vitepress:
-        specifier: 2.0.0-alpha.21
+        specifier: ^2.0.0-alpha.21
         version: 2.0.0-alpha.21(@types/node@26.6.3)(postcss@8.5.32)(typescript@6.0.3)(yaml@2.9.1)
 
   packages/eslint-plugin:
