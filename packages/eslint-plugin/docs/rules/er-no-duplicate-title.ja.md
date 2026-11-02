@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/er-no-duplicate-title
 
 英語版: [er-no-duplicate-title.md](./er-no-duplicate-title.md)
@@ -70,6 +74,14 @@ erDiagram
 
 - [flowchart-no-duplicate-title](./flowchart-no-duplicate-title.ja.md)
 - [er-no-duplicate-description](./er-no-duplicate-description.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

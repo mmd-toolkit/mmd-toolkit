@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/packet-no-duplicate-description
 
 英語版:
@@ -71,6 +75,14 @@ packet
 
 - [packet-no-duplicate-title](./packet-no-duplicate-title.ja.md)
 - [packet-no-empty-description-block](./packet-no-empty-description-block.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/sequence-no-create-destroy
 
 英語版: [sequence-no-create-destroy.md](./sequence-no-create-destroy.md)
@@ -42,6 +46,14 @@ sequenceDiagram
 ## オプション
 
 この規則にはオプションがない。
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

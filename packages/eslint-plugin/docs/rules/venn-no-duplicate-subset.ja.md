@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/venn-no-duplicate-subset
 
 英語版: [venn-no-duplicate-subset.md](./venn-no-duplicate-subset.md)
@@ -82,6 +86,14 @@ text A A3["Vue"]
 ## オプション
 
 この規則にはオプションがない。
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

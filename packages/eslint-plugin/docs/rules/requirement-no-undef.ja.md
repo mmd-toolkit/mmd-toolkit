@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/requirement-no-undef
 
 英語版: [requirement-no-undef.md](./requirement-no-undef.md)
@@ -76,6 +80,14 @@ requirementDiagram
 
 - [er-no-undef](./er-no-undef.ja.md)
 - [requirement-no-duplicate-name](./requirement-no-duplicate-name.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

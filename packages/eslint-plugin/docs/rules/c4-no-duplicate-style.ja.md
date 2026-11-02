@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/c4-no-duplicate-style
 
 英語版: [c4-no-duplicate-style.md](./c4-no-duplicate-style.md)
@@ -89,6 +93,14 @@ C4Context
 
 - [c4-no-undef](./c4-no-undef.ja.md)
 - [c4-no-invalid-attribute-key](./c4-no-invalid-attribute-key.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/requirement-no-unclosed-description-block
 
 Japanese version:
@@ -63,6 +67,14 @@ This rule has no options.
 - [er-no-unclosed-description-block](./er-no-unclosed-description-block.md)
 - [requirement-no-empty-description-block](./requirement-no-empty-description-block.md)
 - [requirement-no-duplicate-description](./requirement-no-duplicate-description.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

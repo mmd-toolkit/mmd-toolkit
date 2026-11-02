@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/no-unclosed-directive
 
 英語版: [no-unclosed-directive.md](./no-unclosed-directive.md)
@@ -63,6 +67,14 @@ flowchart LR
 ## 関連する規則
 
 - [no-invalid-init-directive](./no-invalid-init-directive.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

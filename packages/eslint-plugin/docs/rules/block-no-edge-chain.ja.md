@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/block-no-edge-chain
 
 英語版: [block-no-edge-chain.md](./block-no-edge-chain.md)
@@ -55,6 +59,14 @@ block
 ## 関連する規則
 
 - [block-no-edge-in-composite-head](./block-no-edge-in-composite-head.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

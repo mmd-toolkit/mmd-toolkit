@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/sequence-no-unclosed-description-block
 
 英語版:
@@ -81,6 +85,14 @@ sequenceDiagram
 - [flowchart-no-unclosed-description-block](./flowchart-no-unclosed-description-block.ja.md)
 - [sequence-no-empty-description-block](./sequence-no-empty-description-block.ja.md)
 - [sequence-no-duplicate-description](./sequence-no-duplicate-description.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

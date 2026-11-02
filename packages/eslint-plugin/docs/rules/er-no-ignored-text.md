@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/er-no-ignored-text
 
 Japanese version: [er-no-ignored-text.ja.md](./er-no-ignored-text.ja.md)
@@ -68,6 +72,14 @@ This rule has no options.
 - [flowchart-no-ignored-text](./flowchart-no-ignored-text.md)
 - [class-no-ignored-text](./class-no-ignored-text.md)
 - [state-no-ignored-text](./state-no-ignored-text.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

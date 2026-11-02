@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/class-no-ignored-text
 
 英語版: [class-no-ignored-text.md](./class-no-ignored-text.md)
@@ -72,6 +76,14 @@ classDiagram
 - [class-no-bare-class-name](./class-no-bare-class-name.ja.md)
 - [flowchart-no-ignored-text](./flowchart-no-ignored-text.ja.md)
 - [sequence-no-ignored-text](./sequence-no-ignored-text.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

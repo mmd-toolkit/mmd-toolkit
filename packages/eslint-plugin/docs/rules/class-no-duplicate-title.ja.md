@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/class-no-duplicate-title
 
 英語版: [class-no-duplicate-title.md](./class-no-duplicate-title.md)
@@ -60,6 +64,14 @@ classDiagram
 - [class-no-duplicate-description](./class-no-duplicate-description.ja.md)
 - [flowchart-no-duplicate-title](./flowchart-no-duplicate-title.ja.md)
 - [sequence-no-duplicate-title](./sequence-no-duplicate-title.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

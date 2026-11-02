@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/agentflow-no-unclosed-description-block
 
 Japanese version:
@@ -81,6 +85,14 @@ This rule has no options.
 
 - [agentflow-no-empty-description-block](./agentflow-no-empty-description-block.md)
 - [agentflow-no-duplicate-description](./agentflow-no-duplicate-description.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

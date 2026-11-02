@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/gitgraph-no-duplicate-description
 
 Japanese version:
@@ -67,6 +71,14 @@ This rule has no options.
 
 - [gitgraph-no-duplicate-title](./gitgraph-no-duplicate-title.md)
 - [gitgraph-no-empty-description-block](./gitgraph-no-empty-description-block.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

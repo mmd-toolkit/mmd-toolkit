@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/venn-no-duplicate-style
 
 英語版: [venn-no-duplicate-style.md](./venn-no-duplicate-style.md)
@@ -69,6 +73,14 @@ style A color:white
 ## 関連する規則
 
 - [venn-no-invalid-style-key](./venn-no-invalid-style-key.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

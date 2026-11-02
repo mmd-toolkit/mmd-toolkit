@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/class-no-ignored-text
 
 Japanese version: [class-no-ignored-text.ja.md](./class-no-ignored-text.ja.md)
@@ -72,6 +76,14 @@ This rule has no options.
 - [class-no-bare-class-name](./class-no-bare-class-name.md)
 - [flowchart-no-ignored-text](./flowchart-no-ignored-text.md)
 - [sequence-no-ignored-text](./sequence-no-ignored-text.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

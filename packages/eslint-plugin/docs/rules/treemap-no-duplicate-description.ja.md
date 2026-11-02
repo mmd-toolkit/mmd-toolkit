@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/treemap-no-duplicate-description
 
 英語版:
@@ -72,6 +76,14 @@ treemap
 
 - [treemap-no-duplicate-title](./treemap-no-duplicate-title.ja.md)
 - [treemap-no-empty-description-block](./treemap-no-empty-description-block.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

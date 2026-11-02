@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/c4-no-useless-argument
 
 英語版: [c4-no-useless-argument.md](./c4-no-useless-argument.md)
@@ -80,6 +84,14 @@ C4Deployment
 ## 関連する規則
 
 - [c4-no-invalid-attribute-key](./c4-no-invalid-attribute-key.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

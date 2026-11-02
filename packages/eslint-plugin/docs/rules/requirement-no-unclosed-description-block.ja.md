@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/requirement-no-unclosed-description-block
 
 英語版:
@@ -62,6 +66,14 @@ requirementDiagram
 - [er-no-unclosed-description-block](./er-no-unclosed-description-block.ja.md)
 - [requirement-no-empty-description-block](./requirement-no-empty-description-block.ja.md)
 - [requirement-no-duplicate-description](./requirement-no-duplicate-description.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

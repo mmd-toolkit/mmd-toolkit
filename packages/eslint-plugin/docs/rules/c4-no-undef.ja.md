@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/c4-no-undef
 
 英語版: [c4-no-undef.md](./c4-no-undef.md)
@@ -87,6 +91,14 @@ C4Context
 
 - [c4-no-invalid-attribute-key](./c4-no-invalid-attribute-key.ja.md)
 - [c4-no-redefined-element](./c4-no-redefined-element.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

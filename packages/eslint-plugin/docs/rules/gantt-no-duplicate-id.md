@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/gantt-no-duplicate-id
 
 Japanese version: [gantt-no-duplicate-id.ja.md](./gantt-no-duplicate-id.ja.md)
@@ -54,6 +58,14 @@ This rule has no options.
 ## Related Rules
 
 - [gantt-no-undef](./gantt-no-undef.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

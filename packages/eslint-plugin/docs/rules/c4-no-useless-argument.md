@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/c4-no-useless-argument
 
 Japanese version: [c4-no-useless-argument.ja.md](./c4-no-useless-argument.ja.md)
@@ -79,6 +83,14 @@ This rule has no options.
 ## Related Rules
 
 - [c4-no-invalid-attribute-key](./c4-no-invalid-attribute-key.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

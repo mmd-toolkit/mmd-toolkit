@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/treemap-no-duplicate-description
 
 Japanese version:
@@ -71,6 +75,14 @@ This rule has no options.
 
 - [treemap-no-duplicate-title](./treemap-no-duplicate-title.md)
 - [treemap-no-empty-description-block](./treemap-no-empty-description-block.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/block-no-duplicate-block
 
 英語版: [block-no-duplicate-block.md](./block-no-duplicate-block.md)
@@ -77,6 +81,14 @@ block
 
 - [block-no-useless-width](./block-no-useless-width.ja.md)
 - [block-no-undef](./block-no-undef.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

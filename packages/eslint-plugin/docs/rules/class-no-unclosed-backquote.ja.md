@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/class-no-unclosed-backquote
 
 英語版: [class-no-unclosed-backquote.md](./class-no-unclosed-backquote.md)
@@ -46,6 +50,14 @@ classDiagram
 ## 関連する規則
 
 - [no-unclosed-directive](./no-unclosed-directive.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

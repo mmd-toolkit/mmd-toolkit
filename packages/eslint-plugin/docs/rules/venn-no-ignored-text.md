@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/venn-no-ignored-text
 
 Japanese version: [venn-no-ignored-text.ja.md](./venn-no-ignored-text.ja.md)
@@ -44,6 +48,14 @@ set A:20 %% size
 ## Options
 
 This rule has no options.
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

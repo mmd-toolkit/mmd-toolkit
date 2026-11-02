@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/c4-no-undef
 
 Japanese version: [c4-no-undef.ja.md](./c4-no-undef.ja.md)
@@ -89,6 +93,14 @@ This rule has no options.
 
 - [c4-no-invalid-attribute-key](./c4-no-invalid-attribute-key.md)
 - [c4-no-redefined-element](./c4-no-redefined-element.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

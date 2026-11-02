@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/xychart-no-redefined-axis
 
 英語版: [xychart-no-redefined-axis.md](./xychart-no-redefined-axis.md)
@@ -76,6 +80,14 @@ xychart
 
 - [xychart-no-duplicate-title](./xychart-no-duplicate-title.ja.md)
 - [xychart-no-extra-value](./xychart-no-extra-value.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

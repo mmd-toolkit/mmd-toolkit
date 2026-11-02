@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/c4-no-duplicate-description
 
 英語版: [c4-no-duplicate-description.md](./c4-no-duplicate-description.md)
@@ -82,6 +86,14 @@ C4Context
 ## 関連する規則
 
 - [c4-no-duplicate-title](./c4-no-duplicate-title.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

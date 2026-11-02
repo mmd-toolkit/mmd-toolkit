@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/flowchart-no-undef
 
 英語版: [flowchart-no-undef.md](./flowchart-no-undef.md)
@@ -101,6 +105,14 @@ flowchart LR
 ## 関連する規則
 
 - [class-no-undef](./class-no-undef.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

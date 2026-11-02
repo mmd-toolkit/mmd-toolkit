@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/er-no-empty-description-block
 
 Japanese version:
@@ -76,6 +80,14 @@ This rule has no options.
 - [flowchart-no-empty-description-block](./flowchart-no-empty-description-block.md)
 - [er-no-unclosed-description-block](./er-no-unclosed-description-block.md)
 - [er-no-duplicate-description](./er-no-duplicate-description.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

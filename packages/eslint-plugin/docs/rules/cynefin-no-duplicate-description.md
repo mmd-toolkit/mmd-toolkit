@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/cynefin-no-duplicate-description
 
 Japanese version:
@@ -73,6 +77,14 @@ This rule has no options.
 
 - [cynefin-no-duplicate-title](./cynefin-no-duplicate-title.md)
 - [cynefin-no-empty-description-block](./cynefin-no-empty-description-block.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

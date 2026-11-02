@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/gantt-no-duplicate-setting
 
 英語版: [gantt-no-duplicate-setting.md](./gantt-no-duplicate-setting.md)
@@ -83,6 +87,14 @@ gantt
 ## 関連する規則
 
 - [gantt-no-duplicate-title](./gantt-no-duplicate-title.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

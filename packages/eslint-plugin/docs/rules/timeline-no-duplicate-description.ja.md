@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/timeline-no-duplicate-description
 
 英語版:
@@ -73,6 +77,14 @@ timeline
 - [journey-no-duplicate-description](./journey-no-duplicate-description.ja.md)
 - [timeline-no-duplicate-title](./timeline-no-duplicate-title.ja.md)
 - [timeline-no-empty-description-block](./timeline-no-empty-description-block.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

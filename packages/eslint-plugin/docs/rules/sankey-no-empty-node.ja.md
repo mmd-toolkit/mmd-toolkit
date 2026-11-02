@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/sankey-no-empty-node
 
 英語版: [sankey-no-empty-node.md](./sankey-no-empty-node.md)
@@ -54,6 +58,14 @@ Electricity grid,Homes,104.453
 
 - [journey-no-empty-person](./journey-no-empty-person.ja.md)
 - [sankey-no-invalid-value](./sankey-no-invalid-value.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

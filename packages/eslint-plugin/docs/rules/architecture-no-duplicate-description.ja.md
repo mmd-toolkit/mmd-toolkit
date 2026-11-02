@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/architecture-no-duplicate-description
 
 英語版:
@@ -72,6 +76,14 @@ architecture-beta
 
 - [architecture-no-duplicate-title](./architecture-no-duplicate-title.ja.md)
 - [architecture-no-empty-description-block](./architecture-no-empty-description-block.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

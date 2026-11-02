@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/journey-no-empty-description-block
 
 英語版:
@@ -79,6 +83,14 @@ journey
 
 - [flowchart-no-empty-description-block](./flowchart-no-empty-description-block.ja.md)
 - [journey-no-duplicate-description](./journey-no-duplicate-description.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

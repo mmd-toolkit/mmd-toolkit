@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/gantt-no-duplicate-description
 
 Japanese version:
@@ -75,6 +79,14 @@ This rule has no options.
 - [flowchart-no-duplicate-description](./flowchart-no-duplicate-description.md)
 - [gantt-no-duplicate-title](./gantt-no-duplicate-title.md)
 - [gantt-no-empty-description-block](./gantt-no-empty-description-block.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

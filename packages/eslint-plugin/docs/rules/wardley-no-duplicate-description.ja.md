@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/wardley-no-duplicate-description
 
 英語版:
@@ -72,6 +76,14 @@ wardley-beta
 
 - [wardley-no-duplicate-title](./wardley-no-duplicate-title.ja.md)
 - [wardley-no-empty-description-block](./wardley-no-empty-description-block.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

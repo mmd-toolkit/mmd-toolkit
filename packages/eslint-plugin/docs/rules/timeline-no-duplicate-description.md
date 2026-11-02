@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/timeline-no-duplicate-description
 
 Japanese version:
@@ -72,6 +76,14 @@ This rule has no options.
 - [journey-no-duplicate-description](./journey-no-duplicate-description.md)
 - [timeline-no-duplicate-title](./timeline-no-duplicate-title.md)
 - [timeline-no-empty-description-block](./timeline-no-empty-description-block.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

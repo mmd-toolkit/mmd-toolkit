@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/sankey-no-invalid-value
 
 英語版: [sankey-no-invalid-value.md](./sankey-no-invalid-value.md)
@@ -72,6 +76,14 @@ Electricity grid,Homes,113.726 %% estimate
 
 - [journey-no-invalid-score](./journey-no-invalid-score.ja.md)
 - [sankey-no-empty-node](./sankey-no-empty-node.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

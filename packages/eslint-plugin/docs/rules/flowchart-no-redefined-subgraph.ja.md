@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/flowchart-no-redefined-subgraph
 
 英語版:
@@ -83,6 +87,14 @@ flowchart LR
 
 - [Issue #8326](https://github.com/mermaid-js/mermaid/issues/8326)
 - [Pull request #8337](https://github.com/mermaid-js/mermaid/pull/8337)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

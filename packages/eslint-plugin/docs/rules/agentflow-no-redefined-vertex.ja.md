@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/agentflow-no-redefined-vertex
 
 英語版: [agentflow-no-redefined-vertex.md](./agentflow-no-redefined-vertex.md)
@@ -84,6 +88,14 @@ agentflow-beta TB
 ## 関連する規則
 
 - [agentflow-no-redefined-connector](./agentflow-no-redefined-connector.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

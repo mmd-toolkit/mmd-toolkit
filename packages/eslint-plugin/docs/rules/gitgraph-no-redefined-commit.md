@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/gitgraph-no-redefined-commit
 
 Japanese version:
@@ -53,6 +57,14 @@ This rule has no options.
 ## Related Rules
 
 - [gitgraph-no-duplicate-option](./gitgraph-no-duplicate-option.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

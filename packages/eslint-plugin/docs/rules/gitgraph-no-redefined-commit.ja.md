@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/gitgraph-no-redefined-commit
 
 英語版: [gitgraph-no-redefined-commit.md](./gitgraph-no-redefined-commit.md)
@@ -54,6 +58,14 @@ gitGraph
 ## 関連する規則
 
 - [gitgraph-no-duplicate-option](./gitgraph-no-duplicate-option.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

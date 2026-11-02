@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/flowchart-no-unclosed-description-block
 
 英語版:
@@ -81,6 +85,14 @@ flowchart LR
 
 - [flowchart-no-empty-description-block](./flowchart-no-empty-description-block.ja.md)
 - [flowchart-no-duplicate-description](./flowchart-no-duplicate-description.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

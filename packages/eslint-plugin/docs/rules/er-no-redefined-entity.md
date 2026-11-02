@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/er-no-redefined-entity
 
 Japanese version: [er-no-redefined-entity.ja.md](./er-no-redefined-entity.ja.md)
@@ -54,6 +58,14 @@ This rule has no options.
 
 - [flowchart-no-redefined-vertex](./flowchart-no-redefined-vertex.md)
 - [class-no-redefined-class](./class-no-redefined-class.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/c4-no-duplicate-style
 
 Japanese version: [c4-no-duplicate-style.ja.md](./c4-no-duplicate-style.ja.md)
@@ -88,6 +92,14 @@ This rule has no options.
 
 - [c4-no-undef](./c4-no-undef.md)
 - [c4-no-invalid-attribute-key](./c4-no-invalid-attribute-key.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

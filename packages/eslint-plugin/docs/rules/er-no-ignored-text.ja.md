@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/er-no-ignored-text
 
 英語版: [er-no-ignored-text.md](./er-no-ignored-text.md)
@@ -69,6 +73,14 @@ erDiagram
 - [flowchart-no-ignored-text](./flowchart-no-ignored-text.ja.md)
 - [class-no-ignored-text](./class-no-ignored-text.ja.md)
 - [state-no-ignored-text](./state-no-ignored-text.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

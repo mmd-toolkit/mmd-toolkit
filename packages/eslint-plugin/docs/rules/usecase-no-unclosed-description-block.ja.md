@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/usecase-no-unclosed-description-block
 
 英語版:
@@ -69,6 +73,14 @@ usecase-beta
 
 - [usecase-no-empty-description-block](./usecase-no-empty-description-block.ja.md)
 - [usecase-no-duplicate-description](./usecase-no-duplicate-description.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

@@ -85,6 +85,8 @@ parser が変わったら、
   名前が図種の名前で始まる規則がその図種の組にあること、
   英日の例の `mmd` コードブロックがどれも規則を有効にする指示で始まること、
   テストのファイルのない規則を報告すること。
+  バージョンのケースでは、未リリースの規則、リリース時の付与、
+  初回リリースのバージョンの保持を確かめる。
 - `tests/rules-index.test.ts`: `src/rules/index.ts` が `tools/update-rules.ts`
   の書いたとおりであり、プラグインがそれらの規則を ESLint に渡すこと。
 - `tests/rules/<規則>.test.ts`: 各規則について、
@@ -311,9 +313,28 @@ pnpm --filter @mmd-toolkit/eslint-plugin run check:docs
   `recommended` の設定がその規則を有効にするかどうかと、
   自動修正を持つかどうかと、提案を出すかどうかを書きます。
 - 各規則の文書（言語ごと）の、
+  `<!-- begin auto-generated rule version -->` から
+  `<!-- end auto-generated rule version -->` まで。
+  バージョンの節で、初回リリースのバージョンか、
+  まだリリースされていない旨を書きます。
+- 各規則の文書（言語ごと）の、
   末尾の `<!-- begin auto-generated rule resources -->` から
   `<!-- end auto-generated rule resources -->` まで。
   リソースの節で、規則のソースとテストへのリンクを書きます。
+
+初回リリースのバージョンは、英語の文書の YAML フロントマターに、
+`since: v0.1.0` の形で保持します。
+`update` は、日本語の文書があればその値を写し、
+両言語のバージョンの節を生成します。
+規則を足すときは `since` を書きません。
+通常の更新では、未リリースのままになります。
+リリース時の `pnpm run version:ci` は、先に `changeset version` を実行し、
+`--release` を渡して更新します。
+このモードでだけ、`since` のない規則にプラグインの新しいバージョンを付けます。
+既存の `since` は、後のリリースでも保持します。
+この方法は、
+[eslint-plugin-vue の文書更新ツール](https://github.com/vuejs/eslint-plugin-vue/blob/4f46fd54ce636d0419e0a7c664b37f742e09b3ca/tools/update-docs.js)
+に従っています。
 
 規則の文書のすべての `mmd` コードブロックは、
 `%% eslint @mmd-toolkit/<名前>: error` で始めます。

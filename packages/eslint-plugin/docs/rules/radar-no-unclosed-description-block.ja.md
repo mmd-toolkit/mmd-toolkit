@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/radar-no-unclosed-description-block
 
 英語版:
@@ -72,6 +76,14 @@ radar-beta
 
 - [radar-no-empty-description-block](./radar-no-empty-description-block.ja.md)
 - [radar-no-duplicate-description](./radar-no-duplicate-description.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

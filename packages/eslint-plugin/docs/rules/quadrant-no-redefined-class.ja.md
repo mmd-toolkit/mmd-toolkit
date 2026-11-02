@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/quadrant-no-redefined-class
 
 英語版: [quadrant-no-redefined-class.md](./quadrant-no-redefined-class.md)
@@ -63,6 +67,14 @@ quadrantChart
 
 - [quadrant-no-duplicate-style](./quadrant-no-duplicate-style.ja.md)
 - [quadrant-no-undef](./quadrant-no-undef.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

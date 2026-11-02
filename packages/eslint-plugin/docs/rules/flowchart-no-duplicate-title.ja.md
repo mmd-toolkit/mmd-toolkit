@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/flowchart-no-duplicate-title
 
 英語版: [flowchart-no-duplicate-title.md](./flowchart-no-duplicate-title.md)
@@ -83,6 +87,14 @@ flowchart LR
 ## 関連する規則
 
 - [flowchart-no-duplicate-description](./flowchart-no-duplicate-description.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

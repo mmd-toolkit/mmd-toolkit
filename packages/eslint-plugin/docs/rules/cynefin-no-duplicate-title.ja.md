@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/cynefin-no-duplicate-title
 
 英語版: [cynefin-no-duplicate-title.md](./cynefin-no-duplicate-title.md)
@@ -72,6 +76,14 @@ cynefin-beta
 ## 関連する規則
 
 - [cynefin-no-duplicate-description](./cynefin-no-duplicate-description.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

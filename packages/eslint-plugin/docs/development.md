@@ -76,7 +76,8 @@ parser from its build in `lib/`: rebuild it with
   sidebar of the documentation site, a rule whose name starts with a diagram
   name is in the group of that diagram, every `mmd` code block of the examples,
   in both languages, starts with the directive that enables the rule, and a rule
-  without a test file is reported.
+  without a test file is reported. The version cases check unreleased rules,
+  release-time stamping, and preservation of the first released version.
 - `tests/rules-index.test.ts`: `src/rules/index.ts` is as
   `tools/update-rules.ts` writes it, and the plugin gives ESLint those rules.
 - `tests/rules/<rule>.test.ts`: Each rule, through `testRule(name, rule)` of
@@ -269,9 +270,23 @@ pnpm --filter @mmd-toolkit/eslint-plugin run check:docs
   the `recommended` configuration enables the rule, whether it has a fix, and
   whether it offers suggestions.
 - In each rule document, in each language, everything between
+  `<!-- begin auto-generated rule version -->` and
+  `<!-- end auto-generated rule version -->`: the Version section, with the
+  first released version or a notice that the rule has not been released yet.
+- In each rule document, in each language, everything between
   `<!-- begin auto-generated rule resources -->` and
   `<!-- end auto-generated rule resources -->` at its end: the Resources
   section, with links to the source and the test of the rule.
+
+The first released version is stored as `since: v0.1.0` in the YAML frontmatter
+of the English document. `update` copies it to the Japanese document when one
+exists and generates the Version section in both languages. Leave `since` out
+when adding a rule: ordinary updates keep it unreleased. During a release,
+`pnpm run version:ci` runs `changeset version` first, then passes `--release` to
+the update. Only in that mode does a rule without `since` receive the plugin's
+new package version. An existing `since` is preserved through later releases.
+This follows
+[eslint-plugin-vue's documentation updater](https://github.com/vuejs/eslint-plugin-vue/blob/4f46fd54ce636d0419e0a7c664b37f742e09b3ca/tools/update-docs.js).
 
 Every `mmd` code block in a rule document starts with
 `%% eslint @mmd-toolkit/<name>: error`, where `<name>` is the name of the rule,

@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/quadrant-no-redefined-quadrant
 
 英語版: [quadrant-no-redefined-quadrant.md](./quadrant-no-redefined-quadrant.md)
@@ -65,6 +69,14 @@ quadrantChart
 ## 関連する規則
 
 - [quadrant-no-redefined-axis](./quadrant-no-redefined-axis.ja.md)
+
+<!-- begin auto-generated rule version -->
+
+## バージョン
+
+この規則は、`@mmd-toolkit/eslint-plugin` v0.1.0 で追加された。
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 

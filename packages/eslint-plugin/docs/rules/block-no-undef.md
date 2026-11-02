@@ -1,3 +1,7 @@
+---
+since: v0.1.0
+---
+
 # @mmd-toolkit/block-no-undef
 
 Japanese version: [block-no-undef.ja.md](./block-no-undef.ja.md)
@@ -58,6 +62,14 @@ This rule has no options.
 
 - [block-no-spaced-class-id](./block-no-spaced-class-id.md)
 - [block-no-duplicate-block](./block-no-duplicate-block.md)
+
+<!-- begin auto-generated rule version -->
+
+## Version
+
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.1.0.
+
+<!-- end auto-generated rule version -->
 
 <!-- begin auto-generated rule resources -->
 
