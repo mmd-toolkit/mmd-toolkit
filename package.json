@@ -9,6 +9,10 @@
     "type": "git",
     "url": "git+https://github.com/mmd-toolkit/mmd-toolkit.git"
   },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/ota-meshi"
+  },
   "engines": {
     "node": "^22.18.0 || ^24.11.0 || >=26.0.0"
   },

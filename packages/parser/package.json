@@ -8,6 +8,10 @@
     "url": "git+https://github.com/mmd-toolkit/mmd-toolkit.git",
     "directory": "packages/parser"
   },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/ota-meshi"
+  },
   "type": "module",
   "exports": {
     ".": {
