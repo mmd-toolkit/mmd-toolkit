@@ -14,6 +14,9 @@ that the diagram never defines. It gives ESLint the tree of
 This is a third-party project, not affiliated with mermaid-js. `mmd` here means
 the Mermaid diagram syntax, not MultiMarkdown or MikuMikuDance.
 
+Try lint diagnostics, automatic fixes, and editor suggestions in
+[ESLint Online Playground](https://eslint-online-playground.netlify.app/#@mmd-toolkit/eslint-plugin).
+
 ## Installation
 
 Install the package next to ESLint 10. It is an ES module and needs Node.js

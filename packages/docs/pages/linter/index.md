@@ -3,6 +3,9 @@
 `@mmd-toolkit/eslint-plugin` uses ESLint to report syntax errors and mistakes in
 Mermaid diagram text.
 
+Try lint diagnostics, automatic fixes, and editor suggestions in
+[ESLint Online Playground](https://eslint-online-playground.netlify.app/#@mmd-toolkit/eslint-plugin).
+
 ## Installation and setup
 
 Install ESLint 10, the plugin, and `@eslint/markdown` in your project:

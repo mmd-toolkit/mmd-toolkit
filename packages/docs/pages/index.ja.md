@@ -62,4 +62,7 @@ Mermaidテキストを編集し、ASTとトークン、Prettierの整形結果�
 
 [Playgroundを開く](https://mmd-toolkit.github.io/mmd-toolkit/playground/)。
 
+[ESLint Online Playground](https://eslint-online-playground.netlify.app/#@mmd-toolkit/eslint-plugin)
+で、診断、自動修正、エディターの修正候補を試せます。
+
 </div>

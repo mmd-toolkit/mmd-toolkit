@@ -58,4 +58,7 @@ share your input by URL.
 
 [Open the Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/).
 
+Try lint diagnostics, automatic fixes, and editor suggestions in
+[ESLint Online Playground](https://eslint-online-playground.netlify.app/#@mmd-toolkit/eslint-plugin).
+
 </div>
