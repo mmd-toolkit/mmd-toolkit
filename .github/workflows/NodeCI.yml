@@ -19,7 +19,47 @@ env:
   MMD_TOOLKIT_MERMAID_CACHE: disabled
 
 jobs:
+  action-lock:
+    name: Verify action lockfile
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6.1.0
+      - name: Verify action lockfile
+        run: |
+          gh extension install github/gh-actions-lock --pin v0.4.0
+          gh actions-lock --verify
+        env:
+          GH_TOKEN: ${{ github.token }}
+
   lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6.1.0
+      - uses: pnpm/action-setup@v4.3.0
+      - uses: actions/setup-node@v6.5.0
+        with:
+          node-version: "lts/*"
+      - name: Install Packages
+        run: pnpm install --frozen-lockfile
+      - name: Build workspace dependencies
+        run: pnpm --filter @mmd-toolkit/eslint-plugin... run build
+      - name: ESLint
+        run: pnpm run lint:es
+
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6.1.0
+      - uses: pnpm/action-setup@v4.3.0
+      - uses: actions/setup-node@v6.5.0
+        with:
+          node-version: "lts/*"
+      - name: Install Packages
+        run: pnpm install --frozen-lockfile
+      - name: Type check
+        run: pnpm run lint:ts
+
+  documents:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6.1.0
@@ -27,22 +67,31 @@ jobs:
           # The document check reads the commit history to list the Japanese
           # versions that are older than their English original.
           fetch-depth: 0
-      - name: Verify action lockfile
-        run: |
-          gh extension install github/gh-actions-lock --pin v0.4.0
-          gh actions-lock --verify
-        env:
-          GH_TOKEN: ${{ github.token }}
       - uses: pnpm/action-setup@v4.3.0
       - uses: actions/setup-node@v6.5.0
         with:
           node-version: "lts/*"
       - name: Install Packages
         run: pnpm install --frozen-lockfile
-      - name: Build
-        run: pnpm run build
-      - name: Lint
-        run: pnpm run lint
+      - name: Build parser for rule document checks
+        run: pnpm --filter @mmd-toolkit/parser run build
+      - name: Japanese document check
+        run: pnpm run lint:ja
+      - name: Document check
+        run: pnpm run lint:docs
+      - name: Invisible character check
+        run: pnpm run lint:chars
+
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6.1.0
+      - uses: pnpm/action-setup@v4.3.0
+      - uses: actions/setup-node@v6.5.0
+        with:
+          node-version: "lts/*"
+      - name: Install Packages
+        run: pnpm install --frozen-lockfile
       - name: Format check
         run: pnpm run format:check
 
