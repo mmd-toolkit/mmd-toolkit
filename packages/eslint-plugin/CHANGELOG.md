@@ -1,5 +1,11 @@
 # @mmd-toolkit/eslint-plugin
 
+## 0.2.1
+
+### Patch Changes
+
+- [#29](https://github.com/mmd-toolkit/mmd-toolkit/pull/29) [`e3c5af2`](https://github.com/mmd-toolkit/mmd-toolkit/commit/e3c5af22e5624e0dd121a3c348a46be33620161a) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Point rule documentation links to the mmd-toolkit website.
+
 ## 0.2.0
 
 ### Minor Changes
