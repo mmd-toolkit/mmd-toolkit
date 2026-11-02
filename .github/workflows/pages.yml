@@ -89,11 +89,11 @@ jobs:
     steps:
       - uses: actions/configure-pages@v5.0.0
       # Assemble one Pages tree matching the docs and Playground base paths.
-      - uses: actions/download-artifact@v8.0.1
+      - uses: actions/download-artifact@v8.0.2
         with:
           name: documentation
           path: ${{ runner.temp }}/pages
-      - uses: actions/download-artifact@v8.0.1
+      - uses: actions/download-artifact@v8.0.2
         with:
           name: playground
           path: ${{ runner.temp }}/pages/playground
