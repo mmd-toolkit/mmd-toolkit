@@ -56,7 +56,7 @@
     "@eslint/markdown": "^8.0.3",
     "@mmd-toolkit/tests": "workspace:*",
     "eslint": "^10.0.0",
-    "eslint-snapshot-rule-tester": "0.1.0",
+    "eslint-snapshot-rule-tester": "^0.1.0",
     "prettier": "^3.9.0"
   },
   "publishConfig": {
