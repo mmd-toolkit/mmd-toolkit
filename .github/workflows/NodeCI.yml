@@ -96,12 +96,14 @@ jobs:
         run: pnpm run format:check
 
   test:
-    name: "Test on Node.js ${{ matrix.node }} / ${{ matrix.os }}"
+    name: "Test on Node.js ${{ matrix.node }} / ${{ matrix.os }} / shard ${{ matrix.shard }}"
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
         node: [22.x, 24.x]
+        # Distribute the full suite across runners for every OS/Node pair.
+        shard: [1/3, 2/3, 3/3]
     steps:
       - uses: actions/checkout@v7.0.1
       - uses: pnpm/action-setup@v6.1.0
@@ -113,7 +115,7 @@ jobs:
       - name: Build
         run: pnpm run build
       - name: Test
-        run: pnpm test
+        run: pnpm test --shard=${{ matrix.shard }}
 
   fixtures:
     name: Fixtures match mermaid
