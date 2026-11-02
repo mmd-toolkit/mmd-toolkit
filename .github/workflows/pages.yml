@@ -32,7 +32,7 @@ jobs:
       - run: pnpm exec prettier --check packages/docs .github/workflows/pages.yml
       - run: pnpm --filter @mmd-toolkit/docs run test
       - run: pnpm --filter @mmd-toolkit/docs run build
-      - uses: actions/upload-artifact@v7.0.1
+      - uses: actions/upload-artifact@v7.0.2
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         with:
           name: documentation
@@ -60,13 +60,13 @@ jobs:
       - run: pnpm --filter @mmd-toolkit/playground run test:e2e
       # The traces and error contexts of failed end-to-end tests, which the job
       # log does not hold (it cuts the long values of the share tests).
-      - uses: actions/upload-artifact@v7.0.1
+      - uses: actions/upload-artifact@v7.0.2
         if: failure()
         with:
           name: playground-e2e-failures
           path: packages/playground/test-results
           if-no-files-found: ignore
-      - uses: actions/upload-artifact@v7.0.1
+      - uses: actions/upload-artifact@v7.0.2
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         with:
           name: playground
