@@ -691,12 +691,20 @@ describe("a process that cannot be started", () => {
     return store
   }
 
-  /** Waits for the prune that a store starts again to end. */
+  /** Waits for the retried prune and its deleting processes before cleanup. */
   async function pruneAgain(store: MermaidRunStore): Promise<void> {
     store.pruneInBackground()
     await vi.waitFor(
       () => {
         expect(existsSync(path.join(directory, ".full"))).toBe(true)
+        expect(existsSync(path.join(directory, ".pruned"))).toBe(true)
+        expect(existsSync(path.join(directory, ".pruning"))).toBe(false)
+        expect(existsSync(path.join(directory, otherCode))).toBe(false)
+        expect(
+          directoriesIn(directory).filter((name) =>
+            name.startsWith(".removed-"),
+          ),
+        ).toEqual([])
       },
       { timeout: 20_000 },
     )
