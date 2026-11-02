@@ -240,7 +240,7 @@ printer の規則は、項目ごとに選ばれた選択肢で決まる。
   ほかの設定を保つ。
 - 整形されるが比べる Db のない場合はテストと報告に明示し、
   共有の冪等と原文の検査はその場合にも当てる。
-- `tests/format.test.ts` と `tests/corpus.test.ts` は、
+- `tests/format.test.ts` と共有の `tests/corpus.ts` は、
   全図種に `tests/db-reading.ts` の `writtenTextKeptUpToSemicolons` を当て、
   フロントマターと空白の外のテキストを、入力の `;` の削除だけを認めて比べ、
   Db を比べられない場合も確かめる。
@@ -250,10 +250,12 @@ printer の規則は、項目ごとに選ばれた選択肢で決まる。
   ファイルは `tests/dispatch.test.ts`、`failure.test.ts`、 `markdown.test.ts`、
   `markdown-flowchart.test.ts`。
   図種を足したら、Markdown の中で実際に整形される例を足す。
-- コーパス: `tests/corpus.test.ts` が、
-  `@mmd-toolkit/tests` の図種の fixture のうち整形するものすべてで、
-  例外を出さず、冪等で、Db と埋め込みデータを保つことを確かめる。
-  読み込む図種を足す。
+- コーパス: `tests/corpus.test.ts` は `@mmd-toolkit/tests` の共通の fixture
+  を読み、
+  `tests/corpus/<diagram>.test.ts` は同パッケージのその図種の fixture を読む。
+  それぞれ `tests/corpus.ts` の `testCorpus` を呼び、整形する fixture すべてで、
+  例外を出さず、冪等で、 Db と埋め込みデータを保つことを確かめる。
+  新しい図種にはファイルを足す。
 - 整形の失敗は、コーパスの fixture が守る。
   コーパスの fixture は `@mmd-toolkit/tests` で作る。
   `pnpm run lint` が締め出す失敗（`conventions` の SKILL にある、
@@ -287,9 +289,10 @@ printer の規則は、項目ごとに選ばれた選択肢で決まる。
 - コードの部分と、その変更が影響しうるテストのファイル。
   作業の途中は、
   `pnpm vitest run --project prettier-plugin-mmd <ファイル>` で回す。
-  `-t <図種>`（小文字）で絞れるのは、
-  テストの名前に図種が入る 2 つのファイルだけである。
-  `format` と `corpus`（名前が `<図種>/` で始まる）。
+  `-t <図種>`（小文字）は、
+  名前が `<図種>/` で始まる `format` と `corpus` の各ファイルの fixture を絞る。
+  コーパスだけを回す場合は `tests/corpus/<diagram>.test.ts` を渡す（共通の
+  fixture は `tests/corpus.test.ts`）。
   `-t` を付けると、ほかのファイルは丸ごと飛ばされ、何も失敗しない。
   そのため、ほかのファイルは `-t` なしで回す。
   - 共有のモジュール: `blocks.ts`、`atoms.ts`、`gap.ts`、`layout.ts`、

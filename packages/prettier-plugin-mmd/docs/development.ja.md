@@ -57,11 +57,16 @@ plugin のソースを import して Node で動かすスクリプトは、
 | `tests/line-separators.test.ts`      | 書かれたまま残す U+2028 か U+2029 を含む state 図、sequence 図、ER 図、Gantt 図、journey 図、requirement 図、mindmap、timeline、XY チャート、象限チャート、kanban、C4、Venn、ブロック図と、U+00A0、U+3000、U+FEFF を含む Gantt 図、journey 図、requirement 図、mindmap、timeline、XY チャート、象限チャート、kanban、C4、Venn、ブロック図と、テキストの末尾にそれらを含む sankey 図。文字はエスケープで書きます。                                                                                                                                   |
 | `tests/line-terminators.test.ts`     | 行が `\r\n` か単独の `\r` で終わる図。改行のときと同じに整形し、オプションの行末で印字します。文字はエスケープで書きます。                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | `tests/format.test.ts`               | 整形の fixture ごとに、入力が出力に整形されること、出力を整形しても変わらないこと、eventmodeling の margin の許容範囲内で、Db と埋め込み原文が一致すること（[テストが保つもの](#テストが保つもの)を参照）。                                                                                                                                                                                                                                                                                                                                         |
-| `tests/corpus.test.ts`               | `@mmd-toolkit/tests` の適合性コーパス（common、flowchart、agentflow、sequence、class、state、ER、Gantt、journey、requirement、mindmap、timeline、sankey、XY チャート、象限チャート、kanban、C4、Venn、usecase、ブロック図）のうち、プラグインが整形する入力すべて。もう一度整形しても変わらないこと、埋め込みデータが書かれたままであること、eventmodeling の margin の許容範囲内で、出力の Db が記録された入力の Db と一致すること（[テストが保つもの](#テストが保つもの)を参照）。parser が拒否する入力すべてが、構文エラーとして報告されること。 |
+| `tests/corpus.ts`                    | `@mmd-toolkit/tests` の適合性コーパス（common、flowchart、agentflow、sequence、class、state、ER、Gantt、journey、requirement、mindmap、timeline、sankey、XY チャート、象限チャート、kanban、C4、Venn、usecase、ブロック図）のうち、プラグインが整形する入力すべて。もう一度整形しても変わらないこと、埋め込みデータが書かれたままであること、eventmodeling の margin の許容範囲内で、出力の Db が記録された入力の Db と一致すること（[テストが保つもの](#テストが保つもの)を参照）。parser が拒否する入力すべてが、構文エラーとして報告されること。 |
 | `tests/docs.test.ts`                 | 規則の文書と README が fixture と一致すること（[文書と fixture](#文書と-fixture) を参照）。                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | `tests/value-nodes.test.ts`          | printer のある図種ごとに、子の欄を持たない木の型（その図種の型と、共有する葉のノード）が、どれも、書かれたまま印字する値か、例外として挙げたもののどちらかであること。木に足された型が、意図して扱われるようにするためです。                                                                                                                                                                                                                                                                                                                        |
 | `tests/source.test.ts`               | printer がノードの構造のトークンとみなすもの。ディレクティブ、`;`、フロントマターのトークンは含みません。フロントマターの区切りの `---` は、flowchart の矢印と同じ種類と値です。                                                                                                                                                                                                                                                                                                                                                                    |
 | `tests/sequence-layout.test.ts`      | 後ろの空白が別の単位にしてしまう id のうち、sequence の printer が取るもの。数と `title` で、その隣では矢印の前後に空白を置きません。                                                                                                                                                                                                                                                                                                                                                                                                               |
+
+コーパスのテストは Vitest が並列に実行できるよう、図種ごとにファイルを分けます。
+`tests/corpus.test.ts` は共通の fixture を読み、
+`tests/corpus/<diagram>.test.ts` はその図種の fixture を読みます。
+どちらも `tests/corpus.ts` の `testCorpus` を呼び、検査を共有します。
 
 ### テストが保つもの
 
@@ -237,7 +242,7 @@ fixture を変えたときは、それを載せている文書に新しい中身
 [kanban の規則](./kanban.ja.md)は固定した整形ケースをすべて引用します。
 Unicode と制御文字は `line-separators.test.ts` にエスケープした文字列で書き、
 `line-terminators.test.ts` は設定した CR・LF の出力も確かめます。
-拒否されるボードの入力は、ほかの図種と同じく `corpus.test.ts` が確かめます。
+拒否されるボードの入力は、`corpus/kanban.test.ts` が共通の検査で確かめます。
 
 kanban は共通のブロック印字を本体の深さ 0 で使い、
 各行の字下げ（セクションは 1 段、
@@ -259,7 +264,7 @@ kanban は共通のブロック印字を本体の深さ 0 で使い、
 `ishikawa.test.ts` が検査します。
 `ishikawa.test.ts` は parser の木の不変条件も検査します。
 拒否する入力は、共通の corpus と failure のテストで検査します。
-`corpus.test.ts` は全 Ishikawa 入力を読み、仕様の Db、
+`corpus/ishikawa.test.ts` は全 Ishikawa 入力を読み、仕様の Db、
 および parser の拒否を検査します。
 `markdown-ishikawa.test.ts` は固定した最上位、リスト、引用のホストと、
 字下げを除いた図の本文を分けて検査します。
@@ -285,7 +290,7 @@ Unicode で終わる手前のコメントにある semicolon が、
 `markdown-agentflow.test.ts`は最上位、リスト、引用のホストと、
 外側の字下げを除いた本文を確認します。
 振り分けと値の節点のテストにもagentflowを含めます。
-`corpus.test.ts`は仕様の拒否も含む全入力を読み、
+`corpus/agentflow.test.ts` は仕様の拒否も含む全入力を読み、
 出力の木と記録済みのDbを確認します。
 
 `graph-layout.ts`と`graph-kept-lines.ts`で、 flowchartの隙間、
@@ -304,7 +309,8 @@ agentflowの値と文法の違いは専用のモジュールに理由を書き�
 規則の文から作った整形 fixture を引用します。
 `usecase-cases.ts` は Unicode、制御文字、CR をエスケープして持ち、
 `usecase.test.ts` が検査します。
-`corpus.test.ts` は指定の拒否と印付きの乖離を含む全 usecase 入力を読みます。
+`corpus/usecase.test.ts` は指定の拒否と印付きの乖離を含む全 usecase
+入力を読みます。
 `markdown-usecase.test.ts` は固定したホストと、
 字下げを除いた本文を別々に検査します。
 
@@ -334,7 +340,8 @@ atom 全体を含む保持部分の処理を Venn と共有します。
 `format.test.ts` と `pie.test.ts` は正確な出力、冪等性、 Db の一致、
 embedded の原文を確認します。
 escape 表記の例では木の不変条件も確認します。
-`corpus.test.ts` は、印付きの指定の読みと解析失敗も含む全 pie 入力を読みます。
+`corpus/pie.test.ts` は、
+印付きの指定の読みと解析失敗も含む全 pie 入力を読みます。
 fixture の出力全体で、保持する隠れた原文を確認します。
 `describeFrontmatterChange` は ignored YAML が frontmatter
 に変わらないかを確かめます。

@@ -56,11 +56,16 @@ builds in `lib/`, so rebuild them before running one:
 | `tests/line-separators.test.ts`      | State, sequence, ER, Gantt, journey, requirement, mindmap, timeline, XY chart, quadrant chart, kanban, C4, Venn, and block diagrams with U+2028 or U+2029 that are kept as written or end a comment, Gantt, journey, requirement, mindmap, timeline, XY chart, quadrant chart, kanban, C4, Venn, and block diagrams with U+00A0, U+3000, or U+FEFF, and sankey diagrams with such characters at the end of the text. The characters are written as escapes.                                                                                                                            |
 | `tests/line-terminators.test.ts`     | Diagrams whose lines end with `\r\n` or a lone `\r`: they are formatted as with line feeds, and printed with the line ending of the options. The characters are written as escapes.                                                                                                                                                                                                                                                                                                                                                                                                    |
 | `tests/format.test.ts`               | Each formatting fixture: the input formats to the output, formatting the output changes nothing, the Db and written embedded data agree under the documented eventmodeling margin allowance (see [What the tests keep](#what-the-tests-keep)).                                                                                                                                                                                                                                                                                                                                         |
-| `tests/corpus.test.ts`               | Every input of the conformance corpus of `@mmd-toolkit/tests`, common, flowchart, agentflow, sequence, class, state, ER, Gantt, journey, requirement, mindmap, timeline, sankey, XY chart, quadrant chart, kanban, C4, Venn, usecase, and block diagram, that the plugin formats: formatting again changes nothing, the embedded data is as written, and the output Db agrees with the recorded input Db under the documented eventmodeling margin allowance (see [What the tests keep](#what-the-tests-keep)); and every input that the parser rejects is reported as a syntax error. |
+| `tests/corpus.ts`                    | Every input of the conformance corpus of `@mmd-toolkit/tests`, common, flowchart, agentflow, sequence, class, state, ER, Gantt, journey, requirement, mindmap, timeline, sankey, XY chart, quadrant chart, kanban, C4, Venn, usecase, and block diagram, that the plugin formats: formatting again changes nothing, the embedded data is as written, and the output Db agrees with the recorded input Db under the documented eventmodeling margin allowance (see [What the tests keep](#what-the-tests-keep)); and every input that the parser rejects is reported as a syntax error. |
 | `tests/docs.test.ts`                 | The rules documents and the READMEs agree with the fixtures (see [Documents and fixtures](#documents-and-fixtures)).                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | `tests/value-nodes.test.ts`          | For each diagram type with a printer, every node type of it without child fields, its own and the shared leaf nodes, is either a value, printed as written, or listed as an exception, so that a node type added to the tree is placed on purpose.                                                                                                                                                                                                                                                                                                                                     |
 | `tests/source.test.ts`               | Which tokens the printers take for tokens of a node's structure: not the directives, the `;` tokens, or the tokens of the frontmatter, whose `---` delimiters have the kind and value of a flowchart arrow.                                                                                                                                                                                                                                                                                                                                                                            |
 | `tests/sequence-layout.test.ts`      | Which ids the sequence printer takes for ids that a following space would make another unit: the numbers and `title`, next to which no space is put around an arrow.                                                                                                                                                                                                                                                                                                                                                                                                                   |
+
+The corpus tests run one diagram type per file so that Vitest can run them in
+parallel. `tests/corpus.test.ts` loads common fixtures;
+`tests/corpus/<diagram>.test.ts` loads the named diagram's fixtures. Both call
+`testCorpus` in `tests/corpus.ts`, which keeps their checks shared.
 
 ### What the tests keep
 
@@ -218,7 +223,8 @@ When a fixture changes, copy the new content into the documents that show it.
 The [kanban rules](./kanban.md) cite every fixed formatting case. Unicode and
 control-character cases are escaped strings in `line-separators.test.ts`;
 `line-terminators.test.ts` also checks configured CR/LF output. The rejected
-inputs of a board are checked by `corpus.test.ts`, as for every diagram type.
+inputs of a board are checked by `corpus/kanban.test.ts` through the shared
+corpus checks.
 
 Kanban uses the shared block printer at body depth zero, with the indentation of
 each line, one step for a section and two for an item, in `extraIndentationOf`.
@@ -236,8 +242,8 @@ The [Ishikawa rules](./ishikawa.md) cite fixed cases for every rule.
 `format.test.ts` checks accepted file fixtures through the shared test path;
 `ishikawa-cases.ts` holds escaped Unicode, control and CR inputs exercised by
 `ishikawa.test.ts`, which also checks parser tree invariants. Rejected inputs
-use the shared corpus and failure test families. `corpus.test.ts` loads all
-Ishikawa inputs, checks their specified Db, and checks parser failures.
+use the shared corpus and failure test families. `corpus/ishikawa.test.ts` loads
+all Ishikawa inputs, checks their specified Db, and checks parser failures.
 `markdown-ishikawa.test.ts` checks fixed top-level, list and block-quote hosts
 separately from their dedented payloads.
 
@@ -258,8 +264,9 @@ The [Agentflow rules](./agentflow.md) have fixed file fixtures and escaped
 Unicode/control/EOL cases in `agentflow-cases.ts`, checked by
 `agentflow.test.ts`. `markdown-agentflow.test.ts` checks real top-level, list
 and quote hosts and their dedented payloads. Dispatch and value-node tests
-include Agentflow. `corpus.test.ts` loads every Agentflow input, including
-specified failures, and checks output trees and recorded specified Dbs.
+include Agentflow. `corpus/agentflow.test.ts` loads every Agentflow input,
+including specified failures, and checks output trees and recorded specified
+Dbs.
 
 `graph-layout.ts` and `graph-kept-lines.ts` share flowchart's graph spacing,
 null-style endings, textual semicolon selection and direction priority;
@@ -275,8 +282,9 @@ instead join the header group. Other printers keep their existing paths.
 The [usecase rules](./usecase.md) cite sentence-led formatting fixtures;
 `usecase-cases.ts` supplies escaped Unicode/control/CR cases to
 `usecase.test.ts`. All usecase corpus inputs, including specified failures and
-marked divergences, are loaded by `corpus.test.ts`. `markdown-usecase.test.ts`
-checks fixed hosts separately from their dedented payloads.
+marked divergences, are loaded by `corpus/usecase.test.ts`.
+`markdown-usecase.test.ts` checks fixed hosts separately from their dedented
+payloads.
 
 Data blocks use the same shared path as other diagrams. Formatting fixtures
 without supplied effects compare as null Db and check the written embedded
@@ -298,8 +306,8 @@ The [pie rules](./pie.md) cite fixed formatting fixtures, escaped Unicode/CR
 cases in `pie-cases.ts`, and actual Markdown hosts in `markdown-pie.test.ts`.
 `format.test.ts` and `pie.test.ts` check exact output, idempotence, Db agreement
 and embedded source; the escaped cases also check parser tree invariants.
-`corpus.test.ts` loads every pie input, including marked specified readings and
-parser failures. Complete fixture outputs check retained hidden source;
+`corpus/pie.test.ts` loads every pie input, including marked specified readings
+and parser failures. Complete fixture outputs check retained hidden source;
 `describeFrontmatterChange` checks that ignored YAML does not become
 frontmatter. Dispatch and value-node rows include pie.
 

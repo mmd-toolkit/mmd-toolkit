@@ -62,7 +62,7 @@ mermaid.js が受理する形も拒否します。
 mermaid.js は拒否します（既知の差異
 [`embedded-data-opaque`](../../spec/docs/known-divergences/embedded-data-opaque.ja.md)）。
 確かめも修復もせずに残します。
-適合性コーパスの拒否される入力は、`corpus.test.ts` が確かめます。
+適合性コーパスの拒否される入力は、`corpus/kanban.test.ts` が確かめます。
 
 各規則では、整形前のテキストと、プラグインが出力するテキストを、例で示します。
 例はテストが確かめる fixture で、各例の上のリンクはそのファイルへのものです。
