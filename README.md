@@ -35,6 +35,11 @@ copy a URL that restores the input and indentation settings.
 See the [Playground guide](./packages/playground/README.md) for tree navigation,
 formatting options, and applying the formatted result.
 
+For lint diagnostics, automatic fixes, and editor suggestions, open the
+[ESLint examples](https://eslint-online-playground.netlify.app/#https://github.com/mmd-toolkit/mmd-toolkit/tree/main/examples/eslint)
+in ESLint Online Playground. The [sample project](./examples/eslint) includes
+`.mmd` and `.mermaid` files and a Markdown code block.
+
 ## Packages
 
 | Package                                                  | What it is for                                                                         |

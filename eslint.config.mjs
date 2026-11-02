@@ -38,6 +38,8 @@ export default [
       "packages/tests/fixtures/",
       "packages/prettier-plugin-mmd/tests/fixtures/",
       "packages/eslint-plugin/tests/fixtures/",
+      // This standalone demo has its own dependencies and intentional lint errors.
+      "examples/eslint/",
       ".claude/worktrees/",
       ".work/",
       // Candidate reports to mermaid.js, kept apart from the documents of the
