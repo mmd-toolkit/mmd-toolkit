@@ -49,11 +49,11 @@
     "fixtures:set-note": "node ../../tools/fixtures.ts set-note"
   },
   "devDependencies": {
-    "@csstools/css-color-parser": "4.2.4",
-    "@csstools/css-parser-algorithms": "4.0.1",
-    "@csstools/css-tokenizer": "4.0.2",
-    "@types/js-yaml": "4.0.9",
-    "js-yaml": "4.3.0",
+    "@csstools/css-color-parser": "^4.2.4",
+    "@csstools/css-parser-algorithms": "^4.0.1",
+    "@csstools/css-tokenizer": "^4.0.2",
+    "@types/js-yaml": "^4.0.9",
+    "js-yaml": "^4.3.0",
     "mermaid": "12.2.0"
   }
 }
