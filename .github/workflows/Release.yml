@@ -27,7 +27,7 @@ jobs:
           # Fetch all history so that changesets can generate changelogs with the correct commits
           fetch-depth: 0
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4.3.0
+        uses: pnpm/action-setup@v6.1.0
       - name: Setup Node.js
         uses: actions/setup-node@v7.1.0
         with:
