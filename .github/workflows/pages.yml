@@ -97,7 +97,7 @@ jobs:
         with:
           name: playground
           path: ${{ runner.temp }}/pages/playground
-      - uses: actions/upload-pages-artifact@v4.0.0
+      - uses: actions/upload-pages-artifact@v5.0.0
         with:
           path: ${{ runner.temp }}/pages
       - name: Deploy to GitHub Pages
