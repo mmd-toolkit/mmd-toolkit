@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@eslint/markdown": "^8.0.3",
+    "@mmd-toolkit/eslint-plugin": "^0.2.0",
+    "eslint": "^10.0.0"
+  }
+}

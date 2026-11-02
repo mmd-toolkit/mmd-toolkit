@@ -37,6 +37,13 @@ Prettierによる整形結果を確認できます。
 ツリーの操作、整形の設定、整形結果の適用については、
 [Playgroundの使い方](./packages/playground/README.ja.md)を参照してください。
 
+lint の診断、自動修正、エディターの修正候補は、
+ESLint Online Playground の
+[ESLint サンプル](https://eslint-online-playground.netlify.app/#https://github.com/mmd-toolkit/mmd-toolkit/tree/main/examples/eslint)
+で試せます。
+[サンプルプロジェクト](./examples/eslint)には、`.mmd`、
+`.mermaid` のファイルと Markdown のコードブロックがあります。
+
 ## パッケージ
 
 | パッケージ                                               | 何のためのものか                                                                     |
