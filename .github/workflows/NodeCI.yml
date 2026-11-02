@@ -28,7 +28,7 @@ jobs:
           # versions that are older than their English original.
           fetch-depth: 0
       - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: "lts/*"
       - name: Install Packages
@@ -50,7 +50,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node }}
       - name: Install Packages
@@ -66,7 +66,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: "lts/*"
       - name: Install Packages
