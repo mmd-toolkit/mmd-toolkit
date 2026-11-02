@@ -41,6 +41,25 @@ pnpm run format:check
   その規則の文書の生成する部分です。
   それが最新でないと、`pnpm run lint` が失敗します。
 
+## GitHub Actions の依存関係
+
+ワークフローでは数値のバージョンタグを使い、
+[`.github/workflows/actions.lock`](./.github/workflows/actions.lock) で、
+直接使う action と推移的に使う action のコミットを固定します。
+`uses:` の参照を変更したときや、ワークフローを追加したときは、
+公式の [GitHub CLI 拡張](https://github.com/github/gh-actions-lock) で lock
+ファイルを再生成します。
+
+```sh
+gh extension install github/gh-actions-lock --pin v0.4.0
+gh actions-lock
+gh actions-lock --verify
+```
+
+ワークフローの変更と lock ファイルを一緒に確認し、コミットしてください。
+CI が両者の整合性を検証します。
+Renovate は action のバージョンを更新するときに lock ファイルも更新します。
+
 ## リリース
 
 リリースは [Changesets](https://github.com/changesets/changesets) で行います。
