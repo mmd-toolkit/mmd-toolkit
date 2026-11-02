@@ -99,6 +99,8 @@ jobs:
     name: "Test on Node.js ${{ matrix.node }} / ${{ matrix.os }} / shard ${{ matrix.shard }}"
     runs-on: ${{ matrix.os }}
     strategy:
+      # Keep every shard's result and timing when another shard fails.
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
         node: [22.x, 24.x]
