@@ -552,15 +552,16 @@ architecture-beta
 
 ### Description blocks
 
-Reuse shared `layoutDescriptionBlock`: touching keyword/opener and interior
-edges stay touching; present outer runs become one space. Whitespace-only
-interiors become `{}` because no text needs surrounding space. Plain opener
-whitespace can join; real trivia keeps its break. Keep comment/directive-only
-interiors. Ordinary description body and standalone comment lines align one
-level inside the statement, since the Db removes indentation after LF. Keep line
-breaks, internal blank lines and trailing whitespace. Directives and shared
-removed comment regions keep their complete source. A separate closer aligns
-with the statement; the first closing brace still ends the value.
+Reuse shared `layoutDescriptionBlock`: separate the keyword and opening brace
+with one space so the block boundary is clear. Interior edges stay touching
+where written; present outer runs become one space. Whitespace-only interiors
+become `{}` because no text needs surrounding space. Plain opener whitespace can
+join; real trivia keeps its break. Keep comment/directive-only interiors.
+Ordinary description body and standalone comment lines align one level inside
+the statement, since the Db removes indentation after LF. Keep line breaks,
+internal blank lines and trailing whitespace. Directives and shared removed
+comment regions keep their complete source. A separate closer aligns with the
+statement; the first closing brace still ends the value.
 
 [fixture: architecture/description-blocks/asymmetric]
 
@@ -602,8 +603,8 @@ Output
 
 ```mmd
 architecture-beta
-  accDescr{A }
-  accDescr{ B}
+  accDescr {A }
+  accDescr { B}
   accDescr {C}
   accDescr { D }
 ```

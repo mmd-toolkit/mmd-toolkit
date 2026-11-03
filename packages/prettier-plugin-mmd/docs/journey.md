@@ -494,11 +494,14 @@ line, or a colon written on a later line than the keyword, is printed on one
 line. [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/keyword-and-colon-over-lines-joined]
 
-Align the lines of an `accDescr { ... }` body one step inside its statement.
-Mermaid discards indentation after LF from the description. Its `}` stands at
-the level of its statement; a text on the line of the `{` has one space inside
-the braces where it was written apart, and the braces that touch their text keep
-touching. [fixture: accessibility-statements/block-lines-kept] [fixture:
+Where `accDescr` and `{` print on the same line, separate them by one space,
+including when they were written touching. Existing opener-line breaks retain
+their own rules. Protected trivia and semicolon layouts keep their gaps. Align
+the lines of an `accDescr { ... }` body one step inside its statement. Mermaid
+discards indentation after LF from the description. Its `}` stands at the level
+of its statement; a text on the line of the `{` has one space inside the braces
+where it was written apart, and the braces that touch their text keep touching.
+[fixture: accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-text-on-opening-line] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept] Whitespace inside
 the text is part of it, and stays. [fixture:
@@ -554,8 +557,8 @@ journey
 An empty block, which changes nothing, is a statement of its own. The
 whitespace-only interior of a description block, including tabs, line breaks and
 Unicode whitespace, prints `{}`: there is no text for interior whitespace to
-surround. An already empty interior stays empty. A touching keyword stays
-touching: `accDescr{  }` becomes `accDescr{}`. [fixture:
+surround. An already empty interior stays empty. The ordinary keyword/opener gap
+uses one space: `accDescr{  }` becomes `accDescr {}`. [fixture:
 empty-description-blocks/empty-whitespace-interiors] [test: journey Unicode and
 tab interiors] [fixture: empty-description-blocks/inner-whitespace-collapsed]
 [fixture: empty-description-blocks/touching-kept] [fixture:
@@ -581,9 +584,9 @@ Output
 
 ```mmd
 journey
-  accDescr{}
   accDescr {}
-  accDescr{}
+  accDescr {}
+  accDescr {}
 ```
 
 Input
@@ -729,7 +732,7 @@ Output
 ```mmd
 journey
   accDescr { d }
-  accDescr{e}
+  accDescr {e}
   accDescr {f}
 ```
 

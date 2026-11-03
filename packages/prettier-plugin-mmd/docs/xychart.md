@@ -582,16 +582,19 @@ accessibility-statements/text-that-looks-like-a-statement] [fixture:
 accessibility-statements/without-text-at-the-end] [fixture:
 accessibility-statements/without-text-and-trailing-whitespace]
 
-Align the lines of an `accDescr { ... }` body one step inside its statement.
-Mermaid discards indentation after LF from the description. Its `}` stands at
-the level of its statement; a text on the line of the `{` has one space inside
-the braces where it was written apart, and the braces that touch their text keep
-touching. A block that is not closed runs to the end of the text, without adding
-a `}` or changing its EOF ending: mermaid.js reads no text for it, and a `}`
-that the printer wrote would make the block a description (`accDescr {` and
-`abc` at the end of the text have an empty description in the Db, and the same
-with a `}` have `abc`). [fixture: accessibility-statements/block-lines-kept]
-[fixture: accessibility-statements/block-text-on-the-opening-line] [fixture:
+Where `accDescr` and `{` print on the same line, separate them by one space,
+including when they were written touching. Existing opener-line breaks retain
+their own rules. Protected trivia and semicolon layouts keep their gaps. Align
+the lines of an `accDescr { ... }` body one step inside its statement. Mermaid
+discards indentation after LF from the description. Its `}` stands at the level
+of its statement; a text on the line of the `{` has one space inside the braces
+where it was written apart, and the braces that touch their text keep touching.
+A block that is not closed runs to the end of the text, without adding a `}` or
+changing its EOF ending: mermaid.js reads no text for it, and a `}` that the
+printer wrote would make the block a description (`accDescr {` and `abc` at the
+end of the text have an empty description in the Db, and the same with a `}`
+have `abc`). [fixture: accessibility-statements/block-lines-kept] [fixture:
+accessibility-statements/block-text-on-the-opening-line] [fixture:
 accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
 [fixture: accessibility-statements/block-then-statement-on-the-closing-line]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept] [fixture:
@@ -667,8 +670,8 @@ xychart
 An empty block, which changes nothing, is a statement of its own. The
 whitespace-only interior of a description block, including tabs, line breaks and
 Unicode whitespace, prints `{}`: there is no text for interior whitespace to
-surround. An already empty interior stays empty. A touching keyword stays
-touching: `accDescr{  }` becomes `accDescr{}`. [fixture:
+surround. An already empty interior stays empty. The ordinary keyword/opener gap
+uses one space: `accDescr{  }` becomes `accDescr {}`. [fixture:
 empty-description-blocks/empty-whitespace-interiors] [test: xychart Unicode and
 tab interiors] A block with a directive or comment line keeps its contents and
 line breaks, with standalone trivia one level inside and its closer at statement
@@ -699,9 +702,9 @@ Output
 
 ```mmd
 xychart
-  accDescr{}
   accDescr {}
-  accDescr{}
+  accDescr {}
+  accDescr {}
 ```
 
 Input

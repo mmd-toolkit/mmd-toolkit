@@ -346,7 +346,8 @@ packet
 ### Description blocks
 
 共有の `layoutDescriptionBlock` を使います。
-keyword と opener、内側の接触は保ち、存在する空白列は1個にします。
+ブロックの境界がわかるよう、keyword と opener の間に空白を1個置きます。
+内側の接触は保ち、存在する空白列は1個にします。
 通常の opener 空白は物理・Unicode 行を越えて結合します。
 実際の trivia があれば改行を保ちます。
 囲む文字列がないため、空白だけの内側は `{}` にします。
@@ -389,10 +390,10 @@ directive と共有の除去対象となるコメント領域は原文全体を�
 
 ```mmd
 packet
-  accDescr{A}
+  accDescr {A}
   accDescr { B }
   accDescr {C }
-  accDescr{ D}
+  accDescr { D}
 ```
 
 ### Multiline values

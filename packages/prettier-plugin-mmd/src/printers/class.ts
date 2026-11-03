@@ -26,6 +26,7 @@ import {
   layoutBlockOpening,
   layoutClassHeader,
   layoutClassStatement,
+  printClassMethod,
 } from "./class-layout.ts"
 import { expectToken, expectValue } from "./layout.ts"
 import { narrowPath } from "./paths.ts"
@@ -77,6 +78,10 @@ export function printClass(
         options,
       )
     case "ClassMethod":
+      return (
+        printClassMethod(source, node) ??
+        printAsWritten(source, node.range[0], node.range[1])
+      )
     case "ClassAttribute":
     case "ClassAnnotation":
       // A member line of a body, kept as written (docs/class.md, Member
@@ -228,7 +233,7 @@ function printNamespace(
 
 /**
  * Prints a class statement with its member body: the line of the class with
- * its `{`, the member lines one level deeper, each as written, and the `}`
+ * its `{`, the member lines one level deeper using their own layouts, and the `}`
  * (docs/class.md, Member bodies).
  */
 function printMemberBlock(

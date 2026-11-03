@@ -31,7 +31,7 @@ export const treeviewCases: readonly TreeviewCase[] = [
   {
     name: "treeview/description-blocks/block-unicode-empty",
     input: "treeView-beta\naccDescr{\u00a0\u2028\u2029}\nR\n",
-    output: "treeView-beta\n  accDescr{}\n  R\n",
+    output: "treeView-beta\n  accDescr {}\n  R\n",
     options: {},
   },
   {
@@ -61,7 +61,7 @@ export const treeviewCases: readonly TreeviewCase[] = [
   {
     name: "treeview/line-terminators-and-unicode/eol-block-and-directive",
     input: "treeView-beta\r\naccDescr{A\r\n B}\r\nR%%{init: {\r\n}}%%\r\n",
-    output: "treeView-beta\n  accDescr{A\n    B}\n  R%%{init: {\n}}%%\n",
+    output: "treeView-beta\n  accDescr {A\n    B}\n  R%%{init: {\n}}%%\n",
     options: {},
   },
   {
@@ -359,7 +359,7 @@ export const treeviewCases: readonly TreeviewCase[] = [
     input:
       "treeView-beta\naccDescr{}\nroot\n├── a\u2029%% c\n :::later\n└── z\n",
     output:
-      "treeView-beta\naccDescr{}\nroot\n├── a\u2029%% c\n    :::later\n└── z\n",
+      "treeView-beta\naccDescr {}\nroot\n├── a\u2029%% c\n    :::later\n└── z\n",
     options: {},
   },
   {

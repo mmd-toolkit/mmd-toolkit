@@ -556,7 +556,8 @@ architecture-beta
 ### Description blocks
 
 共有の `layoutDescriptionBlock` を使います。
-keyword と開始、内側の端の接触を保ち、存在する外側の空白列は1個にします。
+ブロックの境界がわかるよう、keyword と開始波括弧の間に空白を1個置きます。
+内側の端の接触を保ち、存在する外側の空白列は1個にします。
 空白だけの内側は囲む文字がないため `{}` にします。
 開始前の単なる空白は結合し、実際の trivia は改行を保ちます。
 comment・directive だけの内側を保ちます。
@@ -606,8 +607,8 @@ directive と共有の除去対象となるコメント領域は原文全体を�
 
 ```mmd
 architecture-beta
-  accDescr{A }
-  accDescr{ B}
+  accDescr {A }
+  accDescr { B}
   accDescr {C}
   accDescr { D }
 ```

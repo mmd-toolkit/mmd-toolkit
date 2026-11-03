@@ -10,6 +10,7 @@ import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import {
   collectAtoms,
   collectValueNodes,
+  descriptionOpeningRules,
   expectToken,
   expectValue,
   findAccDescrBlockClosing,
@@ -275,7 +276,7 @@ export function layoutSequenceStatement(
           values,
           findAccDescrBlockStretches(source, block),
         ),
-        rules: new Map(),
+        rules: descriptionOpeningRules(source, start),
         outdented: closing === null ? new Set() : new Set([closing]),
         lineBreaks: "kept",
       })

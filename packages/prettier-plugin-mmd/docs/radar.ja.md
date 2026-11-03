@@ -220,13 +220,15 @@ radar-beta
 
 ### Multi-line statements
 
-文法が空白として読む entry の改行は、trivia がなければ結合します。
+コメントや directive のない文では、
+文法が空白として読む entry の改行を結合します。
 対象は `{` の後、カンマの後、`}` の前です。
 数だけのリストも名前つきリストも、xychart・quadrant と同様に 1 行にします。
 カンマの前や名前つき entry の途中へ改行を追加しません。
 コメントや Root directive のある改行は残します。
 普通の継続行とコメントは 2 段、別行の `}` は文の位置にそろえます。
-ほかの普通の間隙は結合できます。
+コメント付きのリストをブロックとして読みやすく保つため、
+その文のほかの entry の改行も残します。
 hidden の境界、値の行、semicolon の保護区間は継続列を含め保ちます。
 保護区間内に継続の字下げを足しません。
 その後の普通の間隙には通常の空白規則を適用します。
@@ -292,7 +294,8 @@ hidden の境界、値の行、semicolon の保護区間は継続列を含め保
 radar-beta
   curve trial{4,
     %% entry note
-    5}
+    5
+  }
 ```
 
 ### Named entries
@@ -488,7 +491,8 @@ radar-beta
 ### Description blocks
 
 説明は共有の `layoutDescriptionBlock` を通します。
-keyword と opener、内端の接触は保ち、存在する外端の空白は 1 個にします。
+ブロックの境界がわかるよう、keyword と opener の間に空白を1個置きます。
+内端の接触は保ち、存在する外端の空白は 1 個にします。
 空白だけの内部は、空白で囲む文字がないため `{}` にします。
 opener 前の普通の空白は結合し、実際の trivia のある改行は残します。
 コメント・directive だけの内部を保ちます。
@@ -527,9 +531,9 @@ directive と共有の除去対象となるコメント領域は原文全体を�
 
 ```mmd
 radar-beta
-  accDescr{Word}
+  accDescr {Word}
   accDescr { Word }
-  accDescr{Left }
+  accDescr {Left }
   accDescr { Right}
 ```
 

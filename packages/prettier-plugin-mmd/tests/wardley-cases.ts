@@ -12,13 +12,14 @@ export const wardleyCases: readonly WardleyCase[] = [
   {
     name: "wardley/semicolons/style-comment-ls-connected",
     input: 'wardley-beta\nnote "style\u2028%% removed\n:#x;"[0.3,0.6]',
-    output: 'wardley-beta\n  note "style\u2028%% removed\n:#x;"[0.3,0.6]\n',
+    output: 'wardley-beta\n  note "style\u2028%% removed\n:#x;" [0.3, 0.6]\n',
     options: {},
   },
   {
     name: "wardley/semicolons/classdef-comment-ps-connected",
     input: 'wardley-beta\nnote "classDef\u2029%% removed\n:#x;"[0.3,0.6]',
-    output: 'wardley-beta\n  note "classDef\u2029%% removed\n:#x;"[0.3,0.6]\n',
+    output:
+      'wardley-beta\n  note "classDef\u2029%% removed\n:#x;" [0.3, 0.6]\n',
     options: {},
   },
   {
@@ -70,7 +71,7 @@ export const wardleyCases: readonly WardleyCase[] = [
     input:
       'wardley-beta\nnote "before\u2028%% before\nstyle\u2028%% after\n:#x;"[0.3,0.6]',
     output:
-      'wardley-beta\n  note "before\u2028%% before\nstyle\u2028%% after\n:#x;"[0.3,0.6]\n',
+      'wardley-beta\n  note "before\u2028%% before\nstyle\u2028%% after\n:#x;" [0.3, 0.6]\n',
     options: {},
   },
   {
@@ -91,7 +92,7 @@ export const wardleyCases: readonly WardleyCase[] = [
     input:
       'wardley-beta\nnote "prefix\u2029%% before\nclassDef\u2029%% after\n:#q;"[0.4,0.7]',
     output:
-      'wardley-beta\n  note "prefix\u2029%% before\nclassDef\u2029%% after\n:#q;"[0.4,0.7]\n',
+      'wardley-beta\n  note "prefix\u2029%% before\nclassDef\u2029%% after\n:#q;" [0.4, 0.7]\n',
     options: {},
   },
   {

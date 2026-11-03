@@ -567,7 +567,7 @@ A ||--u-B : x
 erDiagram
   A:::c
   p[P]
-  accDescr{ D }
+  accDescr { D }
   A ||--u-B : x
   1one to one B : x
 ```
@@ -601,9 +601,9 @@ erDiagram
   SUBGRAPH S
     A
   END
-  CLASSDEF a fill:red
+  CLASSDEF a fill: red
   CLASS A a
-  STYLE A fill:red
+  STYLE A fill: red
   DIRECTION lr
   ACCTITLE: T
   ACCDESCR: D
@@ -962,25 +962,27 @@ erDiagram
 
 ### スタイルとクラス
 
-`classDef` の名前と、`class` と `style` の実体とクラスは、
-両側の名前に接する `,` で区切ります。
-`classDef a ,b ,  c fill:red` は `classDef a,b,c fill:red` にします。
+名前とクラスのリストでは、名前に接する comma を使います。
+最初のスタイルは空白 1 つの後に置きます。
+`style` と `classDef` の、通常の 1 行のプロパティと値からなるスタイルでは、
+最初の `:` の前を詰め、空でない値の前に空白を 1 つ置きます。
+スタイル間は `,` とその後の空白 1 つで区切ります。
+プロパティと値の内部は、値の語の間の連続空白も含めて保ちます。
+Mermaid はスタイルの単位をつなげて読むため、
+`stroke-dasharray: 5 5` は引き続き `stroke-dasharray:55` です。
+`fill   : navy, stroke  : black` は `fill: navy, stroke: black` にします。
+`stroke-dasharray:  5    5` は、値の間の空白 4 つを保ちます。
+通常はつなげる見出しや外側の改行があっても、最初の整形で同じ間隔にします。
+スタイル内部の改行区切り、所有する trivia、同じ物理行のセミコロンがある場合は、
+既存のスタイルの配置を保ちます。
+キーワードの大文字小文字は保ちます。
+[fixture: styles-and-classes/style-unit-padding]
 [fixture: styles-and-classes/class-def-names]
 [fixture: styles-and-classes/style-names]
 [fixture: styles-and-classes/class-lists]
-最初のスタイルは空白 1 つの後に置きます。
-1 つのスタイルの中の空白は、書かれたまま印字します。
-mermaid.js はスタイルのテキストをつなげて間の空白を捨てるので、
-`stroke-dasharray: 5 5` はスタイル `stroke-dasharray:55` ですが、
-空白は `stroke-dasharray:  5    5` のように作者が置いた所に残します。
 [fixture: styles-and-classes/styles-as-written]
 [fixture: styles-and-classes/style-inner-whitespace-kept]
-2 つのスタイルの間の `,` の周りの空白は、トークンの間の空白の連続なので、
-空白 1 つにします。
-`style id2   fill:red   ,   stroke:blue` は、
-`style id2 fill:red , stroke:blue` と印字します。
-[fixture: styles-and-classes/styles-as-written]
-キーワードは大文字小文字を保ちます。
+
 [fixture: styles-and-classes/keyword-case-kept]
 
 キーワードや名前の後の空白が改行を取り込んで、
@@ -1030,8 +1032,8 @@ classDef default fill:#f9f,stroke-width:4px
 
 ```mmd
 erDiagram
-  classDef a,b,c fill:red
-  classDef default fill:#f9f,stroke-width:4px
+  classDef a,b,c fill: red
+  classDef default fill: #f9f, stroke-width: 4px
 ```
 
 入力
@@ -1049,9 +1051,9 @@ style  id2   fill:red   ,   stroke:blue
 
 ```mmd
 erDiagram
-  classDef a fill : #f9f , stroke:#333
-  style id1 fill:#bbf,stroke:#f66,stroke-dasharray: 5 5
-  style id2 fill:red , stroke:blue
+  classDef a fill: #f9f, stroke: #333
+  style id1 fill: #bbf, stroke: #f66, stroke-dasharray: 5 5
+  style id2 fill: red, stroke: blue
 ```
 
 入力
@@ -1107,7 +1109,8 @@ subgraph 内では、生の説明がその所属の読みにも使われるた�
 空のブロックは文の 1 つで、前の説明を Db に残します。
 内側は `{}` と印字し、`accDescr { }` は `accDescr {}` になります。
 空白の連続、改行、NBSP だけの内側も同じです。
-すでに空の内側は空のまま、`accDescr{}` は接したままです。
+すでに空の内側は空のままです。
+キーワードと開始括弧の間には空白を 1 つ置きます。
 空白で囲む本文がないので、Db が同じ形の選択は、
 [flowchart のアクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)、
 agentflow、 usecase に合わせます。

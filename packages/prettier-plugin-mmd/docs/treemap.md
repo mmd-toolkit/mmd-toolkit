@@ -349,9 +349,13 @@ treemap
 
 Put one ordinary space before a non-null style. Plain maximal separator
 whitespace may cross blank lines; join it even when the literal looks like
-another row or class definition. The AST already owns that text as style.
-Preserve separator gaps containing comments/directives so their ownership and
-required whitespace survive.
+another row or class definition. The AST already owns that text as style. Keep
+the line breaks in separator gaps containing comments/directives and align their
+standalone trivia and style continuation one level inside `classDef`, so the
+style remains visibly attached to its definition. The maximal separator discards
+this indentation; the style value itself is unchanged. Inline native comments
+that already supply an indentation run and semicolon-protected prefixes retain
+their existing columns.
 
 [fixture: treemap/style-gaps/spaces]
 
@@ -362,6 +366,12 @@ required whitespace survive.
 [fixture: treemap/style-gaps/comment]
 
 [fixture: treemap/style-gaps/directive]
+
+[fixture: treemap/style-gaps/css-comment]
+
+[fixture: treemap/style-gaps/css-directive-tabs]
+
+[fixture: treemap/style-gaps/css-comment-semicolon-kept]
 
 Input (escaped): `"treemap\nclassDef zz\n\n  \"Apparent\":2"`.
 
@@ -506,10 +516,11 @@ treemap
 
 ### Description blocks
 
-Use shared description-block layout. Preserve touching keyword/opener and
-interior edges; existing edge whitespace becomes one space, while
-whitespace-only interiors become `{}` because no text needs surrounding padding.
-Join plain opener whitespace, keep comment/directive contents and their
+Use shared description-block layout. Put one space between `accDescr` and `{`,
+even when they originally touched, to distinguish the keyword from its body.
+Preserve touching interior edges; existing edge whitespace becomes one space,
+while whitespace-only interiors become `{}` because no text needs surrounding
+padding. Join plain opener whitespace, keep comment/directive contents and their
 boundaries, and align body lines one step inside the statement while retaining
 internal blank lines. Mermaid discards indentation after LF from the
 description. The body uses the configured indentation, including tabs and the
@@ -593,7 +604,8 @@ containing comments/directives and their required newlines. Separate selector
 markers and identifiers start at column one because spaces/tabs there reject;
 leaf separator/number continuations align with their statement unless an earlier
 native-comment gap already supplies an indentation run, when no second run is
-added. Standalone trivia marks start at column one.
+added. Standalone trivia marks start at column one except in the class style
+separator described in [Style gaps](#style-gaps).
 
 [fixture: treemap/component-newlines/leaf]
 
@@ -622,13 +634,14 @@ treemap
 
 ### Comments
 
-Put ordinary standalone comment marks at column one; keep inline comments on
-their line and preserve content, marks, tails, order and ownership. This avoids
-introducing an indentation unit before native bare or nonword comments. When
-whitespace before an inline comment supplied the next row’s indent, move it to
-that row even if the comment then touches the preceding token. Use the AST
-hierarchy rather than whitespace already removed with common comment regions.
-Native comments retain LS/PS as content.
+Put ordinary standalone comment marks at column one, except in
+[Style gaps](#style-gaps); keep inline comments on their line and preserve
+content, marks, tails, order and ownership. This avoids introducing an
+indentation unit before native bare or nonword comments. When whitespace before
+an inline comment supplied the next row’s indent, move it to that row even if
+the comment then touches the preceding token. Use the AST hierarchy rather than
+whitespace already removed with common comment regions. Native comments retain
+LS/PS as content.
 
 [fixture: treemap/comments/standalone]
 
@@ -665,13 +678,13 @@ treemap
 ### Directives
 
 Keep Root directive text, order and component/value ownership; standalone
-directives start at column one so removal leaves no extra indentation run. For
-directives inside a row-leading unit, count spaces/tabs on both sides. Use
-shared leading-gap placement: retain following gaps while they fit, shorten
-excess from the last gap, then supply the remaining configured indentation
-before the first directive. Earlier-line carried units move once instead. Keep
-necessary class keyword/name whitespace and never use a directive as its
-substitute.
+directives start at column one so removal leaves no extra indentation run,
+except in [Style gaps](#style-gaps). For directives inside a row-leading unit,
+count spaces/tabs on both sides. Use shared leading-gap placement: retain
+following gaps while they fit, shorten excess from the last gap, then supply the
+remaining configured indentation before the first directive. Earlier-line
+carried units move once instead. Keep necessary class keyword/name whitespace
+and never use a directive as its substitute.
 
 [fixture: treemap/directives/leading]
 

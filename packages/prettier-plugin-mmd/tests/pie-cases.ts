@@ -72,7 +72,7 @@ export const pieCases: readonly PieCase[] = [
   {
     name: "pie/line-terminators-and-unicode/unicode-block-empty",
     input: 'pie\naccDescr{\u00a0\u2028\u2029}\n"Data":2',
-    output: 'pie\n  accDescr{}\n  "Data" : 2\n',
+    output: 'pie\n  accDescr {}\n  "Data" : 2\n',
     options: {},
   },
   {
@@ -125,7 +125,7 @@ export const pieCases: readonly PieCase[] = [
     input:
       'pie\naccDescr{\u00a0  first\u2028middle\u2029last  \ufeff}\n"Block edges":4',
     output:
-      'pie\n  accDescr{ first\u2028middle\u2029last }\n  "Block edges" : 4\n',
+      'pie\n  accDescr { first\u2028middle\u2029last }\n  "Block edges" : 4\n',
     options: {},
   },
   {

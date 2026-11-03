@@ -554,7 +554,7 @@ Output
 erDiagram
   A:::c
   p[P]
-  accDescr{ D }
+  accDescr { D }
   A ||--u-B : x
   1one to one B : x
 ```
@@ -588,9 +588,9 @@ erDiagram
   SUBGRAPH S
     A
   END
-  CLASSDEF a fill:red
+  CLASSDEF a fill: red
   CLASS A a
-  STYLE A fill:red
+  STYLE A fill: red
   DIRECTION lr
   ACCTITLE: T
   ACCDESCR: D
@@ -936,22 +936,25 @@ erDiagram
 
 ### Styles and classes
 
-The names of a `classDef` statement, and the entities and classes of a `class`
-and a `style` statement, are separated by a `,` that touches the names on both
-sides: `classDef a ,b ,  c fill:red` is printed `classDef a,b,c fill:red`.
-[fixture: styles-and-classes/class-def-names] [fixture:
-styles-and-classes/style-names] [fixture: styles-and-classes/class-lists] The
-first style stands after one space. The whitespace inside a style is printed as
-written: mermaid.js joins the texts of a style and drops the whitespace between
-them, so `stroke-dasharray: 5 5` is the style `stroke-dasharray:55`, and the
-whitespace stays where the author put it, as in `stroke-dasharray:  5    5`.
-[fixture: styles-and-classes/styles-as-written] [fixture:
-styles-and-classes/style-inner-whitespace-kept] The whitespace around a `,`
-between two styles is a run of whitespace between tokens, and becomes one space:
-`style id2   fill:red   ,   stroke:blue` is printed
-`style id2 fill:red , stroke:blue`. [fixture:
-styles-and-classes/styles-as-written] The keywords keep their case. [fixture:
-styles-and-classes/keyword-case-kept]
+Name and class lists use commas without surrounding spaces. The first style
+stands after one space. For ordinary single-line property/value styles in
+`style` or `classDef`, put no space before the first colon of each style and one
+before its nonempty value; separate styles with a comma and one following space.
+Keep property and value interiors, including repeated spaces between value
+words. Mermaid concatenates the native style units: `stroke-dasharray: 5 5`
+still means `stroke-dasharray:55`. For example, `fill   : navy, stroke  : black`
+becomes `fill: navy, stroke: black`, while `stroke-dasharray:  5    5` keeps the
+four spaces between its values. A header or exterior line break that ordinarily
+joins does not delay this spacing until another formatting. Style interiors
+containing line separators, owned trivia, and statements with a semicolon on
+their physical line retain the existing style layout. Keyword case stays
+written. [fixture: styles-and-classes/style-unit-padding] [fixture:
+styles-and-classes/class-def-names] [fixture: styles-and-classes/style-names]
+[fixture: styles-and-classes/class-lists] [fixture:
+styles-and-classes/styles-as-written] [fixture:
+styles-and-classes/style-inner-whitespace-kept]
+
+[fixture: styles-and-classes/keyword-case-kept]
 
 A `classDef` or `style` statement written over lines, with whitespace after a
 keyword or a name that takes the line break, is printed on one line. [fixture:
@@ -996,8 +999,8 @@ Output
 
 ```mmd
 erDiagram
-  classDef a,b,c fill:red
-  classDef default fill:#f9f,stroke-width:4px
+  classDef a,b,c fill: red
+  classDef default fill: #f9f, stroke-width: 4px
 ```
 
 Input
@@ -1015,9 +1018,9 @@ Output
 
 ```mmd
 erDiagram
-  classDef a fill : #f9f , stroke:#333
-  style id1 fill:#bbf,stroke:#f66,stroke-dasharray: 5 5
-  style id2 fill:red , stroke:blue
+  classDef a fill: #f9f, stroke: #333
+  style id1 fill: #bbf, stroke: #f66, stroke-dasharray: 5 5
+  style id2 fill: red, stroke: blue
 ```
 
 Input
@@ -1071,8 +1074,8 @@ accessibility-statements/block-text-on-opening-line] An empty block is a
 statement of its own that keeps any prior description in the Db. It prints `{}`
 internally: `accDescr { }` becomes `accDescr {}`, including whitespace runs,
 line breaks and an NBSP-only interior. An already empty interior stays empty,
-and `accDescr{}` stays touching. No text needs surrounding whitespace, so the
-Db-equal choice follows
+and the keyword and opening brace have one space between them. No text needs
+surrounding whitespace, so the Db-equal choice follows
 [flowchart's accessibility lines](./flowchart.md#accessibility-lines), agentflow
 and usecase. [test: accessibility revisions: er empty-description-nbsp] Blocks
 with comments or directives keep their line breaks and complete contents, while

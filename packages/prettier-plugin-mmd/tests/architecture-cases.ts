@@ -12,7 +12,7 @@ export const architectureCases: readonly ArchitectureCase[] = [
   {
     name: "architecture/description-blocks/unicode-empty",
     input: "architecture-beta\naccDescr{ \t\n\u2028\u00a0}\n",
-    output: "architecture-beta\n  accDescr{}\n",
+    output: "architecture-beta\n  accDescr {}\n",
     options: {},
   },
   {
@@ -108,7 +108,7 @@ export const architectureCases: readonly ArchitectureCase[] = [
   {
     name: "architecture/line-terminators-and-unicode/description-content",
     input: "architecture-beta\naccDescr{\u00a0A\u2028B\u2029C\ufeff}\n",
-    output: "architecture-beta\n  accDescr{ A\u2028B\u2029C }\n",
+    output: "architecture-beta\n  accDescr { A\u2028B\u2029C }\n",
     options: {},
   },
   {

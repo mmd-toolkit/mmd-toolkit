@@ -807,7 +807,9 @@ block-beta
 内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
 囲む空白を要する本文がないためです。
 すでに空の内側は空のままです。
-接した keyword は接したまま、 `accDescr{  }` は `accDescr{}` にします。
+keyword と opener の間は、元が接していても空白 1 個にします。
+語と本文の開始を見分けやすくするためで、
+`accDescr{  }` は `accDescr {}` にします。
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: block Unicode and tab interiors]
 指令かコメント行を持つブロックは、内容と改行を保ち、

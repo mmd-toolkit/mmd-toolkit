@@ -593,23 +593,22 @@ direction-and-accessibility/a11y-trimmed] [test: usecase: a11y-unicode-exterior]
 
 Description blocks reuse [class multiline values](./class.md#multi-line-values):
 align body lines one step inside the statement and a separate `}` with the
-statement. Mermaid discards indentation after LF from the description. The
-keyword-to-brace gap reuses
-[flowchart's Whitespace between tokens](./flowchart.md#whitespace-between-tokens)
-with the same reason: the common token-gap rule keeps contact that Mermaid may
-need to read a token. Usecase has no reason to differ among these Db-equal
-forms: `accDescr{ a }` stays touching; a space, run of spaces or tab becomes one
-space. [fixture: direction-and-accessibility/keyword-brace-touching] [fixture:
+statement, including a block whose only content is a comment line. Mermaid
+discards indentation after LF from the description. Put one space between
+`accDescr` and `{`, including when they originally touched, so the keyword and
+body opener have a visible boundary. [fixture:
+direction-and-accessibility/keyword-brace-touching] [fixture:
 direction-and-accessibility/keyword-brace-space] [fixture:
 direction-and-accessibility/keyword-brace-run] [test: accessibility revisions:
-usecase keyword-brace-tab] Empty and whitespace-only interiors print `{}`,
-keeping that exterior gap. The source retention rules for protected common
-comment regions and semicolon prefixes still take priority. Structural
-indentation keeps the same layout with zero width or tabs. [fixture:
-direction-and-accessibility/a11y-closer-aligned] [fixture:
-direction-and-accessibility/a11y-closer-tabs] [fixture:
+usecase keyword-brace-tab] Empty and whitespace-only interiors print `{}`. The
+source retention rules for protected common comment regions and semicolon
+prefixes still take priority. Structural indentation keeps the same layout with
+zero width or tabs. [fixture: direction-and-accessibility/a11y-closer-aligned]
+[fixture: direction-and-accessibility/a11y-closer-tabs] [fixture:
 direction-and-accessibility/a11y-closer-zero] [fixture:
 direction-and-accessibility/a11y-directive-padding]
+
+[fixture: direction-and-accessibility/a11y-comment-empty-tabs]
 
 [fixture: direction-and-accessibility/direction-values] [fixture:
 direction-and-accessibility/a11y-padding] [fixture:
@@ -643,7 +642,7 @@ Output
 
 ```mmd
 usecase-beta
-  accDescr{ a }
+  accDescr { a }
   A[Keyword gap]
 ```
 

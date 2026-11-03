@@ -66,7 +66,7 @@ requirementDiagram
     type: t
   }
   r - satisfies -> e
-  style r fill:red
+  style r fill: red
 ```
 
 Input
@@ -93,11 +93,17 @@ requirementDiagram
 
 ### Bodies
 
+When a header continues across trivia, align the physical line containing its
+opening brace with the initial keyword, so the body remains one level deeper. Do
+not change a value spanning that line or protected source boundaries. [fixture:
+bodies/header-completion-after-comment] [fixture:
+multi-line-statements/header-directive-continuation]
+
 The `{` of a requirement or an element stands on the line of its keyword, name,
 and classes, after one space; the fields follow on lines of their own, and the
 `}` closes the body on a line of its own. A header containing comments or
-directives keeps its line breaks and indents structural continuations one level
-inside the keyword. [fixture:
+directives keeps its line breaks and indents other structural continuations one
+level inside the keyword. [fixture:
 multi-line-statements/header-directive-continuation] The `{` stands after one
 space as in an ER attribute block, which is how the documentation of mermaid.js
 writes it; where the name is unquoted a space is needed anyway, so the statement
@@ -297,7 +303,7 @@ requirementDiagram
   }
   "r" - satisfies -> s
   s - satisfies -> "r"
-  style "r" fill:red
+  style "r" fill: red
 ```
 
 Input
@@ -452,21 +458,26 @@ requirementDiagram
 
 ### Styles and classes
 
-The names of a `classDef` statement, and the names and the classes of a `style`
-and a `class` statement, are separated by a `,` that touches the names on both
-sides: `classDef a ,b ,  c fill:red` is printed `classDef a,b,c fill:red`.
-[fixture: styles-and-classes/class-def-names] [fixture:
-styles-and-classes/style-names] [fixture: styles-and-classes/class-lists] The
-first style stands after one space, and the two lists of a `class` statement are
-separated by one space. The whitespace inside a style is printed as written:
-mermaid.js joins the texts of a style and drops the whitespace between them, so
-`stroke-dasharray: 5 5` is the style `stroke-dasharray:55`, and the whitespace
-stays where the author put it. The whitespace around a `,` between two styles is
-a run of whitespace between tokens, and becomes one space. [fixture:
-styles-and-classes/styles-as-written] The whitespace at the end of the statement
-is dropped, since the style context reads the line feed as the end of the
-statement. [fixture: styles-and-classes/trailing-whitespace-dropped] The
-keywords keep their case. [fixture: styles-and-classes/keyword-case-kept]
+Name and class lists use commas without surrounding spaces. The two lists of a
+`class` statement remain separated by one space. Statement-ending whitespace is
+dropped where the style context ends at LF. The first style stands after one
+space. For ordinary single-line property/value styles in `style` or `classDef`,
+put no space before the first colon of each style and one before its nonempty
+value; separate styles with a comma and one following space. Keep property and
+value interiors, including repeated spaces between value words. Mermaid
+concatenates the native style units: `stroke-dasharray: 5 5` still means
+`stroke-dasharray:55`. For example, `fill   : navy, stroke  : black` becomes
+`fill: navy, stroke: black`, while `stroke-dasharray:  5    5` keeps the four
+spaces between its values. A header or exterior line break that ordinarily joins
+does not delay this spacing until another formatting. Style interiors containing
+line separators, owned trivia, and statements with a semicolon on their physical
+line retain the existing style layout. Keyword case stays written. [fixture:
+styles-and-classes/style-unit-padding] [fixture:
+styles-and-classes/class-def-names] [fixture: styles-and-classes/style-names]
+[fixture: styles-and-classes/class-lists] [fixture:
+styles-and-classes/styles-as-written] [fixture:
+styles-and-classes/trailing-whitespace-dropped] [fixture:
+styles-and-classes/keyword-case-kept]
 
 A `;` at the end of a style is a character of the style, or a `;` that the line
 rule of mermaid.js ignores (diagrams/requirement.md, The style context and
@@ -502,9 +513,9 @@ Output
 
 ```mmd
 requirementDiagram
-  classDef a,b,c fill:red
-  classDef default fill:#f9f,stroke-width:4px
-  classDef "d" fill:red
+  classDef a,b,c fill: red
+  classDef default fill: #f9f, stroke-width: 4px
+  classDef "d" fill: red
 ```
 
 Input
@@ -523,9 +534,9 @@ Output
 
 ```mmd
 requirementDiagram
-  style r fill : #f9f , stroke:#333
+  style r fill: #f9f, stroke: #333
   style r stroke-dasharray: 5 5
-  style r fill:red , stroke:blue
+  style r fill: red, stroke: blue
   style r fill: red;
 ```
 
@@ -738,9 +749,9 @@ requirementDiagram
   requirement r {
     id: 1
   }
-  style r fill:red
+  style r fill: red
   "r":::c
-  classDef c fill:red
+  classDef c fill: red
   "r":::c
   class r c
   "r" - satisfies -> b
@@ -849,8 +860,8 @@ empty-description-blocks/in-body-alone]
 
 The whitespace-only interior of a description block, including tabs, line breaks
 and Unicode whitespace, prints `{}`: there is no text for interior whitespace to
-surround. An already empty interior stays empty. A touching keyword stays
-touching: `accDescr{  }` becomes `accDescr{}`. [fixture:
+surround. An already empty interior stays empty. The keyword and opening brace
+have one space between them: `accDescr{  }` becomes `accDescr {}`. [fixture:
 empty-description-blocks/empty-whitespace-interiors] [test: requirement Unicode
 and tab interiors] [test: requirement body Unicode and tab interiors] [fixture:
 empty-description-blocks/inner-whitespace-collapsed] [fixture:
@@ -1078,7 +1089,7 @@ Output
 
 ```mmd
 requirementDiagram
-  style r fill:red
+  style r fill: red
   "r":::c
   class r c
   "r" - satisfies -> b
@@ -1135,7 +1146,7 @@ requirementDiagram
   requirement r {
     id: 1
   }
-  style r fill:red
+  style r fill: red
   class r c
 ```
 
@@ -1154,8 +1165,8 @@ Output
 
 ```mmd
 requirementDiagram
-  accDescr{}
-  accDescr{}
+  accDescr {}
+  accDescr {}
   accDescr {}
 ```
 
@@ -1196,7 +1207,7 @@ requirementdiagram
   }
   r - SATISFIES -> e
   DIRECTION lr
-  STYLE r fill:red
+  STYLE r fill: red
 ```
 
 ### Comments

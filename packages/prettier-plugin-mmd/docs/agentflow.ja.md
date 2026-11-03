@@ -655,8 +655,8 @@ flowchartと同じ理由で同じ規則を使います。
 [アクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)と
 [複数行の値](./flowchart.ja.md#複数行の値)を再利用します。
 文字とtriviaのない通常の閉じたブロックの内側は、空白や空行があっても`{}`です。
-外側の語と波括弧の隙間も接するトークンを接したままにするので、
-`accDescr{}`も接したままにします。
+外側の語と波括弧の隙間は、元が接していても空白 1 個にします。
+語と本文の開始を見分けやすくするためで、`accDescr {}` と印字します。
 [fixture: accessibility/empty-block-touching-keyword]
 囲む文字がないので内側の空白も不要で、 usecaseのDbが同じ形に従います。
 [fixture: accessibility/empty-block-tight]

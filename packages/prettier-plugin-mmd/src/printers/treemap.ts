@@ -101,6 +101,7 @@ export function printTreemap(
               source,
               statement,
               significantIndentationOf(options, line.depth),
+              significantIndentationOf(options, 1),
             ),
             {
               statement: significantIndentationOf(options, line.depth),

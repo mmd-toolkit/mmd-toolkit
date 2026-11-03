@@ -192,6 +192,27 @@ export function keptAsWritten(start: number, end: number): AtomLayout {
 }
 
 /**
+ * The physical line that completes a block header aligns with its statement,
+ * so the body remains one level deeper. A value spanning that line stays whole
+ * (docs/state.md, Composite states; docs/requirement.md, Bodies).
+ */
+export function alignBlockOpeningLine(
+  source: Source,
+  layout: AtomLayout,
+  opening: number,
+): AtomLayout {
+  const start = lineStartOf(source, opening)
+  if (layout.atoms.some((atom) => atom.start < start && start < atom.end))
+    return layout
+  const first = layout.atoms.find(
+    (atom) => start <= atom.start && atom.start <= opening,
+  )
+  return first === undefined
+    ? layout
+    : { ...layout, outdented: new Set([...layout.outdented, first.start]) }
+}
+
+/**
  * Some grammars require a non-LF whitespace run to start before a retained LF.
  * Keep each first gap-line tail, including complete trivia, while later lines
  * use ordinary continuation columns (diagrams/requirement.md, Whitespace;
@@ -252,15 +273,21 @@ export function layoutEmptyDescriptionBlock(
   start: number,
   end: number,
   formatsTriviaLines = false,
+  opening?: number,
 ): AtomLayout {
   if (!formatsTriviaLines && spansLinesThatCannotJoin(source, start, end)) {
-    return keptAsWritten(start, end)
+    return spaceDescriptionOpening(
+      source,
+      start,
+      keptAsWritten(start, end),
+      opening,
+    )
   }
   return {
     atoms: collectAtoms(source, start, end, [], []).filter(
       (atom) => source.text.slice(atom.start, atom.end).trim() !== "",
     ),
-    rules: new Map(),
+    rules: descriptionOpeningRules(source, start, opening),
     outdented: new Set(),
     lineBreaks: formatsTriviaLines ? "kept" : "joined",
   }
@@ -279,6 +306,7 @@ export function layoutCompactEmptyDescriptionBlock(
   source: Source,
   start: number,
   end: number,
+  opening?: number,
 ): AtomLayout | null {
   if (
     findTriviaBetween(source, start, end).length > 0 ||
@@ -290,9 +318,10 @@ export function layoutCompactEmptyDescriptionBlock(
     "the closing empty description brace",
   )
   expectValue(closing, "}")
+  const layout = layoutEmptyDescriptionBlock(source, start, end, false, opening)
   return {
-    ...layoutEmptyDescriptionBlock(source, start, end),
-    rules: new Map([[closing.range[0], "none"]]),
+    ...layout,
+    rules: new Map([...layout.rules, [closing.range[0], "none"]]),
     joinedBefore: new Set([closing.range[0]]),
   }
 }
@@ -307,9 +336,11 @@ export function layoutCompactEmptyDescriptionBlockWithFallback(
   start: number,
   end: number,
   originalLayout: () => AtomLayout,
+  opening?: number,
 ): AtomLayout {
   return (
-    layoutCompactEmptyDescriptionBlock(source, start, end) ?? originalLayout()
+    layoutCompactEmptyDescriptionBlock(source, start, end, opening) ??
+    originalLayout()
   )
 }
 
@@ -379,6 +410,7 @@ export function layoutDescriptionBlock(
         start,
         end,
         options.formatsEmptyTrivia,
+        options.opening,
       )
     }
 
@@ -389,6 +421,7 @@ export function layoutDescriptionBlock(
             start,
             end,
             originalLayout,
+            options.opening,
           )
         : originalLayout()
     return options.preservesBodyColumns
@@ -411,13 +444,84 @@ export function layoutDescriptionBlock(
         options.keepsTrailingTrivia,
       ),
     ),
-    rules: new Map(),
+    rules: descriptionOpeningRules(source, start, options.opening),
     outdented: closing === null ? new Set() : new Set([closing]),
     lineBreaks: "kept",
   }
   return options.preservesBodyColumns
     ? layout
     : indentDescriptionLines(source, block, layout)
+}
+
+/**
+ * Separate the description keyword from its brace in ordinary whitespace;
+ * interior contacts remain authored (docs/info.md, Description blocks).
+ */
+export function descriptionOpeningRules(
+  source: Source,
+  start: number,
+  opening?: number,
+): Map<number, "space"> {
+  const keyword = expectToken(
+    findTokenStartingAt(source, start),
+    "the description keyword",
+  )
+  const brace = expectToken(
+    opening === undefined
+      ? findStructuralToken(source, keyword.range[1])
+      : findTokenStartingAt(source, opening),
+    "the description opener",
+  )
+  expectValue(brace, "{")
+  return new Map([[brace.range[0], "space"]])
+}
+
+/**
+ * Expose only a plain same-line keyword/brace gap inside a retained header.
+ * The rest of its atom stays whole, including empty-body trivia. Protected
+ * line readings take precedence (docs/c4.md, Empty description blocks).
+ */
+export function spaceDescriptionOpening(
+  source: Source,
+  start: number,
+  layout: AtomLayout,
+  opening?: number,
+): AtomLayout {
+  const keyword = expectToken(findTokenStartingAt(source, start), "accDescr")
+  const brace = expectToken(
+    opening === undefined
+      ? findStructuralToken(source, keyword.range[1])
+      : findTokenStartingAt(source, opening),
+    "the description opener",
+  )
+  if (
+    brace.value !== "{" ||
+    ![...source.text.slice(keyword.range[1], brace.range[0])].every(
+      (character) => character === " " || character === "\t",
+    )
+  )
+    return layout
+  const atoms = layout.atoms.flatMap((atom) =>
+    atom.doc === undefined &&
+    atom.start <= keyword.range[0] &&
+    brace.range[1] <= atom.end &&
+    !spansLinesThatCannotJoin(source, atom.start, atom.end, {
+      ignoresTrivia: true,
+    })
+      ? [
+          { ...atom, end: keyword.range[1] },
+          { ...atom, start: brace.range[0] },
+        ]
+      : [atom],
+  )
+  return {
+    ...layout,
+    atoms,
+    rules: new Map([
+      ...layout.rules,
+      ...descriptionOpeningRules(source, start, brace.range[0]),
+    ]),
+  }
 }
 
 /** Fails when a token that the tree implies is missing. */

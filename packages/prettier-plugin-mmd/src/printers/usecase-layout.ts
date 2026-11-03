@@ -1,4 +1,3 @@
-import { appendItems } from "./collections.ts"
 import type {
   Node,
   Range,
@@ -15,11 +14,8 @@ import {
   collectAtoms,
   collectValueNodes,
   expectToken,
-  findAccDescrBlockClosing,
-  findAccDescrBlockStretches,
-  indentDescriptionLines,
   keptAsWritten,
-  spansLinesThatCannotJoin,
+  layoutDescriptionBlock,
   walk,
   protectSemicolonPrefixes,
 } from "./layout.ts"
@@ -338,85 +334,53 @@ function layoutUsecaseAccessibility(
   end: number,
 ): AtomLayout {
   const start = statement.range[0]
+  if (statement.type === "UsecaseAccDescrBlockStatement") {
+    const layout = layoutDescriptionBlock(
+      source,
+      statement,
+      end,
+      usecaseValueNodeTypes,
+      {
+        trimValueEdges: true,
+        formatsEmptyTrivia: true,
+        keepsTrailingTrivia: true,
+      },
+    )
+    return {
+      ...layout,
+      atoms: protectSemicolonPrefixes(source, start, end, layout.atoms),
+    }
+  }
   const keyword = expectToken(
     findStructuralToken(source, start),
     "the accessibility keyword",
   )
   const separator = expectToken(
     findStructuralToken(source, keyword.range[1]),
-    "the accessibility colon or brace",
+    "the accessibility colon",
   )
   const valueRange = trimmedLiteralRange(source, statement.value)
   const rules = new Map<number, GapRule>()
   const outdented = new Set<number>()
   const joinedBefore = new Set<number>()
   const atoms: Atom[] = [{ start: keyword.range[0], end: keyword.range[1] }]
-  let lineBreaks: "kept" | "joined" = "kept"
-  if (statement.type !== "UsecaseAccDescrBlockStatement") {
-    atoms.push({ start: separator.range[0], end: separator.range[1] })
-    rules.set(separator.range[0], "none")
-    if (valueRange !== null) {
-      atoms.push({ start: valueRange[0], end: valueRange[1] })
-      rules.set(valueRange[0], "space")
-      joinedBefore.add(valueRange[0])
-    }
-  } else {
-    if (valueRange === null && spansLinesThatCannotJoin(source, start, end))
-      return keptAsWritten(start, end)
-    const block = {
-      range: statement.range,
-      value: statement.value,
-      closed: true,
-    }
-    const closing = findAccDescrBlockClosing(source, block)
-    if (closing === null)
-      throw new Error(
-        "prettier-plugin-mmd: an unclosed usecase description block",
-      )
-    const stretches = findAccDescrBlockStretches(source, block, valueRange)
-    if (stretches.length > 0) appendItems(atoms, stretches)
-    else {
-      atoms.push({ start: separator.range[0], end: separator.range[1] })
-      if (valueRange !== null) {
-        atoms.push({ start: valueRange[0], end: valueRange[1] })
-        joinedBefore.add(valueRange[0])
-      }
-    }
-    atoms.push({ start: closing, end })
-    outdented.add(closing)
-    if (valueRange === null) {
-      rules.set(closing, "none")
-      joinedBefore.add(closing)
-      lineBreaks = "joined"
-    }
+  atoms.push({ start: separator.range[0], end: separator.range[1] })
+  rules.set(separator.range[0], "none")
+  if (valueRange !== null) {
+    atoms.push({ start: valueRange[0], end: valueRange[1] })
+    rules.set(valueRange[0], "space")
+    joinedBefore.add(valueRange[0])
   }
   const layout: AtomLayout = {
     atoms,
     rules,
     outdented,
     joinedBefore,
-    lineBreaks,
+    lineBreaks: "kept",
   }
-  const descriptionLayout =
-    statement.type === "UsecaseAccDescrBlockStatement"
-      ? indentDescriptionLines(
-          source,
-          {
-            range: statement.range,
-            value: statement.value,
-            closed: true,
-          },
-          layout,
-        )
-      : layout
   return {
-    ...descriptionLayout,
-    atoms: protectSemicolonPrefixes(
-      source,
-      start,
-      end,
-      descriptionLayout.atoms,
-    ),
+    ...layout,
+    atoms: protectSemicolonPrefixes(source, start, end, layout.atoms),
   }
 }
 

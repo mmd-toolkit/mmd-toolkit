@@ -292,8 +292,8 @@ Data blocks use the same shared path as other diagrams. Formatting fixtures
 without supplied effects compare as null Db and check the written embedded
 strings; the corpus uses recorded effects where available. The printer never
 imports Mermaid or parses its output again. The shared description-block helper
-accepts optional printed value bounds, so usecase's complete Literal ranges can
-reuse the body's written columns and aligned closer.
+trims exterior value padding while aligning ordinary body lines and the closer,
+so usecase's complete Literal ranges reuse the same formatting decisions.
 
 `AtomLayout.keptBreaksBefore` preserves every exterior LF between metadata atoms
 and trivia while the existing atom printer aligns properties and the closing

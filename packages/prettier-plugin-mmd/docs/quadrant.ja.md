@@ -435,12 +435,20 @@ quadrantChart
 スタイルの間はコンマで区切り、コンマの前に空白は置かず、
 後ろに空白 1 つを置きます（`radius: 9, color: #f00`）。
 最後のスタイルの両端の空白は落とします。
-スタイルのテキストは、
-中の空白も含めて書かれたまま印字します（`radius :  10` のように）。
-Db は、スタイルの名前と値を、その空白なしで読むので、この形は選択です。
-印字は書き手が書いたものを残します。
-mermaid.js の文書にも `radius : 10` と `radius: 10` の両方があります。
-木はスタイルを 1 つのテキストとして持ち、印字はそれを分けません。
+通常のスタイルでは、最初の `:` を名前に接し、値の前に空白 1 つを置きます。
+`radius :  10` は `radius: 10` になります。
+置き換えるのは、そのコロンに接する ASCII 空白とタブだけです。
+先頭のゼロや色の大文字小文字も含めて、値の綴りは保ちます。
+Db を変えず、点とクラスのスタイルを読みやすい 1 つの形にそろえます。
+[fixture: styles/style-colon-padding] [fixture: styles/style-colon-tab-padding]
+
+trivia、ASCII 空白とタブ以外の空白文字、セミコロン、
+2 個目のコロンがあるスタイルや、保護対象のセミコロン行にあるスタイルの内部は、
+書かれたまま保ちます。
+2 個目のコロンの後に許される suffix は解釈しません。
+これらの保護は、コロンの空白整形より優先します。
+[fixture: styles/style-extra-colon-kept] [fixture: styles/style-directive-kept]
+[fixture: styles/style-semicolon-protected]
 [fixture: styles/styles-after-one-space] [fixture: styles/comma-after-one-space]
 [fixture: styles/style-text-as-written]
 
@@ -552,6 +560,10 @@ title の中の `;`、`#`、`%%`、引用符、キーワードは、そのテキ
 [fixture: titles-and-accessibility-statements/colon-on-the-next-line-joined]
 [fixture: titles-and-accessibility-statements/text-that-looks-like-a-statement]
 
+`accDescr` と `{` を同じ印字行に置く場合は、
+接して書かれていても間に空白 1 つを置きます。
+既存の開始行の改行は、それぞれの規則を保ちます。
+保護対象の trivia やセミコロンの配置では、その gap を保ちます。
 `accDescr { ... }` の本文行は、文より 1 段深くそろえます。
 Mermaid が説明から LF 後の字下げを除くためです。
 `}` は文と同じ段に置きます。
@@ -631,7 +643,8 @@ quadrantChart
 内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
 囲む空白を要する本文がないためです。
 すでに空の内側は空のままです。
-接した keyword は接したまま、 `accDescr{  }` は `accDescr{}` にします。
+通常のキーワードと開き括弧の間には空白 1 つを置き、
+`accDescr{  }` は `accDescr {}` にします。
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: quadrant Unicode and tab interiors]
 指令かコメント行の内容と改行は保ち、
@@ -661,9 +674,9 @@ accDescr{ }
 
 ```mmd
 quadrantChart
-  accDescr{}
   accDescr {}
-  accDescr{}
+  accDescr {}
+  accDescr {}
 ```
 
 ### 複数行の文

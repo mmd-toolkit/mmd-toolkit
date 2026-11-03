@@ -507,6 +507,8 @@ treeview/semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
 
 ### Decorations
 
+[fixture: treeview/decorations/explicit-empty-description-trivia]
+
 普通の外側の装飾は、次のノードへ続く木の案内線として 1 回描き直します。
 続く木が無ければ空行にし、Blank lines と Final newline に従って整理します。
 body、名前待ち、注釈、opener の gap の各所有位置で適用します。
@@ -1693,8 +1695,10 @@ treeView-beta
 ### Description blocks
 
 普通の block は共有の description layout を通します。
-空白だけの内部は `{}`、接した端は接したまま、
-普通の端の padding は space 1 個です。
+空白だけの内部は `{}` です。
+`accDescr` と `{` の間は、元が接していても space 1 個にします。
+keyword と本文の開始を見分けやすくするためです。
+接した内端は接したまま、普通の内端の padding は space 1 個です。
 普通の opener の前の空白は寄せ、本文行を文より 1 段深くそろえます。
 trivia の内容は保ちます。
 別行の closer は文の段に揃えます。

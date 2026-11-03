@@ -616,6 +616,10 @@ xychart
 [fixture: accessibility-statements/without-text-at-the-end]
 [fixture: accessibility-statements/without-text-and-trailing-whitespace]
 
+`accDescr` と `{` を同じ印字行に置く場合は、
+接して書かれていても間に空白 1 つを置きます。
+既存の開始行の改行は、それぞれの規則を保ちます。
+保護対象の trivia やセミコロンの配置では、その gap を保ちます。
 `accDescr { ... }` の本文行は、文より 1 段深くそろえます。
 Mermaid が説明から LF 後の字下げを除くためです。
 `}` は文と同じ段に置きます。
@@ -704,7 +708,8 @@ xychart
 内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
 囲む空白を要する本文がないためです。
 すでに空の内側は空のままです。
-接した keyword は接したまま、 `accDescr{  }` は `accDescr{}` にします。
+通常のキーワードと開き括弧の間には空白 1 つを置き、
+`accDescr{  }` は `accDescr {}` にします。
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: xychart Unicode and tab interiors]
 指令かコメント行を持つブロックは、内容と改行を保ち、
@@ -736,9 +741,9 @@ accDescr{ }
 
 ```mmd
 xychart
-  accDescr{}
   accDescr {}
-  accDescr{}
+  accDescr {}
+  accDescr {}
 ```
 
 入力

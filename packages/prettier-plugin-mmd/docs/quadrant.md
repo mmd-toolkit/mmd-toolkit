@@ -420,13 +420,20 @@ The styles of a point stand after its `]`, after one space, also where they were
 written touching (`]radius:9`) or after more whitespace. The styles are
 separated by a comma with no space before it and one after it
 (`radius: 9, color: #f00`), and the whitespace at the ends of the last one is
-dropped. The text of a style is printed as written, with the whitespace inside
-it, such as `radius :  10`: the Db reads the name and the value of a style
-without that whitespace, so the form is a choice, and the printer keeps what the
-author wrote there, as the documentation of mermaid.js itself has `radius : 10`
-and `radius: 10`. The tree keeps a style as one text, which the printer does not
-take apart. [fixture: styles/styles-after-one-space] [fixture:
-styles/comma-after-one-space] [fixture: styles/style-text-as-written]
+dropped. In an ordinary style, the first `:` touches its name and has one space
+before the value: `radius :  10` becomes `radius: 10`. Replace only ASCII spaces
+and tabs next to that colon; keep the value's spelling, including leading zeros
+and color case. This gives point and class styles one readable form without
+changing their Db. [fixture: styles/style-colon-padding] [fixture:
+styles/style-colon-tab-padding]
+
+Keep a style's interior as written when it contains trivia, whitespace other
+than ASCII spaces and tabs, a semicolon or a second colon, or lies on a
+protected semicolon line. The allowed suffix after a second colon is not
+interpreted. These guards take precedence over colon spacing. [fixture:
+styles/style-extra-colon-kept] [fixture: styles/style-directive-kept] [fixture:
+styles/style-semicolon-protected] [fixture: styles/styles-after-one-space]
+[fixture: styles/comma-after-one-space] [fixture: styles/style-text-as-written]
 
 `classDef` is followed by one space, the name of the class, one space, and the
 styles, which are laid out as those of a point. The grammar counts one
@@ -531,14 +538,16 @@ titles-and-accessibility-statements/text-on-the-next-line-joined] [fixture:
 titles-and-accessibility-statements/colon-on-the-next-line-joined] [fixture:
 titles-and-accessibility-statements/text-that-looks-like-a-statement]
 
-Align the lines of an `accDescr { ... }` body one step inside its statement.
-Mermaid discards indentation after LF from the description. Its `}` stands at
-the level of its statement; a text on the line of the `{` has one space inside
-the braces where it was written apart, and the braces that touch their text keep
-touching. A block that is not closed makes the input rejected, so it is not
-printed. [fixture: titles-and-accessibility-statements/block-lines-kept]
-[fixture: titles-and-accessibility-statements/block-text-on-the-opening-line]
-[fixture:
+Where `accDescr` and `{` print on the same line, separate them by one space,
+including when they were written touching. Existing opener-line breaks retain
+their own rules. Protected trivia and semicolon layouts keep their gaps. Align
+the lines of an `accDescr { ... }` body one step inside its statement. Mermaid
+discards indentation after LF from the description. Its `}` stands at the level
+of its statement; a text on the line of the `{` has one space inside the braces
+where it was written apart, and the braces that touch their text keep touching.
+A block that is not closed makes the input rejected, so it is not printed.
+[fixture: titles-and-accessibility-statements/block-lines-kept] [fixture:
+titles-and-accessibility-statements/block-text-on-the-opening-line] [fixture:
 titles-and-accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
 [fixture:
 titles-and-accessibility-statements/block-comment-and-empty-lines-kept]
@@ -610,8 +619,8 @@ quadrantChart
 An empty block, which changes nothing, is a statement of its own. The
 whitespace-only interior of a description block, including tabs, line breaks and
 Unicode whitespace, prints `{}`: there is no text for interior whitespace to
-surround. An already empty interior stays empty. A touching keyword stays
-touching: `accDescr{  }` becomes `accDescr{}`. [fixture:
+surround. An already empty interior stays empty. The ordinary keyword/opener gap
+uses one space: `accDescr{  }` becomes `accDescr {}`. [fixture:
 empty-description-blocks/empty-whitespace-interiors] [test: quadrant Unicode and
 tab interiors] A block with a directive or a comment line keeps its contents and
 line breaks, with body indentation under
@@ -640,9 +649,9 @@ Output
 
 ```mmd
 quadrantChart
-  accDescr{}
   accDescr {}
-  accDescr{}
+  accDescr {}
+  accDescr {}
 ```
 
 ### Multi-line statements

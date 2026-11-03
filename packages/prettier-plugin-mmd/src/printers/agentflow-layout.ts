@@ -18,6 +18,7 @@ import { findAgentflowKeptLines } from "./agentflow-kept-lines.ts"
 import {
   collectAtoms,
   collectValueNodes,
+  descriptionOpeningRules,
   expectToken,
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
@@ -319,6 +320,8 @@ export function layoutStatement(
     case "AgentflowAccDescrBlockStatement":
       appendItems(kept, findAccDescrBlockStretches(source, statement))
       if (!statement.closed) return keptAsWritten(start, end)
+      for (const [position, rule] of descriptionOpeningRules(source, start))
+        rules.set(position, rule)
       break
     case "AgentflowVertexStatement":
       walk(statement, (node) => {

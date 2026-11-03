@@ -218,7 +218,7 @@ export function printAtoms(
           breakCurrentLine(
             line.blankBefore,
             false,
-            indentation.trivia ?? alignedIndentation,
+            alignedIndentation ?? indentation.trivia,
           )
           currentWrittenBreak = keepsBreaks
             ? literalBreaksBetween(source, gapOffset, line.run.range[0])

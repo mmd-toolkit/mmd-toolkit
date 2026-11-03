@@ -28,7 +28,9 @@ import {
   addClassListRules,
   classStatementRules,
   directionRules,
+  printStyleUnitSpacing,
   styleStatementRules,
+  styleUnitsCanCompact,
 } from "./statement-rules.ts"
 import {
   findStructuralToken,
@@ -304,6 +306,18 @@ export function layoutErStatement(
     return keptAsWritten(start, end)
   }
   const kept = findKeptStretches(source, statement)
+  const styles =
+    (statement.type === "ErStyleStatement" ||
+      statement.type === "ErClassDefStatement") &&
+    styleUnitsCanCompact(source, start, end, statement.styles)
+      ? statement.styles
+      : []
+  for (const style of styles)
+    kept.push({
+      start: style.range[0],
+      end: style.range[1],
+      doc: printStyleUnitSpacing(source, style),
+    })
   const atoms = collectAtoms(
     source,
     start,
@@ -313,7 +327,7 @@ export function layoutErStatement(
   )
   return {
     atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
-    rules: statementRules(source, statement),
+    rules: statementRules(source, statement, styles.length > 0),
     outdented: new Set(),
     lineBreaks: keepsLineBreaks ? "kept" : "joined",
   }
@@ -427,6 +441,7 @@ function findStructuralTokenBefore(
 function statementRules(
   source: Source,
   statement: ErSimpleStatement | ErEntityStatement,
+  compactStyles = false,
 ): Map<number, GapRule> {
   switch (statement.type) {
     case "ErEntityStatement": {
@@ -447,9 +462,19 @@ function statementRules(
     case "ErDirectionStatement":
       return directionRules(source, statement)
     case "ErClassDefStatement":
-      return styleStatementRules(source, statement.cssClasses, statement.styles)
+      return styleStatementRules(
+        source,
+        statement.cssClasses,
+        statement.styles,
+        compactStyles,
+      )
     case "ErStyleStatement":
-      return styleStatementRules(source, statement.entities, statement.styles)
+      return styleStatementRules(
+        source,
+        statement.entities,
+        statement.styles,
+        compactStyles,
+      )
     case "ErClassStatement":
       return classStatementRules(
         source,

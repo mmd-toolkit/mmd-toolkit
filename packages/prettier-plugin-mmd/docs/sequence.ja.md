@@ -913,7 +913,8 @@ sequenceDiagram
 内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
 囲む空白を要する本文がないためです。
 すでに空の内側は空のままです。
-接した keyword は接したまま、 `accDescr{  }` は `accDescr{}` にします。
+キーワードと開始括弧の間には空白を 1 つ置きます。
+`accDescr{  }` は `accDescr {}` にします。
 [fixture: multi-line-values/empty-whitespace-interiors]
 [test: sequence Unicode and tab interiors]
 コメントや directive があるブロックの内容と改行は保ちます。

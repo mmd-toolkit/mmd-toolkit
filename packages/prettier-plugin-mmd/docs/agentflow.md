@@ -628,8 +628,9 @@ Description blocks also reuse
 [Multi-line values](./flowchart.md#multi-line-values) with the same sibling
 reason: ordinary closed blocks with no text or trivia print their interior as
 `{}`, even with interior spaces or blank lines. The exterior keyword-to-brace
-gap keeps touching tokens touching, so `accDescr{}` stays touching too.
-[fixture: accessibility/empty-block-touching-keyword] No text needs surrounding
+gap prints one space, even when originally touching, to distinguish the keyword
+from its body: `accDescr {}`. [fixture:
+accessibility/empty-block-touching-keyword] No text needs surrounding
 whitespace, so this follows usecase's Db-equal form. [fixture:
 accessibility/empty-block-tight] [fixture: accessibility/empty-block-spaced]
 [fixture: accessibility/empty-block-lines] Accepted NBSP/U+2028/U+2029 interior

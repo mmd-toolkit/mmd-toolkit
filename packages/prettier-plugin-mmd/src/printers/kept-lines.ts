@@ -57,12 +57,11 @@ interface SemicolonRules {
   readonly kind: "separators" | "required" | "text"
   readonly grammatical: ReadonlySet<number>
   /**
-   * Keep lines containing `style` or `classDef` as written in diagrams with
-   * grammatical `;`, so printing does not predict which `;` the line rule
-   * selects (railroad review 151-4; Wardley decision 28; docs/railroad.md and
-   * docs/wardley.md, Semicolons).
+   * Keep `style`/`classDef` word lines before joining can select a required
+   * terminator, or only lines already containing a semicolon where ordinary
+   * components never join (docs/railroad.md and docs/wardley.md, Semicolons).
    */
-  readonly verbatimStyleLines: boolean
+  readonly verbatimStyleLines: false | "word" | "semicolon"
 }
 
 const semicolonRulesBySource = new WeakMap<Source, SemicolonRules>()
@@ -88,7 +87,7 @@ function semicolonRulesOf(source: Source): SemicolonRules {
       )
       rules = {
         kind: "required",
-        verbatimStyleLines: true,
+        verbatimStyleLines: "word",
         grammatical: new Set([
           ...terminators,
           ...source.root.comments
@@ -117,7 +116,7 @@ function semicolonRulesOf(source: Source): SemicolonRules {
         )
         if (mark !== undefined) grammatical.add(mark.range[0])
       }
-      rules = { kind: "text", grammatical, verbatimStyleLines: true }
+      rules = { kind: "text", grammatical, verbatimStyleLines: "semicolon" }
       break
     }
     case "FlowchartDiagram":
@@ -583,18 +582,18 @@ function findStyleWord(text: string): number {
 
 /** Diagrams whose grammatical punctuation needs complete word-line protection. */
 function usesVerbatimStyleLines(source: Source): boolean {
-  return semicolonRulesOf(source).verbatimStyleLines
+  return semicolonRulesOf(source).verbatimStyleLines !== false
 }
 
 /** Verbatim word lines, computed once for protected grammatical punctuation. */
 const verbatimStyleLinesBySource = new WeakMap<Source, ReadonlySet<number>>()
 
 /**
- * Railroad and Wardley keep complete source lines containing a common line-rule
- * word after global directives are omitted. Keeping every statement and comment
- * protects required terminators, ABNF comment marks and Wardley link-label
- * openers without predicting which semicolon the line rule selects. A removed directive
- * can join a word across physical lines; all those lines stay together
+ * Railroad keeps word lines before joining can select a required terminator;
+ * Wardley keeps only lines already containing a semicolon. Both read the line
+ * after global directives are omitted. Keeping complete statements and comments
+ * protects native punctuation without predicting which semicolon is selected.
+ * A removed directive can join a word across physical lines; all those lines stay together
  * (common.md, Where a directive is; docs/railroad.md and docs/wardley.md,
  * Semicolons).
  */
@@ -603,14 +602,16 @@ export function findVerbatimStyleLines(source: Source): ReadonlySet<number> {
   if (cached !== undefined) return cached
   const lines = new Set<number>()
   verbatimStyleLinesBySource.set(source, lines)
-  if (!usesVerbatimStyleLines(source)) return lines
+  const rule = semicolonRulesOf(source).verbatimStyleLines
+  if (rule === false) return lines
   let lineStart = source.root.body.range[0]
   let position = lineStart
   const parts: string[] = []
 
   /** Retains every source line contributing to this directive-free line. */
   function finishLine(end: number): void {
-    if (findStyleWord(parts.join("")) !== -1) {
+    const line = parts.join("")
+    if ((rule === "word" || line.includes(";")) && findStyleWord(line) !== -1) {
       let start = lineStartOf(source, lineStart)
       while (start <= end) {
         lines.add(start)

@@ -1112,8 +1112,8 @@ CRには共通の改行の正規化を使います。
 [test: graph accessibility: flowchart unicode-values]
 [test: graph accessibility: flowchart unicode-semicolon-kept]
 文字とtriviaのない閉じた説明ブロックの内側は、空白や空行があっても`{}`です。
-外側の語と波括弧の隙間は[トークンの間の空白](#トークンの間の空白)に従い、
-接する語は`accDescr{}`と接したままにします。
+外側の語と波括弧の隙間は、元が接していても空白 1 個にします。
+語と本文の開始を見分けやすくするためで、`accDescr {}` と印字します。
 [fixture: accessibility-lines/empty-block-touching-keyword]
 囲む文字がないので内側の空白も不要で、コロン行と同じ兄弟の図種に揃える理由で、
 usecaseのDbが同じ形に従います。 [fixture: accessibility-lines/empty-block-tight]

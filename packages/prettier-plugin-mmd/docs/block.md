@@ -771,8 +771,9 @@ block-beta
 An empty block, which changes nothing, is a statement of its own. The
 whitespace-only interior of a description block, including tabs, line breaks and
 Unicode whitespace, prints `{}`: there is no text for interior whitespace to
-surround. An already empty interior stays empty. A touching keyword stays
-touching: `accDescr{  }` becomes `accDescr{}`. [fixture:
+surround. An already empty interior stays empty. Put one space between the
+keyword and opener, including originally touching tokens, to distinguish the
+keyword from its body: `accDescr{  }` becomes `accDescr {}`. [fixture:
 empty-description-blocks/empty-whitespace-interiors] [test: block Unicode and
 tab interiors] A block with a directive or comment line keeps its contents and
 line breaks, with standalone trivia one level inside and its closer at statement

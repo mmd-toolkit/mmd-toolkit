@@ -59,6 +59,11 @@ stateDiagram-v2
 
 ### Composite states
 
+When a header continues across trivia, align the physical line containing its
+opening brace with the initial keyword, so the body remains one level deeper. Do
+not change a value spanning that line or protected source boundaries. [fixture:
+composite-states/header-completion-after-comment]
+
 The `{` of a composite state, and of an alias definition with a body, stands on
 the line of its name, after one space, as in a class diagram; a `{` written on
 the next line is moved there. Comments or directives between the name and the
@@ -900,9 +905,9 @@ multi-line-values/accdescr-block-single-line-kept] [fixture:
 multi-line-values/accdescr-block-empty-and-comment-lines-kept] A closed block
 with no text prints `{}` internally: `accDescr { }` becomes `accDescr {}`,
 including whitespace runs, line breaks and Unicode whitespace (also U+2028 and
-U+2029) inside the braces; an already empty interior stays empty, and
-`accDescr{}` stays touching. There is no text for interior whitespace to
-surround, so the Db-equal choice follows
+U+2029) inside the braces; an already empty interior stays empty, and the
+keyword and opening brace have one space between them. There is no text for
+interior whitespace to surround, so the Db-equal choice follows
 [flowchart's accessibility lines](./flowchart.md#accessibility-lines), agentflow
 and usecase. A prior description stays in the Db. [fixture:
 multi-line-values/empty-description-interiors] [test: accessibility revisions:

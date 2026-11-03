@@ -714,8 +714,9 @@ accessibility-statements/keyword-and-colon-over-lines-joined] The text holds
 `:`, `;`, `#`, `%`, and `%%` as characters. [fixture:
 accessibility-statements/special-characters-in-text]
 
-An `accDescr` block with text has the `{` after one space (or touching the
-keyword, as written), the text on the line of the `{` between one space on each
+An `accDescr` block with text has the `{` after one ordinary space, even when it
+touched the keyword in the input. Protected trivia and semicolon layouts keep
+their gaps. The text on the line of the `{` stands between one space on each
 side, and the `}` after it; later text lines stand one level inside the
 statement and the `}` stands at its level (see
 [Multi-line values](#multi-line-values)). [fixture:
@@ -773,8 +774,8 @@ timeline
 An empty block, which changes nothing, is a statement of its own. The
 whitespace-only interior of a description block, including tabs, line breaks and
 Unicode whitespace, prints `{}`: there is no text for interior whitespace to
-surround. An already empty interior stays empty. A touching keyword stays
-touching: `accDescr{  }` becomes `accDescr{}`. [fixture:
+surround. An already empty interior stays empty. The ordinary keyword/opener gap
+uses one space: `accDescr{  }` becomes `accDescr {}`. [fixture:
 empty-description-blocks/empty-whitespace-interiors] [test: timeline Unicode and
 tab interiors] [fixture: empty-description-blocks/inner-whitespace-collapsed]
 [fixture: empty-description-blocks/touching-kept] [fixture:
@@ -800,9 +801,9 @@ Output
 
 ```mmd
 timeline
-  accDescr{}
   accDescr {}
-  accDescr{}
+  accDescr {}
+  accDescr {}
 ```
 
 Input
@@ -994,7 +995,7 @@ Output
 ```mmd
 timeline
   accDescr { d }
-  accDescr{e}
+  accDescr {e}
   accDescr {f}
 ```
 

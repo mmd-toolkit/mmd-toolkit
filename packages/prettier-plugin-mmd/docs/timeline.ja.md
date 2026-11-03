@@ -742,9 +742,9 @@ journey と同じ形です。
 テキストは `:`、`;`、`#`、`%`、 `%%` を文字として持ちます。
 [fixture: accessibility-statements/special-characters-in-text]
 
-テキストのある `accDescr` ブロックは、
-`{` を空白 1 つの後ろに置き（書かれたとおりに、
-キーワードに接していてもかまいません）、
+テキストのある `accDescr` ブロックは、入力でキーワードに接していても、
+通常の gap では `{` の前に空白 1 つを置きます。
+保護対象の trivia やセミコロンの配置では、その gap を保ちます。
 `{` の行にあるテキストは両側に空白 1 つ、その後ろに `}` を置きます。
 後ろのテキスト行はその文より 1 段深く置き、
 `}` はその文の段に置きます（[複数行の値](#複数行の値)を参照）。
@@ -803,7 +803,8 @@ timeline
 内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
 囲む空白を要する本文がないためです。
 すでに空の内側は空のままです。
-接した keyword は接したまま、 `accDescr{  }` は `accDescr{}` にします。
+通常のキーワードと開き括弧の間には空白 1 つを置き、
+`accDescr{  }` は `accDescr {}` にします。
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: timeline Unicode and tab interiors]
 [fixture: empty-description-blocks/inner-whitespace-collapsed]
@@ -830,9 +831,9 @@ accDescr{ }
 
 ```mmd
 timeline
-  accDescr{}
   accDescr {}
-  accDescr{}
+  accDescr {}
+  accDescr {}
 ```
 
 入力
@@ -1027,7 +1028,7 @@ accDescr {f}
 ```mmd
 timeline
   accDescr { d }
-  accDescr{e}
+  accDescr {e}
   accDescr {f}
 ```
 

@@ -1,5 +1,6 @@
 import type {
   ClassDeclaration,
+  ClassMethod,
   ClassName,
   ClassNamespaceStatement,
   ClassRelationStatement,
@@ -8,8 +9,10 @@ import type {
   StringLiteral,
   Token,
 } from "@mmd-toolkit/parser"
+import type { Doc } from "prettier"
 import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
+import { printAtoms } from "./atoms.ts"
 import { holdsDirection } from "./accessibility-lines.ts"
 import { findWrittenWhitespaceEnd } from "./gap.ts"
 import { findClassSemicolonLines } from "./class-kept-lines.ts"
@@ -18,6 +21,7 @@ import { findOpenString } from "./lines.ts"
 import {
   collectAtoms,
   collectValueNodes,
+  descriptionOpeningRules,
   expectToken,
   expectValue,
   findAccDescrBlockClosing,
@@ -286,7 +290,7 @@ export function layoutClassStatement(
           values,
           findAccDescrBlockStretches(source, block),
         ),
-        rules: new Map(),
+        rules: descriptionOpeningRules(source, start),
         outdented: closing === null ? new Set() : new Set([closing]),
         lineBreaks: "kept",
       })
@@ -303,7 +307,7 @@ export function layoutClassStatement(
   }
   const kept = [
     ...findGenericStretches(source, statement, end),
-    ...findMemberStretches(statement),
+    ...findMemberStretches(source, statement),
     ...findBlankLabelStretches(source, statement),
     ...findOpenNameStretches(source, statement),
   ]
@@ -451,17 +455,63 @@ function findBlankLabelStretches(source: Source, statement: Node): Atom[] {
 }
 
 /**
- * The member lines of a statement, each printed as written: the member of
- * a member statement. The whitespace after a visibility mark is part of
+ * The member of a member statement, retaining its values while ordinary
+ * method padding uses its planned layout. Whitespace after a visibility mark is part of
  * the member's name in the Db (diagrams/class.md, Building the summary):
  * `+ foo()` has the name ` foo`, and `+foo()` the name `foo`.
  */
-function findMemberStretches(statement: Node): Atom[] {
+function findMemberStretches(source: Source, statement: Node): Atom[] {
   if (statement.type !== "ClassMemberStatement" || statement.member === null) {
     return []
   }
   const { range } = statement.member
-  return [{ start: range[0], end: range[1] }]
+  return [
+    {
+      start: range[0],
+      end: range[1],
+      doc:
+        statement.member.type === "ClassMethod"
+          ? printClassMethod(source, statement.member)
+          : undefined,
+    },
+  ]
+}
+
+/**
+ * Method fields already exclude harmless exterior padding. Keep their contents
+ * and classifier tails, formatting only the gaps around the AST fields
+ * (diagrams/class.md, Member lines; docs/class.md, Member lines).
+ */
+export function printClassMethod(
+  source: Source,
+  method: ClassMethod,
+): Doc | undefined {
+  const [start, end] = method.range
+  const text = source.text.slice(start, end)
+  if (
+    method.textBefore !== null ||
+    method.textAfter !== null ||
+    text.includes("\n") ||
+    text.includes("\u2028") ||
+    text.includes("\u2029") ||
+    text.includes(";") ||
+    findClassSemicolonLines(source).has(lineStartOf(source, start)) ||
+    findTriviaBetween(source, start, end).length > 0
+  )
+    return undefined
+  const values = collectValueNodes(method, classValueNodeTypes)
+  const atoms = collectAtoms(source, start, end, values, [])
+  const rules = new Map<number, GapRule>()
+  for (const atom of atoms.slice(1))
+    rules.set(
+      atom.start,
+      atom.start === method.returnType?.range[0] ? "space" : "none",
+    )
+  return printAtoms(
+    source,
+    { atoms, rules, outdented: new Set(), lineBreaks: "joined" },
+    { statement: "", continuation: "" },
+  ).doc
 }
 
 /**

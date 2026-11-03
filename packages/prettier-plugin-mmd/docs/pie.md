@@ -242,19 +242,20 @@ indentation after LF is absent from the description Db. Among the Db-equal forms
 (`accDescr{a}` and `accDescr {a}`; `{a}` and `{ a }`), pie takes the shared
 accessibility decision of its sibling diagrams
 ([flowchart](./flowchart.md#accessibility-lines) and
-[C4](./c4.md#description-blocks)) rather than a form of its own: contact is
-kept, a run of whitespace becomes one space, and no padding is added. Touching
-keyword/opener and interior sides stay touching; present runs collapse to one
-space. Plain whitespace before the opener can join, including across physical or
-Unicode line boundaries; a real comment/directive keeps its break. Empty
-whitespace-only interiors print `{}` because no text needs surrounding
-whitespace. Keep comment-only blocks with comments one level inside and a
-separate closer at statement level. Ordinary later-line text and standalone
-comment lines align one level inside the statement, making the body readable.
-Keep line breaks, blank lines and trailing whitespace; a separate `}` aligns
-with the statement. Directives and shared removed comment regions keep their
-complete source. Trivia-bearing interiors keep their trivia. The first closing
-brace still closes the block, even inside quote/backslash/hidden-looking text.
+[C4](./c4.md#description-blocks)) rather than a form of its own. The keyword and
+opener use one ordinary space, even when written touching. Interior sides that
+touch their text stay touching; present runs collapse to one space, with no new
+interior padding. Protected trivia and semicolon layouts keep their gaps. Plain
+whitespace before the opener can join, including across physical or Unicode line
+boundaries; a real comment/directive keeps its break. Empty whitespace-only
+interiors print `{}` because no text needs surrounding whitespace. Keep
+comment-only blocks with comments one level inside and a separate closer at
+statement level. Ordinary later-line text and standalone comment lines align one
+level inside the statement, making the body readable. Keep line breaks, blank
+lines and trailing whitespace; a separate `}` aligns with the statement.
+Directives and shared removed comment regions keep their complete source.
+Trivia-bearing interiors keep their trivia. The first closing brace still closes
+the block, even inside quote/backslash/hidden-looking text.
 
 Fixed cases: [fixture: pie/description-blocks/block-runs] [fixture:
 pie/description-blocks/block-empty] [fixture:

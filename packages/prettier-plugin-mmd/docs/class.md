@@ -485,14 +485,23 @@ classDiagram
 
 ### Member lines
 
-A member line, in a body or after the `:` of a class name, is kept as written,
-from its first character to its last. [fixture: member-lines/kept] [fixture:
-member-lines/percent-text-kept] [fixture:
+For an ordinary method, remove padding before and just inside its parentheses,
+and put one space before a nonempty return type. Keep whitespace within each AST
+field, including the name prefix after a visibility mark. Methods with trivia,
+ignored text, physical or Unicode line separators, or a protected semicolon line
+retain their complete source. [fixture: member-lines/method-padding] [fixture:
+member-lines/method-values-and-classifiers-kept] [fixture:
+member-lines/method-trivia-and-semicolon-kept]
+
+Attribute and annotation lines, in a body or after the `:` of a class name, keep
+their contents as written. Methods preserve their name, parameter and
+return-type contents, including generic spelling and classifier-related tails.
+[fixture: member-lines/kept] [fixture: member-lines/percent-text-kept] [fixture:
 member-lines/trailing-whitespace-dropped] [fixture:
 member-lines/directive-inside-kept] [corpus fixture: class/lex-member-percent]
-mermaid.js divides it into its parts by its text, and the whitespace after a
-visibility mark is part of the name: `+ foo()` has the name ` foo`, with a
-space, and `+foo()` the name `foo`. [fixture: member-lines/kept] [corpus
+mermaid.js divides each member into its parts by its text, and the whitespace
+after a visibility mark is part of the name: `+ foo()` has the name ` foo`, with
+a space, and `+foo()` the name `foo`. [fixture: member-lines/kept] [corpus
 fixture: class/gram-member-visibility-whitespace-body-0184dca2] An annotation
 line, `<< y z >>`, keeps the whitespace around its text in the Db. [fixture:
 member-lines/kept]
@@ -517,7 +526,7 @@ Output
 classDiagram
   class A {
     + spaced  name
-    +foo( a ,  b )   int$
+    +foo(a ,  b) int$
     << y  z >>
   }
   A : -  bar()
@@ -952,8 +961,8 @@ classDiagram
 
 The whitespace-only interior of a description block, including tabs, line breaks
 and Unicode whitespace, prints `{}`: there is no text for interior whitespace to
-surround. An already empty interior stays empty. A touching keyword stays
-touching: `accDescr{  }` becomes `accDescr{}`. [fixture:
+surround. An already empty interior stays empty. The keyword and opening brace
+have one space between them: `accDescr{  }` becomes `accDescr {}`. [fixture:
 empty-description-blocks/empty-whitespace-interiors] [test: class Unicode and
 tab interiors] Blocks with comments or directives keep their contents and line
 breaks, with body indentation under [Multi-line values](#multi-line-values).
@@ -1065,7 +1074,8 @@ because changing it would change the diagram or the input would be rejected:
   style, and the text of `accTitle` and `accDescr`; [fixture:
   whitespace-between-tokens/style-values-kept] [fixture:
   labels/accessibility-text-kept]
-- a member line, and a generic type from `~` to `~`;
+- attribute and annotation contents, method-field contents, and a generic type
+  from `~` to `~`;
 - the whitespace after the `:` of a label of only whitespace, and whether
   whitespace follows the `:` of a label on a line that holds a `;`;
 - a line of only whitespace after the comment of a statement, as one space;

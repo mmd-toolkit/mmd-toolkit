@@ -505,9 +505,19 @@ classDiagram
 
 ### メンバーの行
 
-本体の中の、またはクラス名の `:` の後のメンバーの行は、
-最初の文字から最後の文字まで書かれたまま残します。 [fixture: member-lines/kept]
-[fixture: member-lines/percent-text-kept]
+通常のメソッドでは、括弧の直前と内側の外周の空白を除き、
+空でない戻り値型の前に空白を 1 つ置きます。
+可視性記号の後の名前の空白を含め、各 AST フィールドの中身は保ちます。
+trivia、無視される文字、物理・Unicode の改行、
+セミコロン行の保護があるメソッドは原文全体を保ちます。
+[fixture: member-lines/method-padding]
+[fixture: member-lines/method-values-and-classifiers-kept]
+[fixture: member-lines/method-trivia-and-semicolon-kept]
+
+属性と注釈の行は、本体内でもクラス名の `:` の後でも、中身を保ちます。
+メソッドの名前・引数・戻り値の中身も保ちます。
+generic のつづりと classifier に伴う末尾も保ちます。
+[fixture: member-lines/kept] [fixture: member-lines/percent-text-kept]
 [fixture: member-lines/trailing-whitespace-dropped]
 [fixture: member-lines/directive-inside-kept]
 [corpus fixture: class/lex-member-percent]
@@ -539,7 +549,7 @@ A :  -  bar()
 classDiagram
   class A {
     + spaced  name
-    +foo( a ,  b )   int$
+    +foo(a ,  b) int$
     << y  z >>
   }
   A : -  bar()
@@ -992,7 +1002,8 @@ classDiagram
 内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
 囲む空白を要する本文がないためです。
 すでに空の内側は空のままです。
-接した keyword は接したまま、 `accDescr{  }` は `accDescr{}` にします。
+キーワードと開始括弧の間には空白を 1 つ置きます。
+`accDescr{  }` は `accDescr {}` にします。
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: class Unicode and tab interiors]
 コメントや directive の内容と改行は保ち、
@@ -1105,7 +1116,8 @@ mermaid.js はテキストの終わりの空白と改行もその一部として
   `accTitle` と `accDescr` のテキスト。
   [fixture: whitespace-between-tokens/style-values-kept]
   [fixture: labels/accessibility-text-kept]
-- メンバーの行と、`~` から `~` までのジェネリック型。
+- 属性と注釈の中身、メソッドの各フィールドの中身、
+  `~` から `~` までのジェネリック型。
 - 空白だけのラベルの `:` の後の空白と、
   `;` を含む行のラベルの `:` の後に空白があるかどうか。
 - 文の後のコメントの後の空白だけの行。

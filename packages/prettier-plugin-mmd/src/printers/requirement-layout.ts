@@ -16,6 +16,7 @@ import type { MermaidAst } from "../parser.ts"
 import type { AtomLayout, GapRule } from "./atoms.ts"
 import { holdsJoiningRegion } from "./kept-lines.ts"
 import {
+  alignBlockOpeningLine,
   collectAtoms,
   collectValueNodes,
   expectToken,
@@ -40,7 +41,9 @@ import {
   addClassListRules,
   classStatementRules,
   directionRules,
+  printStyleUnitSpacing,
   styleStatementRules,
+  styleUnitsCanCompact,
 } from "./statement-rules.ts"
 
 /**
@@ -179,12 +182,16 @@ export function layoutBlockOpening(
     ),
     [],
   )
-  return {
-    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
-    rules,
-    outdented: new Set(),
-    lineBreaks: keepsLineBreaks ? "kept" : "joined",
-  }
+  return alignBlockOpeningLine(
+    source,
+    {
+      atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+      rules,
+      outdented: new Set(),
+      lineBreaks: keepsLineBreaks ? "kept" : "joined",
+    },
+    opening.range[0],
+  )
 }
 
 /**
@@ -291,16 +298,26 @@ export function layoutRequirementStatement(
   ) {
     return keptAsWritten(start, end)
   }
+  const styles =
+    (statement.type === "RequirementStyleStatement" ||
+      statement.type === "RequirementClassDefStatement") &&
+    styleUnitsCanCompact(source, start, end, statement.styles)
+      ? statement.styles
+      : []
   const atoms = collectAtoms(
     source,
     start,
     end,
     collectValueNodes(statement, requirementValueNodeTypes),
-    [],
+    styles.map((style) => ({
+      start: style.range[0],
+      end: style.range[1],
+      doc: printStyleUnitSpacing(source, style),
+    })),
   )
   return {
     atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
-    rules: statementRules(source, statement),
+    rules: statementRules(source, statement, styles.length > 0),
     outdented: new Set(),
     lineBreaks:
       keepsLineBreaks ||
@@ -354,6 +371,7 @@ function statementRules(
     RequirementSimpleStatement,
     { type: "RequirementAccDescrBlockStatement" }
   >,
+  compactStyles = false,
 ): Map<number, GapRule> {
   switch (statement.type) {
     case "RequirementRelationshipStatement":
@@ -361,9 +379,19 @@ function statementRules(
     case "RequirementDirectionStatement":
       return directionRules(source, statement)
     case "RequirementStyleStatement":
-      return styleStatementRules(source, statement.names, statement.styles)
+      return styleStatementRules(
+        source,
+        statement.names,
+        statement.styles,
+        compactStyles,
+      )
     case "RequirementClassDefStatement":
-      return styleStatementRules(source, statement.cssClasses, statement.styles)
+      return styleStatementRules(
+        source,
+        statement.cssClasses,
+        statement.styles,
+        compactStyles,
+      )
     case "RequirementClassStatement":
       return classStatementRules(source, statement.names, statement.cssClasses)
     case "RequirementClassShorthandStatement": {

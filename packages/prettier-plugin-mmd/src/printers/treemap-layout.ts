@@ -189,6 +189,7 @@ export function layoutTreemapStatement(
   source: Source,
   statement: TreemapBodyItem,
   column: string,
+  continuationPadding: string,
 ): AtomLayout {
   const [start, end] = treemapStatementRange(statement)
   let layout: AtomLayout
@@ -246,15 +247,26 @@ export function layoutTreemapStatement(
           const hasEarlierIndentation =
             previous !== undefined &&
             hasTrailingIndentation(source, previous.end, atom.start)
+          // The class-style separator consumes indentation, unlike row
+          // selectors and native-comment row gaps (docs/treemap.md, Style gaps).
+          const styleContinuation =
+            statement.type === "TreemapClassDefStatement" &&
+            statement.style?.range[0] === atom.start &&
+            !hasEarlierIndentation
           return {
             ...atom,
+            ...(styleContinuation
+              ? { statementPadding: continuationPadding }
+              : {}),
             writtenIndentation:
               hasEarlierIndentation ||
               findTokenStartingAt(source, atom.start)?.value === ":::" ||
               (statement.type !== "TreemapClassDefStatement" &&
                 statement.classSelector?.range[0] === atom.start)
                 ? ""
-                : column,
+                : styleContinuation
+                  ? column + continuationPadding
+                  : column,
           }
         }),
         rules,

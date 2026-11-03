@@ -74,12 +74,14 @@ to avoid suggesting a hierarchy. Reconsider this choice if the pinned Mermaid
 later accepts whitespace before block closers, checking that raw body values and
 rendering remain unchanged.
 
-GWT clauses use one configured step and items two. Structural continuation lines
-stand one step deeper than their statement, including continued `data` headers.
-Columns do not define parents, so `tabWidth: 0` adds no spaces; `useTabs` adds
-one tab per step even at width zero. Value continuations, metadata padding and
-hidden consumed-LF boundaries retain their authored columns, apart from the
-block-body margin adjustment in [Data blocks](#data-blocks).
+GWT clauses use one configured step and items two. Ordinary structural
+continuation lines stand one step deeper than their statement. A line completing
+a `data`, `note` or GWT header aligns with its keyword, so the body remains
+deeper. Columns do not define parents, so `tabWidth: 0` adds no spaces;
+`useTabs` adds one tab per step even at width zero. Value continuations,
+metadata padding and hidden consumed-LF boundaries retain their authored
+columns, apart from the block-body margin adjustment in
+[Data blocks](#data-blocks).
 
 [fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]
 
@@ -356,6 +358,11 @@ resetframe 02 command Beta
 
 ### Declarations and notes
 
+A declaration or note header split by a comment keeps that comment one level
+inside, while the line completing the header aligns with its keyword. Keep value
+continuations and required hidden boundaries unchanged. [fixture:
+eventmodeling/declarations-and-notes/header-completion-comments]
+
 Separate declaration and note components with one ordinary space:
 `entity Shop.Buy`, `data D` and `note 01`. Put a block opener on its header line
 after one space, exposing the declaration's parts. Values and closing boundaries
@@ -381,6 +388,10 @@ entity Shop.Buy
 ```
 
 ### Gwt clauses and items
+
+A GWT header's final source-frame line aligns with `gwt` after an intervening
+comment, keeping the clauses one level deeper. [fixture:
+eventmodeling/gwt-clauses-and-items/header-completion-comment]
 
 Put `gwt 99` at column one, each clause keyword one step deeper and every item
 another step deeper. This shows the authored clause/item relationship without

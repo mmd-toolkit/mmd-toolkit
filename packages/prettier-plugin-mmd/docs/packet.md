@@ -343,9 +343,10 @@ packet
 
 ### Description blocks
 
-Reuse shared `layoutDescriptionBlock`: keep touching keyword/opener and interior
-sides touching, and compact present runs to one space. Plain opener whitespace
-can join across physical or Unicode lines; real opener trivia keeps its break.
+Reuse shared `layoutDescriptionBlock`: separate the keyword and opening brace
+with one space so the block boundary is clear. Keep touching interior sides
+touching, and compact present runs to one space. Plain opener whitespace can
+join across physical or Unicode lines; real opener trivia keeps its break.
 Whitespace-only interiors become `{}` because no text needs surrounding
 whitespace. Comment/directive-only interiors keep their trivia. Ordinary
 description body and standalone comment lines align one level inside the
@@ -387,10 +388,10 @@ Output
 
 ```mmd
 packet
-  accDescr{A}
+  accDescr {A}
   accDescr { B }
   accDescr {C }
-  accDescr{ D}
+  accDescr { D}
 ```
 
 ### Multiline values

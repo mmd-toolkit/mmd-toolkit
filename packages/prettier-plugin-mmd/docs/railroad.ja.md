@@ -785,8 +785,14 @@ trivia の内容は[コメント](#コメント)、[共有 directive](#共有-di
 [hidden form の保持](#hidden-form-の保持)の規則で保ちます。
 `style` や `classDef` を含む行と無視される semicolon は、
 保護した配置を使います。
-EBNF、ABNF、PEG の規則は平坦な配置を保ち、
+EBNF、ABNF、PEG では、最外周の選択の代入直後と、
+`|` や `/` の前に作者が書いた改行を保ち、続きは 1 段深く置きます。
+区切り記号は後の選択肢とまとめるため、その直後の通常の改行はつなげます。
+他の式の余白は詰め、1 行の規則に改行は足しません。
 `printWidth` は図の改行位置を決めません。
+[fixture: railroad/long-lines/ebnf-written-alternatives]
+[fixture: railroad/long-lines/abnf-written-alternatives]
+[fixture: railroad/long-lines/peg-written-alternatives]
 
 [fixture: railroad/long-lines/ir-comments-kept]
 
@@ -864,6 +870,9 @@ railroad-peg-beta
 
 ### 構造上の改行
 
+[長い行](#長い行)にある最外周の選択の段落改行は、
+通常の余白の詰めより優先します。
+
 文法上 padding である通常の CR/LF gap を各位置の空白規則へ揃えます。
 IR は constructor、括弧、引数、comma、EBNF は代入、選択、並び、 group、例外、
 postfix が対象です。
@@ -904,7 +913,9 @@ railroad-beta
 
 ```mmd
 railroad-ebnf-beta
-  r ::= ("joined", other) - "except"+ | ["tail"];
+  r ::=
+    ("joined", other) - "except"+
+    | ["tail"];
 ```
 
 入力（escape 表記）:
@@ -1185,7 +1196,7 @@ railroad-peg-beta
 
 共有の common-description 配置から layoutDescriptionBlock を使います。
 空白だけの内部は、囲む内容がないため `{}` にします。
-`accDescr{` の接触と `{Text}` を保ち、
+`accDescr` と `{` の間に空白を 1 つ置き、`{Text}` は保ち、
 外端に書かれた空白は存在する側に1 space 残します。
 keyword と opener の間の通常の改行は join します。
 通常の説明本文と独立したコメント行は文より1段内側に揃えます。
@@ -1226,7 +1237,7 @@ directive と共有の除去対象となるコメント領域は原文全体を�
 
 ```mmd
 railroad-beta
-  accDescr{Text}
+  accDescr {Text}
   accDescr { Text }
   accDescr {}
   r = terminal("block");
@@ -1240,7 +1251,7 @@ railroad-beta
 
 ```mmd
 railroad-ebnf-beta
-  accDescr{Text}
+  accDescr {Text}
   accDescr { Text }
   accDescr {}
   r = "block";
@@ -1254,7 +1265,7 @@ railroad-ebnf-beta
 
 ```mmd
 railroad-abnf-beta
-  accDescr{Text}
+  accDescr {Text}
   accDescr { Text }
   accDescr {}
   r = "block";
@@ -1268,7 +1279,7 @@ railroad-abnf-beta
 
 ```mmd
 railroad-peg-beta
-  accDescr{Text}
+  accDescr {Text}
   accDescr { Text }
   accDescr {}
   r <- "block";
@@ -1681,7 +1692,7 @@ closer 後の space と tab、inline の接触を共有の hidden-gap 保護で�
 
 ```mmd
 railroad-beta
-  accDescr{moved}
+  accDescr {moved}
   %%{!after metadata}%%
 
   r = terminal("after moved");
@@ -1695,7 +1706,7 @@ railroad-beta
 
 ```mmd
 railroad-ebnf-beta
-  accDescr{moved}
+  accDescr {moved}
   %%{!after metadata}%%
 
   r = "after moved";
@@ -1709,7 +1720,7 @@ railroad-ebnf-beta
 
 ```mmd
 railroad-abnf-beta
-  accDescr{moved}
+  accDescr {moved}
   %%{!after metadata}%%
 
   r = "after moved";
@@ -1723,7 +1734,7 @@ railroad-abnf-beta
 
 ```mmd
 railroad-peg-beta
-  accDescr{moved}
+  accDescr {moved}
   %%{!after metadata}%%
 
   r <- "after moved";

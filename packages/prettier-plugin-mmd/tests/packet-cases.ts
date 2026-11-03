@@ -12,7 +12,7 @@ export const packetCases: readonly PacketCase[] = [
   {
     name: "packet/description-blocks/description-empty",
     input: "packet\naccDescr{ \t\n\u2028\u00a0}\n",
-    output: "packet\n  accDescr{}\n",
+    output: "packet\n  accDescr {}\n",
     options: {},
   },
   {
@@ -113,7 +113,7 @@ export const packetCases: readonly PacketCase[] = [
   {
     name: "packet/line-terminators-and-unicode/unicode-common-interiors",
     input: "packet\naccDescr{\u00a0A\u2028B\u2029C\ufeff}\n",
-    output: "packet\n  accDescr{ A\u2028B\u2029C }\n",
+    output: "packet\n  accDescr { A\u2028B\u2029C }\n",
     options: {},
   },
   {

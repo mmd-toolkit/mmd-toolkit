@@ -65,7 +65,7 @@ requirementDiagram
     type: t
   }
   r - satisfies -> e
-  style r fill:red
+  style r fill: red
 ```
 
 入力
@@ -91,6 +91,12 @@ requirementDiagram
 ```
 
 ### 本体
+
+trivia を挟んで見出しが続く場合、開始括弧のある行を最初のキーワードにそろえ、
+本文がさらに 1 段深く見えるようにします。
+その行をまたぐ値や保護された原文の境界は変えません。
+[fixture: bodies/header-completion-after-comment]
+[fixture: multi-line-statements/header-directive-continuation]
 
 requirement と element の `{` は、種類のキーワード、名前、クラスの行に、
 空白 1 つの後に置きます。
@@ -306,7 +312,7 @@ requirementDiagram
   }
   "r" - satisfies -> s
   s - satisfies -> "r"
-  style "r" fill:red
+  style "r" fill: red
 ```
 
 入力
@@ -467,25 +473,28 @@ requirementDiagram
 
 ### スタイルとクラス
 
-`classDef` 文の名前と、`style` 文と `class` 文の名前とクラスは、
-両側の名前に接する `,` で区切ります。
-`classDef a ,b ,  c fill:red` は `classDef a,b,c fill:red` と印字します。
+名前とクラスのリストでは、名前に接する comma を使います。
+`class` の 2 つのリストは、空白 1 つで区切ります。
+style の文脈が LF で終わる場合、文の末尾の空白は落とします。
+最初のスタイルは空白 1 つの後に置きます。
+`style` と `classDef` の、通常の 1 行のプロパティと値からなるスタイルでは、
+最初の `:` の前を詰め、空でない値の前に空白を 1 つ置きます。
+スタイル間は `,` とその後の空白 1 つで区切ります。
+プロパティと値の内部は、値の語の間の連続空白も含めて保ちます。
+Mermaid はスタイルの単位をつなげて読むため、
+`stroke-dasharray: 5 5` は引き続き `stroke-dasharray:55` です。
+`fill   : navy, stroke  : black` は `fill: navy, stroke: black` にします。
+`stroke-dasharray:  5    5` は、値の間の空白 4 つを保ちます。
+通常はつなげる見出しや外側の改行があっても、最初の整形で同じ間隔にします。
+スタイル内部の改行区切り、所有する trivia、同じ物理行のセミコロンがある場合は、
+既存のスタイルの配置を保ちます。
+キーワードの大文字小文字は保ちます。
+[fixture: styles-and-classes/style-unit-padding]
 [fixture: styles-and-classes/class-def-names]
 [fixture: styles-and-classes/style-names]
 [fixture: styles-and-classes/class-lists]
-最初のスタイルは空白 1 つの後に置き、
-`class` 文の 2 つのリストは空白 1 つで区切ります。
-スタイルの中の空白は書かれたまま印字します。
-mermaid.js はスタイルのテキストをつなげて間の空白を落とすので、
-`stroke-dasharray: 5 5` はスタイル `stroke-dasharray:55` であり、
-空白は作者が置いた所に残します。
-2 つのスタイルの間の `,` の周りの空白は、
-トークンの間の空白と同じに 1 つにします。
 [fixture: styles-and-classes/styles-as-written]
-文の末尾の空白は落とします。
-style の文脈は、改行を文の終わりとして読むからです。
 [fixture: styles-and-classes/trailing-whitespace-dropped]
-キーワードは書かれた大文字小文字のまま残します。
 [fixture: styles-and-classes/keyword-case-kept]
 
 スタイルの末尾の `;` は、スタイルの文字か、
@@ -525,9 +534,9 @@ classDef "d" fill:red
 
 ```mmd
 requirementDiagram
-  classDef a,b,c fill:red
-  classDef default fill:#f9f,stroke-width:4px
-  classDef "d" fill:red
+  classDef a,b,c fill: red
+  classDef default fill: #f9f, stroke-width: 4px
+  classDef "d" fill: red
 ```
 
 入力
@@ -546,9 +555,9 @@ style r   fill: red;
 
 ```mmd
 requirementDiagram
-  style r fill : #f9f , stroke:#333
+  style r fill: #f9f, stroke: #333
   style r stroke-dasharray: 5 5
-  style r fill:red , stroke:blue
+  style r fill: red, stroke: blue
   style r fill: red;
 ```
 
@@ -763,9 +772,9 @@ requirementDiagram
   requirement r {
     id: 1
   }
-  style r fill:red
+  style r fill: red
   "r":::c
-  classDef c fill:red
+  classDef c fill: red
   "r":::c
   class r c
   "r" - satisfies -> b
@@ -877,7 +886,8 @@ ER 図が mermaid.js の読まないテキストをブロックの中の自分�
 内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
 囲む空白を要する本文がないためです。
 すでに空の内側は空のままです。
-接した keyword は接したまま、 `accDescr{  }` は `accDescr{}` にします。
+キーワードと開始括弧の間には空白を 1 つ置きます。
+`accDescr{  }` は `accDescr {}` にします。
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: requirement Unicode and tab interiors]
 [test: requirement body Unicode and tab interiors]
@@ -1112,7 +1122,7 @@ class r c "r"
 
 ```mmd
 requirementDiagram
-  style r fill:red
+  style r fill: red
   "r":::c
   class r c
   "r" - satisfies -> b
@@ -1171,7 +1181,7 @@ requirementDiagram
   requirement r {
     id: 1
   }
-  style r fill:red
+  style r fill: red
   class r c
 ```
 
@@ -1190,8 +1200,8 @@ accDescr {}
 
 ```mmd
 requirementDiagram
-  accDescr{}
-  accDescr{}
+  accDescr {}
+  accDescr {}
   accDescr {}
 ```
 
@@ -1234,7 +1244,7 @@ requirementdiagram
   }
   r - SATISFIES -> e
   DIRECTION lr
-  STYLE r fill:red
+  STYLE r fill: red
 ```
 
 ### コメント

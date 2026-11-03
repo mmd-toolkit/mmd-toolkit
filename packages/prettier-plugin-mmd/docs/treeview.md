@@ -512,6 +512,8 @@ treeview/semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
 
 ### Decorations
 
+[fixture: treeview/decorations/explicit-empty-description-trivia]
+
 Redraw each ordinary outer decoration once as the guide continuing toward the
 next node, or as a blank line when no tree continues there. Apply this at body,
 pending-name, annotation and opener-gap owners; moved blanks join the following
@@ -1722,18 +1724,20 @@ treeView-beta
 ### Description blocks
 
 Use shared description-block layout for ordinary blocks: whitespace-only
-interiors become `{}`, touching edges remain touching, and ordinary edge padding
-becomes one space. Join plain opener whitespace, align ordinary body lines one
-step inside the statement, preserve trivia contents, and align separate closers
-with the statement. Mermaid discards indentation after LF from the description.
-The body uses the configured indentation, including tabs and the positive
-minimum step at width zero. In box mode remove ordinary keyword/opener prefixes
-and place the common statement at column one, while keeping the body's authored
-columns: indenting a plain physical line can make box syntax reject it.
-Value-owned box geometry still keeps its complete brace span. The first
-effective `}` remains the closer. Unsafe removal follows Branch prefixes,
-including common-value tabs. A sole mode selector in the opener gap keeps just
-that gap, as described in Decorations.
+interiors become `{}`. Put one space between `accDescr` and `{`, even when
+originally touching, to distinguish the keyword from its body. Touching interior
+edges remain touching, and ordinary interior edge padding becomes one space.
+Join plain opener whitespace, align ordinary body lines one step inside the
+statement, preserve trivia contents, and align separate closers with the
+statement. Mermaid discards indentation after LF from the description. The body
+uses the configured indentation, including tabs and the positive minimum step at
+width zero. In box mode remove ordinary keyword/opener prefixes and place the
+common statement at column one, while keeping the body's authored columns:
+indenting a plain physical line can make box syntax reject it. Value-owned box
+geometry still keeps its complete brace span. The first effective `}` remains
+the closer. Unsafe removal follows Branch prefixes, including common-value tabs.
+A sole mode selector in the opener gap keeps just that gap, as described in
+Decorations.
 
 [fixture: treeview/decorations/review159-sole-opener-selector]
 

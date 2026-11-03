@@ -1092,9 +1092,8 @@ unicode-semicolon-kept]
 
 A closed description block with no text or trivia prints its interior as `{}`,
 including when its braces contained spaces or blank lines. The exterior
-keyword-to-brace gap still follows
-[Whitespace between tokens](#whitespace-between-tokens): a touching keyword
-stays touching, as `accDescr{}`. [fixture:
+keyword-to-brace gap prints one space, even when the tokens originally touched,
+so the keyword and body opener remain distinct: `accDescr {}`. [fixture:
 accessibility-lines/empty-block-touching-keyword] There is no text for an
 interior space to surround, so follow usecase's Db-equal form, with the same
 sibling-diagram reason as the colon lines. [fixture:

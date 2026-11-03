@@ -13,6 +13,7 @@ import type {
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { maxOf } from "./collections.ts"
 import {
+  alignBlockOpeningLine,
   collectAtoms,
   collectValueNodes,
   expectToken,
@@ -21,6 +22,7 @@ import {
   keptAsWritten,
   layoutDescriptionBlock,
   spansLinesThatCannotJoin,
+  spaceDescriptionOpening,
 } from "./layout.ts"
 import {
   holdsJoiningRegion,
@@ -160,12 +162,10 @@ function indentC4BeforeBody(
   let aligned = layout
   for (const block of blocks) {
     const text = source.text.slice(...block.range)
-    if (
-      !text.includes("\n") ||
-      text.includes(";") ||
-      holdsJoiningRegion(source, ...block.range)
-    )
+    if (text.includes(";") || holdsJoiningRegion(source, ...block.range))
       continue
+    aligned = spaceDescriptionOpening(source, block.range[0], aligned)
+    if (!text.includes("\n")) continue
     aligned = indentDescriptionLines(
       source,
       { range: block.range, value: block.value, closed: true },
@@ -233,12 +233,19 @@ export function layoutC4Call(
       // The brace is structural whitespace after the complete call, even
       // when a semicolon keeps the call's own text or the first child line.
       const head = layoutC4Call(source, statement, previous.range[1])
-      return {
-        ...head,
-        atoms: [...head.atoms, { start: opening.range[0], end }],
-        rules: new Map([...head.rules, [opening.range[0], "space"]]),
-        joinedBefore: new Set([...(head.joinedBefore ?? []), opening.range[0]]),
-      }
+      return alignBlockOpeningLine(
+        source,
+        {
+          ...head,
+          atoms: [...head.atoms, { start: opening.range[0], end }],
+          rules: new Map([...head.rules, [opening.range[0], "space"]]),
+          joinedBefore: new Set([
+            ...(head.joinedBefore ?? []),
+            opening.range[0],
+          ]),
+        },
+        previous.range[0],
+      )
     }
   }
   // Structural LF and trivia stay in their gaps. Only textual semicolon
@@ -388,7 +395,7 @@ export function layoutC4Call(
     )
       rules.set(atom.start, "none")
   }
-  return indentC4BeforeBody(
+  const layout = indentC4BeforeBody(
     source,
     statement.type === "C4BoundaryStatement" ? statement.beforeBody : [],
     {
@@ -400,6 +407,9 @@ export function layoutC4Call(
       keptBreaksBefore,
     },
   )
+  return statement.type === "C4BoundaryStatement" && opening?.value === "{"
+    ? alignBlockOpeningLine(source, layout, opening.range[0])
+    : layout
 }
 
 /**
@@ -423,8 +433,8 @@ export function layoutC4Text(source: Source, statement: C4Text): AtomLayout {
       { keepsTrailingTrivia: true },
     )
     // Ordinary block spacing and closing-brace alignment follow the sibling
-    // diagrams. The shared layout aligns body lines and the closer; absent
-    // token-gap whitespace is not added (diagrams/c4.md, Title
+    // diagrams. The shared layout aligns body lines and the closer while
+    // preserving interior edge contacts (diagrams/c4.md, Title
     // and accessibility statements; docs/c4.md, Description blocks).
     return layout
   }

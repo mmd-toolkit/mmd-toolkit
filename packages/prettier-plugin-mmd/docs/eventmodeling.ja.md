@@ -77,7 +77,9 @@ frame、model entity、`data`、`note`、`gwt` が対象です。
 トップレベルの字下げを再検討します。
 
 GWT clause は設定の 1 段、item は 2 段にします。
-構造の継続行は、`data` ヘッダーの継続も含め、その文より 1 段深くします。
+通常の構造の継続行は、その文より 1 段深くします。
+`data`、`note`、GWT の見出しが完結する行はキーワードにそろえ、
+本文がさらに深く見えるようにします。
 列は親子を決めないため、`tabWidth: 0` では空白を足しません。
 `useTabs` では幅が 0 でも 1 段に tab を 1 個使います。
 値の継続列、metadata の空白、hidden が消費する LF の境界は、
@@ -357,6 +359,11 @@ resetframe 02 command Beta
 
 ### Declarations and notes
 
+コメントで宣言や note の見出しが分かれる場合、コメントは 1 段深く置き、
+見出しが完結する行はキーワードにそろえます。
+値の継続行や必須の hidden の境界は変えません。
+[fixture: eventmodeling/declarations-and-notes/header-completion-comments]
+
 宣言と note の部品は `entity Shop.Buy`、`data D`、`note 01` と、
 普通の 1 space で分けます。
 block opener は見出し行の 1 space 後に置き、宣言の部品を見せます。
@@ -382,6 +389,10 @@ entity Shop.Buy
 ```
 
 ### Gwt clauses and items
+
+GWT の見出しでコメントの後に source-frame の行が続く場合、
+その最後の行を `gwt` にそろえ、clause をさらに 1 段深く置きます。
+[fixture: eventmodeling/gwt-clauses-and-items/header-completion-comment]
 
 `gwt 99` は第 1 列、clause keyword はさらに 1 段、
 各 item はさらに 1 段深くします。

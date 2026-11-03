@@ -879,8 +879,8 @@ in the [folder](../tests/fixtures/sequence/multi-line-statements)).
 
 The whitespace-only interior of a description block, including tabs, line breaks
 and Unicode whitespace, prints `{}`: there is no text for interior whitespace to
-surround. An already empty interior stays empty. A touching keyword stays
-touching: `accDescr{  }` becomes `accDescr{}`. [fixture:
+surround. An already empty interior stays empty. The keyword and opening brace
+have one space between them: `accDescr{  }` becomes `accDescr {}`. [fixture:
 multi-line-values/empty-whitespace-interiors] [test: sequence Unicode and tab
 interiors] Blocks with comments or directives keep their contents and line
 breaks.

@@ -122,6 +122,7 @@ export function layoutRadarStatement(
       const rules = new Map<number, GapRule>()
       const outdented = new Set<number>()
       const joinedBefore = new Set<number>()
+      const hasTrivia = findTriviaBetween(source, start, end).length > 0
       for (const [index, atom] of atoms.entries()) {
         const previous = atoms[index - 1]
         if (previous === undefined) continue
@@ -133,12 +134,13 @@ export function layoutRadarStatement(
           before?.value === "{"
         rules.set(atom.start, touches ? "none" : "space")
         if (token?.value === "}") outdented.add(atom.start)
-        // Only plain entry newlines join. Trivia and hidden boundaries keep
-        // their line, and textual semicolon segments keep their reading
+        // Plain entry newlines join only in a statement without trivia, so
+        // comments do not leave a partly flattened list. Hidden boundaries
+        // and textual semicolon segments keep their reading
         // (diagrams/radar.md, Hidden forms and comments; docs/radar.md,
         // Multi-line statements and Semicolons).
         if (
-          findTriviaBetween(source, previous.end, atom.start).length === 0 &&
+          !hasTrivia &&
           !hidden.some(
             (item) =>
               item.range[0] === atom.start || item.range[1] === previous.end,

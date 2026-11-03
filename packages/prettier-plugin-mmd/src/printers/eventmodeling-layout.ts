@@ -23,6 +23,7 @@ import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import type { HiddenOpenBlockLayout } from "./flat-hidden-diagram.ts"
 import { protectHiddenGaps } from "./hidden-forms.ts"
 import {
+  alignBlockOpeningLine,
   collectAtoms,
   collectValueNodes,
   expectToken,
@@ -147,12 +148,16 @@ export function layoutEventmodelingStatement(
     case "gwt": {
       const gwt = selected.statement
       return {
-        header: layoutComponents(
+        header: alignBlockOpeningLine(
           source,
-          gwt,
-          start,
-          gwt.sourceFrame.range[1],
-          options.tabWidth,
+          layoutComponents(
+            source,
+            gwt,
+            start,
+            gwt.sourceFrame.range[1],
+            options.tabWidth,
+          ),
+          gwt.sourceFrame.range[1] - 1,
         ),
         body: [gwt.given, ...(gwt.when === null ? [] : [gwt.when]), gwt.then],
         end,
@@ -207,6 +212,7 @@ function layoutComponents(
     eventmodelingValueNodeTypes,
   ).filter((node) => start <= node.range[0] && node.range[1] <= end)
   const kept: Atom[] = []
+  let blockOpening: number | undefined
   walk(statement, (node) => {
     if (
       (node.type === "EventmodelingInlineData" ||
@@ -228,6 +234,8 @@ function layoutComponents(
               tabWidth,
             )
           : undefined
+      if (node.type === "EventmodelingDataBlock")
+        blockOpening = opening.range[0]
       kept.push({ start: opening.range[0], end: node.range[1], doc })
     }
   })
@@ -305,13 +313,17 @@ function layoutComponents(
       ],
     }
   }
-  return {
+  const aligned = {
     ...layout,
     writtenGapsBefore: new Set([
       ...(layout.writtenGapsBefore ?? []),
       ...writtenGapsBefore,
     ]),
   }
+  return classifyEventmodelingStatement(statement).kind === "data" &&
+    blockOpening !== undefined
+    ? alignBlockOpeningLine(source, aligned, blockOpening)
+    : aligned
 }
 
 /**

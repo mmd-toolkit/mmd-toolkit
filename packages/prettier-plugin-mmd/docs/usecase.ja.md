@@ -638,24 +638,23 @@ Db が同じになる外側の空白を、兄弟の図種と同じ形に揃え�
 
 説明ブロックは、 class の[複数行の値](./class.ja.md#複数行の値)と同じく、
 本文行を文より 1 段深くし、独立した `}` を文の字下げに揃えます。
+コメント行だけが入ったブロックも同じ配置です。
 Mermaid が説明から LF 後の字下げを除くためです。
-語と波括弧の隙間には、
-[flowchartのトークンの間の空白](./flowchart.ja.md#トークンの間の空白)を、
-同じ理由で再利用します。
-Mermaidがトークンを読むために要する接触を、共通の隙間の規則で保つためです。
-このDbが同じ形からの選択でusecase固有の理由はありません。
-`accDescr{ a }`は接したまま、空白1つ・空白列・タブは空白1つにします。
+`accDescr` と `{` の間は、元が接していても空白 1 個にします。
+keyword と本文の開始を見分けやすくするためです。
 [fixture: direction-and-accessibility/keyword-brace-touching]
 [fixture: direction-and-accessibility/keyword-brace-space]
 [fixture: direction-and-accessibility/keyword-brace-run]
 [test: accessibility revisions: usecase keyword-brace-tab]
-空と空白だけの内部は`{}`にし、外側の隙間はその規則に従います。
+空と空白だけの内部は`{}`にします。
 書かれた原文を保つ共有コメント領域とセミコロンの規則は、そのまま優先します。
 usecase の字下げは構造の表示なので、幅 0 とタブにも同じ配置を使います。
 [fixture: direction-and-accessibility/a11y-closer-aligned]
 [fixture: direction-and-accessibility/a11y-closer-tabs]
 [fixture: direction-and-accessibility/a11y-closer-zero]
 [fixture: direction-and-accessibility/a11y-directive-padding]
+
+[fixture: direction-and-accessibility/a11y-comment-empty-tabs]
 
 [fixture: direction-and-accessibility/direction-values]
 [fixture: direction-and-accessibility/a11y-padding]
@@ -690,7 +689,7 @@ usecase-beta
 
 ```mmd
 usecase-beta
-  accDescr{ a }
+  accDescr { a }
   A[Keyword gap]
 ```
 

@@ -395,7 +395,11 @@ gitGraph
 `title` は空白 1 個と外端だけ trim した非空値を印字します。
 空や空白のみなら裸の `title` です。
 共通の accessibility 配置で `accTitle: value`・`accDescr: value`、
-空 block は `{}`、接した波括弧はそのまま、既存の辺の空白は 1 個にします。
+空 block は `{}` と印字します。
+通常の gap では、
+接して書かれていても `accDescr` と `{` の間に空白 1 つを置きます。
+保護対象の trivia やセミコロンの配置では、その gap を保ちます。
+内部でテキストに接する側は接したまま、既存の辺の空白は 1 個にします。
 別行の閉じは文に揃えます。
 通常の説明本文と独立したコメント行は、文より1段内側に揃えます。
 Db で LF 後の字下げが取り除かれるためです。
@@ -817,7 +821,7 @@ EOF に達する global directive、hidden の閉じの padding、
 
 ```mmd
 gitGraph
-  accDescr{}
+  accDescr {}
 ```
 
 ### Specified readings

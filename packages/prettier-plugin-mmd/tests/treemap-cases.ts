@@ -53,7 +53,7 @@ export const treemapCases: readonly TreemapCase[] = [
   {
     name: "treemap/description-blocks/unicode-empty",
     input: 'treemap\naccDescr{ \t\n\u2028\u00a0}\n"EmptyUnicode":3',
-    output: 'treemap\n  accDescr{}\n  "EmptyUnicode": 3\n',
+    output: 'treemap\n  accDescr {}\n  "EmptyUnicode": 3\n',
     options: {},
   },
   {

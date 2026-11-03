@@ -19,8 +19,10 @@ import {
   printedEndOf,
 } from "./kept-lines.ts"
 import {
+  alignBlockOpeningLine,
   collectAtoms,
   collectValueNodes,
+  descriptionOpeningRules,
   expectToken,
   expectValue,
   findAccDescrBlockClosing,
@@ -223,12 +225,16 @@ export function layoutBodyOpening(
     ),
     [],
   )
-  return {
-    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
-    rules,
-    outdented: new Set([opening.range[0]]),
-    lineBreaks: keepsLineBreaks ? "kept" : "joined",
-  }
+  return alignBlockOpeningLine(
+    source,
+    {
+      atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+      rules,
+      outdented: new Set([opening.range[0]]),
+      lineBreaks: keepsLineBreaks ? "kept" : "joined",
+    },
+    opening.range[0],
+  )
 }
 
 /**
@@ -295,7 +301,7 @@ export function layoutStateStatement(
           collectValueNodes(block, stateValueNodeTypes),
           findAccDescrBlockStretches(source, block),
         ),
-        rules: new Map(),
+        rules: descriptionOpeningRules(source, start),
         outdented: closing === null ? new Set() : new Set([closing]),
         lineBreaks: "kept",
       })
