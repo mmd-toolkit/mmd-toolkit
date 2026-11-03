@@ -12,11 +12,13 @@ import type {
 import { util } from "prettier"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { readGap } from "./gap.ts"
+import { holdsJoiningRegion } from "./kept-lines.ts"
 import {
   collectAtoms,
   collectValueNodes,
   expectToken,
   expectValue,
+  keepFirstGapLineTails,
   keptAsWritten,
   layoutDescriptionBlock,
   spansLinesThatCannotJoin,
@@ -96,10 +98,10 @@ export function layoutTimelineHeader(
  *   not one of them (see `layoutEvents`).
  * - A title, a section, and an accessibility statement written over several
  *   lines stand on one line where the lexer reads the line break as
- *   whitespace, which it does only right after a keyword; one with a comment
- *   or a directive in it is kept as written (see
- *   `spansLinesThatCannotJoin`). The lines of an `accDescr` block are lines
- *   of its text, and are kept (docs/timeline.md, Accessibility statements).
+ *   whitespace, which it does only right after a keyword. Accessibility line
+ *   trivia keeps its breaks with ordinary continuation columns; titles,
+ *   sections, events and protected regions retain their original layout
+ *   (docs/timeline.md, Multi-line statements).
  */
 export function layoutTimelineStatement(
   source: Source,
@@ -121,7 +123,18 @@ export function layoutTimelineStatement(
     default:
       break
   }
-  if (spansLinesThatCannotJoin(source, start, end)) {
+  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  const formatsTriviaLines =
+    statement.type === "TimelineAccTitleStatement" ||
+    statement.type === "TimelineAccDescrStatement"
+  // Trivia prevents joining, but ordinary structural gaps still use atoms.
+  // Value columns, semicolon lines and removed-line regions stay written.
+  if (
+    keepsLineBreaks &&
+    (!formatsTriviaLines ||
+      holdsJoiningRegion(source, start, end) ||
+      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
+  ) {
     return keptAsWritten(start, end)
   }
   const atoms = collectAtoms(
@@ -132,10 +145,10 @@ export function layoutTimelineStatement(
     [],
   )
   return {
-    atoms,
+    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
     rules: textStatementRules(source, statement),
     outdented: new Set(),
-    lineBreaks: "joined",
+    lineBreaks: keepsLineBreaks ? "kept" : "joined",
   }
 }
 

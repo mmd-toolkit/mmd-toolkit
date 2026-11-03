@@ -825,12 +825,14 @@ where the text may be: so `direction`, a line break, and `LR` is printed as
 `direction LR`. [fixture: multi-line-statements/joined] [fixture:
 multi-line-statements/acc-descr-joined] [fixture:
 multi-line-statements/empty-line-inside-joined] [corpus fixture:
-class/lex-direction-line-value-next-line] A statement written over several lines
-with a comment or a directive in it is kept as written, from its start to its
-end, as in a sequence diagram (see
-[Multi-line statements](./sequence.md#multi-line-statements)). [fixture:
-multi-line-statements/comment-inside-kept] [fixture:
-multi-line-statements/directive-inside-kept] [fixture:
+class/lex-direction-line-value-next-line] A statement with a comment or
+directive keeps its line breaks, while structural continuations and intervening
+trivia stand one level deeper, as in a sequence diagram (see
+[Multi-line statements](./sequence.md#multi-line-statements)). Whitespace inside
+values remains unchanged. The whitespace before the first line break of each gap
+is retained; joining regions and semicolon line protections keep the whole
+statement as written. [fixture: multi-line-statements/comment-inside-kept]
+[fixture: multi-line-statements/directive-inside-kept] [fixture:
 multi-line-statements/comment-inside-title-kept]
 
 Input
@@ -869,8 +871,8 @@ Output
 ```mmd
 classDiagram
   direction
-%% c
-LR
+    %% c
+    LR
 ```
 
 Next-line `accTitle:` and `accDescr:` values keep their line break when joining
@@ -1068,8 +1070,8 @@ because changing it would change the diagram or the input would be rejected:
   whitespace follows the `:` of a label on a line that holds a `;`;
 - a line of only whitespace after the comment of a statement, as one space;
 - the text of a direction line before `direction` and after its value;
-- a statement written over several lines with a comment, a directive, or a `;`
-  in it;
+- a statement protected by a semicolon line or a joining comment region;
+- the whitespace before the first line break of a gap containing trivia;
 - a backquoted name that is not closed, to the end of the text;
 - the spelling of the header, `classDiagram` or `classDiagram-v2`. [fixture:
   indentation/header-v2-kept]

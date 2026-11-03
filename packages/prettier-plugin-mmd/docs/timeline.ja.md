@@ -867,9 +867,14 @@ event の `:` の後ろの改行は、字句解析器が読む区切りの空白
 period と event は、後ろの行の行頭に `:` を書く別の形で複数行に書け、
 その改行は残します（[period と event](#period-と-event)を参照）。
 
-連結する改行にコメント行か指令がある文は、書かれたまま印字します。
-コメント行はその行の残りを取り、
-指令のある行の空白は指令と一緒に読まれるからです。
+`accTitle` と `accDescr:` の文では、trivia の改行を保ち、
+section の下でも後続の構造部分と独立した trivia 行を文より 1 段深くそろえます。
+各 gap の最初の行の末尾と、指令の内部全体を保ちます。
+`;` のある行と、物理行を結ぶコメント領域は元の配置を保ちます。
+[fixture: multi-line-statements/accessibility-trivia-continuations]
+
+title と section、event テキストの続きでは、値の空白が Db の一部なので、
+複数行の trivia を含む配置を元のまま保ちます。
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 event の `:` の後ろにある、字下げされた指令だけの行は、
@@ -935,8 +940,8 @@ timeline
 %% c
 T
   accTitle:
-%% d
-T
+    %% d
+    T
   a :
 %% e
   f
@@ -1130,8 +1135,9 @@ journey と同じ規則です。 [fixture: directives/kept]
 
 [fixture: timeline/directives/whitespace-on-both-sides-collapsed]
 
-文の 2 つの単位の間の指令は、両側に書かれた空白とともにその場所に残します。
-テキストの中の指令は、テキストの一部です。
+文の単位の間の指令は元の gap に残し、同じ行の両側の接触・分離を保ちます。
+構造部分の続きの列は[複数行の文](#複数行の文)に従います。
+値の中の指令は、そのテキストの一部です。
 [fixture: directives/between-units-kept]
 [fixture: directives/inside-values-kept] [fixture: directives/over-lines-kept]
 閉じていない指令はテキストの残りを取り、書かれたまま残します。

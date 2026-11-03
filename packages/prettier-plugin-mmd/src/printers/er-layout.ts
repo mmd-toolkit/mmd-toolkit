@@ -16,6 +16,7 @@ import {
   collectValueNodes,
   expectToken,
   expectValue,
+  keepFirstGapLineTails,
   keptAsWritten,
   layoutDescriptionBlock,
   spansLinesThatCannotJoin,
@@ -271,8 +272,8 @@ export function layoutBlockOpening(
  *   lexer reads the line break as whitespace, which it does only after the
  *   `:` of `accTitle` and `accDescr`, between `direction` and its value, and
  *   inside the statements of the style context (diagrams/er.md, The
- *   statement context); one with a comment or a directive in it is kept as
- *   written (see `spansLinesThatCannotJoin`). The lines of an `accDescr`
+ *   statement context); comments and directives keep line breaks while
+ *   structural continuations align. The lines of an `accDescr`
  *   block keep their line breaks and align one level inside the statement,
  *   except inside subgraphs, where raw text also supplies membership
  *   (docs/er.md, Multi-line values).
@@ -294,21 +295,27 @@ export function layoutErStatement(
       preservesBodyColumns: preservesDescriptionColumns,
     })
   }
-  if (spansLinesThatCannotJoin(source, start, end)) {
+  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  if (
+    keepsLineBreaks &&
+    (holdsJoiningRegion(source, start, end) ||
+      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
+  ) {
     return keptAsWritten(start, end)
   }
   const kept = findKeptStretches(source, statement)
+  const atoms = collectAtoms(
+    source,
+    start,
+    end,
+    collectValueNodes(statement, erValueNodeTypes),
+    kept,
+  )
   return {
-    atoms: collectAtoms(
-      source,
-      start,
-      end,
-      collectValueNodes(statement, erValueNodeTypes),
-      kept,
-    ),
+    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
     rules: statementRules(source, statement),
     outdented: new Set(),
-    lineBreaks: "joined",
+    lineBreaks: keepsLineBreaks ? "kept" : "joined",
   }
 }
 

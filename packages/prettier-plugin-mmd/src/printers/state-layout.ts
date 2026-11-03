@@ -12,7 +12,12 @@ import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { holdsDirection } from "./accessibility-lines.ts"
 import { findWrittenWhitespaceEnd } from "./gap.ts"
-import { lineEndOf, lineStartOf, printedEndOf } from "./kept-lines.ts"
+import {
+  holdsJoiningRegion,
+  lineEndOf,
+  lineStartOf,
+  printedEndOf,
+} from "./kept-lines.ts"
 import {
   collectAtoms,
   collectValueNodes,
@@ -21,6 +26,7 @@ import {
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
   indentDescriptionLines,
+  keepFirstGapLineTails,
   keptAsWritten,
   layoutCompactEmptyDescriptionBlockWithFallback,
   spansLinesThatCannotJoin,
@@ -180,8 +186,9 @@ export function layoutStateHeader(source: Source, keyword: Token): AtomLayout {
  * The layout of the line that opens a body, from the start of a statement
  * to the end of its `{`. The `{` stands on the line of the name, after one
  * space; a `{` written on the next line is moved there (docs/state.md,
- * Composite states). Such a line is kept as written when it is written
- * over several lines and holds a comment or a directive, when text that
+ * Composite states). Comments and directives keep line breaks while structural
+ * continuations align. Such a line is kept as written when joining regions or
+ * semicolons protect it, when text that
  * mermaid.js does not read stands before its `{` and is read by its place
  * (see `hasReadOtherwiseTextBeforeBody`), or when it follows a state name
  * (see `isStateNameStatement`).
@@ -194,8 +201,10 @@ export function layoutBodyOpening(
 ): AtomLayout {
   const start = statement.range[0]
   const end = opening.range[1]
+  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
   if (
-    spansLinesThatCannotJoin(source, start, end) ||
+    holdsJoiningRegion(source, start, end) ||
+    spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }) ||
     hasReadOtherwiseTextBeforeBody(statement) ||
     followsStateName
   ) {
@@ -205,19 +214,20 @@ export function layoutBodyOpening(
   if (statement.type === "StateAliasDefinitionStatement") {
     addAliasHeaderRules(source, statement, rules)
   }
-  return {
-    atoms: collectAtoms(
-      source,
-      start,
-      end,
-      collectValueNodes(statement, stateValueNodeTypes).filter(
-        (value) => value.range[1] <= opening.range[0],
-      ),
-      [],
+  const atoms = collectAtoms(
+    source,
+    start,
+    end,
+    collectValueNodes(statement, stateValueNodeTypes).filter(
+      (value) => value.range[1] <= opening.range[0],
     ),
+    [],
+  )
+  return {
+    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
     rules,
-    outdented: new Set(),
-    lineBreaks: "joined",
+    outdented: new Set([opening.range[0]]),
+    lineBreaks: keepsLineBreaks ? "kept" : "joined",
   }
 }
 
@@ -249,7 +259,7 @@ function holdsBrace(source: Source, start: number, end: number): boolean {
  *   `as`, the position of a note, `classDef` and `style` and their names,
  *   `scale`, `direction`, and the `:` of `accTitle` and `accDescr`
  *   (diagrams/state.md, Lexical structure); one with a comment or a
- *   directive in it is kept as written (see `spansLinesThatCannotJoin`). The
+ *   directive keeps its line breaks and aligns structural continuations. The
  *   lines of an `accDescr { ... }` block and of a note over lines are lines
  *   of their texts, and are kept (docs/state.md, Multi-line values).
  * - A transition has one space on each side of its arrow (docs/state.md,
@@ -304,8 +314,10 @@ export function layoutStateStatement(
   ) {
     return layoutNoteOverLines(source, statement, end)
   }
+  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
   if (
-    spansLinesThatCannotJoin(source, start, end) ||
+    holdsJoiningRegion(source, start, end) ||
+    spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }) ||
     ((statement.type === "StateCompositeStatement" ||
       statement.type === "StateAliasDefinitionStatement") &&
       hasReadOtherwiseTextBeforeBody(statement))
@@ -329,23 +341,24 @@ export function layoutStateStatement(
       range: statement.range,
       text: statement.value.value,
     })
-  return {
-    atoms: collectAtoms(
-      source,
-      start,
-      end,
-      collectValueNodes(statement, stateValueNodeTypes).filter(
-        (value) =>
-          !kept.some(
-            (stretch) =>
-              stretch.start <= value.range[0] && value.range[1] <= stretch.end,
-          ),
-      ),
-      kept,
+  const atoms = collectAtoms(
+    source,
+    start,
+    end,
+    collectValueNodes(statement, stateValueNodeTypes).filter(
+      (value) =>
+        !kept.some(
+          (stretch) =>
+            stretch.start <= value.range[0] && value.range[1] <= stretch.end,
+        ),
     ),
+    kept,
+  )
+  return {
+    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
     rules: statementRules(source, statement),
     outdented: new Set(),
-    lineBreaks: keepsDirectionValue ? "kept" : "joined",
+    lineBreaks: keepsLineBreaks || keepsDirectionValue ? "kept" : "joined",
   }
 }
 

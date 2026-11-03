@@ -225,8 +225,8 @@ mermaid.js はどちらも同じ図種として読むので、
 2 つ目以降のヘッダーは自分の行に置き、取り除きません。
 向きを持つ後のヘッダーは向きを変え、向きのないものは何も変えませんが、
 書かれたテキストは書き手のものだからです。
-改行をつなぐ所にコメント行か指令があるヘッダーは、
-書かれたまま残します（[複数行の文](#複数行の文)を参照）。
+gap にコメント行か指令があるヘッダーは、その改行を保ち、
+続きの列をヘッダーより 1 段深くそろえます（[複数行の文](#複数行の文)を参照）。
 [fixture: header-and-orientation/plain-header]
 [fixture: header-and-orientation/beta-header-kept]
 [fixture: header-and-orientation/header-only]
@@ -707,7 +707,8 @@ xychart
 接した keyword は接したまま、 `accDescr{  }` は `accDescr{}` にします。
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: xychart Unicode and tab interiors]
-指令かコメント行を持つブロックは、書かれたまま印字します。
+指令かコメント行を持つブロックは、内容と改行を保ち、
+独立した trivia を 1 段内側、閉じ括弧を文の段に置きます。
 ヘッダーの後でも、ほかの文の後でも、自分の行に置きます。
 テキストの最後で閉じていないブロックは、
 `}` を足さずに `accDescr {` と印字します（詳しくは、
@@ -781,10 +782,13 @@ mermaid.js が複数行にわたって読む文は、
 [fixture: multi-line-statements/text-over-several-line-breaks-joined]
 [fixture: multi-line-statements/next-statement-after-trailing-whitespace]
 
-title の部分の間にコメントや指令がある場合は、改行を保ち、
-後続の部分と独立した trivia 行を文の内側に 1 段字下げします。
-title を続ける空白は LF より前から始まる必要があるため、
-各 gap の最初の行の末尾と、その中の完全な inline 指令を保ちます。
+title、ヘッダー、軸、plot、アクセシビリティの行の文では、
+構造部分の gap にコメントや指令がある場合、その改行を保ちます。
+後続の部分と独立した trivia 行を、その文より 1 段深くそろえます。
+文を続ける空白は LF より前から始まる必要があるため、各 gap の最初の行の末尾と、
+その中の完全な inline 指令を保ちます。
+[fixture: multi-line-statements/structural-trivia-continuations]
+[fixture: multi-line-statements/axis-trivia-with-multiline-string]
 指令の内部も原文どおりです。
 [fixture: multi-line-statements/bare-title-multiline-directive-tail]
 コメント行は、置かれた行の残りを取り込むので、
@@ -794,7 +798,6 @@ title を続ける空白は LF より前から始まる必要があるため、
 [fixture: multi-line-statements/directive-inside-kept]
 引用符の内部は、改行と列を含めて、ひとまとまりのまま保ちます。
 [fixture: multi-line-statements/quoted-title-trivia]
-title 以外で複数行の trivia がある文は、元の配置を保ちます。
 文の内部か最終行に `;` がある場合は、行の規則があるため、
 配置全体を原文のまま保ちます（[1 行 1 文](#1-行-1-文)を参照）。
 [fixture: multi-line-statements/semicolon-inside-kept]

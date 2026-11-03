@@ -622,8 +622,15 @@ composite の見出しの中の改行もそうです。
 改行は空白 1 つに置き換えます。
 ほかの図も同じ規則で文の行をつなぎます（[複数行の文](./xychart.ja.md#複数行の文)
 を参照）。
-コメント行か指令を含む文は、書かれたまま残します。
-コメント行は置かれた行の残りを取り込むからで、すべての図で同じ判断をします。
+node/shape/width と辺の部分、`columns`、class/style の先頭、
+composite の見出しなどの構造 gap では、trivia の改行を保ちます。
+後続の部分と独立した trivia 行は、node の行や composite の内側でも、
+その文より 1 段深くそろえます。
+各 gap の最初の行の末尾、指令の内部全体、値の範囲全体を保ちます。
+block-arrow の方向の内容は原文のままです。
+[fixture: multi-line-statements/structural-trivia-continuations]
+
+物理行を結ぶコメント領域は、元の配置を保ちます。
 `;` を含む文も、行の規則があるので、
 書かれたまま残します（[行](#行)を参照。
 [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)も参照）。
@@ -803,7 +810,9 @@ block-beta
 接した keyword は接したまま、 `accDescr{  }` は `accDescr{}` にします。
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: block Unicode and tab interiors]
-指令かコメント行を持つブロックは、書かれたまま印字します。
+指令かコメント行を持つブロックは、内容と改行を保ち、
+独立した trivia を 1 段内側、閉じ括弧を文の段に置きます。
+[fixture: empty-description-blocks/trivia-continuations]
 ヘッダーの後でも、2 つの node の間でも、自分の行に置きます。
 文法がブロックを受け入れるのは、文が始まる場所です。
 mermaid.js は、どこにあってもトークンのないものとして読みます。

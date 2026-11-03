@@ -61,8 +61,10 @@ stateDiagram-v2
 
 The `{` of a composite state, and of an alias definition with a body, stands on
 the line of its name, after one space, as in a class diagram; a `{` written on
-the next line is moved there. [fixture: composite-states/split] [fixture:
-composite-states/brace-after-one-space] [fixture:
+the next line is moved there. Comments or directives between the name and the
+brace keep the line breaks; the brace aligns with the state keyword, and the
+intervening trivia stands one level deeper. [fixture: composite-states/split]
+[fixture: composite-states/brace-after-one-space] [fixture:
 composite-states/alias-brace-on-next-line] [fixture:
 composite-states/directive-before-body] [fixture:
 multi-line-statements/brace-after-comment-line-kept] [fixture:
@@ -906,10 +908,14 @@ next-line-direction-nbsp] So `classDef c` followed by a line `fill:red` is
 printed as `classDef c fill:red`; a line `B --> C` after `classDef a` is a style
 of `a`, not a transition, and the printed text shows it. [fixture:
 multi-line-statements/joined] [fixture:
-multi-line-statements/classdef-takes-next-line] A statement written over several
-lines with a comment or a directive in it is kept as written, from its start to
-its end, as in a sequence diagram (see
-[Multi-line statements](./sequence.md#multi-line-statements)). [fixture:
+multi-line-statements/classdef-takes-next-line] A statement with a comment or
+directive keeps its line breaks, while structural continuations and intervening
+trivia stand one level deeper, as in a sequence diagram (see
+[Multi-line statements](./sequence.md#multi-line-statements)). Whitespace inside
+values remains unchanged, including multiline notes. The first gap-line tails
+are retained; joining regions, semicolon protections and the composite-state
+exceptions above keep the whole statement as written. [fixture:
+multi-line-statements/declaration-trivia-continuations] [fixture:
 multi-line-statements/comment-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept] [fixture:
 multi-line-statements/brace-after-comment-line-kept] [fixture:
@@ -963,8 +969,8 @@ Output
 ```mmd
 stateDiagram-v2
   direction
-%% c
-LR
+    %% c
+    LR
 ```
 
 A statement written over several lines that holds a `;` is kept as written too.
@@ -1081,8 +1087,8 @@ because changing it would change the diagram or the input would be rejected:
 - the lines of a statement that holds a `{` and follows a `state` name;
 - an arrow and a `:` touching an id that a space would make a keyword;
 - a line that holds U+2028 or U+2029;
-- a statement written over several lines with a comment, a directive, or a `;`
-  in it;
+- a statement protected by a semicolon line or a joining comment region;
+- the whitespace before the first line break of a gap containing trivia;
 - the text of a direction line before `direction` and after its value; [corpus
   fixture: state/lex-direction-line-same-line-transition] [fixture:
   whitespace-between-tokens/direction-line-text-kept]

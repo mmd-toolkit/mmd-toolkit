@@ -125,7 +125,9 @@ contained a line break. A touching keyword stays touching, as `accDescr{}`.
 Every diagram with description-block syntax uses this form for whitespace-only
 interiors, including tabs and Unicode whitespace: there is no text for interior
 whitespace to surround. Blocks containing comments or directives retain their
-existing layout; diagram rules that preserve a surrounding line still apply.
+contents and required line breaks; ordinary indentation follows
+[Description block indentation](#description-block-indentation) and each
+diagram's structural rules. Protections for the surrounding line still apply.
 [test: sequence Unicode and tab interiors] [test: class Unicode and tab
 interiors] [test: state Unicode and tab interiors] [test: block Unicode and tab
 interiors] [test: c4 Unicode and tab interiors] [fixture:
@@ -310,9 +312,10 @@ block/multi-line-statements/line-rule-semicolon-after-touching-arrow-kept]
 
 Whitespace at the end of a `style`, `classDef`, or `linkStyle` statement is
 removed. [fixture: flowchart/style-trailing-whitespace/removed] mermaid.js keeps
-it at the end of the last style, so this is the one place where formatting
-changes what mermaid.js stores. The tests compare styles without their trailing
-whitespace.
+it at the end of the last style, so this changes what mermaid.js stores,
+separately from the permitted eventmodeling body margins in
+[Data blocks](./eventmodeling.md#data-blocks). The tests compare styles without
+their trailing whitespace.
 
 The whitespace is kept where removing it would make mermaid.js reject the
 statement: after a `,` at the end of the list, as in `style A fill:#f00, `.
@@ -345,6 +348,52 @@ sequence/directives/compat-whitespace-on-one-side-of-directive-kept] [fixture:
 class/directives/compat-whitespace-on-one-side-of-directive-kept] [fixture:
 state/directives/compat-whitespace-on-one-side-of-directive-kept] See
 [Directives](./flowchart.md#directives).
+
+## Structural continuations around comments and directives
+
+Ordinary comments and directives between structural parts retain their required
+line breaks without freezing the parts' columns. Continuations and intervening
+standalone trivia use one indentation level inside the statement. Keep each
+first gap-line tail, including whitespace needed before LF, and keep value and
+directive interiors whole. Joining comment regions, semicolon protections and
+diagram-specific value boundaries still take precedence.
+
+This applies to class and state statements, ER statements, requirement headers,
+fields and statements, and sequence statements other than trivia-separated
+titles. Empty description blocks inside requirement and element bodies also
+align their standalone trivia and separate closer. [fixture:
+requirement/empty-description-blocks/in-body-with-comment-line-kept] [fixture:
+requirement/empty-description-blocks/in-body-with-directive-line] A state's
+separate opening brace aligns with its keyword. Callback-name whitespace through
+`(` in class remains value text. [fixture:
+class/multi-line-statements/comment-inside-kept] [fixture:
+class/whitespace-between-tokens/callback-name-comment-line-kept] [fixture:
+state/multi-line-statements/declaration-trivia-continuations] [fixture:
+state/multi-line-statements/brace-after-comment-line-kept] [fixture:
+er/multi-line-statements/style-comment-continuation] [fixture:
+requirement/multi-line-statements/header-directive-continuation] [fixture:
+requirement/fields/comment-and-directive-continuations] [fixture:
+sequence/multi-line-statements/autonumber-comment-continuation]
+
+The same rule covers Gantt click/calendar/list/accessibility structure, journey
+and timeline accessibility lines, quadrant points and accessibility, block
+structure, and XY chart headers, axes, plots and accessibility. It does not
+reindent literal text: Gantt settings/tasks/titles/sections, journey and
+timeline titles/sections, and timeline events retain their value-owned padding.
+Multiline labels and quoted values keep their internal columns. [fixture:
+gantt/multi-line-statements/structural-trivia-continuations] [fixture:
+journey/multi-line-statements/accessibility-trivia-continuations] [fixture:
+timeline/multi-line-statements/accessibility-trivia-continuations] [fixture:
+quadrant/multi-line-statements/point-trivia-with-multiline-label] [fixture:
+block/multi-line-statements/structural-trivia-continuations] [fixture:
+xychart/multi-line-statements/axis-trivia-with-multiline-string]
+
+C4 call padding also formats around inline directives while retaining their
+contents, contacts and required breaks; a boundary opener kept below a directive
+aligns with its call. [fixture: c4/directives/directive-inline] [fixture:
+c4/boundary-bodies/opener-directive] [fixture:
+c4/named-attributes/named-exterior-directive-lines] [fixture:
+c4/argument-spacing/directive-semicolon-prefix]
 
 ## Lines that hold a `;`
 
@@ -529,12 +578,13 @@ sequence/arrow-spacing/touching-before-read-otherwise-kept] See
 In a sequence diagram, a statement continues on the next line when whitespace
 comes before the line break, and such a statement is printed on one line.
 [fixture: sequence/multi-line-statements/joined] One with a comment or a
-directive in it is kept as written, from its start to its end: it cannot stand
-on one line, and the whitespace at the ends of its lines, which the formatter
-does not write, is what joins its lines. [fixture:
-sequence/multi-line-statements/comment-inside-kept] So is a title with a comment
-line between `title` and its text: the comment line is removed before mermaid.js
-reads the text, so the line after it is the title. [fixture:
+directive keeps its line breaks and aligns structural continuations. The
+whitespace before the first line break of each gap is retained because it can
+join the lines for the lexer. [fixture:
+sequence/multi-line-statements/comment-inside-kept] A title with a comment line
+between `title` and its text keeps its complete source instead, including
+value-owned indentation: the comment line is removed before mermaid.js reads the
+text, so the line after it is the title. [fixture:
 sequence/title/comment-line-kept] See
 [Multi-line statements](./sequence.md#multi-line-statements).
 
@@ -880,9 +930,11 @@ formatting keeps them as they are written. See
   line, which is a period: the whitespace before the directive would become the
   text of a title or a section, so it stands at the first column. [fixture:
   timeline/periods-and-events/title-word-then-directive-line]
-- A statement with a comment line, a directive, or a `;` in a line break that
-  would be joined, such as the one between `title` and its text: it is kept as
-  written. A line that holds a `;` keeps its statements together. [fixture:
+- A title or section with a comment line or directive between its keyword and
+  text keeps its complete source, including value-owned padding. Accessibility
+  lines instead follow
+  [Structural continuations around comments and directives](#structural-continuations-around-comments-and-directives).
+  A line that holds a `;` keeps its statements together. [fixture:
   timeline/multi-line-statements/comment-line-inside-kept] [fixture:
   timeline/statements-one-per-line/ignored-semicolon-line-kept]
 
@@ -967,9 +1019,10 @@ the Db or the lexer reads stays. See [Text units](./xychart.md#text-units) and
   keeps its statements together with the `;`. [fixture:
   statements-one-per-line/line-rule-line-kept-together] [fixture:
   multi-line-statements/semicolon-inside-kept]
-- A statement with a comment line or a directive in a line break that it would
-  join, kept as written. [fixture:
-  multi-line-statements/comment-line-inside-kept] [fixture:
+- A statement with a comment or directive keeps the required line breaks while
+  structural continuations align under
+  [Structural continuations around comments and directives](#structural-continuations-around-comments-and-directives).
+  [fixture: multi-line-statements/comment-line-inside-kept] [fixture:
   multi-line-statements/directive-inside-kept]
 - Whether a comment touches the unit before it: mermaid.js reads a `%%` that
   touches a unit of one character together with that character (the known
@@ -1024,9 +1077,10 @@ or the lexer reads stays. See
   keeps its statements together with the `;`. [fixture:
   statements-one-per-line/line-rule-line-kept-together] [fixture:
   multi-line-statements/semicolon-on-the-last-line-kept]
-- A statement with a comment line or a directive in a line break that it would
-  join, kept as written. [fixture:
-  multi-line-statements/comment-line-inside-kept] [fixture:
+- A point or accessibility statement with a comment or directive keeps the
+  required line breaks while structural continuations align under
+  [Structural continuations around comments and directives](#structural-continuations-around-comments-and-directives).
+  [fixture: multi-line-statements/comment-line-inside-kept] [fixture:
   multi-line-statements/directive-inside-kept]
 - Whether a comment touches the unit before it: mermaid.js reads a `%%` that
   touches a unit of one character together with that character (the known
@@ -1071,9 +1125,10 @@ What the Db or the lexer reads stays. See [Rows](./block.md#rows),
   multi-line-statements/line-rule-line-kept] [fixture:
   multi-line-statements/line-rule-line-kept-with-columns] [fixture:
   multi-line-statements/line-rule-line-kept-with-composite]
-- A statement with a comment line or a directive in a line break that it would
-  join, kept as written. [fixture:
-  multi-line-statements/comment-line-inside-kept] [fixture:
+- A statement with a comment or directive keeps the required line breaks while
+  structural continuations align under
+  [Structural continuations around comments and directives](#structural-continuations-around-comments-and-directives).
+  [fixture: multi-line-statements/comment-line-inside-kept] [fixture:
   multi-line-statements/directive-inside-kept]
 - U+0085, which mermaid.js does not read as whitespace: it is a character of an
   id. A U+2028 or U+2029 in the gap of a statement is printed as written. [test:
@@ -1471,10 +1526,11 @@ usecase/gram-metadata-property-comma-two-newlines] [corpus fixture:
 usecase/gram-metadata-property-comma-three-newlines]
 
 Accessibility lines reuse class/C4 spacing: one space precedes the trimmed
-value. Description text keeps its lines and columns, and a separate closing
-brace aligns with the statement. See the
-[usecase rule](./usecase.md#direction-and-accessibility). [fixture:
-usecase/direction-and-accessibility/a11y-padding] [fixture:
+value. Description bodies follow
+[Description block indentation](#description-block-indentation), retaining
+contents and line breaks while aligning ordinary body prefixes and a separate
+closing brace. See the [usecase rule](./usecase.md#direction-and-accessibility).
+[fixture: usecase/direction-and-accessibility/a11y-padding] [fixture:
 usecase/direction-and-accessibility/a11y-closer-aligned]
 
 Stereotype declaration suffixes retain whether whitespace is present before `<<`
@@ -1585,10 +1641,12 @@ gitgraph/semicolons/semicolon-cross-trigger]
 
 Common title/accessibility line edges compact, but never take a value from the
 next physical line. Shared description-block layout keeps touching braces, empty
-blocks, value continuation columns and trivia. Physical EOL, BOM and final
-newline use the shared host path. Markdown trims final payload padding; interior
-hidden padding stays necessary. [corpus fixture: gitgraph/title-next-line]
-[fixture: gitgraph/title-and-common-values/a11y-no-next-line] [fixture:
+blocks and trivia, and aligns ordinary body indentation under
+[Description block indentation](#description-block-indentation). Physical EOL,
+BOM and final newline use the shared host path. Markdown trims final payload
+padding; interior hidden padding stays necessary. [corpus fixture:
+gitgraph/title-next-line] [fixture:
+gitgraph/title-and-common-values/a11y-no-next-line] [fixture:
 gitgraph/title-and-common-values/a11y-fixed] [corpus fixture:
 gitgraph/lex-description-block-only-comment] [test:
 gitgraph/line-terminators-and-unicode/eol-string-crlf] [test: gitgraph Markdown:
@@ -1611,11 +1669,13 @@ gitgraph/div-detect-bare-before-header-ls] [test: gitgraph Markdown: rejected]
 ## Info hidden boundaries and authored statements
 
 The [info rules](./info.md) retain the written showInfo choice, common statement
-order and repetitions, empty forms, quotes, escapes, internal whitespace and
-multiline columns. Info's public Db summary is empty even for common title and
-accessibility assignments; equal empty Dbs do not authorize deleting source.
-Common line edges compact, while next-line values stay separate. [fixture:
-info/statements-one-per-line/order-and-empty] [fixture:
+order and repetitions, empty forms, quotes, escapes and value text. Ordinary
+description-body prefixes follow
+[Description block indentation](#description-block-indentation); other literal
+and hidden-form continuation columns remain authored. Info's public Db summary
+is empty even for common title and accessibility assignments; equal empty Dbs do
+not authorize deleting source. Common line edges compact, while next-line values
+stay separate. [fixture: info/statements-one-per-line/order-and-empty] [fixture:
 info/authored-values/literal-quotes-escapes] [fixture:
 info/title/title-next-comment-directive] [fixture:
 info/accessibility-lines/a11y-line-braces]
@@ -1696,14 +1756,16 @@ packet/frontmatter-yaml/frontmatter-zero-min] [fixture:
 packet/indentation/indent-zero]
 
 Common line edges compact, but never read a next-physical-line value. Shared
-accessibility and description layouts retain empty forms, trivia and authored
-continuation columns. Global directives keep opaque content and attachment;
-removing init can change row configuration. All semicolons remain, using shared
-segment protection for crossing values/trivia and header/body groups: removing
-selected semicolons or moving their triggers can change the Db. Physical EOL,
-BOM, final-newline and Markdown handling are shared. Markdown trims final
-payload-line padding; interior hidden padding stays necessary. [fixture:
-packet/title/title-no-next] [fixture:
+accessibility and description layouts retain empty forms and trivia; ordinary
+description-body prefixes follow
+[Description block indentation](#description-block-indentation). Other literal
+and hidden-form continuation columns stay authored. Global directives keep
+opaque content and attachment; removing init can change row configuration. All
+semicolons remain, using shared segment protection for crossing values/trivia
+and header/body groups: removing selected semicolons or moving their triggers
+can change the Db. Physical EOL, BOM, final-newline and Markdown handling are
+shared. Markdown trims final payload-line padding; interior hidden padding stays
+necessary. [fixture: packet/title/title-no-next] [fixture:
 packet/accessibility-lines/a11y-empty-next] [fixture:
 packet/description-blocks/description-columns] [fixture:
 packet/global-directives/global-standalone] [fixture:
@@ -1803,17 +1865,18 @@ radar/quotes/whitespace-only-labels]
 
 Shared common-line trimming changes only ordinary value edges; trivia and
 semicolon protection take precedence. Descriptions use the shared block layout,
-including compact whitespace-only interiors and written continuation columns.
-Each native hidden form is printed once at its AST owner, with consumed LF and
-closing padding retained outside its range. The last member of a group owns its
-suffix; it uses the same boundary rule as other statements. Only the header's
-own hidden forms use the header-edge exception. Keep the complete retained
-prefix so ignored YAML does not become effective frontmatter; safe real
-frontmatter alone uses guarded YAML formatting. All authored semicolons stay
-under shared segment protection, preserving continuation columns without added
-indentation inside each protected segment, including a semicolon on the last
-line of a multiline statement: joining a style-like label to it can change
-another statement's value. [fixture: radar/title/title-edge-trim] [fixture:
+including compact whitespace-only interiors and
+[ordinary body indentation](#description-block-indentation). Each native hidden
+form is printed once at its AST owner, with consumed LF and closing padding
+retained outside its range. The last member of a group owns its suffix; it uses
+the same boundary rule as other statements. Only the header's own hidden forms
+use the header-edge exception. Keep the complete retained prefix so ignored YAML
+does not become effective frontmatter; safe real frontmatter alone uses guarded
+YAML formatting. All authored semicolons stay under shared segment protection,
+preserving continuation columns without added indentation inside each protected
+segment, including a semicolon on the last line of a multiline statement:
+joining a style-like label to it can change another statement's value. [fixture:
+radar/title/title-edge-trim] [fixture:
 radar/description-blocks/block-empty-fixed] [fixture:
 radar/multiline-values/physical-value-columns] [fixture:
 radar/hidden-forms/named-entry-hidden-owners] [fixture:

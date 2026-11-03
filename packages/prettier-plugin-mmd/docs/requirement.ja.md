@@ -93,8 +93,11 @@ requirementDiagram
 ### 本体
 
 requirement と element の `{` は、種類のキーワード、名前、クラスの行に、
-書かれ方によらず空白 1 つの後に置きます。
+空白 1 つの後に置きます。
 フィールドは次の行から 1 行に 1 つ置き、`}` は行に単独で置きます。
+コメントかディレクティブを含むヘッダーは改行を残し、
+構造の続きの行をキーワードより 1 段深く置きます。
+[fixture: multi-line-statements/header-directive-continuation]
 `{` の前の空白 1 つは、ER の属性ブロックと同じで、
 mermaid.js の文書の書き方でもあります。
 引用符のない名前では空白がどのみち要るので、文の形は 1 つになります。
@@ -170,9 +173,12 @@ requirementDiagram
 
 フィールドは 1 行に、キーワード、キーワードに接する `:`、
 空白 1 つの後に値を置きます。
-書かれ方によりません。
 mermaid.js の文書がフィールドをそう書き、
-journey も値の前に空白 1 つを置きます。 [fixture: fields/colon-touches-keyword]
+journey も値の前に空白 1 つを置きます。
+コメントかディレクティブがあれば改行を残し、
+構造の続きの行と間の注釈をフィールドより 1 段深く置きます。
+[fixture: fields/comment-and-directive-continuations]
+[fixture: fields/colon-touches-keyword]
 [fixture: fields/spaces-around-colon-and-value]
 [fixture: fields/value-after-one-space]
 引用符のない値の両端の空白は Db に入らないので落とします。
@@ -501,7 +507,7 @@ The style context、規則 1）。
 [fixture: styles-and-classes/class-over-lines-joined]
 それ以外のときは改行を残し、続きの行は 1 段深く置きます。
 [fixture: styles-and-classes/class-over-lines-kept]
-コメント行を含む文は、書かれたまま残します。
+コメント行を含む文は改行を残し、コメントと構造の続きの行を 1 段深く置きます。
 [fixture: styles-and-classes/class-over-lines-with-comment-line-kept]
 
 入力
@@ -621,7 +627,8 @@ requirementDiagram
 [fixture: direction/text-kept] [fixture: direction/case-kept]
 次の行に書かれた値は、 `direction` の後ろに寄せて 1 行にします。
 [fixture: direction/value-on-next-line-joined]
-ディレクティブやコメント行を含む方向の行は、書かれたまま残します。
+ディレクティブやコメント行を含む方向の行は改行を残し、
+構造の続きの行を 1 段深く置きます。
 [fixture: direction/directive-and-comment-line-kept]
 字句解析器の方向の行の規則は行全体を取るので、 `direction LR` で終わる関係文は、
 前にテキストを持つ方向の行です。 [fixture: direction/after-relationship]
@@ -878,7 +885,11 @@ ER 図が mermaid.js の読まないテキストをブロックの中の自分�
 [fixture: empty-description-blocks/inner-whitespace-joined]
 [fixture: empty-description-blocks/touching-kept]
 [fixture: empty-description-blocks/in-body-over-lines-joined]
-ディレクティブかコメント行を含むブロックは、書かれたまま印字します。
+ディレクティブかコメント行を含むブロックは、その内容と改行を保ちます。
+独立した注釈をブロックの 1 段内側に置き、
+独立した `}` は `accDescr` にそろえます。
+requirement と element の本文にある空のブロックも同じです。
+[fixture: empty-description-blocks/in-body-with-directive-line]
 [fixture: empty-description-blocks/with-directive-or-comment-line-kept]
 [fixture: empty-description-blocks/in-body-with-comment-line-kept]
 [fixture: empty-description-blocks/in-body-with-directive-kept]
@@ -1057,13 +1068,14 @@ style の文脈の改行の後で続きます。
 [fixture: multi-line-statements/direction-value-joined]
 [fixture: multi-line-statements/accessibility-joined]
 [fixture: multi-line-statements/string-continued-joined]
-コメントやディレクティブがある関係文は、
-改行を保ちながら構造の続きの行をそろえます（[関係文の空白](#関係文の空白)）。
-それ以外の、コメント行かディレクティブを含む文は、
-コメント行がその行の残りを取り、
-ディレクティブのある行の空白はディレクティブと一緒に読まれるので、
-書かれたまま残します。
-`;` を含む文も、行の規則が決めるので、書かれたまま残します。
+コメントやディレクティブがあれば改行を保ち、
+構造の続きの行と間の注釈を 1 段深く置きます。
+ブロックのヘッダー、フィールド、関係文、ほかの文も同じです。
+値の中の空白と、各隙間の最初の改行の前の空白は保ちます。
+コメントで結合される領域とセミコロン行の保護対象では、
+文全体を原文のまま残します。
+[fixture: multi-line-statements/header-directive-continuation]
+[fixture: fields/comment-and-directive-continuations]
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 [fixture: multi-line-statements/semicolon-kept]

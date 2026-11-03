@@ -914,7 +914,8 @@ erDiagram
 後の行に書かれた値は、 `direction` の後に 1 行で印字します。
 [fixture: direction/value-on-next-line-joined]
 [corpus fixture: er/lex-direction-value-next-line]
-ディレクティブやコメント行がある方向の行は、書かれたまま残します。
+ディレクティブやコメント行がある方向の行は改行を残し、
+構造の続きの行を 1 段深く置きます。
 [fixture: direction/directive-and-comment-line-kept]
 
 入力
@@ -1536,9 +1537,12 @@ mermaid.js が複数行にわたって読む文は、
 [fixture: multi-line-statements/accessibility-text-joined]
 [fixture: multi-line-statements/direction-value-joined]
 [fixture: multi-line-statements/style-over-lines-joined]
-コメント行やディレクティブがある文は、書かれたまま残します。
-コメント行は、置かれた行の残りを取り込み、ディレクティブのある行の空白は、
-ディレクティブと一緒に読まれるからです。
+コメント行やディレクティブがある文は改行を残し、
+構造の続きの行と間の注釈を 1 段深く置きます。
+値の中の空白と、各隙間の最初の改行の前の空白は保ちます。
+コメントで結合される領域とセミコロン行の保護対象では、
+文全体を原文のまま残します。
+[fixture: multi-line-statements/style-comment-continuation]
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 
@@ -1582,11 +1586,11 @@ T
 ```mmd
 erDiagram
   direction
-%%{init: {}}%%
-LR
+    %%{init: {}}%%
+    LR
   accTitle:
-%%{init: {}}%%
-T
+    %%{init: {}}%%
+    T
 ```
 
 ### 行区切り文字

@@ -695,8 +695,9 @@ The string of a link is printed as written. [fixture:
 click-statements/call-name-and-arguments-kept] [fixture:
 click-statements/href-string-kept] A string or an argument list written over
 lines is printed as written (see [Multi-line values](#multi-line-values)).
-[fixture: click-statements/string-over-lines-kept] A comment line or a directive
-between the parts keeps the statement as written. [fixture:
+[fixture: click-statements/string-over-lines-kept] A comment line or directive
+between the parts keeps its line breaks, with ordinary structural continuations
+aligned under [Multi-line statements](#multi-line-statements). [fixture:
 click-statements/comment-line-between-parts-kept] [fixture:
 click-statements/directive-between-parts-kept]
 
@@ -905,12 +906,21 @@ setting, `weekday`, `weekend`, `includes`, `excludes`, `accTitle:`, and
 `accDescr:`, between the parts of a click statement, and around the `:` of
 `accTitle` and `accDescr`. Empty lines there are dropped too. [fixture:
 multi-line-statements/value-on-next-line-joined] [fixture:
-multi-line-statements/blank-lines-between-keyword-and-day] A statement with a
-comment line, a directive, or a `;` in it is kept as written, since the comment
-line would take the rest of the line it stands on, the whitespace of a line that
-holds a directive is read with it, and a `;` could come to a line that matches
-the line rule. [fixture: multi-line-statements/comment-line-inside-kept]
-[fixture: multi-line-statements/directive-inside-kept] [fixture:
+multi-line-statements/blank-lines-between-keyword-and-day] Keep trivia line
+breaks in click, weekday/weekend, includes/excludes and accessibility line
+statements. Place later structural parts and standalone comments or directives
+one continuation level inside their statement, also under a section. Preserve
+each gap's first line tail and complete directive interiors; quoted strings,
+call names and arguments remain whole. [fixture:
+multi-line-statements/structural-trivia-continuations] [fixture:
+click-statements/trivia-continuation-under-section]
+
+Titles, sections, settings and tasks keep their original multiline trivia
+layout: their value padding is part of the Db. A `;` in a multiline statement, a
+semicolon on its final line, a joining comment region or a U+FEFF list separator
+also keeps the original layout. [fixture:
+multi-line-statements/comment-line-inside-kept] [fixture:
+multi-line-statements/directive-inside-kept] [fixture:
 multi-line-statements/semicolon-inside-kept]
 
 Input
@@ -964,8 +974,8 @@ gantt
 %% c
 T
   weekday
-%% c
-monday
+    %% c
+    monday
 ```
 
 ### Multi-line values
@@ -1195,9 +1205,10 @@ break its left contact.
 
 [fixture: gantt/directives/split-directive-gap]
 
-A directive between two units of a statement stays where it is, with the
-whitespace written on each side of it, and a directive inside a text is part of
-the text. [fixture: directives/between-units-kept] [fixture:
+A directive between two units stays in its authored gap; same-line contact or
+separation on either side stays. Structural continuation columns follow
+[Multi-line statements](#multi-line-statements). A directive inside a value is
+part of that text. [fixture: directives/between-units-kept] [fixture:
 directives/between-task-parts-kept] [fixture: directives/inside-values-kept]
 [fixture: directives/over-lines-kept] A directive that is not closed takes the
 rest of the text, and is kept as written. [fixture:

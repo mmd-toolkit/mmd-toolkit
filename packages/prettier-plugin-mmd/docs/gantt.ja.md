@@ -713,7 +713,8 @@ Db が持ちます。
 複数行に書かれた文字列や引数は、
 書かれたまま印字します（[複数行の値](#複数行の値)を参照）。
 [fixture: click-statements/string-over-lines-kept]
-部分の間にコメント行やディレクティブがある文は、書かれたまま印字します。
+部分の間にコメント行かディレクティブがあると、その改行を保ち、
+[複数行の文](#複数行の文)に従って構造部分の続きの列をそろえます。
 [fixture: click-statements/comment-line-between-parts-kept]
 [fixture: click-statements/directive-between-parts-kept]
 
@@ -926,10 +927,19 @@ mermaid.js が複数行にわたって読む文は、
 `accTitle` と `accDescr` の `:` の前後が該当し、そこの空行も落とします。
 [fixture: multi-line-statements/value-on-next-line-joined]
 [fixture: multi-line-statements/blank-lines-between-keyword-and-day]
-コメント行、ディレクティブ、`;` を持つ文は、書かれたまま印字します。
-コメント行はそれが立つ行の残りを取り、ディレクティブのある行の空白は、
-ディレクティブと一緒に読まれ、 `;` は行の規則に合う行に移ることがあるからです。
-[fixture: multi-line-statements/comment-line-inside-kept]
+click、weekday/weekend、includes/excludes、アクセシビリティの行の文では、
+trivia の改行を保ちます。
+後続の構造部分と独立したコメント行や指令行は、section の下でも、
+その文より 1 段深くそろえます。
+各 gap の最初の行の末尾と指令の内部全体は保ち、引用符付き文字列、呼び出し名、
+引数はひとまとまりのままです。
+[fixture: multi-line-statements/structural-trivia-continuations]
+[fixture: click-statements/trivia-continuation-under-section]
+
+title、section、設定、タスクでは、値の空白が Db の一部なので、
+複数行の trivia を含む配置を元のまま保ちます。
+文の内部か最終行の `;`、物理行を結ぶコメント領域、リスト区切りの U+FEFF も、
+元の配置を保ちます。 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 [fixture: multi-line-statements/semicolon-inside-kept]
 
@@ -984,8 +994,8 @@ gantt
 %% c
 T
   weekday
-%% c
-monday
+    %% c
+    monday
 ```
 
 ### 複数行の値
@@ -1213,9 +1223,9 @@ gantt
 
 [fixture: gantt/directives/split-directive-gap]
 
-文の 2 つの単位の間のディレクティブは、
-両側に書かれた空白を保ってその位置に残し、
-テキストの中のディレクティブはテキストの一部です。
+文の単位の間の指令は元の gap に残し、同じ行の両側の接触・分離を保ちます。
+構造部分の続きの列は[複数行の文](#複数行の文)に従います。
+値の中の指令は、そのテキストの一部です。
 [fixture: directives/between-units-kept]
 [fixture: directives/between-task-parts-kept]
 [fixture: directives/inside-values-kept] [fixture: directives/over-lines-kept]

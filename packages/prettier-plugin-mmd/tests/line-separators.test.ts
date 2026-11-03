@@ -2608,12 +2608,12 @@ const c4Examples: readonly (readonly [string, string, string])[] = [
   [
     "c4: ls-directive-terminator",
     'C4Context\nPerson(a,"first%%{init: {}}%%\u2028last")',
-    'C4Context\n  Person(a,"first%%{init: {}}%%\u2028last")\n',
+    'C4Context\n  Person(a, "first%%{init: {}}%%\u2028last")\n',
   ],
   [
     "c4: ps-open-directive-terminator",
     'C4Context\nPerson(a,"first%%{wrap\u2029last")',
-    'C4Context\n  Person(a,"first%%{wrap\u2029last")\n',
+    'C4Context\n  Person(a, "first%%{wrap\u2029last")\n',
   ],
   [
     "c4: ls-line-rule-segments",

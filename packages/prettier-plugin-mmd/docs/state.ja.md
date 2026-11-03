@@ -62,6 +62,8 @@ stateDiagram-v2
 
 複合状態と、本体を持つ別名の定義の `{` は、空白 1 つの後に、名前の行に置きます。
 次の行に書かれた `{` は、その行に移します。
+名前と `{` の間にコメントかディレクティブがあれば改行を残し、
+`{` は `state` のキーワードにそろえ、間の注釈は 1 段深く置きます。
 `{` の前の空白 1 つは class 図と同じです。 [fixture: composite-states/split]
 [fixture: composite-states/brace-after-one-space]
 [fixture: composite-states/alias-brace-on-next-line]
@@ -939,9 +941,14 @@ state 図で文が次の行に続けられるのは、 `state` の後、`as` の
 `classDef a` の後の行の `B --> C` は、遷移ではなく `a` のスタイルで、
 印字した結果からそれが分かります。 [fixture: multi-line-statements/joined]
 [fixture: multi-line-statements/classdef-takes-next-line]
-コメントかディレクティブを含む複数行の文は、sequence 図と同じく、
-始まりから終わりまで、
-書かれたまま残します（[複数行の文](./sequence.ja.md#複数行の文)を参照）。
+コメントかディレクティブを含む文は改行を残し、
+構造の続きの行と間の注釈を 1
+段深く置きます（[複数行の文](./sequence.ja.md#複数行の文)を参照）。
+複数行のノートを含め、値の中の空白は変えません。
+各隙間の最初の行末は保ちます。
+コメントで結合される領域、セミコロンの保護対象、前述の複合状態の例外では、
+文全体を原文のまま残します。
+[fixture: multi-line-statements/declaration-trivia-continuations]
 [fixture: multi-line-statements/comment-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 [fixture: multi-line-statements/brace-after-comment-line-kept]
@@ -995,8 +1002,8 @@ LR
 ```mmd
 stateDiagram-v2
   direction
-%% c
-LR
+    %% c
+    LR
 ```
 
 `;` を含み、複数行に書かれた文も、書かれたまま残します。
@@ -1125,7 +1132,8 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
 - `{` を含み、`state` の名前の後に続く文の行。
 - 空白でキーワードになる id に接した矢印と `:`。
 - U+2028 か U+2029 を含む行。
-- コメントかディレクティブか `;` を含む複数行の文。
+- セミコロン行かコメントで結合される領域の保護対象の文。
+- 注釈を含む隙間の最初の改行の前の空白。
 - 方向の行の、 `direction` の前と値の後のテキスト。
   [corpus fixture: state/lex-direction-line-same-line-transition]
   [fixture: whitespace-between-tokens/direction-line-text-kept]

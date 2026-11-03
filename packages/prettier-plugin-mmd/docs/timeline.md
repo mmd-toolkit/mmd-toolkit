@@ -838,10 +838,16 @@ its events are written over several lines in another way, with a colon at the
 start of a later line, and keep their line breaks (see
 [Periods and events](#periods-and-events)).
 
-A statement with a comment line or a directive in a line break that it would
-join is kept as written, since the comment line would take the rest of the line
-it stands on, and the whitespace of a line that holds a directive is read with
-it. [fixture: multi-line-statements/comment-line-inside-kept] [fixture:
+In `accTitle` and `accDescr:` statements, keep trivia line breaks and align
+later structural parts and standalone trivia one continuation level inside the
+statement, also under a section. Preserve each first gap-line tail and complete
+directive interiors. Semicolon lines and joining comment regions keep their
+original layout. [fixture:
+multi-line-statements/accessibility-trivia-continuations]
+
+Titles and sections, and event-text continuations, keep their original multiline
+trivia layout, because their value padding belongs to the Db. [fixture:
+multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept] After the colon of an event, an
 indented line of only a directive is the whitespace that starts the event, so
 the event is printed on the line of the colon, with that whitespace, and the
@@ -906,8 +912,8 @@ timeline
 %% c
 T
   accTitle:
-%% d
-T
+    %% d
+    T
   a :
 %% e
   f
@@ -1093,9 +1099,10 @@ break its left contact.
 
 [fixture: timeline/directives/whitespace-on-both-sides-collapsed]
 
-A directive between two units of a statement stays where it is, with the
-whitespace written on each side of it, and a directive inside a text is part of
-the text. [fixture: directives/between-units-kept] [fixture:
+A directive between two units stays in its authored gap; same-line contact or
+separation on either side stays. Structural continuation columns follow
+[Multi-line statements](#multi-line-statements). A directive inside a value is
+part of that text. [fixture: directives/between-units-kept] [fixture:
 directives/inside-values-kept] [fixture: directives/over-lines-kept] A directive
 that is not closed takes the rest of the text, and is kept as written. [fixture:
 directives/unclosed-at-end-of-text-kept] [fixture:

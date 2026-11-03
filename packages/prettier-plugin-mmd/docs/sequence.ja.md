@@ -597,9 +597,9 @@ sequenceDiagram
   title: Tab
 ```
 
-キーワードと本文の間にコメント行があるタイトルは、
-コメントを含む複数行の文と同じく、
-書かれたまま残します（[複数行の文](#複数行の文)を参照）。
+キーワードと本文の間にコメント行があるタイトルは、本文の字下げを含め、
+全体を原文のまま残します。
+その空白も Db のタイトルの一部だからです（[複数行の文](#複数行の文)を参照）。
 コメント行は mermaid.js がテキストを読む前に取り除かれるので、
 その次の行がタイトルです。
 空白 1 つの後に印字すると、コメントがキーワードの行に乗り、
@@ -888,15 +888,18 @@ sequenceDiagram
 `Alice ->> Bob: hi` と印字します。 [fixture: multi-line-statements/joined]
 [fixture: multi-line-statements/more-lines-joined]
 
-コメントかディレクティブか `;` を含む複数行の文は、
-始まりから終わりまで書かれたまま残します。
-[fixture: multi-line-statements/comment-inside-kept]
+コメントかディレクティブを含む文は改行を残し、
+構造の続きの行と間の注釈を 1 段深く置きます。
+各隙間の最初の改行の前の空白は保ちます。
+その空白によって、mermaid.js が後の行も同じ文の一部として読むためです。
+値の中の空白は変えません。 [fixture: multi-line-statements/comment-inside-kept]
+[fixture: multi-line-statements/autonumber-comment-continuation]
+[fixture: multi-line-statements/autonumber-directive-continuation]
+キーワードと本文の間に注釈があるタイトルは、本文の字下げも値に含むので、
+全体を原文のまま残します。
+コメントで結合される領域とセミコロン行の保護対象も、文全体を原文のまま残します。
 [fixture: multi-line-statements/semicolon-inside-kept]
 [fixture: multi-line-statements/start-moves-to-own-line]
-そうした文は 1 行にまとめられません。
-mermaid.js がその行を 1 つの文として読むのは、行末の空白があるときだけで、
-整形はその空白を出力しないからです。
-キーワードと本文の間にコメント行があるタイトルも、そうした文です。
 説明ブロックは[複数行の値](#複数行の値)に従い、本文の字下げをそろえます。
 
 入力の行末に空白があるので、例は、`\n` を改行とする文字列で書きます。
@@ -995,8 +998,9 @@ sequenceDiagram
   タイトルに含まれる空白。
 - 参加者のデータブロックと、それが id に接していること。
 - 数の形か `title` の綴りの送り元に、矢印が接していること。
-- コメントかディレクティブか `;` を含む複数行の文。
-  キーワードと本文の間にコメント行があるタイトルもその 1 つ。
+- キーワードと本文の間に注釈があるタイトル。
+- セミコロン行かコメントで結合される領域の保護対象の文。
+- 注釈を含む隙間の最初の改行の前の空白。
 - 文の後のコメントの印の前に、空白が書かれているかどうかと、
   コメントとその後のコメント行の間の U+2028 か U+2029。
 - 矢印。

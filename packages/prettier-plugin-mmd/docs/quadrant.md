@@ -369,7 +369,7 @@ after the `[`, around the comma, and before the `]`, and before the `:` when a
 whitespace character comes first. A point written over several lines is printed
 on one line, where the line break is whitespace to the lexer, so that each
 statement is on one line; a point with a comment line or a directive in it is
-kept as written, as in the other diagrams (see
+printed with its line breaks and continuation indentation (see
 [Multi-line statements](#multi-line-statements)). [fixture:
 points/line-breaks-joined] [fixture: points/line-break-with-a-comment-line-kept]
 [fixture: points/line-break-with-a-directive-kept] [fixture:
@@ -660,12 +660,16 @@ multi-line-statements/point-over-lines-joined] [fixture:
 multi-line-statements/name-then-colon-on-the-next-line-joined] [fixture:
 multi-line-statements/point-with-styles-over-lines-joined]
 
-A statement with a comment line or a directive in it is kept as written. A
-comment line takes the rest of the line it stands on, so a comment line cannot
-be joined into a line; a directive would not change the Db if the lines were
-joined, but the same decision is made for comment lines and directives in every
-diagram, so that the printer decides it once. A `;` in the statement keeps it as
-written too, because of the line rule (see
+In points and accessibility line statements, keep trivia line breaks and align
+later structural parts and standalone trivia one continuation level inside the
+statement. Preserve each first gap-line tail and complete directive interiors;
+multiline names and other value ranges stay whole. [fixture:
+multi-line-statements/point-trivia-with-multiline-label] [fixture:
+multi-line-statements/accessibility-trivia-continuations]
+
+Other statements with multiline trivia retain their layout. Joining comment
+regions and a `;` in the statement or on its final line keep the original layout
+too, because of the line rule (see
 [Statements one per line](#statements-one-per-line)). [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept] [fixture:

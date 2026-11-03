@@ -23,6 +23,7 @@ import {
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
   indentDescriptionLines,
+  keepFirstGapLineTails,
   layoutCompactEmptyDescriptionBlockWithFallback,
   spansLinesThatCannotJoin,
   walk,
@@ -231,7 +232,7 @@ export function layoutBlockOpening(
  *   break inside a statement is whitespace to the lexer only after
  *   `direction` and after the `:` of `accTitle` and `accDescr`
  *   (diagrams/class.md, The statement context); one with a comment or a
- *   directive in it is kept as written (see `spansLinesThatCannotJoin`). The
+ *   directive keeps its line breaks and aligns structural continuations. The
  *   lines of an `accDescr { ... }` block are lines of its text, and are
  *   kept (docs/class.md, Multi-line values).
  * - A relation has one space on each side of its arrow and of its
@@ -249,9 +250,13 @@ export function layoutClassStatement(
   end: number,
 ): AtomLayout {
   const start = statement.range[0]
-  if (
+  const keepsLineBreaks =
     statement.type !== "ClassAccDescrBlockStatement" &&
     spansLinesThatCannotJoin(source, start, end)
+  if (
+    keepsLineBreaks &&
+    (holdsJoiningRegion(source, start, end) ||
+      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
   ) {
     return {
       atoms: [{ start, end }],
@@ -302,6 +307,20 @@ export function layoutClassStatement(
     ...findBlankLabelStretches(source, statement),
     ...findOpenNameStretches(source, statement),
   ]
+  if (
+    statement.type === "ClassCallbackStatement" &&
+    statement.callback.type === "ClassLiteral"
+  ) {
+    // The callback-name lexer reads through trivia up to `(`, including the
+    // whitespace outside the literal's range (diagrams/class.md, The callback
+    // contexts). Keep that value boundary rather than indenting it as a gap.
+    const opening = expectToken(
+      findStructuralToken(source, statement.callback.range[1]),
+      "the `(` after a callback name",
+    )
+    expectValue(opening, "(")
+    kept.push({ start: statement.callback.range[0], end: opening.range[1] })
+  }
   // Joining a next-line accessibility value can expose class's greedy,
   // case-sensitive direction rule. Keep the previous continuation layout;
   // TD is value text, not a class direction (diagrams/class.md, The direction
@@ -315,19 +334,20 @@ export function layoutClassStatement(
       { range: statement.range, text: statement.value.value },
       { caseSensitive: true },
     )
-  return {
-    atoms: collectAtoms(
-      source,
-      start,
-      end,
-      values.filter(
-        (value) => !kept.some((stretch) => containsRange(stretch, value)),
-      ),
-      kept,
+  const atoms = collectAtoms(
+    source,
+    start,
+    end,
+    values.filter(
+      (value) => !kept.some((stretch) => containsRange(stretch, value)),
     ),
+    kept,
+  )
+  return {
+    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
     rules: statementRules(source, statement),
     outdented: new Set(),
-    lineBreaks: keepsDirectionValue ? "kept" : "joined",
+    lineBreaks: keepsLineBreaks || keepsDirectionValue ? "kept" : "joined",
   }
 }
 

@@ -888,9 +888,9 @@ since the case is the author's. [fixture: direction/spacing] [fixture:
 direction/text-kept] [fixture: direction/case-kept] A value written on a later
 line is printed after `direction` on one line. [fixture:
 direction/value-on-next-line-joined] [corpus fixture:
-er/lex-direction-value-next-line] A direction line with a directive or a comment
-line inside is kept as written. [fixture:
-direction/directive-and-comment-line-kept]
+er/lex-direction-value-next-line] A direction line with a directive or comment
+keeps its line breaks and indents structural continuations one level deeper.
+[fixture: direction/directive-and-comment-line-kept]
 
 Input
 ([direction/text-kept-input.mmd](../tests/fixtures/er/direction/text-kept-input.mmd)):
@@ -1494,10 +1494,12 @@ where the line break is whitespace to the lexer: after the `:` of `accTitle` and
 statement after whitespace. [fixture:
 multi-line-statements/accessibility-text-joined] [fixture:
 multi-line-statements/direction-value-joined] [fixture:
-multi-line-statements/style-over-lines-joined] A statement with a comment line
-or a directive in it is kept as written, since the comment line would take the
-rest of the line it stands on, and the whitespace of a line that holds a
-directive is read with it. [fixture:
+multi-line-statements/style-over-lines-joined] A statement with a comment or
+directive keeps its line breaks; structural continuations and intervening trivia
+stand one level deeper. Whitespace inside values and before the first line break
+of each gap stays unchanged. Joining regions and semicolon line protections keep
+the whole statement as written. [fixture:
+multi-line-statements/style-comment-continuation] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept]
 
@@ -1541,11 +1543,11 @@ Output
 ```mmd
 erDiagram
   direction
-%%{init: {}}%%
-LR
+    %%{init: {}}%%
+    LR
   accTitle:
-%%{init: {}}%%
-T
+    %%{init: {}}%%
+    T
 ```
 
 ### Line separators

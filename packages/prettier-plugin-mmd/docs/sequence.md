@@ -578,13 +578,13 @@ sequenceDiagram
   title: Tab
 ```
 
-A title with a comment line between its keyword and its text is kept as written,
-as a statement written over several lines with a comment in it is (see
-[Multi-line statements](#multi-line-statements)). The comment line is removed
-before mermaid.js reads the text, so the line after it is the title; printed
-after the one space, the comment would stand on the line of the keyword, and the
-next line would be read as a statement. [fixture: title/comment-line-kept]
-[fixture: title/colon-comment-line-kept]
+A title with a comment line between its keyword and text keeps its complete
+source, including the text's indentation: that whitespace is part of the Db
+title (see [Multi-line statements](#multi-line-statements)). The comment line is
+removed before mermaid.js reads the text, so the line after it is the title;
+printed after the one space, the comment would stand on the line of the keyword,
+and the next line would be read as a statement. [fixture:
+title/comment-line-kept] [fixture: title/colon-comment-line-kept]
 
 Input
 ([title/comment-line-kept-input.mmd](../tests/fixtures/sequence/title/comment-line-kept-input.mmd)):
@@ -855,14 +855,17 @@ rule 2). So `Alice ->>`, a space, a line break, and `Bob: hi` is printed as
 `Alice ->> Bob: hi`. [fixture: multi-line-statements/joined] [fixture:
 multi-line-statements/more-lines-joined]
 
-A statement written over several lines with a comment, a directive, or a `;` in
-it is kept as written, from its start to its end. [fixture:
-multi-line-statements/comment-inside-kept] [fixture:
-multi-line-statements/semicolon-inside-kept] [fixture:
-multi-line-statements/start-moves-to-own-line] It cannot stand on one line, and
-only the whitespace at the ends of its lines, which the formatter does not
-write, makes mermaid.js read its lines as one statement. A title with a comment
-line between its keyword and its text is such a statement. Description blocks
+A statement with comments or directives keeps its line breaks, while structural
+continuations and intervening trivia stand one level deeper. The whitespace
+before the first line break of each gap is retained: it can make mermaid.js read
+later lines as part of the same statement. Whitespace inside values stays
+unchanged. [fixture: multi-line-statements/comment-inside-kept] [fixture:
+multi-line-statements/autonumber-comment-continuation] [fixture:
+multi-line-statements/autonumber-directive-continuation] A title with trivia
+between its keyword and text keeps its complete source, since its text includes
+indentation. Joining regions and statements protected by semicolon lines also
+stay as written. [fixture: multi-line-statements/semicolon-inside-kept]
+[fixture: multi-line-statements/start-moves-to-own-line] Description blocks
 instead follow [Multi-line values](#multi-line-values), which align their body
 indentation.
 
@@ -961,8 +964,9 @@ because changing it would change the diagram or the input would be rejected:
 - the whitespace after the one character that follows `title` or `title:`;
 - the data block of a participant, and that it touches its id;
 - that an arrow touches a source spelled as a number or `title`;
-- a statement written over several lines with a comment, a directive, or a `;`
-  in it, such as a title with a comment line between its keyword and its text;
+- a title with trivia between its keyword and text;
+- a statement protected by a semicolon line or a joining comment region;
+- the whitespace before the first line break of a gap containing trivia;
 - whether whitespace is written before the mark of a comment after a statement,
   and a U+2028 or U+2029 between a comment and a comment line after it;
 - the arrows.

@@ -182,7 +182,9 @@ export function layoutC4Call(
   const opening = findTokenEndingBefore(source, end)
   if (statement.type === "C4BoundaryStatement" && opening?.value === "{") {
     const previous = expectToken(
-      findTokenEndingBefore(source, opening.range[0]),
+      findTokensBetween(source, start, opening.range[0]).findLast(
+        (token) => token.type !== "Directive",
+      ),
       "the end of a C4 boundary call",
     )
     const gap = source.text.slice(previous.range[1], opening.range[0])
@@ -191,7 +193,8 @@ export function layoutC4Call(
       gap.trim() === "" &&
       !gap.includes("\u2028") &&
       !gap.includes("\u2029") &&
-      findTriviaBetween(source, start, end).length === 0
+      findTriviaBetween(source, previous.range[1], opening.range[0]).length ===
+        0
     ) {
       // The brace is structural whitespace after the complete call, even
       // when a semicolon keeps the call's own text or the first child line.
@@ -204,10 +207,10 @@ export function layoutC4Call(
       }
     }
   }
-  if (
-    findTriviaBetween(source, start, end).length > 0 ||
-    spansLinesThatCannotJoin(source, start, end)
-  ) {
+  // Structural LF and trivia stay in their gaps. Only textual semicolon
+  // segments need the whole multiline call kept (diagrams/c4.md, Directives
+  // inside units; docs/c4.md, Argument spacing and Line rule and semicolons).
+  if (spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true })) {
     return keptAsWritten(start, end)
   }
   const values = collectValueNodes(statement, c4ValueNodeTypes).filter(
@@ -270,6 +273,7 @@ export function layoutC4Call(
     },
   )
   const rules = new Map<number, GapRule>()
+  const outdented = new Set<number>()
   const joinedBefore = new Set<number>()
   const keptBreaksBefore = new Set<number>()
   const bareStarts = new Set(
@@ -327,7 +331,12 @@ export function layoutC4Call(
       rules.set(previous.end, "none")
       continue
     }
-    if (afterCall) joinedBefore.add(atom.start)
+    if (
+      afterCall &&
+      findTriviaBetween(source, previous.end, atom.start).length === 0
+    )
+      joinedBefore.add(atom.start)
+    if (text === "{" && atom.end === end) outdented.add(atom.start)
     if (text === "{" && atom.end === end) rules.set(atom.start, "space")
     else if (afterDelimiter)
       rules.set(
@@ -346,7 +355,7 @@ export function layoutC4Call(
   return {
     atoms,
     rules,
-    outdented: new Set(),
+    outdented,
     lineBreaks: "kept",
     joinedBefore,
     keptBreaksBefore,

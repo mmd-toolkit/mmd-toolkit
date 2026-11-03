@@ -145,8 +145,10 @@ mermaid.js は、そうした位置の多くでそれらを受理し、ないも
 説明ブロックの文法がある全図種で、空白だけの内側をこの形に揃えます。
 タブと Unicode の空白も含めます。
 囲む空白を要する本文がないためです。
-コメントや directive があるブロックの配置と、
-周囲の行を保つ図種の規則は保ちます。 [test: sequence Unicode and tab interiors]
+コメントや directive があるブロックの内容と必要な改行は保ちます。
+通常の字下げは、
+[説明ブロックの字下げ](#説明ブロックの字下げ)と各図種の構造の規則に従います。
+周囲の行の保護条件も維持します。 [test: sequence Unicode and tab interiors]
 [test: class Unicode and tab interiors] [test: state Unicode and tab interiors]
 [test: block Unicode and tab interiors] [test: c4 Unicode and tab interiors]
 [fixture: flowchart/accessibility-lines/empty-block-touching-keyword]
@@ -347,7 +349,10 @@ block/multi-line-statements/line-rule-semicolon-after-touching-arrow-kept]
 `style`、`classDef`、 `linkStyle` の文の末尾の空白は取り除きます。
 [fixture: flowchart/style-trailing-whitespace/removed]
 mermaid.js はその空白を最後のスタイルの末尾に残すので、
-整形が mermaid.js の保存するものを変えるのは、ここだけです。
+ここでは整形が mermaid.js の保存するものを変えます。
+これとは別に、
+eventmodeling の [Data blocks](./eventmodeling.ja.md#data-blocks)
+も限定した本文の字下げの変更を認めています。
 テストは、末尾の空白を除いたスタイルを比べます。
 
 取り除くと mermaid.js が文を拒否する箇所では、空白を保ちます。
@@ -384,6 +389,55 @@ mermaid.js はディレクティブを取り除き、その両側のテキスト
 [fixture: class/directives/compat-whitespace-on-one-side-of-directive-kept]
 [fixture: state/directives/compat-whitespace-on-one-side-of-directive-kept]
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)を参照してください。
+
+## コメントやディレクティブの前後の構造の継続行
+
+構造の部分の間にある普通のコメントとディレクティブは必要な改行を残し、
+構造の列はそろえます。
+続きの行と間の独立した注釈は文より 1 段深く置きます。
+LF の前に必要な空白を含め、各隙間の最初の行末を保ち、
+値とディレクティブの内部は分割しません。
+コメントで結合される領域、セミコロンの保護、図種ごとの値の境界を優先します。
+
+class と state の文、ER の文、requirement のヘッダー・フィールド・文、
+sequence の文に適用します。
+ただし、注釈がキーワードと本文を隔てる sequence のタイトルは除きます。
+requirement と element の本文内の空の説明ブロックも、
+独立した注釈と閉じ波括弧の列をそろえます。
+[fixture: requirement/empty-description-blocks/in-body-with-comment-line-kept]
+[fixture: requirement/empty-description-blocks/in-body-with-directive-line]
+state の独立した開き波括弧はキーワードにそろえます。
+class の関数名から `(` までの空白は値の一部として保ちます。
+[fixture: class/multi-line-statements/comment-inside-kept]
+[fixture: class/whitespace-between-tokens/callback-name-comment-line-kept]
+[fixture: state/multi-line-statements/declaration-trivia-continuations]
+[fixture: state/multi-line-statements/brace-after-comment-line-kept]
+[fixture: er/multi-line-statements/style-comment-continuation]
+[fixture: requirement/multi-line-statements/header-directive-continuation]
+[fixture: requirement/fields/comment-and-directive-continuations]
+[fixture: sequence/multi-line-statements/autonumber-comment-continuation]
+
+Gantt の click・暦・リスト・accessibility の構造、
+journey と timeline の accessibility 行、quadrant の点と accessibility、
+block の構造、 XY チャートのヘッダー・軸・plot・accessibility も同じです。
+literal の文字は字下げし直しません。
+Gantt の設定・task・title・section、journey と timeline の title・section、
+timeline の event は値に属する空白を保ちます。
+複数行のラベルと引用値も内部の列を保ちます。
+[fixture: gantt/multi-line-statements/structural-trivia-continuations]
+[fixture: journey/multi-line-statements/accessibility-trivia-continuations]
+[fixture: timeline/multi-line-statements/accessibility-trivia-continuations]
+[fixture: quadrant/multi-line-statements/point-trivia-with-multiline-label]
+[fixture: block/multi-line-statements/structural-trivia-continuations]
+[fixture: xychart/multi-line-statements/axis-trivia-with-multiline-string]
+
+C4 の呼び出しも、インライン directive の内容・接触・必要な改行を保ちながら、
+周りの空白を整えます。
+directive の下に残る境界の開き波括弧は呼び出しにそろえます。
+[fixture: c4/directives/directive-inline]
+[fixture: c4/boundary-bodies/opener-directive]
+[fixture: c4/named-attributes/named-exterior-directive-lines]
+[fixture: c4/argument-spacing/directive-semicolon-prefix]
 
 ## `;` を含む行
 
@@ -579,11 +633,12 @@ sequence のメッセージは、矢印の両側に空白を 1 つずつ置き�
 sequence 図では、改行の前に空白があると、文は次の行に続きます。
 そうした文は 1 行にまとめて印字します。
 [fixture: sequence/multi-line-statements/joined]
-コメントかディレクティブを含むものは、始まりから終わりまで書かれたまま残します。
-mermaid.js がその行を 1 つの文として読むのは、行末の空白があるときだけで、
-整形はその空白を出力しないので、 1 行にまとめられません。
+コメントかディレクティブを含むものは改行を残し、構造の続きの行をそろえます。
+各隙間の最初の改行の前の空白は、
+字句解析が行をつないで読む場合があるため保ちます。
 [fixture: sequence/multi-line-statements/comment-inside-kept]
-`title` と本文の間にコメント行があるタイトルも同じです。
+`title` と本文の間にコメント行があるタイトルは、値に属する字下げも含め、
+全体を原文のまま残します。
 コメント行は mermaid.js がテキストを読む前に取り除かれるので、
 その次の行がタイトルになります。 [fixture: sequence/title/comment-line-kept]
 [複数行の文](./sequence.ja.md#複数行の文)を参照してください。
@@ -943,8 +998,10 @@ mermaid.js は、timeline の period、event、title、section の名前の空�
   指令だけの行。
   指令の前の空白が title や section のテキストになるので、 1 列目に置きます。
   [fixture: timeline/periods-and-events/title-word-then-directive-line]
-- 連結する改行にコメント行、指令、
-  `;` がある文（`title` とそのテキストの間など）は、書かれたまま残します。
+- title と section のキーワードと本文の間にコメント行か指令がある場合は、
+  値に属する空白を含めて原文のまま残します。
+  accessibility 行は、
+  [構造の継続行](#コメントやディレクティブの前後の構造の継続行)をそろえます。
   `;` を含む行は、その行の文をまとめて残します。
   [fixture: timeline/multi-line-statements/comment-line-inside-kept]
   [fixture: timeline/statements-one-per-line/ignored-semicolon-line-kept]
@@ -1036,7 +1093,8 @@ Db や字句解析器が読むものは変えません。
   その後の `;` を持つ行です。
   [fixture: statements-one-per-line/line-rule-line-kept-together]
   [fixture: multi-line-statements/semicolon-inside-kept]
-- つなぐ改行にコメント行か指令がある文は、書かれたまま残します。
+- コメント行や指令を含む文は必要な改行を残し、
+  [構造の継続行](#コメントやディレクティブの前後の構造の継続行)をそろえます。
   [fixture: multi-line-statements/comment-line-inside-kept]
   [fixture: multi-line-statements/directive-inside-kept]
 - コメントが前の単位に接しているかどうか。
@@ -1092,7 +1150,8 @@ Db や字句解析器が読むものは変えません。
   その後の `;` を持つ行です。
   [fixture: statements-one-per-line/line-rule-line-kept-together]
   [fixture: multi-line-statements/semicolon-on-the-last-line-kept]
-- つなぐ改行にコメント行か指令がある文は、書かれたまま残します。
+- コメント行や指令を含む点と accessibility の文は必要な改行を残し、
+  [構造の継続行](#コメントやディレクティブの前後の構造の継続行)をそろえます。
   [fixture: multi-line-statements/comment-line-inside-kept]
   [fixture: multi-line-statements/directive-inside-kept]
 - コメントが前の単位に接しているかどうか。
@@ -1142,7 +1201,8 @@ Db や字句解析器が読むものは変えません。
   [fixture: multi-line-statements/line-rule-line-kept]
   [fixture: multi-line-statements/line-rule-line-kept-with-columns]
   [fixture: multi-line-statements/line-rule-line-kept-with-composite]
-- つなぐ改行にコメント行か指令がある文は、書かれたまま残します。
+- コメント行や指令を含む文は必要な改行を残し、
+  [構造の継続行](#コメントやディレクティブの前後の構造の継続行)をそろえます。
   [fixture: multi-line-statements/comment-line-inside-kept]
   [fixture: multi-line-statements/directive-inside-kept]
 - U+0085 は mermaid.js が空白として読まず、id の文字です。
@@ -1581,7 +1641,8 @@ usecase/gram-metadata-no-trailing-comma-two-properties-three-newlines]
 
 accessibility 行は class と C4 の規則を再利用し、
 両端の空白を除いた値の前を空白 1 個にします。
-説明本文の行と列を保ち、独立した閉じ波括弧は文に揃えます。
+説明本文は[説明ブロックの字下げ](#説明ブロックの字下げ)に従い、
+文字と改行を保ちながら普通の行頭の字下げと独立した閉じ波括弧をそろえます。
 [usecase の規則](./usecase.ja.md#direction-and-accessibility)
 を参照してください。 [fixture: usecase/direction-and-accessibility/a11y-padding]
 [fixture: usecase/direction-and-accessibility/a11y-closer-aligned]
@@ -1703,8 +1764,9 @@ global trivia、コメント、semicolon の保護は共通の規則に従い、
 
 共通の title と accessibility の行の外端は詰めますが、
 次の物理行から値を取り込みません。
-共通の description block 配置は、波括弧の接触、空 block、
-値の続きの列と trivia を保持します。
+共通の description block 配置は、波括弧の接触、空 block、 trivia を保ち、
+普通の本文の字下げは
+[説明ブロックの字下げ](#説明ブロックの字下げ)に従ってそろえます。
 物理改行・BOM・終端改行は共通の host の経路です。
 Markdown は最終 payload 行の padding を消しますが、
 本文途中の hidden の padding は必要なままです。
@@ -1736,7 +1798,9 @@ Markdown の埋め込みを辞退して payload を修復しません。
 ## info の hidden 境界と原文の文
 
 [info の規則](./info.ja.md)は、書かれた showInfo の選択、共通文の順序と反復、
-空の構文、引用符、escape、内部空白、複数行の列を保ちます。
+空の構文、引用符、escape、値の文字を保ちます。
+通常の説明本文の行頭は[説明ブロックの字下げ](#説明ブロックの字下げ)に従います。
+ほかの literal と hidden form の継続列は原文のままです。
 info の公開 Db summary は、title と accessibility の代入があっても空です。
 空 Db の一致は原文を削除する根拠にはなりません。
 共通行の外端は詰め、次の物理行の値は別のままです。
@@ -1830,7 +1894,9 @@ packet の列には文法上の意味がないため、本文の `tabWidth: 0` �
 [fixture: packet/indentation/indent-zero]
 
 共通の行値は外端を詰めますが、次の物理行から値を取りません。
-共有の accessibility と説明配置は、空の形、trivia と原綴の継続列を保ちます。
+共有の accessibility と説明配置は、空の形と trivia を保ちます。
+普通の説明本文の行頭は[説明ブロックの字下げ](#説明ブロックの字下げ)に従い、
+ほかの literal と hidden form の継続列は保ちます。
 global directive は opaque な内容と接触を保ちます。
 init の削除は行設定を変え得ます。
 全セミコロンを残し、共有の segment 保護で交差する値・trivia と、
@@ -1954,7 +2020,9 @@ ticks の制限、min・max の並べ替え、描画設定からの置換はし�
 共通行の trim は普通の値の外端だけに適用します。
 trivia と semicolon の保護を優先します。
 説明は共有のブロック配置を使います。
-空白だけの内部は詰め、書かれた継続列は保ちます。
+空白だけの内部は詰め、
+普通の本文の字下げは
+[説明ブロックの字下げ](#説明ブロックの字下げ)に従ってそろえます。
 native hidden form は AST の owner で 1 回だけ印字します。
 範囲外の消費 LF と closer 後の空白も残します。
 群の最後の member が持つ suffix も、ほかの文と同じ境界規則に渡します。

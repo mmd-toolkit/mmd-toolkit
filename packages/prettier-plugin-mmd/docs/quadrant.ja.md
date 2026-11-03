@@ -382,8 +382,8 @@ mermaid.js は、点の中の改行を空白として読みます。
 `:` の周り、`[` の後、コンマの周り、`]` の前、
 そして空白の文字が先にあるときの `:` の前です。
 複数行に書かれた点は、改行が字句解析器にとって空白である所で 1 行に印字します。
-コメント行か指令がある点は、ほかの図と同じに、
-書かれたまま残します（[複数行の文](#複数行の文)を参照）。
+コメント行か指令を含む点は、その改行を保ち、
+続きの列をそろえます（[複数行の文](#複数行の文)を参照）。
 [fixture: points/line-breaks-joined]
 [fixture: points/line-break-with-a-comment-line-kept]
 [fixture: points/line-break-with-a-directive-kept]
@@ -681,13 +681,16 @@ mermaid.js が複数行にわたって読む文は、
 [fixture: multi-line-statements/name-then-colon-on-the-next-line-joined]
 [fixture: multi-line-statements/point-with-styles-over-lines-joined]
 
-コメント行か指令を含む文は、書かれたまま残します。
-コメント行は、置かれた行の残りを取り込むので、行にはつなげません。
-指令を含む行をつないでも Db は変わりませんが、
-コメント行と指令に同じ判断をするのが、すべての図の決まりで、
-印字はそれを 1 度だけ決めます。
-`;` を含む文も、行の規則があるので、
-書かれたまま残します（[1 行 1 文](#1-行-1-文)を参照）。
+点とアクセシビリティの行の文では、trivia の改行を保ち、
+後続の構造部分と独立した trivia 行を文より 1 段深くそろえます。
+各 gap の最初の行の末尾と、指令の内部全体を保ちます。
+複数行の名前などの値の範囲は、ひとまとまりのままです。
+[fixture: multi-line-statements/point-trivia-with-multiline-label]
+[fixture: multi-line-statements/accessibility-trivia-continuations]
+
+ほかの文の複数行の trivia は元の配置を保ちます。
+物理行を結ぶコメント領域と、文の内部か最終行の `;` も、
+行の規則があるため元の配置を保ちます（[1 行 1 文](#1-行-1-文)を参照）。
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 [fixture: multi-line-statements/semicolon-on-the-last-line-kept]
