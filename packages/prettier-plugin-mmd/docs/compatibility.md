@@ -397,13 +397,20 @@ c4/argument-spacing/directive-semicolon-prefix]
 
 The physical line completing an ordinary block header aligns with its statement,
 leaving its body one level deeper. Crossing literal values keep their own
-columns. This applies to state, requirement, eventmodeling and C4 boundary
-headers. [fixture: state/composite-states/header-completion-after-comment]
-[fixture: requirement/bodies/header-completion-after-comment] [fixture:
+columns. This applies to state, requirement, C4 boundary headers and
+eventmodeling data/note headers. [fixture:
+state/composite-states/header-completion-after-comment] [fixture:
+requirement/bodies/header-completion-after-comment] [fixture:
 eventmodeling/declarations-and-notes/header-completion-comments] [fixture:
-eventmodeling/gwt-clauses-and-items/header-completion-comment] [fixture:
 c4/boundary-bodies/named-header-completion] [fixture:
 c4/boundary-bodies/value-spans-header-line-kept]
+
+GWT has no opening brace. Its continued source-frame line and intervening
+comments or directives use one ordinary continuation level inside `gwt`, keeping
+the written order and trivia form. Clause keywords and items retain their own
+one-level and two-level indentation. [fixture:
+eventmodeling/gwt-clauses-and-items/header-completion-comment] [fixture:
+eventmodeling/gwt-clauses-and-items/header-directive-continuation]
 
 Ordinary ER and requirement style units use `property: value`, with styles
 separated by a comma and one space. Property and value contents stay written,
@@ -701,10 +708,15 @@ its first two characters. [fixture: state/notes/kept]
 For multiline block notes, the restricted [Notes](./state.md#notes) rule aligns
 plain paragraph margins one level inside the note, using ASCII spaces even with
 `useTabs`. Only leading ASCII spaces in raw `notes[].text` may differ, while
-rendering stays the same. Markdown-like markup, HTML, blank lines, whitespace
-other than ASCII spaces within a line, trivia and semicolons keep the body as
-written; general Markdown is not reformatted. [fixture:
-state/notes/payment-prose] [fixture: state/notes/markdown-ordered-list-kept]
+rendering stays the same. A nonempty first physical body row also uses the body
+indentation when its leading whitespace is ASCII spaces: Mermaid trims that
+margin, so its raw Db stays identical, including for HTML or Markdown. Later
+markup margins and blank lines stay written. Trivia, semicolons and leading
+whitespace other than ASCII spaces keep their existing protection; general
+Markdown is not reformatted. [fixture: state/notes/html-note-kept] [fixture:
+state/notes/html-pre-first-line] [fixture: state/notes/html-break-first-line]
+[fixture: state/notes/payment-prose] [fixture:
+state/notes/markdown-ordered-list-kept]
 
 The second description of an alias definition is kept as written, with the
 whitespace at its ends, which mermaid.js reads. [fixture:

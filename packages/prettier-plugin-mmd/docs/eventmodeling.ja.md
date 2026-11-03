@@ -78,7 +78,7 @@ frame、model entity、`data`、`note`、`gwt` が対象です。
 
 GWT clause は設定の 1 段、item は 2 段にします。
 通常の構造の継続行は、その文より 1 段深くします。
-`data`、`note`、GWT の見出しが完結する行はキーワードにそろえ、
+`data` と `note` の見出しが完結する行はキーワードにそろえ、
 本文がさらに深く見えるようにします。
 列は親子を決めないため、`tabWidth: 0` では空白を足しません。
 `useTabs` では幅が 0 でも 1 段に tab を 1 個使います。
@@ -390,9 +390,13 @@ entity Shop.Buy
 
 ### Gwt clauses and items
 
-GWT の見出しでコメントの後に source-frame の行が続く場合、
-その最後の行を `gwt` にそろえ、clause をさらに 1 段深く置きます。
+GWT の見出しがコメントや directive の後に続く場合、通常の継続の字下げを使い、
+trivia と source-frame の行を `gwt` より 1 段深く置きます。
+書かれた順序とコメントの形は保ちます。
+clause keyword は引き続き 1 段、item は 2 段です。
+source-frame の行は新たなトップレベルの文ではありません。
 [fixture: eventmodeling/gwt-clauses-and-items/header-completion-comment]
+[fixture: eventmodeling/gwt-clauses-and-items/header-directive-continuation]
 
 `gwt 99` は第 1 列、clause keyword はさらに 1 段、
 各 item はさらに 1 段深くします。

@@ -588,6 +588,17 @@ id の前の空白は空白 1 つにします。
 `note left of%%x A` のように位置の直後にある、mermaid.js が読まないテキストは、
 位置に接したまま残します。
 
+固定版の Mermaid は、`stateDiagram-v2` のノートを Markdown として描画します。
+[`dataFetcher.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/dataFetcher.ts#L380-L386)
+で `labelType` を `markdown` に設定しています。
+対応する記法は限定されています。
+[`handle-markdown-text.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/rendering-util/handle-markdown-text.ts#L120-L145)
+では、リストはリストとして配置せず、原文のテキストへ戻します。
+このフォーマッターは、ノート本文を Markdown フォーマッターへ渡しません。
+以下の規則で安全な余白だけをそろえ、そのほかの本文は保ちます。
+[fixture: notes/markdown-code-kept]
+[fixture: notes/markdown-unordered-list-kept]
+
 見出しが 1 行に収まり、本文がその次の行から始まり、
 `end note` が行頭の字下げに続くノートでは、空行を挟まない通常の段落の各行を、
 ノートより 1 段深くそろえます。
@@ -598,6 +609,29 @@ id の前の空白は空白 1 つにします。
 [fixture: notes/payment-prose] [fixture: notes/prose-nested-four]
 [fixture: notes/prose-use-tabs] [fixture: notes/prose-zero-width]
 [fixture: notes/prose-one-trailing-space]
+
+同じ条件の見出しと閉じを持つノートでは、本文の最初の物理行が空でなく、
+字下げが ASCII 空白だけなら、その行も本文の段へそろえます。
+Mermaid はこの余白をノートの格納前に取り除くため、
+HTML や Markdown があっても raw Db は完全に一致します。
+後続の記法の字下げは原文を保ちます。
+たとえば `<pre>` の内側の字下げを変えると、描画も変わる場合があるためです。
+最初の行が空か、先頭に ASCII 空白以外の空白文字がある場合は原文を保ちます。
+[fixture: notes/html-note-kept] [fixture: notes/html-pre-first-line]
+[fixture: notes/html-break-first-line] [fixture: notes/html-first-line-tabs]
+[fixture: notes/html-first-line-zero-width]
+
+出力
+([notes/html-note-kept-output.mmd](../tests/fixtures/state/notes/html-note-kept-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  Paid
+  note right of Paid
+    Payment<br/>confirmed
+    Receipt sent
+  end note
+```
 
 `note` の前や `end note` の後にある文や trivia は、
 通常の段落の整列を妨げません。 [fixture: notes/prose-adjacent-header]
@@ -611,9 +645,9 @@ id の前の空白は空白 1 つにします。
 [fixture: notes/over-lines-directive-on-header-line]
 [corpus fixture: state/tokens-note-block-ignored-semicolon]
 
-空行、行内の ASCII 空白以外の空白文字、Markdown 風の記法、HTML、
-バックスラッシュがある本文も、そのまま保ちます。
-リスト、見出し、コードの字下げは保ちます。
+上記の先頭行の余白を除き、空行、行内の ASCII 空白以外の空白文字、
+Markdown 風の記法、HTML、バックスラッシュがある本文は原文を保ちます。
+後続行のリスト、見出し、コードの字下げは保ちます。
 数字の後に `.` または `)` があり、その次が ASCII 空白か行末である形を、
 リストの先頭の候補として保護します。
 Markdown を再整形するものではありません。
@@ -627,7 +661,8 @@ Markdown を再整形するものではありません。
 [fixture: notes/markdown-empty-ordered-parenthesis-kept]
 
 最後以外の本文行が ASCII 空白 2 個以上で終わる場合は、
-Markdown の hard break なので、本文全体を原文のまま保ちます。
+Markdown の hard break なので、その末尾空白と後続行は原文を保ち、
+条件を満たす先頭行の余白だけをそろえます。
 最後以外の本文行の末尾の空白 1 個と、最後の本文行の末尾の空白は、
 本文の margin をそろえる場合も保ちます。 [fixture: notes/prose-trailing-spaces]
 [fixture: notes/prose-one-trailing-space]
@@ -635,8 +670,8 @@ Markdown の hard break なので、本文全体を原文のまま保ちます�
 Mermaid は本文内部の改行の後にある行頭空白を、raw `notes[].text` 値に残します。
 このため、許可する行頭の ASCII 空白変更は、描画を保つ限定的な Db の例外です。
 parser、仕様、記録済み Mermaid の読み取りは変えません。
-ほかの複数行のノート本文は、最初の行の段と、両端の空行や空白だけの行も含めて、
-書かれた列を保ちます。
+ほかの複数行のノート本文は、整列できる先頭行の余白を除き、書かれた列を保ちます。
+両端の空行や空白だけの行も含みます。
 `end note` はノートと同じ段に置きます。
 見出しの id の後の空白は落とします。
 その行のコメントやディレクティブの後の空白は、書かれたまま残します。

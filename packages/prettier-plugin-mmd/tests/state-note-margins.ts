@@ -12,7 +12,8 @@ import type { DbSummary, JsonObject, JsonValue } from "@mmd-toolkit/tests"
  * Checks authored note bodies even when trimming leaves the raw Db unchanged.
  * Only verified ASCII-space margins of attached multiline prose notes are
  * restored for comparison; every other Db field remains the actual after value.
- * Throws for a changed body outside that allowance. Line endings follow the
+ * First-row-only margins keep raw Db comparison strict. Other changed bodies
+ * must meet the prose allowance or throw. Line endings follow the
  * formatter's existing CR/CRLF normalization (docs/state.md, Notes).
  */
 export function stateDbForFormattingComparison(
@@ -50,6 +51,14 @@ export function stateDbForFormattingComparison(
     const nextText = printed.slice(...nextBody)
     if (text === nextText) continue
     if (
+      closing !== null &&
+      nextClosing !== null &&
+      hasPlainEdges(written, beforeRoot, note, closing) &&
+      hasPlainEdges(printed, afterRoot, next, nextClosing) &&
+      onlyFirstRowMarginChanged(text, nextText)
+    )
+      continue
+    if (
       closing === null ||
       nextClosing === null ||
       !hasPlainEdges(written, beforeRoot, note, closing) ||
@@ -79,6 +88,20 @@ export function stateDbForFormattingComparison(
       return { ...current, text: previous.text }
     }),
   }
+}
+
+/** A trimmed first-row margin needs no Db allowance; every later byte stays. */
+function onlyFirstRowMarginChanged(before: string, after: string): boolean {
+  const beforeEnd = before.indexOf("\n")
+  const afterEnd = after.indexOf("\n")
+  if (beforeEnd < 0 || afterEnd < 0) return false
+  const content = before.slice(leadingSpaces(before), beforeEnd)
+  return (
+    content !== "" &&
+    content[0].trim() !== "" &&
+    content === after.slice(leadingSpaces(after), afterEnd) &&
+    before.slice(beforeEnd) === after.slice(afterEnd)
+  )
 }
 
 /** The real attached-note nodes, in the same source walk as the state Db. */

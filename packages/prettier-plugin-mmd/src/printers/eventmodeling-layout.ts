@@ -148,16 +148,12 @@ export function layoutEventmodelingStatement(
     case "gwt": {
       const gwt = selected.statement
       return {
-        header: alignBlockOpeningLine(
+        header: layoutComponents(
           source,
-          layoutComponents(
-            source,
-            gwt,
-            start,
-            gwt.sourceFrame.range[1],
-            options.tabWidth,
-          ),
-          gwt.sourceFrame.range[1] - 1,
+          gwt,
+          start,
+          gwt.sourceFrame.range[1],
+          options.tabWidth,
         ),
         body: [gwt.given, ...(gwt.when === null ? [] : [gwt.when]), gwt.then],
         end,

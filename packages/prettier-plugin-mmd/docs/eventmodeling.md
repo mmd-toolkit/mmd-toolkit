@@ -76,12 +76,11 @@ rendering remain unchanged.
 
 GWT clauses use one configured step and items two. Ordinary structural
 continuation lines stand one step deeper than their statement. A line completing
-a `data`, `note` or GWT header aligns with its keyword, so the body remains
-deeper. Columns do not define parents, so `tabWidth: 0` adds no spaces;
-`useTabs` adds one tab per step even at width zero. Value continuations,
-metadata padding and hidden consumed-LF boundaries retain their authored
-columns, apart from the block-body margin adjustment in
-[Data blocks](#data-blocks).
+a `data` or `note` header aligns with its keyword, so the body remains deeper.
+Columns do not define parents, so `tabWidth: 0` adds no spaces; `useTabs` adds
+one tab per step even at width zero. Value continuations, metadata padding and
+hidden consumed-LF boundaries retain their authored columns, apart from the
+block-body margin adjustment in [Data blocks](#data-blocks).
 
 [fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]
 
@@ -389,9 +388,12 @@ entity Shop.Buy
 
 ### Gwt clauses and items
 
-A GWT header's final source-frame line aligns with `gwt` after an intervening
-comment, keeping the clauses one level deeper. [fixture:
-eventmodeling/gwt-clauses-and-items/header-completion-comment]
+A GWT header continued after a comment or directive uses ordinary continuation
+indentation: the trivia and source-frame line stand one level inside `gwt`. Keep
+their written order and comment form. Clause keywords still use one level and
+items two; the source-frame line is not a new top-level statement. [fixture:
+eventmodeling/gwt-clauses-and-items/header-completion-comment] [fixture:
+eventmodeling/gwt-clauses-and-items/header-directive-continuation]
 
 Put `gwt 99` at column one, each clause keyword one step deeper and every item
 another step deeper. This shows the authored clause/item relationship without

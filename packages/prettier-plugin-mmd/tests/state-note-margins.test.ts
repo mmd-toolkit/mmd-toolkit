@@ -4,6 +4,32 @@ import { dbOfText, defaultEmbedded } from "./db-reading.ts"
 import { stateDbForFormattingComparison } from "./state-note-margins.ts"
 
 describe("state's permitted attached-note margins", () => {
+  it("aligns the first markup row while requiring exact raw Db equality", () => {
+    const beforeSource =
+      "stateDiagram-v2\nPaid\nnote right of Paid\n        Payment<br/>confirmed\n    Receipt sent\nend note\n"
+    const afterSource =
+      "stateDiagram-v2\n  Paid\n  note right of Paid\n    Payment<br/>confirmed\n    Receipt sent\n  end note\n"
+    const before = dbOfText(beforeSource, defaultEmbedded())
+    const after = dbOfText(afterSource, defaultEmbedded()) as DbSummary
+    expect(after).toEqual(before)
+    expect(
+      stateDbForFormattingComparison(before, after, beforeSource, afterSource),
+    ).toEqual(after)
+    const notes = after.notes as JsonObject[]
+    const incorrect: DbSummary = {
+      ...after,
+      notes: [{ ...notes[0], text: "Payment<br/>confirmed\n Receipt sent" }],
+    }
+    expect(
+      stateDbForFormattingComparison(
+        before,
+        incorrect,
+        beforeSource,
+        afterSource,
+      ),
+    ).toEqual(incorrect)
+  })
+
   it("checks nested notes in source order, leaving inline notes and raw Dbs intact", () => {
     const beforeSource =
       "stateDiagram-v2\nnote left of A : kept\nstate S {\nnote right of B\ncard & wallet \n   online payments  \nend note\n}\nnote left of C\n  final prose\nend note\n"
@@ -78,47 +104,58 @@ describe("state's permitted attached-note margins", () => {
       after: "stateDiagram-v2\nnote right of A\n  first\nend note\n",
     },
     {
-      name: "a heading even when Db trimming hides the source change",
-      before: "stateDiagram-v2\nnote right of A\n# Heading\nend note\n",
-      after: "stateDiagram-v2\nnote right of A\n  # Heading\nend note\n",
+      name: "a heading after the first row",
+      before: "stateDiagram-v2\nnote right of A\nIntro\n# Heading\nend note\n",
+      after: "stateDiagram-v2\nnote right of A\nIntro\n  # Heading\nend note\n",
     },
     {
       name: "inline code",
-      before: "stateDiagram-v2\nnote right of A\nUse `card` here\nend note\n",
-      after: "stateDiagram-v2\nnote right of A\n  Use `card` here\nend note\n",
+      before:
+        "stateDiagram-v2\nnote right of A\nIntro\nUse `card` here\nend note\n",
+      after:
+        "stateDiagram-v2\nnote right of A\nIntro\n  Use `card` here\nend note\n",
     },
     {
       name: "emphasis",
-      before: "stateDiagram-v2\nnote right of A\nUse *card* here\nend note\n",
-      after: "stateDiagram-v2\nnote right of A\n  Use *card* here\nend note\n",
+      before:
+        "stateDiagram-v2\nnote right of A\nIntro\nUse *card* here\nend note\n",
+      after:
+        "stateDiagram-v2\nnote right of A\nIntro\n  Use *card* here\nend note\n",
     },
     {
       name: "underscore markup",
-      before: "stateDiagram-v2\nnote right of A\nUse _card_ here\nend note\n",
-      after: "stateDiagram-v2\nnote right of A\n  Use _card_ here\nend note\n",
+      before:
+        "stateDiagram-v2\nnote right of A\nIntro\nUse _card_ here\nend note\n",
+      after:
+        "stateDiagram-v2\nnote right of A\nIntro\n  Use _card_ here\nend note\n",
     },
     {
       name: "strikethrough markup",
-      before: "stateDiagram-v2\nnote right of A\nUse ~~card~~ here\nend note\n",
+      before:
+        "stateDiagram-v2\nnote right of A\nIntro\nUse ~~card~~ here\nend note\n",
       after:
-        "stateDiagram-v2\nnote right of A\n  Use ~~card~~ here\nend note\n",
+        "stateDiagram-v2\nnote right of A\nIntro\n  Use ~~card~~ here\nend note\n",
     },
     {
       name: "a link",
       before:
-        "stateDiagram-v2\nnote right of A\nUse [card](pay) here\nend note\n",
+        "stateDiagram-v2\nnote right of A\nIntro\nUse [card](pay) here\nend note\n",
       after:
-        "stateDiagram-v2\nnote right of A\n  Use [card](pay) here\nend note\n",
+        "stateDiagram-v2\nnote right of A\nIntro\n  Use [card](pay) here\nend note\n",
     },
     {
       name: "HTML markup",
-      before: "stateDiagram-v2\nnote right of A\nUse <br/> here\nend note\n",
-      after: "stateDiagram-v2\nnote right of A\n  Use <br/> here\nend note\n",
+      before:
+        "stateDiagram-v2\nnote right of A\nIntro\nUse <br/> here\nend note\n",
+      after:
+        "stateDiagram-v2\nnote right of A\nIntro\n  Use <br/> here\nend note\n",
     },
     {
       name: "a backslash",
-      before: "stateDiagram-v2\nnote right of A\nUse \\card here\nend note\n",
-      after: "stateDiagram-v2\nnote right of A\n  Use \\card here\nend note\n",
+      before:
+        "stateDiagram-v2\nnote right of A\nIntro\nUse \\card here\nend note\n",
+      after:
+        "stateDiagram-v2\nnote right of A\nIntro\n  Use \\card here\nend note\n",
     },
     {
       name: "an empty ordered-list marker",
@@ -127,8 +164,9 @@ describe("state's permitted attached-note margins", () => {
     },
     {
       name: "an ordered-list marker followed by prose",
-      before: "stateDiagram-v2\nnote right of A\n1) Payment\nend note\n",
-      after: "stateDiagram-v2\nnote right of A\n  1) Payment\nend note\n",
+      before: "stateDiagram-v2\nnote right of A\nIntro\n1) Payment\nend note\n",
+      after:
+        "stateDiagram-v2\nnote right of A\nIntro\n  1) Payment\nend note\n",
     },
     {
       name: "a hard break whose following indentation remains visible",

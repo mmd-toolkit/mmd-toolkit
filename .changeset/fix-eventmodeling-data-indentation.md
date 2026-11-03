@@ -12,3 +12,6 @@ Clarify block header indentation, keep comment-bearing list and grammar
 alternatives readable, normalize method and supported style boundaries, and
 format ordinary Wardley names containing `style` instead of preserving their
 spacing.
+
+Keep wrapped GWT source-frame names inside their header, and align the trimmed
+first line of state note bodies even when they contain HTML or Markdown.

@@ -48,19 +48,19 @@ function format(text: string, options: Options = {}): Promise<string> {
  */
 const examples: readonly (readonly [string, string, string])[] = [
   [
-    "a note whose body starts with U+00A0",
+    "U+00A0 at the start of a later note row",
     "stateDiagram-v2\nnote right of Paid\n        Payment\n\u00a0wallet\nend note\n",
-    "stateDiagram-v2\n  note right of Paid\n        Payment\n\u00a0wallet\n  end note\n",
+    "stateDiagram-v2\n  note right of Paid\n    Payment\n\u00a0wallet\n  end note\n",
   ],
   [
-    "a note whose body contains U+2028",
+    "U+2028 on a later note row",
     "stateDiagram-v2\nnote right of Paid\n        Payment\n  \u2028wallet\nend note\n",
-    "stateDiagram-v2\n  note right of Paid\n        Payment\n  \u2028wallet\n  end note\n",
+    "stateDiagram-v2\n  note right of Paid\n    Payment\n  \u2028wallet\n  end note\n",
   ],
   [
-    "a note whose body contains U+2029",
+    "U+2029 on a later note row",
     "stateDiagram-v2\nnote right of Paid\n        Payment\n  \u2029wallet\nend note\n",
-    "stateDiagram-v2\n  note right of Paid\n        Payment\n  \u2029wallet\n  end note\n",
+    "stateDiagram-v2\n  note right of Paid\n    Payment\n  \u2029wallet\n  end note\n",
   ],
   [
     "a pseudostate mark after U+2028",

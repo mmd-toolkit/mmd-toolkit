@@ -663,9 +663,7 @@ function layoutNoteOverLines(
   )
   const text = findNoteTextStretch(source, statement, endKeyword)
   const lines =
-    text === null
-      ? null
-      : plainNoteTextLines(source, statement, text, indentation)
+    text === null ? null : noteTextLines(source, statement, text, indentation)
   const atoms = collectAtoms(
     source,
     statement.range[0],
@@ -686,12 +684,12 @@ function layoutNoteOverLines(
 }
 
 /**
- * Ordinary paragraph lines use one body level. Markdown structure, embedded
- * forms and non-ASCII indentation retain their authored layout. Explicit ASCII
- * columns also avoid introducing Markdown-significant tabs with useTabs
+ * Align eligible paragraph bodies, or only the first physical body line whose
+ * ASCII margin Mermaid trims. Embedded forms keep their full source. Explicit
+ * ASCII columns avoid introducing Markdown-significant tabs with useTabs
  * (docs/state.md, Notes).
  */
-function plainNoteTextLines(
+function noteTextLines(
   source: Source,
   statement: StateNoteStatement,
   text: Atom,
@@ -705,6 +703,18 @@ function plainNoteTextLines(
     holdsJoiningRegion(source, ...statement.range)
   )
     return null
+  return (
+    plainNoteTextLines(source, text, indentation) ??
+    firstNoteTextLine(source, text, indentation)
+  )
+}
+
+/** Ordinary prose aligns every row; Markdown and HTML keep later margins. */
+function plainNoteTextLines(
+  source: Source,
+  text: Atom,
+  indentation: string,
+): Atom[] | null {
   const body = source.text.slice(text.start + 1, text.end)
   if (body.includes("  \n")) return null
   for (const character of body) {
@@ -734,6 +744,24 @@ function plainNoteTextLines(
     offset = end + 1
   }
   return lines
+}
+
+/** A nonblank first physical row loses its leading spaces in the raw Db. */
+function firstNoteTextLine(
+  source: Source,
+  text: Atom,
+  indentation: string,
+): Atom[] | null {
+  let start = text.start + 1
+  while (source.text[start] === " ") start++
+  const lineEnd = lineEndOf(source, text.start + 1)
+  if (start >= text.end || start >= lineEnd || isWhitespace(source.text[start]))
+    return null
+  const end = Math.min(lineEnd, text.end)
+  return [
+    { start, end, writtenIndentation: indentation },
+    ...(end < text.end ? [{ start: end, end: text.end }] : []),
+  ]
 }
 
 /**

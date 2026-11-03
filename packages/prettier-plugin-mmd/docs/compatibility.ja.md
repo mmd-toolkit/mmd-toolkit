@@ -441,13 +441,20 @@ directive の下に残る境界の開き波括弧は呼び出しにそろえま�
 
 通常のブロック見出しを完成する物理行は文と同じ段にそろえ、本文を1段深くします。
 その行をまたぐリテラル値は、固有の列を保ちます。
-state、requirement、eventmodeling、C4 の boundary 見出しが対象です。
+state、requirement、C4 の boundary、
+eventmodeling の data・note の見出しが対象です。
 [fixture: state/composite-states/header-completion-after-comment]
 [fixture: requirement/bodies/header-completion-after-comment]
 [fixture: eventmodeling/declarations-and-notes/header-completion-comments]
-[fixture: eventmodeling/gwt-clauses-and-items/header-completion-comment]
 [fixture: c4/boundary-bodies/named-header-completion]
 [fixture: c4/boundary-bodies/value-spans-header-line-kept]
+
+GWT には開始波括弧がありません。
+継続する source-frame の行と、その間のコメントや directive は、
+通常の継続として `gwt` より 1 段深く置き、書かれた順序と trivia の形を保ちます。
+clause keyword は 1 段、item は 2 段の字下げを保ちます。
+[fixture: eventmodeling/gwt-clauses-and-items/header-completion-comment]
+[fixture: eventmodeling/gwt-clauses-and-items/header-directive-continuation]
 
 通常の ER と requirement のスタイル単位は `property: value` とし、
 スタイル同士はカンマと空白1個で区切ります。
@@ -766,8 +773,15 @@ mermaid.js はノートの本文を id の直後から読み、最初の 2 文�
 `useTabs` でも ASCII 空白を使います。
 描画を保ちながら、
 raw `notes[].text` の行頭の ASCII 空白だけが変わる場合があります。
-Markdown 風の記法、HTML、空行、行内の ASCII 空白以外の空白文字、trivia、
-セミコロンがある本文は、原文のまま保ち、一般の Markdown は再整形しません。
+空でない本文の最初の物理行も、
+先頭の字下げが ASCII 空白だけなら本文の段にそろえます。
+Mermaid はこの余白を取り除くため、
+HTML や Markdown があっても raw Db は一致します。
+後続の記法の字下げと空行は原文を保ちます。
+trivia、セミコロン、ASCII 空白以外の行頭空白には既存の保護を適用します。
+一般の Markdown は再整形しません。 [fixture: state/notes/html-note-kept]
+[fixture: state/notes/html-pre-first-line]
+[fixture: state/notes/html-break-first-line]
 [fixture: state/notes/payment-prose]
 [fixture: state/notes/markdown-ordered-list-kept]
 
