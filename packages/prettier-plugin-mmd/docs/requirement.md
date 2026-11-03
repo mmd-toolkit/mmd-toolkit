@@ -332,7 +332,17 @@ name is part of it. [fixture: relationship-spacing/multi-word-names] A directive
 between the units stays where it is, with the whitespace written on each side of
 it. [fixture: relationship-spacing/directive-between-units-kept] A relationship
 written over several lines, where the line break follows whitespace, is printed
-on one line. [fixture: relationship-spacing/over-lines-joined]
+on one line unless a comment or directive prevents joining. In that case, later
+structural parts and standalone trivia stand one level inside the relationship.
+Keep each gap's first line tail, since a whitespace run must start before LF to
+continue the relationship, and retain complete multiline directives and name
+interiors. [fixture: relationship-spacing/over-lines-joined] [fixture:
+relationship-spacing/comment-continuation-with-multiline-names] [fixture:
+relationship-spacing/directive-continuation-four-spaces] [fixture:
+relationship-spacing/multiline-directive-line-tail] Semicolon-sensitive lines
+and comment regions that join physical lines keep their original layout.
+[fixture: multi-line-statements/relationship-last-line-semicolon-kept] [test:
+requirement/relationship-spacing/comment-region-continuation-kept]
 
 Input
 ([relationship-spacing/spaces-and-touching-input.mmd](../tests/fixtures/requirement/relationship-spacing/spaces-and-touching-input.mmd)):
@@ -911,13 +921,13 @@ the statement kept as written. [fixture:
 accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/text-with-comment-line-kept]
 
-The lines of an `accDescr { ... }` block are kept as written by choice, not by
-need: the whitespace at the start of a line is not in the Db (`a`, a line break,
-and `b` give the same description as with `  b`), and the lines are the text of
-the author, which the printer does not format. Its `}` stands at the level of
-its statement; a text on the line of the `{` has one space inside the braces
-where it was written apart. [fixture: accessibility-statements/block-lines-kept]
-[fixture: accessibility-statements/block-text-on-opening-line] [fixture:
+Later text lines of an `accDescr { ... }` block stand one level inside its
+statement, replacing only ASCII spaces and tabs immediately after LF. The
+description setter drops that indentation; line breaks, trailing whitespace and
+directive interiors stay written. Its `}` stands at the level of its statement;
+a text on the line of the `{` has one space inside the braces where it was
+written apart. [fixture: accessibility-statements/block-lines-kept] [fixture:
+accessibility-statements/block-text-on-opening-line] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept]
 
 The lexer reads a line as a direction line before it reads the statements that
@@ -971,7 +981,7 @@ Output
 ```mmd
 requirementDiagram
   accDescr {
-  first
+    first
     second
   }
   accDescr {}
@@ -999,7 +1009,7 @@ accTitle: direction LR
 accDescr: direction  TB
 accDescr { direction RL }
   accDescr {
- direction BT
+    direction BT
   }
 ```
 
@@ -1016,11 +1026,13 @@ multi-line-statements/kind-and-name-joined] [fixture:
 multi-line-statements/relationship-joined] [fixture:
 multi-line-statements/direction-value-joined] [fixture:
 multi-line-statements/accessibility-joined] [fixture:
-multi-line-statements/string-continued-joined] A statement with a comment line
-or a directive in it is kept as written, since the comment line would take the
-rest of the line it stands on and the whitespace of a line that holds a
-directive is read with it, and so is one with a `;`, which the line rule
-decides. [fixture: multi-line-statements/comment-line-inside-kept] [fixture:
+multi-line-statements/string-continued-joined] A relationship with a comment or
+directive keeps its line breaks and aligns structural continuations (see
+[Relationship spacing](#relationship-spacing)). Other statements with a comment
+line or a directive in them stay as written, since the comment line would take
+the rest of its line and directive-side whitespace is read with it. A statement
+with a `;` also stays as written, since the line rule decides. [fixture:
+multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept] [fixture:
 multi-line-statements/semicolon-kept]
 

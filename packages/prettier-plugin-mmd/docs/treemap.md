@@ -509,10 +509,12 @@ treemap
 Use shared description-block layout. Preserve touching keyword/opener and
 interior edges; existing edge whitespace becomes one space, while
 whitespace-only interiors become `{}` because no text needs surrounding padding.
-Join plain opener whitespace, keep comment/directive-only interiors and their
-boundaries, and preserve nonempty continuation columns and internal blank lines.
-Align a separate opener or closer with its statement. The first `}` still closes
-the block.
+Join plain opener whitespace, keep comment/directive contents and their
+boundaries, and align body lines one step inside the statement while retaining
+internal blank lines. Mermaid discards indentation after LF from the
+description. The body uses the configured indentation, including tabs and the
+positive minimum step at width zero. Align a separate opener or closer with its
+statement. The first `}` still closes the block.
 
 [fixture: treemap/description-blocks/empty]
 
@@ -525,6 +527,8 @@ the block.
 [fixture: treemap/description-blocks/right-touching]
 
 [fixture: treemap/description-blocks/continuation]
+
+[fixture: treemap/description-blocks/body-tabs]
 
 [fixture: treemap/description-blocks/opener-newline]
 
@@ -551,7 +555,7 @@ Output
 ```mmd
 treemap
   accDescr {
-  first
+    first
 
     second
   }

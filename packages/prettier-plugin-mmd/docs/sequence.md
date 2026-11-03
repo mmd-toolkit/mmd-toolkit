@@ -862,9 +862,9 @@ multi-line-statements/semicolon-inside-kept] [fixture:
 multi-line-statements/start-moves-to-own-line] It cannot stand on one line, and
 only the whitespace at the ends of its lines, which the formatter does not
 write, makes mermaid.js read its lines as one statement. A title with a comment
-line between its keyword and its text is such a statement. The lines of an
-`accDescr { ... }` block are lines of its text (see
-[Multi-line values](#multi-line-values)).
+line between its keyword and its text is such a statement. Description blocks
+instead follow [Multi-line values](#multi-line-values), which align their body
+indentation.
 
 The inputs have whitespace at the ends of lines, so the example is written as
 strings, in which `\n` is a line break:
@@ -879,15 +879,14 @@ and Unicode whitespace, prints `{}`: there is no text for interior whitespace to
 surround. An already empty interior stays empty. A touching keyword stays
 touching: `accDescr{  }` becomes `accDescr{}`. [fixture:
 multi-line-values/empty-whitespace-interiors] [test: sequence Unicode and tab
-interiors] Blocks with comments or directives retain their existing layout.
+interiors] Blocks with comments or directives keep their contents and line
+breaks.
 
-For blocks with text, as in a flowchart: the lines of an `accDescr { ... }`
-block and of a data block written over several lines are kept as written, and
-the `}` of an `accDescr` block stands at the level of its statement. Outside a
-subgraph the columns of those lines are not in the Db, so keeping them is a
-choice, whose reason is in a flowchart (see
-[Multi-line values](./flowchart.md#multi-line-values)). [fixture:
-multi-line-values/kept] [fixture:
+Align the lines of an `accDescr { ... }` body one step inside its statement,
+with a separate `}` at the statement's level, as in
+[flowchart's top-level descriptions](./flowchart.md#multi-line-values). Mermaid
+discards this indentation from the description. Data blocks keep their authored
+columns and contents. [fixture: multi-line-values/kept] [fixture:
 multi-line-values/accdescr-block-closing-brace-after-text-kept] [fixture:
 multi-line-values/accdescr-block-blank-and-comment-lines-kept] [fixture:
 multi-line-values/data-block-in-block-kept] A block without text, whose lines
@@ -920,8 +919,8 @@ Output
 sequenceDiagram
   loop x
     accDescr {
-  one
-    two
+      one
+      two
     }
     participant A@{
   "type": "queue"
@@ -953,8 +952,9 @@ sequenceDiagram
 
 ## Kept as written
 
-Some text is always kept as written, because changing it would change the
-diagram or the input would be rejected:
+Apart from description-body indentation under
+[Multi-line values](#multi-line-values), the following text is kept as written
+because changing it would change the diagram or the input would be rejected:
 
 - the text of a value, with the whitespace inside it, and the text of a `box` as
   a whole, up to the last U+2028 or U+2029 that ends it;

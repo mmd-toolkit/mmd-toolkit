@@ -481,9 +481,12 @@ Route descriptions through shared `layoutDescriptionBlock`. Touching
 keyword/opener and interior edges remain touching; present exterior runs become
 one space. Whitespace-only interiors become `{}` because no text needs
 surrounding space. Plain opener whitespace joins; real trivia keeps its break.
-Preserve comment/directive-only interiors, nonempty continuation columns and
-internal blanks; align a separate opener or closer with the statement. The first
-closing brace still ends the value.
+Preserve comment/directive-only interiors. Ordinary description body and
+standalone comment lines align one level inside the statement: the Db removes
+indentation after LF. Keep line breaks, internal blanks and trailing whitespace;
+align a separate opener or closer with the statement. Directives and shared
+removed comment regions keep their complete source. The first closing brace
+still ends the value.
 
 [fixture: radar/description-blocks/block-empty-fixed]
 
@@ -522,9 +525,9 @@ radar-beta
 ### Multiline values
 
 Do not wrap at printWidth. New visible line breaks can reject group components,
-and reflowing values can change the Db. Keep physical label/value continuation
-lines, columns and internal blank lines; only a separate description closer uses
-shared alignment. Long axis groups and entry lists stay unwrapped.
+and reflowing values can change the Db. Keep physical label continuation lines,
+columns and internal blank lines. Description bodies use the shared indentation
+above. Long axis groups and entry lists stay unwrapped.
 
 [fixture: radar/multiline-values/long-axis-no-wrap]
 

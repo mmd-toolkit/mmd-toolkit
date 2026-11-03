@@ -632,6 +632,28 @@ mermaid.js の行単位の規則は、 `:` の直後から `#` までのテキ�
 [閉じていないバッククォートの名前](./class.ja.md#閉じていないバッククォートの名前)
 を参照してください。
 
+## 説明ブロックの字下げ
+
+通常の閉じた複数行の `accDescr` 本文は文の継続行の字下げを使い、
+独立した `}` は文と同じ段に置きます。
+Mermaid が説明から LF 後の先頭の空白とタブを除くためです。
+それ以外の文字、改行、行末の空白、directive の内容は保ちます。
+引用符付きの文字列と不透明なデータブロックは、それぞれの値の保持規則に従います。
+[fixture: flowchart/multi-line-values/accdescr-block-kept]
+
+原文がメンバーの決定にも使われる場合は、説明本文の列を保ちます。
+flowchart の subgraph、Agentflow の flow/global 本文、
+ER の subgraph が対象です。
+global 本文の原文を変えると、後続の flow のメンバーが変わる場合があります。
+Treeview の罫線モードも、普通の物理行を字下げすると拒否される場合があるため、
+本文の列を保ちます。
+Eventmodeling の共通 terminal は原文を値とする固有の規則に従います。
+[fixture: flowchart/multi-line-values/accdescr-block-subgraph-raw-membership-kept]
+[fixture: agentflow/accessibility/global-description-membership-kept]
+[corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines]
+[corpus fixture: treeview/box-block-tail-decoration-ascii-dash-control]
+[fixture: eventmodeling/description-blocks/description-whitespace-literal-retained]
+
 ## キーワードの綴りの state の id
 
 state 図では、`scale`、`classDef`、`class`、`style`、`state`、`note`、
@@ -1317,12 +1339,14 @@ C4 は書かれた引数の単位と位置をすべて保ちます。
 
 空の説明ブロックは隣接したままにし、二つの `beforeBody` の隙間も保ちます。
 意味のある文も改行も供給しないためです。
-複数行の値と名前付きキーの外側の改行は行と列を保ちます。
+複数行の引数の値は行と列を保ちます。
+名前付きキーの外側の隙間は改行を保ち、通常の継続行の字下げを使います。
 direction の文字の結合は、先頭列でも受理される入力を拒否に変えうるためです。
 [fixture: c4/empty-description-blocks/empty-header-gap]
 [fixture: c4/empty-description-blocks/empty-boundary-next-gap]
 [fixture: c4/empty-description-blocks/empty-on-close-line]
 [fixture: c4/named-attributes/named-exterior-newline-kept]
+[fixture: c4/named-attributes/named-key-newline]
 [fixture: c4/direction-rejection/acc-colon-direction]
 
 図のコメントの後は、復帰用の空白行と末尾の隙間も含めて全体を保ちます。
@@ -2132,7 +2156,7 @@ corpus が記録する受理された指定読みを比較に使います。
 
 外側の装飾は続く案内線か空行にし、モードの選択に必要な装飾は残します。
 `accDescr` の opener の gap にある唯一の選び手は gap だけを保ち、
-block の残りと本文は普通に整形します。
+それ以外の構造は説明ブロックの規則で整え、罫線モードの本文は元の列を保ちます。
 共通文と native comment の prefix を外し、
 コメントが運んだ枝はノードへ 1 回描きます。
 枝付き注釈は、前に description が無く、

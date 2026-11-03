@@ -1135,7 +1135,9 @@ usecaseのDbが同じ形に従います。 [fixture: accessibility-lines/empty-b
 左右を別々に扱い、`{  a}`は`{ a}`、 `{a  }`は`{a }`にします。
 [fixture: accessibility-lines/block-left-padding-only]
 [fixture: accessibility-lines/block-right-padding-only]
-複数行の値とコメントの桁位置を保ち、単独行の閉じ括弧を`accDescr`に揃えます。
+複数行の本文は、
+[複数行の値](#複数行の値)のトップレベルと subgraph の規則に従い、
+単独行の閉じ括弧を `accDescr` に揃えます。
 閉じ括弧が0桁目でも字下げされていても同じです。
 兄弟の図種と同じ形で、 flowchart固有の理由はありません。
 [fixture: accessibility-lines/block-close-column-zero]
@@ -1276,18 +1278,17 @@ cb
 
 ### 複数行の値
 
-複数行に書かれた値では、各行の開始位置を変えません。
-引用符で囲んだ文字列と、
-`{` の次の行から始まる `accDescr { ... }` ブロックのテキストです。
+引用符で囲んだ複数行の文字列は、各行の開始位置を変えません。
 [fixture: multi-line-values/markdown-string-kept]
-subgraph の中では、 mermaid.js はそのブロックのテキストを、
-字下げごと subgraph のメンバーにも入れるので、字下げを変えられません。
-subgraph の外では、行の桁は Db に入りませんが、同じに残し、
-どのブロックのテキストにも 1 つの規則が当てはまるようにします。
-[fixture: multi-line-values/accdescr-block-comment-only-in-subgraph]
+トップレベルの `accDescr { ... }` の本文行は、文より 1 段深くそろえます。
+Mermaid がアクセシビリティの説明から LF 後の字下げを除くためです。
+subgraph の中では、本文があるブロックの原文が字下げごとメンバーに入るため、
+元の列を保ちます。
+[fixture: multi-line-values/accdescr-block-subgraph-raw-membership-kept]
 ブロックの `}` は、それが閉じる `accDescr` と同じ段に置きます。
 [fixture: multi-line-values/accdescr-block-kept]
-そうしたブロックの中のコメント行も、書かれたまま残します。
+そうしたブロックのコメントの内容も保ち、
+列は同じトップレベルまたは subgraph の規則に従います。
 [fixture: multi-line-values/accdescr-block-comment-line-in-subgraph-kept]
 テキストが`{`と同じ行から始まるときは、その前後の空白列を、
 トークンの間と同じく空白1つにし、空白がなければ足しません。
@@ -1354,8 +1355,8 @@ flowchart LR
   end
   accDescr { one line }
   accDescr {
-  text
-%% note
+    text
+    %% note
   }
   accDescr {}
 ```

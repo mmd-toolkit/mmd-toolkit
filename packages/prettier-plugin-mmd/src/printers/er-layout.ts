@@ -273,8 +273,9 @@ export function layoutBlockOpening(
  *   inside the statements of the style context (diagrams/er.md, The
  *   statement context); one with a comment or a directive in it is kept as
  *   written (see `spansLinesThatCannotJoin`). The lines of an `accDescr`
- *   block are lines of its text, and are kept (docs/er.md, Multi-line
- *   values).
+ *   block keep their line breaks and align one level inside the statement,
+ *   except inside subgraphs, where raw text also supplies membership
+ *   (docs/er.md, Multi-line values).
  * - A relationship has one space around its three units and its `:`
  *   (docs/er.md, Relationship spacing).
  * - The classes after `:::` and in the lists of `class`, `classDef`, and
@@ -285,10 +286,13 @@ export function layoutErStatement(
   source: Source,
   statement: ErSimpleStatement | ErEntityStatement,
   end: number,
+  preservesDescriptionColumns: boolean,
 ): AtomLayout {
   const start = statement.range[0]
   if (statement.type === "ErAccDescrBlockStatement") {
-    return layoutDescriptionBlock(source, statement, end, erValueNodeTypes)
+    return layoutDescriptionBlock(source, statement, end, erValueNodeTypes, {
+      preservesBodyColumns: preservesDescriptionColumns,
+    })
   }
   if (spansLinesThatCannotJoin(source, start, end)) {
     return keptAsWritten(start, end)
@@ -353,15 +357,21 @@ function findEndingSemicolonStretches(
 
 /**
  * The layout of an attribute: its type, `?`, name, keys, and comment on one
- * line (docs/er.md, Attribute spacing). An attribute with a comment or a
- * directive between its parts, written over lines, is kept as written.
+ * line (docs/er.md, Attribute spacing). Comments and directives keep the line
+ * breaks, while structural gaps still take continuation indentation. Joining
+ * regions and textual semicolon boundaries retain their complete source.
  */
 export function layoutAttribute(
   source: Source,
   attribute: ErAttribute,
 ): AtomLayout {
   const [start, end] = attribute.range
-  if (spansLinesThatCannotJoin(source, start, end)) {
+  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  if (
+    keepsLineBreaks &&
+    (holdsJoiningRegion(source, start, end) ||
+      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
+  ) {
     return keptAsWritten(start, end)
   }
   const rules = new Map<number, GapRule>([[attribute.name.range[0], "space"]])
@@ -388,7 +398,7 @@ export function layoutAttribute(
     ),
     rules,
     outdented: new Set(),
-    lineBreaks: "joined",
+    lineBreaks: keepsLineBreaks ? "kept" : "joined",
   }
 }
 

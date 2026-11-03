@@ -36,11 +36,11 @@ const cases: readonly MarkdownCase[] = [
     input:
       "- item\n\n  ```mermaid\n  architecture-beta\n  accDescr {\n   one\n     two\n  }\n  service list_node\n  ```\n",
     output:
-      "- item\n\n  ```mermaid\n  architecture-beta\n    accDescr {\n   one\n     two\n    }\n    service list_node\n  ```\n",
+      "- item\n\n  ```mermaid\n  architecture-beta\n    accDescr {\n      one\n      two\n    }\n    service list_node\n  ```\n",
     payloadInput:
       "architecture-beta\naccDescr {\n one\n   two\n}\nservice list_node",
     payloadOutput:
-      "architecture-beta\n  accDescr {\n one\n   two\n  }\n  service list_node\n",
+      "architecture-beta\n  accDescr {\n    one\n    two\n  }\n  service list_node\n",
     options: {},
   },
   {

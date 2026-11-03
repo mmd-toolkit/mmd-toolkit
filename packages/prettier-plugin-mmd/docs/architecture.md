@@ -51,8 +51,8 @@ architecture-beta
 Indent ordinary declarations, edges, alignments, common statements and
 standalone trivia one configured step. The body is flat: `in` is a reference,
 not nesting. `tabWidth: 0` gives zero spaces; `useTabs` gives one tab even at
-width zero, because architecture columns have no grammatical meaning. Value
-continuation columns, hidden closers and retained prefixes stay written.
+width zero, because architecture columns have no grammatical meaning. Other
+value continuation columns, hidden closers and retained prefixes stay written.
 
 [fixture: architecture/indentation/indent-four]
 
@@ -556,8 +556,11 @@ Reuse shared `layoutDescriptionBlock`: touching keyword/opener and interior
 edges stay touching; present outer runs become one space. Whitespace-only
 interiors become `{}` because no text needs surrounding space. Plain opener
 whitespace can join; real trivia keeps its break. Keep comment/directive-only
-interiors, nonempty continuation columns and internal blank lines. A separate
-closer aligns with the statement; the first closing brace still ends the value.
+interiors. Ordinary description body and standalone comment lines align one
+level inside the statement, since the Db removes indentation after LF. Keep line
+breaks, internal blank lines and trailing whitespace. Directives and shared
+removed comment regions keep their complete source. A separate closer aligns
+with the statement; the first closing brace still ends the value.
 
 [fixture: architecture/description-blocks/asymmetric]
 
@@ -609,8 +612,8 @@ architecture-beta
 
 Do not wrap at printWidth. Visible LF between ordinary components can reject
 input, and reflowing text icons or labels can change their Db. Keep authored
-physical value lines, continuation columns and internal blanks. Only a separate
-description closer uses the shared alignment.
+physical label and text-icon lines, continuation columns and internal blanks.
+Description bodies use the shared indentation above.
 
 [fixture: architecture/multiline-values/continuation-columns]
 
@@ -634,9 +637,9 @@ architecture-beta
 C" ["D
  E"]
   accDescr {
-  F
+    F
 
- G
+    G
   }
 ```
 
@@ -1060,9 +1063,9 @@ Output
 ```mmd
 architecture-beta
   accDescr {
-style A fill:#red
+    style A fill:#red
 %% owned;
-text
+    text
   }
 ```
 

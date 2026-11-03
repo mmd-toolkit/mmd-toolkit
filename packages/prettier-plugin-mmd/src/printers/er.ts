@@ -104,14 +104,24 @@ export function printEr(
       return printLine(
         source,
         options,
-        layoutErStatement(source, classified.statement, node.range[1]),
+        layoutErStatement(
+          source,
+          classified.statement,
+          node.range[1],
+          depth > 1,
+        ),
         depth,
       )
     case "simple":
       return printLine(
         source,
         options,
-        layoutErStatement(source, classified.statement, node.range[1]),
+        layoutErStatement(
+          source,
+          classified.statement,
+          node.range[1],
+          depth > 1,
+        ),
         depth,
       )
     default:

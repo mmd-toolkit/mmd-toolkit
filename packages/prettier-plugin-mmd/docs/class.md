@@ -774,13 +774,12 @@ classDiagram
 
 ### Multi-line values
 
-As in a flowchart: the lines of an `accDescr { ... }` block are kept as written,
-and its `}` stands at the level of its statement. Outside a subgraph the columns
-of those lines are not in the Db, so keeping them is a choice, whose reason is
-in a flowchart (see [Multi-line values](./flowchart.md#multi-line-values)). A
-string, a backquoted name, and a generic type written over several lines are
-kept as written too. [fixture: multi-line-values/kept] [fixture:
-multi-line-values/block-text-on-opening-line-spaced] [fixture:
+As in [flowchart's top-level descriptions](./flowchart.md#multi-line-values),
+align the lines of an `accDescr { ... }` body one step inside its statement,
+with a separate `}` at the statement's level. Mermaid discards this indentation
+from the description. A string, a backquoted name, and a generic type written
+over several lines are kept as written too. [fixture: multi-line-values/kept]
+[fixture: multi-line-values/block-text-on-opening-line-spaced] [fixture:
 multi-line-values/block-comment-line-kept] [fixture:
 multi-line-values/block-empty-line-kept] [fixture:
 multi-line-values/backquoted-name-kept] [fixture:
@@ -808,7 +807,7 @@ Output
 ```mmd
 classDiagram
   accDescr {
-  one
+    one
     two
   }
   note "line one
@@ -954,7 +953,8 @@ and Unicode whitespace, prints `{}`: there is no text for interior whitespace to
 surround. An already empty interior stays empty. A touching keyword stays
 touching: `accDescr{  }` becomes `accDescr{}`. [fixture:
 empty-description-blocks/empty-whitespace-interiors] [test: class Unicode and
-tab interiors] Blocks with comments or directives retain their existing layout.
+tab interiors] Blocks with comments or directives keep their contents and line
+breaks, with body indentation under [Multi-line values](#multi-line-values).
 
 An empty description block, `accDescr {}`, is a statement when it shares its
 line with another statement or with the header, before it or after it:
@@ -1055,8 +1055,9 @@ unclosed-backquoted-names/in-relation-kept]
 
 ## Kept as written
 
-Some text is always kept as written, because changing it would change the
-diagram or the input would be rejected:
+Apart from description-body indentation under
+[Multi-line values](#multi-line-values), the following text is kept as written
+because changing it would change the diagram or the input would be rejected:
 
 - the text of a value: a string, a backquoted name, the text of a label, a
   style, and the text of `accTitle` and `accDescr`; [fixture:

@@ -825,11 +825,10 @@ stateDiagram-v2
 
 ### Multi-line values
 
-As in a flowchart: the lines of an `accDescr { ... }` block are kept as written,
-and its `}` stands at the level of its statement. Outside a subgraph the columns
-of those lines are not in the Db, so keeping them is a choice, whose reason is
-in a flowchart (see [Multi-line values](./flowchart.md#multi-line-values)).
-[fixture: multi-line-values/kept] [fixture:
+As in [flowchart's top-level descriptions](./flowchart.md#multi-line-values),
+align the lines of an `accDescr { ... }` body one step inside its statement,
+with a separate `}` at the statement's level. Mermaid discards this indentation
+from the description. [fixture: multi-line-values/kept] [fixture:
 multi-line-values/accdescr-block-single-line-kept] [fixture:
 multi-line-values/accdescr-block-empty-and-comment-lines-kept] A closed block
 with no text prints `{}` internally: `accDescr { }` becomes `accDescr {}`,
@@ -840,8 +839,8 @@ surround, so the Db-equal choice follows
 [flowchart's accessibility lines](./flowchart.md#accessibility-lines), agentflow
 and usecase. A prior description stays in the Db. [fixture:
 multi-line-values/empty-description-interiors] [test: accessibility revisions:
-state empty-description-nbsp] Blocks with comments or directives retain their
-previous layout, and unclosed blocks stay open. [fixture:
+state empty-description-nbsp] Blocks with comments or directives keep their
+contents and line breaks, and unclosed blocks stay open. [fixture:
 multi-line-values/empty-description-trivia-kept] [corpus fixture:
 state/lex-acc-descr-block-unclosed] The text of a floating note written over
 several lines is kept as written too. [fixture: multi-line-values/kept]
@@ -866,7 +865,7 @@ Output
 ```mmd
 stateDiagram-v2
   accDescr {
-  one
+    one
     two
   }
   note "line one
@@ -1064,8 +1063,9 @@ semicolon before U+2029]
 
 ## Kept as written
 
-Some text is always kept as written, because changing it would change the
-diagram or the input would be rejected:
+Apart from description-body indentation under
+[Multi-line values](#multi-line-values), the following text is kept as written
+because changing it would change the diagram or the input would be rejected:
 
 - the text of a value: a description, a label, a note, an id after `as`, a
   pseudostate name, a style, the CSS class of a `class` statement, and the text

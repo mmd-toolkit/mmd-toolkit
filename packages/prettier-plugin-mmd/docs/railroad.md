@@ -100,8 +100,8 @@ tabWidth four uses four and tabWidth zero uses zero because columns have no
 grammatical meaning. useTabs uses one tab, even at width zero. Structural
 continuation lines and standalone trivia inside a rule use two steps; a separate
 structural closer or terminator aligns with the statement. Nested IR calls use
-their argument levels as described in [Long lines](#long-lines). Written value
-columns, hidden interiors and retained prefixes keep their own columns.
+their argument levels as described in [Long lines](#long-lines). Other written
+value columns, hidden interiors and retained prefixes keep their own columns.
 Semicolon-protected segments start at one body step, like other flat diagrams;
 their later lines keep their written columns because these belong to the
 protected text.
@@ -916,10 +916,10 @@ railroad-peg-beta
 ### Multiline values
 
 Keep physical newlines, internal blank lines and continuation columns inside
-strings, EBNF special sequences and metadata blocks. Values are indivisible
-atoms and gain no structural indentation on their later lines. Reflowing or
-reindenting these contents can change the Db, including PEG predicate labels.
-Description exterior edges and its separate closer use the shared description
+strings and EBNF special sequences. These values are indivisible atoms and gain
+no structural indentation on their later lines. Reflowing or reindenting these
+contents can change the Db, including PEG predicate labels. Description body
+indentation, exterior edges and its separate closer use the shared description
 rule.
 
 [fixture: railroad/multiline-values/abnf-columns]
@@ -1170,9 +1170,12 @@ Use shared layoutDescriptionBlock through the common-description layout.
 Whitespace-only interiors become `{}` because no content needs surrounding
 padding. Keep `accDescr{` contact and leave `{Text}` tight; written exterior
 spaces remain one space where present. Join a plain keyword-to-opener gap.
-Preserve nonempty continuation columns and internal blank lines, and align a
-separate closing brace with the statement. Comment/directive-only blocks retain
-their contents through the shared fallback, rather than being emptied.
+Ordinary description body and standalone comment lines align one level inside
+the statement: the Db removes indentation after LF. Keep line breaks, internal
+blank lines and trailing whitespace, and align a separate closing brace with the
+statement. Directives and shared removed comment regions keep their complete
+source. Comment/directive-only blocks retain their contents through the shared
+fallback, rather than being emptied.
 
 [fixture: railroad/description-blocks/abnf-edges]
 

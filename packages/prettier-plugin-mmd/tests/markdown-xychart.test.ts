@@ -33,9 +33,9 @@ describe("an XY chart in a Markdown code block", () => {
     )
   })
 
-  it("keeps a block that is not closed as written", async () => {
+  it("indents the text of a block that is not closed", async () => {
     expect(
       await formatTwice("```mermaid\nxychart\naccDescr {\n  a\n```\n"),
-    ).toBe("```mermaid\nxychart\n  accDescr {\n  a\n```\n")
+    ).toBe("```mermaid\nxychart\n  accDescr {\n    a\n```\n")
   })
 })

@@ -342,8 +342,20 @@ ER 図の関係文も単位の間は空白 1 つです。
 [fixture: relationship-spacing/multi-word-names]
 単位の間のディレクティブは、その場に残し、両側に書かれた空白も残します。
 [fixture: relationship-spacing/directive-between-units-kept]
-空白の後で改行して複数行に書かれた関係文は、 1 行にします。
+空白の後で改行して複数行に書かれた関係文は、
+コメントやディレクティブが結合を妨げる場合を除き、1 行にします。
+結合しない場合は、
+後続の構造部分と独立した trivia を関係文の内側に 1 段字下げします。
+関係文を続ける空白の連続は LF より前から始まる必要があるため、
+各 gap の最初の行の末尾を保ちます。
+複数行のディレクティブ全体と名前の内部も保ちます。
 [fixture: relationship-spacing/over-lines-joined]
+[fixture: relationship-spacing/comment-continuation-with-multiline-names]
+[fixture: relationship-spacing/directive-continuation-four-spaces]
+[fixture: relationship-spacing/multiline-directive-line-tail]
+semicolon の読みが関わる行と、物理行を結ぶコメント領域は、元の配置を保ちます。
+[fixture: multi-line-statements/relationship-last-line-semicolon-kept]
+[test: requirement/relationship-spacing/comment-region-continuation-kept]
 
 入力
 ([relationship-spacing/spaces-and-touching-input.mmd](../tests/fixtures/requirement/relationship-spacing/spaces-and-touching-input.mmd)):
@@ -936,11 +948,10 @@ requirementDiagram
 [fixture: accessibility-statements/text-on-next-line-joined]
 [fixture: accessibility-statements/text-with-comment-line-kept]
 
-`accDescr { ... }` ブロックの行は、必要からではなく選択として、
-書かれたまま残します。
-行頭の空白は Db に入らず、 `a`、改行、`b` と、
-`b` の前に空白がある形は同じ説明です。
-行は作者のテキストで、印字は整形しないからです。
+`accDescr { ... }` ブロックの後続の本文行は、文の内側に 1 段字下げし、
+LF 直後の ASCII 空白とタブだけを置き換えます。
+説明の setter がこの字下げを捨てるためです。
+改行、行末空白、ディレクティブの内部は保ちます。
 `}` は文と同じ段に置きます。
 `{` と同じ行にテキストがあるときは、
 離れて書かれていれば波括弧の内側に空白 1 つを置きます。
@@ -999,7 +1010,7 @@ accDescr {
 ```mmd
 requirementDiagram
   accDescr {
-  first
+    first
     second
   }
   accDescr {}
@@ -1027,7 +1038,7 @@ accTitle: direction LR
 accDescr: direction  TB
 accDescr { direction RL }
   accDescr {
- direction BT
+    direction BT
   }
 ```
 
@@ -1046,7 +1057,10 @@ style の文脈の改行の後で続きます。
 [fixture: multi-line-statements/direction-value-joined]
 [fixture: multi-line-statements/accessibility-joined]
 [fixture: multi-line-statements/string-continued-joined]
-コメント行かディレクティブを含む文は、コメント行がその行の残りを取り、
+コメントやディレクティブがある関係文は、
+改行を保ちながら構造の続きの行をそろえます（[関係文の空白](#関係文の空白)）。
+それ以外の、コメント行かディレクティブを含む文は、
+コメント行がその行の残りを取り、
 ディレクティブのある行の空白はディレクティブと一緒に読まれるので、
 書かれたまま残します。
 `;` を含む文も、行の規則が決めるので、書かれたまま残します。

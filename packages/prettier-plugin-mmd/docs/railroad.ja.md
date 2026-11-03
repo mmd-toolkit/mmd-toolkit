@@ -105,7 +105,7 @@ useTabs は幅0でも1 tab です。
 構造の継続行と規則内の独立した trivia は2段、
 別行の構造的な閉じ括弧と終端は文の位置に揃えます。
 入れ子の IR 呼出しは[長い行](#長い行)の規則で引数の段を使います。
-値の継続列、hidden の内部と保持 prefix は元の列を保ちます。
+その他の値の継続列、hidden の内部と保持 prefix は元の列を保ちます。
 semicolon の保護区間の最初の行は、他の平坦な図種と同じく本文の1段に揃えます。
 2行目以降は保護された本文に属するため、書かれた列を保ちます。
 
@@ -931,11 +931,10 @@ railroad-peg-beta
 
 ### 複数行の値
 
-文字列、EBNF special sequence、metadata block の物理改行、内部空行、
-継続列を保ちます。
-値を一つの atom とし、後続行に構造の字下げを足しません。
+文字列と EBNF special sequence の物理改行、内部空行、継続列を保ちます。
+これらの値を一つの atom とし、後続行に構造の字下げを足しません。
 内容の reflow や字下げ変更は PEG predicate の label を含め Db を変えるためです。
-説明ブロックの外端と別行の閉じ括弧は共有の説明規則に従います。
+説明ブロックの本文の字下げ、外端、別行の閉じ括弧は共有の説明規則に従います。
 
 [fixture: railroad/multiline-values/abnf-columns]
 
@@ -1189,7 +1188,10 @@ railroad-peg-beta
 `accDescr{` の接触と `{Text}` を保ち、
 外端に書かれた空白は存在する側に1 space 残します。
 keyword と opener の間の通常の改行は join します。
-非空の継続列と内部空行を保ち、別行の閉じ括弧を文の位置へ揃えます。
+通常の説明本文と独立したコメント行は文より1段内側に揃えます。
+Db で LF 後の字下げが取り除かれるためです。
+改行、内部の空行、行末空白を保ち、別行の閉じ括弧を文の位置へ揃えます。
+directive と共有の除去対象となるコメント領域は原文全体を保ちます。
 コメントや directive だけの block は共有 fallback で内容を残します。
 
 [fixture: railroad/description-blocks/abnf-edges]

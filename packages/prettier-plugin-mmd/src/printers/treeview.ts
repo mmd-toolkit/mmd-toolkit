@@ -160,6 +160,10 @@ export function printTreeview(
         line.item.type === "TreeviewNode"
           ? (drawing?.trailingDecorations.get(line.item) ?? [])
           : []
+      const descriptionIndentation =
+        line.item.type === "TreeviewAccDescrBlockStatement"
+          ? significantIndentationOf(options, boxMode ? 1 : line.depth + 1)
+          : ""
       return [
         placements.get(line)!.head,
         head,
@@ -167,8 +171,8 @@ export function printTreeview(
           statement: boxMode
             ? ""
             : significantIndentationOf(options, line.depth),
-          continuation: "",
-          trivia: "",
+          continuation: descriptionIndentation,
+          trivia: descriptionIndentation,
         }).doc,
         ...after.flatMap((decoration) => {
           const guide = drawing!.decorations.get(decoration)!

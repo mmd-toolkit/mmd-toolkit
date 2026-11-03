@@ -12,11 +12,13 @@ import type {
   XychartYAxisStatement,
 } from "@mmd-toolkit/parser"
 import type { AtomLayout, GapRule } from "./atoms.ts"
+import { holdsJoiningRegion } from "./kept-lines.ts"
 import {
   collectAtoms,
   collectValueNodes,
   expectToken,
   expectValue,
+  keepFirstGapLineTails,
   keptAsWritten,
   layoutDescriptionBlock,
   spansLinesThatCannotJoin,
@@ -109,9 +111,11 @@ export function layoutXychartHeader(
  * - A statement written over several lines stands on one line where the
  *   lexer reads the line break as whitespace (diagrams/xychart.md, Lexical
  *   structure, Line breaks); one with a comment or a directive in it, or a
- *   `;`, is kept as written (see `spansLinesThatCannotJoin`). The lines of an
- *   `accDescr` block are lines of its text, and are kept (docs/xychart.md,
- *   Accessibility statements).
+ *   `;`, is kept as written (see `spansLinesThatCannotJoin`). A title
+ *   instead keeps trivia line breaks while its exterior gaps take continuation
+ *   indentation; required line tails and protected regions stay written.
+ *   Description-body lines align inside their block (docs/xychart.md,
+ *   Accessibility statements and Multi-line statements).
  * - The rules of the gaps are those of docs/xychart.md: Text units, Brackets
  *   and commas, Ranges, Values and labels, and Accessibility statements.
  */
@@ -129,14 +133,21 @@ export function layoutXychartStatement(
       descriptionBlockTextTypes,
     )
   }
-  if (spansLinesThatCannotJoin(source, start, end)) {
+  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  if (
+    keepsLineBreaks &&
+    (statement.type !== "XychartTitleStatement" ||
+      holdsJoiningRegion(source, start, end) ||
+      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
+  ) {
     return keptAsWritten(start, end)
   }
+  const atoms = collectAtoms(source, start, end, valueNodesOf(statement), [])
   return {
-    atoms: collectAtoms(source, start, end, valueNodesOf(statement), []),
+    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
     rules: statementRules(source, statement),
     outdented: new Set(),
-    lineBreaks: "joined",
+    lineBreaks: keepsLineBreaks ? "kept" : "joined",
   }
 }
 

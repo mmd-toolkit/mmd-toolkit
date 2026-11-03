@@ -18,7 +18,7 @@ export const treemapCases: readonly TreemapCase[] = [
   {
     name: "treemap/line-terminators-and-unicode/crlf-values",
     input: 'treemap\r\n"CRLF\r\n name":3\r\naccDescr {one\r\ntwo}\r\n',
-    output: 'treemap\n  "CRLF\n name": 3\n  accDescr {one\ntwo}\n',
+    output: 'treemap\n  "CRLF\n name": 3\n  accDescr {one\n    two}\n',
     options: {},
   },
   {

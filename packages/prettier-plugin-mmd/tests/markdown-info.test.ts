@@ -34,12 +34,12 @@ const cases: readonly MarkdownCase[] = [
   {
     name: "info Markdown: list",
     payloadInput: "info\naccDescr {\n one\n   two\n}",
-    payloadOutput: "info\n  accDescr {\n one\n   two\n  }\n",
+    payloadOutput: "info\n  accDescr {\n    one\n    two\n  }\n",
     options: {},
     input:
       "- item\n\n  ```mermaid\n  info\n  accDescr {\n   one\n     two\n  }\n  ```\n",
     output:
-      "- item\n\n  ```mermaid\n  info\n    accDescr {\n   one\n     two\n    }\n  ```\n",
+      "- item\n\n  ```mermaid\n  info\n    accDescr {\n      one\n      two\n    }\n  ```\n",
   },
   {
     name: "info Markdown: quote",

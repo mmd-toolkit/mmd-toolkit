@@ -36,9 +36,9 @@ const cases: readonly MarkdownCase[] = [
     input:
       "- item\n\n  ```mermaid\n  gitGraph\n  accDescr {\n   one\n     two\n  }\n  commit\n  ```\n",
     output:
-      "- item\n\n  ```mermaid\n  gitGraph\n    accDescr {\n   one\n     two\n    }\n    commit\n  ```\n",
+      "- item\n\n  ```mermaid\n  gitGraph\n    accDescr {\n      one\n      two\n    }\n    commit\n  ```\n",
     payloadInput: "gitGraph\naccDescr {\n one\n   two\n}\ncommit",
-    payloadOutput: "gitGraph\n  accDescr {\n one\n   two\n  }\n  commit\n",
+    payloadOutput: "gitGraph\n  accDescr {\n    one\n    two\n  }\n  commit\n",
     options: {},
   },
   {

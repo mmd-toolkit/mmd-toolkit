@@ -54,7 +54,7 @@ export const architectureCases: readonly ArchitectureCase[] = [
     input:
       "---\ntitle: Physical\n---\rarchitecture-beta\raccDescr {\r First\r Second\r}\rservice cr_hidden---\rx\r--- \r",
     output:
-      "---\ntitle: Physical\n---\narchitecture-beta\n  accDescr {\n First\n Second\n  }\n  service cr_hidden---\nx\n--- \n",
+      "---\ntitle: Physical\n---\narchitecture-beta\n  accDescr {\n    First\n    Second\n  }\n  service cr_hidden---\nx\n--- \n",
     options: {},
   },
   {

@@ -54,7 +54,7 @@ architecture-beta
 本文は平坦で、`in` は参照なので入れ子の段を増やしません。
 architecture の列には文法上の意味がないため、 `tabWidth: 0` は空白0個、
 `useTabs` は幅0でもタブ1個です。
-値の継続列、hidden の閉じ、保持する prefix は原形を保ちます。
+説明本文以外の値の継続列、hidden の閉じ、保持する prefix は原形を保ちます。
 
 [fixture: architecture/indentation/indent-four]
 
@@ -559,7 +559,11 @@ architecture-beta
 keyword と開始、内側の端の接触を保ち、存在する外側の空白列は1個にします。
 空白だけの内側は囲む文字がないため `{}` にします。
 開始前の単なる空白は結合し、実際の trivia は改行を保ちます。
-comment・directive だけの内側、非空値の継続列と内部空行を保ちます。
+comment・directive だけの内側を保ちます。
+通常の説明本文と独立したコメント行は文より1段内側に揃えます。
+Db で LF 後の字下げが取り除かれるためです。
+改行、内部の空行、行末空白を保ちます。
+directive と共有の除去対象となるコメント領域は原文全体を保ちます。
 独立する閉じは文の位置に揃え、最初の閉じ波括弧が値を終える規則も保ちます。
 
 [fixture: architecture/description-blocks/asymmetric]
@@ -613,8 +617,8 @@ architecture-beta
 printWidth で折り返しません。
 通常の部品間の可視 LF は拒否され、
 文字 icon やラベルの reflow は Db を変え得ます。
-作者の物理行、値の継続列と内部空行を保ちます。
-独立する説明の閉じだけは共有の配置に揃えます。
+作者が書いたラベルと文字 icon の物理行、継続列と内部空行を保ちます。
+説明本文は前述の共有の字下げを使います。
 
 [fixture: architecture/multiline-values/continuation-columns]
 
@@ -638,9 +642,9 @@ architecture-beta
 C" ["D
  E"]
   accDescr {
-  F
+    F
 
- G
+    G
   }
 ```
 
@@ -1066,9 +1070,9 @@ architecture-beta
 ```mmd
 architecture-beta
   accDescr {
-style A fill:#red
+    style A fill:#red
 %% owned;
-text
+    text
   }
 ```
 

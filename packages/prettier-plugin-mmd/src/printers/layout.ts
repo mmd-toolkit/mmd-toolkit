@@ -1,6 +1,7 @@
 import type { Node, Range, Token } from "@mmd-toolkit/parser"
 import { visitorKeys } from "@mmd-toolkit/parser"
 import type { Atom, AtomLayout } from "./atoms.ts"
+import { readGapElement } from "./gap.ts"
 import {
   findSemicolonLines,
   findVerbatimStyleLines,
@@ -139,16 +140,22 @@ function toAtom(token: Token): Atom {
  * `-> "b" e - satisfies -> f;g` has the target `f;g`, and the joined line has
  * the target `fg`. Such a statement is kept as written (docs/sequence.md and
  * docs/class.md, Multi-line statements). This is the one decision about
- * joining lines that every layout takes.
+ * joining lines that every layout takes. A caller that keeps line breaks
+ * between its structural tokens can ignore trivia in this check; semicolon
+ * line protections still apply.
  */
 export function spansLinesThatCannotJoin(
   source: Source,
   start: number,
   end: number,
+  options: { readonly ignoresTrivia?: boolean } = {},
 ): boolean {
   const text = source.text.slice(start, end)
   if (!text.includes("\n")) return false
-  if (text.includes(";") || findTriviaBetween(source, start, end).length > 0) {
+  if (
+    text.includes(";") ||
+    (!options.ignoresTrivia && findTriviaBetween(source, start, end).length > 0)
+  ) {
     return true
   }
   return findSemicolonLines(source).has(lineStartOf(source, end - 1))
@@ -182,6 +189,28 @@ export function keptAsWritten(start: number, end: number): AtomLayout {
     outdented: new Set(),
     lineBreaks: "kept",
   }
+}
+
+/**
+ * Some grammars require a non-LF whitespace run to start before a retained LF.
+ * Keep each first gap-line tail, including complete trivia, while later lines
+ * use ordinary continuation columns (diagrams/requirement.md, Whitespace;
+ * docs/xychart.md, Multi-line statements).
+ */
+export function keepFirstGapLineTails(
+  source: Source,
+  atoms: readonly Atom[],
+): Atom[] {
+  return atoms.map((atom, index) => {
+    const next = atoms[index + 1]
+    if (next === undefined) return atom
+    for (let end = atom.end; end < next.start;) {
+      const part = readGapElement(source, end)
+      if (part.element.kind === "lineTerminator") return { ...atom, end }
+      end = part.end
+    }
+    return atom
+  })
 }
 
 /**
@@ -285,9 +314,11 @@ export function layoutCompactEmptyDescriptionBlockWithFallback(
 }
 
 /**
- * The layout of an `accDescr { ... }` statement: the lines of its text are
- * kept as written and its `}` stands at the level of the statement (the
- * rules document of the diagram type, Accessibility statements). A closed block
+ * The layout of an `accDescr { ... }` statement: its text stands one level
+ * inside the statement and its `}` stands at the statement's level (the
+ * rules document of the diagram type, Accessibility statements). Callers set
+ * `preservesBodyColumns` where raw text also controls membership or box reading.
+ * A closed block
  * without text prints `{}` unless trivia requires its existing layout. The
  * text is a value of `valueTypes`. The block is closed unless the statement
  * says that it is not, as in an XY chart, where a block that is not closed
@@ -302,6 +333,8 @@ export function layoutDescriptionBlock(
   end: number,
   valueTypes: ReadonlySet<Node["type"]>,
   options: {
+    /** Raw block text participates in membership or physical column rules. */
+    readonly preservesBodyColumns?: boolean
     readonly keepsTrailingTrivia?: boolean
     /** Formats an empty block's tokens and trivia lines, keeping its breaks. */
     readonly formatsEmptyTrivia?: boolean
@@ -332,6 +365,12 @@ export function layoutDescriptionBlock(
     }
     valueRange = hasText ? [from, to] : null
   }
+  const block = {
+    range: statement.range,
+    value: statement.value,
+    closed: statement.closed ?? true,
+    ...(options.opening === undefined ? {} : { opening: options.opening }),
+  }
   if (valueRange === null) {
     /** Keeps the existing empty-block trivia and continuation layout. */
     function originalLayout(): AtomLayout {
@@ -343,23 +382,21 @@ export function layoutDescriptionBlock(
       )
     }
 
-    return statement.closed !== false
-      ? layoutCompactEmptyDescriptionBlockWithFallback(
-          source,
-          start,
-          end,
-          originalLayout,
-        )
-      : originalLayout()
-  }
-  const block = {
-    range: statement.range,
-    value: statement.value,
-    closed: statement.closed ?? true,
-    ...(options.opening === undefined ? {} : { opening: options.opening }),
+    const layout =
+      statement.closed !== false
+        ? layoutCompactEmptyDescriptionBlockWithFallback(
+            source,
+            start,
+            end,
+            originalLayout,
+          )
+        : originalLayout()
+    return options.preservesBodyColumns
+      ? layout
+      : indentDescriptionLines(source, block, layout)
   }
   const closing = findAccDescrBlockClosing(source, block)
-  return {
+  const layout: AtomLayout = {
     atoms: collectAtoms(
       source,
       start,
@@ -378,6 +415,9 @@ export function layoutDescriptionBlock(
     outdented: closing === null ? new Set() : new Set([closing]),
     lineBreaks: "kept",
   }
+  return options.preservesBodyColumns
+    ? layout
+    : indentDescriptionLines(source, block, layout)
 }
 
 /** Fails when a token that the tree implies is missing. */
@@ -410,12 +450,77 @@ export interface AccDescrBlock {
 }
 
 /**
- * The stretch of an `accDescr { ... }` block that is printed exactly as
- * written: from the `{` to the end of its text and of the comments and
- * directives after the text, when the text starts on a later line than the
- * `{`. Its lines keep their columns (docs/flowchart.md, Multi-line values),
- * the first one included, and comment lines among them stay where they
- * are. The whitespace after the `{` is read with the `{`, so the text on
+ * Align ordinary description text after LF without changing its contents or
+ * line breaks. The Db setter drops this indentation. Directives and removed
+ * line feeds keep their source, and atoms outside the body stay untouched
+ * (docs/timeline.md, Multi-line values; docs/pie.md, Description blocks).
+ * Callers whose Db also stores the raw description as a member keep their
+ * original layout instead (docs/flowchart.md, Multi-line values).
+ */
+export function indentDescriptionLines(
+  source: Source,
+  block: AccDescrBlock,
+  layout: AtomLayout,
+): AtomLayout {
+  const keyword = expectToken(
+    findTokenStartingAt(source, block.range[0]),
+    "the description keyword",
+  )
+  const opening = expectToken(
+    block.opening === undefined
+      ? findStructuralToken(source, keyword.range[1])
+      : findTokenStartingAt(source, block.opening),
+    "the description opener",
+  )
+  const closing = findAccDescrBlockClosing(source, block)
+  const bodyEnd = closing ?? block.range[1]
+  const atoms: Atom[] = []
+  const keptBreaksBefore = new Set(layout.keptBreaksBefore)
+  const outdented = new Set(layout.outdented)
+  if (closing !== null) outdented.add(closing)
+  for (const atom of layout.atoms) {
+    if (atom.end <= opening.range[1] || atom.start >= bodyEnd) {
+      atoms.push(atom)
+      continue
+    }
+    const trivia = findTriviaBetween(source, atom.start, atom.end)
+    let start = atom.start
+    for (
+      let offset = Math.max(start, opening.range[1]);
+      offset < Math.min(atom.end, bodyEnd);
+      offset++
+    ) {
+      if (source.text[offset] !== "\n") continue
+      if (
+        trivia.some(
+          (item) => item.range[0] <= offset && offset < item.range[1],
+        ) ||
+        source.removedLineFeeds.has(offset)
+      )
+        continue
+      if (start < offset) atoms.push({ start, end: offset })
+      start = offset + 1
+      while (
+        start < atom.end &&
+        (source.text[start] === " " || source.text[start] === "\t")
+      )
+        start++
+      if (start < atom.end && source.text[start] !== "\n")
+        keptBreaksBefore.add(start)
+      offset = start - 1
+    }
+    if (start < atom.end) atoms.push({ ...atom, start })
+  }
+  return { ...layout, atoms, keptBreaksBefore, outdented }
+}
+
+/**
+ * The retained stretch of an `accDescr { ... }` block: from the `{` to the
+ * end of its text and following trivia when text starts on a later line.
+ * Initially retain the complete interior, including margins and comment lines.
+ * `indentDescriptionLines` then aligns safe lines; container descriptions keep
+ * the raw columns that also supply membership (docs/flowchart.md, Multi-line
+ * values). The whitespace after `{` is read with `{`, so text on
  * the line of the `{` is spaced as any other token. `valueRange` supplies the
  * printed bounds when a Literal's AST range includes exterior whitespace.
  * `keepsTrailingTrivia` also keeps trivia lines after an opener-line value,
@@ -462,7 +567,7 @@ export function findAccDescrBlockStretches(
 /**
  * The start of the `}` that closes an `accDescr` block, whose line starts
  * at the statement's indentation, or null when the block is not closed. The
- * lines of its text are kept as written (see `findAccDescrBlockStretches`),
+ * text range keeps its written limits (see `findAccDescrBlockStretches`),
  * and the whitespace before the `}` is neither in the text nor in the Db,
  * so the `}` lines up with the `accDescr` that it closes.
  */

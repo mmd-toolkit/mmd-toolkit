@@ -82,28 +82,34 @@ export function printTreemap(
   const block = printBlock(
     lines.map((line) => [
       placements.get(line)!.head,
-      ...line.statements.flatMap((statement, index) => [
-        index === 0
-          ? ""
-          : printAsWritten(
-              source,
-              treemapStatementRange(line.statements[index - 1])[1],
-              treemapStatementRange(statement)[0],
-            ),
-        printAtoms(
-          source,
-          layoutTreemapStatement(
+      ...line.statements.flatMap((statement, index) => {
+        const descriptionIndentation =
+          statement.type === "TreemapAccDescrBlockStatement"
+            ? significantIndentationOf(options, line.depth + 1)
+            : ""
+        return [
+          index === 0
+            ? ""
+            : printAsWritten(
+                source,
+                treemapStatementRange(line.statements[index - 1])[1],
+                treemapStatementRange(statement)[0],
+              ),
+          printAtoms(
             source,
-            statement,
-            significantIndentationOf(options, line.depth),
-          ),
-          {
-            statement: significantIndentationOf(options, line.depth),
-            continuation: "",
-            trivia: "",
-          },
-        ).doc,
-      ]),
+            layoutTreemapStatement(
+              source,
+              statement,
+              significantIndentationOf(options, line.depth),
+            ),
+            {
+              statement: significantIndentationOf(options, line.depth),
+              continuation: descriptionIndentation,
+              trivia: descriptionIndentation,
+            },
+          ).doc,
+        ]
+      }),
     ]),
     source,
     {

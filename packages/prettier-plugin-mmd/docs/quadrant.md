@@ -531,11 +531,10 @@ titles-and-accessibility-statements/text-on-the-next-line-joined] [fixture:
 titles-and-accessibility-statements/colon-on-the-next-line-joined] [fixture:
 titles-and-accessibility-statements/text-that-looks-like-a-statement]
 
-The lines of an `accDescr { ... }` block are kept as written by choice, not by
-need: the whitespace at the start of a line is not in the Db, and the lines are
-the text of the author, which the printer does not format. Its `}` stands at the
-level of its statement; a text on the line of the `{` has one space inside the
-braces where it was written apart, and the braces that touch their text keep
+Align the lines of an `accDescr { ... }` body one step inside its statement.
+Mermaid discards indentation after LF from the description. Its `}` stands at
+the level of its statement; a text on the line of the `{` has one space inside
+the braces where it was written apart, and the braces that touch their text keep
 touching. A block that is not closed makes the input rejected, so it is not
 printed. [fixture: titles-and-accessibility-statements/block-lines-kept]
 [fixture: titles-and-accessibility-statements/block-text-on-the-opening-line]
@@ -601,8 +600,8 @@ Output
 ```mmd
 quadrantChart
   accDescr {
-   a
-  b
+    a
+    b
   }
 ```
 
@@ -614,13 +613,14 @@ Unicode whitespace, prints `{}`: there is no text for interior whitespace to
 surround. An already empty interior stays empty. A touching keyword stays
 touching: `accDescr{  }` becomes `accDescr{}`. [fixture:
 empty-description-blocks/empty-whitespace-interiors] [test: quadrant Unicode and
-tab interiors] A block with a directive or a comment line is printed as written.
-It stands on a line of its own, also after the header and after another
-statement, where the grammar takes it: mermaid.js reads it as nothing wherever
-it stands, and the grammar takes it where a statement starts and after the last
-unit of a statement. [fixture:
-empty-description-blocks/inner-whitespace-collapsed] [fixture:
-empty-description-blocks/touching-kept] [fixture:
+tab interiors] A block with a directive or a comment line keeps its contents and
+line breaks, with body indentation under
+[Titles and accessibility statements](#titles-and-accessibility-statements). It
+stands on a line of its own, also after the header and after another statement,
+where the grammar takes it: mermaid.js reads it as nothing wherever it stands,
+and the grammar takes it where a statement starts and after the last unit of a
+statement. [fixture: empty-description-blocks/inner-whitespace-collapsed]
+[fixture: empty-description-blocks/touching-kept] [fixture:
 empty-description-blocks/blank-lines-inside] [fixture:
 empty-description-blocks/with-directive-or-comment-line-kept] [fixture:
 empty-description-blocks/between-two-statements]
@@ -673,10 +673,9 @@ multi-line-statements/semicolon-on-the-last-line-kept]
 
 ### Multi-line values
 
-The lines of an `accDescr` block and the lines of a string are kept as written,
-with the line breaks and the whitespace inside. The line breaks are in the Db,
-and so is the whitespace of a string; the whitespace at the start of a line of a
-block is not, so keeping it is a choice: the text of a value is not formatted.
+Strings keep their authored line breaks and whitespace, which are part of their
+values. Description-body lines align one step inside their statement; Mermaid
+discards their indentation after LF. Keep the remaining text and line breaks.
 [fixture: multi-line-values/string-with-line-breaks-kept] [fixture:
 multi-line-values/description-block-lines-kept] [fixture:
 multi-line-values/comment-line-inside-a-block-kept]
@@ -718,7 +717,7 @@ Output
 ```mmd
 quadrantChart
   accDescr {
-  a
+    a
     b
   }
 ```

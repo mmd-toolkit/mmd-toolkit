@@ -213,20 +213,15 @@ export function layoutC4Call(
   const values = collectValueNodes(statement, c4ValueNodeTypes).filter(
     (value) => value.range[1] <= end,
   )
+  const namedAttributes = statement.arguments.filter(
+    (argument) => argument?.type === "C4NamedAttribute",
+  )
   const kept: Atom[] = []
   if (statement.type === "C4BoundaryStatement") {
     for (const block of statement.beforeBody) {
       if (source.text.slice(...block.range).includes(";")) {
         kept.push({ start: block.range[0], end: block.range[1] })
       }
-    }
-  }
-  for (const argument of statement.arguments) {
-    if (
-      argument?.type === "C4NamedAttribute" &&
-      source.text.slice(...argument.range).includes("\n")
-    ) {
-      kept.push({ start: argument.range[0], end: argument.range[1] })
     }
   }
   // The line rule is textual, so the prefix through the last semicolon is
@@ -248,7 +243,7 @@ export function layoutC4Call(
     }
     line = lineEnd + 1
   }
-  // Kept named attributes and line prefixes can overlap; they are one atom.
+  // Kept line prefixes can overlap through values; they are one atom.
   kept.sort((left, right) => left.start - right.start)
   const stretches: Atom[] = []
   for (const stretch of kept) {
@@ -276,6 +271,7 @@ export function layoutC4Call(
   )
   const rules = new Map<number, GapRule>()
   const joinedBefore = new Set<number>()
+  const keptBreaksBefore = new Set<number>()
   const bareStarts = new Set(
     statement.arguments
       .filter((argument) => argument?.type === "C4Literal")
@@ -306,8 +302,16 @@ export function layoutC4Call(
     const afterCall =
       statement.type === "C4BoundaryStatement" &&
       atom.start >= (statement.beforeBody[0]?.range[0] ?? end - 1)
+    // Named keys and strings remain values. Their exterior gaps retain LF
+    // without retaining columns or moving direction text onto the call line
+    // (diagrams/c4.md, Direction rejection; docs/c4.md, Named attributes).
+    const namedGap = namedAttributes.some(
+      (argument) =>
+        argument.range[0] <= previous.start && atom.end <= argument.range[1],
+    )
+    if (namedGap && gap.includes("\n")) keptBreaksBefore.add(atom.start)
     if (
-      (gap.includes("\n") && !afterCall) ||
+      (gap.includes("\n") && !afterCall && !namedGap) ||
       sensitivePrefix ||
       (beforeComma && !bareEnds.has(previous.end) && before !== "(") ||
       (!inBeforeBody &&
@@ -345,6 +349,7 @@ export function layoutC4Call(
     outdented: new Set(),
     lineBreaks: "kept",
     joinedBefore,
+    keptBreaksBefore,
   }
 }
 
@@ -374,8 +379,8 @@ export function layoutC4Text(source: Source, statement: C4Text): AtomLayout {
       { keepsTrailingTrivia: true },
     )
     // Ordinary block spacing and closing-brace alignment follow the sibling
-    // diagrams. The shared layout keeps value/comment columns and aligns the
-    // closer; absent token-gap whitespace is not added (diagrams/c4.md, Title
+    // diagrams. The shared layout aligns body lines and the closer; absent
+    // token-gap whitespace is not added (diagrams/c4.md, Title
     // and accessibility statements; docs/c4.md, Description blocks).
     return layout
   }

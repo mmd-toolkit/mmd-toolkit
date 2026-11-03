@@ -40,9 +40,9 @@ journey も同じです。 [fixture: indentation/sections-and-tasks-nested]
 [fixture: indentation/written-indentation-dropped]
 ヘッダーは、前に空白が書かれていても 1 桁目に置きます。
 [fixture: indentation/header-leading-whitespace]
-書かれたまま残すテキスト（`accDescr` ブロックの行など）は、行ごとの桁を保ち、
-ブロックを閉じる `}` は、
-文と同じ段に置きます（[複数行の値](#複数行の値)を参照）。
+原文を保つ値は行ごとの列を保ちます。
+説明本文の行は[複数行の値](#複数行の値)に従って文より 1 段深くし、
+独立した `}` は文と同じ段に置きます。
 [fixture: indentation/description-block-under-a-section]
 
 入力
@@ -803,11 +803,8 @@ gantt
 1 行に合わせます。 [fixture: accessibility-statements/text-on-next-line-joined]
 [fixture: accessibility-statements/keyword-and-colon-over-lines-joined]
 
-`accDescr { ... }` ブロックの行は、必要からではなく選択として、
-書かれたまま残します。
-行頭の空白は Db に入らず、 `a`、改行、`b` と、
-`b` の前に空白がある形は同じ説明です。
-行は作者のテキストで、印字は整形しないからです。
+`accDescr { ... }` の本文行は、文より 1 段深くそろえます。
+Mermaid が説明から LF 後の字下げを除くためです。
 `}` は文と同じ段に置きます。
 `{` の行にテキストがあるときは、
 離れて書かれていれば括弧の内側に空白 1 つを置き、
@@ -858,8 +855,8 @@ accDescr {
 ```mmd
 gantt
   accDescr {
-   a
-  b
+    a
+    b
   }
 ```
 
@@ -875,7 +872,8 @@ gantt
 [fixture: empty-description-blocks/inner-whitespace-collapsed]
 [fixture: empty-description-blocks/touching-kept]
 [fixture: empty-description-blocks/blank-lines-inside]
-ディレクティブやコメント行を持つブロックは書かれたまま印字します。
+ディレクティブやコメント行の内容と改行は保ち、
+本文の字下げは [アクセシビリティの文](#アクセシビリティの文)に従います。
 [fixture: empty-description-blocks/with-directive-or-comment-line-kept]
 ヘッダーの後でも、自分の行に置きます。
 [fixture: empty-description-blocks/after-header]
@@ -994,8 +992,9 @@ monday
 
 呼び出しの引数と名前とリンクの文字列は、値の一部なので、
 中の改行と空白も含めて書かれたまま残します。
-`accDescr` ブロックの行も書かれたまま残しますが、これは選択です。
-行頭の空白は Db に入りません。 [fixture: multi-line-values/call-arguments-kept]
+説明本文の行は、
+[アクセシビリティの文](#アクセシビリティの文)に従って文より 1 段深くそろえます。
+[fixture: multi-line-values/call-arguments-kept]
 [fixture: multi-line-values/call-name-kept]
 [fixture: multi-line-values/href-string-kept]
 [fixture: multi-line-values/description-block-lines-kept]
@@ -1039,7 +1038,7 @@ accDescr {
 ```mmd
 gantt
   accDescr {
-  a
+    a
     b
   }
 ```

@@ -578,6 +578,27 @@ the text, and no line break is added after it. [fixture:
 class/unclosed-backquoted-names/kept] See
 [Unclosed backquoted names](./class.md#unclosed-backquoted-names).
 
+## Description block indentation
+
+Ordinary closed multiline `accDescr` bodies use the statement's continuation
+indentation, with a separate `}` at the statement's level. Mermaid discards
+leading spaces and tabs after LF from the description. Keep the remaining text,
+line breaks, trailing whitespace and directive contents. Quoted strings and
+opaque data blocks retain their separate value-preservation rules. [fixture:
+flowchart/multi-line-values/accdescr-block-kept]
+
+Keep authored description columns when the raw text also determines membership:
+inside flowchart subgraphs, Agentflow flow/global bodies and ER subgraphs.
+Changing a global body's text can change a later flow's members. Treeview box
+mode also keeps body columns because indenting a plain physical line can reject
+the input. Eventmodeling's raw common terminals follow their own rules.
+[fixture:
+flowchart/multi-line-values/accdescr-block-subgraph-raw-membership-kept]
+[fixture: agentflow/accessibility/global-description-membership-kept] [corpus
+fixture: er/db-subgraph-nodes-acc-descr-block-lines] [corpus fixture:
+treeview/box-block-tail-decoration-ascii-dash-control] [fixture:
+eventmodeling/description-blocks/description-whitespace-literal-retained]
+
 ## State ids spelled as keywords
 
 In a state diagram, `scale`, `classDef`, `class`, `style`, `state`, `note`, and
@@ -1224,12 +1245,14 @@ c4/empty-entries/named-null-slots] [fixture: c4/number-like-text/excess-kept]
 
 Empty description blocks remain adjacent, with both `beforeBody` gaps retained,
 because they supply neither a significant statement nor a newline. Multiline
-values and named-key exterior newlines retain their lines and columns; joining
-direction text can make an accepted input rejected even at column one. [fixture:
+argument values retain their lines and columns. Named-key exterior gaps retain
+their line breaks with ordinary continuation indentation; joining direction text
+can make an accepted input rejected even at column one. [fixture:
 c4/empty-description-blocks/empty-header-gap] [fixture:
 c4/empty-description-blocks/empty-boundary-next-gap] [fixture:
 c4/empty-description-blocks/empty-on-close-line] [fixture:
 c4/named-attributes/named-exterior-newline-kept] [fixture:
+c4/named-attributes/named-key-newline] [fixture:
 c4/direction-rejection/acc-colon-direction]
 
 Diagram comments retain their complete following gaps, including whitespace-only
@@ -1977,16 +2000,16 @@ treeview/branch-prefixes/box-redraw-heavy-to-light]
 
 Outer decoration becomes a continuing guide or a blank line, while a necessary
 mode selector remains. A sole selector in an `accDescr` opener gap keeps only
-that gap; the rest of the block and body formats normally. Common and
-native-comment prefixes are removed; a comment's carried branch is drawn once at
-its node. Prefixed annotations move inline in source order only without an
-earlier description or intervening shared trivia or selected semicolon.
-Indentation-mode annotation lines stay separate. After a joining comment region
-or removed directive, an annotation starting its own physical line keeps
-positive leading spaces at its owner's name column, with a minimum of one space.
-This keeps its marker separate from the preceding name even when Mermaid joins
-the LF. Every name, value, annotation occurrence, arbitrary prefix character and
-shared trivia remains authored text.
+that gap; other structure follows the description rules, while box-mode body
+columns remain authored. Common and native-comment prefixes are removed; a
+comment's carried branch is drawn once at its node. Prefixed annotations move
+inline in source order only without an earlier description or intervening shared
+trivia or selected semicolon. Indentation-mode annotation lines stay separate.
+After a joining comment region or removed directive, an annotation starting its
+own physical line keeps positive leading spaces at its owner's name column, with
+a minimum of one space. This keeps its marker separate from the preceding name
+even when Mermaid joins the LF. Every name, value, annotation occurrence,
+arbitrary prefix character and shared trivia remains authored text.
 
 [fixture:
 treeview/decorations/review159-sole-opener-selector-line-rule-semicolon]

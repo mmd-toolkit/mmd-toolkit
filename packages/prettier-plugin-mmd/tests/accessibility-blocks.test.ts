@@ -24,7 +24,7 @@ const cases = [
     input:
       'C4Context\raccDescr {\r first block line\r   %% block note\r second block line\r      }\rPerson(p,"CR closer")',
     output:
-      'C4Context\n  accDescr {\n first block line\n   %% block note\n second block line\n  }\n  Person(p, "CR closer")\n',
+      'C4Context\n  accDescr {\n    first block line\n    %% block note\n    second block line\n  }\n  Person(p, "CR closer")\n',
   },
 ]
 

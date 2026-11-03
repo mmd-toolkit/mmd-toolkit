@@ -20,6 +20,7 @@ import {
   expectValue,
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
+  indentDescriptionLines,
   keptAsWritten,
   layoutCompactEmptyDescriptionBlockWithFallback,
   spansLinesThatCannotJoin,
@@ -274,7 +275,7 @@ export function layoutStateStatement(
     /** Builds the existing value, trivia and closing-brace layout. */
     function originalLayout(): AtomLayout {
       const closing = findAccDescrBlockClosing(source, block)
-      return {
+      return indentDescriptionLines(source, block, {
         atoms: collectAtoms(
           source,
           start,
@@ -285,7 +286,7 @@ export function layoutStateStatement(
         rules: new Map(),
         outdented: closing === null ? new Set() : new Set([closing]),
         lineBreaks: "kept",
-      }
+      })
     }
 
     return statement.value === null && statement.closed

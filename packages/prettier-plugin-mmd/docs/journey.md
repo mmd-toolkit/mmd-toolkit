@@ -35,11 +35,10 @@ mermaid.js, so the printer chooses the indentation from the structure alone, and
 one rule per level prints the same text whatever the input was indented with.
 [fixture: indentation/written-indentation-dropped] The header stands at the
 first column, also where whitespace was written before it. [fixture:
-indentation/header-leading-whitespace] The lines of a text that is kept as
-written, such as the lines of an `accDescr` block, keep their columns, and the
-`}` that closes a block stands at the level of its statement (see
-[Multi-line values](#multi-line-values)). [fixture:
-indentation/description-block-under-a-section]
+indentation/header-leading-whitespace] Values kept as written retain their
+columns. Description-body lines instead stand one step inside their statement,
+with a separate `}` at its level (see [Multi-line values](#multi-line-values)).
+[fixture: indentation/description-block-under-a-section]
 
 Input
 ([indentation/sections-and-tasks-nested-input.mmd](../tests/fixtures/journey/indentation/sections-and-tasks-nested-input.mmd)):
@@ -495,13 +494,11 @@ line, or a colon written on a later line than the keyword, is printed on one
 line. [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/keyword-and-colon-over-lines-joined]
 
-The lines of an `accDescr { ... }` block are kept as written by choice, not by
-need: the whitespace at the start of a line is not in the Db (`a`, a line break,
-and `b` give the same description as with `  b`), and the lines are the text of
-the author, which the printer does not format. Its `}` stands at the level of
-its statement; a text on the line of the `{` has one space inside the braces
-where it was written apart, and the braces that touch their text keep touching.
-[fixture: accessibility-statements/block-lines-kept] [fixture:
+Align the lines of an `accDescr { ... }` body one step inside its statement.
+Mermaid discards indentation after LF from the description. Its `}` stands at
+the level of its statement; a text on the line of the `{` has one space inside
+the braces where it was written apart, and the braces that touch their text keep
+touching. [fixture: accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-text-on-opening-line] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept] Whitespace inside
 the text is part of it, and stays. [fixture:
@@ -547,8 +544,8 @@ Output
 ```mmd
 journey
   accDescr {
-   a
-  b
+    a
+    b
   }
 ```
 
@@ -563,7 +560,8 @@ empty-description-blocks/empty-whitespace-interiors] [test: journey Unicode and
 tab interiors] [fixture: empty-description-blocks/inner-whitespace-collapsed]
 [fixture: empty-description-blocks/touching-kept] [fixture:
 empty-description-blocks/blank-lines-inside] A block with a directive or a
-comment line is printed as written. [fixture:
+comment line keeps its contents and line breaks, with body indentation under
+[Accessibility statements](#accessibility-statements). [fixture:
 empty-description-blocks/with-directive-or-comment-line-kept] It stands on a
 line of its own, also after the header. [fixture:
 empty-description-blocks/after-header]
@@ -671,12 +669,11 @@ T
 
 ### Multi-line values
 
-The lines of an `accDescr` block are kept as written, with the line breaks and
-the whitespace inside. The line breaks are in the Db, but the whitespace at the
-start of a line is not, so keeping it is a choice: the text of a value is not
-formatted. [fixture: multi-line-values/description-block-lines-kept] A comment
-inside such a block is part of the text. [fixture:
-multi-line-values/comment-line-inside-block-kept]
+Keep the text and line breaks of an `accDescr` block, and align its body lines
+one step inside the statement, as described in
+[Accessibility statements](#accessibility-statements). [fixture:
+multi-line-values/description-block-lines-kept] A comment inside such a block is
+part of the text. [fixture: multi-line-values/comment-line-inside-block-kept]
 
 Input
 ([multi-line-values/description-block-lines-kept-input.mmd](../tests/fixtures/journey/multi-line-values/description-block-lines-kept-input.mmd)):
@@ -695,7 +692,7 @@ Output
 ```mmd
 journey
   accDescr {
-  a
+    a
     b
   }
 ```

@@ -520,7 +520,10 @@ keyword と opener、内端の接触を保ちます。
 既存の端の空白は 1 space、空白だけの中身は `{}` にします。
 囲む文字がないときは padding が不要なためです。
 opener 前の普通の空白は詰めます。
-コメントや directive だけの中身と境界、非空の継続列と内部の空行は保ちます。
+コメントや directive の中身と境界、内部の空行は保ちます。
+本文行は文より 1 段深くそろえます。
+Mermaid が説明から LF 後の字下げを除くためです。
+本文も設定の字下げを使い、タブと幅 0 の正の最小段幅も同じです。
 別行の opener と closer は文の列にそろえます。
 最初の `}` がブロックを閉じます。
 
@@ -535,6 +538,8 @@ opener 前の普通の空白は詰めます。
 [fixture: treemap/description-blocks/right-touching]
 
 [fixture: treemap/description-blocks/continuation]
+
+[fixture: treemap/description-blocks/body-tabs]
 
 [fixture: treemap/description-blocks/opener-newline]
 
@@ -561,7 +566,7 @@ opener 前の普通の空白は詰めます。
 ```mmd
 treemap
   accDescr {
-  first
+    first
 
     second
   }

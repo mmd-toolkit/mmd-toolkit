@@ -20,6 +20,7 @@ import {
   collectValueNodes,
   expectToken,
   expectValue,
+  keepFirstGapLineTails,
   keptAsWritten,
   layoutDescriptionBlock,
   layoutEmptyDescriptionBlock,
@@ -246,8 +247,10 @@ export function layoutBodyItem(
  *   `accDescr` block are lines of its text, and are kept (docs/requirement.md,
  *   Accessibility statements). A `class` statement is laid out as
  *   `joinsClassStatement` says.
- * - A relationship has one space between its units (docs/requirement.md,
- *   Relationship spacing).
+ * - A relationship has one space between its units. Comments and directives
+ *   prevent joining its lines, while the existing atoms still align structural
+ *   gaps. Joining regions and textual semicolon boundaries keep their source
+ *   (docs/requirement.md, Relationship spacing).
  * - The other statements follow the rules shared with an ER diagram (see
  *   `statement-rules.ts`).
  */
@@ -265,22 +268,30 @@ export function layoutRequirementStatement(
       requirementValueNodeTypes,
     )
   }
-  if (spansLinesThatCannotJoin(source, start, end)) {
+  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  if (
+    keepsLineBreaks &&
+    (statement.type !== "RequirementRelationshipStatement" ||
+      holdsJoiningRegion(source, start, end) ||
+      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
+  ) {
     return keptAsWritten(start, end)
   }
+  const atoms = collectAtoms(
+    source,
+    start,
+    end,
+    collectValueNodes(statement, requirementValueNodeTypes),
+    [],
+  )
   return {
-    atoms: collectAtoms(
-      source,
-      start,
-      end,
-      collectValueNodes(statement, requirementValueNodeTypes),
-      [],
-    ),
+    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
     rules: statementRules(source, statement),
     outdented: new Set(),
     lineBreaks:
-      statement.type === "RequirementClassStatement" &&
-      !joinsClassStatement(source, statement)
+      keepsLineBreaks ||
+      (statement.type === "RequirementClassStatement" &&
+        !joinsClassStatement(source, statement))
         ? "kept"
         : "joined",
   }

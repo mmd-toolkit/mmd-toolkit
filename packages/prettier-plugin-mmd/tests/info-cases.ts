@@ -77,7 +77,7 @@ export const infoCases: readonly InfoCase[] = [
   {
     name: "info/line-terminators-and-unicode/eol-crlf-block",
     input: "info\r\naccDescr {D\r\n E}\r\n",
-    output: "info\n  accDescr {D\n E}\n",
+    output: "info\n  accDescr {D\n    E}\n",
     options: {},
   },
   {

@@ -581,10 +581,13 @@ wardley-beta
 Use the shared accessibility line layout for accTitle: Value and accDescr:
 Value, retaining empty assignments. Description blocks go through the shared
 description layout: keep touching/openly spaced braces, compact whitespace-only
-interiors to {}, join plain opener whitespace, retain value columns and align a
-separate closer. Trivia keeps its shared continuation layout. These are the
-common Db-equal forms; there is no text for whitespace-only block interiors to
-surround.
+interiors to {}, join plain opener whitespace and align a separate closer.
+Ordinary description body and standalone comment lines align one level inside
+the statement: the Db removes indentation after LF. Keep line breaks, internal
+blanks and trailing whitespace. Directives and shared removed comment regions
+keep their complete source. Trivia keeps its shared continuation layout. These
+are the common Db-equal forms; there is no text for whitespace-only block
+interiors to surround.
 
 [fixture: wardley/accessibility/access-lines]
 
@@ -993,11 +996,11 @@ wardley-beta
 
 ### Multiline values
 
-Do not wrap at printWidth. Keep physical string, flow and description contents,
-continuation columns and interior blank lines. Visible LF between ordinary
-statement components can reject the input, and reindenting value continuations
-changes the Db. Long component/evolution statements stay unwrapped; description
-openers and closers use Accessibility.
+Do not wrap at printWidth. Keep physical string and flow contents, continuation
+columns and interior blank lines. Description bodies use the shared indentation
+above. Visible LF between ordinary statement components can reject the input,
+and reindenting value continuations changes the Db. Long component/evolution
+statements stay unwrapped; description openers and closers use Accessibility.
 
 [fixture: wardley/multiline-values/long-component]
 

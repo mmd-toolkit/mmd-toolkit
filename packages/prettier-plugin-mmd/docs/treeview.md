@@ -1723,14 +1723,17 @@ treeView-beta
 
 Use shared description-block layout for ordinary blocks: whitespace-only
 interiors become `{}`, touching edges remain touching, and ordinary edge padding
-becomes one space. Join plain opener whitespace, preserve nonempty continuation
-columns and trivia-only interiors, and align separate closers with the
-statement. In box mode remove ordinary keyword/opener prefixes and place the
-common statement at column one. Keep the complete brace span when it contains
-value-owned box geometry, because moving its physical lines can change the
-reading. The first effective `}` remains the closer. Unsafe removal follows
-Branch prefixes, including common-value tabs. A sole mode selector in the opener
-gap keeps just that gap, as described in Decorations.
+becomes one space. Join plain opener whitespace, align ordinary body lines one
+step inside the statement, preserve trivia contents, and align separate closers
+with the statement. Mermaid discards indentation after LF from the description.
+The body uses the configured indentation, including tabs and the positive
+minimum step at width zero. In box mode remove ordinary keyword/opener prefixes
+and place the common statement at column one, while keeping the body's authored
+columns: indenting a plain physical line can make box syntax reject it.
+Value-owned box geometry still keeps its complete brace span. The first
+effective `}` remains the closer. Unsafe removal follows Branch prefixes,
+including common-value tabs. A sole mode selector in the opener gap keeps just
+that gap, as described in Decorations.
 
 [fixture: treeview/decorations/review159-sole-opener-selector]
 
@@ -1766,6 +1769,8 @@ gap keeps just that gap, as described in Decorations.
 
 [fixture: treeview/description-blocks/block-continuation]
 
+[fixture: treeview/description-blocks/body-zero-width]
+
 [fixture: treeview/description-blocks/block-directive-only]
 
 [corpus fixture: treeview/common-block-comments]
@@ -1773,6 +1778,8 @@ gap keeps just that gap, as described in Decorations.
 [corpus fixture: treeview/common-block-first-close]
 
 [corpus fixture: treeview/box-block-decoration]
+
+[corpus fixture: treeview/box-block-tail-decoration-ascii-dash-control]
 
 [fixture: treeview/description-blocks/block-native-percent-text]
 
@@ -1814,7 +1821,7 @@ Output
 ```mmd
 treeView-beta
   accDescr {
-  first
+    first
 
     second
   }

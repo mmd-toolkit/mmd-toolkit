@@ -14,6 +14,7 @@ import {
   expectValue,
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
+  indentDescriptionLines,
   layoutCompactEmptyDescriptionBlockWithFallback,
   spansLinesThatCannotJoin,
   toAsciiLowerCase,
@@ -217,16 +218,16 @@ export function layoutBlockHeader(
  *   the two as whitespace (diagrams/sequence.md, The statement context,
  *   rule 2). One with a comment or a directive in it is kept as written
  *   (see `isKeptAsWritten`); the lines of an `accDescr { ... }` block are
- *   lines of its text, and are kept (docs/sequence.md, Multi-line
- *   statements).
+ *   lines of its text: keep their breaks and align their safe indentation
+ *   (docs/sequence.md, Multi-line statements).
  * - A title is laid out by `layoutTitle`.
  * - A message has one space before and after its arrow (docs/sequence.md,
  *   Arrow spacing).
  * - A `:` before a text touches what comes before it and has one space
  *   after it when a text follows (docs/sequence.md, Colons).
- * - The lines of an `accDescr { ... }` block whose text starts on a later
- *   line than the `{` are kept as written, and its `}` stands at the level
- *   of the statement (docs/sequence.md, Multi-line values).
+ * - Later lines of an `accDescr { ... }` block align one level inside the
+ *   statement without joining their text. Its `}` stands at the level of
+ *   the statement (docs/sequence.md, Multi-line values).
  */
 export function layoutSequenceStatement(
   source: Source,
@@ -257,7 +258,7 @@ export function layoutSequenceStatement(
     /** Builds the existing value, trivia and closing-brace layout. */
     function originalLayout(): AtomLayout {
       const closing = findAccDescrBlockClosing(source, block)
-      return {
+      return indentDescriptionLines(source, block, {
         atoms: collectAtoms(
           source,
           start,
@@ -268,7 +269,7 @@ export function layoutSequenceStatement(
         rules: new Map(),
         outdented: closing === null ? new Set() : new Set([closing]),
         lineBreaks: "kept",
-      }
+      })
     }
 
     return statement.value === null && statement.closed
@@ -298,7 +299,7 @@ export function layoutSequenceStatement(
  * keyword and its text is one: the comment line is removed before the
  * lexer reads the text (common.md, Comment lines), so the line after it is
  * the title. The lines of an `accDescr { ... }` block are lines of its
- * text, kept by its own layout.
+ * text, aligned by its own layout without joining them.
  */
 function isKeptAsWritten(
   source: Source,

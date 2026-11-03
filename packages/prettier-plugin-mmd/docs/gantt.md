@@ -37,9 +37,9 @@ is nothing to mermaid.js, so the printer chooses the indentation from the
 structure alone, and one rule per level prints the same text whatever the input
 was indented with. [fixture: indentation/written-indentation-dropped] The header
 stands at the first column, also where whitespace was written before it.
-[fixture: indentation/header-leading-whitespace] The lines of a text that is
-kept as written, such as the lines of an `accDescr` block, keep their columns,
-and the `}` that closes a block stands at the level of its statement (see
+[fixture: indentation/header-leading-whitespace] Values kept as written retain
+their columns. Description-body lines instead stand one step inside their
+statement, with a separate `}` at its level (see
 [Multi-line values](#multi-line-values)). [fixture:
 indentation/description-block-under-a-section]
 
@@ -786,13 +786,11 @@ line, or a colon written on a later line than the keyword, is printed on one
 line. [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/keyword-and-colon-over-lines-joined]
 
-The lines of an `accDescr { ... }` block are kept as written by choice, not by
-need: the whitespace at the start of a line is not in the Db (`a`, a line break,
-and `b` give the same description as with `  b`), and the lines are the text of
-the author, which the printer does not format. Its `}` stands at the level of
-its statement; a text on the line of the `{` has one space inside the braces
-where it was written apart, and the braces that touch their text keep touching.
-[fixture: accessibility-statements/block-lines-kept] [fixture:
+Align the lines of an `accDescr { ... }` body one step inside its statement.
+Mermaid discards indentation after LF from the description. Its `}` stands at
+the level of its statement; a text on the line of the `{` has one space inside
+the braces where it was written apart, and the braces that touch their text keep
+touching. [fixture: accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-text-on-opening-line] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept] Whitespace inside
 the text is part of it, and stays. [fixture:
@@ -838,8 +836,8 @@ Output
 ```mmd
 gantt
   accDescr {
-   a
-  b
+    a
+    b
   }
 ```
 
@@ -854,7 +852,8 @@ empty-description-blocks/empty-whitespace-interiors] [test: gantt Unicode and
 tab interiors] [fixture: empty-description-blocks/inner-whitespace-collapsed]
 [fixture: empty-description-blocks/touching-kept] [fixture:
 empty-description-blocks/blank-lines-inside] A block with a directive or a
-comment line is printed as written. [fixture:
+comment line keeps its contents and line breaks, with body indentation under
+[Accessibility statements](#accessibility-statements). [fixture:
 empty-description-blocks/with-directive-or-comment-line-kept] It stands on a
 line of its own, also after the header. [fixture:
 empty-description-blocks/after-header]
@@ -973,8 +972,8 @@ monday
 
 The arguments and the name of a call and the string of a link are kept as
 written, with the line breaks and the whitespace inside, since they are part of
-the value. The lines of an `accDescr` block are kept as written too, by choice:
-the whitespace at the start of a line is not in the Db. [fixture:
+the value. Description-body lines instead align one step inside their statement
+under [Accessibility statements](#accessibility-statements). [fixture:
 multi-line-values/call-arguments-kept] [fixture:
 multi-line-values/call-name-kept] [fixture: multi-line-values/href-string-kept]
 [fixture: multi-line-values/description-block-lines-kept] A comment line inside
@@ -1018,7 +1017,7 @@ Output
 ```mmd
 gantt
   accDescr {
-  a
+    a
     b
   }
 ```

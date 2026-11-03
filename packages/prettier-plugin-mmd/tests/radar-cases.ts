@@ -31,7 +31,7 @@ export const radarCases: readonly RadarCase[] = [
     name: "radar/line-terminators-and-unicode/crlf-values",
     input:
       'radar-beta\r\naxis North["one\r\ntwo"]\r\naccDescr {one\r\ntwo}\r\n',
-    output: 'radar-beta\n  axis North["one\ntwo"]\n  accDescr {one\ntwo}\n',
+    output: 'radar-beta\n  axis North["one\ntwo"]\n  accDescr {one\n    two}\n',
     options: {},
   },
   {

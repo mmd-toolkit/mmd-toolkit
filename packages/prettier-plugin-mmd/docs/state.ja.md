@@ -849,13 +849,10 @@ stateDiagram-v2
 
 ### 複数行の値
 
-flowchart と同じです。
-`accDescr { ... }` のブロックの行は書かれたまま残し、
-その `}` は文と同じ段に置きます。
-サブグラフの外では、その行の桁は Db に入らないので、残すのは選択で、
-理由は flowchart
-にあります（[複数行の値](./flowchart.ja.md#複数行の値)を参照）。
-[fixture: multi-line-values/kept]
+[flowchart のトップレベルの説明](./flowchart.ja.md#複数行の値)と同じく、
+`accDescr { ... }` の本文行は文より 1 段深くそろえ、
+独立した `}` は文と同じ段に置きます。
+Mermaid が説明からこの字下げを除くためです。 [fixture: multi-line-values/kept]
 [fixture: multi-line-values/accdescr-block-single-line-kept]
 [fixture: multi-line-values/accdescr-block-empty-and-comment-lines-kept]
 閉じたブロックに本文がなければ、内側を `{}` と印字します。
@@ -869,7 +866,7 @@ agentflow、usecase に合わせます。
 前の説明は Db に残ります。
 [fixture: multi-line-values/empty-description-interiors]
 [test: accessibility revisions: state empty-description-nbsp]
-コメントやディレクティブがあるブロックの配置は従来どおり保ち、
+コメントやディレクティブがあるブロックの内容と改行は保ち、
 閉じられていないブロックは開いたままにします。
 [fixture: multi-line-values/empty-description-trivia-kept]
 [corpus fixture: state/lex-acc-descr-block-unclosed]
@@ -896,7 +893,7 @@ note "line one
 ```mmd
 stateDiagram-v2
   accDescr {
-  one
+    one
     two
   }
   note "line one
@@ -1109,7 +1106,8 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
 
 ## 書かれたまま残すもの
 
-次のテキストは常に書かれたまま残します。
+[複数行の値](#複数行の値)の説明本文の字下げを除き、
+次のテキストは書かれたまま残します。
 変えると図が変わるか、入力が拒否されるからです。
 
 - 値のテキスト。

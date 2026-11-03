@@ -39,7 +39,7 @@ gitGraph
 履歴は平坦なので branch の後に段を増やしません。
 gitgraph の列に文法上の意味がないため、 `tabWidth: 0` は空白 0 個、
 `useTabs` は幅 0 でも tab 1 個です。
-木の構造を見せ、値の続きの列・hidden の閉じ・保護部分は変えません。
+木の構造を見せ、その他の値の続きの列・hidden の閉じ・保護部分は変えません。
 
 固定例: [fixture: gitgraph/indentation/indent-two]
 [fixture: gitgraph/indentation/indent-four]
@@ -396,7 +396,11 @@ gitGraph
 空や空白のみなら裸の `title` です。
 共通の accessibility 配置で `accTitle: value`・`accDescr: value`、
 空 block は `{}`、接した波括弧はそのまま、既存の辺の空白は 1 個にします。
-別行の閉じは文に揃え、続きの列と内部の空行は保持します。
+別行の閉じは文に揃えます。
+通常の説明本文と独立したコメント行は、文より1段内側に揃えます。
+Db で LF 後の字下げが取り除かれるためです。
+改行、内部の空行、行末空白を保持します。
+directive と共有の除去対象となるコメント領域は原文全体を保ちます。
 空白だけの内側は、囲む空白を要する本文がないため `{}` と印字します。
 タブ、改行、 Unicode の空白も同じです。
 [fixture: title-and-common-values/empty-whitespace-interiors]
@@ -405,7 +409,7 @@ gitGraph
 frontmatter の fallback を含む反復・空値・出現位置を保持します。
 空行・コメント・directive を挟んでも行形式は次の物理行を取り込まず、
 colon 後の波括弧は行値のままです。
-同じ意味の外端だけを詰め、本文と字句上の所有は変えません。
+同じ意味の外端だけを詰め、説明の内容と字句上の所有は変えません。
 
 固定例: [fixture: gitgraph/title-and-common-values/title-trim]
 [corpus fixture: gitgraph/title-next-line]
@@ -437,8 +441,8 @@ gitGraph
 
 printWidth で操作語・option・値を折り返しません。
 可視 LF は文を終えるためです。
-引用値と block の物理行、続きの列、内部の空行を保持します。
-別行の閉じ波括弧は共通の block 配置で文に揃え、
+引用値の物理行、続きの列、内部の空行を保持します。
+説明本文は前述の共有の字下げを使い、
 hidden が消費した LF の隙間は専用の保持規則に従います。
 
 固定例: [fixture: gitgraph/multiline-values/long-kept]

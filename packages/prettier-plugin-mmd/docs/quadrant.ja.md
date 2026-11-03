@@ -552,9 +552,8 @@ title の中の `;`、`#`、`%%`、引用符、キーワードは、そのテキ
 [fixture: titles-and-accessibility-statements/colon-on-the-next-line-joined]
 [fixture: titles-and-accessibility-statements/text-that-looks-like-a-statement]
 
-`accDescr { ... }` ブロックの行は、必要からではなく選択として、
-書かれたまま残します。
-行頭の空白は Db に入らず、行は書き手のテキストで、印字は整形しないからです。
+`accDescr { ... }` の本文行は、文より 1 段深くそろえます。
+Mermaid が説明から LF 後の字下げを除くためです。
 `}` は文と同じ段に置きます。
 `{` と同じ行のテキストは、書かれた括弧の間に空白があれば空白 1 つを置き、
 括弧がテキストに接していれば接したままにします。
@@ -621,8 +620,8 @@ accDescr {
 ```mmd
 quadrantChart
   accDescr {
-   a
-  b
+    a
+    b
   }
 ```
 
@@ -635,7 +634,9 @@ quadrantChart
 接した keyword は接したまま、 `accDescr{  }` は `accDescr{}` にします。
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: quadrant Unicode and tab interiors]
-指令かコメント行を持つブロックは、書かれたまま印字します。
+指令かコメント行の内容と改行は保ち、
+本文の字下げは
+[title とアクセシビリティの文](#title-とアクセシビリティの文)に従います。
 ヘッダーの後でも、ほかの文の後でも、自分の行に置きます。
 文法がブロックを受け入れるのは、文の始まりと、文の最後の単位の後です。
 mermaid.js は、どこにあってもトークンのないものとして読みます。
@@ -693,11 +694,10 @@ mermaid.js が複数行にわたって読む文は、
 
 ### 複数行の値
 
-`accDescr` ブロックの行と、文字列の行は、改行と中の空白を含めて、
-書かれたまま残します。
-改行は Db に入り、文字列の空白も入ります。
-ブロックの行頭の空白は入らないので、残すのは選択で、
-値のテキストは整形しないからです。
+文字列の改行と空白は値の一部なので、原文どおり保ちます。
+説明本文の行は文より 1 段深くそろえます。
+Mermaid が LF 後の字下げを除くためです。
+それ以外の文字と改行は保ちます。
 [fixture: multi-line-values/string-with-line-breaks-kept]
 [fixture: multi-line-values/description-block-lines-kept]
 [fixture: multi-line-values/comment-line-inside-a-block-kept]
@@ -739,7 +739,7 @@ accDescr {
 ```mmd
 quadrantChart
   accDescr {
-  a
+    a
     b
   }
 ```

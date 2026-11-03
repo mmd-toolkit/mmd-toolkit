@@ -17,6 +17,7 @@ import {
   expectToken,
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
+  indentDescriptionLines,
   keptAsWritten,
   spansLinesThatCannotJoin,
   walk,
@@ -349,7 +350,7 @@ function layoutUsecaseAccessibility(
   const rules = new Map<number, GapRule>()
   const outdented = new Set<number>()
   const joinedBefore = new Set<number>()
-  let atoms: Atom[] = [{ start: keyword.range[0], end: keyword.range[1] }]
+  const atoms: Atom[] = [{ start: keyword.range[0], end: keyword.range[1] }]
   let lineBreaks: "kept" | "joined" = "kept"
   if (statement.type !== "UsecaseAccDescrBlockStatement") {
     atoms.push({ start: separator.range[0], end: separator.range[1] })
@@ -389,8 +390,34 @@ function layoutUsecaseAccessibility(
       lineBreaks = "joined"
     }
   }
-  atoms = protectSemicolonPrefixes(source, start, end, atoms)
-  return { atoms, rules, outdented, joinedBefore, lineBreaks }
+  const layout: AtomLayout = {
+    atoms,
+    rules,
+    outdented,
+    joinedBefore,
+    lineBreaks,
+  }
+  const descriptionLayout =
+    statement.type === "UsecaseAccDescrBlockStatement"
+      ? indentDescriptionLines(
+          source,
+          {
+            range: statement.range,
+            value: statement.value,
+            closed: true,
+          },
+          layout,
+        )
+      : layout
+  return {
+    ...descriptionLayout,
+    atoms: protectSemicolonPrefixes(
+      source,
+      start,
+      end,
+      descriptionLayout.atoms,
+    ),
+  }
 }
 
 /** Trims exterior common whitespace while keeping complete embedded trivia. */

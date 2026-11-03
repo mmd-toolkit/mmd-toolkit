@@ -61,7 +61,7 @@ export const treeviewCases: readonly TreeviewCase[] = [
   {
     name: "treeview/line-terminators-and-unicode/eol-block-and-directive",
     input: "treeView-beta\r\naccDescr{A\r\n B}\r\nR%%{init: {\r\n}}%%\r\n",
-    output: "treeView-beta\n  accDescr{A\n B}\n  R%%{init: {\n}}%%\n",
+    output: "treeView-beta\n  accDescr{A\n    B}\n  R%%{init: {\n}}%%\n",
     options: {},
   },
   {

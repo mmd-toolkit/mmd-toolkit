@@ -664,7 +664,7 @@ flowchartと同じ理由で同じ規則を使います。
 [fixture: accessibility/empty-block-lines]
 内側で受理するNBSP・U+2028・U+2029の空白も落とします。
 [test: accessibility blocks: agentflow empty-block-unicode]
-保持行とdirectiveがあるブロックは従来の配置を保ちます。
+保持行と directive の内部は原文の配置を保ちます。
 [fixture: accessibility/empty-block-semicolon-kept]
 [fixture: accessibility/empty-block-directive-kept]
 
@@ -676,8 +676,13 @@ flowchartと同じ理由で同じ規則を使います。
 左右を別々に扱い、`{  a}`は`{ a}`、 `{a  }`は`{a }`にします。
 [fixture: accessibility/block-left-padding-only]
 [fixture: accessibility/block-right-padding-only]
-後続の値とコメントの桁位置は書かれた文字で、単独行の閉じ括弧は、
-0桁目でも字下げされていても`accDescr`に揃えます。
+トップレベルの閉じた説明ブロックの本文は文より 1 段深くそろえます。
+Mermaid がアクセシビリティの説明からこの字下げを除くためです。
+flow または global の本文では、原文がメンバーの決定にも使われるため、
+元の列を保ちます。
+global 本文の原文を変えると、後続の flow のメンバーが変わる場合があります。
+[fixture: accessibility/global-description-membership-kept]
+単独行の閉じ括弧は、 0桁目でも字下げされていても`accDescr`に揃えます。
 [fixture: accessibility/block-close-column-zero]
 [fixture: accessibility/block-close-indented]
 [fixture: accessibility/block-comment-close-column-zero]
@@ -685,8 +690,9 @@ flowchartと同じ理由で同じ規則を使います。
 `tabWidth: 0`の本文の最小幅でも同じ空ブロックと閉じ括弧の規則を使います。
 [fixture: accessibility/block-zero-width]
 
-未閉鎖ブロックの内容とEOFの末尾を保ち、括弧や改行を足しません。
-flowchartと異なり、コメントに見える説明行も値なので桁位置を保ちます。
+未閉鎖ブロックの内容と EOF の末尾は原文どおり保ち、括弧や改行を足しません。
+flowchart と異なり、コメントに見える説明行も値であり、
+字下げは同じブロックの文脈の規則に従います。
 文法が割り当てる閉じた空の説明文は別の文で、 Nameとclick内ではIgnoredTextです。
 空のstyleと後続の空の説明ブロックはKept linesに従って同じ行に保ちます。
 文の先頭にある、消される空の文字列、空のmarkdown文字列、空のcallは文ではなく、
@@ -757,7 +763,9 @@ agentflow-beta TB
 
 [複数行の文](./flowchart.ja.md#複数行の文)と、
 [複数行の値](./flowchart.ja.md#複数行の値)を同じ理由で再利用します。
-改行位置は著者が選び、値の後続行の桁位置は文字だからです。
+改行位置は著者が選び、
+[Accessibility](#accessibility) の説明本文の字下げを除き、
+値の後続行の桁位置は文字だからです。
 通常の継続トークンはさらに1段深くします。
 文字列、markdown、分割文字、Name、データ、directive、
 複数行clickの後続行の桁位置を保ちます。

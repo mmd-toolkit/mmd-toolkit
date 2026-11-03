@@ -238,10 +238,18 @@ Db が保つからです。 [fixture: attribute-spacing/keys-comma-space]
 [fixture: attribute-spacing/over-lines-joined]
 [corpus fixture: er/gram-attribute-split-lines]
 [corpus fixture: er/gram-name-then-key-next-line]
-部分の間にコメント行がある属性は、書かれたまま残します。
-コメント行は単独の行になければならないからです。
+部分の間にコメント行かディレクティブがある属性は、改行を保ちます。
+後続の構造部分と独立した trivia 行は、subgraph の中でも、
+属性の内側に 1 段字下げします。
+型、名前、引用符付きコメントの内部は書かれたまま残します。
 [fixture: attribute-spacing/comment-line-inside-kept]
-属性の部分の間にあるディレクティブは、両側に書かれた空白を保ってその位置に残し、
+[fixture: attribute-spacing/directive-inside-kept]
+[fixture: attribute-spacing/comment-continuation-with-multiline-value]
+[fixture: attribute-spacing/directive-continuation-tabs]
+semicolon の読みが関わる行と、物理行を結ぶコメント領域は、元の配置を保ちます。
+[fixture: attribute-spacing/semicolon-continuation-kept]
+[test: er/attribute-spacing/comment-region-continuation-kept]
+属性の部分の間にあるディレクティブは、同じ印字行での接触を保ち、
 2 つの属性の間で行に単独で置かれたディレクティブは、その間に残します。
 [fixture: attribute-spacing/directive-inside-kept]
 [fixture: attribute-spacing/directive-and-line-break-kept]
@@ -1082,11 +1090,13 @@ erDiagram
 [fixture: accessibility-statements/text-with-comment-line-kept]
 [corpus fixture: er/lex-acc-title-line-feed-after-colon]
 
-`accDescr { ... }` ブロックの行は、必要からではなく選択として、
-書かれたまま残します。
-行頭の空白は Db に入らず、 `a`、改行、`b` と、
-`b` の前に空白がある形は同じ説明です。
-行は作者のテキストで、印字は整形しないからです。
+通常の `accDescr { ... }` ブロックの後続の本文行は、文の内側に 1 段字下げし、
+LF 直後の ASCII 空白とタブだけを置き換えます。
+説明の setter がこの字下げを捨てるためです。
+改行、行末空白、ディレクティブの内部は保ちます。
+subgraph 内では、生の説明がその所属の読みにも使われるため、
+本文の元の列を保ちます。
+[corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines]
 `}` は文と同じ段に置きます。
 `{` の行にあるテキストは、離して書かれていれば、
 波括弧の内側に空白を 1 つ置きます。
@@ -1101,7 +1111,8 @@ erDiagram
 [flowchart のアクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)、
 agentflow、 usecase に合わせます。
 [test: accessibility revisions: er empty-description-nbsp]
-コメントやディレクティブがあるブロックの配置は従来どおり保ちます。
+コメントやディレクティブがあるブロックは、改行と完全な内容を保ち、
+普通の独立した trivia はブロックの内側にそろえます。
 [fixture: accessibility-statements/empty-blocks]
 [fixture: accessibility-statements/empty-block-with-directive-or-comment-line]
 [corpus fixture: er/gram-acc-descr-block-empty]
@@ -1198,7 +1209,7 @@ end
 ```mmd
 erDiagram
   accDescr {
-  one
+    one
     two
   }
   subgraph S
@@ -1466,8 +1477,8 @@ erDiagram
 そのような文字列の中のコメント行は文字列の一部で、文字列は書かれたまま残します。
 [fixture: multi-line-values/comment-line-inside-string-kept]
 [corpus fixture: er/tokens-comment-line-in-role-string]
-`accDescr` ブロックの行も、
-書かれたまま残します（[アクセシビリティの文](#アクセシビリティの文)を参照）。
+`accDescr` ブロックの行は、
+[アクセシビリティの文](#アクセシビリティの文) の字下げと文脈の保護に従います。
 [fixture: multi-line-values/description-block-lines-kept]
 
 入力

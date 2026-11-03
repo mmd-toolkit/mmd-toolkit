@@ -230,11 +230,18 @@ An attribute written over several lines is printed on one, since the attribute
 block is read without regard to line breaks. [fixture:
 attribute-spacing/over-lines-joined] [corpus fixture:
 er/gram-attribute-split-lines] [corpus fixture: er/gram-name-then-key-next-line]
-An attribute with a comment line between its parts is kept as written, since the
-comment line must stand on a line of its own. [fixture:
-attribute-spacing/comment-line-inside-kept] A directive between the parts of an
-attribute stays where it is, with the whitespace written on each side of it, and
-a directive on a line of its own between two attributes stays between them. A
+An attribute with a comment line or a directive between its parts keeps its line
+breaks. Later structural parts and standalone trivia stand one level inside the
+attribute, also in a subgraph; type, name and quoted-comment interiors stay as
+written. [fixture: attribute-spacing/comment-line-inside-kept] [fixture:
+attribute-spacing/directive-inside-kept] [fixture:
+attribute-spacing/comment-continuation-with-multiline-value] [fixture:
+attribute-spacing/directive-continuation-tabs] Semicolon-sensitive lines and
+comment regions that join physical lines retain their original layout. [fixture:
+attribute-spacing/semicolon-continuation-kept] [test:
+er/attribute-spacing/comment-region-continuation-kept] A directive between the
+parts of an attribute retains its contacts within a printed line, and a
+directive on a line of its own between two attributes stays between them. A
 directive between two attributes written on the same line moves with the
 attribute after it to the line after, since each attribute stands on a line of
 its own. [fixture: attribute-spacing/directive-between-attributes-on-a-line]
@@ -1050,13 +1057,16 @@ accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/text-with-comment-line-kept] [corpus fixture:
 er/lex-acc-title-line-feed-after-colon]
 
-The lines of an `accDescr { ... }` block are kept as written by choice, not by
-need: the whitespace at the start of a line is not in the Db (`a`, a line break,
-and `b` give the same description as with `  b`), and the lines are the text of
-the author, which the printer does not format. Its `}` stands at the level of
-its statement; a text on the line of the `{` has one space inside the braces
-where it was written apart. [fixture: accessibility-statements/block-lines-kept]
-[fixture: accessibility-statements/block-comment-and-empty-lines-kept] [fixture:
+Later text lines of an ordinary `accDescr { ... }` block stand one level inside
+its statement, replacing only ASCII spaces and tabs immediately after LF. The
+description setter drops that indentation; line breaks, trailing whitespace and
+directive interiors stay written. Inside a subgraph, keep the original body
+columns because the raw description also participates in its membership reading.
+[corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines] Its `}` stands at
+the level of its statement; a text on the line of the `{` has one space inside
+the braces where it was written apart. [fixture:
+accessibility-statements/block-lines-kept] [fixture:
+accessibility-statements/block-comment-and-empty-lines-kept] [fixture:
 accessibility-statements/block-text-on-opening-line] An empty block is a
 statement of its own that keeps any prior description in the Db. It prints `{}`
 internally: `accDescr { }` becomes `accDescr {}`, including whitespace runs,
@@ -1065,7 +1075,8 @@ and `accDescr{}` stays touching. No text needs surrounding whitespace, so the
 Db-equal choice follows
 [flowchart's accessibility lines](./flowchart.md#accessibility-lines), agentflow
 and usecase. [test: accessibility revisions: er empty-description-nbsp] Blocks
-with comments or directives retain their previous layout. [fixture:
+with comments or directives keep their line breaks and complete contents, while
+ordinary standalone trivia aligns inside the block. [fixture:
 accessibility-statements/empty-blocks] [fixture:
 accessibility-statements/empty-block-with-directive-or-comment-line] [corpus
 fixture: er/gram-acc-descr-block-empty]
@@ -1163,7 +1174,7 @@ Output
 ```mmd
 erDiagram
   accDescr {
-  one
+    one
     two
   }
   subgraph S
@@ -1425,8 +1436,8 @@ er/lex-role-string-line-feed] [corpus fixture: er/lex-comment-line-feed] A
 comment line inside such a string is part of the string, which is kept as
 written. [fixture: multi-line-values/comment-line-inside-string-kept] [corpus
 fixture: er/tokens-comment-line-in-role-string] The lines of an `accDescr` block
-are kept as written too (see
-[Accessibility statements](#accessibility-statements)). [fixture:
+follow the indentation and context guards in
+[Accessibility statements](#accessibility-statements). [fixture:
 multi-line-values/description-block-lines-kept]
 
 Input

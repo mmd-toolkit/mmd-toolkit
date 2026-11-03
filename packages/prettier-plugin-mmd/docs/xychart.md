@@ -581,17 +581,16 @@ accessibility-statements/text-that-looks-like-a-statement] [fixture:
 accessibility-statements/without-text-at-the-end] [fixture:
 accessibility-statements/without-text-and-trailing-whitespace]
 
-The lines of an `accDescr { ... }` block are kept as written by choice, not by
-need: the whitespace at the start of a line is not in the Db, and the lines are
-the text of the author, which the printer does not format. Its `}` stands at the
-level of its statement; a text on the line of the `{` has one space inside the
-braces where it was written apart, and the braces that touch their text keep
-touching. A block that is not closed runs to the end of the text, and is printed
-as written without a `}`: mermaid.js reads no text for it, and a `}` that the
-printer wrote would make the block a description (`accDescr {` and `abc` at the
-end of the text have an empty description in the Db, and the same with a `}`
-have `abc`). [fixture: accessibility-statements/block-lines-kept] [fixture:
-accessibility-statements/block-text-on-the-opening-line] [fixture:
+Align the lines of an `accDescr { ... }` body one step inside its statement.
+Mermaid discards indentation after LF from the description. Its `}` stands at
+the level of its statement; a text on the line of the `{` has one space inside
+the braces where it was written apart, and the braces that touch their text keep
+touching. A block that is not closed runs to the end of the text, without adding
+a `}` or changing its EOF ending: mermaid.js reads no text for it, and a `}`
+that the printer wrote would make the block a description (`accDescr {` and
+`abc` at the end of the text have an empty description in the Db, and the same
+with a `}` have `abc`). [fixture: accessibility-statements/block-lines-kept]
+[fixture: accessibility-statements/block-text-on-the-opening-line] [fixture:
 accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
 [fixture: accessibility-statements/block-then-statement-on-the-closing-line]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept] [fixture:
@@ -657,8 +656,8 @@ Output
 ```mmd
 xychart
   accDescr {
-   a
-  b
+    a
+    b
   }
 ```
 
@@ -744,26 +743,31 @@ multi-line-statements/plot-keyword-and-values-joined] [fixture:
 multi-line-statements/text-over-several-line-breaks-joined] [fixture:
 multi-line-statements/next-statement-after-trailing-whitespace]
 
-A statement with a comment line or a directive in it is kept as written. A
-comment line takes the rest of the line it stands on, so the joined
-`title A %% c B` has the title `A`, where the statement with the comment line
-between its lines has `AB`. A directive would not change the Db if the lines
-were joined, but the same decision is made for comment lines and directives in
-every diagram, so that the printer decides it once (see
-[Multi-line statements](./er.md#multi-line-statements)). A `;` in the statement
-keeps it as written too, because of the line rule (see
+Keep the line breaks between parts of a title with a comment or directive in
+their gaps, and place later parts and standalone trivia lines one continuation
+level inside the statement. Preserve each gap's first line tail, including
+complete inline directives: its whitespace must start before LF for the title to
+continue. Directive interiors stay written. [fixture:
+multi-line-statements/bare-title-multiline-directive-tail] A comment line takes
+the rest of the line it stands on, so the joined `title A %% c B` has the title
+`A`, where the statement with the comment line between its lines has `AB`.
+[fixture: multi-line-statements/comment-line-inside-kept] [fixture:
+multi-line-statements/directive-inside-kept] Quoted contents stay whole,
+including their internal line breaks and columns. [fixture:
+multi-line-statements/quoted-title-trivia] Other statements with multiline
+trivia keep their original layout. A `;` in the statement or on its final line
+keeps the complete original layout, because of the line rule (see
 [Statements one per line](#statements-one-per-line)). [fixture:
-multi-line-statements/comment-line-inside-kept] [fixture:
-multi-line-statements/directive-inside-kept] [fixture:
 multi-line-statements/semicolon-inside-kept] [fixture:
-multi-line-statements/semicolon-on-the-last-line-kept]
+multi-line-statements/semicolon-on-the-last-line-kept] Comment regions that join
+physical lines also keep their original layout. [test:
+xychart/multi-line-statements/bare-title-comment-region-kept]
 
 ### Multi-line values
 
-The lines of an `accDescr` block and the lines of a string are kept as written,
-with the line breaks and the whitespace inside. The line breaks are in the Db,
-and so is the whitespace of a string; the whitespace at the start of a line of a
-block is not, so keeping it is a choice: the text of a value is not formatted.
+Strings keep their authored line breaks and whitespace, which are part of their
+values. Description-body lines align one step inside their statement; Mermaid
+discards their indentation after LF. Keep the remaining text and line breaks.
 [fixture: multi-line-values/string-with-line-breaks-kept] [fixture:
 multi-line-values/string-label-with-line-breaks-kept] [fixture:
 multi-line-values/category-string-with-line-breaks-kept] [fixture:
@@ -807,7 +811,7 @@ Output
 ```mmd
 xychart
   accDescr {
-  a
+    a
     b
   }
 ```

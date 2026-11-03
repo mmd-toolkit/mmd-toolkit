@@ -592,8 +592,9 @@ direction-and-accessibility/description-next-direction-separate] [fixture:
 direction-and-accessibility/a11y-trimmed] [test: usecase: a11y-unicode-exterior]
 
 Description blocks reuse [class multiline values](./class.md#multi-line-values):
-keep the body's lines and columns and align a separate `}` with the statement.
-The keyword-to-brace gap reuses
+align body lines one step inside the statement and a separate `}` with the
+statement. Mermaid discards indentation after LF from the description. The
+keyword-to-brace gap reuses
 [flowchart's Whitespace between tokens](./flowchart.md#whitespace-between-tokens)
 with the same reason: the common token-gap rule keeps contact that Mermaid may
 need to read a token. Usecase has no reason to differ among these Db-equal
@@ -749,14 +750,15 @@ usecase-beta
 Reuse [C4 value columns](./c4.md#multiline-values) and
 [flowchart's no-wrapping rule](./flowchart.md#line-wrapping): authored lines and
 columns are characters, and `printWidth` does not wrap long statements. Keep
-markdown, JSON, descriptions, directives and common-region continuations;
-ordinary strings and stereotypes gain no physical newline. Usecase is
-line-oriented, so a structural newline can reject a relationship: `A-->`
-followed by `B` on the next line is rejected, and wrapping
-`LongSource-->LongTarget` at a small `printWidth` turns an accepted input into a
-rejected one. Markdown strings, JSON and description blocks can hold real
-newlines because those are value text. Native metadata structure follows its own
-rule. [fixture: native-metadata/metadata-key-multiline-directive] [fixture:
+markdown, JSON, directives and common-region continuations; ordinary strings and
+stereotypes gain no physical newline. Usecase is line-oriented, so a structural
+newline can reject a relationship: `A-->` followed by `B` on the next line is
+rejected, and wrapping `LongSource-->LongTarget` at a small `printWidth` turns
+an accepted input into a rejected one. Markdown strings, JSON and description
+blocks can hold real newlines because those are value text. Description-body
+columns follow [Direction and accessibility](#direction-and-accessibility).
+Native metadata structure follows its own rule. [fixture:
+native-metadata/metadata-key-multiline-directive] [fixture:
 native-metadata/metadata-scalar-multiline-directive] Repeated compatible
 declarations, boundaries, relationships, notes, class definitions/assignments
 and updates stay in source order, even when a shorter representation would have

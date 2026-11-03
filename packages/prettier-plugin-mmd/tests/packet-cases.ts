@@ -56,7 +56,7 @@ export const packetCases: readonly PacketCase[] = [
     input:
       '---\ntitle: Physical\n---\rpacket\raccDescr {\r First\r Second\r}\r0:"CR yaml"---\rx\r--- \r',
     output:
-      '---\ntitle: Physical\n---\npacket\n  accDescr {\n First\n Second\n  }\n  0: "CR yaml"---\nx\n--- \n',
+      '---\ntitle: Physical\n---\npacket\n  accDescr {\n    First\n    Second\n  }\n  0: "CR yaml"---\nx\n--- \n',
     options: {},
   },
   {

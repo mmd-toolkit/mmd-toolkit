@@ -18,7 +18,7 @@ export const pieCases: readonly PieCase[] = [
   {
     name: "pie/line-terminators-and-unicode/eol-cr",
     input: 'pie\r"A\r B":2\raccDescr {\rfirst\r second\r}\r',
-    output: 'pie\n  "A\n B" : 2\n  accDescr {\nfirst\n second\n  }\n',
+    output: 'pie\n  "A\n B" : 2\n  accDescr {\n    first\n    second\n  }\n',
     options: {},
   },
   {
@@ -144,7 +144,8 @@ export const pieCases: readonly PieCase[] = [
   {
     name: "pie/line-terminators-and-unicode/eol-block-crlf",
     input: 'pie\r\naccDescr {\r\nfirst\r\n  second\r\n}\r\n"Block CRLF":8',
-    output: 'pie\n  accDescr {\nfirst\n  second\n  }\n  "Block CRLF" : 8\n',
+    output:
+      'pie\n  accDescr {\n    first\n    second\n  }\n  "Block CRLF" : 8\n',
     options: {},
   },
   {

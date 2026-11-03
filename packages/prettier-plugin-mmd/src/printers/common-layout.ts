@@ -198,6 +198,7 @@ export function layoutCommonDescription(
   source: Source,
   statement: CommonStatement,
   valueTypes: ReadonlySet<Node["type"]>,
+  options: { readonly preservesBodyColumns?: boolean } = {},
 ): AtomLayout {
   const [start, end] = statement.range
   const after = statement.textAfter?.at(0)?.range[0] ?? end
@@ -219,6 +220,7 @@ export function layoutCommonDescription(
     "the description opener",
   )
   let layout = layoutDescriptionBlock(source, block, blockEnd, valueTypes, {
+    ...options,
     keepsTrailingTrivia: true,
     formatsEmptyTrivia: true,
     trimValueEdges: true,

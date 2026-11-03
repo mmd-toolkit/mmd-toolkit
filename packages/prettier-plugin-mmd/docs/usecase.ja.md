@@ -637,7 +637,8 @@ Db が同じになる外側の空白を、兄弟の図種と同じ形に揃え�
 [test: usecase: a11y-unicode-exterior]
 
 説明ブロックは、 class の[複数行の値](./class.ja.md#複数行の値)と同じく、
-本文の行と列を保ち、独立した `}` を文の字下げに揃えます。
+本文行を文より 1 段深くし、独立した `}` を文の字下げに揃えます。
+Mermaid が説明から LF 後の字下げを除くためです。
 語と波括弧の隙間には、
 [flowchartのトークンの間の空白](./flowchart.ja.md#トークンの間の空白)を、
 同じ理由で再利用します。
@@ -809,13 +810,15 @@ usecase-beta
 C4 の[複数行の値](./c4.ja.md#複数行の値)と、
 flowchart の[折り返し](./flowchart.ja.md#折り返し)を再利用します。
 書かれた行と列は文字であり、`printWidth` で長い文を折り返しません。
-markdown、JSON、説明、directive、共通領域の継続を保ちます。
+markdown、JSON、directive、共通領域の継続を保ちます。
 通常の文字列と stereotype に物理改行を足しません。
 usecase は行指向なので、構造としての改行は関係を拒否させることがあります。
 `A-->` の次の行に `B` を置いた入力は拒否され、
 `LongSource-->LongTarget` を小さな `printWidth` で折り返すと、
 受理される入力が拒否される入力になります。
 markdown 文字列、JSON、説明ブロックは、値の文字として実際の改行を持てます。
+説明本文の列は [Direction and accessibility](#direction-and-accessibility)
+に従います。
 native metadata の構造は専用の規則に従います。
 [fixture: native-metadata/metadata-key-multiline-directive]
 [fixture: native-metadata/metadata-scalar-multiline-directive]

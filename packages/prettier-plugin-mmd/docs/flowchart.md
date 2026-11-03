@@ -1116,10 +1116,11 @@ accessibility-lines/block-spaced-text] [fixture:
 accessibility-lines/block-padded-text] Independently, `{  a}` becomes `{ a}` and
 `{a  }` becomes `{a }`; each side keeps whether it had whitespace. [fixture:
 accessibility-lines/block-left-padding-only] [fixture:
-accessibility-lines/block-right-padding-only] Multiline value and comment
-columns stay written, and a closing brace on its own line aligns with
-`accDescr`, whether written at column zero or indented. This is the same form as
-the sibling diagrams, with no flowchart-specific reason to differ. [fixture:
+accessibility-lines/block-right-padding-only] Multiline body columns follow the
+top-level or subgraph rules in [Multi-line values](#multi-line-values), and a
+closing brace on its own line aligns with `accDescr`, whether written at column
+zero or indented. This is the same form as the sibling diagrams, with no
+flowchart-specific reason to differ. [fixture:
 accessibility-lines/block-close-column-zero] [fixture:
 accessibility-lines/block-close-indented] [fixture:
 accessibility-lines/block-comment-close-column-zero] [fixture:
@@ -1259,21 +1260,20 @@ cb
 
 ### Multi-line values
 
-The lines of a value written over several lines keep their columns: a string in
-quotes, and the text of an `accDescr { ... }` block when it starts on the line
-after the `{`. [fixture: multi-line-values/markdown-string-kept] Inside a
-subgraph, mermaid.js also lists the text of such a block among the members of
-the subgraph, indentation included, so the indentation cannot be changed.
-Outside a subgraph the columns of the lines are not in the Db, and the lines are
-kept all the same, so that one rule holds for the text of every block. [fixture:
-multi-line-values/accdescr-block-comment-only-in-subgraph] The `}` of the block
-stands at the level of the `accDescr` it closes. [fixture:
-multi-line-values/accdescr-block-kept] Comment lines inside such a block are
-kept as written too. [fixture:
-multi-line-values/accdescr-block-comment-line-in-subgraph-kept] When the text
-starts on the line of the `{`, whitespace runs around it become one space, as
-between tokens; absent whitespace is not added. Empty blocks without trivia
-instead follow [Accessibility lines](#accessibility-lines). [fixture:
+A quoted string written over several lines keeps its columns. [fixture:
+multi-line-values/markdown-string-kept] At the top level, align the lines of an
+`accDescr { ... }` body one step inside its statement: Mermaid discards leading
+indentation after LF from the accessibility description. Inside a subgraph, keep
+the columns of a block with text, because its raw text is also stored among the
+subgraph's members. [fixture:
+multi-line-values/accdescr-block-subgraph-raw-membership-kept] The `}` of the
+block stands at the level of the `accDescr` it closes. [fixture:
+multi-line-values/accdescr-block-kept] Comment contents inside such a block are
+kept, with their columns following the same top-level or subgraph rule.
+[fixture: multi-line-values/accdescr-block-comment-line-in-subgraph-kept] When
+the text starts on the line of the `{`, whitespace runs around it become one
+space, as between tokens; absent whitespace is not added. Empty blocks without
+trivia instead follow [Accessibility lines](#accessibility-lines). [fixture:
 multi-line-values/accdescr-block-text-starts-on-brace-line] A block without
 text, whose lines are only comment lines, holds no value: its comment lines
 stand one level deeper than the `accDescr`, as comment lines inside a statement
@@ -1334,8 +1334,8 @@ flowchart LR
   end
   accDescr { one line }
   accDescr {
-  text
-%% note
+    text
+    %% note
   }
   accDescr {}
 ```

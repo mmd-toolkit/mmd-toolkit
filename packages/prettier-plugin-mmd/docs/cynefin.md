@@ -84,7 +84,7 @@ cynefin-beta
 
 Use one configured step for body statements and two for domain items. Columns do
 not define parents: the authored item lists do. tabWidth zero adds no spaces;
-useTabs adds one tab per step even at width zero. Value continuations and
+useTabs adds one tab per step even at width zero. Other value continuations and
 protected interiors retain their written columns.
 
 [fixture: cynefin/indentation/indent-two]
@@ -477,11 +477,13 @@ cynefin-beta
 
 Route accDescr blocks through the shared description layout. Whitespace-only
 interiors become {}; touching braces remain touching and ordinary existing edge
-padding becomes one space. Join plain opener whitespace, retain nonempty
-continuation columns and align a separate closer with the statement.
-Comments/directives inside empty blocks retain their shared layout. No content
-needs surrounding padding, and native-looking text inside a value remains value
-text.
+padding becomes one space. Join plain opener whitespace and align a separate
+closer with the statement. Ordinary description body and standalone comment
+lines align one level inside it, since the Db removes indentation after LF. Keep
+line breaks, internal blanks and trailing whitespace. Directives and shared
+removed comment regions keep their complete source. Comments/directives inside
+empty blocks retain their shared layout. No content needs surrounding padding,
+and native-looking text inside a value remains value text.
 
 [fixture: cynefin/description-blocks/description-empty]
 
@@ -989,10 +991,10 @@ cynefin-beta
 ### Multiline values
 
 Do not wrap at printWidth. Apart from domain/item splitting, retain physical
-string, transition-label and description contents, continuation columns and
-interior blanks. Reflow or reindentation can change the Db, and wrapping
-transition components can reject. A separate description closer uses the shared
-alignment rule.
+string and transition-label contents, continuation columns and interior blanks.
+Description bodies use the shared indentation above. Reflow or reindentation can
+change the Db, and wrapping transition components can reject. A separate
+description closer uses the shared alignment rule.
 
 [fixture: cynefin/multiline-values/long-line-unwrapped]
 
