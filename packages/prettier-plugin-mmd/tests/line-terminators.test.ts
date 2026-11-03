@@ -50,7 +50,7 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
       "%% c",
       "%%{init: {}}%%",
     ],
-    'C4Context\n  Boundary(b, "B") {\n    Person(a, "one\n  two", $first\n second="three\n four")\n    Person(b, bare\n last,)\n    accDescr {\n      first\n      last\n    }\n  }\n  %% c\n  %%{init: {}}%%\n',
+    'C4Context\n  Boundary(b, "B") {\n    Person(a, "one\n  two", $first\n second = "three\n four")\n    Person(b, bare\n last,)\n    accDescr {\n      first\n      last\n    }\n  }\n  %% c\n  %%{init: {}}%%\n',
   ],
   [
     "flowchart",

@@ -1298,6 +1298,10 @@ c4/argument-spacing/null-space-kept] [fixture:
 c4/empty-entries/named-null-slots] [fixture: c4/number-like-text/excess-kept]
 [test: c4: tab-before-quote] [test: c4: bare-dollar-prefix]
 
+Ordinary named-attribute gaps format as `$key = "value"`, keeping key and quoted
+contents intact. [fixture: c4/named-attributes/named-equals] [fixture:
+c4/named-attributes/named-multiline]
+
 Empty description blocks remain adjacent, with both `beforeBody` gaps retained,
 because they supply neither a significant statement nor a newline. Multiline
 argument values retain their lines and columns. Named-key exterior gaps retain

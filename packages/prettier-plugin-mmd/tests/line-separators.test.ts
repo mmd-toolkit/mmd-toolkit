@@ -2548,7 +2548,7 @@ const c4Examples: readonly (readonly [string, string, string])[] = [
   [
     "c4: internal-key-whitespace",
     'C4Context\nPerson(a,"A",$ first\u00a0second = "D")',
-    'C4Context\n  Person(a, "A", $first\u00a0second="D")\n',
+    'C4Context\n  Person(a, "A", $first\u00a0second = "D")\n',
   ],
   [
     "c4: nel-is-value-text",
@@ -2638,7 +2638,7 @@ const c4Examples: readonly (readonly [string, string, string])[] = [
   [
     "c4: cr-bare-and-named-values",
     'C4Context\rPerson(a,one\r  two,$descr="three\r four")\r',
-    'C4Context\n  Person(a, one\n  two, $descr="three\n four")\n',
+    'C4Context\n  Person(a, one\n  two, $descr = "three\n four")\n',
   ],
   [
     "c4: ls-kept-comment-statement",

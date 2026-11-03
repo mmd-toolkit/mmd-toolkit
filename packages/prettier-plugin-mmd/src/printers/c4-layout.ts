@@ -377,6 +377,8 @@ export function layoutC4Call(
         atom.start,
         before !== "(" && text !== ")" && !beforeComma ? "space" : "none",
       )
+    else if (namedGap && (text === "=" || before === "="))
+      rules.set(atom.start, "space")
     else if (
       beforeComma ||
       text === ")" ||
