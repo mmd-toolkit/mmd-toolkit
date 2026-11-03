@@ -20,9 +20,12 @@ import {
   collectValueNodes,
   expectToken,
   expectValue,
+  indentDescriptionLines,
   keepFirstGapLineTails,
   keptAsWritten,
+  layoutCompactEmptyDescriptionBlockWithFallback,
   layoutDescriptionBlock,
+  layoutEmptyDescriptionBlock,
   spansLinesThatCannotJoin,
 } from "./layout.ts"
 import type { Source } from "./source.ts"
@@ -200,12 +203,16 @@ export function layoutBodyItem(
 ): AtomLayout {
   const [start, end] = item.range
   if (item.type === "RequirementIgnoredText") {
-    return layoutDescriptionBlock(
+    return layoutCompactEmptyDescriptionBlockWithFallback(
       source,
-      { ...item, value: null },
+      start,
       end,
-      requirementValueNodeTypes,
-      { formatsEmptyTrivia: true },
+      () =>
+        indentDescriptionLines(
+          source,
+          { range: item.range, value: null, closed: true },
+          layoutEmptyDescriptionBlock(source, start, end, true),
+        ),
     )
   }
   const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
