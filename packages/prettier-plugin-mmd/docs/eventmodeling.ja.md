@@ -463,26 +463,17 @@ tf 01 evt Alpha { 	 x  }
 
 `{` の直後が LF で、LF の直後の `}` で閉じる通常の data と note は、
 次の条件を満たす場合、
-最初の空でない本文行を `tabWidth` 個の ASCII 空白（U+0020）で字下げします。
-後続の空でない行は、直前の空でない行からの原文の字下げの増減を、
-整形後の直前の空でない行の字下げに反映します。
-ただし、字下げが `tabWidth` より小さくなる場合は `tabWidth` で止めます。
-空行と空白だけの行は、この比較に影響しません。
-先頭行の過剰な字下げを直し、後続行が余分に深くなるのを防ぐためです。
+空でない本文行をすべて `tabWidth` 個の ASCII 空白（U+0020）で字下げします。
 `useTabs` でも空白を使い、`tabWidth: 0` では本文を書かれたまま残します。
-本文をデータ項目に分けて解析せず、書かれた字下げを整えます。
+Mermaid が表示する本文の原文を、波括弧の内側の 1 段にそろえる選択です。
+本文をデータ項目に分けて解析したり、JSON や code として整形したりはせず、
+原文の字下げの差は保ちません。
 
 [fixture: eventmodeling/data-blocks/body-common-margin]
 
 [fixture: eventmodeling/data-blocks/body-overindented-first-line]
 
-[fixture: eventmodeling/data-blocks/body-overindented-first-nested]
-
-[fixture: eventmodeling/data-blocks/body-overindented-first-following-nested]
-
-[fixture: eventmodeling/data-blocks/body-overindented-first-repeated-dedents]
-
-[fixture: eventmodeling/data-blocks/body-nested-indentation-kept]
+[fixture: eventmodeling/data-blocks/body-overindented-later-line]
 
 [fixture: eventmodeling/data-blocks/body-overindented-first-note-blanks-tabs]
 
@@ -509,7 +500,7 @@ tf 01 evt Alpha { 	 x  }
 空行、空白だけの行、改行、行末の空白とタブ、
 行頭の margin より後の文字は保ちます。
 閉じ波括弧は第 1 列に残します。
-見かけの文、入れ子風の text、直後の閉じ風の行も、
+見かけの文、波括弧を含む text、直後の閉じ風の行も、
 body を持つ形の規則が後の閉じまで読む場合は保ちます。
 
 [fixture: eventmodeling/data-blocks/body-whitespace-kept]
@@ -560,6 +551,21 @@ eventmodeling
 data AddItem01 {
   sku: 'SHIRT-M'
   quantity: 2
+}
+```
+
+入力（escape 表記）:
+`"eventmodeling\ndata D {\n  sku: 'SHIRT-M'\n    quantity: 2\n  price: 10\n}\n"`
+
+出力
+([data-blocks/body-overindented-later-line-output.mmd](../tests/fixtures/eventmodeling/data-blocks/body-overindented-later-line-output.mmd)):
+
+```mmd
+eventmodeling
+data D {
+  sku: 'SHIRT-M'
+  quantity: 2
+  price: 10
 }
 ```
 

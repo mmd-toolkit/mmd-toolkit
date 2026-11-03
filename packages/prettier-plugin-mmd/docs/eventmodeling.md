@@ -461,26 +461,18 @@ tf 01 evt Alpha { 	 x  }
 ### Data blocks
 
 For ordinary data and note blocks written as `{` immediately followed by LF and
-closed by LF followed by `}`, align the first nonblank body line to `tabWidth`
-ASCII spaces (U+0020) where the conditions below permit it. For each later
-nonblank line, apply its authored indentation change to the preceding formatted
-nonblank line's indentation, stopping decreases at `tabWidth`. Blank and
-whitespace-only lines do not affect these comparisons. This corrects an
-overindented first line without pushing the following lines deeper. Use spaces
-even with `useTabs`; at `tabWidth: 0`, keep the body as written. This adjusts
-written indentation without parsing the body into data fields.
+closed by LF followed by `}`, align every nonblank body line to `tabWidth` ASCII
+spaces (U+0020) where the conditions below permit it. Use spaces even with
+`useTabs`; at `tabWidth: 0`, keep the body as written. This puts the source text
+of Mermaid's displayed body one level inside its braces. It does not parse the
+body into data fields or format it as JSON or code; authored indentation
+differences are not preserved.
 
 [fixture: eventmodeling/data-blocks/body-common-margin]
 
 [fixture: eventmodeling/data-blocks/body-overindented-first-line]
 
-[fixture: eventmodeling/data-blocks/body-overindented-first-nested]
-
-[fixture: eventmodeling/data-blocks/body-overindented-first-following-nested]
-
-[fixture: eventmodeling/data-blocks/body-overindented-first-repeated-dedents]
-
-[fixture: eventmodeling/data-blocks/body-nested-indentation-kept]
+[fixture: eventmodeling/data-blocks/body-overindented-later-line]
 
 [fixture: eventmodeling/data-blocks/body-overindented-first-note-blanks-tabs]
 
@@ -506,7 +498,7 @@ empty line does not make the next line the first physical line.
 
 Keep blank and whitespace-only lines, line breaks, trailing spaces and tabs, and
 every character after each line's leading margin. The closing brace stays at
-column one. Preserve apparent statements, nested-looking text and an adjacent
+column one. Preserve apparent statements, text containing braces and an adjacent
 closing-looking line when the block's body-present rule reads through it to a
 later closer.
 
@@ -558,6 +550,21 @@ eventmodeling
 data AddItem01 {
   sku: 'SHIRT-M'
   quantity: 2
+}
+```
+
+Input (escaped):
+`"eventmodeling\ndata D {\n  sku: 'SHIRT-M'\n    quantity: 2\n  price: 10\n}\n"`.
+
+Output
+([data-blocks/body-overindented-later-line-output.mmd](../tests/fixtures/eventmodeling/data-blocks/body-overindented-later-line-output.mmd)):
+
+```mmd
+eventmodeling
+data D {
+  sku: 'SHIRT-M'
+  quantity: 2
+  price: 10
 }
 ```
 

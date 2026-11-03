@@ -315,10 +315,9 @@ function layoutComponents(
 }
 
 /**
- * Follow the written indentation changes without dedenting past one body
- * level, keeping the space-separated words of Mermaid's data label. A new
- * space on a later physical line adds a visible nonbreaking space; tabs,
- * markup and padded openers need their authored text
+ * Align nonblank body lines while keeping the space-separated words of
+ * Mermaid's data label. A new space on a later physical line adds a visible
+ * nonbreaking space; tabs, markup and padded openers need their authored text
  * (docs/eventmodeling.md, Data blocks).
  */
 function indentedDataBlock(text: string, tabWidth: number): Doc | undefined {
@@ -338,24 +337,19 @@ function indentedDataBlock(text: string, tabWidth: number): Doc | undefined {
     while (row[margin] === " ") margin++
     return margin
   })
+  let hasContent = false
   for (const [index, row] of rows.entries()) {
     if (row.trim() === "") continue
+    hasContent = true
     const margin = margins[index]
     if (isWhitespace(row[margin]) || (index > 0 && margin === 0))
       return undefined
   }
 
-  let minimumMargin = Infinity
-  const indented: string[] = []
-  for (const [index, row] of rows.entries()) {
-    if (row.trim() === "") {
-      indented.push(row)
-      continue
-    }
-    minimumMargin = Math.min(minimumMargin, margins[index])
-    const margin = tabWidth + margins[index] - minimumMargin
-    indented.push(" ".repeat(margin) + row.slice(margins[index]))
-  }
-  if (minimumMargin === Infinity) return undefined
+  if (!hasContent) return undefined
+  const indentation = " ".repeat(tabWidth)
+  const indented = rows.map((row, index) =>
+    row.trim() === "" ? row : indentation + row.slice(margins[index]),
+  )
   return utils.replaceEndOfLine(`{\n${indented.join("\n")}\n}`)
 }

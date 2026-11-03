@@ -2,6 +2,6 @@
 "prettier-plugin-mmd": patch
 ---
 
-Fix excess indentation when the first body line of an `eventmodeling` data or
-note block is deeper than later lines. Later lines now follow the authored
-indentation changes without moving outside the body margin.
+Fix uneven indentation in safely formatted `eventmodeling` data and note blocks.
+Align every nonblank body line to one `tabWidth` step while keeping rendering,
+content, blank lines and trailing whitespace unchanged.
