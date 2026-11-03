@@ -805,6 +805,15 @@ raw `notes[].text` の許可された行頭の ASCII 空白だけが変わる場
 このような本文は、最初の物理行が空でなく、
 字下げが ASCII 空白と tab だけならその行だけをそろえます。
 Mermaid はこの余白を取り除くため、raw Db は一致します。
+後続の内容行の ASCII 空白と tab の接頭辞が共通なら、
+空行と ASCII 空白・tab だけの行を除いてその接頭辞に合わせ、
+それ以外は設定された本文の段を使います。
+これにより、すでにそろっている保護本文を保ち、
+先頭行の不揃いも後続のバイト列を変えずに修正します。
+[fixture: state/notes/blank-paragraphs-first-row-misaligned]
+[fixture: state/notes/protected-tab-margin-alignment]
+[fixture: state/notes/single-markup-row]
+
 trivia、セミコロン、保護された結合領域がある場合は、
 本文全体を原文のまま保ちます。
 一般の Markdown は再整形しません。 [fixture: state/notes/html-note-kept]

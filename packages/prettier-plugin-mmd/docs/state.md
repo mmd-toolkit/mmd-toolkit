@@ -616,14 +616,50 @@ notes/literal-markers-zero-width] [fixture:
 notes/marker-at-paragraph-boundary-kept]
 
 For bodies outside this paragraph rule, align only the first physical body line
-when it is nonempty and starts with only ASCII-space/tab padding. Mermaid trims
-that margin before storing the note, so this step keeps the raw Db identical
-even for HTML or Markdown. Keep every later margin as written; for example,
-indenting the inside of `<pre>` can change the drawing. A blank first row or
-leading whitespace other than ASCII spaces and tabs keeps its source. [fixture:
-notes/html-note-kept] [fixture: notes/html-pre-first-line] [fixture:
-notes/html-break-first-line] [fixture: notes/html-first-line-tabs] [fixture:
-notes/html-first-line-zero-width] [fixture: notes/first-tab-markup-margin]
+when it is nonempty and starts with only ASCII-space/tab padding. If the later
+content lines all have the same ASCII-space/tab prefix, use that exact prefix
+for the first line too, including an empty prefix. Ignore empty lines and lines
+containing only ASCII spaces and tabs when choosing that prefix, preserving
+their bytes. This keeps existing alignment and repairs a previously misaligned
+first line without changing the later text. If no later content line exists, or
+later margins differ or contain leading whitespace other than ASCII spaces and
+tabs, use the configured body indentation. [fixture:
+notes/over-lines-empty-lines-kept] [fixture:
+notes/blank-paragraphs-first-row-misaligned] [fixture:
+notes/protected-tab-margin-alignment] [fixture:
+notes/heading-at-paragraph-boundary-kept] [fixture: notes/markdown-code-kept]
+[fixture: notes/single-markup-row] [test: U+00A0 at the start of a later note
+row]
+
+Mermaid trims the first-line margin before storing the note, so this step keeps
+the raw Db identical even for HTML or Markdown. Keep every later margin as
+written; for example, indenting the inside of `<pre>` can change the drawing. A
+blank first row or leading whitespace other than ASCII spaces and tabs keeps its
+source. [fixture: notes/html-note-kept] [fixture: notes/html-pre-first-line]
+[fixture: notes/html-break-first-line] [fixture: notes/html-first-line-tabs]
+[fixture: notes/html-first-line-zero-width] [fixture:
+notes/first-tab-markup-margin]
+
+For example, keep the common two-space margin of blank-separated paragraphs
+rather than moving just their first line to four spaces. Moving every line to
+four spaces would change how Mermaid reads the later paragraphs.
+
+Output
+([notes/over-lines-empty-lines-kept-output.mmd](../tests/fixtures/state/notes/over-lines-empty-lines-kept-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  A
+  note right of A
+  one
+
+  two
+
+
+  three
+  end note
+  B
+```
 
 Output
 ([notes/html-note-kept-output.mmd](../tests/fixtures/state/notes/html-note-kept-output.mmd)):

@@ -88,6 +88,19 @@ describe("state's permitted attached-note margins", () => {
     ).toEqual(after)
   })
 
+  it("matches a protected tab margin while requiring exact raw Db equality", () => {
+    const beforeSource =
+      "stateDiagram-v2\nnote right of A\n        Card payments\n \t  \n\t\tfinish immediately.\nend note\n"
+    const afterSource =
+      "stateDiagram-v2\n  note right of A\n\t\tCard payments\n \t  \n\t\tfinish immediately.\n  end note\n"
+    const before = dbOfText(beforeSource, defaultEmbedded())
+    const after = dbOfText(afterSource, defaultEmbedded())
+    expect(after).toEqual(before)
+    expect(
+      stateDbForFormattingComparison(before, after, beforeSource, afterSource),
+    ).toEqual(after)
+  })
+
   it("checks nested notes in source order, leaving inline notes and raw Dbs intact", () => {
     const beforeSource =
       "stateDiagram-v2\nnote left of A : kept\nstate S {\nnote right of B\ncard & wallet \n   online payments  \nend note\n}\nnote left of C\n  final prose\nend note\n"

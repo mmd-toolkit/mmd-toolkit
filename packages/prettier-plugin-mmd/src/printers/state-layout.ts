@@ -809,7 +809,11 @@ function isParagraphNoteLine(
   return codeDelimiter === 0
 }
 
-/** A nonblank first physical row loses its leading space/tab padding in the Db. */
+/**
+ * A nonblank first physical row loses its leading space/tab padding in the Db.
+ * Match aligned later content rows rather than introducing a different margin
+ * into a protected body (docs/state.md, Notes).
+ */
 function firstNoteTextLine(
   source: Source,
   text: Atom,
@@ -822,9 +826,41 @@ function firstNoteTextLine(
     return null
   const end = Math.min(lineEnd, text.end)
   return [
-    { start, end, writtenIndentation: indentation },
+    {
+      start,
+      end,
+      writtenIndentation:
+        followingNoteIndentation(source, end + 1, text.end) ?? indentation,
+    },
     ...(end < text.end ? [{ start: end, end: text.end }] : []),
   ]
+}
+
+/** The common ASCII padding of later content rows, if at least one exists. */
+function followingNoteIndentation(
+  source: Source,
+  start: number,
+  end: number,
+): string | undefined {
+  let padding: string | undefined
+  for (let offset = start; offset <= end;) {
+    const nextBreak = source.text.indexOf("\n", offset)
+    const rowEnd = nextBreak < 0 ? end : Math.min(nextBreak, end)
+    let content = offset
+    while (
+      content < rowEnd &&
+      (source.text[content] === " " || source.text[content] === "\t")
+    )
+      content++
+    if (content < rowEnd) {
+      if (isWhitespace(source.text[content])) return undefined
+      const rowPadding = source.text.slice(offset, content)
+      if (padding !== undefined && padding !== rowPadding) return undefined
+      padding = rowPadding
+    }
+    offset = rowEnd + 1
+  }
+  return padding
 }
 
 /**

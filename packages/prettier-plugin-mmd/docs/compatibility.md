@@ -734,11 +734,19 @@ multiline code, strikethrough, general HTML and other protected forms. These
 margins can appear in the rendered label: changing indentation inside `<pre>` or
 after a blank line can change its size or layout. For such bodies, only a
 nonempty first physical row with ASCII-space/tab padding aligns; Mermaid trims
-that margin, so the raw Db stays identical. Trivia, semicolons and protected
-joining regions keep the whole body written. This does not reformat general
-Markdown. [fixture: state/notes/html-note-kept] [fixture:
-state/notes/html-pre-first-line] [fixture: state/notes/html-break-first-line]
-[fixture: state/notes/first-tab-markup-margin] [fixture:
+that margin, so the raw Db stays identical. Match a shared ASCII-space/tab
+prefix of later content rows, ignoring empty and ASCII-space/tab-only rows.
+Otherwise use the configured body level. This preserves already aligned
+protected text and repairs an inconsistent first-row margin without changing
+later bytes. [fixture: state/notes/blank-paragraphs-first-row-misaligned]
+[fixture: state/notes/protected-tab-margin-alignment] [fixture:
+state/notes/single-markup-row]
+
+Trivia, semicolons and protected joining regions keep the whole body written.
+This does not reformat general Markdown. [fixture: state/notes/html-note-kept]
+[fixture: state/notes/html-pre-first-line] [fixture:
+state/notes/html-break-first-line] [fixture:
+state/notes/first-tab-markup-margin] [fixture:
 state/notes/over-lines-empty-lines-kept] [fixture:
 state/notes/list-body-margin-kept] [fixture:
 state/notes/heading-at-paragraph-boundary-kept] [fixture:

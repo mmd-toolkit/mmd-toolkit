@@ -635,7 +635,21 @@ Mermaid の読み方が変わる場合があるためです。
 [fixture: notes/marker-at-paragraph-boundary-kept]
 
 この段落の規則に当てはまらない本文では、最初の物理行が空でなく、
-字下げが ASCII 空白と tab だけなら、その行も本文の段へそろえます。
+字下げが ASCII 空白と tab だけなら、その行だけをそろえます。
+後続の内容行の ASCII 空白と tab の接頭辞がすべて同じなら、空の接頭辞も含め、
+その接頭辞を先頭行にも使います。
+空行と ASCII 空白・tab だけの行は接頭辞の判定から除き、そのバイト列を保ちます。
+これにより、既存のそろいを保ち、
+先頭行だけが不揃いだった本文も後続のテキストを変えずに修正します。
+後続の内容行がない場合や、後続の字下げが異なる場合、
+行頭に ASCII 空白と tab 以外の空白文字がある場合は、
+設定された本文の段を使います。 [fixture: notes/over-lines-empty-lines-kept]
+[fixture: notes/blank-paragraphs-first-row-misaligned]
+[fixture: notes/protected-tab-margin-alignment]
+[fixture: notes/heading-at-paragraph-boundary-kept]
+[fixture: notes/markdown-code-kept] [fixture: notes/single-markup-row]
+[test: U+00A0 at the start of a later note row]
+
 Mermaid はこの余白をノートの格納前に取り除くため、
 HTML や Markdown があっても raw Db は完全に一致します。
 後続のすべての余白は原文を保ちます。
@@ -646,6 +660,28 @@ HTML や Markdown があっても raw Db は完全に一致します。
 [fixture: notes/html-break-first-line] [fixture: notes/html-first-line-tabs]
 [fixture: notes/html-first-line-zero-width]
 [fixture: notes/first-tab-markup-margin]
+
+たとえば、空行で分かれた段落の共通の空白2個の字下げは、
+先頭行だけを空白4個へ動かさずに保ちます。
+すべての行を空白4個へ動かすと、
+Mermaid による後続の段落の読み方が変わるためです。
+
+出力
+([notes/over-lines-empty-lines-kept-output.mmd](../tests/fixtures/state/notes/over-lines-empty-lines-kept-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  A
+  note right of A
+  one
+
+  two
+
+
+  three
+  end note
+  B
+```
 
 出力
 ([notes/html-note-kept-output.mmd](../tests/fixtures/state/notes/html-note-kept-output.mmd)):
