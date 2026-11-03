@@ -1,4 +1,5 @@
 import type {
+  C4AccDescrBlockStatement,
   C4BoundaryStatement,
   C4Diagram,
   C4ElementStatement,
@@ -15,11 +16,14 @@ import {
   collectAtoms,
   collectValueNodes,
   expectToken,
+  indentDescriptionLines,
+  keepFirstGapLineTails,
   keptAsWritten,
   layoutDescriptionBlock,
   spansLinesThatCannotJoin,
 } from "./layout.ts"
 import {
+  holdsJoiningRegion,
   keptSemicolonPrefixEnd,
   lineStartOf,
   semicolonSegmentEnd,
@@ -131,14 +135,44 @@ export function layoutC4Header(source: Source, diagram: C4Diagram): AtomLayout {
     "the C4 header",
   )
   const end = diagram.beforeBody.at(-1)?.range[1] ?? keyword.range[1]
-  if (findTriviaBetween(source, start, end).length > 0)
-    return keptAsWritten(start, end)
-  return {
-    atoms: collectAtoms(source, start, end, [], []),
-    rules: new Map(),
-    outdented: new Set(),
-    lineBreaks: "joined",
+  const layout: AtomLayout =
+    findTriviaBetween(source, start, end).length > 0
+      ? keptAsWritten(start, end)
+      : {
+          atoms: collectAtoms(source, start, end, [], []),
+          rules: new Map(),
+          outdented: new Set(),
+          lineBreaks: "joined",
+        }
+  return indentC4BeforeBody(source, diagram.beforeBody, layout)
+}
+
+/**
+ * Null blocks before a body use ordinary description columns without changing
+ * their adjacency or line breaks. Protected source stays written (ast/c4.md,
+ * C4Diagram and C4BoundaryStatement; docs/c4.md, Empty description blocks).
+ */
+function indentC4BeforeBody(
+  source: Source,
+  blocks: readonly C4AccDescrBlockStatement[],
+  layout: AtomLayout,
+): AtomLayout {
+  let aligned = layout
+  for (const block of blocks) {
+    const text = source.text.slice(...block.range)
+    if (
+      !text.includes("\n") ||
+      text.includes(";") ||
+      holdsJoiningRegion(source, ...block.range)
+    )
+      continue
+    aligned = indentDescriptionLines(
+      source,
+      { range: block.range, value: block.value, closed: true },
+      aligned,
+    )
   }
+  return aligned
 }
 
 /** The boundary braces, outside arguments and beforeBody blocks. */
@@ -352,14 +386,18 @@ export function layoutC4Call(
     )
       rules.set(atom.start, "none")
   }
-  return {
-    atoms,
-    rules,
-    outdented,
-    lineBreaks: "kept",
-    joinedBefore,
-    keptBreaksBefore,
-  }
+  return indentC4BeforeBody(
+    source,
+    statement.type === "C4BoundaryStatement" ? statement.beforeBody : [],
+    {
+      atoms,
+      rules,
+      outdented,
+      lineBreaks: "kept",
+      joinedBefore,
+      keptBreaksBefore,
+    },
+  )
 }
 
 /**
@@ -373,12 +411,7 @@ export function layoutC4Text(source: Source, statement: C4Text): AtomLayout {
   if (keptSemicolonPrefixEnd(source, start) > start)
     return keptAsWritten(start, end)
   if (statement.type === "C4AccDescrBlockStatement") {
-    if (
-      findTriviaBetween(source, start, end).some(
-        (item) => item.type === "Directive",
-      ) ||
-      source.text.slice(start, end).includes(";")
-    )
+    if (source.text.slice(start, end).includes(";"))
       return keptAsWritten(start, end)
     const layout = layoutDescriptionBlock(
       source,
@@ -394,51 +427,66 @@ export function layoutC4Text(source: Source, statement: C4Text): AtomLayout {
     return layout
   }
   if (
-    findTriviaBetween(source, start, end).length > 0 ||
-    spansLinesThatCannotJoin(source, start, end) ||
-    (source.text.slice(start, end).includes("\n") &&
-      c4DirectionIn(statement.value?.value ?? ""))
+    source.text.slice(start, end).includes("\n") &&
+    c4DirectionIn(statement.value?.value ?? "")
   )
     return keptAsWritten(start, end)
   if (
-    statement.type === "C4TitleStatement" ||
-    statement.type === "C4AccDescriptionStatement"
+    statement.type === "C4AccTitleStatement" ||
+    statement.type === "C4AccDescrStatement"
   ) {
-    const keyword = expectToken(
-      findTokenStartingAt(source, start),
-      "a C4 title keyword",
-    )
-    const separator = keyword.range[1]
+    const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+    // Colon forms trim exterior whitespace; their structural trivia gaps
+    // can align while retained LF still shields direction text. Native
+    // title forms below instead own their additional separator whitespace
+    // (diagrams/c4.md, Title and accessibility contexts; docs/c4.md,
+    // Accessibility lines and Direction rejection).
     if (
-      source.text[separator] === "\u2028" ||
-      source.text[separator] === "\u2029"
+      holdsJoiningRegion(source, start, end) ||
+      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true })
     )
       return keptAsWritten(start, end)
-    return {
-      atoms: [
-        { start, end: separator },
-        { start: separator + 1, end },
-      ],
-      rules: new Map([[separator + 1, "space"]]),
-      outdented: new Set(),
-      lineBreaks: "joined",
-    }
-  }
-  return {
-    atoms: collectAtoms(
+    const atoms = collectAtoms(
       source,
       start,
       end,
       collectValueNodes(statement, c4ValueNodeTypes),
       [],
-    ),
-    rules:
-      statement.value === null
-        ? new Map()
-        : accessibilityRules(source, {
-            range: statement.range,
-            value: statement.value,
-          }),
+    )
+    return {
+      atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+      rules:
+        statement.value === null
+          ? new Map()
+          : accessibilityRules(source, {
+              range: statement.range,
+              value: statement.value,
+            }),
+      outdented: new Set(),
+      lineBreaks: keepsLineBreaks ? "kept" : "joined",
+    }
+  }
+  if (
+    findTriviaBetween(source, start, end).length > 0 ||
+    spansLinesThatCannotJoin(source, start, end)
+  )
+    return keptAsWritten(start, end)
+  const keyword = expectToken(
+    findTokenStartingAt(source, start),
+    "a C4 title keyword",
+  )
+  const separator = keyword.range[1]
+  if (
+    source.text[separator] === "\u2028" ||
+    source.text[separator] === "\u2029"
+  )
+    return keptAsWritten(start, end)
+  return {
+    atoms: [
+      { start, end: separator },
+      { start: separator + 1, end },
+    ],
+    rules: new Map([[separator + 1, "space"]]),
     outdented: new Set(),
     lineBreaks: "joined",
   }

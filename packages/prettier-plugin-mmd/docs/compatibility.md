@@ -1310,6 +1310,20 @@ c4/named-attributes/named-exterior-newline-kept] [fixture:
 c4/named-attributes/named-key-newline] [fixture:
 c4/direction-rejection/acc-colon-direction]
 
+Inside multiline empty `beforeBody` blocks, standalone trivia uses one level
+inside the containing header or call, and the closer aligns with that owner.
+Existing adjacency and brace-joining rules still apply. [fixture:
+c4/header/empty-header-comment-columns] [fixture:
+c4/boundary-bodies/empty-beforebody-comment-columns]
+
+Colon accessibility forms keep trivia line breaks while ordinary exterior tokens
+and standalone trivia use continuation indentation. Own-line directives in
+description blocks align with the body, keeping directive contents and contact
+unchanged. Native `title` and `accDescription` value prefixes, direction-text
+lines, semicolon protections and joining comment regions retain their separate
+preservation rules. [fixture: c4/accessibility-lines/colon-trivia-continuations]
+[fixture: c4/description-blocks/block-directive-lines]
+
 Diagram comments retain their complete following gaps, including whitespace-only
 recovery lines and terminal gaps; the `comment-takes-line-break` divergence is
 not repaired by moving comments. C4 keeps every semicolon and the shared

@@ -1409,6 +1409,21 @@ direction の文字の結合は、先頭列でも受理される入力を拒否�
 [fixture: c4/named-attributes/named-key-newline]
 [fixture: c4/direction-rejection/acc-colon-direction]
 
+複数行の空の `beforeBody` ブロックでは、独立した注釈は、
+ブロックを持つヘッダーや呼び出しより 1 段深く置きます。
+閉じる `}` はヘッダーや呼び出しと同じ段にそろえます。
+既存の隣接と波括弧の結合規則は引き続き適用します。
+[fixture: c4/header/empty-header-comment-columns]
+[fixture: c4/boundary-bodies/empty-beforebody-comment-columns]
+
+コロン形式の accessibility は注釈の改行を残し、
+値の外側の構造と独立した注釈を継続行として字下げします。
+説明ブロックの独立した directive は本文にそろえ、内容と接触は変えません。
+native の `title` と `accDescription` の値の前置空白、方向の文字を含む行、
+セミコロンの保護、コメントで結合される領域は、それぞれの保持規則に従います。
+[fixture: c4/accessibility-lines/colon-trivia-continuations]
+[fixture: c4/description-blocks/block-directive-lines]
+
 図のコメントの後は、復帰用の空白行と末尾の隙間も含めて全体を保ちます。
 コメントを移して `comment-takes-line-break` の差異を修復しません。
 すべてのセミコロンと、
