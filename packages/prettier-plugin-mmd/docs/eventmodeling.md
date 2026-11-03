@@ -461,13 +461,30 @@ tf 01 evt Alpha { 	 x  }
 ### Data blocks
 
 For ordinary data and note blocks written as `{` immediately followed by LF and
-closed by LF followed by `}`, adjust the common margin of ASCII spaces (U+0020)
-to `tabWidth` where the conditions below permit it. Take the smallest
-leading-space count among nonblank lines as the common margin. Apply the same
-change to each nonblank body line, preserving their relative indentation. Use
-spaces even with `useTabs`; at `tabWidth: 0`, keep the body as written.
+closed by LF followed by `}`, align the first nonblank body line to `tabWidth`
+ASCII spaces (U+0020) where the conditions below permit it. For each later
+nonblank line, apply its authored indentation change to the preceding formatted
+nonblank line's indentation, stopping decreases at `tabWidth`. Blank and
+whitespace-only lines do not affect these comparisons. This corrects an
+overindented first line without pushing the following lines deeper. Use spaces
+even with `useTabs`; at `tabWidth: 0`, keep the body as written. This adjusts
+written indentation without parsing the body into data fields.
 
 [fixture: eventmodeling/data-blocks/body-common-margin]
+
+[fixture: eventmodeling/data-blocks/body-overindented-first-line]
+
+[fixture: eventmodeling/data-blocks/body-overindented-first-nested]
+
+[fixture: eventmodeling/data-blocks/body-overindented-first-following-nested]
+
+[fixture: eventmodeling/data-blocks/body-overindented-first-repeated-dedents]
+
+[fixture: eventmodeling/data-blocks/body-nested-indentation-kept]
+
+[fixture: eventmodeling/data-blocks/body-overindented-first-note-blanks-tabs]
+
+[fixture: eventmodeling/data-blocks/body-overindented-first-four-spaces]
 
 [fixture: eventmodeling/indentation/data-declaration-four-spaces]
 
@@ -524,11 +541,25 @@ default-size rules also take precedence.
 [fixture: eventmodeling/data-blocks/body-style-semicolon-kept]
 
 Mermaid accepts body indentation and includes it in the raw value. The permitted
-common-margin adjustment can therefore change raw Db values while preserving the
-rendered diagram. This is an explicit formatter exception; it changes no parser,
-specification or recorded Mermaid Db reading.
+leading-margin adjustment can therefore change raw Db values while preserving
+the rendered diagram. This is an explicit formatter exception; it changes no
+parser, specification or recorded Mermaid Db reading.
 
 [fixture: eventmodeling/final-newline/final-block-padding-kept]
+
+Input (escaped):
+`"eventmodeling\ndata AddItem01 {\n    sku: 'SHIRT-M'\n  quantity: 2\n}\n"`.
+
+Output
+([data-blocks/body-overindented-first-line-output.mmd](../tests/fixtures/eventmodeling/data-blocks/body-overindented-first-line-output.mmd)):
+
+```mmd
+eventmodeling
+data AddItem01 {
+  sku: 'SHIRT-M'
+  quantity: 2
+}
+```
 
 Input (escaped): `"eventmodeling tf 01 evt Alpha [[D]] data D {\nx\n}\n"`.
 

@@ -2514,15 +2514,18 @@ final-hidden-padding] [test: cynefin Markdown: rejected]
 
 The [eventmodeling rules](./eventmodeling.md) preserve inline data and block
 contents, except for the restricted ASCII-space margin adjustment in
-[Data blocks](./eventmodeling.md#data-blocks). That adjustment preserves
-rendering but may change raw Db values; it changes no parser, specification or
-recorded Mermaid reading. Other payload characters, quotes, braces, blank lines,
-trailing whitespace and apparent following statements remain as written. Tags
-can still format. Block-data consumes an immediately following LF; other
-whitespace is lookahead. Closing padding and LS/PS boundaries stay written,
-including at EOF. Reindenting a block closer can reject input, and replacing
-closing lookahead with LF can change the comparison Db. Native data is read
-directly from source rather than evaluated as embedded configuration. [fixture:
+[Data blocks](./eventmodeling.md#data-blocks). That adjustment aligns the first
+nonblank body line to `tabWidth` spaces and follows later indentation changes,
+stopping decreases at that margin. It preserves rendering but may change raw Db
+values; it changes no parser, specification or recorded Mermaid reading. Other
+payload characters, quotes, braces, blank lines, trailing whitespace and
+apparent following statements remain as written. Tags can still format.
+Block-data consumes an immediately following LF; other whitespace is lookahead.
+Closing padding and LS/PS boundaries stay written, including at EOF. Reindenting
+a block closer can reject input, and replacing closing lookahead with LF can
+change the comparison Db. Native data is read directly from source rather than
+evaluated as embedded configuration. [fixture:
+eventmodeling/data-blocks/body-overindented-first-line] [fixture:
 eventmodeling/inline-data/greedy-apparent-frames-kept] [fixture:
 eventmodeling/data-blocks/block-closer-indent-unsafe] [fixture:
 eventmodeling/data-boundaries/same-line-block-successor] [test:

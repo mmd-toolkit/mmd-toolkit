@@ -2702,6 +2702,8 @@ Markdown は最終 code line の hidden padding を削りますが、単独整�
 eventmodeling の[規則](./eventmodeling.ja.md)は、
 [Data blocks](./eventmodeling.ja.md#data-blocks) の限定的な ASCII 空白 margin
 変更を除き、 inline data と block の内容を保ちます。
+この変更は最初の空でない本文行を `tabWidth` 個の空白で字下げし、
+後続の字下げの増減に従いながら、減少をその margin で止めます。
 この変更は描画を保ちながら raw Db 値を変える場合がありますが、 parser、仕様、
 記録された Mermaid の読みは変えません。
 ほかの payload の文字、引用符、波括弧、空行、行末の空白、
@@ -2712,6 +2714,7 @@ block-data は直後の LF を消費し、それ以外の空白は lookahead で
 block closer の字下げは拒否を、
 lookahead の LF への置換は比較 Db の変更を起こす場合があります。
 native data は埋め込まれた設定として評価せず、 source から直接読みます。
+[fixture: eventmodeling/data-blocks/body-overindented-first-line]
 [fixture: eventmodeling/inline-data/greedy-apparent-frames-kept]
 [fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]
 [fixture: eventmodeling/data-boundaries/same-line-block-successor]

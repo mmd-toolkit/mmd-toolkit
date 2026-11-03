@@ -57,8 +57,9 @@ function objectOf(value: JsonValue | undefined): JsonObject | undefined {
 }
 
 /**
- * Checks the result independently of the printer's margin plan: content,
- * relative columns and the renderer's ASCII-space-separated words survive.
+ * Checks adjacent nonblank rows independently of the printer's margin plan:
+ * depth changes survive unless they would pass the first printed margin.
+ * Content and the renderer's ASCII-space-separated words stay the same.
  * Protected semicolons also exclude Mermaid's native entity spellings.
  */
 function isAllowedMarginChange(before: string, after: string): boolean {
@@ -86,7 +87,9 @@ function isAllowedMarginChange(before: string, after: string): boolean {
   const rowsBefore = before.slice(0, beforeClose).split("\n").slice(1)
   const rowsAfter = after.slice(0, afterClose).split("\n").slice(1)
   if (rowsBefore.length !== rowsAfter.length) return false
-  let marginDelta: number | undefined
+  let firstPrintedMargin: number | undefined
+  let previousWrittenMargin = 0
+  let previousPrintedMargin = 0
   for (const [index, row] of rowsBefore.entries()) {
     const printed = rowsAfter[index]
     if (row.trim() === "" || printed.trim() === "") {
@@ -98,9 +101,19 @@ function isAllowedMarginChange(before: string, after: string): boolean {
     const content = row.slice(writtenSpaces)
     if (content[0].trim() === "" || content !== printed.slice(printedSpaces))
       return false
-    const delta = printedSpaces - writtenSpaces
-    marginDelta ??= delta
-    if (delta !== marginDelta) return false
+    if (firstPrintedMargin === undefined) {
+      if (printedSpaces === 0) return false
+      firstPrintedMargin = printedSpaces
+    } else if (
+      printedSpaces !==
+      Math.max(
+        firstPrintedMargin,
+        previousPrintedMargin + writtenSpaces - previousWrittenMargin,
+      )
+    )
+      return false
+    previousWrittenMargin = writtenSpaces
+    previousPrintedMargin = printedSpaces
   }
   const beforeWords = rowsBefore.join("\n").split(" ").filter(Boolean)
   const afterWords = rowsAfter.join("\n").split(" ").filter(Boolean)

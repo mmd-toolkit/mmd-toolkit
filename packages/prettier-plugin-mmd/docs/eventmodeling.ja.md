@@ -463,12 +463,30 @@ tf 01 evt Alpha { 	 x  }
 
 `{` の直後が LF で、LF の直後の `}` で閉じる通常の data と note は、
 次の条件を満たす場合、
-ASCII 空白（U+0020）の共通 margin を `tabWidth` にそろえます。
-空でない本文行の行頭空白数の最小値を共通 margin とします。
-空でない各本文行を同じ量だけ動かし、相対的な字下げを保ちます。
+最初の空でない本文行を `tabWidth` 個の ASCII 空白（U+0020）で字下げします。
+後続の空でない行は、直前の空でない行からの原文の字下げの増減を、
+整形後の直前の空でない行の字下げに反映します。
+ただし、字下げが `tabWidth` より小さくなる場合は `tabWidth` で止めます。
+空行と空白だけの行は、この比較に影響しません。
+先頭行の過剰な字下げを直し、後続行が余分に深くなるのを防ぐためです。
 `useTabs` でも空白を使い、`tabWidth: 0` では本文を書かれたまま残します。
+本文をデータ項目に分けて解析せず、書かれた字下げを整えます。
 
 [fixture: eventmodeling/data-blocks/body-common-margin]
+
+[fixture: eventmodeling/data-blocks/body-overindented-first-line]
+
+[fixture: eventmodeling/data-blocks/body-overindented-first-nested]
+
+[fixture: eventmodeling/data-blocks/body-overindented-first-following-nested]
+
+[fixture: eventmodeling/data-blocks/body-overindented-first-repeated-dedents]
+
+[fixture: eventmodeling/data-blocks/body-nested-indentation-kept]
+
+[fixture: eventmodeling/data-blocks/body-overindented-first-note-blanks-tabs]
+
+[fixture: eventmodeling/data-blocks/body-overindented-first-four-spaces]
 
 [fixture: eventmodeling/indentation/data-declaration-four-spaces]
 
@@ -525,11 +543,25 @@ HTML、entity、directive 風の text は、字下げで描画が変わる場合
 [fixture: eventmodeling/data-blocks/body-style-semicolon-kept]
 
 Mermaid は本文内の字下げを受理し、raw value に含めます。
-そのため、この共通 margin の変更では、描画を保ちながら raw Db 値が変わります。
+そのため、この行頭 margin の変更では、描画を保ちながら raw Db 値が変わります。
 これは formatter の明示的な例外で、parser、仕様、
 記録された Mermaid の Db の読みは変えません。
 
 [fixture: eventmodeling/final-newline/final-block-padding-kept]
+
+入力（escape 表記）:
+`"eventmodeling\ndata AddItem01 {\n    sku: 'SHIRT-M'\n  quantity: 2\n}\n"`
+
+出力
+([data-blocks/body-overindented-first-line-output.mmd](../tests/fixtures/eventmodeling/data-blocks/body-overindented-first-line-output.mmd)):
+
+```mmd
+eventmodeling
+data AddItem01 {
+  sku: 'SHIRT-M'
+  quantity: 2
+}
+```
 
 入力（escape 表記）: `"eventmodeling tf 01 evt Alpha [[D]] data D {\nx\n}\n"`
 

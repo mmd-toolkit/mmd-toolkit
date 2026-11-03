@@ -315,10 +315,11 @@ function layoutComponents(
 }
 
 /**
- * Only change a common ASCII-space margin whose space-separated words stay
- * the same in Mermaid's data label. A new space on a later physical line
- * adds a visible nonbreaking space; tabs, markup and padded openers also
- * need their authored text (docs/eventmodeling.md, Data blocks).
+ * Follow the written indentation changes without dedenting past one body
+ * level, keeping the space-separated words of Mermaid's data label. A new
+ * space on a later physical line adds a visible nonbreaking space; tabs,
+ * markup and padded openers need their authored text
+ * (docs/eventmodeling.md, Data blocks).
  */
 function indentedDataBlock(text: string, tabWidth: number): Doc | undefined {
   if (
@@ -337,20 +338,24 @@ function indentedDataBlock(text: string, tabWidth: number): Doc | undefined {
     while (row[margin] === " ") margin++
     return margin
   })
-  let commonMargin = Infinity
   for (const [index, row] of rows.entries()) {
     if (row.trim() === "") continue
     const margin = margins[index]
     if (isWhitespace(row[margin]) || (index > 0 && margin === 0))
       return undefined
-    commonMargin = Math.min(commonMargin, margin)
   }
-  if (commonMargin === Infinity || commonMargin === tabWidth) return undefined
 
-  const delta = tabWidth - commonMargin
-  const indented = rows.map((row, index) => {
-    if (row.trim() === "") return row
-    return " ".repeat(margins[index] + delta) + row.slice(margins[index])
-  })
+  let minimumMargin = Infinity
+  const indented: string[] = []
+  for (const [index, row] of rows.entries()) {
+    if (row.trim() === "") {
+      indented.push(row)
+      continue
+    }
+    minimumMargin = Math.min(minimumMargin, margins[index])
+    const margin = tabWidth + margins[index] - minimumMargin
+    indented.push(" ".repeat(margin) + row.slice(margins[index]))
+  }
+  if (minimumMargin === Infinity) return undefined
   return utils.replaceEndOfLine(`{\n${indented.join("\n")}\n}`)
 }

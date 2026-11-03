@@ -23,6 +23,26 @@ describe("eventmodeling's permitted data margins", () => {
       after: "{\n  x\n    y\n}",
     },
     {
+      name: "a smaller margin following the first row",
+      before: "{\n    x\n  y\n}",
+      after: "{\n  x\n  y\n}",
+    },
+    {
+      name: "a deeper row before a new margin floor",
+      before: "{\n    x\n      y\n  z\n}",
+      after: "{\n  x\n    y\n  z\n}",
+    },
+    {
+      name: "a deeper row after a new margin floor",
+      before: "{\n    x\n  y\n    z\n}",
+      after: "{\n  x\n  y\n    z\n}",
+    },
+    {
+      name: "successive smaller margins across retained blank rows",
+      before: "{\n      a\n    b\n \t\n  c\n    d\n e\n   f\n}",
+      after: "{\n  a\n  b\n \t\n  c\n    d\n  e\n    f\n}",
+    },
+    {
       name: "blank rows and trailing whitespace retained byte for byte",
       before: "{\nx \t\n \t\n  y\t\n}",
       after: "{\n  x \t\n \t\n    y\t\n}",
@@ -68,6 +88,36 @@ describe("eventmodeling's permitted data margins", () => {
       name: "changed relative indentation",
       before: "{\n  x\n    y\n}",
       after: "{\n    x\n     y\n}",
+    },
+    {
+      name: "a flattened nested row",
+      before: "{\n    x\n      y\n}",
+      after: "{\n  x\n  y\n}",
+    },
+    {
+      name: "an arbitrarily deepened nested row",
+      before: "{\n    x\n      y\n}",
+      after: "{\n  x\n      y\n}",
+    },
+    {
+      name: "a zero first printed margin",
+      before: "{\n    x\n      y\n}",
+      after: "{\nx\n  y\n}",
+    },
+    {
+      name: "an outdent past the first printed margin",
+      before: "{\n    x\n  y\n}",
+      after: "{\n  x\n y\n}",
+    },
+    {
+      name: "an inconsistent width at a new margin floor",
+      before: "{\n    x\n  y\n}",
+      after: "{\n  x\n   y\n}",
+    },
+    {
+      name: "a lost depth increase after a clamped row",
+      before: "{\n    x\n  y\n    z\n}",
+      after: "{\n  x\n  y\n  z\n}",
     },
     {
       name: "an inserted tab",
