@@ -665,15 +665,24 @@ state/descriptions-and-labels/compat-keyword-ids-description] See
 
 In a state diagram, what follows the id of a note on one line is kept as
 written: mermaid.js reads the text of the note from right after the id, without
-its first two characters. [fixture: state/notes/kept] The second description of
-an alias definition is kept as written, with the whitespace at its ends, which
-mermaid.js reads. [fixture: state/aliases/second-description-kept] The names and
-the empty strings after `state` stay on the line of `state`: on a line of its
-own, a second name would add a state. [fixture:
-state/statements-one-per-line/state-names-kept] A `%%` or an empty description
-block right before a `{` is kept as written up to the `{`. [fixture:
-state/composite-states/compat-comment-after-name-before-body] [fixture:
-state/composite-states/compat-comment-line-before-body] [fixture:
+its first two characters. [fixture: state/notes/kept]
+
+For multiline block notes, the restricted [Notes](./state.md#notes) rule aligns
+plain paragraph margins one level inside the note, using ASCII spaces even with
+`useTabs`. Only leading ASCII spaces in raw `notes[].text` may differ, while
+rendering stays the same. Markdown-like markup, HTML, blank lines, whitespace
+other than ASCII spaces within a line, trivia and semicolons keep the body as
+written; general Markdown is not reformatted. [fixture:
+state/notes/payment-prose] [fixture: state/notes/markdown-ordered-list-kept]
+
+The second description of an alias definition is kept as written, with the
+whitespace at its ends, which mermaid.js reads. [fixture:
+state/aliases/second-description-kept] The names and the empty strings after
+`state` stay on the line of `state`: on a line of its own, a second name would
+add a state. [fixture: state/statements-one-per-line/state-names-kept] A `%%` or
+an empty description block right before a `{` is kept as written up to the `{`.
+[fixture: state/composite-states/compat-comment-after-name-before-body]
+[fixture: state/composite-states/compat-comment-line-before-body] [fixture:
 state/composite-states/percent-before-body-kept] [fixture:
 state/composite-states/empty-block-before-body-kept] [corpus fixture:
 state/gram-ignored-state-comment-before-brace] See [Notes](./state.md#notes),

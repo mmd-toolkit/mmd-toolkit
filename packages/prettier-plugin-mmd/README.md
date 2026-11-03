@@ -175,6 +175,10 @@ flowchart LR
   [Data blocks](./docs/eventmodeling.md#data-blocks) rule permits a restricted
   ASCII space margin adjustment. This can change raw Db values while preserving
   the rendered diagram.
+- Plain paragraphs in state notes closed by `end note` follow the restricted
+  [Notes](./docs/state.md#notes) rule. Only leading ASCII spaces may change in
+  `notes[].text`, while the rendered diagram stays the same; Markdown and other
+  protected bodies remain as written.
 - Formatting a formatted diagram again changes nothing.
 - The content of directives, of opaque `@{ ... }` data blocks, and of the
   frontmatter is not checked. A diagram that mermaid.js rejects because of that

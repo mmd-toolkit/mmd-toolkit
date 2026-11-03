@@ -582,11 +582,58 @@ mermaid.js は本文を id の直後から読み、最初の 2 文字を除く�
 id の前の空白は空白 1 つにします。
 `note left of%%x A` のように位置の直後にある、mermaid.js が読まないテキストは、
 位置に接したまま残します。
-複数行のノートの本文は、
-id の後の改行から `end note` の行まで書かれたまま残します。
-行の段は最初の行も含めて残し、両端の空行や空白だけの行も残します。
+
+見出しが 1 行に収まり、本文がその次の行から始まり、
+`end note` が行頭の字下げに続くノートでは、空行を挟まない通常の段落の各行を、
+ノートより 1 段深くそろえます。
+行頭の ASCII 空白だけを置き換え、その後のテキスト、改行、末尾の空白は保ちます。
+`useTabs` でも本文には ASCII 空白を使い、
+`tabWidth: 0` では行頭の空白をなくします。
+本文の段は、ノートの階層と `tabWidth` で決まります。
+[fixture: notes/payment-prose] [fixture: notes/prose-nested-four]
+[fixture: notes/prose-use-tabs] [fixture: notes/prose-zero-width]
+[fixture: notes/prose-one-trailing-space]
+
+`note` の前や `end note` の後にある文や trivia は、
+通常の段落の整列を妨げません。 [fixture: notes/prose-adjacent-header]
+[fixture: notes/prose-adjacent-closer] [fixture: notes/prose-closer-comment]
+[fixture: notes/prose-header-directive]
+
+ノートにコメント、ディレクティブ、セミコロン、保護された結合領域がある場合は、
+本文全体を原文のまま保ちます。
+セミコロンで終わる entity も、この保護の対象です。
+[fixture: comments/text-in-note-lines-kept]
+[fixture: notes/over-lines-directive-on-header-line]
+[corpus fixture: state/tokens-note-block-ignored-semicolon]
+
+空行、行内の ASCII 空白以外の空白文字、Markdown 風の記法、HTML、
+バックスラッシュがある本文も、そのまま保ちます。
+リスト、見出し、コードの字下げは保ちます。
+数字の後に `.` または `)` があり、その次が ASCII 空白か行末である形を、
+リストの先頭の候補として保護します。
+Markdown を再整形するものではありません。
+[fixture: notes/markdown-unordered-list-kept]
+[fixture: notes/markdown-ordered-list-kept]
+[fixture: notes/markdown-heading-kept] [fixture: notes/markdown-code-kept]
+[fixture: notes/markdown-inline-kept] [fixture: notes/html-note-kept]
+[fixture: notes/prose-tab-margin-kept]
+[fixture: notes/markdown-ordered-parenthesis-kept]
+[fixture: notes/markdown-empty-ordered-dot-kept]
+[fixture: notes/markdown-empty-ordered-parenthesis-kept]
+
+最後以外の本文行が ASCII 空白 2 個以上で終わる場合は、
+Markdown の hard break なので、本文全体を原文のまま保ちます。
+最後以外の本文行の末尾の空白 1 個と、最後の本文行の末尾の空白は、
+本文の margin をそろえる場合も保ちます。 [fixture: notes/prose-trailing-spaces]
+[fixture: notes/prose-one-trailing-space]
+
+Mermaid は本文内部の改行の後にある行頭空白を、raw `notes[].text` 値に残します。
+このため、許可する行頭の ASCII 空白変更は、描画を保つ限定的な Db の例外です。
+parser、仕様、記録済み Mermaid の読み取りは変えません。
+ほかの複数行のノート本文は、最初の行の段と、両端の空行や空白だけの行も含めて、
+書かれた列を保ちます。
 `end note` はノートと同じ段に置きます。
-ノートの行の id の後の空白は落とします。
+見出しの id の後の空白は落とします。
 その行のコメントやディレクティブの後の空白は、書かれたまま残します。
 [fixture: notes/over-lines] [fixture: notes/over-lines-first-line-column-kept]
 [fixture: notes/over-lines-text-ends-kept]
@@ -624,6 +671,28 @@ stateDiagram-v2
 ```
 
 入力
+([notes/payment-prose-input.mmd](../tests/fixtures/state/notes/payment-prose-input.mmd)):
+
+```mmd
+stateDiagram-v2
+    note right of Paid
+        Payment can be card,
+            wallet, or bank transfer
+    end note
+```
+
+出力
+([notes/payment-prose-output.mmd](../tests/fixtures/state/notes/payment-prose-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  note right of Paid
+    Payment can be card,
+    wallet, or bank transfer
+  end note
+```
+
+入力
 ([notes/over-lines-input.mmd](../tests/fixtures/state/notes/over-lines-input.mmd)):
 
 ```mmd
@@ -643,7 +712,7 @@ note ""floating" as N
 stateDiagram-v2
   A
   note right of A
-  first line
+    first line
     second line
   end note
   note ""floating" as N
@@ -872,7 +941,9 @@ agentflow、usecase に合わせます。
 閉じられていないブロックは開いたままにします。
 [fixture: multi-line-values/empty-description-trivia-kept]
 [corpus fixture: state/lex-acc-descr-block-unclosed]
-複数行に書かれた独立したノートの本文も、書かれたまま残します。
+ブロックノートの段落は、[ノート](#ノート)の限定規則に従います。
+[fixture: notes/payment-prose]
+複数行に書かれた独立したノートの本文は、書かれたまま残します。
 [fixture: multi-line-values/kept]
 [fixture: multi-line-values/floating-note-empty-line-kept]
 
@@ -944,7 +1015,9 @@ state 図で文が次の行に続けられるのは、 `state` の後、`as` の
 コメントかディレクティブを含む文は改行を残し、
 構造の続きの行と間の注釈を 1
 段深く置きます（[複数行の文](./sequence.ja.md#複数行の文)を参照）。
-複数行のノートを含め、値の中の空白は変えません。
+ほかの値の内部の空白は変えません。
+複数行のノートの段落の margin は、[ノート](#ノート)の限定規則に従います。
+[fixture: notes/payment-prose]
 各隙間の最初の行末は保ちます。
 コメントで結合される領域、セミコロンの保護対象、前述の複合状態の例外では、
 文全体を原文のまま残します。
@@ -1113,7 +1186,8 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
 
 ## 書かれたまま残すもの
 
-[複数行の値](#複数行の値)の説明本文の字下げを除き、
+[複数行の値](#複数行の値)で定める説明本文の字下げと、
+[ノート](#ノート)で定める限定的な段落の margin を除き、
 次のテキストは書かれたまま残します。
 変えると図が変わるか、入力が拒否されるからです。
 

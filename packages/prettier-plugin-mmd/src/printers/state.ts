@@ -79,6 +79,7 @@ export function printState(
           classified.statement,
           findStatePrintedEnd(source, classified.statement),
           followsStateName,
+          " ".repeat(options.tabWidth * (depth + 1)),
         ),
         depth,
       )
@@ -91,6 +92,7 @@ export function printState(
           classified.statement,
           findStatePrintedEnd(source, classified.statement),
           followsStateName,
+          " ".repeat(options.tabWidth * (depth + 1)),
         ),
         depth,
       )

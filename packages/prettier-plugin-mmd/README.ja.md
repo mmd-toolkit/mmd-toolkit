@@ -218,6 +218,11 @@ flowchart LR
   [Data blocks](./docs/eventmodeling.ja.md#data-blocks) の規則で、
   ASCII 空白の margin を限定的に変更します。
   描画を保ちながら、raw Db 値が変わる場合があります。
+- `end note` で閉じる state ノートの通常の段落は、
+  [ノート](./docs/state.ja.md#ノート)の限定規則に従います。
+  描画を保ちながら、
+  `notes[].text` の行頭の ASCII 空白だけが変わる場合があります。
+  Markdown などの保護する本文は原文のままです。
 - 整形した図をもう一度整形しても、何も変わりません。
 - ディレクティブ、不透明な `@{ ... }` のデータブロック、
   フロントマターの中身は検査しません。

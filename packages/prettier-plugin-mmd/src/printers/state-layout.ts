@@ -260,8 +260,9 @@ function holdsBrace(source: Source, start: number, end: number): boolean {
  *   `scale`, `direction`, and the `:` of `accTitle` and `accDescr`
  *   (diagrams/state.md, Lexical structure); one with a comment or a
  *   directive keeps its line breaks and aligns structural continuations. The
- *   lines of an `accDescr { ... }` block and of a note over lines are lines
- *   of their texts, and are kept (docs/state.md, Multi-line values).
+ *   lines of an `accDescr { ... }` block and of a note remain separate;
+ *   ordinary note paragraph margins follow their own layout (docs/state.md,
+ *   Multi-line values and Notes).
  * - A transition has one space on each side of its arrow (docs/state.md,
  *   Arrow spacing).
  * - The `:` of a description or a label has one space on each side
@@ -274,6 +275,7 @@ export function layoutStateStatement(
   statement: StateSimpleStatement | StateBodyStatement,
   end: number,
   followsStateName: boolean,
+  noteIndentation: string,
 ): AtomLayout {
   const start = statement.range[0]
   if (followsStateName && holdsBrace(source, start, end)) {
@@ -312,7 +314,7 @@ export function layoutStateStatement(
     statement.type === "StateNoteStatement" &&
     isNoteOverLines(source, statement)
   ) {
-    return layoutNoteOverLines(source, statement, end)
+    return layoutNoteOverLines(source, statement, end, noteIndentation)
   }
   const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
   if (
@@ -631,19 +633,17 @@ function findNoteStretches(statement: StateStatement, end: number): Atom[] {
 }
 
 /**
- * The layout of a note over lines: its keyword, position, and id, its text
- * on the lines after them as written, and `end note` at the level of the
- * note (docs/state.md, Multi-line values). The text is kept from the line
- * break after the id to the line of `end note`, with the whitespace and the
- * empty lines at its ends; the whitespace after the id on the line of the
- * note is dropped. A note whose `end note` does not start its line, or
- * whose text starts on the line of the id, is printed from its id by the
- * gap rules, with its line breaks kept.
+ * A multiline note keeps its lines and aligns plain paragraph margins one
+ * level inside its header. Protected text retains its complete written span;
+ * `end note` aligns with the header (docs/state.md, Notes). A note whose
+ * `end note` does not start its line, or whose text starts on the line of
+ * the id, is printed from its id by the gap rules, with line breaks kept.
  */
 function layoutNoteOverLines(
   source: Source,
   statement: StateNoteStatement,
   end: number,
+  indentation: string,
 ): AtomLayout {
   const note = expectToken(
     findTokenEndingBefore(source, statement.range[1]),
@@ -656,13 +656,22 @@ function layoutNoteOverLines(
     "the `end` of an `end note`",
   )
   const text = findNoteTextStretch(source, statement, endKeyword)
+  const lines =
+    text === null
+      ? null
+      : plainNoteTextLines(source, statement, text, indentation)
+  const atoms = collectAtoms(
+    source,
+    statement.range[0],
+    end,
+    collectValueNodes(statement, stateValueNodeTypes),
+    text === null ? [] : [text],
+  )
   return {
-    atoms: collectAtoms(
-      source,
-      statement.range[0],
-      end,
-      collectValueNodes(statement, stateValueNodeTypes),
-      text === null ? [] : [text],
+    atoms: atoms.flatMap((atom) =>
+      lines !== null && atom.start === text?.start && atom.end === text.end
+        ? lines
+        : [atom],
     ),
     rules: text === null ? new Map() : new Map([[text.start, "none"]]),
     outdented: new Set([endKeyword.range[0]]),
@@ -671,8 +680,59 @@ function layoutNoteOverLines(
 }
 
 /**
- * The stretch of a note over lines that is printed as written: from the
- * line break after its id to the line break before the line of `end note`,
+ * Ordinary paragraph lines use one body level. Markdown structure, embedded
+ * forms and non-ASCII indentation retain their authored layout. Explicit ASCII
+ * columns also avoid introducing Markdown-significant tabs with useTabs
+ * (docs/state.md, Notes).
+ */
+function plainNoteTextLines(
+  source: Source,
+  statement: StateNoteStatement,
+  text: Atom,
+  indentation: string,
+): Atom[] | null {
+  if (
+    source.text[text.start] !== "\n" ||
+    source.text.slice(statement.range[0], text.start).includes("\n") ||
+    source.text.slice(...statement.range).includes(";") ||
+    findTriviaBetween(source, ...statement.range).length > 0 ||
+    holdsJoiningRegion(source, ...statement.range)
+  )
+    return null
+  const body = source.text.slice(text.start + 1, text.end)
+  if (body.includes("  \n")) return null
+  for (const character of body) {
+    if (
+      "`*_~[]<>\\".includes(character) ||
+      (character !== " " && character !== "\n" && isWhitespace(character))
+    )
+      return null
+  }
+  const lines: Atom[] = []
+  for (let offset = text.start + 1; offset <= text.end;) {
+    const nextBreak = source.text.indexOf("\n", offset)
+    const end = nextBreak < 0 ? text.end : Math.min(nextBreak, text.end)
+    let start = offset
+    while (source.text[start] === " ") start++
+    if (start >= end || "#>+-!|=:{}".includes(source.text[start])) return null
+    let digitsEnd = start
+    while (source.text[digitsEnd] >= "0" && source.text[digitsEnd] <= "9")
+      digitsEnd++
+    if (
+      digitsEnd > start &&
+      (source.text[digitsEnd] === "." || source.text[digitsEnd] === ")") &&
+      (digitsEnd + 1 === end || source.text[digitsEnd + 1] === " ")
+    )
+      return null
+    lines.push({ start, end, writtenIndentation: indentation })
+    offset = end + 1
+  }
+  return lines
+}
+
+/**
+ * The body stretch initially collected as one atom: from the line break after
+ * its id to the line break before the line of `end note`,
  * or null where text other than comments and directives follows the id on
  * its line or `end note` does not start its line.
  */

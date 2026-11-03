@@ -727,6 +727,17 @@ state 図では、`scale`、`classDef`、`class`、`style`、`state`、`note`、
 state 図では、1 行のノートの id の後を書かれたまま残します。
 mermaid.js はノートの本文を id の直後から読み、最初の 2 文字を除くからです。
 [fixture: state/notes/kept]
+
+複数行のブロックノートは、[ノート](./state.ja.md#ノート)の限定規則に従い、
+通常の段落の margin をノートより 1 段深くそろえます。
+`useTabs` でも ASCII 空白を使います。
+描画を保ちながら、
+raw `notes[].text` の行頭の ASCII 空白だけが変わる場合があります。
+Markdown 風の記法、HTML、空行、行内の ASCII 空白以外の空白文字、trivia、
+セミコロンがある本文は、原文のまま保ち、一般の Markdown は再整形しません。
+[fixture: state/notes/payment-prose]
+[fixture: state/notes/markdown-ordered-list-kept]
+
 別名の定義の 2 つ目の説明は、 mermaid.js が読む両端の空白ごと、
 書かれたまま残します。 [fixture: state/aliases/second-description-kept]
 `state` の後の名前と空の文字列は、`state` の行に残します。
