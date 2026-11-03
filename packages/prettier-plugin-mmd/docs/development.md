@@ -71,21 +71,21 @@ parallel. `tests/corpus.test.ts` loads common fixtures;
 
 Formatting must be idempotent and must keep the Db, except for the restricted
 ASCII-space margins of eventmodeling block data and notes defined in
-[Data blocks](./eventmodeling.md#data-blocks), and plain state note paragraphs
-defined in [Notes](./state.md#notes). The formatter tests permit only these
-margin differences: raw eventmodeling block values and authored block texts, and
-leading ASCII spaces in eligible state `notes[].text` values. Other Db fields
-and contents remain checked. The comparison helpers leave both raw Db readings
-and recorded Mermaid results intact. The Db is not read from mermaid.js:
-`dbOfText` of `tests/db-reading.ts` builds it from the tree of a text with
-`dbFromTree` of `@mmd-toolkit/tests`, with the values that mermaid.js derives
-from the embedded data of the input (the frontmatter, the directives, the data
-blocks). The corpus records them for each fixture (`embeddedValuesOf`) and the
-Db of the input (`expected.json`, or `specified.json` where the specification
-reads the input differently), so the corpus test compares the Db of the
-formatted text with the recorded one. The other tests have no record: they
-compare the Db of the formatted text with that of the input, with the default
-values.
+[Data blocks](./eventmodeling.md#data-blocks), and single paragraphs in state
+notes defined in [Notes](./state.md#notes). The formatter tests permit only
+these margin differences: raw eventmodeling block values and authored block
+texts, and leading ASCII spaces in eligible state `notes[].text` values. Other
+Db fields and contents remain checked. The comparison helpers leave both raw Db
+readings and recorded Mermaid results intact. The Db is not read from
+mermaid.js: `dbOfText` of `tests/db-reading.ts` builds it from the tree of a
+text with `dbFromTree` of `@mmd-toolkit/tests`, with the values that mermaid.js
+derives from the embedded data of the input (the frontmatter, the directives,
+the data blocks). The corpus records them for each fixture (`embeddedValuesOf`)
+and the Db of the input (`expected.json`, or `specified.json` where the
+specification reads the input differently), so the corpus test compares the Db
+of the formatted text with the recorded one. The other tests have no record:
+they compare the Db of the formatted text with that of the input, with the
+default values.
 
 The values of the embedded data are taken from the input, so the tests check
 that formatting keeps the embedded data: `writtenEmbeddedTexts` lists the texts

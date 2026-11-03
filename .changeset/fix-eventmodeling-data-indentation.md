@@ -3,7 +3,7 @@
 ---
 
 Normalize indentation of safely formatted `eventmodeling` data and note bodies,
-plain paragraph bodies in `state` notes, and ordinary `accDescr` bodies while
+single-paragraph bodies in `state` notes, and ordinary `accDescr` bodies while
 preserving meaningful text and rendering. Align structural continuations around
 comments and directives, and put spaces around `=` in C4 named attributes so the
 key/value boundary is easier to read.
@@ -14,4 +14,7 @@ format ordinary Wardley names containing `style` instead of preserving their
 spacing.
 
 Keep wrapped GWT source-frame names inside their header, and align the trimmed
-first line of state note bodies even when they contain HTML or Markdown.
+first line of state note bodies even when they contain HTML or Markdown. Align
+all eligible paragraph lines, including inline emphasis, same-line code and
+inline `<br/>`, while preserving blank rows at their edges and margins that
+affect block rendering.

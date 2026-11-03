@@ -76,7 +76,7 @@ Correctness is defined by the pinned mermaid.js.
 4. Formatting is idempotent and does not change the Db, except for the limited
    ASCII space margin changes to eventmodeling block bodies defined in
    [Data blocks](packages/prettier-plugin-mmd/docs/eventmodeling.md#data-blocks)
-   and plain state note paragraphs defined in
+   and eligible state note paragraphs defined in
    [Notes](packages/prettier-plugin-mmd/docs/state.md#notes). These exceptions
    permit raw Db value differences only while preserving the rendering.
 

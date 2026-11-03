@@ -639,7 +639,7 @@ function findNoteStretches(statement: StateStatement, end: number): Atom[] {
 }
 
 /**
- * A multiline note keeps its lines and aligns plain paragraph margins one
+ * A multiline note keeps its lines and aligns eligible paragraph margins one
  * level inside its header. Protected text retains its complete written span;
  * `end note` aligns with the header (docs/state.md, Notes). A note whose
  * `end note` does not start its line, or whose text starts on the line of
@@ -704,56 +704,119 @@ function noteTextLines(
   )
     return null
   return (
-    plainNoteTextLines(source, text, indentation) ??
+    paragraphNoteTextLines(source, text, indentation) ??
     firstNoteTextLine(source, text, indentation)
   )
 }
 
-/** Ordinary prose aligns every row; Markdown and HTML keep later margins. */
-function plainNoteTextLines(
+/**
+ * A single paragraph aligns its content rows, including inline emphasis,
+ * same-line code and inline `<br/>`. Outer blank rows retain their exact text;
+ * block syntax and markup that can own later margins remain protected.
+ */
+function paragraphNoteTextLines(
   source: Source,
   text: Atom,
   indentation: string,
 ): Atom[] | null {
-  const body = source.text.slice(text.start + 1, text.end)
-  if (body.includes("  \n")) return null
-  for (const character of body) {
-    if (
-      "`*_~[]<>\\".includes(character) ||
-      (character !== " " && character !== "\n" && isWhitespace(character))
-    )
-      return null
-  }
   const lines: Atom[] = []
+  let sawContent = false
+  let endedParagraph = false
+  let contentEnd = text.end
+  while (
+    contentEnd > text.start + 1 &&
+    " \t\n".includes(source.text[contentEnd - 1])
+  )
+    contentEnd--
   for (let offset = text.start + 1; offset <= text.end;) {
     const nextBreak = source.text.indexOf("\n", offset)
     const end = nextBreak < 0 ? text.end : Math.min(nextBreak, text.end)
     let start = offset
-    while (source.text[start] === " ") start++
-    if (start >= end || "#>+-!|=:{}".includes(source.text[start])) return null
-    let digitsEnd = start
-    while (source.text[digitsEnd] >= "0" && source.text[digitsEnd] <= "9")
-      digitsEnd++
+    while (source.text[start] === " " || source.text[start] === "\t") start++
+    if (start >= end) {
+      lines.push({ start: offset, end, writtenIndentation: "" })
+      endedParagraph ||= sawContent
+      offset = end + 1
+      continue
+    }
     if (
-      digitsEnd > start &&
-      (source.text[digitsEnd] === "." || source.text[digitsEnd] === ")") &&
-      (digitsEnd + 1 === end || source.text[digitsEnd + 1] === " ")
+      endedParagraph ||
+      (sawContent && source.text.slice(offset, start).includes("\t")) ||
+      !isParagraphNoteLine(
+        source.text.slice(start, end),
+        sawContent &&
+          start - offset >= 4 &&
+          !source.text.slice(offset, start).includes("\t") &&
+          indentation.length >= 4,
+      ) ||
+      (end < contentEnd && source.text.slice(end - 2, end) === "  ")
     )
       return null
+    sawContent = true
     lines.push({ start, end, writtenIndentation: indentation })
     offset = end + 1
   }
-  return lines
+  return sawContent ? lines : null
 }
 
-/** A nonblank first physical row loses its leading spaces in the raw Db. */
+/**
+ * Inline paragraph forms discard newline padding when rendered. Block forms,
+ * arbitrary HTML, links, escapes and a code span crossing a newline do not
+ * have that guarantee (docs/state.md, Notes).
+ */
+function isParagraphNoteLine(
+  line: string,
+  literalContinuation: boolean,
+): boolean {
+  if (!literalContinuation && "#>+-!|=:{}".includes(line[0])) return false
+  if (
+    (!literalContinuation && line.startsWith("* ")) ||
+    line.startsWith("```") ||
+    line.startsWith("~~~") ||
+    (!literalContinuation &&
+      [...line].every((character) => " *_".includes(character)))
+  )
+    return false
+  let digitsEnd = 0
+  while (line[digitsEnd] >= "0" && line[digitsEnd] <= "9") digitsEnd++
+  if (
+    !literalContinuation &&
+    digitsEnd > 0 &&
+    (line[digitsEnd] === "." || line[digitsEnd] === ")") &&
+    (digitsEnd + 1 === line.length || line[digitsEnd + 1] === " ")
+  )
+    return false
+  let codeDelimiter = 0
+  for (let offset = 0; offset < line.length; offset++) {
+    const character = line[offset]
+    if (character === "<" && offset > 0 && line.startsWith("<br/>", offset)) {
+      offset += "<br/>".length - 1
+      continue
+    }
+    if (
+      "~[]<>\\".includes(character) ||
+      (character !== " " && isWhitespace(character))
+    )
+      return false
+    if (character !== "`") continue
+    let delimiterEnd = offset + 1
+    while (line[delimiterEnd] === "`") delimiterEnd++
+    const width = delimiterEnd - offset
+    if (codeDelimiter === 0) codeDelimiter = width
+    else if (codeDelimiter === width) codeDelimiter = 0
+    offset = delimiterEnd - 1
+  }
+  return codeDelimiter === 0
+}
+
+/** A nonblank first physical row loses its leading space/tab padding in the Db. */
 function firstNoteTextLine(
   source: Source,
   text: Atom,
   indentation: string,
 ): Atom[] | null {
   let start = text.start + 1
-  while (source.text[start] === " ") start++
+  while (source.text[start] === " " || source.text[start] === "\t") start++
   const lineEnd = lineEndOf(source, text.start + 1)
   if (start >= text.end || start >= lineEnd || isWhitespace(source.text[start]))
     return null

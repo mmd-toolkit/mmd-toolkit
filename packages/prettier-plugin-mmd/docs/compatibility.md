@@ -397,13 +397,21 @@ c4/argument-spacing/directive-semicolon-prefix]
 
 The physical line completing an ordinary block header aligns with its statement,
 leaving its body one level deeper. Crossing literal values keep their own
-columns. This applies to state, requirement, C4 boundary headers and
-eventmodeling data/note headers. [fixture:
+columns. This applies to state, requirement and C4 boundary headers. [fixture:
 state/composite-states/header-completion-after-comment] [fixture:
 requirement/bodies/header-completion-after-comment] [fixture:
-eventmodeling/declarations-and-notes/header-completion-comments] [fixture:
 c4/boundary-bodies/named-header-completion] [fixture:
 c4/boundary-bodies/value-spans-header-line-kept]
+
+Eventmodeling data and note headers use ordinary continuation indentation for
+comments, directives and the line completing the header. An eligible body uses
+one further configured step inside that opening line; native hidden header
+boundaries and body-preservation guards take precedence. Block closers still
+stay at column one. Keep source order and trivia form, as for GWT headers.
+[fixture: eventmodeling/declarations-and-notes/header-completion-comments]
+[fixture: eventmodeling/declarations-and-notes/header-opener-comment] [fixture:
+eventmodeling/declarations-and-notes/header-directive-continuation] [fixture:
+eventmodeling/declarations-and-notes/header-continuation-unsafe-body]
 
 GWT has no opening brace. Its continued source-frame line and intervening
 comments or directives use one ordinary continuation level inside `gwt`, keeping
@@ -706,17 +714,38 @@ written: mermaid.js reads the text of the note from right after the id, without
 its first two characters. [fixture: state/notes/kept]
 
 For multiline block notes, the restricted [Notes](./state.md#notes) rule aligns
-plain paragraph margins one level inside the note, using ASCII spaces even with
-`useTabs`. Only leading ASCII spaces in raw `notes[].text` may differ, while
-rendering stays the same. A nonempty first physical body row also uses the body
-indentation when its leading whitespace is ASCII spaces: Mermaid trims that
-margin, so its raw Db stays identical, including for HTML or Markdown. Later
-markup margins and blank lines stay written. Trivia, semicolons and leading
-whitespace other than ASCII spaces keep their existing protection; general
-Markdown is not reformatted. [fixture: state/notes/html-note-kept] [fixture:
+every content line of a single paragraph one level inside the note, using ASCII
+spaces even with `useTabs`. Tabs in the source margin are allowed only in the
+first content line's trimmed margin; later tab margins stay written. Inline
+emphasis, code closed on the same physical line, and noninitial exact `<br/>`
+forms are included. Outer blank rows stay exact. Literal marker continuations
+align only when the source and output both retain the required four-space
+margin. Only permitted ASCII-space prefixes in raw `notes[].text` may differ,
+while rendering stays the same. [fixture: state/notes/payment-prose] [fixture:
+state/notes/prose-tab-margin-kept] [fixture: state/notes/later-tab-margin-kept]
+[fixture: state/notes/over-lines-text-ends-kept] [fixture:
+state/notes/inline-emphasis-margins] [fixture: state/notes/inline-code-margins]
+[fixture: state/notes/inline-br-margins] [fixture:
+state/notes/markdown-ordered-list-kept] [fixture:
+state/notes/literal-markers-zero-width]
+
+Keep later margins for block syntax, blank-separated paragraphs, hard breaks,
+multiline code, strikethrough, general HTML and other protected forms. These
+margins can appear in the rendered label: changing indentation inside `<pre>` or
+after a blank line can change its size or layout. For such bodies, only a
+nonempty first physical row with ASCII-space/tab padding aligns; Mermaid trims
+that margin, so the raw Db stays identical. Trivia, semicolons and protected
+joining regions keep the whole body written. This does not reformat general
+Markdown. [fixture: state/notes/html-note-kept] [fixture:
 state/notes/html-pre-first-line] [fixture: state/notes/html-break-first-line]
-[fixture: state/notes/payment-prose] [fixture:
-state/notes/markdown-ordered-list-kept]
+[fixture: state/notes/first-tab-markup-margin] [fixture:
+state/notes/over-lines-empty-lines-kept] [fixture:
+state/notes/list-body-margin-kept] [fixture:
+state/notes/heading-at-paragraph-boundary-kept] [fixture:
+state/notes/prose-trailing-spaces] [fixture:
+state/notes/code-spanning-lines-kept] [fixture:
+state/notes/strikethrough-spanning-lines-kept] [fixture:
+state/notes/marker-at-paragraph-boundary-kept]
 
 The second description of an alias definition is kept as written, with the
 whitespace at its ends, which mermaid.js reads. [fixture:
@@ -2699,18 +2728,26 @@ final-hidden-padding] [test: cynefin Markdown: rejected]
 The [eventmodeling rules](./eventmodeling.md) preserve inline data and block
 contents, except for the restricted ASCII-space margin adjustment in
 [Data blocks](./eventmodeling.md#data-blocks). That adjustment aligns every
-nonblank body line to `tabWidth` spaces without interpreting data fields, JSON
-or code structure. It preserves rendering but may change raw Db values; it
-changes no parser, specification or recorded Mermaid reading. Other payload
-characters, quotes, braces, blank lines, trailing whitespace and apparent
-following statements remain as written. Tags can still format. Block-data
-consumes an immediately following LF; other whitespace is lookahead. Closing
-padding and LS/PS boundaries stay written, including at EOF. Reindenting a block
-closer can reject input, and replacing closing lookahead with LF can change the
-comparison Db. Native data is read directly from source rather than evaluated as
-embedded configuration. [fixture:
-eventmodeling/data-blocks/body-overindented-first-line] [fixture:
-eventmodeling/data-blocks/body-overindented-later-line] [fixture:
+nonblank body line to `tabWidth` spaces, or `2 * tabWidth` after an ordinary
+continued header, without interpreting data fields, JSON or code structure.
+Plain joined header LF and LF inside an inline directive add no step; native
+hidden header forms retain their base body rule. [fixture:
+eventmodeling/declarations-and-notes/header-directive-continuation] [fixture:
+eventmodeling/declarations-and-notes/header-inline-multiline-directive]
+[fixture: eventmodeling/declarations-and-notes/header-continuation-tabs]
+[fixture: eventmodeling/declarations-and-notes/data-and-note-headers] [fixture:
+eventmodeling/hidden-forms/hidden-data-tag-owners]
+
+It preserves rendering but may change raw Db values; it changes no parser,
+specification or recorded Mermaid reading. Other payload characters, quotes,
+braces, blank lines, trailing whitespace and apparent following statements
+remain as written. Tags can still format. Block-data consumes an immediately
+following LF; other whitespace is lookahead. Closing padding and LS/PS
+boundaries stay written, including at EOF. Reindenting a block closer can reject
+input, and replacing closing lookahead with LF can change the comparison Db.
+Native data is read directly from source rather than evaluated as embedded
+configuration. [fixture: eventmodeling/data-blocks/body-overindented-first-line]
+[fixture: eventmodeling/data-blocks/body-overindented-later-line] [fixture:
 eventmodeling/inline-data/greedy-apparent-frames-kept] [fixture:
 eventmodeling/data-blocks/block-closer-indent-unsafe] [fixture:
 eventmodeling/data-boundaries/same-line-block-successor] [test:

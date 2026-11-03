@@ -10,10 +10,10 @@ import type { DbSummary, JsonObject, JsonValue } from "@mmd-toolkit/tests"
 
 /**
  * Checks authored note bodies even when trimming leaves the raw Db unchanged.
- * Only verified ASCII-space margins of attached multiline prose notes are
+ * Only verified ASCII-space margins of attached multiline paragraph notes are
  * restored for comparison; every other Db field remains the actual after value.
  * First-row-only margins keep raw Db comparison strict. Other changed bodies
- * must meet the prose allowance or throw. Line endings follow the
+ * must meet the paragraph allowance or throw. Line endings follow the
  * formatter's existing CR/CRLF normalization (docs/state.md, Notes).
  */
 export function stateDbForFormattingComparison(
@@ -65,7 +65,9 @@ export function stateDbForFormattingComparison(
       !hasPlainEdges(printed, afterRoot, next, nextClosing) ||
       !isAllowedBodyChange(text, nextText)
     )
-      throw new Error("state note body changed beyond an allowed prose margin")
+      throw new Error(
+        "state note body changed beyond an allowed paragraph margin",
+      )
     permitted.add(index)
   }
   if (!Array.isArray(before?.notes) || !Array.isArray(after?.notes))
@@ -95,7 +97,7 @@ function onlyFirstRowMarginChanged(before: string, after: string): boolean {
   const beforeEnd = before.indexOf("\n")
   const afterEnd = after.indexOf("\n")
   if (beforeEnd < 0 || afterEnd < 0) return false
-  const content = before.slice(leadingSpaces(before), beforeEnd)
+  const content = before.slice(leadingPadding(before), beforeEnd)
   return (
     content !== "" &&
     content[0].trim() !== "" &&
@@ -193,50 +195,84 @@ function hasPlainEdges(
   )
 }
 
-/** Prose rows are contiguous; their output margins share one ASCII-space width. */
+/** One paragraph aligns to spaces; its outer blank rows remain byte-for-byte. */
 function isAllowedBodyChange(before: string, after: string): boolean {
   if (!before.endsWith("\n") || !after.endsWith("\n")) return false
-  if (
-    before.slice(0, -1).includes("  \n") ||
-    after.slice(0, -1).includes("  \n")
-  )
-    return false
   const rowsBefore = before.slice(0, -1).split("\n")
   const rowsAfter = after.slice(0, -1).split("\n")
   if (rowsBefore.length !== rowsAfter.length) return false
+  const lastContent = rowsBefore.findLastIndex((row) => row.trim() !== "")
   let margin: number | undefined
+  let endedParagraph = false
   for (const [index, row] of rowsBefore.entries()) {
     const printed = rowsAfter[index]
-    const beforeStart = leadingSpaces(row)
+    const beforeStart = leadingPadding(row)
     const afterStart = leadingSpaces(printed)
     const content = row.slice(beforeStart)
-    if (!isOrdinaryProse(content) || content !== printed.slice(afterStart))
+    if (content === "") {
+      if (row !== printed) return false
+      endedParagraph ||= margin !== undefined
+      continue
+    }
+    const literalContinuation =
+      margin !== undefined &&
+      beforeStart >= 4 &&
+      !row.slice(0, beforeStart).includes("\t") &&
+      afterStart >= 4
+    if (
+      endedParagraph ||
+      (margin !== undefined && row.slice(0, beforeStart).includes("\t")) ||
+      (index < lastContent && row.endsWith("  ")) ||
+      !isParagraphText(content, literalContinuation) ||
+      content !== printed.slice(afterStart)
+    )
       return false
     margin ??= afterStart
     if (afterStart !== margin) return false
   }
-  return true
+  return margin !== undefined
 }
 
-/** Guard Markdown syntax independently of the printer's body classifier. */
-function isOrdinaryProse(row: string): boolean {
+/** Guard margin-sensitive Markdown independently of the printer's classifier. */
+function isParagraphText(row: string, literalContinuation: boolean): boolean {
   if (
     row === "" ||
-    "#>+-!|=:{}".includes(row[0]) ||
+    (!literalContinuation && "#>+-!|=:{}".includes(row[0])) ||
+    (!literalContinuation && row.startsWith("* ")) ||
+    (!literalContinuation &&
+      [...row].every((character) => " *_".includes(character))) ||
+    row.startsWith("```") ||
+    row.startsWith("~~~") ||
     row.includes("%%") ||
     row.includes(";")
   )
     return false
-  for (const character of row) {
+  let delimiter = ""
+  for (let index = 0; index < row.length; index++) {
+    const character = row[index]
+    if (character === "<" && index > 0 && row.startsWith("<br/>", index)) {
+      index += 4
+      continue
+    }
     if (
-      "`*_~[]<>\\".includes(character) ||
+      "~[]<>\\".includes(character) ||
       (character !== " " && character.trim() === "")
     )
       return false
+    if (character === "`") {
+      let end = index + 1
+      while (row[end] === "`") end++
+      const run = row.slice(index, end)
+      if (delimiter === "") delimiter = run
+      else if (delimiter === run) delimiter = ""
+      index = end - 1
+    }
   }
+  if (delimiter !== "") return false
   let digitEnd = 0
   while (row[digitEnd] >= "0" && row[digitEnd] <= "9") digitEnd++
   return !(
+    !literalContinuation &&
     digitEnd > 0 &&
     (row[digitEnd] === "." || row[digitEnd] === ")") &&
     (digitEnd + 1 === row.length || row[digitEnd + 1] === " ")
@@ -256,6 +292,13 @@ function onlyLeadingSpacesChanged(before: string, after: string): boolean {
           rowsAfter[index].slice(leadingSpaces(rowsAfter[index])),
     )
   )
+}
+
+/** Only the two ASCII indentation characters may be replaced in a paragraph. */
+function leadingPadding(value: string): number {
+  let end = 0
+  while (value[end] === " " || value[end] === "\t") end++
+  return end
 }
 
 /** The complete ASCII-space prefix, excluding tabs and other whitespace. */

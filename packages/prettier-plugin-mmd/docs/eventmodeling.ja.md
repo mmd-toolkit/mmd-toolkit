@@ -77,9 +77,9 @@ frame、model entity、`data`、`note`、`gwt` が対象です。
 トップレベルの字下げを再検討します。
 
 GWT clause は設定の 1 段、item は 2 段にします。
-通常の構造の継続行は、その文より 1 段深くします。
-`data` と `note` の見出しが完結する行はキーワードにそろえ、
-本文がさらに深く見えるようにします。
+`data` と `note` の見出しが完結する行も含め、
+通常の構造の継続行はその文より 1 段深くします。
+安全に字下げできる block 本文は、その継続した見出し行からさらに 1 段深くします。
 列は親子を決めないため、`tabWidth: 0` では空白を足しません。
 `useTabs` では幅が 0 でも 1 段に tab を 1 個使います。
 値の継続列、metadata の空白、hidden が消費する LF の境界は、
@@ -359,10 +359,39 @@ resetframe 02 command Beta
 
 ### Declarations and notes
 
-コメントで宣言や note の見出しが分かれる場合、コメントは 1 段深く置き、
-見出しが完結する行はキーワードにそろえます。
-値の継続行や必須の hidden の境界は変えません。
+コメントや directive で宣言や note の見出しが分かれる場合、 GWT と同じく、
+trivia と見出しが完結する行をキーワードより 1 段深くします。
+data 本文の規則が margin の変更を許す場合、
+本文はその開始行よりさらに 1 段深くします。
+原文の順序、値の継続行、必須の hidden の境界を保ちます。
+閉じ波括弧は引き続き第 1 列に置きます。
+
 [fixture: eventmodeling/declarations-and-notes/header-completion-comments]
+
+[fixture: eventmodeling/declarations-and-notes/header-opener-comment]
+
+[fixture: eventmodeling/declarations-and-notes/header-directive-continuation]
+
+[fixture: eventmodeling/declarations-and-notes/header-continuation-tabs]
+
+[fixture: eventmodeling/declarations-and-notes/header-continuation-unsafe-body]
+
+出力
+([declarations-and-notes/header-completion-comments-output.mmd](../tests/fixtures/eventmodeling/declarations-and-notes/header-completion-comments-output.mmd)):
+
+```mmd
+eventmodeling
+data
+  // payload
+  Cart {
+    sku: SHIRT-M
+}
+note
+  // payment note
+  01 {
+    Payment received
+}
+```
 
 宣言と note の部品は `entity Shop.Buy`、`data D`、`note 01` と、
 普通の 1 space で分けます。
@@ -479,10 +508,28 @@ tf 01 evt Alpha { 	 x  }
 `{` の直後が LF で、LF の直後の `}` で閉じる通常の data と note は、
 次の条件を満たす場合、
 空でない本文行をすべて `tabWidth` 個の ASCII 空白（U+0020）で字下げします。
+通常の見出しの継続行が残る場合は `2 * tabWidth` 個にして、
+本文をその開始行よりさらに 1 段深くします。
+見出しへ結合される元の LF や、
+inline directive の内部の LF では段を増やしません。
+native hidden を含む見出しはその境界の列を保ち、本文は通常の 1 段にします。
 `useTabs` でも空白を使い、`tabWidth: 0` では本文を書かれたまま残します。
-Mermaid が表示する本文の原文を、波括弧の内側の 1 段にそろえる選択です。
 本文をデータ項目に分けて解析したり、JSON や code として整形したりはせず、
 原文の字下げの差は保ちません。
+
+[fixture: eventmodeling/declarations-and-notes/header-completion-comments]
+
+[fixture: eventmodeling/declarations-and-notes/header-directive-continuation]
+
+[fixture: eventmodeling/declarations-and-notes/data-and-note-headers]
+
+[fixture: eventmodeling/declarations-and-notes/data-name-title-keep-lf]
+
+[fixture: eventmodeling/declarations-and-notes/header-inline-multiline-directive]
+
+[fixture: eventmodeling/declarations-and-notes/header-continuation-tabs]
+
+[fixture: eventmodeling/hidden-forms/hidden-data-tag-owners]
 
 [fixture: eventmodeling/data-blocks/body-common-margin]
 

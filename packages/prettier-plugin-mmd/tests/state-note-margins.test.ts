@@ -4,6 +4,51 @@ import { dbOfText, defaultEmbedded } from "./db-reading.ts"
 import { stateDbForFormattingComparison } from "./state-note-margins.ts"
 
 describe("state's permitted attached-note margins", () => {
+  it.each([
+    {
+      name: "inline emphasis",
+      before:
+        "stateDiagram-v2\nnote right of A\nPay **by card\n            or wallet**.\nend note\n",
+      after:
+        "stateDiagram-v2\n  note right of A\n    Pay **by card\n    or wallet**.\n  end note\n",
+    },
+    {
+      name: "same-line code",
+      before:
+        "stateDiagram-v2\nnote right of A\nUse `card` or ``wallet``.\n            Receipt follows.\nend note\n",
+      after:
+        "stateDiagram-v2\n  note right of A\n    Use `card` or ``wallet``.\n    Receipt follows.\n  end note\n",
+    },
+    {
+      name: "inline HTML breaks",
+      before:
+        "stateDiagram-v2\nnote right of A\nPayment<br/>confirmed\n            Receipt sent\nend note\n",
+      after:
+        "stateDiagram-v2\n  note right of A\n    Payment<br/>confirmed\n    Receipt sent\n  end note\n",
+    },
+    {
+      name: "outer blank rows and tab padding",
+      before:
+        "stateDiagram-v2\nnote right of A\n\n\tFirst\n second\n     \n\nend note\n",
+      after:
+        "stateDiagram-v2\n  note right of A\n\n    First\n    second\n     \n\n  end note\n",
+    },
+    {
+      name: "literal markers within an indented paragraph",
+      before:
+        "stateDiagram-v2\nnote right of A\nPayment methods\n    - Card\n        - Debit\nend note\n",
+      after:
+        "stateDiagram-v2\n  note right of A\n    Payment methods\n    - Card\n    - Debit\n  end note\n",
+    },
+  ])("allows $name without changing other Db values", ({ before, after }) => {
+    const beforeDb = dbOfText(before, defaultEmbedded())
+    const afterDb = dbOfText(after, defaultEmbedded())
+    expect(afterDb).not.toEqual(beforeDb)
+    expect(
+      stateDbForFormattingComparison(beforeDb, afterDb, before, after),
+    ).toEqual(beforeDb)
+  })
+
   it("aligns the first markup row while requiring exact raw Db equality", () => {
     const beforeSource =
       "stateDiagram-v2\nPaid\nnote right of Paid\n        Payment<br/>confirmed\n    Receipt sent\nend note\n"
@@ -28,6 +73,19 @@ describe("state's permitted attached-note margins", () => {
         afterSource,
       ),
     ).toEqual(incorrect)
+  })
+
+  it("aligns a trimmed first-row tab while retaining later markup margins", () => {
+    const beforeSource =
+      "stateDiagram-v2\nnote right of A\n\t<pre>Payment\n            confirmed</pre>\nend note\n"
+    const afterSource =
+      "stateDiagram-v2\n  note right of A\n    <pre>Payment\n            confirmed</pre>\n  end note\n"
+    const before = dbOfText(beforeSource, defaultEmbedded())
+    const after = dbOfText(afterSource, defaultEmbedded())
+    expect(after).toEqual(before)
+    expect(
+      stateDbForFormattingComparison(before, after, beforeSource, afterSource),
+    ).toEqual(after)
   })
 
   it("checks nested notes in source order, leaving inline notes and raw Dbs intact", () => {
@@ -109,53 +167,46 @@ describe("state's permitted attached-note margins", () => {
       after: "stateDiagram-v2\nnote right of A\nIntro\n  # Heading\nend note\n",
     },
     {
-      name: "inline code",
+      name: "code spanning physical rows",
       before:
-        "stateDiagram-v2\nnote right of A\nIntro\nUse `card` here\nend note\n",
+        "stateDiagram-v2\nnote right of A\nUse `card\n            here`\nend note\n",
       after:
-        "stateDiagram-v2\nnote right of A\nIntro\n  Use `card` here\nend note\n",
+        "stateDiagram-v2\nnote right of A\n  Use `card\n  here`\nend note\n",
     },
     {
-      name: "emphasis",
+      name: "unmatched code delimiters",
       before:
-        "stateDiagram-v2\nnote right of A\nIntro\nUse *card* here\nend note\n",
+        "stateDiagram-v2\nnote right of A\nUse ``card`\n            here`\nend note\n",
       after:
-        "stateDiagram-v2\nnote right of A\nIntro\n  Use *card* here\nend note\n",
+        "stateDiagram-v2\nnote right of A\n  Use ``card`\n  here`\nend note\n",
     },
     {
-      name: "underscore markup",
+      name: "strikethrough spanning physical rows",
       before:
-        "stateDiagram-v2\nnote right of A\nIntro\nUse _card_ here\nend note\n",
+        "stateDiagram-v2\nnote right of A\nPay ~~by card\n            or wallet~~.\nend note\n",
       after:
-        "stateDiagram-v2\nnote right of A\nIntro\n  Use _card_ here\nend note\n",
-    },
-    {
-      name: "strikethrough markup",
-      before:
-        "stateDiagram-v2\nnote right of A\nIntro\nUse ~~card~~ here\nend note\n",
-      after:
-        "stateDiagram-v2\nnote right of A\nIntro\n  Use ~~card~~ here\nend note\n",
+        "stateDiagram-v2\nnote right of A\n    Pay ~~by card\n    or wallet~~.\nend note\n",
     },
     {
       name: "a link",
       before:
         "stateDiagram-v2\nnote right of A\nIntro\nUse [card](pay) here\nend note\n",
       after:
-        "stateDiagram-v2\nnote right of A\nIntro\n  Use [card](pay) here\nend note\n",
+        "stateDiagram-v2\nnote right of A\n  Intro\n  Use [card](pay) here\nend note\n",
     },
     {
       name: "HTML markup",
       before:
-        "stateDiagram-v2\nnote right of A\nIntro\nUse <br/> here\nend note\n",
+        "stateDiagram-v2\nnote right of A\nIntro\nUse <pre>card</pre> here\nend note\n",
       after:
-        "stateDiagram-v2\nnote right of A\nIntro\n  Use <br/> here\nend note\n",
+        "stateDiagram-v2\nnote right of A\n  Intro\n  Use <pre>card</pre> here\nend note\n",
     },
     {
       name: "a backslash",
       before:
         "stateDiagram-v2\nnote right of A\nIntro\nUse \\card here\nend note\n",
       after:
-        "stateDiagram-v2\nnote right of A\nIntro\n  Use \\card here\nend note\n",
+        "stateDiagram-v2\nnote right of A\n  Intro\n  Use \\card here\nend note\n",
     },
     {
       name: "an empty ordered-list marker",
@@ -181,9 +232,18 @@ describe("state's permitted attached-note margins", () => {
       after: "stateDiagram-v2\nnote right of A\n  \u00a0Payment\nend note\n",
     },
     {
-      name: "a tab in the body",
-      before: "stateDiagram-v2\nnote right of A\n\tPayment\nend note\n",
-      after: "stateDiagram-v2\nnote right of A\n  \tPayment\nend note\n",
+      name: "an internal tab in the body",
+      before:
+        "stateDiagram-v2\nnote right of A\nFirst\nPayment\tconfirmed\nend note\n",
+      after:
+        "stateDiagram-v2\nnote right of A\n  First\n  Payment\tconfirmed\nend note\n",
+    },
+    {
+      name: "tab padding after the first content row",
+      before:
+        "stateDiagram\nnote right of A\n\n\tPayment confirmed\n\t\tReceipt sent\n     \n\nend note\n",
+      after:
+        "stateDiagram\nnote right of A\n\n    Payment confirmed\n    Receipt sent\n     \n\nend note\n",
     },
     {
       name: "a native entity or protected semicolon",

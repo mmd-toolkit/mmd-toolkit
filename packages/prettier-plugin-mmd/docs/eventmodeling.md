@@ -75,12 +75,13 @@ later accepts whitespace before block closers, checking that raw body values and
 rendering remain unchanged.
 
 GWT clauses use one configured step and items two. Ordinary structural
-continuation lines stand one step deeper than their statement. A line completing
-a `data` or `note` header aligns with its keyword, so the body remains deeper.
-Columns do not define parents, so `tabWidth: 0` adds no spaces; `useTabs` adds
-one tab per step even at width zero. Value continuations, metadata padding and
-hidden consumed-LF boundaries retain their authored columns, apart from the
-block-body margin adjustment in [Data blocks](#data-blocks).
+continuation lines, including a line completing a `data` or `note` header, stand
+one step deeper than their statement. A safely indented block body uses one
+further step inside that continued header line. Columns do not define parents,
+so `tabWidth: 0` adds no spaces; `useTabs` adds one tab per step even at width
+zero. Value continuations, metadata padding and hidden consumed-LF boundaries
+retain their authored columns, apart from the block-body margin adjustment in
+[Data blocks](#data-blocks).
 
 [fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]
 
@@ -357,10 +358,38 @@ resetframe 02 command Beta
 
 ### Declarations and notes
 
-A declaration or note header split by a comment keeps that comment one level
-inside, while the line completing the header aligns with its keyword. Keep value
-continuations and required hidden boundaries unchanged. [fixture:
-eventmodeling/declarations-and-notes/header-completion-comments]
+A declaration or note header split by a comment or directive keeps the trivia
+and the line completing the header one level inside its keyword, as for a GWT
+header. Where the data-body rules allow margin changes, put the body one further
+level inside that opening line. Keep the written order, value continuations and
+required hidden boundaries. The closer still stays at column one.
+
+[fixture: eventmodeling/declarations-and-notes/header-completion-comments]
+
+[fixture: eventmodeling/declarations-and-notes/header-opener-comment]
+
+[fixture: eventmodeling/declarations-and-notes/header-directive-continuation]
+
+[fixture: eventmodeling/declarations-and-notes/header-continuation-tabs]
+
+[fixture: eventmodeling/declarations-and-notes/header-continuation-unsafe-body]
+
+Output
+([declarations-and-notes/header-completion-comments-output.mmd](../tests/fixtures/eventmodeling/declarations-and-notes/header-completion-comments-output.mmd)):
+
+```mmd
+eventmodeling
+data
+  // payload
+  Cart {
+    sku: SHIRT-M
+}
+note
+  // payment note
+  01 {
+    Payment received
+}
+```
 
 Separate declaration and note components with one ordinary space:
 `entity Shop.Buy`, `data D` and `note 01`. Put a block opener on its header line
@@ -475,11 +504,29 @@ tf 01 evt Alpha { 	 x  }
 
 For ordinary data and note blocks written as `{` immediately followed by LF and
 closed by LF followed by `}`, align every nonblank body line to `tabWidth` ASCII
-spaces (U+0020) where the conditions below permit it. Use spaces even with
-`useTabs`; at `tabWidth: 0`, keep the body as written. This puts the source text
-of Mermaid's displayed body one level inside its braces. It does not parse the
-body into data fields or format it as JSON or code; authored indentation
-differences are not preserved.
+spaces (U+0020) where the conditions below permit it. Use `2 * tabWidth` spaces
+when an ordinary header continuation remains, putting the body one further step
+inside its opening line. An authored LF that joins into the header, or an LF
+inside an inline directive, does not add this step. Native hidden header forms
+retain their boundary columns and use the ordinary one-step body rule. Use
+spaces even with `useTabs`; at `tabWidth: 0`, keep the body as written. This
+does not parse the body into data fields or format it as JSON or code; authored
+indentation differences are not preserved.
+
+[fixture: eventmodeling/declarations-and-notes/header-completion-comments]
+
+[fixture: eventmodeling/declarations-and-notes/header-directive-continuation]
+
+[fixture: eventmodeling/declarations-and-notes/data-and-note-headers]
+
+[fixture: eventmodeling/declarations-and-notes/data-name-title-keep-lf]
+
+[fixture:
+eventmodeling/declarations-and-notes/header-inline-multiline-directive]
+
+[fixture: eventmodeling/declarations-and-notes/header-continuation-tabs]
+
+[fixture: eventmodeling/hidden-forms/hidden-data-tag-owners]
 
 [fixture: eventmodeling/data-blocks/body-common-margin]
 

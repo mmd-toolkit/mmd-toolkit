@@ -80,7 +80,7 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
    [Data blocks](packages/prettier-plugin-mmd/docs/eventmodeling.ja.md#data-blocks)
    が定める eventmodeling のブロック本文と、
    [ノート](packages/prettier-plugin-mmd/docs/state.ja.md#ノート) が定める state
-   のノートの通常の段落に対する、限定的な ASCII 空白 margin 変更は除く。
+   のノートの対象となる段落に対する、限定的な ASCII 空白 margin 変更は除く。
    これらの例外では、描画を保つ場合に限り raw Db 値の差を許容する。
 
 ## 各パッケージの責務

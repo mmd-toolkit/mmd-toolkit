@@ -73,7 +73,7 @@ plugin のソースを import して Node で動かすスクリプトは、
 整形は冪等で、
 [Data blocks](./eventmodeling.ja.md#data-blocks) が定める eventmodeling の block
 data と note、
-および[ノート](./state.ja.md#ノート)が定める state の通常の段落に対する、
+および[ノート](./state.ja.md#ノート)が定める state の単一の段落に対する、
 限定的な ASCII 空白 margin を除き、Db を保ちます。
 formatter のテストが許容するのは、eventmodeling の raw block 値と block 原文、
 および対象となる state の `notes[].text` 値の行頭の ASCII 空白の差だけです。

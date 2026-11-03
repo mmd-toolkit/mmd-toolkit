@@ -441,13 +441,22 @@ directive の下に残る境界の開き波括弧は呼び出しにそろえま�
 
 通常のブロック見出しを完成する物理行は文と同じ段にそろえ、本文を1段深くします。
 その行をまたぐリテラル値は、固有の列を保ちます。
-state、requirement、C4 の boundary、
-eventmodeling の data・note の見出しが対象です。
+state、requirement、C4 の boundary の見出しが対象です。
 [fixture: state/composite-states/header-completion-after-comment]
 [fixture: requirement/bodies/header-completion-after-comment]
-[fixture: eventmodeling/declarations-and-notes/header-completion-comments]
 [fixture: c4/boundary-bodies/named-header-completion]
 [fixture: c4/boundary-bodies/value-spans-header-line-kept]
+
+eventmodeling の data と note は、コメント、directive、見出しが完結する行に、
+通常の継続行の字下げを使います。
+条件を満たす本文はその開始行からさらに設定の1段深くし、
+native hidden の見出しの境界や本文の保持条件を優先します。
+閉じ波括弧は引き続き第1列に置きます。
+GWT と同じく原文の順序と trivia の形を保ちます。
+[fixture: eventmodeling/declarations-and-notes/header-completion-comments]
+[fixture: eventmodeling/declarations-and-notes/header-opener-comment]
+[fixture: eventmodeling/declarations-and-notes/header-directive-continuation]
+[fixture: eventmodeling/declarations-and-notes/header-continuation-unsafe-body]
 
 GWT には開始波括弧がありません。
 継続する source-frame の行と、その間のコメントや directive は、
@@ -769,21 +778,46 @@ mermaid.js はノートの本文を id の直後から読み、最初の 2 文�
 [fixture: state/notes/kept]
 
 複数行のブロックノートは、[ノート](./state.ja.md#ノート)の限定規則に従い、
-通常の段落の margin をノートより 1 段深くそろえます。
-`useTabs` でも ASCII 空白を使います。
+単一の段落の内容がある各行をノートより 1 段深くそろえます。
+本文の字下げには、`useTabs` でも ASCII 空白を使います。
+tab は、Mermaid が取り除く、内容がある最初の行の余白だけで許可します。
+後続行の tab を含む余白は原文を保ちます。
+行内の強調、同じ物理行で閉じるコード、行頭ではない正確な `<br/>` も対象です。
+前後の空行は正確に保ちます。
+記号で始まる文字どおりの継続行は、
+原文と出力の両方で必要な空白 4 個以上の余白を保つ場合だけそろえます。
 描画を保ちながら、
-raw `notes[].text` の行頭の ASCII 空白だけが変わる場合があります。
-空でない本文の最初の物理行も、
-先頭の字下げが ASCII 空白だけなら本文の段にそろえます。
-Mermaid はこの余白を取り除くため、
-HTML や Markdown があっても raw Db は一致します。
-後続の記法の字下げと空行は原文を保ちます。
-trivia、セミコロン、ASCII 空白以外の行頭空白には既存の保護を適用します。
+raw `notes[].text` の許可された行頭の ASCII 空白だけが変わる場合があります。
+[fixture: state/notes/payment-prose]
+[fixture: state/notes/prose-tab-margin-kept]
+[fixture: state/notes/later-tab-margin-kept]
+[fixture: state/notes/over-lines-text-ends-kept]
+[fixture: state/notes/inline-emphasis-margins]
+[fixture: state/notes/inline-code-margins]
+[fixture: state/notes/inline-br-margins]
+[fixture: state/notes/markdown-ordered-list-kept]
+[fixture: state/notes/literal-markers-zero-width]
+
+ブロック構文、空行で分かれた段落、hard break、複数行コード、取り消し線、
+一般の HTML などの保護する形では、後続の余白を保ちます。
+これらの余白は、描画されるラベルに現れる場合があります。
+`<pre>` 内や空行後の字下げを変えると、サイズや配置が変わることがあるためです。
+このような本文は、最初の物理行が空でなく、
+字下げが ASCII 空白と tab だけならその行だけをそろえます。
+Mermaid はこの余白を取り除くため、raw Db は一致します。
+trivia、セミコロン、保護された結合領域がある場合は、
+本文全体を原文のまま保ちます。
 一般の Markdown は再整形しません。 [fixture: state/notes/html-note-kept]
 [fixture: state/notes/html-pre-first-line]
 [fixture: state/notes/html-break-first-line]
-[fixture: state/notes/payment-prose]
-[fixture: state/notes/markdown-ordered-list-kept]
+[fixture: state/notes/first-tab-markup-margin]
+[fixture: state/notes/over-lines-empty-lines-kept]
+[fixture: state/notes/list-body-margin-kept]
+[fixture: state/notes/heading-at-paragraph-boundary-kept]
+[fixture: state/notes/prose-trailing-spaces]
+[fixture: state/notes/code-spanning-lines-kept]
+[fixture: state/notes/strikethrough-spanning-lines-kept]
+[fixture: state/notes/marker-at-paragraph-boundary-kept]
 
 別名の定義の 2 つ目の説明は、 mermaid.js が読む両端の空白ごと、
 書かれたまま残します。 [fixture: state/aliases/second-description-kept]
@@ -2905,8 +2939,17 @@ Markdown は最終 code line の hidden padding を削りますが、単独整�
 eventmodeling の[規則](./eventmodeling.ja.md)は、
 [Data blocks](./eventmodeling.ja.md#data-blocks) の限定的な ASCII 空白 margin
 変更を除き、 inline data と block の内容を保ちます。
-この変更は空でない本文行をすべて `tabWidth` 個の空白で字下げし、データ項目、
+この変更は空でない本文行をすべて `tabWidth` 個、
+通常の見出しの継続行が残る場合は `2 * tabWidth` 個の空白で字下げし、データ項目、
 JSON、code の構造は解釈しません。
+見出しへ結合される通常の LF や inline directive 内部の LF では段を増やさず、
+native hidden を含む見出しは従来の本文の段を保ちます。
+[fixture: eventmodeling/declarations-and-notes/header-directive-continuation]
+[fixture: eventmodeling/declarations-and-notes/header-inline-multiline-directive]
+[fixture: eventmodeling/declarations-and-notes/header-continuation-tabs]
+[fixture: eventmodeling/declarations-and-notes/data-and-note-headers]
+[fixture: eventmodeling/hidden-forms/hidden-data-tag-owners]
+
 この変更は描画を保ちながら raw Db 値を変える場合がありますが、 parser、仕様、
 記録された Mermaid の読みは変えません。
 ほかの payload の文字、引用符、波括弧、空行、行末の空白、

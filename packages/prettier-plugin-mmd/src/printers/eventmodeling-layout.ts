@@ -21,9 +21,9 @@ import type {
 import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import type { HiddenOpenBlockLayout } from "./flat-hidden-diagram.ts"
+import { readGap } from "./gap.ts"
 import { protectHiddenGaps } from "./hidden-forms.ts"
 import {
-  alignBlockOpeningLine,
   collectAtoms,
   collectValueNodes,
   expectToken,
@@ -223,16 +223,9 @@ function layoutComponents(
             ),
         "a data body",
       )
-      const doc =
-        node.type === "EventmodelingDataBlock"
-          ? indentedDataBlock(
-              source.text.slice(opening.range[0], node.range[1]),
-              tabWidth,
-            )
-          : undefined
       if (node.type === "EventmodelingDataBlock")
         blockOpening = opening.range[0]
-      kept.push({ start: opening.range[0], end: node.range[1], doc })
+      kept.push({ start: opening.range[0], end: node.range[1] })
     }
   })
   const atoms = collectAtoms(source, start, end, values, kept)
@@ -288,12 +281,40 @@ function layoutComponents(
     values.filter((node) => node.type === "EventmodelingIgnoredText"),
   )
   if (classifyEventmodelingStatement(statement).kind === "data") {
+    const last = layout.atoms.at(-1)!
+    // Ordinary retained header breaks use continuation indentation. Keep a
+    // safe body one further step inside that line, not beside its name
+    // (docs/eventmodeling.md, Declarations and notes and Data blocks).
+    const continuedHeader =
+      !values.some(
+        (node) =>
+          node.type === "EventmodelingIgnoredText" &&
+          node.range[0] < last.start,
+      ) &&
+      layout.atoms.some((atom, index) => {
+        const previous = layout.atoms[index - 1]
+        return (
+          previous !== undefined &&
+          !layout.joinedBefore?.has(atom.start) &&
+          !layout.writtenGapsBefore?.has(atom.start) &&
+          !writtenGapsBefore.has(atom.start) &&
+          readGap(source, previous.end, atom.start, true).breaksLine
+        )
+      })
+    // A semicolon-protected replacement owns its written indentation and
+    // complete source; only the unprotected brace-body atom can be indented.
+    const bodyDoc =
+      last.start === blockOpening && last.writtenIndentation === undefined
+        ? indentedDataBlock(
+            source.text.slice(last.start, last.end),
+            tabWidth * (continuedHeader ? 2 : 1),
+          )
+        : undefined
     // Preserve the lookahead that keeps LF out of a block-data terminal
     // (diagrams/eventmodeling.md, Data; docs/eventmodeling.md, Data boundaries).
     let paddedEnd = end
     while (source.text[paddedEnd] === " " || source.text[paddedEnd] === "\t")
       paddedEnd++
-    const last = layout.atoms.at(-1)!
     layout = {
       ...layout,
       atoms: [
@@ -302,24 +323,20 @@ function layoutComponents(
           ...last,
           end: paddedEnd,
           doc:
-            last.doc === undefined
+            bodyDoc === undefined
               ? undefined
-              : [last.doc, printAsWritten(source, last.end, paddedEnd)],
+              : [bodyDoc, printAsWritten(source, last.end, paddedEnd)],
         },
       ],
     }
   }
-  const aligned = {
+  return {
     ...layout,
     writtenGapsBefore: new Set([
       ...(layout.writtenGapsBefore ?? []),
       ...writtenGapsBefore,
     ]),
   }
-  return classifyEventmodelingStatement(statement).kind === "data" &&
-    blockOpening !== undefined
-    ? alignBlockOpeningLine(source, aligned, blockOpening)
-    : aligned
 }
 
 /**

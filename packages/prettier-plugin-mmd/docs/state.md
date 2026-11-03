@@ -586,23 +586,44 @@ below only align safe margins while preserving the remaining body text.
 notes/markdown-unordered-list-kept]
 
 For a note whose body starts after a single-line header, with `end note`
-starting its own line, align consecutive nonempty plain paragraph lines one
-level inside the note. Replace only their leading ASCII spaces; preserve the
-text after that margin, line breaks and trailing spaces. Use ASCII spaces even
+starting its own line, align every content line of a single paragraph one level
+inside the note. Replace leading ASCII spaces with the body indentation; the
+first content line may also have leading tabs, which Mermaid trims. Later lines
+with a tab in their margin fall outside this paragraph rule. Preserve the
+remaining text, line breaks and trailing spaces. Empty and whitespace-only rows
+before or after the paragraph stay exactly as written. Use ASCII spaces even
 with `useTabs`, and no leading spaces at `tabWidth: 0`. Nesting and `tabWidth`
 determine the body level. [fixture: notes/payment-prose] [fixture:
 notes/prose-nested-four] [fixture: notes/prose-use-tabs] [fixture:
-notes/prose-zero-width] [fixture: notes/prose-one-trailing-space]
+notes/prose-zero-width] [fixture: notes/prose-one-trailing-space] [fixture:
+notes/prose-tab-margin-kept] [fixture: notes/over-lines-text-ends-kept]
+[fixture: notes/later-tab-margin-kept]
 
-For the same single-line header and standalone closer, also align the first
-physical body line when it is nonempty and starts with only ASCII-space padding.
-Mermaid trims that margin before storing the note, so this step keeps the raw Db
-identical even for HTML or Markdown. All later markup margins stay as written;
-for example, indenting the inside of `<pre>` can change the drawing. A blank
-first row or leading whitespace other than ASCII spaces keeps its source.
-[fixture: notes/html-note-kept] [fixture: notes/html-pre-first-line] [fixture:
+This includes inline emphasis, backtick code closed on the same physical line,
+and exact `<br/>` forms after other text on that line. Their contents stay
+written; only line margins align. [fixture: notes/inline-emphasis-margins]
+[fixture: notes/inline-code-margins] [fixture: notes/inline-br-margins]
+
+A list-like or other block-style prefix can also be literal paragraph text.
+Align such a continuation only after an earlier paragraph line, when its source
+margin has at least four ASCII spaces, no tabs, and its output margin has at
+least four spaces. Otherwise preserve the later margins: moving a marker to a
+paragraph boundary, or below four spaces, can change how Mermaid reads it.
+[fixture: notes/markdown-unordered-list-kept] [fixture:
+notes/markdown-ordered-list-kept] [fixture:
+notes/markdown-ordered-parenthesis-kept] [fixture:
+notes/literal-markers-zero-width] [fixture:
+notes/marker-at-paragraph-boundary-kept]
+
+For bodies outside this paragraph rule, align only the first physical body line
+when it is nonempty and starts with only ASCII-space/tab padding. Mermaid trims
+that margin before storing the note, so this step keeps the raw Db identical
+even for HTML or Markdown. Keep every later margin as written; for example,
+indenting the inside of `<pre>` can change the drawing. A blank first row or
+leading whitespace other than ASCII spaces and tabs keeps its source. [fixture:
+notes/html-note-kept] [fixture: notes/html-pre-first-line] [fixture:
 notes/html-break-first-line] [fixture: notes/html-first-line-tabs] [fixture:
-notes/html-first-line-zero-width]
+notes/html-first-line-zero-width] [fixture: notes/first-tab-markup-margin]
 
 Output
 ([notes/html-note-kept-output.mmd](../tests/fixtures/state/notes/html-note-kept-output.mmd)):
@@ -627,35 +648,41 @@ entities. [fixture: comments/text-in-note-lines-kept] [fixture:
 notes/over-lines-directive-on-header-line] [corpus fixture:
 state/tokens-note-block-ignored-semicolon]
 
-Except for the trimmed first-row margin above, keep a body containing blank
-lines, whitespace other than ASCII spaces within a line, Markdown-like markup,
-HTML or backslashes. Later list, heading and code forms retain their
-indentation. The formatter protects potential list prefixes: digits followed by
-`.` or `)` and an ASCII space or the end of the line. This does not reformat
-Markdown. [fixture: notes/markdown-unordered-list-kept] [fixture:
-notes/markdown-ordered-list-kept] [fixture: notes/markdown-heading-kept]
-[fixture: notes/markdown-code-kept] [fixture: notes/markdown-inline-kept]
-[fixture: notes/html-note-kept] [fixture: notes/prose-tab-margin-kept] [fixture:
-notes/markdown-ordered-parenthesis-kept] [fixture:
-notes/markdown-empty-ordered-dot-kept] [fixture:
-notes/markdown-empty-ordered-parenthesis-kept]
+Except for that trimmed first-row margin, keep blank-separated paragraphs, block
+syntax, fenced or multiline code, strikethrough, general HTML, links,
+backslashes and whitespace other than ASCII spaces within content lines.
+Prefixes considered block-like include list markers, headings, and digits
+followed by `.` or `)` and an ASCII space or the end of the line. These margins
+can appear in rendered text when Mermaid displays a block's source literally.
+For example, increasing two spaces after a blank line to four can change three
+displayed paragraphs into a different layout. This does not reformat general
+Markdown. [fixture: notes/over-lines-empty-lines-kept] [fixture:
+notes/list-body-margin-kept] [fixture: notes/heading-at-paragraph-boundary-kept]
+[fixture: notes/markdown-heading-kept] [fixture: notes/markdown-code-kept]
+[fixture: notes/code-spanning-lines-kept] [fixture:
+notes/strikethrough-spanning-lines-kept] [fixture:
+notes/link-spanning-lines-kept] [fixture: notes/backslash-margins-kept]
+[fixture: notes/markdown-empty-ordered-dot-kept] [fixture:
+notes/markdown-empty-ordered-parenthesis-kept] [test: U+00A0 at the start of a
+later note row] [test: U+2028 on a later note row] [test: U+2029 on a later note
+row]
 
-A line ending in two or more ASCII spaces before another body line is a Markdown
-hard break: keep its trailing spaces and subsequent body lines as written,
-aligning only the trimmed first-row margin when eligible. One trailing space on
-an earlier line, and trailing spaces on the last body line, stay written when
-the body margin is aligned. [fixture: notes/prose-trailing-spaces] [fixture:
-notes/prose-one-trailing-space]
+A line ending in two or more ASCII spaces before another content line is a
+Markdown hard break: keep its trailing spaces and subsequent body lines as
+written, aligning only the trimmed first-row margin when eligible. One trailing
+space on an earlier line, and trailing spaces on the last body line, stay
+written when the body margin is aligned. [fixture: notes/prose-trailing-spaces]
+[fixture: notes/prose-one-trailing-space]
 
-Mermaid preserves leading spaces after internal newlines in raw `notes[].text`.
-The permitted ASCII-space prefix changes are therefore a limited Db exception,
-with rendering preserved; parser, specification and recorded Mermaid readings
-stay unchanged. Other multiline note bodies retain their written columns apart
-from the eligible first-row margin, including empty or whitespace-only edge
-lines. `end note` stands at the level of the note. The whitespace after the id
-on the header line is dropped; after a comment or directive on that line it
-stays as written. [fixture: notes/over-lines] [fixture:
-notes/over-lines-first-line-column-kept] [fixture:
+Mermaid preserves leading whitespace after internal newlines in raw
+`notes[].text`. The permitted ASCII-space prefix changes are therefore a limited
+Db exception, with rendering preserved; parser, specification and recorded
+Mermaid readings stay unchanged. Other multiline note bodies retain their
+written columns apart from the eligible first-row margin, including empty or
+whitespace-only edge lines. `end note` stands at the level of the note. The
+whitespace after the id on the header line is dropped; after a comment or
+directive on that line it stays as written. [fixture: notes/over-lines]
+[fixture: notes/over-lines-first-line-column-kept] [fixture:
 notes/over-lines-text-ends-kept] [fixture:
 notes/over-lines-directive-on-header-line] [fixture:
 notes/over-lines-end-note-indentation-set] [fixture:

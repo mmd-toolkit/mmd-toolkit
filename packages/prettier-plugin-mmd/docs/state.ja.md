@@ -600,26 +600,52 @@ id の前の空白は空白 1 つにします。
 [fixture: notes/markdown-unordered-list-kept]
 
 見出しが 1 行に収まり、本文がその次の行から始まり、
-`end note` が行頭の字下げに続くノートでは、空行を挟まない通常の段落の各行を、
+`end note` が行頭の字下げに続くノートでは、単一の段落の内容がある各行を、
 ノートより 1 段深くそろえます。
-行頭の ASCII 空白だけを置き換え、その後のテキスト、改行、末尾の空白は保ちます。
+行頭の ASCII 空白を本文の字下げに置き換えます。
+内容がある最初の行だけは、Mermaid が取り除く行頭の tab も対象です。
+後続行の余白に tab がある本文は、この段落の規則から外します。
+そのほかのテキスト、改行、末尾の空白は保ちます。
+段落の前後にある空行と空白だけの行は、原文を正確に保ちます。
 `useTabs` でも本文には ASCII 空白を使い、
 `tabWidth: 0` では行頭の空白をなくします。
 本文の段は、ノートの階層と `tabWidth` で決まります。
 [fixture: notes/payment-prose] [fixture: notes/prose-nested-four]
 [fixture: notes/prose-use-tabs] [fixture: notes/prose-zero-width]
-[fixture: notes/prose-one-trailing-space]
+[fixture: notes/prose-one-trailing-space] [fixture: notes/prose-tab-margin-kept]
+[fixture: notes/over-lines-text-ends-kept]
+[fixture: notes/later-tab-margin-kept]
 
-同じ条件の見出しと閉じを持つノートでは、本文の最初の物理行が空でなく、
-字下げが ASCII 空白だけなら、その行も本文の段へそろえます。
+行内の強調、同じ物理行で閉じる backtick のコード、
+行内のほかのテキストの後にある正確な `<br/>` も対象です。
+これらの内容は変えず、行頭の余白だけをそろえます。
+[fixture: notes/inline-emphasis-margins] [fixture: notes/inline-code-margins]
+[fixture: notes/inline-br-margins]
+
+リストなどのブロック構文に見える行頭も、段落の文字どおりの続きの場合があります。
+前に段落の行があり、原文の余白が ASCII 空白 4 個以上で tab を含まず、
+出力の余白も空白 4 個以上になる場合だけ、その継続行もそろえます。
+それ以外は後続の余白を保ちます。
+記号を段落の境界へ移したり、字下げを 4 個未満にしたりすると、
+Mermaid の読み方が変わる場合があるためです。
+[fixture: notes/markdown-unordered-list-kept]
+[fixture: notes/markdown-ordered-list-kept]
+[fixture: notes/markdown-ordered-parenthesis-kept]
+[fixture: notes/literal-markers-zero-width]
+[fixture: notes/marker-at-paragraph-boundary-kept]
+
+この段落の規則に当てはまらない本文では、最初の物理行が空でなく、
+字下げが ASCII 空白と tab だけなら、その行も本文の段へそろえます。
 Mermaid はこの余白をノートの格納前に取り除くため、
 HTML や Markdown があっても raw Db は完全に一致します。
-後続の記法の字下げは原文を保ちます。
+後続のすべての余白は原文を保ちます。
 たとえば `<pre>` の内側の字下げを変えると、描画も変わる場合があるためです。
-最初の行が空か、先頭に ASCII 空白以外の空白文字がある場合は原文を保ちます。
+最初の行が空か、
+先頭に ASCII 空白と tab 以外の空白文字がある場合は原文を保ちます。
 [fixture: notes/html-note-kept] [fixture: notes/html-pre-first-line]
 [fixture: notes/html-break-first-line] [fixture: notes/html-first-line-tabs]
 [fixture: notes/html-first-line-zero-width]
+[fixture: notes/first-tab-markup-margin]
 
 出力
 ([notes/html-note-kept-output.mmd](../tests/fixtures/state/notes/html-note-kept-output.mmd)):
@@ -645,22 +671,30 @@ stateDiagram-v2
 [fixture: notes/over-lines-directive-on-header-line]
 [corpus fixture: state/tokens-note-block-ignored-semicolon]
 
-上記の先頭行の余白を除き、空行、行内の ASCII 空白以外の空白文字、
-Markdown 風の記法、HTML、バックスラッシュがある本文は原文を保ちます。
-後続行のリスト、見出し、コードの字下げは保ちます。
-数字の後に `.` または `)` があり、その次が ASCII 空白か行末である形を、
-リストの先頭の候補として保護します。
-Markdown を再整形するものではありません。
-[fixture: notes/markdown-unordered-list-kept]
-[fixture: notes/markdown-ordered-list-kept]
+上記の先頭行の余白を除き、空行で分かれた段落、ブロック構文、
+fence 付きや複数行のコード、取り消し線、一般の HTML、リンク、バックスラッシュ、
+内容の行内にある ASCII 空白以外の空白文字は原文を保ちます。
+ブロック構文の候補には、リストの記号、見出し、数字の後に `.` または `)` があり、
+その次が ASCII 空白か行末である形を含みます。
+Mermaid がブロックの原文を文字どおりに表示する場合は、
+その余白も表示されるためです。
+たとえば空行後の空白を 2 個から 4 個に増やすと、
+表示されていた 3 つの段落が別の配置に変わる場合があります。
+一般の Markdown を再整形するものではありません。
+[fixture: notes/over-lines-empty-lines-kept]
+[fixture: notes/list-body-margin-kept]
+[fixture: notes/heading-at-paragraph-boundary-kept]
 [fixture: notes/markdown-heading-kept] [fixture: notes/markdown-code-kept]
-[fixture: notes/markdown-inline-kept] [fixture: notes/html-note-kept]
-[fixture: notes/prose-tab-margin-kept]
-[fixture: notes/markdown-ordered-parenthesis-kept]
+[fixture: notes/code-spanning-lines-kept]
+[fixture: notes/strikethrough-spanning-lines-kept]
+[fixture: notes/link-spanning-lines-kept]
+[fixture: notes/backslash-margins-kept]
 [fixture: notes/markdown-empty-ordered-dot-kept]
 [fixture: notes/markdown-empty-ordered-parenthesis-kept]
+[test: U+00A0 at the start of a later note row]
+[test: U+2028 on a later note row] [test: U+2029 on a later note row]
 
-最後以外の本文行が ASCII 空白 2 個以上で終わる場合は、
+後に内容の行が続く本文行が ASCII 空白 2 個以上で終わる場合は、
 Markdown の hard break なので、その末尾空白と後続行は原文を保ち、
 条件を満たす先頭行の余白だけをそろえます。
 最後以外の本文行の末尾の空白 1 個と、最後の本文行の末尾の空白は、
