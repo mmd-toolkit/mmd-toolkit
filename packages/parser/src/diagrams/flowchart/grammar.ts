@@ -597,7 +597,7 @@ export class FlowchartGrammar extends GraphGrammar<
       title = this.parseLabel()
       this.addItem("Punctuator", [this.take("]")])
     }
-    const body = [...this.parseStatementEnd(blocks)]
+    const body = this.parseStatementEnd(blocks)
     return { start, name, nameUnits, title, body }
   }
 

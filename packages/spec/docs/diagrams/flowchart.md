@@ -1494,10 +1494,11 @@ name-piece         = number | id-run | letter | space | "-" | "&" | ":" | "*" | 
 
 The name after `subgraph` is required: mermaid.js accepts `subgraph` alone in
 its grammar and then rejects it in its Db. [fixture:
-flowchart/gram-subgraph-no-name] The name is a label of its own: it is a string,
-a markdown string, or a name piece, followed by any further name pieces; its
-kind is `string`, `markdown`, or `text` as for a label, and its value is defined
-as for a label. mermaid.js reads it as the name text that
+flowchart/gram-subgraph-no-name] [fixture:
+flowchart/gram-subgraph-nested-no-name] The name is a label of its own: it is a
+string, a markdown string, or a name piece, followed by any further name pieces;
+its kind is `string`, `markdown`, or `text` as for a label, and its value is
+defined as for a label. mermaid.js reads it as the name text that
 [Rejections outside the grammar](#rejections-outside-the-grammar) defines.
 `subgraph "a"b` has the name `ab`, which is its id and its title;
 `subgraph "a" b` has the name `a b`; a markdown string may be continued in the
@@ -1566,6 +1567,48 @@ and nothing may follow the closing `]` but the separator: `subgraph S [t]` is
 accepted, and `subgraph S[t]` followed by a space and a line break is rejected.
 [fixture: flowchart/gram-subgraph-title-space-before] [fixture:
 flowchart/gram-subgraph-title-space-after]
+
+The lines of a subgraph are the lines of the diagram, so subgraphs nest in them
+to any depth. [fixture: flowchart/gram-subgraph-nested-three-levels] [fixture:
+flowchart/gram-subgraph-nested-string-title] [fixture:
+flowchart/gram-subgraph-nested-markdown-name] [fixture:
+flowchart/gram-subgraph-nested-semicolons] [fixture:
+flowchart/gram-subgraph-body-comment-line] [fixture:
+flowchart/gram-subgraph-body-directive] [fixture:
+flowchart/gram-subgraph-body-empty-line] [fixture:
+flowchart/gram-subgraph-body-line-separator] [fixture:
+flowchart/gram-subgraph-body-empty-block] [fixture:
+flowchart/gram-subgraph-nested-end-ignored-semicolon]
+
+Outside a name, each `end` closes the innermost open subgraph, and each needs
+its own: a missing `end` and an `end` with nothing open are rejected. [fixture:
+flowchart/gram-subgraph-end-extra] [fixture:
+flowchart/gram-subgraph-end-extra-nested] [fixture:
+flowchart/gram-subgraph-end-missing] [fixture:
+flowchart/gram-subgraph-end-missing-nested] [fixture:
+flowchart/gram-subgraph-end-missing-outer] [fixture:
+flowchart/gram-subgraph-end-top-level] [fixture:
+flowchart/gram-subgraph-member-has-own-property-end-missing] [fixture:
+flowchart/gram-subgraph-member-has-own-property-end-missing-nested] [fixture:
+flowchart/gram-subgraph-nested-end-comment-line] [fixture:
+flowchart/gram-subgraph-nested-end-directive] [fixture:
+flowchart/gram-subgraph-nested-end-empty-line] [fixture:
+flowchart/gram-subgraph-nested-end-line-separator] [fixture:
+flowchart/gram-subgraph-nested-end-empty-block] [fixture:
+flowchart/gram-subgraph-nested-end-ignored-semicolon] [fixture:
+flowchart/gram-subgraph-nested-end-same-line] [fixture:
+flowchart/gram-subgraph-name-end] What follows an `end` stands in the subgraph
+around it, or in the diagram after the outermost `end`, a direction statement
+included. [fixture: flowchart/db-subgraph-dir-after-nested-end] [fixture:
+flowchart/db-subgraph-dir-after-nested-ends] [fixture:
+flowchart/db-subgraph-dir-after-nested-end-comment-line] [fixture:
+flowchart/db-subgraph-dir-after-nested-end-directive] [fixture:
+flowchart/db-subgraph-dir-after-nested-end-empty-line] [fixture:
+flowchart/db-subgraph-dir-after-nested-end-line-separator] [fixture:
+flowchart/db-subgraph-dir-after-nested-end-empty-block] [fixture:
+flowchart/db-subgraph-dir-after-nested-end-ignored-semicolon] [fixture:
+flowchart/db-subgraph-dir-after-nested-end-same-line] [fixture:
+flowchart/gram-subgraph-dir-after-nested-end-takes-end]
 
 ### Style, class, and link style statements
 
@@ -1765,18 +1808,28 @@ mermaid.js rejects some inputs that the grammar accepts, while it builds the Db:
   [fixture: flowchart/gram-subgraph-member-has-own-property-acc-title] [fixture:
   flowchart/gram-subgraph-member-has-own-property-nested] [fixture:
   flowchart/gram-subgraph-member-has-own-property-earlier-subgraph-then-member]
-  A subgraph with `hasOwnProperty` alone, with `A` and then `hasOwnProperty`,
-  with `hasOwnProperty-->A`, whose members are `A` and then `hasOwnProperty`, or
-  with `hasOwnProperty` followed only by statements that add no member is
-  accepted, and so is a nested subgraph with the member `hasOwnProperty`
-  followed by `A` in the subgraph around it. [fixture:
+  [fixture:
+  flowchart/gram-subgraph-member-has-own-property-earlier-subgraph-nested]
+  [fixture:
+  flowchart/gram-subgraph-member-has-own-property-empty-id-then-member]
+  [fixture: flowchart/gram-subgraph-member-has-own-property-inner-and-outer]
+  [fixture:
+  flowchart/gram-subgraph-member-has-own-property-nested-outer-end-missing]
+  [fixture: flowchart/gram-subgraph-member-has-own-property-numbered-nested]
+  [fixture: flowchart/gram-subgraph-member-has-own-property-then-extra-end] A
+  subgraph with `hasOwnProperty` alone, with `A` and then `hasOwnProperty`, with
+  `hasOwnProperty-->A`, whose members are `A` and then `hasOwnProperty`, or with
+  `hasOwnProperty` followed only by statements that add no member is accepted,
+  and so is a nested subgraph with the member `hasOwnProperty` followed by `A`
+  in the subgraph around it. [fixture:
   flowchart/db-subgraph-member-has-own-property-alone] [fixture:
   flowchart/db-subgraph-member-has-own-property-last] [fixture:
   flowchart/db-subgraph-member-has-own-property-link-source] [fixture:
   flowchart/db-subgraph-member-has-own-property-acc-title-last] [fixture:
   flowchart/db-subgraph-member-has-own-property-direction] [fixture:
   flowchart/db-subgraph-member-has-own-property-no-member-statements] [fixture:
-  flowchart/db-subgraph-member-has-own-property-in-nested] The member
+  flowchart/db-subgraph-member-has-own-property-in-nested] [fixture:
+  flowchart/db-subgraph-member-has-own-property-two-levels-down] The member
   `hasOwnProperty` may be any kind of member: the id of a nested subgraph, as
   with `subgraph hasOwnProperty`, `subgraph "hasOwnProperty"`,
   `subgraph hasOwnProperty [T]`, and `subgraph " hasOwnProperty "[T]`; or the
@@ -1786,8 +1839,10 @@ mermaid.js rejects some inputs that the grammar accepts, while it builds the Db:
   `subgraph hasOwnProperty ` with a space after the name has the id `subGraph0`,
   so followed by `A` they are accepted. [fixture:
   flowchart/gram-subgraph-member-has-own-property-nested-id] [fixture:
-  flowchart/gram-subgraph-member-has-own-property-nested-string-id] [fixture:
-  flowchart/gram-subgraph-member-has-own-property-nested-id-title] [fixture:
+  flowchart/gram-subgraph-member-has-own-property-nested-id-third-level]
+  [fixture: flowchart/gram-subgraph-member-has-own-property-nested-string-id]
+  [fixture: flowchart/gram-subgraph-member-has-own-property-nested-id-title]
+  [fixture:
   flowchart/gram-subgraph-member-has-own-property-nested-string-space-id-title]
   [fixture: flowchart/gram-subgraph-member-has-own-property-acc-descr-block]
   [fixture: flowchart/db-subgraph-member-has-own-property-nested-title]
