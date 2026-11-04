@@ -290,12 +290,12 @@ as the specification reads it:
   right after the `}%%` that closes a directive, right after a closing
   delimiter, or, in some diagram types, after a complete unit, as `title` after
   `showData` in pie. A statement after a directive that has no `}%%` (one that
-  ends after a word argument, as in `%%{init: dark title t`) may not be
+  ends after a word argument, as `%%{init: dark title t` in treeview) may not be
   recognized.
 - The specification reads a lone carriage return (CR) as a line end, but Shiki
   splits a text into lines only at LF and CRLF. A lone CR that stays inside a
-  line is no line end for the grammar: a value goes on over it, and a statement
-  after it may not be recognized.
+  line is no line end for the grammar: a value may go on over it, and a
+  statement after it may not be recognized.
 - A keyword compared case-insensitively also matches the few characters outside
   ASCII that fold to its letters, as `deſtroy` matches `destroy`. The
   specification reads them as no keyword

@@ -114,8 +114,8 @@ Shiki:
   pattern holds `{{`.
 - In every fixture and escaped input, every character other than whitespace has
   a foreground color other than the default text color of github-light and
-  github-dark. The exceptions are a short list in the test, each with its
-  reason: the YAML body of a frontmatter, and what the README's Limits state.
+  github-dark. The one exception, stated in the test with its reason, is the
+  YAML body of a frontmatter.
 - On fixed inputs, units that the colors tell apart keep different colors in
   both themes, such as `[*]` and a state name, or journey's score and a person.
 
