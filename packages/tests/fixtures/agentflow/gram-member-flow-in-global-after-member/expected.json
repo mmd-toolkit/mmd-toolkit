@@ -1,0 +1,61 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Rejections outside the grammar, the hasOwnProperty member condition of each flow: flow in global after member."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "hasOwnProperty",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "hasOwnProperty",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "subGraph0",
+        "nodes": [
+          "B"
+        ],
+        "title": "",
+        "classes": [],
+        "labelType": "markdown",
+        "type": "flow"
+      },
+      {
+        "id": "subGraph1",
+        "nodes": [
+          "hasOwnProperty"
+        ],
+        "title": "",
+        "classes": [],
+        "labelType": "markdown",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  }
+}

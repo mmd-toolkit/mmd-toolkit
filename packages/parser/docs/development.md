@@ -181,8 +181,11 @@ callbacks. Each diagram constructs its own AST nodes and keeps its own arrow
 vocabulary, comment rules, name grammar, and brace conversion. The existing
 shared reader, direction-line rule, and Unicode-letter helper are also reused.
 Its text wrapper folds only line whitespace immediately followed by the first LF
-after a closing brace. [fixture: agentflow/lex-brace-string-keeps-blank-line]
-[fixture: agentflow/lex-brace-line-whitespace-ls] [fixture:
+after a closing brace. The grammar descends recursively except into the body of
+a flow or a global: they nest without a limit, so it holds the open ones in a
+list instead of the call stack. [fixture:
+agentflow/lex-brace-string-keeps-blank-line] [fixture:
+agentflow/lex-brace-line-whitespace-ls] [fixture:
 agentflow/lex-brace-ls-without-lf]
 
 At or below the default 50000 normalized UTF-16 code units after frontmatter and

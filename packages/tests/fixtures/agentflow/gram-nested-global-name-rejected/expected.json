@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Flows, globals, connectors, and names: nested global name rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...beta TBflowglobal gAendend\n---------------------^\nExpecting 'COMMENT', 'SEMI', 'NEWLINE', 'EOF', got 'NODE_STRING'"
+  }
+}

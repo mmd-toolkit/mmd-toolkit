@@ -201,7 +201,9 @@ data・shape・callback などの共通生成規則には、
 波括弧の変換をそれぞれ持ちます。
 既存の共通 reader、方向行規則、Unicode 文字の補助も使います。
 テキストのラッパーは、終了波括弧後の最初の LF に直結する行空白だけを畳みます。
-[fixture: agentflow/lex-brace-string-keeps-blank-line]
+文法は再帰下降で読みますが、flow と global の本体だけは別です。
+これらは上限なく入れ子になるので、開いているものは呼び出しのスタックでなく、
+一覧に持ちます。 [fixture: agentflow/lex-brace-string-keeps-blank-line]
 [fixture: agentflow/lex-brace-line-whitespace-ls]
 [fixture: agentflow/lex-brace-ls-without-lf]
 
