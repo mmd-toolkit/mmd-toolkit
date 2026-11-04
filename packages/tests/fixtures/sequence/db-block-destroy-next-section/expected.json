@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Rejections outside the grammar walk blocks and sections in source order: destroy next section."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The destroyed participant undefined does not have an associated destroying message after its declaration. Please check the sequence diagram."
+  }
+}

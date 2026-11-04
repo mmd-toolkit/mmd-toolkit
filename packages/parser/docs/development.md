@@ -127,6 +127,10 @@ comments is recorded as a `Directive` token of its own. The frontmatter is
 recorded first, as its opening `---`, its body, and its closing `---`
 ([`ast.md`, Frontmatter](../../spec/docs/ast.md#frontmatter)).
 
+The sequence grammar descends recursively except into a block's body: blocks
+nest without a limit, so it holds the open blocks in a list instead of the call
+stack, and `db-rejections.ts` holds the bodies it walks in the same way.
+
 The C4 grammar checks `__proto__` keys in consumed argument positions and
 retains only aliases and relationship endpoints to decide whether update targets
 exist. It descends recursively except into a boundary's body: boundaries nest

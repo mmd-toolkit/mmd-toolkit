@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Rejections outside the grammar walk blocks and sections in source order: two boxes in blocks."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "A same participant should only be defined in one Box: A can't be in 'X' and in 'Y' at the same time."
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Rejections outside the grammar walk blocks and sections in source order: create message next section."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "C",
+        "description": "C",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "A"
+      },
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "prevActor": "C",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [
+      {
+        "id": "C",
+        "messageIndex": 1
+      }
+    ],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "message": "a",
+        "wrap": false,
+        "type": 12,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "b",
+        "wrap": false,
+        "type": 13,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "A",
+        "to": "C",
+        "message": "m",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 14,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

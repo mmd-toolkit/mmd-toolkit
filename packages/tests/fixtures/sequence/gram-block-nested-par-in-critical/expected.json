@@ -1,0 +1,107 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Blocks: nested par in critical."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "B"
+      },
+      {
+        "name": "B",
+        "description": "B",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "message": "a",
+        "wrap": false,
+        "type": 27,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "b",
+        "wrap": false,
+        "type": 19,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "A",
+        "to": "B",
+        "message": "m",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "c",
+        "wrap": false,
+        "type": 20,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "A",
+        "to": "B",
+        "message": "m",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 21,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "d",
+        "wrap": false,
+        "type": 28,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "A",
+        "to": "B",
+        "message": "m",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 29,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

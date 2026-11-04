@@ -61,6 +61,50 @@ const SECTION_BLOCKS = {
   Record<UnitName, { section: UnitName; type: string }>
 >
 
+/** Blocks: a keyword that starts a block. */
+type BlockKeyword =
+  keyof typeof SIMPLE_BLOCKS | keyof typeof SECTION_BLOCKS | "rect"
+
+/** Blocks: the keywords that start a block. */
+const BLOCK_KEYWORDS: readonly BlockKeyword[] = [
+  "loop",
+  "opt",
+  "break",
+  "rect",
+  "alt",
+  "par",
+  "par_over",
+  "critical",
+]
+
+/** Whether `keyword` starts a block of sections. */
+function isSectionBlock(
+  keyword: BlockKeyword,
+): keyword is keyof typeof SECTION_BLOCKS {
+  return (
+    keyword === "alt" ||
+    keyword === "par" ||
+    keyword === "par_over" ||
+    keyword === "critical"
+  )
+}
+
+/** The `text-part line*` being read: the only one of a block, or a section. */
+interface OpenSection {
+  readonly start: number
+  readonly text: SequenceText | null
+  readonly body: SequenceStatement[]
+}
+
+/** A block whose `end` is still to come. */
+interface OpenBlock {
+  readonly start: number
+  readonly keyword: BlockKeyword
+  /** The finished sections of a block of sections. */
+  readonly sections: SequenceSection[]
+  section: OpenSection
+}
+
 /** Participants and boxes: the keywords that start a participant statement. */
 const PARTICIPANT_KEYWORDS: readonly UnitName[] = [
   "participant",
@@ -70,9 +114,10 @@ const PARTICIPANT_KEYWORDS: readonly UnitName[] = [
 
 /**
  * diagrams/sequence.md, Grammar: the recursive-descent parser over the
- * units of the sequence lexer. Each method reads one rule of the grammar,
- * which its comment names, and makes the node that the specification gives
- * for the rule, with the tokens of `docs/tokens/sequence.md`, Tokens.
+ * units of the sequence lexer, except that `parseLines` holds the open
+ * blocks. Each method reads one rule of the grammar, which its comment
+ * names, and makes the node that the specification gives for the rule, with
+ * the tokens of `docs/tokens/sequence.md`, Tokens.
  *
  * The parser reads units only; it moves no cursor in the source. A unit
  * that no rule takes makes the input rejected, such as the units of an
@@ -93,7 +138,7 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
   public parseDiagram(): SequenceSyntax {
     while (this.peek()?.name === "newline") this.takeNewline()
     this.addItem("Keyword", [this.take("sequenceDiagram")])
-    const body = this.parseLines([])
+    const body = this.parseLines()
     return {
       body,
       tokens: this.tokensInOrder(),
@@ -102,25 +147,36 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
 
   /**
    * Diagram and statements: `line*`, where `line = statement | newline |
-   * invalid`. The lines end before a unit named in `endsBefore`, the `end`
-   * or the next section of the block around them; the lines of the diagram
-   * end at the end of the text.
+   * invalid`. The lines of a block end at its `end` or its next section; the
+   * lines of the diagram end at the end of the text.
+   *
+   * Blocks nest without a limit, so `open` holds the blocks whose `end` is
+   * still to come: a call for each of them would exhaust the call stack.
    */
-  private parseLines(endsBefore: readonly UnitName[]): SequenceStatement[] {
-    const statements: SequenceStatement[] = []
+  private parseLines(): SequenceStatement[] {
+    const top: SequenceStatement[] = []
+    const open: OpenBlock[] = []
     for (;;) {
       const unit = this.peek()
+      const block = open.at(-1)
       if (unit === null) {
-        if (endsBefore.length > 0) throw this.unexpected(null)
-        return statements
+        if (block !== undefined) throw this.unexpected(null)
+        return top
       }
-      if (endsBefore.includes(unit.name)) return statements
-      if (unit.name === "newline") {
+      const lines = block?.section.body ?? top
+      const keyword = BLOCK_KEYWORDS.find((word) => word === unit.name)
+      if (block !== undefined && unit.name === "end") {
+        this.closeBlock(open, top)
+      } else if (block !== undefined && this.startsNextSection(block, unit)) {
+        this.openNextSection(block, unit)
+      } else if (unit.name === "newline") {
         this.takeNewline()
       } else if (unit.name === "invalid") {
-        statements.push(this.parseIgnoredStatement())
+        lines.push(this.parseIgnoredStatement())
+      } else if (keyword !== undefined) {
+        open.push(this.openBlock(keyword))
       } else {
-        appendItems(statements, this.parseStatement(unit))
+        appendItems(lines, this.parseStatement(unit))
       }
     }
   }
@@ -153,7 +209,8 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
    * Diagram and statements: `statement`, with the empty description
    * blocks after it. The participant, destroy, message, autonumber,
    * activation, note, and participant text statements end with a
-   * `statement-end`; the others need no separator.
+   * `statement-end`; the others need no separator. `parseLines` reads the
+   * block statements.
    */
   private parseStatement(first: Unit): SequenceStatement[] {
     switch (first.name) {
@@ -179,17 +236,6 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
         return [this.parseAccTitleStatement()]
       case "accDescr":
         return [this.parseAccDescrStatement()]
-      case "loop":
-      case "opt":
-      case "break":
-        return [this.parseSimpleBlock(first.name)]
-      case "rect":
-        return [this.parseRectBlock()]
-      case "alt":
-      case "par":
-      case "par_over":
-      case "critical":
-        return [this.parseSectionBlock(first.name)]
       default:
         return this.withStatementEnd(this.parseStatementWithNewline(first))
     }
@@ -604,70 +650,81 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
     }
   }
 
-  /** Blocks: `( "loop" | "opt" | "break" ) text-part line* "end"`. */
-  private parseSimpleBlock(
-    keyword: keyof typeof SIMPLE_BLOCKS,
-  ): SequenceStatement {
-    const start = this.next
-    this.addItem("Keyword", [this.take(keyword)])
-    const text = this.parseTextPart()
-    const body = this.parseLines(["end"])
-    this.addItem("Keyword", [this.take("end")])
-    return {
-      type: SIMPLE_BLOCKS[keyword],
-      text,
-      body,
-      ...this.placeFrom(start),
-    }
-  }
-
-  /** Blocks: `"rect" text-part line* "end"`. */
-  private parseRectBlock(): SequenceStatement {
-    const start = this.next
-    this.addItem("Keyword", [this.take("rect")])
-    const color = this.parseTextPart()
-    const body = this.parseLines(["end"])
-    this.addItem("Keyword", [this.take("end")])
-    return {
-      type: "SequenceRectStatement",
-      color,
-      body,
-      ...this.placeFrom(start),
-    }
-  }
-
   /**
-   * Blocks: `"alt" text-part line* ( "else" text-part line* )* "end"`, and
-   * the same with `par` or `par_over` and `and`, and with `critical` and
-   * `option`. Each `text-part line*` is a SequenceSection.
+   * Blocks: `( "loop" | "rect" | "opt" | "break" ) text-part line* "end"`,
+   * `"alt" text-part line* ( "else" text-part line* )* "end"`, and the same
+   * with `par` or `par_over` and `and`, and with `critical` and `option`,
+   * read up to the first `line*`.
    */
-  private parseSectionBlock(
-    keyword: keyof typeof SECTION_BLOCKS,
-  ): SequenceStatement {
+  private openBlock(keyword: BlockKeyword): OpenBlock {
     const start = this.next
-    const { section: sectionKeyword, type } = SECTION_BLOCKS[keyword]
-    const sections = [this.parseSection(keyword, sectionKeyword)]
-    while (this.nameAt(this.next) === sectionKeyword) {
-      sections.push(this.parseSection(sectionKeyword, sectionKeyword))
+    return {
+      start,
+      keyword,
+      sections: [],
+      section: this.openSection(keyword),
     }
-    this.addItem("Keyword", [this.take("end")])
-    return { type, sections, ...this.placeFrom(start) }
   }
 
-  /** Blocks: one section, `keyword text-part line*`, whose lines end before `nextSection` or `end`. */
-  private parseSection(
-    keyword: UnitName,
-    nextSection: UnitName,
-  ): SequenceSection {
+  /** Blocks: `keyword text-part`, the start of a `text-part line*`. */
+  private openSection(keyword: UnitName): OpenSection {
     const start = this.next
     this.addItem("Keyword", [this.take(keyword)])
-    const text = this.parseTextPart()
-    const body = this.parseLines([nextSection, "end"])
+    return { start, text: this.parseTextPart(), body: [] }
+  }
+
+  /** Blocks: whether `unit` starts the next section of the block of sections `block`. */
+  private startsNextSection(block: OpenBlock, unit: Unit): boolean {
+    return (
+      isSectionBlock(block.keyword) &&
+      unit.name === SECTION_BLOCKS[block.keyword].section
+    )
+  }
+
+  /** Blocks: `unit` ends the section of `block` and starts the next one. */
+  private openNextSection(block: OpenBlock, unit: Unit): void {
+    block.sections.push(this.sectionOf(block.section))
+    block.section = this.openSection(unit.name)
+  }
+
+  /** Blocks: a SequenceSection, each `text-part line*` of a block of sections. */
+  private sectionOf(section: OpenSection): SequenceSection {
     return {
       type: "SequenceSection",
-      text,
-      body,
-      ...this.placeFrom(start),
+      text: section.text,
+      body: section.body,
+      ...this.placeFrom(section.start),
+    }
+  }
+
+  /** Blocks: the `end` at the current unit completes the innermost open block. */
+  private closeBlock(open: OpenBlock[], top: SequenceStatement[]): void {
+    const block = open.pop()
+    if (block === undefined) {
+      throw new Error("mmd-toolkit parser bug: no open sequence block")
+    }
+    const { keyword, section } = block
+    if (isSectionBlock(keyword)) block.sections.push(this.sectionOf(section))
+    this.addItem("Keyword", [this.take("end")])
+    const place = this.placeFrom(block.start)
+    const parent = open.at(-1)?.section.body ?? top
+    if (isSectionBlock(keyword)) {
+      const { type } = SECTION_BLOCKS[keyword]
+      parent.push({ type, sections: block.sections, ...place })
+    } else if (keyword === "rect") {
+      parent.push({
+        type: "SequenceRectStatement",
+        color: section.text,
+        body: section.body,
+        ...place,
+      })
+    } else {
+      parent.push({
+        type: SIMPLE_BLOCKS[keyword],
+        text: section.text,
+        body: section.body,
+        ...place,
+      })
     }
   }
 

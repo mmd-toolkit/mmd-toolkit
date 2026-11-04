@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Rejections outside the grammar walk blocks and sections in source order: deactivate before activate sections."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Trying to inactivate an inactive participant (A)"
+  }
+}

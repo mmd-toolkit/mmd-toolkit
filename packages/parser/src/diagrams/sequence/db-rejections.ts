@@ -12,6 +12,13 @@ interface Waiting {
   readonly id: string
 }
 
+/** Statements being walked: the box they stand in, if any, and the next one to apply. */
+interface StatementWalk {
+  readonly statements: readonly SequenceStatement[]
+  readonly box: number | null
+  next: number
+}
+
 /**
  * diagrams/sequence.md, Rejections outside the grammar: the inputs that the
  * grammar accepts and mermaid.js rejects while it builds the Db. The
@@ -49,21 +56,34 @@ export class SequenceDbRejections {
     this.lines = lines
   }
 
-  /** Walks `statements`, the body of the diagram; throws `ParseError` at the first rejection. */
+  /**
+   * Walks `statements`, the body of the diagram, in source order; throws
+   * `ParseError` at the first rejection. Blocks nest without a limit, so
+   * `walks` holds the bodies being walked, the innermost last: a call for
+   * each of them would exhaust the call stack.
+   */
   public check(statements: readonly SequenceStatement[]): void {
-    this.walk(statements, null)
+    const walks: StatementWalk[] = [{ statements, box: null, next: 0 }]
+    for (let walk = walks.at(-1); walk !== undefined; walk = walks.at(-1)) {
+      if (walk.next === walk.statements.length) {
+        walks.pop()
+      } else {
+        walk.next += 1
+        this.apply(walk.statements[walk.next - 1], walk.box, walks)
+      }
+    }
   }
 
-  /** Walks `statements` in source order; `box` is the box they stand in, if any. */
-  private walk(
-    statements: readonly SequenceStatement[],
+  /**
+   * Rejections outside the grammar: what one statement does to the
+   * participants, in the order of the Db. A body goes on `walks`, where it
+   * is walked before the statement after this one.
+   */
+  private apply(
+    statement: SequenceStatement,
     box: number | null,
+    walks: StatementWalk[],
   ): void {
-    for (const statement of statements) this.apply(statement, box)
-  }
-
-  /** Rejections outside the grammar: what one statement does to the participants, in the order of the Db. */
-  private apply(statement: SequenceStatement, box: number | null): void {
     switch (statement.type) {
       case "SequenceParticipantStatement":
         if (statement.created) this.create(statement.id)
@@ -79,7 +99,7 @@ export class SequenceDbRejections {
         return
       case "SequenceBoxStatement": {
         this.boxCount += 1
-        this.walk(statement.body, this.boxCount)
+        walks.push({ statements: statement.body, box: this.boxCount, next: 0 })
         return
       }
       case "SequenceMessageStatement":
@@ -104,13 +124,16 @@ export class SequenceDbRejections {
       case "SequenceOptStatement":
       case "SequenceBreakStatement":
       case "SequenceRectStatement":
-        this.walk(statement.body, box)
+        walks.push({ statements: statement.body, box, next: 0 })
         return
       case "SequenceAltStatement":
       case "SequenceParStatement":
       case "SequenceParOverStatement":
       case "SequenceCriticalStatement":
-        for (const section of statement.sections) this.walk(section.body, box)
+        // The last section goes on first, so that the first is walked first.
+        for (const section of statement.sections.toReversed()) {
+          walks.push({ statements: section.body, box, next: 0 })
+        }
         return
       case "SequenceAutonumberStatement":
       case "SequenceTitleStatement":
