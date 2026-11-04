@@ -289,7 +289,7 @@
       ]
     },
     "venn-style": {
-      "comment": "Read a style statement, keeping target names separate from properties. Follows venn.md#styles, venn.md#units-and-contexts, and venn.md#comments-and-swallowed-fragments.",
+      "comment": "Read a style statement, keeping target names separate from properties. Display the final semicolon separately from style values. Follows venn.md#styles, venn.md#units-and-contexts, and venn.md#comments-and-swallowed-fragments.",
       "begin": "((?i:style)){{wordEnd}}",
       "beginCaptures": {
         "1": {
@@ -298,6 +298,9 @@
       },
       "end": "{{venn-style-end}}",
       "patterns": [
+        {
+          "include": "#style-final-semicolon"
+        },
         {
           "include": "#comment-line"
         },
@@ -323,7 +326,7 @@
       ]
     },
     "venn-style-property": {
-      "comment": "Read one whole style property value, leaving trailing whitespace outside its scope. Follows venn.md#styles, venn.md#units-and-contexts, and venn.md#comments-and-swallowed-fragments.",
+      "comment": "Read one whole style property value, leaving trailing whitespace outside its scope. Display the final semicolon separately. Follows venn.md#styles, venn.md#units-and-contexts, and venn.md#comments-and-swallowed-fragments.",
       "begin": "({{venn-identifier}})({{asciiGap}})(:)({{asciiGap}})",
       "beginCaptures": {
         "1": {
@@ -419,7 +422,7 @@
     "venn-style-atom": "(?!{{venn-native-comment-start}})(?:{{venn-hex-color}}|(?!{{venn-rgb-start}}|{{venn-statement-start}}){{venn-identifier}}|{{venn-number}})",
     "venn-quoted-label-end": "\"{{directives}}\\]",
     "venn-statement-keyword": "(?i:set|union|text|style)",
-    "venn-style-value-end": "(?={{lineGap}}(?:,|{{venn-statement-start}}|{{venn-native-comment-start}}|$))|{{separatorCommentEnd}}",
+    "venn-style-value-end": "(?={{lineGap}}(?:,|{{venn-statement-start}}|{{venn-native-comment-start}}|$))|{{separatorCommentEnd}}|(?={{styleFinalSemicolon}})",
     "venn-rgb-color": "{{venn-rgb-start}}(?:(?!{{separatorCommentEnd}})(?:{{directive}}|(?!{{directiveStart}})[^)\\n]))*\\)",
     "venn-rgb-start": "(?i:rgba?)\\("
   }

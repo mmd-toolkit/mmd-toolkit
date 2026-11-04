@@ -227,7 +227,7 @@
           ]
         },
         {
-          "comment": "Bounded style, classDef and class enter a context lasting through the line feed, where ASCII word characters and strings are values, and colon, comma, semicolon, dash and hash have style-unit meanings. Value scopes and text runs end before a separator-led common comment; the enclosing context reads that comment independently. The keyword boundary reads through following directives. Follows requirement.md#the-style-context.",
+          "comment": "Bounded style, classDef and class enter a context lasting through the line feed, where ASCII word characters and strings are values, and colon, comma, semicolon, dash and hash have style-unit meanings. Value scopes and text runs end before a separator-led common comment; the enclosing context reads that comment independently. The keyword boundary reads through following directives. Display the final semicolon separately from style values. Follows requirement.md#the-style-context.",
           "begin": "((?i:style|classDef)){{wordEnd}}({{gap}})((?:[A-Za-z0-9_]+|\"[^\"]+\")(?:{{gap}},{{gap}}(?:[A-Za-z0-9_]+|\"[^\"]+\"))*)({{gap}})",
           "beginCaptures": {
             "1": {
@@ -269,6 +269,9 @@
           "end": "{{lineValueEnd}}",
           "patterns": [
             {
+              "include": "#style-final-semicolon"
+            },
+            {
               "include": "#comment-line"
             },
             {
@@ -289,7 +292,7 @@
               }
             },
             {
-              "comment": "Read one whole style property value, leaving trailing whitespace outside its scope. Follows requirement.md#styles-and-classes.",
+              "comment": "Read one whole style property value, leaving trailing whitespace outside its scope. Display the final semicolon separately. Follows requirement.md#styles-and-classes.",
               "begin": ":",
               "beginCaptures": {
                 "0": {
@@ -301,6 +304,9 @@
               "patterns": [
                 {
                   "include": "#directive"
+                },
+                {
+                  "include": "#style-entity"
                 }
               ]
             },
@@ -308,7 +314,7 @@
               "include": "#requirement-comma"
             },
             {
-              "comment": "Read a whole style without a property colon as one value, leaving trailing whitespace outside it. Follows requirement.md#styles-and-classes.",
+              "comment": "Read a whole style without a property colon as one value, leaving trailing whitespace outside it. Display the final semicolon separately. Follows requirement.md#styles-and-classes.",
               "begin": "(?![{{ws}}]|[:,]|{{directiveStart}}|{{separatorCommentEnd}})(?=.)",
               "end": "{{requirement-style-value-end}}",
               "contentName": "support.constant.property-value.mermaid",
@@ -317,7 +323,7 @@
                   "include": "#directive"
                 },
                 {
-                  "include": "#entity"
+                  "include": "#style-entity"
                 }
               ]
             }
@@ -690,7 +696,7 @@
     "requirement-fixed-value": "(?i:low|medium|high|analysis|demonstration|inspection|test)",
     "requirement-field-text": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\r\\n])+",
     "requirement-field-key": "(?i:id|text|type|docref|risk|verifyMethod)",
-    "requirement-style-value-end": "(?={{lineGap}}(?:,|$))|{{separatorCommentEnd}}",
+    "requirement-style-value-end": "(?={{lineGap}}(?:,|$))|{{separatorCommentEnd}}|(?={{styleFinalSemicolon}})",
     "requirement-empty-description": "(?i:accDescr){{gap}}\\{{{gap}}\\}"
   }
 }

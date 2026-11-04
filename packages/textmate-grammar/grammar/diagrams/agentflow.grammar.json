@@ -1208,13 +1208,13 @@
       ]
     },
     "agentflow-styles": {
-      "comment": "Read comma-separated styles as property pairs or whole values without colons, leaving trailing whitespace uncolored. Follows agentflow.md#style-classdef-class-and-linkstyle.",
+      "comment": "Read comma-separated styles as property pairs or whole values without colons, leaving trailing whitespace uncolored. Display the final semicolon separately from values. Follows agentflow.md#style-classdef-class-and-linkstyle.",
       "patterns": [
         {
           "include": "#directive"
         },
         {
-          "include": "#entity",
+          "include": "#style-entity",
           "comment": "Each entity is read as its placeholder. Follows common.md#entities."
         },
         {
@@ -1452,7 +1452,7 @@
       ]
     },
     "agentflow-style-property": {
-      "comment": "Read an optional style property name, its key-value colon and one value ending before trailing whitespace or a style separator. Follows agentflow.md#style-classdef-class-and-linkstyle and flowchart.md#style-class-and-link-style-statements.",
+      "comment": "Read an optional style property name, its key-value colon and one value ending before trailing whitespace or a style separator. Leave the physical line's final semicolon available for separator coloring. Follows agentflow.md#style-classdef-class-and-linkstyle and flowchart.md#style-class-and-link-style-statements.",
       "begin": "{{flowchart-style-property-begin}}",
       "beginCaptures": {
         "1": {
@@ -1481,12 +1481,12 @@
           "include": "#directive"
         },
         {
-          "include": "#entity"
+          "include": "#style-entity"
         }
       ]
     },
     "agentflow-classdef-style-property": {
-      "comment": "Read an optional style property name, its key-value colon and one value ending before trailing whitespace or a style separator. Follows agentflow.md#style-classdef-class-and-linkstyle and flowchart.md#style-class-and-link-style-statements.",
+      "comment": "Read an optional style property name, its key-value colon and one value ending before trailing whitespace or a style separator. Leave the physical line's final semicolon available for separator coloring. Follows agentflow.md#style-classdef-class-and-linkstyle and flowchart.md#style-class-and-link-style-statements.",
       "begin": "({{agentflow-classdef-style-key}})({{flowchart-link-gap}})(:)",
       "beginCaptures": {
         "1": {
@@ -1528,18 +1528,18 @@
           "include": "#directive"
         },
         {
-          "include": "#entity"
+          "include": "#style-entity"
         }
       ]
     },
     "agentflow-classdef-styles": {
-      "comment": "Read comma-separated styles as property pairs or whole values without colons, leaving trailing whitespace uncolored. Follows agentflow.md#style-classdef-class-and-linkstyle.",
+      "comment": "Read comma-separated styles as property pairs or whole values without colons, leaving trailing whitespace uncolored. Display the final semicolon separately from values. Follows agentflow.md#style-classdef-class-and-linkstyle.",
       "patterns": [
         {
           "include": "#directive"
         },
         {
-          "include": "#entity",
+          "include": "#style-entity",
           "comment": "Each entity is read as its placeholder. Follows common.md#entities."
         },
         {
@@ -1733,7 +1733,7 @@
       ]
     },
     "agentflow-style-value": {
-      "comment": "Read a whole style without a property colon as one value; commas separate styles. Follows agentflow.md#style-classdef-class-and-linkstyle.",
+      "comment": "Read a whole style without a property colon as one value; commas separate styles. Leave the physical line's final semicolon available for separator coloring. Follows agentflow.md#style-classdef-class-and-linkstyle.",
       "begin": "(?![{{ws}}]|,|:|;|{{directiveStart}}|{{separatorCommentEnd}}|{{flowchart-subgraph-description-start}}|{{agentflow-comment-start}})(?=.)",
       "end": "{{agentflow-style-value-end}}",
       "contentName": "support.constant.property-value.mermaid",
@@ -1742,12 +1742,12 @@
           "include": "#directive"
         },
         {
-          "include": "#entity"
+          "include": "#style-entity"
         }
       ]
     },
     "agentflow-classdef-style-value": {
-      "comment": "Read a whole style without a property colon as one value; keep commas immediately after backslashes inside this classDef style. Follows agentflow.md#style-classdef-class-and-linkstyle.",
+      "comment": "Read a whole style without a property colon as one value; keep commas immediately after backslashes inside this classDef style. Leave the physical line's final semicolon available for separator coloring. Follows agentflow.md#style-classdef-class-and-linkstyle.",
       "begin": "(?![{{ws}}]|,|:|;|{{directiveStart}}|{{separatorCommentEnd}}|{{flowchart-subgraph-description-start}}|{{agentflow-comment-start}})(?=.)",
       "end": "{{agentflow-style-value-end}}",
       "contentName": "support.constant.property-value.mermaid",
@@ -1769,7 +1769,7 @@
           "include": "#directive"
         },
         {
-          "include": "#entity"
+          "include": "#style-entity"
         }
       ]
     },

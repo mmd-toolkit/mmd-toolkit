@@ -161,7 +161,8 @@
   "," keyword.operator.separator.comma.mermaid
   "stroke" support.type.property-name.mermaid
   ":" keyword.operator.separator.key-value.mermaid
-  "blue;" support.constant.property-value.mermaid
+  "blue" support.constant.property-value.mermaid
+  ";" keyword.operator.separator.semicolon.mermaid
 >   style req fill:red
   "style" keyword.control.mermaid
   "req" variable.mermaid

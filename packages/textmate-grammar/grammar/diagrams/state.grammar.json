@@ -12,7 +12,7 @@
     "state-required-padding": "(?={{requiredGap}}){{state-value-padding}}",
     "state-alias-end": "{{lineValueEnd}}|(?={{nonDirectivePercentPair}}|\\{)",
     "state-note-space": "(?!{{separatorCommentEnd}})[{{ws}}]",
-    "state-style-value-end": "(?={{lineGap}}(?:,|$))|{{separatorCommentEnd}}"
+    "state-style-value-end": "(?={{lineGap}}(?:,|$))|{{separatorCommentEnd}}|(?={{styleFinalSemicolon}})"
   },
   "patterns": [
     {
@@ -338,7 +338,7 @@
       ]
     },
     "state-style": {
-      "comment": "ClassDef reads one word class name and whitespace; style reads word characters and commas followed by whitespace; both then read comma-separated style-text to line end. Follows state.md#the-classdef-class-and-style-contexts.",
+      "comment": "ClassDef reads one word class name and whitespace; style reads word characters and commas followed by whitespace; both then read comma-separated style-text to line end. Display the final semicolon separately from style values. Follows state.md#the-classdef-class-and-style-contexts.",
       "begin": "((?i:classDef))({{state-required-padding}})({{state-word}})({{state-required-padding}})|((?i:style))({{state-required-padding}})({{state-style-ids}})({{state-required-padding}})",
       "beginCaptures": {
         "1": {
@@ -393,6 +393,9 @@
       "end": "{{lineValueEnd}}",
       "patterns": [
         {
+          "include": "#style-final-semicolon"
+        },
+        {
           "include": "#comment-line"
         },
         {
@@ -413,7 +416,7 @@
           }
         },
         {
-          "comment": "Read one whole style property value, leaving trailing whitespace outside its scope. Follows state.md#the-classdef-class-and-style-contexts.",
+          "comment": "Read one whole style property value, leaving trailing whitespace outside its scope. Display the final semicolon separately. Follows state.md#the-classdef-class-and-style-contexts.",
           "begin": "(:)",
           "beginCaptures": {
             "1": {
@@ -432,7 +435,7 @@
           "include": "#state-comma"
         },
         {
-          "comment": "Read a whole style without a property colon as one value, leaving trailing whitespace outside it. Follows state.md#the-classdef-class-and-style-contexts.",
+          "comment": "Read a whole style without a property colon as one value, leaving trailing whitespace outside it. Display the final semicolon separately. Follows state.md#the-classdef-class-and-style-contexts.",
           "begin": "(?![{{ws}}]|[:,]|{{directiveStart}}|{{separatorCommentEnd}})(?=.)",
           "end": "{{state-style-value-end}}",
           "contentName": "support.constant.property-value.mermaid",
@@ -441,7 +444,7 @@
               "include": "#directive"
             },
             {
-              "include": "#entity"
+              "include": "#style-entity"
             }
           ]
         }

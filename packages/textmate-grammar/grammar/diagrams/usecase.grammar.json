@@ -118,7 +118,7 @@
           ]
         },
         {
-          "comment": "Read style targets or style class names, followed by property names and complete property values. Follows usecase.md#grammar.",
+          "comment": "Read style targets or style class names, followed by property names and complete property values. Display the final semicolon separately from style values. Follows usecase.md#grammar.",
           "begin": "(?:(classDef){{wordEnd}}({{requiredAsciiGap}})({{usecase-class-list}})|(style){{wordEnd}}({{requiredAsciiGap}})({{usecase-id}}))({{asciiGap}})",
           "beginCaptures": {
             "1": {
@@ -162,6 +162,9 @@
           "end": "{{lineValueEnd}}",
           "patterns": [
             {
+              "include": "#style-final-semicolon"
+            },
+            {
               "include": "#comment-line"
             },
             {
@@ -182,7 +185,7 @@
               }
             },
             {
-              "comment": "Read one whole style property value, leaving trailing whitespace outside its scope. Follows usecase.md#ordered-default-context-rules and usecase.md#grammar.",
+              "comment": "Read one whole style property value, leaving trailing whitespace outside its scope. Display the final semicolon separately. Follows usecase.md#ordered-default-context-rules and usecase.md#grammar.",
               "begin": ":",
               "beginCaptures": {
                 "0": {
@@ -944,7 +947,7 @@
     "usecase-label-word": "(?:[A-Za-z_][A-Za-z0-9_]*(?:-[A-Za-z0-9_]+)+|{{usecase-number}}|{{usecase-id}})",
     "usecase-number": "(?:[0-9]+\\.[0-9]+|\\.[0-9]+)[A-Za-z]*",
     "usecase-statement-start": "(?:^|\\G|{{afterDirectiveEnd}})[ \\t]*",
-    "usecase-style-value-end": "(?={{lineGap}}(?:(?<!\\\\),|$))|{{separatorCommentEnd}}"
+    "usecase-style-value-end": "(?={{lineGap}}(?:(?<!\\\\),|$))|{{separatorCommentEnd}}|(?={{styleFinalSemicolon}})"
   },
   "comment": "Read a native percent-pair comment up to physical line end or a separator-led common comment. Follows usecase.md#whitespace-comments-and-directives-in-every-context."
 }

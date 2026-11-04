@@ -71,8 +71,8 @@
                   "include": "#directive"
                 },
                 {
-                  "comment": "Read an entity whole so its semicolon does not end a style. Follows treemap.md#comments-and-authored-boundaries and common.md#entities.",
-                  "match": "{{entity}}",
+                  "comment": "Keep style entities whole while leaving a final CSS hex color's semicolon available as a displayed separator. Follows treemap.md#comments-and-authored-boundaries and common.md#entities.",
+                  "match": "{{styleEntity}}",
                   "name": "string.unquoted.mermaid",
                   "captures": {
                     "0": {
@@ -188,7 +188,7 @@
       ]
     },
     "treemap-style": {
-      "comment": "For the README's scope reading, split opaque style text at its first property colon, keeping every following comma and colon in one value through the style-text boundary. The document itself reads one style-text unit. Follows treemap.md#class-definitions.",
+      "comment": "Color property pairs inside the document's opaque style text for the reader, separating them at commas while preserving spaces and further colons within each value. Follows treemap.md#class-definitions.",
       "begin": "((?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^,:;{{ws}}])+)({{treemap-style-gap}})(:)({{treemap-style-gap}})",
       "beginCaptures": {
         "1": {
@@ -217,27 +217,14 @@
           ]
         }
       },
-      "end": "(?=;)|{{lineValueEnd}}",
+      "end": "(?={{treemap-style-gap}}(?:[,;]|$))|{{separatorCommentEnd}}",
       "contentName": "support.constant.property-value.mermaid",
       "patterns": [
         {
           "include": "#directive"
         },
         {
-          "comment": "Read a backslash and comma, possibly separated by directives, as ordinary characters of the opaque style value. These characters have no treemap escape meaning. Follows treemap.md#class-definitions and common.md#a-directive-is-a-token-boundary.",
-          "match": "\\\\{{directives}},",
-          "captures": {
-            "0": {
-              "patterns": [
-                {
-                  "include": "#directive"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "include": "#entity"
+          "include": "#style-entity"
         }
       ]
     },
@@ -247,7 +234,7 @@
         {
           "match": ",",
           "name": "keyword.operator.separator.comma.mermaid",
-          "comment": "Color a comma outside a property value as a style separator under the README's display split. The document itself keeps the style text opaque. Follows treemap.md#class-definitions."
+          "comment": "Color commas between displayed properties or bare style text as separators, although the document reads one opaque style-text unit. Follows treemap.md#class-definitions."
         },
         {
           "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^,;\\r\\n{{ws}}])+",
