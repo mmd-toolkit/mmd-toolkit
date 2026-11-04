@@ -129,7 +129,9 @@ recorded first, as its opening `---`, its body, and its closing `---`
 
 The C4 grammar checks `__proto__` keys in consumed argument positions and
 retains only aliases and relationship endpoints to decide whether update targets
-exist.
+exist. It descends recursively except into a boundary's body: boundaries nest
+without a limit, so it holds the open boundaries in a list instead of the call
+stack.
 
 The venn lexer tracks implicit text mode across line starts. Its grammar keeps
 converted set names to check union members against earlier declarations, while

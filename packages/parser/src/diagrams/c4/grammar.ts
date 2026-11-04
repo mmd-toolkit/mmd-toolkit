@@ -86,6 +86,21 @@ const UPDATES: readonly C4UpdateKeyword[] = [
   "UpdateLayoutConfig",
 ]
 
+/** A statement list being read: the diagram's, or the body of an open boundary. */
+interface StatementList {
+  readonly body: C4Statement[]
+  previous: "first" | "other" | "diagram"
+  newline: boolean
+}
+
+/** A boundary read up to its body, with the body read so far. */
+interface OpenBoundary extends StatementList {
+  readonly start: number
+  readonly keyword: C4BoundaryKeyword
+  readonly arguments: C4Argument[]
+  readonly beforeBody: C4AccDescrBlockStatement[]
+}
+
 /** Whether the named unit starts one of the four call families. */
 function startsCall(name: UnitName): boolean {
   return [...ELEMENTS, ...BOUNDARIES, ...RELATIONSHIPS, ...UPDATES].some(
@@ -93,7 +108,10 @@ function startsCall(name: UnitName): boolean {
   )
 }
 
-/** diagrams/c4.md, Grammar: recursive descent over the C4 units. */
+/**
+ * diagrams/c4.md, Grammar: recursive descent over the C4 units, except that
+ * `parseStatements` holds the open boundaries.
+ */
 export class C4Grammar extends UnitGrammar<UnitName, Unit> {
   /** Converted argument values are retained only for the specified rejections. */
   private readonly converted = new Map<C4Literal | StringLiteral, string>()
@@ -112,8 +130,7 @@ export class C4Grammar extends UnitGrammar<UnitName, Unit> {
     const kind = this.kindOf(header)
     const beforeBody = this.parseEmptyBlocks()
     this.take("newline")
-    const body = this.parseStatements(false)
-    if (this.peek() !== null) throw this.unexpected(this.peek())
+    const body = this.parseStatements()
     return { kind, beforeBody, body, tokens: this.tokensInOrder() }
   }
 
@@ -145,37 +162,51 @@ export class C4Grammar extends UnitGrammar<UnitName, Unit> {
    * diagram statements need a newline before the next significant statement;
    * other statements may meet a diagram statement directly. Empty blocks are
    * statements but supply neither a significant statement nor a newline.
+   *
+   * Boundary bodies nest without a limit, so `open` holds the boundaries whose
+   * `}` is still to come: a call for each of them would exhaust the call stack.
    */
-  private parseStatements(inBoundary: boolean): C4Statement[] {
-    const body: C4Statement[] = []
-    let previous: "first" | "other" | "diagram" = "first"
-    let newline = false
+  private parseStatements(): C4Statement[] {
+    const top: StatementList = {
+      body: [],
+      previous: "first",
+      newline: false,
+    }
+    const open: OpenBoundary[] = []
     for (let unit = this.peek(); unit !== null; unit = this.peek()) {
-      if (inBoundary && unit.name === "}") break
+      const list = open.at(-1) ?? top
+      if (open.length > 0 && unit.name === "}") {
+        if (list.previous === "first") throw this.unexpected(unit)
+        this.closeBoundary(open, top)
+        continue
+      }
       if (this.emptyBlockStarts()) {
-        body.push(this.parseDescriptionBlock())
+        list.body.push(this.parseDescriptionBlock())
         continue
       }
       if (unit.name === "newline") {
-        if (previous === "first" || newline) throw this.unexpected(unit)
+        if (list.previous === "first" || list.newline)
+          throw this.unexpected(unit)
         this.advance()
-        newline = true
+        list.newline = true
         continue
       }
-      const diagram = startsCall(unit.name)
+      const call = startsCall(unit.name)
       if (
-        (previous === "first" && inBoundary && !diagram) ||
-        (previous !== "first" &&
-          !newline &&
-          (previous === "diagram" || !diagram))
+        (list.previous === "first" && open.length > 0 && !call) ||
+        (list.previous !== "first" &&
+          !list.newline &&
+          (list.previous === "diagram" || !call))
       )
         throw this.unexpected(unit)
-      body.push(diagram ? this.parseCall(unit) : this.parseOther())
-      previous = diagram ? "diagram" : "other"
-      newline = false
+      list.previous = call ? "diagram" : "other"
+      list.newline = false
+      const boundary = BOUNDARIES.find((word) => word === unit.name)
+      if (boundary !== undefined) open.push(this.openBoundary(unit, boundary))
+      else list.body.push(call ? this.parseCall(unit) : this.parseOther())
     }
-    if (previous === "first") throw this.unexpected(this.peek())
-    return body
+    if (open.length > 0 || top.previous === "first") throw this.unexpected(null)
+    return top.body
   }
 
   /** Empty description blocks: recognize only a closed block with no significant text. */
@@ -199,12 +230,17 @@ export class C4Grammar extends UnitGrammar<UnitName, Unit> {
     return blocks
   }
 
-  /** Calls and arguments: keyword and at least one argument, with a boundary body when required. */
-  private parseCall(unit: Unit): C4Statement {
-    const start = this.next
+  /** Calls and arguments: keyword and at least one argument. */
+  private parseKeywordAndArguments(unit: Unit): C4Argument[] {
     this.advance()
     this.addItem("Keyword", [unit])
-    const args = this.parseArguments()
+    return this.parseArguments()
+  }
+
+  /** Calls and arguments: an element, relationship, or update call. */
+  private parseCall(unit: Unit): C4Statement {
+    const start = this.next
+    const args = this.parseKeywordAndArguments(unit)
     const element = ELEMENTS.find((word) => word === unit.name)
     if (element !== undefined) {
       this.rejections.element(element, args)
@@ -215,8 +251,6 @@ export class C4Grammar extends UnitGrammar<UnitName, Unit> {
         ...this.placeFrom(start),
       }
     }
-    const boundary = BOUNDARIES.find((word) => word === unit.name)
-    if (boundary !== undefined) return this.parseBoundary(start, boundary, args)
     const relationship = RELATIONSHIPS.find((word) => word === unit.name)
     if (relationship !== undefined) {
       this.rejections.relationship(relationship, args)
@@ -239,11 +273,9 @@ export class C4Grammar extends UnitGrammar<UnitName, Unit> {
   }
 
   /** Boundaries: the opening brace has one of the two specified line placements. */
-  private parseBoundary(
-    start: number,
-    keyword: C4BoundaryKeyword,
-    args: C4Argument[],
-  ): C4BoundaryStatement {
+  private openBoundary(unit: Unit, keyword: C4BoundaryKeyword): OpenBoundary {
+    const start = this.next
+    const args = this.parseKeywordAndArguments(unit)
     const beforeBody = this.parseEmptyBlocks()
     const newline = this.takeIf("newline")
     if (newline !== null) appendItems(beforeBody, this.parseEmptyBlocks())
@@ -251,16 +283,33 @@ export class C4Grammar extends UnitGrammar<UnitName, Unit> {
     if (newline === null) this.take("newline")
     else this.takeIf("newline")
     this.rejections.boundary(keyword, args)
-    const body = this.parseStatements(true)
-    this.addItem("Punctuator", [this.take("}")])
     return {
-      type: "C4BoundaryStatement",
+      start,
       keyword,
       arguments: args,
       beforeBody,
-      body,
-      ...this.placeFrom(start),
+      body: [],
+      previous: "first",
+      newline: false,
     }
+  }
+
+  /** Boundaries: the `}` at the current unit completes the innermost open boundary. */
+  private closeBoundary(open: OpenBoundary[], top: StatementList): void {
+    const boundary = open.pop()
+    if (boundary === undefined)
+      throw new Error("mmd-toolkit parser bug: no open C4 boundary")
+    this.addItem("Punctuator", [this.take("}")])
+    const completed: C4BoundaryStatement = {
+      type: "C4BoundaryStatement",
+      keyword: boundary.keyword,
+      arguments: boundary.arguments,
+      beforeBody: boundary.beforeBody,
+      body: boundary.body,
+      ...this.placeFrom(boundary.start),
+    }
+    const parent = open.at(-1) ?? top
+    parent.body.push(completed)
   }
 
   /** Calls and arguments: a flat, nonempty list, with no entry for a lone comma. */

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "c4.md Rejections outside the grammar: a boundary is declared by its call, so it is a candidate while its body is open; the named $alias of its call is its current alias in the body; the new alias matches; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "undefined is not iterable (cannot read property Symbol(Symbol.iterator))"
+  }
+}
