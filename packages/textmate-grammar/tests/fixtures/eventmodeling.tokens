@@ -15,7 +15,10 @@
   "Payload" variable.mermaid
   "]]" keyword.operator.bracket.brackets.end.mermaid
   "{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
-  "\"id\": 1" meta.data.mermaid string.unquoted.mermaid
+  "\"id\"" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "1" meta.data.mermaid constant.numeric.mermaid
   "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
 > tf 02evt OrderPlaced
   "tf" keyword.control.mermaid
@@ -40,7 +43,10 @@
   "json" keyword.control.mermaid
   "`" keyword.operator.delimiter.tag.end.mermaid
   "{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
-  "\"x\": 1" meta.data.mermaid string.unquoted.mermaid
+  "\"x\"" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "1" meta.data.mermaid constant.numeric.mermaid
   "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
 > entity Order.Line
   "entity" keyword.control.mermaid
@@ -55,7 +61,11 @@
   "`" keyword.operator.delimiter.tag.end.mermaid
   "{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
 >   "a": 1
-  "  \"a\": 1" meta.data.mermaid string.unquoted.mermaid
+  "  " meta.data.mermaid
+  "\"a\"" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "1" meta.data.mermaid constant.numeric.mermaid
 > }
   "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
 >  accTitle: Event title
@@ -147,7 +157,10 @@
   "}%%" meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
   "`" keyword.operator.delimiter.tag.end.mermaid
   "{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
-  "\"x\": 1" meta.data.mermaid string.unquoted.mermaid
+  "\"x\"" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "1" meta.data.mermaid constant.numeric.mermaid
   "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
 >  tf 12 evt Html "a<b title="x">y</b>"%%{init: {"closer": "x"}}%%
   "tf" keyword.control.mermaid
@@ -403,4 +416,63 @@
   "accTitle" keyword.control.mermaid
   ":" keyword.operator.separator.colon.mermaid
   " Inline title" string.unquoted.mermaid
+> 
+> tf 02 cmd AddItem { description: string }
+  "tf" keyword.control.mermaid
+  "02" variable.mermaid
+  "cmd" keyword.control.mermaid
+  "AddItem" variable.mermaid
+  "{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
+  " " meta.data.mermaid
+  "description" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "string " meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
+> tf 01 rmo UserAdded `json`{ "name": "foo" }
+  "tf" keyword.control.mermaid
+  "01" variable.mermaid
+  "rmo" keyword.control.mermaid
+  "UserAdded" variable.mermaid
+  "`" keyword.operator.delimiter.tag.begin.mermaid
+  "json" keyword.control.mermaid
+  "`" keyword.operator.delimiter.tag.end.mermaid
+  "{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
+  " " meta.data.mermaid
+  "\"name\"" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "foo" meta.data.mermaid string.quoted.double.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  " " meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
+> data AddItem01 {
+  "data" keyword.control.mermaid
+  "AddItem01" variable.mermaid
+  "{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
+>   description: 'john'
+  "  " meta.data.mermaid
+  "description" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "'" meta.data.mermaid string.quoted.single.mermaid punctuation.definition.string.begin.mermaid
+  "john" meta.data.mermaid string.quoted.single.mermaid
+  "'" meta.data.mermaid string.quoted.single.mermaid punctuation.definition.string.end.mermaid
+>   image: 'avatar_john'
+  "  " meta.data.mermaid
+  "image" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "'" meta.data.mermaid string.quoted.single.mermaid punctuation.definition.string.begin.mermaid
+  "avatar_john" meta.data.mermaid string.quoted.single.mermaid
+  "'" meta.data.mermaid string.quoted.single.mermaid punctuation.definition.string.end.mermaid
+>   price: 20.4
+  "  " meta.data.mermaid
+  "price" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "20.4" meta.data.mermaid constant.numeric.mermaid
+> }
+  "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
 > 

@@ -162,4 +162,8 @@ ACCTITLE%%{wrap}%%: gap title
 ACCDESCR%%{wrap}%%{%%{wrap}%% gap block }
 %%%{wrap}%%% common sequence %%{wrap}%%
 
+
+participant Alice@{ "type" : "queue" }
+participant DB@{ "type": "database", "alias": "User Database" }
+participant API@{ "type": "boundary" } as Public API
 accDescr { unclosed participant description

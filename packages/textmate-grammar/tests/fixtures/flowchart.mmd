@@ -229,4 +229,26 @@ A[/a
 B[c]
 A[/"x"/]
 B[c]
+
+A@{ shape: rect, label: "Text" }
+A@{ img: "https://example.com/a.png", label: "x", pos: "t", w: 60, h: 60, constraint: "on" }
+e1@{ animate: true }
+e1@{ curve: linear }
+D@{ shape: procs, label: "Process Automation"}
+C@{
+  shape: rect
+  label: "x"
+}
+DataSpecial@{ label: "comma, colon: brace}", time: 12:30, endpoint: http://a:80, offset: -1 }
+DataHtml@{ label: "<b title="tip">x</b> #amp;" }
+CommentedData@{
+  shape: rect
+  %% data entry comment
+  %%{wrap}%%
+  label: "x"
+}
+DirectiveData@{ shape: re%%{wrap}%%ct }
+F@{ 担当: 田中 }
+G@{ priority: '50%' }
+H@{ "progress%": "done", 'rate%': '50%' }
 accDescr { unclosed class description

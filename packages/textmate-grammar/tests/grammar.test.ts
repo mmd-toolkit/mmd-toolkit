@@ -274,8 +274,98 @@ it.each(themes)(
   },
 )
 
+it.each([
+  {
+    name: "class",
+    code: "classDiagram\nstyle A fill:rgb(255, 0, 0),stroke:#333",
+    separator: ",stroke",
+  },
+  {
+    name: "treemap",
+    code: "treemap\nclassDef warn fill:rgb(255, 0, 0),stroke:#333",
+    separator: ",stroke",
+  },
+  {
+    name: "state",
+    code: "stateDiagram-v2\nstyle A fill:rgb(255, 0, 0),stroke:#333",
+    separator: ",stroke",
+  },
+  {
+    name: "block",
+    code: "block-beta\nA\nstyle A fill:rgb(255, 0, 0),stroke:#333",
+    separator: ",stroke",
+  },
+  {
+    name: "gantt",
+    code: "gantt\ntodayMarker stroke:rgb(255, 0, 0),opacity:0.5",
+    separator: ",opacity",
+  },
+])(
+  "keeps parenthesized style commas in the value in $name",
+  ({ code, separator }) => {
+    checkForeground(code)
+    for (const theme of themes) {
+      const value = foregroundOf(code, "rgb(", theme)
+      expect(foregroundOf(code, ", 0", theme)).toBe(value)
+      expect(foregroundOf(code, separator, theme)).not.toBe(value)
+      expect(foregroundOf(code, separator, theme)).toBe(
+        foregroundOf(code, ":", theme),
+      )
+    }
+  },
+)
+
 /** Fixed units whose foreground colors must remain distinguishable. */
 const colorContrasts = [
+  {
+    name: "data keys, separators and values",
+    code: 'flowchart\nA@{ shape: rect, label: "Text" }',
+    pairs: [
+      ["shape", ":"],
+      ["shape", "rect"],
+      ["shape", ","],
+      [":", "rect"],
+      [",", "rect"],
+      ["label", "Text"],
+    ],
+  },
+  {
+    name: "class member types and names",
+    code: "classDiagram\nclass A {\n  +String name\n  +pay(float amount)\n}",
+    pairs: [
+      ["String", "name"],
+      ["float", "pay("],
+      ["float", "amount"],
+    ],
+  },
+  {
+    name: "gantt dependencies, ids and durations",
+    code: "gantt\nT :a1, after b1, 3d",
+    pairs: [
+      ["after", "a1"],
+      ["after", "b1"],
+      ["a1", "3d"],
+      ["b1", "3d"],
+    ],
+  },
+  {
+    name: "sankey values and names",
+    code: "sankey-beta\nA,B,3000",
+    pairs: [
+      ["3000", "A"],
+      ["3000", "B"],
+    ],
+  },
+  {
+    name: "gantt marker properties and separators",
+    code: "gantt\ntodayMarker stroke-width:5px,stroke:#00f,opacity:0.5",
+    pairs: [
+      [":", "stroke-width"],
+      [",", "5px"],
+      [",", "#00f"],
+      [",", "0.5"],
+    ],
+  },
   {
     name: "treemap style names, values and separators",
     code: "treemap\nclassDef warning fill:#f96,stroke:#333;",
@@ -573,6 +663,40 @@ describe("the leading trivia", () => {
 
 /** Fixed inputs distinguish the boundary cases of the cited lexical sentences. */
 const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
+  {
+    name: "an unclosed class style parenthesis stops at its line",
+    code: "classDiagram\nstyle A fill:(a\nclass B\n",
+    scopes: [
+      ["class", "keyword.control.mermaid", 2],
+      ["B", "variable.mermaid", 2],
+    ],
+    absentOnLine: [[2, "support.constant.property-value.mermaid"]],
+  },
+  {
+    name: "an unclosed state style parenthesis stops at its line",
+    code: "stateDiagram-v2\nclassDef x fill:(a\nA --> B\n",
+    scopes: [
+      ["A", "variable.mermaid", 2],
+      ["-->", "keyword.operator.arrow.mermaid", 2],
+      ["B", "variable.mermaid", 2],
+    ],
+    absentOnLine: [[2, "support.constant.property-value.mermaid"]],
+  },
+  {
+    name: "an unclosed block style parenthesis stops at its line",
+    code: "block\nclassDef x fill:(a\nA\n",
+    scopes: [["A", "variable.mermaid", 2]],
+    absentOnLine: [[2, "support.constant.property-value.mermaid"]],
+  },
+  {
+    name: "an unclosed gantt style parenthesis stops at its line",
+    code: "gantt\ntodayMarker stroke:(a\nsection S\n",
+    scopes: [
+      ["section", "keyword.control.mermaid", 2],
+      ["S", "string.unquoted.mermaid", 2],
+    ],
+    absentOnLine: [[2, "support.constant.property-value.mermaid"]],
+  },
   {
     name: "flowchart styles keep a final semicolon separate from properties",
     code: "flowchart TD\nstyle A fill:#f96,stroke:#333;\nclassDef warning fill:#f96,stroke:#333;",
@@ -2213,7 +2337,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ['"x', "string.unquoted.mermaid", 12],
       ["#amp;", "string.unquoted.mermaid", 13],
       ["#amp;", "string.unquoted.mermaid", 14],
-      ["#amp;", "string.unquoted.mermaid", 15],
+      ["#amp;", "string.quoted.double.mermaid", 15],
       ["#amp;", "support.constant.property-value.mermaid", 16],
       ["#amp;", "support.constant.property-value.mermaid", 17],
     ],
@@ -2246,7 +2370,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ['"x', "string.unquoted.mermaid", 12],
       ["#amp;", "string.unquoted.mermaid", 13],
       ["#amp;", "string.unquoted.mermaid", 14],
-      ["#amp;", "string.unquoted.mermaid", 15],
+      ["#amp;", "string.quoted.double.mermaid", 15],
       ["#amp;", "support.constant.property-value.mermaid", 16],
       ["#amp;", "support.constant.property-value.mermaid", 17],
       ["#amp;", "string.unquoted.mermaid", 18],
@@ -2296,7 +2420,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
   {
     name: "a usecase JSON HTML tag keeps an escaped non-attribute quote",
     code: 'usecase-beta\njson J @ {"x":"<b \\"text>"}',
-    scopes: [['<b \\"text>', "string.unquoted.mermaid"]],
+    scopes: [['<b \\"text>', "string.quoted.double.mermaid"]],
     absent: [["}", "string.quoted.double.mermaid"]],
   },
   {
@@ -2304,7 +2428,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: 'usecase-beta\njson J @ {"x":"<b \\%%{wrap}%%"text>"}',
     scopes: [
       ["wrap", "entity.name.function.directive.mermaid"],
-      ['"text>', "string.unquoted.mermaid"],
+      ['"text>', "string.quoted.double.mermaid"],
     ],
     absent: [["}", "string.quoted.double.mermaid"]],
   },
@@ -2358,7 +2482,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
   {
     name: "a usecase JSON HTML quoted value ends at a quote after a backslash",
     code: 'usecase-beta\njson J @ {"x":"<b x="v\\"tail>"}',
-    scopes: [['<b x="v\\"tail>', "string.unquoted.mermaid"]],
+    scopes: [['<b x="v\\"tail>', "string.quoted.double.mermaid"]],
     absent: [["}", "string.quoted.double.mermaid"]],
   },
   {
@@ -2370,19 +2494,19 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
   {
     name: "a usecase JSON HTML tag finds a quoted value after a backslash",
     code: 'usecase-beta\njson J @ {"x":"<b \\="v">"}',
-    scopes: [['<b \\="v">', "string.unquoted.mermaid"]],
+    scopes: [['<b \\="v">', "string.quoted.double.mermaid"]],
     absent: [["}", "string.quoted.double.mermaid"]],
   },
   {
     name: "a usecase JSON HTML tag keeps an escaped line separator",
     code: 'usecase-beta\njson J @ {"x":"<b \\\u2028text>"}',
-    scopes: [["<b \\\u2028text>", "string.unquoted.mermaid"]],
+    scopes: [["<b \\\u2028text>", "string.quoted.double.mermaid"]],
     absent: [["}", "string.quoted.double.mermaid"]],
   },
   {
     name: "a usecase JSON HTML tag keeps an escaped paragraph separator",
     code: 'usecase-beta\njson J @ {"x":"<b \\\u2029text>"}',
-    scopes: [["<b \\\u2029text>", "string.unquoted.mermaid"]],
+    scopes: [["<b \\\u2029text>", "string.quoted.double.mermaid"]],
     absent: [["}", "string.quoted.double.mermaid"]],
   },
   {
@@ -2688,7 +2812,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     name: "a flowchart data tag ends inside a directive before a quoted value",
     code: 'flowchart LR\nA@{<b %%{init: >}%% t="q"}',
     scopes: [
-      ["q", "string.unquoted.mermaid"],
+      ["q", "string.quoted.double.mermaid"],
       ["init", "entity.name.function.directive.mermaid"],
       ["}", "keyword.operator.bracket.data.end.mermaid"],
     ],
@@ -2698,7 +2822,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     name: "an agentflow data tag ends inside a directive before a quoted value",
     code: 'agentflow-beta LR\nA@{<b %%{init: >}%% t="q"}',
     scopes: [
-      ["q", "string.unquoted.mermaid"],
+      ["q", "string.quoted.double.mermaid"],
       ["init", "entity.name.function.directive.mermaid"],
       ["}", "keyword.operator.bracket.data.end.mermaid"],
     ],
@@ -3269,9 +3393,12 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       ["a", "string.quoted.double.mermaid"],
       ["<b", "string.quoted.double.mermaid"],
-      [" ticket: ", "string.unquoted.mermaid"],
+      ["ticket", "support.type.property-name.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
+      ["c>", "string.quoted.double.mermaid"],
+      ["}", "keyword.operator.bracket.data.end.mermaid"],
     ],
-    absent: [[" ticket: ", "string.quoted.double.mermaid"]],
+    absent: [["ticket", "string.quoted.double.mermaid"]],
   },
   {
     // common.md#html-attribute-quotes: Tags are found in the text as written.
@@ -3298,25 +3425,30 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     name: "a kanban data block closes after an ordinary single quote",
     code: "kanban\nA@{x: 'a}%% c\n",
     scopes: [
-      ["x: 'a", "string.unquoted.mermaid"],
+      ["x", "support.type.property-name.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
+      ["'a", "string.unquoted.mermaid"],
       ["}", "keyword.operator.bracket.data.end.mermaid"],
       ["%% c", "comment.line.percentage.mermaid"],
     ],
-    absent: [["x: 'a", "string.quoted.single.mermaid"]],
+    absent: [["'a", "string.quoted.single.mermaid"]],
   },
   {
-    // kanban.md#data-blocks: The whole interior has no parsed key/value children.
-    name: "a kanban data block keeps property and boolean spellings as text",
+    // kanban.md#data-blocks: Display property pairs within the opaque data unit.
+    name: "a kanban data block displays property names and boolean values",
     code: "kanban\nA@{key: true, other: false}\n",
-    scopes: [["key: true, other: false", "string.unquoted.mermaid"]],
+    scopes: [
+      ["key", "support.type.property-name.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
+      ["true", "constant.language.mermaid"],
+      [",", "keyword.operator.separator.comma.mermaid"],
+      ["other", "support.type.property-name.mermaid"],
+      ["false", "constant.language.mermaid"],
+    ],
     absent: [
-      ["key: true, other: false", "support.type.property-name.mermaid"],
-      ["key: true, other: false", "constant.language.mermaid"],
-      ["key: true, other: false", "keyword.operator.separator.comma.mermaid"],
-      [
-        "key: true, other: false",
-        "keyword.operator.separator.key-value.mermaid",
-      ],
+      ["key", "string.unquoted.mermaid"],
+      ["true", "string.unquoted.mermaid"],
+      ["false", "string.unquoted.mermaid"],
     ],
   },
   {
@@ -3325,8 +3457,8 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     name: "kanban quoted data protects a brace and caret across a line feed",
     code: 'kanban\nA@{x: "}^\n\\%%{wrap}%%"}%% c\n',
     scopes: [
-      ["}^", "string.unquoted.mermaid"],
-      ["\\", "string.unquoted.mermaid"],
+      ["}^", "string.quoted.double.mermaid"],
+      ["\\", "string.quoted.double.mermaid"],
       ["wrap", "entity.name.function.directive.mermaid"],
       ["}", "keyword.operator.bracket.data.end.mermaid"],
       ["%% c", "comment.line.percentage.mermaid"],
@@ -4282,18 +4414,22 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     absent: [["[*]", "variable.mermaid"]],
   },
   {
-    name: "a usecase JSON value is opaque data",
+    name: "a usecase JSON value displays entries while balancing braces",
     code: 'usecase-beta\njson J @ {"a": {"nested": "v}"}, "b": 1}\nactor A',
     scopes: [
       ["@", "meta.data.mermaid"],
       ["{", "keyword.operator.bracket.data.begin.mermaid"],
+      ["}", "string.unquoted.mermaid"],
+      ['"a"', "support.type.property-name.mermaid"],
+      ['"nested"', "support.type.property-name.mermaid"],
+      ['"b"', "support.type.property-name.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
+      [",", "keyword.operator.separator.comma.mermaid"],
+      ["v}", "string.quoted.double.mermaid"],
+      ["1", "constant.numeric.mermaid"],
       ["A", "variable.mermaid"],
     ],
-    absentOnLine: [
-      [1, "string.quoted.double.mermaid"],
-      [1, "support.type.property-name.mermaid"],
-      [1, "meta.structure.dictionary.mermaid"],
-    ],
+    absentOnLine: [[1, "meta.structure.dictionary.mermaid"]],
   },
   {
     name: "usecase native metadata keeps property keys",
@@ -4330,30 +4466,42 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     ],
   },
   {
-    name: "kanban data quotes remain opaque text",
+    name: "kanban data strings protect a closing brace",
     code: 'kanban\nA\n b[y]@{"k": "v}"}',
-    scopes: [["@{", "meta.data.mermaid"]],
-    absentOnLine: [
-      [2, "string.quoted.double.mermaid"],
-      [2, "support.type.property-name.mermaid"],
+    scopes: [
+      ["@{", "meta.data.mermaid"],
+      ['"k"', "support.type.property-name.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
+      ["v}", "string.quoted.double.mermaid"],
+      ["}", "keyword.operator.bracket.data.end.mermaid"],
     ],
   },
   {
-    name: "flowchart data quotes remain opaque text",
+    name: "flowchart data displays keys and quoted values",
     code: 'flowchart TD\nC@{ shape: rect, label: "x" }',
-    scopes: [["@{", "meta.data.mermaid"]],
-    absentOnLine: [
-      [1, "string.quoted.double.mermaid"],
-      [1, "support.type.property-name.mermaid"],
+    scopes: [
+      ["@{", "meta.data.mermaid"],
+      ["shape", "support.type.property-name.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
+      ["rect", "string.unquoted.mermaid"],
+      [",", "keyword.operator.separator.comma.mermaid"],
+      ["label", "support.type.property-name.mermaid"],
+      ["x", "string.quoted.double.mermaid"],
+      ["}", "keyword.operator.bracket.data.end.mermaid"],
     ],
   },
   {
-    name: "agentflow data quotes remain opaque text",
+    name: "agentflow data displays keys and quoted values",
     code: 'agentflow-beta\nC@{ shape: rect, label: "x" }',
-    scopes: [["@{", "meta.data.mermaid"]],
-    absentOnLine: [
-      [1, "string.quoted.double.mermaid"],
-      [1, "support.type.property-name.mermaid"],
+    scopes: [
+      ["@{", "meta.data.mermaid"],
+      ["shape", "support.type.property-name.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
+      ["rect", "string.unquoted.mermaid"],
+      [",", "keyword.operator.separator.comma.mermaid"],
+      ["label", "support.type.property-name.mermaid"],
+      ["x", "string.quoted.double.mermaid"],
+      ["}", "keyword.operator.bracket.data.end.mermaid"],
     ],
   },
   {
@@ -5437,57 +5585,71 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     absentOnLine: [[2, "keyword.operator.delimiter.directive.end.mermaid"]],
   },
   {
-    name: "follow-up: opaque kanban data has one unquoted scope per token",
+    name: "kanban data entries keep distinct scopes",
     code: 'kanban\nA\n b[y]@{ assigned: "k" }',
-    scopes: [["@{", "meta.data.mermaid"]],
-    absentOnLine: [
-      [2, "string.quoted.double.mermaid"],
-      [2, "support.type.property-name.mermaid"],
+    scopes: [
+      ["@{", "meta.data.mermaid"],
+      ["assigned", "support.type.property-name.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
+      ["k", "string.quoted.double.mermaid"],
+      ["}", "keyword.operator.bracket.data.end.mermaid"],
     ],
   },
   {
-    name: "follow-up: opaque flowchart data has one unquoted scope per token",
+    name: "flowchart data entries keep distinct scopes",
     code: 'flowchart TD\nA@{ assigned: "k" }',
-    scopes: [["@{", "meta.data.mermaid"]],
-    absentOnLine: [
-      [1, "string.quoted.double.mermaid"],
-      [1, "support.type.property-name.mermaid"],
+    scopes: [
+      ["@{", "meta.data.mermaid"],
+      ["assigned", "support.type.property-name.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
+      ["k", "string.quoted.double.mermaid"],
+      ["}", "keyword.operator.bracket.data.end.mermaid"],
     ],
   },
   {
-    name: "follow-up: opaque agentflow data has one unquoted scope per token",
+    name: "agentflow data entries keep distinct scopes",
     code: 'agentflow-beta\nA@{ assigned: "k" }',
-    scopes: [["@{", "meta.data.mermaid"]],
-    absentOnLine: [
-      [1, "string.quoted.double.mermaid"],
-      [1, "support.type.property-name.mermaid"],
+    scopes: [
+      ["@{", "meta.data.mermaid"],
+      ["assigned", "support.type.property-name.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
+      ["k", "string.quoted.double.mermaid"],
+      ["}", "keyword.operator.bracket.data.end.mermaid"],
     ],
   },
   {
-    name: "follow-up: opaque sequence data has one unquoted scope per token",
+    name: "sequence data entries keep distinct scopes",
     code: 'sequenceDiagram\nparticipant A@{ assigned: "k" }',
-    scopes: [["@{", "meta.data.mermaid"]],
-    absentOnLine: [
-      [1, "string.quoted.double.mermaid"],
-      [1, "support.type.property-name.mermaid"],
+    scopes: [
+      ["@{", "meta.data.mermaid"],
+      ["assigned", "support.type.property-name.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
+      ["k", "string.quoted.double.mermaid"],
+      ["}", "keyword.operator.bracket.data.end.mermaid"],
     ],
   },
   {
-    name: "follow-up: opaque usecase data has one unquoted scope per token",
+    name: "usecase data entries keep distinct scopes",
     code: 'usecase-beta\njson J @ {"assigned": {"name": "k}"}}',
-    scopes: [["{", "meta.data.mermaid"]],
-    absentOnLine: [
-      [1, "string.quoted.double.mermaid"],
-      [1, "support.type.property-name.mermaid"],
+    scopes: [
+      ["{", "meta.data.mermaid"],
+      ['"assigned"', "support.type.property-name.mermaid"],
+      ['"name"', "support.type.property-name.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
+      ["k}", "string.quoted.double.mermaid"],
+      ["}", "string.unquoted.mermaid"],
     ],
   },
   {
-    name: "follow-up: opaque eventmodeling data has one unquoted scope per token",
+    name: "eventmodeling data entries keep distinct scopes",
     code: 'eventmodeling\ntf 01 evt A {"assigned": {"name": "k}"}}',
-    scopes: [["{", "meta.data.mermaid"]],
-    absentOnLine: [
-      [1, "string.quoted.double.mermaid"],
-      [1, "support.type.property-name.mermaid"],
+    scopes: [
+      ["{", "meta.data.mermaid"],
+      ['"assigned"', "support.type.property-name.mermaid"],
+      ['"name"', "support.type.property-name.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
+      ["k}", "string.quoted.double.mermaid"],
+      ["}", "string.unquoted.mermaid"],
     ],
   },
   {
@@ -5504,7 +5666,9 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       ["double", "string.quoted.double.mermaid"],
       ["single", "string.quoted.single.mermaid"],
-      ['"k":"v"', "string.unquoted.mermaid"],
+      ['"k"', "support.type.property-name.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
+      ["v", "string.quoted.double.mermaid"],
       ["{", "meta.data.mermaid"],
     ],
     absent: [
@@ -6829,12 +6993,101 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ["}", "keyword.operator.delimiter.description.end.mermaid"],
     ],
   },
+  {
+    name: "a directive inside a data key leaves its fragments as text",
+    code: "flowchart\nA@{ sh%%{wrap}%%ape: rect }",
+    scopes: [
+      [" sh", "string.unquoted.mermaid"],
+      ["ape: rect ", "string.unquoted.mermaid"],
+      ["wrap", "entity.name.function.directive.mermaid"],
+      ["}", "keyword.operator.bracket.data.end.mermaid"],
+    ],
+    absentOnLine: [
+      [1, "support.type.property-name.mermaid"],
+      [1, "keyword.operator.separator.key-value.mermaid"],
+    ],
+  },
+  {
+    name: "a bare data key requires whitespace after its colon",
+    code: "flowchart\nA@{ time:12:30 }",
+    scopes: [
+      [" time:12:30 ", "string.unquoted.mermaid"],
+      ["}", "keyword.operator.bracket.data.end.mermaid"],
+    ],
+    absentOnLine: [
+      [1, "support.type.property-name.mermaid"],
+      [1, "keyword.operator.separator.key-value.mermaid"],
+    ],
+  },
+  {
+    name: "data scalars require a whole value and value colons stay text",
+    code: "flowchart\nA@{ count: 2px, enabled: trueish, label: Very High extra: text }",
+    scopes: [
+      ["count", "support.type.property-name.mermaid"],
+      ["enabled", "support.type.property-name.mermaid"],
+      ["label", "support.type.property-name.mermaid"],
+      ["2px", "string.unquoted.mermaid"],
+      ["trueish", "string.unquoted.mermaid"],
+      ["Very High extra: text ", "string.unquoted.mermaid"],
+    ],
+    absentOnLine: [
+      [1, "constant.numeric.mermaid"],
+      [1, "constant.language.mermaid"],
+    ],
+  },
+  {
+    name: "the first brace closes sequence data inside a double quote",
+    code: 'sequenceDiagram\nparticipant A@{ "type": "queue} as Alias',
+    scopes: [
+      ['"type"', "support.type.property-name.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
+      ["queue", "string.quoted.double.mermaid"],
+      ["}", "keyword.operator.bracket.data.end.mermaid"],
+      ["as", "keyword.control.mermaid"],
+      ["Alias", "string.unquoted.mermaid"],
+    ],
+    absent: [
+      ["}", "string.quoted.double.mermaid"],
+      ["Alias", "meta.data.mermaid"],
+    ],
+  },
+  {
+    name: "inline eventmodeling data ends at the last brace of its line",
+    code: "eventmodeling\ntf 01 evt E { first: 1 } tf 02 evt Later { second: 2 }",
+    scopes: [
+      ["{", "keyword.operator.bracket.data.begin.mermaid"],
+      ["first", "support.type.property-name.mermaid"],
+      ["1", "constant.numeric.mermaid"],
+      ["}", "string.unquoted.mermaid"],
+      [" tf 02 evt Later ", "string.unquoted.mermaid"],
+      ["second", "support.type.property-name.mermaid"],
+      ["2", "constant.numeric.mermaid"],
+    ],
+    absent: [[" tf 02 evt Later ", "keyword.control.mermaid"]],
+  },
+  {
+    name: "a block data closer ends eventmodeling data after an unclosed quote",
+    code: 'eventmodeling\ndata D {\n  value: "open\n}\ntf 01 evt Next',
+    scopes: [
+      ["value", "support.type.property-name.mermaid"],
+      ["open", "string.quoted.double.mermaid"],
+      ["}", "keyword.operator.bracket.data.end.mermaid"],
+      ["tf", "keyword.control.mermaid"],
+      ["Next", "variable.mermaid"],
+    ],
+    absent: [
+      ["}", "string.quoted.double.mermaid"],
+      ["Next", "meta.data.mermaid"],
+    ],
+  },
 ]
 
 describe("the lexical boundaries", () => {
   it("keeps only the outer JSON braces as data delimiters", () => {
     const input = boundaries.find(
-      (boundary) => boundary.name === "a usecase JSON value is opaque data",
+      (boundary) =>
+        boundary.name ===
+        "a usecase JSON value displays entries while balancing braces",
     )
     if (!input) throw new Error("missing fixed JSON input")
     const line = tokenLines(input.code)[1] ?? []
@@ -6846,12 +7099,16 @@ describe("the lexical boundaries", () => {
     )
     expect(begin).toBeGreaterThan(0)
     expect(end).toBe(line.length - 1)
-    for (const token of line.slice(begin + 1, end)) {
-      expect(token.scopes, token.content).toEqual([
-        "meta.data.mermaid",
-        "string.unquoted.mermaid",
-      ])
-    }
+    expect(
+      line
+        .filter((token) => token.content === "{" || token.content === "}")
+        .map((token) => token.scopes),
+    ).toEqual([
+      ["meta.data.mermaid", "keyword.operator.bracket.data.begin.mermaid"],
+      ["meta.data.mermaid", "string.unquoted.mermaid"],
+      ["meta.data.mermaid", "string.unquoted.mermaid"],
+      ["meta.data.mermaid", "keyword.operator.bracket.data.end.mermaid"],
+    ])
   })
 
   it("keeps both EBNF special-sequence delimiters separate from rule terminators", () => {
@@ -6918,14 +7175,15 @@ describe("the lexical boundaries", () => {
     ).toHaveLength(2)
   })
 
-  it("keeps each opaque data interior in one unquoted scope per token", () => {
+  it("gives each data unit one content scope within its delimiters", () => {
     for (const name of [
-      "follow-up: opaque kanban data has one unquoted scope per token",
-      "follow-up: opaque flowchart data has one unquoted scope per token",
-      "follow-up: opaque agentflow data has one unquoted scope per token",
-      "follow-up: opaque sequence data has one unquoted scope per token",
-      "follow-up: opaque usecase data has one unquoted scope per token",
-      "follow-up: opaque eventmodeling data has one unquoted scope per token",
+      "kanban data entries keep distinct scopes",
+      "flowchart data entries keep distinct scopes",
+      "agentflow data entries keep distinct scopes",
+      "sequence data entries keep distinct scopes",
+      "usecase data entries keep distinct scopes",
+      "eventmodeling data entries keep distinct scopes",
+      "inline eventmodeling data ends at the last brace of its line",
     ]) {
       const input = boundaries.find((boundary) => boundary.name === name)
       if (!input) throw new Error(`missing fixed data input: ${name}`)
@@ -6942,11 +7200,20 @@ describe("the lexical boundaries", () => {
         token.scopes.includes("keyword.operator.bracket.data.end.mermaid"),
       )
       expect(end, name).toBeGreaterThan(begin + 1)
+      expect(end, name).toBe(line.length - 1)
       for (const token of line.slice(begin + 1, end)) {
-        expect(token.scopes, token.content).toEqual([
-          "meta.data.mermaid",
-          "string.unquoted.mermaid",
-        ])
+        expect(token.scopes, token.content).toContain("meta.data.mermaid")
+        const contentScopes = token.scopes.filter(
+          (scope) =>
+            scope !== "meta.data.mermaid" &&
+            scope !== "punctuation.definition.string.begin.mermaid" &&
+            scope !== "punctuation.definition.string.end.mermaid",
+        )
+        if (token.content.trim()) {
+          expect(contentScopes, token.content).toHaveLength(1)
+        } else {
+          expect(contentScopes.length, token.content).toBeLessThanOrEqual(1)
+        }
       }
     }
   })

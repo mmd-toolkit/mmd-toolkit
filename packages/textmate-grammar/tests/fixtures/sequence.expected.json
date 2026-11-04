@@ -172,7 +172,25 @@
     ["}", "keyword.operator.delimiter.description.end.mermaid", 6],
     ["A", "variable.mermaid", 20],
     ["B", "variable.mermaid", 20],
-    [" \"type\": \"queue\" ", "string.unquoted.mermaid", 15]
+    ["\"type\"", "support.type.property-name.mermaid", 15],
+    [":", "keyword.operator.separator.key-value.mermaid", 15],
+    ["queue", "string.quoted.double.mermaid", 15],
+    ["\"type\"", "support.type.property-name.mermaid", 165],
+    [":", "keyword.operator.separator.key-value.mermaid", 165],
+    ["queue", "string.quoted.double.mermaid", 165],
+    ["@{", "keyword.operator.bracket.data.begin.mermaid", 165],
+    ["}", "keyword.operator.bracket.data.end.mermaid", 165],
+    ["\"type\"", "support.type.property-name.mermaid", 166],
+    ["database", "string.quoted.double.mermaid", 166],
+    ["\"alias\"", "support.type.property-name.mermaid", 166],
+    ["User Database", "string.quoted.double.mermaid", 166],
+    [":", "keyword.operator.separator.key-value.mermaid", 166],
+    [",", "keyword.operator.separator.comma.mermaid", 166],
+    ["\"type\"", "support.type.property-name.mermaid", 167],
+    [":", "keyword.operator.separator.key-value.mermaid", 167],
+    ["boundary", "string.quoted.double.mermaid", 167],
+    ["as", "keyword.control.mermaid", 167],
+    ["Public API", "string.unquoted.mermaid", 167]
   ],
   "absent": [
     ["ender", "keyword.control.mermaid"],
@@ -192,7 +210,8 @@
     ["1", "constant.numeric.mermaid", 127],
     ["wrap:x", "keyword.control.mermaid", 135],
     ["nowrap:x", "keyword.control.mermaid", 136],
-    ["wrap:x", "keyword.control.mermaid", 137]
+    ["wrap:x", "keyword.control.mermaid", 137],
+    ["\"type\"", "string.quoted.double.mermaid", 165]
   ],
   "absentOnLine": [
     [96, "comment.line.number-sign.mermaid"],

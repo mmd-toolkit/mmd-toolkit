@@ -53,3 +53,11 @@ tf 86 evt LeadingHidden `%%{!}%% json` {}
 tf 87 evt TrailingHidden `json%%{!}%% ` {}
 
 tf 88 evt After accTitle: Inline title
+
+tf 02 cmd AddItem { description: string }
+tf 01 rmo UserAdded `json`{ "name": "foo" }
+data AddItem01 {
+  description: 'john'
+  image: 'avatar_john'
+  price: 20.4
+}

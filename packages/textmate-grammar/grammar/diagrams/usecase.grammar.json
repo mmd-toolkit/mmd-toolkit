@@ -75,7 +75,7 @@
               "include": "#directive"
             },
             {
-              "comment": "Read the JSON at unit inside the data wrapper, then its outer braces and opaque balanced interior. Follows usecase.md#ordered-default-context-rules and usecase.md#json-context.",
+              "comment": "Display the JSON keys and values separately for the reader while balancing its braces and protected double-quoted regions. Follows usecase.md#ordered-default-context-rules and usecase.md#json-context.",
               "begin": "(@)({{asciiGap}})(\\{)",
               "beginCaptures": {
                 "1": {
@@ -99,7 +99,6 @@
                 }
               },
               "name": "meta.data.mermaid",
-              "contentName": "string.unquoted.mermaid",
               "patterns": [
                 {
                   "include": "#comment-line"
@@ -108,10 +107,16 @@
                   "include": "#directive"
                 },
                 {
+                  "include": "#data-entry"
+                },
+                {
                   "include": "#usecase-json-quote"
                 },
                 {
                   "include": "#usecase-object"
+                },
+                {
+                  "include": "#usecase-json-text"
                 }
               ]
             }
@@ -443,7 +448,7 @@
       ]
     },
     "usecase-object": {
-      "comment": "Balance nested JSON braces and quotes inside opaque text without adding delimiter or string scopes. Follows usecase.md#json-context.",
+      "comment": "Balance a nested JSON object while displaying its keys and values; inner braces retain their text color. Follows usecase.md#json-context.",
       "begin": "\\{",
       "end": "\\}",
       "patterns": [
@@ -454,12 +459,28 @@
           "include": "#directive"
         },
         {
+          "include": "#data-entry"
+        },
+        {
           "include": "#usecase-json-quote"
         },
         {
           "include": "#usecase-object"
+        },
+        {
+          "include": "#usecase-json-text"
         }
-      ]
+      ],
+      "beginCaptures": {
+        "0": {
+          "name": "string.unquoted.mermaid"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "string.unquoted.mermaid"
+        }
+      }
     },
     "usecase-json-html-tag": {
       "comment": "Read quoted HTML attribute values as part of the surrounding text. Follows common.md#html-attribute-quotes.",
@@ -502,7 +523,7 @@
       ]
     },
     "usecase-metadata": {
-      "comment": "Metadata is contiguous @{, optional properties separated by commas or newlines, and a closing brace. A property has an exact id or plain-string key, colon, and id, plain-string or boolean value. Follows usecase.md#grammar and usecase.md#ordered-default-context-rules.",
+      "comment": "Read native metadata properties and display bare or quoted keys with the property-name color, keeping the listed fixed values. Follows usecase.md#grammar and usecase.md#ordered-default-context-rules.",
       "begin": "(@\\{)",
       "beginCaptures": {
         "1": {
@@ -528,11 +549,7 @@
           "match": "((?:type|animation)|\"(?:type|animation)\"|'(?:type|animation)')({{asciiGap}})(:)({{asciiGap}})((?:normal|hollow|awesome|rect|package|fast|slow)){{wordEnd}}",
           "captures": {
             "1": {
-              "patterns": [
-                {
-                  "include": "#usecase-metadata-property-name"
-                }
-              ]
+              "name": "support.type.property-name.mermaid"
             },
             "2": {
               "patterns": [
@@ -557,17 +574,10 @@
           }
         },
         {
-          "include": "#usecase-plain-string"
-        },
-        {
-          "match": "({{usecase-id}})({{gap}})(:)",
+          "match": "({{dataKey}}|{{usecase-id}})({{gap}})(:)",
           "captures": {
             "1": {
-              "patterns": [
-                {
-                  "include": "#usecase-metadata-property-name"
-                }
-              ]
+              "name": "support.type.property-name.mermaid"
             },
             "2": {
               "patterns": [
@@ -580,7 +590,10 @@
               "name": "keyword.operator.separator.key-value.mermaid"
             }
           },
-          "comment": "An unquoted metadata key is an exact id followed by a colon. Directives may stand in the whitespace between the whole id and colon. Follows usecase.md#grammar."
+          "comment": "Display a native bare or quoted metadata key and its colon before the value is read. Directives between a complete key and colon retain their scopes. Follows usecase.md#grammar."
+        },
+        {
+          "include": "#usecase-plain-string"
         },
         {
           "match": ",",
@@ -882,21 +895,8 @@
         }
       ]
     },
-    "usecase-metadata-property-name": {
-      "comment": "Read a native metadata key as a string or an unquoted property name. Follows usecase.md#grammar.",
-      "patterns": [
-        {
-          "include": "#usecase-plain-string"
-        },
-        {
-          "comment": "Read a bare Identifier key. Follows usecase.md#ordered-default-context-rules.",
-          "match": "{{usecase-id}}",
-          "name": "support.type.property-name.mermaid"
-        }
-      ]
-    },
     "usecase-json-quote": {
-      "comment": "Protect JSON braces inside double quotes while retaining the surrounding text scope. Follows usecase.md#json-context.",
+      "comment": "Color a double-quoted JSON value as a string while retaining its escaped-character and brace protection. Follows usecase.md#json-context.",
       "begin": "\"",
       "end": "\"",
       "patterns": [
@@ -904,7 +904,7 @@
           "include": "#comment-line"
         },
         {
-          "comment": "Keep JSON quoted contents, HTML attribute quotes and escaped characters in opaque text. Follows usecase.md#json-context and common.md#html-attribute-quotes.",
+          "comment": "Retain directives, converted HTML attribute quotes and escaped characters inside the displayed JSON string. Follows usecase.md#json-context and common.md#html-attribute-quotes.",
           "begin": "(?!{{separatorCommentEnd}})(?=[^\"])",
           "end": "{{usecase-double-value-end}}",
           "patterns": [
@@ -932,6 +932,31 @@
               }
             }
           ]
+        }
+      ],
+      "name": "string.quoted.double.mermaid",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.mermaid"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.end.mermaid"
+        }
+      }
+    },
+    "usecase-json-text": {
+      "comment": "Color remaining JSON text up to a comma, quote, brace, line end or common-comment boundary, preserving nested-object handling. Follows usecase.md#json-context.",
+      "begin": "(?![,{}\"]|$|{{separatorCommentEnd}})(?=.)",
+      "end": "(?=[,{}\"]|$)|{{separatorCommentEnd}}",
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
         }
       ]
     }

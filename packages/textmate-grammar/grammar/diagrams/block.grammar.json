@@ -346,7 +346,7 @@
           "comment": "The styles are the parts between commas of the rest of the line. Follows block.md#classes-and-styles."
         },
         {
-          "comment": "Read an optional style property name, a key-value colon and its value, leaving trailing whitespace outside the value scope. Display the final semicolon separately. Follows block.md#classes-and-styles.",
+          "comment": "Read an optional style property name, a key-value colon and its value, leaving trailing whitespace outside the value scope. Display the final semicolon separately. Parenthesized values retain their internal separators and spacing. Follows block.md#classes-and-styles.",
           "begin": "((?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^:{{ws}},])*)({{lineGap}})(:)",
           "beginCaptures": {
             "1": {
@@ -371,6 +371,9 @@
           "end": "{{block-style-value-end}}",
           "contentName": "support.constant.property-value.mermaid",
           "patterns": [
+            {
+              "include": "#style-value-parentheses"
+            },
             {
               "include": "#directive"
             }

@@ -416,7 +416,7 @@
           }
         },
         {
-          "comment": "Read one whole style property value, leaving trailing whitespace outside its scope. Display the final semicolon separately. Follows state.md#the-classdef-class-and-style-contexts.",
+          "comment": "Read one whole style property value, leaving trailing whitespace outside its scope. Display the final semicolon separately. Parenthesized values retain their internal separators and spacing. Follows state.md#the-classdef-class-and-style-contexts.",
           "begin": "(:)",
           "beginCaptures": {
             "1": {
@@ -426,6 +426,9 @@
           "end": "{{state-style-value-end}}",
           "contentName": "support.constant.property-value.mermaid",
           "patterns": [
+            {
+              "include": "#style-value-parentheses"
+            },
             {
               "include": "#directive"
             }

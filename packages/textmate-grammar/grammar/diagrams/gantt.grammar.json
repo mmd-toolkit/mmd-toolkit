@@ -276,7 +276,7 @@
           "applyEndPatternLast": true
         },
         {
-          "comment": "Read opaque todayMarker text, keeping hashes in the text rather than subdividing its style-looking content. Follows gantt.md#the-statement-context.",
+          "comment": "Read todayMarker and display property names, colons, values and list commas separately for the reader, although the document reads one marker-text unit. A physical-line-final semicolon is displayed as a separator. Text without a property colon retains its text scope. Follows gantt.md#the-statement-context and gantt.md#settings.",
           "begin": "{{gantt-statement-start}}((?i:todayMarker))((?!{{directives}}{{separatorCommentEnd}}){{whitespaceSeparator}})",
           "beginCaptures": {
             "1": {
@@ -291,14 +291,33 @@
             }
           },
           "end": "(?=;)|{{lineValueEnd}}",
-          "contentName": "string.unquoted.mermaid",
           "patterns": [
+            {
+              "include": "#style-final-semicolon"
+            },
             {
               "include": "#directive"
             },
             {
-              "comment": "Read an entity whole and preserve the enclosing value scope and internal directive scopes. Follows common.md#entities.",
-              "include": "#entity"
+              "include": "#gantt-marker-property"
+            },
+            {
+              "include": "#gantt-comma"
+            },
+            {
+              "comment": "Read marker text without a property colon in its original text scope, retaining entities, directives and commas as text. Follows gantt.md#the-statement-context and gantt.md#settings.",
+              "begin": "(?!{{directiveStart}}|{{separatorCommentEnd}}|;)(?=.)",
+              "end": "(?=;)|{{lineValueEnd}}",
+              "contentName": "string.unquoted.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                },
+                {
+                  "include": "#entity"
+                }
+              ],
+              "applyEndPatternLast": true
             }
           ],
           "applyEndPatternLast": true
@@ -379,8 +398,8 @@
           ]
         },
         {
-          "comment": "Read task data as opaque text items, with fixed values for consecutive leading tags and separate comma delimiters. An empty or ordinary item ends the tag run. Follows gantt.md#tasks.",
-          "begin": "(:)((?:{{gap}}{{gantt-tag}}{{gap}},)*)",
+          "comment": "Read task data items and display their ids and dependency words separately for the reader, although the document keeps each item whole. Consecutive leading tags remain fixed values. Display an own id only when exactly three plain nonempty items remain after the tags; other item counts and empty items retain their text scopes. Follows gantt.md#tasks and gantt.md#click-statements.",
+          "begin": "(:)((?:{{gap}}{{gantt-tag}}{{gap}},)*)(?:[{{lws}}]*({{gantt-data-item-start}}{{gantt-data-item}}?)[{{lws}}]*(?=,{{gantt-nonempty-data-item}},{{gantt-nonempty-data-item}}$))?",
           "beginCaptures": {
             "1": {
               "name": "keyword.operator.separator.colon.mermaid"
@@ -412,6 +431,9 @@
                   }
                 }
               ]
+            },
+            "3": {
+              "name": "variable.mermaid"
             }
           },
           "end": "{{gantt-text-end}}",
@@ -423,8 +445,24 @@
               "include": "#gantt-comma"
             },
             {
-              "comment": "Read a data item as text without subdividing its date, length or id spelling. Follows gantt.md#tasks.",
-              "match": "(?:{{entity}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^,#;\\r\\n])+",
+              "comment": "Display after or until at the front of a plain dependency item as a keyword and each following id as a name. This split is for the reader; the document reads the item as one text. Follows gantt.md#tasks and gantt.md#click-statements.",
+              "match": "(?<=[:,])[{{lws}}]*(after|until)[{{lws}}]+({{gantt-reference-id}}(?:[{{lws}}]+{{gantt-reference-id}})*)[{{lws}}]*(?=,|$)",
+              "captures": {
+                "1": {
+                  "name": "keyword.control.mermaid"
+                },
+                "2": {
+                  "patterns": [
+                    {
+                      "include": "#gantt-reference-ids"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "comment": "Read remaining data text without subdividing dates or lengths; a tag word after an ordinary item stays text. Follows gantt.md#tasks.",
+              "match": "{{gantt-data-character}}+",
               "name": "string.unquoted.mermaid",
               "captures": {
                 "0": {
@@ -445,9 +483,14 @@
       ]
     },
     "gantt-comma": {
-      "comment": "Read commas separating click references, settings and task items. Follows gantt.md#the-click-context and gantt.md#the-statement-context.",
+      "comment": "Read commas between click references, setting-list items, task-data items or displayed marker properties. Follows gantt.md#the-click-context, gantt.md#the-statement-context, and gantt.md#settings.",
       "match": ",",
       "name": "keyword.operator.separator.comma.mermaid"
+    },
+    "gantt-reference-ids": {
+      "comment": "Display each whitespace-separated dependency id as an element name. Follows gantt.md#tasks and gantt.md#click-statements.",
+      "match": "{{gantt-reference-id}}",
+      "name": "variable.mermaid"
     },
     "gantt-callback-arguments": {
       "comment": "Read callback argument brackets and opaque argument text through the first closing parenthesis. Follows gantt.md#the-callback-contexts.",
@@ -498,6 +541,50 @@
           "name": "keyword.control.mermaid"
         }
       }
+    },
+    "gantt-marker-property": {
+      "comment": "Display one property pair inside marker-text after optional padding, retaining spaces and parenthesized components within the value. The document keeps the marker text opaque. Follows gantt.md#the-statement-context and gantt.md#settings.",
+      "begin": "({{lineGap}})((?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^,:;{{ws}}])+)({{lineGap}})(:)",
+      "beginCaptures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "support.type.property-name.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "4": {
+          "name": "keyword.operator.separator.key-value.mermaid"
+        }
+      },
+      "end": "{{gantt-marker-property-end}}",
+      "contentName": "support.constant.property-value.mermaid",
+      "patterns": [
+        {
+          "include": "#style-value-parentheses"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#style-entity"
+        }
+      ]
     }
   },
   "variables": {
@@ -506,7 +593,13 @@
     "gantt-setting-text-gap": "(?!{{directives}}{{separatorCommentEnd}})({{whitespaceSeparator}})(?={{gantt-setting-text-start}})",
     "gantt-statement-start": "(?:(?!{{separatorCommentEnd}})[{{ws}}])*",
     "gantt-text-end": "(?=[#;])|{{lineValueEnd}}",
-    "gantt-tag": "(?:a{{directives}}c{{directives}}t{{directives}}i{{directives}}v{{directives}}e|d{{directives}}o{{directives}}n{{directives}}e|c{{directives}}r{{directives}}i{{directives}}t|m{{directives}}i{{directives}}l{{directives}}e{{directives}}s{{directives}}t{{directives}}o{{directives}}n{{directives}}e|v{{directives}}e{{directives}}r{{directives}}t)"
+    "gantt-data-character": "(?:{{entity}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^,#;\\r\\n])",
+    "gantt-data-item": "(?:(?!{{directiveStart}})[^,#;\\r\\n])+",
+    "gantt-data-item-start": "(?=[^{{ws}},#;])",
+    "gantt-nonempty-data-item": "[{{lws}}]*{{gantt-data-item-start}}{{gantt-data-item}}",
+    "gantt-reference-id": "(?:(?!{{directiveStart}})[^{{ws}},#;])+",
+    "gantt-tag": "(?:a{{directives}}c{{directives}}t{{directives}}i{{directives}}v{{directives}}e|d{{directives}}o{{directives}}n{{directives}}e|c{{directives}}r{{directives}}i{{directives}}t|m{{directives}}i{{directives}}l{{directives}}e{{directives}}s{{directives}}t{{directives}}o{{directives}}n{{directives}}e|v{{directives}}e{{directives}}r{{directives}}t)",
+    "gantt-marker-property-end": "(?={{lineGap}}(?:[,;]|$))|{{separatorCommentEnd}}"
   },
   "comment": "Statement-context rules can begin after any complete unit. Earlier text contexts retain their interiors, and leading whitespace stops before a common-comment boundary. Follows gantt.md#diagram-and-statements and gantt.md#the-statement-context."
 }

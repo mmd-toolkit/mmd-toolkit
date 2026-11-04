@@ -729,7 +729,7 @@
       ]
     },
     "flowchart-data": {
-      "comment": "Read an opaque data interior as text, using double quotes only to protect closing braces. Follows flowchart.md#data-blocks.",
+      "comment": "Display the data keys and values separately for the reader while retaining double-quote protection of closing braces. Follows flowchart.md#data-blocks.",
       "begin": "{{flowchart-data-begin}}",
       "beginCaptures": {
         "1": {
@@ -747,14 +747,16 @@
           "include": "#comment-line"
         },
         {
+          "include": "#data-entry"
+        },
+        {
           "include": "#flowchart-data-string"
         },
         {
           "include": "#flowchart-data-text"
         }
       ],
-      "name": "meta.data.mermaid",
-      "contentName": "string.unquoted.mermaid"
+      "name": "meta.data.mermaid"
     },
     "flowchart-callback": {
       "comment": "Read call and its padding, then the complete callback name before its opening parenthesis and argument text through the closing parenthesis. The name context owns entities from its first character; common comment lines and directives keep their own scopes. Follows flowchart.md#click-and-callbacks, common.md#entities, common.md#comment-lines, and common.md#a-directive-is-a-token-boundary.",
@@ -1487,7 +1489,7 @@
       "name": "string.unquoted.mermaid"
     },
     "flowchart-data-string": {
-      "comment": "Keep data quotes and their contents in the enclosing unquoted text scope while protecting braces until the next quote. Follows flowchart.md#data-blocks.",
+      "comment": "Color a double-quoted data value as a string while protecting braces through its next quote. Follows flowchart.md#data-blocks.",
       "begin": "{{flowchart-string-quote}}",
       "end": "{{flowchart-string-quote}}",
       "patterns": [
@@ -1497,7 +1499,18 @@
         {
           "include": "#flowchart-data-string-text"
         }
-      ]
+      ],
+      "name": "string.quoted.double.mermaid",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.mermaid"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.end.mermaid"
+        }
+      }
     },
     "flowchart-ellipse-html-tag": {
       "comment": "Changes only attribute quotes; this context still ends at its closer, including inside a quoted attribute value. Directives are read whole. The attribute part ends at the first >. Read a directive whole; one containing > ends the tag after that directive. Follows flowchart.md#the-ellipse-context, common.md#html-attribute-quotes, and common.md#a-directive-is-a-token-boundary.",
@@ -1661,7 +1674,7 @@
       ]
     },
     "flowchart-data-string-text": {
-      "comment": "Keep data quotes and their contents in the enclosing unquoted text scope while protecting braces until the next quote. Follows flowchart.md#data-blocks and common.md#comment-lines.",
+      "comment": "Retain directives, tags, entities and common comments inside a double-quoted data value. Follows flowchart.md#data-blocks and common.md#comment-lines.",
       "begin": "{{flowchart-quoted-text-start}}",
       "end": "{{flowchart-quoted-text-end}}",
       "patterns": [
@@ -1713,9 +1726,9 @@
       ]
     },
     "flowchart-data-text": {
-      "comment": "`@{` enters the data context. A quote enters the data string context, whose next quote leaves it. The first `}` outside a data string leaves the data context; the content is data text. The value stops before a separator-led common comment; the enclosing context retains its closer after the comment. Follows flowchart.md#data-blocks and common.md#comment-lines.",
-      "begin": "(?!\\}|\"|{{separatorCommentEnd}})(?=.)",
-      "end": "(?=\\}|\")|{{separatorCommentEnd}}",
+      "comment": "Color remaining data text up to a comma, quote, closing brace, line end or common-comment boundary, leaving the next entry available to the shared rule. Follows flowchart.md#data-blocks and common.md#comment-lines.",
+      "begin": "(?![,}\"]|$|{{separatorCommentEnd}})(?=.)",
+      "end": "(?=[,}\"]|$)|{{separatorCommentEnd}}",
       "patterns": [
         {
           "include": "#comment-line"
@@ -1734,7 +1747,8 @@
           "include": "#flowchart-data-string",
           "comment": "In the data string context a quote leaves the context; other characters are data text, with no escape rule. Follows flowchart.md#data-blocks."
         }
-      ]
+      ],
+      "contentName": "string.unquoted.mermaid"
     },
     "flowchart-ellipse-text": {
       "comment": "`(-` enters the ellipse context. `-`, `/`, or `)` followed by `)` closes it; a string starts at a quote, and each other allowed character is label text. The value stops before a separator-led common comment; the enclosing context retains its closer after the comment. Follows flowchart.md#the-ellipse-context and common.md#comment-lines.",

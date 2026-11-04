@@ -183,10 +183,19 @@
   "-->" keyword.operator.arrow.mermaid
   "Q" variable.mermaid
   "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
-  " shape: rect, label: " meta.data.mermaid string.unquoted.mermaid
-  "\"" meta.data.mermaid string.unquoted.mermaid
-  "data } class" meta.data.mermaid string.unquoted.mermaid
-  "\"" meta.data.mermaid string.unquoted.mermaid
+  " " meta.data.mermaid
+  "shape" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "rect" meta.data.mermaid string.unquoted.mermaid
+  "," meta.data.mermaid keyword.operator.separator.comma.mermaid
+  " " meta.data.mermaid
+  "label" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "data } class" meta.data.mermaid string.quoted.double.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
   " " meta.data.mermaid string.unquoted.mermaid
   "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
 >   A & B --> C & D
@@ -650,7 +659,11 @@
   ":::" keyword.operator.separator.class.mermaid
   "c" variable.mermaid
   "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
-  " shape: rect " meta.data.mermaid string.unquoted.mermaid
+  " " meta.data.mermaid
+  "shape" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "rect " meta.data.mermaid string.unquoted.mermaid
   "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
 > A[x]:::12-->B
   "A" variable.mermaid
@@ -1179,22 +1192,25 @@
   "C" variable.mermaid
   "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
   "label:" meta.data.mermaid string.unquoted.mermaid
-  "\"" meta.data.mermaid string.unquoted.mermaid
-  "x" meta.data.mermaid string.unquoted.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "x" meta.data.mermaid string.quoted.double.mermaid
 > %% data quoted comment
-  "%% data quoted comment" meta.data.mermaid string.unquoted.mermaid comment.line.percentage.mermaid
+  "%% data quoted comment" meta.data.mermaid string.quoted.double.mermaid comment.line.percentage.mermaid
 > %%
-  "%%" meta.data.mermaid string.unquoted.mermaid
+  "%%" meta.data.mermaid string.quoted.double.mermaid
 > y"}
-  "y" meta.data.mermaid string.unquoted.mermaid
-  "\"" meta.data.mermaid string.unquoted.mermaid
+  "y" meta.data.mermaid string.quoted.double.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
   "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
 > D@{label: x
   "D" variable.mermaid
   "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
-  "label: x" meta.data.mermaid string.unquoted.mermaid
+  "label" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "x" meta.data.mermaid string.unquoted.mermaid
 > %% data bare comment
-  "%% data bare comment" meta.data.mermaid string.unquoted.mermaid comment.line.percentage.mermaid
+  "%% data bare comment" meta.data.mermaid comment.line.percentage.mermaid
 > %%
   "%%" meta.data.mermaid string.unquoted.mermaid
 > y}
@@ -1437,6 +1453,253 @@
   "[" keyword.operator.shape.begin.mermaid
   "c" string.unquoted.mermaid
   "]" keyword.operator.shape.end.mermaid
+> 
+> A@{ shape: rect, label: "Text" }
+  "A" variable.mermaid
+  "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
+  " " meta.data.mermaid
+  "shape" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "rect" meta.data.mermaid string.unquoted.mermaid
+  "," meta.data.mermaid keyword.operator.separator.comma.mermaid
+  " " meta.data.mermaid
+  "label" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Text" meta.data.mermaid string.quoted.double.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  " " meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
+> A@{ img: "https://example.com/a.png", label: "x", pos: "t", w: 60, h: 60, constraint: "on" }
+  "A" variable.mermaid
+  "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
+  " " meta.data.mermaid
+  "img" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "https://example.com/a.png" meta.data.mermaid string.quoted.double.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "," meta.data.mermaid keyword.operator.separator.comma.mermaid
+  " " meta.data.mermaid
+  "label" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "x" meta.data.mermaid string.quoted.double.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "," meta.data.mermaid keyword.operator.separator.comma.mermaid
+  " " meta.data.mermaid
+  "pos" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "t" meta.data.mermaid string.quoted.double.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "," meta.data.mermaid keyword.operator.separator.comma.mermaid
+  " " meta.data.mermaid
+  "w" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "60" meta.data.mermaid constant.numeric.mermaid
+  "," meta.data.mermaid keyword.operator.separator.comma.mermaid
+  " " meta.data.mermaid
+  "h" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "60" meta.data.mermaid constant.numeric.mermaid
+  "," meta.data.mermaid keyword.operator.separator.comma.mermaid
+  " " meta.data.mermaid
+  "constraint" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "on" meta.data.mermaid string.quoted.double.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  " " meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
+> e1@{ animate: true }
+  "e1" variable.mermaid
+  "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
+  " " meta.data.mermaid
+  "animate" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "true" meta.data.mermaid constant.language.mermaid
+  " " meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
+> e1@{ curve: linear }
+  "e1" variable.mermaid
+  "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
+  " " meta.data.mermaid
+  "curve" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "linear " meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
+> D@{ shape: procs, label: "Process Automation"}
+  "D" variable.mermaid
+  "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
+  " " meta.data.mermaid
+  "shape" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "procs" meta.data.mermaid string.unquoted.mermaid
+  "," meta.data.mermaid keyword.operator.separator.comma.mermaid
+  " " meta.data.mermaid
+  "label" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Process Automation" meta.data.mermaid string.quoted.double.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
+> C@{
+  "C" variable.mermaid
+  "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
+>   shape: rect
+  "  " meta.data.mermaid
+  "shape" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "rect" meta.data.mermaid string.unquoted.mermaid
+>   label: "x"
+  "  " meta.data.mermaid
+  "label" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "x" meta.data.mermaid string.quoted.double.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> }
+  "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
+> DataSpecial@{ label: "comma, colon: brace}", time: 12:30, endpoint: http://a:80, offset: -1 }
+  "DataSpecial" variable.mermaid
+  "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
+  " " meta.data.mermaid
+  "label" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "comma, colon: brace}" meta.data.mermaid string.quoted.double.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "," meta.data.mermaid keyword.operator.separator.comma.mermaid
+  " " meta.data.mermaid
+  "time" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "12:30" meta.data.mermaid string.unquoted.mermaid
+  "," meta.data.mermaid keyword.operator.separator.comma.mermaid
+  " " meta.data.mermaid
+  "endpoint" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "http://a:80" meta.data.mermaid string.unquoted.mermaid
+  "," meta.data.mermaid keyword.operator.separator.comma.mermaid
+  " " meta.data.mermaid
+  "offset" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "-1" meta.data.mermaid constant.numeric.mermaid
+  " " meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
+> DataHtml@{ label: "<b title="tip">x</b> #amp;" }
+  "DataHtml" variable.mermaid
+  "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
+  " " meta.data.mermaid
+  "label" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "<b title=\"tip\">" meta.data.mermaid string.quoted.double.mermaid
+  "x</b> " meta.data.mermaid string.quoted.double.mermaid
+  "#amp;" meta.data.mermaid string.quoted.double.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  " " meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
+> CommentedData@{
+  "CommentedData" variable.mermaid
+  "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
+>   shape: rect
+  "  " meta.data.mermaid
+  "shape" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "rect" meta.data.mermaid string.unquoted.mermaid
+>   %% data entry comment
+  "  " meta.data.mermaid
+  "%% data entry comment" meta.data.mermaid comment.line.percentage.mermaid
+>   %%{wrap}%%
+  "  " meta.data.mermaid string.unquoted.mermaid
+  "%%{" meta.data.mermaid string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "wrap" meta.data.mermaid string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.data.mermaid string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+>   label: "x"
+  "  " meta.data.mermaid
+  "label" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "x" meta.data.mermaid string.quoted.double.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> }
+  "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
+> DirectiveData@{ shape: re%%{wrap}%%ct }
+  "DirectiveData" variable.mermaid
+  "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
+  " " meta.data.mermaid
+  "shape" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "re" meta.data.mermaid string.unquoted.mermaid
+  "%%{" meta.data.mermaid string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "wrap" meta.data.mermaid string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.data.mermaid string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "ct " meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
+> F@{ 担当: 田中 }
+  "F" variable.mermaid
+  "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
+  " " meta.data.mermaid
+  "担当" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "田中 " meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
+> G@{ priority: '50%' }
+  "G" variable.mermaid
+  "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
+  " " meta.data.mermaid
+  "priority" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "'" meta.data.mermaid string.quoted.single.mermaid punctuation.definition.string.begin.mermaid
+  "50%" meta.data.mermaid string.quoted.single.mermaid
+  "'" meta.data.mermaid string.quoted.single.mermaid punctuation.definition.string.end.mermaid
+  " " meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
+> H@{ "progress%": "done", 'rate%': '50%' }
+  "H" variable.mermaid
+  "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
+  " " meta.data.mermaid
+  "\"progress%\"" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "done" meta.data.mermaid string.quoted.double.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "," meta.data.mermaid keyword.operator.separator.comma.mermaid
+  " " meta.data.mermaid
+  "'rate%'" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "'" meta.data.mermaid string.quoted.single.mermaid punctuation.definition.string.begin.mermaid
+  "50%" meta.data.mermaid string.quoted.single.mermaid
+  "'" meta.data.mermaid string.quoted.single.mermaid punctuation.definition.string.end.mermaid
+  " " meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
 > accDescr { unclosed class description
   "accDescr" keyword.control.mermaid
   "{" keyword.operator.delimiter.description.begin.mermaid

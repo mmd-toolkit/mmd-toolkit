@@ -143,4 +143,13 @@ A[/a
 "b/]-->B[c]
 C[d]
 class Node new:accDescr {}
+
+write["write_copy"]@{ shape: tool, connectorRef: "llm.chat", returns: "CoffeeCopy" }
+research["r"]@{ shape: tool, params: "city :: String", returns: "Report" }
+fetch@{
+  shape: tool
+  params: "city :: String"
+  returns: "Report"
+  retry: 2
+}
 accDescr { open

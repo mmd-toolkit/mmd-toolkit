@@ -788,7 +788,7 @@
       ]
     },
     "agentflow-data": {
-      "comment": "Read an opaque data interior as text, using double quotes only to protect closing braces. Follows agentflow.md#metadata-blocks.",
+      "comment": "Display metadata keys and values separately for the reader, preserving native comment text and double-quote protection of closing braces. Follows agentflow.md#metadata-blocks.",
       "begin": "{{flowchart-data-begin}}",
       "beginCaptures": {
         "1": {
@@ -801,21 +801,15 @@
           "name": "keyword.operator.bracket.data.end.mermaid"
         }
       },
-      "contentName": "string.unquoted.mermaid",
       "patterns": [
         {
-          "include": "#agentflow-data-html-tag"
+          "include": "#data-entry"
         },
         {
-          "include": "#directive"
+          "include": "#agentflow-data-string"
         },
         {
-          "include": "#entity",
-          "comment": "Each entity is read as its placeholder. Follows common.md#entities."
-        },
-        {
-          "include": "#agentflow-data-string",
-          "comment": "In the data string context a quote leaves the context; other characters are data text, with no escape rule. Follows flowchart.md#data-blocks."
+          "include": "#agentflow-data-text"
         }
       ],
       "name": "meta.data.mermaid"
@@ -962,7 +956,7 @@
       ]
     },
     "agentflow-data-string": {
-      "comment": "Keep data quotes and their contents in the enclosing unquoted text scope while protecting braces until the next quote. Follows flowchart.md#data-blocks.",
+      "comment": "Color a double-quoted metadata value as a string, retaining native comment text and protecting braces through its next quote. Follows agentflow.md#metadata-blocks.",
       "begin": "{{flowchart-string-quote}}",
       "end": "{{flowchart-string-quote}}",
       "patterns": [
@@ -975,7 +969,18 @@
         {
           "include": "#entity"
         }
-      ]
+      ],
+      "name": "string.quoted.double.mermaid",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.mermaid"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.end.mermaid"
+        }
+      }
     },
     "agentflow-html-tag": {
       "comment": "Changes only attribute quotes; this context still ends at its closer, including inside a quoted attribute value. Directives are read whole. The attribute part ends at the first >. Read a directive whole; one containing > ends the tag after that directive. Follows flowchart.md#the-label-context, common.md#html-attribute-quotes, and common.md#a-directive-is-a-token-boundary.",
@@ -1788,6 +1793,28 @@
           "name": "keyword.control.mermaid"
         }
       }
+    },
+    "agentflow-data-text": {
+      "comment": "Color remaining metadata text up to a comma, quote, closing brace or line end while retaining directives, tags and entities. Follows agentflow.md#metadata-blocks.",
+      "begin": "(?![,}\"]|$)(?=.)",
+      "end": "(?=[,}\"]|$)",
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#agentflow-data-html-tag"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#entity",
+          "comment": "Each entity is read as its placeholder. Follows common.md#entities."
+        },
+        {
+          "include": "#agentflow-data-string",
+          "comment": "In the data string context a quote leaves the context; other characters are data text, with no escape rule. Follows flowchart.md#data-blocks."
+        }
+      ]
     }
   }
 }

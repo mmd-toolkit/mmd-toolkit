@@ -52,7 +52,14 @@
   "participant" keyword.control.mermaid
   "Queue" variable.mermaid
   "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
-  " \"type\": \"queue\" " meta.data.mermaid string.unquoted.mermaid
+  " " meta.data.mermaid
+  "\"type\"" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "queue" meta.data.mermaid string.quoted.double.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  " " meta.data.mermaid string.unquoted.mermaid
   "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
   "as" keyword.control.mermaid
   "Queue alias" string.unquoted.mermaid
@@ -664,7 +671,14 @@
   "{}" variable.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
   "}%%" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
   "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
-  " \"type\": \"queue\" " meta.data.mermaid string.unquoted.mermaid
+  " " meta.data.mermaid
+  "\"type\"" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "queue" meta.data.mermaid string.quoted.double.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  " " meta.data.mermaid string.unquoted.mermaid
   "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
 > participant A %%{init: {}}%%as participant alias
   "participant" keyword.control.mermaid
@@ -1022,6 +1036,57 @@
 > %%%{wrap}%%% common sequence %%{wrap}%%
   "%%%{wrap}%%% common sequence %%{wrap}%%" comment.line.percentage.mermaid
 > 
+> 
+> participant Alice@{ "type" : "queue" }
+  "participant" keyword.control.mermaid
+  "Alice" variable.mermaid
+  "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
+  " " meta.data.mermaid
+  "\"type\"" meta.data.mermaid support.type.property-name.mermaid
+  " " meta.data.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "queue" meta.data.mermaid string.quoted.double.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  " " meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
+> participant DB@{ "type": "database", "alias": "User Database" }
+  "participant" keyword.control.mermaid
+  "DB" variable.mermaid
+  "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
+  " " meta.data.mermaid
+  "\"type\"" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "database" meta.data.mermaid string.quoted.double.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "," meta.data.mermaid keyword.operator.separator.comma.mermaid
+  " " meta.data.mermaid
+  "\"alias\"" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "User Database" meta.data.mermaid string.quoted.double.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  " " meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
+> participant API@{ "type": "boundary" } as Public API
+  "participant" keyword.control.mermaid
+  "API" variable.mermaid
+  "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
+  " " meta.data.mermaid
+  "\"type\"" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "boundary" meta.data.mermaid string.quoted.double.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  " " meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
+  "as" keyword.control.mermaid
+  "Public API" string.unquoted.mermaid
 > accDescr { unclosed participant description
   "accDescr" keyword.control.mermaid
   "{" keyword.operator.delimiter.description.begin.mermaid

@@ -41,7 +41,13 @@
   "2026-11-01" string.unquoted.mermaid
 >   todayMarker stroke:#f00,stroke-width:2px
   "todayMarker" keyword.control.mermaid
-  "stroke:#f00,stroke-width:2px" string.unquoted.mermaid
+  "stroke" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "#f00" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "stroke-width" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "2px" support.constant.property-value.mermaid
 >   weekday monday title After a weekday
   "weekday" keyword.control.mermaid
   "monday" constant.language.mermaid
@@ -81,7 +87,7 @@
   ":" keyword.operator.separator.colon.mermaid
   "done" constant.language.mermaid
   "," keyword.operator.separator.comma.mermaid
-  " task1" string.unquoted.mermaid
+  "task1" variable.mermaid
   "," keyword.operator.separator.comma.mermaid
   " 2026-11-01" string.unquoted.mermaid
   "," keyword.operator.separator.comma.mermaid
@@ -427,8 +433,9 @@
   " " meta.directive.mermaid
   "{}" meta.directive.mermaid string.unquoted.directive.mermaid
   "}%%" meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
-  "stroke:" string.unquoted.mermaid
-  "#amp;" string.unquoted.mermaid
+  "stroke" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "#amp;" support.constant.property-value.mermaid
 >   click x href%%{init: {}}%% "v" call%%{init: {}}%% f(2)
   "click" keyword.control.mermaid
   "x" variable.mermaid
@@ -690,9 +697,256 @@
   "," keyword.operator.separator.comma.mermaid
   "vert" constant.language.mermaid
   "," keyword.operator.separator.comma.mermaid
-  " taggedTask" string.unquoted.mermaid
+  "taggedTask" variable.mermaid
   "," keyword.operator.separator.comma.mermaid
   " 2026-11-01" string.unquoted.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " 1d" string.unquoted.mermaid
+> 
+> todayMarker stroke-width:5px,stroke:#00f,opacity:0.5
+  "todayMarker" keyword.control.mermaid
+  "stroke-width" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "5px" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "stroke" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "#00f" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "opacity" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "0.5" support.constant.property-value.mermaid
+> todayMarker stroke-width:5px,stroke:%%{wrap}%%#00f,opacity:0.5
+  "todayMarker" keyword.control.mermaid
+  "stroke-width" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "5px" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "stroke" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "%%{" support.constant.property-value.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "wrap" support.constant.property-value.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" support.constant.property-value.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "#00f" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "opacity" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "0.5" support.constant.property-value.mermaid
+> %% marker style value comment
+  "%% marker style value comment" comment.line.percentage.mermaid
+> todayMarker stroke:rgb(1, 2, 3),opacity:0.5
+  "todayMarker" keyword.control.mermaid
+  "stroke" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "rgb" support.constant.property-value.mermaid
+  "(" support.constant.property-value.mermaid
+  "1, 2, 3" support.constant.property-value.mermaid
+  ")" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "opacity" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "0.5" support.constant.property-value.mermaid
+> todayMarker font-style:italic,stroke:#00f,opacity:0.5;
+  "todayMarker" keyword.control.mermaid
+  "font-style" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "italic" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "stroke" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "#00f" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "opacity" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "0.5" support.constant.property-value.mermaid
+  ";" keyword.operator.separator.semicolon.mermaid
+> todayMarker off
+  "todayMarker" keyword.control.mermaid
+  "off" string.unquoted.mermaid
+>   todayMarker  stroke-width:5px,stroke:#00f,opacity:0.5
+  "todayMarker" keyword.control.mermaid
+  "stroke-width" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "5px" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "stroke" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "#00f" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "opacity" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "0.5" support.constant.property-value.mermaid
+> 
+>   A task :a1, 2014-01-01, 30d
+  "A task " string.unquoted.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "a1" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " 2014-01-01" string.unquoted.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " 30d" string.unquoted.mermaid
+>   B task :active, des2, 2014-01-09, 3d
+  "B task " string.unquoted.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "active" constant.language.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "des2" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " 2014-01-09" string.unquoted.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " 3d" string.unquoted.mermaid
+>   C task : des3, after des2, 5d
+  "C task " string.unquoted.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "des3" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "after" keyword.control.mermaid
+  "des2" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " 5d" string.unquoted.mermaid
+>   M task : milestone, m1, 17:49, 2m
+  "M task " string.unquoted.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "milestone" constant.language.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "m1" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " 17:49" string.unquoted.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " 2m" string.unquoted.mermaid
+>   Old task :            item36, 1913, 1935
+  "Old task " string.unquoted.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "item36" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " 1913" string.unquoted.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " 1935" string.unquoted.mermaid
+>   Crit :crit, done, after des1, 2d
+  "Crit " string.unquoted.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "crit" constant.language.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "done" constant.language.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "after" keyword.control.mermaid
+  "des1" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " 2d" string.unquoted.mermaid
+>   Tag :crit, 2014-01-06, 24h
+  "Tag " string.unquoted.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "crit" constant.language.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " 2014-01-06" string.unquoted.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " 24h" string.unquoted.mermaid
+>   Two :2014-01-12, 12d
+  "Two " string.unquoted.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "2014-01-12" string.unquoted.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " 12d" string.unquoted.mermaid
+>   After :after a1, 20d
+  "After " string.unquoted.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "after" keyword.control.mermaid
+  "a1" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " 20d" string.unquoted.mermaid
+>   One :24d
+  "One " string.unquoted.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "24d" string.unquoted.mermaid
+>   Multiple :after a1 b2, 20d
+  "Multiple " string.unquoted.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "after" keyword.control.mermaid
+  "a1" variable.mermaid
+  "b2" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " 20d" string.unquoted.mermaid
+>   Add :until isadded
+  "Add " string.unquoted.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "until" keyword.control.mermaid
+  "isadded" variable.mermaid
+>   doc :doc1, after a1  , 48h
+  "doc " string.unquoted.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "doc1" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "after" keyword.control.mermaid
+  "a1" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " 48h" string.unquoted.mermaid
+>   Directive :i%%{wrap}%%d, after a%%{wrap}%%1, 2d
+  "Directive " string.unquoted.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "i" string.unquoted.mermaid
+  "%%{" meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "d" string.unquoted.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " after a" string.unquoted.mermaid
+  "%%{" meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "1" string.unquoted.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " 2d" string.unquoted.mermaid
+>   Entity :entity#amp;id, after a#amp;b, 2d
+  "Entity " string.unquoted.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "entity" string.unquoted.mermaid
+  "#amp;" string.unquoted.mermaid
+  "id" string.unquoted.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " after a" string.unquoted.mermaid
+  "#amp;" string.unquoted.mermaid
+  "b" string.unquoted.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " 2d" string.unquoted.mermaid
+>   %% comment after task
+  "%% comment after task" comment.line.percentage.mermaid
+>   64 : workaround, 1923, 1s   %% custom CSS object
+  "64 " string.unquoted.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "workaround" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " 1923" string.unquoted.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " 1s   %% custom CSS object" string.unquoted.mermaid
+>   Four :ordinary, crit, 2014-01-01, 1d
+  "Four " string.unquoted.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "ordinary" string.unquoted.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " crit" string.unquoted.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " 2014-01-01" string.unquoted.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " 1d" string.unquoted.mermaid
+>   Empty :empty,,1d
+  "Empty " string.unquoted.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "empty" string.unquoted.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "1d" string.unquoted.mermaid
+>   Post tag :2014-01-01, crit
+  "Post tag " string.unquoted.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "2014-01-01" string.unquoted.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " crit" string.unquoted.mermaid
+>   Empty padding :ordinary,   , 1d
+  "Empty padding " string.unquoted.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "ordinary" string.unquoted.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "   " string.unquoted.mermaid
   "," keyword.operator.separator.comma.mermaid
   " 1d" string.unquoted.mermaid
 > 

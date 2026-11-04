@@ -8,11 +8,28 @@
   "Create documentation" string.unquoted.mermaid
   "]" keyword.operator.shape.end.mermaid
   "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
-  " ticket: MC-2037, assigned: " meta.data.mermaid string.unquoted.mermaid
-  "\"" meta.data.mermaid string.unquoted.mermaid
-  "knsv" meta.data.mermaid string.unquoted.mermaid
-  "\"" meta.data.mermaid string.unquoted.mermaid
-  ", priority: 'High' " meta.data.mermaid string.unquoted.mermaid
+  " " meta.data.mermaid
+  "ticket" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "MC-2037" meta.data.mermaid string.unquoted.mermaid
+  "," meta.data.mermaid keyword.operator.separator.comma.mermaid
+  " " meta.data.mermaid
+  "assigned" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "knsv" meta.data.mermaid string.quoted.double.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "," meta.data.mermaid keyword.operator.separator.comma.mermaid
+  " " meta.data.mermaid
+  "priority" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "'" meta.data.mermaid string.quoted.single.mermaid punctuation.definition.string.begin.mermaid
+  "High" meta.data.mermaid string.quoted.single.mermaid
+  "'" meta.data.mermaid string.quoted.single.mermaid punctuation.definition.string.end.mermaid
+  " " meta.data.mermaid string.unquoted.mermaid
   "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
 >     blog(Create blog about the new diagram)
   "blog" variable.mermaid
@@ -59,25 +76,28 @@
 >   Data@{ 1key: "value", "quoted-key": "A%%{init: {}}%%B" }
   "Data" string.unquoted.mermaid
   "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
-  " 1key: " meta.data.mermaid string.unquoted.mermaid
-  "\"" meta.data.mermaid string.unquoted.mermaid
-  "value" meta.data.mermaid string.unquoted.mermaid
-  "\"" meta.data.mermaid string.unquoted.mermaid
-  ", " meta.data.mermaid string.unquoted.mermaid
-  "\"" meta.data.mermaid string.unquoted.mermaid
-  "quoted-key" meta.data.mermaid string.unquoted.mermaid
-  "\"" meta.data.mermaid string.unquoted.mermaid
-  ": " meta.data.mermaid string.unquoted.mermaid
-  "\"" meta.data.mermaid string.unquoted.mermaid
-  "A" meta.data.mermaid string.unquoted.mermaid
-  "%%{" meta.data.mermaid string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
-  "init" meta.data.mermaid string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" meta.data.mermaid string.unquoted.mermaid meta.directive.mermaid keyword.operator.separator.colon.mermaid
-  " " meta.data.mermaid string.unquoted.mermaid meta.directive.mermaid
-  "{}" meta.data.mermaid string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
-  "}%%" meta.data.mermaid string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
-  "B" meta.data.mermaid string.unquoted.mermaid
-  "\"" meta.data.mermaid string.unquoted.mermaid
+  " " meta.data.mermaid
+  "1key" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "value" meta.data.mermaid string.quoted.double.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "," meta.data.mermaid keyword.operator.separator.comma.mermaid
+  " " meta.data.mermaid
+  "\"quoted-key\"" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "A" meta.data.mermaid string.quoted.double.mermaid
+  "%%{" meta.data.mermaid string.quoted.double.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "init" meta.data.mermaid string.quoted.double.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.data.mermaid string.quoted.double.mermaid meta.directive.mermaid keyword.operator.separator.colon.mermaid
+  " " meta.data.mermaid string.quoted.double.mermaid meta.directive.mermaid
+  "{}" meta.data.mermaid string.quoted.double.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.data.mermaid string.quoted.double.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "B" meta.data.mermaid string.quoted.double.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
   " " meta.data.mermaid string.unquoted.mermaid
   "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
 >   directed["%%{init: {}}%%`x`"]
@@ -119,10 +139,13 @@
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
   "]" keyword.operator.shape.end.mermaid
   "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
-  " ticket: " meta.data.mermaid string.unquoted.mermaid
-  "\"" meta.data.mermaid string.unquoted.mermaid
-  "c>" meta.data.mermaid string.unquoted.mermaid
-  "\"" meta.data.mermaid string.unquoted.mermaid
+  " " meta.data.mermaid
+  "ticket" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "c>" meta.data.mermaid string.quoted.double.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
   " " meta.data.mermaid string.unquoted.mermaid
   "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
 >   bare[text%%{init: {}}%%note<b title="x">tag</b>]
@@ -176,14 +199,26 @@
 >   SingleData@{x: 'a}%% single quote closes
   "SingleData" string.unquoted.mermaid
   "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
-  "x: 'a" meta.data.mermaid string.unquoted.mermaid
+  "x" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "'a" meta.data.mermaid string.unquoted.mermaid
   "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
   "%% single quote closes" comment.line.percentage.mermaid
 > 
 >   OpaqueData@{key: true, other: false}
   "OpaqueData" string.unquoted.mermaid
   "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
-  "key: true, other: false" meta.data.mermaid string.unquoted.mermaid
+  "key" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "true" meta.data.mermaid constant.language.mermaid
+  "," meta.data.mermaid keyword.operator.separator.comma.mermaid
+  " " meta.data.mermaid
+  "other" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "false" meta.data.mermaid constant.language.mermaid
   "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
 > 
 >   HtmlCloser[<b x=")%% close">
@@ -306,4 +341,60 @@
   "Quoted cloud" string.quoted.double.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
   "-)" keyword.operator.shape.end.mermaid
+> 
+>   id3[Update DB function]@{ ticket: MC-2037, assigned: knsv, priority: 'High' }
+  "id3" variable.mermaid
+  "[" keyword.operator.shape.begin.mermaid
+  "Update DB function" string.unquoted.mermaid
+  "]" keyword.operator.shape.end.mermaid
+  "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
+  " " meta.data.mermaid
+  "ticket" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "MC-2037" meta.data.mermaid string.unquoted.mermaid
+  "," meta.data.mermaid keyword.operator.separator.comma.mermaid
+  " " meta.data.mermaid
+  "assigned" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "knsv" meta.data.mermaid string.unquoted.mermaid
+  "," meta.data.mermaid keyword.operator.separator.comma.mermaid
+  " " meta.data.mermaid
+  "priority" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "'" meta.data.mermaid string.quoted.single.mermaid punctuation.definition.string.begin.mermaid
+  "High" meta.data.mermaid string.quoted.single.mermaid
+  "'" meta.data.mermaid string.quoted.single.mermaid punctuation.definition.string.end.mermaid
+  " " meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
+>   id4[x]@{ ticket: 2038, assigned: 'K.Sveidqvist', priority: 'Very High'}
+  "id4" variable.mermaid
+  "[" keyword.operator.shape.begin.mermaid
+  "x" string.unquoted.mermaid
+  "]" keyword.operator.shape.end.mermaid
+  "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
+  " " meta.data.mermaid
+  "ticket" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "2038" meta.data.mermaid constant.numeric.mermaid
+  "," meta.data.mermaid keyword.operator.separator.comma.mermaid
+  " " meta.data.mermaid
+  "assigned" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "'" meta.data.mermaid string.quoted.single.mermaid punctuation.definition.string.begin.mermaid
+  "K.Sveidqvist" meta.data.mermaid string.quoted.single.mermaid
+  "'" meta.data.mermaid string.quoted.single.mermaid punctuation.definition.string.end.mermaid
+  "," meta.data.mermaid keyword.operator.separator.comma.mermaid
+  " " meta.data.mermaid
+  "priority" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "'" meta.data.mermaid string.quoted.single.mermaid punctuation.definition.string.begin.mermaid
+  "Very High" meta.data.mermaid string.quoted.single.mermaid
+  "'" meta.data.mermaid string.quoted.single.mermaid punctuation.definition.string.end.mermaid
+  "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
 > 

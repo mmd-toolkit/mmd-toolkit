@@ -327,7 +327,7 @@
           }
         },
         {
-          "comment": "Color each comma-delimited property value separately, although the document can keep multiple properties in one style unit. Retain interior spaces, colons and description-looking text, leaving trailing whitespace and the final semicolon outside the value scope. Follows class.md#other-statements and ast/class.md#classstylestatement.",
+          "comment": "Color each comma-delimited property value separately, although the document can keep multiple properties in one style unit. Retain interior spaces, colons and description-looking text, leaving trailing whitespace and the final semicolon outside the value scope. Parenthesized values retain their internal separators and spacing. Follows class.md#other-statements and ast/class.md#classstylestatement.",
           "begin": "(:)",
           "beginCaptures": {
             "1": {
@@ -337,6 +337,9 @@
           "end": "{{class-style-value-end}}",
           "contentName": "support.constant.property-value.mermaid",
           "patterns": [
+            {
+              "include": "#style-value-parentheses"
+            },
             {
               "include": "#directive"
             }
@@ -795,10 +798,9 @@
           "name": "keyword.operator.bracket.arguments.begin.mermaid"
         },
         "5": {
-          "name": "string.unquoted.mermaid",
           "patterns": [
             {
-              "include": "#directive"
+              "include": "#class-method-parameters"
             }
           ]
         },
@@ -1051,10 +1053,23 @@
                   "name": "storage.modifier.mermaid"
                 },
                 "3": {
-                  "name": "variable.mermaid",
                   "patterns": [
                     {
-                      "include": "#directive"
+                      "include": "#class-member-parts"
+                    },
+                    {
+                      "comment": "Keep an attribute name outside the displayed type-and-name forms whole, retaining its directives. Follows class.md#member-lines.",
+                      "match": ".+",
+                      "name": "variable.mermaid",
+                      "captures": {
+                        "0": {
+                          "patterns": [
+                            {
+                              "include": "#directive"
+                            }
+                          ]
+                        }
+                      }
                     }
                   ]
                 },
@@ -1071,6 +1086,89 @@
               }
             }
           ]
+        }
+      ]
+    },
+    "class-member-parts": {
+      "comment": "Display Type name, name : Type and a lone name for the reader inside an attribute's member-name or one method parameter. Keep generic types with one nested tilde pair and array types whole. These display parts leave the document's units unchanged. End anchors require a complete form; the enclosing whole-text fallback wins over a later suffix match, including in text with directives. Bodies and member statements use these same capture-local forms. Follows class.md#member-lines, class.md#the-member-context, and class.md#members-and-annotations.",
+      "patterns": [
+        {
+          "comment": "Display a complete type-and-name pair, including generic and array type text. Follows class.md#member-lines.",
+          "match": "[ \\t]*({{class-member-type}})[ \\t]+({{class-member-word}})[ \\t]*$",
+          "captures": {
+            "1": {
+              "name": "entity.name.type.mermaid"
+            },
+            "2": {
+              "name": "variable.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Display a complete name-colon-type pair with its colon scoped separately. Follows class.md#member-lines.",
+          "match": "[ \\t]*({{class-member-word}})[ \\t]*(:)[ \\t]*({{class-member-type}})[ \\t]*$",
+          "captures": {
+            "1": {
+              "name": "variable.mermaid"
+            },
+            "2": {
+              "name": "keyword.operator.separator.colon.mermaid"
+            },
+            "3": {
+              "name": "entity.name.type.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Display a lone member or parameter name without inventing a type. Follows class.md#member-lines.",
+          "match": "[ \\t]*({{class-member-word}})[ \\t]*$",
+          "captures": {
+            "1": {
+              "name": "variable.mermaid"
+            }
+          }
+        }
+      ]
+    },
+    "class-method-parameters": {
+      "comment": "Display the parameters unit as comma-separated parameters for the reader, preserving commas within paired tildes. A directive anywhere in the unit keeps its former text scope and directive scopes. Follows class.md#member-lines and common.md#a-directive-is-a-token-boundary.",
+      "patterns": [
+        {
+          "comment": "Keep a parameters unit containing a directive in its original text scope. Follows class.md#member-lines and common.md#a-directive-is-a-token-boundary.",
+          "match": "(?=.*{{directiveStart}}).+",
+          "name": "string.unquoted.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Read a complete displayed parameter, retaining paired-tilde text before considering a comma boundary. Follows class.md#member-lines.",
+          "match": "(?:~[^~\\r\\n]*~|[^,])+",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#class-member-parts"
+                },
+                {
+                  "comment": "Keep an unrecognized parameter in its original text scope. Follows class.md#member-lines.",
+                  "match": ".+",
+                  "name": "string.unquoted.mermaid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Display a parameter separator outside generic text. Follows class.md#member-lines.",
+          "match": ",",
+          "name": "keyword.operator.separator.comma.mermaid"
         }
       ]
     },
@@ -1093,6 +1191,8 @@
   },
   "variables": {
     "class-member-text": "(?:{{class-member-segment-character}})*",
+    "class-member-word": "[^{{ws}}:,~()\\[\\]=%\"'`]+",
+    "class-member-type": "{{class-member-word}}(?:~(?:[^~%=\\r\\n]|~[^~%=\\r\\n]*~)*~)?(?:\\[\\])*",
     "class-member-end": "{{lineValueEnd}}",
     "class-direction-head": "({{lineText}})(direction)({{class-required-padding}})",
     "class-direction-tail": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\r\\n])*",
@@ -1104,5 +1204,5 @@
     "class-style-value-end": "(?={{lineGap}}(?:,|{{styleFinalSemicolon}}|$))|{{separatorCommentEnd}}",
     "class-style-bare-end": "(?={{lineGap}}(?:,|{{styleFinalSemicolon}}|accDescr{{gap}}\\{|$))|{{separatorCommentEnd}}"
   },
-  "comment": "The local padding variables retain the whitespace required by this type's unit rules, stopping before separator-led comments. Text and context variables below name the corresponding rules of this diagram. Follows class.md#units-and-contexts and class.md#member-lines."
+  "comment": "The local padding variables retain the whitespace required by this type's unit rules, stopping before separator-led comments. Text and context variables below name the corresponding rules of this diagram. The member-word part stops at whitespace, colons, commas, tildes, parentheses, square brackets, equality signs, percent marks and quotes. The member-type part adds a generic with one nested tilde pair and array suffixes for display, leaving the member units unchanged. Follows class.md#units-and-contexts and class.md#member-lines."
 }

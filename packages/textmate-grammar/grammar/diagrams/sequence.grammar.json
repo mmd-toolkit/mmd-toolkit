@@ -59,7 +59,7 @@
       "applyEndPatternLast": true
     },
     "sequence-data": {
-      "comment": "Read the opaque data block through its first closing brace; do not interpret its payload as YAML properties. Follows sequence.md#the-data-context and sequence.md#participants-and-boxes.",
+      "comment": "Display data keys and values separately for the reader, retaining the first closing brace as the block end even inside quotes. Follows sequence.md#the-data-context and sequence.md#participants-and-boxes.",
       "begin": "(@\\{)",
       "beginCaptures": {
         "1": {
@@ -77,7 +77,13 @@
           "include": "#comment-line"
         },
         {
-          "include": "#sequence-braced-text"
+          "include": "#data-entry"
+        },
+        {
+          "include": "#sequence-data-string"
+        },
+        {
+          "include": "#sequence-data-text"
         }
       ],
       "name": "meta.data.mermaid"
@@ -562,6 +568,47 @@
           "name": "keyword.control.mermaid"
         }
       }
+    },
+    "sequence-data-string": {
+      "comment": "Color a double-quoted data value as a string without protecting the first closing brace. Follows sequence.md#the-data-context.",
+      "begin": "\"",
+      "end": "(\")|(?=\\})|{{separatorCommentEnd}}",
+      "name": "string.quoted.double.mermaid",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.mermaid"
+        }
+      },
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.definition.string.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#entity"
+        }
+      ]
+    },
+    "sequence-data-text": {
+      "comment": "Color remaining data text up to a comma, quote, closing brace, line end or common-comment boundary. Follows sequence.md#the-data-context.",
+      "begin": "(?![,}\"]|$|{{separatorCommentEnd}})(?=.)",
+      "end": "(?=[,}\"]|$)|{{separatorCommentEnd}}",
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#entity"
+        }
+      ]
     }
   }
 }

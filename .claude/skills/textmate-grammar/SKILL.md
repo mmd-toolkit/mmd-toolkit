@@ -32,11 +32,13 @@ mermaid.js reaches it only through a change of the specification.
   that puts them together: the published entry calls it when it is imported, and
   the build calls it to write `lib/mermaid.tmLanguage.json`.
 - A shared variable or rule is for a form that `common.md` or `detection.md`
-  defines, or for a part that a shared rule and a diagram rule (or a variant of
-  a shared rule) both need. A form that the document of one diagram type defines
-  stays in that type, as a variable of its file named `<type>-<name>` where the
-  file repeats it, even where another type spells it the same: the two forms
-  follow two documents and change apart.
+  defines, for a part that a shared rule and a diagram rule (or a variant of a
+  shared rule) both need, or for a split for the reader that several types make
+  alike (an entry of a data block, the parentheses of a style value). A form
+  that the document of one diagram type defines stays in that type, as a
+  variable of its file named `<type>-<name>` where the file repeats it, even
+  where another type spells it the same: the two forms follow two documents and
+  change apart.
 - The specification decides whether the parser is right, but syntax highlighting
   is a feature that colors text so that people can read it, and nothing is
   gained by supporting a way of writing that people do not use. So the grammar
@@ -47,6 +49,14 @@ mermaid.js reaches it only through a change of the specification.
   directive, or statements that follow one another with no space, is stated
   briefly in the README's Limits. Such forms add neither to the grammar's
   complexity nor to the time of the first coloring.
+- Where the specification reads one text as a single unit, a structure that a
+  reader sees in that text is still colored apart: the properties of a style,
+  the keys and values of a data block, the type and the name of a class member,
+  the `after` and the id of a gantt task, a sankey value that is a number. The
+  unit of the specification does not change. The rule's comment says that the
+  split is for the reader, and `Follows` names the sections that define the
+  statement. A text that the specification reads as both the id and the shown
+  text of an element shows no such structure, and stays a label.
 - A unit of those forms gets the scope of its kind, from the one table in the
   section Scopes of the package's `README.md`, in every diagram type. The table
   is in the README alone; this skill does not copy it.
@@ -154,9 +164,9 @@ spec skill, never by a rule that guesses. Commit and push only when asked
 
 1. Read the sentence that the rule follows, and the units the section defines at
    that place.
-2. Give each unit the scope of its kind from the table. A unit that the
-   specification reads as both the id and the shown text of an element is a
-   label.
+2. Give each unit the scope of its kind from the table, and each part that a
+   reader sees inside a unit, as the Policies say. A unit that the specification
+   reads as both the id and the shown text of an element is a label.
 3. Write the part that several rules of the file need once (a helper rule or a
    variable of the file); use a common variable where the form is common.md's or
    detection.md's.

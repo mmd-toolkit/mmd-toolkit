@@ -35,7 +35,7 @@
   "+" storage.modifier.mermaid
   "call" variable.mermaid
   "(" keyword.operator.bracket.arguments.begin.mermaid
-  "note" string.unquoted.mermaid
+  "note" variable.mermaid
   ")" keyword.operator.bracket.arguments.end.mermaid
   "string" entity.name.type.mermaid
 >   +class and namespace
@@ -547,7 +547,7 @@
   "{" keyword.operator.block.begin.mermaid
   "12" variable.mermaid
   "(" keyword.operator.bracket.arguments.begin.mermaid
-  "x" string.unquoted.mermaid
+  "x" variable.mermaid
   ")" keyword.operator.bracket.arguments.end.mermaid
   "}" keyword.operator.block.end.mermaid
 > 
@@ -614,7 +614,7 @@
   "{" keyword.operator.block.begin.mermaid
   "#amp;" variable.mermaid
   "(" keyword.operator.bracket.arguments.begin.mermaid
-  "x" string.unquoted.mermaid
+  "x" variable.mermaid
   ")" keyword.operator.bracket.arguments.end.mermaid
   "}" keyword.operator.block.end.mermaid
 > 
@@ -674,7 +674,7 @@
   "+" storage.modifier.mermaid
   "call" variable.mermaid
   "(" keyword.operator.bracket.arguments.begin.mermaid
-  "note" string.unquoted.mermaid
+  "note" variable.mermaid
   ")" keyword.operator.bracket.arguments.end.mermaid
   "string" entity.name.type.mermaid
 > Animal : <<interface>>
@@ -800,4 +800,288 @@
   "color" support.type.property-name.mermaid
   ":" keyword.operator.separator.key-value.mermaid
   "red" support.constant.property-value.mermaid
+> 
+> style Animal fill:rgb(255, 0, 0),stroke:#333
+  "style" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "rgb" support.constant.property-value.mermaid
+  "(" support.constant.property-value.mermaid
+  "255, 0, 0" support.constant.property-value.mermaid
+  ")" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "stroke" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "#333" support.constant.property-value.mermaid
+> style Animal fill:rgb(1, %%{wrap}%%2, 3),stroke:#333
+  "style" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "rgb" support.constant.property-value.mermaid
+  "(" support.constant.property-value.mermaid
+  "1, " support.constant.property-value.mermaid
+  "%%{" support.constant.property-value.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "wrap" support.constant.property-value.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" support.constant.property-value.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "2, 3" support.constant.property-value.mermaid
+  ")" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "stroke" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "#333" support.constant.property-value.mermaid
+> %% class style value comment
+  "%% class style value comment" comment.line.percentage.mermaid
+> style Animal fill:rgb(1, 2, 3),stroke:#333
+  "style" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "rgb" support.constant.property-value.mermaid
+  "(" support.constant.property-value.mermaid
+  "1, 2, 3" support.constant.property-value.mermaid
+  ")" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "stroke" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "#333" support.constant.property-value.mermaid
+> style Animal stroke:#333,fill:rgb(1, 2, 3);
+  "style" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "stroke" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "#333" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "rgb" support.constant.property-value.mermaid
+  "(" support.constant.property-value.mermaid
+  "1, 2, 3" support.constant.property-value.mermaid
+  ")" support.constant.property-value.mermaid
+  ";" keyword.operator.separator.semicolon.mermaid
+> style Animal fill:var(--fill, rgb(1, 2, 3)),stroke:#333
+  "style" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "var" support.constant.property-value.mermaid
+  "(" support.constant.property-value.mermaid
+  "--fill, rgb" support.constant.property-value.mermaid
+  "(" support.constant.property-value.mermaid
+  "1, 2, 3" support.constant.property-value.mermaid
+  ")" support.constant.property-value.mermaid
+  ")" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "stroke" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "#333" support.constant.property-value.mermaid
+> style Animal fill:url(https://example.com/a,b.svg),stroke:#333
+  "style" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "url" support.constant.property-value.mermaid
+  "(" support.constant.property-value.mermaid
+  "https://example.com/a,b.svg" support.constant.property-value.mermaid
+  ")" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "stroke" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "#333" support.constant.property-value.mermaid
+> 
+> class MemberTypes {
+  "class" keyword.control.mermaid
+  "MemberTypes" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>   +String name
+  "+" storage.modifier.mermaid
+  "String" entity.name.type.mermaid
+  "name" variable.mermaid
+>   %% a comment between typed members
+  "%% a comment between typed members" comment.line.percentage.mermaid
+>   -int count
+  "-" storage.modifier.mermaid
+  "int" entity.name.type.mermaid
+  "count" variable.mermaid
+>   +List~OrderItem~ items
+  "+" storage.modifier.mermaid
+  "List~OrderItem~" entity.name.type.mermaid
+  "items" variable.mermaid
+>   #Map~String, int~ m
+  "#" storage.modifier.mermaid
+  "Map~String, int~" entity.name.type.mermaid
+  "m" variable.mermaid
+>   +String[] names
+  "+" storage.modifier.mermaid
+  "String[]" entity.name.type.mermaid
+  "names" variable.mermaid
+>   -id : int
+  "-" storage.modifier.mermaid
+  "id" variable.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "int" entity.name.type.mermaid
+>   -idCard : IdCard
+  "-" storage.modifier.mermaid
+  "idCard" variable.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "IdCard" entity.name.type.mermaid
+>   +name
+  "+" storage.modifier.mermaid
+  "name" variable.mermaid
+>   +int total$
+  "+" storage.modifier.mermaid
+  "int" entity.name.type.mermaid
+  "total" variable.mermaid
+  "$" storage.modifier.mermaid
+>   +addItem(Product product, int quantity)
+  "+" storage.modifier.mermaid
+  "addItem" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "Product" entity.name.type.mermaid
+  "product" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "int" entity.name.type.mermaid
+  "quantity" variable.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   +authorize(float amount) bool
+  "+" storage.modifier.mermaid
+  "authorize" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "float" entity.name.type.mermaid
+  "amount" variable.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+  "bool" entity.name.type.mermaid
+>   +deposit(amount) bool
+  "+" storage.modifier.mermaid
+  "deposit" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "amount" variable.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+  "bool" entity.name.type.mermaid
+>   +setMessages(List~string~ messages)
+  "+" storage.modifier.mermaid
+  "setMessages" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "List~string~" entity.name.type.mermaid
+  "messages" variable.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   +area(w, h) float
+  "+" storage.modifier.mermaid
+  "area" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "w" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "h" variable.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+  "float" entity.name.type.mermaid
+>   +setMap(Map~String, int~ m, int size)
+  "+" storage.modifier.mermaid
+  "setMap" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "Map~String, int~" entity.name.type.mermaid
+  "m" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "int" entity.name.type.mermaid
+  "size" variable.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   +a b c
+  "+" storage.modifier.mermaid
+  "a b c" variable.mermaid
+>   +setAmount(amount : float)
+  "+" storage.modifier.mermaid
+  "setAmount" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "amount" variable.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "float" entity.name.type.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   +setLegacy(a b c)
+  "+" storage.modifier.mermaid
+  "setLegacy" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "a b c" string.unquoted.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   +value = 1
+  "+" storage.modifier.mermaid
+  "value = 1" variable.mermaid
+>   +Str%%{wrap}%%ing name
+  "+" storage.modifier.mermaid
+  "Str" variable.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "wrap" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "ing name" variable.mermaid
+>   +setValue(float %%{wrap}%%amount, int size)
+  "+" storage.modifier.mermaid
+  "setValue" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "float " string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "amount, int size" string.unquoted.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+> }
+  "}" keyword.operator.block.end.mermaid
+> Order : +String id
+  "Order" variable.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "+" storage.modifier.mermaid
+  "String" entity.name.type.mermaid
+  "id" variable.mermaid
+> Order : +pay(float amount) bool
+  "Order" variable.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "+" storage.modifier.mermaid
+  "pay" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "float" entity.name.type.mermaid
+  "amount" variable.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+  "bool" entity.name.type.mermaid
+> Square : -List~string~ messages
+  "Square" variable.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "-" storage.modifier.mermaid
+  "List~string~" entity.name.type.mermaid
+  "messages" variable.mermaid
+> Square : +getDistanceMatrix() List~List~int~~
+  "Square" variable.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "+" storage.modifier.mermaid
+  "getDistanceMatrix" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+  "List~List~int~~" entity.name.type.mermaid
+> 
+> class AdditionalMemberTypes {
+  "class" keyword.control.mermaid
+  "AdditionalMemberTypes" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>   +String 名前
+  "+" storage.modifier.mermaid
+  "String" entity.name.type.mermaid
+  "名前" variable.mermaid
+>   +setX(String 名前)
+  "+" storage.modifier.mermaid
+  "setX" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "String" entity.name.type.mermaid
+  "名前" variable.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   -List~List~int~~ matrix
+  "-" storage.modifier.mermaid
+  "List~List~int~~" entity.name.type.mermaid
+  "matrix" variable.mermaid
+>   +java.util.List items
+  "+" storage.modifier.mermaid
+  "java.util.List" entity.name.type.mermaid
+  "items" variable.mermaid
+>   +List<String> names
+  "+" storage.modifier.mermaid
+  "List<String>" entity.name.type.mermaid
+  "names" variable.mermaid
+> }
+  "}" keyword.operator.block.end.mermaid
 > 

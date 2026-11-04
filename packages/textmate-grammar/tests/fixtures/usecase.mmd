@@ -84,3 +84,15 @@ Customer --x Admin
 Customer o-- Admin
 Customer x-- Admin
 Customer <-- Admin
+
+json Session@{ "active": true }:::data
+json Payload@{
+  "2": "second in source",
+  "enabled": true,
+  "count": 3,
+  "missing": null,
+  "colors": ["Red", "Green"],
+  "items": [{ "name": "Book", "quantity": 1 }]
+}
+actor QuotedKey@{ "icon" : "user" }
+actor SingleKey@{ 'icon': 'user' }

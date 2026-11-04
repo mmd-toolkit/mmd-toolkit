@@ -188,7 +188,7 @@
       ]
     },
     "treemap-style": {
-      "comment": "Color property pairs inside the document's opaque style text for the reader, separating them at commas while preserving spaces and further colons within each value. Follows treemap.md#class-definitions.",
+      "comment": "Color property pairs inside the document's opaque style text for the reader, separating them at commas while preserving spaces and further colons within each value. Parenthesized values retain their internal separators and spacing. Follows treemap.md#class-definitions.",
       "begin": "((?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^,:;{{ws}}])+)({{treemap-style-gap}})(:)({{treemap-style-gap}})",
       "beginCaptures": {
         "1": {
@@ -220,6 +220,9 @@
       "end": "(?={{treemap-style-gap}}(?:[,;]|$))|{{separatorCommentEnd}}",
       "contentName": "support.constant.property-value.mermaid",
       "patterns": [
+        {
+          "include": "#style-value-parentheses"
+        },
         {
           "include": "#directive"
         },

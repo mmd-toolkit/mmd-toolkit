@@ -34,7 +34,7 @@
     ["c>", "string.quoted.double.mermaid", 23],
     ["<b title=\"x\">", "string.quoted.double.mermaid", 24],
     ["ConfigHtml", "variable.mermaid", 25],
-    ["<b title=\"x\">", "string.unquoted.mermaid", 25],
+    ["<b title=\"x\">", "string.quoted.double.mermaid", 25],
     ["wrap", "entity.name.function.directive.mermaid", 25],
     ["primary", "variable.mermaid", 26],
     ["fill", "support.type.property-name.mermaid", 26],
@@ -44,9 +44,9 @@
     ["d", "support.constant.property-value.mermaid", 28],
     ["b", "entity.name.type.mermaid", 29],
     ["init", "entity.name.function.directive.mermaid", 29],
-    ["\\", "string.unquoted.mermaid", 30],
+    ["\\", "string.quoted.double.mermaid", 30],
     ["wrap", "entity.name.function.directive.mermaid", 30],
-    ["b", "string.unquoted.mermaid", 30],
+    ["b", "string.quoted.double.mermaid", 30],
     [",", "keyword.operator.separator.comma.mermaid", 26],
     ["wrap", "entity.name.function.directive.mermaid", 0],
     ["LR", "constant.language.mermaid", 3],
@@ -81,7 +81,7 @@
     ["-->", "keyword.operator.arrow.mermaid", 52],
     ["B", "variable.mermaid", 52],
     ["x", "string.quoted.double.mermaid", 53],
-    ["x", "string.unquoted.mermaid", 54],
+    ["x", "string.quoted.double.mermaid", 54],
     ["x", "meta.data.mermaid", 54],
     ["style", "string.unquoted.mermaid", 55],
     ["style ", "string.unquoted.mermaid", 56],
@@ -131,7 +131,54 @@
     ["--x", "keyword.operator.arrow.mermaid", 82],
     ["o--", "keyword.operator.arrow.mermaid", 83],
     ["x--", "keyword.operator.arrow.mermaid", 84],
-    ["<--", "keyword.operator.arrow.mermaid", 85]
+    ["<--", "keyword.operator.arrow.mermaid", 85],
+    ["\"active\"", "support.type.property-name.mermaid", 87],
+    [":", "keyword.operator.separator.key-value.mermaid", 87],
+    ["true", "constant.language.mermaid", 87],
+    ["{", "keyword.operator.bracket.data.begin.mermaid", 87],
+    ["}", "keyword.operator.bracket.data.end.mermaid", 87],
+    ["{", "keyword.operator.bracket.data.begin.mermaid", 88],
+    ["\"2\"", "support.type.property-name.mermaid", 89],
+    [":", "keyword.operator.separator.key-value.mermaid", 89],
+    ["second in source", "string.quoted.double.mermaid", 89],
+    [",", "keyword.operator.separator.comma.mermaid", 89],
+    ["\"enabled\"", "support.type.property-name.mermaid", 90],
+    [":", "keyword.operator.separator.key-value.mermaid", 90],
+    ["true", "constant.language.mermaid", 90],
+    [",", "keyword.operator.separator.comma.mermaid", 90],
+    ["\"count\"", "support.type.property-name.mermaid", 91],
+    [":", "keyword.operator.separator.key-value.mermaid", 91],
+    ["3", "constant.numeric.mermaid", 91],
+    [",", "keyword.operator.separator.comma.mermaid", 91],
+    ["\"missing\"", "support.type.property-name.mermaid", 92],
+    [":", "keyword.operator.separator.key-value.mermaid", 92],
+    ["null", "constant.language.mermaid", 92],
+    [",", "keyword.operator.separator.comma.mermaid", 92],
+    ["\"colors\"", "support.type.property-name.mermaid", 93],
+    [":", "keyword.operator.separator.key-value.mermaid", 93],
+    ["Red", "string.quoted.double.mermaid", 93],
+    ["Green", "string.quoted.double.mermaid", 93],
+    [",", "keyword.operator.separator.comma.mermaid", 93],
+    ["[", "string.unquoted.mermaid", 93],
+    ["]", "string.unquoted.mermaid", 93],
+    ["\"items\"", "support.type.property-name.mermaid", 94],
+    [":", "keyword.operator.separator.key-value.mermaid", 94],
+    ["\"name\"", "support.type.property-name.mermaid", 94],
+    ["Book", "string.quoted.double.mermaid", 94],
+    ["\"quantity\"", "support.type.property-name.mermaid", 94],
+    ["1", "constant.numeric.mermaid", 94],
+    [",", "keyword.operator.separator.comma.mermaid", 94],
+    ["{", "string.unquoted.mermaid", 94],
+    ["}", "string.unquoted.mermaid", 94],
+    ["}", "keyword.operator.bracket.data.end.mermaid", 95],
+    ["\"icon\"", "support.type.property-name.mermaid", 96],
+    [":", "keyword.operator.separator.key-value.mermaid", 96],
+    ["user", "string.quoted.double.mermaid", 96],
+    ["'icon'", "support.type.property-name.mermaid", 97],
+    [":", "keyword.operator.separator.key-value.mermaid", 97],
+    ["user", "string.quoted.single.mermaid", 97],
+    ["'type'", "support.type.property-name.mermaid", 69],
+    ["\"animation\"", "support.type.property-name.mermaid", 74]
   ],
   "absent": [
     ["Later", "string.quoted.double.mermaid", 23],
@@ -148,7 +195,9 @@
     ["-->", "string.unquoted.mermaid", 57],
     ["Target", "string.unquoted.mermaid", 57],
     ["hollow", "constant.language.mermaid", 65],
-    ["hollow", "constant.language.mermaid", 66]
+    ["hollow", "constant.language.mermaid", 66],
+    ["\"icon\"", "string.quoted.double.mermaid", 96],
+    ["'icon'", "string.quoted.single.mermaid", 97]
   ],
   "absentOnLine": [
     [34, "constant.language.mermaid"],
@@ -166,7 +215,7 @@
         ["%% description comment", "comment.line.percentage.mermaid", 6],
         ["two ", "string.unquoted.mermaid", 7],
         ["%% JSON comment", "comment.line.percentage.mermaid", 8],
-        ["b", "string.unquoted.mermaid", 9],
+        ["b", "string.quoted.double.mermaid", 9],
         ["%% note comment", "comment.line.percentage.mermaid", 18],
         ["%% stereotype comment", "comment.line.percentage.mermaid", 15],
         ["two", "entity.name.type.mermaid", 16],
@@ -179,7 +228,6 @@
         ["%% label comment", "string.unquoted.mermaid", 2],
         ["%% edge comment", "string.unquoted.mermaid", 4],
         ["%% description comment", "string.unquoted.mermaid", 6],
-        ["%% JSON comment", "string.quoted.double.mermaid", 8],
         ["%% note comment", "string.unquoted.mermaid", 18],
         ["%% stereotype comment", "entity.name.type.mermaid", 15],
         ["%% plain comment", "string.quoted.double.mermaid", 13],
@@ -220,9 +268,9 @@
     {
       "code": "usecase-beta\njson J @ {\"x\":\"<b \\\u2028%% c\nx>\"}",
       "scopes": [
-        ["\\\u2028", "string.unquoted.mermaid", 1],
+        ["\\\u2028", "string.quoted.double.mermaid", 1],
         ["%% c", "comment.line.percentage.mermaid", 1],
-        ["x>", "string.unquoted.mermaid", 2],
+        ["x>", "string.quoted.double.mermaid", 2],
         ["}", "meta.data.mermaid", 2]
       ],
       "absent": [
@@ -233,9 +281,9 @@
     {
       "code": "usecase-beta\njson J @ {\"x\":\"<b \\\u2029%% c\nx>\"}",
       "scopes": [
-        ["\\\u2029", "string.unquoted.mermaid", 1],
+        ["\\\u2029", "string.quoted.double.mermaid", 1],
         ["%% c", "comment.line.percentage.mermaid", 1],
-        ["x>", "string.unquoted.mermaid", 2],
+        ["x>", "string.quoted.double.mermaid", 2],
         ["}", "meta.data.mermaid", 2]
       ],
       "absent": [
@@ -246,9 +294,9 @@
     {
       "code": "usecase-beta\njson J @ {\"x\":\"\\\u2028%% c\nx\"}",
       "scopes": [
-        ["\\\u2028", "string.unquoted.mermaid", 1],
+        ["\\\u2028", "string.quoted.double.mermaid", 1],
         ["%% c", "comment.line.percentage.mermaid", 1],
-        ["x", "string.unquoted.mermaid", 2],
+        ["x", "string.quoted.double.mermaid", 2],
         ["}", "meta.data.mermaid", 2]
       ],
       "absent": [
@@ -259,12 +307,12 @@
     {
       "code": "usecase-beta\njson J @ {\"x\":\"\\%%{init: \"}%%\u2028%% c\nx\"}",
       "scopes": [
-        ["\\", "string.unquoted.mermaid", 1],
+        ["\\", "string.quoted.double.mermaid", 1],
         ["init", "entity.name.function.directive.mermaid", 1],
         ["}%%", "keyword.operator.delimiter.directive.end.mermaid", 1],
-        ["\u2028", "string.unquoted.mermaid", 1],
+        ["\u2028", "string.quoted.double.mermaid", 1],
         ["%% c", "comment.line.percentage.mermaid", 1],
-        ["x", "string.unquoted.mermaid", 2],
+        ["x", "string.quoted.double.mermaid", 2],
         ["}", "meta.data.mermaid", 2]
       ],
       "absent": [
@@ -276,12 +324,12 @@
     {
       "code": "usecase-beta\njson J @ {\"x\":\"\\%%{init: \"}%%\u2029%% c\nx\"}",
       "scopes": [
-        ["\\", "string.unquoted.mermaid", 1],
+        ["\\", "string.quoted.double.mermaid", 1],
         ["init", "entity.name.function.directive.mermaid", 1],
         ["}%%", "keyword.operator.delimiter.directive.end.mermaid", 1],
-        ["\u2029", "string.unquoted.mermaid", 1],
+        ["\u2029", "string.quoted.double.mermaid", 1],
         ["%% c", "comment.line.percentage.mermaid", 1],
-        ["x", "string.unquoted.mermaid", 2],
+        ["x", "string.quoted.double.mermaid", 2],
         ["}", "meta.data.mermaid", 2]
       ],
       "absent": [
@@ -293,12 +341,12 @@
     {
       "code": "usecase-beta\njson J @ {\"x\":\"<b \\%%{init: \"}%%\u2028%% c\nx>\"}",
       "scopes": [
-        ["\\", "string.unquoted.mermaid", 1],
+        ["\\", "string.quoted.double.mermaid", 1],
         ["init", "entity.name.function.directive.mermaid", 1],
         ["}%%", "keyword.operator.delimiter.directive.end.mermaid", 1],
-        ["\u2028", "string.unquoted.mermaid", 1],
+        ["\u2028", "string.quoted.double.mermaid", 1],
         ["%% c", "comment.line.percentage.mermaid", 1],
-        ["x>", "string.unquoted.mermaid", 2],
+        ["x>", "string.quoted.double.mermaid", 2],
         ["}", "meta.data.mermaid", 2]
       ],
       "absent": [
@@ -310,12 +358,12 @@
     {
       "code": "usecase-beta\njson J @ {\"x\":\"<b \\%%{init: \"}%%\u2029%% c\nx>\"}",
       "scopes": [
-        ["\\", "string.unquoted.mermaid", 1],
+        ["\\", "string.quoted.double.mermaid", 1],
         ["init", "entity.name.function.directive.mermaid", 1],
         ["}%%", "keyword.operator.delimiter.directive.end.mermaid", 1],
-        ["\u2029", "string.unquoted.mermaid", 1],
+        ["\u2029", "string.quoted.double.mermaid", 1],
         ["%% c", "comment.line.percentage.mermaid", 1],
-        ["x>", "string.unquoted.mermaid", 2],
+        ["x>", "string.quoted.double.mermaid", 2],
         ["}", "meta.data.mermaid", 2]
       ],
       "absent": [
@@ -327,9 +375,9 @@
     {
       "code": "usecase-beta\njson J @ {\"x\":\"\\\u2028%% c\n\"}",
       "scopes": [
-        ["\\\u2028", "string.unquoted.mermaid", 1],
+        ["\\\u2028", "string.quoted.double.mermaid", 1],
         ["%% c", "comment.line.percentage.mermaid", 1],
-        ["\"", "string.unquoted.mermaid", 2],
+        ["\"", "string.quoted.double.mermaid", 2],
         ["}", "meta.data.mermaid", 2]
       ],
       "absent": [
@@ -341,9 +389,9 @@
     {
       "code": "usecase-beta\njson J @ {\"x\":\"\\\u2029%% c\n\"}",
       "scopes": [
-        ["\\\u2029", "string.unquoted.mermaid", 1],
+        ["\\\u2029", "string.quoted.double.mermaid", 1],
         ["%% c", "comment.line.percentage.mermaid", 1],
-        ["\"", "string.unquoted.mermaid", 2],
+        ["\"", "string.quoted.double.mermaid", 2],
         ["}", "meta.data.mermaid", 2]
       ],
       "absent": [
@@ -355,9 +403,9 @@
     {
       "code": "usecase-beta\njson J @ {\"x\":\"\\\u2029%% c\nx\"}",
       "scopes": [
-        ["\\\u2029", "string.unquoted.mermaid", 1],
+        ["\\\u2029", "string.quoted.double.mermaid", 1],
         ["%% c", "comment.line.percentage.mermaid", 1],
-        ["x", "string.unquoted.mermaid", 2],
+        ["x", "string.quoted.double.mermaid", 2],
         ["}", "meta.data.mermaid", 2]
       ],
       "absent": [

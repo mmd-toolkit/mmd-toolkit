@@ -230,7 +230,7 @@
       ]
     },
     "kanban-data-block": {
-      "comment": "Read a data block with an opaque unquoted text interior; double quotes protect braces without introducing a string scope. Follows kanban.md#the-data-context and kanban.md#data-blocks.",
+      "comment": "Display data keys and values separately for the reader, preserving double-quote protection of closing braces. Follows kanban.md#the-data-context and kanban.md#data-blocks.",
       "begin": "(@\\{)",
       "beginCaptures": {
         "1": {
@@ -251,7 +251,10 @@
           "include": "#directive"
         },
         {
-          "comment": "Keep double quotes and their protected contents in the data text scope. Follows kanban.md#the-data-context and kanban.md#data-blocks.",
+          "include": "#data-entry"
+        },
+        {
+          "comment": "Color a double-quoted data value as a string while protecting braces through its next quote. Follows kanban.md#the-data-context and kanban.md#data-blocks.",
           "begin": "\"",
           "end": "\"",
           "patterns": [
@@ -264,11 +267,22 @@
             {
               "include": "#html-tag"
             }
-          ]
+          ],
+          "name": "string.quoted.double.mermaid",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.mermaid"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.mermaid"
+            }
+          }
         },
         {
-          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. Follows kanban.md#the-data-context and common.md#comment-lines.",
-          "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^}\"^])+",
+          "comment": "Color remaining data text up to a comma, quote, closing brace, line end or common-comment boundary. Follows kanban.md#the-data-context and common.md#comment-lines.",
+          "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^},\"^\\r\\n])+",
           "captures": {
             "0": {
               "patterns": [
@@ -277,11 +291,11 @@
                 }
               ]
             }
-          }
+          },
+          "name": "string.unquoted.mermaid"
         }
       ],
-      "name": "meta.data.mermaid",
-      "contentName": "string.unquoted.mermaid"
+      "name": "meta.data.mermaid"
     }
   },
   "variables": {

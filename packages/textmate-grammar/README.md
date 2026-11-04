@@ -149,9 +149,12 @@ YAML grammar for `source.yaml`.
 A theme colors the grammar by the scopes of its tokens. In the forms people
 write, a unit that the specification defines gets the scope of its kind from
 this table, in every diagram type; [Limits](#limits) states the rest. The colors
-below are those of Shiki's theme github-light; github-dark also gives names,
-labels, types and keywords four different colors. The playground and the
-documentation site use these themes.
+are for reading: where the specification reads one text as a single unit and a
+reader sees a structure in it, such as the properties of a style, the keys and
+values of a data block, or the type and the name of a class member, each part
+gets the scope of its kind. The colors below are those of Shiki's theme
+github-light; github-dark also gives names, labels, types and keywords four
+different colors. The playground and the documentation site use these themes.
 
 | Kind of unit                    | Scope                                                                        | Color     |
 | ------------------------------- | ---------------------------------------------------------------------------- | --------- |
@@ -189,32 +192,33 @@ What each kind holds:
 - A name of an element is an identifier that the diagram defines or refers to: a
   node id, an edge id, an entity, an attribute name, a state, a participant or
   actor id, a class where it stands as an element of the diagram, a member name,
-  a task id, a commit id, a branch, a rule name, or the name of a class of
-  styles (`classDef` name, `:::name`, `class A name`). Where the specification
-  reads one text as both the id and the shown text of an element, such as a bare
-  mindmap node, the text is a label. State's `[*]`, the start or the end, is a
-  keyword, not a name.
+  a task id (`a1` in `:a1, 2014-01-01, 30d` and in `after a1`), a commit id, a
+  branch, a rule name, or the name of a class of styles (`classDef` name,
+  `:::name`, `class A name`). Where the specification reads one text as both the
+  id and the shown text of an element, such as a bare mindmap node, the text is
+  a label. State's `[*]`, the start or the end, is a keyword, not a name.
 - A name of a function is a callback that a statement calls.
 - A label or text is any text that the diagram shows or keeps: the label of a
   node or an edge, a relation's label, a message, a note, a title, a
   description, an accessibility value, the text of a task, the name of an icon.
   In quotes, it has the scope of the string.
-- A type is the type of an attribute or a member, a return type, a generic
+- A type is the type of an attribute or a member, such as `String` in
+  `+String name` and `float` in `+pay(float amount)`, a return type, a generic
   argument, a class name where it stands as a type, or the free name inside `<<`
   and `>>`, such as a class annotation or a usecase stereotype.
 - A key or modifier is a word or mark that qualifies a member or an attribute:
   `PK`, `FK`, `UK`, a visibility, a classifier.
 - A property name is the name of a style property, or the key of a key-value
-  pair: a key of a data block where the type's document reads keys, the key of a
-  named attribute of C4 (`$key=`), the property of a flowchart rectangle written
-  with `[|` (`[|borders:lt|text]`, whose value `lt` is a text).
+  pair: a key of a data block, the key of a named attribute of C4 (`$key=`), the
+  property of a flowchart rectangle written with `[|` (`[|borders:lt|text]`,
+  whose value `lt` is a text).
 - A style property is one `name:value` of a style: `fill:#43a047` has the name
   `fill` and the one value `#43a047`, nothing inside which is a number. A style
   without `:`, such as `bold` or `#fff`, is one value, the whole style; a style
   with an empty name, such as `:red`, is a separator and a value.
 - A fixed value is a word that the specification lists as a value: a direction
   (`TD`, `LR`, …), an orientation, a gantt tag (`done`, `crit`, …), `true` and
-  `false`.
+  `false`, and `null` in a data block.
 - A shape delimiter is a bracket that chooses the shape of a node, such as the
   `((` and `))` of a circle in flowchart and mindmap, the `[` and `]` of a
   kanban item, or the `{{` and `}}` of a hexagon. A block delimiter is a brace
@@ -237,12 +241,14 @@ What each kind holds:
   `keyword.operator.delimiter.directive.begin.mermaid` and `….end`, also where
   the directive stands inside a string, a label or ignored text.
 - In a data block (`@{ … }`), the braces are
-  `keyword.operator.bracket.data.begin.mermaid` and `….end`. Where the type's
-  document reads keys and values in it, a key is a property name and a value has
-  the scope of its kind; where the document reads its interior as text (as
-  kanban, flowchart, agentflow, sequence and eventmodeling do, and usecase for
-  its JSON value), the whole interior, up to the `}` that ends the block by the
-  type's document, is a text, quotes included.
+  `keyword.operator.bracket.data.begin.mermaid` and `….end`. A key, bare or
+  quoted, is a property name, and a `,` is a separator. A value has the scope of
+  its kind: a quoted value is a string, a number is a number, `true`, `false`
+  and `null` are fixed values, and any other value, such as `rect` in
+  `shape: rect`, is a text. The documents of kanban, flowchart, agentflow,
+  sequence and eventmodeling, and usecase's for its JSON value, read the
+  interior as one text; the grammar colors the keys and values that a reader
+  sees in it, and the block ends at the `}` that the type's document says.
 - An HTML tag and an entity inside a text keep the scope of the text.
 
 ## Diagram types
@@ -306,7 +312,20 @@ as the specification reads it:
   unit of the line, where a changed quote would end or start a single-quoted
   string, and where the quote lies inside a directive.
 - A `;` that the line rule of `style` and `classDef` ignores is colored as the
-  rules around it read it.
+  rules around it read it. A `;` between the properties of a style, as in
+  `fill:#f96;stroke:#333`, is colored differently from one diagram type to
+  another.
+- A class member is divided into a type and a name only in the forms `Type name`
+  and `name : Type`, and a parameter likewise. A member of more words, such as
+  `+a b c`, or with a `=` keeps one color.
+- In gantt, an item is colored as the id of its task when it is the first item
+  after the tags and exactly two more items follow it on its line. A task with
+  four items or more or with an empty item has no item colored as an id, and an
+  item that holds a directive or an entity stays text, also after `after` or
+  `until`.
+- In a data block, text at the start of a line that looks like `key: value` is
+  colored as a key and a value, also on a line inside a longer YAML value and in
+  the data of an eventmodeling tag such as `md` or `text`.
 - A line separator or paragraph separator that belongs to a directive is still
   read as a place where a comment line can start. A comment line inside a
   string, a label or a block is colored as a comment; where the value has one

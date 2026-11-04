@@ -17,31 +17,37 @@
     ["sankey", "variable.mermaid", 15],
     ["Agricultural 'waste'", "variable.mermaid"],
     ["Bio-conversion", "variable.mermaid"],
-    ["124.729", "string.unquoted.mermaid"],
+    ["124.729", "constant.numeric.mermaid"],
     ["Bio-conversion, liquid", "string.quoted.double.mermaid"],
     ["Liquid", "variable.mermaid"],
-    ["0.597", "string.unquoted.mermaid"],
+    ["0.597", "constant.numeric.mermaid"],
     ["Source", "variable.mermaid", 16],
     ["Target", "variable.mermaid", 16],
-    ["123", "string.unquoted.mermaid", 16],
+    ["123", "constant.numeric.mermaid", 16],
     ["\"", "punctuation.definition.string.begin.mermaid", 17],
     ["\"", "string.quoted.double.mermaid", 17],
     ["Source", "string.quoted.double.mermaid", 17],
     ["\"", "punctuation.definition.string.end.mermaid", 18],
     ["\"", "string.quoted.double.mermaid", 18],
     ["Target", "variable.mermaid", 18],
-    ["123", "string.unquoted.mermaid", 18]
+    ["123", "constant.numeric.mermaid", 18],
+    ["3000", "constant.numeric.mermaid", 19],
+    ["3", "constant.numeric.mermaid", 20],
+    ["abc", "string.unquoted.mermaid", 21],
+    ["3000", "string.quoted.double.mermaid", 22]
   ],
   "absentOnLine": [
     [5, "comment.line.percentage.mermaid"],
     [11, "string.quoted.double.mermaid"],
-    [15, "keyword.control.mermaid"]
+    [15, "keyword.control.mermaid"],
+    [21, "constant.numeric.mermaid"]
   ],
   "absent": [
     ["<b title=\"x\">", "punctuation.definition.string.end.mermaid", 7],
     ["wrap", "punctuation.definition.string.end.mermaid", 10],
-    ["124.729", "constant.numeric.mermaid"],
-    ["123", "constant.numeric.mermaid", 16]
+    ["124.729", "string.unquoted.mermaid"],
+    ["123", "string.unquoted.mermaid", 16],
+    ["3000", "constant.numeric.mermaid", 22]
   ],
   "escapedInputs": [
     {
@@ -58,9 +64,14 @@
       "scopes": [
         ["wrap", "entity.name.function.directive.mermaid", 1],
         ["%% common %%{wrap}%%", "comment.line.percentage.mermaid", 1],
-        ["1", "string.unquoted.mermaid", 1]
+        ["1", "constant.numeric.mermaid", 1]
       ],
       "absent": [["%% common %%{wrap}%%", "meta.directive.mermaid", 1]]
+    },
+    {
+      "code": "sankey\nA,B, 124.729 \n",
+      "scopes": [["124.729", "constant.numeric.mermaid", 1]],
+      "absentOnLine": [[1, "string.unquoted.mermaid"]]
     }
   ]
 }

@@ -167,15 +167,29 @@
       "contentName": "variable.mermaid"
     },
     "sankey-value": {
-      "comment": "Read an unquoted link value as text, even when its spelling looks numeric. Follows sankey.md#ids-and-values and common.md#comment-lines.",
-      "begin": "{{sankey-field-start}}",
-      "end": "{{sankey-field-end}}",
+      "comment": "Display a whole unquoted integer or decimal value as a number for the reader, although the document reads any value as text. Other unquoted values retain their text scope. Follows sankey.md#ids-and-values and common.md#comment-lines.",
       "patterns": [
         {
-          "include": "#directive"
+          "comment": "Display a whole integer or decimal value with optional surrounding spaces as a number, leaving the padding outside the number scope. Follows sankey.md#ids-and-values and common.md#comment-lines.",
+          "match": " *([0-9]+(?:\\.[0-9]+)?) *(?={{sankey-field-end}})",
+          "captures": {
+            "1": {
+              "name": "constant.numeric.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read other unquoted link values as text, keeping directives independent. Follows sankey.md#ids-and-values and common.md#comment-lines.",
+          "begin": "{{sankey-field-start}}",
+          "end": "{{sankey-field-end}}",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ],
+          "contentName": "string.unquoted.mermaid"
         }
-      ],
-      "contentName": "string.unquoted.mermaid"
+      ]
     }
   },
   "variables": {

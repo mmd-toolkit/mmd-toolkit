@@ -92,7 +92,7 @@
           "name": "variable.mermaid"
         },
         {
-          "comment": "Read inline braced data as an opaque text block through its last same-line closer. Follows eventmodeling.md#data.",
+          "comment": "Display inline data keys and values separately for the reader while retaining the last same-line brace as its closer, independently of the data tag. Follows eventmodeling.md#data.",
           "match": "(\\{)({{lineText}})(\\})",
           "name": "meta.data.mermaid",
           "captures": {
@@ -100,10 +100,9 @@
               "name": "keyword.operator.bracket.data.begin.mermaid"
             },
             "2": {
-              "name": "string.unquoted.mermaid",
               "patterns": [
                 {
-                  "include": "#directive"
+                  "include": "#eventmodeling-data-content"
                 }
               ]
             },
@@ -150,7 +149,7 @@
           }
         },
         {
-          "comment": "Read block data through an unindented closing brace in the text without directives, retaining directives before that closer. Follows eventmodeling.md#data and common.md#a-directive-is-a-token-boundary.",
+          "comment": "Display block data keys and values separately for the reader while retaining the unindented closing brace, independently of the data tag. Follows eventmodeling.md#data and common.md#a-directive-is-a-token-boundary.",
           "begin": "(\\{)({{asciiGap}})$",
           "beginCaptures": {
             "1": {
@@ -179,10 +178,9 @@
           },
           "patterns": [
             {
-              "include": "#directive"
+              "include": "#eventmodeling-data-content"
             }
           ],
-          "contentName": "string.unquoted.mermaid",
           "name": "meta.data.mermaid"
         },
         {
@@ -453,6 +451,58 @@
         },
         "2": {
           "name": "keyword.control.mermaid"
+        }
+      }
+    },
+    "eventmodeling-data-content": {
+      "comment": "Read the displayed structure of both inline and block data without consulting a tag. Follows eventmodeling.md#data.",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#data-entry"
+        },
+        {
+          "include": "#eventmodeling-data-string"
+        },
+        {
+          "include": "#eventmodeling-data-text"
+        }
+      ]
+    },
+    "eventmodeling-data-string": {
+      "comment": "Color same-line double-quoted data values as strings; the enclosing inline capture or block rule still owns its closing brace. Follows eventmodeling.md#data.",
+      "begin": "\"",
+      "end": "(\")|$",
+      "name": "string.quoted.double.mermaid",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.mermaid"
+        }
+      },
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.definition.string.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#directive"
+        }
+      ]
+    },
+    "eventmodeling-data-text": {
+      "comment": "Color remaining data text through a comma, quote, brace or line end so that the shared entry rule can read the next key. Inner braces remain text. Follows eventmodeling.md#data.",
+      "match": "(?:{{directive}}|(?!{{directiveStart}})[^,{}\"\\r\\n])+|[{}]",
+      "name": "string.unquoted.mermaid",
+      "captures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
         }
       }
     }
