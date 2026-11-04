@@ -825,11 +825,21 @@ ishikawa/directive-in-beta-header] [fixture: ishikawa/gram-initial-beta-cut-eof]
 [fixture: agentflow/gram-member-after-inner-flow]
 [fixture: agentflow/gram-member-empty-inner-flow]
 hasOwnProperty に続くメンバーの条件は、flow の `end` を読むときに確かめます。
-そのため、内側の flow の違反が先に報告され、その `end` の後の、
-文法が読めない単位は報告されません。
+そのため、内側の flow の違反が先に報告されます。
 [fixture: agentflow/gram-member-inner-rejected-first]
+文法が読めない単位と、リンクを指さない linkStyle の添字は、
+その `end` の前にあれば先に報告され、後にあれば報告されません。
+[fixture: agentflow/gram-member-unreadable-unit-before-end]
+[fixture: agentflow/gram-member-linkstyle-before-end]
 [fixture: agentflow/gram-member-rejected-before-later-unit]
 [fixture: agentflow/gram-member-rejected-before-missing-end]
+[fixture: agentflow/gram-member-linkstyle-after-end]
+
+字句解析器は文法より先に図全体を読みます。
+そのため、後ろの読めない文字は、前の部分の文法エラーと、
+メンバーの条件より先に報告されます。
+[fixture: agentflow/lex-later-character-before-grammar-error]
+[fixture: agentflow/lex-later-character-before-member]
 
 オペランドが一つの class 文と、値が空の style 文に改行が続く場合は、
 その改行単位の空の有意範囲を報告する。

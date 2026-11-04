@@ -925,6 +925,7 @@ block-statement = ( "loop" | "rect" | "opt" | "break" ) text-part line* "end"
 `loop`、改行、`end` は、空のテキストのループです。
 [fixture: sequence/gram-block-empty-text]
 [fixture: sequence/gram-block-empty-sections]
+[fixture: sequence/gram-block-rect-empty-text]
 どのキーワードもそれぞれの種類のブロックを始め、 `else`、`and`、`option` は、
 `alt` のブロック、`par` か `par_over` のブロック、
 `critical` のブロックの節を始めます。 [fixture: sequence/db-block-rect]

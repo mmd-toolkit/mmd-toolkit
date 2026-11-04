@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unreadable later character is reported before a grammar error in an earlier prefix."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ntflow-beta TBstyle=\n----------------------^\nExpecting 'SPACE', got 'NEWLINE'"
+  }
+}

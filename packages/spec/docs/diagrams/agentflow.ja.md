@@ -573,6 +573,12 @@ connector に本文はない。 [fixture: agentflow/gram-flow-all-forms]
 [fixture: agentflow/gram-nested-named-heading]
 [fixture: agentflow/gram-nested-string-name]
 [fixture: agentflow/gram-nested-global-name-rejected]
+[fixture: agentflow/gram-member-no-member-direction]
+[fixture: agentflow/gram-member-no-member-style]
+[fixture: agentflow/gram-member-no-member-classdef]
+[fixture: agentflow/gram-member-no-member-class]
+[fixture: agentflow/gram-member-no-member-linkstyle]
+[fixture: agentflow/gram-member-no-member-click]
 
 角括弧の題は名前の後に続く。 [ の前の空白は名前の空白だが、
 ]
@@ -1166,7 +1172,14 @@ global と最上位には、この条件はない。
 [fixture: agentflow/gram-member-group-last]
 [fixture: agentflow/gram-member-ignored-semicolon]
 [fixture: agentflow/gram-member-empty-block]
-方向、global、style と class と linkStyle、click、コメントは要素を渡さない。
+方向、global、style と classDef と class と linkStyle、click、
+コメントは要素を渡さない。 [fixture: agentflow/gram-member-no-member-direction]
+[fixture: agentflow/gram-member-no-member-style]
+[fixture: agentflow/gram-member-no-member-classdef]
+[fixture: agentflow/gram-member-no-member-class]
+[fixture: agentflow/gram-member-no-member-linkstyle]
+[fixture: agentflow/gram-member-no-member-click]
+[fixture: agentflow/gram-member-no-member-comment]
 入れ子の flow や global の中の文も渡さず、それらは外の flow の要素ではない。
 [fixture: agentflow/gram-member-inner-not-outer]
 [fixture: agentflow/gram-member-global-no-member]

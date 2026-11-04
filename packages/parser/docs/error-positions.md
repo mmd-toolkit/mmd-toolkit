@@ -730,11 +730,21 @@ A flow without a name is a member too, and its range is the whole statement.
 [fixture: agentflow/gram-member-after-inner-flow] [fixture:
 agentflow/gram-member-empty-inner-flow] The condition on a member after
 hasOwnProperty is checked when the `end` of the flow is read, so the violation
-of an inner flow comes first, and a unit after that `end` that the grammar
-cannot read is not reported. [fixture:
-agentflow/gram-member-inner-rejected-first] [fixture:
+of an inner flow comes first. [fixture:
+agentflow/gram-member-inner-rejected-first] A unit that the grammar cannot read
+and a linkStyle index that names no link are reported first when they stand
+before that `end`, and are not reported when they stand after it. [fixture:
+agentflow/gram-member-unreadable-unit-before-end] [fixture:
+agentflow/gram-member-linkstyle-before-end] [fixture:
 agentflow/gram-member-rejected-before-later-unit] [fixture:
-agentflow/gram-member-rejected-before-missing-end]
+agentflow/gram-member-rejected-before-missing-end] [fixture:
+agentflow/gram-member-linkstyle-after-end]
+
+The lexer reads the complete diagram before the grammar, so an unreadable later
+character is reported before a grammar error in an earlier prefix and before the
+condition on a member. [fixture:
+agentflow/lex-later-character-before-grammar-error] [fixture:
+agentflow/lex-later-character-before-member]
 
 When followed by a newline, a class statement with one operand or a style
 statement with an empty value reports that newline unit at its empty significant

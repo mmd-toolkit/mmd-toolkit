@@ -825,16 +825,16 @@ block-statement = ( "loop" | "rect" | "opt" | "break" ) text-part line* "end"
 The text of a block or of a section may be empty, and so may its lines: `loop`,
 a line break, and `end` is a loop with the empty text. [fixture:
 sequence/gram-block-empty-text] [fixture: sequence/gram-block-empty-sections]
-Each keyword starts a block of its own kind, and `else`, `and`, and `option`
-start the sections of an `alt` block, of a `par` or `par_over` block, and of a
-`critical` block. [fixture: sequence/db-block-rect] [fixture:
-sequence/gram-block-loop-else] [fixture: sequence/gram-block-alt-option]
-[fixture: sequence/gram-block-critical-and] [fixture: sequence/db-block-opt]
-[fixture: sequence/db-block-break] [fixture: sequence/db-block-alt] [fixture:
-sequence/db-block-par] [fixture: sequence/db-block-par-over] [fixture:
-sequence/db-block-critical] [fixture: sequence/gram-block-and-in-alt] [fixture:
-sequence/gram-block-and-in-par-over] [fixture:
-sequence/gram-block-else-in-critical] [fixture:
+[fixture: sequence/gram-block-rect-empty-text] Each keyword starts a block of
+its own kind, and `else`, `and`, and `option` start the sections of an `alt`
+block, of a `par` or `par_over` block, and of a `critical` block. [fixture:
+sequence/db-block-rect] [fixture: sequence/gram-block-loop-else] [fixture:
+sequence/gram-block-alt-option] [fixture: sequence/gram-block-critical-and]
+[fixture: sequence/db-block-opt] [fixture: sequence/db-block-break] [fixture:
+sequence/db-block-alt] [fixture: sequence/db-block-par] [fixture:
+sequence/db-block-par-over] [fixture: sequence/db-block-critical] [fixture:
+sequence/gram-block-and-in-alt] [fixture: sequence/gram-block-and-in-par-over]
+[fixture: sequence/gram-block-else-in-critical] [fixture:
 sequence/gram-block-else-in-loop] [fixture: sequence/gram-block-else-in-par]
 [fixture: sequence/gram-block-else-in-rect] [fixture:
 sequence/gram-block-option-in-alt] [fixture: sequence/gram-block-option-in-par]

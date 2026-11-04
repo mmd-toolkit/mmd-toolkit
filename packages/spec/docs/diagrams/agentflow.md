@@ -518,7 +518,13 @@ agentflow/gram-nested-siblings] [fixture: agentflow/gram-nested-connector]
 [fixture: agentflow/gram-nested-connector-before-end] [fixture:
 agentflow/gram-nested-named-heading] [fixture:
 agentflow/gram-nested-string-name] [fixture:
-agentflow/gram-nested-global-name-rejected]
+agentflow/gram-nested-global-name-rejected] [fixture:
+agentflow/gram-member-no-member-direction] [fixture:
+agentflow/gram-member-no-member-style] [fixture:
+agentflow/gram-member-no-member-classdef] [fixture:
+agentflow/gram-member-no-member-class] [fixture:
+agentflow/gram-member-no-member-linkstyle] [fixture:
+agentflow/gram-member-no-member-click]
 
 A bracket title follows the name; spaces before its [ are name whitespace, while
 an ordinary space after ] before a bare newline is not accepted. A comment
@@ -1069,9 +1075,16 @@ agentflow/gram-member-chain-target-last] [fixture:
 agentflow/gram-member-chain-source-last] [fixture:
 agentflow/gram-member-group-first] [fixture: agentflow/gram-member-group-last]
 [fixture: agentflow/gram-member-ignored-semicolon] [fixture:
-agentflow/gram-member-empty-block] Direction, global, style/class/linkStyle,
-click, and comment entries contribute no member. Neither do the statements in a
-nested flow or a global: they are no members of the outer flow. [fixture:
+agentflow/gram-member-empty-block] Direction, global,
+style/classDef/class/linkStyle, click, and comment entries contribute no member.
+[fixture: agentflow/gram-member-no-member-direction] [fixture:
+agentflow/gram-member-no-member-style] [fixture:
+agentflow/gram-member-no-member-classdef] [fixture:
+agentflow/gram-member-no-member-class] [fixture:
+agentflow/gram-member-no-member-linkstyle] [fixture:
+agentflow/gram-member-no-member-click] [fixture:
+agentflow/gram-member-no-member-comment] Neither do the statements in a nested
+flow or a global: they are no members of the outer flow. [fixture:
 agentflow/gram-member-inner-not-outer] [fixture:
 agentflow/gram-member-global-no-member] [fixture:
 agentflow/gram-member-flow-in-global-after-member] [fixture:
