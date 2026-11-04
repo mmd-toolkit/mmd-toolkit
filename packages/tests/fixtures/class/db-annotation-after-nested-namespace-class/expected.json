@@ -1,0 +1,57 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Rejections outside the grammar: the items of a nested namespace are walked where it stands, so X exists at the annotation after it."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "X",
+        "type": "",
+        "label": "X",
+        "text": "X",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [
+          "interface"
+        ],
+        "styles": [],
+        "parent": "A.B"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "A",
+        "label": "A",
+        "classes": [],
+        "notes": [],
+        "children": [
+          "A.B"
+        ],
+        "explicit": true
+      },
+      {
+        "id": "A.B",
+        "label": "B",
+        "classes": [
+          "X"
+        ],
+        "notes": [],
+        "children": [],
+        "parent": "A",
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

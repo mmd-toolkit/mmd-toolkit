@@ -1,0 +1,66 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Grammar, namespaces: a nested namespace has name parts before a backquoted name."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "X",
+        "type": "",
+        "label": "X",
+        "text": "X",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "A.P.B"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "A",
+        "label": "A",
+        "classes": [],
+        "notes": [],
+        "children": [
+          "A.P"
+        ],
+        "explicit": true
+      },
+      {
+        "id": "A.P",
+        "label": "P",
+        "classes": [],
+        "notes": [],
+        "children": [
+          "A.P.B"
+        ],
+        "parent": "A",
+        "explicit": false
+      },
+      {
+        "id": "A.P.B",
+        "label": "B",
+        "classes": [
+          "X"
+        ],
+        "notes": [],
+        "children": [],
+        "parent": "A.P",
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

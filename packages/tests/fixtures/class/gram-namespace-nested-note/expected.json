@@ -1,0 +1,54 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Grammar, namespaces: a note is an item of the nested namespace, and the note after its `}` is an item of the namespace around it."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [],
+    "relations": [],
+    "notes": [
+      {
+        "id": "note0",
+        "text": "n",
+        "parent": "A.B"
+      },
+      {
+        "id": "note1",
+        "text": "m",
+        "parent": "A"
+      }
+    ],
+    "namespaces": [
+      {
+        "id": "A",
+        "label": "A",
+        "classes": [],
+        "notes": [
+          "note1"
+        ],
+        "children": [
+          "A.B"
+        ],
+        "explicit": true
+      },
+      {
+        "id": "A.B",
+        "label": "B",
+        "classes": [],
+        "notes": [
+          "note0"
+        ],
+        "children": [],
+        "parent": "A",
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

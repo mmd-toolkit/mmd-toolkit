@@ -8,6 +8,14 @@ import { ParseError } from "../../errors.ts"
 import type { LineIndex } from "../../positions.ts"
 import { classIdOf } from "./names.ts"
 
+/** Statements being walked, and the next one to apply. */
+interface StatementWalk {
+  readonly statements: readonly (
+    ClassStatement | ClassNamespaceStatement["body"][number]
+  )[]
+  next: number
+}
+
 /**
  * diagrams/class.md, Rejections outside the grammar: the inputs that the
  * grammar accepts and mermaid.js rejects while it builds the Db. The
@@ -35,23 +43,33 @@ export class ClassDbRejections {
     this.writtenNames = writtenNames
   }
 
-  /** Walks `statements`, the body of the diagram; throws `ParseError` at the first rejection. */
+  /**
+   * Walks `statements`, the body of the diagram, in source order; throws
+   * `ParseError` at the first rejection. Namespaces nest without a limit, so
+   * `walks` holds the bodies being walked, the innermost last: a call for
+   * each of them would exhaust the call stack.
+   */
   public check(statements: readonly ClassStatement[]): void {
-    this.walk(statements)
+    const walks: StatementWalk[] = [{ statements, next: 0 }]
+    for (let walk = walks.at(-1); walk !== undefined; walk = walks.at(-1)) {
+      if (walk.next === walk.statements.length) {
+        walks.pop()
+      } else {
+        walk.next += 1
+        this.apply(walk.statements[walk.next - 1], walks)
+      }
+    }
   }
 
-  /** Walks `statements` in source order. */
-  private walk(
-    statements: readonly (
-      ClassStatement | ClassNamespaceStatement["body"][number]
-    )[],
-  ): void {
-    for (const statement of statements) this.apply(statement)
-  }
-
-  /** Rejections outside the grammar: which classes one statement adds, in the order of the Db, and the check of an annotation statement. */
+  /**
+   * Rejections outside the grammar: which classes one statement adds, in the
+   * order of the Db, and the check of an annotation statement. The body of a
+   * namespace goes on `walks`, where it is walked before the statement after
+   * this one.
+   */
   private apply(
     statement: ClassStatement | ClassNamespaceStatement["body"][number],
+    walks: StatementWalk[],
   ): void {
     switch (statement.type) {
       case "ClassDeclaration":
@@ -87,7 +105,7 @@ export class ClassDbRejections {
         }
         return
       case "ClassNamespaceStatement":
-        this.walk(statement.body)
+        walks.push({ statements: statement.body, next: 0 })
         return
       case "ClassNameStatement":
       case "ClassNoteStatement":

@@ -1,0 +1,55 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Grammar, namespaces: the namespace and the namespace nested in it each have a label."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "X",
+        "type": "",
+        "label": "X",
+        "text": "X",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "A.B"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "A",
+        "label": "a",
+        "classes": [],
+        "notes": [],
+        "children": [
+          "A.B"
+        ],
+        "explicit": true
+      },
+      {
+        "id": "A.B",
+        "label": "b",
+        "classes": [
+          "X"
+        ],
+        "notes": [],
+        "children": [],
+        "parent": "A",
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

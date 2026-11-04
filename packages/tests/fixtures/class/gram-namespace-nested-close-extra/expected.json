@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Grammar, namespaces: the third `}` has no namespace to close."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 7. Unrecognized text.\n...ace B {class X}}}\n-------------------^"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Grammar, namespaces: an item after the `}` of a nested namespace needs a newline."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 5:\n...space B {class X} class Y}\n---------------------^\nExpecting 'NEWLINE', 'EOF', 'STRUCT_STOP', got 'ALPHA'"
+  }
+}

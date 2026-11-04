@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Rejections outside the grammar: X of the nested namespace is added after the annotation, which needs a class that exists."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "Cannot read properties of undefined (reading 'annotations')"
+  }
+}

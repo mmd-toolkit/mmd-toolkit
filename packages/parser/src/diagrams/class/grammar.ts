@@ -103,11 +103,26 @@ const LINK_TARGETS: readonly ClassLinkTarget[] = [
 /** The direction line: its values. */
 const DIRECTIONS: readonly ClassDirection[] = ["TB", "BT", "RL", "LR"]
 
+/** A namespace whose `}` is still to come, with its heading. */
+interface OpenNamespace {
+  /** The position of its `namespace` unit. */
+  readonly start: number
+  /** The name parts before a backquoted name, or null. */
+  readonly prefix: ClassNamespaceStatement["prefix"]
+  /** Its name. */
+  readonly name: ClassNamespaceStatement["name"]
+  /** Its label, or null. */
+  readonly label: StringLiteral | null
+  /** The items of its body read so far. */
+  readonly body: ClassNamespaceStatement["body"][number][]
+}
+
 /**
  * diagrams/class.md, Grammar: the recursive-descent parser over the units of
- * the class lexer. Each method reads one rule of the grammar, which its
- * comment names, and makes the node that the specification gives for the
- * rule, with the tokens of `docs/tokens/class.md`, Tokens.
+ * the class lexer, except that `parseNamespaceStatement` holds the open
+ * namespaces. Each method reads one rule of the grammar, which its comment
+ * names, and makes the node that the specification gives for the rule, with
+ * the tokens of `docs/tokens/class.md`, Tokens.
  */
 export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
   private readonly lexing: ClassLexing
@@ -209,6 +224,8 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
    * added.
    */
   private parseStatement(body: ClassStatement[]): void {
+    const end = this.afterEmptyForms(this.next, ["empty-description-block"])
+    while (this.next < end) body.push(this.parseDescriptionBlock())
     const unit = this.peek()
     switch (unit?.name) {
       case "class":
@@ -775,41 +792,81 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
    * class-label? "{" newline? namespace-item ( newline namespace-item )*
    * newline? "}"`, with `namespace-name = ( name-part "."? )* ( name-part |
    * "backquoted" )`.
+   *
+   * Namespaces nest without a limit, so `open` holds those whose `}` is still
+   * to come: a call for each of them would exhaust the call stack.
    */
   private parseNamespaceStatement(): ClassNamespaceStatement {
+    const open = [this.openNamespace()]
+    for (;;) {
+      if (this.nameAt(this.next) === "namespace") {
+        open.push(this.openNamespace())
+      } else {
+        open[open.length - 1].body.push(this.parseNamespaceItem())
+        const outermost = this.closeNamespaces(open)
+        if (outermost !== null) return outermost
+      }
+    }
+  }
+
+  /** Namespaces: a `namespace-statement` up to its first `namespace-item`. */
+  private openNamespace(): OpenNamespace {
     const start = this.next
     this.addItem("Keyword", [this.take("namespace")])
     const { prefix, name } = this.parseNameParts()
     const label = this.parseClassLabel()
     this.addItem("Punctuator", [this.take("{")])
     this.takeIf("newline")
-    const body: ClassNamespaceStatement["body"][number][] = [
-      this.parseNamespaceItem(),
-    ]
-    while (this.takeIf("newline") !== null) {
-      if (this.nameAt(this.next) === "}") break
-      body.push(this.parseNamespaceItem())
-    }
-    this.addItem("Punctuator", [this.take("}")])
-    return {
-      type: "ClassNamespaceStatement",
-      prefix,
-      name,
-      label,
-      body,
-      ...this.placeFrom(start),
-    }
+    return { start, prefix, name, label, body: [] }
   }
 
-  /** Namespaces: `namespace-item = class-statement | note-statement | namespace-statement`. */
-  private parseNamespaceItem(): ClassNamespaceStatement["body"][number] {
+  /**
+   * Namespaces: after an item, the `"}"` of each namespace of `open`, from
+   * the innermost, that has no further item. Each closed namespace is an
+   * item of the one around it; the last one, when none stays open, is
+   * returned, and null otherwise.
+   */
+  private closeNamespaces(
+    open: OpenNamespace[],
+  ): ClassNamespaceStatement | null {
+    while (!this.takeNamespaceItemSeparator()) {
+      const namespace = open.pop()
+      if (namespace === undefined) {
+        throw new Error("mmd-toolkit parser bug: no open class namespace")
+      }
+      const { start, prefix, name, label, body } = namespace
+      this.addItem("Punctuator", [this.take("}")])
+      const statement: ClassNamespaceStatement = {
+        type: "ClassNamespaceStatement",
+        prefix,
+        name,
+        label,
+        body,
+        ...this.placeFrom(start),
+      }
+      const around = open.at(-1)
+      if (around === undefined) return statement
+      around.body.push(statement)
+    }
+    return null
+  }
+
+  /** Namespaces: the `newline` after an item, and whether another item follows it. */
+  private takeNamespaceItemSeparator(): boolean {
+    return this.takeIf("newline") !== null && this.nameAt(this.next) !== "}"
+  }
+
+  /**
+   * Namespaces: `namespace-item = class-statement | note-statement |
+   * namespace-statement`, but for the namespaces, which
+   * `parseNamespaceStatement` reads.
+   */
+  private parseNamespaceItem(): ClassDeclaration | ClassNoteStatement {
     switch (this.nameAt(this.next)) {
       case "class":
         return this.parseClassDeclaration()
       case "note":
         return this.parseNoteStatement()
-      case "namespace":
-        return this.parseNamespaceStatement()
       default:
         throw this.unexpected(this.peek())
     }
@@ -1004,7 +1061,7 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
   /**
    * Other statements: `accessibility-statement = "accTitle" ":" title-text |
    * "accDescr" ":" description-text | "accDescr" "{" description-block-text
-   * "}"`, and `empty-description-block statement`, added to `body`.
+   * "}"`, added to `body`.
    */
   private parseAccessibilityStatement(body: ClassStatement[]): void {
     const start = this.next
@@ -1032,10 +1089,7 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
       })
       return
     }
-    const empty = this.nameAt(this.positionAfter(afterKeyword)) === "}"
     body.push(this.parseDescriptionBlock())
-    // Empty description blocks: another statement follows on the same line.
-    if (empty) this.parseStatement(body)
   }
 
   /**

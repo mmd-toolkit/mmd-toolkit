@@ -1,0 +1,17 @@
+{
+  "message": "An annotation statement needs a class that exists",
+  "range": [
+    27,
+    28
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 14
+    },
+    "end": {
+      "line": 2,
+      "column": 15
+    }
+  }
+}

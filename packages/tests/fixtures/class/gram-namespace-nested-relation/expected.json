@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Grammar, namespaces: a relation is no namespace item, in the namespace around a nested one too."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 6:\n...space B {class X}X --> Y}\n--------------------^\nExpecting 'STRUCT_STOP', 'NAMESPACE', 'CLASS', 'NOTE_FOR', 'NOTE', got 'ALPHA'"
+  }
+}
