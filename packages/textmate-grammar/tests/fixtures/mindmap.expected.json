@@ -1,9 +1,11 @@
 {
   "header": "mindmap",
   "scopes": [
-    ["::ICON(", "keyword.control.mermaid"],
-    ["::icon(", "keyword.control.mermaid"],
-    [":::", "punctuation.separator.class.mermaid"],
+    ["(", "keyword.operator.bracket.icon.begin.mermaid", 17],
+    [")", "keyword.operator.bracket.icon.end.mermaid", 17],
+    ["::ICON", "keyword.control.mermaid"],
+    ["::icon", "keyword.control.mermaid"],
+    [":::", "keyword.operator.separator.class.mermaid"],
     ["classLong title ::icon(x)", "variable.mermaid"],
     ["Circle", "string.quoted.double.mermaid"],
     ["Markdown", "string.quoted.other.markdown.mermaid"],
@@ -60,9 +62,11 @@
     ["root", "string.unquoted.mermaid", 0],
     ["circle", "variable.mermaid", 4],
     ["hex", "variable.mermaid", 7],
-    [")", "punctuation.section.icon.end.mermaid", 17],
+    [")", "keyword.operator.bracket.icon.end.mermaid", 17],
     ["\"", "string.quoted.double.mermaid", 4],
-    ["\"`", "string.quoted.other.markdown.mermaid", 12]
+    ["\"`", "string.quoted.other.markdown.mermaid", 12],
+    ["%%", "comment.line.percentage.mermaid", 57],
+    ["%% a comment line", "comment.line.percentage.mermaid", 58]
   ],
   "absent": [
     ["mindmapLong", "keyword.control.mermaid"],
@@ -74,7 +78,7 @@
     [" title ::icon %% text", "comment.line.percentage.mermaid"],
     ["123", "constant.numeric.mermaid"],
     ["--> is node text", "keyword.operator.arrow.mermaid"],
-    ["a:::b", "punctuation.separator.class.mermaid"],
+    ["a:::b", "keyword.operator.separator.class.mermaid"],
     ["::x", "keyword.control.mermaid"],
     ["<b title=\"x\">", "punctuation.definition.string.end.mermaid", 31]
   ],
@@ -159,7 +163,7 @@
       "scopes": [
         ["id", "variable.mermaid"],
         ["Label", "string.unquoted.mermaid"],
-        ["::icon(", "keyword.control.mermaid"],
+        ["::icon", "keyword.control.mermaid"],
         ["book", "string.unquoted.mermaid"],
         ["className", "variable.mermaid"],
         ["Markdown", "string.quoted.other.markdown.mermaid"],

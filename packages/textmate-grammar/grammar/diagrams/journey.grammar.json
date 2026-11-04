@@ -6,7 +6,7 @@
   ],
   "repository": {
     "journey": {
-      "comment": "Read the exact detected header with its bounded body keyword. Follows journey.md#detection.",
+      "comment": "Read journey at the selected header position without including a longer word. Follows detection.md#the-detectors and journey.md#detection.",
       "begin": "{{diagramStart}}(journey){{wordEnd}}",
       "beginCaptures": {
         "1": {
@@ -15,6 +15,9 @@
       },
       "end": "(?!)",
       "patterns": [
+        {
+          "include": "#journey-line-final-keywords"
+        },
         {
           "include": "#comment-line"
         },
@@ -106,8 +109,8 @@
       ]
     },
     "journey-task": {
-      "comment": "Read a task label only when text outside directives follows its indentation, leaving leading directives for the shared rule. Follows journey.md#the-statement-context and common.md#a-directive-is-a-token-boundary.",
-      "begin": "{{journey-statement-start}}(?!{{directiveStart}})(?=[^{{ws}}:;\\r\\n])",
+      "comment": "Read task text or its data colon after indentation, leaving leading directives for the shared rule. A removed comment line may separate that colon from its task text. Follows journey.md#the-statement-context, common.md#comment-lines, and common.md#a-directive-is-a-token-boundary.",
+      "begin": "{{journey-statement-start}}(?!{{directiveStart}})(?=[^{{ws}};\\r\\n])",
       "end": "{{lineValueEnd}}|(?=;)",
       "patterns": [
         {
@@ -121,11 +124,11 @@
           "include": "#journey-hash-comment"
         },
         {
-          "comment": "Read the score as text up to the second colon or data end, including a nonnumeric score. Follows journey.md#tasks.",
+          "comment": "Read the score between the first and second colons, or to the data end, by its position regardless of its spelling. Follows journey.md#tasks.",
           "begin": ":",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.separator.colon.mermaid"
+              "name": "keyword.operator.separator.colon.mermaid"
             }
           },
           "end": "{{journey-text-end}}",
@@ -134,14 +137,11 @@
               "include": "#directive"
             },
             {
-              "include": "#journey-text-entity"
-            },
-            {
-              "comment": "Read people as text separated by commas, leaving a third colon to begin ignored data. Follows journey.md#tasks.",
+              "comment": "Read each person between the second colon, commas and the third colon or data end. Follows journey.md#tasks.",
               "begin": ":",
               "beginCaptures": {
                 "0": {
-                  "name": "punctuation.separator.colon.mermaid"
+                  "name": "keyword.operator.separator.colon.mermaid"
                 }
               },
               "end": "{{journey-text-end}}",
@@ -150,12 +150,9 @@
                   "include": "#directive"
                 },
                 {
-                  "include": "#journey-text-entity"
-                },
-                {
                   "comment": "Read each people-list comma as a separator. Follows journey.md#tasks.",
                   "match": ",",
-                  "name": "punctuation.separator.comma.mermaid"
+                  "name": "keyword.operator.separator.comma.mermaid"
                 },
                 {
                   "comment": "Read the third colon and the rest of the data as ignored text, with no inherited score or people string scope. Follows journey.md#tasks.",
@@ -174,9 +171,9 @@
                   "name": "comment.block.ignored.mermaid"
                 },
                 {
-                  "comment": "Read a complete text stretch without subdividing number-looking or name-looking content. Follows journey.md#tasks.",
+                  "comment": "Read a person text run with entities, keeping embedded directives separate. Follows journey.md#tasks and common.md#entities.",
                   "match": "(?:{{entity}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^,:#;\\r\\n])+",
-                  "name": "string.unquoted.mermaid",
+                  "name": "variable.mermaid",
                   "captures": {
                     "0": {
                       "patterns": [
@@ -194,9 +191,9 @@
               "applyEndPatternLast": true
             },
             {
-              "comment": "Read a complete text stretch without subdividing number-looking or name-looking content. Follows journey.md#tasks.",
+              "comment": "Read a score text run with entities, keeping embedded directives separate. Follows journey.md#tasks and common.md#entities.",
               "match": "(?:{{entity}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^:#;\\r\\n])+",
-              "name": "string.unquoted.mermaid",
+              "name": "constant.numeric.mermaid",
               "captures": {
                 "0": {
                   "patterns": [
@@ -222,7 +219,7 @@
       "applyEndPatternLast": true
     },
     "journey-acc-descr-block": {
-      "comment": "Read a case-insensitive accessibility block and text delimiters, retaining directives in its whitespace. Follows journey.md#the-statement-context.",
+      "comment": "Read a case-insensitive accessibility block and text delimiters, retaining directives in its whitespace. Follows journey.md#the-statement-context and common.md#style-and-classdef-lines.",
       "begin": "{{journey-statement-start}}((?i:accDescr))({{journey-value-padding}})(\\{)({{journey-value-padding}})",
       "beginCaptures": {
         "1": {
@@ -236,7 +233,7 @@
           ]
         },
         "3": {
-          "name": "punctuation.definition.description.begin.mermaid"
+          "name": "keyword.operator.delimiter.description.begin.mermaid"
         },
         "4": {
           "patterns": [
@@ -249,7 +246,7 @@
       "end": "(\\})",
       "endCaptures": {
         "1": {
-          "name": "punctuation.definition.description.end.mermaid"
+          "name": "keyword.operator.delimiter.description.end.mermaid"
         }
       },
       "patterns": [
@@ -276,7 +273,7 @@
       ]
     },
     "journey-accessibility-line": {
-      "comment": "Read accessibility line values after their leading padding, retaining inline percent pairs. Follows journey.md#accessibility-values.",
+      "comment": "Read accessibility line values after their leading padding, retaining inline percent pairs. Follows journey.md#accessibility-values and common.md#style-and-classdef-lines.",
       "begin": "{{journey-statement-start}}((?i:accTitle|accDescr))({{journey-value-padding}})(:)({{journey-value-padding}})",
       "beginCaptures": {
         "1": {
@@ -290,7 +287,7 @@
           ]
         },
         "3": {
-          "name": "punctuation.separator.colon.mermaid"
+          "name": "keyword.operator.separator.colon.mermaid"
         },
         "4": {
           "patterns": [
@@ -335,12 +332,28 @@
           ]
         }
       }
+    },
+    "journey-line-final-keywords": {
+      "comment": "Read a reserved keyword at a statement start when only padding and directives follow on its physical line. A value on a later line receives the surrounding context's scopes. Follows journey.md#the-statement-context and common.md#a-directive-is-a-token-boundary.",
+      "match": "({{journey-statement-start}})((?i:accTitle|accDescr))(?={{lineGap}}$)",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.control.mermaid"
+        }
+      }
     }
   },
   "variables": {
-    "journey-statement-start": "(?:^|\\G|{{afterDirectiveEnd}}|(?<=\\}))(?:(?!{{separatorCommentEnd}})[{{ws}}])*",
+    "journey-statement-start": "(?:(?!{{separatorCommentEnd}})[{{ws}}])*",
     "journey-text-end": "{{lineValueEnd}}|(?=[#;])",
     "journey-value-padding": "(?:(?!{{separatorCommentEnd}})(?:[{{ws}}]|{{directive}}))*"
   },
-  "comment": "Keep diagram-specific text ends and whitespace gaps in this file; shared forms remain common includes and variables. Follows journey.md#units-and-contexts."
+  "comment": "Statement-context rules can begin after any complete unit, while task data and line values keep their own text contexts. Diagram whitespace stops before a common-comment boundary. Follows journey.md#diagram-and-statements and journey.md#the-statement-context."
 }

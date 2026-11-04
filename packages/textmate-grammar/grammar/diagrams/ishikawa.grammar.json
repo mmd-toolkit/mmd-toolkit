@@ -6,7 +6,7 @@
   ],
   "repository": {
     "ishikawa": {
-      "comment": "Read the beta header before the stable-header fallback. Follows ishikawa.md#units-and-contexts.",
+      "comment": "Read ishikawa-beta before the ishikawa fallback, comparing either spelling case-insensitively and requiring a word boundary. Follows detection.md#the-detectors and ishikawa.md#detection.",
       "begin": "{{diagramStart}}((?i:ishikawa-beta|ishikawa)){{wordEnd}}",
       "beginCaptures": {
         "1": {

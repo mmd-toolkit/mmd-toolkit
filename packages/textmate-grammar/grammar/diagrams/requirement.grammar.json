@@ -6,7 +6,7 @@
   ],
   "repository": {
     "requirement": {
-      "comment": "Detection.md entry 14 and The exact requirement prefix selects the type; the lexer reads requirementDiagram case-insensitively and not followed by an ASCII word character, so requirementdiagram is also a header. A newline unit must follow it, with only comments, directives or empty description blocks before it. Follows requirement.md#detection.",
+      "comment": "Read requirementDiagram with a lowercase requirement prefix and a case-insensitive Diagram suffix, ending at a word boundary. Follows detection.md#the-detectors and requirement.md#detection.",
       "begin": "{{diagramStart}}(requirement(?i:Diagram)){{wordEnd}}",
       "beginCaptures": {
         "1": {
@@ -16,13 +16,16 @@
       "end": "(?!)",
       "patterns": [
         {
+          "include": "#requirement-line-final-keywords"
+        },
+        {
           "include": "#comment-line"
         },
         {
           "include": "#directive"
         },
         {
-          "comment": "Try TB, BT, RL and LR in that order, before every rule but rules 1 to 4. Those rules read no leading indentation, so an indented accessibility-looking line is a direction line; an unindented accessibility form keeps precedence. Directives inside direction-text join its parts, and directives may lie in the gap before the direction value. Value scopes and text runs end before a separator-led common comment; the enclosing context reads that comment independently. Follows requirement.md#the-statement-context and common.md#comment-lines.",
+          "comment": "Read a direction line containing TB and its surrounding text. Unindented accessibility forms have priority; indentation instead permits the direction-line reading. Directives join text fragments without supplying the direction value, and separator-led common comments stop text and padding. Follows requirement.md#the-statement-context and common.md#comment-lines.",
           "match": "{{requirement-direction-prefix}}((?i:TB)){{requirement-direction-suffix}}",
           "captures": {
             "1": {
@@ -55,7 +58,7 @@
           }
         },
         {
-          "comment": "Try TB, BT, RL and LR in that order, before every rule but rules 1 to 4. Those rules read no leading indentation, so an indented accessibility-looking line is a direction line; an unindented accessibility form keeps precedence. Directives inside direction-text join its parts, and directives may lie in the gap before the direction value. Value scopes and text runs end before a separator-led common comment; the enclosing context reads that comment independently. Follows requirement.md#the-statement-context and common.md#comment-lines.",
+          "comment": "Read a direction line containing BT and its surrounding text. Unindented accessibility forms have priority; indentation instead permits the direction-line reading. Directives join text fragments without supplying the direction value, and separator-led common comments stop text and padding. Follows requirement.md#the-statement-context and common.md#comment-lines.",
           "match": "{{requirement-direction-prefix}}((?i:BT)){{requirement-direction-suffix}}",
           "captures": {
             "1": {
@@ -88,7 +91,7 @@
           }
         },
         {
-          "comment": "Try TB, BT, RL and LR in that order, before every rule but rules 1 to 4. Those rules read no leading indentation, so an indented accessibility-looking line is a direction line; an unindented accessibility form keeps precedence. Directives inside direction-text join its parts, and directives may lie in the gap before the direction value. Value scopes and text runs end before a separator-led common comment; the enclosing context reads that comment independently. Follows requirement.md#the-statement-context and common.md#comment-lines.",
+          "comment": "Read a direction line containing RL and its surrounding text. Unindented accessibility forms have priority; indentation instead permits the direction-line reading. Directives join text fragments without supplying the direction value, and separator-led common comments stop text and padding. Follows requirement.md#the-statement-context and common.md#comment-lines.",
           "match": "{{requirement-direction-prefix}}((?i:RL)){{requirement-direction-suffix}}",
           "captures": {
             "1": {
@@ -121,7 +124,7 @@
           }
         },
         {
-          "comment": "Try TB, BT, RL and LR in that order, before every rule but rules 1 to 4. Those rules read no leading indentation, so an indented accessibility-looking line is a direction line; an unindented accessibility form keeps precedence. Directives inside direction-text join its parts, and directives may lie in the gap before the direction value. Value scopes and text runs end before a separator-led common comment; the enclosing context reads that comment independently. Follows requirement.md#the-statement-context and common.md#comment-lines.",
+          "comment": "Read a direction line containing LR and its surrounding text. Unindented accessibility forms have priority; indentation instead permits the direction-line reading. Directives join text fragments without supplying the direction value, and separator-led common comments stop text and padding. Follows requirement.md#the-statement-context and common.md#comment-lines.",
           "match": "{{requirement-direction-prefix}}((?i:LR)){{requirement-direction-suffix}}",
           "captures": {
             "1": {
@@ -154,8 +157,8 @@
           }
         },
         {
-          "comment": "AccDescr, zero or more common whitespace characters, an opening brace, and text through the first closing brace form a description block; braces do not nest. Common directives may lie between the keyword and brace. Retain this local context: reads Notation whitespace after the delimiter with the delimiter and keeps inline percent pairs; its keywords are case-insensitive. Value scopes and text runs end before a separator-led common comment; the enclosing context reads that comment independently. Follows requirement.md#accessibility-values and common.md#comment-lines.",
-          "begin": "{{requirement-statement-start}}((?i:accDescr))({{gap}})(\\{)",
+          "comment": "Read a case-folded accDescr keyword and its brace-delimited description, allowing Notation whitespace and directives before the opener. A closing brace ends the block without nesting; a separator-led common comment interrupts its text. At a statement-context unit position it can follow a closed string; enclosing names and line values still own block-shaped text. Follows requirement.md#accessibility-values, common.md#comment-lines, and requirement.md#empty-description-blocks.",
+          "begin": "((?i:accDescr))({{gap}})(\\{)",
           "beginCaptures": {
             "1": {
               "name": "keyword.control.mermaid"
@@ -168,13 +171,13 @@
               ]
             },
             "3": {
-              "name": "punctuation.definition.description.begin.mermaid"
+              "name": "keyword.operator.delimiter.description.begin.mermaid"
             }
           },
           "end": "(\\})",
           "endCaptures": {
             "1": {
-              "name": "punctuation.definition.description.end.mermaid"
+              "name": "keyword.operator.delimiter.description.end.mermaid"
             }
           },
           "patterns": [
@@ -198,7 +201,7 @@
           ]
         },
         {
-          "comment": "AccTitle and accDescr enter their line-value contexts after the colon and common whitespace; each reads the rest of its line as text. Common directives may lie between the keyword and colon. Retain this local context: reads Notation whitespace after the delimiter with the delimiter and keeps inline percent pairs; its keywords are case-insensitive. Value scopes and text runs end before a separator-led common comment; the enclosing context reads that comment independently. Follows requirement.md#accessibility-values and common.md#comment-lines.",
+          "comment": "Read case-folded accTitle or accDescr with a colon and a line value. Padding admits directives and Notation whitespace, inline percent pairs remain text, and separator-led common comments end value runs. Follows requirement.md#accessibility-values and common.md#comment-lines.",
           "begin": "{{requirement-statement-start}}((?i:accTitle|accDescr))({{gap}})(:)(?:(?!{{separatorCommentEnd}})[{{ws}}])*",
           "beginCaptures": {
             "1": {
@@ -212,7 +215,7 @@
               ]
             },
             "3": {
-              "name": "punctuation.separator.colon.mermaid"
+              "name": "keyword.operator.separator.colon.mermaid"
             }
           },
           "end": "{{lineValueEnd}}",
@@ -290,7 +293,7 @@
               "begin": ":",
               "beginCaptures": {
                 "0": {
-                  "name": "punctuation.separator.key-value.mermaid"
+                  "name": "keyword.operator.separator.key-value.mermaid"
                 }
               },
               "end": "{{requirement-style-value-end}}",
@@ -321,14 +324,14 @@
           ]
         },
         {
-          "comment": "Read class application names in the style context. Follows requirement.md#styles-and-classes.",
+          "comment": "Read class application names in the style context. After a quoted final class, an empty description block returns to the statement context. Follows requirement.md#styles-and-classes, and requirement.md#empty-description-blocks.",
           "begin": "((?i:class)){{wordEnd}}",
           "beginCaptures": {
             "1": {
               "name": "keyword.control.mermaid"
             }
           },
-          "end": "{{lineValueEnd}}",
+          "end": "{{lineValueEnd}}|(?<=\")(?={{gap}}{{requirement-empty-description}})",
           "patterns": [
             {
               "include": "#directive"
@@ -358,7 +361,7 @@
           "name": "keyword.operator.arrow.mermaid"
         },
         {
-          "comment": "Rule 15: The bounded case-insensitive keywords are id, text, risk, verifyMethod; the six requirement kinds; low, medium, high; analysis, demonstration, inspection, test; element; contains, copies, derives, satisfies, verifies, refines, traces; type and docref. The keyword boundary reads through following directives. Follows requirement.md#the-statement-context.",
+          "comment": "Read the bounded requirement, functionalRequirement, interfaceRequirement, performanceRequirement, physicalRequirement, designConstraint and element keywords case-insensitively. The boundary is judged after following directives. Follows requirement.md#the-statement-context.",
           "match": "(?i:functionalRequirement|interfaceRequirement|performanceRequirement|physicalRequirement|designConstraint|requirement|element){{wordEnd}}",
           "name": "keyword.control.mermaid"
         },
@@ -372,15 +375,15 @@
           "name": "keyword.operator.arrow.mermaid"
         },
         {
-          "comment": "And A triple colon introduces a comma-separated class list on a definition or in class shorthand. Follows requirement.md#requirements.",
+          "comment": "Read a triple colon introducing style-class names on a definition or class shorthand. Follows requirement.md#requirements.",
           "match": ":::",
-          "name": "punctuation.separator.class.mermaid"
+          "name": "keyword.operator.separator.class.mermaid"
         },
         {
           "include": "#requirement-body"
         },
         {
-          "comment": "Rules 11, 12 and 14: Opening brace, closing brace and colon are units of their characters. Follows requirement.md#the-statement-context.",
+          "comment": "Read opening and closing braces as definition delimiters and a colon as a field separator. Follows requirement.md#the-statement-context.",
           "match": "(\\{)|(\\})|(:)",
           "captures": {
             "1": {
@@ -390,7 +393,7 @@
               "name": "keyword.operator.block.end.mermaid"
             },
             "3": {
-              "name": "punctuation.separator.colon.mermaid"
+              "name": "keyword.operator.separator.colon.mermaid"
             }
           }
         },
@@ -414,9 +417,9 @@
       ]
     },
     "requirement-comma": {
-      "comment": "Rule 10 and rule 24: A comma is a comma unit in either context. Follows requirement.md#the-style-context.",
+      "comment": "Read a comma separating style items or class names. Follows requirement.md#the-style-context and requirement.md#styles-and-classes.",
       "match": ",",
-      "name": "punctuation.separator.comma.mermaid"
+      "name": "keyword.operator.separator.comma.mermaid"
     },
     "requirement-direction-text": {
       "comment": "Read the nonblank ignored text around a direction while retaining directives. Follows requirement.md#the-statement-context.",
@@ -558,7 +561,7 @@
               ]
             },
             "3": {
-              "name": "punctuation.separator.colon.mermaid"
+              "name": "keyword.operator.separator.colon.mermaid"
             },
             "4": {
               "patterns": [
@@ -651,7 +654,7 @@
           ]
         },
         "3": {
-          "name": "punctuation.separator.colon.mermaid"
+          "name": "keyword.operator.separator.colon.mermaid"
         },
         "4": {
           "patterns": [
@@ -659,6 +662,22 @@
               "include": "#directive"
             }
           ]
+        }
+      }
+    },
+    "requirement-line-final-keywords": {
+      "comment": "Read a reserved keyword at a statement start when only padding and directives follow on its physical line. A value on a later line receives the surrounding context's scopes. Follows requirement.md#accessibility-values and common.md#a-directive-is-a-token-boundary.",
+      "match": "({{requirement-statement-start}})((?i:accTitle|accDescr))(?={{lineGap}}$)",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.control.mermaid"
         }
       }
     }
@@ -671,6 +690,7 @@
     "requirement-fixed-value": "(?i:low|medium|high|analysis|demonstration|inspection|test)",
     "requirement-field-text": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\r\\n])+",
     "requirement-field-key": "(?i:id|text|type|docref|risk|verifyMethod)",
-    "requirement-style-value-end": "(?={{lineGap}}(?:,|$))|{{separatorCommentEnd}}"
+    "requirement-style-value-end": "(?={{lineGap}}(?:,|$))|{{separatorCommentEnd}}",
+    "requirement-empty-description": "(?i:accDescr){{gap}}\\{{{gap}}\\}"
   }
 }

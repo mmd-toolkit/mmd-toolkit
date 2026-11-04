@@ -6,7 +6,7 @@
   ],
   "repository": {
     "timeline": {
-      "comment": "Read the exact detected header and its optional ASCII-separated direction; statement-prefix directives retain their scopes. Follows timeline.md#detection.",
+      "comment": "Read timeline with its optional LR or TD direction after ASCII padding, preserving directives in that padding. Follows detection.md#the-detectors and timeline.md#detection.",
       "begin": "{{diagramStart}}(timeline){{wordEnd}}(?:({{requiredAsciiGap}})((?i:LR|TD)){{wordEnd}})?",
       "beginCaptures": {
         "1": {
@@ -141,7 +141,7 @@
               ]
             },
             "4": {
-              "name": "punctuation.definition.description.begin.mermaid"
+              "name": "keyword.operator.delimiter.description.begin.mermaid"
             },
             "5": {
               "patterns": [
@@ -154,7 +154,7 @@
           "end": "(\\})",
           "endCaptures": {
             "1": {
-              "name": "punctuation.definition.description.end.mermaid"
+              "name": "keyword.operator.delimiter.description.end.mermaid"
             }
           },
           "patterns": [
@@ -199,7 +199,7 @@
               ]
             },
             "4": {
-              "name": "punctuation.separator.colon.mermaid"
+              "name": "keyword.operator.separator.colon.mermaid"
             },
             "5": {
               "patterns": [
@@ -222,7 +222,7 @@
           "begin": "(:)(?={{whitespaceStart}})((?!{{directives}}{{separatorCommentEnd}}){{whitespaceSeparator}})?",
           "beginCaptures": {
             "1": {
-              "name": "punctuation.separator.colon.mermaid"
+              "name": "keyword.operator.separator.colon.mermaid"
             },
             "2": {
               "patterns": [

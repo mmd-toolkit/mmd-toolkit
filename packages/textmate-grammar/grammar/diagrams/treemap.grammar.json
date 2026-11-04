@@ -1,6 +1,5 @@
 {
   "variables": {
-    "treemap-class-definition-head": "{{treemap-statement-start}}(classDef)({{requiredGap}})([A-Za-z_][A-Za-z0-9_]+)",
     "treemap-style-gap": "(?:(?!{{separatorCommentEnd}})[{{lws}}]|{{directive}})*",
     "treemap-statement-start": "(?:^|\\G|{{afterDirectiveEnd}})(?:(?!{{separatorCommentEnd}})[{{ws}}])*"
   },
@@ -11,7 +10,7 @@
   ],
   "repository": {
     "treemap": {
-      "comment": "Begin treemap at either lowercase header without imposing a suffix boundary. Follows treemap.md#detection, treemap.md#headers-and-indentation, and common.md#leading-whitespace.",
+      "comment": "Read treemap-beta or treemap as the lowercase header without adding a suffix-boundary test. Follows detection.md#the-detectors and treemap.md#detection.",
       "begin": "{{diagramStart}}(treemap-beta|treemap)",
       "beginCaptures": {
         "1": {
@@ -21,6 +20,9 @@
       "end": "(?!)",
       "patterns": [
         {
+          "include": "#treemap-line-final-keywords"
+        },
+        {
           "include": "#comment-line"
         },
         {
@@ -28,40 +30,43 @@
         },
         {
           "include": "#native-percent-comment",
-          "comment": "Reuse native percent comments. Follows treemap.md#comments-and-authored-boundaries."
+          "comment": "Read a native percent-pair comment up to physical line end or a separator-led common comment. Follows treemap.md#comments-and-authored-boundaries."
         },
         {
-          "include": "#common-statements",
-          "comment": "Reuse title and accessibility composites without imposing a following EOL. Follows treemap.md#common-forms."
+          "include": "#common-statements-at-unit",
+          "comment": "Read title lines and the colon-led or braced forms of accessibility metadata. Follows treemap.md#common-forms."
         },
         {
-          "comment": "Read a class definition with or without style text, preserving its name and optional final semicolon. Follows treemap.md#class-definitions.",
+          "comment": "Read a classDef composite through its class name and optional whitespace-led style, preserving those positions across lines. Follows treemap.md#class-definitions and common.md#a-directive-is-a-token-boundary.",
           "patterns": [
             {
-              "comment": "Read class style after its required whitespace, recognizing property names and whole values while retaining other accepted style text. Follows treemap.md#class-definitions and common.md#comment-lines.",
-              "begin": "{{treemap-class-definition-head}}(?={{whitespaceStart}})",
+              "include": "#treemap-class-definition-gap"
+            },
+            {
+              "comment": "Read the class name and its whitespace-led style, recognizing property names and whole values while retaining other accepted style text. The name starts at the composite's scan position or after a continued gap. Follows treemap.md#class-definitions and common.md#comment-lines.",
+              "begin": "(?:^|\\G|{{afterDirectiveEnd}})({{gap}})([A-Za-z_][A-Za-z0-9_]+)(?={{whitespaceStart}}|$)",
               "beginCaptures": {
                 "1": {
-                  "name": "keyword.control.mermaid"
-                },
-                "2": {
                   "patterns": [
                     {
                       "include": "#directive"
                     }
                   ]
                 },
-                "3": {
+                "2": {
                   "name": "variable.mermaid"
                 }
               },
               "end": "(;)|{{lineValueEnd}}",
               "endCaptures": {
                 "1": {
-                  "name": "punctuation.separator.semicolon.mermaid"
+                  "name": "keyword.operator.separator.semicolon.mermaid"
                 }
               },
               "patterns": [
+                {
+                  "include": "#treemap-class-definition-gap"
+                },
                 {
                   "include": "#directive"
                 },
@@ -89,42 +94,36 @@
               "applyEndPatternLast": true
             },
             {
-              "comment": "Read a styleless class definition without a value scope. Follows treemap.md#class-definitions.",
-              "match": "{{treemap-class-definition-head}}({{directives}})(;)?",
+              "comment": "Read a styleless class name and its optional final semicolon without a value scope. Follows treemap.md#class-definitions.",
+              "match": "(?:^|\\G|{{afterDirectiveEnd}})({{gap}})([A-Za-z_][A-Za-z0-9_]+)({{directives}})(;)?",
               "captures": {
                 "1": {
-                  "name": "keyword.control.mermaid"
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
                 },
                 "2": {
-                  "patterns": [
-                    {
-                      "include": "#directive"
-                    }
-                  ]
-                },
-                "3": {
                   "name": "variable.mermaid"
                 },
-                "4": {
+                "3": {
                   "patterns": [
                     {
                       "include": "#directive"
                     }
                   ]
                 },
-                "5": {
-                  "name": "punctuation.separator.semicolon.mermaid"
+                "4": {
+                  "name": "keyword.operator.separator.semicolon.mermaid"
                 }
               }
             }
-          ]
-        },
-        {
-          "comment": "Read a selector separator and its class element name, retaining intervening directives. Follows treemap.md#names-numbers-and-strings, treemap.md#headers-and-indentation, and common.md#a-directive-is-a-token-boundary.",
-          "match": "(:::)({{directives}})([A-Za-z_][A-Za-z0-9_]*)",
-          "captures": {
+          ],
+          "begin": "{{treemap-statement-start}}(classDef)(?={{whitespaceStart}}|$)({{gap}})",
+          "beginCaptures": {
             "1": {
-              "name": "punctuation.separator.class.mermaid"
+              "name": "keyword.control.mermaid"
             },
             "2": {
               "patterns": [
@@ -132,19 +131,42 @@
                   "include": "#directive"
                 }
               ]
-            },
-            "3": {
+            }
+          },
+          "end": "(?=\\S)|{{lineValueEnd}}",
+          "applyEndPatternLast": true
+        },
+        {
+          "comment": "Read the selector marker and its class element name across hidden newlines, retaining directives and common comments between them. Follows treemap.md#names-numbers-and-strings, treemap.md#headers-and-indentation, and common.md#a-directive-is-a-token-boundary.",
+          "begin": "(:::)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.operator.separator.class.mermaid"
+            }
+          },
+          "end": "([A-Za-z_][A-Za-z0-9_]*)",
+          "endCaptures": {
+            "1": {
               "name": "variable.mermaid"
             }
-          }
+          },
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#comment-line"
+            }
+          ],
+          "applyEndPatternLast": true
         },
         {
           "include": "#string-plain-double",
-          "comment": "Reuse plain double-quoted row labels. Follows treemap.md#names-numbers-and-strings."
+          "comment": "Read plain double-quoted row labels. Follows treemap.md#names-numbers-and-strings."
         },
         {
           "include": "#string-plain-single",
-          "comment": "Reuse plain single-quoted row labels. Follows treemap.md#names-numbers-and-strings."
+          "comment": "Read plain single-quoted row labels. Follows treemap.md#names-numbers-and-strings."
         },
         {
           "comment": "Read a numeric leaf value, keeping its commas and underscores whole after its first digit or dot. Follows treemap.md#names-numbers-and-strings.",
@@ -156,10 +178,10 @@
           "match": "(:)|(,)",
           "captures": {
             "1": {
-              "name": "punctuation.separator.colon.mermaid"
+              "name": "keyword.operator.separator.colon.mermaid"
             },
             "2": {
-              "name": "punctuation.separator.comma.mermaid"
+              "name": "keyword.operator.separator.comma.mermaid"
             }
           }
         }
@@ -185,7 +207,7 @@
           ]
         },
         "3": {
-          "name": "punctuation.separator.key-value.mermaid"
+          "name": "keyword.operator.separator.key-value.mermaid"
         },
         "4": {
           "patterns": [
@@ -202,7 +224,7 @@
           "include": "#directive"
         },
         {
-          "comment": "Keep an escaped comma inside its style value, including directives between the backslash and comma. Follows treemap.md#class-definitions and common.md#a-directive-is-a-token-boundary.",
+          "comment": "Read a backslash and comma, possibly separated by directives, as ordinary characters of the opaque style value. These characters have no treemap escape meaning. Follows treemap.md#class-definitions and common.md#a-directive-is-a-token-boundary.",
           "match": "\\\\{{directives}},",
           "captures": {
             "0": {
@@ -224,7 +246,8 @@
       "patterns": [
         {
           "match": ",",
-          "name": "punctuation.separator.comma.mermaid"
+          "name": "keyword.operator.separator.comma.mermaid",
+          "comment": "Color a comma outside a property value as a style separator under the README's display split. The document itself keeps the style text opaque. Follows treemap.md#class-definitions."
         },
         {
           "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^,;\\r\\n{{ws}}])+",
@@ -237,9 +260,49 @@
                 }
               ]
             }
-          }
+          },
+          "comment": "Read an unquoted style-text run outside a property pair, stopping before whitespace, a comma, a semicolon or a common-comment boundary. Follows treemap.md#class-definitions and common.md#comment-lines."
         }
       ]
+    },
+    "treemap-line-final-keywords": {
+      "comment": "Read accDescr at a unit position when its physical line has only trailing whitespace and directives. The delimiter and value on later lines stay with their surrounding rules. Follows treemap.md#common-forms and common.md#a-directive-is-a-token-boundary.",
+      "match": "({{asciiGap}})(accDescr)(?={{lineGap}}$)",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.control.mermaid"
+        }
+      }
+    },
+    "treemap-class-definition-gap": {
+      "comment": "Read the remaining whitespace before a class name or style, continuing over empty lines and removed common comments. The begin takes its line to the end so that the next line remains in this composite; the first non-whitespace character ends the gap after directives and comments have been read. Follows treemap.md#class-definitions, common.md#comment-lines, and common.md#a-directive-is-a-token-boundary.",
+      "begin": "\\G({{gap}})$",
+      "beginCaptures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "^(?={{gap}}\\S)|(?=\\S)",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#comment-line"
+        }
+      ],
+      "applyEndPatternLast": true
     }
   }
 }

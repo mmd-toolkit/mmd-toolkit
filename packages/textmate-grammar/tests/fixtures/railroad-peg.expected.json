@@ -23,9 +23,9 @@
     ["x", "string.quoted.double.mermaid", 7],
     ["a", "string.quoted.single.mermaid", 7],
     ["\\n", "constant.character.escape.mermaid"],
-    ["(", "punctuation.section.group.begin.mermaid"],
-    [")", "punctuation.section.group.end.mermaid"],
-    [";", "punctuation.separator.rule.mermaid"],
+    ["(", "keyword.operator.bracket.group.begin.mermaid"],
+    [")", "keyword.operator.bracket.group.end.mermaid"],
+    [";", "keyword.operator.separator.rule.mermaid"],
     ["---", "comment.block.ignored.mermaid"],
     ["%%{!}%%", "comment.block.ignored.mermaid"],
     ["%% a comment line", "comment.line.percentage.mermaid"]

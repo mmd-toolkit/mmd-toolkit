@@ -15,7 +15,7 @@
   ],
   "repository": {
     "railroad-ir": {
-      "comment": "Read the lowercase IR header and its following boundary. Follows railroad.md#shared-scanning-and-header-boundaries.",
+      "comment": "Read the lowercase railroad-beta header before whitespace, a percent pair or end of input, then enter its IR body. Follows detection.md#the-detectors, railroad.md#detection, and railroad.md#shared-scanning-and-header-boundaries.",
       "begin": "{{diagramStart}}(railroad-beta){{railroad-header-end}}",
       "beginCaptures": {
         "1": {
@@ -32,22 +32,22 @@
         },
         {
           "include": "#hidden-yaml",
-          "comment": "Read native hidden YAML. Follows railroad.md#native-hidden-forms."
+          "comment": "Read a native YAML region from a three-dash opening fence to the first qualifying unindented closing fence. Follows railroad.md#native-hidden-forms."
         },
         {
           "include": "#hidden-directive",
-          "comment": "Read a native hidden directive. Follows railroad.md#native-hidden-forms."
+          "comment": "Read a native ignored percent-brace region through its earliest brace-percent closer with a following whitespace or end-of-input boundary. Follows railroad.md#native-hidden-forms."
         },
         {
           "include": "#native-percent-comment",
-          "comment": "Read native percent comments. Follows railroad.md#native-comments."
+          "comment": "Read a native percent-pair comment up to physical line end or a separator-led common comment. Follows railroad.md#native-comments."
         },
         {
           "include": "#railroad-c-comment"
         },
         {
-          "include": "#common-statements",
-          "comment": "Read title and accessibility metadata. Follows railroad.md#metadata-units."
+          "include": "#common-statements-at-unit",
+          "comment": "Read title lines and the colon-led or braced forms of accessibility metadata. Follows railroad.md#metadata-units."
         },
         {
           "comment": "Read the eight IR constructor keywords. Follows railroad.md#ir-units.",
@@ -66,16 +66,16 @@
               "name": "keyword.operator.mermaid"
             },
             "2": {
-              "name": "punctuation.separator.rule.mermaid"
+              "name": "keyword.operator.separator.rule.mermaid"
             },
             "3": {
-              "name": "punctuation.section.arguments.begin.mermaid"
+              "name": "keyword.operator.bracket.arguments.begin.mermaid"
             },
             "4": {
-              "name": "punctuation.separator.comma.mermaid"
+              "name": "keyword.operator.separator.comma.mermaid"
             },
             "5": {
-              "name": "punctuation.section.arguments.end.mermaid"
+              "name": "keyword.operator.bracket.arguments.end.mermaid"
             }
           }
         },
@@ -90,7 +90,7 @@
       ]
     },
     "railroad-ebnf": {
-      "comment": "Read the lowercase EBNF header and its following boundary. Follows railroad.md#shared-scanning-and-header-boundaries.",
+      "comment": "Read the lowercase railroad-ebnf-beta header before whitespace, a percent pair or end of input, then enter its EBNF body. Follows detection.md#the-detectors, railroad.md#detection, and railroad.md#shared-scanning-and-header-boundaries.",
       "begin": "{{diagramStart}}(railroad-ebnf-beta){{railroad-header-end}}",
       "beginCaptures": {
         "1": {
@@ -107,15 +107,15 @@
         },
         {
           "include": "#hidden-yaml",
-          "comment": "Read native hidden YAML. Follows railroad.md#native-hidden-forms."
+          "comment": "Read a native YAML region from a three-dash opening fence to the first qualifying unindented closing fence. Follows railroad.md#native-hidden-forms."
         },
         {
           "include": "#hidden-directive",
-          "comment": "Read a native hidden directive. Follows railroad.md#native-hidden-forms."
+          "comment": "Read a native ignored percent-brace region through its earliest brace-percent closer with a following whitespace or end-of-input boundary. Follows railroad.md#native-hidden-forms."
         },
         {
           "include": "#native-percent-comment",
-          "comment": "Read native percent comments. Follows railroad.md#native-comments."
+          "comment": "Read a native percent-pair comment up to physical line end or a separator-led common comment. Follows railroad.md#native-comments."
         },
         {
           "include": "#railroad-c-comment"
@@ -153,15 +153,15 @@
           }
         },
         {
-          "include": "#common-statements",
-          "comment": "Read title and accessibility metadata. Follows railroad.md#metadata-units."
+          "include": "#common-statements-at-unit",
+          "comment": "Read title lines and the colon-led or braced forms of accessibility metadata. Follows railroad.md#metadata-units."
         },
         {
           "comment": "Read special-sequence text, retaining directives and entities. Follows railroad.md#ebnf-units and common.md#a-directive-is-a-token-boundary.",
           "match": "(\\?)((?={{gap}}(?:{{entity}}|(?!{{directiveStart}})[^{{ws}}?;]))(?:(?!{{separatorCommentEnd}})(?:{{directive}}|{{entity}}|(?!{{directiveStart}})[^?;\\r\\n]))+)(\\?)",
           "captures": {
             "1": {
-              "name": "punctuation.definition.special-sequence.begin.mermaid"
+              "name": "keyword.operator.delimiter.special-sequence.begin.mermaid"
             },
             "2": {
               "name": "string.unquoted.mermaid",
@@ -172,7 +172,7 @@
               ]
             },
             "3": {
-              "name": "punctuation.definition.special-sequence.end.mermaid"
+              "name": "keyword.operator.delimiter.special-sequence.end.mermaid"
             }
           }
         },
@@ -184,19 +184,19 @@
               "name": "keyword.operator.mermaid"
             },
             "2": {
-              "name": "punctuation.separator.rule.mermaid"
+              "name": "keyword.operator.separator.rule.mermaid"
             },
             "3": {
               "name": "keyword.operator.mermaid"
             },
             "4": {
-              "name": "punctuation.separator.comma.mermaid"
+              "name": "keyword.operator.separator.comma.mermaid"
             },
             "5": {
-              "name": "punctuation.section.group.begin.mermaid"
+              "name": "keyword.operator.bracket.group.begin.mermaid"
             },
             "6": {
-              "name": "punctuation.section.group.end.mermaid"
+              "name": "keyword.operator.bracket.group.end.mermaid"
             },
             "7": {
               "name": "keyword.operator.mermaid"
@@ -214,7 +214,7 @@
       ]
     },
     "railroad-abnf": {
-      "comment": "Read the lowercase ABNF header and its following boundary. Follows railroad.md#shared-scanning-and-header-boundaries.",
+      "comment": "Read the lowercase railroad-abnf-beta header before whitespace, a percent pair or end of input, then enter its ABNF body. Follows detection.md#the-detectors, railroad.md#detection, and railroad.md#shared-scanning-and-header-boundaries.",
       "begin": "{{diagramStart}}(railroad-abnf-beta){{railroad-header-end}}",
       "beginCaptures": {
         "1": {
@@ -245,15 +245,15 @@
         },
         {
           "include": "#hidden-yaml",
-          "comment": "Read native hidden YAML. Follows railroad.md#native-hidden-forms."
+          "comment": "Read a native YAML region from a three-dash opening fence to the first qualifying unindented closing fence. Follows railroad.md#native-hidden-forms."
         },
         {
           "include": "#hidden-directive",
-          "comment": "Read a native hidden directive. Follows railroad.md#native-hidden-forms."
+          "comment": "Read a native ignored percent-brace region through its earliest brace-percent closer with a following whitespace or end-of-input boundary. Follows railroad.md#native-hidden-forms."
         },
         {
           "include": "#native-percent-comment",
-          "comment": "Read native percent comments. Follows railroad.md#native-comments."
+          "comment": "Read a native percent-pair comment up to physical line end or a separator-led common comment. Follows railroad.md#native-comments."
         },
         {
           "comment": "Read ABNF semicolon comments when longer than a terminator. Follows railroad.md#native-comments.",
@@ -267,8 +267,8 @@
           ]
         },
         {
-          "include": "#common-statements",
-          "comment": "Read title and accessibility metadata. Follows railroad.md#metadata-units."
+          "include": "#common-statements-at-unit",
+          "comment": "Read title lines and the colon-led or braced forms of accessibility metadata. Follows railroad.md#metadata-units."
         },
         {
           "comment": "Read ABNF repeat bounds and a separate repeat operator. Follows railroad.md#abnf-units and railroad.md#common-directive-and-semicolon-boundaries.",
@@ -310,16 +310,16 @@
               "name": "keyword.operator.mermaid"
             },
             "2": {
-              "name": "punctuation.separator.rule.mermaid"
+              "name": "keyword.operator.separator.rule.mermaid"
             },
             "3": {
               "name": "keyword.operator.mermaid"
             },
             "4": {
-              "name": "punctuation.section.group.begin.mermaid"
+              "name": "keyword.operator.bracket.group.begin.mermaid"
             },
             "5": {
-              "name": "punctuation.section.group.end.mermaid"
+              "name": "keyword.operator.bracket.group.end.mermaid"
             }
           }
         },
@@ -335,7 +335,7 @@
       ]
     },
     "railroad-peg": {
-      "comment": "Read the lowercase PEG header and its following boundary. Follows railroad.md#shared-scanning-and-header-boundaries.",
+      "comment": "Read the lowercase railroad-peg-beta header before whitespace, a percent pair or end of input, then enter its PEG body. Follows detection.md#the-detectors, railroad.md#detection, and railroad.md#shared-scanning-and-header-boundaries.",
       "begin": "{{diagramStart}}(railroad-peg-beta){{railroad-header-end}}",
       "beginCaptures": {
         "1": {
@@ -352,15 +352,15 @@
         },
         {
           "include": "#hidden-yaml",
-          "comment": "Read native hidden YAML. Follows railroad.md#native-hidden-forms."
+          "comment": "Read a native YAML region from a three-dash opening fence to the first qualifying unindented closing fence. Follows railroad.md#native-hidden-forms."
         },
         {
           "include": "#hidden-directive",
-          "comment": "Read a native hidden directive. Follows railroad.md#native-hidden-forms."
+          "comment": "Read a native ignored percent-brace region through its earliest brace-percent closer with a following whitespace or end-of-input boundary. Follows railroad.md#native-hidden-forms."
         },
         {
           "include": "#native-percent-comment",
-          "comment": "Read native percent comments. Follows railroad.md#native-comments."
+          "comment": "Read a native percent-pair comment up to physical line end or a separator-led common comment. Follows railroad.md#native-comments."
         },
         {
           "comment": "Read PEG hash comments outside entities. Follows railroad.md#native-comments.",
@@ -374,8 +374,8 @@
           ]
         },
         {
-          "include": "#common-statements",
-          "comment": "Read title and accessibility metadata. Follows railroad.md#metadata-units."
+          "include": "#common-statements-at-unit",
+          "comment": "Read title lines and the colon-led or braced forms of accessibility metadata. Follows railroad.md#metadata-units."
         },
         {
           "comment": "Read operators, separators and grouping delimiters. Follows railroad.md#peg-units.",
@@ -385,7 +385,7 @@
               "name": "keyword.operator.arrow.mermaid"
             },
             "2": {
-              "name": "punctuation.separator.rule.mermaid"
+              "name": "keyword.operator.separator.rule.mermaid"
             },
             "3": {
               "name": "keyword.operator.mermaid"
@@ -397,10 +397,10 @@
               "name": "keyword.operator.mermaid"
             },
             "6": {
-              "name": "punctuation.section.group.begin.mermaid"
+              "name": "keyword.operator.bracket.group.begin.mermaid"
             },
             "7": {
-              "name": "punctuation.section.group.end.mermaid"
+              "name": "keyword.operator.bracket.group.end.mermaid"
             },
             "8": {
               "name": "keyword.operator.mermaid"

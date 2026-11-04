@@ -6,7 +6,7 @@
   ],
   "repository": {
     "class": {
-      "comment": "Detection.md entry 9: `classDiagram`, exact. The grammar then reads the header keyword again, `classDiagram-v2` or `classDiagram`, not followed by a word character. Follows class.md#detection.",
+      "comment": "Read classDiagram-v2 or classDiagram at a word boundary, then retain the class diagram context. Follows detection.md#the-detectors and class.md#detection.",
       "begin": "{{diagramStart}}(classDiagram-v2|classDiagram){{wordEnd}}",
       "beginCaptures": {
         "1": {
@@ -54,7 +54,7 @@
       ]
     },
     "class-direction": {
-      "comment": "TB, BT, RL and LR are tried in this order, at the last direction for that value; the surrounding runs are direction-text. directives inside direction-text join its parts; between direction and the value they are trivia. A directive is read whole, so its argument cannot supply direction or its value. Runs stop before separator-led common comments, and padding never consumes their separator. Follows class.md#the-statement-context.",
+      "comment": "Read a direction line by testing TB, BT, RL and LR and selecting the last occurrence for the selected value. Other text on the line retains its direction-text scope. Directives cannot supply a direction token, and separator-led comments stop text and padding. Follows class.md#the-statement-context and common.md#comment-lines.",
       "match": "{{class-direction-head}}(TB)({{class-direction-tail}})|{{class-direction-head}}(BT)({{class-direction-tail}})|{{class-direction-head}}(RL)({{class-direction-tail}})|{{class-direction-head}}(LR)({{class-direction-tail}})",
       "captures": {
         "1": {
@@ -168,7 +168,7 @@
       }
     },
     "class-comment": {
-      "comment": "Rule 2: A native percent pair starts a comment through line feed; permits directives between the mark characters and inside comment text. End before a separator-led common comment, whose following directives remain comment text. Follows class.md#the-statement-context.",
+      "comment": "Read a native percent comment through physical line end, retaining directives within its mark and body. A separator-led common comment starts a separate region. Follows class.md#the-statement-context and common.md#comment-lines.",
       "match": "{{nonDirectivePercentPair}}(?:{{directive}}|(?!{{directiveStart}}|{{lineValueEnd}})[^\\r\\n])*",
       "name": "comment.line.percentage.mermaid",
       "captures": {
@@ -182,7 +182,7 @@
       }
     },
     "class-declaration": {
-      "comment": "Rule 14 and the bounded keyword class enters the class context, which reads strings, whitespace, a member body and the shared rules until a line feed; } can also close a namespace. Follows class.md#the-statement-context.",
+      "comment": "Read a bounded class keyword and its declaration context through line end. That context admits names, strings, a member body and shared units; a closing brace may instead finish the enclosing namespace. Follows class.md#the-statement-context and class.md#the-class-context.",
       "begin": "(class){{wordEnd}}",
       "beginCaptures": {
         "1": {
@@ -206,7 +206,7 @@
       ]
     },
     "class-namespace": {
-      "comment": "And namespace enters the name context; { enters a body holding class statements, notes and nested namespaces, and } closes it. The header and body share only the rules listed there. Follows class.md#the-namespace-context and class.md#namespaces.",
+      "comment": "Read namespace and its name, followed by a braced body of class declarations, notes and nested namespaces. The header and body each include their permitted shared units. Follows class.md#the-namespace-context and class.md#namespaces.",
       "begin": "(namespace){{wordEnd}}",
       "beginCaptures": {
         "1": {
@@ -233,7 +233,7 @@
       ]
     },
     "class-members": {
-      "comment": "Read the class-members form. Follows class.md#the-member-context.",
+      "comment": "Read the braces of a member body and its member lines through the closing brace. Follows class.md#the-member-context.",
       "begin": "\\{",
       "beginCaptures": {
         "0": {
@@ -327,11 +327,11 @@
           }
         },
         {
-          "comment": "After a style's first colon, read the remaining physical line as one value, including commas, further colons, semicolons and description-looking text. Leave trailing whitespace and separator-led comments outside its scope. Follows class.md#other-statements, ast/class.md#classstylestatement.",
+          "comment": "After a style's first colon, read the remaining physical line as one value, including commas, further colons, semicolons and description-looking text. Leave trailing whitespace and separator-led comments outside its scope. Follows class.md#other-statements and ast/class.md#classstylestatement.",
           "begin": "(:)",
           "beginCaptures": {
             "1": {
-              "name": "punctuation.separator.key-value.mermaid"
+              "name": "keyword.operator.separator.key-value.mermaid"
             }
           },
           "end": "{{class-style-value-end}}",
@@ -346,7 +346,7 @@
           "include": "#class-comma"
         },
         {
-          "comment": "Read a style before its first colon or without a colon, ending at a comma or a following description block as well as the line boundary. Follows class.md#other-statements, ast/class.md#classstylestatement.",
+          "comment": "Read a style before its first colon or without a colon, ending at a comma or a following description block as well as the line boundary. Follows class.md#other-statements and ast/class.md#classstylestatement.",
           "begin": "(?![{{ws}}]|[:,;]|accDescr{{gap}}\\{|{{directiveStart}}|{{separatorCommentEnd}})(?=.)",
           "end": "{{class-style-bare-end}}",
           "contentName": "support.constant.property-value.mermaid",
@@ -406,20 +406,20 @@
           "include": "#class-label"
         },
         {
-          "comment": "Item 2: << and >> are units named by their text. Follows class.md#the-shared-rules.",
+          "comment": "Read a class annotation's angle-pair delimiters and free name, keeping directives separate. Follows class.md#the-shared-rules and class.md#members-and-annotations.",
           "begin": "<<",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.definition.annotation.begin.mermaid"
+              "name": "keyword.operator.delimiter.annotation.begin.mermaid"
             }
           },
           "end": ">>",
           "endCaptures": {
             "0": {
-              "name": "punctuation.definition.annotation.end.mermaid"
+              "name": "keyword.operator.delimiter.annotation.end.mermaid"
             }
           },
-          "contentName": "storage.modifier.mermaid",
+          "contentName": "entity.name.type.mermaid",
           "patterns": [
             {
               "include": "#directive"
@@ -454,24 +454,24 @@
           ]
         },
         {
-          "comment": "Item 10: ::: is a unit named by its text. Follows class.md#the-shared-rules.",
+          "comment": "Read a triple colon introducing a class suffix. Follows class.md#the-shared-rules.",
           "match": ":::",
-          "name": "punctuation.separator.class.mermaid"
+          "name": "keyword.operator.separator.class.mermaid"
         },
         {
-          "comment": "Item 13: [ and ] are units named by their text. Follows class.md#the-shared-rules.",
+          "comment": "Read square brackets around a class label. Follows class.md#the-shared-rules.",
           "match": "(\\[)|(\\])",
           "captures": {
             "1": {
-              "name": "punctuation.definition.label.begin.mermaid"
+              "name": "keyword.operator.delimiter.label.begin.mermaid"
             },
             "2": {
-              "name": "punctuation.definition.label.end.mermaid"
+              "name": "keyword.operator.delimiter.label.end.mermaid"
             }
           }
         },
         {
-          "comment": "Rule 3 and rule 7: whitespace lies between name parts and belongs to no unit. Follows class.md#units-and-contexts.",
+          "comment": "Read spacing between parts of a name without assigning it a unit scope. Follows class.md#units-and-contexts.",
           "match": "(?:(?!{{separatorCommentEnd}})[{{ws}}])+"
         },
         {
@@ -540,13 +540,13 @@
       "begin": "~",
       "beginCaptures": {
         "0": {
-          "name": "punctuation.definition.generic.begin.mermaid"
+          "name": "keyword.operator.delimiter.generic.begin.mermaid"
         }
       },
       "end": "~",
       "endCaptures": {
         "0": {
-          "name": "punctuation.definition.generic.end.mermaid"
+          "name": "keyword.operator.delimiter.generic.end.mermaid"
         }
       },
       "patterns": [
@@ -573,11 +573,11 @@
       ]
     },
     "class-label": {
-      "comment": "Item 9: colon and one or more characters other than colon, semicolon and line feed make a label; percent pairs and keyword-like words are label text. Follows class.md#the-shared-rules.",
+      "comment": "Read a relation label after its colon, allowing percent pairs and keyword spellings as text. Another colon, semicolon or physical line end stops the run. Follows class.md#the-shared-rules.",
       "begin": "(:)(?={{directives}}(?:{{entity}}|[^:;\\r\\n]))",
       "beginCaptures": {
         "1": {
-          "name": "punctuation.separator.colon.mermaid"
+          "name": "keyword.operator.separator.colon.mermaid"
         }
       },
       "end": "(?=[:;]|$)",
@@ -613,7 +613,7 @@
       "end": "(\\))",
       "endCaptures": {
         "1": {
-          "name": "punctuation.section.arguments.end.mermaid"
+          "name": "keyword.operator.bracket.arguments.end.mermaid"
         }
       },
       "patterns": [
@@ -643,7 +643,7 @@
       ]
     },
     "class-acc-descr-block": {
-      "comment": "Read the class-acc-descr-block form. Follows class.md#the-statement-context.",
+      "comment": "Read an accDescr keyword and brace-delimited accessibility description, retaining directives in its padding. Follows class.md#the-statement-context and class.md#accessibility-values.",
       "begin": "(accDescr)({{class-value-padding}})(\\{)({{class-value-padding}})",
       "beginCaptures": {
         "1": {
@@ -657,7 +657,7 @@
           ]
         },
         "3": {
-          "name": "punctuation.definition.description.begin.mermaid"
+          "name": "keyword.operator.delimiter.description.begin.mermaid"
         },
         "4": {
           "patterns": [
@@ -670,7 +670,7 @@
       "end": "(\\})",
       "endCaptures": {
         "1": {
-          "name": "punctuation.definition.description.end.mermaid"
+          "name": "keyword.operator.delimiter.description.end.mermaid"
         }
       },
       "patterns": [
@@ -697,7 +697,7 @@
       ]
     },
     "class-accessibility-line": {
-      "comment": "Read the class-accessibility-line form. Follows class.md#the-statement-context and class.md#accessibility-values.",
+      "comment": "Read a colon-led accTitle or accDescr value with its surrounding padding. The value extends through physical line end unless a common-comment boundary intervenes. Follows class.md#the-statement-context and class.md#accessibility-values.",
       "begin": "(accTitle|accDescr)({{class-value-padding}})(:)({{class-value-padding}})",
       "beginCaptures": {
         "1": {
@@ -711,7 +711,7 @@
           ]
         },
         "3": {
-          "name": "punctuation.separator.colon.mermaid"
+          "name": "keyword.operator.separator.colon.mermaid"
         },
         "4": {
           "patterns": [
@@ -732,7 +732,7 @@
     "class-comma": {
       "comment": "Commas separate classDef names and styles. Follows class.md#the-statement-context.",
       "match": ",",
-      "name": "punctuation.separator.comma.mermaid"
+      "name": "keyword.operator.separator.comma.mermaid"
     },
     "class-namespace-body": {
       "comment": "Only the body enables class declarations; namespace names use the namespace context and shared rules. Follows class.md#the-namespace-body-context.",
@@ -767,7 +767,7 @@
       ]
     },
     "class-method-segment": {
-      "comment": "Within a method line, divide its first divisible segment at the last noninitial opening parenthesis before its last closing parenthesis; earlier parentheses are name or parameter text. The enclosing method-line rule has classified the whole member, so an attribute cannot enter this rule. A directive is trivia and not diagram text. Try the segment before the standalone directive so leading directives remain available to its padding capture. Follows class.md#member-lines.",
+      "comment": "Read the first divisible segment of a method member, splitting at the final noninitial opening parenthesis before its last closer. Earlier parentheses stay in its name or parameters. The enclosing member classifier excludes attributes; this alternative precedes standalone directives so the leading padding capture can retain them. Follows class.md#member-lines.",
       "begin": "(?:\\G|(?<=[{{separators}}])){{class-method}}",
       "beginCaptures": {
         "1": {
@@ -789,7 +789,7 @@
           ]
         },
         "4": {
-          "name": "punctuation.section.arguments.begin.mermaid"
+          "name": "keyword.operator.bracket.arguments.begin.mermaid"
         },
         "5": {
           "name": "string.unquoted.mermaid",
@@ -800,7 +800,7 @@
           ]
         },
         "6": {
-          "name": "punctuation.section.arguments.end.mermaid"
+          "name": "keyword.operator.bracket.arguments.end.mermaid"
         }
       },
       "end": "{{class-member-end}}",
@@ -812,8 +812,8 @@
           "include": "#directive"
         },
         {
-          "comment": "Read the classifier and return type after the method's last closing parenthesis, retaining directives in trailing whitespace. Follows class.md#member-lines, common.md#a-directive-is-a-token-boundary.",
-          "match": "\\G([$*])?({{class-value-padding}})((?:{{class-member-segment-character}})*?)(?(1)|([$*])?)({{class-value-padding}})(?=[{{separators}}]|{{class-member-end}})",
+          "comment": "Read a classifier immediately after the method's closing parenthesis, followed by its return type. A classifier-like character at the end remains type text, and directives in padding retain their scopes. Follows class.md#member-lines and common.md#a-directive-is-a-token-boundary.",
+          "match": "\\G([$*])({{class-value-padding}})((?:{{class-member-segment-character}})*?)({{class-value-padding}})(?=[{{separators}}]|{{class-member-end}})",
           "captures": {
             "1": {
               "name": "storage.modifier.mermaid"
@@ -834,9 +834,37 @@
               ]
             },
             "4": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Read a method return type with an optional trailing classifier when no classifier immediately follows the closing parenthesis. Directives in padding retain their scopes. Follows class.md#member-lines and common.md#a-directive-is-a-token-boundary.",
+          "match": "\\G({{class-value-padding}})((?:{{class-member-segment-character}})*?)([$*])?({{class-value-padding}})(?=[{{separators}}]|{{class-member-end}})",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
+              "name": "entity.name.type.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
               "name": "storage.modifier.mermaid"
             },
-            "5": {
+            "4": {
               "patterns": [
                 {
                   "include": "#directive"
@@ -901,7 +929,7 @@
       "end": "(\\()",
       "endCaptures": {
         "1": {
-          "name": "punctuation.section.arguments.begin.mermaid"
+          "name": "keyword.operator.bracket.arguments.begin.mermaid"
         }
       },
       "patterns": [
@@ -931,7 +959,7 @@
       "comment": "Divide member text identically in a member statement and a class body, after its enclosing rule has bounded the text. Follows class.md#member-lines.",
       "patterns": [
         {
-          "comment": "Read a member annotation with directives in its leading and trailing whitespace, retaining its annotation text. Follows class.md#member-lines, common.md#a-directive-is-a-token-boundary.",
+          "comment": "Read a member annotation's free name and delimiters, retaining directives in its name and surrounding whitespace. Follows class.md#member-lines and common.md#a-directive-is-a-token-boundary.",
           "match": "({{class-value-padding}})(<<)((?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\r\\n])*?)(>>)({{class-value-padding}}){{class-member-end}}",
           "captures": {
             "1": {
@@ -942,10 +970,10 @@
               ]
             },
             "2": {
-              "name": "punctuation.definition.annotation.begin.mermaid"
+              "name": "keyword.operator.delimiter.annotation.begin.mermaid"
             },
             "3": {
-              "name": "storage.modifier.mermaid",
+              "name": "entity.name.type.mermaid",
               "patterns": [
                 {
                   "include": "#directive"
@@ -953,7 +981,7 @@
               ]
             },
             "4": {
-              "name": "punctuation.definition.annotation.end.mermaid"
+              "name": "keyword.operator.delimiter.annotation.end.mermaid"
             },
             "5": {
               "patterns": [
@@ -1006,7 +1034,7 @@
               "include": "#directive"
             },
             {
-              "comment": "Read an attribute's visibility, name and classifier, retaining directives in trailing whitespace. Follows class.md#member-lines, common.md#a-directive-is-a-token-boundary.",
+              "comment": "Read an attribute's visibility, name and classifier, retaining directives in trailing whitespace. Follows class.md#member-lines and common.md#a-directive-is-a-token-boundary.",
               "match": "\\G({{class-value-padding}})([+#~\\-])?((?:{{class-member-character}})*?)([$*])?({{class-value-padding}}){{class-member-end}}",
               "captures": {
                 "1": {
@@ -1048,7 +1076,7 @@
       "match": "(:)((?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^:;\\r\\n])+)",
       "captures": {
         "1": {
-          "name": "punctuation.separator.colon.mermaid"
+          "name": "keyword.operator.separator.colon.mermaid"
         },
         "2": {
           "patterns": [

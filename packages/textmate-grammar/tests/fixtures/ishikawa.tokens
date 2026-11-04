@@ -21,9 +21,9 @@
   "  #amp; %% remains text" string.unquoted.mermaid
 > Root%%{wrap}%%%% stays text
   "Root" string.unquoted.mermaid
-  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
   "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
   "%% stays text" string.unquoted.mermaid
 > %% common %%{wrap}%%
   "%% common %%{wrap}%%" comment.line.percentage.mermaid

@@ -30,7 +30,7 @@
     ["init", "entity.name.function.directive.mermaid", 28],
     ["wrap", "entity.name.function.directive.mermaid", 29],
     ["  x", "string.unquoted.mermaid", 30],
-    ["}", "punctuation.section.data.end.mermaid", 31],
+    ["}", "keyword.operator.bracket.data.end.mermaid", 31],
     ["timeframe", "keyword.control.mermaid", 17],
     ["resetframe", "keyword.control.mermaid", 18],
     ["readmodel", "keyword.control.mermaid", 19],
@@ -62,14 +62,14 @@
     ["Payload", "variable.mermaid", 1],
     ["Orders", "string.unquoted.mermaid", 0],
     ["\"id\": 1", "string.unquoted.mermaid", 1],
-    [".", "punctuation.separator.dot.mermaid"],
-    ["[[", "punctuation.section.brackets.begin.mermaid"],
-    ["]]", "punctuation.section.brackets.end.mermaid"],
-    ["{", "punctuation.section.data.begin.mermaid", 1],
-    ["}", "punctuation.section.data.end.mermaid", 1],
-    ["{", "punctuation.definition.description.begin.mermaid", 25],
-    ["}", "punctuation.definition.description.end.mermaid", 25],
-    ["`", "punctuation.definition.tag.begin.mermaid", 4],
+    [".", "keyword.operator.separator.dot.mermaid"],
+    ["[[", "keyword.operator.bracket.brackets.begin.mermaid"],
+    ["]]", "keyword.operator.bracket.brackets.end.mermaid"],
+    ["{", "keyword.operator.bracket.data.begin.mermaid", 1],
+    ["}", "keyword.operator.bracket.data.end.mermaid", 1],
+    ["{", "keyword.operator.delimiter.description.begin.mermaid", 25],
+    ["}", "keyword.operator.delimiter.description.end.mermaid", 25],
+    ["`", "keyword.operator.delimiter.tag.begin.mermaid", 4],
     ["---", "comment.block.ignored.mermaid"],
     ["%%{!}%%", "comment.block.ignored.mermaid"],
     ["%% a comment line", "comment.line.percentage.mermaid"],
@@ -78,17 +78,19 @@
     ["json", "keyword.control.mermaid", 50],
     ["json", "keyword.control.mermaid", 51],
     ["json", "keyword.control.mermaid", 52],
-    ["`", "punctuation.definition.tag.begin.mermaid", 49],
-    ["`", "punctuation.definition.tag.begin.mermaid", 50],
-    ["`", "punctuation.definition.tag.begin.mermaid", 51],
-    ["`", "punctuation.definition.tag.begin.mermaid", 52],
+    ["`", "keyword.operator.delimiter.tag.begin.mermaid", 49],
+    ["`", "keyword.operator.delimiter.tag.begin.mermaid", 50],
+    ["`", "keyword.operator.delimiter.tag.begin.mermaid", 51],
+    ["`", "keyword.operator.delimiter.tag.begin.mermaid", 52],
     [" c ", "comment.block.mermaid", 49],
     [" c ", "comment.block.mermaid", 50],
     ["%%{!}%%", "comment.block.ignored.mermaid", 51],
     ["%%{!}%%", "comment.block.ignored.mermaid", 52],
     ["'", "string.quoted.single.mermaid", 48],
     ["'", "punctuation.definition.string.begin.mermaid", 48],
-    ["\"", "string.quoted.double.mermaid", 28]
+    ["\"", "string.quoted.double.mermaid", 28],
+    ["accTitle", "keyword.control.mermaid"],
+    [" Inline title", "string.unquoted.mermaid"]
   ],
   "absent": [
     ["init", "string.quoted.double.mermaid", 28],
@@ -110,10 +112,10 @@
         ["accDescr", "keyword.control.mermaid", 1],
         [" a\u2028%% description comment", "string.unquoted.mermaid", 1],
         ["b ", "string.unquoted.mermaid", 2],
-        ["{", "punctuation.section.data.begin.mermaid", 3],
+        ["{", "keyword.operator.bracket.data.begin.mermaid", 3],
         ["  a\u2029%% data comment", "string.unquoted.mermaid", 4],
         ["b", "string.unquoted.mermaid", 5],
-        ["}", "punctuation.section.data.end.mermaid", 6],
+        ["}", "keyword.operator.bracket.data.end.mermaid", 6],
         ["accTitle", "keyword.control.mermaid", 7],
         ["wrap", "entity.name.function.directive.mermaid", 7],
         ["wrap", "entity.name.function.directive.mermaid", 6],
@@ -176,47 +178,47 @@
     {
       "code": "eventmodeling tf 01 evt A `/* c */\u2028json\u00A0/* c */` {}",
       "scopes": [
-        ["`", "punctuation.definition.tag.begin.mermaid"],
+        ["`", "keyword.operator.delimiter.tag.begin.mermaid"],
         ["json", "keyword.control.mermaid"],
         [" c ", "comment.block.mermaid"],
-        ["{", "punctuation.section.data.begin.mermaid"]
+        ["{", "keyword.operator.bracket.data.begin.mermaid"]
       ],
       "absent": [["json", "variable.mermaid"]]
     },
     {
       "code": "eventmodeling tf 01 evt A `// tag gap\njson` {}",
       "scopes": [
-        ["`", "punctuation.definition.tag.begin.mermaid", 0],
+        ["`", "keyword.operator.delimiter.tag.begin.mermaid", 0],
         ["//", "comment.line.double-slash.mermaid", 0],
         ["json", "keyword.control.mermaid", 1],
-        ["`", "punctuation.definition.tag.end.mermaid", 1]
+        ["`", "keyword.operator.delimiter.tag.end.mermaid", 1]
       ]
     },
     {
       "code": "eventmodeling tf 01 evt A `%% tag gap\njson` {}",
       "scopes": [
-        ["`", "punctuation.definition.tag.begin.mermaid", 0],
+        ["`", "keyword.operator.delimiter.tag.begin.mermaid", 0],
         ["%% tag gap", "comment.line.percentage.mermaid", 0],
         ["json", "keyword.control.mermaid", 1],
-        ["`", "punctuation.definition.tag.end.mermaid", 1]
+        ["`", "keyword.operator.delimiter.tag.end.mermaid", 1]
       ]
     },
     {
       "code": "eventmodeling tf 01 evt A `\n---\ntag: ignored\n---\njson` {}",
       "scopes": [
-        ["`", "punctuation.definition.tag.begin.mermaid", 0],
+        ["`", "keyword.operator.delimiter.tag.begin.mermaid", 0],
         ["tag: ignored", "comment.block.ignored.mermaid", 2],
         ["json", "keyword.control.mermaid", 4],
-        ["`", "punctuation.definition.tag.end.mermaid", 4]
+        ["`", "keyword.operator.delimiter.tag.end.mermaid", 4]
       ]
     },
     {
       "code": "eventmodeling tf 01 evt A `/* ` */json\n` {}",
       "scopes": [
-        ["`", "punctuation.definition.tag.begin.mermaid", 0],
+        ["`", "keyword.operator.delimiter.tag.begin.mermaid", 0],
         [" ` ", "comment.block.mermaid", 0],
         ["json", "keyword.control.mermaid", 0],
-        ["`", "punctuation.definition.tag.end.mermaid", 1]
+        ["`", "keyword.operator.delimiter.tag.end.mermaid", 1]
       ],
       "absent": [["json", "variable.mermaid", 0]]
     }

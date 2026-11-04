@@ -6,7 +6,7 @@
   ],
   "repository": {
     "venn": {
-      "comment": "Read the exact lowercase detector header and its keyword boundary. Follows venn.md#detection and venn.md#units-and-contexts.",
+      "comment": "Read venn-beta in lowercase with a word boundary before entering the set-diagram context. Follows detection.md#the-detectors and venn.md#detection.",
       "begin": "{{diagramStart}}(venn-beta){{wordEnd}}",
       "beginCaptures": {
         "1": {
@@ -15,6 +15,9 @@
       },
       "end": "(?!)",
       "patterns": [
+        {
+          "include": "#venn-line-final-keywords"
+        },
         {
           "include": "#comment-line"
         },
@@ -52,7 +55,7 @@
               ]
             },
             {
-              "comment": "Read a native diagram comment. Follows venn.md#units-and-contexts.",
+              "comment": "Read a native percent-pair comment up to physical line end or a separator-led common comment. Follows venn.md#units-and-contexts.",
               "include": "#native-percent-comment"
             }
           ]
@@ -105,7 +108,7 @@
               "begin": "(\\[)({{directives}})(\")",
               "beginCaptures": {
                 "1": {
-                  "name": "punctuation.definition.label.begin.mermaid"
+                  "name": "keyword.operator.delimiter.label.begin.mermaid"
                 },
                 "2": {
                   "patterns": [
@@ -131,7 +134,7 @@
                   ]
                 },
                 "3": {
-                  "name": "punctuation.definition.label.end.mermaid"
+                  "name": "keyword.operator.delimiter.label.end.mermaid"
                 }
               },
               "patterns": [
@@ -162,13 +165,13 @@
               "begin": "(\\[)(?={{directives}}[^\\]\"])",
               "beginCaptures": {
                 "1": {
-                  "name": "punctuation.definition.label.begin.mermaid"
+                  "name": "keyword.operator.delimiter.label.begin.mermaid"
                 }
               },
               "end": "(\\])|(?=\")",
               "endCaptures": {
                 "1": {
-                  "name": "punctuation.definition.label.end.mermaid"
+                  "name": "keyword.operator.delimiter.label.end.mermaid"
                 }
               },
               "patterns": [
@@ -247,10 +250,10 @@
           "match": "(,)|(:)",
           "captures": {
             "1": {
-              "name": "punctuation.separator.comma.mermaid"
+              "name": "keyword.operator.separator.comma.mermaid"
             },
             "2": {
-              "name": "punctuation.separator.colon.mermaid"
+              "name": "keyword.operator.separator.colon.mermaid"
             }
           }
         }
@@ -314,7 +317,7 @@
         },
         {
           "match": ",",
-          "name": "punctuation.separator.comma.mermaid",
+          "name": "keyword.operator.separator.comma.mermaid",
           "comment": "Read a target or property-list comma. Follows venn.md#units-and-contexts."
         }
       ]
@@ -334,7 +337,7 @@
           ]
         },
         "3": {
-          "name": "punctuation.separator.key-value.mermaid"
+          "name": "keyword.operator.separator.key-value.mermaid"
         },
         "4": {
           "patterns": [
@@ -376,7 +379,7 @@
       "applyEndPatternLast": true
     },
     "venn-style-rgb": {
-      "comment": "Read one RGB or RGBA style atom through its closing parenthesis across physical lines, keeping commas inside the value and inheriting its property-value scope. Follows venn.md#units-and-contexts, venn.md#styles.",
+      "comment": "Read one RGB or RGBA style atom through its closing parenthesis across physical lines, keeping commas inside the value and inheriting its property-value scope. Follows venn.md#units-and-contexts and venn.md#styles.",
       "begin": "{{venn-rgb-start}}",
       "end": "\\)",
       "patterns": [
@@ -387,6 +390,22 @@
           "include": "#directive"
         }
       ]
+    },
+    "venn-line-final-keywords": {
+      "comment": "Read a reserved keyword at a statement start when only padding and directives follow on its physical line. A value on a later line receives the surrounding context's scopes. Follows venn.md#units-and-contexts and common.md#a-directive-is-a-token-boundary.",
+      "match": "({{commonStatementStart}})((?i:title))(?={{lineGap}}$)",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.control.mermaid"
+        }
+      }
     }
   },
   "variables": {

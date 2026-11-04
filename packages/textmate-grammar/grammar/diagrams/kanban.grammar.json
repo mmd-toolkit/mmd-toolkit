@@ -6,7 +6,7 @@
   ],
   "repository": {
     "kanban": {
-      "comment": "Read the kanban header and its body. Follows kanban.md#detection and common.md#leading-whitespace.",
+      "comment": "Read the lowercase kanban header without taking a word suffix, then enter the node-line context. Follows detection.md#the-detectors and kanban.md#detection.",
       "begin": "{{diagramStart}}(kanban){{wordEnd}}",
       "beginCaptures": {
         "1": {
@@ -46,7 +46,7 @@
           "include": "#kanban-data-block"
         },
         {
-          "comment": "`:::`: enters the class context. A class starts with `:::`. It takes the nonempty rest of its line segment as `class-text`, whitespace included. line = node data-block* | icon-line | class-line; icon and class lines start after indentation. Indentation counts every whitespace character other than a line feed once. Follows kanban.md#the-icon-and-class-contexts and kanban.md#units-and-contexts.",
+          "comment": "Read a class annotation at an indented line start after its triple-colon marker. The rest of the line segment, including its whitespace and directives, is class text. Follows kanban.md#the-icon-and-class-contexts and kanban.md#units-and-contexts.",
           "match": "({{kanban-indentation}})(:::)([^\\n{{separators}}]*)",
           "captures": {
             "1": {
@@ -57,7 +57,7 @@
               ]
             },
             "2": {
-              "name": "punctuation.separator.class.mermaid"
+              "name": "keyword.operator.separator.class.mermaid"
             },
             "3": {
               "name": "variable.mermaid",
@@ -70,8 +70,8 @@
           }
         },
         {
-          "comment": "Read the icon opener as one keyword and its retained name as text, ending at the icon bracket. Follows kanban.md#the-icon-and-class-contexts.",
-          "begin": "({{kanban-indentation}})((?i:::icon)\\()",
+          "comment": "Read the icon form only with its opening parenthesis, giving the marker, brackets and retained name their own scopes. Follows kanban.md#the-icon-and-class-contexts.",
+          "begin": "({{kanban-indentation}})((?i:::icon))(\\()",
           "beginCaptures": {
             "1": {
               "patterns": [
@@ -82,12 +82,15 @@
             },
             "2": {
               "name": "keyword.control.mermaid"
+            },
+            "3": {
+              "name": "keyword.operator.bracket.icon.begin.mermaid"
             }
           },
           "end": "(\\))",
           "endCaptures": {
             "1": {
-              "name": "punctuation.section.icon.end.mermaid"
+              "name": "keyword.operator.bracket.icon.end.mermaid"
             }
           },
           "patterns": [
@@ -114,10 +117,17 @@
           ]
         },
         {
-          "comment": "An opener: `-)`, `(-`, `))`, `)`, `((`, `{{`, `(`, or `[`, tried in this order. It is an `opener` unit and enters the shape context. rule 3: A closer: `))`, `)`, `]`, `}}`, `(-`, `-)`, `((`, or `(`, tried in this order. It is a `closer` unit and leaves the shape context. Rule 4: A `shape-text` is one or more characters other than `)`, `]`, `(`, and `}`, as many as possible. Strings start only at a unit start, right after the opener; shape text keeps quotes after its first character and has no HTML rule. Follows kanban.md#the-statement-context and kanban.md#the-shape-context.",
-          "begin": "(-\\)|\\(-|\\)\\)|\\)|\\(\\(|\\{\\{|\\(|\\[)",
+          "comment": "Read a node shape with optional line-start indentation so a dash-parenthesis opener wins before node text. Parenthesis, brace and square-bracket shapes accept any permitted closer. Only a quote at the initial value position starts a string; later quotes and HTML-looking content stay shape text. Follows kanban.md#the-statement-context and kanban.md#the-shape-context.",
+          "begin": "({{kanban-indentation}})?(-\\)|\\(-|\\)\\)|\\)|\\(\\(|\\{\\{|\\(|\\[)",
           "beginCaptures": {
             "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
               "name": "keyword.operator.shape.begin.mermaid"
             }
           },
@@ -193,7 +203,7 @@
       ]
     },
     "kanban-shape-text": {
-      "comment": "Shape text takes as many characters other than ), ], (, and } as possible; quotes after its first character and percent pairs are text. Directives inside this text join its parts. Follows kanban.md#the-shape-context and common.md#a-directive-is-a-token-boundary.",
+      "comment": "Read ordinary shape content until a parenthesis, closing square bracket or closing brace. Quotes and percent pairs after the run starts remain text, and directives join its fragments. Follows kanban.md#the-shape-context and common.md#a-directive-is-a-token-boundary.",
       "begin": "(?=[^)\\](}])",
       "end": "(?=[)\\](}])",
       "patterns": [
@@ -224,13 +234,13 @@
       "begin": "(@\\{)",
       "beginCaptures": {
         "1": {
-          "name": "punctuation.section.data.begin.mermaid"
+          "name": "keyword.operator.bracket.data.begin.mermaid"
         }
       },
       "end": "(\\})",
       "endCaptures": {
         "1": {
-          "name": "punctuation.section.data.end.mermaid"
+          "name": "keyword.operator.bracket.data.end.mermaid"
         }
       },
       "patterns": [

@@ -67,7 +67,8 @@ function commit(repo, filePath) {
 
 /** Build an isolated repository, hook temp directory and unique session. */
 function setup() {
-  const temporary = realpathSync(
+  // The native resolver expands Windows 8.3 names, as git does for its top level.
+  const temporary = realpathSync.native(
     mkdtempSync(path.join(os.tmpdir(), "proper-form-test-")),
   )
   temporaryDirs.push(temporary)
@@ -76,6 +77,7 @@ function setup() {
   mkdirSync(repo)
   mkdirSync(tmpdir)
   git(repo, ["init", "--quiet"])
+  git(repo, ["config", "core.autocrlf", "false"])
   write(repo, "AGENTS.md", agents)
   write(repo, "existing.txt", "existing file\n")
   commit(repo, "existing.txt")
@@ -218,6 +220,27 @@ it("allows an edit of an existing tracked file", () => {
   record(fixture, "Edit", fileInput("existing.txt"))
   write(fixture.repo, "existing.txt", "edited\n")
   allowed(fixture, check(fixture))
+})
+
+it("keeps LF edits silent when the system git configuration enables CRLF conversion", () => {
+  const fixture = setup()
+  const systemConfig = path.join(fixture.tmpdir, "system.gitconfig")
+  writeFileSync(systemConfig, "[core]\n\tautocrlf = true\n")
+  record(fixture, "Edit", fileInput("existing.txt"))
+  write(fixture.repo, "existing.txt", "edited\n")
+  const result = spawnSync(process.execPath, [script, "check"], {
+    cwd: fixture.repo,
+    encoding: "utf8",
+    env: {
+      TMPDIR: fixture.tmpdir,
+      TMP: fixture.tmpdir,
+      TEMP: fixture.tmpdir,
+      GIT_CONFIG_SYSTEM: systemConfig,
+      GIT_CONFIG_GLOBAL: path.join(fixture.tmpdir, "absent-global-config"),
+    },
+    input: inputFor(fixture, '{"last_assistant_message":"Done."}'),
+  })
+  allowed(fixture, result)
 })
 
 it("attributes a Bash creation and ignores a file no input names", () => {

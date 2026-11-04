@@ -21,7 +21,7 @@
   ],
   "repository": {
     "state": {
-      "comment": "Detection.md entry 20: `stateDiagram`, exact. The lexer then reads the header again, case-insensitively and followed by whitespace. So `stateDiagram-V2` is a header. Follows state.md#detection.",
+      "comment": "Read stateDiagram, optionally followed by a case-insensitive -v2 suffix, before whitespace or end of input. Follows detection.md#the-detectors and state.md#detection.",
       "begin": "{{diagramStart}}(stateDiagram(?i:-v2)?)(?={{directives}}(?:[{{ws}}]|$))",
       "beginCaptures": {
         "1": {
@@ -31,13 +31,16 @@
       "end": "(?!)",
       "patterns": [
         {
+          "include": "#state-line-final-keywords"
+        },
+        {
           "include": "#comment-line"
         },
         {
           "include": "#directive"
         },
         {
-          "comment": "Rules 1 and 2: bounded click and href are keyword units; strings precede direction lines. Follows state.md#the-statement-context.",
+          "comment": "Read bounded click and href keywords before attempting a direction line. Follows state.md#the-statement-context.",
           "match": "(?i:click|href){{wordEnd}}",
           "name": "keyword.control.mermaid"
         },
@@ -60,7 +63,7 @@
           "include": "#state-scale"
         },
         {
-          "comment": "Rule 21: hide empty description, with exactly one space between words and a final word boundary, is the hide, empty and description-word units. Follows state.md#the-statement-context.",
+          "comment": "Read hide empty description with single ASCII spaces separating its words and a boundary after the last word. Follows state.md#the-statement-context.",
           "match": "((?i:hide))({{spaceSeparator}})((?i:empty))({{spaceSeparator}})((?i:description)){{wordEnd}}",
           "captures": {
             "1": {
@@ -103,7 +106,7 @@
       ]
     },
     "state-direction": {
-      "comment": "TB, BT, RL and LR are tried in this order, at the last direction for that value; the surrounding runs are direction-text. directives inside direction-text join its parts; between direction and the value they are trivia. A directive is read whole, so its argument cannot supply direction or its value. Runs stop before separator-led common comments, and padding never consumes their separator. Follows state.md#the-statement-context and common.md#comment-lines.",
+      "comment": "Read a direction line by selecting TB, BT, RL or LR and retaining the surrounding text. Directives join text fragments without supplying direction tokens; separator-led common comments stop text and padding. Follows state.md#the-statement-context and common.md#comment-lines.",
       "match": "(?i:{{state-direction-head}}(TB)({{state-direction-tail}})|{{state-direction-head}}(BT)({{state-direction-tail}})|{{state-direction-head}}(RL)({{state-direction-tail}})|{{state-direction-head}}(LR)({{state-direction-tail}}))",
       "captures": {
         "1": {
@@ -246,7 +249,7 @@
           }
         },
         {
-          "comment": "Rule 8: hash and the rest of the line are a diagram comment. Follows state.md#the-statement-context.",
+          "comment": "Read a hash-led native comment through physical line end. Follows state.md#the-statement-context.",
           "name": "comment.line.number-sign.mermaid",
           "match": "#(?:{{directive}}|(?!{{directiveStart}}|{{lineValueEnd}})[^\\r\\n])*",
           "captures": {
@@ -260,7 +263,7 @@
           }
         },
         {
-          "comment": "Rule 9: percent-percent not followed by { and the rest of its line are a diagram comment. Follows state.md#the-statement-context.",
+          "comment": "Read a native percent comment unless its mark is followed by an opening brace. Follows state.md#the-statement-context.",
           "name": "comment.line.percentage.mermaid",
           "match": "{{state-percent-comment}}",
           "captures": {
@@ -305,7 +308,7 @@
       }
     },
     "state-context-statements": {
-      "comment": "Rule 4: classDef, class, style and state precede the direction line in a composite body. Follows state.md#the-composite-body-context.",
+      "comment": "Read classDef, class, style and state contexts before the composite body's direction-line alternative. Follows state.md#the-composite-body-context.",
       "patterns": [
         {
           "include": "#state-style"
@@ -414,7 +417,7 @@
           "begin": "(:)",
           "beginCaptures": {
             "1": {
-              "name": "punctuation.separator.key-value.mermaid"
+              "name": "keyword.operator.separator.key-value.mermaid"
             }
           },
           "end": "{{state-style-value-end}}",
@@ -445,7 +448,7 @@
       ]
     },
     "state-class": {
-      "comment": "Class reads word ids separated by commas followed by optional whitespace, then the rest of the line as one css-class text, which can contain spaces and keywords. Follows state.md#the-classdef-class-and-style-contexts.",
+      "comment": "Read class and its state references, followed by the line's CSS-class text. Directives between complete names retain their scopes. Follows state.md#the-classdef-class-and-style-contexts.",
       "begin": "((?i:class))({{state-required-padding}})({{state-word}}(?:{{directives}},{{state-value-padding}}{{state-word}})*)",
       "beginCaptures": {
         "1": {
@@ -568,7 +571,7 @@
               "begin": ":(?!(?:{{directive}}|(?!{{directiveStart}}|{{nonDirectivePercentPair}})[^{\\r\\n])*\\{)",
               "beginCaptures": {
                 "0": {
-                  "name": "punctuation.separator.colon.mermaid"
+                  "name": "keyword.operator.separator.colon.mermaid"
                 }
               },
               "end": "{{state-alias-end}}",
@@ -620,7 +623,7 @@
           ]
         },
         {
-          "comment": "Rule 8: state-name is one or more characters other than line feed, whitespace and {; embedded percent pairs, quotes and keyword-like suffixes are name characters. Directives end a name run. Follows state.md#the-state-context.",
+          "comment": "Read a nonempty state name until whitespace or an opening brace. Percent pairs, quotes and keyword-like suffixes remain name characters, while a directive ends the current run. Follows state.md#the-state-context.",
           "match": "(?:(?!{{directiveStart}})[^{{ws}}\\r\\n{])+",
           "captures": {
             "0": {
@@ -728,7 +731,7 @@
       }
     },
     "state-body": {
-      "comment": "{ starts a composite body, } closes it, and its rules include comments, classDef, class, style, state, direction, notes, terminals, ids, descriptions, arrows, dividers and class separators. Root-only accessibility, click, scale and hide keywords are ids here. Follows state.md#the-composite-body-context.",
+      "comment": "Read a brace-delimited composite body, including nested bodies with the same statements, comments, directions, notes, terminals, ids, descriptions, arrows, dividers and class separators. Root-only accessibility, click, scale and hide keywords are ids here. Follows state.md#the-composite-body-context and state.md#composite-states-aliases-and-pseudostates.",
       "begin": "\\{",
       "beginCaptures": {
         "0": {
@@ -743,13 +746,16 @@
       },
       "patterns": [
         {
+          "include": "#state-line-final-keywords"
+        },
+        {
           "include": "#comment-line"
         },
         {
           "include": "#directive"
         },
         {
-          "comment": "Rule 1: whitespace other than line feed is read before comments, state statements and direction lines. Follows state.md#the-composite-body-context.",
+          "comment": "Read composite-body padding without consuming a physical line feed or a separator-led common-comment boundary. Follows state.md#the-composite-body-context.",
           "match": "(?:(?!{{separatorCommentEnd}})[{{lws}}])+"
         },
         {
@@ -765,9 +771,12 @@
           "include": "#state-notes"
         },
         {
-          "comment": "Rule 13: -- is a divider unit in a composite body. Follows state.md#the-composite-body-context.",
+          "comment": "Read the double-dash divider inside a composite body without taking a transition arrow. Follows state.md#the-composite-body-context.",
           "match": "--(?!{{directives}}>)",
-          "name": "punctuation.separator.divider.mermaid"
+          "name": "keyword.operator.separator.divider.mermaid"
+        },
+        {
+          "include": "#state-body"
         },
         {
           "include": "#state-units"
@@ -778,19 +787,19 @@
       "comment": "Read terminals, ids, descriptions, transition arrows and class separators. Follows state.md#states-and-transitions.",
       "patterns": [
         {
-          "comment": "Read the terminal state reference in an id position. Follows state.md#states-and-transitions.",
+          "comment": "Read the start or end state reference as a keyword in place of a state id. Follows state.md#states-and-transitions.",
           "match": "\\[\\*\\]",
-          "name": "variable.mermaid"
+          "name": "keyword.control.mermaid"
         },
         {
-          "comment": "Rule 25: --> is the transition arrow. Follows state.md#the-statement-context.",
+          "comment": "Read the dash-dash-greater-than transition operator. Follows state.md#the-statement-context.",
           "match": "-->",
           "name": "keyword.operator.arrow.mermaid"
         },
         {
-          "comment": "Rule 26: ::: is a class separator. Follows state.md#the-statement-context.",
+          "comment": "Read a triple colon introducing a state class suffix. Follows state.md#the-statement-context.",
           "match": ":::",
-          "name": "punctuation.separator.class.mermaid"
+          "name": "keyword.operator.separator.class.mermaid"
         },
         {
           "include": "#state-description"
@@ -812,11 +821,11 @@
       ]
     },
     "state-description": {
-      "comment": "Rule 24: colon introduces a description of non-colon/non-semicolon/non-line-feed characters or a colon followed by such a character; percent pairs, hashes and keywords are text. Follows state.md#the-statement-context.",
+      "comment": "Read a colon-led state description, including percent signs, hashes and keyword spellings as text. Embedded colons continue only with following description text; an unprotected semicolon or physical line end stops the run. Follows state.md#the-statement-context.",
       "begin": "(:)(?={{directives}}(?:{{entity}}|[^:;\\r\\n]|:{{directives}}(?:{{entity}}|[^:;\\r\\n])))",
       "beginCaptures": {
         "1": {
-          "name": "punctuation.separator.colon.mermaid"
+          "name": "keyword.operator.separator.colon.mermaid"
         }
       },
       "end": "{{lineValueEnd}}|(?=;|:{{state-colon-or-semicolon-end}})",
@@ -904,7 +913,7 @@
           ]
         },
         "13": {
-          "name": "punctuation.separator.colon.mermaid"
+          "name": "keyword.operator.separator.colon.mermaid"
         },
         "14": {
           "patterns": [
@@ -914,7 +923,7 @@
           ]
         },
         "15": {
-          "name": "punctuation.separator.colon.mermaid"
+          "name": "keyword.operator.separator.colon.mermaid"
         },
         "16": {
           "name": "comment.block.ignored.mermaid",
@@ -1133,7 +1142,7 @@
       ]
     },
     "state-acc-descr-block": {
-      "comment": "Read the state-acc-descr-block form. Follows state.md#the-statement-context.",
+      "comment": "Read accDescr with a brace-delimited accessibility description, retaining directives and padding around its opener. Follows state.md#the-statement-context and state.md#accessibility-values.",
       "begin": "((?i:accDescr))({{state-value-padding}})(\\{)({{state-value-padding}})",
       "beginCaptures": {
         "1": {
@@ -1147,7 +1156,7 @@
           ]
         },
         "3": {
-          "name": "punctuation.definition.description.begin.mermaid"
+          "name": "keyword.operator.delimiter.description.begin.mermaid"
         },
         "4": {
           "patterns": [
@@ -1160,7 +1169,7 @@
       "end": "(\\})",
       "endCaptures": {
         "1": {
-          "name": "punctuation.definition.description.end.mermaid"
+          "name": "keyword.operator.delimiter.description.end.mermaid"
         }
       },
       "patterns": [
@@ -1187,7 +1196,7 @@
       ]
     },
     "state-accessibility-line": {
-      "comment": "Read the state-accessibility-line form. Follows state.md#the-statement-context.",
+      "comment": "Read accTitle or accDescr followed by a colon and its line value, with directives retained in the surrounding padding. Follows state.md#the-statement-context and state.md#accessibility-values.",
       "begin": "((?i:accTitle|accDescr))({{state-value-padding}})(:)({{state-value-padding}})",
       "beginCaptures": {
         "1": {
@@ -1201,7 +1210,7 @@
           ]
         },
         "3": {
-          "name": "punctuation.separator.colon.mermaid"
+          "name": "keyword.operator.separator.colon.mermaid"
         },
         "4": {
           "patterns": [
@@ -1220,7 +1229,7 @@
       ]
     },
     "state-notes": {
-      "comment": "Rule 19 and #the-composite-body-context rule 8: note enters the positioned or floating note contexts; in a composite body it follows the direction line. Follows state.md#the-statement-context.",
+      "comment": "Read positioned and floating note forms. The composite body tries these contexts after its direction-line alternative. Follows state.md#the-statement-context, state.md#the-composite-body-context, and state.md#the-note-contexts.",
       "patterns": [
         {
           "include": "#state-note-line"
@@ -1236,7 +1245,7 @@
     "state-comma": {
       "comment": "Each comma among ids is an id-comma unit and each comma among styles is a comma unit. Follows state.md#the-classdef-class-and-style-contexts.",
       "match": ",",
-      "name": "punctuation.separator.comma.mermaid"
+      "name": "keyword.operator.separator.comma.mermaid"
     },
     "state-direction-text": {
       "comment": "Read the nonblank ignored text around a direction while retaining directives. Follows state.md#the-statement-context.",
@@ -1279,6 +1288,22 @@
           "comment": "Read the pseudostate kind. Follows state.md#the-state-context."
         }
       ]
+    },
+    "state-line-final-keywords": {
+      "comment": "Read a reserved keyword at a statement start when only padding and directives follow on its physical line. A value on a later line receives the surrounding context's scopes. Follows state.md#the-statement-context, state.md#the-composite-body-context, and common.md#a-directive-is-a-token-boundary.",
+      "match": "({{commonStatementStart}})((?i:class|classDef|style))(?={{lineGap}}$)",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.control.mermaid"
+        }
+      }
     }
   },
   "comment": "The local padding variables retain the whitespace required by this type's unit rules, stopping before separator-led comments. Text and context variables below name the corresponding rules of this diagram. Follows state.md#units-and-contexts."

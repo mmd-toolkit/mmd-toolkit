@@ -124,4 +124,23 @@ A["<b %%{init: >}%% t="]%% c ">
 classDef joined foo%%{wrap}%%style:red
 connector foo%%{wrap}%%style
 
+A[/a
+"b/]-->B[c]
+C[d]
+A[\a
+"b\]-->B[c]
+C[d]
+A[\a
+"b/]-->B[c]
+C[d]
+A[/a
+"b\]-->B[c]
+C[d]
+A[/"x"/]-->B[c]
+C[d]
+A[/a
+%% native
+"b/]-->B[c]
+C[d]
+class Node new:accDescr {}
 accDescr { open

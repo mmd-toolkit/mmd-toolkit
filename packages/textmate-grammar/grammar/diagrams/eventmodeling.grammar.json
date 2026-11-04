@@ -6,7 +6,7 @@
   ],
   "repository": {
     "eventmodeling": {
-      "comment": "Read the eventmodeling header and its required following boundary. Follows eventmodeling.md#header-boundary.",
+      "comment": "Read the eventmodeling header with its whitespace, percent-pair or end-of-input boundary. Follows detection.md#the-detectors and eventmodeling.md#detection.",
       "begin": "{{diagramStart}}(eventmodeling)(?={{directives}}(?:[{{ws}}]|%%|$))",
       "beginCaptures": {
         "1": {
@@ -15,6 +15,9 @@
       },
       "end": "(?!)",
       "patterns": [
+        {
+          "include": "#eventmodeling-line-final-keywords"
+        },
         {
           "include": "#eventmodeling-trivia"
         },
@@ -45,13 +48,13 @@
           "begin": "`",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.definition.tag.begin.mermaid"
+              "name": "keyword.operator.delimiter.tag.begin.mermaid"
             }
           },
           "end": "`",
           "endCaptures": {
             "0": {
-              "name": "punctuation.definition.tag.end.mermaid"
+              "name": "keyword.operator.delimiter.tag.end.mermaid"
             }
           },
           "patterns": [
@@ -73,13 +76,13 @@
               "name": "keyword.operator.arrow.mermaid"
             },
             "2": {
-              "name": "punctuation.section.brackets.begin.mermaid"
+              "name": "keyword.operator.bracket.brackets.begin.mermaid"
             },
             "3": {
-              "name": "punctuation.section.brackets.end.mermaid"
+              "name": "keyword.operator.bracket.brackets.end.mermaid"
             },
             "4": {
-              "name": "punctuation.separator.dot.mermaid"
+              "name": "keyword.operator.separator.dot.mermaid"
             }
           }
         },
@@ -94,7 +97,7 @@
           "name": "meta.data.mermaid",
           "captures": {
             "1": {
-              "name": "punctuation.section.data.begin.mermaid"
+              "name": "keyword.operator.bracket.data.begin.mermaid"
             },
             "2": {
               "name": "string.unquoted.mermaid",
@@ -105,7 +108,7 @@
               ]
             },
             "3": {
-              "name": "punctuation.section.data.end.mermaid"
+              "name": "keyword.operator.bracket.data.end.mermaid"
             }
           }
         },
@@ -147,11 +150,11 @@
           }
         },
         {
-          "comment": "Read block data through an unindented closing brace in the text without directives, retaining directives before that closer. Follows eventmodeling.md#data, common.md#a-directive-is-a-token-boundary.",
+          "comment": "Read block data through an unindented closing brace in the text without directives, retaining directives before that closer. Follows eventmodeling.md#data and common.md#a-directive-is-a-token-boundary.",
           "begin": "(\\{)({{asciiGap}})$",
           "beginCaptures": {
             "1": {
-              "name": "punctuation.section.data.begin.mermaid"
+              "name": "keyword.operator.bracket.data.begin.mermaid"
             },
             "2": {
               "patterns": [
@@ -171,7 +174,7 @@
               ]
             },
             "2": {
-              "name": "punctuation.section.data.end.mermaid"
+              "name": "keyword.operator.bracket.data.end.mermaid"
             }
           },
           "patterns": [
@@ -214,7 +217,7 @@
               ]
             },
             "4": {
-              "name": "punctuation.separator.colon.mermaid"
+              "name": "keyword.operator.separator.colon.mermaid"
             }
           },
           "end": "{{eventmodeling-line-value-end}}",
@@ -247,13 +250,13 @@
               ]
             },
             "4": {
-              "name": "punctuation.definition.description.begin.mermaid"
+              "name": "keyword.operator.delimiter.description.begin.mermaid"
             }
           },
           "end": "(\\})",
           "endCaptures": {
             "1": {
-              "name": "punctuation.definition.description.end.mermaid"
+              "name": "keyword.operator.delimiter.description.end.mermaid"
             }
           },
           "patterns": [
@@ -436,10 +439,27 @@
           ]
         }
       ]
+    },
+    "eventmodeling-line-final-keywords": {
+      "comment": "Read accDescr after the header at its initial scan position with the metadata form's required ASCII padding, leaving only whitespace and directives before physical line end. Identifier positions remain outside this rule, and a following-line delimiter receives its surrounding scopes. Follows eventmodeling.md#common-statements and common.md#a-directive-is-a-token-boundary.",
+      "match": "\\G{{eventmodeling-metadata-start}}({{asciiGap}})(accDescr)(?={{lineGap}}$)",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.control.mermaid"
+        }
+      }
     }
   },
   "variables": {
-    "eventmodeling-metadata-start": "(?:^|\\G|{{afterDirectiveEnd}}|(?<=\\}))(?={{requiredAsciiGap}})",
+    "eventmodeling-metadata-start": "(?:^|\\G|{{afterDirectiveEnd}}|(?<=[^{{ws}}]))(?={{directives}}[ \\t])",
     "eventmodeling-line-value-end": "(?={{nonDirectivePercentPair}}|$)"
-  }
+  },
+  "comment": "A padded common form can start between complete units; the surrounding string, data and identifier rules keep their own interiors. Effective ASCII padding is still required. Follows eventmodeling.md#common-statements."
 }

@@ -27,7 +27,7 @@ colors.
   under [Limits](../README.md#limits).
 - `grammar/diagrams/<type>.grammar.json` holds the block of one diagram type,
   one file for each document of `packages/spec/docs/diagrams/`. The block begins
-  at the header of the type and gives every unit of the type the scope of its
+  at the header of the type and gives the units of the type the scope of their
   kind (see [Scopes](../README.md#scopes)).
 - `src/grammar.ts` puts the files together into one TextMate grammar, and
   `src/shiki-language.ts` turns it into Shiki's language registration.
@@ -81,15 +81,12 @@ build writes, are much longer than the expressions written in the grammar files.
 
 ## Case-insensitive keywords
 
-Where keywords are compared case-insensitively, by the
-[notation](../../spec/docs/common.md#notation) of the specification an ASCII
-letter of a keyword matches only its two ASCII cases: a long s does not match
-`s`, and a Kelvin sign does not match `k`. Oniguruma's ignore-case matches them,
-so the rules write the keywords in `(?i:…)` groups and the assembly puts `(?I)`,
-the option of Oniguruma that limits ignore-case to ASCII, at the head of every
-pattern. `(?I)` is an option of the whole pattern: written in a group of a
-longer pattern, as in `a(?iI:s)b`, it makes Oniguruma return an empty match
-where the search starts.
+The rules write the keywords that are compared case-insensitively in `(?i:…)`
+groups. Oniguruma's ignore-case also matches the few characters outside ASCII
+that fold to a letter, such as a long s for `s`, which the
+[notation](../../spec/docs/common.md#notation) of the specification does not
+read as the keyword. People do not write these, so the grammar does not guard
+against them, and the README's [Limits](../README.md#limits) says so.
 
 ## Tests
 
@@ -113,8 +110,14 @@ Shiki:
 - Fixed inputs for the leading trivia (the frontmatter, a directive and a
   comment line before the header) and for the boundary cases of the shared
   rules.
-- The assembled grammar has the fields of a TextMate grammar file, and every
-  pattern starts with `(?I)` and holds no `{{`.
+- The assembled grammar has the fields of a TextMate grammar file, and no
+  pattern holds `{{`.
+- In every fixture and escaped input, every character other than whitespace has
+  a foreground color other than the default text color of github-light and
+  github-dark. The exceptions are a short list in the test, each with its
+  reason: the YAML body of a frontmatter, and what the README's Limits state.
+- On fixed inputs, units that the colors tell apart keep different colors in
+  both themes, such as `[*]` and a state name, or journey's score and a person.
 
 `pnpm --filter @mmd-toolkit/textmate-grammar run test:update` rewrites the
 `.tokens` records after a change of the grammar; read the rewritten records

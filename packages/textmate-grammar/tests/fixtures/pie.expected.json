@@ -11,7 +11,7 @@
     ["titleLong", "string.quoted.single.mermaid"],
     ["12.50", "constant.numeric.mermaid"],
     ["-0", "constant.numeric.mermaid"],
-    [":", "punctuation.separator.colon.mermaid"],
+    [":", "keyword.operator.separator.colon.mermaid"],
     ["%% an inline comment", "comment.line.percentage.mermaid"],
     ["%%", "comment.line.percentage.mermaid"],
     ["%%{!}%%", "comment.block.ignored.mermaid"],
@@ -50,9 +50,11 @@
     ["% native split mark", "comment.line.percentage.mermaid", 42],
     ["Slices showData 123", "string.unquoted.mermaid"],
     ["\\\"", "constant.character.escape.mermaid", 8],
-    ["{", "punctuation.definition.description.begin.mermaid", 4],
-    ["}", "punctuation.definition.description.end.mermaid", 4],
-    ["\"", "punctuation.definition.string.begin.mermaid", 6]
+    ["{", "keyword.operator.delimiter.description.begin.mermaid", 4],
+    ["}", "keyword.operator.delimiter.description.end.mermaid", 4],
+    ["\"", "punctuation.definition.string.begin.mermaid", 6],
+    ["title", "keyword.control.mermaid", 0],
+    ["Where the workday goes (minutes)", "string.unquoted.mermaid", 0]
   ],
   "absent": [
     ["titleLong", "keyword.control.mermaid"],
@@ -101,6 +103,95 @@
         [8, "meta.directive.mermaid"],
         [9, "meta.directive.mermaid"]
       ]
+    },
+    {
+      "code": "pie showData title x",
+      "scopes": [
+        ["title", "keyword.control.mermaid"],
+        ["x", "string.unquoted.mermaid"]
+      ]
+    },
+    {
+      "code": "pie showData%%{wrap}%% title x",
+      "scopes": [
+        ["title", "keyword.control.mermaid"],
+        ["wrap", "meta.directive.mermaid"],
+        ["x", "string.unquoted.mermaid"]
+      ]
+    },
+    {
+      "code": "pie showData title %% c",
+      "scopes": [
+        ["title", "keyword.control.mermaid"],
+        ["%% c", "comment.line.percentage.mermaid"]
+      ]
+    },
+    {
+      "code": "pie showData title",
+      "scopes": [["title", "keyword.control.mermaid"]]
+    },
+    {
+      "code": "pie showData title x;",
+      "scopes": [
+        ["title", "keyword.control.mermaid"],
+        ["x;", "string.unquoted.mermaid"]
+      ]
+    },
+    {
+      "code": "pie showData title\n\n\"A\":1",
+      "scopes": [
+        ["title", "keyword.control.mermaid"],
+        ["A", "string.quoted.double.mermaid"],
+        ["1", "constant.numeric.mermaid"]
+      ]
+    },
+    {
+      "code": "pie showData title x\u2028%% c\n",
+      "scopes": [
+        ["title", "keyword.control.mermaid"],
+        ["x", "string.unquoted.mermaid"],
+        ["%% c", "comment.line.percentage.mermaid"]
+      ]
+    },
+    {
+      "code": "pie showData title x\u2029%% c\n",
+      "scopes": [
+        ["title", "keyword.control.mermaid"],
+        ["x", "string.unquoted.mermaid"],
+        ["%% c", "comment.line.percentage.mermaid"]
+      ]
+    },
+    {
+      "code": "pie showData accTitle: A",
+      "scopes": [
+        ["accTitle", "keyword.control.mermaid"],
+        [" A", "string.unquoted.mermaid"]
+      ]
+    },
+    {
+      "code": "pie showData accDescr: D",
+      "scopes": [
+        ["accDescr", "keyword.control.mermaid"],
+        [" D", "string.unquoted.mermaid"]
+      ]
+    },
+    {
+      "code": "pie showData accDescr { D }",
+      "scopes": [
+        ["accDescr", "keyword.control.mermaid"],
+        ["{", "keyword.operator.delimiter.description.begin.mermaid"],
+        [" D ", "string.unquoted.mermaid"]
+      ]
+    },
+    {
+      "code": "pie showData title a %%{wrap}%%title b",
+      "scopes": [["title b", "string.unquoted.mermaid"]],
+      "absent": [["title b", "keyword.control.mermaid"]]
+    },
+    {
+      "code": "pie showData accTitle: a %%{wrap}%%title b",
+      "scopes": [["title b", "string.unquoted.mermaid"]],
+      "absent": [["title b", "keyword.control.mermaid"]]
     }
   ]
 }

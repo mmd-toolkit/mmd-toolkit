@@ -6,7 +6,7 @@
   ],
   "repository": {
     "wardley": {
-      "comment": "Read the lowercase header, allowing an attached statement. Follows wardley.md#detection.",
+      "comment": "Read the lowercase wardley-beta header, leaving an adjacent statement available to its body rules. Follows detection.md#the-detectors and wardley.md#detection.",
       "begin": "{{diagramStart}}(wardley-beta)",
       "beginCaptures": {
         "1": {
@@ -16,6 +16,9 @@
       "end": "(?!)",
       "patterns": [
         {
+          "include": "#wardley-line-final-keywords"
+        },
+        {
           "include": "#comment-line"
         },
         {
@@ -23,19 +26,35 @@
         },
         {
           "include": "#hidden-yaml",
-          "comment": "Read native hidden YAML. Follows wardley.md#native-padding-hidden-forms-and-eol."
+          "comment": "Read a native YAML region from a three-dash opening fence to the first qualifying unindented closing fence. Follows wardley.md#native-padding-hidden-forms-and-eol."
         },
         {
           "include": "#hidden-directive",
-          "comment": "Read native hidden directives. Follows wardley.md#native-padding-hidden-forms-and-eol."
+          "comment": "Read a native ignored percent-brace region through its earliest brace-percent closer with a following whitespace or end-of-input boundary. Follows wardley.md#native-padding-hidden-forms-and-eol."
         },
         {
           "include": "#native-percent-comment",
-          "comment": "Read native percent comments. Follows wardley.md#native-padding-hidden-forms-and-eol."
+          "comment": "Read a native percent-pair comment up to physical line end or a separator-led common comment. Follows wardley.md#native-padding-hidden-forms-and-eol."
         },
         {
-          "include": "#common-statements",
-          "comment": "Read metadata text and its delimiters. Follows wardley.md#common-metadata-values."
+          "comment": "Read accessibility forms and the shared title value form, then the Wardley bare title with its boundary. Follows wardley.md#common-metadata-values and wardley.md#keyword-and-name-boundaries.",
+          "patterns": [
+            {
+              "include": "#common-acc-descr-block"
+            },
+            {
+              "include": "#common-acc-descr-line"
+            },
+            {
+              "include": "#common-acc-title"
+            },
+            {
+              "include": "#common-title-value"
+            },
+            {
+              "include": "#wardley-title-bare"
+            }
+          ]
         },
         {
           "comment": "Read statement keywords at line, header or directive boundaries, with optional annotation number. Follows wardley.md#keyword-and-name-boundaries and common.md#a-directive-is-a-token-boundary.",
@@ -101,7 +120,7 @@
               "name": "keyword.control.mermaid"
             },
             "4": {
-              "name": "punctuation.section.parens.begin.mermaid"
+              "name": "keyword.operator.bracket.parens.begin.mermaid"
             },
             "5": {
               "patterns": [
@@ -120,7 +139,7 @@
           "match": "{{wardley-parenthesized-value-start}}(build|buy|outsource|market)",
           "captures": {
             "1": {
-              "name": "punctuation.section.parens.begin.mermaid"
+              "name": "keyword.operator.bracket.parens.begin.mermaid"
             },
             "2": {
               "patterns": [
@@ -180,7 +199,7 @@
           "begin": "(;)(?=.)",
           "beginCaptures": {
             "1": {
-              "name": "punctuation.separator.label.mermaid"
+              "name": "keyword.operator.separator.label.mermaid"
             }
           },
           "end": "{{lineValueEnd}}",
@@ -214,10 +233,10 @@
           "match": "(\\[)|(,)|(@)|(/)|(\\()|(-)|(\\{)|(\\})",
           "captures": {
             "1": {
-              "name": "punctuation.section.brackets.begin.mermaid"
+              "name": "keyword.operator.bracket.brackets.begin.mermaid"
             },
             "2": {
-              "name": "punctuation.separator.comma.mermaid"
+              "name": "keyword.operator.separator.comma.mermaid"
             },
             "3": {
               "name": "keyword.operator.mermaid"
@@ -226,7 +245,7 @@
               "name": "keyword.operator.mermaid"
             },
             "5": {
-              "name": "punctuation.section.parens.begin.mermaid"
+              "name": "keyword.operator.bracket.parens.begin.mermaid"
             },
             "6": {
               "name": "keyword.operator.mermaid"
@@ -249,13 +268,40 @@
       "patterns": [
         {
           "match": "\\]",
-          "name": "punctuation.section.brackets.end.mermaid"
+          "name": "keyword.operator.bracket.brackets.end.mermaid",
+          "comment": "Read the square bracket ending a coordinate list, label offset or size pair. Follows wardley.md#ordered-units and wardley.md#grammar."
         },
         {
           "match": "\\)",
-          "name": "punctuation.section.parens.end.mermaid"
+          "name": "keyword.operator.bracket.parens.end.mermaid",
+          "comment": "Read the parenthesis ending a source strategy or parenthesized inertia decoration. Follows wardley.md#ordered-units and wardley.md#grammar."
         }
       ]
+    },
+    "wardley-title-bare": {
+      "comment": "Read a bare title before whitespace, a percent pair or the source end, leaving glued names intact. Follows wardley.md#keyword-and-name-boundaries.",
+      "match": "{{commonStatementStart}}(title)(?={{directives}}(?:[{{ws}}]|{{nonDirectivePercentPair}}|$))",
+      "captures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      }
+    },
+    "wardley-line-final-keywords": {
+      "comment": "Read a reserved keyword at a statement start when only padding and directives follow on its physical line. A value on a later line receives the surrounding context's scopes. Follows wardley.md#common-metadata-values and common.md#a-directive-is-a-token-boundary.",
+      "match": "({{commonStatementStart}})(accDescr)(?={{lineGap}}$)",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.control.mermaid"
+        }
+      }
     }
   },
   "variables": {

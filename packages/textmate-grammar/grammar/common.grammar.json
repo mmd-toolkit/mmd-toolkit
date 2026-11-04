@@ -1,5 +1,5 @@
 {
-  "comment": "The Mermaid grammar of this repository, written from its specification (packages/spec/docs). This file holds the rules that every diagram type shares; grammar/diagrams/<type>.grammar.json holds the rules of one diagram type, one file per document of packages/spec/docs/diagrams/; src/grammar.ts puts them together into one grammar. The `comment` of each rule explains what the rule reads, then names the sections of the specification that it follows, as `Follows <document>.md#<section>.`; where a rule approximates a section beyond the limits below, the comment says what it leaves out. `{{name}}` in a regular expression stands for the value of `variables`, the convention of the variables of Sublime Text's sublime-syntax files; src/grammar.ts resolves references between variables before substituting them. Case-insensitive comparisons follow the notation in common.md#notation; src/grammar.ts puts Oniguruma's whole-pattern ASCII-only ignore-case option at the head of every regular expression; Shiki's JavaScript engine does not support this option. A common variable stands for a form that common.md or detection.md defines, for a part of a shared rule that a diagram rule must also see, or for a part that a shared rule, its variant share. A form that a diagram's own document defines stays in that diagram. Common variable ownership: `ws`: common.md#notation defines Notation whitespace. `lws`: common.md#notation defines line whitespace as whitespace outside a line terminator. `separators`: common.md#notation excludes the line separator, paragraph separator from line terminators, includes them among the boundaries of a line segment. `wordEnd`: common.md#notation defines a word as a maximal run of ASCII letters, ASCII digits or underscore; common.md#a-directive-is-a-token-boundary reads text without directives, so the lookahead prevents a word character after any following directives from continuing it. `directiveStart`: common.md#where-a-directive-is says a directive starts at a percent pair, opening brace when optional whitespace, a word character follow. `directiveName`: common.md#where-a-directive-is defines the name as a word. `directiveWordArgument`: common.md#where-a-directive-is takes a word argument when its first character is a word character. `directiveFreeTextArgument`: common.md#where-a-directive-is takes other argument text through before the first closer, line separator, paragraph separator or end of text, leaving whitespace before the closer outside the argument. `directiveEnd`: common.md#where-a-directive-is defines the optional closing brace, percent pair. `afterDirectiveEnd`: common.md#a-directive-is-a-token-boundary permits a unit to begin after a closed directive. This lookbehind recognizes only its written closer: a directive ending after a word argument or a free-text argument stopped by U+2028 or U+2029 supplies no closer, so a following statement is not recognized there. `directiveStateEnd`: common.md#where-a-directive-is ends pending directive states at their closer, immediately after an inner state read that closer, at a free-text separator boundary, or before body text. `directive`: common.md#where-a-directive-is defines the complete directive, including its whitespace, optional colon, argument, optional closer. These expressions approximate multiline directives one physical line at a time. `directives`: common.md#a-directive-is-a-token-boundary says every subsequent rule reads the text without its directives. `gap`: common.md#a-directive-is-a-token-boundary says directives in whitespace do not lie inside a unit, with the whitespace set of common.md#notation. `asciiGap`: the same sentence permits directives among ASCII spaces, tabs. `lineGap`: the same sentence permits directives among the line whitespace of common.md#notation. `requiredGap`: that sentence preserves a required Notation whitespace character rather than letting a directive supply it. `requiredAsciiGap`: the same sentence preserves a required ASCII space or tab. `requiredLineGap`: the same sentence preserves a required line whitespace character. `whitespaceStart`: common.md#a-directive-is-a-token-boundary allows directives before a required whitespace character without supplying that character; common.md#notation defines its whitespace set. `whitespaceSeparator`: the same sentence allows directives before, after exactly one Notation whitespace character. `spaceSeparator`: the same sentence allows directives before, after exactly one ASCII space. `lineText`: common.md#a-directive-is-a-token-boundary reads text without its directives; common.md#notation defines a line segment as excluding physical line terminators, line separator, paragraph separator. `physicalLineText`: the same directive sentence applies to a line, which common.md#notation defines as excluding physical line terminators only. The type rules retain their own choices of these text, whitespace forms. `entity`: common.md#entities defines a number sign, a word, a semicolon, in text without directives. `stringEscape`: packet.md#numbers-and-strings, architecture.md#icons-strings-and-bracketed-labels define a backslash, one character other than LF, CR, LS or PS; common.md#a-directive-is-a-token-boundary reads through whole directives. This part of string-escaped is also needed by its HTML variant, architecture's complete quoted-label lookahead. `markdownStringEnd`: usecase.md#ordered-default-context-rules ends markdown at a backquote followed by a double quote, through directives; the shared markdown string, Flowchart, Agentflow markdown strings, HTML variants use the same closer. `htmlTagStart`: common.md#html-attribute-quotes defines an opening angle bracket, a tag name, provided a closing angle bracket follows; the expression looks on the same line. `htmlQuotedValueStart`: common.md#html-attribute-quotes defines equals followed by a double quote whose matching double quote precedes the tag closer; the expression looks on the same line. `htmlTagEnd`: common.md#html-attribute-quotes says the attribute part ends at the first >; common.md#a-directive-is-a-token-boundary says a directive is trivia, not diagram text. Read a > or a whole directive containing > as the tag end. Only a free-text directive argument can contain >; the lookahead reads the directive prefix atomically, looks for > before its closer or a separator, then the shared directive expression reads it whole. This part is also needed by the flowchart, agentflow HTML helpers. `htmlTagDirective`: the same sentences read a directive without > whole inside the tag. `htmlTagCharacter`: those sentences, common.md#comment-lines read one character outside a directive, a separator-led common comment, a double quote, > or a physical line terminator. `htmlTagCharacterPreservedComments`: common.md#mermaidjs-and-this-specification says agentflow, eventmodeling receive comment lines, so this variant retains comment-looking text. `htmlQuotedValue`, `htmlQuotedValuePreservedComments`: common.md#html-attribute-quotes reads from equals, a double quote through its matching double quote; read directives whole, stopping before the tag end or the applicable common-comment boundary. The shared HTML rules use these parts, including their markdown variants, which stop only before the markdown closer outside quoted values, directives. `htmlTagBackslashBeforeQuotedValue`: common.md#html-attribute-quotes finds quoted values in the text as written, so a preceding backslash cannot consume the equals sign of their opener. `htmlTagStringEscape`: packet.md#numbers-and-strings, common.md#html-attribute-quotes read a backslash, zero or more directives without a tag end (htmlTagDirective), one character other than a closing angle bracket, LF, CR, line separator or paragraph separator. The final character cannot start a directive, so a directive containing the tag end is left whole for the enclosing string. This escape cannot hold a common-comment start: its character is no separator, a directive's free text stops before one. `commentDirectiveWhitespace`: common.md#comment-lines ends the native comment body before a separator-led common comment, including in a directive's whitespace. `commentDirective` assembles the shared directive parts with that bounded whitespace; its name, word argument, free-text argument already cannot contain that boundary. `commentBodyPart`: the body part shared by native-percent-comment, hidden-directive reads commentDirective or one physical-line character that starts neither a directive nor a separator-led common comment. `hiddenDirectiveStart`, `hiddenDirectiveEnd`: the opener, qualifying closer shared by hidden-directive, its comment-preserving variant; eventmodeling.md#native-hidden-forms-and-comments reads %%{ through the first }%% followed by Notation whitespace or end of text. `hiddenYamlBegin`, `hiddenYamlEnd`: the fences, boundary shared by hidden-yaml, its comment-preserving variant; eventmodeling.md#native-hidden-forms-and-comments opens with three dashes, optional ASCII space/tab, LF, closes at an unindented three-dash fence followed by Notation whitespace or end of text; common.md#a-directive-is-a-token-boundary leaves a directive before its first dash outside the indentation. common.md#mermaidjs-and-this-specification says agentflow, eventmodeling receive comment lines, so the preserving variants retain comment-looking text. `htmlTag`, `htmlTagEscaped`, `htmlTagPreservedComments`: common.md#html-attribute-quotes defines a tag name, attribute part, converts the double quotes of quoted attribute values; these expressions assemble the same-line parts for the shared rules, diagram lookaheads. The escaped variant also reads htmlTagStringEscape outside quoted values; its ordinary-character alternative excludes stringEscape so a backslash cannot be reread as an ordinary character. `nonDirectivePercentPair`: common.md#comment-lines distinguishes percent pairs belonging to a comment from directives. `commonLineValueEnd`: common.md#comment-lines makes a line separator or paragraph separator followed only by whitespace, directives before a comment end the surrounding value before that separator; the shared composite line forms also stop at their first non-directive percent pair or physical line end, as stated in packet.md#composite-common-forms, the matching common-form sentences cited by common-statements. `lineValueEnd`: common.md#comment-lines ends a line value before a separator-led common comment or at physical line end. `separatorCommentEnd`: common.md#comment-lines supplies only the separator-led common-comment boundary, without a type-specific value ending. `commonStatementStart`: the explicitly shared common forms, packet.md#composite-common-forms, the matching common-form sentences cited by common-statements, begin at unit positions with optional ASCII spaces or tabs. The expression recognizes line start, the current scanning position, positions after a closing brace or any directive closer, within the unit-start limitation below. `diagramStart`: common.md#leading-whitespace makes whitespace, directives, comment regions before the first unit trivia; common.md#diagram-detection, detection.md#how-to-read-the-list place header detection at the position reached after those removals. The expression recognizes line start or a position after a directive closer, reads remaining Notation whitespace. Each diagram block begins at its header, runs to the end of the text (its `end` never matches): the diagram type is chosen once, from the header (detection.md), the rest of the text is its body. The limits that hold for every rule: the grammar reads line by line: a form whose components, gaps or value cross a line break (whitespace including line feeds, a value starting on the next line, or a string, label or comment block read by a single match rule) is read only on its own line. It does not check acceptance: rejected input (an unclosed form, a required but empty value, a character a unit does not admit, or a wrong count) may be colored as accepted, a begin/end scope without its closer stays open to the end of the text. The quotes that common.md#html-attribute-quotes changes are read as changed only by html-tag inside a double-quoted string or a label that holds the whole tag. Where a tag starts in an earlier unit of the line (C4 Person(<b,\"x=\"Person\">\")), where a changed quote would end or start a single-quoted string (treemap '<b x=\"title\">'), the quotes are read as written: a rule cannot see a tag that began in an earlier unit, the end of an open scope cannot depend on what a rule inside it read. Unit starts are not tracked after an ordinary match: a following statement or unit on the same line is recognized only at positions a rule names (line start, right after the header, right after a directive, or right after a closing delimiter); text units left without a scope are not tokenized. Native hidden YAML, hidden directive forms inside some bodies are colored as comments. The frontmatter rule cannot know whether a line is the first line or has a line terminator. The `;` that the `style`, `classDef` line rule ignores (common.md#style-and-classdef-lines) is colored as the rules around it read it: whether a `;` is ignored depends on the text before it on its line segment, on the rest of the segment, so every rule that stops at a `;` would have to know it, while a TextMate rule sees the text before its match only through a lookbehind of fixed length. A line separator or paragraph separator that the whitespace after a directive's argument takes (common.md#where-a-directive-is) is still read as a comment start: whether a separator belongs to a directive depends on the text before it, which a lookbehind of fixed length cannot see. A quote of a quoted HTML attribute value that lies inside a directive is not read as common.md#html-attribute-quotes reads it (`<b %%{x: =\"}%%x\">`, `<b x=\"%%{x: \"}%%foo\"`): the tag, quoted-value rules read a directive whole. A common comment region inside a string, label or block (common.md#comment-lines) is colored as a comment inside that scope: the scope continues after the region, a TextMate grammar cannot leave out part of an open scope. Follows common.md#notation, common.md#where-a-directive-is, common.md#a-directive-is-a-token-boundary, common.md#comment-lines, common.md#html-attribute-quotes, common.md#entities, common.md#leading-whitespace, detection.md#how-to-read-the-list, packet.md#numbers-and-strings, usecase.md#ordered-default-context-rules, packet.md#composite-common-forms, packet.md#hidden-forms, common.md#reading-a-source.",
+  "comment": "This grammar assigns scopes to Mermaid text from packages/spec/docs. Shared rules live here; the corresponding grammar/diagrams file holds each diagram's rules, and src/grammar.ts assembles them. Comments describe the reading and any local approximation before their Follows citations. Variable references use Sublime Text's {{name}} notation and are resolved before substitution. Explicit keyword groups request case-insensitive matching. Common variables describe shared source forms or parts needed by a shared rule and its variants; diagram-specific forms stay in their diagram files. The common variables have these owners. The ws and lws sets encode Notation whitespace and its non-line-terminating subset. The separators set contains LS and PS as segment boundaries. The wordEnd lookahead tests the next ASCII word character after any directives. The directiveStart, directiveName, directiveWordArgument, directiveFreeTextArgument and directiveEnd parts describe the percent-brace opener, ASCII name, argument alternatives and optional brace-percent closer. The afterDirectiveEnd position looks behind for the written closer. A directive ending after a word argument or before LS or PS supplies no closer there, so this position cannot recognize a subsequent statement. The directiveStateEnd expression ends pending states at a closer, after an inner state consumed one, before a free-text separator or before body content. The directive expression assembles a whole same-line form atomically; directives repeats it for transparent gaps. The gap, asciiGap and lineGap variables admit directives among Notation whitespace, ASCII spaces and tabs, or line whitespace. The requiredGap, requiredAsciiGap and requiredLineGap forms still require a real whitespace character. The whitespaceStart part begins such a gap through directives. The whitespaceSeparator and spaceSeparator parts isolate one Notation whitespace or ASCII space with surrounding directives. The lineText and physicalLineText forms retain directives while excluding segment boundaries or only physical line endings, respectively. The entity part joins a hash, ASCII word and semicolon through directives. The stringEscape part joins a backslash to an escaped character while excluding physical breaks, LS and PS; the HTML-aware variant also uses it. The markdownStringEnd part joins a backtick and double quote through directives. The htmlTagStart and htmlQuotedValueStart lookaheads locate a same-line tag and its equals-double-quote attribute opener. The htmlTagEnd form takes the first greater-than mark, including a whole directive containing it. The htmlTagDirective alternative retains other directives inside a tag. The htmlTagCharacter and htmlTagCharacterPreservedComments parts read non-delimiter content with or without common-comment handling. The htmlQuotedValue and htmlQuotedValuePreservedComments forms bound quoted attributes at their quote, tag closer or applicable common comment. The htmlTagBackslashBeforeQuotedValue part keeps a backslash from hiding an attribute opener. The htmlTagStringEscape part excludes tag ends and separator-led comments while retaining intervening directives. The htmlTag, htmlTagEscaped and htmlTagPreservedComments expressions assemble those parts for shared rules and diagram lookaheads. The commentDirectiveWhitespace part bounds directive padding at a separator-led common comment. The commentDirective form uses that padding. The commentBodyPart alternative reads such a directive or a physical-line character outside a comment boundary. The hiddenDirectiveStart and hiddenDirectiveEnd parts delimit native hidden percent-brace forms and test the closer's whitespace boundary. The hiddenYamlBegin and hiddenYamlEnd parts delimit native fenced YAML, permitting directives before an otherwise unindented fence. Comment-preserving variants serve agentflow and eventmodeling. The nonDirectivePercentPair part excludes global directives from a comment mark. The separatorCommentEnd lookahead supplies a shared separator-led comment boundary. The lineValueEnd part also stops at physical line end, while commonLineValueEnd additionally stops before a native percent comment. The commonStatementStart position admits ASCII padding at line start, the current scan position, a closing brace or a written directive closer. The commonAccTitleStart, commonAccDescrLineStart and commonAccDescrBlockStart parts share the exact keyword, gap and delimiter with the unit-context lookahead. The diagramStart position reads leading Notation whitespace at line start or after a directive closer. Detection and common leading-trivia rules determine the header position; its body context then remains active to source end. The limits apply throughout this grammar. A single pattern sees only its starting physical line, so later-line components and values receive the scopes of their surroundings. Delimited begin/end contexts can continue across lines, including quoted labels and directive free text. Decisions depending on another line are unavailable locally; treeview therefore always colors a line of vertical bars and whitespace as decoration, although its document requires another qualifying line. A branch mark (└, ┗, ├ or ┣) or a horizontal or vertical bar (─, ━, │ or ┃) elsewhere enables that mode; comments, titles, accessibility metadata and other bar-only lines do not establish it. The grammar does not validate acceptance. Missing values, forbidden characters, incorrect counts and unclosed forms may receive scopes. A missing closer leaves its context active through source end. A subsequent unit or statement is recognized where its surrounding rules allow it: at line start, after a header, after a directive's written }%%, after a closing delimiter or after a separator admitted by that type. Shared common forms can follow complete flags, domains, rows and other units. Gantt and journey statement rules run after complete units, and eventmodeling metadata follows effective ASCII padding. Empty description blocks can follow complete units in agentflow, quadrant and requirement. Treemap, eventmodeling and sequence retain line-final metadata keywords at their defined positions; later delimiters and values use the surrounding rules. A directive without that closer does not establish the statement position. HTML attribute-quote conversion is recognized only when an HTML rule sees the complete tag inside a double-quoted string or label. Quotes remain as written when a tag starts in an earlier unit, a converted quote would change a single-quoted string boundary, or an attribute quote lies inside a directive. In a double-quoted string, a backslash immediately preceding a tag's less-than mark remains string text rather than an escape, letting the authored tag determine quote ownership. An ignored semicolon between statement components is read by its surrounding rules rather than removed before matching. A lone carriage return stays on its tokenization line and is read by the enclosing rule; it supplies neither a shared statement-start position nor a shared line-value end. Line and paragraph separators within a form receive the existing context's reading without additional statement positions. Statements joined without separating whitespace can remain within the preceding unit. A directive-owned LS or PS can still start a common comment here. A comment line inside a string, label or block receives the comment scope. When the value has an open scope, that scope surrounds the comment too, although the comment is not value content. A physical-line-final %%{ receives a provisional directive-opener scope. If the next line has no initial name word after padding, the specification instead reads that opener's line as a comment. When free-text directive content stops at LS or PS, a }%% on a subsequent physical line lacks the directive-end scope. A pre-header --- fence may start frontmatter even when it is not the source's first line. Native hidden YAML and native hidden directives in diagram bodies receive comment scopes. Follows common.md#notation, common.md#where-a-directive-is, common.md#a-directive-is-a-token-boundary, common.md#comment-lines, common.md#html-attribute-quotes, common.md#entities, common.md#leading-whitespace, common.md#frontmatter, detection.md#how-to-read-the-list, packet.md#numbers-and-strings, packet.md#composite-common-forms, packet.md#hidden-forms, architecture.md#icons-strings-and-bracketed-labels, eventmodeling.md#native-hidden-forms-and-comments, usecase.md#ordered-default-context-rules, treeview.md#scope-and-mode, treeview.md#line-classification-and-errors, and common.md#style-and-classdef-lines.",
   "variables": {
     "entity": "#(?:{{directive}})*[A-Za-z0-9_](?:[A-Za-z0-9_]|{{directive}})*;",
     "ws": "\\x{9}-\\x{D}\\x{20}\\x{A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}\\x{FEFF}",
@@ -53,7 +53,10 @@
     "hiddenDirectiveStart": "{{nonDirectivePercentPair}}{{directives}}\\{",
     "hiddenDirectiveEnd": "\\}{{directives}}{{nonDirectivePercentPair}}(?={{directives}}(?:[{{ws}}]|$))",
     "hiddenYamlBegin": "-{{directives}}-{{directives}}-{{asciiGap}}$",
-    "hiddenYamlEnd": "^{{directives}}-{{directives}}-{{directives}}-(?={{directives}}(?:[{{ws}}]|$))"
+    "hiddenYamlEnd": "^{{directives}}-{{directives}}-{{directives}}-(?={{directives}}(?:[{{ws}}]|$))",
+    "commonAccTitleStart": "(accTitle)({{asciiGap}})(:)",
+    "commonAccDescrLineStart": "(accDescr)({{asciiGap}})(:)",
+    "commonAccDescrBlockStart": "(accDescr)({{gap}})(\\{)"
   },
   "patterns": [
     {
@@ -75,13 +78,13 @@
       "begin": "^([{{lws}}]*)(---)[{{lws}}]*$",
       "beginCaptures": {
         "2": {
-          "name": "punctuation.definition.frontmatter.begin.mermaid"
+          "name": "keyword.operator.delimiter.frontmatter.begin.mermaid"
         }
       },
       "end": "^\\1(---)[{{lws}}]*$",
       "endCaptures": {
         "1": {
-          "name": "punctuation.definition.frontmatter.end.mermaid"
+          "name": "keyword.operator.delimiter.frontmatter.end.mermaid"
         }
       },
       "name": "meta.frontmatter.mermaid",
@@ -100,19 +103,19 @@
           "begin": "({{directiveStart}})[{{ws}}]*({{directiveName}})[{{ws}}]*(:)[{{ws}}]*",
           "beginCaptures": {
             "1": {
-              "name": "punctuation.definition.directive.begin.mermaid"
+              "name": "keyword.operator.delimiter.directive.begin.mermaid"
             },
             "2": {
               "name": "entity.name.function.directive.mermaid"
             },
             "3": {
-              "name": "punctuation.separator.colon.mermaid"
+              "name": "keyword.operator.separator.colon.mermaid"
             }
           },
           "end": "{{directiveStateEnd}}",
           "endCaptures": {
             "1": {
-              "name": "punctuation.definition.directive.end.mermaid"
+              "name": "keyword.operator.delimiter.directive.end.mermaid"
             }
           },
           "name": "meta.directive.mermaid",
@@ -128,7 +131,7 @@
           "begin": "({{directiveStart}})[{{ws}}]*({{directiveName}})[{{ws}}]*",
           "beginCaptures": {
             "1": {
-              "name": "punctuation.definition.directive.begin.mermaid"
+              "name": "keyword.operator.delimiter.directive.begin.mermaid"
             },
             "2": {
               "name": "entity.name.function.directive.mermaid"
@@ -137,7 +140,7 @@
           "end": "{{directiveStateEnd}}",
           "endCaptures": {
             "1": {
-              "name": "punctuation.definition.directive.end.mermaid"
+              "name": "keyword.operator.delimiter.directive.end.mermaid"
             }
           },
           "name": "meta.directive.mermaid",
@@ -152,17 +155,17 @@
           "applyEndPatternLast": true
         },
         {
-          "comment": "Read a physical-line-final percent-brace opener provisionally, then an anchored name on the next line after whitespace. Its begin reaches line end, so the continuing scan anchor holds there. If that next line has no word at its name position, end at its start: the opener alone is still colored as a directive where the specification reads a comment line. Follows common.md#where-a-directive-is, common.md#comment-lines.",
+          "comment": "Read a physical-line-final percent-brace opener provisionally, then an anchored name on the next line after whitespace. Its begin reaches line end, so the continuing scan anchor holds there. If that next line has no word at its name position, end at its start: the opener alone is still colored as a directive where the specification reads a comment line. Follows common.md#where-a-directive-is and common.md#comment-lines.",
           "begin": "(%%\\{)[{{ws}}]*$",
           "beginCaptures": {
             "1": {
-              "name": "punctuation.definition.directive.begin.mermaid"
+              "name": "keyword.operator.delimiter.directive.begin.mermaid"
             }
           },
           "end": "^(?![{{ws}}]*[A-Za-z0-9_])|{{directiveStateEnd}}",
           "endCaptures": {
             "1": {
-              "name": "punctuation.definition.directive.end.mermaid"
+              "name": "keyword.operator.delimiter.directive.end.mermaid"
             }
           },
           "name": "meta.directive.mermaid",
@@ -176,7 +179,7 @@
       ]
     },
     "leading-comment-line": {
-      "comment": "Read leading comments and passed bare percent-pair lines, leaving a line-final percent-brace opener for its provisional directive state. Follows common.md#comment-lines, common.md#diagram-detection, common.md#where-a-directive-is.",
+      "comment": "Read leading comments and passed bare percent-pair lines, leaving a line-final percent-brace opener for its provisional directive state. Follows common.md#comment-lines, common.md#diagram-detection, and common.md#where-a-directive-is.",
       "match": "(?:^|(?<=[{{separators}}]))({{gap}})({{nonDirectivePercentPair}}(?!\\{[{{ws}}]*$)[^\\r\\n]*)",
       "captures": {
         "1": {
@@ -222,7 +225,7 @@
       }
     },
     "hidden-directive": {
-      "comment": "Read a native hidden directive with the form used by packet, info, radar, railroad, wardley and cynefin. Read directives whole in the opener, body and closer, judging the closing boundary after them. Stop before a separator-led common comment, retaining the single-line match and native-comment fallback. Follows packet.md#hidden-forms, common.md#a-directive-is-a-token-boundary, and common.md#comment-lines.",
+      "comment": "Read a native hidden directive with the form used by packet, info, radar, railroad, wardley and cynefin. Read directives whole in the opener, body and closer, judging the closing boundary after them. Stop before a separator-led common comment, retaining the single-line match and native-comment fallback. Selected semicolons may separate its native delimiter components. Follows packet.md#hidden-forms, common.md#a-directive-is-a-token-boundary, common.md#comment-lines, and common.md#style-and-classdef-lines.",
       "name": "comment.block.ignored.mermaid",
       "match": "{{hiddenDirectiveStart}}{{commentBodyPart}}*?{{hiddenDirectiveEnd}}",
       "captures": {
@@ -236,7 +239,7 @@
       }
     },
     "hidden-yaml": {
-      "comment": "Read native hidden YAML with the form used by packet, info, radar, railroad, wardley and cynefin. This context closes at its first qualifying fence, rather than trying the body-present alternative before the adjacent empty form. Read directives in its fences, opening padding and body whole, and common comments independently. Follows packet.md#hidden-forms, common.md#a-directive-is-a-token-boundary, and common.md#comment-lines.",
+      "comment": "Read native hidden YAML with the form used by packet, info, radar, railroad, wardley and cynefin. This context closes at its first qualifying fence, rather than trying the body-present alternative before the adjacent empty form. Read directives in its fences, opening padding and body whole, and common comments independently. Selected semicolons may separate the three dashes of its fences. Follows packet.md#hidden-forms, common.md#a-directive-is-a-token-boundary, common.md#comment-lines, and common.md#style-and-classdef-lines.",
       "begin": "{{hiddenYamlBegin}}",
       "beginCaptures": {
         "0": {
@@ -413,7 +416,8 @@
             },
             {
               "match": "[\"`]+",
-              "name": "punctuation.definition.string.begin.mermaid"
+              "name": "punctuation.definition.string.begin.mermaid",
+              "comment": "Read the remaining quote and backtick marks of a markdown opener after its nested directives. Follows usecase.md#ordered-default-context-rules and common.md#a-directive-is-a-token-boundary."
             }
           ]
         }
@@ -449,12 +453,13 @@
         },
         {
           "match": "[\"`]+",
-          "name": "punctuation.definition.string.end.mermaid"
+          "name": "punctuation.definition.string.end.mermaid",
+          "comment": "Read the backtick and quote marks of a markdown closer around any directives. Follows usecase.md#ordered-default-context-rules and common.md#a-directive-is-a-token-boundary."
         }
       ]
     },
     "common-statements": {
-      "comment": "Collect the shared title and accessibility forms used by packet, info, radar, treemap, railroad, wardley, cynefin and treeview. Eventmodeling selects its variants from its own rules. Follows packet.md#composite-common-forms.",
+      "comment": "Collect the shared title and accessibility forms for diagram types using the common metadata order. Follows packet.md#composite-common-forms.",
       "patterns": [
         {
           "include": "#common-acc-descr-block"
@@ -466,50 +471,16 @@
           "include": "#common-acc-title"
         },
         {
-          "include": "#common-title"
-        }
-      ]
-    },
-    "common-title": {
-      "comment": "Read a padded title with one ASCII space/tab before its possibly empty value, or the bare keyword without a value scope. Values stop before non-directive percent pairs, physical line ends or separator-led common comments. Directives in the gap keep their scopes. Follows packet.md#composite-common-forms, common.md#comment-lines, and common.md#a-directive-is-a-token-boundary.",
-      "patterns": [
-        {
-          "comment": "Begin the value after the padded keyword and its one ASCII separator; end before a non-directive percent pair, physical line end or separator-led common comment. Follows packet.md#composite-common-forms, common.md#comment-lines, and common.md#a-directive-is-a-token-boundary.",
-          "begin": "{{commonStatementStart}}(title)({{directives}})[ \\t]",
-          "beginCaptures": {
-            "1": {
-              "name": "keyword.control.mermaid"
-            },
-            "2": {
-              "patterns": [
-                {
-                  "include": "#directive"
-                }
-              ]
-            }
-          },
-          "end": "{{commonLineValueEnd}}",
-          "contentName": "string.unquoted.mermaid",
-          "patterns": [
-            {
-              "include": "#directive"
-            }
-          ]
+          "include": "#common-title-value"
         },
         {
-          "comment": "Read a bare title only before whitespace, a percent pair or the end of text, leaving longer names and following punctuation to diagram rules. Follows packet.md#composite-common-forms and wardley.md#keyword-and-name-boundaries.",
-          "match": "{{commonStatementStart}}(title)(?={{directives}}(?:[{{ws}}]|{{nonDirectivePercentPair}}|$))",
-          "captures": {
-            "1": {
-              "name": "keyword.control.mermaid"
-            }
-          }
+          "include": "#common-title-bare"
         }
       ]
     },
     "common-acc-title": {
       "comment": "Read accTitle, its ASCII padding and colon, then possibly empty line text. Directives in the gap keep their scopes. Stop before non-directive percent pairs, physical line ends or separator-led common comments. Follows packet.md#composite-common-forms, common.md#comment-lines, and common.md#a-directive-is-a-token-boundary.",
-      "begin": "{{commonStatementStart}}(accTitle)({{asciiGap}})(:)",
+      "begin": "{{commonStatementStart}}{{commonAccTitleStart}}",
       "beginCaptures": {
         "1": {
           "name": "keyword.control.mermaid"
@@ -522,7 +493,7 @@
           ]
         },
         "3": {
-          "name": "punctuation.separator.colon.mermaid"
+          "name": "keyword.operator.separator.colon.mermaid"
         }
       },
       "end": "{{commonLineValueEnd}}",
@@ -535,7 +506,7 @@
     },
     "common-acc-descr-line": {
       "comment": "Read accDescr, its ASCII padding and colon, then possibly empty line text. Directives in the gap keep their scopes. Stop before non-directive percent pairs, physical line ends or separator-led common comments. Follows packet.md#composite-common-forms, common.md#comment-lines, and common.md#a-directive-is-a-token-boundary.",
-      "begin": "{{commonStatementStart}}(accDescr)({{asciiGap}})(:)",
+      "begin": "{{commonStatementStart}}{{commonAccDescrLineStart}}",
       "beginCaptures": {
         "1": {
           "name": "keyword.control.mermaid"
@@ -548,7 +519,7 @@
           ]
         },
         "3": {
-          "name": "punctuation.separator.colon.mermaid"
+          "name": "keyword.operator.separator.colon.mermaid"
         }
       },
       "end": "{{commonLineValueEnd}}",
@@ -561,7 +532,7 @@
     },
     "common-acc-descr-block": {
       "comment": "Read accDescr, its whitespace gap and braces around description text. These braces delimit text, not a block of statements, members or attributes. Directives in the gap keep their scopes; common comments are read independently inside the value. Follows packet.md#composite-common-forms, common.md#a-directive-is-a-token-boundary, and common.md#comment-lines.",
-      "begin": "{{commonStatementStart}}(accDescr)({{gap}})(\\{)",
+      "begin": "{{commonStatementStart}}{{commonAccDescrBlockStart}}",
       "beginCaptures": {
         "1": {
           "name": "keyword.control.mermaid"
@@ -574,13 +545,13 @@
           ]
         },
         "3": {
-          "name": "punctuation.definition.description.begin.mermaid"
+          "name": "keyword.operator.delimiter.description.begin.mermaid"
         }
       },
       "end": "(\\})",
       "endCaptures": {
         "1": {
-          "name": "punctuation.definition.description.end.mermaid"
+          "name": "keyword.operator.delimiter.description.end.mermaid"
         }
       },
       "contentName": "string.unquoted.mermaid",
@@ -690,13 +661,13 @@
       "begin": "\\G[{{ws}}]*(:)[{{ws}}]*",
       "beginCaptures": {
         "1": {
-          "name": "punctuation.separator.colon.mermaid"
+          "name": "keyword.operator.separator.colon.mermaid"
         }
       },
       "end": "{{directiveStateEnd}}",
       "endCaptures": {
         "1": {
-          "name": "punctuation.definition.directive.end.mermaid"
+          "name": "keyword.operator.delimiter.directive.end.mermaid"
         }
       },
       "patterns": [
@@ -717,7 +688,7 @@
       "end": "{{directiveStateEnd}}",
       "endCaptures": {
         "1": {
-          "name": "punctuation.definition.directive.end.mermaid"
+          "name": "keyword.operator.delimiter.directive.end.mermaid"
         }
       },
       "patterns": [
@@ -748,7 +719,7 @@
           "end": "{{directiveStateEnd}}",
           "endCaptures": {
             "1": {
-              "name": "punctuation.definition.directive.end.mermaid"
+              "name": "keyword.operator.delimiter.directive.end.mermaid"
             }
           },
           "patterns": [
@@ -764,6 +735,49 @@
           "begin": "\\G[{{ws}}]*(?=(?!{{directiveEnd}})[^{{ws}}A-Za-z0-9_])",
           "end": "(?=[{{ws}}]*{{directiveEnd}}|[{{separators}}])",
           "contentName": "string.unquoted.directive.mermaid"
+        }
+      ]
+    },
+    "common-title-value": {
+      "comment": "Read a padded title keyword and one ASCII space or tab before its value. The value ends at a percent pair, the physical line boundary or a separator-led common comment; directives in the padding keep their scopes. Follows packet.md#composite-common-forms, common.md#comment-lines, and common.md#a-directive-is-a-token-boundary.",
+      "begin": "{{commonStatementStart}}(title)({{directives}})[ \\t]",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "{{commonLineValueEnd}}",
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#directive"
+        }
+      ]
+    },
+    "common-title-bare": {
+      "comment": "Read a title keyword without adding a value scope or requiring a word boundary, including before an adjacent name or quoted row. Follows railroad.md#metadata-units, treemap.md#common-forms, and treeview.md#common-forms.",
+      "match": "{{commonStatementStart}}(title)",
+      "captures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      }
+    },
+    "common-statements-at-unit": {
+      "comment": "Read a shared title or accessibility form at a unit position supplied by its diagram context. The lookahead reuses the included accessibility heads, so entering this context always lets one of its forms consume text. The current scan position is available to those forms, and applyEndPatternLast lets them read before returning. Follows pie.md#composite-common-forms, info.md#composite-common-forms, and cynefin.md#ordered-units.",
+      "begin": "(?=title|{{commonAccTitleStart}}|{{commonAccDescrLineStart}}|{{commonAccDescrBlockStart}})",
+      "end": "(?=.)|$",
+      "applyEndPatternLast": true,
+      "patterns": [
+        {
+          "include": "#common-statements"
         }
       ]
     }

@@ -6,8 +6,9 @@ Mermaidの図の構文（`.mmd`）のためのTextMate文法です。
 mmd-toolkitの[仕様](../spec/README.ja.md)の32図種に色を付けます。
 ヘッダーとキーワード、要素の名前、ラベル、型、図形、スタイル、コメント、
 ディレクティブに色を付け、frontmatterはYAMLとして色付けします。
-すべての規則を仕様から書いているので、図の各単位は、
+すべての規則を仕様から書いているので、人が書く形は、
 仕様がそこで読む単位の種類として色付けされます。
+そうならない場所は、[制限](#制限)に書きました。
 
 mermaid-jsとは関係のない、サードパーティのプロジェクトです。
 
@@ -37,35 +38,20 @@ ESモジュールで、Node.js `^20.19.0 || ^22.13.0 || >=24`が要ります。
 
 ## ホストに要るもの
 
-この文法には、Onigurumaの正規表現エンジンが要ります。
-すべてのパターンは`(?I)`で始まります。
-`(?I)`は、大文字小文字の無視をASCIIに限るOnigurumaのオプションです。
-仕様は、多くの図種のキーワードを大文字小文字を区別せずに比べます。
-そのとき、仕様の[表記](../spec/docs/common.ja.md#表記)により、
-キーワードのASCIIの文字は、そのASCIIの大文字と小文字にだけ一致します。
-たとえばsequence図では、`DESTROY`はキーワード`destroy`ですが、
-long sを含む`deſtroy`はキーワードではありません。
-`(?I)`がなければ、Onigurumaの大文字小文字の無視は、これにも一致します。
+この文法は、Onigurumaの正規表現エンジン向けに書いています。
 
 - ShikiのOnigurumaエンジン（`createOnigurumaEngine`）は、これを読めます。
   `createHighlighter`とVitePressが既定で使うのも、このエンジンです。
 - VS Codeも読めます。
   VS CodeはTextMate文法をOnigurumaでトークン化します。
-- ShikiのJavaScriptエンジン（`createJavaScriptRegexEngine`）は、
-  `Invalid or unsupported group option "(?I)"`というエラーで、
-  この文法を拒否します。
+- ShikiのJavaScriptエンジン（`createJavaScriptRegexEngine`）も読めます。
+  最初の色付けには、より長い時間がかかります。
 
 この文法には、スコープ名が`source.yaml`のYAMLの文法も要ります。
 frontmatterの本文を色付けするためです。
 Shikiでは、言語`yaml`をあわせて読み込んでください。
 読み込まないと、Shikiは`yaml`がないというエラーを投げます。
 VS Codeは、YAMLの文法を最初から持っています。
-
-この文法は、ホストが渡す行を読みます。
-仕様は単独の復帰（CR）を行の終わりとして読みますが、
-ShikiはテキストをLFとCRLFでだけ行に分けます。
-そのためShikiでは、単独のCRはその行の中に残り、その行の残りは、
-そこで行が終わっていないものとして色付けされます。
 
 ## 使い方
 
@@ -119,15 +105,11 @@ Monacoに言語を登録してから（`monaco.languages.register({ id: "mermaid
 `shikiToMonaco(highlighter, monaco)`を呼んでください。
 Monacoは、言語`mermaid`のモデルをこの文法で色付けします。
 
-vscode-textmateとvscode-onigurumaのような、ほかのTextMateのホストでは、
-`mermaid.tmLanguage.json`を`source.mermaid`の文法として読み込み、
-`source.yaml`のYAMLの文法もあわせて読み込みます。
-
 ### VS Codeの拡張機能
 
 拡張機能の`dependencies`にこのパッケージを追加し、
 `package.json`で文法を登録します。
-[`vsce`](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#using-vscodeignore)
+[`vsce`](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#using-.vscodeignore)
 は、既定で本番用の依存パッケージをVSIXに含めるので、
 `path`で`node_modules`内の文法を直接指定できます。
 
@@ -160,11 +142,18 @@ vscode-textmateとvscode-onigurumaのような、ほかのTextMateのホスト�
 拡張機能の`syntaxes/mermaid.tmLanguage.json`にコピーする方法もあります。
 その場合、`path`は`"./syntaxes/mermaid.tmLanguage.json"`にします。
 
+### ほかのTextMateのホスト
+
+vscode-textmateとvscode-onigurumaのようなホストでは、
+`mermaid.tmLanguage.json`を`source.mermaid`の文法として読み込み、
+`source.yaml`のYAMLの文法もあわせて読み込みます。
+
 ## スコープ
 
 テーマは、トークンのスコープで文法に色を付けます。
-受理される入力で仕様が定めるすべての単位に、
+人が書く形では、仕様が定める単位に、
 全図種でこの表から種類に応じたスコープを付けます。
+それ以外は[制限](#制限)に書きました。
 以下の色は、Shikiのテーマgithub-lightの色です。
 github-darkも、名前、ラベル、型、キーワードを4つの異なる色で示します。
 playgroundとドキュメントサイトは、この2つのテーマを使います。
@@ -188,36 +177,37 @@ playgroundとドキュメントサイトは、この2つのテーマを使いま
 | その他の演算子                 | `keyword.operator.mermaid`                                                   | 赤       |
 | 図形の区切り                   | `keyword.operator.shape.begin.mermaid`、`keyword.operator.shape.end.mermaid` | 赤       |
 | ブロックの区切り               | `keyword.operator.block.begin.mermaid`、`keyword.operator.block.end.mermaid` | 赤       |
-| その他の区切り                 | `punctuation.definition.<what>.begin.mermaid`、`….end.mermaid`               | 文字色   |
-| リストや引数の括弧             | `punctuation.section.<what>.begin.mermaid`、`….end.mermaid`                  | 文字色   |
-| 分離記号                       | `punctuation.separator.<name>.mermaid`                                       | 文字色   |
+| その他の区切り                 | `keyword.operator.delimiter.<what>.begin.mermaid`、`….end.mermaid`           | 赤       |
+| リストや引数の括弧             | `keyword.operator.bracket.<what>.begin.mermaid`、`….end.mermaid`             | 赤       |
+| 分離記号                       | `keyword.operator.separator.<name>.mermaid`                                  | 赤       |
 | コメント                       | `comment.line.<mark>.mermaid`、`comment.block.mermaid`                       | 灰色     |
 | どの規則も読まないテキスト     | `comment.block.ignored.mermaid`                                              | 灰色     |
 | ディレクティブ                 | `meta.directive.mermaid`                                                     | 下記参照 |
 | frontmatter                    | `meta.embedded.block.yaml`                                                   | YAML     |
 | データブロック                 | `meta.data.mermaid`                                                          | 下記参照 |
 
-構造を包む `meta.*` スコープ自体は色を持たず、
+構造を包む`meta.*`スコープ自体は色を持たず、
 中の単位はそれぞれの種類のスコープを持ちます。
 
 各種類に含むものは、次のとおりです。
 
 - 要素の名前は、図が定義または参照する識別子です。
-  ノードID、エッジID、エンティティ、属性名、状態（`[*]`も）、
-  参加者やアクターのID、図の要素としてのクラス、メンバー名、タスクID、
-  コミットID、ブランチ、規則名、スタイルのクラス名（`classDef`の名前、
-  `:::name`、`class A name`）です。
+  ノードID、エッジID、エンティティ、属性名、状態、参加者やアクターのID、
+  図の要素としてのクラス、メンバー名、タスクID、コミットID、ブランチ、規則名、
+  スタイルのクラス名（`classDef`の名前、`:::name`、`class A name`）です。
   mindmapの裸のノードのように、
   仕様が1つのテキストをIDと表示テキストの両方として読む場合、
   そのテキストはラベルです。
+  stateの`[*]`は、開始または終了を表すキーワードで、名前ではありません。
 - 関数の名前は、文が呼び出すコールバックです。
 - ラベルやテキストは、図が表示または保持するテキストです。
   ノードやエッジのラベル、関係のラベル、メッセージ、ノート、タイトル、説明、
   アクセシビリティ値、タスクのテキスト、アイコンの名前です。
   引用符で囲まれていれば、引用符付き文字列のスコープを持ちます。
-- 型は、属性やメンバーの型、戻り値の型、総称型の引数、型としてのクラス名です。
+- 型は、属性やメンバーの型、戻り値の型、総称型の引数、型としてのクラス名、
+  クラスの注釈やusecaseのステレオタイプのように`<<`と`>>`の中の自由な名前です。
 - キーや修飾子は、メンバーや属性を修飾する語や記号です。
-  `PK`、`FK`、`UK`、可視性、分類子、ステレオタイプです。
+  `PK`、`FK`、`UK`、可視性、分類子です。
 - プロパティ名は、スタイルのプロパティの名前か、キーと値の組のキーです。
   図種の文書がキーを読むデータブロックのキーや、
   C4の名前付き属性のキー（`$key=`）、
@@ -227,8 +217,10 @@ playgroundとドキュメントサイトは、この2つのテーマを使いま
   `fill:#43a047`の名前は`fill`、値は全体で1つの`#43a047`であり、
   その中に数値はありません。
   `bold`や`#fff`のように`:`のないスタイルは、スタイルの全体で1つの値です。
+  `:red`のように名前が空のスタイルは、区切りと値です。
 - 固定値は、仕様が値として列挙する語です。
-  方向（`TD`、`LR`など）、向き、`true`と`false`です。
+  方向（`TD`、`LR`など）、向き、ganttのタグ（`done`、`crit`など）、
+  `true`と`false`です。
 - 図形の区切りは、ノードの形を選ぶ括弧です。
   flowchartやmindmapの円の`((`と`))`、kanbanの項目の`[`と`]`、
   六角形の`{{`と`}}`などです。
@@ -236,11 +228,11 @@ playgroundとドキュメントサイトは、この2つのテーマを使いま
   複合状態、ERエンティティ、クラス本体の`{`などです。
   `subgraph`と`end`のようにブロックを開閉するキーワードは、
   キーワードのままです。
-  図形とブロックの区切りは図を読むときに意味を持つので、色を付けます。
 - その他の区切り（`|`のようなラベルの区切り、ディレクティブの印）、
-  リストや引数の括弧、分離記号（`:`、`,`、`;`、`:::`）は文字色を保ちます。
+  リストや引数の括弧、分離記号（`:`、`,`、`;`、`:::`）は、
+  図形とブロックの区切りと同じく演算子の色で、行の組み立てが見えるようにします。
   プロパティ名とその値の間の`:`は、
-  `punctuation.separator.key-value.mermaid`です。
+  `keyword.operator.separator.key-value.mermaid`です。
   文字列の引用符は`punctuation.definition.string.begin.mermaid`と`….end`で、
   文字列のスコープの中にあり、テーマは文字列の色で示します。
   コメントの印は、コメントの一部です。
@@ -248,10 +240,11 @@ playgroundとドキュメントサイトは、この2つのテーマを使いま
   隠れたYAML、隠れたディレクティブ、無視されるテキストです。
 - ディレクティブでは、名前は`entity.name.function.directive.mermaid`（紫）、
   引数は`string.unquoted.directive.mermaid`（濃い青）、
-  名前の後の`:`は`punctuation.separator.colon.mermaid`、
-  印は`punctuation.definition.directive.begin.mermaid`と`….end`です。
+  名前の後の`:`は`keyword.operator.separator.colon.mermaid`、
+  印は`keyword.operator.delimiter.directive.begin.mermaid`と`….end`です。
+  ディレクティブが文字列、ラベル、無視されるテキストの中にあるときも同じです。
 - データブロック（`@{ … }`）では、
-  括弧は`punctuation.section.data.begin.mermaid`と`….end`です。
+  括弧は`keyword.operator.bracket.data.begin.mermaid`と`….end`です。
   図種の文書がその中のキーと値を読むときは、キーはプロパティ名、
   値はその種類のスコープです。
   文書が中身をテキストとして読むとき（kanban、flowchart、agentflow、sequence、
@@ -284,6 +277,10 @@ timeline、treemap、treeview、usecase、venn、wardley、xychartです。
   この文法が1つのパターンで読む形は、始まった行でだけ読みます。
   キーワードと次の行から始まる値のように、部分が改行をまたぐときは、
   次の行の部分はまわりの規則で色付けされます。
+  1行に単独で立つキーワードは、その行だけでキーワードと決まるときに、
+  キーワードとして色付けします。
+  次の行で決まるときは、その語はまわりの規則で色付けされます。
+  たとえばerの`direction`は、`LR`の前ではキーワード、`A`の前では名前です。
   開きの区切りから閉じの区切りまでを読む形は、行をまたいで続きます。
   flowchartの引用符付きのラベルや、
   ディレクティブの自由テキストの引数がそうです。
@@ -302,9 +299,19 @@ timeline、treemap、treeview、usecase、venn、wardley、xychartです。
   [リンター](../eslint-plugin/README.ja.md)が示します。
 - 単位の後で、同じ行の次の文や単位を認識するのは、規則が名指しする位置だけです。
   行の始め、ヘッダーの直後、ディレクティブを閉じる`}%%`の直後、
-  閉じる区切りの直後です。
+  閉じる区切りの直後と、図種によっては完結した単位の後です。
+  pieの`showData`の後の`title`がその例です。
   `}%%`のないディレクティブ（`%%{init: dark title t`のように、
-  語の引数で終わるもの）の後の文は認識しません。
+  語の引数で終わるもの）の後の文は、認識しないことがあります。
+- 仕様は単独の復帰（CR）を行の終わりとして読みますが、
+  ShikiはテキストをLFとCRLFでだけ行に分けます。
+  行の中に残った単独のCRは、この文法にとって行の終わりではありません。
+  値はそれを越えて続き、その後の文は認識しないことがあります。
+- 大文字小文字を区別せずに比べるキーワードは、
+  `deſtroy`が`destroy`に一致するように、
+  そのASCIIの文字に畳まれる少数の文字にも一致します。
+  仕様は、
+  これらをキーワードとして読みません（[表記](../spec/docs/common.ja.md#表記)）。
 - 仕様は、HTML属性の引用符付きの値の`"`を`'`として読みます。
   この文法がそう読むのは、タグ全体を含む二重引用符の文字列やラベルの中だけです。
   同じ行の前の単位でタグが始まるとき、
@@ -314,8 +321,9 @@ timeline、treemap、treeview、usecase、venn、wardley、xychartです。
   まわりの規則が読むとおりに色付けします。
 - ディレクティブに属する行区切りや段落区切りも、
   コメント行が始まりうる位置として読みます。
-  文字列、ラベル、ブロックの中のコメント行は、その文字列、ラベル、
-  ブロックのスコープの中のコメントとして色付けします。
+  文字列、ラベル、ブロックの中のコメント行は、コメントとして色付けします。
+  値のスコープが1つ開いているときは、コメントは値の一部ではありませんが、
+  そのスコープの中に入ります。
 - 行末の`%%{`は、次の行がディレクティブの名前で始まるときと同じく、
   ディレクティブの開きとして色付けします。
   次の行が語で始まらないとき、仕様はその`%%{`の行をコメント行として読みます。
@@ -326,7 +334,7 @@ timeline、treemap、treeview、usecase、venn、wardley、xychartです。
   `---`の行がfrontmatterを始めます。
 - 一部の図種の本文の中の隠れたYAMLと隠れたディレクティブは、
   コメントとして色付けします。
-- 文字列の中で、HTMLタグの`<`の前のバックスラッシュは、
+- 二重引用符の文字列の中で、HTMLタグの`<`の前のバックスラッシュは、
   エスケープではなくテキストとして色付けします。
   タグは書かれたとおりのテキストで読まれ、
   その引用符が文字列の終わりを決めるからです。

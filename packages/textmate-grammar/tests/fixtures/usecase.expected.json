@@ -12,7 +12,7 @@
     ["note", "keyword.control.mermaid"],
     ["for", "keyword.control.mermaid"],
     ["include", "keyword.operator.arrow.mermaid"],
-    ["Person", "storage.modifier.mermaid"],
+    ["Person", "entity.name.type.mermaid"],
     ["-->", "keyword.operator.arrow.mermaid"],
     ["--|>", "keyword.operator.arrow.mermaid"],
     ["..>", "keyword.operator.arrow.mermaid"],
@@ -42,12 +42,12 @@
     ["secondary", "variable.mermaid", 27],
     ["wrap", "entity.name.function.directive.mermaid", 27],
     ["d", "support.constant.property-value.mermaid", 28],
-    ["b", "storage.modifier.mermaid", 29],
+    ["b", "entity.name.type.mermaid", 29],
     ["init", "entity.name.function.directive.mermaid", 29],
     ["\\", "string.unquoted.mermaid", 30],
     ["wrap", "entity.name.function.directive.mermaid", 30],
     ["b", "string.unquoted.mermaid", 30],
-    [",", "punctuation.separator.comma.mermaid", 26],
+    [",", "keyword.operator.separator.comma.mermaid", 26],
     ["wrap", "entity.name.function.directive.mermaid", 0],
     ["LR", "constant.language.mermaid", 3],
     ["extend", "keyword.operator.arrow.mermaid", 20],
@@ -96,12 +96,12 @@
     [")", "keyword.operator.shape.end.mermaid", 6],
     ["[", "keyword.operator.shape.begin.mermaid", 21],
     ["]", "keyword.operator.shape.end.mermaid", 21],
-    ["<<", "punctuation.definition.stereotype.begin.mermaid", 4],
-    [">>", "punctuation.definition.stereotype.end.mermaid", 4],
+    ["<<", "keyword.operator.delimiter.stereotype.begin.mermaid", 4],
+    [">>", "keyword.operator.delimiter.stereotype.end.mermaid", 4],
     ["icon", "support.type.property-name.mermaid", 12],
-    ["@{", "punctuation.section.data.begin.mermaid", 12],
-    ["}", "punctuation.section.data.end.mermaid", 12],
-    ["{", "punctuation.section.data.begin.mermaid", 13],
+    ["@{", "keyword.operator.bracket.data.begin.mermaid", 12],
+    ["}", "keyword.operator.bracket.data.end.mermaid", 12],
+    ["{", "keyword.operator.bracket.data.begin.mermaid", 13],
     ["Single label", "string.quoted.single.mermaid", 59],
     ["Markdown label", "string.quoted.other.markdown.mermaid", 60],
     ["#43a047", "support.constant.property-value.mermaid", 61],
@@ -126,7 +126,12 @@
     ["'", "string.quoted.single.mermaid", 59],
     ["\"", "string.quoted.double.mermaid", 53],
     ["\"", "support.constant.property-value.mermaid", 75],
-    ["'", "support.constant.property-value.mermaid", 76]
+    ["'", "support.constant.property-value.mermaid", 76],
+    ["--o", "keyword.operator.arrow.mermaid", 81],
+    ["--x", "keyword.operator.arrow.mermaid", 82],
+    ["o--", "keyword.operator.arrow.mermaid", 83],
+    ["x--", "keyword.operator.arrow.mermaid", 84],
+    ["<--", "keyword.operator.arrow.mermaid", 85]
   ],
   "absent": [
     ["Later", "string.quoted.double.mermaid", 23],
@@ -164,7 +169,7 @@
         ["b", "string.unquoted.mermaid", 9],
         ["%% note comment", "comment.line.percentage.mermaid", 18],
         ["%% stereotype comment", "comment.line.percentage.mermaid", 15],
-        ["two", "storage.modifier.mermaid", 16],
+        ["two", "entity.name.type.mermaid", 16],
         ["%% plain comment", "comment.line.percentage.mermaid", 13],
         ["b", "string.quoted.double.mermaid", 14],
         ["%% metadata comment", "comment.line.percentage.mermaid", 11],
@@ -176,7 +181,7 @@
         ["%% description comment", "string.unquoted.mermaid", 6],
         ["%% JSON comment", "string.quoted.double.mermaid", 8],
         ["%% note comment", "string.unquoted.mermaid", 18],
-        ["%% stereotype comment", "entity.name.tag.stereotype.mermaid", 15],
+        ["%% stereotype comment", "entity.name.type.mermaid", 15],
         ["%% plain comment", "string.quoted.double.mermaid", 13],
         ["%% metadata comment", "string.quoted.double.mermaid", 11]
       ],
@@ -256,7 +261,7 @@
       "scopes": [
         ["\\", "string.unquoted.mermaid", 1],
         ["init", "entity.name.function.directive.mermaid", 1],
-        ["}%%", "punctuation.definition.directive.end.mermaid", 1],
+        ["}%%", "keyword.operator.delimiter.directive.end.mermaid", 1],
         ["\u2028", "string.unquoted.mermaid", 1],
         ["%% c", "comment.line.percentage.mermaid", 1],
         ["x", "string.unquoted.mermaid", 2],
@@ -273,7 +278,7 @@
       "scopes": [
         ["\\", "string.unquoted.mermaid", 1],
         ["init", "entity.name.function.directive.mermaid", 1],
-        ["}%%", "punctuation.definition.directive.end.mermaid", 1],
+        ["}%%", "keyword.operator.delimiter.directive.end.mermaid", 1],
         ["\u2029", "string.unquoted.mermaid", 1],
         ["%% c", "comment.line.percentage.mermaid", 1],
         ["x", "string.unquoted.mermaid", 2],
@@ -290,7 +295,7 @@
       "scopes": [
         ["\\", "string.unquoted.mermaid", 1],
         ["init", "entity.name.function.directive.mermaid", 1],
-        ["}%%", "punctuation.definition.directive.end.mermaid", 1],
+        ["}%%", "keyword.operator.delimiter.directive.end.mermaid", 1],
         ["\u2028", "string.unquoted.mermaid", 1],
         ["%% c", "comment.line.percentage.mermaid", 1],
         ["x>", "string.unquoted.mermaid", 2],
@@ -307,7 +312,7 @@
       "scopes": [
         ["\\", "string.unquoted.mermaid", 1],
         ["init", "entity.name.function.directive.mermaid", 1],
-        ["}%%", "punctuation.definition.directive.end.mermaid", 1],
+        ["}%%", "keyword.operator.delimiter.directive.end.mermaid", 1],
         ["\u2029", "string.unquoted.mermaid", 1],
         ["%% c", "comment.line.percentage.mermaid", 1],
         ["x>", "string.unquoted.mermaid", 2],
@@ -364,7 +369,7 @@
     {
       "code": "usecase-beta\nA edge@--> B\njson J @ {}\n",
       "scopes": [
-        ["@", "punctuation.separator.at.mermaid", 1],
+        ["@", "keyword.operator.separator.at.mermaid", 1],
         ["@", "meta.data.mermaid", 2]
       ],
       "absentOnLine": [

@@ -43,9 +43,9 @@
     ["wrap", "entity.name.function.directive.mermaid", 33],
     ["% native split mark", "comment.line.percentage.mermaid", 33],
     ["TCP Packet", "string.unquoted.mermaid"],
-    [":", "punctuation.separator.colon.mermaid", 5],
-    ["{", "punctuation.definition.description.begin.mermaid", 8],
-    ["}", "punctuation.definition.description.end.mermaid", 8],
+    [":", "keyword.operator.separator.colon.mermaid", 5],
+    ["{", "keyword.operator.delimiter.description.begin.mermaid", 8],
+    ["}", "keyword.operator.delimiter.description.end.mermaid", 8],
     ["\"", "punctuation.definition.string.begin.mermaid", 5],
     ["\\\"", "constant.character.escape.mermaid", 34]
   ],

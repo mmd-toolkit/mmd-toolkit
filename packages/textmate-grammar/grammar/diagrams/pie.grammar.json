@@ -6,7 +6,7 @@
   ],
   "repository": {
     "pie": {
-      "comment": "Begin pie at its lowercase header and retain its keyword boundary through following directives. Follows pie.md#detection and pie.md#keyword-boundaries.",
+      "comment": "Read pie as the lowercase header, testing its keyword boundary after any following directives. Follows detection.md#the-detectors and pie.md#detection.",
       "begin": "{{diagramStart}}(pie){{pie-keyword-end}}",
       "beginCaptures": {
         "1": {
@@ -15,6 +15,9 @@
       },
       "end": "(?!)",
       "patterns": [
+        {
+          "include": "#pie-line-final-keywords"
+        },
         {
           "include": "#comment-line"
         },
@@ -27,11 +30,11 @@
           "name": "keyword.control.mermaid"
         },
         {
-          "comment": "Reuse the common title and accessibility forms. Follows pie.md#composite-common-forms.",
-          "include": "#common-statements"
+          "comment": "Read title lines and the colon-led or braced forms of accessibility metadata. Follows pie.md#composite-common-forms.",
+          "include": "#common-statements-at-unit"
         },
         {
-          "comment": "Reuse matching quoted strings and backslash escapes. Follows pie.md#strings.",
+          "comment": "Read matching quoted strings and backslash escapes. Follows pie.md#strings.",
           "include": "#string-escaped"
         },
         {
@@ -42,21 +45,37 @@
         {
           "comment": "Read the separator between a section label and its value. Follows pie.md#grammar.",
           "match": ":",
-          "name": "punctuation.separator.colon.mermaid"
+          "name": "keyword.operator.separator.colon.mermaid"
         },
         {
-          "comment": "Reuse the native hidden YAML context, including its shared line-based approximation. Follows pie.md#hidden-yaml.",
+          "comment": "Read a native YAML region from a three-dash opening fence to the first qualifying unindented closing fence. Follows pie.md#hidden-yaml.",
           "include": "#hidden-yaml"
         },
         {
-          "comment": "Reuse the native hidden directive form. Follows pie.md#hidden-directive.",
+          "comment": "Read a native ignored percent-brace region through its earliest brace-percent closer with a following whitespace or end-of-input boundary. Follows pie.md#hidden-directive.",
           "include": "#hidden-directive"
         },
         {
-          "comment": "Reuse the native percent comment form. Follows pie.md#comments.",
+          "comment": "Read a native percent-pair comment up to physical line end or a separator-led common comment. Follows pie.md#comments.",
           "include": "#native-percent-comment"
         }
       ]
+    },
+    "pie-line-final-keywords": {
+      "comment": "Read the reserved accessibility description keyword when only padding and directives remain on its physical line, including after another complete unit. A later-line value receives its surrounding context's scopes. Follows pie.md#composite-common-forms and common.md#a-directive-is-a-token-boundary.",
+      "match": "({{asciiGap}})(accDescr)(?={{lineGap}}$)",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.control.mermaid"
+        }
+      }
     }
   },
   "variables": {

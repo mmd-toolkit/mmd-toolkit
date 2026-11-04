@@ -19,7 +19,7 @@
   ],
   "repository": {
     "c4": {
-      "comment": "Detection.md entry 7: `C4Context`, `C4Container`, `C4Component`, `C4Dynamic`, `C4Deployment`. rule 6: `C4Context`, `C4Container`, `C4Component`, `C4Dynamic`, and `C4Deployment`, in that order, read a header keyword not followed by a word character. Follows c4.md#the-top-level-context.",
+      "comment": "Read the five header spellings C4Context, C4Container, C4Component, C4Dynamic and C4Deployment without accepting a longer word. Follows detection.md#the-detectors and c4.md#detection.",
       "begin": "{{diagramStart}}(C4Context|C4Container|C4Component|C4Dynamic|C4Deployment){{wordEnd}}",
       "beginCaptures": {
         "1": {
@@ -36,10 +36,10 @@
         },
         {
           "include": "#native-percent-comment",
-          "comment": "A diagram comment has the mark %% and the text after it up to the line terminator as its value; U+2028 and U+2029 inside a diagram comment do not end it. Follows c4.md#comments."
+          "comment": "Read a native percent-pair comment up to physical line end or a separator-led common comment. Follows c4.md#the-top-level-context and c4.md#comments."
         },
         {
-          "comment": "Rule 2: title and accDescription, each followed by one whitespace character and nonempty text without #, ;, or LF, make their whole line-value unit. Quotes and percent pairs are text. The whole remainder of an accepted title line is its value; the excluded converted characters are not validated here. Directives inside titles are trivia within their values, including before the separator. Retain this local context: permits Notation whitespace, including line terminators, around the delimiter and preserves inline percent pairs in the value. Retain this local title form: uses exactly one Notation whitespace separator and preserves percent pairs in its line value. A common comment after a line separator or paragraph separator ends this value before the separator. Follows c4.md#the-top-level-context and common.md#comment-lines.",
+          "comment": "Read title or accDescription followed by exactly one Notation whitespace character and its line value. Quotes and inline percent pairs remain value text, including around directives. The match does not validate every excluded converted character; a separator-led common comment ends the value. Follows c4.md#the-top-level-context, c4.md#title-and-accessibility-contexts, and common.md#comment-lines.",
           "begin": "(title|accDescription){{wordEnd}}",
           "beginCaptures": {
             "1": {
@@ -58,7 +58,7 @@
           ]
         },
         {
-          "comment": "Rule 3: accTitle and accDescr enter their value context at the colon, and accDescr enters its block context at the opening brace. A directive between two complete units is allowed. The keyword context reads either delimiter after whitespace and directives; bare words inside text contexts stay text. Retain this local context: permits Notation whitespace, including line terminators, around the delimiter and preserves inline percent pairs in the value. A common comment after a line separator or paragraph separator ends this value before the separator. Follows c4.md#the-top-level-context and common.md#comment-lines.",
+          "comment": "Read accTitle or accDescr and its colon-led value, or the accDescr brace form. Padding around the delimiter admits Notation whitespace and directives. Inline percent pairs stay in the value; a separator-led common comment ends its current run. Follows c4.md#the-top-level-context, c4.md#title-and-accessibility-contexts, and common.md#comment-lines.",
           "begin": "(accTitle|accDescr){{wordEnd}}",
           "beginCaptures": {
             "1": {
@@ -96,7 +96,7 @@
               ]
             },
             "3": {
-              "name": "punctuation.section.arguments.begin.mermaid"
+              "name": "keyword.operator.bracket.arguments.begin.mermaid"
             },
             "4": {
               "patterns": [
@@ -143,7 +143,7 @@
           "end": "(\\))",
           "endCaptures": {
             "1": {
-              "name": "punctuation.section.arguments.end.mermaid"
+              "name": "keyword.operator.bracket.arguments.end.mermaid"
             }
           },
           "patterns": [
@@ -167,7 +167,7 @@
               ]
             },
             "3": {
-              "name": "punctuation.section.arguments.begin.mermaid"
+              "name": "keyword.operator.bracket.arguments.begin.mermaid"
             },
             "4": {
               "patterns": [
@@ -197,7 +197,7 @@
           "end": "(\\))",
           "endCaptures": {
             "1": {
-              "name": "punctuation.section.arguments.end.mermaid"
+              "name": "keyword.operator.bracket.arguments.end.mermaid"
             }
           },
           "patterns": [
@@ -221,7 +221,7 @@
               ]
             },
             "3": {
-              "name": "punctuation.section.arguments.begin.mermaid"
+              "name": "keyword.operator.bracket.arguments.begin.mermaid"
             },
             "4": {
               "patterns": [
@@ -234,7 +234,7 @@
           "end": "(\\))",
           "endCaptures": {
             "1": {
-              "name": "punctuation.section.arguments.end.mermaid"
+              "name": "keyword.operator.bracket.arguments.end.mermaid"
             }
           },
           "patterns": [
@@ -244,7 +244,7 @@
           ]
         },
         {
-          "comment": "Rule 7: The call keywords are tried in the listed order, each in exact case and not followed by a word character. A keyword context reads (, entering the argument context; ) at a unit start closes both contexts. Follows c4.md#the-top-level-context and c4.md#the-keyword-and-argument-contexts.",
+          "comment": "Read case-sensitive call keywords together with their opening argument parenthesis, rejecting a word suffix. The closing parenthesis ends this argument context. Follows c4.md#the-top-level-context and c4.md#the-keyword-and-argument-contexts.",
           "begin": "({{c4-call-keywords}}){{wordEnd}}({{directives}})(\\()",
           "beginCaptures": {
             "1": {
@@ -258,13 +258,13 @@
               ]
             },
             "3": {
-              "name": "punctuation.section.arguments.begin.mermaid"
+              "name": "keyword.operator.bracket.arguments.begin.mermaid"
             }
           },
           "end": "(\\))",
           "endCaptures": {
             "1": {
-              "name": "punctuation.section.arguments.end.mermaid"
+              "name": "keyword.operator.bracket.arguments.end.mermaid"
             }
           },
           "patterns": [
@@ -274,7 +274,7 @@
           ]
         },
         {
-          "comment": "Rule 8: { and } read their units. Each boundary keyword requires a body ending with }. Follows c4.md#boundaries.",
+          "comment": "Read braces delimiting the bodies introduced by boundary calls. Follows c4.md#boundaries.",
           "match": "(\\{)|(\\})",
           "captures": {
             "1": {
@@ -292,7 +292,7 @@
       "begin": "(:)",
       "beginCaptures": {
         "1": {
-          "name": "punctuation.separator.colon.mermaid"
+          "name": "keyword.operator.separator.colon.mermaid"
         }
       },
       "end": "{{lineValueEnd}}",
@@ -311,13 +311,13 @@
       "begin": "(\\{)",
       "beginCaptures": {
         "1": {
-          "name": "punctuation.definition.description.begin.mermaid"
+          "name": "keyword.operator.delimiter.description.begin.mermaid"
         }
       },
       "end": "(\\})|{{separatorCommentEnd}}",
       "endCaptures": {
         "1": {
-          "name": "punctuation.definition.description.end.mermaid"
+          "name": "keyword.operator.delimiter.description.end.mermaid"
         }
       },
       "contentName": "string.unquoted.mermaid",
@@ -331,7 +331,7 @@
       ]
     },
     "c4-string-argument": {
-      "comment": "Rules 3 and 4: ASCII spaces before a double quote are padding, including when directives separate them. A tab before a quote instead starts bare text. Read the padding separately so adjacent strings each use the shared string rule. Follows c4.md#the-keyword-and-argument-contexts.",
+      "comment": "Read ASCII-space padding before a quoted argument while retaining any intervening directives. A tab instead belongs to bare argument text. Separate padding leaves adjacent quotes available to the string rule. Follows c4.md#the-keyword-and-argument-contexts.",
       "patterns": [
         {
           "match": "(?!\"){{c4-argument-padding}}(?=\")",
@@ -366,13 +366,13 @@
         },
         {
           "include": "#c4-string-argument",
-          "comment": "Rules 3 and 4: ASCII spaces followed by a double quote enter a quoted argument, including an empty string. Follows c4.md#the-keyword-and-argument-contexts."
+          "comment": "Read an argument's ASCII-space prefix when a double quote follows, including before an empty quoted value. Follows c4.md#the-keyword-and-argument-contexts."
         },
         {
           "include": "#c4-named-key"
         },
         {
-          "comment": "Rule 6: Bare text takes the longest nonempty run of characters other than a comma, including whitespace, quotes, braces, ), and line terminators. A closing parenthesis after its beginning belongs to the value. A common comment after a line separator or paragraph separator ends this value before the separator. Follows c4.md#the-keyword-and-argument-contexts and common.md#comment-lines.",
+          "comment": "Read a nonempty bare argument up to a comma. Parentheses, quotes and whitespace after its start belong to that value; a separator-led common comment ends the current text run. Follows c4.md#the-keyword-and-argument-contexts and common.md#comment-lines.",
           "begin": "(?!{{separatorCommentEnd}})(?=[^,])",
           "end": "(?=,)|{{separatorCommentEnd}}",
           "contentName": "string.unquoted.mermaid",
@@ -388,7 +388,7 @@
       ]
     },
     "c4-named-key": {
-      "comment": "Rule 5: ASCII spaces followed by $ enter the named-key context. After $, the key is every character up to the next =, including commas, ), whitespace, and line terminators, and may be empty. A common comment after a line separator or paragraph separator ends this value before the separator. Follows c4.md#strings-and-named-attributes.",
+      "comment": "Read a dollar-prefixed named key, with preceding ASCII spaces and a terminating equals sign. The intervening key text may be empty and may contain argument punctuation or whitespace. Separator-led comments interrupt the value run. Follows c4.md#strings-and-named-attributes and common.md#comment-lines.",
       "begin": "({{c4-argument-padding}})(\\$)",
       "beginCaptures": {
         "1": {
@@ -399,13 +399,13 @@
           ]
         },
         "2": {
-          "name": "punctuation.definition.attribute.begin.mermaid"
+          "name": "keyword.operator.delimiter.attribute.begin.mermaid"
         }
       },
       "end": "(=)|{{separatorCommentEnd}}",
       "endCaptures": {
         "1": {
-          "name": "punctuation.separator.key-value.mermaid"
+          "name": "keyword.operator.separator.key-value.mermaid"
         }
       },
       "contentName": "support.type.property-name.mermaid",
@@ -421,7 +421,7 @@
     "c4-comma": {
       "comment": "Read a comma between arguments or in a null entry. Follows c4.md#the-keyword-and-argument-contexts.",
       "match": ",",
-      "name": "punctuation.separator.comma.mermaid"
+      "name": "keyword.operator.separator.comma.mermaid"
     },
     "c4-name-argument": {
       "comment": "Read one positional argument, preserving strings and named keys while scoping bare aliases and endpoints as element names. Follows c4.md#rejections-outside-the-grammar.",

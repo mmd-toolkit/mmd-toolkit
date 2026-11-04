@@ -27,8 +27,8 @@
     ["accDescr", "keyword.control.mermaid", 4],
     ["accDescr", "keyword.control.mermaid", 5],
     ["https://example.com/title", "string.quoted.double.mermaid"],
-    [":", "punctuation.separator.colon.mermaid"],
-    [",", "punctuation.separator.comma.mermaid"],
+    [":", "keyword.operator.separator.colon.mermaid"],
+    [",", "keyword.operator.separator.comma.mermaid"],
     [" a native comment", "comment.line.percentage.mermaid"],
     ["%%", "comment.line.percentage.mermaid"],
     ["%% a common comment", "comment.line.percentage.mermaid"],
@@ -40,7 +40,7 @@
     ["init", "entity.name.function.directive.mermaid", 47],
     ["monday", "string.unquoted.mermaid", 48],
     ["init", "entity.name.function.directive.mermaid", 48],
-    [",", "punctuation.separator.comma.mermaid", 48],
+    [",", "keyword.operator.separator.comma.mermaid", 48],
     ["mp;", "string.unquoted.mermaid", 49],
     ["call f()", "string.unquoted.mermaid", 49],
     ["<b title=\"x\">", "string.quoted.double.mermaid", 50],
@@ -74,9 +74,9 @@
     ["#amp;", "string.unquoted.mermaid", 71],
     ["x : 1d", "string.unquoted.mermaid", 71],
     ["init", "entity.name.function.directive.mermaid", 72],
-    [",", "punctuation.separator.comma.mermaid", 85],
-    [",", "punctuation.separator.comma.mermaid", 86],
-    [",", "punctuation.separator.comma.mermaid", 87],
+    [",", "keyword.operator.separator.comma.mermaid", 85],
+    [",", "keyword.operator.separator.comma.mermaid", 86],
+    [",", "keyword.operator.separator.comma.mermaid", 87],
     ["href", "keyword.control.mermaid", 88],
     ["wrap", "entity.name.function.directive.mermaid", 90],
     [" native split mark", "comment.line.percentage.mermaid", 90],
@@ -91,14 +91,21 @@
     ["title ", "string.unquoted.mermaid", 96],
     ["task1", "variable.mermaid", 24],
     ["handler", "entity.name.function.mermaid", 25],
-    ["done", "storage.modifier.mermaid", 23],
+    ["done", "constant.language.mermaid", 23],
     ["Task with title and \"quotes\" ", "string.unquoted.mermaid", 23],
-    ["{", "punctuation.definition.description.begin.mermaid", 4],
-    ["}", "punctuation.definition.description.end.mermaid", 4],
-    ["(", "punctuation.section.arguments.begin.mermaid", 25],
-    [")", "punctuation.section.arguments.end.mermaid", 25],
+    ["{", "keyword.operator.delimiter.description.begin.mermaid", 4],
+    ["}", "keyword.operator.delimiter.description.end.mermaid", 4],
+    ["(", "keyword.operator.bracket.arguments.begin.mermaid", 25],
+    [")", "keyword.operator.bracket.arguments.end.mermaid", 25],
     ["\"", "punctuation.definition.string.begin.mermaid", 24],
-    ["weekends", "string.unquoted.mermaid", 10]
+    ["weekends", "string.unquoted.mermaid", 10],
+    ["active", "constant.language.mermaid", 97],
+    ["crit", "constant.language.mermaid", 97],
+    ["milestone", "constant.language.mermaid", 97],
+    ["vert", "constant.language.mermaid", 97],
+    [" taggedTask", "string.unquoted.mermaid", 97],
+    ["title", "keyword.control.mermaid", 12],
+    ["After a weekday", "string.unquoted.mermaid", 12]
   ],
   "absentOnLine": [
     [1, "comment.line.percentage.mermaid"],
@@ -116,7 +123,7 @@
     [69, "keyword.control.mermaid"],
     [72, "keyword.control.mermaid"],
     [73, "keyword.control.mermaid"],
-    [71, "punctuation.separator.colon.mermaid"],
+    [71, "keyword.operator.separator.colon.mermaid"],
     [74, "keyword.control.mermaid"],
     [75, "keyword.control.mermaid"],
     [76, "keyword.control.mermaid"],
@@ -130,8 +137,8 @@
     [93, "comment.line.percentage.mermaid"]
   ],
   "absent": [
-    ["a(b", "punctuation.section.parens.begin.mermaid"],
-    ["a)b", "punctuation.section.parens.end.mermaid", 46],
+    ["a(b", "keyword.operator.bracket.parens.begin.mermaid"],
+    ["a)b", "keyword.operator.bracket.parens.end.mermaid", 46],
     ["init", "variable.mermaid", 47],
     ["call f()", "keyword.control.mermaid", 49],
     ["<b title=\"x\">", "punctuation.definition.string.end.mermaid", 50],
@@ -188,8 +195,8 @@
         ["%% click gap comment", "string.unquoted.mermaid", 28]
       ],
       "absentOnLine": [
-        [6, "punctuation.separator.comma.mermaid"],
-        [12, "punctuation.separator.comma.mermaid"]
+        [6, "keyword.operator.separator.comma.mermaid"],
+        [12, "keyword.operator.separator.comma.mermaid"]
       ],
       "unscoped": []
     },
@@ -209,9 +216,9 @@
         ["%% data comment", "comment.line.percentage.mermaid", 12],
         ["%% arguments comment )", "comment.line.percentage.mermaid", 13],
         ["resumed ", "string.unquoted.mermaid", 2],
-        ["}", "punctuation.definition.description.end.mermaid", 2],
+        ["}", "keyword.operator.delimiter.description.end.mermaid", 2],
         ["2", "string.unquoted.mermaid", 14],
-        [")", "punctuation.section.arguments.end.mermaid", 14]
+        [")", "keyword.operator.bracket.arguments.end.mermaid", 14]
       ],
       "absent": [
         ["%% block comment }", "string.unquoted.mermaid", 1],
@@ -246,12 +253,12 @@
       "code": "gantt\nincludes #amp;\nTask : do%%{init: {}}%%ne, 1d\nEntity:#amp;\n",
       "scopes": [
         ["#amp;", "string.unquoted.mermaid", 1],
-        ["do", "storage.modifier.mermaid", 2],
-        ["ne", "storage.modifier.mermaid", 2],
+        ["do", "constant.language.mermaid", 2],
+        ["ne", "constant.language.mermaid", 2],
         ["init", "entity.name.function.directive.mermaid", 2],
         ["#amp;", "string.unquoted.mermaid", 3]
       ],
-      "absent": [["init", "storage.modifier.mermaid", 2]]
+      "absent": [["init", "constant.language.mermaid", 2]]
     }
   ]
 }

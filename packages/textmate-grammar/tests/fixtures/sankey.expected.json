@@ -1,12 +1,12 @@
 {
   "header": "sankey-beta",
   "scopes": [
-    [",", "punctuation.separator.comma.mermaid"],
+    [",", "keyword.operator.separator.comma.mermaid"],
     ["\"\"", "constant.character.escape.mermaid"],
     ["<b title=\"x\">", "string.quoted.double.mermaid", 7],
     ["B", "string.quoted.double.mermaid", 10],
     ["wrap", "entity.name.function.directive.mermaid", 10],
-    [",", "punctuation.separator.comma.mermaid", 11],
+    [",", "keyword.operator.separator.comma.mermaid", 11],
     ["D", "string.quoted.double.mermaid", 12],
     ["wrap", "entity.name.function.directive.mermaid", 12],
     ["wrap", "constant.character.escape.mermaid", 12],
@@ -48,7 +48,7 @@
       "code": "sankey-beta\n<b title=\"more,fields\">,1\u2028%% separator comment\n\n",
       "scopes": [
         ["%% separator comment", "comment.line.percentage.mermaid", 1],
-        [",", "punctuation.separator.comma.mermaid", 1]
+        [",", "keyword.operator.separator.comma.mermaid", 1]
       ],
       "absent": [],
       "absentOnLine": [[1, "string.quoted.double.mermaid"]]

@@ -1,35 +1,35 @@
 > railroad-peg-beta%%{wrap}%%
   "railroad-peg-beta" keyword.control.mermaid
-  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "%%{" meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
   "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
-  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "}%%" meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
 > title Grammar
   "title" keyword.control.mermaid
   "Grammar" string.unquoted.mermaid
 > accTitle: Grammar title
   "accTitle" keyword.control.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   " Grammar title" string.unquoted.mermaid
 > accDescr: Grammar description
   "accDescr" keyword.control.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   " Grammar description" string.unquoted.mermaid
 > accDescr { Grammar block }
   "accDescr" keyword.control.mermaid
-  "{" punctuation.definition.description.begin.mermaid
+  "{" keyword.operator.delimiter.description.begin.mermaid
   " Grammar block " string.unquoted.mermaid
-  "}" punctuation.definition.description.end.mermaid
+  "}" keyword.operator.delimiter.description.end.mermaid
 > Expr <- Sum ;
   "Expr" variable.mermaid
   "<-" keyword.operator.arrow.mermaid
   "Sum" variable.mermaid
-  ";" punctuation.separator.rule.mermaid
+  ";" keyword.operator.separator.rule.mermaid
 > Sum <- Product (('+' / '-') Product)* ;
   "Sum" variable.mermaid
   "<-" keyword.operator.arrow.mermaid
   "Product" variable.mermaid
-  "(" punctuation.section.group.begin.mermaid
-  "(" punctuation.section.group.begin.mermaid
+  "(" keyword.operator.bracket.group.begin.mermaid
+  "(" keyword.operator.bracket.group.begin.mermaid
   "'" string.quoted.single.mermaid punctuation.definition.string.begin.mermaid
   "+" string.quoted.single.mermaid
   "'" string.quoted.single.mermaid punctuation.definition.string.end.mermaid
@@ -37,11 +37,11 @@
   "'" string.quoted.single.mermaid punctuation.definition.string.begin.mermaid
   "-" string.quoted.single.mermaid
   "'" string.quoted.single.mermaid punctuation.definition.string.end.mermaid
-  ")" punctuation.section.group.end.mermaid
+  ")" keyword.operator.bracket.group.end.mermaid
   "Product" variable.mermaid
-  ")" punctuation.section.group.end.mermaid
+  ")" keyword.operator.bracket.group.end.mermaid
   "*" keyword.operator.mermaid
-  ";" punctuation.separator.rule.mermaid
+  ";" keyword.operator.separator.rule.mermaid
 > Value <- &Digit !"x" . 'a'? "b"+ ;
   "Value" variable.mermaid
   "<-" keyword.operator.arrow.mermaid
@@ -60,7 +60,7 @@
   "b" string.quoted.double.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
   "+" keyword.operator.mermaid
-  ";" punctuation.separator.rule.mermaid
+  ";" keyword.operator.separator.rule.mermaid
 > # a hash comment
   "#" comment.line.number-sign.mermaid
   " a hash comment" comment.line.number-sign.mermaid
@@ -82,7 +82,7 @@
   "<b title=\"x\">" string.quoted.double.mermaid
   "y</b>" string.quoted.double.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
-  ";" punctuation.separator.rule.mermaid
+  ";" keyword.operator.separator.rule.mermaid
 > Partial <- "a<b" "c>" ;
   "Partial" variable.mermaid
   "<-" keyword.operator.arrow.mermaid
@@ -93,23 +93,23 @@
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "c>" string.quoted.double.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
-  ";" punctuation.separator.rule.mermaid
+  ";" keyword.operator.separator.rule.mermaid
 > # text%%{init: {"mark":"#"}}%% tail
   "#" comment.line.number-sign.mermaid
   " text" comment.line.number-sign.mermaid
-  "%%{" comment.line.number-sign.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "%%{" comment.line.number-sign.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
   "init" comment.line.number-sign.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" comment.line.number-sign.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  ":" comment.line.number-sign.mermaid meta.directive.mermaid keyword.operator.separator.colon.mermaid
   " " comment.line.number-sign.mermaid meta.directive.mermaid
   "{\"mark\":\"#\"}" comment.line.number-sign.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
-  "}%%" comment.line.number-sign.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "}%%" comment.line.number-sign.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
   " tail" comment.line.number-sign.mermaid
 > # D2 line end %%{wrap}%%
   "#" comment.line.number-sign.mermaid
   " D2 line end " comment.line.number-sign.mermaid
-  "%%{" comment.line.number-sign.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "%%{" comment.line.number-sign.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
   "wrap" comment.line.number-sign.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  "}%%" comment.line.number-sign.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "}%%" comment.line.number-sign.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
 > Escaped <- "a\nb";
   "Escaped" variable.mermaid
   "<-" keyword.operator.arrow.mermaid
@@ -118,5 +118,5 @@
   "\\n" string.quoted.double.mermaid constant.character.escape.mermaid
   "b" string.quoted.double.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
-  ";" punctuation.separator.rule.mermaid
+  ";" keyword.operator.separator.rule.mermaid
 > 

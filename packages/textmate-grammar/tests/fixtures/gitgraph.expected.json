@@ -25,7 +25,7 @@
     ["branch and commit", "string.quoted.double.mermaid"],
     ["start", "string.quoted.single.mermaid"],
     ["2", "constant.numeric.mermaid"],
-    [":", "punctuation.separator.colon.mermaid"],
+    [":", "keyword.operator.separator.colon.mermaid"],
     ["%% an inline comment", "comment.line.percentage.mermaid"],
     ["%%", "comment.line.percentage.mermaid"],
     ["%%{!}%%", "comment.block.ignored.mermaid"],
@@ -72,8 +72,8 @@
     ["% native split mark", "comment.line.percentage.mermaid", 55],
     ["main", "variable.mermaid", 9],
     ["\\n", "constant.character.escape.mermaid"],
-    ["{", "punctuation.definition.description.begin.mermaid", 4],
-    ["}", "punctuation.definition.description.end.mermaid", 4],
+    ["{", "keyword.operator.delimiter.description.begin.mermaid", 4],
+    ["}", "keyword.operator.delimiter.description.end.mermaid", 4],
     ["\"", "punctuation.definition.string.begin.mermaid", 6],
     ["'", "punctuation.definition.string.begin.mermaid", 6]
   ],
@@ -126,6 +126,14 @@
         [8, "meta.directive.mermaid"],
         [9, "meta.directive.mermaid"]
       ]
+    },
+    {
+      "code": "gitGraph LR:\ncommit\n",
+      "scopes": [["LR", "constant.language.mermaid", 0]]
+    },
+    {
+      "code": "gitGraph BT:\ncommit\n",
+      "scopes": [["BT", "constant.language.mermaid", 0]]
     }
   ]
 }

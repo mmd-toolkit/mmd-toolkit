@@ -1,9 +1,9 @@
 > cynefin-beta%%{wrap}%%:
   "cynefin-beta" keyword.control.mermaid
-  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "%%{" meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
   "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
-  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
-  ":" punctuation.separator.colon.mermaid
+  "}%%" meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  ":" keyword.operator.separator.colon.mermaid
 > title Decisions
   "title" keyword.control.mermaid
   "Decisions" string.unquoted.mermaid
@@ -27,7 +27,7 @@
   "complex" constant.language.mermaid
   "-->" keyword.operator.arrow.mermaid
   "complicated" constant.language.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "Learn" string.quoted.double.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
@@ -35,17 +35,17 @@
   "%% a comment line" comment.line.percentage.mermaid
 > accTitle: Domains
   "accTitle" keyword.control.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   " Domains" string.unquoted.mermaid
 > accDescr: Domain description
   "accDescr" keyword.control.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   " Domain description" string.unquoted.mermaid
 > accDescr { Domain block }
   "accDescr" keyword.control.mermaid
-  "{" punctuation.definition.description.begin.mermaid
+  "{" keyword.operator.delimiter.description.begin.mermaid
   " Domain block " string.unquoted.mermaid
-  "}" punctuation.definition.description.end.mermaid
+  "}" keyword.operator.delimiter.description.end.mermaid
 > ---
   "---" comment.block.ignored.mermaid
 > ignored: cynefin
@@ -82,4 +82,9 @@
   "\\n" string.quoted.double.mermaid constant.character.escape.mermaid
   "text" string.quoted.double.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> 
+> clear title After a domain
+  "clear" constant.language.mermaid
+  "title" keyword.control.mermaid
+  "After a domain" string.unquoted.mermaid
 > 

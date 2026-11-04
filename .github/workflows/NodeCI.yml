@@ -42,7 +42,7 @@ jobs:
       - name: Install Packages
         run: pnpm install --frozen-lockfile
       - name: Build workspace dependencies
-        run: pnpm --filter @mmd-toolkit/eslint-plugin... run build
+        run: pnpm --filter @mmd-toolkit/eslint-plugin... --filter @mmd-toolkit/textmate-grammar run build
       - name: ESLint
         run: pnpm run lint:es
 

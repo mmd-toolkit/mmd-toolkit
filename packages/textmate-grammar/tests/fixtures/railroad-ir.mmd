@@ -23,3 +23,5 @@ checkedHtml = sequence(terminal("<b %%{x: >}%%x="),terminal("y"));
 %% common */ %%{wrap}%%
  terminal */ commentLine = terminal("x");
 escaped = terminal("a\nb");
+singleHtmlEscape = terminal('a\<b>c');
+doubleHtmlText = terminal("a\<b>c");

@@ -14,7 +14,7 @@
     "agentflow-heading-name-end": "(?=[;\\r\\n\\[]|@\\{|{{agentflow-comment-start}}|$)",
     "agentflow-heading-title-ahead": "(?=(?:{{directive}}|{{entity}}|{{agentflow-erased-form}}|(?!{{directiveStart}}|@\\{|{{agentflow-comment-start}})[^;\\r\\n\\[])*\\[)",
     "agentflow-style-value-end": "(?={{lineGap}}(?:[,;]|{{flowchart-subgraph-description-start}}|{{agentflow-comment-start}}|$))|{{separatorCommentEnd}}",
-    "agentflow-classdef-style-key": "(?:\\\\{{directives}},|{{directive}}|{{entity}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^:{{ws}},;])+"
+    "agentflow-classdef-style-key": "(?:\\\\{{directives}},|{{directive}}|{{entity}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^:{{ws}},;])*"
   },
   "patterns": [
     {
@@ -23,7 +23,7 @@
   ],
   "repository": {
     "agentflow": {
-      "comment": "Read the agentflow header and its body, including the optional fixed header direction. Follows agentflow.md#detection, agentflow.md#diagram-and-statements, flowchart.md#the-header-context, and common.md#leading-whitespace.",
+      "comment": "Read the lowercase agentflow-beta header and its optional fixed direction, then keep the body in the agentflow context. Follows detection.md#the-detectors and agentflow.md#detection.",
       "begin": "{{diagramStart}}(agentflow-beta){{wordEnd}}{{flowchart-header-direction}}",
       "beginCaptures": {
         "1": {
@@ -43,23 +43,22 @@
       "end": "(?!)",
       "patterns": [
         {
+          "include": "#agentflow-line-final-keywords"
+        },
+        {
           "include": "#directive"
         },
         {
-          "include": "#flowchart-name-entity",
-          "comment": "Reuse flowchart units, read in converted form with each entity as one placeholder. Follows common.md#entities."
-        },
-        {
           "include": "#agentflow-acc-descr-block",
-          "comment": "Reuse the accessibility contexts; a description block consumes following whitespace and ends at its first closing brace. Follows agentflow.md#shared-units-and-ordered-contexts."
+          "comment": "Read the accessibility contexts; a description block consumes following whitespace and ends at its first closing brace. Follows agentflow.md#shared-units-and-ordered-contexts."
         },
         {
           "include": "#agentflow-accessibility-line",
-          "comment": "Flowchart accessibility title and description contexts, including their leading whitespace. Accessibility values have no diagram-comment rule; their percent pairs and comment-looking lines are content. Follows agentflow.md#direction-and-accessibility-statements."
+          "comment": "Read the flowchart-derived line and block accessibility forms, retaining their prefix padding. Percent-looking content in their values stays text. Follows agentflow.md#direction-and-accessibility-statements."
         },
         {
           "include": "#agentflow-data",
-          "comment": "Reuse flowchart data and double-quoted data contexts; other text, including metadata keys, is opaque data text. Follows agentflow.md#shared-units-and-ordered-contexts."
+          "comment": "Read flowchart data and double-quoted data contexts; other text, including metadata keys, is opaque data text. Follows agentflow.md#shared-units-and-ordered-contexts."
         },
         {
           "include": "#agentflow-callback",
@@ -69,7 +68,7 @@
           "include": "#agentflow-click-statement"
         },
         {
-          "comment": "Reuse flowchart styles, including numbers and separators. An empty description block after a completed statement is a following statement. A native comment can be a statement separator. Follows agentflow.md#style-classdef-class-and-linkstyle and agentflow.md#preserved-comments-and-the-default-size-limit.",
+          "comment": "Read style property names and text values. Empty description blocks after a completed declaration remain separate statements, and native comments may separate statements. Follows agentflow.md#style-classdef-class-and-linkstyle and agentflow.md#preserved-comments-and-the-default-size-limit.",
           "begin": "(?=style){{agentflow-style-head}}",
           "beginCaptures": {
             "1": {
@@ -87,7 +86,7 @@
               "patterns": [
                 {
                   "include": "#entity",
-                  "comment": "Reuse flowchart units, read in converted form with each entity as one placeholder. Follows common.md#entities."
+                  "comment": "Read an entity without treating its hash or terminator as separate punctuation. Internal directives retain their scopes. Follows common.md#entities."
                 }
               ]
             },
@@ -129,7 +128,7 @@
           ]
         },
         {
-          "comment": "Reuse flowchart styles, including numbers and separators. An empty description block after a completed statement is a following statement. A native comment can be a statement separator. Follows agentflow.md#style-classdef-class-and-linkstyle and agentflow.md#preserved-comments-and-the-default-size-limit.",
+          "comment": "Read style property names and text values. Empty description blocks after a completed declaration remain separate statements, and native comments may separate statements. Follows agentflow.md#style-classdef-class-and-linkstyle and agentflow.md#preserved-comments-and-the-default-size-limit.",
           "begin": "(?=classDef){{agentflow-style-head}}",
           "beginCaptures": {
             "1": {
@@ -147,7 +146,7 @@
               "patterns": [
                 {
                   "include": "#entity",
-                  "comment": "Reuse flowchart units, read in converted form with each entity as one placeholder. Follows common.md#entities."
+                  "comment": "Read an entity without treating its hash or terminator as separate punctuation. Internal directives retain their scopes. Follows common.md#entities."
                 }
               ]
             },
@@ -189,10 +188,10 @@
           ]
         },
         {
-          "comment": "Link-style-statement = \"linkStyle\" space ( \"default\" | number ( \",\" number )* ) space ( \"interpolate\" space name ( space styles )? | styles ). The value begins after linkStyle, its selector and whitespace, or after interpolate, its name and whitespace; the end looks ahead to a semicolon or physical line end. Interpolate and its name without a following style retain a match rule. Follows agentflow.md#style-classdef-class-and-linkstyle and flowchart.md#style-class-and-link-style-statements.",
+          "comment": "Read linkStyle with a default or numeric selector and its style value. A named interpolation may precede styles; a declaration ending after that name uses the separate match rule. This context stops before a semicolon or physical line end. Follows agentflow.md#style-classdef-class-and-linkstyle and flowchart.md#style-class-and-link-style-statements.",
           "patterns": [
             {
-              "comment": "Reuse flowchart styles, including numbers and separators. An empty description block after a completed statement is a following statement. A native comment can be a statement separator. Follows agentflow.md#style-classdef-class-and-linkstyle, flowchart.md#style-class-and-link-style-statements, and agentflow.md#preserved-comments-and-the-default-size-limit.",
+              "comment": "Read style property names and text values. Empty description blocks after a completed declaration remain separate statements, and native comments may separate statements. Follows agentflow.md#style-classdef-class-and-linkstyle, flowchart.md#style-class-and-link-style-statements, and agentflow.md#preserved-comments-and-the-default-size-limit.",
               "begin": "{{agentflow-link-style-head}}{{agentflow-interpolate-head}}({{agentflow-space}})",
               "beginCaptures": {
                 "1": {
@@ -238,7 +237,7 @@
                   "patterns": [
                     {
                       "include": "#entity",
-                      "comment": "Reuse flowchart units, read in converted form with each entity as one placeholder. Follows common.md#entities."
+                      "comment": "Read an entity without treating its hash or terminator as separate punctuation. Internal directives retain their scopes. Follows common.md#entities."
                     }
                   ]
                 },
@@ -304,14 +303,14 @@
                   "patterns": [
                     {
                       "include": "#entity",
-                      "comment": "Reuse flowchart units, read in converted form with each entity as one placeholder. Follows common.md#entities."
+                      "comment": "Read an entity without treating its hash or terminator as separate punctuation. Internal directives retain their scopes. Follows common.md#entities."
                     }
                   ]
                 }
               }
             },
             {
-              "comment": "Reuse flowchart styles, including numbers and separators. An empty description block after a completed statement is a following statement. A native comment can be a statement separator. Follows agentflow.md#style-classdef-class-and-linkstyle, flowchart.md#style-class-and-link-style-statements, and agentflow.md#preserved-comments-and-the-default-size-limit.",
+              "comment": "Read style property names and text values. Empty description blocks after a completed declaration remain separate statements, and native comments may separate statements. Follows agentflow.md#style-classdef-class-and-linkstyle, flowchart.md#style-class-and-link-style-statements, and agentflow.md#preserved-comments-and-the-default-size-limit.",
               "begin": "{{agentflow-link-style-head}}",
               "beginCaptures": {
                 "1": {
@@ -414,13 +413,17 @@
         },
         {
           "include": "#agentflow-direction-line",
-          "comment": "Reuse the direction-line rule; earlier statement rules retain priority at the same position. Follows agentflow.md#direction-and-accessibility-statements."
+          "comment": "Read a direction line after the more specific statement alternatives have been tried. Follows agentflow.md#direction-and-accessibility-statements."
         },
         {
           "include": "#flowchart-edge-id"
         },
         {
-          "comment": "Two dashes with surrounding whitespace produce opening-arrow and enter the solid link-text context. link-text = ( string | markdown-string | link-text-char ) link-text-char*; an initial string protects a closing-arrow spelling inside it. The begin reads two opening dashes that are not already a closed arrow; the end reads the closing solid arrow outside a directive or string. Surrounding whitespace is read through directives and is part of the arrow unit. Follows agentflow.md#arrows, flowchart.md#links, and common.md#a-directive-is-a-token-boundary.",
+          "include": "#flowchart-name-entity",
+          "comment": "Read an entity with name scope after complete edge identifiers have been tried. Follows agentflow.md#shared-units-and-ordered-contexts, flowchart.md#the-statement-context, and common.md#entities."
+        },
+        {
+          "comment": "Read the two-dash opening of a split solid link and its label through the closing arrow. An initial quoted label protects arrow-like content, and directives in the surrounding padding retain their scopes. Follows agentflow.md#arrows, flowchart.md#links, and common.md#a-directive-is-a-token-boundary.",
           "begin": "(--)(?!-*[>x])({{lineGap}})",
           "beginCaptures": {
             "1": {
@@ -464,22 +467,22 @@
           ]
         },
         {
-          "comment": "First try a solid closed arrow: zero or more whitespace, two or more dashes, > or x, and zero or more whitespace. Next, two dashes with surrounding whitespace produce opening-arrow. Then surrounding whitespace and a dash, one or more dots, and a dash produce a closed reference arrow. Follows agentflow.md#arrows.",
+          "comment": "Read solid links ending in a greater-than or cross marker, dotted references with a dash at each end, and the two-dash split-link opener. Follows agentflow.md#arrows.",
           "match": "{{agentflow-solid-arrow}}|-\\.+-|--",
           "name": "keyword.operator.arrow.mermaid"
         },
         {
-          "comment": "`|` ... enters the label context; Reuse Links, including its pipe-label and split-label productions. The text between the pipes is colored as a string. A string is read before a vertical bar leaves the context, so its vertical bars are protected. The begin reads the opening pipe; the end reads the closing pipe outside a directive or string. Follows agentflow.md#the-three-link-kinds, flowchart.md#the-statement-context, and flowchart.md#the-label-context.",
+          "comment": "Read a pipe-delimited link label, giving quoted portions precedence over a closing pipe. A directive inside the label cannot supply its closer. Follows agentflow.md#the-three-link-kinds and flowchart.md#the-label-context.",
           "begin": "{{flowchart-pipe-label-begin}}",
           "beginCaptures": {
             "1": {
-              "name": "punctuation.definition.label.begin.mermaid"
+              "name": "keyword.operator.delimiter.label.begin.mermaid"
             }
           },
           "end": "{{flowchart-pipe-label-end}}",
           "endCaptures": {
             "1": {
-              "name": "punctuation.definition.label.end.mermaid"
+              "name": "keyword.operator.delimiter.label.end.mermaid"
             }
           },
           "patterns": [
@@ -488,7 +491,7 @@
             },
             {
               "include": "#flowchart-label-entity",
-              "comment": "Reuse flowchart units, read in converted form with each entity as one placeholder. Follows common.md#entities."
+              "comment": "Read an entity without treating its hash or terminator as separate punctuation. Internal directives retain their scopes. Follows common.md#entities."
             },
             {
               "include": "#agentflow-label-comment"
@@ -498,7 +501,7 @@
             },
             {
               "include": "#agentflow-string",
-              "comment": "Reuse flowchart nested string contexts and their directive boundaries. Follows agentflow.md#names-strings-and-click-text."
+              "comment": "Read flowchart nested string contexts and their directive boundaries. Follows agentflow.md#names-strings-and-click-text."
             },
             {
               "include": "#agentflow-label-text"
@@ -531,7 +534,7 @@
             },
             {
               "include": "#agentflow-string",
-              "comment": "Reuse flowchart nested string contexts and their directive boundaries. Follows agentflow.md#names-strings-and-click-text."
+              "comment": "Read flowchart nested string contexts and their directive boundaries. Follows agentflow.md#names-strings-and-click-text."
             },
             {
               "include": "#agentflow-slanted-text"
@@ -539,7 +542,7 @@
           ]
         },
         {
-          "comment": "(- enters the ellipse context; -, / or ) followed by ) closes it; each other character except parentheses, brackets and braces is a text-run. Follows flowchart.md#the-ellipse-context.",
+          "comment": "Read ellipse delimiters and text, including each entity as one label-text unit. Native comments can precede the closer. Follows agentflow.md#preserved-comments-and-the-default-size-limit, flowchart.md#the-ellipse-context, and common.md#entities.",
           "begin": "{{flowchart-ellipse-begin}}",
           "beginCaptures": {
             "1": {
@@ -557,8 +560,8 @@
               "include": "#directive"
             },
             {
-              "include": "#entity",
-              "comment": "Reuse flowchart units, read in converted form with each entity as one placeholder. Follows common.md#entities."
+              "include": "#flowchart-label-entity",
+              "comment": "Read an entity without treating its hash or terminator as separate punctuation. Internal directives retain their scopes. Follows common.md#entities."
             },
             {
               "include": "#agentflow-label-comment"
@@ -568,7 +571,7 @@
             },
             {
               "include": "#agentflow-string",
-              "comment": "Reuse flowchart nested string contexts and their directive boundaries. Follows agentflow.md#names-strings-and-click-text."
+              "comment": "Read flowchart nested string contexts and their directive boundaries. Follows agentflow.md#names-strings-and-click-text."
             },
             {
               "comment": "(- enters the ellipse context; -, / or ) followed by ) closes it; each other character except parentheses, brackets and braces is a text-run. The text-run match reads one ordinary character; the earlier directive include reads directives without repeating their expression in this match. Follows flowchart.md#the-ellipse-context.",
@@ -594,20 +597,20 @@
         },
         {
           "include": "#agentflow-string",
-          "comment": "Reuse flowchart nested string contexts and their directive boundaries. Follows agentflow.md#names-strings-and-click-text."
+          "comment": "Read flowchart nested string contexts and their directive boundaries. Follows agentflow.md#names-strings-and-click-text."
         },
         {
-          "comment": "`#`, `:::`, `:`, `&`, `;`, `,`, or `*`: a unit named by its text. separator = newline | \";\" | end-of-text | comment. Follows flowchart.md#the-statement-context and agentflow.md#diagram-and-statements.",
+          "comment": "Read semicolons, ampersands and commas as statement, node-list and list separators. Follows flowchart.md#the-statement-context and agentflow.md#diagram-and-statements.",
           "match": "(;)|(&)|(,)",
           "captures": {
             "1": {
-              "name": "punctuation.separator.statement.mermaid"
+              "name": "keyword.operator.separator.statement.mermaid"
             },
             "2": {
               "name": "keyword.operator.mermaid"
             },
             "3": {
-              "name": "punctuation.separator.comma.mermaid"
+              "name": "keyword.operator.separator.comma.mermaid"
             }
           }
         },
@@ -662,7 +665,7 @@
         },
         {
           "include": "#flowchart-label-entity",
-          "comment": "Reuse flowchart units, read in converted form with each entity as one placeholder. Follows common.md#entities."
+          "comment": "Read an entity without treating its hash or terminator as separate punctuation. Internal directives retain their scopes. Follows common.md#entities."
         },
         {
           "include": "#agentflow-label-comment"
@@ -672,7 +675,7 @@
         },
         {
           "include": "#agentflow-string",
-          "comment": "Reuse flowchart nested string contexts and their directive boundaries. Follows agentflow.md#names-strings-and-click-text."
+          "comment": "Read flowchart nested string contexts and their directive boundaries. Follows agentflow.md#names-strings-and-click-text."
         },
         {
           "include": "#agentflow-label-text"
@@ -680,15 +683,15 @@
       ]
     },
     "agentflow-slanted-text": {
-      "comment": "Reuse the slanted text vocabulary; bare percent signs are not ordinary text. Quotes inside an already-started text run remain text across directives. Follows agentflow.md#shared-units-and-ordered-contexts and agentflow.md#label-and-closing-brace-differences.",
+      "comment": "Read the slanted text vocabulary; bare percent signs are not ordinary text. Quotes inside an already-started text run remain text across directives. Follows agentflow.md#shared-units-and-ordered-contexts and agentflow.md#label-and-closing-brace-differences.",
       "patterns": [
         {
           "include": "#flowchart-slanted-slash",
-          "comment": "Reuse the slash and backslash text units of the slanted context. Follows agentflow.md#shared-units-and-ordered-contexts."
+          "comment": "Read the slash and backslash text units of the slanted context. Follows agentflow.md#shared-units-and-ordered-contexts."
         },
         {
           "begin": "(?!{{directiveStart}})(?={{agentflow-slanted-text-character}})",
-          "end": "(?!{{agentflow-slanted-text-character}})|$",
+          "end": "(?=.)(?!{{agentflow-slanted-text-character}})",
           "contentName": "string.unquoted.mermaid",
           "patterns": [
             {
@@ -702,12 +705,12 @@
             }
           ],
           "applyEndPatternLast": true,
-          "comment": "Rule 5: Quotes in an ordinary run stay text, also after an initial entity or HTML text; percent signs end the run. Follows agentflow.md#label-and-closing-brace-differences and flowchart.md#the-slanted-context."
+          "comment": "Read an ordinary slanted-label text run across physical lines until a written character outside its set, including a percent sign. The end requires an actual character so a physical line boundary leaves the run open. Quotes inside the run remain text, including after an entity or HTML fragment. Follows agentflow.md#label-and-closing-brace-differences and flowchart.md#the-slanted-context."
         }
       ]
     },
     "agentflow-plain-string": {
-      "comment": "Strings, markdown strings, split link text, accessibility values, callback text, and data have no diagram-comment rule. Their percent pairs and comment-looking lines are content. In the string context, a quote followed by a backtick enters the markdown string context; a quote alone leaves it; other characters are content. Follows agentflow.md#preserved-comments-and-the-default-size-limit and flowchart.md#strings.",
+      "comment": "Read ordinary quoted content with markdown transitions at a quote followed by a backtick. Percent-looking text has no native comment meaning in this context. Follows agentflow.md#preserved-comments-and-the-default-size-limit and flowchart.md#strings.",
       "begin": "{{flowchart-string-quote}}",
       "beginCaptures": {
         "0": {
@@ -739,7 +742,7 @@
       ]
     },
     "agentflow-markdown-string": {
-      "comment": "Strings, markdown strings, split link text, accessibility values, callback text, and data have no diagram-comment rule. Their percent pairs and comment-looking lines are content. In the markdown string context, a backtick followed by a quote leaves it; a quote followed by a backtick enters another markdown string context; a quote enters the string context. A directive between quote and backquote lies inside the string, at either delimiter. Follows agentflow.md#preserved-comments-and-the-default-size-limit, flowchart.md#strings, and flowchart.md#directives-inside-units.",
+      "comment": "Read markdown content and its transitions to ordinary quoted strings or another markdown string. Closing backtick-quote pairs may contain directives; percent-looking content remains part of the string. Follows agentflow.md#preserved-comments-and-the-default-size-limit, flowchart.md#strings, and flowchart.md#directives-inside-units.",
       "begin": "{{flowchart-markdown-string-begin}}",
       "beginCaptures": {
         "0": {
@@ -789,13 +792,13 @@
       "begin": "{{flowchart-data-begin}}",
       "beginCaptures": {
         "1": {
-          "name": "punctuation.section.data.begin.mermaid"
+          "name": "keyword.operator.bracket.data.begin.mermaid"
         }
       },
       "end": "{{flowchart-data-end}}",
       "endCaptures": {
         "1": {
-          "name": "punctuation.section.data.end.mermaid"
+          "name": "keyword.operator.bracket.data.end.mermaid"
         }
       },
       "contentName": "string.unquoted.mermaid",
@@ -818,7 +821,7 @@
       "name": "meta.data.mermaid"
     },
     "agentflow-callback": {
-      "comment": "Strings, markdown strings, split link text, accessibility values, callback text, and data have no diagram-comment rule. Their percent pairs and comment-looking lines are content. `call` and whitespace enter the callback name context; the name is every character before `(`. Parentheses enter and leave the arguments context, whose text ends at the next `)`. Directives may separate complete units or occur in their surrounding whitespace; gap captures include the shared directive rule. Follows agentflow.md#preserved-comments-and-the-default-size-limit, flowchart.md#click-and-callbacks, and flowchart.md#directives-inside-units.",
+      "comment": "Read call and its padding, then a callback name and parenthesized argument text. Entities at the start of the name stay within its function-name scope. Directives remain shared trivia, while comment-looking lines remain callback content. Follows agentflow.md#click-call-and-href, agentflow.md#preserved-comments-and-the-default-size-limit, flowchart.md#click-and-callbacks, and common.md#entities.",
       "begin": "{{flowchart-callback-begin}}",
       "beginCaptures": {
         "1": {
@@ -836,10 +839,6 @@
       "patterns": [
         {
           "include": "#directive"
-        },
-        {
-          "include": "#entity",
-          "comment": "Each entity is read as its placeholder. Follows common.md#entities."
         },
         {
           "comment": "Read the callback name before its opening argument parenthesis. Follows flowchart.md#click-and-callbacks.",
@@ -861,13 +860,13 @@
           "begin": "{{flowchart-callback-arguments-begin}}",
           "beginCaptures": {
             "1": {
-              "name": "punctuation.section.arguments.begin.mermaid"
+              "name": "keyword.operator.bracket.arguments.begin.mermaid"
             }
           },
           "end": "{{flowchart-callback-arguments-end}}",
           "endCaptures": {
             "1": {
-              "name": "punctuation.section.arguments.end.mermaid"
+              "name": "keyword.operator.bracket.arguments.end.mermaid"
             }
           },
           "contentName": "string.unquoted.mermaid",
@@ -898,7 +897,7 @@
           ]
         },
         "3": {
-          "name": "punctuation.definition.description.begin.mermaid"
+          "name": "keyword.operator.delimiter.description.begin.mermaid"
         },
         "4": {
           "patterns": [
@@ -911,7 +910,7 @@
       "end": "{{flowchart-acc-descr-block-end}}",
       "endCaptures": {
         "1": {
-          "name": "punctuation.definition.description.end.mermaid"
+          "name": "keyword.operator.delimiter.description.end.mermaid"
         }
       },
       "contentName": "string.unquoted.mermaid",
@@ -926,7 +925,7 @@
       ]
     },
     "agentflow-accessibility-line": {
-      "comment": "Flowchart accessibility title and description contexts, including their leading whitespace. Accessibility values have no diagram-comment rule; their percent pairs and comment-looking lines are content. Follows agentflow.md#direction-and-accessibility-statements.",
+      "comment": "Read colon-led accessibility title or description values, including their initial padding. Percent-looking content remains in the value. Follows agentflow.md#direction-and-accessibility-statements.",
       "begin": "{{flowchart-accessibility-line-begin}}",
       "beginCaptures": {
         "1": {
@@ -940,7 +939,7 @@
           ]
         },
         "3": {
-          "name": "punctuation.separator.colon.mermaid"
+          "name": "keyword.operator.separator.colon.mermaid"
         },
         "4": {
           "patterns": [
@@ -1033,7 +1032,7 @@
           ]
         },
         "5": {
-          "name": "punctuation.separator.key-value.mermaid"
+          "name": "keyword.operator.separator.key-value.mermaid"
         },
         "6": {
           "patterns": [
@@ -1053,7 +1052,7 @@
           ]
         },
         "9": {
-          "name": "punctuation.separator.label.mermaid"
+          "name": "keyword.operator.separator.label.mermaid"
         }
       },
       "end": "{{flowchart-bar-shape-end}}",
@@ -1098,7 +1097,7 @@
       "comment": "One or more characters other than brackets, parentheses, braces, vertical bar and double quote are a text-run; agentflow inserts its label comment rule before text-run. Follows flowchart.md#the-label-context and agentflow.md#preserved-comments-and-the-default-size-limit."
     },
     "agentflow-name": {
-      "comment": "Heading data follows the name or title immediately; a diagram comment ends a bare name heading and is not another name fragment. Ordinary quotes inside a fragment remain text. Follows agentflow.md#flows-globals-connectors-and-names.",
+      "comment": "Read a heading name up to a native comment or its adjacent data opener. Quotes within an ordinary name fragment remain text. Follows agentflow.md#flows-globals-connectors-and-names.",
       "begin": "{{agentflow-heading-name-begin}}",
       "end": "{{agentflow-heading-name-end}}",
       "contentName": "string.unquoted.mermaid",
@@ -1139,7 +1138,7 @@
       ]
     },
     "agentflow-ellipse-html-tag": {
-      "comment": "Changes only attribute quotes; this context still ends at its closer, including inside a quoted attribute value. Directives are read whole. The attribute part ends at the first >. Read a directive whole; one containing > ends the tag after that directive. Follows flowchart.md#the-ellipse-context, common.md#html-attribute-quotes, and common.md#a-directive-is-a-token-boundary.",
+      "comment": "Read an HTML tag as ellipse-label text while converting attribute quotes. Keep the ellipse closer and a native comment active even inside an attribute, and read each directive whole. A directive containing the tag's greater-than mark ends the tag after that directive. Follows flowchart.md#the-ellipse-context, agentflow.md#label-and-closing-brace-differences, common.md#html-attribute-quotes, and common.md#a-directive-is-a-token-boundary.",
       "begin": "{{htmlTagStart}}",
       "end": "{{htmlTagEnd}}|(?=\"|{{flowchart-ellipse-end}})|(?={{agentflow-comment-start}})",
       "endCaptures": {
@@ -1165,7 +1164,8 @@
             }
           ]
         }
-      ]
+      ],
+      "name": "string.unquoted.mermaid"
     },
     "agentflow-solid-html-tag": {
       "comment": "Changes only attribute quotes; this context still ends at its closer, including inside a quoted attribute value. Directives are read whole. The attribute part ends at the first >. Read a directive whole; one containing > ends the tag after that directive. Follows agentflow.md#arrows, common.md#html-attribute-quotes, and common.md#a-directive-is-a-token-boundary.",
@@ -1197,7 +1197,7 @@
       ]
     },
     "agentflow-string": {
-      "comment": "Reuse flowchart nested string contexts, preserving comment-looking lines as content. Follows agentflow.md#names-strings-and-click-text.",
+      "comment": "Read flowchart nested string contexts, preserving comment-looking lines as content. Follows agentflow.md#names-strings-and-click-text.",
       "patterns": [
         {
           "include": "#agentflow-markdown-string"
@@ -1235,7 +1235,7 @@
       ]
     },
     "agentflow-direction-line": {
-      "comment": "Reuse the flowchart direction-line families and their ordered, greedy choice; direction text runs through comment-looking lines to LF. Follows agentflow.md#direction-and-accessibility-statements.",
+      "comment": "Read the flowchart direction-line families and their ordered, greedy choice; direction text runs through comment-looking lines to LF. Follows agentflow.md#direction-and-accessibility-statements.",
       "match": "{{flowchart-direction-line}}",
       "captures": {
         "1": {
@@ -1386,7 +1386,7 @@
         },
         {
           "include": "#entity",
-          "comment": "Reuse flowchart units, read in converted form with each entity as one placeholder. Follows common.md#entities."
+          "comment": "Read an entity without treating its hash or terminator as separate punctuation. Internal directives retain their scopes. Follows common.md#entities."
         },
         {
           "include": "#agentflow-solid-html-tag"
@@ -1394,7 +1394,7 @@
       ]
     },
     "agentflow-data-html-tag": {
-      "comment": "A quote outside an HTML attribute starts a data string. changes attribute quotes only; the data closer still ends the block inside a tag or quoted attribute value. The attribute part ends at the first >. Read a directive whole; one containing > ends the tag after that directive. Follows common.md#html-attribute-quotes, common.md#a-directive-is-a-token-boundary, and flowchart.md#data-blocks.",
+      "comment": "Read an HTML tag within data text, applying attribute-quote conversion while leaving the data closer active. A whole directive containing the tag's first greater-than character ends the tag; a quote elsewhere starts data-string text. Follows flowchart.md#data-blocks, common.md#html-attribute-quotes, and common.md#a-directive-is-a-token-boundary.",
       "begin": "{{htmlTagStart}}",
       "end": "{{htmlTagEnd}}|(?=\"|\\})",
       "endCaptures": {
@@ -1452,7 +1452,7 @@
       ]
     },
     "agentflow-style-property": {
-      "comment": "Read a style property name, key-value colon and one value ending before trailing whitespace or a style separator. Follows agentflow.md#style-classdef-class-and-linkstyle.",
+      "comment": "Read an optional style property name, its key-value colon and one value ending before trailing whitespace or a style separator. Follows agentflow.md#style-classdef-class-and-linkstyle and flowchart.md#style-class-and-link-style-statements.",
       "begin": "{{flowchart-style-property-begin}}",
       "beginCaptures": {
         "1": {
@@ -1471,7 +1471,7 @@
           ]
         },
         "3": {
-          "name": "punctuation.separator.key-value.mermaid"
+          "name": "keyword.operator.separator.key-value.mermaid"
         }
       },
       "end": "{{agentflow-style-value-end}}",
@@ -1486,7 +1486,7 @@
       ]
     },
     "agentflow-classdef-style-property": {
-      "comment": "Read a style property name, key-value colon and one value ending before trailing whitespace or a style separator. Follows agentflow.md#style-classdef-class-and-linkstyle.",
+      "comment": "Read an optional style property name, its key-value colon and one value ending before trailing whitespace or a style separator. Follows agentflow.md#style-classdef-class-and-linkstyle and flowchart.md#style-class-and-link-style-statements.",
       "begin": "({{agentflow-classdef-style-key}})({{flowchart-link-gap}})(:)",
       "beginCaptures": {
         "1": {
@@ -1505,7 +1505,7 @@
           ]
         },
         "3": {
-          "name": "punctuation.separator.key-value.mermaid"
+          "name": "keyword.operator.separator.key-value.mermaid"
         }
       },
       "end": "{{agentflow-style-value-end}}",
@@ -1608,7 +1608,8 @@
             },
             {
               "match": "{{flowchart-list-name}}",
-              "name": "variable.mermaid"
+              "name": "variable.mermaid",
+              "comment": "Read a complete click target name after any directives in its captured field. Follows flowchart.md#click-statements and agentflow.md#click-call-and-href."
             }
           ]
         },
@@ -1681,13 +1682,13 @@
       "begin": "(\\[)",
       "beginCaptures": {
         "1": {
-          "name": "punctuation.definition.label.begin.mermaid"
+          "name": "keyword.operator.delimiter.label.begin.mermaid"
         }
       },
       "end": "(\\])",
       "endCaptures": {
         "1": {
-          "name": "punctuation.definition.label.end.mermaid"
+          "name": "keyword.operator.delimiter.label.end.mermaid"
         }
       },
       "patterns": [
@@ -1696,7 +1697,7 @@
         },
         {
           "include": "#flowchart-label-entity",
-          "comment": "Reuse flowchart units, read in converted form with each entity as one placeholder. Follows common.md#entities."
+          "comment": "Read an entity without treating its hash or terminator as separate punctuation. Internal directives retain their scopes. Follows common.md#entities."
         },
         {
           "include": "#agentflow-label-comment"
@@ -1706,7 +1707,7 @@
         },
         {
           "include": "#agentflow-string",
-          "comment": "Reuse flowchart nested string contexts and their directive boundaries. Follows agentflow.md#names-strings-and-click-text."
+          "comment": "Read flowchart nested string contexts and their directive boundaries. Follows agentflow.md#names-strings-and-click-text."
         },
         {
           "include": "#agentflow-label-text"
@@ -1771,6 +1772,22 @@
           "include": "#entity"
         }
       ]
+    },
+    "agentflow-line-final-keywords": {
+      "comment": "Read a reserved keyword at a statement start when only padding and directives follow on its physical line. A value on a later line receives the surrounding context's scopes. Follows agentflow.md#click-call-and-href and common.md#a-directive-is-a-token-boundary.",
+      "match": "({{commonStatementStart}})(click)(?={{lineGap}}$)",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.control.mermaid"
+        }
+      }
     }
   }
 }

@@ -1,6 +1,7 @@
 {
   "header": "classDiagram-v2",
   "scopes": [
+    ["abstract", "entity.name.type.mermaid", 26],
     ["classDiagram-v2", "keyword.control.mermaid"],
     ["accTitle", "keyword.control.mermaid"],
     ["accDescr", "keyword.control.mermaid", 3],
@@ -31,21 +32,21 @@
     ["--", "keyword.operator.arrow.mermaid"],
     ["..", "keyword.operator.arrow.mermaid"],
     ["o", "keyword.operator.arrow.mermaid"],
-    [":", "punctuation.separator.colon.mermaid"],
-    [":::", "punctuation.separator.class.mermaid"],
-    [",", "punctuation.separator.comma.mermaid", 49],
+    [":", "keyword.operator.separator.colon.mermaid"],
+    [":::", "keyword.operator.separator.class.mermaid"],
+    [",", "keyword.operator.separator.comma.mermaid", 49],
     ["%% a class comment", "comment.line.percentage.mermaid"],
     ["%% inline class comment", "comment.line.percentage.mermaid"],
     ["%%{", "meta.directive.mermaid", 41],
-    ["(", "punctuation.section.arguments.begin.mermaid", 8],
-    [")", "punctuation.section.arguments.end.mermaid", 8],
+    ["(", "keyword.operator.bracket.arguments.begin.mermaid", 8],
+    [")", "keyword.operator.bracket.arguments.end.mermaid", 8],
     ["TB", "constant.language.mermaid", 50],
     ["%%{", "meta.directive.mermaid", 53],
     ["%%{", "meta.directive.mermaid", 54],
     ["accDescr", "keyword.control.mermaid", 44],
     ["cb)name", "entity.name.function.mermaid", 56],
     ["x", "string.unquoted.mermaid", 56],
-    [")", "punctuation.section.arguments.end.mermaid", 56],
+    [")", "keyword.operator.bracket.arguments.end.mermaid", 56],
     ["note", "keyword.control.mermaid", 57],
     [" y", "string.quoted.double.mermaid", 57],
     [" note", "string.unquoted.mermaid", 58],
@@ -55,11 +56,11 @@
     ["for", "keyword.control.mermaid", 61],
     ["accTitle", "keyword.control.mermaid", 62],
     ["accDescr", "keyword.control.mermaid", 63],
-    ["{", "punctuation.definition.description.begin.mermaid", 63],
-    ["}", "punctuation.definition.description.end.mermaid", 63],
+    ["{", "keyword.operator.delimiter.description.begin.mermaid", 63],
+    ["}", "keyword.operator.delimiter.description.end.mermaid", 63],
     ["accDescr", "keyword.control.mermaid", 64],
-    ["{", "punctuation.definition.description.begin.mermaid", 64],
-    ["}", "punctuation.definition.description.end.mermaid", 64],
+    ["{", "keyword.operator.delimiter.description.begin.mermaid", 64],
+    ["}", "keyword.operator.delimiter.description.end.mermaid", 64],
     ["<b title=\"x\">", "string.quoted.double.mermaid", 65],
     ["tag</b>", "string.quoted.double.mermaid", 65],
     ["<b", "string.quoted.double.mermaid", 66],
@@ -68,7 +69,7 @@
     ["%%{", "meta.directive.mermaid", 67],
     ["style", "keyword.control.mermaid", 68],
     ["%%{", "meta.directive.mermaid", 68],
-    [",", "punctuation.separator.comma.mermaid", 69],
+    [",", "keyword.operator.separator.comma.mermaid", 69],
     ["extra", "variable.mermaid", 69],
     ["call", "keyword.control.mermaid", 71],
     [")name", "entity.name.function.mermaid", 71],
@@ -79,29 +80,29 @@
     ["call", "variable.mermaid", 74],
     ["(x)", "entity.name.type.mermaid", 74],
     ["style", "keyword.control.mermaid", 76],
-    [":", "punctuation.separator.key-value.mermaid", 76],
+    [":", "keyword.operator.separator.key-value.mermaid", 76],
     ["classDef", "keyword.control.mermaid", 78],
-    [":", "punctuation.separator.key-value.mermaid", 78],
+    [":", "keyword.operator.separator.key-value.mermaid", 78],
     ["style", "keyword.control.mermaid", 80],
     ["style", "keyword.control.mermaid", 80],
     ["classDef", "keyword.control.mermaid", 82],
     ["style", "support.constant.property-value.mermaid", 82],
-    [",", "punctuation.separator.comma.mermaid", 78],
-    ["<<", "punctuation.definition.annotation.begin.mermaid", 84],
-    [">>", "punctuation.definition.annotation.end.mermaid", 84],
-    ["(", "punctuation.section.arguments.begin.mermaid", 86],
-    [")", "punctuation.section.arguments.end.mermaid", 86],
-    ["(", "punctuation.section.arguments.begin.mermaid", 88],
-    [")", "punctuation.section.arguments.end.mermaid", 88],
-    ["(", "punctuation.section.arguments.begin.mermaid", 108],
-    [")", "punctuation.section.arguments.end.mermaid", 108],
+    [",", "keyword.operator.separator.comma.mermaid", 78],
+    ["<<", "keyword.operator.delimiter.annotation.begin.mermaid", 84],
+    [">>", "keyword.operator.delimiter.annotation.end.mermaid", 84],
+    ["(", "keyword.operator.bracket.arguments.begin.mermaid", 86],
+    [")", "keyword.operator.bracket.arguments.end.mermaid", 86],
+    ["(", "keyword.operator.bracket.arguments.begin.mermaid", 88],
+    [")", "keyword.operator.bracket.arguments.end.mermaid", 88],
+    ["(", "keyword.operator.bracket.arguments.begin.mermaid", 108],
+    [")", "keyword.operator.bracket.arguments.end.mermaid", 108],
     ["b)", "string.unquoted.mermaid", 88],
     ["wrap", "entity.name.function.directive.mermaid", 94],
     [" tail", "comment.line.percentage.mermaid", 94],
     ["wrap", "entity.name.function.directive.mermaid", 114],
     ["style", "support.constant.property-value.mermaid", 115],
-    ["(", "punctuation.section.arguments.begin.mermaid", 116],
-    [")", "punctuation.section.arguments.end.mermaid", 116],
+    ["(", "keyword.operator.bracket.arguments.begin.mermaid", 116],
+    [")", "keyword.operator.bracket.arguments.end.mermaid", 116],
     ["note \"x ", "comment.block.ignored.mermaid", 51],
     ["Long", "support.constant.property-value.mermaid", 92],
     ["Animal", "variable.mermaid", 5],
@@ -111,13 +112,13 @@
     ["call", "variable.mermaid", 8],
     ["{", "keyword.operator.block.begin.mermaid", 5],
     ["}", "keyword.operator.block.end.mermaid", 10],
-    ["interface", "storage.modifier.mermaid", 6],
+    ["interface", "entity.name.type.mermaid", 6],
     [" owns note and click", "string.unquoted.mermaid", 23],
     ["onClick", "entity.name.function.mermaid", 31],
     ["$", "storage.modifier.mermaid", 117],
     ["#43a047", "support.constant.property-value.mermaid", 118],
-    ["[", "punctuation.definition.label.begin.mermaid", 5],
-    ["]", "punctuation.definition.label.end.mermaid", 5],
+    ["[", "keyword.operator.delimiter.label.begin.mermaid", 5],
+    ["]", "keyword.operator.delimiter.label.end.mermaid", 5],
     ["field", "variable.mermaid", 117],
     ["+", "storage.modifier.mermaid", 117],
     ["field", "variable.mermaid", 119],
@@ -127,19 +128,24 @@
     ["note", "string.unquoted.mermaid", 8],
     ["call", "variable.mermaid", 120],
     ["+", "storage.modifier.mermaid", 120],
-    ["(", "punctuation.section.arguments.begin.mermaid", 120],
+    ["(", "keyword.operator.bracket.arguments.begin.mermaid", 120],
     ["note", "string.unquoted.mermaid", 120],
-    [")", "punctuation.section.arguments.end.mermaid", 120],
+    [")", "keyword.operator.bracket.arguments.end.mermaid", 120],
     ["string", "entity.name.type.mermaid", 120],
-    ["<<", "punctuation.definition.annotation.begin.mermaid", 121],
-    ["interface", "storage.modifier.mermaid", 121],
-    [">>", "punctuation.definition.annotation.end.mermaid", 121],
+    ["<<", "keyword.operator.delimiter.annotation.begin.mermaid", 121],
+    ["interface", "entity.name.type.mermaid", 121],
+    [">>", "keyword.operator.delimiter.annotation.end.mermaid", 121],
     ["fill", "support.type.property-name.mermaid", 118],
     ["$", "storage.modifier.mermaid", 122],
     ["int*", "entity.name.type.mermaid", 122],
     ["int*", "entity.name.type.mermaid", 123],
     ["*", "storage.modifier.mermaid", 124],
-    ["fi ll", "support.type.property-name.mermaid", 125]
+    ["fi ll", "support.type.property-name.mermaid", 125],
+    ["*", "keyword.operator.arrow.mermaid", 126],
+    ["<", "keyword.operator.arrow.mermaid", 127],
+    ["|>", "keyword.operator.arrow.mermaid", 128],
+    ["()", "keyword.operator.arrow.mermaid", 129],
+    [">", "keyword.operator.arrow.mermaid", 25]
   ],
   "absent": [
     ["className", "keyword.control.mermaid"],
@@ -170,9 +176,9 @@
     [57, "entity.name.function.mermaid"],
     [58, "comment.line.percentage.mermaid"],
     [59, "comment.line.percentage.mermaid"],
-    [74, "punctuation.section.arguments.begin.mermaid"],
-    [111, "punctuation.section.arguments.begin.mermaid"],
-    [111, "punctuation.section.arguments.end.mermaid"]
+    [74, "keyword.operator.bracket.arguments.begin.mermaid"],
+    [111, "keyword.operator.bracket.arguments.begin.mermaid"],
+    [111, "keyword.operator.bracket.arguments.end.mermaid"]
   ],
   "unscoped": [[" ", 5]],
   "escapedInputs": [
@@ -191,17 +197,17 @@
         ["%% class block boundary", "comment.line.percentage.mermaid", 12],
         ["%% class generic boundary", "comment.line.percentage.mermaid", 15],
         ["%% class backquote boundary", "comment.line.percentage.mermaid", 18],
-        ["(", "punctuation.section.arguments.begin.mermaid", 21],
-        [")", "punctuation.section.arguments.end.mermaid", 21],
+        ["(", "keyword.operator.bracket.arguments.begin.mermaid", 21],
+        [")", "keyword.operator.bracket.arguments.end.mermaid", 21],
         ["more", "entity.name.type.mermaid", 16],
         ["more", "variable.mermaid", 19],
-        ["<<", "punctuation.definition.annotation.begin.mermaid", 23],
-        [">>", "punctuation.definition.annotation.end.mermaid", 23],
+        ["<<", "keyword.operator.delimiter.annotation.begin.mermaid", 23],
+        [">>", "keyword.operator.delimiter.annotation.end.mermaid", 23],
         ["wrap", "entity.name.function.directive.mermaid", 23],
         ["%% class annotation boundary", "comment.line.percentage.mermaid", 23],
         ["%% class callback boundary", "comment.line.percentage.mermaid", 25],
         ["more", "string.unquoted.mermaid", 26],
-        [")", "punctuation.section.arguments.end.mermaid", 26],
+        [")", "keyword.operator.bracket.arguments.end.mermaid", 26],
         ["%% class namespace boundary", "comment.line.percentage.mermaid", 27]
       ],
       "absent": [
@@ -251,14 +257,14 @@
     {
       "code": "classDiagram\nclass A { )x\u2028foo() }\nclass B { )x\u2029foo() }\nclass C { text\u2028foo(a(b)) }\n",
       "scopes": [
-        ["(", "punctuation.section.arguments.begin.mermaid", 3],
-        [")", "punctuation.section.arguments.end.mermaid", 3]
+        ["(", "keyword.operator.bracket.arguments.begin.mermaid", 3],
+        [")", "keyword.operator.bracket.arguments.end.mermaid", 3]
       ],
       "absentOnLine": [
-        [1, "punctuation.section.arguments.begin.mermaid"],
-        [1, "punctuation.section.arguments.end.mermaid"],
-        [2, "punctuation.section.arguments.begin.mermaid"],
-        [2, "punctuation.section.arguments.end.mermaid"]
+        [1, "keyword.operator.bracket.arguments.begin.mermaid"],
+        [1, "keyword.operator.bracket.arguments.end.mermaid"],
+        [2, "keyword.operator.bracket.arguments.begin.mermaid"],
+        [2, "keyword.operator.bracket.arguments.end.mermaid"]
       ]
     },
     {
@@ -304,8 +310,8 @@
     {
       "code": "classDiagram\nclass Boundary { foo()\u2029%% method end %%{wrap}%%\n}\n",
       "scopes": [
-        ["(", "punctuation.section.arguments.begin.mermaid", 1],
-        [")", "punctuation.section.arguments.end.mermaid", 1],
+        ["(", "keyword.operator.bracket.arguments.begin.mermaid", 1],
+        [")", "keyword.operator.bracket.arguments.end.mermaid", 1],
         ["%% method end %%{wrap}%%", "comment.line.percentage.mermaid", 1]
       ],
       "absentOnLine": [[1, "meta.directive.mermaid"]]
@@ -315,8 +321,8 @@
       "scopes": [
         ["wrap", "entity.name.function.directive.mermaid"],
         ["foo", "variable.mermaid"],
-        ["(", "punctuation.section.arguments.begin.mermaid"],
-        [")", "punctuation.section.arguments.end.mermaid"]
+        ["(", "keyword.operator.bracket.arguments.begin.mermaid"],
+        [")", "keyword.operator.bracket.arguments.end.mermaid"]
       ]
     },
     {
@@ -324,8 +330,8 @@
       "scopes": [
         ["wrap", "entity.name.function.directive.mermaid"],
         ["foo", "variable.mermaid"],
-        ["(", "punctuation.section.arguments.begin.mermaid"],
-        [")", "punctuation.section.arguments.end.mermaid"]
+        ["(", "keyword.operator.bracket.arguments.begin.mermaid"],
+        [")", "keyword.operator.bracket.arguments.end.mermaid"]
       ]
     },
     {
@@ -334,8 +340,8 @@
         ["call", "keyword.control.mermaid", 1],
         ["fn", "entity.name.function.mermaid", 2],
         ["a", "string.unquoted.mermaid", 3],
-        ["(", "punctuation.section.arguments.begin.mermaid", 3],
-        [")", "punctuation.section.arguments.end.mermaid", 3]
+        ["(", "keyword.operator.bracket.arguments.begin.mermaid", 3],
+        [")", "keyword.operator.bracket.arguments.end.mermaid", 3]
       ]
     },
     {

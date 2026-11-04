@@ -31,7 +31,7 @@ describe("Mermaid code blocks", () => {
     },
   )
 
-  it("colors the frontmatter as YAML and a flowchart as before", async () => {
+  it("colors the frontmatter as YAML and the keywords of a flowchart", async () => {
     const html = await markdown.renderAsync(
       "```mmd\n---\ntitle: Hello\n---\nflowchart LR\n  A --> B\n```\n",
     )

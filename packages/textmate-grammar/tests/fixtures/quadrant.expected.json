@@ -14,27 +14,27 @@
     ["accDescr", "keyword.control.mermaid", 4],
     ["accDescr", "keyword.control.mermaid", 5],
     ["hot", "variable.mermaid"],
-    [":::", "punctuation.separator.class.mermaid"],
+    [":::", "keyword.operator.separator.class.mermaid"],
     ["-->", "keyword.operator.arrow.mermaid"],
     ["--->", "keyword.operator.arrow.mermaid"],
     ["title and classDef", "string.quoted.double.mermaid"],
     ["x-axis and quadrant-1", "string.quoted.other.markdown.mermaid"],
     ["0.3", "constant.numeric.mermaid"],
-    ["[", "punctuation.section.brackets.begin.mermaid"],
-    [",", "punctuation.separator.comma.mermaid"],
-    [";", "punctuation.separator.semicolon.mermaid"],
+    ["[", "keyword.operator.bracket.brackets.begin.mermaid"],
+    [",", "keyword.operator.separator.comma.mermaid"],
+    [";", "keyword.operator.separator.semicolon.mermaid"],
     ["%% an inline comment", "comment.line.percentage.mermaid"],
     ["%%", "comment.line.percentage.mermaid"],
     ["init", "entity.name.function.directive.mermaid"],
-    [",", "punctuation.separator.comma.mermaid", 29],
-    [",", "punctuation.separator.comma.mermaid", 30],
+    [",", "keyword.operator.separator.comma.mermaid", 29],
+    [",", "keyword.operator.separator.comma.mermaid", 30],
     ["color", "support.type.property-name.mermaid", 31],
-    [":", "punctuation.separator.colon.mermaid", 31],
-    [",", "punctuation.separator.comma.mermaid", 31],
+    [":", "keyword.operator.separator.colon.mermaid", 31],
+    [",", "keyword.operator.separator.comma.mermaid", 31],
     ["0,", "constant.numeric.mermaid", 32],
     ["3", "constant.numeric.mermaid", 32],
-    [",", "punctuation.separator.comma.mermaid", 32],
-    [",", "punctuation.separator.comma.mermaid", 33],
+    [",", "keyword.operator.separator.comma.mermaid", 32],
+    [",", "keyword.operator.separator.comma.mermaid", 33],
     ["<b title=\"x\">", "string.quoted.double.mermaid", 34],
     ["<b title=\"x\">", "string.quoted.other.markdown.mermaid", 35],
     ["%% later >", "comment.line.percentage.mermaid", 36],
@@ -42,26 +42,26 @@
     ["accTitle", "keyword.control.mermaid", 38],
     ["accDescr", "keyword.control.mermaid", 39],
     ["accDescr", "keyword.control.mermaid", 40],
-    ["[", "punctuation.section.brackets.begin.mermaid", 41],
+    ["[", "keyword.operator.bracket.brackets.begin.mermaid", 41],
     ["hot", "variable.mermaid", 42],
     ["hot", "variable.mermaid", 43],
-    [",", "punctuation.separator.comma.mermaid", 43],
+    [",", "keyword.operator.separator.comma.mermaid", 43],
     ["init", "entity.name.function.directive.mermaid", 44],
     ["color", "support.type.property-name.mermaid", 45],
-    [":", "punctuation.separator.colon.mermaid", 45],
-    [",", "punctuation.separator.comma.mermaid", 45],
+    [":", "keyword.operator.separator.colon.mermaid", 45],
+    [",", "keyword.operator.separator.comma.mermaid", 45],
     ["init", "entity.name.function.directive.mermaid", 45],
-    ["[", "punctuation.section.brackets.begin.mermaid", 46],
+    ["[", "keyword.operator.bracket.brackets.begin.mermaid", 46],
     ["0.3", "constant.numeric.mermaid", 46],
     ["0.3", "constant.numeric.mermaid", 48],
     ["classDef", "keyword.control.mermaid", 49],
-    [",", "punctuation.separator.comma.mermaid", 49],
+    [",", "keyword.operator.separator.comma.mermaid", 49],
     ["color", "support.type.property-name.mermaid", 50],
-    [",", "punctuation.separator.comma.mermaid", 50],
+    [",", "keyword.operator.separator.comma.mermaid", 50],
     ["b", "variable.mermaid", 51],
     ["accTitle", "keyword.control.mermaid", 53],
     ["`\"", "punctuation.definition.string.end.mermaid", 55],
-    [";", "punctuation.separator.semicolon.mermaid", 55],
+    [";", "keyword.operator.separator.semicolon.mermaid", 55],
     ["title", "keyword.control.mermaid", 55],
     ["%", "comment.line.percentage.mermaid", 57],
     ["wrap", "entity.name.function.directive.mermaid", 57],
@@ -82,14 +82,28 @@
     ["#f00", "support.constant.property-value.mermaid", 12],
     ["5", "support.constant.property-value.mermaid", 12],
     ["2px", "support.constant.property-value.mermaid", 13],
-    ["]", "punctuation.section.brackets.end.mermaid", 13],
-    ["{", "punctuation.definition.description.begin.mermaid", 4],
-    ["}", "punctuation.definition.description.end.mermaid", 4]
+    ["]", "keyword.operator.bracket.brackets.end.mermaid", 13],
+    ["{", "keyword.operator.delimiter.description.begin.mermaid", 4],
+    ["}", "keyword.operator.delimiter.description.end.mermaid", 4],
+    ["stroke-color", "support.type.property-name.mermaid", 60],
+    ["#123abc", "support.constant.property-value.mermaid", 60],
+    ["accDescr", "keyword.control.mermaid", 62],
+    ["{", "keyword.operator.delimiter.description.begin.mermaid", 62],
+    ["}", "keyword.operator.delimiter.description.end.mermaid", 62],
+    ["accDescr", "keyword.control.mermaid", 63],
+    ["{", "keyword.operator.delimiter.description.begin.mermaid", 63],
+    ["}", "keyword.operator.delimiter.description.end.mermaid", 63],
+    ["accDescr", "keyword.control.mermaid", 64],
+    ["{", "keyword.operator.delimiter.description.begin.mermaid", 64],
+    ["}", "keyword.operator.delimiter.description.end.mermaid", 64],
+    ["accDescr", "keyword.control.mermaid", 65],
+    ["{", "keyword.operator.delimiter.description.begin.mermaid", 65],
+    ["}", "keyword.operator.delimiter.description.end.mermaid", 65]
   ],
   "absent": [
     ["title and classDef", "keyword.control.mermaid"],
     ["x-axis and quadrant-1", "keyword.control.mermaid"],
-    ["0,", "punctuation.separator.comma.mermaid", 32],
+    ["0,", "keyword.operator.separator.comma.mermaid", 32],
     ["<b title=\"x\">", "punctuation.definition.string.end.mermaid", 34],
     ["%% later >", "string.quoted.double.mermaid", 36],
     ["init", "variable.mermaid", 43],
@@ -106,10 +120,10 @@
     [16, "keyword.control.mermaid"],
     [17, "keyword.control.mermaid"],
     [1, "constant.numeric.mermaid"],
-    [37, "punctuation.separator.semicolon.mermaid"],
+    [37, "keyword.operator.separator.semicolon.mermaid"],
     [44, "keyword.control.mermaid"],
     [46, "keyword.control.mermaid"],
-    [48, "punctuation.separator.semicolon.mermaid"]
+    [48, "keyword.operator.separator.semicolon.mermaid"]
   ],
   "escapedInputs": [
     {
@@ -144,7 +158,7 @@
         ["%% point style comment", "comment.line.percentage.mermaid", 7],
         ["%% common %%{wrap}%%", "comment.line.percentage.mermaid", 8],
         ["resumed ", "string.unquoted.mermaid", 2],
-        ["}", "punctuation.definition.description.end.mermaid", 2]
+        ["}", "keyword.operator.delimiter.description.end.mermaid", 2]
       ],
       "absent": [
         ["%% block comment }", "string.unquoted.mermaid", 1],
@@ -163,6 +177,38 @@
         [6, "meta.directive.mermaid"],
         [7, "meta.directive.mermaid"],
         [8, "meta.directive.mermaid"]
+      ]
+    },
+    {
+      "code": "quadrantChart\nclassDef c color: #fff accDescr {}\n",
+      "scopes": [
+        ["accDescr", "keyword.control.mermaid"],
+        ["{", "keyword.operator.delimiter.description.begin.mermaid"],
+        ["}", "keyword.operator.delimiter.description.end.mermaid"]
+      ]
+    },
+    {
+      "code": "quadrantChart\nA: [0.3, 0.6] accDescr {}\n",
+      "scopes": [
+        ["accDescr", "keyword.control.mermaid"],
+        ["{", "keyword.operator.delimiter.description.begin.mermaid"],
+        ["}", "keyword.operator.delimiter.description.end.mermaid"]
+      ]
+    },
+    {
+      "code": "quadrantChart\nquadrant-1 A accDescr {}\n",
+      "scopes": [
+        ["accDescr", "keyword.control.mermaid"],
+        ["{", "keyword.operator.delimiter.description.begin.mermaid"],
+        ["}", "keyword.operator.delimiter.description.end.mermaid"]
+      ]
+    },
+    {
+      "code": "quadrantChart\nx-axis L --> R accDescr {}\n",
+      "scopes": [
+        ["accDescr", "keyword.control.mermaid"],
+        ["{", "keyword.operator.delimiter.description.begin.mermaid"],
+        ["}", "keyword.operator.delimiter.description.end.mermaid"]
       ]
     }
   ]

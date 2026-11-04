@@ -63,13 +63,13 @@
       "begin": "(@\\{)",
       "beginCaptures": {
         "1": {
-          "name": "punctuation.section.data.begin.mermaid"
+          "name": "keyword.operator.bracket.data.begin.mermaid"
         }
       },
       "end": "(\\})",
       "endCaptures": {
         "1": {
-          "name": "punctuation.section.data.end.mermaid"
+          "name": "keyword.operator.bracket.data.end.mermaid"
         }
       },
       "patterns": [
@@ -241,7 +241,7 @@
       ]
     },
     "sequence": {
-      "comment": "Read the exact detected sequence header and its bounded body keyword, allowing an inline first statement. Follows sequence.md#detection.",
+      "comment": "Read sequenceDiagram at its header word boundary. A statement may follow on the header's line. Follows detection.md#the-detectors and sequence.md#detection.",
       "begin": "{{diagramStart}}(sequenceDiagram){{wordEnd}}",
       "beginCaptures": {
         "1": {
@@ -250,6 +250,9 @@
       },
       "end": "(?!)",
       "patterns": [
+        {
+          "include": "#sequence-line-final-keywords"
+        },
         {
           "include": "#comment-line"
         },
@@ -355,7 +358,7 @@
               "name": "keyword.control.mermaid"
             },
             "2": {
-              "name": "punctuation.separator.colon.mermaid"
+              "name": "keyword.operator.separator.colon.mermaid"
             },
             "3": {
               "patterns": [
@@ -393,7 +396,7 @@
               ]
             },
             "3": {
-              "name": "punctuation.definition.description.begin.mermaid"
+              "name": "keyword.operator.delimiter.description.begin.mermaid"
             },
             "4": {
               "patterns": [
@@ -406,7 +409,7 @@
           "end": "(\\})",
           "endCaptures": {
             "1": {
-              "name": "punctuation.definition.description.end.mermaid"
+              "name": "keyword.operator.delimiter.description.end.mermaid"
             }
           },
           "patterns": [
@@ -433,7 +436,7 @@
               ]
             },
             "3": {
-              "name": "punctuation.separator.colon.mermaid"
+              "name": "keyword.operator.separator.colon.mermaid"
             },
             "4": {
               "patterns": [
@@ -472,10 +475,10 @@
           "match": "(,)|(;)",
           "captures": {
             "1": {
-              "name": "punctuation.separator.comma.mermaid"
+              "name": "keyword.operator.separator.comma.mermaid"
             },
             "2": {
-              "name": "punctuation.separator.statement.mermaid"
+              "name": "keyword.operator.separator.statement.mermaid"
             }
           }
         },
@@ -492,7 +495,7 @@
           "begin": "(:)",
           "beginCaptures": {
             "1": {
-              "name": "punctuation.separator.colon.mermaid"
+              "name": "keyword.operator.separator.colon.mermaid"
             }
           },
           "end": "{{sequence-line-text-end}}",
@@ -543,6 +546,22 @@
         }
       ],
       "contentName": "comment.line.number-sign.mermaid"
+    },
+    "sequence-line-final-keywords": {
+      "comment": "Read a line-final title or accessibility keyword after padding at a statement boundary, including the scan position following the header. Trailing directives keep their own scopes; later-line components use the surrounding rules. Follows sequence.md#the-statement-context and common.md#a-directive-is-a-token-boundary.",
+      "match": "((?:^|\\G|{{afterDirectiveEnd}}){{lineGap}})((?i:title|accTitle|accDescr))(?={{lineGap}}$)",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.control.mermaid"
+        }
+      }
     }
   }
 }

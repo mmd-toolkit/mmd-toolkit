@@ -6,7 +6,7 @@
   ],
   "repository": {
     "treeview": {
-      "comment": "Read the exact detected header after common leading trivia; keep the body in the treeview grammar. Follows treeview.md#header-boundary.",
+      "comment": "Read treeView-beta at the selected header position, with its following whitespace, percent-pair or end-of-input boundary. Follows detection.md#the-detectors and treeview.md#detection.",
       "begin": "{{diagramStart}}(treeView-beta)(?={{directives}}(?:[{{ws}}]|%%|$))",
       "beginCaptures": {
         "1": {
@@ -16,18 +16,10 @@
       "end": "(?!)",
       "patterns": [
         {
-          "comment": "Read box bars and whitespace as one decoration line, with directives anywhere between them and at least one bar outside directives. This leaves out the whole-tree mode test, so vertical-only lines are always decoration. Follows treeview.md#scope-and-mode, treeview.md#line-classification-and-errors, common.md#a-directive-is-a-token-boundary.",
-          "match": "^(?=(?:{{directive}}|[─━│┃{{lws}}])*[─━│┃])(?:{{directive}}|[─━│┃{{lws}}])+$",
-          "name": "comment.block.ignored.mermaid",
-          "captures": {
-            "0": {
-              "patterns": [
-                {
-                  "include": "#directive"
-                }
-              ]
-            }
-          }
+          "include": "#treeview-prefixed-common-statements"
+        },
+        {
+          "include": "#treeview-decoration"
         },
         {
           "comment": "Read an authored branch prefix as a structural operator, retaining internal directives. Comment-shaped and metadata-shaped rows keep their ordinary reading. The rule recognizes branch rows without tracking the globally selected box mode. Follows treeview.md#columns-and-prefix-indentation and treeview.md#line-classification-and-errors.",
@@ -62,8 +54,7 @@
           "include": "#directive"
         },
         {
-          "include": "#common-statements",
-          "comment": "Reuse shared title and accessibility forms before node content. Follows treeview.md#common-forms."
+          "include": "#treeview-common-statements"
         },
         {
           "comment": "Read a class annotation as a separator and a referenced style-class name; keep directives in complete-component gaps. Follows treeview.md#annotations and treeview.md#comments-and-boundaries.",
@@ -77,7 +68,7 @@
               ]
             },
             "2": {
-              "name": "punctuation.separator.class.mermaid"
+              "name": "keyword.operator.separator.class.mermaid"
             },
             "3": {
               "patterns": [
@@ -98,7 +89,7 @@
                   "include": "#directive"
                 },
                 {
-                  "comment": "Reuse native percent comments after a complete class name. Follows treeview.md#comments-and-boundaries.",
+                  "comment": "Read a native percent-pair comment up to physical line end or a separator-led common comment. Follows treeview.md#comments-and-boundaries.",
                   "include": "#native-percent-comment"
                 }
               ]
@@ -127,7 +118,7 @@
               ]
             },
             "4": {
-              "name": "punctuation.section.icon.begin.mermaid"
+              "name": "keyword.operator.bracket.icon.begin.mermaid"
             },
             "5": {
               "patterns": [
@@ -147,7 +138,7 @@
               ]
             },
             "8": {
-              "name": "punctuation.section.icon.end.mermaid"
+              "name": "keyword.operator.bracket.icon.end.mermaid"
             }
           }
         },
@@ -175,12 +166,12 @@
           ]
         },
         {
-          "comment": "Reuse the plain double-quoted node label without backslash escapes. Follows treeview.md#names.",
-          "include": "#string-plain-double"
+          "comment": "Read a double-quoted name without backslash escapes, applying decoration and common-comment rules to its interior lines. Follows treeview.md#names, treeview.md#line-classification-and-errors, and common.md#comment-lines.",
+          "include": "#treeview-quoted-double"
         },
         {
-          "comment": "Reuse the plain single-quoted node label without backslash escapes. Follows treeview.md#names.",
-          "include": "#string-plain-single"
+          "comment": "Read a single-quoted name without backslash escapes, applying decoration and common-comment rules to its interior lines. Follows treeview.md#names, treeview.md#line-classification-and-errors, and common.md#comment-lines.",
+          "include": "#treeview-quoted-single"
         },
         {
           "comment": "Read a native comment after ASCII padding at a line, header, quoted-name, icon or directive boundary. Follows treeview.md#comments-and-boundaries and common.md#a-directive-is-a-token-boundary.",
@@ -188,13 +179,13 @@
           "end": "{{lineValueEnd}}",
           "patterns": [
             {
-              "comment": "Reuse native percent-comment content through the physical line end. Follows treeview.md#comments-and-boundaries.",
+              "comment": "Read a native percent-pair comment up to physical line end or a separator-led common comment. Follows treeview.md#comments-and-boundaries.",
               "include": "#native-percent-comment"
             }
           ]
         },
         {
-          "comment": "Read a bare name after its own indentation or directive boundary, leaving leading directives and quoted names for their rules. Follows treeview.md#names, treeview.md#columns-and-prefix-indentation, common.md#a-directive-is-a-token-boundary.",
+          "comment": "Read a bare name after its own indentation or directive boundary, leaving leading directives and quoted names for their rules. Follows treeview.md#names, treeview.md#columns-and-prefix-indentation, and common.md#a-directive-is-a-token-boundary.",
           "match": "{{treeview-node-start}}(?!{{directiveStart}}|:::|{{treeview-icon-opener}}|{{treeview-description-opener}}|[\"' \\t\\r\\n]|{{separatorCommentEnd}})(?:(?!{{treeview-annotation-prefix}}{{treeview-annotation-start}}|{{separatorCommentEnd}})(?:{{directive}}|{{entity}}|(?!{{directiveStart}})[^\\r\\n]))+",
           "captures": {
             "0": {
@@ -206,6 +197,159 @@
               "name": "string.unquoted.mermaid"
             }
           }
+        }
+      ]
+    },
+    "treeview-decoration": {
+      "comment": "Read box bars and whitespace as one decoration line, with directives anywhere between them and at least one bar outside directives. This leaves out the whole-tree mode test, so vertical-only lines are always decoration. Follows treeview.md#scope-and-mode, treeview.md#line-classification-and-errors, and common.md#a-directive-is-a-token-boundary.",
+      "match": "^(?=(?:{{directive}}|[─━│┃{{lws}}])*[─━│┃])(?:{{directive}}|[─━│┃{{lws}}])+$",
+      "name": "comment.block.ignored.mermaid",
+      "captures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      }
+    },
+    "treeview-quoted-double": {
+      "comment": "Read a double-quoted name without backslash escapes, applying decoration and common-comment rules to its interior lines. Follows treeview.md#names, treeview.md#line-classification-and-errors, and common.md#comment-lines.",
+      "begin": "\"",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.mermaid"
+        }
+      },
+      "end": "\"",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.end.mermaid"
+        }
+      },
+      "name": "string.quoted.double.mermaid",
+      "patterns": [
+        {
+          "include": "#treeview-decoration"
+        },
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#html-tag"
+        }
+      ]
+    },
+    "treeview-quoted-single": {
+      "comment": "Read a single-quoted name without backslash escapes, applying decoration and common-comment rules to its interior lines. Follows treeview.md#names, treeview.md#line-classification-and-errors, and common.md#comment-lines.",
+      "begin": "'",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.mermaid"
+        }
+      },
+      "end": "'",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.end.mermaid"
+        }
+      },
+      "name": "string.quoted.single.mermaid",
+      "patterns": [
+        {
+          "include": "#treeview-decoration"
+        },
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        }
+      ]
+    },
+    "treeview-acc-descr-block": {
+      "comment": "Read a braced accDescr value through its first closing brace, with independent decoration and common-comment lines inside its text. Follows treeview.md#common-forms, treeview.md#line-classification-and-errors, and common.md#comment-lines.",
+      "begin": "{{commonStatementStart}}(accDescr)({{gap}})(\\{)",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "keyword.operator.delimiter.description.begin.mermaid"
+        }
+      },
+      "end": "(\\})",
+      "endCaptures": {
+        "1": {
+          "name": "keyword.operator.delimiter.description.end.mermaid"
+        }
+      },
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#treeview-decoration"
+        },
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        }
+      ]
+    },
+    "treeview-common-statements": {
+      "comment": "Read title lines and the colon-led or braced forms of accessibility metadata, applying decoration rules inside a braced value. Follows treeview.md#common-forms and treeview.md#line-classification-and-errors.",
+      "patterns": [
+        {
+          "include": "#treeview-acc-descr-block"
+        },
+        {
+          "include": "#common-acc-descr-line"
+        },
+        {
+          "include": "#common-acc-title"
+        },
+        {
+          "include": "#common-title-value"
+        },
+        {
+          "include": "#common-title-bare"
+        }
+      ]
+    },
+    "treeview-prefixed-common-statements": {
+      "comment": "Read a leading box branch and its padding before common metadata. Consuming the prefix puts the common rules at the current scan position; after their form ends, following text returns to the surrounding tree rules. Vertical bars without a branch and additional branch marks do not enter this context. Follows treeview.md#line-classification-and-errors, treeview.md#common-forms, and common.md#a-directive-is-a-token-boundary.",
+      "begin": "^((?:[│┃ \\t]|{{directive}})*[└┗├┣](?:[─━]|{{directive}})*{{asciiGap}})(?=title|accTitle{{asciiGap}}:|accDescr{{gap}}[:{])",
+      "beginCaptures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read non-padding prefix characters as structural operators, stopping before directives so they retain their own scopes. Follows treeview.md#columns-and-prefix-indentation and common.md#a-directive-is-a-token-boundary.",
+              "match": "(?:(?!{{directiveStart}})[^ \\t])+",
+              "name": "keyword.operator.mermaid"
+            }
+          ]
+        }
+      },
+      "end": "(?=.)|$",
+      "applyEndPatternLast": true,
+      "patterns": [
+        {
+          "include": "#treeview-common-statements"
         }
       ]
     }

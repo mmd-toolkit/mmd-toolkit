@@ -27,7 +27,7 @@
     ["wrap", "entity.name.function.directive.mermaid", 17],
     ["terminal", "keyword.control.mermaid", 18],
     ["y", "string.quoted.double.mermaid", 19],
-    [",", "punctuation.separator.comma.mermaid", 19],
+    [",", "keyword.operator.separator.comma.mermaid", 19],
     ["terminal", "keyword.control.mermaid", 19],
     ["wrap", "entity.name.function.directive.mermaid", 20],
     ["joined", "variable.mermaid", 20],
@@ -38,15 +38,18 @@
     ["c", "string.quoted.single.mermaid", 5],
     ["Grammar", "string.unquoted.mermaid", 4],
     ["\\n", "constant.character.escape.mermaid"],
-    ["(", "punctuation.section.arguments.begin.mermaid"],
-    [")", "punctuation.section.arguments.end.mermaid"],
-    [",", "punctuation.separator.comma.mermaid"],
-    [";", "punctuation.separator.rule.mermaid"],
-    ["{", "punctuation.definition.description.begin.mermaid"],
-    ["}", "punctuation.definition.description.end.mermaid"],
+    ["(", "keyword.operator.bracket.arguments.begin.mermaid"],
+    [")", "keyword.operator.bracket.arguments.end.mermaid"],
+    [",", "keyword.operator.separator.comma.mermaid"],
+    [";", "keyword.operator.separator.rule.mermaid"],
+    ["{", "keyword.operator.delimiter.description.begin.mermaid"],
+    ["}", "keyword.operator.delimiter.description.end.mermaid"],
     ["---", "comment.block.ignored.mermaid"],
     ["%%{!}%%", "comment.block.ignored.mermaid"],
-    ["%% a comment line", "comment.line.percentage.mermaid"]
+    ["%% a comment line", "comment.line.percentage.mermaid"],
+    ["\\<", "constant.character.escape.mermaid", 25],
+    ["a\\", "string.quoted.double.mermaid", 26],
+    ["<b>", "string.quoted.double.mermaid", 26]
   ],
   "absent": [
     ["<b title=\"x\">", "punctuation.definition.string.end.mermaid", 13],
@@ -57,7 +60,8 @@
     [15, "comment.line.percentage.mermaid"],
     [16, "comment.line.percentage.mermaid"],
     [17, "comment.line.percentage.mermaid"],
-    [22, "meta.directive.mermaid"]
+    [22, "meta.directive.mermaid"],
+    [26, "constant.character.escape.mermaid"]
   ],
   "escapedInputs": [
     {

@@ -37,22 +37,32 @@ mermaid.js reaches it only through a change of the specification.
   stays in that type, as a variable of its file named `<type>-<name>` where the
   file repeats it, even where another type spells it the same: the two forms
   follow two documents and change apart.
-- Every unit that the specification defines in an accepted input gets the scope
-  of its kind, from the one table in the section Scopes of the package's
-  `README.md`, in every diagram type. The table is in the README alone; this
-  skill does not copy it.
+- The specification decides whether the parser is right, but syntax highlighting
+  is a feature that colors text so that people can read it, and nothing is
+  gained by supporting a way of writing that people do not use. So the grammar
+  fixes the colors of the forms people write: the playground's examples, the
+  examples in the documents of mermaid.js, and the ordinary forms of each
+  diagram's document. Any other form, such as text whose lines end in a lone
+  carriage return, a form with U+2028 or U+2029, a line break inside a
+  directive, or statements that follow one another with no space, is stated
+  briefly in the README's Limits. Such forms add neither to the grammar's
+  complexity nor to the time of the first coloring.
+- A unit of those forms gets the scope of its kind, from the one table in the
+  section Scopes of the package's `README.md`, in every diagram type. The table
+  is in the README alone; this skill does not copy it.
 - A rule's `comment` says, in the grammar's own words, what the rule reads and
   any position hint, and then names the sections of the specification that the
   rule follows by their anchors (`Follows c4.md#the-top-level-context.`). It
   does not copy the sentences of the specification: the grammar implements the
   sections it names, as the parser does, and the fixtures check its colors. The
   anchors are how a change of the specification finds the rules it reaches.
-- Keywords are compared case-insensitively, and an ASCII letter of a keyword
-  matches only its two ASCII cases (`common.md#notation`). The rules write
-  `(?i:…)`; `src/grammar.ts` puts Oniguruma's option `(?I)` at the head of every
-  pattern. So the grammar needs Shiki's Oniguruma engine; Shiki's JavaScript
-  engine rejects `(?I)`. When Shiki is updated, check that the playground still
-  creates the Oniguruma engine and that VitePress still uses it by default.
+- Keywords compared case-insensitively are written in `(?i:…)` groups.
+  Oniguruma's ignore-case also matches the few characters outside ASCII that
+  fold to a letter, which `common.md#notation` does not read as the keyword;
+  people do not write them, and the README's Limits states it. The grammar is
+  written for Oniguruma, and Shiki's JavaScript engine reads it too. When Shiki
+  is updated, check that the playground still creates the Oniguruma engine and
+  that VitePress still uses it by default.
 - The tests run fixed inputs only: for each diagram type a fixture under
   `tests/fixtures/` (`<name>.mmd`, its `<name>.expected.json` and its `.tokens`
   record), the header spellings taken from the fixtures of the conformance
@@ -99,10 +109,10 @@ spec skill, never by a rule that guesses. Commit and push only when asked
   other variables. A diagram file may declare `variables` whose names start with
   its type and a dash.
 - `src/grammar.ts` resolves the variables, substitutes them into the `match`,
-  `begin`, `end` and `while` fields, puts `(?I)` at the head of each, and throws
-  on an unknown name, a cycle, a name declared twice, and a diagram variable
-  whose name does not start with its type. The list of diagram files in
-  `src/grammar.ts` follows the order of `detection.md`.
+  `begin`, `end` and `while` fields, and throws on an unknown name, a cycle, a
+  name declared twice, and a diagram variable whose name does not start with its
+  type. The list of diagram files in `src/grammar.ts` follows the order of
+  `detection.md`.
 - `src/shiki-language.ts` turns the grammar into Shiki's registration (the name
   `mermaid`, the alias `mmd`, the embedded `yaml`). The build
   (`pnpm --filter @mmd-toolkit/textmate-grammar run build`) writes the grammar
@@ -119,21 +129,20 @@ spec skill, never by a rule that guesses. Commit and push only when asked
   lines, so they use the variants of the shared rules that read no common
   comment.
 
-## 3. How to check (in every piece of work)
+## 3. How to check
 
 - `pnpm --filter @mmd-toolkit/textmate-grammar test` runs the whole test file.
-  Run the whole file before reporting: a filter (`-t`) leaves out the header,
-  the leading-trivia and the boundary tests.
+  Run the whole file after every change: a filter (`-t`) leaves out the header,
+  the leading-trivia and the boundary tests, which check the shared rules for
+  every diagram type.
 - Records: `pnpm --filter @mmd-toolkit/textmate-grammar run test:update`
-  rewrites every `.tokens` record. When several pieces of work run at the same
-  time, each rewrites only its own records:
-  `pnpm --filter @mmd-toolkit/textmate-grammar exec vitest run -u -t "colors (<name>|<name>) as its"`.
-  Read every rewritten record.
+  rewrites every `.tokens` record. Read every rewritten record.
 - Read a record's diff against a copy of the package taken before the work
   (`diff -u`), not against the git index: the index can hold an older state than
   the working tree, and its diff then mixes earlier work into this one.
-- Every input added to a fixture is accepted by the reference parser (`parse()`
-  of `packages/parser/lib/index.mjs` throws on a rejected input).
+- Every input added to a fixture is accepted by the reference parser: `parse()`
+  of `packages/parser/src/index.ts`, which node runs from the source, throws on
+  a rejected input.
 - When `src/`, the build or the fields of `package.json` change:
   `pnpm --filter @mmd-toolkit/textmate-grammar run build`, then
   `npm pack --dry-run` in the package, which lists only `lib/`, the README files
@@ -207,14 +216,21 @@ in the grammar is tied to the version of mermaid.js; the playground's examples
 (`@mermaid-js/examples`, a dependency of the playground) follow its releases, so
 color them again as section 7 says.
 
-## 7. Checking a deliverable
+## 7. Checking a change
 
 - Read the diff against the copy taken before the work: its scope (only the
   files the work may change), its fit to the table (every unit with the scope of
   its kind), and its fit to the specification (the sections that a comment names
   define what the rule reads).
-- Color the playground's examples and read the scopes of their units.
-- Running again the commands that the author ran checks nothing new.
+- Compare the colors of the playground's examples, character by character, with
+  the colors of the grammar that Shiki bundles, diagram type by diagram type,
+  and read every difference: a character that had a color keeps one, and
+  neighboring units that were told apart stay told apart, unless the
+  specification has no unit there or the README's Limits state it. The output of
+  that grammar is compared; its rules are not read. The comparison does not show
+  a character that both grammars leave in the text color, so read also the
+  characters of the examples that stay in the default text color: only an
+  embedded YAML body and what the Limits state may stay.
 
 ## 8. Mistakes to avoid
 
@@ -224,16 +240,10 @@ color them again as section 7 says.
 - A comment that names a section about another construct sends a later change of
   the specification to the wrong rule, and leaves the rule that it does reach
   unchanged. Name the section that defines what the rule reads.
-- Work on several diagram types at the same time that may not change the common
-  file copies each shared form it needs into each type, and the copies drift
-  apart; text that is only spelled the same in several types is no shared form.
-  Add the shared forms first, then the types, and decide shared or local by the
-  criterion above.
-- A test filter (`-t`) leaves out the header, leading-trivia and boundary tests,
-  which check the shared rules for every diagram type. Run the whole file before
-  reporting.
-- `vitest -u` without a `-t` filter, during parallel work, rewrites the records
-  of the other pieces of work.
+- A shared form copied into each diagram type that needs it drifts apart from
+  its copies. Add a form that several types need as a shared form before the
+  types use it, and decide shared or local by the criterion above: text that is
+  only spelled the same in several types is no shared form.
 - A directive written by hand into the expression of each value makes rules long
   and lets the copies drift; use `{{directive}}` and the other common variables.
 - A rule with several variants that is fixed one case at a time breaks the
@@ -242,7 +252,3 @@ color them again as section 7 says.
   variables) once, then build every variant from them.
 - Oniguruma's absent operator `(?~|…|…)` and other rare constructs are not read
   on sight; write the expression explicitly.
-- Literal line separators and paragraph separators in fixture files break
-  `pnpm run lint:chars`; write such inputs with escapes in `escapedInputs`.
-- `(?iI:…)` inside a pattern gives empty matches in Oniguruma: `I` is a
-  whole-pattern option, which `src/grammar.ts` puts at the head.

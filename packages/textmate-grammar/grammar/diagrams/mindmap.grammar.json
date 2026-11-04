@@ -6,7 +6,7 @@
   ],
   "repository": {
     "mindmap": {
-      "comment": "Read the mindmap header and its body. Follows mindmap.md#detection.",
+      "comment": "Read mindmap at its header word boundary and keep subsequent lines in the mindmap context. Follows detection.md#the-detectors and mindmap.md#detection.",
       "begin": "{{diagramStart}}(mindmap){{wordEnd}}",
       "beginCaptures": {
         "1": {
@@ -22,7 +22,7 @@
           "include": "#directive"
         },
         {
-          "comment": "A diagram comment starts at %% where a unit starts in the statement context and runs to the end of its line segment; LF, U+2028, or U+2029 ends it. Node text, shape text, and class text own percent pairs inside them. Padding stops before separator-led common comments, which own their following directive-looking text. Neither percent sign of the mark belongs to a directive. Follows mindmap.md#comments, common.md#comment-lines, and common.md#a-directive-is-a-token-boundary.",
+          "comment": "Read a percent-pair comment where the statement context begins a unit, retaining directives in its mark and body. Follows mindmap.md#comments.",
           "match": "({{mindmap-comment-padding}})({{nonDirectivePercentPair}}(?:{{directive}}|(?!{{directiveStart}})[^\\r\\n{{separators}}])*)",
           "captures": {
             "1": {
@@ -47,7 +47,7 @@
           "begin": "{{mindmap-statement-start}}(:::)",
           "beginCaptures": {
             "1": {
-              "name": "punctuation.separator.class.mermaid"
+              "name": "keyword.operator.separator.class.mermaid"
             }
           },
           "end": "(?=[{{separators}}]|$)",
@@ -62,17 +62,20 @@
           ]
         },
         {
-          "comment": "Read the icon opener as one keyword and its retained name as text, ending at the icon bracket. Follows mindmap.md#the-icon-and-class-contexts.",
-          "begin": "{{mindmap-statement-start}}((?i:::icon\\())",
+          "comment": "Read the icon form only with its opening parenthesis, giving the marker, brackets and retained name their own scopes. Follows mindmap.md#the-icon-and-class-contexts.",
+          "begin": "{{mindmap-statement-start}}((?i:::icon))(\\()",
           "beginCaptures": {
             "1": {
               "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "name": "keyword.operator.bracket.icon.begin.mermaid"
             }
           },
           "end": "(\\))",
           "endCaptures": {
             "1": {
-              "name": "punctuation.section.icon.end.mermaid"
+              "name": "keyword.operator.bracket.icon.end.mermaid"
             }
           },
           "patterns": [
@@ -99,7 +102,7 @@
           ]
         },
         {
-          "comment": "The openers are -), (-, )), ), ((, {{, (, and [, in that order. rule 3: The closers are )), ), ], }}, (-, -), ((, and (, in that order. The closer need not match the opener. Strings start only at a unit start, right after the opener; shape text keeps quotes after its first character and has no HTML rule. Follows mindmap.md#the-statement-context and mindmap.md#the-shape-context.",
+          "comment": "Read a mindmap shape with its parenthesis, brace or square-bracket opener and any accepted shape closer. The opener may include a dash. Only a quote at the initial value position starts a string; later quotes and HTML-looking content remain shape text. Follows mindmap.md#the-statement-context and mindmap.md#the-shape-context.",
           "begin": "[{{ws}}]*(-\\)|\\(-|\\)\\)|\\)|\\(\\(|\\{\\{|\\(|\\[)",
           "beginCaptures": {
             "1": {
@@ -128,7 +131,7 @@
               "include": "#string-plain-double"
             },
             {
-              "comment": "Shape text takes as many characters other than ), ], (, and } as possible; quotes, percent pairs, {, and [ after its first character are text. Follows mindmap.md#the-shape-context.",
+              "comment": "Read ordinary shape content until a parenthesis, closing square bracket or closing brace. Later quotes, percent pairs and opening brackets remain text. Follows mindmap.md#the-shape-context.",
               "begin": "(?=[^)\\](}])",
               "end": "(?=[)\\](}])",
               "patterns": [

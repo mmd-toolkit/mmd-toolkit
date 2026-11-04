@@ -7,14 +7,14 @@
     ["Category A", "string.quoted.double.mermaid"],
     ["Item B1", "string.quoted.single.mermaid"],
     ["20.5", "constant.numeric.mermaid"],
-    [":", "punctuation.separator.colon.mermaid"],
+    [":", "keyword.operator.separator.colon.mermaid"],
     ["accTitle", "keyword.control.mermaid"],
     ["accDescr", "keyword.control.mermaid", 3],
     ["accDescr", "keyword.control.mermaid", 4],
     ["<b title=\"x\">", "string.quoted.double.mermaid", 12],
     ["Label</b>", "string.quoted.double.mermaid", 12],
     ["<b", "string.quoted.double.mermaid", 13],
-    [":", "punctuation.separator.colon.mermaid", 13],
+    [":", "keyword.operator.separator.colon.mermaid", 13],
     ["title", "keyword.control.mermaid", 15],
     ["init", "entity.name.function.directive.mermaid", 15],
     ["classDef is title text", "string.unquoted.mermaid", 15],
@@ -26,8 +26,8 @@
     [" Sales description", "string.unquoted.mermaid", 17],
     ["accDescr", "keyword.control.mermaid", 18],
     ["init", "entity.name.function.directive.mermaid", 18],
-    ["{", "punctuation.definition.description.begin.mermaid", 18],
-    ["}", "punctuation.definition.description.end.mermaid", 18],
+    ["{", "keyword.operator.delimiter.description.begin.mermaid", 18],
+    ["}", "keyword.operator.delimiter.description.end.mermaid", 18],
     ["classDef", "keyword.control.mermaid", 19],
     ["custom", "variable.mermaid", 19],
     ["init", "entity.name.function.directive.mermaid", 19],
@@ -35,11 +35,11 @@
     ["custom", "variable.mermaid", 20],
     ["init", "entity.name.function.directive.mermaid", 20],
     ["blue", "support.constant.property-value.mermaid", 20],
-    [":::", "punctuation.separator.class.mermaid", 21],
+    [":::", "keyword.operator.separator.class.mermaid", 21],
     ["init", "entity.name.function.directive.mermaid", 21],
     ["custom", "variable.mermaid", 21],
     ["#amp;", "support.constant.property-value.mermaid", 22],
-    [";", "punctuation.separator.semicolon.mermaid", 22],
+    [";", "keyword.operator.separator.semicolon.mermaid", 22],
     ["bare", "variable.mermaid", 23],
     ["init", "entity.name.function.directive.mermaid", 23],
     ["terminal", "variable.mermaid", 24],
@@ -60,8 +60,8 @@
     ["fill", "support.type.property-name.mermaid", 19],
     ["Sales", "string.unquoted.mermaid"],
     ["highlight", "variable.mermaid", 10],
-    ["{", "punctuation.definition.description.begin.mermaid", 4],
-    ["}", "punctuation.definition.description.end.mermaid", 4],
+    ["{", "keyword.operator.delimiter.description.begin.mermaid", 4],
+    ["}", "keyword.operator.delimiter.description.end.mermaid", 4],
     ["stroke-dasharray", "support.type.property-name.mermaid", 29],
     ["5", "support.constant.property-value.mermaid", 29],
     ["\\,", "support.constant.property-value.mermaid", 29],
@@ -70,15 +70,15 @@
     ["red", "support.constant.property-value.mermaid", 30],
     ["--色", "support.type.property-name.mermaid", 31],
     ["red", "support.constant.property-value.mermaid", 31],
-    [":::", "punctuation.separator.class.mermaid", 32],
+    [":::", "keyword.operator.separator.class.mermaid", 32],
     ["wrap", "entity.name.function.directive.mermaid", 32],
     ["hot", "variable.mermaid", 32]
   ],
   "absent": [
-    ["#amp;", "punctuation.separator.semicolon.mermaid", 22],
+    ["#amp;", "keyword.operator.separator.semicolon.mermaid", 22],
     ["classDef is title text", "keyword.control.mermaid", 15],
     ["<b title=\"x\">", "punctuation.definition.string.end.mermaid", 12],
-    ["mp;", "punctuation.separator.semicolon.mermaid", 25],
+    ["mp;", "keyword.operator.separator.semicolon.mermaid", 25],
     ["1", "string.quoted.double.mermaid", 26],
     ["2", "string.quoted.double.mermaid", 26],
     ["style", "keyword.control.mermaid", 28],
@@ -87,7 +87,7 @@
     ["5", "constant.numeric.mermaid", 29],
     ["\\,", "constant.numeric.mermaid", 29],
     ["7,fill:red", "constant.numeric.mermaid", 29],
-    ["\\,", "punctuation.separator.comma.mermaid", 29]
+    ["\\,", "keyword.operator.separator.comma.mermaid", 29]
   ],
   "escapedInputs": [
     {
@@ -118,13 +118,13 @@
         ["7,fill:red", "support.constant.property-value.mermaid"]
       ],
       "absent": [
-        [",", "punctuation.separator.comma.mermaid"],
+        [",", "keyword.operator.separator.comma.mermaid"],
         ["7,fill:red", "constant.numeric.mermaid"]
       ]
     }
   ],
   "absentOnLine": [
-    [10, "punctuation.separator.comma.mermaid"],
-    [29, "punctuation.separator.comma.mermaid"]
+    [10, "keyword.operator.separator.comma.mermaid"],
+    [29, "keyword.operator.separator.comma.mermaid"]
   ]
 }

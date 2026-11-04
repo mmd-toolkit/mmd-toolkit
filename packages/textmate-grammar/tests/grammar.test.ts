@@ -4,6 +4,7 @@ import type { HighlighterCore } from "shiki/core"
 import { createHighlighterCore } from "shiki/core"
 import { createOnigurumaEngine } from "shiki/engine/oniguruma"
 import yaml from "shiki/langs/yaml.mjs"
+import dark from "shiki/themes/github-dark.mjs"
 import light from "shiki/themes/github-light.mjs"
 import type { DiagramType } from "@mmd-toolkit/tests"
 import { loadFixture } from "@mmd-toolkit/tests"
@@ -13,7 +14,7 @@ import mermaid from "../src/index.ts"
 
 const grammar = createGrammar()
 
-it("builds a TextMate grammar with resolved ASCII-folding patterns", () => {
+it("builds a TextMate grammar with resolved patterns", () => {
   expect(grammar.name).toBe("Mermaid")
   expect(grammar.scopeName).toBe("source.mermaid")
   expect(grammar.patterns).toEqual(expect.any(Array))
@@ -28,7 +29,6 @@ it("builds a TextMate grammar with resolved ASCII-folding patterns", () => {
         if (["match", "begin", "end", "while"].includes(key)) {
           expect(item).toBeTypeOf("string")
           if (typeof item === "string") {
-            expect(item.startsWith("(?I)")).toBe(true)
             expect(item).not.toContain("{{")
           }
         } else {
@@ -53,7 +53,7 @@ let highlighter: HighlighterCore
 
 beforeAll(async () => {
   highlighter = await createHighlighterCore({
-    themes: [light],
+    themes: [light, dark],
     langs: [mermaid, yaml],
     engine: createOnigurumaEngine(import("shiki/wasm")),
   })
@@ -170,6 +170,47 @@ const fixtureNames = readdirSync(
   .map((name) => name.slice(0, -".mmd".length))
   .sort()
 
+/** Embedded YAML follows its own grammar, including its default text colors. */
+const foregroundExceptions = [
+  {
+    scope: "meta.embedded.block.yaml",
+    reason: "README Scopes: the frontmatter body is colored as YAML.",
+  },
+]
+
+const themes = ["github-light", "github-dark"] as const
+
+/** Every non-whitespace character outside the stated exceptions has a color. */
+function checkForeground(code: string): void {
+  for (const theme of themes) {
+    const foreground = highlighter.getTheme(theme).fg.toLowerCase()
+    for (const [lineIndex, line] of highlighter
+      .codeToTokensBase(code, {
+        lang: "mermaid",
+        theme,
+        includeExplanation: "scopeName",
+      })
+      .entries()) {
+      for (const token of line) {
+        if (!token.content.trim()) continue
+        if ((token.color ?? foreground).toLowerCase() !== foreground) continue
+        for (const part of token.explanation ?? [
+          { content: token.content, scopes: [] },
+        ]) {
+          if (!part.content.trim()) continue
+          const exception = foregroundExceptions.find(({ scope }) =>
+            part.scopes.some((item) => item.scopeName === scope),
+          )
+          expect(
+            exception?.reason,
+            `${theme}, line ${lineIndex + 1}: ${JSON.stringify(part.content)}`,
+          ).toBeDefined()
+        }
+      }
+    }
+  }
+}
+
 describe("the fixtures of the diagram types", () => {
   it.each(fixtureNames)("colors %s as its expectations say", async (name) => {
     const code = readFileSync(fixture(`${name}.mmd`), "utf8")
@@ -178,11 +219,218 @@ describe("the fixtures of the diagram types", () => {
     ) as Expected
     expect(scopesOf(code, expected.header)).toContain("keyword.control.mermaid")
     checkScopes(code, expected)
+    checkForeground(code)
     for (const input of expected.escapedInputs ?? []) {
       checkScopes(input.code, input)
+      checkForeground(input.code)
     }
     await expect(tokens(code)).toMatchFileSnapshot(fixture(`${name}.tokens`))
   })
+})
+
+it.each(themes)(
+  "colors composite-state braces at every depth in %s",
+  (theme) => {
+    const code = readFileSync(fixture("state.mmd"), "utf8")
+    const expected = JSON.parse(
+      readFileSync(fixture("state.expected.json"), "utf8"),
+    ) as Expected
+    const lines = highlighter.codeToTokensBase(code, {
+      lang: "mermaid",
+      theme,
+      includeExplanation: "scopeName",
+    })
+    const foreground = highlighter.getTheme(theme).fg.toLowerCase()
+
+    for (const [text, scope, line] of expected.scopes) {
+      if (
+        line === undefined ||
+        ![
+          "keyword.operator.block.begin.mermaid",
+          "keyword.operator.block.end.mermaid",
+        ].includes(scope)
+      ) {
+        continue
+      }
+      const token = lines[line]?.find((candidate) =>
+        candidate.explanation?.some(
+          (part) =>
+            part.content === text &&
+            part.scopes.some((item) => item.scopeName === scope),
+        ),
+      )
+      expect(token, `${text} on line ${line + 1}`).toBeDefined()
+      expect(
+        (token?.color ?? foreground).toLowerCase(),
+        `${text} on line ${line + 1}`,
+      ).not.toBe(foreground)
+    }
+  },
+)
+
+/** Fixed units whose foreground colors must remain distinguishable. */
+const colorContrasts = [
+  {
+    name: "gantt task tags and separators",
+    code: "gantt\nTask: done, active, crit, milestone, vert, taskId, 2026-11-01, 1d",
+    pairs: [
+      ["done", ":"],
+      ["active", ":"],
+      ["crit", ":"],
+      ["milestone", ":"],
+      ["vert", ":"],
+      ["done", ","],
+      ["active", ","],
+      ["crit", ","],
+      ["milestone", ","],
+      ["vert", ","],
+    ],
+  },
+  {
+    name: "class annotation name and delimiters",
+    code: "classDiagram\nclass A {\n  <<interface>>\n}",
+    pairs: [
+      ["interface", "<<"],
+      ["interface", ">>"],
+    ],
+  },
+  {
+    name: "usecase stereotype name and delimiters",
+    code: "usecase-beta\nactor A <<Person>>",
+    pairs: [
+      ["Person", "<<"],
+      ["Person", ">>"],
+    ],
+  },
+  {
+    name: "state terminal and id",
+    code: "stateDiagram-v2\n[*] --> Rest",
+    pairs: [["[*]", "Rest"]],
+  },
+  {
+    name: "journey positional score, people and ignored data",
+    code: "journey\nTask: abc: Pat, Sam: ignored\nOther: 5, 6: Lee",
+    pairs: [
+      ["abc", "Pat"],
+      ["5, 6", "Lee"],
+      [",", "Pat"],
+      ["ignored", "Pat"],
+    ],
+  },
+  {
+    name: "mindmap icon marker and brackets",
+    code: "mindmap\n  Root\n  ::icon(book)",
+    pairs: [
+      ["::icon", "book"],
+      ["(", "book"],
+      [")", "book"],
+    ],
+  },
+  {
+    name: "kanban icon marker and brackets",
+    code: "kanban\n  Column\n  ::icon(book)",
+    pairs: [
+      ["::icon", "book"],
+      ["(", "book"],
+      [")", "book"],
+    ],
+  },
+  {
+    name: "description delimiters",
+    code: "info\naccDescr {Detail}",
+    pairs: [
+      ["{", "Detail"],
+      ["}", "Detail"],
+    ],
+  },
+  {
+    name: "style separators",
+    code: "flowchart\nstyle A fill:red,stroke:blue",
+    pairs: [
+      [":", "fill"],
+      [",", "red"],
+    ],
+  },
+  {
+    name: "callback brackets",
+    code: "flowchart\nclick A call handler(x)",
+    pairs: [
+      ["(", "handler"],
+      [")", "handler"],
+    ],
+  },
+  {
+    name: "data brackets",
+    code: 'flowchart\nA@{label: "kept"}',
+    pairs: [
+      ["@{", "label"],
+      ["}", "kept"],
+    ],
+  },
+  {
+    name: "directive marks inside a string",
+    code: 'flowchart\nA["left%%{init: dark}%%right"]',
+    pairs: [
+      ["%%{", "left"],
+      [":", "left"],
+      ["}%%", "right"],
+    ],
+  },
+  {
+    name: "directive marks inside a plain label",
+    code: "flowchart\nA[left%%{init: dark}%%right]",
+    pairs: [
+      ["%%{", "left"],
+      [":", "left"],
+      ["}%%", "right"],
+    ],
+  },
+  {
+    name: "directive marks inside ignored text",
+    code: "info\n%%{%%{wrap}%%wrap}%%",
+    pairs: [["%%{wrap", "%%{%%"]],
+  },
+] as const
+
+/** The foreground at the first character of a fixed unit's written text. */
+function foregroundOf(
+  code: string,
+  text: string,
+  theme: (typeof themes)[number],
+): string {
+  const offset = code.indexOf(text)
+  if (offset < 0) throw new Error(`no text ${JSON.stringify(text)}`)
+  for (const line of highlighter.codeToTokensBase(code, {
+    lang: "mermaid",
+    theme,
+  })) {
+    for (const token of line) {
+      if (
+        token.offset <= offset &&
+        offset < token.offset + token.content.length
+      ) {
+        return (token.color ?? highlighter.getTheme(theme).fg).toLowerCase()
+      }
+    }
+  }
+  throw new Error(`no foreground for ${JSON.stringify(text)}`)
+}
+
+describe("foreground colors", () => {
+  it.each(colorContrasts)(
+    "distinguishes $name in both themes",
+    ({ code, pairs }) => {
+      checkForeground(code)
+      for (const theme of themes) {
+        for (const [left, right] of pairs) {
+          expect(
+            foregroundOf(code, left, theme),
+            `${theme}: ${left} / ${right}`,
+          ).not.toBe(foregroundOf(code, right, theme))
+        }
+      }
+    },
+  )
 })
 
 /**
@@ -264,7 +512,7 @@ describe("the leading trivia", () => {
     const code =
       '---\ntitle: Hello\n---\n%% a comment line\n%%{init: {"theme": "dark"}}%%\ntimeline\n  title T\n'
     expect(scopesOf(code, "---")).toContain(
-      "punctuation.definition.frontmatter.begin.mermaid",
+      "keyword.operator.delimiter.frontmatter.begin.mermaid",
     )
     expect(scopesOnLine(code, 1)).toContain("meta.embedded.block.yaml")
     expect(scopesOf(code, "%% a comment line")).toContain(
@@ -291,9 +539,1531 @@ describe("the leading trivia", () => {
 
 /** Fixed inputs distinguish the boundary cases of the cited lexical sentences. */
 const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
-  // common.md#html-attribute-quotes converts only quoted-value quotes.
-  // packet.md#numbers-and-strings and railroad.md#ir-units still read escapes
-  // outside those values, including through common directives.
+  {
+    name: "a method classifier precedes or follows its return type only once",
+    code: "classDiagram\nclass Classifiers {\n  +prefix()* int$\n  +suffix() int$\n}",
+    scopes: [
+      ["*", "storage.modifier.mermaid", 2],
+      ["int$", "entity.name.type.mermaid", 2],
+      ["int", "entity.name.type.mermaid", 3],
+      ["$", "storage.modifier.mermaid", 3],
+    ],
+    absent: [["int$", "storage.modifier.mermaid", 2]],
+  },
+  {
+    name: "info flag title",
+    code: "info showInfo title x",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "info flag directive",
+    code: "info showInfo%%{wrap}%% title x",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "info flag comment",
+    code: "info showInfo title %% c",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+    ],
+  },
+  {
+    name: "info flag empty title",
+    code: "info showInfo title",
+    scopes: [["title", "keyword.control.mermaid"]],
+  },
+  {
+    name: "info flag semicolon text",
+    code: "info showInfo title x;",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x;", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "info flag blank line",
+    code: "info showInfo title\n\naccDescr {}",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["accDescr", "keyword.control.mermaid"],
+    ],
+  },
+  {
+    name: "info flag LS comment",
+    code: "info showInfo title x\u2028%% c\n",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+    ],
+  },
+  {
+    name: "info flag accessibility title",
+    code: "info showInfo accTitle: A",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      [" A", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "info flag accessibility description",
+    code: "info showInfo accDescr { D }",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      [" D ", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "cynefin domain title",
+    code: "cynefin-beta\ncomplextitle x",
+    scopes: [
+      ["complex", "constant.language.mermaid"],
+      ["title", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "cynefin domain directive title",
+    code: "cynefin-beta\ncomplex%%{wrap}%%title x",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "cynefin domain comment title",
+    code: "cynefin-beta\ncomplextitle %% c",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+    ],
+  },
+  {
+    name: "cynefin domain empty title",
+    code: "cynefin-beta\ncomplextitle",
+    scopes: [["title", "keyword.control.mermaid"]],
+  },
+  {
+    name: "cynefin domain semicolon text",
+    code: "cynefin-beta\ncomplextitle x;",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x;", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "cynefin domain blank line",
+    code: "cynefin-beta\ncomplextitle\n\nclear",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["clear", "constant.language.mermaid"],
+    ],
+  },
+  {
+    name: "cynefin domain LS comment",
+    code: "cynefin-beta\ncomplextitle x\u2028%% c\n",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+    ],
+  },
+  {
+    name: "cynefin string title",
+    code: 'cynefin-beta\ncomplex "a"title x',
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "cynefin string accessibility title",
+    code: 'cynefin-beta\ncomplex "a"accTitle: A',
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      [" A", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "cynefin string accessibility description",
+    code: 'cynefin-beta\ncomplex "a"accDescr { D }',
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      [" D ", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "gantt weekday title",
+    code: "gantt\nweekday monday title x",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "gantt weekday directive",
+    code: "gantt\nweekday monday %%{wrap}%%title x",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "gantt weekday comment text",
+    code: "gantt\nweekday monday title %% c",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["%% c", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "gantt weekday semicolon text",
+    code: "gantt\nweekday monday title x;",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x;", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "gantt weekday blank line",
+    code: "gantt\nweekday monday title x\n\n",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "gantt weekday LS comment",
+    code: "gantt\nweekday monday title x\u2028%% c\n",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+    ],
+  },
+  {
+    name: "gantt weekend title",
+    code: "gantt\nweekend friday title x",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "gantt flag title",
+    code: "gantt\ninclusiveEndDates title x",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "gantt flag directive",
+    code: "gantt\ninclusiveEndDates%%{wrap}%% title x",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "gantt flag comment text",
+    code: "gantt\ninclusiveEndDates title %% c",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["%% c", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "gantt flag semicolon text",
+    code: "gantt\ninclusiveEndDates title x;",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x;", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "gantt flag blank line",
+    code: "gantt\ninclusiveEndDates title x\n\n",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "gantt flag LS comment",
+    code: "gantt\ninclusiveEndDates title x\u2028%% c\n",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+    ],
+  },
+  {
+    name: "gantt callback title",
+    code: "gantt\nTask: id,2026-11-01,1d\nclick id call f() title x",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "gantt callback directive",
+    code: "gantt\nTask: id,2026-11-01,1d\nclick id call f()%%{wrap}%% title x",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "gantt callback comment text",
+    code: "gantt\nTask: id,2026-11-01,1d\nclick id call f() title %% c",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["%% c", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "gantt callback semicolon text",
+    code: "gantt\nTask: id,2026-11-01,1d\nclick id call f() title x;",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x;", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "gantt callback blank line",
+    code: "gantt\nTask: id,2026-11-01,1d\nclick id call f() title x\n\n",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "gantt callback LS comment",
+    code: "gantt\nTask: id,2026-11-01,1d\nclick id call f() title x\u2028%% c\n",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+    ],
+  },
+  {
+    name: "gantt href accessibility block",
+    code: 'gantt\nTask: id,2026-11-01,1d\nclick id href "u" accDescr {}',
+    scopes: [
+      ["accDescr", "keyword.control.mermaid", 2],
+      ["{", "keyword.operator.delimiter.description.begin.mermaid", 2],
+    ],
+  },
+  {
+    name: "gantt literal semicolon stays in task text",
+    code: "gantt\ntitle; T: 1d",
+    scopes: [["title; T", "string.unquoted.mermaid"]],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "gantt directive text supplies no style trigger",
+    code: "gantt\n%%{init: {style:#x}}%%title; T: 1d",
+    scopes: [["title; T", "string.unquoted.mermaid"]],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "journey block title",
+    code: "journey\naccDescr {}title x",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "journey block comment title",
+    code: "journey\naccDescr {}title %% c",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["%% c", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "journey block blank line",
+    code: "journey\naccDescr {}title x\n\n",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "journey block LS comment",
+    code: "journey\naccDescr {}title x\u2028%% c\n",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+    ],
+  },
+  {
+    name: "eventmodeling padded title after entity",
+    code: "eventmodeling\ntf 00 evt A title x",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "eventmodeling padded title directive",
+    code: "eventmodeling\ntf 00 evt A %%{wrap}%%title x",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "eventmodeling padded comment title",
+    code: "eventmodeling\ntf 00 evt A title %% c",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+    ],
+  },
+  {
+    name: "eventmodeling padded empty title",
+    code: "eventmodeling\ntf 00 evt A title",
+    scopes: [["title", "keyword.control.mermaid"]],
+  },
+  {
+    name: "eventmodeling padded semicolon text",
+    code: "eventmodeling\ntf 00 evt A title x;",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x;", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "eventmodeling padded blank line",
+    code: "eventmodeling\ntf 00 evt A title x\n\n",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "eventmodeling padded LS comment",
+    code: "eventmodeling\ntf 00 evt A title x\u2028%% c\n",
+    scopes: [["title", "keyword.control.mermaid"]],
+  },
+  {
+    name: "eventmodeling padded accessibility title",
+    code: "eventmodeling\ntf 00 evt A accTitle: A",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      [" A", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "eventmodeling padded accessibility description",
+    code: "eventmodeling\ntf 00 evt A accDescr { D }",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      [" D ", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "radar metadata after an axis",
+    code: "radar-beta\naxis A title x",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "treemap metadata after a row",
+    code: 'treemap\n"A":1 title x',
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "radar axis directive title",
+    code: "radar-beta\naxis A %%{wrap}%%title x",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "radar axis comment title",
+    code: "radar-beta\naxis A title %% c",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+    ],
+  },
+  {
+    name: "radar axis empty title",
+    code: "radar-beta\naxis A title",
+    scopes: [["title", "keyword.control.mermaid"]],
+  },
+  {
+    name: "radar axis semicolon title",
+    code: "radar-beta\naxis A title x;",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x;", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "radar axis blank line title",
+    code: "radar-beta\naxis A title\n\n",
+    scopes: [["title", "keyword.control.mermaid"]],
+  },
+  {
+    name: "radar axis LS title",
+    code: "radar-beta\naxis A title x\u2028%% c\n",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+    ],
+  },
+  {
+    name: "treemap row directive title",
+    code: 'treemap\n"A":1%%{wrap}%% title x',
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "treemap row comment title",
+    code: 'treemap\n"A":1 title %% c',
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+    ],
+  },
+  {
+    name: "treemap row empty title",
+    code: 'treemap\n"A":1 title',
+    scopes: [["title", "keyword.control.mermaid"]],
+  },
+  {
+    name: "treemap row semicolon title",
+    code: 'treemap\n"A":1 title x;',
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["x;", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "treemap row blank line title",
+    code: 'treemap\n"A":1 title\n\n',
+    scopes: [["title", "keyword.control.mermaid"]],
+  },
+  {
+    name: "treemap row LS title",
+    code: 'treemap\n"A":1 title x\u2028%% c\n',
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+    ],
+  },
+  {
+    name: "timeline next-line section can be a title value",
+    code: "timeline\n  Title\n  Section\n  a\n",
+    scopes: [["Title", "string.unquoted.mermaid", 1]],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "timeline next-line text decides a title",
+    code: "timeline\n  title\nT\n",
+    scopes: [["title", "string.unquoted.mermaid", 1]],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "timeline next-line bare percent can be title text",
+    code: "timeline\n  title\n%%\n",
+    scopes: [["title", "string.unquoted.mermaid", 1]],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "timeline title decision crosses a comment",
+    code: "timeline\n  title\n  %% c\n  T\n",
+    scopes: [["title", "string.unquoted.mermaid", 1]],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "timeline title decision crosses two comments",
+    code: "timeline\n  title\n  %% c\n  %% d\n  T\n",
+    scopes: [["title", "string.unquoted.mermaid", 1]],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "timeline next-line indented directive supplies title text",
+    code: "timeline\n  title\n  %%{init: {}}%%\n  T\n",
+    scopes: [["title", "string.unquoted.mermaid", 1]],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "timeline next-line hash can be title text",
+    code: "timeline\n  title\n  # c\n  T\n",
+    scopes: [["title", "string.unquoted.mermaid", 1]],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "timeline blank next line leaves title as a period",
+    code: "timeline\n  title\n\nT\n",
+    scopes: [["title", "string.unquoted.mermaid", 1]],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "timeline unindented directive leaves title as a period",
+    code: "timeline\n  title\n%%{init: {}}%%\nT\n",
+    scopes: [["title", "string.unquoted.mermaid", 1]],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "journey scores and people use position rather than spelling",
+    code: "journey\nTask: abc: Pat, Sam: ignored\nOther: 5, 6: Lee\nTask: #score;: Person#person;Name: ignored",
+    scopes: [
+      [" abc", "constant.numeric.mermaid", 1],
+      [" Pat", "variable.mermaid", 1],
+      [" Sam", "variable.mermaid", 1],
+      [",", "keyword.operator.separator.comma.mermaid", 1],
+      [" ignored", "comment.block.ignored.mermaid", 1],
+      [" 5, 6", "constant.numeric.mermaid", 2],
+      [" Lee", "variable.mermaid", 2],
+      ["#score;", "constant.numeric.mermaid", 3],
+      [" Person", "variable.mermaid", 3],
+      ["#person;", "variable.mermaid", 3],
+      ["Name", "variable.mermaid", 3],
+    ],
+  },
+  {
+    name: "journey data after a removed comment line",
+    code: "journey\nTask text\u2029%% comment\n: 5: Person",
+    scopes: [
+      [":", "keyword.operator.separator.colon.mermaid", 2],
+      [" 5", "constant.numeric.mermaid", 2],
+      [" Person", "variable.mermaid", 2],
+    ],
+  },
+  {
+    name: "ER block closes after a multiline backquoted attribute type",
+    code: "erDiagram\nA { `x\n y` field }\naccDescr { z }",
+    scopes: [
+      ["}", "keyword.operator.block.end.mermaid", 2],
+      ["accDescr", "keyword.control.mermaid", 3],
+      ["{", "keyword.operator.delimiter.description.begin.mermaid", 3],
+      ["z ", "string.unquoted.mermaid", 3],
+    ],
+  },
+  {
+    name: "a line-final gantt setting after a directive",
+    code: "gantt\n%%{x}%%dateFormat\nYYYY-MM-DD",
+    scopes: [
+      ["dateFormat", "keyword.control.mermaid", 1],
+      ["x", "meta.directive.mermaid", 1],
+    ],
+  },
+  {
+    name: "a gantt setting with trailing padding",
+    code: "gantt\ndateFormat \t\nTask :2026-11-01, 1d",
+    scopes: [["dateFormat", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a venn title with trailing padding",
+    code: "venn-beta\ntitle \t\nset A",
+    scopes: [["title", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final venn title after a directive",
+    code: "venn-beta\n%%{x}%%title\nT",
+    scopes: [
+      ["title", "keyword.control.mermaid", 1],
+      ["x", "meta.directive.mermaid", 1],
+    ],
+  },
+  {
+    name: "a c4 title with trailing padding",
+    code: 'C4Context\ntitle \t\nPerson(A,"A")',
+    scopes: [["title", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final c4 title after a directive",
+    code: "C4Context\n%%{x}%%title\nT",
+    scopes: [
+      ["title", "keyword.control.mermaid", 1],
+      ["x", "meta.directive.mermaid", 1],
+    ],
+  },
+  {
+    name: "a shared bare title prefixes railroad",
+    code: 'railroad-beta\ntitlex = terminal("a");',
+    scopes: [
+      ["title", "keyword.control.mermaid", 1],
+      ["x", "variable.mermaid", 1],
+    ],
+  },
+  {
+    name: "a shared bare title prefixes treemap",
+    code: 'treemap\ntitle"A":1',
+    scopes: [
+      ["title", "keyword.control.mermaid", 1],
+      ["A", "string.quoted.double.mermaid", 1],
+      ["1", "constant.numeric.mermaid", 1],
+    ],
+  },
+  {
+    name: "a shared bare title prefixes treeview",
+    code: 'treeView-beta\ntitle"node"',
+    scopes: [
+      ["title", "keyword.control.mermaid", 1],
+      ["node", "string.quoted.double.mermaid", 1],
+    ],
+  },
+  {
+    name: "an empty style property name in flowchart",
+    code: "flowchart TD\nstyle A :red\nclassDef c :blue\nlinkStyle default :green",
+    scopes: [
+      [":", "keyword.operator.separator.key-value.mermaid", 1],
+      ["red", "support.constant.property-value.mermaid", 1],
+      [":", "keyword.operator.separator.key-value.mermaid", 2],
+      ["blue", "support.constant.property-value.mermaid", 2],
+      [":", "keyword.operator.separator.key-value.mermaid", 3],
+      ["green", "support.constant.property-value.mermaid", 3],
+    ],
+  },
+  {
+    name: "an empty style property name in agentflow",
+    code: "agentflow-beta\nstyle A :red\nclassDef c :blue\nlinkStyle default :green",
+    scopes: [
+      [":", "keyword.operator.separator.key-value.mermaid", 1],
+      ["red", "support.constant.property-value.mermaid", 1],
+      [":", "keyword.operator.separator.key-value.mermaid", 2],
+      ["blue", "support.constant.property-value.mermaid", 2],
+      [":", "keyword.operator.separator.key-value.mermaid", 3],
+      ["green", "support.constant.property-value.mermaid", 3],
+    ],
+  },
+  {
+    name: "an empty style property name in block",
+    code: "block-beta\nA\nstyle A :red\nclassDef c :blue",
+    scopes: [
+      [":", "keyword.operator.separator.key-value.mermaid", 2],
+      ["red", "support.constant.property-value.mermaid", 2],
+      [":", "keyword.operator.separator.key-value.mermaid", 3],
+      ["blue", "support.constant.property-value.mermaid", 3],
+    ],
+  },
+  {
+    name: "an empty style property name in treemap",
+    code: "treemap\nclassDef aa :red",
+    scopes: [[":red", "string.unquoted.mermaid", 1]],
+  },
+  {
+    name: "an empty style property name in class",
+    code: "classDiagram\nstyle A :red,fill:blue",
+    scopes: [
+      [":", "keyword.operator.separator.key-value.mermaid", 1],
+      ["red,fill:blue", "support.constant.property-value.mermaid", 1],
+    ],
+    absentOnLine: [[1, "keyword.operator.separator.comma.mermaid"]],
+  },
+  {
+    name: "an empty style property name in state",
+    code: "stateDiagram-v2\nstyle A :red",
+    scopes: [
+      [":", "keyword.operator.separator.key-value.mermaid", 1],
+      ["red", "support.constant.property-value.mermaid", 1],
+    ],
+  },
+  {
+    name: "an empty style property name in er",
+    code: "erDiagram\nstyle A :red",
+    scopes: [
+      [":", "keyword.operator.separator.key-value.mermaid", 1],
+      ["red", "support.constant.property-value.mermaid", 1],
+    ],
+  },
+  {
+    name: "an empty style property name in requirement",
+    code: "requirementDiagram\nstyle A :red",
+    scopes: [
+      [":", "keyword.operator.separator.key-value.mermaid", 1],
+      ["red", "support.constant.property-value.mermaid", 1],
+    ],
+  },
+  {
+    name: "a line-final sequence title retains its keyword",
+    code: "sequenceDiagram\ntitle\nA->>B: x",
+    scopes: [["title", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final sequence accTitle retains its keyword",
+    code: "sequenceDiagram\naccTitle\n: T",
+    scopes: [["accTitle", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final sequence accDescr retains its keyword",
+    code: "sequenceDiagram\naccDescr\n{ D }",
+    scopes: [["accDescr", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final venn title retains its keyword",
+    code: "venn-beta\ntitle\nT",
+    scopes: [["title", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final gantt title retains its keyword",
+    code: "gantt\ntitle\nT",
+    scopes: [["title", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final gantt section retains its keyword",
+    code: "gantt\nsection\nS",
+    scopes: [["section", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final gantt dateFormat retains its keyword",
+    code: "gantt\ndateFormat\nYYYY-MM-DD",
+    scopes: [["dateFormat", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final gantt axisFormat retains its keyword",
+    code: "gantt\naxisFormat\n%Y",
+    scopes: [["axisFormat", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final gantt excludes retains its keyword",
+    code: "gantt\nexcludes\nweekends",
+    scopes: [["excludes", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final gantt includes retains its keyword",
+    code: "gantt\nincludes\n2026-11-01",
+    scopes: [["includes", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final gantt tickInterval retains its keyword",
+    code: "gantt\ntickInterval\n1day",
+    scopes: [["tickInterval", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final gantt todayMarker retains its keyword",
+    code: "gantt\ntodayMarker\nstroke:red",
+    scopes: [["todayMarker", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final gantt accTitle retains its keyword",
+    code: "gantt\naccTitle\n: T",
+    scopes: [["accTitle", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final gantt accDescr retains its keyword",
+    code: "gantt\naccDescr\n{ D }",
+    scopes: [["accDescr", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final journey title retains its keyword",
+    code: "journey\ntitle\nT",
+    scopes: [["title", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final journey section retains its keyword",
+    code: "journey\nsection\nS\nTask: 5",
+    scopes: [["section", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final journey accTitle retains its keyword",
+    code: "journey\naccTitle\n: T",
+    scopes: [["accTitle", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final journey accDescr retains its keyword",
+    code: "journey\naccDescr\n{ D }",
+    scopes: [["accDescr", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final c4 title retains its keyword",
+    code: "C4Context\ntitle\nT",
+    scopes: [["title", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final c4 accDescription retains its keyword",
+    code: "C4Context\naccDescription\nD",
+    scopes: [["accDescription", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final c4 accTitle retains its keyword",
+    code: "C4Context\naccTitle\n: T",
+    scopes: [["accTitle", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final c4 accDescr retains its keyword",
+    code: "C4Context\naccDescr\n{ D }",
+    scopes: [["accDescr", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final state class retains its keyword",
+    code: "stateDiagram-v2\nclass\nA c",
+    scopes: [["class", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final state classDef retains its keyword",
+    code: "stateDiagram-v2\nclassDef\nc fill:red",
+    scopes: [["classDef", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final state style retains its keyword",
+    code: "stateDiagram-v2\nstyle\nA fill:red",
+    scopes: [["style", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final state state retains its keyword",
+    code: "stateDiagram-v2\nstate\nA",
+    scopes: [["state", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final block class retains its keyword",
+    code: "block-beta\nclass\nA c",
+    scopes: [["class", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final block classDef retains its keyword",
+    code: "block-beta\nclassDef\nc fill:red",
+    scopes: [["classDef", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final block space retains its keyword",
+    code: "block-beta\nspace\nA",
+    scopes: [["space", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final flowchart click retains its keyword",
+    code: "flowchart TD\nclick\nA cb",
+    scopes: [["click", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final agentflow click retains its keyword",
+    code: "agentflow-beta\nclick\nA cb",
+    scopes: [["click", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final requirement accTitle retains its keyword",
+    code: "requirementDiagram\naccTitle\n: T",
+    scopes: [["accTitle", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final requirement accDescr retains its keyword",
+    code: "requirementDiagram\naccDescr\n{ D }",
+    scopes: [["accDescr", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final quadrant accTitle retains its keyword",
+    code: "quadrantChart\naccTitle\n: T",
+    scopes: [["accTitle", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final quadrant accDescr retains its keyword",
+    code: "quadrantChart\naccDescr\n{ D }",
+    scopes: [["accDescr", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final xychart title retains its keyword",
+    code: "xychart-beta\ntitle \nT",
+    scopes: [["title", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final xychart x-axis retains its keyword",
+    code: "xychart-beta\nx-axis \n[A,B]",
+    scopes: [["x-axis", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final xychart y-axis retains its keyword",
+    code: "xychart-beta\ny-axis \n0 --> 10",
+    scopes: [["y-axis", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final xychart line retains its keyword",
+    code: "xychart-beta\nline \n[1,2]",
+    scopes: [["line", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final xychart bar retains its keyword",
+    code: "xychart-beta\nbar \n[1,2]",
+    scopes: [["bar", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final info accDescr retains its keyword",
+    code: "info\naccDescr\n{ A }",
+    scopes: [["accDescr", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final pie accDescr retains its keyword",
+    code: "pie\naccDescr\n{ A }",
+    scopes: [["accDescr", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final packet accDescr retains its keyword",
+    code: "packet-beta\naccDescr\n{ A }",
+    scopes: [["accDescr", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final architecture accDescr retains its keyword",
+    code: "architecture-beta\naccDescr\n{ A }",
+    scopes: [["accDescr", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final radar accDescr retains its keyword",
+    code: "radar-beta\naccDescr\n{ A }",
+    scopes: [["accDescr", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final wardley accDescr retains its keyword",
+    code: "wardley-beta\naccDescr\n{ A }",
+    scopes: [["accDescr", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final cynefin accDescr retains its keyword",
+    code: "cynefin-beta\naccDescr\n{ A }",
+    scopes: [["accDescr", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final gitgraph accDescr retains its keyword",
+    code: "gitGraph\naccDescr\n{ A }",
+    scopes: [["accDescr", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "a line-final keyword with sequence padded directives",
+    code: "sequenceDiagram\n  %%{x}%%title%%{x}%% \t\nA->>B: x",
+    scopes: [
+      ["title", "keyword.control.mermaid", 1],
+      ["x", "meta.directive.mermaid", 1],
+    ],
+  },
+  {
+    name: "a line-final keyword with journey padded directives",
+    code: "journey\n%%{x}%%accTitle%%{x}%% \t\n: T",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid", 1],
+      ["x", "meta.directive.mermaid", 1],
+    ],
+  },
+  {
+    name: "a line-final keyword with block padded directives",
+    code: "block-beta\n%%{x}%%classDef%%{x}%% \t\nc fill:red",
+    scopes: [
+      ["classDef", "keyword.control.mermaid", 1],
+      ["x", "meta.directive.mermaid", 1],
+    ],
+  },
+  {
+    name: "a line-final keyword with state padded directives",
+    code: "stateDiagram-v2\n%%{x}%%classDef%%{x}%% \t\nc fill:red",
+    scopes: [
+      ["classDef", "keyword.control.mermaid", 1],
+      ["x", "meta.directive.mermaid", 1],
+    ],
+  },
+  {
+    name: "a line-final keyword with flowchart padded directives",
+    code: "flowchart TD\n%%{x}%%click%%{x}%% \t\nA cb",
+    scopes: [
+      ["click", "keyword.control.mermaid", 1],
+      ["x", "meta.directive.mermaid", 1],
+    ],
+  },
+  {
+    name: "a line-final keyword with agentflow padded directives",
+    code: "agentflow-beta\n%%{x}%%click%%{x}%% \t\nA cb",
+    scopes: [
+      ["click", "keyword.control.mermaid", 1],
+      ["x", "meta.directive.mermaid", 1],
+    ],
+  },
+  {
+    name: "a line-final keyword with requirement padded directives",
+    code: "requirementDiagram\n%%{x}%%accTitle%%{x}%% \t\n: T",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid", 1],
+      ["x", "meta.directive.mermaid", 1],
+    ],
+  },
+  {
+    name: "a line-final keyword with quadrant padded directives",
+    code: "quadrantChart\n%%{x}%%accDescr%%{x}%% \t\n{ D }",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid", 1],
+      ["x", "meta.directive.mermaid", 1],
+    ],
+  },
+  {
+    name: "a line-final keyword with info padded directives",
+    code: "info\n%%{x}%%accDescr%%{x}%% \t\n{ D }",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid", 1],
+      ["x", "meta.directive.mermaid", 1],
+    ],
+  },
+  {
+    name: "a line-final keyword with xychart padded directives",
+    code: "xychart-beta\n%%{x}%%title%%{x}%% \t\nT",
+    scopes: [
+      ["title", "keyword.control.mermaid", 1],
+      ["x", "meta.directive.mermaid", 1],
+    ],
+  },
+  {
+    name: "a line-final word remains contextual: er direction name",
+    code: "erDiagram\ndirection\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: class direction name",
+    code: "classDiagram\ndirection\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: state direction name",
+    code: "stateDiagram-v2\ndirection\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: flowchart direction name",
+    code: "flowchart TD\ndirection\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: agentflow direction name",
+    code: "agentflow-beta\ndirection\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: block columns name",
+    code: "block-beta\ncolumns\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: treeview accTitle name",
+    code: "treeView-beta\naccTitle\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: treeview accDescr name",
+    code: "treeView-beta\naccDescr\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: flowchart title name",
+    code: "flowchart TD\ntitle\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: flowchart accTitle name",
+    code: "flowchart TD\naccTitle\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: flowchart accDescr name",
+    code: "flowchart TD\naccDescr\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: er title name",
+    code: "erDiagram\ntitle\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: er accTitle name",
+    code: "erDiagram\naccTitle\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: er accDescr name",
+    code: "erDiagram\naccDescr\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: class title name",
+    code: "classDiagram\ntitle\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: class accTitle name",
+    code: "classDiagram\naccTitle\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: class accDescr name",
+    code: "classDiagram\naccDescr\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: state title name",
+    code: "stateDiagram-v2\ntitle\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: state accTitle name",
+    code: "stateDiagram-v2\naccTitle\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: state accDescr name",
+    code: "stateDiagram-v2\naccDescr\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: kanban title text",
+    code: "kanban\ntitle\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: kanban accTitle text",
+    code: "kanban\naccTitle\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: kanban accDescr text",
+    code: "kanban\naccDescr\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: ishikawa title text",
+    code: "ishikawa-beta\ntitle\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: ishikawa accTitle text",
+    code: "ishikawa-beta\naccTitle\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: ishikawa accDescr text",
+    code: "ishikawa-beta\naccDescr\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: usecase title name",
+    code: "usecase-beta\ntitle\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: usecase accTitle name",
+    code: "usecase-beta\naccTitle\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: usecase accDescr name",
+    code: "usecase-beta\naccDescr\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: block title name",
+    code: "block-beta\ntitle\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: block accTitle name",
+    code: "block-beta\naccTitle\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: block accDescr name",
+    code: "block-beta\naccDescr\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: mindmap title text",
+    code: "mindmap\ntitle\n  A",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: mindmap accTitle text",
+    code: "mindmap\naccTitle\n  A",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: mindmap accDescr text",
+    code: "mindmap\naccDescr\n  A",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: railroad accDescr name",
+    code: 'railroad-beta\naccDescr\n=terminal("a");',
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: eventmodeling accDescr name",
+    code: "eventmodeling\nentity\n accDescr",
+    scopes: [],
+    absentOnLine: [[2, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: timeline title blank",
+    code: "timeline\ntitle\n\nT",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: timeline section blank",
+    code: "timeline\nsection\n\nS",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: treemap accDescr class",
+    code: 'treemap\nclassDef\naccDescr\nfill:red\n"A":1',
+    scopes: [],
+    absentOnLine: [[2, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: timeline accDescr text",
+    code: "timeline\naccDescr\nA",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word remains contextual: eventmodeling title longer",
+    code: "eventmodeling entity\n titlex",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word stays in sequence nested text",
+    code: "sequenceDiagram\naccDescr {\ntitle\n}",
+    scopes: [["title", "string.unquoted.mermaid", 2]],
+    absentOnLine: [[2, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word stays in gantt nested text",
+    code: "gantt\naccDescr {\ndateFormat\n}",
+    scopes: [["dateFormat", "string.unquoted.mermaid", 2]],
+    absentOnLine: [[2, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word stays in state nested note",
+    code: "stateDiagram-v2\nnote left of A\nclassDef\nend note",
+    scopes: [["classDef", "string.unquoted.mermaid", 2]],
+    absentOnLine: [[2, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word stays in requirement nested text",
+    code: "requirementDiagram\naccDescr {\naccTitle\n}",
+    scopes: [["accTitle", "string.unquoted.mermaid", 2]],
+    absentOnLine: [[2, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word stays in flowchart nested text",
+    code: 'flowchart TD\nA["click\nclick"]',
+    scopes: [["click", "string.quoted.double.mermaid", 2]],
+    absentOnLine: [[2, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final word stays in agentflow nested text",
+    code: 'agentflow-beta\nA["click\nclick"]',
+    scopes: [["click", "string.quoted.double.mermaid", 2]],
+    absentOnLine: [[2, "keyword.control.mermaid"]],
+  },
+  {
+    name: "a line-final classDef in a composite state",
+    code: "stateDiagram-v2\nstate Outer {\n  classDef\nc fill:red\n}",
+    scopes: [["classDef", "keyword.control.mermaid", 2]],
+  },
+  {
+    name: "common metadata after tree prefix title",
+    code: "treeView-beta\n├── title T",
+    scopes: [
+      ["title", "keyword.control.mermaid", 1],
+      ["T", "string.unquoted.mermaid", 1],
+    ],
+  },
+  {
+    name: "common metadata after tree prefix accTitle",
+    code: "treeView-beta\n├── accTitle: A",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid", 1],
+      [" A", "string.unquoted.mermaid", 1],
+    ],
+  },
+  {
+    name: "common metadata after tree prefix short",
+    code: "treeView-beta\n└─ title T",
+    scopes: [
+      ["title", "keyword.control.mermaid", 1],
+      ["T", "string.unquoted.mermaid", 1],
+    ],
+  },
+  {
+    name: "common metadata after tree prefix nested",
+    code: "treeView-beta\n│   ├── title T",
+    scopes: [
+      ["title", "keyword.control.mermaid", 1],
+      ["T", "string.unquoted.mermaid", 1],
+    ],
+  },
+  {
+    name: "common metadata after tree prefix glued",
+    code: "treeView-beta\n├──title",
+    scopes: [["title", "keyword.control.mermaid", 1]],
+  },
+  {
+    name: "common metadata after tree prefix accDescr line",
+    code: "treeView-beta\n├── accDescr: D",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid", 1],
+      [" D", "string.unquoted.mermaid", 1],
+    ],
+  },
+  {
+    name: "common metadata after tree prefix accDescr block",
+    code: "treeView-beta\n├── accDescr { D }",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid", 1],
+      [" D ", "string.unquoted.mermaid", 1],
+      ["{", "keyword.operator.delimiter.description.begin.mermaid", 1],
+      ["}", "keyword.operator.delimiter.description.end.mermaid", 1],
+    ],
+  },
+  {
+    name: "common metadata after tree prefix quoted node",
+    code: 'treeView-beta\n├── title"node"',
+    scopes: [
+      ["title", "keyword.control.mermaid", 1],
+      ["node", "string.quoted.double.mermaid", 1],
+    ],
+  },
+  {
+    name: "common metadata after tree prefix directives",
+    code: "treeView-beta\n├%%{x}%%── title T",
+    scopes: [
+      ["title", "keyword.control.mermaid", 1],
+      ["x", "meta.directive.mermaid", 1],
+      ["T", "string.unquoted.mermaid", 1],
+    ],
+  },
+  {
+    name: "common metadata is text after tree bars text",
+    code: "treeView-beta\n│ title T",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "common metadata is text after tree misplaced branch text",
+    code: "treeView-beta\n├│ title T",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "common metadata is text after tree two branch text",
+    code: "treeView-beta\n├── ├── title T",
+    scopes: [],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "flowchart entities enter their callback, edge-name and label contexts",
+    code: 'flowchart\nclick A call #amp;(x)\nclick A call #amp;x(x)\nclick A call x#amp;(x)\nclick A call cb(#amp;)\nclick #amp; cb\nA #amp;@-->B\nA #amp;x@-->B\nA x#amp;@-->B\nA(-#amp;-)\nA["#amp;"]\nA[#amp;]\nA[/#amp;"x/]\nA--#amp;-->B\nA-->|#amp;|B\nA@{label:"#amp;"}\nstyle A fill:#amp;\nclassDef c fill:#amp;\n',
+    scopes: [
+      ["#amp;", "entity.name.function.mermaid", 1],
+      ["#amp;", "entity.name.function.mermaid", 2],
+      ["#amp;", "entity.name.function.mermaid", 3],
+      ["#amp;", "string.unquoted.mermaid", 4],
+      ["#amp;", "variable.mermaid", 5],
+      ["cb", "entity.name.function.mermaid", 5],
+      ["#amp;", "variable.mermaid", 6],
+      ["@", "keyword.operator.separator.edge.mermaid", 6],
+      ["#amp;x", "variable.mermaid", 7],
+      ["@", "keyword.operator.separator.edge.mermaid", 7],
+      ["x#amp;", "variable.mermaid", 8],
+      ["@", "keyword.operator.separator.edge.mermaid", 8],
+      ["#amp;", "string.unquoted.mermaid", 9],
+      ["#amp;", "string.quoted.double.mermaid", 10],
+      ["#amp;", "string.unquoted.mermaid", 11],
+      ["#amp;", "string.unquoted.mermaid", 12],
+      ['"x', "string.unquoted.mermaid", 12],
+      ["#amp;", "string.unquoted.mermaid", 13],
+      ["#amp;", "string.unquoted.mermaid", 14],
+      ["#amp;", "string.unquoted.mermaid", 15],
+      ["#amp;", "support.constant.property-value.mermaid", 16],
+      ["#amp;", "support.constant.property-value.mermaid", 17],
+    ],
+    absent: [
+      ["#amp;", "string.unquoted.mermaid", 1],
+      ["#amp;", "entity.name.function.mermaid", 4],
+      ['"x', "string.quoted.double.mermaid", 12],
+    ],
+  },
+  {
+    name: "agentflow entities enter their callback, edge-name and label contexts",
+    code: 'agentflow-beta\nclick A call #amp;(x)\nclick A call #amp;x(x)\nclick A call x#amp;(x)\nclick A call cb(#amp;)\nclick #amp; cb\nA #amp;@-->B\nA #amp;x@-->B\nA x#amp;@-->B\nA(-#amp;-)\nA["#amp;"]\nA[#amp;]\nA[/#amp;"x/]\nA--#amp;-->B\nA-->|#amp;|B\nA@{label:"#amp;"}\nstyle A fill:#amp;\nclassDef c fill:#amp;\nflow click #amp;\nA\nend\nconnector click #amp;\n',
+    scopes: [
+      ["#amp;", "entity.name.function.mermaid", 1],
+      ["#amp;", "entity.name.function.mermaid", 2],
+      ["#amp;", "entity.name.function.mermaid", 3],
+      ["#amp;", "string.unquoted.mermaid", 4],
+      ["#amp;", "variable.mermaid", 5],
+      ["cb", "entity.name.function.mermaid", 5],
+      ["#amp;", "variable.mermaid", 6],
+      ["@", "keyword.operator.separator.edge.mermaid", 6],
+      ["#amp;x", "variable.mermaid", 7],
+      ["@", "keyword.operator.separator.edge.mermaid", 7],
+      ["x#amp;", "variable.mermaid", 8],
+      ["@", "keyword.operator.separator.edge.mermaid", 8],
+      ["#amp;", "string.unquoted.mermaid", 9],
+      ["#amp;", "string.quoted.double.mermaid", 10],
+      ["#amp;", "string.unquoted.mermaid", 11],
+      ["#amp;", "string.unquoted.mermaid", 12],
+      ['"x', "string.unquoted.mermaid", 12],
+      ["#amp;", "string.unquoted.mermaid", 13],
+      ["#amp;", "string.unquoted.mermaid", 14],
+      ["#amp;", "string.unquoted.mermaid", 15],
+      ["#amp;", "support.constant.property-value.mermaid", 16],
+      ["#amp;", "support.constant.property-value.mermaid", 17],
+      ["#amp;", "string.unquoted.mermaid", 18],
+      ["#amp;", "string.unquoted.mermaid", 21],
+    ],
+    absent: [
+      ["#amp;", "string.unquoted.mermaid", 1],
+      ["#amp;", "entity.name.function.mermaid", 4],
+      ['"x', "string.quoted.double.mermaid", 12],
+    ],
+  },
   {
     name: "a packet HTML tag keeps an escaped non-attribute quote",
     code: 'packet 0:"<b \\"text>"',
@@ -314,8 +2084,8 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: 'railroad-beta\nr=terminal("<b \\"text>");',
     scopes: [
       ['<b \\"text>', "string.quoted.double.mermaid"],
-      [")", "punctuation.section.arguments.end.mermaid"],
-      [";", "punctuation.separator.rule.mermaid"],
+      [")", "keyword.operator.bracket.arguments.end.mermaid"],
+      [";", "keyword.operator.separator.rule.mermaid"],
     ],
     absent: [[")", "string.quoted.double.mermaid"]],
   },
@@ -325,11 +2095,10 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       ["wrap", "entity.name.function.directive.mermaid"],
       ['"text>', "string.quoted.double.mermaid"],
-      [";", "punctuation.separator.rule.mermaid"],
+      [";", "keyword.operator.separator.rule.mermaid"],
     ],
     absent: [[";", "string.quoted.double.mermaid"]],
   },
-  // usecase.md#json-context: Backslash protects exactly the next character.
   {
     name: "a usecase JSON HTML tag keeps an escaped non-attribute quote",
     code: 'usecase-beta\njson J @ {"x":"<b \\"text>"}',
@@ -345,8 +2114,6 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     ],
     absent: [["}", "string.quoted.double.mermaid"]],
   },
-  // usecase.md#ordered-default-context-rules: Only backquote plus double
-  // quote ends markdown; attribute quotes convert before that reading.
   {
     name: "a markdown HTML tag keeps a lone backquote before a quoted value",
     code: 'usecase-beta\nA("`<b` x="`">z`")',
@@ -369,13 +2136,12 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     ],
     absent: [[")", "string.quoted.other.markdown.mermaid"]],
   },
-  // sankey.md#strings: Doubled quotes remain content outside quoted values.
   {
     name: "a sankey HTML tag reads a doubled quote before a quoted value",
     code: 'sankey-beta\n"<b "" x="v">",B,1',
     scopes: [
       ['<b "" x="v">', "string.quoted.double.mermaid"],
-      [",", "punctuation.separator.comma.mermaid"],
+      [",", "keyword.operator.separator.comma.mermaid"],
     ],
     absent: [[",", "string.quoted.double.mermaid"]],
   },
@@ -385,12 +2151,10 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       ["wrap", "entity.name.function.directive.mermaid"],
       ['" x="v">', "string.quoted.double.mermaid"],
-      [",", "punctuation.separator.comma.mermaid"],
+      [",", "keyword.operator.separator.comma.mermaid"],
     ],
     absent: [[",", "string.quoted.double.mermaid"]],
   },
-  // common.md#html-attribute-quotes: The first written quote ends a quoted
-  // value; a backslash before its equals sign cannot consume the opener.
   {
     name: "a packet HTML quoted value ends at a quote after a backslash",
     code: 'packet 0:"<b x="v\\"tail>"',
@@ -415,8 +2179,6 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [['<b \\="v">', "string.unquoted.mermaid"]],
     absent: [["}", "string.quoted.double.mermaid"]],
   },
-  // usecase.md#json-context permits escapes of both Unicode separators,
-  // unlike packet.md#numbers-and-strings.
   {
     name: "a usecase JSON HTML tag keeps an escaped line separator",
     code: 'usecase-beta\njson J @ {"x":"<b \\\u2028text>"}',
@@ -429,8 +2191,6 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [["<b \\\u2029text>", "string.unquoted.mermaid"]],
     absent: [["}", "string.quoted.double.mermaid"]],
   },
-  // common.md#html-attribute-quotes ends the tag at its first greater-than
-  // sign; leave an escape crossing it whole for the enclosing string.
   {
     name: "a packet HTML tag leaves an escaped tag closer to the string",
     code: 'packet 0:"<b \\>"\n1:"x"',
@@ -458,9 +2218,9 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     name: "an architecture quoted-label lookahead keeps an escaped quote in HTML",
     code: 'architecture-beta\nservice a["<b \\"text>"]',
     scopes: [
-      ["[", "punctuation.definition.label.begin.mermaid"],
+      ["[", "keyword.operator.delimiter.label.begin.mermaid"],
       ['<b \\"text>', "string.quoted.double.mermaid"],
-      ["]", "punctuation.definition.label.end.mermaid"],
+      ["]", "keyword.operator.delimiter.label.end.mermaid"],
     ],
     absent: [["]", "string.quoted.double.mermaid"]],
   },
@@ -483,12 +2243,10 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       [">", "string.unquoted.directive.mermaid"],
       [" text", "string.quoted.double.mermaid"],
-      [",", "punctuation.separator.comma.mermaid"],
+      [",", "keyword.operator.separator.comma.mermaid"],
     ],
     absent: [[",", "string.quoted.double.mermaid"]],
   },
-  // common.md#a-directive-is-a-token-boundary and #html-attribute-quotes:
-  // directives stay whole and quoted HTML values protect backquotes.
   {
     // The top-level grammar comment states this limit: a directive owns the
     // written closing quote of the attribute, so the later quote closes the
@@ -540,7 +2298,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: 'flowchart LR;A["<b %%{init: >"}%%text"]',
     scopes: [
       ['>"', "string.unquoted.directive.mermaid"],
-      ["}%%", "punctuation.definition.directive.end.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
       ["text", "string.quoted.double.mermaid"],
       ["]", "keyword.operator.shape.end.mermaid"],
     ],
@@ -551,7 +2309,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: 'agentflow-beta LR;A["<b %%{init: >"}%%text"]',
     scopes: [
       ['>"', "string.unquoted.directive.mermaid"],
-      ["}%%", "punctuation.definition.directive.end.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
       ["text", "string.quoted.double.mermaid"],
       ["]", "keyword.operator.shape.end.mermaid"],
     ],
@@ -562,9 +2320,9 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: 'radar-beta axis a["<b %%{x: > "axis"}%%foo"]',
     scopes: [
       ['> "axis"', "string.unquoted.directive.mermaid"],
-      ["}%%", "punctuation.definition.directive.end.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
       ["foo", "string.quoted.double.mermaid"],
-      ["]", "punctuation.definition.label.end.mermaid"],
+      ["]", "keyword.operator.delimiter.label.end.mermaid"],
     ],
   },
   {
@@ -572,7 +2330,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: 'packet\n0:"<b %%{x: >"}%%done"',
     scopes: [
       ['>"', "string.unquoted.directive.mermaid"],
-      ["}%%", "punctuation.definition.directive.end.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
       ["done", "string.quoted.double.mermaid"],
     ],
     absentOnLine: [[1, "comment.line.percentage.mermaid"]],
@@ -582,9 +2340,9 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: 'railroad-beta r=terminal("<b %%{x: >"}%%x");',
     scopes: [
       ['>"', "string.unquoted.directive.mermaid"],
-      ["}%%", "punctuation.definition.directive.end.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
       ["x", "string.quoted.double.mermaid"],
-      [";", "punctuation.separator.rule.mermaid"],
+      [";", "keyword.operator.separator.rule.mermaid"],
     ],
     absentOnLine: [[0, "comment.line.percentage.mermaid"]],
   },
@@ -593,7 +2351,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: 'classDiagram\nnote "<b %%{x: >"}%%foo"',
     scopes: [
       ['>"', "string.unquoted.directive.mermaid"],
-      ["}%%", "punctuation.definition.directive.end.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
       ["foo", "string.quoted.double.mermaid"],
     ],
     absentOnLine: [[1, "comment.line.percentage.mermaid"]],
@@ -603,7 +2361,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: 'usecase-beta\nA("`<b %%{x: >"}%%foo`")',
     scopes: [
       ['>"', "string.unquoted.directive.mermaid"],
-      ["}%%", "punctuation.definition.directive.end.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
       ["foo", "string.quoted.other.markdown.mermaid"],
       ['`"', "punctuation.definition.string.end.mermaid"],
       [")", "keyword.operator.shape.end.mermaid"],
@@ -621,8 +2379,6 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     ],
     absent: [['<b x="`">', "punctuation.definition.string.end.mermaid"]],
   },
-  // info.md#hidden-yaml and eventmodeling.md#native-hidden-forms-and-comments:
-  // a directive before an unindented closing fence is trivia.
   {
     name: "hidden info YAML closes after a leading directive",
     code: "info\n---\nx\n%%{wrap}%%---\n\ntitle T",
@@ -668,7 +2424,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       ["wrap", "entity.name.function.directive.mermaid"],
       ["terminal", "keyword.control.mermaid"],
-      [";", "punctuation.separator.rule.mermaid"],
+      [";", "keyword.operator.separator.rule.mermaid"],
     ],
     absent: [["terminal", "comment.block.ignored.mermaid"]],
   },
@@ -690,8 +2446,6 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     ],
     absent: [["complex", "comment.block.ignored.mermaid"]],
   },
-  // kanban.md#the-shape-context and mindmap.md#the-shape-context:
-  // quotes inside shape text are text; markdown uses the shared delimiters.
   {
     name: "kanban shape text owns a quote after its first character",
     code: 'kanban A[<b x="y] %% >',
@@ -736,16 +2490,13 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     ],
     absent: [["%% >", "string.quoted.other.markdown.mermaid"]],
   },
-
-  // common.md#html-attribute-quotes: The first written > ends a tag,
-  // including inside a directive; the enclosing data context reads it whole.
   {
     name: "a flowchart data tag ends inside a directive before a quoted value",
     code: 'flowchart LR\nA@{<b %%{init: >}%% t="q"}',
     scopes: [
       ["q", "string.unquoted.mermaid"],
       ["init", "entity.name.function.directive.mermaid"],
-      ["}", "punctuation.section.data.end.mermaid"],
+      ["}", "keyword.operator.bracket.data.end.mermaid"],
     ],
     absentOnLine: [[1, "comment.line.percentage.mermaid"]],
   },
@@ -755,18 +2506,16 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       ["q", "string.unquoted.mermaid"],
       ["init", "entity.name.function.directive.mermaid"],
-      ["}", "punctuation.section.data.end.mermaid"],
+      ["}", "keyword.operator.bracket.data.end.mermaid"],
     ],
     absentOnLine: [[1, "comment.line.percentage.mermaid"]],
   },
-  // common.md#html-attribute-quotes, #comment-lines and
-  // #a-directive-is-a-token-boundary; pie.md#global-trivia-inside-values.
   {
     name: "an agentflow data tag preserves attribute quotes after a directive",
     code: 'agentflow-beta LR\nA@{<b %%{wrap}%% t="q">}',
     scopes: [
       ["wrap", "entity.name.function.directive.mermaid"],
-      ["}", "punctuation.section.data.end.mermaid"],
+      ["}", "keyword.operator.bracket.data.end.mermaid"],
     ],
     absentOnLine: [[1, "string.quoted.double.mermaid"]],
   },
@@ -784,9 +2533,9 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     name: "a railroad HTML tag ends before the next terminal call",
     code: 'railroad-beta r=sequence(terminal("<b %%{x: >}%%x="),terminal("y"));',
     scopes: [
-      [",", "punctuation.separator.comma.mermaid"],
+      [",", "keyword.operator.separator.comma.mermaid"],
       ["y", "string.quoted.double.mermaid"],
-      [";", "punctuation.separator.rule.mermaid"],
+      [";", "keyword.operator.separator.rule.mermaid"],
     ],
     absent: [[",", "string.quoted.double.mermaid"]],
   },
@@ -814,7 +2563,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: 'quadrantChart quadrant-1 "`<b`";title >',
     scopes: [
       ['`"', "punctuation.definition.string.end.mermaid"],
-      [";", "punctuation.separator.semicolon.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
       ["title", "keyword.control.mermaid"],
     ],
     absent: [["title", "string.quoted.other.markdown.mermaid"]],
@@ -987,7 +2736,6 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     absent: [["axis", "comment.block.ignored.mermaid"]],
     absentOnLine: [[0, "comment.line.percentage.mermaid"]],
   },
-
   {
     name: "timeline keywords with only separator directives remain periods",
     code: "timeline\ntitle %%{wrap}%%\n\nsection %%{wrap}%%\n",
@@ -1057,7 +2805,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       ["after ", "string.unquoted.mermaid"],
       ["%% block comment }", "comment.line.percentage.mermaid"],
-      ["}", "punctuation.definition.description.end.mermaid", 2],
+      ["}", "keyword.operator.delimiter.description.end.mermaid", 2],
     ],
   },
   {
@@ -1112,7 +2860,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: "journey\nsection S\n%%%{wrap}%%{left}: 3\n",
     scopes: [
       ["{left}", "string.unquoted.mermaid"],
-      [":", "punctuation.separator.colon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
     ],
     absentOnLine: [[2, "comment.line.percentage.mermaid"]],
   },
@@ -1165,7 +2913,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: 'architecture-beta\nservice a["\\<b title="group">"]\n',
     scopes: [
       ['<b title="group">', "string.quoted.double.mermaid"],
-      ["]", "punctuation.definition.label.end.mermaid"],
+      ["]", "keyword.operator.delimiter.label.end.mermaid"],
     ],
     absent: [['<b title="group">', "constant.character.escape.mermaid"]],
   },
@@ -1175,7 +2923,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       ['\\"', "constant.character.escape.mermaid"],
       ["b", "string.quoted.double.mermaid"],
-      ["]", "punctuation.definition.label.end.mermaid"],
+      ["]", "keyword.operator.delimiter.label.end.mermaid"],
     ],
   },
   {
@@ -1357,7 +3105,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: "kanban\nA@{x: 'a}%% c\n",
     scopes: [
       ["x: 'a", "string.unquoted.mermaid"],
-      ["}", "punctuation.section.data.end.mermaid"],
+      ["}", "keyword.operator.bracket.data.end.mermaid"],
       ["%% c", "comment.line.percentage.mermaid"],
     ],
     absent: [["x: 'a", "string.quoted.single.mermaid"]],
@@ -1370,8 +3118,11 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     absent: [
       ["key: true, other: false", "support.type.property-name.mermaid"],
       ["key: true, other: false", "constant.language.mermaid"],
-      ["key: true, other: false", "punctuation.separator.comma.mermaid"],
-      ["key: true, other: false", "punctuation.separator.key-value.mermaid"],
+      ["key: true, other: false", "keyword.operator.separator.comma.mermaid"],
+      [
+        "key: true, other: false",
+        "keyword.operator.separator.key-value.mermaid",
+      ],
     ],
   },
   {
@@ -1383,7 +3134,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ["}^", "string.unquoted.mermaid"],
       ["\\", "string.unquoted.mermaid"],
       ["wrap", "entity.name.function.directive.mermaid"],
-      ["}", "punctuation.section.data.end.mermaid"],
+      ["}", "keyword.operator.bracket.data.end.mermaid"],
       ["%% c", "comment.line.percentage.mermaid"],
     ],
     absent: [["\\", "constant.character.escape.mermaid"]],
@@ -1446,12 +3197,6 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ["Event", "string.unquoted.mermaid"],
     ],
     absent: [["#", "comment.line.number-sign.mermaid"]],
-  },
-  {
-    name: "long s does not match the ASCII s of scale",
-    code: "stateDiagram\n\u017Fcale 3 width\n",
-    scopes: [],
-    absent: [["\u017Fcale", "keyword.control.mermaid"]],
   },
   {
     name: "a native kanban comment after a shape",
@@ -1526,14 +3271,14 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     name: "a kanban class after byte order mark indentation",
     code: "kanban\n A\n\uFEFF:::tag\n",
     scopes: [
-      [":::", "punctuation.separator.class.mermaid"],
+      [":::", "keyword.operator.separator.class.mermaid"],
       ["tag", "variable.mermaid"],
     ],
   },
   {
     name: "a kanban icon after nonbreaking space indentation",
     code: "kanban\n A\n\u00A0::icon(x)\n",
-    scopes: [["::icon(", "keyword.control.mermaid"]],
+    scopes: [["::icon", "keyword.control.mermaid"]],
   },
   {
     // common.md#a-directive-is-a-token-boundary; railroad.md#metadata-units.
@@ -1553,7 +3298,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ["accTitle", "keyword.control.mermaid"],
       ["init", "entity.name.function.directive.mermaid"],
       ["wrap", "entity.name.function.directive.mermaid"],
-      [":", "punctuation.separator.colon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
       [" Title", "string.unquoted.mermaid"],
     ],
     absent: [["accTitle", "variable.mermaid"]],
@@ -1575,9 +3320,9 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       ["accDescr", "keyword.control.mermaid"],
       ["wrap", "entity.name.function.directive.mermaid"],
-      ["{", "punctuation.definition.description.begin.mermaid"],
+      ["{", "keyword.operator.delimiter.description.begin.mermaid"],
       [" Block ", "string.unquoted.mermaid"],
-      ["}", "punctuation.definition.description.end.mermaid"],
+      ["}", "keyword.operator.delimiter.description.end.mermaid"],
     ],
   },
   {
@@ -1605,12 +3350,12 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     name: "an entity semicolon inside an EBNF special sequence",
     code: "railroad-ebnf-beta\nentity = ? #amp; ? ;\n",
     scopes: [
-      ["?", "punctuation.definition.special-sequence.begin.mermaid"],
+      ["?", "keyword.operator.delimiter.special-sequence.begin.mermaid"],
       [" #amp; ", "string.unquoted.mermaid"],
     ],
     absent: [
-      ["?", "punctuation.separator.rule.mermaid"],
-      [" #amp; ", "punctuation.separator.rule.mermaid"],
+      ["?", "keyword.operator.separator.rule.mermaid"],
+      [" #amp; ", "keyword.operator.separator.rule.mermaid"],
     ],
   },
   {
@@ -1622,8 +3367,8 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ["; ", "string.unquoted.mermaid"],
     ],
     absent: [
-      ["; ", "punctuation.separator.rule.mermaid"],
-      ["?", "punctuation.separator.rule.mermaid"],
+      ["; ", "keyword.operator.separator.rule.mermaid"],
+      ["?", "keyword.operator.separator.rule.mermaid"],
     ],
   },
   {
@@ -1659,8 +3404,6 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     ],
     absent: [[">", "string.quoted.single.mermaid"]],
   },
-  // Review boundaries from the diagram specifications and common.md.
-
   {
     name: "gitgraph metadata after directives",
     code: "gitGraph\n  %%{x}%%title t\n%%{x}%%accTitle: t\n%%{x}%% title t",
@@ -1777,9 +3520,9 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     name: "mindmap icon and class after directives",
     code: "mindmap\n  r\n    %%{init: {}}%%::icon(x)\n    %%{init: {}}%%:::c",
     scopes: [
-      ["::icon(", "keyword.control.mermaid"],
+      ["::icon", "keyword.control.mermaid"],
       ["x", "string.unquoted.mermaid"],
-      [":::", "punctuation.separator.class.mermaid"],
+      [":::", "keyword.operator.separator.class.mermaid"],
       ["c", "variable.mermaid"],
     ],
   },
@@ -1811,7 +3554,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     name: "kanban icon after a directive",
     code: "kanban\n A\n %%{wrap}%%::icon(x)",
     scopes: [
-      ["::icon(", "keyword.control.mermaid"],
+      ["::icon", "keyword.control.mermaid"],
       ["x", "string.unquoted.mermaid"],
     ],
   },
@@ -1963,9 +3706,9 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: "flowchart TD\nclassDef a bold,fill:red\nstyle A fill:red,bold,stroke:blue\nstyle A #fff\nlinkStyle default bold,stroke:red",
     scopes: [
       ["bold", "support.constant.property-value.mermaid"],
-      [",", "punctuation.separator.comma.mermaid"],
+      [",", "keyword.operator.separator.comma.mermaid"],
       ["fill", "support.type.property-name.mermaid"],
-      [":", "punctuation.separator.key-value.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
       ["#fff", "support.constant.property-value.mermaid"],
       ["stroke", "support.type.property-name.mermaid"],
     ],
@@ -1975,9 +3718,9 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: "agentflow-beta\nclassDef a bold,fill:red\nstyle A fill:red,bold,stroke:blue\nstyle A #fff\nlinkStyle default bold,stroke:red",
     scopes: [
       ["bold", "support.constant.property-value.mermaid"],
-      [",", "punctuation.separator.comma.mermaid"],
+      [",", "keyword.operator.separator.comma.mermaid"],
       ["fill", "support.type.property-name.mermaid"],
-      [":", "punctuation.separator.key-value.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
       ["#fff", "support.constant.property-value.mermaid"],
       ["stroke", "support.type.property-name.mermaid"],
     ],
@@ -1989,11 +3732,11 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ["\\,", "support.constant.property-value.mermaid"],
       ["wide", "support.constant.property-value.mermaid"],
       ["wrap", "meta.directive.mermaid"],
-      [",", "punctuation.separator.comma.mermaid", 2],
-      [",", "punctuation.separator.comma.mermaid", 3],
+      [",", "keyword.operator.separator.comma.mermaid", 2],
+      [",", "keyword.operator.separator.comma.mermaid", 3],
       [",", "support.constant.property-value.mermaid", 4],
     ],
-    absent: [["\\,", "punctuation.separator.comma.mermaid"]],
+    absent: [["\\,", "keyword.operator.separator.comma.mermaid"]],
   },
   {
     name: "classDef keeps an escaped comma in a bare agentflow style",
@@ -2002,11 +3745,11 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ["\\,", "support.constant.property-value.mermaid"],
       ["wide", "support.constant.property-value.mermaid"],
       ["wrap", "meta.directive.mermaid"],
-      [",", "punctuation.separator.comma.mermaid", 2],
-      [",", "punctuation.separator.comma.mermaid", 3],
+      [",", "keyword.operator.separator.comma.mermaid", 2],
+      [",", "keyword.operator.separator.comma.mermaid", 3],
       [",", "support.constant.property-value.mermaid", 4],
     ],
-    absent: [["\\,", "punctuation.separator.comma.mermaid"]],
+    absent: [["\\,", "keyword.operator.separator.comma.mermaid"]],
   },
   {
     name: "flowchart style values leave trailing whitespace",
@@ -2041,8 +3784,8 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ["bold", "support.constant.property-value.mermaid"],
       ["fill", "support.type.property-name.mermaid"],
       ["#fff", "support.constant.property-value.mermaid"],
-      [",", "punctuation.separator.comma.mermaid"],
-      [":", "punctuation.separator.key-value.mermaid"],
+      [",", "keyword.operator.separator.comma.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
     ],
   },
   {
@@ -2051,8 +3794,8 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       ["bold", "support.constant.property-value.mermaid"],
       ["fill", "support.type.property-name.mermaid"],
-      [",", "punctuation.separator.comma.mermaid"],
-      [":", "punctuation.separator.key-value.mermaid"],
+      [",", "keyword.operator.separator.comma.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
       ["style", "support.constant.property-value.mermaid", 4],
     ],
   },
@@ -2062,8 +3805,8 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       ["bold", "support.constant.property-value.mermaid"],
       ["fill", "support.type.property-name.mermaid"],
-      [",", "punctuation.separator.comma.mermaid"],
-      [":", "punctuation.separator.key-value.mermaid"],
+      [",", "keyword.operator.separator.comma.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
     ],
   },
   {
@@ -2072,8 +3815,8 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       ["bold", "support.constant.property-value.mermaid"],
       ["fill", "support.type.property-name.mermaid"],
-      [",", "punctuation.separator.comma.mermaid"],
-      [":", "punctuation.separator.key-value.mermaid"],
+      [",", "keyword.operator.separator.comma.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
     ],
   },
   {
@@ -2082,8 +3825,8 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       ["bold", "support.constant.property-value.mermaid"],
       ["fill", "support.type.property-name.mermaid"],
-      [",", "punctuation.separator.comma.mermaid"],
-      [":", "punctuation.separator.key-value.mermaid"],
+      [",", "keyword.operator.separator.comma.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
     ],
   },
   {
@@ -2093,8 +3836,8 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ["fill", "support.type.property-name.mermaid"],
       ["red", "support.constant.property-value.mermaid"],
       ["stroke", "support.type.property-name.mermaid"],
-      [",", "punctuation.separator.comma.mermaid"],
-      [":", "punctuation.separator.key-value.mermaid"],
+      [",", "keyword.operator.separator.comma.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
     ],
   },
   {
@@ -2104,8 +3847,8 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ["fill", "support.type.property-name.mermaid"],
       ["red", "support.constant.property-value.mermaid"],
       ["stroke", "support.type.property-name.mermaid"],
-      [",", "punctuation.separator.comma.mermaid"],
-      [":", "punctuation.separator.key-value.mermaid"],
+      [",", "keyword.operator.separator.comma.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
     ],
   },
   {
@@ -2115,8 +3858,8 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ["color", "support.type.property-name.mermaid"],
       ["#f00", "support.constant.property-value.mermaid"],
       ["radius", "support.type.property-name.mermaid"],
-      [":", "punctuation.separator.key-value.mermaid", 2],
-      [",", "punctuation.separator.comma.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid", 2],
+      [",", "keyword.operator.separator.comma.mermaid"],
     ],
   },
   {
@@ -2125,9 +3868,9 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       ["fill", "support.type.property-name.mermaid"],
       ["red,stroke:blue", "support.constant.property-value.mermaid"],
-      [":", "punctuation.separator.key-value.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
     ],
-    absentOnLine: [[1, "punctuation.separator.comma.mermaid"]],
+    absentOnLine: [[1, "keyword.operator.separator.comma.mermaid"]],
   },
   {
     name: "pie retained second-scan directive before its header",
@@ -2234,8 +3977,8 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: "classDiagram\nclass A\nA <|-- B accDescr {}",
     scopes: [
       ["accDescr", "keyword.control.mermaid"],
-      ["{", "punctuation.definition.description.begin.mermaid"],
-      ["}", "punctuation.definition.description.end.mermaid"],
+      ["{", "keyword.operator.delimiter.description.begin.mermaid"],
+      ["}", "keyword.operator.delimiter.description.end.mermaid"],
     ],
   },
   {
@@ -2266,7 +4009,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: 'cynefin-beta\ncomplex\n%%{wrap:\n   clear }%%"a"\n"b"',
     scopes: [
       ["clear", "string.unquoted.directive.mermaid"],
-      ["}%%", "punctuation.definition.directive.end.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
       ["a", "string.quoted.double.mermaid"],
       ["b", "string.quoted.double.mermaid"],
     ],
@@ -2304,7 +4047,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: "flowchart TD\nA[|borders:lt|text]",
     scopes: [
       ["borders", "support.type.property-name.mermaid"],
-      [":", "punctuation.separator.key-value.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
       ["lt", "string.unquoted.mermaid"],
     ],
   },
@@ -2313,7 +4056,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: "agentflow-beta\nA[|borders:lt|text]",
     scopes: [
       ["borders", "support.type.property-name.mermaid"],
-      [":", "punctuation.separator.key-value.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
       ["lt", "string.unquoted.mermaid"],
     ],
   },
@@ -2322,8 +4065,8 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: "architecture-beta\nservice s(server)",
     scopes: [
       ["server", "string.unquoted.mermaid"],
-      ["(", "punctuation.section.icon.begin.mermaid"],
-      [")", "punctuation.section.icon.end.mermaid"],
+      ["(", "keyword.operator.bracket.icon.begin.mermaid"],
+      [")", "keyword.operator.bracket.icon.end.mermaid"],
     ],
     absent: [["server", "variable.mermaid"]],
   },
@@ -2332,22 +4075,22 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: "treeView-beta\nroot icon(fa:x)",
     scopes: [
       ["fa:x", "string.unquoted.mermaid"],
-      ["(", "punctuation.section.icon.begin.mermaid"],
-      [")", "punctuation.section.icon.end.mermaid"],
+      ["(", "keyword.operator.bracket.icon.begin.mermaid"],
+      [")", "keyword.operator.bracket.icon.end.mermaid"],
     ],
   },
   {
-    name: "a state terminal is a state reference",
+    name: "a state terminal has the keyword scope",
     code: "stateDiagram-v2\n[*] --> A",
-    scopes: [["[*]", "variable.mermaid"]],
-    absent: [["[*]", "constant.language.mermaid"]],
+    scopes: [["[*]", "keyword.control.mermaid"]],
+    absent: [["[*]", "variable.mermaid"]],
   },
   {
     name: "a usecase JSON value is opaque data",
     code: 'usecase-beta\njson J @ {"a": {"nested": "v}"}, "b": 1}\nactor A',
     scopes: [
       ["@", "meta.data.mermaid"],
-      ["{", "punctuation.section.data.begin.mermaid"],
+      ["{", "keyword.operator.bracket.data.begin.mermaid"],
       ["A", "variable.mermaid"],
     ],
     absentOnLine: [
@@ -2361,7 +4104,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: "usecase-beta\nactor A@{ type: normal }",
     scopes: [
       ["type", "support.type.property-name.mermaid"],
-      [":", "punctuation.separator.key-value.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
       ["normal", "constant.language.mermaid", 1],
     ],
   },
@@ -2441,8 +4184,8 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     name: "gantt callback brackets are argument brackets",
     code: "gantt\nTask : a, 1d\nclick a call cb(x)",
     scopes: [
-      ["(", "punctuation.section.arguments.begin.mermaid"],
-      [")", "punctuation.section.arguments.end.mermaid"],
+      ["(", "keyword.operator.bracket.arguments.begin.mermaid"],
+      [")", "keyword.operator.bracket.arguments.end.mermaid"],
     ],
   },
   {
@@ -2474,7 +4217,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: 'cynefin-beta\ncomplex\n%%{wrap\nclear\n}%%"a"\n"b"',
     scopes: [
       ["clear", "string.unquoted.directive.mermaid"],
-      ["}%%", "punctuation.definition.directive.end.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
       ["a", "string.quoted.double.mermaid"],
       ["b", "string.quoted.double.mermaid"],
     ],
@@ -3198,37 +4941,43 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       ["a", "meta.directive.mermaid"],
       ["b", "meta.directive.mermaid"],
-      ["anno", "storage.modifier.mermaid"],
+      ["anno", "entity.name.type.mermaid"],
     ],
   },
   {
     name: "follow-up: eventmodeling closes block data after a directive",
     code: "eventmodeling\ndata D {\nx\n%%{x}%%}\n title t",
     scopes: [
-      ["}", "punctuation.section.data.end.mermaid"],
+      ["}", "keyword.operator.bracket.data.end.mermaid"],
       ["title", "keyword.control.mermaid"],
       ["t", "string.unquoted.mermaid"],
     ],
     absent: [["title", "meta.data.mermaid"]],
   },
   {
-    name: "follow-up: an unclosed word directive retains the statement-start limit",
+    name: "a common form follows an unclosed word directive",
     code: "pie\n%%{init: dark title t",
-    scopes: [["dark", "string.unquoted.directive.mermaid"]],
-    unscoped: [["title t"]],
-    absentOnLine: [[1, "keyword.control.mermaid"]],
+    scopes: [
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["title", "keyword.control.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+    ],
   },
   {
-    name: "follow-up: an unclosed free-text directive retains the LS statement-start limit",
+    name: "a common form follows a free-text directive stopped by LS",
     code: "pie\n%%{init: {}\u2028title t",
-    scopes: [["{}", "string.unquoted.directive.mermaid"]],
-    absentOnLine: [[1, "keyword.control.mermaid"]],
+    scopes: [
+      ["{}", "string.unquoted.directive.mermaid"],
+      ["title", "keyword.control.mermaid"],
+    ],
   },
   {
-    name: "follow-up: an unclosed free-text directive retains the PS statement-start limit",
+    name: "a common form follows a free-text directive stopped by PS",
     code: "pie\n%%{init: {}\u2029title t",
-    scopes: [["{}", "string.unquoted.directive.mermaid"]],
-    absentOnLine: [[1, "keyword.control.mermaid"]],
+    scopes: [
+      ["{}", "string.unquoted.directive.mermaid"],
+      ["title", "keyword.control.mermaid"],
+    ],
   },
   {
     name: "follow-up: treeview decoration permits directives before after and between bars",
@@ -3255,9 +5004,9 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: "classDiagram\nclass A\nstyle A bold,fill:red,stroke:blue:wide",
     scopes: [
       ["bold", "support.constant.property-value.mermaid"],
-      [",", "punctuation.separator.comma.mermaid"],
+      [",", "keyword.operator.separator.comma.mermaid"],
       ["fill", "support.type.property-name.mermaid"],
-      [":", "punctuation.separator.key-value.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
       ["red,stroke:blue:wide", "support.constant.property-value.mermaid"],
     ],
   },
@@ -3274,7 +5023,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     name: "follow-up: class style values retain description-looking text",
     code: "classDiagram\nclass A\nstyle A fill:red accDescr {}",
     scopes: [["red accDescr {}", "support.constant.property-value.mermaid"]],
-    absentOnLine: [[2, "punctuation.definition.description.begin.mermaid"]],
+    absentOnLine: [[2, "keyword.operator.delimiter.description.begin.mermaid"]],
   },
   {
     name: "follow-up: class bare styles still leave a description block",
@@ -3282,7 +5031,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       ["bold", "support.constant.property-value.mermaid"],
       ["accDescr", "keyword.control.mermaid"],
-      ["{", "punctuation.definition.description.begin.mermaid"],
+      ["{", "keyword.operator.delimiter.description.begin.mermaid"],
     ],
   },
   {
@@ -3290,7 +5039,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: "classDiagram\nclass A\nclassDef aa bold,fill:red,stroke:blue",
     scopes: [
       ["bold", "support.constant.property-value.mermaid"],
-      [",", "punctuation.separator.comma.mermaid"],
+      [",", "keyword.operator.separator.comma.mermaid"],
       ["fill", "support.type.property-name.mermaid"],
       ["red,stroke:blue", "support.constant.property-value.mermaid"],
     ],
@@ -3300,10 +5049,10 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: "treemap\nclassDef aa fill:red,stroke:x",
     scopes: [
       ["fill", "support.type.property-name.mermaid"],
-      [":", "punctuation.separator.key-value.mermaid"],
+      [":", "keyword.operator.separator.key-value.mermaid"],
       ["red,stroke:x", "support.constant.property-value.mermaid"],
     ],
-    absentOnLine: [[1, "punctuation.separator.comma.mermaid"]],
+    absentOnLine: [[1, "keyword.operator.separator.comma.mermaid"]],
   },
   {
     name: "follow-up: venn keeps a multiline RGB atom inside one style value",
@@ -3315,8 +5064,8 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ["red", "support.constant.property-value.mermaid"],
     ],
     absentOnLine: [
-      [2, "punctuation.separator.comma.mermaid"],
-      [3, "punctuation.separator.comma.mermaid"],
+      [2, "keyword.operator.separator.comma.mermaid"],
+      [3, "keyword.operator.separator.comma.mermaid"],
       [3, "keyword.control.mermaid"],
     ],
   },
@@ -3328,7 +5077,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ["3,0.5", "support.constant.property-value.mermaid"],
       ["stroke", "support.type.property-name.mermaid"],
       ["blue", "support.constant.property-value.mermaid"],
-      [",", "punctuation.separator.comma.mermaid", 3],
+      [",", "keyword.operator.separator.comma.mermaid", 3],
     ],
   },
   {
@@ -3338,29 +5087,29 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ["x", "support.constant.property-value.mermaid"],
       ["\\,", "support.constant.property-value.mermaid"],
       ["y", "support.constant.property-value.mermaid"],
-      [",", "punctuation.separator.comma.mermaid"],
+      [",", "keyword.operator.separator.comma.mermaid"],
     ],
-    absent: [["\\,", "punctuation.separator.comma.mermaid"]],
+    absent: [["\\,", "keyword.operator.separator.comma.mermaid"]],
   },
   {
     name: "follow-up: flowchart keeps the classDef-only escaped comma distinction",
     code: "flowchart TD\nA-->B\nclassDef aa bold\\,wide,fill:red\nstyle A bold\\,wide\nlinkStyle 0 bold\\,wide",
     scopes: [
       ["\\,", "support.constant.property-value.mermaid", 2],
-      [",", "punctuation.separator.comma.mermaid", 3],
-      [",", "punctuation.separator.comma.mermaid", 4],
+      [",", "keyword.operator.separator.comma.mermaid", 3],
+      [",", "keyword.operator.separator.comma.mermaid", 4],
     ],
-    absent: [["\\,", "punctuation.separator.comma.mermaid", 2]],
+    absent: [["\\,", "keyword.operator.separator.comma.mermaid", 2]],
   },
   {
     name: "follow-up: agentflow keeps the classDef-only escaped comma distinction",
     code: "agentflow-beta\nA-->B\nclassDef aa bold\\,wide,fill:red\nstyle A bold\\,wide\nlinkStyle 0 bold\\,wide",
     scopes: [
       ["\\,", "support.constant.property-value.mermaid", 2],
-      [",", "punctuation.separator.comma.mermaid", 3],
-      [",", "punctuation.separator.comma.mermaid", 4],
+      [",", "keyword.operator.separator.comma.mermaid", 3],
+      [",", "keyword.operator.separator.comma.mermaid", 4],
     ],
-    absent: [["\\,", "punctuation.separator.comma.mermaid", 2]],
+    absent: [["\\,", "keyword.operator.separator.comma.mermaid", 2]],
   },
   {
     name: "follow-up: a word argument after a blank line",
@@ -3377,7 +5126,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       ["dark", "string.unquoted.directive.mermaid"],
       ["title", "keyword.control.mermaid"],
-      ["}%%", "punctuation.definition.directive.end.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
     ],
     absent: [["title", "meta.directive.mermaid"]],
   },
@@ -3387,7 +5136,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       [":x", "string.unquoted.directive.mermaid"],
       ["title", "keyword.control.mermaid"],
-      ["}%%", "punctuation.definition.directive.end.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
     ],
     absent: [["title", "meta.directive.mermaid"]],
   },
@@ -3397,7 +5146,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       ["dark", "string.unquoted.directive.mermaid"],
       ["title", "keyword.control.mermaid"],
-      ["}%%", "punctuation.definition.directive.end.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
     ],
     absent: [["title", "meta.directive.mermaid"]],
   },
@@ -3407,7 +5156,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     scopes: [
       ["dark", "string.unquoted.directive.mermaid"],
       ["title", "keyword.control.mermaid"],
-      ["}%%", "punctuation.definition.directive.end.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
     ],
     absent: [["title", "meta.directive.mermaid"]],
   },
@@ -3427,7 +5176,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ["init", "entity.name.function.directive.mermaid"],
       ['{"theme": "dark"}', "string.unquoted.directive.mermaid"],
       ["title", "keyword.control.mermaid"],
-      ["}%%", "punctuation.definition.directive.end.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
     ],
     absent: [["title", "meta.directive.mermaid"]],
   },
@@ -3462,7 +5211,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     name: "follow-up: a provisional opener ends before a non-word body line",
     code: 'pie\n%%{\n"x":1',
     scopes: [
-      ["%%{", "punctuation.definition.directive.begin.mermaid"],
+      ["%%{", "keyword.operator.delimiter.directive.begin.mermaid"],
       ["x", "string.quoted.double.mermaid"],
     ],
     absent: [["x", "meta.directive.mermaid"]],
@@ -3474,7 +5223,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ["{}", "string.unquoted.directive.mermaid"],
       ["title", "keyword.control.mermaid"],
     ],
-    absentOnLine: [[2, "punctuation.definition.directive.end.mermaid"]],
+    absentOnLine: [[2, "keyword.operator.delimiter.directive.end.mermaid"]],
   },
   {
     name: "follow-up: a free-text PS stop leaves a next-line closer outside its scope",
@@ -3483,7 +5232,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ["{}", "string.unquoted.directive.mermaid"],
       ["title", "keyword.control.mermaid"],
     ],
-    absentOnLine: [[2, "punctuation.definition.directive.end.mermaid"]],
+    absentOnLine: [[2, "keyword.operator.delimiter.directive.end.mermaid"]],
   },
   {
     name: "follow-up: opaque kanban data has one unquoted scope per token",
@@ -3543,7 +5292,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     name: "follow-up: usecase JSON at remains its own unit",
     code: 'usecase-beta\njson J @ {"a": 1}',
     scopes: [
-      ["@", "punctuation.separator.at.mermaid"],
+      ["@", "keyword.operator.separator.at.mermaid"],
       ["@", "meta.data.mermaid"],
     ],
   },
@@ -3565,10 +5314,10 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     name: "follow-up: a directive separator is a colon after its name",
     code: "pie\n%%{init: dark}%%\ntitle t",
     scopes: [
-      [":", "punctuation.separator.colon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
       ["dark", "string.unquoted.directive.mermaid"],
     ],
-    absent: [[":", "punctuation.separator.key-value.mermaid"]],
+    absent: [[":", "keyword.operator.separator.key-value.mermaid"]],
   },
   {
     name: "follow-up: venn recognizes multiline RGB after other value atoms",
@@ -3582,7 +5331,7 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
       ["3,0.5", "support.constant.property-value.mermaid", 5],
     ],
     absentOnLine: [
-      [2, "punctuation.separator.comma.mermaid"],
+      [2, "keyword.operator.separator.comma.mermaid"],
       [5, "constant.numeric.mermaid"],
     ],
   },
@@ -3590,9 +5339,9 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     name: "follow-up: pending colon and closer cross blank lines",
     code: "pie\n%%{init\n\n: dark\n\n}%%\ntitle t",
     scopes: [
-      [":", "punctuation.separator.colon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
       ["dark", "string.unquoted.directive.mermaid"],
-      ["}%%", "punctuation.definition.directive.end.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
       ["title", "keyword.control.mermaid"],
     ],
     absent: [["title", "meta.directive.mermaid"]],
@@ -3602,10 +5351,1281 @@ const boundaries: (ScopeExpectations & { name: string; code: string })[] = [
     code: "pie\n%%{init: dark\n\n\n}%%\ntitle t",
     scopes: [
       ["dark", "string.unquoted.directive.mermaid"],
-      ["}%%", "punctuation.definition.directive.end.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
       ["title", "keyword.control.mermaid"],
     ],
     absent: [["title", "meta.directive.mermaid"]],
+  },
+  {
+    name: "treeview unselected semicolon leaves a title-shaped node",
+    code: "treeView-beta\n├── accTitle;: style:#x\n└── next",
+    scopes: [[" accTitle;: style:#x", "string.unquoted.mermaid"]],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "treeview unselected semicolon leaves a description-shaped node",
+    code: "treeView-beta\n├── accDescr;{style:#x}\n└── next",
+    scopes: [[" accDescr;{style:#x}", "string.unquoted.mermaid"]],
+    absentOnLine: [[1, "keyword.control.mermaid"]],
+  },
+  {
+    name: "redo: agentflow terminal class block keeps a directive gap",
+    code: "agentflow-beta\nclass A c:%%{wrap}%%accDescr {}",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["c:", "variable.mermaid"],
+      ["%%{", "meta.directive.mermaid"],
+    ],
+  },
+  {
+    name: "redo: agentflow terminal vertex block before a separator",
+    code: "agentflow-beta\nA accDescr {};B",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.statement.mermaid"],
+      ["B", "variable.mermaid"],
+    ],
+  },
+  {
+    name: "redo: agentflow terminal data block before an empty description",
+    code: "agentflow-beta\nA@{label:x}accDescr {}",
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "redo: agentflow terminal description after a blank line",
+    code: "agentflow-beta\nA\n\naccDescr {}",
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "redo: agentflow terminal empty description contains a line separator",
+    code: "agentflow-beta\nA accDescr {\u2028}",
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "redo: quadrant terminal class style block after a directive",
+    code: "quadrantChart\nclassDef c color:#fff %%{wrap}%%accDescr {}",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["#fff", "support.constant.property-value.mermaid"],
+    ],
+  },
+  {
+    name: "redo: quadrant terminal point block before a separator",
+    code: "quadrantChart\nA: [0.1,0.2] accDescr {};quadrant-1 Q",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+    ],
+  },
+  {
+    name: "redo: quadrant terminal empty block contains a comment",
+    code: "quadrantChart\nquadrant-1 Q accDescr {\n%% c\n}",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+    ],
+  },
+  {
+    name: "redo: quadrant terminal empty block follows a blank line",
+    code: "quadrantChart\nx-axis L --> R\n\naccDescr {}",
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "redo: quadrant terminal empty block contains a line separator",
+    code: "quadrantChart\nA: [0.1,0.2] accDescr {\u2028}",
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "redo: quadrant accessibility text owns a block-shaped suffix",
+    code: "quadrantChart\naccTitle: T accDescr {}",
+    scopes: [["T accDescr {}", "string.unquoted.mermaid"]],
+    absentOnLine: [[1, "keyword.operator.delimiter.description.begin.mermaid"]],
+  },
+  {
+    name: "redo: requirement terminal quoted target block after a directive",
+    code: 'requirementDiagram\na - satisfies -> "b"%%{wrap}%%accDescr {}',
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "redo: requirement terminal block contains a comment",
+    code: 'requirementDiagram\nr:::"c" accDescr {\n%% c\n}',
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+    ],
+  },
+  {
+    name: "redo: requirement terminal block follows a blank line",
+    code: 'requirementDiagram\na - satisfies -> "b"\n\naccDescr {}',
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "redo: requirement terminal block contains a line separator",
+    code: 'requirementDiagram\nr:::"c" accDescr {\u2028}',
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "redo: requirement accessibility value owns a block-shaped suffix",
+    code: "requirementDiagram\naccTitle: T accDescr {}",
+    scopes: [["T accDescr {}", "string.unquoted.mermaid"]],
+    absentOnLine: [[1, "keyword.operator.delimiter.description.begin.mermaid"]],
+  },
+  {
+    name: "redo: requirement direction value owns a block-shaped suffix",
+    code: "requirementDiagram\ndirection LR accDescr {}",
+    scopes: [[" accDescr {}", "comment.block.ignored.mermaid"]],
+    absentOnLine: [[1, "keyword.operator.delimiter.description.begin.mermaid"]],
+  },
+  {
+    name: "redo: requirement unquoted definition name owns a description-shaped suffix",
+    code: "requirementDiagram\nrequirement r accDescr {\nid: 1\n}",
+    scopes: [["r accDescr ", "variable.mermaid"]],
+    absentOnLine: [[1, "keyword.operator.delimiter.description.begin.mermaid"]],
+  },
+  {
+    name: "redo: requirement unquoted field value owns the description word",
+    code: "requirementDiagram\nrequirement r {\nid: 1 accDescr\n}",
+    scopes: [["1 accDescr", "string.unquoted.mermaid"]],
+    absent: [["1 accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "redo: requirement body empty block remains ignored",
+    code: "requirementDiagram\nrequirement r {\naccDescr {}\nid: 1\n}",
+    scopes: [["accDescr {", "comment.block.ignored.mermaid"]],
+    absentOnLine: [[2, "keyword.control.mermaid"]],
+  },
+  {
+    name: "redo: agentflow terminal block before a preserved native comment",
+    code: "agentflow-beta\nA accDescr {} %% c\nB",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+    ],
+  },
+  {
+    name: "line-final: treemap header description before a next-line brace",
+    code: "treemap accDescr\n{ D }",
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: treemap padded header description before a next-line brace",
+    code: "treemap   accDescr  \n{ D }",
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: treemap indented description before a next-line brace",
+    code: "treemap\n  accDescr\n{ D }",
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: treemap line-final description before a trailing directive",
+    code: "treemap accDescr%%{wrap}%%\n{ D }",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["wrap", "entity.name.function.directive.mermaid"],
+    ],
+  },
+  {
+    name: "line-final: treemap header description before a comment gap",
+    code: "treemap accDescr\n%% c\n{ D }",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+    ],
+  },
+  {
+    name: "line-final: treemap header description before a blank gap",
+    code: "treemap accDescr\n\n{ D }",
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: treemap header description before a line separator gap",
+    code: "treemap accDescr\u2028\n{ D }",
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: eventmodeling header description before a next-line brace",
+    code: "eventmodeling accDescr\n{ D }",
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: eventmodeling padded header description before a next-line brace",
+    code: "eventmodeling   accDescr  \n{ D }",
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: eventmodeling line-final description before a trailing directive",
+    code: "eventmodeling accDescr%%{wrap}%%\n{ D }",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["wrap", "entity.name.function.directive.mermaid"],
+    ],
+  },
+  {
+    name: "line-final: eventmodeling header description after a leading comment",
+    code: "%% c\neventmodeling accDescr\n{ D }",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+    ],
+  },
+  {
+    name: "line-final: eventmodeling header description before a line separator gap",
+    code: "eventmodeling accDescr\u2028\n{ D }",
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: sequence header description before a next-line brace",
+    code: "sequenceDiagram accDescr\n{ D }",
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: sequence header description before a directive and brace",
+    code: "sequenceDiagram accDescr%%{wrap}%%\n{ D }",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["wrap", "entity.name.function.directive.mermaid"],
+    ],
+  },
+  {
+    name: "line-final: sequence header description before a comment and brace",
+    code: "sequenceDiagram accDescr\n%% c\n{ D }",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+    ],
+  },
+  {
+    name: "line-final: sequence header description before a blank line and brace",
+    code: "sequenceDiagram accDescr\n\n{ D }",
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: sequence header description before a line separator and brace",
+    code: "sequenceDiagram accDescr\u2028\n{ D }",
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: sequence header accessibility title before a next-line colon",
+    code: "sequenceDiagram accTitle\n: D",
+    scopes: [["accTitle", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: sequence header accessibility title before a directive and colon",
+    code: "sequenceDiagram accTitle%%{wrap}%%\n: D",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["wrap", "entity.name.function.directive.mermaid"],
+    ],
+  },
+  {
+    name: "line-final: sequence header accessibility title before a comment and colon",
+    code: "sequenceDiagram accTitle\n%% c\n: D",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+    ],
+  },
+  {
+    name: "line-final: sequence header accessibility title before a blank line and colon",
+    code: "sequenceDiagram accTitle\n\n: D",
+    scopes: [["accTitle", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: sequence header accessibility title before a line separator and colon",
+    code: "sequenceDiagram accTitle\u2028\n: D",
+    scopes: [["accTitle", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: sequence header accessibility description before a next-line colon",
+    code: "sequenceDiagram accDescr\n: D",
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: sequence header accessibility description before a directive and colon",
+    code: "sequenceDiagram accDescr%%{wrap}%%\n: D",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["wrap", "entity.name.function.directive.mermaid"],
+    ],
+  },
+  {
+    name: "line-final: sequence header accessibility description before a comment and colon",
+    code: "sequenceDiagram accDescr\n%% c\n: D",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+    ],
+  },
+  {
+    name: "line-final: sequence header accessibility description before a blank line and colon",
+    code: "sequenceDiagram accDescr\n\n: D",
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: sequence header accessibility description before a line separator and colon",
+    code: "sequenceDiagram accDescr\u2028\n: D",
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: sequence padded header accessibility title keeps case folding",
+    code: "sequenceDiagram   AcCtItLe  \n: D",
+    scopes: [["AcCtItLe", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: sequence header title before a next-line value",
+    code: "sequenceDiagram title\nD",
+    scopes: [["title", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: class description word can be a name",
+    code: "classDiagram\naccDescr\nA",
+    scopes: [["accDescr", "variable.mermaid"]],
+    absent: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: class accessibility title word can be a name",
+    code: "classDiagram\naccTitle\nA",
+    scopes: [["accTitle", "variable.mermaid"]],
+    absent: [["accTitle", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: er description word can be a name",
+    code: "erDiagram\naccDescr\nA",
+    scopes: [["accDescr", "variable.mermaid"]],
+    absent: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: er accessibility title word can be a name",
+    code: "erDiagram\naccTitle\nA",
+    scopes: [["accTitle", "variable.mermaid"]],
+    absent: [["accTitle", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: flowchart description word can be an id",
+    code: "flowchart LR\naccDescr\nA",
+    scopes: [["accDescr", "variable.mermaid"]],
+    absent: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: flowchart accessibility title word can be an id",
+    code: "flowchart LR\naccTitle\nA",
+    scopes: [["accTitle", "variable.mermaid"]],
+    absent: [["accTitle", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: agentflow description word can be an id",
+    code: "agentflow-beta TB\naccDescr\nA",
+    scopes: [["accDescr", "variable.mermaid"]],
+    absent: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: agentflow accessibility title word can be an id",
+    code: "agentflow-beta TB\naccTitle\nA",
+    scopes: [["accTitle", "variable.mermaid"]],
+    absent: [["accTitle", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: state description word can be a state reference",
+    code: "stateDiagram-v2\naccDescr\nA",
+    scopes: [["accDescr", "variable.mermaid"]],
+    absent: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: state accessibility title word can be a state reference",
+    code: "stateDiagram-v2\naccTitle\nA",
+    scopes: [["accTitle", "variable.mermaid"]],
+    absent: [["accTitle", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: railroad description word can name a rule",
+    code: 'railroad-beta\naccDescr\n= terminal("a");',
+    scopes: [["accDescr", "variable.mermaid"]],
+    absent: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: timeline title word can be a period before a blank line",
+    code: "timeline\n  title\n\nT",
+    scopes: [["title", "string.unquoted.mermaid"]],
+    absent: [["title", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: timeline accessibility title word can be a period",
+    code: "timeline\naccTitle\nT",
+    scopes: [["accTitle", "string.unquoted.mermaid"]],
+    absent: [["accTitle", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: treeview description word can name a node",
+    code: "treeView-beta\naccDescr\nnode",
+    scopes: [["accDescr", "string.unquoted.mermaid"]],
+    absent: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: treeview prefixed description word can name a node",
+    code: "treeView-beta\n├── accDescr\n└── node",
+    scopes: [[" accDescr", "string.unquoted.mermaid"]],
+    absent: [[" accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: eventmodeling header entity name stays an identifier",
+    code: "eventmodeling entity accDescr",
+    scopes: [["accDescr", "variable.mermaid"]],
+    absent: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: eventmodeling next-line entity name stays an identifier",
+    code: "eventmodeling entity\n  accDescr",
+    scopes: [["accDescr", "variable.mermaid"]],
+    absent: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: treemap class name stays an identifier",
+    code: "treemap\nclassDef accDescr fill:red",
+    scopes: [["accDescr", "variable.mermaid"]],
+    absent: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: sequence description interior keeps the accessibility word as text",
+    code: "sequenceDiagram\naccDescr {D\naccTitle\n}",
+    scopes: [["accTitle", "string.unquoted.mermaid"]],
+    absent: [["accTitle", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: corpus treemap/common-block-newline-gap",
+    code: "treemap\naccDescr\n{ D }",
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: corpus treemap/common-block-comment-gap",
+    code: "treemap\naccDescr\n%% comment\n{ D }",
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: corpus treemap/common-block-directive-gap",
+    code: "treemap\naccDescr\n%%{init: {}}%%\n{ D }",
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: corpus eventmodeling/common-description-directive-gap",
+    code: "eventmodeling accDescr\n%%{x}%%\n{ D }\n",
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: corpus eventmodeling/common-description-empty-gap",
+    code: "eventmodeling accDescr\n\n{ D }\n",
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: treemap class name on a later line stays an identifier",
+    code: 'treemap\nclassDef\naccDescr\nfill:red\n"A":1',
+    scopes: [
+      ["accDescr", "variable.mermaid"],
+      ["fill", "support.type.property-name.mermaid"],
+    ],
+    absent: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: treemap style on a later line stays text",
+    code: 'treemap\nclassDef aa\naccDescr\n"A":1',
+    scopes: [["accDescr", "string.unquoted.mermaid"]],
+    absent: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: treemap class style after blank and comment lines stays contextual",
+    code: 'treemap\nclassDef aa\n\n%% comment\nfill:red\n"A":1',
+    scopes: [
+      ["%% comment", "comment.line.percentage.mermaid"],
+      ["fill", "support.type.property-name.mermaid"],
+      ["red", "support.constant.property-value.mermaid"],
+    ],
+  },
+  {
+    name: "line-final: treemap class style after a directive stays text",
+    code: 'treemap\nclassDef aa\n%%{x}%%\naccDescr\n"A":1',
+    scopes: [
+      ["x", "entity.name.function.directive.mermaid"],
+      ["accDescr", "string.unquoted.mermaid"],
+    ],
+    absent: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: treemap class name after a directive stays an identifier",
+    code: 'treemap\nclassDef\n%%{x}%%accDescr\nfill:red\n"A":1',
+    scopes: [
+      ["accDescr", "variable.mermaid"],
+      ["x", "entity.name.function.directive.mermaid"],
+    ],
+    absent: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: treemap description follows a completed class definition",
+    code: "treemap\nclassDef aa;accDescr\n{D}",
+    scopes: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: treemap indented class name stays an identifier",
+    code: 'treemap\nclassDef\n  accDescr\nfill:red\n"A":1',
+    scopes: [["accDescr", "variable.mermaid"]],
+    absent: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: treemap next-line selector name stays an identifier",
+    code: 'treemap\n"A":::\naccDescr\n"B":1',
+    scopes: [
+      [":::", "keyword.operator.separator.class.mermaid"],
+      ["accDescr", "variable.mermaid"],
+    ],
+    absent: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "line-final: treemap next-line selector name after a directive stays an identifier",
+    code: 'treemap\n"A":::\n%%{x}%%accDescr\n"B":1',
+    scopes: [
+      [":::", "keyword.operator.separator.class.mermaid"],
+      ["x", "entity.name.function.directive.mermaid"],
+      ["accDescr", "variable.mermaid"],
+    ],
+    absent: [["accDescr", "keyword.control.mermaid"]],
+  },
+  {
+    name: "directive end: quadrant accessibility title after written closer",
+    code: "quadrantChart\n%%{init: dark}%% accTitle: t",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: quadrant description after written closer",
+    code: "quadrantChart\n%%{init: dark}%% accDescr: t",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: requirement accessibility title after written closer",
+    code: "requirementDiagram\n%%{init: dark}%% accTitle: t",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: requirement description after written closer",
+    code: "requirementDiagram\n%%{init: dark}%% accDescr: t",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: wardley title after written closer",
+    code: "wardley-beta\n%%{init: dark}%% title t",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: wardley accessibility title after written closer",
+    code: "wardley-beta\n%%{init: dark}%% accTitle: t",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: wardley description after written closer",
+    code: "wardley-beta\n%%{init: dark}%% accDescr: t",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: wardley description block after written closer",
+    code: "wardley-beta\n%%{init: dark}%% accDescr {t}",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: treeview title after written closer",
+    code: "treeView-beta\n%%{init: dark}%% title t",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: treeview accessibility title after written closer",
+    code: "treeView-beta\n%%{init: dark}%% accTitle: t",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: treeview description after written closer",
+    code: "treeView-beta\n%%{init: dark}%% accDescr: t",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: treeview description block after written closer",
+    code: "treeView-beta\n%%{init: dark}%% accDescr {t}",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: quadrant continuing value after written closer",
+    code: "quadrantChart\naccTitle: a %%{init: dark}%% accDescr: b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      [" accDescr: b", "string.unquoted.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+    absent: [[" accDescr: b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "directive end: requirement continuing value after written closer",
+    code: "requirementDiagram\naccTitle: a %%{init: dark}%% accDescr: b",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      [" accDescr: b", "string.unquoted.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+    absent: [[" accDescr: b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "directive end: wardley continuing value after written closer",
+    code: "wardley-beta\ntitle a %%{init: dark}%% title b",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      [" title b", "string.unquoted.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+    absent: [[" title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "directive end: treeview continuing value after written closer",
+    code: "treeView-beta\ntitle a %%{init: dark}%% title b",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      [" title b", "string.unquoted.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+    absent: [[" title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "directive end: quadrant comment after written closer",
+    code: "quadrantChart\n%%{init: dark}%% accTitle: t\n%% c",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: requirement comment after written closer",
+    code: "requirementDiagram\n%%{init: dark}%% accTitle: t\n%% c",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: wardley comment after written closer",
+    code: "wardley-beta\n%%{init: dark}%% title t\n%% c",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: treeview comment after written closer",
+    code: "treeView-beta\n%%{init: dark}%% title t\n%% c",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: quadrant semicolon after written closer",
+    code: "quadrantChart\n%%{init: dark}%% accTitle: t;u",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["t;u", "string.unquoted.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: requirement semicolon after written closer",
+    code: "requirementDiagram\n%%{init: dark}%% accTitle: t;u",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["t;u", "string.unquoted.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: wardley semicolon after written closer",
+    code: "wardley-beta\n%%{init: dark}%% title t;u",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["t;u", "string.unquoted.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: treeview semicolon after written closer",
+    code: "treeView-beta\n%%{init: dark}%% title t;u",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["t;u", "string.unquoted.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: quadrant line separator after written closer",
+    code: "quadrantChart\n%%{init: dark\u2028}%%accTitle: t",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: requirement line separator after written closer",
+    code: "requirementDiagram\n%%{init: dark\u2028}%%accTitle: t",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: wardley line separator after written closer",
+    code: "wardley-beta\n%%{init: dark\u2028}%%title t",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: treeview line separator after written closer",
+    code: "treeView-beta\n%%{init: dark\u2028}%%title t",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: quadrant colonless directive after written closer",
+    code: "quadrantChart\n%%{init dark}%% accTitle: t",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: requirement colonless directive after written closer",
+    code: "requirementDiagram\n%%{init dark}%% accTitle: t",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: wardley colonless directive after written closer",
+    code: "wardley-beta\n%%{init dark}%% title t",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: treeview colonless directive after written closer",
+    code: "treeView-beta\n%%{init dark}%% title t",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: a treeview string retains its suffix with written closer",
+    code: 'treeView-beta\n"a %%{init: dark}%% title b"',
+    scopes: [
+      [" title b", "string.quoted.double.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+    absent: [[" title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "directive end: a flowchart label retains its suffix with written closer",
+    code: "flowchart TD\nA[a %%{init: dark}%% title b]",
+    scopes: [
+      [" title b", "string.unquoted.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+    absent: [[" title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "directive end: a flowchart quoted label retains its suffix with written closer",
+    code: 'flowchart TD\nA["a %%{init: dark}%% title b"]',
+    scopes: [
+      [" title b", "string.quoted.double.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+    absent: [[" title b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "directive end: a comment retains its suffix with written closer",
+    code: "treeView-beta\n%% c %%{init: dark}%% title b\nroot",
+    scopes: [
+      ["%% c %%{init: dark}%% title b", "comment.line.percentage.mermaid"],
+    ],
+    absent: [
+      ["%% c %%{init: dark}%% title b", "keyword.control.mermaid"],
+      ["%% c %%{init: dark}%% title b", "meta.directive.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: a description block retains its suffix with written closer",
+    code: "requirementDiagram\naccDescr {a %%{init: dark}%% accTitle: b}",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      [" accTitle: b", "string.unquoted.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+    absent: [[" accTitle: b", "keyword.control.mermaid"]],
+  },
+  {
+    name: "directive end: a directive argument can be title with written closer",
+    code: "treeView-beta\n%%{wrap title}%% t",
+    scopes: [
+      ["title", "string.unquoted.directive.mermaid"],
+      [" t", "string.unquoted.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+    absent: [["title", "keyword.control.mermaid"]],
+  },
+  {
+    name: "directive end: a word argument is not split before title with written closer",
+    code: "treeView-beta\n%%{init: darktitle}%%\nroot",
+    scopes: [
+      ["darktitle", "string.unquoted.directive.mermaid"],
+      ["root", "string.unquoted.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+    absent: [["darktitle", "keyword.control.mermaid"]],
+  },
+  {
+    name: "directive end: a directive name is not split before title with written closer",
+    code: "treeView-beta\n%%{wraptitle t}%%\nroot",
+    scopes: [
+      ["wraptitle", "entity.name.function.directive.mermaid"],
+      ["t", "string.unquoted.directive.mermaid"],
+      ["root", "string.unquoted.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+    absent: [["wraptitle", "keyword.control.mermaid"]],
+  },
+  {
+    name: "directive end: a quote can follow a word argument directly with written closer",
+    code: 'treeView-beta\n%%{init: dark}%%"node"',
+    scopes: [
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["node", "string.quoted.double.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: a directive can follow a word argument directly with written closer",
+    code: "treeView-beta\n%%{init: dark}%%%%{wrap: light}%% title t",
+    scopes: [
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["light", "string.unquoted.directive.mermaid"],
+      ["title", "keyword.control.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+    ],
+  },
+  {
+    name: "directive end: a word argument retains its later-line closer",
+    code: "treeView-beta\n%%{init: dark\n}%%title t",
+    scopes: [
+      ["dark", "string.unquoted.directive.mermaid"],
+      ["}%%", "keyword.operator.delimiter.directive.end.mermaid"],
+      ["title", "keyword.control.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant semicolon: adjacent accessibility title",
+    code: "quadrantChart\nquadrant-1 a;accTitle: t",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant semicolon: adjacent description",
+    code: "quadrantChart\nquadrant-1 a;accDescr: t",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant semicolon: padding after semicolon before accessibility title",
+    code: "quadrantChart\nquadrant-1 a; accTitle: t",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant semicolon: padding after semicolon before description",
+    code: "quadrantChart\nquadrant-1 a; accDescr: t",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant semicolon: padding before semicolon before accessibility title",
+    code: "quadrantChart\nquadrant-1 a ;accTitle: t",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant semicolon: padding before semicolon before description",
+    code: "quadrantChart\nquadrant-1 a ;accDescr: t",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant semicolon: word directive before accessibility title separator",
+    code: "quadrantChart\nquadrant-1 a%%{init: dark;accTitle: t",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["init", "entity.name.function.directive.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant semicolon: word directive before description separator",
+    code: "quadrantChart\nquadrant-1 a%%{init: dark;accDescr: t",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["init", "entity.name.function.directive.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant semicolon: closed directive before accessibility title separator",
+    code: "quadrantChart\nquadrant-1 a%%{init: dark}%%;accTitle: t",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["init", "entity.name.function.directive.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant semicolon: closed directive before description separator",
+    code: "quadrantChart\nquadrant-1 a%%{init: dark}%%;accDescr: t",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["init", "entity.name.function.directive.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant semicolon: directive after accessibility title separator",
+    code: "quadrantChart\nquadrant-1 a;%%{wrap}%%accTitle: t",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["wrap", "entity.name.function.directive.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant semicolon: directive after description separator",
+    code: "quadrantChart\nquadrant-1 a; %%{wrap}%% accDescr: t",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["wrap", "entity.name.function.directive.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant semicolon: directive before accessibility title colon",
+    code: "quadrantChart\nquadrant-1 a;accTitle%%{wrap}%%: t",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["wrap", "entity.name.function.directive.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant semicolon: directive before description colon",
+    code: "quadrantChart\nquadrant-1 a;accDescr%%{wrap}%%: t",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["wrap", "entity.name.function.directive.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant semicolon: comment before following accessibility title",
+    code: "quadrantChart\nquadrant-1 a;%% c\naccTitle: t",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant semicolon: comment after following description",
+    code: "quadrantChart\nquadrant-1 a;accDescr: t\n%% c",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant semicolon: accessibility title value on next line",
+    code: "quadrantChart\nquadrant-1 a;accTitle:\nt",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant semicolon: description value on next line",
+    code: "quadrantChart\nquadrant-1 a;accDescr:\nt",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant semicolon: description value after blank line",
+    code: "quadrantChart\nquadrant-1 a;accDescr:\n\nt",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant semicolon: line separator before accessibility title colon",
+    code: "quadrantChart\nquadrant-1 a;accTitle\u2028: t",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant semicolon: paragraph separator after description colon",
+    code: "quadrantChart\nquadrant-1 a;accDescr:\u2029t",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant semicolon: line separator before accessibility title comment",
+    code: "quadrantChart\nquadrant-1 a;accTitle: t\u2028%% c\n",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant semicolon: paragraph separator before description comment",
+    code: "quadrantChart\nquadrant-1 a;accDescr: t\u2029%% c\n",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
+      ["t", "string.unquoted.mermaid"],
+      ["%% c", "comment.line.percentage.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant semicolon: word directive before style-looking accessibility value",
+    code: "quadrantChart\n%%{init: dark;accTitle: style:#x",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      [":", "keyword.operator.separator.colon.mermaid"],
+      ["style:#x", "string.unquoted.mermaid"],
+      ["init", "entity.name.function.directive.mermaid"],
+      ["dark", "string.unquoted.directive.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant semicolon: semicolon inside accessibility value stays text",
+    code: "quadrantChart\nquadrant-1 a;accTitle: first;accDescr: second",
+    scopes: [
+      ["accTitle", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      ["first;accDescr: second", "string.unquoted.mermaid"],
+    ],
+    absent: [["first;accDescr: second", "keyword.control.mermaid"]],
+  },
+  {
+    name: "quadrant semicolon: semicolon inside description block stays text",
+    code: "quadrantChart\nquadrant-1 a;accDescr {first;accTitle: second}",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      ["{", "keyword.operator.delimiter.description.begin.mermaid"],
+      ["}", "keyword.operator.delimiter.description.end.mermaid"],
+      ["first;accTitle: second", "string.unquoted.mermaid"],
+    ],
+    absent: [["first;accTitle: second", "keyword.control.mermaid"]],
+  },
+  {
+    name: "quadrant semicolon: accessibility words inside a string stay text",
+    code: 'quadrantChart\n"accTitle: x; accDescr: y": [0.1,0.2]',
+    scopes: [["accTitle: x; accDescr: y", "string.quoted.double.mermaid"]],
+    absent: [["accTitle: x; accDescr: y", "keyword.control.mermaid"]],
+  },
+  {
+    name: "quadrant semicolon: accessibility suffix inside a word stays text",
+    code: "quadrantChart\nNamesaccTitle: [0.1,0.2]",
+    scopes: [["NamesaccTitle", "string.unquoted.mermaid"]],
+    absent: [["NamesaccTitle", "keyword.control.mermaid"]],
+  },
+  {
+    name: "quadrant semicolon: empty title after semicolon",
+    code: "quadrantChart\nquadrant-1 a;title",
+    scopes: [
+      ["title", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+    ],
+  },
+  {
+    name: "quadrant semicolon: empty description block after semicolon",
+    code: "quadrantChart\nquadrant-1 a;accDescr {}",
+    scopes: [
+      ["accDescr", "keyword.control.mermaid"],
+      [";", "keyword.operator.separator.semicolon.mermaid"],
+      ["{", "keyword.operator.delimiter.description.begin.mermaid"],
+      ["}", "keyword.operator.delimiter.description.end.mermaid"],
+    ],
   },
 ]
 
@@ -3617,10 +6637,10 @@ describe("the lexical boundaries", () => {
     if (!input) throw new Error("missing fixed JSON input")
     const line = tokenLines(input.code)[1] ?? []
     const begin = line.findIndex((token) =>
-      token.scopes.includes("punctuation.section.data.begin.mermaid"),
+      token.scopes.includes("keyword.operator.bracket.data.begin.mermaid"),
     )
     const end = line.findIndex((token) =>
-      token.scopes.includes("punctuation.section.data.end.mermaid"),
+      token.scopes.includes("keyword.operator.bracket.data.end.mermaid"),
     )
     expect(begin).toBeGreaterThan(0)
     expect(end).toBe(line.length - 1)
@@ -3645,8 +6665,8 @@ describe("the lexical boundaries", () => {
           .filter((token) => token.content === "?")
           .map((token) => token.scopes),
       ).toEqual([
-        ["punctuation.definition.special-sequence.begin.mermaid"],
-        ["punctuation.definition.special-sequence.end.mermaid"],
+        ["keyword.operator.delimiter.special-sequence.begin.mermaid"],
+        ["keyword.operator.delimiter.special-sequence.end.mermaid"],
       ])
     }
   })
@@ -3672,7 +6692,7 @@ describe("the lexical boundaries", () => {
         .filter(
           (token) =>
             token.content === ":" &&
-            token.scopes.includes("punctuation.separator.colon.mermaid") &&
+            token.scopes.includes("keyword.operator.separator.colon.mermaid") &&
             !token.scopes.includes("meta.directive.mermaid"),
         ),
     ).toHaveLength(2)
@@ -3709,15 +6729,15 @@ describe("the lexical boundaries", () => {
       if (!input) throw new Error(`missing fixed data input: ${name}`)
       const line = tokenLines(input.code).find((lineTokens) =>
         lineTokens.some((token) =>
-          token.scopes.includes("punctuation.section.data.begin.mermaid"),
+          token.scopes.includes("keyword.operator.bracket.data.begin.mermaid"),
         ),
       )
       if (!line) throw new Error(`missing data delimiters: ${name}`)
       const begin = line.findIndex((token) =>
-        token.scopes.includes("punctuation.section.data.begin.mermaid"),
+        token.scopes.includes("keyword.operator.bracket.data.begin.mermaid"),
       )
       const end = line.findIndex((token) =>
-        token.scopes.includes("punctuation.section.data.end.mermaid"),
+        token.scopes.includes("keyword.operator.bracket.data.end.mermaid"),
       )
       expect(end, name).toBeGreaterThan(begin + 1)
       for (const token of line.slice(begin + 1, end)) {

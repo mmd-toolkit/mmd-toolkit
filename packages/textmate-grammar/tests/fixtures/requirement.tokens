@@ -2,65 +2,65 @@
   "requirementdiagram" keyword.control.mermaid
 >   accTitle: An accessible title
   "accTitle" keyword.control.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   "An accessible title" string.unquoted.mermaid
 >   accDescr: A line description
   "accDescr" keyword.control.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   "A line description" string.unquoted.mermaid
 >   accDescr { A block with requirement and 123 }
   "accDescr" keyword.control.mermaid
-  "{" punctuation.definition.description.begin.mermaid
+  "{" keyword.operator.delimiter.description.begin.mermaid
   " A block with requirement and 123 " string.unquoted.mermaid
-  "}" punctuation.definition.description.end.mermaid
+  "}" keyword.operator.delimiter.description.end.mermaid
 >   accDescr {}
   "accDescr" keyword.control.mermaid
-  "{" punctuation.definition.description.begin.mermaid
-  "}" punctuation.definition.description.end.mermaid
+  "{" keyword.operator.delimiter.description.begin.mermaid
+  "}" keyword.operator.delimiter.description.end.mermaid
 >   direction LR
   "direction" keyword.control.mermaid
   "LR" constant.language.mermaid
 >   requirement req:::hot {
   "requirement" keyword.control.mermaid
   "req" variable.mermaid
-  ":::" punctuation.separator.class.mermaid
+  ":::" keyword.operator.separator.class.mermaid
   "hot " variable.mermaid
   "{" keyword.operator.block.begin.mermaid
 >     id: 123
   "id" keyword.control.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   "123" string.unquoted.mermaid
 >     text: A test with low risk and 456
   "text" keyword.control.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   "A test with low risk and 456" string.unquoted.mermaid
 >     risk: low
   "risk" keyword.control.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   "low" constant.language.mermaid
 >     risk: medium
   "risk" keyword.control.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   "medium" constant.language.mermaid
 >     risk: high
   "risk" keyword.control.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   "high" constant.language.mermaid
 >     verifyMethod: analysis
   "verifyMethod" keyword.control.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   "analysis" constant.language.mermaid
 >     verifyMethod: demonstration
   "verifyMethod" keyword.control.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   "demonstration" constant.language.mermaid
 >     verifyMethod: inspection
   "verifyMethod" keyword.control.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   "inspection" constant.language.mermaid
 >     verifyMethod: test
   "verifyMethod" keyword.control.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   "test" constant.language.mermaid
 >   }
   "}" keyword.operator.block.end.mermaid
@@ -100,11 +100,11 @@
   "{" keyword.operator.block.begin.mermaid
 >     type: software
   "type" keyword.control.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   "software" string.unquoted.mermaid
 >     docref: "https://example.com/text"
   "docref" keyword.control.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "https://example.com/text" string.quoted.double.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
@@ -156,17 +156,17 @@
   "classDef" keyword.control.mermaid
   "hot" variable.mermaid
   "fill" support.type.property-name.mermaid
-  ":" punctuation.separator.key-value.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
   "red" support.constant.property-value.mermaid
-  "," punctuation.separator.comma.mermaid
+  "," keyword.operator.separator.comma.mermaid
   "stroke" support.type.property-name.mermaid
-  ":" punctuation.separator.key-value.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
   "blue;" support.constant.property-value.mermaid
 >   style req fill:red
   "style" keyword.control.mermaid
   "req" variable.mermaid
   "fill" support.type.property-name.mermaid
-  ":" punctuation.separator.key-value.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
   "red" support.constant.property-value.mermaid
 >   class req hot
   "class" keyword.control.mermaid
@@ -174,7 +174,7 @@
   "hot" variable.mermaid
 >   req:::hot
   "req" variable.mermaid
-  ":::" punctuation.separator.class.mermaid
+  ":::" keyword.operator.separator.class.mermaid
   "hot" variable.mermaid
 >   tests - satisfies -> styleLong
   "tests " variable.mermaid
@@ -190,48 +190,48 @@
   "elem" variable.mermaid
 >   accTitle: A%%{init: {}}%%B
   "accTitle" keyword.control.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   "A" string.unquoted.mermaid
-  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
   "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid keyword.operator.separator.colon.mermaid
   " " string.unquoted.mermaid meta.directive.mermaid
   "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
-  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
   "B" string.unquoted.mermaid
 >   accDescr { A%%{init: {}}%%B }
   "accDescr" keyword.control.mermaid
-  "{" punctuation.definition.description.begin.mermaid
+  "{" keyword.operator.delimiter.description.begin.mermaid
   " A" string.unquoted.mermaid
-  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
   "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid keyword.operator.separator.colon.mermaid
   " " string.unquoted.mermaid meta.directive.mermaid
   "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
-  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
   "B " string.unquoted.mermaid
-  "}" punctuation.definition.description.end.mermaid
+  "}" keyword.operator.delimiter.description.end.mermaid
 >   requirement a%%{init: {}}%%b {
   "requirement" keyword.control.mermaid
   "a" variable.mermaid
-  "%%{" variable.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
   "init" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" variable.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  ":" variable.mermaid meta.directive.mermaid keyword.operator.separator.colon.mermaid
   " " variable.mermaid meta.directive.mermaid
   "{}" variable.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
-  "}%%" variable.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
   "b " variable.mermaid
   "{" keyword.operator.block.begin.mermaid
 >     text: A%%{init: {}}%%B
   "text" keyword.control.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   "A" string.unquoted.mermaid
-  "%%{" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
   "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" string.unquoted.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid keyword.operator.separator.colon.mermaid
   " " string.unquoted.mermaid meta.directive.mermaid
   "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
-  "}%%" string.unquoted.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
   "B" string.unquoted.mermaid
 >   }
   "}" keyword.operator.block.end.mermaid
@@ -256,7 +256,7 @@
   "{" keyword.operator.block.begin.mermaid
 >     RISK: HIGH
   "RISK" keyword.control.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   "HIGH" constant.language.mermaid
 >   }
   "}" keyword.operator.block.end.mermaid
@@ -280,52 +280,52 @@
   " }" comment.block.ignored.mermaid
 > accTitle: direction LR
   "accTitle" keyword.control.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   "direction LR" string.unquoted.mermaid
 > accDescr { direction LR }
   "accDescr" keyword.control.mermaid
-  "{" punctuation.definition.description.begin.mermaid
+  "{" keyword.operator.delimiter.description.begin.mermaid
   " direction LR " string.unquoted.mermaid
-  "}" punctuation.definition.description.end.mermaid
+  "}" keyword.operator.delimiter.description.end.mermaid
 >   accTitle%%{init: {}}%%: T
   "accTitle" keyword.control.mermaid
-  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "%%{" meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
   "init" meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
+  ":" meta.directive.mermaid keyword.operator.separator.colon.mermaid
   " " meta.directive.mermaid
   "{}" meta.directive.mermaid string.unquoted.directive.mermaid
-  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
-  ":" punctuation.separator.colon.mermaid
+  "}%%" meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   "T" string.unquoted.mermaid
 >   accDescr%%{init: {}}%%: D
   "accDescr" keyword.control.mermaid
-  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "%%{" meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
   "init" meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
+  ":" meta.directive.mermaid keyword.operator.separator.colon.mermaid
   " " meta.directive.mermaid
   "{}" meta.directive.mermaid string.unquoted.directive.mermaid
-  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
-  ":" punctuation.separator.colon.mermaid
+  "}%%" meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   "D" string.unquoted.mermaid
 >   accDescr%%{init: {}}%%{ B }
   "accDescr" keyword.control.mermaid
-  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "%%{" meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
   "init" meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
+  ":" meta.directive.mermaid keyword.operator.separator.colon.mermaid
   " " meta.directive.mermaid
   "{}" meta.directive.mermaid string.unquoted.directive.mermaid
-  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
-  "{" punctuation.definition.description.begin.mermaid
+  "}%%" meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "{" keyword.operator.delimiter.description.begin.mermaid
   " B " string.unquoted.mermaid
-  "}" punctuation.definition.description.end.mermaid
+  "}" keyword.operator.delimiter.description.end.mermaid
 >   direction%%{init: {}}%% TB
   "direction" keyword.control.mermaid
-  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "%%{" meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
   "init" meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" meta.directive.mermaid punctuation.separator.colon.mermaid
+  ":" meta.directive.mermaid keyword.operator.separator.colon.mermaid
   " " meta.directive.mermaid
   "{}" meta.directive.mermaid string.unquoted.directive.mermaid
-  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "}%%" meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
   "TB" constant.language.mermaid
 >   requirement html {
   "requirement" keyword.control.mermaid
@@ -333,7 +333,7 @@
   "{" keyword.operator.block.begin.mermaid
 >     text: "<b title="x">y</b>"
   "text" keyword.control.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "<b title=\"x\">" string.quoted.double.mermaid
   "y</b>" string.quoted.double.mermaid
@@ -346,7 +346,7 @@
   "{" keyword.operator.block.begin.mermaid
 >     text: "a<b" %% later >
   "text" keyword.control.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
   "a" string.quoted.double.mermaid
   "<b" string.quoted.double.mermaid
@@ -357,12 +357,12 @@
   "}" keyword.operator.block.end.mermaid
 > foo%%{x: "direction TB"}%% direction LR
   "foo" comment.block.ignored.mermaid
-  "%%{" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "%%{" comment.block.ignored.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
   "x" comment.block.ignored.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  ":" comment.block.ignored.mermaid meta.directive.mermaid punctuation.separator.colon.mermaid
+  ":" comment.block.ignored.mermaid meta.directive.mermaid keyword.operator.separator.colon.mermaid
   " " comment.block.ignored.mermaid meta.directive.mermaid
   "\"direction TB\"" comment.block.ignored.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
-  "}%%" comment.block.ignored.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "}%%" comment.block.ignored.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
   " " comment.block.ignored.mermaid
   "direction" keyword.control.mermaid
   "LR" constant.language.mermaid
@@ -376,9 +376,9 @@
   "BT" constant.language.mermaid
 >   test%%{wrap}%%_x - satisfies -> b
   "test" variable.mermaid
-  "%%{" variable.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
   "wrap" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  "}%%" variable.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
   "_x " variable.mermaid
   "-" keyword.operator.arrow.mermaid
   "satisfies" keyword.operator.arrow.mermaid
@@ -386,9 +386,9 @@
   "b" variable.mermaid
 >   style%%{wrap}%%Long - satisfies -> r
   "style" variable.mermaid
-  "%%{" variable.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
   "wrap" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  "}%%" variable.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
   "Long " variable.mermaid
   "-" keyword.operator.arrow.mermaid
   "satisfies" keyword.operator.arrow.mermaid
@@ -396,9 +396,9 @@
   "r" variable.mermaid
 >   classDef%%{wrap}%%Long - satisfies -> r
   "classDef" variable.mermaid
-  "%%{" variable.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
   "wrap" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  "}%%" variable.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
   "Long " variable.mermaid
   "-" keyword.operator.arrow.mermaid
   "satisfies" keyword.operator.arrow.mermaid
@@ -406,9 +406,9 @@
   "r" variable.mermaid
 >   class%%{wrap}%%Long - satisfies -> r
   "class" variable.mermaid
-  "%%{" variable.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
   "wrap" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  "}%%" variable.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
   "Long " variable.mermaid
   "-" keyword.operator.arrow.mermaid
   "satisfies" keyword.operator.arrow.mermaid
@@ -419,19 +419,19 @@
   "class" keyword.control.mermaid
   "r" variable.mermaid
   "a" variable.mermaid
-  "," punctuation.separator.comma.mermaid
+  "," keyword.operator.separator.comma.mermaid
   "b" variable.mermaid
 >   r:::a,b
   "r" variable.mermaid
-  ":::" punctuation.separator.class.mermaid
+  ":::" keyword.operator.separator.class.mermaid
   "a" variable.mermaid
-  "," punctuation.separator.comma.mermaid
+  "," keyword.operator.separator.comma.mermaid
   "b" variable.mermaid
 >   style r fill:#amp;
   "style" keyword.control.mermaid
   "r" variable.mermaid
   "fill" support.type.property-name.mermaid
-  ":" punctuation.separator.key-value.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
   "#amp;" support.constant.property-value.mermaid
 > 
 >   a - satisfies -> "b"%%%{wrap}%%% native split mark
@@ -443,28 +443,28 @@
   "b" string.quoted.double.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
   "%" comment.line.percentage.mermaid
-  "%%{" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "%%{" comment.line.percentage.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
   "wrap" comment.line.percentage.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  "}%%" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "}%%" comment.line.percentage.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
   "%" comment.line.percentage.mermaid
   " native split mark" comment.line.percentage.mermaid
 > %%{wrap}%%accTitle: direction LR
-  "%%{" meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "%%{" meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
   "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
-  "}%%" meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "}%%" meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
   "accTitle" keyword.control.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   "direction LR" string.unquoted.mermaid
 > 
 >   style r fill:#a%%{wrap}%%mp;
   "style" keyword.control.mermaid
   "r" variable.mermaid
   "fill" support.type.property-name.mermaid
-  ":" punctuation.separator.key-value.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
   "#a" support.constant.property-value.mermaid
-  "%%{" support.constant.property-value.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "%%{" support.constant.property-value.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
   "wrap" support.constant.property-value.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  "}%%" support.constant.property-value.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "}%%" support.constant.property-value.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
   "mp;" support.constant.property-value.mermaid
 >   "a" - satisfies -> "b"%%%{wrap}%% native single mark
   "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
@@ -477,15 +477,15 @@
   "b" string.quoted.double.mermaid
   "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
   "%" comment.line.percentage.mermaid
-  "%%{" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "%%{" comment.line.percentage.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
   "wrap" comment.line.percentage.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  "}%%" comment.line.percentage.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "}%%" comment.line.percentage.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
   " native single mark" comment.line.percentage.mermaid
 >   foo%%{wrap}%%style - satisfies -> b
   "foo" variable.mermaid
-  "%%{" variable.mermaid meta.directive.mermaid punctuation.definition.directive.begin.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
   "wrap" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
-  "}%%" variable.mermaid meta.directive.mermaid punctuation.definition.directive.end.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
   "style " variable.mermaid
   "-" keyword.operator.arrow.mermaid
   "satisfies" keyword.operator.arrow.mermaid
@@ -495,19 +495,19 @@
   "style" keyword.control.mermaid
   "req" variable.mermaid
   "fill" support.type.property-name.mermaid
-  ":" punctuation.separator.key-value.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
   "#43a047" support.constant.property-value.mermaid
 > style req fi ll:red
   "style" keyword.control.mermaid
   "req" variable.mermaid
   "fi ll" support.type.property-name.mermaid
-  ":" punctuation.separator.key-value.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
   "red" support.constant.property-value.mermaid
 > style req-x fill:red
   "style" keyword.control.mermaid
   "req" variable.mermaid
   "-x fill" support.type.property-name.mermaid
-  ":" punctuation.separator.key-value.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
   "red" support.constant.property-value.mermaid
 > element LocalType {
   "element" keyword.control.mermaid
@@ -515,20 +515,51 @@
   "{" keyword.operator.block.begin.mermaid
 > type: custom
   "type" keyword.control.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   "custom" string.unquoted.mermaid
 > docref: local
   "docref" keyword.control.mermaid
-  ":" punctuation.separator.colon.mermaid
+  ":" keyword.operator.separator.colon.mermaid
   "local" string.unquoted.mermaid
 > }
   "}" keyword.operator.block.end.mermaid
 > class r,e a,b
   "class" keyword.control.mermaid
   "r" variable.mermaid
-  "," punctuation.separator.comma.mermaid
+  "," keyword.operator.separator.comma.mermaid
   "e" variable.mermaid
   "a" variable.mermaid
-  "," punctuation.separator.comma.mermaid
+  "," keyword.operator.separator.comma.mermaid
   "b" variable.mermaid
+> 
+> source - satisfies -> "Target" accDescr {}
+  "source " variable.mermaid
+  "-" keyword.operator.arrow.mermaid
+  "satisfies" keyword.operator.arrow.mermaid
+  "->" keyword.operator.arrow.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Target" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "accDescr" keyword.control.mermaid
+  "{" keyword.operator.delimiter.description.begin.mermaid
+  "}" keyword.operator.delimiter.description.end.mermaid
+> source:::"chosen" accDescr {}
+  "source" variable.mermaid
+  ":::" keyword.operator.separator.class.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "chosen" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "accDescr" keyword.control.mermaid
+  "{" keyword.operator.delimiter.description.begin.mermaid
+  "}" keyword.operator.delimiter.description.end.mermaid
+> class source
+  "class" keyword.control.mermaid
+  "source" variable.mermaid
+> "chosen" accDescr {}
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "chosen" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "accDescr" keyword.control.mermaid
+  "{" keyword.operator.delimiter.description.begin.mermaid
+  "}" keyword.operator.delimiter.description.end.mermaid
 > 

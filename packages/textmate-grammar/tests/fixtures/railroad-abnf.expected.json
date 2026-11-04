@@ -24,7 +24,7 @@
     ["4", "constant.numeric.mermaid", 16],
     ["init", "entity.name.function.directive.mermaid", 17],
     [" tail", "comment.line.semicolon.mermaid", 17],
-    [";", "punctuation.separator.rule.mermaid", 18],
+    [";", "keyword.operator.separator.rule.mermaid", 18],
     ["wrap", "entity.name.function.directive.mermaid", 18],
     [" D2 line end ", "comment.line.semicolon.mermaid", 19],
     ["wrap", "entity.name.function.directive.mermaid", 19],
@@ -33,12 +33,13 @@
     ["a", "string.quoted.double.mermaid", 5],
     ["1", "constant.numeric.mermaid", 5],
     ["=", "keyword.operator.mermaid"],
-    ["[", "punctuation.section.group.begin.mermaid"],
-    ["]", "punctuation.section.group.end.mermaid"],
-    [";", "punctuation.separator.rule.mermaid", 5],
+    ["[", "keyword.operator.bracket.group.begin.mermaid"],
+    ["]", "keyword.operator.bracket.group.end.mermaid"],
+    [";", "keyword.operator.separator.rule.mermaid", 5],
     ["---", "comment.block.ignored.mermaid"],
     ["%%{!}%%", "comment.block.ignored.mermaid"],
-    ["%% a comment line", "comment.line.percentage.mermaid"]
+    ["%% a comment line", "comment.line.percentage.mermaid"],
+    ["3", "constant.numeric.mermaid", 20]
   ],
   "absentOnLine": [
     [13, "comment.line.percentage.mermaid"],

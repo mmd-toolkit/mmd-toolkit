@@ -150,4 +150,36 @@ state "alias" as Boundary %%%{wrap}%%% native alias
 A%%%{wrap}%%
 note left of%%%{wrap}%% : boundary note
 note "boundary" as %%%{wrap}%%
+    state First {
+        [*] --> Second
+
+        state Second {
+            [*] --> second
+            second --> Third
+
+            state Third {
+                [*] --> third
+                third --> [*]
+            }
+        }
+    }
+
+state NestedOuter {
+    %% nested body comment
+    state NestedMiddle {
+        %%{wrap}%%
+
+        state NestedInner {
+            [*] --> Live
+            note right of Live
+                nested note
+            end note
+            --
+            [*] --> Standby
+            Standby --> [*]
+        }
+    }
+}
+AfterNested --> [*]
+
 accDescr { unclosed description

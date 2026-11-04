@@ -6,7 +6,7 @@
   ],
   "repository": {
     "gantt": {
-      "comment": "Read the exact detected header and its body, permitting an inline first statement. Follows gantt.md#detection.",
+      "comment": "Read the lowercase gantt header without taking a longer word. The body may start on that same line. Follows detection.md#the-detectors and gantt.md#detection.",
       "begin": "{{diagramStart}}(gantt){{wordEnd}}",
       "beginCaptures": {
         "1": {
@@ -16,13 +16,16 @@
       "end": "(?!)",
       "patterns": [
         {
+          "include": "#gantt-line-final-keywords"
+        },
+        {
           "include": "#comment-line"
         },
         {
           "include": "#directive"
         },
         {
-          "comment": "Read a case-insensitive accessibility description with text delimiters; common comments and directives remain independent. Follows gantt.md#the-statement-context and gantt.md#accessibility-values.",
+          "comment": "Read a case-insensitive accessibility description with text delimiters; common comments and directives remain independent. Follows gantt.md#the-statement-context, gantt.md#accessibility-values, and common.md#style-and-classdef-lines.",
           "begin": "{{gantt-statement-start}}((?i:accDescr))({{gap}})(\\{)",
           "beginCaptures": {
             "1": {
@@ -36,13 +39,13 @@
               ]
             },
             "3": {
-              "name": "punctuation.definition.description.begin.mermaid"
+              "name": "keyword.operator.delimiter.description.begin.mermaid"
             }
           },
           "end": "(\\})",
           "endCaptures": {
             "1": {
-              "name": "punctuation.definition.description.end.mermaid"
+              "name": "keyword.operator.delimiter.description.end.mermaid"
             }
           },
           "patterns": [
@@ -66,7 +69,7 @@
           ]
         },
         {
-          "comment": "Read case-insensitive accessibility line text, keeping inline percent pairs as text. Follows gantt.md#accessibility-values.",
+          "comment": "Read case-insensitive accessibility line text, keeping inline percent pairs as text. Follows gantt.md#accessibility-values and common.md#style-and-classdef-lines.",
           "begin": "{{gantt-statement-start}}((?i:accTitle|accDescr))({{gap}})(:)(?:(?!{{separatorCommentEnd}})[{{ws}}])*",
           "beginCaptures": {
             "1": {
@@ -80,7 +83,7 @@
               ]
             },
             "3": {
-              "name": "punctuation.separator.colon.mermaid"
+              "name": "keyword.operator.separator.colon.mermaid"
             }
           },
           "end": "{{lineValueEnd}}",
@@ -131,7 +134,7 @@
           "end": "(?<=\")",
           "patterns": [
             {
-              "comment": "Reuse the plain double-quoted string for a URL without escapes. Follows gantt.md#the-href-context.",
+              "comment": "Read the plain double-quoted string for a URL without escapes. Follows gantt.md#the-href-context.",
               "include": "#string-plain-double"
             }
           ]
@@ -342,7 +345,7 @@
           }
         },
         {
-          "comment": "Read title and section text through line end, including hashes, colons, semicolons and percent signs. Follows gantt.md#the-statement-context.",
+          "comment": "Read title and section text through line end, including hashes, colons, semicolons and percent signs. Follows gantt.md#the-statement-context and common.md#style-and-classdef-lines.",
           "begin": "{{gantt-statement-start}}((?i:title|section))((?!{{directives}}{{separatorCommentEnd}}){{whitespaceSeparator}})",
           "beginCaptures": {
             "1": {
@@ -376,11 +379,11 @@
           ]
         },
         {
-          "comment": "Read task data as opaque text items, with modifiers only for the consecutive front tags and separate comma delimiters. An empty or ordinary item ends the front-tag run. Follows gantt.md#tasks.",
+          "comment": "Read task data as opaque text items, with fixed values for consecutive leading tags and separate comma delimiters. An empty or ordinary item ends the tag run. Follows gantt.md#tasks.",
           "begin": "(:)((?:{{gap}}{{gantt-tag}}{{gap}},)*)",
           "beginCaptures": {
             "1": {
-              "name": "punctuation.separator.colon.mermaid"
+              "name": "keyword.operator.separator.colon.mermaid"
             },
             "2": {
               "patterns": [
@@ -391,7 +394,7 @@
                   "include": "#gantt-comma"
                 },
                 {
-                  "comment": "Read one of the listed front tags as a modifier. Follows gantt.md#tasks.",
+                  "comment": "Read a listed tag at the front of task data as a fixed value. Follows gantt.md#tasks.",
                   "match": "{{gantt-tag}}",
                   "captures": {
                     "0": {
@@ -400,9 +403,9 @@
                           "include": "#directive"
                         },
                         {
-                          "comment": "Read one of the listed front tags as a modifier. Follows gantt.md#tasks.",
+                          "comment": "Read the written letters of a task tag as a fixed value, leaving internal directives to their rule. Follows gantt.md#tasks and common.md#a-directive-is-a-token-boundary.",
                           "match": "[a-z]+",
-                          "name": "storage.modifier.mermaid"
+                          "name": "constant.language.mermaid"
                         }
                       ]
                     }
@@ -444,20 +447,20 @@
     "gantt-comma": {
       "comment": "Read commas separating click references, settings and task items. Follows gantt.md#the-click-context and gantt.md#the-statement-context.",
       "match": ",",
-      "name": "punctuation.separator.comma.mermaid"
+      "name": "keyword.operator.separator.comma.mermaid"
     },
     "gantt-callback-arguments": {
       "comment": "Read callback argument brackets and opaque argument text through the first closing parenthesis. Follows gantt.md#the-callback-contexts.",
       "begin": "(\\()",
       "beginCaptures": {
         "1": {
-          "name": "punctuation.section.arguments.begin.mermaid"
+          "name": "keyword.operator.bracket.arguments.begin.mermaid"
         }
       },
       "end": "(\\))",
       "endCaptures": {
         "1": {
-          "name": "punctuation.section.arguments.end.mermaid"
+          "name": "keyword.operator.bracket.arguments.end.mermaid"
         }
       },
       "patterns": [
@@ -479,14 +482,31 @@
           ]
         }
       ]
+    },
+    "gantt-line-final-keywords": {
+      "comment": "Read a reserved keyword at a statement start when only padding and directives follow on its physical line. A value on a later line receives the surrounding context's scopes. Follows gantt.md#the-statement-context, gantt.md#accessibility-values, and common.md#a-directive-is-a-token-boundary.",
+      "match": "({{gantt-statement-start}})((?i:dateFormat|axisFormat|excludes|includes|tickInterval|accTitle|accDescr))(?={{lineGap}}$)",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.control.mermaid"
+        }
+      }
     }
   },
   "variables": {
     "gantt-spaces": "(?!{{gap}}{{separatorCommentEnd}}){{whitespaceSeparator}}{{gap}}",
     "gantt-setting-text-start": "(?!{{separatorCommentEnd}})(?:{{entity}}|(?!{{directiveStart}})[^#;\\r\\n])",
     "gantt-setting-text-gap": "(?!{{directives}}{{separatorCommentEnd}})({{whitespaceSeparator}})(?={{gantt-setting-text-start}})",
-    "gantt-statement-start": "(?:^|\\G|(?<=\\})|{{afterDirectiveEnd}})(?:(?!{{separatorCommentEnd}})[{{ws}}])*",
+    "gantt-statement-start": "(?:(?!{{separatorCommentEnd}})[{{ws}}])*",
     "gantt-text-end": "(?=[#;])|{{lineValueEnd}}",
     "gantt-tag": "(?:a{{directives}}c{{directives}}t{{directives}}i{{directives}}v{{directives}}e|d{{directives}}o{{directives}}n{{directives}}e|c{{directives}}r{{directives}}i{{directives}}t|m{{directives}}i{{directives}}l{{directives}}e{{directives}}s{{directives}}t{{directives}}o{{directives}}n{{directives}}e|v{{directives}}e{{directives}}r{{directives}}t)"
-  }
+  },
+  "comment": "Statement-context rules can begin after any complete unit. Earlier text contexts retain their interiors, and leading whitespace stops before a common-comment boundary. Follows gantt.md#diagram-and-statements and gantt.md#the-statement-context."
 }

@@ -6,7 +6,7 @@
   ],
   "repository": {
     "sankey": {
-      "comment": "Begin sankey at its lowercase detector prefix, accepting either bounded beta spelling. Follows sankey.md#detection and common.md#leading-whitespace.",
+      "comment": "Read sankey with an optional case-insensitive -beta suffix and a word boundary before the record context. Follows detection.md#the-detectors and sankey.md#detection.",
       "begin": "{{diagramStart}}(sankey(?:-(?i:beta))?){{wordEnd}}",
       "beginCaptures": {
         "1": {
@@ -37,7 +37,7 @@
               "begin": ",",
               "beginCaptures": {
                 "0": {
-                  "name": "punctuation.separator.comma.mermaid"
+                  "name": "keyword.operator.separator.comma.mermaid"
                 }
               },
               "end": "{{lineValueEnd}}",
@@ -53,7 +53,7 @@
                   "begin": ",",
                   "beginCaptures": {
                     "0": {
-                      "name": "punctuation.separator.comma.mermaid"
+                      "name": "keyword.operator.separator.comma.mermaid"
                     }
                   },
                   "end": "{{lineValueEnd}}",
@@ -91,7 +91,7 @@
       ]
     },
     "sankey-html-tag": {
-      "comment": "Reuse shared HTML tag parts; paired quotes crossing the tag end or a common comment remain available to the surrounding CSV string. Follows common.md#html-attribute-quotes, sankey.md#strings, common.md#a-directive-is-a-token-boundary, and common.md#comment-lines.",
+      "comment": "Read shared HTML tag parts; paired quotes crossing the tag end or a common comment remain available to the surrounding CSV string. Follows common.md#html-attribute-quotes, sankey.md#strings, common.md#a-directive-is-a-token-boundary, and common.md#comment-lines.",
       "match": "{{htmlTagStart}}(?:{{htmlQuotedValue}}|{{htmlTagDirective}}|{{sankey-html-doubled-quote}}|{{htmlTagCharacter}})*(?:{{htmlTagEnd}}|(?=\")|{{separatorCommentEnd}})",
       "captures": {
         "0": {
@@ -134,7 +134,7 @@
               "include": "#directive"
             },
             {
-              "comment": "Reuse shared HTML parts while protecting doubled quotes. Follows sankey.md#lexical-structure.",
+              "comment": "Read shared HTML parts while protecting doubled quotes. Follows sankey.md#lexical-structure.",
               "include": "#sankey-html-tag"
             },
             {

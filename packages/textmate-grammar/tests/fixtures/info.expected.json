@@ -37,11 +37,13 @@
     ["% native split mark", "comment.line.percentage.mermaid", 27],
     ["Info", "string.unquoted.mermaid", 1],
     [" Info title", "string.unquoted.mermaid", 2],
-    [":", "punctuation.separator.colon.mermaid", 2],
-    ["{", "punctuation.definition.description.begin.mermaid", 4],
-    ["}", "punctuation.definition.description.end.mermaid", 4],
+    [":", "keyword.operator.separator.colon.mermaid", 2],
+    ["{", "keyword.operator.delimiter.description.begin.mermaid", 4],
+    ["}", "keyword.operator.delimiter.description.end.mermaid", 4],
     ["%% a comment line", "comment.line.percentage.mermaid", 5],
-    ["%%{!}%%", "comment.block.ignored.mermaid", 9]
+    ["%%{!}%%", "comment.block.ignored.mermaid", 9],
+    ["title", "keyword.control.mermaid", 0],
+    ["Inline info", "string.unquoted.mermaid", 0]
   ],
   "absent": [
     ["init", "string.unquoted.mermaid", 10],

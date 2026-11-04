@@ -143,4 +143,90 @@ subgraph foo%%{wrap}%%style
 end
 %%%{wrap}%%% common flow comment %%{wrap}%%
 
+A["x
+%% quoted comment
+%%
+y"]
+B["`x
+%% markdown comment
+%%
+y`"]
+C@{label:"x
+%% data quoted comment
+%%
+y"}
+D@{label: x
+%% data bare comment
+%%
+y}
+accDescr {x
+%% description comment
+%%
+y}
+E(-x
+%% ellipse comment
+%%
+y-)
+F[/x
+%% slanted comment
+%%
+y/]
+G[x
+%% label comment
+%%
+y]
+G-->|x
+%% pipe comment
+%%
+y|H
+G--dash
+%% dash comment
+%%
+y-->H
+G==thick
+%% thick comment
+%%
+y==>H
+G-.x
+%% dotted comment
+%%
+y.->H
+click A call x
+%% callback name comment
+%%
+y(arg)
+click A call f(x
+%% callback args comment
+%%
+y)
+A[/a
+%% c
+"b/]
+B[c]
+A[/a
+"b/]
+B[c]
+A[\a
+%% c
+"b\]
+B[c]
+A[\a
+"b\]
+B[c]
+A[\a
+%% c
+"b/]
+B[c]
+A[\a
+"b/]
+B[c]
+A[/a
+%% c
+"b\]
+B[c]
+A[/a
+"b\]
+B[c]
+A[/"x"/]
+B[c]
 accDescr { unclosed class description

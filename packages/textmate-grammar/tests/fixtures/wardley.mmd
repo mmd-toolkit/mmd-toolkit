@@ -43,3 +43,9 @@ component Gap%%{wrap}%% builder [0.4%%{wrap}%%,0.5]label[1%%{wrap}%%,2](buy)iner
 Glued%%{wrap}%%-->Kettle
 component foo%%{wrap}%%inertia [0.2,0.4]
 note 'Escaped\ntext' [0.2, 0.4]
+Kettle -.-> Power
+Kettle +< Power
+Kettle +> Power
+Kettle +'incoming'< Water
+Kettle +'both'<> Water
+component Stable [0.2, 0.4] (inertia)

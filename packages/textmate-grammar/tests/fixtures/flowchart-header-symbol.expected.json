@@ -9,5 +9,5 @@
     ["[", "keyword.operator.shape.begin.mermaid", 1],
     ["]", "keyword.operator.shape.end.mermaid", 1]
   ],
-  "absent": [[">", "punctuation.definition.label.begin.mermaid"]]
+  "absent": [[">", "keyword.operator.delimiter.label.begin.mermaid"]]
 }

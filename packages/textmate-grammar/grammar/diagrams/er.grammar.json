@@ -17,7 +17,7 @@
   ],
   "repository": {
     "er": {
-      "comment": "Detection.md entry 10: `erDiagram`, exact. The lexer then reads the header again, case-insensitively and not followed by a word character. Follows er.md#detection.",
+      "comment": "Read erDiagram at a word boundary and enter the ER body context. Follows detection.md#the-detectors and er.md#detection.",
       "begin": "{{diagramStart}}(erDiagram){{wordEnd}}",
       "beginCaptures": {
         "1": {
@@ -55,7 +55,7 @@
           "include": "#er-style"
         },
         {
-          "comment": "Rules 19 to 21: bounded class, subgraph and end are keywords, compared case-insensitively. Follows er.md#the-statement-context.",
+          "comment": "Read bounded class, subgraph and end keywords case-insensitively. Follows er.md#the-statement-context.",
           "match": "(?i:class|subgraph|end){{wordEnd}}",
           "name": "keyword.control.mermaid"
         },
@@ -71,7 +71,7 @@
           "include": "#er-punctuation"
         },
         {
-          "comment": "Names contain non-ASCII characters, word characters, hyphens, stars and dots. an entity continues a name without exposing its hash or semicolon. A directive ends a name run. Follows er.md#units-and-contexts.",
+          "comment": "Read names assembled from word characters, non-ASCII characters, dashes, stars and dots. Entities remain part of the name, while directives end its current run. Follows er.md#units-and-contexts.",
           "begin": "(?=[^\\x{00}-\\x{7F}]|[A-Za-z0-9_.*-]|#)",
           "end": "{{separatorCommentEnd}}|(?={{directiveStart}}|[^\\x{80}-\\x{10FFFF}A-Za-z0-9_.*#-]|$)",
           "contentName": "variable.mermaid",
@@ -201,7 +201,7 @@
     "er-string": {
       "patterns": [
         {
-          "comment": "Rule 8: a double quote, zero or more characters other than double quote, and a double quote make a string with no escape. Follows er.md#the-statement-context.",
+          "comment": "Read a double-quoted ER string, allowing empty content and treating backslashes as ordinary characters. Follows er.md#the-statement-context.",
           "include": "#string-plain-double"
         }
       ]
@@ -222,22 +222,22 @@
       ]
     },
     "er-punctuation": {
-      "comment": "Rules 12 to 16: comma, class separator, colon and alias/title brackets are punctuation units. Follows er.md#the-statement-context.",
+      "comment": "Read commas, triple colons, colons and square brackets as ER punctuation. Follows er.md#the-statement-context.",
       "patterns": [
         {
-          "comment": "Rule 13: ::: is a unit. Follows er.md#the-statement-context.",
+          "comment": "Read a triple colon introducing an ER class suffix. Follows er.md#the-statement-context.",
           "match": ":::",
-          "name": "punctuation.separator.class.mermaid"
+          "name": "keyword.operator.separator.class.mermaid"
         },
         {
           "include": "#er-comma"
         },
         {
-          "comment": "Rule 14: colon is a unit. Follows er.md#the-statement-context.",
+          "comment": "Read the colon separating an ER label or accessibility value from its prefix. Follows er.md#the-statement-context.",
           "begin": "(:)({{asciiGap}})",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.separator.colon.mermaid"
+              "name": "keyword.operator.separator.colon.mermaid"
             },
             "2": {
               "patterns": [
@@ -260,17 +260,17 @@
           ]
         },
         {
-          "comment": "Rules 15 and 16: brackets delimit an alias or subgraph title. Follows er.md#entities.",
+          "comment": "Read the square brackets of an alias or subgraph title. Follows er.md#entities and er.md#subgraphs.",
           "begin": "\\[",
           "beginCaptures": {
             "0": {
-              "name": "punctuation.definition.label.begin.mermaid"
+              "name": "keyword.operator.delimiter.label.begin.mermaid"
             }
           },
           "end": "\\]",
           "endCaptures": {
             "0": {
-              "name": "punctuation.definition.label.end.mermaid"
+              "name": "keyword.operator.delimiter.label.end.mermaid"
             }
           },
           "patterns": [
@@ -299,7 +299,7 @@
       ]
     },
     "er-style": {
-      "comment": "Rules 17 and 18 and bounded style and classDef enter a style context with no keyword rules; colon, comma, hash, semicolon and style-text are its units until a line feed. Follows er.md#the-statement-context.",
+      "comment": "Read bounded style or classDef and its style context through physical line end. Styles use text and punctuation here without recognizing diagram keywords. Follows er.md#the-statement-context and er.md#the-style-context.",
       "begin": "((?i:style|classDef)){{wordEnd}}({{er-value-padding}})({{er-style-name}}(?:{{er-value-padding}},{{er-value-padding}}{{er-style-name}})*)({{er-value-padding}})",
       "beginCaptures": {
         "1": {
@@ -355,7 +355,7 @@
         },
         {
           "match": ";",
-          "name": "punctuation.separator.semicolon.mermaid",
+          "name": "keyword.operator.separator.semicolon.mermaid",
           "comment": "Read the style statement separator. Follows er.md#the-style-context."
         },
         {
@@ -363,7 +363,7 @@
           "begin": "(:)",
           "beginCaptures": {
             "1": {
-              "name": "punctuation.separator.key-value.mermaid"
+              "name": "keyword.operator.separator.key-value.mermaid"
             }
           },
           "end": "{{er-style-value-end}}",
@@ -415,11 +415,11 @@
           "include": "#directive"
         },
         {
-          "comment": "Rule 1: one or more whitespace characters, line feeds included, are nothing and precede keys and words. Follows er.md#the-attribute-block-context.",
+          "comment": "Read attribute-block whitespace before keys and words without assigning it a scope. Follows er.md#the-attribute-block-context.",
           "match": "(?:(?!{{separatorCommentEnd}})[{{ws}}])+"
         },
         {
-          "comment": "Rule 2: PK, FK and UK, compared case-insensitively and not followed by a word character, are keys. Follows er.md#the-attribute-block-context.",
+          "comment": "Read bounded PK, FK and UK attribute modifiers case-insensitively. Follows er.md#the-attribute-block-context.",
           "match": "(?i:PK|FK|UK){{wordEnd}}",
           "name": "storage.modifier.mermaid"
         },
@@ -429,9 +429,9 @@
           "comment": "Retain an empty backquoted block item as ignored text. Follows er.md#the-attribute-block-context."
         },
         {
-          "comment": "Read an attribute type and then its optional modifier and name; the type's complete lexical form must fit on a physical line. Follows er.md#attributes.",
+          "comment": "Read an attribute type followed by its optional modifier and name, leaving a closing block brace to the enclosing context. The type's complete lexical form must fit on a physical line. Follows er.md#attributes.",
           "begin": "({{er-attribute-word}})",
-          "end": "({{er-attribute-word}})",
+          "end": "({{er-attribute-word}})|(?=\\})",
           "endCaptures": {
             "1": {
               "patterns": [
@@ -569,7 +569,7 @@
           "include": "#er-string"
         },
         {
-          "comment": "Rule 8: question mark is the optional attribute mark. Follows er.md#the-attribute-block-context.",
+          "comment": "Read the question mark identifying an optional attribute. Follows er.md#the-attribute-block-context.",
           "match": "\\?",
           "name": "storage.modifier.mermaid"
         },
@@ -617,7 +617,7 @@
       ]
     },
     "er-acc-descr-block": {
-      "comment": "Read the er-acc-descr-block form. Follows er.md#the-statement-context.",
+      "comment": "Read accDescr with its braced accessibility text, including whitespace and directives around the opening brace. Follows er.md#the-statement-context and er.md#accessibility-values.",
       "begin": "((?i:accDescr))({{er-value-padding}})(\\{)({{er-value-padding}})",
       "beginCaptures": {
         "1": {
@@ -631,7 +631,7 @@
           ]
         },
         "3": {
-          "name": "punctuation.definition.description.begin.mermaid"
+          "name": "keyword.operator.delimiter.description.begin.mermaid"
         },
         "4": {
           "patterns": [
@@ -644,7 +644,7 @@
       "end": "(\\})",
       "endCaptures": {
         "1": {
-          "name": "punctuation.definition.description.end.mermaid"
+          "name": "keyword.operator.delimiter.description.end.mermaid"
         }
       },
       "patterns": [
@@ -671,7 +671,7 @@
       ]
     },
     "er-accessibility-line": {
-      "comment": "Accessibility line text runs to the line feed, including inline percent pairs. the value ends before a line or paragraph separator when only whitespace and directives lead to a common comment. Retain this local context: reads whitespace after the delimiter with that delimiter and keeps inline percent pairs; its keywords are case-insensitive. Follows er.md#accessibility-values.",
+      "comment": "Read the case-folded accessibility keyword and colon with their surrounding whitespace, followed by line text that retains inline percent pairs. A common-comment start after a line or paragraph separator stops the value. Follows er.md#accessibility-values and common.md#comment-lines.",
       "begin": "((?i:accTitle|accDescr))({{er-value-padding}})(:)({{er-value-padding}})",
       "beginCaptures": {
         "1": {
@@ -685,7 +685,7 @@
           ]
         },
         "3": {
-          "name": "punctuation.separator.colon.mermaid"
+          "name": "keyword.operator.separator.colon.mermaid"
         },
         "4": {
           "patterns": [
@@ -704,9 +704,9 @@
       ]
     },
     "er-comma": {
-      "comment": "Rule 12 and #the-attribute-block-context rule 8: a comma is a separator outside an attribute word. Follows er.md#the-statement-context.",
+      "comment": "Read a comma separating statement components or attribute modifiers outside an attribute word. Follows er.md#the-statement-context and er.md#the-attribute-block-context.",
       "match": ",",
-      "name": "punctuation.separator.comma.mermaid"
+      "name": "keyword.operator.separator.comma.mermaid"
     },
     "er-direction-text": {
       "comment": "Read the nonblank ignored text around a direction while retaining directives. Follows er.md#the-statement-context.",

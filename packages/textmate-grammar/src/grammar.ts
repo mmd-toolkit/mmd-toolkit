@@ -46,8 +46,8 @@ export interface TextMateGrammar extends RawGrammar {
 
 /** One source grammar, before variable substitution and repository merging. */
 interface GrammarPart {
-  readonly patterns: RawGrammar["patterns"]
-  readonly repository: RawGrammar["repository"]
+  readonly patterns: unknown[]
+  readonly repository: Record<string, unknown>
   readonly variables?: Record<string, string>
 }
 
@@ -56,11 +56,9 @@ interface GrammarPart {
  * them (flowchart for entries 3, 16 and 17). Each block begins at a header that
  * no other block reads, so the order decides nothing; it keeps the list easy
  * to check against detection.md. Each key is also the prefix required for
- * variables declared by that diagram file. The cast is needed because the type
- * that TypeScript infers for the JSON adds the absent capture keys with the
- * type undefined, while a TextMate dictionary holds only the entries present.
+ * variables declared by that diagram file.
  */
-const diagrams = {
+const diagrams: Record<string, GrammarPart> = {
   flowchart,
   mindmap,
   architecture,
@@ -93,7 +91,7 @@ const diagrams = {
   wardley,
   cynefin,
   usecase,
-} as unknown as Record<string, GrammarPart>
+}
 
 const grammarParts: GrammarPart[] = [common, ...Object.values(diagrams)]
 
@@ -127,7 +125,7 @@ function mergeVariables(
 function resolveVariables(
   variables: Record<string, string>,
 ): Record<string, string> {
-  const resolved: Record<string, string> = Object.create(null)
+  const resolved: Record<string, string> = {}
   const resolving = new Set<string>()
 
   /** Resolves one variable after the variables it references. */
@@ -157,7 +155,6 @@ function resolveVariables(
  * `variables[name]`, the convention of the variables of Sublime Text's
  * sublime-syntax files. The common and diagram grammar files declare them.
  * Unknown variable names throw an error.
- * Every emitted expression uses Oniguruma's ASCII-only case folding.
  */
 function substitute<T>(value: T, variables: Record<string, string>): T {
   if (Array.isArray(value))
@@ -166,19 +163,12 @@ function substitute<T>(value: T, variables: Record<string, string>): T {
   const result: Record<string, unknown> = {}
   for (const [key, item] of Object.entries(value)) {
     if (regexFields.has(key) && typeof item === "string") {
-      const expression = item.replaceAll(
-        variableReference,
-        (_, name: string) => {
-          if (!Object.hasOwn(variables, name)) {
-            throw new Error(`unknown grammar variable {{${name}}} in ${item}`)
-          }
-          return variables[name]
-        },
-      )
-      // Keywords match only the ASCII cases of their letters
-      // (common.md#notation); Oniguruma takes the option I only at the head of
-      // a pattern.
-      result[key] = `(?I)${expression}`
+      result[key] = item.replaceAll(variableReference, (_, name: string) => {
+        if (!Object.hasOwn(variables, name)) {
+          throw new Error(`unknown grammar variable {{${name}}} in ${item}`)
+        }
+        return variables[name]
+      })
     } else {
       result[key] = substitute(item, variables)
     }
@@ -190,8 +180,8 @@ function substitute<T>(value: T, variables: Record<string, string>): T {
  * Merges the repositories of the parts. A key that two parts define would
  * silently replace a rule, so it is an error.
  */
-function mergeRepositories(parts: GrammarPart[]): RawGrammar["repository"] {
-  const repository: RawGrammar["repository"] = {}
+function mergeRepositories(parts: GrammarPart[]): Record<string, unknown> {
+  const repository: Record<string, unknown> = {}
   for (const part of parts) {
     for (const [key, rule] of Object.entries(part.repository)) {
       if (Object.hasOwn(repository, key)) {
@@ -207,6 +197,9 @@ function mergeRepositories(parts: GrammarPart[]): RawGrammar["repository"] {
 
 /** Builds the TextMate grammar, resolving variables and checking its parts. */
 export function createGrammar(): TextMateGrammar {
+  // The grammar files are not checked against the TextMate types: the type
+  // inferred for JSON adds absent capture keys as undefined. The tests check
+  // what the grammar colors.
   return substitute(
     {
       name: "Mermaid",
@@ -215,5 +208,5 @@ export function createGrammar(): TextMateGrammar {
       repository: mergeRepositories(grammarParts),
     },
     resolveVariables(mergeVariables(common.variables, diagrams)),
-  )
+  ) as TextMateGrammar
 }

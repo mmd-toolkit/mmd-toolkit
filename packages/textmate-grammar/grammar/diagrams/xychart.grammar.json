@@ -14,7 +14,7 @@
   ],
   "repository": {
     "xychart": {
-      "comment": "Begin at the lowercase detector prefix and accept either bounded beta spelling. Follows xychart.md#detection.",
+      "comment": "Read xychart with an optional case-insensitive -beta suffix, requiring a word boundary before the chart body. Follows detection.md#the-detectors and xychart.md#detection.",
       "begin": "{{diagramStart}}({{xychart-header}}){{wordEnd}}",
       "beginCaptures": {
         "1": {
@@ -67,7 +67,7 @@
               "begin": "(:)",
               "beginCaptures": {
                 "1": {
-                  "name": "punctuation.separator.colon.mermaid"
+                  "name": "keyword.operator.separator.colon.mermaid"
                 }
               },
               "end": "{{lineValueEnd}}",
@@ -86,13 +86,13 @@
               "begin": "(\\{)",
               "beginCaptures": {
                 "1": {
-                  "name": "punctuation.definition.description.begin.mermaid"
+                  "name": "keyword.operator.delimiter.description.begin.mermaid"
                 }
               },
               "end": "(\\})|{{separatorCommentEnd}}",
               "endCaptures": {
                 "1": {
-                  "name": "punctuation.definition.description.end.mermaid"
+                  "name": "keyword.operator.delimiter.description.end.mermaid"
                 }
               },
               "contentName": "string.unquoted.mermaid",
@@ -158,13 +158,13 @@
               "begin": "{{xychart-list-begin}}",
               "beginCaptures": {
                 "1": {
-                  "name": "punctuation.section.brackets.begin.mermaid"
+                  "name": "keyword.operator.bracket.brackets.begin.mermaid"
                 }
               },
               "end": "{{xychart-list-end}}",
               "endCaptures": {
                 "1": {
-                  "name": "punctuation.section.brackets.end.mermaid"
+                  "name": "keyword.operator.bracket.brackets.end.mermaid"
                 }
               },
               "patterns": [
@@ -225,13 +225,13 @@
               "begin": "{{xychart-list-begin}}",
               "beginCaptures": {
                 "1": {
-                  "name": "punctuation.section.brackets.begin.mermaid"
+                  "name": "keyword.operator.bracket.brackets.begin.mermaid"
                 }
               },
               "end": "{{xychart-list-end}}",
               "endCaptures": {
                 "1": {
-                  "name": "punctuation.section.brackets.end.mermaid"
+                  "name": "keyword.operator.bracket.brackets.end.mermaid"
                 }
               },
               "patterns": [
@@ -263,12 +263,12 @@
         {
           "comment": "Read a semicolon as a statement separator. Follows xychart.md#diagram-and-statements.",
           "match": ";",
-          "name": "punctuation.separator.semicolon.mermaid"
+          "name": "keyword.operator.separator.semicolon.mermaid"
         }
       ]
     },
     "xychart-string": {
-      "comment": "Reuse plain double-quoted strings without escapes. Follows xychart.md#strings.",
+      "comment": "Read plain double-quoted strings without escapes. Follows xychart.md#strings.",
       "include": "#string-plain-double"
     },
     "xychart-word": {
@@ -291,13 +291,13 @@
       "name": "constant.numeric.mermaid"
     },
     "xychart-comment": {
-      "comment": "Reuse native percent comments outside value text. Follows xychart.md#comments.",
+      "comment": "Read a native percent-pair comment up to physical line end or a separator-led common comment. Follows xychart.md#comments.",
       "include": "#native-percent-comment"
     },
     "xychart-list-separator": {
       "comment": "Read the separator of categories and plot values. Follows xychart.md#plots, xychart.md#the-category-context, and xychart.md#the-statement-context.",
       "match": ",",
-      "name": "punctuation.separator.comma.mermaid"
+      "name": "keyword.operator.separator.comma.mermaid"
     }
   }
 }
