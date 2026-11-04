@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Rejections outside the grammar: the terminal after the body of B lies in A, so its id is A_start, a state with a body and two descriptions."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Group nodes can only have label. Remove the additional description for node [A_start]"
+  }
+}

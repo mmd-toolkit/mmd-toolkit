@@ -1,0 +1,77 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Grammar, composite states: each `}` closes the innermost body, and the line after it belongs to the body around that one: X to C, Y to B, Z to A, and W to the diagram."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "roundedWithTitle",
+        "label": "A",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "B",
+        "shape": "roundedWithTitle",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "parentId": "A",
+        "dir": "TB"
+      },
+      {
+        "id": "C",
+        "shape": "roundedWithTitle",
+        "label": "C",
+        "classes": [],
+        "styles": [],
+        "parentId": "B",
+        "dir": "TB"
+      },
+      {
+        "id": "X",
+        "shape": "rect",
+        "label": "X",
+        "classes": [],
+        "styles": [],
+        "parentId": "C"
+      },
+      {
+        "id": "Y",
+        "shape": "rect",
+        "label": "Y",
+        "classes": [],
+        "styles": [],
+        "parentId": "B"
+      },
+      {
+        "id": "Z",
+        "shape": "rect",
+        "label": "Z",
+        "classes": [],
+        "styles": [],
+        "parentId": "A"
+      },
+      {
+        "id": "W",
+        "shape": "rect",
+        "label": "W",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

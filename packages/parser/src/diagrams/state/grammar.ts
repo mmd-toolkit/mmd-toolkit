@@ -73,9 +73,43 @@ const STATE_CONTEXT_STARTS: readonly UnitName[] = [
   ...PSEUDOSTATE_MARKS,
 ]
 
+/** A composite state whose `}` is still to come, with what comes before its body. */
+interface OpenComposite {
+  readonly keyword: "composite"
+  /** The position of its first unit. */
+  readonly start: number
+  readonly textBeforeId: StateIgnoredText | null
+  readonly id: StateCompositeStatement["id"]
+  readonly textBeforeBody: StateIgnoredText | null
+  /** The statements of its body read so far. */
+  readonly body: StateStatement[]
+}
+
+/** An alias definition whose `}` is still to come, with what comes before its body. */
+interface OpenAlias {
+  readonly keyword: "alias"
+  /** The position of its first unit. */
+  readonly start: number
+  readonly textBeforeDescription: StateIgnoredText | null
+  readonly description: StateAliasDefinitionStatement["description"]
+  readonly textAfterDescription: StateIgnoredText | null
+  readonly id: StateAliasDefinitionStatement["id"]
+  /** Whether it has a `:`. */
+  readonly hasColon: boolean
+  readonly secondDescription: StateAliasDefinitionStatement["secondDescription"]
+  readonly textAfter: StateIgnoredText | null
+  readonly textBeforeBody: StateIgnoredText | null
+  /** The statements of its body read so far. */
+  readonly body: StateStatement[]
+}
+
+/** A statement whose body is being read. */
+type OpenState = OpenComposite | OpenAlias
+
 /**
  * diagrams/state.md, Grammar: the recursive-descent parser over the units
- * of the state lexer. Each method reads one rule of the grammar, which its
+ * of the state lexer, except that `parseLines` holds the statements whose
+ * body is being read. Each method reads one rule of the grammar, which its
  * comment names, and makes the node that the specification gives for the
  * rule, with the tokens of `docs/tokens/state.md`, Tokens.
  */
@@ -96,7 +130,7 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
   public parseDiagram(): StateSyntax {
     this.takeAll("newline")
     this.addItem("Keyword", [this.take("header")])
-    const body = this.parseLines(false)
+    const body = this.parseLines()
     return {
       body,
       tokens: this.tokensInOrder(),
@@ -123,22 +157,82 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
   /**
    * Diagram and statements: `line*`, with `line = statement | newline`: the
    * statements up to the end of the text, or, in a body, up to its `}`.
+   *
+   * Bodies nest without a limit, so `open` holds the statements whose `}` is
+   * still to come: a call for each of them would exhaust the call stack.
    */
-  private parseLines(inBody: boolean): StateStatement[] {
-    const body: StateStatement[] = []
+  private parseLines(): StateStatement[] {
+    const top: StateStatement[] = []
+    const open: OpenState[] = []
     for (;;) {
       const unit = this.peek()
-      if (unit === null || (inBody && unit.name === "}")) return body
-      if (unit.name === "newline") {
+      if (open.length > 0 && (unit === null || unit.name === "}")) {
+        this.closeBody(open, top)
+      } else if (unit === null) {
+        return top
+      } else if (unit.name === "newline") {
         this.take("newline")
-        continue
+      } else {
+        const statement = this.parseStatement()
+        const statements = open.at(-1)?.body ?? top
+        if ("keyword" in statement) open.push(statement)
+        else statements.push(statement)
       }
-      body.push(this.parseStatement())
     }
   }
 
-  /** Diagram and statements: `statement`. */
-  private parseStatement(): StateStatement {
+  /**
+   * Composite states and aliases: the `"}"` of the innermost statement of
+   * `open`, which makes it a statement of the body around it, or of `top`
+   * when there is none.
+   */
+  private closeBody(open: OpenState[], top: StateStatement[]): void {
+    const state = open.pop()
+    if (state === undefined) {
+      throw new Error("mmd-toolkit parser bug: no open state body")
+    }
+    this.addItem("Punctuator", [this.take("}")])
+    const statements = open.at(-1)?.body ?? top
+    statements.push(
+      state.keyword === "composite"
+        ? this.compositeStatementOf(state)
+        : this.aliasStatementOf(state),
+    )
+  }
+
+  /** Composite states: the statement of `state`, whose `}` was just read. */
+  private compositeStatementOf(state: OpenComposite): StateCompositeStatement {
+    const { start, textBeforeId, id, textBeforeBody, body } = state
+    return {
+      type: "StateCompositeStatement",
+      textBeforeId,
+      id,
+      textBeforeBody,
+      body,
+      ...this.placeFrom(start),
+    }
+  }
+
+  /** Aliases: the statement of `state`, whose `}` was just read. */
+  private aliasStatementOf(state: OpenAlias): StateAliasDefinitionStatement {
+    const statement: StateAliasDefinitionStatement = {
+      type: "StateAliasDefinitionStatement",
+      textBeforeDescription: state.textBeforeDescription,
+      description: state.description,
+      textAfterDescription: state.textAfterDescription,
+      id: state.id,
+      secondDescription: state.secondDescription,
+      textAfter: state.textAfter,
+      textBeforeBody: state.textBeforeBody,
+      body: state.body,
+      ...this.placeFrom(state.start),
+    }
+    if (state.hasColon) this.aliasesWithColon.add(statement)
+    return statement
+  }
+
+  /** Diagram and statements: `statement`, or, with a body, the part before it. */
+  private parseStatement(): StateStatement | OpenState {
     const unit = this.peek()
     switch (unit?.name) {
       case "id":
@@ -285,7 +379,7 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
    * context reads; `state` alone, also before empty strings that no name
    * and no string follows, is a composite statement without a name.
    */
-  private parseStateKeywordStatement(): StateStatement {
+  private parseStateKeywordStatement(): StateStatement | OpenState {
     const start = this.next
     this.addItem("Keyword", [this.take("state")])
     const next = this.nameAt(this.next)
@@ -311,7 +405,9 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
    * name or the string of an alias belong to that statement; without
    * either after them, they are an `ignored-statement`.
    */
-  private parseStateContextStatement(start: number): StateStatement {
+  private parseStateContextStatement(
+    start: number,
+  ): StateStatement | OpenState {
     if (
       this.nameAt(this.next) === "empty-string" &&
       !this.emptyStringsBelongToStatement()
@@ -358,20 +454,31 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
   /**
    * Composite states: `"state"? empty-string* state-name ( empty-string*
    * empty-description-block* ( ignored-state empty-string* )* ignored-text?
-   * "{" line* "}" )?`, whose empty strings before the name are
-   * `textBeforeId`.
+   * "{" line* "}" )?`, up to its `line*`, whose empty strings before the
+   * name are `textBeforeId`.
    */
   private parseCompositeStatement(
     start: number,
     textBeforeId: StateIgnoredText | null,
-  ): StateCompositeStatement {
+  ): StateCompositeStatement | OpenComposite {
     const id = this.stateIdOf(this.take("state-name"))
+    const textBeforeBody = this.parseTextBeforeBody()
+    if (this.opensBody()) {
+      return {
+        keyword: "composite",
+        start,
+        textBeforeId,
+        id,
+        textBeforeBody,
+        body: [],
+      }
+    }
     return {
       type: "StateCompositeStatement",
       textBeforeId,
       id,
-      textBeforeBody: this.parseTextBeforeBody(),
-      body: this.parseBody(),
+      textBeforeBody,
+      body: null,
       ...this.placeFrom(start),
     }
   }
@@ -424,27 +531,25 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
     }
   }
 
-  /** Composite states: `( "{" line* "}" )?`, the body; null without one. */
-  private parseBody(): StateStatement[] | null {
+  /** Composite states: the `"{"` of a body; false without one. */
+  private opensBody(): boolean {
     const opening = this.takeIf("{")
-    if (opening === null) return null
+    if (opening === null) return false
     this.addItem("Punctuator", [opening])
-    const body = this.parseLines(true)
-    this.addItem("Punctuator", [this.take("}")])
-    return body
+    return true
   }
 
   /**
    * Aliases: `"state"? empty-string* string empty-string* "as" alias-id?
    * ( ":" second-description? ignored-text? )? ( empty-description-block*
-   * ( ignored-state empty-string* )* ignored-text? "{" line* "}" )?`, whose
-   * empty strings before and after the string are
+   * ( ignored-state empty-string* )* ignored-text? "{" line* "}" )?`, up to
+   * its `line*`, whose empty strings before and after the string are
    * `textBeforeDescription` and `textAfterDescription`.
    */
   private parseAliasStatement(
     start: number,
     textBeforeDescription: StateIgnoredText | null,
-  ): StateAliasDefinitionStatement {
+  ): StateAliasDefinitionStatement | OpenAlias {
     const description = this.closedStringLiteralOf(this.take("string"))
     const textAfterDescription = this.parseEmptyStrings()
     this.addItem("Keyword", [this.take("as")])
@@ -460,6 +565,22 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
       colon === null
         ? null
         : this.optionalIgnoredText(this.takeIf("ignored-text"))
+    const textBeforeBody = this.parseTextBeforeBody()
+    if (this.opensBody()) {
+      return {
+        keyword: "alias",
+        start,
+        textBeforeDescription,
+        description,
+        textAfterDescription,
+        id,
+        hasColon: colon !== null,
+        secondDescription,
+        textAfter,
+        textBeforeBody,
+        body: [],
+      }
+    }
     const statement: StateAliasDefinitionStatement = {
       type: "StateAliasDefinitionStatement",
       textBeforeDescription,
@@ -468,8 +589,8 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
       id,
       secondDescription,
       textAfter,
-      textBeforeBody: this.parseTextBeforeBody(),
-      body: this.parseBody(),
+      textBeforeBody,
+      body: null,
       ...this.placeFrom(start),
     }
     if (colon !== null) this.aliasesWithColon.add(statement)

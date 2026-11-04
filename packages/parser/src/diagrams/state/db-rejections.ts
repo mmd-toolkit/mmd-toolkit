@@ -39,6 +39,18 @@ class RandomId {
  */
 type StateId = string | RandomId
 
+/** Statements being walked in source order, and the next one to read. */
+interface BodyPosition {
+  readonly statements: readonly StateStatement[]
+  next: number
+}
+
+/** Statements being walked: the composite state or region that they lie in, and whether they are a divided body. */
+interface StatementWalk extends BodyPosition {
+  readonly parent: StateId
+  readonly divided: boolean
+}
+
 /**
  * diagrams/state.md, Rejections outside the grammar: the inputs that the
  * grammar accepts and mermaid.js rejects while it builds the Db. The
@@ -89,7 +101,7 @@ export class StateDbRejections {
   /** Walks `statements`, the body of the diagram; throws `ParseError` when a state with a body has more than one description. */
   public check(statements: readonly StateStatement[]): void {
     this.numberDividers(statements)
-    this.walk(statements, "root")
+    this.walk(statements)
     for (const record of this.states.values()) {
       if (record.body !== null && record.descriptions > 1) {
         throw new ParseError(
@@ -101,17 +113,47 @@ export class StateDbRejections {
     }
   }
 
-  /** The number of each divider of `statements` and of the bodies in them, in source order. */
+  /**
+   * The number of each divider of `statements` and of the bodies in them, in
+   * source order. `bodies` holds the bodies being read, the innermost last,
+   * for the reason of {@link StateDbRejections.walk}.
+   */
   private numberDividers(statements: readonly StateStatement[]): void {
-    for (const statement of statements) {
-      if (statement.type === "StateDividerStatement") {
-        this.dividerNumbers.set(statement, this.dividerNumbers.size + 1)
-      } else if (
-        (statement.type === "StateCompositeStatement" ||
-          statement.type === "StateAliasDefinitionStatement") &&
-        statement.body !== null
-      ) {
-        this.numberDividers(statement.body)
+    const bodies: BodyPosition[] = [{ statements, next: 0 }]
+    for (let body = bodies.at(-1); body !== undefined; body = bodies.at(-1)) {
+      if (body.next === body.statements.length) {
+        bodies.pop()
+      } else {
+        const statement = body.statements[body.next]
+        body.next += 1
+        if (statement.type === "StateDividerStatement") {
+          this.dividerNumbers.set(statement, this.dividerNumbers.size + 1)
+        } else if (
+          (statement.type === "StateCompositeStatement" ||
+            statement.type === "StateAliasDefinitionStatement") &&
+          statement.body !== null
+        ) {
+          bodies.push({ statements: statement.body, next: 0 })
+        }
+      }
+    }
+  }
+
+  /**
+   * The walk of `statements`, the body of the diagram. Bodies nest without a
+   * limit, so `walks` holds those being walked, the innermost last: a call
+   * for each of them would exhaust the call stack.
+   */
+  private walk(statements: readonly StateStatement[]): void {
+    const walks = [this.walkOf(statements, "root")]
+    for (let walk = walks.at(-1); walk !== undefined; walk = walks.at(-1)) {
+      if (walk.next === walk.statements.length) {
+        walks.pop()
+      } else if (walk.divided) {
+        this.walkRegion(walk, walks)
+      } else {
+        walk.next += 1
+        this.apply(walk.statements[walk.next - 1], walk.parent, walks)
       }
     }
   }
@@ -122,31 +164,41 @@ export class StateDbRejections {
    * when it has dividers and its last statement is not one; it is then
    * walked as its regions, each the parent of its statements.
    */
-  private walk(statements: readonly StateStatement[], parent: StateId): void {
+  private walkOf(
+    statements: readonly StateStatement[],
+    parent: StateId,
+  ): StatementWalk {
     const divided =
       statements.some(
         (statement) => statement.type === "StateDividerStatement",
       ) && statements.at(-1)?.type !== "StateDividerStatement"
-    if (!divided) {
-      for (const statement of statements) this.apply(statement, parent)
-      return
+    return { statements, parent, divided, next: 0 }
+  }
+
+  /** The walk: the next region of the divided body `walk`, which goes on `walks`. */
+  private walkRegion(walk: StatementWalk, walks: StatementWalk[]): void {
+    const { statements } = walk
+    let end = walk.next
+    while (
+      end < statements.length &&
+      statements[end].type !== "StateDividerStatement"
+    ) {
+      end += 1
     }
-    let region: StateStatement[] = []
-    for (const statement of statements) {
-      if (statement.type === "StateDividerStatement") {
-        // A region that a divider statement closes is a state with a body,
-        // which the divider statement gives it.
-        const id = `divider-id-${this.dividerNumberOf(statement)}`
-        this.visit(id, 0, statement.range)
-        this.walk(region, id)
-        region = []
-      } else {
-        region.push(statement)
-      }
+    const region = statements.slice(walk.next, end)
+    const divider = statements.at(end)
+    walk.next = Math.min(end + 1, statements.length)
+    if (divider?.type === "StateDividerStatement") {
+      // A region that a divider statement closes is a state with a body,
+      // which the divider statement gives it.
+      const id = `divider-id-${this.dividerNumberOf(divider)}`
+      this.visit(id, 0, divider.range)
+      walks.push(this.walkOf(region, id))
+    } else {
+      // No statement names the last region, so no description makes it
+      // rejected, and it needs no visit.
+      walks.push(this.walkOf(region, new RandomId()))
     }
-    // No statement names the last region, so no description makes it
-    // rejected, and it needs no visit.
-    this.walk(region, new RandomId())
   }
 
   /** The number of the divider `divider` ({@link StateDbRejections.numberDividers}). */
@@ -162,9 +214,15 @@ export class StateDbRejections {
 
   /**
    * The walk: what one statement does to the descriptions and the bodies of
-   * its states, in the composite state or region whose id is `parent`.
+   * its states, in the composite state or region whose id is `parent`. A
+   * body goes on `walks`, where it is walked before the statement after this
+   * one.
    */
-  private apply(statement: StateStatement, parent: StateId): void {
+  private apply(
+    statement: StateStatement,
+    parent: StateId,
+    walks: StatementWalk[],
+  ): void {
     switch (statement.type) {
       case "StateDefinitionStatement":
         this.visit(
@@ -177,7 +235,7 @@ export class StateDbRejections {
         if (statement.id !== null && statement.body !== null) {
           const id = this.idOf(statement.id, parent)
           this.visit(id, 0, statement.range)
-          this.walk(statement.body, id)
+          walks.push(this.walkOf(statement.body, id))
         }
         return
       case "StateAliasDefinitionStatement": {
@@ -190,7 +248,9 @@ export class StateDbRejections {
             statement.body === null ? null : statement.range,
           )
         }
-        if (statement.body !== null) this.walk(statement.body, id ?? parent)
+        if (statement.body !== null) {
+          walks.push(this.walkOf(statement.body, id ?? parent))
+        }
         return
       }
       case "StateTransitionStatement":
