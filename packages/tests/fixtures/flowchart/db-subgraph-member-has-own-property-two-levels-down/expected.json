@@ -1,0 +1,59 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Rejections outside the grammar, subgraph members: the id `hasOwnProperty` is a member of T alone, not of S around it, so A follows no such member."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "hasOwnProperty",
+        "nodes": [],
+        "title": "hasOwnProperty",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "T",
+        "nodes": [
+          "hasOwnProperty"
+        ],
+        "title": "T",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "S",
+        "nodes": [
+          "T",
+          "A"
+        ],
+        "title": "S",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

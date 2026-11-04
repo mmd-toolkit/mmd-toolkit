@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The composite body context: accDescr is an id there, and no rule reads the {; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 6. Unrecognized text.\n...te B {X}accDescr {}Y}\n--------------------^"
+  }
+}

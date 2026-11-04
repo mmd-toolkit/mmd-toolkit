@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Grammar, composites: a composite whose only statement is a composite holds a statement."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "",
+          "type": "composite",
+          "widthInColumns": 1,
+          "children": [
+            {
+              "id": "B",
+              "label": "",
+              "type": "composite",
+              "widthInColumns": 1,
+              "children": [
+                {
+                  "id": "C",
+                  "label": "",
+                  "type": "composite",
+                  "widthInColumns": 1,
+                  "children": [
+                    {
+                      "id": "d",
+                      "label": "d",
+                      "type": "na",
+                      "widthInColumns": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

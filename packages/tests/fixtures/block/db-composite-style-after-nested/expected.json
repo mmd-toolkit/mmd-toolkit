@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Rejections outside the grammar: the nested composite has made the block c when the style after it is read."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "",
+          "type": "composite",
+          "widthInColumns": 1,
+          "children": [
+            {
+              "id": "B",
+              "label": "",
+              "type": "composite",
+              "widthInColumns": 1,
+              "children": [
+                {
+                  "id": "c",
+                  "label": "c",
+                  "type": "na",
+                  "widthInColumns": 1,
+                  "styles": [
+                    "fill:#f00"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

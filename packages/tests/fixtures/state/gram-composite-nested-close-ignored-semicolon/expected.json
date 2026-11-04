@@ -1,0 +1,62 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Composite states, aliases, and pseudostates: what follows a } stands in the body around it; the line rule ignores the ; of the line after the inner }; accepted."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "roundedWithTitle",
+        "label": "A",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "B",
+        "shape": "roundedWithTitle",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "parentId": "A",
+        "dir": "TB"
+      },
+      {
+        "id": "X",
+        "shape": "rect",
+        "label": "X",
+        "classes": [],
+        "styles": [],
+        "parentId": "B"
+      },
+      {
+        "id": "Y",
+        "shape": "rect",
+        "label": "Y",
+        "classes": [],
+        "styles": [],
+        "parentId": "A"
+      },
+      {
+        "id": "style",
+        "shape": "rect",
+        "label": "#fff",
+        "description": [],
+        "classes": [],
+        "styles": [],
+        "parentId": "A"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

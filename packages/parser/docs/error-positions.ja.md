@@ -82,6 +82,22 @@
   [fixture: flowchart/gram-subgraph-member-has-own-property-nested]
   [fixture: flowchart/gram-subgraph-member-has-own-property-acc-title]
   [fixture: flowchart/gram-subgraph-member-has-own-property-empty-statement]
+  この条件は subgraph の `end` を読むときに確かめるので、
+  内側の subgraph の違反が先に報告されます。
+  [fixture: flowchart/gram-subgraph-member-has-own-property-inner-and-outer]
+  [fixture: flowchart/gram-subgraph-member-has-own-property-nested-outer-end-missing]
+  `end` のない subgraph は、代わりにテキストの終わりで報告されます。
+  [fixture: flowchart/gram-subgraph-member-has-own-property-end-missing]
+  [fixture: flowchart/gram-subgraph-member-has-own-property-end-missing-nested]
+  文法が読めない単位と、リンクを指さない `linkStyle` の番号は、
+  その `end` の前にあれば先に報告され、後にあれば報告されません。
+  [fixture: flowchart/gram-subgraph-member-has-own-property-unreadable-unit-before-end]
+  [fixture: flowchart/gram-subgraph-member-has-own-property-linkstyle-before-end]
+  [fixture: flowchart/gram-subgraph-member-has-own-property-then-extra-end]
+  [fixture: flowchart/gram-subgraph-member-has-own-property-linkstyle-after-end]
+  字句解析器は文法より先に図全体を読むので、後ろの読めない文字は、
+  この条件より先に報告されます。
+  [fixture: flowchart/lex-later-character-before-subgraph-member]
 
 ## シーケンス図の中
 

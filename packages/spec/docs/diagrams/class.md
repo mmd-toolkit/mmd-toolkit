@@ -1000,7 +1000,37 @@ them: `namespace A {` with `}` on the next line, and a relation in a namespace,
 are rejected. [fixture: class/gram-namespace-empty] [fixture:
 class/gram-namespace-relation] [fixture: class/gram-namespace-note] [fixture:
 class/db-namespace-redeclared-label] [fixture:
-class/lex-namespace-two-closing-braces]
+class/lex-namespace-two-closing-braces] [fixture:
+class/gram-namespace-nested-three-levels] [fixture:
+class/gram-namespace-nested-labels] [fixture:
+class/gram-namespace-nested-backquoted-prefix] [fixture:
+class/gram-namespace-nested-note] [fixture: class/gram-namespace-nested-empty]
+[fixture: class/gram-namespace-nested-relation] [fixture:
+class/gram-namespace-nested-close-empty-block]
+
+Outside a class body, each `}` closes the innermost open namespace, and each
+needs its own: a missing `}` and a `}` with nothing open are rejected. [fixture:
+class/gram-namespace-nested-unclosed] [fixture:
+class/gram-namespace-outer-unclosed] [fixture:
+class/gram-namespace-nested-close-extra] [fixture:
+class/lex-namespace-body-unclosed] [fixture:
+class/gram-namespace-nested-closes-glued] [fixture:
+class/gram-namespace-class-body-closes-glued] [fixture:
+class/gram-close-brace-alone] Items are separated by a line break, also after
+the `}` of a nested namespace or of a class body, and a statement after the
+outermost `}` needs one too. [fixture:
+class/gram-namespace-nested-item-same-line] [fixture:
+class/gram-namespace-close-then-statement-same-line] [fixture:
+class/gram-namespace-nested-close-line-separator-only] [fixture:
+class/gram-namespace-class-body-close-then-class] What follows a `}` stands in
+the namespace around it, or in the diagram after the outermost `}`. [fixture:
+class/gram-namespace-nested-close-comment-line] [fixture:
+class/gram-namespace-nested-close-directive] [fixture:
+class/gram-namespace-nested-close-empty-line] [fixture:
+class/gram-namespace-nested-close-line-separator] [fixture:
+class/gram-namespace-nested-close-ignored-semicolon] [fixture:
+class/gram-namespace-after-outermost-close] [fixture:
+class/gram-namespace-after-outermost-close-empty-block]
 
 ### Other statements
 
@@ -1050,7 +1080,9 @@ while `accDescr {}` on a line of its own is rejected, as in mermaid.js, which
 reads no token for the block and then two `newline` units. In flowchart and
 sequence, an empty description block on a line of its own is accepted. [fixture:
 class/gram-empty-description-block-then-statement] [fixture:
-class/gram-empty-description-block-alone]
+class/gram-empty-description-block-alone] [fixture:
+class/gram-empty-description-blocks-before-statement] [fixture:
+class/gram-empty-description-blocks-then-line-feed]
 
 ### Rejections outside the grammar
 
@@ -1062,24 +1094,25 @@ this specification:
   ([`addAnnotation`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/classDb.ts#L263-L266)),
   while the same after `class A` is accepted. A class is **added** by a class
   statement, a member statement with a label, and a relation statement, for each
-  of its class names, also in the body of a namespace; the name on the `()` side
-  of a relation whose only end is `()` names an interface and adds no class. A
-  statement of a class name alone, a note, a click, a `cssClass`, and a style
-  statement add none. An annotation statement names, and a statement adds, the
-  class with the **id** of its class name. The **name text** of a class name is
-  the text of its units before the generic type, joined, with the backquotes of
-  a backquoted name left out; the whitespace between the units is not part of
-  it. When a backquoted name is not closed, its text runs to the end of the
-  text, and the name text ends with a line feed, the one that the lexer reads
-  after the last character. The **written name** is the name text, followed by
-  `~`, the value of the generic of the class name, whitespace included, and `~`,
-  when the class name has one (see [ClassName](../ast/class.md#classname)). Its
-  id is the text before its first `~`, when it has a `~` and its first `~` is
-  not its first character, and otherwise the written name. So `class A~T~` and
-  ``class `A~T` `` add the class `A`, which `<<interface>> A` and
-  `<<interface>> A~T~` name, while ``class `~A` `` adds the class `~A`, which
-  `` <<interface>> `~A` `` names and `<<interface>> A` does not (mermaid.js
-  rejects a backquoted name that starts with `~`, see
+  of its class names, also in the body of a namespace at any depth; the name on
+  the `()` side of a relation whose only end is `()` names an interface and adds
+  no class. A statement of a class name alone, a note, a click, a `cssClass`,
+  and a style statement add none. An annotation statement names, and a statement
+  adds, the class with the **id** of its class name. The **name text** of a
+  class name is the text of its units before the generic type, joined, with the
+  backquotes of a backquoted name left out; the whitespace between the units is
+  not part of it. When a backquoted name is not closed, its text runs to the end
+  of the text, and the name text ends with a line feed, the one that the lexer
+  reads after the last character. The **written name** is the name text,
+  followed by `~`, the value of the generic of the class name, whitespace
+  included, and `~`, when the class name has one (see
+  [ClassName](../ast/class.md#classname)). Its id is the text before its first
+  `~`, when it has a `~` and its first `~` is not its first character, and
+  otherwise the written name. So `class A~T~` and ``class `A~T` `` add the class
+  `A`, which `<<interface>> A` and `<<interface>> A~T~` name, while
+  ``class `~A` `` adds the class `~A`, which `` <<interface>> `~A` `` names and
+  `<<interface>> A` does not (mermaid.js rejects a backquoted name that starts
+  with `~`, see
   [`name-start-reads-unit`](../known-divergences/name-start-reads-unit.md)), and
   `class A~T~` adds no class `T`. [fixture:
   class/db-annotation-after-generic-class] [fixture:
@@ -1101,7 +1134,10 @@ this specification:
   class/gram-annotation-after-style] [fixture:
   class/gram-annotation-after-name-statement] [fixture:
   class/gram-annotation-after-css-class] [fixture:
-  class/gram-annotation-after-click]
+  class/gram-annotation-after-click] [fixture:
+  class/db-annotation-after-nested-namespace-class] [fixture:
+  class/gram-annotation-before-nested-namespace-class] [fixture:
+  class/db-annotation-after-second-nested-namespace-class]
 - A method line that cannot be divided, such as `x)` (see
   [Member lines](#member-lines)). [fixture:
   class/lex-member-method-without-opening]

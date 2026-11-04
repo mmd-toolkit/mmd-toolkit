@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Subgraphs: each end closes the innermost open subgraph; an empty description block between the two ends; accepted."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "T",
+        "nodes": [
+          "A"
+        ],
+        "title": "T",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "S",
+        "nodes": [
+          "T"
+        ],
+        "title": "S",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

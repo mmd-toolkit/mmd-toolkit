@@ -1678,6 +1678,7 @@ name-piece         = number | id-run | letter | space | "-" | "&" | ":" | "*" | 
 `subgraph` の後の名前は必須です。
 mermaid.js は、文法では `subgraph` だけを受け付け、その後 Db で拒否します。
 [fixture: flowchart/gram-subgraph-no-name]
+[fixture: flowchart/gram-subgraph-nested-no-name]
 名前はそれ自体がラベルです。
 文字列、markdown 文字列、名前の部品のどれかに、
 さらに名前の部品が続いたものです。
@@ -1762,6 +1763,50 @@ id の並びの中では、`click` は単位になりません。
 空白と改行が後に続く `subgraph S[t]` は拒否されます。
 [fixture: flowchart/gram-subgraph-title-space-before] [fixture:
 flowchart/gram-subgraph-title-space-after]
+
+subgraph の行は図の行と同じなので、subgraph はどの深さまでも入れ子にできます。
+[fixture: flowchart/gram-subgraph-nested-three-levels]
+[fixture: flowchart/gram-subgraph-nested-string-title]
+[fixture: flowchart/gram-subgraph-nested-markdown-name]
+[fixture: flowchart/gram-subgraph-nested-semicolons]
+[fixture: flowchart/gram-subgraph-body-comment-line]
+[fixture: flowchart/gram-subgraph-body-directive]
+[fixture: flowchart/gram-subgraph-body-empty-line]
+[fixture: flowchart/gram-subgraph-body-line-separator]
+[fixture: flowchart/gram-subgraph-body-empty-block]
+[fixture: flowchart/gram-subgraph-nested-end-ignored-semicolon]
+
+名前の外の `end` は、いちばん内側の開いている subgraph を閉じ、
+どれも自分の `end` が要ります。
+`end` が足りない入力と、開いているものがないときの `end` は拒否します。
+[fixture: flowchart/gram-subgraph-end-extra]
+[fixture: flowchart/gram-subgraph-end-extra-nested]
+[fixture: flowchart/gram-subgraph-end-missing]
+[fixture: flowchart/gram-subgraph-end-missing-nested]
+[fixture: flowchart/gram-subgraph-end-missing-outer]
+[fixture: flowchart/gram-subgraph-end-top-level]
+[fixture: flowchart/gram-subgraph-member-has-own-property-end-missing]
+[fixture: flowchart/gram-subgraph-member-has-own-property-end-missing-nested]
+[fixture: flowchart/gram-subgraph-nested-end-comment-line]
+[fixture: flowchart/gram-subgraph-nested-end-directive]
+[fixture: flowchart/gram-subgraph-nested-end-empty-line]
+[fixture: flowchart/gram-subgraph-nested-end-line-separator]
+[fixture: flowchart/gram-subgraph-nested-end-empty-block]
+[fixture: flowchart/gram-subgraph-nested-end-ignored-semicolon]
+[fixture: flowchart/gram-subgraph-nested-end-same-line]
+[fixture: flowchart/gram-subgraph-name-end]
+`end` の後に続くものは、方向の文も含めて、外側の subgraph の中にあります。
+いちばん外側の `end` の後なら、図の中にあります。
+[fixture: flowchart/db-subgraph-dir-after-nested-end]
+[fixture: flowchart/db-subgraph-dir-after-nested-ends]
+[fixture: flowchart/db-subgraph-dir-after-nested-end-comment-line]
+[fixture: flowchart/db-subgraph-dir-after-nested-end-directive]
+[fixture: flowchart/db-subgraph-dir-after-nested-end-empty-line]
+[fixture: flowchart/db-subgraph-dir-after-nested-end-line-separator]
+[fixture: flowchart/db-subgraph-dir-after-nested-end-empty-block]
+[fixture: flowchart/db-subgraph-dir-after-nested-end-ignored-semicolon]
+[fixture: flowchart/db-subgraph-dir-after-nested-end-same-line]
+[fixture: flowchart/gram-subgraph-dir-after-nested-end-takes-end]
 
 ### style、class、linkStyle の文
 
@@ -1992,6 +2037,12 @@ mermaid.js は、文法が受理する入力の一部を、Db を作る途中で
   [fixture: flowchart/gram-subgraph-member-has-own-property-acc-title] [fixture:
   flowchart/gram-subgraph-member-has-own-property-nested] [fixture:
   flowchart/gram-subgraph-member-has-own-property-earlier-subgraph-then-member]
+  [fixture: flowchart/gram-subgraph-member-has-own-property-earlier-subgraph-nested]
+  [fixture: flowchart/gram-subgraph-member-has-own-property-empty-id-then-member]
+  [fixture: flowchart/gram-subgraph-member-has-own-property-inner-and-outer]
+  [fixture: flowchart/gram-subgraph-member-has-own-property-nested-outer-end-missing]
+  [fixture: flowchart/gram-subgraph-member-has-own-property-numbered-nested]
+  [fixture: flowchart/gram-subgraph-member-has-own-property-then-extra-end]
   `hasOwnProperty` だけを持つもの、`A` の後に `hasOwnProperty` を持つもの、
   メンバーが `A`、`hasOwnProperty` の順になる `hasOwnProperty-->A` を持つもの、
   `hasOwnProperty` の後にメンバーを加えない文だけが続くものは受理されます。
@@ -2004,6 +2055,7 @@ mermaid.js は、文法が受理する入力の一部を、Db を作る途中で
   flowchart/db-subgraph-member-has-own-property-direction] [fixture:
   flowchart/db-subgraph-member-has-own-property-no-member-statements] [fixture:
   flowchart/db-subgraph-member-has-own-property-in-nested]
+  [fixture: flowchart/db-subgraph-member-has-own-property-two-levels-down]
   メンバー `hasOwnProperty` は、どの種類のメンバーでもかまいません。
   入れ子の subgraph の id として、 `subgraph hasOwnProperty`、
   `subgraph "hasOwnProperty"`、 `subgraph hasOwnProperty [T]`、
@@ -2014,7 +2066,9 @@ mermaid.js は、文法が受理する入力の一部を、Db を作る途中で
   入れ子の `subgraph x[hasOwnProperty]` の id は `x`、
   名前の後に空白がある入れ子の `subgraph hasOwnProperty ` の id は `subGraph0`
   なので、後に `A` が続いても受理されます。
-  [fixture: flowchart/gram-subgraph-member-has-own-property-nested-id] [fixture:
+  [fixture: flowchart/gram-subgraph-member-has-own-property-nested-id]
+  [fixture: flowchart/gram-subgraph-member-has-own-property-nested-id-third-level]
+  [fixture:
   flowchart/gram-subgraph-member-has-own-property-nested-string-id] [fixture:
   flowchart/gram-subgraph-member-has-own-property-nested-id-title] [fixture:
   flowchart/gram-subgraph-member-has-own-property-nested-string-space-id-title]

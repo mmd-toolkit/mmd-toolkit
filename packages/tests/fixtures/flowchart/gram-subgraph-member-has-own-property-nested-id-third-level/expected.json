@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Rejections outside the grammar, subgraph members: in the subgraph T, itself nested, the nested id `hasOwnProperty` is followed by the member A."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "prims[type].hasOwnProperty is not a function"
+  }
+}

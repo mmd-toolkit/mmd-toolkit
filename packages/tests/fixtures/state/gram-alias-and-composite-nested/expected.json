@@ -1,0 +1,55 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Grammar, composite states: a composite state and an alias definition nest in each other."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "roundedWithTitle",
+        "label": "A",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "B",
+        "shape": "roundedWithTitle",
+        "label": "b",
+        "description": [],
+        "classes": [],
+        "styles": [],
+        "parentId": "A",
+        "dir": "TB"
+      },
+      {
+        "id": "C",
+        "shape": "roundedWithTitle",
+        "label": "C",
+        "classes": [],
+        "styles": [],
+        "parentId": "B",
+        "dir": "TB"
+      },
+      {
+        "id": "X",
+        "shape": "rect",
+        "label": "X",
+        "classes": [],
+        "styles": [],
+        "parentId": "C"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

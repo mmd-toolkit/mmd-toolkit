@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Grammar, composites: the third `end` has nothing to close after the two nested composites."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 7:\n...Ablock:Bcendendend\n------------------^\nExpecting 'EOF', got 'end'"
+  }
+}

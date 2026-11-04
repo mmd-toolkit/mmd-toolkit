@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Rejections outside the grammar: both states have a body and two descriptions, and the error is at the first of them."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Group nodes can only have label. Remove the additional description for node [A]"
+  }
+}

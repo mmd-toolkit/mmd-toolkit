@@ -1645,6 +1645,9 @@ composite-statement = ( "block:" node-statement | "block" | "block-beta" )
 空のもの、空の説明ブロックだけを持つもの、閉じないもの、閉じるものがない `end`、
 id としての `end` は拒否されます。
 入れ子はどの深さでもかまいません。
+`end` は、いちばん内側の開いている入れ子のブロックを閉じます。
+`end` の後に続くものは、外側の入れ子のブロックの中にあります。
+いちばん外側の `end` の後なら、図の中にあります。
 `block:` の後の辺の文は入れ子のブロックのノードの文で、
 mermaid.js はそれを id のないものとして読み、その辺の文のノードは、
 ブロックを作りません（[文法の外の拒否](#文法の外の拒否) を参照）。
@@ -1658,6 +1661,23 @@ mermaid.js はそれを id のないものとして読み、その辺の文の�
 [fixture: block/db-composite-block-arrow] [fixture: block/db-composite-nested]
 [fixture: block/db-composite-nested-no-id]
 [fixture: block/db-composite-nested-three]
+[fixture: block/db-composite-nested-empty-block-first]
+[fixture: block/db-composite-nested-only-nested]
+[fixture: block/db-composite-nested-three-levels-after-ends]
+[fixture: block/gram-composite-extra-end-nested]
+[fixture: block/gram-composite-nested-empty]
+[fixture: block/gram-composite-nested-empty-at-end-of-text]
+[fixture: block/gram-composite-nested-only-empty-block]
+[fixture: block/gram-composite-not-closed-both]
+[fixture: block/db-composite-nested-end-comment-line]
+[fixture: block/db-composite-nested-end-directive]
+[fixture: block/db-composite-nested-end-empty-line]
+[fixture: block/db-composite-nested-end-line-separator]
+[fixture: block/db-composite-nested-end-empty-block]
+[fixture: block/db-composite-nested-end-ignored-semicolon]
+[fixture: block/db-composite-nested-end-same-line]
+[fixture: block/db-composite-nested-ends-same-line]
+[fixture: block/db-composite-after-outermost-end-empty-block]
 [fixture: block/db-composite-siblings]
 [fixture: block/db-composite-siblings-no-id]
 [fixture: block/db-composite-end-in-line]
@@ -2317,6 +2337,8 @@ id `A,B` のブロックがないときの `style A,B`、
 `class A, B c` に `style B` が続くと、ノード `B` がなくても受理されます。
 文法が受理するほかのものを Db が拒否することはありません。
 [fixture: block/gram-composite-style-later-outer]
+[fixture: block/gram-composite-style-before-nested]
+[fixture: block/db-composite-style-after-nested]
 [fixture: block/gram-grid-ampersand-entity-style-id]
 [fixture: block/gram-grid-backslash-style-id]
 [fixture: block/gram-grid-backtick-style-id]

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Rejections outside the grammar, subgraph members: the lexer reads the whole diagram before the grammar, so the character that no rule reads after the `end` of S comes before the check of its members."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "prims[type].hasOwnProperty is not a function"
+  }
+}

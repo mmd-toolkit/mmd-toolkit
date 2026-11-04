@@ -6,7 +6,6 @@ import type {
   BlockClassDefStatement,
   BlockClassStatement,
   BlockColumnsStatement,
-  BlockCompositeStatement,
   BlockLink,
   BlockLiteral,
   BlockNode,
@@ -43,11 +42,30 @@ const SHAPE_STARTS: readonly UnitName[] = ["shape-open", "<["]
  */
 const STYLE_MESSAGE = "style names no block made before it"
 
+/** Composites: the units that start a `composite-statement`. */
+const COMPOSITE_STARTS: readonly UnitName[] = ["block:", "block", "block-beta"]
+
+/** The statements of a body read so far. */
+interface BodyStatements {
+  readonly body: BlockStatement[]
+  /** Whether a statement other than an empty description block is among them. */
+  hasStatement: boolean
+}
+
+/** A composite whose `end` is still to come, with its node. */
+interface OpenComposite extends BodyStatements {
+  /** The position of its first unit. */
+  readonly start: number
+  /** Its node statement, or null. */
+  readonly head: BlockNodeStatement | null
+}
+
 /**
  * diagrams/block.md, Grammar: the recursive-descent parser over the units
- * of the block lexer. Each method reads one rule of the grammar, which its
- * comment names, and makes the node that the specification gives for the
- * rule, with the tokens of `docs/tokens/block.md`, Tokens.
+ * of the block lexer, except that `parseStatements` holds the open
+ * composites. Each method reads one rule of the grammar, which its comment
+ * names, and makes the node that the specification gives for the rule, with
+ * the tokens of `docs/tokens/block.md`, Tokens.
  */
 export class BlockGrammar extends UnitGrammar<UnitName, Unit> {
   /**
@@ -69,7 +87,7 @@ export class BlockGrammar extends UnitGrammar<UnitName, Unit> {
     }
     this.addItem("Keyword", [header])
     this.advance()
-    const body = this.parseStatements(false)
+    const body = this.parseStatements()
     return { body, tokens: this.tokensInOrder() }
   }
 
@@ -85,24 +103,33 @@ export class BlockGrammar extends UnitGrammar<UnitName, Unit> {
 
   /**
    * Diagram and statements, and Composites: `statement+`, up to the end of
-   * the text, or, in a composite (`inComposite`), up to its `end`. An empty
-   * description block where a statement starts is a statement; at least
-   * one statement must be another.
+   * the text, or, in a composite, up to its `end`. An empty description
+   * block where a statement starts is a statement; at least one statement
+   * must be another.
+   *
+   * Composites nest without a limit, so `open` holds those whose `end` is
+   * still to come: a call for each of them would exhaust the call stack.
    */
-  private parseStatements(inComposite: boolean): BlockStatement[] {
-    const body: BlockStatement[] = []
-    let hasStatement = false
-    for (let unit = this.peek(); unit !== null; unit = this.peek()) {
-      if (inComposite && unit.name === "end") break
-      if (this.emptyBlockStartsAt(this.next)) {
-        body.push(this.parseAccDescrBlockStatement())
+  private parseStatements(): BlockStatement[] {
+    const top: BodyStatements = { body: [], hasStatement: false }
+    const open: OpenComposite[] = []
+    for (;;) {
+      const unit = this.peek()
+      const statements = open.at(-1) ?? top
+      if (unit === null || (open.length > 0 && unit.name === "end")) {
+        if (!statements.hasStatement) throw this.unexpected(unit)
+        if (open.length === 0) return top.body
+        this.closeComposite(open, top)
+      } else if (this.emptyBlockStartsAt(this.next)) {
+        statements.body.push(this.parseAccDescrBlockStatement())
+      } else if (COMPOSITE_STARTS.includes(unit.name)) {
+        statements.hasStatement = true
+        open.push(this.openComposite())
       } else {
-        body.push(this.parseStatement(unit))
-        hasStatement = true
+        statements.body.push(this.parseStatement(unit))
+        statements.hasStatement = true
       }
     }
-    if (!hasStatement) throw this.unexpected(this.peek())
-    return body
   }
 
   /** Empty description blocks: whether an empty description block starts at the position `position`. */
@@ -112,7 +139,10 @@ export class BlockGrammar extends UnitGrammar<UnitName, Unit> {
     return form?.kind === "empty-description-block" && form.units[0] === unit
   }
 
-  /** Diagram and statements: `statement`, which starts at `unit`, the next unit. */
+  /**
+   * Diagram and statements: `statement`, which starts at `unit`, the next
+   * unit. `parseStatements` reads the composites.
+   */
   private parseStatement(unit: Unit): BlockStatement {
     switch (unit.name) {
       case "id": {
@@ -125,10 +155,6 @@ export class BlockGrammar extends UnitGrammar<UnitName, Unit> {
         return this.parseSpaceStatement()
       case "columns":
         return this.parseColumnsStatement()
-      case "block:":
-      case "block":
-      case "block-beta":
-        return this.parseCompositeStatement()
       case "classDef":
         return this.parseClassDefStatement()
       case "class":
@@ -373,12 +399,12 @@ export class BlockGrammar extends UnitGrammar<UnitName, Unit> {
 
   /**
    * Composites: `composite-statement = ( "block:" node-statement | "block"
-   * | "block-beta" ) statement+ "end"`. Rejections outside the grammar: the
-   * composite of `block:` makes the block of its node before its
-   * statements, unless the node statement has links, which mermaid.js
-   * reads as a composite with no id.
+   * | "block-beta" ) statement+ "end"`, up to its `statement+`. Rejections
+   * outside the grammar: the composite of `block:` makes the block of its
+   * node before its statements, unless the node statement has links, which
+   * mermaid.js reads as a composite with no id.
    */
-  private parseCompositeStatement(): BlockCompositeStatement {
+  private openComposite(): OpenComposite {
     const start = this.next
     let head: BlockNodeStatement | null = null
     const keyed = this.takeIf("block:")
@@ -394,14 +420,28 @@ export class BlockGrammar extends UnitGrammar<UnitName, Unit> {
       this.addItem("Keyword", [keyword])
       this.advance()
     }
-    const body = this.parseStatements(true)
+    return { start, head, body: [], hasStatement: false }
+  }
+
+  /**
+   * Composites: the `"end"` of the innermost composite of `open`, which makes
+   * it a statement of the composite around it, or of `top` when there is
+   * none.
+   */
+  private closeComposite(open: OpenComposite[], top: BodyStatements): void {
+    const composite = open.pop()
+    if (composite === undefined) {
+      throw new Error("mmd-toolkit parser bug: no open block composite")
+    }
+    const { start, head, body } = composite
     this.addItem("Keyword", [this.take("end")])
-    return {
+    const statements = open.at(-1) ?? top
+    statements.body.push({
       type: "BlockCompositeStatement",
       head,
       body,
       ...this.placeFrom(start),
-    }
+    })
   }
 
   /**

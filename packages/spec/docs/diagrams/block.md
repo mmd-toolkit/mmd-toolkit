@@ -1450,18 +1450,36 @@ a shape (`block:G:2`, `block:G["x"]`), and whitespace, line feeds included, may
 stand after `block:`. A composite holds one or more statements: an empty
 composite, one that holds only an empty description block, one that is not
 closed, an `end` with nothing to close, and `end` as an id are rejected.
-Composites nest to any depth. An edge statement after `block:` is the node
-statement of the composite, which mermaid.js then reads with no id, and whose
-nodes make no block (see
-[Rejections outside the grammar](#rejections-outside-the-grammar)); the tree
-holds it as written. A quoted id, a space before the `:`, `Block:G`, and `space`
-after `block:` are rejected. [fixture: block/db-composite-plain] [fixture:
-block/db-composite-no-id] [fixture: block/db-composite-no-id-beta] [fixture:
-block/db-composite-width] [fixture: block/db-composite-width-zero] [fixture:
-block/db-composite-label] [fixture: block/db-composite-label-shapes] [fixture:
-block/db-composite-label-and-width] [fixture: block/db-composite-block-arrow]
-[fixture: block/db-composite-nested] [fixture: block/db-composite-nested-no-id]
-[fixture: block/db-composite-nested-three] [fixture:
+Composites nest to any depth: each `end` closes the innermost open one, and what
+follows it stands in the composite around it, or in the diagram after the
+outermost `end`. An edge statement after `block:` is the node statement of the
+composite, which mermaid.js then reads with no id, and whose nodes make no block
+(see [Rejections outside the grammar](#rejections-outside-the-grammar)); the
+tree holds it as written. A quoted id, a space before the `:`, `Block:G`, and
+`space` after `block:` are rejected. [fixture: block/db-composite-plain]
+[fixture: block/db-composite-no-id] [fixture: block/db-composite-no-id-beta]
+[fixture: block/db-composite-width] [fixture: block/db-composite-width-zero]
+[fixture: block/db-composite-label] [fixture: block/db-composite-label-shapes]
+[fixture: block/db-composite-label-and-width] [fixture:
+block/db-composite-block-arrow] [fixture: block/db-composite-nested] [fixture:
+block/db-composite-nested-no-id] [fixture: block/db-composite-nested-three]
+[fixture: block/db-composite-nested-empty-block-first] [fixture:
+block/db-composite-nested-only-nested] [fixture:
+block/db-composite-nested-three-levels-after-ends] [fixture:
+block/gram-composite-extra-end-nested] [fixture:
+block/gram-composite-nested-empty] [fixture:
+block/gram-composite-nested-empty-at-end-of-text] [fixture:
+block/gram-composite-nested-only-empty-block] [fixture:
+block/gram-composite-not-closed-both] [fixture:
+block/db-composite-nested-end-comment-line] [fixture:
+block/db-composite-nested-end-directive] [fixture:
+block/db-composite-nested-end-empty-line] [fixture:
+block/db-composite-nested-end-line-separator] [fixture:
+block/db-composite-nested-end-empty-block] [fixture:
+block/db-composite-nested-end-ignored-semicolon] [fixture:
+block/db-composite-nested-end-same-line] [fixture:
+block/db-composite-nested-ends-same-line] [fixture:
+block/db-composite-after-outermost-end-empty-block] [fixture:
 block/db-composite-siblings] [fixture: block/db-composite-siblings-no-id]
 [fixture: block/db-composite-end-in-line] [fixture:
 block/db-composite-two-statements-line] [fixture:
@@ -2033,6 +2051,8 @@ id of a block, since the statement makes one for an id that no block has:
 `class A, B c` followed by `style B` is accepted with no node `B`. Nothing else
 that the grammar accepts is rejected by the Db. [fixture:
 block/gram-composite-style-later-outer] [fixture:
+block/gram-composite-style-before-nested] [fixture:
+block/db-composite-style-after-nested] [fixture:
 block/gram-grid-ampersand-entity-style-id] [fixture:
 block/gram-grid-backslash-style-id] [fixture: block/gram-grid-backtick-style-id]
 [fixture: block/gram-grid-close-square-style-id] [fixture:

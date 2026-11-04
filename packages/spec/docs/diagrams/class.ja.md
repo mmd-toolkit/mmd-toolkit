@@ -1098,6 +1098,40 @@ namespace-item      = class-statement | note-statement | namespace-statement
 [fixture: class/gram-namespace-note]
 [fixture: class/db-namespace-redeclared-label]
 [fixture: class/lex-namespace-two-closing-braces]
+[fixture: class/gram-namespace-nested-three-levels]
+[fixture: class/gram-namespace-nested-labels]
+[fixture: class/gram-namespace-nested-backquoted-prefix]
+[fixture: class/gram-namespace-nested-note]
+[fixture: class/gram-namespace-nested-empty]
+[fixture: class/gram-namespace-nested-relation]
+[fixture: class/gram-namespace-nested-close-empty-block]
+
+class の本体の外の `}` は、いちばん内側の開いている名前空間を閉じ、
+どれも自分の `}` が要ります。
+`}` が足りない入力と、開いているものがないときの `}` は拒否します。
+[fixture: class/gram-namespace-nested-unclosed]
+[fixture: class/gram-namespace-outer-unclosed]
+[fixture: class/gram-namespace-nested-close-extra]
+[fixture: class/lex-namespace-body-unclosed]
+[fixture: class/gram-namespace-nested-closes-glued]
+[fixture: class/gram-namespace-class-body-closes-glued]
+[fixture: class/gram-close-brace-alone]
+項目は改行で区切ります。
+入れ子の名前空間や class の本体の `}` の後も同じで、
+いちばん外側の `}` の後の文にも改行が要ります。
+[fixture: class/gram-namespace-nested-item-same-line]
+[fixture: class/gram-namespace-close-then-statement-same-line]
+[fixture: class/gram-namespace-nested-close-line-separator-only]
+[fixture: class/gram-namespace-class-body-close-then-class]
+`}` の後に続くものは、外側の名前空間の中にあります。
+いちばん外側の `}` の後なら、図の中にあります。
+[fixture: class/gram-namespace-nested-close-comment-line]
+[fixture: class/gram-namespace-nested-close-directive]
+[fixture: class/gram-namespace-nested-close-empty-line]
+[fixture: class/gram-namespace-nested-close-line-separator]
+[fixture: class/gram-namespace-nested-close-ignored-semicolon]
+[fixture: class/gram-namespace-after-outermost-close]
+[fixture: class/gram-namespace-after-outermost-close-empty-block]
 
 ### ほかの文
 
@@ -1154,6 +1188,8 @@ mermaid.js は、そのブロックにトークンを読まず、
 flowchart と sequence では、空の説明ブロックだけの行は受理されます。
 [fixture: class/gram-empty-description-block-then-statement] [fixture:
 class/gram-empty-description-block-alone]
+[fixture: class/gram-empty-description-blocks-before-statement]
+[fixture: class/gram-empty-description-blocks-then-line-feed]
 
 ### 文法の外での拒否
 
@@ -1165,7 +1201,7 @@ mermaid.js は、文法が受理した後に、次の入力を拒否します。
   [`addAnnotation`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/classDb.ts#L263-L266)）。
   `class A` の後なら受理されます。
   クラスを**加える**のは、クラスの文、ラベルのあるメンバーの文、関係の文で、
-  その各クラス名について、名前空間の本体の中でも加えます。
+  その各クラス名について、どの深さの名前空間の本体の中でも加えます。
   ただし、端が `()` だけの関係の、`()` の側の名前はインターフェースを指し、
   クラスを加えません。
   クラス名だけの文、ノート、click、`cssClass`、スタイルの文は加えません。
@@ -1209,6 +1245,9 @@ mermaid.js は、文法が受理した後に、次の入力を拒否します。
   [fixture: class/gram-annotation-after-name-statement]
   [fixture: class/gram-annotation-after-css-class]
   [fixture: class/gram-annotation-after-click]
+  [fixture: class/db-annotation-after-nested-namespace-class]
+  [fixture: class/gram-annotation-before-nested-namespace-class]
+  [fixture: class/db-annotation-after-second-nested-namespace-class]
 - 分けられない方法の行。
   `x)` など（[メンバーの行](#メンバーの行) を参照）。
   [fixture: class/lex-member-method-without-opening]

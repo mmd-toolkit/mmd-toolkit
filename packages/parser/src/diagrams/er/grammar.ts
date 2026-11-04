@@ -1,4 +1,3 @@
-import { appendItems } from "../../append-items.ts"
 import type { DiagramTokenKind, Identifier, StringLiteral } from "../../ast.ts"
 import type {
   ErAccDescrBlockStatement,
@@ -18,7 +17,6 @@ import type {
   ErRelationshipStatement,
   ErStatement,
   ErStyleStatement,
-  ErSubgraphStatement,
 } from "../../ast/er.ts"
 import type { EmptyFormKind } from "../../empty-forms.ts"
 import { EMPTY_FORM_KINDS } from "../../empty-forms.ts"
@@ -85,11 +83,24 @@ function lineOf(name: UnitName): ErRelationshipLine | null {
   }
 }
 
+/** A subgraph whose `end` is still to come, with its heading. */
+interface OpenSubgraph {
+  /** The position of its `subgraph` unit. */
+  readonly start: number
+  /** Its id. */
+  readonly id: ErIdentifier | StringLiteral
+  /** Its title, or null. */
+  readonly title: (ErIdentifier | StringLiteral)[] | null
+  /** The statements of its body read so far. */
+  readonly body: ErStatement[]
+}
+
 /**
  * diagrams/er.md, Grammar: the recursive-descent parser over the units of
- * the ER lexer. Each method reads one rule of the grammar, which its
- * comment names, and makes the node that the specification gives for the
- * rule, with the tokens of `docs/tokens/er.md`, Tokens.
+ * the ER lexer, except that `parseLines` holds the open subgraphs. Each
+ * method reads one rule of the grammar, which its comment names, and makes
+ * the node that the specification gives for the rule, with the tokens of
+ * `docs/tokens/er.md`, Tokens.
  */
 export class ErGrammar extends UnitGrammar<UnitName, Unit> {
   public constructor(units: readonly Unit[], lexer: SourceLexer) {
@@ -100,7 +111,7 @@ export class ErGrammar extends UnitGrammar<UnitName, Unit> {
   /** Diagram and statements: `diagram = "header" line*`. */
   public parseDiagram(): ErSyntax {
     this.addItem("Keyword", [this.take("header")])
-    const body = this.parseLines(false)
+    const body = this.parseLines()
     return { body, tokens: this.tokensInOrder() }
   }
 
@@ -132,25 +143,36 @@ export class ErGrammar extends UnitGrammar<UnitName, Unit> {
    * Diagram and statements: `line*`, with `line = statement | newline`: the
    * statements up to the end of the text, or, in the body of a subgraph,
    * up to its `end`.
+   *
+   * Subgraphs nest without a limit, so `open` holds those whose `end` is
+   * still to come: a call for each of them would exhaust the call stack.
    */
-  private parseLines(inSubgraph: boolean): ErStatement[] {
-    const body: ErStatement[] = []
+  private parseLines(): ErStatement[] {
+    const top: ErStatement[] = []
+    const open: OpenSubgraph[] = []
     for (;;) {
       const unit = this.peek()
       if (unit === null) {
-        if (inSubgraph) throw this.unexpected(null)
-        return body
+        if (open.length > 0) throw this.unexpected(null)
+        return top
       }
-      if (inSubgraph && unit.name === "end") return body
-      if (unit.name === "newline") {
+      const statements = open.at(-1)?.body ?? top
+      if (open.length > 0 && unit.name === "end") {
+        this.closeSubgraph(open, top)
+      } else if (unit.name === "newline") {
         this.advance()
-        continue
+      } else if (unit.name === "subgraph") {
+        open.push(this.openSubgraph())
+      } else {
+        statements.push(this.parseStatement())
       }
-      body.push(this.parseStatement())
     }
   }
 
-  /** Diagram and statements: `statement`. Nothing separates two statements. */
+  /**
+   * Diagram and statements: `statement`. Nothing separates two statements.
+   * `parseLines` reads the subgraphs.
+   */
   private parseStatement(): ErStatement {
     const unit = this.peek()
     switch (unit?.name) {
@@ -158,8 +180,6 @@ export class ErGrammar extends UnitGrammar<UnitName, Unit> {
       case "number":
       case "quoted-name":
         return this.parseEntityOrRelationshipStatement()
-      case "subgraph":
-        return this.parseSubgraphStatement()
       case "direction-text":
       case "direction":
         return this.parseDirectionStatement()
@@ -479,10 +499,11 @@ export class ErGrammar extends UnitGrammar<UnitName, Unit> {
   /**
    * Subgraphs: `subgraph-statement = "subgraph" entity-name
    * subgraph-title? empty-description-block* newline line* "end"`, with
-   * `subgraph-title = "[" entity-name+ "]"`. The empty description blocks
-   * of the header line are the first statements of the body.
+   * `subgraph-title = "[" entity-name+ "]"`, up to its `line*`. The empty
+   * description blocks of the header line are the first statements of the
+   * body.
    */
-  private parseSubgraphStatement(): ErSubgraphStatement {
+  private openSubgraph(): OpenSubgraph {
     const start = this.next
     this.addItem("Keyword", [this.take("subgraph")])
     const id = this.parseEntityName()
@@ -499,15 +520,28 @@ export class ErGrammar extends UnitGrammar<UnitName, Unit> {
     const body: ErStatement[] = []
     while (this.next < separator) body.push(this.parseAccDescrBlockStatement())
     this.take("newline")
-    appendItems(body, this.parseLines(true))
+    return { start, id, title, body }
+  }
+
+  /**
+   * Subgraphs: the `"end"` of the innermost subgraph of `open`, which makes
+   * it a statement of the subgraph around it, or of `top` when there is none.
+   */
+  private closeSubgraph(open: OpenSubgraph[], top: ErStatement[]): void {
+    const subgraph = open.pop()
+    if (subgraph === undefined) {
+      throw new Error("mmd-toolkit parser bug: no open ER subgraph")
+    }
+    const { start, id, title, body } = subgraph
     this.addItem("Keyword", [this.take("end")])
-    return {
+    const statements = open.at(-1)?.body ?? top
+    statements.push({
       type: "ErSubgraphStatement",
       id,
       title,
       body,
       ...this.placeFrom(start),
-    }
+    })
   }
 
   /**
