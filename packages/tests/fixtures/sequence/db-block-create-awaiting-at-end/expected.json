@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Rejections outside the grammar: a statement in a block or a section counts once, where it is written; C still awaits creation at the end of the text; accepted."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "C",
+        "description": "C",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [
+      {
+        "id": "C",
+        "messageIndex": 1
+      }
+    ],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "message": "a",
+        "wrap": false,
+        "type": 10,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 11,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

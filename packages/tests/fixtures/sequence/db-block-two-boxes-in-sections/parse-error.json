@@ -1,0 +1,17 @@
+{
+  "message": "A participant cannot be in two boxes",
+  "range": [
+    71,
+    72
+  ],
+  "loc": {
+    "start": {
+      "line": 8,
+      "column": 12
+    },
+    "end": {
+      "line": 8,
+      "column": 13
+    }
+  }
+}

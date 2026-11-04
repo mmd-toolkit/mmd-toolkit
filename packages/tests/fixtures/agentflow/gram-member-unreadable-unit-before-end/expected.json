@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A unit before the end of the flow that the grammar cannot read comes before the condition on a member."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 5:\n...sOwnPropertyBstyleend\n---------------------^\nExpecting 'SPACE', got 'NEWLINE'"
+  }
+}

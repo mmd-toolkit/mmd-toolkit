@@ -1,0 +1,495 @@
+{
+  "type": "Root",
+  "diagramType": "sequence",
+  "body": {
+    "type": "SequenceDiagram",
+    "body": [
+      {
+        "type": "SequenceParStatement",
+        "sections": [
+          {
+            "type": "SequenceSection",
+            "text": {
+              "type": "SequenceText",
+              "wrap": null,
+              "value": {
+                "type": "SequenceLiteral",
+                "value": "a",
+                "range": [
+                  20,
+                  21
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 5
+                  }
+                }
+              },
+              "range": [
+                20,
+                21
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 4
+                },
+                "end": {
+                  "line": 2,
+                  "column": 5
+                }
+              }
+            },
+            "body": [
+              {
+                "type": "SequenceParOverStatement",
+                "sections": [
+                  {
+                    "type": "SequenceSection",
+                    "text": {
+                      "type": "SequenceText",
+                      "wrap": null,
+                      "value": {
+                        "type": "SequenceLiteral",
+                        "value": "b",
+                        "range": [
+                          31,
+                          32
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 3,
+                            "column": 9
+                          },
+                          "end": {
+                            "line": 3,
+                            "column": 10
+                          }
+                        }
+                      },
+                      "range": [
+                        31,
+                        32
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 3,
+                          "column": 9
+                        },
+                        "end": {
+                          "line": 3,
+                          "column": 10
+                        }
+                      }
+                    },
+                    "body": [],
+                    "range": [
+                      22,
+                      32
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 3,
+                        "column": 0
+                      },
+                      "end": {
+                        "line": 3,
+                        "column": 10
+                      }
+                    }
+                  },
+                  {
+                    "type": "SequenceSection",
+                    "text": {
+                      "type": "SequenceText",
+                      "wrap": null,
+                      "value": {
+                        "type": "SequenceLiteral",
+                        "value": "c",
+                        "range": [
+                          37,
+                          38
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 4,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 4,
+                            "column": 5
+                          }
+                        }
+                      },
+                      "range": [
+                        37,
+                        38
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 4,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 4,
+                          "column": 5
+                        }
+                      }
+                    },
+                    "body": [],
+                    "range": [
+                      33,
+                      38
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 4,
+                        "column": 0
+                      },
+                      "end": {
+                        "line": 4,
+                        "column": 5
+                      }
+                    }
+                  }
+                ],
+                "range": [
+                  22,
+                  42
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 0
+                  },
+                  "end": {
+                    "line": 5,
+                    "column": 3
+                  }
+                }
+              }
+            ],
+            "range": [
+              16,
+              42
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 5,
+                "column": 3
+              }
+            }
+          },
+          {
+            "type": "SequenceSection",
+            "text": {
+              "type": "SequenceText",
+              "wrap": null,
+              "value": {
+                "type": "SequenceLiteral",
+                "value": "d",
+                "range": [
+                  47,
+                  48
+                ],
+                "loc": {
+                  "start": {
+                    "line": 6,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 6,
+                    "column": 5
+                  }
+                }
+              },
+              "range": [
+                47,
+                48
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 4
+                },
+                "end": {
+                  "line": 6,
+                  "column": 5
+                }
+              }
+            },
+            "body": [],
+            "range": [
+              43,
+              48
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 0
+              },
+              "end": {
+                "line": 6,
+                "column": 5
+              }
+            }
+          }
+        ],
+        "range": [
+          16,
+          52
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 3
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      52
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 7,
+        "column": 3
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "sequenceDiagram",
+      "range": [
+        0,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "par",
+      "range": [
+        16,
+        19
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "a",
+      "range": [
+        20,
+        21
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 2,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "par_over",
+      "range": [
+        22,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "b",
+      "range": [
+        31,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 9
+        },
+        "end": {
+          "line": 3,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "and",
+      "range": [
+        33,
+        36
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "c",
+      "range": [
+        37,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 4
+        },
+        "end": {
+          "line": 4,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "end",
+      "range": [
+        39,
+        42
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "and",
+      "range": [
+        43,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "d",
+      "range": [
+        47,
+        48
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 4
+        },
+        "end": {
+          "line": 6,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "end",
+      "range": [
+        49,
+        52
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 3
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    53
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 8,
+      "column": 0
+    }
+  }
+}

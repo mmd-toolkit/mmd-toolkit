@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md Rejections outside the grammar: an unnamed nested flow contributes a nonempty value; empty, and after hasOwnProperty; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "prims[type2].hasOwnProperty is not a function"
+  }
+}

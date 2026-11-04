@@ -110,19 +110,25 @@ interface LabelUnits {
   readonly delimiters: readonly Range[]
 }
 
-/** Flows, globals, connectors, and names: the heading of a flow. */
-interface FlowHeading {
+/** A flow whose `end` is still to come, with its optional heading. */
+interface OpenFlow {
+  readonly keyword: "flow"
+  readonly start: number
   readonly name: AgentflowName | null
   readonly title: AgentflowLabel | null
   readonly data: AgentflowDataBlock[]
-}
-
-/** A flow or a global whose `end` is still to come; a global has no heading. */
-interface OpenContainer {
-  readonly start: number
-  readonly heading: FlowHeading | null
   readonly body: AgentflowStatement[]
 }
+
+/** A global whose `end` is still to come. */
+interface OpenGlobal {
+  readonly keyword: "global"
+  readonly start: number
+  readonly body: AgentflowStatement[]
+}
+
+/** A flow or a global whose `end` is still to come. */
+type OpenContainer = OpenFlow | OpenGlobal
 
 /**
  * diagrams/agentflow.md, Grammar: the recursive-descent parser over the
@@ -594,7 +600,7 @@ export class AgentflowGrammar extends GraphGrammar<
   }
 
   /** Flows, globals, connectors, and names: `"flow"` and its optional heading, up to its lines. */
-  private openFlow(): OpenContainer {
+  private openFlow(): OpenFlow {
     const start = this.next
     this.addItem("Keyword", [this.take("flow")])
     let name: AgentflowName | null = null
@@ -606,17 +612,20 @@ export class AgentflowGrammar extends GraphGrammar<
       data = this.parseData()
     }
     return {
+      keyword: "flow",
       start,
-      heading: { name, title, data },
+      name,
+      title,
+      data,
       body: this.parseHeadingEnd(),
     }
   }
 
   /** A global heading has no name, title, or data. */
-  private openGlobal(): OpenContainer {
+  private openGlobal(): OpenGlobal {
     const start = this.next
     this.addItem("Keyword", [this.take("global")])
-    return { start, heading: null, body: this.parseHeadingEnd() }
+    return { keyword: "global", start, body: this.parseHeadingEnd() }
   }
 
   /**
@@ -632,20 +641,23 @@ export class AgentflowGrammar extends GraphGrammar<
     if (container === undefined) {
       throw new Error("mmd-toolkit parser bug: no open agentflow container")
     }
-    const { start, heading, body } = container
-    if (heading !== null) this.checkFlowMembers(body)
+    const { start, body } = container
+    if (container.keyword === "flow") this.checkFlowMembers(body)
     this.addItem("Keyword", [this.take("end")])
     const place = this.placeFrom(start)
     const parent = open.at(-1)?.body ?? top
-    if (heading === null) {
-      parent.push({ type: "AgentflowGlobalStatement", body, ...place })
-    } else {
+    if (container.keyword === "flow") {
+      const { name, title, data } = container
       parent.push({
         type: "AgentflowFlowStatement",
-        ...heading,
+        name,
+        title,
+        data,
         body,
         ...place,
       })
+    } else {
+      parent.push({ type: "AgentflowGlobalStatement", body, ...place })
     }
   }
 
