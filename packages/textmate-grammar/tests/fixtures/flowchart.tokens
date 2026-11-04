@@ -1700,6 +1700,23 @@
   "'" meta.data.mermaid string.quoted.single.mermaid punctuation.definition.string.end.mermaid
   " " meta.data.mermaid string.unquoted.mermaid
   "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
+> A@{ w: 10 , h: 20 }
+  "A" variable.mermaid
+  "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
+  " " meta.data.mermaid
+  "w" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "10" meta.data.mermaid constant.numeric.mermaid
+  " " meta.data.mermaid string.unquoted.mermaid
+  "," meta.data.mermaid keyword.operator.separator.comma.mermaid
+  " " meta.data.mermaid
+  "h" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "20" meta.data.mermaid constant.numeric.mermaid
+  " " meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
 > accDescr { unclosed class description
   "accDescr" keyword.control.mermaid
   "{" keyword.operator.delimiter.description.begin.mermaid

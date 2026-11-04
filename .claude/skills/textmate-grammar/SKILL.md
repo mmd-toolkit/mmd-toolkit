@@ -52,11 +52,13 @@ mermaid.js reaches it only through a change of the specification.
 - Where the specification reads one text as a single unit, a structure that a
   reader sees in that text is still colored apart: the properties of a style,
   the keys and values of a data block, the type and the name of a class member,
-  the `after` and the id of a gantt task, a sankey value that is a number. The
-  unit of the specification does not change. The rule's comment says that the
-  split is for the reader, and `Follows` names the sections that define the
-  statement. A text that the specification reads as both the id and the shown
-  text of an element shows no such structure, and stays a label.
+  the `after` and the id of a gantt task, a sankey value that is an unsigned
+  whole number or decimal. The unit of the specification does not change. The
+  rule's comment says that the split is for the reader, and `Follows` names the
+  sections that define the statement. A text that the specification reads as
+  both the id and the shown text of an element shows no such structure, and
+  stays a label; a text that the document reads as an id alone, as er reads the
+  name of a subgraph apart from its title, is a name.
 - A unit of those forms gets the scope of its kind, from the one table in the
   section Scopes of the package's `README.md`, in every diagram type. The table
   is in the README alone; this skill does not copy it.

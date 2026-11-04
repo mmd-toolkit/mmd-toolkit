@@ -178,3 +178,17 @@ class AdditionalMemberTypes {
   +java.util.List items
   +List<String> names
 }
+
+class TypedMethods {
+  -int leafCount()
+  +void setName(String name)
+  +List~int~ items()
+  +String[] names() int
+  +foo()
+  +run-nested(x)
+  +run(List~T~, List~OT~)
+  +run-nested(List~List~OT~~)
+  +f(String[])
+  +List~T~
+}
+Apple : -int leafCount()

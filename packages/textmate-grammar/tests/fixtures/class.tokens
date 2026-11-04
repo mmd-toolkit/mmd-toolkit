@@ -906,11 +906,17 @@
   "count" variable.mermaid
 >   +List~OrderItem~ items
   "+" storage.modifier.mermaid
-  "List~OrderItem~" entity.name.type.mermaid
+  "List" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "OrderItem" entity.name.type.mermaid entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
   "items" variable.mermaid
 >   #Map~String, int~ m
   "#" storage.modifier.mermaid
-  "Map~String, int~" entity.name.type.mermaid
+  "Map" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "String, int" entity.name.type.mermaid entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
   "m" variable.mermaid
 >   +String[] names
   "+" storage.modifier.mermaid
@@ -963,7 +969,10 @@
   "+" storage.modifier.mermaid
   "setMessages" variable.mermaid
   "(" keyword.operator.bracket.arguments.begin.mermaid
-  "List~string~" entity.name.type.mermaid
+  "List" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "string" entity.name.type.mermaid entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
   "messages" variable.mermaid
   ")" keyword.operator.bracket.arguments.end.mermaid
 >   +area(w, h) float
@@ -979,7 +988,10 @@
   "+" storage.modifier.mermaid
   "setMap" variable.mermaid
   "(" keyword.operator.bracket.arguments.begin.mermaid
-  "Map~String, int~" entity.name.type.mermaid
+  "Map" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "String, int" entity.name.type.mermaid entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
   "m" variable.mermaid
   "," keyword.operator.separator.comma.mermaid
   "int" entity.name.type.mermaid
@@ -1044,7 +1056,10 @@
   "Square" variable.mermaid
   ":" keyword.operator.separator.colon.mermaid
   "-" storage.modifier.mermaid
-  "List~string~" entity.name.type.mermaid
+  "List" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "string" entity.name.type.mermaid entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
   "messages" variable.mermaid
 > Square : +getDistanceMatrix() List~List~int~~
   "Square" variable.mermaid
@@ -1053,7 +1068,13 @@
   "getDistanceMatrix" variable.mermaid
   "(" keyword.operator.bracket.arguments.begin.mermaid
   ")" keyword.operator.bracket.arguments.end.mermaid
-  "List~List~int~~" entity.name.type.mermaid
+  "List" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "List" entity.name.type.mermaid entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
+  "int" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
 > 
 > class AdditionalMemberTypes {
   "class" keyword.control.mermaid
@@ -1072,7 +1093,13 @@
   ")" keyword.operator.bracket.arguments.end.mermaid
 >   -List~List~int~~ matrix
   "-" storage.modifier.mermaid
-  "List~List~int~~" entity.name.type.mermaid
+  "List" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "List" entity.name.type.mermaid entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
+  "int" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
   "matrix" variable.mermaid
 >   +java.util.List items
   "+" storage.modifier.mermaid
@@ -1084,4 +1111,98 @@
   "names" variable.mermaid
 > }
   "}" keyword.operator.block.end.mermaid
+> 
+> class TypedMethods {
+  "class" keyword.control.mermaid
+  "TypedMethods" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>   -int leafCount()
+  "-" storage.modifier.mermaid
+  "int" entity.name.type.mermaid
+  "leafCount" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   +void setName(String name)
+  "+" storage.modifier.mermaid
+  "void" entity.name.type.mermaid
+  "setName" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "String" entity.name.type.mermaid
+  "name" variable.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   +List~int~ items()
+  "+" storage.modifier.mermaid
+  "List" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "int" entity.name.type.mermaid entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
+  "items" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   +String[] names() int
+  "+" storage.modifier.mermaid
+  "String[]" entity.name.type.mermaid
+  "names" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+  "int" entity.name.type.mermaid
+>   +foo()
+  "+" storage.modifier.mermaid
+  "foo" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   +run-nested(x)
+  "+" storage.modifier.mermaid
+  "run-nested" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "x" variable.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   +run(List~T~, List~OT~)
+  "+" storage.modifier.mermaid
+  "run" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "List" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "T" entity.name.type.mermaid entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "List" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "OT" entity.name.type.mermaid entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   +run-nested(List~List~OT~~)
+  "+" storage.modifier.mermaid
+  "run-nested" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "List" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "List" entity.name.type.mermaid entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
+  "OT" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   +f(String[])
+  "+" storage.modifier.mermaid
+  "f" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "String[]" entity.name.type.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   +List~T~
+  "+" storage.modifier.mermaid
+  "List" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "T" entity.name.type.mermaid entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
+> }
+  "}" keyword.operator.block.end.mermaid
+> Apple : -int leafCount()
+  "Apple" variable.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "-" storage.modifier.mermaid
+  "int" entity.name.type.mermaid
+  "leafCount" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
 > 

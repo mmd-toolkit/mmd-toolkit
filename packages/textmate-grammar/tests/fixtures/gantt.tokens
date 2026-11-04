@@ -950,3 +950,30 @@
   "," keyword.operator.separator.comma.mermaid
   " 1d" string.unquoted.mermaid
 > 
+> B :after a %% note
+  "B " string.unquoted.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "after" keyword.control.mermaid
+  "a" variable.mermaid
+  " %% note" string.unquoted.mermaid
+> A :a1, after b %% why, 1d
+  "A " string.unquoted.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "a1" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "after" keyword.control.mermaid
+  "b" variable.mermaid
+  " %% why" string.unquoted.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " 1d" string.unquoted.mermaid
+> kiwi :d, 2017-07-20, until b c
+  "kiwi " string.unquoted.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "d" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  " 2017-07-20" string.unquoted.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "until" keyword.control.mermaid
+  "b" variable.mermaid
+  "c" variable.mermaid
+> 

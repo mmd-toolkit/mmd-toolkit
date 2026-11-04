@@ -384,7 +384,16 @@
     ["'rate%'", "support.type.property-name.mermaid", 252],
     ["done", "string.quoted.double.mermaid", 252],
     ["50%", "string.quoted.single.mermaid", 252],
-    [",", "keyword.operator.separator.comma.mermaid", 252]
+    [",", "keyword.operator.separator.comma.mermaid", 252],
+    ["A", "variable.mermaid", 253],
+    ["@{", "keyword.operator.bracket.data.begin.mermaid", 253],
+    ["w", "support.type.property-name.mermaid", 253],
+    [":", "keyword.operator.separator.key-value.mermaid", 253],
+    ["10", "constant.numeric.mermaid", 253],
+    [",", "keyword.operator.separator.comma.mermaid", 253],
+    ["h", "support.type.property-name.mermaid", 253],
+    ["20", "constant.numeric.mermaid", 253],
+    ["}", "keyword.operator.bracket.data.end.mermaid", 253]
   ],
   "absent": [
     ["x", "string.unquoted.mermaid", 229],
@@ -426,7 +435,10 @@
     ["12:30", "constant.numeric.mermaid", 241],
     ["comma, colon: brace}", "keyword.operator.separator.comma.mermaid", 241],
     ["'rate%'", "string.quoted.single.mermaid", 252],
-    ["\"progress%\"", "string.quoted.double.mermaid", 252]
+    ["\"progress%\"", "string.quoted.double.mermaid", 252],
+    [",", "string.unquoted.mermaid", 253],
+    ["10", "string.unquoted.mermaid", 253],
+    ["20", "string.unquoted.mermaid", 253]
   ],
   "absentOnLine": [
     [204, "string.quoted.double.mermaid"],

@@ -195,8 +195,10 @@ What each kind holds:
   a task id (`a1` in `:a1, 2014-01-01, 30d` and in `after a1`), a commit id, a
   branch, a rule name, or the name of a class of styles (`classDef` name,
   `:::name`, `class A name`). Where the specification reads one text as both the
-  id and the shown text of an element, such as a bare mindmap node, the text is
-  a label. State's `[*]`, the start or the end, is a keyword, not a name.
+  id and the shown text of an element, such as a bare mindmap node or the name
+  of a flowchart subgraph, the text is a label. er reads the name of a subgraph
+  as an id, apart from its title, so there it is a name. State's `[*]`, the
+  start or the end, is a keyword, not a name.
 - A name of a function is a callback that a statement calls.
 - A label or text is any text that the diagram shows or keeps: the label of a
   node or an edge, a relation's label, a message, a note, a title, a
@@ -219,20 +221,22 @@ What each kind holds:
 - A fixed value is a word that the specification lists as a value: a direction
   (`TD`, `LR`, …), an orientation, a gantt tag (`done`, `crit`, …), `true` and
   `false`, and `null` in a data block.
+- A sankey value is a number when the whole field is an unsigned whole number or
+  decimal, such as `3000` or `0.597`; any other value, such as `-1`, is a text.
 - A shape delimiter is a bracket that chooses the shape of a node, such as the
   `((` and `))` of a circle in flowchart and mindmap, the `[` and `]` of a
   kanban item, or the `{{` and `}}` of a hexagon. A block delimiter is a brace
   or bracket that opens and closes a block of statements, members or attributes,
   such as the `{` of a composite state, an ER entity or a class body. Keywords
   that open and close a block, such as `subgraph` and `end`, stay keywords.
-- Other delimiters (label delimiters such as `|`, directive marks), the brackets
-  of a list or of arguments, and separators (`:`, `,`, `;`, `:::`) have the
-  operator color, as shape and block delimiters do, so that the structure of a
-  line stands out. The `:` between a property name and its value is
-  `keyword.operator.separator.key-value.mermaid`. The quotes of a string are
-  `punctuation.definition.string.begin.mermaid` and `….end` inside the string's
-  scope, and the themes color them as the string; the mark of a comment is part
-  of the comment.
+- Other delimiters (label delimiters such as `|`, directive marks, the `~` of a
+  generic type), the brackets of a list or of arguments, and separators (`:`,
+  `,`, `;`, `:::`) have the operator color, as shape and block delimiters do, so
+  that the structure of a line stands out. The `:` between a property name and
+  its value is `keyword.operator.separator.key-value.mermaid`. The quotes of a
+  string are `punctuation.definition.string.begin.mermaid` and `….end` inside
+  the string's scope, and the themes color them as the string; the mark of a
+  comment is part of the comment.
 - Text that no rule reads is text that the specification reads as nothing:
   hidden YAML, a hidden directive, ignored text.
 - In a directive, the name is `entity.name.function.directive.mermaid` (purple),
@@ -243,9 +247,10 @@ What each kind holds:
 - In a data block (`@{ … }`), the braces are
   `keyword.operator.bracket.data.begin.mermaid` and `….end`. A key, bare or
   quoted, is a property name, and a `,` is a separator. A value has the scope of
-  its kind: a quoted value is a string, a number is a number, `true`, `false`
-  and `null` are fixed values, and any other value, such as `rect` in
-  `shape: rect`, is a text. The documents of kanban, flowchart, agentflow,
+  its kind: a quoted value is a string, a whole number or a decimal such as
+  `60`, `-1` or `20.4` is a number, `true`, `false` and `null` are fixed values,
+  and any other value, such as `rect` in `shape: rect`, `1e3`, or a number
+  inside an array, is a text. The documents of kanban, flowchart, agentflow,
   sequence and eventmodeling, and usecase's for its JSON value, read the
   interior as one text; the grammar colors the keys and values that a reader
   sees in it, and the block ends at the `}` that the type's document says.
@@ -315,17 +320,21 @@ as the specification reads it:
   rules around it read it. A `;` between the properties of a style, as in
   `fill:#f96;stroke:#333`, is colored differently from one diagram type to
   another.
-- A class member is divided into a type and a name only in the forms `Type name`
-  and `name : Type`, and a parameter likewise. A member of more words, such as
-  `+a b c`, or with a `=` keeps one color.
+- A class member, the name of a method and a parameter are divided into a type
+  and a name only in the forms `Type name` and `name : Type`. A lone word is a
+  name, unless it holds `~` or `[]`, which makes it a type. A text of more
+  words, such as `+a b c`, or with a `=` keeps one color.
 - In gantt, an item is colored as the id of its task when it is the first item
   after the tags and exactly two more items follow it on its line. A task with
-  four items or more or with an empty item has no item colored as an id, and an
-  item that holds a directive or an entity stays text, also after `after` or
-  `until`.
-- In a data block, text at the start of a line that looks like `key: value` is
-  colored as a key and a value, also on a line inside a longer YAML value and in
-  the data of an eventmodeling tag such as `md` or `text`.
+  four items or more, with an empty item, or with a directive or an entity in
+  any of its items has no item colored as the id of its task, and an item that
+  holds a directive or an entity stays text, also after `after` or `until`.
+- In a data block, text that looks like `key: value` at the start of a line or
+  after a `,` is colored as a key and a value, and a `,` is colored as a
+  separator, also inside a plain value of a block over lines
+  (`label: Hello, world`), inside a longer YAML value, and in the data of an
+  eventmodeling tag such as `md` or `text`. A `{`, `}`, `[` or `]` nested inside
+  the data is colored as text.
 - A line separator or paragraph separator that belongs to a directive is still
   read as a place where a comment line can start. A comment line inside a
   string, a label or a block is colored as a comment; where the value has one

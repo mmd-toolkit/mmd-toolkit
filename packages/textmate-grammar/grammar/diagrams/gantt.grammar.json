@@ -445,8 +445,8 @@
               "include": "#gantt-comma"
             },
             {
-              "comment": "Display after or until at the front of a plain dependency item as a keyword and each following id as a name. This split is for the reader; the document reads the item as one text. Follows gantt.md#tasks and gantt.md#click-statements.",
-              "match": "(?<=[:,])[{{lws}}]*(after|until)[{{lws}}]+({{gantt-reference-id}}(?:[{{lws}}]+{{gantt-reference-id}})*)[{{lws}}]*(?=,|$)",
+              "comment": "Display after or until at the front of a plain dependency item as a keyword and each following id as a name. Stop before a non-directive percent pair, leaving it and its preceding spacing to the remaining text rule. This split is for the reader; the document reads the item as one text. Follows gantt.md#tasks, gantt.md#comments, and gantt.md#click-statements.",
+              "match": "(?<=[:,])[{{lws}}]*(after|until)[{{lws}}]+({{gantt-reference-id}}(?:[{{lws}}]+{{gantt-reference-id}})*)(?:[{{lws}}]*(?=,|$)|(?=[{{lws}}]*{{nonDirectivePercentPair}}))",
               "captures": {
                 "1": {
                   "name": "keyword.control.mermaid"
@@ -597,7 +597,7 @@
     "gantt-data-item": "(?:(?!{{directiveStart}})[^,#;\\r\\n])+",
     "gantt-data-item-start": "(?=[^{{ws}},#;])",
     "gantt-nonempty-data-item": "[{{lws}}]*{{gantt-data-item-start}}{{gantt-data-item}}",
-    "gantt-reference-id": "(?:(?!{{directiveStart}})[^{{ws}},#;])+",
+    "gantt-reference-id": "(?:(?!{{directiveStart}})[^{{ws}},#;%])+",
     "gantt-tag": "(?:a{{directives}}c{{directives}}t{{directives}}i{{directives}}v{{directives}}e|d{{directives}}o{{directives}}n{{directives}}e|c{{directives}}r{{directives}}i{{directives}}t|m{{directives}}i{{directives}}l{{directives}}e{{directives}}s{{directives}}t{{directives}}o{{directives}}n{{directives}}e|v{{directives}}e{{directives}}r{{directives}}t)",
     "gantt-marker-property-end": "(?={{lineGap}}(?:[,;]|$))|{{separatorCommentEnd}}"
   },

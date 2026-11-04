@@ -417,9 +417,9 @@
   ":" keyword.operator.separator.colon.mermaid
   " Inline title" string.unquoted.mermaid
 > 
-> tf 02 cmd AddItem { description: string }
+> tf 89 cmd AddItem { description: string }
   "tf" keyword.control.mermaid
-  "02" variable.mermaid
+  "89" variable.mermaid
   "cmd" keyword.control.mermaid
   "AddItem" variable.mermaid
   "{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
@@ -429,9 +429,9 @@
   " " meta.data.mermaid
   "string " meta.data.mermaid string.unquoted.mermaid
   "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
-> tf 01 rmo UserAdded `json`{ "name": "foo" }
+> tf 90 rmo UserAdded `json`{ "name": "foo" }
   "tf" keyword.control.mermaid
-  "01" variable.mermaid
+  "90" variable.mermaid
   "rmo" keyword.control.mermaid
   "UserAdded" variable.mermaid
   "`" keyword.operator.delimiter.tag.begin.mermaid

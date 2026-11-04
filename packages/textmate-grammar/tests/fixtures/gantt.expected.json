@@ -185,7 +185,28 @@
     ["empty", "string.unquoted.mermaid", 125],
     ["2014-01-01", "string.unquoted.mermaid", 126],
     [" crit", "string.unquoted.mermaid", 126],
-    ["ordinary", "string.unquoted.mermaid", 127]
+    ["ordinary", "string.unquoted.mermaid", 127],
+    ["B ", "string.unquoted.mermaid", 129],
+    [":", "keyword.operator.separator.colon.mermaid", 129],
+    ["after", "keyword.control.mermaid", 129],
+    ["a", "variable.mermaid", 129],
+    [" %% note", "string.unquoted.mermaid", 129],
+    ["A ", "string.unquoted.mermaid", 130],
+    [":", "keyword.operator.separator.colon.mermaid", 130],
+    ["a1", "variable.mermaid", 130],
+    [",", "keyword.operator.separator.comma.mermaid", 130],
+    ["after", "keyword.control.mermaid", 130],
+    ["b", "variable.mermaid", 130],
+    [" %% why", "string.unquoted.mermaid", 130],
+    [" 1d", "string.unquoted.mermaid", 130],
+    ["kiwi ", "string.unquoted.mermaid", 131],
+    [":", "keyword.operator.separator.colon.mermaid", 131],
+    ["d", "variable.mermaid", 131],
+    [",", "keyword.operator.separator.comma.mermaid", 131],
+    [" 2017-07-20", "string.unquoted.mermaid", 131],
+    ["until", "keyword.control.mermaid", 131],
+    ["b", "variable.mermaid", 131],
+    ["c", "variable.mermaid", 131]
   ],
   "absentOnLine": [
     [1, "comment.line.percentage.mermaid"],
@@ -228,7 +249,9 @@
     [125, "variable.mermaid"],
     [126, "constant.language.mermaid"],
     [126, "variable.mermaid"],
-    [127, "variable.mermaid"]
+    [127, "variable.mermaid"],
+    [129, "comment.line.percentage.mermaid"],
+    [130, "comment.line.percentage.mermaid"]
   ],
   "absent": [
     ["a(b", "keyword.operator.bracket.parens.begin.mermaid"],
@@ -240,7 +263,9 @@
     ["call f()", "keyword.control.mermaid", 64],
     ["title ", "keyword.control.mermaid", 96],
     ["a1", "string.unquoted.mermaid", 107],
-    ["after", "string.unquoted.mermaid", 115]
+    ["after", "string.unquoted.mermaid", 115],
+    [" %% note", "variable.mermaid", 129],
+    [" %% why", "variable.mermaid", 130]
   ],
   "escapedInputs": [
     {

@@ -112,7 +112,9 @@
     ["price", "support.type.property-name.mermaid", 61],
     [":", "keyword.operator.separator.key-value.mermaid", 61],
     ["20.4", "constant.numeric.mermaid", 61],
-    ["}", "keyword.operator.bracket.data.end.mermaid", 62]
+    ["}", "keyword.operator.bracket.data.end.mermaid", 62],
+    ["89", "variable.mermaid", 56],
+    ["90", "variable.mermaid", 57]
   ],
   "absent": [
     ["init", "string.quoted.double.mermaid", 28],

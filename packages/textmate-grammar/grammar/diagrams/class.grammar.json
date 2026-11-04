@@ -787,10 +787,23 @@
           "name": "storage.modifier.mermaid"
         },
         "3": {
-          "name": "variable.mermaid",
           "patterns": [
             {
-              "include": "#directive"
+              "include": "#class-member-parts"
+            },
+            {
+              "comment": "Keep a method name outside the displayed member forms whole, retaining its directives. Follows class.md#member-lines.",
+              "match": ".+",
+              "name": "variable.mermaid",
+              "captures": {
+                "0": {
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              }
             }
           ]
         },
@@ -835,6 +848,9 @@
               "patterns": [
                 {
                   "include": "#directive"
+                },
+                {
+                  "include": "#class-generic"
                 }
               ]
             },
@@ -863,6 +879,9 @@
               "patterns": [
                 {
                   "include": "#directive"
+                },
+                {
+                  "include": "#class-generic"
                 }
               ]
             },
@@ -1090,14 +1109,19 @@
       ]
     },
     "class-member-parts": {
-      "comment": "Display Type name, name : Type and a lone name for the reader inside an attribute's member-name or one method parameter. Keep generic types with one nested tilde pair and array types whole. These display parts leave the document's units unchanged. End anchors require a complete form; the enclosing whole-text fallback wins over a later suffix match, including in text with directives. Bodies and member statements use these same capture-local forms. Follows class.md#member-lines, class.md#the-member-context, and class.md#members-and-annotations.",
+      "comment": "Display Type name, name : Type and a lone name for the reader inside an attribute or method's member-name or one method parameter. Keep generic types with one nested tilde pair and array types whole. These display parts leave the document's units unchanged. End anchors require a complete form; the enclosing whole-text fallback wins over a later suffix match, including in text with directives. Bodies and member statements use these same capture-local forms. Follows class.md#member-lines, class.md#the-member-context, and class.md#members-and-annotations.",
       "patterns": [
         {
           "comment": "Display a complete type-and-name pair, including generic and array type text. Follows class.md#member-lines.",
           "match": "[ \\t]*({{class-member-type}})[ \\t]+({{class-member-word}})[ \\t]*$",
           "captures": {
             "1": {
-              "name": "entity.name.type.mermaid"
+              "name": "entity.name.type.mermaid",
+              "patterns": [
+                {
+                  "include": "#class-generic"
+                }
+              ]
             },
             "2": {
               "name": "variable.mermaid"
@@ -1115,7 +1139,26 @@
               "name": "keyword.operator.separator.colon.mermaid"
             },
             "3": {
-              "name": "entity.name.type.mermaid"
+              "name": "entity.name.type.mermaid",
+              "patterns": [
+                {
+                  "include": "#class-generic"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Display a lone generic or array word as a type because a name contains neither tilde text nor square brackets. A lone word without either remains a name. Follows class.md#member-lines.",
+          "match": "[ \\t]*((?=[^\\r\\n]*(?:~|\\[\\])){{class-member-type}})[ \\t]*$",
+          "captures": {
+            "1": {
+              "name": "entity.name.type.mermaid",
+              "patterns": [
+                {
+                  "include": "#class-generic"
+                }
+              ]
             }
           }
         },

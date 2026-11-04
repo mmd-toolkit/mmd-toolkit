@@ -315,6 +315,42 @@ it.each([
   },
 )
 
+it.each(themes)(
+  "colors generic delimiters alike in class names and member types in %s",
+  (theme) => {
+    const code =
+      "classDiagram\nclass Square~Shape~ {\n  +List~int~ position\n  +run(List~T~)\n  +get()$ List~int~\n  +get() List~int~\n}"
+    const delimiters = tokenLines(code)
+      .flat()
+      .filter((token) => token.content === "~")
+    expect(delimiters.map((token) => token.scopes.at(-1))).toEqual([
+      "keyword.operator.delimiter.generic.begin.mermaid",
+      "keyword.operator.delimiter.generic.end.mermaid",
+      "keyword.operator.delimiter.generic.begin.mermaid",
+      "keyword.operator.delimiter.generic.end.mermaid",
+      "keyword.operator.delimiter.generic.begin.mermaid",
+      "keyword.operator.delimiter.generic.end.mermaid",
+      "keyword.operator.delimiter.generic.begin.mermaid",
+      "keyword.operator.delimiter.generic.end.mermaid",
+      "keyword.operator.delimiter.generic.begin.mermaid",
+      "keyword.operator.delimiter.generic.end.mermaid",
+    ])
+    const marker = foregroundOf(code, "~Shape", theme)
+    for (const line of highlighter.codeToTokensBase(code, {
+      lang: "mermaid",
+      theme,
+      includeExplanation: "scopeName",
+    })) {
+      for (const token of line) {
+        if (token.explanation?.some((part) => part.content === "~")) {
+          expect(token.color?.toLowerCase()).toBe(marker)
+        }
+      }
+    }
+    expect(foregroundOf(code, "Shape", theme)).not.toBe(marker)
+  },
+)
+
 /** Fixed units whose foreground colors must remain distinguishable. */
 const colorContrasts = [
   {
