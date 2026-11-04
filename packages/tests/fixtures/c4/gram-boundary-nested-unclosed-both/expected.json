@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "End of text in a boundary, with two boundaries open."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 6:\n...\") {Person(p,\"P\")\n--------------------^\nExpecting 'RBRACE', got 'EOF'"
+  }
+}

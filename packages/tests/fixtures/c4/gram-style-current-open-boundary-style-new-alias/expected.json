@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "c4.md Rejections outside the grammar: target matching uses the current alias as last assigned before the update; an earlier update in the open body assigns the alias; the new alias matches; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "undefined is not iterable (cannot read property Symbol(Symbol.iterator))"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Flows, globals, connectors, and names: nested heading empty block."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...lowflow accDescr {}Aendend\n----------------------^\nExpecting 'SPACE', 'GRAPH', 'DIR', 'flow', 'end', 'global', 'connector', 'AMP', 'COLON', 'START_LINK', 'STR', 'MD_STR', 'STYLE', 'LINKSTYLE', 'CLASSDEF', 'CLASS', 'CLICK', 'DOWN', 'UP', 'NUM', 'NODE_STRING', 'BRKT', 'MINUS', 'MULT', 'UNICODE_TEXT', got 'NEWLINE'"
+  }
+}

@@ -36,8 +36,6 @@ import type {
   AgentflowStatement,
   AgentflowStatementDirection,
   AgentflowStyleStatement,
-  AgentflowFlowStatement,
-  AgentflowGlobalStatement,
   AgentflowConnectorStatement,
   AgentflowName,
   AgentflowVertex,
@@ -112,11 +110,26 @@ interface LabelUnits {
   readonly delimiters: readonly Range[]
 }
 
+/** Flows, globals, connectors, and names: the heading of a flow. */
+interface FlowHeading {
+  readonly name: AgentflowName | null
+  readonly title: AgentflowLabel | null
+  readonly data: AgentflowDataBlock[]
+}
+
+/** A flow or a global whose `end` is still to come; a global has no heading. */
+interface OpenContainer {
+  readonly start: number
+  readonly heading: FlowHeading | null
+  readonly body: AgentflowStatement[]
+}
+
 /**
  * diagrams/agentflow.md, Grammar: the recursive-descent parser over the
- * units of the agentflow lexer. Each method reads one rule of the grammar,
- * which its comment names, and makes the node that the specification gives
- * for the rule, with the tokens of `docs/tokens/agentflow.md`, Tokens.
+ * units of the agentflow lexer, except that `parseLines` holds the open
+ * flows and globals. Each method reads one rule of the grammar, which its
+ * comment names, and makes the node that the specification gives for the
+ * rule, with the tokens of `docs/tokens/agentflow.md`, Tokens.
  *
  * The parser reads units only; it moves no cursor in the source. A unit
  * that no rule takes makes the input rejected, such as the units of an
@@ -197,7 +210,7 @@ export class AgentflowGrammar extends GraphGrammar<
         this.emptyDescriptionBlockStatementOf(units),
       )
     }
-    const body = [...headerBlocks, ...this.parseLines(false)]
+    const body = [...headerBlocks, ...this.parseLines()]
     return {
       direction,
       body,
@@ -208,30 +221,38 @@ export class AgentflowGrammar extends GraphGrammar<
   /**
    * Diagram and statements: `line*`, where `line = statement |
    * empty-statement | newline | space`. Inside a flow or global the lines end
-   * before its `end`; otherwise they end at the end of the text.
+   * at its `end`; otherwise they end at the end of the text.
+   *
+   * Flows and globals nest without a limit, so `open` holds those whose `end`
+   * is still to come: a call for each of them would exhaust the call stack.
    */
-  private parseLines(insideContainer: boolean): AgentflowStatement[] {
-    const statements: AgentflowStatement[] = []
+  private parseLines(): AgentflowStatement[] {
+    const top: AgentflowStatement[] = []
+    const open: OpenContainer[] = []
     for (;;) {
       const unit = this.peek()
       if (unit === null) {
-        if (insideContainer) throw this.unexpected(null)
-        return statements
+        if (open.length > 0) throw this.unexpected(null)
+        return top
       }
+      const lines = open.at(-1)?.body ?? top
       if (unit.name === "end") {
-        if (!insideContainer) throw this.unexpected(unit)
-        return statements
-      }
-      if (
+        if (open.length === 0) throw this.unexpected(unit)
+        this.closeContainer(open, top)
+      } else if (
         unit.name === "newline" ||
         unit.name === "space" ||
         unit.name === "comment"
       ) {
         this.advance()
       } else if (unit.name === ";") {
-        statements.push(this.parseEmptyStatement())
+        lines.push(this.parseEmptyStatement())
+      } else if (unit.name === "flow") {
+        open.push(this.openFlow())
+      } else if (unit.name === "global") {
+        open.push(this.openGlobal())
       } else {
-        appendItems(statements, this.parseStatement(unit))
+        appendItems(lines, this.parseStatement(unit))
       }
     }
   }
@@ -248,13 +269,10 @@ export class AgentflowGrammar extends GraphGrammar<
    * blocks after it. The vertex, style, class definition, class, link
    * style, and click statements end with a `statement-end`, whose
    * separator belongs to no statement; the others need no separator.
+   * `parseLines` reads the flows and globals.
    */
   private parseStatement(first: Unit): AgentflowStatement[] {
     switch (first.name) {
-      case "flow":
-        return [this.parseFlowStatement()]
-      case "global":
-        return [this.parseGlobalStatement()]
       case "connector":
         return this.parseConnectorStatement()
       case "direction-text":
@@ -575,8 +593,8 @@ export class AgentflowGrammar extends GraphGrammar<
     )
   }
 
-  /** Flows, globals, connectors, and names: optional flow heading, then a body through end. */
-  private parseFlowStatement(): AgentflowFlowStatement {
+  /** Flows, globals, connectors, and names: `"flow"` and its optional heading, up to its lines. */
+  private openFlow(): OpenContainer {
     const start = this.next
     this.addItem("Keyword", [this.take("flow")])
     let name: AgentflowName | null = null
@@ -587,26 +605,48 @@ export class AgentflowGrammar extends GraphGrammar<
       title = this.parseHeadingTitle()
       data = this.parseData()
     }
-    const body = [...this.parseHeadingEnd(), ...this.parseLines(true)]
-    this.checkFlowMembers(body)
-    this.addItem("Keyword", [this.take("end")])
     return {
-      type: "AgentflowFlowStatement",
-      name,
-      title,
-      data,
-      body,
-      ...this.placeFrom(start),
+      start,
+      heading: { name, title, data },
+      body: this.parseHeadingEnd(),
     }
   }
 
   /** A global heading has no name, title, or data. */
-  private parseGlobalStatement(): AgentflowGlobalStatement {
+  private openGlobal(): OpenContainer {
     const start = this.next
     this.addItem("Keyword", [this.take("global")])
-    const body = [...this.parseHeadingEnd(), ...this.parseLines(true)]
+    return { start, heading: null, body: this.parseHeadingEnd() }
+  }
+
+  /**
+   * Flows, globals, connectors, and names: the `end` at the current unit
+   * completes the innermost open flow or global. Rejections outside the
+   * grammar: a flow's members are checked here, once its body is read.
+   */
+  private closeContainer(
+    open: OpenContainer[],
+    top: AgentflowStatement[],
+  ): void {
+    const container = open.pop()
+    if (container === undefined) {
+      throw new Error("mmd-toolkit parser bug: no open agentflow container")
+    }
+    const { start, heading, body } = container
+    if (heading !== null) this.checkFlowMembers(body)
     this.addItem("Keyword", [this.take("end")])
-    return { type: "AgentflowGlobalStatement", body, ...this.placeFrom(start) }
+    const place = this.placeFrom(start)
+    const parent = open.at(-1)?.body ?? top
+    if (heading === null) {
+      parent.push({ type: "AgentflowGlobalStatement", body, ...place })
+    } else {
+      parent.push({
+        type: "AgentflowFlowStatement",
+        ...heading,
+        body,
+        ...place,
+      })
+    }
   }
 
   /** A connector has a required name and no body or end keyword. */

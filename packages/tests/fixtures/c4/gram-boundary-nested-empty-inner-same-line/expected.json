@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An inner boundary closed on the line of its {."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...\")Boundary(b,\"B\") {}}\n----------------------^\nExpecting 'NEWLINE', got 'RBRACE'"
+  }
+}

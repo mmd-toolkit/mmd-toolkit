@@ -1,0 +1,79 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Flows, globals, connectors, and names: nested heading data."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "b",
+        "nodes": [
+          "A"
+        ],
+        "title": "",
+        "classes": [],
+        "labelType": "text",
+        "type": "flow",
+        "metadata": {
+          "y": 2
+        }
+      },
+      {
+        "id": "a",
+        "nodes": [
+          "b"
+        ],
+        "title": "",
+        "classes": [],
+        "labelType": "text",
+        "type": "flow",
+        "metadata": {
+          "x": 1
+        }
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "b",
+        "set": {
+          "metadata": {
+            "y": 2
+          }
+        }
+      },
+      {
+        "id": "a",
+        "set": {
+          "metadata": {
+            "x": 1
+          }
+        }
+      }
+    ]
+  }
+}

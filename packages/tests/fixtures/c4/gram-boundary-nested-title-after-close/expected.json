@@ -1,0 +1,66 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A title on the line after the inner }."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "p",
+        "label": {
+          "text": "P"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "b"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      },
+      {
+        "alias": "a",
+        "label": {
+          "text": "A"
+        },
+        "type": {
+          "text": "system"
+        },
+        "parentBoundary": "global"
+      },
+      {
+        "alias": "b",
+        "label": {
+          "text": "B"
+        },
+        "type": {
+          "text": "system"
+        },
+        "parentBoundary": "a"
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

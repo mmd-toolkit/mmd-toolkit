@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Blocks: loop in box."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...quenceDiagrambox Xloop aA->>B: mend\n---------------------^\nExpecting 'SPACE', 'NEWLINE', 'end', 'participant', 'participant_actor', 'destroy', got 'loop'"
+  }
+}

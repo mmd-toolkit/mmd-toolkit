@@ -127,9 +127,15 @@ comments is recorded as a `Directive` token of its own. The frontmatter is
 recorded first, as its opening `---`, its body, and its closing `---`
 ([`ast.md`, Frontmatter](../../spec/docs/ast.md#frontmatter)).
 
+The sequence grammar descends recursively except into a block's body: blocks
+nest without a limit, so it holds the open blocks in a list instead of the call
+stack, and `db-rejections.ts` holds the bodies it walks in the same way.
+
 The C4 grammar checks `__proto__` keys in consumed argument positions and
 retains only aliases and relationship endpoints to decide whether update targets
-exist.
+exist. It descends recursively except into a boundary's body: boundaries nest
+without a limit, so it holds the open boundaries in a list instead of the call
+stack.
 
 The venn lexer tracks implicit text mode across line starts. Its grammar keeps
 converted set names to check union members against earlier declarations, while
@@ -175,8 +181,11 @@ callbacks. Each diagram constructs its own AST nodes and keeps its own arrow
 vocabulary, comment rules, name grammar, and brace conversion. The existing
 shared reader, direction-line rule, and Unicode-letter helper are also reused.
 Its text wrapper folds only line whitespace immediately followed by the first LF
-after a closing brace. [fixture: agentflow/lex-brace-string-keeps-blank-line]
-[fixture: agentflow/lex-brace-line-whitespace-ls] [fixture:
+after a closing brace. The grammar descends recursively except into the body of
+a flow or a global: they nest without a limit, so it holds the open ones in a
+list instead of the call stack. [fixture:
+agentflow/lex-brace-string-keeps-blank-line] [fixture:
+agentflow/lex-brace-line-whitespace-ls] [fixture:
 agentflow/lex-brace-ls-without-lf]
 
 At or below the default 50000 normalized UTF-16 code units after frontmatter and

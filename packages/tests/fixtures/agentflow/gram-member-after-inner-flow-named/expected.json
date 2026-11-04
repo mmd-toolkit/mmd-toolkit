@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Rejections outside the grammar, the hasOwnProperty member condition of each flow: after inner flow named."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "prims[type2].hasOwnProperty is not a function"
+  }
+}

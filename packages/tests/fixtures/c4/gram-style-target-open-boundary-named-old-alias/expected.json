@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "c4.md Rejections outside the grammar: a boundary is declared by its call, so it is a candidate while its body is open; the named $alias of its call replaces the first argument; the old alias does not match; accepted."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      },
+      {
+        "alias": "c",
+        "label": {
+          "text": "B"
+        },
+        "type": {
+          "text": "t"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}
