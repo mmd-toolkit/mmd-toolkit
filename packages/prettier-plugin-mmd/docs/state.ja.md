@@ -594,8 +594,10 @@ id の前の空白は空白 1 つにします。
 対応する記法は限定されています。
 [`handle-markdown-text.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/rendering-util/handle-markdown-text.ts#L120-L145)
 では、リストはリストとして配置せず、原文のテキストへ戻します。
-このフォーマッターは、ノート本文を Markdown フォーマッターへ渡しません。
-以下の規則で安全な余白だけをそろえ、そのほかの本文は保ちます。
+このフォーマッターは、
+固定版の Mermaid と同じ Marked 16.4.2 で Markdown を判別します。
+ノート本文を Markdown フォーマッターへ渡さず、
+以下の規則で対応する段落の余白だけをそろえ、そのほかの本文は保ちます。
 [fixture: notes/markdown-code-kept]
 [fixture: notes/markdown-unordered-list-kept]
 
@@ -616,23 +618,29 @@ id の前の空白は空白 1 つにします。
 [fixture: notes/over-lines-text-ends-kept]
 [fixture: notes/later-tab-margin-kept]
 
-行内の強調、同じ物理行で閉じる backtick のコード、
-行内のほかのテキストの後にある正確な `<br/>` も対象です。
+段落内で対象になるのは、通常のテキスト、行内の強調、
+同じ物理行で閉じる backtick のコード、
+括弧を使わず 1 つの物理行に収まる自動リンク、
+行内のほかのテキストの後にある正確な `<br/>` だけです。
 これらの内容は変えず、行頭の余白だけをそろえます。
 [fixture: notes/inline-emphasis-margins] [fixture: notes/inline-code-margins]
-[fixture: notes/inline-br-margins]
+[fixture: notes/inline-br-margins] [fixture: notes/autolink-margins]
 
-リストなどのブロック構文に見える行頭も、段落の文字どおりの続きの場合があります。
-前に段落の行があり、原文の余白が ASCII 空白 4 個以上で tab を含まず、
-出力の余白も空白 4 個以上になる場合だけ、その継続行もそろえます。
-それ以外は後続の余白を保ちます。
-記号を段落の境界へ移したり、字下げを 4 個未満にしたりすると、
-Mermaid の読み方が変わる場合があるためです。
-[fixture: notes/markdown-unordered-list-kept]
+Marked が通常の段落として読む `+Cash` や `#Heading` などの本文もそろえます。
+[fixture: notes/plain-block-like-text]
+
+この段落の判定には、設定された本文の字下げが空白 4 個以上なら、
+原文の行頭の余白を残した本文を使います。
+Marked が段落の文字どおりの続きとして読む記号の行も、対象になります。
+4 個未満なら、
+内容のある各行の行頭の ASCII 空白と tab を除いた入力本文で判定します。
+リストや setext 見出しなど、対応する段落以外の構文が現れる場合は、
+後続の余白を保ちます。 [fixture: notes/markdown-unordered-list-kept]
 [fixture: notes/markdown-ordered-list-kept]
 [fixture: notes/markdown-ordered-parenthesis-kept]
 [fixture: notes/literal-markers-zero-width]
 [fixture: notes/marker-at-paragraph-boundary-kept]
+[fixture: notes/literal-setext-zero-width]
 
 この段落の規則に当てはまらない本文では、最初の物理行が空でなく、
 字下げが ASCII 空白と tab だけなら、その行だけをそろえます。
@@ -711,10 +719,10 @@ stateDiagram-v2
 [corpus fixture: state/tokens-note-block-ignored-semicolon]
 
 上記の先頭行の余白を除き、空行で分かれた段落、ブロック構文、
-fence 付きや複数行のコード、取り消し線、一般の HTML、リンク、バックスラッシュ、
+fence 付きや複数行のコード、取り消し線、一般の HTML、角括弧を使うリンク、
+山括弧で囲むリンク、バックスラッシュ、
 内容の行内にある ASCII 空白以外の空白文字は原文を保ちます。
-ブロック構文の候補には、リストの記号、見出し、数字の後に `.` または `)` があり、
-その次が ASCII 空白か行末である形を含みます。
+リストや見出しなどのブロック構文は、Marked が判別します。
 Mermaid がブロックの原文を文字どおりに表示する場合は、
 その余白も表示されるためです。
 たとえば空行後の空白を 2 個から 4 個に増やすと、
@@ -727,7 +735,7 @@ Mermaid がブロックの原文を文字どおりに表示する場合は、
 [fixture: notes/code-spanning-lines-kept]
 [fixture: notes/strikethrough-spanning-lines-kept]
 [fixture: notes/link-spanning-lines-kept]
-[fixture: notes/backslash-margins-kept]
+[fixture: notes/angle-link-margins-kept] [fixture: notes/backslash-margins-kept]
 [fixture: notes/markdown-empty-ordered-dot-kept]
 [fixture: notes/markdown-empty-ordered-parenthesis-kept]
 [test: U+00A0 at the start of a later note row]

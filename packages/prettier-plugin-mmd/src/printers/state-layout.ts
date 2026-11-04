@@ -9,6 +9,7 @@ import type {
   Token,
 } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
+import { Marked, type Token as MarkdownToken } from "marked"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { holdsDirection } from "./accessibility-lines.ts"
 import { findWrittenWhitespaceEnd } from "./gap.ts"
@@ -720,6 +721,7 @@ function paragraphNoteTextLines(
   indentation: string,
 ): Atom[] | null {
   const lines: Atom[] = []
+  const contentRows: string[] = []
   let sawContent = false
   let endedParagraph = false
   let contentEnd = text.end
@@ -740,77 +742,73 @@ function paragraphNoteTextLines(
       continue
     }
     const margin = source.text.slice(offset, start)
-    // Block markers remain literal inside an existing paragraph only while
-    // both the written and printed continuation have at least four spaces.
-    const literalContinuation =
-      sawContent &&
-      margin.length >= 4 &&
-      !margin.includes("\t") &&
-      indentation.length >= 4
+    const content = source.text.slice(start, end)
     if (
       endedParagraph ||
       (sawContent && margin.includes("\t")) ||
-      !isParagraphNoteLine(
-        source.text.slice(start, end),
-        literalContinuation,
+      content.startsWith("<br/>") ||
+      [...content.split("<br/>").join("")].some(
+        (character) =>
+          "~[]<>\\".includes(character) ||
+          (character !== " " && isWhitespace(character)),
       ) ||
       (end < contentEnd && source.text.slice(end - 2, end) === "  ")
     )
       return null
     sawContent = true
+    contentRows.push(content)
     lines.push({ start, end, writtenIndentation: indentation })
     offset = end + 1
   }
-  return sawContent ? lines : null
+  if (!sawContent) return null
+  // Below four columns, removing a margin can expose a list, heading or other
+  // block. Classify the marginless input before choosing the paragraph layout;
+  // at four columns or more, paragraph continuations remain literal text
+  // (docs/state.md, Notes).
+  const markdown =
+    indentation.length < 4
+      ? contentRows.join("\n")
+      : source.text.slice(text.start + 1, text.end)
+  return isParagraphNoteText(markdown) ? lines : null
 }
 
 /**
- * Inline paragraph forms discard newline padding when rendered. Block forms,
- * arbitrary HTML, links, escapes and a code span crossing a newline do not
- * have that guarantee (docs/state.md, Notes).
+ * Use Mermaid's Markdown lexer in an isolated instance. Other consumers of
+ * Marked cannot change these defaults through marked.use (docs/state.md, Notes).
  */
-function isParagraphNoteLine(
-  line: string,
-  literalContinuation: boolean,
-): boolean {
-  if (!literalContinuation) {
-    if (
-      "#>+-!|=:{}".includes(line[0]) ||
-      line.startsWith("* ") ||
-      [...line].every((character) => " *_".includes(character))
-    )
-      return false
-    let digitsEnd = 0
-    while (line[digitsEnd] >= "0" && line[digitsEnd] <= "9") digitsEnd++
-    if (
-      digitsEnd > 0 &&
-      (line[digitsEnd] === "." || line[digitsEnd] === ")") &&
-      (digitsEnd + 1 === line.length || line[digitsEnd + 1] === " ")
-    )
+const noteMarkdown = new Marked({ gfm: true, breaks: false, pedantic: false })
+
+/** Only supported paragraph tokens permit changing physical line margins. */
+function isParagraphNoteText(text: string): boolean {
+  const tokens = noteMarkdown.lexer(text.trim())
+  const paragraph = tokens[0]
+  return (
+    tokens.length === 1 &&
+    paragraph.type === "paragraph" &&
+    paragraph.tokens !== undefined &&
+    paragraph.tokens.every(isMarginIndependentNoteToken)
+  )
+}
+
+/** Token forms that permit changing surrounding paragraph line margins. */
+function isMarginIndependentNoteToken(token: MarkdownToken): boolean {
+  switch (token.type) {
+    case "text":
+      return !token.raw.includes("`")
+    case "em":
+    case "strong":
+      return (
+        token.tokens !== undefined &&
+        token.tokens.every(isMarginIndependentNoteToken)
+      )
+    case "codespan":
+    case "link":
+      return !token.raw.includes("\n")
+    case "html":
+      return token.raw === "<br/>" && token.block === false
+    default:
       return false
   }
-  if (line.startsWith("```") || line.startsWith("~~~")) return false
-  let codeDelimiter = 0
-  for (let offset = 0; offset < line.length; offset++) {
-    const character = line[offset]
-    if (character === "<" && offset > 0 && line.startsWith("<br/>", offset)) {
-      offset += "<br/>".length - 1
-      continue
-    }
-    if (
-      "~[]<>\\".includes(character) ||
-      (character !== " " && isWhitespace(character))
-    )
-      return false
-    if (character !== "`") continue
-    let delimiterEnd = offset + 1
-    while (line[delimiterEnd] === "`") delimiterEnd++
-    const width = delimiterEnd - offset
-    if (codeDelimiter === 0) codeDelimiter = width
-    else if (codeDelimiter === width) codeDelimiter = 0
-    offset = delimiterEnd - 1
-  }
-  return codeDelimiter === 0
 }
 
 /** A nonblank first physical row loses its leading space/tab padding in the Db. */

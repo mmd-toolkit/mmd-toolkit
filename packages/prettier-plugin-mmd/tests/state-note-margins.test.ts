@@ -40,6 +40,13 @@ describe("state's permitted attached-note margins", () => {
       after:
         "stateDiagram-v2\n  note right of A\n    Payment methods\n    - Card\n    - Debit\n  end note\n",
     },
+    {
+      name: "a same-line autolink",
+      before:
+        "stateDiagram-v2\nnote right of A\nIntro\n  https://example.com\nend note\n",
+      after:
+        "stateDiagram-v2\n  note right of A\n    Intro\n    https://example.com\n  end note\n",
+    },
   ])("allows $name without changing other Db values", ({ before, after }) => {
     const beforeDb = dbOfText(before, defaultEmbedded())
     const afterDb = dbOfText(after, defaultEmbedded())
@@ -192,6 +199,19 @@ describe("state's permitted attached-note margins", () => {
         "stateDiagram-v2\nnote right of A\nUse ``card`\n            here`\nend note\n",
       after:
         "stateDiagram-v2\nnote right of A\n  Use ``card`\n  here`\nend note\n",
+    },
+    {
+      name: "unparsed backticks in plain text",
+      before:
+        "stateDiagram-v2\nnote right of A\nUse ``card\n  here\nend note\n",
+      after:
+        "stateDiagram-v2\n  note right of A\n    Use ``card\n    here\n  end note\n",
+    },
+    {
+      name: "an inline break at the start of a physical row",
+      before: "stateDiagram-v2\nnote right of A\nIntro\n<br/>Next\nend note\n",
+      after:
+        "stateDiagram-v2\n  note right of A\n    Intro\n    <br/>Next\n  end note\n",
     },
     {
       name: "strikethrough spanning physical rows",

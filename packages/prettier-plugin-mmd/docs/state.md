@@ -580,8 +580,9 @@ The pinned Mermaid renders `stateDiagram-v2` notes as Markdown labels, setting
 This is limited Markdown support: lists fall back to their source text instead
 of a list layout in
 [`handle-markdown-text.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/rendering-util/handle-markdown-text.ts#L120-L145).
-The formatter does not run the Markdown formatter on note contents; the rules
-below only align safe margins while preserving the remaining body text.
+The formatter recognizes Markdown with the same Marked 16.4.2 as pinned Mermaid.
+It does not run the Markdown formatter on note contents; the rules below only
+align supported paragraph margins while preserving the remaining body text.
 [fixture: notes/markdown-code-kept] [fixture:
 notes/markdown-unordered-list-kept]
 
@@ -599,21 +600,27 @@ notes/prose-zero-width] [fixture: notes/prose-one-trailing-space] [fixture:
 notes/prose-tab-margin-kept] [fixture: notes/over-lines-text-ends-kept]
 [fixture: notes/later-tab-margin-kept]
 
-This includes inline emphasis, backtick code closed on the same physical line,
-and exact `<br/>` forms after other text on that line. Their contents stay
-written; only line margins align. [fixture: notes/inline-emphasis-margins]
-[fixture: notes/inline-code-margins] [fixture: notes/inline-br-margins]
+Only ordinary text, inline emphasis, backtick code closed on the same physical
+line, bare autolinks on one physical line, and exact `<br/>` forms after other
+text on that line qualify within the paragraph. Their contents stay written;
+only line margins align. [fixture: notes/inline-emphasis-margins] [fixture:
+notes/inline-code-margins] [fixture: notes/inline-br-margins] [fixture:
+notes/autolink-margins]
 
-A list-like or other block-style prefix can also be literal paragraph text.
-Align such a continuation only after an earlier paragraph line, when its source
-margin has at least four ASCII spaces, no tabs, and its output margin has at
-least four spaces. Otherwise preserve the later margins: moving a marker to a
-paragraph boundary, or below four spaces, can change how Mermaid reads it.
-[fixture: notes/markdown-unordered-list-kept] [fixture:
-notes/markdown-ordered-list-kept] [fixture:
-notes/markdown-ordered-parenthesis-kept] [fixture:
+Text such as `+Cash` and `#Heading` aligns when Marked reads it as ordinary
+paragraph text. [fixture: notes/plain-block-like-text]
+
+For this paragraph check, use the input body with its written margins when the
+configured body indentation has at least four spaces. Markers that Marked reads
+as literal paragraph continuations may then align. With fewer than four spaces,
+check the input content after removing each content line's leading ASCII-space
+and tab padding. Preserve later margins if this exposes a list, a setext
+heading, or another form outside the supported paragraph. [fixture:
+notes/markdown-unordered-list-kept] [fixture: notes/markdown-ordered-list-kept]
+[fixture: notes/markdown-ordered-parenthesis-kept] [fixture:
 notes/literal-markers-zero-width] [fixture:
-notes/marker-at-paragraph-boundary-kept]
+notes/marker-at-paragraph-boundary-kept] [fixture:
+notes/literal-setext-zero-width]
 
 For bodies outside this paragraph rule, align only the first physical body line
 when it is nonempty and starts with only ASCII-space/tab padding. Use the
@@ -688,20 +695,20 @@ notes/over-lines-directive-on-header-line] [corpus fixture:
 state/tokens-note-block-ignored-semicolon]
 
 Except for that trimmed first-row margin, keep blank-separated paragraphs, block
-syntax, fenced or multiline code, strikethrough, general HTML, links,
-backslashes and whitespace other than ASCII spaces within content lines.
-Prefixes considered block-like include list markers, headings, and digits
-followed by `.` or `)` and an ASCII space or the end of the line. These margins
-can appear in rendered text when Mermaid displays a block's source literally.
-For example, increasing two spaces after a blank line to four can change three
-displayed paragraphs into a different layout. This does not reformat general
-Markdown. [fixture: notes/over-lines-empty-lines-kept] [fixture:
-notes/list-body-margin-kept] [fixture: notes/heading-at-paragraph-boundary-kept]
-[fixture: notes/markdown-heading-kept] [fixture: notes/markdown-code-kept]
-[fixture: notes/code-spanning-lines-kept] [fixture:
-notes/strikethrough-spanning-lines-kept] [fixture:
+syntax, fenced or multiline code, strikethrough, general HTML, bracketed links,
+links enclosed in angle brackets, backslashes and whitespace other than ASCII
+spaces within content lines. Marked recognizes block syntax, including lists and
+headings. These margins can appear in rendered text when Mermaid displays a
+block's source literally. For example, increasing two spaces after a blank line
+to four can change three displayed paragraphs into a different layout. This does
+not reformat general Markdown. [fixture: notes/over-lines-empty-lines-kept]
+[fixture: notes/list-body-margin-kept] [fixture:
+notes/heading-at-paragraph-boundary-kept] [fixture: notes/markdown-heading-kept]
+[fixture: notes/markdown-code-kept] [fixture: notes/code-spanning-lines-kept]
+[fixture: notes/strikethrough-spanning-lines-kept] [fixture:
 notes/link-spanning-lines-kept] [fixture: notes/backslash-margins-kept]
-[fixture: notes/markdown-empty-ordered-dot-kept] [fixture:
+[fixture: notes/angle-link-margins-kept] [fixture:
+notes/markdown-empty-ordered-dot-kept] [fixture:
 notes/markdown-empty-ordered-parenthesis-kept] [test: U+00A0 at the start of a
 later note row] [test: U+2028 on a later note row] [test: U+2029 on a later note
 row]

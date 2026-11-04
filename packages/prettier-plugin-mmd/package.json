@@ -43,7 +43,8 @@
     "prettier": "^3.0.0"
   },
   "dependencies": {
-    "@mmd-toolkit/parser": "workspace:*"
+    "@mmd-toolkit/parser": "workspace:*",
+    "marked": "16.4.2"
   },
   "devDependencies": {
     "@mmd-toolkit/tests": "workspace:*",

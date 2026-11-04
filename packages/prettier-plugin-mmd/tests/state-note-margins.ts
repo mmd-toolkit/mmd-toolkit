@@ -7,6 +7,14 @@ import type {
 } from "@mmd-toolkit/parser"
 import { parse } from "@mmd-toolkit/parser"
 import type { DbSummary, JsonObject, JsonValue } from "@mmd-toolkit/tests"
+import { isDeepStrictEqual } from "node:util"
+import { Marked, type Token as MarkdownToken } from "marked"
+
+const comparisonMarkdown = new Marked({
+  gfm: true,
+  breaks: false,
+  pedantic: false,
+})
 
 /** The two keywords that close a multiline attached note. */
 interface NoteClosingTokens {
@@ -216,69 +224,89 @@ function isAllowedBodyChange(before: string, after: string): boolean {
       endedParagraph ||= margin !== undefined
       continue
     }
-    const literalContinuation =
-      margin !== undefined &&
-      beforeStart >= 4 &&
-      !row.slice(0, beforeStart).includes("\t") &&
-      afterStart >= 4
+    // Only exact inline breaks are exempt from the opaque-source policy.
+    const withoutBreakTags = content.split("<br/>").join("")
     if (
       endedParagraph ||
       (margin !== undefined && row.slice(0, beforeStart).includes("\t")) ||
       (index < lastContent && row.endsWith("  ")) ||
-      !isParagraphText(content, literalContinuation) ||
+      content.startsWith("<br/>") ||
+      withoutBreakTags.includes("%%") ||
+      withoutBreakTags.includes(";") ||
+      [...withoutBreakTags].some(
+        (character) =>
+          "~[]<>\\".includes(character) ||
+          (character !== " " && character.trim() === ""),
+      ) ||
       content !== printed.slice(afterStart)
     )
       return false
     margin ??= afterStart
     if (afterStart !== margin) return false
   }
-  return margin !== undefined
+  if (margin === undefined) return false
+  const readingBefore = paragraphReading(before)
+  const readingAfter = paragraphReading(after)
+  return (
+    readingBefore !== null &&
+    readingAfter !== null &&
+    isDeepStrictEqual(readingBefore, readingAfter)
+  )
 }
 
-/** Guard margin-sensitive Markdown independently of the printer's classifier. */
-function isParagraphText(row: string, literalContinuation: boolean): boolean {
+/** Read each actual body independently of the printer's Markdown decisions. */
+function paragraphReading(body: string): JsonValue[] | null {
+  const blocks = comparisonMarkdown.lexer(body.trim())
+  const paragraph = blocks[0]
   if (
-    row === "" ||
-    (!literalContinuation && "#>+-!|=:{}".includes(row[0])) ||
-    (!literalContinuation && row.startsWith("* ")) ||
-    (!literalContinuation &&
-      [...row].every((character) => " *_".includes(character))) ||
-    row.startsWith("```") ||
-    row.startsWith("~~~") ||
-    row.includes("%%") ||
-    row.includes(";")
+    blocks.length !== 1 ||
+    paragraph.type !== "paragraph" ||
+    paragraph.tokens === undefined
   )
-    return false
-  let delimiter = ""
-  for (let index = 0; index < row.length; index++) {
-    const character = row[index]
-    if (character === "<" && index > 0 && row.startsWith("<br/>", index)) {
-      index += 4
-      continue
-    }
-    if (
-      "~[]<>\\".includes(character) ||
-      (character !== " " && character.trim() === "")
-    )
-      return false
-    if (character === "`") {
-      let end = index + 1
-      while (row[end] === "`") end++
-      const run = row.slice(index, end)
-      if (delimiter === "") delimiter = run
-      else if (delimiter === run) delimiter = ""
-      index = end - 1
+    return null
+  return inlineReading(paragraph.tokens)
+}
+
+/** Only text-node padding after LF may differ; other allowed tokens stay exact. */
+function inlineReading(tokens: readonly MarkdownToken[]): JsonValue[] | null {
+  const reading: JsonValue[] = []
+  for (const token of tokens) {
+    switch (token.type) {
+      case "text":
+        if (token.raw.includes("`") || typeof token.text !== "string")
+          return null
+        reading.push({
+          type: "text",
+          text: token.text
+            .split("\n")
+            .map((line, index) =>
+              index === 0 ? line : line.slice(leadingSpaces(line)),
+            )
+            .join("\n"),
+        })
+        break
+      case "em":
+      case "strong": {
+        const children =
+          token.tokens === undefined ? null : inlineReading(token.tokens)
+        if (children === null) return null
+        reading.push({ type: token.type, children })
+        break
+      }
+      case "codespan":
+      case "link":
+        if (token.raw.includes("\n")) return null
+        reading.push({ type: token.type, raw: token.raw })
+        break
+      case "html":
+        if (token.raw !== "<br/>" || token.block !== false) return null
+        reading.push({ type: "html", raw: token.raw })
+        break
+      default:
+        return null
     }
   }
-  if (delimiter !== "") return false
-  let digitEnd = 0
-  while (row[digitEnd] >= "0" && row[digitEnd] <= "9") digitEnd++
-  return !(
-    !literalContinuation &&
-    digitEnd > 0 &&
-    (row[digitEnd] === "." || row[digitEnd] === ")") &&
-    (digitEnd + 1 === row.length || row[digitEnd + 1] === " ")
-  )
+  return reading
 }
 
 /** The Db trims the first row; only later rows may differ in ASCII margins. */

@@ -351,6 +351,9 @@ importers:
       '@mmd-toolkit/parser':
         specifier: workspace:*
         version: link:../parser
+      marked:
+        specifier: 16.4.2
+        version: 16.4.2
     devDependencies:
       '@mmd-toolkit/tests':
         specifier: workspace:*
