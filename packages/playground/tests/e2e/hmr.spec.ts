@@ -58,6 +58,10 @@ test.beforeAll(async () => {
           find: /^prettier-plugin-mmd$/u,
           replacement: join(directory, "formatter/index.ts"),
         },
+        {
+          find: /^@mmd-toolkit\/textmate-grammar$/u,
+          replacement: join(packages, "textmate-grammar/src/index.ts"),
+        },
       ],
     },
     optimizeDeps: {
