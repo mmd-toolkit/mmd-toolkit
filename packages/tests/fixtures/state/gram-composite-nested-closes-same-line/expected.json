@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Composite states, aliases, and pseudostates: each } closes the innermost open body; two closing braces together; accepted."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "roundedWithTitle",
+        "label": "A",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "B",
+        "shape": "roundedWithTitle",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "parentId": "A",
+        "dir": "TB"
+      },
+      {
+        "id": "X",
+        "shape": "rect",
+        "label": "X",
+        "classes": [],
+        "styles": [],
+        "parentId": "B"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

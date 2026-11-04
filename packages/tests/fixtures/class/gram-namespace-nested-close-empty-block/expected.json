@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Namespaces: a namespace holds class statements, notes, and namespaces; an empty description block is no item; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 6:\n...space B {class X}accDescr {}class Y\n--------------------^\nExpecting 'STRUCT_STOP', 'NAMESPACE', 'CLASS', 'NOTE_FOR', 'NOTE', got 'ALPHA'"
+  }
+}

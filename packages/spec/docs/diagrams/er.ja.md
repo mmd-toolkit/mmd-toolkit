@@ -745,8 +745,9 @@ er/lex-direction-line-as-role] [fixture: er/lex-direction-lower-case] [fixture:
 er/lex-direction-upper-case] [fixture: er/lex-direction-leading-space] [fixture:
 er/lex-direction-line-leading-tab] [fixture:
 er/lex-direction-line-before-classdef] [fixture:
-er/lex-direction-line-with-acc-title] [fixture:
-er/lex-direction-line-subgraph] [fixture: er/lex-acc-title-direction] [fixture:
+er/lex-direction-line-with-acc-title] [fixture: er/lex-direction-line-subgraph]
+[fixture: er/gram-subgraph-nested-end-direction-same-line]
+[fixture: er/lex-acc-title-direction] [fixture:
 er/lex-direction-value-glued] [fixture: er/lex-direction-line-percent]
 [fixture: er/lex-direction-line-semicolon] [fixture:
 er/lex-direction-line-text-after] [fixture:
@@ -1359,6 +1360,9 @@ er/gram-subgraph-title-three-words] [fixture: er/gram-subgraph-title-empty]
 er/lex-subgraph-title-class-separator] [fixture:
 er/lex-subgraph-title-string-line-feed] [fixture:
 er/lex-subgraph-title-then-string-glued]
+[fixture: er/gram-subgraph-nested-string-id]
+[fixture: er/gram-subgraph-nested-title]
+[fixture: er/gram-subgraph-nested-no-id]
 
 - 名前かタイトルの後、改行の前に置けるのは空の説明ブロックだけで、
   それらは本体の最初の文です（[空の説明ブロック](#空の説明ブロック) を参照）。
@@ -1372,6 +1376,7 @@ er/lex-subgraph-title-then-string-glued]
   [fixture: er/gram-subgraph-header-block-then-text]
   [fixture: er/gram-subgraph-header-blocks]
   [fixture: er/gram-subgraph-title-then-block]
+  [fixture: er/gram-subgraph-nested-header-blocks]
 - 名前 `1` は、改行と、ASCII の文字、`_`、`"`、`'`、
   数字のいずれかで始まる行が続くと `only-one`
   です（[文の文脈](#文の文脈)を参照）。
@@ -1399,6 +1404,19 @@ er/lex-subgraph-title-then-string-glued]
   er/gram-end-twice] [fixture: er/gram-end-alone] [fixture:
   er/lex-end-same-line] [fixture: er/lex-end-end-same-line] [fixture:
   er/lex-subgraph-crlf] [fixture: er/gram-subgraph-after-header-same-line]
+  [fixture: er/gram-subgraph-unclosed-nested]
+  [fixture: er/gram-subgraph-unclosed-outer] [fixture: er/gram-end-after-nested]
+  [fixture: er/gram-subgraph-nested-three-levels]
+  `end` の後に続くものは、方向の文も含めて、外側の subgraph の中にあります。
+  いちばん外側の `end` の後なら、図の中にあります。
+  [fixture: er/db-subgraph-direction-after-nested-end]
+  [fixture: er/db-subgraph-direction-after-nested-ends]
+  [fixture: er/db-subgraph-direction-after-nested-end-comment-line]
+  [fixture: er/db-subgraph-direction-after-nested-end-directive]
+  [fixture: er/db-subgraph-direction-after-nested-end-empty-line]
+  [fixture: er/db-subgraph-direction-after-nested-end-line-separator]
+  [fixture: er/db-subgraph-direction-after-nested-end-empty-block]
+  [fixture: er/db-subgraph-direction-after-nested-end-ignored-semicolon]
 - 実体は subgraph の名前を持てます。
   `subgraph S` の前や後の `S` は実体でもあり subgraph でもあります。
   [fixture: er/db-subgraph-id-as-name-after]
@@ -1525,8 +1543,10 @@ accessibility-statement = "accTitle" ":" title-text
   テキストの終わりの `direction LR` も方向の文です。
   [fixture: er/gram-direction] [fixture: er/db-direction-twice] [fixture:
   er/gram-direction-in-subgraph] [fixture: er/db-direction-in-subgraph-twice]
-  [fixture: er/gram-direction-in-nested-subgraph] [fixture:
-  er/lex-direction-at-end]
+  [fixture: er/gram-direction-in-nested-subgraph]
+  [fixture: er/lex-direction-at-end]
+  [fixture: er/db-subgraph-direction-after-nested-end]
+  [fixture: er/db-subgraph-direction-after-nested-ends]
 - `classDef` と `style` の文では、名前は `,` で区切った `style-text` の単位で、
   `,` が前にない最初の単位で終わります。
   その後にスタイルが続き、少なくとも 1 つ要ります。

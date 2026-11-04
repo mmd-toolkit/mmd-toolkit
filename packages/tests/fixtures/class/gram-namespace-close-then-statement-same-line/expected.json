@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Namespaces: items and statements are separated by a line break, also after the outermost }; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 6:\n...ace B {class X}} class W\n--------------------^\nExpecting 'NEWLINE', 'EOF', 'STRUCT_STOP', got 'ALPHA'"
+  }
+}

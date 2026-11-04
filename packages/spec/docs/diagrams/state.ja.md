@@ -125,7 +125,8 @@ state/lex-note-unclosed-at-end] [fixture: state/lex-scale-at-end]
 そのため id は、`;`、`#`、`"`、`}`、1 つの `%` を持てます。
 `A;B` と `A#1` は状態で、文の文脈の `}` だけのものも状態です。
 [fixture: state/lex-semicolon-in-id] [fixture: state/lex-hash-in-id]
-[fixture: state/lex-close-brace-as-id] [fixture:
+[fixture: state/lex-close-brace-as-id]
+[fixture: state/gram-composite-nested-then-brace-state] [fixture:
 state/lex-percent-comment-in-id]
 下で id を読むと言うほかの規則も同じです。
 文の文脈と合成状態の本体の文脈で単位が始まるところでは、
@@ -474,6 +475,7 @@ state/lex-direction-lower-case] [fixture: state/lex-direction-line-then-comment]
 state/lex-composite-acc-title-as-state] [fixture:
 state/lex-composite-hide-as-states] [fixture:
 state/lex-composite-string-as-id] [fixture: state/lex-composite-default-as-id]
+[fixture: state/gram-composite-nested-close-empty-block]
 ここでは改行は単位を作りません。
 `state` の規則は方向の行より前にあるので、
 本体の中の `state B direction LR` は state の文で、
@@ -1417,6 +1419,32 @@ state/gram-state-empty-string-before-comment-body-next-line]
 そのため、空の文字列は、state の文脈のどこにあっても、
 mermaid.js と同じく受理され、Db を何も変えません。
 
+合成状態の本体は、合成状態の本体の文脈が読む文を持ち、
+それには合成状態の文も含まれます。
+本体は空でもよく、どの深さまでも入れ子にできます。
+[fixture: state/gram-composite-nested-three-levels]
+[fixture: state/gram-composite-nested-one-line]
+[fixture: state/gram-alias-and-composite-nested]
+[fixture: state/gram-alias-nested-in-alias]
+[fixture: state/gram-composite-nested-empty-body]
+`}` は、いちばん内側の開いている本体を閉じ、どの本体にも自分の `}` が要ります。
+[fixture: state/gram-composite-nested-unclosed]
+[fixture: state/gram-composite-outer-unclosed]
+[fixture: state/gram-composite-nested-closes-same-line]
+`}` の後に続くものは、外側の本体の中にあります。
+いちばん外側の `}` の後なら、最上位にあります。
+[fixture: state/gram-composite-nested-close-comment-line]
+[fixture: state/gram-composite-nested-close-hash-comment]
+[fixture: state/gram-composite-nested-close-directive]
+[fixture: state/gram-composite-nested-close-empty-line]
+[fixture: state/gram-composite-nested-close-line-separator]
+[fixture: state/gram-composite-nested-close-semicolon]
+[fixture: state/gram-composite-nested-close-ignored-semicolon]
+[fixture: state/gram-composite-nested-close-same-line]
+[fixture: state/gram-composite-after-outermost-close]
+[fixture: state/gram-composite-after-outermost-close-same-line]
+[fixture: state/gram-composite-after-outermost-close-empty-block]
+
 ### ノート
 
 ```text
@@ -1566,6 +1594,9 @@ state/div-empty-description-block-after-arrow]
   [fixture: state/db-divider-then-direction]
   [fixture: state/db-divider-last-in-body]
   [fixture: state/db-divider-then-comment-only]
+  [fixture: state/db-composite-empty-regions]
+  [fixture: state/gram-region-divider-number-inner-divider]
+  [fixture: state/gram-region-divider-number-outer-divider]
   文は、説明が null でない定義の文か、別名の定義のとき、
   その状態に**説明を与えます**。
   ただし、本体も `:` もなく、
@@ -1595,6 +1626,9 @@ state/div-empty-description-block-after-arrow]
   [fixture: state/gram-composite-descriptions-after-body]
   [fixture: state/gram-composite-description-in-other-composite]
   [fixture: state/gram-composite-terminal-two-descriptions]
+  [fixture: state/gram-composite-nested-alias-colon-then-body]
+  [fixture: state/gram-composite-terminal-after-nested-body]
+  [fixture: state/gram-composite-two-descriptions-outer-and-inner]
 - `state` と `{` の間の 2 つの語（[state の文脈](#state-の文脈) を参照）。
   字句解析器が拒否します。 [fixture: state/lex-state-two-names-body]
 

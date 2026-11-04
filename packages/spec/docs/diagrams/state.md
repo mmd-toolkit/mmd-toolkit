@@ -108,15 +108,17 @@ after a `note-id`, the note text context has no comment rule, and
 an id may contain `;`, `#`, `"`, `}`, and a single `%`: `A;B` and `A#1` are
 states, and `}` alone is a state in the statement context. [fixture:
 state/lex-semicolon-in-id] [fixture: state/lex-hash-in-id] [fixture:
-state/lex-close-brace-as-id] [fixture: state/lex-percent-comment-in-id] The same
-holds for the other rules below that say they read an id. Where a unit starts in
-the statement or composite body context, `%%` is read as a comment unless `{`
-follows. A `%%` before a `{` that starts no directive is an `ignored-text` unit
-in the statement context (rule 9), and an id in the composite body context,
-which has no rule for the `{`, so the input is rejected there. In both contexts,
-the direction line is tried first: a line `%%{}direction LR` sets the direction,
-also in a body. [fixture: state/lex-direction-line-after-ignored-percent]
-[fixture: state/lex-composite-direction-line-after-ignored-percent] [fixture:
+state/lex-close-brace-as-id] [fixture:
+state/gram-composite-nested-then-brace-state] [fixture:
+state/lex-percent-comment-in-id] The same holds for the other rules below that
+say they read an id. Where a unit starts in the statement or composite body
+context, `%%` is read as a comment unless `{` follows. A `%%` before a `{` that
+starts no directive is an `ignored-text` unit in the statement context (rule 9),
+and an id in the composite body context, which has no rule for the `{`, so the
+input is rejected there. In both contexts, the direction line is tried first: a
+line `%%{}direction LR` sets the direction, also in a body. [fixture:
+state/lex-direction-line-after-ignored-percent] [fixture:
+state/lex-composite-direction-line-after-ignored-percent] [fixture:
 state/lex-composite-direction-line-after-ignored-percent-space-brace] [fixture:
 state/lex-composite-direction-line-after-emptied-directive] [fixture:
 state/lex-composite-ignored-percent-rejected] A `floating-note-id` may start
@@ -402,8 +404,9 @@ with the description `x`; and `hide empty description` is three states.
 [fixture: state/lex-composite-click-as-ids] [fixture:
 state/lex-composite-acc-title-as-state] [fixture:
 state/lex-composite-hide-as-states] [fixture: state/lex-composite-string-as-id]
-[fixture: state/lex-composite-default-as-id] A line feed makes no unit here. The
-`state` rule comes before the direction line, so `state B direction LR` in a
+[fixture: state/lex-composite-default-as-id] [fixture:
+state/gram-composite-nested-close-empty-block] A line feed makes no unit here.
+The `state` rule comes before the direction line, so `state B direction LR` in a
 body is a state statement, while `B : x direction LR` is a direction line.
 [fixture: state/lex-composite-state-before-direction] [fixture:
 state/lex-composite-direction-line]
@@ -1231,6 +1234,29 @@ state/gram-state-empty-string-before-comment-body-next-line] So the empty
 strings are accepted wherever they lie in the state context, as in mermaid.js,
 and they change nothing in the Db.
 
+The body of a composite state holds the statements that the composite body
+context reads, composite statements included, and may be empty, so bodies nest
+to any depth. [fixture: state/gram-composite-nested-three-levels] [fixture:
+state/gram-composite-nested-one-line] [fixture:
+state/gram-alias-and-composite-nested] [fixture:
+state/gram-alias-nested-in-alias] [fixture:
+state/gram-composite-nested-empty-body] Each `}` closes the innermost open body,
+and each body needs its own. [fixture: state/gram-composite-nested-unclosed]
+[fixture: state/gram-composite-outer-unclosed] [fixture:
+state/gram-composite-nested-closes-same-line] What follows a `}` stands in the
+body around it, or at the top level after the outermost `}`. [fixture:
+state/gram-composite-nested-close-comment-line] [fixture:
+state/gram-composite-nested-close-hash-comment] [fixture:
+state/gram-composite-nested-close-directive] [fixture:
+state/gram-composite-nested-close-empty-line] [fixture:
+state/gram-composite-nested-close-line-separator] [fixture:
+state/gram-composite-nested-close-semicolon] [fixture:
+state/gram-composite-nested-close-ignored-semicolon] [fixture:
+state/gram-composite-nested-close-same-line] [fixture:
+state/gram-composite-after-outermost-close] [fixture:
+state/gram-composite-after-outermost-close-same-line] [fixture:
+state/gram-composite-after-outermost-close-empty-block]
+
 ### Notes
 
 ```text
@@ -1358,15 +1384,18 @@ state/div-empty-description-block-after-arrow]
   state/db-divider-state-two-descriptions] [fixture:
   state/lex-composite-divider] [fixture: state/db-divider-first-then-state]
   [fixture: state/db-divider-then-direction] [fixture:
-  state/db-divider-last-in-body] [fixture: state/db-divider-then-comment-only] A
-  statement **gives a description** to its state when it is a definition
-  statement whose description is not null, or an alias definition, except one
-  without a body and without a `:` whose string is empty or all whitespace once
-  the whitespace at its ends is left out; an alias definition with a `:` gives
-  two. No other statement gives one. So `A : ` with a space after the `:`, and
-  `state " " as A`, give no description, while `state " " as A : y` and
-  `state " " as A` with a body do. [fixture: state/gram-description-blank]
-  [fixture: state/db-description-blank-after-description] [fixture:
+  state/db-divider-last-in-body] [fixture: state/db-divider-then-comment-only]
+  [fixture: state/db-composite-empty-regions] [fixture:
+  state/gram-region-divider-number-inner-divider] [fixture:
+  state/gram-region-divider-number-outer-divider] A statement **gives a
+  description** to its state when it is a definition statement whose description
+  is not null, or an alias definition, except one without a body and without a
+  `:` whose string is empty or all whitespace once the whitespace at its ends is
+  left out; an alias definition with a `:` gives two. No other statement gives
+  one. So `A : ` with a space after the `:`, and `state " " as A`, give no
+  description, while `state " " as A : y` and `state " " as A` with a body do.
+  [fixture: state/gram-description-blank] [fixture:
+  state/db-description-blank-after-description] [fixture:
   state/db-alias-blank-without-body] [fixture:
   state/db-alias-blank-second-description] [fixture:
   state/db-alias-body-blank-description] So `state [*] {` with a body and the
@@ -1384,7 +1413,10 @@ state/div-empty-description-block-after-arrow]
   state/gram-composite-descriptions-equal-to-id] [fixture:
   state/gram-composite-descriptions-after-body] [fixture:
   state/gram-composite-description-in-other-composite] [fixture:
-  state/gram-composite-terminal-two-descriptions]
+  state/gram-composite-terminal-two-descriptions] [fixture:
+  state/gram-composite-nested-alias-colon-then-body] [fixture:
+  state/gram-composite-terminal-after-nested-body] [fixture:
+  state/gram-composite-two-descriptions-outer-and-inner]
 - Two words between `state` and `{` (see
   [The state context](#the-state-context)), which the lexer rejects. [fixture:
   state/lex-state-two-names-body]

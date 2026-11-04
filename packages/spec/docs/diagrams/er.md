@@ -656,10 +656,11 @@ er/lex-direction-upper-case] [fixture: er/lex-direction-leading-space] [fixture:
 er/lex-direction-line-leading-tab] [fixture:
 er/lex-direction-line-before-classdef] [fixture:
 er/lex-direction-line-with-acc-title] [fixture: er/lex-direction-line-subgraph]
-[fixture: er/lex-acc-title-direction] [fixture: er/lex-direction-value-glued]
-[fixture: er/lex-direction-line-percent] [fixture:
-er/lex-direction-line-semicolon] [fixture: er/lex-direction-line-text-after]
-[fixture: er/lex-direction-line-same-value-twice] [fixture:
+[fixture: er/gram-subgraph-nested-end-direction-same-line] [fixture:
+er/lex-acc-title-direction] [fixture: er/lex-direction-value-glued] [fixture:
+er/lex-direction-line-percent] [fixture: er/lex-direction-line-semicolon]
+[fixture: er/lex-direction-line-text-after] [fixture:
+er/lex-direction-line-same-value-twice] [fixture:
 er/lex-direction-line-two-values] [fixture:
 er/lex-direction-value-glued-then-other] The whitespace between `direction` and
 its value may hold a line feed, a tab, a U+00A0, or a U+2028: `direction`, a
@@ -1203,7 +1204,9 @@ er/gram-subgraph-title-three-words] [fixture: er/gram-subgraph-title-empty]
 [fixture: er/gram-subgraph-title-then-text] [fixture:
 er/lex-subgraph-title-class-separator] [fixture:
 er/lex-subgraph-title-string-line-feed] [fixture:
-er/lex-subgraph-title-then-string-glued]
+er/lex-subgraph-title-then-string-glued] [fixture:
+er/gram-subgraph-nested-string-id] [fixture: er/gram-subgraph-nested-title]
+[fixture: er/gram-subgraph-nested-no-id]
 
 - After the name or the title, only empty description blocks may come before the
   line break, and they are the first statements of the body (see
@@ -1215,7 +1218,8 @@ er/lex-subgraph-title-then-string-glued]
   er/gram-subgraph-header-then-end-same-line] [fixture:
   er/gram-subgraph-id-class] [fixture: er/gram-subgraph-header-block-then-text]
   [fixture: er/gram-subgraph-header-blocks] [fixture:
-  er/gram-subgraph-title-then-block]
+  er/gram-subgraph-title-then-block] [fixture:
+  er/gram-subgraph-nested-header-blocks]
 - The name `1` followed by the line break and a line that starts with an ASCII
   letter, `_`, `"`, `'`, or a digit is `only-one` (see
   [The statement context](#the-statement-context)), so `subgraph 1` followed by
@@ -1241,7 +1245,19 @@ er/lex-subgraph-title-then-string-glued]
   er/lex-subgraph-header-line-feed-at-end] [fixture: er/gram-end-twice]
   [fixture: er/gram-end-alone] [fixture: er/lex-end-same-line] [fixture:
   er/lex-end-end-same-line] [fixture: er/lex-subgraph-crlf] [fixture:
-  er/gram-subgraph-after-header-same-line]
+  er/gram-subgraph-after-header-same-line] [fixture:
+  er/gram-subgraph-unclosed-nested] [fixture: er/gram-subgraph-unclosed-outer]
+  [fixture: er/gram-end-after-nested] [fixture:
+  er/gram-subgraph-nested-three-levels] What follows an `end` stands in the
+  subgraph around it, or in the diagram after the outermost `end`, a direction
+  statement included. [fixture: er/db-subgraph-direction-after-nested-end]
+  [fixture: er/db-subgraph-direction-after-nested-ends] [fixture:
+  er/db-subgraph-direction-after-nested-end-comment-line] [fixture:
+  er/db-subgraph-direction-after-nested-end-directive] [fixture:
+  er/db-subgraph-direction-after-nested-end-empty-line] [fixture:
+  er/db-subgraph-direction-after-nested-end-line-separator] [fixture:
+  er/db-subgraph-direction-after-nested-end-empty-block] [fixture:
+  er/db-subgraph-direction-after-nested-end-ignored-semicolon]
 - An entity may have the name of a subgraph: `S` before or after `subgraph S` is
   an entity and a subgraph. [fixture: er/db-subgraph-id-as-name-after] [fixture:
   er/db-subgraph-id-as-name-before]
@@ -1364,6 +1380,8 @@ accessibility-statement = "accTitle" ":" title-text
   [fixture: er/gram-direction-in-subgraph] [fixture:
   er/db-direction-in-subgraph-twice] [fixture:
   er/gram-direction-in-nested-subgraph] [fixture: er/lex-direction-at-end]
+  [fixture: er/db-subgraph-direction-after-nested-end] [fixture:
+  er/db-subgraph-direction-after-nested-ends]
 - In a `classDef` and a `style` statement, the names are `style-text` units
   separated by `,`, and they end at the first unit that no `,` precedes; the
   styles then follow, and at least one is needed. The statement ends with a
