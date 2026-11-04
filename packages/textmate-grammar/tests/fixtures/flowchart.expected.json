@@ -393,7 +393,11 @@
     [",", "keyword.operator.separator.comma.mermaid", 253],
     ["h", "support.type.property-name.mermaid", 253],
     ["20", "constant.numeric.mermaid", 253],
-    ["}", "keyword.operator.bracket.data.end.mermaid", 253]
+    ["}", "keyword.operator.bracket.data.end.mermaid", 253],
+    ["J", "variable.mermaid", 254],
+    ["label", "support.type.property-name.mermaid", 254],
+    ["first", "string.quoted.double.mermaid", 254],
+    ["  key: value", "string.quoted.double.mermaid", 255]
   ],
   "absent": [
     ["x", "string.unquoted.mermaid", 229],
@@ -479,7 +483,8 @@
     [135, "string.quoted.double.mermaid"],
     [136, "punctuation.definition.string.begin.mermaid"],
     [136, "string.quoted.double.mermaid"],
-    [143, "meta.directive.mermaid"]
+    [143, "meta.directive.mermaid"],
+    [255, "support.type.property-name.mermaid"]
   ],
   "unscoped": [
     [" ", 0],

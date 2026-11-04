@@ -196,9 +196,9 @@ What each kind holds:
   branch, a rule name, or the name of a class of styles (`classDef` name,
   `:::name`, `class A name`). Where the specification reads one text as both the
   id and the shown text of an element, such as a bare mindmap node or the name
-  of a flowchart subgraph, the text is a label. er reads the name of a subgraph
-  as an id, apart from its title, so there it is a name. State's `[*]`, the
-  start or the end, is a keyword, not a name.
+  of a flowchart subgraph, the text is a label. er's document reads the name of
+  a subgraph as an entity name, with an optional title of its own, so there it
+  is a name. State's `[*]`, the start or the end, is a keyword, not a name.
 - A name of a function is a callback that a statement calls.
 - A label or text is any text that the diagram shows or keeps: the label of a
   node or an edge, a relation's label, a message, a note, a title, a

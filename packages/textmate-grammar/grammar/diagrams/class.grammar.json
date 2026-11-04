@@ -1149,7 +1149,7 @@
           }
         },
         {
-          "comment": "Display a lone generic or array word as a type because a name contains neither tilde text nor square brackets. A lone word without either remains a name. Follows class.md#member-lines.",
+          "comment": "Display a lone generic or array word as a type because people write this form as a type. A generic method name such as foo~T~ gets the same color. A lone word without either remains a name. Follows class.md#member-lines.",
           "match": "[ \\t]*((?=[^\\r\\n]*(?:~|\\[\\])){{class-member-type}})[ \\t]*$",
           "captures": {
             "1": {

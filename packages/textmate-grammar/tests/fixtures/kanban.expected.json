@@ -104,7 +104,10 @@
     ["Very High", "string.quoted.single.mermaid", 59],
     [":", "keyword.operator.separator.key-value.mermaid", 59],
     [",", "keyword.operator.separator.comma.mermaid", 59],
-    ["\"quoted-key\"", "support.type.property-name.mermaid", 12]
+    ["\"quoted-key\"", "support.type.property-name.mermaid", 12],
+    ["id9", "variable.mermaid", 60],
+    ["priority", "support.type.property-name.mermaid", 60],
+    ["Very, High", "string.quoted.single.mermaid", 60]
   ],
   "unscoped": [],
   "absent": [
@@ -120,7 +123,8 @@
     [31, "string.quoted.double.mermaid"],
     [33, "string.quoted.double.mermaid"],
     [47, "punctuation.definition.string.begin.mermaid"],
-    [21, "string.quoted.single.mermaid"]
+    [21, "string.quoted.single.mermaid"],
+    [60, "keyword.operator.separator.comma.mermaid"]
   ],
   "escapedInputs": [
     {

@@ -1717,6 +1717,20 @@
   "20" meta.data.mermaid constant.numeric.mermaid
   " " meta.data.mermaid string.unquoted.mermaid
   "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
+> J@{ label: "first
+  "J" variable.mermaid
+  "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
+  " " meta.data.mermaid
+  "label" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "first" meta.data.mermaid string.quoted.double.mermaid
+>   key: value" }
+  "  key: value" meta.data.mermaid string.quoted.double.mermaid
+  "\"" meta.data.mermaid string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  " " meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
 > accDescr { unclosed class description
   "accDescr" keyword.control.mermaid
   "{" keyword.operator.delimiter.description.begin.mermaid

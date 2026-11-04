@@ -397,4 +397,19 @@
   "Very High" meta.data.mermaid string.quoted.single.mermaid
   "'" meta.data.mermaid string.quoted.single.mermaid punctuation.definition.string.end.mermaid
   "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
+>   id9[x]@{ priority: 'Very, High' }
+  "id9" variable.mermaid
+  "[" keyword.operator.shape.begin.mermaid
+  "x" string.unquoted.mermaid
+  "]" keyword.operator.shape.end.mermaid
+  "@{" meta.data.mermaid keyword.operator.bracket.data.begin.mermaid
+  " " meta.data.mermaid
+  "priority" meta.data.mermaid support.type.property-name.mermaid
+  ":" meta.data.mermaid keyword.operator.separator.key-value.mermaid
+  " " meta.data.mermaid
+  "'" meta.data.mermaid string.quoted.single.mermaid punctuation.definition.string.begin.mermaid
+  "Very, High" meta.data.mermaid string.quoted.single.mermaid
+  "'" meta.data.mermaid string.quoted.single.mermaid punctuation.definition.string.end.mermaid
+  " " meta.data.mermaid string.unquoted.mermaid
+  "}" meta.data.mermaid keyword.operator.bracket.data.end.mermaid
 > 
