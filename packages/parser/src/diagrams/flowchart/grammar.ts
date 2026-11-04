@@ -108,11 +108,26 @@ interface LabelUnits {
   readonly delimiters: readonly Range[]
 }
 
+/** A subgraph whose `end` is still to come, with its heading. */
+interface OpenSubgraph {
+  /** The position of its `subgraph` unit. */
+  readonly start: number
+  /** Its name. */
+  readonly name: FlowchartLabel
+  /** The units that its name was read from. */
+  readonly nameUnits: LabelUnits
+  /** Its title, or null. */
+  readonly title: FlowchartLabel | null
+  /** The statements of its body read so far. */
+  readonly body: FlowchartStatement[]
+}
+
 /**
  * diagrams/flowchart.md, Grammar: the recursive-descent parser over the
- * units of the flowchart lexer. Each method reads one rule of the grammar,
- * which its comment names, and makes the node that the specification gives
- * for the rule, with the tokens of `docs/tokens/flowchart.md`, Tokens.
+ * units of the flowchart lexer, except that `parseLines` holds the open
+ * subgraphs. Each method reads one rule of the grammar, which its comment
+ * names, and makes the node that the specification gives for the rule, with
+ * the tokens of `docs/tokens/flowchart.md`, Tokens.
  *
  * The parser reads units only; it moves no cursor in the source. A unit
  * that no rule takes makes the input rejected, such as the units of an
@@ -203,7 +218,7 @@ export class FlowchartGrammar extends GraphGrammar<
         this.emptyDescriptionBlockStatementOf(units),
       )
     }
-    const body = [...headerBlocks, ...this.parseLines(false)]
+    const body = [...headerBlocks, ...this.parseLines()]
     return {
       direction,
       body,
@@ -213,25 +228,31 @@ export class FlowchartGrammar extends GraphGrammar<
 
   /**
    * Diagram and statements: `line*`, where `line = statement |
-   * empty-statement | newline | space`. Inside a subgraph the lines end
-   * before its `end`; otherwise they end at the end of the text.
+   * empty-statement | newline | space`. The lines of a subgraph end before
+   * its `end`; the others end at the end of the text.
+   *
+   * Subgraphs nest without a limit, so `open` holds those whose `end` is
+   * still to come: a call for each of them would exhaust the call stack.
    */
-  private parseLines(insideSubgraph: boolean): FlowchartStatement[] {
-    const statements: FlowchartStatement[] = []
+  private parseLines(): FlowchartStatement[] {
+    const top: FlowchartStatement[] = []
+    const open: OpenSubgraph[] = []
     for (;;) {
       const unit = this.peek()
       if (unit === null) {
-        if (insideSubgraph) throw this.unexpected(null)
-        return statements
+        if (open.length > 0) throw this.unexpected(null)
+        return top
       }
+      const statements = open.at(-1)?.body ?? top
       if (unit.name === "end") {
-        if (!insideSubgraph) throw this.unexpected(unit)
-        return statements
-      }
-      if (unit.name === "newline" || unit.name === "space") {
+        if (open.length === 0) throw this.unexpected(unit)
+        this.closeSubgraph(open, top)
+      } else if (unit.name === "newline" || unit.name === "space") {
         this.advance()
       } else if (unit.name === ";") {
         statements.push(this.parseEmptyStatement())
+      } else if (unit.name === "subgraph") {
+        open.push(this.openSubgraph())
       } else {
         appendItems(statements, this.parseStatement(unit))
       }
@@ -250,11 +271,10 @@ export class FlowchartGrammar extends GraphGrammar<
    * blocks after it. The vertex, style, class definition, class, link
    * style, and click statements end with a `statement-end`, whose
    * separator belongs to no statement; the others need no separator.
+   * `parseLines` reads the subgraphs.
    */
   private parseStatement(first: Unit): FlowchartStatement[] {
     switch (first.name) {
-      case "subgraph":
-        return [this.parseSubgraphStatement()]
       case "direction-text":
       case "direction":
         return [this.parseDirectionStatement()]
@@ -555,10 +575,11 @@ export class FlowchartGrammar extends GraphGrammar<
 
   /**
    * Subgraphs: `subgraph-statement = "subgraph" space subgraph-name
-   * ( "[" label "]" )? statement-end line* "end"`. The empty description
-   * blocks of the `statement-end` are the first statements of the body.
+   * ( "[" label "]" )? statement-end line* "end"`, up to its `line*`. The
+   * empty description blocks of the `statement-end` are the first statements
+   * of the body.
    */
-  private parseSubgraphStatement(): FlowchartSubgraphStatement {
+  private openSubgraph(): OpenSubgraph {
     const start = this.next
     this.addItem("Keyword", [this.take("subgraph")])
     this.take("space")
@@ -576,7 +597,20 @@ export class FlowchartGrammar extends GraphGrammar<
       title = this.parseLabel()
       this.addItem("Punctuator", [this.take("]")])
     }
-    const body = [...this.parseStatementEnd(blocks), ...this.parseLines(true)]
+    const body = [...this.parseStatementEnd(blocks)]
+    return { start, name, nameUnits, title, body }
+  }
+
+  /**
+   * Subgraphs: the `"end"` of the innermost subgraph of `open`, which makes
+   * it a statement of the subgraph around it, or of `top` when there is none.
+   */
+  private closeSubgraph(open: OpenSubgraph[], top: FlowchartStatement[]): void {
+    const subgraph = open.pop()
+    if (subgraph === undefined) {
+      throw new Error("mmd-toolkit parser bug: no open flowchart subgraph")
+    }
+    const { start, name, nameUnits, title, body } = subgraph
     this.checkSubgraphMembers(body)
     this.addItem("Keyword", [this.take("end")])
     const statement: FlowchartSubgraphStatement = {
@@ -590,7 +624,8 @@ export class FlowchartGrammar extends GraphGrammar<
       statement,
       this.subgraphMemberOf(name, nameUnits, title),
     )
-    return statement
+    const statements = open.at(-1)?.body ?? top
+    statements.push(statement)
   }
 
   /**

@@ -74,7 +74,16 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   flowchart/gram-subgraph-member-has-own-property-then-member] [fixture:
   flowchart/gram-subgraph-member-has-own-property-nested] [fixture:
   flowchart/gram-subgraph-member-has-own-property-acc-title] [fixture:
-  flowchart/gram-subgraph-member-has-own-property-empty-statement]
+  flowchart/gram-subgraph-member-has-own-property-empty-statement] The condition
+  is checked when the `end` of the subgraph is read, so the violation of an
+  inner subgraph comes first. [fixture:
+  flowchart/gram-subgraph-member-has-own-property-inner-and-outer] [fixture:
+  flowchart/gram-subgraph-member-has-own-property-nested-outer-end-missing] A
+  subgraph without an `end` is reported at the end of the text instead.
+  [fixture: flowchart/gram-subgraph-member-has-own-property-end-missing]
+  [fixture: flowchart/gram-subgraph-member-has-own-property-end-missing-nested]
+  A unit after that `end` is not reported. [fixture:
+  flowchart/gram-subgraph-member-has-own-property-then-extra-end]
 
 ## In a sequence diagram
 

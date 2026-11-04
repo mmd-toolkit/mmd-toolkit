@@ -82,6 +82,15 @@
   [fixture: flowchart/gram-subgraph-member-has-own-property-nested]
   [fixture: flowchart/gram-subgraph-member-has-own-property-acc-title]
   [fixture: flowchart/gram-subgraph-member-has-own-property-empty-statement]
+  この条件は subgraph の `end` を読むときに確かめるので、
+  内側の subgraph の違反が先に報告されます。
+  [fixture: flowchart/gram-subgraph-member-has-own-property-inner-and-outer]
+  [fixture: flowchart/gram-subgraph-member-has-own-property-nested-outer-end-missing]
+  `end` のない subgraph は、代わりにテキストの終わりで報告されます。
+  [fixture: flowchart/gram-subgraph-member-has-own-property-end-missing]
+  [fixture: flowchart/gram-subgraph-member-has-own-property-end-missing-nested]
+  その `end` より後の単位は報告されません。
+  [fixture: flowchart/gram-subgraph-member-has-own-property-then-extra-end]
 
 ## シーケンス図の中
 

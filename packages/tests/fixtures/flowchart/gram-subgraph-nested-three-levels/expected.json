@@ -1,0 +1,86 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Grammar, subgraphs: each `end` closes the innermost subgraph, and the line after it belongs to the subgraph around that one: A to U, B to T, C to S, and D to the diagram."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "C",
+        "props": {}
+      },
+      {
+        "id": "D",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "D",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "U",
+        "nodes": [
+          "A"
+        ],
+        "title": "U",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "T",
+        "nodes": [
+          "U",
+          "B"
+        ],
+        "title": "T",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "S",
+        "nodes": [
+          "T",
+          "C"
+        ],
+        "title": "S",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

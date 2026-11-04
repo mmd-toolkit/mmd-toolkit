@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Rejections outside the grammar, subgraph members: the nested subgraph with an empty id adds no member, so A is the member after `hasOwnProperty`."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "prims[type].hasOwnProperty is not a function"
+  }
+}

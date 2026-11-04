@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Grammar, subgraphs: the direction statement after the last `end` is a statement of the diagram."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "T",
+        "nodes": [],
+        "title": "T",
+        "classes": [],
+        "dir": "LR",
+        "labelType": "text"
+      },
+      {
+        "id": "S",
+        "nodes": [
+          "T"
+        ],
+        "title": "S",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}
