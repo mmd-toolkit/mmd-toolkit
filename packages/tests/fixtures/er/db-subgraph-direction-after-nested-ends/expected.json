@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Grammar, subgraphs: the direction statement after the last `end` is a statement of the diagram."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "RL",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "I",
+        "nodes": [
+          "A"
+        ],
+        "title": "I",
+        "classes": [],
+        "cssStyles": [],
+        "dir": "LR"
+      },
+      {
+        "id": "O",
+        "nodes": [
+          "I"
+        ],
+        "title": "O",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

@@ -145,6 +145,9 @@ The flowchart grammar descends recursively except into the body of a subgraph:
 subgraphs nest without a limit, so it holds the open ones in a list instead of
 the call stack.
 
+The ER grammar descends recursively except into the body of a subgraph, in the
+same way.
+
 The venn lexer tracks implicit text mode across line starts. Its grammar keeps
 converted set names to check union members against earlier declarations, while
 the tree keeps written values.

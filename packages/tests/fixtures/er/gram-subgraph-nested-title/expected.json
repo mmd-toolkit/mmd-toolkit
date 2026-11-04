@@ -1,0 +1,46 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Grammar, subgraphs: the subgraph and the subgraph nested in it each have a title."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "I",
+        "nodes": [
+          "A"
+        ],
+        "title": "Inner title",
+        "classes": [],
+        "cssStyles": []
+      },
+      {
+        "id": "O",
+        "nodes": [
+          "I"
+        ],
+        "title": "Outer title",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}
