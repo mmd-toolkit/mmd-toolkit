@@ -101,7 +101,7 @@ function onlyFirstRowMarginChanged(before: string, after: string): boolean {
   return (
     content !== "" &&
     content[0].trim() !== "" &&
-    content === after.slice(leadingPadding(after), afterEnd) &&
+    content === after.slice(leadingSpaces(after), afterEnd) &&
     before.slice(beforeEnd) === after.slice(afterEnd)
   )
 }

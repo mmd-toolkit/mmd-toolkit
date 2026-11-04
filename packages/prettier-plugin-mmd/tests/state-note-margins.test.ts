@@ -88,11 +88,11 @@ describe("state's permitted attached-note margins", () => {
     ).toEqual(after)
   })
 
-  it("matches a protected tab margin while requiring exact raw Db equality", () => {
+  it("keeps later tab margins while requiring exact raw Db equality", () => {
     const beforeSource =
       "stateDiagram-v2\nnote right of A\n        Card payments\n \t  \n\t\tfinish immediately.\nend note\n"
     const afterSource =
-      "stateDiagram-v2\n  note right of A\n\t\tCard payments\n \t  \n\t\tfinish immediately.\n  end note\n"
+      "stateDiagram-v2\n  note right of A\n    Card payments\n \t  \n\t\tfinish immediately.\n  end note\n"
     const before = dbOfText(beforeSource, defaultEmbedded())
     const after = dbOfText(afterSource, defaultEmbedded())
     expect(after).toEqual(before)

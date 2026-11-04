@@ -616,20 +616,15 @@ notes/literal-markers-zero-width] [fixture:
 notes/marker-at-paragraph-boundary-kept]
 
 For bodies outside this paragraph rule, align only the first physical body line
-when it is nonempty and starts with only ASCII-space/tab padding. If the later
-content lines all have the same ASCII-space/tab prefix, use that exact prefix
-for the first line too, including an empty prefix. Ignore empty lines and lines
-containing only ASCII spaces and tabs when choosing that prefix, preserving
-their bytes. This keeps existing alignment and repairs a previously misaligned
-first line without changing the later text. If no later content line exists, or
-later margins differ or contain leading whitespace other than ASCII spaces and
-tabs, use the configured body indentation. [fixture:
-notes/over-lines-empty-lines-kept] [fixture:
-notes/blank-paragraphs-first-row-misaligned] [fixture:
-notes/protected-tab-margin-alignment] [fixture:
-notes/heading-at-paragraph-boundary-kept] [fixture: notes/markdown-code-kept]
-[fixture: notes/single-markup-row] [test: U+00A0 at the start of a later note
-row]
+when it is nonempty and starts with only ASCII-space/tab padding. Use the
+configured body indentation, as for eligible paragraphs. Do not infer a
+different indentation from protected later lines: their authored margins are
+part of the body text and may affect rendering. This rule applies with or
+without later content lines, and with any later margins. [fixture:
+notes/backslash-margins-kept] [fixture: notes/protected-tab-margins-kept]
+[fixture: notes/heading-at-paragraph-boundary-kept] [fixture:
+notes/markdown-code-kept] [fixture: notes/single-markup-row] [test: U+00A0 at
+the start of a later note row]
 
 Mermaid trims the first-line margin before storing the note, so this step keeps
 the raw Db identical even for HTML or Markdown. Keep every later margin as
@@ -640,9 +635,12 @@ source. [fixture: notes/html-note-kept] [fixture: notes/html-pre-first-line]
 [fixture: notes/html-first-line-zero-width] [fixture:
 notes/first-tab-markup-margin]
 
-For example, keep the common two-space margin of blank-separated paragraphs
-rather than moving just their first line to four spaces. Moving every line to
-four spaces would change how Mermaid reads the later paragraphs.
+For example, the first line of the following note uses the configured four
+spaces. Its blank-separated later paragraphs retain their two spaces: moving
+them to four spaces changes Mermaid's reading and drawing. Keeping all three
+lines at two spaces would also preserve rendering, but this formatter uses the
+configured body indentation for the trimmed first line rather than adopting an
+authored margin.
 
 Output
 ([notes/over-lines-empty-lines-kept-output.mmd](../tests/fixtures/state/notes/over-lines-empty-lines-kept-output.mmd)):
@@ -651,7 +649,7 @@ Output
 stateDiagram-v2
   A
   note right of A
-  one
+    one
 
   two
 
@@ -660,6 +658,11 @@ stateDiagram-v2
   end note
   B
 ```
+
+Likewise, a line after a backslash can retain twelve spaces while the trimmed
+first line uses the configured four. Moving the later line to four spaces
+changes the drawing; copying its twelve spaces to the first line would only
+introduce excessive indentation. [fixture: notes/backslash-margins-kept]
 
 Output
 ([notes/html-note-kept-output.mmd](../tests/fixtures/state/notes/html-note-kept-output.mmd)):

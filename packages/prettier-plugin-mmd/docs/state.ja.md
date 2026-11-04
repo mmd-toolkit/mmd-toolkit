@@ -636,16 +636,12 @@ Mermaid の読み方が変わる場合があるためです。
 
 この段落の規則に当てはまらない本文では、最初の物理行が空でなく、
 字下げが ASCII 空白と tab だけなら、その行だけをそろえます。
-後続の内容行の ASCII 空白と tab の接頭辞がすべて同じなら、空の接頭辞も含め、
-その接頭辞を先頭行にも使います。
-空行と ASCII 空白・tab だけの行は接頭辞の判定から除き、そのバイト列を保ちます。
-これにより、既存のそろいを保ち、
-先頭行だけが不揃いだった本文も後続のテキストを変えずに修正します。
-後続の内容行がない場合や、後続の字下げが異なる場合、
-行頭に ASCII 空白と tab 以外の空白文字がある場合は、
-設定された本文の段を使います。 [fixture: notes/over-lines-empty-lines-kept]
-[fixture: notes/blank-paragraphs-first-row-misaligned]
-[fixture: notes/protected-tab-margin-alignment]
+整列できる段落と同じく、設定された本文の段を使います。
+保護する後続行から別の字下げを推測しません。
+後続の余白は本文のテキストの一部で、描画に影響する場合があるためです。
+この規則は、後続の内容行の有無や字下げによらず適用します。
+[fixture: notes/backslash-margins-kept]
+[fixture: notes/protected-tab-margins-kept]
 [fixture: notes/heading-at-paragraph-boundary-kept]
 [fixture: notes/markdown-code-kept] [fixture: notes/single-markup-row]
 [test: U+00A0 at the start of a later note row]
@@ -661,10 +657,11 @@ HTML や Markdown があっても raw Db は完全に一致します。
 [fixture: notes/html-first-line-zero-width]
 [fixture: notes/first-tab-markup-margin]
 
-たとえば、空行で分かれた段落の共通の空白2個の字下げは、
-先頭行だけを空白4個へ動かさずに保ちます。
-すべての行を空白4個へ動かすと、
-Mermaid による後続の段落の読み方が変わるためです。
+たとえば、次のノートの先頭行には、設定された空白4個を使います。
+空行で分かれた後続の段落は空白2個を保ちます。
+後続行を空白4個へ動かすと、Mermaid の読み取りと描画が変わるためです。
+3行すべてを空白2個にしても描画は変わりませんが、この先頭行には、
+設定された本文の段を使う書式を採用しています。
 
 出力
 ([notes/over-lines-empty-lines-kept-output.mmd](../tests/fixtures/state/notes/over-lines-empty-lines-kept-output.mmd)):
@@ -673,7 +670,7 @@ Mermaid による後続の段落の読み方が変わるためです。
 stateDiagram-v2
   A
   note right of A
-  one
+    one
 
   two
 
@@ -682,6 +679,12 @@ stateDiagram-v2
   end note
   B
 ```
+
+同様に、backslash の後の行は空白12個を保ち、
+余白が取り除かれる先頭行には設定された空白4個を使う場合があります。
+後続行を空白4個へ動かすと描画が変わり、
+その空白12個を先頭行へコピーしても字下げを深くしすぎるだけです。
+[fixture: notes/backslash-margins-kept]
 
 出力
 ([notes/html-note-kept-output.mmd](../tests/fixtures/state/notes/html-note-kept-output.mmd)):
