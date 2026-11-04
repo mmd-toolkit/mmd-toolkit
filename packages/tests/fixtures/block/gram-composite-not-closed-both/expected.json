@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Grammar, composites: the text ends with two composites open."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...block:Ablock:Bc\n------------------^\nExpecting 'end', got 'EOF'"
+  }
+}

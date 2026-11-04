@@ -1,0 +1,67 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Grammar, composites: each `end` closes the innermost composite, and the statement after it belongs to the composite around that one: d to C, e to B, f to A, and g to the diagram."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "",
+          "type": "composite",
+          "widthInColumns": 1,
+          "children": [
+            {
+              "id": "B",
+              "label": "",
+              "type": "composite",
+              "widthInColumns": 1,
+              "children": [
+                {
+                  "id": "C",
+                  "label": "",
+                  "type": "composite",
+                  "widthInColumns": 1,
+                  "children": [
+                    {
+                      "id": "d",
+                      "label": "d",
+                      "type": "na",
+                      "widthInColumns": 1
+                    }
+                  ]
+                },
+                {
+                  "id": "e",
+                  "label": "e",
+                  "type": "na",
+                  "widthInColumns": 1
+                }
+              ]
+            },
+            {
+              "id": "f",
+              "label": "f",
+              "type": "na",
+              "widthInColumns": 1
+            }
+          ]
+        },
+        {
+          "id": "g",
+          "label": "g",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

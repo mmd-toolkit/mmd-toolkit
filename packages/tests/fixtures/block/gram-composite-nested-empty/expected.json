@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Grammar, composites: a nested composite needs a statement as the outermost one does; the `end` of the empty B is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...etablock:Ablock:Bendend\n--------------------^\nExpecting 'BLOCK_DIAGRAM_KEY', 'LINK', 'START_LINK', 'SPACE_BLOCK', 'COLUMNS', 'id-block', 'NODE_ID', 'classDef', 'class', 'style', got 'end'"
+  }
+}
