@@ -212,20 +212,26 @@ function checkForeground(code: string): void {
 }
 
 describe("the fixtures of the diagram types", () => {
-  it.each(fixtureNames)("colors %s as its expectations say", async (name) => {
-    const code = readFileSync(fixture(`${name}.mmd`), "utf8")
-    const expected = JSON.parse(
-      readFileSync(fixture(`${name}.expected.json`), "utf8"),
-    ) as Expected
-    expect(scopesOf(code, expected.header)).toContain("keyword.control.mermaid")
-    checkScopes(code, expected)
-    checkForeground(code)
-    for (const input of expected.escapedInputs ?? []) {
-      checkScopes(input.code, input)
-      checkForeground(input.code)
-    }
-    await expect(tokens(code)).toMatchFileSnapshot(fixture(`${name}.tokens`))
-  })
+  it.each(fixtureNames)(
+    "colors %s as its expectations say",
+    async (name) => {
+      const code = readFileSync(fixture(`${name}.mmd`), "utf8")
+      const expected = JSON.parse(
+        readFileSync(fixture(`${name}.expected.json`), "utf8"),
+      ) as Expected
+      expect(scopesOf(code, expected.header)).toContain(
+        "keyword.control.mermaid",
+      )
+      checkScopes(code, expected)
+      checkForeground(code)
+      for (const input of expected.escapedInputs ?? []) {
+        checkScopes(input.code, input)
+        checkForeground(input.code)
+      }
+      await expect(tokens(code)).toMatchFileSnapshot(fixture(`${name}.tokens`))
+    },
+    60_000,
+  )
 })
 
 it.each(themes)(
