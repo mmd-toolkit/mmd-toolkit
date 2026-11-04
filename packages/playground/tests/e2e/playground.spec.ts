@@ -554,6 +554,85 @@ test("Apply and Undo preserve the previous CRLF source", async ({ page }) => {
   await expect.poll(() => savedSource(page)).toBe(source)
 })
 
+test("preserves navigation before an older URL compression finishes", async ({
+  page,
+}) => {
+  await expect.poll(() => savedSource(page)).toBe(defaultSource)
+  const source = "flowchart LR\r\nA-->B\r\n"
+  const hash = await encodeState({ source, tabWidth: 2, useTabs: false })
+  await page.evaluate((fragment) => {
+    const nativeResponse = Response
+    window.Response = class extends nativeResponse {
+      public override async arrayBuffer(): Promise<ArrayBuffer> {
+        window.Response = nativeResponse
+        const bytes = await super.arrayBuffer()
+        // Navigate before saveUrl resumes and before hashchange is delivered.
+        window.location.hash = fragment
+        return bytes
+      }
+    }
+  }, hash)
+  await page.getByRole("button", { name: "Share", exact: true }).click()
+  await expect(page.locator(".source-pane .pane-footer")).toContainText(
+    "21 UTF-16 units",
+  )
+  await expect.poll(() => savedSource(page)).toBe(source)
+})
+
+test("preserves navigation before an older URL save starts", async ({
+  page,
+}) => {
+  const source = "flowchart LR\r\nA-->B\r\n"
+  const hash = await encodeState({ source, tabWidth: 2, useTabs: false })
+  await page.addInitScript((fragment) => {
+    const setTimeout = window.setTimeout.bind(window)
+    Object.defineProperty(window, "setTimeout", {
+      value(handler: TimerHandler, timeout?: number, ...args: unknown[]) {
+        if (timeout !== 500 || typeof handler !== "function")
+          return setTimeout(handler, timeout, ...args)
+        window.setTimeout = setTimeout
+        return setTimeout(() => {
+          // The initial save was scheduled before this navigation.
+          let navigationDelivered: (() => void) | undefined
+          const navigated = new Promise<void>((resolve) => {
+            navigationDelivered = resolve
+          })
+
+          /** Delays the app listener until the pending save has finished. */
+          function holdNavigation(event: HashChangeEvent): void {
+            event.stopImmediatePropagation()
+            navigationDelivered?.()
+          }
+
+          window.addEventListener("hashchange", holdNavigation, true)
+          const nativeResponse = Response
+          window.Response = class extends nativeResponse {
+            public override async arrayBuffer(): Promise<ArrayBuffer> {
+              window.Response = nativeResponse
+              const bytes = await super.arrayBuffer()
+              await navigated
+              // Let the save finish before notifying the app about navigation.
+              setTimeout(() => {
+                window.removeEventListener("hashchange", holdNavigation, true)
+                window.dispatchEvent(new HashChangeEvent("hashchange"))
+              }, 0)
+              return bytes
+            }
+          }
+          window.location.hash = fragment
+          handler(...args)
+        }, timeout)
+      },
+    })
+  }, hash)
+  // A different query starts a new document with the initial save still pending.
+  await page.goto("./?pending-save")
+  await expect(page.locator(".source-pane .pane-footer")).toContainText(
+    "21 UTF-16 units",
+  )
+  await expect.poll(() => savedSource(page)).toBe(source)
+})
+
 test("discards formatting superseded while the formatter is loading", async ({
   page,
 }) => {
