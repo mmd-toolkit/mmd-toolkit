@@ -778,10 +778,13 @@ statement           = participant-statement
 [fixture: sequence/gram-statement-after-end]
 [fixture: sequence/spec-sequence-diagram-543d2299]
 [fixture: sequence/spec-sequence-diagram-8e03af61]
+[fixture: sequence/gram-block-nested-end-end-same-line]
+[fixture: sequence/gram-block-nested-statement-after-end]
 `invalid` の単位の行は受理されて、木では SequenceIgnoredStatement になります。
 `end` の後の同じ行でも同じです。
 [fixture: sequence/lex-invalid-line-parenthesis] [fixture:
 sequence/gram-invalid-after-end]
+[fixture: sequence/gram-block-nested-invalid-line]
 テキストが続くつもりだったメッセージの後の `)` の行も、そのような行です。
 `A->>B: call(x`、改行、 `)` のメッセージは `call(x` です。
 [fixture: sequence/db-ignored-line-after-wrapped-message] [fixture:
@@ -865,7 +868,8 @@ box-text              = color-candidate text? | text
 箱が持てるのは、参加者の文、空の説明ブロック、空の行だけで、
 `create` もメッセージも置けません。
 [fixture: sequence/gram-box-create-participant] [fixture:
-sequence/gram-box-message-inside]
+sequence/gram-box-message-inside] [fixture: sequence/gram-block-loop-in-box]
+[fixture: sequence/gram-block-section-in-box-in-alt]
 箱の中の空の説明ブロックは、ほかの文が始まる位置と同じく、
 テキストのない説明のブロックの文です。
 それだけの行にあっても、括弧の間が空白だけで何行かにわたっても、
@@ -917,9 +921,10 @@ block-statement = ( "loop" | "rect" | "opt" | "break" ) text-part line* "end"
                 | "critical" text-part line* ( "option" text-part line* )* "end"
 ```
 
-ブロックのテキストは空でもかまいません。
+ブロックと節のテキストは空でもかまわず、行もなくてかまいません。
 `loop`、改行、`end` は、空のテキストのループです。
 [fixture: sequence/gram-block-empty-text]
+[fixture: sequence/gram-block-empty-sections]
 どのキーワードもそれぞれの種類のブロックを始め、 `else`、`and`、`option` は、
 `alt` のブロック、`par` か `par_over` のブロック、
 `critical` のブロックの節を始めます。 [fixture: sequence/db-block-rect]
@@ -928,12 +933,102 @@ block-statement = ( "loop" | "rect" | "opt" | "break" ) text-part line* "end"
 [fixture: sequence/gram-block-critical-and] [fixture: sequence/db-block-opt]
 [fixture: sequence/db-block-break] [fixture: sequence/db-block-alt]
 [fixture: sequence/db-block-par] [fixture: sequence/db-block-par-over]
-[fixture: sequence/db-block-critical]
+[fixture: sequence/db-block-critical] [fixture: sequence/gram-block-and-in-alt]
+[fixture: sequence/gram-block-and-in-par-over]
+[fixture: sequence/gram-block-else-in-critical]
+[fixture: sequence/gram-block-else-in-loop]
+[fixture: sequence/gram-block-else-in-par]
+[fixture: sequence/gram-block-else-in-rect]
+[fixture: sequence/gram-block-option-in-alt]
+[fixture: sequence/gram-block-option-in-par]
+
+ブロックと節の行は図の行と同じなので、ブロックと箱は、
+どの深さまでも入れ子にできます。 [fixture: sequence/gram-block-nested-all-kinds]
+[fixture: sequence/gram-block-loop-in-rect]
+[fixture: sequence/gram-block-rect-in-loop]
+[fixture: sequence/gram-block-rect-in-rect]
+[fixture: sequence/gram-block-rect-in-section]
+[fixture: sequence/gram-block-nested-in-section]
+[fixture: sequence/gram-block-sections-in-nested]
+[fixture: sequence/gram-block-box-in-loop]
+[fixture: sequence/gram-block-box-in-section]
+[fixture: sequence/gram-block-body-comment-line]
+[fixture: sequence/gram-block-section-end-comment-line]
+[fixture: sequence/gram-block-body-directive]
+[fixture: sequence/gram-block-section-end-directive]
+[fixture: sequence/gram-block-body-empty-line]
+[fixture: sequence/gram-block-body-line-separator]
+[fixture: sequence/gram-block-body-semicolon]
+[fixture: sequence/gram-block-body-ignored-semicolon]
+[fixture: sequence/gram-block-body-empty-block]
+
+`end` は、いちばん内側の開いているブロックか箱を閉じ、
+どれも自分の `end` が要ります。
+`end` が足りない入力と、開いているものがないときの `end` は拒否します。
+[fixture: sequence/gram-block-box-end-closes-box]
+[fixture: sequence/gram-block-extra-end]
+[fixture: sequence/gram-block-nested-extra-end]
+[fixture: sequence/gram-block-section-extra-end]
+[fixture: sequence/gram-block-nested-missing-end-both]
+[fixture: sequence/gram-block-nested-missing-end-outer]
+[fixture: sequence/gram-block-section-missing-end]
+[fixture: sequence/gram-block-nested-section-missing-end]
+[fixture: sequence/gram-block-end-top-level]
+[fixture: sequence/gram-block-nested-end-semicolon]
+
+節のキーワードは、いちばん内側の開いているブロックのものです。
+そのブロックにその節がないときと、開いているブロックがないときは、
+外側のブロックにその節があっても、入力を拒否します。
+[fixture: sequence/gram-block-else-in-loop-in-alt]
+[fixture: sequence/gram-block-and-in-alt-in-par]
+[fixture: sequence/gram-block-option-in-par-in-critical]
+[fixture: sequence/gram-block-else-top-level]
+[fixture: sequence/gram-block-and-top-level]
+[fixture: sequence/gram-block-option-top-level]
+[fixture: sequence/gram-block-nested-same-sections]
+[fixture: sequence/gram-block-nested-par-in-critical]
+[fixture: sequence/gram-block-and-in-par-over-in-par]
+[fixture: sequence/gram-block-nested-critical-in-critical]
+[fixture: sequence/gram-block-section-after-inner-end-same-line]
+[fixture: sequence/gram-block-section-after-inner-end-semicolon]
+[fixture: sequence/gram-block-section-after-inner-end-ignored-semicolon]
+[fixture: sequence/gram-block-section-after-inner-end-comment-line]
+[fixture: sequence/gram-block-section-after-inner-end-empty-line]
+[fixture: sequence/gram-block-section-after-inner-end-directive]
+[fixture: sequence/gram-block-section-after-inner-end-line-separator]
+[fixture: sequence/gram-block-section-after-inner-end-empty-block]
 
 ### 文法の外での拒否
 
 mermaid.js は、文法が受理する入力の一部を、Db を作る間に拒否します。
 どれも、ソースの順の文から決まります。
+ブロックや節の中の文は、書かれた場所で 1 回だけ数えます。
+ブロックは繰り返さず、ブロックの節は互いを排除しません。
+[fixture: sequence/db-block-activate-before-deactivate-sections]
+[fixture: sequence/db-block-activate-in-nested-body]
+[fixture: sequence/db-block-deactivate-after-nested-body]
+[fixture: sequence/db-block-deactivate-before-activate-sections]
+[fixture: sequence/db-block-deactivate-in-body-before-activate]
+[fixture: sequence/db-block-deactivate-both-sections]
+[fixture: sequence/db-block-deactivate-once-in-loop]
+[fixture: sequence/db-block-deactivate-after-loop]
+[fixture: sequence/db-block-arrows-across-sections]
+[fixture: sequence/db-block-create-message-in-loop]
+[fixture: sequence/db-block-create-message-next-section]
+[fixture: sequence/db-block-create-wrong-message-next-section]
+[fixture: sequence/db-block-create-awaiting-at-end]
+[fixture: sequence/db-block-destroy-next-section]
+[fixture: sequence/db-block-destroy-message-after-block]
+[fixture: sequence/db-block-create-existing-next-section]
+[fixture: sequence/db-block-create-existing-after-loop]
+[fixture: sequence/db-block-create-after-message-next-section]
+[fixture: sequence/db-block-two-boxes-in-blocks]
+[fixture: sequence/db-block-two-boxes-in-sections]
+[fixture: sequence/gram-create-wait-into-block]
+[fixture: sequence/gram-create-wait-out-of-block]
+[fixture: sequence/gram-create-wait-across-else]
+
+拒否する入力は次のとおりです。
 
 - **活性化していない参加者の非活性化。**
   参加者は、それについての `activate` の文と、
@@ -1006,7 +1101,6 @@ mermaid.js は、文法が受理する入力の一部を、Db を作る間に拒
 - ほかの文は、どちらの場所も見ず、変えません。
   作られるのを待つ参加者の上のノートはそれを満たさず、
   `activate` や `autonumber` なども満たしません。
-  文はソースの順に適用されるので、ブロックとその節は関係しません。
 - テキストの終わりでは何も検査しません。
   参加者が作られるのや destroy されるのを待ったままでもかまいません。
 

@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md Rejections outside the grammar: the statements in a global are no members of the outer flow; a directive in the global; accepted."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "hasOwnProperty",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "hasOwnProperty",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "subGraph0",
+        "nodes": [
+          "hasOwnProperty"
+        ],
+        "title": "",
+        "classes": [],
+        "labelType": "markdown",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  }
+}

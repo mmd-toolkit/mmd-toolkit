@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md Rejections outside the grammar: a chain contributes its groups from last to first, so hasOwnProperty comes before A; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "prims[type2].hasOwnProperty is not a function"
+  }
+}

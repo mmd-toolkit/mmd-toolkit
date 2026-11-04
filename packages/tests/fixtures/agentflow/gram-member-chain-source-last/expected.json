@@ -1,0 +1,64 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md Rejections outside the grammar: a chain contributes its groups from last to first, so hasOwnProperty comes after A; accepted."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "hasOwnProperty",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "hasOwnProperty",
+        "props": {}
+      },
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "hasOwnProperty",
+        "end": "A",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_hasOwnProperty_A_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "subGraph0",
+        "nodes": [
+          "A",
+          "hasOwnProperty"
+        ],
+        "title": "",
+        "classes": [],
+        "labelType": "markdown",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  }
+}

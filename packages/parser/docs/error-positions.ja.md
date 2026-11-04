@@ -783,7 +783,7 @@ ishikawa/directive-in-beta-header] [fixture: ishikawa/gram-initial-beta-cut-eof]
 | EOF まで click コンテキストが何も読まない | click キーワードで `click has no click id before the end of the text`。                                                                                                    |
 | 文法が単位を読めない                      | 有意なトークン範囲、空白だけなら先頭の空範囲で `Unexpected token`。ソース EOF ではその空範囲で `Unexpected end of text`。                                                  |
 | 無効な linkStyle 添字                     | その数値で `linkStyle <number> does not name a link that exists`。                                                                                                         |
-| hasOwnProperty に続くメンバー             | 最初の後続候補の id、名前、アクセシビリティ値、または空文のセミコロンで `A flow member follows the member hasOwnProperty`。                                                |
+| hasOwnProperty に続くメンバー             | 最初の後続候補の id、名前、アクセシビリティ値、空文のセミコロン、または名前のない flow の文で `A flow member follows the member hasOwnProperty`。                          |
 
 字句規則に一致しない場合の行の例: [fixture: agentflow/lex-class-suffix-equals]
 [fixture: agentflow/lex-vertex-equals-alone]
@@ -820,6 +820,16 @@ ishikawa/directive-in-beta-header] [fixture: ishikawa/gram-initial-beta-cut-eof]
 [fixture: agentflow/gram-accessibility-hasownproperty-member]
 [fixture: agentflow/gram-flow-hasownproperty-before-empty-statement]
 [fixture: agentflow/gram-name-click-empty-string-adjacent-text]
+
+名前のない flow もメンバーで、その範囲は文全体です。
+[fixture: agentflow/gram-member-after-inner-flow]
+[fixture: agentflow/gram-member-empty-inner-flow]
+hasOwnProperty に続くメンバーの条件は、flow の `end` を読むときに確かめます。
+そのため、内側の flow の違反が先に報告され、その `end` の後の、
+文法が読めない単位は報告されません。
+[fixture: agentflow/gram-member-inner-rejected-first]
+[fixture: agentflow/gram-member-rejected-before-later-unit]
+[fixture: agentflow/gram-member-rejected-before-missing-end]
 
 オペランドが一つの class 文と、値が空の style 文に改行が続く場合は、
 その改行単位の空の有意範囲を報告する。

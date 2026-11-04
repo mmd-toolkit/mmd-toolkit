@@ -149,6 +149,10 @@ C4 の文法は、消費する引数の位置にある `__proto__` キーを検�
 境界は上限なく入れ子になるので、開いている境界は呼び出しのスタックでなく、
 一覧に持ちます。
 
+agentflow の文法は再帰下降で読みますが、flow と global の本体だけは別です。
+これらは上限なく入れ子になるので、開いているものは呼び出しのスタックでなく、
+一覧に持ちます。
+
 venn の字句解析器は、行の始まりをまたいで暗黙の text モードを保持します。
 文法は、変換した set 名を保持して union の要素を先行する宣言と照合し、
 木は書かれた値を保持します。
@@ -201,9 +205,7 @@ data・shape・callback などの共通生成規則には、
 波括弧の変換をそれぞれ持ちます。
 既存の共通 reader、方向行規則、Unicode 文字の補助も使います。
 テキストのラッパーは、終了波括弧後の最初の LF に直結する行空白だけを畳みます。
-文法は再帰下降で読みますが、flow と global の本体だけは別です。
-これらは上限なく入れ子になるので、開いているものは呼び出しのスタックでなく、
-一覧に持ちます。 [fixture: agentflow/lex-brace-string-keeps-blank-line]
+[fixture: agentflow/lex-brace-string-keeps-blank-line]
 [fixture: agentflow/lex-brace-line-whitespace-ls]
 [fixture: agentflow/lex-brace-ls-without-lf]
 

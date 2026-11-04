@@ -1,0 +1,61 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Blocks: a section keyword belongs to the innermost open block; the first and belongs to the par_over, the second to the par; accepted."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "message": "a",
+        "wrap": false,
+        "type": 19,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "b",
+        "wrap": false,
+        "type": 32,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "c",
+        "wrap": false,
+        "type": 20,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 21,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "d",
+        "wrap": false,
+        "type": 20,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 21,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

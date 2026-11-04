@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Rejections outside the grammar: a statement in a block or a section counts once, where it is written; the deactivation in the loop counts; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Trying to inactivate an inactive participant (A)"
+  }
+}

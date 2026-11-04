@@ -684,14 +684,14 @@ ishikawa/directive-in-beta-header] [fixture: ishikawa/gram-initial-beta-cut-eof]
 
 ## In an agentflow diagram
 
-| Rejection                                | Range and message                                                                                                                                                                          |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| No lexical rule matches                  | The one character, including both UTF-16 units of a non-BMP character, with `Unexpected character`. An unclosed string or markdown string reports its opening quote.                       |
-| Unfinished callback context              | The call keyword with `The callback after call has no ( before the end of the text`, or its opening parenthesis with `The arguments of the callback have no ) before the end of the text`. |
-| A click context reads nothing before EOF | Its click keyword, with `click has no click id before the end of the text`.                                                                                                                |
-| The grammar cannot read a unit           | Its significant token range, or the empty range at the start of an all-whitespace unit, with `Unexpected token`; at source EOF, the empty range there with `Unexpected end of text`.       |
-| An invalid linkStyle index               | The number, with `linkStyle <number> does not name a link that exists`.                                                                                                                    |
-| A member after hasOwnProperty            | The first following candidate member's id, name, accessibility value, or empty-statement semicolon, with `A flow member follows the member hasOwnProperty`.                                |
+| Rejection                                | Range and message                                                                                                                                                                                      |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| No lexical rule matches                  | The one character, including both UTF-16 units of a non-BMP character, with `Unexpected character`. An unclosed string or markdown string reports its opening quote.                                   |
+| Unfinished callback context              | The call keyword with `The callback after call has no ( before the end of the text`, or its opening parenthesis with `The arguments of the callback have no ) before the end of the text`.             |
+| A click context reads nothing before EOF | Its click keyword, with `click has no click id before the end of the text`.                                                                                                                            |
+| The grammar cannot read a unit           | Its significant token range, or the empty range at the start of an all-whitespace unit, with `Unexpected token`; at source EOF, the empty range there with `Unexpected end of text`.                   |
+| An invalid linkStyle index               | The number, with `linkStyle <number> does not name a link that exists`.                                                                                                                                |
+| A member after hasOwnProperty            | The first following candidate member's id, name, accessibility value, or empty-statement semicolon, or the statement of a flow without a name, with `A flow member follows the member hasOwnProperty`. |
 
 Cases of the lexical-rule row: [fixture: agentflow/lex-class-suffix-equals]
 [fixture: agentflow/lex-vertex-equals-alone] [fixture:
@@ -725,6 +725,16 @@ agentflow/gram-connector-member-hasownproperty] [fixture:
 agentflow/gram-accessibility-hasownproperty-member] [fixture:
 agentflow/gram-flow-hasownproperty-before-empty-statement] [fixture:
 agentflow/gram-name-click-empty-string-adjacent-text]
+
+A flow without a name is a member too, and its range is the whole statement.
+[fixture: agentflow/gram-member-after-inner-flow] [fixture:
+agentflow/gram-member-empty-inner-flow] The condition on a member after
+hasOwnProperty is checked when the `end` of the flow is read, so the violation
+of an inner flow comes first, and a unit after that `end` that the grammar
+cannot read is not reported. [fixture:
+agentflow/gram-member-inner-rejected-first] [fixture:
+agentflow/gram-member-rejected-before-later-unit] [fixture:
+agentflow/gram-member-rejected-before-missing-end]
 
 When followed by a newline, a class statement with one operand or a style
 statement with an empty value reports that newline unit at its empty significant

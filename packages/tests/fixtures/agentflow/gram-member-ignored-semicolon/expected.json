@@ -1,0 +1,58 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md Rejections outside the grammar: the line rule ignores the last ;, so no extra semicolon follows; accepted."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "hasOwnProperty",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "hasOwnProperty",
+        "props": {},
+        "metadata": {
+          "style": "x:#y"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "subGraph0",
+        "nodes": [
+          "hasOwnProperty"
+        ],
+        "title": "",
+        "classes": [],
+        "labelType": "markdown",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "hasOwnProperty",
+        "set": {
+          "metadata": {
+            "style": "x:#y"
+          }
+        }
+      }
+    ]
+  }
+}

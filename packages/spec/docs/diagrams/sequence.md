@@ -690,12 +690,15 @@ another statement may follow on the same line after `end`: `loop x`, a message,
 and `end A->>B: z` has the message after the loop. [fixture:
 sequence/gram-statement-after-end] [fixture:
 sequence/spec-sequence-diagram-543d2299] [fixture:
-sequence/spec-sequence-diagram-8e03af61] A line of an `invalid` unit is accepted
-and is a SequenceIgnoredStatement in the tree, also after `end` on the same
-line. [fixture: sequence/lex-invalid-line-parenthesis] [fixture:
-sequence/gram-invalid-after-end] A line `)` after a message whose text was meant
-to continue is such a line: `A->>B: call(x`, a line break, and `)` has the
-message `call(x`. [fixture: sequence/db-ignored-line-after-wrapped-message]
+sequence/spec-sequence-diagram-8e03af61] [fixture:
+sequence/gram-block-nested-end-end-same-line] [fixture:
+sequence/gram-block-nested-statement-after-end] A line of an `invalid` unit is
+accepted and is a SequenceIgnoredStatement in the tree, also after `end` on the
+same line. [fixture: sequence/lex-invalid-line-parenthesis] [fixture:
+sequence/gram-invalid-after-end] [fixture:
+sequence/gram-block-nested-invalid-line] A line `)` after a message whose text
+was meant to continue is such a line: `A->>B: call(x`, a line break, and `)` has
+the message `call(x`. [fixture: sequence/db-ignored-line-after-wrapped-message]
 [fixture: sequence/db-wrapped-message-closed]
 
 ### Empty description blocks before a separator
@@ -768,12 +771,13 @@ sequence/gram-create-destroy] [fixture: sequence/spec-sequence-diagram-a7618b16]
 A box holds only participant statements, empty description blocks, and empty
 lines, without `create` and without messages. [fixture:
 sequence/gram-box-create-participant] [fixture:
-sequence/gram-box-message-inside] An empty description block in a box is a
-description block statement without text, as where any other statement starts:
-it may be on a line of its own, over several lines with only whitespace between
-its braces, or followed on the same line by a participant statement or by `end`.
-[fixture: sequence/gram-box-empty-description-block-line] [fixture:
-sequence/gram-box-empty-description-block-lines] [fixture:
+sequence/gram-box-message-inside] [fixture: sequence/gram-block-loop-in-box]
+[fixture: sequence/gram-block-section-in-box-in-alt] An empty description block
+in a box is a description block statement without text, as where any other
+statement starts: it may be on a line of its own, over several lines with only
+whitespace between its braces, or followed on the same line by a participant
+statement or by `end`. [fixture: sequence/gram-box-empty-description-block-line]
+[fixture: sequence/gram-box-empty-description-block-lines] [fixture:
 sequence/gram-box-empty-description-block-then-participant] [fixture:
 sequence/gram-box-empty-description-block-before-end] A description block with
 text and a description statement are no statements of a box, and both reject
@@ -818,21 +822,105 @@ block-statement = ( "loop" | "rect" | "opt" | "break" ) text-part line* "end"
                 | "critical" text-part line* ( "option" text-part line* )* "end"
 ```
 
-A block's text may be empty: `loop`, a line break, and `end` is a loop with the
-empty text. [fixture: sequence/gram-block-empty-text] Each keyword starts a
-block of its own kind, and `else`, `and`, and `option` start the sections of an
-`alt` block, of a `par` or `par_over` block, and of a `critical` block.
-[fixture: sequence/db-block-rect] [fixture: sequence/gram-block-loop-else]
-[fixture: sequence/gram-block-alt-option] [fixture:
-sequence/gram-block-critical-and] [fixture: sequence/db-block-opt] [fixture:
-sequence/db-block-break] [fixture: sequence/db-block-alt] [fixture:
+The text of a block or of a section may be empty, and so may its lines: `loop`,
+a line break, and `end` is a loop with the empty text. [fixture:
+sequence/gram-block-empty-text] [fixture: sequence/gram-block-empty-sections]
+Each keyword starts a block of its own kind, and `else`, `and`, and `option`
+start the sections of an `alt` block, of a `par` or `par_over` block, and of a
+`critical` block. [fixture: sequence/db-block-rect] [fixture:
+sequence/gram-block-loop-else] [fixture: sequence/gram-block-alt-option]
+[fixture: sequence/gram-block-critical-and] [fixture: sequence/db-block-opt]
+[fixture: sequence/db-block-break] [fixture: sequence/db-block-alt] [fixture:
 sequence/db-block-par] [fixture: sequence/db-block-par-over] [fixture:
-sequence/db-block-critical]
+sequence/db-block-critical] [fixture: sequence/gram-block-and-in-alt] [fixture:
+sequence/gram-block-and-in-par-over] [fixture:
+sequence/gram-block-else-in-critical] [fixture:
+sequence/gram-block-else-in-loop] [fixture: sequence/gram-block-else-in-par]
+[fixture: sequence/gram-block-else-in-rect] [fixture:
+sequence/gram-block-option-in-alt] [fixture: sequence/gram-block-option-in-par]
+
+The lines of a block and of a section are the lines of the diagram, so blocks
+and boxes nest in them to any depth. [fixture:
+sequence/gram-block-nested-all-kinds] [fixture:
+sequence/gram-block-loop-in-rect] [fixture: sequence/gram-block-rect-in-loop]
+[fixture: sequence/gram-block-rect-in-rect] [fixture:
+sequence/gram-block-rect-in-section] [fixture:
+sequence/gram-block-nested-in-section] [fixture:
+sequence/gram-block-sections-in-nested] [fixture:
+sequence/gram-block-box-in-loop] [fixture: sequence/gram-block-box-in-section]
+[fixture: sequence/gram-block-body-comment-line] [fixture:
+sequence/gram-block-section-end-comment-line] [fixture:
+sequence/gram-block-body-directive] [fixture:
+sequence/gram-block-section-end-directive] [fixture:
+sequence/gram-block-body-empty-line] [fixture:
+sequence/gram-block-body-line-separator] [fixture:
+sequence/gram-block-body-semicolon] [fixture:
+sequence/gram-block-body-ignored-semicolon] [fixture:
+sequence/gram-block-body-empty-block]
+
+Each `end` closes the innermost open block or box, and each needs its own: a
+missing `end` and an `end` with nothing open are rejected. [fixture:
+sequence/gram-block-box-end-closes-box] [fixture: sequence/gram-block-extra-end]
+[fixture: sequence/gram-block-nested-extra-end] [fixture:
+sequence/gram-block-section-extra-end] [fixture:
+sequence/gram-block-nested-missing-end-both] [fixture:
+sequence/gram-block-nested-missing-end-outer] [fixture:
+sequence/gram-block-section-missing-end] [fixture:
+sequence/gram-block-nested-section-missing-end] [fixture:
+sequence/gram-block-end-top-level] [fixture:
+sequence/gram-block-nested-end-semicolon]
+
+A section keyword belongs to the innermost open block: where that block has no
+such sections, or no block is open, the input is rejected, even when an
+enclosing block has them. [fixture: sequence/gram-block-else-in-loop-in-alt]
+[fixture: sequence/gram-block-and-in-alt-in-par] [fixture:
+sequence/gram-block-option-in-par-in-critical] [fixture:
+sequence/gram-block-else-top-level] [fixture: sequence/gram-block-and-top-level]
+[fixture: sequence/gram-block-option-top-level] [fixture:
+sequence/gram-block-nested-same-sections] [fixture:
+sequence/gram-block-nested-par-in-critical] [fixture:
+sequence/gram-block-and-in-par-over-in-par] [fixture:
+sequence/gram-block-nested-critical-in-critical] [fixture:
+sequence/gram-block-section-after-inner-end-same-line] [fixture:
+sequence/gram-block-section-after-inner-end-semicolon] [fixture:
+sequence/gram-block-section-after-inner-end-ignored-semicolon] [fixture:
+sequence/gram-block-section-after-inner-end-comment-line] [fixture:
+sequence/gram-block-section-after-inner-end-empty-line] [fixture:
+sequence/gram-block-section-after-inner-end-directive] [fixture:
+sequence/gram-block-section-after-inner-end-line-separator] [fixture:
+sequence/gram-block-section-after-inner-end-empty-block]
 
 ### Rejections outside the grammar
 
 mermaid.js rejects some inputs that the grammar accepts, while it builds the Db.
-Each is decided from the statements in source order:
+Each is decided from the statements in source order. A statement in a block or a
+section counts once, where it is written: a block does not repeat, and the
+sections of a block do not exclude each other. [fixture:
+sequence/db-block-activate-before-deactivate-sections] [fixture:
+sequence/db-block-activate-in-nested-body] [fixture:
+sequence/db-block-deactivate-after-nested-body] [fixture:
+sequence/db-block-deactivate-before-activate-sections] [fixture:
+sequence/db-block-deactivate-in-body-before-activate] [fixture:
+sequence/db-block-deactivate-both-sections] [fixture:
+sequence/db-block-deactivate-once-in-loop] [fixture:
+sequence/db-block-deactivate-after-loop] [fixture:
+sequence/db-block-arrows-across-sections] [fixture:
+sequence/db-block-create-message-in-loop] [fixture:
+sequence/db-block-create-message-next-section] [fixture:
+sequence/db-block-create-wrong-message-next-section] [fixture:
+sequence/db-block-create-awaiting-at-end] [fixture:
+sequence/db-block-destroy-next-section] [fixture:
+sequence/db-block-destroy-message-after-block] [fixture:
+sequence/db-block-create-existing-next-section] [fixture:
+sequence/db-block-create-existing-after-loop] [fixture:
+sequence/db-block-create-after-message-next-section] [fixture:
+sequence/db-block-two-boxes-in-blocks] [fixture:
+sequence/db-block-two-boxes-in-sections] [fixture:
+sequence/gram-create-wait-into-block] [fixture:
+sequence/gram-create-wait-out-of-block] [fixture:
+sequence/gram-create-wait-across-else]
+
+The inputs are these:
 
 - **Deactivating an inactive participant.** A participant is **activated** by an
   `activate` statement for it and by a message with `+` after the arrow, for its
@@ -895,8 +983,7 @@ Both start empty.
   empty. A message that fails its check makes the input rejected.
 - No other statement looks at either place or changes it: a note over the
   participant awaiting creation does not satisfy it, and neither do `activate`,
-  `autonumber`, and the like. Blocks and their sections make no difference,
-  since the statements are applied in source order.
+  `autonumber`, and the like.
 - At the end of the text, nothing is checked: a participant may still await
   creation or destruction.
 

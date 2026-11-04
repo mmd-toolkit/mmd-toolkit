@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Blocks: each end closes the innermost open block or box; a ; between the two ends; accepted."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "message": "a",
+        "wrap": false,
+        "type": 10,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "b",
+        "wrap": false,
+        "type": 10,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 11,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 11,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

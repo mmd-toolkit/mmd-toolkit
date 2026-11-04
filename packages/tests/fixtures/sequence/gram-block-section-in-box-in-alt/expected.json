@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Participants and boxes: a box holds only participant statements, empty description blocks, and empty lines; else in a box in an alt; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...Diagramalt abox Xelse cendend\n--------------------^\nExpecting 'SPACE', 'NEWLINE', 'end', 'participant', 'participant_actor', 'destroy', got 'else'"
+  }
+}

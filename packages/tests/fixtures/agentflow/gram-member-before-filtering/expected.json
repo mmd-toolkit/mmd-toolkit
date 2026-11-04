@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md Rejections outside the grammar: the condition comes before membership filtering, so A of an earlier flow still counts; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "prims[type2].hasOwnProperty is not a function"
+  }
+}

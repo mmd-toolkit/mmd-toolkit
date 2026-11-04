@@ -92,7 +92,9 @@ agentflow/lex-end-nbsp-with-following-node] [fixture:
 agentflow/gram-flow-end-suffix] [fixture: agentflow/gram-flow-end-unicode]
 [fixture: agentflow/lex-flow-name-end-does-not-take-newline] [fixture:
 agentflow/gram-end-followed-by-vertex] [fixture:
-agentflow/lex-global-nbsp-before-newline]
+agentflow/lex-global-nbsp-before-newline] [fixture:
+agentflow/gram-nested-statement-after-end] [fixture:
+agentflow/gram-nested-end-end-same-line]
 
 The final remaining-whitespace rule produces one space unit per character,
 rather than flowchart's maximal run. The preceding newline rule still produces
@@ -474,7 +476,8 @@ agentflow/gram-tail-node-semicolons] [fixture: agentflow/header-empty-document]
 [fixture: agentflow/gram-bare-string-statement-rejected] [fixture:
 agentflow/gram-connector-title-space-before-comment] [fixture:
 agentflow/gram-connector-title-space-before-newline] [fixture:
-agentflow/comment-keeps-following-empty-line]
+agentflow/comment-keeps-following-empty-line] [fixture:
+agentflow/gram-nested-semicolons]
 
 ### Flows, globals, connectors, and names
 
@@ -494,17 +497,28 @@ A flow may omit its entire name heading; a connector requires a name. The one
 space after flow or connector is a grammar gap, so a second written space can be
 a name piece, but a lone space followed by newline supplies no name. A global
 permits neither name, title, nor data. All bodies may be empty and may contain
-nested flows and globals; connectors have no body. [fixture:
-agentflow/gram-flow-all-forms] [fixture: agentflow/gram-flow-empty] [fixture:
-agentflow/gram-connector-all-forms] [fixture: agentflow/gram-global-empty]
-[fixture: agentflow/gram-global-data] [fixture: agentflow/gram-global-label]
-[fixture: agentflow/gram-flow-nested] [fixture: agentflow/gram-global-nested]
-[fixture: agentflow/gram-flow-name-whitespace-only] [fixture:
+any statement, nested flows and globals included; connectors have no body.
+[fixture: agentflow/gram-flow-all-forms] [fixture: agentflow/gram-flow-empty]
+[fixture: agentflow/gram-connector-all-forms] [fixture:
+agentflow/gram-global-empty] [fixture: agentflow/gram-global-data] [fixture:
+agentflow/gram-global-label] [fixture: agentflow/gram-flow-nested] [fixture:
+agentflow/gram-global-nested] [fixture:
+agentflow/gram-flow-name-whitespace-only] [fixture:
 agentflow/gram-connector-name-whitespace-only] [fixture:
 agentflow/gram-global-in-global] [fixture: agentflow/gram-flow-inside-global]
 [fixture: agentflow/gram-global-name-rejected] [fixture:
 agentflow/gram-flow-one-space-no-name] [fixture:
-agentflow/gram-connector-one-space-no-name]
+agentflow/gram-connector-one-space-no-name] [fixture:
+agentflow/gram-nested-empty-inner] [fixture:
+agentflow/gram-nested-empty-global-inner] [fixture:
+agentflow/gram-nested-flow-in-global-in-flow] [fixture:
+agentflow/gram-nested-global-in-flow] [fixture:
+agentflow/gram-nested-global-in-flow-in-global] [fixture:
+agentflow/gram-nested-siblings] [fixture: agentflow/gram-nested-connector]
+[fixture: agentflow/gram-nested-connector-before-end] [fixture:
+agentflow/gram-nested-named-heading] [fixture:
+agentflow/gram-nested-string-name] [fixture:
+agentflow/gram-nested-global-name-rejected]
 
 A bracket title follows the name; spaces before its [ are name whitespace, while
 an ordinary space after ] before a bare newline is not accepted. A comment
@@ -522,12 +536,31 @@ agentflow/gram-flow-title-space-before-newline] [fixture:
 agentflow/gram-connector-title-space-before-comment] [fixture:
 agentflow/gram-connector-title-space-before-newline] [fixture:
 agentflow/gram-unnamed-flow-heading-data-rejected] [fixture:
-agentflow/gram-end-followed-by-vertex]
+agentflow/gram-end-followed-by-vertex] [fixture:
+agentflow/gram-nested-heading-data]
+
+Outside a name, each end closes the innermost open flow or global, and each
+needs its own: a missing end and an end with nothing open are rejected.
+[fixture: agentflow/gram-end-top-level] [fixture: agentflow/gram-flow-extra-end]
+[fixture: agentflow/gram-nested-extra-end] [fixture:
+agentflow/gram-nested-global-extra-end] [fixture:
+agentflow/gram-nested-global-missing-end] [fixture:
+agentflow/gram-nested-missing-end-both] [fixture:
+agentflow/gram-nested-missing-end-outer] [fixture:
+agentflow/gram-nested-end-comment-line] [fixture:
+agentflow/gram-nested-end-directive] [fixture:
+agentflow/gram-nested-end-empty-line] [fixture:
+agentflow/gram-nested-end-line-separator] [fixture:
+agentflow/gram-nested-end-empty-block] [fixture:
+agentflow/gram-nested-end-ignored-semicolon] [fixture:
+agentflow/gram-tail-flow-open-directive] [fixture:
+agentflow/gram-tail-global-open-directive]
 
 Name productions retain ordinary written whitespace, including the ends read as
 name pieces and quoted padding. The initial form may be string or markdown,
 followed only by name pieces; it cannot start a second ordinary string after
-bare text. default is not a name-piece alternative. A colon is ordinary name
+bare text. The keywords that name-piece lists, flow and end included, are name
+text; default is not a name-piece alternative. A colon is ordinary name
 punctuation. The source opening-arrow alternative does not complete a valid name
 through the active link-text context and does not broaden this grammar.
 [fixture: agentflow/gram-flow-name-text-followed-string] [fixture:
@@ -540,7 +573,8 @@ agentflow/gram-connector-name-string-bare-tail] [fixture:
 agentflow/gram-flow-name-default-rejected] [fixture:
 agentflow/lex-flow-name-start-link] [fixture:
 agentflow/gram-flow-name-quoted-padding] [fixture:
-agentflow/lex-name-token-punctuation]
+agentflow/lex-name-token-punctuation] [fixture: agentflow/gram-nested-name-end]
+[fixture: agentflow/gram-nested-name-flow]
 
 While reading a name, read through recognized erased click markers, closed empty
 description blocks, and erased empty strings, empty markdown strings, and empty
@@ -589,7 +623,8 @@ IgnoredText; it does not create another initial-string alternative. An empty
 block alone after the required one-space gap does not supply a name. [fixture:
 agentflow/gram-empty-description-before-flow-name] [fixture:
 agentflow/gram-empty-description-before-connector-string] [fixture:
-agentflow/gram-empty-description-no-flow-name]
+agentflow/gram-empty-description-no-flow-name] [fixture:
+agentflow/gram-nested-heading-empty-block]
 
 A click context in a name may recognize an empty string or empty markdown string
 without contributing a Label fragment. Retain the click and empty form as
@@ -924,6 +959,7 @@ agentflow/gram-empty-description-after-flow-name] [fixture:
 agentflow/gram-empty-description-before-flow-title] [fixture:
 agentflow/gram-empty-description-after-connector-name] [fixture:
 agentflow/gram-empty-description-after-global] [fixture:
+agentflow/gram-nested-global-heading-empty-block] [fixture:
 agentflow/gram-empty-description-after-flow-title] [fixture:
 agentflow/gram-empty-description-after-connector-title] [fixture:
 agentflow/gram-empty-description-before-href] [fixture:
@@ -1010,23 +1046,60 @@ agentflow/lex-directive-joins-invalid-linkstyle-index] [fixture:
 agentflow/gram-linkstyle-interpolate-index]
 
 Reuse the flowchart hasOwnProperty member condition for each flow, before
-membership filtering. A vertex chain contributes its groups from last to first,
-and each group contributes ids in written order. A named nested flow or
-connector contributes its name as read by the grammar, trimmed. An unnamed
-nested flow contributes a nonempty value other than hasOwnProperty; its
-generated spelling is irrelevant to this rejection and is not an AST field. A
-nonempty accessibility value contributes its trimmed text, and an extra
+membership filtering; a global and the top level have no such condition.
+[fixture: agentflow/gram-member-global-holds-own] [fixture:
+agentflow/gram-member-top-level-no-check] [fixture:
+agentflow/gram-member-flow-in-global] [fixture:
+agentflow/gram-member-before-filtering] A vertex chain contributes its groups
+from last to first, and each group contributes ids in written order. A named
+nested flow or connector contributes its name as read by the grammar, trimmed.
+An unnamed nested flow contributes a nonempty value other than hasOwnProperty;
+its generated spelling is irrelevant to this rejection and is not an AST field.
+A nonempty accessibility value contributes its trimmed text, and an extra
 semicolon its own text. [fixture: agentflow/gram-nested-unnamed-flow] [fixture:
 agentflow/gram-flow-named-member-hasownproperty] [fixture:
 agentflow/gram-connector-member-hasownproperty] [fixture:
-agentflow/gram-flow-hasownproperty-before-empty-statement] Direction, global,
-style/class/linkStyle, click, and comment entries contribute no member. If
-hasOwnProperty is followed by any other nonempty candidate member, reject.
-[fixture: agentflow/lex-flow-prototype-members] [fixture:
+agentflow/gram-flow-hasownproperty-before-empty-statement] [fixture:
+agentflow/gram-member-after-inner-flow] [fixture:
+agentflow/gram-member-after-inner-flow-named] [fixture:
+agentflow/gram-member-connector-after-inner] [fixture:
+agentflow/gram-member-inner-name] [fixture:
+agentflow/gram-member-empty-inner-flow] [fixture:
+agentflow/gram-member-chain-target-last] [fixture:
+agentflow/gram-member-chain-source-last] [fixture:
+agentflow/gram-member-group-first] [fixture: agentflow/gram-member-group-last]
+[fixture: agentflow/gram-member-ignored-semicolon] [fixture:
+agentflow/gram-member-empty-block] Direction, global, style/class/linkStyle,
+click, and comment entries contribute no member. Neither do the statements in a
+nested flow or a global: they are no members of the outer flow. [fixture:
+agentflow/gram-member-inner-not-outer] [fixture:
+agentflow/gram-member-global-no-member] [fixture:
+agentflow/gram-member-flow-in-global-after-member] [fixture:
+agentflow/gram-member-connector-in-global] [fixture:
+agentflow/gram-member-accessibility-in-global] [fixture:
+agentflow/gram-member-empty-statement-in-global] [fixture:
+agentflow/gram-member-nested-global] [fixture:
+agentflow/gram-member-empty-inner-global] [fixture:
+agentflow/gram-member-inner-of-inner] [fixture:
+agentflow/gram-member-global-comment-line] [fixture:
+agentflow/gram-member-global-directive] [fixture:
+agentflow/gram-member-global-empty-line] [fixture:
+agentflow/gram-member-global-line-separator] [fixture:
+agentflow/gram-member-global-empty-block] [fixture:
+agentflow/gram-member-global-ignored-semicolon] If hasOwnProperty is followed by
+any other nonempty candidate member, reject. [fixture:
+agentflow/lex-flow-prototype-members] [fixture:
 agentflow/lex-flow-hasownproperty-member] [fixture:
 agentflow/lex-accessibility-scope] [fixture:
 agentflow/gram-accessibility-hasownproperty-member] [fixture:
-agentflow/gram-hasownproperty-last-member]
+agentflow/gram-hasownproperty-last-member] [fixture:
+agentflow/gram-member-inner-name-last] [fixture:
+agentflow/gram-member-inner-rejected-first] [fixture:
+agentflow/gram-member-rejected-before-later-unit] [fixture:
+agentflow/gram-member-rejected-before-missing-end] [fixture:
+agentflow/gram-member-after-global] [fixture:
+agentflow/gram-member-comment-before-inner-flow] [fixture:
+agentflow/gram-member-twice]
 
 That rejection is not a general reservation of prototype-related ids. Do not
 reject duplicate ids, unresolved connectorRef, missing inputs, reference labels,

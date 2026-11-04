@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Blocks: the lines of a block are the lines of the diagram; a directive in the body; accepted."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "message": "a",
+        "wrap": false,
+        "type": 10,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 11,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

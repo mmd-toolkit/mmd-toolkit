@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md Rejections outside the grammar: the hasOwnProperty member condition holds for each flow; a flow in a global; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "prims[type2].hasOwnProperty is not a function"
+  }
+}

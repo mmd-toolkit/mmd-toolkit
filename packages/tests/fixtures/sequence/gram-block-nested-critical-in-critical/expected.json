@@ -1,0 +1,61 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Blocks: a section keyword belongs to the innermost open block; the first option belongs to the inner critical, the second to the outer; accepted."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "message": "outer",
+        "wrap": false,
+        "type": 27,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "inner",
+        "wrap": false,
+        "type": 27,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "innerOption",
+        "wrap": false,
+        "type": 28,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 29,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "outerOption",
+        "wrap": false,
+        "type": 28,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 29,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

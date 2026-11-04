@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md Rejections outside the grammar: a group contributes ids in written order; accepted."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "hasOwnProperty",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "hasOwnProperty",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "subGraph0",
+        "nodes": [
+          "A",
+          "hasOwnProperty"
+        ],
+        "title": "",
+        "classes": [],
+        "labelType": "markdown",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  }
+}

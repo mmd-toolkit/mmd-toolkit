@@ -106,6 +106,8 @@ LF や他の空白文字は取らない。
 [fixture: agentflow/lex-flow-name-end-does-not-take-newline]
 [fixture: agentflow/gram-end-followed-by-vertex]
 [fixture: agentflow/lex-global-nbsp-before-newline]
+[fixture: agentflow/gram-nested-statement-after-end]
+[fixture: agentflow/gram-nested-end-end-same-line]
 
 最後の残る空白の規則は、flowchart の最長の連続とは異なり、
 1 文字ごとに space の単位を作る。
@@ -525,6 +527,7 @@ header-keyword を agentflow-beta とした
 [fixture: agentflow/gram-connector-title-space-before-comment]
 [fixture: agentflow/gram-connector-title-space-before-newline]
 [fixture: agentflow/comment-keeps-following-empty-line]
+[fixture: agentflow/gram-nested-semicolons]
 
 ### flow、global、connector と名前
 
@@ -545,7 +548,7 @@ flow と connector の直後の 1 つの space は文法の間隔なので、
 2 つ目の space は名前の一部になり得るが、
 1 つの space と改行だけでは名前にならない。
 global は名前、題、データを許さない。
-本文は空にもでき、flow と global を入れ子にできる。
+本文は空にもでき、どの文も置け、flow と global も入れ子にできる。
 connector に本文はない。 [fixture: agentflow/gram-flow-all-forms]
 [fixture: agentflow/gram-flow-empty]
 [fixture: agentflow/gram-connector-all-forms]
@@ -559,6 +562,17 @@ connector に本文はない。 [fixture: agentflow/gram-flow-all-forms]
 [fixture: agentflow/gram-global-name-rejected]
 [fixture: agentflow/gram-flow-one-space-no-name]
 [fixture: agentflow/gram-connector-one-space-no-name]
+[fixture: agentflow/gram-nested-empty-inner]
+[fixture: agentflow/gram-nested-empty-global-inner]
+[fixture: agentflow/gram-nested-flow-in-global-in-flow]
+[fixture: agentflow/gram-nested-global-in-flow]
+[fixture: agentflow/gram-nested-global-in-flow-in-global]
+[fixture: agentflow/gram-nested-siblings]
+[fixture: agentflow/gram-nested-connector]
+[fixture: agentflow/gram-nested-connector-before-end]
+[fixture: agentflow/gram-nested-named-heading]
+[fixture: agentflow/gram-nested-string-name]
+[fixture: agentflow/gram-nested-global-name-rejected]
 
 角括弧の題は名前の後に続く。 [ の前の空白は名前の空白だが、
 ]
@@ -579,11 +593,31 @@ connector に本文はない。 [fixture: agentflow/gram-flow-all-forms]
 [fixture: agentflow/gram-connector-title-space-before-newline]
 [fixture: agentflow/gram-unnamed-flow-heading-data-rejected]
 [fixture: agentflow/gram-end-followed-by-vertex]
+[fixture: agentflow/gram-nested-heading-data]
+
+名前の外の end は、いちばん内側の開いている flow か global を閉じ、
+どれも自分の end が要る。
+end が足りない入力と、開いているものがないときの end は拒否する。
+[fixture: agentflow/gram-end-top-level] [fixture: agentflow/gram-flow-extra-end]
+[fixture: agentflow/gram-nested-extra-end]
+[fixture: agentflow/gram-nested-global-extra-end]
+[fixture: agentflow/gram-nested-global-missing-end]
+[fixture: agentflow/gram-nested-missing-end-both]
+[fixture: agentflow/gram-nested-missing-end-outer]
+[fixture: agentflow/gram-nested-end-comment-line]
+[fixture: agentflow/gram-nested-end-directive]
+[fixture: agentflow/gram-nested-end-empty-line]
+[fixture: agentflow/gram-nested-end-line-separator]
+[fixture: agentflow/gram-nested-end-empty-block]
+[fixture: agentflow/gram-nested-end-ignored-semicolon]
+[fixture: agentflow/gram-tail-flow-open-directive]
+[fixture: agentflow/gram-tail-global-open-directive]
 
 名前の生成規則は、名前の一部として読む両端と引用した余白も含め、
 通常の書かれた空白を保つ。
 先頭は文字列か markdown にもでき、その後は name-piece だけを続ける。
 裸のテキストの後で 2 つ目の通常の文字列を始められない。
+name-piece が挙げるキーワードは、flow と end を含めて名前のテキストになる。
 default は name-piece の選択肢にない。
 コロンは通常の名前の記号である。
 ソースにある opening-arrow の選択肢は、
@@ -599,6 +633,8 @@ default は name-piece の選択肢にない。
 [fixture: agentflow/lex-flow-name-start-link]
 [fixture: agentflow/gram-flow-name-quoted-padding]
 [fixture: agentflow/lex-name-token-punctuation]
+[fixture: agentflow/gram-nested-name-end]
+[fixture: agentflow/gram-nested-name-flow]
 
 名前を読む間、認識した消される click の印、閉じた空の説明ブロック、
 消される空の文字列、空の markdown 文字列、空の call は、
@@ -651,6 +687,7 @@ Name には、空白だけでも、Label の断片が少なくとも 1 つ必要
 [fixture: agentflow/gram-empty-description-before-flow-name]
 [fixture: agentflow/gram-empty-description-before-connector-string]
 [fixture: agentflow/gram-empty-description-no-flow-name]
+[fixture: agentflow/gram-nested-heading-empty-block]
 
 名前の click の文脈は、Label の断片を寄与せず、
 空の文字列や空の markdown 文字列を認識することもある。
@@ -1013,6 +1050,7 @@ flow と connector の名前の中では Name の part とする。
 [fixture: agentflow/gram-empty-description-before-flow-title]
 [fixture: agentflow/gram-empty-description-after-connector-name]
 [fixture: agentflow/gram-empty-description-after-global]
+[fixture: agentflow/gram-nested-global-heading-empty-block]
 [fixture: agentflow/gram-empty-description-after-flow-title]
 [fixture: agentflow/gram-empty-description-after-connector-title]
 [fixture: agentflow/gram-empty-description-before-href]
@@ -1102,6 +1140,11 @@ flowchart の正規の linkStyle の番号の条件を参照する。
 [fixture: agentflow/gram-linkstyle-interpolate-index]
 
 所属を絞る前の各 flow に、flowchart の hasOwnProperty の要素の条件を適用する。
+global と最上位には、この条件はない。
+[fixture: agentflow/gram-member-global-holds-own]
+[fixture: agentflow/gram-member-top-level-no-check]
+[fixture: agentflow/gram-member-flow-in-global]
+[fixture: agentflow/gram-member-before-filtering]
 頂点の連鎖は群を後ろから前へ渡し、各群は id を書かれた順で渡す。
 名前のある入れ子の flow と connector は、文法が読む名前の端の空白を除いて渡す。
 名前のない入れ子の flow は hasOwnProperty 以外の空でない値を渡す。
@@ -1112,13 +1155,47 @@ flowchart の正規の linkStyle の番号の条件を参照する。
 [fixture: agentflow/gram-flow-named-member-hasownproperty]
 [fixture: agentflow/gram-connector-member-hasownproperty]
 [fixture: agentflow/gram-flow-hasownproperty-before-empty-statement]
+[fixture: agentflow/gram-member-after-inner-flow]
+[fixture: agentflow/gram-member-after-inner-flow-named]
+[fixture: agentflow/gram-member-connector-after-inner]
+[fixture: agentflow/gram-member-inner-name]
+[fixture: agentflow/gram-member-empty-inner-flow]
+[fixture: agentflow/gram-member-chain-target-last]
+[fixture: agentflow/gram-member-chain-source-last]
+[fixture: agentflow/gram-member-group-first]
+[fixture: agentflow/gram-member-group-last]
+[fixture: agentflow/gram-member-ignored-semicolon]
+[fixture: agentflow/gram-member-empty-block]
 方向、global、style と class と linkStyle、click、コメントは要素を渡さない。
+入れ子の flow や global の中の文も渡さず、それらは外の flow の要素ではない。
+[fixture: agentflow/gram-member-inner-not-outer]
+[fixture: agentflow/gram-member-global-no-member]
+[fixture: agentflow/gram-member-flow-in-global-after-member]
+[fixture: agentflow/gram-member-connector-in-global]
+[fixture: agentflow/gram-member-accessibility-in-global]
+[fixture: agentflow/gram-member-empty-statement-in-global]
+[fixture: agentflow/gram-member-nested-global]
+[fixture: agentflow/gram-member-empty-inner-global]
+[fixture: agentflow/gram-member-inner-of-inner]
+[fixture: agentflow/gram-member-global-comment-line]
+[fixture: agentflow/gram-member-global-directive]
+[fixture: agentflow/gram-member-global-empty-line]
+[fixture: agentflow/gram-member-global-line-separator]
+[fixture: agentflow/gram-member-global-empty-block]
+[fixture: agentflow/gram-member-global-ignored-semicolon]
 hasOwnProperty の後に他の空でない候補があれば拒否する。
 [fixture: agentflow/lex-flow-prototype-members]
 [fixture: agentflow/lex-flow-hasownproperty-member]
 [fixture: agentflow/lex-accessibility-scope]
 [fixture: agentflow/gram-accessibility-hasownproperty-member]
 [fixture: agentflow/gram-hasownproperty-last-member]
+[fixture: agentflow/gram-member-inner-name-last]
+[fixture: agentflow/gram-member-inner-rejected-first]
+[fixture: agentflow/gram-member-rejected-before-later-unit]
+[fixture: agentflow/gram-member-rejected-before-missing-end]
+[fixture: agentflow/gram-member-after-global]
+[fixture: agentflow/gram-member-comment-before-inner-flow]
+[fixture: agentflow/gram-member-twice]
 
 この拒否を prototype に関係する id 全般の予約にはしない。
 id の重複、未解決の connectorRef、入力の欠落、reference のラベル、包含の循環、

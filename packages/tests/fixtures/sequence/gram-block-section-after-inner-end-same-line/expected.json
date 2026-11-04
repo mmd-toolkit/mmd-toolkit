@@ -1,0 +1,54 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Blocks: a section keyword belongs to the innermost open block; else on the line of the inner end belongs to the alt; accepted."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "message": "a",
+        "wrap": false,
+        "type": 12,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "b",
+        "wrap": false,
+        "type": 10,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 11,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "c",
+        "wrap": false,
+        "type": 13,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 14,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}
