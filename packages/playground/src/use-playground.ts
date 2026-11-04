@@ -216,8 +216,11 @@ export function usePlayground(): Playground {
     }
   }
 
-  /** Saves a current compressed fragment without adding browser history entries. */
-  async function saveUrl(showLink: boolean): Promise<void> {
+  /** Saves only while the URL still matches the hash captured for this save. */
+  async function saveUrl(
+    showLink: boolean,
+    expectedHash: string,
+  ): Promise<void> {
     const currentRevision = stateRevision
     const currentNavigation = navigation
     if (showLink) {
@@ -226,11 +229,12 @@ export function usePlayground(): Playground {
     }
     try {
       const hash = await encodeState(sharedState())
-      // An older compression must not overwrite a newer edit or navigated hash.
+      // The browser hash changes before its queued hashchange listener runs.
       if (
         disposed ||
         currentRevision !== stateRevision ||
-        currentNavigation !== navigation
+        currentNavigation !== navigation ||
+        window.location.hash !== expectedHash
       )
         return
       const url = new URL(window.location.href)
@@ -242,7 +246,8 @@ export function usePlayground(): Playground {
       if (
         disposed ||
         currentRevision !== stateRevision ||
-        currentNavigation !== navigation
+        currentNavigation !== navigation ||
+        window.location.hash !== expectedHash
       )
         return
       shareMessage.value =
@@ -255,6 +260,15 @@ export function usePlayground(): Playground {
     }
   }
 
+  /** Retains the original hash even if navigation precedes the save timer. */
+  function scheduleSaveUrl(): void {
+    const expectedHash = window.location.hash
+    clearTimeout(shareTimer)
+    shareTimer = setTimeout(() => {
+      void saveUrl(false, expectedHash)
+    }, 500)
+  }
+
   /** Debounces URL persistence and cancels restoration superseded by user edits. */
   function inputChanged(): void {
     stateRevision++
@@ -264,10 +278,7 @@ export function usePlayground(): Playground {
     shareBusy.value = false
     shareMessage.value = ""
     copied.value = false
-    clearTimeout(shareTimer)
-    shareTimer = setTimeout(() => {
-      void saveUrl(false)
-    }, 500)
+    scheduleSaveUrl()
     invalidateResults()
   }
 
@@ -367,10 +378,7 @@ export function usePlayground(): Playground {
     window.addEventListener("hashchange", hashChanged)
     parseNow()
     if (window.location.hash) void restoreHash()
-    else
-      shareTimer = setTimeout(() => {
-        void saveUrl(false)
-      }, 500)
+    else scheduleSaveUrl()
   })
   onBeforeUnmount(() => {
     disposed = true
@@ -414,6 +422,6 @@ export function usePlayground(): Playground {
     dark,
     toggleTheme,
     copyLink,
-    share: () => saveUrl(true),
+    share: () => saveUrl(true, window.location.hash),
   }
 }

@@ -48,7 +48,10 @@ function write(root, file, content) {
   return target
 }
 
-/** Copies imported sources and the diagram inventory for discovery tests. */
+/**
+ * Copies imported sources and the diagram inventory for discovery tests.
+ * Tests using this full tree allow 30 seconds for file I/O on Windows.
+ */
 function referenceRepository() {
   const repository = temporaryRepository()
   for (const source of documents.keys()) {
@@ -340,7 +343,7 @@ describe("canonical documents", () => {
         expect(existsSync(path.join(output, page))).toBe(false)
       }
     }
-  })
+  }, 30_000)
 
   it("fails before changing output when a required source is missing", () => {
     const { root, output } = temporaryRepository()
@@ -562,7 +565,7 @@ describe("additional diagram types", () => {
         path.join(root, "packages/docs/pages/formatter/compatibility.md"),
       ),
     )
-  })
+  }, 30_000)
 
   it("refreshes diagram navigation while ignoring formatter specifications", () => {
     vi.useFakeTimers()
