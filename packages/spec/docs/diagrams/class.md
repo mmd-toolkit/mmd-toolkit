@@ -1008,18 +1008,22 @@ class/gram-namespace-nested-note] [fixture: class/gram-namespace-nested-empty]
 [fixture: class/gram-namespace-nested-relation] [fixture:
 class/gram-namespace-nested-close-empty-block]
 
-Each `}` closes the innermost open namespace, and each needs its own: a missing
-`}` and a `}` with nothing open are rejected. [fixture:
+Outside a class body, each `}` closes the innermost open namespace, and each
+needs its own: a missing `}` and a `}` with nothing open are rejected. [fixture:
 class/gram-namespace-nested-unclosed] [fixture:
 class/gram-namespace-outer-unclosed] [fixture:
 class/gram-namespace-nested-close-extra] [fixture:
 class/lex-namespace-body-unclosed] [fixture:
-class/gram-namespace-nested-closes-glued] Items are separated by a line break,
-also after the `}` of a nested namespace, and a statement after the outermost
-`}` needs one too. [fixture: class/gram-namespace-nested-item-same-line]
-[fixture: class/gram-namespace-close-then-statement-same-line] [fixture:
-class/gram-namespace-nested-close-line-separator-only] What follows a `}` stands
-in the namespace around it, or in the diagram after the outermost `}`. [fixture:
+class/gram-namespace-nested-closes-glued] [fixture:
+class/gram-namespace-class-body-closes-glued] [fixture:
+class/gram-close-brace-alone] Items are separated by a line break, also after
+the `}` of a nested namespace or of a class body, and a statement after the
+outermost `}` needs one too. [fixture:
+class/gram-namespace-nested-item-same-line] [fixture:
+class/gram-namespace-close-then-statement-same-line] [fixture:
+class/gram-namespace-nested-close-line-separator-only] [fixture:
+class/gram-namespace-class-body-close-then-class] What follows a `}` stands in
+the namespace around it, or in the diagram after the outermost `}`. [fixture:
 class/gram-namespace-nested-close-comment-line] [fixture:
 class/gram-namespace-nested-close-directive] [fixture:
 class/gram-namespace-nested-close-empty-line] [fixture:

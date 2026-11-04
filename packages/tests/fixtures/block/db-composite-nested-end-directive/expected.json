@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Composites: what follows an end stands in the composite around it; a directive after the inner end; accepted."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "",
+          "type": "composite",
+          "widthInColumns": 1,
+          "children": [
+            {
+              "id": "B",
+              "label": "",
+              "type": "composite",
+              "widthInColumns": 1,
+              "children": [
+                {
+                  "id": "c",
+                  "label": "c",
+                  "type": "na",
+                  "widthInColumns": 1
+                }
+              ]
+            },
+            {
+              "id": "e",
+              "label": "e",
+              "type": "na",
+              "widthInColumns": 1
+            }
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

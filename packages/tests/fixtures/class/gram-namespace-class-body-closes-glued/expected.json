@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Namespaces: outside a class body, each } closes the innermost open namespace; the first } closes the class body, the second the namespace; accepted."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "b",
+        "type": "",
+        "label": "b",
+        "text": "b",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "x"
+          }
+        ],
+        "annotations": [],
+        "styles": [],
+        "parent": "a"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "a",
+        "label": "a",
+        "classes": [
+          "b"
+        ],
+        "notes": [],
+        "children": [],
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

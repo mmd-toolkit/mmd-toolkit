@@ -1,0 +1,50 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Composite states, aliases, and pseudostates: each } unit closes the innermost open body; the } of c} is part of the id; accepted."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "a",
+        "shape": "roundedWithTitle",
+        "label": "a",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "b",
+        "shape": "rect",
+        "label": "b",
+        "classes": [],
+        "styles": [],
+        "parentId": "a"
+      },
+      {
+        "id": "c}",
+        "shape": "rect",
+        "label": "c}",
+        "classes": [],
+        "styles": [],
+        "parentId": "a"
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "b",
+        "end": "c}",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

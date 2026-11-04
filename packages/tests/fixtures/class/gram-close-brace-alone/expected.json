@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Namespaces: outside a class body, each } closes the innermost open namespace; a } with nothing open; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nclassDiagram}\n------------^"
+  }
+}

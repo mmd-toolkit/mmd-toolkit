@@ -1234,17 +1234,22 @@ state/gram-state-empty-string-before-comment-body-next-line] So the empty
 strings are accepted wherever they lie in the state context, as in mermaid.js,
 and they change nothing in the Db.
 
-The body of a composite state holds the statements that the composite body
-context reads, composite statements included, and may be empty, so bodies nest
-to any depth. [fixture: state/gram-composite-nested-three-levels] [fixture:
-state/gram-composite-nested-one-line] [fixture:
+The body of a composite state or an alias holds the statements that the
+composite body context reads, composite statements included, and may be empty,
+so bodies nest to any depth. [fixture: state/gram-composite-nested-three-levels]
+[fixture: state/gram-composite-nested-one-line] [fixture:
 state/gram-alias-and-composite-nested] [fixture:
 state/gram-alias-nested-in-alias] [fixture:
-state/gram-composite-nested-empty-body] Each `}` closes the innermost open body,
-and each body needs its own. [fixture: state/gram-composite-nested-unclosed]
-[fixture: state/gram-composite-outer-unclosed] [fixture:
-state/gram-composite-nested-closes-same-line] What follows a `}` stands in the
-body around it, or at the top level after the outermost `}`. [fixture:
+state/gram-composite-nested-empty-body] Each `}` unit closes the innermost open
+body, and each body needs its own; a `}` inside an id or a description is no
+such unit. [fixture: state/gram-composite-nested-unclosed] [fixture:
+state/gram-composite-outer-unclosed] [fixture:
+state/gram-composite-nested-closes-same-line] [fixture:
+state/gram-composite-close-brace-in-id] [fixture:
+state/gram-composite-close-brace-in-id-unclosed] [fixture:
+state/gram-composite-close-brace-in-transition-target] [fixture:
+state/gram-composite-close-brace-in-description] What follows a `}` stands in
+the body around it, or at the top level after the outermost `}`. [fixture:
 state/gram-composite-nested-close-comment-line] [fixture:
 state/gram-composite-nested-close-hash-comment] [fixture:
 state/gram-composite-nested-close-directive] [fixture:

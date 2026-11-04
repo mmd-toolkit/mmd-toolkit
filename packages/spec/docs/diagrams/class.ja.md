@@ -1106,19 +1106,23 @@ namespace-item      = class-statement | note-statement | namespace-statement
 [fixture: class/gram-namespace-nested-relation]
 [fixture: class/gram-namespace-nested-close-empty-block]
 
-`}` は、いちばん内側の開いている名前空間を閉じ、どれも自分の `}` が要ります。
+class の本体の外の `}` は、いちばん内側の開いている名前空間を閉じ、
+どれも自分の `}` が要ります。
 `}` が足りない入力と、開いているものがないときの `}` は拒否します。
 [fixture: class/gram-namespace-nested-unclosed]
 [fixture: class/gram-namespace-outer-unclosed]
 [fixture: class/gram-namespace-nested-close-extra]
 [fixture: class/lex-namespace-body-unclosed]
 [fixture: class/gram-namespace-nested-closes-glued]
+[fixture: class/gram-namespace-class-body-closes-glued]
+[fixture: class/gram-close-brace-alone]
 項目は改行で区切ります。
-入れ子の名前空間の `}` の後も同じで、
+入れ子の名前空間や class の本体の `}` の後も同じで、
 いちばん外側の `}` の後の文にも改行が要ります。
 [fixture: class/gram-namespace-nested-item-same-line]
 [fixture: class/gram-namespace-close-then-statement-same-line]
 [fixture: class/gram-namespace-nested-close-line-separator-only]
+[fixture: class/gram-namespace-class-body-close-then-class]
 `}` の後に続くものは、外側の名前空間の中にあります。
 いちばん外側の `}` の後なら、図の中にあります。
 [fixture: class/gram-namespace-nested-close-comment-line]

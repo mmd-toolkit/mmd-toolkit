@@ -1419,7 +1419,7 @@ state/gram-state-empty-string-before-comment-body-next-line]
 そのため、空の文字列は、state の文脈のどこにあっても、
 mermaid.js と同じく受理され、Db を何も変えません。
 
-合成状態の本体は、合成状態の本体の文脈が読む文を持ち、
+合成状態や別名の本体は、合成状態の本体の文脈が読む文を持ち、
 それには合成状態の文も含まれます。
 本体は空でもよく、どの深さまでも入れ子にできます。
 [fixture: state/gram-composite-nested-three-levels]
@@ -1427,10 +1427,16 @@ mermaid.js と同じく受理され、Db を何も変えません。
 [fixture: state/gram-alias-and-composite-nested]
 [fixture: state/gram-alias-nested-in-alias]
 [fixture: state/gram-composite-nested-empty-body]
-`}` は、いちばん内側の開いている本体を閉じ、どの本体にも自分の `}` が要ります。
+`}` の単位は、いちばん内側の開いている本体を閉じ、
+どの本体にも自分の `}` が要ります。
+id や説明の中の `}` は、この単位ではありません。
 [fixture: state/gram-composite-nested-unclosed]
 [fixture: state/gram-composite-outer-unclosed]
 [fixture: state/gram-composite-nested-closes-same-line]
+[fixture: state/gram-composite-close-brace-in-id]
+[fixture: state/gram-composite-close-brace-in-id-unclosed]
+[fixture: state/gram-composite-close-brace-in-transition-target]
+[fixture: state/gram-composite-close-brace-in-description]
 `}` の後に続くものは、外側の本体の中にあります。
 いちばん外側の `}` の後なら、最上位にあります。
 [fixture: state/gram-composite-nested-close-comment-line]
