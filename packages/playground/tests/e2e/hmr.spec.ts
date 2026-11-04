@@ -1,4 +1,4 @@
-import { cp, mkdtemp, readFile, rm, writeFile } from "node:fs/promises"
+import { cp, mkdtemp, readFile, rm, symlink, writeFile } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { fileURLToPath } from "node:url"
@@ -22,6 +22,12 @@ test.beforeAll(async () => {
     join(packages, "prettier-plugin-mmd/src"),
     join(directory, "formatter"),
     { recursive: true },
+  )
+  // Keep package resolution for the copied formatter's runtime dependencies.
+  await symlink(
+    join(packages, "prettier-plugin-mmd/node_modules"),
+    join(directory, "formatter/node_modules"),
+    "junction",
   )
   server = await createServer({
     ...config,
