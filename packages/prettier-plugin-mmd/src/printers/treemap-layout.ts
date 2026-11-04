@@ -253,21 +253,22 @@ export function layoutTreemapStatement(
             statement.type === "TreemapClassDefStatement" &&
             statement.style?.range[0] === atom.start &&
             !hasEarlierIndentation
-          return {
-            ...atom,
-            ...(styleContinuation
-              ? { statementPadding: continuationPadding }
-              : {}),
-            writtenIndentation:
-              hasEarlierIndentation ||
-              findTokenStartingAt(source, atom.start)?.value === ":::" ||
-              (statement.type !== "TreemapClassDefStatement" &&
-                statement.classSelector?.range[0] === atom.start)
-                ? ""
-                : styleContinuation
-                  ? column + continuationPadding
-                  : column,
-          }
+          let writtenIndentation = column
+          if (
+            hasEarlierIndentation ||
+            findTokenStartingAt(source, atom.start)?.value === ":::" ||
+            (statement.type !== "TreemapClassDefStatement" &&
+              statement.classSelector?.range[0] === atom.start)
+          )
+            writtenIndentation = ""
+          else if (styleContinuation) writtenIndentation += continuationPadding
+          if (styleContinuation)
+            return {
+              ...atom,
+              statementPadding: continuationPadding,
+              writtenIndentation,
+            }
+          return { ...atom, writtenIndentation }
         }),
         rules,
         outdented: new Set(),

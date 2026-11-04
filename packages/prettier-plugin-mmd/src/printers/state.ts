@@ -58,49 +58,32 @@ export function printState(
   }
   const depth = depthOf(path)
   const followsStateName = isStateNameStatement(path.previous)
-  switch (classified.kind) {
-    case "body":
-      if (hasBodyBlock(source, classified.statement)) {
-        return printBodyBlock(
-          path,
-          options,
-          print,
-          source,
-          classified.statement,
-          depth,
-          followsStateName,
-        )
-      }
-      return printLine(
-        source,
-        options,
-        layoutStateStatement(
-          source,
-          classified.statement,
-          findStatePrintedEnd(source, classified.statement),
-          followsStateName,
-          " ".repeat(options.tabWidth * (depth + 1)),
-        ),
-        depth,
-      )
-    case "simple":
-      return printLine(
-        source,
-        options,
-        layoutStateStatement(
-          source,
-          classified.statement,
-          findStatePrintedEnd(source, classified.statement),
-          followsStateName,
-          " ".repeat(options.tabWidth * (depth + 1)),
-        ),
-        depth,
-      )
-    default:
-      throw new Error(
-        `prettier-plugin-mmd: unknown kind of statement ${JSON.stringify(classified satisfies never)}`,
-      )
+  if (
+    classified.kind === "body" &&
+    hasBodyBlock(source, classified.statement)
+  ) {
+    return printBodyBlock(
+      path,
+      options,
+      print,
+      source,
+      classified.statement,
+      depth,
+      followsStateName,
+    )
   }
+  return printLine(
+    source,
+    options,
+    layoutStateStatement(
+      source,
+      classified.statement,
+      findStatePrintedEnd(source, classified.statement),
+      followsStateName,
+      " ".repeat(options.tabWidth * (depth + 1)),
+    ),
+    depth,
+  )
 }
 
 /** Prints a statement laid out on its lines at `depth`. */

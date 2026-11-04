@@ -101,34 +101,20 @@ export function printEr(
           depth,
         )
       }
-      return printLine(
-        source,
-        options,
-        layoutErStatement(
-          source,
-          classified.statement,
-          node.range[1],
-          depth > 1,
-        ),
-        depth,
-      )
+      break
     case "simple":
-      return printLine(
-        source,
-        options,
-        layoutErStatement(
-          source,
-          classified.statement,
-          node.range[1],
-          depth > 1,
-        ),
-        depth,
-      )
+      break
     default:
       throw new Error(
         `prettier-plugin-mmd: unknown kind of statement ${JSON.stringify(classified satisfies never)}`,
       )
   }
+  return printLine(
+    source,
+    options,
+    layoutErStatement(source, classified.statement, node.range[1], depth > 1),
+    depth,
+  )
 }
 
 /** Prints a statement laid out on its lines at `depth`. */

@@ -260,82 +260,31 @@ export function layoutC4Call(
   const namedAttributes = statement.arguments.filter(
     (argument) => argument?.type === "C4NamedAttribute",
   )
-  const kept: Atom[] = []
-  if (statement.type === "C4BoundaryStatement") {
-    for (const block of statement.beforeBody) {
-      if (source.text.slice(...block.range).includes(";")) {
-        kept.push({ start: block.range[0], end: block.range[1] })
-      }
-    }
-  }
-  // The line rule is textual, so the prefix through the last semicolon is
-  // opaque even when the semicolon is inside a value (common.md, Style and
-  // classDef lines; docs/c4.md, Line rule and semicolons). A value stays whole.
-  for (let line = lineStartOf(source, start); line < end;) {
-    const lineEnd = semicolonSegmentEnd(source, line)
-    const last = source.text.lastIndexOf(";", Math.min(end, lineEnd) - 1)
-    if (last >= Math.max(start, line)) {
-      let from = Math.max(start, line)
-      let to = last + 1
-      for (const value of values) {
-        if (value.range[0] < to && from < value.range[1]) {
-          from = Math.min(from, value.range[0])
-          to = Math.max(to, value.range[1])
-        }
-      }
-      kept.push({ start: from, end: to })
-    }
-    line = lineEnd + 1
-  }
-  // Kept line prefixes can overlap through values; they are one atom.
-  kept.sort((left, right) => left.start - right.start)
-  const stretches: Atom[] = []
-  for (const stretch of kept) {
-    const previous = stretches.at(-1)
-    if (previous !== undefined && stretch.start <= previous.end) {
-      stretches[stretches.length - 1] = {
-        start: previous.start,
-        end: Math.max(previous.end, stretch.end),
-      }
-    } else stretches.push(stretch)
-  }
-  const atoms = collectAtoms(source, start, end, values, stretches).flatMap(
-    (atom) => {
-      const token = findTokenStartingAt(source, atom.start)
-      // The opening empty-entry token includes its ASCII padding (tokens/c4.md).
-      return token?.type === "Punctuator" &&
-        token.value.startsWith("(") &&
-        token.value.endsWith(",")
-        ? [
-            { start: atom.start, end: atom.start + 1 },
-            { start: atom.end - 1, end: atom.end },
-          ]
-        : [atom]
-    },
+  const stretches = findC4CallStretches(source, statement, end, values)
+  const atoms = splitC4EmptyEntryTokens(
+    source,
+    collectAtoms(source, start, end, values, stretches),
   )
   const rules = new Map<number, GapRule>()
   const outdented = new Set<number>()
   const joinedBefore = new Set<number>()
   const keptBreaksBefore = new Set<number>()
-  const bareStarts = new Set(
-    statement.arguments
-      .filter((argument) => argument?.type === "C4Literal")
-      .map((argument) => argument.range[0]),
-  )
-  const bareEnds = new Set(
-    statement.arguments
-      .filter((argument) => argument?.type === "C4Literal")
-      .map((argument) => argument.range[1]),
-  )
+  const bareStarts = new Set<number>()
+  const bareEnds = new Set<number>()
+  for (const argument of statement.arguments) {
+    if (argument?.type !== "C4Literal") continue
+    bareStarts.add(argument.range[0])
+    bareEnds.add(argument.range[1])
+  }
   for (let index = 1; index < atoms.length; index++) {
     const previous = atoms[index - 1]
     const atom = atoms[index]
     const before = source.text.slice(previous.start, previous.end)
     const text = source.text.slice(atom.start, atom.end)
     const gap = source.text.slice(previous.end, atom.start)
-    const bare = bareStarts.has(atom.start)
     const sensitivePrefix =
-      bare && (text.startsWith('"') || text.startsWith("$"))
+      bareStarts.has(atom.start) &&
+      (text.startsWith('"') || text.startsWith("$"))
     const afterDelimiter = before === "(" || before.endsWith(",")
     const beforeComma = text.startsWith(",")
     // Preserve null units, adjacent-unit gaps and physical-line shielding.
@@ -355,18 +304,23 @@ export function layoutC4Call(
         argument.range[0] <= previous.start && atom.end <= argument.range[1],
     )
     if (namedGap && gap.includes("\n")) keptBreaksBefore.add(atom.start)
+    const keepsPhysicalLine = gap.includes("\n") && !afterCall && !namedGap
+    const keepsCommaGap =
+      beforeComma && !bareEnds.has(previous.end) && before !== "("
+    const keepsAdjacentUnits =
+      !inBeforeBody &&
+      !afterCall &&
+      !afterDelimiter &&
+      !beforeComma &&
+      before !== "$" &&
+      text !== "=" &&
+      before !== "=" &&
+      text !== "{"
     if (
-      (gap.includes("\n") && !afterCall && !namedGap) ||
+      keepsPhysicalLine ||
       sensitivePrefix ||
-      (beforeComma && !bareEnds.has(previous.end) && before !== "(") ||
-      (!inBeforeBody &&
-        !afterCall &&
-        !afterDelimiter &&
-        !beforeComma &&
-        before !== "$" &&
-        text !== "=" &&
-        before !== "=" &&
-        text !== "{")
+      keepsCommaGap ||
+      keepsAdjacentUnits
     ) {
       if (gap !== "") atoms[index] = { start: previous.end, end: atom.end }
       rules.set(previous.end, "none")
@@ -377,9 +331,10 @@ export function layoutC4Call(
       findTriviaBetween(source, previous.end, atom.start).length === 0
     )
       joinedBefore.add(atom.start)
-    if (text === "{" && atom.end === end) outdented.add(atom.start)
-    if (text === "{" && atom.end === end) rules.set(atom.start, "space")
-    else if (afterDelimiter)
+    if (text === "{" && atom.end === end) {
+      outdented.add(atom.start)
+      rules.set(atom.start, "space")
+    } else if (afterDelimiter)
       rules.set(
         atom.start,
         before !== "(" && text !== ")" && !beforeComma ? "space" : "none",
@@ -413,6 +368,77 @@ export function layoutC4Call(
 }
 
 /**
+ * Preserve semicolon-bearing null blocks and textual line prefixes through
+ * their last semicolon. A prefix can cross a value, which must stay whole
+ * (common.md, Style and classDef lines; docs/c4.md, Line rule and semicolons).
+ */
+function findC4CallStretches(
+  source: Source,
+  statement: C4Call,
+  end: number,
+  values: readonly Node[],
+): Atom[] {
+  const start = statement.range[0]
+  const kept: Atom[] = []
+  if (statement.type === "C4BoundaryStatement") {
+    for (const block of statement.beforeBody) {
+      if (source.text.slice(...block.range).includes(";")) {
+        kept.push({ start: block.range[0], end: block.range[1] })
+      }
+    }
+  }
+  for (let line = lineStartOf(source, start); line < end;) {
+    const lineEnd = semicolonSegmentEnd(source, line)
+    const last = source.text.lastIndexOf(";", Math.min(end, lineEnd) - 1)
+    if (last >= Math.max(start, line)) {
+      let from = Math.max(start, line)
+      let to = last + 1
+      for (const value of values) {
+        if (value.range[0] < to && from < value.range[1]) {
+          from = Math.min(from, value.range[0])
+          to = Math.max(to, value.range[1])
+        }
+      }
+      kept.push({ start: from, end: to })
+    }
+    line = lineEnd + 1
+  }
+  // Prefixes can overlap through values; collectAtoms needs one whole atom.
+  kept.sort((left, right) => left.start - right.start)
+  const stretches: Atom[] = []
+  for (const stretch of kept) {
+    const previous = stretches.at(-1)
+    if (previous !== undefined && stretch.start <= previous.end) {
+      stretches[stretches.length - 1] = {
+        start: previous.start,
+        end: Math.max(previous.end, stretch.end),
+      }
+    } else stretches.push(stretch)
+  }
+  return stretches
+}
+
+/** Expose the padding in an opening empty-entry token (tokens/c4.md). */
+function splitC4EmptyEntryTokens(
+  source: Source,
+  atoms: readonly Atom[],
+): Atom[] {
+  const split: Atom[] = []
+  for (const atom of atoms) {
+    const token = findTokenStartingAt(source, atom.start)
+    if (
+      token?.type === "Punctuator" &&
+      token.value.startsWith("(") &&
+      token.value.endsWith(",")
+    ) {
+      split.push({ start: atom.start, end: atom.start + 1 })
+      split.push({ start: atom.end - 1, end: atom.end })
+    } else split.push(atom)
+  }
+  return split
+}
+
+/**
  * Title separators consume one character, unlike colon text. A multiline
  * text statement keeps its physical lines if joining would expose a
  * direction lookahead; keeping all such continuations avoids rescanning
@@ -425,18 +451,13 @@ export function layoutC4Text(source: Source, statement: C4Text): AtomLayout {
   if (statement.type === "C4AccDescrBlockStatement") {
     if (source.text.slice(start, end).includes(";"))
       return keptAsWritten(start, end)
-    const layout = layoutDescriptionBlock(
-      source,
-      statement,
-      end,
-      c4ValueNodeTypes,
-      { keepsTrailingTrivia: true },
-    )
     // Ordinary block spacing and closing-brace alignment follow the sibling
     // diagrams. The shared layout aligns body lines and the closer while
     // preserving interior edge contacts (diagrams/c4.md, Title
     // and accessibility statements; docs/c4.md, Description blocks).
-    return layout
+    return layoutDescriptionBlock(source, statement, end, c4ValueNodeTypes, {
+      keepsTrailingTrivia: true,
+    })
   }
   if (
     source.text.slice(start, end).includes("\n") &&

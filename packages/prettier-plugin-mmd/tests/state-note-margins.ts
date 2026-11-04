@@ -8,6 +8,12 @@ import type {
 import { parse } from "@mmd-toolkit/parser"
 import type { DbSummary, JsonObject, JsonValue } from "@mmd-toolkit/tests"
 
+/** The two keywords that close a multiline attached note. */
+interface NoteClosingTokens {
+  readonly end: Token
+  readonly note: Token
+}
+
 /**
  * Checks authored note bodies even when trimming leaves the raw Db unchanged.
  * Only verified ASCII-space margins of attached multiline paragraph notes are
@@ -51,20 +57,16 @@ export function stateDbForFormattingComparison(
     const nextText = printed.slice(...nextBody)
     if (text === nextText) continue
     if (
-      closing !== null &&
-      nextClosing !== null &&
-      hasPlainEdges(written, beforeRoot, note, closing) &&
-      hasPlainEdges(printed, afterRoot, next, nextClosing) &&
-      onlyFirstRowMarginChanged(text, nextText)
-    )
-      continue
-    if (
       closing === null ||
       nextClosing === null ||
       !hasPlainEdges(written, beforeRoot, note, closing) ||
-      !hasPlainEdges(printed, afterRoot, next, nextClosing) ||
-      !isAllowedBodyChange(text, nextText)
+      !hasPlainEdges(printed, afterRoot, next, nextClosing)
     )
+      throw new Error(
+        "state note body changed beyond an allowed paragraph margin",
+      )
+    if (onlyFirstRowMarginChanged(text, nextText)) continue
+    if (!isAllowedBodyChange(text, nextText))
       throw new Error(
         "state note body changed beyond an allowed paragraph margin",
       )
@@ -133,7 +135,7 @@ function attachedNotes(root: Root): StateNoteStatement[] {
 function closingTokens(
   root: Root,
   note: StateNoteStatement,
-): readonly [Token, Token] | null {
+): NoteClosingTokens | null {
   const last = root.tokens.findLast(
     (token) => token.range[1] <= note.range[1] && token.type !== "Directive",
   )
@@ -147,7 +149,7 @@ function closingTokens(
     (token) => token.range[1] <= last.range[0] && token.type !== "Directive",
   )
   return end?.type === "Keyword" && end.value.toLowerCase() === "end"
-    ? [end, last]
+    ? { end, note: last }
     : null
 }
 
@@ -155,19 +157,19 @@ function closingTokens(
 function bodyRange(
   source: string,
   note: StateNoteStatement,
-  closing: readonly [Token, Token] | null,
+  closing: NoteClosingTokens | null,
 ): Range | null {
   if (closing === null) return null
   const openingLine = source.indexOf(
     "\n",
     note.state?.range[1] ?? note.range[0],
   )
-  if (openingLine === -1 || openingLine >= closing[0].range[0]) return null
-  const closingLine = source.lastIndexOf("\n", closing[0].range[0] - 1) + 1
+  if (openingLine === -1 || openingLine >= closing.end.range[0]) return null
+  const closingLine = source.lastIndexOf("\n", closing.end.range[0] - 1) + 1
   const end =
-    source.slice(closingLine, closing[0].range[0]).trim() === ""
+    source.slice(closingLine, closing.end.range[0]).trim() === ""
       ? closingLine
-      : closing[0].range[0]
+      : closing.end.range[0]
   return [openingLine + 1, end]
 }
 
@@ -176,16 +178,16 @@ function hasPlainEdges(
   source: string,
   root: Root,
   note: StateNoteStatement,
-  closing: readonly [Token, Token],
+  closing: NoteClosingTokens,
 ): boolean {
   if (note.state === null) return false
   const headerEnd = source.indexOf("\n", note.range[0])
-  const closeStart = source.lastIndexOf("\n", closing[0].range[0] - 1) + 1
-  const closerGap = source.slice(closing[0].range[1], closing[1].range[0])
+  const closeStart = source.lastIndexOf("\n", closing.end.range[0] - 1) + 1
+  const closerGap = source.slice(closing.end.range[1], closing.note.range[0])
   return (
     note.state.range[1] <= headerEnd &&
     source.slice(note.state.range[1], headerEnd).trim() === "" &&
-    source.slice(closeStart, closing[0].range[0]).trim() === "" &&
+    source.slice(closeStart, closing.end.range[0]).trim() === "" &&
     !closerGap.includes("\n") &&
     closerGap.trim() === "" &&
     !source.slice(...note.range).includes(";") &&

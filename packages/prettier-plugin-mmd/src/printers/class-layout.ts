@@ -254,22 +254,6 @@ export function layoutClassStatement(
   end: number,
 ): AtomLayout {
   const start = statement.range[0]
-  const keepsLineBreaks =
-    statement.type !== "ClassAccDescrBlockStatement" &&
-    spansLinesThatCannotJoin(source, start, end)
-  if (
-    keepsLineBreaks &&
-    (holdsJoiningRegion(source, start, end) ||
-      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
-  ) {
-    return {
-      atoms: [{ start, end }],
-      rules: new Map(),
-      outdented: new Set(),
-      lineBreaks: "kept",
-    }
-  }
-  const values = collectValueNodes(statement, classValueNodeTypes)
   if (statement.type === "ClassAccDescrBlockStatement") {
     // A description block of a class diagram is always closed: one that is
     // not is rejected (diagrams/class.md, Units and contexts).
@@ -279,15 +263,15 @@ export function layoutClassStatement(
       closed: true,
     }
 
-    /** Builds the existing value, trivia and closing-brace layout. */
-    function originalLayout(): AtomLayout {
+    /** Keeps the block's line breaks, including those around empty trivia. */
+    function layoutExpandedBlock(): AtomLayout {
       const closing = findAccDescrBlockClosing(source, block)
       return indentDescriptionLines(source, block, {
         atoms: collectAtoms(
           source,
           start,
           end,
-          values,
+          collectValueNodes(statement, classValueNodeTypes),
           findAccDescrBlockStretches(source, block),
         ),
         rules: descriptionOpeningRules(source, start),
@@ -301,10 +285,24 @@ export function layoutClassStatement(
           source,
           start,
           end,
-          originalLayout,
+          layoutExpandedBlock,
         )
-      : originalLayout()
+      : layoutExpandedBlock()
   }
+  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  if (
+    keepsLineBreaks &&
+    (holdsJoiningRegion(source, start, end) ||
+      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
+  ) {
+    return {
+      atoms: [{ start, end }],
+      rules: new Map(),
+      outdented: new Set(),
+      lineBreaks: "kept",
+    }
+  }
+  const values = collectValueNodes(statement, classValueNodeTypes)
   const kept = [
     ...findGenericStretches(source, statement, end),
     ...findMemberStretches(source, statement),

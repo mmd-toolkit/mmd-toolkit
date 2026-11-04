@@ -80,38 +80,41 @@ export function printTreemap(
     line.range[0],
   ])
   const block = printBlock(
-    lines.map((line) => [
-      placements.get(line)!.head,
-      ...line.statements.flatMap((statement, index) => {
-        const descriptionIndentation =
-          statement.type === "TreemapAccDescrBlockStatement"
-            ? significantIndentationOf(options, line.depth + 1)
-            : ""
-        return [
-          index === 0
-            ? ""
-            : printAsWritten(
-                source,
-                treemapStatementRange(line.statements[index - 1])[1],
-                treemapStatementRange(statement)[0],
-              ),
-          printAtoms(
-            source,
-            layoutTreemapStatement(
+    lines.map((line) => {
+      const column = significantIndentationOf(options, line.depth)
+      return [
+        placements.get(line)!.head,
+        ...line.statements.flatMap((statement, index) => {
+          const descriptionIndentation =
+            statement.type === "TreemapAccDescrBlockStatement"
+              ? significantIndentationOf(options, line.depth + 1)
+              : ""
+          return [
+            index === 0
+              ? ""
+              : printAsWritten(
+                  source,
+                  treemapStatementRange(line.statements[index - 1])[1],
+                  treemapStatementRange(statement)[0],
+                ),
+            printAtoms(
               source,
-              statement,
-              significantIndentationOf(options, line.depth),
-              significantIndentationOf(options, 1),
-            ),
-            {
-              statement: significantIndentationOf(options, line.depth),
-              continuation: descriptionIndentation,
-              trivia: descriptionIndentation,
-            },
-          ).doc,
-        ]
-      }),
-    ]),
+              layoutTreemapStatement(
+                source,
+                statement,
+                column,
+                significantIndentationOf(options, 1),
+              ),
+              {
+                statement: column,
+                continuation: descriptionIndentation,
+                trivia: descriptionIndentation,
+              },
+            ).doc,
+          ]
+        }),
+      ]
+    }),
     source,
     {
       statements: lines,

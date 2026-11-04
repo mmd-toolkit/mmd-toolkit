@@ -361,26 +361,23 @@ function layoutUsecaseAccessibility(
   )
   const valueRange = trimmedLiteralRange(source, statement.value)
   const rules = new Map<number, GapRule>()
-  const outdented = new Set<number>()
   const joinedBefore = new Set<number>()
-  const atoms: Atom[] = [{ start: keyword.range[0], end: keyword.range[1] }]
-  atoms.push({ start: separator.range[0], end: separator.range[1] })
+  const atoms: Atom[] = [
+    { start: keyword.range[0], end: keyword.range[1] },
+    { start: separator.range[0], end: separator.range[1] },
+  ]
   rules.set(separator.range[0], "none")
   if (valueRange !== null) {
     atoms.push({ start: valueRange[0], end: valueRange[1] })
     rules.set(valueRange[0], "space")
     joinedBefore.add(valueRange[0])
   }
-  const layout: AtomLayout = {
-    atoms,
+  return {
+    atoms: protectSemicolonPrefixes(source, start, end, atoms),
     rules,
-    outdented,
+    outdented: new Set(),
     joinedBefore,
     lineBreaks: "kept",
-  }
-  return {
-    ...layout,
-    atoms: protectSemicolonPrefixes(source, start, end, layout.atoms),
   }
 }
 

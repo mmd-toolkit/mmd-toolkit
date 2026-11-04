@@ -87,15 +87,13 @@ export function styleStatementRules(
   addNameListRules(source, names, rules)
   rules.set(styles[0].range[0], "space")
   if (compactStyles) {
-    for (const [index, style] of styles.entries()) {
-      if (index > 0) {
-        const comma = expectToken(
-          findStructuralToken(source, styles[index - 1].range[1]),
-          "the comma between styles",
-        )
-        rules.set(comma.range[0], "none")
-        rules.set(style.range[0], "space")
-      }
+    for (let index = 1; index < styles.length; index++) {
+      const comma = expectToken(
+        findStructuralToken(source, styles[index - 1].range[1]),
+        "the comma between styles",
+      )
+      rules.set(comma.range[0], "none")
+      rules.set(styles[index].range[0], "space")
     }
   }
   return rules

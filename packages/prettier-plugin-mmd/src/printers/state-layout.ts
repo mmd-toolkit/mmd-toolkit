@@ -739,15 +739,20 @@ function paragraphNoteTextLines(
       offset = end + 1
       continue
     }
+    const margin = source.text.slice(offset, start)
+    // Block markers remain literal inside an existing paragraph only while
+    // both the written and printed continuation have at least four spaces.
+    const literalContinuation =
+      sawContent &&
+      margin.length >= 4 &&
+      !margin.includes("\t") &&
+      indentation.length >= 4
     if (
       endedParagraph ||
-      (sawContent && source.text.slice(offset, start).includes("\t")) ||
+      (sawContent && margin.includes("\t")) ||
       !isParagraphNoteLine(
         source.text.slice(start, end),
-        sawContent &&
-          start - offset >= 4 &&
-          !source.text.slice(offset, start).includes("\t") &&
-          indentation.length >= 4,
+        literalContinuation,
       ) ||
       (end < contentEnd && source.text.slice(end - 2, end) === "  ")
     )
@@ -768,24 +773,23 @@ function isParagraphNoteLine(
   line: string,
   literalContinuation: boolean,
 ): boolean {
-  if (!literalContinuation && "#>+-!|=:{}".includes(line[0])) return false
-  if (
-    (!literalContinuation && line.startsWith("* ")) ||
-    line.startsWith("```") ||
-    line.startsWith("~~~") ||
-    (!literalContinuation &&
-      [...line].every((character) => " *_".includes(character)))
-  )
-    return false
-  let digitsEnd = 0
-  while (line[digitsEnd] >= "0" && line[digitsEnd] <= "9") digitsEnd++
-  if (
-    !literalContinuation &&
-    digitsEnd > 0 &&
-    (line[digitsEnd] === "." || line[digitsEnd] === ")") &&
-    (digitsEnd + 1 === line.length || line[digitsEnd + 1] === " ")
-  )
-    return false
+  if (!literalContinuation) {
+    if (
+      "#>+-!|=:{}".includes(line[0]) ||
+      line.startsWith("* ") ||
+      [...line].every((character) => " *_".includes(character))
+    )
+      return false
+    let digitsEnd = 0
+    while (line[digitsEnd] >= "0" && line[digitsEnd] <= "9") digitsEnd++
+    if (
+      digitsEnd > 0 &&
+      (line[digitsEnd] === "." || line[digitsEnd] === ")") &&
+      (digitsEnd + 1 === line.length || line[digitsEnd + 1] === " ")
+    )
+      return false
+  }
+  if (line.startsWith("```") || line.startsWith("~~~")) return false
   let codeDelimiter = 0
   for (let offset = 0; offset < line.length; offset++) {
     const character = line[offset]

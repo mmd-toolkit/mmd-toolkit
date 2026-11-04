@@ -270,7 +270,7 @@ function layoutComponents(
     }
     if (token?.value === "`") inTag = !inTag
   }
-  let layout = protectHiddenGaps(
+  const protectedLayout = protectHiddenGaps(
     {
       atoms: protectSemicolonPrefixes(source, start, end, atoms),
       rules,
@@ -280,62 +280,75 @@ function layoutComponents(
     },
     values.filter((node) => node.type === "EventmodelingIgnoredText"),
   )
-  if (classifyEventmodelingStatement(statement).kind === "data") {
-    const last = layout.atoms.at(-1)!
-    // Ordinary retained header breaks use continuation indentation. Keep a
-    // safe body one further step inside that line, not beside its name
-    // (docs/eventmodeling.md, Declarations and notes and Data blocks).
-    const continuedHeader =
-      !values.some(
-        (node) =>
-          node.type === "EventmodelingIgnoredText" &&
-          node.range[0] < last.start,
-      ) &&
-      layout.atoms.some((atom, index) => {
-        const previous = layout.atoms[index - 1]
-        return (
-          previous !== undefined &&
-          !layout.joinedBefore?.has(atom.start) &&
-          !layout.writtenGapsBefore?.has(atom.start) &&
-          !writtenGapsBefore.has(atom.start) &&
-          readGap(source, previous.end, atom.start, true).breaksLine
-        )
-      })
-    // A semicolon-protected replacement owns its written indentation and
-    // complete source; only the unprotected brace-body atom can be indented.
-    const bodyDoc =
-      last.start === blockOpening && last.writtenIndentation === undefined
-        ? indentedDataBlock(
-            source.text.slice(last.start, last.end),
-            tabWidth * (continuedHeader ? 2 : 1),
-          )
-        : undefined
-    // Preserve the lookahead that keeps LF out of a block-data terminal
-    // (diagrams/eventmodeling.md, Data; docs/eventmodeling.md, Data boundaries).
-    let paddedEnd = end
-    while (source.text[paddedEnd] === " " || source.text[paddedEnd] === "\t")
-      paddedEnd++
-    layout = {
-      ...layout,
-      atoms: [
-        ...layout.atoms.slice(0, -1),
-        {
-          ...last,
-          end: paddedEnd,
-          doc:
-            bodyDoc === undefined
-              ? undefined
-              : [bodyDoc, printAsWritten(source, last.end, paddedEnd)],
-        },
-      ],
-    }
-  }
-  return {
-    ...layout,
+  const layout: AtomLayout = {
+    ...protectedLayout,
     writtenGapsBefore: new Set([
-      ...(layout.writtenGapsBefore ?? []),
+      ...(protectedLayout.writtenGapsBefore ?? []),
       ...writtenGapsBefore,
     ]),
+  }
+  return classifyEventmodelingStatement(statement).kind === "data"
+    ? layoutDataBody(source, layout, values, blockOpening, end, tabWidth)
+    : layout
+}
+
+/**
+ * Aligns a data or note body and retains its required closing padding. Its
+ * final atom is the required body, or a semicolon-protected span covering it.
+ */
+function layoutDataBody(
+  source: Source,
+  layout: AtomLayout,
+  values: readonly Node[],
+  blockOpening: number | undefined,
+  end: number,
+  tabWidth: number,
+): AtomLayout {
+  const body = layout.atoms.at(-1)!
+  // Ordinary retained header breaks use continuation indentation. Keep a
+  // safe body one further step inside that line, not beside its name
+  // (docs/eventmodeling.md, Declarations and notes and Data blocks).
+  const continuedHeader =
+    !values.some(
+      (node) =>
+        node.type === "EventmodelingIgnoredText" && node.range[0] < body.start,
+    ) &&
+    layout.atoms.some((atom, index) => {
+      const previous = layout.atoms[index - 1]
+      return (
+        previous !== undefined &&
+        !layout.joinedBefore?.has(atom.start) &&
+        !layout.writtenGapsBefore?.has(atom.start) &&
+        readGap(source, previous.end, atom.start, true).breaksLine
+      )
+    })
+  // A semicolon-protected replacement owns its written indentation and
+  // complete source; only the unprotected brace-body atom can be indented.
+  const bodyDoc =
+    body.start === blockOpening && body.writtenIndentation === undefined
+      ? indentedDataBlock(
+          source.text.slice(body.start, body.end),
+          tabWidth * (continuedHeader ? 2 : 1),
+        )
+      : undefined
+  // Preserve the lookahead that keeps LF out of a block-data terminal
+  // (diagrams/eventmodeling.md, Data; docs/eventmodeling.md, Data boundaries).
+  let paddedEnd = end
+  while (source.text[paddedEnd] === " " || source.text[paddedEnd] === "\t")
+    paddedEnd++
+  return {
+    ...layout,
+    atoms: [
+      ...layout.atoms.slice(0, -1),
+      {
+        ...body,
+        end: paddedEnd,
+        doc:
+          bodyDoc === undefined
+            ? undefined
+            : [bodyDoc, printAsWritten(source, body.end, paddedEnd)],
+      },
+    ],
   }
 }
 

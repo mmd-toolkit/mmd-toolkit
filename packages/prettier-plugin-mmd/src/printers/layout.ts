@@ -402,6 +402,7 @@ export function layoutDescriptionBlock(
     closed: statement.closed ?? true,
     ...(options.opening === undefined ? {} : { opening: options.opening }),
   }
+  let layout: AtomLayout
   if (valueRange === null) {
     /** Keeps the existing empty-block trivia and continuation layout. */
     function originalLayout(): AtomLayout {
@@ -414,7 +415,7 @@ export function layoutDescriptionBlock(
       )
     }
 
-    const layout =
+    layout =
       statement.closed !== false
         ? layoutCompactEmptyDescriptionBlockWithFallback(
             source,
@@ -424,29 +425,27 @@ export function layoutDescriptionBlock(
             options.opening,
           )
         : originalLayout()
-    return options.preservesBodyColumns
-      ? layout
-      : indentDescriptionLines(source, block, layout)
-  }
-  const closing = findAccDescrBlockClosing(source, block)
-  const layout: AtomLayout = {
-    atoms: collectAtoms(
-      source,
-      start,
-      end,
-      collectValueNodes(statement, valueTypes).map((value) =>
-        value === statement.value ? { ...value, range: valueRange } : value,
-      ),
-      findAccDescrBlockStretches(
+  } else {
+    const closing = findAccDescrBlockClosing(source, block)
+    layout = {
+      atoms: collectAtoms(
         source,
-        block,
-        valueRange,
-        options.keepsTrailingTrivia,
+        start,
+        end,
+        collectValueNodes(statement, valueTypes).map((value) =>
+          value === statement.value ? { ...value, range: valueRange } : value,
+        ),
+        findAccDescrBlockStretches(
+          source,
+          block,
+          valueRange,
+          options.keepsTrailingTrivia,
+        ),
       ),
-    ),
-    rules: descriptionOpeningRules(source, start, options.opening),
-    outdented: closing === null ? new Set() : new Set([closing]),
-    lineBreaks: "kept",
+      rules: descriptionOpeningRules(source, start, options.opening),
+      outdented: closing === null ? new Set() : new Set([closing]),
+      lineBreaks: "kept",
+    }
   }
   return options.preservesBodyColumns
     ? layout
@@ -467,9 +466,7 @@ export function descriptionOpeningRules(
     "the description keyword",
   )
   const brace = expectToken(
-    opening === undefined
-      ? findStructuralToken(source, keyword.range[1])
-      : findTokenStartingAt(source, opening),
+    findDescriptionOpening(source, keyword, opening),
     "the description opener",
   )
   expectValue(brace, "{")
@@ -489,9 +486,7 @@ export function spaceDescriptionOpening(
 ): AtomLayout {
   const keyword = expectToken(findTokenStartingAt(source, start), "accDescr")
   const brace = expectToken(
-    opening === undefined
-      ? findStructuralToken(source, keyword.range[1])
-      : findTokenStartingAt(source, opening),
+    findDescriptionOpening(source, keyword, opening),
     "the description opener",
   )
   if (
@@ -501,27 +496,40 @@ export function spaceDescriptionOpening(
     )
   )
     return layout
-  const atoms = layout.atoms.flatMap((atom) =>
-    atom.doc === undefined &&
-    atom.start <= keyword.range[0] &&
-    brace.range[1] <= atom.end &&
-    !spansLinesThatCannotJoin(source, atom.start, atom.end, {
-      ignoresTrivia: true,
-    })
-      ? [
-          { ...atom, end: keyword.range[1] },
-          { ...atom, start: brace.range[0] },
-        ]
-      : [atom],
-  )
+  const atoms: Atom[] = []
+  for (const atom of layout.atoms) {
+    if (
+      atom.doc !== undefined ||
+      atom.start > keyword.range[0] ||
+      atom.end < brace.range[1] ||
+      spansLinesThatCannotJoin(source, atom.start, atom.end, {
+        ignoresTrivia: true,
+      })
+    ) {
+      atoms.push(atom)
+      continue
+    }
+    atoms.push(
+      { ...atom, end: keyword.range[1] },
+      { ...atom, start: brace.range[0] },
+    )
+  }
   return {
     ...layout,
     atoms,
-    rules: new Map([
-      ...layout.rules,
-      ...descriptionOpeningRules(source, start, brace.range[0]),
-    ]),
+    rules: new Map([...layout.rules, [brace.range[0], "space"]]),
   }
+}
+
+/** The authored opener, or the next structural token after the keyword. */
+function findDescriptionOpening(
+  source: Source,
+  keyword: Token,
+  opening?: number,
+): Token | undefined {
+  return opening === undefined
+    ? findStructuralToken(source, keyword.range[1])
+    : findTokenStartingAt(source, opening)
 }
 
 /** Fails when a token that the tree implies is missing. */
@@ -571,9 +579,7 @@ export function indentDescriptionLines(
     "the description keyword",
   )
   const opening = expectToken(
-    block.opening === undefined
-      ? findStructuralToken(source, keyword.range[1])
-      : findTokenStartingAt(source, block.opening),
+    findDescriptionOpening(source, keyword, block.opening),
     "the description opener",
   )
   const closing = findAccDescrBlockClosing(source, block)
@@ -638,12 +644,12 @@ export function findAccDescrBlockStretches(
 ): Atom[] {
   const brace = expectToken(
     statement.opening === undefined
-      ? findStructuralToken(
+      ? findDescriptionOpening(
           source,
           expectToken(
             findTokenStartingAt(source, statement.range[0]),
             "`accDescr`",
-          ).range[1],
+          ),
         )
       : findTokenStartingAt(source, statement.opening),
     "the `{` of an accDescr block",
