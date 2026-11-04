@@ -382,8 +382,8 @@ mermaid.js は、点の中の改行を空白として読みます。
 `:` の周り、`[` の後、コンマの周り、`]` の前、
 そして空白の文字が先にあるときの `:` の前です。
 複数行に書かれた点は、改行が字句解析器にとって空白である所で 1 行に印字します。
-コメント行か指令がある点は、ほかの図と同じに、
-書かれたまま残します（[複数行の文](#複数行の文)を参照）。
+コメント行か指令を含む点は、その改行を保ち、
+続きの列をそろえます（[複数行の文](#複数行の文)を参照）。
 [fixture: points/line-breaks-joined]
 [fixture: points/line-break-with-a-comment-line-kept]
 [fixture: points/line-break-with-a-directive-kept]
@@ -435,12 +435,20 @@ quadrantChart
 スタイルの間はコンマで区切り、コンマの前に空白は置かず、
 後ろに空白 1 つを置きます（`radius: 9, color: #f00`）。
 最後のスタイルの両端の空白は落とします。
-スタイルのテキストは、
-中の空白も含めて書かれたまま印字します（`radius :  10` のように）。
-Db は、スタイルの名前と値を、その空白なしで読むので、この形は選択です。
-印字は書き手が書いたものを残します。
-mermaid.js の文書にも `radius : 10` と `radius: 10` の両方があります。
-木はスタイルを 1 つのテキストとして持ち、印字はそれを分けません。
+通常のスタイルでは、最初の `:` を名前に接し、値の前に空白 1 つを置きます。
+`radius :  10` は `radius: 10` になります。
+置き換えるのは、そのコロンに接する ASCII 空白とタブだけです。
+先頭のゼロや色の大文字小文字も含めて、値の綴りは保ちます。
+Db を変えず、点とクラスのスタイルを読みやすい 1 つの形にそろえます。
+[fixture: styles/style-colon-padding] [fixture: styles/style-colon-tab-padding]
+
+trivia、ASCII 空白とタブ以外の空白文字、セミコロン、
+2 個目のコロンがあるスタイルや、保護対象のセミコロン行にあるスタイルの内部は、
+書かれたまま保ちます。
+2 個目のコロンの後に許される suffix は解釈しません。
+これらの保護は、コロンの空白整形より優先します。
+[fixture: styles/style-extra-colon-kept] [fixture: styles/style-directive-kept]
+[fixture: styles/style-semicolon-protected]
 [fixture: styles/styles-after-one-space] [fixture: styles/comma-after-one-space]
 [fixture: styles/style-text-as-written]
 
@@ -552,9 +560,12 @@ title の中の `;`、`#`、`%%`、引用符、キーワードは、そのテキ
 [fixture: titles-and-accessibility-statements/colon-on-the-next-line-joined]
 [fixture: titles-and-accessibility-statements/text-that-looks-like-a-statement]
 
-`accDescr { ... }` ブロックの行は、必要からではなく選択として、
-書かれたまま残します。
-行頭の空白は Db に入らず、行は書き手のテキストで、印字は整形しないからです。
+`accDescr` と `{` を同じ印字行に置く場合は、
+接して書かれていても間に空白 1 つを置きます。
+既存の開始行の改行は、それぞれの規則を保ちます。
+保護対象の trivia やセミコロンの配置では、その gap を保ちます。
+`accDescr { ... }` の本文行は、文より 1 段深くそろえます。
+Mermaid が説明から LF 後の字下げを除くためです。
 `}` は文と同じ段に置きます。
 `{` と同じ行のテキストは、書かれた括弧の間に空白があれば空白 1 つを置き、
 括弧がテキストに接していれば接したままにします。
@@ -621,8 +632,8 @@ accDescr {
 ```mmd
 quadrantChart
   accDescr {
-   a
-  b
+    a
+    b
   }
 ```
 
@@ -632,10 +643,13 @@ quadrantChart
 内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
 囲む空白を要する本文がないためです。
 すでに空の内側は空のままです。
-接した keyword は接したまま、 `accDescr{  }` は `accDescr{}` にします。
+通常のキーワードと開き括弧の間には空白 1 つを置き、
+`accDescr{  }` は `accDescr {}` にします。
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: quadrant Unicode and tab interiors]
-指令かコメント行を持つブロックは、書かれたまま印字します。
+指令かコメント行の内容と改行は保ち、
+本文の字下げは
+[title とアクセシビリティの文](#title-とアクセシビリティの文)に従います。
 ヘッダーの後でも、ほかの文の後でも、自分の行に置きます。
 文法がブロックを受け入れるのは、文の始まりと、文の最後の単位の後です。
 mermaid.js は、どこにあってもトークンのないものとして読みます。
@@ -660,9 +674,9 @@ accDescr{ }
 
 ```mmd
 quadrantChart
-  accDescr{}
   accDescr {}
-  accDescr{}
+  accDescr {}
+  accDescr {}
 ```
 
 ### 複数行の文
@@ -680,24 +694,26 @@ mermaid.js が複数行にわたって読む文は、
 [fixture: multi-line-statements/name-then-colon-on-the-next-line-joined]
 [fixture: multi-line-statements/point-with-styles-over-lines-joined]
 
-コメント行か指令を含む文は、書かれたまま残します。
-コメント行は、置かれた行の残りを取り込むので、行にはつなげません。
-指令を含む行をつないでも Db は変わりませんが、
-コメント行と指令に同じ判断をするのが、すべての図の決まりで、
-印字はそれを 1 度だけ決めます。
-`;` を含む文も、行の規則があるので、
-書かれたまま残します（[1 行 1 文](#1-行-1-文)を参照）。
+点とアクセシビリティの行の文では、trivia の改行を保ち、
+後続の構造部分と独立した trivia 行を文より 1 段深くそろえます。
+各 gap の最初の行の末尾と、指令の内部全体を保ちます。
+複数行の名前などの値の範囲は、ひとまとまりのままです。
+[fixture: multi-line-statements/point-trivia-with-multiline-label]
+[fixture: multi-line-statements/accessibility-trivia-continuations]
+
+ほかの文の複数行の trivia は元の配置を保ちます。
+物理行を結ぶコメント領域と、文の内部か最終行の `;` も、
+行の規則があるため元の配置を保ちます（[1 行 1 文](#1-行-1-文)を参照）。
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 [fixture: multi-line-statements/semicolon-on-the-last-line-kept]
 
 ### 複数行の値
 
-`accDescr` ブロックの行と、文字列の行は、改行と中の空白を含めて、
-書かれたまま残します。
-改行は Db に入り、文字列の空白も入ります。
-ブロックの行頭の空白は入らないので、残すのは選択で、
-値のテキストは整形しないからです。
+文字列の改行と空白は値の一部なので、原文どおり保ちます。
+説明本文の行は文より 1 段深くそろえます。
+Mermaid が LF 後の字下げを除くためです。
+それ以外の文字と改行は保ちます。
 [fixture: multi-line-values/string-with-line-breaks-kept]
 [fixture: multi-line-values/description-block-lines-kept]
 [fixture: multi-line-values/comment-line-inside-a-block-kept]
@@ -739,7 +755,7 @@ accDescr {
 ```mmd
 quadrantChart
   accDescr {
-  a
+    a
     b
   }
 ```

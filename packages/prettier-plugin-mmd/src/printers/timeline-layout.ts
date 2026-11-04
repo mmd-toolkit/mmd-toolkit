@@ -1,6 +1,5 @@
 import type {
   Node,
-  TimelineAccDescrBlockStatement,
   TimelineAccDescrStatement,
   TimelineAccTitleStatement,
   TimelineEventStatement,
@@ -13,12 +12,13 @@ import type {
 import { util } from "prettier"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { readGap } from "./gap.ts"
+import { holdsJoiningRegion } from "./kept-lines.ts"
 import {
   collectAtoms,
   collectValueNodes,
   expectToken,
   expectValue,
-  findAccDescrBlockClosing,
+  keepFirstGapLineTails,
   keptAsWritten,
   layoutDescriptionBlock,
   spansLinesThatCannotJoin,
@@ -26,7 +26,7 @@ import {
 } from "./layout.ts"
 import { accessibilityRules } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
-import { findStructuralToken, findTriviaBetween } from "./source.ts"
+import { findStructuralToken } from "./source.ts"
 
 /**
  * The node types of a timeline whose text is a value, printed as written:
@@ -98,10 +98,10 @@ export function layoutTimelineHeader(
  *   not one of them (see `layoutEvents`).
  * - A title, a section, and an accessibility statement written over several
  *   lines stand on one line where the lexer reads the line break as
- *   whitespace, which it does only right after a keyword; one with a comment
- *   or a directive in it is kept as written (see
- *   `spansLinesThatCannotJoin`). The lines of an `accDescr` block are lines
- *   of its text, and are kept (docs/timeline.md, Accessibility statements).
+ *   whitespace, which it does only right after a keyword. Accessibility line
+ *   trivia keeps its breaks with ordinary continuation columns; titles,
+ *   sections, events and protected regions retain their original layout
+ *   (docs/timeline.md, Multi-line statements).
  */
 export function layoutTimelineStatement(
   source: Source,
@@ -111,14 +111,30 @@ export function layoutTimelineStatement(
   const start = statement.range[0]
   switch (statement.type) {
     case "TimelineAccDescrBlockStatement":
-      return layoutTimelineDescriptionBlock(source, statement, end)
+      return layoutDescriptionBlock(
+        source,
+        statement,
+        end,
+        timelineValueNodeTypes,
+      )
     case "TimelinePeriodStatement":
     case "TimelineEventStatement":
       return layoutEvents(source, statement, end)
     default:
       break
   }
-  if (spansLinesThatCannotJoin(source, start, end)) {
+  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  const formatsTriviaLines =
+    statement.type === "TimelineAccTitleStatement" ||
+    statement.type === "TimelineAccDescrStatement"
+  // Trivia prevents joining, but ordinary structural gaps still use atoms.
+  // Value columns, semicolon lines and removed-line regions stay written.
+  if (
+    keepsLineBreaks &&
+    (!formatsTriviaLines ||
+      holdsJoiningRegion(source, start, end) ||
+      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
+  ) {
     return keptAsWritten(start, end)
   }
   const atoms = collectAtoms(
@@ -129,67 +145,11 @@ export function layoutTimelineStatement(
     [],
   )
   return {
-    atoms,
+    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
     rules: textStatementRules(source, statement),
     outdented: new Set(),
-    lineBreaks: "joined",
+    lineBreaks: keepsLineBreaks ? "kept" : "joined",
   }
-}
-
-/**
- * Align description lines one level inside their statement. Indentation after
- * LF is absent from the Db, so normalize those columns while preserving written
- * line breaks and trailing whitespace (docs/timeline.md, Multi-line values).
- * Reuse the shared block layout, splitting its retained atoms only at those safe
- * LFs; directives keep their complete written contents.
- */
-function layoutTimelineDescriptionBlock(
-  source: Source,
-  statement: TimelineAccDescrBlockStatement,
-  end: number,
-): AtomLayout {
-  const layout = layoutDescriptionBlock(
-    source,
-    statement,
-    end,
-    timelineValueNodeTypes,
-  )
-  const atoms: Atom[] = []
-  const keptBreaksBefore = new Set<number>()
-  const outdented = new Set(layout.outdented)
-  const closing = findAccDescrBlockClosing(source, {
-    range: statement.range,
-    value: statement.value,
-    closed: true,
-  })
-  if (closing !== null) outdented.add(closing)
-  for (const atom of layout.atoms) {
-    const trivia = findTriviaBetween(source, atom.start, atom.end)
-    let start = atom.start
-    for (let offset = atom.start; offset < atom.end; offset++) {
-      if (source.text[offset] !== "\n") continue
-      if (
-        trivia.some(
-          (item) => item.range[0] <= offset && offset < item.range[1],
-        ) ||
-        source.removedLineFeeds.has(offset)
-      ) {
-        continue
-      }
-      if (start < offset) atoms.push({ start, end: offset })
-      start = offset + 1
-      while (
-        start < atom.end &&
-        (source.text[start] === " " || source.text[start] === "\t")
-      )
-        start++
-      if (start < atom.end && source.text[start] !== "\n")
-        keptBreaksBefore.add(start)
-      offset = start - 1
-    }
-    if (start < atom.end) atoms.push({ ...atom, start })
-  }
-  return { ...layout, atoms, keptBreaksBefore, outdented }
 }
 
 /** The gap rules of a title, a section, or an accessibility statement. */

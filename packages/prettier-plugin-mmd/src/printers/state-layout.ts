@@ -9,17 +9,27 @@ import type {
   Token,
 } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
+import { Marked, type Token as MarkdownToken } from "marked"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { holdsDirection } from "./accessibility-lines.ts"
 import { findWrittenWhitespaceEnd } from "./gap.ts"
-import { lineEndOf, lineStartOf, printedEndOf } from "./kept-lines.ts"
 import {
+  holdsJoiningRegion,
+  lineEndOf,
+  lineStartOf,
+  printedEndOf,
+} from "./kept-lines.ts"
+import {
+  alignBlockOpeningLine,
   collectAtoms,
   collectValueNodes,
+  descriptionOpeningRules,
   expectToken,
   expectValue,
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
+  indentDescriptionLines,
+  keepFirstGapLineTails,
   keptAsWritten,
   layoutCompactEmptyDescriptionBlockWithFallback,
   spansLinesThatCannotJoin,
@@ -179,8 +189,9 @@ export function layoutStateHeader(source: Source, keyword: Token): AtomLayout {
  * The layout of the line that opens a body, from the start of a statement
  * to the end of its `{`. The `{` stands on the line of the name, after one
  * space; a `{` written on the next line is moved there (docs/state.md,
- * Composite states). Such a line is kept as written when it is written
- * over several lines and holds a comment or a directive, when text that
+ * Composite states). Comments and directives keep line breaks while structural
+ * continuations align. Such a line is kept as written when joining regions or
+ * semicolons protect it, when text that
  * mermaid.js does not read stands before its `{` and is read by its place
  * (see `hasReadOtherwiseTextBeforeBody`), or when it follows a state name
  * (see `isStateNameStatement`).
@@ -193,8 +204,10 @@ export function layoutBodyOpening(
 ): AtomLayout {
   const start = statement.range[0]
   const end = opening.range[1]
+  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
   if (
-    spansLinesThatCannotJoin(source, start, end) ||
+    holdsJoiningRegion(source, start, end) ||
+    spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }) ||
     hasReadOtherwiseTextBeforeBody(statement) ||
     followsStateName
   ) {
@@ -204,20 +217,25 @@ export function layoutBodyOpening(
   if (statement.type === "StateAliasDefinitionStatement") {
     addAliasHeaderRules(source, statement, rules)
   }
-  return {
-    atoms: collectAtoms(
-      source,
-      start,
-      end,
-      collectValueNodes(statement, stateValueNodeTypes).filter(
-        (value) => value.range[1] <= opening.range[0],
-      ),
-      [],
+  const atoms = collectAtoms(
+    source,
+    start,
+    end,
+    collectValueNodes(statement, stateValueNodeTypes).filter(
+      (value) => value.range[1] <= opening.range[0],
     ),
-    rules,
-    outdented: new Set(),
-    lineBreaks: "joined",
-  }
+    [],
+  )
+  return alignBlockOpeningLine(
+    source,
+    {
+      atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+      rules,
+      outdented: new Set([opening.range[0]]),
+      lineBreaks: keepsLineBreaks ? "kept" : "joined",
+    },
+    opening.range[0],
+  )
 }
 
 /**
@@ -248,9 +266,10 @@ function holdsBrace(source: Source, start: number, end: number): boolean {
  *   `as`, the position of a note, `classDef` and `style` and their names,
  *   `scale`, `direction`, and the `:` of `accTitle` and `accDescr`
  *   (diagrams/state.md, Lexical structure); one with a comment or a
- *   directive in it is kept as written (see `spansLinesThatCannotJoin`). The
- *   lines of an `accDescr { ... }` block and of a note over lines are lines
- *   of their texts, and are kept (docs/state.md, Multi-line values).
+ *   directive keeps its line breaks and aligns structural continuations. The
+ *   lines of an `accDescr { ... }` block and of a note remain separate;
+ *   ordinary note paragraph margins follow their own layout (docs/state.md,
+ *   Multi-line values and Notes).
  * - A transition has one space on each side of its arrow (docs/state.md,
  *   Arrow spacing).
  * - The `:` of a description or a label has one space on each side
@@ -263,6 +282,7 @@ export function layoutStateStatement(
   statement: StateSimpleStatement | StateBodyStatement,
   end: number,
   followsStateName: boolean,
+  noteIndentation: string,
 ): AtomLayout {
   const start = statement.range[0]
   if (followsStateName && holdsBrace(source, start, end)) {
@@ -274,7 +294,7 @@ export function layoutStateStatement(
     /** Builds the existing value, trivia and closing-brace layout. */
     function originalLayout(): AtomLayout {
       const closing = findAccDescrBlockClosing(source, block)
-      return {
+      return indentDescriptionLines(source, block, {
         atoms: collectAtoms(
           source,
           start,
@@ -282,10 +302,10 @@ export function layoutStateStatement(
           collectValueNodes(block, stateValueNodeTypes),
           findAccDescrBlockStretches(source, block),
         ),
-        rules: new Map(),
+        rules: descriptionOpeningRules(source, start),
         outdented: closing === null ? new Set() : new Set([closing]),
         lineBreaks: "kept",
-      }
+      })
     }
 
     return statement.value === null && statement.closed
@@ -301,10 +321,12 @@ export function layoutStateStatement(
     statement.type === "StateNoteStatement" &&
     isNoteOverLines(source, statement)
   ) {
-    return layoutNoteOverLines(source, statement, end)
+    return layoutNoteOverLines(source, statement, end, noteIndentation)
   }
+  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
   if (
-    spansLinesThatCannotJoin(source, start, end) ||
+    holdsJoiningRegion(source, start, end) ||
+    spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }) ||
     ((statement.type === "StateCompositeStatement" ||
       statement.type === "StateAliasDefinitionStatement") &&
       hasReadOtherwiseTextBeforeBody(statement))
@@ -328,23 +350,24 @@ export function layoutStateStatement(
       range: statement.range,
       text: statement.value.value,
     })
-  return {
-    atoms: collectAtoms(
-      source,
-      start,
-      end,
-      collectValueNodes(statement, stateValueNodeTypes).filter(
-        (value) =>
-          !kept.some(
-            (stretch) =>
-              stretch.start <= value.range[0] && value.range[1] <= stretch.end,
-          ),
-      ),
-      kept,
+  const atoms = collectAtoms(
+    source,
+    start,
+    end,
+    collectValueNodes(statement, stateValueNodeTypes).filter(
+      (value) =>
+        !kept.some(
+          (stretch) =>
+            stretch.start <= value.range[0] && value.range[1] <= stretch.end,
+        ),
     ),
+    kept,
+  )
+  return {
+    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
     rules: statementRules(source, statement),
     outdented: new Set(),
-    lineBreaks: keepsDirectionValue ? "kept" : "joined",
+    lineBreaks: keepsLineBreaks || keepsDirectionValue ? "kept" : "joined",
   }
 }
 
@@ -617,19 +640,17 @@ function findNoteStretches(statement: StateStatement, end: number): Atom[] {
 }
 
 /**
- * The layout of a note over lines: its keyword, position, and id, its text
- * on the lines after them as written, and `end note` at the level of the
- * note (docs/state.md, Multi-line values). The text is kept from the line
- * break after the id to the line of `end note`, with the whitespace and the
- * empty lines at its ends; the whitespace after the id on the line of the
- * note is dropped. A note whose `end note` does not start its line, or
- * whose text starts on the line of the id, is printed from its id by the
- * gap rules, with its line breaks kept.
+ * A multiline note keeps its lines and aligns eligible paragraph margins one
+ * level inside its header. Protected text retains its complete written span;
+ * `end note` aligns with the header (docs/state.md, Notes). A note whose
+ * `end note` does not start its line, or whose text starts on the line of
+ * the id, is printed from its id by the gap rules, with line breaks kept.
  */
 function layoutNoteOverLines(
   source: Source,
   statement: StateNoteStatement,
   end: number,
+  indentation: string,
 ): AtomLayout {
   const note = expectToken(
     findTokenEndingBefore(source, statement.range[1]),
@@ -642,13 +663,20 @@ function layoutNoteOverLines(
     "the `end` of an `end note`",
   )
   const text = findNoteTextStretch(source, statement, endKeyword)
+  const lines =
+    text === null ? null : noteTextLines(source, statement, text, indentation)
+  const atoms = collectAtoms(
+    source,
+    statement.range[0],
+    end,
+    collectValueNodes(statement, stateValueNodeTypes),
+    text === null ? [] : [text],
+  )
   return {
-    atoms: collectAtoms(
-      source,
-      statement.range[0],
-      end,
-      collectValueNodes(statement, stateValueNodeTypes),
-      text === null ? [] : [text],
+    atoms: atoms.flatMap((atom) =>
+      lines !== null && atom.start === text?.start && atom.end === text.end
+        ? lines
+        : [atom],
     ),
     rules: text === null ? new Map() : new Map([[text.start, "none"]]),
     outdented: new Set([endKeyword.range[0]]),
@@ -657,8 +685,153 @@ function layoutNoteOverLines(
 }
 
 /**
- * The stretch of a note over lines that is printed as written: from the
- * line break after its id to the line break before the line of `end note`,
+ * Align eligible paragraph bodies, or only the first physical body line whose
+ * ASCII margin Mermaid trims. Embedded forms keep their full source. Explicit
+ * ASCII columns avoid introducing Markdown-significant tabs with useTabs
+ * (docs/state.md, Notes).
+ */
+function noteTextLines(
+  source: Source,
+  statement: StateNoteStatement,
+  text: Atom,
+  indentation: string,
+): Atom[] | null {
+  if (
+    source.text[text.start] !== "\n" ||
+    source.text.slice(statement.range[0], text.start).includes("\n") ||
+    source.text.slice(...statement.range).includes(";") ||
+    findTriviaBetween(source, ...statement.range).length > 0 ||
+    holdsJoiningRegion(source, ...statement.range)
+  )
+    return null
+  return (
+    paragraphNoteTextLines(source, text, indentation) ??
+    firstNoteTextLine(source, text, indentation)
+  )
+}
+
+/**
+ * A single paragraph aligns its content rows, including inline emphasis,
+ * same-line code and inline `<br/>`. Outer blank rows retain their exact text;
+ * block syntax and markup that can own later margins remain protected.
+ */
+function paragraphNoteTextLines(
+  source: Source,
+  text: Atom,
+  indentation: string,
+): Atom[] | null {
+  const lines: Atom[] = []
+  const contentRows: string[] = []
+  let sawContent = false
+  let endedParagraph = false
+  let contentEnd = text.end
+  while (
+    contentEnd > text.start + 1 &&
+    " \t\n".includes(source.text[contentEnd - 1])
+  )
+    contentEnd--
+  for (let offset = text.start + 1; offset <= text.end;) {
+    const nextBreak = source.text.indexOf("\n", offset)
+    const end = nextBreak < 0 ? text.end : Math.min(nextBreak, text.end)
+    let start = offset
+    while (source.text[start] === " " || source.text[start] === "\t") start++
+    if (start >= end) {
+      lines.push({ start: offset, end, writtenIndentation: "" })
+      endedParagraph ||= sawContent
+      offset = end + 1
+      continue
+    }
+    const margin = source.text.slice(offset, start)
+    const content = source.text.slice(start, end)
+    if (
+      endedParagraph ||
+      (sawContent && margin.includes("\t")) ||
+      content.startsWith("<br/>") ||
+      [...content.split("<br/>").join("")].some(
+        (character) =>
+          "~[]<>\\".includes(character) ||
+          (character !== " " && isWhitespace(character)),
+      ) ||
+      (end < contentEnd && source.text.slice(end - 2, end) === "  ")
+    )
+      return null
+    sawContent = true
+    contentRows.push(content)
+    lines.push({ start, end, writtenIndentation: indentation })
+    offset = end + 1
+  }
+  if (!sawContent) return null
+  // Below four columns, removing a margin can expose a list, heading or other
+  // block. Classify the marginless input before choosing the paragraph layout;
+  // at four columns or more, paragraph continuations remain literal text
+  // (docs/state.md, Notes).
+  const markdown =
+    indentation.length < 4
+      ? contentRows.join("\n")
+      : source.text.slice(text.start + 1, text.end)
+  return isParagraphNoteText(markdown) ? lines : null
+}
+
+/**
+ * Use Mermaid's Markdown lexer in an isolated instance. Other consumers of
+ * Marked cannot change these defaults through marked.use (docs/state.md, Notes).
+ */
+const noteMarkdown = new Marked({ gfm: true, breaks: false, pedantic: false })
+
+/** Only supported paragraph tokens permit changing physical line margins. */
+function isParagraphNoteText(text: string): boolean {
+  const tokens = noteMarkdown.lexer(text.trim())
+  const paragraph = tokens[0]
+  return (
+    tokens.length === 1 &&
+    paragraph.type === "paragraph" &&
+    paragraph.tokens !== undefined &&
+    paragraph.tokens.every(isMarginIndependentNoteToken)
+  )
+}
+
+/** Token forms that permit changing surrounding paragraph line margins. */
+function isMarginIndependentNoteToken(token: MarkdownToken): boolean {
+  switch (token.type) {
+    case "text":
+      return !token.raw.includes("`")
+    case "em":
+    case "strong":
+      return (
+        token.tokens !== undefined &&
+        token.tokens.every(isMarginIndependentNoteToken)
+      )
+    case "codespan":
+    case "link":
+      return !token.raw.includes("\n")
+    case "html":
+      return token.raw === "<br/>" && token.block === false
+    default:
+      return false
+  }
+}
+
+/** A nonblank first physical row loses its leading space/tab padding in the Db. */
+function firstNoteTextLine(
+  source: Source,
+  text: Atom,
+  indentation: string,
+): Atom[] | null {
+  let start = text.start + 1
+  while (source.text[start] === " " || source.text[start] === "\t") start++
+  const lineEnd = lineEndOf(source, text.start + 1)
+  if (start >= text.end || start >= lineEnd || isWhitespace(source.text[start]))
+    return null
+  const end = Math.min(lineEnd, text.end)
+  return [
+    { start, end, writtenIndentation: indentation },
+    ...(end < text.end ? [{ start: end, end: text.end }] : []),
+  ]
+}
+
+/**
+ * The body stretch initially collected as one atom: from the line break after
+ * its id to the line break before the line of `end note`,
  * or null where text other than comments and directives follows the id on
  * its line or `end note` does not start its line.
  */

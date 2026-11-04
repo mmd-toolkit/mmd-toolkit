@@ -38,7 +38,7 @@ packet
 Place ordinary statements and standalone comments/global directives one
 configured step below the header. The body is flat: published rows add no source
 nesting. `tabWidth: 0` gives zero spaces, and `useTabs` gives one tab even at
-width zero, because packet columns have no grammatical meaning. Value
+width zero, because packet columns have no grammatical meaning. Other value
 continuation columns, hidden closers and retained prefixes stay written; YAML
 uses the shared positive minimum.
 
@@ -343,14 +343,18 @@ packet
 
 ### Description blocks
 
-Reuse shared `layoutDescriptionBlock`: keep touching keyword/opener and interior
-sides touching, and compact present runs to one space. Plain opener whitespace
-can join across physical or Unicode lines; real opener trivia keeps its break.
+Reuse shared `layoutDescriptionBlock`: separate the keyword and opening brace
+with one space so the block boundary is clear. Keep touching interior sides
+touching, and compact present runs to one space. Plain opener whitespace can
+join across physical or Unicode lines; real opener trivia keeps its break.
 Whitespace-only interiors become `{}` because no text needs surrounding
-whitespace. Comment/directive-only interiors keep their trivia. Nonempty
-continuation columns and blank lines stay written; a separate closer aligns with
-the statement. Quotes, backslashes and hidden-looking text do not protect the
-first closing brace.
+whitespace. Comment/directive-only interiors keep their trivia. Ordinary
+description body and standalone comment lines align one level inside the
+statement, since the Db removes indentation after LF. Keep line breaks, blank
+lines and trailing whitespace; a separate closer aligns with the statement.
+Directives and shared removed comment regions keep their complete source.
+Quotes, backslashes and hidden-looking text do not protect the first closing
+brace.
 
 [fixture: packet/description-blocks/description-gaps]
 
@@ -384,19 +388,19 @@ Output
 
 ```mmd
 packet
-  accDescr{A}
+  accDescr {A}
   accDescr { B }
   accDescr {C }
-  accDescr{ D}
+  accDescr { D}
 ```
 
 ### Multiline values
 
 Do not wrap components or values at printWidth: visible LF between block
 components rejects, and changing label line breaks changes its Db. Keep existing
-physical label/block lines, continuation columns and internal blanks. A separate
-description closer uses the shared alignment; hidden consumed LFs use their
-boundary rules.
+physical label lines, their continuation columns and internal blanks.
+Description bodies use the shared indentation above; hidden consumed LFs use
+their boundary rules.
 
 [fixture: packet/multiline-values/long-no-wrap]
 

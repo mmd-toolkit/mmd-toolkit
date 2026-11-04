@@ -65,7 +65,7 @@ requirementDiagram
     type: t
   }
   r - satisfies -> e
-  style r fill:red
+  style r fill: red
 ```
 
 入力
@@ -92,9 +92,18 @@ requirementDiagram
 
 ### 本体
 
+trivia を挟んで見出しが続く場合、開始括弧のある行を最初のキーワードにそろえ、
+本文がさらに 1 段深く見えるようにします。
+その行をまたぐ値や保護された原文の境界は変えません。
+[fixture: bodies/header-completion-after-comment]
+[fixture: multi-line-statements/header-directive-continuation]
+
 requirement と element の `{` は、種類のキーワード、名前、クラスの行に、
-書かれ方によらず空白 1 つの後に置きます。
+空白 1 つの後に置きます。
 フィールドは次の行から 1 行に 1 つ置き、`}` は行に単独で置きます。
+コメントかディレクティブを含むヘッダーは改行を残し、
+構造の続きの行をキーワードより 1 段深く置きます。
+[fixture: multi-line-statements/header-directive-continuation]
 `{` の前の空白 1 つは、ER の属性ブロックと同じで、
 mermaid.js の文書の書き方でもあります。
 引用符のない名前では空白がどのみち要るので、文の形は 1 つになります。
@@ -170,9 +179,12 @@ requirementDiagram
 
 フィールドは 1 行に、キーワード、キーワードに接する `:`、
 空白 1 つの後に値を置きます。
-書かれ方によりません。
 mermaid.js の文書がフィールドをそう書き、
-journey も値の前に空白 1 つを置きます。 [fixture: fields/colon-touches-keyword]
+journey も値の前に空白 1 つを置きます。
+コメントかディレクティブがあれば改行を残し、
+構造の続きの行と間の注釈をフィールドより 1 段深く置きます。
+[fixture: fields/comment-and-directive-continuations]
+[fixture: fields/colon-touches-keyword]
 [fixture: fields/spaces-around-colon-and-value]
 [fixture: fields/value-after-one-space]
 引用符のない値の両端の空白は Db に入らないので落とします。
@@ -300,7 +312,7 @@ requirementDiagram
   }
   "r" - satisfies -> s
   s - satisfies -> "r"
-  style "r" fill:red
+  style "r" fill: red
 ```
 
 入力
@@ -342,8 +354,20 @@ ER 図の関係文も単位の間は空白 1 つです。
 [fixture: relationship-spacing/multi-word-names]
 単位の間のディレクティブは、その場に残し、両側に書かれた空白も残します。
 [fixture: relationship-spacing/directive-between-units-kept]
-空白の後で改行して複数行に書かれた関係文は、 1 行にします。
+空白の後で改行して複数行に書かれた関係文は、
+コメントやディレクティブが結合を妨げる場合を除き、1 行にします。
+結合しない場合は、
+後続の構造部分と独立した trivia を関係文の内側に 1 段字下げします。
+関係文を続ける空白の連続は LF より前から始まる必要があるため、
+各 gap の最初の行の末尾を保ちます。
+複数行のディレクティブ全体と名前の内部も保ちます。
 [fixture: relationship-spacing/over-lines-joined]
+[fixture: relationship-spacing/comment-continuation-with-multiline-names]
+[fixture: relationship-spacing/directive-continuation-four-spaces]
+[fixture: relationship-spacing/multiline-directive-line-tail]
+semicolon の読みが関わる行と、物理行を結ぶコメント領域は、元の配置を保ちます。
+[fixture: multi-line-statements/relationship-last-line-semicolon-kept]
+[test: requirement/relationship-spacing/comment-region-continuation-kept]
 
 入力
 ([relationship-spacing/spaces-and-touching-input.mmd](../tests/fixtures/requirement/relationship-spacing/spaces-and-touching-input.mmd)):
@@ -449,25 +473,28 @@ requirementDiagram
 
 ### スタイルとクラス
 
-`classDef` 文の名前と、`style` 文と `class` 文の名前とクラスは、
-両側の名前に接する `,` で区切ります。
-`classDef a ,b ,  c fill:red` は `classDef a,b,c fill:red` と印字します。
+名前とクラスのリストでは、名前に接する comma を使います。
+`class` の 2 つのリストは、空白 1 つで区切ります。
+style の文脈が LF で終わる場合、文の末尾の空白は落とします。
+最初のスタイルは空白 1 つの後に置きます。
+`style` と `classDef` の、通常の 1 行のプロパティと値からなるスタイルでは、
+最初の `:` の前を詰め、空でない値の前に空白を 1 つ置きます。
+スタイル間は `,` とその後の空白 1 つで区切ります。
+プロパティと値の内部は、値の語の間の連続空白も含めて保ちます。
+Mermaid はスタイルの単位をつなげて読むため、
+`stroke-dasharray: 5 5` は引き続き `stroke-dasharray:55` です。
+`fill   : navy, stroke  : black` は `fill: navy, stroke: black` にします。
+`stroke-dasharray:  5    5` は、値の間の空白 4 つを保ちます。
+通常はつなげる見出しや外側の改行があっても、最初の整形で同じ間隔にします。
+スタイル内部の改行区切り、所有する trivia、同じ物理行のセミコロンがある場合は、
+既存のスタイルの配置を保ちます。
+キーワードの大文字小文字は保ちます。
+[fixture: styles-and-classes/style-unit-padding]
 [fixture: styles-and-classes/class-def-names]
 [fixture: styles-and-classes/style-names]
 [fixture: styles-and-classes/class-lists]
-最初のスタイルは空白 1 つの後に置き、
-`class` 文の 2 つのリストは空白 1 つで区切ります。
-スタイルの中の空白は書かれたまま印字します。
-mermaid.js はスタイルのテキストをつなげて間の空白を落とすので、
-`stroke-dasharray: 5 5` はスタイル `stroke-dasharray:55` であり、
-空白は作者が置いた所に残します。
-2 つのスタイルの間の `,` の周りの空白は、
-トークンの間の空白と同じに 1 つにします。
 [fixture: styles-and-classes/styles-as-written]
-文の末尾の空白は落とします。
-style の文脈は、改行を文の終わりとして読むからです。
 [fixture: styles-and-classes/trailing-whitespace-dropped]
-キーワードは書かれた大文字小文字のまま残します。
 [fixture: styles-and-classes/keyword-case-kept]
 
 スタイルの末尾の `;` は、スタイルの文字か、
@@ -489,7 +516,7 @@ The style context、規則 1）。
 [fixture: styles-and-classes/class-over-lines-joined]
 それ以外のときは改行を残し、続きの行は 1 段深く置きます。
 [fixture: styles-and-classes/class-over-lines-kept]
-コメント行を含む文は、書かれたまま残します。
+コメント行を含む文は改行を残し、コメントと構造の続きの行を 1 段深く置きます。
 [fixture: styles-and-classes/class-over-lines-with-comment-line-kept]
 
 入力
@@ -507,9 +534,9 @@ classDef "d" fill:red
 
 ```mmd
 requirementDiagram
-  classDef a,b,c fill:red
-  classDef default fill:#f9f,stroke-width:4px
-  classDef "d" fill:red
+  classDef a,b,c fill: red
+  classDef default fill: #f9f, stroke-width: 4px
+  classDef "d" fill: red
 ```
 
 入力
@@ -528,9 +555,9 @@ style r   fill: red;
 
 ```mmd
 requirementDiagram
-  style r fill : #f9f , stroke:#333
+  style r fill: #f9f, stroke: #333
   style r stroke-dasharray: 5 5
-  style r fill:red , stroke:blue
+  style r fill: red, stroke: blue
   style r fill: red;
 ```
 
@@ -609,7 +636,8 @@ requirementDiagram
 [fixture: direction/text-kept] [fixture: direction/case-kept]
 次の行に書かれた値は、 `direction` の後ろに寄せて 1 行にします。
 [fixture: direction/value-on-next-line-joined]
-ディレクティブやコメント行を含む方向の行は、書かれたまま残します。
+ディレクティブやコメント行を含む方向の行は改行を残し、
+構造の続きの行を 1 段深く置きます。
 [fixture: direction/directive-and-comment-line-kept]
 字句解析器の方向の行の規則は行全体を取るので、 `direction LR` で終わる関係文は、
 前にテキストを持つ方向の行です。 [fixture: direction/after-relationship]
@@ -744,9 +772,9 @@ requirementDiagram
   requirement r {
     id: 1
   }
-  style r fill:red
+  style r fill: red
   "r":::c
-  classDef c fill:red
+  classDef c fill: red
   "r":::c
   class r c
   "r" - satisfies -> b
@@ -858,7 +886,8 @@ ER 図が mermaid.js の読まないテキストをブロックの中の自分�
 内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
 囲む空白を要する本文がないためです。
 すでに空の内側は空のままです。
-接した keyword は接したまま、 `accDescr{  }` は `accDescr{}` にします。
+キーワードと開始括弧の間には空白を 1 つ置きます。
+`accDescr{  }` は `accDescr {}` にします。
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: requirement Unicode and tab interiors]
 [test: requirement body Unicode and tab interiors]
@@ -866,7 +895,11 @@ ER 図が mermaid.js の読まないテキストをブロックの中の自分�
 [fixture: empty-description-blocks/inner-whitespace-joined]
 [fixture: empty-description-blocks/touching-kept]
 [fixture: empty-description-blocks/in-body-over-lines-joined]
-ディレクティブかコメント行を含むブロックは、書かれたまま印字します。
+ディレクティブかコメント行を含むブロックは、その内容と改行を保ちます。
+独立した注釈をブロックの 1 段内側に置き、
+独立した `}` は `accDescr` にそろえます。
+requirement と element の本文にある空のブロックも同じです。
+[fixture: empty-description-blocks/in-body-with-directive-line]
 [fixture: empty-description-blocks/with-directive-or-comment-line-kept]
 [fixture: empty-description-blocks/in-body-with-comment-line-kept]
 [fixture: empty-description-blocks/in-body-with-directive-kept]
@@ -936,11 +969,10 @@ requirementDiagram
 [fixture: accessibility-statements/text-on-next-line-joined]
 [fixture: accessibility-statements/text-with-comment-line-kept]
 
-`accDescr { ... }` ブロックの行は、必要からではなく選択として、
-書かれたまま残します。
-行頭の空白は Db に入らず、 `a`、改行、`b` と、
-`b` の前に空白がある形は同じ説明です。
-行は作者のテキストで、印字は整形しないからです。
+`accDescr { ... }` ブロックの後続の本文行は、文の内側に 1 段字下げし、
+LF 直後の ASCII 空白とタブだけを置き換えます。
+説明の setter がこの字下げを捨てるためです。
+改行、行末空白、ディレクティブの内部は保ちます。
 `}` は文と同じ段に置きます。
 `{` と同じ行にテキストがあるときは、
 離れて書かれていれば波括弧の内側に空白 1 つを置きます。
@@ -999,7 +1031,7 @@ accDescr {
 ```mmd
 requirementDiagram
   accDescr {
-  first
+    first
     second
   }
   accDescr {}
@@ -1027,7 +1059,7 @@ accTitle: direction LR
 accDescr: direction  TB
 accDescr { direction RL }
   accDescr {
- direction BT
+    direction BT
   }
 ```
 
@@ -1046,10 +1078,14 @@ style の文脈の改行の後で続きます。
 [fixture: multi-line-statements/direction-value-joined]
 [fixture: multi-line-statements/accessibility-joined]
 [fixture: multi-line-statements/string-continued-joined]
-コメント行かディレクティブを含む文は、コメント行がその行の残りを取り、
-ディレクティブのある行の空白はディレクティブと一緒に読まれるので、
-書かれたまま残します。
-`;` を含む文も、行の規則が決めるので、書かれたまま残します。
+コメントやディレクティブがあれば改行を保ち、
+構造の続きの行と間の注釈を 1 段深く置きます。
+ブロックのヘッダー、フィールド、関係文、ほかの文も同じです。
+値の中の空白と、各隙間の最初の改行の前の空白は保ちます。
+コメントで結合される領域とセミコロン行の保護対象では、
+文全体を原文のまま残します。
+[fixture: multi-line-statements/header-directive-continuation]
+[fixture: fields/comment-and-directive-continuations]
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 [fixture: multi-line-statements/semicolon-kept]
@@ -1086,7 +1122,7 @@ class r c "r"
 
 ```mmd
 requirementDiagram
-  style r fill:red
+  style r fill: red
   "r":::c
   class r c
   "r" - satisfies -> b
@@ -1145,7 +1181,7 @@ requirementDiagram
   requirement r {
     id: 1
   }
-  style r fill:red
+  style r fill: red
   class r c
 ```
 
@@ -1164,8 +1200,8 @@ accDescr {}
 
 ```mmd
 requirementDiagram
-  accDescr{}
-  accDescr{}
+  accDescr {}
+  accDescr {}
   accDescr {}
 ```
 
@@ -1208,7 +1244,7 @@ requirementdiagram
   }
   r - SATISFIES -> e
   DIRECTION lr
-  STYLE r fill:red
+  STYLE r fill: red
 ```
 
 ### コメント

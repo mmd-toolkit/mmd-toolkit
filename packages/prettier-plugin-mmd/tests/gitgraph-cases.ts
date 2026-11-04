@@ -42,7 +42,7 @@ export const gitgraphCases: readonly GitgraphCase[] = [
   {
     name: "gitgraph/line-terminators-and-unicode/eol-block-cr",
     input: "gitGraph\raccDescr {A\r B}\r",
-    output: "gitGraph\n  accDescr {A\n B}\n",
+    output: "gitGraph\n  accDescr {A\n    B}\n",
     options: {},
   },
   {

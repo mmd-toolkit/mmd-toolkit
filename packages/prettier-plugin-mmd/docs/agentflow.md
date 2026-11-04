@@ -628,14 +628,15 @@ Description blocks also reuse
 [Multi-line values](./flowchart.md#multi-line-values) with the same sibling
 reason: ordinary closed blocks with no text or trivia print their interior as
 `{}`, even with interior spaces or blank lines. The exterior keyword-to-brace
-gap keeps touching tokens touching, so `accDescr{}` stays touching too.
-[fixture: accessibility/empty-block-touching-keyword] No text needs surrounding
+gap prints one space, even when originally touching, to distinguish the keyword
+from its body: `accDescr {}`. [fixture:
+accessibility/empty-block-touching-keyword] No text needs surrounding
 whitespace, so this follows usecase's Db-equal form. [fixture:
 accessibility/empty-block-tight] [fixture: accessibility/empty-block-spaced]
 [fixture: accessibility/empty-block-lines] Accepted NBSP/U+2028/U+2029 interior
 whitespace also disappears. [test: accessibility blocks: agentflow
-empty-block-unicode] Kept lines and blocks containing directives retain their
-existing layout. [fixture: accessibility/empty-block-semicolon-kept] [fixture:
+empty-block-unicode] Kept lines and directive interiors retain their authored
+layout. [fixture: accessibility/empty-block-semicolon-kept] [fixture:
 accessibility/empty-block-directive-kept]
 
 For nonempty blocks, `{a}` stays `{a}`, `{ a }` stays `{ a }`, and `{  a  }`
@@ -645,23 +646,27 @@ accessibility/block-tight-text] [fixture: accessibility/block-spaced-text]
 [fixture: accessibility/block-padded-text] Independently, `{  a}` becomes `{ a}`
 and `{a  }` becomes `{a }`; each side keeps whether it had whitespace. [fixture:
 accessibility/block-left-padding-only] [fixture:
-accessibility/block-right-padding-only] Later value and comment columns are
-authored text, and a closed description brace on its own line aligns with
-`accDescr`, whether written at column zero or indented. [fixture:
-accessibility/block-close-column-zero] [fixture:
+accessibility/block-right-padding-only] At the top level, align the body lines
+of a closed description block one step inside its statement: Mermaid discards
+this indentation from the accessibility description. Inside a flow or global
+body, keep their columns, because the raw text also participates in membership.
+Changing a global body's text can change the members of a later flow. [fixture:
+accessibility/global-description-membership-kept] A closed description brace on
+its own line aligns with `accDescr`, whether written at column zero or indented.
+[fixture: accessibility/block-close-column-zero] [fixture:
 accessibility/block-close-indented] [fixture:
 accessibility/block-comment-close-column-zero] [fixture:
 accessibility/block-comment-close-indented] The same empty-block and closer
 rules apply with the minimum body step at `tabWidth: 0`. [fixture:
-accessibility/block-zero-width] Keep unclosed block content and its EOF ending
-without adding a brace or newline. Unlike flowchart, comment-looking description
-lines are real values and keep their columns. Closed empty descriptions stay
-separate statements where the grammar places them; Name/click placements stay
-IgnoredText, and style statements with a final empty style stay with following
-empty description blocks under Kept lines. An erased empty string, empty
-markdown string or empty call where a statement starts is not a statement: it is
-rejected as `tokenless-empty-forms`. [fixture:
-accessibility/accessibility-block] [fixture:
+accessibility/block-zero-width] Keep unclosed block contents and EOF ending as
+written, without adding a brace or newline. Unlike flowchart, comment-looking
+description lines are real values; their indentation follows the same
+block-context rule. Closed empty descriptions stay separate statements where the
+grammar places them; Name/click placements stay IgnoredText, and style
+statements with a final empty style stay with following empty description blocks
+under Kept lines. An erased empty string, empty markdown string or empty call
+where a statement starts is not a statement: it is rejected as
+`tokenless-empty-forms`. [fixture: accessibility/accessibility-block] [fixture:
 accessibility/accessibility-comment-indent-alternative] [fixture:
 accessibility/accessibility-comment-is-value] [fixture:
 accessibility/accessibility-empty-block] [fixture:
@@ -727,13 +732,15 @@ accessibility/empty-block-lines]
 
 Reuse [Multi-line statements](./flowchart.md#multi-line-statements) and
 [Multi-line values](./flowchart.md#multi-line-values) for the same reasons: the
-author chooses statement breaks, and later value columns are characters. Indent
-ordinary continuation tokens one additional step; keep string/markdown/split
-text, Name, metadata, directive and multiline click continuation columns. An
-extra whitespace character in a click gap can reject. Agentflow folds only line
-whitespace immediately before the next LF after a closing brace; later blank LFs
-remain. Keep those raw value lines, including LS/PS/VT/FF/NBSP, and never align
-an opaque data closer as an accessibility closer. [fixture:
+author chooses statement breaks, and later value columns are characters except
+for the description-body indentation described in
+[Accessibility](#accessibility). Indent ordinary continuation tokens one
+additional step; keep string/markdown/split text, Name, metadata, directive and
+multiline click continuation columns. An extra whitespace character in a click
+gap can reject. Agentflow folds only line whitespace immediately before the next
+LF after a closing brace; later blank LFs remain. Keep those raw value lines,
+including LS/PS/VT/FF/NBSP, and never align an opaque data closer as an
+accessibility closer. [fixture:
 multiline-statements-and-values/brace-blank-kept] [fixture:
 multiline-statements-and-values/multiline-chain] [fixture:
 multiline-statements-and-values/multiline-string]

@@ -31,7 +31,7 @@ export const radarCases: readonly RadarCase[] = [
     name: "radar/line-terminators-and-unicode/crlf-values",
     input:
       'radar-beta\r\naxis North["one\r\ntwo"]\r\naccDescr {one\r\ntwo}\r\n',
-    output: 'radar-beta\n  axis North["one\ntwo"]\n  accDescr {one\ntwo}\n',
+    output: 'radar-beta\n  axis North["one\ntwo"]\n  accDescr {one\n    two}\n',
     options: {},
   },
   {
@@ -98,7 +98,7 @@ export const radarCases: readonly RadarCase[] = [
   {
     name: "radar/description-blocks/unicode-empty",
     input: "radar-beta\naccDescr{ \t\n\u2028\u00a0}\n",
-    output: "radar-beta\n  accDescr{}\n",
+    output: "radar-beta\n  accDescr {}\n",
     options: {},
   },
   {
@@ -112,7 +112,7 @@ export const radarCases: readonly RadarCase[] = [
   {
     name: "radar/line-terminators-and-unicode/description-content",
     input: "radar-beta\naccDescr{\u00a0A\u2028B\u2029C\ufeff}\n",
-    output: "radar-beta\n  accDescr{ A\u2028B\u2029C }\n",
+    output: "radar-beta\n  accDescr { A\u2028B\u2029C }\n",
     options: {},
   },
 ]

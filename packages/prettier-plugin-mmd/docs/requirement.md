@@ -66,7 +66,7 @@ requirementDiagram
     type: t
   }
   r - satisfies -> e
-  style r fill:red
+  style r fill: red
 ```
 
 Input
@@ -93,16 +93,25 @@ requirementDiagram
 
 ### Bodies
 
+When a header continues across trivia, align the physical line containing its
+opening brace with the initial keyword, so the body remains one level deeper. Do
+not change a value spanning that line or protected source boundaries. [fixture:
+bodies/header-completion-after-comment] [fixture:
+multi-line-statements/header-directive-continuation]
+
 The `{` of a requirement or an element stands on the line of its keyword, name,
-and classes, after one space, however it was written; the fields follow on lines
-of their own, and the `}` closes the body on a line of its own. The `{` stands
-after one space as in an ER attribute block, which is how the documentation of
-mermaid.js writes it; where the name is unquoted a space is needed anyway, so
-the statement has one form. [fixture: bodies/opening-brace-after-one-space] The
-keyword of a requirement is one of six kinds, kept in the case in which it is
-written. [fixture: bodies/kinds] A statement that follows the `}` on its line
-stands on a line of its own. [fixture: bodies/statement-after-closing-brace]
-[fixture: statements-one-per-line/closing-brace-then-statement]
+and classes, after one space; the fields follow on lines of their own, and the
+`}` closes the body on a line of its own. A header containing comments or
+directives keeps its line breaks and indents other structural continuations one
+level inside the keyword. [fixture:
+multi-line-statements/header-directive-continuation] The `{` stands after one
+space as in an ER attribute block, which is how the documentation of mermaid.js
+writes it; where the name is unquoted a space is needed anyway, so the statement
+has one form. [fixture: bodies/opening-brace-after-one-space] The keyword of a
+requirement is one of six kinds, kept in the case in which it is written.
+[fixture: bodies/kinds] A statement that follows the `}` on its line stands on a
+line of its own. [fixture: bodies/statement-after-closing-brace] [fixture:
+statements-one-per-line/closing-brace-then-statement]
 
 mermaid.js needs a line break after the `{`, so a body without fields is the `{`
 and the `}` on two lines, and the empty lines between them are dropped.
@@ -168,13 +177,15 @@ requirementDiagram
 ### Fields
 
 A field is printed on one line: its keyword, the `:` touching it, and its value
-after one space, however it was written, as the documentation of mermaid.js
-writes the fields and as a user journey puts a value after one space. [fixture:
-fields/colon-touches-keyword] [fixture: fields/spaces-around-colon-and-value]
-[fixture: fields/value-after-one-space] The whitespace at the ends of an
-unquoted value is not in the Db and is dropped; the whitespace inside it is, and
-so is everything between the quotes of a string. [fixture:
-fields/value-outer-whitespace-dropped] [fixture:
+after one space, as the documentation of mermaid.js writes the fields and as a
+user journey puts a value after one space. Comments or directives keep their
+line breaks; structural continuations and intervening trivia stand one level
+inside the field. [fixture: fields/comment-and-directive-continuations]
+[fixture: fields/colon-touches-keyword] [fixture:
+fields/spaces-around-colon-and-value] [fixture: fields/value-after-one-space]
+The whitespace at the ends of an unquoted value is not in the Db and is dropped;
+the whitespace inside it is, and so is everything between the quotes of a
+string. [fixture: fields/value-outer-whitespace-dropped] [fixture:
 fields/value-inner-whitespace-kept] [fixture: fields/string-values-kept] A `#`,
 a `%`, and a `;` inside an unquoted value are characters of the value, not the
 start of a comment. [fixture: fields/special-characters-in-values]
@@ -292,7 +303,7 @@ requirementDiagram
   }
   "r" - satisfies -> s
   s - satisfies -> "r"
-  style "r" fill:red
+  style "r" fill: red
 ```
 
 Input
@@ -332,7 +343,17 @@ name is part of it. [fixture: relationship-spacing/multi-word-names] A directive
 between the units stays where it is, with the whitespace written on each side of
 it. [fixture: relationship-spacing/directive-between-units-kept] A relationship
 written over several lines, where the line break follows whitespace, is printed
-on one line. [fixture: relationship-spacing/over-lines-joined]
+on one line unless a comment or directive prevents joining. In that case, later
+structural parts and standalone trivia stand one level inside the relationship.
+Keep each gap's first line tail, since a whitespace run must start before LF to
+continue the relationship, and retain complete multiline directives and name
+interiors. [fixture: relationship-spacing/over-lines-joined] [fixture:
+relationship-spacing/comment-continuation-with-multiline-names] [fixture:
+relationship-spacing/directive-continuation-four-spaces] [fixture:
+relationship-spacing/multiline-directive-line-tail] Semicolon-sensitive lines
+and comment regions that join physical lines keep their original layout.
+[fixture: multi-line-statements/relationship-last-line-semicolon-kept] [test:
+requirement/relationship-spacing/comment-region-continuation-kept]
 
 Input
 ([relationship-spacing/spaces-and-touching-input.mmd](../tests/fixtures/requirement/relationship-spacing/spaces-and-touching-input.mmd)):
@@ -437,21 +458,26 @@ requirementDiagram
 
 ### Styles and classes
 
-The names of a `classDef` statement, and the names and the classes of a `style`
-and a `class` statement, are separated by a `,` that touches the names on both
-sides: `classDef a ,b ,  c fill:red` is printed `classDef a,b,c fill:red`.
-[fixture: styles-and-classes/class-def-names] [fixture:
-styles-and-classes/style-names] [fixture: styles-and-classes/class-lists] The
-first style stands after one space, and the two lists of a `class` statement are
-separated by one space. The whitespace inside a style is printed as written:
-mermaid.js joins the texts of a style and drops the whitespace between them, so
-`stroke-dasharray: 5 5` is the style `stroke-dasharray:55`, and the whitespace
-stays where the author put it. The whitespace around a `,` between two styles is
-a run of whitespace between tokens, and becomes one space. [fixture:
-styles-and-classes/styles-as-written] The whitespace at the end of the statement
-is dropped, since the style context reads the line feed as the end of the
-statement. [fixture: styles-and-classes/trailing-whitespace-dropped] The
-keywords keep their case. [fixture: styles-and-classes/keyword-case-kept]
+Name and class lists use commas without surrounding spaces. The two lists of a
+`class` statement remain separated by one space. Statement-ending whitespace is
+dropped where the style context ends at LF. The first style stands after one
+space. For ordinary single-line property/value styles in `style` or `classDef`,
+put no space before the first colon of each style and one before its nonempty
+value; separate styles with a comma and one following space. Keep property and
+value interiors, including repeated spaces between value words. Mermaid
+concatenates the native style units: `stroke-dasharray: 5 5` still means
+`stroke-dasharray:55`. For example, `fill   : navy, stroke  : black` becomes
+`fill: navy, stroke: black`, while `stroke-dasharray:  5    5` keeps the four
+spaces between its values. A header or exterior line break that ordinarily joins
+does not delay this spacing until another formatting. Style interiors containing
+line separators, owned trivia, and statements with a semicolon on their physical
+line retain the existing style layout. Keyword case stays written. [fixture:
+styles-and-classes/style-unit-padding] [fixture:
+styles-and-classes/class-def-names] [fixture: styles-and-classes/style-names]
+[fixture: styles-and-classes/class-lists] [fixture:
+styles-and-classes/styles-as-written] [fixture:
+styles-and-classes/trailing-whitespace-dropped] [fixture:
+styles-and-classes/keyword-case-kept]
 
 A `;` at the end of a style is a character of the style, or a `;` that the line
 rule of mermaid.js ignores (diagrams/requirement.md, The style context and
@@ -468,9 +494,9 @@ line break is a string or an unquoted name that is a `style-word`: the lexer
 reads such a name the same way on one line. [fixture:
 styles-and-classes/class-over-lines-joined] Otherwise the line break stays, and
 the later lines stand one level deeper. [fixture:
-styles-and-classes/class-over-lines-kept] A statement with a comment line in it
-is kept as written. [fixture:
-styles-and-classes/class-over-lines-with-comment-line-kept]
+styles-and-classes/class-over-lines-kept] A statement with a comment line keeps
+its line breaks, while the comment and structural continuations stand one level
+deeper. [fixture: styles-and-classes/class-over-lines-with-comment-line-kept]
 
 Input
 ([styles-and-classes/class-def-names-input.mmd](../tests/fixtures/requirement/styles-and-classes/class-def-names-input.mmd)):
@@ -487,9 +513,9 @@ Output
 
 ```mmd
 requirementDiagram
-  classDef a,b,c fill:red
-  classDef default fill:#f9f,stroke-width:4px
-  classDef "d" fill:red
+  classDef a,b,c fill: red
+  classDef default fill: #f9f, stroke-width: 4px
+  classDef "d" fill: red
 ```
 
 Input
@@ -508,9 +534,9 @@ Output
 
 ```mmd
 requirementDiagram
-  style r fill : #f9f , stroke:#333
+  style r fill: #f9f, stroke: #333
   style r stroke-dasharray: 5 5
-  style r fill:red , stroke:blue
+  style r fill: red, stroke: blue
   style r fill: red;
 ```
 
@@ -587,11 +613,12 @@ stands between it and `direction`, where they were written apart, and between
 [fixture: direction/spacing] [fixture: direction/spaces-around] [fixture:
 direction/text-kept] [fixture: direction/case-kept] A value written on a later
 line is printed after `direction` on one line. [fixture:
-direction/value-on-next-line-joined] A direction line with a directive or a
-comment line inside is kept as written. [fixture:
-direction/directive-and-comment-line-kept] The rule of the lexer for a direction
-line takes the whole line, so a relationship that ends with `direction LR` is a
-direction line with the text before it. [fixture: direction/after-relationship]
+direction/value-on-next-line-joined] A direction line with a directive or
+comment keeps its line breaks and indents structural continuations one level
+deeper. [fixture: direction/directive-and-comment-line-kept] The rule of the
+lexer for a direction line takes the whole line, so a relationship that ends
+with `direction LR` is a direction line with the text before it. [fixture:
+direction/after-relationship]
 
 Input
 ([direction/text-kept-input.mmd](../tests/fixtures/requirement/direction/text-kept-input.mmd)):
@@ -722,9 +749,9 @@ requirementDiagram
   requirement r {
     id: 1
   }
-  style r fill:red
+  style r fill: red
   "r":::c
-  classDef c fill:red
+  classDef c fill: red
   "r":::c
   class r c
   "r" - satisfies -> b
@@ -833,15 +860,18 @@ empty-description-blocks/in-body-alone]
 
 The whitespace-only interior of a description block, including tabs, line breaks
 and Unicode whitespace, prints `{}`: there is no text for interior whitespace to
-surround. An already empty interior stays empty. A touching keyword stays
-touching: `accDescr{  }` becomes `accDescr{}`. [fixture:
+surround. An already empty interior stays empty. The keyword and opening brace
+have one space between them: `accDescr{  }` becomes `accDescr {}`. [fixture:
 empty-description-blocks/empty-whitespace-interiors] [test: requirement Unicode
 and tab interiors] [test: requirement body Unicode and tab interiors] [fixture:
 empty-description-blocks/inner-whitespace-collapsed] [fixture:
 empty-description-blocks/inner-whitespace-joined] [fixture:
 empty-description-blocks/touching-kept] [fixture:
-empty-description-blocks/in-body-over-lines-joined] A block with a directive or
-a comment line is printed as written. [fixture:
+empty-description-blocks/in-body-over-lines-joined] A block containing comments
+or directives keeps their contents and line breaks; standalone trivia is one
+level inside the block and a separate `}` aligns with `accDescr`, including an
+empty block within a requirement or element body. [fixture:
+empty-description-blocks/in-body-with-directive-line] [fixture:
 empty-description-blocks/with-directive-or-comment-line-kept] [fixture:
 empty-description-blocks/in-body-with-comment-line-kept] [fixture:
 empty-description-blocks/in-body-with-directive-kept]
@@ -911,13 +941,13 @@ the statement kept as written. [fixture:
 accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/text-with-comment-line-kept]
 
-The lines of an `accDescr { ... }` block are kept as written by choice, not by
-need: the whitespace at the start of a line is not in the Db (`a`, a line break,
-and `b` give the same description as with `  b`), and the lines are the text of
-the author, which the printer does not format. Its `}` stands at the level of
-its statement; a text on the line of the `{` has one space inside the braces
-where it was written apart. [fixture: accessibility-statements/block-lines-kept]
-[fixture: accessibility-statements/block-text-on-opening-line] [fixture:
+Later text lines of an `accDescr { ... }` block stand one level inside its
+statement, replacing only ASCII spaces and tabs immediately after LF. The
+description setter drops that indentation; line breaks, trailing whitespace and
+directive interiors stay written. Its `}` stands at the level of its statement;
+a text on the line of the `{` has one space inside the braces where it was
+written apart. [fixture: accessibility-statements/block-lines-kept] [fixture:
+accessibility-statements/block-text-on-opening-line] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept]
 
 The lexer reads a line as a direction line before it reads the statements that
@@ -971,7 +1001,7 @@ Output
 ```mmd
 requirementDiagram
   accDescr {
-  first
+    first
     second
   }
   accDescr {}
@@ -999,7 +1029,7 @@ accTitle: direction LR
 accDescr: direction  TB
 accDescr { direction RL }
   accDescr {
- direction BT
+    direction BT
   }
 ```
 
@@ -1016,11 +1046,15 @@ multi-line-statements/kind-and-name-joined] [fixture:
 multi-line-statements/relationship-joined] [fixture:
 multi-line-statements/direction-value-joined] [fixture:
 multi-line-statements/accessibility-joined] [fixture:
-multi-line-statements/string-continued-joined] A statement with a comment line
-or a directive in it is kept as written, since the comment line would take the
-rest of the line it stands on and the whitespace of a line that holds a
-directive is read with it, and so is one with a `;`, which the line rule
-decides. [fixture: multi-line-statements/comment-line-inside-kept] [fixture:
+multi-line-statements/string-continued-joined] Comments and directives keep line
+breaks without freezing structural columns: continuations and intervening trivia
+stand one level deeper. This applies to block headers, fields, relationships and
+other statements. Whitespace inside values and before the first line break of
+each gap stays. Joining regions and statements protected by a semicolon line
+keep their complete source. [fixture:
+multi-line-statements/header-directive-continuation] [fixture:
+fields/comment-and-directive-continuations] [fixture:
+multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept] [fixture:
 multi-line-statements/semicolon-kept]
 
@@ -1055,7 +1089,7 @@ Output
 
 ```mmd
 requirementDiagram
-  style r fill:red
+  style r fill: red
   "r":::c
   class r c
   "r" - satisfies -> b
@@ -1112,7 +1146,7 @@ requirementDiagram
   requirement r {
     id: 1
   }
-  style r fill:red
+  style r fill: red
   class r c
 ```
 
@@ -1131,8 +1165,8 @@ Output
 
 ```mmd
 requirementDiagram
-  accDescr{}
-  accDescr{}
+  accDescr {}
+  accDescr {}
   accDescr {}
 ```
 
@@ -1173,7 +1207,7 @@ requirementdiagram
   }
   r - SATISFIES -> e
   DIRECTION lr
-  STYLE r fill:red
+  STYLE r fill: red
 ```
 
 ### Comments

@@ -505,9 +505,19 @@ classDiagram
 
 ### メンバーの行
 
-本体の中の、またはクラス名の `:` の後のメンバーの行は、
-最初の文字から最後の文字まで書かれたまま残します。 [fixture: member-lines/kept]
-[fixture: member-lines/percent-text-kept]
+通常のメソッドでは、括弧の直前と内側の外周の空白を除き、
+空でない戻り値型の前に空白を 1 つ置きます。
+可視性記号の後の名前の空白を含め、各 AST フィールドの中身は保ちます。
+trivia、無視される文字、物理・Unicode の改行、
+セミコロン行の保護があるメソッドは原文全体を保ちます。
+[fixture: member-lines/method-padding]
+[fixture: member-lines/method-values-and-classifiers-kept]
+[fixture: member-lines/method-trivia-and-semicolon-kept]
+
+属性と注釈の行は、本体内でもクラス名の `:` の後でも、中身を保ちます。
+メソッドの名前・引数・戻り値の中身も保ちます。
+generic のつづりと classifier に伴う末尾も保ちます。
+[fixture: member-lines/kept] [fixture: member-lines/percent-text-kept]
 [fixture: member-lines/trailing-whitespace-dropped]
 [fixture: member-lines/directive-inside-kept]
 [corpus fixture: class/lex-member-percent]
@@ -539,7 +549,7 @@ A :  -  bar()
 classDiagram
   class A {
     + spaced  name
-    +foo( a ,  b )   int$
+    +foo(a ,  b) int$
     << y  z >>
   }
   A : -  bar()
@@ -804,12 +814,10 @@ classDiagram
 
 ### 複数行の値
 
-flowchart と同じです。
-`accDescr { ... }` のブロックの行は書かれたまま残し、
-その `}` は文と同じ段に置きます。
-サブグラフの外では、その行の桁は Db に入らないので、残すのは選択で、
-理由は flowchart
-にあります（[複数行の値](./flowchart.ja.md#複数行の値)を参照）。
+[flowchart のトップレベルの説明](./flowchart.ja.md#複数行の値)と同じく、
+`accDescr { ... }` の本文行は文より 1 段深くそろえ、
+独立した `}` は文と同じ段に置きます。
+Mermaid が説明からこの字下げを除くためです。
 複数行に書かれた文字列、バッククォートの名前、ジェネリック型も、
 書かれたまま残します。 [fixture: multi-line-values/kept]
 [fixture: multi-line-values/block-text-on-opening-line-spaced]
@@ -840,7 +848,7 @@ class A~T,
 ```mmd
 classDiagram
   accDescr {
-  one
+    one
     two
   }
   note "line one
@@ -860,9 +868,13 @@ class 図では、改行は文を終えます。
 [fixture: multi-line-statements/acc-descr-joined]
 [fixture: multi-line-statements/empty-line-inside-joined]
 [corpus fixture: class/lex-direction-line-value-next-line]
-コメントかディレクティブを含む複数行の文は、sequence 図と同じく、
-始まりから終わりまで、
-書かれたまま残します（[複数行の文](./sequence.ja.md#複数行の文)を参照）。
+コメントかディレクティブを含む文は改行を残し、
+構造の続きの行と間の注釈を 1
+段深く置きます（[複数行の文](./sequence.ja.md#複数行の文)を参照）。
+値の中の空白は変えません。
+各隙間の最初の改行の前の空白は保ちます。
+コメントで結合される領域とセミコロン行の保護対象では、
+文全体を原文のまま残します。
 [fixture: multi-line-statements/comment-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 [fixture: multi-line-statements/comment-inside-title-kept]
@@ -903,8 +915,8 @@ LR
 ```mmd
 classDiagram
   direction
-%% c
-LR
+    %% c
+    LR
 ```
 
 `accTitle:`と`accDescr:`の次行の値は、結合で貪欲な方向行の規則が現れる場合、
@@ -990,10 +1002,12 @@ classDiagram
 内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
 囲む空白を要する本文がないためです。
 すでに空の内側は空のままです。
-接した keyword は接したまま、 `accDescr{  }` は `accDescr{}` にします。
+キーワードと開始括弧の間には空白を 1 つ置きます。
+`accDescr{  }` は `accDescr {}` にします。
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: class Unicode and tab interiors]
-コメントや directive があるブロックの配置は従来どおり保ちます。
+コメントや directive の内容と改行は保ち、
+本文の字下げは[複数行の値](#複数行の値)に従います。
 
 空の説明ブロック `accDescr {}` は、同じ行の別の文やヘッダーと並ぶとき、
 その前でも後でも、文になります。
@@ -1093,7 +1107,8 @@ mermaid.js はテキストの終わりの空白と改行もその一部として
 
 ## 書かれたまま残すもの
 
-次のテキストは常に書かれたまま残します。
+[複数行の値](#複数行の値)の説明本文の字下げを除き、
+次のテキストは書かれたまま残します。
 変えると図が変わるか、入力が拒否されるからです。
 
 - 値のテキスト。
@@ -1101,13 +1116,15 @@ mermaid.js はテキストの終わりの空白と改行もその一部として
   `accTitle` と `accDescr` のテキスト。
   [fixture: whitespace-between-tokens/style-values-kept]
   [fixture: labels/accessibility-text-kept]
-- メンバーの行と、`~` から `~` までのジェネリック型。
+- 属性と注釈の中身、メソッドの各フィールドの中身、
+  `~` から `~` までのジェネリック型。
 - 空白だけのラベルの `:` の後の空白と、
   `;` を含む行のラベルの `:` の後に空白があるかどうか。
 - 文の後のコメントの後の空白だけの行。
   空白 1 つにする。
 - 方向の行の、`direction` の前と値の後のテキスト。
-- コメントかディレクティブを含む複数行の文。
+- セミコロン行かコメントで結合される領域の保護対象の文。
+- 注釈を含む隙間の最初の改行の前の空白。
 - 閉じていないバッククォートの名前。
   テキストの終わりまで。
 - ヘッダーの綴り。

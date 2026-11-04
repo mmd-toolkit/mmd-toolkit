@@ -1,4 +1,5 @@
 import type {
+  C4AccDescrBlockStatement,
   C4BoundaryStatement,
   C4Diagram,
   C4ElementStatement,
@@ -12,14 +13,19 @@ import type {
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { maxOf } from "./collections.ts"
 import {
+  alignBlockOpeningLine,
   collectAtoms,
   collectValueNodes,
   expectToken,
+  indentDescriptionLines,
+  keepFirstGapLineTails,
   keptAsWritten,
   layoutDescriptionBlock,
   spansLinesThatCannotJoin,
+  spaceDescriptionOpening,
 } from "./layout.ts"
 import {
+  holdsJoiningRegion,
   keptSemicolonPrefixEnd,
   lineStartOf,
   semicolonSegmentEnd,
@@ -131,14 +137,42 @@ export function layoutC4Header(source: Source, diagram: C4Diagram): AtomLayout {
     "the C4 header",
   )
   const end = diagram.beforeBody.at(-1)?.range[1] ?? keyword.range[1]
-  if (findTriviaBetween(source, start, end).length > 0)
-    return keptAsWritten(start, end)
-  return {
-    atoms: collectAtoms(source, start, end, [], []),
-    rules: new Map(),
-    outdented: new Set(),
-    lineBreaks: "joined",
+  const layout: AtomLayout =
+    findTriviaBetween(source, start, end).length > 0
+      ? keptAsWritten(start, end)
+      : {
+          atoms: collectAtoms(source, start, end, [], []),
+          rules: new Map(),
+          outdented: new Set(),
+          lineBreaks: "joined",
+        }
+  return indentC4BeforeBody(source, diagram.beforeBody, layout)
+}
+
+/**
+ * Null blocks before a body use ordinary description columns without changing
+ * their adjacency or line breaks. Protected source stays written (ast/c4.md,
+ * C4Diagram and C4BoundaryStatement; docs/c4.md, Empty description blocks).
+ */
+function indentC4BeforeBody(
+  source: Source,
+  blocks: readonly C4AccDescrBlockStatement[],
+  layout: AtomLayout,
+): AtomLayout {
+  let aligned = layout
+  for (const block of blocks) {
+    const text = source.text.slice(...block.range)
+    if (text.includes(";") || holdsJoiningRegion(source, ...block.range))
+      continue
+    aligned = spaceDescriptionOpening(source, block.range[0], aligned)
+    if (!text.includes("\n")) continue
+    aligned = indentDescriptionLines(
+      source,
+      { range: block.range, value: block.value, closed: true },
+      aligned,
+    )
   }
+  return aligned
 }
 
 /** The boundary braces, outside arguments and beforeBody blocks. */
@@ -182,7 +216,9 @@ export function layoutC4Call(
   const opening = findTokenEndingBefore(source, end)
   if (statement.type === "C4BoundaryStatement" && opening?.value === "{") {
     const previous = expectToken(
-      findTokenEndingBefore(source, opening.range[0]),
+      findTokensBetween(source, start, opening.range[0]).findLast(
+        (token) => token.type !== "Directive",
+      ),
       "the end of a C4 boundary call",
     )
     const gap = source.text.slice(previous.range[1], opening.range[0])
@@ -191,28 +227,158 @@ export function layoutC4Call(
       gap.trim() === "" &&
       !gap.includes("\u2028") &&
       !gap.includes("\u2029") &&
-      findTriviaBetween(source, start, end).length === 0
+      findTriviaBetween(source, previous.range[1], opening.range[0]).length ===
+        0
     ) {
       // The brace is structural whitespace after the complete call, even
       // when a semicolon keeps the call's own text or the first child line.
       const head = layoutC4Call(source, statement, previous.range[1])
-      return {
-        ...head,
-        atoms: [...head.atoms, { start: opening.range[0], end }],
-        rules: new Map([...head.rules, [opening.range[0], "space"]]),
-        joinedBefore: new Set([...(head.joinedBefore ?? []), opening.range[0]]),
-      }
+      return alignBlockOpeningLine(
+        source,
+        {
+          ...head,
+          atoms: [...head.atoms, { start: opening.range[0], end }],
+          rules: new Map([...head.rules, [opening.range[0], "space"]]),
+          joinedBefore: new Set([
+            ...(head.joinedBefore ?? []),
+            opening.range[0],
+          ]),
+        },
+        previous.range[0],
+      )
     }
   }
-  if (
-    findTriviaBetween(source, start, end).length > 0 ||
-    spansLinesThatCannotJoin(source, start, end)
-  ) {
+  // Structural LF and trivia stay in their gaps. Only textual semicolon
+  // segments need the whole multiline call kept (diagrams/c4.md, Directives
+  // inside units; docs/c4.md, Argument spacing and Line rule and semicolons).
+  if (spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true })) {
     return keptAsWritten(start, end)
   }
   const values = collectValueNodes(statement, c4ValueNodeTypes).filter(
     (value) => value.range[1] <= end,
   )
+  const namedAttributes = statement.arguments.filter(
+    (argument) => argument?.type === "C4NamedAttribute",
+  )
+  const stretches = findC4CallStretches(source, statement, end, values)
+  const atoms = splitC4EmptyEntryTokens(
+    source,
+    collectAtoms(source, start, end, values, stretches),
+  )
+  const rules = new Map<number, GapRule>()
+  const outdented = new Set<number>()
+  const joinedBefore = new Set<number>()
+  const keptBreaksBefore = new Set<number>()
+  const bareStarts = new Set<number>()
+  const bareEnds = new Set<number>()
+  for (const argument of statement.arguments) {
+    if (argument?.type !== "C4Literal") continue
+    bareStarts.add(argument.range[0])
+    bareEnds.add(argument.range[1])
+  }
+  for (let index = 1; index < atoms.length; index++) {
+    const previous = atoms[index - 1]
+    const atom = atoms[index]
+    const before = source.text.slice(previous.start, previous.end)
+    const text = source.text.slice(atom.start, atom.end)
+    const gap = source.text.slice(previous.end, atom.start)
+    const sensitivePrefix =
+      bareStarts.has(atom.start) &&
+      (text.startsWith('"') || text.startsWith("$"))
+    const afterDelimiter = before === "(" || before.endsWith(",")
+    const beforeComma = text.startsWith(",")
+    // Preserve null units, adjacent-unit gaps and physical-line shielding.
+    const inBeforeBody =
+      statement.type === "C4BoundaryStatement" &&
+      statement.beforeBody.some(
+        (block) => block.range[0] <= atom.start && atom.end <= block.range[1],
+      )
+    const afterCall =
+      statement.type === "C4BoundaryStatement" &&
+      atom.start >= (statement.beforeBody[0]?.range[0] ?? end - 1)
+    // Named keys and strings remain values. Their exterior gaps retain LF
+    // without retaining columns or moving direction text onto the call line
+    // (diagrams/c4.md, Direction rejection; docs/c4.md, Named attributes).
+    const namedGap = namedAttributes.some(
+      (argument) =>
+        argument.range[0] <= previous.start && atom.end <= argument.range[1],
+    )
+    if (namedGap && gap.includes("\n")) keptBreaksBefore.add(atom.start)
+    const keepsPhysicalLine = gap.includes("\n") && !afterCall && !namedGap
+    const keepsCommaGap =
+      beforeComma && !bareEnds.has(previous.end) && before !== "("
+    const keepsAdjacentUnits =
+      !inBeforeBody &&
+      !afterCall &&
+      !afterDelimiter &&
+      !beforeComma &&
+      before !== "$" &&
+      text !== "=" &&
+      before !== "=" &&
+      text !== "{"
+    if (
+      keepsPhysicalLine ||
+      sensitivePrefix ||
+      keepsCommaGap ||
+      keepsAdjacentUnits
+    ) {
+      if (gap !== "") atoms[index] = { start: previous.end, end: atom.end }
+      rules.set(previous.end, "none")
+      continue
+    }
+    if (
+      afterCall &&
+      findTriviaBetween(source, previous.end, atom.start).length === 0
+    )
+      joinedBefore.add(atom.start)
+    if (text === "{" && atom.end === end) {
+      outdented.add(atom.start)
+      rules.set(atom.start, "space")
+    } else if (afterDelimiter)
+      rules.set(
+        atom.start,
+        before !== "(" && text !== ")" && !beforeComma ? "space" : "none",
+      )
+    else if (namedGap && (text === "=" || before === "="))
+      rules.set(atom.start, "space")
+    else if (
+      beforeComma ||
+      text === ")" ||
+      before === "$" ||
+      text === "=" ||
+      before === "="
+    )
+      rules.set(atom.start, "none")
+  }
+  const layout = indentC4BeforeBody(
+    source,
+    statement.type === "C4BoundaryStatement" ? statement.beforeBody : [],
+    {
+      atoms,
+      rules,
+      outdented,
+      lineBreaks: "kept",
+      joinedBefore,
+      keptBreaksBefore,
+    },
+  )
+  return statement.type === "C4BoundaryStatement" && opening?.value === "{"
+    ? alignBlockOpeningLine(source, layout, opening.range[0])
+    : layout
+}
+
+/**
+ * Preserve semicolon-bearing null blocks and textual line prefixes through
+ * their last semicolon. A prefix can cross a value, which must stay whole
+ * (common.md, Style and classDef lines; docs/c4.md, Line rule and semicolons).
+ */
+function findC4CallStretches(
+  source: Source,
+  statement: C4Call,
+  end: number,
+  values: readonly Node[],
+): Atom[] {
+  const start = statement.range[0]
   const kept: Atom[] = []
   if (statement.type === "C4BoundaryStatement") {
     for (const block of statement.beforeBody) {
@@ -221,17 +387,6 @@ export function layoutC4Call(
       }
     }
   }
-  for (const argument of statement.arguments) {
-    if (
-      argument?.type === "C4NamedAttribute" &&
-      source.text.slice(...argument.range).includes("\n")
-    ) {
-      kept.push({ start: argument.range[0], end: argument.range[1] })
-    }
-  }
-  // The line rule is textual, so the prefix through the last semicolon is
-  // opaque even when the semicolon is inside a value (common.md, Style and
-  // classDef lines; docs/c4.md, Line rule and semicolons). A value stays whole.
   for (let line = lineStartOf(source, start); line < end;) {
     const lineEnd = semicolonSegmentEnd(source, line)
     const last = source.text.lastIndexOf(";", Math.min(end, lineEnd) - 1)
@@ -248,7 +403,7 @@ export function layoutC4Call(
     }
     line = lineEnd + 1
   }
-  // Kept named attributes and line prefixes can overlap; they are one atom.
+  // Prefixes can overlap through values; collectAtoms needs one whole atom.
   kept.sort((left, right) => left.start - right.start)
   const stretches: Atom[] = []
   for (const stretch of kept) {
@@ -260,92 +415,27 @@ export function layoutC4Call(
       }
     } else stretches.push(stretch)
   }
-  const atoms = collectAtoms(source, start, end, values, stretches).flatMap(
-    (atom) => {
-      const token = findTokenStartingAt(source, atom.start)
-      // The opening empty-entry token includes its ASCII padding (tokens/c4.md).
-      return token?.type === "Punctuator" &&
-        token.value.startsWith("(") &&
-        token.value.endsWith(",")
-        ? [
-            { start: atom.start, end: atom.start + 1 },
-            { start: atom.end - 1, end: atom.end },
-          ]
-        : [atom]
-    },
-  )
-  const rules = new Map<number, GapRule>()
-  const joinedBefore = new Set<number>()
-  const bareStarts = new Set(
-    statement.arguments
-      .filter((argument) => argument?.type === "C4Literal")
-      .map((argument) => argument.range[0]),
-  )
-  const bareEnds = new Set(
-    statement.arguments
-      .filter((argument) => argument?.type === "C4Literal")
-      .map((argument) => argument.range[1]),
-  )
-  for (let index = 1; index < atoms.length; index++) {
-    const previous = atoms[index - 1]
-    const atom = atoms[index]
-    const before = source.text.slice(previous.start, previous.end)
-    const text = source.text.slice(atom.start, atom.end)
-    const gap = source.text.slice(previous.end, atom.start)
-    const bare = bareStarts.has(atom.start)
-    const sensitivePrefix =
-      bare && (text.startsWith('"') || text.startsWith("$"))
-    const afterDelimiter = before === "(" || before.endsWith(",")
-    const beforeComma = text.startsWith(",")
-    // Preserve null units, adjacent-unit gaps and physical-line shielding.
-    const inBeforeBody =
-      statement.type === "C4BoundaryStatement" &&
-      statement.beforeBody.some(
-        (block) => block.range[0] <= atom.start && atom.end <= block.range[1],
-      )
-    const afterCall =
-      statement.type === "C4BoundaryStatement" &&
-      atom.start >= (statement.beforeBody[0]?.range[0] ?? end - 1)
+  return stretches
+}
+
+/** Expose the padding in an opening empty-entry token (tokens/c4.md). */
+function splitC4EmptyEntryTokens(
+  source: Source,
+  atoms: readonly Atom[],
+): Atom[] {
+  const split: Atom[] = []
+  for (const atom of atoms) {
+    const token = findTokenStartingAt(source, atom.start)
     if (
-      (gap.includes("\n") && !afterCall) ||
-      sensitivePrefix ||
-      (beforeComma && !bareEnds.has(previous.end) && before !== "(") ||
-      (!inBeforeBody &&
-        !afterCall &&
-        !afterDelimiter &&
-        !beforeComma &&
-        before !== "$" &&
-        text !== "=" &&
-        before !== "=" &&
-        text !== "{")
+      token?.type === "Punctuator" &&
+      token.value.startsWith("(") &&
+      token.value.endsWith(",")
     ) {
-      if (gap !== "") atoms[index] = { start: previous.end, end: atom.end }
-      rules.set(previous.end, "none")
-      continue
-    }
-    if (afterCall) joinedBefore.add(atom.start)
-    if (text === "{" && atom.end === end) rules.set(atom.start, "space")
-    else if (afterDelimiter)
-      rules.set(
-        atom.start,
-        before !== "(" && text !== ")" && !beforeComma ? "space" : "none",
-      )
-    else if (
-      beforeComma ||
-      text === ")" ||
-      before === "$" ||
-      text === "=" ||
-      before === "="
-    )
-      rules.set(atom.start, "none")
+      split.push({ start: atom.start, end: atom.start + 1 })
+      split.push({ start: atom.end - 1, end: atom.end })
+    } else split.push(atom)
   }
-  return {
-    atoms,
-    rules,
-    outdented: new Set(),
-    lineBreaks: "kept",
-    joinedBefore,
-  }
+  return split
 }
 
 /**
@@ -359,72 +449,77 @@ export function layoutC4Text(source: Source, statement: C4Text): AtomLayout {
   if (keptSemicolonPrefixEnd(source, start) > start)
     return keptAsWritten(start, end)
   if (statement.type === "C4AccDescrBlockStatement") {
-    if (
-      findTriviaBetween(source, start, end).some(
-        (item) => item.type === "Directive",
-      ) ||
-      source.text.slice(start, end).includes(";")
-    )
+    if (source.text.slice(start, end).includes(";"))
       return keptAsWritten(start, end)
-    const layout = layoutDescriptionBlock(
-      source,
-      statement,
-      end,
-      c4ValueNodeTypes,
-      { keepsTrailingTrivia: true },
-    )
     // Ordinary block spacing and closing-brace alignment follow the sibling
-    // diagrams. The shared layout keeps value/comment columns and aligns the
-    // closer; absent token-gap whitespace is not added (diagrams/c4.md, Title
+    // diagrams. The shared layout aligns body lines and the closer while
+    // preserving interior edge contacts (diagrams/c4.md, Title
     // and accessibility statements; docs/c4.md, Description blocks).
-    return layout
+    return layoutDescriptionBlock(source, statement, end, c4ValueNodeTypes, {
+      keepsTrailingTrivia: true,
+    })
   }
   if (
-    findTriviaBetween(source, start, end).length > 0 ||
-    spansLinesThatCannotJoin(source, start, end) ||
-    (source.text.slice(start, end).includes("\n") &&
-      c4DirectionIn(statement.value?.value ?? ""))
+    source.text.slice(start, end).includes("\n") &&
+    c4DirectionIn(statement.value?.value ?? "")
   )
     return keptAsWritten(start, end)
   if (
-    statement.type === "C4TitleStatement" ||
-    statement.type === "C4AccDescriptionStatement"
+    statement.type === "C4AccTitleStatement" ||
+    statement.type === "C4AccDescrStatement"
   ) {
-    const keyword = expectToken(
-      findTokenStartingAt(source, start),
-      "a C4 title keyword",
-    )
-    const separator = keyword.range[1]
+    const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+    // Colon forms trim exterior whitespace; their structural trivia gaps
+    // can align while retained LF still shields direction text. Native
+    // title forms below instead own their additional separator whitespace
+    // (diagrams/c4.md, Title and accessibility contexts; docs/c4.md,
+    // Accessibility lines and Direction rejection).
     if (
-      source.text[separator] === "\u2028" ||
-      source.text[separator] === "\u2029"
+      holdsJoiningRegion(source, start, end) ||
+      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true })
     )
       return keptAsWritten(start, end)
-    return {
-      atoms: [
-        { start, end: separator },
-        { start: separator + 1, end },
-      ],
-      rules: new Map([[separator + 1, "space"]]),
-      outdented: new Set(),
-      lineBreaks: "joined",
-    }
-  }
-  return {
-    atoms: collectAtoms(
+    const atoms = collectAtoms(
       source,
       start,
       end,
       collectValueNodes(statement, c4ValueNodeTypes),
       [],
-    ),
-    rules:
-      statement.value === null
-        ? new Map()
-        : accessibilityRules(source, {
-            range: statement.range,
-            value: statement.value,
-          }),
+    )
+    return {
+      atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+      rules:
+        statement.value === null
+          ? new Map()
+          : accessibilityRules(source, {
+              range: statement.range,
+              value: statement.value,
+            }),
+      outdented: new Set(),
+      lineBreaks: keepsLineBreaks ? "kept" : "joined",
+    }
+  }
+  if (
+    findTriviaBetween(source, start, end).length > 0 ||
+    spansLinesThatCannotJoin(source, start, end)
+  )
+    return keptAsWritten(start, end)
+  const keyword = expectToken(
+    findTokenStartingAt(source, start),
+    "a C4 title keyword",
+  )
+  const separator = keyword.range[1]
+  if (
+    source.text[separator] === "\u2028" ||
+    source.text[separator] === "\u2029"
+  )
+    return keptAsWritten(start, end)
+  return {
+    atoms: [
+      { start, end: separator },
+      { start: separator + 1, end },
+    ],
+    rules: new Map([[separator + 1, "space"]]),
     outdented: new Set(),
     lineBreaks: "joined",
   }

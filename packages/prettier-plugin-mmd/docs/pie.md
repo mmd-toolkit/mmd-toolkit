@@ -40,9 +40,9 @@ Reuse [XY chart indentation](./xychart.md#indentation): ordinary statements and
 standalone comments/directives stand one configured step below the header, for
 readable structure. A pie section is a slice and adds no nested level.
 `tabWidth: 0` gives zero body spaces; `useTabs` gives one tab, including with
-width zero, because pie columns have no grammatical meaning. Value continuation
-columns and hidden closers retain their source columns; YAML alone uses the
-shared positive minimum.
+width zero, because pie columns have no grammatical meaning. Other value
+continuation columns and hidden closers retain their source columns; YAML alone
+uses the shared positive minimum.
 
 Fixed cases: [fixture: pie/indentation/indent-default] [fixture:
 pie/indentation/indent-four] [fixture: pie/indentation/indent-zero] [fixture:
@@ -237,22 +237,25 @@ pie
 
 ### Description blocks
 
-Reuse [flowchart multiline values](./flowchart.md#multi-line-values) and its
-reason: authored value columns remain consistent everywhere. Among the Db-equal
-forms (`accDescr{a}` and `accDescr {a}`; `{a}` and `{ a }`), pie takes the
-shared accessibility decision of its sibling diagrams
+Reuse [flowchart multiline values](./flowchart.md#multi-line-values):
+indentation after LF is absent from the description Db. Among the Db-equal forms
+(`accDescr{a}` and `accDescr {a}`; `{a}` and `{ a }`), pie takes the shared
+accessibility decision of its sibling diagrams
 ([flowchart](./flowchart.md#accessibility-lines) and
-[C4](./c4.md#description-blocks)) rather than a form of its own: contact is
-kept, a run of whitespace becomes one space, and no padding is added. Touching
-keyword/opener and interior sides stay touching; present runs collapse to one
-space. Plain whitespace before the opener can join, including across physical or
-Unicode line boundaries; a real comment/directive keeps its break. Empty
-whitespace-only interiors print `{}` because no text needs surrounding
-whitespace. Keep comment-only blocks with comments one level inside and a
-separate closer at statement level. Nonempty later-line text keeps its columns
-and blank lines, including internal comment lines; a separate `}` aligns with
-the statement. Trivia-bearing interiors keep their trivia. The first closing
-brace still closes the block, even inside quote/backslash/hidden-looking text.
+[C4](./c4.md#description-blocks)) rather than a form of its own. The keyword and
+opener use one ordinary space, even when written touching. Interior sides that
+touch their text stay touching; present runs collapse to one space, with no new
+interior padding. Protected trivia and semicolon layouts keep their gaps. Plain
+whitespace before the opener can join, including across physical or Unicode line
+boundaries; a real comment/directive keeps its break. Empty whitespace-only
+interiors print `{}` because no text needs surrounding whitespace. Keep
+comment-only blocks with comments one level inside and a separate closer at
+statement level. Ordinary later-line text and standalone comment lines align one
+level inside the statement, making the body readable. Keep line breaks, blank
+lines and trailing whitespace; a separate `}` aligns with the statement.
+Directives and shared removed comment regions keep their complete source.
+Trivia-bearing interiors keep their trivia. The first closing brace still closes
+the block, even inside quote/backslash/hidden-looking text.
 
 Fixed cases: [fixture: pie/description-blocks/block-runs] [fixture:
 pie/description-blocks/block-empty] [fixture:
@@ -280,7 +283,7 @@ Output
 ```mmd
 pie
   accDescr {
-  first
+    first
     second
   }
   "Data" : 2
@@ -589,8 +592,9 @@ pie showData
 
 Reuse [flowchart value columns](./flowchart.md#multi-line-values) and
 [shared no wrapping](./flowchart.md#line-wrapping): source text is authored and
-one layout should apply independently of width. Keep physical label/block lines,
-continuation columns and internal blanks; do not reflow long statements at
+one layout should apply independently of width. Keep physical label lines, their
+continuation columns and internal blanks; description bodies follow
+[Description blocks](#description-blocks). Do not reflow long statements at
 printWidth or wrap section components. Preserve insertion order, duplicate
 converted labels, prototype/numeric-looking keys, repeated/empty common
 assignments and zero/small slices; reconstructing the resolved Map would lose

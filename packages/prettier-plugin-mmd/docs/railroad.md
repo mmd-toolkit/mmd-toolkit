@@ -100,8 +100,8 @@ tabWidth four uses four and tabWidth zero uses zero because columns have no
 grammatical meaning. useTabs uses one tab, even at width zero. Structural
 continuation lines and standalone trivia inside a rule use two steps; a separate
 structural closer or terminator aligns with the statement. Nested IR calls use
-their argument levels as described in [Long lines](#long-lines). Written value
-columns, hidden interiors and retained prefixes keep their own columns.
+their argument levels as described in [Long lines](#long-lines). Other written
+value columns, hidden interiors and retained prefixes keep their own columns.
 Semicolon-protected segments start at one body step, like other flat diagrams;
 their later lines keep their written columns because these belong to the
 protected text.
@@ -769,8 +769,15 @@ boundaries while the surrounding calls use the structural layout. Semicolons
 inside values do not prevent it. Keep trivia contents as described in
 [Comments](#comments), [Global directives](#global-directives) and
 [Hidden forms](#hidden-forms). Lines containing `style` or `classDef`, and
-ignored semicolons, retain their protected layout. EBNF, ABNF and PEG rules keep
-their flat layout; `printWidth` controls no diagram line breaks.
+ignored semicolons, retain their protected layout. EBNF, ABNF and PEG keep an
+authored line break after the assignment of an outermost choice and before its
+`|` or `/` separators. The continuation uses one extra level. The separator
+stays with the following alternative: a plain line break after it still joins.
+Other expression padding remains compact, and single-line rules gain no new
+breaks. `printWidth` controls no diagram line breaks. [fixture:
+railroad/long-lines/ebnf-written-alternatives] [fixture:
+railroad/long-lines/abnf-written-alternatives] [fixture:
+railroad/long-lines/peg-written-alternatives]
 
 [fixture: railroad/long-lines/ir-comments-kept]
 
@@ -848,6 +855,9 @@ railroad-peg-beta
 
 ### Component newlines
 
+The outer-choice paragraph breaks under [Long lines](#long-lines) take
+precedence over ordinary padding compaction.
+
 Replace ordinary CR/LF gaps where the grammar reads padding: IR
 constructor/open/argument/comma/close; EBNF
 assignment/choice/sequence/group/exception/postfix; ABNF
@@ -888,7 +898,9 @@ Output
 
 ```mmd
 railroad-ebnf-beta
-  r ::= ("joined", other) - "except"+ | ["tail"];
+  r ::=
+    ("joined", other) - "except"+
+    | ["tail"];
 ```
 
 Input (escaped):
@@ -916,10 +928,10 @@ railroad-peg-beta
 ### Multiline values
 
 Keep physical newlines, internal blank lines and continuation columns inside
-strings, EBNF special sequences and metadata blocks. Values are indivisible
-atoms and gain no structural indentation on their later lines. Reflowing or
-reindenting these contents can change the Db, including PEG predicate labels.
-Description exterior edges and its separate closer use the shared description
+strings and EBNF special sequences. These values are indivisible atoms and gain
+no structural indentation on their later lines. Reflowing or reindenting these
+contents can change the Db, including PEG predicate labels. Description body
+indentation, exterior edges and its separate closer use the shared description
 rule.
 
 [fixture: railroad/multiline-values/abnf-columns]
@@ -1168,11 +1180,14 @@ railroad-peg-beta
 
 Use shared layoutDescriptionBlock through the common-description layout.
 Whitespace-only interiors become `{}` because no content needs surrounding
-padding. Keep `accDescr{` contact and leave `{Text}` tight; written exterior
-spaces remain one space where present. Join a plain keyword-to-opener gap.
-Preserve nonempty continuation columns and internal blank lines, and align a
-separate closing brace with the statement. Comment/directive-only blocks retain
-their contents through the shared fallback, rather than being emptied.
+padding. Put one space between `accDescr` and `{`, and leave `{Text}` tight;
+written exterior spaces remain one space where present. Join a plain
+keyword-to-opener gap. Ordinary description body and standalone comment lines
+align one level inside the statement: the Db removes indentation after LF. Keep
+line breaks, internal blank lines and trailing whitespace, and align a separate
+closing brace with the statement. Directives and shared removed comment regions
+keep their complete source. Comment/directive-only blocks retain their contents
+through the shared fallback, rather than being emptied.
 
 [fixture: railroad/description-blocks/abnf-edges]
 
@@ -1206,7 +1221,7 @@ Output
 
 ```mmd
 railroad-beta
-  accDescr{Text}
+  accDescr {Text}
   accDescr { Text }
   accDescr {}
   r = terminal("block");
@@ -1220,7 +1235,7 @@ Output
 
 ```mmd
 railroad-ebnf-beta
-  accDescr{Text}
+  accDescr {Text}
   accDescr { Text }
   accDescr {}
   r = "block";
@@ -1234,7 +1249,7 @@ Output
 
 ```mmd
 railroad-abnf-beta
-  accDescr{Text}
+  accDescr {Text}
   accDescr { Text }
   accDescr {}
   r = "block";
@@ -1248,7 +1263,7 @@ Output
 
 ```mmd
 railroad-peg-beta
-  accDescr{Text}
+  accDescr {Text}
   accDescr { Text }
   accDescr {}
   r <- "block";
@@ -1653,7 +1668,7 @@ Output
 
 ```mmd
 railroad-beta
-  accDescr{moved}
+  accDescr {moved}
   %%{!after metadata}%%
 
   r = terminal("after moved");
@@ -1667,7 +1682,7 @@ Output
 
 ```mmd
 railroad-ebnf-beta
-  accDescr{moved}
+  accDescr {moved}
   %%{!after metadata}%%
 
   r = "after moved";
@@ -1681,7 +1696,7 @@ Output
 
 ```mmd
 railroad-abnf-beta
-  accDescr{moved}
+  accDescr {moved}
   %%{!after metadata}%%
 
   r = "after moved";
@@ -1695,7 +1710,7 @@ Output
 
 ```mmd
 railroad-peg-beta
-  accDescr{moved}
+  accDescr {moved}
   %%{!after metadata}%%
 
   r <- "after moved";

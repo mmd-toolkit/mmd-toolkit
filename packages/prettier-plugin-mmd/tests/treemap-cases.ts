@@ -18,7 +18,7 @@ export const treemapCases: readonly TreemapCase[] = [
   {
     name: "treemap/line-terminators-and-unicode/crlf-values",
     input: 'treemap\r\n"CRLF\r\n name":3\r\naccDescr {one\r\ntwo}\r\n',
-    output: 'treemap\n  "CRLF\n name": 3\n  accDescr {one\ntwo}\n',
+    output: 'treemap\n  "CRLF\n name": 3\n  accDescr {one\n    two}\n',
     options: {},
   },
   {
@@ -53,7 +53,7 @@ export const treemapCases: readonly TreemapCase[] = [
   {
     name: "treemap/description-blocks/unicode-empty",
     input: 'treemap\naccDescr{ \t\n\u2028\u00a0}\n"EmptyUnicode":3',
-    output: 'treemap\n  accDescr{}\n  "EmptyUnicode": 3\n',
+    output: 'treemap\n  accDescr {}\n  "EmptyUnicode": 3\n',
     options: {},
   },
   {

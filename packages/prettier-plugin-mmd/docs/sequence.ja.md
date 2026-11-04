@@ -597,9 +597,9 @@ sequenceDiagram
   title: Tab
 ```
 
-キーワードと本文の間にコメント行があるタイトルは、
-コメントを含む複数行の文と同じく、
-書かれたまま残します（[複数行の文](#複数行の文)を参照）。
+キーワードと本文の間にコメント行があるタイトルは、本文の字下げを含め、
+全体を原文のまま残します。
+その空白も Db のタイトルの一部だからです（[複数行の文](#複数行の文)を参照）。
 コメント行は mermaid.js がテキストを読む前に取り除かれるので、
 その次の行がタイトルです。
 空白 1 つの後に印字すると、コメントがキーワードの行に乗り、
@@ -888,17 +888,19 @@ sequenceDiagram
 `Alice ->> Bob: hi` と印字します。 [fixture: multi-line-statements/joined]
 [fixture: multi-line-statements/more-lines-joined]
 
-コメントかディレクティブか `;` を含む複数行の文は、
-始まりから終わりまで書かれたまま残します。
-[fixture: multi-line-statements/comment-inside-kept]
+コメントかディレクティブを含む文は改行を残し、
+構造の続きの行と間の注釈を 1 段深く置きます。
+各隙間の最初の改行の前の空白は保ちます。
+その空白によって、mermaid.js が後の行も同じ文の一部として読むためです。
+値の中の空白は変えません。 [fixture: multi-line-statements/comment-inside-kept]
+[fixture: multi-line-statements/autonumber-comment-continuation]
+[fixture: multi-line-statements/autonumber-directive-continuation]
+キーワードと本文の間に注釈があるタイトルは、本文の字下げも値に含むので、
+全体を原文のまま残します。
+コメントで結合される領域とセミコロン行の保護対象も、文全体を原文のまま残します。
 [fixture: multi-line-statements/semicolon-inside-kept]
 [fixture: multi-line-statements/start-moves-to-own-line]
-そうした文は 1 行にまとめられません。
-mermaid.js がその行を 1 つの文として読むのは、行末の空白があるときだけで、
-整形はその空白を出力しないからです。
-キーワードと本文の間にコメント行があるタイトルも、そうした文です。
-`accDescr { ... }` のブロックの行は、
-そのテキストの行です（[複数行の値](#複数行の値)を参照）。
+説明ブロックは[複数行の値](#複数行の値)に従い、本文の字下げをそろえます。
 
 入力の行末に空白があるので、例は、`\n` を改行とする文字列で書きます。
 `"sequenceDiagram\nAlice ->> \nBob: hi\nautonumber \n  10 5\n"` は、
@@ -911,16 +913,17 @@ mermaid.js がその行を 1 つの文として読むのは、行末の空白が
 内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
 囲む空白を要する本文がないためです。
 すでに空の内側は空のままです。
-接した keyword は接したまま、 `accDescr{  }` は `accDescr{}` にします。
+キーワードと開始括弧の間には空白を 1 つ置きます。
+`accDescr{  }` は `accDescr {}` にします。
 [fixture: multi-line-values/empty-whitespace-interiors]
 [test: sequence Unicode and tab interiors]
-コメントや directive があるブロックの配置は従来どおり保ちます。
+コメントや directive があるブロックの内容と改行は保ちます。
 
-本文があるブロックは flowchart と同じです。
-`accDescr { ... }` のブロックの行と、
-複数行に書かれたデータブロックの行は書かれたまま残し、
-`accDescr` のブロックの `}` は、その文と同じ段に置きます。
-[fixture: multi-line-values/kept]
+`accDescr { ... }` の本文行は文より 1 段深くそろえ、
+独立した `}` は文と同じ段に置きます。
+[flowchart のトップレベルの説明](./flowchart.ja.md#複数行の値)と同じく、
+Mermaid が説明からこの字下げを除くためです。
+データブロックの列と内容は原文どおり保ちます。 [fixture: multi-line-values/kept]
 [fixture: multi-line-values/accdescr-block-closing-brace-after-text-kept]
 [fixture: multi-line-values/accdescr-block-blank-and-comment-lines-kept]
 [fixture: multi-line-values/data-block-in-block-kept]
@@ -953,8 +956,8 @@ end
 sequenceDiagram
   loop x
     accDescr {
-  one
-    two
+      one
+      two
     }
     participant A@{
   "type": "queue"
@@ -986,7 +989,8 @@ sequenceDiagram
 
 ## 書かれたまま残すもの
 
-次のテキストは常に書かれたまま残します。
+[複数行の値](#複数行の値)の説明本文の字下げを除き、
+次のテキストは書かれたまま残します。
 変えると図が変わるか、入力が拒否されるからです。
 
 - 値のテキストと、その中の空白。
@@ -995,8 +999,9 @@ sequenceDiagram
   タイトルに含まれる空白。
 - 参加者のデータブロックと、それが id に接していること。
 - 数の形か `title` の綴りの送り元に、矢印が接していること。
-- コメントかディレクティブか `;` を含む複数行の文。
-  キーワードと本文の間にコメント行があるタイトルもその 1 つ。
+- キーワードと本文の間に注釈があるタイトル。
+- セミコロン行かコメントで結合される領域の保護対象の文。
+- 注釈を含む隙間の最初の改行の前の空白。
 - 文の後のコメントの印の前に、空白が書かれているかどうかと、
   コメントとその後のコメント行の間の U+2028 か U+2029。
 - 矢印。

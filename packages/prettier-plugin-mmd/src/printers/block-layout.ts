@@ -19,14 +19,14 @@ import {
   collectValueNodes,
   expectToken,
   expectValue,
+  keepFirstGapLineTails,
   keptAsWritten,
-  layoutEmptyDescriptionBlock,
-  layoutCompactEmptyDescriptionBlockWithFallback,
+  layoutDescriptionBlock,
   spansLinesThatCannotJoin,
   walk,
 } from "./layout.ts"
 import { readGap } from "./gap.ts"
-import { lineStartOf } from "./kept-lines.ts"
+import { holdsJoiningRegion, lineStartOf } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import {
   findStructuralToken,
@@ -163,13 +163,15 @@ export function layoutBlockRow(
   }
   const rules = new Map<number, GapRule>()
   const atoms: Atom[] = []
+  let lineBreaks: AtomLayout["lineBreaks"] = "joined"
   for (const [index, statement] of statements.entries()) {
     const layout = layoutBlockStatement(source, statement)
     appendItems(atoms, layout.atoms)
+    if (layout.lineBreaks === "kept") lineBreaks = "kept"
     for (const [offset, rule] of layout.rules) rules.set(offset, rule)
     if (index > 0) rules.set(statement.range[0], "space")
   }
-  return { atoms, rules, outdented: new Set(), lineBreaks: "joined" }
+  return { atoms, rules, outdented: new Set(), lineBreaks }
 }
 
 /**
@@ -193,18 +195,26 @@ export function layoutCompositeHead(
       lineBreaks: "joined",
     }
   }
-  if (spansLinesThatCannotJoin(source, keyword.range[0], head.range[1])) {
-    return keptAsWritten(keyword.range[0], head.range[1])
+  const start = keyword.range[0]
+  const end = head.range[1]
+  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  if (
+    keepsLineBreaks &&
+    (holdsJoiningRegion(source, start, end) ||
+      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
+  ) {
+    return keptAsWritten(start, end)
   }
   const layout = layoutBlockStatement(source, head)
+  const atoms = [
+    { start: keyword.range[0], end: keyword.range[1] },
+    ...layout.atoms,
+  ]
   return {
-    atoms: [
-      { start: keyword.range[0], end: keyword.range[1] },
-      ...layout.atoms,
-    ],
+    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
     rules: new Map([...layout.rules, [head.range[0], "none"]]),
     outdented: new Set(),
-    lineBreaks: "joined",
+    lineBreaks: keepsLineBreaks ? "kept" : "joined",
   }
 }
 
@@ -229,9 +239,9 @@ export function findCompositeBounds(
  * The layout of a statement, from its start to the end of its range.
  *
  * - A statement written over several lines stands on one line where the
- *   lexer reads the line break as whitespace; one with a comment or a
- *   directive in it, or a `;`, is kept as written (see
- *   `spansLinesThatCannotJoin`; docs/block.md, Multi-line statements).
+ *   lexer reads the line break as whitespace. Trivia keeps structural gaps
+ *   broken with ordinary continuation columns; semicolon lines and joining
+ *   regions retain their layout (docs/block.md, Multi-line statements).
  * - The rules of the gaps are those of docs/block.md: Columns and space,
  *   Shapes, Edges, and Styles.
  */
@@ -242,14 +252,20 @@ export function layoutBlockStatement(
   const start = statement.range[0]
   const end = statement.range[1]
   if (statement.type === "BlockAccDescrBlockStatement") {
-    return layoutCompactEmptyDescriptionBlockWithFallback(
+    return layoutDescriptionBlock(
       source,
-      start,
+      { ...statement, value: null },
       end,
-      () => layoutEmptyDescriptionBlock(source, start, end),
+      blockValueNodeTypes,
+      { formatsEmptyTrivia: true },
     )
   }
-  if (spansLinesThatCannotJoin(source, start, end)) {
+  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  if (
+    keepsLineBreaks &&
+    (holdsJoiningRegion(source, start, end) ||
+      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
+  ) {
     return keptAsWritten(start, end)
   }
   const rules = new Map<number, GapRule>()
@@ -276,17 +292,18 @@ export function layoutBlockStatement(
         `prettier-plugin-mmd: unknown statement ${JSON.stringify(statement satisfies never)}`,
       )
   }
+  const atoms = collectAtoms(
+    source,
+    start,
+    end,
+    collectValueNodes(statement, blockValueNodeTypes),
+    kept,
+  )
   return {
-    atoms: collectAtoms(
-      source,
-      start,
-      end,
-      collectValueNodes(statement, blockValueNodeTypes),
-      kept,
-    ),
+    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
     rules,
     outdented: new Set(),
-    lineBreaks: "joined",
+    lineBreaks: keepsLineBreaks ? "kept" : "joined",
   }
 }
 

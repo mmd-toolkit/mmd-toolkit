@@ -355,7 +355,12 @@ null でない style の前に、普通の space 1 個を置きます。
 最大 separator 空白は空行を越えることもあります。
 次の行や classDef に見える literal でも、その空白を詰めます。
 AST が既に style として所有しているためです。
-コメントや directive を含む separator は保持し、所有位置と必要な空白を保ちます。
+コメントや directive を含む separator は改行を保ち、
+独立した trivia と style の継続行を `classDef` より 1 段深くそろえます。
+style がその定義に属することを見分けやすくするためです。
+最大 separator はこの字下げを取り除き、style 値そのものは変えません。
+すでに字下げの run を供給する native の inline コメントと、
+semicolon で保護する prefix は、従来の列を保ちます。
 
 [fixture: treemap/style-gaps/spaces]
 
@@ -366,6 +371,12 @@ AST が既に style として所有しているためです。
 [fixture: treemap/style-gaps/comment]
 
 [fixture: treemap/style-gaps/directive]
+
+[fixture: treemap/style-gaps/css-comment]
+
+[fixture: treemap/style-gaps/css-directive-tabs]
+
+[fixture: treemap/style-gaps/css-comment-semicolon-kept]
 
 入力（escape 表記）: `"treemap\nclassDef zz\n\n  \"Apparent\":2"`
 
@@ -516,11 +527,16 @@ treemap
 ### Description blocks
 
 共有の説明ブロック配置を使います。
-keyword と opener、内端の接触を保ちます。
+`accDescr` と `{` の間は、元が接していても space 1 個にします。
+keyword と本文の開始を見分けやすくするためです。
+内端の接触は保ちます。
 既存の端の空白は 1 space、空白だけの中身は `{}` にします。
 囲む文字がないときは padding が不要なためです。
 opener 前の普通の空白は詰めます。
-コメントや directive だけの中身と境界、非空の継続列と内部の空行は保ちます。
+コメントや directive の中身と境界、内部の空行は保ちます。
+本文行は文より 1 段深くそろえます。
+Mermaid が説明から LF 後の字下げを除くためです。
+本文も設定の字下げを使い、タブと幅 0 の正の最小段幅も同じです。
 別行の opener と closer は文の列にそろえます。
 最初の `}` がブロックを閉じます。
 
@@ -535,6 +551,8 @@ opener 前の普通の空白は詰めます。
 [fixture: treemap/description-blocks/right-touching]
 
 [fixture: treemap/description-blocks/continuation]
+
+[fixture: treemap/description-blocks/body-tabs]
 
 [fixture: treemap/description-blocks/opener-newline]
 
@@ -561,7 +579,7 @@ opener 前の普通の空白は詰めます。
 ```mmd
 treemap
   accDescr {
-  first
+    first
 
     second
   }
@@ -602,7 +620,8 @@ trivia のない leaf の名前、区切り、数と、selector の部品の間�
 leaf の区切りと数の継続行は文にそろえます。
 ただし native コメント前の gap が既に字下げの run を持つなら、
 二つ目の run は足しません。
-独立した trivia の mark は第 1 列に置きます。
+独立した trivia の mark は、
+[Style gaps](#style-gaps) の class style separator を除き、第 1 列に置きます。
 
 [fixture: treemap/component-newlines/leaf]
 
@@ -631,7 +650,8 @@ treemap
 
 ### Comments
 
-普通の独立コメントの mark は第 1 列に置きます。
+普通の独立コメントの mark は、
+[Style gaps](#style-gaps) を除き第 1 列に置きます。
 inline は同じ行に残し、内容、mark、末尾、順序、所有位置を保ちます。
 native の bare や非 word コメント前に、新しい字下げの unit を作らないためです。
 inline コメント前の空白が次行の indent なら、次行へ移します。
@@ -674,7 +694,7 @@ treemap
 ### Directives
 
 Root directive の全文、順序、部品や値の所有位置を保ちます。
-独立 directive は第 1 列に置きます。
+独立 directive は、[Style gaps](#style-gaps) を除き第 1 列に置きます。
 除去後に余分な字下げの run を残さないためです。
 行頭の unit の中では、directive 前後の space と tab を合計します。
 共有の leading gap 配置を使い、後側の gap が目標幅に収まる間は保ちます。

@@ -39,7 +39,7 @@ packet
 本文は平坦で、公開される行は構文の入れ子を増やしません。
 packet の列には文法上の意味がないため、`tabWidth: 0` は空白0個、
 `useTabs` は幅0でもタブ1個です。
-値の継続列、hidden の閉じ、保持する prefix は原形を保ちます。
+説明本文以外の値の継続列、hidden の閉じ、保持する prefix は原形を保ちます。
 YAML は共有の正の最小幅を使います。
 
 [fixture: packet/indentation/indent-default]
@@ -346,12 +346,16 @@ packet
 ### Description blocks
 
 共有の `layoutDescriptionBlock` を使います。
-keyword と opener、内側の接触は保ち、存在する空白列は1個にします。
+ブロックの境界がわかるよう、keyword と opener の間に空白を1個置きます。
+内側の接触は保ち、存在する空白列は1個にします。
 通常の opener 空白は物理・Unicode 行を越えて結合します。
 実際の trivia があれば改行を保ちます。
 囲む文字列がないため、空白だけの内側は `{}` にします。
 コメント・directive だけの内側は trivia を残します。
-非空値の継続列と空行を保ち、独立した閉じは文の位置へ揃えます。
+通常の説明本文と独立したコメント行は、文より1段内側に揃えます。
+Db で LF 後の字下げが取り除かれるためです。
+改行、空行、行末空白は保ち、独立した閉じは文の位置へ揃えます。
+directive と共有の除去対象となるコメント領域は原文全体を保ちます。
 引用符、backslash、hidden に見える文字列も最初の閉じ brace を保護しません。
 
 [fixture: packet/description-blocks/description-gaps]
@@ -386,18 +390,18 @@ keyword と opener、内側の接触は保ち、存在する空白列は1個に�
 
 ```mmd
 packet
-  accDescr{A}
+  accDescr {A}
   accDescr { B }
   accDescr {C }
-  accDescr{ D}
+  accDescr { D}
 ```
 
 ### Multiline values
 
 printWidth では component と値を折り返しません。
 block component 間の可視 LF は拒否され、label の改行変更は Db を変えるためです。
-既存の label・block の物理行、継続列と内部空行を保ちます。
-独立した説明の閉じは共有配置、hidden の消費 LF は境界規則に従います。
+既存の label の物理行、継続列と内部空行を保ちます。
+説明本文は前述の共有の字下げ、hidden の消費 LF は境界規則に従います。
 
 [fixture: packet/multiline-values/long-no-wrap]
 

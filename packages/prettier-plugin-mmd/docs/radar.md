@@ -212,18 +212,19 @@ radar-beta
 
 ### Multi-line statements
 
-Join trivia-free entry newlines where the grammar reads them as whitespace:
-after `{`, after a comma and before `}`. Positional and named lists then fit on
-one line, as in xychart and quadrant. Never add a newline before a comma or
-inside a named entry. Keep newlines holding comments or Root directives;
-ordinary continuation lines and comments use two indentation steps, while a
-separate `}` aligns with its statement. Other plain gaps may still join. Hidden
-boundaries, value lines and protected semicolon segments remain written,
-including their continuation columns. No continuation indentation is added
-inside a protected segment; ordinary spacing still applies after it. Shared
-joining checks also keep a terminal line containing another statement's
-semicolon: joining a preceding style-like label could change that statement's
-Db.
+In a statement without comments or directives, join entry newlines where the
+grammar reads them as whitespace: after `{`, after a comma and before `}`.
+Positional and named lists then fit on one line, as in xychart and quadrant.
+Never add a newline before a comma or inside a named entry. Keep newlines
+holding comments or Root directives; ordinary continuation lines and comments
+use two indentation steps, while a separate `}` aligns with its statement.
+Preserve other authored entry newlines in such a statement too, keeping the
+commented list readable as a block. Hidden boundaries, value lines and protected
+semicolon segments remain written, including their continuation columns. No
+continuation indentation is added inside a protected segment; ordinary spacing
+still applies after it. Shared joining checks also keep a terminal line
+containing another statement's semicolon: joining a preceding style-like label
+could change that statement's Db.
 
 [fixture: radar/multi-line-statements/leading-trailing-entry-lines]
 
@@ -286,7 +287,8 @@ Output
 radar-beta
   curve trial{4,
     %% entry note
-    5}
+    5
+  }
 ```
 
 ### Named entries
@@ -477,13 +479,17 @@ radar-beta
 
 ### Description blocks
 
-Route descriptions through shared `layoutDescriptionBlock`. Touching
-keyword/opener and interior edges remain touching; present exterior runs become
-one space. Whitespace-only interiors become `{}` because no text needs
-surrounding space. Plain opener whitespace joins; real trivia keeps its break.
-Preserve comment/directive-only interiors, nonempty continuation columns and
-internal blanks; align a separate opener or closer with the statement. The first
-closing brace still ends the value.
+Route descriptions through shared `layoutDescriptionBlock`. Separate the keyword
+and opening brace with one space so the block boundary is clear. Touching
+interior edges remain touching; present exterior runs become one space.
+Whitespace-only interiors become `{}` because no text needs surrounding space.
+Plain opener whitespace joins; real trivia keeps its break. Preserve
+comment/directive-only interiors. Ordinary description body and standalone
+comment lines align one level inside the statement: the Db removes indentation
+after LF. Keep line breaks, internal blanks and trailing whitespace; align a
+separate opener or closer with the statement. Directives and shared removed
+comment regions keep their complete source. The first closing brace still ends
+the value.
 
 [fixture: radar/description-blocks/block-empty-fixed]
 
@@ -513,18 +519,18 @@ Output
 
 ```mmd
 radar-beta
-  accDescr{Word}
+  accDescr {Word}
   accDescr { Word }
-  accDescr{Left }
+  accDescr {Left }
   accDescr { Right}
 ```
 
 ### Multiline values
 
 Do not wrap at printWidth. New visible line breaks can reject group components,
-and reflowing values can change the Db. Keep physical label/value continuation
-lines, columns and internal blank lines; only a separate description closer uses
-shared alignment. Long axis groups and entry lists stay unwrapped.
+and reflowing values can change the Db. Keep physical label continuation lines,
+columns and internal blank lines. Description bodies use the shared indentation
+above. Long axis groups and entry lists stay unwrapped.
 
 [fixture: radar/multiline-values/long-axis-no-wrap]
 

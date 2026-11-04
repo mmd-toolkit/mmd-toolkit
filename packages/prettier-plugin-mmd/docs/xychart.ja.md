@@ -225,8 +225,8 @@ mermaid.js はどちらも同じ図種として読むので、
 2 つ目以降のヘッダーは自分の行に置き、取り除きません。
 向きを持つ後のヘッダーは向きを変え、向きのないものは何も変えませんが、
 書かれたテキストは書き手のものだからです。
-改行をつなぐ所にコメント行か指令があるヘッダーは、
-書かれたまま残します（[複数行の文](#複数行の文)を参照）。
+gap にコメント行か指令があるヘッダーは、その改行を保ち、
+続きの列をヘッダーより 1 段深くそろえます（[複数行の文](#複数行の文)を参照）。
 [fixture: header-and-orientation/plain-header]
 [fixture: header-and-orientation/beta-header-kept]
 [fixture: header-and-orientation/header-only]
@@ -616,14 +616,17 @@ xychart
 [fixture: accessibility-statements/without-text-at-the-end]
 [fixture: accessibility-statements/without-text-and-trailing-whitespace]
 
-`accDescr { ... }` ブロックの行は、必要からではなく選択として、
-書かれたまま残します。
-行頭の空白は Db に入らず、行は書き手のテキストで、印字は整形しないからです。
+`accDescr` と `{` を同じ印字行に置く場合は、
+接して書かれていても間に空白 1 つを置きます。
+既存の開始行の改行は、それぞれの規則を保ちます。
+保護対象の trivia やセミコロンの配置では、その gap を保ちます。
+`accDescr { ... }` の本文行は、文より 1 段深くそろえます。
+Mermaid が説明から LF 後の字下げを除くためです。
 `}` は文と同じ段に置きます。
 `{` と同じ行のテキストは、書かれた括弧の間に空白があれば空白 1 つを置き、
 括弧がテキストに接していれば接したままにします。
-閉じていないブロックはテキストの最後まで続き、
-`}` を足さずに書かれたまま印字します。
+閉じていないブロックはテキストの最後まで続き、 `}` を足さず、
+EOF の末尾を保ちます。
 mermaid.js はそのブロックのテキストを読まず、印字が `}` を足すと、
 ブロックが説明になってしまうからです（テキストの最後の `accDescr {` と、
 `abc` の説明は Db では空で、 `}` を足すと `abc` になります）。
@@ -694,8 +697,8 @@ accDescr {
 ```mmd
 xychart
   accDescr {
-   a
-  b
+    a
+    b
   }
 ```
 
@@ -705,10 +708,12 @@ xychart
 内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
 囲む空白を要する本文がないためです。
 すでに空の内側は空のままです。
-接した keyword は接したまま、 `accDescr{  }` は `accDescr{}` にします。
+通常のキーワードと開き括弧の間には空白 1 つを置き、
+`accDescr{  }` は `accDescr {}` にします。
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: xychart Unicode and tab interiors]
-指令かコメント行を持つブロックは、書かれたまま印字します。
+指令かコメント行を持つブロックは、内容と改行を保ち、
+独立した trivia を 1 段内側、閉じ括弧を文の段に置きます。
 ヘッダーの後でも、ほかの文の後でも、自分の行に置きます。
 テキストの最後で閉じていないブロックは、
 `}` を足さずに `accDescr {` と印字します（詳しくは、
@@ -736,9 +741,9 @@ accDescr{ }
 
 ```mmd
 xychart
-  accDescr{}
   accDescr {}
-  accDescr{}
+  accDescr {}
+  accDescr {}
 ```
 
 入力
@@ -782,27 +787,35 @@ mermaid.js が複数行にわたって読む文は、
 [fixture: multi-line-statements/text-over-several-line-breaks-joined]
 [fixture: multi-line-statements/next-statement-after-trailing-whitespace]
 
-コメント行か指令を含む文は、書かれたまま残します。
+title、ヘッダー、軸、plot、アクセシビリティの行の文では、
+構造部分の gap にコメントや指令がある場合、その改行を保ちます。
+後続の部分と独立した trivia 行を、その文より 1 段深くそろえます。
+文を続ける空白は LF より前から始まる必要があるため、各 gap の最初の行の末尾と、
+その中の完全な inline 指令を保ちます。
+[fixture: multi-line-statements/structural-trivia-continuations]
+[fixture: multi-line-statements/axis-trivia-with-multiline-string]
+指令の内部も原文どおりです。
+[fixture: multi-line-statements/bare-title-multiline-directive-tail]
 コメント行は、置かれた行の残りを取り込むので、
 つないだ `title A %% c B` の title は `A` ですが、
 コメント行を挟んだ文は `AB` です。
-指令を含む行をつないでも Db は変わりません。
-それでも、コメント行と指令に同じ判断をするのが、すべての図の決まりで、
-印字はそれを 1 度だけ決めます（[複数行の文](./er.ja.md#複数行の文)を参照）。
-`;` を含む文も、行の規則があるので、
-書かれたまま残します（[1 行 1 文](#1-行-1-文)を参照）。
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
+引用符の内部は、改行と列を含めて、ひとまとまりのまま保ちます。
+[fixture: multi-line-statements/quoted-title-trivia]
+文の内部か最終行に `;` がある場合は、行の規則があるため、
+配置全体を原文のまま保ちます（[1 行 1 文](#1-行-1-文)を参照）。
 [fixture: multi-line-statements/semicolon-inside-kept]
 [fixture: multi-line-statements/semicolon-on-the-last-line-kept]
+物理行を結ぶコメント領域も、元の配置を保ちます。
+[test: xychart/multi-line-statements/bare-title-comment-region-kept]
 
 ### 複数行の値
 
-`accDescr` ブロックの行と、文字列の行は、改行と中の空白を含めて、
-書かれたまま残します。
-改行は Db に入り、文字列の空白も入ります。
-ブロックの行頭の空白は入らないので、残すのは選択で、
-値のテキストは整形しないからです。
+文字列の改行と空白は値の一部なので、原文どおり保ちます。
+説明本文の行は文より 1 段深くそろえます。
+Mermaid が LF 後の字下げを除くためです。
+それ以外の文字と改行は保ちます。
 [fixture: multi-line-values/string-with-line-breaks-kept]
 [fixture: multi-line-values/string-label-with-line-breaks-kept]
 [fixture: multi-line-values/category-string-with-line-breaks-kept]
@@ -846,7 +859,7 @@ accDescr {
 ```mmd
 xychart
   accDescr {
-  a
+    a
     b
   }
 ```

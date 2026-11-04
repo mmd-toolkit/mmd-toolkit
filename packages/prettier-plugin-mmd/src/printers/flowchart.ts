@@ -77,12 +77,13 @@ export function printFlowchart(
         FlowchartStatement,
         FlowchartSubgraphStatement
       >
+      const depth = depthOf(path)
       const layout = layoutStatement(
         source,
         statement,
         findPrintedEnd(source, statement),
+        depth > 1,
       )
-      const depth = depthOf(path)
       return printAtoms(source, layout, {
         statement: indentationOf(bodyOptions, depth),
         continuation: indentationOf(bodyOptions, depth + 1),

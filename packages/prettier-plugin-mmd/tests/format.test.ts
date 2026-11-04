@@ -1,9 +1,9 @@
 /**
  * Checks each formatting fixture: the input formats to the output, the
  * output is already formatted, and the Db and embedded data stay the same
- * except for eventmodeling's explicitly checked data margins. Source comparison
- * ignores frontmatter and whitespace and allows only semicolon removals
- * (see `db-reading.ts` and `eventmodeling-data-margins.ts`).
+ * except for the independently checked eventmodeling data and state note
+ * margins. Source comparison ignores frontmatter and whitespace and allows
+ * only semicolon removals (see `db-reading.ts` and the margin helpers).
  * The outputs are written by
  * `pnpm --filter prettier-plugin-mmd run test:update` and reviewed as diffs;
  * this test never writes them.
@@ -24,6 +24,7 @@ import {
   eventmodelingDbForFormattingComparison,
   eventmodelingEmbeddedForFormattingComparison,
 } from "./eventmodeling-data-margins.ts"
+import { stateDbForFormattingComparison } from "./state-note-margins.ts"
 
 /** Formats a fixture text with the fixture's options. */
 function format(fixture: FormatFixture, text: string): Promise<string> {
@@ -65,7 +66,14 @@ describe("formatting fixtures", () => {
       expect(
         isEventmodeling
           ? eventmodelingDbForFormattingComparison(dbBefore, dbAfter)
-          : dbAfter,
+          : fixture.id.startsWith("state/")
+            ? stateDbForFormattingComparison(
+                dbBefore,
+                dbAfter,
+                fixture.input,
+                output,
+              )
+            : dbAfter,
       ).toEqual(dbBefore)
       expect(
         isEventmodeling

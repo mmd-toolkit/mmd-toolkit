@@ -39,9 +39,9 @@ Gantt 図も同じです。 [fixture: indentation/sections-and-tasks-nested]
 [fixture: indentation/written-indentation-dropped]
 ヘッダーは、前に空白が書かれていても 1 桁目に置きます。
 [fixture: indentation/header-leading-whitespace]
-書かれたまま残すテキスト（`accDescr` ブロックの行など）は、行ごとの桁を保ち、
-ブロックを閉じる `}` は、
-文と同じ段に置きます（[複数行の値](#複数行の値)を参照）。
+原文を保つ値は行ごとの列を保ちます。
+説明本文の行は[複数行の値](#複数行の値)に従って文より 1 段深くし、
+独立した `}` は文と同じ段に置きます。
 [fixture: indentation/description-block-under-a-section]
 
 入力
@@ -512,11 +512,12 @@ journey
 1 行に合わせます。 [fixture: accessibility-statements/text-on-next-line-joined]
 [fixture: accessibility-statements/keyword-and-colon-over-lines-joined]
 
-`accDescr { ... }` ブロックの行は、必要からではなく選択として、
-書かれたまま残します。
-行頭の空白は Db に入らず、 `a`、改行、`b` と、
-`b` の前に空白がある形は同じ説明です。
-行は作者のテキストで、印字は整形しないからです。
+`accDescr` と `{` を同じ印字行に置く場合は、
+接して書かれていても間に空白 1 つを置きます。
+既存の開始行の改行は、それぞれの規則を保ちます。
+保護対象の trivia やセミコロンの配置では、その gap を保ちます。
+`accDescr { ... }` の本文行は、文より 1 段深くそろえます。
+Mermaid が説明から LF 後の字下げを除くためです。
 `}` は文と同じ段に置きます。
 `{` の行にテキストがあるときは、
 離れて書かれていれば括弧の内側に空白 1 つを置き、
@@ -567,8 +568,8 @@ accDescr {
 ```mmd
 journey
   accDescr {
-   a
-  b
+    a
+    b
   }
 ```
 
@@ -578,13 +579,15 @@ journey
 内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
 囲む空白を要する本文がないためです。
 すでに空の内側は空のままです。
-接した keyword は接したまま、 `accDescr{  }` は `accDescr{}` にします。
+通常のキーワードと開き括弧の間には空白 1 つを置き、
+`accDescr{  }` は `accDescr {}` にします。
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: journey Unicode and tab interiors]
 [fixture: empty-description-blocks/inner-whitespace-collapsed]
 [fixture: empty-description-blocks/touching-kept]
 [fixture: empty-description-blocks/blank-lines-inside]
-ディレクティブやコメント行を持つブロックは書かれたまま印字します。
+ディレクティブやコメント行の内容と改行は保ち、
+本文の字下げは [アクセシビリティの文](#アクセシビリティの文)に従います。
 [fixture: empty-description-blocks/with-directive-or-comment-line-kept]
 ヘッダーの後でも、自分の行に置きます。
 [fixture: empty-description-blocks/after-header]
@@ -604,9 +607,9 @@ accDescr{ }
 
 ```mmd
 journey
-  accDescr{}
   accDescr {}
-  accDescr{}
+  accDescr {}
+  accDescr {}
 ```
 
 入力
@@ -636,9 +639,14 @@ mermaid.js が複数行にわたって読む文は、
 `accTitle` と `accDescr` の `:` の前後が該当します。
 タスクは複数行に書かれることがありません。
 [fixture: multi-line-statements/value-on-next-line-joined]
-コメント行やディレクティブを持つ文は、書かれたまま印字します。
-コメント行はそれが立つ行の残りを取り、ディレクティブのある行の空白は、
-ディレクティブと一緒に読まれるからです。
+`accTitle` と `accDescr:` の文では、trivia の改行を保ち、
+section の下でも後続の構造部分と独立した trivia 行を文より 1 段深くそろえます。
+各 gap の最初の行の末尾と、指令の内部全体を保ちます。
+`;` のある行と、物理行を結ぶコメント領域は元の配置を保ちます。
+[fixture: multi-line-statements/accessibility-trivia-continuations]
+
+title と section では、値の空白が Db の一部なので、
+複数行の trivia を含む配置を元のまま保ちます。
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 
@@ -687,15 +695,14 @@ journey
 %% c
 T
   accTitle:
-%% d
-T
+    %% d
+    T
 ```
 
 ### 複数行の値
 
-`accDescr` ブロックの行は、中の改行と空白も含めて書かれたまま残します。
-改行は Db に入りますが、行頭の空白は入らないので、残すのは選択で、
-値のテキストは整形しないからです。
+`accDescr` ブロックの本文と改行は保ち、
+[アクセシビリティの文](#アクセシビリティの文)に従って文より 1 段深くそろえます。
 [fixture: multi-line-values/description-block-lines-kept]
 そのようなブロックの中のコメントは、テキストの一部です。
 [fixture: multi-line-values/comment-line-inside-block-kept]
@@ -717,7 +724,7 @@ accDescr {
 ```mmd
 journey
   accDescr {
-  a
+    a
     b
   }
 ```
@@ -749,7 +756,7 @@ accDescr {f}
 ```mmd
 journey
   accDescr { d }
-  accDescr{e}
+  accDescr {e}
   accDescr {f}
 ```
 
@@ -840,9 +847,9 @@ journey # c
 
 [fixture: journey/directives/split-directive-gap]
 
-文の 2 つの単位の間のディレクティブは、
-両側に書かれた空白を保ってその位置に残し、
-テキストの中のディレクティブはテキストの一部です。
+文の単位の間の指令は元の gap に残し、同じ行の両側の接触・分離を保ちます。
+構造部分の続きの列は[複数行の文](#複数行の文)に従います。
+値の中の指令は、そのテキストの一部です。
 [fixture: directives/between-units-kept]
 [fixture: directives/inside-values-kept] [fixture: directives/over-lines-kept]
 閉じられていないディレクティブはテキストの残りを取り、書かれたまま残します。

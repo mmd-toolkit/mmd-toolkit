@@ -60,8 +60,15 @@ stateDiagram-v2
 
 ### 複合状態
 
+trivia を挟んで見出しが続く場合、開始括弧のある行を最初のキーワードにそろえ、
+本文がさらに 1 段深く見えるようにします。
+その行をまたぐ値や保護された原文の境界は変えません。
+[fixture: composite-states/header-completion-after-comment]
+
 複合状態と、本体を持つ別名の定義の `{` は、空白 1 つの後に、名前の行に置きます。
 次の行に書かれた `{` は、その行に移します。
+名前と `{` の間にコメントかディレクティブがあれば改行を残し、
+`{` は `state` のキーワードにそろえ、間の注釈は 1 段深く置きます。
 `{` の前の空白 1 つは class 図と同じです。 [fixture: composite-states/split]
 [fixture: composite-states/brace-after-one-space]
 [fixture: composite-states/alias-brace-on-next-line]
@@ -580,11 +587,174 @@ mermaid.js は本文を id の直後から読み、最初の 2 文字を除く�
 id の前の空白は空白 1 つにします。
 `note left of%%x A` のように位置の直後にある、mermaid.js が読まないテキストは、
 位置に接したまま残します。
-複数行のノートの本文は、
-id の後の改行から `end note` の行まで書かれたまま残します。
-行の段は最初の行も含めて残し、両端の空行や空白だけの行も残します。
+
+固定版の Mermaid は、`stateDiagram-v2` のノートを Markdown として描画します。
+[`dataFetcher.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/dataFetcher.ts#L380-L386)
+で `labelType` を `markdown` に設定しています。
+対応する記法は限定されています。
+[`handle-markdown-text.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/rendering-util/handle-markdown-text.ts#L120-L145)
+では、リストはリストとして配置せず、原文のテキストへ戻します。
+このフォーマッターは、
+固定版の Mermaid と同じ Marked 16.4.2 で Markdown を判別します。
+ノート本文を Markdown フォーマッターへ渡さず、
+以下の規則で対応する段落の余白だけをそろえ、そのほかの本文は保ちます。
+[fixture: notes/markdown-code-kept]
+[fixture: notes/markdown-unordered-list-kept]
+
+見出しが 1 行に収まり、本文がその次の行から始まり、
+`end note` が行頭の字下げに続くノートでは、単一の段落の内容がある各行を、
+ノートより 1 段深くそろえます。
+行頭の ASCII 空白を本文の字下げに置き換えます。
+内容がある最初の行だけは、Mermaid が取り除く行頭の tab も対象です。
+後続行の余白に tab がある本文は、この段落の規則から外します。
+そのほかのテキスト、改行、末尾の空白は保ちます。
+段落の前後にある空行と空白だけの行は、原文を正確に保ちます。
+`useTabs` でも本文には ASCII 空白を使い、
+`tabWidth: 0` では行頭の空白をなくします。
+本文の段は、ノートの階層と `tabWidth` で決まります。
+[fixture: notes/payment-prose] [fixture: notes/prose-nested-four]
+[fixture: notes/prose-use-tabs] [fixture: notes/prose-zero-width]
+[fixture: notes/prose-one-trailing-space] [fixture: notes/prose-tab-margin-kept]
+[fixture: notes/over-lines-text-ends-kept]
+[fixture: notes/later-tab-margin-kept]
+
+段落内で対象になるのは、通常のテキスト、行内の強調、
+同じ物理行で閉じる backtick のコード、
+括弧を使わず 1 つの物理行に収まる自動リンク、
+行内のほかのテキストの後にある正確な `<br/>` だけです。
+これらの内容は変えず、行頭の余白だけをそろえます。
+[fixture: notes/inline-emphasis-margins] [fixture: notes/inline-code-margins]
+[fixture: notes/inline-br-margins] [fixture: notes/autolink-margins]
+
+Marked が通常の段落として読む `+Cash` や `#Heading` などの本文もそろえます。
+[fixture: notes/plain-block-like-text]
+
+この段落の判定には、設定された本文の字下げが空白 4 個以上なら、
+原文の行頭の余白を残した本文を使います。
+Marked が段落の文字どおりの続きとして読む記号の行も、対象になります。
+4 個未満なら、
+内容のある各行の行頭の ASCII 空白と tab を除いた入力本文で判定します。
+リストや setext 見出しなど、対応する段落以外の構文が現れる場合は、
+後続の余白を保ちます。 [fixture: notes/markdown-unordered-list-kept]
+[fixture: notes/markdown-ordered-list-kept]
+[fixture: notes/markdown-ordered-parenthesis-kept]
+[fixture: notes/literal-markers-zero-width]
+[fixture: notes/marker-at-paragraph-boundary-kept]
+[fixture: notes/literal-setext-zero-width]
+
+この段落の規則に当てはまらない本文では、最初の物理行が空でなく、
+字下げが ASCII 空白と tab だけなら、その行だけをそろえます。
+整列できる段落と同じく、設定された本文の段を使います。
+保護する後続行から別の字下げを推測しません。
+後続の余白は本文のテキストの一部で、描画に影響する場合があるためです。
+この規則は、後続の内容行の有無や字下げによらず適用します。
+[fixture: notes/backslash-margins-kept]
+[fixture: notes/protected-tab-margins-kept]
+[fixture: notes/heading-at-paragraph-boundary-kept]
+[fixture: notes/markdown-code-kept] [fixture: notes/single-markup-row]
+[test: U+00A0 at the start of a later note row]
+
+Mermaid はこの余白をノートの格納前に取り除くため、
+HTML や Markdown があっても raw Db は完全に一致します。
+後続のすべての余白は原文を保ちます。
+たとえば `<pre>` の内側の字下げを変えると、描画も変わる場合があるためです。
+最初の行が空か、
+先頭に ASCII 空白と tab 以外の空白文字がある場合は原文を保ちます。
+[fixture: notes/html-note-kept] [fixture: notes/html-pre-first-line]
+[fixture: notes/html-break-first-line] [fixture: notes/html-first-line-tabs]
+[fixture: notes/html-first-line-zero-width]
+[fixture: notes/first-tab-markup-margin]
+
+たとえば、次のノートの先頭行には、設定された空白4個を使います。
+空行で分かれた後続の段落は空白2個を保ちます。
+後続行を空白4個へ動かすと、Mermaid の読み取りと描画が変わるためです。
+3行すべてを空白2個にしても描画は変わりませんが、この先頭行には、
+設定された本文の段を使う書式を採用しています。
+
+出力
+([notes/over-lines-empty-lines-kept-output.mmd](../tests/fixtures/state/notes/over-lines-empty-lines-kept-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  A
+  note right of A
+    one
+
+  two
+
+
+  three
+  end note
+  B
+```
+
+同様に、backslash の後の行は空白12個を保ち、
+余白が取り除かれる先頭行には設定された空白4個を使う場合があります。
+後続行を空白4個へ動かすと描画が変わり、
+その空白12個を先頭行へコピーしても字下げを深くしすぎるだけです。
+[fixture: notes/backslash-margins-kept]
+
+出力
+([notes/html-note-kept-output.mmd](../tests/fixtures/state/notes/html-note-kept-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  Paid
+  note right of Paid
+    Payment<br/>confirmed
+    Receipt sent
+  end note
+```
+
+`note` の前や `end note` の後にある文や trivia は、
+通常の段落の整列を妨げません。 [fixture: notes/prose-adjacent-header]
+[fixture: notes/prose-adjacent-closer] [fixture: notes/prose-closer-comment]
+[fixture: notes/prose-header-directive]
+
+ノートにコメント、ディレクティブ、セミコロン、保護された結合領域がある場合は、
+本文全体を原文のまま保ちます。
+セミコロンで終わる entity も、この保護の対象です。
+[fixture: comments/text-in-note-lines-kept]
+[fixture: notes/over-lines-directive-on-header-line]
+[corpus fixture: state/tokens-note-block-ignored-semicolon]
+
+上記の先頭行の余白を除き、空行で分かれた段落、ブロック構文、
+fence 付きや複数行のコード、取り消し線、一般の HTML、角括弧を使うリンク、
+山括弧で囲むリンク、バックスラッシュ、
+内容の行内にある ASCII 空白以外の空白文字は原文を保ちます。
+リストや見出しなどのブロック構文は、Marked が判別します。
+Mermaid がブロックの原文を文字どおりに表示する場合は、
+その余白も表示されるためです。
+たとえば空行後の空白を 2 個から 4 個に増やすと、
+表示されていた 3 つの段落が別の配置に変わる場合があります。
+一般の Markdown を再整形するものではありません。
+[fixture: notes/over-lines-empty-lines-kept]
+[fixture: notes/list-body-margin-kept]
+[fixture: notes/heading-at-paragraph-boundary-kept]
+[fixture: notes/markdown-heading-kept] [fixture: notes/markdown-code-kept]
+[fixture: notes/code-spanning-lines-kept]
+[fixture: notes/strikethrough-spanning-lines-kept]
+[fixture: notes/link-spanning-lines-kept]
+[fixture: notes/angle-link-margins-kept] [fixture: notes/backslash-margins-kept]
+[fixture: notes/markdown-empty-ordered-dot-kept]
+[fixture: notes/markdown-empty-ordered-parenthesis-kept]
+[test: U+00A0 at the start of a later note row]
+[test: U+2028 on a later note row] [test: U+2029 on a later note row]
+
+後に内容の行が続く本文行が ASCII 空白 2 個以上で終わる場合は、
+Markdown の hard break なので、その末尾空白と後続行は原文を保ち、
+条件を満たす先頭行の余白だけをそろえます。
+最後以外の本文行の末尾の空白 1 個と、最後の本文行の末尾の空白は、
+本文の margin をそろえる場合も保ちます。 [fixture: notes/prose-trailing-spaces]
+[fixture: notes/prose-one-trailing-space]
+
+Mermaid は本文内部の改行の後にある行頭空白を、raw `notes[].text` 値に残します。
+このため、許可する行頭の ASCII 空白変更は、描画を保つ限定的な Db の例外です。
+parser、仕様、記録済み Mermaid の読み取りは変えません。
+ほかの複数行のノート本文は、整列できる先頭行の余白を除き、書かれた列を保ちます。
+両端の空行や空白だけの行も含みます。
 `end note` はノートと同じ段に置きます。
-ノートの行の id の後の空白は落とします。
+見出しの id の後の空白は落とします。
 その行のコメントやディレクティブの後の空白は、書かれたまま残します。
 [fixture: notes/over-lines] [fixture: notes/over-lines-first-line-column-kept]
 [fixture: notes/over-lines-text-ends-kept]
@@ -622,6 +792,28 @@ stateDiagram-v2
 ```
 
 入力
+([notes/payment-prose-input.mmd](../tests/fixtures/state/notes/payment-prose-input.mmd)):
+
+```mmd
+stateDiagram-v2
+    note right of Paid
+        Payment can be card,
+            wallet, or bank transfer
+    end note
+```
+
+出力
+([notes/payment-prose-output.mmd](../tests/fixtures/state/notes/payment-prose-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  note right of Paid
+    Payment can be card,
+    wallet, or bank transfer
+  end note
+```
+
+入力
 ([notes/over-lines-input.mmd](../tests/fixtures/state/notes/over-lines-input.mmd)):
 
 ```mmd
@@ -641,7 +833,7 @@ note ""floating" as N
 stateDiagram-v2
   A
   note right of A
-  first line
+    first line
     second line
   end note
   note ""floating" as N
@@ -849,31 +1041,31 @@ stateDiagram-v2
 
 ### 複数行の値
 
-flowchart と同じです。
-`accDescr { ... }` のブロックの行は書かれたまま残し、
-その `}` は文と同じ段に置きます。
-サブグラフの外では、その行の桁は Db に入らないので、残すのは選択で、
-理由は flowchart
-にあります（[複数行の値](./flowchart.ja.md#複数行の値)を参照）。
-[fixture: multi-line-values/kept]
+[flowchart のトップレベルの説明](./flowchart.ja.md#複数行の値)と同じく、
+`accDescr { ... }` の本文行は文より 1 段深くそろえ、
+独立した `}` は文と同じ段に置きます。
+Mermaid が説明からこの字下げを除くためです。 [fixture: multi-line-values/kept]
 [fixture: multi-line-values/accdescr-block-single-line-kept]
 [fixture: multi-line-values/accdescr-block-empty-and-comment-lines-kept]
 閉じたブロックに本文がなければ、内側を `{}` と印字します。
 `accDescr { }` は `accDescr {}` になり、空白の連続、改行、
 Unicode の空白だけの内側も同じです。
 波括弧の内側の U+2028 と U+2029 も含みます。
-すでに空の内側は空のまま、`accDescr{}` は接したままです。
+すでに空の内側は空のままです。
+キーワードと開始括弧の間には空白を 1 つ置きます。
 空白で囲む本文がないので、Db が同じ形の選択は、
 [flowchart のアクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)、
 agentflow、usecase に合わせます。
 前の説明は Db に残ります。
 [fixture: multi-line-values/empty-description-interiors]
 [test: accessibility revisions: state empty-description-nbsp]
-コメントやディレクティブがあるブロックの配置は従来どおり保ち、
+コメントやディレクティブがあるブロックの内容と改行は保ち、
 閉じられていないブロックは開いたままにします。
 [fixture: multi-line-values/empty-description-trivia-kept]
 [corpus fixture: state/lex-acc-descr-block-unclosed]
-複数行に書かれた独立したノートの本文も、書かれたまま残します。
+ブロックノートの段落は、[ノート](#ノート)の限定規則に従います。
+[fixture: notes/payment-prose]
+複数行に書かれた独立したノートの本文は、書かれたまま残します。
 [fixture: multi-line-values/kept]
 [fixture: multi-line-values/floating-note-empty-line-kept]
 
@@ -896,7 +1088,7 @@ note "line one
 ```mmd
 stateDiagram-v2
   accDescr {
-  one
+    one
     two
   }
   note "line one
@@ -942,9 +1134,16 @@ state 図で文が次の行に続けられるのは、 `state` の後、`as` の
 `classDef a` の後の行の `B --> C` は、遷移ではなく `a` のスタイルで、
 印字した結果からそれが分かります。 [fixture: multi-line-statements/joined]
 [fixture: multi-line-statements/classdef-takes-next-line]
-コメントかディレクティブを含む複数行の文は、sequence 図と同じく、
-始まりから終わりまで、
-書かれたまま残します（[複数行の文](./sequence.ja.md#複数行の文)を参照）。
+コメントかディレクティブを含む文は改行を残し、
+構造の続きの行と間の注釈を 1
+段深く置きます（[複数行の文](./sequence.ja.md#複数行の文)を参照）。
+ほかの値の内部の空白は変えません。
+複数行のノートの段落の margin は、[ノート](#ノート)の限定規則に従います。
+[fixture: notes/payment-prose]
+各隙間の最初の行末は保ちます。
+コメントで結合される領域、セミコロンの保護対象、前述の複合状態の例外では、
+文全体を原文のまま残します。
+[fixture: multi-line-statements/declaration-trivia-continuations]
 [fixture: multi-line-statements/comment-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 [fixture: multi-line-statements/brace-after-comment-line-kept]
@@ -998,8 +1197,8 @@ LR
 ```mmd
 stateDiagram-v2
   direction
-%% c
-LR
+    %% c
+    LR
 ```
 
 `;` を含み、複数行に書かれた文も、書かれたまま残します。
@@ -1109,7 +1308,9 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
 
 ## 書かれたまま残すもの
 
-次のテキストは常に書かれたまま残します。
+[複数行の値](#複数行の値)で定める説明本文の字下げと、
+[ノート](#ノート)で定める限定的な段落の margin を除き、
+次のテキストは書かれたまま残します。
 変えると図が変わるか、入力が拒否されるからです。
 
 - 値のテキスト。
@@ -1127,7 +1328,8 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
 - `{` を含み、`state` の名前の後に続く文の行。
 - 空白でキーワードになる id に接した矢印と `:`。
 - U+2028 か U+2029 を含む行。
-- コメントかディレクティブか `;` を含む複数行の文。
+- セミコロン行かコメントで結合される領域の保護対象の文。
+- 注釈を含む隙間の最初の改行の前の空白。
 - 方向の行の、 `direction` の前と値の後のテキスト。
   [corpus fixture: state/lex-direction-line-same-line-transition]
   [fixture: whitespace-between-tokens/direction-line-text-kept]

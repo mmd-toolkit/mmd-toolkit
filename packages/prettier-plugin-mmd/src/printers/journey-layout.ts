@@ -9,10 +9,12 @@ import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import {
   collectAtoms,
   collectValueNodes,
+  keepFirstGapLineTails,
   keptAsWritten,
   layoutDescriptionBlock,
   spansLinesThatCannotJoin,
 } from "./layout.ts"
+import { holdsJoiningRegion } from "./kept-lines.ts"
 import { accessibilityRules } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
 
@@ -106,10 +108,10 @@ function isAtLineEnd(source: Source, offset: number): boolean {
  *
  * - A statement written over several lines stands on one line where the
  *   lexer reads the line break as whitespace, which it does only right after
- *   a keyword (diagrams/journey.md, The statement context); one with a
- *   comment or a directive in it is kept as written (see
- *   `spansLinesThatCannotJoin`). The lines of an `accDescr` block are lines
- *   of its text, and are kept (docs/journey.md, Accessibility statements).
+ *   a keyword (diagrams/journey.md, The statement context). Accessibility
+ *   line trivia keeps its breaks with ordinary continuation columns; titles,
+ *   sections and protected regions keep their original layout
+ *   (docs/journey.md, Multi-line statements).
  * - The rules of the gaps are those of docs/journey.md: Task data, Titles and
  *   sections, and Accessibility statements.
  */
@@ -122,7 +124,18 @@ export function layoutJourneyStatement(
   if (statement.type === "JourneyAccDescrBlockStatement") {
     return layoutDescriptionBlock(source, statement, end, journeyValueNodeTypes)
   }
-  if (spansLinesThatCannotJoin(source, start, end)) {
+  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  const formatsTriviaLines =
+    statement.type === "JourneyAccTitleStatement" ||
+    statement.type === "JourneyAccDescrStatement"
+  // Trivia prevents joining, but ordinary structural gaps still use atoms.
+  // Value columns, semicolon lines and removed-line regions stay written.
+  if (
+    keepsLineBreaks &&
+    (!formatsTriviaLines ||
+      holdsJoiningRegion(source, start, end) ||
+      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
+  ) {
     return keptAsWritten(start, end)
   }
   const atoms = collectAtoms(
@@ -135,10 +148,10 @@ export function layoutJourneyStatement(
   const remainder = findBlankRemainder(source, statement)
   if (remainder !== null) atoms.push(remainder)
   return {
-    atoms,
+    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
     rules: statementRules(source, statement, atoms, remainder),
     outdented: new Set(),
-    lineBreaks: "joined",
+    lineBreaks: keepsLineBreaks ? "kept" : "joined",
   }
 }
 

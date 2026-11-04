@@ -593,11 +593,16 @@ A statement that mermaid.js reads over several lines is printed on one line: the
 line break is whitespace to the lexer, and so are the line breaks in `columns`,
 an edge, a width, a shape, and the head of a composite. The line break is
 replaced by one space; this is how the other diagrams join the lines of a
-statement (see [Multi-line statements](./xychart.md#multi-line-statements)). A
-statement with a comment line or a directive in it is kept as written, since a
-comment line takes the rest of the line it stands on, and the same decision is
-made in every diagram. A `;` in a statement keeps it as written too, because of
-the line rule (see [Rows](#rows) and
+statement (see [Multi-line statements](./xychart.md#multi-line-statements)).
+Keep trivia line breaks in structural gaps, including node/shape/width and edge
+parts, `columns`, class/style heads and composite heads. Place later parts and
+standalone trivia one continuation level inside the statement, also within rows
+and composites. Preserve first gap-line tails, complete directive interiors and
+whole value ranges; block-arrow direction contents remain as written. [fixture:
+multi-line-statements/structural-trivia-continuations]
+
+Joining comment regions retain their original layout. A `;` in a statement keeps
+it as written too, because of the line rule (see [Rows](#rows) and
 [A line that a `;` ends](./compatibility.md#a-line-that-a--ends)). The line rule
 of mermaid.js removes the last `;` of a line that holds `style` or `classDef`, a
 later `:`, a `#` after that with no whitespace between them, and a later `;`;
@@ -766,13 +771,16 @@ block-beta
 An empty block, which changes nothing, is a statement of its own. The
 whitespace-only interior of a description block, including tabs, line breaks and
 Unicode whitespace, prints `{}`: there is no text for interior whitespace to
-surround. An already empty interior stays empty. A touching keyword stays
-touching: `accDescr{  }` becomes `accDescr{}`. [fixture:
+surround. An already empty interior stays empty. Put one space between the
+keyword and opener, including originally touching tokens, to distinguish the
+keyword from its body: `accDescr{  }` becomes `accDescr {}`. [fixture:
 empty-description-blocks/empty-whitespace-interiors] [test: block Unicode and
-tab interiors] A block with a directive or a comment line is printed as written.
-It stands on a line of its own, also after the header and between two nodes,
-where the grammar takes it: mermaid.js reads it as nothing wherever it stands,
-and the grammar takes it where a statement starts. [fixture:
+tab interiors] A block with a directive or comment line keeps its contents and
+line breaks, with standalone trivia one level inside and its closer at statement
+level. [fixture: empty-description-blocks/trivia-continuations] It stands on a
+line of its own, also after the header and between two nodes, where the grammar
+takes it: mermaid.js reads it as nothing wherever it stands, and the grammar
+takes it where a statement starts. [fixture:
 empty-description-blocks/whitespace-removed] [fixture:
 empty-description-blocks/braces-touching-kept] [fixture:
 empty-description-blocks/line-break-inside-joined] [fixture:

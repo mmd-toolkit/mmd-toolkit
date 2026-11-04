@@ -36,10 +36,10 @@ const cases: readonly MarkdownCase[] = [
     input:
       "- item\n\n  ```mermaid\n  radar-beta\n  accDescr {\n   one\n     two\n  }\n  axis list_node\n  ```\n",
     output:
-      "- item\n\n  ```mermaid\n  radar-beta\n    accDescr {\n   one\n     two\n    }\n    axis list_node\n  ```\n",
+      "- item\n\n  ```mermaid\n  radar-beta\n    accDescr {\n      one\n      two\n    }\n    axis list_node\n  ```\n",
     payloadInput: "radar-beta\naccDescr {\n one\n   two\n}\naxis list_node",
     payloadOutput:
-      "radar-beta\n  accDescr {\n one\n   two\n  }\n  axis list_node\n",
+      "radar-beta\n  accDescr {\n    one\n    two\n  }\n  axis list_node\n",
     options: {},
   },
   {

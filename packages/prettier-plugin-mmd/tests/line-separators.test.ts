@@ -48,6 +48,21 @@ function format(text: string, options: Options = {}): Promise<string> {
  */
 const examples: readonly (readonly [string, string, string])[] = [
   [
+    "U+00A0 at the start of a later note row",
+    "stateDiagram-v2\nnote right of Paid\n        Payment\n\u00a0wallet\nend note\n",
+    "stateDiagram-v2\n  note right of Paid\n    Payment\n\u00a0wallet\n  end note\n",
+  ],
+  [
+    "U+2028 on a later note row",
+    "stateDiagram-v2\nnote right of Paid\n        Payment\n  \u2028wallet\nend note\n",
+    "stateDiagram-v2\n  note right of Paid\n    Payment\n  \u2028wallet\n  end note\n",
+  ],
+  [
+    "U+2029 on a later note row",
+    "stateDiagram-v2\nnote right of Paid\n        Payment\n  \u2029wallet\nend note\n",
+    "stateDiagram-v2\n  note right of Paid\n    Payment\n  \u2029wallet\n  end note\n",
+  ],
+  [
     "a pseudostate mark after U+2028",
     "stateDiagram-v2\nstate a\u2028b   <<fork>>\n",
     "stateDiagram-v2\n  state a\u2028b   <<fork>>\n",
@@ -2548,7 +2563,7 @@ const c4Examples: readonly (readonly [string, string, string])[] = [
   [
     "c4: internal-key-whitespace",
     'C4Context\nPerson(a,"A",$ first\u00a0second = "D")',
-    'C4Context\n  Person(a, "A", $first\u00a0second="D")\n',
+    'C4Context\n  Person(a, "A", $first\u00a0second = "D")\n',
   ],
   [
     "c4: nel-is-value-text",
@@ -2608,12 +2623,12 @@ const c4Examples: readonly (readonly [string, string, string])[] = [
   [
     "c4: ls-directive-terminator",
     'C4Context\nPerson(a,"first%%{init: {}}%%\u2028last")',
-    'C4Context\n  Person(a,"first%%{init: {}}%%\u2028last")\n',
+    'C4Context\n  Person(a, "first%%{init: {}}%%\u2028last")\n',
   ],
   [
     "c4: ps-open-directive-terminator",
     'C4Context\nPerson(a,"first%%{wrap\u2029last")',
-    'C4Context\n  Person(a,"first%%{wrap\u2029last")\n',
+    'C4Context\n  Person(a, "first%%{wrap\u2029last")\n',
   ],
   [
     "c4: ls-line-rule-segments",
@@ -2638,7 +2653,7 @@ const c4Examples: readonly (readonly [string, string, string])[] = [
   [
     "c4: cr-bare-and-named-values",
     'C4Context\rPerson(a,one\r  two,$descr="three\r four")\r',
-    'C4Context\n  Person(a, one\n  two, $descr="three\n four")\n',
+    'C4Context\n  Person(a, one\n  two, $descr = "three\n four")\n',
   ],
   [
     "c4: ls-kept-comment-statement",

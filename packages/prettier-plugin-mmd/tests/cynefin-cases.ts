@@ -12,7 +12,7 @@ export const cynefinCases: readonly CynefinCase[] = [
   {
     name: "cynefin/description-blocks/description-unicode-empty",
     input: "cynefin-beta\naccDescr{\u00a0\u2028\u2029\t}",
-    output: "cynefin-beta\n  accDescr{}\n",
+    output: "cynefin-beta\n  accDescr {}\n",
     options: {},
   },
   {

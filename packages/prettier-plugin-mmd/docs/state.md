@@ -59,10 +59,17 @@ stateDiagram-v2
 
 ### Composite states
 
+When a header continues across trivia, align the physical line containing its
+opening brace with the initial keyword, so the body remains one level deeper. Do
+not change a value spanning that line or protected source boundaries. [fixture:
+composite-states/header-completion-after-comment]
+
 The `{` of a composite state, and of an alias definition with a body, stands on
 the line of its name, after one space, as in a class diagram; a `{` written on
-the next line is moved there. [fixture: composite-states/split] [fixture:
-composite-states/brace-after-one-space] [fixture:
+the next line is moved there. Comments or directives between the name and the
+brace keep the line breaks; the brace aligns with the state keyword, and the
+intervening trivia stands one level deeper. [fixture: composite-states/split]
+[fixture: composite-states/brace-after-one-space] [fixture:
 composite-states/alias-brace-on-next-line] [fixture:
 composite-states/directive-before-body] [fixture:
 multi-line-statements/brace-after-comment-line-kept] [fixture:
@@ -565,13 +572,164 @@ two characters, so `note left of A:hi` has the text `i`, and
 `note right of A  : two spaces` the text `: two spaces`. [fixture: notes/kept]
 The whitespace before the id becomes one space. A text that mermaid.js does not
 read right after the position, as in `note left of%%x A`, keeps touching the
-position. The text of a note over lines is kept as written, from the line break
-after its id to the line of `end note`: the columns of its lines, the first one
-included, and the empty and whitespace-only lines at its ends. `end note` stands
-at the level of the note. The whitespace after the id on the line of the note is
-dropped; after a comment or a directive on that line it stays as written.
-[fixture: notes/over-lines] [fixture: notes/over-lines-first-line-column-kept]
-[fixture: notes/over-lines-text-ends-kept] [fixture:
+position.
+
+The pinned Mermaid renders `stateDiagram-v2` notes as Markdown labels, setting
+`labelType` to `markdown` in
+[`dataFetcher.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/dataFetcher.ts#L380-L386).
+This is limited Markdown support: lists fall back to their source text instead
+of a list layout in
+[`handle-markdown-text.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/rendering-util/handle-markdown-text.ts#L120-L145).
+The formatter recognizes Markdown with the same Marked 16.4.2 as pinned Mermaid.
+It does not run the Markdown formatter on note contents; the rules below only
+align supported paragraph margins while preserving the remaining body text.
+[fixture: notes/markdown-code-kept] [fixture:
+notes/markdown-unordered-list-kept]
+
+For a note whose body starts after a single-line header, with `end note`
+starting its own line, align every content line of a single paragraph one level
+inside the note. Replace leading ASCII spaces with the body indentation; the
+first content line may also have leading tabs, which Mermaid trims. Later lines
+with a tab in their margin fall outside this paragraph rule. Preserve the
+remaining text, line breaks and trailing spaces. Empty and whitespace-only rows
+before or after the paragraph stay exactly as written. Use ASCII spaces even
+with `useTabs`, and no leading spaces at `tabWidth: 0`. Nesting and `tabWidth`
+determine the body level. [fixture: notes/payment-prose] [fixture:
+notes/prose-nested-four] [fixture: notes/prose-use-tabs] [fixture:
+notes/prose-zero-width] [fixture: notes/prose-one-trailing-space] [fixture:
+notes/prose-tab-margin-kept] [fixture: notes/over-lines-text-ends-kept]
+[fixture: notes/later-tab-margin-kept]
+
+Only ordinary text, inline emphasis, backtick code closed on the same physical
+line, bare autolinks on one physical line, and exact `<br/>` forms after other
+text on that line qualify within the paragraph. Their contents stay written;
+only line margins align. [fixture: notes/inline-emphasis-margins] [fixture:
+notes/inline-code-margins] [fixture: notes/inline-br-margins] [fixture:
+notes/autolink-margins]
+
+Text such as `+Cash` and `#Heading` aligns when Marked reads it as ordinary
+paragraph text. [fixture: notes/plain-block-like-text]
+
+For this paragraph check, use the input body with its written margins when the
+configured body indentation has at least four spaces. Markers that Marked reads
+as literal paragraph continuations may then align. With fewer than four spaces,
+check the input content after removing each content line's leading ASCII-space
+and tab padding. Preserve later margins if this exposes a list, a setext
+heading, or another form outside the supported paragraph. [fixture:
+notes/markdown-unordered-list-kept] [fixture: notes/markdown-ordered-list-kept]
+[fixture: notes/markdown-ordered-parenthesis-kept] [fixture:
+notes/literal-markers-zero-width] [fixture:
+notes/marker-at-paragraph-boundary-kept] [fixture:
+notes/literal-setext-zero-width]
+
+For bodies outside this paragraph rule, align only the first physical body line
+when it is nonempty and starts with only ASCII-space/tab padding. Use the
+configured body indentation, as for eligible paragraphs. Do not infer a
+different indentation from protected later lines: their authored margins are
+part of the body text and may affect rendering. This rule applies with or
+without later content lines, and with any later margins. [fixture:
+notes/backslash-margins-kept] [fixture: notes/protected-tab-margins-kept]
+[fixture: notes/heading-at-paragraph-boundary-kept] [fixture:
+notes/markdown-code-kept] [fixture: notes/single-markup-row] [test: U+00A0 at
+the start of a later note row]
+
+Mermaid trims the first-line margin before storing the note, so this step keeps
+the raw Db identical even for HTML or Markdown. Keep every later margin as
+written; for example, indenting the inside of `<pre>` can change the drawing. A
+blank first row or leading whitespace other than ASCII spaces and tabs keeps its
+source. [fixture: notes/html-note-kept] [fixture: notes/html-pre-first-line]
+[fixture: notes/html-break-first-line] [fixture: notes/html-first-line-tabs]
+[fixture: notes/html-first-line-zero-width] [fixture:
+notes/first-tab-markup-margin]
+
+For example, the first line of the following note uses the configured four
+spaces. Its blank-separated later paragraphs retain their two spaces: moving
+them to four spaces changes Mermaid's reading and drawing. Keeping all three
+lines at two spaces would also preserve rendering, but this formatter uses the
+configured body indentation for the trimmed first line rather than adopting an
+authored margin.
+
+Output
+([notes/over-lines-empty-lines-kept-output.mmd](../tests/fixtures/state/notes/over-lines-empty-lines-kept-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  A
+  note right of A
+    one
+
+  two
+
+
+  three
+  end note
+  B
+```
+
+Likewise, a line after a backslash can retain twelve spaces while the trimmed
+first line uses the configured four. Moving the later line to four spaces
+changes the drawing; copying its twelve spaces to the first line would only
+introduce excessive indentation. [fixture: notes/backslash-margins-kept]
+
+Output
+([notes/html-note-kept-output.mmd](../tests/fixtures/state/notes/html-note-kept-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  Paid
+  note right of Paid
+    Payment<br/>confirmed
+    Receipt sent
+  end note
+```
+
+Statements or trivia before `note` or after `end note` do not prevent ordinary
+paragraph alignment. [fixture: notes/prose-adjacent-header] [fixture:
+notes/prose-adjacent-closer] [fixture: notes/prose-closer-comment] [fixture:
+notes/prose-header-directive]
+
+Notes containing comments, directives, semicolons or protected joining regions
+keep their complete bodies as written. This includes semicolon-terminated
+entities. [fixture: comments/text-in-note-lines-kept] [fixture:
+notes/over-lines-directive-on-header-line] [corpus fixture:
+state/tokens-note-block-ignored-semicolon]
+
+Except for that trimmed first-row margin, keep blank-separated paragraphs, block
+syntax, fenced or multiline code, strikethrough, general HTML, bracketed links,
+links enclosed in angle brackets, backslashes and whitespace other than ASCII
+spaces within content lines. Marked recognizes block syntax, including lists and
+headings. These margins can appear in rendered text when Mermaid displays a
+block's source literally. For example, increasing two spaces after a blank line
+to four can change three displayed paragraphs into a different layout. This does
+not reformat general Markdown. [fixture: notes/over-lines-empty-lines-kept]
+[fixture: notes/list-body-margin-kept] [fixture:
+notes/heading-at-paragraph-boundary-kept] [fixture: notes/markdown-heading-kept]
+[fixture: notes/markdown-code-kept] [fixture: notes/code-spanning-lines-kept]
+[fixture: notes/strikethrough-spanning-lines-kept] [fixture:
+notes/link-spanning-lines-kept] [fixture: notes/backslash-margins-kept]
+[fixture: notes/angle-link-margins-kept] [fixture:
+notes/markdown-empty-ordered-dot-kept] [fixture:
+notes/markdown-empty-ordered-parenthesis-kept] [test: U+00A0 at the start of a
+later note row] [test: U+2028 on a later note row] [test: U+2029 on a later note
+row]
+
+A line ending in two or more ASCII spaces before another content line is a
+Markdown hard break: keep its trailing spaces and subsequent body lines as
+written, aligning only the trimmed first-row margin when eligible. One trailing
+space on an earlier line, and trailing spaces on the last body line, stay
+written when the body margin is aligned. [fixture: notes/prose-trailing-spaces]
+[fixture: notes/prose-one-trailing-space]
+
+Mermaid preserves leading whitespace after internal newlines in raw
+`notes[].text`. The permitted ASCII-space prefix changes are therefore a limited
+Db exception, with rendering preserved; parser, specification and recorded
+Mermaid readings stay unchanged. Other multiline note bodies retain their
+written columns apart from the eligible first-row margin, including empty or
+whitespace-only edge lines. `end note` stands at the level of the note. The
+whitespace after the id on the header line is dropped; after a comment or
+directive on that line it stays as written. [fixture: notes/over-lines]
+[fixture: notes/over-lines-first-line-column-kept] [fixture:
+notes/over-lines-text-ends-kept] [fixture:
 notes/over-lines-directive-on-header-line] [fixture:
 notes/over-lines-end-note-indentation-set] [fixture:
 notes/over-lines-in-composite] [fixture: notes/over-lines-empty-lines-kept] A
@@ -605,6 +763,28 @@ stateDiagram-v2
 ```
 
 Input
+([notes/payment-prose-input.mmd](../tests/fixtures/state/notes/payment-prose-input.mmd)):
+
+```mmd
+stateDiagram-v2
+    note right of Paid
+        Payment can be card,
+            wallet, or bank transfer
+    end note
+```
+
+Output
+([notes/payment-prose-output.mmd](../tests/fixtures/state/notes/payment-prose-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  note right of Paid
+    Payment can be card,
+    wallet, or bank transfer
+  end note
+```
+
+Input
 ([notes/over-lines-input.mmd](../tests/fixtures/state/notes/over-lines-input.mmd)):
 
 ```mmd
@@ -624,7 +804,7 @@ Output
 stateDiagram-v2
   A
   note right of A
-  first line
+    first line
     second line
   end note
   note ""floating" as N
@@ -825,26 +1005,26 @@ stateDiagram-v2
 
 ### Multi-line values
 
-As in a flowchart: the lines of an `accDescr { ... }` block are kept as written,
-and its `}` stands at the level of its statement. Outside a subgraph the columns
-of those lines are not in the Db, so keeping them is a choice, whose reason is
-in a flowchart (see [Multi-line values](./flowchart.md#multi-line-values)).
-[fixture: multi-line-values/kept] [fixture:
+As in [flowchart's top-level descriptions](./flowchart.md#multi-line-values),
+align the lines of an `accDescr { ... }` body one step inside its statement,
+with a separate `}` at the statement's level. Mermaid discards this indentation
+from the description. [fixture: multi-line-values/kept] [fixture:
 multi-line-values/accdescr-block-single-line-kept] [fixture:
 multi-line-values/accdescr-block-empty-and-comment-lines-kept] A closed block
 with no text prints `{}` internally: `accDescr { }` becomes `accDescr {}`,
 including whitespace runs, line breaks and Unicode whitespace (also U+2028 and
-U+2029) inside the braces; an already empty interior stays empty, and
-`accDescr{}` stays touching. There is no text for interior whitespace to
-surround, so the Db-equal choice follows
+U+2029) inside the braces; an already empty interior stays empty, and the
+keyword and opening brace have one space between them. There is no text for
+interior whitespace to surround, so the Db-equal choice follows
 [flowchart's accessibility lines](./flowchart.md#accessibility-lines), agentflow
 and usecase. A prior description stays in the Db. [fixture:
 multi-line-values/empty-description-interiors] [test: accessibility revisions:
-state empty-description-nbsp] Blocks with comments or directives retain their
-previous layout, and unclosed blocks stay open. [fixture:
+state empty-description-nbsp] Blocks with comments or directives keep their
+contents and line breaks, and unclosed blocks stay open. [fixture:
 multi-line-values/empty-description-trivia-kept] [corpus fixture:
-state/lex-acc-descr-block-unclosed] The text of a floating note written over
-several lines is kept as written too. [fixture: multi-line-values/kept]
+state/lex-acc-descr-block-unclosed] Block note paragraphs follow the restricted
+[Notes](#notes) rule. [fixture: notes/payment-prose] The text of a floating note
+written over several lines stays as written. [fixture: multi-line-values/kept]
 [fixture: multi-line-values/floating-note-empty-line-kept]
 
 Input
@@ -866,7 +1046,7 @@ Output
 ```mmd
 stateDiagram-v2
   accDescr {
-  one
+    one
     two
   }
   note "line one
@@ -907,10 +1087,15 @@ next-line-direction-nbsp] So `classDef c` followed by a line `fill:red` is
 printed as `classDef c fill:red`; a line `B --> C` after `classDef a` is a style
 of `a`, not a transition, and the printed text shows it. [fixture:
 multi-line-statements/joined] [fixture:
-multi-line-statements/classdef-takes-next-line] A statement written over several
-lines with a comment or a directive in it is kept as written, from its start to
-its end, as in a sequence diagram (see
-[Multi-line statements](./sequence.md#multi-line-statements)). [fixture:
+multi-line-statements/classdef-takes-next-line] A statement with a comment or
+directive keeps its line breaks, while structural continuations and intervening
+trivia stand one level deeper, as in a sequence diagram (see
+[Multi-line statements](./sequence.md#multi-line-statements)). Whitespace inside
+other values remains unchanged. Multiline note paragraph margins follow the
+limited [Notes](#notes) rule. [fixture: notes/payment-prose] The first gap-line
+tails are retained; joining regions, semicolon protections and the
+composite-state exceptions above keep the whole statement as written. [fixture:
+multi-line-statements/declaration-trivia-continuations] [fixture:
 multi-line-statements/comment-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept] [fixture:
 multi-line-statements/brace-after-comment-line-kept] [fixture:
@@ -964,8 +1149,8 @@ Output
 ```mmd
 stateDiagram-v2
   direction
-%% c
-LR
+    %% c
+    LR
 ```
 
 A statement written over several lines that holds a `;` is kept as written too.
@@ -1064,8 +1249,10 @@ semicolon before U+2029]
 
 ## Kept as written
 
-Some text is always kept as written, because changing it would change the
-diagram or the input would be rejected:
+Apart from description-body indentation under
+[Multi-line values](#multi-line-values) and the restricted paragraph margins in
+[Notes](#notes), the following text is kept as written because changing it would
+change the diagram or the input would be rejected:
 
 - the text of a value: a description, a label, a note, an id after `as`, a
   pseudostate name, a style, the CSS class of a `class` statement, and the text
@@ -1081,8 +1268,8 @@ diagram or the input would be rejected:
 - the lines of a statement that holds a `{` and follows a `state` name;
 - an arrow and a `:` touching an id that a space would make a keyword;
 - a line that holds U+2028 or U+2029;
-- a statement written over several lines with a comment, a directive, or a `;`
-  in it;
+- a statement protected by a semicolon line or a joining comment region;
+- the whitespace before the first line break of a gap containing trivia;
 - the text of a direction line before `direction` and after its value; [corpus
   fixture: state/lex-direction-line-same-line-transition] [fixture:
   whitespace-between-tokens/direction-line-text-kept]

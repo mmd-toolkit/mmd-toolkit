@@ -1,5 +1,6 @@
 import type {
   ClassDeclaration,
+  ClassMethod,
   ClassName,
   ClassNamespaceStatement,
   ClassRelationStatement,
@@ -8,8 +9,10 @@ import type {
   StringLiteral,
   Token,
 } from "@mmd-toolkit/parser"
+import type { Doc } from "prettier"
 import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
+import { printAtoms } from "./atoms.ts"
 import { holdsDirection } from "./accessibility-lines.ts"
 import { findWrittenWhitespaceEnd } from "./gap.ts"
 import { findClassSemicolonLines } from "./class-kept-lines.ts"
@@ -18,10 +21,13 @@ import { findOpenString } from "./lines.ts"
 import {
   collectAtoms,
   collectValueNodes,
+  descriptionOpeningRules,
   expectToken,
   expectValue,
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
+  indentDescriptionLines,
+  keepFirstGapLineTails,
   layoutCompactEmptyDescriptionBlockWithFallback,
   spansLinesThatCannotJoin,
   walk,
@@ -230,7 +236,7 @@ export function layoutBlockOpening(
  *   break inside a statement is whitespace to the lexer only after
  *   `direction` and after the `:` of `accTitle` and `accDescr`
  *   (diagrams/class.md, The statement context); one with a comment or a
- *   directive in it is kept as written (see `spansLinesThatCannotJoin`). The
+ *   directive keeps its line breaks and aligns structural continuations. The
  *   lines of an `accDescr { ... }` block are lines of its text, and are
  *   kept (docs/class.md, Multi-line values).
  * - A relation has one space on each side of its arrow and of its
@@ -248,18 +254,6 @@ export function layoutClassStatement(
   end: number,
 ): AtomLayout {
   const start = statement.range[0]
-  if (
-    statement.type !== "ClassAccDescrBlockStatement" &&
-    spansLinesThatCannotJoin(source, start, end)
-  ) {
-    return {
-      atoms: [{ start, end }],
-      rules: new Map(),
-      outdented: new Set(),
-      lineBreaks: "kept",
-    }
-  }
-  const values = collectValueNodes(statement, classValueNodeTypes)
   if (statement.type === "ClassAccDescrBlockStatement") {
     // A description block of a class diagram is always closed: one that is
     // not is rejected (diagrams/class.md, Units and contexts).
@@ -269,21 +263,21 @@ export function layoutClassStatement(
       closed: true,
     }
 
-    /** Builds the existing value, trivia and closing-brace layout. */
-    function originalLayout(): AtomLayout {
+    /** Keeps the block's line breaks, including those around empty trivia. */
+    function layoutExpandedBlock(): AtomLayout {
       const closing = findAccDescrBlockClosing(source, block)
-      return {
+      return indentDescriptionLines(source, block, {
         atoms: collectAtoms(
           source,
           start,
           end,
-          values,
+          collectValueNodes(statement, classValueNodeTypes),
           findAccDescrBlockStretches(source, block),
         ),
-        rules: new Map(),
+        rules: descriptionOpeningRules(source, start),
         outdented: closing === null ? new Set() : new Set([closing]),
         lineBreaks: "kept",
-      }
+      })
     }
 
     return statement.value === null
@@ -291,16 +285,44 @@ export function layoutClassStatement(
           source,
           start,
           end,
-          originalLayout,
+          layoutExpandedBlock,
         )
-      : originalLayout()
+      : layoutExpandedBlock()
   }
+  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  if (
+    keepsLineBreaks &&
+    (holdsJoiningRegion(source, start, end) ||
+      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
+  ) {
+    return {
+      atoms: [{ start, end }],
+      rules: new Map(),
+      outdented: new Set(),
+      lineBreaks: "kept",
+    }
+  }
+  const values = collectValueNodes(statement, classValueNodeTypes)
   const kept = [
     ...findGenericStretches(source, statement, end),
-    ...findMemberStretches(statement),
+    ...findMemberStretches(source, statement),
     ...findBlankLabelStretches(source, statement),
     ...findOpenNameStretches(source, statement),
   ]
+  if (
+    statement.type === "ClassCallbackStatement" &&
+    statement.callback.type === "ClassLiteral"
+  ) {
+    // The callback-name lexer reads through trivia up to `(`, including the
+    // whitespace outside the literal's range (diagrams/class.md, The callback
+    // contexts). Keep that value boundary rather than indenting it as a gap.
+    const opening = expectToken(
+      findStructuralToken(source, statement.callback.range[1]),
+      "the `(` after a callback name",
+    )
+    expectValue(opening, "(")
+    kept.push({ start: statement.callback.range[0], end: opening.range[1] })
+  }
   // Joining a next-line accessibility value can expose class's greedy,
   // case-sensitive direction rule. Keep the previous continuation layout;
   // TD is value text, not a class direction (diagrams/class.md, The direction
@@ -314,19 +336,20 @@ export function layoutClassStatement(
       { range: statement.range, text: statement.value.value },
       { caseSensitive: true },
     )
-  return {
-    atoms: collectAtoms(
-      source,
-      start,
-      end,
-      values.filter(
-        (value) => !kept.some((stretch) => containsRange(stretch, value)),
-      ),
-      kept,
+  const atoms = collectAtoms(
+    source,
+    start,
+    end,
+    values.filter(
+      (value) => !kept.some((stretch) => containsRange(stretch, value)),
     ),
+    kept,
+  )
+  return {
+    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
     rules: statementRules(source, statement),
     outdented: new Set(),
-    lineBreaks: keepsDirectionValue ? "kept" : "joined",
+    lineBreaks: keepsLineBreaks || keepsDirectionValue ? "kept" : "joined",
   }
 }
 
@@ -430,17 +453,63 @@ function findBlankLabelStretches(source: Source, statement: Node): Atom[] {
 }
 
 /**
- * The member lines of a statement, each printed as written: the member of
- * a member statement. The whitespace after a visibility mark is part of
+ * The member of a member statement, retaining its values while ordinary
+ * method padding uses its planned layout. Whitespace after a visibility mark is part of
  * the member's name in the Db (diagrams/class.md, Building the summary):
  * `+ foo()` has the name ` foo`, and `+foo()` the name `foo`.
  */
-function findMemberStretches(statement: Node): Atom[] {
+function findMemberStretches(source: Source, statement: Node): Atom[] {
   if (statement.type !== "ClassMemberStatement" || statement.member === null) {
     return []
   }
   const { range } = statement.member
-  return [{ start: range[0], end: range[1] }]
+  return [
+    {
+      start: range[0],
+      end: range[1],
+      doc:
+        statement.member.type === "ClassMethod"
+          ? printClassMethod(source, statement.member)
+          : undefined,
+    },
+  ]
+}
+
+/**
+ * Method fields already exclude harmless exterior padding. Keep their contents
+ * and classifier tails, formatting only the gaps around the AST fields
+ * (diagrams/class.md, Member lines; docs/class.md, Member lines).
+ */
+export function printClassMethod(
+  source: Source,
+  method: ClassMethod,
+): Doc | undefined {
+  const [start, end] = method.range
+  const text = source.text.slice(start, end)
+  if (
+    method.textBefore !== null ||
+    method.textAfter !== null ||
+    text.includes("\n") ||
+    text.includes("\u2028") ||
+    text.includes("\u2029") ||
+    text.includes(";") ||
+    findClassSemicolonLines(source).has(lineStartOf(source, start)) ||
+    findTriviaBetween(source, start, end).length > 0
+  )
+    return undefined
+  const values = collectValueNodes(method, classValueNodeTypes)
+  const atoms = collectAtoms(source, start, end, values, [])
+  const rules = new Map<number, GapRule>()
+  for (const atom of atoms.slice(1))
+    rules.set(
+      atom.start,
+      atom.start === method.returnType?.range[0] ? "space" : "none",
+    )
+  return printAtoms(
+    source,
+    { atoms, rules, outdented: new Set(), lineBreaks: "joined" },
+    { statement: "", continuation: "" },
+  ).doc
 }
 
 /**

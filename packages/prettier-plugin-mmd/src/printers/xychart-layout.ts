@@ -12,11 +12,13 @@ import type {
   XychartYAxisStatement,
 } from "@mmd-toolkit/parser"
 import type { AtomLayout, GapRule } from "./atoms.ts"
+import { holdsJoiningRegion } from "./kept-lines.ts"
 import {
   collectAtoms,
   collectValueNodes,
   expectToken,
   expectValue,
+  keepFirstGapLineTails,
   keptAsWritten,
   layoutDescriptionBlock,
   spansLinesThatCannotJoin,
@@ -75,15 +77,21 @@ function valueNodesOf(statement: XychartBlockStatement): Node[] {
  * The layout of a header (docs/xychart.md, Header and orientation): the
  * keyword and the orientation after it, which stands after one space, also
  * where it was written on a later line after whitespace. A header with a
- * comment or a directive over several lines is kept as written (see
- * `spansLinesThatCannotJoin`).
+ * comment or directive keeps its trivia breaks with continuation columns;
+ * semicolon lines and joining regions retain their layout (docs/xychart.md,
+ * Multi-line statements).
  */
 export function layoutXychartHeader(
   source: Source,
   header: XychartHeader,
 ): AtomLayout {
   const [start, end] = header.range
-  if (spansLinesThatCannotJoin(source, start, end)) {
+  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  if (
+    keepsLineBreaks &&
+    (holdsJoiningRegion(source, start, end) ||
+      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
+  ) {
     return keptAsWritten(start, end)
   }
   const keyword = expectToken(findStructuralToken(source, start), "the header")
@@ -95,11 +103,12 @@ export function layoutXychartHeader(
     )
     rules.set(orientation.range[0], "space")
   }
+  const atoms = collectAtoms(source, start, end, [], [])
   return {
-    atoms: collectAtoms(source, start, end, [], []),
+    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
     rules,
     outdented: new Set(),
-    lineBreaks: "joined",
+    lineBreaks: keepsLineBreaks ? "kept" : "joined",
   }
 }
 
@@ -109,9 +118,11 @@ export function layoutXychartHeader(
  * - A statement written over several lines stands on one line where the
  *   lexer reads the line break as whitespace (diagrams/xychart.md, Lexical
  *   structure, Line breaks); one with a comment or a directive in it, or a
- *   `;`, is kept as written (see `spansLinesThatCannotJoin`). The lines of an
- *   `accDescr` block are lines of its text, and are kept (docs/xychart.md,
- *   Accessibility statements).
+ *   `;`, keeps its required line breaks. Ordinary exterior gaps take
+ *   continuation indentation; required line tails and protected regions stay
+ *   written.
+ *   Description-body lines align inside their block (docs/xychart.md,
+ *   Accessibility statements and Multi-line statements).
  * - The rules of the gaps are those of docs/xychart.md: Text units, Brackets
  *   and commas, Ranges, Values and labels, and Accessibility statements.
  */
@@ -129,14 +140,20 @@ export function layoutXychartStatement(
       descriptionBlockTextTypes,
     )
   }
-  if (spansLinesThatCannotJoin(source, start, end)) {
+  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  if (
+    keepsLineBreaks &&
+    (holdsJoiningRegion(source, start, end) ||
+      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
+  ) {
     return keptAsWritten(start, end)
   }
+  const atoms = collectAtoms(source, start, end, valueNodesOf(statement), [])
   return {
-    atoms: collectAtoms(source, start, end, valueNodesOf(statement), []),
+    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
     rules: statementRules(source, statement),
     outdented: new Set(),
-    lineBreaks: "joined",
+    lineBreaks: keepsLineBreaks ? "kept" : "joined",
   }
 }
 

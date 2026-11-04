@@ -16,14 +16,17 @@ import type { MermaidAst } from "../parser.ts"
 import type { AtomLayout, GapRule } from "./atoms.ts"
 import { holdsJoiningRegion } from "./kept-lines.ts"
 import {
+  alignBlockOpeningLine,
   collectAtoms,
   collectValueNodes,
   expectToken,
   expectValue,
+  indentDescriptionLines,
+  keepFirstGapLineTails,
   keptAsWritten,
+  layoutCompactEmptyDescriptionBlockWithFallback,
   layoutDescriptionBlock,
   layoutEmptyDescriptionBlock,
-  layoutCompactEmptyDescriptionBlockWithFallback,
   spansLinesThatCannotJoin,
 } from "./layout.ts"
 import type { Source } from "./source.ts"
@@ -38,7 +41,9 @@ import {
   addClassListRules,
   classStatementRules,
   directionRules,
+  printStyleUnitSpacing,
   styleStatementRules,
+  styleUnitsCanCompact,
 } from "./statement-rules.ts"
 
 /**
@@ -142,7 +147,7 @@ export function findBlockBraces(
  * `:::` and the `,` between them (docs/requirement.md, Bodies and Class
  * lists). A statement written over lines, where the lexer reads the line
  * break as whitespace, stands on one line; one with a comment or a directive
- * in it is kept as written (see `spansLinesThatCannotJoin`).
+ * in it keeps its line breaks and aligns structural continuations.
  */
 export function layoutBlockOpening(
   source: Source,
@@ -151,9 +156,10 @@ export function layoutBlockOpening(
 ): AtomLayout {
   const start = statement.range[0]
   const end = opening.range[1]
+  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
   if (
     holdsJoiningRegion(source, start, end) ||
-    spansLinesThatCannotJoin(source, start, end)
+    spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true })
   ) {
     return keptAsWritten(start, end)
   }
@@ -167,28 +173,34 @@ export function layoutBlockOpening(
     statement.name.range[1],
     rules,
   )
-  return {
-    atoms: collectAtoms(
-      source,
-      start,
-      end,
-      collectValueNodes(statement, requirementValueNodeTypes).filter(
-        (value) => value.range[1] <= opening.range[0],
-      ),
-      [],
+  const atoms = collectAtoms(
+    source,
+    start,
+    end,
+    collectValueNodes(statement, requirementValueNodeTypes).filter(
+      (value) => value.range[1] <= opening.range[0],
     ),
-    rules,
-    outdented: new Set(),
-    lineBreaks: "joined",
-  }
+    [],
+  )
+  return alignBlockOpeningLine(
+    source,
+    {
+      atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+      rules,
+      outdented: new Set(),
+      lineBreaks: keepsLineBreaks ? "kept" : "joined",
+    },
+    opening.range[0],
+  )
 }
 
 /**
  * The layout of an item of a body. A field is printed on one line: its
  * keyword, the `:` touching it, and its value after one space; a field
  * written over lines, where the lexer reads the line break as whitespace,
- * stands on one line too, and one with a comment or a directive in it is kept
- * as written. An empty description block, which mermaid.js does not read, is
+ * stands on one line too. Comments and directives retain line breaks while
+ * structural continuations align. An empty description block, which mermaid.js
+ * does not read, is
  * compacted with the shared empty-block layout (docs/requirement.md, Fields
  * and Empty description blocks).
  */
@@ -202,10 +214,19 @@ export function layoutBodyItem(
       source,
       start,
       end,
-      () => layoutEmptyDescriptionBlock(source, start, end),
+      () =>
+        indentDescriptionLines(
+          source,
+          { range: item.range, value: null, closed: true },
+          layoutEmptyDescriptionBlock(source, start, end, true),
+        ),
     )
   }
-  if (spansLinesThatCannotJoin(source, start, end)) {
+  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  if (
+    holdsJoiningRegion(source, start, end) ||
+    spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true })
+  ) {
     return keptAsWritten(start, end)
   }
   const keyword = expectToken(findStructuralToken(source, start), "a field")
@@ -218,20 +239,21 @@ export function layoutBodyItem(
     findStructuralToken(source, colon.range[1]),
     "the value of a field",
   )
+  const atoms = collectAtoms(
+    source,
+    start,
+    end,
+    collectValueNodes(item, requirementValueNodeTypes),
+    [],
+  )
   return {
-    atoms: collectAtoms(
-      source,
-      start,
-      end,
-      collectValueNodes(item, requirementValueNodeTypes),
-      [],
-    ),
+    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
     rules: new Map<number, GapRule>([
       [colon.range[0], "none"],
       [value.range[0], "space"],
     ]),
     outdented: new Set(),
-    lineBreaks: "joined",
+    lineBreaks: keepsLineBreaks ? "kept" : "joined",
   }
 }
 
@@ -241,13 +263,16 @@ export function layoutBodyItem(
  *
  * - A statement written over several lines stands on one line where the
  *   lexer reads the line break as whitespace (diagrams/requirement.md, The
- *   statement context); one with a comment or a directive in it, or a `;`, is
- *   kept as written (see `spansLinesThatCannotJoin`). The lines of an
+ *   statement context); comments and directives keep line breaks while
+ *   structural continuations align. Semicolon boundaries and joining regions
+ *   keep their source. The lines of an
  *   `accDescr` block are lines of its text, and are kept (docs/requirement.md,
  *   Accessibility statements). A `class` statement is laid out as
  *   `joinsClassStatement` says.
- * - A relationship has one space between its units (docs/requirement.md,
- *   Relationship spacing).
+ * - A relationship has one space between its units. Comments and directives
+ *   prevent joining its lines, while the existing atoms still align structural
+ *   gaps. Joining regions and textual semicolon boundaries keep their source
+ *   (docs/requirement.md, Relationship spacing).
  * - The other statements follow the rules shared with an ER diagram (see
  *   `statement-rules.ts`).
  */
@@ -265,22 +290,39 @@ export function layoutRequirementStatement(
       requirementValueNodeTypes,
     )
   }
-  if (spansLinesThatCannotJoin(source, start, end)) {
+  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  if (
+    keepsLineBreaks &&
+    (holdsJoiningRegion(source, start, end) ||
+      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
+  ) {
     return keptAsWritten(start, end)
   }
+  const styles =
+    (statement.type === "RequirementStyleStatement" ||
+      statement.type === "RequirementClassDefStatement") &&
+    styleUnitsCanCompact(source, start, end, statement.styles)
+      ? statement.styles
+      : []
+  const atoms = collectAtoms(
+    source,
+    start,
+    end,
+    collectValueNodes(statement, requirementValueNodeTypes),
+    styles.map((style) => ({
+      start: style.range[0],
+      end: style.range[1],
+      doc: printStyleUnitSpacing(source, style),
+    })),
+  )
   return {
-    atoms: collectAtoms(
-      source,
-      start,
-      end,
-      collectValueNodes(statement, requirementValueNodeTypes),
-      [],
-    ),
-    rules: statementRules(source, statement),
+    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+    rules: statementRules(source, statement, styles.length > 0),
     outdented: new Set(),
     lineBreaks:
-      statement.type === "RequirementClassStatement" &&
-      !joinsClassStatement(source, statement)
+      keepsLineBreaks ||
+      (statement.type === "RequirementClassStatement" &&
+        !joinsClassStatement(source, statement))
         ? "kept"
         : "joined",
   }
@@ -329,6 +371,7 @@ function statementRules(
     RequirementSimpleStatement,
     { type: "RequirementAccDescrBlockStatement" }
   >,
+  compactStyles = false,
 ): Map<number, GapRule> {
   switch (statement.type) {
     case "RequirementRelationshipStatement":
@@ -336,9 +379,19 @@ function statementRules(
     case "RequirementDirectionStatement":
       return directionRules(source, statement)
     case "RequirementStyleStatement":
-      return styleStatementRules(source, statement.names, statement.styles)
+      return styleStatementRules(
+        source,
+        statement.names,
+        statement.styles,
+        compactStyles,
+      )
     case "RequirementClassDefStatement":
-      return styleStatementRules(source, statement.cssClasses, statement.styles)
+      return styleStatementRules(
+        source,
+        statement.cssClasses,
+        statement.styles,
+        compactStyles,
+      )
     case "RequirementClassStatement":
       return classStatementRules(source, statement.names, statement.cssClasses)
     case "RequirementClassShorthandStatement": {

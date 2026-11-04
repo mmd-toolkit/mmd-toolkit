@@ -714,8 +714,9 @@ accessibility-statements/keyword-and-colon-over-lines-joined] The text holds
 `:`, `;`, `#`, `%`, and `%%` as characters. [fixture:
 accessibility-statements/special-characters-in-text]
 
-An `accDescr` block with text has the `{` after one space (or touching the
-keyword, as written), the text on the line of the `{` between one space on each
+An `accDescr` block with text has the `{` after one ordinary space, even when it
+touched the keyword in the input. Protected trivia and semicolon layouts keep
+their gaps. The text on the line of the `{` stands between one space on each
 side, and the `}` after it; later text lines stand one level inside the
 statement and the `}` stands at its level (see
 [Multi-line values](#multi-line-values)). [fixture:
@@ -773,8 +774,8 @@ timeline
 An empty block, which changes nothing, is a statement of its own. The
 whitespace-only interior of a description block, including tabs, line breaks and
 Unicode whitespace, prints `{}`: there is no text for interior whitespace to
-surround. An already empty interior stays empty. A touching keyword stays
-touching: `accDescr{  }` becomes `accDescr{}`. [fixture:
+surround. An already empty interior stays empty. The ordinary keyword/opener gap
+uses one space: `accDescr{  }` becomes `accDescr {}`. [fixture:
 empty-description-blocks/empty-whitespace-interiors] [test: timeline Unicode and
 tab interiors] [fixture: empty-description-blocks/inner-whitespace-collapsed]
 [fixture: empty-description-blocks/touching-kept] [fixture:
@@ -800,9 +801,9 @@ Output
 
 ```mmd
 timeline
-  accDescr{}
   accDescr {}
-  accDescr{}
+  accDescr {}
+  accDescr {}
 ```
 
 Input
@@ -838,10 +839,16 @@ its events are written over several lines in another way, with a colon at the
 start of a later line, and keep their line breaks (see
 [Periods and events](#periods-and-events)).
 
-A statement with a comment line or a directive in a line break that it would
-join is kept as written, since the comment line would take the rest of the line
-it stands on, and the whitespace of a line that holds a directive is read with
-it. [fixture: multi-line-statements/comment-line-inside-kept] [fixture:
+In `accTitle` and `accDescr:` statements, keep trivia line breaks and align
+later structural parts and standalone trivia one continuation level inside the
+statement, also under a section. Preserve each first gap-line tail and complete
+directive interiors. Semicolon lines and joining comment regions keep their
+original layout. [fixture:
+multi-line-statements/accessibility-trivia-continuations]
+
+Titles and sections, and event-text continuations, keep their original multiline
+trivia layout, because their value padding belongs to the Db. [fixture:
+multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept] After the colon of an event, an
 indented line of only a directive is the whitespace that starts the event, so
 the event is printed on the line of the colon, with that whitespace, and the
@@ -906,8 +913,8 @@ timeline
 %% c
 T
   accTitle:
-%% d
-T
+    %% d
+    T
   a :
 %% e
   f
@@ -988,7 +995,7 @@ Output
 ```mmd
 timeline
   accDescr { d }
-  accDescr{e}
+  accDescr {e}
   accDescr {f}
 ```
 
@@ -1093,9 +1100,10 @@ break its left contact.
 
 [fixture: timeline/directives/whitespace-on-both-sides-collapsed]
 
-A directive between two units of a statement stays where it is, with the
-whitespace written on each side of it, and a directive inside a text is part of
-the text. [fixture: directives/between-units-kept] [fixture:
+A directive between two units stays in its authored gap; same-line contact or
+separation on either side stays. Structural continuation columns follow
+[Multi-line statements](#multi-line-statements). A directive inside a value is
+part of that text. [fixture: directives/between-units-kept] [fixture:
 directives/inside-values-kept] [fixture: directives/over-lines-kept] A directive
 that is not closed takes the rest of the text, and is kept as written. [fixture:
 directives/unclosed-at-end-of-text-kept] [fixture:

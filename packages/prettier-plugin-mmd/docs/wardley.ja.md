@@ -579,8 +579,14 @@ wardley-beta
 accTitle: Value と accDescr: Value は共有の行 layout を使います。
 空の代入も残します。
 説明ブロックは共有の description layout を通します。
-括弧との接し方を保ち、空白だけの内部は {} にします。
-普通の opener 前の空白は結び、値の列は保ち、独立した closer を揃えます。
+通常の gap では、接して書かれていても語と { の間に空白 1 つを置きます。
+内部の辺の接し方を保ち、空白だけの内部は {} にします。
+保護対象の trivia やセミコロンの配置では、その gap を保ちます。
+普通の opener 前の空白は結び、独立した closer を揃えます。
+通常の説明本文と独立したコメント行は文より1段内側に揃えます。
+Db で LF 後の字下げが取り除かれるためです。
+改行、内部の空行、行末空白を保ちます。
+directive と共有の除去対象となるコメント領域は原文全体を保ちます。
 trivia は共有の継続行 layout を使います。
 Db が同じ共通の形を選び、空白だけの内部には囲むテキストがありません。
 
@@ -916,8 +922,11 @@ wardley-beta
 
 ### セミコロン
 
-Root directive を除いた後で literal の style か classDef を含む原文行は、
-発火しない語の行も含め、共有の行保護で丸ごと保ちます。
+Root directive を除いた後でセミコロンと literal の style か classDef
+の両方を含む原文行は、共有の行保護で丸ごと保ちます。
+規則が発火しない語の行でも、セミコロンがあれば保護します。
+`mystyle` のような名前だけでは、
+通常の component や pipeline の空白整形を妨げません。
 文、コメント、hidden form を同じ行に残し、前後の行と結びません。
 最初の行は本文の段に揃え、中身と後続行の列は保ちます。
 directive をまたぐ語と U+2028/U+2029 後の comment region も、
@@ -943,6 +952,8 @@ mermaid が 1 行として読む範囲で数えます。
 [fixture: wardley/semicolons/style-uppercase-nontrigger]
 
 [fixture: wardley/semicolons/style-no-semicolon]
+
+[fixture: wardley/semicolons/style-no-semicolon-directive-lines]
 
 [fixture: wardley/semicolons/style-inside-global]
 
@@ -995,7 +1006,8 @@ wardley-beta
 ### 複数行の値
 
 printWidth では折り返しません。
-文字列、flow、説明の物理的な中身、継続行の列、内部の空行を保ちます。
+文字列と flow の物理的な中身、継続行の列、内部の空行を保ちます。
+説明本文は前述の共有の字下げを使います。
 普通の文の部品間の可視 LF は拒否され、値の継続行の字下げは Db を変えます。
 長い component と evolution の行も折り返しません。
 説明の opener と closer には Accessibility を使います。

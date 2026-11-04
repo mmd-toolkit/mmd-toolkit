@@ -12,8 +12,8 @@ import { treeviewBoxCharacters } from "../src/printers/treeview-characters.ts"
  * formatted text is given the values of its input, which holds for formatting
  * only if it keeps the embedded data as written, so that is checked as well:
  * `writtenEmbeddedTexts` exposes the complete raw values before and after.
- * Eventmodeling's permitted native-data margin difference is checked by
- * `eventmodeling-data-margins.ts`; this module preserves that difference.
+ * Permitted margins are checked by `eventmodeling-data-margins.ts` and
+ * `state-note-margins.ts`; this module preserves both raw Db differences.
  */
 import type {
   CheckedRoot,

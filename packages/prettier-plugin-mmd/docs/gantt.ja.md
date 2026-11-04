@@ -40,9 +40,9 @@ journey も同じです。 [fixture: indentation/sections-and-tasks-nested]
 [fixture: indentation/written-indentation-dropped]
 ヘッダーは、前に空白が書かれていても 1 桁目に置きます。
 [fixture: indentation/header-leading-whitespace]
-書かれたまま残すテキスト（`accDescr` ブロックの行など）は、行ごとの桁を保ち、
-ブロックを閉じる `}` は、
-文と同じ段に置きます（[複数行の値](#複数行の値)を参照）。
+原文を保つ値は行ごとの列を保ちます。
+説明本文の行は[複数行の値](#複数行の値)に従って文より 1 段深くし、
+独立した `}` は文と同じ段に置きます。
 [fixture: indentation/description-block-under-a-section]
 
 入力
@@ -713,7 +713,8 @@ Db が持ちます。
 複数行に書かれた文字列や引数は、
 書かれたまま印字します（[複数行の値](#複数行の値)を参照）。
 [fixture: click-statements/string-over-lines-kept]
-部分の間にコメント行やディレクティブがある文は、書かれたまま印字します。
+部分の間にコメント行かディレクティブがあると、その改行を保ち、
+[複数行の文](#複数行の文)に従って構造部分の続きの列をそろえます。
 [fixture: click-statements/comment-line-between-parts-kept]
 [fixture: click-statements/directive-between-parts-kept]
 
@@ -803,11 +804,12 @@ gantt
 1 行に合わせます。 [fixture: accessibility-statements/text-on-next-line-joined]
 [fixture: accessibility-statements/keyword-and-colon-over-lines-joined]
 
-`accDescr { ... }` ブロックの行は、必要からではなく選択として、
-書かれたまま残します。
-行頭の空白は Db に入らず、 `a`、改行、`b` と、
-`b` の前に空白がある形は同じ説明です。
-行は作者のテキストで、印字は整形しないからです。
+`accDescr` と `{` を同じ印字行に置く場合は、
+接して書かれていても間に空白 1 つを置きます。
+既存の開始行の改行は、それぞれの規則を保ちます。
+保護対象の trivia やセミコロンの配置では、その gap を保ちます。
+`accDescr { ... }` の本文行は、文より 1 段深くそろえます。
+Mermaid が説明から LF 後の字下げを除くためです。
 `}` は文と同じ段に置きます。
 `{` の行にテキストがあるときは、
 離れて書かれていれば括弧の内側に空白 1 つを置き、
@@ -858,24 +860,28 @@ accDescr {
 ```mmd
 gantt
   accDescr {
-   a
-  b
+    a
+    b
   }
 ```
 
 ### 空の説明ブロック
 
+[fixture: gantt/empty-description-blocks/touching-comment-body]
+
 何も変えない空のブロックは、文の 1 つです。
 内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
 囲む空白を要する本文がないためです。
 すでに空の内側は空のままです。
-接した keyword は接したまま、 `accDescr{  }` は `accDescr{}` にします。
+通常のキーワードと開き括弧の間には空白 1 つを置き、
+`accDescr{  }` は `accDescr {}` にします。
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: gantt Unicode and tab interiors]
 [fixture: empty-description-blocks/inner-whitespace-collapsed]
 [fixture: empty-description-blocks/touching-kept]
 [fixture: empty-description-blocks/blank-lines-inside]
-ディレクティブやコメント行を持つブロックは書かれたまま印字します。
+ディレクティブやコメント行の内容と改行は保ち、
+本文の字下げは [アクセシビリティの文](#アクセシビリティの文)に従います。
 [fixture: empty-description-blocks/with-directive-or-comment-line-kept]
 ヘッダーの後でも、自分の行に置きます。
 [fixture: empty-description-blocks/after-header]
@@ -895,9 +901,9 @@ accDescr{ }
 
 ```mmd
 gantt
-  accDescr{}
   accDescr {}
-  accDescr{}
+  accDescr {}
+  accDescr {}
 ```
 
 入力
@@ -928,10 +934,19 @@ mermaid.js が複数行にわたって読む文は、
 `accTitle` と `accDescr` の `:` の前後が該当し、そこの空行も落とします。
 [fixture: multi-line-statements/value-on-next-line-joined]
 [fixture: multi-line-statements/blank-lines-between-keyword-and-day]
-コメント行、ディレクティブ、`;` を持つ文は、書かれたまま印字します。
-コメント行はそれが立つ行の残りを取り、ディレクティブのある行の空白は、
-ディレクティブと一緒に読まれ、 `;` は行の規則に合う行に移ることがあるからです。
-[fixture: multi-line-statements/comment-line-inside-kept]
+click、weekday/weekend、includes/excludes、アクセシビリティの行の文では、
+trivia の改行を保ちます。
+後続の構造部分と独立したコメント行や指令行は、section の下でも、
+その文より 1 段深くそろえます。
+各 gap の最初の行の末尾と指令の内部全体は保ち、引用符付き文字列、呼び出し名、
+引数はひとまとまりのままです。
+[fixture: multi-line-statements/structural-trivia-continuations]
+[fixture: click-statements/trivia-continuation-under-section]
+
+title、section、設定、タスクでは、値の空白が Db の一部なので、
+複数行の trivia を含む配置を元のまま保ちます。
+文の内部か最終行の `;`、物理行を結ぶコメント領域、リスト区切りの U+FEFF も、
+元の配置を保ちます。 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 [fixture: multi-line-statements/semicolon-inside-kept]
 
@@ -986,16 +1001,17 @@ gantt
 %% c
 T
   weekday
-%% c
-monday
+    %% c
+    monday
 ```
 
 ### 複数行の値
 
 呼び出しの引数と名前とリンクの文字列は、値の一部なので、
 中の改行と空白も含めて書かれたまま残します。
-`accDescr` ブロックの行も書かれたまま残しますが、これは選択です。
-行頭の空白は Db に入りません。 [fixture: multi-line-values/call-arguments-kept]
+説明本文の行は、
+[アクセシビリティの文](#アクセシビリティの文)に従って文より 1 段深くそろえます。
+[fixture: multi-line-values/call-arguments-kept]
 [fixture: multi-line-values/call-name-kept]
 [fixture: multi-line-values/href-string-kept]
 [fixture: multi-line-values/description-block-lines-kept]
@@ -1039,7 +1055,7 @@ accDescr {
 ```mmd
 gantt
   accDescr {
-  a
+    a
     b
   }
 ```
@@ -1214,9 +1230,9 @@ gantt
 
 [fixture: gantt/directives/split-directive-gap]
 
-文の 2 つの単位の間のディレクティブは、
-両側に書かれた空白を保ってその位置に残し、
-テキストの中のディレクティブはテキストの一部です。
+文の単位の間の指令は元の gap に残し、同じ行の両側の接触・分離を保ちます。
+構造部分の続きの列は[複数行の文](#複数行の文)に従います。
+値の中の指令は、そのテキストの一部です。
 [fixture: directives/between-units-kept]
 [fixture: directives/between-task-parts-kept]
 [fixture: directives/inside-values-kept] [fixture: directives/over-lines-kept]

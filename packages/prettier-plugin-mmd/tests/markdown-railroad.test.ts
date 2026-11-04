@@ -72,11 +72,11 @@ const cases: readonly MarkdownCase[] = [
     input:
       '- item\n\n  ```mermaid\n  railroad-ebnf-beta\n  accDescr {\n   first\n     continuation\n  }\n  r::=( "fenced" );\n  ```\n',
     output:
-      '- item\n\n  ```mermaid\n  railroad-ebnf-beta\n    accDescr {\n   first\n     continuation\n    }\n    r ::= ("fenced");\n  ```\n',
+      '- item\n\n  ```mermaid\n  railroad-ebnf-beta\n    accDescr {\n      first\n      continuation\n    }\n    r ::= ("fenced");\n  ```\n',
     payloadInput:
       'railroad-ebnf-beta\naccDescr {\n first\n   continuation\n}\nr::=( "fenced" );',
     payloadOutput:
-      'railroad-ebnf-beta\n  accDescr {\n first\n   continuation\n  }\n  r ::= ("fenced");\n',
+      'railroad-ebnf-beta\n  accDescr {\n    first\n    continuation\n  }\n  r ::= ("fenced");\n',
     options: {},
   },
   {
@@ -155,11 +155,11 @@ const cases: readonly MarkdownCase[] = [
     input:
       '```mermaid\nrailroad-peg-beta accDescr{host}%%{!suffix}%%\n\nr<-"after host";\n```\n',
     output:
-      '```mermaid\nrailroad-peg-beta accDescr{host}%%{!suffix}%%\n\n  r <- "after host";\n```\n',
+      '```mermaid\nrailroad-peg-beta accDescr {host}%%{!suffix}%%\n\n  r <- "after host";\n```\n',
     payloadInput:
       'railroad-peg-beta accDescr{host}%%{!suffix}%%\n\nr<-"after host";',
     payloadOutput:
-      'railroad-peg-beta accDescr{host}%%{!suffix}%%\n\n  r <- "after host";\n',
+      'railroad-peg-beta accDescr {host}%%{!suffix}%%\n\n  r <- "after host";\n',
     options: {},
   },
   {

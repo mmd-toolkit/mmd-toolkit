@@ -73,11 +73,12 @@ Correctness is defined by the pinned mermaid.js.
    each token and comment equals the input at its range. Whitespace and line
    terminators are not nodes; with the source text and the ranges, the input is
    reproduced byte for byte.
-4. Formatting is idempotent and does not change the Db, except for ASCII space
-   margin changes to eventmodeling block bodies defined in the formatter's
-   [Data blocks](packages/prettier-plugin-mmd/docs/eventmodeling.md#data-blocks).
-   This exception permits raw Db value differences only while preserving the
-   rendering.
+4. Formatting is idempotent and does not change the Db, except for the limited
+   ASCII space margin changes to eventmodeling block bodies defined in
+   [Data blocks](packages/prettier-plugin-mmd/docs/eventmodeling.md#data-blocks)
+   and eligible state note paragraphs defined in
+   [Notes](packages/prettier-plugin-mmd/docs/state.md#notes). These exceptions
+   permit raw Db value differences only while preserving the rendering.
 
 ## What each package is responsible for
 

@@ -14,10 +14,12 @@ import {
   collectValueNodes,
   expectToken,
   expectValue,
+  keepFirstGapLineTails,
   keptAsWritten,
   layoutDescriptionBlock,
   spansLinesThatCannotJoin,
 } from "./layout.ts"
+import { holdsJoiningRegion } from "./kept-lines.ts"
 import { accessibilityRules } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
 import { findTokenEndingBefore, findTokensBetween } from "./source.ts"
@@ -160,10 +162,10 @@ function isAtLineEnd(source: Source, offset: number): boolean {
  * - A statement written over several lines stands on one line where the
  *   lexer reads the line break as whitespace, which it does only right after
  *   a keyword and before a part of a statement (diagrams/gantt.md, The
- *   statement context); one with a comment or a directive in it is kept as
- *   written (see `spansLinesThatCannotJoin`). The lines of an `accDescr`
- *   block are lines of its text, and are kept (docs/gantt.md, Accessibility
- *   statements).
+ *   statement context). Trivia keeps structural click/day/list/accessibility
+ *   gaps broken, with ordinary continuation columns; raw line values,
+ *   semicolon lines and joining regions keep their original layout
+ *   (docs/gantt.md, Multi-line statements).
  * - The rules of the gaps are those of docs/gantt.md: Task data, Settings,
  *   Lists, Click statements, and Accessibility statements.
  */
@@ -176,8 +178,24 @@ export function layoutGanttStatement(
   if (statement.type === "GanttAccDescrBlockStatement") {
     return layoutDescriptionBlock(source, statement, end, ganttValueNodeTypes)
   }
+  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  const formatsTriviaLines =
+    statement.type === "GanttClickStatement" ||
+    statement.type === "GanttWeekdayStatement" ||
+    statement.type === "GanttWeekendStatement" ||
+    statement.type === "GanttIncludesStatement" ||
+    statement.type === "GanttExcludesStatement" ||
+    statement.type === "GanttAccTitleStatement" ||
+    statement.type === "GanttAccDescrStatement"
+  // Trivia prevents joining, but ordinary structural gaps still use atoms.
+  // Value columns, semicolon lines and removed-line regions stay written.
   if (
-    spansLinesThatCannotJoin(source, start, end) ||
+    (keepsLineBreaks &&
+      (!formatsTriviaLines ||
+        holdsJoiningRegion(source, start, end) ||
+        spansLinesThatCannotJoin(source, start, end, {
+          ignoresTrivia: true,
+        }))) ||
     holdsCaseIgnoredSeparator(source, statement, end)
   ) {
     return keptAsWritten(start, end)
@@ -192,10 +210,10 @@ export function layoutGanttStatement(
   const remainder = findBlankRemainder(source, statement)
   if (remainder !== null) atoms.push(remainder)
   return {
-    atoms,
+    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
     rules: statementRules(source, statement, atoms, remainder),
     outdented: new Set(),
-    lineBreaks: "joined",
+    lineBreaks: keepsLineBreaks ? "kept" : "joined",
   }
 }
 

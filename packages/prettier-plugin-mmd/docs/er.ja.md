@@ -238,10 +238,18 @@ Db が保つからです。 [fixture: attribute-spacing/keys-comma-space]
 [fixture: attribute-spacing/over-lines-joined]
 [corpus fixture: er/gram-attribute-split-lines]
 [corpus fixture: er/gram-name-then-key-next-line]
-部分の間にコメント行がある属性は、書かれたまま残します。
-コメント行は単独の行になければならないからです。
+部分の間にコメント行かディレクティブがある属性は、改行を保ちます。
+後続の構造部分と独立した trivia 行は、subgraph の中でも、
+属性の内側に 1 段字下げします。
+型、名前、引用符付きコメントの内部は書かれたまま残します。
 [fixture: attribute-spacing/comment-line-inside-kept]
-属性の部分の間にあるディレクティブは、両側に書かれた空白を保ってその位置に残し、
+[fixture: attribute-spacing/directive-inside-kept]
+[fixture: attribute-spacing/comment-continuation-with-multiline-value]
+[fixture: attribute-spacing/directive-continuation-tabs]
+semicolon の読みが関わる行と、物理行を結ぶコメント領域は、元の配置を保ちます。
+[fixture: attribute-spacing/semicolon-continuation-kept]
+[test: er/attribute-spacing/comment-region-continuation-kept]
+属性の部分の間にあるディレクティブは、同じ印字行での接触を保ち、
 2 つの属性の間で行に単独で置かれたディレクティブは、その間に残します。
 [fixture: attribute-spacing/directive-inside-kept]
 [fixture: attribute-spacing/directive-and-line-break-kept]
@@ -559,7 +567,7 @@ A ||--u-B : x
 erDiagram
   A:::c
   p[P]
-  accDescr{ D }
+  accDescr { D }
   A ||--u-B : x
   1one to one B : x
 ```
@@ -593,9 +601,9 @@ erDiagram
   SUBGRAPH S
     A
   END
-  CLASSDEF a fill:red
+  CLASSDEF a fill: red
   CLASS A a
-  STYLE A fill:red
+  STYLE A fill: red
   DIRECTION lr
   ACCTITLE: T
   ACCDESCR: D
@@ -906,7 +914,8 @@ erDiagram
 後の行に書かれた値は、 `direction` の後に 1 行で印字します。
 [fixture: direction/value-on-next-line-joined]
 [corpus fixture: er/lex-direction-value-next-line]
-ディレクティブやコメント行がある方向の行は、書かれたまま残します。
+ディレクティブやコメント行がある方向の行は改行を残し、
+構造の続きの行を 1 段深く置きます。
 [fixture: direction/directive-and-comment-line-kept]
 
 入力
@@ -953,25 +962,27 @@ erDiagram
 
 ### スタイルとクラス
 
-`classDef` の名前と、`class` と `style` の実体とクラスは、
-両側の名前に接する `,` で区切ります。
-`classDef a ,b ,  c fill:red` は `classDef a,b,c fill:red` にします。
+名前とクラスのリストでは、名前に接する comma を使います。
+最初のスタイルは空白 1 つの後に置きます。
+`style` と `classDef` の、通常の 1 行のプロパティと値からなるスタイルでは、
+最初の `:` の前を詰め、空でない値の前に空白を 1 つ置きます。
+スタイル間は `,` とその後の空白 1 つで区切ります。
+プロパティと値の内部は、値の語の間の連続空白も含めて保ちます。
+Mermaid はスタイルの単位をつなげて読むため、
+`stroke-dasharray: 5 5` は引き続き `stroke-dasharray:55` です。
+`fill   : navy, stroke  : black` は `fill: navy, stroke: black` にします。
+`stroke-dasharray:  5    5` は、値の間の空白 4 つを保ちます。
+通常はつなげる見出しや外側の改行があっても、最初の整形で同じ間隔にします。
+スタイル内部の改行区切り、所有する trivia、同じ物理行のセミコロンがある場合は、
+既存のスタイルの配置を保ちます。
+キーワードの大文字小文字は保ちます。
+[fixture: styles-and-classes/style-unit-padding]
 [fixture: styles-and-classes/class-def-names]
 [fixture: styles-and-classes/style-names]
 [fixture: styles-and-classes/class-lists]
-最初のスタイルは空白 1 つの後に置きます。
-1 つのスタイルの中の空白は、書かれたまま印字します。
-mermaid.js はスタイルのテキストをつなげて間の空白を捨てるので、
-`stroke-dasharray: 5 5` はスタイル `stroke-dasharray:55` ですが、
-空白は `stroke-dasharray:  5    5` のように作者が置いた所に残します。
 [fixture: styles-and-classes/styles-as-written]
 [fixture: styles-and-classes/style-inner-whitespace-kept]
-2 つのスタイルの間の `,` の周りの空白は、トークンの間の空白の連続なので、
-空白 1 つにします。
-`style id2   fill:red   ,   stroke:blue` は、
-`style id2 fill:red , stroke:blue` と印字します。
-[fixture: styles-and-classes/styles-as-written]
-キーワードは大文字小文字を保ちます。
+
 [fixture: styles-and-classes/keyword-case-kept]
 
 キーワードや名前の後の空白が改行を取り込んで、
@@ -1021,8 +1032,8 @@ classDef default fill:#f9f,stroke-width:4px
 
 ```mmd
 erDiagram
-  classDef a,b,c fill:red
-  classDef default fill:#f9f,stroke-width:4px
+  classDef a,b,c fill: red
+  classDef default fill: #f9f, stroke-width: 4px
 ```
 
 入力
@@ -1040,9 +1051,9 @@ style  id2   fill:red   ,   stroke:blue
 
 ```mmd
 erDiagram
-  classDef a fill : #f9f , stroke:#333
-  style id1 fill:#bbf,stroke:#f66,stroke-dasharray: 5 5
-  style id2 fill:red , stroke:blue
+  classDef a fill: #f9f, stroke: #333
+  style id1 fill: #bbf, stroke: #f66, stroke-dasharray: 5 5
+  style id2 fill: red, stroke: blue
 ```
 
 入力
@@ -1082,11 +1093,13 @@ erDiagram
 [fixture: accessibility-statements/text-with-comment-line-kept]
 [corpus fixture: er/lex-acc-title-line-feed-after-colon]
 
-`accDescr { ... }` ブロックの行は、必要からではなく選択として、
-書かれたまま残します。
-行頭の空白は Db に入らず、 `a`、改行、`b` と、
-`b` の前に空白がある形は同じ説明です。
-行は作者のテキストで、印字は整形しないからです。
+通常の `accDescr { ... }` ブロックの後続の本文行は、文の内側に 1 段字下げし、
+LF 直後の ASCII 空白とタブだけを置き換えます。
+説明の setter がこの字下げを捨てるためです。
+改行、行末空白、ディレクティブの内部は保ちます。
+subgraph 内では、生の説明がその所属の読みにも使われるため、
+本文の元の列を保ちます。
+[corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines]
 `}` は文と同じ段に置きます。
 `{` の行にあるテキストは、離して書かれていれば、
 波括弧の内側に空白を 1 つ置きます。
@@ -1096,12 +1109,14 @@ erDiagram
 空のブロックは文の 1 つで、前の説明を Db に残します。
 内側は `{}` と印字し、`accDescr { }` は `accDescr {}` になります。
 空白の連続、改行、NBSP だけの内側も同じです。
-すでに空の内側は空のまま、`accDescr{}` は接したままです。
+すでに空の内側は空のままです。
+キーワードと開始括弧の間には空白を 1 つ置きます。
 空白で囲む本文がないので、Db が同じ形の選択は、
 [flowchart のアクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)、
 agentflow、 usecase に合わせます。
 [test: accessibility revisions: er empty-description-nbsp]
-コメントやディレクティブがあるブロックの配置は従来どおり保ちます。
+コメントやディレクティブがあるブロックは、改行と完全な内容を保ち、
+普通の独立した trivia はブロックの内側にそろえます。
 [fixture: accessibility-statements/empty-blocks]
 [fixture: accessibility-statements/empty-block-with-directive-or-comment-line]
 [corpus fixture: er/gram-acc-descr-block-empty]
@@ -1198,7 +1213,7 @@ end
 ```mmd
 erDiagram
   accDescr {
-  one
+    one
     two
   }
   subgraph S
@@ -1466,8 +1481,8 @@ erDiagram
 そのような文字列の中のコメント行は文字列の一部で、文字列は書かれたまま残します。
 [fixture: multi-line-values/comment-line-inside-string-kept]
 [corpus fixture: er/tokens-comment-line-in-role-string]
-`accDescr` ブロックの行も、
-書かれたまま残します（[アクセシビリティの文](#アクセシビリティの文)を参照）。
+`accDescr` ブロックの行は、
+[アクセシビリティの文](#アクセシビリティの文) の字下げと文脈の保護に従います。
 [fixture: multi-line-values/description-block-lines-kept]
 
 入力
@@ -1525,9 +1540,12 @@ mermaid.js が複数行にわたって読む文は、
 [fixture: multi-line-statements/accessibility-text-joined]
 [fixture: multi-line-statements/direction-value-joined]
 [fixture: multi-line-statements/style-over-lines-joined]
-コメント行やディレクティブがある文は、書かれたまま残します。
-コメント行は、置かれた行の残りを取り込み、ディレクティブのある行の空白は、
-ディレクティブと一緒に読まれるからです。
+コメント行やディレクティブがある文は改行を残し、
+構造の続きの行と間の注釈を 1 段深く置きます。
+値の中の空白と、各隙間の最初の改行の前の空白は保ちます。
+コメントで結合される領域とセミコロン行の保護対象では、
+文全体を原文のまま残します。
+[fixture: multi-line-statements/style-comment-continuation]
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 
@@ -1571,11 +1589,11 @@ T
 ```mmd
 erDiagram
   direction
-%%{init: {}}%%
-LR
+    %%{init: {}}%%
+    LR
   accTitle:
-%%{init: {}}%%
-T
+    %%{init: {}}%%
+    T
 ```
 
 ### 行区切り文字

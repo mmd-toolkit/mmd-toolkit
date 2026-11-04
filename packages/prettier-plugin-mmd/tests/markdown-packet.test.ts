@@ -36,9 +36,9 @@ const cases: readonly MarkdownCase[] = [
     input:
       '- item\n\n  ```mermaid\n  packet\n  accDescr {\n   one\n     two\n  }\n  0:"List"\n  ```\n',
     output:
-      '- item\n\n  ```mermaid\n  packet\n    accDescr {\n   one\n     two\n    }\n    0: "List"\n  ```\n',
+      '- item\n\n  ```mermaid\n  packet\n    accDescr {\n      one\n      two\n    }\n    0: "List"\n  ```\n',
     payloadInput: 'packet\naccDescr {\n one\n   two\n}\n0:"List"',
-    payloadOutput: 'packet\n  accDescr {\n one\n   two\n  }\n  0: "List"\n',
+    payloadOutput: 'packet\n  accDescr {\n    one\n    two\n  }\n  0: "List"\n',
     options: {},
   },
   {

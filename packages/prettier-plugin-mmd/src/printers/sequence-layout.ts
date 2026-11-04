@@ -10,10 +10,13 @@ import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import {
   collectAtoms,
   collectValueNodes,
+  descriptionOpeningRules,
   expectToken,
   expectValue,
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
+  indentDescriptionLines,
+  keepFirstGapLineTails,
   layoutCompactEmptyDescriptionBlockWithFallback,
   spansLinesThatCannotJoin,
   toAsciiLowerCase,
@@ -215,18 +218,18 @@ export function layoutBlockHeader(
  * - A statement written over several lines stands on one line: a line
  *   break inside a statement comes after whitespace, and the lexer reads
  *   the two as whitespace (diagrams/sequence.md, The statement context,
- *   rule 2). One with a comment or a directive in it is kept as written
- *   (see `isKeptAsWritten`); the lines of an `accDescr { ... }` block are
- *   lines of its text, and are kept (docs/sequence.md, Multi-line
- *   statements).
+ *   rule 2). Comments and directives keep line breaks while structural
+ *   continuations align; the lines of an `accDescr { ... }` block are
+ *   lines of its text: keep their breaks and align their safe indentation
+ *   (docs/sequence.md, Multi-line statements).
  * - A title is laid out by `layoutTitle`.
  * - A message has one space before and after its arrow (docs/sequence.md,
  *   Arrow spacing).
  * - A `:` before a text touches what comes before it and has one space
  *   after it when a text follows (docs/sequence.md, Colons).
- * - The lines of an `accDescr { ... }` block whose text starts on a later
- *   line than the `{` are kept as written, and its `}` stands at the level
- *   of the statement (docs/sequence.md, Multi-line values).
+ * - Later lines of an `accDescr { ... }` block align one level inside the
+ *   statement without joining their text. Its `}` stands at the level of
+ *   the statement (docs/sequence.md, Multi-line values).
  */
 export function layoutSequenceStatement(
   source: Source,
@@ -234,7 +237,15 @@ export function layoutSequenceStatement(
   end: number,
 ): AtomLayout {
   const start = statement.range[0]
-  if (isKeptAsWritten(source, statement, end)) {
+  const keepsLineBreaks =
+    statement.type !== "SequenceAccDescrBlockStatement" &&
+    spansLinesThatCannotJoin(source, start, end)
+  if (
+    keepsLineBreaks &&
+    (statement.type === "SequenceTitleStatement" ||
+      holdsJoiningRegion(source, start, end) ||
+      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
+  ) {
     return {
       atoms: [{ start, end }],
       rules: new Map(),
@@ -257,7 +268,7 @@ export function layoutSequenceStatement(
     /** Builds the existing value, trivia and closing-brace layout. */
     function originalLayout(): AtomLayout {
       const closing = findAccDescrBlockClosing(source, block)
-      return {
+      return indentDescriptionLines(source, block, {
         atoms: collectAtoms(
           source,
           start,
@@ -265,10 +276,10 @@ export function layoutSequenceStatement(
           values,
           findAccDescrBlockStretches(source, block),
         ),
-        rules: new Map(),
+        rules: descriptionOpeningRules(source, start),
         outdented: closing === null ? new Set() : new Set([closing]),
         lineBreaks: "kept",
-      }
+      })
     }
 
     return statement.value === null && statement.closed
@@ -280,33 +291,13 @@ export function layoutSequenceStatement(
         )
       : originalLayout()
   }
+  const atoms = collectAtoms(source, start, end, values, tail)
   return {
-    atoms: collectAtoms(source, start, end, values, tail),
+    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
     rules: statementRules(source, statement),
     outdented: new Set(),
-    lineBreaks: "joined",
+    lineBreaks: keepsLineBreaks ? "kept" : "joined",
   }
-}
-
-/**
- * Whether a statement is kept as written, from its start to `end`: it is
- * written over several lines, and a comment or a directive lies in it
- * (docs/sequence.md, Multi-line statements). Such a statement cannot stand
- * on one line, and its lines are part of it only through the whitespace at
- * their ends (diagrams/sequence.md, The statement context, rule 2), which
- * the formatter does not write. A title with a comment line between its
- * keyword and its text is one: the comment line is removed before the
- * lexer reads the text (common.md, Comment lines), so the line after it is
- * the title. The lines of an `accDescr { ... }` block are lines of its
- * text, kept by its own layout.
- */
-function isKeptAsWritten(
-  source: Source,
-  statement: SequenceSimpleStatement,
-  end: number,
-): boolean {
-  if (statement.type === "SequenceAccDescrBlockStatement") return false
-  return spansLinesThatCannotJoin(source, statement.range[0], end)
 }
 
 /**

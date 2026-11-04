@@ -74,12 +74,14 @@ to avoid suggesting a hierarchy. Reconsider this choice if the pinned Mermaid
 later accepts whitespace before block closers, checking that raw body values and
 rendering remain unchanged.
 
-GWT clauses use one configured step and items two. Structural continuation lines
-stand one step deeper than their statement, including continued `data` headers.
-Columns do not define parents, so `tabWidth: 0` adds no spaces; `useTabs` adds
-one tab per step even at width zero. Value continuations, metadata padding and
-hidden consumed-LF boundaries retain their authored columns, apart from the
-block-body margin adjustment in [Data blocks](#data-blocks).
+GWT clauses use one configured step and items two. Ordinary structural
+continuation lines, including a line completing a `data` or `note` header, stand
+one step deeper than their statement. A safely indented block body uses one
+further step inside that continued header line. Columns do not define parents,
+so `tabWidth: 0` adds no spaces; `useTabs` adds one tab per step even at width
+zero. Value continuations, metadata padding and hidden consumed-LF boundaries
+retain their authored columns, apart from the block-body margin adjustment in
+[Data blocks](#data-blocks).
 
 [fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]
 
@@ -356,6 +358,39 @@ resetframe 02 command Beta
 
 ### Declarations and notes
 
+A declaration or note header split by a comment or directive keeps the trivia
+and the line completing the header one level inside its keyword, as for a GWT
+header. Where the data-body rules allow margin changes, put the body one further
+level inside that opening line. Keep the written order, value continuations and
+required hidden boundaries. The closer still stays at column one.
+
+[fixture: eventmodeling/declarations-and-notes/header-completion-comments]
+
+[fixture: eventmodeling/declarations-and-notes/header-opener-comment]
+
+[fixture: eventmodeling/declarations-and-notes/header-directive-continuation]
+
+[fixture: eventmodeling/declarations-and-notes/header-continuation-tabs]
+
+[fixture: eventmodeling/declarations-and-notes/header-continuation-unsafe-body]
+
+Output
+([declarations-and-notes/header-completion-comments-output.mmd](../tests/fixtures/eventmodeling/declarations-and-notes/header-completion-comments-output.mmd)):
+
+```mmd
+eventmodeling
+data
+  // payload
+  Cart {
+    sku: SHIRT-M
+}
+note
+  // payment note
+  01 {
+    Payment received
+}
+```
+
 Separate declaration and note components with one ordinary space:
 `entity Shop.Buy`, `data D` and `note 01`. Put a block opener on its header line
 after one space, exposing the declaration's parts. Values and closing boundaries
@@ -381,6 +416,13 @@ entity Shop.Buy
 ```
 
 ### Gwt clauses and items
+
+A GWT header continued after a comment or directive uses ordinary continuation
+indentation: the trivia and source-frame line stand one level inside `gwt`. Keep
+their written order and comment form. Clause keywords still use one level and
+items two; the source-frame line is not a new top-level statement. [fixture:
+eventmodeling/gwt-clauses-and-items/header-completion-comment] [fixture:
+eventmodeling/gwt-clauses-and-items/header-directive-continuation]
 
 Put `gwt 99` at column one, each clause keyword one step deeper and every item
 another step deeper. This shows the authored clause/item relationship without
@@ -461,13 +503,40 @@ tf 01 evt Alpha { 	 x  }
 ### Data blocks
 
 For ordinary data and note blocks written as `{` immediately followed by LF and
-closed by LF followed by `}`, adjust the common margin of ASCII spaces (U+0020)
-to `tabWidth` where the conditions below permit it. Take the smallest
-leading-space count among nonblank lines as the common margin. Apply the same
-change to each nonblank body line, preserving their relative indentation. Use
-spaces even with `useTabs`; at `tabWidth: 0`, keep the body as written.
+closed by LF followed by `}`, align every nonblank body line to `tabWidth` ASCII
+spaces (U+0020) where the conditions below permit it. Use `2 * tabWidth` spaces
+when an ordinary header continuation remains, putting the body one further step
+inside its opening line. An authored LF that joins into the header, or an LF
+inside an inline directive, does not add this step. Native hidden header forms
+retain their boundary columns and use the ordinary one-step body rule. Use
+spaces even with `useTabs`; at `tabWidth: 0`, keep the body as written. This
+does not parse the body into data fields or format it as JSON or code; authored
+indentation differences are not preserved.
+
+[fixture: eventmodeling/declarations-and-notes/header-completion-comments]
+
+[fixture: eventmodeling/declarations-and-notes/header-directive-continuation]
+
+[fixture: eventmodeling/declarations-and-notes/data-and-note-headers]
+
+[fixture: eventmodeling/declarations-and-notes/data-name-title-keep-lf]
+
+[fixture:
+eventmodeling/declarations-and-notes/header-inline-multiline-directive]
+
+[fixture: eventmodeling/declarations-and-notes/header-continuation-tabs]
+
+[fixture: eventmodeling/hidden-forms/hidden-data-tag-owners]
 
 [fixture: eventmodeling/data-blocks/body-common-margin]
+
+[fixture: eventmodeling/data-blocks/body-overindented-first-line]
+
+[fixture: eventmodeling/data-blocks/body-overindented-later-line]
+
+[fixture: eventmodeling/data-blocks/body-overindented-first-note-blanks-tabs]
+
+[fixture: eventmodeling/data-blocks/body-overindented-first-four-spaces]
 
 [fixture: eventmodeling/indentation/data-declaration-four-spaces]
 
@@ -489,7 +558,7 @@ empty line does not make the next line the first physical line.
 
 Keep blank and whitespace-only lines, line breaks, trailing spaces and tabs, and
 every character after each line's leading margin. The closing brace stays at
-column one. Preserve apparent statements, nested-looking text and an adjacent
+column one. Preserve apparent statements, text containing braces and an adjacent
 closing-looking line when the block's body-present rule reads through it to a
 later closer.
 
@@ -524,11 +593,40 @@ default-size rules also take precedence.
 [fixture: eventmodeling/data-blocks/body-style-semicolon-kept]
 
 Mermaid accepts body indentation and includes it in the raw value. The permitted
-common-margin adjustment can therefore change raw Db values while preserving the
-rendered diagram. This is an explicit formatter exception; it changes no parser,
-specification or recorded Mermaid Db reading.
+leading-margin adjustment can therefore change raw Db values while preserving
+the rendered diagram. This is an explicit formatter exception; it changes no
+parser, specification or recorded Mermaid Db reading.
 
 [fixture: eventmodeling/final-newline/final-block-padding-kept]
+
+Input (escaped):
+`"eventmodeling\ndata AddItem01 {\n    sku: 'SHIRT-M'\n  quantity: 2\n}\n"`.
+
+Output
+([data-blocks/body-overindented-first-line-output.mmd](../tests/fixtures/eventmodeling/data-blocks/body-overindented-first-line-output.mmd)):
+
+```mmd
+eventmodeling
+data AddItem01 {
+  sku: 'SHIRT-M'
+  quantity: 2
+}
+```
+
+Input (escaped):
+`"eventmodeling\ndata D {\n  sku: 'SHIRT-M'\n    quantity: 2\n  price: 10\n}\n"`.
+
+Output
+([data-blocks/body-overindented-later-line-output.mmd](../tests/fixtures/eventmodeling/data-blocks/body-overindented-later-line-output.mmd)):
+
+```mmd
+eventmodeling
+data D {
+  sku: 'SHIRT-M'
+  quantity: 2
+  price: 10
+}
+```
 
 Input (escaped): `"eventmodeling tf 01 evt Alpha [[D]] data D {\nx\n}\n"`.
 

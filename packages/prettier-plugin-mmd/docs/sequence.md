@@ -578,13 +578,13 @@ sequenceDiagram
   title: Tab
 ```
 
-A title with a comment line between its keyword and its text is kept as written,
-as a statement written over several lines with a comment in it is (see
-[Multi-line statements](#multi-line-statements)). The comment line is removed
-before mermaid.js reads the text, so the line after it is the title; printed
-after the one space, the comment would stand on the line of the keyword, and the
-next line would be read as a statement. [fixture: title/comment-line-kept]
-[fixture: title/colon-comment-line-kept]
+A title with a comment line between its keyword and text keeps its complete
+source, including the text's indentation: that whitespace is part of the Db
+title (see [Multi-line statements](#multi-line-statements)). The comment line is
+removed before mermaid.js reads the text, so the line after it is the title;
+printed after the one space, the comment would stand on the line of the keyword,
+and the next line would be read as a statement. [fixture:
+title/comment-line-kept] [fixture: title/colon-comment-line-kept]
 
 Input
 ([title/comment-line-kept-input.mmd](../tests/fixtures/sequence/title/comment-line-kept-input.mmd)):
@@ -855,16 +855,19 @@ rule 2). So `Alice ->>`, a space, a line break, and `Bob: hi` is printed as
 `Alice ->> Bob: hi`. [fixture: multi-line-statements/joined] [fixture:
 multi-line-statements/more-lines-joined]
 
-A statement written over several lines with a comment, a directive, or a `;` in
-it is kept as written, from its start to its end. [fixture:
-multi-line-statements/comment-inside-kept] [fixture:
-multi-line-statements/semicolon-inside-kept] [fixture:
-multi-line-statements/start-moves-to-own-line] It cannot stand on one line, and
-only the whitespace at the ends of its lines, which the formatter does not
-write, makes mermaid.js read its lines as one statement. A title with a comment
-line between its keyword and its text is such a statement. The lines of an
-`accDescr { ... }` block are lines of its text (see
-[Multi-line values](#multi-line-values)).
+A statement with comments or directives keeps its line breaks, while structural
+continuations and intervening trivia stand one level deeper. The whitespace
+before the first line break of each gap is retained: it can make mermaid.js read
+later lines as part of the same statement. Whitespace inside values stays
+unchanged. [fixture: multi-line-statements/comment-inside-kept] [fixture:
+multi-line-statements/autonumber-comment-continuation] [fixture:
+multi-line-statements/autonumber-directive-continuation] A title with trivia
+between its keyword and text keeps its complete source, since its text includes
+indentation. Joining regions and statements protected by semicolon lines also
+stay as written. [fixture: multi-line-statements/semicolon-inside-kept]
+[fixture: multi-line-statements/start-moves-to-own-line] Description blocks
+instead follow [Multi-line values](#multi-line-values), which align their body
+indentation.
 
 The inputs have whitespace at the ends of lines, so the example is written as
 strings, in which `\n` is a line break:
@@ -876,18 +879,17 @@ in the [folder](../tests/fixtures/sequence/multi-line-statements)).
 
 The whitespace-only interior of a description block, including tabs, line breaks
 and Unicode whitespace, prints `{}`: there is no text for interior whitespace to
-surround. An already empty interior stays empty. A touching keyword stays
-touching: `accDescr{  }` becomes `accDescr{}`. [fixture:
+surround. An already empty interior stays empty. The keyword and opening brace
+have one space between them: `accDescr{  }` becomes `accDescr {}`. [fixture:
 multi-line-values/empty-whitespace-interiors] [test: sequence Unicode and tab
-interiors] Blocks with comments or directives retain their existing layout.
+interiors] Blocks with comments or directives keep their contents and line
+breaks.
 
-For blocks with text, as in a flowchart: the lines of an `accDescr { ... }`
-block and of a data block written over several lines are kept as written, and
-the `}` of an `accDescr` block stands at the level of its statement. Outside a
-subgraph the columns of those lines are not in the Db, so keeping them is a
-choice, whose reason is in a flowchart (see
-[Multi-line values](./flowchart.md#multi-line-values)). [fixture:
-multi-line-values/kept] [fixture:
+Align the lines of an `accDescr { ... }` body one step inside its statement,
+with a separate `}` at the statement's level, as in
+[flowchart's top-level descriptions](./flowchart.md#multi-line-values). Mermaid
+discards this indentation from the description. Data blocks keep their authored
+columns and contents. [fixture: multi-line-values/kept] [fixture:
 multi-line-values/accdescr-block-closing-brace-after-text-kept] [fixture:
 multi-line-values/accdescr-block-blank-and-comment-lines-kept] [fixture:
 multi-line-values/data-block-in-block-kept] A block without text, whose lines
@@ -920,8 +922,8 @@ Output
 sequenceDiagram
   loop x
     accDescr {
-  one
-    two
+      one
+      two
     }
     participant A@{
   "type": "queue"
@@ -953,16 +955,18 @@ sequenceDiagram
 
 ## Kept as written
 
-Some text is always kept as written, because changing it would change the
-diagram or the input would be rejected:
+Apart from description-body indentation under
+[Multi-line values](#multi-line-values), the following text is kept as written
+because changing it would change the diagram or the input would be rejected:
 
 - the text of a value, with the whitespace inside it, and the text of a `box` as
   a whole, up to the last U+2028 or U+2029 that ends it;
 - the whitespace after the one character that follows `title` or `title:`;
 - the data block of a participant, and that it touches its id;
 - that an arrow touches a source spelled as a number or `title`;
-- a statement written over several lines with a comment, a directive, or a `;`
-  in it, such as a title with a comment line between its keyword and its text;
+- a title with trivia between its keyword and text;
+- a statement protected by a semicolon line or a joining comment region;
+- the whitespace before the first line break of a gap containing trivia;
 - whether whitespace is written before the mark of a comment after a statement,
   and a U+2028 or U+2029 between a comment and a comment line after it;
 - the arrows.

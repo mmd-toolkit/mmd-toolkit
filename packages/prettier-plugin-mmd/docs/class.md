@@ -485,14 +485,23 @@ classDiagram
 
 ### Member lines
 
-A member line, in a body or after the `:` of a class name, is kept as written,
-from its first character to its last. [fixture: member-lines/kept] [fixture:
-member-lines/percent-text-kept] [fixture:
+For an ordinary method, remove padding before and just inside its parentheses,
+and put one space before a nonempty return type. Keep whitespace within each AST
+field, including the name prefix after a visibility mark. Methods with trivia,
+ignored text, physical or Unicode line separators, or a protected semicolon line
+retain their complete source. [fixture: member-lines/method-padding] [fixture:
+member-lines/method-values-and-classifiers-kept] [fixture:
+member-lines/method-trivia-and-semicolon-kept]
+
+Attribute and annotation lines, in a body or after the `:` of a class name, keep
+their contents as written. Methods preserve their name, parameter and
+return-type contents, including generic spelling and classifier-related tails.
+[fixture: member-lines/kept] [fixture: member-lines/percent-text-kept] [fixture:
 member-lines/trailing-whitespace-dropped] [fixture:
 member-lines/directive-inside-kept] [corpus fixture: class/lex-member-percent]
-mermaid.js divides it into its parts by its text, and the whitespace after a
-visibility mark is part of the name: `+ foo()` has the name ` foo`, with a
-space, and `+foo()` the name `foo`. [fixture: member-lines/kept] [corpus
+mermaid.js divides each member into its parts by its text, and the whitespace
+after a visibility mark is part of the name: `+ foo()` has the name ` foo`, with
+a space, and `+foo()` the name `foo`. [fixture: member-lines/kept] [corpus
 fixture: class/gram-member-visibility-whitespace-body-0184dca2] An annotation
 line, `<< y z >>`, keeps the whitespace around its text in the Db. [fixture:
 member-lines/kept]
@@ -517,7 +526,7 @@ Output
 classDiagram
   class A {
     + spaced  name
-    +foo( a ,  b )   int$
+    +foo(a ,  b) int$
     << y  z >>
   }
   A : -  bar()
@@ -774,13 +783,12 @@ classDiagram
 
 ### Multi-line values
 
-As in a flowchart: the lines of an `accDescr { ... }` block are kept as written,
-and its `}` stands at the level of its statement. Outside a subgraph the columns
-of those lines are not in the Db, so keeping them is a choice, whose reason is
-in a flowchart (see [Multi-line values](./flowchart.md#multi-line-values)). A
-string, a backquoted name, and a generic type written over several lines are
-kept as written too. [fixture: multi-line-values/kept] [fixture:
-multi-line-values/block-text-on-opening-line-spaced] [fixture:
+As in [flowchart's top-level descriptions](./flowchart.md#multi-line-values),
+align the lines of an `accDescr { ... }` body one step inside its statement,
+with a separate `}` at the statement's level. Mermaid discards this indentation
+from the description. A string, a backquoted name, and a generic type written
+over several lines are kept as written too. [fixture: multi-line-values/kept]
+[fixture: multi-line-values/block-text-on-opening-line-spaced] [fixture:
 multi-line-values/block-comment-line-kept] [fixture:
 multi-line-values/block-empty-line-kept] [fixture:
 multi-line-values/backquoted-name-kept] [fixture:
@@ -808,7 +816,7 @@ Output
 ```mmd
 classDiagram
   accDescr {
-  one
+    one
     two
   }
   note "line one
@@ -826,12 +834,14 @@ where the text may be: so `direction`, a line break, and `LR` is printed as
 `direction LR`. [fixture: multi-line-statements/joined] [fixture:
 multi-line-statements/acc-descr-joined] [fixture:
 multi-line-statements/empty-line-inside-joined] [corpus fixture:
-class/lex-direction-line-value-next-line] A statement written over several lines
-with a comment or a directive in it is kept as written, from its start to its
-end, as in a sequence diagram (see
-[Multi-line statements](./sequence.md#multi-line-statements)). [fixture:
-multi-line-statements/comment-inside-kept] [fixture:
-multi-line-statements/directive-inside-kept] [fixture:
+class/lex-direction-line-value-next-line] A statement with a comment or
+directive keeps its line breaks, while structural continuations and intervening
+trivia stand one level deeper, as in a sequence diagram (see
+[Multi-line statements](./sequence.md#multi-line-statements)). Whitespace inside
+values remains unchanged. The whitespace before the first line break of each gap
+is retained; joining regions and semicolon line protections keep the whole
+statement as written. [fixture: multi-line-statements/comment-inside-kept]
+[fixture: multi-line-statements/directive-inside-kept] [fixture:
 multi-line-statements/comment-inside-title-kept]
 
 Input
@@ -870,8 +880,8 @@ Output
 ```mmd
 classDiagram
   direction
-%% c
-LR
+    %% c
+    LR
 ```
 
 Next-line `accTitle:` and `accDescr:` values keep their line break when joining
@@ -951,10 +961,11 @@ classDiagram
 
 The whitespace-only interior of a description block, including tabs, line breaks
 and Unicode whitespace, prints `{}`: there is no text for interior whitespace to
-surround. An already empty interior stays empty. A touching keyword stays
-touching: `accDescr{  }` becomes `accDescr{}`. [fixture:
+surround. An already empty interior stays empty. The keyword and opening brace
+have one space between them: `accDescr{  }` becomes `accDescr {}`. [fixture:
 empty-description-blocks/empty-whitespace-interiors] [test: class Unicode and
-tab interiors] Blocks with comments or directives retain their existing layout.
+tab interiors] Blocks with comments or directives keep their contents and line
+breaks, with body indentation under [Multi-line values](#multi-line-values).
 
 An empty description block, `accDescr {}`, is a statement when it shares its
 line with another statement or with the header, before it or after it:
@@ -1055,20 +1066,22 @@ unclosed-backquoted-names/in-relation-kept]
 
 ## Kept as written
 
-Some text is always kept as written, because changing it would change the
-diagram or the input would be rejected:
+Apart from description-body indentation under
+[Multi-line values](#multi-line-values), the following text is kept as written
+because changing it would change the diagram or the input would be rejected:
 
 - the text of a value: a string, a backquoted name, the text of a label, a
   style, and the text of `accTitle` and `accDescr`; [fixture:
   whitespace-between-tokens/style-values-kept] [fixture:
   labels/accessibility-text-kept]
-- a member line, and a generic type from `~` to `~`;
+- attribute and annotation contents, method-field contents, and a generic type
+  from `~` to `~`;
 - the whitespace after the `:` of a label of only whitespace, and whether
   whitespace follows the `:` of a label on a line that holds a `;`;
 - a line of only whitespace after the comment of a statement, as one space;
 - the text of a direction line before `direction` and after its value;
-- a statement written over several lines with a comment, a directive, or a `;`
-  in it;
+- a statement protected by a semicolon line or a joining comment region;
+- the whitespace before the first line break of a gap containing trivia;
 - a backquoted name that is not closed, to the end of the text;
 - the spelling of the header, `classDiagram` or `classDiagram-v2`. [fixture:
   indentation/header-v2-kept]

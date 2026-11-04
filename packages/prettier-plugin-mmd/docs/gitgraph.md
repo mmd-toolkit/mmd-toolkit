@@ -37,8 +37,8 @@ Put the header at column one and ordinary body statements, standalone comments
 and global directives one configured step below it. The flat history has no
 extra level after branch. `tabWidth: 0` gives zero spaces; `useTabs` gives one
 tab even at width zero, because gitgraph columns have no grammatical meaning.
-This exposes the AST structure without altering value continuation columns,
-hidden closers or protected segments.
+This exposes the AST structure without altering other value continuation
+columns, hidden closers or protected segments.
 
 Fixed cases: [fixture: gitgraph/indentation/indent-two] [fixture:
 gitgraph/indentation/indent-four] [fixture: gitgraph/indentation/indent-zero]
@@ -386,18 +386,22 @@ gitGraph
 
 Print `title` plus one space and a nonempty value trimmed only at its outer
 ends; empty/whitespace-only titles print bare `title`. Shared accessibility
-layout prints `accTitle: value` / `accDescr: value`, empty blocks as `{}`,
-touching braces as written and present edge whitespace as one space. A separate
-closer aligns with its statement; continuation columns and internal blanks stay.
-Whitespace-only interiors print `{}` because there is no text for interior
-whitespace to surround; tabs, line breaks and Unicode whitespace follow the same
-rule. [fixture: title-and-common-values/empty-whitespace-interiors] [test:
-gitgraph Unicode and tab interiors] Comment/directive-only blocks keep their
-trivia. Keep every repeated, empty and interleaved assignment, including
-frontmatter fallback. Line forms never read the next physical line, even across
-blanks/comments/directives; colon-form braces stay line text. These choices
-compact equivalent outer whitespace without changing the authored interior or
-lexical ownership.
+layout prints `accTitle: value` / `accDescr: value` and empty blocks as `{}`.
+Put one ordinary space between `accDescr` and `{`, even when written touching;
+protected trivia and semicolon layouts keep their gaps. Interior touching sides
+stay touching, and present edge whitespace becomes one space. A separate closer
+aligns with its statement. Ordinary description body and standalone comment
+lines align one level inside it: the Db removes indentation after LF. Keep line
+breaks, internal blanks and trailing whitespace. Directives and shared removed
+comment regions keep their complete source. Whitespace-only interiors print `{}`
+because there is no text for interior whitespace to surround; tabs, line breaks
+and Unicode whitespace follow the same rule. [fixture:
+title-and-common-values/empty-whitespace-interiors] [test: gitgraph Unicode and
+tab interiors] Comment/directive-only blocks keep their trivia. Keep every
+repeated, empty and interleaved assignment, including frontmatter fallback. Line
+forms never read the next physical line, even across blanks/comments/directives;
+colon-form braces stay line text. These choices compact equivalent outer
+whitespace without changing the description text or lexical ownership.
 
 Fixed cases: [fixture: gitgraph/title-and-common-values/title-trim] [corpus
 fixture: gitgraph/title-next-line] [fixture:
@@ -428,9 +432,9 @@ gitGraph
 ### Multiline values
 
 Do not wrap operations/options/values at printWidth: a visible LF can end a
-statement. Keep physical quoted/block lines, continuation columns and internal
-blank lines. The shared block layout alone aligns a separate closing brace;
-hidden consumed-LF gaps follow their own preservation rules.
+statement. Keep physical quoted lines, their continuation columns and internal
+blank lines. Description bodies use the shared indentation above; hidden
+consumed-LF gaps follow their own preservation rules.
 
 Fixed cases: [fixture: gitgraph/multiline-values/long-kept] [fixture:
 gitgraph/multiline-values/multiline-string] [fixture:
@@ -793,7 +797,7 @@ Output
 
 ```mmd
 gitGraph
-  accDescr{}
+  accDescr {}
 ```
 
 ### Specified readings

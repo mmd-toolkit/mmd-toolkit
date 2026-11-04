@@ -77,7 +77,9 @@ frame、model entity、`data`、`note`、`gwt` が対象です。
 トップレベルの字下げを再検討します。
 
 GWT clause は設定の 1 段、item は 2 段にします。
-構造の継続行は、`data` ヘッダーの継続も含め、その文より 1 段深くします。
+`data` と `note` の見出しが完結する行も含め、
+通常の構造の継続行はその文より 1 段深くします。
+安全に字下げできる block 本文は、その継続した見出し行からさらに 1 段深くします。
 列は親子を決めないため、`tabWidth: 0` では空白を足しません。
 `useTabs` では幅が 0 でも 1 段に tab を 1 個使います。
 値の継続列、metadata の空白、hidden が消費する LF の境界は、
@@ -357,6 +359,40 @@ resetframe 02 command Beta
 
 ### Declarations and notes
 
+コメントや directive で宣言や note の見出しが分かれる場合、 GWT と同じく、
+trivia と見出しが完結する行をキーワードより 1 段深くします。
+data 本文の規則が margin の変更を許す場合、
+本文はその開始行よりさらに 1 段深くします。
+原文の順序、値の継続行、必須の hidden の境界を保ちます。
+閉じ波括弧は引き続き第 1 列に置きます。
+
+[fixture: eventmodeling/declarations-and-notes/header-completion-comments]
+
+[fixture: eventmodeling/declarations-and-notes/header-opener-comment]
+
+[fixture: eventmodeling/declarations-and-notes/header-directive-continuation]
+
+[fixture: eventmodeling/declarations-and-notes/header-continuation-tabs]
+
+[fixture: eventmodeling/declarations-and-notes/header-continuation-unsafe-body]
+
+出力
+([declarations-and-notes/header-completion-comments-output.mmd](../tests/fixtures/eventmodeling/declarations-and-notes/header-completion-comments-output.mmd)):
+
+```mmd
+eventmodeling
+data
+  // payload
+  Cart {
+    sku: SHIRT-M
+}
+note
+  // payment note
+  01 {
+    Payment received
+}
+```
+
 宣言と note の部品は `entity Shop.Buy`、`data D`、`note 01` と、
 普通の 1 space で分けます。
 block opener は見出し行の 1 space 後に置き、宣言の部品を見せます。
@@ -382,6 +418,14 @@ entity Shop.Buy
 ```
 
 ### Gwt clauses and items
+
+GWT の見出しがコメントや directive の後に続く場合、通常の継続の字下げを使い、
+trivia と source-frame の行を `gwt` より 1 段深く置きます。
+書かれた順序とコメントの形は保ちます。
+clause keyword は引き続き 1 段、item は 2 段です。
+source-frame の行は新たなトップレベルの文ではありません。
+[fixture: eventmodeling/gwt-clauses-and-items/header-completion-comment]
+[fixture: eventmodeling/gwt-clauses-and-items/header-directive-continuation]
 
 `gwt 99` は第 1 列、clause keyword はさらに 1 段、
 各 item はさらに 1 段深くします。
@@ -463,12 +507,39 @@ tf 01 evt Alpha { 	 x  }
 
 `{` の直後が LF で、LF の直後の `}` で閉じる通常の data と note は、
 次の条件を満たす場合、
-ASCII 空白（U+0020）の共通 margin を `tabWidth` にそろえます。
-空でない本文行の行頭空白数の最小値を共通 margin とします。
-空でない各本文行を同じ量だけ動かし、相対的な字下げを保ちます。
+空でない本文行をすべて `tabWidth` 個の ASCII 空白（U+0020）で字下げします。
+通常の見出しの継続行が残る場合は `2 * tabWidth` 個にして、
+本文をその開始行よりさらに 1 段深くします。
+見出しへ結合される元の LF や、
+inline directive の内部の LF では段を増やしません。
+native hidden を含む見出しはその境界の列を保ち、本文は通常の 1 段にします。
 `useTabs` でも空白を使い、`tabWidth: 0` では本文を書かれたまま残します。
+本文をデータ項目に分けて解析したり、JSON や code として整形したりはせず、
+原文の字下げの差は保ちません。
+
+[fixture: eventmodeling/declarations-and-notes/header-completion-comments]
+
+[fixture: eventmodeling/declarations-and-notes/header-directive-continuation]
+
+[fixture: eventmodeling/declarations-and-notes/data-and-note-headers]
+
+[fixture: eventmodeling/declarations-and-notes/data-name-title-keep-lf]
+
+[fixture: eventmodeling/declarations-and-notes/header-inline-multiline-directive]
+
+[fixture: eventmodeling/declarations-and-notes/header-continuation-tabs]
+
+[fixture: eventmodeling/hidden-forms/hidden-data-tag-owners]
 
 [fixture: eventmodeling/data-blocks/body-common-margin]
+
+[fixture: eventmodeling/data-blocks/body-overindented-first-line]
+
+[fixture: eventmodeling/data-blocks/body-overindented-later-line]
+
+[fixture: eventmodeling/data-blocks/body-overindented-first-note-blanks-tabs]
+
+[fixture: eventmodeling/data-blocks/body-overindented-first-four-spaces]
 
 [fixture: eventmodeling/indentation/data-declaration-four-spaces]
 
@@ -491,7 +562,7 @@ ASCII 空白（U+0020）の共通 margin を `tabWidth` にそろえます。
 空行、空白だけの行、改行、行末の空白とタブ、
 行頭の margin より後の文字は保ちます。
 閉じ波括弧は第 1 列に残します。
-見かけの文、入れ子風の text、直後の閉じ風の行も、
+見かけの文、波括弧を含む text、直後の閉じ風の行も、
 body を持つ形の規則が後の閉じまで読む場合は保ちます。
 
 [fixture: eventmodeling/data-blocks/body-whitespace-kept]
@@ -525,11 +596,40 @@ HTML、entity、directive 風の text は、字下げで描画が変わる場合
 [fixture: eventmodeling/data-blocks/body-style-semicolon-kept]
 
 Mermaid は本文内の字下げを受理し、raw value に含めます。
-そのため、この共通 margin の変更では、描画を保ちながら raw Db 値が変わります。
+そのため、この行頭 margin の変更では、描画を保ちながら raw Db 値が変わります。
 これは formatter の明示的な例外で、parser、仕様、
 記録された Mermaid の Db の読みは変えません。
 
 [fixture: eventmodeling/final-newline/final-block-padding-kept]
+
+入力（escape 表記）:
+`"eventmodeling\ndata AddItem01 {\n    sku: 'SHIRT-M'\n  quantity: 2\n}\n"`
+
+出力
+([data-blocks/body-overindented-first-line-output.mmd](../tests/fixtures/eventmodeling/data-blocks/body-overindented-first-line-output.mmd)):
+
+```mmd
+eventmodeling
+data AddItem01 {
+  sku: 'SHIRT-M'
+  quantity: 2
+}
+```
+
+入力（escape 表記）:
+`"eventmodeling\ndata D {\n  sku: 'SHIRT-M'\n    quantity: 2\n  price: 10\n}\n"`
+
+出力
+([data-blocks/body-overindented-later-line-output.mmd](../tests/fixtures/eventmodeling/data-blocks/body-overindented-later-line-output.mmd)):
+
+```mmd
+eventmodeling
+data D {
+  sku: 'SHIRT-M'
+  quantity: 2
+  price: 10
+}
+```
 
 入力（escape 表記）: `"eventmodeling tf 01 evt Alpha [[D]] data D {\nx\n}\n"`
 

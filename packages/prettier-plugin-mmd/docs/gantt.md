@@ -37,9 +37,9 @@ is nothing to mermaid.js, so the printer chooses the indentation from the
 structure alone, and one rule per level prints the same text whatever the input
 was indented with. [fixture: indentation/written-indentation-dropped] The header
 stands at the first column, also where whitespace was written before it.
-[fixture: indentation/header-leading-whitespace] The lines of a text that is
-kept as written, such as the lines of an `accDescr` block, keep their columns,
-and the `}` that closes a block stands at the level of its statement (see
+[fixture: indentation/header-leading-whitespace] Values kept as written retain
+their columns. Description-body lines instead stand one step inside their
+statement, with a separate `}` at its level (see
 [Multi-line values](#multi-line-values)). [fixture:
 indentation/description-block-under-a-section]
 
@@ -695,8 +695,9 @@ The string of a link is printed as written. [fixture:
 click-statements/call-name-and-arguments-kept] [fixture:
 click-statements/href-string-kept] A string or an argument list written over
 lines is printed as written (see [Multi-line values](#multi-line-values)).
-[fixture: click-statements/string-over-lines-kept] A comment line or a directive
-between the parts keeps the statement as written. [fixture:
+[fixture: click-statements/string-over-lines-kept] A comment line or directive
+between the parts keeps its line breaks, with ordinary structural continuations
+aligned under [Multi-line statements](#multi-line-statements). [fixture:
 click-statements/comment-line-between-parts-kept] [fixture:
 click-statements/directive-between-parts-kept]
 
@@ -786,11 +787,12 @@ line, or a colon written on a later line than the keyword, is printed on one
 line. [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/keyword-and-colon-over-lines-joined]
 
-The lines of an `accDescr { ... }` block are kept as written by choice, not by
-need: the whitespace at the start of a line is not in the Db (`a`, a line break,
-and `b` give the same description as with `  b`), and the lines are the text of
-the author, which the printer does not format. Its `}` stands at the level of
-its statement; a text on the line of the `{` has one space inside the braces
+Where `accDescr` and `{` print on the same line, separate them by one space,
+including when they were written touching. Existing opener-line breaks retain
+their own rules. Protected trivia and semicolon layouts keep their gaps. Align
+the lines of an `accDescr { ... }` body one step inside its statement. Mermaid
+discards indentation after LF from the description. Its `}` stands at the level
+of its statement; a text on the line of the `{` has one space inside the braces
 where it was written apart, and the braces that touch their text keep touching.
 [fixture: accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-text-on-opening-line] [fixture:
@@ -838,23 +840,26 @@ Output
 ```mmd
 gantt
   accDescr {
-   a
-  b
+    a
+    b
   }
 ```
 
 ### Empty description blocks
 
+[fixture: gantt/empty-description-blocks/touching-comment-body]
+
 An empty block, which changes nothing, is a statement of its own. The
 whitespace-only interior of a description block, including tabs, line breaks and
 Unicode whitespace, prints `{}`: there is no text for interior whitespace to
-surround. An already empty interior stays empty. A touching keyword stays
-touching: `accDescr{  }` becomes `accDescr{}`. [fixture:
+surround. An already empty interior stays empty. The ordinary keyword/opener gap
+uses one space: `accDescr{  }` becomes `accDescr {}`. [fixture:
 empty-description-blocks/empty-whitespace-interiors] [test: gantt Unicode and
 tab interiors] [fixture: empty-description-blocks/inner-whitespace-collapsed]
 [fixture: empty-description-blocks/touching-kept] [fixture:
 empty-description-blocks/blank-lines-inside] A block with a directive or a
-comment line is printed as written. [fixture:
+comment line keeps its contents and line breaks, with body indentation under
+[Accessibility statements](#accessibility-statements). [fixture:
 empty-description-blocks/with-directive-or-comment-line-kept] It stands on a
 line of its own, also after the header. [fixture:
 empty-description-blocks/after-header]
@@ -874,9 +879,9 @@ Output
 
 ```mmd
 gantt
-  accDescr{}
   accDescr {}
-  accDescr{}
+  accDescr {}
+  accDescr {}
 ```
 
 Input
@@ -906,12 +911,21 @@ setting, `weekday`, `weekend`, `includes`, `excludes`, `accTitle:`, and
 `accDescr:`, between the parts of a click statement, and around the `:` of
 `accTitle` and `accDescr`. Empty lines there are dropped too. [fixture:
 multi-line-statements/value-on-next-line-joined] [fixture:
-multi-line-statements/blank-lines-between-keyword-and-day] A statement with a
-comment line, a directive, or a `;` in it is kept as written, since the comment
-line would take the rest of the line it stands on, the whitespace of a line that
-holds a directive is read with it, and a `;` could come to a line that matches
-the line rule. [fixture: multi-line-statements/comment-line-inside-kept]
-[fixture: multi-line-statements/directive-inside-kept] [fixture:
+multi-line-statements/blank-lines-between-keyword-and-day] Keep trivia line
+breaks in click, weekday/weekend, includes/excludes and accessibility line
+statements. Place later structural parts and standalone comments or directives
+one continuation level inside their statement, also under a section. Preserve
+each gap's first line tail and complete directive interiors; quoted strings,
+call names and arguments remain whole. [fixture:
+multi-line-statements/structural-trivia-continuations] [fixture:
+click-statements/trivia-continuation-under-section]
+
+Titles, sections, settings and tasks keep their original multiline trivia
+layout: their value padding is part of the Db. A `;` in a multiline statement, a
+semicolon on its final line, a joining comment region or a U+FEFF list separator
+also keeps the original layout. [fixture:
+multi-line-statements/comment-line-inside-kept] [fixture:
+multi-line-statements/directive-inside-kept] [fixture:
 multi-line-statements/semicolon-inside-kept]
 
 Input
@@ -965,16 +979,16 @@ gantt
 %% c
 T
   weekday
-%% c
-monday
+    %% c
+    monday
 ```
 
 ### Multi-line values
 
 The arguments and the name of a call and the string of a link are kept as
 written, with the line breaks and the whitespace inside, since they are part of
-the value. The lines of an `accDescr` block are kept as written too, by choice:
-the whitespace at the start of a line is not in the Db. [fixture:
+the value. Description-body lines instead align one step inside their statement
+under [Accessibility statements](#accessibility-statements). [fixture:
 multi-line-values/call-arguments-kept] [fixture:
 multi-line-values/call-name-kept] [fixture: multi-line-values/href-string-kept]
 [fixture: multi-line-values/description-block-lines-kept] A comment line inside
@@ -1018,7 +1032,7 @@ Output
 ```mmd
 gantt
   accDescr {
-  a
+    a
     b
   }
 ```
@@ -1196,9 +1210,10 @@ break its left contact.
 
 [fixture: gantt/directives/split-directive-gap]
 
-A directive between two units of a statement stays where it is, with the
-whitespace written on each side of it, and a directive inside a text is part of
-the text. [fixture: directives/between-units-kept] [fixture:
+A directive between two units stays in its authored gap; same-line contact or
+separation on either side stays. Structural continuation columns follow
+[Multi-line statements](#multi-line-statements). A directive inside a value is
+part of that text. [fixture: directives/between-units-kept] [fixture:
 directives/between-task-parts-kept] [fixture: directives/inside-values-kept]
 [fixture: directives/over-lines-kept] A directive that is not closed takes the
 rest of the text, and is kept as written. [fixture:

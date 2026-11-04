@@ -1,10 +1,14 @@
 import type { Node, Range } from "@mmd-toolkit/parser"
+import type { Doc } from "prettier"
 import type { GapRule } from "./atoms.ts"
 import { expectToken, expectValue } from "./layout.ts"
+import { lineEndOf, lineStartOf } from "./kept-lines.ts"
+import { printAsWritten } from "./lines.ts"
 import type { Source } from "./source.ts"
 import {
   findStructuralToken,
   findTokensBetween,
+  findTriviaBetween,
   isStructural,
 } from "./source.ts"
 
@@ -69,18 +73,82 @@ export function addNameListRules(
 /**
  * The rules of a `classDef` or `style` statement: its names are separated by
  * `,` without whitespace, and the first style stands after one space. The
- * styles are printed as written, and the whitespace between them and the `,`
- * is as in the source.
+ * default style/comma gaps follow the source. Safe ER and requirement units
+ * instead use no space before a comma and one after it (docs/er.md and
+ * docs/requirement.md, Styles and classes).
  */
 export function styleStatementRules(
   source: Source,
   names: readonly Node[],
   styles: readonly Node[],
+  compactStyles = false,
 ): Map<number, GapRule> {
   const rules = new Map<number, GapRule>()
   addNameListRules(source, names, rules)
   rules.set(styles[0].range[0], "space")
+  if (compactStyles) {
+    for (let index = 1; index < styles.length; index++) {
+      const comma = expectToken(
+        findStructuralToken(source, styles[index - 1].range[1]),
+        "the comma between styles",
+      )
+      rules.set(comma.range[0], "none")
+      rules.set(styles[index].range[0], "space")
+    }
+  }
   return rules
+}
+
+/** Keep property and value text, changing only the first colon's padding. */
+export function printStyleUnitSpacing(source: Source, style: Node): Doc {
+  const colon = source.text.indexOf(":", style.range[0])
+  if (colon <= style.range[0] || colon >= style.range[1])
+    return printAsWritten(source, ...style.range)
+  let propertyEnd = colon
+  while (
+    source.text[propertyEnd - 1] === " " ||
+    source.text[propertyEnd - 1] === "\t"
+  )
+    propertyEnd--
+  if (propertyEnd === style.range[0])
+    return printAsWritten(source, ...style.range)
+  let valueStart = colon + 1
+  while (source.text[valueStart] === " " || source.text[valueStart] === "\t")
+    valueStart++
+  return [
+    printAsWritten(source, style.range[0], propertyEnd),
+    ":",
+    valueStart < style.range[1]
+      ? [" ", printAsWritten(source, valueStart, style.range[1])]
+      : "",
+  ]
+}
+
+/**
+ * ER and requirement discard simple same-line style-unit padding. Keep trivia,
+ * physical/Unicode line boundaries and complete semicolon-sensitive lines on
+ * their original path (diagrams/er.md and diagrams/requirement.md, Style context).
+ */
+export function styleUnitsCanCompact(
+  source: Source,
+  start: number,
+  end: number,
+  styles: readonly Node[],
+): boolean {
+  return (
+    styles.every((style) => {
+      const text = source.text.slice(...style.range)
+      return (
+        !text.includes("\n") &&
+        !text.includes("\u2028") &&
+        !text.includes("\u2029")
+      )
+    }) &&
+    !source.text
+      .slice(lineStartOf(source, start), lineEndOf(source, end))
+      .includes(";") &&
+    findTriviaBetween(source, start, end).length === 0
+  )
 }
 
 /**

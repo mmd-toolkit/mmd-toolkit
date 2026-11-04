@@ -5,8 +5,8 @@
  * allows only semicolon removals, and the embedded data is as written (see
  * `writtenEmbeddedTexts`).
  * The Db that the tree of the formatted text denotes matches the corpus's
- * recorded Db except for eventmodeling's permitted data margins, which are
- * checked independently before comparing its Db and embedded blocks. The
+ * recorded Db except for permitted eventmodeling data and state note margins,
+ * checked independently with their authored source before Db comparison. The
  * formatted texts are not stored; the fixtures under `tests/fixtures/` show the
  * formatting itself.
  */
@@ -25,6 +25,7 @@ import {
   eventmodelingDbForFormattingComparison,
   eventmodelingEmbeddedForFormattingComparison,
 } from "./eventmodeling-data-margins.ts"
+import { stateDbForFormattingComparison } from "./state-note-margins.ts"
 
 /**
  * Whether the plugin formats the input, rather than printing it as written
@@ -114,7 +115,14 @@ export async function testCorpus(diagram: DiagramType): Promise<void> {
       expect(
         isEventmodeling
           ? eventmodelingDbForFormattingComparison(recorded.db, formattedDb)
-          : formattedDb,
+          : fixture.diagram === "state"
+            ? stateDbForFormattingComparison(
+                recorded.db,
+                formattedDb,
+                input,
+                formatted,
+              )
+            : formattedDb,
         output,
       ).toEqual(recorded.db)
     })

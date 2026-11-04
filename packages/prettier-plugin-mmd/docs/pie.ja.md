@@ -45,7 +45,8 @@ XY chart の[インデント](./xychart.ja.md#インデント)を再利用しま
 pie の区分は slice であり、追加の階層にはしません。
 pie では列が構文を決めないため、`tabWidth: 0` の本文は空白0個です。
 `useTabs` は幅0でも tab 1つです。
-値の継続行と hidden の閉じは元の列を保ち、YAML だけは共有の最小幅を使います。
+説明本文以外の値の継続行と hidden の閉じは元の列を保ち、
+YAML だけは共有の最小幅を使います。
 
 固定例: [fixture: pie/indentation/indent-default]
 [fixture: pie/indentation/indent-four] [fixture: pie/indentation/indent-zero]
@@ -251,21 +252,24 @@ pie
 
 ### Description blocks
 
-flowchart の[複数行の値](./flowchart.ja.md#複数行の値)
-を同じ理由で再利用します。
-値の列を常に一貫して保つためです。
+flowchart の[複数行の値](./flowchart.ja.md#複数行の値) を再利用します。
+説明の Db では LF 後の字下げが取り除かれるためです。
 Db が同じ形（`accDescr{a}` と `accDescr {a}`、`{a}` と `{ a }`）のうち、
 pie は独自の形を選ばず、
 兄弟の図の共通の accessibility
 の決定（[flowchart](./flowchart.ja.md#アクセシビリティの行)、
 [C4](./c4.ja.md#説明ブロック)）に従います。
-接していれば接したまま、空白の連なりは1つにし、空白は加えません。
-語と開き括弧、内部の接した側は接したまま、空白の連なりは1つにします。
+通常の gap では、接して書かれていても語と開き括弧の間に空白 1 つを置きます。
+内部でテキストに接した側は接したまま、既存の空白の連なりは 1 つにします。
+内側に新しい空白は加えません。
+保護対象の trivia やセミコロンの配置では、その gap を保ちます。
 開き括弧の前が空白だけなら改行や Unicode の境界も結合できます。
 コメント・directive の改行は残します。
 空白だけの内部は囲む値がないため `{}` にします。
 コメントだけなら1段内側に置き、別行の閉じを文の列に揃えます。
-後続行から始まる値は内部のコメント行も含め、列と空行を保ちます。
+通常の後続本文と独立したコメント行は、文より1段内側に揃えます。
+改行、空行、行末空白は保ちます。
+directive と共有の除去対象となるコメント領域は原文全体を保ちます。
 別行の `}` は文の列です。
 trivia のある内部は残します。
 引用符・backslash・hidden に見える文字列でも最初の `}` が閉じます。
@@ -296,7 +300,7 @@ trivia のある内部は残します。
 ```mmd
 pie
   accDescr {
-  first
+    first
     second
   }
   "Data" : 2
@@ -619,7 +623,8 @@ pie showData
 flowchart の [複数行の値](./flowchart.ja.md#複数行の値) と共有の
 [折り返し](./flowchart.ja.md#折り返し) を再利用します。
 原文は著者の選択で、幅によらず同じ配置にするためです。
-ラベルと block の物理行、継続列、内部の空行を保持します。
+ラベルの物理行、継続列、内部の空行を保持します。
+説明本文は [Description blocks](#description-blocks) に従います。
 printWidth で長い文を折り返さず、区分の部品も別行にしません。
 挿入順、変換後に重なるラベル、prototype・数値に見える key、
 共通文の重複・空代入、ゼロや小さい slice を残します。

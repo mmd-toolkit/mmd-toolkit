@@ -18,9 +18,11 @@ import { findAgentflowKeptLines } from "./agentflow-kept-lines.ts"
 import {
   collectAtoms,
   collectValueNodes,
+  descriptionOpeningRules,
   expectToken,
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
+  indentDescriptionLines,
   keptAsWritten,
   walk,
 } from "./layout.ts"
@@ -267,6 +269,7 @@ export function layoutStatement(
   source: Source,
   statement: SimpleStatement,
   end: number,
+  preservesDescriptionColumns: boolean,
 ): AtomLayout {
   const start = statement.range[0]
   if (statement.type === "AgentflowConnectorStatement")
@@ -317,6 +320,8 @@ export function layoutStatement(
     case "AgentflowAccDescrBlockStatement":
       appendItems(kept, findAccDescrBlockStretches(source, statement))
       if (!statement.closed) return keptAsWritten(start, end)
+      for (const [position, rule] of descriptionOpeningRules(source, start))
+        rules.set(position, rule)
       break
     case "AgentflowVertexStatement":
       walk(statement, (node) => {
@@ -343,10 +348,13 @@ export function layoutStatement(
   )
   if (statement.type === "AgentflowAccDescrBlockStatement") {
     const closing = findAccDescrBlockClosing(source, statement)
-    return {
+    const descriptionLayout: AtomLayout = {
       ...layout,
       outdented: closing === null ? new Set() : new Set([closing]),
     }
+    return preservesDescriptionColumns
+      ? descriptionLayout
+      : indentDescriptionLines(source, statement, descriptionLayout)
   }
   return layout
 }

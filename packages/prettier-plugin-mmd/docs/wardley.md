@@ -580,11 +580,15 @@ wardley-beta
 
 Use the shared accessibility line layout for accTitle: Value and accDescr:
 Value, retaining empty assignments. Description blocks go through the shared
-description layout: keep touching/openly spaced braces, compact whitespace-only
-interiors to {}, join plain opener whitespace, retain value columns and align a
-separate closer. Trivia keeps its shared continuation layout. These are the
-common Db-equal forms; there is no text for whitespace-only block interiors to
-surround.
+description layout: separate the keyword and { by one ordinary space even when
+written touching, keep interior edge contact, compact whitespace-only interiors
+to {}, join plain opener whitespace and align a separate closer. Protected
+trivia and semicolon layouts keep their gaps. Ordinary description body and
+standalone comment lines align one level inside the statement: the Db removes
+indentation after LF. Keep line breaks, internal blanks and trailing whitespace.
+Directives and shared removed comment regions keep their complete source. Trivia
+keeps its shared continuation layout. These are the common Db-equal forms; there
+is no text for whitespace-only block interiors to surround.
 
 [fixture: wardley/accessibility/access-lines]
 
@@ -916,18 +920,19 @@ wardley-beta
 
 ### Semicolons
 
-Use shared complete-line protection for source lines containing literal style or
-classDef after Root directives are omitted, including nontriggering word lines.
-Keep their statements, comments and hidden forms together and do not join
-neighboring lines. Align the first line with its body; keep its content and all
-later columns. Count a line as Mermaid reads it, including directive-spanning
-words and comment regions after U+2028/U+2029. The line rule can ignore a
-grammatical label opener, so preserving the complete line avoids predicting its
-selection after moving text. Keep all authored semicolons. Exclude grammatical
-link-label openers from shared textual-prefix protection; other semicolons
-protect their source segment through the last semicolon and whole crossing
-values/trivia. Words inside removed Root directives alone do not trigger
-complete-line protection.
+Use shared complete-line protection for source lines containing both a semicolon
+and literal style or classDef after Root directives are omitted, including
+nontriggering word lines with a semicolon. A name such as `mystyle` alone does
+not prevent ordinary component and pipeline spacing. Keep their statements,
+comments and hidden forms together and do not join neighboring lines. Align the
+first line with its body; keep its content and all later columns. Count a line
+as Mermaid reads it, including directive-spanning words and comment regions
+after U+2028/U+2029. The line rule can ignore a grammatical label opener, so
+preserving the complete line avoids predicting its selection after moving text.
+Keep all authored semicolons. Exclude grammatical link-label openers from shared
+textual-prefix protection; other semicolons protect their source segment through
+the last semicolon and whole crossing values/trivia. Words inside removed Root
+directives alone do not trigger complete-line protection.
 
 [fixture: wardley/semicolons/style-label]
 
@@ -942,6 +947,8 @@ complete-line protection.
 [fixture: wardley/semicolons/style-uppercase-nontrigger]
 
 [fixture: wardley/semicolons/style-no-semicolon]
+
+[fixture: wardley/semicolons/style-no-semicolon-directive-lines]
 
 [fixture: wardley/semicolons/style-inside-global]
 
@@ -993,11 +1000,11 @@ wardley-beta
 
 ### Multiline values
 
-Do not wrap at printWidth. Keep physical string, flow and description contents,
-continuation columns and interior blank lines. Visible LF between ordinary
-statement components can reject the input, and reindenting value continuations
-changes the Db. Long component/evolution statements stay unwrapped; description
-openers and closers use Accessibility.
+Do not wrap at printWidth. Keep physical string and flow contents, continuation
+columns and interior blank lines. Description bodies use the shared indentation
+above. Visible LF between ordinary statement components can reject the input,
+and reindenting value continuations changes the Db. Long component/evolution
+statements stay unwrapped; description openers and closers use Accessibility.
 
 [fixture: wardley/multiline-values/long-component]
 

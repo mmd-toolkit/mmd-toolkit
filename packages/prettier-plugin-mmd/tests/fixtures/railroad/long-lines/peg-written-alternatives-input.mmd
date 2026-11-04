@@ -1,0 +1,6 @@
+railroad-peg-beta
+expression <-
+ term (("+" / "-") term)*
+ / ("(" expression ")")
+ /
+ number;

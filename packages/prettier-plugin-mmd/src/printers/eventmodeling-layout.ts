@@ -21,6 +21,7 @@ import type {
 import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import type { HiddenOpenBlockLayout } from "./flat-hidden-diagram.ts"
+import { readGap } from "./gap.ts"
 import { protectHiddenGaps } from "./hidden-forms.ts"
 import {
   collectAtoms,
@@ -207,6 +208,7 @@ function layoutComponents(
     eventmodelingValueNodeTypes,
   ).filter((node) => start <= node.range[0] && node.range[1] <= end)
   const kept: Atom[] = []
+  let blockOpening: number | undefined
   walk(statement, (node) => {
     if (
       (node.type === "EventmodelingInlineData" ||
@@ -221,14 +223,9 @@ function layoutComponents(
             ),
         "a data body",
       )
-      const doc =
-        node.type === "EventmodelingDataBlock"
-          ? indentedDataBlock(
-              source.text.slice(opening.range[0], node.range[1]),
-              tabWidth,
-            )
-          : undefined
-      kept.push({ start: opening.range[0], end: node.range[1], doc })
+      if (node.type === "EventmodelingDataBlock")
+        blockOpening = opening.range[0]
+      kept.push({ start: opening.range[0], end: node.range[1] })
     }
   })
   const atoms = collectAtoms(source, start, end, values, kept)
@@ -273,7 +270,7 @@ function layoutComponents(
     }
     if (token?.value === "`") inTag = !inTag
   }
-  let layout = protectHiddenGaps(
+  const protectedLayout = protectHiddenGaps(
     {
       atoms: protectSemicolonPrefixes(source, start, end, atoms),
       rules,
@@ -283,42 +280,83 @@ function layoutComponents(
     },
     values.filter((node) => node.type === "EventmodelingIgnoredText"),
   )
-  if (classifyEventmodelingStatement(statement).kind === "data") {
-    // Preserve the lookahead that keeps LF out of a block-data terminal
-    // (diagrams/eventmodeling.md, Data; docs/eventmodeling.md, Data boundaries).
-    let paddedEnd = end
-    while (source.text[paddedEnd] === " " || source.text[paddedEnd] === "\t")
-      paddedEnd++
-    const last = layout.atoms.at(-1)!
-    layout = {
-      ...layout,
-      atoms: [
-        ...layout.atoms.slice(0, -1),
-        {
-          ...last,
-          end: paddedEnd,
-          doc:
-            last.doc === undefined
-              ? undefined
-              : [last.doc, printAsWritten(source, last.end, paddedEnd)],
-        },
-      ],
-    }
-  }
-  return {
-    ...layout,
+  const layout: AtomLayout = {
+    ...protectedLayout,
     writtenGapsBefore: new Set([
-      ...(layout.writtenGapsBefore ?? []),
+      ...(protectedLayout.writtenGapsBefore ?? []),
       ...writtenGapsBefore,
     ]),
+  }
+  return classifyEventmodelingStatement(statement).kind === "data"
+    ? layoutDataBody(source, layout, values, blockOpening, end, tabWidth)
+    : layout
+}
+
+/**
+ * Aligns a data or note body and retains its required closing padding. Its
+ * final atom is the required body, or a semicolon-protected span covering it.
+ */
+function layoutDataBody(
+  source: Source,
+  layout: AtomLayout,
+  values: readonly Node[],
+  blockOpening: number | undefined,
+  end: number,
+  tabWidth: number,
+): AtomLayout {
+  const body = layout.atoms.at(-1)!
+  // Ordinary retained header breaks use continuation indentation. Keep a
+  // safe body one further step inside that line, not beside its name
+  // (docs/eventmodeling.md, Declarations and notes and Data blocks).
+  const continuedHeader =
+    !values.some(
+      (node) =>
+        node.type === "EventmodelingIgnoredText" && node.range[0] < body.start,
+    ) &&
+    layout.atoms.some((atom, index) => {
+      const previous = layout.atoms[index - 1]
+      return (
+        previous !== undefined &&
+        !layout.joinedBefore?.has(atom.start) &&
+        !layout.writtenGapsBefore?.has(atom.start) &&
+        readGap(source, previous.end, atom.start, true).breaksLine
+      )
+    })
+  // A semicolon-protected replacement owns its written indentation and
+  // complete source; only the unprotected brace-body atom can be indented.
+  const bodyDoc =
+    body.start === blockOpening && body.writtenIndentation === undefined
+      ? indentedDataBlock(
+          source.text.slice(body.start, body.end),
+          tabWidth * (continuedHeader ? 2 : 1),
+        )
+      : undefined
+  // Preserve the lookahead that keeps LF out of a block-data terminal
+  // (diagrams/eventmodeling.md, Data; docs/eventmodeling.md, Data boundaries).
+  let paddedEnd = end
+  while (source.text[paddedEnd] === " " || source.text[paddedEnd] === "\t")
+    paddedEnd++
+  return {
+    ...layout,
+    atoms: [
+      ...layout.atoms.slice(0, -1),
+      {
+        ...body,
+        end: paddedEnd,
+        doc:
+          bodyDoc === undefined
+            ? undefined
+            : [bodyDoc, printAsWritten(source, body.end, paddedEnd)],
+      },
+    ],
   }
 }
 
 /**
- * Only change a common ASCII-space margin whose space-separated words stay
- * the same in Mermaid's data label. A new space on a later physical line
- * adds a visible nonbreaking space; tabs, markup and padded openers also
- * need their authored text (docs/eventmodeling.md, Data blocks).
+ * Align nonblank body lines while keeping the space-separated words of
+ * Mermaid's data label. A new space on a later physical line adds a visible
+ * nonbreaking space; tabs, markup and padded openers need their authored text
+ * (docs/eventmodeling.md, Data blocks).
  */
 function indentedDataBlock(text: string, tabWidth: number): Doc | undefined {
   if (
@@ -337,20 +375,19 @@ function indentedDataBlock(text: string, tabWidth: number): Doc | undefined {
     while (row[margin] === " ") margin++
     return margin
   })
-  let commonMargin = Infinity
+  let hasContent = false
   for (const [index, row] of rows.entries()) {
     if (row.trim() === "") continue
+    hasContent = true
     const margin = margins[index]
     if (isWhitespace(row[margin]) || (index > 0 && margin === 0))
       return undefined
-    commonMargin = Math.min(commonMargin, margin)
   }
-  if (commonMargin === Infinity || commonMargin === tabWidth) return undefined
 
-  const delta = tabWidth - commonMargin
-  const indented = rows.map((row, index) => {
-    if (row.trim() === "") return row
-    return " ".repeat(margins[index] + delta) + row.slice(margins[index])
-  })
+  if (!hasContent) return undefined
+  const indentation = " ".repeat(tabWidth)
+  const indented = rows.map((row, index) =>
+    row.trim() === "" ? row : indentation + row.slice(margins[index]),
+  )
   return utils.replaceEndOfLine(`{\n${indented.join("\n")}\n}`)
 }

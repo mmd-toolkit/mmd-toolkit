@@ -507,6 +507,8 @@ treeview/semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
 
 ### Decorations
 
+[fixture: treeview/decorations/explicit-empty-description-trivia]
+
 普通の外側の装飾は、次のノードへ続く木の案内線として 1 回描き直します。
 続く木が無ければ空行にし、Blank lines と Final newline に従って整理します。
 body、名前待ち、注釈、opener の gap の各所有位置で適用します。
@@ -1693,14 +1695,20 @@ treeView-beta
 ### Description blocks
 
 普通の block は共有の description layout を通します。
-空白だけの内部は `{}`、接した端は接したまま、
-普通の端の padding は space 1 個です。
-普通の opener の前の空白は寄せ、非空の継続列と trivia だけの内部は保ちます。
+空白だけの内部は `{}` です。
+`accDescr` と `{` の間は、元が接していても space 1 個にします。
+keyword と本文の開始を見分けやすくするためです。
+接した内端は接したまま、普通の内端の padding は space 1 個です。
+普通の opener の前の空白は寄せ、本文行を文より 1 段深くそろえます。
+trivia の内容は保ちます。
 別行の closer は文の段に揃えます。
+Mermaid が説明から LF 後の字下げを除くためです。
+本文も設定の字下げを使い、タブと幅 0 の正の最小段幅も同じです。
 罫線モードでは keyword と opener の普通の prefix を外し、
 共通文を第 1 列に置きます。
-値内の罫線がある場合は、
-物理行を動かすと読みが変わるため brace の範囲を丸ごと保ちます。
+本文の列は原文どおり保ちます。
+普通の物理行を字下げすると、罫線構文として拒否される場合があるためです。
+値内に罫線がある場合は、引き続き brace の範囲を丸ごと保ちます。
 最初の有効な `}` が closer のままです。
 共通値の tab など、安全に外せない形は Branch prefixes の本文保持に従います。
 opener の gap の唯一のモードの選び手は、
@@ -1740,6 +1748,8 @@ Decorations に従って gap だけを保ちます。
 
 [fixture: treeview/description-blocks/block-continuation]
 
+[fixture: treeview/description-blocks/body-zero-width]
+
 [fixture: treeview/description-blocks/block-directive-only]
 
 [corpus fixture: treeview/common-block-comments]
@@ -1747,6 +1757,8 @@ Decorations に従って gap だけを保ちます。
 [corpus fixture: treeview/common-block-first-close]
 
 [corpus fixture: treeview/box-block-decoration]
+
+[corpus fixture: treeview/box-block-tail-decoration-ascii-dash-control]
 
 [fixture: treeview/description-blocks/block-native-percent-text]
 
@@ -1789,7 +1801,7 @@ Decorations に従って gap だけを保ちます。
 ```mmd
 treeView-beta
   accDescr {
-  first
+    first
 
     second
   }

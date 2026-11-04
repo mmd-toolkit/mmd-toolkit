@@ -65,7 +65,10 @@ export function findC4KeptLines(source: Source): KeptLines {
       (token) => token.range[0] >= line,
     )
     const next = nonDirectiveTokens[first]
-    if (next !== undefined && next.range[0] < end) verbatim.add(line)
+    // Directive removal supplies no separator. Keep same-line neighbours
+    // together while their layouts still format ordinary structural gaps
+    // (docs/c4.md, Directives and Argument spacing).
+    if (next !== undefined && next.range[0] < end) joined.add(line)
   }
   const kept: KeptLines = {
     joined,

@@ -14,10 +14,12 @@ import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import {
   collectAtoms,
   collectValueNodes,
+  descriptionOpeningRules,
   expectToken,
   expectValue,
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
+  indentDescriptionLines,
   keptAsWritten,
   walk,
 } from "./layout.ts"
@@ -94,6 +96,7 @@ export function layoutStatement(
   source: Source,
   statement: Exclude<FlowchartStatement, FlowchartSubgraphStatement>,
   end: number,
+  preservesDescriptionColumns: boolean,
 ): AtomLayout {
   const start = statement.range[0]
   const accessibility = layoutGraphAccessibility(
@@ -108,16 +111,22 @@ export function layoutStatement(
   }
   const kept = findKeptStretches(source, statement, end)
   const values = collectValueNodes(statement, valueNodeTypes)
-  const rules =
+  const rules: Map<number, GapRule> =
     statement.type === "FlowchartVertexStatement"
       ? vertexStatementRules(source, statement)
-      : new Map<number, GapRule>()
-  return {
+      : statement.type === "FlowchartAccDescrBlockStatement"
+        ? descriptionOpeningRules(source, start)
+        : new Map()
+  const layout: AtomLayout = {
     atoms: collectAtoms(source, start, end, values, kept),
     rules,
     outdented: findOutdentedAtoms(source, statement),
     lineBreaks: "kept",
   }
+  return statement.type === "FlowchartAccDescrBlockStatement" &&
+    !preservesDescriptionColumns
+    ? indentDescriptionLines(source, statement, layout)
+    : layout
 }
 
 /**

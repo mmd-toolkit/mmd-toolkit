@@ -50,7 +50,7 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
       "%% c",
       "%%{init: {}}%%",
     ],
-    'C4Context\n  Boundary(b, "B") {\n    Person(a, "one\n  two", $first\n second = "three\n four")\n    Person(b, bare\n last,)\n    accDescr {\n first\n  last\n    }\n  }\n  %% c\n  %%{init: {}}%%\n',
+    'C4Context\n  Boundary(b, "B") {\n    Person(a, "one\n  two", $first\n second = "three\n four")\n    Person(b, bare\n last,)\n    accDescr {\n      first\n      last\n    }\n  }\n  %% c\n  %%{init: {}}%%\n',
   ],
   [
     "flowchart",
@@ -78,7 +78,7 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
       "text",
       "end note",
     ],
-    "stateDiagram-v2\n  state S {\n    A --> B\n  }\n  note right of A\ntext\n  end note\n",
+    "stateDiagram-v2\n  state S {\n    A --> B\n  }\n  note right of A\n    text\n  end note\n",
   ],
   [
     "er",
@@ -154,7 +154,7 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
       "%% c",
       "%%{init: {}}%%",
     ],
-    "quadrantChart\n  title Reach\n  x-axis Low --> High\n  quadrant-1 We   should expand\n  A: [0.3, 0.6] radius: 9, color: #f00\n  accDescr {\nd\n  }\n  %% c\n  %%{init: {}}%%\n",
+    "quadrantChart\n  title Reach\n  x-axis Low --> High\n  quadrant-1 We   should expand\n  A: [0.3, 0.6] radius: 9, color: #f00\n  accDescr {\n    d\n  }\n  %% c\n  %%{init: {}}%%\n",
   ],
   [
     "xychart",
@@ -169,7 +169,7 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
       "%% c",
       "%%{init: {}}%%",
     ],
-    'xychart-beta horizontal\n  title Two words\n  x-axis [a, b]\n  line [1, 2 "x"]\n  accDescr {\nd\n  }\n  %% c\n  %%{init: {}}%%\n',
+    'xychart-beta horizontal\n  title Two words\n  x-axis [a, b]\n  line [1, 2 "x"]\n  accDescr {\n    d\n  }\n  %% c\n  %%{init: {}}%%\n',
   ],
   [
     "kanban",
@@ -236,7 +236,7 @@ describe("configured C4 line endings", () => {
         "diagram.mmd",
         { endOfLine: "cr" },
       ),
-    ).toBe('C4Context\r  accDescr {\r first\r  }\r  Person(a, "A")\r')
+    ).toBe('C4Context\r  accDescr {\r    first\r  }\r  Person(a, "A")\r')
   })
 })
 

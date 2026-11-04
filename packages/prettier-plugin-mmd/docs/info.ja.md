@@ -172,12 +172,17 @@ info
 ### Description blocks
 
 [共有の description 配置](./pie.ja.md#description-blocks)を使います。
-keyword と opener、内部の辺の接触を保ち、ある外端空白列だけを1個にします。
+ブロックの境界がわかるよう、keyword と opener の間に空白を1個置きます。
+内部の辺の接触を保ち、ある外端空白列だけを1個にします。
 通常の opener 空白は物理改行や Unicode 境界を越えて結合します。
 実際の opener trivia は改行を保ち、共有の継続字下げを使います。
 空白だけの block は、囲む本文がないため `{}` にします。
 コメントだけの block ではコメントを1段内側に置きます。
-単独の閉じは文の列へ合わせ、非空値の継続列と内部の空行は保ちます。
+単独の閉じは文の列へ合わせます。
+通常の説明本文と独立したコメント行は文より1段内側に揃えます。
+Db に LF 後の字下げが残らないためです。
+改行、内部の空行、行末空白は保ちます。
+directive と共有の除去対象となるコメント領域は原文全体を保ちます。
 引用符と backslash は最初の閉じ brace を保護しません。
 
 [fixture: info/description-blocks/block-gap-presence]
@@ -204,10 +209,10 @@ keyword と opener、内部の辺の接触を保ち、ある外端空白列だ�
 
 ```mmd
 info
-  accDescr{D}
+  accDescr {D}
   accDescr { D }
   accDescr {D }
-  accDescr{ D}
+  accDescr { D}
 ```
 
 ### Authored values
@@ -216,7 +221,8 @@ InfoLiteral は decode や再構築をせず、原文を印字します。
 info が共通値を公開しなくても作者の本文なので、内部空白、大小文字、引用符、
 escape、HTML、entity を保ちます。
 `singleQuote` で引用符を変えず、`printWidth` で値を折り返しません。
-物理的な複数行 block は継続列と空行を保ちます。
+物理的な複数行 block は改行と空行を保ちます。
+本文の字下げは [Description blocks](#description-blocks) に従います。
 共通 trivia が range を切る場合も、trivia を二重にせず原文全体を保ちます。
 
 [fixture: info/authored-values/literal-quotes-escapes]

@@ -392,6 +392,9 @@ export function layoutTreeviewStatement(
           source,
           content,
           treeviewValueNodeTypes,
+          // Box reading rejects indented plain lines even inside a block
+          // (diagrams/treeview.md, Line classification and errors).
+          { preservesBodyColumns: boxMode },
         )
       const gap = drawing?.keptOpenerGaps.get(item)
       if (gap !== undefined) {

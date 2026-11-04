@@ -224,6 +224,27 @@ function layoutRule(
   const rules = new Map<number, GapRule>()
   const outdented = new Set<number>([end - 1])
   const joinedBefore = new Set<number>()
+  // Preserve authored paragraphs at the rule's outer alternatives. Padding
+  // within groups, sequences and repeats keeps its compact layout instead
+  // (docs/railroad.md, Long lines and Component newlines).
+  const alternativeBreaks = new Set<number>()
+  if (!wrapsCalls && statement.definition.type === "RailroadChoiceExpression") {
+    alternativeBreaks.add(statement.definition.range[0])
+    for (
+      let index = 1;
+      index < statement.definition.alternatives.length;
+      index++
+    ) {
+      const separator = expectToken(
+        findStructuralToken(
+          source,
+          statement.definition.alternatives[index - 1].range[1],
+        ),
+        "the separator between railroad alternatives",
+      )
+      alternativeBreaks.add(separator.range[0])
+    }
+  }
   const binary = new Set(["=", "::=", "<-", "|", "/", "-"])
   for (const [index, atom] of atoms.entries()) {
     const previous = atoms[index - 1]
@@ -248,6 +269,10 @@ function layoutRule(
       !hidden.some(
         (item) =>
           item.range[0] === atom.start || item.range[1] === previous.end,
+      ) &&
+      !(
+        alternativeBreaks.has(atom.start) &&
+        source.text.slice(previous.end, atom.start).includes("\n")
       )
     )
       joinedBefore.add(atom.start)

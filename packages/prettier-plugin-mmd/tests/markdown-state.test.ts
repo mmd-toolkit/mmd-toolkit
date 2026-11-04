@@ -13,6 +13,16 @@ async function formatTwice(markdown: string): Promise<string> {
 }
 
 describe("a state diagram in a Markdown code block", () => {
+  it("aligns ordinary note text inside a list item", async () => {
+    expect(
+      await formatTwice(
+        "- item\n\n  ```mermaid\n  stateDiagram-v2\n  note right of Paid\n          Payment can be card,\n              wallet, or bank transfer\n  end note\n  ```\n",
+      ),
+    ).toBe(
+      "- item\n\n  ```mermaid\n  stateDiagram-v2\n    note right of Paid\n      Payment can be card,\n      wallet, or bank transfer\n    end note\n  ```\n",
+    )
+  })
+
   it("is formatted at the top level", async () => {
     expect(
       await formatTwice(
