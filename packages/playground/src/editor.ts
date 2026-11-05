@@ -6,8 +6,8 @@ import { createHighlighterCore } from "shiki/core"
 import { createOnigurumaEngine } from "shiki/engine/oniguruma"
 import json from "shiki/langs/json.mjs"
 import yaml from "shiki/langs/yaml.mjs"
-import light from "shiki/themes/github-light.mjs"
-import dark from "shiki/themes/github-dark.mjs"
+import light from "shiki/themes/light-plus.mjs"
+import dark from "shiki/themes/dark-plus.mjs"
 
 let ready: Promise<void> | undefined
 

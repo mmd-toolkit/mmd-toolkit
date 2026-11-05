@@ -35,6 +35,7 @@ export default defineConfig({
   cacheDir: "node_modules/.vitepress",
   rewrites: rewritePagePath,
   markdown: {
+    theme: { light: "light-plus", dark: "dark-plus" },
     anchor: { slugify: documentAnchor },
     languages,
     codeTransformers: [eslintCodeTransformer],
