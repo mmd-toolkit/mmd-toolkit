@@ -589,10 +589,10 @@ id の前の空白は空白 1 つにします。
 位置に接したまま残します。
 
 固定版の Mermaid は、`stateDiagram-v2` のノートを Markdown として描画します。
-[`dataFetcher.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/dataFetcher.ts#L380-L386)
+[`dataFetcher.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/state/dataFetcher.ts#L380-L386)
 で `labelType` を `markdown` に設定しています。
 対応する記法は限定されています。
-[`handle-markdown-text.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/rendering-util/handle-markdown-text.ts#L120-L145)
+[`handle-markdown-text.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/handle-markdown-text.ts#L120-L145)
 では、リストはリストとして配置せず、原文のテキストへ戻します。
 このフォーマッターは、
 固定版の Mermaid と同じ Marked 16.4.2 で Markdown を判別します。

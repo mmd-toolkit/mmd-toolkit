@@ -98,7 +98,7 @@ pie
 区分は `"label" : value` とし、コロンの両側を空白1つにします。
 幅に合わせた整列はしません。
 pie 固有の選択であり、
-[Mermaid の pie の例](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/pie.md#L64-L69)
+[Mermaid の pie の例](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/pie.md#L68-L73)
 の綴りに従います。
 両方の引用符と空ラベルにも適用します。
 directive のある gap は各側の接触の有無を保持し、

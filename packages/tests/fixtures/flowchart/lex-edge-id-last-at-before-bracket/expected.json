@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md The statement context, rule 15: the run stops at `[`, so its last `@` is the first one: the edge id is `e1`, and `x` follows it where an arrow must; the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nflowchart LRA e1@x[y@-->B\n-----------------^\nExpecting 'START_LINK', 'LINK', got 'NODE_STRING'"
+  }
+}

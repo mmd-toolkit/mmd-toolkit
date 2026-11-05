@@ -233,6 +233,10 @@ export class AgentflowUnitLexer extends GraphUnitLexer<
   protected override readonly headerKeywords: readonly string[] =
     HEADER_KEYWORDS
 
+  protected override readonly edgeIdRunEnds: readonly number[] = [
+    QUOTATION_MARK,
+  ]
+
   private readonly headerStart: number
 
   public constructor(

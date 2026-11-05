@@ -8,7 +8,7 @@ Japanese version:
 [agentflow-no-redefined-connector.ja.md](./agentflow-no-redefined-connector.ja.md)
 
 Disallow a connector declaration that replaces the title or the vertex written
-for its id before.
+for its id before, or that a later flow does not get.
 
 <!-- begin auto-generated rule notice -->
 
@@ -18,7 +18,8 @@ for its id before.
 
 A connector declared again with another title takes the later title without an
 error, losing the earlier one. Declared with the id of a vertex, it replaces
-that vertex.
+that vertex. A connector also belongs to the first flow that ended with it:
+declaring it in a later flow does not add it there.
 
 ## Rule Details
 
@@ -34,8 +35,22 @@ connector of its id is reported by
 rule.
 
 A repeated connector declaration with no title, a whitespace-only title, or the
-current title is not reported. A connector first declared without a title has
-its id as its title, and a later title for it is not reported.
+current title is not reported, except in a flow that does not get the connector
+(below). A connector first declared without a title has its id as its title, and
+a later title for it is not reported.
+
+A flow does not get a connector that a flow before it has, in the order in which
+the flows end (a flow inside another one ends first): mermaid.js leaves the
+connector in the first and the later one does not get it. A declaration in the
+later flow is reported when it has no data block and has no title or the title
+that the connector has: it says nothing new about the connector; another title
+is reported for the title, as above. It is not reported when the earlier flow is
+inside the later one, or has the same id, since nothing is lost; nor when no
+earlier flow has the connector, or when the earlier flow only refers to the id,
+since the declaration then makes it a connector. A connector written directly in
+a `global` block belongs to no flow, so it is never reported. The same applies
+to a vertex that an earlier flow holds, as
+[agentflow-no-redefined-vertex](./agentflow-no-redefined-vertex.md) reports.
 
 A vertex with the reserved id `connectors` does not count as an earlier label or
 shape. Titles and labels set by data blocks, such as `C@{ label: API }`, are not
@@ -61,6 +76,17 @@ agentflow-beta TB
   connector github["GitHub API"]
 ```
 
+```mmd
+%% eslint @mmd-toolkit/agentflow-no-redefined-connector: error
+agentflow-beta TB
+  flow a
+    connector C
+  end
+  flow b
+    connector C
+  end
+```
+
 Examples of **correct** code for this rule:
 
 ```mmd
@@ -75,6 +101,17 @@ agentflow-beta TB
 agentflow-beta TB
   create["create_issue"] --> done
   connector github["GitHub API"]
+```
+
+```mmd
+%% eslint @mmd-toolkit/agentflow-no-redefined-connector: error
+agentflow-beta TB
+  flow a
+    connector C[One]
+  end
+  flow b
+    connector C[One]@{ label: Two }
+  end
 ```
 
 ## Options

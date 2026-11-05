@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md Vertices, shapes, and labels: an edge id reads no whitespace before it, and a vertex statement takes none after a data block, so the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ntflow-beta TBA@{} e1@-->B\n----------------------^\nExpecting 'AMP', got 'LINK_ID'"
+  }
+}

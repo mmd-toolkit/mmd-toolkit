@@ -146,9 +146,11 @@ accDescr: d ; direction LR
 [fixture: statements-one-per-line/compat-empty-description-block-after-statement]
 [fixture: statements-one-per-line/compat-empty-description-block-before-separator]
 [fixture: statements-one-per-line/compat-empty-description-block-before-statement]
+[fixture: statements-one-per-line/compat-empty-description-block-after-data-block]
 1 行に書かれ `;` で区切られた文は、行に分けます。
 `;` は文を区切るだけで、 1 行に複数の文があると読みにくいからです。
 [fixture: statements-one-per-line/separated-by-semicolons-meets-others]
+[fixture: statements-one-per-line/separated-by-semicolons-after-data-block]
 
 ただし、文を区切る `;` 以外の `;` を含む行は、文と `;` を行に残します。
 `A[x;]`、`accTitle: a;b`、コメントの中の `;` などがそうした `;` です。
@@ -776,6 +778,27 @@ flowchart LR
 [fixture: arrow-spacing/edge-id-with-labels]
 [fixture: arrow-spacing/edge-id-whitespace-before-arrow-dropped]
 
+辺の id が矢印の始まりと同じ形のとき（`--`、`==`、`-.`、1 つ以上の `.` と `-`、
+先頭に頭の `x`、`o`、`<` があってもよい。頭のない `~~~` も同じ）は、
+前の形に接して印字します。
+この id は、前に空白がないときだけ辺の id です。
+空白の後では字句解析が矢印を読み、残りはそのテキストになるか、
+入力が拒否されるので、 `A[x]--a@-->B` の辺の id は `--a`、
+`A[x] --a@-->B` のリンクのテキストは `a@` です。
+[fixture: arrow-spacing/edge-id-arrow-like-kept-attached]
+[fixture: arrow-spacing/edge-id-arrow-like-with-head]
+[fixture: arrow-spacing/edge-id-arrow-like-dotted-forms]
+[fixture: arrow-spacing/edge-id-arrow-like-after-every-shape]
+[fixture: arrow-spacing/edge-id-arrow-like-with-link-text]
+[fixture: arrow-spacing/edge-id-arrow-like-chain]
+[fixture: arrow-spacing/edge-id-arrow-like-after-whitespace-is-link-text]
+それ以外の辺の id の前には、空白を 1 つ置きます（`=a`、`~~a`、`.a`、`x-a`、
+`x~~~a` など）。 [fixture: arrow-spacing/edge-id-not-arrow-like-gets-one-space]
+形と辺の id の間にディレクティブか無視される `;` があるときは、
+その両側の空白を書かれたまま残します。
+[fixture: arrow-spacing/edge-id-arrow-like-after-directive]
+[fixture: arrow-spacing/edge-id-arrow-like-after-ignored-semicolon]
+
 入力
 ([arrow-spacing/plain-input.mmd](../tests/fixtures/flowchart/arrow-spacing/plain-input.mmd)):
 
@@ -850,6 +873,30 @@ flowchart LR
   A e1@--> B
 ```
 
+入力
+([arrow-spacing/edge-id-arrow-like-kept-attached-input.mmd](../tests/fixtures/flowchart/arrow-spacing/edge-id-arrow-like-kept-attached-input.mmd)):
+
+```mmd
+flowchart LR
+A[x]--a@-->B
+C[x]==c@==>D
+E[x]-.e@.->F
+G[x].-g@-.->H
+I[x]~~~i@~~~J
+```
+
+出力
+([arrow-spacing/edge-id-arrow-like-kept-attached-output.mmd](../tests/fixtures/flowchart/arrow-spacing/edge-id-arrow-like-kept-attached-output.mmd)):
+
+```mmd
+flowchart LR
+  A[x]--a@--> B
+  C[x]==c@==> D
+  E[x]-.e@.-> F
+  G[x].-g@-.-> H
+  I[x]~~~i@~~~ J
+```
+
 ### ラベルの内側の空白
 
 引用符のないラベルの両端の空白は、 mermaid.js が取り除くのと同じく取り除きます。
@@ -862,20 +909,31 @@ flowchart LR
 ラベルの先頭の空白は、それがないとラベルの読み方が変わるときは、
 空白 1 つとして残します。
 ラベルが `/`、`\`、`-`、`"` のどれかで始まるときと、
-最初の語（空白か `"` まで）が `@` を含むときです。
+`>` の形のラベルの最初の語（空白か `"` まで）が `@` を含むときです。
 [fixture: label-inner-whitespace/leading-whitespace-trimmed-without-trigger]
 [fixture: label-inner-whitespace/leading-whitespace-run-becomes-one]
 [fixture: label-inner-whitespace/compat-leading-backslash-kept]
 空白がないと、`A[ /x/]` はラベル `x` の lean-right の形に、
-`A( -x-)` は ellipse になり、`A[ x@ ]` は拒否されます。
+`A( -x-)` は ellipse になり、 `A>x@ ]` は拒否されます。
+辺の id の並びが `>` で止まらず、`A>x` を辺の id として読むからです。
 そうしたラベルは、末尾にも空白 1 つを置きます。
 `A[ /x/]` は `A[ /x/ ]` になります。
 ただし、斜めの形の閉じの `?]` と `=]` の前には置きません。
 mermaid.js が、その空白と `?` や `=` をテキストとして読むからです。
 `A[/ -x/?]` はそのままです。
-この規則は、どの形でも、 `|` の間のテキストでも同じです。
+この規則は、`@` を除き、どの形でも、 `|` の間のテキストでも同じです。
 [fixture: label-inner-whitespace/leading-whitespace-every-shape-kept]
 [fixture: label-inner-whitespace/leading-whitespace-pipe-label-kept]
+
+`>` 以外で開く形では、ラベルの中の `@` に空白は要りません。
+辺の id の並びは、括弧類と `|` で止まるので、
+`A[x@]` と `A-->|x@|B` のラベルは、空白があってもなくても `x@` です。
+`A[ user@example.com ]` は `A[user@example.com]` になります。
+[fixture: label-inner-whitespace/leading-whitespace-at-sign-trimmed]
+agentflow では違います。
+辺の id の並びがそこで止まらず、`A[x@]` は拒否されます。
+そのため、最初の語に `@` があるラベルは、前の空白を残します。
+詳しくは [Labels](./agentflow.ja.md#labels) を参照してください。
 
 入力
 ([label-inner-whitespace/trimmed-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/trimmed-input.mmd)):
@@ -940,10 +998,9 @@ A[ /x/]
 B( -x-)
 C(( -x))
 D[/ "x /]
-E[ user@example.com ]
-F-->| x@ |G
 H[ %%{init: {}}%%/x/]
 I{ -x }
+J> x@ ]
 ```
 
 出力
@@ -955,10 +1012,9 @@ flowchart LR
   B( -x- )
   C(( -x ))
   D[/ "x /]
-  E[ user@example.com ]
-  F -->| x@ | G
   H[ %%{init: {}}%%/x/ ]
   I{ -x }
+  J> x@ ]
 ```
 
 入力

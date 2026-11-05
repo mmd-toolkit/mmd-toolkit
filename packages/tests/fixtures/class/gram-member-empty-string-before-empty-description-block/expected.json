@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md The member context: `{` ends the member line and no rule takes it there, so both reject the input."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...lass A {\"\"accDescr {}}\n----------------------^\nExpecting 'STRUCT_STOP', 'MEMBER', got 'OPEN_IN_STRUCT'"
+  }
+}

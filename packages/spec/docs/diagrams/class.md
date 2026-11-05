@@ -4,11 +4,11 @@ Japanese version: [class.ja.md](./class.ja.md)
 
 Source of truth in mermaid.js:
 
-- [`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison)
-- [`classDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/classDb.ts)
-- [`classTypes.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/classTypes.ts)
+- [`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/parser/classDiagram.jison)
+- [`classDb.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/classDb.ts)
+- [`classTypes.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/classTypes.ts)
 - the tests (`*.spec.ts`) in
-  [`class/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class)
+  [`class/`](https://github.com/mermaid-js/mermaid/tree/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class)
 
 This document covers the diagram type `classDiagram`. The nodes of the tree are
 defined in [ast/class.md](../ast/class.md).
@@ -457,9 +457,38 @@ member `+x`, and `class A {+x`, a line break, and `+y}` the members `+x` and
 class/lex-member-body-close-on-member-line] A `"` starts a string only where a
 member starts, and the grammar does not take a string there: a member line `"x"`
 is rejected, and `+foo "bar"` is a member with the quotes in it. [fixture:
-class/lex-member-quote-at-start] [fixture: class/lex-member-quote-inside] `%%`,
-`;`, `[*]`, and `~` inside a member line are characters of it: `+x %% c` is the
-member `x %% c`. [fixture: class/lex-member-percent] [fixture:
+class/lex-member-quote-at-start] [fixture: class/lex-member-quote-inside] An
+empty string where a member starts is rejected too, also before text, while
+mermaid.js reads no token for it and accepts the input: `""`, `""""`, `""x`, and
+`"" x` on a line of a body, and `class A {""}`, whatever line lies next to it
+(see [Known divergences](#known-divergences)). [fixture:
+class/div-empty-string-member-start] [fixture:
+class/div-empty-string-member-start-before-member] [fixture:
+class/div-empty-string-member-start-after-member] [fixture:
+class/div-empty-string-member-start-before-text] [fixture:
+class/div-empty-string-member-start-glued-text] [fixture:
+class/div-empty-strings-member-start] [fixture:
+class/div-empty-string-member-start-after-brace] [fixture:
+class/div-empty-string-member-start-before-line-separator] [fixture:
+class/div-empty-string-member-start-after-directive] [fixture:
+class/div-empty-string-member-start-before-directive] [fixture:
+class/div-empty-string-member-start-after-comment-line] [fixture:
+class/div-empty-string-member-start-before-comment-line] [fixture:
+class/div-empty-string-member-start-after-empty-line] [fixture:
+class/div-empty-string-member-start-before-empty-line] [fixture:
+class/div-empty-string-member-start-before-ignored-semicolon] [fixture:
+class/div-empty-string-member-start-before-semicolon] [fixture:
+class/div-empty-string-member-start-in-namespace] With whitespace before it, a
+space, a tab, or U+2028, no member starts at the `""`: `  ""` is a member line
+and the member `""`, in both, and so is the `""` of `class A { "" }`.
+`""accDescr {}` is rejected in both, because a `{` ends a member line. [fixture:
+class/lex-member-empty-string-after-spaces] [fixture:
+class/lex-member-empty-string-after-tab] [fixture:
+class/lex-member-empty-string-after-line-separator] [fixture:
+class/lex-member-empty-string-after-brace-space] [fixture:
+class/gram-member-empty-string-before-empty-description-block] `%%`, `;`, `[*]`,
+and `~` inside a member line are characters of it: `+x %% c` is the member
+`x %% c`. [fixture: class/lex-member-percent] [fixture:
 class/lex-member-semicolon] A `[*]` right after the `{` or a line feed is a
 `[*]` unit, which the grammar does not take, so `[*]` and `[*] x` on a line of
 their own in a body are rejected, and so is a `{` in a body. The context has no
@@ -472,8 +501,8 @@ class/lex-member-edge-state-then-text] [fixture: class/lex-member-open-brace]
 
 mermaid.js reads a member line as one text and divides it into its parts when it
 adds the member
-([`addMember`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/classDb.ts#L277-L297),
-[`ClassMember`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/classTypes.ts#L80-L134)).
+([`addMember`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/classDb.ts#L277-L297),
+[`ClassMember`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/classTypes.ts#L80-L134)).
 The division depends on the text alone, so the lexer makes it, and each part is
 a unit. The whitespace at the ends of the line belongs to no unit; a line of
 only whitespace makes a `blank-member` unit, which no node holds. The rest, the
@@ -699,7 +728,7 @@ In its backquote and generic states, the lexer of mermaid.js tries the rules for
 `"`, for `~` (in a backquote), for `<<` and `>>`, and for the keywords
 `cssClass`, `callback`, `link`, `click`, `note`, and `href` before its rule for
 the text
-([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L89-L112)).
+([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L89-L112)).
 Where the text starts with one of these, which for a keyword means that no word
 character follows it, mermaid.js reads that unit instead of a name, and reads
 the text only after it. These inputs are the known divergence
@@ -766,7 +795,7 @@ such as `"class"` or `"{"`. `string` stands for a `string` unit that is not
 empty, and `string-or-empty` for a `string` unit that may be empty.
 `end-of-text` stands for the end of the text. The grammar is a restatement of
 the grammar in
-[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L221-L438)
+[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L221-L438)
 and accepts the same sequences of units.
 
 Each rule below makes a node of the tree, defined in
@@ -915,7 +944,7 @@ class name, and a namespace name too, has one of three forms, each of which a
 class name may end with a generic type: name parts; a backquoted name; and name
 parts followed by a backquoted name, as in ``class A.`b c` ``, which declares
 `A.b c`, and ``class A`b c` ``, which declares `Ab c`
-([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L244-L258)).
+([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L244-L258)).
 A backquoted name ends the name: ``class `b c`A `` and a name of two backquoted
 names are rejected. [fixture: class/gram-name-prefix-backquoted] [fixture:
 class/gram-name-word-then-backquoted] [fixture:
@@ -1091,7 +1120,7 @@ this specification:
 
 - An annotation statement for a class that does not exist: `<<interface>> A`
   before any statement that adds A is rejected
-  ([`addAnnotation`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/classDb.ts#L263-L266)),
+  ([`addAnnotation`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/classDb.ts#L263-L266)),
   while the same after `class A` is accepted. A class is **added** by a class
   statement, a member statement with a label, and a relation statement, for each
   of its class names, also in the body of a namespace at any depth; the name on
@@ -1172,14 +1201,53 @@ class diagrams, and show in them as follows.
 - **[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.md).**
   An empty string where the grammar takes no string or only one that is not
   empty, an empty backquoted name, an empty generic type that does not end a
-  class name, an empty call, and an empty description block inside a statement,
-  neither where a statement starts nor before the line break of a statement or
-  of the header, make the input rejected here, while mermaid.js reads no token
-  for them and accepts the input: `"" A --> B`, `class A""B`, `class A``B`,
-  `class A~~B`, `A call () --> B`, and `A accDescr {} --> B`. An empty string as
-  a cardinality or a tooltip is accepted by both, and so is an empty generic
-  type at the end of a class name: `class A~~` declares A without a type.
-  [fixture: class/div-empty-string-statement-start] [fixture:
+  class name, an empty call, and, neither where a statement starts nor before
+  the line break of a statement or of the header, an empty description block
+  inside a statement make the input rejected here, while mermaid.js reads no
+  token for them and accepts the input: `"" A --> B`, `A ""`, `""` where a
+  member starts, `class A""B`, `class A``B`, `class A~~B`, `A call () --> B`,
+  `call () A`, `A call ()`, and `A accDescr {} --> B`. An empty string and an
+  empty call where a statement starts and after the last unit of a statement are
+  rejected whatever the statement, as in `A --> B ""`, `note for A "x" call ()`,
+  `cssClass "A" c ""`, `click A href "u" call ()`, and `class A {`, a line
+  break, and `}""`, and whatever lies next to them: a comment line, an empty
+  line, U+2028, a directive, an ignored `;`, or an empty description block.
+  [fixture: class/div-empty-call-statement-start] [fixture:
+  class/div-empty-call-after-name] [fixture:
+  class/div-empty-call-after-relation] [fixture:
+  class/div-empty-call-after-note] [fixture:
+  class/div-empty-call-after-css-class] [fixture:
+  class/div-empty-call-after-click] [fixture:
+  class/div-empty-string-after-class-statement] [fixture:
+  class/div-empty-string-after-relation] [fixture:
+  class/div-empty-string-after-note] [fixture:
+  class/div-empty-string-after-css-class] [fixture:
+  class/div-empty-string-after-body] [fixture:
+  class/div-empty-string-before-comment-line] [fixture:
+  class/div-empty-call-before-comment-line] [fixture:
+  class/div-empty-string-before-empty-line] [fixture:
+  class/div-empty-call-before-empty-line] [fixture:
+  class/div-empty-string-before-line-separator] [fixture:
+  class/div-empty-call-before-line-separator] [fixture:
+  class/div-empty-string-after-directive] [fixture:
+  class/div-empty-call-after-directive] [fixture:
+  class/div-empty-call-statement-start-after-directive] [fixture:
+  class/div-empty-string-before-empty-description-block] [fixture:
+  class/div-empty-call-before-empty-description-block] [fixture:
+  class/div-empty-call-after-empty-description-block] [fixture:
+  class/div-empty-string-before-ignored-semicolon] [fixture:
+  class/div-empty-call-before-ignored-semicolon] mermaid.js rejects `call ()`
+  alone on a line, `class A call ()`, `class A {`, a line break, and
+  `} call ()`, and an empty string or an empty call before a `;` that is not
+  ignored, so these inputs are no part of this divergence. [fixture:
+  class/gram-empty-call-line] [fixture:
+  class/gram-empty-call-after-class-statement] [fixture:
+  class/gram-empty-call-after-body] [fixture:
+  class/gram-empty-string-before-semicolon] [fixture:
+  class/gram-empty-call-before-semicolon] An empty string as a cardinality or a
+  tooltip is accepted by both, and so is an empty generic type at the end of a
+  class name: `class A~~` declares A without a type. [fixture:
+  class/div-empty-string-statement-start] [fixture:
   class/div-empty-string-in-name] [fixture: class/div-empty-backquoted-in-name]
   [fixture: class/div-empty-generic-in-name] [fixture: class/div-empty-call]
   [fixture: class/div-empty-description-block-in-statement] [fixture:
@@ -1200,7 +1268,7 @@ class diagrams, and show in them as follows.
   read the two statements, unless a comment line with text after its `%%` comes
   right after that line: mermaid.js removes such a comment line together with
   the lines of only whitespace right before it before it reads the text
-  ([`cleanupComments`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)),
+  ([`cleanupComments`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagram-api/comments.ts#L6-L8)),
   and then joins the next line again. `A --> B %% c`, a line of spaces, `%% x`,
   and `A : +int age` is a relation from A to `BA` in mermaid.js, while with a
   line `%%` in place of `%% x`, or with another line of spaces after `%% x`,

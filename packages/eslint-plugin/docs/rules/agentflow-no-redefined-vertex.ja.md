@@ -6,7 +6,8 @@ since: v0.1.0
 
 英語版: [agentflow-no-redefined-vertex.md](./agentflow-no-redefined-vertex.md)
 
-その id に前に書いたラベルや形を置き換える頂点を禁止する。
+その id に前に書いたラベルや形を置き換える頂点と、
+後の flow が取らない頂点を禁止する。
 
 <!-- begin auto-generated rule notice -->
 
@@ -17,29 +18,49 @@ since: v0.1.0
 `A[End]` のように形を付けて書いた頂点は、その id のラベルと形を設定する。
 前の文が同じ id にそれらを書いていると、
 mermaid.js は後のものをエラーなしに使い、前のラベルや形は失われる。
+頂点は、それを持って終わった最初の flow にも属し、後の flow に書いても、
+そこには加わらない。
 
 ## 規則の詳細
 
 この規則は、agentflow 図（`agentflow-beta`）に当てる。
-形を付けて書いた頂点のうち、同じ id の現在のものとラベル、描かれる形、
-種類のどれかが違うものを報告する。
-現在のラベルと形の繰り返しや、形なしでの参照は報告しない。
+形を付けて書いた頂点のうち、
+同じ id の現在のものとラベルか描かれる形が違うものを報告する。
+現在のラベルと形の繰り返しや、形なしでの参照は、
+flow が頂点を取らない場合（後述）を除き、報告しない。
 
-ひし形 `{ }`、六角形 `{{ }}`、サブルーチン `[[ ]]` は書いたとおりに描かれ、
-ほかの括弧の形は角の丸い長方形になる。
-既定のテーマ `redux-color` は種類ごとの色を使うので、種類も比べる。
-サブルーチンは tool、ひし形は decision、六角形は action、`[/ /]` は input、
-connector は connector、ほかの括弧の形は task である。
+ひし形 `{ }`、六角形 `{{ }}`、サブルーチン `[[ ]]`、
+`[/ /]` は書いたとおりに描かれ、ほかの括弧の形は角の丸い長方形になる。
 そのため、`A[x]` の後の `A(x)` は報告しないが、
-`A[x]` の後の `A[/x/]` は報告する。
+`A[x]` の後の `A[/x/]` は報告し、`A[/x/]` の後の `A(x)` も報告する。
 
 connector の後に同じ id で形を付けて書いた頂点は、
 `connector C[API]` の後の `C[Other]` や `C{API}` のように、
 そのタイトルや形を変えると報告する。
-種類は connector のままである。
+要素は connector のままである。
 タイトルなしで宣言した connector の後の頂点は、ラベルについては報告しない。
 そのラベルは誰も書いていない id だからである。
 予約 id `connectors` の頂点は何も変えず、前のラベルや形として数えない。
+
+flow は、それより前に終わった flow が持つ頂点や connector を取らない。
+flow が終わる順に見る（flow の中の flow が先に終わる）。
+mermaid.js はそれを先に終わった方に残し、後の方は取らない。
+後の flow の中の頂点の文のうち、リンク、クラス、データブロックがなく、
+id だけか、要素が持つラベルと形を同じラベルの種類とプロパティで書くものは、
+要素について新しいことを言わないので報告する。
+前の出現として、connector の宣言も数える。
+後の flow の connector の宣言は、
+[agentflow-no-redefined-connector](./agentflow-no-redefined-connector.ja.md)
+が報告する。
+`A & B` のような組では、頂点ごとに報告する。
+前の flow が後の flow の中にあるか、同じ id を持つときは、
+何も失われないので報告しない。
+前の flow が要素を持たないときや、要素が前に書かれていないとき、
+文が新しいことを言うとき（リンク、クラス、データブロック、頂点の最初の形、
+ラベルの種類やプロパティの違い）も報告しない。
+`global` ブロックの直下に書いた頂点や connector は、
+ブロックがどこにあってもどの flow にも属さないので、報告しない。
+`global` ブロックの中に書いた flow は、自分の頂点を持つ。
 
 `A@{ shape: decision }` のようなデータブロックが設定するラベルや形は、
 形付きの頂点の間にあっても比べない。
@@ -65,6 +86,17 @@ agentflow-beta TB
   github["create_issue"] --> done
 ```
 
+```mmd
+%% eslint @mmd-toolkit/agentflow-no-redefined-vertex: error
+agentflow-beta TB
+  flow a
+    A
+  end
+  flow b
+    A
+  end
+```
+
 この規則に**従う**コードの例:
 
 ```mmd
@@ -79,6 +111,20 @@ agentflow-beta TB
 agentflow-beta TB
   connector github["GitHub API"]
   create["create_issue"] --> done
+```
+
+```mmd
+%% eslint @mmd-toolkit/agentflow-no-redefined-vertex: error
+agentflow-beta TB
+  global
+    shared
+  end
+  flow a
+    shared
+  end
+  flow b
+    shared
+  end
 ```
 
 ## オプション

@@ -14,8 +14,8 @@ of the repository, and the changelog of the package says what changed in each.
 
 ## mermaid.js version
 
-The specification follows mermaid 12.2.0, at the commit
-[`1fb7869`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b).
+The specification follows mermaid 12.3.0, at the commit
+[`2086904`](https://github.com/mermaid-js/mermaid/tree/2086904e76c692331e34a45d7cc3bc30860d040e).
 Where the specification and that version disagree, mermaid.js is right and the
 specification has a bug, except for the deliberate differences listed under
 [Known divergences](./docs/known-divergences.md).

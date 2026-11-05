@@ -413,53 +413,53 @@ mermaid.js の字句解析器は、これらの形のどれにもトークンを
 flowchart では、空の文字列の引用符、空の呼び出しの `call` と括弧、
 空の説明ブロックの `accDescr {` と `}` を読み飛ばします（それぞれ、
 mermaid.js の
-[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L82-L87)、
-[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L74-L79)、
-[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L35-L37)）。
+[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L82-L87)、
+[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L74-L79)、
+[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L35-L37)）。
 sequence と state は空の説明ブロックを同じように読み飛ばし（mermaid.js の
-[`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L76-L77)、
-[`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L93-L95)）、
+[`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L76-L77)、
+[`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L93-L95)）、
 class は 5 つの形すべてを読み飛ばします（mermaid.js の
-[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L34-L35)、
-[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L53-L62)、
-[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)）。
+[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L34-L35)、
+[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L53-L62)、
+[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)）。
 er は、空の説明ブロックと、空のバッククォートを読み飛ばします（それぞれ、
 mermaid.js の
-[`erDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/er/parser/erDiagram.jison#L16-L18)、
-[`erDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/er/parser/erDiagram.jison#L38-L40)）。
+[`erDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/er/parser/erDiagram.jison#L16-L18)、
+[`erDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/er/parser/erDiagram.jison#L38-L40)）。
 gantt は、空の説明ブロックと、空の href の `href`、その空白、両方の引用符と、
 空の call の `call`、その空白、括弧を読み飛ばします（それぞれ、
 mermaid.js の
-[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L24-L25)、
-[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L42-L43)、
-[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L54-L55)）。
+[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L24-L25)、
+[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L42-L43)、
+[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L54-L55)）。
 requirement は空の説明ブロックと、
 文の文脈と style の文脈の空の文字列の引用符を読み飛ばします（それぞれ、
 mermaid.js の
-[`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L23-L24)、
-[`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L85-L96)）。
+[`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L23-L24)、
+[`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L85-L96)）。
 mindmap は、その行で後に何もない `:::` と間に何もない `::icon(` と `)` と、
 空の文字列の引用符と空の markdown 文字列の区切りを読み飛ばします（それぞれ、
 mermaid.js の
-[`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L24-L32)、
-[`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L45-L50)）。
+[`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L24-L32)、
+[`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L45-L50)）。
 xychart は、閉じた空の説明ブロックと、
 空の文字列の引用符を読み飛ばします（それぞれ、
 mermaid.js の
-[`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L28-L30)、
-[`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L54-L56)）。
+[`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L28-L30)、
+[`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L54-L56)）。
 quadrant は、閉じた空の説明ブロック、空の markdown 文字列の区切り、
 空の文字列の引用符を読み飛ばします（それぞれ、
 mermaid.js の
-[`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L28-L29)、
-[`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L41-L43)、
-[`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L44-L45)）。
+[`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L28-L29)、
+[`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L41-L43)、
+[`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L44-L45)）。
 block は、閉じた空の説明ブロック、空の markdown 文字列の区切り、
 空の文字列の引用符を読み飛ばします（それぞれ、
 mermaid.js の
-[`block.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/block/parser/block.jison#L79-L80)、
-[`block.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/block/parser/block.jison#L50-L52)、
-[`block.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/block/parser/block.jison#L53-L54)）。
+[`block.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/block/parser/block.jison#L79-L80)、
+[`block.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/block/parser/block.jison#L50-L52)、
+[`block.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/block/parser/block.jison#L53-L54)）。
 これらの規則はどれも、字句解析器の状態に入るか出るだけで何も返さないので、
 文法はその形を見ません。
 
@@ -528,6 +528,23 @@ state では、2 つの文の間に何も要らないので、文は各文のす
 state/div-empty-description-block-after-arrow] [fixture:
 state/div-empty-description-block-in-transition] [fixture:
 state/div-empty-description-block-before-label]
+
+木は、flowchart の文の始まりと文の最後の単位の後で mermaid.js が丸ごと捨てる、
+空の文字列、空の markdown 文字列、空の call の文を持ちません。
+class の同じ位置の空の文字列と空の call の文も持ちません。
+flowchart の `""`、`A ""`、`A call ()`、 class の `"" A --> B`、`A ""`、
+`call () A`、`A call ()` がこれに当たります。
+class の本体のメンバーが始まるところの空の文字列のメンバーも持ちません。
+`class A {`、改行、`""`、改行、`}` は、 mermaid.js でもメンバーを持ちません。
+空の説明ブロックと同じく、その位置には文やメンバーを置けますが、
+これらの形はそれ自体の意味を持って書かれているので、入力は拒否されます。
+[fixture: flowchart/lex-empty-string-line] [fixture: flowchart/lex-empty-string]
+[fixture: flowchart/gram-empty-call-after-vertex]
+[fixture: class/div-empty-string-statement-start]
+[fixture: class/div-empty-string-after-name]
+[fixture: class/div-empty-call-statement-start]
+[fixture: class/div-empty-call-after-name]
+[fixture: class/div-empty-string-member-start]
 
 文の始まりでも、文やヘッダーの区切りの前でもない空の説明ブロックは、
 文の中にあります。
@@ -956,7 +973,7 @@ class の `direction accDescr {}`、改行、`LR` もそのような入力です
 ブロックは、mermaid.js でも、2 つが方向の行になるのを妨げるので、
 それらはラベルのない 2 つのメンバーの文で、方向は `TB` のままです。
 [fixture: state/gram-click-empty-description-block-after] [fixture:
-flowchart/gram-empty-description-block-after-data-block-space] [fixture:
+flowchart/gram-empty-description-block-after-click-space] [fixture:
 sequence/gram-empty-description-block-after-autonumber-spaces] [fixture:
 class/gram-empty-description-block-after-direction-word]
 
@@ -994,7 +1011,7 @@ mermaid.js はそれらを丸ごと捨てます。
 
 agentflow は、flowchart と空の文字列、空の markdown 文字列、
 空の call の語彙を共有します。
-文の始まりでは IgnoredStatement に保つこともできますが、
+文の始まりや文の最後の単位の後では IgnoredStatement に保つこともできますが、
 その位置には明示の空の形の例外を適用します。
 それ自体の意味を持って書かれた文字列や呼び出しを mermaid.js が丸ごと捨てるため、
 何も変えない文は作りません。 [fixture: agentflow/div-empty-string-statement]
@@ -1002,6 +1019,9 @@ agentflow は、flowchart と空の文字列、空の markdown 文字列、
 [fixture: agentflow/div-empty-call-statement]
 [fixture: agentflow/div-empty-string-before-vertex]
 [fixture: agentflow/div-empty-call-before-vertex]
+[fixture: agentflow/div-empty-string-after-vertex]
+[fixture: agentflow/div-empty-markdown-after-vertex]
+[fixture: agentflow/div-empty-call-after-vertex]
 
 flow と connector の名前の中や、後続の click の URL・tooltip の前では、
 既存の AgentflowName.parts、textBeforeUrl、textBeforeTooltip の欄が、
@@ -1009,7 +1029,7 @@ flow と connector の名前の中や、後続の click の URL・tooltip の前
 空の call を AgentflowIgnoredText として保てます。
 その位置の消される click や閉じた空の説明ブロックと同じく、
 書かれたまま受理します。
-文の始まりの例外は、これらの位置には当たりません。
+その例外は、これらの位置には当たりません。
 [fixture: agentflow/lex-empty-string-in-flow-name]
 [fixture: agentflow/lex-empty-call-in-flow-name]
 [fixture: agentflow/lex-empty-markdown-in-flow-name]
@@ -1033,7 +1053,7 @@ flow と connector の名前の中や、後続の click の URL・tooltip の前
 [fixture: agentflow/div-empty-string-after-click]
 [fixture: agentflow/div-empty-string-between-header-and-direction]
 
-閉じた空の説明ブロックには、文の始まりの例外を適用しません。
+閉じた空の説明ブロックには、その例外を適用しません。
 文の始まりや完成した文の後では AgentflowAccDescrBlockStatement とし、
 ヘッダーの方向の後では図の body、
 flow の題や global の見出しの後ではその body の先頭に置きます。
@@ -1071,61 +1091,61 @@ style のコンマの前などです。
 空の形の区切りを lexer が消す規則としては説明されていません。
 
 - flowchart:
-  [文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/flowchart.md#L53-L74)
+  [文書](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L54-L75)
   引用した Unicode と markdown のラベルを示します。
 
 - sequence:
-  [文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/config/accessibility.md#L67-L93)
+  [文書](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/config/accessibility.md#L71-L97)
   accDescr と空でない複数行の説明ブロックを説明します。
 
 - class:
-  [文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/classDiagram.md#L150-L167)
+  [文書](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L154-L171)
   引用したラベルと空でないバッククォートのクラス名を示します。
 
 - state:
-  [文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/config/accessibility.md#L67-L93)
+  [文書](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/config/accessibility.md#L71-L97)
   共通の説明ブロックの構文を説明します。
   [PR #8498](https://github.com/mermaid-js/mermaid/pull/8498) は 2026-10-22
   時点で open であり、 as の後の state の id を必須にする提案です。
   消される空の説明ブロックではなく、id の欠落を扱うものです。
 
 - er:
-  [文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/entityRelationshipDiagram.md#L225-L241)
+  [文書](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/entityRelationshipDiagram.md#L229-L245)
   type と name の対を持つ属性ブロックを示します。
   2026-10-22 に確認した closed の
   [issue #1415](https://github.com/mermaid-js/mermaid/issues/1415) は、
   属性内の空のバッククォートではなく、空の関係ラベルを報告します。
 
 - gantt:
-  [文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/gantt.md#L450-L477)
+  [文書](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/gantt.md#L454-L481)
   URL とコールバック名を持つ click href と call の文を示します。
 
 - requirement:
-  [文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/requirementDiagram.md#L91-L109)
+  [文書](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/requirementDiagram.md#L95-L113)
   ユーザーのテキストの引用を任意とし、空でない欄を示します。
 
 - mindmap:
-  [文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/mindmap.md#L177-L203)
+  [文書](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/mindmap.md#L179-L205)
   は、::icon() の中のアイコン名と ::: の後のクラス名を示します。
 
 - xychart:
-  [文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/xyChart.md#L33-L56)
+  [文書](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/xyChart.md#L37-L60)
   引用した図の題、軸の題、カテゴリーのラベルを示します。
 
 - quadrant:
-  [文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/quadrantChart.md#L35-L62)
+  [文書](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/quadrantChart.md#L39-L66)
   題と軸のテキストを説明します。
 
 - block:
-  [文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/block.md#L175-L195)
+  [文書](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/block.md#L176-L196)
   形の中の空でない引用したラベルを示します。
 
 - kanban:
-  [文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/kanban.md#L15-L47)
+  [文書](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/kanban.md#L19-L51)
   括弧で囲む列とタスクのラベルを示します。
 
 - agentflow:
-  [文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/agentflow.md#L108-L118)
+  [文書](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/agentflow.md#L113-L123)
   flowchart と同じノードの宣言を説明します。
   2026-10-22 に `agentflow empty in:title,body` で検索し、消される空の文字列、
   call、内部の説明ブロックの報告は見つかりませんでした。

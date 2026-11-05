@@ -14,11 +14,11 @@ const documentDirectories = [
 ]
 
 /**
- * Diagram families in the order of Mermaid 12.2.0's sidebarSyntax(). Existing
+ * Diagram families in the order of Mermaid 12.3.0's sidebarSyntax(). Existing
  * families use their specification filenames; other entries use diagram ids.
  * The sidebar omits agentflow, info and railroad; they follow it in name
  * order.
- * https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/.vitepress/config.ts#L160-L207
+ * https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/.vitepress/config.ts#L164-L207
  */
 export const diagramOrder = [
   "flowchart",

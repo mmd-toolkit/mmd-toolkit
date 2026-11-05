@@ -213,7 +213,7 @@ diagram; an imported common rule does not establish how the diagram uses it.
 2. Read keyword patterns too: list which keywords receive custom boundaries,
    which keep the default ordering, and which have explicit `longer_alt`
    alternatives. The
-   [shared token builder](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/tokenBuilder.ts#L7-L31)
+   [shared token builder](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/common/tokenBuilder.ts#L7-L31)
    adds whitespace/EOF-or-percent-pair lookahead only to its configured
    keywords. First matching rule, keyword boundaries and explicit alternatives
    decide the unit, rather than a general longest match. Probe glued suffixes,
@@ -222,7 +222,7 @@ diagram; an imported common rule does not establish how the diagram uses it.
    boundaries of its own.
 3. Treat hidden terminals as lexer rules with consumed text, not as global
    removals. The imported
-   [YAML and DIRECTIVE terminals](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/common.langium#L25-L34)
+   [YAML and DIRECTIVE terminals](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/common/common.langium#L25-L34)
    consume an immediately following LF, whereas another whitespace boundary is
    only looked at. Probe each unit gap and each statement's EOL and EOF: a
    consumed sole LF prevents a later statement, but consuming the common
@@ -235,18 +235,18 @@ diagram; an imported common rule does not establish how the diagram uses it.
 4. Follow the actual terminal rule name through the injected converter and its
    fallback, including identity, string, integer and double conversion only
    where reachable. The
-   [common converter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/common/valueConverter.ts#L26-L70)
+   [common converter](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/common/valueConverter.ts#L26-L70)
    gives line and block common values different whitespace readings. For
    example, the pie
-   [custom branch](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/pie/valueConverter.ts#L6-L16)
+   [custom branch](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/pie/valueConverter.ts#L6-L16)
    names PIE_SECTION_LABEL, while its
-   [grammar](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/pie/pie.langium#L1-L20)
+   [grammar](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/pie/pie.langium#L1-L20)
    calls STRING and reaches the default escape conversion. For reachable units,
    collect both quote styles, unknown escapes, precision, overflow and
    underflow; use rejecting controls and record the reason where a previous
    diagram's unit is unreachable.
 5. Read the public acceptance gate, not just the recoverable AST. The
-   [public parse wrapper](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/parse.ts#L134-L150)
+   [public parse wrapper](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/parse.ts#L134-L150)
    rejects any lexer or parser error. Then follow the diagram's AST-to-Db
    publication, distinguishing stored values, conditional or skipped
    assignments, unassigned grammar literals and statements the adapter discards.

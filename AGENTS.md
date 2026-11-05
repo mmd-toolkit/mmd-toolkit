@@ -39,18 +39,21 @@ Correctness is defined by the pinned mermaid.js.
       the third reason below seems to apply. That mermaid.js does not read a
       text, and that nobody would write it, are not reasons to reject it. The
       one exception is a form written with a meaning of its own, as a string, a
-      link, or a call, that mermaid.js discards whole: an empty string or an
-      empty call where a statement starts in flowchart and in agentflow, an
-      empty string where a statement starts in class, an empty href or an empty
-      call in gantt, wherever it stands, an empty string in requirement,
-      wherever it stands, an empty icon, an empty class line, or an empty string
-      inside a shape in mindmap and in kanban, an empty string in xychart where
-      it is not the whole title of an axis or of a plot or the whole label of a
-      value, and an empty string or an empty markdown string in quadrant and in
-      block, wherever it stands. Such a form is not held as a statement that
-      changes nothing; the input is rejected as the divergence
-      `tokenless-empty-forms`. A fragment that mermaid.js does not read after a
-      statement it reads, `state ""` in state, is no such form and stays a node.
+      link, or a call, that mermaid.js discards whole: an empty string, an empty
+      markdown string, or an empty call where a statement starts or after the
+      last unit of a statement in flowchart and in agentflow, an empty string or
+      an empty call where a statement starts or after the last unit of a
+      statement in class, an empty string where a member starts in the body of a
+      class, an empty href or an empty call in gantt, wherever it stands, an
+      empty string in requirement, wherever it stands, an empty icon, an empty
+      class line, or an empty string or an empty markdown string inside a shape
+      in mindmap and in kanban, an empty string in xychart where it is not the
+      whole title of an axis or of a plot or the whole label of a value, and an
+      empty string or an empty markdown string in quadrant and in block,
+      wherever it stands. Such a form is not held as a statement that changes
+      nothing; the input is rejected as the divergence `tokenless-empty-forms`.
+      In state, a fragment that mermaid.js does not read after a statement it
+      reads, `state ""`, is no such form and stays a node.
    2. Only where no node can hold it: an input that mermaid.js accepts is
       rejected, or read differently, as a divergence, and only for one of these
       reasons:

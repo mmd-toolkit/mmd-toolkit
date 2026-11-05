@@ -305,7 +305,7 @@ agentflow と eventmodeling 以外の図では、
 [`style` 行と `classDef` 行](../../spec/docs/common.ja.md#style-行と-classdef-行)
 を参照。
 Db が
-[`preserveCommentsWhenParsing`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/Diagram.ts#L66-L76)
+[`preserveCommentsWhenParsing`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/Diagram.ts#L66-L76)
 を設定している図（pin した mermaid.js では agentflow と eventmodeling）は、
 パーサーの入力でコメント行を受け取ります。
 それを木でどう表すかは、その図の文書で述べます。

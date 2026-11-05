@@ -1,0 +1,61 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.3.0",
+    "path": "packages/mermaid/src/diagrams/swimlanes/swimlanesDiagram.spec.ts",
+    "line": 78,
+    "test": "swimlane-beta lanes that parse but cannot be drawn as written (issue #8386) > draws a node kept by a subgraph nested in a lane in that lane, without a stray empty lane"
+  },
+  "accepted": true,
+  "diagramType": "swimlane",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "a",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "inner",
+        "nodes": [
+          "a"
+        ],
+        "title": "inner",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "lane1",
+        "nodes": [
+          "inner"
+        ],
+        "title": "lane1",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "lane2",
+        "nodes": [],
+        "title": "lane2",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

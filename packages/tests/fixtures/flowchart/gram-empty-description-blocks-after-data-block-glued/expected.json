@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "flowchart.md Empty description blocks before a separator: without whitespace around them, two blocks may follow a data block, after which the grammar takes no whitespace at the end of a statement."
+    "note": "flowchart.md Empty description blocks before a separator: without whitespace around them, two blocks may follow a data block."
   },
   "accepted": true,
   "diagramType": "flowchart-v2",

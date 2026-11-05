@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md Vertices, shapes, and labels: a vertex statement takes no whitespace after a data block that no line feed follows; the empty string does not change this, so the input is rejected by both."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...flow-beta TBA@{} \"\"\n----------------------^\nExpecting 'AMP', got 'NEWLINE'"
+  }
+}

@@ -245,6 +245,17 @@ export class FlowchartUnitLexer extends GraphUnitLexer<
   protected override readonly headerKeywords: readonly string[] =
     HEADER_KEYWORDS
 
+  protected override readonly edgeIdRunEnds: readonly number[] = [
+    QUOTATION_MARK,
+    LEFT_SQUARE_BRACKET,
+    RIGHT_SQUARE_BRACKET,
+    LEFT_PARENTHESIS,
+    RIGHT_PARENTHESIS,
+    LEFT_CURLY_BRACKET,
+    RIGHT_CURLY_BRACKET,
+    VERTICAL_LINE,
+  ]
+
   public constructor(reader: DiagramText, lines: LineIndex) {
     super(reader, lines, "statement", END_OF_TEXT_MESSAGES)
   }

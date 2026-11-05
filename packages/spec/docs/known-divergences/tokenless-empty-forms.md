@@ -378,56 +378,56 @@ tests, the documentation, and the demos of mermaid.js contains one of them.
 
 The lexer of mermaid.js reads no token for any of these forms. In flowchart, it
 passes over the quotes of an empty string
-([`flow.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L82-L87)),
+([`flow.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L82-L87)),
 over the `call` and the parentheses of an empty call
-([`flow.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L74-L79)),
+([`flow.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L74-L79)),
 and over the `accDescr {` and the `}` of an empty description block
-([`flow.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L35-L37)).
+([`flow.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L35-L37)).
 Sequence and state pass over an empty description block in the same way
-([`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L76-L77),
-[`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L93-L95)),
+([`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L76-L77),
+[`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L93-L95)),
 and class over all five forms
-([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L34-L35),
-[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L53-L62),
+([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L34-L35),
+[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L53-L62),
 and
-[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)).
+[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)).
 Er passes over an empty description block
-([`erDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/er/parser/erDiagram.jison#L16-L18))
+([`erDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/er/parser/erDiagram.jison#L16-L18))
 and over empty backquotes
-([`erDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/er/parser/erDiagram.jison#L38-L40)).
+([`erDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/er/parser/erDiagram.jison#L38-L40)).
 Gantt passes over an empty description block
-([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L24-L25)),
+([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L24-L25)),
 over `href`, its whitespace, and both quotes of an empty href
-([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L42-L43)),
+([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L42-L43)),
 and over `call`, its whitespace, and the parentheses of an empty call
-([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L54-L55)).
+([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L54-L55)).
 Requirement passes over an empty description block
-([`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L23-L24))
+([`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L23-L24))
 and over the quotes of an empty string, in the statement context and in the
 style context
-([`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L85-L96)).
+([`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L85-L96)).
 Mindmap passes over `:::` with nothing after it on its line and over `::icon(`
 and `)` with nothing between them
-([`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L24-L32)),
+([`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L24-L32)),
 and over the quotes of an empty string and the delimiters of an empty markdown
 string
-([`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L45-L50)).
+([`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L45-L50)).
 Xychart passes over a closed empty description block
-([`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L28-L30))
+([`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L28-L30))
 and over the quotes of an empty string
-([`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L54-L56)).
+([`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L54-L56)).
 Quadrant passes over a closed empty description block
-([`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L28-L29)),
+([`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L28-L29)),
 over the delimiters of an empty markdown string
-([`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L41-L43)),
+([`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L41-L43)),
 and over the quotes of an empty string
-([`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L44-L45)).
+([`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L44-L45)).
 Block passes over a closed empty description block
-([`block.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/block/parser/block.jison#L79-L80)),
+([`block.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/block/parser/block.jison#L79-L80)),
 over the delimiters of an empty markdown string
-([`block.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/block/parser/block.jison#L50-L52)),
+([`block.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/block/parser/block.jison#L50-L52)),
 and over the quotes of an empty string
-([`block.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/block/parser/block.jison#L53-L54)).
+([`block.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/block/parser/block.jison#L53-L54)).
 Each of these rules enters or leaves a state of the lexer and returns nothing,
 so the grammar never sees the form.
 
@@ -490,6 +490,22 @@ state/gram-empty-description-block-after-transition] [fixture:
 state/div-empty-description-block-after-arrow] [fixture:
 state/div-empty-description-block-in-transition] [fixture:
 state/div-empty-description-block-before-label]
+
+The tree holds no statement for an empty string, an empty markdown string, or an
+empty call that mermaid.js discards whole, where a statement starts and after
+the last unit of a statement in flowchart, nor for an empty string or an empty
+call there in class: `""`, `A ""`, and `A call ()` in flowchart, and
+`"" A --> B`, `A ""`, `call () A`, and `A call ()` in class. Nor does it hold a
+member for an empty string where a member starts in the body of a class:
+`class A {`, a line break, `""`, a line break, and `}` has no member, in
+mermaid.js too. A statement or a member could stand at those places, as an empty
+description block does, but these forms are written with a meaning of their own,
+so the input is rejected. [fixture: flowchart/lex-empty-string-line] [fixture:
+flowchart/lex-empty-string] [fixture: flowchart/gram-empty-call-after-vertex]
+[fixture: class/div-empty-string-statement-start] [fixture:
+class/div-empty-string-after-name] [fixture:
+class/div-empty-call-statement-start] [fixture: class/div-empty-call-after-name]
+[fixture: class/div-empty-string-member-start]
 
 An empty description block that lies neither where a statement starts nor before
 the separator of a statement or of the header lies inside a statement. The tree
@@ -897,7 +913,7 @@ In class, `direction accDescr {}`, a line break, and `LR` is such an input: the
 block keeps the two from forming a direction line, in mermaid.js too, so they
 are two member statements without a label, and the direction stays `TB`.
 [fixture: state/gram-click-empty-description-block-after] [fixture:
-flowchart/gram-empty-description-block-after-data-block-space] [fixture:
+flowchart/gram-empty-description-block-after-click-space] [fixture:
 sequence/gram-empty-description-block-after-autonumber-spaces] [fixture:
 class/gram-empty-description-block-after-direction-word]
 
@@ -933,21 +949,25 @@ kanban/div-empty-markdown-before-label]
 ### Agentflow
 
 Agentflow shares flowchart's empty-string, empty-markdown-string, and empty-call
-vocabulary. At statement start an IgnoredStatement could hold such a form, but
-the explicit empty-form exception applies there: these are strings or calls with
-their own written meaning that Mermaid discards whole, so no no-effect statement
-is introduced. [fixture: agentflow/div-empty-string-statement] [fixture:
+vocabulary. At statement start or after the last unit of a statement an
+IgnoredStatement could hold such a form, but the explicit empty-form exception
+applies there: these are strings or calls with their own written meaning that
+Mermaid discards whole, so no no-effect statement is introduced. [fixture:
+agentflow/div-empty-string-statement] [fixture:
 agentflow/div-empty-markdown-statement] [fixture:
 agentflow/div-empty-call-statement] [fixture:
 agentflow/div-empty-string-before-vertex] [fixture:
-agentflow/div-empty-call-before-vertex]
+agentflow/div-empty-call-before-vertex] [fixture:
+agentflow/div-empty-string-after-vertex] [fixture:
+agentflow/div-empty-markdown-after-vertex] [fixture:
+agentflow/div-empty-call-after-vertex]
 
 Inside flow/connector names or before a following click URL/tooltip, the
 existing AgentflowName.parts, textBeforeUrl, or textBeforeTooltip field holds a
 recognized erased empty string, empty markdown string, or empty call as
 AgentflowIgnoredText. Accept it as written, like the erased click or closed
-empty description block there. The statement-start exception does not apply to
-those positions. [fixture: agentflow/lex-empty-string-in-flow-name] [fixture:
+empty description block there. That exception does not apply to those positions.
+[fixture: agentflow/lex-empty-string-in-flow-name] [fixture:
 agentflow/lex-empty-call-in-flow-name] [fixture:
 agentflow/lex-empty-markdown-in-flow-name] [fixture:
 agentflow/lex-empty-string-in-connector-name] [fixture:
@@ -970,15 +990,15 @@ agentflow/div-empty-string-before-callback] [fixture:
 agentflow/div-empty-string-after-click] [fixture:
 agentflow/div-empty-string-between-header-and-direction]
 
-Closed empty description blocks do not use the statement-start exception. At
-statement start or after a completed statement they are
-AgentflowAccDescrBlockStatements; after the header direction they begin the
-diagram body, and after a flow title/global heading they begin that body. Within
-flow/connector names, AgentflowName.parts holds the whole form as
-AgentflowIgnoredText; existing click textBefore fields hold it too. The measured
-ordinary reading remains representable, so these inputs are accepted, not
-reason-1 rejections. [fixture: agentflow/lex-empty-description-before-node]
-[fixture: agentflow/gram-empty-description-after-vertex] [fixture:
+Closed empty description blocks do not use that exception. At statement start or
+after a completed statement they are AgentflowAccDescrBlockStatements; after the
+header direction they begin the diagram body, and after a flow title/global
+heading they begin that body. Within flow/connector names, AgentflowName.parts
+holds the whole form as AgentflowIgnoredText; existing click textBefore fields
+hold it too. The measured ordinary reading remains representable, so these
+inputs are accepted, not reason-1 rejections. [fixture:
+agentflow/lex-empty-description-before-node] [fixture:
+agentflow/gram-empty-description-after-vertex] [fixture:
 agentflow/gram-empty-description-after-header-direction] [fixture:
 agentflow/gram-empty-description-after-global] [fixture:
 agentflow/gram-empty-description-after-flow-title] [fixture:
@@ -1007,61 +1027,61 @@ The pinned documentation describes the forms below, without specifying the lexer
 erasing the delimiters of these empty forms.
 
 - flowchart: the
-  [documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/flowchart.md#L53-L74)
+  [documentation](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L54-L75)
   shows quoted Unicode and markdown labels.
 
 - sequence: the
-  [documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/config/accessibility.md#L67-L93)
+  [documentation](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/config/accessibility.md#L71-L97)
   describes accDescr and a nonempty multiline description block.
 
 - class: the
-  [documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/classDiagram.md#L150-L167)
+  [documentation](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L154-L171)
   shows quoted labels and nonempty backquoted class names.
 
 - state: the
-  [documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/config/accessibility.md#L67-L93)
+  [documentation](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/config/accessibility.md#L71-L97)
   describes the shared description-block syntax.
   [PR #8498](https://github.com/mermaid-js/mermaid/pull/8498) is open as of
   2026-10-22 and proposes requiring a state id after as; it concerns a missing
   id, not a discarded empty description block.
 
 - er: the
-  [documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/entityRelationshipDiagram.md#L225-L241)
+  [documentation](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/entityRelationshipDiagram.md#L229-L245)
   shows attribute blocks with type/name pairs. The closed
   [issue #1415](https://github.com/mermaid-js/mermaid/issues/1415), checked on
   2026-10-22, reports empty relationship labels rather than empty attribute
   backquotes.
 
 - gantt: the
-  [documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/gantt.md#L450-L477)
+  [documentation](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/gantt.md#L454-L481)
   shows click href and call statements with URLs and callback names.
 
 - requirement: the
-  [documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/requirementDiagram.md#L91-L109)
+  [documentation](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/requirementDiagram.md#L95-L113)
   allows quoted or unquoted user text and shows nonempty fields.
 
 - mindmap: the
-  [documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/mindmap.md#L177-L203)
+  [documentation](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/mindmap.md#L179-L205)
   shows icon names inside ::icon() and class names after :::.
 
 - xychart: the
-  [documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/xyChart.md#L33-L56)
+  [documentation](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/xyChart.md#L37-L60)
   shows quoted chart titles, axis titles, and category labels.
 
 - quadrant: the
-  [documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/quadrantChart.md#L35-L62)
+  [documentation](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/quadrantChart.md#L39-L66)
   describes titles and axis text.
 
 - block: the
-  [documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/block.md#L175-L195)
+  [documentation](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/block.md#L176-L196)
   shows nonempty quoted labels inside shapes.
 
 - kanban: the
-  [documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/kanban.md#L15-L47)
+  [documentation](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/kanban.md#L19-L51)
   shows bracketed column and task labels.
 
 - agentflow: the
-  [documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/agentflow.md#L108-L118)
+  [documentation](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/agentflow.md#L113-L123)
   describes flowchart-style node declarations. Searches on 2026-10-22 with
   `agentflow empty in:title,body` found no report about erased empty strings,
   calls, or interior description blocks.

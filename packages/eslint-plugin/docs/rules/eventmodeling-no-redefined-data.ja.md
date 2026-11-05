@@ -80,8 +80,8 @@ second
 
 ## 参考
 
-- [Event Modeling の構文: データブロックの名前](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/eventmodeling.md#L97-L99)
-- [Event Modeling の構文: データの型](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/eventmodeling.md#L323-L325)
+- [Event Modeling の構文: データブロックの名前](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/eventmodeling.md#L101-L103)
+- [Event Modeling の構文: データの型](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/eventmodeling.md#L327-L329)
 
 <!-- begin auto-generated rule version -->
 

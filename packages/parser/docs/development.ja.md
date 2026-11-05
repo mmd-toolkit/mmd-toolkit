@@ -32,10 +32,10 @@
 - `style` と `classDef` の行の規則
 - 実体参照
 - テキストの終わり
-- 図種の検出（mermaid.js 12.2.0 のすべての図種）
+- 図種の検出（mermaid.js 12.3.0 のすべての図種）
 
 図の本体は、
-mermaid.js 12.2.0 のすべての図種と `error` 疑似図種について実装しています。
+mermaid.js 12.3.0 のすべての図種と `error` 疑似図種について実装しています。
 その一覧は README の[対応している図](../README.ja.md#対応している図)にあります。
 
 ## 図のパーサーの作り
@@ -223,6 +223,9 @@ data・shape・callback などの共通生成規則には、
 `src/graph-grammar.ts` の `GraphGrammar` を使います。
 各図種は独自の AST ノードを構築し、矢印の語彙、コメント規則、名前の文法、
 波括弧の変換をそれぞれ持ちます。
+辺の id の並びを止める文字（`edgeIdRunEnds`）と、
+頂点の文がグループの後で取る空白（`takeSpacesAfterGroup`）も、
+2 つの図種で違うので、それぞれが持ちます。
 既存の共通 reader、方向行規則、Unicode 文字の補助も使います。
 テキストのラッパーは、終了波括弧後の最初の LF に直結する行空白だけを畳みます。
 [fixture: agentflow/lex-brace-string-keeps-blank-line]

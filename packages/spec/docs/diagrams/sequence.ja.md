@@ -4,9 +4,9 @@
 
 mermaid.js での正解の出どころ:
 
-- [`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison)
-- [`sequenceDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts)
-- [`sequenceDiagram.spec.js`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js)
+- [`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison)
+- [`sequenceDb.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/sequenceDb.ts)
+- [`sequenceDiagram.spec.js`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js)
   のテスト
 
 この文書は、図種 `sequence` を扱います。
@@ -711,7 +711,7 @@ sequence/db-box-wrap-without-colour]
 そのテキストを名前とする単位を表します。
 `end-of-text` はテキストの終わりを表します。
 この文法は
-[`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L136-L422)
+[`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L136-L422)
 の文法を述べ直したもので、同じ入力を受理します。
 jison の文法は、id を取る所で `link` の単位も取ります。
 字句解析器は、文を完成させる所でその単位を作りません。
@@ -1082,7 +1082,7 @@ mermaid.js は、文法が受理する入力の一部を、Db を作る間に拒
 2 つの場所を保ちます。
 どちらも空か、1 つの id を持ちます。
 **作られるのを待つ参加者**と、**destroy されるのを待つ参加者**です。
-[`sequenceDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L581-L645)
+[`sequenceDb.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L581-L645)
 を参照してください。
 どちらも空から始まります。
 

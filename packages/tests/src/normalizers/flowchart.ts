@@ -67,11 +67,11 @@ interface FlowDbLike {
  * after the rest of its processing (trimming, quote stripping).
  *
  * Some fields are set only by `@{ ... }` data blocks: `icon`, `form`, `pos`,
- * `img`, `constraint`, `assetWidth` and `assetHeight` of vertices, `animate`
- * and `animation` of edges, and `metadata` of subgraphs. They are part of the
- * summary, but an implementation that does not read data blocks takes them
- * from `dataBlockEffects` (see docs/embedded-data.md), so only mermaid checks
- * them.
+ * `img`, `constraint`, `assetWidth` and `assetHeight` of vertices, `animate`,
+ * `animation` and `step` of edges, and `metadata` of subgraphs. They are part
+ * of the summary, but an implementation that does not read data blocks takes
+ * them from `dataBlockEffects` (see docs/embedded-data.md), so only mermaid
+ * checks them.
  */
 export function normalizeFlowchart(dbValue: unknown): DbSummary {
   const db = dbValue as FlowDbLike

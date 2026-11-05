@@ -1,0 +1,90 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.3.0",
+    "path": "packages/mermaid/src/docs/syntax/flowchart.md",
+    "line": 886
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "Client",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Client",
+        "props": {}
+      },
+      {
+        "id": "API",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "API",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "Client",
+        "end": "API",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": true,
+        "stroke": "normal",
+        "length": 1,
+        "id": "e1",
+        "step": 1
+      },
+      {
+        "start": "API",
+        "end": "Client",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": true,
+        "stroke": "normal",
+        "length": 1,
+        "id": "e2",
+        "step": 2
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "config": {
+      "flowchart": {
+        "stepDuration": 0.5
+      }
+    },
+    "dataBlockEffects": [
+      {
+        "id": "e1",
+        "set": {
+          "step": 1
+        }
+      },
+      {
+        "id": "e2",
+        "set": {
+          "step": 2
+        }
+      }
+    ]
+  }
+}

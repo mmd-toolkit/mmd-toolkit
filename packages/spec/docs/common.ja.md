@@ -146,9 +146,9 @@ treeview の [branch の列](./diagrams/treeview.ja.md)です。
 
 ## mermaid.js とこの仕様
 
-[`preprocessDiagram()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/preprocess.ts#L58-L91)、
-[`Diagram.fromText()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/Diagram.ts#L19-L85)、
-[`detectType()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/detectType.ts#L36-L51)
+[`preprocessDiagram()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/preprocess.ts#L58-L91)、
+[`Diagram.fromText()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/Diagram.ts#L19-L85)、
+[`detectType()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagram-api/detectType.ts#L36-L51)
 は、次の段階をこの順に適用します。
 最後の列は、この仕様がそれぞれをどう述べ直しているかです。
 
@@ -182,7 +182,7 @@ mermaid.js が書き換えたテキストの上で何かを決めるとき（図
 図の Db が `preserveCommentsWhenParsing` を設定している場合、
 段階 5 はパーサーへの入力には適用されず、
 検出にだけ適用されます（mermaid.js の
-[`Diagram.fromText()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/Diagram.ts#L66-L77)）。
+[`Diagram.fromText()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/Diagram.ts#L66-L77)）。
 そのとき段階 7 は、パーサーが受け取るテキストに対して働くので、
 コメント行と先頭の空白も見ます。
 pin した mermaid.js でそうしているのは agentflow と eventmodeling の Db です。
@@ -478,7 +478,7 @@ flowchart ではラベルの文字列の中の `"` が引用符付き文字列�
 
 mermaid.js は、文法を変えずにラベルの中の HTML の属性値に `"` を使えるように、
 この置き換えを
-[`cleanupText()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/preprocess.ts#L6-L17)
+[`cleanupText()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/preprocess.ts#L6-L17)
 で行い、フロントマター、ディレクティブ、
 コメント行を取り除く前にソース全体に適用します。
 フロントマターの中を除いて（詳しくは
@@ -518,7 +518,7 @@ mermaid.js は、文法を変えずにラベルの中の HTML の属性値に `"
 
 トリビアの規則。
 出どころは
-[`extractFrontMatter()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/frontmatter.ts#L24-L69)
+[`extractFrontMatter()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagram-api/frontmatter.ts#L24-L69)
 です。
 次の条件がすべて成り立つとき、ソースはフロントマターを持ちます。
 
@@ -690,7 +690,7 @@ mermaid.js は一部のディレクティブを設定のために読みます。
 ### ディレクティブの位置
 
 ディレクティブは、フロントマターの後のソースのあらゆる位置で、左から順に、
-[`removeDirectives()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L200-L202)
+[`removeDirectives()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/utils.ts#L200-L202)
 と同じように探します。
 ディレクティブは、`%%{` の後に 0 個以上の空白と語の文字が続くところで始まり、
 次の規則が届くところまで伸びます。
@@ -894,7 +894,7 @@ flowchart については
 
 トリビアの規則。
 出どころは
-[`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)
+[`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagram-api/comments.ts#L6-L8)
 です。
 
 **コメント開始位置**は、テキストの先頭、またはディレクティブの一部でない行終端、
@@ -1043,7 +1043,7 @@ state で、`A %% x`、U+2029、行 `%% end`、行 `B` の後では、
 
 トリビアの規則。
 mermaid.js は、
-[`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)
+[`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagram-api/comments.ts#L6-L8)
 の中で、コメント行を取り除いた直後に先頭の空白を取り除きます。
 図の字句解析器の最初の単位より前の空白、行終端、ディレクティブ、
 コメント領域はトリビアで、図の文法からは見えません。
@@ -1341,12 +1341,12 @@ class はそのような行の後の空白だけの行を `newline` の単位と
   common/detect-dashes-after-directive-found-once-more]
 
 mermaid.js は、先に書き換えたテキストの上で図種を決めます。
-[`detectType()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/detectType.ts#L36-L51)
+[`detectType()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagram-api/detectType.ts#L36-L51)
 は、フロントマター、ディレクティブ、コメント行、先頭の空白を除いた後に、
 先頭のフロントマターのブロックをもう一度除き、
 ディレクティブをもう一度走査して除き、後ろのどこかに改行がある `%%` を、
 その前の空白と行の残りごと除きます（mermaid.js の
-[`stripAnyComments()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/regexes.ts#L49-L76)）。
+[`stripAnyComments()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagram-api/regexes.ts#L49-L76)）。
 その後で検出器が残りを見ます。
 C4 の検出器は、5 つのキーワードのうち 4 つをその中のどこにでも探します。
 検出した図の字句解析器は、この最後の除去をしていないテキストを読みます。
@@ -1461,7 +1461,7 @@ YAML の 1 回の skip は bare line と第二走査より先で、
 
 行単位の規則で、すべての図種に適用します。
 出どころは
-[`encodeEntities()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L895-L917)
+[`encodeEntities()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/utils.ts#L895-L917)
 です。
 1 つの行区間ごとに適用し、字句解析器は各行区間の先頭で、
 その終わりまで先を見て適用します。
@@ -1540,7 +1540,7 @@ agentflow と eventmodeling
 項目 1 の `style` を `classDef` に替えて同じことを行います。
 [fixture: common/entity-style-then-classdef-rule]
 mermaid.js は、
-[`encodeEntities()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L895-L917)
+[`encodeEntities()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/utils.ts#L895-L917)
 でそのような `;` をテキストから取り除きます。
 この仕様は、それをソースに残したまま無視するだけです。
 無視される `;` は、ディレクティブと同じく、テキストと文字列の中と、

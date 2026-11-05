@@ -7,7 +7,8 @@ since: v0.1.0
 Japanese version:
 [flowchart-no-redefined-vertex.ja.md](./flowchart-no-redefined-vertex.ja.md)
 
-Disallow writing the shape or the label of a vertex again, differently.
+Disallow writing a vertex again, differently or in a subgraph that does not get
+it.
 
 <!-- begin auto-generated rule notice -->
 
@@ -17,16 +18,18 @@ Disallow writing the shape or the label of a vertex again, differently.
 
 A vertex may be written many times, and the last shape and label are used.
 Reusing an id for what was meant as another vertex loses the earlier shape or
-label without an error.
+label without an error. A vertex belongs to the first subgraph that ended with
+it: writing it in a later subgraph does not add it there.
 
 ## Rule Details
 
 This rule applies to flowcharts (`flowchart`, `graph`, `flowchart-elk`, and
 `swimlane-beta`). It reports a vertex written with a shape whose shape or label
 differs from the last one written for that id. Referring to the vertex without a
-shape, or repeating its current shape and label, is not reported. A shape or
-label set by a data block, such as `A@{ shape: rect }`, is not compared, also
-when it stands between two shaped occurrences of the vertex.
+shape, or repeating its current shape and label, is not reported, except in a
+subgraph that does not get the vertex (below). A shape or label set by a data
+block, such as `A@{ shape: rect }`, is not compared, also when it stands between
+two shaped occurrences of the vertex.
 
 Label comparisons ignore whitespace at the ends, treat LF, CRLF, and CR as LF,
 and do not distinguish text, quoted text, and markdown text. Otherwise labels
@@ -37,6 +40,20 @@ label.
 A shaped vertex whose id is already a link id changes nothing; it is not
 reported and does not count as an earlier declaration.
 
+A subgraph does not get a vertex that a subgraph before it has, in the order in
+which the subgraphs end (a subgraph inside another one ends first): mermaid.js
+leaves the vertex in the first and the later one does not get it. A statement in
+the later subgraph that writes the vertex again is reported when it has no link,
+no class, and no data block, and writes only the id, or the shape that the
+vertex has with the same label, label kind, and property of the shape: it says
+nothing new about the vertex. In a group such as `A & B`, each vertex is
+reported for itself. It is not reported when the earlier subgraph is inside the
+later one, or has the same id, since nothing is lost; nor when the vertex was
+not written before (an id that only names an earlier subgraph writes a new
+vertex), or when the statement says something new: a link, a class, a data
+block, the first shape of the vertex, or another label kind (text, string, or
+markdown) or property. A different shape or label is reported as above.
+
 Examples of **incorrect** code for this rule:
 
 ```mmd
@@ -44,6 +61,17 @@ Examples of **incorrect** code for this rule:
 flowchart LR
   A[Start] --> B
   C --> A[End]
+```
+
+```mmd
+%% eslint @mmd-toolkit/flowchart-no-redefined-vertex: error
+flowchart TD
+  subgraph a
+    A
+  end
+  subgraph b
+    A
+  end
 ```
 
 Examples of **correct** code for this rule:
@@ -60,6 +88,17 @@ flowchart LR
 flowchart LR
   A[Start] --> B
   C --> A[Start]
+```
+
+```mmd
+%% eslint @mmd-toolkit/flowchart-no-redefined-vertex: error
+flowchart TD
+  subgraph b
+    subgraph a
+      A
+    end
+    A
+  end
 ```
 
 ## Options

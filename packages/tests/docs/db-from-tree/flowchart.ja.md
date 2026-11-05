@@ -138,7 +138,7 @@ id と、省略可能なラベル、形、スタイル、プロパティを取�
    一方、`class` の文は頂点を加えず `props` を作らないので、
    その後の `A[|__proto__:x|text]` が `__proto__` を持つ `props` を作ります。
    mermaid.js は、
-   [`addVertex()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L229-L233)
+   [`addVertex()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L255-L259)
    で、既存の `props` にプロパティを、素のオブジェクトへの代入で加えます。
    そこでは `__proto__` はキーになりません。 [fixture: flowchart/db-props-merge]
    [fixture:

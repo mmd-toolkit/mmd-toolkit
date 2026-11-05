@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.3.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/flow-edges.spec.js",
+    "line": 263,
+    "test": "[Edges] when parsing > edge ids attached to the preceding node (#7032) > edge ids may not contain node bracket characters > should reject an edge id containing { } [A e{1}@--> B]"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nflowchart TDA e{1}@--> B\n--------------^\nExpecting 'SEMI', 'NEWLINE', 'EOF', 'AMP', 'START_LINK', 'LINK', 'LINK_ID', got 'NODE_STRING'"
+  }
+}

@@ -150,6 +150,9 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
   "diagrams/usecase/usecaseTypes.js": ["ARROW_TYPE"],
   "diagrams/usecase/styles.js": ["default"],
   "diagrams/common/common.js": ["sanitizeText"],
+  "rendering-util/layout-algorithms/swimlanes/helpers.js": [
+    "prepareLayoutForSwimlanes",
+  ],
   "node:fs": ["existsSync", "readFileSync"],
   "node:path": ["resolve"],
   "diagrams/agentflow/parser/agentflowParser.js": ["default"],
@@ -175,6 +178,7 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
     "vi",
   ],
   "diagrams/flowchart/parser/flowParser.ts": ["default"],
+  "diagrams/flowchart/parser/flowParser.js": ["default"],
   "diagrams/flowchart/flowDb.js": ["FlowDB"],
   "diagrams/sequence/sequenceDb.js": ["SequenceDB"],
   "diagrams/class/parser/classDiagram.jison": ["parser"],
@@ -687,6 +691,12 @@ export async function recordSpecFile(
     },
     "diagrams/flowchart/parser/flowParser.ts": {
       default: { parser: { parse: record, yy: anything }, parse: record },
+    },
+    "diagrams/flowchart/parser/flowParser.js": {
+      default: { parser: { parse: record, yy: anything }, parse: record },
+    },
+    "rendering-util/layout-algorithms/swimlanes/helpers.js": {
+      prepareLayoutForSwimlanes: anything,
     },
     "diagrams/flowchart/flowDb.js": { FlowDB: anything },
     "diagrams/sequence/sequenceDb.js": { SequenceDB: anything },

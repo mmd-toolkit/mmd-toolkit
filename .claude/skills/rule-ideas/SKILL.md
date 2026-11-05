@@ -98,6 +98,7 @@ Kept (an author's mistake that mermaid accepts silently):
 | `%%{init: {"flowchart": {"inheritDir": true},}}%%` (a trailing comma)                                | All init configuration is dropped                                                               | no-invalid-init-directive (common)                                                                                                                          |
 | `%%{init: {"fontFamily": "O'Brien"}}%%` (a `'` inside a string in `"`)                               | All init configuration is dropped: mermaid.js turns every `'` into `"` before it reads the JSON | no-invalid-init-directive (common)                                                                                                                          |
 | `C-->A[End]` after `A[Start]-->B`                                                                    | The label of A becomes End                                                                      | flowchart-no-redefined-vertex                                                                                                                               |
+| `A` in `subgraph b` after `subgraph a` holds `A`                                                     | `A` stays in a, and b does not get the member                                                   | flowchart-no-redefined-vertex                                                                                                                               |
 | `style C fill:red` (C mistyped)                                                                      | Adds a styled vertex C                                                                          | flowchart-no-undef                                                                                                                                          |
 | `class C foo` or `click C href "…"` (C mistyped)                                                     | Nothing: no vertex gets the class or the link                                                   | flowchart-no-undef                                                                                                                                          |
 | `style C fill:red`, then `class C foo` (C mistyped in both)                                          | `style` adds the vertex C, and the class applies to it                                          | flowchart-no-undef, on the `style` only: the first `style` of an id that nothing else defines is reported, and a vertex that `style` adds counts as defined |
@@ -131,11 +132,12 @@ Dropped:
 | `link A: Dash@https://x.example` (the label is `Das`)                                                                                                                                                          | Looks like a mermaid bug: one missing space drops the last character of the label. Fact: the docs show the form `<label> @ <url>` only                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | `subgraph a ` (whitespace at the end of the line makes the id subGraph0)                                                                                                                                       | Looks like a mermaid bug: invisible whitespace at the end of the line changes the id. Fact: its maintainers approved it as a bug in [#3252](https://github.com/mermaid-js/mermaid/issues/3252) (closed; Type: Bug / Error, Status: Approved, P1), and it still happens in the pinned version (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | `class 1A:::c` (a name that starts with a digit), `style C fill:red` before `class C`, `classDef fo` applied to the CSS class `foo`                                                                            | Outside the scope of this toolkit: whether a CSS class or a style is applied shows only in the drawn diagram, and this toolkit does not draw. Not judged as a mermaid bug, and not reported to mermaid                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `` class `a~b` `` (id `a` with the type `b`, drawn as `a<b>`)                                                                                                                                                  | A mermaid bug by its docs: backquotes escape special characters ([syntax/classDiagram.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/classDiagram.md#L161-L168)), but `~` inside them still starts a generic type. Rare in ordinary writing                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `` class `a~b` `` (id `a` with the type `b`, drawn as `a<b>`)                                                                                                                                                  | A mermaid bug by its docs: backquotes escape special characters ([syntax/classDiagram.md](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L165-L172)), but `~` inside them still starts a generic type. Rare in ordinary writing                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `note for A~T~ "x"` after `class A~T~` (a note for a class written with its generic type)                                                                                                                      | Looks like a mermaid bug: the note keeps the name `A~T~`, the class is `A`, and the note is drawn without its line. `note for A "x"` finds the class                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | `+foo(a(b)) int` (in the Db, the method name `foo(a` and the parameters `b)`)                                                                                                                                  | Nothing the user sees: the drawn diagram shows `+foo(a(b)) : int`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `A x-->B`, `A o-- t -->B` (a start marker different from the end marker)                                                                                                                                       | A mermaid bug, already recognized: mermaid-js/mermaid#1665 (open, approved) says that arrows with different markers at their ends do not work. `A x-->B` is a longer plain arrow, and `A o-- t -->B` is drawn as a plain arrow                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | `A x-- t x--x B` (the start marker on both the opening and the closing arrow)                                                                                                                                  | Comes from not knowing the syntax. The specification says the edge is `INVALID` (drawn as a plain arrow); `A x-- t --x B` is the way to write it                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `A` outside every subgraph or flow after one holds `A` (`A` stays in it), and the same `A[x]` there                                                                                                            | Nothing is lost: a line outside places nothing. Written before `subgraph a`, the outside `A` changes the output just as little, and `A` still goes into a; two outside `A` lines do the same (run). So the line writes no place that mermaid.js could lose, and calling it a place meant is a guess; inside `subgraph b`, the same line does put a vertex in b                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | `style e1 fill:red` with the id `e1` of a link                                                                                                                                                                 | Comes from not knowing the syntax: `style` applies to vertices and subgraphs, and mermaid.js does nothing with it; a link takes a style from `linkStyle` or a class                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `class A foo` or `click A …` before the vertex `A` is written                                                                                                                                                  | Looks like a mermaid bug: the id is written correctly, and mermaid.js does nothing with it only because of where the statement stands (`style` before the vertex works). Searched with "class before node", "class statement order node", "classes not applied node defined after": no issue found                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | In a state diagram, `A,B --> C` or `A,B:::e --> C` (states listed with `,` in a transition)                                                                                                                    | Comes from not knowing the syntax: the documentation lists states with `,` only in the `class` statement, and a transition takes one state; mermaid.js draws one state `A,B`. `A,:::e` is no form that a person drawing a diagram writes, and a stray `,` in `A, --> B` is no ordinary slip                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
@@ -152,7 +154,7 @@ Dropped:
 | In a requirement diagram, `id: 1 %% note` in a body (the id becomes `1 %% note`)                                                                                                                               | Comes from not knowing the syntax: the documentation of mermaid.js says that comments go on a line of their own, as for `subgraph S %% group` in a flowchart                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | In a mindmap, an icon line less indented than the node written last before it (`root`, `  child`, then `::icon(x)` at the indentation of `root`; the icon goes to `child`)                                     | The formatter makes it visible: it prints the icon line at the indentation of `child`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | In a mindmap, a node indented between earlier levels (`root`, `    a`, `      b`, `     c`; `c` becomes a child of `a`)                                                                                        | The documentation of mermaid.js explains this reading under "Unclear indentation", and the indentation does not tell what the author meant: a rule would also report intended writing                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| A line of only `%%` among lines commented out together (the vertex `%%`)                                                                                                                                       | mermaid.js draws the line, without an error, as a vertex with the id `%%`. Read as a comment that the flowchart documentation defines, "the text from the start of the comment to the next line break" ([syntax/flowchart.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/flowchart.md#L1217-L1219)), the vertex is a defect of mermaid.js, for which no rule is kept, for the reasons above ([#7008](https://github.com/mermaid-js/mermaid/pull/7008) is open). Read as writing outside that documentation, `%%` gives the vertex `%%` by the grammar, with nothing lost, and calling it a mistake needs the guess that a comment was meant. On either reading, no fact shows a mistake without a guess |
+| A line of only `%%` among lines commented out together (the vertex `%%`)                                                                                                                                       | mermaid.js draws the line, without an error, as a vertex with the id `%%`. Read as a comment that the flowchart documentation defines, "the text from the start of the comment to the next line break" ([syntax/flowchart.md](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L1258-L1260)), the vertex is a defect of mermaid.js, for which no rule is kept, for the reasons above ([#7008](https://github.com/mermaid-js/mermaid/pull/7008) is open). Read as writing outside that documentation, `%%` gives the vertex `%%` by the grammar, with nothing lost, and calling it a mistake needs the guess that a comment was meant. On either reading, no fact shows a mistake without a guess |
 | In a mindmap, `Write ::icon(fa fa-book)` or `Write:::urgent` on the line of a node                                                                                                                             | mermaid.js reads both by its grammar and loses nothing: the first is the node `Write ::icon` with the label `fa fa-book`, as `X(Foo)` shows `Foo` and not `X`, and the second is the label `Write:::urgent`. Calling either a mistake rests only on the guess that an icon or a class was meant                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | In a timeline, `#` in a period (`Sprint #3 : planning`: the period `Sprint `, and the comment `#3 : planning`, so the event is lost)                                                                           | A defect of mermaid.js, for the reasons above: the timeline documentation of mermaid.js calls a period and an event "simple text", names no comment `#`, and shows no other way of writing that keeps it (the entity `#35;` appears in the flowchart documentation only). Fact: [#5356](https://github.com/mermaid-js/mermaid/issues/5356) (closed, Type: Bug / Error) reports that `#` starts a comment                                                                                                                                                                                                                                                                                                                                                                          |
 | In a timeline, an event line after a section with no period of its own (`section B`, then `: y`; `y` goes to the last period of the section before)                                                            | mermaid.js reads it by its grammar and loses nothing; calling it a mistake needs the guess that the event was meant for section B. So for `section 2020 : a`, the section `2020 ` and an event of the period before                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
@@ -990,11 +992,32 @@ flowchart-no-redefined-vertex: (1) a later shape or label replaces the earlier
 one; labels that differ only in their line breaks are not reported, and labels
 are otherwise compared as written, so two that differ only in the quotes of an
 HTML attribute, which mermaid.js keeps the same, are reported, as the document
-says, because the rules compare written values; (2) none; (3) "node label
-overwritten", "redefine node label", "node label":
+says, because the rules compare written values. A subgraph leaves out the
+members that a subgraph ended before it has, so a statement in a later subgraph
+with no link, class, or data block that says nothing new about a vertex written
+before, only its id, or a shape of the same name, property, label, and kind of
+label, is reported: the later subgraph does not hold the vertex (run: `A` in
+`subgraph a`, then `A` in `subgraph b`, leaves `A` in a). It is not reported
+when the earlier subgraph is nested in the later one or has its id, where
+nothing is lost. Each vertex of such a statement counts apart: `A & B` in b,
+when a has only `A`, reports `A`, which says nothing new while `B` joins b, and
+`A & B --> C` reports neither (run). `A` in b when no earlier subgraph has it
+puts it in b, `A --> B` draws its edge, `A[y]`, `A:::c`, and after `A[x]` also
+`A["x"]`, ``A["`**x**`"]``, and `A[|borders:lt|x]` change the Db, and a bare `c`
+that only names an earlier subgraph writes a new vertex, so none of them is
+reported for this (run). It is the mistake of this rule, an id written again, in
+the same statement, as in block-no-duplicate-block; (2) none: no example of the
+documentation writes it (run on `flowchart.md` and `swimlanes.md`); (3) "node
+label overwritten", "redefine node label", "node label", "subgraph node two
+subgraphs", "node multiple subgraphs", "subgraph duplicate node", "node belongs
+subgraph", "subgraph members same node":
 [#3789](https://github.com/mermaid-js/mermaid/issues/3789) (open, Type:
-Enhancement) proposes another statement for labels; (4) use another id, or write
-the label once.
+Enhancement) proposes another statement for labels,
+[#2567](https://github.com/mermaid-js/mermaid/issues/2567) (open, Type:
+Enhancement) asks to share a node between subgraphs, with no pull request, and
+[#8503](https://github.com/mermaid-js/mermaid/pull/8503) (open) changes only a
+subgraph that lists one around it; (4) use another id, or write the label once,
+and write the vertex in one subgraph.
 
 flowchart-no-duplicate-direction: (1) a later `direction` statement in the body
 of a subgraph replaces the direction of the subgraph (run in `flowchart`,
@@ -1053,7 +1076,7 @@ no-invalid-init-directive: (1) the settings of every init directive are dropped,
 or, for a name in another case, the settings of that directive (run in every
 diagram type); mermaid.js turns every `'` into `"` before it reads the JSON
 (read in
-[`detectDirective`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L159-L198)),
+[`detectDirective`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/utils.ts#L159-L198)),
 so it reads any JSON that is valid after that, also one that mixes the two
 quotes (`{'theme": "dark"}`), and reads `\'` inside a string of either quote as
 `"` (the steps run in Node). Where the JSON is broken after the replacement but
@@ -1437,10 +1460,8 @@ SVG was drawn).
 
 The agentflow rules. Searches: "agentflow" in titles, "agentflow-beta", and
 "agentflow" with the words connector, flow title, direction, accDescr,
-duplicate, and shape: [#8443](https://github.com/mermaid-js/mermaid/pull/8443),
-merged after the pinned version, draws `[/…/]` as an input, so that
-agentflow-no-redefined-vertex would miss a change to or from it, but would
-report nothing that changes nothing.
+duplicate, and shape: [#8443](https://github.com/mermaid-js/mermaid/pull/8443)
+(merged, in the pinned version) draws `[/…/]` as an input.
 
 - agentflow-no-duplicate-title, agentflow-no-duplicate-description,
   agentflow-no-empty-description-block, agentflow-no-unclosed-description-block,
@@ -1455,15 +1476,26 @@ report nothing that changes nothing.
   vertex or a connector declaration replaces the label, the drawn shape, and the
   kind that the id had, and the first declaration of a connector replaces a
   vertex of the id (run); shapes are compared as drawn, the diamond, the
-  hexagon, and the subroutine apart and every other bracket shape as a rounded
-  rectangle (read in `getTypeFromVertex` and `normaliseNodeShapes`), and kinds
-  as agentflow derives them (task, input, decision, action, tool, connector),
-  which its default theme `redux-color` draws in their own colours (read in
-  `deriveVertexKind` and `styles.ts`; kinds count, since they are part of the
-  default drawing of agentflow); (2) none: the id that a connector without a
-  title shows, a reference, data blocks, and the same label, drawn shape, and
-  kind are not reported; (4) give each element its own id. The two rules share
-  one record of each id and part by the statement reported.
+  hexagon, the subroutine, and `[/…/]` apart and every other bracket shape as a
+  rounded rectangle (read in `getTypeFromVertex` and `normaliseNodeShapes`), and
+  kinds as agentflow derives them (task, input, decision, action, tool,
+  connector), which its default theme `redux-color` draws in their own colours
+  (read in `deriveVertexKind` and `styles.ts`; kinds count, since they are part
+  of the default drawing of agentflow); (2) none: the id that a connector
+  without a title shows, a reference, data blocks, and the same label, drawn
+  shape, and kind are not reported; (4) give each element its own id. The two
+  rules share one record of each id and part by the statement reported.
+  agentflow-no-redefined-vertex also reports a vertex written again in a later
+  flow, under the condition of flowchart-no-redefined-vertex (run), except a
+  vertex of a `global` block, which stays at the top level: the documentation
+  gives that block for a node shared by flows. A connector that an earlier flow
+  holds counts as its member, and agentflow-no-redefined-connector reports in
+  the same way a declaration in a later flow with no metadata, with no title or
+  the title that the element has: `connector C` in `flow a`, then `connector C`
+  in `flow b`, leaves `C` in a and changes nothing (run). Another title is
+  reported for the title; a declaration after a bare `C` in an earlier flow
+  takes effect, since `C` becomes a connector, and `connector C` in b when no
+  earlier flow has it puts it in b (run).
 - agentflow-no-redefined-flow: (1) flows of one id are merged, and a later title
   that is not empty replaces the earlier one, in the order in which the flows
   end (run); (2) none: a flow written again without a title to add members is
@@ -1481,9 +1513,9 @@ report nothing that changes nothing.
 
 The usecase rules. Searches: "usecase" and "use case" in titles, and "usecase"
 with the words duplicate, classDef, metadata, direction, accDescr, animate, and
-animation: [#8392](https://github.com/mermaid-js/mermaid/issues/8392) and
-[#8402](https://github.com/mermaid-js/mermaid/pull/8402), both open, concern the
-guillemets of include and extend.
+animation: [#8392](https://github.com/mermaid-js/mermaid/issues/8392) (closed)
+and [#8402](https://github.com/mermaid-js/mermaid/pull/8402) (merged, in the
+pinned version) draw the guillemets of include and extend.
 
 - usecase-no-duplicate-title, usecase-no-duplicate-description,
   usecase-no-empty-description-block, usecase-no-unclosed-description-block: the
@@ -1573,7 +1605,7 @@ merges of more parents), the layout, and clicks.
   does not show, so the input is accepted silently, as for flowchart-no-undef,
   whose warning [#7441](https://github.com/mermaid-js/mermaid/pull/7441) added;
   the railroad example of the
-  [documentation](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/gitgraph.md#L481-L500)
+  [documentation](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/gitgraph.md#L485-L504)
   writes `commit id:"Boston"` twice, and the second replaces the first, the
   behavior that #4838 reported, so it is no way of writing that the
   documentation shows on purpose; (2) none: the last `id:` of a statement is its
@@ -1640,7 +1672,7 @@ values and labels of the rings.
   left (read in `drawCurves`; run); (2) none: every axis counts, and a curve
   with axis names is left to the other rules; (4) give one value for each axis.
 - radar-no-duplicate-option: (1) the last value of each option is used (read in
-  [`setOptions`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/db.ts#L93-L117);
+  [`setOptions`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/radar/db.ts#L93-L117);
   run); (2) none: a value given again is not reported, and a `ticks` above 32 is
   compared as 32, since mermaid.js draws at most 32 rings; (4) give each option
   one value.
@@ -2309,7 +2341,7 @@ above; a rule named with none offers nothing.
   argument, a word argument, or JSON that mermaid.js reads, with no error in its
   structure, no trailing comma, and no quote that breaks it: mermaid.js reads no
   JSON from a missing or a word argument (read in
-  [`directiveRegex`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/regexes.ts#L12-L13)),
+  [`directiveRegex`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagram-api/regexes.ts#L12-L13)),
   and with broken JSON the lower case would leave mermaid.js reading no settings
   from the directive (run). no-duplicate-init-key removes this member or the one
   of the same key before it (run).

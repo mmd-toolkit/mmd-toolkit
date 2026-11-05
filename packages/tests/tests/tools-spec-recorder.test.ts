@@ -1447,9 +1447,9 @@ describe("recordSpecFile: what stops the run", () => {
     ).rejects.toThrow("imports node:crypto, which has no stub")
     await expect(
       recordSource(
-        `import flowParser from "./flowParser.js"\nit("t", () => {})\n`,
+        `import { FlowDB } from "../flowDb.ts"\nit("t", () => {})\n`,
       ),
-    ).rejects.toThrow("imports ./flowParser.js, which has no stub")
+    ).rejects.toThrow("imports ../flowDb.ts, which has no stub")
   })
 
   it("throws for a dynamic import with a literal path that has no stub", async () => {

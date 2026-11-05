@@ -153,7 +153,7 @@ const tokenCount = root.tokens.length // 8
 | treeview                       | `treeView`（`treeView-beta`）                                                                                                                       | [`ast/treeview.md`](../spec/docs/ast/treeview.ja.md)           |
 | mermaid.js の `error` 疑似図種 | `error`（`error`）                                                                                                                                  | [`ErrorDiagram`](../spec/docs/ast.ja.md#errordiagram)          |
 
-これで mermaid.js 12.2.0 のすべての図種です。
+これで mermaid.js 12.3.0 のすべての図種です。
 
 ## API
 
@@ -298,7 +298,7 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
 
 ## mermaid.js との違い
 
-`parse()` は、mermaid.js 12.2.0 が受理するものを受理し、
+`parse()` は、mermaid.js 12.3.0 が受理するものを受理し、
 拒否するものを拒否します。
 ただし次の違いがあります。
 

@@ -77,7 +77,7 @@ This rule has no options.
 
 ## Further Reading
 
-- [Gantt diagram syntax: excludes](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/gantt.md#L131)
+- [Gantt diagram syntax: excludes](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/gantt.md#L135)
 
 <!-- begin auto-generated rule version -->
 

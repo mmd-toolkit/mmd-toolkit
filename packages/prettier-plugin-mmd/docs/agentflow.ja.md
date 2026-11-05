@@ -243,6 +243,18 @@ agentflowの矢印は`-->`、`--x`、`-.-`とその延長形だけです。
 [fixture: arrows/edge-id] [fixture: arrows/marker-letter-vertex]
 [fixture: arrows/three-kinds]
 
+データブロックの後の辺IDは、ブロックに接します。
+vertex 文は、矢印が読む空白を除き、データブロックの後に空白を取りません。
+そのため`A@{ shape: rect }e1@-->B`は受理され、
+`A@{ shape: rect } e1@-->B`は拒否されます。
+[fixture: arrows/edge-id-after-data-block-touches]
+矢印の始まりと同じ形の辺IDは、前の形かデータブロックに接します。
+たとえば`A["x"]--a@-->B`です。
+agentflowでは、`--`、`-.-`、`-..-`で始まる辺IDがそれに当たります。
+`x--a`、`==a`、`-.a`、`.-a`のような辺IDは、空白の後でも同じに読まれるので、
+前に空白を1つ置きます。 [fixture: arrows/edge-id-arrow-like-kept-attached]
+[fixture: arrows/edge-id-not-arrow-like-gets-one-space]
+
 入力（escape 表記）: `"agentflow-beta TB\nA--xB"`。
 [fixture: arrows/arrow-kind-change-unsafe]
 
@@ -292,7 +304,8 @@ agentflowのラベルコメントの直前の空白とタブは値の文字な�
 コメント内の閉じ括弧は形を閉じないので、コメントの文字のままです。
 チルダは文字です。
 形、実体参照とHTMLの綴りも保ちます。 [fixture: labels/labels-closers]
-[fixture: labels/labels-leading-sensitive] [fixture: labels/labels-padding]
+[fixture: labels/labels-leading-sensitive]
+[fixture: labels/labels-leading-at-sign] [fixture: labels/labels-padding]
 [fixture: labels/labels-tilde] [fixture: labels/labels-trim-sensitive-unsafe]
 
 flow/connectorの見出しのタイトルは、

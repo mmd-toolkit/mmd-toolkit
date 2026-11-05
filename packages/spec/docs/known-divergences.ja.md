@@ -68,14 +68,16 @@ mermaid.js では flowchart の文法で拒否され、
    木には書かれたとおりに現れます。
    例外は、文字列、リンク、呼び出しとして、それ自体の意味を持って書かれていて、
    mermaid.js が丸ごと捨てる形です。
-   flowchart と class と agentflow で文の始まるところにある空の文字列、
-   flowchart と agentflow で文の始まるところにある空の call、どこにあっても、
-   gantt の空の href と空の call、どこにあっても、requirement の空の文字列、
-   mindmap の空の icon、空の class の行、形の中の空の文字列、 xychart で、
-   軸やプロットのタイトル全体でも値のラベル全体でもない空の文字列、
-   どこにあっても、quadrant の空の文字列と空の markdown 文字列、どこにあっても、
-   block の空の文字列と空の markdown 文字列、そして、kanban の空の icon、
-   空の class の行、形の中の空の文字列です。
+   flowchart と agentflow で文の始まるところか文の最後の単位の後にある、
+   空の文字列、空の markdown 文字列、空の call、
+   class で文の始まるところか文の最後の単位の後にある、空の文字列と空の call、
+   class の本体のメンバーが始まるところにある、空の文字列、どこにあっても、
+   gantt の空の href と空の call、どこにあっても、 requirement の空の文字列、
+   mindmap と kanban の空の icon、空の class の行、
+   形の中の空の文字列と空の markdown 文字列、
+   軸やプロットのタイトルの全体でも値のラベルの全体でもない、
+   xychart の空の文字列、そして、どこにあっても、
+   quadrant と block の空の文字列と空の markdown 文字列です。
    [fixture: kanban/div-empty-string-before-label]
 
    木はそうした形を何も変えない文としては持たず、
