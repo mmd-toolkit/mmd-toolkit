@@ -1,0 +1,220 @@
+{
+  "variables": {
+    "architecture-label-double": "\"(?>\\\\(?={{directives}}{{htmlTagEscaped}})|{{htmlTagEscaped}}|{{directive}}|{{stringEscape}}|[^\"\\\\\\r\\n])*\"",
+    "architecture-label-single": "'(?>{{directive}}|{{stringEscape}}|[^'\\\\\\r\\n])*'",
+    "architecture-id-end": "{{wordEnd}}(?!{{directives}}-+[A-Za-z0-9_])"
+  },
+  "patterns": [
+    {
+      "include": "#architecture"
+    }
+  ],
+  "repository": {
+    "architecture": {
+      "comment": "Read architecture-beta at its identifier boundary before entering the architecture body. Follows detection.md#the-detectors and architecture.md#detection.",
+      "begin": "{{diagramStart}}(architecture-beta){{architecture-id-end}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#architecture-line-final-keywords"
+        },
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#common-statements-at-unit",
+          "comment": "Read title lines and the colon-led or braced forms of accessibility metadata. Follows architecture.md#composite-common-forms."
+        },
+        {
+          "include": "#hidden-yaml",
+          "comment": "Read a native YAML region from a three-dash opening fence to the first qualifying unindented closing fence. Follows architecture.md#hidden-forms-and-comments."
+        },
+        {
+          "comment": "Read a native ignored percent-brace region through its earliest brace-percent closer with a following whitespace or end-of-input boundary. Follows architecture.md#hidden-forms-and-comments.",
+          "include": "#hidden-directive"
+        },
+        {
+          "include": "#native-percent-comment",
+          "comment": "Read a native percent-pair comment up to physical line end or a separator-led common comment. Follows architecture.md#hidden-forms-and-comments."
+        },
+        {
+          "comment": "Read a bracketed label when its entire value is a matching quoted string. The lookahead applies HTML attribute-quote conversion before checking the bracket; the string context retains source escapes and directives. Separator-led comments end the current value, and a backslash preceding a tag remains text. Follows architecture.md#icons-strings-and-bracketed-labels, common.md#html-attribute-quotes, and common.md#comment-lines.",
+          "begin": "(\\[)({{directives}})(?=(?:{{architecture-label-double}}|{{architecture-label-single}}){{directives}}\\])",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.operator.delimiter.label.begin.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "(\\])|{{separatorCommentEnd}}",
+          "endCaptures": {
+            "1": {
+              "name": "keyword.operator.delimiter.label.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#architecture-string",
+              "comment": "String escape recognition applies to the complete quoted alternatives of a bracketed label. Follows architecture.md#icons-strings-and-bracketed-labels."
+            }
+          ]
+        },
+        {
+          "comment": "Read an unquoted bracketed label when neither complete quoted form applies. Either square bracket or physical line end bounds it; internal quotes and backslashes stay plain text, and HTML cannot extend the label past its closer. A separator-led common comment stops the current value. Follows architecture.md#icons-strings-and-bracketed-labels and common.md#comment-lines.",
+          "begin": "(\\[)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.operator.delimiter.label.begin.mermaid"
+            }
+          },
+          "end": "(\\])|{{separatorCommentEnd}}",
+          "endCaptures": {
+            "1": {
+              "name": "keyword.operator.delimiter.label.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ],
+          "contentName": "string.unquoted.mermaid"
+        },
+        {
+          "comment": "Read a possibly empty quoted text icon using matching single or double delimiters. Backslash escapes exclude physical line breaks and line or paragraph separators. Follows architecture.md#icons-strings-and-bracketed-labels.",
+          "include": "#architecture-string"
+        },
+        {
+          "comment": "Read an icon's separate brackets and retained name text. Follows architecture.md#icons-strings-and-bracketed-labels.",
+          "begin": "(\\()",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.operator.bracket.icon.begin.mermaid"
+            }
+          },
+          "end": "(\\))|{{separatorCommentEnd}}",
+          "endCaptures": {
+            "1": {
+              "name": "keyword.operator.bracket.icon.end.mermaid"
+            }
+          },
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": "Read a group modifier with independent directive scopes between its components. Follows architecture.md#names-keyword-boundaries-and-directions and common.md#a-directive-is-a-token-boundary.",
+          "match": "(\\{)({{directives}})(group)({{directives}})(\\})",
+          "captures": {
+            "1": {
+              "name": "keyword.operator.delimiter.modifier.begin.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "storage.modifier.mermaid"
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "5": {
+              "name": "keyword.operator.delimiter.modifier.end.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read a listed alignment orientation. Follows architecture.md#grammar.",
+          "match": "(?:row|column){{architecture-id-end}}",
+          "name": "constant.language.mermaid"
+        },
+        {
+          "comment": "Read the junction, service, group, align and in keywords unless the suffix continues an identifier. Follows architecture.md#ordered-rules and architecture.md#names-keyword-boundaries-and-directions.",
+          "match": "(?:junction|service|group|align|in){{architecture-id-end}}",
+          "name": "keyword.control.mermaid"
+        },
+        {
+          "comment": "Read one port-side marker from L, R, T and B even when name characters follow it. Follows architecture.md#names-keyword-boundaries-and-directions.",
+          "match": "[LRTB]",
+          "name": "constant.language.mermaid"
+        },
+        {
+          "comment": "Read a bare ASCII name made of letters, digits, underscores and internal dashes. A dash cannot be its final character, and numeric-looking names keep the name scope. Follows architecture.md#names-keyword-boundaries-and-directions and architecture.md#ordered-rules.",
+          "match": "[A-Za-z0-9_](?:[A-Za-z0-9_-]*[A-Za-z0-9_])?",
+          "name": "variable.mermaid"
+        },
+        {
+          "comment": "Read double or single dashes and either angle marker as components of an architecture connection. Follows architecture.md#names-keyword-boundaries-and-directions and architecture.md#grammar.",
+          "match": "--|[-<>]",
+          "name": "keyword.operator.arrow.mermaid"
+        },
+        {
+          "comment": "The arrow has a colon before its first port direction and after its second; group-modifier is opening brace, group, and closing brace. Follows architecture.md#icons-strings-and-bracketed-labels and architecture.md#grammar.",
+          "match": "(:)|(\\{)|(\\})",
+          "captures": {
+            "1": {
+              "name": "keyword.operator.separator.colon.mermaid"
+            },
+            "2": {
+              "name": "keyword.operator.delimiter.modifier.begin.mermaid"
+            },
+            "3": {
+              "name": "keyword.operator.delimiter.modifier.end.mermaid"
+            }
+          }
+        }
+      ]
+    },
+    "architecture-string": {
+      "comment": "Read matching single- or double-quoted text with optional empty content. A backslash escapes the next character unless it is a physical line break, line separator or paragraph separator. Follows architecture.md#icons-strings-and-bracketed-labels.",
+      "include": "#string-escaped"
+    },
+    "architecture-line-final-keywords": {
+      "comment": "Read a reserved keyword at a statement start when only padding and directives follow on its physical line. A value on a later line receives the surrounding context's scopes. Follows architecture.md#composite-common-forms and common.md#a-directive-is-a-token-boundary.",
+      "match": "({{commonStatementStart}})(accDescr)(?={{lineGap}}$)",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.control.mermaid"
+        }
+      }
+    }
+  }
+}

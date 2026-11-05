@@ -152,6 +152,9 @@ tools, a CLI), the inputs are different and the list is this:
 Every review has a section on proper form, also when the behavior is right:
 
 - Is the thing needed, and is it named for what it is?
+- Does it take the form the repository already uses for the same kind of thing?
+- Is its only reason an earlier decision of its author's own? Then that decision
+  is reconsidered first.
 - Is each decision made in one place? A rule copied into a printer and a parser,
   or a condition repeated per caller, is a finding.
 - Does a caller rely on a promise the callee does not state (a token always

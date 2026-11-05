@@ -1,0 +1,39 @@
+xychart-BETA%%{init: {}}%% horizontal
+XYCHART%%{init: {}}%% vertical
+xychart-BETA horizontal
+xychart vertical
+title TitleLong Q1
+accTitle: line %% title text
+accDescr: bar and x-axis are description text
+accDescr { line [1] and title are block text }
+x-axis "Categories" [Q1, 2, "line", a-titles]
+y-axis "Revenue" -.5 --> +10.25
+line Q1 [1 "One", -2.5, +.5 "bar"]
+bar "Bars" [007, -0]
+title "line and bar %% are string text"
+x-axis-foo [a, b];line.5 [2]
+y-axis -1-->2 bar 2024 [3]
+title A%%{init: {}}%%B
+x-axis [a%%{init: {}}%%b, "A%%{init: {}}%%B"]
+bar [1 "A%%{init: {}}%%B"]%% native comment
+accDescr {}line [4]
+%%{ }%%
+accTitle%%{init: {}}%%: line is title text
+accDescr%%{init: {}}%% { Block text }line [5]
+title a%%{init: {}}%%line
+x-axis a%%{init: {}}%%line
+line a%%{init: {}}%%bar [1]
+title Chart line [1]
+x-axis "X" [a] line [2]
+line [3] bar [4]
+title "<b title="x">line</b>"
+title "a<b";line [1 "c>"]
+accTitle:%%{init: {}}%% line is text
+accDescr {%%{init: {}}%% Block text }
+title a%%{wrap}%%%%{wrap}%%line
+x-axis a%%{wrap}%%%%{wrap}%%line
+BAR a%%{wrap}%%%%{wrap}%%bar [1]
+bar [2]%%%{wrap}%%% native %%{wrap}%% tail
+bar longer%%{wrap}%%title [1]
+x-axis [First, 2]
+line [1, 2]

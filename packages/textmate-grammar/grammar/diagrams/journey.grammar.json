@@ -1,0 +1,359 @@
+{
+  "patterns": [
+    {
+      "include": "#journey"
+    }
+  ],
+  "repository": {
+    "journey": {
+      "comment": "Read journey at the selected header position without including a longer word. Follows detection.md#the-detectors and journey.md#detection.",
+      "begin": "{{diagramStart}}(journey){{wordEnd}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#journey-line-final-keywords"
+        },
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Read a native percent comment only when its first percent is not a directive and no opening brace follows after directives. Follows journey.md#the-statement-context.",
+          "match": "{{journey-statement-start}}((?!{{directiveStart}})%(?!{{directives}}\\{)(?:{{directive}}|(?!{{directiveStart}}|{{lineValueEnd}})[^\\r\\n])*)",
+          "captures": {
+            "1": {
+              "name": "comment.line.percentage.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "include": "#journey-acc-descr-block"
+        },
+        {
+          "include": "#journey-accessibility-line"
+        },
+        {
+          "comment": "Read a case-insensitive title after one whitespace character, stopping before hash, semicolon or a common-comment boundary. Follows journey.md#the-statement-context.",
+          "begin": "{{journey-statement-start}}((?i:title))((?!{{separatorCommentEnd}}){{whitespaceSeparator}})(?=[^;\\r\\n]|$)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "{{journey-text-end}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#entity",
+              "comment": "Read an entity whole and preserve the enclosing value scope and internal directive scopes. Follows common.md#entities."
+            }
+          ],
+          "applyEndPatternLast": true
+        },
+        {
+          "comment": "Read a case-insensitive section and its text up to hash, colon, semicolon or a common-comment boundary. Follows journey.md#the-statement-context.",
+          "begin": "{{journey-statement-start}}((?i:section))((?!{{separatorCommentEnd}}){{whitespaceSeparator}})(?=[^:;\\r\\n]|$)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "{{lineValueEnd}}|(?=[:#;])",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#entity",
+              "comment": "Read an entity whole and preserve the enclosing value scope and internal directive scopes. Follows common.md#entities."
+            }
+          ],
+          "applyEndPatternLast": true
+        },
+        {
+          "include": "#journey-task"
+        },
+        {
+          "include": "#journey-hash-comment"
+        }
+      ]
+    },
+    "journey-task": {
+      "comment": "Read task text or its data colon after indentation, leaving leading directives for the shared rule. A removed comment line may separate that colon from its task text. Follows journey.md#the-statement-context, common.md#comment-lines, and common.md#a-directive-is-a-token-boundary.",
+      "begin": "{{journey-statement-start}}(?!{{directiveStart}})(?=[^{{ws}};\\r\\n])",
+      "end": "{{lineValueEnd}}|(?=;)",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#journey-text-entity"
+        },
+        {
+          "comment": "Read a hash as a native comment after entity text has been read. Follows journey.md#the-statement-context.",
+          "include": "#journey-hash-comment"
+        },
+        {
+          "comment": "Read the score between the first and second colons, or to the data end, by its position regardless of its spelling. Follows journey.md#tasks.",
+          "begin": ":",
+          "beginCaptures": {
+            "0": {
+              "name": "keyword.operator.separator.colon.mermaid"
+            }
+          },
+          "end": "{{journey-text-end}}",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read each person between the second colon, commas and the third colon or data end. Follows journey.md#tasks.",
+              "begin": ":",
+              "beginCaptures": {
+                "0": {
+                  "name": "keyword.operator.separator.colon.mermaid"
+                }
+              },
+              "end": "{{journey-text-end}}",
+              "patterns": [
+                {
+                  "include": "#directive"
+                },
+                {
+                  "comment": "Read each people-list comma as a separator. Follows journey.md#tasks.",
+                  "match": ",",
+                  "name": "keyword.operator.separator.comma.mermaid"
+                },
+                {
+                  "comment": "Read the third colon and the rest of the data as ignored text, with no inherited score or people string scope. Follows journey.md#tasks.",
+                  "begin": ":",
+                  "end": "{{journey-text-end}}",
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    },
+                    {
+                      "include": "#entity",
+                      "comment": "Read an entity whole and preserve the enclosing value scope and internal directive scopes. Follows common.md#entities."
+                    }
+                  ],
+                  "applyEndPatternLast": true,
+                  "name": "comment.block.ignored.mermaid"
+                },
+                {
+                  "comment": "Read a person text run with entities, keeping embedded directives separate. Follows journey.md#tasks and common.md#entities.",
+                  "match": "(?:{{entity}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^,:#;\\r\\n])+",
+                  "name": "variable.mermaid",
+                  "captures": {
+                    "0": {
+                      "patterns": [
+                        {
+                          "include": "#directive"
+                        },
+                        {
+                          "include": "#entity"
+                        }
+                      ]
+                    }
+                  }
+                }
+              ],
+              "applyEndPatternLast": true
+            },
+            {
+              "comment": "Read a score text run with entities, keeping embedded directives separate. Follows journey.md#tasks and common.md#entities.",
+              "match": "(?:{{entity}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^:#;\\r\\n])+",
+              "name": "constant.numeric.mermaid",
+              "captures": {
+                "0": {
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    },
+                    {
+                      "include": "#entity"
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "applyEndPatternLast": true
+        },
+        {
+          "comment": "Read task description text while keeping internal directives from exposing keywords. Follows journey.md#the-statement-context.",
+          "match": "(?:(?!{{directiveStart}}|{{separatorCommentEnd}})[^#:;\\r\\n])+",
+          "name": "string.unquoted.mermaid"
+        }
+      ],
+      "applyEndPatternLast": true
+    },
+    "journey-acc-descr-block": {
+      "comment": "Read a case-insensitive accessibility block and text delimiters, retaining directives in its whitespace. Follows journey.md#the-statement-context and common.md#style-and-classdef-lines.",
+      "begin": "{{journey-statement-start}}((?i:accDescr))({{journey-value-padding}})(\\{)({{journey-value-padding}})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "keyword.operator.delimiter.description.begin.mermaid"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "(\\})",
+      "endCaptures": {
+        "1": {
+          "name": "keyword.operator.delimiter.description.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Read block text through the first closing brace without crossing common-comment boundaries. Follows journey.md#accessibility-values.",
+          "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^}])+",
+          "name": "string.unquoted.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "journey-accessibility-line": {
+      "comment": "Read accessibility line values after their leading padding, retaining inline percent pairs. Follows journey.md#accessibility-values and common.md#style-and-classdef-lines.",
+      "begin": "{{journey-statement-start}}((?i:accTitle|accDescr))({{journey-value-padding}})(:)({{journey-value-padding}})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "keyword.operator.separator.colon.mermaid"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "end": "{{lineValueEnd}}",
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#directive"
+        }
+      ]
+    },
+    "journey-hash-comment": {
+      "comment": "Read a native hash comment, ending before a separator-led common comment. Follows journey.md#the-statement-context.",
+      "name": "comment.line.number-sign.mermaid",
+      "match": "#(?:{{directive}}|(?!{{directiveStart}}|{{lineValueEnd}})[^\\r\\n])*",
+      "captures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      }
+    },
+    "journey-text-entity": {
+      "comment": "Read an entity whole and preserve the enclosing value scope and internal directive scopes. Follows common.md#entities.",
+      "match": "{{entity}}",
+      "name": "string.unquoted.mermaid",
+      "captures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      }
+    },
+    "journey-line-final-keywords": {
+      "comment": "Read a reserved keyword at a statement start when only padding and directives follow on its physical line. A value on a later line receives the surrounding context's scopes. Follows journey.md#the-statement-context and common.md#a-directive-is-a-token-boundary.",
+      "match": "({{journey-statement-start}})((?i:accTitle|accDescr))(?={{lineGap}}$)",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.control.mermaid"
+        }
+      }
+    }
+  },
+  "variables": {
+    "journey-statement-start": "(?:(?!{{separatorCommentEnd}})[{{ws}}])*",
+    "journey-text-end": "{{lineValueEnd}}|(?=[#;])",
+    "journey-value-padding": "(?:(?!{{separatorCommentEnd}})(?:[{{ws}}]|{{directive}}))*"
+  },
+  "comment": "Statement-context rules can begin after any complete unit, while task data and line values keep their own text contexts. Diagram whitespace stops before a common-comment boundary. Follows journey.md#diagram-and-statements and journey.md#the-statement-context."
+}

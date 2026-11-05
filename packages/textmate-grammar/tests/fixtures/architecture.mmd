@@ -1,0 +1,69 @@
+architecture-beta group cloud(cloud)[Cloud]
+title service and group are title text
+accTitle: Architecture title
+accDescr: Architecture description
+accDescr { service and group %% are block text }
+group nested(database)["Nested [group]"] in cloud
+service api(server)[API] in nested
+service store 'Text icon'['Store'] in cloud
+service serviceLong(custom)[Long keyword-like ID]
+junction hub in cloud
+service 123(-:A_)[Numeric ID]
+service columnar[align row are label text]
+service in-house["open]
+api:R-->L:store
+hub:B<-->T:api
+api{group}:R-["Link"]->L:123{group}
+align row api store
+align column hub api
+service escaped "A\"B"[Escaped icon]
+service labels[A"B]
+service directive[A%%{init: {}}%%B]
+service quoted["A%%{init: {}}%%B"]
+title A%%{init: {}}%%B%% native comment
+accTitle: A%%{init: {}}%%B%% another comment
+accDescr {}
+service afterBlock
+%%{ }%%
+---
+hidden: service group
+---
+
+title
+service quotedDirective["[group]%%{init: {"theme": "dark"}}%%"] in cloud
+service escapeDirective "A\%%{init: {}}%%"B"[Escaped across directive]
+service htmlLabel['<a href="x">']
+service semicolonLabel['style:#x\;']
+service escapeLabel["A\%%{init: {}}%%"]
+accTitle%%{init: {}}%%: service and group are text
+service accDescr%%{init: {}}%% in cloud
+title%%{init: {}}%% service
+accDescr%%{init: {}}%%{}
+service afterDirectiveBlock
+service labeled["title"]%% foo
+service single['A;B'] in cloud
+service bare["open] in cloud
+service htmlQuoted["<b title="x">Label</b>"] in cloud
+service htmlIcon "<b title="x">Icon</b>"[Icon] in cloud
+service shortIcon "a<b"[Bare] in cloud %% later >
+service edge%%{init: {}}%%[Directive before label] in cloud
+service labelGap[%%{init: {}}%%"Label"%%{init: {}}%%] in cloud
+service notTag['< ="x']
+service bareCloser[<a x=]%% c>
+service iconEscaped "\<b title="group">"
+service escapedLabel["a\"b"]
+service%%{wrap}%% boundary[Boundary]
+service incompleteTag['<b ="x']
+%%%{wrap}%%%{! }%% service splitOpen
+%%{! }%%%{wrap}%%% service splitClose
+---%%{wrap}%%
+hidden: opener
+---
+service afterOpen
+---
+hidden: closer
+-%%{wrap}%%--
+service afterClose
+service splitComment%%%{wrap}%%% native %%{wrap}%% tail
+service run[foo%%{wrap}%%group]
+service htmlBoundary["<b %%{x: >}%%x="]

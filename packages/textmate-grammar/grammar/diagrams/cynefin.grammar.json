@@ -1,0 +1,91 @@
+{
+  "patterns": [
+    {
+      "include": "#cynefin"
+    }
+  ],
+  "repository": {
+    "cynefin": {
+      "comment": "Read cynefin-beta, optionally joined to its colon through directives. The bare spelling requires its own following boundary. Follows detection.md#the-detectors and cynefin.md#detection.",
+      "begin": "{{diagramStart}}(cynefin-beta)(?:({{directives}})(:)|(?={{directives}}(?:[{{ws}}]|%%|$)))",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "keyword.operator.separator.colon.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#cynefin-line-final-keywords"
+        },
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#hidden-yaml",
+          "comment": "Read a native YAML region from a three-dash opening fence to the first qualifying unindented closing fence. Follows cynefin.md#native-hidden-forms-and-eol."
+        },
+        {
+          "include": "#hidden-directive",
+          "comment": "Read a native ignored percent-brace region through its earliest brace-percent closer with a following whitespace or end-of-input boundary. Follows cynefin.md#native-hidden-forms-and-eol."
+        },
+        {
+          "include": "#native-percent-comment",
+          "comment": "Read a native percent-pair comment up to physical line end or a separator-led common comment. Follows cynefin.md#native-hidden-forms-and-eol."
+        },
+        {
+          "include": "#common-statements-at-unit",
+          "comment": "Read title lines and the colon-led or braced forms of accessibility metadata. Follows cynefin.md#strings-and-common-values."
+        },
+        {
+          "comment": "Read the five fixed domain values. Follows cynefin.md#grammar and cynefin.md#ordered-units.",
+          "match": "complex|complicated|clear|chaotic|confusion",
+          "name": "constant.language.mermaid"
+        },
+        {
+          "comment": "Read an indivisible transition arrow. Follows cynefin.md#ordered-units.",
+          "match": "-->",
+          "name": "keyword.operator.arrow.mermaid"
+        },
+        {
+          "comment": "Read the transition-label separator. Follows cynefin.md#grammar.",
+          "match": ":",
+          "name": "keyword.operator.separator.colon.mermaid"
+        },
+        {
+          "include": "#string-escaped",
+          "comment": "Read an item or transition-label string. Follows cynefin.md#strings-and-common-values."
+        }
+      ]
+    },
+    "cynefin-line-final-keywords": {
+      "comment": "Read the reserved accessibility description keyword when only padding and directives remain on its physical line, including after another complete unit. A later-line value receives its surrounding context's scopes. Follows cynefin.md#strings-and-common-values and common.md#a-directive-is-a-token-boundary.",
+      "match": "({{asciiGap}})(accDescr)(?={{lineGap}}$)",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.control.mermaid"
+        }
+      }
+    }
+  }
+}

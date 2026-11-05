@@ -894,8 +894,6 @@ gantt の Db は日付をその両方から計算するので、
   自分でこれを切ります。
   fixture は mermaid.js そのものを記録するためです。
   ワークフロー `NodeCI.yml` も切ります。
-  これは `.github/workflows_bk/` に置いてあり、
-  今は有効なワークフローがありません。
   実行の手順を試すこのパッケージのテストも切りますが、
   `tests/mermaid-run-store.test.ts` の貯蔵庫のテストのうち、
   貯蔵庫を入れるものは例外です。

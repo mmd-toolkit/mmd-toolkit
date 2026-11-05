@@ -1,0 +1,242 @@
+> railroad-ebnf-beta%%{wrap}%%
+  "railroad-ebnf-beta" keyword.control.mermaid
+  "%%{" meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+> title Grammar
+  "title" keyword.control.mermaid
+  "Grammar" string.unquoted.mermaid
+> accTitle: Grammar title
+  "accTitle" keyword.control.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  " Grammar title" string.unquoted.mermaid
+> accDescr: Grammar description
+  "accDescr" keyword.control.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  " Grammar description" string.unquoted.mermaid
+> accDescr { Grammar block }
+  "accDescr" keyword.control.mermaid
+  "{" keyword.operator.delimiter.description.begin.mermaid
+  " Grammar block " string.unquoted.mermaid
+  "}" keyword.operator.delimiter.description.end.mermaid
+> digit = "0" | "1" ;
+  "digit" variable.mermaid
+  "=" keyword.operator.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "0" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "|" keyword.operator.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "1" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ";" keyword.operator.separator.rule.mermaid
+> number ::= digit, { digit } ;
+  "number" variable.mermaid
+  "::=" keyword.operator.mermaid
+  "digit" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "{" keyword.operator.bracket.group.begin.mermaid
+  "digit" variable.mermaid
+  "}" keyword.operator.bracket.group.end.mermaid
+  ";" keyword.operator.separator.rule.mermaid
+> value = [ "-" ] number - "0" ;
+  "value" variable.mermaid
+  "=" keyword.operator.mermaid
+  "[" keyword.operator.bracket.group.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "-" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" keyword.operator.bracket.group.end.mermaid
+  "number" variable.mermaid
+  "-" keyword.operator.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "0" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ";" keyword.operator.separator.rule.mermaid
+> item = ? special sequence ? , value+ ;
+  "item" variable.mermaid
+  "=" keyword.operator.mermaid
+  "?" keyword.operator.delimiter.special-sequence.begin.mermaid
+  " special sequence " string.unquoted.mermaid
+  "?" keyword.operator.delimiter.special-sequence.end.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "value" variable.mermaid
+  "+" keyword.operator.mermaid
+  ";" keyword.operator.separator.rule.mermaid
+> (* an iso comment *)
+  "(*" comment.block.mermaid
+  " an iso comment " comment.block.mermaid
+  "*)" comment.block.mermaid
+> %% a comment line
+  "%% a comment line" comment.line.percentage.mermaid
+> ---
+  "---" comment.block.ignored.mermaid
+> ignored: railroad
+  "ignored: railroad" comment.block.ignored.mermaid
+> ---
+  "---" comment.block.ignored.mermaid
+> %%{!}%%
+  "%%{!}%%" comment.block.ignored.mermaid
+> probe = ? a%%{init: {"end":"?;"}}%%b ? ;
+  "probe" variable.mermaid
+  "=" keyword.operator.mermaid
+  "?" keyword.operator.delimiter.special-sequence.begin.mermaid
+  " a" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid keyword.operator.separator.colon.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{\"end\":\"?;\"}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "b " string.unquoted.mermaid
+  "?" keyword.operator.delimiter.special-sequence.end.mermaid
+  ";" keyword.operator.separator.rule.mermaid
+> html = "a<b title="x">y</b>" ;
+  "html" variable.mermaid
+  "=" keyword.operator.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "<b title=\"x\">" string.quoted.double.mermaid
+  "y</b>" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ";" keyword.operator.separator.rule.mermaid
+> postfix = "a"? ?;
+  "postfix" variable.mermaid
+  "=" keyword.operator.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "?" keyword.operator.mermaid
+  "?" keyword.operator.mermaid
+  ";" keyword.operator.separator.rule.mermaid
+> directivesOnly = "a"?%%{wrap}%% ?;
+  "directivesOnly" variable.mermaid
+  "=" keyword.operator.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "?" keyword.operator.mermaid
+  "%%{" meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "wrap" meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "?" keyword.operator.mermaid
+  ";" keyword.operator.separator.rule.mermaid
+> (* a%%{x: *)}%%terminal *) native = "x";
+  "(*" comment.block.mermaid
+  " a" comment.block.mermaid
+  "%%{" comment.block.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "x" comment.block.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" comment.block.mermaid meta.directive.mermaid keyword.operator.separator.colon.mermaid
+  " " comment.block.mermaid meta.directive.mermaid
+  "*)" comment.block.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" comment.block.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "terminal " comment.block.mermaid
+  "*)" comment.block.mermaid
+  "native" variable.mermaid
+  "=" keyword.operator.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "x" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ";" keyword.operator.separator.rule.mermaid
+> (%%{wrap}%%* set *) opened = "x";
+  "(" comment.block.mermaid
+  "%%{" comment.block.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "wrap" comment.block.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.block.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "*" comment.block.mermaid
+  " set " comment.block.mermaid
+  "*)" comment.block.mermaid
+  "opened" variable.mermaid
+  "=" keyword.operator.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "x" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ";" keyword.operator.separator.rule.mermaid
+> (* text *%%{wrap}%%) closed = "x";
+  "(*" comment.block.mermaid
+  " text " comment.block.mermaid
+  "*" comment.block.mermaid
+  "%%{" comment.block.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "wrap" comment.block.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.block.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  ")" comment.block.mermaid
+  "closed" variable.mermaid
+  "=" keyword.operator.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "x" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ";" keyword.operator.separator.rule.mermaid
+> entity = ? #amp; ?;
+  "entity" variable.mermaid
+  "=" keyword.operator.mermaid
+  "?" keyword.operator.delimiter.special-sequence.begin.mermaid
+  " #amp; " string.unquoted.mermaid
+  "?" keyword.operator.delimiter.special-sequence.end.mermaid
+  ";" keyword.operator.separator.rule.mermaid
+> 
+> empty = "a"??;
+  "empty" variable.mermaid
+  "=" keyword.operator.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "?" keyword.operator.mermaid
+  "?" keyword.operator.mermaid
+  ";" keyword.operator.separator.rule.mermaid
+> 
+> (%%{wrap}%%* text *%%{wrap}%%) joined = "x";
+  "(" comment.block.mermaid
+  "%%{" comment.block.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "wrap" comment.block.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.block.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "*" comment.block.mermaid
+  " text " comment.block.mermaid
+  "*" comment.block.mermaid
+  "%%{" comment.block.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "wrap" comment.block.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.block.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  ")" comment.block.mermaid
+  "joined" variable.mermaid
+  "=" keyword.operator.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "x" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ";" keyword.operator.separator.rule.mermaid
+> /* block
+  "/*" comment.block.mermaid
+  " block" comment.block.mermaid
+> %% common */ %%{wrap}%%
+  "%% common */ %%{wrap}%%" comment.block.mermaid comment.line.percentage.mermaid
+>  set */ commentLine = "x";
+  " set " comment.block.mermaid
+  "*/" comment.block.mermaid
+  "commentLine" variable.mermaid
+  "=" keyword.operator.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "x" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ";" keyword.operator.separator.rule.mermaid
+> escaped = 'a\nb';
+  "escaped" variable.mermaid
+  "=" keyword.operator.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.single.mermaid
+  "\\n" string.quoted.single.mermaid constant.character.escape.mermaid
+  "b" string.quoted.single.mermaid
+  "'" string.quoted.single.mermaid punctuation.definition.string.end.mermaid
+  ";" keyword.operator.separator.rule.mermaid
+> group = ( "a" | "b" )* ;
+  "group" variable.mermaid
+  "=" keyword.operator.mermaid
+  "(" keyword.operator.bracket.group.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "|" keyword.operator.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "b" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  ")" keyword.operator.bracket.group.end.mermaid
+  "*" keyword.operator.mermaid
+  ";" keyword.operator.separator.rule.mermaid
+> 

@@ -1,0 +1,202 @@
+{
+  "patterns": [
+    {
+      "include": "#sankey"
+    }
+  ],
+  "repository": {
+    "sankey": {
+      "comment": "Read sankey with an optional case-insensitive -beta suffix and a word boundary before the record context. Follows detection.md#the-detectors and sankey.md#detection.",
+      "begin": "{{diagramStart}}(sankey(?:-(?i:beta))?){{wordEnd}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Track the three fields of each record, retaining that position across multiline strings. Follows sankey.md#diagram-and-records and sankey.md#ids-and-values.",
+          "begin": "(?!{{separatorCommentEnd}})(?=.)",
+          "end": "{{lineValueEnd}}",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "After the first comma, read the target and then the value field. Follows sankey.md#diagram-and-records.",
+              "begin": ",",
+              "beginCaptures": {
+                "0": {
+                  "name": "keyword.operator.separator.comma.mermaid"
+                }
+              },
+              "end": "{{lineValueEnd}}",
+              "patterns": [
+                {
+                  "include": "#comment-line"
+                },
+                {
+                  "include": "#directive"
+                },
+                {
+                  "comment": "After the second comma, read the link value rather than an element name. Follows sankey.md#ids-and-values.",
+                  "begin": ",",
+                  "beginCaptures": {
+                    "0": {
+                      "name": "keyword.operator.separator.comma.mermaid"
+                    }
+                  },
+                  "end": "{{lineValueEnd}}",
+                  "patterns": [
+                    {
+                      "include": "#comment-line"
+                    },
+                    {
+                      "include": "#directive"
+                    },
+                    {
+                      "include": "#sankey-string"
+                    },
+                    {
+                      "include": "#sankey-value"
+                    }
+                  ]
+                },
+                {
+                  "include": "#sankey-string"
+                },
+                {
+                  "include": "#sankey-name"
+                }
+              ]
+            },
+            {
+              "include": "#sankey-string"
+            },
+            {
+              "include": "#sankey-name"
+            }
+          ]
+        }
+      ]
+    },
+    "sankey-html-tag": {
+      "comment": "Read shared HTML tag parts; paired quotes crossing the tag end or a common comment remain available to the surrounding CSV string. Follows common.md#html-attribute-quotes, sankey.md#strings, common.md#a-directive-is-a-token-boundary, and common.md#comment-lines.",
+      "match": "{{htmlTagStart}}(?:{{htmlQuotedValue}}|{{htmlTagDirective}}|{{sankey-html-doubled-quote}}|{{htmlTagCharacter}})*(?:{{htmlTagEnd}}|(?=\")|{{separatorCommentEnd}})",
+      "captures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      }
+    },
+    "sankey-string": {
+      "comment": "Read CSV quoted strings with doubled quotes and multiline content. Follows sankey.md#strings.",
+      "begin": "\"",
+      "beginCaptures": {
+        "0": {
+          "name": "string.quoted.double.mermaid punctuation.definition.string.begin.mermaid"
+        }
+      },
+      "end": "{{sankey-string-end}}",
+      "endCaptures": {
+        "0": {
+          "name": "string.quoted.double.mermaid punctuation.definition.string.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Read quoted content while leaving common-comment boundaries to the enclosing context. Follows sankey.md#strings and common.md#comment-lines.",
+          "begin": "(?!{{separatorCommentEnd}})(?=.)",
+          "end": "(?={{sankey-string-end}})|{{separatorCommentEnd}}",
+          "contentName": "string.quoted.double.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read shared HTML parts while protecting doubled quotes. Follows sankey.md#lexical-structure.",
+              "include": "#sankey-html-tag"
+            },
+            {
+              "match": "{{sankey-doubled-quote}}",
+              "name": "constant.character.escape.mermaid",
+              "comment": "Read doubled quotes as a string escape, including directives between their characters. Follows sankey.md#strings and common.md#a-directive-is-a-token-boundary.",
+              "captures": {
+                "1": {
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "sankey-name": {
+      "comment": "Read an unquoted source or target id as an element name, retaining authored HTML quote text inside the field. Follows sankey.md#ids-and-values, sankey.md#the-record-context, and common.md#comment-lines.",
+      "begin": "{{sankey-field-start}}",
+      "end": "{{sankey-field-end}}",
+      "patterns": [
+        {
+          "include": "#directive"
+        }
+      ],
+      "contentName": "variable.mermaid"
+    },
+    "sankey-value": {
+      "comment": "Display a whole unquoted integer or decimal value as a number for the reader, although the document reads any value as text. Other unquoted values retain their text scope. Follows sankey.md#ids-and-values and common.md#comment-lines.",
+      "patterns": [
+        {
+          "comment": "Display a whole integer or decimal value with optional surrounding spaces as a number, leaving the padding outside the number scope. Follows sankey.md#ids-and-values and common.md#comment-lines.",
+          "match": " *([0-9]+(?:\\.[0-9]+)?) *(?={{sankey-field-end}})",
+          "captures": {
+            "1": {
+              "name": "constant.numeric.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Read other unquoted link values as text, keeping directives independent. Follows sankey.md#ids-and-values and common.md#comment-lines.",
+          "begin": "{{sankey-field-start}}",
+          "end": "{{sankey-field-end}}",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ],
+          "contentName": "string.unquoted.mermaid"
+        }
+      ]
+    }
+  },
+  "variables": {
+    "sankey-field-start": "(?!{{separatorCommentEnd}})(?=[^\",\\r\\n])",
+    "sankey-field-end": "(?=,)|{{lineValueEnd}}",
+    "sankey-doubled-quote": "\"({{directives}})\"",
+    "sankey-html-doubled-quote": "\"(?:{{htmlTagDirective}})*\"",
+    "sankey-string-end": "(?!{{sankey-doubled-quote}})\""
+  }
+}

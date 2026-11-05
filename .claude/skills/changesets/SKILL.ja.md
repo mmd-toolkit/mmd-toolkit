@@ -1,20 +1,22 @@
 ---
 name: changesets
 description: リリースするパッケージへの変更に要る changeset を、同じ変更で足す。
-  `packages/parser`、`packages/prettier-plugin-mmd`、`packages/eslint-plugin`
-  をパッケージの利用者に見える形で変えるとき、`packages/spec` を変えるとき、
+  `packages/parser`、`packages/prettier-plugin-mmd`、`packages/eslint-plugin`、
+  `packages/textmate-grammar` をパッケージの利用者に見える形で変えるとき、
+  `packages/spec` を変えるとき、
   およびプルリクエストを開く前・更新する前に使う。
 ---
 
 # Changesets
 
-`@mmd-toolkit/parser`、`prettier-plugin-mmd`、`@mmd-toolkit/eslint-plugin` は、
+`@mmd-toolkit/parser`、`prettier-plugin-mmd`、`@mmd-toolkit/eslint-plugin`、
+`@mmd-toolkit/textmate-grammar` は、
 Changesets で `main` から公開する（CONTRIBUTING.md の Releases）。
 仕様の `@mmd-toolkit/spec` は npm に公開しないが、同じ仕組みでリリースする。
 リリースで、版と変更履歴の項目と、git のタグ `@mmd-toolkit/spec@<版>` が付く。
 実装が、従っている仕様の版を名指し、
 そこから何が変わったかを読めるようにするためである。
-この 4 つへの変更は、同じプルリクエストに changeset を含める。
+この 5 つへの変更は、同じプルリクエストに changeset を含める。
 無いと、その変更は次の版の changelog と版の更新から漏れる。
 
 ## changeset が要るとき
@@ -22,7 +24,8 @@ Changesets で `main` から公開する（CONTRIBUTING.md の Releases）。
 - 公開するパッケージの振る舞いが変わるとき。
   parser が受理するものや木に置くもの、フォーマッターが印字するもの、
   lint の規則が報告するものや修正するもの、メッセージ、規則の追加や削除、
-  オプション、export する型や関数。
+  オプション、export する型や関数、文法が単位を何として色付けするか、スコープ、
+  文法が従う仕様の版。
 - `packages/spec` を変えるときは、常に要る。
 - 要らないもの。
   テスト、fixture、リポジトリの文書やスキル、道具、CI だけの変更。

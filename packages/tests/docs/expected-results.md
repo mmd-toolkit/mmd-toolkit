@@ -746,10 +746,9 @@ Db computes its dates from both, so its summary leaves the dates out (see
   is used; any other value is an error, so that a value meant to turn it off
   (`off`, `0`) never leaves it on. The generator (`fixtures:generate`,
   `fixtures:check`, `add`, `add-many`) turns it off for itself, since the
-  fixtures record mermaid.js itself; so does the workflow `NodeCI.yml`, which is
-  kept in `.github/workflows_bk/` (no workflow is active at present), and so do
-  the tests of this package, which check how a run is made, but for the tests of
-  the store in `tests/mermaid-run-store.test.ts` that turn it on: they run a
+  fixtures record mermaid.js itself; so does the workflow `NodeCI.yml`, and so
+  do the tests of this package, which check how a run is made, but for the tests
+  of the store in `tests/mermaid-run-store.test.ts` that turn it on: they run a
   text through the store of the repository to check that the run functions use
   it, that an error thrown instead of a result is not stored, and that
   `detectDiagramType()` does not use the store.

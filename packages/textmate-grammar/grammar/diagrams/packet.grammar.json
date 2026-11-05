@@ -1,0 +1,86 @@
+{
+  "patterns": [
+    {
+      "include": "#packet"
+    }
+  ],
+  "repository": {
+    "packet": {
+      "comment": "Read packet-beta or packet as the lowercase header. Only the shorter spelling requires the additional following boundary. Follows detection.md#the-detectors and packet.md#detection.",
+      "begin": "{{diagramStart}}(packet-beta|packet(?={{directives}}(?:[{{ws}}]|%%|$)))",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#packet-line-final-keywords"
+        },
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#hidden-yaml",
+          "comment": "Read a native YAML region from a three-dash opening fence to the first qualifying unindented closing fence. Follows packet.md#ordered-rules and packet.md#hidden-forms."
+        },
+        {
+          "include": "#hidden-directive",
+          "comment": "Read a native ignored percent-brace region through its earliest brace-percent closer with a following whitespace or end-of-input boundary. Follows packet.md#hidden-forms."
+        },
+        {
+          "include": "#native-percent-comment",
+          "comment": "Read a native percent-pair comment up to physical line end or a separator-led common comment. Follows packet.md#comments-and-common-trivia."
+        },
+        {
+          "comment": "Read title lines and the colon-led or braced forms of accessibility metadata. Follows packet.md#composite-common-forms.",
+          "include": "#common-statements-at-unit"
+        },
+        {
+          "comment": "Read an unsigned integer and check its following boundary through directives. Follows packet.md#numbers-and-strings and common.md#a-directive-is-a-token-boundary.",
+          "match": "(?<![0-9])(0|[1-9][0-9]*)(?!{{directives}}[0-9.])",
+          "name": "constant.numeric.mermaid"
+        },
+        {
+          "include": "#string-escaped",
+          "comment": "Read quoted strings with backslash escapes. Follows packet.md#numbers-and-strings."
+        },
+        {
+          "comment": "Read the range and relative operators and the label separator. Follows packet.md#ordered-rules.",
+          "match": "(-)|(\\+)|(:)",
+          "captures": {
+            "1": {
+              "name": "keyword.operator.mermaid"
+            },
+            "2": {
+              "name": "keyword.operator.mermaid"
+            },
+            "3": {
+              "name": "keyword.operator.separator.colon.mermaid"
+            }
+          }
+        }
+      ]
+    },
+    "packet-line-final-keywords": {
+      "comment": "Read a reserved keyword at a statement start when only padding and directives follow on its physical line. A value on a later line receives the surrounding context's scopes. Follows packet.md#composite-common-forms and common.md#a-directive-is-a-token-boundary.",
+      "match": "({{commonStatementStart}})(accDescr)(?={{lineGap}}$)",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.control.mermaid"
+        }
+      }
+    }
+  }
+}

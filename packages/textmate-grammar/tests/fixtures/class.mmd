@@ -1,0 +1,194 @@
+classDiagram-v2
+%% a class comment
+accTitle: class and namespace
+accDescr: note and click
+accDescr { classDef and style }
+class Animal["Animal label"] {
+  <<interface>>
+  +name
+  +call(note) string
+  +class and namespace
+}
+class Duck~List~
+class className
+class noteX
+class order
+class callX
+namespace Zoo["A namespace"] {
+  class Bird
+  note for Bird "A bird note"
+  namespace Inner {
+    class Nest
+  }
+}
+Animal "1" <|-- Duck : owns note and click
+Duck o-- Bird
+Duck ..> Nest
+<<abstract>> Animal
+note "A plain note"
+note for Animal "A note %% inside"
+callback Animal "onClick" "callback tooltip"
+link Animal "https://example.com" "link tooltip" _self
+click Animal call onClick("class", 12) "call tooltip"
+click Duck href "https://example.org" "href tooltip" _blank
+link Bird "bird" "" _parent
+link Nest "nest" "" _top
+cssClass "Animal,Duck" highlighted
+classDef highlighted fill:red
+style Animal fill:blue
+DirectionName
+title Animals
+direction LR
+note "directive %%{init: {}}%% text"
+Animal --> Duck : text %%{init: {}}%% class
+Animal --> Duck %% inline class comment
+accDescr {} class AfterBlock
+class Styled:::highlighted {
+  +x
+}
+class `backquoted class`
+classDef highlighted,extra fill:red
+direction TB x direction LR
+note "x direction TB"
+class DirectiveMembers {
+  +na%%{init: {}}%%me
+  +foo(%%{init: {}}%%note)
+}
+click Animal call cb)name(x)
+note "x %%{init: 'direction TB'}%% y"
+Animal --> Duck : #amp; note
+Animal --> Duck : #%%{init: {}}%%amp; note
+note%%{init: {}}%% for Animal "x"
+note %%{init: {}}%%for Animal "y"
+accTitle%%{init: {}}%%: note
+accDescr%%{init: {}}%%{} class DirectedBlock
+style Animal fill red accDescr {}
+note "<b title="x">tag</b>"
+click Animal href "a<b" "c>"
+class Na%%{init: {}}%%note
+style Animal%%{init: {}}%% fill red
+classDef highlighted%%{init: {}}%%,extra fill red
+
+click Animal call%%{init: {}}%% cb%%{init: {}}%%)name(x%%{init: {}}%%y)
+namespace class { note "x" }
+
+class call A~(x)~
+
+style A:x
+
+classDef A,B:red
+
+style A style
+
+classDef C style
+
+class PercentAnnotation { <<a%>> }
+
+class NumericMethod { 12(x) }
+
+class NestedMethod { foo(a(b)) }
+
+class note%%{wrap}%%Long
+
+style A style%%{wrap}%%Long
+
+A --> B %%%{wrap}%%% native %%{init: ">>"}%% tail
+
+
+
+
+
+
+
+
+
+
+
+
+
+class EntityMethod { #amp;(x) }
+
+
+class AttributeParens { )x() }
+
+
+classDef A foo%%{wrap}%%style
+classDef Boundary style
+class DivisionProbe { foo(a(b)) }
+class ScopeMember { +field$ }
+style Animal fill:#43a047
+ScopeMember : +field$
+Animal : +call(note) string
+Animal : <<interface>>
+class ReturnClassifier { +foo()$ int* }
+Animal : +foo()$ int*
+class ReturnSuffix { +foo() int* }
+style Animal fi ll:red
+Animal *-- Duck
+Duck <-- Bird
+Bird --|> Nest
+Nest ()-- Animal
+
+classDef warning fill:#f96,stroke:#333;
+style Animal fill:#f9f,stroke:#333,stroke-width:4px;
+style Mineral fill:#bbf,stroke:#f66,stroke-width:2px,color:#fff,stroke-dasharray: 5 5;
+classDef default fill:#f96,color:red
+
+style Animal fill:rgb(255, 0, 0),stroke:#333
+style Animal fill:rgb(1, %%{wrap}%%2, 3),stroke:#333
+%% class style value comment
+style Animal fill:rgb(1, 2, 3),stroke:#333
+style Animal stroke:#333,fill:rgb(1, 2, 3);
+style Animal fill:var(--fill, rgb(1, 2, 3)),stroke:#333
+style Animal fill:url(https://example.com/a,b.svg),stroke:#333
+
+class MemberTypes {
+  +String name
+  %% a comment between typed members
+  -int count
+  +List~OrderItem~ items
+  #Map~String, int~ m
+  +String[] names
+  -id : int
+  -idCard : IdCard
+  +name
+  +int total$
+  +addItem(Product product, int quantity)
+  +authorize(float amount) bool
+  +deposit(amount) bool
+  +setMessages(List~string~ messages)
+  +area(w, h) float
+  +setMap(Map~String, int~ m, int size)
+  +a b c
+  +setAmount(amount : float)
+  +setLegacy(a b c)
+  +value = 1
+  +Str%%{wrap}%%ing name
+  +setValue(float %%{wrap}%%amount, int size)
+}
+Order : +String id
+Order : +pay(float amount) bool
+Square : -List~string~ messages
+Square : +getDistanceMatrix() List~List~int~~
+
+class AdditionalMemberTypes {
+  +String 名前
+  +setX(String 名前)
+  -List~List~int~~ matrix
+  +java.util.List items
+  +List<String> names
+}
+
+class TypedMethods {
+  -int leafCount()
+  +void setName(String name)
+  +List~int~ items()
+  +String[] names() int
+  +foo()
+  +run-nested(x)
+  +run(List~T~, List~OT~)
+  +run-nested(List~List~OT~~)
+  +f(String[])
+  +List~T~
+}
+Apple : -int leafCount()

@@ -1,0 +1,49 @@
+%% a comment line
+timeline%%{init: {}}%% TD
+  title History of Social Media
+  accTitle: Social media
+  accDescr: The years of the big platforms
+  accDescr { A description
+    over two lines }
+  section Early years
+    2002 : LinkedIn
+    2004 : Facebook : Google
+  # a hash comment
+  % a percent comment
+  section Later
+    2005 : YouTube
+  titlex
+  sectionx
+  title 
+  section 
+  period # an inline hash comment
+  period #amp; : Event%%{init: {}}%% text
+  title A%%{init: {}}%%B
+title%%{init: {}}%% Directive title
+section%%{init: {}}%% Directive section : Event
+accTitle%%{init: {}}%%: Directive accessibility title
+accDescr%%{init: {}}%%: Directive description
+accDescr%%{init: {}}%%{Directive block}
+Period:%%{init: {}}%% Event
+Period : first:%%{init: {}}%% second
+Period : first:%%{init: {}}%%word
+#%%{init: {}}%%amp; : Entity event
+title
+
+section
+
+accDescr {}%%%{wrap}%%{period}
+accDescr {}%%%{wrap}%%% native %%{wrap}%% end
+accDescr {}# native %%{wrap}%% end
+#%%{wrap}%%amp%%{wrap}%%; : Entity continuation
+Period:%%{wrap}%% Event after directive
+  %%{wrap}%%title Leading directive
+  %%{wrap}%%section Leading section
+  %%{wrap}%%accTitle: Leading accessibility title
+  %%{wrap}%%accDescr: Leading description
+  %%{wrap}%%accDescr { Leading block }
+  %%{wrap}%%% native percent
+period%%{wrap}%%title Still period
+period%%{wrap}%%section Still period
+period%%{wrap}%%accTitle: Event
+period%%{wrap}%%%still period

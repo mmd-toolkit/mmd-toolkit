@@ -1,0 +1,1208 @@
+> classDiagram-v2
+  "classDiagram-v2" keyword.control.mermaid
+> %% a class comment
+  "%% a class comment" comment.line.percentage.mermaid
+> accTitle: class and namespace
+  "accTitle" keyword.control.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "class and namespace" string.unquoted.mermaid
+> accDescr: note and click
+  "accDescr" keyword.control.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "note and click" string.unquoted.mermaid
+> accDescr { classDef and style }
+  "accDescr" keyword.control.mermaid
+  "{" keyword.operator.delimiter.description.begin.mermaid
+  "classDef and style " string.unquoted.mermaid
+  "}" keyword.operator.delimiter.description.end.mermaid
+> class Animal["Animal label"] {
+  "class" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "[" keyword.operator.delimiter.label.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Animal label" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" keyword.operator.delimiter.label.end.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>   <<interface>>
+  "<<" keyword.operator.delimiter.annotation.begin.mermaid
+  "interface" entity.name.type.mermaid
+  ">>" keyword.operator.delimiter.annotation.end.mermaid
+>   +name
+  "+" storage.modifier.mermaid
+  "name" variable.mermaid
+>   +call(note) string
+  "+" storage.modifier.mermaid
+  "call" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "note" variable.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+  "string" entity.name.type.mermaid
+>   +class and namespace
+  "+" storage.modifier.mermaid
+  "class and namespace" variable.mermaid
+> }
+  "}" keyword.operator.block.end.mermaid
+> class Duck~List~
+  "class" keyword.control.mermaid
+  "Duck" variable.mermaid
+  "~" keyword.operator.delimiter.generic.begin.mermaid
+  "List" entity.name.type.mermaid
+  "~" keyword.operator.delimiter.generic.end.mermaid
+> class className
+  "class" keyword.control.mermaid
+  "className" variable.mermaid
+> class noteX
+  "class" keyword.control.mermaid
+  "noteX" variable.mermaid
+> class order
+  "class" keyword.control.mermaid
+  "order" variable.mermaid
+> class callX
+  "class" keyword.control.mermaid
+  "callX" variable.mermaid
+> namespace Zoo["A namespace"] {
+  "namespace" keyword.control.mermaid
+  "Zoo" variable.mermaid
+  "[" keyword.operator.delimiter.label.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "A namespace" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "]" keyword.operator.delimiter.label.end.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>   class Bird
+  "class" keyword.control.mermaid
+  "Bird" variable.mermaid
+>   note for Bird "A bird note"
+  "note" keyword.control.mermaid
+  "for" keyword.control.mermaid
+  "Bird" variable.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "A bird note" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+>   namespace Inner {
+  "namespace" keyword.control.mermaid
+  "Inner" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>     class Nest
+  "class" keyword.control.mermaid
+  "Nest" variable.mermaid
+>   }
+  "}" keyword.operator.block.end.mermaid
+> }
+  "}" keyword.operator.block.end.mermaid
+> Animal "1" <|-- Duck : owns note and click
+  "Animal" variable.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "1" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "<|" keyword.operator.arrow.mermaid
+  "--" keyword.operator.arrow.mermaid
+  "Duck" variable.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  " owns note and click" string.unquoted.mermaid
+> Duck o-- Bird
+  "Duck" variable.mermaid
+  "o" keyword.operator.arrow.mermaid
+  "--" keyword.operator.arrow.mermaid
+  "Bird" variable.mermaid
+> Duck ..> Nest
+  "Duck" variable.mermaid
+  ".." keyword.operator.arrow.mermaid
+  ">" keyword.operator.arrow.mermaid
+  "Nest" variable.mermaid
+> <<abstract>> Animal
+  "<<" keyword.operator.delimiter.annotation.begin.mermaid
+  "abstract" entity.name.type.mermaid
+  ">>" keyword.operator.delimiter.annotation.end.mermaid
+  "Animal" variable.mermaid
+> note "A plain note"
+  "note" keyword.control.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "A plain note" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> note for Animal "A note %% inside"
+  "note" keyword.control.mermaid
+  "for" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "A note %% inside" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> callback Animal "onClick" "callback tooltip"
+  "callback" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "onClick" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "callback tooltip" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> link Animal "https://example.com" "link tooltip" _self
+  "link" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "https://example.com" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "link tooltip" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "_self" constant.language.mermaid
+> click Animal call onClick("class", 12) "call tooltip"
+  "click" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "call" keyword.control.mermaid
+  "onClick" entity.name.function.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "\"class\", 12" string.unquoted.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "call tooltip" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> click Duck href "https://example.org" "href tooltip" _blank
+  "click" keyword.control.mermaid
+  "Duck" variable.mermaid
+  "href" keyword.control.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "https://example.org" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "href tooltip" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "_blank" constant.language.mermaid
+> link Bird "bird" "" _parent
+  "link" keyword.control.mermaid
+  "Bird" variable.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "bird" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "_parent" constant.language.mermaid
+> link Nest "nest" "" _top
+  "link" keyword.control.mermaid
+  "Nest" variable.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "nest" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "_top" constant.language.mermaid
+> cssClass "Animal,Duck" highlighted
+  "cssClass" keyword.control.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Animal,Duck" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "highlighted" variable.mermaid
+> classDef highlighted fill:red
+  "classDef" keyword.control.mermaid
+  "highlighted" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "red" support.constant.property-value.mermaid
+> style Animal fill:blue
+  "style" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "blue" support.constant.property-value.mermaid
+> DirectionName
+  "DirectionName" variable.mermaid
+> title Animals
+  "title" variable.mermaid
+  "Animals" variable.mermaid
+> direction LR
+  "direction" keyword.control.mermaid
+  "LR" constant.language.mermaid
+> note "directive %%{init: {}}%% text"
+  "note" keyword.control.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "directive " string.quoted.double.mermaid
+  "%%{" string.quoted.double.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "init" string.quoted.double.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.quoted.double.mermaid meta.directive.mermaid keyword.operator.separator.colon.mermaid
+  " " string.quoted.double.mermaid meta.directive.mermaid
+  "{}" string.quoted.double.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.quoted.double.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  " text" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> Animal --> Duck : text %%{init: {}}%% class
+  "Animal" variable.mermaid
+  "--" keyword.operator.arrow.mermaid
+  ">" keyword.operator.arrow.mermaid
+  "Duck" variable.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  " text " string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid keyword.operator.separator.colon.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  " class" string.unquoted.mermaid
+> Animal --> Duck %% inline class comment
+  "Animal" variable.mermaid
+  "--" keyword.operator.arrow.mermaid
+  ">" keyword.operator.arrow.mermaid
+  "Duck" variable.mermaid
+  "%% inline class comment" comment.line.percentage.mermaid
+> accDescr {} class AfterBlock
+  "accDescr" keyword.control.mermaid
+  "{" keyword.operator.delimiter.description.begin.mermaid
+  "}" keyword.operator.delimiter.description.end.mermaid
+  "class" keyword.control.mermaid
+  "AfterBlock" variable.mermaid
+> class Styled:::highlighted {
+  "class" keyword.control.mermaid
+  "Styled" variable.mermaid
+  ":::" keyword.operator.separator.class.mermaid
+  "highlighted" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>   +x
+  "+" storage.modifier.mermaid
+  "x" variable.mermaid
+> }
+  "}" keyword.operator.block.end.mermaid
+> class `backquoted class`
+  "class" keyword.control.mermaid
+  "`" punctuation.definition.string.begin.mermaid
+  "backquoted class" variable.mermaid
+  "`" punctuation.definition.string.end.mermaid
+> classDef highlighted,extra fill:red
+  "classDef" keyword.control.mermaid
+  "highlighted" variable.mermaid
+  "," variable.mermaid keyword.operator.separator.comma.mermaid
+  "extra" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "red" support.constant.property-value.mermaid
+> direction TB x direction LR
+  "direction" keyword.control.mermaid
+  "TB" constant.language.mermaid
+  " x direction LR" comment.block.ignored.mermaid
+> note "x direction TB"
+  "note \"x " comment.block.ignored.mermaid
+  "direction" keyword.control.mermaid
+  "TB" constant.language.mermaid
+  "\"" comment.block.ignored.mermaid
+> class DirectiveMembers {
+  "class" keyword.control.mermaid
+  "DirectiveMembers" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>   +na%%{init: {}}%%me
+  "+" storage.modifier.mermaid
+  "na" variable.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "init" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" variable.mermaid meta.directive.mermaid keyword.operator.separator.colon.mermaid
+  " " variable.mermaid meta.directive.mermaid
+  "{}" variable.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "me" variable.mermaid
+>   +foo(%%{init: {}}%%note)
+  "+" storage.modifier.mermaid
+  "foo" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid keyword.operator.separator.colon.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "note" string.unquoted.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+> }
+  "}" keyword.operator.block.end.mermaid
+> click Animal call cb)name(x)
+  "click" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "call" keyword.control.mermaid
+  "cb)name" entity.name.function.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "x" string.unquoted.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+> note "x %%{init: 'direction TB'}%% y"
+  "note" keyword.control.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "x " string.quoted.double.mermaid
+  "%%{" string.quoted.double.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "init" string.quoted.double.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.quoted.double.mermaid meta.directive.mermaid keyword.operator.separator.colon.mermaid
+  " " string.quoted.double.mermaid meta.directive.mermaid
+  "'direction TB'" string.quoted.double.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.quoted.double.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  " y" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> Animal --> Duck : #amp; note
+  "Animal" variable.mermaid
+  "--" keyword.operator.arrow.mermaid
+  ">" keyword.operator.arrow.mermaid
+  "Duck" variable.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  " " string.unquoted.mermaid
+  "#amp;" string.unquoted.mermaid
+  " note" string.unquoted.mermaid
+> Animal --> Duck : #%%{init: {}}%%amp; note
+  "Animal" variable.mermaid
+  "--" keyword.operator.arrow.mermaid
+  ">" keyword.operator.arrow.mermaid
+  "Duck" variable.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  " " string.unquoted.mermaid
+  "#" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid keyword.operator.separator.colon.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "amp;" string.unquoted.mermaid
+  " note" string.unquoted.mermaid
+> note%%{init: {}}%% for Animal "x"
+  "note" keyword.control.mermaid
+  "%%{" meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid keyword.operator.separator.colon.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "for" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "x" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> note %%{init: {}}%%for Animal "y"
+  "note" keyword.control.mermaid
+  "%%{" meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid keyword.operator.separator.colon.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "for" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "y" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> accTitle%%{init: {}}%%: note
+  "accTitle" keyword.control.mermaid
+  "%%{" meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid keyword.operator.separator.colon.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "note" string.unquoted.mermaid
+> accDescr%%{init: {}}%%{} class DirectedBlock
+  "accDescr" keyword.control.mermaid
+  "%%{" meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid keyword.operator.separator.colon.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "{" keyword.operator.delimiter.description.begin.mermaid
+  "}" keyword.operator.delimiter.description.end.mermaid
+  "class" keyword.control.mermaid
+  "DirectedBlock" variable.mermaid
+> style Animal fill red accDescr {}
+  "style" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "fill red" support.constant.property-value.mermaid
+  "accDescr" keyword.control.mermaid
+  "{" keyword.operator.delimiter.description.begin.mermaid
+  "}" keyword.operator.delimiter.description.end.mermaid
+> note "<b title="x">tag</b>"
+  "note" keyword.control.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "<b title=\"x\">" string.quoted.double.mermaid
+  "tag</b>" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> click Animal href "a<b" "c>"
+  "click" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "href" keyword.control.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "<b" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "c>" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> class Na%%{init: {}}%%note
+  "class" keyword.control.mermaid
+  "Na" variable.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "init" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" variable.mermaid meta.directive.mermaid keyword.operator.separator.colon.mermaid
+  " " variable.mermaid meta.directive.mermaid
+  "{}" variable.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "note" variable.mermaid
+> style Animal%%{init: {}}%% fill red
+  "style" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "%%{" meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid keyword.operator.separator.colon.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "fill red" support.constant.property-value.mermaid
+> classDef highlighted%%{init: {}}%%,extra fill red
+  "classDef" keyword.control.mermaid
+  "highlighted" variable.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "init" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" variable.mermaid meta.directive.mermaid keyword.operator.separator.colon.mermaid
+  " " variable.mermaid meta.directive.mermaid
+  "{}" variable.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "," variable.mermaid keyword.operator.separator.comma.mermaid
+  "extra" variable.mermaid
+  "fill red" support.constant.property-value.mermaid
+> 
+> click Animal call%%{init: {}}%% cb%%{init: {}}%%)name(x%%{init: {}}%%y)
+  "click" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "call" keyword.control.mermaid
+  "%%{" meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "init" meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" meta.directive.mermaid keyword.operator.separator.colon.mermaid
+  " " meta.directive.mermaid
+  "{}" meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "cb" entity.name.function.mermaid
+  "%%{" entity.name.function.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "init" entity.name.function.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" entity.name.function.mermaid meta.directive.mermaid keyword.operator.separator.colon.mermaid
+  " " entity.name.function.mermaid meta.directive.mermaid
+  "{}" entity.name.function.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" entity.name.function.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  ")name" entity.name.function.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "x" string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "init" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.unquoted.mermaid meta.directive.mermaid keyword.operator.separator.colon.mermaid
+  " " string.unquoted.mermaid meta.directive.mermaid
+  "{}" string.unquoted.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "y" string.unquoted.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+> namespace class { note "x" }
+  "namespace" keyword.control.mermaid
+  "class" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+  "note" keyword.control.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "x" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "}" keyword.operator.block.end.mermaid
+> 
+> class call A~(x)~
+  "class" keyword.control.mermaid
+  "call" variable.mermaid
+  "A" variable.mermaid
+  "~" keyword.operator.delimiter.generic.begin.mermaid
+  "(x)" entity.name.type.mermaid
+  "~" keyword.operator.delimiter.generic.end.mermaid
+> 
+> style A:x
+  "style" keyword.control.mermaid
+  "A" variable.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "x" support.constant.property-value.mermaid
+> 
+> classDef A,B:red
+  "classDef" keyword.control.mermaid
+  "A" variable.mermaid
+  "," variable.mermaid keyword.operator.separator.comma.mermaid
+  "B" variable.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "red" support.constant.property-value.mermaid
+> 
+> style A style
+  "style" keyword.control.mermaid
+  "A" variable.mermaid
+  "style" support.constant.property-value.mermaid
+> 
+> classDef C style
+  "classDef" keyword.control.mermaid
+  "C" variable.mermaid
+  "style" support.constant.property-value.mermaid
+> 
+> class PercentAnnotation { <<a%>> }
+  "class" keyword.control.mermaid
+  "PercentAnnotation" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+  "<<" keyword.operator.delimiter.annotation.begin.mermaid
+  "a%" entity.name.type.mermaid
+  ">>" keyword.operator.delimiter.annotation.end.mermaid
+  "}" keyword.operator.block.end.mermaid
+> 
+> class NumericMethod { 12(x) }
+  "class" keyword.control.mermaid
+  "NumericMethod" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+  "12" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "x" variable.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+  "}" keyword.operator.block.end.mermaid
+> 
+> class NestedMethod { foo(a(b)) }
+  "class" keyword.control.mermaid
+  "NestedMethod" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+  "foo(a" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "b)" string.unquoted.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+  "}" keyword.operator.block.end.mermaid
+> 
+> class note%%{wrap}%%Long
+  "class" keyword.control.mermaid
+  "note" variable.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "wrap" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "Long" variable.mermaid
+> 
+> style A style%%{wrap}%%Long
+  "style" keyword.control.mermaid
+  "A" variable.mermaid
+  "style" support.constant.property-value.mermaid
+  "%%{" support.constant.property-value.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "wrap" support.constant.property-value.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" support.constant.property-value.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "Long" support.constant.property-value.mermaid
+> 
+> A --> B %%%{wrap}%%% native %%{init: ">>"}%% tail
+  "A" variable.mermaid
+  "--" keyword.operator.arrow.mermaid
+  ">" keyword.operator.arrow.mermaid
+  "B" variable.mermaid
+  "%" comment.line.percentage.mermaid
+  "%%{" comment.line.percentage.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "wrap" comment.line.percentage.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" comment.line.percentage.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "% native " comment.line.percentage.mermaid
+  "%%{" comment.line.percentage.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "init" comment.line.percentage.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" comment.line.percentage.mermaid meta.directive.mermaid keyword.operator.separator.colon.mermaid
+  " " comment.line.percentage.mermaid meta.directive.mermaid
+  "\">>\"" comment.line.percentage.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" comment.line.percentage.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  " tail" comment.line.percentage.mermaid
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> class EntityMethod { #amp;(x) }
+  "class" keyword.control.mermaid
+  "EntityMethod" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+  "#amp;" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "x" variable.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+  "}" keyword.operator.block.end.mermaid
+> 
+> 
+> class AttributeParens { )x() }
+  "class" keyword.control.mermaid
+  "AttributeParens" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+  ")x()" variable.mermaid
+  "}" keyword.operator.block.end.mermaid
+> 
+> 
+> classDef A foo%%{wrap}%%style
+  "classDef" keyword.control.mermaid
+  "A" variable.mermaid
+  "foo" support.constant.property-value.mermaid
+  "%%{" support.constant.property-value.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "wrap" support.constant.property-value.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" support.constant.property-value.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "style" support.constant.property-value.mermaid
+> classDef Boundary style
+  "classDef" keyword.control.mermaid
+  "Boundary" variable.mermaid
+  "style" support.constant.property-value.mermaid
+> class DivisionProbe { foo(a(b)) }
+  "class" keyword.control.mermaid
+  "DivisionProbe" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+  "foo(a" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "b)" string.unquoted.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+  "}" keyword.operator.block.end.mermaid
+> class ScopeMember { +field$ }
+  "class" keyword.control.mermaid
+  "ScopeMember" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+  "+" storage.modifier.mermaid
+  "field" variable.mermaid
+  "$" storage.modifier.mermaid
+  "}" keyword.operator.block.end.mermaid
+> style Animal fill:#43a047
+  "style" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "#43a047" support.constant.property-value.mermaid
+> ScopeMember : +field$
+  "ScopeMember" variable.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "+" storage.modifier.mermaid
+  "field" variable.mermaid
+  "$" storage.modifier.mermaid
+> Animal : +call(note) string
+  "Animal" variable.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "+" storage.modifier.mermaid
+  "call" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "note" variable.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+  "string" entity.name.type.mermaid
+> Animal : <<interface>>
+  "Animal" variable.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "<<" keyword.operator.delimiter.annotation.begin.mermaid
+  "interface" entity.name.type.mermaid
+  ">>" keyword.operator.delimiter.annotation.end.mermaid
+> class ReturnClassifier { +foo()$ int* }
+  "class" keyword.control.mermaid
+  "ReturnClassifier" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+  "+" storage.modifier.mermaid
+  "foo" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+  "$" storage.modifier.mermaid
+  "int*" entity.name.type.mermaid
+  "}" keyword.operator.block.end.mermaid
+> Animal : +foo()$ int*
+  "Animal" variable.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "+" storage.modifier.mermaid
+  "foo" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+  "$" storage.modifier.mermaid
+  "int*" entity.name.type.mermaid
+> class ReturnSuffix { +foo() int* }
+  "class" keyword.control.mermaid
+  "ReturnSuffix" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+  "+" storage.modifier.mermaid
+  "foo" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+  "int" entity.name.type.mermaid
+  "*" storage.modifier.mermaid
+  "}" keyword.operator.block.end.mermaid
+> style Animal fi ll:red
+  "style" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "fi ll" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "red" support.constant.property-value.mermaid
+> Animal *-- Duck
+  "Animal" variable.mermaid
+  "*" keyword.operator.arrow.mermaid
+  "--" keyword.operator.arrow.mermaid
+  "Duck" variable.mermaid
+> Duck <-- Bird
+  "Duck" variable.mermaid
+  "<" keyword.operator.arrow.mermaid
+  "--" keyword.operator.arrow.mermaid
+  "Bird" variable.mermaid
+> Bird --|> Nest
+  "Bird" variable.mermaid
+  "--" keyword.operator.arrow.mermaid
+  "|>" keyword.operator.arrow.mermaid
+  "Nest" variable.mermaid
+> Nest ()-- Animal
+  "Nest" variable.mermaid
+  "()" keyword.operator.arrow.mermaid
+  "--" keyword.operator.arrow.mermaid
+  "Animal" variable.mermaid
+> 
+> classDef warning fill:#f96,stroke:#333;
+  "classDef" keyword.control.mermaid
+  "warning" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "#f96" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "stroke" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "#333" support.constant.property-value.mermaid
+  ";" keyword.operator.separator.semicolon.mermaid
+> style Animal fill:#f9f,stroke:#333,stroke-width:4px;
+  "style" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "#f9f" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "stroke" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "#333" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "stroke-width" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "4px" support.constant.property-value.mermaid
+  ";" keyword.operator.separator.semicolon.mermaid
+> style Mineral fill:#bbf,stroke:#f66,stroke-width:2px,color:#fff,stroke-dasharray: 5 5;
+  "style" keyword.control.mermaid
+  "Mineral" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "#bbf" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "stroke" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "#f66" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "stroke-width" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "2px" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "color" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "#fff" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "stroke-dasharray" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  " 5 5" support.constant.property-value.mermaid
+  ";" keyword.operator.separator.semicolon.mermaid
+> classDef default fill:#f96,color:red
+  "classDef" keyword.control.mermaid
+  "default" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "#f96" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "color" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "red" support.constant.property-value.mermaid
+> 
+> style Animal fill:rgb(255, 0, 0),stroke:#333
+  "style" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "rgb" support.constant.property-value.mermaid
+  "(" support.constant.property-value.mermaid
+  "255, 0, 0" support.constant.property-value.mermaid
+  ")" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "stroke" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "#333" support.constant.property-value.mermaid
+> style Animal fill:rgb(1, %%{wrap}%%2, 3),stroke:#333
+  "style" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "rgb" support.constant.property-value.mermaid
+  "(" support.constant.property-value.mermaid
+  "1, " support.constant.property-value.mermaid
+  "%%{" support.constant.property-value.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "wrap" support.constant.property-value.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" support.constant.property-value.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "2, 3" support.constant.property-value.mermaid
+  ")" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "stroke" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "#333" support.constant.property-value.mermaid
+> %% class style value comment
+  "%% class style value comment" comment.line.percentage.mermaid
+> style Animal fill:rgb(1, 2, 3),stroke:#333
+  "style" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "rgb" support.constant.property-value.mermaid
+  "(" support.constant.property-value.mermaid
+  "1, 2, 3" support.constant.property-value.mermaid
+  ")" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "stroke" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "#333" support.constant.property-value.mermaid
+> style Animal stroke:#333,fill:rgb(1, 2, 3);
+  "style" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "stroke" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "#333" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "rgb" support.constant.property-value.mermaid
+  "(" support.constant.property-value.mermaid
+  "1, 2, 3" support.constant.property-value.mermaid
+  ")" support.constant.property-value.mermaid
+  ";" keyword.operator.separator.semicolon.mermaid
+> style Animal fill:var(--fill, rgb(1, 2, 3)),stroke:#333
+  "style" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "var" support.constant.property-value.mermaid
+  "(" support.constant.property-value.mermaid
+  "--fill, rgb" support.constant.property-value.mermaid
+  "(" support.constant.property-value.mermaid
+  "1, 2, 3" support.constant.property-value.mermaid
+  ")" support.constant.property-value.mermaid
+  ")" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "stroke" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "#333" support.constant.property-value.mermaid
+> style Animal fill:url(https://example.com/a,b.svg),stroke:#333
+  "style" keyword.control.mermaid
+  "Animal" variable.mermaid
+  "fill" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "url" support.constant.property-value.mermaid
+  "(" support.constant.property-value.mermaid
+  "https://example.com/a,b.svg" support.constant.property-value.mermaid
+  ")" support.constant.property-value.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "stroke" support.type.property-name.mermaid
+  ":" keyword.operator.separator.key-value.mermaid
+  "#333" support.constant.property-value.mermaid
+> 
+> class MemberTypes {
+  "class" keyword.control.mermaid
+  "MemberTypes" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>   +String name
+  "+" storage.modifier.mermaid
+  "String" entity.name.type.mermaid
+  "name" variable.mermaid
+>   %% a comment between typed members
+  "%% a comment between typed members" comment.line.percentage.mermaid
+>   -int count
+  "-" storage.modifier.mermaid
+  "int" entity.name.type.mermaid
+  "count" variable.mermaid
+>   +List~OrderItem~ items
+  "+" storage.modifier.mermaid
+  "List" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "OrderItem" entity.name.type.mermaid entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
+  "items" variable.mermaid
+>   #Map~String, int~ m
+  "#" storage.modifier.mermaid
+  "Map" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "String, int" entity.name.type.mermaid entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
+  "m" variable.mermaid
+>   +String[] names
+  "+" storage.modifier.mermaid
+  "String[]" entity.name.type.mermaid
+  "names" variable.mermaid
+>   -id : int
+  "-" storage.modifier.mermaid
+  "id" variable.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "int" entity.name.type.mermaid
+>   -idCard : IdCard
+  "-" storage.modifier.mermaid
+  "idCard" variable.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "IdCard" entity.name.type.mermaid
+>   +name
+  "+" storage.modifier.mermaid
+  "name" variable.mermaid
+>   +int total$
+  "+" storage.modifier.mermaid
+  "int" entity.name.type.mermaid
+  "total" variable.mermaid
+  "$" storage.modifier.mermaid
+>   +addItem(Product product, int quantity)
+  "+" storage.modifier.mermaid
+  "addItem" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "Product" entity.name.type.mermaid
+  "product" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "int" entity.name.type.mermaid
+  "quantity" variable.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   +authorize(float amount) bool
+  "+" storage.modifier.mermaid
+  "authorize" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "float" entity.name.type.mermaid
+  "amount" variable.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+  "bool" entity.name.type.mermaid
+>   +deposit(amount) bool
+  "+" storage.modifier.mermaid
+  "deposit" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "amount" variable.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+  "bool" entity.name.type.mermaid
+>   +setMessages(List~string~ messages)
+  "+" storage.modifier.mermaid
+  "setMessages" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "List" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "string" entity.name.type.mermaid entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
+  "messages" variable.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   +area(w, h) float
+  "+" storage.modifier.mermaid
+  "area" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "w" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "h" variable.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+  "float" entity.name.type.mermaid
+>   +setMap(Map~String, int~ m, int size)
+  "+" storage.modifier.mermaid
+  "setMap" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "Map" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "String, int" entity.name.type.mermaid entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
+  "m" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "int" entity.name.type.mermaid
+  "size" variable.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   +a b c
+  "+" storage.modifier.mermaid
+  "a b c" variable.mermaid
+>   +setAmount(amount : float)
+  "+" storage.modifier.mermaid
+  "setAmount" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "amount" variable.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "float" entity.name.type.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   +setLegacy(a b c)
+  "+" storage.modifier.mermaid
+  "setLegacy" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "a b c" string.unquoted.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   +value = 1
+  "+" storage.modifier.mermaid
+  "value = 1" variable.mermaid
+>   +Str%%{wrap}%%ing name
+  "+" storage.modifier.mermaid
+  "Str" variable.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "wrap" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "ing name" variable.mermaid
+>   +setValue(float %%{wrap}%%amount, int size)
+  "+" storage.modifier.mermaid
+  "setValue" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "float " string.unquoted.mermaid
+  "%%{" string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "wrap" string.unquoted.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.unquoted.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "amount, int size" string.unquoted.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+> }
+  "}" keyword.operator.block.end.mermaid
+> Order : +String id
+  "Order" variable.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "+" storage.modifier.mermaid
+  "String" entity.name.type.mermaid
+  "id" variable.mermaid
+> Order : +pay(float amount) bool
+  "Order" variable.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "+" storage.modifier.mermaid
+  "pay" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "float" entity.name.type.mermaid
+  "amount" variable.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+  "bool" entity.name.type.mermaid
+> Square : -List~string~ messages
+  "Square" variable.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "-" storage.modifier.mermaid
+  "List" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "string" entity.name.type.mermaid entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
+  "messages" variable.mermaid
+> Square : +getDistanceMatrix() List~List~int~~
+  "Square" variable.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "+" storage.modifier.mermaid
+  "getDistanceMatrix" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+  "List" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "List" entity.name.type.mermaid entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
+  "int" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
+> 
+> class AdditionalMemberTypes {
+  "class" keyword.control.mermaid
+  "AdditionalMemberTypes" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>   +String 名前
+  "+" storage.modifier.mermaid
+  "String" entity.name.type.mermaid
+  "名前" variable.mermaid
+>   +setX(String 名前)
+  "+" storage.modifier.mermaid
+  "setX" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "String" entity.name.type.mermaid
+  "名前" variable.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   -List~List~int~~ matrix
+  "-" storage.modifier.mermaid
+  "List" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "List" entity.name.type.mermaid entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
+  "int" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
+  "matrix" variable.mermaid
+>   +java.util.List items
+  "+" storage.modifier.mermaid
+  "java.util.List" entity.name.type.mermaid
+  "items" variable.mermaid
+>   +List<String> names
+  "+" storage.modifier.mermaid
+  "List<String>" entity.name.type.mermaid
+  "names" variable.mermaid
+> }
+  "}" keyword.operator.block.end.mermaid
+> 
+> class TypedMethods {
+  "class" keyword.control.mermaid
+  "TypedMethods" variable.mermaid
+  "{" keyword.operator.block.begin.mermaid
+>   -int leafCount()
+  "-" storage.modifier.mermaid
+  "int" entity.name.type.mermaid
+  "leafCount" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   +void setName(String name)
+  "+" storage.modifier.mermaid
+  "void" entity.name.type.mermaid
+  "setName" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "String" entity.name.type.mermaid
+  "name" variable.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   +List~int~ items()
+  "+" storage.modifier.mermaid
+  "List" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "int" entity.name.type.mermaid entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
+  "items" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   +String[] names() int
+  "+" storage.modifier.mermaid
+  "String[]" entity.name.type.mermaid
+  "names" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+  "int" entity.name.type.mermaid
+>   +foo()
+  "+" storage.modifier.mermaid
+  "foo" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   +run-nested(x)
+  "+" storage.modifier.mermaid
+  "run-nested" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "x" variable.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   +run(List~T~, List~OT~)
+  "+" storage.modifier.mermaid
+  "run" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "List" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "T" entity.name.type.mermaid entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "List" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "OT" entity.name.type.mermaid entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   +run-nested(List~List~OT~~)
+  "+" storage.modifier.mermaid
+  "run-nested" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "List" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "List" entity.name.type.mermaid entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
+  "OT" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   +f(String[])
+  "+" storage.modifier.mermaid
+  "f" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  "String[]" entity.name.type.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+>   +List~T~
+  "+" storage.modifier.mermaid
+  "List" entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.begin.mermaid
+  "T" entity.name.type.mermaid entity.name.type.mermaid
+  "~" entity.name.type.mermaid keyword.operator.delimiter.generic.end.mermaid
+> }
+  "}" keyword.operator.block.end.mermaid
+> Apple : -int leafCount()
+  "Apple" variable.mermaid
+  ":" keyword.operator.separator.colon.mermaid
+  "-" storage.modifier.mermaid
+  "int" entity.name.type.mermaid
+  "leafCount" variable.mermaid
+  "(" keyword.operator.bracket.arguments.begin.mermaid
+  ")" keyword.operator.bracket.arguments.end.mermaid
+> 

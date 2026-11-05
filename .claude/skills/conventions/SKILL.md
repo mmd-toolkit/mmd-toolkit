@@ -98,7 +98,7 @@ The procedures of a package are in the skill of that package.
   blocks are not wrapped, so keep table cells short and put long explanations
   below the table. Prettier does not wrap Japanese text, which has no
   whitespace, so it keeps the line breaks of the Japanese documents as written
-  (`proseWrap: "preserve"` for `*.ja.md`), and `pnpm run lint:ja --fix` writes
+  (`proseWrap: "preserve"` for `*.ja.md`), and `pnpm run lint:md --fix` writes
   them: one sentence on a line, and a long sentence broken after a `、`, or,
   where no `、` lets it fit, at a space beside a code span, a link, or a Latin
   word, so that no line of prose is longer than 80 columns, counting a
@@ -113,7 +113,7 @@ The procedures of a package are in the skill of that package.
   immediately follows `。`; directly adjacent citations remain adjacent. Where a
   line break between a full-width and a half-width character, or between two
   half-width characters, is removed, one space takes its place.
-  `pnpm run lint:ja` checks all of this.
+  `pnpm run lint:md` checks all of this.
 - A code block that holds Mermaid text has the info string `mmd`, not `mermaid`
   and not `text`. GitHub highlights it and does not try to render it as a
   diagram, which matters because many examples are rejected or are edge cases on

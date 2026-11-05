@@ -1,0 +1,69 @@
+journey
+%% a journey comment
+% a percent comment
+# a hash comment
+title A title with section and accTitle
+section A section with title
+accTitle: title section # and ; %% text
+accDescr: section title
+accDescr { title and section }
+Read a "string": 5: Me, You
+Plan title section: 3: Alice,,Bob: ignored, title: section
+section Planning
+Task with #amp; entity: 4: Person#amp;Name
+TitleX: 2
+sectionx: 2
+title-x: 2
+accTitlex: 2
+accDescrx: 2
+title: text
+section: score
+%{x}: 5
+Task A%%B: 5
+A: abc
+A: 5, 6
+A: 5 B: 3
+A: 5 accDescr {}
+accDescr {} Task after block: 1
+title title %%{init: {}}%% section
+section section %%{init: {}}%% title
+Task %%{init: {}}%% title: 1%%{init: {}}%%0: Me%%{init: {}}%%You
+accDescr { text %%{init: {}}%% section }
+Task: 5 # inline hash comment
+  Indented: 2
+title #amp; section
+section #amp; title
+#amp;Task: 5
+#%%{init: {}}%%amp;Task: 5
+title #%%{init: {}}%%amp; section
+Task #amp;: 5: #amp;Me
+title%%{init: {}}%% T
+section%%{init: {}}%% S
+accTitle%%{init: {}}%%: T
+accDescr%%{init: {}}%%{ d }
+
+
+
+
+
+
+
+
+
+
+
+
+% native %%{wrap}%% comment
+
+# native %%{init: ":"}%% comment
+
+%{left}: 3
+
+
+
+
+
+Task: #amp;: Person#amp;Name: ignored#amp;data
+accDescr {}%%%{wrap}%%{left}: 3
+accTitle: boundary title
+accDescr: boundary description

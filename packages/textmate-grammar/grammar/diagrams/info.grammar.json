@@ -1,0 +1,70 @@
+{
+  "patterns": [
+    {
+      "include": "#info"
+    }
+  ],
+  "repository": {
+    "info": {
+      "comment": "Read the lowercase info header and judge its keyword boundary through subsequent directives. Follows detection.md#the-detectors and info.md#detection.",
+      "begin": "{{diagramStart}}(info){{info-keyword-end}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#info-line-final-keywords"
+        },
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#hidden-yaml",
+          "comment": "Read a native YAML region from a three-dash opening fence to the first qualifying unindented closing fence. Follows info.md#hidden-yaml."
+        },
+        {
+          "include": "#hidden-directive",
+          "comment": "Read a native ignored percent-brace region through its earliest brace-percent closer with a following whitespace or end-of-input boundary. Follows info.md#hidden-directive-and-line-endings."
+        },
+        {
+          "include": "#native-percent-comment",
+          "comment": "Read a native percent-pair comment up to physical line end or a separator-led common comment. Follows info.md#comments-and-common-trivia."
+        },
+        {
+          "comment": "Read the bounded showInfo flag through following directives. Follows info.md#keyword-boundaries and common.md#a-directive-is-a-token-boundary.",
+          "match": "showInfo{{info-keyword-end}}",
+          "name": "keyword.control.mermaid"
+        },
+        {
+          "comment": "Read title lines and the colon-led or braced forms of accessibility metadata. Follows info.md#composite-common-forms.",
+          "include": "#common-statements-at-unit"
+        }
+      ]
+    },
+    "info-line-final-keywords": {
+      "comment": "Read the reserved accessibility description keyword when only padding and directives remain on its physical line, including after another complete unit. A later-line value receives its surrounding context's scopes. Follows info.md#composite-common-forms and common.md#a-directive-is-a-token-boundary.",
+      "match": "({{asciiGap}})(accDescr)(?={{lineGap}}$)",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.control.mermaid"
+        }
+      }
+    }
+  },
+  "variables": {
+    "info-keyword-end": "(?={{directives}}(?:[{{ws}}]|%%|$))"
+  }
+}

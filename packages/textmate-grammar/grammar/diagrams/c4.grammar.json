@@ -1,0 +1,461 @@
+{
+  "variables": {
+    "c4-argument-padding": "(?:[ ]|{{directive}})*",
+    "c4-element-calls": "Person_Ext|Person|SystemQueue_Ext|SystemDb_Ext|System_Ext|SystemQueue|SystemDb|System|Boundary|Enterprise_Boundary|System_Boundary|ContainerQueue_Ext|ContainerDb_Ext|Container_Ext|ContainerQueue|ContainerDb|Container|Container_Boundary|ComponentQueue_Ext|ComponentDb_Ext|Component_Ext|ComponentQueue|ComponentDb|Component|Deployment_Node|Node|Node_L|Node_R|UpdateElementStyle",
+    "c4-relation-calls": "Rel|BiRel|Rel_Up|Rel_U|Rel_Down|Rel_D|Rel_Left|Rel_L|Rel_Right|Rel_R|Rel_Back|UpdateRelStyle",
+    "c4-call-keywords": "{{c4-element-calls}}|{{c4-relation-calls}}|RelIndex|UpdateLayoutConfig",
+    "c4-quoted-argument": "{{c4-argument-padding}}\"(?:{{htmlTag}}|{{directive}}|(?!{{directiveStart}})[^\"\\r\\n])*\"",
+    "c4-named-argument": "{{c4-argument-padding}}\\$(?:{{directive}}|(?!{{directiveStart}})[^=\\r\\n])*={{c4-quoted-argument}}",
+    "c4-bare-argument": "(?!{{c4-argument-padding}}[\"$]|\\)|,)(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^,\\r\\n])+",
+    "c4-argument": "(?>{{c4-quoted-argument}}|{{c4-named-argument}}|{{c4-bare-argument}})",
+    "c4-first-argument": "(?>{{c4-argument-padding}},|{{c4-argument}})",
+    "c4-next-argument": "(?:{{directives}},{{directives}},|{{c4-argument}})",
+    "c4-argument-separator": "{{directives}}(?:,(?!{{directives}},){{directives}})?"
+  },
+  "patterns": [
+    {
+      "include": "#c4"
+    }
+  ],
+  "repository": {
+    "c4": {
+      "comment": "Read the five header spellings C4Context, C4Container, C4Component, C4Dynamic and C4Deployment without accepting a longer word. Follows detection.md#the-detectors and c4.md#detection.",
+      "begin": "{{diagramStart}}(C4Context|C4Container|C4Component|C4Dynamic|C4Deployment){{wordEnd}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#native-percent-comment",
+          "comment": "Read a native percent-pair comment up to physical line end or a separator-led common comment. Follows c4.md#the-top-level-context and c4.md#comments."
+        },
+        {
+          "comment": "Read title or accDescription followed by exactly one Notation whitespace character and its line value. Quotes and inline percent pairs remain value text, including around directives. The match does not validate every excluded converted character; a separator-led common comment ends the value. Follows c4.md#the-top-level-context, c4.md#title-and-accessibility-contexts, and common.md#comment-lines.",
+          "begin": "(title|accDescription){{wordEnd}}",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          },
+          "end": "{{lineValueEnd}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": "Read accTitle or accDescr and its colon-led value, or the accDescr brace form. Padding around the delimiter admits Notation whitespace and directives. Inline percent pairs stay in the value; a separator-led common comment ends its current run. Follows c4.md#the-top-level-context, c4.md#title-and-accessibility-contexts, and common.md#comment-lines.",
+          "begin": "(accTitle|accDescr){{wordEnd}}",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          },
+          "end": "(?<=\\})|{{lineValueEnd}}",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#c4-colon-value"
+            },
+            {
+              "include": "#c4-brace-value"
+            }
+          ]
+        },
+        {
+          "comment": "Read the positional alias or endpoints without requiring surplus commas or arguments. Directives between the call keyword and opener keep their own scopes. Follows c4.md#rejections-outside-the-grammar and c4.md#calls-and-arguments.",
+          "begin": "(RelIndex){{wordEnd}}({{directives}})(\\()({{c4-first-argument}})(?:({{c4-argument-separator}})({{c4-next-argument}})(?:({{c4-argument-separator}})({{c4-next-argument}}))?)?",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "keyword.operator.bracket.arguments.begin.mermaid"
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#c4-call-arguments"
+                }
+              ]
+            },
+            "5": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                },
+                {
+                  "include": "#c4-comma"
+                }
+              ]
+            },
+            "6": {
+              "patterns": [
+                {
+                  "include": "#c4-name-argument"
+                }
+              ]
+            },
+            "7": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                },
+                {
+                  "include": "#c4-comma"
+                }
+              ]
+            },
+            "8": {
+              "patterns": [
+                {
+                  "include": "#c4-name-argument"
+                }
+              ]
+            }
+          },
+          "end": "(\\))",
+          "endCaptures": {
+            "1": {
+              "name": "keyword.operator.bracket.arguments.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#c4-call-arguments"
+            }
+          ]
+        },
+        {
+          "comment": "Read the positional alias or endpoints without requiring surplus commas or arguments. Directives between the call keyword and opener keep their own scopes. Follows c4.md#rejections-outside-the-grammar and c4.md#calls-and-arguments.",
+          "begin": "({{c4-relation-calls}}){{wordEnd}}({{directives}})(\\()({{c4-first-argument}})(?:({{c4-argument-separator}})({{c4-next-argument}}))?",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "keyword.operator.bracket.arguments.begin.mermaid"
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#c4-name-argument"
+                }
+              ]
+            },
+            "5": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                },
+                {
+                  "include": "#c4-comma"
+                }
+              ]
+            },
+            "6": {
+              "patterns": [
+                {
+                  "include": "#c4-name-argument"
+                }
+              ]
+            }
+          },
+          "end": "(\\))",
+          "endCaptures": {
+            "1": {
+              "name": "keyword.operator.bracket.arguments.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#c4-call-arguments"
+            }
+          ]
+        },
+        {
+          "comment": "Read the positional alias or endpoints without requiring surplus commas or arguments. Directives between the call keyword and opener keep their own scopes. Follows c4.md#rejections-outside-the-grammar and c4.md#calls-and-arguments.",
+          "begin": "({{c4-element-calls}}){{wordEnd}}({{directives}})(\\()({{c4-first-argument}})",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "keyword.operator.bracket.arguments.begin.mermaid"
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#c4-name-argument"
+                }
+              ]
+            }
+          },
+          "end": "(\\))",
+          "endCaptures": {
+            "1": {
+              "name": "keyword.operator.bracket.arguments.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#c4-call-arguments"
+            }
+          ]
+        },
+        {
+          "comment": "Read case-sensitive call keywords together with their opening argument parenthesis, rejecting a word suffix. The closing parenthesis ends this argument context. Follows c4.md#the-top-level-context and c4.md#the-keyword-and-argument-contexts.",
+          "begin": "({{c4-call-keywords}}){{wordEnd}}({{directives}})(\\()",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "keyword.operator.bracket.arguments.begin.mermaid"
+            }
+          },
+          "end": "(\\))",
+          "endCaptures": {
+            "1": {
+              "name": "keyword.operator.bracket.arguments.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#c4-call-arguments"
+            }
+          ]
+        },
+        {
+          "comment": "Read braces delimiting the bodies introduced by boundary calls. Follows c4.md#boundaries.",
+          "match": "(\\{)|(\\})",
+          "captures": {
+            "1": {
+              "name": "keyword.operator.block.begin.mermaid"
+            },
+            "2": {
+              "name": "keyword.operator.block.end.mermaid"
+            }
+          }
+        }
+      ]
+    },
+    "c4-colon-value": {
+      "comment": "A colon enters the line-value context, whose value is the rest of the line after optional whitespace. Leave the following whitespace outside the begin match so a separator before a common comment remains available to #comment-line. Follows c4.md#title-and-accessibility-contexts and common.md#comment-lines.",
+      "begin": "(:)",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.operator.separator.colon.mermaid"
+        }
+      },
+      "end": "{{lineValueEnd}}",
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        }
+      ]
+    },
+    "c4-brace-value": {
+      "comment": "The description block reads through the first closing brace; interior opening braces and percent pairs are text. Leave the following whitespace outside the begin match so a separator before a common comment remains available to #comment-line. Follows c4.md#title-and-accessibility-contexts.",
+      "begin": "(\\{)",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.operator.delimiter.description.begin.mermaid"
+        }
+      },
+      "end": "(\\})|{{separatorCommentEnd}}",
+      "endCaptures": {
+        "1": {
+          "name": "keyword.operator.delimiter.description.end.mermaid"
+        }
+      },
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        }
+      ]
+    },
+    "c4-string-argument": {
+      "comment": "Read ASCII-space padding before a quoted argument while retaining any intervening directives. A tab instead belongs to bare argument text. Separate padding leaves adjacent quotes available to the string rule. Follows c4.md#the-keyword-and-argument-contexts.",
+      "patterns": [
+        {
+          "match": "(?!\"){{c4-argument-padding}}(?=\")",
+          "comment": "Only ASCII spaces before a quoted argument are padding; global directives may separate these components. Follows c4.md#the-keyword-and-argument-contexts.",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "include": "#string-plain-double",
+          "comment": "In a quoted argument the next double quote closes the string; backslash does not escape it. Follows c4.md#strings-and-named-attributes."
+        }
+      ]
+    },
+    "c4-call-arguments": {
+      "comment": "Read the remaining argument units of each call. Follows c4.md#calls-and-arguments.",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#c4-comma"
+        },
+        {
+          "include": "#c4-string-argument",
+          "comment": "Read an argument's ASCII-space prefix when a double quote follows, including before an empty quoted value. Follows c4.md#the-keyword-and-argument-contexts."
+        },
+        {
+          "include": "#c4-named-key"
+        },
+        {
+          "comment": "Read a nonempty bare argument up to a comma. Parentheses, quotes and whitespace after its start belong to that value; a separator-led common comment ends the current text run. Follows c4.md#the-keyword-and-argument-contexts and common.md#comment-lines.",
+          "begin": "(?!{{separatorCommentEnd}})(?=[^,])",
+          "end": "(?=,)|{{separatorCommentEnd}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      ]
+    },
+    "c4-named-key": {
+      "comment": "Read a dollar-prefixed named key, with preceding ASCII spaces and a terminating equals sign. The intervening key text may be empty and may contain argument punctuation or whitespace. Separator-led comments interrupt the value run. Follows c4.md#strings-and-named-attributes and common.md#comment-lines.",
+      "begin": "({{c4-argument-padding}})(\\$)",
+      "beginCaptures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.operator.delimiter.attribute.begin.mermaid"
+        }
+      },
+      "end": "(=)|{{separatorCommentEnd}}",
+      "endCaptures": {
+        "1": {
+          "name": "keyword.operator.separator.key-value.mermaid"
+        }
+      },
+      "contentName": "support.type.property-name.mermaid",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        }
+      ]
+    },
+    "c4-comma": {
+      "comment": "Read a comma between arguments or in a null entry. Follows c4.md#the-keyword-and-argument-contexts.",
+      "match": ",",
+      "name": "keyword.operator.separator.comma.mermaid"
+    },
+    "c4-name-argument": {
+      "comment": "Read one positional argument, preserving strings and named keys while scoping bare aliases and endpoints as element names. Follows c4.md#rejections-outside-the-grammar.",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#c4-string-argument"
+        },
+        {
+          "include": "#c4-named-key"
+        },
+        {
+          "include": "#c4-comma"
+        },
+        {
+          "comment": "Read the entire bare alias or endpoint, including quotes that do not delimit a string. Follows c4.md#the-keyword-and-argument-contexts.",
+          "match": "{{c4-bare-argument}}",
+          "name": "variable.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

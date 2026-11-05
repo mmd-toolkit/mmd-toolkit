@@ -1,0 +1,306 @@
+{
+  "patterns": [
+    {
+      "include": "#kanban"
+    }
+  ],
+  "repository": {
+    "kanban": {
+      "comment": "Read the lowercase kanban header without taking a word suffix, then enter the node-line context. Follows detection.md#the-detectors and kanban.md#detection.",
+      "begin": "{{diagramStart}}(kanban){{wordEnd}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Read a native percent comment at a line, header, shape or directive boundary, retaining directives in its padding and body. Follows kanban.md#comments and common.md#a-directive-is-a-token-boundary.",
+          "match": "(?:{{kanban-statement-start}}|(?<=[)\\]}(]))({{kanban-comment-padding}})({{nonDirectivePercentPair}}(?:{{directive}}|(?!{{directiveStart}})[^\\r\\n{{separators}}])*)",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
+              "name": "comment.line.percentage.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "include": "#kanban-data-block"
+        },
+        {
+          "comment": "Read a class annotation at an indented line start after its triple-colon marker. The rest of the line segment, including its whitespace and directives, is class text. Follows kanban.md#the-icon-and-class-contexts and kanban.md#units-and-contexts.",
+          "match": "({{kanban-indentation}})(:::)([^\\n{{separators}}]*)",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.operator.separator.class.mermaid"
+            },
+            "3": {
+              "name": "variable.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Read the icon form only with its opening parenthesis, giving the marker, brackets and retained name their own scopes. Follows kanban.md#the-icon-and-class-contexts.",
+          "begin": "({{kanban-indentation}})((?i:::icon))(\\()",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.control.mermaid"
+            },
+            "3": {
+              "name": "keyword.operator.bracket.icon.begin.mermaid"
+            }
+          },
+          "end": "(\\))",
+          "endCaptures": {
+            "1": {
+              "name": "keyword.operator.bracket.icon.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. Follows kanban.md#the-icon-and-class-contexts and common.md#comment-lines.",
+              "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^)])+",
+              "name": "string.unquoted.mermaid",
+              "captures": {
+                "0": {
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "comment": "Read a node shape with optional line-start indentation so a dash-parenthesis opener wins before node text. Parenthesis, brace and square-bracket shapes accept any permitted closer. Only a quote at the initial value position starts a string; later quotes and HTML-looking content stay shape text. Follows kanban.md#the-statement-context and kanban.md#the-shape-context.",
+          "begin": "({{kanban-indentation}})?(-\\)|\\(-|\\)\\)|\\)|\\(\\(|\\{\\{|\\(|\\[)",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.operator.shape.begin.mermaid"
+            }
+          },
+          "end": "(\\)\\)|\\)|\\]|\\}\\}|\\(-|-\\)|\\(\\(|\\()",
+          "endCaptures": {
+            "1": {
+              "name": "keyword.operator.shape.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#markdown-string",
+              "comment": "A quote and backtick start a markdown string, closed by backtick and quote. Follows kanban.md#the-shape-context."
+            },
+            {
+              "include": "#string-plain-double",
+              "comment": "A double quote starts a string ending at the next double quote, without escapes. Follows kanban.md#the-shape-context."
+            },
+            {
+              "include": "#kanban-shape-text"
+            }
+          ]
+        },
+        {
+          "comment": "Read node text before a shape as its element name after indentation or a directive. Follows kanban.md#nodes-and-shapes and common.md#a-directive-is-a-token-boundary.",
+          "begin": "{{kanban-statement-start}}((?>{{lineGap}}))(?=(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^(\\[){}@\\r\\n])+[({\\[)])",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "(?=[(\\[){}@\\r\\n])|{{lineValueEnd}}",
+          "contentName": "variable.mermaid",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": "Read bare node text as its displayed label after indentation or a directive. Follows kanban.md#nodes-and-shapes and common.md#a-directive-is-a-token-boundary.",
+          "begin": "{{kanban-statement-start}}((?>{{lineGap}}))(?=[^(\\[){}@\\r\\n])",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "(?=[(\\[){}@\\r\\n])|{{lineValueEnd}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      ]
+    },
+    "kanban-shape-text": {
+      "comment": "Read ordinary shape content until a parenthesis, closing square bracket or closing brace. Quotes and percent pairs after the run starts remain text, and directives join its fragments. Follows kanban.md#the-shape-context and common.md#a-directive-is-a-token-boundary.",
+      "begin": "(?=[^)\\](}])",
+      "end": "(?=[)\\](}])",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Runs stop before separator-led common comments, and padding never consumes their separator. Follows kanban.md#the-shape-context and common.md#comment-lines.",
+          "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^)\\](}])+",
+          "name": "string.unquoted.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "kanban-data-block": {
+      "comment": "Display data keys and values separately for the reader, preserving double-quote protection of closing braces. Follows kanban.md#the-data-context and kanban.md#data-blocks.",
+      "begin": "(@\\{)",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.operator.bracket.data.begin.mermaid"
+        }
+      },
+      "end": "(\\})",
+      "endCaptures": {
+        "1": {
+          "name": "keyword.operator.bracket.data.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#data-entry"
+        },
+        {
+          "comment": "Color a double-quoted data value as a string while protecting braces through its next quote. Follows kanban.md#the-data-context and kanban.md#data-blocks.",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#html-tag"
+            }
+          ],
+          "name": "string.quoted.double.mermaid",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.mermaid"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.mermaid"
+            }
+          }
+        },
+        {
+          "comment": "Color remaining data text up to a comma, quote, closing brace, line end or common-comment boundary. Follows kanban.md#the-data-context and common.md#comment-lines.",
+          "match": "(?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^},\"^\\r\\n])+",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "name": "string.unquoted.mermaid"
+        }
+      ],
+      "name": "meta.data.mermaid"
+    }
+  },
+  "variables": {
+    "kanban-indentation": "{{kanban-statement-start}}{{lineGap}}",
+    "kanban-comment-padding": "(?:(?!{{separatorCommentEnd}})(?:[{{lws}}]|{{directive}}))*",
+    "kanban-statement-start": "(?:^|\\G|{{afterDirectiveEnd}})"
+  }
+}

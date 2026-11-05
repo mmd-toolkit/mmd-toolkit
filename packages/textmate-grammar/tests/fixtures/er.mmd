@@ -1,0 +1,94 @@
+erDiagram
+%% an ER comment
+accTitle: class and subgraph
+accDescr: style and direction
+accDescr { classDef and end }
+direction LR
+subgraph Group [Group title]
+  Person["Person label"]:::highlighted {
+    int id PK, FK, UK "An attribute comment"
+    string? nickname
+    string PKx
+    direction LR
+    List~int~ values
+    `type with spaces` field
+  }
+  Account
+end
+classDef highlighted fill:red
+style Person fill:blue
+class Person,Account highlighted
+Person ||--o{ Account : owns
+Person one or zero to zero or many Account : "A role"
+Person one or more optionally to only one Account : links
+Person one or many to zero or one Account : links
+Person many(0)..many(1) Account : links
+Person 1+.-0+ Account : links
+Person }o-.}| Account : links
+Person |o--|{ Account : links
+Person o|--|| Account : links
+Person 1--1 Account : links
+Person u--o{ Account : links
+12
+2.5
+ending
+classes
+styles
+manyx
+tomato
+ones
+subgraph1
+title T
+"quoted %%{init: {}}%% entity"
+Person ||--o{ Account : "role %%{init: {}}%% class"
+accDescr {} Extra
+Person many to one Account : links
+Person zero or more to many Account : links
+classDef end note:class
+classDef a direction LR
+classDef colored fill:#f00
+classDef plain fill:red;
+A ||--O{ B : x
+A |O--O| B : x
+A { }~a~ b }
+
+classDef #foo; fill:red
+A 1%%{init: {}}%%--1 B : x
+A u%%{init: {}}%%--o{ B : x
+A ||%%{init: {}}%%--o{ B : x
+accTitle%%{init: {}}%%: note
+accDescr%%{init: {}}%%{ text }
+direction%%{init: {}}%% LR
+X%%{init: {}}%% { string%%{init: {}}%%? a }
+A { List%%{init: {}}%%~int~ values }
+Html["<b title="x">label</b>"]
+Html["a<b"] { string x "c>" }
+Name#amp;
+classDef styled fill%%{init: {}}%%:red
+
+A ||--|o%%{wrap}%% B : x
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+BoundaryTilde { T~#amp;~ field }
+accTitle: boundary title
+accDescr: boundary description
+Ignored { `` }
+12
+2.5
+classDef a fi ll:red
+classDef c étoile:red
+classDef c *:red
+TildeName { int values~T~ }

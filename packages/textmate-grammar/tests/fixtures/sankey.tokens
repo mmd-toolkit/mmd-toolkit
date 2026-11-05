@@ -1,0 +1,176 @@
+> sankey-beta
+  "sankey-beta" keyword.control.mermaid
+> %% a comment line
+  "%% a comment line" comment.line.percentage.mermaid
+> Agricultural 'waste',Bio-conversion,124.729
+  "Agricultural 'waste'" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "Bio-conversion" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "124.729" constant.numeric.mermaid
+> "Bio-conversion, liquid",Liquid,0.597
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Bio-conversion, liquid" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "Liquid" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "0.597" constant.numeric.mermaid
+> "Say ""hi""",Losses,26.862
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Say " string.quoted.double.mermaid
+  "\"\"" string.quoted.double.mermaid constant.character.escape.mermaid
+  "hi" string.quoted.double.mermaid
+  "\"\"" string.quoted.double.mermaid constant.character.escape.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "Losses" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "26.862" constant.numeric.mermaid
+> %%{ }%%,Literal,1
+  "%%{ }%%" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "Literal" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "1" constant.numeric.mermaid
+> "A%%{init: {}}%%B",Joined,2
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "A" string.quoted.double.mermaid
+  "%%{" string.quoted.double.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "init" string.quoted.double.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  ":" string.quoted.double.mermaid meta.directive.mermaid keyword.operator.separator.colon.mermaid
+  " " string.quoted.double.mermaid meta.directive.mermaid
+  "{}" string.quoted.double.mermaid meta.directive.mermaid string.unquoted.directive.mermaid
+  "}%%" string.quoted.double.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "B" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "Joined" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "2" constant.numeric.mermaid
+> "a<b title="x">y</b>",HTML,1
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "<b title=\"x\">" string.quoted.double.mermaid
+  "y</b>" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "HTML" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "1" constant.numeric.mermaid
+> <b title="x">y</b>,Bare,2
+  "<b title=\"x\">y</b>" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "Bare" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "2" constant.numeric.mermaid
+> "a<b",Later>,3
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "a" string.quoted.double.mermaid
+  "<b" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "Later>" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "3" constant.numeric.mermaid
+> "A"%%{wrap}%%"B",Doubled,4
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "A" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid constant.character.escape.mermaid
+  "%%{" string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "wrap" string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "\"" string.quoted.double.mermaid constant.character.escape.mermaid
+  "B" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "Doubled" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "4" constant.numeric.mermaid
+> <b title="x,y">,1
+  "<b title=\"x" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "y\">" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "1" constant.numeric.mermaid
+> "C"%%{wrap}%%"D",MoreDoubled,5
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "C" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid constant.character.escape.mermaid
+  "%%{" string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "wrap" string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "\"" string.quoted.double.mermaid constant.character.escape.mermaid
+  "D" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "MoreDoubled" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "5" constant.numeric.mermaid
+> 
+> "Join"%%{wrap}%%"quote",Tail,6
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Join" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid constant.character.escape.mermaid
+  "%%{" string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "wrap" string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" string.quoted.double.mermaid constant.character.escape.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "\"" string.quoted.double.mermaid constant.character.escape.mermaid
+  "quote" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "Tail" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "6" constant.numeric.mermaid
+> foo%%{wrap}%%sankey,target,7
+  "foo" variable.mermaid
+  "%%{" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.begin.mermaid
+  "wrap" variable.mermaid meta.directive.mermaid entity.name.function.directive.mermaid
+  "}%%" variable.mermaid meta.directive.mermaid keyword.operator.delimiter.directive.end.mermaid
+  "sankey" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "target" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "7" constant.numeric.mermaid
+> Source,Target,123
+  "Source" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "Target" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "123" constant.numeric.mermaid
+> "Source
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "Source" string.quoted.double.mermaid
+> ",Target,123
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "Target" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "123" constant.numeric.mermaid
+> A,B,3000
+  "A" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "B" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "3000" constant.numeric.mermaid
+> A,B, 3
+  "A" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "B" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "3" constant.numeric.mermaid
+> A,B,abc
+  "A" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "B" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "abc" string.unquoted.mermaid
+> A,B,"3000"
+  "A" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "B" variable.mermaid
+  "," keyword.operator.separator.comma.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.begin.mermaid
+  "3000" string.quoted.double.mermaid
+  "\"" string.quoted.double.mermaid punctuation.definition.string.end.mermaid
+> 

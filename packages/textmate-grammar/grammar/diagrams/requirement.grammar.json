@@ -1,0 +1,702 @@
+{
+  "patterns": [
+    {
+      "include": "#requirement"
+    }
+  ],
+  "repository": {
+    "requirement": {
+      "comment": "Read requirementDiagram with a lowercase requirement prefix and a case-insensitive Diagram suffix, ending at a word boundary. Follows detection.md#the-detectors and requirement.md#detection.",
+      "begin": "{{diagramStart}}(requirement(?i:Diagram)){{wordEnd}}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#requirement-line-final-keywords"
+        },
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Read a direction line containing TB and its surrounding text. Unindented accessibility forms have priority; indentation instead permits the direction-line reading. Directives join text fragments without supplying the direction value, and separator-led common comments stop text and padding. Follows requirement.md#the-statement-context and common.md#comment-lines.",
+          "match": "{{requirement-direction-prefix}}((?i:TB)){{requirement-direction-suffix}}",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#requirement-direction-text"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.control.mermaid"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "4": {
+              "name": "constant.language.mermaid"
+            },
+            "5": {
+              "patterns": [
+                {
+                  "include": "#requirement-direction-text"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Read a direction line containing BT and its surrounding text. Unindented accessibility forms have priority; indentation instead permits the direction-line reading. Directives join text fragments without supplying the direction value, and separator-led common comments stop text and padding. Follows requirement.md#the-statement-context and common.md#comment-lines.",
+          "match": "{{requirement-direction-prefix}}((?i:BT)){{requirement-direction-suffix}}",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#requirement-direction-text"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.control.mermaid"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "4": {
+              "name": "constant.language.mermaid"
+            },
+            "5": {
+              "patterns": [
+                {
+                  "include": "#requirement-direction-text"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Read a direction line containing RL and its surrounding text. Unindented accessibility forms have priority; indentation instead permits the direction-line reading. Directives join text fragments without supplying the direction value, and separator-led common comments stop text and padding. Follows requirement.md#the-statement-context and common.md#comment-lines.",
+          "match": "{{requirement-direction-prefix}}((?i:RL)){{requirement-direction-suffix}}",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#requirement-direction-text"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.control.mermaid"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "4": {
+              "name": "constant.language.mermaid"
+            },
+            "5": {
+              "patterns": [
+                {
+                  "include": "#requirement-direction-text"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Read a direction line containing LR and its surrounding text. Unindented accessibility forms have priority; indentation instead permits the direction-line reading. Directives join text fragments without supplying the direction value, and separator-led common comments stop text and padding. Follows requirement.md#the-statement-context and common.md#comment-lines.",
+          "match": "{{requirement-direction-prefix}}((?i:LR)){{requirement-direction-suffix}}",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#requirement-direction-text"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.control.mermaid"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "4": {
+              "name": "constant.language.mermaid"
+            },
+            "5": {
+              "patterns": [
+                {
+                  "include": "#requirement-direction-text"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Read a case-folded accDescr keyword and its brace-delimited description, allowing Notation whitespace and directives before the opener. A closing brace ends the block without nesting; a separator-led common comment interrupts its text. At a statement-context unit position it can follow a closed string; enclosing names and line values still own block-shaped text. Follows requirement.md#accessibility-values, common.md#comment-lines, and requirement.md#empty-description-blocks.",
+          "begin": "((?i:accDescr))({{gap}})(\\{)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "keyword.operator.delimiter.description.begin.mermaid"
+            }
+          },
+          "end": "(\\})",
+          "endCaptures": {
+            "1": {
+              "name": "keyword.operator.delimiter.description.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Description block text runs to the first closing brace; quotes are ordinary text. A common comment is trivia in every context. Follows requirement.md#accessibility-values and common.md#comment-lines.",
+              "begin": "(?!{{separatorCommentEnd}})(?=[^}\\r\\n])",
+              "end": "(?=})|{{lineValueEnd}}",
+              "contentName": "string.unquoted.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "comment": "Read case-folded accTitle or accDescr with a colon and a line value. Padding admits directives and Notation whitespace, inline percent pairs remain text, and separator-led common comments end value runs. Follows requirement.md#accessibility-values and common.md#comment-lines.",
+          "begin": "{{requirement-statement-start}}((?i:accTitle|accDescr))({{gap}})(:)(?:(?!{{separatorCommentEnd}})[{{ws}}])*",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "keyword.operator.separator.colon.mermaid"
+            }
+          },
+          "end": "{{lineValueEnd}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        {
+          "comment": "Bounded style, classDef and class enter a context lasting through the line feed, where ASCII word characters and strings are values, and colon, comma, semicolon, dash and hash have style-unit meanings. Value scopes and text runs end before a separator-led common comment; the enclosing context reads that comment independently. The keyword boundary reads through following directives. Display the final semicolon separately from style values. Follows requirement.md#the-style-context.",
+          "begin": "((?i:style|classDef)){{wordEnd}}({{gap}})((?:[A-Za-z0-9_]+|\"[^\"]+\")(?:{{gap}},{{gap}}(?:[A-Za-z0-9_]+|\"[^\"]+\"))*)({{gap}})",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                },
+                {
+                  "include": "#string-plain-double"
+                },
+                {
+                  "include": "#requirement-comma"
+                },
+                {
+                  "match": "[A-Za-z0-9_]+",
+                  "name": "variable.mermaid",
+                  "comment": "Read a style target or style class name. Follows requirement.md#styles-and-classes."
+                }
+              ]
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "{{lineValueEnd}}",
+          "patterns": [
+            {
+              "include": "#style-final-semicolon"
+            },
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read a property name before a style colon. Follows requirement.md#styles-and-classes.",
+              "match": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^,:\\r\\n])+(?=:)",
+              "captures": {
+                "0": {
+                  "name": "support.type.property-name.mermaid",
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "comment": "Read one whole style property value, leaving trailing whitespace outside its scope. Display the final semicolon separately. Follows requirement.md#styles-and-classes.",
+              "begin": ":",
+              "beginCaptures": {
+                "0": {
+                  "name": "keyword.operator.separator.key-value.mermaid"
+                }
+              },
+              "end": "{{requirement-style-value-end}}",
+              "contentName": "support.constant.property-value.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                },
+                {
+                  "include": "#style-entity"
+                }
+              ]
+            },
+            {
+              "include": "#requirement-comma"
+            },
+            {
+              "comment": "Read a whole style without a property colon as one value, leaving trailing whitespace outside it. Display the final semicolon separately. Follows requirement.md#styles-and-classes.",
+              "begin": "(?![{{ws}}]|[:,]|{{directiveStart}}|{{separatorCommentEnd}})(?=.)",
+              "end": "{{requirement-style-value-end}}",
+              "contentName": "support.constant.property-value.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                },
+                {
+                  "include": "#style-entity"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "comment": "Read class application names in the style context. After a quoted final class, an empty description block returns to the statement context. Follows requirement.md#styles-and-classes, and requirement.md#empty-description-blocks.",
+          "begin": "((?i:class)){{wordEnd}}",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          },
+          "end": "{{lineValueEnd}}|(?<=\")(?={{gap}}{{requirement-empty-description}})",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#string-plain-double"
+            },
+            {
+              "include": "#requirement-comma"
+            },
+            {
+              "match": "[A-Za-z0-9_]+",
+              "name": "variable.mermaid",
+              "comment": "Read a target or style class name. Follows requirement.md#styles-and-classes."
+            }
+          ]
+        },
+        {
+          "include": "#requirement-type-field"
+        },
+        {
+          "include": "#requirement-field"
+        },
+        {
+          "comment": "Read a relation name between its arrow parts. Follows requirement.md#the-statement-context.",
+          "match": "(?i:contains|copies|derives|satisfies|verifies|refines|traces){{wordEnd}}",
+          "name": "keyword.operator.arrow.mermaid"
+        },
+        {
+          "comment": "Read the bounded requirement, functionalRequirement, interfaceRequirement, performanceRequirement, physicalRequirement, designConstraint and element keywords case-insensitively. The boundary is judged after following directives. Follows requirement.md#the-statement-context.",
+          "match": "(?i:functionalRequirement|interfaceRequirement|performanceRequirement|physicalRequirement|designConstraint|requirement|element){{wordEnd}}",
+          "name": "keyword.control.mermaid"
+        },
+        {
+          "comment": "Double quotes enclose text other than double quotes, without escapes; an empty string is rejected. Follows requirement.md#units-and-contexts.",
+          "include": "#string-plain-double"
+        },
+        {
+          "comment": "A relationship is name, dash, relation, right arrow, name; or name, left arrow, relation, dash, name; whitespace is optional. Follows requirement.md#relationships.",
+          "match": "<-|->|-",
+          "name": "keyword.operator.arrow.mermaid"
+        },
+        {
+          "comment": "Read a triple colon introducing style-class names on a definition or class shorthand. Follows requirement.md#requirements.",
+          "match": ":::",
+          "name": "keyword.operator.separator.class.mermaid"
+        },
+        {
+          "include": "#requirement-body"
+        },
+        {
+          "comment": "Read opening and closing braces as definition delimiters and a colon as a field separator. Follows requirement.md#the-statement-context.",
+          "match": "(\\{)|(\\})|(:)",
+          "captures": {
+            "1": {
+              "name": "keyword.operator.block.begin.mermaid"
+            },
+            "2": {
+              "name": "keyword.operator.block.end.mermaid"
+            },
+            "3": {
+              "name": "keyword.operator.separator.colon.mermaid"
+            }
+          }
+        },
+        {
+          "include": "#requirement-comma"
+        },
+        {
+          "include": "#requirement-comments"
+        },
+        {
+          "comment": "An ASCII word character starts unquoted text that takes as many characters as possible other than colon, comma, line feed, opening brace, angle brackets, dash and equals; keyword-like words, quotes, hash, percent and closing braces inside it remain text. Value scopes and text runs end before a separator-led common comment; the enclosing context reads that comment independently. Follows requirement.md#units-and-contexts and common.md#comment-lines.",
+          "begin": "(?=[A-Za-z0-9_])",
+          "end": "(?=[:,{<>=-])|{{lineValueEnd}}",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ],
+          "contentName": "variable.mermaid"
+        }
+      ]
+    },
+    "requirement-comma": {
+      "comment": "Read a comma separating style items or class names. Follows requirement.md#the-style-context and requirement.md#styles-and-classes.",
+      "match": ",",
+      "name": "keyword.operator.separator.comma.mermaid"
+    },
+    "requirement-direction-text": {
+      "comment": "Read the nonblank ignored text around a direction while retaining directives. Follows requirement.md#the-statement-context.",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "match": "(?=(?:{{directive}}|[{{ws}}])*(?!{{directiveStart}})[^{{ws}}])(?:{{directive}}|(?!{{directiveStart}}).)+",
+          "name": "comment.block.ignored.mermaid",
+          "captures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "comment": "Read a nonblank direction-text unit. Follows requirement.md#the-statement-context."
+        }
+      ]
+    },
+    "requirement-type-field": {
+      "comment": "Read an element's type field as a keyword, colon and text or string value. Follows requirement.md#elements.",
+      "begin": "((?i:type)){{requirement-field-suffix}}",
+      "beginCaptures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#requirement-field-header"
+            }
+          ]
+        }
+      },
+      "end": "(?<=\")|{{lineValueEnd}}",
+      "patterns": [
+        {
+          "include": "#requirement-field-value"
+        },
+        {
+          "match": "{{requirement-field-text}}",
+          "captures": {
+            "0": {
+              "name": "string.unquoted.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "comment": "Read the element field value as retained text. Follows requirement.md#elements."
+        }
+      ]
+    },
+    "requirement-field": {
+      "comment": "Read a field key and its value. Follows requirement.md#the-statement-context and requirement.md#units-and-contexts.",
+      "begin": "({{requirement-field-key}}){{requirement-field-suffix}}",
+      "beginCaptures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#requirement-field-header"
+            }
+          ]
+        }
+      },
+      "end": "(?<=\")|{{lineValueEnd}}",
+      "patterns": [
+        {
+          "include": "#requirement-field-value"
+        },
+        {
+          "match": "{{requirement-field-text}}",
+          "captures": {
+            "0": {
+              "name": "string.unquoted.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "comment": "Read the field's unquoted text value. Follows requirement.md#units-and-contexts."
+        }
+      ]
+    },
+    "requirement-body": {
+      "comment": "Read a requirement or element body, keeping its empty description blocks as ignored text. Follows requirement.md#requirements.",
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.operator.block.begin.mermaid"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "keyword.operator.block.end.mermaid"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "begin": "(?i:accDescr){{gap}}\\{",
+          "end": "\\}",
+          "name": "comment.block.ignored.mermaid",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            }
+          ],
+          "comment": "Read an empty description block in a body as an ignored item. Follows requirement.md#empty-description-blocks."
+        },
+        {
+          "include": "#requirement-type-field"
+        },
+        {
+          "match": "((?i:risk|verifyMethod)){{requirement-field-suffix}}({{requirement-fixed-value}}){{wordEnd}}",
+          "captures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "keyword.operator.separator.colon.mermaid"
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "5": {
+              "name": "constant.language.mermaid"
+            }
+          },
+          "comment": "Read the complete fixed-value field so a following empty block remains an ignored body item. Follows requirement.md#requirements."
+        },
+        {
+          "include": "#requirement-field"
+        },
+        {
+          "include": "#requirement-comments"
+        }
+      ]
+    },
+    "requirement-comments": {
+      "comment": "At a unit start in the statement context a hash or percent begins a comment through the physical line end; neither starts a comment inside unquoted text, a string or style context. Directives in comment text are read whole. Value scopes and text runs end before a separator-led common comment; the enclosing context reads that comment independently. Follows requirement.md#comments.",
+      "patterns": [
+        {
+          "begin": "#",
+          "end": "{{lineValueEnd}}",
+          "name": "comment.line.number-sign.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ],
+          "comment": "A hash starts a native comment; makes separator-led common comments independent trivia. Follows requirement.md#comments."
+        },
+        {
+          "begin": "(?!{{directiveStart}})(?:{{nonDirectivePercentPair}}|%)",
+          "end": "{{lineValueEnd}}",
+          "name": "comment.line.percentage.mermaid",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ],
+          "comment": "A percent starts a native comment; reads directives in its body whole. Neither character of a percent pair belongs to a directive; a lone text percent before a directive keeps the single-percent mark. Follows requirement.md#comments.",
+          "beginCaptures": {
+            "0": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "requirement-field-value": {
+      "comment": "Read the common parts of field values before the field-specific unquoted text. Follows requirement.md#units-and-contexts.",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#requirement-comments"
+        },
+        {
+          "include": "#string-plain-double"
+        },
+        {
+          "match": "{{requirement-fixed-value}}{{wordEnd}}",
+          "name": "constant.language.mermaid",
+          "comment": "Read a listed risk or verification method. Follows requirement.md#the-statement-context."
+        }
+      ]
+    },
+    "requirement-field-header": {
+      "comment": "Read the field keyword, its colon and their directive-bearing gaps once for text and type fields. Follows requirement.md#the-statement-context.",
+      "match": "({{requirement-field-key}}){{requirement-field-suffix}}",
+      "captures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        },
+        "2": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "3": {
+          "name": "keyword.operator.separator.colon.mermaid"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      }
+    },
+    "requirement-line-final-keywords": {
+      "comment": "Read a reserved keyword at a statement start when only padding and directives follow on its physical line. A value on a later line receives the surrounding context's scopes. Follows requirement.md#accessibility-values and common.md#a-directive-is-a-token-boundary.",
+      "match": "({{requirement-statement-start}})((?i:accTitle|accDescr))(?={{lineGap}}$)",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        },
+        "2": {
+          "name": "keyword.control.mermaid"
+        }
+      }
+    }
+  },
+  "variables": {
+    "requirement-direction-prefix": "(?={{requirement-statement-start}})(?!{{directives}}(?:(?i:accTitle){{gap}}:|(?i:accDescr){{gap}}[:{]))({{lineText}})((?i:direction))({{requiredGap}})",
+    "requirement-direction-suffix": "((?:{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}}).)*){{lineValueEnd}}",
+    "requirement-statement-start": "(?:^|\\G|(?<=\\})|{{afterDirectiveEnd}})(?:(?!{{separatorCommentEnd}})[{{ws}}])*",
+    "requirement-field-suffix": "{{wordEnd}}({{gap}})(:)({{gap}})",
+    "requirement-fixed-value": "(?i:low|medium|high|analysis|demonstration|inspection|test)",
+    "requirement-field-text": "(?:{{entity}}|{{directive}}|(?!{{directiveStart}}|{{separatorCommentEnd}})[^\\r\\n])+",
+    "requirement-field-key": "(?i:id|text|type|docref|risk|verifyMethod)",
+    "requirement-style-value-end": "(?={{lineGap}}(?:,|$))|{{separatorCommentEnd}}|(?={{styleFinalSemicolon}})",
+    "requirement-empty-description": "(?i:accDescr){{gap}}\\{{{gap}}\\}"
+  }
+}

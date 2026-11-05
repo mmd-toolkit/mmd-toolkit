@@ -1,0 +1,978 @@
+{
+  "patterns": [
+    {
+      "include": "#usecase"
+    }
+  ],
+  "repository": {
+    "usecase": {
+      "comment": "Read the lowercase usecase-beta header before Notation whitespace or end of input. The parser requires the body to start on another physical line. Follows detection.md#the-detectors and usecase.md#detection.",
+      "begin": "{{diagramStart}}(usecase-beta)(?={{directives}}(?:[{{ws}}]|$))",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.mermaid"
+        }
+      },
+      "end": "(?!)",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "comment": "Read a native percent comment after ASCII padding at a line, header or directive boundary. Follows usecase.md#ordered-default-context-rules and common.md#a-directive-is-a-token-boundary.",
+          "begin": "({{usecase-statement-start}}{{directives}})(?={{nonDirectivePercentPair}})",
+          "end": "{{lineValueEnd}}",
+          "patterns": [
+            {
+              "comment": "Read a native percent-pair comment up to physical line end or a separator-led common comment. Follows usecase.md#whitespace-comments-and-directives-in-every-context.",
+              "include": "#native-percent-comment"
+            }
+          ],
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "include": "#usecase-accessibility"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Read the json keyword and id before its at-sign data block. Follows usecase.md#ordered-default-context-rules and usecase.md#json-context.",
+          "begin": "{{usecase-statement-start}}(json)({{requiredAsciiGap}})({{usecase-id}})({{asciiGap}})(?=@{{asciiGap}}\\{)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "variable.mermaid"
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "(?<=\\})",
+          "patterns": [
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Display the JSON keys and values separately for the reader while balancing its braces and protected double-quoted regions. Follows usecase.md#ordered-default-context-rules and usecase.md#json-context.",
+              "begin": "(@)({{asciiGap}})(\\{)",
+              "beginCaptures": {
+                "1": {
+                  "name": "keyword.operator.separator.at.mermaid"
+                },
+                "2": {
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                },
+                "3": {
+                  "name": "keyword.operator.bracket.data.begin.mermaid"
+                }
+              },
+              "end": "\\}",
+              "endCaptures": {
+                "0": {
+                  "name": "keyword.operator.bracket.data.end.mermaid"
+                }
+              },
+              "name": "meta.data.mermaid",
+              "patterns": [
+                {
+                  "include": "#comment-line"
+                },
+                {
+                  "include": "#directive"
+                },
+                {
+                  "include": "#data-entry"
+                },
+                {
+                  "include": "#usecase-json-quote"
+                },
+                {
+                  "include": "#usecase-object"
+                },
+                {
+                  "include": "#usecase-json-text"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "comment": "Read style targets or style class names, followed by property names and complete property values. Display the final semicolon separately from style values. Follows usecase.md#grammar.",
+          "begin": "(?:(classDef){{wordEnd}}({{requiredAsciiGap}})({{usecase-class-list}})|(style){{wordEnd}}({{requiredAsciiGap}})({{usecase-id}}))({{asciiGap}})",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#usecase-class-names"
+                }
+              ]
+            },
+            "4": {
+              "name": "keyword.control.mermaid"
+            },
+            "5": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "6": {
+              "name": "variable.mermaid"
+            },
+            "7": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "{{lineValueEnd}}",
+          "patterns": [
+            {
+              "include": "#style-final-semicolon"
+            },
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read a CSS property word, hyphenated identifier, or markerless prefix and word. Follows usecase.md#ordered-default-context-rules and usecase.md#categories-and-unquoted-text.",
+              "match": "(?:--{{asciiGap}})?[A-Za-z0-9_-]+(?={{asciiGap}}:)",
+              "captures": {
+                "0": {
+                  "name": "support.type.property-name.mermaid",
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "comment": "Read one whole style property value, leaving trailing whitespace outside its scope. Display the final semicolon separately. Follows usecase.md#ordered-default-context-rules and usecase.md#grammar.",
+              "begin": ":",
+              "beginCaptures": {
+                "0": {
+                  "name": "keyword.operator.separator.key-value.mermaid"
+                }
+              },
+              "end": "{{usecase-style-value-end}}",
+              "contentName": "support.constant.property-value.mermaid",
+              "patterns": [
+                {
+                  "include": "#usecase-style-string"
+                },
+                {
+                  "include": "#directive"
+                },
+                {
+                  "match": "\\\\{{directives}},",
+                  "comment": "Read an escaped comma inside the one property value. Follows usecase.md#ordered-default-context-rules.",
+                  "captures": {
+                    "0": {
+                      "patterns": [
+                        {
+                          "include": "#directive"
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "match": ",",
+              "name": "keyword.operator.separator.comma.mermaid",
+              "comment": "Read the separator between style declarations. Follows usecase.md#ordered-default-context-rules."
+            }
+          ]
+        },
+        {
+          "comment": "Read note for and its referenced id before the note's line label. Keyword-like words in the label remain text, and directives may separate complete prefix units. A separator-led comment ends the value. Follows usecase.md#grammar and common.md#comment-lines.",
+          "begin": "(note){{wordEnd}}({{asciiGap}})(for){{wordEnd}}({{asciiGap}})({{usecase-id}})({{asciiGap}})",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "keyword.control.mermaid"
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "5": {
+              "name": "variable.mermaid"
+            },
+            "6": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          },
+          "end": "{{lineValueEnd}}",
+          "patterns": [
+            {
+              "include": "#usecase-label"
+            }
+          ]
+        },
+        {
+          "comment": "A split-association has a markerless, backward, circle or cross opener, edge-label text, then the closing relationship operator. Word keywords and booleans in the label are text; complete arrows remain indivisible. Follows usecase.md#grammar.",
+          "begin": "(<--|o--|x--|--)(?![-|>ox])(?=(?:(?!{{usecase-arrow}}|{{separatorCommentEnd}})(?:{{directive}}|{{entity}}|(?!{{directiveStart}}|{{entity}})[^()\\[\\]\"'\\r\\n]))+(?:{{usecase-arrow}}|{{separatorCommentEnd}}))",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.operator.arrow.mermaid"
+            }
+          },
+          "end": "(?={{usecase-arrow}})",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#usecase-label"
+            }
+          ]
+        },
+        {
+          "comment": "Read actor, systemBoundary, end, direction, note, for, json and class at identifier boundaries. Their spelling is case-sensitive; other keyword families use separate rules. Follows usecase.md#ordered-default-context-rules.",
+          "match": "(actor|systemBoundary|end|direction|note|for|json|class){{wordEnd}}",
+          "captures": {
+            "1": {
+              "name": "keyword.control.mermaid"
+            }
+          }
+        },
+        {
+          "match": "(?:TD|TB|BT|LR|RL){{wordEnd}}",
+          "name": "constant.language.mermaid",
+          "comment": "Read a listed layout direction. Follows usecase.md#ordered-default-context-rules."
+        },
+        {
+          "match": "(?i:include|extend){{wordEnd}}",
+          "name": "keyword.operator.arrow.mermaid",
+          "comment": "Read the semantic dependency relation. Follows usecase.md#ordered-default-context-rules."
+        },
+        {
+          "include": "#usecase-boolean"
+        },
+        {
+          "comment": "Read stereotype text enclosed by doubled angle brackets. Only a closer outside a directive ends the content; physical-line and empty-value rejection are left to the parser. Follows usecase.md#ordered-default-context-rules and usecase.md#stereotype-context.",
+          "begin": "(<<)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.operator.delimiter.stereotype.begin.mermaid"
+            }
+          },
+          "end": "(>>)",
+          "endCaptures": {
+            "1": {
+              "name": "keyword.operator.delimiter.stereotype.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read the free stereotype name up to its double-angle closer. A separator-led comment ends this text run while leaving the stereotype context open. Follows usecase.md#stereotype-context and common.md#comment-lines.",
+              "begin": "(?!{{separatorCommentEnd}})(?=.)",
+              "end": "(?=>>)|{{separatorCommentEnd}}",
+              "contentName": "entity.name.type.mermaid",
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "comment": "Read the solid, dependency and generalization relationship operators, including backward, circle and cross endpoints. Follows usecase.md#ordered-default-context-rules.",
+          "match": "{{usecase-arrow}}",
+          "name": "keyword.operator.arrow.mermaid"
+        },
+        {
+          "comment": "Read a triple-colon class suffix with one or more comma-separated class names. ASCII padding and directives may separate its complete components. Follows usecase.md#grammar.",
+          "match": "(:::)({{asciiGap}})({{usecase-class-list}})",
+          "captures": {
+            "1": {
+              "name": "keyword.operator.separator.class.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#usecase-class-names"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "include": "#usecase-metadata"
+        },
+        {
+          "comment": "Read actor and usecase labels enclosed by parentheses or square brackets, giving their contents the text scope. Follows usecase.md#ordered-default-context-rules and usecase.md#grammar.",
+          "begin": "(\\(|\\[)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.operator.shape.begin.mermaid"
+            }
+          },
+          "end": "(\\)|\\])",
+          "endCaptures": {
+            "1": {
+              "name": "keyword.operator.shape.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#usecase-label"
+            }
+          ]
+        },
+        {
+          "comment": "Read a hash-prefixed color with at least one ASCII hexadecimal digit. Follows usecase.md#ordered-default-context-rules.",
+          "match": "#[0-9A-Fa-f]+",
+          "name": "support.constant.property-value.mermaid"
+        },
+        {
+          "comment": "Read a complete same-line tag without a scope of its own, preserving the surrounding text scope. Quoted attribute values do not close the surrounding double-quoted string. Read directives whole; one containing the first greater-than sign ends the tag after that directive. Stop before an ordinary double quote or separator-led common comment for the enclosing context to read. Follows common.md#html-attribute-quotes, common.md#a-directive-is-a-token-boundary, and common.md#comment-lines.",
+          "include": "#html-tag"
+        },
+        {
+          "include": "#markdown-string",
+          "comment": "Read ordinary quoted strings or double-quote/backtick markdown strings. Their matching delimiters end the content without backslash escapes. Follows usecase.md#ordered-default-context-rules."
+        },
+        {
+          "include": "#usecase-plain-string"
+        },
+        {
+          "comment": "Read a decimal number with digits after its point and an optional ASCII-letter suffix. Earlier identifiers own integer-looking words such as 1mg; a decimal spelling such as 1.5px reaches this rule. Follows usecase.md#ordered-default-context-rules.",
+          "match": "{{usecase-number}}",
+          "name": "constant.numeric.mermaid"
+        },
+        {
+          "comment": "Read a nonempty ASCII name containing letters, digits and underscores, taking the full word. Follows usecase.md#ordered-default-context-rules.",
+          "match": "{{usecase-id}}",
+          "name": "variable.mermaid"
+        },
+        {
+          "comment": "Read an at sign, a data brace, a comma or a colon outside the more specific enclosing contexts. Follows usecase.md#ordered-default-context-rules.",
+          "match": "(@)|(\\{)|(\\})|(,)|(:)",
+          "captures": {
+            "1": {
+              "name": "keyword.operator.separator.at.mermaid"
+            },
+            "2": {
+              "name": "keyword.operator.block.begin.mermaid"
+            },
+            "3": {
+              "name": "keyword.operator.block.end.mermaid"
+            },
+            "4": {
+              "name": "keyword.operator.separator.comma.mermaid"
+            },
+            "5": {
+              "name": "keyword.operator.separator.colon.mermaid"
+            }
+          }
+        }
+      ]
+    },
+    "usecase-object": {
+      "comment": "Balance a nested JSON object while displaying its keys and values; inner braces retain their text color. Follows usecase.md#json-context.",
+      "begin": "\\{",
+      "end": "\\}",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#data-entry"
+        },
+        {
+          "include": "#usecase-json-quote"
+        },
+        {
+          "include": "#usecase-object"
+        },
+        {
+          "include": "#usecase-json-text"
+        }
+      ],
+      "beginCaptures": {
+        "0": {
+          "name": "string.unquoted.mermaid"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "string.unquoted.mermaid"
+        }
+      }
+    },
+    "usecase-json-html-tag": {
+      "comment": "Read quoted HTML attribute values as part of the surrounding text. Follows common.md#html-attribute-quotes.",
+      "match": "{{htmlTagStart}}(?:{{htmlQuotedValue}}|{{htmlTagDirective}}|{{htmlTagBackslashBeforeQuotedValue}}|{{usecase-html-string-escape}}|(?!{{usecase-string-escape}}){{htmlTagCharacter}})*(?:{{htmlTagEnd}}|(?={{usecase-string-escape}}|\")|{{separatorCommentEnd}})",
+      "captures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      }
+    },
+    "usecase-boolean": {
+      "comment": "Read true or false at an identifier boundary as native metadata values. Follows usecase.md#ordered-default-context-rules and usecase.md#grammar.",
+      "match": "(true|false){{wordEnd}}",
+      "captures": {
+        "1": {
+          "name": "constant.language.mermaid"
+        }
+      }
+    },
+    "usecase-class-names": {
+      "comment": "A class list consists of whole ids separated by commas; Directives may lie between its complete names and punctuation. Follows usecase.md#grammar.",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Each class in class-suffix is an id, with ASCII space/tab permitted between units. Follows usecase.md#grammar.",
+          "match": "{{usecase-id}}",
+          "name": "variable.mermaid"
+        },
+        {
+          "comment": "Read one ASCII class name in a comma-separated suffix. Follows usecase.md#grammar.",
+          "match": ",",
+          "name": "keyword.operator.separator.comma.mermaid"
+        }
+      ]
+    },
+    "usecase-metadata": {
+      "comment": "Read native metadata properties and display bare or quoted keys with the property-name color, keeping the listed fixed values. Follows usecase.md#grammar and usecase.md#ordered-default-context-rules.",
+      "begin": "(@\\{)",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.operator.bracket.data.begin.mermaid"
+        }
+      },
+      "end": "(\\})",
+      "endCaptures": {
+        "1": {
+          "name": "keyword.operator.bracket.data.end.mermaid"
+        }
+      },
+      "name": "meta.data.mermaid",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Read the unquoted actor and boundary types and edge animation values listed in the native metadata table as fixed values. Quoted values keep their string scopes. Follows usecase.md#rejections-outside-the-grammar.",
+          "match": "((?:type|animation)|\"(?:type|animation)\"|'(?:type|animation)')({{asciiGap}})(:)({{asciiGap}})((?:normal|hollow|awesome|rect|package|fast|slow)){{wordEnd}}",
+          "captures": {
+            "1": {
+              "name": "support.type.property-name.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "keyword.operator.separator.key-value.mermaid"
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "5": {
+              "name": "constant.language.mermaid"
+            }
+          }
+        },
+        {
+          "match": "({{dataKey}}|{{usecase-id}})({{gap}})(:)",
+          "captures": {
+            "1": {
+              "name": "support.type.property-name.mermaid"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "3": {
+              "name": "keyword.operator.separator.key-value.mermaid"
+            }
+          },
+          "comment": "Display a native bare or quoted metadata key and its colon before the value is read. Directives between a complete key and colon retain their scopes. Follows usecase.md#grammar."
+        },
+        {
+          "include": "#usecase-plain-string"
+        },
+        {
+          "match": ",",
+          "name": "keyword.operator.separator.comma.mermaid",
+          "comment": "Metadata properties are separated by commas. Follows usecase.md#grammar."
+        },
+        {
+          "include": "#usecase-boolean"
+        },
+        {
+          "comment": "Metadata-property is an id or plain-string key, a colon, then an id, plain-string, true or false value; quoted keys precede the colon. Follows usecase.md#grammar.",
+          "match": ":",
+          "name": "keyword.operator.separator.key-value.mermaid"
+        },
+        {
+          "match": "{{usecase-id}}",
+          "name": "string.unquoted.mermaid",
+          "comment": "Read a bare native metadata text value. Follows usecase.md#rejections-outside-the-grammar."
+        }
+      ]
+    },
+    "usecase-accessibility": {
+      "comment": "Read line-start accessibility metadata after ASCII indentation. Colon forms retain the line value, while a brace form stops at its first closer. Separator-led common comments interrupt value runs. Follows usecase.md#ordered-default-context-rules and common.md#comment-lines.",
+      "patterns": [
+        {
+          "comment": "Read an accessibility description block at a line, header or directive boundary after ASCII padding. Follows usecase.md#ordered-default-context-rules and common.md#a-directive-is-a-token-boundary.",
+          "begin": "({{usecase-statement-start}}{{directives}})(accDescr)({{asciiGap}})(\\{)",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.control.mermaid"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "4": {
+              "name": "keyword.operator.delimiter.description.begin.mermaid"
+            }
+          },
+          "end": "(\\})",
+          "endCaptures": {
+            "1": {
+              "name": "keyword.operator.delimiter.description.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read description-block content up to a closing brace or common-comment boundary, leaving the enclosing block available to resume after a comment. Follows usecase.md#ordered-default-context-rules.",
+              "begin": "(?!{{separatorCommentEnd}})(?=[^}])",
+              "end": "(?=\\})|{{separatorCommentEnd}}",
+              "contentName": "string.unquoted.mermaid",
+              "patterns": [
+                {
+                  "include": "#comment-line"
+                },
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "comment": "Read an accessibility keyword and colon with its physical-line value at a line, header or directive boundary. Follows usecase.md#ordered-default-context-rules and common.md#a-directive-is-a-token-boundary.",
+          "begin": "({{usecase-statement-start}}{{directives}})(accTitle|accDescr)({{asciiGap}})(:)",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.control.mermaid"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#directive"
+                }
+              ]
+            },
+            "4": {
+              "name": "keyword.operator.separator.colon.mermaid"
+            }
+          },
+          "end": "{{lineValueEnd}}",
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      ]
+    },
+    "usecase-plain-string": {
+      "comment": "Read ordinary quoted text with matching delimiters and no escape syntax. The accepted lexer value cannot contain a physical line feed, but a common comment region may remove one from the authored text. Value runs pause before separator-led comments; parser rejection is not checked here. Follows usecase.md#ordered-default-context-rules and common.md#comment-lines.",
+      "patterns": [
+        {
+          "comment": "Read a plain string through its matching quote. A common comment region cannot contribute the closing quote. Follows usecase.md#ordered-default-context-rules.",
+          "begin": "(\")",
+          "beginCaptures": {
+            "1": {
+              "name": "string.quoted.double.mermaid punctuation.definition.string.begin.mermaid"
+            }
+          },
+          "end": "(\")",
+          "endCaptures": {
+            "1": {
+              "name": "string.quoted.double.mermaid punctuation.definition.string.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read unescaped plain-string content, pausing before a separator-led common comment while the surrounding quote context remains open. Follows usecase.md#ordered-default-context-rules and common.md#comment-lines.",
+              "begin": "(?!{{separatorCommentEnd}})(?=[^\"\\r\\n])",
+              "end": "{{usecase-double-value-end}}",
+              "contentName": "string.quoted.double.mermaid",
+              "patterns": [
+                {
+                  "include": "#comment-line"
+                },
+                {
+                  "include": "#directive"
+                },
+                {
+                  "comment": "Read quoted HTML attribute values as part of the surrounding text. Follows common.md#html-attribute-quotes.",
+                  "include": "#html-tag"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "comment": "Read a plain string through its matching quote. A common comment region cannot contribute the closing quote. Follows usecase.md#ordered-default-context-rules.",
+          "begin": "(')",
+          "beginCaptures": {
+            "1": {
+              "name": "string.quoted.single.mermaid punctuation.definition.string.begin.mermaid"
+            }
+          },
+          "end": "(')",
+          "endCaptures": {
+            "1": {
+              "name": "string.quoted.single.mermaid punctuation.definition.string.end.mermaid"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read unescaped plain-string content, pausing before a separator-led common comment while the surrounding quote context remains open. Follows usecase.md#ordered-default-context-rules and common.md#comment-lines.",
+              "begin": "(?!{{separatorCommentEnd}})(?=[^'\\r\\n])",
+              "end": "(?=')|{{separatorCommentEnd}}",
+              "contentName": "string.quoted.single.mermaid",
+              "patterns": [
+                {
+                  "include": "#comment-line"
+                },
+                {
+                  "include": "#directive"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "usecase-label": {
+      "comment": "Word keywords and booleans in node-label and edge-label are text. Strings are separate alternatives; an HTML attribute quote is changed before it can start a string. Follows usecase.md#categories-and-unquoted-text.",
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "include": "#markdown-string"
+        },
+        {
+          "include": "#usecase-plain-string"
+        },
+        {
+          "comment": "An unquoted label needs at least one LabelText unit and keeps interior spaces; strings are separate alternatives. Tags inside label text own their attribute quotes; an unrelated quote ends the text context. End before a separator-led common comment. In an edge label, relationship operators end the text. Follows usecase.md#categories-and-unquoted-text and common.md#comment-lines.",
+          "begin": "(?!{{separatorCommentEnd}})(?=[^()\\[\\]\"'\\r\\n])",
+          "end": "{{usecase-label-end}}|{{lineValueEnd}}",
+          "applyEndPatternLast": true,
+          "contentName": "string.unquoted.mermaid",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#usecase-html-tag"
+            },
+            {
+              "include": "#entity"
+            },
+            {
+              "comment": "Read each Identifier, CSS identifier or decimal number whole before trying the next arrow boundary, so an o or x inside it stays label text. Follows usecase.md#ordered-default-context-rules and usecase.md#categories-and-unquoted-text.",
+              "match": "(?:(?!{{usecase-arrow}}|{{separatorCommentEnd}}|{{directiveStart}}|{{entity}}|{{htmlTagStart}})(?>{{usecase-label-word}}|[^()\\[\\]\"'\\r\\n]))+"
+            }
+          ]
+        }
+      ]
+    },
+    "usecase-html-tag": {
+      "comment": "Only attribute quotes change; label delimiters and relationship operators still end label text, including inside a quoted attribute. Shape delimiters and operators are not LabelText; an unrelated quote starts a string. Follows usecase.md#categories-and-unquoted-text and common.md#html-attribute-quotes.",
+      "begin": "{{htmlTagStart}}",
+      "end": "{{htmlTagEnd}}|{{usecase-label-end}}|{{lineValueEnd}}",
+      "endCaptures": {
+        "0": {
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      },
+      "patterns": [
+        {
+          "include": "#directive"
+        },
+        {
+          "comment": "Equals and a paired double quote open an attribute value. Label delimiters and relationship operators still end the surrounding text. Follows usecase.md#categories-and-unquoted-text and common.md#html-attribute-quotes.",
+          "begin": "{{htmlQuotedValueStart}}",
+          "end": "\"|(?={{htmlTagEnd}})|{{usecase-label-end}}|{{lineValueEnd}}",
+          "patterns": [
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      ]
+    },
+    "usecase-style-string": {
+      "comment": "Keep a complete plain-string component, including its commas and quotes, inside one style property value. Follows usecase.md#grammar and usecase.md#ordered-default-context-rules.",
+      "patterns": [
+        {
+          "comment": "Read a double-quoted CSS value component without changing its property-value scope. Follows usecase.md#ordered-default-context-rules.",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "include": "#html-tag"
+            }
+          ]
+        },
+        {
+          "comment": "Read a single-quoted CSS value component without changing its property-value scope. Follows usecase.md#ordered-default-context-rules.",
+          "begin": "'",
+          "end": "'",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            }
+          ]
+        }
+      ]
+    },
+    "usecase-json-quote": {
+      "comment": "Color a double-quoted JSON value as a string while retaining its escaped-character and brace protection. Follows usecase.md#json-context.",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "comment": "Retain directives, converted HTML attribute quotes and escaped characters inside the displayed JSON string. Follows usecase.md#json-context and common.md#html-attribute-quotes.",
+          "begin": "(?!{{separatorCommentEnd}})(?=[^\"])",
+          "end": "{{usecase-double-value-end}}",
+          "patterns": [
+            {
+              "include": "#comment-line"
+            },
+            {
+              "include": "#directive"
+            },
+            {
+              "comment": "Read quoted HTML attribute values as part of the surrounding text. Follows common.md#html-attribute-quotes.",
+              "include": "#usecase-json-html-tag"
+            },
+            {
+              "comment": "Protect the next JSON character without changing its text scope, preserving directives. Follows usecase.md#json-context.",
+              "match": "{{usecase-string-escape}}",
+              "captures": {
+                "1": {
+                  "patterns": [
+                    {
+                      "include": "#directive"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "name": "string.quoted.double.mermaid",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.mermaid"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.end.mermaid"
+        }
+      }
+    },
+    "usecase-json-text": {
+      "comment": "Color remaining JSON text up to a comma, quote, brace, line end or common-comment boundary, preserving nested-object handling. Follows usecase.md#json-context.",
+      "begin": "(?![,{}\"]|$|{{separatorCommentEnd}})(?=.)",
+      "end": "(?=[,{}\"]|$)|{{separatorCommentEnd}}",
+      "contentName": "string.unquoted.mermaid",
+      "patterns": [
+        {
+          "include": "#comment-line"
+        },
+        {
+          "include": "#directive"
+        }
+      ]
+    }
+  },
+  "variables": {
+    "usecase-id": "[A-Za-z0-9_]+",
+    "usecase-class-list": "{{usecase-id}}(?:{{asciiGap}},{{asciiGap}}{{usecase-id}})*",
+    "usecase-arrow": "(?:--\\|>|\\.\\.>|-{2,}>|<-{2,}|--o|o--|--x|x--|-{2,})",
+    "usecase-double-value-end": "(?=\")|{{separatorCommentEnd}}",
+    "usecase-string-escape": "\\\\({{directives}}).",
+    "usecase-html-string-escape": "\\\\(?:{{htmlTagDirective}})*(?!{{directiveStart}}|{{separatorCommentEnd}})[^>\\r\\n]",
+    "usecase-label-end": "(?=[()\\[\\]\"']|{{usecase-arrow}})",
+    "usecase-label-word": "(?:[A-Za-z_][A-Za-z0-9_]*(?:-[A-Za-z0-9_]+)+|{{usecase-number}}|{{usecase-id}})",
+    "usecase-number": "(?:[0-9]+\\.[0-9]+|\\.[0-9]+)[A-Za-z]*",
+    "usecase-statement-start": "(?:^|\\G|{{afterDirectiveEnd}})[ \\t]*",
+    "usecase-style-value-end": "(?={{lineGap}}(?:(?<!\\\\),|$))|{{separatorCommentEnd}}|(?={{styleFinalSemicolon}})"
+  },
+  "comment": "Read a native percent-pair comment up to physical line end or a separator-led common comment. Follows usecase.md#whitespace-comments-and-directives-in-every-context."
+}

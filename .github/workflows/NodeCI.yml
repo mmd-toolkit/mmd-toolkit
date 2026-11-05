@@ -42,7 +42,7 @@ jobs:
       - name: Install Packages
         run: pnpm install --frozen-lockfile
       - name: Build workspace dependencies
-        run: pnpm --filter @mmd-toolkit/eslint-plugin... run build
+        run: pnpm --filter @mmd-toolkit/eslint-plugin... --filter @mmd-toolkit/textmate-grammar run build
       - name: ESLint
         run: pnpm run lint:es
 
@@ -75,8 +75,8 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Build parser for rule document checks
         run: pnpm --filter @mmd-toolkit/parser run build
-      - name: Japanese document check
-        run: pnpm run lint:ja
+      - name: Markdown document check
+        run: pnpm run lint:md
       - name: Document check
         run: pnpm run lint:docs
       - name: Invisible character check

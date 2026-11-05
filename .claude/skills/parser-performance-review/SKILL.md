@@ -70,6 +70,12 @@ resource exception of live Mermaid before the target parser runs is a validation
 limitation: neither a successful comparison, a parser failure, nor a syntax
 rejection. Do not report an unexecuted size as tested.
 
+If the AST-to-Db helper throws after public `parse()` returns a tree, record the
+successful public return separately and investigate the helper exception. Keep
+the raw attempt, but exclude its timing from Db-validated results until the
+comparison completes. That exception does not show that `parse()` threw or that
+the Dbs matched.
+
 Keep one valid shape at several explicit sizes. Vary the dimension that causes
 the suspected repeated work, and say when two must grow together. A comparison
 input may show the trigger, such as LF-only versus space-filled blank lines; do
