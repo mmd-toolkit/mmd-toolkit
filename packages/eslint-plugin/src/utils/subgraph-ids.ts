@@ -201,3 +201,123 @@ export function subgraphIdsOf(
   addSubgraphs(body.body)
   return ids
 }
+
+// A subgraph (or a flow) does not get a member that a subgraph before it has.
+// This repeats the derivation of the Db, as `subgraph-ids.ts` does for ids:
+// `addSubGraph`, `makeUniq`, `recordDroppedMembers`, and `isNestedIn` of
+// https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L701-L818
+// and `addSubGraph` and `addGlobal` of
+// https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1175-L1310
+
+/** A subgraph or a flow, and the ids that its body lists. */
+export interface Container<Statement> {
+  readonly statement: Statement
+  readonly id: string
+  readonly listed: readonly string[]
+}
+
+/** A vertex of a group, for the ids of a statement. */
+interface VertexOfGroup {
+  readonly id: { readonly name: string }
+}
+
+/** The vertex ids of the groups of a statement, in source order. */
+export function vertexIdsOf(
+  statement: {
+    readonly first: { readonly vertices: readonly VertexOfGroup[] }
+    readonly links: readonly {
+      readonly target: { readonly vertices: readonly VertexOfGroup[] }
+    }[]
+  },
+  normalize: (name: string) => string,
+): string[] {
+  return [statement.first, ...statement.links.map((link) => link.target)]
+    .flatMap((group) => group.vertices)
+    .map((vertex) => normalize(vertex.id.name))
+}
+
+/**
+ * The ids that each container lists but leaves to a container added before it:
+ * the container that ends first keeps an id, and a container never loses an
+ * id that it has already, to one inside it or to one with its own id.
+ */
+export function lostMembers<Statement>(
+  containers: readonly Container<Statement>[],
+): ReadonlyMap<Statement, ReadonlySet<string>> {
+  const owners = new Map<string, string>()
+  const lost = new Map<Statement, ReadonlySet<string>>()
+  for (const { statement, id, listed } of containers) {
+    const lostIds = new Set<string>()
+    for (const member of listed) {
+      if (member === id || member.trim() === "") continue
+      const owner = owners.get(member)
+      if (owner === undefined) owners.set(member, id)
+      else if (owner !== id && !isUnder(owner, listed, owners)) {
+        lostIds.add(member)
+      }
+    }
+    lost.set(statement, lostIds)
+  }
+  return lost
+}
+
+/** Whether the container `id` is listed by, or at any depth under, a container that lists `listed`. */
+function isUnder(
+  id: string,
+  listed: readonly string[],
+  owners: ReadonlyMap<string, string>,
+): boolean {
+  const visited = new Set<string>()
+  for (
+    let current: string | undefined = id;
+    current !== undefined && !visited.has(current);
+    current = owners.get(current)
+  ) {
+    if (listed.includes(current)) return true
+    visited.add(current)
+  }
+  return false
+}
+
+/**
+ * The members that each subgraph of a flowchart loses to a subgraph that ended
+ * before it. A subgraph lists the vertices of its statements and the ids of
+ * the subgraphs directly in it.
+ */
+export function flowchartLostMembers(
+  sourceCode: MermaidSourceCode,
+): ReadonlyMap<FlowchartSubgraphStatement, ReadonlySet<string>> {
+  const { body } = sourceCode.ast
+  if (body.type !== "FlowchartDiagram") return new Map()
+  const ids = subgraphIdsOf(sourceCode)
+  const containers: Container<FlowchartSubgraphStatement>[] = []
+
+  /** The ids that `statements` list, in source order. */
+  function listedIn(statements: readonly FlowchartStatement[]): string[] {
+    return statements.flatMap((statement) => {
+      if (statement.type === "FlowchartVertexStatement") {
+        return vertexIdsOf(statement, (name) => name)
+      }
+      if (statement.type === "FlowchartSubgraphStatement") {
+        return [ids.get(statement) ?? ""]
+      }
+      return []
+    })
+  }
+
+  /** Adds the subgraphs among `statements` after the subgraphs in their bodies. */
+  function addSubgraphs(statements: readonly FlowchartStatement[]): void {
+    for (const statement of statements) {
+      if (statement.type !== "FlowchartSubgraphStatement") continue
+      addSubgraphs(statement.body)
+      containers.push({
+        statement,
+        id: ids.get(statement) ?? "",
+        listed: listedIn(statement.body),
+      })
+    }
+  }
+
+  addSubgraphs(body.body)
+  return lostMembers(containers)
+}

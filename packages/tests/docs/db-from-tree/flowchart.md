@@ -115,7 +115,7 @@ property:
    `class` statement adds no vertex and does not make them, so a later
    `A[|__proto__:x|text]` makes them with `__proto__`. mermaid.js adds a
    property to existing `props` in
-   [`addVertex()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L229-L233)
+   [`addVertex()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L255-L259)
    by assigning it to a plain object, where `__proto__` does not become a key.
    [fixture: flowchart/db-props-merge] [fixture:
    flowchart/db-props-existing-vertex] [fixture: flowchart/db-props-replaced]

@@ -33,7 +33,7 @@ the end-to-end tests, are not collected.
    version of the `mermaid` devDependency in `packages/tests/package.json`):
 
    ```sh
-   git clone --depth 1 --branch mermaid@12.2.0 https://github.com/mermaid-js/mermaid.git <checkout>
+   git clone --depth 1 --branch mermaid@12.3.0 https://github.com/mermaid-js/mermaid.git <checkout>
    ```
 
    The collector checks that the checkout is at that tag. Nothing needs to be

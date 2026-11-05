@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Known divergences, tokenless-empty-forms: after a class statement no rule takes the `()` unit, so both reject the input."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...iagramclass A call ()\n----------------------^\nExpecting 'NEWLINE', 'EOF', 'SQS', 'STRUCT_START', 'STRUCT_STOP', 'STYLE_SEPARATOR', 'ANNOTATION_START', got 'LOLLIPOP'"
+  }
+}

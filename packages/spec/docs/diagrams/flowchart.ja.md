@@ -4,10 +4,10 @@
 
 mermaid.js での正解の出どころ:
 
-- [`flow.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison)
-- [`flowParser.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flowParser.ts)
-- [`flowDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts)
-- [`parser/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser)
+- [`flow.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/parser/flow.jison)
+- [`flowParser.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/parser/flowParser.ts)
+- [`flowDb.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts)
+- [`parser/`](https://github.com/mermaid-js/mermaid/tree/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/parser)
   の中のテスト（`*.spec.js`）
 
 この文書は、図種 `flowchart-v2`、`flowchart-elk`、`swimlane` を扱います。
@@ -213,11 +213,12 @@ flowchart/header-direction-trailing-space]
 ### `}` の後の空白
 
 `}` の後に改行を含む空白が続くとき、字句解析器は、その空白の最後の改行までを、
-1 つの改行として読みます。
+1 つの改行として読みます。 [fixture: flowchart/lex-brace-data-trailing-space]
 この空白は図のテキストのものなので、
 その中のコメント領域とディレクティブは除きます。
+[fixture: flowchart/lex-brace-data-trailing-directive]
 mermaid.js は、文法がテキストを読む前に、
-[`flowParser.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flowParser.ts#L6-L10)
+[`flowParser.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/parser/flowParser.ts#L6-L10)
 でこの置き換えを行います。
 
 そのため、その空白の中にディレクティブがあっても、結果は mermaid.js と同じです。
@@ -227,17 +228,17 @@ mermaid.js はリンクテキスト `a}`、改行、` b` を読み、 `click A c
 [fixture: flowchart/lex-brace-link-text-directive] [fixture:
 flowchart/lex-brace-callback-arguments-directive]
 
-- データブロックの後の空白で行を終えられます。
-  `A@{ shape: rect }` の後に空白と改行が続くものは受理されます。
-  文法は、文の終わりのデータブロックの後に空白を受け付けないにもかかわらずです。
-  [fixture: flowchart/lex-brace-data-trailing-space] [fixture:
-  flowchart/lex-brace-data-trailing-directive]
-- そのような `}` を含む文字列で、mermaid.js が読むものが変わります。
-  `A["a}`、空白 2 つ、改行、`  b"]` では、 mermaid.js はラベル `a}`、改行、
-  `  b` を読みます。
-  木のラベルの値は書かれたテキストで、`a}`、空白 2 つ、改行、
-  `  b` です（[ノード](../ast.ja.md#ノード) を参照）。
-  [fixture: flowchart/lex-brace-string]
+この置き換えで、
+そのような `}` を含む文字列で mermaid.js が読むものが変わります。
+`A["a}`、空白 2 つ、改行、`  b"]` では、 mermaid.js はラベル `a}`、改行、
+`  b` を読みます。
+木のラベルの値は書かれたテキストで、`a}`、空白 2 つ、改行、
+`  b` です（[ノード](../ast.ja.md#ノード) を参照）。
+[fixture: flowchart/lex-brace-string]
+その空白の中に空行やコメント行があっても、 mermaid.js は同じラベルを読みます。
+置き換えが最後の改行まで届くからです。
+[fixture: flowchart/lex-brace-string-empty-line]
+[fixture: flowchart/lex-brace-string-comment-line]
 
 ### 文の文脈
 
@@ -293,14 +294,30 @@ flowchart/lex-brace-callback-arguments-directive]
 13. 後に語の文字が続かない `_self`、`_blank`、`_parent`、
     `_top`: `link-target` の単位。 [fixture: flowchart/gram-click-url-target]
 14. 方向の行（下を参照）。 [fixture: flowchart/lex-direction-line-swallows-edge]
-15. 辺の id: 空白でも `"` でもない 1 個以上の文字と、その後の、
+15. 辺の id: 空白でなく、`"`、`[`、`]`、`(`、`)`、`{`、`}`、
+    `|` のどれでもない 1 個以上の文字と、その後の、
     `{` でも `"` でもない文字が後に続く `@`。
-    並びは、次の空白か `"` より前にある、そのような最後の `@` で終わります。
+    並びは、並びに含められない次の文字より前にある、
+    そのような最後の `@` で終わります。
     その `@` より前の文字は `edge-id` の単位で、`@` は `@` の単位です。
-    `A @-->B` は辺の id を持ちません。
-    その `@` の前に文字がないからです。
-    その `@` を読む規則はないので、入力は拒否されます。
+    `A @-->B` と `A[x]@-->B` は辺の id を持ちません。
+    その `@` の前に並びの文字がないからです。
+    その `@` を読む規則はないので、これらの入力は拒否されます。
+    `A e[1@--> B` も辺の id を持たず、拒否されます。
+    並びが `@` を含まないまま `[` で止まるからです。
+    並びに含められないほかの文字でも同じです。
+    `A e1@x[y@-->B` でも並びは `[` で止まるので、
+    最後の `@` は `e1` の後のもので、入力は拒否されます。
     [fixture: flowchart/lex-edge-id-at-start] [fixture: flowchart/gram-edge-id]
+    [fixture: flowchart/lex-edge-id-open-square]
+    [fixture: flowchart/lex-edge-id-close-square]
+    [fixture: flowchart/lex-edge-id-open-paren]
+    [fixture: flowchart/lex-edge-id-close-paren]
+    [fixture: flowchart/lex-edge-id-open-brace]
+    [fixture: flowchart/lex-edge-id-close-brace]
+    [fixture: flowchart/lex-edge-id-pipe]
+    [fixture: flowchart/lex-edge-id-last-at-before-bracket]
+    [fixture: flowchart/lex-edge-id-at-after-shape]
 16. 1 個以上の ASCII の数字: `number` の単位。
     [fixture: flowchart/lex-number-vertices]
 17. `#`、`:::`、`:`、`&`、`;`、`,`、`*`: そのテキストを名前とする単位。
@@ -363,9 +380,10 @@ flowchart/lex-brace-callback-arguments-directive]
   `A"x"-->B` は頂点 `A"x"` を持ちます。
   空の文字列 `""` は `empty-string` の単位で、
   文法のどの規則も取らないので（[文字列](#文字列) を参照）、
-  `A ""` は拒否されます。
-  mermaid.js はこれを頂点 `A` として受理します。
+  `A ""` と `A@{ shape: rect } "" ;B` は拒否されます。
+  mermaid.js は、前者を頂点 `A` として、後者を頂点 `A` と `B` として受理します。
   [fixture: flowchart/lex-quote-in-id] [fixture: flowchart/lex-empty-string]
+  [fixture: flowchart/gram-data-space-empty-string-semicolon]
 - `&` が単独の単位を始めるのは、単位が始まる位置だけです。
   `A&B` は 1 つの頂点 `A&B` で、 `A & B` は 2 つの頂点です。
   [fixture: flowchart/lex-ampersand-in-id] [fixture:
@@ -409,17 +427,58 @@ flowchart/lex-brace-callback-arguments-directive]
   `A( -x-)` はラベル `-x-` の角の丸い長方形で、`A(-x-)` は楕円です。
   `A(( -x))` はラベル `-x` の円ですが、
   `A((-x))` では `(` の後の `(-` が楕円を始め、入力は拒否されます。
-  辺の id（規則 15）は次の空白で終わります。
-  `A[ x@ ]` のラベルは `x@` で、`A-->| x@ |B` のリンクテキストは `x@` です。
-  一方、`A[x@]` と `A-->|x@|B` は、`A[x` と `A-->|x` を辺の id として読み、
-  拒否されます。 [fixture: flowchart/lex-square-label-space-slash] [fixture:
+  [fixture: flowchart/lex-square-label-space-slash] [fixture:
   flowchart/lex-lean-right-label] [fixture:
   flowchart/lex-round-label-space-dash] [fixture: flowchart/lex-ellipse-label]
   [fixture: flowchart/lex-circle-label-space-dash] [fixture:
-  flowchart/lex-circle-dash-ellipse] [fixture:
-  flowchart/lex-edge-id-space-label] [fixture: flowchart/lex-edge-id-in-label]
-  [fixture: flowchart/lex-edge-id-space-pipe-label] [fixture:
-  flowchart/lex-edge-id-in-pipe-label]
+  flowchart/lex-circle-dash-ellipse]
+- `[`、`(`、`{` が開くラベルと `|` の間のリンクテキストの中の `@` は、
+  辺の id になりません。
+  規則 15 の並びがそれらの文字で止まるからです。
+  `A[x@]`、`A[ x@ ]`、`A[x@%%{init: {}}%%]`、`A(x@)`、
+  `A{x@}` のラベルは `x@` で、 `A[x@y]` のラベルは `x@y` です。
+  `A-->|x@|B` と `A-->| x@ |B` のリンクテキストは `x@` で、
+  `A-->|a@b|B` のリンクテキストは `a@b` です。
+  [fixture: flowchart/lex-edge-id-in-label]
+  [fixture: flowchart/lex-edge-id-space-label]
+  [fixture: flowchart/lex-edge-id-in-label-before-directive]
+  [fixture: flowchart/lex-edge-id-in-round-label]
+  [fixture: flowchart/lex-edge-id-in-diamond-label]
+  [fixture: flowchart/lex-edge-id-inside-label]
+  [fixture: flowchart/lex-edge-id-in-pipe-label]
+  [fixture: flowchart/lex-edge-id-space-pipe-label]
+  [fixture: flowchart/lex-edge-id-inside-pipe-label]
+  ラベルの中の無視される `;`、空行、コメント行、U+2028 はこれを変えません。
+  `A[style:#x;x@]` のラベルは `style:#xx@` です。
+  `A[x@accDescr {}]` は拒否されます。
+  `@` はラベルの中にあり、文法はそこで `{` を取らないからです。
+  [fixture: flowchart/lex-edge-id-in-label-ignored-semicolon]
+  [fixture: flowchart/lex-edge-id-in-label-before-comment-line]
+  [fixture: flowchart/lex-edge-id-in-label-before-empty-line]
+  [fixture: flowchart/lex-edge-id-in-label-before-line-separator]
+  [fixture: flowchart/lex-edge-id-in-label-before-empty-description-block]
+- ラベルやリンクテキストを開くほかの文字は、並びを止めません。
+  `A>x@]`、`A--a@-->B`、`A==a@==>B`、`A-.a@.->B` は、 `A>x`、`A--a`、`A==a`、
+  `A-.a` を辺の id として読み、拒否されます。
+  `@` の前の空白は並びを止めます。
+  `A> x@]` のラベルは `x@` で、`A -- x@ --> B` のリンクテキストは `x@` です。
+  [fixture: flowchart/lex-edge-id-in-odd-label]
+  [fixture: flowchart/lex-edge-id-odd-label-space]
+  [fixture: flowchart/lex-edge-id-in-link-text]
+  [fixture: flowchart/lex-edge-id-in-thick-link-text]
+  [fixture: flowchart/lex-edge-id-in-dotted-link-text]
+  [fixture: flowchart/lex-edge-id-space-link-text]
+- 辺の id は、空白なしで形の後に置けます。
+  並びは、形を閉じる `]`、`)`、`}` の後から始まるからです。
+  `A[x]e1@-->B`、`A(x)e1@-->B`、`A{x}e1@-->B` の辺の id は `e1` で、
+  `A[x]%%{init: {}}%%e1@-->B` と `A[style:#x];e1@-->B` も同じです。
+  `A[x]--a@-->B` の辺の id は `--a` です。
+  [fixture: flowchart/lex-edge-id-after-square-shape]
+  [fixture: flowchart/lex-edge-id-after-round-shape]
+  [fixture: flowchart/lex-edge-id-after-diamond-shape]
+  [fixture: flowchart/lex-edge-id-after-shape-directive]
+  [fixture: flowchart/lex-edge-id-after-shape-ignored-semicolon]
+  [fixture: flowchart/lex-edge-id-dashes-after-shape]
 
 **方向の行。**
 今の位置から、改行、U+2028、U+2029 を含まない文字の並びで、
@@ -1140,7 +1199,7 @@ flowchart/header-space-before-empty-string] [fixture: flowchart/header-string]
 ### Unicode の文字
 
 `letter` の単位は、次の範囲の 1 文字です。
-[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L211-L272)
+[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L211-L272)
 が挙げる文字です: U+00AA, U+00B5, U+00BA, U+00C0–U+00D6, U+00D8–U+00F6,
 U+00F8–U+02C1, U+02C6–U+02D1, U+02E0–U+02E4, U+02EC, U+02EE, U+0370–U+0374,
 U+0376, U+0377, U+037A–U+037D, U+0386, U+0388–U+038A, U+038C, U+038E–U+03A1,
@@ -1227,7 +1286,7 @@ U+FFC2–U+FFC7, U+FFCA–U+FFCF, U+FFD2–U+FFD7, U+FFDA–U+FFDC。
 繰り返しを最後まで進められない場合、その繰り返しは取られず、
 規則はその後に続くものへ進みます。
 この文法は
-[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L302-L633)
+[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L302-L644)
 の文法を述べ直したもので、同じ単位の並びを受理します。
 
 次の各規則が、
@@ -1360,18 +1419,25 @@ flowchart/gram-empty-description-block-line-feed]
 空の説明ブロックを除いて読みます。
 ブロックの前、間、後の `space` の単位は文の終わりの空白で、
 文の規則がそれを取るかどうかで決まります。
-頂点の文の終わりは空白を取り、 style、クラスの定義、
+頂点の文の終わりは、データブロックの後でも空白を取り、 style、クラスの定義、
 リンクのスタイルの文のスタイルと、 subgraph の名前も空白を取るので、
 `A accDescr {} ;B`、`A accDescr {} accDescr {} ;B`、
+`A@{ shape: rect } accDescr {}`、`A@{ shape: rect }accDescr {} ;B`、
+`A@{ shape: rect }accDescr {} accDescr {}`、
+`A@{ shape: rect } accDescr {} accDescr {} ;B`、
 `style A fill:red accDescr {} ;B`、`subgraph S accDescr {} ;A` は受理されます。
-class の文、click の文、データブロックで終わる頂点の文は、空白を取りません。
-クラス名や URL の後の `space` の単位には文の続きが要り、
-改行が続かないデータブロックの後の空白は `space`
-の単位だからです（[`}` の後の空白](#-の後の空白) を参照）。
+[fixture: flowchart/gram-empty-description-blocks-after-data-block-spaces]
+[fixture: flowchart/gram-empty-description-block-after-data-block-directive]
+[fixture: flowchart/gram-empty-description-block-after-data-block-ignored-semicolon]
+[fixture: flowchart/gram-empty-description-block-after-data-block-comment-line]
+[fixture: flowchart/gram-empty-description-block-after-data-block-empty-line]
+[fixture: flowchart/gram-empty-description-block-after-data-block-line-separator]
+[fixture: flowchart/gram-empty-description-blocks-after-target-data-block-spaces]
+class の文と click の文は、空白を取りません。
+クラス名や URL の後の `space` の単位には文の続きが要るからです。
 そのため、`class A c accDescr {}`、`class A c accDescr {} ;B`、
 `click A href "u" accDescr {}`、`click A href "u"accDescr {} ;B`、
-`click A href "u"accDescr {} accDescr {}`、`A@{ shape: rect } accDescr {}`、
-`A@{ shape: rect }accDescr {} ;B` は、
+`click A href "u"accDescr {} accDescr {}` は、
 ブロックのない同じものと同じく拒否されます。
 一方、
 `click A href "u"accDescr {}accDescr {}` と
@@ -1466,7 +1532,7 @@ flowchart/header-empty-description-block-no-direction]
 ### 頂点の文
 
 ```text
-vertex-statement = vertex-group ( data | space+ )? ( link vertex-group ( data | space+ )? )*
+vertex-statement = vertex-group ( data space* | space+ )? ( link vertex-group ( data space* | space+ )? )*
 vertex-group     = vertex ( data? space+ "&" space+ vertex )*
 vertex           = id shape? ( ":::" id )?
 id               = id-piece+
@@ -1503,9 +1569,40 @@ data             = ( data-start ( data-text | data-quote )* "}" )+
   [単位の中のディレクティブ](#単位の中のディレクティブ) を参照してください。
 - id とその形の間に空白を置くことはできません。
   `A [x]` は拒否されます。 [fixture: flowchart/gram-space-before-shape]
-- データブロックは、空白を挟まずに頂点の後に置くしかなく、その後には `&`、
-  リンク、区切りしか続きません。
+- データブロックは、空白を挟まずに頂点の後に置くしかありません。
   `A @{ shape: rect }` は拒否されます。
+  文の終わりでは、ブロックの後に、どの種類、どの長さの空白も置けます。
+  `A@{ shape: rect } ;B` と `A-->B@{ shape: rect } ;C` は受理され、
+  テキストの終わりで `A@{ shape: rect }` の後に空白が続くものも受理されます。
+  [fixture: flowchart/gram-data-space-semicolon]
+  [fixture: flowchart/gram-data-tab-semicolon]
+  [fixture: flowchart/gram-data-spaces-semicolon]
+  [fixture: flowchart/gram-data-line-separator-semicolon]
+  [fixture: flowchart/gram-data-paragraph-separator-semicolon]
+  [fixture: flowchart/gram-data-no-break-space-semicolon]
+  [fixture: flowchart/gram-data-space-end-of-text]
+  [fixture: flowchart/gram-data-target-space-semicolon]
+  [fixture: flowchart/gram-data-group-space-semicolon]
+  [fixture: flowchart/gram-data-class-space-semicolon]
+  [fixture: flowchart/gram-data-space-semicolon-in-subgraph]
+  [fixture: flowchart/gram-data-spaces-before-subgraph-end]
+  [fixture: flowchart/gram-data-space-empty-line]
+  [fixture: flowchart/gram-data-space-comment-line]
+  [fixture: flowchart/gram-data-space-directive-semicolon]
+  [fixture: flowchart/gram-data-space-ignored-semicolon]
+  ブロックとその空白の後には、`&`、リンク、区切りしか続きません。
+  `A@{ shape: rect } & B` と `A@{ shape: rect } --> B` は受理され、
+  `A@{ shape: rect } B`、`A@{ shape: rect } @{ label: x }`、
+  `A@{ shape: rect } :::c`、`A@{ shape: rect } %% c`、
+  `A@{ shape: rect } end` は拒否されます。
+  [fixture: flowchart/gram-data-space-link]
+  [fixture: flowchart/gram-data-target-space-link]
+  [fixture: flowchart/gram-data-space-group]
+  [fixture: flowchart/gram-data-space-vertex]
+  [fixture: flowchart/gram-data-space-data]
+  [fixture: flowchart/gram-data-space-class]
+  [fixture: flowchart/gram-data-space-trailing-comment]
+  [fixture: flowchart/gram-data-space-subgraph-end]
   続けて書いたブロックは、どれもその頂点に属し、
   それぞれが 1 つのデータブロックで、 mermaid.js はそれらを一緒に読みます。
   続く行の `A@{`、`shape: rect`、`}@{`、`label: x`、`}` は、
@@ -1560,7 +1657,7 @@ shape = "[" label "]"
 名前は、
 mermaid.js がデータブロック `A@{ shape: … }`
 で同じ形に受け付ける語です（mermaid.js の
-[`shapesDefs`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/rendering-util/rendering-elements/shapes.ts#L107-L534)）。
+[`shapesDefs`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes.ts#L116-L543)）。
 それらの語のうち、形そのものを表し、省略していない語です。
 `process`、`decision`、`subroutine` のような用途の語や、 `rect`、`diam`、
 `fr-rect` のような省略した語は採りません。
@@ -1738,7 +1835,7 @@ id は生成された `subGraph0`、タイトルは `end` で、`;` はメンバ
 mermaid.js の flowchart の文書は、冒頭で、
 小文字だけの語 `end` は flowchart を壊すと警告し、
 語かその文字のどれかを大文字にするよう勧めています（mermaid.js の
-[flowchart.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/flowchart.md#L9-L11)）。
+[flowchart.md](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L10-L12)）。
 その警告は、
 [issue #1444](https://github.com/mermaid-js/mermaid/issues/1444) 「Some node
 names break the diagrams」の回避策にリンクしています。
@@ -1991,9 +2088,9 @@ mermaid.js は、文法が受理する入力の一部を、Db を作る途中で
   `linkStyle 00 stroke:red` と、指すリンクより前にある `linkStyle` は、
   `interpolate` があってもなくても拒否されます。
   mermaid.js は、
-  [`updateLink()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L391-L413)
+  [`updateLink()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L417-L439)
   と、
-  [`updateLinkInterpolate()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L377-L386)
+  [`updateLinkInterpolate()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L403-L412)
   の `TypeError` で、これらを拒否します。
   どちらも、テキストとして受け取った番号を確かめないからです。
   [fixture: flowchart/linkstyle-index-out-of-range] [fixture:
@@ -2131,7 +2228,7 @@ mermaid.js は、文法が受理する入力の一部を、Db を作る途中で
   [fixture: flowchart/gram-subgraph-member-has-own-property-nested-blocks-glued]
   この名前は、ほかのどこでも予約されていません。
   mermaid.js は、
-  [`addSubGraph()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L685-L707)
+  [`addSubGraph()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L712-L734)
   で、見たメンバーを素のオブジェクトのキーとして持ち、
   各メンバーについてそのオブジェクトの `hasOwnProperty` 関数に尋ねます。
   メンバー `hasOwnProperty` を残すと、その関数が `true` に置き換わるので、
@@ -2250,25 +2347,59 @@ mermaid.js は、文法が受理する入力の一部を、Db を作る途中で
   [fixture: flowchart/gram-subgraph-name-click-comma]
   [fixture: flowchart/gram-subgraph-name-bare-click]
 - **[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md)。**
-  空の文字列、空の呼び出し、文の始まりでも、文やヘッダーの区切りの前でもない、
+  空の文字列、空の呼び出しと、文の始まりでも、文やヘッダーの区切りの前でもない、
   文の中の空の説明ブロックは、それがある位置には木にそれを置く場所がないので、
   ここでは入力を拒否させます（[文字列](#文字列)、
   [クリックとコールバック](#クリックとコールバック)、
   [アクセシビリティの値](#アクセシビリティの値) を参照）。
   mermaid.js はそれらにトークンを読まず、そのような入力の多くを受理します。
-  たとえば、1 行だけの空の文字列（`""`）、ラベルの中の空の文字列（`A[""x]`）、
+  たとえば、1 行だけの空の文字列（`""`）、
+  文の最後の単位の後の空の文字列（`A ""`）、ラベルの中の空の文字列（`A[""x]`）、
   クリックの文の id の前の空の文字列（`click ""A href "x"`）、
   ヘッダーのキーワードの後の空の文字列（`flowchart"" TD`）。
-  文の中の空の呼び出し（`A call ()-->B`）と、
+  文の中の空の呼び出し（`A call ()-->B`）、
+  文の最後の単位の後の空の呼び出し（`A call ()`）、
   クリックの文の中の空の呼び出し（`click A call ()cb`）。
   文の中の空の説明ブロック（`A accDescr {}-->B`）。
   [fixture: flowchart/lex-empty-string-line]
+  [fixture: flowchart/lex-empty-string]
   [fixture: flowchart/tokens-empty-string-in-label]
   [fixture: flowchart/gram-click-empty-string-before-id]
   [fixture: flowchart/header-empty-string-before-direction]
   [fixture: flowchart/gram-empty-call-before-link]
+  [fixture: flowchart/gram-empty-call-after-vertex]
   [fixture: flowchart/gram-click-empty-call-before-callback]
   [fixture: flowchart/gram-empty-description-block-before-link]
+  文の最後の単位の後では、`A "``"`、`A:::c ""`、`A --> B ""`、
+  `A --> B call ()`、 `A@{}""`、`A@{}call ()`、`A "";B`、`A call ();B`、
+  `A "" ""`、`A "" call ()`、 `end ""` がこれに当たり、
+  サブグラフの本体の中でも同じです。
+  その形の隣のコメント行、空行、U+2028、ディレクティブ、無視される `;`、
+  空の説明ブロックは、これを変えません。
+  [fixture: flowchart/div-empty-markdown-after-vertex]
+  [fixture: flowchart/div-empty-string-after-link-target]
+  [fixture: flowchart/div-empty-call-after-link-target]
+  [fixture: flowchart/div-empty-string-after-class-suffix]
+  [fixture: flowchart/div-empty-string-after-data-block]
+  [fixture: flowchart/div-empty-call-after-data-block]
+  [fixture: flowchart/div-empty-string-before-semicolon]
+  [fixture: flowchart/div-empty-call-before-semicolon]
+  [fixture: flowchart/div-empty-strings-after-vertex]
+  [fixture: flowchart/div-empty-string-then-call-after-vertex]
+  [fixture: flowchart/div-empty-string-after-end]
+  [fixture: flowchart/div-empty-string-in-subgraph-body]
+  [fixture: flowchart/div-empty-string-before-comment-line]
+  [fixture: flowchart/div-empty-string-before-empty-line]
+  [fixture: flowchart/div-empty-call-before-empty-line]
+  [fixture: flowchart/div-empty-string-before-line-separator]
+  [fixture: flowchart/div-empty-string-after-line-separator]
+  [fixture: flowchart/div-empty-string-after-directive]
+  [fixture: flowchart/div-empty-string-before-directive]
+  [fixture: flowchart/div-empty-string-before-ignored-semicolon]
+  [fixture: flowchart/div-empty-call-before-ignored-semicolon]
+  [fixture: flowchart/div-empty-string-before-empty-description-block]
+  [fixture: flowchart/div-empty-string-after-empty-description-block]
+  [fixture: flowchart/div-empty-call-after-empty-description-block]
 - **[`c4-keyword-anywhere`](../known-divergences/c4-keyword-anywhere.ja.md)。**
   ヘッダーの後のどこかにある `C4Container`、`C4Component`、`C4Dynamic`、
   `C4Deployment`（頂点の id、ラベル、辺のテキストなど）は、

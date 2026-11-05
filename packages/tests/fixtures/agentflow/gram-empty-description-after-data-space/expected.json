@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md Empty description blocks and erased forms: a vertex statement takes no whitespace after a data block that no line feed follows, so the space before the block makes the input rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...: rect } accDescr {}\n-----------------------^\nExpecting 'AMP', got 'NEWLINE'"
+  }
+}

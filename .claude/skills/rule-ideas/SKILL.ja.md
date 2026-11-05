@@ -109,6 +109,7 @@ description:
 | `%%{init: {"flowchart": {"inheritDir": true},}}%%`（末尾のカンマ）      | init の設定がすべて捨てられる                                                              | no-invalid-init-directive（共通）                                                                                                       |
 | `%%{init: {"fontFamily": "O'Brien"}}%%`（`"` で囲んだ文字列の中の `'`） | init の設定がすべて捨てられる。mermaid.js は JSON を読む前に、すべての `'` を `"` に変える | no-invalid-init-directive（共通）                                                                                                       |
 | `A[Start]-->B` の後に `C-->A[End]`                                      | A のラベルが End に置き換わる                                                              | flowchart-no-redefined-vertex                                                                                                           |
+| `subgraph a` が `A` を持った後の、`subgraph b` の中の `A`               | `A` は a に残り、b はそのメンバーを得ない                                                  | flowchart-no-redefined-vertex                                                                                                           |
 | `style C fill:red`（C の打ち間違い）                                    | スタイル付きの頂点 C が増える                                                              | flowchart-no-undef                                                                                                                      |
 | `class C foo` か `click C href "…"`（C の打ち間違い）                   | 何もしない（どの頂点にもクラスやリンクが付かない）                                         | flowchart-no-undef                                                                                                                      |
 | `style C fill:red` の後の `class C foo`（どちらも C の打ち間違い）      | `style` が頂点 C を足し、クラスはそれに付く                                                | flowchart-no-undef。`style` だけを報告する。ほかに何も定義していない id の最初の `style` を報告し、`style` が足す頂点は定義として数える |
@@ -142,11 +143,12 @@ description:
 | `link A: Dash@https://x.example`（ラベルが `Das` になる）                                                                                                                                 | mermaid の不具合のように見える。空白が 1 つないだけで、ラベルの最後の文字が落ちる。事実: 文書は `<ラベル> @ <URL>` の形だけを示す                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | `subgraph a `（行末の空白で id が subGraph0 になる）                                                                                                                                      | mermaid の不具合のように見える。見えない行末の空白で id が変わる。事実: メンテナーは [#3252](https://github.com/mermaid-js/mermaid/issues/3252)（closed。Type: Bug / Error、Status: Approved、P1）で不具合と認めており、固定版でも起きる（実行）                                                                                                                                                                                                                                                                                                                                                                                                            |
 | `class 1A:::c`（数字で始まる名前）、`class C` より前の `style C fill:red`、CSS クラス `foo` に効く `classDef fo`                                                                          | この道具の範囲の外。CSS クラスやスタイルが付くかどうかは描かれた図にしか現れず、この道具は図を描かない。mermaid の不具合かどうかは判定せず、mermaid にも報告しない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| `` class `a~b` ``（id `a`、型 `b`。図では `a<b>`）                                                                                                                                        | 文書から見て mermaid の不具合。バッククォートは特別な文字を逃がすとされる（[syntax/classDiagram.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/classDiagram.md#L161-L168)）が、その中の `~` も総称型を始める。ふつうの書き方ではまれ                                                                                                                                                                                                                                                                                                                                              |
+| `` class `a~b` ``（id `a`、型 `b`。図では `a<b>`）                                                                                                                                        | 文書から見て mermaid の不具合。バッククォートは特別な文字を逃がすとされる（[syntax/classDiagram.md](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L165-L172)）が、その中の `~` も総称型を始める。ふつうの書き方ではまれ                                                                                                                                                                                                                                                                                                                                              |
 | `class A~T~` の後の `note for A~T~ "x"`（総称型つきで書いたクラスへのノート）                                                                                                             | mermaid の不具合のように見える。ノートは名前 `A~T~` を持ち、クラスは `A` なので、線なしで描かれる。`note for A "x"` ならクラスが見つかる                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | `+foo(a(b)) int`（Db ではメソッドの名前が `foo(a`、引数が `b)`）                                                                                                                          | 利用者に見える誤りがない。描かれた図は `+foo(a(b)) : int` を示す                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | `A x-->B`、`A o-- t -->B`（始まりの印が終わりの印と違う）                                                                                                                                 | mermaid の不具合で、すでに認められている。mermaid-js/mermaid#1665（Open、Approved）が、両端の印が違う矢印は動かないとしている。`A x-->B` は長いふつうの矢印、`A o-- t -->B` はふつうの矢印として描かれる                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | `A x-- t x--x B`（始まりの印を開く矢印と閉じる矢印の両方に書く）                                                                                                                          | 構文を知らないことから起きる。仕様は、この辺を `INVALID`（ふつうの矢印として描く）としている。書き方は `A x-- t --x B`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| subgraph や flow が `A` を持った後の、どの subgraph や flow の外の `A` と、同じ `A[x]`（`A` はその中に残る）                                                                              | 何も失われない。外の行は何も置かない。`subgraph a` より前に書いた外の `A` も同じく出力を変えず、`A` は a に入る。外に 2 度書いた `A` も同じである（実行）。そのため、この行は mermaid.js が失いうる場所を書いておらず、場所のつもりと言うのは推定である。`subgraph b` の中では、同じ行が頂点を b に入れる                                                                                                                                                                                                                                                                                                                                                   |
 | リンクの id `e1` を指す `style e1 fill:red`                                                                                                                                               | 構文を知らないことから来る。`style` は頂点と subgraph に当たり、mermaid.js はそれに何もしない。リンクには `linkStyle` かクラスでスタイルを付ける                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | 頂点 `A` を書く前の `class A foo` や `click A …`                                                                                                                                          | mermaid のバグに見える。id は正しく書かれていて、mermaid.js は文の位置だけを理由に何もしない（頂点の前の `style` は効く）。「class before node」「class statement order node」「classes not applied node defined after」で探したが、issue は見つからなかった                                                                                                                                                                                                                                                                                                                                                                                                |
 | state の図の `A,B --> C` や `A,B:::e --> C`（遷移で状態を `,` で並べる）                                                                                                                  | 構文を知らないことから起きる。文書は `,` で並べる書き方を `class` の文だけに書き、遷移は状態を 1 つ取る。mermaid.js は 1 つの状態 `A,B` を描く。`A,:::e` は図を描く人が書く形でなく、`A, --> B` の余計な `,` はふつうの打ち間違いでない                                                                                                                                                                                                                                                                                                                                                                                                                     |
@@ -163,7 +165,7 @@ description:
 | requirement の図で、本体の中の `id: 1 %% note`（id が `1 %% note` になる）                                                                                                                | 構文を知らないことから起きる。mermaid.js の文書は、コメントを行にひとりで書くと言う。flowchart の `subgraph S %% group` と同じ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | mindmap の図で、その前に最後に書いたノードより浅い icon の行（`root`、`  child` の後、`root` の字下げの `::icon(x)`。icon は `child` に付く）                                             | 整形で見える。フォーマッターは icon の行を `child` の字下げで印字する                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | mindmap の図で、前の段の間の字下げのノード（`root`、`    a`、`      b`、`     c` で、`c` が `a` の子になる）                                                                              | mermaid.js の文書が「Unclear indentation」でこの読み方を説明し、字下げは書き手の意図を示さない。規則は意図した書き方も報告することになる                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| 複数行のコメントアウトの中の `%%` だけの行（頂点 `%%`）                                                                                                                                   | mermaid.js は、その行をエラーなしに id `%%` の頂点として描く。flowchart の文書が定める「コメントの始まりから次の改行までの文字」（[syntax/flowchart.md](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/flowchart.md#L1217-L1219)）のコメントと読むなら、頂点は mermaid.js の不具合であり、上の理由で規則にしない（[#7008](https://github.com/mermaid-js/mermaid/pull/7008) が open）。その文書の範囲外の書き方と読むなら、`%%` は文法どおりに頂点 `%%` を作り、何も失われず、誤りと言うにはコメントのつもりだったという推定が要る。どちらの読みでも、推定なしに誤りと言える事実がない |
+| 複数行のコメントアウトの中の `%%` だけの行（頂点 `%%`）                                                                                                                                   | mermaid.js は、その行をエラーなしに id `%%` の頂点として描く。flowchart の文書が定める「コメントの始まりから次の改行までの文字」（[syntax/flowchart.md](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L1258-L1260)）のコメントと読むなら、頂点は mermaid.js の不具合であり、上の理由で規則にしない（[#7008](https://github.com/mermaid-js/mermaid/pull/7008) が open）。その文書の範囲外の書き方と読むなら、`%%` は文法どおりに頂点 `%%` を作り、何も失われず、誤りと言うにはコメントのつもりだったという推定が要る。どちらの読みでも、推定なしに誤りと言える事実がない |
 | mindmap の図で、ノードの行の `Write ::icon(fa fa-book)` や `Write:::urgent`                                                                                                               | mermaid.js はどちらも文法どおりに読み、何も失わない。前者は、`X(Foo)` が `X` でなく `Foo` を表示するのと同じく、ラベル `fa fa-book` を持つノード `Write ::icon` であり、後者はラベル `Write:::urgent` である。どちらを誤りと言うにも、icon や class のつもりだったという推定しか根拠がない                                                                                                                                                                                                                                                                                                                                                                  |
 | timeline の図で、年の中の `#`（`Sprint #3 : planning` は年 `Sprint ` とコメント `#3 : planning` になり、出来事が失われる）                                                                | 上の理由による mermaid.js の不具合。mermaid.js の timeline の文書は年と出来事を「simple text」と言い、`#` のコメントを挙げず、それを保つほかの書き方も示していない（実体 `#35;` は flowchart の文書にしかない）。事実: [#5356](https://github.com/mermaid-js/mermaid/issues/5356)（closed、Type: Bug / Error）は、`#` がコメントを始めると報告している                                                                                                                                                                                                                                                                                                      |
 | timeline の図で、自分の年のない section の後の出来事の行（`section B` の後の `: y`。`y` は前の section の最後の年に付く）                                                                 | mermaid.js は文法どおりに読み、何も失わない。誤りと言うには、section B のための出来事だったという推定が要る。`section 2020 : a` も同じで、section `2020 ` と、前の年の出来事になる                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
@@ -1043,11 +1045,39 @@ flowchart-no-redefined-vertex: (1) 後の形やラベルは、前のものを置
 改行だけが違うラベルは報告せず、ラベルはそのほかは書いたとおりに比べるので、
 mermaid.js が同じに保つ、HTML の属性の引用符だけが違う 2 つのラベルは、
 規則は書いた値を比べるので、文書が言うとおり報告する。
+subgraph は、先に終わった subgraph が持つメンバーを除く。
+そのため、後の subgraph の文で、リンク、クラス、データブロックがなく、
+前に書いた頂点について新しいことを言わないもの、つまり id だけか、名前、
+プロパティ、ラベル、ラベルの種類が同じ形だけのものは報告する。
+後の subgraph は頂点を持たない（実行。`subgraph a` の中の `A` の後の
+`subgraph b` の中の `A` は、`A` を a に残す）。
+ただし、前の subgraph が後の subgraph の中に入れ子であるときと、
+同じ id であるときは、何も失われないので報告しない。
+そうした文の頂点は、1 つずつ数える。
+a が `A` だけを持つときの b の中の `A & B` は `A` を報告する。
+`A` は新しいことを言わず、`B` は b に入るからである。
+`A & B --> C` はどちらも報告しない（実行）。
+前のどの subgraph も持たないときの b の中の `A` は b に入り、
+`A --> B` は辺を描く。
+`A[y]`、`A:::c`、`A[x]` の後の `A["x"]`、``A["`**x**`"]``、
+`A[|borders:lt|x]` は Db を変える。
+前の subgraph の名前にすぎない素の `c` は、新しい頂点を書く。
+どれもこの報告をしない（実行）。
+これは、block-no-duplicate-block と同じく、同じ文に書いた、
+もう一度書いた id というこの規則の誤りである。
 (2) なし。
-(3) 「node label overwritten」「redefine node label」「node label」。
+文書の例はこれを書いていない（`flowchart.md` と `swimlanes.md` で実行）。
+(3) 「node label overwritten」「redefine node label」「node label」「subgraph
+node two subgraphs」「node multiple subgraphs」「subgraph duplicate node」「node
+belongs subgraph」「subgraph members same node」。
 [#3789](https://github.com/mermaid-js/mermaid/issues/3789) （open、
 Type: Enhancement）は、ラベルのための別の文を提案している。
-(4) 別の id を使うか、ラベルを 1 度だけ書く。
+[#2567](https://github.com/mermaid-js/mermaid/issues/2567)（open、
+Type: Enhancement）は subgraph の間でノードを共有することを求めており、
+PR はない。
+[#8503](https://github.com/mermaid-js/mermaid/pull/8503)（open）は、
+自分を囲む subgraph を挙げる subgraph だけを変える。
+(4) 別の id を使うか、ラベルを 1 度だけ書き、頂点を 1 つの subgraph に書く。
 
 flowchart-no-duplicate-direction: (1) subgraph の本体の後の `direction` 文は、
 subgraph の方向を置き換える（`flowchart`、`flowchart-elk`、
@@ -1122,7 +1152,7 @@ merged の [#7989](https://github.com/mermaid-js/mermaid/pull/7989) で、
 no-invalid-init-directive: (1) どの init の指令の設定も捨てられるか、
 大文字小文字の違う名前ではその指令の設定が捨てられる（すべての図種で実行）。
 mermaid.js は、JSON を読む前に、すべての `'` を `"` に変える（読んだのは、
-[`detectDirective`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/utils.ts#L159-L198)）。
+[`detectDirective`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/utils.ts#L159-L198)）。
 そのため、変えた後の JSON として正しければ、
 `{'theme": "dark"}` のように 2 種類の引用符が混ざっていても読む。
 どちらの引用符の文字列でも、
@@ -1604,10 +1634,8 @@ open の [#8471](https://github.com/mermaid-js/mermaid/pull/8471) は、
 agentflow の規則。
 検索は題名の「agentflow」と「agentflow-beta」と、「agentflow」に connector、
 flow title、direction、accDescr、duplicate、shape の語を加えたもの。
-固定版の後にマージされた
-[#8443](https://github.com/mermaid-js/mermaid/pull/8443) は `[/…/]`
-を入力として描くので、 agentflow-no-redefined-vertex はそれへの、
-またはそれからの変化を見逃すが、何も変えないものは報告しない。
+[#8443](https://github.com/mermaid-js/mermaid/pull/8443)（merged、
+固定版に入っている）は、`[/…/]` を入力として描く。
 
 - agentflow-no-duplicate-title、agentflow-no-duplicate-description、
   agentflow-no-empty-description-block、
@@ -1624,7 +1652,7 @@ flow title、direction、accDescr、duplicate、shape の語を加えたもの�
   agentflow-no-redefined-connector: (1) 形を付けた頂点や connector の宣言は id
   が持っていたラベル、描かれる形、種類を置き換え、
   connector の最初の宣言はその id の頂点を置き換える（実行）。
-  形は描かれるとおりに、ひし形、六角形、サブルーチンを別に、
+  形は描かれるとおりに、ひし形、六角形、サブルーチン、`[/…/]` を別に、
   ほかの括弧の形を角の丸い長方形として比べる。
   `getTypeFromVertex` と `normaliseNodeShapes` を読んだ。
   種類は agentflow が導くとおりに比べる。
@@ -1637,6 +1665,18 @@ flow title、direction、accDescr、duplicate、shape の語を加えたもの�
   描かれる形、種類は報告しない。
   (4) 要素ごとに自分の id を与える。
   2 つの規則は id ごとの 1 つの記録を共有し、報告する文で分かれる。
+  agentflow-no-redefined-vertex は、 flowchart-no-redefined-vertex の条件で、
+  後の flow にもう一度書いた頂点も報告する（実行）。
+  ただし、`global` のブロックの頂点は最上位に残るので報告しない。
+  文書は、flow の間で共有するノードにそのブロックを示す。
+  前の flow が持つ connector はそのメンバーとして数える。
+  agentflow-no-redefined-connector も同じように、後の flow の宣言で、
+  メタデータがなく、タイトルがないか要素が持つタイトルのものを報告する。
+  `flow a` の中の `connector C` の後の `flow b` の中の `connector C` は、
+  `C` を a に残し、何も変えない（実行）。
+  別のタイトルは、タイトルについて報告する。
+  前の flow の素の `C` の後の宣言は、`C` が connector になるので効く。
+  前のどの flow も持たないときの b の中の `connector C` は b に入る（実行）。
 - agentflow-no-redefined-flow: (1) 同じ id の flow は合わされ、
   空でない後のタイトルが前のものを、 flow が終わる順に置き換える（実行）。
   (2) なし。
@@ -1658,9 +1698,9 @@ flow title、direction、accDescr、duplicate、shape の語を加えたもの�
 usecase の規則。
 検索は題名の「usecase」と「use case」と、「usecase」に duplicate、classDef、
 metadata、direction、accDescr、animate、animation の語を加えたもの。
-[#8392](https://github.com/mermaid-js/mermaid/issues/8392) と、
-[#8402](https://github.com/mermaid-js/mermaid/pull/8402) は、どちらも open で、
-include と extend のギュメに関するものである。
+[#8392](https://github.com/mermaid-js/mermaid/issues/8392)（closed）と、
+[#8402](https://github.com/mermaid-js/mermaid/pull/8402)（merged、
+固定版に入っている）は、include と extend のギュメを描く。
 
 - usecase-no-duplicate-title、usecase-no-duplicate-description、
   usecase-no-empty-description-block、
@@ -1769,7 +1809,7 @@ parent」「gitGraph message」「gitGraph tag」「gitGraph title」。
   その入力は黙って受理される。
   [#7441](https://github.com/mermaid-js/mermaid/pull/7441) が警告を足した
   flowchart-no-undef と同じである。
-  [文書](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/syntax/gitgraph.md#L481-L500)
+  [文書](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/gitgraph.md#L485-L504)
   の鉄道の例は `commit id:"Boston"` を 2 度書き、 2 つ目が 1 つ目を置き換える。
   これは #4838 が報告した振る舞いであり、文書が意図して示す書き方ではない。
   (2) なし。
@@ -1847,7 +1887,7 @@ min max」「radar title」「radar accDescr」「radar axis」。
   すべての軸を数え、軸の名前を持つ曲線はほかの規則に任せる。
   (4) 軸ごとに値を 1 つ与える。
 - radar-no-duplicate-option: (1) オプションごとに最後の値が使われる（読んだのは
-  [`setOptions`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/radar/db.ts#L93-L117)
+  [`setOptions`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/radar/db.ts#L93-L117)
   で、実行して確かめた）。
   (2) なし。
   もう一度与えた同じ値は報告せず、 mermaid.js は輪を 32 までしか描かないので、
@@ -2636,7 +2676,7 @@ fixture: 上の sankey の値（出さない）と、
   引数がないか、語か、mermaid.js が読める JSON（構造の誤りも、末尾の `,` も、
   壊す引用符もないもの）のとき、小文字で書く。
   引数がないか語なら、mermaid.js は JSON を読まない（読んだのは、
-  [`directiveRegex`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/regexes.ts#L12-L13)）。
+  [`directiveRegex`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagram-api/regexes.ts#L12-L13)）。
   壊れた JSON のときに小文字にすると、
   mermaid.js はそのディレクティブから設定を読まない（実行）。
   no-duplicate-init-key は、このメンバーか、前の同じキーのものを消す（実行）。

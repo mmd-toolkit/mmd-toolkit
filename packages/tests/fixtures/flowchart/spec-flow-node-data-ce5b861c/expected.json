@@ -1,0 +1,141 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.3.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/flow-node-data.spec.js",
+    "line": 404,
+    "test": "when parsing directions > should order edges for the step animation"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "C",
+        "props": {}
+      },
+      {
+        "id": "D",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "D",
+        "props": {}
+      },
+      {
+        "id": "E",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "E",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": true,
+        "stroke": "normal",
+        "length": 1,
+        "id": "e1",
+        "step": 1
+      },
+      {
+        "start": "B",
+        "end": "C",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": true,
+        "stroke": "normal",
+        "length": 1,
+        "id": "e2",
+        "step": 2
+      },
+      {
+        "start": "B",
+        "end": "D",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": true,
+        "stroke": "normal",
+        "length": 1,
+        "id": "e3",
+        "step": 2
+      },
+      {
+        "start": "C",
+        "end": "E",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": true,
+        "stroke": "normal",
+        "length": 1,
+        "id": "e4"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "e1",
+        "set": {
+          "step": 1
+        }
+      },
+      {
+        "id": "e2",
+        "set": {
+          "step": 2
+        }
+      },
+      {
+        "id": "e3",
+        "set": {
+          "step": 2
+        }
+      }
+    ]
+  }
+}

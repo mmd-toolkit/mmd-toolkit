@@ -29,6 +29,24 @@ Code:
 ---
 
 
+Test: agentflow-no-redefined-connector >> invalid >>> docs/rules/agentflow-no-redefined-connector.md incorrect 3
+Filename: agentflow-no-redefined-connector-incorrect-3.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow a
+  3 |     connector C
+  4 |   end
+  5 |   flow b
+  6 |     connector C
+    |     ^~~~~~~~~~~ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js keeps `C` in an earlier flow, so this flow does not get it.
+---
+
+
 Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/connector-entity-written-limit
 Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/connector-entity-written-limit-input.mmd
 
@@ -110,7 +128,7 @@ Code:
     | ^~~~~~~~~~~~~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the kind of `C` written earlier with that of this connector.
+[1] mermaid.js replaces the drawn shape of `C` written earlier with that of this connector.
 ---
 
 
@@ -261,6 +279,177 @@ Code:
   4 |
 
 [1] mermaid.js replaces the label of `C` written earlier with that of this connector.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/flow-lost-connector-and-new-title
+Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/flow-lost-connector-and-new-title-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow a
+  3 |     connector C[T]
+  4 |   end
+  5 |   flow b
+  6 |     connector C[U]
+    |     ^~~~~~~~~~~~~~ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js replaces the label of `C` written earlier with that of this connector.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/flow-lost-connector-between-siblings
+Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/flow-lost-connector-between-siblings-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow outer
+  3 |     flow a
+  4 |       connector C
+  5 |     end
+  6 |     flow b
+  7 |       connector C
+    |       ^~~~~~~~~~~ [1]
+  8 |     end
+  9 |   end
+ 10 |
+
+[1] mermaid.js keeps `C` in an earlier flow, so this flow does not get it.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/flow-lost-connector-held-by-nested-flow
+Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/flow-lost-connector-held-by-nested-flow-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow a
+  3 |     flow c
+  4 |       connector C
+  5 |     end
+  6 |   end
+  7 |   flow b
+  8 |     connector C
+    |     ^~~~~~~~~~~ [1]
+  9 |   end
+ 10 |
+
+[1] mermaid.js keeps `C` in an earlier flow, so this flow does not get it.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/flow-lost-connector-in-third-flow
+Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/flow-lost-connector-in-third-flow-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow a
+  3 |     connector C
+  4 |   end
+  5 |   flow b
+  6 |     connector C
+    |     ^~~~~~~~~~~ [1]
+  7 |   end
+  8 |   flow c
+  9 |     connector C
+    |     ^~~~~~~~~~~ [2]
+ 10 |   end
+ 11 |
+
+[1] mermaid.js keeps `C` in an earlier flow, so this flow does not get it.
+[2] mermaid.js keeps `C` in an earlier flow, so this flow does not get it.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/flow-lost-connector
+Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/flow-lost-connector-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow a
+  3 |     connector C
+  4 |   end
+  5 |   flow b
+  6 |     connector C
+    |     ^~~~~~~~~~~ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js keeps `C` in an earlier flow, so this flow does not get it.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/flow-lost-connector-mirrored
+Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/flow-lost-connector-mirrored-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow b
+  3 |     connector C
+  4 |   end
+  5 |   flow a
+  6 |     connector C
+    |     ^~~~~~~~~~~ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js keeps `C` in an earlier flow, so this flow does not get it.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/flow-lost-connector-same-title
+Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/flow-lost-connector-same-title-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow a
+  3 |     connector C[T]
+  4 |   end
+  5 |   flow b
+  6 |     connector C[T]
+    |     ^~~~~~~~~~~~~~ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js keeps `C` in an earlier flow, so this flow does not get it.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/flow-lost-connector-unnamed-flows
+Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/flow-lost-connector-unnamed-flows-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow
+  3 |     connector C
+  4 |   end
+  5 |   flow
+  6 |     connector C
+    |     ^~~~~~~~~~~ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js keeps `C` in an earlier flow, so this flow does not get it.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/flow-lost-connector-untitled-after-titled
+Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/flow-lost-connector-untitled-after-titled-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow a
+  3 |     connector C[T]
+  4 |   end
+  5 |   flow b
+  6 |     connector C
+    |     ^~~~~~~~~~~ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js keeps `C` in an earlier flow, so this flow does not get it.
 ---
 
 

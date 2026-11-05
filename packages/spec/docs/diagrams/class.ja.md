@@ -4,10 +4,10 @@
 
 mermaid.js での正解の出どころ:
 
-- [`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison)
-- [`classDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/classDb.ts)
-- [`classTypes.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/classTypes.ts)
-- [`class/`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class)
+- [`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/parser/classDiagram.jison)
+- [`classDb.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/classDb.ts)
+- [`classTypes.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/classTypes.ts)
+- [`class/`](https://github.com/mermaid-js/mermaid/tree/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class)
   のテスト（`*.spec.ts`）
 
 この文書は、図種 `classDiagram` を扱います。
@@ -500,6 +500,37 @@ class/lex-member-body-close-on-member-line]
 メンバーの行 `"x"` は拒否され、 `+foo "bar"` は引用符を含むメンバーです。
 [fixture: class/lex-member-quote-at-start] [fixture:
 class/lex-member-quote-inside]
+メンバーが始まるところの空の文字列も、テキストの前を含めて拒否されます。
+mermaid.js はそれにトークンを読まず、入力を受理します。
+本体の行の `""`、`""""`、`""x`、`"" x` と `class A {""}` がそうで、
+隣の行が何であっても同じです（[既知の差異](#既知の差異) を参照）。
+[fixture: class/div-empty-string-member-start]
+[fixture: class/div-empty-string-member-start-before-member]
+[fixture: class/div-empty-string-member-start-after-member]
+[fixture: class/div-empty-string-member-start-before-text]
+[fixture: class/div-empty-string-member-start-glued-text]
+[fixture: class/div-empty-strings-member-start]
+[fixture: class/div-empty-string-member-start-after-brace]
+[fixture: class/div-empty-string-member-start-before-line-separator]
+[fixture: class/div-empty-string-member-start-after-directive]
+[fixture: class/div-empty-string-member-start-before-directive]
+[fixture: class/div-empty-string-member-start-after-comment-line]
+[fixture: class/div-empty-string-member-start-before-comment-line]
+[fixture: class/div-empty-string-member-start-after-empty-line]
+[fixture: class/div-empty-string-member-start-before-empty-line]
+[fixture: class/div-empty-string-member-start-before-ignored-semicolon]
+[fixture: class/div-empty-string-member-start-before-semicolon]
+[fixture: class/div-empty-string-member-start-in-namespace]
+前に空白、タブ、U+2028 があると、`""` でメンバーは始まりません。
+`  ""` はメンバーの行で、どちらでもメンバー `""` です。
+`class A { "" }` の `""` も同じです。
+`""accDescr {}` はどちらでも拒否されます。
+`{` がメンバーの行を終えるからです。
+[fixture: class/lex-member-empty-string-after-spaces]
+[fixture: class/lex-member-empty-string-after-tab]
+[fixture: class/lex-member-empty-string-after-line-separator]
+[fixture: class/lex-member-empty-string-after-brace-space]
+[fixture: class/gram-member-empty-string-before-empty-description-block]
 メンバーの行の中の `%%`、`;`、`[*]`、`~` は、その行の文字です。
 `+x %% c` はメンバー `x %% c` です。 [fixture: class/lex-member-percent]
 [fixture: class/lex-member-semicolon]
@@ -516,8 +547,8 @@ class/lex-member-quote-inside]
 
 mermaid.js は、メンバーの行を 1 つのテキストとして読み、メンバーを加えるときに、
 それを部分に分けます（mermaid.js の
-[`addMember`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/classDb.ts#L277-L297)、
-[`ClassMember`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/classTypes.ts#L80-L134)）。
+[`addMember`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/classDb.ts#L277-L297)、
+[`ClassMember`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/classTypes.ts#L80-L134)）。
 分け方はテキストだけで決まるので、字句解析器が分け、各部分は単位になります。
 行の両端の空白はどの単位にも属しません。
 空白だけの行は `blank-member` の単位を作り、それを持つノードはありません。
@@ -763,7 +794,7 @@ mermaid.js の字句解析器は、バッククォートの状態とジェネリ
 （バッククォートでは）`~`、`<<` と `>>`、キーワード `cssClass`、`callback`、
 `link`、`click`、`note`、`href` の規則を、
 テキストの規則より先に試します（mermaid.js の
-[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L89-L112)）。
+[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L89-L112)）。
 テキストがそのどれかで始まると（キーワードでは、後に語の文字が続かないとき）、
 mermaid.js は名前の代わりにその単位を読み、テキストはその後で読みます。
 これらの入力は既知の差異 `name-start-reads-unit` です（[既知の差異](#既知の差異)
@@ -840,7 +871,7 @@ class/lex-acc-title-next-line]
 `string-or-empty` は空でもよい `string` の単位を表します。
 `end-of-text` はテキストの終わりを表します。
 この文法は
-[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L221-L438)
+[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L221-L438)
 の文法を言い換えたもので、同じ単位の並びを受理します。
 
 下の各規則は、
@@ -1001,7 +1032,7 @@ namespace-name = ( name-part "."? )* ( name-part | "backquoted" )
 名前の部分とそれに続くバッククォートの名前です。
 クラスの名前は、
 どの形でもジェネリクスの型で終わってかまいません（mermaid.js の
-[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L244-L258)）。
+[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L244-L258)）。
 ``class A.`b c` `` は `A.b c` を、``class A`b c` `` は `Ab c` を宣言します。
 バッククォートの名前は名前を終えます。
 ``class `b c`A `` と、 2 つのバッククォートの名前からなる名前は拒否されます。
@@ -1198,7 +1229,7 @@ mermaid.js は、文法が受理した後に、次の入力を拒否します。
 
 - 存在しないクラスへの注釈の文。
   A を加える文より前の `<<interface>> A` は拒否されます（mermaid.js の
-  [`addAnnotation`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/class/classDb.ts#L263-L266)）。
+  [`addAnnotation`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/classDb.ts#L263-L266)）。
   `class A` の後なら受理されます。
   クラスを**加える**のは、クラスの文、ラベルのあるメンバーの文、関係の文で、
   その各クラス名について、どの深さの名前空間の本体の中でも加えます。
@@ -1285,11 +1316,50 @@ class 図に当てはまり、次のように表れます。
 - **[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md)。**
   文法が文字列を取らないか、空でない文字列だけを取るところの空の文字列、
   空のバッククォートの名前、クラスの名前を終えない空のジェネリクスの型、
-  空の呼び出し、文の始まりでも、文やヘッダーの改行の前でもない、
+  空の呼び出しと、文の始まりでも、文やヘッダーの改行の前でもない、
   文の中の空の説明ブロックは、ここでは入力を拒否にします。
   mermaid.js はそれらにトークンを読まず、入力を受理します。
-  `"" A --> B`、`class A""B`、`class A``B`、`class A~~B`、 `A call () --> B`、
+  `"" A --> B`、`A ""`、メンバーが始まるところの `""`、`class A""B`、
+  `class A``B`、`class A~~B`、 `A call () --> B`、`call () A`、`A call ()`、
   `A accDescr {} --> B` です。
+  文の始まりと文の最後の単位の後の空の文字列と空の呼び出しは、
+  どの文でも拒否します。
+  `A --> B ""`、`note for A "x" call ()`、`cssClass "A" c ""`、
+  `click A href "u" call ()`、`class A {`、改行、`}""` がその例です。
+  隣にコメント行、空行、U+2028、ディレクティブ、無視される `;`、
+  空の説明ブロックがあっても同じです。
+  [fixture: class/div-empty-call-statement-start]
+  [fixture: class/div-empty-call-after-name]
+  [fixture: class/div-empty-call-after-relation]
+  [fixture: class/div-empty-call-after-note]
+  [fixture: class/div-empty-call-after-css-class]
+  [fixture: class/div-empty-call-after-click]
+  [fixture: class/div-empty-string-after-class-statement]
+  [fixture: class/div-empty-string-after-relation]
+  [fixture: class/div-empty-string-after-note]
+  [fixture: class/div-empty-string-after-css-class]
+  [fixture: class/div-empty-string-after-body]
+  [fixture: class/div-empty-string-before-comment-line]
+  [fixture: class/div-empty-call-before-comment-line]
+  [fixture: class/div-empty-string-before-empty-line]
+  [fixture: class/div-empty-call-before-empty-line]
+  [fixture: class/div-empty-string-before-line-separator]
+  [fixture: class/div-empty-call-before-line-separator]
+  [fixture: class/div-empty-string-after-directive]
+  [fixture: class/div-empty-call-after-directive]
+  [fixture: class/div-empty-call-statement-start-after-directive]
+  [fixture: class/div-empty-string-before-empty-description-block]
+  [fixture: class/div-empty-call-before-empty-description-block]
+  [fixture: class/div-empty-call-after-empty-description-block]
+  [fixture: class/div-empty-string-before-ignored-semicolon]
+  [fixture: class/div-empty-call-before-ignored-semicolon]
+  mermaid.js は、1 行だけの `call ()`、`class A call ()`、`class A {`、改行、
+  `} call ()`、無視されない `;` の前の空の文字列と空の呼び出しを拒否するので、
+  これらの入力はこの差に含まれません。 [fixture: class/gram-empty-call-line]
+  [fixture: class/gram-empty-call-after-class-statement]
+  [fixture: class/gram-empty-call-after-body]
+  [fixture: class/gram-empty-string-before-semicolon]
+  [fixture: class/gram-empty-call-before-semicolon]
   多重度やツールチップの空の文字列は、どちらも受理します。
   クラスの名前の終わりの空のジェネリクスの型もそうで、
   `class A~~` は型のない A を宣言します。 [fixture:
@@ -1317,7 +1387,7 @@ class 図に当てはまり、次のように表れます。
   ただし、`%%` の後に文字のあるコメント行がその行のすぐ後に来るときは別です。
   mermaid.js は、テキストを読む前に、そのようなコメント行を、
   すぐ前の空白だけの行と一緒に除き（mermaid.js の
-  [`cleanupComments`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)）、
+  [`cleanupComments`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagram-api/comments.ts#L6-L8)）、
   次の行をまたつなぎます。
   `A --> B %% c`、空白の行、`%% x`、`A : +int age` は、
   mermaid.js では A から `BA` への関係です。

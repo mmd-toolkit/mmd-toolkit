@@ -328,13 +328,16 @@ statement: after a `,` at the end of the list, as in `style A fill:#f00, `.
 mermaid.js drops whitespace at the start of a label without quotes, and so does
 formatting, except where the label would then be read differently: the
 whitespace is kept, as one space, when the label starts with `/`, `\`, `-`, or
-`"`, or when its first word contains `@`, and the label then gets one space at
-its end too. [fixture: flowchart/label-inner-whitespace/trimmed] [fixture:
+`"`, or when the label of a `>` shape has a `@` in its first word, and the label
+then gets one space at its end too. [fixture:
+flowchart/label-inner-whitespace/trimmed] [fixture:
 flowchart/label-inner-whitespace/leading-whitespace-kept] [fixture:
 flowchart/label-inner-whitespace/compat-leading-backslash-kept] For example,
 `A[ /x/]` is a rectangle with the label `/x/`, while `A[/x/]` is a lean-right
-shape with the label `x`, and `A[x@]` is rejected. See
-[Label inner whitespace](./flowchart.md#label-inner-whitespace).
+shape with the label `x`. See
+[Label inner whitespace](./flowchart.md#label-inner-whitespace). In agentflow,
+where `A[x@]` is rejected, the whitespace is kept in every shape when the first
+word of the label contains `@`.
 
 ## Directives between tokens
 

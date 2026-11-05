@@ -1,0 +1,65 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A data block of a subgraph with the key laneRole and another key a. laneRole is dropped, and the subgraph has metadata with a only."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "a",
+        "props": {}
+      },
+      {
+        "id": "S",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "S",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "a"
+        ],
+        "title": "S",
+        "classes": [],
+        "labelType": "text",
+        "metadata": {
+          "a": 1
+        }
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "S",
+        "set": {
+          "metadata": {
+            "a": 1
+          }
+        }
+      }
+    ]
+  }
+}

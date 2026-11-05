@@ -4,10 +4,10 @@ Japanese version: [sequence.ja.md](./sequence.ja.md)
 
 Source of truth in mermaid.js:
 
-- [`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison)
-- [`sequenceDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts)
+- [`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison)
+- [`sequenceDb.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/sequenceDb.ts)
 - the tests in
-  [`sequenceDiagram.spec.js`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js)
+  [`sequenceDiagram.spec.js`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js)
 
 This document covers the diagram type `sequence`. The nodes of the tree are
 defined in [ast/sequence.md](../ast/sequence.md).
@@ -628,7 +628,7 @@ instead of characters. A unit name, such as `id`, stands for one unit with that
 name, and text in double quotes stands for the unit named by that text, such as
 `"participant"` or `"+"`. `end-of-text` stands for the end of the text. The
 grammar is a restatement of the grammar in
-[`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L136-L422)
+[`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L136-L422)
 and accepts the same inputs. The jison grammar also takes a `link` unit where it
 takes an id. The lexer never makes such a unit where it would complete a
 statement, because rule 11 reads `link` as a unit only before spaces or tabs and
@@ -967,7 +967,7 @@ The inputs are these:
 For the messages after `create` and `destroy`, two places are kept while the
 statements are applied, each empty or holding one id: the **participant awaiting
 creation** and the **participant awaiting destruction** (see
-[`sequenceDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L581-L645)).
+[`sequenceDb.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L581-L645)).
 Both start empty.
 
 - A statement with `create`, a destroy statement with `create` included, puts

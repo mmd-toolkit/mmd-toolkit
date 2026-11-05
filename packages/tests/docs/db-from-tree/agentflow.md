@@ -165,7 +165,7 @@ agentflow/db-flow-self-reference] [fixture: agentflow/gram-flow-nested]
 [fixture: agentflow/db-flow-collapse] [fixture:
 agentflow/db-diagnostics-containment-cycle]
 
-[`addSubGraph`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1187-L1265)
+[`addSubGraph`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1187-L1265)
 uses ordinary object keys to remove candidate duplicates, but `includes()` to
 merge into an existing member list. Assigning a boolean to the object's
 `__proto__` creates no own key, so every occurrence survives the first step; the

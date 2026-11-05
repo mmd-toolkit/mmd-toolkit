@@ -235,6 +235,17 @@ arrows/arrow-length-change-unsafe] [fixture: arrows/arrow-lengths] [fixture:
 arrows/edge-id] [fixture: arrows/marker-letter-vertex] [fixture:
 arrows/three-kinds]
 
+An edge id after a data block touches it: a vertex statement takes no whitespace
+after a data block except the one that an arrow reads, so
+`A@{ shape: rect }e1@-->B` is accepted and `A@{ shape: rect } e1@-->B` is
+rejected. [fixture: arrows/edge-id-after-data-block-touches] An edge id that
+starts as an arrow does touches the shape or the data block before it, as in
+`A["x"]--a@-->B`. In agentflow that is an edge id that starts with `--`, `-.-`,
+or `-..-`; one such as `x--a`, `==a`, `-.a`, or `.-a` is read the same after
+whitespace, and has one space before it. [fixture:
+arrows/edge-id-arrow-like-kept-attached] [fixture:
+arrows/edge-id-not-arrow-like-gets-one-space]
+
 Input (escaped): `"agentflow-beta TB\nA--xB"`. [fixture:
 arrows/arrow-kind-change-unsafe]
 
@@ -281,8 +292,8 @@ preserve that padding, the comment and its LF/continuation columns, including a
 closing bracket that belongs to the comment rather than closing the shape.
 Tildes remain content. Shape spellings, entities and HTML remain authored.
 [fixture: labels/labels-closers] [fixture: labels/labels-leading-sensitive]
-[fixture: labels/labels-padding] [fixture: labels/labels-tilde] [fixture:
-labels/labels-trim-sensitive-unsafe]
+[fixture: labels/labels-leading-at-sign] [fixture: labels/labels-padding]
+[fixture: labels/labels-tilde] [fixture: labels/labels-trim-sensitive-unsafe]
 
 Flow/connector heading titles follow
 [Subgraph header](./flowchart.md#subgraph-header) instead: keep their interior

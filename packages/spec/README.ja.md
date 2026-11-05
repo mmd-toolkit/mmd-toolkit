@@ -17,8 +17,8 @@ mermaid-js とは関係のない、第三者のプロジェクトです。
 
 この仕様は、
 コミット
-[`1fb7869`](https://github.com/mermaid-js/mermaid/tree/1fb7869866dd619168d840291c9c54b4f129758b)
-の mermaid 12.2.0 に従います。
+[`2086904`](https://github.com/mermaid-js/mermaid/tree/2086904e76c692331e34a45d7cc3bc30860d040e)
+の mermaid 12.3.0 に従います。
 仕様とその版が食い違う場合は mermaid.js が正しく、仕様に誤りがあります。
 ただし、
 [既知の差異](./docs/known-divergences.ja.md) に挙げた意図的な違いは除きます。

@@ -4,15 +4,15 @@
 
 mermaid.js での根拠:
 
-- [`agentflow.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/parser/agentflow.jison#L38-L673)
-- [`afDetector.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/afDetector.ts#L7-L11)
-- [`NOTES.md`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/NOTES.md#L20-L62)
-- [`agentflowParser.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/parser/agentflowParser.ts#L1-L18)
-- [`agentflowDb.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L213-L2492)
-- [`shapes.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/shapes.ts#L1-L147)
-- [`transformData.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/transformData.ts#L1-L22)
-- [`types.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/types.ts#L1-L244)
-- [`diagnostics.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/agentflow/diagnostics.ts#L1-L192)
+- [`agentflow.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/parser/agentflow.jison#L38-L673)
+- [`afDetector.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/afDetector.ts#L7-L11)
+- [`NOTES.md`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/NOTES.md#L20-L62)
+- [`agentflowParser.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/parser/agentflowParser.ts#L1-L18)
+- [`agentflowDb.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L213-L2492)
+- [`shapes.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/shapes.ts#L1-L148)
+- [`transformData.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/transformData.ts#L1-L22)
+- [`types.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/types.ts#L1-L244)
+- [`diagnostics.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/diagnostics.ts#L1-L192)
 
 `agentflow` を扱う。
 木は [ast/agentflow.md](../ast/agentflow.ja.md) に定義する。
@@ -121,6 +121,28 @@ LF や他の空白文字は取らない。
 [fixture: agentflow/lex-linkstyle-double-space-keyword]
 [fixture: agentflow/gram-callback-tooltip-double-space]
 [fixture: agentflow/gram-pipe-label-two-spaces-after]
+
+flowchart の文の文脈の規則 15 を次の規則に置き換える。
+辺の id は、空白でも `"` でもない 1 個以上の文字と、その後の、
+`{` でも `"` でもない文字が後に続く `@` とする。
+並びは、次の空白か `"` より前にある、そのような最後の `@` で終わる。
+そのため flowchart と異なり、`[`、`]`、`(`、`)`、`{`、`}`、
+`|` は並びを止めない。
+`A e[1@--> B` の辺の id は `e[1` で、ほかの 6 文字も同じように並びに含める。
+`A[x@]` と `A-->|x@|B` は、`A[x` と `A-->|x` を辺の id として読み、拒否する。
+`A[ x@ ]` のラベルと `A-->| x@ |B` のリンクテキストは `x@` である。
+空白が `@` の前で並びを止めるからである。
+[fixture: agentflow/lex-edge-id-bracket-in-run]
+[fixture: agentflow/lex-edge-id-in-label]
+[fixture: agentflow/lex-edge-id-in-pipe-label]
+[fixture: agentflow/lex-edge-id-space-label]
+[fixture: agentflow/lex-edge-id-space-pipe-label]
+[fixture: agentflow/lex-edge-id-close-square-in-run]
+[fixture: agentflow/lex-edge-id-open-paren-in-run]
+[fixture: agentflow/lex-edge-id-close-paren-in-run]
+[fixture: agentflow/lex-edge-id-open-brace-in-run]
+[fixture: agentflow/lex-edge-id-close-brace-in-run]
+[fixture: agentflow/lex-edge-id-pipe-in-run]
 
 ### 矢印
 
@@ -757,6 +779,25 @@ id、形、::: のクラス、データの接尾部を空白で離せない。
 [fixture: agentflow/gram-node-three-definitions]
 [fixture: agentflow/gram-bracket-shapes] [fixture: agentflow/gram-props]
 
+flowchart と異なり、頂点の文はデータブロックの後に空白を取らない。
+flowchart の生成規則とその空白についての文の代わりに、次の生成規則を使う。
+
+```text
+vertex-statement = vertex-group ( data | space+ )? ( link vertex-group ( data | space+ )? )*
+```
+
+`A@{ shape: rect } ;B`、`A-->B@{} ;C`、`A & B@{} ;C`、`A:::c@{} ;B`、
+`A@{} e1@-->B` は拒否する。
+`A@{ shape: rect } --> B` は受理する。
+矢印がその前の空白を読み、
+LF で終わる空白は上の変換でその LF として読むからである。
+[fixture: agentflow/gram-data-space-semicolon]
+[fixture: agentflow/gram-data-target-space-semicolon]
+[fixture: agentflow/gram-data-group-space-semicolon]
+[fixture: agentflow/gram-data-class-space-semicolon]
+[fixture: agentflow/gram-data-space-edge-id]
+[fixture: agentflow/gram-data-space-link]
+
 flowchart の表の完全な形の名前を、ここでも構文の名前として使う。
 Agentflow のドメインの metadata の alias にはしない。
 プロパティの長方形には Identifier の項を 2 つ持たせる。
@@ -1034,6 +1075,19 @@ flowchart の
 を参照する。
 文の始まりでは、同じ行の次の文の前も含め、閉じた空のブロック自身を文とする。
 完成した文とその区切りの間では、その文の値の一部ではなく後続の文とする。
+データブロックで終わる頂点の文は、ブロックの周りの空白を取らない。
+そのため flowchart と異なり、 `A@{ shape: rect } accDescr {}`、
+`A@{}accDescr {} ;B`、 `A@{}accDescr {} accDescr {}` は、
+その空白が U+2028 でも、ディレクティブを含んでも拒否する。
+`A@{}accDescr {}` は受理する。
+その後に LF で終わる空白が続くものも受理し、その空白はその LF として読む。
+[fixture: agentflow/gram-empty-description-after-data-space]
+[fixture: agentflow/gram-empty-descriptions-after-data-space-between]
+[fixture: agentflow/gram-empty-description-after-data-directive]
+[fixture: agentflow/gram-empty-description-after-data-line-separator]
+[fixture: agentflow/gram-empty-description-after-data-ignored-semicolon]
+[fixture: agentflow/gram-empty-description-after-data-comment-line]
+[fixture: agentflow/gram-empty-description-after-data-empty-line]
 [fixture: agentflow/lex-empty-description-before-node]
 [fixture: agentflow/gram-empty-description-after-vertex]
 [fixture: agentflow/gram-empty-description-after-data]
@@ -1081,14 +1135,50 @@ mermaid.js が受理する場合は tokenless-empty-forms として拒否する�
 [fixture: agentflow/gram-empty-description-after-class-glued]
 [fixture: agentflow/gram-empty-description-after-class-space]
 
-文の始まりの、全体が消される空の文字列、空の markdown 文字列、空の call は、
+文の始まりや文の最後の単位の後の、全体が消される空の文字列、
+空の markdown 文字列、空の call は、
 tokenless-empty-forms の agentflow の明示の例外により拒否する。
 これらのための IgnoredStatement は作らない。
+文の最後の単位の後では、`A ""`、`A "``"`、`A call ()`、`A[x]""`、`A:::c ""`、
+`A --> B ""`、`A@{}""`、`A "";B`、`A "" ""`、`end ""` がこれに当たり、
+flow の本体の中でも同じとする。
+その形の隣のコメント行、空行、U+2028、ディレクティブ、無視する `;`、
+空の説明ブロックは、これを変えない。
 [fixture: agentflow/div-empty-string-statement]
 [fixture: agentflow/div-empty-markdown-statement]
 [fixture: agentflow/div-empty-call-statement]
 [fixture: agentflow/div-empty-string-before-vertex]
 [fixture: agentflow/div-empty-call-before-vertex]
+[fixture: agentflow/div-empty-string-after-vertex]
+[fixture: agentflow/div-empty-markdown-after-vertex]
+[fixture: agentflow/div-empty-call-after-vertex]
+[fixture: agentflow/div-empty-string-after-shape]
+[fixture: agentflow/div-empty-string-after-class-suffix]
+[fixture: agentflow/div-empty-string-after-link-target]
+[fixture: agentflow/div-empty-call-after-link-target]
+[fixture: agentflow/div-empty-string-after-data-block]
+[fixture: agentflow/div-empty-call-after-data-block]
+[fixture: agentflow/div-empty-string-before-semicolon]
+[fixture: agentflow/div-empty-call-before-semicolon]
+[fixture: agentflow/div-empty-string-after-end]
+[fixture: agentflow/div-empty-string-in-flow-body]
+[fixture: agentflow/div-empty-strings-after-vertex]
+[fixture: agentflow/div-empty-string-then-call-after-vertex]
+[fixture: agentflow/div-empty-string-before-comment-line]
+[fixture: agentflow/div-empty-string-before-empty-line]
+[fixture: agentflow/div-empty-call-before-empty-line]
+[fixture: agentflow/div-empty-string-before-line-separator]
+[fixture: agentflow/div-empty-string-after-line-separator]
+[fixture: agentflow/div-empty-string-after-directive]
+[fixture: agentflow/div-empty-string-before-directive]
+[fixture: agentflow/div-empty-string-before-ignored-semicolon]
+[fixture: agentflow/div-empty-call-before-ignored-semicolon]
+[fixture: agentflow/div-empty-string-before-empty-description-block]
+[fixture: agentflow/div-empty-string-after-empty-description-block]
+[fixture: agentflow/div-empty-call-after-empty-description-block]
+`A@{} ""` は mermaid.js も拒否する。
+頂点の文はデータブロックの後に空白を取らないからである。
+[fixture: agentflow/gram-data-space-empty-string]
 
 それ以外の位置では、認識した消される空の形を、既存の欄が保てる場合に受理する。
 flow と connector の名前では AgentflowName.parts、
@@ -1289,8 +1379,8 @@ Comment の記録はヘッダー前のディレクティブでない percent と
 [fixture: agentflow/div-comment-header-percent-brace]
 
 [tokenless-empty-forms](../known-divergences/tokenless-empty-forms.ja.md):
-文の始まりでは、明示の例外により、消される空の文字列、markdown、
-call を拒否する。
+文の始まりと文の最後の単位の後では、明示の例外により、消される空の文字列、
+markdown、call を拒否する。
 保持する欄のない内部の消される形や空の説明ブロックは理由 1 で拒否する。
 Name.parts や click の textBeforeUrl、textBeforeTooltip にある、
 認識した消される空の形は IgnoredText として受理する。

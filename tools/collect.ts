@@ -276,6 +276,39 @@ const ERRORS_AFTER_THEIR_INPUT: Readonly<
     }[]
   >
 > = {
+  "diagrams/flowchart/parser/flow-node-data.spec.js": [
+    {
+      test: "when parsing directions > should give step edges the default step duration",
+      error: "Cannot read properties of undefined (reading 'stepDuration')",
+      reason:
+        "the only parse call precedes reading the edges of the stubbed Db data",
+    },
+    {
+      test: "when parsing directions > should take the step duration from the flowchart config",
+      error: "Cannot read properties of undefined (reading 'stepDuration')",
+      reason:
+        "the only parse call precedes reading the edges of the stubbed Db data",
+    },
+    {
+      test: "when parsing directions > should mark step edges for a number badge only when stepNumbers is on",
+      error: "Cannot read properties of undefined (reading 'showStepNumber')",
+      reason:
+        "the only parse call precedes reading the edges of the stubbed Db data",
+    },
+    {
+      test: "when parsing directions > should leave step edges without a number badge by default",
+      error:
+        "Cannot use 'in' operator to search for 'showStepNumber' in undefined",
+      reason:
+        "the only parse call precedes reading the edges of the stubbed Db data",
+    },
+    {
+      test: "when parsing directions > should leave edges without a step free of step data",
+      error: "Cannot use 'in' operator to search for 'step' in undefined",
+      reason:
+        "the only parse call precedes reading the edges of the stubbed Db data",
+    },
+  ],
   "diagrams/git/gitGraph.spec.ts": [
     {
       test: "when parsing a gitGraph > when parsing more advanced gitGraphs > should handle merge with custom ids, tags and type",
@@ -293,6 +326,12 @@ const ERRORS_AFTER_THEIR_INPUT: Readonly<
     },
   ],
   "diagrams/usecase/usecase.spec.ts": [
+    {
+      test: "UseCase diagram with Chevrotain parser > P4 LayoutData contract > maps relationship semantics, markers, animation, styles, and note attachments exactly",
+      error: "Cannot read properties of undefined (reading 'label')",
+      reason:
+        "the test passes no text to a parser, so no input can be missing; it builds its model by hand and fails on an assertion about the stubbed layout data",
+    },
     {
       test: "UseCase diagram with Chevrotain parser > when parsing relationships > should parse actor to use case relationship",
       error: "Cannot read properties of undefined (reading 'source')",
@@ -667,7 +706,7 @@ function markdownFiles(dir: string): string[] {
 /**
  * The blocks of the demo pages that belong to `diagram`.
  *
- * The text is what `mermaid.run()` reads from the page ([`run`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaid.ts#L173-L178)):
+ * The text is what `mermaid.run()` reads from the page ([`run`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/mermaid.ts#L173-L178)):
  * the element's content with character references decoded, then `dedent()`
  * (mermaid's own `ts-dedent`), then trimmed. Like a browser, the line feed
  * right after `<pre>` is not part of the content. `run()` also rewrites every

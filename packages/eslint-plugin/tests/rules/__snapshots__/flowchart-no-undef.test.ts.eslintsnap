@@ -320,6 +320,20 @@ Code:
 ---
 
 
+Test: flowchart-no-undef >> invalid >>> invalid/flowchart/edge-label-ending-at-sign-is-no-edge-id
+Filename: tests/fixtures/rules/flowchart-no-undef/invalid/flowchart/edge-label-ending-at-sign-is-no-edge-id-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A-->|x@|B
+  3 | class x foo
+    |       ^ [1]
+  4 |
+
+[1] mermaid.js gives no element these classes for the undefined id `x`.
+---
+
+
 Test: flowchart-no-undef >> invalid >>> invalid/flowchart/generated-edge-id-missing
 Filename: tests/fixtures/rules/flowchart-no-undef/invalid/flowchart/generated-edge-id-missing-input.mmd
 
@@ -332,4 +346,18 @@ Code:
   5 |
 
 [1] mermaid.js gives no element these classes for the undefined id `L_A_B_1`.
+---
+
+
+Test: flowchart-no-undef >> invalid >>> invalid/flowchart/shape-label-ending-at-sign-is-no-edge-id
+Filename: tests/fixtures/rules/flowchart-no-undef/invalid/flowchart/shape-label-ending-at-sign-is-no-edge-id-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A[x@]-->B
+  3 | class x foo
+    |       ^ [1]
+  4 |
+
+[1] mermaid.js gives no element these classes for the undefined id `x`.
 ---

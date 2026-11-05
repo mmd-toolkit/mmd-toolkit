@@ -142,9 +142,12 @@ statements-one-per-line/compat-empty-description-block-after-statement]
 statements-one-per-line/compat-empty-description-block-before-separator]
 [fixture:
 statements-one-per-line/compat-empty-description-block-before-statement]
+[fixture:
+statements-one-per-line/compat-empty-description-block-after-data-block]
 Statements written on one line and separated by `;` are split into lines: a `;`
 only separates them, and a line of several statements is hard to read. [fixture:
-statements-one-per-line/separated-by-semicolons-meets-others]
+statements-one-per-line/separated-by-semicolons-meets-others] [fixture:
+statements-one-per-line/separated-by-semicolons-after-data-block]
 
 A line that holds a `;` other than one that separates statements, such as the
 `;` in `A[x;]`, in `accTitle: a;b`, or in a comment, keeps its statements and
@@ -759,6 +762,24 @@ arrow-spacing/pipe-label-other-link-kinds] [fixture:
 arrow-spacing/edge-id-with-labels] [fixture:
 arrow-spacing/edge-id-whitespace-before-arrow-dropped]
 
+An edge id that starts as an arrow does (`--`, `==`, `-.`, or dots and then `-`,
+with or without the head `x`, `o`, or `<`, or `~~~` without a head) touches the
+shape before it. It is an edge id only without whitespace before it: after
+whitespace the lexer reads the arrow, and the rest is its text or the input is
+rejected, so `A[x]--a@-->B` has the edge id `--a`, and `A[x] --a@-->B` has the
+link text `a@`. [fixture: arrow-spacing/edge-id-arrow-like-kept-attached]
+[fixture: arrow-spacing/edge-id-arrow-like-with-head] [fixture:
+arrow-spacing/edge-id-arrow-like-dotted-forms] [fixture:
+arrow-spacing/edge-id-arrow-like-after-every-shape] [fixture:
+arrow-spacing/edge-id-arrow-like-with-link-text] [fixture:
+arrow-spacing/edge-id-arrow-like-chain] [fixture:
+arrow-spacing/edge-id-arrow-like-after-whitespace-is-link-text] Any other edge
+id has one space before it, such as `=a`, `~~a`, `.a`, `x-a`, and `x~~~a`.
+[fixture: arrow-spacing/edge-id-not-arrow-like-gets-one-space] A directive or an
+ignored `;` between the shape and the edge id keeps the whitespace on each side
+as written. [fixture: arrow-spacing/edge-id-arrow-like-after-directive]
+[fixture: arrow-spacing/edge-id-arrow-like-after-ignored-semicolon]
+
 Input
 ([arrow-spacing/plain-input.mmd](../tests/fixtures/flowchart/arrow-spacing/plain-input.mmd)):
 
@@ -833,6 +854,30 @@ flowchart LR
   A e1@--> B
 ```
 
+Input
+([arrow-spacing/edge-id-arrow-like-kept-attached-input.mmd](../tests/fixtures/flowchart/arrow-spacing/edge-id-arrow-like-kept-attached-input.mmd)):
+
+```mmd
+flowchart LR
+A[x]--a@-->B
+C[x]==c@==>D
+E[x]-.e@.->F
+G[x].-g@-.->H
+I[x]~~~i@~~~J
+```
+
+Output
+([arrow-spacing/edge-id-arrow-like-kept-attached-output.mmd](../tests/fixtures/flowchart/arrow-spacing/edge-id-arrow-like-kept-attached-output.mmd)):
+
+```mmd
+flowchart LR
+  A[x]--a@--> B
+  C[x]==c@==> D
+  E[x]-.e@.-> F
+  G[x].-g@-.-> H
+  I[x]~~~i@~~~ J
+```
+
 ### Label inner whitespace
 
 Whitespace at the ends of a label without quotes is dropped, as mermaid.js drops
@@ -844,18 +889,28 @@ label-inner-whitespace/quotes-kept]
 
 The whitespace at the start of a label is kept, as one space, when the label
 would be read differently without it: when the label starts with `/`, `\`, `-`,
-or `"`, and when its first word, up to whitespace or a `"`, contains `@`.
-[fixture: label-inner-whitespace/compat-leading-backslash-kept] [fixture:
+or `"`, and when the label of a `>` shape has a `@` in its first word, up to
+whitespace or a `"`. [fixture:
+label-inner-whitespace/compat-leading-backslash-kept] [fixture:
 label-inner-whitespace/leading-whitespace-trimmed-without-trigger] [fixture:
 label-inner-whitespace/leading-whitespace-run-becomes-one] Without the space,
 `A[ /x/]` would become a lean-right shape with the label `x`, `A( -x-)` an
-ellipse, and `A[ x@ ]` would be rejected. Such a label then has one space at its
-end too: `A[ /x/]` becomes `A[ /x/ ]`, except before the closing `?]` or `=]` of
-a slanted shape, where mermaid.js would read the space and the `?` or `=` as
-text: `A[/ -x/?]` stays as it is. The rule is the same for every shape and for
-the text between `|`. [fixture:
+ellipse, and `A>x@ ]` would be rejected, because the run of an edge id does not
+stop at `>` and reads `A>x` as an edge id. Such a label then has one space at
+its end too: `A[ /x/]` becomes `A[ /x/ ]`, except before the closing `?]` or
+`=]` of a slanted shape, where mermaid.js would read the space and the `?` or
+`=` as text: `A[/ -x/?]` stays as it is. The rule is the same for every shape
+and for the text between `|`, except for the `@`. [fixture:
 label-inner-whitespace/leading-whitespace-every-shape-kept] [fixture:
 label-inner-whitespace/leading-whitespace-pipe-label-kept]
+
+After any other opening than `>`, a `@` in a label needs no space. The run of an
+edge id stops at the brackets and at `|`, so `A[x@]` and `A-->|x@|B` have the
+label `x@` with or without the whitespace, and `A[ user@example.com ]` becomes
+`A[user@example.com]`. [fixture:
+label-inner-whitespace/leading-whitespace-at-sign-trimmed] Agentflow differs:
+its edge id run does not stop there, `A[x@]` is rejected, and so the space stays
+before a label whose first word has a `@` (see [Labels](./agentflow.md#labels)).
 
 Input
 ([label-inner-whitespace/trimmed-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/trimmed-input.mmd)):
@@ -920,10 +975,9 @@ A[ /x/]
 B( -x-)
 C(( -x))
 D[/ "x /]
-E[ user@example.com ]
-F-->| x@ |G
 H[ %%{init: {}}%%/x/]
 I{ -x }
+J> x@ ]
 ```
 
 Output
@@ -935,10 +989,9 @@ flowchart LR
   B( -x- )
   C(( -x ))
   D[/ "x /]
-  E[ user@example.com ]
-  F -->| x@ | G
   H[ %%{init: {}}%%/x/ ]
   I{ -x }
+  J> x@ ]
 ```
 
 Input

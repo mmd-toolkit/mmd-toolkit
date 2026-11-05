@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md Empty description blocks and erased forms: the space between the blocks is whitespace that no line feed ends, which no rule takes after a data block, so the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...Descr {} accDescr {}\n-----------------------^\nExpecting 'AMP', got 'NEWLINE'"
+  }
+}

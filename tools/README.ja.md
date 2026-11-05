@@ -38,7 +38,7 @@ mermaid の無関係なテストファイル、例えば `mermaid.spec.ts`、
    `packages/tests/package.json` の devDependency `mermaid` の版を続けます。
 
    ```sh
-   git clone --depth 1 --branch mermaid@12.2.0 https://github.com/mermaid-js/mermaid.git <checkout>
+   git clone --depth 1 --branch mermaid@12.3.0 https://github.com/mermaid-js/mermaid.git <checkout>
    ```
 
    収集の道具は、チェックアウトがそのタグにあることを確かめます。

@@ -1,7 +1,11 @@
 import type {
   AgentflowConnectorStatement,
+  AgentflowDiagram,
+  AgentflowLabel,
   AgentflowLink,
   AgentflowShape,
+  AgentflowVertex,
+  Node,
 } from "@mmd-toolkit/parser"
 import type { MermaidRuleVisitor } from "../rule-types.ts"
 import {
@@ -17,6 +21,8 @@ interface ElementValues {
   label: string | null
   shape: string
   kind: string
+  /** The kind of the written label and the property of the written shape, which mermaid.js records apart from the drawing. */
+  form: string
   readonly connector: boolean
 }
 
@@ -25,7 +31,25 @@ type ReplacedField = "label" | "drawn shape" | "kind"
 
 /** Observers of the two declarations that can replace an element's fields. */
 interface ElementObserver {
+  /** The diagram, before any of its statements. */
+  diagram?(node: AgentflowDiagram): void
   vertex?(node: AgentflowShape, id: string, field: ReplacedField): void
+  /**
+   * A vertex of a statement without a link that has no class or data block and
+   * writes only the id, or the label, shape, and kind that the element has;
+   * `parent` is the node that holds the statement.
+   */
+  unchanged?(node: AgentflowVertex, id: string, parent: Node | null): void
+  /**
+   * A connector declaration of an existing connector with no data block that
+   * has no title or the title that the connector has; `parent` is the node
+   * that holds the declaration.
+   */
+  unchangedConnector?(
+    node: AgentflowConnectorStatement,
+    id: string,
+    parent: Node | null,
+  ): void
   connector?(
     node: AgentflowConnectorStatement,
     id: string,
@@ -33,12 +57,24 @@ interface ElementObserver {
   ): void
 }
 
-/** Agentflow draws only these three bracket shapes distinctly. */
+/** How mermaid.js records a written label and shape, besides what is drawn. */
+function formOf(
+  label: AgentflowLabel | null,
+  shape: AgentflowShape | null,
+): string {
+  const property = shape?.property
+  return `${label?.kind ?? ""}|${
+    property ? `${property.name.name}:${property.value.name}` : ""
+  }`
+}
+
+/** Agentflow draws only these four bracket shapes distinctly. */
 function drawnShape(shape: AgentflowShape): string {
   switch (shape.name) {
     case "diamond":
     case "hexagon":
     case "framed-rectangle":
+    case "lean-right":
       return shape.name
     default:
       return "rounded"
@@ -90,39 +126,69 @@ export function agentflowElementDeclarations(
 ): MermaidRuleVisitor {
   const elements = new Map<string, ElementValues>()
   const edgeIds = new Set<string>()
+  /** The ids of the vertices and connectors written so far. */
+  const written = new Set<string>()
   let linkIds: ReadonlyMap<AgentflowLink, readonly string[]> = new Map()
+  /** Whether the statement being visited has a link, and the node that holds it. */
+  let linked = false
+  let container: Node | null = null
   return {
     AgentflowDiagram(node) {
       linkIds = agentflowLinkIdsOf(node)
+      observer.diagram?.(node)
+    },
+    AgentflowVertexStatement(node, parent) {
+      linked = node.links.length > 0
+      container = parent
     },
     AgentflowVertex(node) {
-      if (node.shape === null) return
       const id = normalizeLineTerminators(node.id.name)
       if (!isAgentflowOrdinaryVertexId(id) || edgeIds.has(id)) return
+      const bare = !linked && node.cssClass === null && node.data.length === 0
+      const seen = written.has(id)
+      written.add(id)
+      if (node.shape === null) {
+        if (bare && seen) observer.unchanged?.(node, id, container)
+        return
+      }
       const label = agentflowLabelText(node.shape.label)
+      const form = formOf(node.shape.label, node.shape)
       const shape = drawnShape(node.shape)
       const previous = elements.get(id)
       const kind =
         previous?.connector === true ? "connector" : vertexKind(node.shape)
       const field = replacedFieldOf(previous, label, shape, kind)
       if (field !== null) observer.vertex?.(node.shape, id, field)
+      else if (bare && seen && previous?.form === form) {
+        observer.unchanged?.(node, id, container)
+      }
       elements.set(id, {
         label,
         shape,
         kind: previous?.connector === true ? previous.kind : kind,
+        form,
         connector: previous?.connector ?? false,
       })
     },
-    AgentflowConnectorStatement(node) {
+    AgentflowConnectorStatement(node, parent) {
       const id = agentflowConnectorId(node.name)
       if (id === null) return
       const title = node.title === null ? "" : agentflowLabelText(node.title)
       const previous = elements.get(id)
+      written.add(id)
       if (previous?.connector === true) {
-        if (title === "") return
+        const bare = node.data.length === 0
+        if (title === "") {
+          if (bare) observer.unchangedConnector?.(node, id, parent)
+          return
+        }
         const field = replacedFieldOf(previous, title, null, null)
         if (field !== null) observer.connector?.(node, id, field)
+        else if (bare && previous.label !== null) {
+          observer.unchangedConnector?.(node, id, parent)
+        }
         previous.label = title
+        previous.form = formOf(node.title, null)
         return
       }
       const field = replacedFieldOf(
@@ -136,6 +202,7 @@ export function agentflowElementDeclarations(
         label: title === "" ? null : title,
         shape: "rounded",
         kind: "connector",
+        form: formOf(node.title, null),
         connector: true,
       })
     },

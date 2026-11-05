@@ -419,6 +419,16 @@ export class AgentflowGrammar extends GraphGrammar<
     }
   }
 
+  /** Vertex statements: the `space+` of `( data | space+ )?` after `group`. */
+  protected override takeSpacesAfterGroup(group: {
+    readonly vertices: readonly {
+      readonly data: readonly AgentflowDataBlock[]
+    }[]
+  }): void {
+    const last = group.vertices[group.vertices.length - 1]
+    if (last.data.length === 0) this.takeAll("space")
+  }
+
   /** AgentflowVertexStatement: the diagram's node for the shared production. */
   private parseVertexStatement(): AgentflowVertexStatement {
     return {

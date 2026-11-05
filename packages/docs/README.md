@@ -52,7 +52,7 @@ Diagram types are discovered from the English files in
 specification's localized headings for their sidebar labels. Adding another
 diagram needs no new entry in the site's configuration. The presentation order
 follows Mermaid's
-[`sidebarSyntax()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/docs/.vitepress/config.ts#L160-L207)
+[`sidebarSyntax()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/.vitepress/config.ts#L164-L207)
 and is defined in `.vitepress/documents.js`. Types without a defined position
 are appended in filename order.
 

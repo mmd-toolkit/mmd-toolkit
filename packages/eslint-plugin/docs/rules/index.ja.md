@@ -40,17 +40,17 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 
 ## flowchart
 
-| 規則                                                                                       | 説明                                                                    | ✅  | 🔧  | 💡  |
-| ------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------- | --- | --- | --- |
-| [flowchart-no-duplicate-description](./flowchart-no-duplicate-description.ja.md)           | 説明をもう一度設定する `accDescr` の文を禁止する。                      | ✅  |     | 💡  |
-| [flowchart-no-duplicate-direction](./flowchart-no-duplicate-direction.ja.md)               | その subgraph の方向を置き換える `direction` 文を禁止する。             | ✅  |     | 💡  |
-| [flowchart-no-duplicate-title](./flowchart-no-duplicate-title.ja.md)                       | タイトルをもう一度設定する `accTitle` の文を禁止する。                  | ✅  |     | 💡  |
-| [flowchart-no-empty-description-block](./flowchart-no-empty-description-block.ja.md)       | 説明を持たない `accDescr` のブロックを禁止する。                        | ✅  |     | 💡  |
-| [flowchart-no-ignored-text](./flowchart-no-ignored-text.ja.md)                             | 方向の行にあって、mermaid.js が捨てるテキストを禁止する。               | ✅  |     |     |
-| [flowchart-no-redefined-subgraph](./flowchart-no-redefined-subgraph.ja.md)                 | 同じ id に保たれる題と違う題を持つ subgraph の宣言を禁止する。          | ✅  |     |     |
-| [flowchart-no-redefined-vertex](./flowchart-no-redefined-vertex.ja.md)                     | 頂点の形やラベルを、後で違うものに書き直すことを禁止する。              | ✅  |     |     |
-| [flowchart-no-unclosed-description-block](./flowchart-no-unclosed-description-block.ja.md) | 閉じる `}` のない `accDescr {` のブロックを禁止する。                   |     |     | 💡  |
-| [flowchart-no-undef](./flowchart-no-undef.ja.md)                                           | 図が定義していない id を指す `style`、`class`、`click` の文を禁止する。 | ✅  |     |     |
+| 規則                                                                                       | 説明                                                                                   | ✅  | 🔧  | 💡  |
+| ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- | --- | --- | --- |
+| [flowchart-no-duplicate-description](./flowchart-no-duplicate-description.ja.md)           | 説明をもう一度設定する `accDescr` の文を禁止する。                                     | ✅  |     | 💡  |
+| [flowchart-no-duplicate-direction](./flowchart-no-duplicate-direction.ja.md)               | その subgraph の方向を置き換える `direction` 文を禁止する。                            | ✅  |     | 💡  |
+| [flowchart-no-duplicate-title](./flowchart-no-duplicate-title.ja.md)                       | タイトルをもう一度設定する `accTitle` の文を禁止する。                                 | ✅  |     | 💡  |
+| [flowchart-no-empty-description-block](./flowchart-no-empty-description-block.ja.md)       | 説明を持たない `accDescr` のブロックを禁止する。                                       | ✅  |     | 💡  |
+| [flowchart-no-ignored-text](./flowchart-no-ignored-text.ja.md)                             | 方向の行にあって、mermaid.js が捨てるテキストを禁止する。                              | ✅  |     |     |
+| [flowchart-no-redefined-subgraph](./flowchart-no-redefined-subgraph.ja.md)                 | 同じ id に保たれる題と違う題を持つ subgraph の宣言を禁止する。                         | ✅  |     |     |
+| [flowchart-no-redefined-vertex](./flowchart-no-redefined-vertex.ja.md)                     | 頂点を、違う形やラベルで、または後の subgraph が取らない形で、書き直すことを禁止する。 | ✅  |     |     |
+| [flowchart-no-unclosed-description-block](./flowchart-no-unclosed-description-block.ja.md) | 閉じる `}` のない `accDescr {` のブロックを禁止する。                                  |     |     | 💡  |
+| [flowchart-no-undef](./flowchart-no-undef.ja.md)                                           | 図が定義していない id を指す `style`、`class`、`click` の文を禁止する。                | ✅  |     |     |
 
 ## sequence
 
@@ -351,18 +351,18 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 
 ## agentflow
 
-| 規則                                                                                       | 説明                                                                          | ✅  | 🔧  | 💡  |
-| ------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------- | --- | --- | --- |
-| [agentflow-no-duplicate-description](./agentflow-no-duplicate-description.ja.md)           | 前に設定した説明を置き換える `accDescr` を禁止する。                          | ✅  |     | 💡  |
-| [agentflow-no-duplicate-direction](./agentflow-no-duplicate-direction.ja.md)               | その flow の方向を置き換える `direction` 文を禁止する。                       | ✅  |     | 💡  |
-| [agentflow-no-duplicate-title](./agentflow-no-duplicate-title.ja.md)                       | 前に設定したタイトルを置き換える `accTitle` を禁止する。                      | ✅  |     | 💡  |
-| [agentflow-no-empty-description-block](./agentflow-no-empty-description-block.ja.md)       | 説明を持たない `accDescr` のブロックを禁止する。                              | ✅  |     | 💡  |
-| [agentflow-no-ignored-text](./agentflow-no-ignored-text.ja.md)                             | mermaid.js が方向の行から捨てる文字を禁止する。                               | ✅  |     |     |
-| [agentflow-no-redefined-connector](./agentflow-no-redefined-connector.ja.md)               | その id に前に書いたタイトルや頂点を置き換える connector の宣言を禁止する。   | ✅  |     |     |
-| [agentflow-no-redefined-flow](./agentflow-no-redefined-flow.ja.md)                         | その id に前に書いたタイトルを置き換える flow の宣言を禁止する。              | ✅  |     |     |
-| [agentflow-no-redefined-vertex](./agentflow-no-redefined-vertex.ja.md)                     | その id に前に書いたラベルや形を置き換える頂点を禁止する。                    | ✅  |     |     |
-| [agentflow-no-unclosed-description-block](./agentflow-no-unclosed-description-block.ja.md) | `}` で閉じていない `accDescr {` のブロックを禁止する。                        |     |     | 💡  |
-| [agentflow-no-undef](./agentflow-no-undef.ja.md)                                           | どこにも宣言されていない id を指す `style`、`class`、`click` の文を禁止する。 | ✅  |     |     |
+| 規則                                                                                       | 説明                                                                                                    | ✅  | 🔧  | 💡  |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------- | --- | --- | --- |
+| [agentflow-no-duplicate-description](./agentflow-no-duplicate-description.ja.md)           | 前に設定した説明を置き換える `accDescr` を禁止する。                                                    | ✅  |     | 💡  |
+| [agentflow-no-duplicate-direction](./agentflow-no-duplicate-direction.ja.md)               | その flow の方向を置き換える `direction` 文を禁止する。                                                 | ✅  |     | 💡  |
+| [agentflow-no-duplicate-title](./agentflow-no-duplicate-title.ja.md)                       | 前に設定したタイトルを置き換える `accTitle` を禁止する。                                                | ✅  |     | 💡  |
+| [agentflow-no-empty-description-block](./agentflow-no-empty-description-block.ja.md)       | 説明を持たない `accDescr` のブロックを禁止する。                                                        | ✅  |     | 💡  |
+| [agentflow-no-ignored-text](./agentflow-no-ignored-text.ja.md)                             | mermaid.js が方向の行から捨てる文字を禁止する。                                                         | ✅  |     |     |
+| [agentflow-no-redefined-connector](./agentflow-no-redefined-connector.ja.md)               | その id に前に書いたタイトルや頂点を置き換える connector の宣言と、後の flow が取らない宣言を禁止する。 | ✅  |     |     |
+| [agentflow-no-redefined-flow](./agentflow-no-redefined-flow.ja.md)                         | その id に前に書いたタイトルを置き換える flow の宣言を禁止する。                                        | ✅  |     |     |
+| [agentflow-no-redefined-vertex](./agentflow-no-redefined-vertex.ja.md)                     | その id に前に書いたラベルや形を置き換える頂点と、後の flow が取らない頂点を禁止する。                  | ✅  |     |     |
+| [agentflow-no-unclosed-description-block](./agentflow-no-unclosed-description-block.ja.md) | `}` で閉じていない `accDescr {` のブロックを禁止する。                                                  |     |     | 💡  |
+| [agentflow-no-undef](./agentflow-no-undef.ja.md)                                           | どこにも宣言されていない id を指す `style`、`class`、`click` の文を禁止する。                           | ✅  |     |     |
 
 ## railroad
 

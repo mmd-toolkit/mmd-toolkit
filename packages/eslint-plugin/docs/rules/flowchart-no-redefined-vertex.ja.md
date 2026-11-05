@@ -6,7 +6,8 @@ since: v0.1.0
 
 英語版: [flowchart-no-redefined-vertex.md](./flowchart-no-redefined-vertex.md)
 
-頂点の形やラベルを、後で違うものに書き直すことを禁止する。
+頂点を、違う形やラベルで、または後の subgraph が取らない形で、
+書き直すことを禁止する。
 
 <!-- begin auto-generated rule notice -->
 
@@ -16,6 +17,8 @@ since: v0.1.0
 
 頂点は何度でも書くことができ、最後の形とラベルが使われる。
 別の頂点のつもりで id を使い回すと、前の形やラベルがエラーなしに失われる。
+頂点は、それを持って終わった最初の subgraph に属し、後の subgraph に書いても、
+そこには加わらない。
 
 ## 規則の詳細
 
@@ -23,7 +26,8 @@ since: v0.1.0
 `swimlane-beta`）に当てる。
 形を付けて書いた頂点のうち、
 同じ id に最後に書いたものと形かラベルが違うものを報告する。
-形なしでの参照や、現在の形とラベルの繰り返しは報告しない。
+形なしでの参照や、現在の形とラベルの繰り返しは、
+subgraph が頂点を取らない場合（後述）を除き、報告しない。
 `A@{ shape: rect }` のようなデータブロックで決めた形やラベルは、
 頂点の 2 つの形付きの出現の間にあっても比べない。
 
@@ -35,6 +39,21 @@ mermaid.js が同じラベルとして読んでも報告することがある。
 すでにあるリンクの id を持つ形付きの頂点は何も変えず、報告せず、
 前の宣言としても数えない。
 
+subgraph は、それより前に終わった subgraph が持つ頂点を取らない。
+subgraph が終わる順に見る（subgraph の中の subgraph が先に終わる）。
+mermaid.js は頂点を先に終わった方に残し、後の方は取らない。
+後の subgraph の中の文のうち、リンク、クラス、データブロックがなく、
+頂点の id だけか、頂点が持つ形を同じラベル、ラベルの種類、
+形のプロパティで書くものは、頂点について新しいことを言わないので報告する。
+`A & B` のような組では、頂点ごとに報告する。
+前の subgraph が後の subgraph の中にあるか、同じ id を持つときは、
+何も失われないので報告しない。
+頂点が前に書かれていないとき（前の subgraph の名前にすぎない id は、
+新しい頂点を書く）や、文が新しいことを言うとき（リンク、クラス、データブロック、
+頂点の最初の形、ラベルの種類（テキスト、文字列、
+マークダウン）やプロパティの違い）も報告しない。
+違う形やラベルは、上のとおり報告する。
+
 この規則に**反する**コードの例:
 
 ```mmd
@@ -42,6 +61,17 @@ mermaid.js が同じラベルとして読んでも報告することがある。
 flowchart LR
   A[Start] --> B
   C --> A[End]
+```
+
+```mmd
+%% eslint @mmd-toolkit/flowchart-no-redefined-vertex: error
+flowchart TD
+  subgraph a
+    A
+  end
+  subgraph b
+    A
+  end
 ```
 
 この規則に**従う**コードの例:
@@ -58,6 +88,17 @@ flowchart LR
 flowchart LR
   A[Start] --> B
   C --> A[Start]
+```
+
+```mmd
+%% eslint @mmd-toolkit/flowchart-no-redefined-vertex: error
+flowchart TD
+  subgraph b
+    subgraph a
+      A
+    end
+    A
+  end
 ```
 
 ## オプション

@@ -252,7 +252,7 @@ export function readMermaidConfiguration(
       pathToFileURL(
         path.join(
           path.dirname(mermaidPackageJsonPath),
-          "dist/chunks/mermaid.core/chunk-DSNLSHJZ.mjs",
+          "dist/chunks/mermaid.core/chunk-BG4553SI.mjs",
         ),
       ).href
     )) as MermaidDiagramRegistry
@@ -690,7 +690,7 @@ async function neutralizeDomPurify(): Promise<void> {
 }
 
 // The two functions below mirror `cleanupText` in mermaid's `preprocess.ts` and
-// `extractFrontMatter` in `diagram-api/frontmatter.ts` (mermaid@12.2.0). mermaid
+// `extractFrontMatter` in `diagram-api/frontmatter.ts` (mermaid@12.3.0). mermaid
 // does not export them. Since mermaid@12.1.0, `extractFrontMatter` finds the
 // block with `matchFrontMatter()`, a linear scan that gives the result of
 // `frontMatterRegex` (which mermaid keeps), so the regular expression below

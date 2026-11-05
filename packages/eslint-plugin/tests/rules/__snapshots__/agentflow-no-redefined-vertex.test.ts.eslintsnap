@@ -29,6 +29,24 @@ Code:
 ---
 
 
+Test: agentflow-no-redefined-vertex >> invalid >>> docs/rules/agentflow-no-redefined-vertex.md incorrect 3
+Filename: agentflow-no-redefined-vertex-incorrect-3.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow a
+  3 |     A
+  4 |   end
+  5 |   flow b
+  6 |     A
+    |     ^ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js keeps `A` in an earlier flow, so this flow does not get it.
+---
+
+
 Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/chain-target-before-second-edge-created
 Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/chain-target-before-second-edge-created-input.mmd
 
@@ -57,6 +75,309 @@ Code:
 ---
 
 
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/flow-lost-connector
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/flow-lost-connector-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow a
+  3 |     connector C
+  4 |   end
+  5 |   flow b
+  6 |     C
+    |     ^ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js keeps `C` in an earlier flow, so this flow does not get it.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/flow-lost-id-and-new-label
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/flow-lost-id-and-new-label-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow a
+  3 |     A[x]
+  4 |   end
+  5 |   flow b
+  6 |     A[y]
+    |      ^~~ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js replaces the label of `A` written earlier with that of this vertex.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/flow-lost-id-between-siblings
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/flow-lost-id-between-siblings-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow outer
+  3 |     flow a
+  4 |       A
+  5 |     end
+  6 |     flow b
+  7 |       A
+    |       ^ [1]
+  8 |     end
+  9 |   end
+ 10 |
+
+[1] mermaid.js keeps `A` in an earlier flow, so this flow does not get it.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/flow-lost-id-held-by-flow-in-global
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/flow-lost-id-held-by-flow-in-global-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   global
+  3 |     flow g
+  4 |       X
+  5 |     end
+  6 |   end
+  7 |   flow b
+  8 |     X
+    |     ^ [1]
+  9 |   end
+ 10 |
+
+[1] mermaid.js keeps `X` in an earlier flow, so this flow does not get it.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/flow-lost-id-held-by-link
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/flow-lost-id-held-by-link-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow a
+  3 |     X --> A
+  4 |   end
+  5 |   flow b
+  6 |     A
+    |     ^ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js keeps `A` in an earlier flow, so this flow does not get it.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/flow-lost-id-held-by-nested-flow
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/flow-lost-id-held-by-nested-flow-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow a
+  3 |     flow c
+  4 |       A
+  5 |     end
+  6 |   end
+  7 |   flow b
+  8 |     A
+    |     ^ [1]
+  9 |   end
+ 10 |
+
+[1] mermaid.js keeps `A` in an earlier flow, so this flow does not get it.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/flow-lost-id-in-group
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/flow-lost-id-in-group-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow a
+  3 |     A
+  4 |   end
+  5 |   flow b
+  6 |     A & B
+    |     ^ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js keeps `A` in an earlier flow, so this flow does not get it.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/flow-lost-id-in-third-flow
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/flow-lost-id-in-third-flow-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow a
+  3 |     A
+  4 |   end
+  5 |   flow b
+  6 |     A
+    |     ^ [1]
+  7 |   end
+  8 |   flow c
+  9 |     A
+    |     ^ [2]
+ 10 |   end
+ 11 |
+
+[1] mermaid.js keeps `A` in an earlier flow, so this flow does not get it.
+[2] mermaid.js keeps `A` in an earlier flow, so this flow does not get it.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/flow-lost-id
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/flow-lost-id-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow a
+  3 |     A
+  4 |   end
+  5 |   flow b
+  6 |     A
+    |     ^ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js keeps `A` in an earlier flow, so this flow does not get it.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/flow-lost-id-markdown-label-same-kind
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/flow-lost-id-markdown-label-same-kind-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow a
+  3 |     A["`**x**`"]
+  4 |   end
+  5 |   flow b
+  6 |     A["`**x**`"]
+    |     ^~~~~~~~~~~~ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js keeps `A` in an earlier flow, so this flow does not get it.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/flow-lost-id-mirrored
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/flow-lost-id-mirrored-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow b
+  3 |     A
+  4 |   end
+  5 |   flow a
+  6 |     A
+    |     ^ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js keeps `A` in an earlier flow, so this flow does not get it.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/flow-lost-id-same-shape-and-label
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/flow-lost-id-same-shape-and-label-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow a
+  3 |     A[x]
+  4 |   end
+  5 |   flow b
+  6 |     A[x]
+    |     ^~~~ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js keeps `A` in an earlier flow, so this flow does not get it.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/flow-lost-id-shape-property-same
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/flow-lost-id-shape-property-same-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow a
+  3 |     A[|borders:lt|x]
+  4 |   end
+  5 |   flow b
+  6 |     A[|borders:lt|x]
+    |     ^~~~~~~~~~~~~~~~ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js keeps `A` in an earlier flow, so this flow does not get it.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/flow-lost-id-unnamed-flows
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/flow-lost-id-unnamed-flows-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow
+  3 |     A
+  4 |   end
+  5 |   flow
+  6 |     A
+    |     ^ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js keeps `A` in an earlier flow, so this flow does not get it.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/flow-lost-id-with-shape-written-later
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/flow-lost-id-with-shape-written-later-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow a
+  3 |     A
+  4 |   end
+  5 |   flow b
+  6 |     A
+    |     ^ [1]
+  7 |   end
+  8 |   A[x]
+  9 |
+
+[1] mermaid.js keeps `A` in an earlier flow, so this flow does not get it.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/flow-lost-id-written-twice
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/flow-lost-id-written-twice-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow a
+  3 |     A
+  4 |   end
+  5 |   flow b
+  6 |     A
+    |     ^ [1]
+  7 |     A
+    |     ^ [2]
+  8 |   end
+  9 |
+
+[1] mermaid.js keeps `A` in an earlier flow, so this flow does not get it.
+[2] mermaid.js keeps `A` in an earlier flow, so this flow does not get it.
+---
+
+
 Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/vertex-after-connector-diamond
 Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/vertex-after-connector-diamond-input.mmd
 
@@ -82,6 +403,20 @@ Code:
   4 |
 
 [1] mermaid.js replaces the label of `C` written earlier with that of this vertex.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/vertex-after-connector-lean-right
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/vertex-after-connector-lean-right-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | connector C[API]
+  3 | C[/API/] --> B
+    |  ^~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the drawn shape of `C` written earlier with that of this vertex.
 ---
 
 
@@ -172,6 +507,34 @@ Code:
 ---
 
 
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/vertex-input-to-removed-lean-left
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/vertex-input-to-removed-lean-left-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A[/x/]
+  3 | A[\x\]
+    |  ^~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the drawn shape of `A` written earlier with that of this vertex.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/vertex-input-to-round
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/vertex-input-to-round-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A[/x/]
+  3 | A(x)
+    |  ^~~ [1]
+  4 |
+
+[1] mermaid.js replaces the drawn shape of `A` written earlier with that of this vertex.
+---
+
+
 Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/vertex-kind-restored
 Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/vertex-kind-restored-input.mmd
 
@@ -184,8 +547,8 @@ Code:
     |  ^~~ [2]
   5 |
 
-[1] mermaid.js replaces the kind of `A` written earlier with that of this vertex.
-[2] mermaid.js replaces the kind of `A` written earlier with that of this vertex.
+[1] mermaid.js replaces the drawn shape of `A` written earlier with that of this vertex.
+[2] mermaid.js replaces the drawn shape of `A` written earlier with that of this vertex.
 ---
 
 
@@ -215,6 +578,20 @@ Code:
   5 |
 
 [1] mermaid.js replaces the label of `A` written earlier with that of this vertex.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/vertex-round-to-input
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/vertex-round-to-input-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A(x)
+  3 | A[/x/]
+    |  ^~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the drawn shape of `A` written earlier with that of this vertex.
 ---
 
 
@@ -260,7 +637,7 @@ Code:
     |  ^~~~~ [1]
   4 |
 
-[1] mermaid.js replaces the kind of `A` written earlier with that of this vertex.
+[1] mermaid.js replaces the drawn shape of `A` written earlier with that of this vertex.
 ---
 
 

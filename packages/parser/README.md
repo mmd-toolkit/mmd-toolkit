@@ -152,7 +152,7 @@ The eight tokens are `flowchart`, `LR`, `A`, `[`, `Start`, `]`, `-->`, and `B`.
 | Tree views                               | `treeView` (`treeView-beta`)                                                                                                                    | [`ast/treeview.md`](../spec/docs/ast/treeview.md)           |
 | The `error` pseudo-diagram of mermaid.js | `error` (`error`)                                                                                                                               | [`ErrorDiagram`](../spec/docs/ast.md#errordiagram)          |
 
-These are all the diagram types of mermaid.js 12.2.0.
+These are all the diagram types of mermaid.js 12.3.0.
 
 ## API
 
@@ -281,7 +281,7 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
 
 ## Differences from mermaid.js
 
-`parse()` accepts and rejects what mermaid.js 12.2.0 accepts and rejects, with
+`parse()` accepts and rejects what mermaid.js 12.3.0 accepts and rejects, with
 these differences:
 
 - A directive inside a name without whitespace, a keyword, an arrow, a number,

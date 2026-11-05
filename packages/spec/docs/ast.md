@@ -210,7 +210,7 @@ not dedented, and the tree does not parse the YAML.
 Child fields: `body`. `frontmatter` and `directives` are not child fields.
 
 `diagramType` is the id that
-[`mermaid.parse()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L96-L117)
+[`mermaid.parse()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/mermaidAPI.ts#L96-L117)
 reports as `diagramType`, because fixtures record the same ids. The `graph` and
 `flowchart` headers both give `flowchart-v2`; `flowchart-elk` gives
 `flowchart-elk`; `swimlane-beta` gives `swimlane`.
@@ -231,7 +231,7 @@ so an input it selects is always rejected. No tree has it, and it is not a
 DiagramType. This specification defines the set of DiagramType ids. The list
 includes `flowchart-elk`, `mindmap`, and `architecture`, which mermaid.js
 registers only when
-[`includeLargeFeatures`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L85-L87)
+[`includeLargeFeatures`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L85-L87)
 is true; it is true in the default entry point of the npm package.
 
 **DiagramBody** is an `ErrorDiagram` or one of the body node types defined in
@@ -451,7 +451,7 @@ sequence/db-autonumber-step-overflow]
 
 At a treemap leaf value, the position permits digits, underscores, dots and
 commas rather than only conventional decimal spellings. Its value follows
-[TreemapValueConverter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/treemap/valueConverter.ts#L13-L15):
+[TreemapValueConverter](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/treemap/valueConverter.ts#L13-L15):
 the double read from the decimal prefix after removing commas, stopping at the
 first underscore or extra dot; if no decimal prefix can be read, value is NaN.
 The prefix must contain at least one digit and at most one dot; a leading dot

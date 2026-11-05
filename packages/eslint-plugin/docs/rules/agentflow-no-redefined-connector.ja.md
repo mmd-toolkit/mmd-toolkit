@@ -7,7 +7,8 @@ since: v0.1.0
 英語版:
 [agentflow-no-redefined-connector.md](./agentflow-no-redefined-connector.md)
 
-その id に前に書いたタイトルや頂点を置き換える connector の宣言を禁止する。
+その id に前に書いたタイトルや頂点を置き換える connector の宣言と、
+後の flow が取らない宣言を禁止する。
 
 <!-- begin auto-generated rule notice -->
 
@@ -18,6 +19,8 @@ since: v0.1.0
 別のタイトルでもう一度宣言した connector は、エラーなしに後のタイトルを取り、
 前のタイトルは失われる。
 頂点の id で宣言すると、その頂点を置き換える。
+connector は、それを持って終わった最初の flow にも属し、後の flow で宣言しても、
+そこには加わらない。
 
 ## 規則の詳細
 
@@ -37,6 +40,25 @@ connector の再宣言は、タイトルがないとき、空白だけのとき�
 現在と同じときは報告しない。
 最初にタイトルなしで宣言した connector は id をタイトルに持ち、
 その後にタイトルを付けても報告しない。
+ただし、flow が connector を取らない場合（後述）は除く。
+
+flow は、それより前に終わった flow が持つ connector を取らない。
+flow が終わる順に見る（flow の中の flow が先に終わる）。
+mermaid.js は connector を先に終わった方に残し、後の方は取らない。
+後の flow の中の宣言のうち、データブロックがなく、
+タイトルがないか connector が持つタイトルのものは、
+connector について新しいことを言わないので報告する。
+別のタイトルは、上のとおりタイトルについて報告する。
+前の flow が後の flow の中にあるか、同じ id を持つときは、
+何も失われないので報告しない。
+前の flow が connector を持たないときや、
+前の flow が id を参照するだけのときも、
+宣言が頂点を connector にするので報告しない。
+`global` ブロックの直下に書いた connector は、
+どの flow にも属さないので報告しない。
+前の flow が持つ頂点は、
+[agentflow-no-redefined-vertex](./agentflow-no-redefined-vertex.ja.md)
+が同じように報告する。
 
 予約 id `connectors` の頂点は、前のラベルや形として数えない。
 `C@{ label: API }` のようなデータブロックが設定するタイトルやラベルは、
@@ -62,6 +84,17 @@ agentflow-beta TB
   connector github["GitHub API"]
 ```
 
+```mmd
+%% eslint @mmd-toolkit/agentflow-no-redefined-connector: error
+agentflow-beta TB
+  flow a
+    connector C
+  end
+  flow b
+    connector C
+  end
+```
+
 この規則に**従う**コードの例:
 
 ```mmd
@@ -76,6 +109,17 @@ agentflow-beta TB
 agentflow-beta TB
   create["create_issue"] --> done
   connector github["GitHub API"]
+```
+
+```mmd
+%% eslint @mmd-toolkit/agentflow-no-redefined-connector: error
+agentflow-beta TB
+  flow a
+    connector C[One]
+  end
+  flow b
+    connector C[One]@{ label: Two }
+  end
 ```
 
 ## オプション

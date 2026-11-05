@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Known divergences, tokenless-empty-forms: after the `}` of a body a word may not come, so `call` makes both reject the input."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...Diagramclass A {} call ()\n---------------------^\nExpecting 'NEWLINE', 'EOF', 'STRUCT_STOP', got 'ALPHA'"
+  }
+}

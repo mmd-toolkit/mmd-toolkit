@@ -42,17 +42,20 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
       拒否の理由にならない。
       唯一の例外は、文字列、リンク、呼び出しとして、
       それ自体の意味を持って書かれていて、mermaid.js が丸ごと捨てる形。
-      flowchart と agentflow で文の始まるところにある空の文字列と空の call、
-      class で文の始まるところにある空の文字列、どこにあっても、
-      gantt の空の href と空の call、どこにあっても、requirement の空の文字列、
-      mindmap と kanban の空の icon、空の class の行、形の中の空の文字列、
+      flowchart と agentflow で文の始まるところか文の最後の単位の後にある、
+      空の文字列、空の markdown 文字列、空の call、
+      class で文の始まるところか文の最後の単位の後にある、
+      空の文字列と空の call、class の本体のメンバーが始まるところにある、
+      空の文字列、どこにあっても、gantt の空の href と空の call、
+      どこにあっても、requirement の空の文字列、mindmap と kanban の空の icon、
+      空の class の行、形の中の空の文字列と空の markdown 文字列、
       軸やプロットのタイトルの全体でも値のラベルの全体でもない、
       xychart の空の文字列、そして、どこにあっても、
       quadrant と block の空の文字列と空の markdown 文字列。
       こうした形は何も変えない文としては持たず、
       入力は差 `tokenless-empty-forms` として拒否する。
-      mermaid.js が読む文の後ろにある、
-      読まない断片（state の `state ""`）はこの形ではなく、ノードのまま。
+      state では、mermaid.js が読む文の後ろにある、
+      読まない断片（`state ""`）はこの形ではなく、ノードのまま。
    2. ノードにできないときに限り、mermaid.js が受理する入力を、
       差として拒否するか、違う読み方にする。
       理由は次のどれかに限る。

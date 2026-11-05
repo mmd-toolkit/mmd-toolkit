@@ -413,6 +413,11 @@ export class FlowchartGrammar extends GraphGrammar<
     }
   }
 
+  /** Vertex statements: the `space*` or the `space+` of `( data space* | space+ )?`. */
+  protected override takeSpacesAfterGroup(): void {
+    this.takeAll("space")
+  }
+
   /** FlowchartVertexStatement: the diagram's node for the shared production. */
   private parseVertexStatement(): FlowchartVertexStatement {
     return {

@@ -367,14 +367,16 @@ eventmodeling の [Data blocks](./eventmodeling.ja.md#data-blocks)
 mermaid.js は引用符のないラベルの先頭の空白を取り除き、整形も取り除きます。
 ただし、取り除くとラベルの読み方が変わる場合は、空白 1 つとして残します。
 ラベルが `/`、`\`、`-`、`"` のどれかで始まる場合と、
-最初の語が `@` を含む場合です。
+`>` の形のラベルの最初の語が `@` を含む場合です。
 そのときは、ラベルの末尾にも空白 1 つを置きます。
 [fixture: flowchart/label-inner-whitespace/trimmed]
 [fixture: flowchart/label-inner-whitespace/leading-whitespace-kept]
 [fixture: flowchart/label-inner-whitespace/compat-leading-backslash-kept]
 たとえば、`A[ /x/]` はラベル `/x/` の rectangle ですが、
-`A[/x/]` はラベル `x` の lean-right の形で、`A[x@]` は拒否されます。
+`A[/x/]` はラベル `x` の lean-right の形です。
 [ラベルの内側の空白](./flowchart.ja.md#ラベルの内側の空白)を参照してください。
+`A[x@]` が拒否される agentflow では、どの形でも、
+最初の語が `@` を含む場合は空白を残します。
 
 ## トークンの間のディレクティブ
 

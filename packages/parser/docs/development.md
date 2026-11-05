@@ -33,9 +33,9 @@ read from the source text directly:
 - the `style` and `classDef` line rule;
 - entities;
 - the end of the text;
-- diagram type detection, for every diagram type of mermaid.js 12.2.0.
+- diagram type detection, for every diagram type of mermaid.js 12.3.0.
 
-The parser implements the body of every diagram type of mermaid.js 12.2.0 and of
+The parser implements the body of every diagram type of mermaid.js 12.3.0 and of
 the `error` pseudo-diagram; the README lists them in
 [Supported diagrams](../README.md#supported-diagrams).
 
@@ -203,11 +203,14 @@ The agentflow lexer and grammar have their own files under
 `src/graph-unit-lexer.ts` for identical lexical rules and `GraphGrammar` in
 `src/graph-grammar.ts` for identical productions, including data, shapes, and
 callbacks. Each diagram constructs its own AST nodes and keeps its own arrow
-vocabulary, comment rules, name grammar, and brace conversion. The existing
-shared reader, direction-line rule, and Unicode-letter helper are also reused.
-Its text wrapper folds only line whitespace immediately followed by the first LF
-after a closing brace. [fixture: agentflow/lex-brace-string-keeps-blank-line]
-[fixture: agentflow/lex-brace-line-whitespace-ls] [fixture:
+vocabulary, comment rules, name grammar, and brace conversion. It also gives the
+characters that end the run of an edge id (`edgeIdRunEnds`) and the whitespace
+that a vertex statement takes after a group (`takeSpacesAfterGroup`), where the
+two diagrams differ. The existing shared reader, direction-line rule, and
+Unicode-letter helper are also reused. Its text wrapper folds only line
+whitespace immediately followed by the first LF after a closing brace. [fixture:
+agentflow/lex-brace-string-keeps-blank-line] [fixture:
+agentflow/lex-brace-line-whitespace-ls] [fixture:
 agentflow/lex-brace-ls-without-lf]
 
 At or below the default 50000 normalized UTF-16 code units after frontmatter and

@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md Empty description blocks and erased forms: the `;` of the line is ignored, so the space after the block is ended by a line feed and read as it."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "style:#x",
+        "props": {},
+        "metadata": {
+          "label": "style:#x"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "labelType": "markdown",
+          "text": "style:#x",
+          "metadata": {
+            "label": "style:#x"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -149,7 +149,7 @@ mmd-toolkit のパーサーは入力を拒否し、予約語を報告します�
 
 mermaid.js の字句解析器は、空白が後に続くすべての `click` で、
 クリックの文脈に入ります（mermaid.js の
-[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L112-L114)）。
+[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L112-L114)）。
 そこでクリック文が始まれるかは確かめません。
 この規則はトークンを返しません。
 クリックの文脈では、後に続くものを次の空白までクリックの id として読むか、

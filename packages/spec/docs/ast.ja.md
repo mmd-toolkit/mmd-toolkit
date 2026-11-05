@@ -233,7 +233,7 @@ mermaid.js は図を設定するディレクティブを専用の走査で見つ
 `frontmatter` と `directives` は子の欄ではありません。
 
 `diagramType` は、
-[`mermaid.parse()`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/mermaidAPI.ts#L96-L117)
+[`mermaid.parse()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/mermaidAPI.ts#L96-L117)
 が `diagramType` として報告する id です。
 fixture も同じ id を記録するからです。
 `graph` と `flowchart` のヘッダーはどちらも `flowchart-v2`、
@@ -258,7 +258,7 @@ mermaid.js は `---` 疑似図種も登録しますが、そのパーサーは�
 DiagramType の id の集合はこの仕様が定めます。
 一覧には `flowchart-elk`、`mindmap`、`architecture` が含まれます。
 mermaid.js はこれらを
-[`includeLargeFeatures`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L85-L87)
+[`includeLargeFeatures`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L85-L87)
 が真のときだけ登録しますが、 npm パッケージの既定の入口では真です。
 
 **DiagramBody** は、`ErrorDiagram` か、以下の図の節で定める本文のノードの型、
@@ -501,7 +501,7 @@ linkStyle の番号もそのような数になれ、 linkStyle の番号では�
 treemap の leaf の値の位置は、通常の十進表記だけでなく、
 数字・underscore・dot・comma を許します。
 value は
-[TreemapValueConverter](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/parser/src/language/treemap/valueConverter.ts#L13-L15)
+[TreemapValueConverter](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/treemap/valueConverter.ts#L13-L15)
 に従い、 comma を除いて十進の先頭部分を読んだ倍精度の数とし、
 最初の underscore や余分な dot で読み終えます。
 十進の先頭部分を読めなければ value は NaN です。

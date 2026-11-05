@@ -576,10 +576,10 @@ position.
 
 The pinned Mermaid renders `stateDiagram-v2` notes as Markdown labels, setting
 `labelType` to `markdown` in
-[`dataFetcher.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/state/dataFetcher.ts#L380-L386).
+[`dataFetcher.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/state/dataFetcher.ts#L380-L386).
 This is limited Markdown support: lists fall back to their source text instead
 of a list layout in
-[`handle-markdown-text.ts`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/rendering-util/handle-markdown-text.ts#L120-L145).
+[`handle-markdown-text.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/handle-markdown-text.ts#L120-L145).
 The formatter recognizes Markdown with the same Marked 16.4.2 as pinned Mermaid.
 It does not run the Markdown formatter on note contents; the rules below only
 align supported paragraph margins while preserving the remaining body text.

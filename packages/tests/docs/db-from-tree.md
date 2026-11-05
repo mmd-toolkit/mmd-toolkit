@@ -217,9 +217,9 @@ are read from the tree like this:
 ## The replacement of characters
 
 mermaid.js passes each text that its Db keeps through
-[`sanitizeText`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/common.ts#L85-L97).
+[`sanitizeText`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/common/common.ts#L85-L97).
 The runner of the corpus disables DOMPurify, so what remains is
-[`sanitizeMore`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/diagrams/common/common.ts#L70-L83)
+[`sanitizeMore`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/common/common.ts#L70-L83)
 (see [expected-results.md](./expected-results.md), What remains). It depends on
 the configuration alone, which `embedded.config` holds in full (the site
 configuration, the frontmatter, and the directives), so `dbFromTree()` makes it

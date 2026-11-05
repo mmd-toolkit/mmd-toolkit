@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Known divergences, tokenless-empty-forms: an empty string after the `}` of a body: this specification rejects the form, which a statement could hold but which is written with a meaning of its own; mermaid.js reads no token for it and accepts the input."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

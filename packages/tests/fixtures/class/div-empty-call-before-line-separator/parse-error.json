@@ -1,0 +1,17 @@
+{
+  "message": "An empty call cannot be written here",
+  "range": [
+    15,
+    22
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 2
+    },
+    "end": {
+      "line": 2,
+      "column": 9
+    }
+  }
+}

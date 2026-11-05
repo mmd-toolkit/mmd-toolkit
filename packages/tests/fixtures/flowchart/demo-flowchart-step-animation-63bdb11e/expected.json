@@ -1,0 +1,166 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.3.0",
+    "path": "demos/flowchart-step-animation.html",
+    "line": 26
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "Producer",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Producer",
+        "props": {}
+      },
+      {
+        "id": "Queue",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Queue",
+        "props": {}
+      },
+      {
+        "id": "WorkerA",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "WorkerA",
+        "props": {}
+      },
+      {
+        "id": "WorkerB",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "WorkerB",
+        "props": {}
+      },
+      {
+        "id": "Store",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Store",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "Producer",
+        "end": "Queue",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": true,
+        "stroke": "normal",
+        "length": 1,
+        "id": "e1",
+        "step": 1
+      },
+      {
+        "start": "Queue",
+        "end": "WorkerA",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": true,
+        "stroke": "normal",
+        "length": 1,
+        "id": "e2",
+        "step": 2
+      },
+      {
+        "start": "Queue",
+        "end": "WorkerB",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": true,
+        "stroke": "normal",
+        "length": 1,
+        "id": "e3",
+        "step": 2
+      },
+      {
+        "start": "WorkerA",
+        "end": "Store",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": true,
+        "stroke": "normal",
+        "length": 1,
+        "id": "e4",
+        "step": 3
+      },
+      {
+        "start": "WorkerB",
+        "end": "Store",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": true,
+        "stroke": "normal",
+        "length": 1,
+        "id": "e5",
+        "step": 3
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "e1",
+        "set": {
+          "step": 1
+        }
+      },
+      {
+        "id": "e2",
+        "set": {
+          "step": 2
+        }
+      },
+      {
+        "id": "e3",
+        "set": {
+          "step": 2
+        }
+      },
+      {
+        "id": "e4",
+        "set": {
+          "step": 3
+        }
+      },
+      {
+        "id": "e5",
+        "set": {
+          "step": 3
+        }
+      }
+    ]
+  }
+}

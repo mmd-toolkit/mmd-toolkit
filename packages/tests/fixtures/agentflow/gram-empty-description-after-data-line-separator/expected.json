@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md Empty description blocks and erased forms: U+2028 after the block is whitespace that no line feed ends, which no rule takes after a data block, so the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n... TBA@{}accDescr {} ;B\n----------------------^\nExpecting 'AMP', got 'SEMI'"
+  }
+}

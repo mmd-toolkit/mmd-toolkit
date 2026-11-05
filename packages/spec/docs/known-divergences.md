@@ -63,16 +63,17 @@ three reasons, and only as a divergence listed here:
    The same holds for text that mermaid.js reads as something other than what is
    written: it is accepted and shown in the tree as written. The exception is a
    form written with a meaning of its own, as a string, a link, or a call, that
-   mermaid.js discards whole: an empty string where a statement starts in
-   flowchart, class, and agentflow, an empty call where a statement starts in
-   flowchart and agentflow, an empty href or an empty call in gantt, wherever it
-   stands, an empty string in requirement, wherever it stands, an empty icon, an
-   empty class line, or an empty string inside a shape in mindmap, an empty
+   mermaid.js discards whole: an empty string, an empty markdown string, or an
+   empty call where a statement starts or after the last unit of a statement in
+   flowchart and in agentflow, an empty string or an empty call where a
+   statement starts or after the last unit of a statement in class, an empty
+   string where a member starts in the body of a class, an empty href or an
+   empty call in gantt, wherever it stands, an empty string in requirement,
+   wherever it stands, an empty icon, an empty class line, or an empty string or
+   an empty markdown string inside a shape in mindmap and in kanban, an empty
    string in xychart where it is not the whole title of an axis or of a plot or
-   the whole label of a value, an empty string or an empty markdown string in
-   quadrant, wherever it stands, an empty string or an empty markdown string in
-   block, wherever it stands, and an empty icon, an empty class line, or an
-   empty string inside a shape in kanban. [fixture:
+   the whole label of a value, and an empty string or an empty markdown string
+   in quadrant and in block, wherever it stands. [fixture:
    kanban/div-empty-string-before-label] The tree holds no statement that
    changes nothing for such a form, and the input is rejected as
    [tokenless-empty-forms](./known-divergences/tokenless-empty-forms.md). An

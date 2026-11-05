@@ -70,6 +70,8 @@ export function addLinkRules(
     expectValue(at, "@")
     rules.set(at.range[0], "none")
     rules.set((link.opening ?? link.arrow).range[0], "none")
+    if (startsLikeArrow(link.id.name, link.type))
+      rules.set(link.range[0], "none")
   }
   if (link.opening !== null) {
     const label = link.label as NonNullable<GraphLink["label"]>
@@ -93,6 +95,44 @@ export function addLinkRules(
   )
   expectValue(closing, "|")
   rules.set(closing.range[0], edge)
+}
+
+/**
+ * Whether an edge id starts as an arrow does (diagrams/flowchart.md, Arrows
+ * and the lexical rule of the edge id; diagrams/agentflow.md, Arrows). Such an
+ * id is an edge id only where no whitespace stands before it, as in
+ * `A[x]--a@-->B`; after whitespace, the lexer reads the arrow and `a@` is its
+ * text, or the input is rejected. So no whitespace is put before it.
+ *
+ * In flowchart these are `--a`, `==a`, `-.a`, `.-a`, with or without the head
+ * `x`, `o`, or `<`, and `~~~a`, which takes no head. In agentflow they are
+ * `--a` (also `---a` and `-->a`), `-.-a`, and `-..-a`, without a head: an id
+ * such as `x--a`, `==a`, `-.a`, or `.-a` is read the same after whitespace.
+ */
+function startsLikeArrow(id: string, type: GraphLink["type"]): boolean {
+  if (type === "AgentflowLink") {
+    return id.startsWith("--") || startsWithDashedDots(id)
+  }
+  return (
+    id.startsWith("~~~") ||
+    startsWithArrowBody(id) ||
+    (["x", "o", "<"].includes(id.charAt(0)) && startsWithArrowBody(id.slice(1)))
+  )
+}
+
+/** Whether `text` starts with `-`, one or more dots, and `-`: `-.-`, `-..-`. */
+function startsWithDashedDots(text: string): boolean {
+  let dots = 0
+  while (text.charAt(dots + 1) === ".") dots++
+  return text.startsWith("-") && dots > 0 && text.charAt(dots + 1) === "-"
+}
+
+/** Whether `text` starts with `--`, `==`, `-.`, or dots and then `-`. */
+function startsWithArrowBody(text: string): boolean {
+  if (["--", "==", "-."].some((start) => text.startsWith(start))) return true
+  let dots = 0
+  while (text.charAt(dots) === ".") dots++
+  return dots > 0 && text.charAt(dots) === "-"
 }
 
 /**
@@ -125,7 +165,9 @@ export function labelEdgeRule(source: Source, label: GraphLabel): GapRule {
   const hasWhitespaceBefore = [
     ...source.text.slice(before.range[1], label.range[0]),
   ].some(isWhitespace)
-  return hasWhitespaceBefore && keepsLeadingWhitespace(label) ? "space" : "none"
+  return hasWhitespaceBefore && keepsLeadingWhitespace(label, before)
+    ? "space"
+    : "none"
 }
 
 /**
@@ -139,18 +181,23 @@ export function labelEdgeRule(source: Source, label: GraphLabel): GapRule {
  *   with the label `/x/`, `A[/x/]` a lean-right with the label `x`;
  *   `A( -x-)` is a rounded, `A(-x-)` an ellipse; `A[/ "x /]` has the
  *   label `"x`, and `A[/"x/]` is rejected.
- * - a label whose first word, up to whitespace or a `"`, holds a `@`:
- *   `A[x@]` is rejected, because `A[x@` is read as an edge id.
+ * - a label whose first word, up to whitespace or a `"`, holds a `@`, in
+ *   agentflow and after the `>` of a flowchart shape: `A>x@]` is rejected,
+ *   because `A>x@` is read as an edge id, and `A> x@]` has the label `x@`. In
+ *   flowchart, the run of an edge id stops at the brackets and at `|`, so
+ *   `A[x@]` and `A-->|x@|B` are accepted with the same label as with the
+ *   whitespace, and it is dropped. In agentflow, `A[x@]` is rejected too.
  *
- * The rule is the same for every shape and for the text between `|`, so
- * that it does not depend on which brackets a label has. The label's value
- * is its text without directives, as mermaid.js reads it.
+ * Apart from the `@`, the rule is the same for every shape and for the text
+ * between `|`, so that it does not depend on which brackets a label has. The
+ * label's value is its text without directives, as mermaid.js reads it.
  */
-function keepsLeadingWhitespace(label: GraphLabel): boolean {
+function keepsLeadingWhitespace(label: GraphLabel, opening: Token): boolean {
   const first = label.value.charAt(0)
   if (first === "/" || first === "\\" || first === "-" || first === '"') {
     return true
   }
+  if (label.type !== "AgentflowLabel" && opening.value !== ">") return false
   let wordEnd = 0
   while (
     wordEnd < label.value.length &&

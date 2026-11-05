@@ -323,12 +323,23 @@ export function layoutStatement(
       for (const [position, rule] of descriptionOpeningRules(source, start))
         rules.set(position, rule)
       break
-    case "AgentflowVertexStatement":
+    case "AgentflowVertexStatement": {
+      const dataBlockEnds = new Set<number>()
+      walk(statement, (node) => {
+        if (node.type === "AgentflowDataBlock") dataBlockEnds.add(node.range[1])
+      })
       walk(statement, (node) => {
         if (node.type === "AgentflowShape") addShapeRules(source, node, rules)
-        if (node.type === "AgentflowLink") addLinkRules(source, node, rules)
+        if (node.type !== "AgentflowLink") return
+        addLinkRules(source, node, rules)
+        // A vertex statement takes no whitespace after a data block but the
+        // one that an arrow reads, so an edge id touches the block
+        // (diagrams/agentflow.md, Vertices, shapes, and labels).
+        if (node.id !== null && dataBlockEnds.has(node.range[0]))
+          rules.set(node.range[0], "none")
       })
       break
+    }
     default:
       break
   }

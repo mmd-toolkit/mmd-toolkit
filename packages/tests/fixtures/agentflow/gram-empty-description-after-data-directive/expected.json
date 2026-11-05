@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md Empty description blocks and erased forms: the directive is left out, and the whitespace before the block is taken by no rule after a data block, so the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n... rect }  accDescr {}\n-----------------------^\nExpecting 'AMP', got 'NEWLINE'"
+  }
+}

@@ -503,11 +503,11 @@ export abstract class GraphGrammar<
   protected abstract parseStyles(classDefinition: boolean): (Literal | null)[]
 
   /**
-   * Vertex statements: `vertex-statement = vertex-group ( data | space+ )?
-   * ( link vertex-group ( data | space+ )? )*`. A data block is read with
-   * the vertex right before it (see {@link GraphGrammar.readVertex}),
-   * so what is left here of `( data | space+ )?` is the `space+` after a
-   * group whose last vertex has no data block.
+   * Vertex statements: `vertex-statement = vertex-group ( data space* |
+   * space+ )? ( link vertex-group ( data space* | space+ )? )*`, without the
+   * `space*` in agentflow. A data block is read with the vertex right before
+   * it (see {@link GraphGrammar.readVertex}), so what is left here is the
+   * whitespace after a group, which `takeSpacesAfterGroup` reads.
    */
   protected readVertexStatement<
     Group extends {
@@ -539,13 +539,10 @@ export abstract class GraphGrammar<
     }
   }
 
-  /** Vertex statements: the `space+` of `( data | space+ )?` after `group`. */
-  protected takeSpacesAfterGroup(group: {
+  /** Vertex statements: the whitespace that the diagram's production takes after `group`. */
+  protected abstract takeSpacesAfterGroup(group: {
     readonly vertices: readonly { readonly data: readonly DataBlock[] }[]
-  }): void {
-    const last = group.vertices[group.vertices.length - 1]
-    if (last.data.length === 0) this.takeAll("space")
-  }
+  }): void
 
   /**
    * Vertex statements: `vertex-group = vertex ( data? space+ "&" space+

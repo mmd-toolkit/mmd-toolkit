@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.3.0",
+    "path": "packages/mermaid/src/diagrams/swimlanes/swimlanesDiagram.spec.ts",
+    "line": 78,
+    "test": "swimlane-beta lanes that parse but cannot be drawn as written (issue #8386) > draws a node listed in two lanes in the first one, without a stray empty lane"
+  },
+  "accepted": true,
+  "diagramType": "swimlane",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "step one",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "lane1",
+        "nodes": [
+          "a"
+        ],
+        "title": "Performer A",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "phase1",
+        "nodes": [],
+        "title": "Phase 1",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

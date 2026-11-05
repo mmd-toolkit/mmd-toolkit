@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.3.0",
+    "path": "packages/mermaid/src/diagrams/swimlanes/swimlanesDiagram.spec.ts",
+    "line": 78,
+    "test": "swimlane-beta lanes that parse but cannot be drawn as written (issue #8386) > keeps a lane the author declared empty"
+  },
+  "accepted": true,
+  "diagramType": "swimlane",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "a",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "l1",
+        "nodes": [
+          "a"
+        ],
+        "title": "l1",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "l2",
+        "nodes": [],
+        "title": "l2",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

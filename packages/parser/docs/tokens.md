@@ -269,7 +269,7 @@ because the line rule leaves comment regions out of its line segments (see
 [fixture: sequence/tokens-comment-then-ignored-semicolon] [fixture:
 eventmodeling/tokens-comment-line-ignored-semicolon] [fixture:
 eventmodeling/tokens-comment-line-semicolon-before-text] A diagram whose Db sets
-[`preserveCommentsWhenParsing`](https://github.com/mermaid-js/mermaid/blob/1fb7869866dd619168d840291c9c54b4f129758b/packages/mermaid/src/Diagram.ts#L66-L76)
+[`preserveCommentsWhenParsing`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/Diagram.ts#L66-L76)
 (agentflow and eventmodeling in the pinned mermaid.js) sees comment lines in its
 parser input; its document says how the tree represents them. A `%%` that is not
 a comment line, such as a trailing `%%` after a statement or a line containing

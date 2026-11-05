@@ -272,6 +272,9 @@ export abstract class GraphUnitLexer<
   /** The diagram's header words, in matching order. */
   protected abstract readonly headerKeywords: readonly string[]
 
+  /** Statement context, rule 15: the code points, besides whitespace, that end the run of an edge id. */
+  protected abstract readonly edgeIdRunEnds: readonly number[]
+
   /** Whether the first header keyword has already entered the header context. */
   private headerKeywordRead = false
 
@@ -524,10 +527,10 @@ export abstract class GraphUnitLexer<
 
   /**
    * Statement context, rule 15: an edge id. A run of characters that are
-   * neither whitespace nor `"`, ending with an `@` that is followed by a
-   * character other than `{` and `"`; the run ends at the last such `@`
-   * before the next whitespace or `"`. The characters before that `@` are
-   * an `edge-id` unit, and the `@` is an `@` unit.
+   * neither whitespace nor one of `edgeIdRunEnds`, ending with an `@` that is
+   * followed by a character other than `{` and `"`; the run ends at the last
+   * such `@` before the next character that it may not hold. The characters
+   * before that `@` are an `edge-id` unit, and the `@` is an `@` unit.
    */
   protected readEdgeId(at: DiagramCharacter): boolean {
     if (isBefore(at, this.noEdgeIdBefore)) return false
@@ -536,7 +539,7 @@ export abstract class GraphUnitLexer<
     while (
       position !== null &&
       !isWhitespace(position.codePoint) &&
-      position.codePoint !== QUOTATION_MARK
+      !this.edgeIdRunEnds.includes(position.codePoint)
     ) {
       if (position.codePoint === COMMERCIAL_AT && !samePosition(position, at)) {
         const following = this.reader.after(position)
