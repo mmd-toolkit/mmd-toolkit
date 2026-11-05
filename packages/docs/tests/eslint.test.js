@@ -126,6 +126,48 @@ describe("ESLint diagnostic rendering", () => {
     },
   )
 
+  it.each([".md", ".ja.md"])(
+    "marks C inside the Mermaid block of the Markdown example: %s",
+    async (extension) => {
+      const html = await markdown.renderAsync(guide("markdown", extension))
+      expect(markedText(html)).toEqual(["C"])
+      // The later fences of the page load other languages, which must not take
+      // the Mermaid rule out of the Markdown grammar.
+      expect(html).toMatch(/<span[^>]*>flowchart<\/span>/u)
+    },
+  )
+
+  it("marks a Mermaid block of a Markdown fence at its place in the Markdown", async () => {
+    const html = await markdown.renderAsync(
+      [
+        "````md",
+        "# Title",
+        "",
+        "```mermaid",
+        "%% eslint @mmd-toolkit/flowchart-no-undef: error",
+        "flowchart LR",
+        "  A --> B",
+        "  style C fill:red",
+        "```",
+        "",
+        "```js",
+        "const C = 1",
+        "```",
+        "````",
+        "",
+      ].join("\n"),
+    )
+    expect(markedText(html)).toEqual(["C"])
+  })
+
+  it("leaves a Markdown fence without an mmd rule comment to plain highlighting", async () => {
+    const html = await markdown.renderAsync(
+      "````md\n```mermaid\nflowchart LR\n  A --> B\n  style C fill:red\n```\n````\n",
+    )
+    expect(markedText(html)).toEqual([])
+    expect(html).not.toContain("twoslash")
+  })
+
   it("accepts a mermaid fence with a directive before the header", async () => {
     const html = await markdown.renderAsync(
       "```mermaid\n" +

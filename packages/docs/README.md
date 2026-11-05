@@ -17,21 +17,22 @@ its tests. Diagnostic markers execute the workspace linter while rendering
 pages, and code blocks are colored with the built grammar; rebuild those
 packages after changing them.
 
-`mmd` code fences containing `%% eslint @mmd-toolkit/` use `twoslash-eslint` to
-show actual ESLint diagnostics on hover. Enable the rules an example
-demonstrates with `%% eslint <rule>: <config>` comments; the renderer registers
-the Mermaid language without enabling rules by default. Other fences are left as
-normal syntax-highlighted examples.
+`mmd` code fences containing `%% eslint @mmd-toolkit/`, and `md` code fences
+with such a Mermaid block inside, use `twoslash-eslint` to show actual ESLint
+diagnostics on hover. Enable the rules an example demonstrates with
+`%% eslint <rule>: <config>` comments; the renderer registers the Mermaid
+language without enabling rules by default. Other fences are left as normal
+syntax-highlighted examples.
 
 `mmd` and `mermaid` code blocks are colored with the TextMate grammar of
 [`@mmd-toolkit/textmate-grammar`](../textmate-grammar/README.md).
 `.vitepress/highlighting.js` holds the language list used by
 `.vitepress/config.js` and the tests, with this grammar as the highlighter's
-`mermaid` language, the `yaml` grammar it embeds, and a rule that colors
-`mermaid` and `mmd` code blocks inside Markdown code blocks. The grammar is
-written for every diagram type from the specification of this repository. Do not
-also list `mermaid` by name in `languages`: Shiki's bundled grammar of that name
-would replace it.
+`mermaid` language, the `yaml` grammar it embeds, and Shiki's Markdown grammar
+with a rule that colors `mermaid` and `mmd` code blocks inside Markdown code
+blocks. The grammar is written for every diagram type from the specification of
+this repository. Do not also list `mermaid` by name in `languages`: Shiki's
+bundled grammar of that name would replace it.
 
 In `packages/eslint-plugin/docs/rules/`, begin every `mmd` example in both
 languages with `%% eslint @mmd-toolkit/<rule>: error`, using the rule described
