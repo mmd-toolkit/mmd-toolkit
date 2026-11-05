@@ -1,5 +1,44 @@
 # @mmd-toolkit/spec
 
+## 0.2.0
+
+### Minor Changes
+
+- [#49](https://github.com/mmd-toolkit/mmd-toolkit/pull/49) [`b972b58`](https://github.com/mmd-toolkit/mmd-toolkit/commit/b972b58533d16004b5763e42c2d5cebe14ba625a) Thanks [@ota-meshi](https://github.com/ota-meshi)! - `agentflow`, Rejections outside the grammar: the statements in a nested flow or
+  a global are no members of the outer flow, and a global and the top level have
+  no `hasOwnProperty` member condition. Flows, globals, connectors, and names:
+  each `end` closes the innermost open flow or global.
+
+- [#48](https://github.com/mmd-toolkit/mmd-toolkit/pull/48) [`1620a8f`](https://github.com/mmd-toolkit/mmd-toolkit/commit/1620a8f03f15f82aeb19b2fb7df3266714669c6b) Thanks [@ota-meshi](https://github.com/ota-meshi)! - `c4`, Rejections outside the grammar: a boundary is declared by its call, so it
+  is a candidate for `UpdateElementStyle` while its body is open, in that body and
+  in the bodies nested in it.
+
+### Patch Changes
+
+- [#50](https://github.com/mmd-toolkit/mmd-toolkit/pull/50) [`8514d3a`](https://github.com/mmd-toolkit/mmd-toolkit/commit/8514d3a11f485a1a7970136b2d0c1004cbdc2523) Thanks [@ota-meshi](https://github.com/ota-meshi)! - `block`, Composites: state what the grammar already decides. Each `end` closes
+  the innermost open composite, and what follows it stands in the composite around
+  it.
+
+- [#50](https://github.com/mmd-toolkit/mmd-toolkit/pull/50) [`8514d3a`](https://github.com/mmd-toolkit/mmd-toolkit/commit/8514d3a11f485a1a7970136b2d0c1004cbdc2523) Thanks [@ota-meshi](https://github.com/ota-meshi)! - `class`, Namespaces: state what the grammar already decides. Outside a class
+  body, each `}` closes the innermost open namespace, items are separated by a
+  line break, and what follows a `}` stands in the namespace around it.
+
+- [#50](https://github.com/mmd-toolkit/mmd-toolkit/pull/50) [`8514d3a`](https://github.com/mmd-toolkit/mmd-toolkit/commit/8514d3a11f485a1a7970136b2d0c1004cbdc2523) Thanks [@ota-meshi](https://github.com/ota-meshi)! - `er`, Subgraphs: state what the grammar already decides. What follows an `end`
+  stands in the subgraph around it, or in the diagram after the outermost `end`.
+
+- [#50](https://github.com/mmd-toolkit/mmd-toolkit/pull/50) [`8514d3a`](https://github.com/mmd-toolkit/mmd-toolkit/commit/8514d3a11f485a1a7970136b2d0c1004cbdc2523) Thanks [@ota-meshi](https://github.com/ota-meshi)! - `flowchart`, Subgraphs: state what the grammar already decides. Subgraphs nest,
+  each `end` closes the innermost open subgraph, and what follows an `end` stands
+  in the subgraph around it.
+
+- [#49](https://github.com/mmd-toolkit/mmd-toolkit/pull/49) [`b972b58`](https://github.com/mmd-toolkit/mmd-toolkit/commit/b972b58533d16004b5763e42c2d5cebe14ba625a) Thanks [@ota-meshi](https://github.com/ota-meshi)! - `sequence`, Blocks and Rejections outside the grammar: state what the grammar
+  and the source order already decide. Blocks and boxes nest, each `end` closes
+  the innermost one, a section keyword belongs to the innermost open block, and a
+  statement in a block or a section counts once, where it is written.
+
+- [#50](https://github.com/mmd-toolkit/mmd-toolkit/pull/50) [`8514d3a`](https://github.com/mmd-toolkit/mmd-toolkit/commit/8514d3a11f485a1a7970136b2d0c1004cbdc2523) Thanks [@ota-meshi](https://github.com/ota-meshi)! - `state`, Composite states, aliases, and pseudostates: state what the grammar
+  already decides. Bodies nest, each `}` unit closes the innermost open body, and
+  what follows a `}` stands in the body around it.
+
 ## 0.1.0
 
 ### Minor Changes
