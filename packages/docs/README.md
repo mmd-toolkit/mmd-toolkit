@@ -27,10 +27,11 @@ normal syntax-highlighted examples.
 [`@mmd-toolkit/textmate-grammar`](../textmate-grammar/README.md).
 `.vitepress/highlighting.js` holds the language list used by
 `.vitepress/config.js` and the tests, with this grammar as the highlighter's
-`mermaid` language and the `yaml` grammar it embeds. The grammar is written for
-every diagram type from the specification of this repository. Do not also list
-`mermaid` by name in `languages`: Shiki's bundled grammar of that name would
-replace it.
+`mermaid` language, the `yaml` grammar it embeds, and a rule that colors
+`mermaid` and `mmd` code blocks inside Markdown code blocks. The grammar is
+written for every diagram type from the specification of this repository. Do not
+also list `mermaid` by name in `languages`: Shiki's bundled grammar of that name
+would replace it.
 
 In `packages/eslint-plugin/docs/rules/`, begin every `mmd` example in both
 languages with `%% eslint @mmd-toolkit/<rule>: error`, using the rule described

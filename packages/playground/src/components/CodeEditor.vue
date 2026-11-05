@@ -120,7 +120,7 @@ onMounted(async () => {
       model,
       ariaLabel: props.label,
       readOnly: props.readonly ?? false,
-      theme: props.dark ? "github-dark" : "github-light",
+      theme: props.dark ? "dark-plus" : "light-plus",
       automaticLayout: true,
       minimap: { enabled: false },
       fontFamily: '"SFMono-Regular", Consolas, "Liberation Mono", monospace',
@@ -170,7 +170,7 @@ watch(
 )
 watch(
   () => props.dark,
-  (value) => monaco.editor.setTheme(value ? "github-dark" : "github-light"),
+  (value) => monaco.editor.setTheme(value ? "dark-plus" : "light-plus"),
 )
 watch(
   () => [props.tabWidth, props.useTabs],

@@ -39,4 +39,18 @@ describe("Mermaid code blocks", () => {
     expect(html).toMatch(/<span[^>]*>flowchart<\/span>/u)
     expect(html).toMatch(/<span[^>]*>\s*(?:-->|--&gt;)<\/span>/u)
   })
+
+  it.each(["mmd", "mermaid"])(
+    "colors a %s block inside a Markdown block and returns to Markdown after it",
+    async (lang) => {
+      const html = await markdown.renderAsync(
+        `\`\`\`\`md\n# Diagram\n\n\`\`\`${lang}\nflowchart LR\n  A --> B\n\`\`\`\n\nAfter the block.\n\`\`\`\`\n`,
+      )
+      expect(html).toMatch(/<span[^>]*>flowchart<\/span>/u)
+      expect(html).toMatch(/<span[^>]*>\s*LR<\/span>/u)
+      // With the Mermaid rules still active, the words after the closing fence
+      // would be colored one by one as ids; as Markdown it is one plain span.
+      expect(html).toMatch(/<span[^>]*>After the block\.<\/span>/u)
+    },
+  )
 })

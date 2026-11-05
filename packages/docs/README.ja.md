@@ -31,7 +31,9 @@ TextMate文法で付けます。
 `.vitepress/highlighting.js`に、
 `.vitepress/config.js`とテストが使う言語一覧を置きます。
 この一覧には、この文法をhighlighterの`mermaid`言語として含め、
-埋め込む`yaml`の文法も含めます。
+埋め込む`yaml`の文法と、
+Markdownのコードブロックの中の`mermaid`と`mmd`のブロックに、
+色を付ける規則も含めます。
 この文法は、このリポジトリの仕様から全図種について書いたものです。
 `languages`に`mermaid`を名前でも並べないでください。
 Shikiの同名のバンドル済み文法がこの文法を置き換えます。
