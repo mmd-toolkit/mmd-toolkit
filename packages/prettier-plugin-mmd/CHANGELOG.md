@@ -1,5 +1,22 @@
 # prettier-plugin-mmd
 
+## 0.4.0
+
+### Minor Changes
+
+- [#51](https://github.com/mmd-toolkit/mmd-toolkit/pull/51) [`73b1cf3`](https://github.com/mmd-toolkit/mmd-toolkit/commit/73b1cf3c2e92370094cd7d8c5ab72a2a4f6348d1) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Follow mermaid.js 12.3.0. In `flowchart`, `A[ user@example.com ]` is now
+  formatted as `A[user@example.com]`, because `A[x@]` is accepted and reads the
+  same; `agentflow` still keeps the space. An edge id that starts like an arrow,
+  as in `A[x]--a@-->B`, stays attached to the shape before it, so that formatting
+  no longer turns it into link text. In `agentflow`, an edge id after a data
+  block, as in `A@{ shape: rect }e1@-->B`, stays attached to the block, so that
+  the output is no longer rejected.
+
+### Patch Changes
+
+- Updated dependencies [[`73b1cf3`](https://github.com/mmd-toolkit/mmd-toolkit/commit/73b1cf3c2e92370094cd7d8c5ab72a2a4f6348d1)]:
+  - @mmd-toolkit/parser@0.2.0
+
 ## 0.3.0
 
 ### Minor Changes

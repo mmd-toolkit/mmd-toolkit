@@ -1,5 +1,14 @@
 # @mmd-toolkit/spec
 
+## 0.3.0
+
+### Minor Changes
+
+- [#51](https://github.com/mmd-toolkit/mmd-toolkit/pull/51) [`73b1cf3`](https://github.com/mmd-toolkit/mmd-toolkit/commit/73b1cf3c2e92370094cd7d8c5ab72a2a4f6348d1) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Follow mermaid.js 12.3.0. In flowchart, an edge id now stops at `[`, `]`, `(`,
+  `)`, `{`, `}`, and `|`, so `A[x@]` and `A-->|x@|B` are accepted, and whitespace
+  may follow a data block at the end of a statement. Agentflow keeps its earlier
+  rules for both.
+
 ## 0.2.0
 
 ### Minor Changes
