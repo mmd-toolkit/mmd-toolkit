@@ -315,6 +315,16 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
     "sequenceDiagram\n  participant A\u2028%% c\n  B\n  A ->> B: x\n",
   ],
   [
+    "U+2028 between the id of a participant and its data block",
+    'sequenceDiagram\nparticipant A\u2028@{ "type": "queue" }\nA->>B: x\n',
+    'sequenceDiagram\n  participant A\u2028@{ "type": "queue" }\n  A ->> B: x\n',
+  ],
+  [
+    "U+2029 between the id of a participant and its data block",
+    'sequenceDiagram\nparticipant A\u2029@{ "type": "queue" }\nA->>B: x\n',
+    'sequenceDiagram\n  participant A\u2029@{ "type": "queue" }\n  A ->> B: x\n',
+  ],
+  [
     "U+2029 after a comment that a comment line follows",
     "sequenceDiagram\nA->>B: y #c\u2029%% d\nC->>D: z\n",
     "sequenceDiagram\n  A->>B: y #c\u2029%% d\nC->>D: z\n",

@@ -356,8 +356,17 @@ whitespace-between-tokens/values-of-other-statements-kept] The text of a `box`
 is kept as a whole: when its first word is no colour, mermaid.js takes the whole
 text as the name of the box. [fixture: whitespace-between-tokens/values-kept]
 [fixture: whitespace-between-tokens/box-text-kept] The data block of a
-participant, `@{ ... }`, touches its id, since whitespace before `@{` makes the
-input rejected. Its contents stay written except for the eligible margins in
+participant, `@{ ... }`, touches its id: mermaid.js reads the same diagram with
+spaces or a tab between them as without, so the whitespace is dropped. The data
+block may stand on one line or on several, and `as` may follow it. [fixture:
+whitespace-between-tokens/data-block-space-before-removed] [fixture:
+whitespace-between-tokens/data-block-space-before-removed-alias] [fixture:
+whitespace-between-tokens/data-block-multi-line-space-before-removed] [fixture:
+whitespace-between-tokens/data-block-space-before-removed-between-statements] A
+directive between the id and `@{` keeps the whitespace around it as written, as
+under [Directives](#directives), and so does a U+2028 or U+2029. [fixture:
+whitespace-between-tokens/data-block-space-before-kept-after-directive] Its
+contents stay written except for the eligible margins in
 [Multi-line values](#multi-line-values). [fixture:
 whitespace-between-tokens/data-block-and-ignored-line-kept] [fixture:
 whitespace-between-tokens/actor-data-block-kept] A line that mermaid.js reads as
@@ -995,7 +1004,7 @@ because changing it would change the diagram or the input would be rejected:
 - the text of a value, with the whitespace inside it, and the text of a `box` as
   a whole, up to the last U+2028 or U+2029 that ends it;
 - the whitespace after the one character that follows `title` or `title:`;
-- the data block of a participant, and that it touches its id;
+- the contents of the data block of a participant;
 - that an arrow touches a source spelled as a number or `title`;
 - a title with trivia between its keyword and text;
 - a statement protected by a semicolon line or a joining comment region;

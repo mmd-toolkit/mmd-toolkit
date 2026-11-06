@@ -364,8 +364,19 @@ sequenceDiagram
 最初の語が色でないとき、 mermaid.js はテキスト全体を box の名前にするからです。
 [fixture: whitespace-between-tokens/values-kept]
 [fixture: whitespace-between-tokens/box-text-kept]
-参加者のデータブロック `@{ ... }` は id に接したままにします。
-`@{` の前に空白があると、入力が拒否されるからです。
+参加者のデータブロック `@{ ... }` は id に接します。
+mermaid.js は、間に空白かタブがあっても、ないときと同じ図を読むので、
+空白は取り除きます。
+データブロックが 1 行でも複数行でも、後ろに `as` が続いても同じです。
+[fixture: whitespace-between-tokens/data-block-space-before-removed]
+[fixture: whitespace-between-tokens/data-block-space-before-removed-alias]
+[fixture: whitespace-between-tokens/data-block-multi-line-space-before-removed]
+[fixture: whitespace-between-tokens/data-block-space-before-removed-between-statements]
+id と `@{` の間に directive があるときは、
+[ディレクティブ](#ディレクティブ)と同じく、
+その前後の空白を書かれたまま残します。
+U+2028 か U+2029 があるときも同じです。
+[fixture: whitespace-between-tokens/data-block-space-before-kept-after-directive]
 内容は[複数行の値](#複数行の値)で対象となる余白を除いて保ちます。
 [fixture: whitespace-between-tokens/data-block-and-ignored-line-kept]
 [fixture: whitespace-between-tokens/actor-data-block-kept]
@@ -1034,7 +1045,7 @@ sequenceDiagram
   `box` のテキストは、それを終える最後の U+2028 か U+2029 までの全体。
 - `title` または `title:` の直後にある区切り文字 1 文字を除き、
   タイトルに含まれる空白。
-- 参加者のデータブロックと、それが id に接していること。
+- 参加者のデータブロックの内容。
 - 数の形か `title` の綴りの送り元に、矢印が接していること。
 - キーワードと本文の間に注釈があるタイトル。
 - セミコロン行かコメントで結合される領域の保護対象の文。
