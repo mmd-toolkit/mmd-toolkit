@@ -25,6 +25,22 @@ function walk(node: Node): [string, string, string | null][] {
   return calls
 }
 
+/** The types of the nodes that a walk enters, with `onEnter` called on each after its type is noted. */
+function enteredTypes(
+  node: Node,
+  onEnter: (entered: Node, parent: Node | null) => void,
+): string[] {
+  const types: string[] = []
+  traverseNodes(node, {
+    enterNode(entered, parent) {
+      types.push(entered.type)
+      onEnter(entered, parent)
+    },
+    leaveNode: () => undefined,
+  })
+  return types
+}
+
 /** The start of the sentence that names the child fields of a node type. */
 const CHILD_FIELDS = "Child fields: "
 
@@ -200,6 +216,60 @@ describe("traverseNodes", () => {
     expect(walk(root.body)).toEqual([
       ["enter", "ErrorDiagram", null],
       ["leave", "ErrorDiagram", null],
+    ])
+  })
+
+  it("walks child fields in order, returning to the parent after each child", () => {
+    const root = parse("flowchart TD\nsubgraph S[T]\nsubgraph U\nend\nend\n")
+    expect(walk(root)).toEqual([
+      ["enter", "Root", null],
+      ["enter", "FlowchartDiagram", "Root"],
+      ["enter", "FlowchartSubgraphStatement", "FlowchartDiagram"],
+      ["enter", "FlowchartLabel", "FlowchartSubgraphStatement"],
+      ["leave", "FlowchartLabel", "FlowchartSubgraphStatement"],
+      ["enter", "FlowchartLabel", "FlowchartSubgraphStatement"],
+      ["leave", "FlowchartLabel", "FlowchartSubgraphStatement"],
+      ["enter", "FlowchartSubgraphStatement", "FlowchartSubgraphStatement"],
+      ["enter", "FlowchartLabel", "FlowchartSubgraphStatement"],
+      ["leave", "FlowchartLabel", "FlowchartSubgraphStatement"],
+      ["leave", "FlowchartSubgraphStatement", "FlowchartSubgraphStatement"],
+      ["leave", "FlowchartSubgraphStatement", "FlowchartDiagram"],
+      ["leave", "FlowchartDiagram", "Root"],
+      ["leave", "Root", null],
+    ])
+  })
+
+  it("skips the null elements of a list of child nodes", () => {
+    const root = parse("flowchart TD\nclassDef a,,b color:red\n")
+    const body = Reflect.get(root.body, "body") as Node[]
+    const statement = body[0]
+    expect(Reflect.get(statement, "cssClasses")).toContain(null)
+    const names = walk(statement).filter(
+      ([call, type]) => call === "enter" && type === "Identifier",
+    )
+    expect(names).toHaveLength(2)
+  })
+
+  it("reads the child fields of a node after entering it", () => {
+    const root = parse("flowchart TD\nA\n")
+    const types = enteredTypes(root, (node) => {
+      if (node.type === "FlowchartDiagram") Reflect.set(node, "body", [])
+    })
+    expect(types).toEqual(["Root", "FlowchartDiagram"])
+  })
+
+  it("reads a child field after leaving the nodes of the field before it", () => {
+    const root = parse("flowchart TD\nsubgraph S\nA\nend\n")
+    const types = enteredTypes(root, (node, parent) => {
+      if (node.type === "FlowchartLabel" && parent !== null) {
+        Reflect.set(parent, "body", [])
+      }
+    })
+    expect(types).toEqual([
+      "Root",
+      "FlowchartDiagram",
+      "FlowchartSubgraphStatement",
+      "FlowchartLabel",
     ])
   })
 
