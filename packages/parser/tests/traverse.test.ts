@@ -203,6 +203,37 @@ describe("traverseNodes", () => {
     ])
   })
 
+  it("walks child fields in order, returning to the parent after each child", () => {
+    const root = parse("flowchart TD\nsubgraph S[T]\nsubgraph U\nend\nend\n")
+    expect(walk(root)).toEqual([
+      ["enter", "Root", null],
+      ["enter", "FlowchartDiagram", "Root"],
+      ["enter", "FlowchartSubgraphStatement", "FlowchartDiagram"],
+      ["enter", "FlowchartLabel", "FlowchartSubgraphStatement"],
+      ["leave", "FlowchartLabel", "FlowchartSubgraphStatement"],
+      ["enter", "FlowchartLabel", "FlowchartSubgraphStatement"],
+      ["leave", "FlowchartLabel", "FlowchartSubgraphStatement"],
+      ["enter", "FlowchartSubgraphStatement", "FlowchartSubgraphStatement"],
+      ["enter", "FlowchartLabel", "FlowchartSubgraphStatement"],
+      ["leave", "FlowchartLabel", "FlowchartSubgraphStatement"],
+      ["leave", "FlowchartSubgraphStatement", "FlowchartSubgraphStatement"],
+      ["leave", "FlowchartSubgraphStatement", "FlowchartDiagram"],
+      ["leave", "FlowchartDiagram", "Root"],
+      ["leave", "Root", null],
+    ])
+  })
+
+  it("skips the null elements of a list of child nodes", () => {
+    const root = parse("flowchart TD\nclassDef a,,b color:red\n")
+    const body = Reflect.get(root.body, "body") as Node[]
+    const statement = body[0]
+    expect(Reflect.get(statement, "cssClasses")).toContain(null)
+    const names = walk(statement).filter(
+      ([call, type]) => call === "enter" && type === "Identifier",
+    )
+    expect(names).toHaveLength(2)
+  })
+
   it("visits no token, comment, directive, or frontmatter", () => {
     const root = parse(text)
     expect(root.frontmatter).not.toBeNull()

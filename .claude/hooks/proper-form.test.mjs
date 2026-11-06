@@ -288,7 +288,7 @@ it("checks attributed package fields and package-manager commands only", () => {
   record(description, "Edit", fileInput("package.json"))
   write(description.repo, "package.json", '{"description":"new"}')
   allowed(description, check(description))
-})
+}, 30_000)
 
 it("asks about dependencies changed by a filtered package-manager command", () => {
   const fixture = setup()

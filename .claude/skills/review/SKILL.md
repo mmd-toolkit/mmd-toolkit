@@ -152,6 +152,13 @@ tools, a CLI), the inputs are different and the list is this:
 Every review has a section on proper form, also when the behavior is right:
 
 - Is the thing needed, and is it named for what it is?
+- List every function, type, and field that the change adds or rewrites, counted
+  from the file, with the reason it cannot be removed or written in place. A
+  helper with one caller needs a reason of its own. A verdict on the form
+  without this list is no verdict.
+- A behavior that a change keeps on purpose names the caller or the sentence of
+  a document that needs it. What only the old code did is a finding, and so is a
+  test that fixes it.
 - Does it take the form the repository already uses for the same kind of thing?
 - Is its only reason an earlier decision of its author's own? Then that decision
   is reconsidered first.

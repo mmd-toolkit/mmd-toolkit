@@ -41,15 +41,21 @@ function childNodes(node: Node, key: string): Node[] {
   return isNode(value) ? [value] : []
 }
 
-/** Visits `node`, then the nodes of its child fields in the order of `visitorKeys`, then leaves `node`. */
-function traverse(node: Node, parent: Node | null, visitor: Visitor): void {
-  visitor.enterNode(node, parent)
-  for (const key of visitorKeys[node.type]) {
-    for (const child of childNodes(node, key)) {
-      traverse(child, node, visitor)
-    }
+/** Calls `callback` with each of `items`, the last first. */
+function forEachReversed<T>(
+  items: readonly T[],
+  callback: (item: T) => void,
+): void {
+  for (let index = items.length - 1; index >= 0; index -= 1) {
+    callback(items[index])
   }
-  visitor.leaveNode(node, parent)
+}
+
+/** A call the walk has still to make: `leaveNode` when `entered`, otherwise `enterNode`. */
+interface Step {
+  readonly node: Node
+  readonly parent: Node | null
+  readonly entered: boolean
 }
 
 /**
@@ -57,7 +63,27 @@ function traverse(node: Node, parent: Node | null, visitor: Visitor): void {
  * of `visitorKeys` only. Every node is entered before its child nodes and
  * left after them. Tokens, comments, directives, and the frontmatter are not
  * nodes and are never visited; they are in the lists of the root.
+ *
+ * Trees nest without a limit, so `pending` holds the calls found so far and
+ * not yet made, the next one last: a function call for each level would
+ * exhaust the call stack. The step that leaves a node goes in before its child
+ * nodes, which go in reversed, so that it comes after them and they come in
+ * order.
  */
 export function traverseNodes(node: Node, visitor: Visitor): void {
-  traverse(node, null, visitor)
+  const pending: Step[] = [{ node, parent: null, entered: false }]
+  for (let step = pending.pop(); step !== undefined; step = pending.pop()) {
+    if (step.entered) {
+      visitor.leaveNode(step.node, step.parent)
+      continue
+    }
+    visitor.enterNode(step.node, step.parent)
+    pending.push({ node: step.node, parent: step.parent, entered: true })
+    const parent = step.node
+    forEachReversed(visitorKeys[parent.type], (key) => {
+      forEachReversed(childNodes(parent, key), (child) => {
+        pending.push({ node: child, parent, entered: false })
+      })
+    })
+  }
 }
