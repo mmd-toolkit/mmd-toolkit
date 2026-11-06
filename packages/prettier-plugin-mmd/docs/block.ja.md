@@ -558,6 +558,17 @@ flowchart の [スタイルの行末の空白](./flowchart.ja.md#スタイルの
 [fixture: styles/trailing-whitespace-dropped]
 [fixture: styles/styles-with-a-directive]
 
+スタイルのない `style` は `style A` と出力し、id は 1 つの空白の後に置き、
+その後ろには何も置きません。 [fixture: styles/style-without-styles]
+[corpus fixture: block/db-style-none]
+最初のスタイルが空白だけのとき、たとえば `classDef c ,fill:#f00` では、
+Db の最初のスタイルは空で、`,` の前の空白はどのスタイルにも属しません。
+そのためスタイルは最初の `,` から始まるものとして扱い、
+その空白は 1 つの空白にし、
+`,` とそれ以降はほかのスタイルと同じく書かれたとおりに出力します。
+[fixture: styles/styles-with-a-leading-comma]
+[corpus fixture: block/db-class-def-leading-comma]
+
 入力
 ([styles/class-definition-spaces-input.mmd](../tests/fixtures/block/styles/class-definition-spaces-input.mmd)):
 

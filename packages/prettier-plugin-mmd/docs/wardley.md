@@ -932,7 +932,9 @@ preserving the complete line avoids predicting its selection after moving text.
 Keep all authored semicolons. Exclude grammatical link-label openers from shared
 textual-prefix protection; other semicolons protect their source segment through
 the last semicolon and whole crossing values/trivia. Words inside removed Root
-directives alone do not trigger complete-line protection.
+directives alone do not trigger complete-line protection. A Root directive
+before the header is omitted in the same way, and the lines of the body after it
+are protected or formatted as before.
 
 [fixture: wardley/semicolons/style-label]
 
@@ -987,6 +989,8 @@ directives alone do not trigger complete-line protection.
 [fixture: wardley/semicolons/style-pipeline-child]
 
 [fixture: wardley/semicolons/style-trivia-line]
+
+[fixture: wardley/semicolons/style-after-leading-directive]
 
 Input (escaped): `"wardley-beta\nAlpha  -> Beta; style:#tone;"`.
 

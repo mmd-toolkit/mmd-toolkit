@@ -1908,6 +1908,9 @@ railroad では、規則の必須終端や ABNF のコメントの印がその�
 その他の行は通常の規則に従います。
 除かれる global directive の中にしかない語は、行を保つ対象にしません。
 directive の除去で接する文字は対象にします。
+ヘッダの前の行にある global directive も同じように除かれ、その後の本文の行は、
+従来どおり保つか整形します。
+[fixture: railroad/semicolons/ir-word-after-leading-directive]
 
 [fixture: railroad/semicolons/abnf-comment-marker-spaced]
 

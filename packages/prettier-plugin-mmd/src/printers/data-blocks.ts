@@ -7,7 +7,11 @@ import type { KeptLines } from "./kept-lines.ts"
 import { lineStartOf } from "./kept-lines.ts"
 import { printAsWritten } from "./lines.ts"
 import type { Source } from "./source.ts"
-import { findFirstIndex, findTriviaBetween, isWhitespace } from "./source.ts"
+import {
+  findDirectiveEndingAt,
+  findFirstIndex,
+  isWhitespace,
+} from "./source.ts"
 
 const { literalline } = builders
 
@@ -86,79 +90,71 @@ export function formatDataBlocks(
   placement: DataBlockPlacement,
 ): AtomLayout {
   const all = dataBlocksOf(source)
-  const first = findFirstIndex(all, (block) => block.range[0] >= range[0])
   // The blocks do not overlap, so those inside the range follow one another.
-  const inside: number[] = []
-  for (
-    let index = first;
-    index < all.length && all[index].range[1] <= range[1];
-    index++
-  )
-    inside.push(index)
-  // The formatted blocks by the atom that holds them, in source order.
-  const formatted = new Map<number, { block: Node; doc: Doc }[]>()
-  for (const index of inside) {
+  const first = findFirstIndex(all, (block) => block.range[0] >= range[0])
+  const afterLast = findFirstIndex(all, (block) => block.range[1] > range[1])
+  const atoms = [...layout.atoms]
+  let changed = false
+  for (let index = first; index < afterLast; index++) {
     const block = all[index]
     const doc = isOneLine(source.text.slice(...block.range))
       ? padDataBlock(source, all, index, placement.kept)
-      : inside.length === 1 && placement.tabWidth !== 0
+      : afterLast - first === 1 && placement.tabWidth !== 0
         ? moveDataBlock(source, block, range, placement)
         : undefined
     if (doc === undefined) continue
-    const at = layout.atoms.findIndex(
-      (atom) =>
-        atom.doc === undefined &&
-        atom.writtenIndentation === undefined &&
-        (placement.wholeLine === true
-          ? atom.start <= block.range[0] && block.range[1] <= atom.end
-          : atom.start === block.range[0] && block.range[1] === atom.end),
+    // The atoms are in source order and do not overlap, so the first one that
+    // ends at or after the block is the one that holds it, if any does.
+    const at = findFirstIndex(atoms, (atom) => atom.end >= block.range[1])
+    const atom = atoms[at]
+    if (
+      atom === undefined ||
+      atom.doc !== undefined ||
+      atom.writtenIndentation !== undefined ||
+      atom.start > block.range[0] ||
+      (placement.wholeLine !== true && atom.end !== block.range[1])
     )
-    if (at === -1) continue
-    const blocks = formatted.get(at) ?? []
-    blocks.push({ block, doc })
-    formatted.set(at, blocks)
+      continue
+    // An atom that holds several blocks is a kanban node, whose blocks touch,
+    // and so none of them is formatted.
+    atoms[at] = {
+      ...atom,
+      doc: [
+        printAsWritten(source, atom.start, block.range[0]),
+        doc,
+        printAsWritten(source, block.range[1], atom.end),
+      ],
+    }
+    changed = true
   }
-  if (formatted.size === 0) return layout
-  return {
-    ...layout,
-    atoms: layout.atoms.map((atom, at) => {
-      const blocks = formatted.get(at)
-      if (blocks === undefined) return atom
-      const parts: Doc[] = []
-      let position = atom.start
-      for (const { block, doc } of blocks) {
-        parts.push(printAsWritten(source, position, block.range[0]), doc)
-        position = block.range[1]
-      }
-      parts.push(printAsWritten(source, position, atom.end))
-      return { ...atom, doc: parts }
-    }),
-  }
+  return changed ? { ...layout, atoms } : layout
 }
 
 /** Whether a text holds no line break: LF, CR, U+2028 or U+2029. */
 function isOneLine(text: string): boolean {
-  return ![...text].some(
-    (character) =>
-      character === "\n" ||
-      character === "\r" ||
-      character === "\u2028" ||
-      character === "\u2029",
+  return (
+    !text.includes("\n") &&
+    !text.includes("\r") &&
+    !text.includes("\u2028") &&
+    !text.includes("\u2029")
   )
 }
 
 /**
  * The block of one line printed with one space inside each end, `@{ shape:
  * circle }`; undefined where it stays as written. These diagram types read the
- * text inside `@{` and `}` as the lines of a YAML flow mapping (docs/flowchart.md,
- * Data blocks), so the spaces and tabs at its ends carry no meaning. A block
- * is padded only if
+ * text inside `@{` and `}` as the lines of a YAML flow mapping
+ * (docs/flowchart.md, Data blocks), so the spaces and tabs at its ends carry no
+ * meaning. A block is padded only if
  *
  * - it is one of `paddedTypes`;
  * - no `%%{` lies in it: a directive in the block is written as it stands;
  * - it is on no kept line (see `KeptLines`);
  * - something other than spaces and tabs stands in it: of a block that holds
  *   none, `@{}` is rejected while `@{   }` is accepted;
+ * - its text does not start at the first column with `---`, `...`, or `%`: a
+ *   space before them makes a document marker or a YAML directive an ordinary
+ *   string, so `@{---}` is rejected while `@{ --- }` is accepted;
  * - it touches no other block: two blocks with nothing between them, or only
  *   directives, are read as one text.
  *
@@ -177,9 +173,8 @@ function padDataBlock(
   const after = blocks[index + 1]
   if (
     !paddedTypes.has(block.type) ||
-    !text.startsWith("@{") ||
-    !text.endsWith("}") ||
     text.includes("%%{") ||
+    startsWithYamlMark(text.slice(2)) ||
     holdsKeptLine(source, block.range, kept) ||
     (before !== undefined &&
       holdsOnlyDirectives(source, before.range[1], block.range[0])) ||
@@ -201,15 +196,20 @@ function holdsOnlyDirectives(
   from: number,
   to: number,
 ): boolean {
-  let position = from
-  while (position < to) {
-    const directive = findTriviaBetween(source, position, position + 1).find(
-      (item) => item.type === "Directive",
-    )
-    if (directive === undefined) return false
-    position = directive.range[1]
+  let position = to
+  while (position > from) {
+    const directive = findDirectiveEndingAt(source, position)
+    if (directive === undefined || directive.range[0] < from) return false
+    position = directive.range[0]
   }
   return true
+}
+
+/** Whether a text starts with a YAML document marker or directive mark. */
+function startsWithYamlMark(text: string): boolean {
+  return (
+    text.startsWith("---") || text.startsWith("...") || text.startsWith("%")
+  )
 }
 
 /**
@@ -295,11 +295,7 @@ function moveDataBlock(
   if (
     shallowest === 0 &&
     textLines.some(
-      (index) =>
-        margins[index] === 0 &&
-        (body[index].startsWith("---") ||
-          body[index].startsWith("...") ||
-          body[index].startsWith("%")),
+      (index) => margins[index] === 0 && startsWithYamlMark(body[index]),
     )
   )
     return undefined

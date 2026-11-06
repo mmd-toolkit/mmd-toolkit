@@ -478,6 +478,12 @@ mermaid.js は拒否します（既知の差異
 [fixture: data-blocks/one-line-kept-line-kept]
 [fixture: data-blocks/one-line-touching-blocks-kept]
 [fixture: data-blocks/one-line-surrounding-trivia]
+[fixture: data-blocks/one-line-padded-zero-width]
+[fixture: data-blocks/compat-document-marker-data-block-kept]
+[fixture: data-blocks/one-line-document-marker-after-space-padded]
+[test: data blocks: kanban one line with U+2028 inside]
+[test: data blocks: kanban one line with U+2029 inside]
+[test: data blocks: kanban one line with no-break spaces at the ends]
 [test: data blocks: kanban one line with U+2028 inside]
 
 [データブロック](./flowchart.ja.md#データブロック)の移動と安全条件を適用します。

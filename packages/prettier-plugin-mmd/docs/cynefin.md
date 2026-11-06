@@ -573,6 +573,8 @@ separate matches and fallback comments.
 
 [fixture: cynefin/hidden-forms/leading-two-forms]
 
+[fixture: cynefin/hidden-forms/hidden-item-after-closer-tab]
+
 [corpus fixture: cynefin/hidden-domain-item-members]
 
 [corpus fixture: cynefin/hidden-all-unit-gaps]

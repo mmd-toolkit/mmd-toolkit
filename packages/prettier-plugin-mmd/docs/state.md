@@ -149,11 +149,18 @@ composite-states/percent-space-brace-comment] An empty description block before
 a `{` is kept as written too: `state "d" as A` followed by a line
 `accDescr {} {` has the id `A`, while written on one line the id is
 `A accDescr {}`, and mermaid.js rejects the body. [fixture:
-composite-states/empty-block-before-body-kept] A body with nothing but a
-directive stays on the line of its `{` when it is written there, as in
-`state X { %%{init: {}}%% }`; a comment stands on a line of its own, so a body
-with only a comment is printed as a body. [fixture:
-composite-states/empty-body-directive-and-comment]
+composite-states/empty-block-before-body-kept] A `state` before a `{`, which
+mermaid.js ignores, is kept as written too: `state "d" as A` followed by a line
+`state {` has the id `A`, while written on one line the id is `A state`.
+[fixture: composite-states/ignored-state-before-body-kept] [corpus fixture:
+state/gram-ignored-state-before-alias-body-next-line] A `state` with no name,
+which mermaid.js accepts and reads as nothing, is a statement of its own,
+printed at the level of the statements around it. [fixture:
+composite-states/state-keyword-alone] [corpus fixture:
+state/lex-state-keyword-alone] A body with nothing but a directive stays on the
+line of its `{` when it is written there, as in `state X { %%{init: {}}%% }`; a
+comment stands on a line of its own, so a body with only a comment is printed as
+a body. [fixture: composite-states/empty-body-directive-and-comment]
 
 Input
 ([composite-states/percent-before-body-kept-input.mmd](../tests/fixtures/state/composite-states/percent-before-body-kept-input.mmd)):
@@ -570,9 +577,12 @@ What follows the id of a note on one line, its `:` and its text, is kept as
 written: mermaid.js reads the text from right after the id, without its first
 two characters, so `note left of A:hi` has the text `i`, and
 `note right of A  : two spaces` the text `: two spaces`. [fixture: notes/kept]
-The whitespace before the id becomes one space. A text that mermaid.js does not
-read right after the position, as in `note left of%%x A`, keeps touching the
-position.
+In `note left of A:h` the `:` and the `h` are the two characters that mermaid.js
+drops, so the note has no text, and the whitespace after the `h` is dropped.
+[fixture: notes/one-character-text-kept] [corpus fixture:
+state/lex-note-colon-then-one-character] The whitespace before the id becomes
+one space. A text that mermaid.js does not read right after the position, as in
+`note left of%%x A`, keeps touching the position.
 
 The pinned Mermaid renders `stateDiagram-v2` notes as Markdown labels, setting
 `labelType` to `markdown` in
@@ -733,12 +743,23 @@ notes/over-lines-text-ends-kept] [fixture:
 notes/over-lines-directive-on-header-line] [fixture:
 notes/over-lines-end-note-indentation-set] [fixture:
 notes/over-lines-in-composite] [fixture: notes/over-lines-empty-lines-kept] A
-note on one line with no text keeps the whitespace after its `:`, as a
-description does: `note left of A : ` is accepted, while `note left of A :` is
-rejected; so does a note with two whitespace characters before the `:` and
-nothing after it, whose text is the `:` alone. [fixture: notes/blank-text-kept]
-The quotes of a floating note are kept as written: `note ""floating" as N` has
-the text `floating`. [fixture: notes/over-lines]
+note over lines with no text, as in `note right of A` followed by a line
+`end note`, is accepted with the empty text, and prints its two lines. [fixture:
+notes/over-lines-empty] [corpus fixture: state/lex-note-block-empty] When the
+text of a note over lines starts on the line of its id, as in
+`note right of A text`, the first row of the text is on that line, and Mermaid
+trims only the margin of that row: the margins of the later rows are part of the
+text and stay as written, and `end note` stands at the level of the note.
+[fixture: notes/over-lines-text-on-id-line-kept] The same holds when the id is
+empty: in `note left of %%x`, mermaid.js reads the `%%x` as the start of the
+text. [fixture: notes/over-lines-empty-id-kept] [corpus fixture:
+state/lex-note-id-percent-block] A note on one line with no text keeps the
+whitespace after its `:`, as a description does: `note left of A : ` is
+accepted, while `note left of A :` is rejected; so does a note with two
+whitespace characters before the `:` and nothing after it, whose text is the `:`
+alone. [fixture: notes/blank-text-kept] The quotes of a floating note are kept
+as written: `note ""floating" as N` has the text `floating`. [fixture:
+notes/over-lines]
 
 Input ([notes/kept-input.mmd](../tests/fixtures/state/notes/kept-input.mmd)):
 
@@ -1022,10 +1043,13 @@ multi-line-values/empty-description-interiors] [test: accessibility revisions:
 state empty-description-nbsp] Blocks with comments or directives keep their
 contents and line breaks, and unclosed blocks stay open. [fixture:
 multi-line-values/empty-description-trivia-kept] [corpus fixture:
-state/lex-acc-descr-block-unclosed] Block note paragraphs follow the restricted
-[Notes](#notes) rule. [fixture: notes/payment-prose] The text of a floating note
-written over several lines stays as written. [fixture: multi-line-values/kept]
-[fixture: multi-line-values/floating-note-empty-line-kept]
+state/lex-acc-descr-block-unclosed] The lines of an unclosed block are aligned
+as those of a closed one, up to the end of the text, and no `}` is added.
+[fixture: multi-line-values/unclosed-block-kept] Block note paragraphs follow
+the restricted [Notes](#notes) rule. [fixture: notes/payment-prose] The text of
+a floating note written over several lines stays as written. [fixture:
+multi-line-values/kept] [fixture:
+multi-line-values/floating-note-empty-line-kept]
 
 Input
 ([multi-line-values/kept-input.mmd](../tests/fixtures/state/multi-line-values/kept-input.mmd)):
@@ -1076,8 +1100,12 @@ mermaid.js removes the first `;` of each style. [fixture:
 semicolons-at-the-end-of-a-style-statement/style-text-terminators] Keep
 `classDef c fill:red;;`, `classDef c ;` and `style A fill : #f00;`; they do not
 meet these conditions. [fixture:
-semicolons-at-the-end-of-a-style-statement/style-text-kept] A transition such as
-`A --> B;` keeps its semicolon, which is part of its id. [fixture:
+semicolons-at-the-end-of-a-style-statement/style-text-kept] A statement with no
+style, such as `style A`, has no `;` to drop, and its whitespace follows the
+usual layout. [fixture:
+semicolons-at-the-end-of-a-style-statement/no-style-kept] [corpus fixture:
+state/lex-style-without-styles] A transition such as `A --> B;` keeps its
+semicolon, which is part of its id. [fixture:
 semicolons-at-the-end-of-a-style-statement/transition-semicolon-kept]
 
 A directive after the semicolon on the same line keeps the `;`. [fixture:
@@ -1094,6 +1122,12 @@ semicolons: state before U+2028] [test: style semicolons: state before U+2029] A
 closed directive between the statement and an ignored terminator is kept while
 the `;` is dropped. [fixture:
 semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+
+A statement whose styles are all empty, such as `style A ,%%{init: {}}%%`, has
+no style text that a `;` could end, so it formats as usual and keeps its
+directive: a `;` after the comma would be a style of its own (see
+[StateClassDefStatement](../../spec/docs/ast/state.md#stateclassdefstatement)).
+[fixture: semicolons-at-the-end-of-a-style-statement/empty-styles]
 
 Output
 ([semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd](../tests/fixtures/state/semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd)):

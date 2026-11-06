@@ -19,6 +19,11 @@ describe("data blocks' permitted uniform margins", () => {
       after: "@{ label: Alpha }",
     },
     {
+      name: "an inline block with a document marker after a space",
+      before: "@{ ---}",
+      after: "@{ --- }",
+    },
+    {
       name: "an inline block that starts with a no-break space inside",
       before: "@{\u00a0label: Alpha}",
       after: "@{ \u00a0label: Alpha }",
@@ -150,6 +155,36 @@ describe("data blocks' permitted uniform margins", () => {
       name: "an inline block with a no-break space removed at its end",
       before: "@{label: Alpha\u00a0}",
       after: "@{ label: Alpha }",
+    },
+    {
+      name: "an inline block with a directive",
+      before: "@{label:%%{init: {}}%%a}",
+      after: "@{ label:%%{init: {}}%%a }",
+    },
+    {
+      name: "an inline block with U+2028 inside",
+      before: "@{label:\u2028a}",
+      after: "@{ label:\u2028a }",
+    },
+    {
+      name: "an inline block with U+2029 inside",
+      before: "@{label:\u2029a}",
+      after: "@{ label:\u2029a }",
+    },
+    {
+      name: "a document marker at the first column given a space before it",
+      before: "@{---}",
+      after: "@{ --- }",
+    },
+    {
+      name: "a document end marker at the first column given a space before it",
+      before: "@{... a}",
+      after: "@{ ... a }",
+    },
+    {
+      name: "a YAML directive mark at the first column given a space before it",
+      before: "@{%a: 1}",
+      after: "@{ %a: 1 }",
     },
     {
       name: "an inline block of spaces only",

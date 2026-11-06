@@ -764,6 +764,11 @@ remaining configured indentation before the first directive. Earlier-line
 carried units move once instead. Keep necessary class keyword/name whitespace
 and never use a directive as its substitute.
 
+With useTabs, the retained gaps and the supplied indentation are all printed as
+tabs: the whitespace on both sides of the directive is one indentation unit, in
+which each character counts once whatever its kind (see [Tabs](#tabs)).
+[fixture: treemap/directives/leading-use-tabs]
+
 [fixture: treemap/directives/leading]
 
 [fixture: treemap/directives/shortened]

@@ -155,7 +155,14 @@ names-and-headings/click-empty-string-space-semicolon] [fixture:
 names-and-headings/name-exit-lf-empty-line] [fixture:
 names-and-headings/name-exit-lf-semicolon] [fixture:
 names-and-headings/name-exit-tab-eof] [fixture:
-names-and-headings/name-ordinary-fragment-blank]
+names-and-headings/name-ordinary-fragment-blank] [fixture:
+names-and-headings/name-click-exit-before-data-tab] [fixture:
+names-and-headings/name-click-exit-before-title-tab]
+
+A name read as a click id that reaches EOF with no exit character keeps its text
+as written; the only addition is the final LF of
+[Final newline](#final-newline). [fixture:
+names-and-headings/name-click-exit-eof]
 
 Ordinary blank gaps after the character ending click-id text follow Blank lines.
 [fixture: names-and-headings/name-exit-lf-empty-line] [fixture:
@@ -273,7 +280,9 @@ exterior space. Print one post-pipe gap. Only sequence/failure support split
 labels. Keep string/markdown kind, bare continuation, and split semicolons,
 percent text and line breaks; do not invent another string or split reference
 form. [fixture: edge-labels/edge-label-forms] [fixture:
-edge-labels/split-pipe-content]
+edge-labels/split-pipe-content] A string between pipes keeps its text, and the
+pipes touch the arrow and the quotes: `A  -->  |"x  y"|B` is printed as
+`A -->|"x  y"| B`. [fixture: edge-labels/pipe-label-string-kept]
 
 Input (escaped): `"agentflow-beta TB\nA --> |x| B"`. [fixture:
 edge-labels/pipe-label-gap]
@@ -361,8 +370,13 @@ metadata-blocks/one-line-space-only-kept] [fixture:
 metadata-blocks/one-line-directive-kept] [fixture:
 metadata-blocks/one-line-kept-line-kept] [fixture:
 metadata-blocks/one-line-touching-blocks-kept] [fixture:
-metadata-blocks/one-line-separate-blocks-padded] [test: data blocks: agentflow
-one line with U+2029 inside]
+metadata-blocks/one-line-separate-blocks-padded] [fixture:
+metadata-blocks/compat-document-marker-data-block-kept] [fixture:
+metadata-blocks/one-line-document-marker-after-space-padded] [fixture:
+metadata-blocks/one-line-padded-zero-width] [fixture:
+metadata-blocks/one-line-surrounding-trivia] [test: data blocks: agentflow one
+line with U+2028 inside] [test: data blocks: agentflow one line with U+2029
+inside] [test: data blocks: agentflow one line with no-break spaces at the ends]
 
 For a block whose opener is immediately followed by a newline, move all body
 lines by the same number of ASCII spaces so the shallowest text is one level

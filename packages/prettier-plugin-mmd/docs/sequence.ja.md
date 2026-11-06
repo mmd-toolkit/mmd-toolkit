@@ -392,6 +392,10 @@ U+2028 か U+2029 があるときも同じです。
 [fixture: whitespace-between-tokens/data-block-directive-kept]
 [fixture: whitespace-between-tokens/data-block-kept-line-kept]
 [test: data blocks: sequence one line with U+2028 inside]
+[test: data blocks: sequence one line with U+2029 inside]
+[test: data blocks: sequence one line with no-break spaces at the ends]
+[fixture: whitespace-between-tokens/data-block-padded-zero-width]
+[fixture: whitespace-between-tokens/data-block-surrounding-trivia]
 [fixture: whitespace-between-tokens/data-block-and-ignored-line-kept]
 [fixture: whitespace-between-tokens/actor-data-block-kept]
 行に単独の `)` のように、mermaid.js が何も読まない行は残し、
@@ -809,7 +813,11 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   行の規則は、文字の手前までを行として読むので、その行を書かれたまま残します。
   ダイアグラムコメントの中の `;` はコメントの一部で、
   コメントを書かれたまま残し、行のほかの部分は整形します。
+  文字の後の改行に続く次の行の `;` も、書かれたまま残します。
+  `participant Z@{ "style": "x:#y" };`、U+2028、改行、
+  `;` は mermaid.js が受理し、2 つ目の `;` がない同じテキストは拒否されます。
   [test: a `;` after an ignored `;` and U+2029, which the line rule reads as the end of its line]
+  [test: a `;` on the next line after an ignored `;` and U+2028, which the line rule reads as the end of its line]
   [test: statements after an ignored `;`, with a U+2029 later on the line]
 - printer が残す U+2028 か U+2029 の後の `;`。
   `box`、タイトル、subgraph の名前のテキストの終わりにあるものがその例です。
@@ -961,6 +969,11 @@ Mermaid が説明からこの字下げを除くためです。
 `}` は `accDescr` と同じ段に置きます。
 [fixture: multi-line-values/accdescr-block-comment-only]
 [fixture: multi-line-values/accdescr-block-without-text-kept]
+テキストの終わりで閉じる説明ブロック（`accDescr {` の後に `}` がないもの）は、
+mermaid.js が受理します（詳しくは、
+[文の文脈](../../spec/docs/diagrams/sequence.ja.md#文の文脈)を参照）。
+その本文行は、閉じたブロックと同じく文より 1 段深く置き、 `}` は足しません。
+[fixture: multi-line-values/accdescr-block-unclosed-indented]
 
 participant と actor のデータブロックには、
 文字のある本文行がちょうど 1 行の場合だけ、

@@ -441,8 +441,13 @@ data-blocks/one-line-space-only-kept] [fixture:
 data-blocks/one-line-directive-kept] [fixture:
 data-blocks/one-line-kept-line-kept] [fixture:
 data-blocks/one-line-touching-blocks-kept] [fixture:
-data-blocks/one-line-surrounding-trivia] [test: data blocks: kanban one line
-with U+2028 inside]
+data-blocks/one-line-surrounding-trivia] [fixture:
+data-blocks/one-line-padded-zero-width] [fixture:
+data-blocks/compat-document-marker-data-block-kept] [fixture:
+data-blocks/one-line-document-marker-after-space-padded] [test: data blocks:
+kanban one line with U+2028 inside] [test: data blocks: kanban one line with
+U+2029 inside] [test: data blocks: kanban one line with no-break spaces at the
+ends]
 
 Apply the movement and safety conditions of
 [Data blocks](./flowchart.md#data-blocks): when a newline immediately follows

@@ -56,11 +56,26 @@ function isShallowCloser(rows: readonly string[], closing: number): boolean {
 /**
  * Whether `after` is the block `before` of one line with the spaces and tabs
  * at the ends of its inside replaced by one space each: `@{ ` and ` }` around
- * the same inside, which holds something other than spaces and tabs.
+ * the same inside, which holds something other than spaces and tabs. The
+ * formatter leaves a block as written that touches another block, which this
+ * function cannot tell from the text alone, and one of a diagram type that is
+ * not padded.
  */
 function isPaddedOneLine(before: string, after: string): boolean {
   if (!before.startsWith("@{") || !before.endsWith("}")) return false
   const inside = before.slice(2, -1)
+  // Blocks that the formatter leaves as written: with a directive, with a
+  // separator inside, and with a document marker or a directive mark of YAML
+  // at the first column, which a space before it would turn into a string.
+  if (
+    before.includes("%%{") ||
+    before.includes("\u2028") ||
+    before.includes("\u2029") ||
+    inside.startsWith("---") ||
+    inside.startsWith("...") ||
+    inside.startsWith("%")
+  )
+    return false
   let start = 0
   let end = inside.length
   while (start < end && (inside[start] === " " || inside[start] === "\t"))

@@ -2054,6 +2054,11 @@ supply the remaining indentation before the first directive. This preserves the
 assigned indent without duplicating earlier carried runs. Multiline interiors,
 value-owned forms and unfinished EOF directives remain written.
 
+With useTabs, the retained gaps and the supplied indentation of a leading
+indentation unit are all printed as tabs: each character of that unit counts
+once whatever its kind (see [Tabs](#tabs)). [fixture:
+treeview/directives/directive-leading-use-tabs]
+
 [fixture: treeview/directives/before-unprefixed-box-root]
 
 [test: treeview/directives/unclosed-final-whitespace-ls]

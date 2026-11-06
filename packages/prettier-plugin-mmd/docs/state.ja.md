@@ -153,6 +153,14 @@ mermaid.js が読まない `%%` を持つ X の本体を開きます。
 1 行に書くと id は `A accDescr {}` になり、
 本体を mermaid.js は拒否するからです。
 [fixture: composite-states/empty-block-before-body-kept]
+mermaid.js が無視する、`{` の前の `state` も、書かれたまま残します。
+`state "d" as A` の次の行の `state {` では id は `A` ですが、
+1 行に書くと id は `A state` になるからです。
+[fixture: composite-states/ignored-state-before-body-kept]
+[corpus fixture: state/gram-ignored-state-before-alias-body-next-line]
+名前のない `state` は、mermaid.js が受理して何も読まない独立した文なので、
+周りの文と同じ段に印字します。 [fixture: composite-states/state-keyword-alone]
+[corpus fixture: state/lex-state-keyword-alone]
 ディレクティブだけの本体は、
 `{` の行に書かれていればその行に残します（`state X { %%{init: {}}%% }`）。
 コメントは単独の行に置くので、コメントだけの本体は本体として印字します。
@@ -584,6 +592,10 @@ mermaid.js は本文を id の直後から読み、最初の 2 文字を除く�
 `note left of A:hi` の本文は `i` で、
 `note right of A  : two spaces` の本文は `: two spaces` です。
 [fixture: notes/kept]
+`note left of A:h` では、`:` と `h` が mermaid.js の捨てる 2 文字なので、
+ノートに本文はなく、`h` の後の空白は削除します。
+[fixture: notes/one-character-text-kept]
+[corpus fixture: state/lex-note-colon-then-one-character]
 id の前の空白は空白 1 つにします。
 `note left of%%x A` のように位置の直後にある、mermaid.js が読まないテキストは、
 位置に接したまま残します。
@@ -763,6 +775,19 @@ parser、仕様、記録済み Mermaid の読み取りは変えません。
 [fixture: notes/over-lines-end-note-indentation-set]
 [fixture: notes/over-lines-in-composite]
 [fixture: notes/over-lines-empty-lines-kept]
+本文のない複数行のノートは、`note right of A` の次の行が `end note` の形で、
+空の本文として受理され、2 行をそのまま印字します。
+[fixture: notes/over-lines-empty] [corpus fixture: state/lex-note-block-empty]
+複数行のノートの本文が id と同じ行から始まる場合、
+たとえば `note right of A text` では、本文の最初の行は id の行にあり、
+Mermaid が余白を除くのはその行だけです。
+後の行の余白は本文の一部なので、書かれたまま残し、
+`end note` はノートと同じ段に置きます。
+[fixture: notes/over-lines-text-on-id-line-kept]
+id が空の場合も同じです。
+`note left of %%x` では、mermaid.js は `%%x` から本文が始まると読みます。
+[fixture: notes/over-lines-empty-id-kept]
+[corpus fixture: state/lex-note-id-percent-block]
 本文のない 1 行のノートは、説明と同じく、`:` の後の空白を残します。
 `note left of A : ` は受理され、`note left of A :` は拒否されます。
 `:` の前に空白が 2 つあり、後ろに何もないノートも同じです。
@@ -1064,6 +1089,9 @@ agentflow、usecase に合わせます。
 閉じられていないブロックは開いたままにします。
 [fixture: multi-line-values/empty-description-trivia-kept]
 [corpus fixture: state/lex-acc-descr-block-unclosed]
+閉じられていないブロックの行も、テキストの終わりまで、
+閉じたブロックと同じようにそろえ、`}` は加えません。
+[fixture: multi-line-values/unclosed-block-kept]
 ブロックノートの段落は、[ノート](#ノート)の限定規則に従います。
 [fixture: notes/payment-prose]
 複数行に書かれた独立したノートの本文は、書かれたまま残します。
@@ -1121,6 +1149,10 @@ mermaid.js は各スタイルの最初の `;` を取り除くためです。
 `classDef c fill:red;;`、`classDef c ;`、
 `style A fill : #f00;` は条件を満たさないので残します。
 [fixture: semicolons-at-the-end-of-a-style-statement/style-text-kept]
+`style A` のようにスタイルのない文には、削除する `;` がなく、
+空白は通常の配置に従います。
+[fixture: semicolons-at-the-end-of-a-style-statement/no-style-kept]
+[corpus fixture: state/lex-style-without-styles]
 `A --> B;` などの遷移のセミコロンは、id の文字なので保ちます。
 [fixture: semicolons-at-the-end-of-a-style-statement/transition-semicolon-kept]
 
@@ -1139,6 +1171,13 @@ U+2028 と U+2029 の前も同じように保護します。
 [test: style semicolons: state before U+2029]
 文と無視される終端の間にある閉じたディレクティブは残し、`;` は削除します。
 [fixture: semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+
+スタイルがすべて空の文（`style A ,%%{init: {}}%%` など）には、
+`;` が終わらせるスタイルのテキストがないので、通常どおり整形し、
+ディレクティブも残します。
+カンマの後の `;` は、それだけで 1 つのスタイルになるためです（詳しくは、
+[木](../../spec/docs/ast/state.ja.md#stateclassdefstatement)を参照）。
+[fixture: semicolons-at-the-end-of-a-style-statement/empty-styles]
 
 出力
 ([semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd](../tests/fixtures/state/semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd)):

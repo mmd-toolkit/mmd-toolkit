@@ -2035,6 +2035,11 @@ directive の原文と順序を保ちます。
 前の行の run を重ねず、割り当て済みの indent を保つためです。
 複数行の内部、値の中の形と EOF の未完の directive は原文のままです。
 
+useTabs のときは、
+行頭の字下げ単位の保つ gap も補う字下げもすべて tab で印字します。
+その単位の各文字は種類を問わず一つと数えるためです（[Tabs](#tabs) を参照）。
+[fixture: treeview/directives/directive-leading-use-tabs]
+
 [fixture: treeview/directives/before-unprefixed-box-root]
 
 [test: treeview/directives/unclosed-final-whitespace-ls]

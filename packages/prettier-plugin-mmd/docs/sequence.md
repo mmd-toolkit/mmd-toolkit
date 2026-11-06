@@ -380,7 +380,10 @@ that rule says so. [fixture:
 whitespace-between-tokens/data-block-space-only-kept] [fixture:
 whitespace-between-tokens/data-block-directive-kept] [fixture:
 whitespace-between-tokens/data-block-kept-line-kept] [test: data blocks:
-sequence one line with U+2028 inside] [fixture:
+sequence one line with U+2028 inside] [test: data blocks: sequence one line with
+U+2029 inside] [test: data blocks: sequence one line with no-break spaces at the
+ends] [fixture: whitespace-between-tokens/data-block-padded-zero-width]
+[fixture: whitespace-between-tokens/data-block-surrounding-trivia] [fixture:
 whitespace-between-tokens/data-block-and-ignored-line-kept] [fixture:
 whitespace-between-tokens/actor-data-block-kept] A line that mermaid.js reads as
 nothing, such as `)` alone, is kept and stands at the level of the statements
@@ -774,10 +777,14 @@ characters as escapes too (see
 - On a line that holds a `;` that the line rule ignores and, after it, a U+2028
   or U+2029: the line rule reads the text up to the character as the line, so
   the line is printed as written. A `;` inside a diagram comment is part of the
-  comment, which is kept as written, and the rest of the line is formatted.
-  [test: a `;` after an ignored `;` and U+2029, which the line rule reads as the
-  end of its line] [test: statements after an ignored `;`, with a U+2029 later
-  on the line]
+  comment, which is kept as written, and the rest of the line is formatted. A
+  `;` on the next line, after the line break that follows the character, stays
+  as written too: `participant Z@{ "style": "x:#y" };`, U+2028, a line break,
+  and `;` is accepted by mermaid.js, while the same text without the second `;`
+  is rejected. [test: a `;` after an ignored `;` and U+2029, which the line rule
+  reads as the end of its line] [test: a `;` on the next line after an ignored
+  `;` and U+2028, which the line rule reads as the end of its line] [test:
+  statements after an ignored `;`, with a U+2029 later on the line]
 - A `;` after a U+2028 or U+2029 that the printer keeps, such as the one at the
   end of the text of a `box`, a title, or a subgraph name. mermaid.js removes a
   comment line that starts right after U+2028 or U+2029 with the line breaks
@@ -923,7 +930,12 @@ lines are only comment lines, holds no value: its comment lines stand one level
 deeper than the `accDescr`, as comment lines inside a statement do, and its `}`
 at the level of the `accDescr`. [fixture:
 multi-line-values/accdescr-block-comment-only] [fixture:
-multi-line-values/accdescr-block-without-text-kept]
+multi-line-values/accdescr-block-without-text-kept] A description block that the
+text ends, as in `accDescr {` with no `}` after it, is accepted by mermaid.js
+(see
+[The statement context](../../spec/docs/diagrams/sequence.md#the-statement-context)),
+and its body lines stand one level inside the statement as in a closed block; no
+`}` is added. [fixture: multi-line-values/accdescr-block-unclosed-indented]
 
 For participant and actor data blocks, apply
 [Data blocks](./flowchart.md#data-blocks) only when exactly one body line holds

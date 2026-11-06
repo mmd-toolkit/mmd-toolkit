@@ -792,6 +792,11 @@ Root directive の全文、順序、部品や値の所有位置を保ちます�
 前の行から渡る unit は、代わりに一度だけ次行へ移します。
 class keyword と名前の必須空白を保ち、directive で代用しません。
 
+useTabs のときは、保つ gap も補う字下げもすべて tab で印字します。
+directive の前後の空白は一つの字下げ unit で、
+その各文字は種類を問わず一つと数えるためです（[Tabs](#tabs) を参照）。
+[fixture: treemap/directives/leading-use-tabs]
+
 [fixture: treemap/directives/leading]
 
 [fixture: treemap/directives/shortened]

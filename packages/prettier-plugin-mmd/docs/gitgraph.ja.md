@@ -16,6 +16,16 @@ English version: [gitgraph.md](./gitgraph.md)
 方向は Db に影響し、省略と colon の有無は作者の選択です。
 hidden の隙間と保護された見出し・本文の境界は保持します。
 
+`gitGraph` と方向の間にある hidden の形は、直後の改行を取り、
+その後の隙間を動かしたり削ったりすると入力が拒否されることがあるため、
+その隙間を書かれたまま保持します（詳しくは、
+[隠れた DIRECTIVE と行末](../../spec/docs/diagrams/gitgraph.ja.md#隠れた-directive-と行末)
+を参照）。
+その前の隙間は通常の隙間で、空白 1 つになります。
+`gitGraph  %%{}%%  LR:` は `gitGraph %%{}%%  LR:` と印字します。
+[fixture: gitgraph/header/hidden-before-direction]
+[corpus fixture: gitgraph/header-hidden-before-direction]
+
 固定例: [fixture: gitgraph/header/header-absent]
 [fixture: gitgraph/header/header-colon] [fixture: gitgraph/header/header-lr]
 [fixture: gitgraph/header/header-tb] [fixture: gitgraph/header/header-bt]

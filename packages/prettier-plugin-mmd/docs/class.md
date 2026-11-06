@@ -894,7 +894,13 @@ values remains unchanged. The whitespace before the first line break of each gap
 is retained; joining regions and semicolon line protections keep the whole
 statement as written. [fixture: multi-line-statements/comment-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept] [fixture:
-multi-line-statements/comment-inside-title-kept]
+multi-line-statements/comment-inside-title-kept] A statement with a comment line
+after U+2028 or U+2029 inside it is a joining region: mermaid.js removes the
+comment line and reads the text on both sides as one line (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)),
+so the statement is kept as written, with the spacing of its parts and the
+indentation of its later lines. [test: class: ls-comment-in-class-statement]
+[test: class: ps-comment-in-relation-statement]
 
 Input
 ([multi-line-statements/joined-input.mmd](../tests/fixtures/class/multi-line-statements/joined-input.mmd)):

@@ -934,6 +934,14 @@ class 図では、改行は文を終えます。
 [fixture: multi-line-statements/comment-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 [fixture: multi-line-statements/comment-inside-title-kept]
+U+2028 か U+2029 の後のコメント行を含む文は、結合される領域です。
+mermaid.js はそのコメント行を除き、
+前後のテキストを 1 行として読むので（詳しくは、
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照）、その文は、
+各部分の間隔と後の行のインデントも含めて書かれたまま残します。
+[test: class: ls-comment-in-class-statement]
+[test: class: ps-comment-in-relation-statement]
 
 入力
 ([multi-line-statements/joined-input.mmd](../tests/fixtures/class/multi-line-statements/joined-input.mmd)):

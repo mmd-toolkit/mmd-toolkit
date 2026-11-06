@@ -310,6 +310,9 @@ flowchart LR
 `fill:click` のように、 ASCII の英数字以外の文字の後にあっても終わりの単語です。
 [fixture: statements-one-per-line/semicolon-after-style-text-word-kept]
 [fixture: statements-one-per-line/semicolon-after-style-text-not-word-split]
+英字（大文字も含む）か数字の後にある単語は、独立した単語ではないので、
+`style A fillXclick;` の `;` は、`fillclick` の後と同じく落とします。
+[fixture: statements-one-per-line/semicolon-after-style-text-after-capital-not-word-split]
 名前の中の `end` は、その後の空白を、改行も含めて取ります。
 そのため、`subgraph Front end` に改行と `A` が続くと、名前は `Front end`、改行、
 `A` で、メンバーはなく、 `subgraph Front end ;` ではメンバー A があります。
@@ -443,6 +446,10 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
 [fixture: statements-one-per-line/compat-ignored-semicolon-next-to-semicolon-kept]
 [corpus fixture: flowchart/ignored-semicolon-after-directive-1abc682b]
 [corpus fixture: flowchart/style-line-separator-semicolon-2a0f3253]
+この種の `style` や `classDef` の行は、文の先頭から書かれたまま印字するので、
+文の前のインデントだけが変わります。
+[test: a `classDef` line with a `;`, U+2028, and a `;`]
+[test: a `style` line with a `;`, U+2029, and a `;`]
 `style` か `classDef` を `:` の前に持ち、`#` の後に `;` がある行で、
 `:` とその後の `#` の間の空白は、あるかないかを保ちます。
 行の規則は、その間に空白がないときだけ、行の最後の `;` を無視するので、
@@ -749,6 +756,14 @@ mermaid.js は、名前を `(` の前まで、空白も含めて読むので、
 `click A call fn  ()` は、 `fn` と 2 つの空白を名前とする関数を呼びます。
 [fixture: whitespace-between-tokens/callback-name-arguments-forms-kept]
 
+`call` なしで書いたコールバックは、後ろに `(` のない click の id であり、
+`call` の後の名前の規則は当てはまりません（詳しくは、
+[FlowchartClickCallbackStatement](../../spec/docs/ast/flowchart.ja.md#flowchartclickcallbackstatement)
+を参照）。
+文の各部分の間の空白は 1 つの空白にします。
+`click   A cb   "tip"` は `click A cb "tip"` と出力します。
+[fixture: whitespace-between-tokens/click-without-call-collapsed]
+
 入力
 ([whitespace-between-tokens/callback-name-kept-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/callback-name-kept-input.mmd)):
 
@@ -783,6 +798,10 @@ flowchart LR
 [fixture: arrow-spacing/pipe-label-other-link-kinds]
 [fixture: arrow-spacing/edge-id-with-labels]
 [fixture: arrow-spacing/edge-id-whitespace-before-arrow-dropped]
+引用符で囲んだ `|` の間のラベルは、ほかの引用符で囲んだラベルと同じく、
+書かれたまま残し（詳しくは、 [ラベルの内側の空白](#ラベルの内側の空白)を参照）、
+その `|` は矢印と引用符に接します。
+[fixture: arrow-spacing/pipe-label-string-kept]
 
 辺の id が矢印の始まりと同じ形のとき（`--`、`==`、`-.`、1 つ以上の `.` と `-`、
 先頭に頭の `x`、`o`、`<` があってもよい。頭のない `~~~` も同じ）は、
@@ -1286,6 +1305,11 @@ mermaid.js がコメント行とその前の空白を除き、
 [test: a comment line after U+2029 in a flowchart header]
 [test: a comment line after U+2028 in a flowchart subgraph header]
 [test: a comment line after U+2029 in a flowchart subgraph header]
+コメント行がこのように入る文も、同じ理由で、
+先頭から末尾までを書かれたまま残します（詳しくは、
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照）。 [test: a comment line after U+2028 in a flowchart statement]
+[test: a comment line after U+2029 in a flowchart statement]
 
 入力
 ([multi-line-statements/continuation-indented-input.mmd](../tests/fixtures/flowchart/multi-line-statements/continuation-indented-input.mmd)):
@@ -1373,7 +1397,9 @@ U+00A0 などの空白は文字列の一部として残します。
 - 半角空白とタブしか含まないとき。
   `A@{}` は拒否され、`A@{   }` は受理されます。
   [fixture: data-blocks/one-line-space-only-kept]
-- `%%{` を含むとき。 [fixture: data-blocks/one-line-directive-kept]
+- `%%{` を含むとき。
+  directive は、複数行のブロックと同じく、文字と桁を保ちます。
+  [fixture: data-blocks/one-line-directive-kept]
 - その行が全体を保つ行であるとき。
   下の条件と同じです。 [fixture: data-blocks/one-line-kept-line-kept]
 - 別のブロックと接しているとき。
@@ -1381,7 +1407,16 @@ U+00A0 などの空白は文字列の一部として残します。
   `}@{` のように接する 2 つのブロックは、mermaid.js が文字列を連結して読むので、
   片方の端の空白が両方のテキストを変えます。
   [fixture: data-blocks/one-line-touching-blocks-kept]
+- 文字列が 1 桁目の `---`、`...`、`%` で始まるとき。
+  mermaid.js はこの始まりを YAML の文書区切りか directive として読み、
+  前に空白があれば普通の文字列になります。
+  `A@{---}` は拒否され、`A@{ --- }` は受理されます。
+  すでに空白かタブがあるブロックは整えます。
+  [fixture: data-blocks/compat-document-marker-data-block-kept]
+  [fixture: data-blocks/one-line-document-marker-after-space-padded]
 - U+2028 か U+2029 を含むとき。
+  この 2 つは改行ではなく文字列の文字で、 1 行のブロックの規則は、
+  この 2 つを含めて改行のない文字列に対する規則です。
   [test: data blocks: flowchart one line with U+2028 inside]
   [test: data blocks: flowchart one line with U+2029 inside]
 
@@ -1896,6 +1931,15 @@ subgraph の id は `subGraph0` になり、空白がなければ `S` になり�
 ヘッダーの行に書かれたまま残します。
 ブロックが独立した行にあると、空白は別に読まれ、
 ブロックとディレクティブの後の `;` は頂点として読まれます。
+
+`end` で終わる名前は、
+その後の改行と次の行の空白まで名前として読まれます（詳しくは、
+[subgraph](../../spec/docs/diagrams/flowchart.ja.md#subgraph)を参照）。
+そのため、その次の行にあるブロックも名前に続くものとして扱います。
+ブロックの行は、ブロックの前の空白とともに書かれたまま残し、
+その後の行は通常どおりインデントします。
+[fixture: subgraph-header/block-on-line-after-end-name-kept]
+[corpus fixture: flowchart/db-subgraph-name-end-line-feed-then-empty-description-block]
 
 入力
 ([subgraph-header/whitespace-before-block-kept-input.mmd](../tests/fixtures/flowchart/subgraph-header/whitespace-before-block-kept-input.mmd)):

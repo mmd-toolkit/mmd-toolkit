@@ -531,6 +531,15 @@ styles/class-name-with-a-comma-as-written] [fixture:
 styles/class-name-as-written] [fixture: styles/trailing-whitespace-dropped]
 [fixture: styles/styles-with-a-directive]
 
+A `style` with no styles is printed as `style A`: the id stands after one space
+and nothing follows it. [fixture: styles/style-without-styles] [corpus fixture:
+block/db-style-none] When the first style is only whitespace, as in
+`classDef c ,fill:#f00`, the Db has an empty first style and the whitespace
+before the `,` belongs to no style, so the styles start at the first `,`: that
+whitespace becomes one space, and the `,` and what follows are printed as
+written, as for any other styles. [fixture: styles/styles-with-a-leading-comma]
+[corpus fixture: block/db-class-def-leading-comma]
+
 Input
 ([styles/class-definition-spaces-input.mmd](../tests/fixtures/block/styles/class-definition-spaces-input.mmd)):
 
