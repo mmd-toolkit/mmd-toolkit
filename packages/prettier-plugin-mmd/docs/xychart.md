@@ -768,7 +768,9 @@ final line keeps the complete original layout, because of the line rule (see
 multi-line-statements/semicolon-inside-kept] [fixture:
 multi-line-statements/semicolon-on-the-last-line-kept] Comment regions that join
 physical lines also keep their original layout. [test:
-xychart/multi-line-statements/bare-title-comment-region-kept]
+xychart/multi-line-statements/bare-title-comment-region-kept] [test:
+xychart/multi-line-statements/header-comment-region-ls] [test:
+xychart/multi-line-statements/header-comment-region-ps]
 
 ### Multi-line values
 

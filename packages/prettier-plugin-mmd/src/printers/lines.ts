@@ -5,6 +5,7 @@ import type { MermaidAst } from "../parser.ts"
 import type { ItemRun } from "./gap.ts"
 import { walk } from "./layout.ts"
 import type { Source } from "./source.ts"
+import { isWhitespace } from "./source.ts"
 
 const { align, hardline, literalline } = builders
 const { mapDoc, replaceEndOfLine } = utils
@@ -189,6 +190,20 @@ export function printAsWritten(
   end: number,
 ): Doc {
   return replaceEndOfLine(source.text.slice(start, end))
+}
+
+/**
+ * Prints the source between two offsets as written, without the whitespace at
+ * its end.
+ */
+export function printAsWrittenTrimmed(
+  source: Source,
+  start: number,
+  end: number,
+): Doc {
+  let trimmed = end
+  while (trimmed > start && isWhitespace(source.text[trimmed - 1])) trimmed--
+  return printAsWritten(source, start, trimmed)
 }
 
 /** Prints items that stand after `doc` on its line. */

@@ -77,7 +77,20 @@ flowchart/whitespace-between-tokens/compat-unknown-shape-data-block-kept]
 [corpus fixture: flowchart/div-data-unknown-shape]
 [corpus fixture: flowchart/frontmatter-invalid-yaml]
 
-ディレクティブとデータブロックは書かれたまま残します。
+directive は書かれたまま残します。
+flowchart、agentflow、kanban、sequence の対象となる複数行のデータブロックと、
+usecase の JSON table は、本文の全行を一定数の半角空白だけ動かします。
+行どうしの字下げの差と末尾空白を保ち、単独行の `}` は文の段に揃えます。
+開きの行の本文、半角空白以外の行頭空白、内部の directive、0 桁の YAML の印、
+行全体を保つ行、文の最初の行より後のブロック、`tabWidth: 0` は移動を妨げます。
+sequence では、Mermaid がブロック全体を trim するため、
+文字のある本文行が 1 行であることも必要です。
+条件と理由は[データブロック](./flowchart.ja.md#データブロック)に従い、
+ほかのブロックは桁を保ちます。 [fixture: flowchart/data-blocks/deep-nested-yaml]
+[fixture: flowchart/data-blocks/scalar-blank-lines]
+[fixture: sequence/multi-line-values/data-multiple-lines-kept]
+[fixture: usecase/json-tables/tab-statement-space-body]
+
 フロントマターは、
 Prettier が YAML として読めるときは Prettier の YAML 整形で整形し、
 読めないときは書かれたまま残します（[フロントマター](#フロントマター)を参照）。
@@ -324,8 +337,10 @@ mermaid.js は、`accTitle`、`accDescr`、`direction`、`click`、`call`、
 同じ 1 つの答えで決めます。
 `;` が文を区切る図種（flowchart、sequence 図、象限チャート、XY チャート）では、
 行末の無視される `;` を落とし、その前の空白は通常どおり整形します。
-そうでない図種（class 図、state 図、ブロック図など）では、
-行を `;` とともに残し、隙間もそのままです。
+そうでない class、state、ER、requirement、block、Venn、usecase の図でも、
+行の規則が無視する `classDef` と `style` の行末の `;` は削除し、
+スタイルの空白を通常どおり整形します。
+ほかのセミコロンは、その行と隙間を保ちます。
 [fixture: flowchart/semicolons/style-line-dropped-semicolon-formats-the-gap]
 [fixture:
 xychart/statements-one-per-line/line-rule-line-with-a-dropped-semicolon-formats-the-gap]
@@ -500,6 +515,30 @@ flowchart/statements-one-per-line/compat-semicolon-in-label-without-style-kept]
 [fixture: state/descriptions-and-labels/semicolon-line-kept]
 [1 行に 1 文](./flowchart.ja.md#1-行に-1-文)を参照してください。
 
+class、state、ER、requirement、block、Venn、usecase の図では、
+`classDef` と `style` の行末のセミコロンを、Db が変わらない形で削除します。
+無視される終端は直前の空白と一緒に削除し、
+その前にある閉じたディレクティブは残します。
+[fixture: class/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+[fixture: state/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+[fixture: er/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+[fixture: requirement/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+[fixture: block/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+[fixture: venn/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+[fixture: usecase/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+文に `#` がない ER では、最後のスタイルとの間に trivia がない場合に、
+終端の `;` の単位も削除します。
+state のスタイル文と block の `classDef` 文では、最後のスタイルの末尾の `;` が、
+そのスタイルで唯一のセミコロンで、前に空白以外のテキストがある場合に削除します。
+ほかのスタイルのセミコロンは、削除で Db が変わる形で残します。
+[fixture: er/semicolons-at-the-end-of-a-style-statement/unit-terminators]
+[fixture: er/semicolons-at-the-end-of-a-style-statement/directive-before-unit-kept]
+[fixture: state/semicolons-at-the-end-of-a-style-statement/style-text-terminators]
+[fixture: state/semicolons-at-the-end-of-a-style-statement/style-text-kept]
+[fixture: block/semicolons-at-the-end-of-a-style-statement/classdef-text-terminators]
+[fixture: block/semicolons-at-the-end-of-a-style-statement/style-text-kept]
+[fixture: requirement/semicolons-at-the-end-of-a-style-statement/style-text-kept]
+
 ## `;` が終わらせる行
 
 `;` は、行がどこで終わるか、
@@ -552,6 +591,12 @@ flowchart/statements-one-per-line/compat-semicolon-in-label-without-style-kept]
 `A-->B %%{init: {}}%% ;` は `A --> B %%{init: {}}%%` と印字します。
 [fixture: flowchart/semicolons/closed-directive-formatted] [fixture:
 sequence/statements-one-per-line/compat-closed-directive-semicolon-dropped]
+
+上のスタイルの終端にも同じ保護が適用されます。
+セミコロンの削除で、閉じていないディレクティブの停止位置を変えたり、
+行の規則が別のセミコロンを取り除く形に変えたりしません。
+[fixture: class/semicolons-at-the-end-of-a-style-statement/unclosed-directive-kept]
+[fixture: state/semicolons-at-the-end-of-a-style-statement/adjacent-semicolons-kept]
 
 sequence 図で、
 空白を読まない単位（participant のデータブロックか `autonumber`）で終わる文は、
@@ -1031,8 +1076,7 @@ mermaid.js は、requirement 図の名前や値の一部の空白を持ち、一
   mermaid.js の行の規則は行のテキストを読むので、その行の文を行に残します。
   複数行に書かれた文の最後の行に、後ろの文の `;` があるときも、
   1 行にした行が全体として読まれるので、書かれたまま残します。
-  [fixture: requirement/statements-one-per-line/ignored-semicolon-line-kept]
-  [fixture:
+  [fixture: requirement/statements-one-per-line/semicolon-line-kept] [fixture:
   requirement/multi-line-statements/relationship-last-line-semicolon-kept]
 - フィールドのない本体。
   mermaid.js は `{` の後に改行を要するので、 `{` と `}` を 2 行に置きます。
@@ -1189,7 +1233,10 @@ Db や字句解析器が読むものは変えません。
   mermaid.js はそのテキストを読まず、
   印字が `}` を足すとブロックが説明になってしまいます。
   [fixture: accessibility-statements/block-not-closed-kept-as-written]
-- mermaid.js の行の規則が読む行は、文を 1 行に残し、`;` も書かれたままです。
+- mermaid.js の行の規則が読む行は、文を 1 行に残し、
+  保持する `;` も書かれたままです。
+  削除するスタイルの終端は、
+  [スタイルの規則](./block.ja.md#スタイル文の末尾のセミコロン)に従います。
   `style` か `classDef`、その後の `:`、 `:` との間に空白のない `#`、
   その後の `;` を持つ行です。
   [fixture: statements-one-per-line/line-rule-line-kept-together]
@@ -1247,7 +1294,10 @@ Db や字句解析器が読むものは変えません。
   title の中の空の説明ブロックは title の一部です。
   [fixture: statements-one-per-line/semicolon-in-a-title-is-text]
   [fixture: statements-one-per-line/empty-description-block-in-a-title-stays]
-- mermaid.js の行の規則が読む行は、文を 1 行に残し、`;` も書かれたままです。
+- mermaid.js の行の規則が読む行は、文を 1 行に残し、
+  保持する `;` も書かれたままです。
+  削除するスタイルの終端は、
+  [スタイルの規則](./block.ja.md#スタイル文の末尾のセミコロン)に従います。
   `style` か `classDef`、その後の `:`、 `:` との間に空白のない `#`、
   その後の `;` を持つ行です。
   [fixture: statements-one-per-line/line-rule-line-kept-together]
@@ -1309,7 +1359,10 @@ Db や字句解析器が読むものは変えません。
 - 辺の連鎖 `A --> B --> C` は、1 つの文のまま 1 行に残します。
   mermaid.js はそれを正しく読まず（Db が最後の前の node を落とします）、
   分けると別の読みになります。 [fixture: edges/chain-on-one-line]
-- mermaid.js の行の規則が読む行は、文を 1 行に残し、`;` も書かれたままです。
+- mermaid.js の行の規則が読む行は、文を 1 行に残し、
+  保持する `;` も書かれたままです。
+  削除するスタイルの終端は、
+  [スタイルの規則](./block.ja.md#スタイル文の末尾のセミコロン)に従います。
   `style` か `classDef`、その後の `:`、 `:` との間に空白のない `#`、
   その後の `;` を持つ行です。
   [fixture: multi-line-statements/line-rule-line-kept]
@@ -1467,15 +1520,15 @@ kanban のボードの Db は字下げを持たず、
 YAML として正しくないデータブロックは、パーサーが不透明なテキストとして受理し、
 mermaid.js は拒否します（既知の差異
 [`embedded-data-opaque`](../../spec/docs/known-divergences/embedded-data-opaque.ja.md)）。
-印字は書かれたまま残します。
+印字は対象となる余白の移動を除き、不透明な内容を保ちます。
 [kanban の規則](./kanban.ja.md)を参照してください。
 [fixture: kanban/indentation/sections-and-items]
 [fixture: kanban/icons-and-classes/aligned]
 [fixture: kanban/directives/leading-directive-indentation-decided]
 [fixture: kanban/trailing-whitespace/class-trailing-trim]
 
-データブロックは、中身と付着位置、
-隣接するブロックや間のディレクティブも保ちます。
+余白の移動は、[データブロック](./kanban.ja.md#データブロック)に従います。
+データブロックの付着位置と内容、隣接するブロック、間のディレクティブも保ちます。
 YAML 整形は、保護条件付きのフロントマターだけです。
 図のコメント後の空行・コメントの隙間は、末尾も含め、
 `blank-line-after-header-or-comments` のもとで全体を保ちます。
@@ -1575,8 +1628,8 @@ Venn の本文は平らな一覧で、対象を書かない text だけを字下
 重複と飲み込まれる断片は書かれたテキストのまま保ちます。
 空の引用符つきの名前と style も値です。
 裸の空白、引用符内の空白、空の引用符つきラベルの読み分けも保ちます。
-全てのセミコロンを保ち、
-最初の非空白から最後のセミコロンまでの接頭部を保護します。
+上で述べた行末のスタイルの終端を除き、セミコロンを保ちます。
+最初の非空白から最後の保持するセミコロンまでの接頭部を保護します。
 端にかかる値と項目は全体を保ちます。
 字下げと外側の末尾空白はプリンターの空白で、安全な接尾部は通常どおり整形します。
 コメントとディレクティブ内の Unicode 区切りは保持部分を切りません。
@@ -1727,7 +1780,8 @@ usecase は書かれた AST に従います。
 native の `@{...}` metadata は解析と検証を行う構文です。
 構造の空白だけを変え、書かれた区切り、空行、綴り、順序、重複をすべて保ちます。
 JSON の表データは不透明で、@ と波括弧の隙間、数とエスケープの綴り、
-プロパティの順序も含みます。
+プロパティの順序も含み、
+対象となる余白は [JSON tables](./usecase.ja.md#json-tables) に従います。
 効果を渡さない整形 fixture では、共有の Db 比較を null とし、原文を比較します。
 コーパスは存在する記録済みの効果を使います。
 CSS 宣言全体は、 Mermaid が保存するコロンの両側と `--` の隙間を保ちます。
@@ -2224,10 +2278,18 @@ leaf は section を閉じますが親にはならず、class と common の文�
 字下げが親子を決めるので、tabWidth 0 でも 1 段 1 文字以上です。
 class 名と行が接する場合は接触を保ち、図全体の根の基準を 0 にします。
 行末や空白行の字下げは、次の行へ一度だけ移します。
-独立したコメントと directive は、class のスタイル区切りを除き、
-第 1 列に置きます。
-native の余分な字下げの unit を作らないためです。
-スタイル区切りの独立した trivia とスタイルの継続行は、
+独立したコメント行は [Comments](./treemap.ja.md#comments) に従い、
+次の文の桁にそろえ、末尾では最後の文の桁にそろえます。
+[fixture: treemap/comments/aligned-depths]
+[fixture: treemap/comments/aligned-final]
+文の間では、裸の `%%`、directive ではない `%%{` の行、
+独立した directive を第 1 列に置きます。
+字下げすると mermaid.js が拒否するためです。
+[fixture: treemap/comments/native-bare]
+[fixture: treemap/comments/native-nonword]
+[fixture: treemap/comments/unclosed-directive]
+[fixture: treemap/comments/mixed-directives]
+class のスタイル区切りの独立した trivia とスタイルの継続行は、
 `classDef` より1段内側にそろえます。
 スタイル本文と、semicolon が保護する接頭部は変えません。
 [fixture: treemap/style-gaps/css-comment]

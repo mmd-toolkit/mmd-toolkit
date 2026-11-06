@@ -362,14 +362,16 @@ after it. The line of such an entity is printed as written, and so is a subgraph
 that ends on it, from its header to its `end`, without the indentation of a
 level for its lines. [fixture:
 statements-one-per-line/number-name-then-name-kept] [fixture:
+statements-one-per-line/number-name-before-uppercase] [fixture:
+statements-one-per-line/number-name-before-non-ascii] [fixture:
 statements-one-per-line/number-name-in-subgraph-kept] [fixture:
 statements-one-per-line/number-name-before-end-kept] [fixture:
 statements-one-per-line/number-name-before-directive-kept] [fixture:
 statements-one-per-line/number-name-then-name-split] [corpus fixture:
-er/lex-name-number-then-letter] And a line that holds a `;` keeps its statements
-together: the line rule of mermaid.js reads the text of a line, and moving text
-to another line changes which line matches the rule and which `;` it ignores
-(see [Styles and classes](#styles-and-classes)). [fixture:
+er/lex-name-number-then-letter] And a line that holds a kept `;` keeps its
+statements together: the line rule of mermaid.js reads the text of a line, and
+moving text to another line changes which line matches the rule and which `;` it
+ignores (see [Styles and classes](#styles-and-classes)). [fixture:
 statements-one-per-line/semicolon-line-kept] [fixture:
 statements-one-per-line/ignored-semicolon-line-kept] The `}` of an attribute
 block or the `end` of a subgraph on such a line, with a statement after it on
@@ -946,8 +948,8 @@ still means `stroke-dasharray:55`. For example, `fill   : navy, stroke  : black`
 becomes `fill: navy, stroke: black`, while `stroke-dasharray:  5    5` keeps the
 four spaces between its values. A header or exterior line break that ordinarily
 joins does not delay this spacing until another formatting. Style interiors
-containing line separators, owned trivia, and statements with a semicolon on
-their physical line retain the existing style layout. Keyword case stays
+containing line separators, owned trivia, and statements with a kept semicolon
+on their physical line retain the existing style layout. Keyword case stays
 written. [fixture: styles-and-classes/style-unit-padding] [fixture:
 styles-and-classes/class-def-names] [fixture: styles-and-classes/style-names]
 [fixture: styles-and-classes/class-lists] [fixture:
@@ -972,17 +974,13 @@ styles-and-classes/comment-line-inside-kept] [corpus fixture:
 er/lex-classdef-space-before-line-feed] [corpus fixture:
 er/lex-style-tab-before-line-feed]
 
-The `;` that ends a `classDef` or `style` statement is kept as written, with
-whatever lies between it and the last style, and so is a `;` that the line rule
-of mermaid.js ignores: the rule removes the last `;` of a line that holds
-`style`, a `:` and a `#` after it, from the text before mermaid.js reads it, so
-the lines that hold it keep their statements, and the `;` stays. [fixture:
-styles-and-classes/ending-semicolon-kept] [fixture:
-styles-and-classes/ignored-semicolon-kept] [corpus fixture:
-er/lex-classdef-semicolon-line-feed] [corpus fixture:
-er/lex-classdef-ignored-semicolon] The rule ignores the `;` only when no
-whitespace lies between the `:` and the `#`, so that whitespace stays as
-written: `style A fill: #f00;` keeps its space. [fixture:
+Line-ending semicolons follow
+[Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement).
+An ending unit with a directive between it and the last style is kept with that
+gap as written. [fixture: styles-and-classes/ending-semicolon-rules] The line
+rule ignores the `;` only when no whitespace lies between the `:` and the `#`.
+Where the rule does not apply, `#f00;` is an entity, so removing the `;` would
+change the Db: `style A fill: #f00;` keeps its space and semicolon. [fixture:
 styles-and-classes/space-after-colon-before-hash-kept]
 
 Input
@@ -1024,7 +1022,7 @@ erDiagram
 ```
 
 Input
-([styles-and-classes/ending-semicolon-kept-input.mmd](../tests/fixtures/er/styles-and-classes/ending-semicolon-kept-input.mmd)):
+([styles-and-classes/ending-semicolon-rules-input.mmd](../tests/fixtures/er/styles-and-classes/ending-semicolon-rules-input.mmd)):
 
 ```mmd
 erDiagram
@@ -1037,15 +1035,15 @@ style D fill:blue%%{init: {}}%%;
 ```
 
 Output
-([styles-and-classes/ending-semicolon-kept-output.mmd](../tests/fixtures/er/styles-and-classes/ending-semicolon-kept-output.mmd)):
+([styles-and-classes/ending-semicolon-rules-output.mmd](../tests/fixtures/er/styles-and-classes/ending-semicolon-rules-output.mmd)):
 
 ```mmd
 erDiagram
-  classDef a fill:red;
+  classDef a fill: red
   A
-  classDef b fill:red ;
+  classDef b fill: red
   B
-  style C fill:blue;
+  style C fill: blue
   style D fill:blue%%{init: {}}%%;
 ```
 
@@ -1489,6 +1487,55 @@ erDiagram
   }
 ```
 
+### Semicolons at the end of a style statement
+
+A line-ending `;` of a `classDef` or `style` statement is dropped when the
+[line rule of mermaid.js](../../spec/docs/common.md#style-and-classdef-lines)
+ignores it: no whitespace lies between the `:` and the later `#`. Removing this
+terminator leaves the Db unchanged, also with several styles. [fixture:
+semicolons-at-the-end-of-a-style-statement/hash-terminators] The line then
+formats as a line without that `;`, including its usual style spacing. [fixture:
+semicolons-at-the-end-of-a-style-statement/hash-terminators] Blank lines and
+comment lines keep their usual layout around the statement. [fixture:
+semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines] An empty
+description block follows its usual layout while the style terminator is
+dropped. [fixture:
+semicolons-at-the-end-of-a-style-statement/empty-description-block]
+
+Without a `#` in the statement, its terminating `;` unit is dropped, with any
+whitespace before it. [fixture:
+semicolons-at-the-end-of-a-style-statement/unit-terminators] A directive between
+the last style and that unit keeps the gap and `;` as written. [fixture:
+semicolons-at-the-end-of-a-style-statement/directive-before-unit-kept] Where a
+`#` is present but the line rule does not apply, the `;` stays: `#f00;` is an
+entity, so removing its terminator changes the Db. [fixture:
+semicolons-at-the-end-of-a-style-statement/hash-outside-line-rule-kept]
+
+A directive after the semicolon on the same line keeps the `;`. [fixture:
+semicolons-at-the-end-of-a-style-statement/trailing-items-kept] An ignored `;`
+beside another `;` is kept to preserve the line rule's selection. [fixture:
+semicolons-at-the-end-of-a-style-statement/adjacent-semicolons-kept] A `;` after
+an unclosed directive stays, preserving its stopping boundary. [fixture:
+semicolons-at-the-end-of-a-style-statement/unclosed-directive-kept] The same
+protection applies before U+2028 and U+2029; see
+[A line that a `;` ends](./compatibility.md#a-line-that-a--ends). [test: style
+semicolons: er before U+2028] [test: style semicolons: er before U+2029] A
+closed directive between the statement and an ignored terminator is kept while
+the `;` is dropped. [fixture:
+semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+
+Output
+([semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd](../tests/fixtures/er/semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd)):
+
+```mmd
+erDiagram
+  A
+  classDef c fill: #f00
+  style A fill: #f00
+  classDef d fill: #0f0, stroke: #00f
+  style A fill: #0f0, stroke: #00f
+```
+
 ### Multi-line statements
 
 A statement that mermaid.js reads over several lines is printed on one line
@@ -1563,3 +1610,12 @@ break. [test: U+2028 inside an entity name] [test: U+2029 inside a role name]
 [test: U+2028 before the colon of a role] [test: U+2028 between direction and
 its value] [test: U+2028 in the text after a direction] [test: U+2028 inside an
 attribute name]
+
+An entity header, a subgraph header, or a class definition with a comment line
+after U+2028 or U+2029 keeps that span as written: mermaid.js removes the
+comment line and its preceding whitespace, joining the continuation to the text
+before the separator. [test: a comment line after U+2028 in an ER entity header]
+[test: a comment line after U+2029 in an ER entity header] [test: a comment line
+after U+2028 in an ER subgraph header] [test: a comment line after U+2029 in an
+ER subgraph header] [test: a comment line after U+2028 in an ER class
+definition] [test: a comment line after U+2029 in an ER class definition]

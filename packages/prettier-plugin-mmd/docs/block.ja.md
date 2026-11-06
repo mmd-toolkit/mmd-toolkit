@@ -531,7 +531,9 @@ block-beta
 空白 1 つを置きます。
 キーワードの後と最初のスタイルの前の空白は Db に入らないので、
 空白 1 つにします。
-その後は書かれたまま印字します。
+その後は、
+[スタイル文の末尾のセミコロン](#スタイル文の末尾のセミコロン)
+で削除する終端を除き、書かれたまま印字します。
 `style` と `class` の空白は Db に入ります。
 `style A fill:#f00 , stroke:#333` のスタイルは、
 `fill:#f00 ` と ` stroke:#333` で、 `class A, B c1` は ` B` を空白つきで探し、
@@ -614,6 +616,59 @@ block-beta
   class A, B c1
 ```
 
+### スタイル文の末尾のセミコロン
+
+`classDef` または `style` 文の行末の `;` は、
+[mermaid.js の行の規則](../../spec/docs/common.ja.md#style-行と-classdef-行)
+が無視するときに削除します。
+`:` と後の `#` の間に空白がない形です。
+この終端を削除しても Db は変わらず、スタイルが複数でも同じです。
+[fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
+削除する `;` の直前の空白も一緒に削除します。
+[fixture: semicolons-at-the-end-of-a-style-statement/space-before-terminator]
+その行は、スタイルの空白を含め、その `;` がない行として整形します。
+[fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
+文の前後の空行とコメント行は、通常の配置に従います。
+[fixture: semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines]
+空の description block も通常の配置に従い、スタイルの終端は削除します。
+[fixture: semicolons-at-the-end-of-a-style-statement/empty-description-block]
+
+文に `#` がない `classDef` では、最後のスタイルの末尾の `;` も削除します。
+そのスタイルで唯一のセミコロンで、前に空白以外のテキストがある場合に限ります。
+mermaid.js が最初の `;` を取り除くためです。
+[fixture: semicolons-at-the-end-of-a-style-statement/classdef-text-terminators]
+`classDef c fill:red;;` と `style A fill:red;` は、
+最後のセミコロンを削除すると Db が変わるので残します。
+[fixture: semicolons-at-the-end-of-a-style-statement/style-text-kept]
+
+同じ行でセミコロンの後にディレクティブが続く場合は、`;` を保ちます。
+[fixture: semicolons-at-the-end-of-a-style-statement/trailing-items-kept]
+同じ行で `%%` のテキストが続く場合も保ちます。
+ここではスタイルの文字列の一部です。
+[fixture: semicolons-at-the-end-of-a-style-statement/trailing-items-kept]
+無視される `;` が別の `;` の隣にある場合は、行の規則の選択を保つために残します。
+[fixture: semicolons-at-the-end-of-a-style-statement/adjacent-semicolons-kept]
+閉じていないディレクティブの後の `;` は、その停止位置を保つために残します。
+[fixture: semicolons-at-the-end-of-a-style-statement/unclosed-directive-kept]
+U+2028 と U+2029 の前も同じように保護します。
+[`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)を参照してください。
+[test: style semicolons: block before U+2028]
+[test: style semicolons: block before U+2029]
+文と無視される終端の間にある閉じたディレクティブは残し、`;` は削除します。
+[fixture: semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+
+出力
+([semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd](../tests/fixtures/block/semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd)):
+
+```mmd
+block
+  A
+  classDef c fill:#f00
+  style A fill:#f00
+  classDef d fill:#0f0,stroke:#00f
+  style A fill:#0f0,stroke:#00f
+```
+
 ### 複数行の文
 
 mermaid.js が複数行にわたって読む文は、1 行に印字します。
@@ -631,7 +686,9 @@ block-arrow の方向の内容は原文のままです。
 [fixture: multi-line-statements/structural-trivia-continuations]
 
 物理行を結ぶコメント領域は、元の配置を保ちます。
-`;` を含む文も、行の規則があるので、
+[test: block: ls-comment-in-composite-head]
+[test: block: ps-comment-in-composite-head]
+保持する `;` を含む文も、行の規則があるので、
 書かれたまま残します（[行](#行)を参照。
 [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)も参照）。
 mermaid.js の行の規則は、`style` か `classDef`、その後の `:`、その後の、
@@ -639,7 +696,9 @@ mermaid.js の行の規則は、`style` か `classDef`、その後の `:`、そ�
 そのような行から文を動かすと、
 どの `;` が最後かが変わるので（`A["style:#a"] B;C D;` で取り除かれるのは `D;` の
 `;` で、 id は `B;C` です。 `D;` のない行では、`B;C` の `;` が取り除かれます）、
-その行の文はその行に残し、`;` も書かれたままにします。
+その行の文はその行に残し、保持する `;` も書かれたままにします。
+スタイルの終端の例外は、
+[スタイル文の末尾のセミコロン](#スタイル文の末尾のセミコロン)に従います。
 `:` と `#` の間の空白も、規則が効くかどうかを決めるので、そのままです。
 `A["style:"]-->B["#z"];` は矢印が接したままで、
 矢印の周りに空白があると規則は効かず、 `;` はそれだけの id になります。
@@ -655,7 +714,7 @@ mermaid.js の行の規則は、`style` か `classDef`、その後の `:`、そ�
 [fixture: multi-line-statements/line-rule-line-kept-with-columns]
 [fixture: multi-line-statements/line-rule-line-kept-with-composite]
 [fixture: multi-line-statements/semicolon-in-an-id-kept]
-[fixture: multi-line-statements/line-rule-semicolon-at-the-end-kept]
+[fixture: multi-line-statements/line-rule-style-terminator-dropped]
 [fixture: multi-line-statements/empty-line-inside-joined]
 [fixture: multi-line-statements/semicolon-id-after-end-kept]
 [fixture: multi-line-statements/semicolon-id-after-columns-kept]

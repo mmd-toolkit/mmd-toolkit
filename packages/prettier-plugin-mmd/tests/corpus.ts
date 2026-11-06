@@ -21,6 +21,7 @@ import {
   writtenEmbeddedTexts,
   writtenTextKeptUpToSemicolons,
 } from "./db-reading.ts"
+import { dataBlockEmbeddedForFormattingComparison } from "./data-block-margins.ts"
 import {
   eventmodelingDbForFormattingComparison,
   eventmodelingEmbeddedForFormattingComparison,
@@ -102,7 +103,10 @@ export async function testCorpus(diagram: DiagramType): Promise<void> {
               writtenBefore,
               writtenAfter,
             )
-          : writtenAfter,
+          : dataBlockEmbeddedForFormattingComparison(
+              writtenBefore,
+              writtenAfter,
+            ),
         output,
       ).toEqual(writtenBefore)
       expect(await describeFrontmatterChange(input, formatted)).toBeNull()

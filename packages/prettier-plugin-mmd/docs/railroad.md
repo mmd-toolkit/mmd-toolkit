@@ -1299,6 +1299,8 @@ zero-width indentation.
 
 [fixture: railroad/comments/ir-call-inline-spacing]
 
+[fixture: railroad/comments/ir-block-comments-after-gap-breaks]
+
 [fixture: railroad/comments/ir-call-constructor-nested]
 
 [test: railroad/comments/ir-call-constructor-break-tabs]

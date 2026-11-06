@@ -166,6 +166,7 @@ set A
 規則は構文に対して局所的で、正規化後の最終状態を探すものではないためです。
 title は行の残りを値として取るので、title の後の文に見える語は分けられません。
 飲み込まれる断片は書かれた行の隣とともに保ちます。
+[fixture: venn/statements-one-per-line/directive-in-declaration-group]
 [corpus fixture: venn/db-indent-after-same-line-explicit-text]
 [corpus fixture: venn/db-indent-after-same-line-style]
 [corpus fixture: venn/db-indent-after-same-line-title]
@@ -484,18 +485,59 @@ venn-beta
 style A, B fill:red, opacity:.50, custom:" dark blue "
 ```
 
+### Semicolons at the end of a style statement
+
+`style` 文の行末の `;` は、
+[mermaid.js の行の規則](../../spec/docs/common.ja.md#style-行と-classdef-行)
+が無視するときに削除します。
+`:` と後の `#` の間に空白がない形です。
+この終端を削除しても Db は変わらず、スタイルが複数でも同じです。
+[fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
+削除する `;` の直前の空白も一緒に削除します。
+[fixture: semicolons-at-the-end-of-a-style-statement/space-before-terminator]
+その行は、スタイルの空白を含め、その `;` がない行として整形します。
+[fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
+文の前後の空行とコメント行は、通常の配置に従います。
+[fixture: semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines]
+
+同じ行でセミコロンの後にディレクティブが続く場合は、`;` を保ちます。
+[fixture: semicolons-at-the-end-of-a-style-statement/trailing-items-kept]
+同じ行でコメントが続く場合も保ちます。
+[fixture: semicolons-at-the-end-of-a-style-statement/trailing-items-kept]
+閉じていないディレクティブの後の `;` は、その停止位置を保つために残します。
+[fixture: semicolons-at-the-end-of-a-style-statement/unclosed-directive-kept]
+U+2028 と U+2029 の前も同じように保護します。
+[`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)を参照してください。
+[test: style semicolons: venn before U+2028]
+[test: style semicolons: venn before U+2029]
+文と無視される終端の間にある閉じたディレクティブは残し、`;` は削除します。
+[fixture: semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+
+出力
+([semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd](../tests/fixtures/venn/semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd)):
+
+```mmd
+venn-beta
+set A
+style A fill:#f00
+style A fill:#0f0, stroke:#00f
+```
+
 ### Line rule and kept lines
 
-全てのセミコロンを保ちます。
-Venn の文を区切る文字ではないためです。
-最初の非空白から最後のセミコロンまでの範囲を保護し、端にかかる値、コメント、
-ディレクティブの末尾まで延ばします。
+セミコロンは Venn の文を区切りません。
+[スタイル文の末尾のセミコロン](#semicolons-at-the-end-of-a-style-statement)
+の例外を除き、書かれたまま保ちます。
+最初の非空白から最後の保持するセミコロンまでの範囲を保護し、端にかかる値、
+コメント、ディレクティブの末尾まで延ばします。
 不一致や文をまたぐ印も含め、同じテキストの行規則の選択を保つためです。
 字下げと外側の末尾空白はプリンターが決め、安全な接尾部は通常どおり整形します。
 共通の行規則の区間は図コメントの途中でも終わりますが、
 プリンターはそのコメント全体を保護します。
 端をまたぐ値は一度だけ出力し、
 セミコロンで止まる閉じないディレクティブは停止境界を保ちます。
+
+[fixture: venn/line-rule-and-kept-lines/crossing-adjacent-values]
 
 たとえば入力 `"venn-beta\nset A[style:#x;y]%% c\u2028tail;"` は
 `"venn-beta\nset A[style:#x;y]%% c\u2028tail;\n"` になり、
@@ -522,14 +564,14 @@ U+2029 でも同じラベルです。
 [fixture: venn/line-rule-and-kept-lines/crossing-multiline-value]
 [fixture: venn/line-rule-and-kept-lines/directive-crossing-prefix]
 [fixture: venn/line-rule-and-kept-lines/directive-semicolon-stop]
-[fixture: venn/line-rule-and-kept-lines/line-rule-colon-space-unsafe]
+[fixture: venn/line-rule-and-kept-lines/dropped-style-terminator-formats-property]
 [fixture: venn/line-rule-and-kept-lines/line-rule-comment-keep]
 [fixture: venn/line-rule-and-kept-lines/line-rule-comment-move-control]
 [fixture: venn/line-rule-and-kept-lines/line-rule-comment-move]
 [fixture: venn/line-rule-and-kept-lines/line-rule-cross-statement-control]
 [fixture: venn/line-rule-and-kept-lines/line-rule-cross-statement]
 [fixture: venn/line-rule-and-kept-lines/line-rule-double-pass]
-[fixture: venn/line-rule-and-kept-lines/line-rule-kept-whitespace]
+[fixture: venn/line-rule-and-kept-lines/dropped-style-terminator-formats-whitespace]
 [fixture: venn/line-rule-and-kept-lines/line-rule-no-hash-control-control]
 [fixture: venn/line-rule-and-kept-lines/line-rule-no-hash-control]
 [fixture: venn/line-rule-and-kept-lines/line-rule-nonmatch-value-control]
@@ -612,6 +654,8 @@ title   T
 除去が全ての隙間を結ぶためです。
 埋め込み、複数行、セミコロンで止まるもの、末尾のものの境界を保ちます。
 埋め込みデータは整形しません。
+
+[fixture: venn/directives/unclosed-after-doubled-semicolon]
 
 ヘッダーや文の行では、
 後の文を別の行へ移すときもディレクティブを前のテキストと同じ行に保ちます。

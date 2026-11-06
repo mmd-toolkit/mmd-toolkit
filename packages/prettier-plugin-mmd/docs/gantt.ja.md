@@ -1095,7 +1095,8 @@ gantt
 
 コメントは、単位が始まる所の `%%` か `%` で始まり、行末まで続きます。
 単独の行のコメントは周りの文と同じ段に置き、テキストと印は書かれたまま残します。
-[fixture: comments/lines-at-statement-level] [fixture: comments/text-kept]
+[fixture: comments/lines-at-statement-level]
+[fixture: comments/directive-before-comment-line] [fixture: comments/text-kept]
 [fixture: comments/single-percent-kept] [fixture: comments/bare-percent-lines]
 コメント行は、その次の文と同じ段に置きます。
 `section` の前のコメントは `section` の段、タスクの前のコメントはタスクの段、

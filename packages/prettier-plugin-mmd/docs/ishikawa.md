@@ -630,6 +630,11 @@ ishikawa/div-header-inline-comment-ls-node] [corpus fixture:
 ishikawa/div-header-inline-comment-ps-node] [test: ishikawa:
 common-joined-terminal-spaces]
 
+Before the first node, two LF after an LS or PS that ends a diagram comment stay
+as written, preserving Mermaid's pairing of comments and blank lines. [test:
+ishikawa: ls-comment-two-lf-before-root] [test: ishikawa:
+ps-comment-two-lf-before-root]
+
 Input and output (escaped):
 
 ```json

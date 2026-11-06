@@ -183,10 +183,12 @@ flowchart LR
 - Formatting a formatted diagram again changes nothing.
 - The content of directives, of opaque `@{ ... }` data blocks, and of the
   frontmatter is not checked. A diagram that mermaid.js rejects because of that
-  content is still formatted. Directives and opaque `@{ ... }` data blocks are
-  kept as written; the frontmatter is formatted only when Prettier can read it
-  as YAML. Native usecase metadata properties are parsed and validated as
-  syntax.
+  content is still formatted. Directives are kept as written. An opaque
+  `@{ ... }` data block keeps its content too; only a multi-line block that
+  meets the conditions in [Data blocks](./docs/flowchart.md#data-blocks) has all
+  its lines moved by the same number of spaces. The frontmatter is formatted
+  only when Prettier can read it as YAML. Native usecase metadata properties are
+  parsed and validated as syntax.
 - A flowchart with more edges than mermaid.js allows, 500 by default (its
   `maxEdges` site setting), is rejected by mermaid.js but still formatted: the
   plugin does not know the site settings.

@@ -4,6 +4,7 @@ import {
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
   lineEndOf,
+  lastKeptSemicolonBefore,
   lineStartOf,
 } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
@@ -87,7 +88,7 @@ export function vennDiagramLineEnd(source: Source, offset: number): number {
 /** The protected semicolon prefix includes inline gaps between statements. */
 export function vennKeptPrefixEnd(source: Source, offset: number): number {
   const end = vennDiagramLineEnd(source, offset)
-  const last = source.text.lastIndexOf(";", end - 1)
+  const last = lastKeptSemicolonBefore(source, end)
   return last >= offset ? last + 1 : offset
 }
 

@@ -6,6 +6,7 @@ import type {
 } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
+import { moveDataBlocks } from "./data-blocks.ts"
 import { lineEndOf } from "./kept-lines.ts"
 import type { BlockRules } from "./blocks.ts"
 import {
@@ -78,11 +79,20 @@ export function printFlowchart(
         FlowchartSubgraphStatement
       >
       const depth = depthOf(path)
-      const layout = layoutStatement(
+      const layout = moveDataBlocks(
         source,
-        statement,
-        findPrintedEnd(source, statement),
-        depth > 1,
+        layoutStatement(
+          source,
+          statement,
+          findPrintedEnd(source, statement),
+          depth > 1,
+        ),
+        statement.range,
+        {
+          kept: findFlowchartKeptLines(source),
+          statement: indentationOf(bodyOptions, depth),
+          tabWidth: options.tabWidth,
+        },
       )
       return printAtoms(source, layout, {
         statement: indentationOf(bodyOptions, depth),

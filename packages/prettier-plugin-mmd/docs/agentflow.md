@@ -113,6 +113,10 @@ Keep the title's interior whitespace, so `[ T ]` remains `[ T ]`; Agentflow has
 the same Db for both forms and no reason to choose a different form from
 flowchart. [fixture: names-and-headings/name-heading-padding]
 
+A whitespace-only name before an explicit title keeps its written characters:
+removing them would remove the required name. [fixture:
+names-and-headings/whitespace-name-before-title]
+
 Otherwise keep all source text from the first name part through the last:
 quoted/markdown padding, erased `click`, empty description/string/markdown/call
 forms, their gaps and continuation columns. These parts belong to the name even
@@ -121,7 +125,8 @@ this use of `click` or read LF after `end` as name text. A connector has a name
 but no closing `end`. [fixture: names-and-headings/name-collapse-unsafe]
 [fixture: names-and-headings/name-click-reindent-unsafe] [fixture:
 names-and-headings/name-quoted-tail] [fixture:
-names-and-headings/name-whitespace-only]
+names-and-headings/name-whitespace-only] [fixture:
+names-and-headings/directive-after-erased-string]
 
 After name text read as a click id, exactly one whitespace character ends that
 reading. Keep that character, including a tab or LF, before a title, data,
@@ -136,6 +141,7 @@ names-and-headings/connector-empty-string-adjacent-semicolon-exit] [fixture:
 names-and-headings/connector-empty-string-adjacent-text-exit] [fixture:
 names-and-headings/click-empty-string-lf-body] [fixture:
 names-and-headings/click-empty-markdown-eof-tab] [fixture:
+names-and-headings/directive-before-click-exit] [fixture:
 names-and-headings/empty-string-before-name-space] [fixture:
 names-and-headings/empty-string-before-name-lf] [test: agentflow:
 empty-string-before-name-ls-flow] [test: agentflow:
@@ -338,16 +344,49 @@ agentflow-beta TB
 
 ### Metadata blocks
 
-Reuse opaque data from [Kept as written](./flowchart.md#kept-as-written):
-embedded contents are outside the syntax tree. Keep each complete @{...}
-separately on its written vertex or flow/connector heading, with adjacency,
-directives, aliases, unknown/prototype keys, scalar/array/empty/multiline
-content and continuation columns. Agentflow's later routing and domain aliases
-do not authorize rewriting, merging, or aligning a data closer. Content-only
-rejection uses the specified opaque reading; a raw rejection has no Db, and
-delimiter failures remain failures. [fixture: metadata-blocks/metadata-adjacent]
-[fixture: metadata-blocks/metadata-alias-rewrite-unsafe] [fixture:
+Reuse [Data blocks](./flowchart.md#data-blocks): embedded contents are outside
+the syntax tree. Keep each complete `@{...}` separately on its written vertex or
+flow/connector heading, with adjacency, directives, aliases, unknown/prototype
+keys, scalar/array/empty/multiline content. Agentflow's later routing and domain
+aliases do not authorize rewriting or merging the YAML. Content-only rejection
+uses the specified opaque reading; a raw rejection has no Db, and delimiter
+failures remain failures. [fixture: metadata-blocks/metadata-adjacent] [fixture:
+metadata-blocks/metadata-alias-rewrite-unsafe] [fixture:
 metadata-blocks/metadata-multiline]
+
+For a block whose opener is immediately followed by a newline, move all body
+lines by the same number of ASCII spaces so the shallowest text is one level
+inside the statement, including in a `flow` body. Nested YAML keeps its relative
+indentation; a separate `}` aligns with the statement, and a closer after text
+moves with that line. [fixture: metadata-blocks/zero-and-shallow] [fixture:
+metadata-blocks/deep-nested-yaml] [fixture: metadata-blocks/closing-after-text]
+[fixture: metadata-blocks/connector-multiline]
+
+The other shared movement conditions and their reasons are in
+[Data blocks](./flowchart.md#data-blocks): keep inline-opening blocks, embedded
+directives, kept lines, zero-width indentation and blocks starting after the
+statement's first line as written. Body margins use spaces even with `useTabs`,
+while a separate closer uses spaces too, at the column of the statement.
+Surrounding comments, directives, empty descriptions, blank lines and separators
+follow their own rules. [fixture: metadata-blocks/inline-and-directive-kept]
+[fixture: metadata-blocks/kept-body-line] [fixture:
+metadata-blocks/zero-width-kept] [fixture:
+metadata-blocks/tab-statement-space-body] [fixture:
+metadata-blocks/surrounding-trivia] [test: data blocks: agentflow U+2029] [test:
+data blocks: agentflow CRLF]
+
+The header of a `flow` or `global` container moves its block in the same way.
+[fixture: metadata-blocks/container-header]
+
+A block after an arrow's newline retains its columns because it starts after the
+statement's first line, and a statement with two blocks, of one line or of
+several, retains both. The same holds for a `flow` header and a `connector`.
+[fixture: metadata-blocks/later-statement-blocks-kept] [fixture:
+metadata-blocks/adjacent-single-line-after-kept] [fixture:
+metadata-blocks/adjacent-single-line-before-kept] [fixture:
+metadata-blocks/separate-single-line-block-kept] [fixture:
+metadata-blocks/container-header-adjacent-kept] [fixture:
+metadata-blocks/connector-adjacent-single-line-kept]
 
 Input (escaped): `"agentflow-beta TB\nA@{}@{\n}"`. [fixture:
 metadata-blocks/metadata-empty]

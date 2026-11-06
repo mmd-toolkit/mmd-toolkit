@@ -809,6 +809,8 @@ title、ヘッダー、軸、plot、アクセシビリティの行の文では�
 [fixture: multi-line-statements/semicolon-on-the-last-line-kept]
 物理行を結ぶコメント領域も、元の配置を保ちます。
 [test: xychart/multi-line-statements/bare-title-comment-region-kept]
+[test: xychart/multi-line-statements/header-comment-region-ls]
+[test: xychart/multi-line-statements/header-comment-region-ps]
 
 ### 複数行の値
 

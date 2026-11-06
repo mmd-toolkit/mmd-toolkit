@@ -74,8 +74,9 @@ system-boundaries/boundary-header-comment-empty] A step follows `tabWidth` and
 `useTabs`, two spaces by default or one tab per level. Indentation does not
 determine usecase syntax, so `tabWidth: 0` stays zero; accessibility remains
 accessibility at column zero and after ASCII whitespace. YAML retains the shared
-minimum of one. Value, JSON and directive continuation columns stay authored.
-[fixture: native-metadata/metadata-key-multiline-directive] [fixture:
+minimum of one. Value and directive continuation columns stay authored; eligible
+JSON margins follow [JSON tables](#json-tables). [fixture:
+native-metadata/metadata-key-multiline-directive] [fixture:
 native-metadata/metadata-scalar-multiline-directive] [fixture:
 classes-and-styles/css-name-multiline-directive] [fixture:
 json-tables/json-prefix-id-at-multiline-directive]
@@ -104,12 +105,12 @@ usecase-beta
 ### Statements and semicolons
 
 Each native statement keeps its required physical grammar line; semicolons never
-separate statements, and actor lists use commas. Reuse the non-separator
-[C4 kept-prefix policy](./c4.md#line-rule-and-semicolons): every semicolon
-stays, including a selected terminal one whose deletion would be Db-equal,
-because one source policy avoids retargeting the shared textual rule. Protect
-text from the first non-whitespace character through the last semicolon of each
-segment, extending through whole crossing values, CSS declarations, comments and
+separate statements, and actor lists use commas. Except for
+[Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement),
+keep semicolons as written, following the non-separator
+[C4 kept-prefix policy](./c4.md#line-rule-and-semicolons). Protect text from the
+first non-whitespace character through the last kept semicolon of each segment,
+extending through whole crossing values, CSS declarations, comments and
 directives. Exterior indentation and a safe suffix still format. [fixture:
 native-metadata/metadata-selected-semicolon-between-properties] Both textual
 passes, colon/hash separation, Unicode segment boundaries and an open
@@ -473,17 +474,42 @@ usecase-beta
 ### JSON tables
 
 Reuse [opaque data retention](./compatibility.md#embedded-data-is-not-checked):
-keep the whole JSON data range, including `@`, its gap before `{`, every body
-character and closing brace. Format only exterior json/id gaps and class
-suffixes; one ordinary gap precedes the data. [fixture:
+keep `@`, its gap before `{`, and the JSON contents, apart from the uniform
+margin movement below. Format exterior json/id gaps and class suffixes; one
+ordinary gap precedes the data. [fixture:
 json-tables/json-prefix-id-at-multiline-directive] Nested objects, duplicates,
-integer-key order, numbers/escapes, apparent comments and continuation columns
-stay authored. Even Db-equal JSON pretty-printing edits opaque source; sorting
+integer-key order, numbers/escapes and apparent comments stay authored. Sorting
 keys can change `propertyOrder`. Balanced malformed contents follow the
 specified opaque reading, while balancing failures remain failures. Db checks
 follow the shared data-block path: authored formatting fixtures without supplied
 effects compare as null and check the written embedded strings instead. The
-corpus uses recorded effects where available.
+corpus uses recorded effects where available; the written-string comparison
+allows only the uniform movement defined in
+[Data blocks](./flowchart.md#data-blocks).
+
+When `{` is immediately followed by a newline, shift all body lines by the same
+number of ASCII spaces so the shallowest text stands one level inside the JSON
+statement. Relative indentation, including nested objects, stays unchanged. A
+separate `}` aligns with the statement; a closer after text stays on that line.
+JSON strings cannot contain raw newlines: Mermaid rejects them with
+`Bad control character in string literal`, so this movement cannot change a
+string's contents. [fixture: json-tables/closing-deeper-kept] [fixture:
+json-tables/closing-equal-depth] [fixture: json-tables/zero-and-shallow]
+[fixture: json-tables/deep-nested-json] [fixture:
+json-tables/closing-after-text]
+
+Apply all the shared movement conditions and their reasons from
+[Data blocks](./flowchart.md#data-blocks). In particular, keep inline-opening
+JSON, embedded directives, kept lines, leading tabs and `tabWidth: 0` as
+written. With `useTabs`, body margins and a separate `}` still use spaces, the
+`}` at the column of the statement. Comments, directives, blank lines and empty
+description blocks outside the JSON keep their own rules; CR/LF follows
+`endOfLine` and Unicode separators inside strings remain characters. [fixture:
+json-tables/inline-opening-kept] [fixture: json-tables/directive-inside-kept]
+[fixture: json-tables/kept-body-line] [fixture: json-tables/zero-width-kept]
+[fixture: json-tables/tab-statement-space-body] [fixture:
+json-tables/surrounding-trivia] [test: data blocks: JSON leading tab kept]
+[test: data blocks: usecase U+2029] [test: data blocks: usecase CRLF]
 
 [fixture: json-tables/json-opaque] [corpus fixture:
 usecase/gram-json-prefix-id-control] [fixture: json-tables/json-invalid-opaque]
@@ -501,8 +527,50 @@ Output
 ```mmd
 usecase-beta
   json Table @ {
- "2": 2, "1": {"z":1}, "2": 3
-}:::data,table
+    "2": 2, "1": {"z":1}, "2": 3
+  }:::data,table
+```
+
+### Semicolons at the end of a style statement
+
+A line-ending `;` of a `classDef` or `style` statement is dropped when the
+[line rule of mermaid.js](../../spec/docs/common.md#style-and-classdef-lines)
+ignores it: no whitespace lies between the `:` and the later `#`. Removing this
+terminator leaves the Db unchanged, also with several styles. [fixture:
+semicolons-at-the-end-of-a-style-statement/hash-terminators] Whitespace
+immediately before a dropped `;` is dropped with it. [fixture:
+semicolons-at-the-end-of-a-style-statement/space-before-terminator] The line
+then formats as a line without that `;`, including its usual style spacing.
+[fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators] Blank
+lines and comment lines keep their usual layout around the statement. [fixture:
+semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines] An empty
+description block follows its usual layout while the style terminator is
+dropped. [fixture:
+semicolons-at-the-end-of-a-style-statement/empty-description-block]
+
+A directive after the semicolon on the same line keeps the `;`. [fixture:
+semicolons-at-the-end-of-a-style-statement/trailing-items-kept] Following `%%`
+text on the same line also keeps it; here it is part of the style. [fixture:
+semicolons-at-the-end-of-a-style-statement/trailing-items-kept] A `;` after an
+unclosed directive stays, preserving its stopping boundary. [fixture:
+semicolons-at-the-end-of-a-style-statement/unclosed-directive-kept] The same
+protection applies before U+2028 and U+2029; see
+[A line that a `;` ends](./compatibility.md#a-line-that-a--ends). [test: style
+semicolons: usecase before U+2028] [test: style semicolons: usecase before
+U+2029] A closed directive between the statement and an ignored terminator is
+kept while the `;` is dropped. [fixture:
+semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+
+Output
+([semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd](../tests/fixtures/usecase/semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd)):
+
+```mmd
+usecase-beta
+  A
+  classDef c fill:#f00
+  style A fill:#f00
+  classDef d fill:#0f0, stroke:#00f
+  style A fill:#0f0, stroke:#00f
 ```
 
 ### Classes and styles
@@ -515,7 +583,7 @@ before and after the colon and inside `--  color`, so this is not ER's
 whitespace-discarding CSS reading. Tabs, directives in the dash gap, quoted or
 escaped commas, empty string components, functions, order and repetition stay.
 [fixture: classes-and-styles/css-name-multiline-directive] Only exterior HWS
-after the last component can disappear; selected-semicolon prefixes override
+after the last component can disappear; prefixes with kept semicolons override
 ordinary list layout.
 
 [fixture: classes-and-styles/class-lists] [fixture:
@@ -714,7 +782,8 @@ standalone directives and collapse only harmless exterior HWS gap sides.
 arrows/semantic-operator-directives] [fixture:
 arrow-id-boundaries/arrow-marker-both-gap-sides] Header-line directives remain
 with the header. Value-side gaps, CSS name/value spans and opaque JSON remain
-exact, including separate JSON id/`@`/brace boundaries. [fixture:
+exact apart from [JSON table margins](#json-tables), including separate JSON
+id/`@`/brace boundaries. [fixture:
 classes-and-styles/css-name-multiline-directive] [fixture:
 json-tables/json-prefix-id-at-multiline-directive] Native `@{`, unquoted words
 and arrows stay atomic. EOF-reaching directives keep their ending and semicolon

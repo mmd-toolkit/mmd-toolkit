@@ -27,9 +27,11 @@ block is left to Prettier.
 
 ## Embedded data
 
-Directive arguments and `@{ ... }` data blocks are kept as written. YAML
-frontmatter is formatted with Prettier's YAML formatter when it can be read and
-formatted safely; otherwise, it is kept as written. See [frontmatter
+Directive arguments and the text of `@{ ... }` data blocks are kept as written.
+The lines of a multi-line data block move with their statement, by one number of
+spaces, where that does not change what mermaid.js reads. YAML frontmatter is
+formatted with Prettier's YAML formatter when it can be read and formatted
+safely; otherwise, it is kept as written. See [frontmatter
 compatibility][frontmatter] for the exact conditions.
 
 The plugin does not check whether embedded data is valid for Mermaid. Malformed

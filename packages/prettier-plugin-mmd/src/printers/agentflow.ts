@@ -7,6 +7,8 @@ import type {
 } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
+import { moveDataBlocks } from "./data-blocks.ts"
+import { findAgentflowKeptLines } from "./agentflow-kept-lines.ts"
 import type { BlockRules } from "./blocks.ts"
 import {
   openingLine,
@@ -14,7 +16,6 @@ import {
   printClosedBlock,
   printDiagramBlock,
 } from "./blocks.ts"
-import { findAgentflowKeptLines } from "./agentflow-kept-lines.ts"
 import {
   classifyAgentflowStatement,
   findNamePrintedEnd,
@@ -85,14 +86,24 @@ export function printAgentflow(
       print,
       source,
       classified.statement,
+      options.tabWidth,
     )
   const statement = classified.statement
   const depth = depthOf(path)
-  const layout = layoutStatement(
+  const layout = moveDataBlocks(
     source,
-    statement,
-    findPrintedEnd(source, statement),
-    depth > 1,
+    layoutStatement(
+      source,
+      statement,
+      findPrintedEnd(source, statement),
+      depth > 1,
+    ),
+    statement.range,
+    {
+      kept: findAgentflowKeptLines(source),
+      statement: indentationOf(bodyOptions, depth),
+      tabWidth: options.tabWidth,
+    },
   )
   return printAtoms(source, layout, {
     statement: indentationOf(bodyOptions, depth),
@@ -145,6 +156,7 @@ function printContainer(
   print: (path: AstPath<MermaidAst>) => Doc,
   source: Source,
   container: AgentflowFlowStatement | AgentflowGlobalStatement,
+  tabWidth: number,
 ): Doc {
   const depth = depthOf(path)
   const headerEnd = findContainerHeaderEnd(source, container)
@@ -162,7 +174,16 @@ function printContainer(
   )
   const headerDoc = printAtoms(
     source,
-    layoutContainerHeader(source, container, headerEnd),
+    moveDataBlocks(
+      source,
+      layoutContainerHeader(source, container, headerEnd),
+      [container.range[0], headerEnd],
+      {
+        kept: findAgentflowKeptLines(source),
+        statement: indentationOf(options, depth),
+        tabWidth,
+      },
+    ),
     {
       statement: indentationOf(options, depth),
       continuation: indentationOf(options, depth + 1),

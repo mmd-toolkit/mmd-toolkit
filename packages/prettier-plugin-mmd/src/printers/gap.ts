@@ -89,6 +89,13 @@ export interface ItemLine {
    * the lines around it as they are.
    */
   readonly commentLinesOnly: boolean
+  /**
+   * Whether the first item of the line is a comment that mermaid.js reads as a
+   * comment line (see `isCommentLine`), the one kind of line that it reads
+   * after the whitespace of any indentation (see
+   * `BlockRules.indentsOnlyCommentLines`).
+   */
+  readonly startsWithCommentLine: boolean
 }
 
 /**
@@ -106,6 +113,8 @@ export interface Gap {
   readonly leading: ItemRun | null
   /** Whether `leading` holds nothing but directives. */
   readonly leadingDirectivesOnly: boolean
+  /** Whether the first item of `leading` is a comment line (see `ItemLine.startsWithCommentLine`). */
+  readonly leadingStartsWithCommentLine: boolean
   /** The `percentBraceGaps` of the line of `leading`. */
   readonly leadingPercentBraceGaps: number | null
   /** The spaces and tabs before the first item of `leading`, as written. */
@@ -249,6 +258,7 @@ export function readGap(
       singlePercent: line.parts.some(
         (part) => part.item.type === "Comment" && part.item.mark === "%",
       ),
+      startsWithCommentLine: startsWithCommentLine(source, line.parts),
       commentLinesOnly:
         line.parts.some((part) => part.item.type === "Comment") &&
         line.parts.every(
@@ -275,6 +285,7 @@ export function readGap(
       last.parts.length > 0 &&
       last.parts.every((part) => part.item.type === "Directive"),
     leadingIndentation: indentationBefore(source, last),
+    leadingStartsWithCommentLine: startsWithCommentLine(source, last.parts),
     leadingPercentBraceGaps: countGapsBeforePercentBrace(source, last.parts),
     blankAfter: emptyLineSeen,
     breaksLine: true,
@@ -348,6 +359,7 @@ function readSingleLine(
     lines: [],
     leading: toRun(source, after, line.spaceAfter, false),
     leadingDirectivesOnly: false,
+    leadingStartsWithCommentLine: false,
     leadingPercentBraceGaps: null,
     leadingIndentation: "",
     blankAfter: false,
@@ -585,6 +597,17 @@ function isFollowedByJoiningRegion(source: Source, offset: number): boolean {
     position++
   }
   return false
+}
+
+/** Whether the first part is a comment that is a comment line. */
+function startsWithCommentLine(
+  source: Source,
+  parts: readonly Part[],
+): boolean {
+  const first = parts.at(0)?.item
+  return (
+    first?.type === "Comment" && isCommentLine(source.text, source.root, first)
+  )
 }
 
 /** Makes an empty scanned line. */

@@ -356,8 +356,9 @@ whitespace-between-tokens/values-of-other-statements-kept] The text of a `box`
 is kept as a whole: when its first word is no colour, mermaid.js takes the whole
 text as the name of the box. [fixture: whitespace-between-tokens/values-kept]
 [fixture: whitespace-between-tokens/box-text-kept] The data block of a
-participant, `@{ ... }`, is kept as written and touches its id, since whitespace
-before `@{` makes the input rejected. [fixture:
+participant, `@{ ... }`, touches its id, since whitespace before `@{` makes the
+input rejected. Its contents stay written except for the eligible margins in
+[Multi-line values](#multi-line-values). [fixture:
 whitespace-between-tokens/data-block-and-ignored-line-kept] [fixture:
 whitespace-between-tokens/actor-data-block-kept] A line that mermaid.js reads as
 nothing, such as `)` alone, is kept and stands at the level of the statements
@@ -723,13 +724,16 @@ characters as escapes too (see
   U+2028 at the end of a block header] [test: a `%%` comment line after U+2028
   at the end of a participant] [test: U+2029 after a comment that a comment line
   follows] [test: U+2028 after a `%%` comment that a comment line follows]
-  [test: U+2029 after a `%` comment that a comment line follows]
+  [test: U+2029 after a `%` comment that a comment line follows] [test: a `#`
+  comment and a comment line after U+2028 inside a message text]
 - Right after a directive that is not closed. The text of such a directive stops
   before the character, which is no whitespace to it: with the character printed
   as a space or a line break, the directive would reach the rest of the text.
   This holds in every diagram type. [test: U+2028 after a directive that is not
   closed] [test: U+2029 after a directive that is not closed] [test: a `;` after
-  U+2029 after a directive that is not closed]
+  U+2029 after a directive that is not closed] [test: a standalone open
+  directive before U+2028 and a semicolon] [test: a standalone open directive
+  before U+2029 and a semicolon]
 - As the whitespace character that follows `title`: `title`, U+2028, and ` ;`
   stays as written, with the `;`. [test: U+2028 as the whitespace character
   after `title`, with a `;` after it] [test: U+2029 as the whitespace character
@@ -888,19 +892,48 @@ breaks.
 Align the lines of an `accDescr { ... }` body one step inside its statement,
 with a separate `}` at the statement's level, as in
 [flowchart's top-level descriptions](./flowchart.md#multi-line-values). Mermaid
-discards this indentation from the description. Data blocks keep their authored
-columns and contents. [fixture: multi-line-values/kept] [fixture:
+discards this indentation from the description. [fixture:
+multi-line-values/description-and-data-indented] [fixture:
 multi-line-values/accdescr-block-closing-brace-after-text-kept] [fixture:
 multi-line-values/accdescr-block-blank-and-comment-lines-kept] [fixture:
-multi-line-values/data-block-in-block-kept] A block without text, whose lines
-are only comment lines, holds no value: its comment lines stand one level deeper
-than the `accDescr`, as comment lines inside a statement do, and its `}` at the
-level of the `accDescr`. [fixture:
+multi-line-values/data-block-in-block-indented] A block without text, whose
+lines are only comment lines, holds no value: its comment lines stand one level
+deeper than the `accDescr`, as comment lines inside a statement do, and its `}`
+at the level of the `accDescr`. [fixture:
 multi-line-values/accdescr-block-comment-only] [fixture:
 multi-line-values/accdescr-block-without-text-kept]
 
+For participant and actor data blocks, apply
+[Data blocks](./flowchart.md#data-blocks) only when exactly one body line holds
+text. Move that line one level inside the statement and align a separate `}`
+with the statement; a closer after text stays with that line. This applies at
+the top level and inside `loop`, with body spaces even under `useTabs` and the
+statement's indentation for a separate closer. [fixture:
+multi-line-values/data-zero-and-shallow] [fixture:
+multi-line-values/data-deep-inline-closer] [fixture:
+multi-line-values/data-block-in-block-indented] [fixture:
+multi-line-values/data-tab-statement-space-body] [fixture:
+multi-line-values/data-closing-deeper-kept] [fixture:
+multi-line-values/data-closing-equal-depth]
+
+Mermaid trims the whole data block: the first line loses its margin, while later
+lines count from column zero. Thus two keys at column zero are accepted, but
+indenting them can make the YAML fail; blocks with multiple text lines keep
+their columns. The shared conditions also keep inline-opening blocks, directives
+inside a block, kept lines and `tabWidth: 0` unchanged. They avoid changing the
+first line's relative margin or a directive's text and preserve whole kept
+lines. [fixture: multi-line-values/data-multiple-lines-kept] [fixture:
+multi-line-values/data-inline-and-directive-kept] [fixture:
+multi-line-values/data-kept-body-line] [fixture:
+multi-line-values/data-zero-width-kept]
+
+Comments, directives, blank lines and empty description blocks around the data
+keep their own rules. CRLF and CR follow `endOfLine`; Unicode separators inside
+values remain characters. [fixture: multi-line-values/data-surrounding-trivia]
+[test: data blocks: sequence U+2028] [test: data blocks: sequence CR]
+
 Input
-([multi-line-values/kept-input.mmd](../tests/fixtures/sequence/multi-line-values/kept-input.mmd)):
+([multi-line-values/description-and-data-indented-input.mmd](../tests/fixtures/sequence/multi-line-values/description-and-data-indented-input.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -916,7 +949,7 @@ end
 ```
 
 Output
-([multi-line-values/kept-output.mmd](../tests/fixtures/sequence/multi-line-values/kept-output.mmd)):
+([multi-line-values/description-and-data-indented-output.mmd](../tests/fixtures/sequence/multi-line-values/description-and-data-indented-output.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -926,8 +959,8 @@ sequenceDiagram
       two
     }
     participant A@{
-  "type": "queue"
-}
+      "type": "queue"
+    }
   end
 ```
 
@@ -955,7 +988,7 @@ sequenceDiagram
 
 ## Kept as written
 
-Apart from description-body indentation under
+Apart from description-body and eligible data-block indentation under
 [Multi-line values](#multi-line-values), the following text is kept as written
 because changing it would change the diagram or the input would be rejected:
 

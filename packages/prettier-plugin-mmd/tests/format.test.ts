@@ -20,6 +20,7 @@ import {
   writtenEmbeddedTexts,
   writtenTextKeptUpToSemicolons,
 } from "./db-reading.ts"
+import { dataBlockEmbeddedForFormattingComparison } from "./data-block-margins.ts"
 import {
   eventmodelingDbForFormattingComparison,
   eventmodelingEmbeddedForFormattingComparison,
@@ -81,11 +82,69 @@ describe("formatting fixtures", () => {
               writtenBefore,
               writtenAfter,
             )
-          : writtenAfter,
+          : dataBlockEmbeddedForFormattingComparison(
+              writtenBefore,
+              writtenAfter,
+            ),
       ).toEqual(writtenBefore)
       expect(
         await describeFrontmatterChange(fixture.input, output, fixture.options),
       ).toBeNull()
     },
   )
+})
+
+describe("written semicolon boundaries", () => {
+  it.each([
+    [
+      "style terminator after a directive",
+      "classDiagram\nclass A\nstyle A fill:#f00 %%{init: {}}%% ;\n",
+      "classDiagram\nclass A\nstyle A fill:#f00 %%{init: {}}%%\n",
+      true,
+    ],
+    [
+      "ER terminating unit",
+      "erDiagram\nstyle A fill:red;\n",
+      "erDiagram\nstyle A fill:red\n",
+      true,
+    ],
+    [
+      "state final style character",
+      "stateDiagram-v2\nclassDef c fill:red;\n",
+      "stateDiagram-v2\nclassDef c fill:red\n",
+      true,
+    ],
+    [
+      "class member text",
+      "classDiagram\nclass A {\nvalue;\n}\n",
+      "classDiagram\nclass A {\nvalue\n}\n",
+      false,
+    ],
+    [
+      "state transition id",
+      "stateDiagram-v2\nA --> B;\n",
+      "stateDiagram-v2\nA --> B\n",
+      false,
+    ],
+    [
+      "interior style character",
+      "stateDiagram-v2\nclassDef c fill:r;ed\n",
+      "stateDiagram-v2\nclassDef c fill:red\n",
+      false,
+    ],
+    [
+      "directive argument",
+      'classDiagram\nclass A\n%%{init: {"value": "x;y"}}%%\n',
+      'classDiagram\nclass A\n%%{init: {"value": "xy"}}%%\n',
+      false,
+    ],
+    [
+      "comment text",
+      "classDiagram\nclass A\n%% keep;\n",
+      "classDiagram\nclass A\n%% keep\n",
+      false,
+    ],
+  ])("%s", (_title, before, after, kept) => {
+    expect(writtenTextKeptUpToSemicolons(before, after)).toBe(kept)
+  })
 })

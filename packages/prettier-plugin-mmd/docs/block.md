@@ -509,7 +509,9 @@ block-beta
 `classDef`, `style`, and `class` are followed by one space, the name of the
 class or the id, and one space; the whitespace after the keyword and before the
 first style is not in the Db, so it becomes one space. What follows is printed
-as written. In a `style` and a `class` the whitespace is in the Db.
+as written, apart from the terminators dropped under
+[Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement).
+In a `style` and a `class` the whitespace is in the Db.
 `style A fill:#f00 , stroke:#333` has a style `fill:#f00 ` and a style
 ` stroke:#333`; `class A, B c1` looks up the id ` B` with its whitespace, finds
 no block `B`, and gives the class to a new block that the diagram does not show;
@@ -587,6 +589,58 @@ block-beta
   class A, B c1
 ```
 
+### Semicolons at the end of a style statement
+
+A line-ending `;` of a `classDef` or `style` statement is dropped when the
+[line rule of mermaid.js](../../spec/docs/common.md#style-and-classdef-lines)
+ignores it: no whitespace lies between the `:` and the later `#`. Removing this
+terminator leaves the Db unchanged, also with several styles. [fixture:
+semicolons-at-the-end-of-a-style-statement/hash-terminators] Whitespace
+immediately before a dropped `;` is dropped with it. [fixture:
+semicolons-at-the-end-of-a-style-statement/space-before-terminator] The line
+then formats as a line without that `;`, including its usual style spacing.
+[fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators] Blank
+lines and comment lines keep their usual layout around the statement. [fixture:
+semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines] An empty
+description block follows its usual layout while the style terminator is
+dropped. [fixture:
+semicolons-at-the-end-of-a-style-statement/empty-description-block]
+
+For `classDef` without a `#` in the statement, a final `;` of the last style is
+dropped when it is the only semicolon of that style and follows non-whitespace
+text: mermaid.js removes its first `;`. [fixture:
+semicolons-at-the-end-of-a-style-statement/classdef-text-terminators] Keep
+`classDef c fill:red;;` and `style A fill:red;`: removing the last semicolon
+changes the Db. [fixture:
+semicolons-at-the-end-of-a-style-statement/style-text-kept]
+
+A directive after the semicolon on the same line keeps the `;`. [fixture:
+semicolons-at-the-end-of-a-style-statement/trailing-items-kept] Following `%%`
+text on the same line also keeps it; here it is part of the style. [fixture:
+semicolons-at-the-end-of-a-style-statement/trailing-items-kept] An ignored `;`
+beside another `;` is kept to preserve the line rule's selection. [fixture:
+semicolons-at-the-end-of-a-style-statement/adjacent-semicolons-kept] A `;` after
+an unclosed directive stays, preserving its stopping boundary. [fixture:
+semicolons-at-the-end-of-a-style-statement/unclosed-directive-kept] The same
+protection applies before U+2028 and U+2029; see
+[A line that a `;` ends](./compatibility.md#a-line-that-a--ends). [test: style
+semicolons: block before U+2028] [test: style semicolons: block before U+2029] A
+closed directive between the statement and an ignored terminator is kept while
+the `;` is dropped. [fixture:
+semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+
+Output
+([semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd](../tests/fixtures/block/semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd)):
+
+```mmd
+block
+  A
+  classDef c fill:#f00
+  style A fill:#f00
+  classDef d fill:#0f0,stroke:#00f
+  style A fill:#0f0,stroke:#00f
+```
+
 ### Multi-line statements
 
 A statement that mermaid.js reads over several lines is printed on one line: the
@@ -601,19 +655,23 @@ and composites. Preserve first gap-line tails, complete directive interiors and
 whole value ranges; block-arrow direction contents remain as written. [fixture:
 multi-line-statements/structural-trivia-continuations]
 
-Joining comment regions retain their original layout. A `;` in a statement keeps
-it as written too, because of the line rule (see [Rows](#rows) and
+Joining comment regions retain their original layout. [test: block:
+ls-comment-in-composite-head] [test: block: ps-comment-in-composite-head] A kept
+`;` in a statement keeps it as written too, because of the line rule (see
+[Rows](#rows) and
 [A line that a `;` ends](./compatibility.md#a-line-that-a--ends)). The line rule
 of mermaid.js removes the last `;` of a line that holds `style` or `classDef`, a
 later `:`, a `#` after that with no whitespace between them, and a later `;`;
 moving a statement away from such a line changes which `;` is the last (in
 `A["style:#a"] B;C D;` the `;` of `D;` is the one removed and the id is `B;C`;
 on a line without `D;`, the `;` of `B;C` would be removed), so the statements of
-such a line stay on it and its `;` stays. The whitespace between the `:` and the
-`#` stays as well, since it decides whether the rule applies:
-`A["style:"]-->B["#z"];` keeps its arrow touching, and with spaces around the
-arrow the rule does not apply, and the `;` is an id of its own. [fixture:
-multi-line-statements/columns-over-lines-joined] [fixture:
+such a line stay on it and its kept `;` stays. The exception for a style
+terminator is described in
+[Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement).
+The whitespace between the `:` and the `#` stays as well, since it decides
+whether the rule applies: `A["style:"]-->B["#z"];` keeps its arrow touching, and
+with spaces around the arrow the rule does not apply, and the `;` is an id of
+its own. [fixture: multi-line-statements/columns-over-lines-joined] [fixture:
 multi-line-statements/edge-over-lines-joined] [fixture:
 multi-line-statements/shape-over-lines-joined] [fixture:
 multi-line-statements/class-definition-line-break-in-the-head] [fixture:
@@ -625,7 +683,7 @@ multi-line-statements/line-rule-line-kept] [fixture:
 multi-line-statements/line-rule-line-kept-with-columns] [fixture:
 multi-line-statements/line-rule-line-kept-with-composite] [fixture:
 multi-line-statements/semicolon-in-an-id-kept] [fixture:
-multi-line-statements/line-rule-semicolon-at-the-end-kept] [fixture:
+multi-line-statements/line-rule-style-terminator-dropped] [fixture:
 multi-line-statements/empty-line-inside-joined] [fixture:
 multi-line-statements/semicolon-id-after-end-kept] [fixture:
 multi-line-statements/semicolon-id-after-columns-kept] [fixture:

@@ -155,7 +155,8 @@ the rule is local to the syntax, not a search for the final normalized state. A
 title takes the rest of its line as its value, so statement-looking words after
 `title` cannot be split out, and swallowed fragments stay with their written
 line neighbours. [corpus fixture: venn/db-indent-after-same-line-explicit-text]
-[corpus fixture: venn/db-indent-after-same-line-style] [corpus fixture:
+[fixture: venn/statements-one-per-line/directive-in-declaration-group] [corpus
+fixture: venn/db-indent-after-same-line-style] [corpus fixture:
 venn/db-indent-after-same-line-title] [corpus fixture:
 venn/header-statement-on-line] [fixture:
 venn/statements-one-per-line/declaration-runs] [fixture:
@@ -446,17 +447,58 @@ venn-beta
 style A, B fill:red, opacity:.50, custom:" dark blue "
 ```
 
+### Semicolons at the end of a style statement
+
+A line-ending `;` of a `style` statement is dropped when the
+[line rule of mermaid.js](../../spec/docs/common.md#style-and-classdef-lines)
+ignores it: no whitespace lies between the `:` and the later `#`. Removing this
+terminator leaves the Db unchanged, also with several styles. [fixture:
+semicolons-at-the-end-of-a-style-statement/hash-terminators] Whitespace
+immediately before a dropped `;` is dropped with it. [fixture:
+semicolons-at-the-end-of-a-style-statement/space-before-terminator] The line
+then formats as a line without that `;`, including its usual style spacing.
+[fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators] Blank
+lines and comment lines keep their usual layout around the statement. [fixture:
+semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines]
+
+A directive after the semicolon on the same line keeps the `;`. [fixture:
+semicolons-at-the-end-of-a-style-statement/trailing-items-kept] A following
+comment on the same line also keeps it. [fixture:
+semicolons-at-the-end-of-a-style-statement/trailing-items-kept] A `;` after an
+unclosed directive stays, preserving its stopping boundary. [fixture:
+semicolons-at-the-end-of-a-style-statement/unclosed-directive-kept] The same
+protection applies before U+2028 and U+2029; see
+[A line that a `;` ends](./compatibility.md#a-line-that-a--ends). [test: style
+semicolons: venn before U+2028] [test: style semicolons: venn before U+2029] A
+closed directive between the statement and an ignored terminator is kept while
+the `;` is dropped. [fixture:
+semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+
+Output
+([semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd](../tests/fixtures/venn/semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd)):
+
+```mmd
+venn-beta
+set A
+style A fill:#f00
+style A fill:#0f0, stroke:#00f
+```
+
 ### Line rule and kept lines
 
-Every semicolon stays because it never separates Venn statements. The printer
-keeps the protected stretch from the first non-whitespace character through the
-last semicolon, extending through any crossing value, comment or directive; this
-keeps the textual line-rule selection, including nonmatches and markers across
-statements. Indentation and exterior trailing whitespace belong to the printer,
-and a safe suffix formats normally. The shared rule's segments can end inside a
-diagram comment, while the printer's protected stretch retains that whole
-comment. Crossing values appear once, and an unclosed directive stopped by a
-semicolon retains its stopping boundary.
+Semicolons never separate Venn statements. Except for
+[Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement),
+they stay as written. The printer keeps the protected stretch from the first
+non-whitespace character through the last kept semicolon, extending through any
+crossing value, comment or directive; this keeps the textual line-rule
+selection, including nonmatches and markers across statements. Indentation and
+exterior trailing whitespace belong to the printer, and a safe suffix formats
+normally. The shared rule's segments can end inside a diagram comment, while the
+printer's protected stretch retains that whole comment. Crossing values appear
+once, and an unclosed directive stopped by a semicolon retains its stopping
+boundary.
+
+[fixture: venn/line-rule-and-kept-lines/crossing-adjacent-values]
 
 For example, input `"venn-beta\nset A[style:#x;y]%% c\u2028tail;"` prints
 `"venn-beta\nset A[style:#x;y]%% c\u2028tail;\n"` and keeps the Db label
@@ -480,16 +522,16 @@ venn/lex-text-style-rule-other-line] [fixture:
 venn/line-rule-and-kept-lines/crossing-multiline-value] [fixture:
 venn/line-rule-and-kept-lines/directive-crossing-prefix] [fixture:
 venn/line-rule-and-kept-lines/directive-semicolon-stop] [fixture:
-venn/line-rule-and-kept-lines/line-rule-colon-space-unsafe] [fixture:
-venn/line-rule-and-kept-lines/line-rule-comment-keep] [fixture:
+venn/line-rule-and-kept-lines/dropped-style-terminator-formats-property]
+[fixture: venn/line-rule-and-kept-lines/line-rule-comment-keep] [fixture:
 venn/line-rule-and-kept-lines/line-rule-comment-move-control] [fixture:
 venn/line-rule-and-kept-lines/line-rule-comment-move] [fixture:
 venn/line-rule-and-kept-lines/line-rule-cross-statement-control] [fixture:
 venn/line-rule-and-kept-lines/line-rule-cross-statement] [fixture:
 venn/line-rule-and-kept-lines/line-rule-double-pass] [fixture:
-venn/line-rule-and-kept-lines/line-rule-kept-whitespace] [fixture:
-venn/line-rule-and-kept-lines/line-rule-no-hash-control-control] [fixture:
-venn/line-rule-and-kept-lines/line-rule-no-hash-control] [fixture:
+venn/line-rule-and-kept-lines/dropped-style-terminator-formats-whitespace]
+[fixture: venn/line-rule-and-kept-lines/line-rule-no-hash-control-control]
+[fixture: venn/line-rule-and-kept-lines/line-rule-no-hash-control] [fixture:
 venn/line-rule-and-kept-lines/line-rule-nonmatch-value-control] [fixture:
 venn/line-rule-and-kept-lines/line-rule-nonmatch-value] [fixture:
 venn/line-rule-and-kept-lines/line-rule-other-line-control-control] [fixture:
@@ -560,6 +602,8 @@ directive retains the positive versus zero logical indentation of implicit
 versus explicit text, choosing exterior indentation before the first directive
 while keeping its internal gap relations. Embedded, multiline, semicolon-stopped
 and EOF directives keep their boundaries; no embedded data is reformatted.
+
+[fixture: venn/directives/unclosed-after-doubled-semicolon]
 
 An internal gap, including between two leading directives, already supplies the
 positive marker. Only where no internal gap supplies it does an implicit line

@@ -3,6 +3,7 @@ import type { UsecaseStatement } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
 import type { AtomLayout } from "./atoms.ts"
 import { printAtoms } from "./atoms.ts"
+import { moveDataBlocks } from "./data-blocks.ts"
 import type { BlockBounds, BlockRules, PrintedBlock } from "./blocks.ts"
 import {
   openingLine,
@@ -95,7 +96,16 @@ function printStatements(
         return printLine(
           source,
           options,
-          layoutUsecaseStatement(source, statement, statement.range[1]),
+          moveDataBlocks(
+            source,
+            layoutUsecaseStatement(source, statement, statement.range[1]),
+            statement.range,
+            {
+              kept: rules.kept,
+              statement: indentationOf(options, depth),
+              tabWidth: options.tabWidth,
+            },
+          ),
           depth,
         )
       const boundary = classified.statement

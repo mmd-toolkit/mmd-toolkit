@@ -42,6 +42,11 @@ class/lex-member-edge-state-indented] The shared minimum is the same as for
 reading. [fixture: indentation/namespaces] [fixture:
 indentation/written-indentation-dropped]
 
+A namespace or member-body opening split by a comment region after U+2028 or
+U+2029 keeps its written lines and spacing: mermaid.js joins the text on either
+side of the removed comment. [test: class: ls-comment-in-namespace-opening]
+[test: class: ps-comment-in-member-opening]
+
 Input
 ([indentation/namespaces-input.mmd](../tests/fixtures/class/indentation/namespaces-input.mmd)):
 
@@ -389,6 +394,10 @@ the word `call` stays touching: with a space before it, `A call()--> B` would be
 a callback of the class A, and `call-->C` would start one. [fixture:
 arrow-spacing/touching-call-kept] [fixture:
 arrow-spacing/touching-call-colon-kept] [corpus fixture: class/lex-call-prefix]
+
+Inside an ASCII word, after a letter, digit, or `_`, `call` starts no keyword,
+so the ordinary arrow spacing applies. [fixture:
+arrow-spacing/call-inside-ascii-word]
 
 Input
 ([arrow-spacing/touching-call-kept-input.mmd](../tests/fixtures/class/arrow-spacing/touching-call-kept-input.mmd)):
@@ -823,6 +832,49 @@ classDiagram
   line two"
   class A~T,
   U~
+```
+
+### Semicolons at the end of a style statement
+
+A line-ending `;` of a `classDef` or `style` statement is dropped when the
+[line rule of mermaid.js](../../spec/docs/common.md#style-and-classdef-lines)
+ignores it: no whitespace lies between the `:` and the later `#`. Removing this
+terminator leaves the Db unchanged, also with several styles. [fixture:
+semicolons-at-the-end-of-a-style-statement/hash-terminators] Whitespace
+immediately before a dropped `;` is dropped with it. [fixture:
+semicolons-at-the-end-of-a-style-statement/space-before-terminator] The line
+then formats as a line without that `;`, including its usual style spacing.
+[fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators] Blank
+lines and comment lines keep their usual layout around the statement. [fixture:
+semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines] Member
+semicolons stay: they are outside style statements. [fixture:
+semicolons-at-the-end-of-a-style-statement/member-semicolons-kept]
+
+A directive after the semicolon on the same line keeps the `;`. [fixture:
+semicolons-at-the-end-of-a-style-statement/trailing-items-kept] Following `%%`
+text on the same line also keeps it; here it is part of the style. [fixture:
+semicolons-at-the-end-of-a-style-statement/trailing-items-kept] An ignored `;`
+beside another `;` is kept to preserve the line rule's selection. [fixture:
+semicolons-at-the-end-of-a-style-statement/adjacent-semicolons-kept] A `;` after
+an unclosed directive stays, preserving its stopping boundary. [fixture:
+semicolons-at-the-end-of-a-style-statement/unclosed-directive-kept] The same
+protection applies before U+2028 and U+2029; see
+[A line that a `;` ends](./compatibility.md#a-line-that-a--ends). [test: style
+semicolons: class before U+2028] [test: style semicolons: class before U+2029] A
+closed directive between the statement and an ignored terminator is kept while
+the `;` is dropped. [fixture:
+semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+
+Output
+([semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd](../tests/fixtures/class/semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd)):
+
+```mmd
+classDiagram
+  class A
+  classDef c fill:#f00
+  style A fill:#f00
+  classDef d fill:#0f0,stroke:#00f
+  style A fill:#0f0,stroke:#00f
 ```
 
 ### Multi-line statements

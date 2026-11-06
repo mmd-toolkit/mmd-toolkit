@@ -207,6 +207,8 @@ export function printTreeview(
           ?.some((decoration) => drawing.decorations.get(decoration) === "") ===
           true,
       relocatedWhitespace: boxMode ? [] : relocatedWhitespace,
+      indentsOnlyCommentLines: true,
+      extraIndentationOf: (line) => placements.get(line)!.indentation,
       joiningRegionsPrintedAsWritten: true,
       printedEnd: (line) =>
         layouts.get(line) === undefined

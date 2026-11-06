@@ -1,6 +1,7 @@
 import type { AstPath, Doc, ParserOptions } from "prettier"
 import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
+import { moveDataBlocks } from "./data-blocks.ts"
 import type { BlockRules } from "./blocks.ts"
 import { openingLine, printBlock, printDiagramBlock } from "./blocks.ts"
 import { findKanbanKeptLines } from "./kanban-kept-lines.ts"
@@ -52,10 +53,21 @@ export function printKanban(
   const block = printBlock(
     lines.map((line) => [
       placements.get(line)?.head ?? "",
-      printAtoms(source, layoutKanbanLine(line), {
-        statement: "",
-        continuation: "",
-      }).doc,
+      printAtoms(
+        source,
+        moveDataBlocks(source, layoutKanbanLine(line), line.range, {
+          kept: findKanbanKeptLines(source),
+          statement: (options.useTabs ? "\t" : " ").repeat(
+            significantIndentationOf(options, 1).length * line.depth,
+          ),
+          tabWidth: options.tabWidth,
+          wholeLine: true,
+        }),
+        {
+          statement: "",
+          continuation: "",
+        },
+      ).doc,
     ]),
     source,
     {

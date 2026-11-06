@@ -689,6 +689,12 @@ LF のコメント終端は新しい行を始め、字下げの文字として�
 [corpus fixture: ishikawa/div-header-inline-comment-ps-node]
 [test: ishikawa: common-joined-terminal-spaces]
 
+最初の節点の前で、図のコメントを終える LS や PS に続く 2 つの LF は、
+書かれたまま保ちます。
+Mermaid がコメントと空行を組み合わせる読み方を保つためです。
+[test: ishikawa: ls-comment-two-lf-before-root]
+[test: ishikawa: ps-comment-two-lf-before-root]
+
 入力と出力（escape 表記）:
 
 ```json

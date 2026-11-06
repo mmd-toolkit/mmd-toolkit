@@ -97,6 +97,10 @@ across LF. Move its information once to that row’s planned column. Do not
 measure only physical leading whitespace or add a second indentation run. Common
 removals have already decided which runs count.
 
+Use the resulting row column for standalone comment lines too, including when
+common comment removal discarded an earlier whitespace-only run. [fixture:
+treemap/comments/removed-indent]
+
 [fixture: treemap/carried-indentation/header-space]
 
 [fixture: treemap/carried-indentation/header-tab]
@@ -164,6 +168,8 @@ precedence. Text already owned by a title or class style is one value, not a new
 statement.
 
 [fixture: treemap/statements-one-per-line/adjacent]
+
+[fixture: treemap/statements-one-per-line/empty-class-before-comment]
 
 [fixture: treemap/statements-one-per-line/glued-empty-class]
 
@@ -461,6 +467,9 @@ rewriting internal spaces or quote-looking text. Never take a value from the
 next physical line, across comments or directives. Trivia-bearing values retain
 their written boundaries.
 
+A comment line after an empty title aligns with the next statement without
+becoming the title's value. [fixture: treemap/title/empty-next-comment]
+
 [fixture: treemap/title/padding]
 
 [fixture: treemap/title/empty-next-comment]
@@ -604,8 +613,9 @@ containing comments/directives and their required newlines. Separate selector
 markers and identifiers start at column one because spaces/tabs there reject;
 leaf separator/number continuations align with their statement unless an earlier
 native-comment gap already supplies an indentation run, when no second run is
-added. Standalone trivia marks start at column one except in the class style
-separator described in [Style gaps](#style-gaps).
+added. Standalone trivia marks inside these component gaps start at column one
+except in the class style separator described in [Style gaps](#style-gaps).
+Comments between statements follow [Comments](#comments).
 
 [fixture: treemap/component-newlines/leaf]
 
@@ -634,14 +644,42 @@ treemap
 
 ### Comments
 
-Put ordinary standalone comment marks at column one, except in
-[Style gaps](#style-gaps); keep inline comments on their line and preserve
-content, marks, tails, order and ownership. This avoids introducing an
-indentation unit before native bare or nonword comments. When whitespace before
-an inline comment supplied the next row’s indent, move it to that row even if
-the comment then touches the preceding token. Use the AST hierarchy rather than
-whitespace already removed with common comment regions. Native comments retain
-LS/PS as content.
+Align standalone comment lines with the next statement, or the last statement at
+EOF, to show their association, as in [ishikawa](./ishikawa.md#comments),
+[kanban](./kanban.md#comments) and [mindmap](./mindmap.md#comments). This
+applies whether the comment was shallower or deeper than that statement,
+including before a dedent. [fixture: treemap/comments/aligned-depths] [fixture:
+treemap/comments/standalone] [fixture: treemap/comments/aligned-final]
+
+The aligned forms include `%% text`, `%%!`, `%%!x`, `%%%`, `%%` followed by
+spaces, and `%% {x}`. Successive comment lines align together, even across blank
+lines. [fixture: treemap/comments/aligned-forms] [fixture:
+treemap/comments/aligned-blank-lines] Use the same configured indentation as the
+statement, including tabs and the positive minimum step at tabWidth zero.
+[fixture: treemap/comments/aligned-tabs] [fixture:
+treemap/comments/aligned-zero] Comments before the header or in a body without
+statements stand at column one. [fixture: treemap/prefix/comment] [fixture:
+treemap/comments/only-comments]
+
+Between statements, keep a line of only `%%`, a line starting with `%%{` without
+being a directive, and a standalone directive at column one: mermaid.js rejects
+these lines when indented. Keep this distinction in mixed runs and at EOF.
+[fixture: treemap/comments/native-bare] [fixture:
+treemap/comments/native-nonword] [fixture: treemap/comments/unclosed-directive]
+[fixture: treemap/comments/mixed-directives] [fixture:
+treemap/comments/native-final] Gaps inside statements follow
+[Component newlines](#component-newlines) and [Style gaps](#style-gaps). Comment
+lines around an empty description block or a semicolon-protected title still
+align with the following statement. [fixture:
+treemap/comments/aligned-empty-description] [fixture:
+treemap/comments/aligned-protected-title]
+
+Keep inline comments on their line and preserve content, marks, tails, order and
+ownership. When whitespace before an inline comment supplied the next row’s
+indent, move it to that row even if the comment then touches the preceding
+token. Use the AST hierarchy rather than whitespace already removed with common
+comment regions. Native comments retain LS/PS as content. [test:
+treemap/comments/standalone-ls] [test: treemap/comments/standalone-ps]
 
 [fixture: treemap/comments/standalone]
 
@@ -670,9 +708,9 @@ Output
 ```mmd
 treemap
   "Top"
-%% before child
+    %% before child
     "Tip": 2
-%% final comment
+    %% final comment
 ```
 
 ### Directives
@@ -751,6 +789,10 @@ Keep at most one ordinary blank line and remove ordinary blanks at document/body
 edges, choosing a bounded separation between statements. First move any
 meaningful whitespace-only indentation run to its row. Preserve blank lines
 inside names, descriptions, directives and common comment regions as owned text.
+
+Blank lines between a comment line and its following statement do not change the
+comment's target column. [fixture: treemap/blank-lines/comments] [fixture:
+treemap/comments/aligned-blank-lines]
 
 [fixture: treemap/blank-lines/ordinary]
 
@@ -899,6 +941,9 @@ file boundary choice. Value tails remain owned text; an unfinished Root
 directive reaching EOF and a protected body ending keep their source ending. A
 rejected unused indentation run is never repaired.
 
+A final standalone comment line aligns with the last statement. [fixture:
+treemap/final-newline/comment] [fixture: treemap/comments/aligned-final]
+
 [fixture: treemap/final-newline/row]
 
 [fixture: treemap/final-newline/common]
@@ -917,7 +962,7 @@ Output
 ```mmd
 treemap
   "FinalComment": 2
-%% final
+  %% final
 ```
 
 ### Specified readings

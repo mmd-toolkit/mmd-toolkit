@@ -1056,6 +1056,8 @@ required identifier と共通値の空白は構造上の字下げより優先し
 
 [fixture: eventmodeling/semicolons/prefix-crosses-clause-header]
 
+[fixture: eventmodeling/semicolons/two-hidden-clause-prefixes]
+
 入力（escape 表記）:
 `"eventmodeling tf 01 evt Alpha \"style:#x\" ;rf 02 cmd Beta"`
 

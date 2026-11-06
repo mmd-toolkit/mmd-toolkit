@@ -283,6 +283,15 @@ export interface BlockRules<Statement extends Positioned> {
    * directives in the gap stands at the first column, which is one rule.
    */
   readonly readsDirectiveLineWhitespaceAfter?: (statement: Statement) => boolean
+  /**
+   * Whether only a line that starts with a comment line stands at the
+   * indentation of the gap (`extraIndentationOf` of the statement after it),
+   * and every other line of the gap stands at the first column: mermaid.js
+   * rejects an indented line of a directive, of a `%%` alone, and of a `%%{`
+   * that is no directive, in a treemap and in a tree view, where it reads the
+   * indentation of a row (docs/treemap.md and docs/treeview.md, Comments).
+   */
+  readonly indentsOnlyCommentLines?: boolean
 }
 
 /** Where a block of statements lies in the source, and which block it is. */
@@ -533,6 +542,9 @@ export function printBlock<Statement extends Positioned>(
         line.directivesOnly
       const indentation =
         percentCommentIndentation(gap, index) ??
+        (rules.indentsOnlyCommentLines === true && !line.startsWithCommentLine
+          ? ""
+          : undefined) ??
         keptIndentation(
           unindented || (readsWhitespace && line.directivesOnly),
           keepsWhitespaceLines && line.directivesOnly,
@@ -946,13 +958,17 @@ export function printBlock<Statement extends Positioned>(
             gap.leadingPercentBraceGaps,
             rules.oneCharacterIndentation,
           )
-        : keptIndentation(
-            gap.leadingDirectivesOnly &&
-              ((rules.keepsDirectiveLinesUnindented && endsAfterBareMarker) ||
-                readsWhitespaceAfter(lastStatement)),
-            endsAfterTakingComment && gap.leadingDirectivesOnly,
-            gap.leadingIndentation,
-          ),
+        : rules.indentsOnlyCommentLines === true &&
+            gap.leading !== null &&
+            !gap.leadingStartsWithCommentLine
+          ? ""
+          : keptIndentation(
+              gap.leadingDirectivesOnly &&
+                ((rules.keepsDirectiveLinesUnindented && endsAfterBareMarker) ||
+                  readsWhitespaceAfter(lastStatement)),
+              endsAfterTakingComment && gap.leadingDirectivesOnly,
+              gap.leadingIndentation,
+            ),
     endBlank: gap.blankAfter,
     closingJoin,
     endExtraIndentation: extra,
