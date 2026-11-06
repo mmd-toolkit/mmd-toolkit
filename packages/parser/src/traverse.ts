@@ -41,11 +41,6 @@ function childNodes(node: Node, key: string): Node[] {
   return isNode(value) ? [value] : []
 }
 
-/** The child nodes of `node`, in the order of `visitorKeys`. */
-function childrenOf(node: Node): Node[] {
-  return visitorKeys[node.type].flatMap((key) => childNodes(node, key))
-}
-
 /** A call the walk has still to make: `leaveNode` when `entered`, otherwise `enterNode`. */
 interface Step {
   readonly node: Node
@@ -74,8 +69,10 @@ export function traverseNodes(node: Node, visitor: Visitor): void {
     }
     visitor.enterNode(step.node, step.parent)
     pending.push({ node: step.node, parent: step.parent, entered: true })
-    for (const child of childrenOf(step.node).reverse()) {
-      pending.push({ node: child, parent: step.node, entered: false })
+    for (const key of visitorKeys[step.node.type].toReversed()) {
+      for (const child of childNodes(step.node, key).reverse()) {
+        pending.push({ node: child, parent: step.node, entered: false })
+      }
     }
   }
 }
