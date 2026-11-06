@@ -430,12 +430,17 @@ last `;` that the
 ignores, as in `classDef zz color:#f00;`. [fixture:
 semicolons/class-terminator-dropped] [fixture:
 semicolons/class-terminator-hash-dropped] Whitespace immediately before the
-dropped `;` is dropped with it, also a U+2029. [fixture:
-semicolons/class-terminator-space-before-dropped] [test:
-treemap/line-terminators-and-unicode/unicode-values] The statement then takes
-the usual layout of a `classDef` line: indentation, blank lines and comment
-lines around it, an empty description block before it, and the run of whitespace
-after the `;` that indents the next row. [fixture:
+dropped `;` is dropped with it, also a U+00A0, U+2028, U+2029 or U+FEFF.
+[fixture: semicolons/class-terminator-space-before-dropped] [test:
+treemap/line-terminators-and-unicode/unicode-values] [test:
+treemap/semicolons/class-terminator-unicode-space-before-dropped] Whitespace
+after a `;` that the line rule ignores belongs to the style and is dropped too.
+[fixture: semicolons/class-terminator-hash-trailing-whitespace-dropped] The
+statement can end the text. [fixture:
+semicolons/class-terminator-end-of-text-dropped] The statement then takes the
+usual layout of a `classDef` line: indentation, blank lines and comment lines
+around it, an empty description block before it, and the run of whitespace after
+the `;` that indents the next row. [fixture:
 semicolons/class-terminator-indented-dropped] [fixture:
 semicolons/class-terminator-trailing-whitespace-dropped] [fixture:
 semicolons/class-terminator-blank-and-comment-lines-dropped] [fixture:
@@ -444,9 +449,15 @@ style-gaps/css-comment-terminator-dropped] The `;` stays where dropping it would
 change what is read: after a `classDef` without a style, where the next line
 would become the style, and before another statement on the same line. [fixture:
 semicolons/terminator] [fixture: semicolons/class-terminator-before-row-kept] It
-stays too when a comment or a directive follows it on its line, or stands
-between the style and it. [fixture: semicolons/class-terminator-comment-kept]
-[fixture: semicolons/class-terminator-directive-kept]
+stays too when a comment or a directive follows it on its line, [fixture:
+semicolons/class-terminator-comment-kept] when a directive stands right before
+the `;` that is a unit of the statement, with or without whitespace between,
+[fixture: semicolons/class-terminator-directive-kept] when it is part of the
+style, as in `classDef zz fill: #f00;`, where `#f00;` is an entity, [fixture:
+semicolons/class-terminator-entity-kept] and when another `;` is beside it.
+[fixture: semicolons/class-terminator-beside-semicolon-kept] A directive before
+a `;` that the line rule ignores stays and the `;` is dropped, as in the other
+diagram types. [fixture: semicolons/class-terminator-hash-directive-dropped]
 
 Keep every other authored semicolon: selected ignored semicolons, a `;` beside
 another `;`, and value characters. Use shared kept-line and protected-prefix

@@ -371,6 +371,17 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 [fixture: metadata-blocks/metadata-alias-rewrite-unsafe]
 [fixture: metadata-blocks/metadata-multiline]
 
+1 行のブロックは、両端の内側に空白を 1 つずつ置いて印字します。
+書かれたままにする場合は、
+[データブロック](./flowchart.ja.md#データブロック)に挙げたとおりです。
+[fixture: metadata-blocks/one-line-padded]
+[fixture: metadata-blocks/one-line-space-only-kept]
+[fixture: metadata-blocks/one-line-directive-kept]
+[fixture: metadata-blocks/one-line-kept-line-kept]
+[fixture: metadata-blocks/one-line-touching-blocks-kept]
+[fixture: metadata-blocks/one-line-separate-blocks-padded]
+[test: data blocks: agentflow one line with U+2029 inside]
+
 開きの直後が改行のブロックでは、本文の全行を同じ数の半角空白だけ動かし、
 文字がある最も浅い行を文の 1 段内側に置きます。
 `flow` の本文でも同じです。

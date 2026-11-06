@@ -365,8 +365,12 @@ sequenceDiagram
 [fixture: whitespace-between-tokens/values-kept]
 [fixture: whitespace-between-tokens/box-text-kept]
 参加者のデータブロック `@{ ... }` は id に接します。
-mermaid.js は、間に空白かタブがあっても、ないときと同じ図を読むので、
+mermaid.js は、間に空白があっても、ないときと同じ図を読むので、
 空白は取り除きます。
+NBSP、全角空白、BOM も同じです。
+[test: byte order mark between the id of a participant and its data block]
+[test: no-break space between the id of a participant and its data block]
+[test: ideographic space between the id of a participant and its data block]
 データブロックが 1 行でも複数行でも、後ろに `as` が続いても同じです。
 [fixture: whitespace-between-tokens/data-block-space-before-removed]
 [fixture: whitespace-between-tokens/data-block-space-before-removed-alias]
@@ -377,7 +381,17 @@ id と `@{` の間に directive があるときは、
 その前後の空白を書かれたまま残します。
 U+2028 か U+2029 があるときも同じです。
 [fixture: whitespace-between-tokens/data-block-space-before-kept-after-directive]
-内容は[複数行の値](#複数行の値)で対象となる余白を除いて保ちます。
+内容は、[複数行の値](#複数行の値)で対象となる余白と、
+1 行のブロックの両端の半角空白とタブを除いて保ちます。
+両端は[データブロック](./flowchart.ja.md#データブロック)と同じく、
+空白 1 つずつにします。
+`participant A@{"type":"queue"}` は `participant A@{ "type":"queue" }`
+になります。 [fixture: whitespace-between-tokens/data-block-padded]
+その規則が書かれたままにする場合は、このブロックも書かれたままにします。
+[fixture: whitespace-between-tokens/data-block-space-only-kept]
+[fixture: whitespace-between-tokens/data-block-directive-kept]
+[fixture: whitespace-between-tokens/data-block-kept-line-kept]
+[test: data blocks: sequence one line with U+2028 inside]
 [fixture: whitespace-between-tokens/data-block-and-ignored-line-kept]
 [fixture: whitespace-between-tokens/actor-data-block-kept]
 行に単独の `)` のように、mermaid.js が何も読まない行は残し、

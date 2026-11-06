@@ -95,16 +95,16 @@ The values of the embedded data are taken from the input, so the tests check
 that formatting keeps the embedded data: `writtenEmbeddedTexts` lists the texts
 of the directives and of the data blocks as written, in source order, and the
 list agrees before and after under the same eventmodeling margin allowance and
-the uniform data-block movement in [Data blocks](./flowchart.md#data-blocks),
-with each line terminator read as a line feed. This includes unused native
-blocks and notes. The frontmatter is another exception: the printer formats its
-YAML with Prettier's YAML formatter where that is safe, so
-`describeFrontmatterChange` accepts the frontmatter as written or as that
-formatter prints it, and relies on that formatter to keep the value of the YAML;
-the tests do not read it. Where a text holds a data block and no effects are
-given, `dbOfText` gives no Db: what a data block does to it is what mermaid.js
-derives, and the text alone does not give it; the written text of the block is
-still checked.
+the uniform data-block movement and one-line padding in
+[Data blocks](./flowchart.md#data-blocks), with each line terminator read as a
+line feed. This includes unused native blocks and notes. The frontmatter is
+another exception: the printer formats its YAML with Prettier's YAML formatter
+where that is safe, so `describeFrontmatterChange` accepts the frontmatter as
+written or as that formatter prints it, and relies on that formatter to keep the
+value of the YAML; the tests do not read it. Where a text holds a data block and
+no effects are given, `dbOfText` gives no Db: what a data block does to it is
+what mermaid.js derives, and the text alone does not give it; the written text
+of the block is still checked.
 
 ## How the printer is built
 

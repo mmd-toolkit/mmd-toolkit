@@ -1,10 +1,11 @@
 /**
- * Exposes the formatter's permitted move of a multi-line data block without
- * changing the raw texts. The formatter moves every line of a block by the same
- * number of spaces and puts a closing `}` that stands on a line of its own at
- * the column of its statement, in spaces (docs/flowchart.md, Data blocks);
- * every other character stays. A text that is not such a move stays as it is,
- * so that the comparison reports it.
+ * Exposes the formatter's permitted changes of a data block without changing
+ * the raw texts. The formatter moves every line of a multi-line block by the
+ * same number of spaces and puts a closing `}` that stands on a line of its
+ * own at the column of its statement, in spaces, and prints a block of one
+ * line with one space inside each end (docs/flowchart.md, Data blocks); every
+ * other character stays. A text that is not such a change stays as it is, so
+ * that the comparison reports it.
  */
 export function dataBlockEmbeddedForFormattingComparison(
   before: readonly string[],
@@ -53,6 +54,23 @@ function isShallowCloser(rows: readonly string[], closing: number): boolean {
 }
 
 /**
+ * Whether `after` is the block `before` of one line with the spaces and tabs
+ * at the ends of its inside replaced by one space each: `@{ ` and ` }` around
+ * the same inside, which holds something other than spaces and tabs.
+ */
+function isPaddedOneLine(before: string, after: string): boolean {
+  if (!before.startsWith("@{") || !before.endsWith("}")) return false
+  const inside = before.slice(2, -1)
+  let start = 0
+  let end = inside.length
+  while (start < end && (inside[start] === " " || inside[start] === "\t"))
+    start++
+  while (end > start && (inside[end - 1] === " " || inside[end - 1] === "\t"))
+    end--
+  return start < end && after === `@{ ${inside.slice(start, end)} }`
+}
+
+/**
  * Whether `after` is `before` with its lines moved by one number of spaces:
  * the same rows, the same first row, the same text in each row that holds
  * text, a blank row as wide as the move leaves it (empty where it leaves none),
@@ -61,6 +79,8 @@ function isShallowCloser(rows: readonly string[], closing: number): boolean {
  */
 function isAllowedMove(before: string, after: string): boolean {
   if (before === after) return true
+  if (!before.includes("\n") && !after.includes("\n"))
+    return isPaddedOneLine(before, after)
   const rowsBefore = before.split("\n")
   const rowsAfter = after.split("\n")
   if (rowsBefore.length !== rowsAfter.length || rowsBefore[0] !== rowsAfter[0])

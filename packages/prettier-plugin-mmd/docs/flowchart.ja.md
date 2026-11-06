@@ -1351,6 +1351,50 @@ cb
 
 各 `@{ ... }` の頂点への付着を保ち、YAML の整形や、キー、値、区切り、
 行数の変更はしません。
+変えるのは、1 行のブロックの両端と、移動できる複数行ブロックの余白の 2 つです。
+
+1 行のブロックは、両端の内側に空白を 1 つずつ置いて印字します。
+`A@{shape: circle}` も `A@{   shape: circle   }` も `A@{ shape: circle }`
+になります。
+mermaid.js は 1 行のブロックの文字列を、前に `{` と改行、
+後ろに改行と `}` を付けて、YAML の flow mapping として読みます。
+([flowchart](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L160-L168)、
+[agentflow](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L364-L371)、
+[kanban](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L118-L129)、
+[sequence](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L164-L172))
+このため、両端の半角空白とタブは意味を持ちません。
+[fixture: data-blocks/one-line-padded]
+[fixture: data-blocks/one-line-padded-zero-width]
+取り除くのは半角空白とタブだけで、
+U+00A0 などの空白は文字列の一部として残します。
+[test: data blocks: flowchart one line with no-break spaces at the ends]
+次の場合、ブロックは書かれたままにします。
+
+- 半角空白とタブしか含まないとき。
+  `A@{}` は拒否され、`A@{   }` は受理されます。
+  [fixture: data-blocks/one-line-space-only-kept]
+- `%%{` を含むとき。 [fixture: data-blocks/one-line-directive-kept]
+- その行が全体を保つ行であるとき。
+  下の条件と同じです。 [fixture: data-blocks/one-line-kept-line-kept]
+- 別のブロックと接しているとき。
+  間に何もないか、directive だけがある場合です。
+  `}@{` のように接する 2 つのブロックは、mermaid.js が文字列を連結して読むので、
+  片方の端の空白が両方のテキストを変えます。
+  [fixture: data-blocks/one-line-touching-blocks-kept]
+- U+2028 か U+2029 を含むとき。
+  [test: data blocks: flowchart one line with U+2028 inside]
+  [test: data blocks: flowchart one line with U+2029 inside]
+
+接していないブロックは、1 文に複数あっても、それぞれ整えます。
+同じ文の複数行のブロックの隣にある 1 行のブロックも同じです。
+[fixture: data-blocks/one-line-separate-blocks-padded]
+コメント、ディレクティブ、空行、空の description block、
+ブロックの隣にある捨てられる文の `;` は、それぞれの規則に従います。
+CRLF と CR は `endOfLine` に従います。
+[fixture: data-blocks/one-line-surrounding-trivia]
+[test: data blocks: flowchart one line CRLF]
+[test: data blocks: flowchart one line CR]
+
 移動できる複数行ブロックでは、本文の全行を同じ数の半角空白だけ動かし、
 文字がある最も浅い行を文の 1 段内側に置きます。
 入れ子の YAML を含む行どうしの字下げの差を保ち、内側にも外側にも動かします。
@@ -1408,7 +1452,8 @@ cb
 - 文に、1 行でも複数行でも、ほかのブロックがないこと。
   1 つ動かすと、次のブロックは文の最初でない行から始まることになり、
   `}@{` のように接するブロックは 1 つのテキストとして読まれます。
-  ブロックを 2 つ持つ文は、どちらも書かれたまま残します。
+  ブロックを 2 つ持つ文は、複数行のブロックを書かれたまま残します。
+  1 行のブロックは、もう一方と接していなければ整えます。
   [fixture: data-blocks/second-block-kept]
   [fixture: data-blocks/adjacent-single-line-after-kept]
   [fixture: data-blocks/adjacent-single-line-before-kept]
@@ -2126,7 +2171,8 @@ flowchart LR
   [fixture: arrow-spacing/arrow-length-kept]
   [fixture: direction/header-keyword-kept]
 - ディレクティブの中身と、
-  [データブロック](#データブロック)の一定量の字下げを除く `@{ ... }` の中身。
+  [データブロック](#データブロック)の一定量の字下げと 1 行のブロックの両端を除く
+  `@{ ... }` の中身。
   パーサーは読みません。 [fixture: whitespace-between-tokens/data-block-kept]
   [fixture: directives/content-kept]
   [fixture: whitespace-between-tokens/compat-unknown-shape-data-block-kept]

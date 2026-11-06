@@ -17,7 +17,11 @@ import {
   collectValueNodes,
   protectSemicolonPrefixes,
 } from "./layout.ts"
-import { isDroppedSemicolon, lineStartOf } from "./kept-lines.ts"
+import {
+  endingSemicolonOf,
+  isDroppedSemicolon,
+  lineStartOf,
+} from "./kept-lines.ts"
 import { printAsWrittenTrimmed } from "./lines.ts"
 import type { Source } from "./source.ts"
 import { findTokenStartingAt, findTriviaBetween } from "./source.ts"
@@ -159,30 +163,25 @@ export function treemapLines(
 }
 
 /**
- * The style of a `classDef`, printed without the whitespace before the `;`
- * that ends the statement, where the printer drops that `;` (see
- * `isDroppedSemicolon`); null where it keeps it. The `;` is a unit of the
- * statement, and the atom then ends with it, or it is a `;` that the line rule
- * ignores, which stands right after the statement and is dropped with the
- * whitespace that the style holds before it.
+ * The style of a `classDef` together with what follows it, printed without the
+ * `;` that ends the statement and without the whitespace around that `;`,
+ * where the printer drops that `;` (see `isDroppedSemicolon`); none where it
+ * keeps it. The `;` is a unit at the end of the statement, or one that the
+ * line rule ignores: right after the statement, or inside its style, which then
+ * holds the whitespace that follows the `;`.
  */
-function findDroppedSemicolonStretch(
+function findDroppedSemicolonStretches(
   source: Source,
   statement: TreemapBodyItem,
-): Atom | null {
+): Atom[] {
   if (statement.type !== "TreemapClassDefStatement" || statement.style === null)
-    return null
+    return []
   const [start] = statement.style.range
   const end = statement.range[1]
-  if (source.ignoredSemicolons.has(end)) {
-    return isDroppedSemicolon(source, end)
-      ? { start, end, doc: printAsWrittenTrimmed(source, start, end) }
-      : null
-  }
-  const semicolon = end - 1
-  return isDroppedSemicolon(source, semicolon)
-    ? { start, end, doc: printAsWrittenTrimmed(source, start, semicolon) }
-    : null
+  const semicolon = endingSemicolonOf(source, statement.range, statement.style)
+  if (semicolon === undefined || !isDroppedSemicolon(source, semicolon))
+    return []
+  return [{ start, end, doc: printAsWrittenTrimmed(source, start, semicolon) }]
 }
 
 /**
@@ -237,21 +236,21 @@ export function layoutTreemapStatement(
     case "TreemapSection":
     case "TreemapLeaf":
     case "TreemapClassDefStatement": {
-      const droppedStyle = findDroppedSemicolonStretch(source, statement)
+      const dropped = findDroppedSemicolonStretches(source, statement)
       const atoms = collectAtoms(
         source,
         start,
         end,
         statement.type === "TreemapClassDefStatement"
           ? collectValueNodes(statement, treemapValueNodeTypes).filter(
-              (value) => value !== statement.style || droppedStyle === null,
+              (value) => value !== statement.style || dropped.length === 0,
             )
           : treemapRowParts(statement).flatMap((part) =>
               treemapValueNodeTypes.has(part.type)
                 ? [part]
                 : collectValueNodes(part, treemapValueNodeTypes),
             ),
-        droppedStyle === null ? [] : [droppedStyle],
+        dropped,
       )
       const rules = new Map<number, GapRule>()
       const joinedBefore = new Set<number>()

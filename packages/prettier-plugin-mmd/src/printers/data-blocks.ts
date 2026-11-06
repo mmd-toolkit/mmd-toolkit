@@ -7,7 +7,7 @@ import type { KeptLines } from "./kept-lines.ts"
 import { lineStartOf } from "./kept-lines.ts"
 import { printAsWritten } from "./lines.ts"
 import type { Source } from "./source.ts"
-import { findFirstIndex, isWhitespace } from "./source.ts"
+import { findFirstIndex, findTriviaBetween, isWhitespace } from "./source.ts"
 
 const { literalline } = builders
 
@@ -23,6 +23,18 @@ const movableTypes: ReadonlySet<string> = new Set([
   "KanbanDataBlock",
   "SequenceDataBlock",
   "UsecaseJsonDataBlock",
+])
+
+/**
+ * The movable data blocks whose single line is padded: all but the JSON tables
+ * of a use case diagram, whose `{` and `}` are the brackets of the JSON itself
+ * and not the delimiters of a block (docs/usecase.md, JSON tables).
+ */
+const paddedTypes: ReadonlySet<string> = new Set([
+  "FlowchartDataBlock",
+  "AgentflowDataBlock",
+  "KanbanDataBlock",
+  "SequenceDataBlock",
 ])
 
 /** The movable data blocks of each source, in source order, found once. */
@@ -60,11 +72,14 @@ export interface DataBlockPlacement {
 }
 
 /**
- * The layout with the multi-line data block of the statement in `range`
- * printed one level inside the statement, and its closing `}` on a line of its
- * own at the column of the statement, in spaces (see `moveDataBlock`).
+ * The layout with the data blocks of the statement in `range` formatted: a
+ * block of one line printed with one space inside each end (see
+ * `padDataBlock`), and, where the statement holds no other block, a block of
+ * several lines printed one level inside the statement, with its closing `}`
+ * on a line of its own at the column of the statement, in spaces (see
+ * `moveDataBlock`).
  */
-export function moveDataBlocks(
+export function formatDataBlocks(
   source: Source,
   layout: AtomLayout,
   range: Range,
@@ -73,38 +88,128 @@ export function moveDataBlocks(
   const all = dataBlocksOf(source)
   const first = findFirstIndex(all, (block) => block.range[0] >= range[0])
   // The blocks do not overlap, so those inside the range follow one another.
-  const next = all[first + 1]
-  const block = all[first]
-  if (
-    block === undefined ||
-    block.range[1] > range[1] ||
-    (next !== undefined && next.range[1] <= range[1]) ||
-    placement.tabWidth === 0
+  const inside: number[] = []
+  for (
+    let index = first;
+    index < all.length && all[index].range[1] <= range[1];
+    index++
   )
-    return layout
-  const moved = moveDataBlock(source, block, range, placement)
-  if (moved === undefined) return layout
-  const index = layout.atoms.findIndex(
-    (atom) =>
-      atom.doc === undefined &&
-      atom.writtenIndentation === undefined &&
-      (placement.wholeLine === true
-        ? atom.start <= block.range[0] && block.range[1] <= atom.end
-        : atom.start === block.range[0] && block.range[1] === atom.end),
-  )
-  if (index === -1) return layout
-  const atom = layout.atoms[index]
-  const doc: Doc = [
-    printAsWritten(source, atom.start, block.range[0]),
-    moved,
-    printAsWritten(source, block.range[1], atom.end),
-  ]
+    inside.push(index)
+  // The formatted blocks by the atom that holds them, in source order.
+  const formatted = new Map<number, { block: Node; doc: Doc }[]>()
+  for (const index of inside) {
+    const block = all[index]
+    const doc = isOneLine(source.text.slice(...block.range))
+      ? padDataBlock(source, all, index, placement.kept)
+      : inside.length === 1 && placement.tabWidth !== 0
+        ? moveDataBlock(source, block, range, placement)
+        : undefined
+    if (doc === undefined) continue
+    const at = layout.atoms.findIndex(
+      (atom) =>
+        atom.doc === undefined &&
+        atom.writtenIndentation === undefined &&
+        (placement.wholeLine === true
+          ? atom.start <= block.range[0] && block.range[1] <= atom.end
+          : atom.start === block.range[0] && block.range[1] === atom.end),
+    )
+    if (at === -1) continue
+    const blocks = formatted.get(at) ?? []
+    blocks.push({ block, doc })
+    formatted.set(at, blocks)
+  }
+  if (formatted.size === 0) return layout
   return {
     ...layout,
-    atoms: layout.atoms.map((item, at) =>
-      at === index ? { ...atom, doc } : item,
-    ),
+    atoms: layout.atoms.map((atom, at) => {
+      const blocks = formatted.get(at)
+      if (blocks === undefined) return atom
+      const parts: Doc[] = []
+      let position = atom.start
+      for (const { block, doc } of blocks) {
+        parts.push(printAsWritten(source, position, block.range[0]), doc)
+        position = block.range[1]
+      }
+      parts.push(printAsWritten(source, position, atom.end))
+      return { ...atom, doc: parts }
+    }),
   }
+}
+
+/** Whether a text holds no line break: LF, CR, U+2028 or U+2029. */
+function isOneLine(text: string): boolean {
+  return ![...text].some(
+    (character) =>
+      character === "\n" ||
+      character === "\r" ||
+      character === "\u2028" ||
+      character === "\u2029",
+  )
+}
+
+/**
+ * The block of one line printed with one space inside each end, `@{ shape:
+ * circle }`; undefined where it stays as written. These diagram types read the
+ * text inside `@{` and `}` as the lines of a YAML flow mapping (docs/flowchart.md,
+ * Data blocks), so the spaces and tabs at its ends carry no meaning. A block
+ * is padded only if
+ *
+ * - it is one of `paddedTypes`;
+ * - no `%%{` lies in it: a directive in the block is written as it stands;
+ * - it is on no kept line (see `KeptLines`);
+ * - something other than spaces and tabs stands in it: of a block that holds
+ *   none, `@{}` is rejected while `@{   }` is accepted;
+ * - it touches no other block: two blocks with nothing between them, or only
+ *   directives, are read as one text.
+ *
+ * Only spaces and tabs are removed at its ends: other whitespace, such as
+ * U+00A0, is part of the text.
+ */
+function padDataBlock(
+  source: Source,
+  blocks: readonly Node[],
+  index: number,
+  kept: KeptLines,
+): Doc | undefined {
+  const block = blocks[index]
+  const text = source.text.slice(...block.range)
+  const before = blocks[index - 1]
+  const after = blocks[index + 1]
+  if (
+    !paddedTypes.has(block.type) ||
+    !text.startsWith("@{") ||
+    !text.endsWith("}") ||
+    text.includes("%%{") ||
+    holdsKeptLine(source, block.range, kept) ||
+    (before !== undefined &&
+      holdsOnlyDirectives(source, before.range[1], block.range[0])) ||
+    (after !== undefined &&
+      holdsOnlyDirectives(source, block.range[1], after.range[0]))
+  )
+    return undefined
+  let start = 2
+  let end = text.length - 1
+  while (start < end && (text[start] === " " || text[start] === "\t")) start++
+  while (end > start && (text[end - 1] === " " || text[end - 1] === "\t")) end--
+  if (start === end) return undefined
+  return ["@{ ", text.slice(start, end), " }"]
+}
+
+/** Whether nothing but directives lies between two offsets, or nothing. */
+function holdsOnlyDirectives(
+  source: Source,
+  from: number,
+  to: number,
+): boolean {
+  let position = from
+  while (position < to) {
+    const directive = findTriviaBetween(source, position, position + 1).find(
+      (item) => item.type === "Directive",
+    )
+    if (directive === undefined) return false
+    position = directive.range[1]
+  }
+  return true
 }
 
 /**

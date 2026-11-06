@@ -416,11 +416,12 @@ kanban
 A data block `@{ ... }` is embedded text that mermaid.js reads as YAML for the
 properties of a node, such as `ticket` and `assigned`. The printer keeps it
 opaque, with its delimiters, its content and its line breaks retained, apart
-from the uniform indentation below: it does not format the YAML, and it does not
-merge, split, reorder, wrap, or repair blocks, whether a block is empty
-(`A@{}`), has an unknown or duplicate key (`A@{ticket: X, ticket: Y}`), is not
-valid YAML (`A@{assigned: [a}`), or runs over several lines. The parser accepts
-a block whose YAML is invalid, although mermaid.js rejects it (known divergence
+from the uniform indentation below and the spaces at the ends of a block on one
+line: it does not format the YAML, and it does not merge, split, reorder, wrap,
+or repair blocks, whether a block is empty (`A@{}`), has an unknown or duplicate
+key (`A@{ticket: X, ticket: Y}`), is not valid YAML (`A@{assigned: [a}`), or
+runs over several lines. The parser accepts a block whose YAML is invalid,
+although mermaid.js rejects it (known divergence
 [`embedded-data-opaque`](../../spec/docs/known-divergences/embedded-data-opaque.md)),
 because the block is embedded text that the specification reads as opaque.
 [fixture: data-blocks/data-opaque] [fixture: data-blocks/empty-data] [fixture:
@@ -431,6 +432,17 @@ data-blocks/data-multiline] [fixture: data-blocks/gram-metadata-empty-multiline]
 data-blocks/db-metadata-ticket-false] [fixture:
 data-blocks/db-metadata-assigned-zero] [fixture:
 data-blocks/db-metadata-quoted-brace] [fixture: data-blocks/data-line-rule-gap]
+
+A block on one line is printed with one space inside each end, as in
+[Data blocks](./flowchart.md#data-blocks): `A@{ticket: X}` becomes
+`A@{ ticket: X }`. The block stays as written in the cases listed there.
+[fixture: data-blocks/one-line-padded] [fixture:
+data-blocks/one-line-space-only-kept] [fixture:
+data-blocks/one-line-directive-kept] [fixture:
+data-blocks/one-line-kept-line-kept] [fixture:
+data-blocks/one-line-touching-blocks-kept] [fixture:
+data-blocks/one-line-surrounding-trivia] [test: data blocks: kanban one line
+with U+2028 inside]
 
 Apply the movement and safety conditions of
 [Data blocks](./flowchart.md#data-blocks): when a newline immediately follows

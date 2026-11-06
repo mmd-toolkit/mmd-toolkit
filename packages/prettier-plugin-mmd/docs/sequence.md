@@ -357,8 +357,12 @@ is kept as a whole: when its first word is no colour, mermaid.js takes the whole
 text as the name of the box. [fixture: whitespace-between-tokens/values-kept]
 [fixture: whitespace-between-tokens/box-text-kept] The data block of a
 participant, `@{ ... }`, touches its id: mermaid.js reads the same diagram with
-spaces or a tab between them as without, so the whitespace is dropped. The data
-block may stand on one line or on several, and `as` may follow it. [fixture:
+whitespace between them as without, so the whitespace is dropped, also a
+no-break space, an ideographic space or a byte order mark. [test: no-break space
+between the id of a participant and its data block] [test: byte order mark
+between the id of a participant and its data block] [test: ideographic space
+between the id of a participant and its data block] The data block may stand on
+one line or on several, and `as` may follow it. [fixture:
 whitespace-between-tokens/data-block-space-before-removed] [fixture:
 whitespace-between-tokens/data-block-space-before-removed-alias] [fixture:
 whitespace-between-tokens/data-block-multi-line-space-before-removed] [fixture:
@@ -367,7 +371,16 @@ directive between the id and `@{` keeps the whitespace around it as written, as
 under [Directives](#directives), and so does a U+2028 or U+2029. [fixture:
 whitespace-between-tokens/data-block-space-before-kept-after-directive] Its
 contents stay written except for the eligible margins in
-[Multi-line values](#multi-line-values). [fixture:
+[Multi-line values](#multi-line-values) and the spaces and tabs at the ends of a
+block on one line, which become one space each, as in
+[Data blocks](./flowchart.md#data-blocks): `participant A@{"type":"queue"}`
+becomes `participant A@{ "type":"queue" }`. [fixture:
+whitespace-between-tokens/data-block-padded] The block stays as written where
+that rule says so. [fixture:
+whitespace-between-tokens/data-block-space-only-kept] [fixture:
+whitespace-between-tokens/data-block-directive-kept] [fixture:
+whitespace-between-tokens/data-block-kept-line-kept] [test: data blocks:
+sequence one line with U+2028 inside] [fixture:
 whitespace-between-tokens/data-block-and-ignored-line-kept] [fixture:
 whitespace-between-tokens/actor-data-block-kept] A line that mermaid.js reads as
 nothing, such as `)` alone, is kept and stands at the level of the statements

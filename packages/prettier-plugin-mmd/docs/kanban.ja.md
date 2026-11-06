@@ -446,8 +446,8 @@ kanban
 データブロック `@{ ... }` は、
 mermaid.js がノードの属性（`ticket` や `assigned`）の YAML として読む、
 埋め込みのテキストです。
-印字は、これを不透明なものとして、以下の一定量の字下げを除き、区切り、中身、
-改行を保ちます。
+印字は、これを不透明なものとして、以下の一定量の字下げと、
+1 行のブロックの両端の空白を除き、区切り、中身、改行を保ちます。
 YAML を整形することも、ブロックをまとめることも、分けることも、
 並べ替えることも、折り返すことも、直すこともしません。
 ブロックが空（`A@{}`）でも、キーが未知か重複（`A@{ticket: X, ticket: Y}`）でも、
@@ -467,6 +467,18 @@ mermaid.js は拒否します（既知の差異
 [fixture: data-blocks/db-metadata-assigned-zero]
 [fixture: data-blocks/db-metadata-quoted-brace]
 [fixture: data-blocks/data-line-rule-gap]
+
+1 行のブロックは、 [データブロック](./flowchart.ja.md#データブロック)と同じく、
+両端の内側に空白を 1 つずつ置いて印字します。
+`A@{ticket: X}` は `A@{ ticket: X }` になります。
+書かれたままにする場合は、そこに挙げたとおりです。
+[fixture: data-blocks/one-line-padded]
+[fixture: data-blocks/one-line-space-only-kept]
+[fixture: data-blocks/one-line-directive-kept]
+[fixture: data-blocks/one-line-kept-line-kept]
+[fixture: data-blocks/one-line-touching-blocks-kept]
+[fixture: data-blocks/one-line-surrounding-trivia]
+[test: data blocks: kanban one line with U+2028 inside]
 
 [データブロック](./flowchart.ja.md#データブロック)の移動と安全条件を適用します。
 `@{` の直後が改行なら、本文の全行を同じ数の半角空白だけ動かし、

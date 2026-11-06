@@ -1,4 +1,4 @@
-import type { Range } from "@mmd-toolkit/parser"
+import type { Node, Range } from "@mmd-toolkit/parser"
 import { findNodes, minOf, maxOf } from "./collections.ts"
 import type { Source } from "./source.ts"
 import {
@@ -348,15 +348,17 @@ function isNextToSemicolon(source: Source, offset: number): boolean {
 
 /**
  * Whether nothing but whitespace follows the `;` at `offset` on its line: no
- * token, comment, or directive starts after it before the line ends. A `;`
- * that the line rule ignores and that ends its line can be dropped only
+ * token that holds more than whitespace, comment, or directive starts after it
+ * before the line ends (a style holds the whitespace after an ignored `;`). A
+ * `;` that the line rule ignores and that ends its line can be dropped only
  * where it is optional (see `isDroppedSemicolon`).
  */
 export function isLastOnItsLine(source: Source, offset: number): boolean {
   const lineEnd = lineEndOf(source, offset)
   return (
-    findTokensBetween(source, offset + 1, lineEnd).length === 0 &&
-    findTriviaBetween(source, offset + 1, lineEnd).length === 0
+    findTokensBetween(source, offset + 1, lineEnd).every(
+      (token) => source.text.slice(...token.range).trim() === "",
+    ) && findTriviaBetween(source, offset + 1, lineEnd).length === 0
   )
 }
 
@@ -413,17 +415,39 @@ export function holdsKeptSemicolon(
 }
 
 /**
+ * The offset of the `;` that ends a treemap `classDef` statement with a style,
+ * or undefined: the `;` that the line rule ignores right after the statement;
+ * or the last character of the statement, ignoring whitespace, which is the `;`
+ * unit of the statement, or a `;` that the line rule ignores and that the style
+ * holds together with the whitespace after it.
+ */
+export function endingSemicolonOf(
+  source: Source,
+  range: Range,
+  style: Node | null,
+): number | undefined {
+  if (style === null) return undefined
+  const [, end] = range
+  if (source.ignoredSemicolons.has(end)) return end
+  let last = end
+  while (last > style.range[0] && isWhitespace(source.text[last - 1])) last--
+  return source.text[last - 1] === ";" ? last - 1 : undefined
+}
+
+/**
  * The `;` that end `classDef` and `style` statements, where dropping the `;`
  * leaves the Db as it is, found once per source: `ends` holds the offsets
  * where the statements end, after which a `;` that the line rule ignores
- * stands, and `terminators` the offsets of a `;` that is in the range of a
- * statement:
+ * stands, and the offsets of such a `;` that a treemap style holds, with only
+ * whitespace after it in the statement (see `endingSemicolonOf`), and
+ * `terminators` the offsets of a `;` that is in the range of a statement:
  *
  * - the `;` unit that ends an ER statement, when no `#` lies in it (mermaid.js
  *   reads `#f00;` as an entity, so with a `#` the `;` is part of it) and no
- *   comment or directive stands between the last style and the `;`.
+ *   directive stands right before the `;`.
  * - the `;` unit that ends a treemap `classDef` statement, when it has a style
- *   and no comment or directive stands between the style and the `;`.
+ *   and no directive stands right before the `;`. A `#` does not matter there:
+ *   an entity `#f00;` holds its `;` in the style, so the `;` is no unit then.
  * - the last character of the last style of a state statement or a block
  *   `classDef` statement, when it is the only `;` of that style, something
  *   else than a `;` stands in it, and no `#` lies in the statement: mermaid.js
@@ -463,23 +487,40 @@ function styleSemicolonsOf(source: Source): StyleSemicolons {
   if (cached !== undefined) return cached
   const ends = new Set<number>()
   const terminators = new Set<number>()
+
+  /**
+   * Adds the `;` unit that ends a statement, when the statement has a style
+   * and no directive stands right before the `;`, with at most whitespace
+   * between: it is printed with the style as written, with the `;`.
+   */
+  function addUnitTerminator(
+    statement: Node,
+    style: Node | null | undefined,
+  ): void {
+    const last = findTokenEndingBefore(source, statement.range[1])
+    if (
+      last?.value !== ";" ||
+      last.type !== "Punctuator" ||
+      style === undefined ||
+      style === null
+    )
+      return
+    let before = last.range[0]
+    while (before > style.range[0] && isWhitespace(source.text[before - 1]))
+      before--
+    if (findDirectiveEndingAt(source, before) === undefined)
+      terminators.add(last.range[0])
+  }
+
   for (const node of findNodes(source.root.body, (candidate) =>
     styleStatementTypes.has(candidate.type),
   )) {
     ends.add(node.range[1])
     if (node.type === "TreemapClassDefStatement") {
-      const last = findTokenEndingBefore(source, node.range[1])
-      // A `;` that is a unit of the statement is not inside a token, so a `#`
-      // in the style does not make it part of an entity. Without a style, the
-      // `;` keeps the next line from being read as the style.
-      if (
-        last?.value === ";" &&
-        last.type === "Punctuator" &&
-        node.style !== null &&
-        findTriviaBetween(source, node.style.range[1], last.range[0]).length ===
-          0
-      )
-        terminators.add(last.range[0])
+      addUnitTerminator(node, node.style)
+      const semicolon = endingSemicolonOf(source, node.range, node.style)
+      if (semicolon !== undefined && source.ignoredSemicolons.has(semicolon))
+        ends.add(semicolon)
       continue
     }
     const statementText = source.text.slice(...node.range)
@@ -488,17 +529,7 @@ function styleSemicolonsOf(source: Source): StyleSemicolons {
       node.type === "ErClassDefStatement" ||
       node.type === "ErStyleStatement"
     ) {
-      const last = findTokenEndingBefore(source, node.range[1])
-      const style = node.styles.at(-1)
-      // A directive between the last style and the `;` is printed with them
-      // as written, with the `;`.
-      if (
-        last?.value === ";" &&
-        last.type === "Punctuator" &&
-        style !== undefined &&
-        findTriviaBetween(source, style.range[1], last.range[0]).length === 0
-      )
-        terminators.add(last.range[0])
+      addUnitTerminator(node, node.styles.at(-1))
     } else if (
       node.type === "StateClassDefStatement" ||
       node.type === "StateStyleStatement" ||

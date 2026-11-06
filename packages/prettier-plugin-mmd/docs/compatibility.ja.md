@@ -78,6 +78,13 @@ flowchart/whitespace-between-tokens/compat-unknown-shape-data-block-kept]
 [corpus fixture: flowchart/frontmatter-invalid-yaml]
 
 directive は書かれたまま残します。
+flowchart、agentflow、kanban、sequence の 1 行のデータブロックは、
+両端の内側に空白を 1 つずつ置いて印字し、
+[データブロック](./flowchart.ja.md#データブロック)が定める場合は、
+書かれたままにします。 [fixture: flowchart/data-blocks/one-line-padded]
+[fixture: flowchart/data-blocks/one-line-space-only-kept]
+[fixture: flowchart/data-blocks/one-line-touching-blocks-kept]
+[fixture: flowchart/data-blocks/one-line-separate-blocks-padded]
 flowchart、agentflow、kanban、sequence の対象となる複数行のデータブロックと、
 usecase の JSON table は、本文の全行を一定数の半角空白だけ動かします。
 行どうしの字下げの差と末尾空白を保ち、単独行の `}` は文の段に揃えます。
@@ -530,9 +537,11 @@ class、state、ER、requirement、block、Venn、usecase の図では、
 終端の `;` の単位も削除します。
 treemap の `classDef` 文は、style があり同じ条件のとき、
 `#` の有無にかかわらず終端の `;` の単位を削除します。
-文の単位である `;` が entity の一部になることはないからです。
+`fill: #f00;` のように style の中にある `;` は、
+`#f00;` が entity なので残します。
 [fixture: treemap/semicolons/class-terminator-dropped]
 [fixture: treemap/semicolons/class-terminator-directive-kept]
+[fixture: treemap/semicolons/class-terminator-entity-kept]
 state のスタイル文と block の `classDef` 文では、最後のスタイルの末尾の `;` が、
 そのスタイルで唯一のセミコロンで、前に空白以外のテキストがある場合に削除します。
 ほかのスタイルのセミコロンは、削除で Db が変わる形で残します。
@@ -1532,7 +1541,8 @@ mermaid.js は拒否します（既知の差異
 [fixture: kanban/directives/leading-directive-indentation-decided]
 [fixture: kanban/trailing-whitespace/class-trailing-trim]
 
-余白の移動は、[データブロック](./kanban.ja.md#データブロック)に従います。
+余白の移動と、1 行のブロックの両端の空白は、
+[データブロック](./kanban.ja.md#データブロック)に従います。
 データブロックの付着位置と内容、隣接するブロック、間のディレクティブも保ちます。
 YAML 整形は、保護条件付きのフロントマターだけです。
 図のコメント後の空行・コメントの隙間は、末尾も含め、

@@ -1326,12 +1326,48 @@ cb
 ### Data blocks
 
 Keep each `@{ ... }` attached to its vertex, without formatting its YAML or
-changing its keys, values, delimiters, or line count. For an eligible multiline
-block, move every body line by the same number of ASCII spaces until the
-shallowest line with text stands one level inside its statement. This preserves
-relative indentation, including nested YAML, and can move lines inward or
-outward. A `}` alone on its line aligns with the statement; a `}` after body
-text stays there and moves with that line. [fixture:
+changing its keys, values, delimiters, or line count. Two things change: the
+ends of a block on one line, and the margin of an eligible multiline block.
+
+A block on one line is printed with one space inside each end:
+`A@{shape: circle}` and `A@{   shape: circle   }` become `A@{ shape: circle }`.
+mermaid.js reads the text of a block on one line as a YAML flow mapping, with
+`{` and a line feed before it and a line feed and `}` after it
+([flowchart](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L160-L168),
+[agentflow](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L364-L371),
+[kanban](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L118-L129),
+[sequence](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L164-L172)),
+so the spaces and tabs at its ends carry no meaning. [fixture:
+data-blocks/one-line-padded] [fixture: data-blocks/one-line-padded-zero-width]
+Only spaces and tabs are removed: other whitespace, such as U+00A0, is part of
+the text. [test: data blocks: flowchart one line with no-break spaces at the
+ends] The block stays as written
+
+- when it holds nothing but spaces and tabs: `A@{}` is rejected, while `A@{   }`
+  is accepted; [fixture: data-blocks/one-line-space-only-kept]
+- when a `%%{` lies in it; [fixture: data-blocks/one-line-directive-kept]
+- when its line is kept in full, as under the conditions below; [fixture:
+  data-blocks/one-line-kept-line-kept]
+- when it touches another block, with nothing or only directives between them,
+  as in `}@{`: mermaid.js joins the text of two blocks that touch, so a space
+  inside one end changes the text of both; [fixture:
+  data-blocks/one-line-touching-blocks-kept]
+- when a U+2028 or U+2029 lies in it. [test: data blocks: flowchart one line
+  with U+2028 inside] [test: data blocks: flowchart one line with U+2029 inside]
+
+Blocks that do not touch are padded each, also several in one statement, and a
+block of one line next to a block of several lines in the same statement.
+[fixture: data-blocks/one-line-separate-blocks-padded] Comments, directives,
+blank lines, empty description blocks and a discarded statement `;` beside the
+block keep their own rules, and CRLF and CR follow `endOfLine`. [fixture:
+data-blocks/one-line-surrounding-trivia] [test: data blocks: flowchart one line
+CRLF] [test: data blocks: flowchart one line CR]
+
+For an eligible multiline block, move every body line by the same number of
+ASCII spaces until the shallowest line with text stands one level inside its
+statement. This preserves relative indentation, including nested YAML, and can
+move lines inward or outward. A `}` alone on its line aligns with the statement;
+a `}` after body text stays there and moves with that line. [fixture:
 data-blocks/zero-and-shallow] [fixture: data-blocks/deep-nested-yaml] [fixture:
 data-blocks/closing-after-text]
 
@@ -1377,8 +1413,9 @@ written:
 - The statement holds no other block, of one line or of several. Once a block
   has moved, the next one would start on a line that is not the statement's
   first, and blocks that touch, as in `}@{`, are read as one text, whose columns
-  the move would split. A statement with two blocks keeps both as written.
-  [fixture: data-blocks/second-block-kept] [fixture:
+  the move would split. A statement with two blocks keeps its blocks of several
+  lines as written; a block of one line in it is padded unless it touches the
+  other. [fixture: data-blocks/second-block-kept] [fixture:
   data-blocks/adjacent-single-line-after-kept] [fixture:
   data-blocks/adjacent-single-line-before-kept] [fixture:
   data-blocks/separate-single-line-block-kept] [fixture:
@@ -2067,9 +2104,9 @@ diagram or the input would be rejected:
 - the length of an arrow (`-->` and `--->`), and the header keyword (`graph` or
   `flowchart`); [fixture: arrow-spacing/arrow-length-kept] [fixture:
   direction/header-keyword-kept]
-- the content of directives and, apart from the uniform indentation in
-  [Data blocks](#data-blocks), of `@{ ... }` blocks, which the parser does not
-  read; [fixture:
+- the content of directives and, apart from the uniform indentation and the ends
+  of a block on one line in [Data blocks](#data-blocks), of `@{ ... }` blocks,
+  which the parser does not read; [fixture:
   whitespace-between-tokens/compat-unknown-shape-data-block-kept] [fixture:
   whitespace-between-tokens/data-block-kept] [fixture: directives/content-kept]
 - the lines of strings written over several lines, and of Markdown strings,

@@ -3,7 +3,7 @@ import type { UsecaseStatement } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
 import type { AtomLayout } from "./atoms.ts"
 import { printAtoms } from "./atoms.ts"
-import { moveDataBlocks } from "./data-blocks.ts"
+import { formatDataBlocks } from "./data-blocks.ts"
 import type { BlockBounds, BlockRules, PrintedBlock } from "./blocks.ts"
 import {
   openingLine,
@@ -96,7 +96,7 @@ function printStatements(
         return printLine(
           source,
           options,
-          moveDataBlocks(
+          formatDataBlocks(
             source,
             layoutUsecaseStatement(source, statement, statement.range[1]),
             statement.range,

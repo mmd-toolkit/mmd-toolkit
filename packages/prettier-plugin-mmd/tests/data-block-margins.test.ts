@@ -9,6 +9,21 @@ describe("data blocks' permitted uniform margins", () => {
       after: "@{ label: Alpha }",
     },
     {
+      name: "an inline block padded with one space inside each end",
+      before: "@{label: Alpha}",
+      after: "@{ label: Alpha }",
+    },
+    {
+      name: "an inline block whose spaces and tabs at the ends are replaced",
+      before: "@{ \t label: Alpha\t  }",
+      after: "@{ label: Alpha }",
+    },
+    {
+      name: "an inline block that starts with a no-break space inside",
+      before: "@{\u00a0label: Alpha}",
+      after: "@{ \u00a0label: Alpha }",
+    },
+    {
       name: "an inward move with relative indentation",
       before: "@{\ncustom:\n  nested: yes\n}",
       after: "@{\n    custom:\n      nested: yes\n  }",
@@ -122,9 +137,29 @@ describe("data blocks' permitted uniform margins", () => {
       after: "@{\n    label: Alpha }\n",
     },
     {
-      name: "an inline edit",
+      name: "an inline block padded with two spaces",
       before: "@{ label: Alpha }",
       after: "@{  label: Alpha }",
+    },
+    {
+      name: "an inline block changed inside",
+      before: "@{label: Alpha}",
+      after: "@{ label: Beta }",
+    },
+    {
+      name: "an inline block with a no-break space removed at its end",
+      before: "@{label: Alpha\u00a0}",
+      after: "@{ label: Alpha }",
+    },
+    {
+      name: "an inline block of spaces only",
+      before: "@{   }",
+      after: "@{ }",
+    },
+    {
+      name: "an inline block of one line made several",
+      before: "@{label: Alpha}",
+      after: "@{\nlabel: Alpha\n}",
     },
     {
       name: "changed spaces in a block without body text",

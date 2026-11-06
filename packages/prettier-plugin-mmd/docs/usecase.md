@@ -511,6 +511,11 @@ json-tables/inline-opening-kept] [fixture: json-tables/directive-inside-kept]
 json-tables/surrounding-trivia] [test: data blocks: JSON leading tab kept]
 [test: data blocks: usecase U+2029] [test: data blocks: usecase CRLF]
 
+A JSON table on one line stays as written: its `{` and `}` are the braces of the
+JSON itself, not the ends of a block that mermaid.js wraps in braces, so the
+one-space padding of [Data blocks](./flowchart.md#data-blocks) does not apply to
+it. [fixture: json-tables/one-line-kept]
+
 [fixture: json-tables/json-opaque] [corpus fixture:
 usecase/gram-json-prefix-id-control] [fixture: json-tables/json-invalid-opaque]
 [fixture: json-tables/json-order-kept] [fixture:

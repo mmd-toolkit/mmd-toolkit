@@ -315,6 +315,26 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
     "sequenceDiagram\n  participant A\u2028%% c\n  B\n  A ->> B: x\n",
   ],
   [
+    "no-break space between the id of a participant and its data block",
+    'sequenceDiagram\nparticipant A\u00a0@{"type": "queue"}\nA->>B: x\n',
+    'sequenceDiagram\n  participant A@{ "type": "queue" }\n  A ->> B: x\n',
+  ],
+  [
+    "byte order mark between the id of a participant and its data block",
+    'sequenceDiagram\nparticipant A\ufeff@{"type": "queue"}\nA->>B: x\n',
+    'sequenceDiagram\n  participant A@{ "type": "queue" }\n  A ->> B: x\n',
+  ],
+  [
+    "ideographic space between the id of a participant and its data block",
+    'sequenceDiagram\nparticipant A\u3000@{"type": "queue"}\nA->>B: x\n',
+    'sequenceDiagram\n  participant A@{ "type": "queue" }\n  A ->> B: x\n',
+  ],
+  [
+    "form feed and vertical tab between the id of a participant and its data block",
+    'sequenceDiagram\nparticipant A\f@{"type": "queue"}\nparticipant B\u000b@{"type": "queue"}\n',
+    'sequenceDiagram\n  participant A@{ "type": "queue" }\n  participant B@{ "type": "queue" }\n',
+  ],
+  [
     "U+2028 between the id of a participant and its data block",
     'sequenceDiagram\nparticipant A\u2028@{ "type": "queue" }\nA->>B: x\n',
     'sequenceDiagram\n  participant A\u2028@{ "type": "queue" }\n  A ->> B: x\n',
@@ -2216,7 +2236,7 @@ const kanbanExamples: readonly (readonly [string, string, string, Options?])[] =
     [
       "kanban: closed-trailing-trim",
       "kanban\n S[x]   \n   A[y]@{ticket: X}\t \n ::icon(z)  \n",
-      "kanban\n  S[x]\n    A[y]@{ticket: X}\n    ::icon(z)\n",
+      "kanban\n  S[x]\n    A[y]@{ ticket: X }\n    ::icon(z)\n",
     ],
     [
       "kanban: crlf-to-lf",
@@ -2720,6 +2740,48 @@ const dataBlockExamples: readonly (readonly [
     "data blocks: sequence CR",
     'sequenceDiagram\rparticipant A@{\r"type": "queue"\r}\r',
     'sequenceDiagram\n  participant A@{\n    "type": "queue"\n  }\n',
+  ],
+  [
+    "data blocks: flowchart one line with no-break spaces at the ends",
+    "flowchart LR\nA@{   \u00a0shape: rect\u00a0   }\n",
+    "flowchart LR\n  A@{ \u00a0shape: rect\u00a0 }\n",
+  ],
+  [
+    "data blocks: flowchart one line with U+2028 inside",
+    'flowchart LR\nA@{label:"a\u2028b"}\n',
+    'flowchart LR\n  A@{label:"a\u2028b"}\n',
+  ],
+  [
+    "data blocks: flowchart one line with U+2029 inside",
+    'flowchart LR\nA@{label:"a\u2029b"}\n',
+    'flowchart LR\n  A@{label:"a\u2029b"}\n',
+  ],
+  [
+    "data blocks: flowchart one line CRLF",
+    "flowchart LR\r\nA@{label:Alpha}\r\n",
+    "flowchart LR\r\n  A@{ label:Alpha }\r\n",
+    { endOfLine: "crlf" },
+  ],
+  [
+    "data blocks: flowchart one line CR",
+    "flowchart LR\rA@{label:Alpha}\r",
+    "flowchart LR\r  A@{ label:Alpha }\r",
+    { endOfLine: "cr" },
+  ],
+  [
+    "data blocks: agentflow one line with U+2029 inside",
+    'agentflow-beta TB\nA@{label:"Alpha\u2029 Beta"}\n',
+    'agentflow-beta TB\n  A@{label:"Alpha\u2029 Beta"}\n',
+  ],
+  [
+    "data blocks: kanban one line with U+2028 inside",
+    'kanban\nS\n  A@{ticket:"Alpha\u2028 Beta"}\n',
+    'kanban\n  S\n    A@{ticket:"Alpha\u2028 Beta"}\n',
+  ],
+  [
+    "data blocks: sequence one line with U+2028 inside",
+    'sequenceDiagram\nparticipant A@{"alias":"Alpha\u2028 Beta"}\n',
+    'sequenceDiagram\n  participant A@{"alias":"Alpha\u2028 Beta"}\n',
   ],
   [
     "data blocks: usecase U+2029",

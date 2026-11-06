@@ -253,6 +253,11 @@ function droppableSemicolonsOf(text: string, root: Root): ReadonlySet<number> {
     if (!styleStatementTypes.has(node.type)) return
     const { range } = node as unknown as { range: Range }
     ends.add(range[1])
+    // Treemap holds the whitespace after a `;` that the line rule ignores in
+    // the range of the statement.
+    let trimmed = range[1]
+    while (trimmed > range[0] && text[trimmed - 1].trim() === "") trimmed--
+    if (text[trimmed - 1] === ";") ends.add(trimmed - 1)
     // ER, state, block and treemap read a last `;` of a statement as part of its
     // range.
     if (text[range[1] - 1] === ";") offsets.add(range[1] - 1)

@@ -437,9 +437,14 @@ mermaid.js は `;` がなくても同じ文として読むからです。
 が無視する最後の `;` も、同じく消します。
 [fixture: semicolons/class-terminator-dropped]
 [fixture: semicolons/class-terminator-hash-dropped]
-消す `;` の直前の空白も、U+2029 を含めて一緒に消します。
+消す `;` の直前の空白も、U+00A0、U+2028、U+2029、U+FEFF を含めて一緒に消します。
 [fixture: semicolons/class-terminator-space-before-dropped]
 [test: treemap/line-terminators-and-unicode/unicode-values]
+[test: treemap/semicolons/class-terminator-unicode-space-before-dropped]
+行の規則が無視する `;` の後ろの空白は style に属するので、これも消します。
+[fixture: semicolons/class-terminator-hash-trailing-whitespace-dropped]
+文がテキストの末尾で終わっていても同じです。
+[fixture: semicolons/class-terminator-end-of-text-dropped]
 消した後の文は、`classDef` の行の通常の配置に従います。
 字下げ、前後の空行とコメント行、前にある空の description block、
 `;` の後ろの空白が次の row に与える字下げです。
@@ -453,10 +458,20 @@ style のない `classDef` の `;` は、消すと次の行が style になり�
 同じ行に別の文が続く `;` も、消すと読まれ方が変わります。
 [fixture: semicolons/terminator]
 [fixture: semicolons/class-terminator-before-row-kept]
-同じ行に続くコメントや directive、
-style との間にある comment や directive があるときも残します。
+同じ行に続くコメントや directive があるときも残します。
 [fixture: semicolons/class-terminator-comment-kept]
+文の単位である `;` の直前に directive があるときも残します。
+間に空白があっても同じです。
 [fixture: semicolons/class-terminator-directive-kept]
+`classDef zz fill: #f00;` のように、`;` が style の一部であるときも残します。
+`#f00;` が entity だからです。
+[fixture: semicolons/class-terminator-entity-kept]
+別の `;` が隣にあるときも残します。
+[fixture: semicolons/class-terminator-beside-semicolon-kept]
+行の規則が無視する `;` の前に directive があるときは、
+directive を残して `;` を消します。
+ほかの図種と同じです。
+[fixture: semicolons/class-terminator-hash-directive-dropped]
 
 それ以外の書かれた semicolon は保ちます。
 選ばれて無視されるもの、別の `;` の隣にあるもの、値の文字です。

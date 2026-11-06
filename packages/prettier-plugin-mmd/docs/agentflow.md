@@ -354,6 +354,16 @@ failures remain failures. [fixture: metadata-blocks/metadata-adjacent] [fixture:
 metadata-blocks/metadata-alias-rewrite-unsafe] [fixture:
 metadata-blocks/metadata-multiline]
 
+A block on one line is printed with one space inside each end, and stays as
+written in the cases listed under [Data blocks](./flowchart.md#data-blocks).
+[fixture: metadata-blocks/one-line-padded] [fixture:
+metadata-blocks/one-line-space-only-kept] [fixture:
+metadata-blocks/one-line-directive-kept] [fixture:
+metadata-blocks/one-line-kept-line-kept] [fixture:
+metadata-blocks/one-line-touching-blocks-kept] [fixture:
+metadata-blocks/one-line-separate-blocks-padded] [test: data blocks: agentflow
+one line with U+2029 inside]
+
 For a block whose opener is immediately followed by a newline, move all body
 lines by the same number of ASCII spaces so the shallowest text is one level
 inside the statement, including in a `flow` body. Nested YAML keeps its relative
