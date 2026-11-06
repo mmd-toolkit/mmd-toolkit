@@ -41,6 +41,16 @@ function childNodes(node: Node, key: string): Node[] {
   return isNode(value) ? [value] : []
 }
 
+/** Calls `callback` with each of `items`, the last first. */
+function forEachReversed<T>(
+  items: readonly T[],
+  callback: (item: T) => void,
+): void {
+  for (let index = items.length - 1; index >= 0; index -= 1) {
+    callback(items[index])
+  }
+}
+
 /** A call the walk has still to make: `leaveNode` when `entered`, otherwise `enterNode`. */
 interface Step {
   readonly node: Node
@@ -69,10 +79,11 @@ export function traverseNodes(node: Node, visitor: Visitor): void {
     }
     visitor.enterNode(step.node, step.parent)
     pending.push({ node: step.node, parent: step.parent, entered: true })
-    for (const key of visitorKeys[step.node.type].toReversed()) {
-      for (const child of childNodes(step.node, key).reverse()) {
-        pending.push({ node: child, parent: step.node, entered: false })
-      }
-    }
+    const parent = step.node
+    forEachReversed(visitorKeys[parent.type], (key) => {
+      forEachReversed(childNodes(parent, key), (child) => {
+        pending.push({ node: child, parent, entered: false })
+      })
+    })
   }
 }
