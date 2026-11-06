@@ -1,5 +1,12 @@
 # prettier-plugin-mmd
 
+## 0.4.1
+
+### Patch Changes
+
+- Updated dependencies [[`7e28e77`](https://github.com/mmd-toolkit/mmd-toolkit/commit/7e28e770d7d6e30c51a4fcf94918b7e46f165116)]:
+  - @mmd-toolkit/parser@0.2.1
+
 ## 0.4.0
 
 ### Minor Changes
