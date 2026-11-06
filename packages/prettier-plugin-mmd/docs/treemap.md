@@ -379,6 +379,8 @@ their existing columns.
 
 [fixture: treemap/style-gaps/css-comment-semicolon-kept]
 
+[fixture: treemap/style-gaps/css-comment-terminator-dropped]
+
 Input (escaped): `"treemap\nclassDef zz\n\n  \"Apparent\":2"`.
 
 Output
@@ -394,7 +396,8 @@ treemap
 Keep the whole TreemapLiteral style span, including comma/colon spacing, escaped
 commas, quotes, percent text, empty entries and trailing spaces/tabs. Do not
 split, merge or format it as CSS. Style spelling and leading entry padding can
-affect the Db; trailing padding is retained as authored value text.
+affect the Db; trailing padding is retained as authored value text, except the
+whitespace before a `;` that is dropped (see [Semicolons](#semicolons)).
 
 [fixture: treemap/styles/written]
 
@@ -414,18 +417,44 @@ Output
 
 ```mmd
 treemap
-  classDef zz color:red , fill:blue,stroke:rgb(1\,2\,3),;
+  classDef zz color:red , fill:blue,stroke:rgb(1\,2\,3),
 ```
 
 ### Semicolons
 
-Keep every authored semicolon: class terminators, selected ignored semicolons
-and value characters. Use shared kept-line and protected-prefix rules; protected
-segments retain their source text and columns, with no extra indentation on
-their inner lines. If a kept line constrains a row boundary, preserve the body
-as written rather than fixing some row indents and normalizing others. This
-keeps parentage and semicolon selection together, including the protected
-ending; it takes precedence over ordinary line and spacing choices.
+A `;` that ends a `classDef` statement with a style, at the end of its line, is
+dropped: mermaid.js reads the statement the same without it. This holds for the
+`;` that is a unit of the statement, as in `classDef zz fill:red;`, and for the
+last `;` that the
+[line rule of mermaid.js](../../spec/docs/common.md#style-and-classdef-lines)
+ignores, as in `classDef zz color:#f00;`. [fixture:
+semicolons/class-terminator-dropped] [fixture:
+semicolons/class-terminator-hash-dropped] Whitespace immediately before the
+dropped `;` is dropped with it, also a U+2029. [fixture:
+semicolons/class-terminator-space-before-dropped] [test:
+treemap/line-terminators-and-unicode/unicode-values] The statement then takes
+the usual layout of a `classDef` line: indentation, blank lines and comment
+lines around it, an empty description block before it, and the run of whitespace
+after the `;` that indents the next row. [fixture:
+semicolons/class-terminator-indented-dropped] [fixture:
+semicolons/class-terminator-trailing-whitespace-dropped] [fixture:
+semicolons/class-terminator-blank-and-comment-lines-dropped] [fixture:
+semicolons/class-terminator-empty-description-block-dropped] [fixture:
+style-gaps/css-comment-terminator-dropped] The `;` stays where dropping it would
+change what is read: after a `classDef` without a style, where the next line
+would become the style, and before another statement on the same line. [fixture:
+semicolons/terminator] [fixture: semicolons/class-terminator-before-row-kept] It
+stays too when a comment or a directive follows it on its line, or stands
+between the style and it. [fixture: semicolons/class-terminator-comment-kept]
+[fixture: semicolons/class-terminator-directive-kept]
+
+Keep every other authored semicolon: selected ignored semicolons, a `;` beside
+another `;`, and value characters. Use shared kept-line and protected-prefix
+rules; protected segments retain their source text and columns, with no extra
+indentation on their inner lines. If a kept line constrains a row boundary,
+preserve the body as written rather than fixing some row indents and normalizing
+others. This keeps parentage and semicolon selection together, including the
+protected ending; it takes precedence over ordinary line and spacing choices.
 
 [fixture: treemap/semicolons/terminator]
 
@@ -927,8 +956,8 @@ treemap
   "Top"
     "Right": 2
     "Left": 1
-  classDef zz color:red;
-  classDef zz fill:blue;
+  classDef zz color:red
+  classDef zz fill:blue
   title Earlier
   title
 ```

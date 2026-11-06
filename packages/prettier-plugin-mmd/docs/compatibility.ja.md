@@ -528,6 +528,11 @@ class、state、ER、requirement、block、Venn、usecase の図では、
 [fixture: usecase/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
 文に `#` がない ER では、最後のスタイルとの間に trivia がない場合に、
 終端の `;` の単位も削除します。
+treemap の `classDef` 文は、style があり同じ条件のとき、
+`#` の有無にかかわらず終端の `;` の単位を削除します。
+文の単位である `;` が entity の一部になることはないからです。
+[fixture: treemap/semicolons/class-terminator-dropped]
+[fixture: treemap/semicolons/class-terminator-directive-kept]
 state のスタイル文と block の `classDef` 文では、最後のスタイルの末尾の `;` が、
 そのスタイルで唯一のセミコロンで、前に空白以外のテキストがある場合に削除します。
 ほかのスタイルのセミコロンは、削除で Db が変わる形で残します。

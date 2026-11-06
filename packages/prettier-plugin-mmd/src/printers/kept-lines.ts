@@ -422,6 +422,8 @@ export function holdsKeptSemicolon(
  * - the `;` unit that ends an ER statement, when no `#` lies in it (mermaid.js
  *   reads `#f00;` as an entity, so with a `#` the `;` is part of it) and no
  *   comment or directive stands between the last style and the `;`.
+ * - the `;` unit that ends a treemap `classDef` statement, when it has a style
+ *   and no comment or directive stands between the style and the `;`.
  * - the last character of the last style of a state statement or a block
  *   `classDef` statement, when it is the only `;` of that style, something
  *   else than a `;` stands in it, and no `#` lies in the statement: mermaid.js
@@ -450,6 +452,7 @@ const styleStatementTypes: ReadonlySet<string> = new Set([
   "VennStyleStatement",
   "UsecaseClassDefStatement",
   "UsecaseStyleStatement",
+  "TreemapClassDefStatement",
 ])
 
 const styleSemicolonsBySource = new WeakMap<Source, StyleSemicolons>()
@@ -464,6 +467,21 @@ function styleSemicolonsOf(source: Source): StyleSemicolons {
     styleStatementTypes.has(candidate.type),
   )) {
     ends.add(node.range[1])
+    if (node.type === "TreemapClassDefStatement") {
+      const last = findTokenEndingBefore(source, node.range[1])
+      // A `;` that is a unit of the statement is not inside a token, so a `#`
+      // in the style does not make it part of an entity. Without a style, the
+      // `;` keeps the next line from being read as the style.
+      if (
+        last?.value === ";" &&
+        last.type === "Punctuator" &&
+        node.style !== null &&
+        findTriviaBetween(source, node.style.range[1], last.range[0]).length ===
+          0
+      )
+        terminators.add(last.range[0])
+      continue
+    }
     const statementText = source.text.slice(...node.range)
     if (statementText.includes("#")) continue
     if (

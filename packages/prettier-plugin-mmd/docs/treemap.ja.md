@@ -384,6 +384,8 @@ semicolon で保護する prefix は、従来の列を保ちます。
 
 [fixture: treemap/style-gaps/css-comment-semicolon-kept]
 
+[fixture: treemap/style-gaps/css-comment-terminator-dropped]
+
 入力（escape 表記）: `"treemap\nclassDef zz\n\n  \"Apparent\":2"`
 
 出力
@@ -402,6 +404,7 @@ comma、colon の空白、escaped comma、引用符、percent、空 entry、
 CSS として分割、統合、整形しません。
 綴りや entry の先頭空白は Db を変えうるためです。
 末尾の空白も作者の値の文字として保ちます。
+ただし、消す `;` の前の空白は除きます([Semicolons](#semicolons)を参照)。
 
 [fixture: treemap/styles/written]
 
@@ -421,13 +424,42 @@ CSS として分割、統合、整形しません。
 
 ```mmd
 treemap
-  classDef zz color:red , fill:blue,stroke:rgb(1\,2\,3),;
+  classDef zz color:red , fill:blue,stroke:rgb(1\,2\,3),
 ```
 
 ### Semicolons
 
-書かれた semicolon はすべて保ちます。
-class の終端、選ばれて無視されるもの、値の文字を区別します。
+style を持つ `classDef` を終える `;` が行末にあるときは消します。
+mermaid.js は `;` がなくても同じ文として読むからです。
+`classDef zz fill:red;` のように文の単位である `;` も、
+`classDef zz color:#f00;` のように
+[mermaid.js の行の規則](../../spec/docs/common.ja.md#style-行と-classdef-行)
+が無視する最後の `;` も、同じく消します。
+[fixture: semicolons/class-terminator-dropped]
+[fixture: semicolons/class-terminator-hash-dropped]
+消す `;` の直前の空白も、U+2029 を含めて一緒に消します。
+[fixture: semicolons/class-terminator-space-before-dropped]
+[test: treemap/line-terminators-and-unicode/unicode-values]
+消した後の文は、`classDef` の行の通常の配置に従います。
+字下げ、前後の空行とコメント行、前にある空の description block、
+`;` の後ろの空白が次の row に与える字下げです。
+[fixture: semicolons/class-terminator-indented-dropped]
+[fixture: semicolons/class-terminator-trailing-whitespace-dropped]
+[fixture: semicolons/class-terminator-blank-and-comment-lines-dropped]
+[fixture: semicolons/class-terminator-empty-description-block-dropped]
+[fixture: style-gaps/css-comment-terminator-dropped]
+消すと読まれ方が変わる `;` は残します。
+style のない `classDef` の `;` は、消すと次の行が style になります。
+同じ行に別の文が続く `;` も、消すと読まれ方が変わります。
+[fixture: semicolons/terminator]
+[fixture: semicolons/class-terminator-before-row-kept]
+同じ行に続くコメントや directive、
+style との間にある comment や directive があるときも残します。
+[fixture: semicolons/class-terminator-comment-kept]
+[fixture: semicolons/class-terminator-directive-kept]
+
+それ以外の書かれた semicolon は保ちます。
+選ばれて無視されるもの、別の `;` の隣にあるもの、値の文字です。
 共有の行と prefix の保護を使い、区間の原文と列を保ちます。
 保護区間の内部の行に字下げを足しません。
 保持する行が row の境界を拘束する場合は、本文を原文保持します。
@@ -952,8 +984,8 @@ treemap
   "Top"
     "Right": 2
     "Left": 1
-  classDef zz color:red;
-  classDef zz fill:blue;
+  classDef zz color:red
+  classDef zz fill:blue
   title Earlier
   title
 ```

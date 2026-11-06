@@ -42,7 +42,7 @@ export const treemapCases: readonly TreemapCase[] = [
     input:
       'treemap\n"N\u2028S\u2029E\u00a0W\ufeff":3\naccTitle: A\u2028B\nclassDef zz x:1\u2028y:2\u2029;\n',
     output:
-      'treemap\n  "N\u2028S\u2029E\u00a0W\ufeff": 3\n  accTitle: A\u2028B\n  classDef zz x:1\u2028y:2\u2029;\n',
+      'treemap\n  "N\u2028S\u2029E\u00a0W\ufeff": 3\n  accTitle: A\u2028B\n  classDef zz x:1\u2028y:2\n',
     options: {},
   },
   {
@@ -110,8 +110,8 @@ export const treemapCases: readonly TreemapCase[] = [
   },
   {
     name: "treemap/semicolons/protected-later-atom",
-    input: 'treemap\n"Protected"\n:3\n:::zz\nclassDef zz color:#red;',
-    output: 'treemap\n  "Protected": 3:::zz\n  classDef zz color:#red;\n',
+    input: 'treemap\n"Protected"\n:3\n:::zz\nclassDef zz color:#red;;',
+    output: 'treemap\n  "Protected": 3:::zz\n  classDef zz color:#red;;\n',
     options: {},
   },
   {

@@ -487,10 +487,14 @@ venn/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
 [fixture:
 usecase/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
 Without a `#` in the statement, ER also drops its terminating `;` unit when no
-trivia separates it from the last style. State style statements and block
-`classDef` statements drop a final `;` from the last style only when it is that
-style's sole semicolon and follows non-whitespace text. Other style semicolons
-remain where deleting them changes the Db. [fixture:
+trivia separates it from the last style. A treemap `classDef` statement with a
+style drops its terminating `;` unit on the same condition, with or without a
+`#`: the `;` of such a statement is a unit of it and never part of an entity.
+[fixture: treemap/semicolons/class-terminator-dropped] [fixture:
+treemap/semicolons/class-terminator-directive-kept] State style statements and
+block `classDef` statements drop a final `;` from the last style only when it is
+that style's sole semicolon and follows non-whitespace text. Other style
+semicolons remain where deleting them changes the Db. [fixture:
 er/semicolons-at-the-end-of-a-style-statement/unit-terminators] [fixture:
 er/semicolons-at-the-end-of-a-style-statement/directive-before-unit-kept]
 [fixture:
