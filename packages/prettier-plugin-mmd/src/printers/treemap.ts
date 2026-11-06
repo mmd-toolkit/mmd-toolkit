@@ -131,6 +131,8 @@ export function printTreemap(
         ),
       },
       relocatedWhitespace,
+      indentsOnlyCommentLines: true,
+      extraIndentationOf: (line) => placements.get(line)!.indentation,
       printedEnd: (line) => line.range[1],
       holdsStatements: () => false,
       isDroppedAtTopLevel: () => false,

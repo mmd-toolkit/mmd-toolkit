@@ -11,10 +11,12 @@ import { describe, expect, it } from "vitest"
 import * as prettier from "prettier"
 import type { Options } from "prettier"
 import plugin from "../src/index.ts"
+import { dataBlockEmbeddedForFormattingComparison } from "./data-block-margins.ts"
 import {
   dbOfText,
   defaultEmbedded,
   writtenEmbeddedTexts,
+  writtenTextKeptUpToSemicolons,
   describeFrontmatterChange,
 } from "./db-reading.ts"
 
@@ -263,6 +265,16 @@ const semicolonExamples: readonly (readonly [string, string, string])[] = [
  */
 const sequenceExamples: readonly (readonly [string, string, string])[] = [
   [
+    "a standalone open directive before U+2028 and a semicolon",
+    "sequenceDiagram\n%%{wrap foo\u2028;\nparticipant A\n",
+    "sequenceDiagram\n  %%{wrap foo\u2028;\n  participant A\n",
+  ],
+  [
+    "a standalone open directive before U+2029 and a semicolon",
+    "sequenceDiagram\n%%{wrap foo\u2029;\nparticipant A\n",
+    "sequenceDiagram\n  %%{wrap foo\u2029;\n  participant A\n",
+  ],
+  [
     "U+2028 at the end of the text of a box",
     "sequenceDiagram\nbox aqua\u2028\nparticipant A\nend\n",
     "sequenceDiagram\n  box aqua\u2028\n    participant A\n  end\n",
@@ -306,6 +318,11 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
     "U+2029 after a comment that a comment line follows",
     "sequenceDiagram\nA->>B: y #c\u2029%% d\nC->>D: z\n",
     "sequenceDiagram\n  A->>B: y #c\u2029%% d\nC->>D: z\n",
+  ],
+  [
+    "a `#` comment and a comment line after U+2028 inside a message text",
+    "sequenceDiagram\n%% z\nA->>B: x\u2028# d1\u2028%% line\n frag\nB->>A: y\n",
+    "sequenceDiagram\n  %% z\n  A->>B: x\u2028# d1\u2028%% line\n frag\n  B ->> A: y\n",
   ],
   [
     "U+2029 at the end of the text of a box",
@@ -394,6 +411,26 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
  */
 const flowchartExamples: readonly (readonly [string, string, string])[] = [
   [
+    "a comment line after U+2028 in a flowchart header",
+    "flowchart\u2028%% c\n TD\nA\n",
+    "flowchart\u2028%% c\n TD\n  A\n",
+  ],
+  [
+    "a comment line after U+2029 in a flowchart header",
+    "flowchart\u2029%% c\n TD\nA\n",
+    "flowchart\u2029%% c\n TD\n  A\n",
+  ],
+  [
+    "a comment line after U+2028 in a flowchart subgraph header",
+    "flowchart TD\nsubgraph\u2028%% c\n S\nA\nend\n",
+    "flowchart TD\n  subgraph\u2028%% c\n S\n    A\n  end\n",
+  ],
+  [
+    "a comment line after U+2029 in a flowchart subgraph header",
+    "flowchart TD\nsubgraph\u2029%% c\n S\nA\nend\n",
+    "flowchart TD\n  subgraph\u2029%% c\n S\n    A\n  end\n",
+  ],
+  [
     "an ignored `;` before U+2028 and a `;`",
     "flowchart LR\nZ[style:#x];\u2028;\nB\n",
     "flowchart LR\n  Z[style:#x];\u2028;\n  B\n",
@@ -454,12 +491,60 @@ const droppedExamples: readonly (readonly [string, string, string])[] = [
   ],
 ]
 
+/** Block openings retain the comment regions that join their source lines. */
+const classLineSeparatorExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "class: ls-comment-in-namespace-opening",
+    "classDiagram\nnamespace Box\u2028%% keep\n {\nclass Node\n}\n",
+    "classDiagram\n  namespace Box\u2028%% keep\n {\n    class Node\n  }\n",
+  ],
+  [
+    "class: ps-comment-in-member-opening",
+    "classDiagram\nclass Node\u2029%% keep\n {\n+value\n}\n",
+    "classDiagram\n  class Node\u2029%% keep\n {\n    +value\n  }\n",
+  ],
+]
+
 /**
  * Each example is an ER diagram with U+2028 or U+2029: in the statement context
  * these are characters of a name, so the name keeps them, and a gap that holds
  * one is printed as written (docs/er.md, Line separators).
  */
 const erExamples: readonly (readonly [string, string, string])[] = [
+  [
+    "a comment line after U+2028 in an ER subgraph header",
+    "erDiagram\nsubgraph S\u2028%% c\n [T]\nA\nend\n",
+    "erDiagram\n  subgraph S\u2028%% c\n [T]\n    A\n  end\n",
+  ],
+  [
+    "a comment line after U+2029 in an ER subgraph header",
+    "erDiagram\nsubgraph S\u2029%% c\n [T]\nA\nend\n",
+    "erDiagram\n  subgraph S\u2029%% c\n [T]\n    A\n  end\n",
+  ],
+  [
+    "a comment line after U+2028 in an ER entity header",
+    "erDiagram\nA\u2028%% c\n {\nstring x\n}\n",
+    "erDiagram\n  A\u2028%% c\n {\n    string x\n  }\n",
+  ],
+  [
+    "a comment line after U+2029 in an ER entity header",
+    "erDiagram\nA\u2029%% c\n {\nstring x\n}\n",
+    "erDiagram\n  A\u2029%% c\n {\n    string x\n  }\n",
+  ],
+  [
+    "a comment line after U+2028 in an ER class definition",
+    "erDiagram\nclassDef\u2028%% c\n c fill:red\n",
+    "erDiagram\n  classDef\u2028%% c\n c fill:red\n",
+  ],
+  [
+    "a comment line after U+2029 in an ER class definition",
+    "erDiagram\nclassDef\u2029%% c\n c fill:red\n",
+    "erDiagram\n  classDef\u2029%% c\n c fill:red\n",
+  ],
   [
     "U+2028 inside an entity name",
     "erDiagram\nA\u2028B   ||--o{   C : x\n",
@@ -705,6 +790,21 @@ const journeyWhitespaceExamples: readonly (readonly [
   string,
 ])[] = [
   [
+    "U+00A0 as the entire data of a journey task",
+    "journey\nTask:\u00a0\n",
+    "journey\n  Task:\u00a0\n",
+  ],
+  [
+    "U+2028 as the entire data of a journey task",
+    "journey\nTask:\u2028\n",
+    "journey\n  Task:\u2028\n",
+  ],
+  [
+    "U+2029 as the entire data of a journey task",
+    "journey\nTask:\u2029\n",
+    "journey\n  Task:\u2029\n",
+  ],
+  [
     "U+00A0 after a title keyword",
     "journey\ntitle\u00a0T\n",
     "journey\n  title T\n",
@@ -753,6 +853,16 @@ const requirementLineSeparatorExamples: readonly (readonly [
   string,
   string,
 ])[] = [
+  [
+    "requirement/multi-line-statements/header-and-field-comment-regions-ls",
+    "requirementDiagram\nrequirement\u2028%% heading\n r {\nid\u2028%% field\n : 1\n}\n",
+    "requirementDiagram\n  requirement\u2028%% heading\n r {\n    id\u2028%% field\n : 1\n  }\n",
+  ],
+  [
+    "requirement/multi-line-statements/header-and-field-comment-regions-ps",
+    "requirementDiagram\nrequirement\u2029%% heading\n r {\nid\u2029%% field\n : 1\n}\n",
+    "requirementDiagram\n  requirement\u2029%% heading\n r {\n    id\u2029%% field\n : 1\n  }\n",
+  ],
   [
     "U+2028 after the closing brace of a body",
     "requirementDiagram\nrequirement r {\n}\u2028element e {\n}\n",
@@ -1371,6 +1481,16 @@ const xychartLineSeparatorExamples: readonly (readonly [
   string,
 ])[] = [
   [
+    "xychart/multi-line-statements/header-comment-region-ls",
+    "xychart-beta\u2028%% orientation\n horizontal\n",
+    "xychart-beta\u2028%% orientation\n horizontal\n",
+  ],
+  [
+    "xychart/multi-line-statements/header-comment-region-ps",
+    "xychart-beta\u2029%% orientation\n horizontal\n",
+    "xychart-beta\u2029%% orientation\n horizontal\n",
+  ],
+  [
     "U+2028 between the header and a statement",
     "xychart\u2028title T\n",
     "xychart\n  title T\n",
@@ -1777,6 +1897,16 @@ const blockLineSeparatorExamples: readonly (readonly [
     "block-beta\n  block:G\n    a\n  end\n",
   ],
   [
+    "block: ls-comment-in-composite-head",
+    "block-beta\nblock:\u2028%% keep\n group:2\nA\nend\n",
+    "block-beta\n  block:\u2028%% keep\n group:2\n    A\n  end\n",
+  ],
+  [
+    "block: ps-comment-in-composite-head",
+    "block-beta\nblock:\u2029%% keep\n group:2\nA\nend\n",
+    "block-beta\n  block:\u2029%% keep\n group:2\n    A\n  end\n",
+  ],
+  [
     "block: comment-ls-semicolon-before",
     'block-beta\nblock:r\n A["x"]%% c;\u2028 B["y"]\nend\n',
     'block-beta\n  block:r\n    A["x"] %% c;\u2028 B["y"]\n  end\n',
@@ -1891,6 +2021,15 @@ describe("a block that ends with a line separator after its closing word", () =>
   it.each(droppedExamples)("drops %s", async (_name, input, output) => {
     await expectKept(input, output)
   })
+})
+
+describe("a class block opening with a line separator", () => {
+  it.each(classLineSeparatorExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
 })
 
 describe("an ER diagram with a line separator", () => {
@@ -2130,12 +2269,12 @@ const kanbanExamples: readonly (readonly [string, string, string, Options?])[] =
     [
       "kanban: multiline-data-crlf",
       "kanban\r\n S\r\n   A@{\r\n ticket: X\r\n}\r\n",
-      "kanban\n  S\n    A@{\n ticket: X\n}\n",
+      "kanban\n  S\n    A@{\n      ticket: X\n    }\n",
     ],
     [
       "kanban: multiline-data-cr",
       "kanban\r S\r   A@{\r ticket: X\r}\r",
-      "kanban\n  S\n    A@{\n ticket: X\n}\n",
+      "kanban\n  S\n    A@{\n      ticket: X\n    }\n",
     ],
     [
       "kanban: class-separator-empty-tail",
@@ -2493,13 +2632,164 @@ describe("kanban whitespace and line boundaries", () => {
     expect(dbOfText(output, defaultEmbedded())).toEqual(
       dbOfText(input, defaultEmbedded()),
     )
-    expect(writtenEmbeddedTexts(output)).toEqual(writtenEmbeddedTexts(input))
+    expect(
+      dataBlockEmbeddedForFormattingComparison(
+        writtenEmbeddedTexts(input),
+        writtenEmbeddedTexts(output),
+      ),
+    ).toEqual(writtenEmbeddedTexts(input))
     expect(await describeFrontmatterChange(input, output, options)).toBeNull()
+  })
+})
+
+/** Fixed escaped cases of uniform data-block indentation and line endings. */
+const dataBlockExamples: readonly (readonly [
+  string,
+  string,
+  string,
+  Options?,
+])[] = [
+  [
+    "data blocks: flowchart U+2028",
+    'flowchart LR\nA@{\nlabel: "Alpha\u2028 Beta"\n}\n',
+    'flowchart LR\n  A@{\n    label: "Alpha\u2028 Beta"\n  }\n',
+  ],
+  [
+    "data blocks: flowchart U+2029",
+    'flowchart LR\nA@{\nlabel: "Alpha\u2029 Beta"\n}\n',
+    'flowchart LR\n  A@{\n    label: "Alpha\u2029 Beta"\n  }\n',
+  ],
+  [
+    "data blocks: flowchart NBSP before the closer",
+    "flowchart LR\nA@{\n  label: x\n    \u00a0}\n",
+    "flowchart LR\n  A@{\n  label: x\n    \u00a0}\n",
+  ],
+  [
+    "data blocks: flowchart U+2028 before the closer",
+    "flowchart LR\nA@{\n  label: x\n    \u2028}\n",
+    "flowchart LR\n  A@{\n  label: x\n    \u2028}\n",
+  ],
+  [
+    "data blocks: flowchart U+2029 before the closer",
+    "flowchart LR\nA@{\n  label: x\n    \u2029}\n",
+    "flowchart LR\n  A@{\n  label: x\n    \u2029}\n",
+  ],
+  [
+    "data blocks: flowchart CRLF",
+    "flowchart LR\r\nA@{\r\nlabel: Alpha\r\n}\r\n",
+    "flowchart LR\r\n  A@{\r\n    label: Alpha\r\n  }\r\n",
+    { endOfLine: "crlf" },
+  ],
+  [
+    "data blocks: flowchart CR",
+    "flowchart LR\rA@{\rlabel: Alpha\r}\r",
+    "flowchart LR\r  A@{\r    label: Alpha\r  }\r",
+    { endOfLine: "cr" },
+  ],
+  [
+    "data blocks: agentflow U+2029",
+    'agentflow-beta TB\nA@{\nlabel: "Alpha\u2029 Beta"\n}\n',
+    'agentflow-beta TB\n  A@{\n    label: "Alpha\u2029 Beta"\n  }\n',
+  ],
+  [
+    "data blocks: agentflow CRLF",
+    "agentflow-beta TB\r\nA@{\r\nshape: task\r\n}\r\n",
+    "agentflow-beta TB\n  A@{\n    shape: task\n  }\n",
+  ],
+  [
+    "data blocks: kanban U+2028",
+    'kanban\nS\n  A@{\nticket: "Alpha\u2028 Beta"\n}\n',
+    'kanban\n  S\n    A@{\n      ticket: "Alpha\u2028 Beta"\n    }\n',
+  ],
+  [
+    "data blocks: sequence U+2028",
+    'sequenceDiagram\nparticipant A@{\n"alias": "Alpha\u2028 Beta"\n}\n',
+    'sequenceDiagram\n  participant A@{\n    "alias": "Alpha\u2028 Beta"\n  }\n',
+  ],
+  [
+    "data blocks: sequence CR",
+    'sequenceDiagram\rparticipant A@{\r"type": "queue"\r}\r',
+    'sequenceDiagram\n  participant A@{\n    "type": "queue"\n  }\n',
+  ],
+  [
+    "data blocks: usecase U+2029",
+    'usecase-beta\njson A @{\n"name": "Alpha\u2029 Beta"\n}\n',
+    'usecase-beta\n  json A @{\n    "name": "Alpha\u2029 Beta"\n  }\n',
+  ],
+  [
+    "data blocks: usecase CRLF",
+    'usecase-beta\r\njson A @{\r\n"name": "Alpha"\r\n}\r\n',
+    'usecase-beta\r\n  json A @{\r\n    "name": "Alpha"\r\n  }\r\n',
+    { endOfLine: "crlf" },
+  ],
+  [
+    "data blocks: JSON leading tab kept",
+    'usecase-beta\njson A @{\n\t"name": "Alpha"\n}\n',
+    'usecase-beta\n  json A @{\n\t"name": "Alpha"\n}\n',
+  ],
+]
+
+describe("uniform data-block margins with escaped whitespace", () => {
+  it.each(
+    dataBlockExamples.map(([title, input, expected, options]) => ({
+      title,
+      input,
+      expected,
+      options,
+    })),
+  )("$title", async ({ input, expected, options }) => {
+    const output = await format(input, options)
+    expect(output).toBe(expected)
+    expect(await format(output, options)).toBe(output)
+    expect(
+      dataBlockEmbeddedForFormattingComparison(
+        writtenEmbeddedTexts(input),
+        writtenEmbeddedTexts(output),
+      ),
+    ).toEqual(writtenEmbeddedTexts(input))
+    expect(dbOfText(output, defaultEmbedded())).toEqual(
+      dbOfText(input, defaultEmbedded()),
+    )
   })
 })
 
 /** C4 lexical whitespace can be a bare prefix or a value character. */
 const c4Examples: readonly (readonly [string, string, string])[] = [
+  [
+    "c4: empty-header-opener-tab",
+    'C4Context accDescr \t{\n%% keep\n}\nPerson(a,"A")\n',
+    'C4Context accDescr {\n  %% keep\n}\n  Person(a, "A")\n',
+  ],
+  [
+    "c4: empty-header-opener-nbsp",
+    'C4Context accDescr \u00a0{\n%% keep\n}\nPerson(a,"A")\n',
+    'C4Context accDescr \u00a0{\n  %% keep\n}\n  Person(a, "A")\n',
+  ],
+  [
+    "c4: overlapping-comment-fragments",
+    'C4Context\nPerson(a,"A") %% first\u2028%% region\nsecond\u2029%% later\nlast\n',
+    'C4Context\n  Person(a,"A") %% first\u2028%% region\nsecond\u2029%% later\nlast\n',
+  ],
+  [
+    "c4: ls-comment-before-accessibility-colon",
+    "C4Context\naccTitle\u2028%% keep\n : Overview\n",
+    "C4Context\n  accTitle\u2028%% keep\n : Overview\n",
+  ],
+  [
+    "c4: ps-comment-before-accessibility-colon",
+    "C4Context\naccDescr\u2029%% keep\n : Overview\n",
+    "C4Context\n  accDescr\u2029%% keep\n : Overview\n",
+  ],
+  [
+    "c4: ls-comment-in-named-attribute-gap",
+    'C4Context\nPerson(a,"A",$descr\u2028%% comment\n = "D")\n',
+    'C4Context\n  Person(a,"A",$descr\u2028%% comment\n = "D")\n',
+  ],
+  [
+    "c4: ps-comment-in-named-attribute-gap",
+    'C4Context\nPerson(a,"A",$descr\u2029%% comment\n = "D")\n',
+    'C4Context\n  Person(a,"A",$descr\u2029%% comment\n = "D")\n',
+  ],
   [
     "c4: exterior-whitespace-kinds",
     'C4Context\n\t\u00a0\ufeff\u000b\u000c\u3000Person(a,"A")\n',
@@ -2992,5 +3282,106 @@ describe("Venn whitespace and line boundaries", () => {
       writtenEmbeddedTexts(original),
     )
     expect(await describeFrontmatterChange(original, formatted)).toBeNull()
+  })
+})
+
+/** Style terminators retain Unicode line-rule and directive boundaries. */
+describe("style semicolons", () => {
+  it.each([
+    [
+      "style semicolons: class before U+2028",
+      "classDiagram\nclass A\nstyle A fill:#f00;\u2028\n",
+      "classDiagram\n  class A\n  style A fill:#f00;\u2028\n",
+    ],
+    [
+      "style semicolons: class before U+2029",
+      "classDiagram\nclass A\nstyle A fill:#f00;\u2029\n",
+      "classDiagram\n  class A\n  style A fill:#f00;\u2029\n",
+    ],
+    [
+      "style semicolons: state before U+2028",
+      "stateDiagram-v2\nstyle A fill:#f00;\u2028\n",
+      "stateDiagram-v2\n  style A fill:#f00;\u2028\n",
+    ],
+    [
+      "style semicolons: state before U+2029",
+      "stateDiagram-v2\nstyle A fill:#f00;\u2029\n",
+      "stateDiagram-v2\n  style A fill:#f00;\u2029\n",
+    ],
+    [
+      "style semicolons: er before U+2028",
+      "erDiagram\nstyle A fill:#f00;\u2028\n",
+      "erDiagram\n  style A fill:#f00;\u2028\n",
+    ],
+    [
+      "style semicolons: er before U+2029",
+      "erDiagram\nstyle A fill:#f00;\u2029\n",
+      "erDiagram\n  style A fill:#f00;\u2029\n",
+    ],
+    [
+      "style semicolons: requirement before U+2028",
+      "requirementDiagram\nclassDef c fill:#f00%%{wrap;\u2028\n",
+      "requirementDiagram\n  classDef c fill:#f00%%{wrap;\u2028\n",
+    ],
+    [
+      "style semicolons: requirement before U+2029",
+      "requirementDiagram\nclassDef c fill:#f00%%{wrap;\u2029\n",
+      "requirementDiagram\n  classDef c fill:#f00%%{wrap;\u2029\n",
+    ],
+    [
+      "style semicolons: block before U+2028",
+      "block\nA\nstyle A fill:#f00;\u2028\n",
+      "block\n  A\n  style A fill:#f00;\u2028\n",
+    ],
+    [
+      "style semicolons: block before U+2029",
+      "block\nA\nstyle A fill:#f00;\u2029\n",
+      "block\n  A\n  style A fill:#f00;\u2029\n",
+    ],
+    [
+      "style semicolons: venn before U+2028",
+      "venn-beta\nset A\nstyle A fill:#f00%%{wrap;\u2028\n",
+      "venn-beta\nset A\nstyle A fill:#f00%%{wrap;\u2028\n",
+    ],
+    [
+      "style semicolons: venn before U+2029",
+      "venn-beta\nset A\nstyle A fill:#f00%%{wrap;\u2029\n",
+      "venn-beta\nset A\nstyle A fill:#f00%%{wrap;\u2029\n",
+    ],
+    [
+      "style semicolons: usecase before U+2028",
+      "usecase-beta\nA\nclassDef c fill:#f00%%{wrap;\u2028\n",
+      "usecase-beta\n  A\n  classDef c fill:#f00%%{wrap;\u2028\n",
+    ],
+    [
+      "style semicolons: usecase before U+2029",
+      "usecase-beta\nA\nclassDef c fill:#f00%%{wrap;\u2029\n",
+      "usecase-beta\n  A\n  classDef c fill:#f00%%{wrap;\u2029\n",
+    ],
+    [
+      "style semicolons: state CRLF terminator",
+      "stateDiagram-v2\r\nstyle A fill:red ;\r\n",
+      "stateDiagram-v2\n  style A fill:red\n",
+    ],
+    [
+      "style semicolons: state trailing tab",
+      "stateDiagram-v2\nclassDef c fill:#f00;\t\n",
+      "stateDiagram-v2\n  classDef c fill:#f00\n",
+    ],
+    [
+      "style semicolons: class EOF terminator",
+      "classDiagram\nclass A\nstyle A fill:#f00;",
+      "classDiagram\n  class A\n  style A fill:#f00\n",
+    ],
+  ])("%s", async (_title, input, expected) => {
+    const output = await format(input)
+    expect(output).toBe(expected)
+    expect(await format(output)).toBe(output)
+    expect(dbOfText(output, defaultEmbedded())).toEqual(
+      dbOfText(input, defaultEmbedded()),
+    )
+    expect(writtenEmbeddedTexts(output)).toEqual(writtenEmbeddedTexts(input))
+    expect(writtenTextKeptUpToSemicolons(input, output)).toBe(true)
+    expect(await describeFrontmatterChange(input, output)).toBeNull()
   })
 })

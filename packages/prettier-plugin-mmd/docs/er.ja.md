@@ -373,12 +373,14 @@ state も 1 行に 1 つの文を印字します。
 そのような実体の行は書かれたまま印字し、その行で終わる subgraph も、
 ヘッダーから `end` まで、行ごとの 1 段の字下げなしで書かれたまま印字します。
 [fixture: statements-one-per-line/number-name-then-name-kept]
+[fixture: statements-one-per-line/number-name-before-uppercase]
+[fixture: statements-one-per-line/number-name-before-non-ascii]
 [fixture: statements-one-per-line/number-name-in-subgraph-kept]
 [fixture: statements-one-per-line/number-name-before-end-kept]
 [fixture: statements-one-per-line/number-name-before-directive-kept]
 [fixture: statements-one-per-line/number-name-then-name-split]
 [corpus fixture: er/lex-name-number-then-letter]
-また、`;` がある行は、その文を一緒に残します。
+また、保持する `;` がある行は、その文を一緒に残します。
 mermaid.js の行の規則は行のテキストを読み、テキストを別の行に動かすと、
 規則に合う行と、規則が無視する `;` が、
 変わるからです（[スタイルとクラス](#スタイルとクラス)を参照）。
@@ -973,8 +975,8 @@ Mermaid はスタイルの単位をつなげて読むため、
 `fill   : navy, stroke  : black` は `fill: navy, stroke: black` にします。
 `stroke-dasharray:  5    5` は、値の間の空白 4 つを保ちます。
 通常はつなげる見出しや外側の改行があっても、最初の整形で同じ間隔にします。
-スタイル内部の改行区切り、所有する trivia、同じ物理行のセミコロンがある場合は、
-既存のスタイルの配置を保ちます。
+スタイル内部の改行区切り、所有する trivia、
+同じ物理行に保持するセミコロンがある場合は、既存のスタイルの配置を保ちます。
 キーワードの大文字小文字は保ちます。
 [fixture: styles-and-classes/style-unit-padding]
 [fixture: styles-and-classes/class-def-names]
@@ -1003,19 +1005,15 @@ Db は同じで mermaid.js の読みも見えますが、作者が書いた空�
 [corpus fixture: er/lex-classdef-space-before-line-feed]
 [corpus fixture: er/lex-style-tab-before-line-feed]
 
-`classDef` と `style` の文を終える `;` は、
-最後のスタイルとの間にあるものと一緒に、書かれたまま残します。
-mermaid.js の行の規則が無視する `;` も同じです。
-規則は、`style` と、その後の `#` の前の `:` を含む行の最後の `;` を、
-mermaid.js が読む前にテキストから取り除くので、
-その `;` がある行は文を一緒に残し、 `;` を残します。
-[fixture: styles-and-classes/ending-semicolon-kept]
-[fixture: styles-and-classes/ignored-semicolon-kept]
-[corpus fixture: er/lex-classdef-semicolon-line-feed]
-[corpus fixture: er/lex-classdef-ignored-semicolon]
-行の規則は、`:` と `#` の間に空白がないときだけ `;` を無視するので、
-その間の空白は書かれたままです。
-`style A fill: #f00;` は空白を保ちます。
+行末のセミコロンは、
+[スタイル文の末尾のセミコロン](#スタイル文の末尾のセミコロン)に従います。
+最後のスタイルとの間にディレクティブがある終端の単位は、
+その間の内容と一緒に残します。
+[fixture: styles-and-classes/ending-semicolon-rules]
+行の規則は、`:` と `#` の間に空白がないときだけ `;` を無視します。
+規則が適用されないときは `#f00;` が実体参照になり、
+`;` の削除で Db が変わるので、
+`style A fill: #f00;` は空白とセミコロンを保ちます。
 [fixture: styles-and-classes/space-after-colon-before-hash-kept]
 
 入力
@@ -1057,7 +1055,7 @@ erDiagram
 ```
 
 入力
-([styles-and-classes/ending-semicolon-kept-input.mmd](../tests/fixtures/er/styles-and-classes/ending-semicolon-kept-input.mmd)):
+([styles-and-classes/ending-semicolon-rules-input.mmd](../tests/fixtures/er/styles-and-classes/ending-semicolon-rules-input.mmd)):
 
 ```mmd
 erDiagram
@@ -1070,15 +1068,15 @@ style D fill:blue%%{init: {}}%%;
 ```
 
 出力
-([styles-and-classes/ending-semicolon-kept-output.mmd](../tests/fixtures/er/styles-and-classes/ending-semicolon-kept-output.mmd)):
+([styles-and-classes/ending-semicolon-rules-output.mmd](../tests/fixtures/er/styles-and-classes/ending-semicolon-rules-output.mmd)):
 
 ```mmd
 erDiagram
-  classDef a fill:red;
+  classDef a fill: red
   A
-  classDef b fill:red ;
+  classDef b fill: red
   B
-  style C fill:blue;
+  style C fill: blue
   style D fill:blue%%{init: {}}%%;
 ```
 
@@ -1531,6 +1529,55 @@ erDiagram
   }
 ```
 
+### スタイル文の末尾のセミコロン
+
+`classDef` または `style` 文の行末の `;` は、
+[mermaid.js の行の規則](../../spec/docs/common.ja.md#style-行と-classdef-行)
+が無視するときに削除します。
+`:` と後の `#` の間に空白がない形です。
+この終端を削除しても Db は変わらず、スタイルが複数でも同じです。
+[fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
+その行は、スタイルの空白を含め、その `;` がない行として整形します。
+[fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
+文の前後の空行とコメント行は、通常の配置に従います。
+[fixture: semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines]
+空の description block も通常の配置に従い、スタイルの終端は削除します。
+[fixture: semicolons-at-the-end-of-a-style-statement/empty-description-block]
+
+文に `#` がない場合は、文を終える `;` の単位も、直前の空白と一緒に削除します。
+[fixture: semicolons-at-the-end-of-a-style-statement/unit-terminators]
+最後のスタイルとその単位の間にディレクティブがある場合は、
+その間の内容と `;` を書かれたまま残します。
+[fixture: semicolons-at-the-end-of-a-style-statement/directive-before-unit-kept]
+`#` があって行の規則が適用されない場合は、`;` を残します。
+`#f00;` は実体参照なので、終端を削除すると Db が変わるためです。
+[fixture: semicolons-at-the-end-of-a-style-statement/hash-outside-line-rule-kept]
+
+同じ行でセミコロンの後にディレクティブが続く場合は、`;` を保ちます。
+[fixture: semicolons-at-the-end-of-a-style-statement/trailing-items-kept]
+無視される `;` が別の `;` の隣にある場合は、行の規則の選択を保つために残します。
+[fixture: semicolons-at-the-end-of-a-style-statement/adjacent-semicolons-kept]
+閉じていないディレクティブの後の `;` は、その停止位置を保つために残します。
+[fixture: semicolons-at-the-end-of-a-style-statement/unclosed-directive-kept]
+U+2028 と U+2029 の前も同じように保護します。
+[`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)を参照してください。
+[test: style semicolons: er before U+2028]
+[test: style semicolons: er before U+2029]
+文と無視される終端の間にある閉じたディレクティブは残し、`;` は削除します。
+[fixture: semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+
+出力
+([semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd](../tests/fixtures/er/semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd)):
+
+```mmd
+erDiagram
+  A
+  classDef c fill: #f00
+  style A fill: #f00
+  classDef d fill: #0f0, stroke: #00f
+  style A fill: #0f0, stroke: #00f
+```
+
 ### 複数行の文
 
 mermaid.js が複数行にわたって読む文は、
@@ -1607,3 +1654,14 @@ ER 図では、空白そのものを読む規則を除き、これらは名前�
 [test: U+2028 between direction and its value]
 [test: U+2028 in the text after a direction]
 [test: U+2028 inside an attribute name]
+
+実体のヘッダー、subgraph のヘッダー、クラス定義で、
+U+2028 や U+2029 の後にコメント行がある範囲は書かれたまま残します。
+mermaid.js がコメント行とその前の空白を除き、
+後続の行を区切り文字の前のテキストにつなぐためです。
+[test: a comment line after U+2028 in an ER entity header]
+[test: a comment line after U+2029 in an ER entity header]
+[test: a comment line after U+2028 in an ER subgraph header]
+[test: a comment line after U+2029 in an ER subgraph header]
+[test: a comment line after U+2028 in an ER class definition]
+[test: a comment line after U+2029 in an ER class definition]

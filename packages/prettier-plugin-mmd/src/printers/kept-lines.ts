@@ -1,10 +1,11 @@
 import type { Range } from "@mmd-toolkit/parser"
-import { minOf, maxOf } from "./collections.ts"
+import { findNodes, minOf, maxOf } from "./collections.ts"
 import type { Source } from "./source.ts"
 import {
   findDirectiveEndingAt,
   findFirstIndex,
   findTriviaAt,
+  findTokenEndingBefore,
   findTokenStartingAt,
   findTokensBetween,
   findTriviaBetween,
@@ -179,7 +180,11 @@ export function findLinesWithOwnSemicolons(
   /** Adds the lines of the `;` characters in a range. */
   function addSemicolonsIn(range: Range): void {
     for (let offset = range[0]; offset < range[1]; offset++) {
-      if (text[offset] === ";" && !rules.grammatical.has(offset))
+      if (
+        text[offset] === ";" &&
+        !rules.grammatical.has(offset) &&
+        !isDroppedSemicolon(source, offset)
+      )
         lines.add(lineStartOf(source, offset))
     }
   }
@@ -189,7 +194,7 @@ export function findLinesWithOwnSemicolons(
       addSemicolonsIn(token.range)
     } else if (
       !rules.grammatical.has(token.range[0]) &&
-      (rules.kind === "text" ||
+      ((rules.kind === "text" && !isDroppedSemicolon(source, token.range[0])) ||
         (source.ignoredSemicolons.has(token.range[0]) &&
           (rules.kind === "required" ||
             !isLastOnItsLine(source, token.range[0]))))
@@ -358,22 +363,165 @@ export function isLastOnItsLine(source: Source, offset: number): boolean {
 /**
  * Whether the printer drops the `;` at `offset`: one that the line rule
  * ignores at the end of its line, which is dropped as a `;` that separates
- * statements is, since mermaid.js removes it from the text. Not one right
- * after a comment: with whitespace after it, the `;` lies inside the comment,
- * which is printed as written, and a `;` that was dropped only when it stands
- * outside the comment would make a second formatting differ from the first
- * (ast.md, Comment). Not one in a diagram type where no `;` separates
- * statements: there the line that holds it is kept as written, with the `;`.
- * Required punctuation is never dropped, including selected semicolons in a
- * diagram with required terminators (see `semicolonRulesOf`).
+ * statements is, since mermaid.js removes it from the text, and the `;` that
+ * ends a `classDef` or `style` statement (see `styleSemicolonsOf`). Not one
+ * right after a comment: with whitespace after it, the `;` lies inside the
+ * comment, which is printed as written, and a `;` that was dropped only when
+ * it stands outside the comment would make a second formatting differ from the
+ * first (ast.md, Comment). Not one in a diagram type where no `;` separates
+ * statements, unless it ends such a statement: there the line that holds it is
+ * kept as written, with the `;`. Required punctuation is never dropped,
+ * including selected semicolons in a diagram with required terminators (see
+ * `semicolonRulesOf`).
  */
 export function isDroppedSemicolon(source: Source, offset: number): boolean {
-  return (
-    semicolonRulesOf(source).kind === "separators" &&
-    source.ignoredSemicolons.has(offset) &&
-    isLastOnItsLine(source, offset) &&
-    !source.root.comments.some((comment) => comment.range[1] === offset)
-  )
+  if (
+    !isLastOnItsLine(source, offset) ||
+    source.root.comments.some((comment) => comment.range[1] === offset)
+  ) {
+    return false
+  }
+  const { kind } = semicolonRulesOf(source)
+  if (source.ignoredSemicolons.has(offset)) {
+    return (
+      kind === "separators" ||
+      (kind === "text" && endsStyleStatement(source, offset))
+    )
+  }
+  return kind === "text" && styleSemicolonsOf(source).terminators.has(offset)
+}
+
+/**
+ * Whether the text from `start` to `end` holds a `;` that the printer keeps:
+ * every `;` but one that it drops (see `isDroppedSemicolon`). A decision that
+ * the printed text would make again on a second formatting reads the text as
+ * it is printed, without the dropped `;`.
+ */
+export function holdsKeptSemicolon(
+  source: Source,
+  start: number,
+  end: number,
+): boolean {
+  for (
+    let offset = source.text.indexOf(";", start);
+    offset !== -1 && offset < end;
+    offset = source.text.indexOf(";", offset + 1)
+  ) {
+    if (!isDroppedSemicolon(source, offset)) return true
+  }
+  return false
+}
+
+/**
+ * The `;` that end `classDef` and `style` statements, where dropping the `;`
+ * leaves the Db as it is, found once per source: `ends` holds the offsets
+ * where the statements end, after which a `;` that the line rule ignores
+ * stands, and `terminators` the offsets of a `;` that is in the range of a
+ * statement:
+ *
+ * - the `;` unit that ends an ER statement, when no `#` lies in it (mermaid.js
+ *   reads `#f00;` as an entity, so with a `#` the `;` is part of it) and no
+ *   comment or directive stands between the last style and the `;`.
+ * - the last character of the last style of a state statement or a block
+ *   `classDef` statement, when it is the only `;` of that style, something
+ *   else than a `;` stands in it, and no `#` lies in the statement: mermaid.js
+ *   removes the first `;` of each style from its text.
+ */
+interface StyleSemicolons {
+  readonly ends: ReadonlySet<number>
+  readonly terminators: ReadonlySet<number>
+}
+
+/**
+ * The node types of the `classDef` and `style` statements whose `;` may be
+ * dropped.
+ */
+const styleStatementTypes: ReadonlySet<string> = new Set([
+  "ClassClassDefStatement",
+  "ClassStyleStatement",
+  "StateClassDefStatement",
+  "StateStyleStatement",
+  "ErClassDefStatement",
+  "ErStyleStatement",
+  "RequirementClassDefStatement",
+  "RequirementStyleStatement",
+  "BlockClassDefStatement",
+  "BlockStyleStatement",
+  "VennStyleStatement",
+  "UsecaseClassDefStatement",
+  "UsecaseStyleStatement",
+])
+
+const styleSemicolonsBySource = new WeakMap<Source, StyleSemicolons>()
+
+/** The `;` of the style statements of a source. */
+function styleSemicolonsOf(source: Source): StyleSemicolons {
+  const cached = styleSemicolonsBySource.get(source)
+  if (cached !== undefined) return cached
+  const ends = new Set<number>()
+  const terminators = new Set<number>()
+  for (const node of findNodes(source.root.body, (candidate) =>
+    styleStatementTypes.has(candidate.type),
+  )) {
+    ends.add(node.range[1])
+    const statementText = source.text.slice(...node.range)
+    if (statementText.includes("#")) continue
+    if (
+      node.type === "ErClassDefStatement" ||
+      node.type === "ErStyleStatement"
+    ) {
+      const last = findTokenEndingBefore(source, node.range[1])
+      const style = node.styles.at(-1)
+      // A directive between the last style and the `;` is printed with them
+      // as written, with the `;`.
+      if (
+        last?.value === ";" &&
+        last.type === "Punctuator" &&
+        style !== undefined &&
+        findTriviaBetween(source, style.range[1], last.range[0]).length === 0
+      )
+        terminators.add(last.range[0])
+    } else if (
+      node.type === "StateClassDefStatement" ||
+      node.type === "StateStyleStatement" ||
+      node.type === "BlockClassDefStatement"
+    ) {
+      const style = node.styles.findLast((item) => item !== null)
+      if (style === undefined || style === null) continue
+      const text = source.text.slice(...style.range)
+      if (
+        text.endsWith(";") &&
+        text.indexOf(";") === text.length - 1 &&
+        text.slice(0, -1).trim() !== ""
+      )
+        terminators.add(style.range[1] - 1)
+    }
+  }
+  const found = { ends, terminators }
+  styleSemicolonsBySource.set(source, found)
+  return found
+}
+
+/**
+ * Whether the `;` that the line rule ignores at `offset` ends a `classDef` or
+ * `style` statement: only whitespace and directives lie between the end of the
+ * statement and the `;`.
+ */
+function endsStyleStatement(source: Source, offset: number): boolean {
+  const { ends } = styleSemicolonsOf(source)
+  let position = offset
+  while (position > 0) {
+    if (ends.has(position)) return true
+    const directive = findDirectiveEndingAt(source, position)
+    if (directive !== undefined) {
+      position = directive.range[0]
+      continue
+    }
+    const character = source.text[position - 1]
+    if (character === "\n" || !isWhitespace(character)) return false
+    position--
+  }
+  return false
 }
 
 /**
@@ -728,9 +876,24 @@ export function semicolonSegmentEnd(source: Source, offset: number): number {
   return stop
 }
 
+/**
+ * The offset of the last `;` that the printer keeps (see `isDroppedSemicolon`)
+ * before `end`, or -1 where there is none.
+ */
+export function lastKeptSemicolonBefore(source: Source, end: number): number {
+  for (
+    let offset = source.text.lastIndexOf(";", end - 1);
+    offset !== -1;
+    offset = offset === 0 ? -1 : source.text.lastIndexOf(";", offset - 1)
+  ) {
+    if (!isDroppedSemicolon(source, offset)) return offset
+  }
+  return -1
+}
+
 /** The end of the protected prefix on the segment holding `offset`. */
 export function keptSemicolonPrefixEnd(source: Source, offset: number): number {
   const end = semicolonSegmentEnd(source, offset)
-  const semicolon = source.text.lastIndexOf(";", end - 1)
+  const semicolon = lastKeptSemicolonBefore(source, end)
   return semicolon >= offset ? semicolon + 1 : offset
 }

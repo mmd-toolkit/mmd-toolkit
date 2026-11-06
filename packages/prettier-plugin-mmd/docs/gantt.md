@@ -1073,7 +1073,8 @@ gantt
 A comment starts with `%%` or `%`, where a unit starts, and runs to the end of
 the line. A comment on a line of its own stands at the level of the statements
 around it, and its text and its mark are kept as written. [fixture:
-comments/lines-at-statement-level] [fixture: comments/text-kept] [fixture:
+comments/lines-at-statement-level] [fixture:
+comments/directive-before-comment-line] [fixture: comments/text-kept] [fixture:
 comments/single-percent-kept] [fixture: comments/bare-percent-lines] A comment
 line stands at the level of the statement after it, so a comment before a
 `section` stands at its level, and one before a task stands at the level of the

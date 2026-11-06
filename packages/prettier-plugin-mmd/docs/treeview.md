@@ -49,6 +49,10 @@ body-retention conditions in Branch prefixes. Common statement prefixes are
 removed and ordinary common statements use column one, so they do not appear as
 children.
 
+Box characters inside a comment line do not select box mode; in indentation mode
+that comment aligns with the following statement. [fixture:
+treeview/modes/comment-excluded]
+
 [corpus fixture: treeview/box-written-tree]
 
 [corpus fixture: treeview/box-heavy]
@@ -246,6 +250,10 @@ treeview/statements-one-per-line/review159-box-quoted-unprefixed-leading-ps]
 
 [fixture: treeview/branch-prefixes/box-redraw-nested-mixed-weights]
 
+A branch whose name is a `;` alone is a node: nothing follows its prefix, and
+the prefix is drawn like any other. [fixture:
+treeview/branch-prefixes/branch-semicolon-name]
+
 Choose body retention once before drawing. Keep the complete body as written if
 an outer prefix or its separator crosses arbitrary text, a directive, selected
 semicolon or comment region, or a decoration line crosses shared trivia. Also
@@ -257,6 +265,10 @@ whitespace in a name on a new unprefixed line. These conditions compose; one
 protected row can determine the first positive branch column for every other
 row. Body-retained diagrams are exempt from visual agreement. Names, values,
 arbitrary prefix text and shared trivia are never discarded.
+
+[test: treeview/branch-prefixes/uppercase-entity-and-tab-column]
+
+[fixture: treeview/branch-prefixes/retained-unprefixed-annotation-decoration]
 
 [test: treeview/annotation-lines/box-redraw-comment-region-prefix-ls]
 
@@ -513,6 +525,8 @@ treeview/semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
 ### Decorations
 
 [fixture: treeview/decorations/explicit-empty-description-trivia]
+
+[fixture: treeview/decorations/pending-name-before-first-root]
 
 Redraw each ordinary outer decoration once as the guide continuing toward the
 next node, or as a blank line when no tree continues there. Apply this at body,
@@ -1213,6 +1227,10 @@ rejected. Joining removes a false child branch; replacing it with a vertical
 guide creates a vertical-bar node. Preserve all repeated classes, icons and
 descriptions.
 
+[test: treeview/annotation-lines/empty-description-after-unrelated-region-ls]
+
+[test: treeview/annotation-lines/empty-description-after-unrelated-region-ps]
+
 [test: treeview/annotation-lines/review159-region-line-rule-semicolon]
 
 [test: treeview/annotation-lines/review159-region-class-ls-four]
@@ -1739,6 +1757,8 @@ the closer. Unsafe removal follows Branch prefixes, including common-value tabs.
 A sole mode selector in the opener gap keeps just that gap, as described in
 Decorations.
 
+[fixture: treeview/description-blocks/geometry-with-opener-directive]
+
 [fixture: treeview/decorations/review159-sole-opener-selector]
 
 [fixture: treeview/decorations/review159-sole-opener-selector-empty-block]
@@ -1876,15 +1896,53 @@ treeview/annotation-lines/box-redraw-sole-common-mode-selector-preserved]
 
 ### Comments
 
-Put ordinary standalone comment marks at column one and keep inline comments on
-their line, preserving marks, contents and tails, including native LS/PS. Move
-meaningful indentation runs once to their assigned node. In a drawable box
-diagram remove a native comment's structural prefix and draw that assigned
-branch once on the node's name line. The comment is not a tree child. Percent
-text inside names, descriptions or blocks stays value text; common joining
-regions and unsafe prefix intersections follow body retention.
+In indentation mode, align standalone comment lines with the next statement, or
+the last statement at EOF, to show their association, as in
+[ishikawa](./ishikawa.md#comments), [kanban](./kanban.md#comments) and
+[mindmap](./mindmap.md#comments). A comment may move deeper or shallower,
+including before a dedent; successive comments share the target column even
+across blank lines. [fixture: treeview/comments/comment-standalone-aligned]
+[fixture: treeview/comments/aligned-depths] [fixture:
+treeview/comments/aligned-final] [fixture:
+treeview/comments/aligned-blank-lines]
 
-[fixture: treeview/comments/comment-standalone-column-one]
+The aligned forms include `%% text`, `%%!`, `%%!x`, `%%%`, `%%` followed by
+spaces, and `%% {x}`. [fixture: treeview/comments/aligned-forms] [fixture:
+treeview/comments/comment-mark-spliced-directive] Use the statement's configured
+indentation, including tabs and the positive minimum step at tabWidth zero.
+[fixture: treeview/comments/aligned-tabs] [fixture:
+treeview/comments/aligned-zero] Comments before the header or in a body without
+statements stand at column one. [fixture: treeview/comments/before-header]
+[fixture: treeview/comments/only-comments]
+
+In box mode, ordinary structural lines start at column one, before their
+branches or guides. Comment lines also start there, rather than at the node's
+name column: mermaid.js accepts indented comment lines, but shifting them would
+misalign the starts of successive lines. [fixture:
+treeview/comments/box-standalone]
+
+Between statements, keep a line of only `%%`, a line starting with `%%{` without
+being a directive, and a standalone directive at column one: mermaid.js rejects
+them when indented in indentation mode. Keep this distinction in mixed runs and
+at EOF. [fixture: treeview/comments/comment-bare-native] [fixture:
+treeview/comments/native-nonword] [fixture:
+treeview/comments/unclosed-directive] [fixture:
+treeview/comments/mixed-directives] [fixture: treeview/comments/native-final]
+Comment lines around an empty description block or a semicolon-protected title
+still align with the following statement. [fixture:
+treeview/comments/aligned-empty-description] [fixture:
+treeview/comments/aligned-protected-title]
+
+Keep inline comments on their line, preserving marks, contents and tails,
+including native LS/PS. [test: treeview/comments/standalone-ls] [test:
+treeview/comments/standalone-ps] Move meaningful indentation runs once to their
+assigned node. In a drawable box diagram remove a native comment's structural
+prefix and draw that assigned branch once on the node's name line. The comment
+is not a tree child. Percent text inside names, descriptions or blocks stays
+value text; common joining regions and unsafe prefix intersections follow body
+retention.
+
+[fixture: treeview/comments/comment-standalone-aligned]
 
 [fixture: treeview/comments/comment-bare-native]
 
@@ -1995,6 +2053,12 @@ keep following gaps while they fit, shorten excess from the last gap, then
 supply the remaining indentation before the first directive. This preserves the
 assigned indent without duplicating earlier carried runs. Multiline interiors,
 value-owned forms and unfinished EOF directives remain written.
+
+[fixture: treeview/directives/before-unprefixed-box-root]
+
+[test: treeview/directives/unclosed-final-whitespace-ls]
+
+[test: treeview/directives/unclosed-final-whitespace-ps]
 
 [fixture: treeview/directives/review159-box-tail-directive-gap]
 
@@ -2199,7 +2263,7 @@ Output
 ```mmd
 treeView-beta
   R
-%% note
+    %% note
 
     C
 ```

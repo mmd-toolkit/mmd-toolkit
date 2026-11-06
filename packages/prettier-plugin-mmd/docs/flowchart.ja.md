@@ -316,6 +316,7 @@ flowchart LR
 `;` が後の行にあるときも、`;` はそのまま残り、その前の空白も書かれたまま、
 `subgraph` の行の一部になります。
 [corpus fixture: flowchart/semicolon-after-end-name-2a3a795c]
+[fixture: statements-one-per-line/name-semicolon-after-directive-line]
 名前の後の改行を読むのは `end` と `click` だけで、一覧のほかの単語は、
 文のテキストと一覧を共用しているために入っています。
 そこで `;` を残しても、 mermaid.js が読むものは変わりません。
@@ -328,6 +329,11 @@ flowchart LR
 ディレクティブが単語を切っていても同じです。
 mermaid.js はテキストを読む前にディレクティブを取り除くからです。
 [fixture: statements-one-per-line/semicolon-after-word-cut-by-directive-kept]
+
+`accTitle` で終わる名前の後の `;` は独立した文として、
+subgraph 内の単独の行に置きます。
+subgraph のメンバーの 1 つだからです。
+[fixture: statements-one-per-line/name-followed-by-empty-statement]
 
 入力
 ([statements-one-per-line/semicolon-after-end-name-kept-input.mmd](../tests/fixtures/flowchart/statements-one-per-line/semicolon-after-end-name-kept-input.mmd)):
@@ -1272,6 +1278,15 @@ mermaid.js は、2 行目以降が字下げされていると、その一部を�
 [fixture: multi-line-statements/click-forms-kept]
 [fixture: multi-line-statements/click-comment-inside-kept]
 
+図のヘッダーや subgraph のヘッダーで、
+U+2028 や U+2029 の後にコメント行がある範囲は書かれたまま残します。
+mermaid.js がコメント行とその前の空白を除き、
+後続の行を前のテキストにつなぐためです。
+[test: a comment line after U+2028 in a flowchart header]
+[test: a comment line after U+2029 in a flowchart header]
+[test: a comment line after U+2028 in a flowchart subgraph header]
+[test: a comment line after U+2029 in a flowchart subgraph header]
+
 入力
 ([multi-line-statements/continuation-indented-input.mmd](../tests/fixtures/flowchart/multi-line-statements/continuation-indented-input.mmd)):
 
@@ -1330,6 +1345,140 @@ flowchart LR
   A
   click A
 cb
+```
+
+### データブロック
+
+各 `@{ ... }` の頂点への付着を保ち、YAML の整形や、キー、値、区切り、
+行数の変更はしません。
+移動できる複数行ブロックでは、本文の全行を同じ数の半角空白だけ動かし、
+文字がある最も浅い行を文の 1 段内側に置きます。
+入れ子の YAML を含む行どうしの字下げの差を保ち、内側にも外側にも動かします。
+単独行の `}` は文の段に揃え、
+本文の後の `}` はその行に残して行と一緒に動かします。
+[fixture: data-blocks/zero-and-shallow] [fixture: data-blocks/deep-nested-yaml]
+[fixture: data-blocks/closing-after-text]
+
+次の条件をすべて満たす場合だけ動かし、満たさなければ書かれた桁を保ちます。
+
+- `@{` の直後が改行であること。
+  Mermaid は最初の行の桁を開きから、後の行をソースの行頭から数えるため、
+  `A@{ shape: rect` の次行の `label: x` を字下げすると、
+  受理される YAML が拒否されます。 [fixture: data-blocks/inline-opening-kept]
+  開きと改行の間に空白がある場合も、書かれたまま残します。
+  [fixture: data-blocks/opening-padding-kept]
+- 本文の各行の行頭の空白が半角空白だけであること。
+  Mermaid は flowchart と kanban のタブで字下げした YAML を拒否し、
+  移動量も半角空白で数えます。 [test: data blocks: JSON leading tab kept]
+- ブロックに `%%{` がないこと。
+  directive のテキストと桁は書かれたまま保ちます。
+  [fixture: data-blocks/directive-inside-kept]
+- 最も浅い文字のある行が 0 桁なら、そこから始まる行の先頭が `---`、`...`、
+  `%` でないこと。
+  文書の印や YAML directive を 0 桁から動かすと、
+  受理される YAML が拒否される場合があります。
+  [fixture: data-blocks/document-start-kept]
+  [fixture: data-blocks/document-end-kept]
+  [fixture: data-blocks/yaml-directive-kept]
+- `}` が単独行と言えるのは、前に半角空白だけがあり、
+  その幅が文字のある最も浅い行以下のときだけであること。
+  `}` の前の空白は、Mermaid がブロックのテキストの最後の行として読み、
+  literal や folded のスカラーが残します。
+  それより深い半角空白は、空白だけの行として値に入り、
+  `}` を文の桁へ動かすと消えます。
+  `}` の前のタブ、NBSP、U+2028 も、その行の文字なので、その行は本文の行で、
+  行頭の空白が半角空白だけではありません。
+  最も浅い行と同じ幅の半角空白は動かします。
+  [fixture: data-blocks/closing-deeper-kept]
+  [fixture: data-blocks/closing-tab-kept]
+  [fixture: data-blocks/closing-equal-depth]
+  [test: data blocks: flowchart NBSP before the closer]
+  [test: data blocks: flowchart U+2028 before the closer]
+  [test: data blocks: flowchart U+2029 before the closer]
+- `tabWidth` が 0 でないこと。
+  0 では内側の字下げの段がありません。 [fixture: data-blocks/zero-width-kept]
+- ブロックの行と開始行が、行全体を残す行でないこと。
+  セミコロンの行規則による保持も含みます。
+  一部だけ動かすと、その行の保持に反します。
+  [fixture: data-blocks/kept-body-line] [fixture: data-blocks/kept-opening-line]
+- ブロックが文の最初の行から始まること。
+  その行の字下げを文の段として使うため、
+  `A -->` の改行後のブロックは桁を残します。
+  [fixture: data-blocks/later-statement-line-kept]
+- 文に、1 行でも複数行でも、ほかのブロックがないこと。
+  1 つ動かすと、次のブロックは文の最初でない行から始まることになり、
+  `}@{` のように接するブロックは 1 つのテキストとして読まれます。
+  ブロックを 2 つ持つ文は、どちらも書かれたまま残します。
+  [fixture: data-blocks/second-block-kept]
+  [fixture: data-blocks/adjacent-single-line-after-kept]
+  [fixture: data-blocks/adjacent-single-line-before-kept]
+  [fixture: data-blocks/separate-single-line-block-kept]
+  [fixture: data-blocks/edge-adjacent-single-line-kept]
+
+本文に文字がないブロックには最も浅い文字のある行がないため、
+書かれたまま残します。 [fixture: usecase/json-tables/empty-body-kept]
+
+同じ移動を agentflow の metadata、kanban の data、usecase の JSON table、
+sequence の参加者データにも適用します。
+sequence では、文字がある本文行がちょうど 1 行であることも必要です。
+Mermaid はブロック全体を trim して最初の行の字下げだけを除くため、
+後のキーを字下げすると受理される YAML が拒否される場合があります。
+[Metadata blocks](./agentflow.ja.md#metadata-blocks)、
+[データブロック](./kanban.ja.md#データブロック)、
+[JSON tables](./usecase.ja.md#json-tables)、
+[複数行の値](./sequence.ja.md#複数行の値)を参照してください。
+
+空白だけの行も同じ量だけ動かし、空白がなくなる場合は空行にします。
+空行は空のままにします。
+本文の各行の末尾空白は保ちます。
+literal block scalar は空白行の幅と末尾空白を読むため、
+変えると Db が変わる場合があります。 [fixture: data-blocks/scalar-blank-lines]
+[fixture: data-blocks/scalar-blank-lines-outdent]
+
+`useTabs` でも本文の字下げと単独行の `}` は半角空白にし、
+`}` は文の桁に置きます。
+`}` の前のタブは、空行を残すスカラー（`|+`、`>+`）で、
+ブロックの最後の行を文字のある行にし、値を変えます。
+[fixture: data-blocks/tab-statement-space-body]
+[fixture: data-blocks/closing-with-tabs-keeps-empty-lines]
+[fixture: data-blocks/closing-with-tabs-keeps-folded-empty-lines]
+
+前後の directive、コメント、空行、空の説明ブロック、
+捨てる文区切りの `;` はそれぞれの規則に従います。
+CRLF と CR は `endOfLine` に従い、値の U+2028 と U+2029 は文字として保ちます。
+[fixture: data-blocks/surrounding-trivia] [test: data blocks: flowchart CRLF]
+[test: data blocks: flowchart CR] [test: data blocks: flowchart U+2028]
+[test: data blocks: flowchart U+2029]
+
+移動できるブロック内の字下げしたコメント行は、ほかの本文行と一緒に動かし、
+書かれた行とテキストを保ちます。 [fixture: data-blocks/indented-comment-line]
+
+入力
+([data-blocks/deep-nested-yaml-input.mmd](../tests/fixtures/flowchart/data-blocks/deep-nested-yaml-input.mmd)):
+
+```mmd
+flowchart LR
+subgraph Group
+A@{
+        label: Alpha
+        custom:
+          nested: yes
+ }
+end
+```
+
+出力
+([data-blocks/deep-nested-yaml-output.mmd](../tests/fixtures/flowchart/data-blocks/deep-nested-yaml-output.mmd)):
+
+```mmd
+flowchart LR
+  subgraph Group
+    A@{
+      label: Alpha
+      custom:
+        nested: yes
+    }
+  end
 ```
 
 ### 複数行の値
@@ -1976,7 +2125,8 @@ flowchart LR
   ヘッダーのキーワード（`graph` か `flowchart`）。
   [fixture: arrow-spacing/arrow-length-kept]
   [fixture: direction/header-keyword-kept]
-- `@{ ... }` のデータブロックとディレクティブの中身。
+- ディレクティブの中身と、
+  [データブロック](#データブロック)の一定量の字下げを除く `@{ ... }` の中身。
   パーサーは読みません。 [fixture: whitespace-between-tokens/data-block-kept]
   [fixture: directives/content-kept]
   [fixture: whitespace-between-tokens/compat-unknown-shape-data-block-kept]

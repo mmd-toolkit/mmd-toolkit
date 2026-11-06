@@ -48,6 +48,13 @@ namespace が 1 行に書かれていても同じです。 [fixture: indentation
 共有の下限を使います。 [fixture: indentation/namespaces]
 [fixture: indentation/written-indentation-dropped]
 
+namespace またはメンバー本体を開く行を、
+U+2028 または U+2029 の後のコメント領域が分ける場合は、
+書かれた行と空白を保ちます。
+mermaid.js が、除いたコメントの前後の文字を結合するためです。
+[test: class: ls-comment-in-namespace-opening]
+[test: class: ps-comment-in-member-opening]
+
 入力
 ([indentation/namespaces-input.mmd](../tests/fixtures/class/indentation/namespaces-input.mmd)):
 
@@ -406,6 +413,10 @@ classDiagram
 [fixture: arrow-spacing/touching-call-kept]
 [fixture: arrow-spacing/touching-call-colon-kept]
 [corpus fixture: class/lex-call-prefix]
+
+ASCII の単語の中では、英字、数字、`_` の後の `call` はキーワードを始めないので、
+通常の矢印の空白を適用します。 [fixture:
+arrow-spacing/call-inside-ascii-word]
 
 入力
 ([arrow-spacing/touching-call-kept-input.mmd](../tests/fixtures/class/arrow-spacing/touching-call-kept-input.mmd)):
@@ -855,6 +866,51 @@ classDiagram
   line two"
   class A~T,
   U~
+```
+
+### スタイル文の末尾のセミコロン
+
+`classDef` または `style` 文の行末の `;` は、
+[mermaid.js の行の規則](../../spec/docs/common.ja.md#style-行と-classdef-行)
+が無視するときに削除します。
+`:` と後の `#` の間に空白がない形です。
+この終端を削除しても Db は変わらず、スタイルが複数でも同じです。
+[fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
+削除する `;` の直前の空白も一緒に削除します。
+[fixture: semicolons-at-the-end-of-a-style-statement/space-before-terminator]
+その行は、スタイルの空白を含め、その `;` がない行として整形します。
+[fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
+文の前後の空行とコメント行は、通常の配置に従います。
+[fixture: semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines]
+メンバーのセミコロンはスタイル文の外なので保ちます。
+[fixture: semicolons-at-the-end-of-a-style-statement/member-semicolons-kept]
+
+同じ行でセミコロンの後にディレクティブが続く場合は、`;` を保ちます。
+[fixture: semicolons-at-the-end-of-a-style-statement/trailing-items-kept]
+同じ行で `%%` のテキストが続く場合も保ちます。
+ここではスタイルの文字列の一部です。
+[fixture: semicolons-at-the-end-of-a-style-statement/trailing-items-kept]
+無視される `;` が別の `;` の隣にある場合は、行の規則の選択を保つために残します。
+[fixture: semicolons-at-the-end-of-a-style-statement/adjacent-semicolons-kept]
+閉じていないディレクティブの後の `;` は、その停止位置を保つために残します。
+[fixture: semicolons-at-the-end-of-a-style-statement/unclosed-directive-kept]
+U+2028 と U+2029 の前も同じように保護します。
+[`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)を参照してください。
+[test: style semicolons: class before U+2028]
+[test: style semicolons: class before U+2029]
+文と無視される終端の間にある閉じたディレクティブは残し、`;` は削除します。
+[fixture: semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+
+出力
+([semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd](../tests/fixtures/class/semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd)):
+
+```mmd
+classDiagram
+  class A
+  classDef c fill:#f00
+  style A fill:#f00
+  classDef d fill:#0f0,stroke:#00f
+  style A fill:#0f0,stroke:#00f
 ```
 
 ### 複数行の文

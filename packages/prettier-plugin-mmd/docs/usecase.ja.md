@@ -84,7 +84,8 @@ class の[字下げ](./class.ja.md#字下げ)を再利用します。
 usecase では字下げが読みを決めないので、`tabWidth: 0` は 0 のままです。
 accessibility は先頭列でも ASCII 空白の後でも accessibility のままです。
 YAML は共有の最小幅 1 を保ちます。
-値、JSON、 directive の継続行は書かれた列を保ちます。
+値と directive の継続行は書かれた列を保ち、
+対象となる JSON の余白は [JSON tables](#json-tables) に従います。
 [fixture: native-metadata/metadata-key-multiline-directive]
 [fixture: native-metadata/metadata-scalar-multiline-directive]
 [fixture: classes-and-styles/css-name-multiline-directive]
@@ -116,11 +117,12 @@ usecase-beta
 
 各 native 文は、文法が要求する物理行を保ちます。
 セミコロンは文を区切らず、actor の一覧はコンマを使います。
-C4 の[行規則とセミコロン](./c4.ja.md#行規則とセミコロン)を再利用し、
-選択された末尾のものも含め、すべてのセミコロンを残します。
-末尾の削除で Db が等しい場合も、一つの方針で共有の文字列規則の選択先を保ちます。
-各区間の最初の非空白文字から最後のセミコロンまでを保持し、境界をまたぐ値、
-CSS 宣言、コメント、directive は全体を含めます。
+[スタイル文の末尾のセミコロン](#semicolons-at-the-end-of-a-style-statement)
+の例外を除き、
+C4 の[行規則とセミコロン](./c4.ja.md#行規則とセミコロン)に従って、
+セミコロンを保ちます。
+各区間の最初の非空白文字から最後の保持するセミコロンまでを保持し、
+境界をまたぐ値、 CSS 宣言、コメント、directive は全体を含めます。
 外側の字下げと安全な後続部分は整形します。
 [fixture: native-metadata/metadata-selected-semicolon-between-properties]
 二つの文字列処理、コロンとハッシュの間の空白の有無、 Unicode の区間境界、
@@ -511,20 +513,46 @@ usecase-beta
 
 [埋め込みデータは検査しない](./compatibility.ja.md#埋め込みデータは検査しない)
 を再利用します。
-`@`、`{` の前の隙間、本文の全文字、
-閉じ括弧を含む JSON データ範囲全体を保ちます。
-外側の json と id の隙間、および class の接尾辞だけを整え、
+`@`、`{` の前の隙間、JSON の内容を、以下の一定量の余白の移動を除いて保ちます。
+外側の json と id の隙間、および class の接尾辞を整え、
 データの前は通常の空白 1 個にします。
 [fixture: json-tables/json-prefix-id-at-multiline-directive]
-入れ子、重複、整数キーの順序、数とエスケープ、コメント風の文字、
-継続列を保ちます。
-JSON の整形で Db が等しくても、不透明な原文を書き換えることになります。
+入れ子、重複、整数キーの順序、数とエスケープ、コメント風の文字を保ちます。
 キーの並べ替えは `propertyOrder` を変える場合があります。
 釣り合った不正な内容は指定の不透明な読み、括弧の釣り合いの失敗は拒否のままです。
 Db の検査は共有のデータブロックの経路に従います。
 効果を渡さない整形 fixture の比較は null とし、
 書かれた埋め込み文字列を比較します。
 コーパスは、存在する場合に記録済みの効果を使います。
+原文の比較では、一定量の移動だけを許します。
+条件は[データブロック](./flowchart.ja.md#データブロック)に従います。
+
+`{` の直後が改行なら、本文の全行を同じ数の半角空白だけ動かし、
+文字がある最も浅い行を JSON 文の 1 段内側に置きます。
+入れ子のオブジェクトを含め、行どうしの字下げの差を保ちます。
+単独行の `}` は文の段に揃え、本文の後の閉じ括弧はその行に残します。
+JSON の文字列には生の改行を入れられず、
+Mermaid が `Bad control character in string literal` として拒否するため、
+移動で文字列の内容は変わりません。 [fixture: json-tables/closing-deeper-kept]
+[fixture: json-tables/closing-equal-depth]
+[fixture: json-tables/zero-and-shallow] [fixture: json-tables/deep-nested-json]
+[fixture: json-tables/closing-after-text]
+
+共有の移動条件と理由は、
+[データブロック](./flowchart.ja.md#データブロック)に従います。
+特に、開きの行から始まる JSON、内部の directive、行全体を保つ行、行頭のタブ、
+`tabWidth: 0` は書かれたまま残します。
+`useTabs` でも本文と単独行の `}` は半角空白とし、`}` は文の桁に置きます。
+外側のコメント、directive、空行、空の説明ブロックはそれぞれの規則に従います。
+CR と LF は `endOfLine` に従い、
+文字列の Unicode separator は文字として保ちます。
+[fixture: json-tables/inline-opening-kept]
+[fixture: json-tables/directive-inside-kept]
+[fixture: json-tables/kept-body-line] [fixture: json-tables/zero-width-kept]
+[fixture: json-tables/tab-statement-space-body]
+[fixture: json-tables/surrounding-trivia]
+[test: data blocks: JSON leading tab kept] [test: data blocks: usecase U+2029]
+[test: data blocks: usecase CRLF]
 
 [fixture: json-tables/json-opaque]
 [corpus fixture: usecase/gram-json-prefix-id-control]
@@ -543,8 +571,51 @@ Db の検査は共有のデータブロックの経路に従います。
 ```mmd
 usecase-beta
   json Table @ {
- "2": 2, "1": {"z":1}, "2": 3
-}:::data,table
+    "2": 2, "1": {"z":1}, "2": 3
+  }:::data,table
+```
+
+### Semicolons at the end of a style statement
+
+`classDef` または `style` 文の行末の `;` は、
+[mermaid.js の行の規則](../../spec/docs/common.ja.md#style-行と-classdef-行)
+が無視するときに削除します。
+`:` と後の `#` の間に空白がない形です。
+この終端を削除しても Db は変わらず、スタイルが複数でも同じです。
+[fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
+削除する `;` の直前の空白も一緒に削除します。
+[fixture: semicolons-at-the-end-of-a-style-statement/space-before-terminator]
+その行は、スタイルの空白を含め、その `;` がない行として整形します。
+[fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
+文の前後の空行とコメント行は、通常の配置に従います。
+[fixture: semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines]
+空の description block も通常の配置に従い、スタイルの終端は削除します。
+[fixture: semicolons-at-the-end-of-a-style-statement/empty-description-block]
+
+同じ行でセミコロンの後にディレクティブが続く場合は、`;` を保ちます。
+[fixture: semicolons-at-the-end-of-a-style-statement/trailing-items-kept]
+同じ行で `%%` のテキストが続く場合も保ちます。
+ここではスタイルの文字列の一部です。
+[fixture: semicolons-at-the-end-of-a-style-statement/trailing-items-kept]
+閉じていないディレクティブの後の `;` は、その停止位置を保つために残します。
+[fixture: semicolons-at-the-end-of-a-style-statement/unclosed-directive-kept]
+U+2028 と U+2029 の前も同じように保護します。
+[`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)を参照してください。
+[test: style semicolons: usecase before U+2028]
+[test: style semicolons: usecase before U+2029]
+文と無視される終端の間にある閉じたディレクティブは残し、`;` は削除します。
+[fixture: semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+
+出力
+([semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd](../tests/fixtures/usecase/semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd)):
+
+```mmd
+usecase-beta
+  A
+  classDef c fill:#f00
+  style A fill:#f00
+  classDef d fill:#0f0, stroke:#00f
+  style A fill:#0f0, stroke:#00f
 ```
 
 ### Classes and styles
@@ -560,7 +631,7 @@ Mermaid はコロンの前後と `--  color` 内の余白を保存するため�
 関数、順序、繰り返しを保ちます。
 [fixture: classes-and-styles/css-name-multiline-directive]
 最後の成分の外側の水平空白だけを除き、
-選択されたセミコロンの保持部分は通常の一覧配置より優先します。
+保持するセミコロンを含む接頭部は通常の一覧配置より優先します。
 
 [fixture: classes-and-styles/class-lists]
 [fixture: classes-and-styles/css-colon-padding]
@@ -769,7 +840,8 @@ usecase-beta
 [fixture: arrows/semantic-operator-directives]
 [fixture: arrow-id-boundaries/arrow-marker-both-gap-sides]
 ヘッダー行の directive はヘッダーと同じ行に残します。
-値側の隙間、CSS の名前と値の範囲、不透明な JSON は正確に保ちます。
+値側の隙間、CSS の名前と値の範囲、不透明な JSON は、
+[JSON tables](#json-tables) の余白を除いて正確に保ちます。
 独立した JSON の id、`@`、波括弧の境界も含みます。
 [fixture: classes-and-styles/css-name-multiline-directive]
 [fixture: json-tables/json-prefix-id-at-multiline-directive]

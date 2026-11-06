@@ -264,7 +264,7 @@ stay on the line of `state`: `state a b` is two statements, and on a line of its
 own `b` would add the state b, which `state a b` does not. [corpus fixture:
 state/lex-state-without-body] The same holds for the `""` that mermaid.js does
 not read in `state x "" y` and `state z ""`. [fixture:
-statements-one-per-line/state-names-kept] A line that holds a `;` keeps its
+statements-one-per-line/state-names-kept] A line that holds a kept `;` keeps its
 statements, as in a flowchart (see
 [Statements one per line](./flowchart.md#statements-one-per-line)); in a state
 diagram, a `;` is a character of an id. [fixture:
@@ -638,9 +638,9 @@ the raw Db identical even for HTML or Markdown. Keep every later margin as
 written; for example, indenting the inside of `<pre>` can change the drawing. A
 blank first row or leading whitespace other than ASCII spaces and tabs keeps its
 source. [fixture: notes/html-note-kept] [fixture: notes/html-pre-first-line]
-[fixture: notes/html-break-first-line] [fixture: notes/html-first-line-tabs]
-[fixture: notes/html-first-line-zero-width] [fixture:
-notes/first-tab-markup-margin]
+[fixture: notes/whitespace-only-body] [fixture: notes/html-break-first-line]
+[fixture: notes/html-first-line-tabs] [fixture:
+notes/html-first-line-zero-width] [fixture: notes/first-tab-markup-margin]
 
 For example, the first line of the following note uses the configured four
 spaces. Its blank-separated later paragraphs retain their two spaces: moving
@@ -1053,6 +1053,60 @@ stateDiagram-v2
   line two" as N
 ```
 
+### Semicolons at the end of a style statement
+
+A line-ending `;` of a `classDef` or `style` statement is dropped when the
+[line rule of mermaid.js](../../spec/docs/common.md#style-and-classdef-lines)
+ignores it: no whitespace lies between the `:` and the later `#`. Removing this
+terminator leaves the Db unchanged, also with several styles. [fixture:
+semicolons-at-the-end-of-a-style-statement/hash-terminators] Whitespace
+immediately before a dropped `;` is dropped with it. [fixture:
+semicolons-at-the-end-of-a-style-statement/space-before-terminator] The line
+then formats as a line without that `;`, including its usual style spacing.
+[fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators] Blank
+lines and comment lines keep their usual layout around the statement. [fixture:
+semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines] An empty
+description block follows its usual layout while the style terminator is
+dropped. [fixture:
+semicolons-at-the-end-of-a-style-statement/empty-description-block]
+
+Without a `#` in the statement, a final `;` in the last style is dropped when
+that style contains no other `;` and has non-whitespace text before it:
+mermaid.js removes the first `;` of each style. [fixture:
+semicolons-at-the-end-of-a-style-statement/style-text-terminators] Keep
+`classDef c fill:red;;`, `classDef c ;` and `style A fill : #f00;`; they do not
+meet these conditions. [fixture:
+semicolons-at-the-end-of-a-style-statement/style-text-kept] A transition such as
+`A --> B;` keeps its semicolon, which is part of its id. [fixture:
+semicolons-at-the-end-of-a-style-statement/transition-semicolon-kept]
+
+A directive after the semicolon on the same line keeps the `;`. [fixture:
+semicolons-at-the-end-of-a-style-statement/trailing-items-kept] Following `%%`
+text on the same line also keeps it; here it is part of the style. [fixture:
+semicolons-at-the-end-of-a-style-statement/trailing-items-kept] An ignored `;`
+beside another `;` is kept to preserve the line rule's selection. [fixture:
+semicolons-at-the-end-of-a-style-statement/adjacent-semicolons-kept] A `;` after
+an unclosed directive stays, preserving its stopping boundary. [fixture:
+semicolons-at-the-end-of-a-style-statement/unclosed-directive-kept] The same
+protection applies before U+2028 and U+2029; see
+[A line that a `;` ends](./compatibility.md#a-line-that-a--ends). [test: style
+semicolons: state before U+2028] [test: style semicolons: state before U+2029] A
+closed directive between the statement and an ignored terminator is kept while
+the `;` is dropped. [fixture:
+semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+
+Output
+([semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd](../tests/fixtures/state/semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  A --> B
+  classDef c fill:#f00
+  style A fill:#f00
+  classDef d fill:#0f0,stroke:#00f
+  style A fill:#0f0,stroke:#00f
+```
+
 ### Multi-line statements
 
 A statement written over several lines is printed on one line. In a state
@@ -1153,8 +1207,8 @@ stateDiagram-v2
     LR
 ```
 
-A statement written over several lines that holds a `;` is kept as written too.
-[corpus fixture: state/db-style-semicolons] [corpus fixture:
+A statement written over several lines that holds a kept `;` is kept as written
+too. [corpus fixture: state/db-style-semicolons] [corpus fixture:
 state/db-classdef-semicolons] [fixture: multi-line-statements/semicolon-kept]
 [fixture: multi-line-statements/semicolon-in-id-kept] The line rule of
 mermaid.js (the specification's
@@ -1162,7 +1216,8 @@ mermaid.js (the specification's
 reads the text of one line: in `classDef`, a line break, and `c fill:#f00;` it
 does not match the second line, so `#f00;` is an entity, while on one line, as
 `classDef c fill:#f00;`, it matches and ignores the `;`. Joining the lines would
-change the style.
+change the style. On a single line the ignored terminator is dropped under
+[Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement).
 
 Input
 ([multi-line-statements/semicolon-kept-input.mmd](../tests/fixtures/state/multi-line-statements/semicolon-kept-input.mmd)):
@@ -1251,8 +1306,10 @@ semicolon before U+2029]
 
 Apart from description-body indentation under
 [Multi-line values](#multi-line-values) and the restricted paragraph margins in
-[Notes](#notes), the following text is kept as written because changing it would
-change the diagram or the input would be rejected:
+[Notes](#notes), and the terminators dropped under
+[Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement),
+the following text is kept as written because changing it would change the
+diagram or the input would be rejected:
 
 - the text of a value: a description, a label, a note, an id after `as`, a
   pseudostate name, a style, the CSS class of a `class` statement, and the text

@@ -415,24 +415,53 @@ kanban
 
 A data block `@{ ... }` is embedded text that mermaid.js reads as YAML for the
 properties of a node, such as `ticket` and `assigned`. The printer keeps it
-opaque, with its delimiters, its interior, and its line breaks, as written: it
-does not format the YAML, and it does not merge, split, reorder, wrap, or repair
-blocks, whether a block is empty (`A@{}`), has an unknown or duplicate key
-(`A@{ticket: X, ticket: Y}`), is not valid YAML (`A@{assigned: [a}`), or runs
-over several lines. The parser accepts a block whose YAML is invalid, although
-mermaid.js rejects it (known divergence
+opaque, with its delimiters, its content and its line breaks retained, apart
+from the uniform indentation below: it does not format the YAML, and it does not
+merge, split, reorder, wrap, or repair blocks, whether a block is empty
+(`A@{}`), has an unknown or duplicate key (`A@{ticket: X, ticket: Y}`), is not
+valid YAML (`A@{assigned: [a}`), or runs over several lines. The parser accepts
+a block whose YAML is invalid, although mermaid.js rejects it (known divergence
 [`embedded-data-opaque`](../../spec/docs/known-divergences/embedded-data-opaque.md)),
-because the block is embedded text that the specification reads as opaque. Even
-a rewrite that leaves the Db unchanged would change the text that the author
-embedded. [fixture: data-blocks/data-opaque] [fixture: data-blocks/empty-data]
-[fixture: data-blocks/data-invalid-yaml] [fixture:
-data-blocks/data-unknown-duplicate] [fixture:
-data-blocks/gram-metadata-ticket-duplicate] [fixture:
+because the block is embedded text that the specification reads as opaque.
+[fixture: data-blocks/data-opaque] [fixture: data-blocks/empty-data] [fixture:
+data-blocks/data-invalid-yaml] [fixture: data-blocks/data-unknown-duplicate]
+[fixture: data-blocks/gram-metadata-ticket-duplicate] [fixture:
 data-blocks/data-multiline] [fixture: data-blocks/gram-metadata-empty-multiline]
 [fixture: data-blocks/db-metadata-comment-line] [fixture:
 data-blocks/db-metadata-ticket-false] [fixture:
 data-blocks/db-metadata-assigned-zero] [fixture:
 data-blocks/db-metadata-quoted-brace] [fixture: data-blocks/data-line-rule-gap]
+
+Apply the movement and safety conditions of
+[Data blocks](./flowchart.md#data-blocks): when a newline immediately follows
+`@{`, shift every body line by the same number of ASCII spaces to put the
+shallowest text one level inside its node. A section's body is two levels below
+the header, an item's three; nested YAML keeps its relative indentation. A
+separate `}` aligns with the node, even if it had no margin; a closer after text
+stays on that line. [fixture: data-blocks/section-and-item-margins] [fixture:
+data-blocks/nested-yaml] [fixture: data-blocks/closing-after-text]
+
+Move space-only lines by the same amount, making them empty when no spaces
+remain, and leave empty lines empty. Keep trailing spaces: literal block scalars
+read both their trailing spaces and blank-line widths, so discarding them can
+change the Db. [fixture: data-blocks/scalar-blank-lines] [fixture:
+data-blocks/scalar-blank-lines-outdent]
+
+Keep columns when the shared conditions fail: inline-opening text counts its
+first margin from `@{`, embedded directives keep their columns, kept lines must
+stay whole, and `tabWidth: 0` supplies no inner step. Tab-indented YAML is
+rejected by Mermaid; moving column-zero document markers can also make it fail.
+[fixture: data-blocks/inline-opening-kept] [fixture:
+data-blocks/directive-inside-kept] [fixture: data-blocks/kept-body-line]
+[fixture: data-blocks/zero-width-kept] [fixture:
+data-blocks/document-start-kept]
+
+With `useTabs`, body margins and a separate closer still use spaces, the closer
+at the column of the node. Comments, directives and blank lines outside the
+block retain their own rules. CRLF and CR follow `endOfLine`; Unicode separators
+inside values remain characters. [fixture: data-blocks/tab-statement-space-body]
+[fixture: data-blocks/surrounding-trivia] [test: kanban: multiline-data-crlf]
+[test: kanban: multiline-data-cr] [test: data blocks: kanban U+2028]
 
 Where a block is attached is part of the syntax. The block touches the closing
 of a shape (`A[x]@{ticket: X}`), and a space there is rejected. After a bare id,
@@ -445,6 +474,14 @@ data-blocks/data-space-after-shape] [fixture: data-blocks/data-space-after-bare]
 [fixture: data-blocks/data-space-before-kept] [fixture: data-blocks/adjacent]
 [fixture: data-blocks/data-adjacent-gap] [fixture:
 data-blocks/data-adjacent-directive] [fixture: data-blocks/data-empty-adjacent]
+
+A node with two blocks, as in `A@{`, a line break, `ticket: A,`, a line break,
+and `}@{assigned: Ada}`, keeps both as written: the blocks touch, so Mermaid
+joins their text, and moving the lines of the first alone makes accepted YAML
+fail. The same holds when one of the two blocks is a single line. [fixture:
+data-blocks/adjacent-multiline-kept] [fixture:
+data-blocks/adjacent-single-line-after-kept] [fixture:
+data-blocks/adjacent-single-line-before-kept]
 
 Input
 ([data-blocks/adjacent-input.mmd](../tests/fixtures/kanban/data-blocks/adjacent-input.mmd)):
@@ -581,9 +618,11 @@ the first column; its mark and its text are kept as written. This shows which
 statement the comment is about, as in [mindmap](./mindmap.md#comments). In
 `kanban`, `%% c1`, ` S`, `       %% c2`, `   A`, `%% c3`, the comments stand
 with 2, 4, and 4 characters of indentation, those of `S` and `A`. A comment line
-inside a multi-line label or data block is removed by mermaid.js and stays where
-it is. A diagram comment that is followed by an empty line, by another comment,
-or by a U+2028 or U+2029 stays as written with the gap after it (see
+inside a multi-line label or data block is removed by mermaid.js and stays on
+its authored line, with eligible data-block margins following
+[Data blocks](#data-blocks). [fixture: data-blocks/indented-comment-line] A
+diagram comment that is followed by an empty line, by another comment, or by a
+U+2028 or U+2029 stays as written with the gap after it (see
 [Blank lines](#blank-lines)). [fixture: comments/comments-align] [fixture:
 comments/bare-brace-comments-aligned] [fixture: comments/header-leading-comment]
 [fixture: comments/comment-line-in-value]
@@ -963,8 +1002,8 @@ YAML, one whose `---` lines are indented, one that holds a `<` which may start
 an HTML tag, and one whose formatted YAML would hold a `---` line stay as
 written. Whitespace after the closing `---` stays too. A comment or a directive
 between the frontmatter and the header stays, and the board after it is
-formatted as usual. This permission to format does not reach a data block, which
-stays as written (see [Data blocks](#data-blocks)). [fixture:
+formatted as usual. YAML formatting does not reach a data block; only its
+eligible margins move (see [Data blocks](#data-blocks)). [fixture:
 frontmatter-yaml/formatted] [fixture: frontmatter-yaml/frontmatter-malformed]
 [fixture: frontmatter-yaml/frontmatter-indented-kept] [fixture:
 frontmatter-yaml/frontmatter-html-tag-kept] [fixture:
@@ -998,20 +1037,23 @@ kanban
 
 ### Multi-line values
 
-A label, an icon, and a data block may run over several lines, and the line
-breaks and the whitespace in them are in the Db (the label of `A["x`, a line
-break, and ` y"]` holds the line break and the space). The printer keeps every
-line of such a value as written, with the columns of its continuation lines, a
-comment line or a directive inside it, and an empty line inside it. Only the
-first line of a decoration is aligned (see
-[Icons and classes](#icons-and-classes)). It does not join the lines, since a
-line break in a value is a character of it and joining would change the Db or
-make another node. [fixture: multi-line-values/labels-and-icon] [fixture:
-multi-line-values/multiline-join] [fixture:
-multi-line-values/multiline-icon-trim-unsafe] [fixture:
+A label and an icon may run over several lines, and the line breaks and the
+whitespace in them are in the Db (the label of `A["x`, a line break, and ` y"]`
+holds the line break and the space). The printer keeps every line of such a
+value as written, with the columns of its continuation lines, a comment line or
+a directive inside it, and an empty line inside it. Only the first line of a
+decoration is aligned (see [Icons and classes](#icons-and-classes)). It does not
+join the lines, since a line break in a value is a character of it and joining
+would change the Db or make another node. [fixture:
+multi-line-values/labels-and-icon] [fixture: multi-line-values/multiline-join]
+[fixture: multi-line-values/multiline-icon-trim-unsafe] [fixture:
 multi-line-values/lex-label-empty-line] [fixture:
 multi-line-values/lex-label-directive-line] [fixture:
 multi-line-values/lex-metadata-blank-line]
+
+Multiline data blocks instead follow [Data blocks](#data-blocks): preserve their
+line breaks and contents with only the eligible uniform margin change. [fixture:
+data-blocks/data-multiline]
 
 `printWidth` has no effect: a long bare node
 (`This is a deliberately long kanban item ...`) and a long label stay on their

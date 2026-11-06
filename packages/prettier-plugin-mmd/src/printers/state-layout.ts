@@ -15,6 +15,7 @@ import { holdsDirection } from "./accessibility-lines.ts"
 import { findWrittenWhitespaceEnd } from "./gap.ts"
 import {
   holdsJoiningRegion,
+  isDroppedSemicolon,
   lineEndOf,
   lineStartOf,
   printedEndOf,
@@ -35,6 +36,7 @@ import {
   spansLinesThatCannotJoin,
   toAsciiLowerCase,
 } from "./layout.ts"
+import { printAsWrittenTrimmed } from "./lines.ts"
 import type { Source } from "./source.ts"
 import {
   findStructuralToken,
@@ -337,6 +339,7 @@ export function layoutStateStatement(
     ...findNoteStretches(statement, end),
     ...findSecondDescriptionStretches(source, statement, end),
     ...findBlankDescriptionStretches(source, statement, end),
+    ...findDroppedSemicolonStretches(source, statement),
   ]
   // Joining a next-line value exposes state's case-insensitive direction
   // rule. Keep the previous continuation layout instead (diagrams/state.md,
@@ -594,6 +597,34 @@ function findSecondDescriptionStretches(
   const colon = findSecondDescriptionColon(source, statement)
   if (colon === null) return []
   return [{ start: colon.range[0], end }]
+}
+
+/**
+ * The last style of a `classDef` or `style` statement, printed without the `;`
+ * that ends it, and without the whitespace before it, where the printer drops
+ * that `;` (see `isDroppedSemicolon`): the `;` is a character of the style.
+ */
+function findDroppedSemicolonStretches(
+  source: Source,
+  statement: StateStatement,
+): Atom[] {
+  if (
+    statement.type !== "StateClassDefStatement" &&
+    statement.type !== "StateStyleStatement"
+  ) {
+    return []
+  }
+  const style = statement.styles.findLast((item) => item !== null)
+  if (style === undefined || style === null) return []
+  const semicolon = style.range[1] - 1
+  if (!isDroppedSemicolon(source, semicolon)) return []
+  return [
+    {
+      start: style.range[0],
+      end: style.range[1],
+      doc: printAsWrittenTrimmed(source, style.range[0], semicolon),
+    },
+  ]
 }
 
 /**

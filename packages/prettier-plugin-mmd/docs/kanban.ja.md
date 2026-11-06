@@ -446,7 +446,8 @@ kanban
 データブロック `@{ ... }` は、
 mermaid.js がノードの属性（`ticket` や `assigned`）の YAML として読む、
 埋め込みのテキストです。
-印字は、これを不透明なものとして、区切り、中身、改行を、書かれたまま残します。
+印字は、これを不透明なものとして、以下の一定量の字下げを除き、区切り、中身、
+改行を保ちます。
 YAML を整形することも、ブロックをまとめることも、分けることも、
 並べ替えることも、折り返すことも、直すこともしません。
 ブロックが空（`A@{}`）でも、キーが未知か重複（`A@{ticket: X, ticket: Y}`）でも、
@@ -455,7 +456,6 @@ YAML として正しくなくても（`A@{assigned: [a}`）、複数行にわた
 mermaid.js は拒否します（既知の差異
 [`embedded-data-opaque`](../../spec/docs/known-divergences/embedded-data-opaque.ja.md)）。
 ブロックは仕様が不透明なものとして読む埋め込みのテキストだからです。
-Db が変わらない書き換えでも、書き手が埋め込んだテキストを変えることになります。
 [fixture: data-blocks/data-opaque] [fixture: data-blocks/empty-data]
 [fixture: data-blocks/data-invalid-yaml]
 [fixture: data-blocks/data-unknown-duplicate]
@@ -467,6 +467,40 @@ Db が変わらない書き換えでも、書き手が埋め込んだテキス�
 [fixture: data-blocks/db-metadata-assigned-zero]
 [fixture: data-blocks/db-metadata-quoted-brace]
 [fixture: data-blocks/data-line-rule-gap]
+
+[データブロック](./flowchart.ja.md#データブロック)の移動と安全条件を適用します。
+`@{` の直後が改行なら、本文の全行を同じ数の半角空白だけ動かし、
+文字がある最も浅い行をノードの 1 段内側に置きます。
+section の本文はヘッダーから 2 段、item の本文は 3 段で、
+入れ子の YAML の字下げの差を保ちます。
+単独行の `}` は元の余白がなくてもノードの段に揃え、
+本文の後の閉じ括弧はその行に残します。
+[fixture: data-blocks/section-and-item-margins]
+[fixture: data-blocks/nested-yaml] [fixture: data-blocks/closing-after-text]
+
+空白だけの行も同じ量だけ動かし、空白がなくなる場合は空行にします。
+空行は空のままにし、末尾空白も保ちます。
+literal block scalar は末尾空白と空白行の幅を読むため、
+捨てると Db が変わる場合があります。 [fixture: data-blocks/scalar-blank-lines]
+[fixture: data-blocks/scalar-blank-lines-outdent]
+
+共有の条件を満たさない場合は桁を保ちます。
+開きの行の本文は最初の桁を `@{` から数え、内部の directive は桁を保ち、
+行全体を保つ行は一部だけ動かせず、`tabWidth: 0` では内側の段がありません。
+Mermaid はタブで字下げした YAML を拒否し、
+0 桁の文書の印を動かしても拒否される場合があります。
+[fixture: data-blocks/inline-opening-kept]
+[fixture: data-blocks/directive-inside-kept]
+[fixture: data-blocks/kept-body-line] [fixture: data-blocks/zero-width-kept]
+[fixture: data-blocks/document-start-kept]
+
+`useTabs` でも本文と単独行の閉じ括弧は半角空白とし、
+閉じ括弧はノードの桁に置きます。
+外側のコメント、directive、空行はそれぞれの規則に従います。
+CRLF と CR は `endOfLine` に従い、値の Unicode separator は文字として保ちます。
+[fixture: data-blocks/tab-statement-space-body]
+[fixture: data-blocks/surrounding-trivia] [test: kanban: multiline-data-crlf]
+[test: kanban: multiline-data-cr] [test: data blocks: kanban U+2028]
 
 ブロックが付く場所は構文の一部です。
 ブロックは形の閉じに接し（`A[x]@{ticket: X}`）、そこに空白があると拒否されます。
@@ -483,6 +517,15 @@ Db が変わらない書き換えでも、書き手が埋め込んだテキス�
 [fixture: data-blocks/data-adjacent-gap]
 [fixture: data-blocks/data-adjacent-directive]
 [fixture: data-blocks/data-empty-adjacent]
+
+ブロックを 2 つ持つノード（`A@{`、改行、`ticket: A,`、改行、
+`}@{assigned: Ada}`）は、どちらも書かれたまま残します。
+ブロックは接するので Mermaid は中身をつなぎ、最初のブロックの行だけを動かすと、
+受理される YAML が拒否されます。
+2 つのうち 1 つが 1 行のブロックでも同じです。
+[fixture: data-blocks/adjacent-multiline-kept]
+[fixture: data-blocks/adjacent-single-line-after-kept]
+[fixture: data-blocks/adjacent-single-line-before-kept]
 
 入力
 ([data-blocks/adjacent-input.mmd](../tests/fixtures/kanban/data-blocks/adjacent-input.mmd)):
@@ -625,7 +668,9 @@ kanban
 `kanban`、`%% c1`、` S`、`       %% c2`、`   A`、`%% c3` では、
 コメントは字下げ 2、4、4 文字で、`S` と `A` の字下げに置きます。
 複数行のラベルやデータブロックの中のコメント行は、mermaid.js が取り除き、
-そのまま残ります。
+書かれた行に残します。
+移動できるデータブロックの余白は、[データブロック](#データブロック)に従います。
+[fixture: data-blocks/indented-comment-line]
 空行、別のコメント、U+2028 か U+2029 が続く図のコメントは、
 後ろの隙間と一緒に書かれたまま残します（[空行](#空行)を参照）。
 [fixture: comments/comments-align]
@@ -1038,8 +1083,8 @@ HTML タグを始めうる `<` を含むもの、
 閉じの `---` の後の空白も残します。
 フロントマターとヘッダーの間のコメントやディレクティブは残し、
 その後のボードは通常どおり整形します。
-整形してよいのはフロントマターだけで、データブロックは、
-書かれたまま残します（[データブロック](#データブロック)を参照）。
+YAML の整形はデータブロックには及ばず、対象となる余白だけを動かします。
+[データブロック](#データブロック)を参照してください。
 [fixture: frontmatter-yaml/formatted]
 [fixture: frontmatter-yaml/frontmatter-malformed]
 [fixture: frontmatter-yaml/frontmatter-indented-kept]
@@ -1074,7 +1119,7 @@ kanban
 
 ### 複数行の値
 
-ラベル、アイコン、データブロックは複数行にわたってよく、
+ラベルとアイコンは複数行にわたってよく、
 その中の改行と空白は Db に入ります（`A["x`、改行、
 ` y"]` のラベルは改行と空白を持ちます）。
 印字は、そのような値のどの行も、続きの行の桁、中のコメント行やディレクティブ、
@@ -1089,6 +1134,10 @@ kanban
 [fixture: multi-line-values/lex-label-empty-line]
 [fixture: multi-line-values/lex-label-directive-line]
 [fixture: multi-line-values/lex-metadata-blank-line]
+
+複数行のデータブロックは[データブロック](#データブロック)に従い、
+移動できる余白だけを一定量動かして、改行と内容を保ちます。
+[fixture: data-blocks/data-multiline]
 
 `printWidth` は効きません。
 長い裸のノード（`This is a deliberately long kanban item ...`）も、

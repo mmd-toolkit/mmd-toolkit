@@ -48,6 +48,10 @@ prefix の有無だけでは判定しません。
 Branch prefixes の本文保持の条件によって、モードと値内の罫線の読みを保ちます。
 共通文の prefix は外し、普通の共通文は第 1 列に置き、子のように見せません。
 
+コメント行内の罫線文字は罫線モードを選ばず、
+字下げモードのコメントは次の文にそろえます。
+[fixture: treeview/modes/comment-excluded]
+
 [corpus fixture: treeview/box-written-tree]
 
 [corpus fixture: treeview/box-heavy]
@@ -240,6 +244,10 @@ treeview/description-blocks/box-redraw-opener-prefix-with-directive-gap]
 
 [fixture: treeview/branch-prefixes/box-redraw-nested-mixed-weights]
 
+名前が `;` だけの枝もノードです。
+prefix の後に何も続かず、prefix はほかと同じように描きます。
+[fixture: treeview/branch-prefixes/branch-semicolon-name]
+
 描く前に、本文を保つかを一度に判断します。
 外側の prefix と区切りが任意文字、directive、選ばれる semicolon、
 comment region と交わる図や、
@@ -253,6 +261,10 @@ comment region と交わる図や、
 一つの保護行の最初の正の branch 列が、ほかの全行の幅を決めうるためです。
 本文を保った図には見た目の一致を約束しません。
 名前、値、prefix の任意文字と共有の trivia は捨てません。
+
+[test: treeview/branch-prefixes/uppercase-entity-and-tab-column]
+
+[fixture: treeview/branch-prefixes/retained-unprefixed-annotation-decoration]
 
 [test: treeview/annotation-lines/box-redraw-comment-region-prefix-ls]
 
@@ -508,6 +520,8 @@ treeview/semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
 ### Decorations
 
 [fixture: treeview/decorations/explicit-empty-description-trivia]
+
+[fixture: treeview/decorations/pending-name-before-first-root]
 
 普通の外側の装飾は、次のノードへ続く木の案内線として 1 回描き直します。
 続く木が無ければ空行にし、Blank lines と Final newline に従って整理します。
@@ -1190,6 +1204,10 @@ description の印を名前の続きではなく注釈として読むために�
 枝を縦の案内線に置き換えると、縦線が別ノードになります。
 class、icon と description の反復はすべて残します。
 
+[test: treeview/annotation-lines/empty-description-after-unrelated-region-ls]
+
+[test: treeview/annotation-lines/empty-description-after-unrelated-region-ps]
+
 [test: treeview/annotation-lines/review159-region-line-rule-semicolon]
 
 [test: treeview/annotation-lines/review159-region-class-ls-four]
@@ -1714,6 +1732,8 @@ Mermaid が説明から LF 後の字下げを除くためです。
 opener の gap の唯一のモードの選び手は、
 Decorations に従って gap だけを保ちます。
 
+[fixture: treeview/description-blocks/geometry-with-opener-directive]
+
 [fixture: treeview/decorations/review159-sole-opener-selector]
 
 [fixture: treeview/decorations/review159-sole-opener-selector-empty-block]
@@ -1850,8 +1870,50 @@ treeView-beta
 
 ### Comments
 
-普通の独立コメントの印は第 1 列、inline のコメントは同じ行に置きます。
+字下げモードの独立したコメント行は次の文の桁にそろえ、
+末尾では最後の文の桁にそろえます。
+[ishikawa](./ishikawa.ja.md#comments)、[kanban](./kanban.ja.md#コメント)、
+[mindmap](./mindmap.ja.md#コメント) と同じく、どの文に関係するかを示します。
+字下げが浅くなる行の前も含め、コメントを深くも浅くも移します。
+連続するコメントは、空行を挟んでも同じ桁にそろえます。
+[fixture: treeview/comments/comment-standalone-aligned]
+[fixture: treeview/comments/aligned-depths]
+[fixture: treeview/comments/aligned-final]
+[fixture: treeview/comments/aligned-blank-lines]
+
+`%% text`、`%%!`、`%%!x`、`%%%`、`%%` の後が空白の行、`%% {x}` は、
+そろえるコメント行です。 [fixture: treeview/comments/aligned-forms]
+[fixture: treeview/comments/comment-mark-spliced-directive]
+文と同じ設定の字下げを使い、tab と tabWidth 0 での正の最小幅にも従います。
+[fixture: treeview/comments/aligned-tabs]
+[fixture: treeview/comments/aligned-zero]
+見出しの前のコメントと、文のない本文のコメントは第 1 列に置きます。
+[fixture: treeview/comments/before-header]
+[fixture: treeview/comments/only-comments]
+
+罫線モードの普通の構造行は、枝や縦線の前の第 1 列から始まります。
+コメント行もノード名の桁ではなく、その桁から始めます。
+mermaid.js は字下げしたコメント行も受理しますが、
+字下げすると前後の行の始まりとずれるためです。
+[fixture: treeview/comments/box-standalone]
+
+文の間では、`%%` だけの行、directive ではない `%%{` 始まりの行、
+独立した directive を第 1 列に置きます。
+字下げモードでは、字下げすると mermaid.js が拒否するためです。
+混在する列と末尾でも、この区別を保ちます。
+[fixture: treeview/comments/comment-bare-native]
+[fixture: treeview/comments/native-nonword]
+[fixture: treeview/comments/unclosed-directive]
+[fixture: treeview/comments/mixed-directives]
+[fixture: treeview/comments/native-final]
+空の description block やセミコロンで保護された title の前後でも、
+コメント行は次の文にそろえます。
+[fixture: treeview/comments/aligned-empty-description]
+[fixture: treeview/comments/aligned-protected-title]
+
+inline のコメントは同じ行に置きます。
 印、内容、末尾と native comment の LS・PS を保ちます。
+[test: treeview/comments/standalone-ls] [test: treeview/comments/standalone-ps]
 有意な字下げ run は割り当て済みのノードへ 1 回だけ移します。
 描き直せる罫線の図では、native comment の構造の prefix を外し、
 その枝をノードの名前の行へ 1 回だけ描きます。
@@ -1859,7 +1921,7 @@ treeView-beta
 名前、description と block の percent は値に残し、
 共通の結合領域や危険な prefix の交差は本文保持に従います。
 
-[fixture: treeview/comments/comment-standalone-column-one]
+[fixture: treeview/comments/comment-standalone-aligned]
 
 [fixture: treeview/comments/comment-bare-native]
 
@@ -1972,6 +2034,12 @@ directive の原文と順序を保ちます。
 残りの字下げを最初の directive の前に置きます。
 前の行の run を重ねず、割り当て済みの indent を保つためです。
 複数行の内部、値の中の形と EOF の未完の directive は原文のままです。
+
+[fixture: treeview/directives/before-unprefixed-box-root]
+
+[test: treeview/directives/unclosed-final-whitespace-ls]
+
+[test: treeview/directives/unclosed-final-whitespace-ps]
 
 [fixture: treeview/directives/review159-box-tail-directive-gap]
 
@@ -2176,7 +2244,7 @@ Unicode だけの名前を空行扱いしません。
 ```mmd
 treeView-beta
   R
-%% note
+    %% note
 
     C
 ```

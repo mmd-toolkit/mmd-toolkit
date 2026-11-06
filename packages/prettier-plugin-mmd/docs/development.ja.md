@@ -63,6 +63,10 @@ plugin のソースを import して Node で動かすスクリプトは、
 | `tests/source.test.ts`               | printer がノードの構造のトークンとみなすもの。ディレクティブ、`;`、フロントマターのトークンは含みません。フロントマターの区切りの `---` は、flowchart の矢印と同じ種類と値です。                                                                                                                                                                                                                                                                                                                                                                |
 | `tests/sequence-layout.test.ts`      | 後ろの空白が別の単位にしてしまう id のうち、sequence の printer が取るもの。数と `title` で、その隣では矢印の前後に空白を置きません。                                                                                                                                                                                                                                                                                                                                                                                                           |
 
+プラグイン API のテストでは、範囲を指定して `prettier.format` に渡し、
+Prettier の部分整形の走査が使うノード位置のコールバックも確かめます。
+[test: provides node ranges for Prettier's partial formatting]
+
 コーパスのテストは Vitest が並列に実行できるよう、図種ごとにファイルを分けます。
 `tests/corpus.test.ts` は共通の fixture を読み、
 `tests/corpus/<diagram>.test.ts` はその図種の fixture を読みます。
@@ -95,7 +99,8 @@ Db は mermaid.js から読みません。
 埋め込みデータの値は入力のものを使うので、
 整形が埋め込みデータを書かれたまま残すことも確かめます。
 `writtenEmbeddedTexts` が、ディレクティブとデータブロックの書かれたテキストを、
-出現順に並べ、その並びが、同じ eventmodeling の margin の許容範囲内で、
+出現順に並べ、その並びが、同じ eventmodeling の margin の許容と、
+[データブロック](./flowchart.ja.md#データブロック)の一定量の移動の範囲内で、
 整形の前後で一致することを確かめます。
 行終端はすべて改行として読み、未使用の native block と note も対象にします。
 フロントマターは別の例外です。

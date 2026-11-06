@@ -187,7 +187,8 @@ statement. Protected trivia and semicolon groups take precedence.
 
 Fixed cases: [fixture: pie/title/title-trim] [fixture: pie/title/title-empty]
 [fixture: pie/title/title-next-section] [fixture: pie/title/title-next-trivia]
-[fixture: pie/title/title-inner-text].
+[fixture: pie/title/title-inner-text] [fixture:
+pie/title/empty-value-with-directive].
 
 Input (escaped): `"pie\ntitle\t   Sales  report  \n\"Sales\":8"`.
 
@@ -531,6 +532,8 @@ statements.
 [fixture: pie/blank-lines/header-statement-semicolon]
 
 [fixture: pie/blank-lines/hidden-document-end]
+
+[fixture: pie/blank-lines/hidden-eof-whitespace-line]
 
 [fixture: pie/blank-lines/hidden-body-end]
 

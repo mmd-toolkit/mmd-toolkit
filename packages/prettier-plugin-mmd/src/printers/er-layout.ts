@@ -10,7 +10,7 @@ import type {
 } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
-import { holdsJoiningRegion } from "./kept-lines.ts"
+import { holdsJoiningRegion, isDroppedSemicolon } from "./kept-lines.ts"
 import {
   collectAtoms,
   collectValueNodes,
@@ -367,7 +367,8 @@ function findEndingSemicolonStretches(
   >,
 ): Atom[] {
   const last = findTokenEndingBefore(source, statement.range[1])
-  if (last?.value !== ";") return []
+  if (last?.value !== ";" || isDroppedSemicolon(source, last.range[0]))
+    return []
   return [
     {
       start: statement.styles.at(-1)?.range[1] ?? last.range[0],

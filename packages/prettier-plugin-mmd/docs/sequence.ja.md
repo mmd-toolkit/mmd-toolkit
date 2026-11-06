@@ -364,8 +364,9 @@ sequenceDiagram
 最初の語が色でないとき、 mermaid.js はテキスト全体を box の名前にするからです。
 [fixture: whitespace-between-tokens/values-kept]
 [fixture: whitespace-between-tokens/box-text-kept]
-参加者のデータブロック `@{ ... }` は書かれたまま残し、id に接したままにします。
+参加者のデータブロック `@{ ... }` は id に接したままにします。
 `@{` の前に空白があると、入力が拒否されるからです。
+内容は[複数行の値](#複数行の値)で対象となる余白を除いて保ちます。
 [fixture: whitespace-between-tokens/data-block-and-ignored-line-kept]
 [fixture: whitespace-between-tokens/actor-data-block-kept]
 行に単独の `)` のように、mermaid.js が何も読まない行は残し、
@@ -749,6 +750,7 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   [test: U+2029 after a comment that a comment line follows]
   [test: U+2028 after a `%%` comment that a comment line follows]
   [test: U+2029 after a `%` comment that a comment line follows]
+  [test: a `#` comment and a comment line after U+2028 inside a message text]
 - 閉じていないディレクティブの直後。
   そのようなディレクティブのテキストはこの文字の手前で止まり、
   文字はディレクティブにとって空白ではありません。
@@ -758,6 +760,8 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   [test: U+2028 after a directive that is not closed]
   [test: U+2029 after a directive that is not closed]
   [test: a `;` after U+2029 after a directive that is not closed]
+  [test: a standalone open directive before U+2028 and a semicolon]
+  [test: a standalone open directive before U+2029 and a semicolon]
 - `title` の後の 1 つの空白文字としての U+2028 か U+2029。
   `title`、U+2028、` ;` は、 `;` ごと書かれたまま残します。
   [test: U+2028 as the whitespace character after `title`, with a `;` after it]
@@ -923,18 +927,51 @@ sequenceDiagram
 独立した `}` は文と同じ段に置きます。
 [flowchart のトップレベルの説明](./flowchart.ja.md#複数行の値)と同じく、
 Mermaid が説明からこの字下げを除くためです。
-データブロックの列と内容は原文どおり保ちます。 [fixture: multi-line-values/kept]
+[fixture: multi-line-values/description-and-data-indented]
 [fixture: multi-line-values/accdescr-block-closing-brace-after-text-kept]
 [fixture: multi-line-values/accdescr-block-blank-and-comment-lines-kept]
-[fixture: multi-line-values/data-block-in-block-kept]
+[fixture: multi-line-values/data-block-in-block-indented]
 テキストがなく、コメント行だけを持つブロックは、値を持ちません。
 そのコメント行は、文の中のコメント行と同じく `accDescr` より 1 段深く置き、
 `}` は `accDescr` と同じ段に置きます。
 [fixture: multi-line-values/accdescr-block-comment-only]
 [fixture: multi-line-values/accdescr-block-without-text-kept]
 
+participant と actor のデータブロックには、
+文字のある本文行がちょうど 1 行の場合だけ、
+[データブロック](./flowchart.ja.md#データブロック)を適用します。
+その行を文の 1 段内側に動かし、単独行の `}` は文の段に揃えます。
+本文の後の閉じ括弧はその行と一緒に動かします。
+トップレベルと `loop` 内で適用し、`useTabs` でも本文は半角空白とし、
+単独行の閉じ括弧は文の字下げを使います。
+[fixture: multi-line-values/data-zero-and-shallow]
+[fixture: multi-line-values/data-deep-inline-closer]
+[fixture: multi-line-values/data-block-in-block-indented]
+[fixture: multi-line-values/data-tab-statement-space-body]
+[fixture: multi-line-values/data-closing-deeper-kept]
+[fixture: multi-line-values/data-closing-equal-depth]
+
+Mermaid はデータブロック全体を trim し、最初の行の余白だけを除き、
+後の行は 0 桁から数えます。
+キー 2 つを 0 桁に置く形は受理されますが、
+字下げすると YAML が拒否される場合があります。
+そのため、文字のある本文行が複数あるブロックは桁を保ちます。
+共有条件により、開きの行から本文が始まる形、内部の directive、行全体を保つ行、
+`tabWidth: 0` もそのまま残します。
+最初の行との相対的な余白や directive のテキストを変えず、
+行全体の保持を守るためです。
+[fixture: multi-line-values/data-multiple-lines-kept]
+[fixture: multi-line-values/data-inline-and-directive-kept]
+[fixture: multi-line-values/data-kept-body-line]
+[fixture: multi-line-values/data-zero-width-kept]
+
+前後のコメント、directive、空行、空の説明ブロックはそれぞれの規則に従います。
+CRLF と CR は `endOfLine` に従い、値の Unicode separator は文字として保ちます。
+[fixture: multi-line-values/data-surrounding-trivia]
+[test: data blocks: sequence U+2028] [test: data blocks: sequence CR]
+
 入力
-([multi-line-values/kept-input.mmd](../tests/fixtures/sequence/multi-line-values/kept-input.mmd)):
+([multi-line-values/description-and-data-indented-input.mmd](../tests/fixtures/sequence/multi-line-values/description-and-data-indented-input.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -950,7 +987,7 @@ end
 ```
 
 出力
-([multi-line-values/kept-output.mmd](../tests/fixtures/sequence/multi-line-values/kept-output.mmd)):
+([multi-line-values/description-and-data-indented-output.mmd](../tests/fixtures/sequence/multi-line-values/description-and-data-indented-output.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -960,8 +997,8 @@ sequenceDiagram
       two
     }
     participant A@{
-  "type": "queue"
-}
+      "type": "queue"
+    }
   end
 ```
 
@@ -989,7 +1026,7 @@ sequenceDiagram
 
 ## 書かれたまま残すもの
 
-[複数行の値](#複数行の値)の説明本文の字下げを除き、
+[複数行の値](#複数行の値)の説明本文と対象データブロックの字下げを除き、
 次のテキストは書かれたまま残します。
 変えると図が変わるか、入力が拒否されるからです。
 

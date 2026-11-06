@@ -67,11 +67,24 @@ flowchart/frontmatter-yaml/compat-unknown-config-formatted] [corpus fixture:
 common/directive-bad-json] [corpus fixture: flowchart/div-data-unknown-shape]
 [corpus fixture: flowchart/frontmatter-invalid-yaml]
 
-Directives and data blocks are kept as written. The frontmatter is formatted
-with Prettier's YAML formatter when Prettier can read it as YAML, and kept as
-written otherwise (see [Frontmatter](#frontmatter)). [fixture:
-flowchart/frontmatter-yaml/formatted] [fixture:
-flowchart/frontmatter-yaml/malformed-kept]
+Directives stay as written. Eligible multiline data blocks in flowchart,
+agentflow, kanban and sequence, and usecase JSON tables, move their body lines
+by one uniform number of ASCII spaces, preserving relative indentation and
+trailing whitespace; a separate `}` aligns with its statement. Inline-opening
+blocks, leading non-space whitespace, embedded directives, column-zero YAML
+markers, kept lines, blocks after the statement's first line and `tabWidth: 0`
+prevent movement. Sequence additionally requires a single text-bearing body line
+because Mermaid trims the whole block. The conditions and their reasons are in
+[Data blocks](./flowchart.md#data-blocks); other blocks keep their columns.
+[fixture: flowchart/data-blocks/deep-nested-yaml] [fixture:
+flowchart/data-blocks/scalar-blank-lines] [fixture:
+sequence/multi-line-values/data-multiple-lines-kept] [fixture:
+usecase/json-tables/tab-statement-space-body]
+
+The frontmatter is formatted with Prettier's YAML formatter when Prettier can
+read it as YAML, and kept as written otherwise (see
+[Frontmatter](#frontmatter)). [fixture: flowchart/frontmatter-yaml/formatted]
+[fixture: flowchart/frontmatter-yaml/malformed-kept]
 
 ### HTML tags that start in the frontmatter
 
@@ -288,10 +301,11 @@ printing of the `;` and the whitespace between the `:` and the `#`, which it
 keeps as touching or as one space. Where a `;` separates statements (a
 flowchart, a sequence diagram, a quadrant chart, an XY chart), the ignored `;`
 at the end of the line is dropped, and the whitespace of the line before it is
-formatted as usual. Where it does not (a class diagram, a state diagram, a block
-diagram, and the others), the line is kept with its `;`, and the gap stays.
-[fixture: flowchart/semicolons/style-line-dropped-semicolon-formats-the-gap]
-[fixture:
+formatted as usual. Where it does not, a line-ending `;` of `classDef` or
+`style` is also dropped in class, state, ER, requirement, block, Venn and
+usecase diagrams when the line rule ignores it; style spacing then follows the
+ordinary rules. Other semicolons keep their protected lines and gaps. [fixture:
+flowchart/semicolons/style-line-dropped-semicolon-formats-the-gap] [fixture:
 xychart/statements-one-per-line/line-rule-line-with-a-dropped-semicolon-formats-the-gap]
 [fixture:
 quadrant/statements-one-per-line/line-rule-line-with-a-dropped-semicolon-formats-the-gap]
@@ -455,6 +469,39 @@ class/labels/semicolon-line-kept] [fixture:
 state/descriptions-and-labels/semicolon-line-kept] See
 [Statements one per line](./flowchart.md#statements-one-per-line).
 
+In class, state, ER, requirement, block, Venn and usecase diagrams, line-ending
+`classDef` and `style` semicolons are dropped where this leaves the Db
+unchanged. This includes the ignored terminator and its preceding whitespace,
+with a closed directive before it retained. [fixture:
+class/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+[fixture:
+state/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+[fixture:
+er/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+[fixture:
+requirement/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+[fixture:
+block/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+[fixture:
+venn/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+[fixture:
+usecase/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+Without a `#` in the statement, ER also drops its terminating `;` unit when no
+trivia separates it from the last style. State style statements and block
+`classDef` statements drop a final `;` from the last style only when it is that
+style's sole semicolon and follows non-whitespace text. Other style semicolons
+remain where deleting them changes the Db. [fixture:
+er/semicolons-at-the-end-of-a-style-statement/unit-terminators] [fixture:
+er/semicolons-at-the-end-of-a-style-statement/directive-before-unit-kept]
+[fixture:
+state/semicolons-at-the-end-of-a-style-statement/style-text-terminators]
+[fixture: state/semicolons-at-the-end-of-a-style-statement/style-text-kept]
+[fixture:
+block/semicolons-at-the-end-of-a-style-statement/classdef-text-terminators]
+[fixture: block/semicolons-at-the-end-of-a-style-statement/style-text-kept]
+[fixture:
+requirement/semicolons-at-the-end-of-a-style-statement/style-text-kept]
+
 ## A line that a `;` ends
 
 A `;` decides where a line ends and, when it is the one that the line rule
@@ -502,6 +549,13 @@ it is dropped, so it is dropped: `A-->B %%{init: {}}%% ;` is printed as
 `A --> B %%{init: {}}%%`. [fixture:
 flowchart/semicolons/closed-directive-formatted] [fixture:
 sequence/statements-one-per-line/compat-closed-directive-semicolon-dropped]
+
+The same protections apply to the style terminators above: removing a semicolon
+must not move an unclosed directive's stopping boundary or make the line rule
+discard a different semicolon. [fixture:
+class/semicolons-at-the-end-of-a-style-statement/unclosed-directive-kept]
+[fixture:
+state/semicolons-at-the-end-of-a-style-statement/adjacent-semicolons-kept]
 
 In a sequence diagram, a statement that ends with a unit that reads no
 whitespace, a data block of a participant or `autonumber`, keeps a `;` that
@@ -860,8 +914,8 @@ See [Task data](./gantt.md#task-data), [Settings](./gantt.md#settings),
 - The name and the arguments of a call, with their whitespace: `f ()`,
   `f( 1, 2 )`, and `f(1,2)` are three calls. [fixture:
   gantt/click-statements/call-name-and-arguments-kept]
-- A line that holds a `;`: its statements stay on it, since the line rule of
-  mermaid.js reads the text of the line. [fixture:
+- A line that holds a kept `;`: its statements stay on it, since the line rule
+  of mermaid.js reads the text of the line. [fixture:
   gantt/statements-one-per-line/ignored-semicolon-line-kept]
 - A comment line that starts with `%%{` without being a directive, and a comment
   line with the mark `%` right before it, stand after one whitespace character.
@@ -907,8 +961,8 @@ See [Task data](./journey.md#task-data) and
   mermaid.js needs a character of the data after the colon, so `A:` is rejected
   and `A: ` is a task, and one whitespace character stays. [fixture:
   journey/task-data/whitespace-only-data]
-- A line that holds a `;`: its statements stay on it, since the line rule of
-  mermaid.js reads the text of the line. [fixture:
+- A line that holds a kept `;`: its statements stay on it, since the line rule
+  of mermaid.js reads the text of the line. [fixture:
   journey/statements-one-per-line/ignored-semicolon-line-kept]
 
 ## Requirement lines that the place or the whitespace decides
@@ -950,11 +1004,11 @@ them as they are written. See [Names](./requirement.md#names),
 - An `accTitle`, `accDescr:`, or `accDescr {` statement that holds `direction`
   and a direction on its first printed line keeps the first column, as in an ER
   diagram. [fixture: requirement/accessibility-statements/first-column-kept]
-- A line that holds a `;`: its statements stay on it, since the line rule of
-  mermaid.js reads the text of the line. A statement written over lines whose
+- A line that holds a kept `;`: its statements stay on it, since the line rule
+  of mermaid.js reads the text of the line. A statement written over lines whose
   last line holds a `;` of the statement after it stays as written too, since
   the joined line would be read as a whole. [fixture:
-  requirement/statements-one-per-line/ignored-semicolon-line-kept] [fixture:
+  requirement/statements-one-per-line/semicolon-line-kept] [fixture:
   requirement/multi-line-statements/relationship-last-line-semicolon-kept]
 - A body with no field: the `{` and the `}` on two lines, since mermaid.js needs
   a line break after the `{`. [fixture:
@@ -1107,8 +1161,10 @@ the Db or the lexer reads stays. See [Text units](./xychart.md#text-units) and
   accessibility-statements/block-not-closed-kept-as-written]
 - A line that the line rule of mermaid.js reads, with a `style` or `classDef`, a
   `:` and a `#` after it with no whitespace between them, and a `;` after that,
-  keeps its statements together with the `;`. [fixture:
-  statements-one-per-line/line-rule-line-kept-together] [fixture:
+  keeps its statements together with the kept `;`; dropped style terminators
+  follow
+  [the style rule](./block.md#semicolons-at-the-end-of-a-style-statement).
+  [fixture: statements-one-per-line/line-rule-line-kept-together] [fixture:
   multi-line-statements/semicolon-inside-kept]
 - A statement with a comment or directive keeps the required line breaks while
   structural continuations align under
@@ -1165,8 +1221,10 @@ around them. What the Db or the lexer reads stays. See
   statements-one-per-line/empty-description-block-in-a-title-stays]
 - A line that the line rule of mermaid.js reads, with a `style` or `classDef`, a
   `:` and a `#` after it with no whitespace between them, and a `;` after that,
-  keeps its statements together with the `;`. [fixture:
-  statements-one-per-line/line-rule-line-kept-together] [fixture:
+  keeps its statements together with the kept `;`; dropped style terminators
+  follow
+  [the style rule](./block.md#semicolons-at-the-end-of-a-style-statement).
+  [fixture: statements-one-per-line/line-rule-line-kept-together] [fixture:
   multi-line-statements/semicolon-on-the-last-line-kept]
 - A point or accessibility statement with a comment or directive keeps the
   required line breaks while structural continuations align under
@@ -1223,8 +1281,10 @@ What the Db or the lexer reads stays. See [Rows](./block.md#rows),
   statement on one line. [fixture: edges/chain-on-one-line]
 - A line that the line rule of mermaid.js reads, with a `style` or `classDef`, a
   `:` and a `#` after it with no whitespace between them, and a `;` after that,
-  keeps its statements together with the `;`. [fixture:
-  multi-line-statements/line-rule-line-kept] [fixture:
+  keeps its statements together with the kept `;`; dropped style terminators
+  follow
+  [the style rule](./block.md#semicolons-at-the-end-of-a-style-statement).
+  [fixture: multi-line-statements/line-rule-line-kept] [fixture:
   multi-line-statements/line-rule-line-kept-with-columns] [fixture:
   multi-line-statements/line-rule-line-kept-with-composite]
 - A statement with a comment or directive keeps the required line breaks while
@@ -1362,18 +1422,20 @@ directives and the gaps beside them, and the printer chooses the whitespace
 before the first one. A data block with invalid YAML is accepted by the parser
 as opaque text, although mermaid.js rejects it (known divergence
 [`embedded-data-opaque`](../../spec/docs/known-divergences/embedded-data-opaque.md)),
-and the printer keeps it as written. See the [kanban rules](./kanban.md).
-[fixture: kanban/indentation/sections-and-items] [fixture:
+and the printer retains its opaque content with only eligible margin movement.
+See the [kanban rules](./kanban.md). [fixture:
+kanban/indentation/sections-and-items] [fixture:
 kanban/icons-and-classes/aligned] [fixture:
 kanban/directives/leading-directive-indentation-decided] [fixture:
 kanban/trailing-whitespace/class-trailing-trim]
 
-Data blocks keep their interiors and attachment, including touching adjacent
-blocks and intervening directives; YAML formatting applies only to guarded
-frontmatter. Complete blank/comment gaps after diagram comments, terminal gaps
-included, stay as written under `blank-line-after-header-or-comments`. A raw
-rejection has no raw Db; the corpus checks the specified reading. [fixture:
-kanban/data-blocks/adjacent] [fixture:
+Data blocks keep their contents apart from the eligible uniform margin change in
+[Data blocks](./kanban.md#data-blocks), and their attachment, including touching
+adjacent blocks and intervening directives; YAML formatting applies only to
+guarded frontmatter. Complete blank/comment gaps after diagram comments,
+terminal gaps included, stay as written under
+`blank-line-after-header-or-comments`. A raw rejection has no raw Db; the corpus
+checks the specified reading. [fixture: kanban/data-blocks/adjacent] [fixture:
 kanban/data-blocks/data-adjacent-directive] [fixture:
 kanban/blank-lines/div-between-comment-blank] [fixture:
 kanban/blank-lines/comment-blank-trailing]
@@ -1460,11 +1522,12 @@ venn/blank-lines/blank-before-empty-braces-explicit]
 Names, labels, sizes, complete bare/quoted styles, titles, repetitions and
 swallowed fragments remain authored text. Empty quoted names and styles are real
 values; bare whitespace, quoted whitespace and empty quoted labels keep their
-different readings. Every semicolon stays, with the prefix from first
-non-whitespace through last semicolon protected and crossing values/trivia
-whole; indentation and exterior trailing spaces remain printer whitespace, and
-safe suffixes format normally. Unicode separators inside comments or directives
-do not cut the kept part: Venn diagram comments continue to LF/EOF.
+different readings. Except for the line-ending style terminator described above,
+semicolons stay, with the prefix from first non-whitespace through last kept
+semicolon protected and crossing values/trivia whole; indentation and exterior
+trailing spaces remain printer whitespace, and safe suffixes format normally.
+Unicode separators inside comments or directives do not cut the kept part: Venn
+diagram comments continue to LF/EOF.
 
 [fixture: venn/name-lists/empty-quoted-targets] [fixture:
 venn/labels/labels-empty-kept] [fixture: venn/style-properties/style-atoms-kept]
@@ -1601,10 +1664,11 @@ usecase/frontmatter-yaml/frontmatter-zero]
 Native `@{...}` metadata is parsed and validated syntax: only structural
 whitespace changes, with all written separators, blank lines, spelling, order
 and duplicates retained. JSON table data is opaque, including its @-to-brace
-gap, number/escape spelling and property order. Formatting fixtures without
-supplied effects use the shared null Db comparison and written-source check; the
-corpus uses recorded effects where available. Full CSS declarations keep both
-colon padding sides and the `--` name gap, which Mermaid stores. [fixture:
+gap, number/escape spelling and property order; eligible margins follow
+[JSON tables](./usecase.md#json-tables). Formatting fixtures without supplied
+effects use the shared null Db comparison and written-source check; the corpus
+uses recorded effects where available. Full CSS declarations keep both colon
+padding sides and the `--` name gap, which Mermaid stores. [fixture:
 usecase/native-metadata/metadata-inline] [fixture:
 usecase/native-metadata/metadata-blank-lines-kept] [fixture:
 usecase/json-tables/json-opaque] [fixture:
@@ -2048,10 +2112,16 @@ statements do not participate. Ordinary roots use one positive configured step,
 including at tabWidth zero because indentation determines parentage. A class
 name touching a row keeps that contact and uses root baseline zero throughout
 the diagram. Trailing or whitespace-line indentation moves once to the following
-row. Standalone comments and directives start at column one to avoid an extra
-native indentation unit, except in a class-style separator: its standalone
-trivia and style continuation align one step inside `classDef`. The style text
-and protected semicolon prefixes remain unchanged. [fixture:
+row. Standalone comment lines align with the next statement, or the last
+statement at EOF, as described in [Comments](./treemap.md#comments). [fixture:
+treemap/comments/aligned-depths] [fixture: treemap/comments/aligned-final]
+Between statements, bare `%%`, non-directive `%%{` lines and standalone
+directives stay at column one because mermaid.js rejects them when indented.
+[fixture: treemap/comments/native-bare] [fixture:
+treemap/comments/native-nonword] [fixture: treemap/comments/unclosed-directive]
+[fixture: treemap/comments/mixed-directives] In a class-style separator,
+standalone trivia and style continuation align one step inside `classDef`. The
+style text and protected semicolon prefixes remain unchanged. [fixture:
 treemap/style-gaps/css-comment] [fixture: treemap/style-gaps/css-directive-tabs]
 [fixture: treemap/style-gaps/css-comment-semicolon-kept] Protected semicolon row
 boundaries keep the body as written.

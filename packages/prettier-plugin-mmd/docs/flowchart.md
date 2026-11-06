@@ -310,10 +310,11 @@ statements-one-per-line/semicolon-after-style-text-not-word-split] In a name,
 a line feed, and `A`, and no members, while `subgraph Front end ;` has the
 member A. The `;` stays where it is when it stands on a later line, with the
 whitespace before it as written, as part of the `subgraph` line. [corpus
-fixture: flowchart/semicolon-after-end-name-2a3a795c] In a name, only `end` and
-`click` read the line break after them; the other words of the list are there
-because the list is shared with the text of a statement, and keeping a `;` there
-changes nothing that mermaid.js reads. [fixture:
+fixture: flowchart/semicolon-after-end-name-2a3a795c] [fixture:
+statements-one-per-line/name-semicolon-after-directive-line] In a name, only
+`end` and `click` read the line break after them; the other words of the list
+are there because the list is shared with the text of a statement, and keeping a
+`;` there changes nothing that mermaid.js reads. [fixture:
 statements-one-per-line/semicolon-after-name-word-kept] [corpus fixture:
 flowchart/name-semicolon-whitespace-0c9483e4] [corpus fixture:
 flowchart/name-semicolon-whitespace-0fd5a434] [corpus fixture:
@@ -323,6 +324,10 @@ statements-one-per-line/semicolon-after-name-not-end-dropped] A directive that
 cuts the word does not change that: mermaid.js removes directives before it
 reads the text. [fixture:
 statements-one-per-line/semicolon-after-word-cut-by-directive-kept]
+
+A `;` after a name ending in `accTitle` is a statement of its own and stands on
+its own line inside the subgraph, since it is one of the subgraph's members.
+[fixture: statements-one-per-line/name-followed-by-empty-statement]
 
 Input
 ([statements-one-per-line/semicolon-after-end-name-kept-input.mmd](../tests/fixtures/flowchart/statements-one-per-line/semicolon-after-end-name-kept-input.mmd)):
@@ -1250,6 +1255,14 @@ later line is indented. [fixture: multi-line-statements/click-in-subgraph-kept]
 [fixture: multi-line-statements/click-forms-kept] [fixture:
 multi-line-statements/click-comment-inside-kept]
 
+A diagram header or subgraph header with a comment line after U+2028 or U+2029
+keeps that span as written: mermaid.js removes the comment line and its
+preceding whitespace and joins the continuation to the preceding text. [test: a
+comment line after U+2028 in a flowchart header] [test: a comment line after
+U+2029 in a flowchart header] [test: a comment line after U+2028 in a flowchart
+subgraph header] [test: a comment line after U+2029 in a flowchart subgraph
+header]
+
 Input
 ([multi-line-statements/continuation-indented-input.mmd](../tests/fixtures/flowchart/multi-line-statements/continuation-indented-input.mmd)):
 
@@ -1308,6 +1321,131 @@ flowchart LR
   A
   click A
 cb
+```
+
+### Data blocks
+
+Keep each `@{ ... }` attached to its vertex, without formatting its YAML or
+changing its keys, values, delimiters, or line count. For an eligible multiline
+block, move every body line by the same number of ASCII spaces until the
+shallowest line with text stands one level inside its statement. This preserves
+relative indentation, including nested YAML, and can move lines inward or
+outward. A `}` alone on its line aligns with the statement; a `}` after body
+text stays there and moves with that line. [fixture:
+data-blocks/zero-and-shallow] [fixture: data-blocks/deep-nested-yaml] [fixture:
+data-blocks/closing-after-text]
+
+Move a block only when all these conditions hold; otherwise keep its columns as
+written:
+
+- A line break immediately follows `@{`. Mermaid counts the first line's columns
+  from the opener and later lines from the source margin: indenting `label: x`
+  after an opening line `A@{ shape: rect` makes accepted YAML fail. [fixture:
+  data-blocks/inline-opening-kept] Whitespace between the opener and the newline
+  also keeps the block written. [fixture: data-blocks/opening-padding-kept]
+- Each body line's leading whitespace consists only of ASCII spaces. Mermaid
+  rejects tab-indented YAML in flowchart and kanban, and the movement counts
+  spaces. [test: data blocks: JSON leading tab kept]
+- The block contains no `%%{`: directives retain their authored text and
+  columns. [fixture: data-blocks/directive-inside-kept]
+- If the shallowest text starts at column zero, no such line starts with `---`,
+  `...`, or `%`. Moving a document marker or YAML directive away from column
+  zero can make accepted YAML fail. [fixture: data-blocks/document-start-kept]
+  [fixture: data-blocks/document-end-kept] [fixture:
+  data-blocks/yaml-directive-kept]
+- A `}` is alone on its line only when spaces and nothing else stand before it,
+  and those spaces are no more than the shallowest line with text. Mermaid reads
+  the whitespace before the `}` as the last line of the block text, which a
+  literal or folded scalar keeps: a deeper run of spaces is a line with spaces
+  of its own, and moving the `}` to the statement would remove it. A tab, a
+  no-break space or U+2028 before the `}` is a character of that line too, so
+  the row is a body row and its leading whitespace is not spaces. A run of
+  spaces as wide as the shallowest line moves. [fixture:
+  data-blocks/closing-deeper-kept] [fixture: data-blocks/closing-tab-kept]
+  [fixture: data-blocks/closing-equal-depth] [test: data blocks: flowchart NBSP
+  before the closer] [test: data blocks: flowchart U+2028 before the closer]
+  [test: data blocks: flowchart U+2029 before the closer]
+- `tabWidth` is not zero: zero supplies no inner indentation step. [fixture:
+  data-blocks/zero-width-kept]
+- Neither a block line nor its opening line belongs to a line kept in full,
+  including one protected by the semicolon line rule. Moving part of that line
+  would violate its preservation. [fixture: data-blocks/kept-body-line]
+  [fixture: data-blocks/kept-opening-line]
+- The block starts on its statement's first line, so that line's indentation
+  supplies the statement level. A block after a newline following `A -->` keeps
+  its columns. [fixture: data-blocks/later-statement-line-kept]
+- The statement holds no other block, of one line or of several. Once a block
+  has moved, the next one would start on a line that is not the statement's
+  first, and blocks that touch, as in `}@{`, are read as one text, whose columns
+  the move would split. A statement with two blocks keeps both as written.
+  [fixture: data-blocks/second-block-kept] [fixture:
+  data-blocks/adjacent-single-line-after-kept] [fixture:
+  data-blocks/adjacent-single-line-before-kept] [fixture:
+  data-blocks/separate-single-line-block-kept] [fixture:
+  data-blocks/edge-adjacent-single-line-kept]
+
+A block without body text has no shallowest text line and stays as written.
+[fixture: usecase/json-tables/empty-body-kept]
+
+The same movement applies to agentflow metadata, kanban data, usecase JSON
+tables and sequence participant data. Sequence additionally requires exactly one
+body line with text: Mermaid trims the whole block, removing only the first
+line's margin, and indenting later keys can make accepted YAML fail. See
+[Metadata blocks](./agentflow.md#metadata-blocks),
+[Data blocks](./kanban.md#data-blocks), [JSON tables](./usecase.md#json-tables)
+and [Multi-line values](./sequence.md#multi-line-values).
+
+Space-only lines move by the same amount, becoming empty if the movement removes
+all their spaces; empty lines stay empty. Preserve trailing whitespace on every
+body line: literal block scalars read both blank-line widths and trailing
+spaces, and changing them can change the Db. [fixture:
+data-blocks/scalar-blank-lines] [fixture:
+data-blocks/scalar-blank-lines-outdent]
+
+Body margins and a separate `}` use ASCII spaces, even with `useTabs`: the `}`
+stands at the column of the statement. A tab before the `}` makes the last line
+of the block a line with text in a scalar that keeps its empty lines (`|+`,
+`>+`), and changes the value. [fixture: data-blocks/tab-statement-space-body]
+[fixture: data-blocks/closing-with-tabs-keeps-empty-lines] [fixture:
+data-blocks/closing-with-tabs-keeps-folded-empty-lines]
+
+Directives, comments, blank lines, empty description blocks and a discarded
+statement `;` beside the block keep their own rules. CRLF and CR follow
+`endOfLine`; U+2028 and U+2029 inside values remain characters. [fixture:
+data-blocks/surrounding-trivia] [test: data blocks: flowchart CRLF] [test: data
+blocks: flowchart CR] [test: data blocks: flowchart U+2028] [test: data blocks:
+flowchart U+2029]
+
+An indented comment line inside an eligible block moves with the other body
+lines, keeping its authored line and text. [fixture:
+data-blocks/indented-comment-line]
+
+Input
+([data-blocks/deep-nested-yaml-input.mmd](../tests/fixtures/flowchart/data-blocks/deep-nested-yaml-input.mmd)):
+
+```mmd
+flowchart LR
+subgraph Group
+A@{
+        label: Alpha
+        custom:
+          nested: yes
+ }
+end
+```
+
+Output
+([data-blocks/deep-nested-yaml-output.mmd](../tests/fixtures/flowchart/data-blocks/deep-nested-yaml-output.mmd)):
+
+```mmd
+flowchart LR
+  subgraph Group
+    A@{
+      label: Alpha
+      custom:
+        nested: yes
+    }
+  end
 ```
 
 ### Multi-line values
@@ -1929,8 +2067,9 @@ diagram or the input would be rejected:
 - the length of an arrow (`-->` and `--->`), and the header keyword (`graph` or
   `flowchart`); [fixture: arrow-spacing/arrow-length-kept] [fixture:
   direction/header-keyword-kept]
-- the content of `@{ ... }` data blocks and of directives, which the parser does
-  not read; [fixture:
+- the content of directives and, apart from the uniform indentation in
+  [Data blocks](#data-blocks), of `@{ ... }` blocks, which the parser does not
+  read; [fixture:
   whitespace-between-tokens/compat-unknown-shape-data-block-kept] [fixture:
   whitespace-between-tokens/data-block-kept] [fixture: directives/content-kept]
 - the lines of strings written over several lines, and of Markdown strings,

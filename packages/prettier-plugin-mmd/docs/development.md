@@ -62,6 +62,10 @@ builds in `lib/`, so rebuild them before running one:
 | `tests/source.test.ts`               | Which tokens the printers take for tokens of a node's structure: not the directives, the `;` tokens, or the tokens of the frontmatter, whose `---` delimiters have the kind and value of a flowchart arrow.                                                                                                                                                                                                                                                                                                                                                               |
 | `tests/sequence-layout.test.ts`      | Which ids the sequence printer takes for ids that a following space would make another unit: the numbers and `title`, next to which no space is put around an arrow.                                                                                                                                                                                                                                                                                                                                                                                                      |
 
+The plugin API test also passes a bounded range to `prettier.format`, checking
+the node-location callbacks used by Prettier's partial-format traversal. [test:
+provides node ranges for Prettier's partial formatting]
+
 The corpus tests run one diagram type per file so that Vitest can run them in
 parallel. `tests/corpus.test.ts` loads common fixtures;
 `tests/corpus/<diagram>.test.ts` loads the named diagram's fixtures. Both call
@@ -90,15 +94,17 @@ default values.
 The values of the embedded data are taken from the input, so the tests check
 that formatting keeps the embedded data: `writtenEmbeddedTexts` lists the texts
 of the directives and of the data blocks as written, in source order, and the
-list agrees before and after under the same eventmodeling margin allowance, with
-each line terminator read as a line feed. This includes unused native blocks and
-notes. The frontmatter is another exception: the printer formats its YAML with
-Prettier's YAML formatter where that is safe, so `describeFrontmatterChange`
-accepts the frontmatter as written or as that formatter prints it, and relies on
-that formatter to keep the value of the YAML; the tests do not read it. Where a
-text holds a data block and no effects are given, `dbOfText` gives no Db: what a
-data block does to it is what mermaid.js derives, and the text alone does not
-give it; the written text of the block is still checked.
+list agrees before and after under the same eventmodeling margin allowance and
+the uniform data-block movement in [Data blocks](./flowchart.md#data-blocks),
+with each line terminator read as a line feed. This includes unused native
+blocks and notes. The frontmatter is another exception: the printer formats its
+YAML with Prettier's YAML formatter where that is safe, so
+`describeFrontmatterChange` accepts the frontmatter as written or as that
+formatter prints it, and relies on that formatter to keep the value of the YAML;
+the tests do not read it. Where a text holds a data block and no effects are
+given, `dbOfText` gives no Db: what a data block does to it is what mermaid.js
+derives, and the text alone does not give it; the written text of the block is
+still checked.
 
 ## How the printer is built
 

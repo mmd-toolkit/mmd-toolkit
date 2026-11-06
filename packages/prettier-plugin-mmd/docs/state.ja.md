@@ -270,7 +270,7 @@ click 文の後の空の説明ブロックも同じです。
 `state a b` は足さないからです。 [corpus fixture: state/lex-state-without-body]
 `state x "" y` と `state z ""` の、 mermaid.js が読まない `""` も同じです。
 [fixture: statements-one-per-line/state-names-kept]
-`;` を含む行は、flowchart と同じく、
+保持する `;` を含む行は、flowchart と同じく、
 その行の文を残します（[1 行に 1 文](./flowchart.ja.md#1-行に-1-文)を参照）。
 state 図では、 `;` は id の文字です。
 [fixture: statements-one-per-line/line-with-semicolon-kept]
@@ -660,8 +660,9 @@ HTML や Markdown があっても raw Db は完全に一致します。
 たとえば `<pre>` の内側の字下げを変えると、描画も変わる場合があるためです。
 最初の行が空か、
 先頭に ASCII 空白と tab 以外の空白文字がある場合は原文を保ちます。
-[fixture: notes/html-note-kept] [fixture: notes/html-pre-first-line]
-[fixture: notes/html-break-first-line] [fixture: notes/html-first-line-tabs]
+[fixture: notes/whitespace-only-body] [fixture: notes/html-note-kept]
+[fixture: notes/html-pre-first-line] [fixture: notes/html-break-first-line]
+[fixture: notes/html-first-line-tabs]
 [fixture: notes/html-first-line-zero-width]
 [fixture: notes/first-tab-markup-margin]
 
@@ -1095,6 +1096,62 @@ stateDiagram-v2
   line two" as N
 ```
 
+### スタイル文の末尾のセミコロン
+
+`classDef` または `style` 文の行末の `;` は、
+[mermaid.js の行の規則](../../spec/docs/common.ja.md#style-行と-classdef-行)
+が無視するときに削除します。
+`:` と後の `#` の間に空白がない形です。
+この終端を削除しても Db は変わらず、スタイルが複数でも同じです。
+[fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
+削除する `;` の直前の空白も一緒に削除します。
+[fixture: semicolons-at-the-end-of-a-style-statement/space-before-terminator]
+その行は、スタイルの空白を含め、その `;` がない行として整形します。
+[fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
+文の前後の空行とコメント行は、通常の配置に従います。
+[fixture: semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines]
+空の description block も通常の配置に従い、スタイルの終端は削除します。
+[fixture: semicolons-at-the-end-of-a-style-statement/empty-description-block]
+
+文に `#` がない場合は、最後のスタイルの末尾の `;` も削除します。
+ただし、そのスタイルにほかの `;` がなく、
+前に空白以外のテキストがある場合に限ります。
+mermaid.js は各スタイルの最初の `;` を取り除くためです。
+[fixture: semicolons-at-the-end-of-a-style-statement/style-text-terminators]
+`classDef c fill:red;;`、`classDef c ;`、
+`style A fill : #f00;` は条件を満たさないので残します。
+[fixture: semicolons-at-the-end-of-a-style-statement/style-text-kept]
+`A --> B;` などの遷移のセミコロンは、id の文字なので保ちます。
+[fixture: semicolons-at-the-end-of-a-style-statement/transition-semicolon-kept]
+
+同じ行でセミコロンの後にディレクティブが続く場合は、`;` を保ちます。
+[fixture: semicolons-at-the-end-of-a-style-statement/trailing-items-kept]
+同じ行で `%%` のテキストが続く場合も保ちます。
+ここではスタイルの文字列の一部です。
+[fixture: semicolons-at-the-end-of-a-style-statement/trailing-items-kept]
+無視される `;` が別の `;` の隣にある場合は、行の規則の選択を保つために残します。
+[fixture: semicolons-at-the-end-of-a-style-statement/adjacent-semicolons-kept]
+閉じていないディレクティブの後の `;` は、その停止位置を保つために残します。
+[fixture: semicolons-at-the-end-of-a-style-statement/unclosed-directive-kept]
+U+2028 と U+2029 の前も同じように保護します。
+[`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)を参照してください。
+[test: style semicolons: state before U+2028]
+[test: style semicolons: state before U+2029]
+文と無視される終端の間にある閉じたディレクティブは残し、`;` は削除します。
+[fixture: semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+
+出力
+([semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd](../tests/fixtures/state/semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  A --> B
+  classDef c fill:#f00
+  style A fill:#f00
+  classDef d fill:#0f0,stroke:#00f
+  style A fill:#0f0,stroke:#00f
+```
+
 ### 複数行の文
 
 複数行に書かれた文は、1 行にまとめて印字します。
@@ -1201,7 +1258,7 @@ stateDiagram-v2
     LR
 ```
 
-`;` を含み、複数行に書かれた文も、書かれたまま残します。
+保持する `;` を含み、複数行に書かれた文も、書かれたまま残します。
 [corpus fixture: state/db-style-semicolons]
 [corpus fixture: state/db-classdef-semicolons]
 [fixture: multi-line-statements/semicolon-kept]
@@ -1213,6 +1270,9 @@ mermaid.js の行の規則は、
 規則は 2 行目に当たらないので `#f00;` はエンティティですが、
 `classDef c fill:#f00;` と 1 行に書くと規則が当たり、`;` が無視されます。
 行を結ぶと、スタイルが変わるからです。
+1 行に書かれた無視される終端は、
+[スタイル文の末尾のセミコロン](#スタイル文の末尾のセミコロン)
+に従って削除します。
 
 入力
 ([multi-line-statements/semicolon-kept-input.mmd](../tests/fixtures/state/multi-line-statements/semicolon-kept-input.mmd)):
@@ -1309,8 +1369,9 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
 ## 書かれたまま残すもの
 
 [複数行の値](#複数行の値)で定める説明本文の字下げと、
-[ノート](#ノート)で定める限定的な段落の margin を除き、
-次のテキストは書かれたまま残します。
+[ノート](#ノート)で定める限定的な段落の margin と、
+[スタイル文の末尾のセミコロン](#スタイル文の末尾のセミコロン)
+で削除する終端を除き、次のテキストは書かれたまま残します。
 変えると図が変わるか、入力が拒否されるからです。
 
 - 値のテキスト。

@@ -7,6 +7,7 @@ import type {
 } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
+import { moveDataBlocks } from "./data-blocks.ts"
 import type { BlockRules, PrintedBlock } from "./blocks.ts"
 import {
   openingLine,
@@ -80,10 +81,19 @@ export function printSequence(
       const depth = depthOf(path)
       return printAtoms(
         source,
-        layoutSequenceStatement(
+        moveDataBlocks(
           source,
-          statement,
-          findSequencePrintedEnd(source, statement),
+          layoutSequenceStatement(
+            source,
+            statement,
+            findSequencePrintedEnd(source, statement),
+          ),
+          statement.range,
+          {
+            kept: findSequenceKeptLines(source),
+            statement: indentationOf(options, depth),
+            tabWidth: options.tabWidth,
+          },
         ),
         {
           statement: indentationOf(options, depth),

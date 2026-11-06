@@ -1317,6 +1317,8 @@ comma や閉じ括弧の前のコメントは、前に1 space、後ろに空白�
 
 [fixture: railroad/comments/ir-call-inline-spacing]
 
+[fixture: railroad/comments/ir-block-comments-after-gap-breaks]
+
 [fixture: railroad/comments/ir-call-constructor-nested]
 
 [test: railroad/comments/ir-call-constructor-break-tabs]

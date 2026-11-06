@@ -302,6 +302,10 @@ mermaid.js はコロンの後に 1 文字を要求します。
 タスクの部分の間のディレクティブは、
 その位置に残します（[ディレクティブ](#ディレクティブ) を参照）。
 
+[test: U+00A0 as the entire data of a journey task]
+[test: U+2028 as the entire data of a journey task]
+[test: U+2029 as the entire data of a journey task]
+
 入力
 ([task-data/people-comma-spacing-input.mmd](../tests/fixtures/journey/task-data/people-comma-spacing-input.mmd)):
 

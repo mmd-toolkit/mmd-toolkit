@@ -99,6 +99,10 @@ treemap
 物理行の先頭だけを測り直したり、二つ目の run を足したりしません。
 数える run は common の除去処理で既に決まっています。
 
+common コメントの除去で前の空白だけの run が消えていても、
+その結果の行の桁を独立したコメント行にも使います。
+[fixture: treemap/comments/removed-indent]
+
 [fixture: treemap/carried-indentation/header-space]
 
 [fixture: treemap/carried-indentation/header-tab]
@@ -165,6 +169,8 @@ semicolon の保護が優先します。
 title や class style が既に所有する文字は、別文にしません。
 
 [fixture: treemap/statements-one-per-line/adjacent]
+
+[fixture: treemap/statements-one-per-line/empty-class-before-comment]
 
 [fixture: treemap/statements-one-per-line/glued-empty-class]
 
@@ -470,6 +476,9 @@ Db の等しい外側の空白から 1 つを選び、
 コメントや directive を越えて次の物理行から値を取りません。
 trivia を持つ値は書かれた境界を保ちます。
 
+空の title の次のコメント行は次の文にそろえ、title の値にはしません。
+[fixture: treemap/title/empty-next-comment]
+
 [fixture: treemap/title/padding]
 
 [fixture: treemap/title/empty-next-comment]
@@ -620,8 +629,9 @@ trivia のない leaf の名前、区切り、数と、selector の部品の間�
 leaf の区切りと数の継続行は文にそろえます。
 ただし native コメント前の gap が既に字下げの run を持つなら、
 二つ目の run は足しません。
-独立した trivia の mark は、
+これらの部品の gap 内の独立した trivia の mark は、
 [Style gaps](#style-gaps) の class style separator を除き、第 1 列に置きます。
+文の間のコメントは [Comments](#comments) に従います。
 
 [fixture: treemap/component-newlines/leaf]
 
@@ -650,14 +660,47 @@ treemap
 
 ### Comments
 
-普通の独立コメントの mark は、
-[Style gaps](#style-gaps) を除き第 1 列に置きます。
+独立したコメント行は次の文の桁にそろえ、末尾では最後の文の桁にそろえます。
+[ishikawa](./ishikawa.ja.md#comments)、[kanban](./kanban.ja.md#コメント)、
+[mindmap](./mindmap.ja.md#コメント) と同じく、どの文に関係するかを示します。
+元のコメントが次の文より浅くても深くても同じで、
+字下げが浅くなる行の前にも適用します。
+[fixture: treemap/comments/aligned-depths]
+[fixture: treemap/comments/standalone] [fixture: treemap/comments/aligned-final]
+
+`%% text`、`%%!`、`%%!x`、`%%%`、`%%` の後が空白の行、`%% {x}` は、
+そろえるコメント行です。
+連続するコメント行は、空行を挟んでも同じ桁にそろえます。
+[fixture: treemap/comments/aligned-forms]
+[fixture: treemap/comments/aligned-blank-lines]
+文と同じ設定の字下げを使い、tab と tabWidth 0 での正の最小幅にも従います。
+[fixture: treemap/comments/aligned-tabs]
+[fixture: treemap/comments/aligned-zero]
+見出しの前のコメントと、文のない本文のコメントは第 1 列に置きます。
+[fixture: treemap/prefix/comment] [fixture: treemap/comments/only-comments]
+
+文の間では、`%%` だけの行、directive ではない `%%{` 始まりの行、
+独立した directive を第 1 列に置きます。
+字下げすると mermaid.js が拒否するためです。
+混在する列と末尾でも、この区別を保ちます。
+[fixture: treemap/comments/native-bare]
+[fixture: treemap/comments/native-nonword]
+[fixture: treemap/comments/unclosed-directive]
+[fixture: treemap/comments/mixed-directives]
+[fixture: treemap/comments/native-final]
+文の内部の gap は [Component newlines](#component-newlines) と
+[Style gaps](#style-gaps) に従います。
+空の description block やセミコロンで保護された title の前後でも、
+コメント行は次の文にそろえます。
+[fixture: treemap/comments/aligned-empty-description]
+[fixture: treemap/comments/aligned-protected-title]
+
 inline は同じ行に残し、内容、mark、末尾、順序、所有位置を保ちます。
-native の bare や非 word コメント前に、新しい字下げの unit を作らないためです。
 inline コメント前の空白が次行の indent なら、次行へ移します。
 その結果コメントが直前の token に接しても、親子を保ちます。
 common コメント領域とともに消えた空白を復元せず、 AST の親子を使います。
 native コメント内の LS と PS は内容として保ちます。
+[test: treemap/comments/standalone-ls] [test: treemap/comments/standalone-ps]
 
 [fixture: treemap/comments/standalone]
 
@@ -686,9 +729,9 @@ native コメント内の LS と PS は内容として保ちます。
 ```mmd
 treemap
   "Top"
-%% before child
+    %% before child
     "Tip": 2
-%% final comment
+    %% final comment
 ```
 
 ### Directives
@@ -768,6 +811,10 @@ treemap
 文の間の空きを一定の範囲にそろえるためです。
 空白だけの行が意味のある字下げなら、先に次の行へ移します。
 名前、説明、directive、common コメント領域が所有する空行は保ちます。
+
+コメント行と次の文の間に空行があっても、コメントをそろえる桁は変わりません。
+[fixture: treemap/blank-lines/comments]
+[fixture: treemap/comments/aligned-blank-lines]
 
 [fixture: treemap/blank-lines/ordinary]
 
@@ -921,6 +968,10 @@ EOF まで届く未完の Root directive と保護された本文の末尾は、
 元の終わり方を優先します。
 拒否される未使用の字下げの run は修復しません。
 
+末尾の独立したコメント行は最後の文にそろえます。
+[fixture: treemap/final-newline/comment]
+[fixture: treemap/comments/aligned-final]
+
 [fixture: treemap/final-newline/row]
 
 [fixture: treemap/final-newline/common]
@@ -939,7 +990,7 @@ EOF まで届く未完の Root directive と保護された本文の末尾は、
 ```mmd
 treemap
   "FinalComment": 2
-%% final
+  %% final
 ```
 
 ### Specified readings

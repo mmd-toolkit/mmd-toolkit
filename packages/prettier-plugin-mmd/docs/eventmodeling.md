@@ -1057,6 +1057,8 @@ eventmodeling/semicolons/protected-metadata-prefix-is-value-whitespace]
 
 [fixture: eventmodeling/semicolons/prefix-crosses-clause-header]
 
+[fixture: eventmodeling/semicolons/two-hidden-clause-prefixes]
+
 Input (escaped): `"eventmodeling tf 01 evt Alpha \"style:#x\" ;rf 02 cmd Beta"`.
 
 Output

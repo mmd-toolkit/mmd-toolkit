@@ -10,6 +10,22 @@ interface TreemapCase {
 
 export const treemapCases: readonly TreemapCase[] = [
   {
+    name: "treemap/comments/standalone-ls",
+    input:
+      'treemap\n"SeparatorRoot"\n%% note\u2028still comment\n "SeparatorChild":2\n',
+    output:
+      'treemap\n  "SeparatorRoot"\n    %% note\u2028still comment\n    "SeparatorChild": 2\n',
+    options: {},
+  },
+  {
+    name: "treemap/comments/standalone-ps",
+    input:
+      'treemap\n"ParagraphRoot"\n%% note\u2029still comment\n "ParagraphChild":2\n',
+    output:
+      'treemap\n  "ParagraphRoot"\n    %% note\u2029still comment\n    "ParagraphChild": 2\n',
+    options: {},
+  },
+  {
     name: "treemap/line-terminators-and-unicode/cr-structure",
     input: 'treemap\r"CR root"\r "CR child":3\r',
     output: 'treemap\n  "CR root"\n    "CR child": 3\n',

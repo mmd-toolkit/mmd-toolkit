@@ -286,6 +286,9 @@ together with it. [fixture: task-data/whitespace-only-data] [fixture:
 task-data/whitespace-only-data-then-comment] A directive between the parts of a
 task stays where it is (see [Directives](#directives)).
 
+[test: U+00A0 as the entire data of a journey task] [test: U+2028 as the entire
+data of a journey task] [test: U+2029 as the entire data of a journey task]
+
 Input
 ([task-data/people-comma-spacing-input.mmd](../tests/fixtures/journey/task-data/people-comma-spacing-input.mmd)):
 

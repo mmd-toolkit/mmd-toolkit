@@ -195,11 +195,10 @@ export function treeProblemsOfText(text: string): TreeProblem[] {
 }
 
 /**
- * Only these diagram types may drop separator or ignored line-end `;`:
+ * The diagram types whose `;` may be dropped wherever one is written:
  * docs/flowchart.md and docs/agentflow.md, Semicolons; docs/sequence.md,
  * docs/quadrant.md and docs/xychart.md, Statements one per line. Their rules
- * replace statement separators with line breaks. Every other diagram type
- * keeps all semicolons, including grammatical punctuation and text.
+ * replace statement separators with line breaks.
  */
 const semicolonSeparatorDiagramTypes: ReadonlySet<DiagramBody["type"]> =
   new Set([
@@ -211,18 +210,83 @@ const semicolonSeparatorDiagramTypes: ReadonlySet<DiagramBody["type"]> =
   ])
 
 /**
+ * The `classDef` and `style` statements of the diagram types that drop the `;`
+ * that ends such a statement, and only that one (docs/class.md, docs/state.md,
+ * docs/er.md, docs/requirement.md, docs/block.md, docs/venn.md and
+ * docs/usecase.md, Semicolons at the end of a style statement).
+ */
+const styleStatementTypes: ReadonlySet<string> = new Set([
+  "ClassClassDefStatement",
+  "ClassStyleStatement",
+  "StateClassDefStatement",
+  "StateStyleStatement",
+  "ErClassDefStatement",
+  "ErStyleStatement",
+  "RequirementClassDefStatement",
+  "RequirementStyleStatement",
+  "BlockClassDefStatement",
+  "BlockStyleStatement",
+  "VennStyleStatement",
+  "UsecaseClassDefStatement",
+  "UsecaseStyleStatement",
+])
+
+/**
+ * The offsets of the `;` of a text that formatting may drop: every `;` in a
+ * diagram of `semicolonSeparatorDiagramTypes`, and in the others the `;` that
+ * the line rule ignores right after a `classDef` or `style` statement, and the
+ * last character of such a statement. Every other `;`, including grammatical
+ * punctuation and text, stays.
+ */
+function droppableSemicolonsOf(text: string, root: Root): ReadonlySet<number> {
+  const offsets = new Set<number>()
+  if (semicolonSeparatorDiagramTypes.has(root.body.type)) {
+    for (const token of root.tokens) {
+      if (token.value === ";") offsets.add(token.range[0])
+    }
+    return offsets
+  }
+  const ends = new Set<number>()
+  walk(root.body, (node) => {
+    if (!styleStatementTypes.has(node.type)) return
+    const { range } = node as unknown as { range: Range }
+    ends.add(range[1])
+    // ER, state and block read a last `;` of a statement as part of its range.
+    if (text[range[1] - 1] === ";") offsets.add(range[1] - 1)
+  })
+
+  /** The directive that ends at `end`. */
+  function directiveEndingAt(end: number): Range | undefined {
+    return root.directives.find((candidate) => candidate.range[1] === end)
+      ?.range
+  }
+
+  for (const token of root.tokens) {
+    if (token.type !== "IgnoredSemicolon") continue
+    // Only whitespace and directives lie between the statement and the `;`.
+    let position = token.range[0]
+    while (position > 0 && !ends.has(position)) {
+      const directive = directiveEndingAt(position)
+      if (directive !== undefined) position = directive[0]
+      else if (text[position - 1].trim() === "") position--
+      else break
+    }
+    if (ends.has(position)) offsets.add(token.range[0])
+  }
+  return offsets
+}
+
+/**
  * Compare authored text while allowing treeview's explicitly redrawn outer
- * box structure. Only semicolonSeparatorDiagramTypes may remove input `;`.
- * Ignore common.md's whitespace (including BOM) and frontmatter;
+ * box structure. Only the `;` of `droppableSemicolonsOf` may be removed from
+ * the input. Ignore common.md's whitespace (including BOM) and frontmatter;
  * describeFrontmatterChange checks its YAML separately.
  */
 export function writtenTextKeptUpToSemicolons(
   before: string,
   after: string,
 ): boolean {
-  const keepsAllSemicolons = !semicolonSeparatorDiagramTypes.has(
-    parse(before).body.type,
-  )
+  const droppable = droppableSemicolonsOf(before, parse(before))
   const [input, output] = [before, after].map((text) => {
     const root = parse(text)
     const structural: Range[] = []
@@ -239,6 +303,7 @@ export function writtenTextKeptUpToSemicolons(
         )
     })
     let written = ""
+    const offsets: number[] = []
     for (let offset = 0; offset < text.length; offset++) {
       const character = text[offset]
       const frontmatter = root.frontmatter?.range
@@ -254,14 +319,21 @@ export function writtenTextKeptUpToSemicolons(
         ![...root.comments, ...root.directives].some(
           (item) => item.range[0] <= offset && offset < item.range[1],
         )
-      if (!drawn && character.trim() !== "") written += character
+      if (!drawn && character.trim() !== "") {
+        written += character
+        offsets.push(offset)
+      }
     }
-    return written
+    return { written, offsets }
   })
   let outputIndex = 0
-  for (let inputIndex = 0; inputIndex < input.length; inputIndex++) {
-    if (input[inputIndex] === output[outputIndex]) outputIndex++
-    else if (input[inputIndex] !== ";" || keepsAllSemicolons) return false
+  for (let inputIndex = 0; inputIndex < input.written.length; inputIndex++) {
+    if (input.written[inputIndex] === output.written[outputIndex]) outputIndex++
+    else if (
+      input.written[inputIndex] !== ";" ||
+      !droppable.has(input.offsets[inputIndex])
+    )
+      return false
   }
-  return outputIndex === output.length
+  return outputIndex === output.written.length
 }

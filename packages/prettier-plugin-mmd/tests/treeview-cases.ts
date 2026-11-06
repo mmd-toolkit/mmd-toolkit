@@ -10,6 +10,52 @@ interface TreeviewCase {
 
 export const treeviewCases: readonly TreeviewCase[] = [
   {
+    name: "treeview/comments/standalone-ls",
+    input:
+      "treeView-beta\nSeparatorRoot\n%% note\u2028still comment\n SeparatorChild\n",
+    output:
+      "treeView-beta\n  SeparatorRoot\n    %% note\u2028still comment\n    SeparatorChild\n",
+    options: {},
+  },
+  {
+    name: "treeview/comments/standalone-ps",
+    input:
+      "treeView-beta\nParagraphRoot\n%% note\u2029still comment\n ParagraphChild\n",
+    output:
+      "treeView-beta\n  ParagraphRoot\n    %% note\u2029still comment\n    ParagraphChild\n",
+    options: {},
+  },
+  {
+    name: "treeview/directives/unclosed-final-whitespace-ls",
+    input: "treeView-beta\nroot\n├── child\n%%{wrap\u2028\n",
+    output: "treeView-beta\nroot\n└── child\n%%{wrap\u2028\n",
+    options: {},
+  },
+  {
+    name: "treeview/directives/unclosed-final-whitespace-ps",
+    input: "treeView-beta\nroot\n├── child\n%%{wrap\u2029\n",
+    output: "treeView-beta\nroot\n└── child\n%%{wrap\u2029\n",
+    options: {},
+  },
+  {
+    name: "treeview/branch-prefixes/uppercase-entity-and-tab-column",
+    input: "treeView-beta\nroot\n│ #AMP;\t├── child\n",
+    output: "treeView-beta\nroot\n│ #AMP;\t├── child\n",
+    options: {},
+  },
+  {
+    name: "treeview/annotation-lines/empty-description-after-unrelated-region-ls",
+    input: "treeView-beta\nroot\u2028%% join\npart\n├── ##\n└── child\n",
+    output: "treeView-beta\nroot\u2028%% join\npart ##\n└── child\n",
+    options: {},
+  },
+  {
+    name: "treeview/annotation-lines/empty-description-after-unrelated-region-ps",
+    input: "treeView-beta\nroot\u2029%% join\npart\n├── ##\n└── child\n",
+    output: "treeView-beta\nroot\u2029%% join\npart ##\n└── child\n",
+    options: {},
+  },
+  {
     name: "treeview/multiline-values/ls-value",
     input: 'treeView-beta\n"first\u2028last"\n',
     output: 'treeView-beta\n  "first\u2028last"\n',

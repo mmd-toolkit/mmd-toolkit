@@ -2,7 +2,7 @@ import type { Node, Range } from "@mmd-toolkit/parser"
 import type { Doc } from "prettier"
 import type { GapRule } from "./atoms.ts"
 import { expectToken, expectValue } from "./layout.ts"
-import { lineEndOf, lineStartOf } from "./kept-lines.ts"
+import { holdsKeptSemicolon, lineEndOf, lineStartOf } from "./kept-lines.ts"
 import { printAsWritten } from "./lines.ts"
 import type { Source } from "./source.ts"
 import {
@@ -144,9 +144,11 @@ export function styleUnitsCanCompact(
         !text.includes("\u2029")
       )
     }) &&
-    !source.text
-      .slice(lineStartOf(source, start), lineEndOf(source, end))
-      .includes(";") &&
+    !holdsKeptSemicolon(
+      source,
+      lineStartOf(source, start),
+      lineEndOf(source, end),
+    ) &&
     findTriviaBetween(source, start, end).length === 0
   )
 }

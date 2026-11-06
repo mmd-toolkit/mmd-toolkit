@@ -463,15 +463,16 @@ Name and class lists use commas without surrounding spaces. The two lists of a
 dropped where the style context ends at LF. The first style stands after one
 space. For ordinary single-line property/value styles in `style` or `classDef`,
 put no space before the first colon of each style and one before its nonempty
-value; separate styles with a comma and one following space. Keep property and
-value interiors, including repeated spaces between value words. Mermaid
-concatenates the native style units: `stroke-dasharray: 5 5` still means
-`stroke-dasharray:55`. For example, `fill   : navy, stroke  : black` becomes
-`fill: navy, stroke: black`, while `stroke-dasharray:  5    5` keeps the four
-spaces between its values. A header or exterior line break that ordinarily joins
-does not delay this spacing until another formatting. Style interiors containing
-line separators, owned trivia, and statements with a semicolon on their physical
-line retain the existing style layout. Keyword case stays written. [fixture:
+value; separate styles with a comma and one following space. [fixture:
+styles-and-classes/empty-style-value] Keep property and value interiors,
+including repeated spaces between value words. Mermaid concatenates the native
+style units: `stroke-dasharray: 5 5` still means `stroke-dasharray:55`. For
+example, `fill   : navy, stroke  : black` becomes `fill: navy, stroke: black`,
+while `stroke-dasharray:  5    5` keeps the four spaces between its values. A
+header or exterior line break that ordinarily joins does not delay this spacing
+until another formatting. Style interiors containing line separators, owned
+trivia, and statements with a kept semicolon on their physical line retain the
+existing style layout. Keyword case stays written. [fixture:
 styles-and-classes/style-unit-padding] [fixture:
 styles-and-classes/class-def-names] [fixture: styles-and-classes/style-names]
 [fixture: styles-and-classes/class-lists] [fixture:
@@ -479,11 +480,11 @@ styles-and-classes/styles-as-written] [fixture:
 styles-and-classes/trailing-whitespace-dropped] [fixture:
 styles-and-classes/keyword-case-kept]
 
-A `;` at the end of a style is a character of the style, or a `;` that the line
-rule of mermaid.js ignores (diagrams/requirement.md, The style context and
-Comments). It is kept as written, with whatever lies between it and the last
-style. [fixture: styles-and-classes/ending-semicolon-kept] [fixture:
-styles-and-classes/ignored-semicolon-kept]
+A `;` at the end of a style that the line rule does not ignore is a character of
+the style; it stays because removing it changes the Db. [fixture:
+styles-and-classes/ending-semicolon-kept] Ignored semicolons follow
+[Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement).
+[fixture: styles-and-classes/ignored-style-terminator-dropped]
 
 A `class` statement may go on after a line break. The names before the break are
 read in the style context, where an unquoted name is a `style-word`
@@ -492,8 +493,9 @@ the statement context, where an unquoted name may hold whitespace and other
 characters. The statement is printed on one line when every name after the first
 line break is a string or an unquoted name that is a `style-word`: the lexer
 reads such a name the same way on one line. [fixture:
-styles-and-classes/class-over-lines-joined] Otherwise the line break stays, and
-the later lines stand one level deeper. [fixture:
+styles-and-classes/class-over-lines-joined] [fixture:
+styles-and-classes/class-uppercase-digit-next-line] Otherwise the line break
+stays, and the later lines stand one level deeper. [fixture:
 styles-and-classes/class-over-lines-kept] A statement with a comment line keeps
 its line breaks, while the comment and structural continuations stand one level
 deeper. [fixture: styles-and-classes/class-over-lines-with-comment-line-kept]
@@ -691,16 +693,17 @@ statements-one-per-line/continued-with-directive-kept] [fixture:
 statements-one-per-line/continued-on-semicolon-line-kept] [fixture:
 statements-one-per-line/continued-on-ignored-semicolon-line-kept]
 
-A line that holds a `;` keeps its statements together: the line rule of
+A line that holds a kept `;` keeps its statements together: the line rule of
 mermaid.js removes the last `;` of a line that holds `style`, a `:` after it,
 and a `#` after that, and moving a statement to a line of its own makes the rule
 stop ignoring a `;`, or ignore another. In
 `a - satisfies -> "style:#x" accDescr {} e - satisfies -> f;g`, the target of
 the second relationship is `fg`, while on a line of its own `f;g` is the target
 `f;g`. So the statements of such a line stay on it, with the whitespace between
-them formatted as anywhere else, and the `;` stays as written. [fixture:
-statements-one-per-line/semicolon-line-kept] [fixture:
-statements-one-per-line/ignored-semicolon-line-kept]
+them formatted as anywhere else, and the kept `;` stays as written. A dropped
+style terminator lets a preceding block closer and the style move to separate
+lines. [fixture: statements-one-per-line/semicolon-line-kept] [fixture:
+statements-one-per-line/dropped-style-terminator-splits-line]
 
 Input
 ([statements-one-per-line/header-then-empty-description-block-input.mmd](../tests/fixtures/requirement/statements-one-per-line/header-then-empty-description-block-input.mmd)):
@@ -1033,6 +1036,50 @@ accDescr { direction RL }
   }
 ```
 
+### Semicolons at the end of a style statement
+
+A line-ending `;` of a `classDef` or `style` statement is dropped when the
+[line rule of mermaid.js](../../spec/docs/common.md#style-and-classdef-lines)
+ignores it: no whitespace lies between the `:` and the later `#`. Removing this
+terminator leaves the Db unchanged, also with several styles. [fixture:
+semicolons-at-the-end-of-a-style-statement/hash-terminators] Whitespace
+immediately before a dropped `;` is dropped with it. [fixture:
+semicolons-at-the-end-of-a-style-statement/space-before-terminator] The line
+then formats as a line without that `;`, including its usual style spacing.
+[fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators] Blank
+lines and comment lines keep their usual layout around the statement. [fixture:
+semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines] An empty
+description block follows its usual layout while the style terminator is
+dropped. [fixture:
+semicolons-at-the-end-of-a-style-statement/empty-description-block]
+
+A semicolon that the line rule does not ignore is a style character and stays:
+removing it changes the Db, as in `classDef c fill:red;` and
+`style r fill:red;`. [fixture:
+semicolons-at-the-end-of-a-style-statement/style-text-kept]
+
+A directive after the semicolon on the same line keeps the `;`. [fixture:
+semicolons-at-the-end-of-a-style-statement/trailing-items-kept] A `;` after an
+unclosed directive stays, preserving its stopping boundary. [fixture:
+semicolons-at-the-end-of-a-style-statement/unclosed-directive-kept] The same
+protection applies before U+2028 and U+2029; see
+[A line that a `;` ends](./compatibility.md#a-line-that-a--ends). [test: style
+semicolons: requirement before U+2028] [test: style semicolons: requirement
+before U+2029] A closed directive between the statement and an ignored
+terminator is kept while the `;` is dropped. [fixture:
+semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+
+Output
+([semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd](../tests/fixtures/requirement/semicolons-at-the-end-of-a-style-statement/hash-terminators-output.mmd)):
+
+```mmd
+requirementDiagram
+  classDef c fill: #f00
+  style r fill: #f00
+  classDef d fill: #0f0, stroke: #00f
+  style r fill: #0f0, stroke: #00f
+```
+
 ### Multi-line statements
 
 A statement that mermaid.js reads over several lines is printed on one line
@@ -1051,7 +1098,9 @@ breaks without freezing structural columns: continuations and intervening trivia
 stand one level deeper. This applies to block headers, fields, relationships and
 other statements. Whitespace inside values and before the first line break of
 each gap stays. Joining regions and statements protected by a semicolon line
-keep their complete source. [fixture:
+keep their complete source. [test:
+requirement/multi-line-statements/header-and-field-comment-regions-ls] [test:
+requirement/multi-line-statements/header-and-field-comment-regions-ps] [fixture:
 multi-line-statements/header-directive-continuation] [fixture:
 fields/comment-and-directive-continuations] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:

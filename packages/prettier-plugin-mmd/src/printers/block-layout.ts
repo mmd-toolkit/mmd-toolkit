@@ -26,7 +26,12 @@ import {
   walk,
 } from "./layout.ts"
 import { readGap } from "./gap.ts"
-import { holdsJoiningRegion, lineStartOf } from "./kept-lines.ts"
+import {
+  holdsJoiningRegion,
+  isDroppedSemicolon,
+  lineStartOf,
+} from "./kept-lines.ts"
+import { printAsWrittenTrimmed } from "./lines.ts"
 import type { Source } from "./source.ts"
 import {
   findStructuralToken,
@@ -403,6 +408,18 @@ function addStyledStatementRules(
   const start = findStylesStart(source, statement)
   if (start >= statement.range[1]) return
   rules.set(start, "space")
+  const semicolon = statement.range[1] - 1
+  if (
+    statement.type === "BlockClassDefStatement" &&
+    isDroppedSemicolon(source, semicolon)
+  ) {
+    kept.push({
+      start,
+      end: statement.range[1],
+      doc: printAsWrittenTrimmed(source, start, semicolon),
+    })
+    return
+  }
   kept.push({ start, end: statement.range[1] })
 }
 

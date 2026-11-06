@@ -13,6 +13,22 @@ export interface IshikawaCase {
 export const ishikawaCases: readonly IshikawaCase[] = [
   {
     rule: "line-separators",
+    name: "ishikawa: ls-comment-two-lf-before-root",
+    input: "ishikawa\n%%{}%%\u2028\n\nRoot\n",
+    output: "ishikawa\n  %%{}%%\u2028\n\n  Root\n",
+    options: {},
+    rejected: false,
+  },
+  {
+    rule: "line-separators",
+    name: "ishikawa: ps-comment-two-lf-before-root",
+    input: "ishikawa\n%%{}%%\u2029\n\nRoot\n",
+    output: "ishikawa\n  %%{}%%\u2029\n\n  Root\n",
+    options: {},
+    rejected: false,
+  },
+  {
+    rule: "line-separators",
     name: "ishikawa: ls-comment-leading-directives",
     input: "ishikawa\nR\n A\n%%{}%%\u2028 %%{a}%%  %%{b}%%   B\n   C",
     output:

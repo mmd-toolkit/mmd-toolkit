@@ -5,6 +5,7 @@ import { readGapElement } from "./gap.ts"
 import {
   findSemicolonLines,
   findVerbatimStyleLines,
+  isDroppedSemicolon,
   lineEndOf,
   lineStartOf,
   semicolonSegmentEnd,
@@ -729,7 +730,11 @@ export function protectSemicolonPrefixes(
     const stop = semicolonSegmentEnd(source, position)
     const segment = source.text.slice(position, stop)
     let index = segment.lastIndexOf(";")
-    while (index !== -1 && structuralSemicolons.has(position + index))
+    while (
+      index !== -1 &&
+      (structuralSemicolons.has(position + index) ||
+        isDroppedSemicolon(source, position + index))
+    )
       index = index === 0 ? -1 : segment.lastIndexOf(";", index - 1)
     const semicolon = index === -1 ? -1 : position + index
     if (semicolon < position) {

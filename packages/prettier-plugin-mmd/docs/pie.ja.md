@@ -201,6 +201,7 @@ pie は次の物理行を title に結合しません。
 固定例: [fixture: pie/title/title-trim] [fixture: pie/title/title-empty]
 [fixture: pie/title/title-next-section] [fixture: pie/title/title-next-trivia]
 [fixture: pie/title/title-inner-text]
+[fixture: pie/title/empty-value-with-directive]
 
 入力（escape 表記）: `"pie\ntitle\t   Sales  report  \n\"Sales\":8"`
 
@@ -560,6 +561,8 @@ hidden の境界や semicolon の保護で文が見出しの行に残っても�
 [fixture: pie/blank-lines/header-statement-semicolon]
 
 [fixture: pie/blank-lines/hidden-document-end]
+
+[fixture: pie/blank-lines/hidden-eof-whitespace-line]
 
 [fixture: pie/blank-lines/hidden-body-end]
 

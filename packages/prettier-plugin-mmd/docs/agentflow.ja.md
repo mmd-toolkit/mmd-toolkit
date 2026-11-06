@@ -118,6 +118,10 @@ agentflow-beta TB
 Dbは同じで、 agentflowだけ違う形を選ぶ理由がないためです。
 [fixture: names-and-headings/name-heading-padding]
 
+明示的なタイトルの前にある空白だけの名前は、書かれた文字を保ちます。
+除くと、必要な名前がなくなるためです。 [fixture:
+names-and-headings/whitespace-name-before-title]
+
 それ以外は、名前の最初の断片から最後の断片までの原文を保ちます。
 引用形式の空白、消される`click`、空の説明・文字列・markdown・call、
 その間の隙間と後続行の桁位置も含みます。
@@ -128,6 +132,7 @@ connectorにも名前がありますが、閉じる`end`はありません。
 [fixture: names-and-headings/name-click-reindent-unsafe]
 [fixture: names-and-headings/name-quoted-tail]
 [fixture: names-and-headings/name-whitespace-only]
+[fixture: names-and-headings/directive-after-erased-string]
 
 名前をclickのIDとして読んだ後は、空白1文字だけでその読みを終えます。
 タイトル、データ、区切り、EOFの前でも、そのタブやLFを保ちます。
@@ -142,6 +147,7 @@ connectorの名前では、消される空文字列に直続する文字が`;`�
 [fixture: names-and-headings/connector-empty-string-adjacent-text-exit]
 [fixture: names-and-headings/click-empty-string-lf-body]
 [fixture: names-and-headings/click-empty-markdown-eof-tab]
+[fixture: names-and-headings/directive-before-click-exit]
 [fixture: names-and-headings/empty-string-before-name-space]
 [fixture: names-and-headings/empty-string-before-name-lf]
 [test: agentflow: empty-string-before-name-ls-flow]
@@ -354,18 +360,52 @@ agentflow-beta TB
 
 ### Metadata blocks
 
-[書かれたまま残すもの](./flowchart.ja.md#書かれたまま残すもの)
-の不透明なデータ規則と同じです。
+[データブロック](./flowchart.ja.md#データブロック)と同じです。
 埋め込み内容は構文木の外なので、完全な各@{...}を別々に保ちます。
 書かれた頂点やflow/connector見出しへの付着、接触、directive、別名、
-未知キーとプロトタイプ名のキー、スカラー、配列、空、
-複数行の内容と桁位置を保ちます。
-agentflowの後の振り分けや別名解決を根拠に書き換えたり、結合したり、
-データの閉じ括弧を揃えたりしません。
+未知キーとプロトタイプ名のキー、スカラー、配列、空、複数行の内容を保ちます。
+agentflow の後の振り分けや別名解決を根拠に YAML を書き換えたり、
+結合したりしません。
 内容だけの拒否には仕様の不透明な読みを使い、rawの拒否にはDbがありません。
 区切り記号の不備は拒否のままです。 [fixture: metadata-blocks/metadata-adjacent]
 [fixture: metadata-blocks/metadata-alias-rewrite-unsafe]
 [fixture: metadata-blocks/metadata-multiline]
+
+開きの直後が改行のブロックでは、本文の全行を同じ数の半角空白だけ動かし、
+文字がある最も浅い行を文の 1 段内側に置きます。
+`flow` の本文でも同じです。
+入れ子の YAML の字下げの差を保ち、単独行の `}` は文の段に揃え、
+本文の後の閉じ括弧はその行と一緒に動かします。
+[fixture: metadata-blocks/zero-and-shallow]
+[fixture: metadata-blocks/deep-nested-yaml]
+[fixture: metadata-blocks/closing-after-text]
+[fixture: metadata-blocks/connector-multiline]
+
+ほかの移動条件と理由は、
+[データブロック](./flowchart.ja.md#データブロック)に従います。
+開きの行に本文があるブロック、内部の directive、行全体を保つ行、幅 0 の字下げ、
+文の最初の行より後から始まるブロックは書かれたまま残します。
+`useTabs` でも本文と単独行の閉じ括弧は半角空白とし、閉じ括弧は文の桁に置きます。
+前後のコメント、directive、空の説明、空行、区切りはそれぞれの規則に従います。
+[fixture: metadata-blocks/inline-and-directive-kept]
+[fixture: metadata-blocks/kept-body-line]
+[fixture: metadata-blocks/zero-width-kept]
+[fixture: metadata-blocks/tab-statement-space-body]
+[fixture: metadata-blocks/surrounding-trivia]
+[test: data blocks: agentflow U+2029] [test: data blocks: agentflow CRLF]
+
+`flow` や `global` のコンテナの見出しにあるブロックも、同じように動かします。
+[fixture: metadata-blocks/container-header]
+
+矢印の改行後のブロックは、文の最初の行より後から始まるため桁を残し、
+1 行でも複数行でも、ブロックを 2 つ持つ文は、どちらも桁を残します。
+`flow` の見出しと `connector` も同じです。
+[fixture: metadata-blocks/later-statement-blocks-kept]
+[fixture: metadata-blocks/adjacent-single-line-after-kept]
+[fixture: metadata-blocks/adjacent-single-line-before-kept]
+[fixture: metadata-blocks/separate-single-line-block-kept]
+[fixture: metadata-blocks/container-header-adjacent-kept]
+[fixture: metadata-blocks/connector-adjacent-single-line-kept]
 
 入力（escape 表記）: `"agentflow-beta TB\nA@{}@{\n}"`。
 [fixture: metadata-blocks/metadata-empty]
