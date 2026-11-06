@@ -153,8 +153,9 @@ function isOneLine(text: string): boolean {
  * - something other than spaces and tabs stands in it: of a block that holds
  *   none, `@{}` is rejected while `@{   }` is accepted;
  * - its text does not start at the first column with `---`, `...`, or `%`: a
- *   space before them makes a document marker or a YAML directive an ordinary
- *   string, so `@{---}` is rejected while `@{ --- }` is accepted;
+ *   space before `---` or `...` makes a document marker an ordinary string, so
+ *   `@{---}` is rejected while `@{ --- }` is accepted; the starts that are no
+ *   marker stay as written as well, as in a block of several lines;
  * - it touches no other block: two blocks with nothing between them, or only
  *   directives, are read as one text.
  *

@@ -305,8 +305,8 @@ the text of a style may end with one after any character that is no letter or
 digit, as `fill:click` does. [fixture:
 statements-one-per-line/semicolon-after-style-text-word-kept] [fixture:
 statements-one-per-line/semicolon-after-style-text-not-word-split] After a
-letter or digit, in either case, the word is no word of its own, so the `;` of
-`style A fillXclick;` is dropped, as it is after `fillclick`. [fixture:
+letter or digit, in upper or lower case, the word is no word of its own, so the
+`;` of `style A fillXclick;` is dropped, as it is after `fillclick`. [fixture:
 statements-one-per-line/semicolon-after-style-text-after-capital-not-word-split]
 In a name, `end` takes the whitespace after it, line feeds included, so
 `subgraph Front end` followed by a line break and `A` has the name `Front end`,
@@ -1375,16 +1375,20 @@ ends] The block stays as written
   as in `}@{`: mermaid.js joins the text of two blocks that touch, so a space
   inside one end changes the text of both; [fixture:
   data-blocks/one-line-touching-blocks-kept]
-- when its text starts at the first column with `---`, `...` or `%`: mermaid.js
-  reads such a start as a YAML document marker or directive, and a space before
-  it makes it an ordinary string, so `A@{---}` is rejected while `A@{ --- }` is
-  accepted. A space or tab that is already there lets the block be padded;
-  [fixture: data-blocks/compat-document-marker-data-block-kept] [fixture:
+- when its text starts at the first column with `---`, `...` or `%`. mermaid.js
+  reads `---` or `...` followed by whitespace or the end as a YAML document
+  marker, and a space before it makes it an ordinary string, so `A@{---}` is
+  rejected while `A@{ --- }` is accepted. A start such as `---x` is no marker
+  and `%a: 1` is rejected with or without a space, but the rule for several
+  lines keeps all three starts, and so does this one. A space or tab that is
+  already there lets the block be padded; [fixture:
+  data-blocks/compat-document-marker-data-block-kept] [fixture:
   data-blocks/one-line-document-marker-after-space-padded]
-- when a U+2028 or U+2029 lies in it: these are characters of the text, not line
-  feeds, and the rule for a block on one line is the rule for a text without any
-  line break, these two included. [test: data blocks: flowchart one line with
-  U+2028 inside] [test: data blocks: flowchart one line with U+2029 inside]
+- when a U+2028 or U+2029 lies in it: mermaid.js wraps such a text as one line
+  and reads it the same with or without the spaces, but the rule for a block on
+  one line is limited to a text without any line break, these two included.
+  [test: data blocks: flowchart one line with U+2028 inside] [test: data blocks:
+  flowchart one line with U+2029 inside]
 
 Blocks that do not touch are padded each, also several in one statement, and a
 block of one line next to a block of several lines in the same statement.
@@ -1871,12 +1875,15 @@ on the line of the header, as written, with the `;` and the directives after
 them: on a line of their own, the whitespace would be read otherwise, and a `;`
 after a block and a directive would be read as a vertex.
 
-A name that ends with `end` takes the line break after it and the whitespace of
-the next line (see
+A name whose last word is `end`, as in `subgraph Front end`, takes the line
+break after it and the whitespace of the next line (see
 [Subgraphs](../../spec/docs/diagrams/flowchart.md#subgraphs)), so a block on
 that next line follows the name too: its line stays as written, with the
-whitespace before the block, and the lines after it are indented as usual.
-[fixture: subgraph-header/block-on-line-after-end-name-kept] [corpus fixture:
+whitespace before the block, and the lines after it are indented as usual. A
+name that only ends with the letters, as `Frontend`, does not, and the line of
+the block is indented as usual. [fixture:
+subgraph-header/block-on-line-after-name-ending-in-end-letters] [fixture:
+subgraph-header/block-on-line-after-end-name-kept] [corpus fixture:
 flowchart/db-subgraph-name-end-line-feed-then-empty-description-block]
 
 Input

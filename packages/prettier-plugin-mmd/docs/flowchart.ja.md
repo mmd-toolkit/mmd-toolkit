@@ -1408,15 +1408,21 @@ U+00A0 などの空白は文字列の一部として残します。
   片方の端の空白が両方のテキストを変えます。
   [fixture: data-blocks/one-line-touching-blocks-kept]
 - 文字列が 1 桁目の `---`、`...`、`%` で始まるとき。
-  mermaid.js はこの始まりを YAML の文書区切りか directive として読み、
-  前に空白があれば普通の文字列になります。
-  `A@{---}` は拒否され、`A@{ --- }` は受理されます。
+  mermaid.js は、`---` か `...` の後に空白か終わりが続く始まりを、
+  YAML の文書区切りとして読みます。
+  前に空白があれば普通の文字列になるので、 `A@{---}` は拒否され、
+  `A@{ --- }` は受理されます。
+  `---x` のような始まりは区切りでなく、
+  `%a: 1` は空白があってもなくても拒否されますが、
+  複数行のブロックの規則はこの 3 つの始まりを書かれたままにするので、
+  この規則も同じにします。
   すでに空白かタブがあるブロックは整えます。
   [fixture: data-blocks/compat-document-marker-data-block-kept]
   [fixture: data-blocks/one-line-document-marker-after-space-padded]
 - U+2028 か U+2029 を含むとき。
-  この 2 つは改行ではなく文字列の文字で、 1 行のブロックの規則は、
-  この 2 つを含めて改行のない文字列に対する規則です。
+  mermaid.js はこの文字列を 1 行として包み、
+  空白があってもなくても同じに読みますが、 1 行のブロックの規則は、
+  この 2 つを含めて改行のない文字列に限ります。
   [test: data blocks: flowchart one line with U+2028 inside]
   [test: data blocks: flowchart one line with U+2029 inside]
 
@@ -1932,12 +1938,15 @@ subgraph の id は `subGraph0` になり、空白がなければ `S` になり�
 ブロックが独立した行にあると、空白は別に読まれ、
 ブロックとディレクティブの後の `;` は頂点として読まれます。
 
-`end` で終わる名前は、
+最後の語が `end` の名前（`subgraph Front end` など）は、
 その後の改行と次の行の空白まで名前として読まれます（詳しくは、
 [subgraph](../../spec/docs/diagrams/flowchart.ja.md#subgraph)を参照）。
 そのため、その次の行にあるブロックも名前に続くものとして扱います。
 ブロックの行は、ブロックの前の空白とともに書かれたまま残し、
 その後の行は通常どおりインデントします。
+`Frontend` のように文字が `end` で終わるだけの名前は、これに当たらず、
+ブロックの行も通常どおりインデントします。
+[fixture: subgraph-header/block-on-line-after-name-ending-in-end-letters]
 [fixture: subgraph-header/block-on-line-after-end-name-kept]
 [corpus fixture: flowchart/db-subgraph-name-end-line-feed-then-empty-description-block]
 

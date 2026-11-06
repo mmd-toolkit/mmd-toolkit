@@ -1045,7 +1045,7 @@ contents and line breaks, and unclosed blocks stay open. [fixture:
 multi-line-values/empty-description-trivia-kept] [corpus fixture:
 state/lex-acc-descr-block-unclosed] The lines of an unclosed block are aligned
 as those of a closed one, up to the end of the text, and no `}` is added.
-[fixture: multi-line-values/unclosed-block-kept] Block note paragraphs follow
+[fixture: multi-line-values/unclosed-block-aligned] Block note paragraphs follow
 the restricted [Notes](#notes) rule. [fixture: notes/payment-prose] The text of
 a floating note written over several lines stays as written. [fixture:
 multi-line-values/kept] [fixture:
@@ -1103,7 +1103,7 @@ meet these conditions. [fixture:
 semicolons-at-the-end-of-a-style-statement/style-text-kept] A statement with no
 style, such as `style A`, has no `;` to drop, and its whitespace follows the
 usual layout. [fixture:
-semicolons-at-the-end-of-a-style-statement/no-style-kept] [corpus fixture:
+semicolons-at-the-end-of-a-style-statement/no-style-spacing] [corpus fixture:
 state/lex-style-without-styles] A transition such as `A --> B;` keeps its
 semicolon, which is part of its id. [fixture:
 semicolons-at-the-end-of-a-style-statement/transition-semicolon-kept]

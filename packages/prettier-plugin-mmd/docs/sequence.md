@@ -780,11 +780,12 @@ characters as escapes too (see
   comment, which is kept as written, and the rest of the line is formatted. A
   `;` on the next line, after the line break that follows the character, stays
   as written too: `participant Z@{ "style": "x:#y" };`, U+2028, a line break,
-  and `;` is accepted by mermaid.js, while the same text without the second `;`
-  is rejected. [test: a `;` after an ignored `;` and U+2029, which the line rule
-  reads as the end of its line] [test: a `;` on the next line after an ignored
-  `;` and U+2028, which the line rule reads as the end of its line] [test:
-  statements after an ignored `;`, with a U+2029 later on the line]
+  and `;`, followed by a statement, is accepted by mermaid.js, while the same
+  text without the second `;` is rejected. [test: a `;` after an ignored `;` and
+  U+2029, which the line rule reads as the end of its line] [test: a `;` on the
+  next line after an ignored `;` and U+2028, which the line rule reads as the
+  end of its line] [test: statements after an ignored `;`, with a U+2029 later
+  on the line]
 - A `;` after a U+2028 or U+2029 that the printer keeps, such as the one at the
   end of the text of a `box`, a title, or a subgraph name. mermaid.js removes a
   comment line that starts right after U+2028 or U+2029 with the line breaks

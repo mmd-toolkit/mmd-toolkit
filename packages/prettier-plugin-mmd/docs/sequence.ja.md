@@ -814,8 +814,9 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   ダイアグラムコメントの中の `;` はコメントの一部で、
   コメントを書かれたまま残し、行のほかの部分は整形します。
   文字の後の改行に続く次の行の `;` も、書かれたまま残します。
-  `participant Z@{ "style": "x:#y" };`、U+2028、改行、
-  `;` は mermaid.js が受理し、2 つ目の `;` がない同じテキストは拒否されます。
+  `participant Z@{ "style": "x:#y" };`、U+2028、改行、 `;`、
+  続く文は mermaid.js が受理し、
+  続く文があって 2 つ目の `;` がない同じテキストは拒否されます。
   [test: a `;` after an ignored `;` and U+2029, which the line rule reads as the end of its line]
   [test: a `;` on the next line after an ignored `;` and U+2028, which the line rule reads as the end of its line]
   [test: statements after an ignored `;`, with a U+2029 later on the line]

@@ -776,8 +776,8 @@ parser、仕様、記録済み Mermaid の読み取りは変えません。
 [fixture: notes/over-lines-in-composite]
 [fixture: notes/over-lines-empty-lines-kept]
 本文のない複数行のノートは、`note right of A` の次の行が `end note` の形で、
-空の本文として受理され、2 行をそのまま印字します。
-[fixture: notes/over-lines-empty] [corpus fixture: state/lex-note-block-empty]
+空の本文として受理され、2 行を印字します。 [fixture: notes/over-lines-empty]
+[corpus fixture: state/lex-note-block-empty]
 複数行のノートの本文が id と同じ行から始まる場合、
 たとえば `note right of A text` では、本文の最初の行は id の行にあり、
 Mermaid が余白を除くのはその行だけです。
@@ -1091,7 +1091,7 @@ agentflow、usecase に合わせます。
 [corpus fixture: state/lex-acc-descr-block-unclosed]
 閉じられていないブロックの行も、テキストの終わりまで、
 閉じたブロックと同じようにそろえ、`}` は加えません。
-[fixture: multi-line-values/unclosed-block-kept]
+[fixture: multi-line-values/unclosed-block-aligned]
 ブロックノートの段落は、[ノート](#ノート)の限定規則に従います。
 [fixture: notes/payment-prose]
 複数行に書かれた独立したノートの本文は、書かれたまま残します。
@@ -1151,7 +1151,7 @@ mermaid.js は各スタイルの最初の `;` を取り除くためです。
 [fixture: semicolons-at-the-end-of-a-style-statement/style-text-kept]
 `style A` のようにスタイルのない文には、削除する `;` がなく、
 空白は通常の配置に従います。
-[fixture: semicolons-at-the-end-of-a-style-statement/no-style-kept]
+[fixture: semicolons-at-the-end-of-a-style-statement/no-style-spacing]
 [corpus fixture: state/lex-style-without-styles]
 `A --> B;` などの遷移のセミコロンは、id の文字なので保ちます。
 [fixture: semicolons-at-the-end-of-a-style-statement/transition-semicolon-kept]

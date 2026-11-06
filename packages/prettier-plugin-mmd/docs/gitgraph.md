@@ -18,7 +18,7 @@ groups retain their source boundaries.
 
 A hidden form between `gitGraph` and the direction keeps the gap after it as
 written, because a hidden form consumes an immediately following line feed, and
-moving or trimming that gap can reject the input (see
+moving that gap can reject the input (see
 [Hidden DIRECTIVE and line endings](../../spec/docs/diagrams/gitgraph.md#hidden-directive-and-line-endings)),
 while the gap before it is an ordinary gap: `gitGraph  %%{}%%  LR:` is printed
 as `gitGraph %%{}%%  LR:`. [fixture: gitgraph/header/hidden-before-direction]

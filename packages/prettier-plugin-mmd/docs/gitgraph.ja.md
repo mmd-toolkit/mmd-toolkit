@@ -17,7 +17,7 @@ English version: [gitgraph.md](./gitgraph.md)
 hidden の隙間と保護された見出し・本文の境界は保持します。
 
 `gitGraph` と方向の間にある hidden の形は、直後の改行を取り、
-その後の隙間を動かしたり削ったりすると入力が拒否されることがあるため、
+その後の隙間を動かすと入力が拒否されることがあるため、
 その隙間を書かれたまま保持します（詳しくは、
 [隠れた DIRECTIVE と行末](../../spec/docs/diagrams/gitgraph.ja.md#隠れた-directive-と行末)
 を参照）。
