@@ -41,27 +41,16 @@ function childNodes(node: Node, key: string): Node[] {
   return isNode(value) ? [value] : []
 }
 
-/**
- * The child nodes of `node`, in the order of `visitorKeys`. Each child field
- * is read when the walk reaches it, after the nodes of the fields before it
- * have been left.
- */
-function* childrenOf(node: Node): Generator<Node, void, undefined> {
-  for (const key of visitorKeys[node.type]) yield* childNodes(node, key)
+/** The child nodes of `node`, in the order of `visitorKeys`. */
+function childrenOf(node: Node): Node[] {
+  return visitorKeys[node.type].flatMap((key) => childNodes(node, key))
 }
 
-/** A node that the walk has entered and not left yet. */
-interface OpenNode {
+/** A call the walk has still to make: `leaveNode` when `entered`, otherwise `enterNode`. */
+interface Step {
   readonly node: Node
   readonly parent: Node | null
-  /** The child nodes that are still to come. */
-  readonly children: Iterator<Node, void, undefined>
-}
-
-/** Enters `node`, whose child nodes are read only after that. */
-function enter(node: Node, parent: Node | null, visitor: Visitor): OpenNode {
-  visitor.enterNode(node, parent)
-  return { node, parent, children: childrenOf(node) }
+  readonly entered: boolean
 }
 
 /**
@@ -70,22 +59,23 @@ function enter(node: Node, parent: Node | null, visitor: Visitor): OpenNode {
  * left after them. Tokens, comments, directives, and the frontmatter are not
  * nodes and are never visited; they are in the lists of the root.
  *
- * Trees nest without a limit, so `open` holds the nodes entered and not left,
- * the innermost last: a call for each of them would exhaust the call stack.
+ * Trees nest without a limit, so `pending` holds the calls found so far and
+ * not yet made, the next one last: a function call for each level would
+ * exhaust the call stack. The step that leaves a node goes in before its child
+ * nodes, which go in reversed, so that it comes after them and they come in
+ * order.
  */
 export function traverseNodes(node: Node, visitor: Visitor): void {
-  const open = [enter(node, null, visitor)]
-  for (
-    let current = open.at(-1);
-    current !== undefined;
-    current = open.at(-1)
-  ) {
-    const child = current.children.next()
-    if (child.done === true) {
-      open.pop()
-      visitor.leaveNode(current.node, current.parent)
-    } else {
-      open.push(enter(child.value, current.node, visitor))
+  const pending: Step[] = [{ node, parent: null, entered: false }]
+  for (let step = pending.pop(); step !== undefined; step = pending.pop()) {
+    if (step.entered) {
+      visitor.leaveNode(step.node, step.parent)
+      continue
+    }
+    visitor.enterNode(step.node, step.parent)
+    pending.push({ node: step.node, parent: step.parent, entered: true })
+    for (const child of childrenOf(step.node).reverse()) {
+      pending.push({ node: child, parent: step.node, entered: false })
     }
   }
 }

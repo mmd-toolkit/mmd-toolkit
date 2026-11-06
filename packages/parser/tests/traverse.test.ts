@@ -25,22 +25,6 @@ function walk(node: Node): [string, string, string | null][] {
   return calls
 }
 
-/** The types of the nodes that a walk enters, with `onEnter` called on each after its type is noted. */
-function enteredTypes(
-  node: Node,
-  onEnter: (entered: Node, parent: Node | null) => void,
-): string[] {
-  const types: string[] = []
-  traverseNodes(node, {
-    enterNode(entered, parent) {
-      types.push(entered.type)
-      onEnter(entered, parent)
-    },
-    leaveNode: () => undefined,
-  })
-  return types
-}
-
 /** The start of the sentence that names the child fields of a node type. */
 const CHILD_FIELDS = "Child fields: "
 
@@ -248,29 +232,6 @@ describe("traverseNodes", () => {
       ([call, type]) => call === "enter" && type === "Identifier",
     )
     expect(names).toHaveLength(2)
-  })
-
-  it("reads the child fields of a node after entering it", () => {
-    const root = parse("flowchart TD\nA\n")
-    const types = enteredTypes(root, (node) => {
-      if (node.type === "FlowchartDiagram") Reflect.set(node, "body", [])
-    })
-    expect(types).toEqual(["Root", "FlowchartDiagram"])
-  })
-
-  it("reads a child field after leaving the nodes of the field before it", () => {
-    const root = parse("flowchart TD\nsubgraph S\nA\nend\n")
-    const types = enteredTypes(root, (node, parent) => {
-      if (node.type === "FlowchartLabel" && parent !== null) {
-        Reflect.set(parent, "body", [])
-      }
-    })
-    expect(types).toEqual([
-      "Root",
-      "FlowchartDiagram",
-      "FlowchartSubgraphStatement",
-      "FlowchartLabel",
-    ])
   })
 
   it("visits no token, comment, directive, or frontmatter", () => {
