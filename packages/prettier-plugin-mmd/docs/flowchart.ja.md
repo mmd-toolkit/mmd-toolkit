@@ -1938,13 +1938,13 @@ subgraph の id は `subGraph0` になり、空白がなければ `S` になり�
 ブロックが独立した行にあると、空白は別に読まれ、
 ブロックとディレクティブの後の `;` は頂点として読まれます。
 
-最後の語が `end` の名前（`subgraph Front end` など）は、
+末尾が `end` の単位である名前（`subgraph Front end` など）は、
 その後の改行と次の行の空白まで名前として読まれます（詳しくは、
 [subgraph](../../spec/docs/diagrams/flowchart.ja.md#subgraph)を参照）。
 そのため、その次の行にあるブロックも名前に続くものとして扱います。
 ブロックの行は、ブロックの前の空白とともに書かれたまま残し、
 その後の行は通常どおりインデントします。
-`Frontend` のように文字が `end` で終わるだけの名前は、これに当たらず、
+`Frontend` のように、その文字が単位をなさない名前は、これに当たらず、
 ブロックの行も通常どおりインデントします。
 [fixture: subgraph-header/block-on-line-after-name-ending-in-end-letters]
 [fixture: subgraph-header/block-on-line-after-end-name-kept]

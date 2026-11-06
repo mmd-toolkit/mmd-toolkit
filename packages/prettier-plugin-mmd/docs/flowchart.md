@@ -1875,13 +1875,13 @@ on the line of the header, as written, with the `;` and the directives after
 them: on a line of their own, the whitespace would be read otherwise, and a `;`
 after a block and a directive would be read as a vertex.
 
-A name whose last word is `end`, as in `subgraph Front end`, takes the line
+A name that ends with an `end` unit, as in `subgraph Front end`, takes the line
 break after it and the whitespace of the next line (see
 [Subgraphs](../../spec/docs/diagrams/flowchart.md#subgraphs)), so a block on
 that next line follows the name too: its line stays as written, with the
 whitespace before the block, and the lines after it are indented as usual. A
-name that only ends with the letters, as `Frontend`, does not, and the line of
-the block is indented as usual. [fixture:
+name in which the letters are no unit of their own, as `Frontend`, does not, and
+the line of the block is indented as usual. [fixture:
 subgraph-header/block-on-line-after-name-ending-in-end-letters] [fixture:
 subgraph-header/block-on-line-after-end-name-kept] [corpus fixture:
 flowchart/db-subgraph-name-end-line-feed-then-empty-description-block]
