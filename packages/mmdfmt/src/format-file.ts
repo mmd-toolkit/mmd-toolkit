@@ -10,8 +10,8 @@ import { formatMarkdown } from "./markdown.ts"
 export type FileKind = "diagram" | "markdown"
 
 /**
- * The files that the tool formats, by the ending of their names (README, What
- * is formatted).
+ * The files that the tool formats, by the ending of their names (README,
+ * Patterns).
  */
 const fileKinds: ReadonlyMap<string, FileKind> = new Map([
   [".md", "markdown"],
@@ -31,7 +31,7 @@ export function kindOf(file: string): FileKind | undefined {
 /**
  * Formats a file of the given kind. The indentation comes from the Prettier
  * configuration of the file, found as Prettier's CLI finds it,
- * `.editorconfig` included (README, Formatting options).
+ * `.editorconfig` included (README, Indentation).
  */
 export async function formatFile(
   text: string,

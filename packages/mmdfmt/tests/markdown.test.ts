@@ -21,7 +21,7 @@ async function expectFormatted(text: string, expected: string): Promise<void> {
   expect(await format(text)).toEqual({ text: expected, diagnostics: [] })
 }
 
-describe("What is formatted: the code blocks whose info string starts with mermaid or mmd", () => {
+describe("Code blocks in detail: the code blocks whose info string starts with mermaid or mmd", () => {
   it("formats a mermaid block and keeps the rest of the file byte for byte", async () => {
     await expectFormatted(
       lines(
@@ -104,7 +104,7 @@ describe("What is formatted: the code blocks whose info string starts with merma
   })
 })
 
-describe("What is formatted: each line written starts with what stands before the opening fence", () => {
+describe("Code blocks in detail: each line written starts with what stands before the opening fence", () => {
   it("keeps the indentation of a list item", async () => {
     await expectFormatted(
       lines("- item", "", "  ```mermaid", "  flowchart LR", "  A-->B", "  ```"),
@@ -254,7 +254,7 @@ describe("What is formatted: each line written starts with what stands before th
   })
 })
 
-describe("What is formatted: a block that is not closed", () => {
+describe("Code blocks in detail: a block that is not closed", () => {
   it("runs to the end of the file, and keeps its last line without a line ending", async () => {
     await expectFormatted(
       "```mermaid\nflowchart LR\nA-->B",
@@ -287,7 +287,7 @@ describe("What is formatted: a block that is not closed", () => {
   })
 })
 
-describe("What is formatted: a tab read partly as indentation and partly as text", () => {
+describe("Code blocks in detail: a tab read partly as indentation and partly as text", () => {
   it("leaves the block of a list item as it is, with a warning at the tab", async () => {
     const text = lines(
       "- x",
@@ -331,7 +331,7 @@ describe("What is formatted: a tab read partly as indentation and partly as text
   })
 })
 
-describe("What is formatted: a block whose opening fence stands on the line of a footnote label", () => {
+describe("Code blocks in detail: a block whose opening fence stands on the line of a footnote label", () => {
   it("leaves the block as it is, with a warning at the fence", async () => {
     const text = lines(
       "[^1]: ```mermaid",
@@ -372,7 +372,7 @@ describe("What is formatted: a block whose opening fence stands on the line of a
   })
 })
 
-describe("What is formatted: text that is empty or only whitespace", () => {
+describe("Code blocks in detail: text that is empty or only whitespace", () => {
   it("leaves an empty block as it is", async () => {
     const text = lines("```mermaid", "```")
     await expectFormatted(text, text)
@@ -399,7 +399,7 @@ describe("What is formatted: text that is empty or only whitespace", () => {
   })
 })
 
-describe("What is formatted: a file keeps its line endings", () => {
+describe("Code blocks in detail: a file keeps its line endings", () => {
   it("ends the lines that it writes with \\r\\n in a file of \\r\\n", async () => {
     await expectFormatted(
       "# T\r\n\r\n```mermaid\r\nflowchart LR\r\nA-->B\r\n```\r\n",
@@ -450,14 +450,14 @@ describe("What is formatted: a file keeps its line endings", () => {
   })
 })
 
-describe("How it relates to the other packages: the rules of the plugin apply to the text of a block", () => {
+describe("If you know Prettier: the rules of the plugin apply to the text of a block", () => {
   it("leaves the error pseudo-diagram as written, as the plugin leaves it in a file", async () => {
     const text = lines("```mermaid", "%% note", "  error  ", "```")
     await expectFormatted(text, text)
   })
 })
 
-describe("When a diagram cannot be read: a warning with its position in the file", () => {
+describe("Errors and exit codes: a warning with its position in the file", () => {
   it("leaves a rejected block and formats the other blocks", async () => {
     const text = lines(
       "```mermaid",

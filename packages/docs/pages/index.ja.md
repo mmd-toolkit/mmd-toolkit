@@ -28,6 +28,7 @@ features:
     details: >-
       prettier-plugin-mmdで.mmd・.mermaidファイルと、
       Markdown内のMermaidコードブロックを整形。
+      MarkdownにPrettierを使わない場合は、mmdfmtで図だけを整形。
     link: /ja/formatter/
   - title: リンター
     details: >-

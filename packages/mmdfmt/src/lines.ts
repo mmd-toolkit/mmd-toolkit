@@ -63,7 +63,7 @@ export function splitLines(text: string): Line[] {
 
 /**
  * The line ending that the tool writes in a file: the first line ending of the
- * file, or `\n` in a file without one (README, Line endings).
+ * file, or `\n` in a file without one (README, Code blocks in detail).
  */
 export function lineEndingOf(text: string): LineEnding {
   for (let index = 0; index < text.length; index++) {

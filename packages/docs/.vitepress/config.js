@@ -107,6 +107,10 @@ export default defineConfig({
                   text: "Compatibility",
                   link: "/formatter/compatibility",
                 },
+                {
+                  text: "mmdfmt",
+                  link: "/formatter/mmdfmt",
+                },
               ],
             },
           ],
@@ -260,6 +264,10 @@ export default defineConfig({
                 {
                   text: "互換性",
                   link: "/ja/formatter/compatibility",
+                },
+                {
+                  text: "mmdfmt",
+                  link: "/ja/formatter/mmdfmt",
                 },
               ],
             },

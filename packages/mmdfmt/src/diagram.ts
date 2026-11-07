@@ -6,7 +6,7 @@ import type { LineEnding } from "./lines.ts"
 
 /**
  * The options of a Prettier configuration that the tool uses (README,
- * Formatting options). An option that the configuration does not set is
+ * Indentation). An option that the configuration does not set is
  * `undefined`, and Prettier then uses its default.
  */
 export interface Indentation {
