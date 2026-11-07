@@ -488,9 +488,10 @@ comment lines and blank lines lie between. [fixture:
 semicolons/class-terminator-comment-lines-run-moved] Without whitespace after
 the `;`, the indentation of the next row is its own and is printed at its
 planned column. [fixture: semicolons/class-terminator-comment-row-indented-kept]
-A `;` that the line rule ignores, followed by text on its line, makes that text
-part of the style, so its whitespace stays: `classDef zz a:#b ; %% c` keeps its
-line. [fixture: semicolons/class-terminator-ignored-text-after-kept]
+Where no `;` before it ends the statement, a `;` that the line rule ignores,
+followed by text on its line, makes that text part of the style, so its
+whitespace stays: `classDef zz a:#b ; %% c` keeps its line. [fixture:
+semicolons/class-terminator-ignored-text-after-kept]
 
 Keep every other authored semicolon: selected ignored semicolons, a `;` beside
 another `;`, and value characters. Use shared kept-line and protected-prefix

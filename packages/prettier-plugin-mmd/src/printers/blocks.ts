@@ -1176,8 +1176,7 @@ function printInlineGap(
 /**
  * The text between two offsets as written, without the whitespace in
  * `relocatedWhitespace`: a run that the planned indentation of the next
- * statement supplies, which must not be printed a second time. A line
- * separator that breaks a line stays, as in `scanLines`.
+ * statement supplies, which must not be printed a second time.
  */
 function withoutRelocatedWhitespace(
   source: Source,
@@ -1190,7 +1189,6 @@ function withoutRelocatedWhitespace(
     const { element, end: next } = readGapElement(source, offset)
     if (
       element.kind !== "whitespace" ||
-      element.breaksLine ||
       findCoveringRange(relocatedWhitespace, offset) === undefined
     )
       text += source.text.slice(offset, next)

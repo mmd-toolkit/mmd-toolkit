@@ -505,6 +505,7 @@ style のない `classDef` でも同じです。
 `;` の後ろに空白がないときは、次の row の字下げはその row 自身のものなので、
 計画された列に印字します。
 [fixture: semicolons/class-terminator-comment-row-indented-kept]
+それより前に文を終える `;` がなく、
 行の規則が無視する `;` の後ろに同じ行の文字が続くときは、
 その文字が style の一部になるので、空白も残ります。
 `classDef zz a:#b ; %% c` は行が変わりません。
