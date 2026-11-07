@@ -367,11 +367,15 @@ mermaid.js が trim するからです。
 空白があるかどうかが、無視される `;` を決めるからです。
 `set "style:"[ #x; ]` は `set "style:"[ #x;]` になり、
 `:` の前に `style` がない `set "a:b"[ #x; ]` は `set "a:b"[#x;]` になります。
-ディレクティブやコメントの中の `style`、`:`、`#`、`;` は、
+ディレクティブの中の `style`、`:`、`#`、`;` は、
 規則が読まないので区間を作りません。
 `set "style:"[ #x ]%%{init:{"a":";"}}%%` は
 `set "style:"[#x]%%{init:{"a":";"}}%%` になります。
-[fixture: venn/labels/bracket-padding-line-rule-chars-in-directive-or-comment]
+[fixture: venn/labels/bracket-padding-line-rule-chars-in-directive]
+行の途中の `%%` はコメント行ではないので、規則はそのテキストを読みます。
+`set "style:b"[ #x ] %% c;` は `set "style:b"[ #x] %% c;` になり、
+`set "classDef:#a;style:"[ x ]%%#c;` は変わりません。
+[fixture: venn/labels/bracket-padding-line-rule-chars-in-comment]
 U+2028 や U+2029 を含む空白は、書かれたまま残します。
 [fixture: labels/bracket-padding-with-directive-or-semicolon]
 [fixture: labels/bracket-padding-in-style-rule-stretch]

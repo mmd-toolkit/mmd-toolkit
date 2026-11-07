@@ -485,10 +485,10 @@ override separator deletion. [fixture: semicolons/semicolon-before-directive]
 [fixture: semicolons/semicolons-drop-member-unsafe] [fixture:
 semicolons/semicolons-flow] [fixture: semicolons/semicolons-global]
 
-The line rule reads a comment of an agentflow, but not a directive:
-`A[style:]-->B %% #x;` keeps its arrow tight, while
-`C[style:]-->D %%{init:{"x":"#;"}}%%` is spaced as any other line. [fixture:
-semicolons/line-rule-comment-read]
+The line rule reads the text of a `%%` comment in the middle of a line, which an
+agentflow accepts, but not a directive: `A[style:]-->B %% #x;` keeps its arrow
+tight, while `C[style:]-->D %%{init:{"x":"#;"}}%%` is spaced as any other line.
+[fixture: semicolons/line-rule-comment-read]
 
 Input (escaped): `"agentflow-beta TB\nA;B;; ;"`. [fixture:
 semicolons/semicolons-top]

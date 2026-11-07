@@ -749,7 +749,7 @@ function findLastKeptSemicolon(
  * The stretch of each line-rule segment that holds `style` or `classDef`, later
  * a `:`, later a `#`, and later a `;`: from the first `:` after the word to the
  * last `#` before the last `;`. The segment is what the rule reads, without
- * the directives and the comments (see `readSegments`). Every pair of a `:` and
+ * the directives and the comment regions (see `readSegments`). Every pair of a `:` and
  * a later `#` of the segment lies in it, so the whitespace that may decide the
  * rule lies in it (see `isInsideStyleRuleStretch`).
  */
@@ -854,10 +854,10 @@ export function findVerbatimStyleLines(source: Source): ReadonlySet<number> {
 /**
  * The colon/hash stretches of the line from `start` to `end`, one for each
  * line-rule segment that has one, used for ordinary gaps. The rule reads a
- * segment without its directives and without the comment regions (in agentflow
- * and eventmodeling the comment regions are read), and a segment ends at a
- * U+2028 or U+2029 that no directive or comment holds (common.md, The `style`
- * and `classDef` lines). Railroad and Wardley instead keep complete lines
+ * segment without its directives and without the comment regions that
+ * mermaid.js removes (see `readSegments`), and a segment ends at a U+2028 or
+ * U+2029 that no directive or comment holds (common.md, The `style` and
+ * `classDef` lines). Railroad and Wardley instead keep complete lines
  * containing the shared words as written (docs/railroad.md and
  * docs/wardley.md, Semicolons).
  */
@@ -892,33 +892,48 @@ interface ReadableSegment {
 
 /**
  * The segments that the line rule reads in the line from `start` to `end`: the
- * characters outside every directive, and outside every comment unless the
- * diagram reads its comment regions, split at the U+2028 and U+2029 that lie
- * outside all comments and directives (common.md, The `style` and `classDef`
- * lines).
+ * characters outside every directive and outside every comment region that
+ * mermaid.js removes (`Source.joiningRegions`), split at the U+2028 and U+2029
+ * that lie outside all comments and directives (common.md, The `style` and
+ * `classDef` lines). A `%%` in the middle of a line is no comment region and
+ * stays in the text, which the rule reads, and so does a comment of a diagram
+ * that reads its comment lines.
  */
 function readSegments(
   source: Source,
   start: number,
   end: number,
 ): ReadableSegment[] {
-  const readsComments =
-    source.root.body.type === "AgentflowDiagram" ||
-    source.root.body.type === "EventmodelingDiagram"
   const trivia = findTriviaBetween(source, start, end)
+  const removed: Range[] = [
+    ...trivia
+      .filter((item) => item.type === "Directive")
+      .map((item): Range => item.range),
+    ...source.joiningRegions
+      .filter((region) => region.start < end && start < region.end)
+      .map((region): Range => [region.start, region.end]),
+  ].sort((a, b) => a[0] - b[0])
   const segments: ReadableSegment[] = []
   let text = ""
   let offsets: number[] = []
-  let next = 0
+  let nextRemoved = 0
+  let nextTrivia = 0
   for (let offset = start; offset < end; offset++) {
-    while (next < trivia.length && trivia[next].range[1] <= offset) next++
-    const item = trivia[next]
-    if (item !== undefined && item.range[0] <= offset) {
-      if (item.type === "Directive" || !readsComments) {
-        offset = item.range[1] - 1
-        continue
-      }
+    while (nextRemoved < removed.length && removed[nextRemoved][1] <= offset) {
+      nextRemoved++
     }
+    const gone = removed[nextRemoved]
+    if (gone !== undefined && gone[0] <= offset) {
+      offset = gone[1] - 1
+      continue
+    }
+    while (
+      nextTrivia < trivia.length &&
+      trivia[nextTrivia].range[1] <= offset
+    ) {
+      nextTrivia++
+    }
+    const item = trivia[nextTrivia]
     const character = source.text[offset]
     if (
       (character === "\u2028" || character === "\u2029") &&

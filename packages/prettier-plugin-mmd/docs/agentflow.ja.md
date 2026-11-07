@@ -518,7 +518,9 @@ Kept linesと、空のstyleに続く空の説明ブロックの同じ行の保�
 [fixture: semicolons/semicolons-drop-member-unsafe]
 [fixture: semicolons/semicolons-flow] [fixture: semicolons/semicolons-global]
 
-行の規則は agentflow のコメントを読みますが、ディレクティブは読みません。
+行の規則は、
+agentflow が受け付ける行の途中の `%%` コメントのテキストを読みますが、
+ディレクティブは読みません。
 `A[style:]-->B %% #x;` は矢印を詰めたままで、
 `C[style:]-->D %%{init:{"x":"#;"}}%%` はほかの行と同じく空白を入れて印字します。
 [fixture: semicolons/line-rule-comment-read]

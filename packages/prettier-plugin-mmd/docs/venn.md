@@ -338,11 +338,14 @@ between a `:` and a `#` of a line that the line rule may read, since whether it
 is there decides which `;` is ignored: `set "style:"[ #x; ]` is printed
 `set "style:"[ #x;]`, while `set "a:b"[ #x; ]` has no `style` before the `:` and
 is printed `set "a:b"[#x;]`. A `style`, a `:`, a `#`, or a `;` inside a
-directive or a comment is not read by the rule, so it makes no stretch:
+directive is not read by the rule, so it makes no stretch:
 `set "style:"[ #x ]%%{init:{"a":";"}}%%` is printed
 `set "style:"[#x]%%{init:{"a":";"}}%%`. [fixture:
-labels/bracket-padding-line-rule-chars-in-directive-or-comment] A padding with a
-U+2028 or U+2029 in it stays. [fixture:
+labels/bracket-padding-line-rule-chars-in-directive] A `%%` in the middle of a
+line is no comment line, so the rule reads its text: `set "style:b"[ #x ] %% c;`
+is printed `set "style:b"[ #x] %% c;`, and `set "classDef:#a;style:"[ x ]%%#c;`
+is not changed. [fixture: labels/bracket-padding-line-rule-chars-in-comment] A
+padding with a U+2028 or U+2029 in it stays. [fixture:
 labels/bracket-padding-with-directive-or-semicolon] [fixture:
 labels/bracket-padding-in-style-rule-stretch] [test: U+2028 inside the brackets
 of a venn label] [test: U+2029 inside the brackets of a venn label] [test:
