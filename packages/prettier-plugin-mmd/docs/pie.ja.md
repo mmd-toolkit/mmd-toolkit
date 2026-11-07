@@ -71,7 +71,7 @@ accDescr { direction TB }
 
 ### Statements one per line
 
-読みやすさのため、 [1 行 1 文](./xychart.ja.md#1-行-1-文)を再利用します。
+読みやすさのため、[1 行 1 文](./xychart.ja.md#1-行-1-文)を再利用します。
 ただし pie の EOL と保持する source group を優先します。
 空の説明ブロックも含め、区分と共通文を元の順序で残します。
 pie のセミコロンは文の区切りではなく、ラベルや共通値の文字です。
@@ -722,8 +722,8 @@ YAML の字下げは幅0でも最低1文字です。
 隠れた形式を含む前置きを保持する規則は、
 仕様の字句規則がヘッダーより前にこれらの形式を保持する図種に共通です。
 pie はこれを適用する最初の printer です。
-先頭 LF、コメントの列、2回目の走査の form、裸の行の trivia、
-fence の順序も含め、前置き全体を保持します。
+先頭 LF、コメントの列、2回目の走査の form、裸の行の trivia、fence の順序も含め、
+前置き全体を保持します。
 削除・移動すると無効だった YAML が実際の frontmatter になるためです。
 PieIgnoredText を YAML formatter へ渡しません。
 原文と embedded effect を別々に確認します。

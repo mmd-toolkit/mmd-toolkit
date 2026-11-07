@@ -62,7 +62,7 @@ XychartAccDescrStatement、XychartAccDescrBlockStatement のどれかです。
 向きはキーワードの後の語を書かれたとおりに持ちます。
 `xychart Horizontal` は向き `Horizontal` を、
 `xychart horizontal` は向き `horizontal` を持ち、向きがなければ null です。
-mermaid.js が向きを Db にどう読むかは、 tests パッケージの要約にあります。
+mermaid.js が向きを Db にどう読むかは、tests パッケージの要約にあります。
 [fixture: xychart/db-orientation-capitalized]
 [fixture: xychart/db-orientation-horizontal]
 [fixture: xychart/db-orientation-upper-case]
@@ -138,7 +138,7 @@ y 軸は分類を持ちません。
 子の欄: `categories`。
 同じテキストの 2 つの分類は 2 つの分類です。
 空の分類はありません。
-`[]`、`[a, ""]`、 `[, b]` は拒否されます。 [fixture: xychart/db-x-axis-band]
+`[]`、`[a, ""]`、`[, b]` は拒否されます。 [fixture: xychart/db-x-axis-band]
 [fixture: xychart/db-x-axis-band-quoted]
 [fixture: xychart/db-x-axis-band-numbers]
 [fixture: xychart/db-x-axis-band-same-category]

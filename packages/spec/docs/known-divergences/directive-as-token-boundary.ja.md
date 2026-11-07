@@ -37,7 +37,7 @@ mermaid.js は、図を読む前に、
 ここでの名前は、空白を含みうるかどうかにかかわらず、
 図の文書が名前の単位と数えるものです。
 U+00A0 を含みうる ER の実体の名前も、gantt の click の id も、その 1 つです。
-sequence 図の参加者の id、クラスの名前、 `~` を使って書いた ER の属性の語、
+sequence 図の参加者の id、クラスの名前、`~` を使って書いた ER の属性の語、
 gantt のタスクの説明、要求図の引用符なしの名前のように、
 図の文書がテキストの単位と数える名前は、テキストとして読まれます。
 [fixture: sequence/div-directive-in-wrap-prefix]
@@ -71,7 +71,7 @@ mermaid.js は前後をつないで受理します。
 を参照してください。
 
 C4 では見出し語、呼び出し語、`accTitle`、`accDescr` の内部の、
-ディレクティブを拒否し、 mermaid.js は前後をつなぎます。
+ディレクティブを拒否し、mermaid.js は前後をつなぎます。
 [fixture: c4/lex-directive-keyword] [fixture: c4/div-directive-header]
 [fixture: c4/div-acc-title-directive]
 [fixture: c4/div-acc-block-marker-directive]
@@ -499,7 +499,7 @@ entry の名前・省略可能な colon・数、member と comma の間が該当
 除去後にも正しい字句境界を要求します。
 native な形は名前つき gap/body に、
 global directive は共有 root のリストに保ちます。
-string・common 値・native な形の内容にも、 atom を割らずに置けます。
+string・common 値・native な形の内容にも、atom を割らずに置けます。
 [fixture: radar/gram-directive-composite-header]
 [fixture: radar/directive-common-colon]
 [fixture: radar/common-block-directive-gap] [fixture: radar/directive-common]
@@ -665,7 +665,7 @@ hidden であるだけでは拒否しませ ん。
 [fixture: eventmodeling/comment-mark-directive]
 
 [event-modeling.langium](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L70)
-が単位を、 [図の構文](../diagrams/eventmodeling.ja.md)が直接の境目を定義します。
+が単位を、[図の構文](../diagrams/eventmodeling.ja.md)が直接の境目を定義します。
 
 ### Treeview
 
@@ -677,7 +677,7 @@ icon 参照は colon も含みます。
 bare 名などの text/string の内側は断片を持て、完成部品の間も許します。
 branch と各 dash は別の部品なので、その間の directive も許します。
 [treeView.langium](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/treeView/treeView.langium#L15-L64)
-に基づく境目を、 [図の構文](../diagrams/treeview.ja.md) が定めます。
+に基づく境目を、[図の構文](../diagrams/treeview.ja.md) が定めます。
 [fixture: treeview/directive-header-inside]
 [fixture: treeview/directive-class-inside]
 [fixture: treeview/directive-description-inside]
@@ -730,9 +730,8 @@ mermaid.js の flowchart のパーサーのテストには、
 [C4 の文書](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/c4.md#L150-L159)
 は呼び出しと名前付き引数の例を示し、
 見出しや呼び出し語の内部のディレクティブを説明していません。
-`mermaid-js/mermaid` の issue と pull request を、
-2026-10-21 に `C4 directive`、 `C4 directive in:title,body`、
-`C4 directive keyword in:title,body`、
+`mermaid-js/mermaid` の issue と pull request を、2026-10-21 に `C4 directive`、
+`C4 directive in:title,body`、`C4 directive keyword in:title,body`、
 `"Add directive support" in:title` で検索し、
 この形式についての報告は見つかりませんでした。
 [PR #4759](https://github.com/mermaid-js/mermaid/pull/4759)
@@ -744,7 +743,7 @@ mermaid.js の flowchart のパーサーのテストには、
 [venn の文書](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/venn.md)
 は完全なキーワードと名前を示し、その内部のディレクティブは示していません。
 2026-10-21 に `mermaid-js/mermaid` の issue と PR を
-`venn directive in:title,body` で検索しましたが、 venn のキーワード、名前、
+`venn directive in:title,body` で検索しましたが、venn のキーワード、名前、
 数の内部のディレクティブに関する報告は見つかりませんでした。
 
 - ピン留めした
@@ -785,8 +784,8 @@ Ishikawa の見出しを分割する directive の報告は見つかりません
 gitgraph の
 [gitgraph.md](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/gitgraph.md)
 は、見出しと各コマンドを説明します。
-2026-10-23 に issue・PR を `gitGraph`、`gitGraph directive`、 `gitGraph YAML`、
-`gitGraph semicolon`、`gitGraph keyword`、 `gitGraph duplicate`、
+2026-10-23 に issue・PR を `gitGraph`、`gitGraph directive`、`gitGraph YAML`、
+`gitGraph semicolon`、`gitGraph keyword`、`gitGraph duplicate`、
 `gitGraph cherry-pick` で検索しました。
 確認した結果には、この共通の境界を決定するものはありませんでした。
 [#4838](https://github.com/mermaid-js/mermaid/issues/4838) は終了済みで Status:
@@ -802,7 +801,7 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
   2026-10-23 に `info showInfo`、`info directive`、`info semicolon`、
   `info accTitle` で issue と PR を検索しました。
   [#7601](https://github.com/mermaid-js/mermaid/issues/7601) は info/showInfo
-  の描画を報告し、 open、Type: Bug / Error、Status: Triage でした。
+  の描画を報告し、open、Type: Bug / Error、Status: Triage でした。
   検査した結果には、
   この構文の拒否を決める info 固有のメンテナーの判断はありません。
   この節は既存の直接の規則に従います。
@@ -849,15 +848,15 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
 
 - Railroad:
   [pin した構文の文書](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/railroad.md#L1-L288)
-  は 4 記法、 EBNF の例外、ABNF のセミコロンの comment、
+  は 4 記法、EBNF の例外、ABNF のセミコロンの comment、
   PEG の predicate を説明します。
   native の残る YAML と frontmatter を跨ぐ HTML の引用符の文脈は定義しません。
   2026-10-26 に公式 repository の issue と PR を railroad frontmatter、
   railroad directive、railroad semicolon、railroad comment で検索しました。
   [#7979](https://github.com/mermaid-js/mermaid/issues/7979) は demo
-  の見出し名の報告（closed、 Triage）、
+  の見出し名の報告（closed、Triage）、
   [#6620](https://github.com/mermaid-js/mermaid/issues/6620) は ABNF
-  の図種の提案（open、 Discussion Needed）です。
+  の図種の提案（open、Discussion Needed）です。
   どちらも、これらの前処理の境界について、
   メンテナーが defect と判断した事実ではありません。
   この差異はその判断でなく既存の共通規則に従います。
@@ -894,7 +893,7 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
 
 pin した
 [eventmodeling.md](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/eventmodeling.md#L41-L340)
-は frame、 data、tag を説明しますが、共有の前処理の境目を定義しません。
+は frame、data、tag を説明しますが、共有の前処理の境目を定義しません。
 2026-10-26 に公式 issue と PR を eventmodeling title、eventmodeling parser、
 event modeling data、eventmodeling accTitle、
 eventmodeling validator で検索しました。
@@ -911,7 +910,7 @@ eventmodeling validator で検索しました。
 は字下げ・引用名・注釈・罫線を説明します。
 この共通の境目を定義してはいません。
 2026-10-26 に公式 issue/PR を `treeView quoted`、`treeView indentation`、
-`treeView box`、 `treeView quotes`、`treeView whitespace`、
+`treeView box`、`treeView quotes`、`treeView whitespace`、
 `treeView accDescr` で検索しました。
 [PR #7721](https://github.com/mermaid-js/mermaid/pull/7721) は罫線を追加した
 merged の PR、

@@ -5,7 +5,7 @@
 `radarDbOf` は受理された [radar の木](../../../spec/docs/ast/radar.md)を読む。
 意味上の受理条件は
 [構文](../../../spec/docs/diagrams/radar.md#semantic-acceptance-conditions)
-が定め、 builder は再判定しない。
+が定め、builder は再判定しない。
 結果の項目は [radar の要約](../db-summaries.md#radar)と一致する。
 [fixture: radar/db-all-fields] [fixture: radar/error-reference-label]
 
@@ -73,7 +73,7 @@
    `numberOrText` を適用する。
    上限未満の小数 ticks と、未指定の max の null は保つ。
    固定語は showLegend では boolean、graticule では string になる。
-   自動の最大値は計算せず、 entry を min/max に切り詰めない。
+   自動の最大値は計算せず、entry を min/max に切り詰めない。
    [fixture: radar/spec-radar-test-ts-f0c0291e]
    [fixture: radar/db-options-repeat] [fixture: radar/db-ticks-cap-last]
    [fixture: radar/db-ticks-cap-before-final]

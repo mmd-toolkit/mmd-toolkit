@@ -52,7 +52,7 @@ architecture-beta
 
 通常の宣言・辺・alignment・共通文・独立した trivia は設定の1段だけ字下げします。
 本文は平坦で、`in` は参照なので入れ子の段を増やしません。
-architecture の列には文法上の意味がないため、 `tabWidth: 0` は空白0個、
+architecture の列には文法上の意味がないため、`tabWidth: 0` は空白0個、
 `useTabs` は幅0でもタブ1個です。
 説明本文以外の値の継続列、hidden の閉じ、保持する prefix は原形を保ちます。
 
@@ -294,7 +294,7 @@ architecture-beta
 
 ### Label content
 
-角括弧の内側は、端の空白、連続空白、タブ、空白だけの値、quoted の空値、 escape、
+角括弧の内側は、端の空白、連続空白、タブ、空白だけの値、quoted の空値、escape、
 HTML、entity、hidden に見える文字もそのまま保ちます。
 Db がこれらを区別するため、外側の空白のようには正規化しません。
 物理 CR・CRLF だけは共有の host 方針に従います。
@@ -934,7 +934,7 @@ architecture-beta
 
 見出し、
 完結した宣言・辺・alignment・説明の閉じの後の無害な ASCII padding を除きます。
-値と継続行、コメント末尾、 directive・hidden 内部、保持する prefix、
+値と継続行、コメント末尾、directive・hidden 内部、保持する prefix、
 保護区間は保ちます。
 hidden の閉じの padding は EOF でも保持します。
 trim すると可視 EOL が消え得るためです。
@@ -1029,8 +1029,8 @@ architecture-beta
 安全な後ろの隙間だけを整えます。
 保護された見出し・最初の文は一緒に保ちます。
 選択された1個の削除や style・classDef の trigger 移動は、
-別のセミコロンを選んで Db を変え得るため、両 pass、非 trigger、 entity、
-値の物理行、 global 除去で結合する trigger を保ちます。
+別のセミコロンを選んで Db を変え得るため、両 pass、非 trigger、entity、
+値の物理行、global 除去で結合する trigger を保ちます。
 
 [fixture: architecture/semicolons/native-service-value]
 
@@ -1182,7 +1182,7 @@ architecture-beta
 
 ### Source order
 
-すべての文、参照、 alignment member、繰り返す辺・制約、
+すべての文、参照、alignment member、繰り返す辺・制約、
 空の代入を source 順に保ちます。
 Db から木を再構成したり、公開順に宣言を並べたりすると作者の構造が失われます。
 空の代入の削除は最終値を変え得ます。

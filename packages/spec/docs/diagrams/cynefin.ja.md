@@ -125,7 +125,7 @@ colon の無い cynefin-beta だけの独自 matcher を加える。
 実効の一つの文脈の順序は次のとおりで、先に合うものを採り、
 longer alternative や一般の最長一致の規則は無い。
 到達する[共通 terminal][common] を含むが、import した BOOLEAN、FLOAT、INT、
-NUMBER、 ID には到達しない。 [fixture: cynefin/header-colon-inline]
+NUMBER、ID には到達しない。 [fixture: cynefin/header-colon-inline]
 [fixture: cynefin/lex-domain-title-priority]
 [fixture: cynefin/gram-glued-domains] [fixture: cynefin/common-title-prefix]
 [fixture: cynefin/domain-digit]
@@ -181,7 +181,7 @@ backslash の後には CR、LF、U+2028、U+2029 以外の一文字が必要で�
 
 項目と遷移ラベルの文字列は共有の StringLiteral を使う。
 raw は引用符と共通の trivia を含む書かれた全体を保ち、
-value は共通の除去を除く未変換の内側を保ち、 closed は true である。
+value は共通の除去を除く未変換の内側を保ち、closed は true である。
 木の値の中で文字列の escape、HTML の引用符、entity を変換しない。
 これらの文字列の[共通と既定の変換][converter]は、
 書かれた木と分けて tests の要約で記録する。
@@ -345,7 +345,7 @@ native fence の個々の句読の文字である。
 文字列、共通の値、hidden な値の内側にも置ける。
 固定語や分割しない --> の中は割れない。
 複合の行の単位でも、作者の句読の境目は語の内部にならない。
-一方、 native hidden な形は複合の見出しや共通の行の単位を割れない。
+一方、native hidden な形は複合の見出しや共通の行の単位を割れない。
 [fixture: cynefin/header-global-before-colon]
 [fixture: cynefin/directive-transition-parts]
 [fixture: cynefin/directive-title-parts]

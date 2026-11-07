@@ -65,7 +65,7 @@ wardley-beta
 ### pipeline
 
 pipeline Parent { と印字し、
-子文はさらに 1 段深く、 } は親の文と同じ段に置きます。
+子文はさらに 1 段深く、} は親の文と同じ段に置きます。
 { と各子文の後の可視 LF は、幅 0 でも文法に必要なので保ちます。
 座標や生成 ID を足さず、書かれた親子の区切りを示します。
 
@@ -177,7 +177,7 @@ wardley-beta
 ### 名前の境界
 
 普通の名前と後続部品の間は空白 1 つにします。
-ただし bare 名がちょうど title のときは、座標、pipeline の括弧、 evolve の数、
+ただし bare 名がちょうど title のときは、座標、pipeline の括弧、evolve の数、
 矢印、port、@、/ との接し方を保ちます。
 title の後の空白で metadata として読まれるためです。
 引用した "title" と bare の titlex は普通に空白を置きます。
@@ -241,7 +241,7 @@ wardley-beta
 ### 数
 
 NumericLiteral は double 値を文字列化せず、source span を印字します。
-小数の先頭と末尾のゼロ、精度、丸められる境界、非正規化数、 underflow、
+小数の先頭と末尾のゼロ、精度、丸められる境界、非正規化数、underflow、
 受理される overflow を保ちます。
 01.00 を 1 にすると、小数必須の位置で拒否されます。
 百分率への変換も作者の単位を失うため行いません。
@@ -422,7 +422,7 @@ wardley-beta
 文法上のラベル開始 ; は前の部品に付け、
 後ろは物理行末まで source span のまま印字します。
 Db が同じ形から、link に属する区切りと分かる接した形を選びます。
-padding を足したり trim したりしません。 ; の後が空白なら、
+padding を足したり trim したりしません。; の後が空白なら、
 空白だけのラベルとして受理され、裸の ; は拒否されます。
 後続のセミコロンには共有の prefix 保護を使います。
 native に見える形と percent テキストもラベルのままです。
@@ -899,7 +899,7 @@ wardley-beta
 ### 行末の空白
 
 見出し、完結した構造、説明の closer の外の無害な ASCII padding は落とします。
-owner ごとに判断し、link ラベルの末尾、文字列と flow、コメント、 directive、
+owner ごとに判断し、link ラベルの末尾、文字列と flow、コメント、directive、
 hidden の内部、必須の closer padding、保護区間は保ちます。
 物理行を一律に trim すると、Db が変わるか空白だけのラベルが拒否されます。
 
@@ -1173,8 +1173,8 @@ wardley-beta
 
 既存の 6 差異を適用します。
 directive-as-token-boundary、ignored-semicolon-as-token-boundary、
-html-tag-in-frontmatter、embedded-data-opaque、
-bare-percent-line-before-header、c4-keyword-anywhere です。
+html-tag-in-frontmatter、embedded-data-opaque、bare-percent-line-before-header、
+c4-keyword-anywhere です。
 Wardley 固有の opaque な受理設定キーはありません。
 raw の拒否に raw Db はなく、
 利用できる specified reading と埋め込み効果を使います。

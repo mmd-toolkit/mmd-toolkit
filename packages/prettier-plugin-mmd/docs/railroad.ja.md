@@ -576,7 +576,7 @@ railroad-abnf-beta
 ### 呼出し
 
 IR の8 constructor を `name(...)` にします。
-sequence、choice、optional、oneOrMore、zeroOrMore、terminal、 nonterminal、
+sequence、choice、optional、oneOrMore、zeroOrMore、terminal、nonterminal、
 special が対象です。
 `(` の前と括弧の内端の通常の空白を詰め、引数 comma の前を0、
 同じ行の後を1 space にします。
@@ -874,9 +874,9 @@ railroad-peg-beta
 通常の余白の詰めより優先します。
 
 文法上 padding である通常の CR/LF gap を各位置の空白規則へ揃えます。
-IR は constructor、括弧、引数、comma、EBNF は代入、選択、並び、 group、例外、
+IR は constructor、括弧、引数、comma、EBNF は代入、選択、並び、group、例外、
 postfix が対象です。
-ABNF は代入、選択、並び、完全な repeat と primary、group、 PEG は代入、選択、
+ABNF は代入、選択、並び、完全な repeat と primary、group、PEG は代入、選択、
 並び、prefix、suffix、group が対象です。
 IR 呼出しは[長い行](#長い行)の規則で構造に沿って配置します。
 名前、複合代入記号、repeat の内部、numeric value は分割しません。
@@ -1863,7 +1863,7 @@ directive の除去で、これらの文字列が複数の物理行をまたい�
 [fixture: railroad/semicolons/ebnf-word-unclosed-directive-lines]
 [fixture: railroad/semicolons/abnf-word-unclosed-directive-lines]
 [fixture: railroad/semicolons/peg-word-unclosed-directive-lines]
-ここでいう行は、 mermaid.js が1行として読む範囲全体です。
+ここでいう行は、mermaid.js が1行として読む範囲全体です。
 U+2028 や U+2029 の後の comment line が、語を含む行の前、後、
 両方のテキストをつなぐ場合も、つながる原文の行をすべて保ちます。
 最初の行の字下げは本文の1段に揃え、中身と2行目以降の列は書かれたままです。
@@ -2597,7 +2597,7 @@ railroad-peg-beta
 通常の空白だけの行を空にし、
 見出しと完結した構造の無害な ASCII padding を除きます。
 他の平坦な図種と同じ見通しにするためです。
-値、コメント末尾、directive と hidden の内部、必要な closer padding、 prefix、
+値、コメント末尾、directive と hidden の内部、必要な closer padding、prefix、
 保護区間は各規則に従います。
 ABNF の見かけの終端後の space は無害と推測せず、
 AST がコメントとして読んだ結果に従います。
@@ -2991,8 +2991,8 @@ railroad-peg-beta
 
 既存の6差異に従います。
 directive-as-token-boundary、ignored-semicolon-as-token-boundary、
-html-tag-in-frontmatter、embedded-data-opaque、
-bare-percent-line-before-header、c4-keyword-anywhere です。
+html-tag-in-frontmatter、embedded-data-opaque、bare-percent-line-before-header、
+c4-keyword-anywhere です。
 railroad には opaque 比較から除く受理設定 key がありません。
 空文字列は値で、空 call は拒否します。
 raw の拒否に raw Db はないため、仕様で受理する入力は記録された読み、原文の保持、

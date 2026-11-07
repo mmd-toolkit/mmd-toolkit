@@ -28,7 +28,7 @@
 `root`、`::icon(x)` の行、`  a` の行では、
 根は 3 つの行を `root` から `a` まで覆い、ノード `a` は `a` を覆います。
 `root`、`    a`、`      b`、`    c` の 4 行では、ノード `a` は、`a`、改行、
-字下げ、 `b` を覆います。 [fixture: mindmap/gram-icon-then-child]
+字下げ、`b` を覆います。 [fixture: mindmap/gram-icon-then-child]
 [fixture: mindmap/db-indent-sibling-after-deeper]
 [fixture: mindmap/db-first-node-on-header-line]
 
@@ -37,7 +37,7 @@
 形は opener から closer まで、icon の行は `::icon(` から `)` までです。
 class の行は、`:::` から class の終わりまでです。
 トークンが残す class の終わりの空白も含みます。
-`:::a b` と 2 つの空白は、 2 つの空白も覆います。
+`:::a b` と 2 つの空白は、2 つの空白も覆います。
 [fixture: mindmap/db-shape-rect] [fixture: mindmap/db-icon-line]
 [fixture: mindmap/db-class-trailing-space]
 

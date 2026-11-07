@@ -84,7 +84,7 @@ mermaid.js が入力を拒否し、この仕様は受理します。
      A ||--o{ B : has
    ```
 
-7. ER のヘッダーの前の `%%{ }%%` の行と、 `%%` だけの行と ER のヘッダーの間の、
+7. ER のヘッダーの前の `%%{ }%%` の行と、`%%` だけの行と ER のヘッダーの間の、
    空白だけで空でない行。
    `%%`、空白 2 つの行、`erDiagram`、`A`。
 
@@ -194,8 +194,7 @@ flowchart と state では、
 ここではコメント、mermaid.js では拒否です。
 class では、タブだけの行や、
 ディレクティブを除くと空白だけになる行（`  %%{init: {}}%%`
-など）は空白だけの行で、ここではトリビア、
-mermaid.js では `newline` の単位です。
+など）は空白だけの行で、ここではトリビア、mermaid.js では `newline` の単位です。
 [fixture: flowchart/header-after-non-word-brace-line]
 [fixture: flowchart/header-after-empty-braces-no-space]
 [fixture: state/header-after-non-word-brace-line]
@@ -204,7 +203,7 @@ mermaid.js では `newline` の単位です。
 [fixture: class/header-after-bare-percent-then-indented-directive-line]
 
 `%%` だけの行の前にディレクティブやフロントマターがあっても変わりません。
-それらはトリビアで、 `%%` だけの行は上と同じに読まれます。
+それらはトリビアで、`%%` だけの行は上と同じに読まれます。
 [fixture: flowchart/header-after-directive-then-bare-percent-line]
 [fixture: flowchart/header-after-frontmatter-then-bare-percent-line]
 
@@ -228,7 +227,7 @@ class/header-after-bare-percent-then-whitespace-line-then-comment-line]
 mermaid.js がここで受理する入力を拒否することはありません。
 
 C4 では見出しの前で `%%` だけの行にスペースだけの行が続くと、
-ここでは前置きとなり、 mermaid.js は見出しの前に改行を残して拒否します。
+ここでは前置きとなり、mermaid.js は見出しの前に改行を残して拒否します。
 [fixture: c4/div-leading-percent-space-blank]
 
 C4 の見出しの直前の裸のパーセント行と、
@@ -595,12 +594,12 @@ keyword の前で拒否することがあります。
   すべての図の定義は図種の宣言で始まることを述べています。
   `%%` だけの行については何も述べていません。
 - [mermaid-js/mermaid#8196](https://github.com/mermaid-js/mermaid/issues/8196)
-  （open、 2026-09-01）は、
+  （open、2026-09-01）は、
   `detectType()` と `preprocessDiagram()`
   のコメント除去が違うことを記録しています。
   ヘッダーの前の `%%` の行についての issue と pull request
   は見つかりませんでした（2026-10-07 に `comment before diagram type`、
-  `detectType comment`、 `stripAnyComments`、
+  `detectType comment`、`stripAnyComments`、
   `UnknownDiagramError comment` で検索）。
 
 - 固定した版の
@@ -609,7 +608,7 @@ keyword の前で拒否することがあります。
 は例を C4 の見出しから始め、その前の `%%` だけの行を説明していません。
 `mermaid-js/mermaid` の issue と pull request を、
 2026-10-21 に `C4 comment header in:title,body`、
-`C4 comment "header" in:title,body`、 `C4 "bare" comment in:title,body`、
+`C4 comment "header" in:title,body`、`C4 "bare" comment in:title,body`、
 `stripAnyComments in:title,body` で検索したところ、
 [issue #8196](https://github.com/mermaid-js/mermaid/issues/8196)
 が見つかりました。
@@ -653,8 +652,8 @@ Agentflow のヘッダー前の、
 gitgraph の
 [gitgraph.md](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/gitgraph.md)
 は、見出しと各コマンドを説明します。
-2026-10-23 に issue・PR を `gitGraph`、`gitGraph directive`、 `gitGraph YAML`、
-`gitGraph semicolon`、`gitGraph keyword`、 `gitGraph duplicate`、
+2026-10-23 に issue・PR を `gitGraph`、`gitGraph directive`、`gitGraph YAML`、
+`gitGraph semicolon`、`gitGraph keyword`、`gitGraph duplicate`、
 `gitGraph cherry-pick` で検索しました。
 確認した結果には、この共通の境界を決定するものはありませんでした。
 [#4838](https://github.com/mermaid-js/mermaid/issues/4838) は終了済みで Status:
@@ -670,7 +669,7 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
   2026-10-23 に `info showInfo`、`info directive`、`info semicolon`、
   `info accTitle` で issue と PR を検索しました。
   [#7601](https://github.com/mermaid-js/mermaid/issues/7601) は info/showInfo
-  の描画を報告し、 open、Type: Bug / Error、Status: Triage でした。
+  の描画を報告し、open、Type: Bug / Error、Status: Triage でした。
   検査した結果には、
   この構文の拒否を決める info 固有のメンテナーの判断はありません。
   この節は既存の直接の規則に従います。
@@ -717,15 +716,15 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
 
 - Railroad:
   [pin した構文の文書](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/railroad.md#L1-L288)
-  は 4 記法、 EBNF の例外、ABNF のセミコロンの comment、
+  は 4 記法、EBNF の例外、ABNF のセミコロンの comment、
   PEG の predicate を説明します。
   native の残る YAML と frontmatter を跨ぐ HTML の引用符の文脈は定義しません。
   2026-10-26 に公式 repository の issue と PR を railroad frontmatter、
   railroad directive、railroad semicolon、railroad comment で検索しました。
   [#7979](https://github.com/mermaid-js/mermaid/issues/7979) は demo
-  の見出し名の報告（closed、 Triage）、
+  の見出し名の報告（closed、Triage）、
   [#6620](https://github.com/mermaid-js/mermaid/issues/6620) は ABNF
-  の図種の提案（open、 Discussion Needed）です。
+  の図種の提案（open、Discussion Needed）です。
   どちらも、これらの前処理の境界について、
   メンテナーが defect と判断した事実ではありません。
   この差異はその判断でなく既存の共通規則に従います。
@@ -765,7 +764,7 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
 は字下げ・引用名・注釈・罫線を説明します。
 この共通の境目を定義してはいません。
 2026-10-26 に公式 issue/PR を `treeView quoted`、`treeView indentation`、
-`treeView box`、 `treeView quotes`、`treeView whitespace`、
+`treeView box`、`treeView quotes`、`treeView whitespace`、
 `treeView accDescr` で検索しました。
 [PR #7721](https://github.com/mermaid-js/mermaid/pull/7721) は罫線を追加した
 merged の PR、

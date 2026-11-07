@@ -297,7 +297,7 @@ frontmatter 内で開始した属性が、本仕様の受理する文字 icon �
 両方向と、双方が受理するが読みが異なる角括弧 label を記録する。
 木は quote の原綴を持てるが、mermaid と同じ本文の変換には、
 前処理の順序に沿って frontmatter の HTML 文脈を引き継ぐ必要がある。
-共有の直接の規則では、 frontmatter の後から本文の HTML を読む。
+共有の直接の規則では、frontmatter の後から本文の HTML を読む。
 [fixture: architecture/div-frontmatter-open-tag-icon]
 [fixture: architecture/gram-frontmatter-open-tag-reference]
 [fixture: architecture/div-frontmatter-open-attribute-icon]
@@ -355,8 +355,7 @@ single quote の逆方向の例を Mermaid は拒否しますが、
 ここでは名前 `x="y">` として受理します。
 共通 title と class 定義の例は両方で受理します。
 Mermaid は title を `x='y'>`、style を `fill:x='y'>` として読みますが、
-この仕様は本文だけの引用符の読みに合わせ、
-`x="y">` と `fill:x="y">` を保ちます。
+この仕様は本文だけの引用符の読みに合わせ、`x="y">` と `fill:x="y">` を保ちます。
 受理と値の差異をこの識別子で表し、比較を specified.json に記録します。
 ノードは書かれた綴りを保ちます。
 [fixture: treemap/div-html-tag-starts-in-frontmatter]
@@ -461,7 +460,7 @@ retained prefix は比較 の両方で保ちます。
 [fixture: eventmodeling/prefix-directive-html]
 
 [event-modeling.langium](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L70)
-が単位を、 [図の構文](../diagrams/eventmodeling.ja.md)が直接の境目を定義します。
+が単位を、[図の構文](../diagrams/eventmodeling.ja.md)が直接の境目を定義します。
 
 ### Treeview
 
@@ -545,8 +544,8 @@ div-html-frontmatter-value は両方が受理し、bare 名の引用符だけが
 gitgraph の
 [gitgraph.md](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/gitgraph.md)
 は、見出しと各コマンドを説明します。
-2026-10-23 に issue・PR を `gitGraph`、`gitGraph directive`、 `gitGraph YAML`、
-`gitGraph semicolon`、`gitGraph keyword`、 `gitGraph duplicate`、
+2026-10-23 に issue・PR を `gitGraph`、`gitGraph directive`、`gitGraph YAML`、
+`gitGraph semicolon`、`gitGraph keyword`、`gitGraph duplicate`、
 `gitGraph cherry-pick` で検索しました。
 確認した結果には、この共通の境界を決定するものはありませんでした。
 [#4838](https://github.com/mermaid-js/mermaid/issues/4838) は終了済みで Status:
@@ -596,15 +595,15 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
 
 - Railroad:
   [pin した構文の文書](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/railroad.md#L1-L288)
-  は 4 記法、 EBNF の例外、ABNF のセミコロンの comment、
+  は 4 記法、EBNF の例外、ABNF のセミコロンの comment、
   PEG の predicate を説明します。
   native の残る YAML と frontmatter を跨ぐ HTML の引用符の文脈は定義しません。
   2026-10-26 に公式 repository の issue と PR を railroad frontmatter、
   railroad directive、railroad semicolon、railroad comment で検索しました。
   [#7979](https://github.com/mermaid-js/mermaid/issues/7979) は demo
-  の見出し名の報告（closed、 Triage）、
+  の見出し名の報告（closed、Triage）、
   [#6620](https://github.com/mermaid-js/mermaid/issues/6620) は ABNF
-  の図種の提案（open、 Discussion Needed）です。
+  の図種の提案（open、Discussion Needed）です。
   どちらも、これらの前処理の境界について、
   メンテナーが defect と判断した事実ではありません。
   この差異はその判断でなく既存の共通規則に従います。
@@ -641,7 +640,7 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
 
 pin した
 [eventmodeling.md](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/eventmodeling.md#L41-L340)
-は frame、 data、tag を説明しますが、共有の前処理の境目を定義しません。
+は frame、data、tag を説明しますが、共有の前処理の境目を定義しません。
 2026-10-26 に公式 issue と PR を eventmodeling title、eventmodeling parser、
 event modeling data、eventmodeling accTitle、
 eventmodeling validator で検索しました。
@@ -658,7 +657,7 @@ eventmodeling validator で検索しました。
 は字下げ・引用名・注釈・罫線を説明します。
 この共通の境目を定義してはいません。
 2026-10-26 に公式 issue/PR を `treeView quoted`、`treeView indentation`、
-`treeView box`、 `treeView quotes`、`treeView whitespace`、
+`treeView box`、`treeView quotes`、`treeView whitespace`、
 `treeView accDescr` で検索しました。
 [PR #7721](https://github.com/mermaid-js/mermaid/pull/7721) は罫線を追加した
 merged の PR、

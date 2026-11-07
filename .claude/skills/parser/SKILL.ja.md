@@ -201,7 +201,7 @@ pin した mermaid.js の更新を扱う。
 4. 仕様は作業の間にも変わり、
    作ったものに関わることもある（ノードの欄の名前が変わったり、
    欄がなくなったりする）。
-   読んだときの文書の写しをリポジトリの外に取っておき、 4.8 節の確かめの前に、
+   読んだときの文書の写しをリポジトリの外に取っておき、4.8 節の確かめの前に、
    文書を写しと比べて、変わったところを実装する。
 
 ### 4.3 ノードの型とつなぎ込み
@@ -277,7 +277,7 @@ flowchart のファイルが手本になる。
    図種はほかに、`addUnit` と `readInContext` を与える。
    図種には、その文書が違うと言うことだけを残し、
    同じことの別の書き方は残さない。
-   文字は、`src/code-points.ts` の定数と、 `src/character-classes.ts`、
+   文字は、`src/code-points.ts` の定数と、`src/character-classes.ts`、
    `src/scanning.ts` で比べる。
    正規表現は使わない。
 5. 単位は仕様の名前を持つ。
@@ -287,13 +287,13 @@ flowchart のファイルが手本になる。
    文字列の単位が中身の範囲を持つ）。
    字句解析器が単位を読むときに決め、ノードが持つものは、単位に載せる。
    文法がテキストを別の読み方で読み直さないためである。
-   矢印の単位は、矢印の記号と線を持ち、 flowchart ではさらに線の文字の数を持つ。
+   矢印の単位は、矢印の記号と線を持ち、flowchart ではさらに線の文字の数を持つ。
 6. 字句解析器が大文字小文字を区別しないとき（sequence ではすべての規則）は、
    語を `src/scanning.ts` の `matchWordIgnoringCase` と
    `matchWholeWordIgnoringCase` で比べる。
    これらは Notation に従う。
    小文字にしてから比べることはしない。
-7. 図種の字句解析器が自分のコメントを読むとき（図のコメント。 sequence では、
+7. 図種の字句解析器が自分のコメントを読むとき（図のコメント。sequence では、
    行の終わりまでの `#` と `%`）は、その範囲と値の始まりを返し、
    入口がそれを `DiagramAnalysis.comments` として `finishDiagram()` に渡す。
    共通の部分が、中のディレクティブとともに `Root.comments` に記録する。
@@ -332,7 +332,7 @@ flowchart のファイルが手本になる。
    読めない単位のエラー（`unexpected()`）を受け持つ。
    図種は、生成規則と `knownDivergenceAt()` を足す。
    `knownDivergenceAt()` は、既知の差異が名指す原因を探す。
-   flowchart では `space` の単位の後の `click` と空の形、 sequence では空の形、
+   flowchart では `space` の単位の後の `click` と空の形、sequence では空の形、
    class では空の形か、空のジェネリクスの型の後の単位である。
    単位のトークンの範囲は、
    `src/diagram-units.ts` の `significantRangeOf` で求める。
@@ -385,7 +385,7 @@ flowchart のファイルが手本になる。
    参加者について Db が持つものを追う（`db-rejections.ts`）。
    待っている文が複数あるとき、
    どれに検査を当てるかを仕様が言っていなければ（sequence では、
-   1 つのメッセージの前の 2 つの `create`）、 mermaid.js で確かめ（3 節）、
+   1 つのメッセージの前の 2 つの `create`）、mermaid.js で確かめ（3 節）、
    欠落として知らせる。
 6. 新しい種類の拒否には、`ParseError` の範囲を決め、
    `docs/error-positions.md` とその `.ja.md` に 1 行足す。
@@ -442,7 +442,7 @@ fixture を図種と名前で引用して読み込む。
 1. パースの結果を記録に書いて比べ、上の共通の受理検査を使うのは、
    `tests/fixtures.test.ts` だけにする（4.7 節）。
    記録された木が木の条件を満たし、mermaid.js の Db を与えることは、
-   コーパスの検査であり、 `@mmd-toolkit/tests` が、
+   コーパスの検査であり、`@mmd-toolkit/tests` が、
    すべての記録木で確かめる（`check-tree-corpus.test.ts`、
    `db-from-tree.test.ts`）。
    parser のテストは、それを確かめるために fixture をパースし直さない。
@@ -477,8 +477,7 @@ fixture のテストが、各結果をそのファイルと比べる。
 
 記録は既定の parse(text) の結果とし、
 `outcomeOf(fixture.input, fixture.config)` は、
-外部のサイト設定だけを受理に適用し、
-parse() に設定の引数やオプションを足さない。
+外部のサイト設定だけを受理に適用し、parse() に設定の引数やオプションを足さない。
 
 1. これらのファイルを書いて読むのは、規則を実装した fixture だけにする。
    先に書くと、いまのパーサーの誤った結果が記録され、記録として通ってしまう。
@@ -522,7 +521,7 @@ parse() に設定の引数やオプションを足さない。
    その変更の前に、fixture をリポジトリの外の新しいディレクトリに写す。
    変更の後に、
    `tests/fixtures.test.ts` だけを `-u` 付きで走らせる `pnpm run test:update`
-   で書き直し、 `packages/parser` で違いを分類する。
+   で書き直し、`packages/parser` で違いを分類する。
 
    ```sh
    cp -R ../tests/fixtures/<図種> <ディレクトリ>/ast-before

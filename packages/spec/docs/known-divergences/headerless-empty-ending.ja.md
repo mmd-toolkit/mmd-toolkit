@@ -22,7 +22,7 @@ classDiagram
 後に語の文字が続かない語 `classDiagram`
 です（[検出](../diagrams/class.ja.md#検出) を参照）。
 `classDiagramX`、`classDiagram2`、
-`classDiagramclassDiagram` で始まるテキストは、 class 図として検出されますが、
+`classDiagramclassDiagram` で始まるテキストは、class 図として検出されますが、
 ヘッダーを持ちません。 [fixture: class/header-word-after-keyword]
 [fixture: class/header-digit-after-keyword]
 [fixture: class/header-keyword-twice]
@@ -95,7 +95,7 @@ class/div-headerless-empty-call] [fixture: class/div-headerless-empty-string]
 
 つまり mermaid.js は、ヘッダーのないテキストを拒否しますが、
 テキストが 7 つの空の形のどれかで終わるときは別です。
-後に空白しかない `accTitle:`、`accDescr:`、`accDescr {`、 `click A call`、
+後に空白しかない `accTitle:`、`accDescr:`、`accDescr {`、`click A call`、
 そして `callback A "`、`link A "`、`click A href "` の、
 終わりで開いた文字列です。
 そのとき mermaid.js はテキストを受理してその文を読み、ヘッダーの場所の語を、

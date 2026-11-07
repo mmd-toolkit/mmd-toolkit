@@ -6,7 +6,7 @@
 [木](../ast/architecture.md)は書かれた構文を保ち、
 [tests の要約](../../../tests/docs/db-summaries.md#architecture)が Db
 の導出値を定める。
-構文の根拠は [architecture.langium][grammar]、 [arch.langium][arch]、
+構文の根拠は [architecture.langium][grammar]、[arch.langium][arch]、
 [common.langium][common] である。 [fixture: architecture/header-beta]
 [fixture: architecture/db-mixed]
 
@@ -62,7 +62,7 @@ textBeforeHeader の ArchitectureIgnoredText が所有し、properties は適用
 隣接する 3 本の fence は本文行を持ち得る。
 先頭の trim が開始側の字下げだけを除く場合もある。
 先頭の BOM の trivia は検出点より前に除かれ得る。
-検出を通っても、 native の開始・終了の空白規則は緩めない。
+検出を通っても、native の開始・終了の空白規則は緩めない。
 [fixture: architecture/detect-retained-adjacent-fences]
 [fixture: architecture/detect-retained-unclosed]
 [fixture: architecture/detect-retained-indent-both]
@@ -117,7 +117,7 @@ native Mermaid がその Unicode 空白を拒否する入力は
 一般の最長一致ではない。
 語の keyword は長い ID、両 dash の規則は長い hidden YAML を明示的な代替とする。
 読めない文字は入力全体を拒否する。
-有効な順序の根拠は [module.ts][module]、 [tokenBuilder.ts][builder]、
+有効な順序の根拠は [module.ts][module]、[tokenBuilder.ts][builder]、
 import した文法である。 [fixture: architecture/db-mixed]
 [fixture: architecture/hidden-yaml-after-header]
 [fixture: architecture/error-after-prefix]
@@ -209,7 +209,7 @@ icon は開始 parenthesis、ASCII 英数字・underscore・dash・colon の空�
 
 string は single quote または double quote で囲み、同じ quote で閉じる。
 空でもよい。
-内部では、その quote と backslash 以外の任意の文字を読み、 LF、U+2028、
+内部では、その quote と backslash 以外の任意の文字を読み、LF、U+2028、
 U+2029 も含む。
 backslash は代わりに次の文字を取り、その文字は LF、CR、U+2028、
 U+2029 以外でなければならない。
@@ -371,12 +371,12 @@ LF、U+2028、U+2029 を含む任意の文字を、
 [fixture: architecture/lex-yaml-selected-semicolon]
 [fixture: architecture/lex-native-directive-selected-semicolon]
 
-native hidden DIRECTIVE は任意の ASCII space/tab と %%{ で始まり、 LF、U+2028、
+native hidden DIRECTIVE は任意の ASCII space/tab と %%{ で始まり、LF、U+2028、
 U+2029 を含む任意の文字を、
 hidden YAML と同じ閉じの境界を満たす最初の }%% まで読む。
 条件を満たさない閉じ候補の後に、有効な閉じが続いてもよい。
 これは共通の Directive とは異なり、本文は設定ではない。
-native form が成立しなければ、 native comment へ fallback できる。
+native form が成立しなければ、native comment へ fallback できる。
 [fixture: architecture/hidden-directive-body]
 [fixture: architecture/hidden-directive-nonqualifying-close]
 [fixture: architecture/hidden-directive-close-glued]
@@ -545,7 +545,7 @@ alignments の順に、各種類の内部では記述順に登録する。
 共通のテキスト変換後の ID を大文字小文字を区別して正確に比較する。
 ID の変換に引用符処理、escape 復号、HTML escape、trim は加えない。
 登録済み ID、その種類 group/node、各 node の任意の親 group を保持する。
-`__proto__`、`constructor` も通常の ID であり、 object property として扱わない。
+`__proto__`、`constructor` も通常の ID であり、object property として扱わない。
 [fixture: architecture/db-id-case] [fixture: architecture/db-prototype-ids]
 [fixture: architecture/db-prototype-services]
 [fixture: architecture/lex-id-numeric]
@@ -674,7 +674,7 @@ tokenless-empty-forms ではない。
 [fixture: architecture/db-directions]
 
 [directive-as-token-boundary](../known-divergences/directive-as-token-boundary.md)
-では、 id、icon-name、固定語、double dash 内の global directive を拒否する。
+では、id、icon-name、固定語、double dash 内の global directive を拒否する。
 完全な icon-name や group の語を囲む delimiter は別の構成要素なので、
 その間の directive は許す。
 label/string/共通値の内容にも directive を置ける。
@@ -692,10 +692,10 @@ label/string/共通値の内容にも directive を置ける。
 [fixture: architecture/end-junction-unclosed-directive]
 
 [ignored-semicolon-as-token-boundary](../known-divergences/ignored-semicolon-as-token-boundary.md)
-では、 in や親 id の中の選ばれた semicolon を、断片をつながず拒否する。
+では、in や親 id の中の選ばれた semicolon を、断片をつながず拒否する。
 値の text 内で選ばれた semicolon は共通の読みを維持する。
 [html-tag-in-frontmatter](../known-divergences/html-tag-in-frontmatter.md)
-では、 frontmatter 内で始まった tag により本文へ HTML quote の変換を延長しない。
+では、frontmatter 内で始まった tag により本文へ HTML quote の変換を延長しない。
 その差は受理の両方向、または受理された label の値に現れる。
 [fixture: architecture/div-semicolon-parent-id]
 [fixture: architecture/div-semicolon-in-keyword]
@@ -708,7 +708,7 @@ label/string/共通値の内容にも directive を置ける。
 正しく区切られた frontmatter/directive の内容を受理のために解析しない。
 拒否の原因の data だけを除き、無関係な embedded 値を保つ共通の比較を使う。
 [bare-percent-line-before-header](../known-divergences/bare-percent-line-before-header.md)
-では、 native な読みが空白を拒否する場合も、
+では、native な読みが空白を拒否する場合も、
 通した行と付随する空白を trivia にする。
 残存する形自体の字句規則は維持する。
 [fixture: architecture/div-frontmatter-invalid-yaml]

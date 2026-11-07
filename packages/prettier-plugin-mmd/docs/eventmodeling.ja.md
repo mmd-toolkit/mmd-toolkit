@@ -359,7 +359,7 @@ resetframe 02 command Beta
 
 ### Declarations and notes
 
-コメントや directive で宣言や note の見出しが分かれる場合、 GWT と同じく、
+コメントや directive で宣言や note の見出しが分かれる場合、GWT と同じく、
 trivia と見出しが完結する行をキーワードより 1 段深くします。
 data 本文の規則が margin の変更を許す場合、
 本文はその開始行よりさらに 1 段深くします。
@@ -431,7 +431,7 @@ source-frame の行は新たなトップレベルの文ではありません。
 各 item はさらに 1 段深くします。
 架空の閉じ記号を足さず、書かれた clause と item の関係を見せます。
 必須の given・then、任意の when、item の順序・反復・型語を保ちます。
-普通の item 部品は 1 space で分け、required `title` の境界、 hidden、trivia、
+普通の item 部品は 1 space で分け、required `title` の境界、hidden、trivia、
 保護された opening edge を優先します。
 
 [fixture: eventmodeling/gwt-clauses-and-items/given-when-then-nested]
@@ -472,7 +472,7 @@ tf 01 evt End
 
 ### Inline data
 
-inline body は完全な source span から印字し、波括弧・引用符、 backslash、空白、
+inline body は完全な source span から印字し、波括弧・引用符、backslash、空白、
 空の形、native 風の text を保ちます。
 `singleQuote` では terminal を書き直しません。
 lexer は同じ行の最後の対応する閉じまで読むため、
@@ -748,7 +748,7 @@ tf 01 evt Alpha
 
 ### Accessibility lines
 
-accessibility の行形式は前置空白、keyword と colon の間、 colon 後と末尾の空白、
+accessibility の行形式は前置空白、keyword と colon の間、colon 後と末尾の空白、
 空 payload、引用符、波括弧風の text を保ちます。
 EM_ACC_TITLE と EM_ACC_DESCR はこれらも値に含むためです。
 空 payload でも terminal は空ではなく、colon 形式を block へ変えません。
@@ -812,7 +812,7 @@ eventmodeling accDescr
 ### Hidden forms
 
 IgnoredText は AST の owner ごとに source range から 1 回印字します。
-見出し前・本文、必須・任意の named gap、qualified name の tail、 tag、
+見出し前・本文、必須・任意の named gap、qualified name の tail、tag、
 GWT clause・item の gap を保ちます。
 保持 YAML と native DIRECTIVE を設定として解釈しません。
 共有 hidden 経路が内部の列、消費 LF、閉じの lookahead 空白を保ち、
@@ -1105,7 +1105,7 @@ rf 02 cmd Beta
 見出しや構造部品の後の、害のない外側の ASCII 空白だけを削ります。
 物理行ごとの trim ではなく owner で判断します。
 metadata の値と prefix、許容した margin 変更以外の data 内部、
-comment・directive の末尾、 hidden・data の閉じの境界、保護区間は、
+comment・directive の末尾、hidden・data の閉じの境界、保護区間は、
 空白が内容や受理条件になりうるため保ちます。
 
 [fixture: eventmodeling/trailing-whitespace/harmless-trailing-structure]
@@ -1308,8 +1308,8 @@ eventmodeling accDescr: D
 ### Specified readings
 
 既存の 5 差異、directive-as-token-boundary、
-ignored-semicolon-as-token-boundary、 html-tag-in-frontmatter、
-embedded-data-opaque、 c4-keyword-anywhere に従います。
+ignored-semicolon-as-token-boundary、html-tag-in-frontmatter、
+embedded-data-opaque、c4-keyword-anywhere に従います。
 新しい差異を加えず、拒否入力の atomic cut を修復しません。
 raw 拒否には raw Db がないため、
 必要な比較は記録された specified reading を使います。

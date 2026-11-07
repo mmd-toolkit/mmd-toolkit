@@ -129,9 +129,9 @@ Mermaid は CR 変換後の ASCII の空白・タブ・LF 以外をそこで拒�
 [fixture: gitgraph/lex-reference-common-prefix]
 
 1. キーワードを次の順で試します。
-   `cherry-pick`、`gitGraph:`、`HIGHLIGHT`、`gitGraph`、`checkout`、 `REVERSE`、
-   `parent:`、`commit`、`NORMAL`、`branch`、`order:`、 `switch`、`type:`、
-   `merge`、`msg:`、`tag:`、`id:`、`LR`、`TB`、 `BT`、`:`。
+   `cherry-pick`、`gitGraph:`、`HIGHLIGHT`、`gitGraph`、`checkout`、`REVERSE`、
+   `parent:`、`commit`、`NORMAL`、`branch`、`order:`、`switch`、`type:`、
+   `merge`、`msg:`、`tag:`、`id:`、`LR`、`TB`、`BT`、`:`。
 2. `acc-descr-line` または `acc-descr-block`。
 3. `acc-title-line`。
 4. `title-line`。
@@ -289,7 +289,7 @@ order は符号、先頭の 0、小数、指数、非有限値の語を拒否し
 `title-line` は `title` 単独、または `title`、1 個の ASCII の空白・タブ、
 空でもよい行のテキストを読みます。
 `acc-title-line` は `accTitle`、0 個以上の ASCII の空白・タブ、コロン、
-空でもよい行のテキストを読み、 `acc-descr-line` は `accDescr` で同じ形です。
+空でもよい行のテキストを読み、`acc-descr-line` は `accDescr` で同じ形です。
 行のテキストは最初の `%%` か物理的な行末で終わり、次の行を値に取りません。
 コロンの前の Unicode の空白は拒否します。 [fixture: gitgraph/title-tab]
 [fixture: gitgraph/title-next-line] [fixture: gitgraph/acctitle-next-line]
@@ -300,7 +300,7 @@ order は符号、先頭の 0、小数、指数、非有限値の語を拒否し
 行の値の中の LS・PS、単独の `%`、セミコロン、コロン、引用符、
 逆斜線は通常のテキストです。
 引用符に見えても閉じる必要はありません。
-ブロックの形は `accDescr`、改行や Unicode の区切りを含む共通の空白、 `{`、
+ブロックの形は `accDescr`、改行や Unicode の区切りを含む共通の空白、`{`、
 最初の `}` までの内容を読みます。
 波括弧は入れ子にならず、引用符と逆斜線は閉じを保護しません。
 閉じていないブロックは拒否し、コロンがあれば波括弧の前でも行の形になります。
@@ -395,7 +395,7 @@ YAML の内容は検証しません。 [fixture: gitgraph/lex-yaml-invalid-body]
 隠れた形自体は EOL になりません。
 完了した文と次の文を区切る唯一の LF を消費すると、入力を拒否します。
 追加の LF や、閉じの後の ASCII の空白・タブがあれば、必要な EOL が残ります。
-元の EOF では追加される LF を消費しても、 EOF が EOL を満たします。
+元の EOF では追加される LF を消費しても、EOF が EOL を満たします。
 [fixture: gitgraph/lex-hidden-directive-after-commit]
 [fixture: gitgraph/lex-hidden-directive-commit-spare-lf]
 [fixture: gitgraph/lex-hidden-directive-commit-closing-space]
@@ -526,7 +526,7 @@ cherry-pick の type や裸の message、2 個目の見出し、未対応の res
 `gitGraph.securityLevel` は未設定です。
 ルートの既定値 `securityLevel: strict` は、
 この未設定の gitgraph の値を補いません。
-変換後の値は、 [以下の比較規則](#比較値)で定義します。
+変換後の値は、[以下の比較規則](#比較値)で定義します。
 [fixture: gitgraph/db-duplicate-main]
 [fixture: gitgraph/db-duplicate-converted-branch]
 [fixture: gitgraph/html-all-texts] [fixture: gitgraph/config-security-strict]
@@ -576,7 +576,7 @@ gitgraph の値は、テキストの外のサイト設定では与えられま�
 
 - 初期分岐名が `trunk`、その順序が 5 になります。
   [fixture: gitgraph/config-main-branch]
-- 初期分岐名が空の文字列になり、 `main` に戻しません。
+- 初期分岐名が空の文字列になり、`main` に戻しません。
   [fixture: gitgraph/config-main-empty-name]
 - 初期分岐名がそのままの `<b>main</b>` になり、
   書かれた分岐名や参照名に適用するエスケープを行いません。
@@ -631,8 +631,8 @@ commit・merge の commit id、cherry-pick の元の id と parent id に適用�
 | `\0`       | U+0000、ヌル文字 |
 
 ほかの許される逆斜線の組は、2 文字目だけになります。
-そのため `\q` は q、`\"` は二重引用符、`\'` は一重引用符、
-`\\` は 1 個の逆斜線、`\/` はスラッシュです。
+そのため `\q` は q、`\"` は二重引用符、`\'` は一重引用符、`\\` は 1 個の逆斜線、
+`\/` はスラッシュです。
 16 進・Unicode・8 進のエスケープはありません。
 `\x41` は x41、`\u0041` は u0041 になり、どちらも A にはなりません。
 先の組が作った逆斜線を、もう一度復号しません。
@@ -1007,7 +1007,7 @@ Mermaid が拒否する先頭の不正な YAML は、ここでは受理します
 元の入力への拒否からは Db を得られませんが、
 差異の原因となるブロックや鍵だけを除いた参照入力が受理されると、
 [比較する Db](../known-divergences/embedded-data-opaque.ja.md#比較する-db)
-の規則により、 `specified.json` はその Db と埋め込み値を比較のために記録します。
+の規則により、`specified.json` はその Db と埋め込み値を比較のために記録します。
 この 2 つのフロントマターでは、その Db は初期分岐 `main` だけの空の履歴です。
 [fixture: gitgraph/div-frontmatter-invalid-yaml]
 [fixture: gitgraph/div-frontmatter-html-invalid-yaml]
@@ -1032,7 +1032,7 @@ C4 の語を書かれたまま持てます。
 `C4Component`、`C4Dynamic`、`C4Deployment` により Mermaid が拒否する入力も、
 ここでは受理します。
 Mermaid が受理する入力をこの規則で拒否することはありません。
-後の `C4Context` や、 LF で終わるコメントの対照例は一致します。
+後の `C4Context` や、LF で終わるコメントの対照例は一致します。
 [fixture: gitgraph/div-detect-c4container-id]
 [fixture: gitgraph/div-detect-c4component-branch]
 [fixture: gitgraph/div-detect-c4dynamic-message]

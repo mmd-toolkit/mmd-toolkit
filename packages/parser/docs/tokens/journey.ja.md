@@ -45,14 +45,14 @@
 `task-text` は、コロンの前の空白を含みます（`Make tea  : 3` は、
 `Make tea` と 2 つの空白のトークンを持ちます）。
 `title-text` と `section-text` も保ちます（`title` と、2 つの空白の後の `T` は、
-空白 1 つと `T` のトークンを持ち、 `title T` と 3 つの空白は、
+空白 1 つと `T` のトークンを持ち、`title T` と 3 つの空白は、
 `T` と 3 つの空白のトークンを持ちます）。
 mermaid.js が値をトリムするアクセシビリティのテキスト、つまり `acc-title-text`、
-`acc-description-text`、 `acc-description-block-text` と、
+`acc-description-text`、`acc-description-block-text` と、
 単位が両端に空白を持たない `score`、`person`、`ignored-data` は、
 それを含みません。
 `accTitle: T` と 3 つの空白は、トークン `T` を持ちます。
-`accDescr {`、`line one` の行、`line two` の行、`}` だけの行は、 `line one`、
+`accDescr {`、`line one` の行、`line two` の行、`}` だけの行は、`line one`、
 改行とインデント、`line two` のトークンを持ちます。
 字句解析器がブロックのテキストに読み込む、`}` の前の改行と空白は含みません。
 `A:` の後に U+00A0、`5`、U+00A0、`: Me` が続くスコアは、
@@ -90,7 +90,7 @@ CR や CRLF は、改行と同じくテキストを終わらせます。
 その間の `Directive` トークンを持ちます。
 `A: 5: Me: a %%{init: {}}%%b` の無視されるデータは、
 ディレクティブの前の空白を含む `RawText` トークン `: a` と、`b` を持ちます。
-一方、 `ti%%{init: {}}%%tle T` は拒否されます。
+一方、`ti%%{init: {}}%%tle T` は拒否されます。
 [fixture: journey/lex-directive-after-space-in-ignored-data]
 [fixture: journey/lex-directive-in-task-text]
 [fixture: journey/div-directive-in-title-keyword]

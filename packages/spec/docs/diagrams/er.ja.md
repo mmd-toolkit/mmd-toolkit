@@ -151,8 +151,8 @@ er/lex-direction-value-line-separator] [fixture: er/lex-one-tab]
 文の文脈では、ASCII の外の文字、語の文字、`-`、`*`、
 `.` のいずれかである文字 1 つ以上を、
 できるだけ多く読んだものが `name` の単位です。
-`ÀB-c.d*e`、`_a`、絵文字、`C4Context` は名前で、 `#`、`,`、`;`、`'`、`(`、`)`、
-`[`、`]`、`{`、`}`、`|`、`:`、`=`、`+`、`/`、 `&`、`@`、`$`、`!`、`^`、`` ` ``、
+`ÀB-c.d*e`、`_a`、絵文字、`C4Context` は名前で、`#`、`,`、`;`、`'`、`(`、`)`、
+`[`、`]`、`{`、`}`、`|`、`:`、`=`、`+`、`/`、`&`、`@`、`$`、`!`、`^`、`` ` ``、
 `~`、`?` は名前の文字ではありません。
 名前とそのいずれかを持つ行は、その文字が自分の単位を始めないかぎり、
 `Blo?rf` の `?` がそうであるように拒否されます。
@@ -194,7 +194,7 @@ er/lex-subgraph-comment-line] [fixture: er/tokens-comment-line-in-role-string]
 er/tokens-comment-line-in-backquoted-word]
 文字列を閉じる引用符を持つコメント行は、それを一緒に持っていき、
 文字列は閉じていないことになります。
-`A ||--o{ B : "x`、改行、 `%% c"` は拒否されます。
+`A ||--o{ B : "x`、改行、`%% c"` は拒否されます。
 [fixture: er/lex-comment-line-takes-closing-quote]
 
 ### 単位の中のディレクティブ
@@ -208,8 +208,8 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
 名前の単位を含むそれ以外の単位の中のディレクティブは、入力を拒否させます。
 **名前の単位**は、`name`、`number`、属性ブロックの `word`、`key`、
 および `style` や `classDef` の後の名前かクラスの名前である `style-text` です。
-**テキストの単位**は、`tilde-word`、スタイルの中の `style-text`、 `title-text`、
-`description-text`、`description-block-text`、 `direction-text` です。
+**テキストの単位**は、`tilde-word`、スタイルの中の `style-text`、`title-text`、
+`description-text`、`description-block-text`、`direction-text` です。
 **文字列の単位**は、`quoted-name`、`string`、`comment-string`、
 `backquoted-word` です。
 
@@ -255,7 +255,7 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
   `direction L%%{init: {}}%%R`、`one or %%{init: {}}%%more`、
   `1%%{init: {}}%%+`、`many(%%{init: {}}%%0)`、`|%%{init: {}}%%|`、
   `::%%{init: {}}%%:` では、キーワード、濃度、区切り記号の中にあります。
-  入力は拒否され、 mermaid.js は 2 つの部分を 1 つとして読んで受理します。
+  入力は拒否され、mermaid.js は 2 つの部分を 1 つとして読んで受理します。
   [fixture: er/div-directive-in-name] [fixture: er/div-directive-in-number-name]
   [fixture: er/div-directive-in-decimal-name]
   [fixture: er/div-directive-in-role-name]
@@ -332,11 +332,11 @@ er/tokens-unclosed-directive-after-classdef] [fixture:
 er/tokens-unclosed-directive-in-block]
 キーワードとその続きの間のコメント行は、
 字句解析器がテキストを読む前に取り除かれます。
-`accTitle:`、コメント行、`T` はタイトル `T` を持ち、 `accDescr:` でも、
+`accTitle:`、コメント行、`T` はタイトル `T` を持ち、`accDescr:` でも、
 `direction` とその値でも同じです。
 空白文字の続く `classDef a fill:red`、コメント行、`A` は `fill:redA` を定義し、
-`subgraph 1`、コメント行、`A` はコメント行がないときと同じく拒否され、 `end`、
-コメント行、`B` は受理され、 `accDescr {`、コメント行、
+`subgraph 1`、コメント行、`A` はコメント行がないときと同じく拒否され、`end`、
+コメント行、`B` は受理され、`accDescr {`、コメント行、
 `D }` は説明 `D` を持ちます。
 [fixture: er/tokens-comment-line-after-acc-title-colon] [fixture:
 er/tokens-comment-line-after-acc-descr-colon] [fixture:
@@ -373,7 +373,7 @@ er/tokens-comment-line-after-acc-descr-brace]
    `"A B"`、`"A#B"`、`"<b>A</b>"` は引用符付きの名前です。
    `""` は引用符付きの名前ではなく空の `string`（規則 8）で、
    どの実体の名前もそれを取りません。
-   `%`、改行、U+000B、U+0008、 `\` を中に持つ文字列も同じです。
+   `%`、改行、U+000B、U+0008、`\` を中に持つ文字列も同じです。
    [fixture: er/lex-quoted-name] [fixture: er/lex-quoted-name-hash] [fixture:
    er/lex-quoted-name-html] [fixture: er/spec-er-diagram-f4c59d78] [fixture:
    er/spec-er-diagram-c0a2be45] [fixture: er/spec-er-diagram-20d6ae6a]
@@ -402,7 +402,7 @@ er/tokens-comment-line-after-acc-descr-brace]
 20. キーワード `subgraph`: `subgraph` の単位。 [fixture: er/gram-subgraph]
 21. キーワード `end` と、改行を含む 0 個以上の空白文字: `end` の単位。
     [fixture: er/gram-subgraph] [fixture: er/lex-end-blank-line-then-name]
-22. **濃度**、**数**、 **関係の線**（後述）。
+22. **濃度**、**数**、**関係の線**（後述）。
     [fixture: er/gram-relationship-symbols]
 23. 名前（[名前](#単位と文脈) を参照）。
     [fixture: er/lex-name-unicode-characters]
@@ -411,7 +411,7 @@ er/tokens-comment-line-after-acc-descr-brace]
 単位 `#`、`invalid`、ロールが読まれないところの `string`、
 文法が取らないところの `newline` は、文法のどの規則も取らないので、
 それらを持つ入力は拒否されます。
-`A # c`、`A 'x'`、閉じる引用符のない `"A` と `A ||--o{ B : "x`、 `A`、改行、
+`A # c`、`A 'x'`、閉じる引用符のない `"A` と `A ||--o{ B : "x`、`A`、改行、
 `||--o{ B : x` は拒否されます。 [fixture: er/lex-hash-after-name]
 [fixture: er/lex-single-quote] [fixture:
 er/lex-quoted-name-unclosed] [fixture: er/lex-role-string-unclosed] [fixture:
@@ -422,7 +422,7 @@ er/lex-relationship-spec-next-line]
   名前はキーワードで始められません。
   `end` だけ、`many` だけ、`1+` だけは拒否され、ロール `one`、`to`、
   `end` も拒否されます。
-  `ending`、`ones`、`tomato`、`manyx`、`classes`、 `styles` は名前です。
+  `ending`、`ones`、`tomato`、`manyx`、`classes`、`styles` は名前です。
   [fixture: er/gram-end-alone] [fixture: er/lex-many-alone] [fixture:
   er/lex-one-plus-alone] [fixture: er/lex-role-keyword-one] [fixture:
   er/lex-role-keyword-to] [fixture: er/lex-role-keyword-end] [fixture:
@@ -431,7 +431,7 @@ er/lex-relationship-spec-next-line]
   er/lex-keyword-class-prefix] [fixture: er/lex-keyword-style-prefix]
   `classDefa fill:red`、`classA a`、`styleA fill:red` はキーワードを持ちません。
   1 つ目は名前 `classDefa` と `fill` と `:` で拒否され、
-  2 つ目は 2 つの名前 `classA` と `a` で、 3 つ目は拒否されます。
+  2 つ目は 2 つの名前 `classA` と `a` で、3 つ目は拒否されます。
   [fixture: er/lex-classdef-no-whitespace] [fixture:
   er/lex-class-no-whitespace] [fixture: er/lex-style-no-whitespace]
 - `end` の単位はその後の空白を改行ごと読むので、
@@ -456,7 +456,7 @@ er/lex-relationship-spec-next-line]
   er/lex-semicolon-after-role]
 - 関係の外の `:` は拒否され、
   前に名前がないか後ろにクラスがない `:::` も拒否されます。
-  `A : x`、`:::c`、`A:::`、 `A:::c:::d` は拒否されます。
+  `A : x`、`:::c`、`A:::`、`A:::c:::d` は拒否されます。
   [fixture: er/gram-colon-after-name] [fixture: er/gram-class-separator-alone]
   [fixture: er/gram-class-separator-without-class] [fixture:
   er/gram-two-class-separators]
@@ -487,7 +487,7 @@ er/lex-relationship-spec-next-line]
 `direction`、`accTitle`、`accDescr` の規則は、
 語の後に空白か `:` か `{` を要します。
 `directionx LR`、`direction1 LR`、`direction-LR`、および単独の `direction`、
-`accTitle`、`accDescr` は名前で、 `direction: LR`、`accTitle1: T`、
+`accTitle`、`accDescr` は名前で、`direction: LR`、`accTitle1: T`、
 `accTitle-: T`、`accTitle {T}` は拒否されます。
 複数の語からなるキーワードは、語の間にちょうど 1 つの空白文字を持ちます。
 空白文字 2 つの `A only  one to one B : x` は実体 `only` から B への関係で、
@@ -567,13 +567,13 @@ er/lex-md-parent-upper-case-dash-dot]
 
 1. キーワード `one or zero`: `zero-or-one`。
    [fixture: er/lex-cardinality-only-one-optionally-to]
-2. キーワード `one or more`、キーワード `one or many`、 `1+`: `one-or-more`。
+2. キーワード `one or more`、キーワード `one or many`、`1+`: `one-or-more`。
    [fixture: er/lex-cardinality-words] [fixture: er/lex-cardinality-one-or-many]
    [fixture: er/lex-cardinality-plus]
 3. 語の文字が続かない `|o`: `zero-or-one`。 [fixture: er/lex-line-dot-dash]
    [fixture: er/lex-pipe-o-glued-left]
 4. キーワード `zero or one`: `zero-or-one`。 [fixture: er/lex-cardinality-words]
-5. キーワード `zero or more`、キーワード `zero or many`、 `0+`: `zero-or-more`。
+5. キーワード `zero or more`、キーワード `zero or many`、`0+`: `zero-or-more`。
    [fixture: er/lex-cardinality-one-or-many] [fixture: er/lex-cardinality-plus]
    [fixture: er/docs-syntax-entity-relationship-diagram-fff06d91]
 6. 語の文字が続かない `}o`: `zero-or-more`。
@@ -586,12 +586,12 @@ er/lex-md-parent-upper-case-dash-dot]
 9. キーワード `one` かキーワード `only one`: `only-one`。
    [fixture: er/lex-cardinality-many-zero] [fixture:
    er/lex-cardinality-only-one-optionally-to]
-10. 1 つ以上の ASCII の数字、`.`、 1 つ以上の ASCII の数字: `number`。
+10. 1 つ以上の ASCII の数字、`.`、1 つ以上の ASCII の数字: `number`。
     [fixture: er/lex-name-decimal]
 11. 後ろに、改行を含む 1 つ以上の空白文字と、ASCII の文字、`_`、`"`、
     `'` のいずれかが続く `1`。
     または、改行を含む 1 つ以上の空白文字と ASCII の数字が続く `1`。
-    または、直後に `--`、`..`、`.-`、 `-.` のいずれかが続く `1`: `only-one`。
+    または、直後に `--`、`..`、`.-`、`-.` のいずれかが続く `1`: `only-one`。
     [fixture: er/lex-one-digit-cardinalities] [fixture:
     er/spec-er-diagram-155d18bb] [fixture: er/spec-er-diagram-92625f77]
     [fixture: er/spec-er-diagram-4fd0ae58] [fixture:
@@ -604,7 +604,7 @@ er/lex-md-parent-upper-case-dash-dot]
     `o{`: `zero-or-more`。
     `|{`: `one-or-more`。 [fixture: er/gram-relationship-symbols]
     [fixture: er/lex-line-dash-dot] [fixture: er/lex-only-one-symbols]
-15. 後ろに `.`、`-`、 `|` のいずれかが続く `u`: `md-parent`。
+15. 後ろに `.`、`-`、`|` のいずれかが続く `u`: `md-parent`。
     [fixture: er/lex-md-parent]
 16. `..`: `non-identifying`。
     `--`: `identifying`。
@@ -617,8 +617,8 @@ er/lex-md-parent-upper-case-dash-dot]
     [fixture: er/lex-line-dash-dot] [fixture: er/lex-optionally-to-upper-case]
 
 関係の 3 つの単位の間と周りに空白は要らず、あってもかまいません。
-`A||--o{B:has` と `A || -- o{ B : has` は同じ関係で、 `A ||to|| B : x`、
-`A one--one B : x`、`A 1+--0+ B : x`、 `A many(0)--many(1) B : x`、
+`A||--o{B:has` と `A || -- o{ B : has` は同じ関係で、`A ||to|| B : x`、
+`A one--one B : x`、`A 1+--0+ B : x`、`A many(0)--many(1) B : x`、
 `A one or more--one B : x` も同じです。
 `A one or zero--|| B : x` や `A ||--only one B : x` のように、
 語のつづりと記号のつづりは混ぜられます。
@@ -636,7 +636,7 @@ er/lex-cardinality-symbol-then-word]
   名前の前の `|o` や `}o` が濃度ではないからです。
   `1+`、`0+`、`many(0)`、`many(1)` の後には名前が続けられます。
   `A 1+--0+x : x` と `A many(0)--many(1)x : x` は実体 `x` を持ちます。
-  キーワード `to` はそうではなく、 `A ||tox|| B : x` は拒否されます。
+  キーワード `to` はそうではなく、`A ||tox|| B : x` は拒否されます。
   [fixture: er/lex-pipe-o-glued-left] [fixture: er/lex-o-brace-glued-letter]
   [fixture: er/lex-brace-pipe-glued] [fixture: er/lex-pipe-o-glued-letter]
   [fixture: er/lex-pipe-o-glued-digit] [fixture: er/lex-brace-o-glued-letter]
@@ -651,9 +651,9 @@ er/lex-cardinality-symbol-then-word]
   `A u--u-B : x` は両端がそれです。
   `A u --o{ B : x` は名前 `u` を持って拒否され、`u` だけは実体 `u` で、
   `Au--o{ B : x` は名前 `Au` を持って拒否され、
-  `u--o{ B : x` は濃度の前に実体がなく拒否され、 `A u|--o{ B : x`、
-  `A ||--u B : x`、 `A ||--u| B : x` は拒否されます。
-  [fixture: er/lex-md-parent] [fixture: er/lex-md-parent-dots] [fixture:
+  `u--o{ B : x` は濃度の前に実体がなく拒否され、`A u|--o{ B : x`、
+  `A ||--u B : x`、`A ||--u| B : x` は拒否されます。 [fixture: er/lex-md-parent]
+  [fixture: er/lex-md-parent-dots] [fixture:
   er/lex-md-parent-upper-case] [fixture: er/lex-md-parent-right-glued-name]
   [fixture: er/lex-md-parent-right-glued-dot] [fixture:
   er/lex-md-parent-both-glued] [fixture: er/lex-u-then-space] [fixture:
@@ -661,7 +661,7 @@ er/lex-cardinality-symbol-then-word]
   er/gram-md-parent-without-left] [fixture: er/lex-md-parent-pipe] [fixture:
   er/lex-md-parent-right] [fixture: er/lex-md-parent-right-pipe]
 - 名前は `o` で始められますが、`o{` は濃度です。
-  属性が続く `o{` は拒否され、 `o {` は実体 `o` とその属性です。
+  属性が続く `o{` は拒否され、`o {` は実体 `o` とその属性です。
   [fixture: er/lex-name-o-then-block] [fixture: er/lex-name-o-space-block]
 - 規則 11 は、文が始まるところでも `1` を `only-one` として読みます。
   `1 A` と `1 12` は拒否され、濃度の前に実体のない `1--1 B : x` も拒否され、
@@ -688,7 +688,7 @@ er/lex-cardinality-symbol-then-word]
 - 数は名前が始まるところで終わります。
   `1a` は 2 つの実体 `1` と `a`、`12a` は実体 `12` と `a`、
   `2.5x` は実体 `2.5` と `x`、`12.` は実体 `12` と `.` です。
-  `12`、`2.5`、 `1` は実体です。 [fixture: er/lex-name-number-then-letter]
+  `12`、`2.5`、`1` は実体です。 [fixture: er/lex-name-number-then-letter]
   [fixture:
   er/lex-name-number2-then-letter] [fixture:
   er/lex-name-decimal-then-letter] [fixture: er/lex-name-number-then-dot]
@@ -784,7 +784,7 @@ er/lex-direction-without-value] [fixture: er/lex-direction-at-end]
    er/gram-block-blank-lines]
 2. 大文字小文字を区別せずに照合した `PK`、`FK`、`UK` で、
    後ろに語の文字がないもの: `key` の単位。
-   `pk` はキーで、 `PKx` は語です。 [fixture: er/gram-keys-comma-space]
+   `pk` はキーで、`PKx` は語です。 [fixture: er/gram-keys-comma-space]
    [fixture: er/lex-key-lower-case] [fixture: er/lex-key-prefix-word]
    [fixture: er/lex-key-line-separator-after]
 3. **チルダの語**。
@@ -799,7 +799,7 @@ er/lex-direction-without-value] [fixture: er/lex-direction-at-end]
    `List~int~ Map~k~ x` は 1 つの型 `List~int~ Map~k~` と名前 `x`、
    `int~x~a b` の型は `int~x~a` です。
    `a~b c` は `~` を 1 つしか持たず拒否され、
-   `List~int~ Map~k~` だけは型を持って名前を持たず拒否され、 `List~a`、U+2028、
+   `List~int~ Map~k~` だけは型を持って名前を持たず拒否され、`List~a`、U+2028、
    `b~ c` は、区分が U+2028 で終わるので拒否されます。
    この規則はコメントとバッククォートの語の規則より前に来るので、
    `string a "x~y" List~int~ b` は 2 つ目の型 `"x~y" List~int~` を持ち、
@@ -814,7 +814,7 @@ er/lex-direction-without-value] [fixture: er/lex-direction-at-end]
    `A { int x~y } B { z~w }` は `x~y } B { z~w` という名前の属性を持つ実体 A
    です。
    `A {` と行 `List~int~}` は、チルダの語が `}` を取るので拒否されます。
-   `List~int~ a` の行の次の行に `}` があれば、 `}` は語の外です。
+   `List~int~ a` の行の次の行に `}` があれば、`}` は語の外です。
    [fixture: er/lex-tilde-across-close-brace] [fixture:
    er/lex-tilde-across-close-brace-name] [fixture:
    er/lex-tilde-before-close-brace-glued] [fixture:
@@ -832,17 +832,17 @@ er/lex-direction-without-value] [fixture: er/lex-direction-at-end]
 4. **語**。
    最初の文字が `*`、ASCII の文字、`_`、
    または U+00C0 以降の文字（基本多言語面の外の文字を含む）で、その後に、
-   ASCII の文字、ASCII の数字、`-`、`_`、`[`、`]`、`(`、`)`、`.`、 `,`、 `*`、
+   ASCII の文字、ASCII の数字、`-`、`_`、`[`、`]`、`(`、`)`、`.`、`,`、`*`、
    U+00C0 以降の文字のいずれかである文字が 0 個以上続くもの: `word` の単位。
    `string[]`、`decimal(10,2)`、`a.b`、`*a`、`_a`、`a-b`、`a,b`、`a1`、`é`、
    絵文字は語で、`end` も語です。
    `0a`、`[a`、`)a`、`]a`、`-a`、`©`、`a#b` は語ではありません。
    最初の 5 つは続きにしか置けない文字で始まり、
-   `©` は U+00C0 より下の U+00A9で、 `#` は語の文字ではないからです。
+   `©` は U+00C0 より下の U+00A9で、`#` は語の文字ではないからです。
    U+00C0 以降の空白文字、U+2028、U+3000、U+FEFF などは、
    最初の文字の後では語の文字です。
    `string`、U+2028、`a` は 1 つの語で、`str`、U+FEFF、`ing` も同じですが、
-   `str`、U+00A0、 `ing` は 2 つの語です。 [fixture: er/lex-word-brackets]
+   `str`、U+00A0、`ing` は 2 つの語です。 [fixture: er/lex-word-brackets]
    [fixture: er/lex-word-parentheses] [fixture:
    er/lex-word-dot] [fixture: er/lex-word-star]
    [fixture: er/lex-word-underscore] [fixture: er/lex-word-dash]
@@ -858,7 +858,7 @@ er/lex-direction-without-value] [fixture: er/lex-direction-at-end]
 5. `` ` ``、改行を含む `` ` `` 以外の文字 1 つ以上、
    `` ` ``: `backquoted-word` の単位。
    バッククォートを含みます。
-   そのため `` `a b` c `` の型は `a b` で、 `` `a``、改行、
+   そのため `` `a b` c `` の型は `a b` で、`` `a``、改行、
    ``b` c`` の型は改行を含みます。
    `` `a"b` `` は `"` を含みます。
    間に何もない 2 つのバッククォートは `empty-backquotes` の単位で、
@@ -890,7 +890,7 @@ er/lex-direction-without-value] [fixture: er/lex-direction-at-end]
    er/lex-block-brace] [fixture: er/lex-tilde-single]
 
 文の文脈の規則はここでは試されません。
-`{` の後の `end`、`direction LR`、`accDescr { x }` は語なので、 `end a` は属性、
+`{` の後の `end`、`direction LR`、`accDescr { x }` は語なので、`end a` は属性、
 `direction LR` は型 `direction` の属性で、
 `accDescr { x }` はその `{` で拒否されます。 [fixture: er/lex-block-keyword-end]
 [fixture: er/lex-direction-in-block] [fixture: er/lex-block-acc-descr]
@@ -979,7 +979,7 @@ style の文脈には `accDescr {` の規則がなく、
 改行を含めて `:` の単位と一緒に読まれるので（文の文脈の規則 1 と 2）、
 テキストは空白でない最初の文字から始まり、それは後の行にあってもよく、
 テキストが続くところでは単位が空になることはありません。
-`accTitle:`、改行、`T` はタイトル `T` を持ち、 `accTitle:`、空行、
+`accTitle:`、改行、`T` はタイトル `T` を持ち、`accTitle:`、空行、
 `A` はタイトル `A` を持って実体を持ちません。
 テキストの終わりでは入力は拒否されます。
 `accTitle:` は、後ろに空白文字や改行があっても拒否され、
@@ -1015,7 +1015,7 @@ er/db-acc-title-trailing-space] [fixture: er/lex-acc-title-trailing-nbsp]
 `accDescr { a {b }` は説明 `a {b`、`accDescr { D   }` は説明 `D`、
 `accDescr { direction LR }` は説明 `direction LR` を持ちます。
 テキストはこの文脈では終われません。
-`accDescr {`、`accDescr { D`、 `accDescr { D` と行 `A` は拒否されます。
+`accDescr {`、`accDescr { D`、`accDescr { D` と行 `A` は拒否されます。
 [fixture: er/gram-acc-descr-block] [fixture:
 er/gram-acc-descr-block-multiline] [fixture: er/gram-acc-descr-block-empty]
 [fixture: er/gram-acc-descr-block-empty-space] [fixture:
@@ -1031,7 +1031,7 @@ er/lex-acc-descr-block-unclosed]
 [fixture: er/lex-acc-descr-block-unclosed-lines]
 
 これらの文脈に入る規則は文の文脈の規則だけです。
-属性ブロックと style の文脈では、 `accTitle` と `accDescr` は語です。
+属性ブロックと style の文脈では、`accTitle` と `accDescr` は語です。
 [fixture: er/lex-block-acc-descr]
 [fixture: er/lex-classdef-empty-description-block]
 [属性ブロックの文脈](#属性ブロックの文脈) と、
@@ -1146,8 +1146,8 @@ er/lex-name-number] [fixture: er/lex-name-decimal] [fixture: er/lex-name-one]
   `p[]` と `p[A B]` は拒否されます。
   別名はクラスより前に来て、別名付きの実体はその行で関係を取りません。
   `A:::c[P]`、`p[P] ||--o{ B : x`、`p[P]:::c ||--o{ B : x`、
-  `A ||--o{ p[P] : x`、`A:::c ||--o{ p[P] : x` は拒否され、 `p[P]:::c`、
-  `p[P] { … }`、`p[P]:::c { … }`、 `p[P]:::c {}` は受理されます。
+  `A ||--o{ p[P] : x`、`A:::c ||--o{ p[P] : x` は拒否され、`p[P]:::c`、
+  `p[P] { … }`、`p[P]:::c { … }`、`p[P]:::c {}` は受理されます。
   [fixture: er/gram-alias] [fixture: er/gram-alias-spaces] [fixture:
   er/gram-alias-string] [fixture: er/gram-alias-number] [fixture:
   er/gram-alias-one] [fixture: er/gram-alias-string-name] [fixture:
@@ -1161,8 +1161,8 @@ er/lex-name-number] [fixture: er/lex-name-decimal] [fixture: er/lex-name-one]
   er/gram-alias-class-block] [fixture: er/gram-alias-class-empty-block]
 - `:::` の後のクラスは `,` で区切った名前で、
   `:::` と `,` の周りに空白があってもなくてもかまいません。
-  `A:::c1,c2`、`A ::: c, d`、`A:::é,b-c` は受理され、 `A:::`、`A:::c,`、
-  `A:::12`、`A:::"c"`、 `A:::c:::d` は拒否されます。
+  `A:::c1,c2`、`A ::: c, d`、`A:::é,b-c` は受理され、`A:::`、`A:::c,`、
+  `A:::12`、`A:::"c"`、`A:::c:::d` は拒否されます。
   [fixture: er/gram-entity-classes] [fixture:
   er/lex-class-separator-spaces-then-names] [fixture:
   er/lex-class-list-unicode] [fixture: er/gram-class-separator-without-class]
@@ -1247,7 +1247,7 @@ er/gram-attributes-keys-comment]
   [fixture: er/gram-comment-two] [fixture:
   er/gram-comment-then-key-next-line] [fixture:
   er/lex-comment-glued-next-attribute]
-- mermaid.js がトークンを読まない `empty-backquotes` の単位は、 2 つの属性の間、
+- mermaid.js がトークンを読まない `empty-backquotes` の単位は、2 つの属性の間、
   最初の属性の前、最後の属性の後、ブロックに 1つだけにあるときブロックの項目で、
   入力は受理されます。
   `int a` と 2 つのバッククォートと `string b`、2 つのバッククォートと `int a`、
@@ -1324,11 +1324,10 @@ er/lex-double-colon] [fixture: er/lex-role-number] [fixture: er/lex-role-one]
 er/gram-role-string-then-name] [fixture: er/lex-role-string-glued-name]
 [fixture: er/lex-role-then-keyword]
 関係の 3 つの単位とロールは、最初の実体の後の行には置けません。
-`A`、改行、`||--o{ B : x` と、`A ||--o{ B :`、改行、 `x` は拒否されます。
+`A`、改行、`||--o{ B : x` と、`A ||--o{ B :`、改行、`x` は拒否されます。
 [fixture: er/lex-relationship-spec-next-line] [fixture: er/lex-role-next-line]
 端は、文より前か後に定義された subgraph の名前を持てます。
-そのとき mermaid.js が関係をどこに向けるかは、
-tests パッケージの要約にあります。
+そのとき mermaid.js が関係をどこに向けるかは、tests パッケージの要約にあります。
 [fixture: er/db-relationship-to-subgraph-after] [fixture:
 er/db-relationship-to-subgraph-before]
 
@@ -1346,8 +1345,8 @@ subgraph の文は、`subgraph`、実体の名前、`[` と `]` のタイトル�
 タイトルは 1 つ以上の実体の名前で、間に空白があってもなくてもかまいません。
 `["T 1" x]`、`["a"b]`、`[a"b"]`、`[12 3.5]`、`[1]`、`[a b c]` はタイトルで、
 mermaid.js は名前を 1 つの空白文字でつなぎます。
-`subgraph S []`、`subgraph S [T] x`、`subgraph S [T:::c]`、 `subgraph S ["T`、
-改行、`1"]`、 `subgraph S ["T"]x` は拒否されます。 [fixture: er/gram-subgraph]
+`subgraph S []`、`subgraph S [T] x`、`subgraph S [T:::c]`、`subgraph S ["T`、
+改行、`1"]`、`subgraph S ["T"]x` は拒否されます。 [fixture: er/gram-subgraph]
 [fixture: er/gram-subgraph-title] [fixture:
 er/lex-subgraph-title-no-space] [fixture: er/gram-subgraph-string-id] [fixture:
 er/gram-subgraph-string-id-title] [fixture: er/gram-subgraph-number-id]
@@ -1390,7 +1389,7 @@ er/lex-subgraph-title-then-string-glued]
   `A` とテキストの終わりが続く `subgraph S`、`subgraph S` だけ、
   テキストの終わりに改行の付いた `subgraph S`、
   閉じた subgraph の後や単独の `end` は拒否され、`subgraph S` と行 `A end`、
-  `subgraph O`、`subgraph I`、`A`、 `end end` は受理されます。
+  `subgraph O`、`subgraph I`、`A`、`end end` は受理されます。
   [fixture: er/gram-subgraph-nested] [fixture: er/gram-subgraph-relationship]
   [fixture: er/gram-subgraph-alias-inside] [fixture:
   er/db-subgraph-classdef-inside] [fixture: er/db-subgraph-class-inside]
@@ -1442,7 +1441,7 @@ mermaid.js はそれにトークンを読みません。
 `A:::c accDescr {} B`、`A ||--o{ B : x accDescr {}`、
 `A ||--o{ B : "x" accDescr {}`、`A ||--o{ B : x accDescr {} C`、
 `accDescr {}accDescr {}`、subgraph の中の `accDescr {} A`、`A accDescr {} end`、
-`accDescr {} end`、 `end accDescr {}` は受理されます。
+`accDescr {} end`、`end accDescr {}` は受理されます。
 subgraph の名前かタイトルの後、改行の前のブロックは本体の最初の文です。
 行の `direction LR` の後のブロックは方向の行のテキストの一部で、
 `accTitle:` の後のブロックはタイトルの一部です。
@@ -1479,15 +1478,15 @@ er/lex-acc-title-empty-description-block]
 そのため `A accDescr {} ||--o{ B : x`、`A accDescr {}||--o{ B : x`、
 `A:::c accDescr {} ||--o{ B : x`、`A accDescr {} :::c`、`A accDescr {} {`、
 `A accDescr {} [P]`、`A ||--o{ accDescr {} B : x`、
-`A ||--o{ B accDescr {} : x`、 `A ||--o{ B : accDescr {} x`、
-`class A accDescr {} a`、`A[accDescr {} P]`、 `A[P accDescr {}]`、
-`A ::: accDescr {} c`、`A:::c, accDescr {} d`、 `A:::c accDescr {} , d`、
-`A[P] accDescr {} :::c`、 `A ||--o{ B:::c accDescr {} : x`、
-`subgraph accDescr {} S`、 `subgraph S accDescr {} [T]`、
-`subgraph S [accDescr {} T]`、 `subgraph S [T accDescr {}]`、
-`class A, accDescr {} B a`、 `class A a accDescr {} , b`、
-`class accDescr {} A a`、 `subgraph S [T accDescr {} U]`、 `A accDescr {`、
-改行、`} ||--o{ B : x` は拒否され、 `A accDescr {}` と行 `{` も拒否されます。
+`A ||--o{ B accDescr {} : x`、`A ||--o{ B : accDescr {} x`、
+`class A accDescr {} a`、`A[accDescr {} P]`、`A[P accDescr {}]`、
+`A ::: accDescr {} c`、`A:::c, accDescr {} d`、`A:::c accDescr {} , d`、
+`A[P] accDescr {} :::c`、`A ||--o{ B:::c accDescr {} : x`、
+`subgraph accDescr {} S`、`subgraph S accDescr {} [T]`、
+`subgraph S [accDescr {} T]`、`subgraph S [T accDescr {}]`、
+`class A, accDescr {} B a`、`class A a accDescr {} , b`、
+`class accDescr {} A a`、`subgraph S [T accDescr {} U]`、`A accDescr {`、改行、
+`} ||--o{ B : x` は拒否され、`A accDescr {}` と行 `{` も拒否されます。
 後者は mermaid.js も拒否します。
 style の文脈と属性ブロックでは `accDescr` は語で、
 `{` は拒否されます（[style の文脈](#style-の文脈) を参照）。
@@ -1559,14 +1558,14 @@ accessibility-statement = "accTitle" ":" title-text
   [ErLiteral](../ast/er.ja.md#erliteral) を参照してください。
   そのため `classDef a fill : #f9f` は `fill:#f9f` を定義し、
   `classDef a fill:red stroke:blue` は 1 つのスタイル `fill:redstroke:blue`
-  を定義し、 `classDef a fill:red , stroke:blue` は 2 つを定義します。
+  を定義し、`classDef a fill:red , stroke:blue` は 2 つを定義します。
   `classDef a,b fill:red`、`classDef a, b fill:red`、
-  `classDef default fill:red`、 `classDef a 1`、`classDef a #`、`classDef a :`、
-  `classDef a *:red`、 `classDef end fill:red`、
+  `classDef default fill:red`、`classDef a 1`、`classDef a #`、`classDef a :`、
+  `classDef a *:red`、`classDef end fill:red`、
   および A と `fill` に `:red` を与える `style A, fill:red` は受理されます。
   `classDef a`、`classDef a` と行 `fill:red`、`style A`、
-  `classDef a fill:red,`、 `classDef a fill:red,,stroke:blue`、
-  `style ,A fill:red`、 `style A,,B fill:red` は拒否されます。
+  `classDef a fill:red,`、`classDef a fill:red,,stroke:blue`、
+  `style ,A fill:red`、`style A,,B fill:red` は拒否されます。
   [fixture: er/gram-classdef] [fixture: er/lex-classdef-style-spaces] [fixture:
   er/lex-classdef-styles-joined] [fixture: er/lex-style-styles-joined]
   [fixture: er/lex-classdef-comma-spaces] [fixture: er/gram-classdef-two-names]
@@ -1590,7 +1589,7 @@ accessibility-statement = "accTitle" ":" title-text
   1 つ目の一覧は `,` が前にない最初の名前で終わり、
   2 つ目は `,` でも名前でもない次の単位で終わります。
   `class A a`、`class A,B a,b`、`class A , B a`、
-  後ろに実体 `b` を持つ `class A a b`、 `class A a,b c` は受理されます。
+  後ろに実体 `b` を持つ `class A a b`、`class A a,b c` は受理されます。
   `class A`、`class A` と行 `B`、`class A, a`、`class 12 a`、`class "A" a`、
   `class A end` は拒否されます。 [fixture: er/gram-class]
   [fixture: er/gram-class-two-lists] [fixture: er/lex-class-list-comma-spaces]
@@ -1603,7 +1602,7 @@ accessibility-statement = "accTitle" ":" title-text
   [fixture: er/lex-class-unicode]
 - アクセシビリティの文はタイトルか説明を設定し、どちらも、行でもブロックでも、
   空のブロックでも、何度書いてもかまいません。
-  mermaid.js がそれらを Db にどう読むかは、 tests パッケージの要約にあります。
+  mermaid.js がそれらを Db にどう読むかは、tests パッケージの要約にあります。
   [fixture: er/gram-acc-title] [fixture: er/gram-acc-descr] [fixture:
   er/gram-acc-descr-block] [fixture: er/db-acc-title-twice] [fixture:
   er/db-acc-descr-twice] [fixture: er/db-acc-descr-then-block] [fixture:
@@ -1623,7 +1622,7 @@ accessibility-statement = "accTitle" ":" title-text
   mermaid.js は受理します（[単位の中のディレクティブ](#単位の中のディレクティブ)
   を参照）。
   名前、数、属性ブロックの語やキー、`style` の後の名前、キーワード、濃度、
-  関係の線、 `:::`、`[` の中です。 [fixture: er/div-directive-in-name] [fixture:
+  関係の線、`:::`、`[` の中です。 [fixture: er/div-directive-in-name] [fixture:
   er/div-directive-in-number-name] [fixture:
   er/div-directive-in-attribute-word] [fixture: er/div-directive-in-key]
   [fixture: er/div-directive-in-style-id] [fixture:
@@ -1634,10 +1633,10 @@ accessibility-statement = "accTitle" ":" title-text
 - **[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.ja.md)。**
   `style` の規則か `classDef` の規則に合う行で、
   テキストの単位と文字列の単位以外の単位の中にある無視される `;` は、
-  ここでは入力を拒否させ、 mermaid.js は `;` を除いて両側を 1 つとして読みます。
+  ここでは入力を拒否させ、mermaid.js は `;` を除いて両側を 1 つとして読みます。
   規則が探す `style`、`:`、`#` は、その行の `;` より前のどこにあってもよく、
   実体 `Bstyle` の後のロール `:"#"` や属性のコメント `"c:#"` でも足ります。
-  `A ||--o{ Bstyle :"#" C;D` は mermaid.js では実体 `CD`、 `1;2` は実体 `12`、
+  `A ||--o{ Bstyle :"#" C;D` は mermaid.js では実体 `CD`、`1;2` は実体 `12`、
   `1.;5` は実体 `1.5`、`|;|--o{` は濃度、
   `on;e or more` と `su;bgraph` はキーワード、`||-;-o{` は関係の線、
   `C::;:c` はクラスの `:::`、

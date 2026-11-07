@@ -180,7 +180,7 @@ ishikawa
 [fixture: ishikawa/blank-lines/terminal-comment-complete-gap]
 
 空白だけの行は空行ですが、埋め込まれた結合や directive 内は保ちます。
-仕様上の空行とコメントの差異は、 Mermaid の組合せを修復せず整形します。
+仕様上の空行とコメントの差異は、Mermaid の組合せを修復せず整形します。
 [fixture: ishikawa/blank-lines/blank-comment-div]
 [fixture: ishikawa/blank-lines/blank-header-div]
 [corpus fixture: ishikawa/div-beta-header-trailing-space-node]
@@ -321,7 +321,7 @@ ishikawa/standalone-directives/header-touching-prefix-spaced-directive]
 [fixture: ishikawa/standalone-directives/directive-header-separated]
 [corpus fixture: ishikawa/div-header-space-directive-node]
 
-閉じたもの、複数行のもの、単語の引数、 EOF までのものも境界を保ちます。
+閉じたもの、複数行のもの、単語の引数、EOF までのものも境界を保ちます。
 [fixture: ishikawa/standalone-directives/directive-open-eof]
 
 入力（escape 表記）:
@@ -518,7 +518,7 @@ Ishikawa の節点を分ける semicolon はありません。
 共有の区間保持機構で最後の semicolon までの接頭部を保ち、交差する literal、
 コメント、directive は全体を含めます。
 末尾を二重に印字しません。
-外側の字下げは printer の空白ですが、 literal の末尾の文字は保ちます。
+外側の字下げは printer の空白ですが、literal の末尾の文字は保ちます。
 [fixture: ishikawa/line-rule-and-kept-lines/line-rule-kept]
 [fixture: ishikawa/line-rule-and-kept-lines/line-rule-double-pass]
 [fixture: ishikawa/line-rule-and-kept-lines/line-rule-directive-trigger]
@@ -839,7 +839,7 @@ ishikawa
 拒否される裸の見出しを、改行の追加で救済しません。
 最後の図コメントの隙間全体と EOF までの開いた directive は、
 書かれた終わりを保ちます。
-末尾の literal の余白は、 Trailing whitespace に従い保ちます。
+末尾の literal の余白は、Trailing whitespace に従い保ちます。
 [fixture: ishikawa/final-newline/final-comment]
 [corpus fixture: ishikawa/directive-open-root-eof]
 [fixture: ishikawa/final-newline/final-value-spaces]
@@ -861,7 +861,7 @@ ishikawa
 
 ### Markdown fences
 
-Markdown がコンテナの字下げを除いてから、 Mermaid fence に同じ規則を適用します。
+Markdown がコンテナの字下げを除いてから、Mermaid fence に同じ規則を適用します。
 fence、リスト、引用の字下げはホストが補います。
 タブや幅 0 の設定も含め、図の深さを Markdown の入れ物から独立させ、
 parse に失敗した本文は整形を辞退するためです。

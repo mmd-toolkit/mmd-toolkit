@@ -134,7 +134,7 @@ id のノードは、id が新しいときに作られ、ノードの一覧は�
 **要約。**
 要約は [db-summaries.md](../db-summaries.md#sankey) の欄を持ちます。
 タイトル、上の順の id である `nodes`、ソースの順の `links` で、
-各リンクは `source`、`target`、 `value` を持ちます。
+各リンクは `source`、`target`、`value` を持ちます。
 [fixture: sankey/db-everything]
 
 ## 文字の置き換え

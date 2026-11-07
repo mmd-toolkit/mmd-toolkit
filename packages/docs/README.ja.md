@@ -62,7 +62,7 @@ Shikiの同名のバンドル済み文法がこの文法を置き換えます。
 表示順は、
 Mermaidの
 [`sidebarSyntax()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/.vitepress/config.ts#L164-L207)
-に合わせ、 `.vitepress/documents.js`に定義しています。
+に合わせ、`.vitepress/documents.js`に定義しています。
 順序をまだ定義していない図種も、末尾にファイル名順で表示します。
 
 リンターのルールのサイドバーは、言語ごとの取り込み済み文書から生成します。

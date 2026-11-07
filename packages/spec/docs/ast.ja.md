@@ -134,7 +134,7 @@ mermaid.js が読まないテキストのノード、
 などがそうです（[図ごとのノード](#図ごとのノード) を参照）。
 その書かれたテキストは値の書かれたテキストで、コメントも除きます。
 単位の間の空白と行終端はその一部で、コメントはその一部ではありません。
-`state "d" as A` の後の行 `state %% c` と、本体のある `state {` は、 A に、
+`state "d" as A` の後の行 `state %% c` と、本体のある `state {` は、A に、
 `state`、空白、改行、空白 2 つ、`state` の `textBeforeBody` を与え、
 本体のある行 `{` が続く `state X "" %%{init: {}}%% ""` では、
 それは 2 つの空の文字列とその間の空白 2 つです。
@@ -259,7 +259,7 @@ DiagramType の id の集合はこの仕様が定めます。
 一覧には `flowchart-elk`、`mindmap`、`architecture` が含まれます。
 mermaid.js はこれらを
 [`includeLargeFeatures`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L85-L87)
-が真のときだけ登録しますが、 npm パッケージの既定の入口では真です。
+が真のときだけ登録しますが、npm パッケージの既定の入口では真です。
 
 **DiagramBody** は、`ErrorDiagram` か、以下の図の節で定める本文のノードの型、
 つまり [`FlowchartDiagram`](./ast/flowchart.ja.md#flowchartdiagram)、
@@ -355,7 +355,7 @@ ESTree のノードの `kind` と同じです。
 その `value` はテキスト、その記号と線はそのような語です。
 道具が、矢印の文字を読み直さずにそれらを読めるようにするためです。
 図どうしは、同じものに同じ欄の名前と同じ語を使い（`startMarker`、`endMarker`、
-`line`、 `none`、`arrow`、`cross`、`solid`、`dotted`）、
+`line`、`none`、`arrow`、`cross`、`solid`、`dotted`）、
 各図の文書が自分の定義を持ちます。
 どの欄がどのノードを持ち、それぞれがどの単位からなるかは、各図の文書が述べます。
 
@@ -401,7 +401,7 @@ ESTree と同じく、識別子かどうかは構文上の形で決まり、
 引用符は二重引用符で、class 図のバッククォートの名前と、
 ER 図のバッククォートの属性の語では、バッククォートです。
 図の字句規則が許す位置では、一重引用符の文字列も StringLiteral です。
-同じ引用符で閉じ、 escape は復号しません。
+同じ引用符で閉じ、escape は復号しません。
 [fixture: usecase/lex-native-single-quoted-keys]
 [fixture: usecase/lex-native-string-backslashes]
 
@@ -467,7 +467,7 @@ class 図で、`class`、`` `x``、改行、`%%{init: {}}%%`、改行は、
 
 子の欄はありません。
 
-`linkStyle 0,1 stroke:red` の最初の数の値は 0 で、 `raw` は `0` です。
+`linkStyle 0,1 stroke:red` の最初の数の値は 0 で、`raw` は `0` です。
 [fixture: flowchart/db-linkstyle-shared-fill]
 
 数が取れる形は、その位置の文法が決めます。
@@ -479,16 +479,16 @@ sequence では小数も取れるので、`autonumber .5` は 2 分の 1 から�
 
 値は書かれた数に最も近い倍精度の数で、書かれた数と違うことがあります。
 XY chart で、`bar [`、20 個の 9、`]` は値が 1 の後に 20 個の 0 が続く数で、
-`line [.`、400 個の 0、 `1]` は値が 0 です。
+`line [.`、400 個の 0、`1]` は値が 0 です。
 [fixture: xychart/db-plot-values-large]
 [fixture: xychart/db-plot-values-underflow]
 
-倍精度に収まらない数は、 mermaid.js が読むとおり、無限大、
+倍精度に収まらない数は、mermaid.js が読むとおり、無限大、
 `-` があればマイナス無限大です。
 XY chart で、`bar [`、400 個の 9、`]` は値が無限大で、
 `-` の後の同じ数はマイナス無限大です。
 範囲、scale の幅、`autonumber` の始まりと増分、
-linkStyle の番号もそのような数になれ、 linkStyle の番号では範囲の外です。
+linkStyle の番号もそのような数になれ、linkStyle の番号では範囲の外です。
 [fixture: xychart/db-plot-values-overflow]
 [fixture: xychart/db-plot-values-negative-overflow]
 [fixture: xychart/db-x-axis-range-overflow]
@@ -502,7 +502,7 @@ treemap の leaf の値の位置は、通常の十進表記だけでなく、
 数字・underscore・dot・comma を許します。
 value は
 [TreemapValueConverter](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/treemap/valueConverter.ts#L13-L15)
-に従い、 comma を除いて十進の先頭部分を読んだ倍精度の数とし、
+に従い、comma を除いて十進の先頭部分を読んだ倍精度の数とし、
 最初の underscore や余分な dot で読み終えます。
 十進の先頭部分を読めなければ value は NaN です。
 その部分は数字を一つ以上、dot を高々一つ含みます。
@@ -519,7 +519,7 @@ raw は数の先頭部分として読まれない文字も含め、元の綴り�
 
 ## 図ごとのノード
 
-各図種のノードと、その欄と子の欄は、 `ast/` の下のそれぞれの文書で定めます。
+各図種のノードと、その欄と子の欄は、`ast/` の下のそれぞれの文書で定めます。
 
 - [Flowchart](./ast/flowchart.ja.md): 図種 `flowchart-v2`、`flowchart-elk`、
   `swimlane`。
@@ -589,7 +589,7 @@ mermaid.js が読まないテキストのノードの型は `<図種>IgnoredText
 
 - [eventmodeling](./ast/eventmodeling.ja.md): 数字列の名前は Identifier、
   dot の名前は head/tail member を持つ EventmodelingQualifiedName を使います。
-  全出現、tag、 unassigned な GWT の型の語も書かれた node に保ちます。
+  全出現、tag、unassigned な GWT の型の語も書かれた node に保ちます。
   [fixture: eventmodeling/gram-written-tree]
   [fixture: eventmodeling/db-source-leading-zero]
   [fixture: eventmodeling/lex-qualified-hidden-components]

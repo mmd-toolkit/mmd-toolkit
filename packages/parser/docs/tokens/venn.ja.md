@@ -54,7 +54,7 @@ title 行の一致を、キーワードと空でない内容に分けます。
 裸の style 値の単位は、隣接していてもそれぞれのトークンの種類を保ちます。
 単位間の空白はトークンに属さず、VennLiteral の書かれた値には属します。
 色全体の内部の空白は、その `RawText` トークンに属します。
-字下げ、ほかの単位間の空白、 newline 単位はトークンを作りません。
+字下げ、ほかの単位間の空白、newline 単位はトークンを作りません。
 [fixture: venn/lex-style-adjacent-units] [fixture: venn/db-form-style-tokens]
 [fixture: venn/lex-style-value-rgb-multiline] [fixture: venn/db-indent-width]
 [fixture: venn/lex-tab-whitespace-line]
@@ -111,7 +111,7 @@ U+2028 と U+2029 を越えて LF かテキストの終わりまで続きます�
 
 規則 2 が飲み込む文字が[表記](../../../spec/docs/common.ja.md#表記) の空白なら、
 トークンを作りません。
-U+0009–U+000D、U+0020、U+00A0、U+1680、U+2000–U+200A、 U+2028、U+2029、U+202F、
+U+0009–U+000D、U+0020、U+00A0、U+1680、U+2000–U+200A、U+2028、U+2029、U+202F、
 U+205F、U+3000、U+FEFF が該当します。
 共通のコメント行やディレクティブの除去で、
 図のテキストに残った `%%` の直前にある U+2028 と U+2029 も含みます。

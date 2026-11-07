@@ -47,7 +47,7 @@
 XychartBand はその `[` から `]` まで、
 XychartRange は最初の数から 2 つ目の数までです。
 XychartValue は、その数からラベルまでで、ラベルがないときは数を覆います。
-`[1 "a", 2]` の最初の値は、 `1 "a"` を覆います。
+`[1 "a", 2]` の最初の値は、`1 "a"` を覆います。
 [fixture: xychart/db-x-axis-band-title] [fixture: xychart/db-x-axis-range]
 [fixture: xychart/db-label-one]
 

@@ -33,7 +33,7 @@
 `Punctuator` トークン `[` と `]`、
 引用符を含む `String` トークン `"text with ( paren"` を持ちます。
 `::icon(fa fa-book)` は、`Keyword` トークン `::icon(`、
-`RawText` トークン `fa fa-book`、 `Punctuator` トークン `)` を持ちます。
+`RawText` トークン `fa fa-book`、`Punctuator` トークン `)` を持ちます。
 [fixture: mindmap/db-shape-string] [fixture: mindmap/db-icon-line]
 
 トークンは両端に空白を持ちません。
@@ -49,7 +49,7 @@
 `::icon( x )` の icon は、空白、`x`、空白です。
 `:::  x` の class は、2 つの空白と `x` です。
 形のテキストは、中の改行を持ちます。
-`a[x`、改行、`y]` は、`x`、改行、 `y` のトークンを持ちます。
+`a[x`、改行、`y]` は、`x`、改行、`y` のトークンを持ちます。
 [fixture: mindmap/db-node-trailing-whitespace]
 [fixture: mindmap/gram-shape-text-quoted-with-space]
 [fixture: mindmap/db-icon-surrounding-whitespace]

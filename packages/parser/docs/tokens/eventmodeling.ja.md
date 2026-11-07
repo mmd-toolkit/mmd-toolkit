@@ -25,7 +25,7 @@ lexer は仕様の[先勝ちの順序][ordered-units]に従います。
 書かれた各構成要素は別の item です。
 修飾名は各部分の Identifier と dot の Punctuator を持ち、
 一つに連結した Identifier トークンにはしません。
-frame 名は先頭のゼロを保ち、 Numeric トークンを使いません。
+frame 名は先頭のゼロを保ち、Numeric トークンを使いません。
 [fixture: eventmodeling/space-qualified-name]
 [fixture: eventmodeling/lex-qualified-hidden-components]
 [fixture: eventmodeling/db-source-leading-zero]
@@ -44,7 +44,7 @@ block data は本文がある閉じ方を優先します。
 RawText の値は内部の空白と改行をすべて保ち、空白だけでも保ちます。
 空の内部はトークンを作りませんが、空の引用文字列は String を持ちます。
 title の値は ASCII 区切り一文字の後、accessibility 行は colon 直後です。
-metadata の先行字下げはトークンにせず、 Db 導出時にソースから読めます。
+metadata の先行字下げはトークンにせず、Db 導出時にソースから読めます。
 [fixture: eventmodeling/lex-common-title-two-spaces]
 [fixture: eventmodeling/common-whitespace]
 [fixture: eventmodeling/lex-common-block-whitespace-only]

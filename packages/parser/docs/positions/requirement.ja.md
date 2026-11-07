@@ -60,7 +60,7 @@
 本文の中の空の説明ブロックは、`accDescr` から `}` までを、
 複数の行にわたるときも覆います。
 値は、その中のコメント行を除きます。
-`accDescr {`、コメント行 `%% c`、`}` の値は、 `accDescr {`、改行、 `}` です。
+`accDescr {`、コメント行 `%% c`、`}` の値は、`accDescr {`、改行、`}` です。
 [fixture: requirement/lex-direction-line-text-before-and-after]
 [fixture: requirement/gram-empty-description-block-multiline-in-body]
 [fixture: requirement/gram-empty-description-block-comment-line-in-body]

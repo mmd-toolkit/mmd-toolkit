@@ -13,7 +13,7 @@ builder は parser の拒否検査を繰り返しません。
 ## 木から要約を作る手順
 
 1. **変換した値。**
-   共通の converted-text reader で原文の除去、CR/CRLF、 HTML 属性の引用符、
+   共通の converted-text reader で原文の除去、CR/CRLF、HTML 属性の引用符、
    実体参照の仮表現を読みます。
    PacketIgnoredText は無視します。
    StringLiteral の変換した引用符内を読み、
@@ -29,7 +29,7 @@ builder は parser の拒否検査を繰り返しません。
 2. **共通の代入。**
    title、accTitle、両 accDescr を変換した literal の範囲から読み、
    null は空文字にします。
-   行の値は両端を trim し、 2 個以上続く ASCII space/tab を 1 個にします。
+   行の値は両端を trim し、2 個以上続く ASCII space/tab を 1 個にします。
    ブロックは各行も trim し、連続する物理改行をまとめます。
    最後の代入を残し、空の代入も前の本文の値を消します。
    最後の値が空でなければ公開します。

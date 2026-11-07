@@ -58,8 +58,8 @@ RailroadDiagram.textBeforeHeader に属し、YAML の値を適用しない。
 [fixture: railroad/abnf-frontmatter-retained]
 [fixture: railroad/peg-frontmatter-retained]
 
-本文行も後の closing fence もない隣接 fence、 closer の欠落、indent の不一致、
-4 個の dash、 closing fence の接尾字、closer の後の改行の欠落は、
+本文行も後の closing fence もない隣接 fence、closer の欠落、indent の不一致、
+4 個の dash、closing fence の接尾字、closer の後の改行の欠落は、
 その通過を止める。
 先頭の trim が opening indent だけを除く場合もある。
 2 個目の block、passed bare line の後の block、
@@ -154,11 +154,11 @@ ASCII の space/tab の対照は受理する。
 [fixture: railroad/abnf-comment-empty-line]
 [fixture: railroad/peg-comment-in-literal]
 
-有効な順序は [IR の module.ts][ir-module]、 [EBNF の module.ts][ebnf-module]、
+有効な順序は [IR の module.ts][ir-module]、[EBNF の module.ts][ebnf-module]、
 [ABNF の module.ts][abnf-module]、
 [PEG の module.ts][peg-module] から各 token builder と
 [AbstractMermaidTokenBuilder][common-builder]を辿ったもの。
-custom keyword は各見出しだけで、 `%%`、共通 Notation の空白、
+custom keyword は各見出しだけで、`%%`、共通 Notation の空白、
 EOF の直前で終わる必要がある。
 境目は消費しない。
 それ以外の keyword も正確な case で比較する。
@@ -195,9 +195,9 @@ EOF に付加される LF は書かれた値には含めない。
 
 ### IR の単位
 
-IR の順序は、見出し、constructor の `nonterminal`、`zeroOrMore`、 `oneOrMore`、
-`sequence`、`optional`、`terminal`、`special`、`choice`、 `= ; ( , )`、
-metadata、ir-name、ir-string、native padding、 hidden-yaml、hidden-directive、
+IR の順序は、見出し、constructor の `nonterminal`、`zeroOrMore`、`oneOrMore`、
+`sequence`、`optional`、`terminal`、`special`、`choice`、`= ; ( , )`、metadata、
+ir-name、ir-string、native padding、hidden-yaml、hidden-directive、
 native-percent-comment、C-comment。
 見出しと constructor の longer alternative は ir-name で、
 それ以外の句読点にはない。 [fixture: railroad/ir-db-all-fields]
@@ -235,9 +235,9 @@ IR に数の単位はない。 [fixture: railroad/ir-db-empty-strings]
 
 ### EBNF の単位
 
-EBNF の順序は、見出し、`::=`、`= ; | , ( ) [ ] { } ? * + -`、 metadata、
-ebnf-name、ebnf-string、special-sequence、native padding、 hidden-yaml、
-hidden-directive、native-percent-comment、 C-comment、ISO-comment。
+EBNF の順序は、見出し、`::=`、`= ; | , ( ) [ ] { } ? * + -`、metadata、
+ebnf-name、ebnf-string、special-sequence、native padding、hidden-yaml、
+hidden-directive、native-percent-comment、C-comment、ISO-comment。
 見出しの longer alternative は ebnf-name、`(` は ISO-comment、
 `?` は special-sequence、`-` は hidden-yaml。
 それ以外の EBNF の句読点にはない。 [fixture: railroad/ebnf-db-all-fields]
@@ -291,8 +291,8 @@ backslash と引用符は closer を保護しない。
 
 ### ABNF の単位
 
-ABNF の順序は、見出し、`= ; / ( ) [ ]`、metadata、abnf-name、 abnf-string、
-abnf-numeric-value、star-repeat、exact-repeat、native padding、 hidden-yaml、
+ABNF の順序は、見出し、`= ; / ( ) [ ]`、metadata、abnf-name、abnf-string、
+abnf-numeric-value、star-repeat、exact-repeat、native padding、hidden-yaml、
 hidden-directive、native-percent-comment、semicolon-comment。
 見出しの longer alternative は abnf-name、`;` は semicolon-comment。
 それ以外にはない。 [fixture: railroad/abnf-db-all-fields]
@@ -301,7 +301,7 @@ hidden-directive、native-percent-comment、semicolon-comment。
 [fixture: railroad/abnf-comment-terminator-space]
 [fixture: railroad/abnf-native-ownership]
 
-abnf-name は ASCII 英字で始まり、 ASCII 英字、数字、hyphen を最大限続ける。
+abnf-name は ASCII 英字で始まり、ASCII 英字、数字、hyphen を最大限続ける。
 underscore と非 ASCII 英字は名前の字ではない。
 metadata の先行する接頭辞の規則は、参照も含めて名前より先に適用する。
 [fixture: railroad/abnf-name-underscore]
@@ -327,14 +327,13 @@ abnf-numeric-value は `%`、`x X d D b B` のどれか、
 続いて `-` か `.` と空でない十六進の字の並びを 0 回以上。
 十六進の字は ASCII の `0`〜`9`、`A`〜`F`、`a`〜`f`。
 base の字に対する桁や range の大小を検査しない。
-全綴りを text として保ち、 `%x41Z` の Z は別の参照になる。
+全綴りを text として保ち、`%x41Z` の Z は別の参照になる。
 [fixture: railroad/abnf-numval-boundaries] [fixture: railroad/abnf-numval-empty]
 [fixture: railroad/abnf-numval-suffix]
 [fixture: railroad/abnf-gram-written-tree]
 
 abnf-count は ASCII 十進数字の空でない最大の並び。
-star-repeat は任意の count、`*`、任意の count で、
-exact-repeat は 1 個の count。
+star-repeat は任意の count、`*`、任意の count で、exact-repeat は 1 個の count。
 通常の空白と native hidden form は repeat の内部に置けないが、
 完成した repeat と primary の間には置ける。
 両方の count を省略でき、先頭ゼロも許す。 [fixture: railroad/abnf-db-all-fields]
@@ -347,9 +346,9 @@ exact-repeat は 1 個の count。
 
 ### PEG の単位
 
-PEG の順序は、見出し、`<- ; / & ! ? * + ( ) .`、metadata、peg-name、
-peg-string、native padding、hidden-yaml、hidden-directive、
-native-percent-comment、hash-comment。
+PEG の順序は、見出し、`<- ; / & ! ? * + ( ) .`、metadata、peg-name、peg-string、
+native padding、hidden-yaml、hidden-directive、native-percent-comment、
+hash-comment。
 longer alternative があるのは見出しだけで、peg-name を指定する。
 代入の矢印は 1 個の書かれた delimiter、
 前置と後置の演算子はそれぞれ別の句読点である。
@@ -402,7 +401,7 @@ title-line は `title` と、任意の、
 [fixture: railroad/abnf-common-whitespace-shapes]
 [fixture: railroad/peg-common-whitespace-shapes]
 
-acc-title-line は `accTitle`、ASCII space/tab の 0 個以上、 `:`、
+acc-title-line は `accTitle`、ASCII space/tab の 0 個以上、`:`、
 CR/LF か最初の `%%` の直前までの、空でもよい内容。
 colon は次の行に置けない。
 accDescr の colon 形も同じ規則で、block 形より優先する。
@@ -418,7 +417,7 @@ colon 後の brace に見える text は行の内容である。
 [fixture: railroad/abnf-common-repeat-empty]
 [fixture: railroad/peg-common-repeat-empty]
 
-acc-descr-block は `accDescr`、Notation の空白の 0 個以上、 `{`、
+acc-descr-block は `accDescr`、Notation の空白の 0 個以上、`{`、
 最初の `}` までのすべての字。
 内部は空でも、複数行でもよく、U+2028/U+2029 も入る。
 引用符、backslash、入れ子の brace は最初の closer を保護しない。
@@ -474,7 +473,7 @@ tests の要約が定義する。 [fixture: railroad/ir-common-title-open-quote]
 
 ### Native hidden form
 
-単位の境目で hidden-yaml は `---`、ASCII space/tab の 0 個以上、 LF で始まり、
+単位の境目で hidden-yaml は `---`、ASCII space/tab の 0 個以上、LF で始まり、
 raw の CRLF も共通改行変換の後は同じ。
 任意の本文は closing `---` の前の LF で終わる。
 本文のある選択肢を先に試し、条件に合う closer が成立する最小の本文を取る。
@@ -513,7 +512,7 @@ opener 前の source padding と、
 [fixture: railroad/abnf-hidden-yaml-inline]
 [fixture: railroad/peg-hidden-yaml-inline]
 
-hidden-directive は `%%{` で始まり、 LF、Notation の空白、
+hidden-directive は `%%{` で始まり、LF、Notation の空白、
 EOF のいずれかが続く最初の `}%%` で終わる。
 直後の LF は消費し、他の境目の字は見るだけ。
 境目のない closer は通過し、後の条件に合う closer を探す。
@@ -531,7 +530,7 @@ native directive に合わなければ、
 [fixture: railroad/ir-hidden-directive-unclosed]
 
 hidden YAML と directive の内部には物理改行、U+2028、U+2029 が入る。
-次の規則までに visible LF を残す必要はなく、 sole LF、spare LF、
+次の規則までに visible LF を残す必要はなく、sole LF、spare LF、
 closer 後の space、EOF の形を全方言で許す。
 [名前つき owner](../ast/railroad.md#gap-ownership)の中の whole
 RailroadIgnoredText node として保ち、消費した後続 LF は range の外に置く。
@@ -604,7 +603,7 @@ PEG の hash-comment は `#` で始まり、CR/LF か EOF の直前まで読み�
 その改行は含めず、裸の hash も合う。
 U+2028 と U+2029 は native line comment を終えない。
 hash comment は IR、EBNF、ABNF の comment ではない。
-C comment は ABNF、PEG の comment ではなく、 ISO comment は EBNF だけにある。
+C comment は ABNF、PEG の comment ではなく、ISO comment は EBNF だけにある。
 [fixture: railroad/peg-comment-hash-ps]
 [fixture: railroad/peg-comment-bare-hash] [fixture: railroad/peg-comment-hash]
 [fixture: railroad/ir-comment-hash-foreign]
@@ -631,11 +630,11 @@ body の文や RailroadIgnoredText にはしない。
 ### 共通 directive とセミコロンの境界
 
 共通の[directive](../common.md#a-directive-is-a-token-boundary)と
-[ignored-semicolon](../common.md#style-and-classdef-lines)の境界では、
-4 見出し、IR constructor の語、metadata keyword、名前、十進の count、`::=`、
+[ignored-semicolon](../common.md#style-and-classdef-lines)の境界では、4 見出し、
+IR constructor の語、metadata keyword、名前、十進の count、`::=`、
 `<-` を atom とする。
 metadata の keyword、colon または brace、値は別の書かれた部品。
-ABNF repeat の部品は十進の両端値と star で、 native の照合で隣接が必須でも、
+ABNF repeat の部品は十進の両端値と star で、native の照合で隣接が必須でも、
 その部品を区別する。 [fixture: railroad/ir-div-directive-header]
 [fixture: railroad/ir-directive-keyword-glued]
 [fixture: railroad/ir-directive-description-keyword]
@@ -851,7 +850,7 @@ choice の内側に sequence、prefix の内側に suffix が結び付き、
 group は choice 全体を囲む。
 各項の prefix と suffix はそれぞれ 1 個までで、
 括弧の内側にはさらに式を入れられる。
-空の definition、alternative、group、 operand のない prefix は拒否する。
+空の definition、alternative、group、operand のない prefix は拒否する。
 [fixture: railroad/peg-gram-written-tree]
 [fixture: railroad/peg-gram-double-prefix]
 [fixture: railroad/peg-gram-double-suffix] [fixture: railroad/peg-rhs-empty]
@@ -923,8 +922,8 @@ repeat の逆順の両端値、有限の double を超える count も許す。
 [fixture: railroad/abnf-db-repeat-overflow]
 [fixture: railroad/abnf-numval-boundaries]
 
-これらの条件の出典は [railroadParser.ts][ir-gate]、 [ebnfParser.ts][ebnf-gate]、
-[abnfParser.ts][abnf-gate]、 [pegParser.ts][peg-gate] の完全入力の検査と、
+これらの条件の出典は [railroadParser.ts][ir-gate]、[ebnfParser.ts][ebnf-gate]、
+[abnfParser.ts][abnf-gate]、[pegParser.ts][peg-gate] の完全入力の検査と、
 [railroadDb.ts][db]に追加の拒否がないこと。
 有効な `railroad.*` の設定は描画に作用し、構文受理には作用せず、
 semantic acceptance key を追加しない。
@@ -1017,7 +1016,7 @@ ignored-text の兄弟ノードでは fence を跨ぐ引用符の文脈を表せ
 [fixture: railroad/peg-div-html-frontmatter-acctitle]
 
 [`embedded-data-opaque`](../known-divergences/embedded-data-opaque.ja.md): 先頭
-frontmatter と global directive の内容を、 YAML、JSON、設定の型を検証せず保つ。
+frontmatter と global directive の内容を、YAML、JSON、設定の型を検証せず保つ。
 有効な設定から railroad の acceptance key は除かない。
 数の railroad font family を埋め込むと Mermaid の設定導出が失敗し得るが、
 この仕様は適切な delimiter を持つ図を受理する。
@@ -1036,7 +1035,7 @@ Comment record と空白として原文を保ち、共有の直接規則によ�
 [fixture: railroad/ir-secondscan-between-bares-unicode]
 
 [`c4-keyword-anywhere`](../known-divergences/c4-keyword-anywhere.ja.md): 後の
-text に C4Container、 C4Component、 C4Dynamic、
+text に C4Container、C4Component、C4Dynamic、
 C4Deployment があるため C4 に切り替えるのでなく、
 見出しで railroad の方言を選ぶ。
 書かれた名前、文字列、special の形は、それぞれの自然なノードにその語を保つ。

@@ -101,7 +101,7 @@ venn の見出しより後の `C4Context` と、
 Ishikawa の節点のテキスト内の `C4Container`、`C4Component`、`C4Dynamic`、
 `C4Deployment` は、この仕様では Ishikawa のテキストです。
 引用されたようなテキストや、より長い語の中でも同じです。
-その語が検出するテキストに残ると、 mermaid.js は C4 を選んで拒否します。
+その語が検出するテキストに残ると、mermaid.js は C4 を選んで拒否します。
 [fixture: ishikawa/detect-c4-container-text]
 [fixture: ishikawa/detect-c4-component-root]
 [fixture: ishikawa/detect-c4-dynamic-quoted]
@@ -115,7 +115,7 @@ Ishikawa の節点のテキスト内の `C4Container`、`C4Component`、`C4Dynam
 
 行内の `R %% C4Container` は、`%` の接尾部の後に物理行終端があれば、
 両者が受理します（「[行終端](../common.ja.md#行終端)」）。
-検出ではその接尾部を除きますが、 Ishikawa は節点のテキスト全体を保ちます。
+検出ではその接尾部を除きますが、Ishikawa は節点のテキスト全体を保ちます。
 [fixture: ishikawa/detect-inline-comment-c4-text]
 [fixture: ishikawa/detect-inline-comment-c4-cr]
 
@@ -245,7 +245,7 @@ mermaid.js は、どの字句解析器がソースを読むよりも前に、
 ### Usecase
 
 usecase は C4 より後に登録されます。
-対象の C4Container、C4Component、C4Dynamic、C4Deployment は、 UsecaseLabel、
+対象の C4Container、C4Component、C4Dynamic、C4Deployment は、UsecaseLabel、
 UsecaseLiteral、UsecaseJsonDataBlock にそのまま保てます。
 その語が検出に残る場合、pin の検出器は C4 を選んで例を拒否します。
 その検出だけを除けば同じ入力を usecase として受理します。
@@ -273,7 +273,7 @@ EOF では検出がその接尾部を残すので、C4 を選んで拒否しま�
 
 StringLiteral のラベル、PieLiteral のタイトル、
 アクセシビリティの行の値と説明ブロック、PieIgnoredText の YAML ブロック、
-共通の Comment は、 C4 の語を書かれたまま持てます。
+共通の Comment は、C4 の語を書かれたまま持てます。
 コメントの場合は、区分の後の EOF とヘッダー行の EOF を含みます。
 そのため木は pie のヘッダーを読み、この入力を受理します。
 mermaid.js は、検出の見るテキストに残る、
@@ -306,7 +306,7 @@ C4 の語を書かれたまま持てます。
 `C4Component`、`C4Dynamic`、`C4Deployment` により Mermaid が拒否する入力も、
 ここでは受理します。
 Mermaid が受理する入力をこの規則で拒否することはありません。
-後の `C4Context` や、 LF で終わるコメントの対照例は一致します。
+後の `C4Context` や、LF で終わるコメントの対照例は一致します。
 [fixture: gitgraph/div-detect-c4container-id]
 [fixture: gitgraph/div-detect-c4component-branch]
 [fixture: gitgraph/div-detect-c4dynamic-message]
@@ -453,11 +453,11 @@ EOF のコメントは同じ control ではありません。
 ### eventmodeling
 
 eventmodeling は C4 の検出より後です。
-書かれた identifier、 参照、inline/block data、note、GWT、
+書かれた identifier、参照、inline/block data、note、GWT、
 共通の値には C4Container、C4Component、C4Dynamic、C4Deployment を持てます。
 後の語から C4 を選ぶと、それらの node を変えるのでなく、
 書かれた見出しの図を置き換えます。
-見出しから選ぶ規則に従い、 印付きの例は Mermaid では拒否、
+見出しから選ぶ規則に従い、印付きの例は Mermaid では拒否、
 指定の eventmodeling の読みでは受理します。
 LF で終わる percent comment の対照で はその検出の差がなく、
 両方拒否する場合も印を足しません。 [fixture: eventmodeling/c4-container-data]
@@ -470,7 +470,7 @@ LF で終わる percent comment の対照で はその検出の差がなく、
 [fixture: eventmodeling/prefix-yaml-between-bares-c4]
 
 [event-modeling.langium](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L70)
-が単位を、 [図の構文](../diagrams/eventmodeling.ja.md)が直接の境目を定義します。
+が単位を、[図の構文](../diagrams/eventmodeling.ja.md)が直接の境目を定義します。
 
 ### Treeview
 
@@ -490,7 +490,7 @@ specified の treeview の読みが、先の検出器からまだ見える、
 ## mermaid.js の文書と issue
 
 - [C4 図の文書](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/c4.md)
-  は、 5 つの種類の図をそのキーワードとともに挙げ、
+  は、5 つの種類の図をそのキーワードとともに挙げ、
   どの例も 1 行目がそのキーワードで始まります。
 - [構文のリファレンス](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/intro/syntax-reference.md)
   は、すべての図の定義は図種の宣言で始まると述べています。
@@ -555,8 +555,8 @@ C4 語が Ishikawa の見出しを上書きする報告は見つかりません�
 gitgraph の
 [gitgraph.md](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/gitgraph.md)
 は、見出しと各コマンドを説明します。
-2026-10-23 に issue・PR を `gitGraph`、`gitGraph directive`、 `gitGraph YAML`、
-`gitGraph semicolon`、`gitGraph keyword`、 `gitGraph duplicate`、
+2026-10-23 に issue・PR を `gitGraph`、`gitGraph directive`、`gitGraph YAML`、
+`gitGraph semicolon`、`gitGraph keyword`、`gitGraph duplicate`、
 `gitGraph cherry-pick` で検索しました。
 確認した結果には、この共通の境界を決定するものはありませんでした。
 [#4838](https://github.com/mermaid-js/mermaid/issues/4838) は終了済みで Status:
@@ -572,7 +572,7 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
   2026-10-23 に `info showInfo`、`info directive`、`info semicolon`、
   `info accTitle` で issue と PR を検索しました。
   [#7601](https://github.com/mermaid-js/mermaid/issues/7601) は info/showInfo
-  の描画を報告し、 open、Type: Bug / Error、Status: Triage でした。
+  の描画を報告し、open、Type: Bug / Error、Status: Triage でした。
   検査した結果には、
   この構文の拒否を決める info 固有のメンテナーの判断はありません。
   この節は既存の直接の規則に従います。
@@ -608,15 +608,15 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
 
 - Railroad:
   [pin した構文の文書](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/railroad.md#L1-L288)
-  は 4 記法、 EBNF の例外、ABNF のセミコロンの comment、
+  は 4 記法、EBNF の例外、ABNF のセミコロンの comment、
   PEG の predicate を説明します。
   native の残る YAML と frontmatter を跨ぐ HTML の引用符の文脈は定義しません。
   2026-10-26 に公式 repository の issue と PR を railroad frontmatter、
   railroad directive、railroad semicolon、railroad comment で検索しました。
   [#7979](https://github.com/mermaid-js/mermaid/issues/7979) は demo
-  の見出し名の報告（closed、 Triage）、
+  の見出し名の報告（closed、Triage）、
   [#6620](https://github.com/mermaid-js/mermaid/issues/6620) は ABNF
-  の図種の提案（open、 Discussion Needed）です。
+  の図種の提案（open、Discussion Needed）です。
   どちらも、これらの前処理の境界について、
   メンテナーが defect と判断した事実ではありません。
   この差異はその判断でなく既存の共通規則に従います。
@@ -653,7 +653,7 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
 
 pin した
 [eventmodeling.md](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/eventmodeling.md#L41-L340)
-は frame、 data、tag を説明しますが、共有の前処理の境目を定義しません。
+は frame、data、tag を説明しますが、共有の前処理の境目を定義しません。
 2026-10-26 に公式 issue と PR を eventmodeling title、eventmodeling parser、
 event modeling data、eventmodeling accTitle、
 eventmodeling validator で検索しました。
@@ -670,7 +670,7 @@ eventmodeling validator で検索しました。
 は字下げ・引用名・注釈・罫線を説明します。
 この共通の境目を定義してはいません。
 2026-10-26 に公式 issue/PR を `treeView quoted`、`treeView indentation`、
-`treeView box`、 `treeView quotes`、`treeView whitespace`、
+`treeView box`、`treeView quotes`、`treeView whitespace`、
 `treeView accDescr` で検索しました。
 [PR #7721](https://github.com/mermaid-js/mermaid/pull/7721) は罫線を追加した
 merged の PR、

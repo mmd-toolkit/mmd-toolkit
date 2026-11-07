@@ -234,7 +234,7 @@ title がなければ textBeforeEndDash は空。 [fixture: architecture/db-dire
 | `textAfter`           | list of ArchitectureIgnoredText     | 可視 EOL 前の接尾辞。      |
 
 子の欄: `textBeforeDirection`、`members`、`textAfter`。
-範囲は align から最後の member id までで、 textAfter があればその末尾まで広げ、
+範囲は align から最後の member id までで、textAfter があればその末尾まで広げ、
 外の padding と EOL を除く。
 members は 2 個以上。
 反復した alignment の文もすべて保ち、member をソートせず制約を統合しない。
@@ -297,7 +297,7 @@ native comment は接尾辞の要素でなく共有 Comment とする。
 
 value は colon の直後からの行のテキストで、両端の padding を保つ。
 内容が残らない場合だけ null とし、空白だけなら Literal とする。
-範囲は accTitle から colon または最後の値の文字までで、 textAfter があれば広げ、
+範囲は accTitle から colon または最後の値の文字までで、textAfter があれば広げ、
 EOL と無関係な外の padding を除く。
 [fixture: architecture/lex-acctitle-whitespace-only]
 [fixture: architecture/common-acctitle-next-statement]
@@ -321,7 +321,7 @@ native comment は接尾辞の要素でなく共有 Comment とする。
 
 value は colon の直後からの行のテキストで、両端の padding を保つ。
 内容が残らない場合だけ null とし、空白だけなら Literal とする。
-範囲は accDescr から colon または最後の値の文字までで、 textAfter があれば広げ、
+範囲は accDescr から colon または最後の値の文字までで、textAfter があれば広げ、
 EOL と無関係な外の padding を除く。
 [fixture: architecture/lex-description-line-whitespace-only]
 [fixture: architecture/common-accdescr-next-statement]
@@ -420,7 +420,7 @@ value は written-value の規則で原文を保つ。
 value から共通 directive、comment region、選ばれた semicolon を除き、
 原文の改行、quote、entity、escape、その文が所有する空白など、それ以外は保つ。
 null に対して空の Literal は作らない。
-quote に見える共通値も ArchitectureLiteral で、 quote の閉じを要求しない。
+quote に見える共通値も ArchitectureLiteral で、quote の閉じを要求しない。
 [fixture: architecture/common-title-literal-quotes]
 [fixture: architecture/common-line-whitespace]
 [fixture: architecture/common-block-whitespace]

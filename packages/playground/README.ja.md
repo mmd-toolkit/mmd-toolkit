@@ -24,7 +24,7 @@ mmd-toolkitが生成する構文木と、Prettierによる整形結果を確認�
 
 ## 構文木を調べる
 
-**AST**タブではTreeとJSONの表示に加えて、 Tokens、Comments、Directives、
+**AST**タブではTreeとJSONの表示に加えて、Tokens、Comments、Directives、
 Frontmatterを個別に確認できます。
 
 - ツリーの行をクリックすると、その行を選択し、子の展開と縮小を切り替えます。

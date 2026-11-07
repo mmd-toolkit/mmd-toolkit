@@ -186,9 +186,9 @@ sequence/db-box-no-colour-candidate]
   始まりの `//` と `\\`。
 
 上と下は、矢じりの半分を線のどちら側に描くかの名前です。
-始まりでは文字が鏡に書かれるので、 `//` は、終わりでは `half-stick-bottom`、
+始まりでは文字が鏡に書かれるので、`//` は、終わりでは `half-stick-bottom`、
 始まりでは `half-stick-top` です。
-そのため、`->` と `-->` は記号を持たず、 `->>`、`-x`、
+そのため、`->` と `-->` は記号を持たず、`->>`、`-x`、
 `-)` は終わりの記号 `arrow`、`cross`、`open-arrow` を持ちます。
 `<<->>` は始まりと終わりの記号 `arrow` を、
 `-|\` は終わりの記号 `half-arrow-top` を、
@@ -248,7 +248,7 @@ sequence/db-box-no-colour-candidate]
 mermaid.js はタイトルを空白を含めて書かれたとおりに保つので、
 値は `title-text` の単位の全体の書かれたテキストです。
 `title`、空白 2 個、`x`、空白 2 個の値は、空白、`x`、空白 2 個で、
-空白 4 個が続く `title` の値は空白 3 個で、 `title`、改行、空白 2 個、
+空白 4 個が続く `title` の値は空白 3 個で、`title`、改行、空白 2 個、
 `A->>B: x` の値は、空白 2 個と `A->>B: x` です。
 [fixture: sequence/db-title-spaces] [fixture:
 sequence/db-title-whitespace-only] [fixture:
@@ -341,7 +341,7 @@ sequence/lex-acc-title-at-end] [fixture: sequence/lex-acc-title-hash]
 
 子の欄: `sections`。
 どの節も、テキストとその後の文という同じ形を持ちます。
-そのため、ブロックのキーワードの後の最初の節も、 `else`、`and`、
+そのため、ブロックのキーワードの後の最初の節も、`else`、`and`、
 `option` の後の節と同じ節です。
 
 ### SequenceSection

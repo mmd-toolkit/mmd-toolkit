@@ -8,8 +8,7 @@
 [diagrams/sankey.ja.md](../diagrams/sankey.ja.md) で定めます。
 
 この図種の本体は [SankeyDiagram](#sankeydiagram) です。
-欄の値は、
-[ast.ja.md](../ast.ja.md#ノード)が値の書かれたテキストを定めるとおり、
+欄の値は、[ast.ja.md](../ast.ja.md#ノード)が値の書かれたテキストを定めるとおり、
 書き手が書いたものを保ち、
 [common.ja.md](../common.ja.md#ソースの読み方) の変換後の形ではありません。
 引用符なしの欄は、mermaid.js が読むとおり、両端の空白なしで読まれます。
@@ -53,7 +52,7 @@
 どちらを書いたかはそのノードの型に表れます。
 `"a",b,1` は source に StringLiteral を、
 `a,b,1` は SankeyIdentifier を持ちます。
-mermaid.js が欄を Db にどう読むかは、 tests パッケージの要約にあります。
+mermaid.js が欄を Db にどう読むかは、tests パッケージの要約にあります。
 [fixture: sankey/docs-syntax-sankey-9cc115a6]
 [fixture: sankey/db-quoted-and-unquoted-same-id]
 [fixture: sankey/db-quoted-value]

@@ -164,8 +164,7 @@ treemap
 文の境界を見やすくするためです。
 終端のない空の classDef と次の引用行の接触は、間の directive も含めて保ちます。
 空白を足すと行が style に取り込まれるためです。
-完了した classDef にこの接触の制約はありませんが、
-semicolon の保護が優先します。
+完了した classDef にこの接触の制約はありませんが、semicolon の保護が優先します。
 title や class style が既に所有する文字は、別文にしません。
 
 [fixture: treemap/statements-one-per-line/adjacent]
@@ -223,7 +222,7 @@ treemap
 ### Selectors
 
 `"section":::class` と `"leaf": value:::class` にします。
-trivia のない marker と名前の間の改行を詰め、 `:::` の前後には空白を足しません。
+trivia のない marker と名前の間の改行を詰め、`:::` の前後には空白を足しません。
 そこでは字下げが許されないためです。
 1 文字や keyword に似た名前も含め、selector の綴りと有無を保ちます。
 
@@ -295,7 +294,7 @@ treemap
 ### Names
 
 StringLiteral の source span 全体を保ちます。
-引用符、反対側の引用符、空名、空白だけの名、padding、 backslash、HTML、entity、
+引用符、反対側の引用符、空名、空白だけの名、padding、backslash、HTML、entity、
 percent の文字と物理継続列を残します。
 singleQuote では書き換えません。
 backslash は引用符を escape せず、`\n` も decode しません。
@@ -784,7 +783,7 @@ treemap
 inline は同じ行に残し、内容、mark、末尾、順序、所有位置を保ちます。
 inline コメント前の空白が次行の indent なら、次行へ移します。
 その結果コメントが直前の token に接しても、親子を保ちます。
-common コメント領域とともに消えた空白を復元せず、 AST の親子を使います。
+common コメント領域とともに消えた空白を復元せず、AST の親子を使います。
 native コメント内の LS と PS は内容として保ちます。
 [test: treemap/comments/standalone-ls] [test: treemap/comments/standalone-ps]
 
@@ -870,7 +869,7 @@ treemap
 ### Prefix
 
 見出し前の普通のコメント、directive、空行は共有の root 配置を使います。
-検出の second scan で残った単行の percent 形式は、 Comment として、
+検出の second scan で残った単行の percent 形式は、Comment として、
 内部の Root directive を一度だけ印字します。
 frontmatter に昇格させる native hidden YAML はありません。
 読めない retained YAML は拒否のままです。
@@ -972,7 +971,7 @@ Unicode の行の字下げを追加する規則ではありません。
 ### Frontmatter yaml
 
 安全な実際の先頭 frontmatter だけを、共有の guard 付き YAML 整形へ渡します。
-字下げした fence、closer の padding、不正 YAML、 HTML 引用符の危険や、
+字下げした fence、closer の padding、不正 YAML、HTML 引用符の危険や、
 整形で fence になる本文は原文を保ちます。
 YAML の入れ子と block scalar は、tabWidth 0 でも 1 space 以上にします。
 前処理と値を守りながら、安全な YAML の空白をそろえるためです。
@@ -1019,7 +1018,7 @@ treemap
 本文の全出現と兄弟、根の順を保ちます。
 空や重複した名と section、未使用や再定義された class、前方や未解決の selector、
 common の空代入も残します。
-class の蓄積、リセット、順序、親子を変えうるため、 sort、統合、削除はしません。
+class の蓄積、リセット、順序、親子を変えうるため、sort、統合、削除はしません。
 正規化した Db から再構築せず、作者の構文を印字します。
 
 [fixture: treemap/source-order/repetitions]
@@ -1088,8 +1087,8 @@ treemap
 
 既存の 6 つの指定読みを使います。
 directive-as-token-boundary、ignored-semicolon-as-token-boundary、
-html-tag-in-frontmatter、embedded-data-opaque、
-bare-percent-line-before-header、c4-keyword-anywhere です。
+html-tag-in-frontmatter、embedded-data-opaque、bare-percent-line-before-header、
+c4-keyword-anywhere です。
 atomic な切断は修復せず拒否し、frontmatter の HTML の影響を分離します。
 埋め込みは opaque とし、後の C4 語で選択図種を変えません。
 opaque 比較で削る treemap 固有の受理設定 key はありません。

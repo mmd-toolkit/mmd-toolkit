@@ -49,7 +49,7 @@ NumericLiteral は数字と小数点を含み raw を保持します。
 entry は最初の textBefore 形式、なければ数値か軸参照から始まり、
 数値か最後の textAfter 形式で終わります。
 許可された前後の改行を越えても、内部の形式は entry の gap に属します。
-名前付き entry にコロンがあれば、 textBeforeColon はその前、
+名前付き entry にコロンがあれば、textBeforeColon はその前、
 textBeforeValue はその後です。
 コロンがなければ textBeforeColon は空で、
 textBeforeValue が間の全形式を所有します。

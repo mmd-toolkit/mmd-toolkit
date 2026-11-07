@@ -55,7 +55,7 @@ timeline/gram-header-as-later-line]
 ヘッダーは**方向**を持てます。
 `timeline` の後の 1 つ以上の空白文字かタブと、大文字小文字を区別せずに比べる、
 語の文字が続かないキーワード `LR` か `TD` です。
-`timeline TD`、`timeline td`、`timeline Lr`、 `timeline` とタブと `TD`、
+`timeline TD`、`timeline td`、`timeline Lr`、`timeline` とタブと `TD`、
 `timeline` と空白文字 2 つと `TD` は方向を持ちます。
 ほかの空白は方向をヘッダーにつなぎません。
 U+00A0、U+3000、U+2028、改行の後の `TD` は period で、
@@ -114,7 +114,7 @@ timeline/header-after-hash-line]
 最後の文字の後に字句解析器が読む `\n` は、
 図のテキストの一部なので（詳しくは
 [テキストの終わり](../common.ja.md#テキストの終わり) を参照）、
-テキストの終わりのタイトルのテキスト、period、 event はそこで終わります。
+テキストの終わりのタイトルのテキスト、period、event はそこで終わります。
 [fixture: timeline/lex-title-at-end-of-text]
 [fixture: timeline/lex-period-at-end-of-text]
 [fixture: timeline/lex-event-at-end-of-text]
@@ -125,7 +125,7 @@ timeline/header-after-hash-line]
 この図の mermaid.js の字句解析器は、
 文字の大文字小文字を区別せずに比べます（[表記](../common.ja.md#表記) を参照）。
 `TITLE T`、`SECTION S`、`ACCTITLE: T`、`ACCDESCR: D`、`ACCDESCR { D }` は、
-この文書が書く形の語と同じに読まれ、 `Title`、改行、`  Section` はタイトルです。
+この文書が書く形の語と同じに読まれ、`Title`、改行、`  Section` はタイトルです。
 テキストは書かれた大文字小文字を保ちます。
 [fixture: timeline/db-title-upper-case]
 [fixture: timeline/db-section-upper-case] [fixture:
@@ -175,7 +175,7 @@ U+00A0、U+2028、U+2029、U+3000、U+FEFF、タブは、
 単位の一部にならずに単位の間にあります（規則 3）。
 字下げ、period の前の U+3000、ヘッダーの後や period の前の U+2028 は空白です。
 文のテキストは空白を自分の文字として取ります。
-period はコロンの前の空白を保ち、 period、event、タイトル、section、
+period はコロンの前の空白を保ち、period、event、タイトル、section、
 アクセシビリティのテキストの中の U+2028 と U+2029 はその文字です。
 period、event、タイトル、section のテキストの終わりのタブ、U+00A0、
 U+3000 はその文字で、アクセシビリティのタイトルと説明、
@@ -342,8 +342,8 @@ timeline/tokens-unclosed-directive-in-period-line]
 ディレクティブの前の空白とともにその行をテキストに残します。
 そのため、`title`、コメント行、`  T` は空白文字 2 つと `T` のタイトルを持ち、
 コメント行が 2 つでも同じです。
-`section`、コメント行、`  S` は section `  S` を、 `a :`、コメント行、
-`  e` は event `  e` を持ち、 `a :` の代わりに `:` だけの行でも同じです。
+`section`、コメント行、`  S` は section `  S` を、`a :`、コメント行、
+`  e` は event `  e` を持ち、`a :` の代わりに `:` だけの行でも同じです。
 `accTitle:` と `accDescr:`、コメント行、テキストは、そのテキストの値を持ち、
 コメント行と `d` を持つブロックは説明 `d` を持ちます。
 コメント行の代わりにディレクティブの行があると、その空白がテキストです。
@@ -352,7 +352,7 @@ timeline/tokens-unclosed-directive-in-period-line]
 `section` も同じです。
 `a :` と字下げしたディレクティブの行は空白文字 2 つの event を持ちます。
 ディレクティブがその行の先頭にあると行は空なので、
-`title` と `section` は period になり、 event は始まれず入力は拒否されます。
+`title` と `section` は period になり、event は始まれず入力は拒否されます。
 `accTitle:` と `accDescr:` の後では、その行の空白はコロンとともに読まれます。
 `title` の後の行 `# c` はタイトル `  # c` です。
 タイトルのテキストは `#` を持つからです。
@@ -393,7 +393,7 @@ timeline/lex-title-line-feed-hash-line]
 2 つあると最後のものだけが無視され、その前の `#x;` はエンティティです。
 `title style:#x;y;z` がそうです。
 一方、`title style:#35;` では、
-ただ 1 つの `;` がエンティティを読む前に無視され、 `#35` はテキストのままです。
+ただ 1 つの `;` がエンティティを読む前に無視され、`#35` はテキストのままです。
 period と section のテキストは `style:` の `:` で止まるので、
 `style:#x;y` と `section style:#x;y` は、残りが `:` の単位なので、
 どちらも拒否します。
@@ -426,7 +426,7 @@ timeline/div-ignored-semicolon-in-acc-title-keyword]
 
 1. `{` が続かない `%`。
    `%` から行の終わりまでの図のコメントです（[コメント](#コメント) を参照）。
-   `% c`、`%c`、`%` だけはコメントで、 period とその event の行の間でも、
+   `% c`、`%c`、`%` だけはコメントで、period とその event の行の間でも、
    ヘッダーの後でもそうです。 [fixture: timeline/db-comment-percent-line]
    [fixture: timeline/db-comment-single-percent-line]
    [fixture: timeline/db-comment-single-percent-glued]
@@ -530,10 +530,10 @@ timeline/lex-semicolon-line-is-period]
   `timeline TD title T`、`timeline a : b`、`accDescr { D } a : e`、
   `accDescr {}accDescr {} a` がそうです。
   一方、タイトルのテキストはその行の残りを、
-  section のテキストは `:` までの残りを、 period は `#` か `:` までの残りを、
+  section のテキストは `:` までの残りを、period は `#` か `:` までの残りを、
   event のテキストは空白が続く `:` までの残りを取ります。
   そのため、`title T : e` はタイトル `T : e`、
-  `section S : x` は section `S ` と event、 `a : b -- c : d --> e` は、
+  `section S : x` は section `S ` と event、`a : b -- c : d --> e` は、
   event `b -- c ` と `d --> e` を持つ period `a ` です。
   [fixture: timeline/header-title-on-header-line] [fixture:
   timeline/header-period-with-event-on-header-line] [fixture:
@@ -563,7 +563,7 @@ timeline/lex-semicolon-line-is-period]
   timeline/db-event-colon-space-then-glued-colon]
 - `title`、`section`、event のコロンの後の空白文字 1 つは改行でもよいので、
   テキストは次の行から始まれます。
-  `a :`、改行、`e` は event `e` を、 `a :`、改行、
+  `a :`、改行、`e` は event `e` を、`a :`、改行、
   `  e` は event `  e` を持ちます。
   `a : e1 :` と行 `  e2` は event `e1 ` と `  e2` を持ちます。
   テキストは空白だけでもかまいません。
@@ -575,8 +575,8 @@ timeline/lex-semicolon-line-is-period]
   timeline/db-event-line-feed-after-second-colon] [fixture:
   timeline/db-event-line-feed-then-whitespace-line] [fixture:
   timeline/gram-event-line-feed-then-empty-line]
-- `#` は period を終えてコメントを始めるので、
-  `a #c : e` は period `a ` を持ち、event を持ちません。
+- `#` は period を終えてコメントを始めるので、`a #c : e` は period `a ` を持ち、
+  event を持ちません。
   一方、タイトルのテキスト、section のテキスト、event のテキスト、
   アクセシビリティのテキストの中の `#` は文字です。
   `title T # c`、`section S # c`、`a : e # c`、`a : #`、
@@ -627,7 +627,7 @@ timeline/gram-section-colon-glued] [fixture: timeline/db-title-only-space]
 [fixture: timeline/db-section-only-space]
 `accTitle` と `accDescr` は、空白の後でも直後でも、
 `:` か `{` が後に続くときだけキーワードです。
-それだけの行の `accTitle` と `accDescr` は period で、 `accTitle`、改行、
+それだけの行の `accTitle` と `accDescr` は period で、`accTitle`、改行、
 `: T` はアクセシビリティのタイトル `T` を持ちます。 [fixture:
 timeline/db-period-acc-keywords-alone] [fixture:
 timeline/lex-acc-title-colon-on-next-line]
@@ -667,7 +667,7 @@ timeline/db-acc-descr-hash] [fixture: timeline/gram-acc-title-empty]
    [fixture: timeline/db-acc-descr-block-hash-and-percent]
 
 `{` の後の空白は、改行を含めて波括弧とともに読まれるので、
-ブロックのテキストは空白でない文字から始まり、 `}` の直前で、
+ブロックのテキストは空白でない文字から始まり、`}` の直前で、
 その前の空白を含めて終わります。
 波括弧の間に空白しかないブロックはテキストの単位を持ちません。
 [空の説明ブロック](#空の説明ブロック) を参照してください。
@@ -687,9 +687,9 @@ timeline/db-acc-descr-block-brace-inside]
 行の終わりまで続き、mermaid.js が何もないものとして読むテキストです。
 これは [common.ja.md](../common.ja.md#コメント行) のコメント行ではありません。
 コメント行は字句解析器がテキストを読む前に取り除かれます。
-図のコメントは行の途中から始まれ、 `%%` だけの行、`%x`、`# c`、
-`%%{ }%%` の行は、コメント行ではなく図のコメントです。
-[fixture: timeline/db-comment-hash-line] [fixture:
+図のコメントは行の途中から始まれ、`%%` だけの行、`%x`、`# c`、`%%{ }%%` の行は、
+コメント行ではなく図のコメントです。 [fixture: timeline/db-comment-hash-line]
+[fixture:
 timeline/db-comment-percent-only] [fixture: timeline/lex-percent-x-line]
 [fixture: timeline/lex-percent-brace-line-after-period]
 
@@ -724,7 +724,7 @@ timeline/lex-hash-before-percent]
 `title % c` はタイトル `% c` を持ちます。
 `% c` を持つ section、アクセシビリティのタイトルと説明、
 説明ブロックの行も同じです。
-`a %% c`、`a %%c`、`ab%% c` は period で、 `a : e %% c`、`a : e%% c`、
+`a %% c`、`a %%c`、`ab%% c` は period で、`a : e %% c`、`a : e%% c`、
 `a: e%% c`、`a : %%` は `%%` を含む event を持ち、タイトル、section、
 アクセシビリティのタイトルと説明は、
 `accDescr: d %% c` のように `%%` を文字として持ちます。 [fixture:
@@ -841,7 +841,7 @@ period の文は、そのように続く event をすべて取ります。
 `a : e1 : e2` は 2 つの event を持ち、
 `a` に行 `: e1` と `: e2` が続くものも同じで、間に空行、コメント行、行 `# c`、
 `%%` だけの行があっても同じです。
-period は、その単位の書かれたとおりのテキストで、 Db が保つ、コロン、`#`、
+period は、その単位の書かれたとおりのテキストで、Db が保つ、コロン、`#`、
 改行の前の空白を含みます。
 その前の空白は外にあります。 [fixture:
 timeline/db-event-two-on-a-line] [fixture: timeline/db-event-own-line] [fixture:
@@ -899,7 +899,7 @@ accessibility-statement = "accTitle" ":" acc-title-text
                         | "accDescr" "{" acc-description-block-text "}"
 ```
 
-アクセシビリティのタイトルと説明は、 mermaid.js が取り除く両端の空白を除いた、
+アクセシビリティのタイトルと説明は、mermaid.js が取り除く両端の空白を除いた、
 その単位のテキストです。
 ブロックのテキストは改行を保ち、
 各改行の後の空白は Db から外されます（tests パッケージの要約を参照）。
@@ -969,7 +969,7 @@ timeline/gram-section-with-event]
   キーワードか方向の中のディレクティブは、この仕様では入力を拒否させ、
   mermaid.js は受理します（[単位の中のディレクティブ](#単位の中のディレクティブ)
   を参照）。
-  ヘッダー、方向、`title`、`section`、`accTitle`、 `accDescr` の中です。
+  ヘッダー、方向、`title`、`section`、`accTitle`、`accDescr` の中です。
   [fixture:
   timeline/div-directive-in-header-keyword] [fixture:
   timeline/div-directive-in-direction] [fixture:
@@ -984,7 +984,7 @@ timeline/gram-section-with-event]
   mermaid.js は `;` を取り除いて部分を 1 つとして読みます。
   規則が探す `style`、`:`、`#` は、その行の文の前の説明ブロックにあります。
   同じ行の `accDescr { style:#x }` の後の `ti;tle T`、`sec;tion S`、
-  `accTi;tle: T` は、 `;` のない文として読まれます。
+  `accTi;tle: T` は、`;` のない文として読まれます。
   テキストの単位の中では、
   mermaid.js の読みを保ちます（[単位の間のトリビア](#単位の中のディレクティブ)
   を参照）。 [fixture:
@@ -995,7 +995,7 @@ timeline/gram-section-with-event]
 - **[`comment-takes-character`](../known-divergences/comment-takes-character.ja.md)。**
   単位の最初の文字、つまり `}` と空白以外の文字の直後の `%%` は、
   ここでは [コメント](#コメント) のとおりに読まれます。
-  コメントは単位が始まるところでだけ始まるので、 `%%` はその単位の一部か、
+  コメントは単位が始まるところでだけ始まるので、`%%` はその単位の一部か、
   その前の文字が文法の取らない単位です。
   mermaid.js はその文字と行の残りを 1 つのコメントとして読みます。
   差異は両方向です。

@@ -8,12 +8,11 @@
 [diagrams/mindmap.ja.md](../diagrams/mindmap.ja.md) で定めます。
 
 この図種の本体は [MindmapDiagram](#mindmapdiagram) です。
-欄の値は、
-[ast.ja.md](../ast.ja.md#ノード)が値の書かれたテキストを定めるとおり、
+欄の値は、[ast.ja.md](../ast.ja.md#ノード)が値の書かれたテキストを定めるとおり、
 書き手が書いたものを保ち、
 [common.ja.md](../common.ja.md#ソースの読み方) の変換後の形ではありません。
 この図種では、mermaid.js が読むとおり、値はその単位が読む両端の空白を保ちます。
-ノードのテキストは終わりの空白を、 icon、class、
+ノードのテキストは終わりの空白を、icon、class、
 形のテキストは両端の空白を保ちます。
 [単位と文脈](../diagrams/mindmap.ja.md#単位と文脈) を参照してください。
 形の中の文字列と markdown 文字列は常に閉じていて空ではなく、
@@ -69,7 +68,7 @@ mindmap/db-first-node-unindented]
 ノードの子は、その前にある最も近い、
 字下げの小さいノードがこのノードであるノードです。
 [字下げと親](../diagrams/mindmap.ja.md#字下げと親) を参照してください。
-`root`、`    a`、`  b`、`    c` の 4 行では、 a と b が根の子で、
+`root`、`    a`、`  b`、`    c` の 4 行では、a と b が根の子で、
 c は b の子です。
 ノードの decorations は、
 そのノードの行と次のノードの行の間にある icon と class の行で、

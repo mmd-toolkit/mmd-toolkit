@@ -164,7 +164,7 @@ processor のいずれかで、省略名を正規化しない。
 sourceFrames は空でもよい。
 dataReference と data は書かれた形全体がなければ null。
 data 参照があっても inline data を残す。
-短い frame keyword と長い keyword は構文に残し、 alias の欄を作らない。
+短い frame keyword と長い keyword は構文に残し、alias の欄を作らない。
 [fixture: eventmodeling/gram-written-tree]
 [fixture: eventmodeling/lex-hidden-frame-type-gap]
 [fixture: eventmodeling/lex-hidden-frame-entity-gap]
@@ -197,7 +197,7 @@ processor のいずれかで、省略名を正規化しない。
 sourceFrames は空でもよい。
 dataReference と data は書かれた形全体がなければ null。
 data 参照があっても inline data を残す。
-短い frame keyword と長い keyword は構文に残し、 alias の欄を作らない。
+短い frame keyword と長い keyword は構文に残し、alias の欄を作らない。
 [fixture: eventmodeling/gram-written-tree]
 [fixture: eventmodeling/db-all-aliases]
 [fixture: eventmodeling/validator-reset-invalid]
@@ -343,7 +343,7 @@ value は常に非 null。
 内部の空白、原文の改行、先の closing に見える行、文に見える text をすべて保つ。
 消費した closing LF と論理上の追加 LF はこの node の外。
 [tests の要約](../../../tests/docs/db-summaries.md#eventmodeling)
-が説明するとおり、 Db の導出は原文からその境目を読む。
+が説明するとおり、Db の導出は原文からその境目を読む。
 [fixture: eventmodeling/data-block-empty]
 [fixture: eventmodeling/lex-block-empty-whitespace]
 [fixture: eventmodeling/line-block-values]
@@ -640,7 +640,7 @@ tf 03 ui Shop.Screen accDescr {} title All
 GWT item の型の語は Item の欄に残る。
 空 note は DataBlock と LF を持つ Literal、
 空の説明 block は null の value を持つ。
-宣言、source、 tag を合成せず捨てない。
+宣言、source、tag を合成せず捨てない。
 [fixture: eventmodeling/gram-written-tree]
 
 [grammar]: https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/eventmodeling/event-modeling.langium#L1-L70

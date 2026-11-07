@@ -16,7 +16,7 @@
 `radar-beta` を第 1 列に置き、普通の最初の文を次の行へ移します。
 見出しを見つけやすくするためです。
 作者が書いたコロンの有無を保ちます。
-別置コロン前の普通の空白は意味を持たないため、 `radar-beta:` に詰めます。
+別置コロン前の普通の空白は意味を持たないため、`radar-beta:` に詰めます。
 gitgraph の [Header](./gitgraph.ja.md#header) と同じ選択です。
 hidden form、global trivia、semicolon の保護区間では境界を保ちます。
 空の本文は空のままです。
@@ -330,7 +330,7 @@ radar-beta
 ### Numbers
 
 entry と ticks・max・min の数は NumericLiteral の source span を印字します。
-整数、小数の先行・末尾ゼロ、丸められる精度、subnormal、 underflow、
+整数、小数の先行・末尾ゼロ、丸められる精度、subnormal、underflow、
 overflow の綴りを保ちます。
 double 値からの再出力は綴りを失います。
 radar が拒否する指数表記や Infinity を出すこともあるためです。
@@ -398,7 +398,7 @@ radar-beta
 ### Quotes
 
 ラベルの StringLiteral は完全な source span を保ちます。
-一重・二重・反対側の引用符、空・空白だけの文字列、escape、HTML、 entity、
+一重・二重・反対側の引用符、空・空白だけの文字列、escape、HTML、entity、
 内部の空白、hidden に見える文字を含みます。
 singleQuote でも再引用しません。
 空ラベルの削除は ID への fallback を変えます。
@@ -1086,8 +1086,8 @@ radar-beta
 
 既存の 6 差異に従います。
 directive-as-token-boundary、ignored-semicolon-as-token-boundary、
-html-tag-in-frontmatter、embedded-data-opaque、
-bare-percent-line-before-header、c4-keyword-anywhere です。
+html-tag-in-frontmatter、embedded-data-opaque、bare-percent-line-before-header、
+c4-keyword-anywhere です。
 原子的な切断は拒否し、ほかの印つき入力は仕様の読みを使います。
 radar に opaque 比較から除く固有の受理設定 key はありません。
 raw の拒否には raw Db がありません。

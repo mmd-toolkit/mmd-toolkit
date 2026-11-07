@@ -123,7 +123,7 @@ body に直接置くのは列のノードだけとし、
 [fixture: kanban/lex-indent-comment-ps-tail-directive-touching]
 [fixture: kanban/lex-indent-comment-ps-selected-semicolon-indent-directive]
 
-id は末尾の空白を保ち、 `A [text]` の id は `A ` です。
+id は末尾の空白を保ち、`A [text]` の id は `A ` です。
 [fixture: kanban/db-name-space-before-shape]
 [fixture: kanban/db-name-trailing-space]
 ノード本文は空白を許すため KanbanLiteral です。
@@ -185,7 +185,7 @@ children はソース順とし、カードが無ければ空にします。
 [fixture: kanban/db-shape-square]
 [fixture: kanban/gram-shape-carryover-doublecircle]
 [fixture: kanban/lex-shape-dash-string]
-開きと閉じは一致しなくてもよく、 `[text)` は開き `[` と閉じ `)` を持ちます。
+開きと閉じは一致しなくてもよく、`[text)` は開き `[` と閉じ `)` を持ちます。
 [fixture: kanban/db-shape-mismatched]
 
 閉じない形とラベルは拒否します。 [fixture: kanban/gram-unclosed-shape]
@@ -242,7 +242,7 @@ markdown ラベルなら `markdown` です。 [fixture: kanban/db-shape-square]
 空白だけの本文も含めて両端の空白を保ちます。
 [fixture: kanban/lex-class-trailing-spaces]
 [fixture: kanban/gram-whitespace-class]
-行区間を終える改行、U+2028、 U+2029 は含みません。
+行区間を終える改行、U+2028、U+2029 は含みません。
 [fixture: kanban/lex-class-ls-lf] [fixture: kanban/gram-grid-ps-item-class]
 
 ### KanbanDataBlock
@@ -292,7 +292,7 @@ Identifier ではなく KanbanLiteral です。 [fixture: kanban/db-name-two-wor
 
 この記述例は、二段の木を示すため不揃いな字下げを保っています。
 Diagram.body は S、S.children は A・B・C を持ちます。
-三つのカードの children は空で、 B は A の子ではありません。
+三つのカードの children は空で、B は A の子ではありません。
 [fixture: kanban/db-indent-deeper]
 
 ```mmd

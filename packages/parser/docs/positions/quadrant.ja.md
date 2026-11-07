@@ -61,7 +61,7 @@
 `] radius: 10, color: #f00` の `radius: 10` がそうです。
 題、アクセシビリティのテキスト、説明ブロックのテキストは、
 両端の Notation の空白を U+00A0 も含めて除いたテキストを覆います。
-説明ブロックでは、 `{` の後の空白と `}` の前の空白の間の行を覆います。
+説明ブロックでは、`{` の後の空白と `}` の前の空白の間の行を覆います。
 [fixture: quadrant/db-point-plain] [fixture: quadrant/db-style-two]
 [fixture: quadrant/db-acc-descr-block-lines] [fixture: quadrant/db-class-plain]
 [fixture: quadrant/db-classdef-two-styles]

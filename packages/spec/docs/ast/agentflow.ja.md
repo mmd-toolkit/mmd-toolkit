@@ -172,7 +172,7 @@ Label の part が少なくとも 1 つ必要であり、消される形だけ�
 閉じた空の説明ブロック（kind は empty-description-block）、
 認識した消される空の文字列（kind は empty-string）、
 空の markdown 文字列（kind は empty-markdown-string）、
-空の call（kind は empty-call）、 click の文脈の断片の終わりでだけ分ける。
+空の call（kind は empty-call）、click の文脈の断片の終わりでだけ分ける。
 [fixture: agentflow/lex-empty-string-in-flow-name]
 [fixture: agentflow/lex-empty-call-in-flow-name]
 [fixture: agentflow/lex-empty-markdown-in-flow-name]
@@ -728,7 +728,7 @@ interpolate と styles の少なくとも一方がある。
 空の id は null とする。
 call の後の名前は空白と改行を許すので Literal、
 裸のコールバックは Identifier とする。
-名前の LF、CRLF、U+2028、 U+2029 は書かれたまま保つ。
+名前の LF、CRLF、U+2028、U+2029 は書かれたまま保つ。
 [fixture: agentflow/lex-callback-name-lf]
 [fixture: agentflow/lex-callback-name-crlf]
 [fixture: agentflow/lex-callback-name-u2028]
@@ -889,7 +889,7 @@ direction と値の間の改行も文の範囲に含む。
 
 閉じないブロックの内容は、mermaid.js が使わなくても EOF まで保つ。
 閉じた空のブロックは value が null、closed が true である。
-文の位置なら別の文として保ち、 Name と click の前置欄では、全表記を、
+文の位置なら別の文として保ち、Name と click の前置欄では、全表記を、
 kind が empty-description-block の IgnoredText に保つ。
 [fixture: agentflow/db-accessibility-unclosed-block]
 [fixture: agentflow/db-accessibility-empty-unclosed]

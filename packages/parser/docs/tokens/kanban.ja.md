@@ -23,7 +23,7 @@ kanban のトークンを定めます。
 [fixture: kanban/spec-kanban-562eb2dc] [fixture: kanban/db-markdown-label]
 
 各単位は 1 項目です。
-ただし、データブロックの `data-start` と `}` の間の単位は、 flowchart と同じく、
+ただし、データブロックの `data-start` と `}` の間の単位は、flowchart と同じく、
 合わせて 1 つの `RawText` 項目です。
 `data-text` の単位と、引用された部分を囲む `data-quote` の単位は、
 `}` や `^` を囲んでいても、内部全体で 1 つの `RawText` トークンになります。

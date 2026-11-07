@@ -191,7 +191,7 @@ treeview/description-blocks/box-redraw-opener-prefix-with-directive-gap]
 
 ### Branch prefixes
 
-親子は AST の children から読み、 file も親として扱い、
+親子は AST の children から読み、file も親として扱い、
 原文の深さの飛びを詰めます。
 次の兄弟があるノードは `├── `、最後の兄弟は `└── ` で描きます。
 次の兄弟がある祖先の段は `│   `、それ以外は 4 spaces です。
@@ -1486,7 +1486,7 @@ treeView-beta
 ### Names
 
 裸名と StringLiteral の原文の範囲を丸ごと保ちます。
-引用符の選択、空名、backslash、内部と末尾の空白、 HTML と entity の綴り、
+引用符の選択、空名、backslash、内部と末尾の空白、HTML と entity の綴り、
 directory の slash を含みます。
 singleQuote で引用し直しません。
 Db の等しい引用変更も綴りを失い、
@@ -1665,7 +1665,7 @@ treeView-beta
 ### Accessibility lines
 
 共有の `accTitle: value` と `accDescr: value` を使います。
-colon は keyword に付け、 trim した非空値の前は space 1 個、
+colon は keyword に付け、trim した非空値の前は space 1 個、
 空なら colon までです。
 内部の空白、brace らしい行値と trivia の境界を保ちます。
 共通の converter が許す同等の外側の gap を選び、
@@ -2803,8 +2803,8 @@ treeView-beta
 
 既存の六つの差異を使います。
 directive-as-token-boundary、ignored-semicolon-as-token-boundary、
-html-tag-in-frontmatter、embedded-data-opaque、
-bare-percent-line-before-header、c4-keyword-anywhere です。
+html-tag-in-frontmatter、embedded-data-opaque、bare-percent-line-before-header、
+c4-keyword-anywhere です。
 空の引用名と `icon()` は受理される構文です。
 拒否される文法を修復せず、記録があれば仕様の Db で比較します。
 raw の拒否に raw の Db はなく、treeview 固有の opaque の受理設定はありません。
@@ -2831,7 +2831,7 @@ raw の拒否に raw の Db はなく、treeview 固有の opaque の受理設�
 
 ### Markdown fences
 
-dedent 後の本文へ同じ規則を適用し、 fence、
+dedent 後の本文へ同じ規則を適用し、fence、
 list と quote の列は Markdown host に任せます。
 値の継続列へ host の列を足しません。
 host の出力と冪等性は本文の Db とは別に検査します。

@@ -20,7 +20,7 @@ parser の結果の記録が決める。
    共通 directive と選ばれた semicolon を除き、
    comment region は原文が `maxTextSize` より長いときだけ除く。
    そうでなければ、agentflow と同じく comment 行を残す。
-   値の外の comment 行は共有の Comment で、 block の値、note、`accDescr {…}`、
+   値の外の comment 行は共有の Comment で、block の値、note、`accDescr {…}`、
    隠れた形の中の comment 行は、そのテキストの一部になる。
    CR/CRLF を正規化し、
    実際の frontmatter より後の原文全体で HTML 属性の引用符を変換し、
@@ -54,7 +54,7 @@ parser の結果の記録が決める。
    semicolon の除去で native directive の closer と LF が直結する場合も含む。
    選ばれない semicolon は構文として、空の説明ブロックは文の境目として残る。
    どちらも除かれたかのように prefix をつながない。
-   共通 converter の trim、空白の畳み込み、 escape の復号を施さない。
+   共通 converter の trim、空白の畳み込み、escape の復号を施さない。
    [fixture: eventmodeling/gram-common-leading-directive-both-sides]
    [fixture: eventmodeling/gram-common-leading-directive-before-padding]
    [fixture: eventmodeling/gram-common-leading-directive-after-padding]

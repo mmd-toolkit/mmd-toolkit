@@ -168,7 +168,7 @@ section もタスクもリンクもなく、
 
 - `dateFormat`、`axisFormat`、`tickInterval`、`todayMarker` は、
   その種類の最後の文の値のテキストで、書かれたとおり、両端の空白を含みます。
-  欄 `tickInterval` があるのは、 `tickInterval` の文があるときだけです。
+  欄 `tickInterval` があるのは、`tickInterval` の文があるときだけです。
   [fixture: gantt/db-date-format] [fixture: gantt/db-date-format-last-wins]
   [fixture: gantt/db-axis-format] [fixture: gantt/db-axis-format-last-wins]
   [fixture: gantt/db-tick-interval] [fixture: gantt/db-tick-interval-last-wins]
@@ -240,19 +240,19 @@ section もタスクもリンクもなく、
   [fixture: gantt/gram-task]
 - それ以外の項目が何を与えるかは、その数で決まります。
   項目が 1 つなら、それが終わりです。
-  `raw.endTime` は項目のテキストを持つ `{ data }` で、 `raw.startTime` は、
+  `raw.endTime` は項目のテキストを持つ `{ data }` で、`raw.startTime` は、
   直前のタスクの `id` を持つ `{ type: "prevTaskEnd", id }` です。
   タスクが最初の場合や、直前のタスクに id がない場合は、`id` はありません。
   項目が 2 つなら、始まりと終わりです。
   `raw.startTime` は、
-  最初の項目を持つ `{ type: "getStartDate", startData }` で、 `raw.endTime` は、
+  最初の項目を持つ `{ type: "getStartDate", startData }` で、`raw.endTime` は、
   2 つ目の項目を持つ `{ data }` です。
   項目が 3 つなら、id、始まり、終わりです。
   id は最初の項目で、空でも、空白を含んでもかまいません。
   項目は書かれたとおりのテキストなので、`after id1 id2` や `until id1` も、
   ほかの項目と同じ項目です。
   項目が 4 つ以上なら、読みません。
-  タスクは `id` を持たず、 `raw` は `startTime` も `endTime` も持ちません。
+  タスクは `id` を持たず、`raw` は `startTime` も `endTime` も持ちません。
   [fixture: gantt/gram-task-one-item] [fixture: gantt/db-task-forms]
   [fixture: gantt/db-task-id-numbered]
   [fixture: gantt/db-task-one-item-after-four-items]
@@ -363,7 +363,7 @@ click の文は、id でタスクを参照し、呼び出し部分があれば�
 要約は [db-summaries.ja.md](../db-summaries.ja.md#gantt) の欄を持ちます。
 上の値、文の順に並べた section の名前の `sections`、ソースの順の `tasks`、
 `links`、`clickCalls` です。
-タスクは `section`、`raw`、`task`、`classes`、 `id`（なければなし）、
+タスクは `section`、`raw`、`task`、`classes`、`id`（なければなし）、
 立っているフラグ、`order` を持ちます。
 
 ## 文字の置き換え

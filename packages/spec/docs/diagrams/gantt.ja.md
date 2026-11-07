@@ -128,7 +128,7 @@ gantt/lex-click-keywords-upper-case] [fixture: gantt/lex-day-mixed-case]
 後ろに何もない `accDescr:`、
 `}` のない `accDescr {` （後ろにテキストがあってもなくても）、
 テキストの終わりの `click id1`、テキストの終わりの `click` と空白、
-閉じる引用符のない `href "u`、 `(` のない `call f`、
+閉じる引用符のない `href "u`、`(` のない `call f`、
 `)` のない `call f(1` は拒否されます。
 後ろに行が続いても同じです。
 これらの文脈の規則は改行を読むからです。
@@ -178,7 +178,7 @@ gantt/lex-task-text-tab-at-end]
 を参照）、プレースホルダーは ASCII の外の文字でできているので、
 その `#` と `;` は設定のテキストやタスクのデータを終えず、
 テキストはエンティティを書かれたとおりに保ちます。
-`a#amp; : 1d` は説明が `a#amp; ` のタスクで、 `title #x;` はタイトル `#x;` を、
+`a#amp; : 1d` は説明が `a#amp; ` のタスクで、`title #x;` はタイトル `#x;` を、
 `dateFormat X#y;` は書式 `X#y;` を持ちます。
 エンティティの後の `#` や `;` は、いつもどおりテキストを終えます。
 [fixture: gantt/entity-placeholder-in-task-text] [fixture:
@@ -215,8 +215,7 @@ mermaid.js がディレクティブを除いた後のテキストを読むのと
 `acc-description-block-text` です。
 唯一の**文字列の単位**は `url-text` です。
 
-- `a%%{init: {}}%%b : 1d` はタスク `ab `、
-  `a : 1%%{init: {}}%%d` は終わり `1d`、
+- `a%%{init: {}}%%b : 1d` はタスク `ab `、`a : 1%%{init: {}}%%d` は終わり `1d`、
   `title a%%{init: {}}%%b` はタイトル `ab`、
   `section S%%{init: {}}%%T` は section `ST`、
   `dateFormat YY%%{init: {}}%%YY` は書式 `YYYY`、
@@ -224,7 +223,7 @@ mermaid.js がディレクティブを除いた後のテキストを読むのと
   `accDescr { a%%{init: {}}%%b }` の説明も同じです。
   `click id1 href` `"u%%{init: {}}%%v"` は URL `uv`、
   `call f%%{init: {}}%%g()` はコールバック `fg`、
-  `call f(1%%{init: {}}%%2)` は引数 `12` で、 mermaid.js と同じです。
+  `call f(1%%{init: {}}%%2)` は引数 `12` で、mermaid.js と同じです。
   [fixture: gantt/lex-directive-in-task-text] [fixture:
   gantt/lex-directive-in-task-data] [fixture: gantt/lex-directive-in-title-text]
   [fixture: gantt/lex-directive-in-section-text] [fixture:
@@ -235,13 +234,12 @@ mermaid.js がディレクティブを除いた後のテキストを読むのと
   gantt/lex-directive-in-callback-name] [fixture:
   gantt/lex-directive-in-callback-arguments]
 - 2 つの単位の間のディレクティブは、単位の種類によらず許されます。
-  `a : 1d%%{init: {}}%%, 2d`、`title %%{init: {}}%%T`、
-  `title%%{init: {}}%% T`、`weekday %%{init: {}}%%monday`、
-  `click %%{init: {}}%%id1 href "u"`、`href %%{init: {}}%%"u"`、
-  `call f%%{init: {}}%%()`、`call f(%%{init: {}}%%1)`、
-  `accTitle%%{init: {}}%%: T`、`accDescr %%{init: {}}%%{ d }`、
-  `a :%%{init: {}}%% 1d`、行の続く `gantt%%{init: {}}%%` は、
-  ディレクティブがないものとして読まれます。
+  `a : 1d%%{init: {}}%%, 2d`、`title %%{init: {}}%%T`、`title%%{init: {}}%% T`、
+  `weekday %%{init: {}}%%monday`、`click %%{init: {}}%%id1 href "u"`、
+  `href %%{init: {}}%%"u"`、`call f%%{init: {}}%%()`、
+  `call f(%%{init: {}}%%1)`、`accTitle%%{init: {}}%%: T`、
+  `accDescr %%{init: {}}%%{ d }`、`a :%%{init: {}}%% 1d`、
+  行の続く `gantt%%{init: {}}%%` は、ディレクティブがないものとして読まれます。
   [fixture: gantt/lex-directive-between-items] [fixture:
   gantt/lex-directive-between-title-and-text] [fixture:
   gantt/lex-directive-between-title-and-whitespace] [fixture:
@@ -262,7 +260,7 @@ mermaid.js がディレクティブを除いた後のテキストを読むのと
   `cli%%{init: {}}%%ck`、`hr%%{init: {}}%%ef`、`ca%%{init: {}}%%ll`、
   `acc%%{init: {}}%%Title:`、
   `acc%%{init: {}}%%Descr {` ではキーワードの中にあります。
-  入力は拒否され、 mermaid.js は 2 つの部分を 1 つとして読んで受理します。
+  入力は拒否され、mermaid.js は 2 つの部分を 1 つとして読んで受理します。
   [fixture: gantt/div-directive-in-click-id]
   [fixture: gantt/div-directive-in-list-item]
   [fixture: gantt/div-directive-in-header-keyword]
@@ -285,7 +283,7 @@ mermaid.js がディレクティブを除いた後のテキストを読むのと
 単独の CR は行終端で、
 改行として読まれます（[行終端](../common.ja.md#行終端) を参照）。
 ヘッダー、タイトル、section、タスクは、単独の CR の間でも CRLF の改行の間でも、
-改行の間と同じに読まれ、 click の id の後の単独の CR は、
+改行の間と同じに読まれ、click の id の後の単独の CR は、
 改行と同じく click の文脈を出ます。 [fixture: gantt/header-cr-only]
 [fixture: gantt/lex-title-cr-value] [fixture:
 gantt/lex-section-cr-value] [fixture: gantt/header-crlf] [fixture:
@@ -310,7 +308,7 @@ gantt/lex-directive-glued-at-end-of-section]
 [ディレクティブの位置](../common.ja.md#ディレクティブの位置)
 を参照してください。
 `a : 1d %%{init: {}` に行 `b : 2d` が続くものは、
-終わりが `1d` の 1 つのタスク `a ` を持ち、 `gantt`、行 `%%{init: {}`、
+終わりが `1d` の 1 つのタスク `a ` を持ち、`gantt`、行 `%%{init: {}`、
 行 `a : 1d` はタスクを持たず、
 タスクの行が続く `title T %%{init: {}` はタイトル `T ` を持ち、
 タスクを持ちません。 [fixture: gantt/tokens-unclosed-directive-in-data-line]
@@ -320,7 +318,7 @@ gantt/tokens-unclosed-directive-in-title]
 コメント行は、字句解析器がテキストを読む前に除かれます。
 説明ブロックの中、複数行にわたるコールバック引数や URL 文字列の中、
 キーワードとその後に続くものの間でも同じです。
-`title`、コメント行、`T` はタイトル `T` を持ち、 `weekday` と `monday`、
+`title`、コメント行、`T` はタイトル `T` を持ち、`weekday` と `monday`、
 `dateFormat` と `YYYY`、`accTitle:` と `T` も同じです。
 `click id1`、コメント行、`href "u"` はリンクを設定します。
 id の後の改行が click の文脈を出るからです。
@@ -407,9 +405,9 @@ gantt/lex-semicolon-not-ignored-in-click-id]
    [fixture: gantt/lex-click-tab-separators] [fixture:
    gantt/lex-click-double-spaces]
 10. キーワード `gantt`: `header` の単位。 [fixture: gantt/header-only]
-11. `dateFormat`、改行を含む 1 つの空白文字、 `#`、`;`、
+11. `dateFormat`、改行を含む 1 つの空白文字、`#`、`;`、
     改行以外の 1 つ以上の文字: `dateFormat` の単位と `setting-text` の単位。
-    そのテキストは、 1 つの空白文字の後の文字です。
+    そのテキストは、1 つの空白文字の後の文字です。
     [fixture: gantt/db-date-format] [fixture: gantt/lex-dateformat-two-spaces]
     [fixture: gantt/lex-dateformat-tab] [fixture:
     gantt/lex-dateformat-line-feed-value] [fixture: gantt/lex-dateformat-hash]
@@ -489,8 +487,8 @@ gantt/lex-semicolon-not-ignored-in-click-id]
     gantt/lex-date-digit-suffix-task] [fixture: gantt/lex-date-short-task]
 22. `title`、改行を含む 1 つの空白文字、
     改行以外の 1 つ以上の文字: `title` の単位と `title-text` の単位。
-    そのテキストは、1 つの空白文字の後から行の終わりまでの文字で、 `:`、`#`、
-    `;`、 `%%` を含めます。 [fixture: gantt/db-title-statement]
+    そのテキストは、1 つの空白文字の後から行の終わりまでの文字で、`:`、`#`、
+    `;`、`%%` を含めます。 [fixture: gantt/db-title-statement]
     [fixture: gantt/lex-title-two-spaces] [fixture: gantt/lex-title-tab]
     [fixture: gantt/lex-title-vertical-tab]
     [fixture: gantt/lex-title-ideographic-space] [fixture:
@@ -503,7 +501,7 @@ gantt/lex-semicolon-not-ignored-in-click-id]
     文法のどの規則も取りません。 [fixture: gantt/lex-acc-description]
 24. `section`、改行を含む 1 つの空白文字、
     改行以外の 1 つ以上の文字: `section` の単位と `section-text` の単位。
-    そのテキストは、 1 つの空白文字の後から行の終わりまでの文字です。
+    そのテキストは、1 つの空白文字の後から行の終わりまでの文字です。
     [fixture: gantt/db-sections] [fixture: gantt/lex-section-two-spaces]
     [fixture: gantt/lex-section-tab] [fixture:
     gantt/lex-section-line-feed-value] [fixture: gantt/lex-section-hash-colon]
@@ -539,7 +537,7 @@ gantt/lex-semicolon-not-ignored-in-click-id]
 改行と `:` 以外のどの文字もタスクのテキストの文字なので、
 独自の単位として残る文字はなく、行を拒否するのは文法だけです。
 データのないタスクのテキスト（`a`、`#`、`}`、`title2 T`）、`date` の単位、
-`accDescription` の単位、 `:` の単位です。 [fixture: gantt/lex-task-text-only]
+`accDescription` の単位、`:` の単位です。 [fixture: gantt/lex-task-text-only]
 [fixture: gantt/lex-task-hash-line] [fixture: gantt/lex-task-brace-line]
 [fixture: gantt/lex-title-digit-suffix] [fixture: gantt/lex-date-line]
 [fixture: gantt/lex-acc-description] [fixture:
@@ -583,14 +581,14 @@ gantt/lex-task-colon-only]
 語の文字が続かないところでだけキーワードです。
 その後に語の文字があると、
 語の全体がタスクのテキストになります（`gantt2` はヘッダーを持たず拒否され、
-`inclusiveEndDatesx : 1d`、 `topAxisx : 1d`、`weekday mondayx : 1d`、
+`inclusiveEndDatesx : 1d`、`topAxisx : 1d`、`weekday mondayx : 1d`、
 `weekday monday2 : 1d` はタスクです）。
 一方、その後の `-`、`:`、`#`、`{`、`%`、改行、
 テキストの終わりはキーワードを終えます。
 `gantt-x : 1d` と `inclusiveEndDates-x : 1d` はキーワードとタスク `-x `、
 `inclusiveEndDates{ : 1d` はキーワードとタスク `{ `、
-`inclusiveEndDates%` はキーワードとコメントで、 `inclusiveEndDates:`、
-`inclusiveEndDates#`、`inclusiveEndDates-x`、 `weekday monday-x`、
+`inclusiveEndDates%` はキーワードとコメントで、`inclusiveEndDates:`、
+`inclusiveEndDates#`、`inclusiveEndDates-x`、`weekday monday-x`、
 `weekday monday:`、`weekday monday#`、`weekday monday x` は拒否されます。
 `:` の単位とデータのないタスクのテキストはどの規則も取らないからです。
 ASCII の外の文字も語の文字ではありません。
@@ -627,10 +625,10 @@ gantt/lex-weekday-then-text]
 テキストの終わり、`dateFormat` では `#` の位置では、語はデータのある、
 またはないタスクのテキストです。
 `title\n\nT`、`title`、`title `、`section`、`dateFormat`、`dateFormat `、
-`dateFormat \nX`、`dateFormat\n#x`、`title2 T` は拒否され、 `title:T`、
+`dateFormat \nX`、`dateFormat\n#x`、`title2 T` は拒否され、`title:T`、
 `section:S`、`dateFormat:x`、`tickInterval:1w`、
-`accDescription: x` は語を説明とするタスクで、 `titles : 1d`、`title-x : 1d`、
-`sectionx : 1d`、`dateFormat-x : 1d`、 `weekdays monday : 1d`、
+`accDescription: x` は語を説明とするタスクで、`titles : 1d`、`title-x : 1d`、
+`sectionx : 1d`、`dateFormat-x : 1d`、`weekdays monday : 1d`、
 `weekdayx monday : 1d` はタスクです。 [fixture: gantt/lex-title-line-feed-value]
 [fixture:
 gantt/lex-dateformat-line-feed-value] [fixture:
@@ -655,7 +653,7 @@ gantt/lex-weekday-word-suffix-keyword]
 `href` はさらに空白の後の `"` が要ります。
 `click:` `1d`、`click-x : 1d`、`clickx : 1d`、`hrefx : 1d`、
 `callx : 1d` はタスクで、`click` だけ、click の id の後の `href"u"`、
-click の id の後の `callf()` は拒否され、 `click`、改行、
+click の id の後の `callf()` は拒否され、`click`、改行、
 `id1 href "u"` は click の文です。 [fixture: gantt/lex-click-colon-task]
 [fixture: gantt/lex-click-dash-task] [fixture: gantt/lex-click-word-suffix-task]
 [fixture:
@@ -664,7 +662,7 @@ gantt/lex-href-word-suffix-task] [fixture: gantt/lex-call-word-suffix-task]
 gantt/lex-call-no-space] [fixture: gantt/lex-click-line-feed-id]
 `accTitle` と `accDescr` は、
 空白を挟んでも挟まなくても `:` か `{` が続くところでだけキーワードです。
-`accTitlex: T` と `accTitle-: T` は語を説明とするタスクで、 `accTitle`、改行、
+`accTitlex: T` と `accTitle-: T` は語を説明とするタスクで、`accTitle`、改行、
 `: T` はタイトル `T` を持ちます。
 [fixture: gantt/lex-acc-title-word-suffix-task] [fixture:
 gantt/lex-acc-title-dash-task] [fixture:
@@ -694,7 +692,7 @@ id のテキストは最初の空白文字で終わり、その空白文字は�
 `newline` の単位ではありません。
 `click id1`、改行、`href "u"` は 1 つの click の文で、
 `href` の前に空白があっても同じです。
-一方、`click id1`、空白、改行、`href "u"` と、 `click id1`、改行 2 つ、
+一方、`click id1`、空白、改行、`href "u"` と、`click id1`、改行 2 つ、
 `href "u"` は拒否されます。
 2 つ目の空白文字が文の文脈で `newline` の単位を始めるからです。
 `click id1, id2 href "u"` も拒否されます。
@@ -706,7 +704,7 @@ gantt/gram-click-id-line-feed-tab-href] [fixture:
 gantt/gram-click-id-space-line-feed-href] [fixture:
 gantt/gram-click-id-blank-line-href] [fixture: gantt/gram-click-ids-comma-space]
 [fixture: gantt/lex-click-id-at-end]
-click の id にはコメントの規則がなく、 `%` は id の文字です。
+click の id にはコメントの規則がなく、`%` は id の文字です。
 [fixture: gantt/lex-percent-in-click-id]
 
 ### href の文脈
@@ -716,7 +714,7 @@ href の文脈には、`href`、その空白、`"` の後に入ります（文�
 
 1. `"`: `"` の単位。
    文脈を出ます。 [fixture: gantt/gram-click-href]
-2. 改行を含む、 `"` 以外の 1 つ以上の文字: `url-text` の単位。
+2. 改行を含む、`"` 以外の 1 つ以上の文字: `url-text` の単位。
    [fixture: gantt/gram-click-href] [fixture:
    gantt/gram-click-href-line-feed-inside] [fixture:
    gantt/lex-percent-in-href-string] [fixture: gantt/lex-href-line-feed-url]
@@ -743,7 +741,7 @@ gantt/lex-href-line-feed-url] [fixture: gantt/lex-href-unclosed]
 2. `(`: `(` の単位。
    文脈を出て、コールバック引数の文脈に入ります。
    [fixture: gantt/gram-click-call-arguments]
-3. 改行を含む、 `(` 以外の 1 つ以上の文字: `callback-name` の単位。
+3. 改行を含む、`(` 以外の 1 つ以上の文字: `callback-name` の単位。
    [fixture: gantt/gram-click-call] [fixture:
    gantt/gram-click-call-name-space-before-parenthesis] [fixture:
    gantt/gram-click-call-name-line-feed-before-parenthesis] [fixture:
@@ -755,7 +753,7 @@ gantt/lex-href-line-feed-url] [fixture: gantt/lex-href-unclosed]
 
 1. `)`: `)` の単位。
    文脈を出ます。 [fixture: gantt/gram-click-call-arguments]
-2. 改行を含む、 `)` 以外の 1 つ以上の文字: `callback-arguments` の単位。
+2. 改行を含む、`)` 以外の 1 つ以上の文字: `callback-arguments` の単位。
    [fixture: gantt/gram-click-call-arguments] [fixture:
    gantt/gram-click-call-arguments-leading-space] [fixture:
    gantt/gram-click-call-arguments-quoted-comma] [fixture:
@@ -811,7 +809,7 @@ gantt/lex-acc-title-at-end] [fixture: gantt/lex-acc-title-space-at-end]
 
 1. `}`: `}` の単位。
    文脈を出ます。 [fixture: gantt/gram-acc-descr-block]
-2. 改行を含む、 `}` 以外の 1 つ以上の文字: `acc-description-block-text` の単位。
+2. 改行を含む、`}` 以外の 1 つ以上の文字: `acc-description-block-text` の単位。
    [fixture: gantt/gram-acc-descr-block] [fixture:
    gantt/gram-acc-descr-block-multiline] [fixture:
    gantt/gram-acc-descr-block-brace-inside]
@@ -836,7 +834,7 @@ gantt/gram-acc-descr-block-double-close]
 行の終わりまで続き、mermaid.js が何もないものとして読むテキストです。
 これは [common.ja.md](../common.ja.md#コメント行) のコメント行ではありません。
 コメント行は字句解析器がテキストを読む前に除かれます。
-図のコメントは行の途中から始まることができ、 `%%` だけ、`% c`、`%x`、
+図のコメントは行の途中から始まることができ、`%%` だけ、`% c`、`%x`、
 `%%{ }%%` の行は、コメント行ではなく図のコメントです。
 [fixture: gantt/comment-line] [fixture:
 gantt/lex-bare-percent-line-after-header] [fixture:
@@ -989,7 +987,7 @@ gantt/lex-two-spaces-then-percent-after-unit]
 mermaid.js は、直接たどり着いた `%` のコメントがその後の改行を取るので、
 受理します。
 call の部分の後の `%` の前に空白があるとき、
-click の id の後に空白が 2 つあるとき、 `%%` のときは、
+click の id の後に空白が 2 つあるとき、`%%` のときは、
 `%` に直接たどり着かないかコメントが改行を取らないので、どちらも拒否し、
 文と文の間では mermaid.js が取る改行は何も変えません。
 [fixture: gantt/lex-percent-comment-after-click-id-two-spaces-then-href-line]
@@ -1043,7 +1041,7 @@ mermaid.js の文書は
 そのテキストを名前とする単位を表します。
 文法は
 [`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L107-L173)
-の文法の言い換えで、 mermaid.js がトークンを読まない、
+の文法の言い換えで、mermaid.js がトークンを読まない、
 空の形（[空の説明ブロック](#空の説明ブロック) と、
 [空の href と空の call](#空の-href-と空の-call) を参照）を除いて、
 同じ単位の並びを受理します。
@@ -1142,8 +1140,8 @@ gantt/db-task-description-spaces] [fixture: gantt/lex-task-colon-at-end]
 の要素です（[GanttTaskStatement](../ast/gantt.ja.md#gantttaskstatement)
 を参照）。
 項目はコンマより常に 1 つ多くあります。
-`a : ` は空の項目 1 つ、`a : ,` は 2 つ、 `a : 1d,` は項目 `1d` と空の項目、
-`a : id1,, 1d` は項目 `id1`、空の項目、 `1d` を持ちます。
+`a : ` は空の項目 1 つ、`a : ,` は 2 つ、`a : 1d,` は項目 `1d` と空の項目、
+`a : id1,, 1d` は項目 `id1`、空の項目、`1d` を持ちます。
 [fixture: gantt/lex-task-data-whitespace-only] [fixture:
 gantt/gram-task-empty-items] [fixture: gantt/gram-task-empty-items-no-spaces]
 [fixture: gantt/gram-task-trailing-comma] [fixture:
@@ -1163,7 +1161,7 @@ mermaid.js がそれをどう読むかは、tests パッケージの要約にあ
 タグの後の項目がタスクの `items` で、それぞれ書かれたとおりです。
 `after` と id、`until` と id、日付、長さ、空白を含む id は、
 それぞれ 1 つの項目です。
-id は一意である必要はなく、 2 つのタスクが同じ id を持ってもかまいません。
+id は一意である必要はなく、2 つのタスクが同じ id を持ってもかまいません。
 [fixture: gantt/gram-task-duplicate-id-click]
 [fixture: gantt/gram-task-tag-then-item] [fixture: gantt/gram-task-two-tags]
 [fixture: gantt/gram-task-tag-repeated]
@@ -1256,7 +1254,7 @@ call の部分は、`call`、`callback-name` の単位、括弧で、
 click の文は call とリンクを多くとも 1 つずつ持ち、
 その後の行には別の文かコメントのほかに何も置けません。
 2 つの call の部分、2 つのリンクの部分、3 つの部分、部分の後のテキスト、
-id と部分の間のテキスト、 id のテキストが `href` である `click` は拒否されます。
+id と部分の間のテキスト、id のテキストが `href` である `click` は拒否されます。
 [fixture: gantt/gram-click-call] [fixture: gantt/gram-click-call-arguments]
 [fixture: gantt/gram-click-call-blank-arguments] [fixture:
 gantt/gram-click-call-arguments-leading-space] [fixture:
@@ -1316,7 +1314,7 @@ weekend-statement             = "weekend" day
 `weekday` と `weekend` の曜日は `day` の単位の曜日で、
 テキストの大文字小文字によらず小文字です。
 これらの文はどれも何度書いてもかまいません。
-mermaid.js がそれらを Db にどう読むかは、 tests パッケージの要約にあります。
+mermaid.js がそれらを Db にどう読むかは、tests パッケージの要約にあります。
 [fixture: gantt/db-date-format] [fixture: gantt/db-date-format-extra-spaces]
 [fixture: gantt/lex-dateformat-trailing-spaces] [fixture:
 gantt/db-date-format-last-wins] [fixture: gantt/db-axis-format] [fixture:
@@ -1343,7 +1341,7 @@ section-statement = "section" section-text
 section の文の名前は、その `section-text` の単位の書かれたとおりのテキストです。
 タイトルと section の名前は繰り返してもかまいません。
 mermaid.js がタイトル、フロントマターのタイトル、section を Db にどう読むか、
-タスクがどの section に属するかは、 tests パッケージの要約にあります。
+タスクがどの section に属するかは、tests パッケージの要約にあります。
 [fixture: gantt/db-title-statement] [fixture: gantt/db-title-frontmatter]
 [fixture: gantt/db-title-statement-after-frontmatter] [fixture:
 gantt/lex-title-twice] [fixture: gantt/lex-title-two-spaces] [fixture:
@@ -1412,8 +1410,8 @@ gantt/gram-empty-description-block-in-href-string] [fixture:
 gantt/lex-empty-description-block-between-weekday-and-day] [fixture:
 gantt/gram-empty-description-block-then-percent-glued]
 
-ブロックが文の中にあって入力が拒否されるのは、
-click の文の id と最初の部分の間、2 つの部分の間です。
+ブロックが文の中にあって入力が拒否されるのは、click の文の id と最初の部分の間、
+2 つの部分の間です。
 `click id1 accDescr {} href "u"`（くっついていても）、
 `click id1 call f() accDescr {}` `href "u"`、
 `click id1 href "u" accDescr {} call f()` です。
@@ -1441,11 +1439,11 @@ mermaid.js はどちらにもトークンを読まず、ないものとして入
 同じ行の文の前（くっついていてもいなくても）、
 click の文の中（id と最初の部分の間、部分の間）のどれでもです。
 mermaid.js はどれも、その形がないものとして受理します。
-`title T` の前の行の `href ""` はタイトルを持ち、
-`call ()x : 1d` はタスク `x `、 `click id1 href "" call f()` は call を、
+`title T` の前の行の `href ""` はタイトルを持ち、`call ()x : 1d` はタスク `x `、
+`click id1 href "" call f()` は call を、
 `click id1 call () href "u"` はリンクを設定します。
 `href ""` か `call ()` だけが続く `click id1` と、
-`click id1 href "" b : 1d` は、 click の文に部分がないので、
+`click id1 href "" b : 1d` は、click の文に部分がないので、
 どちらでも拒否されます。
 並んだ 2 つの空の href・空の call は、最初のもので拒否されます。
 `href "" call ()` は href です。
@@ -1491,8 +1489,8 @@ gantt/gram-click-empty-href-only] [fixture: gantt/gram-click-empty-call-only]
 ほかの図種も同じ形を拒否します。
 [tokenless-empty-forms](../known-divergences/tokenless-empty-forms.ja.md)
 を参照してください。
-キーワードの後に空白のない `call()` と `href""` はタスクのテキストで、
-`href "`、改行、`"` は空の href ではありません。
+キーワードの後に空白のない `call()` と `href""` はタスクのテキストで、`href "`、
+改行、`"` は空の href ではありません。
 空の href の 2 つの引用符の間や、
 空の call の括弧の間のディレクティブは単位の間にあるので、
 `href "%%{init: {}}%%"` と `call (%%{init: {}}%%)` は、
@@ -1512,8 +1510,8 @@ mermaid.js の文法が受理し、その Db が拒否する入力が 2 つあ�
 - `top-axis-statement`。
   文法は
   [`yy.TopAxis()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L141-L141)
-  を呼びますが、 Db にはそれがないので、`topAxis` の文を持つテキストは、
-  ほかに何を持っていても、 `TypeError` で拒否されます。
+  を呼びますが、Db にはそれがないので、`topAxis` の文を持つテキストは、
+  ほかに何を持っていても、`TypeError` で拒否されます。
   [fixture: gantt/db-top-axis-statement] [fixture:
   gantt/lex-topaxis-upper-case] [fixture: gantt/lex-topaxis-then-title]
 - データがタグだけのタスク。
@@ -1540,7 +1538,7 @@ gantt/db-task-start-after-unknown] [fixture: gantt/db-task-end-until-unknown]
   mermaid.js は受理します（[単位の中のディレクティブ](#単位の中のディレクティブ)
   を参照）。
   click の id、`includes` と `excludes` のリストの項目、キーワード（ヘッダー、
-  曜日名、`click`、`href`、`call`、`accTitle`、 `accDescr` を含む）の中です。
+  曜日名、`click`、`href`、`call`、`accTitle`、`accDescr` を含む）の中です。
   [fixture: gantt/div-directive-in-click-id] [fixture:
   gantt/div-directive-in-list-item] [fixture:
   gantt/div-directive-in-header-keyword] [fixture:
@@ -1553,7 +1551,7 @@ gantt/db-task-start-after-unknown] [fixture: gantt/db-task-end-until-unknown]
 - **[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.ja.md)。**
   `style` の規則に合う行で、
   テキストの単位と文字列の単位以外の単位の中にある無視される `;` は、
-  ここでは入力を拒否させ、 mermaid.js は `;` を除いて両側を 1 つとして読みます。
+  ここでは入力を拒否させ、mermaid.js は `;` を除いて両側を 1 つとして読みます。
   規則が探す `style`、`:`、`#` は、その行の `;` より前のどこにあってもよく、
   同じ click の文の URL 文字列やコールバック引数、その行の文の前の説明ブロック、
   click の id そのものにあってもかまいません。
@@ -1615,7 +1613,7 @@ gantt/db-task-start-after-unknown] [fixture: gantt/db-task-end-until-unknown]
   `a% : 1d` はここではタスク、mermaid.js ではタスクなし。
   `t%itle T`、`a : 1d;%c`、`a : 1d#%c`、`dateFormat X;%c` はここでは拒否、
   mermaid.js は受理。
-  `a :%c` はここではタスク、 mermaid.js は拒否。
+  `a :%c` はここではタスク、mermaid.js は拒否。
   [fixture: gantt/lex-colon-then-percent] [fixture:
   gantt/div-comment-after-task-text-start] [fixture:
   gantt/div-comment-after-keyword-start] [fixture:
@@ -1626,7 +1624,7 @@ gantt/db-task-start-after-unknown] [fixture: gantt/db-task-end-until-unknown]
   gantt/div-comment-after-quote-after-string]
 - **[`comment-takes-line-break`](../known-divergences/comment-takes-line-break.ja.md)。**
   mermaid.js が直接たどり着く（[コメント](#コメント) の定め）印 `%`
-  のコメントは、 mermaid.js ではその後の改行を取るので、
+  のコメントは、mermaid.js ではその後の改行を取るので、
   次の行の click の文の部分が文を続けます。
   `click id1 %c`、改行、`href "u"` はそこではリンクを設定し、
   `click id1 call f()%c`、改行、`href "u"` も同じです。
@@ -1646,7 +1644,7 @@ gantt/db-task-start-after-unknown] [fixture: gantt/db-task-end-until-unknown]
   単位の直後、先頭の改行を除いてちょうど 1 文字を残さない 2 文字以上の空白の後、
   直接たどり着いた `%` のコメントが取る改行の後です。
   差異は一方向です。
-  この仕様が受理し、 mermaid.js が拒否します。
+  この仕様が受理し、mermaid.js が拒否します。
   [fixture: gantt/div-percent-brace-glued-after-header] [fixture:
   gantt/div-percent-brace-glued-after-keyword] [fixture:
   gantt/div-percent-brace-glued-after-string] [fixture:
@@ -1657,7 +1655,7 @@ gantt/db-task-start-after-unknown] [fixture: gantt/db-task-end-until-unknown]
 - **[`c4-keyword-anywhere`](../known-divergences/c4-keyword-anywhere.ja.md)。**
   ヘッダーの後のどこか、タスクのテキスト、タイトル、section、
   タスクのデータの `C4Container`、`C4Component`、`C4Dynamic`、
-  `C4Deployment` は、 mermaid.js にテキストを C4 のパーサーへ渡させ、
+  `C4Deployment` は、mermaid.js にテキストを C4 のパーサーへ渡させ、
   それは拒否します。
   ここではテキストはガントチャートです。
   `C4Context` はどちらでもテキストです。

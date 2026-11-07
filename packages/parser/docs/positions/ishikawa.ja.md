@@ -48,7 +48,7 @@ ishikawa/lex-comment-ps-indent-excludes-body-padding]
 リテラルは、書かれたテキストの最初から最後の文字までを覆い、
 引用符と末尾の空白をすべて含み、EOF やコロンの後でも同じです。
 範囲はディレクティブ、共通のコメント領域、選ばれた無視する `;` をまたげます。
-値はそれらを除き、 `RawText` の断片が残りのテキストを覆います。
+値はそれらを除き、`RawText` の断片が残りのテキストを覆います。
 [fixture: ishikawa/gram-empty-quotes] [fixture:
 ishikawa/gram-root-trailing-space] [fixture:
 ishikawa/gram-child-trailing-space] [fixture:

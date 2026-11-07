@@ -179,8 +179,7 @@ requirementDiagram
 
 フィールドは 1 行に、キーワード、キーワードに接する `:`、
 空白 1 つの後に値を置きます。
-mermaid.js の文書がフィールドをそう書き、
-journey も値の前に空白 1 つを置きます。
+mermaid.js の文書がフィールドをそう書き、journey も値の前に空白 1 つを置きます。
 コメントかディレクティブがあれば改行を残し、
 構造の続きの行と間の注釈をフィールドより 1 段深く置きます。
 [fixture: fields/comment-and-directive-continuations]
@@ -196,7 +195,7 @@ journey も値の前に空白 1 つを置きます。
 コメントの始まりではありません。 [fixture: fields/special-characters-in-values]
 
 フィールドは書かれた順に置きます。
-同じフィールドが 2 回書かれていても同じで、 mermaid.js は最初のものを読みます。
+同じフィールドが 2 回書かれていても同じで、mermaid.js は最初のものを読みます。
 [fixture: fields/order-kept] [fixture: fields/same-field-twice]
 フィールド、risk、verifyMethod の値のキーワードは、
 書かれた大文字小文字のまま残します。
@@ -283,7 +282,7 @@ mermaid.js は `"r"` と `r` を同じ名前として読みますが、引用符
 両端の空白は名前に入らないので落とします。
 [fixture: names/inner-whitespace-kept] [fixture: names/outer-whitespace-dropped]
 文字列は `-`、`:`、`,`、`{` など、どの文字も含められます。
-引用符のない名前は、最初の文字の後に `#`、`.`、 `}` を含められます。
+引用符のない名前は、最初の文字の後に `#`、`.`、`}` を含められます。
 [fixture: names/string-names-with-special-characters]
 [fixture: names/special-characters-in-unquoted-names]
 
@@ -414,7 +413,7 @@ requirementDiagram
 requirement、element、名前とクラスだけの文で、`:::` の後に書くクラスは、
 `:::` に接し、クラスを区切る `,` は両側のクラスに接します。
 `requirement r ::: a , b {` は `requirement r:::a,b {` と印字します。
-これは ER 図のクラスと同じで、 mermaid.js の文書の書き方でもあります。
+これは ER 図のクラスと同じで、mermaid.js の文書の書き方でもあります。
 [fixture: class-lists/in-requirement-and-element]
 [fixture: class-lists/shorthand]
 クラスは、文字列か、語の間に空白を持てる引用符のない文字列です。
@@ -518,7 +517,7 @@ The style context、規則 1）。
 引用符のない名前は空白やほかの文字を含められます。
 最初の改行の後の名前がすべて、
 文字列か `style-word` として読める引用符のない名前のときは、文を 1 行にします。
-そのような名前は、 1 行にしても字句解析器が同じに読みます。
+そのような名前は、1 行にしても字句解析器が同じに読みます。
 [fixture: styles-and-classes/class-over-lines-joined]
 [fixture: styles-and-classes/class-uppercase-digit-next-line]
 それ以外のときは改行を残し、続きの行は 1 段深く置きます。
@@ -641,12 +640,12 @@ requirementDiagram
 `direction` と値の間も空白 1 つにし、値は書かれた大文字小文字のまま残します。
 [fixture: direction/spacing] [fixture: direction/spaces-around]
 [fixture: direction/text-kept] [fixture: direction/case-kept]
-次の行に書かれた値は、 `direction` の後ろに寄せて 1 行にします。
+次の行に書かれた値は、`direction` の後ろに寄せて 1 行にします。
 [fixture: direction/value-on-next-line-joined]
 ディレクティブやコメント行を含む方向の行は改行を残し、
 構造の続きの行を 1 段深く置きます。
 [fixture: direction/directive-and-comment-line-kept]
-字句解析器の方向の行の規則は行全体を取るので、 `direction LR` で終わる関係文は、
+字句解析器の方向の行の規則は行全体を取るので、`direction LR` で終わる関係文は、
 前にテキストを持つ方向の行です。 [fixture: direction/after-relationship]
 
 入力
@@ -726,7 +725,7 @@ mermaid.js の行の規則は、`style`、その後の `:`、
 その後の `#` を含む行の最後の `;` を取り除くので、文を別の行に移すと、
 規則が `;` を無視しなくなったり、別の `;` を無視したりするからです。
 `a - satisfies -> "style:#x" accDescr {} e - satisfies -> f;g` では、
-2 つ目の関係の右は `fg` ですが、 `f;g` が単独の行にあると、右は `f;g` です。
+2 つ目の関係の右は `fg` ですが、`f;g` が単独の行にあると、右は `f;g` です。
 そのため、そのような行の文は同じ行に残し、文の間の空白はほかと同じに整形し、
 保持する `;` は書かれたまま残します。
 スタイルの終端を削除した行では、
@@ -971,7 +970,7 @@ requirementDiagram
 [fixture: accessibility-statements/colon-touches-keyword]
 [fixture: accessibility-statements/title-and-description]
 [fixture: accessibility-statements/inner-whitespace-kept]
-テキストの中の `;`、`#`、 `%%` は文字です。
+テキストの中の `;`、`#`、`%%` は文字です。
 [fixture: accessibility-statements/special-characters-in-text]
 後の行に書かれたテキストは、`:` の後ろに寄せて 1 行にします。
 その前にコメント行があるときは、文を書かれたまま残します。
@@ -1122,7 +1121,7 @@ mermaid.js が複数行にわたって読む文は、
 字句解析器が改行を空白として読む所で 1 行にして印字します。
 空白の後の改行は空白です。
 requirement のキーワードと名前の間、関係文の単位の間、フィールドの `:` の前後、
-`accTitle` と `accDescr` の `:` の前後、 `direction` と値の間が、
+`accTitle` と `accDescr` の `:` の前後、`direction` と値の間が、
 それにあたります。
 `style`・`classDef`・`class` 文の行末の文字列が始める文は、
 style の文脈の改行の後で続きます。
@@ -1488,7 +1487,7 @@ requirementDiagram
 ### フロントマターの YAML
 
 フローチャートと同じです。
-`---` の行の間の YAML は Prettier の YAML 整形で整形し、 `---` の行は、
+`---` の行の間の YAML は Prettier の YAML 整形で整形し、`---` の行は、
 行末の空白とタブも含め、書かれたまま残します。
 [fixture: frontmatter-yaml/formatted]
 [fixture: frontmatter-yaml/closing-delimiter-whitespace-kept]
@@ -1534,7 +1533,7 @@ U+2028 と U+2029 は、requirement の図の単位の間の空白であり、�
 文の間では、どの空白とも同じ改行として扱い、文はそれぞれの行に移ります。
 文の中で、これを含む間隔は書かれたまま印字し、名前、クラス、値、
 アクセシビリティのテキストの中のものも書かれたまま残します。
-例は文字列で書かれていて、`\u2028` は U+2028、 `\n` は改行です。
+例は文字列で書かれていて、`\u2028` は U+2028、`\n` は改行です。
 [test: U+2028 after the closing brace of a body] [test: U+2028 inside a name]
 [test: U+2028 inside a class] [test: U+2028 after the keyword of a requirement]
 [test: U+2028 inside a value] [test: U+2029 inside a string]
@@ -1551,7 +1550,7 @@ U+00A0 と U+FEFF は、字句解析器にとって単位の間の空白であ�
 名前や値の文字でもあります。
 字句解析器が単位の間の空白を読む所には空白 1 つを置き、
 名前や値の中のものはテキストの文字なので残します。
-例は文字列で書かれていて、`\u00a0` は U+00A0、 `\ufeff` は U+FEFF です。
+例は文字列で書かれていて、`\u00a0` は U+00A0、`\ufeff` は U+FEFF です。
 [test: U+00A0 around the name of a requirement]
 [test: U+00A0 around the value of a field]
 [test: U+00A0 around the colon of a field]

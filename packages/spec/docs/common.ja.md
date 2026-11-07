@@ -80,7 +80,7 @@ mermaid.js のソースへの参照は、
   U+017F（LATIN SMALL LETTER LONG S）は `s` とも `S` とも一致せず（大文字が
   ASCII の `S` のため）、
   U+212A（KELVIN SIGN）は `k` と一致せず（`k` は `K` になり、
-  U+212A はそのまま）、 BMP の外の文字は他の文字と一致しません。
+  U+212A はそのまま）、BMP の外の文字は他の文字と一致しません。
   mermaid.js の大文字小文字を区別しない検出器は、この方法で比べます。
   [fixture: common/detect-case-kelvin-sign] [fixture: common/detect-case-long-s]
 - **トークン**は、字句解析器がテキストから切り出して文法に渡すものの一般名です。
@@ -119,7 +119,7 @@ mermaid.js のソースへの参照は、
   その後の最初の `end note` の行で終わります。
   その規則は、できるだけ少なく読むからです。
   `note right of A`、`x`、`end note`、`B`、`note left of B`、`y`、
-  `end note` の 7 行は 2 つのノートで、 A の `x` と B の `y` です。
+  `end note` の 7 行は 2 つのノートで、A の `x` と B の `y` です。
   [fixture: flowchart/gram-click-call] [fixture: state/lex-note-block-two-notes]
 - すべての規則は、[行終端](#行終端) の規則を適用した状態でソースを読みます。
   そのため、どの行終端も 1 つの改行として数えます。
@@ -262,7 +262,7 @@ agentflow と eventmodeling の文書で、
    そのプレースホルダとして（[エンティティ](#エンティティ)）読みます。
    コメント領域、行単位の規則が無視する `;`、ディレクティブは、
    ないかのように読み進めます。
-   その後、中にディレクティブを持つ単位は、 mermaid.js の読み方を保つか、
+   その後、中にディレクティブを持つ単位は、mermaid.js の読み方を保つか、
    入力を拒否させます。
    [ディレクティブはトークンの境界](#ディレクティブはトークンの境界)
    を参照してください。
@@ -351,7 +351,7 @@ WardleyDiagram.textBeforeHeader の WardleyIgnoredText として読み、
 通した裸の行と伴う trivia は残存形の間も再読せず、
 native の閉じ境界は適用します。
 [検出規則](./diagrams/wardley.ja.md#検出)が一つの block の skip、停止条件、
-prefix の両順序を区別し、 [木](./ast/wardley.ja.md)が所有を定めます。
+prefix の両順序を区別し、[木](./ast/wardley.ja.md)が所有を定めます。
 [fixture: wardley/detect-block-after-directive]
 [fixture: wardley/detect-real-before-retained-secondscan]
 [fixture: wardley/detect-retained-two]
@@ -368,7 +368,7 @@ retained YAML の属性は設定になりません。
 retained な形の間でも共有の Comment と trivia となり、
 native の閉じの境目は依然必要です。
 [検出の規則](./diagrams/cynefin.ja.md#検出)が一つのブロックの飛ばし、停止条件、
-接頭の両順序を区別し、 [木](./ast/cynefin.ja.md)が名前つきの所有者を定めます。
+接頭の両順序を区別し、[木](./ast/cynefin.ja.md)が名前つきの所有者を定めます。
 [fixture: cynefin/detect-real-before-retained-secondscan]
 [fixture: cynefin/detect-retained-yaml-properties]
 [fixture: cynefin/prefix-yaml-before-secondscan]
@@ -505,7 +505,7 @@ mermaid.js は、文法を変えずにラベルの中の HTML の属性値に `"
   値 `="c` はコメント行で終わるので、`d` の後の `"` は残り、
   flowchart の文法がそれを拒否します。
   `A[<a`、コメント行 `%% x="`、`y" z>e]` では、値はコメント行の `="` で始まり、
-  `y` の後の `"` で終わるので、ラベルは `<a`、改行、 `y' z>e` です。
+  `y` の後の `"` で終わるので、ラベルは `<a`、改行、`y' z>e` です。
   [fixture: flowchart/html-tag-value-closed-in-comment-line] [fixture:
   flowchart/html-tag-value-opened-in-comment-line]
 - 行単位の規則が無視する `;` も数に入ります。
@@ -552,7 +552,7 @@ mermaid.js は、文法を変えずにラベルの中の HTML の属性値に `"
    [fixture: common/frontmatter-indented-block-scalar-dashes] [fixture:
    common/frontmatter-indented-closing-in-body]
    `--- !!map` は区切り行ではないので、`---`、`%YAML 1.2`、`--- !!map`、
-   `title: x`、 `---` はタイトルが `x` のフロントマターです。
+   `title: x`、`---` はタイトルが `x` のフロントマターです。
    `--- !!map` を `---` と `!!map` に分けると、
    `%YAML 1.2` の後の `---` の行がフロントマターを閉じ、入力は拒否されます。
    [fixture: common/frontmatter-yaml-document-marker-with-tag] [fixture:
@@ -569,10 +569,10 @@ mermaid.js は、文法を変えずにラベルの中の HTML の属性値に `"
    開始行との間に空白だけの行が 1 行以上あれば、最初の内容行が終了行になり、
    本文はそれらの空白だけの行のうち最後の 1 行です。
    これにより、`---`、空行、`---` は本文が空のフロントマターになり、`---`、
-   空白の行、 `---` はその行を本文とするフロントマターになります。
+   空白の行、`---` はその行を本文とするフロントマターになります。
    [fixture: common/frontmatter-blank-line-then-delimiter-only]
    それ以外の場合はフロントマターではありません。
-   特に、 `---` の直後に `---` が続く場合はフロントマターではありません。
+   特に、`---` の直後に `---` が続く場合はフロントマターではありません。
    [fixture: common/frontmatter-empty-body] [fixture:
    common/frontmatter-adjacent-delimiters]
 
@@ -750,12 +750,12 @@ mermaid.js で確かめた帰結は次のとおりです。
   頂点も辺も持ちません。 [fixture: common/directive-unclosed-after-header]
 - `%%{` の後に語が続けば、意図していなくてもディレクティブが始まります。
   行末の `%%{wrap` の次の行に `A-->B` があると、
-  引数の前の空白が改行をまたぐので、 `A` が語の引数になります。
+  引数の前の空白が改行をまたぐので、`A` が語の引数になります。
   [fixture: common/directive-name-only-unclosed]
   `A-->B` の後の `%%{wrap` と `C-->D` の行では、
   ディレクティブは引数 `C` を取り、
   その行の残りの `-->D` は前のリンクに続きます。
-  辺は A から B と、 B から D です。
+  辺は A から B と、B から D です。
   [fixture: common/directive-word-argument-unclosed-next-line]
 - 引数が語の文字で始まる場合、引数はその語だけです。
   `%%{init: dark foo}%%` は `dark ` の後で終わり、
@@ -767,7 +767,7 @@ mermaid.js で確かめた帰結は次のとおりです。
   各図の字句解析器が読みます。
   頂点の後の行の `%%{}` を、flowchart は拒否し、
   sequence と class は図のコメントとして読みます。
-  state は、状態の後の行ではそれを拒否し、 `state X` の後の行では、
+  state は、状態の後の行ではそれを拒否し、`state X` の後の行では、
   その `%%` を本体の前の mermaid.js が読まないテキスト、
   `{}` を X の空の本体として読みます。 [fixture: common/directive-empty-braces]
   [fixture:
@@ -916,7 +916,7 @@ U+2028、U+2029 の直後の位置です。
    行終端の一部でもない。
    そのため `%%` だけの行はコメント行でなく、何行かにわたるテキストの中では、
    そのテキストの一部です。
-   flowchart の `A -->|a`、行 `%%`、`b| B` の辺のテキストは、 `a`、行 `%%`、
+   flowchart の `A -->|a`、行 `%%`、`b| B` の辺のテキストは、`a`、行 `%%`、
    `b` で、同じように書いた subgraph のタイトルも同じです。
    [fixture: flowchart/lex-percent-line-in-edge-label] [fixture:
    flowchart/lex-percent-line-in-subgraph-title]
@@ -960,7 +960,7 @@ mermaid.js は `A` も `B --> C` も読みません。
 - コメント行は、任意の行内の空白で字下げしてよい。
   [fixture: common/comment-indented]
 - 同じ行の、他の文字の後にある `%%` はコメントではありません。
-  `A-->B %% note` の `%% note` は図の文法に渡され、 flowchart では拒否されます。
+  `A-->B %% note` の `%% note` は図の文法に渡され、flowchart では拒否されます。
   [fixture: common/comment-trailing]
 - U+2028 と U+2029 は、行終端ではありませんがコメント開始位置です。
   `A-->B` U+2028 `%% note` では、`%% note` はコメントで、
@@ -986,13 +986,13 @@ mermaid.js は `A` も `B --> C` も読みません。
   common/comment-bare-between-comment-lines-empty] [fixture:
   common/comment-bare-between-comment-lines-space]
   ラベルの中では、そのような行はテキストに残ります。
-  `A[a`、改行、`%%`、改行、`b]` のラベルは、`a`、改行、`%%`、改行、 `b` です。
+  `A[a`、改行、`%%`、改行、`b]` のラベルは、`a`、改行、`%%`、改行、`b` です。
   [fixture: common/comment-bare-line-in-label]
   文字列の中でも同じです。
   `A["first`、改行、`%%`、改行、`third"]` のラベルは、`first`、改行、`%%`、
   改行、`third` です。
   一方、`%%` と空白だけの行は、ラベルの中でもコメント行です。
-  `A[a`、改行、`%%` と空白、改行、`b]` のラベルは、`a`、改行、 `b` です。
+  `A[a`、改行、`%%` と空白、改行、`b]` のラベルは、`a`、改行、`b` です。
   [fixture: common/comment-bare-line-in-string-label] [fixture:
   common/comment-percent-space-line-in-label]
   説明のブロック（コメント行の後でも）、ツールチップの文字列、
@@ -1036,7 +1036,7 @@ common/comment-blank-line-before-in-string]
 図のコメントの行は、その行の U+2028 か U+2029 の後のコメント行を越えて続きます。
 mermaid.js は、コメント行を除いたテキストを読むからです。
 state で、`A %% x`、U+2029、行 `%% end`、行 `B` の後では、
-図のコメントは `B` に続き、 mermaid.js は `B` を読みません。
+図のコメントは `B` に続き、mermaid.js は `B` を読みません。
 [fixture: state/lex-diagram-comment-across-comment-line]
 
 ## 先頭の空白
@@ -1070,7 +1070,7 @@ eventmodeling と、拒否する対照例は、フロントマターの節にあ
 [fixture: common/frontmatter-nonleading-sequence]
 [fixture: common/frontmatter-nonleading-class]
 [fixture: common/frontmatter-nonleading-state]
-そこから、検出は、 **`%%` だけの行**があればそれを読んで通り過ぎます。
+そこから、検出は、**`%%` だけの行**があればそれを読んで通り過ぎます。
 `%%` だけの行とは、行の空白の後の図のテキストが、`%%` と、それに続く行終端、
 テキストの終わり、またはディレクティブの始まらない `{`（ソースでも、
 下のもう一度の読みでも始まらない）で始まる行です。
@@ -1172,8 +1172,8 @@ class はそのような行の後の空白だけの行を `newline` の単位と
 どの検出器も一致しなければ、テキストは `UnknownDiagramError` で拒否されます。
 図のテキストがまったくないテキスト（空のテキストや、
 コメント行だけのテキスト）も同じです。
-最初の単位がヘッダーでないテキスト（`#` や `;` の行、
-ヘッダーと同じ行の `%%`。これは `%%` だけの行ではありません）も同じです。
+最初の単位がヘッダーでないテキスト（`#` や `;` の行、ヘッダーと同じ行の `%%`。
+これは `%%` だけの行ではありません）も同じです。
 ディレクティブやコメント行がヘッダーを取るテキストも同じです。
 `%%{`、改行、`sequenceDiagram` ではディレクティブがキーワードを名前として取り、
 `%%`、U+2028、`sequenceDiagram` ではコメント行がキーワードを含みます。
@@ -1334,7 +1334,7 @@ class はそのような行の後の空白だけの行を `newline` の単位と
   たどり着いた位置は最初の `---` にあり、
   `error` の条件は検出点から見るのでブロックは検出点になく、除かれません。
   検出がもう一度の読みで見つけるディレクティブの後でも同じです（`%%{`、
-  コメント行、 `wrap}%%---`）。 [fixture: common/frontmatter-four-dashes]
+  コメント行、`wrap}%%---`）。 [fixture: common/frontmatter-four-dashes]
   [fixture:
   common/frontmatter-leading-newline] [fixture:
   common/error-bare-percent-line-then-frontmatter-block] [fixture:
@@ -1390,7 +1390,7 @@ eventmodeling は、隠れた YAML の規則を適用し、
 mermaid.js がこの段階を通して検出し、この仕様が別に読む入力は 1 つで、
 既知の差異
 [`c4-keyword-anywhere`](./known-divergences/c4-keyword-anywhere.ja.md) です。
-ヘッダーが別の図のもので、その後の図のテキストに `C4Container`、 `C4Component`、
+ヘッダーが別の図のもので、その後の図のテキストに `C4Container`、`C4Component`、
 `C4Dynamic`、`C4Deployment` のどれかを持つテキストを、
 mermaid.js は C4 のパーサーに渡し、この仕様はヘッダーの図として読みます。
 `C4Context` は両者とも先頭でだけ数えます。 [fixture: common/detect-c4-anywhere]
@@ -1486,7 +1486,7 @@ mermaid.js と同じく参加者 A と `Cparticipant D` を宣言します。
 - 行終端、U+2028、U+2029 は、閉じたディレクティブの直後でも行区間を終え、
   コメント行の前の改行も同じです。
   1 行目の最後の `;`、つまり `C` と `participant E` の間のものが無視され、
-  参加者は A、`Cparticipant E`、D、 B です。
+  参加者は A、`Cparticipant E`、D、B です。
   [fixture: sequence/tokens-ignored-semicolon-separator-line-feed] [fixture:
   sequence/tokens-ignored-semicolon-separator-carriage-return] [fixture:
   sequence/tokens-ignored-semicolon-separator-crlf] [fixture:
@@ -1500,7 +1500,7 @@ mermaid.js と同じく参加者 A と `Cparticipant D` を宣言します。
   そして閉じていないディレクティブの引数が U+2028 か U+2029 の前で終わり、
   ディレクティブがそれを空白として取り込むときは、行区間は続き、
   区切りの後の `;` が無視されます。
-  参加者は A、C、`Eparticipant D`、 B です。
+  参加者は A、C、`Eparticipant D`、B です。
   [fixture: sequence/tokens-ignored-semicolon-separator-none] [fixture:
   sequence/tokens-ignored-semicolon-separator-closed-directive] [fixture:
   sequence/tokens-ignored-semicolon-separator-unclosed-directive-line-separator]
@@ -1566,7 +1566,7 @@ flowchart/div-ignored-semicolon-in-arrow]
   ラベルは `mystyle: ﬂ°x¶ß` です。 [fixture: common/entity-style-in-label]
   [fixture:
   common/entity-style-in-label-space]
-  空白でなければ、 `:` と `#` の間にほかの文字があってもかまいません。
+  空白でなければ、`:` と `#` の間にほかの文字があってもかまいません。
   `A[style:a#b;]` は当てはまり、ラベルは `style:a#b` です。
   一方、`A[style:a #b;]` は当てはまらず、ラベルは `style:a`、空白、
   `#b;` のプレースホルダです。
@@ -1591,7 +1591,7 @@ flowchart/div-ignored-semicolon-in-arrow]
   `A[<span style='color:red;font-size:12px'>x</span>]` は 2 つの `;`
   を保ちます。
   `A[<span style='color:#35;f00;font-weight:bold'>x</span>]`
-  では行が当てはまるので、 `f00` の後の `;` が無視され、
+  では行が当てはまるので、`f00` の後の `;` が無視され、
   `#35;` はエンティティです。
   ラベルは、そのプレースホルダに `f00font-weight:bold` が続くものです。
   [fixture: common/entity-css-in-label-no-hash] [fixture:
@@ -1645,7 +1645,7 @@ flowchart/div-ignored-semicolon-in-arrow]
   一方、`A[style:#x;]` ではラベルの中の `;` が無視され、
   ラベルは `style:#x` です。
   アクセシビリティの文の行もほかの行と同じで、
-  `accTitle: style:#x;y;` のタイトルは `style:`、プレースホルダ、 `y` です。
+  `accTitle: style:#x;y;` のタイトルは `style:`、プレースホルダ、`y` です。
   [fixture: common/entity-style-separator-ignored] [fixture:
   common/entity-style-label-semicolon-ignored] [fixture:
   common/entity-style-separator-ignored-string] [fixture:
@@ -1727,7 +1727,7 @@ sequence では、メッセージのテキストは `#` の手前で終わり、
 flowchart では、そのような規則は、リンクテキストの文脈と楕円の文脈の規則です。
 プレースホルダの最初の文字だけを読む規則は変わりません。
 flowchart では、文字の規則は U+FB02 を読みますが、
-その後の U+00B0 を読む規則はないので、 `A#x;-->B` は拒否されます。
+その後の U+00B0 を読む規則はないので、`A#x;-->B` は拒否されます。
 [fixture: flowchart/lex-link-text-entity-dash] [fixture:
 flowchart/lex-ellipse-entity-start] [fixture:
 flowchart/lex-entity-in-vertex-id]
@@ -1792,4 +1792,4 @@ U+00A0 や U+FEFF も含めて空白として扱います。 [fixture: common/nb
 - [`c4-keyword-anywhere`](./known-divergences/c4-keyword-anywhere.ja.md):
   別の図種のヘッダーの後の C4 のキーワード。
 - [`bare-percent-line-before-header`](./known-divergences/bare-percent-line-before-header.ja.md):
-  ヘッダーの前の `%%` だけの行のうち、 mermaid.js の字句解析器が拒否するもの。
+  ヘッダーの前の `%%` だけの行のうち、mermaid.js の字句解析器が拒否するもの。

@@ -273,8 +273,8 @@ playgroundとドキュメントサイトは、この2つのテーマを使いま
 
 agentflow、architecture、block、c4、class、cynefin、er、eventmodeling、
 flowchart、gantt、gitgraph、info、ishikawa、journey、kanban、mindmap、packet、
-pie、quadrant、radar、railroad、requirement、sankey、sequence、state、
-timeline、treemap、treeview、usecase、venn、wardley、xychartです。
+pie、quadrant、radar、railroad、requirement、sankey、sequence、state、timeline、
+treemap、treeview、usecase、venn、wardley、xychartです。
 仕様の[`docs/diagrams/`](../spec/docs/diagrams/)の文書1つにつき1つです。
 図は、その文書のDetection節が受理するどのヘッダーからでも始まります。
 たとえばflowchartの4つ（`graph`、`flowchart`、`flowchart-elk`、

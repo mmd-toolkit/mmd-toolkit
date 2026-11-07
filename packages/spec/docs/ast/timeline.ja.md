@@ -8,8 +8,7 @@
 [diagrams/timeline.ja.md](../diagrams/timeline.ja.md) で定めます。
 
 この図種の本体は [TimelineDiagram](#timelinediagram) です。
-欄の値は、
-[ast.ja.md](../ast.ja.md#ノード)が値の書かれたテキストを定めるとおり、
+欄の値は、[ast.ja.md](../ast.ja.md#ノード)が値の書かれたテキストを定めるとおり、
 書き手が書いたものを保ち、
 [common.ja.md](../common.ja.md#ソースの読み方) の変換後の形ではありません。
 値が空白で始まったり終わったりするのは、mermaid.js が読むとおり、
@@ -82,7 +81,7 @@ period は、それを終えるコロン、`#`、改行の前の空白を保ち�
 event は、そのコロンと空白文字 1 つ（改行でもよい）の後のテキストで、
 両端の残りの空白を保ちます。
 空白だけでもよく、空白が続かない `:` を持てます。
-`a :   e` は event `  e` を、 `a :` と空白文字 2 つは空白文字 1 つの event を、
+`a :   e` は event `  e` を、`a :` と空白文字 2 つは空白文字 1 つの event を、
 `a : b:c` は event `b:c` を持ちます。 [fixture: timeline/db-period-and-event]
 [fixture:
 timeline/db-period-colon-glued-to-period] [fixture:
@@ -125,7 +124,7 @@ mermaid.js がそれをどの period に与えるかは、tests パッケージ�
 | `value` | TimelineLiteral | `title` と空白文字 1 つの後の、改行までのテキスト。 |
 
 子の欄: `value`。
-値は両端の空白を保ち、`:`、`#`、 `%%` を文字として持ちます。
+値は両端の空白を保ち、`:`、`#`、`%%` を文字として持ちます。
 [fixture: timeline/db-title-statement] [fixture:
 timeline/db-title-two-spaces] [fixture: timeline/db-title-trailing-spaces]
 [fixture: timeline/db-title-colon] [fixture: timeline/db-title-hash] [fixture:
@@ -210,7 +209,7 @@ period、event、タイトル、section の名前、アクセシビリティの�
 子の欄はありません。
 TimelineLiteral はどれも 1 つの単位なので、
 その値はその単位の書かれたテキストです。
-period はそれを終えるものの前の空白を保ち、 event、タイトル、
+period はそれを終えるものの前の空白を保ち、event、タイトル、
 section の名前は両端の空白を保ち、アクセシビリティのテキストは、
 mermaid.js が取り除く両端の空白なしで読まれます。
 説明ブロックの中の改行は値の一部です。 [fixture:

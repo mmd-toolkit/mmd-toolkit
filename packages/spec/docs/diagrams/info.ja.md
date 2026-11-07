@@ -281,7 +281,7 @@ LF が隠れた YAML を開きます。
 後続の LF と字下げのない `---` まで、任意の文字をできるだけ少なく読みます。
 その直後は LF・共通の空白・EOF のいずれかです。
 この形が一致しない場合だけ、開きの LF の直後が閉じとなる空本文を試します。
-本文は LF・LS・PS を含み、 YAML の検証はしません。
+本文は LF・LS・PS を含み、YAML の検証はしません。
 [fixture: info/hidden-yaml-body] [fixture: info/hidden-yaml-open-padding]
 [fixture: info/hidden-yaml-empty] [fixture: info/hidden-yaml-invalid]
 [fixture: info/lex-yaml-body-separators] [fixture: info/lex-yaml-close-space]
@@ -290,7 +290,7 @@ LF が隠れた YAML を開きます。
 [fixture: info/lex-yaml-empty-spare-line]
 
 従って隣接する 3 本のフェンスは一つの形になります。
-空の 2 ブロックに見えても、 4 本目のフェンスが対応しないまま残ることがあります。
+空の 2 ブロックに見えても、4 本目のフェンスが対応しないまま残ることがあります。
 条件を満たさない閉じは、後に適切な閉じがあれば本文のままです。
 最初の本文に適切な閉じがあれば、空でない 2 ブロックは別々のままです。
 字下げした閉じ、開きの Unicode 空白、開きの 4 本のダッシュ、
@@ -547,7 +547,7 @@ Mermaid が拒否してもここでは受理します。
 元の入力への拒否からは Db を得られませんが、
 差異の原因となるブロックや鍵だけを除いた参照入力が受理されると、
 [比較する Db](../known-divergences/embedded-data-opaque.ja.md#比較する-db)
-の規則により、 `specified.json` はその Db と埋め込み値を比較のために記録します。
+の規則により、`specified.json` はその Db と埋め込み値を比較のために記録します。
 この 2 つのフロントマターでは、その Db は `{}` です。
 この規則で Mermaid が受理する入力を拒否することはありません。
 不正な隠れた YAML と記録済みの不正な init 引数は両方が受理し、印を付けません。

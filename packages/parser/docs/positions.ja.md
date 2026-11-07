@@ -64,7 +64,7 @@
 
 ## ノードの範囲
 
-どのノードも、 [`ast.ja.md`](../../spec/docs/ast.ja.md#ノード) の欄のほかに、
+どのノードも、[`ast.ja.md`](../../spec/docs/ast.ja.md#ノード) の欄のほかに、
 次の欄を持ちます。
 
 | 欄      | 型             | 意味                           |
@@ -122,8 +122,8 @@ ESTree の木をたどる道具はこれを前提にします。
 どの木も、次の条件を満たします。
 
 - 入力のどの文字も、トークンかコメントに含まれるか、空白か行終端である。
-  空白は [表記](../../spec/docs/common.ja.md#表記) で定めた集合で、 U+00A0、
-  U+FEFF、U+2028、 U+2029 を含む。 [fixture: common/whitespace-characters]
+  空白は [表記](../../spec/docs/common.ja.md#表記) で定めた集合で、U+00A0、
+  U+FEFF、U+2028、U+2029 を含む。 [fixture: common/whitespace-characters]
   [fixture: common/nbsp-as-space] [fixture: common/bom-mid-text]
   [fixture: common/comment-after-u2028] [fixture: common/comment-after-u2029]
 - どのトークン、コメント、ディレクティブ、フロントマターのテキストも、
@@ -137,7 +137,7 @@ ESTree の木をたどる道具はこれを前提にします。
   そのテキストを切るディレクティブ、コメント領域、
   無視される `;` の隣にあるところ、
   前のトークンが始めた値を続けるトークンの始まりだけである。
-  最後のものは、 flowchart のラベルが始める文字列の後のテキストなどである。
+  最後のものは、flowchart のラベルが始める文字列の後のテキストなどである。
   [fixture: class/db-generic-spaces]
   [fixture: flowchart/tokens-directive-label-space-after]
   [fixture: common/comment-in-string]
@@ -153,7 +153,7 @@ ESTree の木をたどる道具はこれを前提にします。
   [sequence のトークン](./tokens/sequence.ja.md#トークン) を参照。
 - コメントは、どのトークンの外にもある。 [fixture: common/comment-in-string]
 - ディレクティブは、ほかのどのトークンの中にもない。
-  コメントの中、つまりその印の後か、 `%%` の印の 2 つの `%` の間にはありうる。
+  コメントの中、つまりその印の後か、`%%` の印の 2 つの `%` の間にはありうる。
   どのトークンとコメントの外にもある各ディレクティブには、
   その範囲を持つ `Directive` のトークンがちょうど 1 つあり、
   どの `Directive` のトークンも、そのようなディレクティブのものである。
@@ -181,7 +181,7 @@ ESTree の木をたどる道具はこれを前提にします。
   ノードの範囲は最初のトークンの始まりから最後のトークンの終わりまでである。
   `Root.range` は入力全体を覆う。
   `Root` を除いて、この文書で定めるどのノードも 1 つ以上のトークンを持つ。
-  `ErrorDiagram` は、 `error` の文字を持つ 1 つ以上のトークンを持ち、
+  `ErrorDiagram` は、`error` の文字を持つ 1 つ以上のトークンを持ち、
   すべて空白の
   [FlowchartLabel](../../spec/docs/ast/flowchart.ja.md#flowchartlabel) は、
   その空白のトークンを持つ。 [fixture: common/error-split-by-directive]

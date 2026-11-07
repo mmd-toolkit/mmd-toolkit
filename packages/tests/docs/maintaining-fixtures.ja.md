@@ -7,7 +7,7 @@ fixture の読み方は [README](../README.ja.md) にあります。
 
 ## 手で書くもの
 
-`expected.json` のうち手で書くのは、 `source`、`config`、
+`expected.json` のうち手で書くのは、`source`、`config`、
 `knownDivergence` だけです。
 生成器はこの 3 つの欄をそのまま保ち、残りを mermaid.js から書き直し、
 ファイルを正準形（欄の順序を固定、2 文字の字下げ、末尾の改行）に保ちます。
@@ -62,7 +62,7 @@ fixture の読み方は [README](../README.ja.md) にあります。
 比較の参照入力では、Mermaid の設定導出で拒否されたブロックだけを除き、
 正しいテキスト内設定から、仕様が名指しする受理条件の鍵だけを除きます。
 ほかの導出値は保ちます。
-Mermaid の frontmatter タイトルや、 `wrap` など Db に効く設定も保ちます。
+Mermaid の frontmatter タイトルや、`wrap` など Db に効く設定も保ちます。
 [fixture: gitgraph/div-frontmatter-main-branch-preserves-title]
 [fixture: sequence/div-invalid-frontmatter-preserves-wrap-directive]
 比較 Db がないことを明示し、Db を作り出したり、
@@ -73,7 +73,7 @@ mermaid.js の拒否を仕様の拒否と扱ったりしません。
 入力は、構文が関わる文字を、そのまま持ちます。
 loader が読み出しで戻す escape や代わりの印にはしません。
 U+2028、U+2029、U+0085、U+00A0、U+FEFF、U+3000 と、
-`scripts/check-invisible-chars.mjs` が挙げるその他の文字、 NUL を含む制御文字、
+`scripts/check-invisible-chars.mjs` が挙げるその他の文字、NUL を含む制御文字、
 単独の CR と CRLF、行末の空白、末尾の改行がないことが、これに当たります。
 `expected.json` と `ast.json` は、
 それらを JSON が書くとおりに持ちます（`JSON.stringify` は U+2028 と U+2029
@@ -250,7 +250,7 @@ pnpm run fixtures:set-note notes.json --dry-run
   その図種に正規化関数がないときである。
   そのような fixture は、最後に理由とともに一覧に出し、ファイルはそのまま残し、
   実行を失敗させる。
-- `generate`、`add`、`add-many` は、 `Error`、`MermaidParseError`、
+- `generate`、`add`、`add-many` は、`Error`、`MermaidParseError`、
   `UnknownDiagramError`、
   `YAMLException` 以外のエラーで拒否された fixture を一覧に出す。
   1 件ずつ、入力が原因であることを手で確かめる。
@@ -383,7 +383,7 @@ spec の AST 文書の見出し）の範囲です。
   `linkStyle 0 fill:red` は辺の style が `fill:red`、
   `linkStyle 0 color:red` は `color:red` と `fill:none` です。
 - テキスト全体が、ノードを作らない状態の id であるトークン（`</choice>`、
-  `</join></fork>`。 `src/db-from-tree/state.ts` の `IDS_WITHOUT_NODE` と、
+  `</join></fork>`。`src/db-from-tree/state.ts` の `IDS_WITHOUT_NODE` と、
   [db-from-tree/state.ja.md](./db-from-tree/state.ja.md) のとおり）。
   `state </join></fork> <<fork>>` には fork の状態がなく、
   `state </x></fork> <<fork>>` にはあります。

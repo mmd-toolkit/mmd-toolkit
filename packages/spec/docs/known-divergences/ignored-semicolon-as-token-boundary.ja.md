@@ -33,7 +33,7 @@ mermaid.js もこの仕様も、それを読みません。
 ここでの名前は、空白を含みうるかどうかにかかわらず、
 図の文書が名前の単位と数えるものです。
 U+00A0 を含みうる ER の実体の名前も、その 1 つです。
-sequence 図の参加者の id、クラスの名前、 `~` を使って書いた ER の属性の語、
+sequence 図の参加者の id、クラスの名前、`~` を使って書いた ER の属性の語、
 要求図の引用符なしの名前、マインドマップのノードのテキストのように、
 図の文書がテキストの単位と数える名前は、無視される `;` を持てます。
 [fixture: sequence/tokens-ignored-semicolon-separator-line-feed]
@@ -117,7 +117,7 @@ sequence 図の参加者の id、クラスの名前、 `~` を使って書いた
 この仕様は、mermaid.js が拒否する入力を受理することはなく、
 どちらも受理する入力には、すべて同じ Db を与えます。
 
-state 図では、無視される `;` は、 `style`、`:`、
+state 図では、無視される `;` は、`style`、`:`、
 `#` を持てる `state` の後の名前の中に置けます。
 mermaid.js は、本体の続く `state style:#x;B` を合成状態 `style:#xB` と読み、
 この仕様はそれを拒否します。
@@ -147,7 +147,7 @@ mermaid.js は `click style:#y,id;1 href "u"` を `id1` のリンクと読み、
 [fixture: gantt/div-ignored-semicolon-in-list-item]
 
 ユーザージャーニー図では、`#` はタイトルのテキスト、section のテキスト、
-タスクのテキスト、タスクのデータを終えてコメントを始めるので、 `style`、`:`、
+タスクのテキスト、タスクのデータを終えてコメントを始めるので、`style`、`:`、
 `#` はその行の文の前の説明ブロックにあり、
 無視される `;` はキーワードの中に置けます。
 mermaid.js は `accDescr { style:#x } ti;tle T` をタイトル `T` と読み、
@@ -169,7 +169,7 @@ mermaid.js は `"style:#x" - sati;sfies -> b` を関係 `satisfies` の関係と
 mermaid.js は `style:#x{;{b}}` を六角形の形でテキスト `b` のノードと読み、
 この仕様はそれを拒否します。 [fixture: mindmap/div-ignored-semicolon-in-opener]
 
-timeline では、ユーザージャーニー図と同じく、 `style`、`:`、
+timeline では、ユーザージャーニー図と同じく、`style`、`:`、
 `#` はその行の文の前の説明ブロックにあり、
 無視される `;` はキーワードの中に置けます。
 mermaid.js は `accDescr { style:#x } ti;tle T` をタイトル `T` と読み、
@@ -276,7 +276,7 @@ venn の色全体の単位の内部で選ばれたセミコロンは trivia で�
 名前、数、キーワード、矢印、区切り記号の中の無視される `;` は、
 mmd-toolkit のパーサーでは拒否されます。
 mermaid.js はそれを受理し、`;` がないものとして行を読みます。
-どちらも同じに読む図を書くには、 `style` の規則に当たる行は `;` で終えるか、
+どちらも同じに読む図を書くには、`style` の規則に当たる行は `;` で終えるか、
 語の中に `;` を書かないでください。
 
 ## mermaid.js がそう読む理由
@@ -356,7 +356,7 @@ mermaid は結合した id、include、矢印、metadata のキーと値、区�
 [fixture: usecase/div-semicolon-stereotype-closer-selected]
 [fixture: usecase/lex-semicolon-stereotype-closer-control]
 
-`style` と `classDef` の CSS プロパティ名では、 `--` と後の語の間の HWS にある、
+`style` と `classDef` の CSS プロパティ名では、`--` と後の語の間の HWS にある、
 選ばれた `;` を trivia として受理します。
 UsecaseIdentifier に前後のテキストを保持できます。
 セミコロンの有無によらず `--` と語は別々の単位なので、
@@ -479,7 +479,7 @@ atom の内部には無視するテキストの node を置けません。
 選択した semicolon は共通 trivia として保ちます。
 native な形全体には RadarIgnoredText の所有先があり、受理します。
 残る通常の semicolon は radar の文の区切りにはなりません。
-hidden テキストの置き場所があっても、 atom の分割を受理する理由にはなりません。
+hidden テキストの置き場所があっても、atom の分割を受理する理由にはなりません。
 [fixture: radar/gram-semicolon-between-units]
 [fixture: radar/lex-hidden-yaml-opener-selected-control]
 [fixture: radar/lex-hidden-native-opener-selected] [fixture: radar/style-fields]
@@ -531,7 +531,7 @@ ABNF の native semicolon comment と visible な規則の終端記号とは別�
 
 第 1 の問いでは、可能な限り hidden form を名前つき gap、
 text の値を書かれた葉に保ちます。
-除かれる句読点自体は共通の trivia に残せますが、 ignored-text の子では、
+除かれる句読点自体は共通の trivia に残せますが、ignored-text の子では、
 名前・keyword・count・delimiter の 2 断片を 1 個の書かれた atom にはできません。
 第 2 の問いの答えは理由 2 で、
 Mermaid の前処理順の代わりに直接の境界規則を使います。
@@ -599,12 +599,12 @@ label つき flow も plus、引用した label、完全な終端 marker の間�
 
 ### eventmodeling
 
-eventmodeling では directive の境目と同じ不可分の語、 数字列の名前、->>、
+eventmodeling では directive の境目と同じ不可分の語、数字列の名前、->>、
 [[、]] にこの識別子を適用します。
 無視した semicolon を記録できても、
 割れた atom の綴りを結合すればその単位を変えます。
 Mermaid は atom 内の選ばれた semicolon の場合を受理し、この仕様は拒否します。
-dot と完全な名前の間、 参照の部品間、
+dot と完全な名前の間、参照の部品間、
 type tag の部品間の選ばれた semicolon は atom を割らず許します。
 普通の semicolon は拒否したままで、
 最後の semicolon を選んでも前のものは除きません。
@@ -624,7 +624,7 @@ type tag の部品間の選ばれた semicolon は atom を割らず許します
 [fixture: eventmodeling/style-two-semicolons]
 
 [event-modeling.langium](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L70)
-が単位を、 [図の構文](../diagrams/eventmodeling.ja.md)が直接の境目を定義します。
+が単位を、[図の構文](../diagrams/eventmodeling.ja.md)が直接の境目を定義します。
 
 ### Treeview
 
@@ -651,7 +651,7 @@ Mermaid は両側を結びます。
 ## mermaid.js の文書と issue
 
 - [flowchart](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L1278-L1278)
-  の文書は、 `;` を `style`、`classDef`、`linkStyle` の行の終わりにだけ示し、
+  の文書は、`;` を `style`、`classDef`、`linkStyle` の行の終わりにだけ示し、
   名前や矢印の中の `;` には触れていません。
 - [Issue #1666](https://github.com/mermaid-js/mermaid/issues/1666) 「Flowchart:
   linkStyle issues with hex colors」は、
@@ -725,8 +725,8 @@ C4 のキーワード内の選択された `;` を扱う issue や pull request 
 gitgraph の
 [gitgraph.md](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/gitgraph.md)
 は、見出しと各コマンドを説明します。
-2026-10-23 に issue・PR を `gitGraph`、`gitGraph directive`、 `gitGraph YAML`、
-`gitGraph semicolon`、`gitGraph keyword`、 `gitGraph duplicate`、
+2026-10-23 に issue・PR を `gitGraph`、`gitGraph directive`、`gitGraph YAML`、
+`gitGraph semicolon`、`gitGraph keyword`、`gitGraph duplicate`、
 `gitGraph cherry-pick` で検索しました。
 確認した結果には、この共通の境界を決定するものはありませんでした。
 [#4838](https://github.com/mermaid-js/mermaid/issues/4838) は終了済みで Status:
@@ -742,7 +742,7 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
   2026-10-23 に `info showInfo`、`info directive`、`info semicolon`、
   `info accTitle` で issue と PR を検索しました。
   [#7601](https://github.com/mermaid-js/mermaid/issues/7601) は info/showInfo
-  の描画を報告し、 open、Type: Bug / Error、Status: Triage でした。
+  の描画を報告し、open、Type: Bug / Error、Status: Triage でした。
   検査した結果には、
   この構文の拒否を決める info 固有のメンテナーの判断はありません。
   この節は既存の直接の規則に従います。
@@ -789,15 +789,15 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
 
 - Railroad:
   [pin した構文の文書](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/railroad.md#L1-L288)
-  は 4 記法、 EBNF の例外、ABNF のセミコロンの comment、
+  は 4 記法、EBNF の例外、ABNF のセミコロンの comment、
   PEG の predicate を説明します。
   native の残る YAML と frontmatter を跨ぐ HTML の引用符の文脈は定義しません。
   2026-10-26 に公式 repository の issue と PR を railroad frontmatter、
   railroad directive、railroad semicolon、railroad comment で検索しました。
   [#7979](https://github.com/mermaid-js/mermaid/issues/7979) は demo
-  の見出し名の報告（closed、 Triage）、
+  の見出し名の報告（closed、Triage）、
   [#6620](https://github.com/mermaid-js/mermaid/issues/6620) は ABNF
-  の図種の提案（open、 Discussion Needed）です。
+  の図種の提案（open、Discussion Needed）です。
   どちらも、これらの前処理の境界について、
   メンテナーが defect と判断した事実ではありません。
   この差異はその判断でなく既存の共通規則に従います。
@@ -834,7 +834,7 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
 
 pin した
 [eventmodeling.md](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/eventmodeling.md#L41-L340)
-は frame、 data、tag を説明しますが、共有の前処理の境目を定義しません。
+は frame、data、tag を説明しますが、共有の前処理の境目を定義しません。
 2026-10-26 に公式 issue と PR を eventmodeling title、eventmodeling parser、
 event modeling data、eventmodeling accTitle、
 eventmodeling validator で検索しました。
@@ -851,7 +851,7 @@ eventmodeling validator で検索しました。
 は字下げ・引用名・注釈・罫線を説明します。
 この共通の境目を定義してはいません。
 2026-10-26 に公式 issue/PR を `treeView quoted`、`treeView indentation`、
-`treeView box`、 `treeView quotes`、`treeView whitespace`、
+`treeView box`、`treeView quotes`、`treeView whitespace`、
 `treeView accDescr` で検索しました。
 [PR #7721](https://github.com/mermaid-js/mermaid/pull/7721) は罫線を追加した
 merged の PR、

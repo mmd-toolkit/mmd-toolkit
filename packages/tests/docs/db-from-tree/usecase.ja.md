@@ -14,7 +14,7 @@ JSON の内部は不透明に保ちます。
 
 1. **値の変換。**
    各葉の記述値と範囲を `convertedValuesOf` で読みます。
-   共通の directive、コメント領域、選択されたセミコロンを除き、 CR/CRLF を LF、
+   共通の directive、コメント領域、選択されたセミコロンを除き、CR/CRLF を LF、
    エンティティをプレースホルダーに変換します。
    HTML 属性引用符の文脈はフロントマター後の本文全体から取ります。
    文字列・markdown の区切りを除き、
@@ -110,7 +110,7 @@ JSON の内部は不透明に保ちます。
    [fixture: usecase/gram-edge-whitespace-label]
    [fixture: usecase/db-edge-id-style] [fixture: usecase/db-note-order]
 7. **クラスとスタイル。**
-   記述された接尾クラスを蓄積してから、 class 指定をその記述順に適用します。
+   記述された接尾クラスを蓄積してから、class 指定をその記述順に適用します。
    最初の接尾部は反復を保ち、後の宣言と class 指定は、
    まだないクラスだけを追記します。
    [fixture: usecase/gram-class-suffix-duplicate]
@@ -139,8 +139,8 @@ JSON の内部は不透明に保ちます。
    [fixture: usecase/gram-json-object-scalar-overwrite]
    [fixture: usecase/div-gram-json-unquoted-key]
 9. **方向と共通文字列。**
-   方向は `LR` で始まり、最後の指定を採用して、 `TD` を `TB` に変えます。
-   固定版がフロントマターの後で clear するため、 title は空です。
+   方向は `LR` で始まり、最後の指定を採用して、`TD` を `TB` に変えます。
+   固定版がフロントマターの後で clear するため、title は空です。
    アクセシビリティの行とブロックは先の値を置き換え、
    完全に空の内容は空文字列になります。
    変換したタイトル値を trim し、説明では各 LF の後の空白も除きます。

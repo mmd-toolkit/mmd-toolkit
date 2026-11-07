@@ -28,7 +28,7 @@
    Unicode・十六進の綴りを数値として復号しない。
    ラベルを trim・sanitize しない。
    引用符は両方を使える。
-   空のラベル、 prototype にある名前も通常の Map キーである。
+   空のラベル、prototype にある名前も通常の Map キーである。
    [fixture: pie/label-escapes] [fixture: pie/label-unknown-escapes]
    [fixture: pie/label-escaped-quotes] [fixture: pie/label-whitespace]
    [fixture: pie/label-empty] [fixture: pie/db-prototype-labels]
@@ -38,7 +38,7 @@
    変換後の値がゼロ未満なら、重複ラベルでも拒否する。
    負のゼロと負の underflow は通る。
    変換後のラベルごとに最初の値だけを、初出の順に保つ。
-   `numberOrText` により負のゼロはゼロ、 overflow は `"Infinity"` になる。
+   `numberOrText` により負のゼロはゼロ、overflow は `"Infinity"` になる。
    [fixture: pie/db-slice-order] [fixture: pie/db-three-definitions]
    [fixture: pie/review-db-converted-duplicate-single-double]
    [fixture: pie/db-duplicate-negative]

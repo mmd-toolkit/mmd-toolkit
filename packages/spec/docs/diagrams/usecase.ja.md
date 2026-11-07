@@ -89,7 +89,7 @@ LabelText と Word はカテゴリ名で、一致する規則ではありませ�
 
 12. **dependency-arrow**: `..>` です。 [fixture: usecase/db-semantic-case]
 
-13. **stereotype-open**: `<<` を読み、 stereotype 文脈に入ります。
+13. **stereotype-open**: `<<` を読み、stereotype 文脈に入ります。
     [fixture: usecase/gram-stereotype-u2028]
 
 14. **class-separator**: `:::` です。
@@ -152,15 +152,15 @@ LabelText と Word はカテゴリ名で、一致する規則ではありませ�
 35. **css-punctuation**: `! # $ & * + / = ? ^ _ | ~` の 1 文字です。
     [fixture: usecase/lex-label-fallback-punctuation]
 
-36. **label-punctuation**: `; < >`、backslash、 backtick の 1 文字です。
+36. **label-punctuation**: `; < >`、backslash、backtick の 1 文字です。
     [fixture: usecase/lex-label-fallback-punctuation]
 
-37. **label-symbol**: 印字可能 ASCII 外の残りの最長列で、 TAB/LF/CR は除きます。
+37. **label-symbol**: 印字可能 ASCII 外の残りの最長列で、TAB/LF/CR は除きます。
     [fixture: usecase/lex-label-fallback-symbols]
 
-キーワードの順は `usecase-beta`、`actor`、`systemBoundary`、`end`、
-`direction`、`TD`、`TB`、`BT`、`LR`、`RL`、`note`、`for`、`json`、 `classDef`、
-`class`、`style`、`include`、`extend`、`true`、`false` です。
+キーワードの順は `usecase-beta`、`actor`、`systemBoundary`、`end`、`direction`、
+`TD`、`TB`、`BT`、`LR`、`RL`、`note`、`for`、`json`、`classDef`、`class`、
+`style`、`include`、`extend`、`true`、`false` です。
 include と extend だけが大文字小文字を区別しません。
 より長い identifier がキーワードに勝ちます。
 ハイフンと非 ASCII の接尾辞は ASCII 語を延ばしません。
@@ -180,7 +180,7 @@ number は数字列と任意の小数部、またはドットと数字列を読�
 その後に ASCII 英字を単位として取れます。
 符号と指数はありません。
 identifier が先なので `1mg` は id、`1.5px` は number です。
-native metadata は小数を拒否し、 NumericLiteral の位置にはなりません。
+native metadata は小数を拒否し、NumericLiteral の位置にはなりません。
 [fixture: usecase/lex-number-identifiers] [fixture: usecase/lex-decimal-id]
 [fixture: usecase/lex-number-decimal-id-unit]
 [fixture: usecase/gram-metadata-number-icon]
@@ -190,7 +190,7 @@ css-identifier はダッシュ 2 つ、ASCII 英字か underscore、語文字と
 または ASCII 英字か underscore、語文字の列、
 1 組以上のハイフンと空でない語文字の組です。
 前のキーワードと markerless 規則が優先し、`--custom` は markerless と語です。
-`actor-name` は actor から始まり、 `my-actor` は 1 つの CSS 単位です。
+`actor-name` は actor から始まり、`my-actor` は 1 つの CSS 単位です。
 [fixture: usecase/lex-css-hyphen-keyword-style]
 [fixture: usecase/lex-css-keyword-prefix-label-control]
 [fixture: usecase/gram-style-custom-markerless]
@@ -218,7 +218,7 @@ directive の有無にかかわらず別々の単位なので、語を結合し�
 
 CSS プロパティ名の語内にある、選ばれた無視するセミコロンは拒否します。
 [fixture: usecase/div-semicolon-css-property-selected]
-`style` と `classDef` のどちらでも、 `--` と後の語の間の HWS にある、
+`style` と `classDef` のどちらでも、`--` と後の語の間の HWS にある、
 選ばれた `;` は trivia として受理します。
 [fixture: usecase/lex-semicolon-css-name-gap]
 [fixture: usecase/lex-semicolon-classdef-css-name-gap]
@@ -267,8 +267,8 @@ LabelText に形状区切り、演算子、stereotype-open、metadata-open、
 class-separator は含みません。
 裸のラベルには 1 つ以上の単位が必要で、後に引用文字列を混ぜられません。
 最初と最後の単位間の空白を保ちます。
-セミコロン、単独の山括弧、backslash、backtick、NUL、他の制御文字、
-Unicode 空白、補助平面の文字もラベル内容です。
+セミコロン、単独の山括弧、backslash、backtick、NUL、他の制御文字、Unicode 空白、
+補助平面の文字もラベル内容です。
 引用符を単独の fallback テキストにはしません。
 [fixture: usecase/lex-label-fallback-punctuation]
 [fixture: usecase/lex-label-fallback-symbols] [fixture: usecase/lex-nul]
@@ -392,7 +392,7 @@ JSON でも不透明な内容ですが、mermaid の厳密な JSON は構造的�
 directive は全文脈で共通 trivia で、複数行なら物理行終端を除くことがあります。
 ヘッダーと文のキーワード、方向語、普通の id、辺 id、class 名、
 native metadata の裸キーとスカラー、CSS プロパティ名の語、矢印、連続した `@{`、
-`:::`、 `<<`、`>>` は共通の原子的な単位の境界規則に従います。
+`:::`、`<<`、`>>` は共通の原子的な単位の境界規則に従います。
 文字列、ラベル内容、stereotype 内容、CSS 値、アクセシビリティ値、
 JSON 内部には directive を含められます。
 完全な構成要素の間にも置けます。 [fixture: usecase/div-directive-in-header]
@@ -450,7 +450,7 @@ CSS プロパティ名の語を含む、上記の原子的な単位内なら既�
 forward-circle と forward-cross は markerless-solid より前で、
 語境界を検査しません。
 `A --order` の target は `rder`、`A --xray` の target は `ray` です。
-最初の o と x は矢印に入り、 marker の後に空白かタブを置けば次の id を保ちます。
+最初の o と x は矢印に入り、marker の後に空白かタブを置けば次の id を保ちます。
 [fixture: usecase/lex-forward-circle-id-prefix]
 [fixture: usecase/lex-forward-cross-id-prefix]
 [fixture: usecase/lex-forward-circle-id-spaced]
@@ -573,7 +573,7 @@ metadata-open などの複合開き印ではなく、任意の CSS は許しま�
    互換でない単位より前に許す閉じ演算子に達する、
    空でないラベル互換列があると選びます。
    探索では引用文字列も互換ですが、文法のラベルは文字列 1 つか裸の列だけです。
-   両者の混合はなく、 `---` や `<---` はラベルを開けません。
+   両者の混合はなく、`---` や `<---` はラベルを開けません。
    [fixture: usecase/gram-arrow-long-left-label]
    [fixture: usecase/gram-backward-long-labeled-left]
    [fixture: usecase/db-labeled-arrows]
@@ -623,7 +623,7 @@ metadata-open などの複合開き印ではなく、任意の CSS は許しま�
    [fixture: usecase/gram-metadata-property-comma-two-newlines]
    [fixture: usecase/gram-metadata-property-comma-three-newlines]
 
-   ASCII 空白とタブは改行数を変えず、 CRLF は 1 改行として数えます。
+   ASCII 空白とタブは改行数を変えず、CRLF は 1 改行として数えます。
    [fixture: usecase/gram-metadata-trailing-comma-one-newline-hws]
    [fixture: usecase/gram-metadata-trailing-comma-two-newlines-hws]
    [fixture: usecase/gram-metadata-property-comma-one-newline-hws]
@@ -651,7 +651,7 @@ metadata-open などの複合開き印ではなく、任意の CSS は許しま�
 
    先頭や二重のコンマ、改行の後の最後のコンマ、
    空白だけで区切るプロパティは拒否します。
-   YAML/JSON のスカラー、配列、 mapping の文法を持ち込みません。
+   YAML/JSON のスカラー、配列、mapping の文法を持ち込みません。
    [fixture: usecase/gram-metadata-no-separator]
    [fixture: usecase/gram-metadata-double-comma]
    [fixture: usecase/gram-metadata-empty-comma-only]
@@ -745,7 +745,7 @@ metadata-open などの複合開き印ではなく、任意の CSS は許しま�
 - 関連は actor/usecase/JSON 間で、境界や明示辺には接続できません。
   include/extend は usecase 2 つ、
   generalization は actor 同士か usecase 同士です。
-  JSON は forward-point、backward-point、 markerless の関連だけです。
+  JSON は forward-point、backward-point、markerless の関連だけです。
   [fixture: usecase/spec-usecase-parser-81a7a3d7]
   [fixture: usecase/spec-usecase-parser-70ebd0e2]
   [fixture: usecase/spec-usecase-parser-5c692f7f]
@@ -761,7 +761,7 @@ metadata-open などの複合開き印ではなく、任意の CSS は許しま�
   対象を生成しません。
   class/style も同じ名前空間で、保存した要素、境界、JSON、明示辺が対象です。
   無名辺には付けられません。
-  未使用の classDef は有効で、 class 名に定義は不要です。
+  未使用の classDef は有効で、class 名に定義は不要です。
   [fixture: usecase/db-metadata-forward] [fixture: usecase/gram-metadata-empty]
   [fixture: usecase/gram-class-unknown] [fixture: usecase/gram-style-unknown]
   [fixture: usecase/db-style-forward] [fixture: usecase/db-class-forward]
@@ -798,7 +798,7 @@ metadata に markdown 文字列は許しません。
 単独の更新は前の値を置き換え、
 宣言より前に書いても宣言の metadata の後に適用します。
 境界の inline type は更新と同じで、繰り返し宣言の競合にはしません。
-これらは native の検証で、 embedded-data の差異ではありません。
+これらは native の検証で、embedded-data の差異ではありません。
 [fixture: usecase/gram-metadata-duplicate-inline-conflict]
 [fixture: usecase/gram-metadata-duplicate-inline-business]
 [fixture: usecase/db-metadata-overrides]
@@ -812,7 +812,7 @@ business true の actor は normal/hollow だけです。
 rectangle を business usecase にできません。
 検証は単独更新後の最終 metadata に対して行い、初期の組合せは後で修復できます。
 宣言間の競合と未知または誤った型のプロパティは後で修復できません。
-空の icon 文字列は許し、 icon を消せます。
+空の icon 文字列は許し、icon を消せます。
 [fixture: usecase/spec-usecase-parser-ca3ba61c]
 [fixture: usecase/spec-usecase-parser-19f94cab]
 [fixture: usecase/spec-usecase-parser-3f58fb81]
@@ -872,10 +872,10 @@ trivia 以外の位置はすべて字句規則で読める必要があります�
 
 明示 id は括弧や角括弧ラベルの前の名前です。
 引用符だけの名前には、書かれた id がありません。
-`as` の別名と title 文はなく、 `title` 単独は普通の entity id です。
+`as` の別名と title 文はなく、`title` 単独は普通の entity id です。
 [fixture: usecase/gram-entity-as-alias] [fixture: usecase/gram-quoted-as-alias]
 [fixture: usecase/gram-title-bare-id]
-direction とアクセシビリティの文は繰り返せ、 `TD` は書かれた `TD` のままです。
+direction とアクセシビリティの文は繰り返せ、`TD` は書かれた `TD` のままです。
 [fixture: usecase/db-direction-all] [fixture: usecase/db-direction-td]
 [fixture: usecase/db-acctitle-empty] [fixture: usecase/db-accdescr-empty]
 空の引用ラベルも実在する節点で、
@@ -930,7 +930,7 @@ direction とアクセシビリティの文は繰り返せ、 `TD` は書かれ�
   [fixture: usecase/gram-native-quoted-business]
 - [c4-keyword-anywhere](../known-divergences/c4-keyword-anywhere.ja.md):
   検出に残る後続の C4 語があっても、ヘッダーから usecase を選びます。
-  行末の LF は検出から inline パーセント接尾部を隠しますが、 EOF は隠しません。
+  行末の LF は検出から inline パーセント接尾部を隠しますが、EOF は隠しません。
   [fixture: usecase/div-detect-c4-label]
   [fixture: usecase/div-c4-component-label]
   [fixture: usecase/div-c4-dynamic-json]

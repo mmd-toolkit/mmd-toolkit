@@ -314,7 +314,7 @@ flowchart の公開された lexer も同じである。
 [fixture: agentflow/lex-slanted-equals-closer-after-slash]
 [fixture: agentflow/gram-bracket-shapes] [fixture: agentflow/lex-node-equals]
 
-flowchart の波括弧の後の空白の変換を、次の狭い規則に置き換える。 } の後で、
+flowchart の波括弧の後の空白の変換を、次の狭い規則に置き換える。} の後で、
 0 個以上の[行の空白](../common.ja.md#表記)に直後の LF が続く場合、
 その LF として読む。
 これには U+2028、U+2029、垂直タブ、改ページ、U+00A0 も含む。
@@ -881,7 +881,7 @@ YAML、形、型の内容だけによる拒否は、embedded-data-opaque によ�
 ### style、classDef、class、linkStyle
 
 [style、class、linkStyle の文](./flowchart.ja.md#styleclasslinkstyle-の文)
-を参照し、 id-list、styles、style、name、番号付きと default の選択肢を含める。
+を参照し、id-list、styles、style、name、番号付きと default の選択肢を含める。
 必須の space はそれぞれ Agentflow の space の単位 1 つとする。
 id-list の空の要素は末尾も含め null とする。
 style の対象 id、クラスの接尾部、class の文の 2 番目の id は、
@@ -953,7 +953,7 @@ click の id は click-comma で分け、空の端を null にできる。
 call の後のコールバックは開き括弧までの不透明な名前と、
 任意の不透明な引数を持つ。
 名前と引数の余白を保つ。
-名前の LF、CRLF、U+2028、 U+2029 は書かれたまま保つ。
+名前の LF、CRLF、U+2028、U+2029 は書かれたまま保つ。
 [fixture: agentflow/lex-callback-name-lf]
 [fixture: agentflow/lex-callback-name-crlf]
 [fixture: agentflow/lex-callback-name-u2028]
@@ -1059,7 +1059,7 @@ EOF で閉じなくてもよく、そのテキストと closed の false を保�
 [fixture: agentflow/gram-accdescr-open-text-directive-eof]
 [fixture: agentflow/gram-accdescr-open-text-spaces-eof]
 [fixture: agentflow/frontmatter-accdescr-open-trailing-spaces-eof]
-内容のない閉じたブロックは value を null、 closed を true とする。
+内容のない閉じたブロックは value を null、closed を true とする。
 [fixture: agentflow/lex-accdescr-block-u2028]
 [fixture: agentflow/lex-accdescr-block-u2029]
 [fixture: agentflow/lex-accessibility-block-comment]
@@ -1076,9 +1076,9 @@ flowchart の
 文の始まりでは、同じ行の次の文の前も含め、閉じた空のブロック自身を文とする。
 完成した文とその区切りの間では、その文の値の一部ではなく後続の文とする。
 データブロックで終わる頂点の文は、ブロックの周りの空白を取らない。
-そのため flowchart と異なり、 `A@{ shape: rect } accDescr {}`、
-`A@{}accDescr {} ;B`、 `A@{}accDescr {} accDescr {}` は、
-その空白が U+2028 でも、ディレクティブを含んでも拒否する。
+そのため flowchart と異なり、`A@{ shape: rect } accDescr {}`、
+`A@{}accDescr {} ;B`、`A@{}accDescr {} accDescr {}` は、その空白が U+2028 でも、
+ディレクティブを含んでも拒否する。
 `A@{}accDescr {}` は受理する。
 その後に LF で終わる空白が続くものも受理し、その空白はその LF として読む。
 [fixture: agentflow/gram-empty-description-after-data-space]
@@ -1323,7 +1323,7 @@ id の重複、未解決の connectorRef、入力の欠落、reference のラベ
 [fixture: agentflow/div-directive-in-id]
 
 [directive-as-token-boundary](../known-divergences/directive-as-token-boundary.ja.md):
-不可分のキーワード、 Identifier、数値、矢印、複合区切りには、
+不可分のキーワード、Identifier、数値、矢印、複合区切りには、
 全体の単位の定義を変えずに内部のディレクティブを保てない。
 結合して受理される形を理由 2 で拒否する。
 名前のテキスト、文字列、データの位置は受理し、

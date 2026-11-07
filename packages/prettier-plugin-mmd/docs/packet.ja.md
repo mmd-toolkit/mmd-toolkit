@@ -890,7 +890,7 @@ packet
 directive・選択セミコロンの atomic cut は失敗のままです。
 frontmatter HTML は本文だけの変換、opaque な埋め込みデータ、
 C4 検出と見出し前の bare percent trivia は指定読みを使います。
-受理を変える本文の bitsPerRow は指定の比較経路だけで外し、 site 設定、
+受理を変える本文の bitsPerRow は指定の比較経路だけで外し、site 設定、
 title と他の設定を残します。
 raw 拒否には raw Db がありません。
 hidden form、空 label と空説明は新たな差異ではありません。

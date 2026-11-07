@@ -6,7 +6,7 @@ since: v0.1.0
 
 英語版: [requirement-no-undef.md](./requirement-no-undef.md)
 
-どの requirement も element も名指さない、 `style`、`class`、`:::`、
+どの requirement も element も名指さない、`style`、`class`、`:::`、
 関係の名前を禁止する。
 
 <!-- begin auto-generated rule notice -->

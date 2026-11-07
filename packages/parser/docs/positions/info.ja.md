@@ -42,7 +42,7 @@ null ならコロンまでです。 [fixture: info/title-tabs]
 [fixture: info/hidden-directive-block-first-brace]
 
 各共通文は見える EOL 前の最後の textAfter まで延びます。
-その EOL 後の形式は body に属し、 EOL も図固有のコメントも範囲を延ばしません。
+その EOL 後の形式は body に属し、EOL も図固有のコメントも範囲を延ばしません。
 [fixture: info/hidden-directive-title-eof]
 [fixture: info/hidden-directive-acctitle-eof]
 [fixture: info/hidden-directive-accdescr-eof]
@@ -51,7 +51,7 @@ null ならコロンまでです。 [fixture: info/title-tabs]
 [fixture: info/comment-after-block]
 
 InfoLiteral は空白を含む空でない行の値全体か、
-両端の共通空白を除くブロックの内部で、 null には葉がありません。
+両端の共通空白を除くブロックの内部で、null には葉がありません。
 [fixture: info/title-tabs] [fixture: info/lex-title-two-spaces]
 [fixture: info/acctitle-gap] [fixture: info/lex-accdescr-line-whitespace]
 [fixture: info/space-block-interior] [fixture: info/lex-block-whitespace-only]
