@@ -657,6 +657,16 @@ const classLineSeparatorExamples: readonly (readonly [
  */
 const erExamples: readonly (readonly [string, string, string])[] = [
   [
+    "U+2028 between an ER subgraph name and its title",
+    "erDiagram\nsubgraph S\u2028[t]\nA\nend\n",
+    "erDiagram\n  subgraph S\u2028[t]\n    A\n  end\n",
+  ],
+  [
+    "U+2029 between an ER subgraph name and its title",
+    "erDiagram\nsubgraph S\u2029[t]\nA\nend\n",
+    "erDiagram\n  subgraph S\u2029[t]\n    A\n  end\n",
+  ],
+  [
     "a comment line after U+2028 in an ER subgraph header",
     "erDiagram\nsubgraph S\u2028%% c\n [T]\nA\nend\n",
     "erDiagram\n  subgraph S\u2028%% c\n [T]\n    A\n  end\n",

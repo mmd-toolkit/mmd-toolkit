@@ -247,15 +247,17 @@ usecase-beta
 
 Openings, declaration bodies and aligned `end` use separate lines, including
 empty boundaries and empty quoted names. [fixture:
-system-boundaries/boundary-header-comment-empty] Reuse the authored heading
-choice of [flowchart subgraphs](./flowchart.md#subgraph-header): an id/title gap
-becomes one space if present, touching stays touching, and parentheses/brackets
-with their interior padding stay written. [fixture:
-system-boundaries/boundary-id-title-directed-gap] Compact title padding is
-Db-equal, but keeping container headings consistent with flowchart avoids a
-second heading policy. Preserve native metadata/classes and repeated
-declarations; body membership comes from the AST's single declaration-body
-level.
+system-boundaries/boundary-header-comment-empty] Reuse the heading form of
+[flowchart subgraphs](./flowchart.md#subgraph-header): the opener of the title,
+`[` or `(`, touches the id, so `systemBoundary S [t]` is printed
+`systemBoundary S[t]` and `systemBoundary S (t)` is printed
+`systemBoundary S(t)`. mermaid.js reads the spaced and the touching spellings as
+the same boundary. The padding inside the brackets stays written. [fixture:
+system-boundaries/boundary-title-opener-touches-id] A directive in the gap keeps
+the whitespace written on each side of it, as under flowchart's Directives.
+[fixture: system-boundaries/boundary-id-title-directed-gap] Preserve native
+metadata/classes and repeated declarations; body membership comes from the AST's
+single declaration-body level.
 
 [fixture: system-boundaries/boundary-headings] [fixture:
 system-boundaries/boundary-empty] [corpus fixture: usecase/db-empty-boundary-id]
@@ -272,7 +274,7 @@ Output
 
 ```mmd
 usecase-beta
-  systemBoundary Box [ Display ]@{ type: 'package' }:::box,group
+  systemBoundary Box[ Display ]@{ type: 'package' }:::box,group
     actor User
     A@{ business: true }
   end

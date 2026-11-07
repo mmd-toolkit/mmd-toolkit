@@ -30,7 +30,7 @@ import {
   expectValue,
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
-  indentDescriptionLines,
+  formatDescriptionBlock,
   keepFirstGapLineTails,
   keptAsWritten,
   layoutCompactEmptyDescriptionBlockWithFallback,
@@ -297,7 +297,7 @@ export function layoutStateStatement(
     /** Builds the existing value, trivia and closing-brace layout. */
     function originalLayout(): AtomLayout {
       const closing = findAccDescrBlockClosing(source, block)
-      return indentDescriptionLines(source, block, {
+      return formatDescriptionBlock(source, block, {
         atoms: collectAtoms(
           source,
           start,
@@ -986,10 +986,9 @@ function statementRules(
 
 /**
  * Adds the rules of the `,` between the ids of a `class` statement: an id
- * after a `,` touches it. Where whitespace is written before the `,`, the
- * ids end at that whitespace and mermaid.js reads the rest as the name of
- * the class, so `class A ,B c` stays as written (docs/state.md, Whitespace
- * between tokens).
+ * after a `,` touches it. The ids end at whitespace before a `,`, and mermaid.js
+ * reads the rest as the name of the class, so `class A ,B c` has the one id `A`
+ * and stays as written (docs/state.md, Whitespace between tokens).
  */
 function addClassIdListRules(
   source: Source,
@@ -997,14 +996,14 @@ function addClassIdListRules(
   rules: Map<number, GapRule>,
 ): void {
   for (let index = 1; index < states.length; index++) {
-    const comma = expectToken(
-      findStructuralToken(source, states[index - 1].range[1]),
-      "the `,` between the ids of a `class` statement",
+    expectValue(
+      expectToken(
+        findStructuralToken(source, states[index - 1].range[1]),
+        "the `,` between the ids of a `class` statement",
+      ),
+      ",",
     )
-    expectValue(comma, ",")
-    if (comma.range[0] === states[index - 1].range[1]) {
-      rules.set(states[index].range[0], "none")
-    }
+    rules.set(states[index].range[0], "none")
   }
 }
 

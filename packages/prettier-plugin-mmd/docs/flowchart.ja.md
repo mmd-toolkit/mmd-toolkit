@@ -1212,22 +1212,27 @@ usecaseのDbが同じ形に従います。 [fixture: accessibility-lines/empty-b
 `{a}`、`{ a }`、`{  a  }`、`{  a}`、`{a  }` は、どれも `{ a }` になります。
 mermaid.js は文字を trim するので、両端の空白に意味はありません。
 [データブロック](#データブロック)の `@{ ... }` も同じ形で印字します。
-corpus の fixture にある 1 行のブロックは、両側に空白があるものが 368 件、
-どちらにもないものが 186 件です。
 mermaid.js の文書には、1 行のブロックの例がありません。
 [fixture: accessibility-lines/block-tight-text]
 [fixture: accessibility-lines/block-spaced-text]
 [fixture: accessibility-lines/block-padded-text]
 [fixture: accessibility-lines/block-left-padding-only]
 [fixture: accessibility-lines/block-right-padding-only]
-コメントやディレクティブ、改行、文字の中の `;` があるブロックは、
-書かれたままにします。
-mermaid.js の line rule は `;` までを文字として読むからです。
-`{a;b}` と `{a; b}` はそのままで、ブロックの後ろの `;` は文を区切るので、
-その文は落とされ、ブロックは整えます。
+コメントやディレクティブ、改行があるブロックは、書かれたままにします。
+文字に `%%{` があるブロックも同じです。
+`accDescr {A%%{}%% B` では最初の `}` がブロックを閉じるので、
+空白を足すとディレクティブが変わります。
 [fixture: accessibility-lines/block-text-beside-directive-kept]
-[fixture: accessibility-lines/block-text-with-semicolon-kept]
+[fixture: pie/description-blocks/block-first-brace]
+文字の中の `;` は、空白を足すことを妨げません。
+`{a;b}` は `{ a;b }` になります。
+[fixture: accessibility-lines/block-text-with-semicolon-padded]
 [fixture: accessibility-lines/block-text-with-semicolons-padded]
+文字に `style` か `classDef` と `;` があると、
+mermaid.js の line rule が読むことがあります。
+整形は `:` と `#` の間の空白を保つので（[セミコロン](#セミコロン)を参照）、
+そのブロックは書かれたままにします。
+[fixture: accessibility-lines/block-text-style-line-kept]
 文字の中の U+2028 と U+2029 は、文字を複数行にするので、そのまま残します。
 [test: U+2028 in the text of a flowchart description block]
 [test: U+2029 in the text of a flowchart description block]

@@ -865,7 +865,7 @@ Mermaid が説明からこの字下げを除くためです。
 `accDescr {a b}`、`accDescr {  a b  }`、`accDescr {  a b}`、
 `accDescr {a b  }` は、どれも `accDescr { a b }` になります。
 mermaid.js は文字を trim するので、両端の空白に意味はありません。
-文字の中にディレクティブや `;` があるブロックは、書かれたままにします。
+文字の中にディレクティブがあるブロックは、書かれたままにします。
 [fixture: multi-line-values/block-text-on-one-line-padded]
 
 入力

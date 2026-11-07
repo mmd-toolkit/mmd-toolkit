@@ -406,13 +406,16 @@ ends the ids, and what follows is the name of the class: `class A ,B c` is the
 state `A` with the class `,B c`. Those forms stay as written, with the
 whitespace after the `,`. [fixture:
 whitespace-between-tokens/class-ids-space-before-comma-kept] [fixture:
-whitespace-between-tokens/comma-kept] A directive in the gap keeps the
-whitespace written on each side of it, as under [Directives](#directives), and a
-`;` that the line rule ignores keeps its line as written. [fixture:
-whitespace-between-tokens/class-ids-beside-directive-kept] [fixture:
-whitespace-between-tokens/class-ids-with-ignored-semicolon] A U+2028 or U+2029
-after the `,` stays where it is. [test: U+2028 after the comma of a state class
-statement] [test: U+2029 after the comma of a state class statement]
+whitespace-between-tokens/comma-kept] A line break after the `,` is joined, so
+`class A,` and `B c` on the next line are printed `class A,B c`, and a directive
+before the `,` does not change that: the id after the `,` touches it. [fixture:
+whitespace-between-tokens/class-ids-line-break-and-directive] A directive in the
+gap after the `,` keeps the whitespace written on each side of it, as under
+[Directives](#directives), and a `;` that the line rule ignores keeps its line
+as written. [fixture: whitespace-between-tokens/class-ids-beside-directive-kept]
+[fixture: whitespace-between-tokens/class-ids-with-ignored-semicolon] A U+2028
+or U+2029 after the `,` stays where it is. [test: U+2028 after the comma of a
+state class statement] [test: U+2029 after the comma of a state class statement]
 
 Input
 ([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/state/whitespace-between-tokens/collapsed-input.mmd)):
@@ -1077,7 +1080,7 @@ The text of a block on one line stands between one space on each side, as in
 `accDescr {a b}`, `accDescr {  a b  }`, `accDescr {  a b}`, and
 `accDescr {a b  }` are printed `accDescr { a b }`. mermaid.js trims the text, so
 the whitespace at its ends carries no meaning. A block with a directive in its
-text, or a `;` in its text, stays as written. [fixture:
+text stays as written. [fixture:
 multi-line-values/block-text-on-one-line-padded]
 
 Input

@@ -417,7 +417,11 @@ mermaid.js の文書は、この文の例 2 件を `,` の後ろに空白を置�
 その形は、`,` の後ろの空白も含めて、書かれたまま残します。
 [fixture: whitespace-between-tokens/class-ids-space-before-comma-kept]
 [fixture: whitespace-between-tokens/comma-kept]
-隙間にディレクティブがあれば、
+`,` の後ろの改行は結ぶので、
+`class A,` と次の行の `B c` は `class A,B c` になります。
+`,` の前にディレクティブがあっても同じで、`,` の後ろの id は `,` に接します。
+[fixture: whitespace-between-tokens/class-ids-line-break-and-directive]
+`,` の後ろの隙間にディレクティブがあれば、
 その両側に書かれた空白を残します（[ディレクティブ](#ディレクティブ)を参照）。
 行の line rule が無視する `;` のある行は、書かれたまま残します。
 [fixture: whitespace-between-tokens/class-ids-beside-directive-kept]
@@ -1127,7 +1131,7 @@ agentflow、usecase に合わせます。
 `accDescr {a b}`、`accDescr {  a b  }`、`accDescr {  a b}`、
 `accDescr {a b  }` は、どれも `accDescr { a b }` になります。
 mermaid.js は文字を trim するので、両端の空白に意味はありません。
-文字の中にディレクティブや `;` があるブロックは、書かれたままにします。
+文字の中にディレクティブがあるブロックは、書かれたままにします。
 [fixture: multi-line-values/block-text-on-one-line-padded]
 
 ブロックノートの段落は、[ノート](#ノート)の限定規則に従います。

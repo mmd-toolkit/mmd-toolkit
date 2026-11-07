@@ -16,7 +16,7 @@ import {
   expectValue,
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
-  indentDescriptionLines,
+  formatDescriptionBlock,
   keepFirstGapLineTails,
   layoutCompactEmptyDescriptionBlockWithFallback,
   spansLinesThatCannotJoin,
@@ -269,7 +269,7 @@ export function layoutSequenceStatement(
     /** Builds the existing value, trivia and closing-brace layout. */
     function originalLayout(): AtomLayout {
       const closing = findAccDescrBlockClosing(source, block)
-      return indentDescriptionLines(source, block, {
+      return formatDescriptionBlock(source, block, {
         atoms: collectAtoms(
           source,
           start,

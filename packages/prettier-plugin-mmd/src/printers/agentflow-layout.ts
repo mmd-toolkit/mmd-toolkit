@@ -22,7 +22,7 @@ import {
   expectToken,
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
-  indentDescriptionLines,
+  formatDescriptionBlock,
   keptAsWritten,
   walk,
 } from "./layout.ts"
@@ -380,9 +380,12 @@ export function layoutStatement(
       ...layout,
       outdented: closing === null ? new Set() : new Set([closing]),
     }
-    return preservesDescriptionColumns
-      ? descriptionLayout
-      : indentDescriptionLines(source, statement, descriptionLayout)
+    return formatDescriptionBlock(
+      source,
+      statement,
+      descriptionLayout,
+      preservesDescriptionColumns,
+    )
   }
   return layout
 }

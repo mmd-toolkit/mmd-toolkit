@@ -167,7 +167,7 @@ export function findAttributeBraces(
  * description blocks that may follow stand on the line as statements of the
  * body (see `findErKeptLines`).
  *
- * The name stands after one space, the title after one space too, with
+ * The name stands after one space, the `[` of the title touches it, with
  * nothing inside its brackets, and its names are separated by one space,
  * written touching or not: mermaid.js joins them with one space
  * (docs/er.md, Subgraphs).
@@ -190,7 +190,7 @@ export function layoutSubgraphOpening(
       "the `[` of a subgraph title",
     )
     expectValue(opening, "[")
-    rules.set(opening.range[0], "space")
+    rules.set(opening.range[0], "none")
     for (const [index, name] of statement.title.entries()) {
       rules.set(name.range[0], index === 0 ? "none" : "space")
     }

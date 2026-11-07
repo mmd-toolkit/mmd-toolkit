@@ -448,9 +448,12 @@ export function layoutDescriptionBlock(
       lineBreaks: "kept",
     }
   }
-  return options.preservesBodyColumns
-    ? padOneLineDescription(source, block, layout)
-    : indentDescriptionLines(source, block, layout)
+  return formatDescriptionBlock(
+    source,
+    block,
+    layout,
+    options.preservesBodyColumns,
+  )
 }
 
 /**
@@ -574,10 +577,11 @@ function isLineBreak(character: string): boolean {
  * docs/flowchart.md, Data blocks. The block is padded only if it is closed
  * and the layout holds its text as one atom between the braces, with
  * nothing but whitespace on one line around it: a comment or a directive in
- * the block, a line break, a `;` in the text, or a layout that holds the text
+ * the block (a `%%{` in the text, whose `}` would be read as the closing
+ * brace), a line break, or a layout that holds the text
  * in a longer stretch (a kept line, a hidden form) leaves it as it is.
  */
-export function padOneLineDescription(
+function padOneLineDescription(
   source: Source,
   block: AccDescrBlock,
   layout: AtomLayout,
@@ -602,17 +606,12 @@ export function padOneLineDescription(
   )
     return layout
   const [text] = inside
-  const around = [
-    source.text.slice(opening.range[1], text.start),
-    source.text.slice(text.end, closing),
-  ]
+  const between = source.text.slice(opening.range[1], closing)
   if (
     text.doc !== undefined ||
-    source.text.slice(text.start, text.end).includes(";") ||
-    [...source.text.slice(text.start, text.end)].some(isLineBreak) ||
-    around.some((gap) =>
-      gap.trim() === "" ? [...gap].some(isLineBreak) : true,
-    ) ||
+    [...between].some(isLineBreak) ||
+    between.includes("%%{") ||
+    holdsStyleLine(between) ||
     findTriviaBetween(source, opening.range[1], closing).length > 0
   )
     return layout
@@ -627,28 +626,47 @@ export function padOneLineDescription(
 }
 
 /**
- * Align ordinary description text after LF without changing its contents or
- * line breaks. The Db setter drops this indentation. Directives and removed
- * line feeds keep their source, and atoms outside the body stay untouched
- * (docs/timeline.md, Multi-line values; docs/pie.md, Description blocks).
- * Text on one line is padded instead (see `padOneLineDescription`).
- * Callers whose Db also stores the raw description as a member keep their
- * original layout instead (docs/flowchart.md, Multi-line values).
+ * Whether a text can be read by the line rule of mermaid.js: it holds `style`
+ * or `classDef` and a `;` (docs/flowchart.md, Semicolons). The printer keeps
+ * the whitespace of such a text where it stands between a `:` and a `#`, so
+ * padding the braces around it would touch one side only.
  */
-export function indentDescriptionLines(
+function holdsStyleLine(text: string): boolean {
+  return (
+    text.includes(";") && (text.includes("style") || text.includes("classDef"))
+  )
+}
+
+/**
+ * Format the text of an `accDescr { ... }` block: align its lines (see
+ * `indentDescriptionLines`) and pad its text on one line (see
+ * `padOneLineDescription`). Callers whose Db also stores the raw description
+ * as a member keep the original body columns instead
+ * (`preservesBodyColumns`; docs/flowchart.md, Multi-line values), and pad the
+ * text on one line all the same: there are no columns to keep in it.
+ */
+export function formatDescriptionBlock(
   source: Source,
   block: AccDescrBlock,
   layout: AtomLayout,
+  preservesBodyColumns = false,
 ): AtomLayout {
   return padOneLineDescription(
     source,
     block,
-    indentMultiLineDescription(source, block, layout),
+    preservesBodyColumns
+      ? layout
+      : indentDescriptionLines(source, block, layout),
   )
 }
 
-/** Align the lines of the text after LF (see `indentDescriptionLines`). */
-function indentMultiLineDescription(
+/**
+ * Align ordinary description text after LF without changing its contents or
+ * line breaks. The Db setter drops this indentation. Directives and removed
+ * line feeds keep their source, and atoms outside the body stay untouched
+ * (docs/timeline.md, Multi-line values; docs/pie.md, Description blocks).
+ */
+export function indentDescriptionLines(
   source: Source,
   block: AccDescrBlock,
   layout: AtomLayout,

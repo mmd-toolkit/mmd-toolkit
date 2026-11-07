@@ -26,7 +26,7 @@ import {
   expectValue,
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
-  indentDescriptionLines,
+  formatDescriptionBlock,
   keepFirstGapLineTails,
   layoutCompactEmptyDescriptionBlockWithFallback,
   spansLinesThatCannotJoin,
@@ -267,7 +267,7 @@ export function layoutClassStatement(
     /** Keeps the block's line breaks, including those around empty trivia. */
     function layoutExpandedBlock(): AtomLayout {
       const closing = findAccDescrBlockClosing(source, block)
-      return indentDescriptionLines(source, block, {
+      return formatDescriptionBlock(source, block, {
         atoms: collectAtoms(
           source,
           start,

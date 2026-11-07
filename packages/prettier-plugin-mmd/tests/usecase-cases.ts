@@ -198,7 +198,7 @@ export const usecaseCases: readonly UsecaseCase[] = [
     input:
       "usecase-beta\nsystemBoundary Scope [\u00a0 Display\ufeff ]\nTask\nend",
     output:
-      "usecase-beta\n  systemBoundary Scope [\u00a0 Display\ufeff ]\n    Task\n  end\n",
+      "usecase-beta\n  systemBoundary Scope[\u00a0 Display\ufeff ]\n    Task\n  end\n",
     options: {},
   },
   {

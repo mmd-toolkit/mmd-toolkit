@@ -19,9 +19,8 @@ import {
   expectValue,
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
-  indentDescriptionLines,
+  formatDescriptionBlock,
   keptAsWritten,
-  padOneLineDescription,
   walk,
 } from "./layout.ts"
 import { holdsJoiningRegion } from "./kept-lines.ts"
@@ -136,9 +135,12 @@ export function layoutStatement(
     lineBreaks: "kept",
   }
   if (statement.type !== "FlowchartAccDescrBlockStatement") return layout
-  return preservesDescriptionColumns
-    ? padOneLineDescription(source, statement, layout)
-    : indentDescriptionLines(source, statement, layout)
+  return formatDescriptionBlock(
+    source,
+    statement,
+    layout,
+    preservesDescriptionColumns,
+  )
 }
 
 /**

@@ -1186,21 +1186,26 @@ Nonempty blocks follow [Multi-line values](#multi-line-values): the text of a
 block on one line stands between one space on each side, so `{a}`, `{ a }`,
 `{  a  }`, `{  a}`, and `{a  }` all become `{ a }`. mermaid.js trims the text,
 so the whitespace at its ends carries no meaning, and the `@{ ... }` blocks of
-[Data blocks](#data-blocks) are printed the same way. In the fixtures of the
-corpus, 368 blocks on one line are written with a space on both sides and 186
-with none, and the documentation of mermaid.js has no example of a block on one
-line. [fixture: accessibility-lines/block-tight-text] [fixture:
+[Data blocks](#data-blocks) are printed the same way. The documentation of
+mermaid.js has no example of a block on one line. [fixture:
+accessibility-lines/block-tight-text] [fixture:
 accessibility-lines/block-spaced-text] [fixture:
 accessibility-lines/block-padded-text] [fixture:
 accessibility-lines/block-left-padding-only] [fixture:
 accessibility-lines/block-right-padding-only] A block stays as written when it
-holds a comment or a directive, a line break, or a `;` in its text, since the
-line rule of mermaid.js reads the text up to a `;`: `{a;b}` and `{a; b}` stay,
-while a `;` after the block is a separator that the statement drops, and the
-block is padded. [fixture: accessibility-lines/block-text-beside-directive-kept]
-[fixture: accessibility-lines/block-text-with-semicolon-kept] [fixture:
-accessibility-lines/block-text-with-semicolons-padded] A U+2028 or U+2029 in the
-text makes it several lines, and stays. [test: U+2028 in the text of a flowchart
+holds a comment or a directive, or a line break, and so does a block whose text
+holds a `%%{`, as in `accDescr {A%%{}%% B`, where the first `}` closes the block
+and padding it would change the directive. [fixture:
+accessibility-lines/block-text-beside-directive-kept] [fixture:
+pie/description-blocks/block-first-brace] A `;` in the text does not stop the
+padding: `{a;b}` is printed `{ a;b }`. [fixture:
+accessibility-lines/block-text-with-semicolon-padded] [fixture:
+accessibility-lines/block-text-with-semicolons-padded] Where the text holds
+`style` or `classDef` and a `;`, the line rule of mermaid.js may read it, and
+the printer keeps the whitespace between its `:` and `#` (see
+[Semicolons](#semicolons)), so the block stays as written. [fixture:
+accessibility-lines/block-text-style-line-kept] A U+2028 or U+2029 in the text
+makes it several lines, and stays. [test: U+2028 in the text of a flowchart
 description block] [test: U+2029 in the text of a flowchart description block]
 Whitespace at the ends that is not an ASCII space or tab, such as a no-break
 space, is trimmed by mermaid.js too and prints as one space. [test: no-break

@@ -167,6 +167,9 @@ export function layoutUsecaseStatement(
           findStructuralToken(source, statement.title.range[1]),
           "the boundary title closer",
         )
+        // The title opener touches the id, as in a flowchart subgraph
+        // (docs/usecase.md, System boundaries).
+        rules.set(opening.range[0], "none")
         kept.push({ start: opening.range[0], end: closing.range[1] })
       }
       addClassListRules(source, statement.classes, statement.range[0], rules)
