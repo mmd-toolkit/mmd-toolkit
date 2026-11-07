@@ -305,6 +305,21 @@ importers:
         specifier: ^3.9.0
         version: 3.9.9
 
+  packages/mmdfmt:
+    dependencies:
+      '@mmd-toolkit/parser':
+        specifier: workspace:^
+        version: link:../parser
+      prettier:
+        specifier: ^3.9.0
+        version: 3.9.9
+      prettier-plugin-mmd:
+        specifier: workspace:^
+        version: link:../prettier-plugin-mmd
+      tinyglobby:
+        specifier: ^0.2.17
+        version: 0.2.17
+
   packages/parser:
     devDependencies:
       '@mmd-toolkit/ast':

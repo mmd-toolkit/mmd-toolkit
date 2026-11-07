@@ -78,6 +78,7 @@ tag `@mmd-toolkit/spec@<version>`.
 | `packages/ast`                 | The TypeScript types of the syntax tree.                           |
 | `packages/parser`              | The parser.                                                        |
 | `packages/prettier-plugin-mmd` | The Prettier plugin.                                               |
+| `packages/mmdfmt`              | The command-line formatter.                                        |
 | `packages/eslint-plugin`       | The ESLint plugin.                                                 |
 | `packages/textmate-grammar`    | The TextMate grammar.                                              |
 | `.claude`                      | The skills, settings and hooks of Claude Code.                     |

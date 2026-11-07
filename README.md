@@ -11,9 +11,10 @@ corpus. Not affiliated with [mermaid-js](https://mermaid.js.org/).
 `mmd` refers to the `.mmd` file extension used for Mermaid diagram text. It is
 unrelated to MultiMarkdown and MikuMikuDance, which also use the abbreviation.
 
-Every diagram type of mermaid.js is supported. The formatter, the linter, the
-parser, its TypeScript types, and the TextMate grammar are published to npm. The
-specification and the tests are used from this repository and are not published.
+Every diagram type of mermaid.js is supported. The formatter and its
+command-line tool, the linter, the parser, its TypeScript types, and the
+TextMate grammar are published to npm. The specification and the tests are used
+from this repository and are not published.
 
 ## Documentation
 
@@ -42,17 +43,18 @@ in ESLint Online Playground. The [sample project](./examples/eslint) includes
 
 ## Packages
 
-| Package                                                        | What it is for                                                                                   |
-| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| [`prettier-plugin-mmd`](./packages/prettier-plugin-mmd)        | Format `.mmd` files and `mermaid` code blocks in Markdown with Prettier.                         |
-| [`@mmd-toolkit/eslint-plugin`](./packages/eslint-plugin)       | Lint `.mmd` files and `mermaid` code blocks in Markdown with ESLint.                             |
-| [`@mmd-toolkit/parser`](./packages/parser)                     | Parse Mermaid text into a syntax tree with positions, for linters and other tools.               |
-| [`@mmd-toolkit/ast`](./packages/ast)                           | Use the TypeScript types of the syntax tree of the parser.                                       |
-| [`@mmd-toolkit/textmate-grammar`](./packages/textmate-grammar) | Color Mermaid text in Shiki, Monaco and VS Code, with a TextMate grammar for every diagram type. |
-| [`@mmd-toolkit/spec`](./packages/spec)                         | Read how Mermaid text is parsed, as a specification independent of any implementation.           |
-| [`@mmd-toolkit/tests`](./packages/tests)                       | Test an implementation of the syntax against what mermaid.js does.                               |
-| [`@mmd-toolkit/docs`](./packages/docs)                         | Build the documentation site: the guides and the documents of the lint rules.                    |
-| [`@mmd-toolkit/playground`](./packages/playground)             | Try the parser and the formatter in the browser.                                                 |
+| Package                                                        | What it is for                                                                                                |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| [`prettier-plugin-mmd`](./packages/prettier-plugin-mmd)        | Format `.mmd` files and `mermaid` code blocks in Markdown with Prettier.                                      |
+| [`mmdfmt`](./packages/mmdfmt)                                  | Format `.mmd` files and `mermaid` code blocks from the command line, and leave the rest of Markdown as it is. |
+| [`@mmd-toolkit/eslint-plugin`](./packages/eslint-plugin)       | Lint `.mmd` files and `mermaid` code blocks in Markdown with ESLint.                                          |
+| [`@mmd-toolkit/parser`](./packages/parser)                     | Parse Mermaid text into a syntax tree with positions, for linters and other tools.                            |
+| [`@mmd-toolkit/ast`](./packages/ast)                           | Use the TypeScript types of the syntax tree of the parser.                                                    |
+| [`@mmd-toolkit/textmate-grammar`](./packages/textmate-grammar) | Color Mermaid text in Shiki, Monaco and VS Code, with a TextMate grammar for every diagram type.              |
+| [`@mmd-toolkit/spec`](./packages/spec)                         | Read how Mermaid text is parsed, as a specification independent of any implementation.                        |
+| [`@mmd-toolkit/tests`](./packages/tests)                       | Test an implementation of the syntax against what mermaid.js does.                                            |
+| [`@mmd-toolkit/docs`](./packages/docs)                         | Build the documentation site: the guides and the documents of the lint rules.                                 |
+| [`@mmd-toolkit/playground`](./packages/playground)             | Try the parser and the formatter in the browser.                                                              |
 
 ## What you can rely on
 
