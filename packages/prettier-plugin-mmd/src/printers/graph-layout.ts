@@ -281,7 +281,13 @@ export function layoutGraphHeader(
   }
 }
 
-/** The required null-style whitespace can extend past a statement's range. */
+/**
+ * The required null-style whitespace can extend past a statement's range, and
+ * so can the whitespace that makes the value of the last `stroke` of a
+ * `linkStyle` blank: mermaid.js draws no colour of an arrowhead from a
+ * `stroke:` with a blank value and does not try the next one
+ * (docs/flowchart.md, Style trailing whitespace).
+ */
 export function findStyleStatementEnd(
   source: Source,
   statement: Node & { readonly styles: readonly (Node | null)[] },
@@ -290,7 +296,12 @@ export function findStyleStatementEnd(
     findTokenEndingBefore(source, statement.range[1]),
     "the end of a style statement",
   )
-  return statement.styles.at(-1) !== null && !last.value.endsWith(",")
+  return statement.styles.at(-1) !== null &&
+    !last.value.endsWith(",") &&
+    !(
+      statement.type.endsWith("LinkStyleStatement") &&
+      last.value.trimEnd().endsWith("stroke:")
+    )
     ? statement.range[1]
     : findWrittenWhitespaceEnd(source, statement.range[1])
 }

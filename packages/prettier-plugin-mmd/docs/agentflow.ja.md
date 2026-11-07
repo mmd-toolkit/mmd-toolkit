@@ -298,14 +298,37 @@ directiveを挟む最初のstyleの先頭空白、スタイルの値の中の語
 [fixture: single-space-gaps/style-colon-spaced]
 番号を指定した `linkStyle` では、`fill` で始まるスタイルの前の `,` の後ろに、
 空白があるかないかを保ち、空白の連続は空白 1 つにします。
+mermaid.js は先頭だけを読むので、`fill-opacity` も含みます。
 [fixture: single-space-gaps/link-style-fill-after-comma-kept]
+[fixture: single-space-gaps/link-style-fill-opacity-after-comma-kept]
 この文のほかのスタイルと `linkStyle default` は、1 つの形で印字します。
 詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
 を参照してください。
-バックスラッシュの後に空白か `,` がある文、ディレクティブやコメントがある文、
-空白だけのスタイルがある文、スタイルに改行か U+2028・U+2029 があるか、
-行に保つ `;` がある文は、書かれたままにします。
-[fixture: single-space-gaps/classdef-first-tab]
+リンクにも適用される `linkStyle` と `classDef` では、
+`stroke` で終わる名前と `:` の間の空白の有無を保ち、
+空白の連続は空白 1 つにします。
+詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+を参照してください。
+[fixture: single-space-gaps/link-style-stroke-before-colon-kept]
+[fixture: single-space-gaps/class-def-stroke-before-colon-kept]
+`style` はノードに適用され、1 つの形で印字します。
+[fixture: single-space-gaps/style-stroke-before-colon-spaced]
+[flowchart](./flowchart.ja.md#トークンの間の空白)と同じく、
+`linkStyle` のスタイルのうち、名前が `stroke` で終わり、
+値が空白とタブだけのものは、書かれたまま残します。
+[fixture: single-space-gaps/link-style-blank-stroke-value-kept]
+`classDef` では、バックスラッシュの後の `,` はスタイルの一部です。
+バックスラッシュと `,` の間の空白は、
+除くと `,` がスタイルの一部になるので残します。
+`style` と `linkStyle` では、`,` は前に何があってもスタイルを終えます。
+バックスラッシュの後で `:` の前にある空白も、
+除くと `:` がエスケープされるので残します。
+[fixture: single-space-gaps/style-escaped-space-before-comma]
+[fixture: single-space-gaps/style-backslash-before-comma]
+[fixture: single-space-gaps/style-colon-escaped-space-kept]
+ディレクティブやコメントがある文、空白だけのスタイルがある文、
+スタイルに改行か U+2028・U+2029 があるか、行に保つ `;` がある文は、
+書かれたままにします。 [fixture: single-space-gaps/classdef-first-tab]
 [fixture: single-space-gaps/linkstyle-first-spaces]
 [fixture: single-space-gaps/style-directive-gap]
 [fixture: single-space-gaps/style-first-spaces]
@@ -484,7 +507,7 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 書かれたままにする場合は、
 [データブロック](./flowchart.ja.md#データブロック)に挙げたとおりです。
 [fixture: metadata-blocks/one-line-padded]
-[fixture: metadata-blocks/one-line-space-only-kept]
+[fixture: metadata-blocks/one-line-space-only-padded]
 [fixture: metadata-blocks/one-line-directive-kept]
 [fixture: metadata-blocks/one-line-kept-line-kept]
 [fixture: metadata-blocks/one-line-touching-blocks-kept]
@@ -1164,6 +1187,11 @@ tooltip/target前に必須の空白1文字を保ち、末尾の空の説明は�
 [fixture: click-statements/target-required-tab]
 [fixture: click-statements/prefix-with-directive]
 
+呼び出しの引数は、[flowchart](./flowchart.ja.md#トークンの間の空白)と同じく、
+両端と `,` の前に空白を置かず、後ろに空白を 1 つ置きます。
+`click A call f(  "x" ,y )` は `click A call f("x", y)` と印字します。
+（[同じに描かれる呼び出しの引数](./compatibility.ja.md#同じに描かれる呼び出しの引数)）。
+[fixture: click-statements/callback-arguments-spaced]
 引数が空白だけの呼び出しの括弧は、
 [flowchart](./flowchart.ja.md#トークンの間の空白)と同じく互いに接します。
 `click A call f( )` は、

@@ -368,9 +368,8 @@ flowcharts put the styles into the CSS `style` attribute, in which the
 whitespace around `:` and `;` is not read. Both texts of each kind of statement
 were drawn with mermaid.js 12.3.0 in Chromium, and the pixels were the same, and
 so was the SVG, without the generated ids and without that whitespace: for
-`style` and `classDef` in the five diagram types, for `linkStyle` with the
-default links, and for the styles of a `linkStyle` with link numbers that do not
-start with `fill`, and do not have a name that ends with `stroke`.
+`style` and `classDef` in the five diagram types, and for the styles of a
+`linkStyle`, with link numbers or `default`, except for the cases below.
 
 A `linkStyle` with link numbers is drawn differently where a style after a `,`
 starts with whitespace.
@@ -412,14 +411,35 @@ flowchart/whitespace-between-tokens/class-def-stroke-before-colon-kept]
 [fixture: flowchart/whitespace-between-tokens/style-stroke-before-colon-spaced]
 [fixture: agentflow/single-space-gaps/link-style-stroke-before-colon-kept]
 
-A backslash escapes a `,` in a style of flowchart and agentflow: `fill:a\,b` is
-the style `fill:a,b`. A space between the backslash and the `,` therefore stays:
-without it, the `,` would be part of the style instead of ending it. In the
-other diagram types the `,` always ends a style, and a backslash before it is no
-reason to keep anything. A space after a backslash before the `:` stays in all
-of them, since taking it away would escape the `:`. [fixture:
+A `stroke:` whose value is whitespace only is read too. mermaid.js takes the
+colour from the characters after the first `stroke:` up to a `;`, and draws no
+colour where they are whitespace only, without trying the next `stroke:`. In
+`linkStyle 0 stroke: ,stroke:#f00` the arrowheads keep their theme colour, and
+in `linkStyle 0 stroke:, stroke: #f00` they are red, so the pixels differ. So a
+style of a `linkStyle` with a name that ends with `stroke` and a value of spaces
+and tabs only stays as written, with its whitespace, also at the end of the
+statement, where the whitespace at the end of a style statement is dropped
+otherwise (see
+[Style trailing whitespace](./flowchart.md#style-trailing-whitespace)). A
+`classDef` is not affected: the pixels of `classDef c stroke: ,stroke:#f00` put
+on a link and of `classDef c stroke:, stroke: #f00` were the same. [fixture:
+flowchart/whitespace-between-tokens/link-style-blank-stroke-value-kept]
+[fixture:
+flowchart/style-trailing-whitespace/link-style-blank-stroke-value-at-end-kept]
+[fixture: agentflow/single-space-gaps/link-style-blank-stroke-value-kept]
+
+A backslash escapes a `,` in the `classDef` of flowchart and agentflow:
+`classDef c fill:a\,b` is the style `fill:a,b`. A space between the backslash
+and the `,` therefore stays: without it, the `,` would be part of the style
+instead of ending it. In a `style` and a `linkStyle` of these diagram types, and
+in the other diagram types, the `,` always ends a style, and a backslash before
+it is no reason to keep anything: `style A fill:#f00\,stroke:#00f` has the two
+styles `fill:#f00\` and `stroke:#00f`. A space after a backslash before the `:`
+stays in all of them, since taking it away would escape the `:`. [fixture:
 flowchart/whitespace-between-tokens/style-escaped-space-before-comma] [fixture:
+flowchart/whitespace-between-tokens/style-backslash-before-comma] [fixture:
 agentflow/single-space-gaps/style-escaped-space-before-comma] [fixture:
+agentflow/single-space-gaps/style-backslash-before-comma] [fixture:
 block/styles/style-backslash-before-comma] [fixture:
 class/whitespace-between-tokens/style-backslash-before-comma] [fixture:
 state/whitespace-between-tokens/style-backslash-before-comma]
@@ -439,8 +459,10 @@ restored from the Db of the written text (`styleDbForFormattingComparison` in
 whitespace at its ends and around its first `:` takes the written text, and any
 other difference, among them the number of styles of a link and the presence of
 whitespace before the `:` of a `stroke` in a style that can reach a link, fails.
-When the pinned mermaid.js is updated, draw the statements of each of these
-kinds again and compare the SVG and the pixels before the exception stays.
+The Db summary of the tests trims the end of the value of a style, so only the
+fixtures guard the whitespace-only value of a `stroke`. When the pinned
+mermaid.js is updated, draw the statements of each of these kinds again and
+compare the SVG and the pixels before the exception stays.
 
 ## Texts after a keyword that are drawn the same
 
@@ -547,6 +569,45 @@ the Db of the written text (`clickCallDbForFormattingComparison` in
 `tests/click-call-margins.ts`): arguments that are read as the same parts take
 the written text, and any other difference fails. When the pinned mermaid.js is
 updated, click both texts of each kind again before the exception stays.
+
+## Mindmap texts that are drawn the same
+
+The text of a node of a mindmap, the text of its shape, its icon, and its class
+are printed without the spaces and tabs at their ends: `a (x)` is printed
+`a(x)`, `b[ y ]` is printed `b[y]`, `::icon( fa )` is printed `::icon(fa)`, and
+`::: big ` is printed `:::big`. The whitespace inside a text stays. A shape text
+that would start with a quote once its padding is gone (`a[ "x" ]` is a text
+with its quotes, `a["x"]` a string), a string, a markdown string, a text of
+nothing but spaces and tabs, a text over lines, and a line with a comment or a
+directive in it or after it stay as written. [fixture:
+mindmap/node-text/trailing-whitespace-dropped] [fixture:
+mindmap/node-text/space-before-a-shape-dropped] [fixture:
+mindmap/shapes/inner-padding-dropped] [fixture:
+mindmap/decorations/padding-in-icon-and-class-dropped] [fixture:
+mindmap/shapes/padding-kept-where-drawn-differently] [fixture:
+mindmap/decorations/blank-icon-and-class-kept] [fixture:
+mindmap/node-text/inner-whitespace-kept]
+
+mermaid.js keeps the texts in the Db (`nodeId`, `descr`, `icon`, and `class`),
+so the Db of the printed text differs from the Db of the written text, but it
+draws the same node. The text of a node and of its shape go into a markdown
+label, the icon into the icon of the node, and the class into the list of
+classes of its element, which the browser reads whitespace-separated; the id of
+a node is not drawn
+([`flattenNodes`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts#L224-L309)).
+Both texts of each case were drawn with mermaid.js 12.3.0 in Chromium, and the
+pixels were the same, and so was the SVG, without the generated ids and the
+whitespace that HTML does not draw. The nodes are numbered, not compared by
+their ids or texts, so two nodes that get the same text by the change are still
+two nodes, drawn as before. A text that becomes a string was drawn differently.
+
+The tests compare the Db of the printed text with the texts of the nodes
+restored from the Db of the written text (`mindmapDbForFormattingComparison` in
+`tests/mindmap-text-margins.ts`): a text that differs from the written one only
+by the spaces and tabs at its ends takes the written text, and any other
+difference, among them a text that became a string, fails. When the pinned
+mermaid.js is updated, draw both texts of each case again and compare the SVG
+and the pixels before the exception stays.
 
 ## Whitespace at the start of a label
 

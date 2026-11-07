@@ -20,7 +20,7 @@
       {
         "id": "c",
         "styles": [
-          "fill:a\\",
+          "fill:a\\ ",
           "stroke:b"
         ]
       }

@@ -106,7 +106,9 @@ Correctness is defined by the pinned mermaid.js.
      [Texts after a keyword that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#texts-after-a-keyword-that-are-drawn-the-same);
    - the whitespace around the arguments of a `click` call in flowchart,
      agentflow, class, and Gantt diagrams, defined in
-     [Call arguments that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#call-arguments-that-are-drawn-the-same).
+     [Call arguments that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#call-arguments-that-are-drawn-the-same);
+   - the spaces and tabs at the ends of the texts of a mindmap node, defined in
+     [Mindmap texts that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#mindmap-texts-that-are-drawn-the-same).
 
 ## What each package is responsible for
 

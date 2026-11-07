@@ -857,6 +857,7 @@ multi-line-statements/accessibility-trivia-continuations]
 Titles and sections, and event-text continuations, keep their original multiline
 trivia layout, because their value padding belongs to the Db. [fixture:
 multi-line-statements/breaks-decided-one-by-one] [fixture:
+multi-line-statements/line-rule-first-hash-after-colon-kept] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept] After the colon of an event, an
 indented line of only a directive is the whitespace that starts the event, so

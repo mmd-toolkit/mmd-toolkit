@@ -413,13 +413,19 @@ journey
 
 ### タイトルとセクション
 
-`title` と `section` は、値を、
-末尾の空白も含めて書かれたまま印字します（Db が持ちます）。
+`title` は、値を、末尾の空白も含めて書かれたまま印字します（Db が持ちます）。
 キーワードの後の区切りは、書かれた空白によらず空白 1 つです。
 区切りの形を 1 つにするためで、Gantt 図と同じです。
+値の先頭の空白は除きます。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 `title   My trip` は `title My trip` と印字します。
-[fixture: titles-and-sections/text-padding-dropped]
+`section` の名前は、先頭の空白も含めて書かれたまま印字します。
+その空白で名前が異なる 2 つのセクションは別々に描かれ、
+除くとそうならないからです。
+半角空白とタブだけのタイトルは、書かれたままにします。
+[fixture: titles-and-sections/title-padding-dropped]
+[fixture: titles-and-sections/title-blank-kept]
+[fixture: titles-and-sections/section-padding-kept]
 [fixture: titles-and-sections/value-whitespace-kept]
 [fixture: titles-and-sections/one-space-after-keyword]
 後の行に書かれた値は、キーワードの後に寄せて 1 行にします。
@@ -644,6 +650,7 @@ mermaid.js が複数行にわたって読む文は、
 `title`、`section`、`accTitle:`、`accDescr:` の後と、
 `accTitle` と `accDescr` の `:` の前後が該当します。
 タスクは複数行に書かれることがありません。
+[fixture: multi-line-statements/breaks-decided-one-by-one]
 [fixture: multi-line-statements/value-on-next-line-joined]
 `accTitle` と `accDescr:` の文では、trivia の改行を保ち、
 section の下でも後続の構造部分と独立した trivia 行を文より 1 段深くそろえます。

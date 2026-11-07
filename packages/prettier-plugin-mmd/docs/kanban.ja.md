@@ -492,7 +492,7 @@ mermaid.js は拒否します（既知の差異
 `A@{ticket: X}` は `A@{ ticket: X }` になります。
 書かれたままにする場合は、そこに挙げたとおりです。
 [fixture: data-blocks/one-line-padded]
-[fixture: data-blocks/one-line-space-only-kept]
+[fixture: data-blocks/one-line-space-only-padded]
 [fixture: data-blocks/one-line-directive-kept]
 [fixture: data-blocks/one-line-kept-line-kept]
 [fixture: data-blocks/one-line-touching-blocks-kept]

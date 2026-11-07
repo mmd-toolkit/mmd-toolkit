@@ -6,7 +6,8 @@ import type {
   Token,
 } from "@mmd-toolkit/ast"
 import { parse } from "@mmd-toolkit/parser"
-import type { DbSummary, JsonObject, JsonValue } from "@mmd-toolkit/tests"
+import type { DbSummary, JsonValue } from "@mmd-toolkit/tests"
+import { leadingSpaces, objectOf } from "./db-values.ts"
 import { isDeepStrictEqual } from "node:util"
 import { Marked, type Token as MarkdownToken } from "marked"
 
@@ -329,20 +330,6 @@ function leadingPadding(value: string): number {
   let end = 0
   while (value[end] === " " || value[end] === "\t") end++
   return end
-}
-
-/** The complete ASCII-space prefix, excluding tabs and other whitespace. */
-function leadingSpaces(value: string): number {
-  let end = 0
-  while (value[end] === " ") end++
-  return end
-}
-
-/** A Db note record, excluding arrays, null and missing entries. */
-function objectOf(value: JsonValue | undefined): JsonObject | undefined {
-  return value !== null && typeof value === "object" && !Array.isArray(value)
-    ? (value as JsonObject)
-    : undefined
 }
 
 /** The existing formatter allowance for CRLF and lone CR. */

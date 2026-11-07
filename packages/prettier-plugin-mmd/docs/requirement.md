@@ -1100,6 +1100,7 @@ and `accDescr`, and between `direction` and its value. The statement that a
 string at the end of a `style`, `classDef`, or `class` statement starts goes on
 after the line break of the style context. [fixture:
 multi-line-statements/breaks-decided-one-by-one] [fixture:
+multi-line-statements/line-rule-first-hash-after-colon-kept] [fixture:
 multi-line-statements/kind-and-name-joined] [fixture:
 multi-line-statements/relationship-joined] [fixture:
 multi-line-statements/direction-value-joined] [fixture:

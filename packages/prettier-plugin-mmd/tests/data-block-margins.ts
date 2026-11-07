@@ -1,3 +1,5 @@
+import { leadingSpaces } from "./db-values.ts"
+
 /**
  * Exposes the formatter's permitted changes of a data block without changing
  * the raw texts. The formatter moves every line of a multi-line block by the
@@ -17,13 +19,6 @@ export function dataBlockEmbeddedForFormattingComparison(
       ? previous
       : value
   })
-}
-
-/** The number of spaces that start a row. */
-function leadingSpaces(row: string): number {
-  let count = 0
-  while (row[count] === " ") count++
-  return count
 }
 
 /** Whether a row is a `}` with only spaces before it. */

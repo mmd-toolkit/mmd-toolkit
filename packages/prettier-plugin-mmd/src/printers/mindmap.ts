@@ -79,7 +79,7 @@ function printLine(
   options: ParserOptions<MermaidAst>,
   line: MindmapLine,
 ): Doc {
-  return printAtoms(source, layoutMindmapLine(line), {
+  return printAtoms(source, layoutMindmapLine(source, line), {
     statement: significantIndentationOf(options, 1),
     continuation: significantIndentationOf(options, 2),
   }).doc

@@ -65,7 +65,7 @@
     "edgeDefaults": {
       "interpolate": "basis",
       "style": [
-        ""
+        " "
       ]
     },
     "classDefs": [],

@@ -41,9 +41,6 @@ interface ClassDbLike {
  * - `notes[].index`: the number in the note's id.
  * - The class definitions (`classDef`): the Db keeps them in a private map
  *   that nothing reads; what they change shows in `classes[].styles`.
- * - Whitespace at the end of each style value (`classes[].styles`), which the
- *   grammar keeps before a comma or the end of the line and nothing reads, as
- *   in the flowchart summary.
  *
  * `classes[].link` and `classes[].linkTarget` are recorded as written; see
  * {@link patchClassDb}.
@@ -70,10 +67,9 @@ export function normalizeClass(dbValue: unknown): DbSummary {
  * The summary of one class.
  */
 function classSummary(classNode: object): JsonObject {
-  const { methods, members, styles } = classNode as {
+  const { methods, members } = classNode as {
     methods: object[]
     members: object[]
-    styles: string[]
   }
   return {
     ...omit(toJsonObject({ ...classNode, methods: [], members: [] }), [
@@ -81,7 +77,6 @@ function classSummary(classNode: object): JsonObject {
     ]),
     methods: methods.map(memberSummary),
     members: members.map(memberSummary),
-    styles: styles.map((value) => value.trimEnd()),
   }
 }
 

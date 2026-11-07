@@ -754,6 +754,7 @@ later parts and standalone trivia lines one continuation level inside their
 statement. Preserve each gap's first line tail, including complete inline
 directives: its whitespace must start before LF for the statement to continue.
 [fixture: multi-line-statements/breaks-decided-one-by-one] [fixture:
+multi-line-statements/line-rule-first-hash-after-colon-kept] [fixture:
 multi-line-statements/structural-trivia-continuations] [fixture:
 multi-line-statements/axis-trivia-with-multiline-string] Directive interiors
 stay written. [fixture:

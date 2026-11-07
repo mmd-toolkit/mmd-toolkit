@@ -169,7 +169,9 @@ cynefin-beta
 同じ印字行の中の global directive は、
 [Global directives](#global-directives) のとおりに置きます。
 行に分ける所も同じです。
-hidden closer の padding と semicolon の prefix は保護されたままにします。
+hidden closer の padding は保護されたままにします。
+保持する `;` が保護するのは、
+行の規則が読む範囲だけです（[Semicolons](#semicolons)を参照）。
 
 [fixture: cynefin/component-spacing/domain-hidden-contact]
 
@@ -285,7 +287,6 @@ cynefin-beta
 native form に見える文字を保ち、singleQuote でも引用符は変えません。
 Db が等しい引用符の変更も書かれた形を失い、
 trim や escape の decode は値を変え得るためです。
-共有の semicolon 保護を先に適用します。
 
 [fixture: cynefin/strings/strings-quotes]
 

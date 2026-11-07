@@ -724,8 +724,9 @@ Mermaid keeps the margins in the Db, so the Db of the printed note differs from
 the Db of the written note, but it draws the same figure. Both texts of each
 fixture of this section whose printed note differs from the written one were
 drawn with mermaid.js 12.3.0 in Chromium, after the state that the note refers
-to was declared where the fixture does not declare it. The SVG, without the
-generated ids, and the pixels were the same, except for
+to was declared where the fixture does not declare it, and with `handDrawnSeed`
+set, since the lines of the box of a note are random otherwise. The SVG, without
+the generated ids, and the pixels were the same, except for
 `notes/over-lines-empty-id-kept`, whose note refers to an empty id and which
 mermaid.js 12.3.0 cannot draw in either form. The tests compare the Db of the
 printed text with the margins of the notes restored from the Db of the written
@@ -1346,6 +1347,7 @@ other line break is joined as usual, also in a statement that holds a `;`. A
 statement that keeps a line break keeps its styles as written. [corpus fixture:
 state/db-style-semicolons] [corpus fixture: state/db-classdef-semicolons]
 [fixture: multi-line-statements/breaks-decided-one-by-one] [fixture:
+multi-line-statements/line-rule-first-hash-after-colon-kept] [fixture:
 multi-line-statements/semicolon-kept] A `;` alone does not prevent joining.
 [fixture: multi-line-statements/semicolon-in-id-joined] The line rule of
 mermaid.js (the specification's

@@ -420,7 +420,7 @@ id と `@{` の間のディレクティブは、
 `participant A@{"type":"queue"}` は `participant A@{ "type":"queue" }`
 になります。 [fixture: whitespace-between-tokens/data-block-padded]
 その規則が書かれたままにする場合は、このブロックも書かれたままにします。
-[fixture: whitespace-between-tokens/data-block-space-only-kept]
+[fixture: whitespace-between-tokens/data-block-space-only-padded]
 [fixture: whitespace-between-tokens/data-block-directive-kept]
 [fixture: whitespace-between-tokens/data-block-kept-line-kept]
 [test: data blocks: sequence one line with U+2028 inside]
@@ -681,6 +681,8 @@ sequenceDiagram
 `title   My diagram` は `title My diagram` と印字します。
 [fixture: title/text-padding-dropped]
 [fixture: title/text-padding-dropped-colon]
+半角空白とタブだけのタイトルは、書かれたままにします。
+[fixture: title/title-blank-kept]
 キーワードとその後の空白 1 文字の間のディレクティブは、
 キーワードに接したまま残します。
 `title%%{init: {}}%% U` と `title:%%{init: {}}%% V` は変えません。
@@ -1027,19 +1029,25 @@ sequenceDiagram
 `Alice ->> Bob: hi` と印字します。 [fixture: multi-line-statements/joined]
 [fixture: multi-line-statements/more-lines-joined]
 
-コメントかディレクティブを含む文は改行を残し、
-構造の続きの行と間の注釈を 1 段深く置きます。
+文の各改行は、それぞれ別に判断します。
+コメントかディレクティブの隣の改行は残し、
+構造の続きの行と間の注釈を 1 段深く置き、ほかの改行はつなぎます。
+`autonumber`、改行、`5 %%{init: {}}%%`、改行、`2` は、
+`autonumber 5 %%{init: {}}%%`、改行、`2` と印字します。
 各隙間の最初の改行の前の空白は保ちます。
 その空白によって、mermaid.js が後の行も同じ文の一部として読むためです。
-値の中の空白は変えません。 [fixture: multi-line-statements/comment-inside-kept]
+値の中の空白は変えません。
+[fixture: multi-line-statements/breaks-decided-one-by-one] [fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
+[fixture: multi-line-statements/comment-inside-kept]
 [fixture: multi-line-statements/autonumber-comment-continuation]
 [fixture: multi-line-statements/autonumber-directive-continuation]
 キーワードと本文の間に注釈があるタイトルは、本文の字下げも値に含むので、
 全体を原文のまま残します。
 コメントで結合される領域も、文全体を原文のまま残します。
-複数行に書かれた文は、その行を空白 1 つか何も挟まずにつなぐと、
-行の規則が無視する `;` が変わりうる場合に、書かれたまま残します。
-それ以外の複数行の文は、`;` を含んでいても通常どおりつなぎます。
+改行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合と、
+最後の行の終わりを `;` が決める場合は、その改行を残します。
+それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
 [fixture: multi-line-statements/semicolon-joining-changes-kept]
 `;` があるだけでは、行をつなぐ妨げにはなりません。
 [fixture: multi-line-statements/semicolon-inside-joined]

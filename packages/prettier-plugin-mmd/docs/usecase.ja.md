@@ -259,10 +259,11 @@ LS、PS、NBSP は内部の内容になれます。
 [fixture: stereotypes/directive-gap-sides]
 [test: usecase: stereotype-unicode-exterior-padding]
 [test: usecase: stereotype-unicode-gap-sides]
-保護した共通コメント領域とセミコロンの接頭部は、
-交差する値を余白も含めて全体のまま保ちます。
-[fixture: stereotypes/semicolon-padding-dropped]
+保護した共通コメント領域は、交差する値を余白も含めて全体のまま保ちます。
 [test: usecase: stereotype-comment-region-padding-kept]
+内部の `;` は余白を保つ理由にはなりません。
+行の規則が読むのは `:` から `#` までの範囲だけで、余白はその外にあるからです。
+[fixture: stereotypes/semicolon-padding-dropped]
 物理的な複数行、空、未完の拒否入力は修復しません。
 [corpus fixture: usecase/gram-stereotype-newline]
 [corpus fixture: usecase/gram-stereotype-empty]

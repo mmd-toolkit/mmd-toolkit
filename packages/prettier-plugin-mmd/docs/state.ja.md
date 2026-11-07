@@ -423,9 +423,15 @@ mermaid.js は state 図では `,` の前後の空白を何もないものとし
 描かれる図は同じです。
 詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
 を参照してください。 [fixture: whitespace-between-tokens/style-colon-spaced]
-バックスラッシュの後に空白か `,` がある文、コメントやディレクティブがある文、
-空白だけのスタイルがある文、スタイルに改行があるか、行に保つ `;` がある文は、
-書かれたままにします。 [fixture: whitespace-between-tokens/comma-kept]
+ここではバックスラッシュは `,` をエスケープしません。
+`fill:a\,b ,stroke:c` は `fill: a\, b, stroke: c` と印字します。
+バックスラッシュの後で `:` の前にある空白は、
+除くと `:` がエスケープされるので残します。
+[fixture: whitespace-between-tokens/style-backslash-before-comma]
+[fixture: whitespace-between-tokens/style-colon-escaped-space-kept]
+コメントやディレクティブがある文、空白だけのスタイルがある文、
+スタイルに改行があるか、行に保つ `;` がある文は、書かれたままにします。
+[fixture: whitespace-between-tokens/comma-kept]
 [fixture: whitespace-between-tokens/style-comma-spaced]
 [fixture: whitespace-between-tokens/style-comma-beside-directive]
 [fixture: whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
@@ -660,11 +666,21 @@ stateDiagram-v2
 
 ### ノート
 
-1 行のノートの id の後、つまり `:` と本文は、書かれたまま残します。
-mermaid.js は本文を id の直後から読み、最初の 2 文字を除くからです。
+1 行のノートの id の後、つまり `:` と本文は、
+mermaid.js が id の直後から最初の 2 文字を除いて読み、両端の空白を除きます。
 `note left of A:hi` の本文は `i` で、
 `note right of A  : two spaces` の本文は `: two spaces` です。
 [fixture: notes/kept]
+最初の 2 文字が、順序によらず、`:` と半角空白またはタブの組である場合は、
+書かれた空白によらず、空白 1 つの後に `:` を置き、
+その後の空白 1 つの後に本文を印字します。
+`note right of A: x` と `note left of A\t:\tz` は、
+`note right of A : x` と `note left of A : z` と印字します。
+本文の中の空白は残します。
+Db と図は同じです。 [fixture: notes/colon-and-text-spaced]
+それ以外の始まりは書かれたままにし、本文が空のノート、コメントやディレクティブ、
+ASCII 以外の文字を含むノートも書かれたままにします。
+[fixture: notes/colon-and-text-kept]
 `note left of A:h` では、`:` と `h` が mermaid.js の捨てる 2 文字なので、
 ノートに本文はなく、`h` の後の空白は削除します。
 [fixture: notes/one-character-text-kept]
@@ -750,6 +766,23 @@ HTML や Markdown があっても raw Db は完全に一致します。
 [fixture: notes/html-first-line-tabs]
 [fixture: notes/html-first-line-zero-width]
 [fixture: notes/first-tab-markup-margin]
+
+Mermaid は余白を Db に残すので、印字したノートの Db は、
+書かれたノートの Db と違いますが、同じ図を描きます。
+この節の fixture のうち、
+印字したノートが書かれたものと異なる各 fixture について、
+両方のテキストを mermaid.js 12.3.0 で Chromium に描きました。
+fixture が参照先の状態を宣言していない場合は、その状態を宣言してから描きました。
+また、ノートの枠の線がランダムにならないように、`handDrawnSeed` を設定しました。
+生成された id を除いた SVG と画素は同じでした。
+ただし、`notes/over-lines-empty-id-kept` のノートは空の id を参照しており、
+mermaid.js 12.3.0 はどちらの形でも描けません。
+テストは、印字したテキストの Db に、
+書かれたテキストの Db からノートの余白を戻して比べます。
+`tests/state-note-margins.ts` の関数、
+`stateDbForFormattingComparison` を使います。
+固定している mermaid.js の版を上げるときは、
+各 fixture の両方のテキストを描き直してから、例外を残します。
 
 たとえば、次のノートの先頭行には、設定された空白4個を使います。
 空行で分かれた後続の段落は空白2個を保ちます。
@@ -1395,11 +1428,14 @@ stateDiagram-v2
     LR
 ```
 
-複数行に書かれた文は、その行を空白 1 つか何も挟まずにつなぐと、
-行の規則が無視する `;` が変わりうる場合に、書かれたまま残します。
-それ以外の複数行の文は、`;` を含んでいても通常どおりつなぎます。
+改行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
+その改行を残します。
+それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
+改行が残る文は、スタイルも書かれたままにします。
 [corpus fixture: state/db-style-semicolons]
 [corpus fixture: state/db-classdef-semicolons]
+[fixture: multi-line-statements/breaks-decided-one-by-one]
 [fixture: multi-line-statements/semicolon-kept]
 `;` があるだけでは、行をつなぐ妨げにはなりません。
 [fixture: multi-line-statements/semicolon-in-id-joined]

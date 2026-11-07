@@ -1,4 +1,5 @@
-import type { DbSummary, JsonObject, JsonValue } from "@mmd-toolkit/tests"
+import type { DbSummary, JsonValue } from "@mmd-toolkit/tests"
+import { leadingSpaces, objectOf } from "./db-values.ts"
 
 /**
  * Exposes the formatter's permitted block-margin difference without changing
@@ -47,13 +48,6 @@ export function eventmodelingEmbeddedForFormattingComparison(
       ? previous
       : value
   })
-}
-
-/** A JSON record, excluding arrays, primitives and an absent frame or field. */
-function objectOf(value: JsonValue | undefined): JsonObject | undefined {
-  return value !== null && typeof value === "object" && !Array.isArray(value)
-    ? (value as JsonObject)
-    : undefined
 }
 
 /**
@@ -109,11 +103,4 @@ function isAllowedMarginChange(before: string, after: string): boolean {
     beforeWords.length === afterWords.length &&
     beforeWords.every((word, index) => word === afterWords[index])
   )
-}
-
-/** The complete ASCII-space prefix; tabs and other whitespace are content. */
-function leadingSpaces(value: string): number {
-  let end = 0
-  while (value[end] === " ") end++
-  return end
 }

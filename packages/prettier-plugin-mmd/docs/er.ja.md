@@ -1600,6 +1600,7 @@ mermaid.js が複数行にわたって読む文は、
 改行が字句解析器にとって空白である所では 1 行に印字します。
 `accTitle` と `accDescr` の `:` の後、`direction` と値の間、
 空白の後の `classDef` と `style` の文の中です。
+[fixture: multi-line-statements/breaks-decided-one-by-one] [fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
 [fixture: multi-line-statements/accessibility-text-joined]
 [fixture: multi-line-statements/direction-value-joined]
 [fixture: multi-line-statements/style-over-lines-joined]
@@ -1607,9 +1608,11 @@ mermaid.js が複数行にわたって読む文は、
 構造の続きの行と間の注釈を 1 段深く置きます。
 値の中の空白と、各隙間の最初の改行の前の空白は保ちます。
 コメントで結合される領域では、文全体を原文のまま残します。
-複数行に書かれた文は、その行を空白 1 つか何も挟まずにつなぐと、
-行の規則が無視する `;` が変わりうる場合に、書かれたまま残します。
-それ以外の複数行の文は、`;` を含んでいても通常どおりつなぎます。
+改行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
+その改行を残します。
+それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
+改行が残る文は、スタイルも書かれたままにします。
 [fixture: multi-line-statements/semicolon-joining-changes-kept]
 [fixture: multi-line-statements/style-comment-continuation]
 [fixture: multi-line-statements/comment-line-inside-kept]

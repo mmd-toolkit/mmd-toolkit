@@ -676,15 +676,22 @@ styles of a link to colour its arrowheads. [fixture:
 whitespace-between-tokens/link-style-stroke-before-colon-kept] [fixture:
 whitespace-between-tokens/class-def-stroke-before-colon-kept] A `style` styles a
 node, and uses the one form. [fixture:
-whitespace-between-tokens/style-stroke-before-colon-spaced] A `,` after a
-backslash is part of its style, and a space between the backslash and the `,`
-stays, since taking it away would make the `,` part of the style:
-`fill:a\ ,stroke:b` is printed `fill: a\ , stroke: b`. A space after a backslash
-before the `:` stays as well, since taking it away would escape the `:`. A
-statement stays as written where it holds a comment or a directive, where a
-style is all whitespace, or where a style holds a line break or its line holds a
-kept `;`. [fixture: whitespace-between-tokens/style-blank-style-kept] [fixture:
-whitespace-between-tokens/style-colon-escaped-space-kept] [fixture:
+whitespace-between-tokens/style-stroke-before-colon-spaced] A style of a
+`linkStyle` with a name that ends with `stroke` and a value of spaces and tabs
+only stays as written, since mermaid.js draws no colour of the arrowheads from
+it and does not try a later `stroke:`: `linkStyle 0 stroke: ,stroke:#f00` is
+printed `linkStyle 0 stroke: , stroke: #f00`. [fixture:
+whitespace-between-tokens/link-style-blank-stroke-value-kept] In a `classDef` a
+`,` after a backslash is part of its style, and a space between the backslash
+and the `,` stays, since taking it away would make the `,` part of the style:
+`classDef c fill:a\ ,stroke:b` is printed `classDef c fill: a\ , stroke: b`. In
+a `style` and a `linkStyle` the `,` ends a style whatever stands before it.
+[fixture: whitespace-between-tokens/style-backslash-before-comma] A space after
+a backslash before the `:` stays as well, since taking it away would escape the
+`:`. A statement stays as written where it holds a comment or a directive, where
+a style is all whitespace, or where a style holds a line break or its line holds
+a kept `;`. [fixture: whitespace-between-tokens/style-blank-style-kept]
+[fixture: whitespace-between-tokens/style-colon-escaped-space-kept] [fixture:
 whitespace-between-tokens/style-escaped-space-before-comma] [fixture:
 whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
 whitespace-between-tokens/style-comma-with-kept-semicolon-kept] A U+2028 or
@@ -2210,9 +2217,14 @@ style-trailing-whitespace/removed-after-directive] mermaid.js keeps it at the
 end of the last style, so this is one of the rules that change what mermaid.js
 stores (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same));
-the tests compare styles without their trailing whitespace. The whitespace is
-kept when mermaid.js reads it as a style of its own, after a `,` at the end of
-the list, because the statement would be rejected without it: in
+the tests compare styles without their trailing whitespace. The whitespace of a
+`linkStyle` after a `stroke:` is kept as well (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)):
+`linkStyle default stroke: ` followed by `linkStyle 0 stroke:#f00` keeps the
+space. [fixture:
+style-trailing-whitespace/link-style-blank-stroke-value-at-end-kept] The
+whitespace is kept when mermaid.js reads it as a style of its own, after a `,`
+at the end of the list, because the statement would be rejected without it: in
 `style A fill:#f00, ` and in `classDef c fill:x\, `. [fixture:
 style-trailing-whitespace/whitespace-only-value-kept] [fixture:
 style-trailing-whitespace/whitespace-only-value-in-link-style-kept] [fixture:

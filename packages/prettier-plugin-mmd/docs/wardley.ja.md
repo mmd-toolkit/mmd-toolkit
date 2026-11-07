@@ -943,6 +943,13 @@ mermaid が 1 行として読む範囲で数えます。
 ヘッダの前にある Root directive も同じように除かれ、その後の本文の行は、
 従来どおり保護するか整形します。
 
+語の行の `;` の前後の空白は、mermaid.js の行の読み方を変えるので、
+書かれたまま残します。
+行末の `A -> B;` は拒否されますが、
+その後に空白がある `A -> B;` は受理されるので、
+mermaid.js が別の読み方をする形を印字しません。
+[fixture: wardley/semicolons/word-line-semicolon-whitespace-kept]
+
 [fixture: wardley/semicolons/style-label]
 
 [fixture: wardley/semicolons/style-selected-delimiter]

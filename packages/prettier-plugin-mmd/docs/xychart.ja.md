@@ -792,6 +792,7 @@ title、ヘッダー、軸、plot、アクセシビリティの行の文では�
 後続の部分と独立した trivia 行を、その文より 1 段深くそろえます。
 文を続ける空白は LF より前から始まる必要があるため、各 gap の最初の行の末尾と、
 その中の完全な inline 指令を保ちます。
+[fixture: multi-line-statements/breaks-decided-one-by-one] [fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
 [fixture: multi-line-statements/structural-trivia-continuations]
 [fixture: multi-line-statements/axis-trivia-with-multiline-string]
 指令の内部も原文どおりです。
@@ -803,9 +804,10 @@ title、ヘッダー、軸、plot、アクセシビリティの行の文では�
 [fixture: multi-line-statements/directive-inside-kept]
 引用符の内部は、改行と列を含めて、ひとまとまりのまま保ちます。
 [fixture: multi-line-statements/quoted-title-trivia]
-複数行に書かれた文は、その行を空白 1 つか何も挟まずにつなぐと、
-行の規則が無視する `;` が変わりうる場合に、書かれたまま残します。
-それ以外の複数行の文は、`;` を含んでいても通常どおりつなぎます。
+改行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
+その改行を残します。
+それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
 最終行の別の文にある `;` も、同じ判定をします。
 [1 行 1 文](#1-行-1-文)を参照してください。
 [fixture: multi-line-statements/semicolon-joining-changes-kept]

@@ -980,6 +980,7 @@ printed as `autonumber 5 %%{init: {}}%%`, a line break, and `2`. The whitespace
 before the first line break of each gap is retained: it can make mermaid.js read
 later lines as part of the same statement. Whitespace inside values stays
 unchanged. [fixture: multi-line-statements/breaks-decided-one-by-one] [fixture:
+multi-line-statements/line-rule-first-hash-after-colon-kept] [fixture:
 multi-line-statements/comment-inside-kept] [fixture:
 multi-line-statements/autonumber-comment-continuation] [fixture:
 multi-line-statements/autonumber-directive-continuation] A title with trivia

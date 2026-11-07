@@ -82,7 +82,7 @@ flowchart、agentflow、kanban、sequence の 1 行のデータブロックは�
 両端の内側に空白を 1 つずつ置いて印字し、
 [データブロック](./flowchart.ja.md#データブロック)が定める場合は、
 書かれたままにします。 [fixture: flowchart/data-blocks/one-line-padded]
-[fixture: flowchart/data-blocks/one-line-space-only-kept]
+[fixture: flowchart/data-blocks/one-line-space-only-padded]
 [fixture: flowchart/data-blocks/one-line-touching-blocks-kept]
 [fixture: flowchart/data-blocks/one-line-separate-blocks-padded]
 flowchart、agentflow、kanban、sequence の対象となる複数行のデータブロックと、
@@ -408,9 +408,11 @@ mermaid.js はこの空白を Db に残すので、印字したテキストの D
 class の図形と flowchart のリンクは、スタイルを CSS の `style` 属性に入れ、
 `:` や `;` の前後の空白は読まれません。
 それぞれの文について、両方のテキストを mermaid.js 12.3.0 で Chromium に描き、
-SVG と画素が同じであることを確かめました。
-対象は、5 つの図種の `style` と `classDef`、既定のリンクの `linkStyle`、
-それに番号を指定した `linkStyle` の `fill` で始まらないスタイルです。
+画素が同じで、
+生成された id とその空白を除いた SVG も同じであることを確かめました。
+対象は、5 つの図種の `style` と `classDef`、
+それに番号か `default` を指定した `linkStyle` のスタイルですが、
+次の場合を除きます。
 
 番号を指定した `linkStyle` は、`,` の後のスタイルが空白で始まるときに、
 描かれる図が変わります。
@@ -420,22 +422,79 @@ SVG と画素が同じであることを確かめました。
 `linkStyle 0 stroke:#f00,fill:red` ではリンクが赤で塗られ、
 `linkStyle 0 stroke:#f00, fill:red` では mermaid.js が `fill:none`
 を足すので塗られません。
-そのため、flowchart と agentflow では、
+そのため、flowchart と agentflow では、`fill-opacity` も含め、
 `fill` で始まるスタイルの前に空白があるかないかを保ち、
 空白の連続は空白 1 つにします。
 [fixture: flowchart/whitespace-between-tokens/link-style-fill-after-comma-kept]
+[fixture: flowchart/whitespace-between-tokens/link-style-fill-opacity-after-comma-kept]
 [fixture: agentflow/single-space-gaps/link-style-fill-after-comma-kept]
+[fixture: agentflow/single-space-gaps/link-style-fill-opacity-after-comma-kept]
 この文のほかのスタイルと `linkStyle default` は、1 つの形で印字します。
 [fixture: flowchart/whitespace-between-tokens/link-style-other-after-comma-spaced]
 [fixture: flowchart/whitespace-between-tokens/link-style-default-after-comma-spaced]
 
+リンクのスタイルでは、`stroke:` の有無を調べます。
+[`insertEdge`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L956-L957)
+はリンクのスタイルから `stroke:` を探し、
+[`addEdgeMarker`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edgeMarker.ts#L105-L127)
+は矢印の頭をその色にします。
+`stroke :` は該当しません。
+`linkStyle 0 stroke :#f00` では線が赤で、矢印の頭はテーマの色のままですが、
+`linkStyle 0 stroke: #f00` では両方が赤なので、画素が異なります。
+`linkStyle default` と、リンクに付けた `classDef` でも同じです。
+そのため、flowchart と agentflow の `linkStyle` と `classDef` では、
+`stroke` で終わる名前と `:` の間の空白の有無を保ち、
+空白の連続は空白 1 つにします。
+`linkStyle 0 stroke  :#f00` は `linkStyle 0 stroke : #f00` と印字します。
+`style` はノードに適用され、1 つの形で印字します。
+`style A stroke :#f00` と `style A stroke: #f00` の画素は同じでした。
+[fixture: flowchart/whitespace-between-tokens/link-style-stroke-before-colon-kept]
+[fixture: flowchart/whitespace-between-tokens/class-def-stroke-before-colon-kept]
+[fixture: flowchart/whitespace-between-tokens/style-stroke-before-colon-spaced]
+[fixture: agentflow/single-space-gaps/link-style-stroke-before-colon-kept]
+
+値が空白だけの `stroke:` も読まれます。
+mermaid.js は、最初の `stroke:` の後から `;` までの文字から色を取り、
+その文字が空白だけなら、次の `stroke:` を試さず、色を付けません。
+`linkStyle 0 stroke: ,stroke:#f00` では矢印の頭がテーマの色を保ち、
+`linkStyle 0 stroke:, stroke: #f00` では赤になるので、画素が異なります。
+そのため、`linkStyle` のスタイルのうち、名前が `stroke` で終わり、
+値が空白とタブだけのものは、その空白も含めて書かれたままにします。
+通常ならスタイル文の末尾の空白を落とす文末でも、同じです。
+（[スタイルの行末の空白](./flowchart.ja.md#スタイルの行末の空白)）。
+`classDef` には影響しません。
+リンクに付けた `classDef c stroke: ,stroke:#f00` と、
+`classDef c stroke:, stroke: #f00` の画素は同じでした。
+[fixture: flowchart/whitespace-between-tokens/link-style-blank-stroke-value-kept]
+[fixture: flowchart/style-trailing-whitespace/link-style-blank-stroke-value-at-end-kept]
+[fixture: agentflow/single-space-gaps/link-style-blank-stroke-value-kept]
+
+flowchart と agentflow の `classDef` では、
+バックスラッシュは `,` をエスケープします。
+`classDef c fill:a\,b` はスタイル `fill:a,b` です。
+そのため、バックスラッシュと `,` の間の空白は残します。
+空白がないと、`,` はスタイルを終えず、その一部になるからです。
+これらの図種の `style` と `linkStyle`、それにほかの図種では、
+`,` は必ずスタイルを終えるので、その前のバックスラッシュは、
+何かを保つ理由にはなりません。
+`style A fill:#f00\,stroke:#00f` は、
+`fill:#f00\` と `stroke:#00f` の 2 つのスタイルを持ちます。
+バックスラッシュの後で `:` の前にある空白は、どの図種でも、
+除くと `:` がエスケープされるので残します。
+[fixture: flowchart/whitespace-between-tokens/style-escaped-space-before-comma]
+[fixture: flowchart/whitespace-between-tokens/style-backslash-before-comma]
+[fixture: agentflow/single-space-gaps/style-escaped-space-before-comma]
+[fixture: agentflow/single-space-gaps/style-backslash-before-comma]
+[fixture: block/styles/style-backslash-before-comma]
+[fixture: class/whitespace-between-tokens/style-backslash-before-comma]
+[fixture: state/whitespace-between-tokens/style-backslash-before-comma]
+
 次の場合は、文を書かれたまま残します。
 スタイルが改行か U+2028・U+2029 を含む場合、
 文がコメントかディレクティブを含む場合、スタイルが全部空白の場合、
-バックスラッシュの後に空白か `,` がある場合、
 行に自分の `;` がある場合です（[`;` を含む行](#-を含む行)を参照してください）。
+[fixture: flowchart/whitespace-between-tokens/style-blank-style-kept]
 [fixture: flowchart/whitespace-between-tokens/style-colon-escaped-space-kept]
-[fixture: flowchart/whitespace-between-tokens/style-comma-escaped-space-kept]
 [fixture: flowchart/whitespace-between-tokens/style-comma-beside-directive-kept]
 [fixture: flowchart/whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
 
@@ -445,26 +504,36 @@ SVG と画素が同じであることを確かめました。
 `styleDbForFormattingComparison`）。
 スタイルが書かれたものと、両端と最初の `:` の前後の空白だけが違うときは、
 書かれた方を採ります。
-ほかの違いは、リンクのスタイルの数も含めて、失敗とします。
+ほかの違いは、リンクのスタイルの数や、
+リンクにも適用されるスタイルの `stroke` の `:` の前の空白の有無も含めて、
+失敗とします。
+テストの Db 要約はスタイルの値の末尾の空白を取り除くので、
+`stroke` の空白だけの値は fixture だけが守ります。
 固定している mermaid.js の版を上げるときは、これらの種類の文を描き直し、
 SVG と画素を比べてから、例外を残します。
 
 ## 同じに描かれるキーワードの後のテキスト
 
-Gantt、user journey、timeline、sequence、Venn の図では、タイトル、セクション名、
+Gantt、user journey、timeline、sequence、Venn の図では、タイトル、
 Gantt 図の日付書式と軸の書式を、キーワードの後に空白を 1 つ置き、
 テキストの先頭の空白を除いて印字します。
 `title   Plan` は `title Plan` と印字し、
 `dateFormat   YYYY-MM-DD` は `dateFormat YYYY-MM-DD` と印字します。
 テキストの中と末尾の空白は書かれたままにし、
 空白とタブだけのテキストも書かれたままにします。
-[fixture: gantt/titles-and-sections/text-padding-dropped]
+[fixture: gantt/titles-and-sections/title-padding-dropped]
+[fixture: gantt/titles-and-sections/title-blank-kept]
 [fixture: gantt/settings/format-padding-dropped]
-[fixture: journey/titles-and-sections/text-padding-dropped]
-[fixture: timeline/titles-and-sections/text-padding-dropped]
+[fixture: gantt/settings/format-blank-kept]
+[fixture: journey/titles-and-sections/title-padding-dropped]
+[fixture: journey/titles-and-sections/title-blank-kept]
+[fixture: timeline/titles-and-sections/title-padding-dropped]
+[fixture: timeline/titles-and-sections/title-blank-kept]
 [fixture: sequence/title/text-padding-dropped]
 [fixture: sequence/title/text-padding-dropped-colon]
+[fixture: sequence/title/title-blank-kept]
 [fixture: venn/title/text-padding-dropped]
+[fixture: venn/title/title-blank-kept]
 
 mermaid.js はキーワードの後の空白 1 文字を読み、残りを Db に残すので、
 印字したテキストの Db は、書かれたテキストの Db と違いますが、
@@ -480,7 +549,24 @@ mermaid.js はキーワードの後の空白 1 文字を読み、残りを Db �
 （[`getStartDate`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttDb.js#L305-L359)）。
 軸の書式は、軸のラベルの書式だけです。
 それぞれの種類について、両方のテキストを mermaid.js 12.3.0 で Chromium に描き、
-生成された id を除いた SVG と画素が同じであることを確かめました。
+画素が同じで、生成された id とテキストの先頭の空白を除いた SVG も、
+同じであることを確かめました。
+
+セクション名は、この形では印字しません。
+レンダラーは名前でセクションを区別するので、
+先頭の空白だけが異なる 2 つの名前は 2 つのセクションですが、
+その空白を除くとそうでなくなります。
+Gantt はセクションのタスクに専用の帯を与えます。
+（[`checkUnique`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttRenderer.js#L120-L126)）。
+user journey はセクション名が変わる所で新しい枠を始めます。
+（[`drawTasks`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/user-journey/journeyRenderer.ts#L297-L324)）。
+timeline は同じ名前のセクションのイベントを集めます。
+（[`draw`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/timeline/timelineRenderer.ts#L144)）。
+`section A` と `section  A` を続けると 2 つのセクションを描き、
+`section A` と `section A` なら 1 つを描くので、帯の色、枠の数、幅が異なります。
+[fixture: gantt/titles-and-sections/section-padding-kept]
+[fixture: journey/titles-and-sections/section-padding-kept]
+[fixture: timeline/titles-and-sections/section-padding-kept]
 
 Gantt 図の 2 つの設定は、値の前に空白があると描かれる図が変わるので、
 書かれたままにします。
@@ -495,12 +581,90 @@ Gantt 図の 2 つの設定は、値の前に空白があると描かれる図�
 書かれたテキストの Db から各テキストの先頭の空白を戻して比べます。
 `tests/keyword-text-margins.ts` の関数、
 `keywordTextDbForFormattingComparison` を使います。
-タイトル、セクション名、日付書式、軸の書式が、書かれたものと、
+タイトル、日付書式、軸の書式が、書かれたものと、
 先頭の空白とタブだけが違うときは、書かれた方を採ります。
-ほかの違いは失敗とします。
+ほかの違いは、セクション名の違いも含めて失敗とします。
 固定している mermaid.js の版を上げるときは、
 それぞれの種類の両方のテキストを描き直し、SVG と画素を比べてから、
 例外を残します。
+
+## 同じに描かれる呼び出しの引数
+
+flowchart、agentflow、class、Gantt の図の `click` の呼び出しの引数は、
+両端と `,` の前に空白を置かず、後ろに空白を 1 つ置いて印字します。
+`click A call f(  "x" ,y ,   z  )` は `click A call f("x", y, z)` と印字します。
+引用符の中の空白は残し、引用符の中の `,` の隣の空白も残します。
+空の部分、改行、コメント、ディレクティブを含む引数は、書かれたままにします。
+[fixture: flowchart/whitespace-between-tokens/callback-arguments-spaced]
+[fixture: agentflow/click-statements/callback-arguments-spaced]
+[fixture: class/whitespace-between-tokens/callback-arguments-spaced]
+[fixture: gantt/click-statements/call-arguments-spaced]
+
+mermaid.js は括弧の間のテキストを Db に残すので、印字したテキストの Db は、
+書かれたテキストの Db と違いますが、同じ引数で関数を呼びます。
+4 つの図種はどれも、後ろに `"` が偶数個ある各 `,` でテキストを分け、
+各部分の両端の空白を除き、`"` で始まり `"` で終わる部分は、その `"` を除きます。
+（[flowchart](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L533-L545)、
+[class](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/classDb.ts#L458-L471)、
+[Gantt](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttDb.js#L752-L765)、
+[agentflow](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L963-L976)）。
+関数を結び付けるのは、`securityLevel` が `loose` のときだけです。
+各場合の両方のテキストを、その設定で mermaid.js 12.3.0 で Chromium に描き、
+ノードをクリックしました。
+4 つの図種すべてで関数に渡された引数は同じで、上の 2 つの書き方では `x`、`y`、
+`z` でしたが、引用符の中を変えると引数も変わりました。
+
+テストは、印字したテキストの Db に、
+書かれたテキストの Db から引数を戻して比べます。
+`tests/click-call-margins.ts` の関数、
+`clickCallDbForFormattingComparison` を使います。
+同じ部分として読まれる引数は書かれた方を採り、ほかの違いは失敗とします。
+固定している mermaid.js の版を上げるときは、
+それぞれの種類の両方のテキストをクリックし直してから、例外を残します。
+
+## 同じに描かれる mindmap のテキスト
+
+mindmap のノードのテキスト、形のテキスト、icon、class は、
+両端の空白とタブを除いて印字します。
+`a (x)` は `a(x)`、`b[ y ]` は `b[y]`、`::icon( fa )` は `::icon(fa)`、
+`::: big ` は `:::big` と印字します。
+テキストの中の空白は残します。
+余白を除くと引用符で始まる形のテキスト（`a[ "x" ]` は引用符を含むテキストで、
+`a["x"]` は文字列）、文字列、markdown 文字列、空白とタブだけのテキスト、
+複数行にまたがるテキスト、行の中か後ろにコメントやディレクティブがある行は、
+書かれたままにします。 [fixture: mindmap/node-text/trailing-whitespace-dropped]
+[fixture: mindmap/node-text/space-before-a-shape-dropped]
+[fixture: mindmap/shapes/inner-padding-dropped]
+[fixture: mindmap/decorations/padding-in-icon-and-class-dropped]
+[fixture: mindmap/shapes/padding-kept-where-drawn-differently]
+[fixture: mindmap/decorations/blank-icon-and-class-kept]
+[fixture: mindmap/node-text/inner-whitespace-kept]
+
+mermaid.js はテキストを Db（`nodeId`、`descr`、`icon`、`class`）に残すので、
+印字したテキストの Db は、書かれたテキストの Db と違いますが、
+同じノードを描きます。
+ノードと形のテキストは markdown のラベルに、icon はノードの icon に、
+class は要素の class の並びに入り、
+ブラウザーはその並びを空白で区切って読みます。
+ノードの id は描かれません。
+（[`flattenNodes`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts#L224-L309)）。
+各場合の両方のテキストを mermaid.js 12.3.0 で Chromium に描き、画素が同じで、
+生成された id と HTML が描かない空白を除いた SVG も、
+同じであることを確かめました。
+ノードは id やテキストで比べず、番号を付けるので、
+この変更で同じテキストになる 2 つのノードも 2 つのノードのままで、
+以前と同じに描かれます。
+文字列になるテキストは、描かれ方が異なりました。
+
+テストは、印字したテキストの Db に、
+書かれたテキストの Db からノードのテキストを戻して比べます。
+`tests/mindmap-text-margins.ts` の関数、
+`mindmapDbForFormattingComparison` を使います。
+テキストが書かれたものと、両端の空白とタブだけが違うときは、
+書かれた方を採ります。
+ほかの違いは、文字列になったテキストも含めて失敗とします。
+固定している mermaid.js の版を上げるときは、各場合の両方のテキストを描き直し、
+SVG と画素を比べてから、例外を残します。
 
 ## ラベルの先頭の空白
 
@@ -539,7 +703,9 @@ mermaid.js はディレクティブを取り除き、その両側のテキスト
 [fixture: class/directives/compat-whitespace-on-one-side-of-directive]
 [fixture: state/directives/compat-whitespace-on-one-side-of-directive]
 mermaid.js の行の規則が隙間の空白を読む可能性のある所と、
-ディレクティブが印字行の先頭か末尾にある所では、隙間は書かれたまま残します。
+ディレクティブが印字行の先頭か末尾にある所では、隙間の空白の有無を保ち、
+空白の連続は空白 1 つにします。
+[fixture: flowchart/directives/line-edge-whitespace]
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)を参照してください。
 
 ## コメントやディレクティブの前後の構造の継続行
@@ -1120,8 +1286,9 @@ mermaid.js は、Gantt 図の一部の値の空白を持ち、一部の行を、
   その後ろの語末の大文字のシグマは `ς` になります。
   空白など、ほかの空白の後ろなら `σ` です。
   [test: U+FEFF between the items of a list]
-- 呼び出しの名前と引数の、中の空白。
-  `f ()`、`f( 1, 2 )`、`f(1,2)` は 3 つの別の呼び出しです。
+- 呼び出しの名前の、中の空白。
+  `f ()` と `f()` は 2 つの関数を呼びますが、引数の空白は 1 つの形で印字します。
+  （[同じに描かれる呼び出しの引数](#同じに描かれる呼び出しの引数)）。
   [fixture: gantt/click-statements/call-name-kept-arguments-spaced]
 - `;` を含む行。
   mermaid.js の行の規則は行のテキストを読むので、その行の文を行に残します。
@@ -1987,7 +2154,7 @@ stereotype の宣言接尾辞は、systemBoundary 内も含め、`<<` の前と�
 空白があれば 1 個に縮め、なければ足しません。
 Mermaid は内部の両端を除き、`<<` の前の空白は構造上の空白です。
 内部のテキストは書かれたままです。
-保護したセミコロンの接頭部と共通コメント領域は、値の全体を保ちます。
+保護した共通コメント領域は、値の全体を保ちます。
 class の[トークンの間の空白](./class.ja.md#トークンの間の空白) を再利用します。
 [fixture: usecase/stereotypes/stereotype-padding]
 [fixture: usecase/stereotypes/opener-gap-sides]
@@ -3115,9 +3282,9 @@ skip された prefix 全体を保ちます。
 [fixture: cynefin/frontmatter-yaml/frontmatter-safe-yaml]
 [fixture: cynefin/description-blocks/description-empty]
 
-共有の textual-prefix 保護で、segment の最後の semicolon までと、
-交差する値・trivia 全体を保ち、全 semicolon を残します。
-保護した最初の行は本文または項目の段にし、中身と後続列は保ちます。
+書かれた semicolon はすべて残します。
+保持する `;` がある segment は、行の規則が無視する `;` が変わりうる場合を除き、
+ほかと同じように整形します（[Semicolons](./cynefin.ja.md#semicolons)を参照）。
 除去される directive と comment の結合を含め、
 segment は mermaid の読みで決まります。
 cynefin に文法上の semicolon はないため、
@@ -3245,9 +3412,11 @@ hidden YAML と native DIRECTIVE は元の owner で 1 回印字し、
 [fixture: eventmodeling/frontmatter-yaml/retained-prefix-whole]
 [fixture: eventmodeling/frontmatter-yaml/safe-real-yaml]
 
-全 authored semicolon は、子の本文の opening edge も含め、
-共有 textual-prefix 保護を使います。
-最初の保護された本文行は所属の段に揃え、後続列と値に属する空白は保ちます。
+子の本文の opening edge も含め、書かれた semicolon はすべて残します。
+保持する `;` がある segment は、行の規則が無視する `;` が変わりうる場合を除き、
+ほかと同じように整形します。
+（[Semicolons](./eventmodeling.ja.md#semicolons)）。
+値に属する空白は保ちます。
 文法上の semicolon はなく、
 style・classDef という語だけでは行全体を固定しません。
 directive は同じ印字行では両側の接触を保ち、

@@ -1554,6 +1554,7 @@ where the line break is whitespace to the lexer: after the `:` of `accTitle` and
 `accDescr`, between `direction` and its value, and in a `classDef` or `style`
 statement after whitespace. [fixture:
 multi-line-statements/breaks-decided-one-by-one] [fixture:
+multi-line-statements/line-rule-first-hash-after-colon-kept] [fixture:
 multi-line-statements/accessibility-text-joined] [fixture:
 multi-line-statements/direction-value-joined] [fixture:
 multi-line-statements/style-over-lines-joined] A statement with a comment or

@@ -45,7 +45,7 @@
     "edgeDefaults": {
       "interpolate": null,
       "style": [
-        "stroke:red"
+        "stroke:red "
       ]
     },
     "classDefs": [],

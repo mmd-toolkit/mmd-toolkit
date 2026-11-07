@@ -289,11 +289,16 @@ whitespace becoming one space (see
 [fixture: single-space-gaps/link-style-stroke-before-colon-kept] [fixture:
 single-space-gaps/class-def-stroke-before-colon-kept] A `style` styles a node,
 and uses the one form. [fixture:
-single-space-gaps/style-stroke-before-colon-spaced] A `,` after a backslash is
-part of its style, and a space between the backslash and the `,` stays, since
-taking it away would make the `,` part of the style. A space after a backslash
-before the `:` stays as well, since taking it away would escape the `:`.
-[fixture: single-space-gaps/style-escaped-space-before-comma] [fixture:
+single-space-gaps/style-stroke-before-colon-spaced] A style of a `linkStyle`
+with a name that ends with `stroke` and a value of spaces and tabs only stays as
+written, as in [flowchart](./flowchart.md#whitespace-between-tokens). [fixture:
+single-space-gaps/link-style-blank-stroke-value-kept] In a `classDef` a `,`
+after a backslash is part of its style, and a space between the backslash and
+the `,` stays, since taking it away would make the `,` part of the style; in a
+`style` and a `linkStyle` the `,` ends a style whatever stands before it. A
+space after a backslash before the `:` stays as well, since taking it away would
+escape the `:`. [fixture: single-space-gaps/style-escaped-space-before-comma]
+[fixture: single-space-gaps/style-backslash-before-comma] [fixture:
 single-space-gaps/style-colon-escaped-space-kept] A statement stays as written
 where it holds a directive or a comment, where a style is all whitespace, or
 where a style holds a line break, U+2028, or U+2029, or its line holds a kept

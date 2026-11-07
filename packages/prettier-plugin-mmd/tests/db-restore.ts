@@ -1,14 +1,8 @@
 import type { JsonValue } from "@mmd-toolkit/tests"
+import { objectOf } from "./db-values.ts"
 
 /** A place in a Db: the names of the keys down to a value, without indices. */
 export type DbPath = readonly string[]
-
-/** Whether a JSON value is an object. */
-function isObject(
-  value: JsonValue,
-): value is { readonly [key: string]: JsonValue } {
-  return typeof value === "object" && value !== null && !Array.isArray(value)
-}
 
 /**
  * The Db of a formatted text `after` with each string replaced by
@@ -30,12 +24,14 @@ export function restoreStrings(
       restoreStrings(before[index], item, restoreString, path),
     )
   }
-  if (isObject(before) && isObject(after)) {
+  const written = objectOf(before)
+  const printed = objectOf(after)
+  if (written !== undefined && printed !== undefined) {
     return Object.fromEntries(
-      Object.entries(after).map(([name, value]) => [
+      Object.entries(printed).map(([name, value]) => [
         name,
-        name in before
-          ? restoreStrings(before[name], value, restoreString, [...path, name])
+        name in written
+          ? restoreStrings(written[name], value, restoreString, [...path, name])
           : value,
       ]),
     )

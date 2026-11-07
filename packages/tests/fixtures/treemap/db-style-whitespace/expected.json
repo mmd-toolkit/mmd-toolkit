@@ -20,8 +20,8 @@
       {
         "id": "styles",
         "styles": [
-          "fill:red",
-          " color:blue"
+          "fill:red  ",
+          " color:blue\t "
         ]
       }
     ]

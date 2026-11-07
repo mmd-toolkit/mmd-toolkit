@@ -39,7 +39,7 @@
         "id": "fill:red",
         "labelType": "text",
         "styles": [
-          ""
+          "\t"
         ],
         "classes": [],
         "text": "fill:red",

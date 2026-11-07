@@ -715,7 +715,8 @@ function findNoteStretches(
  * trims the rest, and draws the same note whatever the whitespace around the
  * `:` and the text (docs/state.md, Notes). Any other start, an empty text, a
  * comment or a directive, or a character other than an ASCII one in the text
- * stays as written.
+ * stays as written. The whitespace after the text is dropped, as at the end of
+ * any statement.
  */
 function printNoteColonAndText(
   source: Source,

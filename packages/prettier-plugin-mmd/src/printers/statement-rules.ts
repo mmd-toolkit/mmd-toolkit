@@ -179,9 +179,13 @@ export interface StyleListUse {
   readonly keepsSpaceBeforeFill?: boolean
   /** The styles can reach a link: a `linkStyle`, a `classDef`. */
   readonly keepsGapAfterStroke?: boolean
+  /** The statement is a `linkStyle`, with link numbers or `default`. */
+  readonly keepsBlankStrokeValue?: boolean
   /**
-   * A backslash escapes a `,` (flowchart and agentflow): `a\,b` is one style,
-   * and a space between the backslash and a `,` decides that.
+   * A backslash escapes a `,`: `a\,b` is one style, and a space between the
+   * backslash and a `,` decides that. Only the `classDef` of flowchart and
+   * agentflow reads it so; their `style` and `linkStyle` end a style at every
+   * `,`.
    */
   readonly escapesComma?: boolean
 }
@@ -211,6 +215,13 @@ export interface StyleListUse {
  * between it and the `:`, a run of whitespace becoming one space
  * (docs/compatibility.md, Styles that are drawn the same).
  *
+ * `keepsBlankStrokeValue` is set for a `linkStyle`. mermaid.js takes the
+ * colour of an arrowhead from the first `stroke:` of the styles of a link and
+ * the characters after it up to a `;`, and draws no colour where they are
+ * whitespace only: the next `stroke:` is not tried. So a style with a name that
+ * ends with `stroke` and a value of spaces and tabs only stays as written, with
+ * the whitespace of its value, and the gap before the next style.
+ *
  * Where `escapesComma` is set, a `,` after a backslash is part of a style, and
  * so is a space after a backslash at the end of one: taking that space away
  * would make the `,` part of the style. A space after a backslash before the
@@ -229,6 +240,7 @@ export function normalizeStyleList(
   {
     keepsSpaceBeforeFill = false,
     keepsGapAfterStroke = false,
+    keepsBlankStrokeValue = false,
     escapesComma = false,
   }: StyleListUse = {},
 ): void {
@@ -255,9 +267,13 @@ export function normalizeStyleList(
   for (let start = from; start <= to;) {
     let comma = start
     while (comma < to && !endsStyle(source, comma, escapesComma)) comma++
-    const core = trimStyle(source, [start, comma], escapesComma)
+    const keepsValue =
+      keepsBlankStrokeValue && hasBlankStrokeValue(source, [start, comma])
+    const core: Range = keepsValue
+      ? [skipSpacesAndTabs(source, start, comma), comma]
+      : trimStyle(source, [start, comma], { keepsEscapedSpace: escapesComma })
     if (core[0] === core[1]) return
-    addColonEdit(source, core, edits, keepsGapAfterStroke)
+    if (!keepsValue) addColonEdit(source, core, edits, { keepsGapAfterStroke })
     if (previousEnd !== -1) {
       const touchesFill =
         keepsSpaceBeforeFill &&
@@ -414,7 +430,7 @@ export function normalizeBlankLabels(
  */
 export function printStyleWithColon(source: Source, range: Range): Doc {
   const edits: TextEdit[] = []
-  addColonEdit(source, trimStyle(source, range, false), edits, false)
+  addColonEdit(source, trimStyle(source, range), edits)
   const [edit] = edits
   if (edit === undefined) return printAsWritten(source, ...range)
   return [
@@ -440,15 +456,18 @@ function endsStyle(
 }
 
 /**
- * Whether the space or tab at `offset` follows a backslash that keeps it,
- * where `keepsEscapedSpace` is set.
+ * Whether a style has a name that ends with `stroke` and a value of spaces and
+ * tabs only, with at least one of them (see `normalizeStyleList`).
  */
-function isEscapedSpace(
-  source: Source,
-  offset: number,
-  keepsEscapedSpace: boolean,
-): boolean {
-  return keepsEscapedSpace && source.text[offset - 1] === "\\"
+function hasBlankStrokeValue(source: Source, [start, end]: Range): boolean {
+  const colon = source.text.indexOf(":", start)
+  if (colon === -1 || colon >= end) return false
+  const value = source.text.slice(colon + 1, end)
+  return (
+    value !== "" &&
+    [...value].every(isSpaceOrTab) &&
+    source.text.slice(start, colon).trimEnd().endsWith("stroke")
+  )
 }
 
 /**
@@ -458,16 +477,14 @@ function isEscapedSpace(
 function trimStyle(
   source: Source,
   range: Range,
-  keepsEscapedSpace: boolean,
+  { keepsEscapedSpace = false } = {},
 ): Range {
   let [start, end] = range
   while (start < end && isSpaceOrTab(source.text[start])) start++
-  while (
-    end > start &&
-    isSpaceOrTab(source.text[end - 1]) &&
-    !isEscapedSpace(source, end - 1, keepsEscapedSpace)
-  )
+  while (end > start && isSpaceOrTab(source.text[end - 1])) {
+    if (keepsEscapedSpace && source.text[end - 2] === "\\") break
     end--
+  }
   return [start, end]
 }
 
@@ -482,7 +499,7 @@ function addColonEdit(
   source: Source,
   [start, end]: Range,
   edits: TextEdit[],
-  keepsGapAfterStroke: boolean,
+  { keepsGapAfterStroke = false } = {},
 ): void {
   const colon = source.text.indexOf(":", start)
   if (colon <= start || colon >= end) return
@@ -495,7 +512,7 @@ function addColonEdit(
   const spaceBeforeColon =
     keepsGapAfterStroke &&
     nameEnd < colon &&
-    source.text.slice(Math.max(start, nameEnd - 6), nameEnd) === "stroke"
+    source.text.slice(start, nameEnd).endsWith("stroke")
   edits.push({
     range: [nameEnd, valueStart],
     replacement: `${spaceBeforeColon ? " " : ""}:${valueStart < end ? " " : ""}`,

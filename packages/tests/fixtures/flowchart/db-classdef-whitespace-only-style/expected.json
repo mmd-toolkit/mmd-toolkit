@@ -21,7 +21,7 @@
         "id": "c",
         "styles": [
           "fill:#f00",
-          "",
+          "  ",
           "stroke:red"
         ]
       }

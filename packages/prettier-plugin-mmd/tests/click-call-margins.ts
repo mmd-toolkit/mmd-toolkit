@@ -1,4 +1,5 @@
-import type { DbSummary, JsonValue } from "@mmd-toolkit/tests"
+import type { DbSummary } from "@mmd-toolkit/tests"
+import { objectOf } from "./db-values.ts"
 
 /** The diagram types whose click calls the formatter prints in one form. */
 export const clickCallDiagramTypes: ReadonlySet<string> = new Set([
@@ -38,13 +39,6 @@ function readCallArguments(text: string): string[] {
   })
 }
 
-/** Whether a JSON value is an object. */
-function isObject(
-  value: JsonValue,
-): value is { readonly [key: string]: JsonValue } {
-  return typeof value === "object" && value !== null && !Array.isArray(value)
-}
-
 /**
  * Checks the click calls of a formatted diagram even though the whitespace
  * around the parts of their arguments changed. The formatter prints the
@@ -65,18 +59,19 @@ export function clickCallDbForFormattingComparison(
   return {
     ...after,
     clickCalls: printed.map((call, index) => {
-      const original = written[index]
+      const printedCall = objectOf(call)
+      const writtenCall = objectOf(written[index])
       if (
-        !isObject(call) ||
-        !isObject(original) ||
-        typeof call.args !== "string" ||
-        typeof original.args !== "string"
+        printedCall === undefined ||
+        writtenCall === undefined ||
+        typeof printedCall.args !== "string" ||
+        typeof writtenCall.args !== "string"
       )
         return call
       const same =
-        JSON.stringify(readCallArguments(call.args)) ===
-        JSON.stringify(readCallArguments(original.args))
-      return same ? { ...call, args: original.args } : call
+        JSON.stringify(readCallArguments(printedCall.args)) ===
+        JSON.stringify(readCallArguments(writtenCall.args))
+      return same ? { ...printedCall, args: writtenCall.args } : call
     }),
   }
 }

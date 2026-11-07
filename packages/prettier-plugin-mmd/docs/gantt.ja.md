@@ -401,6 +401,8 @@ mermaid.js は値の先頭の空白を Db に残しますが、
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 `dateFormat   YYYY-MM-DD` は `dateFormat YYYY-MM-DD` と印字します。
 [fixture: settings/format-padding-dropped]
+半角空白とタブだけの日付書式は、書かれたままにします。
+[fixture: settings/format-blank-kept]
 `D` の日付書式は、前後に空白がないときだけ日単位の軸を描くので、
 書かれたままにします。
 `tickInterval` も、値全体を読んでいて、
@@ -465,13 +467,20 @@ gantt
 
 ### タイトルとセクション
 
-`title` と `section` も設定と同じに印字します。
+`title` も設定と同じに印字します。
 値は末尾の空白も含めて書かれたまま（Db が持つ）で、
 キーワードの後の区切りは空白 1 つです。
 値の先頭の空白は除きます。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 `title   Plan` は `title Plan` と印字します。
-[fixture: titles-and-sections/text-padding-dropped]
+`section` の名前は、先頭の空白も含めて書かれたまま印字します。
+その空白で名前が異なる 2 つのセクションは別々に描かれ、
+除くとそうならないからです。
+`section A` の後の `section  A` は、そのまま残します。
+半角空白とタブだけのタイトルは、書かれたままにします。
+[fixture: titles-and-sections/title-padding-dropped]
+[fixture: titles-and-sections/title-blank-kept]
+[fixture: titles-and-sections/section-padding-kept]
 [fixture: titles-and-sections/value-whitespace-kept]
 [fixture: titles-and-sections/one-space-after-keyword]
 [fixture: titles-and-sections/value-on-next-line]
@@ -718,13 +727,19 @@ ID の間の `,` は両側の ID に接します。
 文は、ID が指すタスクに依存しません。
 [fixture: click-statements/ids-unknown-and-duplicate]
 
-呼び出しの名前と引数は、中の空白と改行も含めて書かれたまま印字しますが、
-空白だけの引数は落とします（[トークンの間の空白](#トークンの間の空白)を参照）。
-`f ()` の名前は `f` と空白で、`f( 1, 2 )` の引数は空白、`1, 2`、空白であり、
-Db が持ちます。
-リンクの文字列も書かれたままです。
+呼び出しの名前は、中の空白と改行も含めて書かれたまま印字します。
+（[トークンの間の空白](#トークンの間の空白)を参照）。
+`f ()` の名前は `f` と空白です。
+引数の両端と `,` の前には空白を置かず、後ろに空白を 1 つ置きます。
+`f( 1,2 )` は `f(1, 2)` と印字します。
+mermaid.js は引用符の外の `,` で引数を分け、各部分の両端の空白を除き、
+同じ引数で関数を呼ぶからです。
+（[同じに描かれる呼び出しの引数](./compatibility.ja.md#同じに描かれる呼び出しの引数)）。
+引用符の中の空白は残し、空の部分を含む引数も書かれたままにします。
+空白だけの引数は落とします。
 [fixture: click-statements/call-name-kept-arguments-spaced]
-[fixture: click-statements/href-string-kept]
+[fixture: click-statements/call-arguments-spaced]
+リンクの文字列も書かれたままです。 [fixture: click-statements/href-string-kept]
 複数行に書かれた文字列や引数は、
 書かれたまま印字します（[複数行の値](#複数行の値)を参照）。
 [fixture: click-statements/string-over-lines-kept]
@@ -782,7 +797,7 @@ gantt
 ```
 
 入力
-([click-statements/call-name-kept-arguments-spaced-input.mmd](../tests/fixtures/gantt/click-statements/call-name-and-arguments-kept-input.mmd)):
+([click-statements/call-name-kept-arguments-spaced-input.mmd](../tests/fixtures/gantt/click-statements/call-name-kept-arguments-spaced-input.mmd)):
 
 ```mmd
 gantt
@@ -795,14 +810,14 @@ click id1 call   f()
 ```
 
 出力
-([click-statements/call-name-kept-arguments-spaced-output.mmd](../tests/fixtures/gantt/click-statements/call-name-and-arguments-kept-output.mmd)):
+([click-statements/call-name-kept-arguments-spaced-output.mmd](../tests/fixtures/gantt/click-statements/call-name-kept-arguments-spaced-output.mmd)):
 
 ```mmd
 gantt
   a :id1, 1d
   click id1 call f ()
-  click id1 call f( 1, 2 )
-  click id1 call f(1,2)
+  click id1 call f(1, 2)
+  click id1 call f(1, 2)
   click id1 call f()
   click id1 call f()
 ```
@@ -959,11 +974,14 @@ trivia の改行を保ちます。
 
 title、section、設定、タスクでは、値の空白が Db の一部なので、
 複数行の trivia を含む配置を元のまま保ちます。
-複数行に書かれた文は、その行を空白 1 つか何も挟まずにつなぐと、
-行の規則が無視する `;` が変わりうる場合に、書かれたまま残します。
-それ以外の複数行の文は、`;` を含んでいても通常どおりつなぎます。
+click 文などの trivia 行を整形する文では、
+改行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
+その改行を残します。
+それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
 最終行の別の文にある `;` も、同じ判定をします。
 物理行を結ぶコメント領域とリスト区切りの U+FEFF も、元の配置を保ちます。
+[fixture: multi-line-statements/breaks-decided-one-by-one] [fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
 [fixture: multi-line-statements/semicolon-joining-changes-kept]
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]

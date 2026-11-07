@@ -9,6 +9,14 @@ import {
   keywordTextDbForFormattingComparison,
   keywordTextDiagramTypes,
 } from "./keyword-text-margins.ts"
+import {
+  kanbanDbForFormattingComparison,
+  kanbanTextDiagramTypes,
+} from "./kanban-text-margins.ts"
+import {
+  mindmapDbForFormattingComparison,
+  mindmapTextDiagramTypes,
+} from "./mindmap-text-margins.ts"
 import { stateDbForFormattingComparison } from "./state-note-margins.ts"
 import {
   styleDbForFormattingComparison,
@@ -44,5 +52,9 @@ export function dbForFormattingComparison(
     compared = styleDbForFormattingComparison(before, compared, type)
   if (clickCallDiagramTypes.has(type))
     compared = clickCallDbForFormattingComparison(before, compared)
+  if (mindmapTextDiagramTypes.has(type))
+    compared = mindmapDbForFormattingComparison(before, compared)
+  if (kanbanTextDiagramTypes.has(type))
+    compared = kanbanDbForFormattingComparison(before, compared)
   return compared
 }

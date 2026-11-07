@@ -16,7 +16,7 @@
         "labelType": "text",
         "styles": [
           "fill:red",
-          ""
+          " "
         ],
         "classes": [],
         "text": "A",

@@ -108,8 +108,12 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
    - title と、Gantt の日付形式と軸形式の先頭の空白。
      [同じに描かれるキーワードの後のテキスト](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれるキーワードの後のテキスト)
      が定める。
-   - flowchart、agentflow、class、Gantt の `click` の呼び出しの引数の周りの空白。
+   - flowchart、agentflow、class、Gantt の `click` の呼び出しの、
+     引数の周りの空白。
      [同じに描かれる呼び出しの引数](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれる呼び出しの引数)
+     が定める。
+   - mindmap の節点のテキストの両端の空白とタブ。
+     [同じに描かれる mindmap のテキスト](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれる-mindmap-のテキスト)
      が定める。
 
 ## 各パッケージの責務

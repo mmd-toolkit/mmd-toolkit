@@ -601,6 +601,26 @@ Mermaid は本文内の字下げを受理し、raw value に含めます。
 これは formatter の明示的な例外で、parser、仕様、
 記録された Mermaid の Db の読みは変えません。
 
+レンダラーは、データブロックの `{` と閉じる `}` の間の本文を取り出し、
+`wrapLabel` に渡します。
+（[`calculateTextProps`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/eventmodeling/db.ts#L358-L371)）。
+`wrapLabel` は半角空白ごとに分け、空の部分を捨てます。
+（[`wrapLabel`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/utils.ts#L559-L594)）。
+そのため、2 行目以降の行頭の連続する半角空白は、
+長さによらず空白 1 つとして描かれ、空白がなければ何も描かれません。
+最初の行の先頭の半角空白は、何も描かれません。
+各場合の両方のテキストを mermaid.js 12.3.0 で Chromium に描きました。
+各行の余白を別の長さにした場合と、最初の行に余白を足した場合は、
+生成された id を除いた SVG と画素が同じでした。
+余白がなかった後続行に余白を足すと図が変わったので、
+そのような本文は書かれたままにします。
+テストは、印字したテキストの Db に、
+書かれたテキストの Db から本文の余白を戻して比べます。
+`tests/eventmodeling-data-margins.ts` の関数、
+`eventmodelingDbForFormattingComparison` を使います。
+固定している mermaid.js の版を上げるときは、
+各場合の両方のテキストを描き直してから、例外を残します。
+
 [fixture: eventmodeling/final-newline/final-block-padding-kept]
 
 入力（escape 表記）:

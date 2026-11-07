@@ -366,7 +366,8 @@ ER 図の関係文も単位の間は空白 1 つです。
 [fixture: relationship-spacing/comment-continuation-with-multiline-names]
 [fixture: relationship-spacing/directive-continuation-four-spaces]
 [fixture: relationship-spacing/multiline-directive-line-tail]
-行をつなぐと行の規則が無視する `;` が変わりうる文と、
+改行をつなぐと行の規則が無視する `;` が変わりうる場合と、
+最後の行を `;` が終える場合は、その改行を残します。
 物理行を結ぶコメント領域は、元の配置を保ちます。
 [fixture: multi-line-statements/relationship-last-line-semicolon-kept]
 [test: requirement/relationship-spacing/comment-region-continuation-kept]
@@ -525,7 +526,10 @@ The style context、規則 1）。
 [fixture: styles-and-classes/class-uppercase-digit-next-line]
 それ以外のときは改行を残し、続きの行は 1 段深く置きます。
 [fixture: styles-and-classes/class-over-lines-kept]
-コメント行を含む文は改行を残し、コメントと構造の続きの行を 1 段深く置きます。
+ディレクティブを含む名前は `style-word` ではありません。
+style の文脈では、単位の中のディレクティブを拒否するからです。
+[fixture: styles-and-classes/class-name-with-directive-kept]
+コメント行の隣の改行は残し、コメントと構造の続きの行を 1 段深く置きます。
 [fixture: styles-and-classes/class-over-lines-with-comment-line-kept]
 
 入力
@@ -1128,6 +1132,7 @@ requirement のキーワードと名前の間、関係文の単位の間、フ�
 それにあたります。
 `style`・`classDef`・`class` 文の行末の文字列が始める文は、
 style の文脈の改行の後で続きます。
+[fixture: multi-line-statements/breaks-decided-one-by-one] [fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
 [fixture: multi-line-statements/kind-and-name-joined]
 [fixture: multi-line-statements/relationship-joined]
 [fixture: multi-line-statements/direction-value-joined]
@@ -1138,9 +1143,11 @@ style の文脈の改行の後で続きます。
 ブロックのヘッダー、フィールド、関係文、ほかの文も同じです。
 値の中の空白と、各隙間の最初の改行の前の空白は保ちます。
 コメントで結合される領域では、文全体を原文のまま残します。
-複数行に書かれた文は、その行を空白 1 つか何も挟まずにつなぐと、
-行の規則が無視する `;` が変わりうる場合に、書かれたまま残します。
-それ以外の複数行の文は、`;` を含んでいても通常どおりつなぎます。
+改行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
+その改行を残します。
+それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
+改行が残る文は、スタイルも書かれたままにします。
 [test: requirement/multi-line-statements/header-and-field-comment-regions-ls]
 [test: requirement/multi-line-statements/header-and-field-comment-regions-ps]
 [fixture: multi-line-statements/header-directive-continuation]

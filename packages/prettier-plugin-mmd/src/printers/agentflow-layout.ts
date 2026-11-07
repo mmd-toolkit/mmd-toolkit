@@ -398,7 +398,10 @@ export function layoutStatement(
       normalizeStyleList(source, atoms, statement, {
         keepsSpaceBeforeFill: statement.type === "AgentflowLinkStyleStatement",
         keepsGapAfterStroke: statement.type !== "AgentflowStyleStatement",
-        escapesComma: true,
+        keepsBlankStrokeValue:
+          statement.type === "AgentflowLinkStyleStatement" ||
+          statement.type === "AgentflowDefaultLinkStyleStatement",
+        escapesComma: statement.type === "AgentflowClassDefStatement",
       })
       return { ...keptAsWritten(start, end), atoms }
     }

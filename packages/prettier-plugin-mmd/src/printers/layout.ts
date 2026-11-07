@@ -939,7 +939,7 @@ function protectWholePrefixes(
   return withKept(atoms, kept)
 }
 
-/** The atoms without those inside a kept range, and the kept ranges, in order. */
+/** The atoms outside a kept range, and the kept ranges, in order. */
 function withKept(atoms: readonly Atom[], kept: readonly Atom[]): Atom[] {
   return [
     ...kept,

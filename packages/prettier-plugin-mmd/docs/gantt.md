@@ -953,6 +953,7 @@ also in a statement that holds a `;`. The same decision applies to a `;` in
 another statement on its final line. A joining comment region or a U+FEFF list
 separator also keeps the original layout. [fixture:
 multi-line-statements/breaks-decided-one-by-one] [fixture:
+multi-line-statements/line-rule-first-hash-after-colon-kept] [fixture:
 multi-line-statements/semicolon-joining-changes-kept] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept] A `;` alone does not prevent

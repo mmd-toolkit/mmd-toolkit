@@ -698,6 +698,7 @@ line; any other line break is joined as usual, also in a statement that holds a
 of it stays. The same decision applies to a `;` in another statement on its
 final line (see [Statements one per line](#statements-one-per-line)). [fixture:
 multi-line-statements/breaks-decided-one-by-one] [fixture:
+multi-line-statements/line-rule-first-hash-after-colon-kept] [fixture:
 multi-line-statements/semicolon-joining-changes-kept] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept] A `;` alone does not prevent

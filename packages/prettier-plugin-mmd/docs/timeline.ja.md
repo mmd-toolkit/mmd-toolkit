@@ -583,13 +583,20 @@ timeline
 
 ### title と section
 
-`title` と `section` は、値を書かれたまま印字します。
+`title` は、値を書かれたまま印字します。
 末尾の空白も Db が持つので残します。
 キーワードの後ろの区切りは、書かれた空白が何であっても空白 1 つにします。
 この形は journey と同じです。
+値の先頭の空白は除きます。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 `title   History` は `title History` と印字します。
-[fixture: titles-and-sections/text-padding-dropped]
+`section` の名前は、先頭の空白も含めて書かれたまま印字します。
+その空白で名前が異なる 2 つのセクションは別々に描かれ、
+除くとそうならないからです。
+半角空白とタブだけのタイトルは、書かれたままにします。
+[fixture: titles-and-sections/title-padding-dropped]
+[fixture: titles-and-sections/title-blank-kept]
+[fixture: titles-and-sections/section-padding-kept]
 [fixture: titles-and-sections/value-whitespace-kept]
 [fixture: titles-and-sections/one-space-after-keyword]
 後ろの行に書かれた値は、キーワードの後ろに寄せて 1 行にします。
@@ -880,15 +887,19 @@ section の下でも後続の構造部分と独立した trivia 行を文より 
 
 title と section、event テキストの続きでは、値の空白が Db の一部なので、
 複数行の trivia を含む配置を元のまま保ちます。
+[fixture: multi-line-statements/breaks-decided-one-by-one] [fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 event の `:` の後ろにある、字下げされた指令だけの行は、
 event の始まりの空白です。
 そのため event は `:` の行に、その空白と、後ろの指令とともに印字します。
 [fixture: multi-line-statements/directive-line-after-the-colon-is-the-text]
-複数行に書かれた文は、その行を空白 1 つか何も挟まずにつなぐと、
-行の規則が無視する `;` が変わりうる場合に、書かれたまま残します。
-それ以外の複数行の文は、`;` を含んでいても通常どおりつなぎます。
+アクセシビリティの文では、改行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
+その改行を残します。
+それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
+title、section、period、event は、改行が残る場合、書かれたままにします。
+Db がそれらの先頭の空白を持つからです。
 [1 行 1 文](#1-行-1-文)を参照してください。
 [fixture: multi-line-statements/semicolon-joining-changes-kept]
 `;` があるだけでは、行をつなぐ妨げにはなりません。

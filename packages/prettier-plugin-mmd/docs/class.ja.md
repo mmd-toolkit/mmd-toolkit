@@ -366,9 +366,11 @@ mermaid.js の文書にある例 1 件は、接する形で書かれています
 mermaid.js は余白を Db に残しますが、描かれる図は同じです。
 詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
 を参照してください。 [fixture: whitespace-between-tokens/style-colon-spaced]
-バックスラッシュの後に空白か `,` がある文、コメントやディレクティブがある文、
-空白だけのスタイルがある文、スタイルに改行があるか、行に保つ `;` がある文は、
-書かれたままにします。
+ここではバックスラッシュは `,` をエスケープしません。
+`fill:a\,b ,stroke:c` は `fill: a\, b, stroke: c` と印字します。
+[fixture: whitespace-between-tokens/style-backslash-before-comma]
+コメントやディレクティブがある文、空白だけのスタイルがある文、
+スタイルに改行があるか、行に保つ `;` がある文は、書かれたままにします。
 [fixture: whitespace-between-tokens/style-comma-before-dropped]
 [fixture: whitespace-between-tokens/style-comma-beside-directive-kept]
 [fixture: whitespace-between-tokens/style-colon-and-comma-spaced]
@@ -414,11 +416,17 @@ classDiagram
   A - B --> C
 ```
 
-`call` の後の関数名と、その後の `(` の間の空白は、括弧と引数と一緒に、
-書かれたまま残します。
+`call` の後の関数名と、その後の `(` の間の空白は、書かれたまま残します。
 mermaid.js は、名前を `(` の前まで、空白も含めて読むので、
 `click A call fn  ()` は、`fn` と 2 つの空白を名前とする関数を呼びます。
 そこにある改行も残り、文は 2 行のままです。
+引数の両端と `,` の前には空白を置かず、後ろに空白を 1 つ置きます。
+`click A call f(  "x" ,y )` は `click A call f("x", y)` と印字します。
+mermaid.js は引用符の外の `,` で引数を分け、各部分の両端の空白を除き、
+同じ引数で関数を呼ぶからです。
+（[同じに描かれる呼び出しの引数](./compatibility.ja.md#同じに描かれる呼び出しの引数)）。
+引用符の中の空白は残し、空の部分を含む引数も書かれたままにします。
+[fixture: whitespace-between-tokens/callback-arguments-spaced]
 引数が空白だけの呼び出しの括弧は互いに接し、
 `click A call f( )` は `click A call f()` になります。
 mermaid.js はどちらも引数のない同じ呼び出しとして読むからです。
@@ -460,7 +468,7 @@ click B call hn   ()
 classDiagram
   class A
   class B
-  click A call fn  ( x )
+  click A call fn  (x)
   click B call gn
 (y)
   click B call hn   ()
@@ -1095,9 +1103,10 @@ class 図では、改行は文を終えます。
 [fixture: multi-line-statements/acc-descr-joined]
 [fixture: multi-line-statements/empty-line-inside-joined]
 [corpus fixture: class/lex-direction-line-value-next-line]
-コメントかディレクティブを含む文は改行を残し、
+コメントかディレクティブの隣の改行は残し、
 構造の続きの行と間の注釈を 1
 段深く置きます（[複数行の文](./sequence.ja.md#複数行の文)を参照）。
+[fixture: multi-line-statements/breaks-decided-one-by-one]
 値の中の空白は変えません。
 各隙間の最初の改行の前の空白は保ちます。
 コメントで結合される領域では、文全体を原文のまま残します。

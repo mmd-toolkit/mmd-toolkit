@@ -573,9 +573,14 @@ block-beta
 Db は変わりますが、mermaid.js が描く図は同じです。
 詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
 を参照してください。 [fixture: styles/style-colon-spaced]
-バックスラッシュの後に空白か `,` がある文、コメントやディレクティブがある文、
-空白だけのスタイルがある文、スタイルに改行があるか、行に保つ `;` がある文は、
-書かれたままにします。
+ここではバックスラッシュは `,` をエスケープしません。
+`fill:a\,b ,stroke:c` は `fill: a\, b, stroke: c` と印字します。
+バックスラッシュの後で `:` の前にある空白は、
+除くと `:` がエスケープされるので残します。
+[fixture: styles/style-backslash-before-comma]
+[fixture: styles/style-colon-escaped-space-kept]
+コメントやディレクティブがある文、空白だけのスタイルがある文、
+スタイルに改行があるか、行に保つ `;` がある文は、書かれたままにします。
 文の最後の空白は、
 flowchart の [スタイルの行末の空白](./flowchart.ja.md#スタイルの行末の空白)
 と同じに落とします。 [fixture: styles/class-definition-spaces]
@@ -732,13 +737,16 @@ block-arrow の方向は、`,` の後の空白を除いて原文のままです�
 物理行を結ぶコメント領域は、元の配置を保ちます。
 [test: block: ls-comment-in-composite-head]
 [test: block: ps-comment-in-composite-head]
-複数行に書かれた文は、その行を空白 1 つか何も挟まずにつなぐと、
-行の規則が無視する `;` が変わりうる場合に、書かれたまま残します。
-それ以外の複数行の文は、`;` を含んでいても通常どおりつなぎます。
+改行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
+その改行を残します。
+それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
+改行が残る文は、スタイルも書かれたままにします。
 [行](#行)と
 [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)を参照してください。
 mermaid.js の行の規則は、`style` か `classDef`、その後の `:`、その後の、
 `:` との間に空白のない `#`、その後の `;` を持つ行の、最後の `;` を取り除きます。
+この条件に合う最初の `#` で決まるので、`B[":#a;#b"]` も該当します。
 そのような行から文を動かすと、
 どの `;` が最後かが変わるので（`A["style:#a"] B;C D;` で取り除かれるのは `D;` の
 `;` で、id は `B;C` です。`D;` のない行では、`B;C` の `;` が取り除かれます）、
@@ -748,6 +756,7 @@ mermaid.js の行の規則は、`style` か `classDef`、その後の `:`、そ�
 `:` と `#` の間の空白も、規則が効くかどうかを決めるので、そのままです。
 `A["style:"]-->B["#z"];` は矢印が接したままで、
 矢印の周りに空白があると規則は効かず、`;` はそれだけの id になります。
+[fixture: multi-line-statements/breaks-decided-one-by-one]
 [fixture: multi-line-statements/columns-over-lines-joined]
 [fixture: multi-line-statements/edge-over-lines-joined]
 [fixture: multi-line-statements/shape-over-lines-joined]
@@ -768,6 +777,7 @@ mermaid.js の行の規則は、`style` か `classDef`、その後の `:`、そ�
 [fixture: multi-line-statements/semicolon-id-statement-on-its-own-line]
 [fixture: multi-line-statements/line-rule-semicolon-after-touching-arrow-kept]
 [fixture: multi-line-statements/line-rule-semicolon-after-an-id-kept]
+[fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
 [fixture: multi-line-statements/semicolon-after-spaced-arrow-is-an-id]
 
 ### コメント

@@ -163,7 +163,10 @@ export function layoutStatement(
     normalizeStyleList(source, atoms, statement, {
       keepsSpaceBeforeFill: statement.type === "FlowchartLinkStyleStatement",
       keepsGapAfterStroke: statement.type !== "FlowchartStyleStatement",
-      escapesComma: true,
+      keepsBlankStrokeValue:
+        statement.type === "FlowchartLinkStyleStatement" ||
+        statement.type === "FlowchartDefaultLinkStyleStatement",
+      escapesComma: statement.type === "FlowchartClassDefStatement",
     })
   }
   if (statement.type !== "FlowchartAccDescrBlockStatement") return layout

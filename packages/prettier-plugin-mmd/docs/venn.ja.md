@@ -656,6 +656,8 @@ mermaid.js はそれらを Db に残しますが、それらがなくても同�
 次のソース行の字下げは値の一部なので、
 `title` の LF と `  T` は `title T` と印字されます。
 [fixture: venn/title/text-padding-dropped]
+半角空白とタブだけのタイトルは、書かれたままにします。
+[fixture: venn/title/title-blank-kept]
 LF と title で受理する広い種類の区切りは正規化します。
 ただし項目、結合領域、保持部分の境界は保ちます。
 [corpus fixture: venn/db-frontmatter-title-overridden]
