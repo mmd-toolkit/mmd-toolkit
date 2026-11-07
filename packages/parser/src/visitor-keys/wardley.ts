@@ -1,4 +1,4 @@
-import type { WardleyNode } from "../ast/wardley.ts"
+import type { WardleyNode } from "@mmd-toolkit/ast"
 
 /** ast/wardley.md: child fields in specified visitor order. */
 export const wardleyVisitorKeys: Readonly<

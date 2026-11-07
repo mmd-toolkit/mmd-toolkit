@@ -1,7 +1,7 @@
 ---
 name: changesets
 description: リリースするパッケージへの変更に要る changeset を、同じ変更で足す。
-  `packages/parser`、`packages/prettier-plugin-mmd`、`packages/eslint-plugin`、
+  `packages/ast`、`packages/parser`、`packages/prettier-plugin-mmd`、`packages/eslint-plugin`、
   `packages/textmate-grammar` をパッケージの利用者に見える形で変えるとき、
   `packages/spec` を変えるとき、
   およびプルリクエストを開く前・更新する前に使う。
@@ -9,14 +9,18 @@ description: リリースするパッケージへの変更に要る changeset �
 
 # Changesets
 
-`@mmd-toolkit/parser`、`prettier-plugin-mmd`、`@mmd-toolkit/eslint-plugin`、
-`@mmd-toolkit/textmate-grammar` は、
+`@mmd-toolkit/ast`、`@mmd-toolkit/parser`、`prettier-plugin-mmd`、
+`@mmd-toolkit/eslint-plugin`、`@mmd-toolkit/textmate-grammar` は、
 Changesets で `main` から公開する（CONTRIBUTING.md の Releases）。
+`@mmd-toolkit/ast` と `@mmd-toolkit/parser` は、
+`.changeset/config.json` の `fixed` の組である。
+片方を上げると、もう片方も同じ版に上がるので、
+changeset は変えたパッケージだけを書く。
 仕様の `@mmd-toolkit/spec` は npm に公開しないが、同じ仕組みでリリースする。
 リリースで、版と変更履歴の項目と、git のタグ `@mmd-toolkit/spec@<版>` が付く。
 実装が、従っている仕様の版を名指し、
 そこから何が変わったかを読めるようにするためである。
-この 5 つへの変更は、同じプルリクエストに changeset を含める。
+この 6 つへの変更は、同じプルリクエストに changeset を含める。
 無いと、その変更は次の版の changelog と版の更新から漏れる。
 
 ## changeset が要るとき

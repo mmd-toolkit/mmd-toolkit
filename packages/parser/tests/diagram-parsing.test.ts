@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import type { DiagramTokenKind } from "../src/ast.ts"
+import type { DiagramTokenKind } from "@mmd-toolkit/ast"
 import type { DiagramAnalysis, DiagramInput } from "../src/diagram-parsing.ts"
 import { finishDiagram, openDiagramText } from "../src/diagram-parsing.ts"
 import { ParseError } from "../src/index.ts"

@@ -1,5 +1,7 @@
-import type { DiagramTokenKind, Identifier, StringLiteral } from "../../ast.ts"
 import type {
+  DiagramTokenKind,
+  Identifier,
+  StringLiteral,
   StateAliasDefinitionStatement,
   StateClassDefStatement,
   StateClassStatement,
@@ -17,7 +19,7 @@ import type {
   StateReference,
   StateStatement,
   StateStyleStatement,
-} from "../../ast/state.ts"
+} from "@mmd-toolkit/ast"
 import type { DiagramComment } from "../../diagram-parsing.ts"
 import { EMPTY_FORM_KINDS } from "../../empty-forms.ts"
 import type { ParseError } from "../../errors.ts"

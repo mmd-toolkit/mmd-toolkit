@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import type { DiagramType } from "../src/ast.ts"
+import type { DiagramType } from "@mmd-toolkit/ast"
 import {
   detectDiagram,
   detectors,

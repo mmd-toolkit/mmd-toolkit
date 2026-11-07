@@ -1,10 +1,10 @@
-import type { Range } from "../../ast.ts"
 import type {
+  Range,
   C4BoundaryKeyword,
   C4ElementKeyword,
   C4RelationshipKeyword,
   C4UpdateKeyword,
-} from "../../ast/c4.ts"
+} from "@mmd-toolkit/ast"
 import { isWhitespace } from "../../character-classes.ts"
 import {
   COLON,

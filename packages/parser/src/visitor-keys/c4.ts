@@ -1,4 +1,4 @@
-import type { C4Node } from "../ast/c4.ts"
+import type { C4Node } from "@mmd-toolkit/ast"
 
 /** ast/c4.md: child fields, in source order. */
 export const c4VisitorKeys: Readonly<

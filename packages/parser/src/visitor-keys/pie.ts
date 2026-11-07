@@ -1,4 +1,4 @@
-import type { PieNode } from "../ast/pie.ts"
+import type { PieNode } from "@mmd-toolkit/ast"
 
 /** ast/pie.md: child fields in the specified visitor and source order. */
 export const pieVisitorKeys: Readonly<

@@ -6,7 +6,10 @@ import { examplesIn } from "./helpers/ast-examples.ts"
 import { allTreemapNodeTypes } from "./helpers/node-types.ts"
 
 const examples = examplesIn(
-  readFileSync(new URL("../src/ast/treemap.ts", import.meta.url), "utf8"),
+  readFileSync(
+    new URL("../../ast/src/ast/treemap.ts", import.meta.url),
+    "utf8",
+  ),
 )
 
 describe("the examples in the comments of the treemap node types", () => {

@@ -7,7 +7,7 @@ import type {
   Range,
   Token,
   TokenKind,
-} from "./ast.ts"
+} from "@mmd-toolkit/ast"
 import { isWhitespace } from "./character-classes.ts"
 import { APOSTROPHE } from "./code-points.ts"
 import { ParseError } from "./errors.ts"

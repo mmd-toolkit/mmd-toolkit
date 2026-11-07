@@ -1,4 +1,4 @@
-import type { Range } from "./ast.ts"
+import type { Range } from "@mmd-toolkit/ast"
 import type { DiagramUnit } from "./diagram-units.ts"
 import { significantRangeOf } from "./diagram-units.ts"
 import { ParseError } from "./errors.ts"

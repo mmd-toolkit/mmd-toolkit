@@ -26,6 +26,18 @@ npm install @mmd-toolkit/parser
 
 ES モジュールで、Node.js `^20.19.0 || ^22.13.0 || >=24` が要ります。
 
+TypeScript の型を使うには、
+パーサーと同じ版の [`@mmd-toolkit/ast`](../ast) も入れます。
+
+```sh
+npm install --save-dev @mmd-toolkit/ast
+```
+
+パーサーは、これを任意の peer 依存にしています。
+入れないと、`parse()` は `any` を返し、`Root` などの型の import は失敗します。
+`skipLibCheck` が無効なら、
+TypeScript はパーサーの宣言ファイルで `TS2307` を報告します。
+
 ## 使い方
 
 ```ts
@@ -246,8 +258,8 @@ try {
 
 ### 型
 
-`Root`、`FlowchartVertex`、`Identifier` など、
-すべてのノードの TypeScript の型と、
+[`@mmd-toolkit/ast`](../ast) を入れると（[導入](#導入)を参照）、 `Root`、
+`FlowchartVertex`、`Identifier` など、すべてのノードの TypeScript の型と、
 図種 id の合併型 `DiagramType` を公開しています。
 名前と欄は、仕様の [`ast.md`](../spec/docs/ast.ja.md) と、
 各図のノードの文書のものです。

@@ -5,6 +5,7 @@
     "types": ["vite/client", "node"],
     "isolatedDeclarations": false,
     "paths": {
+      "@mmd-toolkit/ast": ["../ast/src/index.ts"],
       "@mmd-toolkit/parser": ["../parser/src/index.ts"],
       "prettier-plugin-mmd": ["../prettier-plugin-mmd/src/index.ts"],
       "@mmd-toolkit/textmate-grammar": ["../textmate-grammar/src/index.ts"]

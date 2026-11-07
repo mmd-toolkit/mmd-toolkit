@@ -1,4 +1,4 @@
-import type { EventmodelingNode } from "../ast/eventmodeling.ts"
+import type { EventmodelingNode } from "@mmd-toolkit/ast"
 
 /** ast/eventmodeling.md: child fields in specified visitor order. */
 export const eventmodelingVisitorKeys: Readonly<

@@ -6,7 +6,10 @@ import { examplesIn } from "./helpers/ast-examples.ts"
 import { allIshikawaNodeTypes } from "./helpers/node-types.ts"
 
 const examples = examplesIn(
-  readFileSync(new URL("../src/ast/ishikawa.ts", import.meta.url), "utf8"),
+  readFileSync(
+    new URL("../../ast/src/ast/ishikawa.ts", import.meta.url),
+    "utf8",
+  ),
 )
 
 describe("the examples in the comments of the ishikawa node types", () => {

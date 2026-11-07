@@ -5,7 +5,7 @@ import type {
   NumericLiteral,
   Range,
   StringLiteral,
-} from "./ast.ts"
+} from "@mmd-toolkit/ast"
 import type { DiagramComment } from "./diagram-parsing.ts"
 import type { DiagramUnit } from "./diagram-units.ts"
 import { significantRangeOf } from "./diagram-units.ts"

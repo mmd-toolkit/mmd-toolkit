@@ -2,8 +2,10 @@ import { appendItems } from "../../append-items.ts"
 import { GraphGrammar } from "../../graph-grammar.ts"
 import type { NodePlace } from "../../unit-grammar.ts"
 import type { ClosedArrowParts, OpeningArrowParts } from "./arrows.ts"
-import type { Identifier, Range, StringLiteral } from "../../ast.ts"
 import type {
+  Identifier,
+  Range,
+  StringLiteral,
   FlowchartAccDescrBlockStatement,
   FlowchartAccDescrStatement,
   FlowchartAccTitleStatement,
@@ -34,7 +36,7 @@ import type {
   FlowchartVertex,
   FlowchartVertexGroup,
   FlowchartVertexStatement,
-} from "../../ast/flowchart.ts"
+} from "@mmd-toolkit/ast"
 
 import { ParseError } from "../../errors.ts"
 import type { PendingToken, SourceLexer } from "../../source-lexer.ts"

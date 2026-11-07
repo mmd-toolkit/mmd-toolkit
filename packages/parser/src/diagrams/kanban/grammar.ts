@@ -6,7 +6,7 @@ import type {
   KanbanLiteral,
   KanbanNode,
   KanbanShape,
-} from "../../ast/kanban.ts"
+} from "@mmd-toolkit/ast"
 import { significantRangeOf } from "../../diagram-units.ts"
 import { EMPTY_FORM_KINDS } from "../../empty-forms.ts"
 import { ParseError } from "../../errors.ts"

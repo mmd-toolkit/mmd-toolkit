@@ -1,5 +1,6 @@
-import type { NumericLiteral, StringLiteral } from "../../ast.ts"
 import type {
+  NumericLiteral,
+  StringLiteral,
   XychartAccDescrBlockStatement,
   XychartAccDescrStatement,
   XychartAccTitleStatement,
@@ -13,8 +14,8 @@ import type {
   XychartValue,
   XychartXAxisStatement,
   XychartYAxisStatement,
-} from "../../ast/xychart.ts"
-import type { DiagramTokenKind } from "../../ast.ts"
+  DiagramTokenKind,
+} from "@mmd-toolkit/ast"
 import { EMPTY_FORM_KINDS } from "../../empty-forms.ts"
 import type { ParseError } from "../../errors.ts"
 import type { PendingToken, SourceLexer } from "../../source-lexer.ts"

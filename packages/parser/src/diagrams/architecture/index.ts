@@ -1,7 +1,6 @@
 import { DiagramTextWithoutPassedLines } from "../../passed-bare-lines.ts"
-import type { ArchitectureDiagram } from "../../ast/architecture.ts"
+import type { ArchitectureDiagram, Root } from "@mmd-toolkit/ast"
 import { checkArchitectureDeclarations } from "./acceptance.ts"
-import type { Root } from "../../ast.ts"
 import type { CommonFormLexing } from "../../common-form-unit-lexer.ts"
 import type { DiagramComment, DiagramInput } from "../../diagram-parsing.ts"
 import { finishDiagram, openDiagramText } from "../../diagram-parsing.ts"

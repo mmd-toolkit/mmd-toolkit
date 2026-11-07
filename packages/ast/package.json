@@ -1,0 +1,38 @@
+{
+  "name": "@mmd-toolkit/ast",
+  "version": "0.2.1",
+  "description": "TypeScript types of the abstract syntax tree of @mmd-toolkit/parser",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mmd-toolkit/mmd-toolkit.git",
+    "directory": "packages/ast"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/ota-meshi"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.mts"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib"
+  ],
+  "keywords": [
+    "mermaid",
+    "mmd",
+    "ast",
+    "types"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "clean": "rimraf lib"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

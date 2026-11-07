@@ -1,4 +1,4 @@
-import type { C4NamedAttribute } from "../../ast/c4.ts"
+import type { C4NamedAttribute } from "@mmd-toolkit/ast"
 
 /** The converted identity of a C4 target; named attributes keep object identity. */
 export type TargetIdentity = string | number | C4NamedAttribute | undefined

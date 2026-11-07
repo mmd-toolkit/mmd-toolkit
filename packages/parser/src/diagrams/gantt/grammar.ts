@@ -1,5 +1,6 @@
-import type { Identifier, StringLiteral } from "../../ast.ts"
 import type {
+  Identifier,
+  StringLiteral,
   GanttAccDescrBlockStatement,
   GanttAccDescrStatement,
   GanttAccTitleStatement,
@@ -10,7 +11,7 @@ import type {
   GanttStatement,
   GanttTaskStatement,
   GanttWeekendDay,
-} from "../../ast/gantt.ts"
+} from "@mmd-toolkit/ast"
 import { matchesIgnoringCase } from "../../character-classes.ts"
 import { EMPTY_FORM_KINDS } from "../../empty-forms.ts"
 import { ParseError } from "../../errors.ts"

@@ -56,7 +56,7 @@ delete files with `mv` and `rm`.
 ## 2. When to start (input)
 
 - The parser implements the diagram type and exports its tree types
-  (`packages/parser/src/ast/<diagram>.ts`) and `visitorKeys` (the output of the
+  (`packages/ast/src/ast/<diagram>.ts`) and `visitorKeys` (the output of the
   parser SKILL). Write no code that depends on the tree before the tree is
   settled.
 - `@mmd-toolkit/tests` has the corpus of the diagram type

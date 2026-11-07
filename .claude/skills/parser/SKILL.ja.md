@@ -67,7 +67,7 @@ pin した mermaid.js の更新を扱う。
 
 ## 2. 作業ツリー
 
-- この SKILL の手順が書くのは、`packages/parser` と、
+- この SKILL の手順が書くのは、`packages/parser`、`packages/ast` と、
   fixture のテストが書く `packages/tests/fixtures/<図種>/<fixture 名>/` の
   `ast.json` と `parse-error.json` だけ。
   fixture のほかのファイル、仕様、ほかのパッケージは書かない。
@@ -153,7 +153,7 @@ pin した mermaid.js の更新を扱う。
   | 変えた部分                                                                | テストのファイル                                                                                                                                               |
   | ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
   | `src/diagrams/<図種>/`                                                    | `tests/<図種>.test.ts`、`tests/fixtures.test.ts`                                                                                                               |
-  | `src/ast.ts`、`src/ast/<図種>.ts`、`src/visitor-keys*`                    | `tests/types.test.ts`、`tests/traverse.test.ts`、`tests/ast-<図種>-examples.test.ts`、`tests/union-docs.test.ts`、flowchart では `tests/ast-flowchart.test.ts` |
+  | `packages/ast/src/`、`src/visitor-keys*`                                  | `tests/types.test.ts`、`tests/traverse.test.ts`、`tests/ast-<図種>-examples.test.ts`、`tests/union-docs.test.ts`、flowchart では `tests/ast-flowchart.test.ts` |
   | `src/unit-grammar.ts`、`src/empty-forms.ts`、`src/diagram-*.ts`           | すべての図種の `tests/<図種>.test.ts`、`tests/diagram-parsing.test.ts`、`tests/fixtures.test.ts`                                                               |
   | 共通の規則（`src/source-lexer.ts`、`directives.ts`、`entities.ts` など）  | 同じ名前のテストのファイル、`tests/fixtures.test.ts`                                                                                                           |
   | `src/diagrams/flowchart/subgraph-ids.ts`                                  | `tests/fixtures.test.ts`                                                                                                                                       |
@@ -163,8 +163,8 @@ pin した mermaid.js の更新を扱う。
   文書を読むテストは、その文書だけを変えたときにも回す。
   `tests/readme-example.test.ts`（`README.md` と `README.ja.md` の例）、
   `tests/types.test.ts`（`packages/spec/docs/known-divergences/` の文書）、
-  `src/ast.ts` と `src/ast/*.ts` のコメントの例と union
-  を読むテスト（`tests/ast-<図種>-examples.test.ts`、
+  `packages/ast/src/ast.ts` と `packages/ast/src/ast/*.ts` のコメントの例と
+  union を読むテスト（`tests/ast-<図種>-examples.test.ts`、
   `tests/union-docs.test.ts`）である。
   全体は、4.8 節のとおりに回す。
 
@@ -209,13 +209,15 @@ pin した mermaid.js の更新を扱う。
 次の順に足す。
 flowchart のファイルが手本になる。
 
-1. `src/ast/<図種>.ts`: `ast/<図種>.md` のノードを、同じ名前と欄で書く。
+1. `packages/ast/src/ast/<図種>.ts`: `ast/<図種>.md` のノードを、
+   同じ名前と欄で書く。
    各型の JSDoc は仕様の節を名指しし、構文の例と、
    ノードの範囲を示す `^` の行を持つ。
    図種のノードの合併型（flowchart では `FlowchartNode`）を置く。
-2. `src/ast.ts`: `DiagramBody` に図の本体のノードを足す。
+2. `packages/ast/src/ast.ts`: `DiagramBody` に図の本体のノードを足す。
 3. `src/visitor-keys/<図種>.ts` を書き、`src/visitor-keys.ts` で展開する。
-4. `src/index.ts`: 型を公開する。
+4. `packages/ast/src/index.ts`: 新しいファイルの型を公開する。
+   パーサーは 1 行で全部を公開する。
    `parse()` の API は共有のインターフェースなので（AGENTS.md）、
    公開した型を結果に示す。
    prettier-plugin と eslint-plugin がその型の上に作る。
@@ -720,7 +722,7 @@ pnpm run format:check
    `node scripts/check-mermaid-links.mjs` で確かめる。
 3. 図種 ID が増えた、
    または変わった: 仕様の `detection.md` と `ast.md` の DiagramType に従って、
-   `src/detection.ts`、`src/ast.ts` の `DiagramType`、
+   `src/detection.ts`、`packages/ast/src/ast.ts` の `DiagramType`、
    `tests/types.test.ts` の `allDiagramTypes`、
    `tests/detection.test.ts` を直す。
    増えた ID は、

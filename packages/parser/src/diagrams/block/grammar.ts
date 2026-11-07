@@ -1,5 +1,7 @@
-import type { Identifier, NumericLiteral, StringLiteral } from "../../ast.ts"
 import type {
+  Identifier,
+  NumericLiteral,
+  StringLiteral,
   BlockAccDescrBlockStatement,
   BlockArrow,
   BlockArrowShape,
@@ -15,7 +17,7 @@ import type {
   BlockSpaceStatement,
   BlockStatement,
   BlockStyleStatement,
-} from "../../ast/block.ts"
+} from "@mmd-toolkit/ast"
 import { EMPTY_FORM_KINDS } from "../../empty-forms.ts"
 import { ParseError } from "../../errors.ts"
 import type { PendingToken, SourceLexer } from "../../source-lexer.ts"

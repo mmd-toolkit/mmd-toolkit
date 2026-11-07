@@ -1,10 +1,10 @@
-import type { Range } from "../../ast.ts"
 import type {
+  Range,
   RequirementKind,
   RequirementRelationship,
   RequirementRisk,
   RequirementVerifyMethod,
-} from "../../ast/requirement.ts"
+} from "@mmd-toolkit/ast"
 import { isWhitespace, isWordCharacter } from "../../character-classes.ts"
 import {
   COLON,

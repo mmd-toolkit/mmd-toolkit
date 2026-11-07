@@ -1,4 +1,4 @@
-import type { RadarNode } from "../ast/radar.ts"
+import type { RadarNode } from "@mmd-toolkit/ast"
 
 /** ast/radar.md: child fields in specified visitor order. */
 export const radarVisitorKeys: Readonly<

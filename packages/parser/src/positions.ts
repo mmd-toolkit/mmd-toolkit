@@ -1,4 +1,4 @@
-import type { Location, Position, Range } from "./ast.ts"
+import type { Location, Position, Range } from "@mmd-toolkit/ast"
 import { firstIndexWhere } from "./ordered-search.ts"
 import { lineTerminatorEnd, nextOffset } from "./text-cursor.ts"
 

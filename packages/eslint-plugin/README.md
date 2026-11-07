@@ -26,6 +26,9 @@ Install the package next to ESLint 10. It is an ES module and needs Node.js
 npm install --save-dev eslint @mmd-toolkit/eslint-plugin
 ```
 
+When TypeScript checks `eslint.config.ts` with `skipLibCheck` off, also install
+[`@mmd-toolkit/ast`](../ast), the types of the tree.
+
 ## Usage
 
 Add the `recommended` configuration to `eslint.config.js`:

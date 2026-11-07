@@ -1,4 +1,4 @@
-import type { JourneyNode } from "../ast/journey.ts"
+import type { JourneyNode } from "@mmd-toolkit/ast"
 
 /**
  * ast/journey.md: the child fields of each journey node type, as each

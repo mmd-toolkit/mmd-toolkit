@@ -1,4 +1,4 @@
-import type { MindmapTreeNode } from "../ast/mindmap.ts"
+import type { MindmapTreeNode } from "@mmd-toolkit/ast"
 
 /**
  * ast/mindmap.md: the child fields of each mindmap node type, as each

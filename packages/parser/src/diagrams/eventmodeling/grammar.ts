@@ -21,7 +21,7 @@ import type {
   EventmodelingAccDescrStatement,
   EventmodelingAccDescrBlockStatement,
   EventmodelingLiteral,
-} from "../../ast/eventmodeling.ts"
+} from "@mmd-toolkit/ast"
 import type { CommonFormLexing } from "../../common-form-unit-lexer.ts"
 import type { ParseError } from "../../errors.ts"
 import type { PendingToken, SourceLexer } from "../../source-lexer.ts"

@@ -1,5 +1,4 @@
-import type { Range } from "../../ast.ts"
-import type { MindmapCloser, MindmapOpener } from "../../ast/mindmap.ts"
+import type { Range, MindmapCloser, MindmapOpener } from "@mmd-toolkit/ast"
 import {
   isLineSegmentSeparator,
   isWhitespace,

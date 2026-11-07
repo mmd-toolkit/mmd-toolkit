@@ -7,7 +7,7 @@ import type {
   PieLiteral,
   PieSectionStatement,
   PieTitleStatement,
-} from "../../ast/pie.ts"
+} from "@mmd-toolkit/ast"
 import type { CommonFormLexing } from "../../common-form-unit-lexer.ts"
 import { ParseError } from "../../errors.ts"
 import type { PendingToken, SourceLexer } from "../../source-lexer.ts"

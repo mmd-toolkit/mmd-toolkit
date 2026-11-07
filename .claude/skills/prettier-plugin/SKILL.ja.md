@@ -55,7 +55,7 @@ fixture は tests の SKILL で直す。
 
 ## 2. 始める条件（入力）
 
-- parser が図種を実装し、その木の型 `packages/parser/src/ast/<図種>.ts` と、
+- parser が図種を実装し、その木の型 `packages/ast/src/ast/<図種>.ts` と、
   `visitorKeys` を公開している（parser の SKILL の出力）。
   木が定まるまで、木に依存するコードを書かない。
 - `@mmd-toolkit/tests` に、

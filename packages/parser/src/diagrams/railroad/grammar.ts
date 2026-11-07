@@ -1,13 +1,14 @@
 import { appendItems } from "../../append-items.ts"
-import type { NodeBase, Range } from "../../ast.ts"
 import type {
+  NodeBase,
+  Range,
   RailroadBodyItem,
   RailroadExpression,
   RailroadExpressionMember,
   RailroadIgnoredText,
   RailroadLiteral,
   RailroadRule,
-} from "../../ast/railroad.ts"
+} from "@mmd-toolkit/ast"
 import type { CommonFormLexing } from "../../common-form-unit-lexer.ts"
 import type { Place } from "../../diagram-parsing.ts"
 import type { ParseError } from "../../errors.ts"

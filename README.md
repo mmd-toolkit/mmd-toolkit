@@ -47,6 +47,7 @@ in ESLint Online Playground. The [sample project](./examples/eslint) includes
 | [`prettier-plugin-mmd`](./packages/prettier-plugin-mmd)        | Format `.mmd` files and `mermaid` code blocks in Markdown with Prettier.                         |
 | [`@mmd-toolkit/eslint-plugin`](./packages/eslint-plugin)       | Lint `.mmd` files and `mermaid` code blocks in Markdown with ESLint.                             |
 | [`@mmd-toolkit/parser`](./packages/parser)                     | Parse Mermaid text into a syntax tree with positions, for linters and other tools.               |
+| [`@mmd-toolkit/ast`](./packages/ast)                           | Use the TypeScript types of the syntax tree of the parser.                                       |
 | [`@mmd-toolkit/textmate-grammar`](./packages/textmate-grammar) | Color Mermaid text in Shiki, Monaco and VS Code, with a TextMate grammar for every diagram type. |
 | [`@mmd-toolkit/spec`](./packages/spec)                         | Read how Mermaid text is parsed, as a specification independent of any implementation.           |
 | [`@mmd-toolkit/tests`](./packages/tests)                       | Test an implementation of the syntax against what mermaid.js does.                               |

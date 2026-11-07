@@ -15,7 +15,10 @@ function readBoxEscapes(text: string): string {
 }
 
 const examples = examplesIn(
-  readFileSync(new URL("../src/ast/treeview.ts", import.meta.url), "utf8"),
+  readFileSync(
+    new URL("../../ast/src/ast/treeview.ts", import.meta.url),
+    "utf8",
+  ),
 )
 
 describe("the examples in the comments of the treeview node types", () => {

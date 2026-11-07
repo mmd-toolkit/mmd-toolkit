@@ -51,6 +51,7 @@ ESLint Online Playground の
 | [`prettier-plugin-mmd`](./packages/prettier-plugin-mmd)        | `.mmd` ファイルと、Markdown の中の `mermaid` コードブロックを、Prettier で整形する。     |
 | [`@mmd-toolkit/eslint-plugin`](./packages/eslint-plugin)       | `.mmd` ファイルと、Markdown の中の `mermaid` コードブロックを、ESLint で検査する。       |
 | [`@mmd-toolkit/parser`](./packages/parser)                     | Mermaid のテキストを、位置を持つ構文木にする。リンターなどのツールのためのもの。         |
+| [`@mmd-toolkit/ast`](./packages/ast)                           | パーサーの構文木の TypeScript の型を使います。                                           |
 | [`@mmd-toolkit/textmate-grammar`](./packages/textmate-grammar) | 全図種の TextMate 文法で、Shiki、Monaco、VS Code の中の Mermaid のテキストに色を付ける。 |
 | [`@mmd-toolkit/spec`](./packages/spec)                         | Mermaid のテキストがどう解析されるかを、実装によらない仕様として読む。                   |
 | [`@mmd-toolkit/tests`](./packages/tests)                       | 構文の実装を、mermaid.js の実際の挙動と比べてテストする。                                |

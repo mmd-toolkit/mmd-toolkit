@@ -64,12 +64,12 @@ type.
 
 ## 2. The working tree
 
-- The steps of this skill write `packages/parser` and the `ast.json` and
-  `parse-error.json` files in `packages/tests/fixtures/<diagram>/<fixture>/`,
-  which the fixture test writes. They do not write the other files of a fixture,
-  the specification, or the other packages; when one of those must change,
-  change it with the steps of that package's skill (spec, tests,
-  prettier-plugin).
+- The steps of this skill write `packages/parser`, `packages/ast`, and the
+  `ast.json` and `parse-error.json` files in
+  `packages/tests/fixtures/<diagram>/<fixture>/`, which the fixture test writes.
+  They do not write the other files of a fixture, the specification, or the
+  other packages; when one of those must change, change it with the steps of
+  that package's skill (spec, tests, prettier-plugin).
 - The configuration at the root (`package.json`, `pnpm-lock.yaml`,
   `tsconfig.json`, `eslint.config.mjs`, `prettier.config.js`,
   `vitest.config.ts`, `.github/workflows/`, `scripts/`) is used by every
@@ -142,7 +142,7 @@ type.
   | Changed part                                                                  | Test files                                                                                                                                                           |
   | ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
   | `src/diagrams/<diagram>/`                                                     | `tests/<diagram>.test.ts`, `tests/fixtures.test.ts`                                                                                                                  |
-  | `src/ast.ts`, `src/ast/<diagram>.ts`, `src/visitor-keys*`                     | `tests/types.test.ts`, `tests/traverse.test.ts`, `tests/ast-<diagram>-examples.test.ts`, `tests/union-docs.test.ts`, and for flowchart `tests/ast-flowchart.test.ts` |
+  | `packages/ast/src/`, `src/visitor-keys*`                                      | `tests/types.test.ts`, `tests/traverse.test.ts`, `tests/ast-<diagram>-examples.test.ts`, `tests/union-docs.test.ts`, and for flowchart `tests/ast-flowchart.test.ts` |
   | `src/unit-grammar.ts`, `src/empty-forms.ts`, `src/diagram-*.ts`               | `tests/<diagram>.test.ts` of every diagram, `tests/diagram-parsing.test.ts`, `tests/fixtures.test.ts`                                                                |
   | the common rules (`src/source-lexer.ts`, `directives.ts`, `entities.ts`, ...) | the test file of the same name, `tests/fixtures.test.ts`                                                                                                             |
   | `src/diagrams/flowchart/subgraph-ids.ts`                                      | `tests/fixtures.test.ts`                                                                                                                                             |
@@ -153,9 +153,9 @@ type.
   runs: `tests/readme-example.test.ts` (the example of `README.md` and
   `README.ja.md`), `tests/types.test.ts` (the documents of
   `packages/spec/docs/known-divergences/`), and the tests of the examples and
-  the unions in the comments of `src/ast.ts` and `src/ast/*.ts`
-  (`tests/ast-<diagram>-examples.test.ts`, `tests/union-docs.test.ts`). The
-  whole suite is run as 4.8 says.
+  the unions in the comments of `packages/ast/src/ast.ts` and
+  `packages/ast/src/ast/*.ts` (`tests/ast-<diagram>-examples.test.ts`,
+  `tests/union-docs.test.ts`). The whole suite is run as 4.8 says.
 
 ## 4. Adding a diagram type
 
@@ -196,14 +196,15 @@ type.
 
 Add them in this order; the flowchart files are the model.
 
-1. `src/ast/<diagram>.ts`: the nodes of `ast/<diagram>.md`, with the same names
-   and fields. The JSDoc of each type names the section of the specification and
-   has an example of the syntax with a line of `^` under it for the node's
-   range. Add the union of the diagram's nodes (in the flowchart,
+1. `packages/ast/src/ast/<diagram>.ts`: the nodes of `ast/<diagram>.md`, with
+   the same names and fields. The JSDoc of each type names the section of the
+   specification and has an example of the syntax with a line of `^` under it
+   for the node's range. Add the union of the diagram's nodes (in the flowchart,
    `FlowchartNode`).
-2. `src/ast.ts`: add the body node of the diagram to `DiagramBody`.
+2. `packages/ast/src/ast.ts`: add the body node of the diagram to `DiagramBody`.
 3. `src/visitor-keys/<diagram>.ts`, spread into `src/visitor-keys.ts`.
-4. `src/index.ts`: export the types. The `parse()` API is a shared interface
+4. `packages/ast/src/index.ts`: export the types of the new file; the parser
+   exports all of them with one line. The `parse()` API is a shared interface
    (AGENTS.md); show the exported types in the result, since prettier-plugin and
    eslint-plugin build on them.
 5. `src/parse.ts`: the `case` of the diagram type ids, calling the diagram's
@@ -669,7 +670,7 @@ skill). The parser does not change behavior before the specification does.
    them with `node scripts/check-mermaid-links.mjs`.
 3. When diagram type ids are added or changed: following `detection.md` and the
    DiagramType of `ast.md`, fix `src/detection.ts`, `DiagramType` in
-   `src/ast.ts`, `allDiagramTypes` in `tests/types.test.ts`, and
+   `packages/ast/src/ast.ts`, `allDiagramTypes` in `tests/types.test.ts`, and
    `tests/detection.test.ts`. An added id first goes into
    `DIAGRAM_TYPES_WITHOUT_BODY` of `tests/fixtures.test.ts`; then write its body
    (section 4), and make these fixes and remove the id from the list in the

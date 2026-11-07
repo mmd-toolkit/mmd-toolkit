@@ -1,4 +1,4 @@
-import type { ErNode } from "../ast/er.ts"
+import type { ErNode } from "@mmd-toolkit/ast"
 
 /**
  * ast/er.md: the child fields of each ER node type, as each node's section

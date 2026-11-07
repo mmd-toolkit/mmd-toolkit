@@ -1,4 +1,8 @@
-import type { NumericLiteral } from "../../ast.ts"
+import type {
+  NumericLiteral,
+  RailroadExpression,
+  RailroadRepeatRange,
+} from "@mmd-toolkit/ast"
 import {
   QUOTATION_MARK,
   PERCENT_SIGN,
@@ -8,10 +12,6 @@ import {
 } from "../../code-points.ts"
 import { isAsciiDigit } from "../../character-classes.ts"
 import type { DiagramCharacter } from "../../diagram-text.ts"
-import type {
-  RailroadExpression,
-  RailroadRepeatRange,
-} from "../../ast/railroad.ts"
 import { skipWhile } from "../../scanning.ts"
 import { RailroadUnitLexer } from "./units.ts"
 import { RailroadGrammar } from "./grammar.ts"

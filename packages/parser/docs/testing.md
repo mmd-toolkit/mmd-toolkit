@@ -337,9 +337,10 @@ looks for files left behind names any that remain.
 
 ## Other tests
 
-- Every example in the comments of the node types (`src/ast/flowchart.ts`,
-  `src/ast/sequence.ts`, `src/ast/class.ts`, and `src/ast/state.ts`) is parsed.
-  The range that its `^` marks show is compared with the range of the node.
+- Every example in the comments of the node types, in `packages/ast`
+  (`src/ast/flowchart.ts`, `src/ast/sequence.ts`, `src/ast/class.ts`, and
+  `src/ast/state.ts`), is parsed. The range that its `^` marks show is compared
+  with the range of the node.
 - The example in the Usage section of the README is parsed, and the values and
   the tree it shows are compared with the result.
 - Unit tests cover each rule of `common.md`, the detector table, `visitorKeys`

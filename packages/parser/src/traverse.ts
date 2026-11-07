@@ -1,4 +1,4 @@
-import type { Node } from "./ast.ts"
+import type { Node } from "@mmd-toolkit/ast"
 import { visitorKeys } from "./visitor-keys.ts"
 
 /** What {@link traverseNodes} calls for each node of a tree. */

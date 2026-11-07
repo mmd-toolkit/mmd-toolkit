@@ -1,4 +1,4 @@
-import type { GanttNode } from "../ast/gantt.ts"
+import type { GanttNode } from "@mmd-toolkit/ast"
 
 /**
  * ast/gantt.md: the child fields of each Gantt node type, as each node's

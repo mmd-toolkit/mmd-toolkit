@@ -1,8 +1,9 @@
 import type { Range } from "../../src/index.ts"
 
-// The comments of the node types in `src/ast.ts` and `src/ast/<diagram>.ts`
-// show examples of the syntax of each node type, with a line of `^` under
-// each line of input for the range of the node. These functions read them.
+// The comments of the node types in `packages/ast/src/ast.ts` and
+// `packages/ast/src/ast/<diagram>.ts` show examples of the syntax of each node
+// type, with a line of `^` under each line of input for the range of the node.
+// These functions read them.
 
 /** One example of a comment: the input, and the range that the `^` lines mark. */
 export interface Example {

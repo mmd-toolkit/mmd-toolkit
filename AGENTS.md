@@ -6,13 +6,14 @@ version is `AGENTS.ja.md`.
 ## Project
 
 A third-party project unrelated to mermaid-js. For the Mermaid text syntax
-(`.mmd`), covering every diagram type that mermaid.js has, it builds these six
+(`.mmd`), covering every diagram type that mermaid.js has, it builds these seven
 things.
 
 | Package                        | npm name                        | Contents                             |
 | ------------------------------ | ------------------------------- | ------------------------------------ |
 | `packages/spec`                | `@mmd-toolkit/spec`             | Syntax specification (private)       |
 | `packages/tests`               | `@mmd-toolkit/tests`            | Conformance corpus (private)         |
+| `packages/ast`                 | `@mmd-toolkit/ast`              | TypeScript types of the tree         |
 | `packages/parser`              | `@mmd-toolkit/parser`           | Parser that returns an AST           |
 | `packages/prettier-plugin-mmd` | `prettier-plugin-mmd`           | Formatter, as a Prettier plugin      |
 | `packages/eslint-plugin`       | `@mmd-toolkit/eslint-plugin`    | Linter, as an ESLint language plugin |
@@ -100,6 +101,10 @@ package.
   accepted. It is the source of the definition; implementations follow it. Its
   documents do not refer to the parser's specification of tokens and positions.
   Skill `spec`.
+- `packages/ast`: the TypeScript types of the tree, which follow the definition
+  in the specification. It holds types only. The parser has it as an optional
+  peer dependency at the same version, so that the users of the formatter and of
+  the linter do not download it. Skill `parser`.
 - `packages/parser`: the reference implementation of the specification, and the
   specification of the tokens and positions of the tree (its `docs/tokens.md`
   and `docs/positions.md`). Every behavior it implements comes from the
@@ -127,15 +132,16 @@ package.
 A change to one of these reaches the packages that use it; change them in the
 same change.
 
-| Interface                                       | Defined in | Used by                                         |
-| ----------------------------------------------- | ---------- | ----------------------------------------------- |
-| Fixture format and loader                       | tests      | spec, parser, prettier-plugin, textmate-grammar |
-| Function that extracts mermaid's Db             | tests      | parser, prettier-plugin                         |
-| Fixture CLIs (`tools/fixtures.ts`)              | tests      | spec, parser                                    |
-| Db summaries and the checks of recorded trees   | tests      | parser                                          |
-| AST definition (`docs/ast.md`, `docs/ast/*.md`) | spec       | parser, prettier-plugin, eslint-plugin          |
-| Tokens and positions (`docs/tokens.md`, …)      | parser     | tests, prettier-plugin, eslint-plugin           |
-| The parser API (`parse()`, errors, traversal)   | parser     | prettier-plugin, eslint-plugin                  |
+| Interface                                        | Defined in | Used by                                         |
+| ------------------------------------------------ | ---------- | ----------------------------------------------- |
+| Fixture format and loader                        | tests      | spec, parser, prettier-plugin, textmate-grammar |
+| Function that extracts mermaid's Db              | tests      | parser, prettier-plugin                         |
+| Fixture CLIs (`tools/fixtures.ts`)               | tests      | spec, parser                                    |
+| Db summaries and the checks of recorded trees    | tests      | parser                                          |
+| AST definition (`docs/ast.md`, `docs/ast/*.md`)  | spec       | parser, prettier-plugin, eslint-plugin          |
+| Tokens and positions (`docs/tokens.md`, …)       | parser     | tests, prettier-plugin, eslint-plugin           |
+| Types of the tree (`src/ast.ts`, `src/ast/*.ts`) | ast        | parser, prettier-plugin, eslint-plugin          |
+| The parser API (`parse()`, errors, traversal)    | parser     | prettier-plugin, eslint-plugin                  |
 
 ## Principles
 

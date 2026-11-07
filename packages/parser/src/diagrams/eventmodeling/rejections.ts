@@ -1,4 +1,4 @@
-import type { EventmodelingBodyItem } from "../../ast/eventmodeling.ts"
+import type { EventmodelingBodyItem } from "@mmd-toolkit/ast"
 import { ParseError } from "../../errors.ts"
 import type { LineIndex } from "../../positions.ts"
 

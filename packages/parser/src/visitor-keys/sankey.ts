@@ -1,4 +1,4 @@
-import type { SankeyNode } from "../ast/sankey.ts"
+import type { SankeyNode } from "@mmd-toolkit/ast"
 
 /**
  * ast/sankey.md: the child fields of each sankey node type, as each node's

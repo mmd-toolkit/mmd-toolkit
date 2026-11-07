@@ -69,6 +69,8 @@ Renovate は action のバージョンを更新するときに lock ファイル
 `changeset version` の後に `pnpm run update` を実行するので、
 その中の生成するファイルは最新です。
 その pull request をマージすると、パッケージが公開されます。
+`@mmd-toolkit/ast` と `@mmd-toolkit/parser` の版は、
+常に同じです（`.changeset/config.json` の `fixed`）。
 仕様の `@mmd-toolkit/spec` は npm に公開しません。
 リリースで、版と変更履歴の項目と、
 git のタグ `@mmd-toolkit/spec@<版>` が付きます。
@@ -79,6 +81,7 @@ git のタグ `@mmd-toolkit/spec@<版>` が付きます。
 | ------------------------------ | ---------------------------------------------- |
 | `packages/spec`                | 仕様。                                         |
 | `packages/tests`               | fixture と、実装を mermaid.js と比べる仕組み。 |
+| `packages/ast`                 | 構文木の TypeScript の型。                     |
 | `packages/parser`              | パーサー。                                     |
 | `packages/prettier-plugin-mmd` | Prettier のプラグイン。                        |
 | `packages/eslint-plugin`       | ESLint のプラグイン。                          |

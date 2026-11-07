@@ -1,4 +1,4 @@
-import type { BlockTreeNode } from "../ast/block.ts"
+import type { BlockTreeNode } from "@mmd-toolkit/ast"
 
 /**
  * ast/block.md: the child fields of each block diagram node type, as each

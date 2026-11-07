@@ -6,9 +6,9 @@ import { examplesIn } from "./helpers/ast-examples.ts"
 import { problemsOfTree } from "./helpers/tree-problems.ts"
 import { allSequenceNodeTypes } from "./helpers/node-types.ts"
 
-// The comments of `src/ast/sequence.ts` show examples of the syntax of each
-// node type, with a line of `^` under each line of input for the range of
-// the node. The examples are sequence diagrams. This test parses every
+// The comments of `packages/ast/src/ast/sequence.ts` show examples of the
+// syntax of each node type, with a line of `^` under each line of input for the
+// range of the node. The examples are sequence diagrams. This test parses every
 // example and compares the range.
 
 /** The header line that the examples of statements stand after. */
@@ -16,7 +16,10 @@ const HEADER = "sequenceDiagram\n"
 
 const examples = [
   ...examplesIn(
-    readFileSync(new URL("../src/ast/sequence.ts", import.meta.url), "utf8"),
+    readFileSync(
+      new URL("../../ast/src/ast/sequence.ts", import.meta.url),
+      "utf8",
+    ),
   ),
 ]
 

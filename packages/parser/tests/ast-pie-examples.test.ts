@@ -6,7 +6,7 @@ import { examplesIn } from "./helpers/ast-examples.ts"
 import { allPieNodeTypes } from "./helpers/node-types.ts"
 
 const examples = examplesIn(
-  readFileSync(new URL("../src/ast/pie.ts", import.meta.url), "utf8"),
+  readFileSync(new URL("../../ast/src/ast/pie.ts", import.meta.url), "utf8"),
 )
 
 describe("the examples in the comments of the pie node types", () => {

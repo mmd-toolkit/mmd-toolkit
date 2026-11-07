@@ -1,4 +1,4 @@
-import type { RequirementNode } from "../ast/requirement.ts"
+import type { RequirementNode } from "@mmd-toolkit/ast"
 
 /**
  * ast/requirement.md: the child fields of each requirement node type, as

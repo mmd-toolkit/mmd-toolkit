@@ -12,7 +12,7 @@ import type {
   FlowchartArrowLine,
   FlowchartArrowMarker,
   FlowchartOpeningArrowLine,
-} from "../../ast/flowchart.ts"
+} from "@mmd-toolkit/ast"
 import type { DiagramPosition, DiagramText } from "../../diagram-text.ts"
 import type { Match } from "../../scanning.ts"
 import { isCodePointAt } from "../../scanning.ts"

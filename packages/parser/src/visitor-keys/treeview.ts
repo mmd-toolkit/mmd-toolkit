@@ -1,4 +1,4 @@
-import type { TreeviewTreeNode } from "../ast/treeview.ts"
+import type { TreeviewTreeNode } from "@mmd-toolkit/ast"
 
 /** ast/treeview.md: the exact child fields in visitor/source order. */
 export const treeviewVisitorKeys: Readonly<

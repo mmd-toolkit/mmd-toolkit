@@ -41,7 +41,8 @@ GitHub][positions] for their format.
 
 ## Types and diagram-specific fields
 
-The package exports these types, as well as a type for each diagram node:
+With `@mmd-toolkit/ast` installed (see [Installation](./index.md#installation)),
+the package exports these types, as well as a type for each diagram node:
 
 | Types                                                       | Purpose                                             |
 | ----------------------------------------------------------- | --------------------------------------------------- |

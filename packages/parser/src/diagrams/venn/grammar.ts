@@ -1,5 +1,7 @@
-import type { Identifier, NumericLiteral, StringLiteral } from "../../ast.ts"
 import type {
+  Identifier,
+  NumericLiteral,
+  StringLiteral,
   VennLabel,
   VennLiteral,
   VennStatement,
@@ -8,7 +10,7 @@ import type {
   VennSubsetStatement,
   VennTextStatement,
   VennTitleStatement,
-} from "../../ast/venn.ts"
+} from "@mmd-toolkit/ast"
 import { ParseError } from "../../errors.ts"
 import type { PendingToken, SourceLexer } from "../../source-lexer.ts"
 import { UnitGrammar } from "../../unit-grammar.ts"

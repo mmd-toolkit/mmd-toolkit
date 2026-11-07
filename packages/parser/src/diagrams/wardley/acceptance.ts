@@ -1,10 +1,11 @@
 import { ReferencedNames } from "./referenced-names.ts"
-import type { NumericLiteral, StringLiteral } from "../../ast.ts"
 import type {
+  NumericLiteral,
+  StringLiteral,
   WardleyCoordinates,
   WardleyDiagram,
   WardleyIdentifier,
-} from "../../ast/wardley.ts"
+} from "@mmd-toolkit/ast"
 import { ParseError } from "../../errors.ts"
 import type { WardleyComparisonNames } from "./grammar.ts"
 

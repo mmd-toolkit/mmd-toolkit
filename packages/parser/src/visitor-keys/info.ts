@@ -1,4 +1,4 @@
-import type { InfoNode } from "../ast/info.ts"
+import type { InfoNode } from "@mmd-toolkit/ast"
 
 /** ast/info.md: child fields in the specified visitor and source order. */
 export const infoVisitorKeys: Readonly<

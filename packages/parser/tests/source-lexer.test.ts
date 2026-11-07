@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import type { Range } from "../src/ast.ts"
+import type { Range } from "@mmd-toolkit/ast"
 import { isWhitespace } from "../src/character-classes.ts"
 import { SPACE } from "../src/code-points.ts"
 import { readFrontmatterTrivia } from "../src/frontmatter.ts"

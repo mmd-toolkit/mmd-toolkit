@@ -1,4 +1,4 @@
-import type { TimelineNode } from "../ast/timeline.ts"
+import type { TimelineNode } from "@mmd-toolkit/ast"
 
 /**
  * ast/timeline.md: the child fields of each timeline node type, as each

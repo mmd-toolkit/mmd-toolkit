@@ -1,10 +1,10 @@
 import { appendItems } from "../../append-items.ts"
-import type { Range } from "../../ast.ts"
 import type {
+  Range,
   FlowchartStatement,
   FlowchartSubgraphStatement,
   FlowchartVertexStatement,
-} from "../../ast/flowchart.ts"
+} from "@mmd-toolkit/ast"
 import { isWhitespace } from "../../character-classes.ts"
 
 /**

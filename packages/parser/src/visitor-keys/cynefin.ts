@@ -1,4 +1,4 @@
-import type { CynefinNode } from "../ast/cynefin.ts"
+import type { CynefinNode } from "@mmd-toolkit/ast"
 
 /** ast/cynefin.md: child fields in specified source order. */
 export const cynefinVisitorKeys: Readonly<
