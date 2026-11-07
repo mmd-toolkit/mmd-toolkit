@@ -5,10 +5,12 @@ import type { Atom, AtomLayout } from "./atoms.ts"
 import { readGapElement } from "./gap.ts"
 import { printAsWritten } from "./lines.ts"
 import {
+  findLinesEndedBySemicolon,
   findSemicolonLines,
   findVerbatimStyleLines,
   isDroppedSemicolon,
   isInsideStyleRuleStretch,
+  joiningChangesIgnoredSemicolon,
   lineEndOf,
   lineStartOf,
   semicolonSegmentEnd,
@@ -133,23 +135,26 @@ function toAtom(token: Token): Atom {
 /**
  * Whether the text of a statement from `start` to `end` lies on several
  * lines and cannot be joined into one: it holds a comment or a directive, or
- * a `;`, or its last line is one that holds a `;` (see `findSemicolonLines`).
- * Where the lexer reads the line breaks inside a statement as whitespace, a
- * printer joins the lines of the statement; a comment would then take the
- * rest of the line, and a `;` could come to a line that matches the line rule
- * (common.md, `style` and `classDef` lines) while it did not on its own line,
- * so the rule would ignore it and the text would change: `classDef`, a line
- * break, and `c fill:#f00;` has the entity `#f00;` in its style, and
- * `classDef c fill:#f00;` has the style `fill:#f00`. The same holds when the
- * `;` is in another statement on the last line of the statement: the joined
- * line takes the text before the `;` from the first line, and the rule reads
- * the text of the whole line. `"style:#q" - satisfies`, a line break, and
- * `-> "b" e - satisfies -> f;g` has the target `f;g`, and the joined line has
- * the target `fg`. Such a statement is kept as written (docs/sequence.md and
- * docs/class.md, Multi-line statements). This is the one decision about
+ * joining its lines could change which `;` the line rule ignores
+ * (`joiningChangesIgnoredSemicolon`), or its last line is one that a `;`
+ * decides the end of (see `findLinesEndedBySemicolon`). Where the lexer reads
+ * the line breaks inside a statement as whitespace, a printer joins the lines
+ * of the statement; a comment would then take the rest of the line, and a `;`
+ * could come to a line that matches the line rule (common.md, `style` and
+ * `classDef` lines) while it did not on its own line, so the rule would ignore
+ * it and the text would change: `classDef`, a line break, and `c fill:#f00;`
+ * has the entity `#f00;` in its style, and `classDef c fill:#f00;` has the
+ * style `fill:#f00`. The same holds when the `;` is in another statement on
+ * the last line of the statement: the joined line takes the text before the
+ * `;` from the first line, and the rule reads the text of the whole line.
+ * `"style:#q" - satisfies`, a line break, and `-> "b" e - satisfies -> f;g`
+ * has the target `f;g`, and the joined line has the target `fg`. Such a
+ * statement is kept as written (docs/sequence.md and docs/class.md,
+ * Multi-line statements). A statement with a `;` whose lines can be joined
+ * without that change is joined as any other. This is the one decision about
  * joining lines that every layout takes. A caller that keeps line breaks
- * between its structural tokens can ignore trivia in this check; semicolon
- * line protections still apply.
+ * between its structural tokens can ignore trivia in this check; the
+ * protections of the line rule still apply.
  */
 export function spansLinesThatCannotJoin(
   source: Source,
@@ -160,12 +165,15 @@ export function spansLinesThatCannotJoin(
   const text = source.text.slice(start, end)
   if (!text.includes("\n")) return false
   if (
-    text.includes(";") ||
-    (!options.ignoresTrivia && findTriviaBetween(source, start, end).length > 0)
+    !options.ignoresTrivia &&
+    findTriviaBetween(source, start, end).length > 0
   ) {
     return true
   }
-  return findSemicolonLines(source).has(lineStartOf(source, end - 1))
+  return (
+    findLinesEndedBySemicolon(source).has(lineStartOf(source, end - 1)) ||
+    joiningChangesIgnoredSemicolon(source, start, end)
+  )
 }
 
 /**
@@ -814,10 +822,12 @@ export function toAsciiLowerCase(text: string): string {
  *   whitespace (see `isInsideStyleRuleStretch`), and the rest of the line may
  *   change. Text that no atom holds stays as written, as the layout left it to
  *   this function.
- * - A statement over several lines, and the diagrams that keep complete word
- *   lines verbatim (railroad and wardley), keep the whole text of each segment
- *   up to its last kept `;` (`protectWholePrefixes`): joining the lines of a
- *   statement could make a line that the rule reads.
+ * - A statement over several lines whose lines, joined, could change which
+ *   `;` the rule ignores (`joiningChangesIgnoredSemicolon`), and the diagrams
+ *   that keep complete word lines verbatim (railroad and wardley), keep the
+ *   whole text of each segment up to its last kept `;`
+ *   (`protectWholePrefixes`). Any other statement over several lines is
+ *   formatted like a statement on one line.
  *
  * Callers can exclude required grammatical terminators, which are separate
  * atoms rather than protected text (docs/railroad.md, Semicolons). A kept range
@@ -831,11 +841,9 @@ export function protectSemicolonPrefixes(
   atoms: readonly Atom[],
   structuralSemicolons: ReadonlySet<number> = new Set(),
 ): Atom[] {
-  const text = source.text.slice(start, end)
   if (
     usesVerbatimStyleLines(source) ||
-    text.includes("\n") ||
-    text.includes("\r")
+    joiningChangesIgnoredSemicolon(source, start, end)
   ) {
     return protectWholePrefixes(source, start, end, atoms, structuralSemicolons)
   }

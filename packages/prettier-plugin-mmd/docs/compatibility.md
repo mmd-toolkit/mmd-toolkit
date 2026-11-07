@@ -343,6 +343,68 @@ statement: after a `,` at the end of the list, as in `style A fill:#f00, `.
 [corpus fixture: flowchart/db-style-whitespace-only-value] See
 [Style trailing whitespace](./flowchart.md#style-trailing-whitespace).
 
+## Styles that are drawn the same
+
+A `style`, `classDef`, or `linkStyle` statement prints its styles in one form in
+flowchart, agentflow, class, state, and block diagrams, as it does in ER and
+requirement diagrams: no whitespace before the first `:` of a style, one space
+after it where the value is not empty, no whitespace before the `,` between two
+styles, and one space after it. `style A fill :#f00,stroke:  #333` is printed
+`style A fill: #f00, stroke: #333`. The whitespace between the words of a value
+stays as written. [fixture:
+flowchart/whitespace-between-tokens/style-colon-spaced] [fixture:
+flowchart/whitespace-between-tokens/style-colon-empty-value-kept] [fixture:
+agentflow/single-space-gaps/style-colon-spaced] [fixture:
+class/whitespace-between-tokens/style-colon-spaced] [fixture:
+state/whitespace-between-tokens/style-colon-spaced] [fixture:
+block/styles/style-colon-spaced]
+
+mermaid.js keeps this whitespace in the Db, so the Db of the printed text
+differs from the Db of the written text, but it draws the same figure.
+[`styles2Map`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L44-L51)
+takes the whitespace around the name and the value of a style away before it
+makes the CSS of a shape, and the shapes of class diagrams and the links of
+flowcharts put the styles into the CSS `style` attribute, in which the
+whitespace around `:` and `;` is not read. Both texts of each kind of statement
+were drawn with mermaid.js 12.3.0 in Chromium, and the SVG and the pixels were
+the same: for `style` and `classDef` in the five diagram types, for `linkStyle`
+with the default links, and for the styles of a `linkStyle` with link numbers
+that do not start with `fill`.
+
+A `linkStyle` with link numbers is drawn differently where a style after a `,`
+starts with whitespace.
+[`updateLink`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L417-L440)
+adds `fill:none` to the styles of a link when none of them starts with `fill`,
+and a style with a space before it does not. In
+`linkStyle 0 stroke:#f00,fill:red` the link is filled with red; in
+`linkStyle 0 stroke:#f00, fill:red` mermaid.js adds `fill:none`, and it is not.
+So in flowchart and agentflow a style that starts with `fill` keeps whether
+whitespace stands before it, a run of whitespace becoming one space. [fixture:
+flowchart/whitespace-between-tokens/link-style-fill-after-comma-kept] [fixture:
+agentflow/single-space-gaps/link-style-fill-after-comma-kept] The other styles
+of such a statement, and `linkStyle default`, are printed in the one form.
+[fixture:
+flowchart/whitespace-between-tokens/link-style-other-after-comma-spaced]
+[fixture:
+flowchart/whitespace-between-tokens/link-style-default-after-comma-spaced]
+
+A statement stays as written where a style holds a line break or a U+2028 or
+U+2029, where the statement holds a comment or a directive, where a style is all
+whitespace, where a space or a `,` follows a backslash, and where its line holds
+a `;` of its own (see [Lines that hold a `;`](#lines-that-hold-a-)). [fixture:
+flowchart/whitespace-between-tokens/style-colon-escaped-space-kept] [fixture:
+flowchart/whitespace-between-tokens/style-comma-escaped-space-kept] [fixture:
+flowchart/whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
+flowchart/whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
+
+The tests compare the Db of the printed text with the margins of its styles
+restored from the Db of the written text (`styleDbForFormattingComparison` in
+`tests/style-margins.ts`): a style that differs from the written one only by the
+whitespace at its ends and around its first `:` takes the written text, and any
+other difference, among them the number of styles of a link, fails. When the
+pinned mermaid.js is updated, draw the statements of each of these kinds again
+and compare the SVG and the pixels before the exception stays.
+
 ## Whitespace at the start of a label
 
 mermaid.js drops whitespace at the start of a label without quotes, and so does
@@ -363,8 +425,12 @@ word of the label contains `@`.
 
 mermaid.js removes a directive and reads the text on its two sides joined.
 Within a printed line, formatting therefore keeps whether whitespace was written
-on each side of a directive: `flowchart %%{init: {}}%%LR` stays as it is,
-because `flowchart%%{init: {}}%%LR` would be rejected. [fixture:
+on each side of a directive. mermaid.js reads the text without the directive, so
+the whitespace that remains must not change: a unit such as `note for`, or the
+text after `title`, reads exactly one whitespace character, and one space on
+each side of a directive that had it on one side only would leave two. For
+example, `flowchart %%{init: {}}%%LR` stays as it is, because
+`flowchart%%{init: {}}%%LR` would be rejected. [fixture:
 flowchart/directives/whitespace-on-each-side-kept] [fixture:
 flowchart/directives/touching-token-kept] [fixture:
 sequence/directives/compat-whitespace-on-one-side-of-directive-kept] [fixture:
@@ -1176,7 +1242,7 @@ the Db or the lexer reads stays. See [Text units](./xychart.md#text-units) and
   follow
   [the style rule](./block.md#semicolons-at-the-end-of-a-style-statement).
   [fixture: statements-one-per-line/line-rule-line-kept-together] [fixture:
-  multi-line-statements/semicolon-inside-kept]
+  multi-line-statements/semicolon-inside-joined]
 - A statement with a comment or directive keeps the required line breaks while
   structural continuations align under
   [Structural continuations around comments and directives](#structural-continuations-around-comments-and-directives).
@@ -1236,7 +1302,7 @@ around them. What the Db or the lexer reads stays. See
   follow
   [the style rule](./block.md#semicolons-at-the-end-of-a-style-statement).
   [fixture: statements-one-per-line/line-rule-line-kept-together] [fixture:
-  multi-line-statements/semicolon-on-the-last-line-kept]
+  multi-line-statements/semicolon-on-the-last-line-joined]
 - A point or accessibility statement with a comment or directive keeps the
   required line breaks while structural continuations align under
   [Structural continuations around comments and directives](#structural-continuations-around-comments-and-directives).
@@ -1275,10 +1341,9 @@ What the Db or the lexer reads stays. See [Rows](./block.md#rows),
   `(right down)` has the direction `right `, and `( up)` has ` up`. [fixture:
   shapes/block-arrow-directions-as-written] [fixture:
   shapes/block-arrow-directions-whitespace-kept]
-- The whitespace of `style` and `class`: of a style after a `,`, of the ids of
-  `class`, and of its class name. [fixture: styles/style-commas-as-written]
-  [fixture: styles/class-ids-as-written] [fixture: styles/class-name-as-written]
-  [fixture: styles/class-name-with-a-comma-as-written]
+- The whitespace of `class`: of its ids and of its class name. [fixture:
+  styles/class-ids-as-written] [fixture: styles/class-name-as-written] [fixture:
+  styles/class-name-with-a-comma-as-written]
 - A statement that starts with `%%`: mermaid.js reads `%%x` after a node as an
   id and a line that starts with `%%x` as a comment line, so the line that holds
   such a statement stays on one line. [fixture:
@@ -1506,11 +1571,16 @@ preservation rules. [fixture: c4/accessibility-lines/colon-trivia-continuations]
 
 Diagram comments retain their complete following gaps, including whitespace-only
 recovery lines and terminal gaps; the `comment-takes-line-break` divergence is
-not repaired by moving comments. C4 keeps every semicolon and the shared
-`style`/`classDef` line rule's protected prefix, with value nodes whole and
-Unicode segment boundaries retained. Indentation and exterior trailing
-whitespace remain printer whitespace. [fixture: c4/comments/comment-header]
-[fixture: c4/blank-lines/comment-recovery] [fixture:
+not repaired by moving comments. C4 keeps every semicolon and Unicode segment
+boundary. A segment that holds a kept `;` is formatted as anywhere else, except
+where formatting could change which `;` the line rule ignores. The rule reads a
+segment from the first `:` after `style` or `classDef` to the last `#` before
+its last kept `;`, with no whitespace between the `:` and the `#` (see
+[Semicolons](./flowchart.md#semicolons)), so the gaps and the padding inside
+that stretch keep whether they hold whitespace, a run becoming one space, and
+the rest of the segment follows the ordinary rules of this diagram. Indentation
+and exterior trailing whitespace remain printer whitespace. [fixture:
+c4/comments/comment-header] [fixture: c4/blank-lines/comment-recovery] [fixture:
 c4/final-newline/comment-eof-gap] [fixture:
 c4/line-rule-and-semicolons/semicolon-inline-comment] [fixture:
 c4/line-rule-and-semicolons/semicolon-suffix-spacing] [fixture:

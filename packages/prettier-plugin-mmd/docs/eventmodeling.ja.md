@@ -1031,8 +1031,10 @@ tf%%{wrap}%% 01 evt Alpha%%{wrap}%%->>%%{wrap}%%02
 その範囲の隙間と余白は空白の有無を保ち、空白の連続は空白 1 つにします。
 範囲の外は、この図種の通常の規則に従います。
 どの部分の配置も持たないテキストは、書かれたまま残します。
-複数行にわたる文は、各区間の頭から最後の保つ `;` までを、書かれたまま残します。
-プリンターが文の行をつなぐと、行の規則が読む行になりうるからです。
+複数行にわたる文の行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
+書かれたまま残します。
+それ以外の複数行の文は、1 行の文と同じように整形します。
 [fixture: semicolons/stretch-kept-rest-formatted]
 [fixture: semicolons/no-stretch-formatted]
 [fixture: semicolons/protected-gwt-title-hidden-gap-remains-zero]
@@ -1077,7 +1079,7 @@ required identifier と共通値の空白は構造上の字下げより優先し
 ([semicolons/selected-external-semicolon-preserved-output.mmd](../tests/fixtures/eventmodeling/semicolons/selected-external-semicolon-preserved-output.mmd)):
 
 ```mmd
-eventmodeling tf 01 evt Alpha "style:#x" ;rf 02 cmd Beta
+eventmodeling tf 01 evt Alpha "style:#x"; rf 02 cmd Beta
 ```
 
 ### Blank lines

@@ -713,6 +713,19 @@ export function isInsideStyleRuleStretch(
   )
 }
 
+/**
+ * The end of the stretch that the line rule may read (see
+ * `isInsideStyleRuleStretch`) that holds the whitespace after `offset`, or
+ * `offset` when no stretch does.
+ */
+export function styleRuleStretchEnd(source: Source, offset: number): number {
+  if (usesVerbatimStyleLines(source)) return offset
+  const stretch = findStyleRuleStretches(source).find(
+    ([first, last]) => first < offset && offset < last,
+  )
+  return stretch === undefined ? offset : stretch[1]
+}
+
 /** The stretches of each source, found once per source. */
 const styleRuleStretchesBySource = new WeakMap<
   Source,
@@ -884,6 +897,112 @@ export function findPotentialStyleRuleStretches(
   return stretches
 }
 
+/**
+ * The offsets of the `;` that the line rule ignores in the segments of a line
+ * (common.md, The `style` and `classDef` lines): in each segment the last `;`
+ * when the segment holds `style`, later a `:` followed by characters that are
+ * not whitespace and then a `#`, and later a `;`, and then the same with
+ * `classDef` on the segment without that `;`. An offset of -1 stands for a
+ * character that the source does not hold.
+ */
+function ignoredSemicolonsIn(segments: readonly ReadableSegment[]): number[] {
+  const ignored: number[] = []
+  for (const segment of segments) {
+    let { text, offsets } = segment
+    for (const word of ["style", "classDef"]) {
+      const semicolon = findSemicolonIgnoredByWord(text, word)
+      if (semicolon === -1) continue
+      ignored.push(offsets[semicolon])
+      text = text.slice(0, semicolon) + text.slice(semicolon + 1)
+      offsets = [
+        ...offsets.slice(0, semicolon),
+        ...offsets.slice(semicolon + 1),
+      ]
+    }
+  }
+  return ignored.sort((a, b) => a - b)
+}
+
+/**
+ * The index of the last `;` of a segment when it matches the line rule for
+ * `word`, and -1 otherwise.
+ */
+function findSemicolonIgnoredByWord(text: string, word: string): number {
+  const first = text.indexOf(word)
+  const semicolon = text.lastIndexOf(";")
+  if (first === -1 || semicolon === -1) return -1
+  for (
+    let colon = text.indexOf(":", first + word.length);
+    colon !== -1;
+    colon = text.indexOf(":", colon + 1)
+  ) {
+    let after = colon + 1
+    while (after < text.length && !isWhitespace(text[after])) after++
+    const hash = text.lastIndexOf("#", after - 1)
+    if (hash > colon && hash < semicolon) return semicolon
+  }
+  return -1
+}
+
+/**
+ * Whether joining the lines of the statement from `start` to `end` into one
+ * can change which `;` the line rule ignores (common.md, The `style` and
+ * `classDef` lines). The rule reads each line, and a segment of it that a
+ * U+2028 or U+2029 ends, so a `;` can come to a line that matches the rule
+ * while it did not on its own line, and the rule would ignore it, or the rule
+ * can come to ignore another `;` of the line. The segments of the lines are
+ * joined with one space and with nothing, whichever a layout prints between
+ * them, and the `;` that the rule ignores in the joined line must be those
+ * that it ignores in the segments on their own. The first and the last line
+ * hold the text of the other statements on them where the line keeps its
+ * statements together (see `findSemicolonLines`), and otherwise only the
+ * statement, since the printer puts each statement on a line of its own. This
+ * is the one decision about whether the line breaks of a statement can go.
+ */
+export function joiningChangesIgnoredSemicolon(
+  source: Source,
+  start: number,
+  end: number,
+): boolean {
+  if (!source.text.slice(start, end).includes("\n")) return false
+  const keptTogether = findSemicolonLines(source)
+  const firstLine = lineStartOf(source, start)
+  const lastLine = lineStartOf(source, end - 1)
+  const segments: ReadableSegment[] = []
+  for (
+    let lineStart = firstLine;
+    lineStart <= lastLine;
+    lineStart = lineEndOf(source, lineStart) + 1
+  ) {
+    const from =
+      lineStart === firstLine && !keptTogether.has(firstLine)
+        ? start
+        : lineStart
+    const lineEnd = lineEndOf(source, lineStart)
+    const to =
+      lineStart === lastLine && !keptTogether.has(lastLine)
+        ? Math.min(end, lineEnd)
+        : lineEnd
+    appendItems(segments, readSegments(source, from, to))
+  }
+  const alone = ignoredSemicolonsIn(segments)
+  return ["", " "].some((joint) => {
+    const together = ignoredSemicolonsIn([
+      {
+        text: segments.map((segment) => segment.text).join(joint),
+        offsets: segments.flatMap((segment, index) => [
+          ...(index === 0 ? [] : [...joint].map(() => -1)),
+          ...segment.offsets,
+        ]),
+      },
+    ])
+    return (
+      together.length !== alone.length ||
+      together.some((offset, index) => offset !== alone[index])
+    )
+  })
+}
+
 /** The characters of a line-rule segment, with their offsets in the source. */
 interface ReadableSegment {
   readonly text: string
@@ -1016,11 +1135,4 @@ export function lastKeptSemicolonBefore(source: Source, end: number): number {
     if (!isDroppedSemicolon(source, offset)) return offset
   }
   return -1
-}
-
-/** The end of the protected prefix on the segment holding `offset`. */
-export function keptSemicolonPrefixEnd(source: Source, offset: number): number {
-  const end = semicolonSegmentEnd(source, offset)
-  const semicolon = lastKeptSemicolonBefore(source, end)
-  return semicolon >= offset ? semicolon + 1 : offset
 }

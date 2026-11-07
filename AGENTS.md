@@ -78,12 +78,29 @@ Correctness is defined by the pinned mermaid.js.
    each token and comment equals the input at its range. Whitespace and line
    terminators are not nodes; with the source text and the ranges, the input is
    reproduced byte for byte.
-4. Formatting is idempotent and does not change the Db, except for the limited
-   ASCII space margin changes to eventmodeling block bodies defined in
-   [Data blocks](packages/prettier-plugin-mmd/docs/eventmodeling.md#data-blocks)
-   and eligible state note paragraphs defined in
-   [Notes](packages/prettier-plugin-mmd/docs/state.md#notes). These exceptions
-   permit raw Db value differences only while preserving the rendering.
+4. Formatting is idempotent and does not change what mermaid.js draws: the SVG,
+   with the figure, the targets of links, the functions that a click calls and
+   their arguments, tooltips, and accessibility texts. Generated ids and
+   whitespace that the drawing ignores (around a CSS declaration, in a run of
+   HTML characters) are not compared. A way of writing that draws the same is
+   printed in one form, the form that the other diagram types print for the same
+   kind of gap; a way of writing that draws something else is kept as written.
+   The check is that formatting does not change the Db. A formatting that
+   changes the Db but not the drawing is an exception. Each kind of exception
+   has a section that defines it, with links to the code of the pinned
+   mermaid.js that shows why the drawing stays the same and the result of
+   drawing both texts, and the tests compare the Db with the differences of that
+   kind restored, one function for each kind, which
+   `packages/prettier-plugin-mmd/tests/db-comparison.ts` calls. When the pinned
+   mermaid.js is updated, each exception is checked again by drawing. The kinds
+   are:
+   - the limited ASCII space margin changes to eventmodeling block bodies,
+     defined in
+     [Data blocks](packages/prettier-plugin-mmd/docs/eventmodeling.md#data-blocks);
+   - the margin changes to eligible state note paragraphs, defined in
+     [Notes](packages/prettier-plugin-mmd/docs/state.md#notes);
+   - the whitespace around the first `:` and the `,` of styles, defined in
+     [Styles that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#styles-that-are-drawn-the-same).
 
 ## What each package is responsible for
 

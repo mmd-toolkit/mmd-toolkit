@@ -600,6 +600,19 @@ export function findTriviaBetween(
 }
 
 /**
+ * Whether the keyword of the diagram ends at `offset`. Diagram detection reads
+ * the text before the `;` that the line rule ignores is removed, so such a `;`
+ * against the keyword is no whitespace after it (docs/cynefin.md,
+ * Semicolons).
+ */
+export function isDiagramKeywordEnd(source: Source, offset: number): boolean {
+  return (
+    source.root.tokens.find((token) => token.type === "Keyword")?.range[1] ===
+    offset
+  )
+}
+
+/**
  * The offset after the run of `;` that the line rule ignores and that begins at
  * `offset`: `offset` itself where none does. Such a `;` is a token of its own,
  * so it does not hide the line separator that follows a comment

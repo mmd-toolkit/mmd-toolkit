@@ -1,7 +1,7 @@
 import type { Doc } from "prettier"
 import type { Range } from "@mmd-toolkit/ast"
 import { builders } from "prettier/doc"
-import { endsWithSpaceOrTab, readGap } from "./gap.ts"
+import { endsWithSpaceOrTab, printIgnoredSemicolons, readGap } from "./gap.ts"
 import { isInsideStyleRuleStretch } from "./kept-lines.ts"
 import type { Line } from "./lines.ts"
 import {
@@ -11,6 +11,7 @@ import {
   withTrailing,
 } from "./lines.ts"
 import type { Source } from "./source.ts"
+import { isDiagramKeywordEnd } from "./source.ts"
 
 const { indent } = builders
 
@@ -241,16 +242,32 @@ export function printAtoms(
           : undefined
         if (gap.leading !== null) current = [withLeading(gap.leading, "")]
       } else if (gap.trailing !== null || gap.leading !== null) {
-        // Items keep the whitespace written on each side of them; the rule
-        // of the gap does not apply (docs/flowchart.md, Directives and
-        // Semicolons).
-        current = [withTrailing(current, gap.trailing)]
-        if (gap.leading !== null) {
-          const spaced =
-            gap.trailing === null
-              ? gap.leading.spaceBefore
-              : gap.trailing.spaceAfter
-          current = [current, spaced ? " " : "", withLeading(gap.leading, "")]
+        // mermaid.js removes a `;` that the line rule ignores from the text, so
+        // the gap follows its ordinary rule as if the `;` were absent. The
+        // other items keep the whitespace written on each side of them, and so
+        // does a gap that the line rule may read, that holds a U+2028 or
+        // U+2029, or that follows the keyword of the diagram (docs/flowchart.md,
+        // Directives and Semicolons).
+        const written = source.text.slice(previous.end, atom.start)
+        const absent =
+          gap.trailing === null &&
+          gap.leading !== null &&
+          !written.includes("\u2028") &&
+          !written.includes("\u2029") &&
+          !isInsideStyleRuleStretch(source, previous.end, atom.start) &&
+          !isDiagramKeywordEnd(source, previous.end)
+            ? printIgnoredSemicolons(gap.leading, layout.rules.get(atom.start))
+            : null
+        if (absent !== null) current.push(absent)
+        else {
+          current = [withTrailing(current, gap.trailing)]
+          if (gap.leading !== null) {
+            const spaced =
+              gap.trailing === null
+                ? gap.leading.spaceBefore
+                : gap.trailing.spaceAfter
+            current = [current, spaced ? " " : "", withLeading(gap.leading, "")]
+          }
         }
       } else {
         const written = source.text.slice(previous.end, atom.start)

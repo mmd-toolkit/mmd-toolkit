@@ -288,14 +288,24 @@ tooltipの前の必須の空白1文字の隙間は決して揃えません。
 文法が空白1文字だけを取り、その後の空白は値の文字で、
 トークンを期待する場所に空白が2文字あると拒否されることもあるためです。
 この1文字として使うタブも保ちます。
-directiveを挟む最初のstyleの先頭空白、値内の空白、コンマの後の空白、
+directiveを挟む最初のstyleの先頭空白、スタイルの値の中の語と語の間の空白、
 空のstyleリスト項目、classDefのエスケープしたコンマ、順序と反復を保ちます。
-style内部を値として保つ理由はflowchartと同じですが、先頭の隙間は揃えません。
-コンマの前の空白は mermaid.js が落とすので値ではなく、
-[flowchart](./flowchart.ja.md#トークンの間の空白)と同じく落とします。
-`style A fill:#f00 ,color:white` は `style A fill:#f00,color:white` になります。
-バックスラッシュがエスケープする空白、スタイルの間のディレクティブやコメント、
-空白だけのスタイル、行にある改行や保つ `;` は、文を書かれたままにします。
+最初のstyleの空白は、flowchart と同じには揃えません。
+各スタイルの最初の `:` の前に空白を置かず、値が空でなければ、
+後ろに空白を 1 つ置きます。
+スタイルの間の `,` の前に空白を置かず、後ろに空白を 1 つ置きます。
+`style A fill :#f00,stroke:  #333` は、
+`style A fill: #f00, stroke: #333` になります。
+[fixture: single-space-gaps/style-colon-spaced]
+番号を指定した `linkStyle` では、`fill` で始まるスタイルの前の `,` の後ろに、
+空白があるかないかを保ち、空白の連続は空白 1 つにします。
+[fixture: single-space-gaps/link-style-fill-after-comma-kept]
+この文のほかのスタイルと `linkStyle default` は、1 つの形で印字します。
+詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+を参照してください。
+バックスラッシュの後に空白か `,` がある文、ディレクティブやコメントがある文、
+空白だけのスタイルがある文、スタイルに改行か U+2028・U+2029 があるか、
+行に保つ `;` がある文は、書かれたままにします。
 [fixture: single-space-gaps/classdef-first-tab]
 [fixture: single-space-gaps/linkstyle-first-spaces]
 [fixture: single-space-gaps/style-directive-gap]
@@ -804,10 +814,14 @@ flowchartの継続行の規則を同じ理由で再利用するためです。
 例外も同じです。
 [Kept lines](#kept-lines)の非区切りの`;`を含む行は、
 アクセシビリティの文字と`;`の脇の空白を保ちます。
-セミコロンが別の文や次行の値にある場合も同じです。
+セミコロンが別の文にある場合も同じです。
+複数行に書かれた文は、その行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合に、書かれたまま残します。
+それ以外の複数行の文は、`;` を含んでいても通常どおりつなぎます。
 [fixture: accessibility/semicolon-value-kept]
 [fixture: accessibility/neighbour-semicolon-kept]
-[fixture: accessibility/next-line-semicolon-kept]
+`;` があるだけでは、行をつなぐ妨げにはなりません。
+[fixture: accessibility/next-line-semicolon-joined]
 方向の文字列がある行は[Direction](#direction)に従い、原文、改行、
 桁位置を保ちます。
 ほかの文書化された保持行の理由も優先します。
@@ -1022,7 +1036,7 @@ Db要約はstyleの末尾空白を正規化しますが、
 agentflow-beta TB
   A
   A --> B
-  style A fill:red
+  style A fill: red
 ```
 
 ### Line terminators

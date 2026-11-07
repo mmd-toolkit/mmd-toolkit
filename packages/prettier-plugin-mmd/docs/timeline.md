@@ -842,8 +842,8 @@ start of a later line, and keep their line breaks (see
 In `accTitle` and `accDescr:` statements, keep trivia line breaks and align
 later structural parts and standalone trivia one continuation level inside the
 statement, also under a section. Preserve each first gap-line tail and complete
-directive interiors. Semicolon lines and joining comment regions keep their
-original layout. [fixture:
+directive interiors. Joining comment regions keep their original layout;
+semicolon protection follows the joining decision below. [fixture:
 multi-line-statements/accessibility-trivia-continuations]
 
 Titles and sections, and event-text continuations, keep their original multiline
@@ -853,11 +853,14 @@ multi-line-statements/directive-inside-kept] After the colon of an event, an
 indented line of only a directive is the whitespace that starts the event, so
 the event is printed on the line of the colon, with that whitespace, and the
 directive after it. [fixture:
-multi-line-statements/directive-line-after-the-colon-is-the-text] A `;` in such
-a statement keeps it as written too, because the joined line could be read by
-the line rule of mermaid.js differently (see
-[Statements one per line](#statements-one-per-line)). [fixture:
-multi-line-statements/text-on-next-line-with-semicolon-kept]
+multi-line-statements/directive-line-after-the-colon-is-the-text] A statement
+written over several lines is kept as written when joining its lines, with one
+space or with nothing, could change which `;` the line rule ignores; any other
+statement over several lines is joined as usual, also when it holds a `;`. See
+[Statements one per line](#statements-one-per-line). [fixture:
+multi-line-statements/semicolon-joining-changes-kept] A `;` alone does not
+prevent joining. [fixture:
+multi-line-statements/text-on-next-line-with-semicolon-joined]
 
 Input
 ([multi-line-statements/value-on-next-line-joined-input.mmd](../tests/fixtures/timeline/multi-line-statements/value-on-next-line-joined-input.mmd)):

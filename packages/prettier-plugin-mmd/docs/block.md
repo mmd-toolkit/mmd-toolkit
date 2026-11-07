@@ -523,29 +523,37 @@ block-beta
 
 `classDef`, `style`, and `class` are followed by one space, the name of the
 class or the id, and one space; the whitespace after the keyword and before the
-first style is not in the Db, so it becomes one space. What follows is printed
-as written, apart from the terminators dropped under
+first style is not in the Db, so it becomes one space. The styles of `classDef`
+and `style` use the spacing below; the value of a `class` is printed as written.
+Terminators follow
 [Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement).
 In a `style` and a `class` the whitespace is in the Db.
 `style A fill:#f00 , stroke:#333` has a style `fill:#f00 ` and a style
 ` stroke:#333`; `class A, B c1` looks up the id ` B` with its whitespace, finds
 no block `B`, and gives the class to a new block that the diagram does not show;
 and the class name of `class A c   d` is `c   d`, and that of `class A , B   c1`
-is `, B   c1`, since the whitespace after `A` ends the ids. In a `classDef` it
-is not, so the `,` between the styles has no whitespace before it and one space
-after it, as in ER (see [Styles and classes](./er.md#styles-and-classes)):
+is `, B   c1`, since the whitespace after `A` ends the ids. In a `classDef` or a
+`style` statement, each style has no whitespace before its first `:` and one
+space after it where the value is not empty. The `,` between styles has no
+whitespace before it and one space after it, as in ER and requirement (see
+[Styles and classes](./er.md#styles-and-classes)):
 `classDef c fill:#f00 , color:white` is printed
-`classDef c fill:#f00, color:white`. A comment or a directive among the styles,
-and a line break or a kept `;` on the line, keep the statement as written. The
-styles of a `style` statement are printed as written. The whitespace at the end
-of the statement is dropped, as in a flowchart (see
+`classDef c fill: #f00, color: white`, and the styles of a `style` statement use
+the same form. The whitespace between the words of a value stays as written. The
+Db changes, but mermaid.js draws the same figure (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
+[fixture: styles/style-colon-spaced] A statement stays as written where
+whitespace or a `,` follows a backslash, where it holds a comment or a
+directive, where a style is all whitespace, or where a style holds a line break
+or its line holds a kept `;`. The whitespace at the end of the statement is
+dropped, as in a flowchart (see
 [Style trailing whitespace](./flowchart.md#style-trailing-whitespace)).
 [fixture: styles/class-definition-spaces] [fixture: styles/style-spaces]
-[fixture: styles/class-spaces] [fixture: styles/style-commas-as-written]
-[fixture: styles/class-definition-commas-as-written] [fixture:
+[fixture: styles/class-spaces] [fixture: styles/style-commas-spaced] [fixture:
+styles/class-definition-commas-spaced] [fixture:
 styles/class-definition-comma-spaced] [fixture:
 styles/class-definition-comma-beside-directive-kept] [fixture:
-styles/style-statement-commas-kept] [test: U+2029 before the comma of a block
+styles/style-statement-commas-spaced] [test: U+2029 before the comma of a block
 classDef statement] [fixture: styles/class-ids-as-written] [fixture:
 styles/class-name-with-a-comma-as-written] [fixture:
 styles/class-name-as-written] [fixture: styles/trailing-whitespace-dropped]
@@ -557,8 +565,8 @@ block/db-style-none] When the first style is only whitespace, as in
 `classDef c ,fill:#f00`, the Db has an empty first style and the whitespace
 before the `,` belongs to no style, so the styles start at the first `,`: that
 whitespace becomes one space, and the `,` and what follows are printed as
-written, as for any other styles. [fixture: styles/styles-with-a-leading-comma]
-[corpus fixture: block/db-class-def-leading-comma]
+written. [fixture: styles/styles-with-a-leading-comma] [corpus fixture:
+block/db-class-def-leading-comma]
 
 Input
 ([styles/class-definition-spaces-input.mmd](../tests/fixtures/block/styles/class-definition-spaces-input.mmd)):
@@ -575,7 +583,7 @@ Output
 ```mmd
 block-beta
   A
-  classDef c1 color:#fff, fill:#000
+  classDef c1 color: #fff, fill: #000
 ```
 
 Input
@@ -593,7 +601,7 @@ Output
 ```mmd
 block-beta
   A
-  style A fill:#f00 , stroke:#333
+  style A fill: #f00, stroke: #333
 ```
 
 Input
@@ -664,10 +672,10 @@ Output
 ```mmd
 block
   A
-  classDef c fill:#f00
-  style A fill:#f00
-  classDef d fill:#0f0, stroke:#00f
-  style A fill:#0f0,stroke:#00f
+  classDef c fill: #f00
+  style A fill: #f00
+  classDef d fill: #0f0, stroke: #00f
+  style A fill: #0f0, stroke: #00f
 ```
 
 ### Multi-line statements
@@ -686,10 +694,12 @@ whitespace after a `,`. [fixture:
 multi-line-statements/structural-trivia-continuations]
 
 Joining comment regions retain their original layout. [test: block:
-ls-comment-in-composite-head] [test: block: ps-comment-in-composite-head] A kept
-`;` in a statement keeps it as written too, because of the line rule (see
-[Rows](#rows) and
-[A line that a `;` ends](./compatibility.md#a-line-that-a--ends)). The line rule
+ls-comment-in-composite-head] [test: block: ps-comment-in-composite-head] A
+statement written over several lines is kept as written when joining its lines,
+with one space or with nothing, could change which `;` the line rule ignores;
+any other statement over several lines is joined as usual, also when it holds a
+`;`. See [Rows](#rows) and
+[A line that a `;` ends](./compatibility.md#a-line-that-a--ends). The line rule
 of mermaid.js removes the last `;` of a line that holds `style` or `classDef`, a
 later `:`, a `#` after that with no whitespace between them, and a later `;`;
 moving a statement away from such a line changes which `;` is the last (in
@@ -707,9 +717,9 @@ multi-line-statements/shape-over-lines-joined] [fixture:
 multi-line-statements/class-definition-line-break-in-the-head] [fixture:
 multi-line-statements/continuation-line-joined-in-a-row] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
-multi-line-statements/directive-inside-kept] [fixture:
-multi-line-statements/semicolon-in-the-statement-kept] [fixture:
-multi-line-statements/line-rule-line-kept] [fixture:
+multi-line-statements/directive-inside-kept] A `;` alone does not prevent
+joining. [fixture: multi-line-statements/semicolon-in-the-statement-joined]
+[fixture: multi-line-statements/line-rule-line-kept] [fixture:
 multi-line-statements/line-rule-line-kept-with-columns] [fixture:
 multi-line-statements/line-rule-line-kept-with-composite] [fixture:
 multi-line-statements/semicolon-in-an-id-kept] [fixture:

@@ -22,9 +22,11 @@ const { replaceEndOfLine } = utils
  * them in no node (see `Trivia`). The other tokens are the `;` that the
  * line rule ignores (`ignoredSemicolons`): no node contains them. A caller
  * can also supply complete opaque AST nodes for retained source forms. All
- * items are printed as written, and on each side of each, whitespace is
- * printed where the source has it and nothing where it has none
- * (docs/flowchart.md, Directives and Semicolons).
+ * items are printed as written. The whitespace around them is that of the
+ * ordinary rule of the gap, as if they were not there, when each is a `;`
+ * that the line rule ignores (see `printIgnoredSemicolons`), and otherwise the
+ * whitespace that the source has on each side of each, with nothing where it
+ * has none (docs/flowchart.md, Directives and Semicolons).
  */
 export type GapItem = Trivia | Token | Node
 
@@ -41,6 +43,13 @@ export interface ItemRun {
   readonly spaceBefore: boolean
   /** Whether the source had whitespace or a `;` after the last item. */
   readonly spaceAfter: boolean
+  /** Whether the source had whitespace between two of the printed items. */
+  readonly spaceWithin: boolean
+  /**
+   * The number of items when each is a `;` that the line rule ignores; null
+   * when the run holds any other item, such as a directive or a comment.
+   */
+  readonly ignoredSemicolons: number | null
   /**
    * Whether the run ends with whitespace that must be kept: a comment that
    * ends with spaces or tabs. `%% ` is a comment; `%%` is not.
@@ -644,6 +653,7 @@ function toRun(
   }
   const doc: Doc[] = []
   let spaceBefore = false
+  let spaceWithin = false
   let spacePending = false
   let firstPrinted: Part | undefined, printed: Part | undefined
   for (const [index, part] of parts.entries()) {
@@ -662,7 +672,10 @@ function toRun(
       continue
     }
     if (printed === undefined) spaceBefore = space
-    else if (space) doc.push(" ")
+    else if (space) {
+      doc.push(" ")
+      spaceWithin = true
+    }
     firstPrinted ??= part
     doc.push(printItem(source, part.item))
     printed = part
@@ -674,10 +687,55 @@ function toRun(
     doc,
     spaceBefore,
     spaceAfter: spaceAfter || spacePending,
+    spaceWithin,
+    ignoredSemicolons: parts.every(
+      (part) => !part.separates && part.item.type === "IgnoredSemicolon",
+    )
+      ? parts.length
+      : null,
     endsWithWhitespace: endsWithSpaceOrTab(
       source.text.slice(printed.item.range[0], printed.item.range[1]),
     ),
   }
+}
+
+/**
+ * Prints the items of a gap that lies within one line, when each is a `;` that
+ * the line rule ignores, and null when the run holds any other item.
+ * mermaid.js removes such a `;` from the text (common.md, Style and
+ * classDef lines), so the whitespace around it follows the ordinary rule of
+ * the gap as if it were absent, and not the whitespace that the source has on
+ * each side of it. `rule` is that rule: one space, none, or, where the gap
+ * has no rule, one space where the source has whitespace in the gap and none
+ * where it has none. Where the rule has one space, a `;` stands against what
+ * comes before it and has one space after it; where it has none, the `;`
+ * touches what is on both sides. `place` says that nothing is printed before
+ * or after the gap on its line, where the gap prints no space after it and
+ * the whitespace of the source there is not that of the gap. The caller keeps
+ * the whitespace of a gap that the line rule may read (see
+ * `isInsideStyleRuleStretch`), of a gap that holds a U+2028 or U+2029, and of
+ * the gap after the keyword of the diagram, which diagram detection reads with
+ * the `;` (docs/cynefin.md, Semicolons).
+ */
+export function printIgnoredSemicolons(
+  run: ItemRun,
+  rule: "space" | "none" | undefined,
+  place: { readonly atLineStart: boolean; readonly atLineEnd: boolean } = {
+    atLineStart: false,
+    atLineEnd: false,
+  },
+): Doc | null {
+  if (run.ignoredSemicolons === null) return null
+  const apart =
+    rule === undefined
+      ? (run.spaceBefore && !place.atLineStart) ||
+        (run.spaceAfter && !place.atLineEnd) ||
+        run.spaceWithin
+      : rule === "space"
+  return [
+    ";".repeat(run.ignoredSemicolons),
+    apart && !place.atLineEnd ? " " : "",
+  ]
 }
 
 /**

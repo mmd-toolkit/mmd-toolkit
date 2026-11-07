@@ -411,17 +411,22 @@ mermaid.js が読まない `""` も同じです。
 状態に結び付けない独立したノート（`note "..." as ...`）の引用符は、
 書かれたまま残します。
 [fixture: whitespace-between-tokens/floating-note-quotes-kept]
-`classDef` 文と `style` 文のスタイルを区切る `,` は、
-ER と requirement と同じく、
+`classDef` 文と `style` 文では、各スタイルの最初の `:` の前に空白を置かず、
+値が空でなければ、後ろに空白を 1 つ置きます。
+スタイルを区切る `,` は、ER と requirement と同じく、
 [スタイルとクラス](./er.ja.md#スタイルとクラス)のとおり、前に空白を置かず、
 後に空白 1 つを置きます。
 `classDef c fill:#f00 , color:white` は、
-`classDef c fill:#f00, color:white` になります。
+`classDef c fill: #f00, color: white` になります。
+値の中の語と語の間の空白は、書かれたまま残します。
 mermaid.js は state 図では `,` の前後の空白を何もないものとして読むので、
-Db は同じです。
-スタイルの間のコメントやディレクティブ、行にある改行や保つ `;` は、
-文を書かれたままにし、空白だけのスタイルがあるときも同じです。
-[fixture: whitespace-between-tokens/comma-kept]
+その空白では Db は変わりませんが、`:` の前後の空白は Db に残します。
+描かれる図は同じです。
+詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+を参照してください。 [fixture: whitespace-between-tokens/style-colon-spaced]
+バックスラッシュの後に空白か `,` がある文、コメントやディレクティブがある文、
+空白だけのスタイルがある文、スタイルに改行があるか、行に保つ `;` がある文は、
+書かれたままにします。 [fixture: whitespace-between-tokens/comma-kept]
 [fixture: whitespace-between-tokens/style-comma-spaced]
 [fixture: whitespace-between-tokens/style-comma-beside-directive-kept]
 [fixture: whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
@@ -491,7 +496,7 @@ stateDiagram-v2
   A:::highlight
   state f1 <<fork>>
   state "" x
-  classDef c fill:red, stroke:blue
+  classDef c fill: red, stroke: blue
   class A,B c
   scale 350 width
   hide empty description
@@ -1279,10 +1284,10 @@ U+2028 と U+2029 の前も同じように保護します。
 ```mmd
 stateDiagram-v2
   A --> B
-  classDef c fill:#f00
-  style A fill:#f00
-  classDef d fill:#0f0, stroke:#00f
-  style A fill:#0f0, stroke:#00f
+  classDef c fill: #f00
+  style A fill: #f00
+  classDef d fill: #0f0, stroke: #00f
+  style A fill: #0f0, stroke: #00f
 ```
 
 ### 複数行の文
@@ -1320,7 +1325,7 @@ state 図で文が次の行に続けられるのは、`state` の後、`as` の�
 [test: accessibility revisions: state next-line-direction-crlf]
 [test: accessibility revisions: state next-line-direction-nbsp]
 そのため、`classDef c` の次の行の `fill:red` は、
-`classDef c fill:red` と印字します。
+`classDef c fill: red` と印字します。
 `classDef a` の後の行の `B --> C` は、遷移ではなく `a` のスタイルで、
 印字した結果からそれが分かります。 [fixture: multi-line-statements/joined]
 [fixture: multi-line-statements/classdef-takes-next-line]
@@ -1331,8 +1336,7 @@ state 図で文が次の行に続けられるのは、`state` の後、`as` の�
 複数行のノートの段落の margin は、[ノート](#ノート)の限定規則に従います。
 [fixture: notes/payment-prose]
 各隙間の最初の行末は保ちます。
-コメントで結合される領域、セミコロンの保護対象、前述の複合状態の例外では、
-文全体を原文のまま残します。
+コメントで結合される領域と前述の複合状態の例外では、文全体を原文のまま残します。
 [fixture: multi-line-statements/declaration-trivia-continuations]
 [fixture: multi-line-statements/comment-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
@@ -1365,7 +1369,7 @@ A title
 stateDiagram-v2
   state A
   direction LR
-  classDef c fill:red
+  classDef c fill: red
   note right of A : x
   scale 350 width
   accTitle: A title
@@ -1391,11 +1395,14 @@ stateDiagram-v2
     LR
 ```
 
-保持する `;` を含み、複数行に書かれた文も、書かれたまま残します。
+複数行に書かれた文は、その行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合に、書かれたまま残します。
+それ以外の複数行の文は、`;` を含んでいても通常どおりつなぎます。
 [corpus fixture: state/db-style-semicolons]
 [corpus fixture: state/db-classdef-semicolons]
 [fixture: multi-line-statements/semicolon-kept]
-[fixture: multi-line-statements/semicolon-in-id-kept]
+`;` があるだけでは、行をつなぐ妨げにはなりません。
+[fixture: multi-line-statements/semicolon-in-id-joined]
 mermaid.js の行の規則は、
 1 行のテキストを読みます（仕様の
 [`style` 行と `classDef` 行](../../spec/docs/common.ja.md#style-行と-classdef-行)）。
@@ -1509,8 +1516,8 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
 
 - 値のテキスト。
   説明、ラベル、ノート、`as` の後の id、擬似状態の名前、
-  スタイル（`,` の前後の空白を除きます）、`class` 文の CSS クラス、
-  `accTitle` と `accDescr` のテキスト。
+  スタイル（最初の `:` と `,` の前後の空白を除きます）、
+  `class` 文の CSS クラス、`accTitle` と `accDescr` のテキスト。
   [fixture: whitespace-between-tokens/style-text-kept]
   [fixture: descriptions-and-labels/acc-text-kept] [fixture: aliases/id-kept]
 - 1 行のノートの id の後、別名の定義の 2 つ目の説明、

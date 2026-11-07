@@ -621,8 +621,11 @@ multi-line-statements/value-on-next-line-joined] In `accTitle` and `accDescr:`
 statements, keep trivia line breaks and align later structural parts and
 standalone trivia one continuation level inside the statement, also under a
 section. Preserve each first gap-line tail and complete directive interiors.
-Semicolon lines and joining comment regions keep their original layout.
-[fixture: multi-line-statements/accessibility-trivia-continuations]
+Joining comment regions keep their original layout. A statement written over
+several lines is kept as written when joining its lines, with one space or with
+nothing, could change which `;` the line rule ignores; any other statement over
+several lines is joined as usual, also when it holds a `;`. [fixture:
+multi-line-statements/accessibility-trivia-continuations]
 
 Titles and sections keep their original multiline trivia layout, because their
 value padding belongs to the Db. [fixture:

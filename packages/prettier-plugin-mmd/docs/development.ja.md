@@ -336,8 +336,10 @@ metadata の atom と trivia の間の LF をすべて保ち、
 他のレイアウトは指定せず、既存の空行の方針を保ちます。
 `semicolonSegmentEnd` と `keptSemicolonPrefixEnd` は、
 C4 の既存の区間境界を共有します。
-`protectSemicolonPrefixes` は、複数行にわたる文の区間と、
-どの atom も持たないテキストを、書かれたまま保ちます。
+`protectSemicolonPrefixes` は、複数行にわたる文のソースの行を、
+空白 1 つか何も挟まずにつなぐと、行の規則が無視する `;` が変わりうる場合だけ、
+その区間を書かれたまま保ちます。
+どの atom も持たないテキストも、書かれたまま保ちます。
 行の規則が読む範囲は、atom printer の隙間と余白の規則で保護します。
 共有 printer に図種による分岐は加えません。
 

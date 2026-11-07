@@ -366,7 +366,8 @@ ER 図の関係文も単位の間は空白 1 つです。
 [fixture: relationship-spacing/comment-continuation-with-multiline-names]
 [fixture: relationship-spacing/directive-continuation-four-spaces]
 [fixture: relationship-spacing/multiline-directive-line-tail]
-semicolon の読みが関わる行と、物理行を結ぶコメント領域は、元の配置を保ちます。
+行をつなぐと行の規則が無視する `;` が変わりうる文と、
+物理行を結ぶコメント領域は、元の配置を保ちます。
 [fixture: multi-line-statements/relationship-last-line-semicolon-kept]
 [test: requirement/relationship-spacing/comment-region-continuation-kept]
 
@@ -1136,18 +1137,20 @@ style の文脈の改行の後で続きます。
 構造の続きの行と間の注釈を 1 段深く置きます。
 ブロックのヘッダー、フィールド、関係文、ほかの文も同じです。
 値の中の空白と、各隙間の最初の改行の前の空白は保ちます。
-コメントで結合される領域とセミコロン行の保護対象では、
-文全体を原文のまま残します。
+コメントで結合される領域では、文全体を原文のまま残します。
+複数行に書かれた文は、その行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合に、書かれたまま残します。
+それ以外の複数行の文は、`;` を含んでいても通常どおりつなぎます。
 [test: requirement/multi-line-statements/header-and-field-comment-regions-ls]
 [test: requirement/multi-line-statements/header-and-field-comment-regions-ps]
 [fixture: multi-line-statements/header-directive-continuation]
 [fixture: fields/comment-and-directive-continuations]
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
-[fixture: multi-line-statements/semicolon-kept]
+[fixture: multi-line-statements/semicolon-joined]
 
-最後の行に、後ろの文の `;` がある文も、書かれたまま残します。
-1 行にした行を、行の規則が行全体として読むからです。
+最後の行の `;` が後ろの文のものでも、同じ判定をします。
+つないだ行を、行の規則が行全体として読むからです。
 `"style:#q" - satisfies` と、改行の後の `-> "b" e - satisfies -> f;g` では、
 2 つ目の関係の右は `f;g` ですが、
 1 行にした `"style:#q" - satisfies -> "b" e - satisfies -> f;g` では `fg`
@@ -1155,12 +1158,16 @@ style の文脈の改行の後で続きます。
 その行の文は、その行に残します。
 [fixture: multi-line-statements/relationship-last-line-semicolon-kept]
 [fixture: multi-line-statements/class-last-line-semicolon-kept]
-[fixture: multi-line-statements/string-continued-last-line-semicolon-kept]
 文の最初の行にある、前の文の `;` は、規則にとって何も変えないので、
 文は 1 行にします。
 [fixture: multi-line-statements/relationship-first-line-semicolon-joined]
 [fixture: multi-line-statements/class-first-line-semicolon-joined]
 [fixture: multi-line-statements/accessibility-first-line-semicolon-joined]
+`;` のない行の文は、プリンタが 1 行ずつに分けて置くので、規則は、
+ほかの文を除いた文として読みます。
+`style r fill:#q "r"` と、
+改行の後の `- satisfies -> "b" e - satisfies -> f;g` も、1 行にします。
+[fixture: multi-line-statements/string-continued-last-line-semicolon-joined]
 
 入力
 ([multi-line-statements/string-continued-joined-input.mmd](../tests/fixtures/requirement/multi-line-statements/string-continued-joined-input.mmd)):

@@ -762,12 +762,16 @@ the rest of the line it stands on, so the joined `title A %% c B` has the title
 [fixture: multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept] Quoted contents stay whole,
 including their internal line breaks and columns. [fixture:
-multi-line-statements/quoted-title-trivia] A `;` in the statement or on its
-final line keeps the complete original layout, because of the line rule (see
+multi-line-statements/quoted-title-trivia] A statement written over several
+lines is kept as written when joining its lines, with one space or with nothing,
+could change which `;` the line rule ignores; any other statement over several
+lines is joined as usual, also when it holds a `;`. The same decision applies to
+a `;` in another statement on its final line (see
 [Statements one per line](#statements-one-per-line)). [fixture:
-multi-line-statements/semicolon-inside-kept] [fixture:
-multi-line-statements/semicolon-on-the-last-line-kept] Comment regions that join
-physical lines also keep their original layout. [test:
+multi-line-statements/semicolon-joining-changes-kept] [fixture:
+multi-line-statements/semicolon-inside-joined] [fixture:
+multi-line-statements/semicolon-on-the-last-line-joined] Comment regions that
+join physical lines also keep their original layout. [test:
 xychart/multi-line-statements/bare-title-comment-region-kept] [test:
 xychart/multi-line-statements/header-comment-region-ls] [test:
 xychart/multi-line-statements/header-comment-region-ps]

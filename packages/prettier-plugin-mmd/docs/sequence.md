@@ -188,8 +188,9 @@ own: `autonumber %%{wrap}%%; A->>B: x; B->>A: y` is printed as
 `autonumber %%{wrap}%%;`, `A ->> B: x`, and `B ->> A: y`. [fixture:
 statements-one-per-line/autonumber-directive-semicolon-then-statements-split] A
 statement written over several lines, such as `autonumber`, a line break, and
-`5`, keeps its directive and its `;` as written, with the statement. [fixture:
-statements-one-per-line/directive-semicolon-after-multi-line-statement-kept]
+`5`, joins as usual, keeping its directive and its `;` with the statement.
+[fixture:
+statements-one-per-line/directive-semicolon-after-multi-line-statement-aligned]
 mermaid.js removes the directive, and whitespace at the end of the line then
 hides the line break from the statement, which needs one, and whose last unit
 reads no whitespace: `autonumber`, a space, `%%{wrap}%%`, and `;` are accepted,
@@ -461,6 +462,12 @@ sequenceDiagram
   A ->> B: x
   )
 ```
+
+A `;` that the line rule ignores between two tokens of a statement stands
+against the token before it, with one space after it where whitespace was
+written in the gap and none where it was not. [fixture:
+whitespace-between-tokens/ignored-semicolon-before-of-attached] [fixture:
+whitespace-between-tokens/ignored-semicolon-before-of-spaced-after-kept]
 
 ### Arrow spacing
 
@@ -964,8 +971,12 @@ unchanged. [fixture: multi-line-statements/comment-inside-kept] [fixture:
 multi-line-statements/autonumber-comment-continuation] [fixture:
 multi-line-statements/autonumber-directive-continuation] A title with trivia
 between its keyword and text keeps its complete source, since its text includes
-indentation. Joining regions and statements protected by semicolon lines also
-stay as written. [fixture: multi-line-statements/semicolon-inside-kept]
+indentation. Joining regions also stay as written. A statement written over
+several lines is kept as written when joining its lines, with one space or with
+nothing, could change which `;` the line rule ignores; any other statement over
+several lines is joined as usual, also when it holds a `;`. [fixture:
+multi-line-statements/semicolon-joining-changes-kept] A `;` alone does not
+prevent joining. [fixture: multi-line-statements/semicolon-inside-joined]
 [fixture: multi-line-statements/start-moves-to-own-line] Description blocks
 instead follow [Multi-line values](#multi-line-values), which align their body
 indentation.

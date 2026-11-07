@@ -717,11 +717,17 @@ mermaid.js が複数行にわたって読む文は、
 [fixture: multi-line-statements/accessibility-trivia-continuations]
 
 ほかの文の複数行の trivia は元の配置を保ちます。
-物理行を結ぶコメント領域と、文の内部か最終行の `;` も、
-行の規則があるため元の配置を保ちます（[1 行 1 文](#1-行-1-文)を参照）。
+物理行を結ぶコメント領域も、元の配置を保ちます。
+複数行に書かれた文は、その行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合に、書かれたまま残します。
+それ以外の複数行の文は、`;` を含んでいても通常どおりつなぎます。
+最終行の別の文にある `;` も、同じ判定をします。
+[1 行 1 文](#1-行-1-文)を参照してください。
+[fixture: multi-line-statements/semicolon-joining-changes-kept]
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
-[fixture: multi-line-statements/semicolon-on-the-last-line-kept]
+`;` があるだけでは、行をつなぐ妨げにはなりません。
+[fixture: multi-line-statements/semicolon-on-the-last-line-joined]
 
 ### 複数行の値
 

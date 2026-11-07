@@ -21,15 +21,11 @@ import {
   keepFirstGapLineTails,
   keptAsWritten,
   layoutDescriptionBlock,
+  protectSemicolonPrefixes,
   spansLinesThatCannotJoin,
   spaceDescriptionOpening,
 } from "./layout.ts"
-import {
-  holdsJoiningRegion,
-  keptSemicolonPrefixEnd,
-  lineStartOf,
-  semicolonSegmentEnd,
-} from "./kept-lines.ts"
+import { holdsJoiningRegion, lineStartOf } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import {
   findTokenEndingBefore,
@@ -260,10 +256,20 @@ export function layoutC4Call(
   const namedAttributes = statement.arguments.filter(
     (argument) => argument?.type === "C4NamedAttribute",
   )
-  const stretches = findC4CallStretches(source, statement, end, values)
   const atoms = splitC4EmptyEntryTokens(
     source,
-    collectAtoms(source, start, end, values, stretches),
+    protectSemicolonPrefixes(
+      source,
+      start,
+      end,
+      collectAtoms(
+        source,
+        start,
+        end,
+        values,
+        findC4NullBlocks(source, statement),
+      ),
+    ),
   )
   const rules = new Map<number, GapRule>()
   const outdented = new Set<number>()
@@ -368,54 +374,16 @@ export function layoutC4Call(
 }
 
 /**
- * Preserve semicolon-bearing null blocks and textual line prefixes through
- * their last semicolon. A prefix can cross a value, which must stay whole
- * (common.md, Style and classDef lines; docs/c4.md, Line rule and semicolons).
+ * Preserve semicolon-bearing null blocks. The text of the line is protected
+ * where formatting it could change which `;` the line rule ignores (common.md,
+ * Style and classDef lines; docs/c4.md, Line rule and semicolons), by
+ * `protectSemicolonPrefixes`.
  */
-function findC4CallStretches(
-  source: Source,
-  statement: C4Call,
-  end: number,
-  values: readonly Node[],
-): Atom[] {
-  const start = statement.range[0]
-  const kept: Atom[] = []
-  if (statement.type === "C4BoundaryStatement") {
-    for (const block of statement.beforeBody) {
-      if (source.text.slice(...block.range).includes(";")) {
-        kept.push({ start: block.range[0], end: block.range[1] })
-      }
-    }
-  }
-  for (let line = lineStartOf(source, start); line < end;) {
-    const lineEnd = semicolonSegmentEnd(source, line)
-    const last = source.text.lastIndexOf(";", Math.min(end, lineEnd) - 1)
-    if (last >= Math.max(start, line)) {
-      let from = Math.max(start, line)
-      let to = last + 1
-      for (const value of values) {
-        if (value.range[0] < to && from < value.range[1]) {
-          from = Math.min(from, value.range[0])
-          to = Math.max(to, value.range[1])
-        }
-      }
-      kept.push({ start: from, end: to })
-    }
-    line = lineEnd + 1
-  }
-  // Prefixes can overlap through values; collectAtoms needs one whole atom.
-  kept.sort((left, right) => left.start - right.start)
-  const stretches: Atom[] = []
-  for (const stretch of kept) {
-    const previous = stretches.at(-1)
-    if (previous !== undefined && stretch.start <= previous.end) {
-      stretches[stretches.length - 1] = {
-        start: previous.start,
-        end: Math.max(previous.end, stretch.end),
-      }
-    } else stretches.push(stretch)
-  }
-  return stretches
+function findC4NullBlocks(source: Source, statement: C4Call): Atom[] {
+  if (statement.type !== "C4BoundaryStatement") return []
+  return statement.beforeBody
+    .filter((block) => source.text.slice(...block.range).includes(";"))
+    .map((block) => ({ start: block.range[0], end: block.range[1] }))
 }
 
 /** Expose the padding in an opening empty-entry token (tokens/c4.md). */
@@ -446,8 +414,6 @@ function splitC4EmptyEntryTokens(
  */
 export function layoutC4Text(source: Source, statement: C4Text): AtomLayout {
   const [start, end] = statement.range
-  if (keptSemicolonPrefixEnd(source, start) > start)
-    return keptAsWritten(start, end)
   if (statement.type === "C4AccDescrBlockStatement") {
     if (source.text.slice(start, end).includes(";"))
       return keptAsWritten(start, end)

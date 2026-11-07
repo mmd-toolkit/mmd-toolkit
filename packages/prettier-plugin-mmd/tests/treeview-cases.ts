@@ -461,7 +461,7 @@ export const treeviewCases: readonly TreeviewCase[] = [
   {
     name: "treeview/annotation-lines/review159-region-line-rule-semicolon",
     input: "treeView-beta\nroot\n├── a\u2028%% c\n ## style:#x;\n└── z\n",
-    output: "treeView-beta\nroot\n├── a\u2028%% c\n ## style:#x;\n└── z\n",
+    output: "treeView-beta\nroot\n├── a\u2028%% c\n    ## style:#x;\n└── z\n",
     options: {},
   },
   {

@@ -946,10 +946,16 @@ trivia の改行を保ちます。
 
 title、section、設定、タスクでは、値の空白が Db の一部なので、
 複数行の trivia を含む配置を元のまま保ちます。
-文の内部か最終行の `;`、物理行を結ぶコメント領域、リスト区切りの U+FEFF も、
-元の配置を保ちます。 [fixture: multi-line-statements/comment-line-inside-kept]
+複数行に書かれた文は、その行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合に、書かれたまま残します。
+それ以外の複数行の文は、`;` を含んでいても通常どおりつなぎます。
+最終行の別の文にある `;` も、同じ判定をします。
+物理行を結ぶコメント領域とリスト区切りの U+FEFF も、元の配置を保ちます。
+[fixture: multi-line-statements/semicolon-joining-changes-kept]
+[fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
-[fixture: multi-line-statements/semicolon-inside-kept]
+`;` があるだけでは、行をつなぐ妨げにはなりません。
+[fixture: multi-line-statements/semicolon-inside-joined]
 
 入力
 ([multi-line-statements/value-on-next-line-joined-input.mmd](../tests/fixtures/gantt/multi-line-statements/value-on-next-line-joined-input.mmd)):

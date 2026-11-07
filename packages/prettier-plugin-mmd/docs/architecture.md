@@ -1079,14 +1079,15 @@ the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps and the
 padding inside that stretch keep whether they hold whitespace, a run becoming
 one space, and the rest of the segment follows the ordinary rules of this
 diagram. Text that no part of the layout holds stays as written. A statement
-over several lines keeps the text of each segment, up to its last kept `;`, as
-written, since the printer joins its lines and a joined line can be one that the
-rule reads. [fixture: semicolons/stretch-kept-rest-formatted] [fixture:
-semicolons/no-stretch-formatted] [fixture: semicolons/crossing-comment]
-Protected header/first-statement groups stay together. Removing one selected
-semicolon or moving style/classDef triggers can select another and change the
-Db, so keep both passes, nontriggers, entities, physical value lines and
-global-rejoined triggers.
+over several lines whose lines, joined with one space or with nothing, could
+change which `;` the line rule ignores keeps the text of each segment, up to its
+last kept `;`, as written; any other statement over several lines is formatted
+like one on a single line. [fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted] [fixture:
+semicolons/crossing-comment] Protected header/first-statement groups stay
+together. Removing one selected semicolon or moving style/classDef triggers can
+select another and change the Db, so keep both passes, nontriggers, entities,
+physical value lines and global-rejoined triggers.
 
 [fixture: architecture/semicolons/native-service-value]
 

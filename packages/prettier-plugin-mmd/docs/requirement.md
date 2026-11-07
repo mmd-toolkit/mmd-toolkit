@@ -352,9 +352,10 @@ continue the relationship, and retain complete multiline directives and name
 interiors. [fixture: relationship-spacing/over-lines-joined] [fixture:
 relationship-spacing/comment-continuation-with-multiline-names] [fixture:
 relationship-spacing/directive-continuation-four-spaces] [fixture:
-relationship-spacing/multiline-directive-line-tail] Semicolon-sensitive lines
-and comment regions that join physical lines keep their original layout.
-[fixture: multi-line-statements/relationship-last-line-semicolon-kept] [test:
+relationship-spacing/multiline-directive-line-tail] A statement whose lines,
+joined, could change which `;` the line rule ignores, and comment regions that
+join physical lines, keep their original layout. [fixture:
+multi-line-statements/relationship-last-line-semicolon-kept] [test:
 requirement/relationship-spacing/comment-region-continuation-kept]
 
 Input
@@ -1103,30 +1104,35 @@ multi-line-statements/string-continued-joined] Comments and directives keep line
 breaks without freezing structural columns: continuations and intervening trivia
 stand one level deeper. This applies to block headers, fields, relationships and
 other statements. Whitespace inside values and before the first line break of
-each gap stays. Joining regions and statements protected by a semicolon line
-keep their complete source. [test:
+each gap stays. Joining regions keep their complete source. A statement written
+over several lines is kept as written when joining its lines, with one space or
+with nothing, could change which `;` the line rule ignores; any other statement
+over several lines is joined as usual, also when it holds a `;`. [test:
 requirement/multi-line-statements/header-and-field-comment-regions-ls] [test:
 requirement/multi-line-statements/header-and-field-comment-regions-ps] [fixture:
 multi-line-statements/header-directive-continuation] [fixture:
 fields/comment-and-directive-continuations] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept] [fixture:
-multi-line-statements/semicolon-kept]
+multi-line-statements/semicolon-joined]
 
-A statement whose last line holds a `;` of the statement after it is kept as
-written too, since the joined line is read by the line rule as a whole:
+This also applies when the `;` on the last line belongs to a following
+statement, since the joined line is read by the line rule as a whole:
 `"style:#q" - satisfies`, a line break, and `-> "b" e - satisfies -> f;g` give
 the second relationship the target `f;g`, while the joined line
 `"style:#q" - satisfies -> "b" e - satisfies -> f;g` gives it `fg`. The
 statements of the line stay on it. [fixture:
 multi-line-statements/relationship-last-line-semicolon-kept] [fixture:
-multi-line-statements/class-last-line-semicolon-kept] [fixture:
-multi-line-statements/string-continued-last-line-semicolon-kept] A `;` on the
-first line of the statement, in a statement before it, changes nothing for the
-rule, and the statement is joined. [fixture:
+multi-line-statements/class-last-line-semicolon-kept] A `;` on the first line of
+the statement, in a statement before it, changes nothing for the rule, and the
+statement is joined. [fixture:
 multi-line-statements/relationship-first-line-semicolon-joined] [fixture:
 multi-line-statements/class-first-line-semicolon-joined] [fixture:
-multi-line-statements/accessibility-first-line-semicolon-joined]
+multi-line-statements/accessibility-first-line-semicolon-joined] The printer
+puts the statements of a line without a `;` of its own on lines of their own, so
+the rule reads the statement without them: `style r fill:#q "r"`, a line break,
+and `- satisfies -> "b" e - satisfies -> f;g` is joined too. [fixture:
+multi-line-statements/string-continued-last-line-semicolon-joined]
 
 Input
 ([multi-line-statements/string-continued-joined-input.mmd](../tests/fixtures/requirement/multi-line-statements/string-continued-joined-input.mmd)):

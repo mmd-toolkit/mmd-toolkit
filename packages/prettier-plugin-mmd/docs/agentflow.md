@@ -269,17 +269,24 @@ style/classDef/class/linkStyle, before class values and interpolation names, or
 before tooltips. The grammar consumes exactly one whitespace character;
 following whitespace is value text, and a second character where a token is
 expected can reject. Tabs used as that character remain tabs. Preserve
-first-style leading whitespace even across directives, inner style whitespace,
-the whitespace after a comma, empty style-list items, escaped classDef commas,
-order and repetition. The flowchart reason for keeping inner styles applies
-unchanged: they are values; its first-style collapse does not. The whitespace
-before a comma is no value, since mermaid.js drops it, and it is dropped as in
-[flowchart](./flowchart.md#whitespace-between-tokens):
-`style A fill:#f00 ,color:white` is printed `style A fill:#f00,color:white`. A
-space that a backslash escapes, a directive or a comment among the styles, a
-style that is all whitespace, and a line break or a kept `;` on the line keep
-the statement as written. [fixture: single-space-gaps/classdef-first-tab]
-[fixture: single-space-gaps/linkstyle-first-spaces] [fixture:
+first-style leading whitespace even across directives, the whitespace between
+the words of a style value, empty style-list items, escaped classDef commas,
+order and repetition. The first-style whitespace does not collapse as in
+flowchart. Each style has no whitespace before its first `:` and one space after
+it where the value is not empty. The `,` between styles has no whitespace before
+it and one space after it: `style A fill :#f00,stroke:  #333` is printed
+`style A fill: #f00, stroke: #333`. [fixture:
+single-space-gaps/style-colon-spaced] A `linkStyle` with link numbers keeps
+whether whitespace follows the `,` before a style that starts with `fill`, a run
+of whitespace becoming one space. [fixture:
+single-space-gaps/link-style-fill-after-comma-kept] The other styles of such a
+statement, and `linkStyle default`, use the one form (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
+A statement stays as written where whitespace or a `,` follows a backslash,
+where it holds a directive or a comment, where a style is all whitespace, or
+where a style holds a line break, U+2028, or U+2029, or its line holds a kept
+`;`. [fixture: single-space-gaps/classdef-first-tab] [fixture:
+single-space-gaps/linkstyle-first-spaces] [fixture:
 single-space-gaps/style-directive-gap] [fixture:
 single-space-gaps/style-first-spaces] [fixture:
 single-space-gaps/styles-inner-gaps] [fixture:
@@ -758,12 +765,15 @@ agentflow/lex-directive-acctitle-next-line]
 
 The same exceptions apply: non-separator `;` lines under
 [Kept lines](#kept-lines) retain the accessibility text and whitespace beside
-`;`, including when the semicolon is in another statement or a next-line value.
-[fixture: accessibility/semicolon-value-kept] [fixture:
-accessibility/neighbour-semicolon-kept] [fixture:
-accessibility/next-line-semicolon-kept] Direction-text lines keep their text,
-line breaks and columns under [Direction](#direction), and other documented
-kept-line reasons still take priority. [fixture:
+`;`, including when the semicolon is in another statement. A statement written
+over several lines is kept as written when joining its lines, with one space or
+with nothing, could change which `;` the line rule ignores; any other statement
+over several lines is joined as usual, also when it holds a `;`. [fixture:
+accessibility/semicolon-value-kept] [fixture:
+accessibility/neighbour-semicolon-kept] A `;` alone does not prevent joining.
+[fixture: accessibility/next-line-semicolon-joined] Direction-text lines keep
+their text, line breaks and columns under [Direction](#direction), and other
+documented kept-line reasons still take priority. [fixture:
 accessibility/direction-text-kept] [fixture:
 accessibility/next-line-direction-kept] Ordinary indentation uses the same
 positive minimum at `tabWidth: 0` and the same `useTabs` step; both options keep
@@ -962,7 +972,7 @@ Output
 agentflow-beta TB
   A
   A --> B
-  style A fill:red
+  style A fill: red
 ```
 
 ### Line terminators

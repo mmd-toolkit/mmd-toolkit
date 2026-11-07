@@ -872,7 +872,8 @@ period と event は、後ろの行の行頭に `:` を書く別の形で複数�
 `accTitle` と `accDescr:` の文では、trivia の改行を保ち、
 section の下でも後続の構造部分と独立した trivia 行を文より 1 段深くそろえます。
 各 gap の最初の行の末尾と、指令の内部全体を保ちます。
-`;` のある行と、物理行を結ぶコメント領域は元の配置を保ちます。
+物理行を結ぶコメント領域は、元の配置を保ちます。
+セミコロンの保護は、後述の行をつなぐ判定に従います。
 [fixture: multi-line-statements/accessibility-trivia-continuations]
 
 title と section、event テキストの続きでは、値の空白が Db の一部なので、
@@ -883,10 +884,13 @@ event の `:` の後ろにある、字下げされた指令だけの行は、
 event の始まりの空白です。
 そのため event は `:` の行に、その空白と、後ろの指令とともに印字します。
 [fixture: multi-line-statements/directive-line-after-the-colon-is-the-text]
-そのような文に `;` があるときも、書かれたまま残します。
-連結した行を、mermaid.js の行の規則が、
-別に読むことがあるからです（[1 行 1 文](#1-行-1-文)を参照）。
-[fixture: multi-line-statements/text-on-next-line-with-semicolon-kept]
+複数行に書かれた文は、その行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合に、書かれたまま残します。
+それ以外の複数行の文は、`;` を含んでいても通常どおりつなぎます。
+[1 行 1 文](#1-行-1-文)を参照してください。
+[fixture: multi-line-statements/semicolon-joining-changes-kept]
+`;` があるだけでは、行をつなぐ妨げにはなりません。
+[fixture: multi-line-statements/text-on-next-line-with-semicolon-joined]
 
 入力
 ([multi-line-statements/value-on-next-line-joined-input.mmd](../tests/fixtures/timeline/multi-line-statements/value-on-next-line-joined-input.mmd)):

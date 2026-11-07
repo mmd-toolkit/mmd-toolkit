@@ -306,9 +306,11 @@ and trivia while the existing atom printer aligns properties and the closing
 brace. Other layouts omit it and retain their blank-line policy.
 `semicolonSegmentEnd` and `keptSemicolonPrefixEnd` share C4's existing segment
 bounds; `protectSemicolonPrefixes` keeps the segments of a statement over
-several lines, and the text that no atom holds, as written; the stretch that the
-line rule reads is protected by the gap and padding rules of the atom printer.
-No diagram branch is added to a shared printer.
+several lines as written only when joining its source lines with one space or
+with nothing could change which `;` the line rule ignores, and keeps text that
+no atom holds as written; the stretch that the line rule reads is protected by
+the gap and padding rules of the atom printer. No diagram branch is added to a
+shared printer.
 
 ## Pie fixture coverage
 

@@ -803,10 +803,14 @@ title、ヘッダー、軸、plot、アクセシビリティの行の文では�
 [fixture: multi-line-statements/directive-inside-kept]
 引用符の内部は、改行と列を含めて、ひとまとまりのまま保ちます。
 [fixture: multi-line-statements/quoted-title-trivia]
-文の内部か最終行に `;` がある場合は、行の規則があるため、
-配置全体を原文のまま保ちます（[1 行 1 文](#1-行-1-文)を参照）。
-[fixture: multi-line-statements/semicolon-inside-kept]
-[fixture: multi-line-statements/semicolon-on-the-last-line-kept]
+複数行に書かれた文は、その行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合に、書かれたまま残します。
+それ以外の複数行の文は、`;` を含んでいても通常どおりつなぎます。
+最終行の別の文にある `;` も、同じ判定をします。
+[1 行 1 文](#1-行-1-文)を参照してください。
+[fixture: multi-line-statements/semicolon-joining-changes-kept]
+[fixture: multi-line-statements/semicolon-inside-joined]
+[fixture: multi-line-statements/semicolon-on-the-last-line-joined]
 物理行を結ぶコメント領域も、元の配置を保ちます。
 [test: xychart/multi-line-statements/bare-title-comment-region-kept]
 [test: xychart/multi-line-statements/header-comment-region-ls]

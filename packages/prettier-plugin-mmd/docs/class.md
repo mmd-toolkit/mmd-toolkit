@@ -306,7 +306,7 @@ a callback and its tooltip] [test: U+2028 between a generic type and the call of
 a callback]
 
 The names of a `classDef` statement are separated by a `,` that touches both
-names: `classDef c1 , c2 fill:#f00` is printed `classDef c1,c2 fill:#f00`, as
+names: `classDef c1 , c2 fill:#f00` is printed `classDef c1,c2 fill: #f00`, as
 the lists of ER, requirement, and usecase are (see
 [Styles and classes](./er.md#styles-and-classes)). mermaid.js reads every
 spelling as the same statement, so nothing forces the form, and its
@@ -324,19 +324,23 @@ or a `#` that ends the statement follows
 U+2028 or U+2029 after the `,` stays where it is. [test: U+2028 after the comma
 of a classDef statement] [test: U+2029 after the comma of a classDef statement]
 
-The whitespace before a `,` of the styles of a `classDef` or a `style` statement
-is dropped, since mermaid.js drops it from the style:
+In a `classDef` or a `style` statement, each style has no whitespace before its
+first `:` and one space after it where the value is not empty. The `,` between
+styles has no whitespace before it and one space after it:
 `style C fill:#f9f  ,  stroke:#333` is printed
-`style C fill:#f9f,  stroke:#333`. The whitespace after the `,` is in the Db
-where the style is shown, in a `style` statement and in a `classDef` that a
-class uses with `:::`, so it stays as written. A space that a backslash escapes,
-a comment or a directive among the styles, and a line break or a kept `;` on the
-line keep the statement as written. [fixture:
+`style C fill: #f9f, stroke: #333`. The whitespace between the words of a value
+stays as written. mermaid.js keeps the margins in the Db but draws the same
+figure (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
+[fixture: whitespace-between-tokens/style-colon-spaced] A statement stays as
+written where whitespace or a `,` follows a backslash, where it holds a comment
+or a directive, where a style is all whitespace, or where a style holds a line
+break or its line holds a kept `;`. [fixture:
 whitespace-between-tokens/style-comma-before-dropped] [fixture:
 whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
-whitespace-between-tokens/style-values-kept] A U+2028 or U+2029 among the styles
-keeps the statement as written. [test: U+2028 before the comma of a class style
-statement]
+whitespace-between-tokens/style-colon-and-comma-spaced] A U+2028 or U+2029 among
+the styles keeps the statement as written. [test: U+2028 before the comma of a
+class style statement]
 
 U+2028 and U+2029 after the `}` that closes a class body or a namespace are
 whitespace to mermaid.js, and are dropped with the whitespace at the end of the
@@ -371,7 +375,7 @@ classDiagram
   class C:::highlight
   note for C "a note"
   click C href "https://example.com" "tip"
-  style C fill:#f9f
+  style C fill: #f9f
   cssClass "A,B" highlight
   Foo Bar
   A - B --> C
@@ -1007,10 +1011,10 @@ Output
 ```mmd
 classDiagram
   class A
-  classDef c fill:#f00
-  style A fill:#f00
-  classDef d fill:#0f0,stroke:#00f
-  style A fill:#0f0,stroke:#00f
+  classDef c fill: #f00
+  style A fill: #f00
+  classDef d fill: #0f0, stroke: #00f
+  style A fill: #0f0, stroke: #00f
 ```
 
 ### Multi-line statements
@@ -1027,9 +1031,12 @@ directive keeps its line breaks, while structural continuations and intervening
 trivia stand one level deeper, as in a sequence diagram (see
 [Multi-line statements](./sequence.md#multi-line-statements)). Whitespace inside
 values remains unchanged. The whitespace before the first line break of each gap
-is retained; joining regions and semicolon line protections keep the whole
-statement as written. [fixture: multi-line-statements/comment-inside-kept]
-[fixture: multi-line-statements/directive-inside-kept] [fixture:
+is retained; joining regions keep the whole statement as written. A statement
+written over several lines is kept as written when joining its lines, with one
+space or with nothing, could change which `;` the line rule ignores; any other
+statement over several lines is joined as usual, also when it holds a `;`.
+[fixture: multi-line-statements/comment-inside-kept] [fixture:
+multi-line-statements/directive-inside-kept] [fixture:
 multi-line-statements/comment-inside-title-kept] A statement with a comment line
 after U+2028 or U+2029 inside it is a joining region: mermaid.js removes the
 comment line and reads the text on both sides as one line (see
@@ -1269,9 +1276,10 @@ Apart from description-body indentation under
 because changing it would change the diagram or the input would be rejected:
 
 - the text of a value: a string, a backquoted name, the text of a label, a
-  style, apart from the whitespace before its `,`, and the text of `accTitle`
-  and `accDescr`; [fixture: whitespace-between-tokens/style-values-kept]
-  [fixture: labels/accessibility-text-kept]
+  style, apart from the whitespace around its first `:` and its `,`, and the
+  text of `accTitle` and `accDescr`; [fixture:
+  whitespace-between-tokens/style-colon-and-comma-spaced] [fixture:
+  labels/accessibility-text-kept]
 - attribute and annotation contents, method-field contents, and a generic type
   from `~` to `~`;
 - the whitespace after the `:` of a label of only whitespace, and whether

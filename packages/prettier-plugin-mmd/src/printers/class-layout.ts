@@ -39,7 +39,7 @@ import {
   addCssClassRules,
   addNameListRules,
   findCallRangeWithTrivia,
-  normalizeStyleCommas,
+  normalizeStyleList,
 } from "./statement-rules.ts"
 import {
   findStructuralToken,
@@ -366,12 +366,9 @@ export function layoutClassStatement(
     statement.type === "ClassClassDefStatement" ||
     statement.type === "ClassStyleStatement"
   ) {
-    // mermaid.js drops the whitespace before the `,` of a list of styles and
-    // keeps the whitespace after it in the style (docs/class.md, Styles).
-    normalizeStyleCommas(source, atoms, statement, {
-      before: true,
-      after: false,
-    })
+    // mermaid.js draws the same figure whatever the whitespace around the `:`
+    // and the `,` of the styles (docs/class.md, Styles).
+    normalizeStyleList(source, atoms, statement)
   }
   return {
     atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,

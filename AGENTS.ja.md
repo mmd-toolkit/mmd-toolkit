@@ -80,13 +80,31 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
    トークンとコメントのテキストは、その範囲の入力と一致する。
    空白と行終端子はノードにしない。
    ソースの文字列と範囲があれば、入力をバイト単位で再現できる。
-4. 整形は冪等で、整形前後で Db が変わらない。
-   ただし formatter の
-   [Data blocks](packages/prettier-plugin-mmd/docs/eventmodeling.ja.md#data-blocks)
-   が定める eventmodeling のブロック本文と、
-   [ノート](packages/prettier-plugin-mmd/docs/state.ja.md#ノート) が定める state
-   のノートの対象となる段落に対する、限定的な ASCII 空白 margin 変更は除く。
-   これらの例外では、描画を保つ場合に限り raw Db 値の差を許容する。
+4. 整形は冪等で、mermaid.js が描くものを変えない。
+   描くものは SVG で、見える図に加えて、リンク先、クリックで呼ぶ関数とその引数、
+   ツールチップ、アクセシビリティの文を含む。
+   生成される id と、描画が無視する空白（CSS の宣言の周り、
+   HTML の文字の連なり）は比べない。
+   描くものが同じになる書き方は、ほかの図種が同じ種類の隙間を印字する形で、
+   1 つの形で印字する。
+   描くものが変わる書き方は、書かれたまま残す。
+   確かめる方法は、整形が Db を変えないことである。
+   Db を変えても描くものを変えない整形は、例外とする。
+   例外は種類ごとに、定義する節と、描画が変わらない理由を示す、
+   固定した mermaid.js のコードへのリンクと、両方のテキストを描いた結果を持つ。
+   テストは、その種類の差を戻した Db で比べる。
+   関数は種類ごとに 1 つで、
+   `packages/prettier-plugin-mmd/tests/db-comparison.ts` が呼ぶ。
+   固定した mermaid.js の版を上げるときは、例外のそれぞれを描画で確かめ直す。
+   種類は次のとおり。
+   - eventmodeling のブロック本文に対する、限定的な ASCII 空白 margin の変更。
+     [Data blocks](packages/prettier-plugin-mmd/docs/eventmodeling.ja.md#data-blocks)
+     が定める。
+   - state のノートの対象となる段落に対する margin の変更。
+     [ノート](packages/prettier-plugin-mmd/docs/state.ja.md#ノート) が定める。
+   - スタイルの最初の `:` と `,` の周りの空白。
+     [同じに描かれるスタイル](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれるスタイル)
+     が定める。
 
 ## 各パッケージの責務
 

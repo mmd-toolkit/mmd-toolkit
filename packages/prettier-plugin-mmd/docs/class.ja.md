@@ -339,7 +339,7 @@ mermaid.js はどの書き方も同じ文として読むので、形を強いる
 [test: U+2028 between a generic type and the call of a callback]
 
 `classDef` 文の名前を区切る `,` は、両側の名前に接します。
-`classDef c1 , c2 fill:#f00` は `classDef c1,c2 fill:#f00` になります。
+`classDef c1 , c2 fill:#f00` は `classDef c1,c2 fill: #f00` になります。
 ER、requirement、
 usecase
 の一覧と同じです（[スタイルとクラス](./er.ja.md#スタイルとクラス)を参照）。
@@ -360,17 +360,21 @@ mermaid.js の文書にある例 1 件は、接する形で書かれています
 [test: U+2028 after the comma of a classDef statement]
 [test: U+2029 after the comma of a classDef statement]
 
-`classDef` 文と `style` 文のスタイルの `,` の前の空白は落とします。
-mermaid.js がスタイルから落とすからです。
+`classDef` 文と `style` 文では、各スタイルの最初の `:` の前に空白を置かず、
+値が空でなければ、後ろに空白を 1 つ置きます。
+スタイルの間の `,` の前に空白を置かず、後ろに空白を 1 つ置きます。
 `style C fill:#f9f  ,  stroke:#333` は、
-`style C fill:#f9f,  stroke:#333` になります。
-`,` の後の空白は、`style` 文と、クラスが `:::` で使う `classDef` では、
-スタイルを示す Db に入るので、書かれたまま残します。
-バックスラッシュがエスケープする空白、スタイルの間のコメントやディレクティブ、
-行にある改行や保つ `;` は、文を書かれたままにします。
+`style C fill: #f9f, stroke: #333` になります。
+値の中の語と語の間の空白は、書かれたまま残します。
+mermaid.js は余白を Db に残しますが、描かれる図は同じです。
+詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+を参照してください。 [fixture: whitespace-between-tokens/style-colon-spaced]
+バックスラッシュの後に空白か `,` がある文、コメントやディレクティブがある文、
+空白だけのスタイルがある文、スタイルに改行があるか、行に保つ `;` がある文は、
+書かれたままにします。
 [fixture: whitespace-between-tokens/style-comma-before-dropped]
 [fixture: whitespace-between-tokens/style-comma-beside-directive-kept]
-[fixture: whitespace-between-tokens/style-values-kept]
+[fixture: whitespace-between-tokens/style-colon-and-comma-spaced]
 スタイルの間に U+2028 や U+2029 があれば、文を書かれたままにします。
 [test: U+2028 before the comma of a class style statement]
 
@@ -407,7 +411,7 @@ classDiagram
   class C:::highlight
   note for C "a note"
   click C href "https://example.com" "tip"
-  style C fill:#f9f
+  style C fill: #f9f
   cssClass "A,B" highlight
   Foo Bar
   A - B --> C
@@ -1073,10 +1077,10 @@ U+2028 と U+2029 の前も同じように保護します。
 ```mmd
 classDiagram
   class A
-  classDef c fill:#f00
-  style A fill:#f00
-  classDef d fill:#0f0,stroke:#00f
-  style A fill:#0f0,stroke:#00f
+  classDef c fill: #f00
+  style A fill: #f00
+  classDef d fill: #0f0, stroke: #00f
+  style A fill: #0f0, stroke: #00f
 ```
 
 ### 複数行の文
@@ -1095,8 +1099,10 @@ class 図では、改行は文を終えます。
 段深く置きます（[複数行の文](./sequence.ja.md#複数行の文)を参照）。
 値の中の空白は変えません。
 各隙間の最初の改行の前の空白は保ちます。
-コメントで結合される領域とセミコロン行の保護対象では、
-文全体を原文のまま残します。
+コメントで結合される領域では、文全体を原文のまま残します。
+複数行に書かれた文は、その行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合に、書かれたまま残します。
+それ以外の複数行の文は、`;` を含んでいても通常どおりつなぎます。
 [fixture: multi-line-statements/comment-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 [fixture: multi-line-statements/comment-inside-title-kept]
@@ -1347,8 +1353,9 @@ mermaid.js はテキストの終わりの空白と改行もその一部として
 
 - 値のテキスト。
   文字列、バッククォートの名前、ラベルのテキスト、
-  スタイル（`,` の前の空白を除きます）、`accTitle` と `accDescr` のテキスト。
-  [fixture: whitespace-between-tokens/style-values-kept]
+  スタイル（最初の `:` と `,` の前後の空白を除きます）、
+  `accTitle` と `accDescr` のテキスト。
+  [fixture: whitespace-between-tokens/style-colon-and-comma-spaced]
   [fixture: labels/accessibility-text-kept]
 - 属性と注釈の中身、メソッドの各フィールドの中身、
   `~` から `~` までのジェネリック型。

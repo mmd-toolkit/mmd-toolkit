@@ -95,6 +95,6 @@ export const agentflowCases: readonly AgentflowCase[] = [
     name: "agentflow: U+2028 before the comma of a style statement",
     input: "agentflow-beta TB\nA-->B\nstyle A fill:#f00\u2028 ,color:white",
     output:
-      "agentflow-beta TB\n  A --> B\n  style A fill:#f00\u2028,color:white\n",
+      "agentflow-beta TB\n  A --> B\n  style A fill: #f00\u2028, color: white\n",
   },
 ]

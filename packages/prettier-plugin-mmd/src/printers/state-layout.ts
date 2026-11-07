@@ -41,7 +41,6 @@ import {
   toAsciiLowerCase,
   walk,
 } from "./layout.ts"
-import { printAsWrittenTrimmed } from "./lines.ts"
 import type { Source } from "./source.ts"
 import {
   findStructuralToken,
@@ -53,7 +52,12 @@ import {
   isWhitespace,
 } from "./source.ts"
 import { findStateSemicolonLines } from "./state-kept-lines.ts"
-import { addCssClassRules, styleUnitsCanCompact } from "./statement-rules.ts"
+import {
+  addCssClassRules,
+  normalizeStyleList,
+  printStyleWithColon,
+  styleUnitsCanCompact,
+} from "./statement-rules.ts"
 
 /**
  * The node types of a state diagram whose text is a value, printed as
@@ -372,6 +376,14 @@ export function layoutStateStatement(
     ),
     kept,
   )
+  if (
+    statement.type === "StateClassDefStatement" ||
+    statement.type === "StateStyleStatement"
+  ) {
+    // mermaid.js draws the same figure whatever the whitespace around the `:`
+    // of the styles (docs/state.md, Styles).
+    normalizeStyleList(source, atoms, statement)
+  }
   return {
     atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
     rules: statementRules(source, statement),
@@ -624,11 +636,17 @@ function findDroppedSemicolonStretches(
   if (style === undefined || style === null) return []
   const semicolon = style.range[1] - 1
   if (!isDroppedSemicolon(source, semicolon)) return []
+  let printedEnd = semicolon
+  while (
+    printedEnd > style.range[0] &&
+    isWhitespace(source.text[printedEnd - 1])
+  )
+    printedEnd--
   return [
     {
       start: style.range[0],
       end: style.range[1],
-      doc: printAsWrittenTrimmed(source, style.range[0], semicolon),
+      doc: printStyleWithColon(source, [style.range[0], printedEnd]),
     },
   ]
 }

@@ -1029,10 +1029,11 @@ the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps and the
 padding inside that stretch keep whether they hold whitespace, a run becoming
 one space, and the rest of the segment follows the ordinary rules of this
 diagram. Text that no part of the layout holds stays as written. A statement
-over several lines keeps the text of each segment, up to its last kept `;`, as
-written, since the printer joins its lines and a joined line can be one that the
-rule reads. [fixture: semicolons/stretch-kept-rest-formatted] [fixture:
-semicolons/no-stretch-formatted] [fixture:
+over several lines whose lines, joined with one space or with nothing, could
+change which `;` the line rule ignores keeps the text of each segment, up to its
+last kept `;`, as written; any other statement over several lines is formatted
+like one on a single line. [fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted] [fixture:
 semicolons/protected-gwt-title-hidden-gap-remains-zero] The first protected body
 line aligns with its body; contents and later columns remain authored. Required
 identifier and common-value padding takes precedence over structural
@@ -1076,7 +1077,7 @@ Output
 ([semicolons/selected-external-semicolon-preserved-output.mmd](../tests/fixtures/eventmodeling/semicolons/selected-external-semicolon-preserved-output.mmd)):
 
 ```mmd
-eventmodeling tf 01 evt Alpha "style:#x" ;rf 02 cmd Beta
+eventmodeling tf 01 evt Alpha "style:#x"; rf 02 cmd Beta
 ```
 
 ### Blank lines

@@ -551,9 +551,9 @@ block-beta
 空白 1 つを置きます。
 キーワードの後と最初のスタイルの前の空白は Db に入らないので、
 空白 1 つにします。
-その後は、
-[スタイル文の末尾のセミコロン](#スタイル文の末尾のセミコロン)
-で削除する終端を除き、書かれたまま印字します。
+`classDef` と `style` のスタイルは下の空白の規則に従い、
+`class` の値は書かれたまま印字します。
+終端は[スタイル文の末尾のセミコロン](#スタイル文の末尾のセミコロン)に従います。
 `style` と `class` の空白は Db に入ります。
 `style A fill:#f00 , stroke:#333` のスタイルは、
 `fill:#f00 ` と ` stroke:#333` で、`class A, B c1` は ` B` を空白つきで探し、
@@ -561,23 +561,30 @@ block-beta
 `class A c   d` のクラス名は `c   d` で、
 `class A , B   c1` のクラス名は `, B   c1` です。
 `A` の後の空白が id を終わらせるからです。
-`classDef` の空白は Db に入らないので、スタイルを区切る `,` は、
-ER の[スタイルとクラス](./er.ja.md#スタイルとクラス)と同じく、前に空白を置かず、
-後に空白 1 つを置きます。
+`classDef` 文と `style` 文では、各スタイルの最初の `:` の前に空白を置かず、
+値が空でなければ、後ろに空白を 1 つ置きます。
+スタイルを区切る `,` は、ER と requirement と同じく、
+[スタイルとクラス](./er.ja.md#スタイルとクラス)のとおり、前に空白を置かず、
+後ろに空白を 1 つ置きます。
 `classDef c fill:#f00 , color:white` は、
-`classDef c fill:#f00, color:white` になります。
-スタイルの間のコメントやディレクティブ、行にある改行や保つ `;` は、
-文を書かれたままにします。
-`style` 文のスタイルは、書かれたまま印字します。
+`classDef c fill: #f00, color: white` になります。
+`style` 文のスタイルも、同じ形で印字します。
+値の中の語と語の間の空白は、書かれたまま残します。
+Db は変わりますが、mermaid.js が描く図は同じです。
+詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+を参照してください。 [fixture: styles/style-colon-spaced]
+バックスラッシュの後に空白か `,` がある文、コメントやディレクティブがある文、
+空白だけのスタイルがある文、スタイルに改行があるか、行に保つ `;` がある文は、
+書かれたままにします。
 文の最後の空白は、
 flowchart の [スタイルの行末の空白](./flowchart.ja.md#スタイルの行末の空白)
 と同じに落とします。 [fixture: styles/class-definition-spaces]
 [fixture: styles/style-spaces] [fixture: styles/class-spaces]
-[fixture: styles/style-commas-as-written]
-[fixture: styles/class-definition-commas-as-written]
+[fixture: styles/style-commas-spaced]
+[fixture: styles/class-definition-commas-spaced]
 [fixture: styles/class-definition-comma-spaced]
 [fixture: styles/class-definition-comma-beside-directive-kept]
-[fixture: styles/style-statement-commas-kept]
+[fixture: styles/style-statement-commas-spaced]
 [test: U+2029 before the comma of a block classDef statement]
 [fixture: styles/class-ids-as-written]
 [fixture: styles/class-name-with-a-comma-as-written]
@@ -591,8 +598,7 @@ flowchart の [スタイルの行末の空白](./flowchart.ja.md#スタイルの
 最初のスタイルが空白だけのとき、たとえば `classDef c ,fill:#f00` では、
 Db の最初のスタイルは空で、`,` の前の空白はどのスタイルにも属しません。
 そのためスタイルは最初の `,` から始まるものとして扱い、
-その空白は 1 つの空白にし、
-`,` とそれ以降はほかのスタイルと同じく書かれたとおりに出力します。
+その空白は 1 つの空白にし、`,` とそれ以降は書かれたとおりに出力します。
 [fixture: styles/styles-with-a-leading-comma]
 [corpus fixture: block/db-class-def-leading-comma]
 
@@ -611,7 +617,7 @@ classDef   c1    color:#fff , fill:#000
 ```mmd
 block-beta
   A
-  classDef c1 color:#fff, fill:#000
+  classDef c1 color: #fff, fill: #000
 ```
 
 入力
@@ -629,7 +635,7 @@ style  A   fill:#f00 , stroke:#333
 ```mmd
 block-beta
   A
-  style A fill:#f00 , stroke:#333
+  style A fill: #f00, stroke: #333
 ```
 
 入力
@@ -701,10 +707,10 @@ U+2028 と U+2029 の前も同じように保護します。
 ```mmd
 block
   A
-  classDef c fill:#f00
-  style A fill:#f00
-  classDef d fill:#0f0, stroke:#00f
-  style A fill:#0f0,stroke:#00f
+  classDef c fill: #f00
+  style A fill: #f00
+  classDef d fill: #0f0, stroke: #00f
+  style A fill: #0f0, stroke: #00f
 ```
 
 ### 複数行の文
@@ -726,9 +732,11 @@ block-arrow の方向は、`,` の後の空白を除いて原文のままです�
 物理行を結ぶコメント領域は、元の配置を保ちます。
 [test: block: ls-comment-in-composite-head]
 [test: block: ps-comment-in-composite-head]
-保持する `;` を含む文も、行の規則があるので、
-書かれたまま残します（[行](#行)を参照。
-[`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)も参照）。
+複数行に書かれた文は、その行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合に、書かれたまま残します。
+それ以外の複数行の文は、`;` を含んでいても通常どおりつなぎます。
+[行](#行)と
+[`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)を参照してください。
 mermaid.js の行の規則は、`style` か `classDef`、その後の `:`、その後の、
 `:` との間に空白のない `#`、その後の `;` を持つ行の、最後の `;` を取り除きます。
 そのような行から文を動かすと、
@@ -747,7 +755,8 @@ mermaid.js の行の規則は、`style` か `classDef`、その後の `:`、そ�
 [fixture: multi-line-statements/continuation-line-joined-in-a-row]
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
-[fixture: multi-line-statements/semicolon-in-the-statement-kept]
+`;` があるだけでは、行をつなぐ妨げにはなりません。
+[fixture: multi-line-statements/semicolon-in-the-statement-joined]
 [fixture: multi-line-statements/line-rule-line-kept]
 [fixture: multi-line-statements/line-rule-line-kept-with-columns]
 [fixture: multi-line-statements/line-rule-line-kept-with-composite]

@@ -12,6 +12,7 @@ import * as prettier from "prettier"
 import type { Options } from "prettier"
 import plugin from "../src/index.ts"
 import { dataBlockEmbeddedForFormattingComparison } from "./data-block-margins.ts"
+import { dbForFormattingComparison } from "./db-comparison.ts"
 import {
   dbOfText,
   defaultEmbedded,
@@ -62,12 +63,12 @@ const examples: readonly (readonly [string, string, string])[] = [
   [
     "U+2028 after the comma of a state class statement",
     "stateDiagram-v2\nA --> B\nclass A,\u2028B c\nclassDef c fill:#f00\n",
-    "stateDiagram-v2\n  A --> B\n  class A,\u2028B c\n  classDef c fill:#f00\n",
+    "stateDiagram-v2\n  A --> B\n  class A,\u2028B c\n  classDef c fill: #f00\n",
   ],
   [
     "U+2029 after the comma of a state class statement",
     "stateDiagram-v2\nA --> B\nclass A, \u2029 B c\nclassDef c fill:#f00\n",
-    "stateDiagram-v2\n  A --> B\n  class A, \u2029 B c\n  classDef c fill:#f00\n",
+    "stateDiagram-v2\n  A --> B\n  class A, \u2029 B c\n  classDef c fill: #f00\n",
   ],
   [
     "U+00A0 at the start of a later note row",
@@ -527,6 +528,26 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
  */
 const flowchartExamples: readonly (readonly [string, string, string])[] = [
   [
+    "U+2028 after a `;` before an edge id",
+    "flowchart LR\nA[style:#x];\u2028e1@-->B\n",
+    "flowchart LR\n  A[style:#x];\u2028e1@-->B\n",
+  ],
+  [
+    "U+2028 after a `;` and a space before an edge id",
+    "flowchart LR\nA[style:#x] ;\u2028 e1@-->B\n",
+    "flowchart LR\n  A[style:#x] ;\u2028 e1@-->B\n",
+  ],
+  [
+    "U+2029 after a `;` before an edge id",
+    "flowchart LR\nA[style:#x];\u2029e1@-->B\n",
+    "flowchart LR\n  A[style:#x];\u2029e1@-->B\n",
+  ],
+  [
+    "U+2029 after a `;` and a space before an edge id",
+    "flowchart LR\nA[style:#x] ;\u2029 e1@-->B\n",
+    "flowchart LR\n  A[style:#x] ;\u2029 e1@-->B\n",
+  ],
+  [
     "U+2028 between the closing quote and the bracket of a flowchart label",
     'flowchart LR\nA["x"\u2028]\n',
     'flowchart LR\n  A["x"\u2028]\n',
@@ -674,7 +695,7 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
   [
     "U+2028 before the comma of a flowchart style statement",
     "flowchart LR\nA-->B\nstyle A fill:#f00\u2028 ,color:white\n",
-    "flowchart LR\n  A --> B\n  style A fill:#f00\u2028,color:white\n",
+    "flowchart LR\n  A --> B\n  style A fill: #f00\u2028, color: white\n",
   ],
   [
     "U+2029 after the comma of a flowchart style statement",
@@ -766,12 +787,12 @@ const classLineSeparatorExamples: readonly (readonly [
   [
     "U+2028 after the comma of a classDef statement",
     "classDiagram\nclass A\nclassDef c1,\u2028c2 fill:#f00\n",
-    "classDiagram\n  class A\n  classDef c1,\u2028c2 fill:#f00\n",
+    "classDiagram\n  class A\n  classDef c1,\u2028c2 fill: #f00\n",
   ],
   [
     "U+2029 after the comma of a classDef statement",
     "classDiagram\nclass A\nclassDef c1 ,\u2029 c2 fill:#f00\n",
-    "classDiagram\n  class A\n  classDef c1,\u2029 c2 fill:#f00\n",
+    "classDiagram\n  class A\n  classDef c1,\u2029 c2 fill: #f00\n",
   ],
   [
     "class: ls-comment-in-namespace-opening",
@@ -1611,9 +1632,15 @@ async function expectKept(
 ): Promise<void> {
   expect(await format(input, options)).toBe(output)
   expect(await format(output, options)).toBe(output)
-  expect(dbOfText(output, defaultEmbedded())).toEqual(
-    dbOfText(input, defaultEmbedded()),
-  )
+  const dbBefore = dbOfText(input, defaultEmbedded())
+  expect(
+    dbForFormattingComparison(
+      dbBefore,
+      dbOfText(output, defaultEmbedded()),
+      input,
+      output,
+    ),
+  ).toEqual(dbBefore)
 }
 
 /**
@@ -2367,12 +2394,12 @@ const blockWhitespaceExamples: readonly (readonly [string, string, string])[] =
     [
       "U+00A0 in a class definition",
       "block-beta\nclassDef\u00a0c1\u00a0fill:#f00\u00a0\n",
-      "block-beta\n  classDef c1 fill:#f00\n",
+      "block-beta\n  classDef c1 fill: #f00\n",
     ],
     [
       "U+00A0 in a style",
       "block-beta\nA\nstyle\u00a0A\u00a0fill:#f00\u00a0\n",
-      "block-beta\n  A\n  style A fill:#f00\n",
+      "block-beta\n  A\n  style A fill: #f00\n",
     ],
     [
       "U+00A0 inside an empty description block",
@@ -3584,14 +3611,14 @@ const c4Examples: readonly (readonly [string, string, string])[] = [
     'C4Context\n  Person(a, "x;y") %%{init:\u2029 {}}%%\n',
   ],
   [
-    "c4: ls-kept-boundary-brace-gap",
+    "c4: ls-joined-boundary-brace-gap",
     'C4Context\nSystem_Boundary(b, "x;")\n\u2028      {\nPerson(a,"A")\n}\n',
-    'C4Context\n  System_Boundary(b, "x;")\n\u2028      {\n    Person(a, "A")\n  }\n',
+    'C4Context\n  System_Boundary(b, "x;") {\n    Person(a, "A")\n  }\n',
   ],
   [
-    "c4: ps-kept-boundary-brace-gap",
+    "c4: ps-joined-boundary-brace-gap",
     'C4Context\nSystem_Boundary(b, "x;")\n\u2029      {\nPerson(a,"A")\n}\n',
-    'C4Context\n  System_Boundary(b, "x;")\n\u2029      {\n    Person(a, "A")\n  }\n',
+    'C4Context\n  System_Boundary(b, "x;") {\n    Person(a, "A")\n  }\n',
   ],
 ]
 
@@ -3869,25 +3896,31 @@ describe("style semicolons", () => {
     [
       "style semicolons: state CRLF terminator",
       "stateDiagram-v2\r\nstyle A fill:red ;\r\n",
-      "stateDiagram-v2\n  style A fill:red\n",
+      "stateDiagram-v2\n  style A fill: red\n",
     ],
     [
       "style semicolons: state trailing tab",
       "stateDiagram-v2\nclassDef c fill:#f00;\t\n",
-      "stateDiagram-v2\n  classDef c fill:#f00\n",
+      "stateDiagram-v2\n  classDef c fill: #f00\n",
     ],
     [
       "style semicolons: class EOF terminator",
       "classDiagram\nclass A\nstyle A fill:#f00;",
-      "classDiagram\n  class A\n  style A fill:#f00\n",
+      "classDiagram\n  class A\n  style A fill: #f00\n",
     ],
   ])("%s", async (_title, input, expected) => {
     const output = await format(input)
     expect(output).toBe(expected)
     expect(await format(output)).toBe(output)
-    expect(dbOfText(output, defaultEmbedded())).toEqual(
-      dbOfText(input, defaultEmbedded()),
-    )
+    const dbBefore = dbOfText(input, defaultEmbedded())
+    expect(
+      dbForFormattingComparison(
+        dbBefore,
+        dbOfText(output, defaultEmbedded()),
+        input,
+        output,
+      ),
+    ).toEqual(dbBefore)
     expect(writtenEmbeddedTexts(output)).toEqual(writtenEmbeddedTexts(input))
     expect(writtenTextKeptUpToSemicolons(input, output)).toBe(true)
     expect(await describeFrontmatterChange(input, output)).toBeNull()

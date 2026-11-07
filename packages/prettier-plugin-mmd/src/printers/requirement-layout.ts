@@ -347,13 +347,24 @@ function joinsClassStatement(
   if (lineBreak === -1 || lineBreak >= statement.range[1]) return true
   return [...statement.names, ...statement.cssClasses]
     .filter((name) => name.range[0] > lineBreak)
-    .every((name) => name.type !== "RequirementIdentifier" || isStyleWord(name))
+    .every(
+      (name) =>
+        name.type !== "RequirementIdentifier" || isStyleWord(source, name),
+    )
 }
 
-/** Whether an unquoted name reads as a `style-word` unit: ASCII word characters only. */
-function isStyleWord(name: RequirementIdentifier): boolean {
+/**
+ * Whether an unquoted name reads as a `style-word` unit: ASCII word
+ * characters only, and no `;` that the line rule ignores inside it, which the
+ * parser rejects inside a unit of the style context (diagrams/requirement.md,
+ * Known divergences).
+ */
+function isStyleWord(source: Source, name: RequirementIdentifier): boolean {
   return (
     name.name !== "" &&
+    ![...source.ignoredSemicolons].some(
+      (offset) => name.range[0] <= offset && offset < name.range[1],
+    ) &&
     [...name.name].every(
       (character) =>
         (character >= "a" && character <= "z") ||

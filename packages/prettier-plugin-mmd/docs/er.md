@@ -236,9 +236,10 @@ attribute, also in a subgraph; type, name and quoted-comment interiors stay as
 written. [fixture: attribute-spacing/comment-line-inside-kept] [fixture:
 attribute-spacing/directive-inside-kept] [fixture:
 attribute-spacing/comment-continuation-with-multiline-value] [fixture:
-attribute-spacing/directive-continuation-tabs] Semicolon-sensitive lines and
-comment regions that join physical lines retain their original layout. [fixture:
-attribute-spacing/semicolon-continuation-kept] [test:
+attribute-spacing/directive-continuation-tabs] Semicolons alone do not prevent
+alignment of a continuation. [fixture:
+attribute-spacing/semicolon-continuation-aligned] Comment regions that join
+physical lines retain their original layout. [test:
 er/attribute-spacing/comment-region-continuation-kept] A directive between the
 parts of an attribute retains its contacts within a printed line, and a
 directive on a line of its own between two attributes stays between them. A
@@ -1561,9 +1562,12 @@ multi-line-statements/direction-value-joined] [fixture:
 multi-line-statements/style-over-lines-joined] A statement with a comment or
 directive keeps its line breaks; structural continuations and intervening trivia
 stand one level deeper. Whitespace inside values and before the first line break
-of each gap stays unchanged. Joining regions and semicolon line protections keep
-the whole statement as written. [fixture:
-multi-line-statements/style-comment-continuation] [fixture:
+of each gap stays unchanged. Joining regions keep the whole statement as
+written. A statement written over several lines is kept as written when joining
+its lines, with one space or with nothing, could change which `;` the line rule
+ignores; any other statement over several lines is joined as usual, also when it
+holds a `;`. [fixture: multi-line-statements/semicolon-joining-changes-kept]
+[fixture: multi-line-statements/style-comment-continuation] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept]
 

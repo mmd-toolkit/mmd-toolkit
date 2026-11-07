@@ -3,7 +3,7 @@ import type { Doc } from "prettier"
 import type { Atom, GapRule } from "./atoms.ts"
 import type { TextEdit } from "./layout.ts"
 import { expectToken, expectValue, replaceInAtoms } from "./layout.ts"
-import { holdsKeptSemicolon, lineEndOf, lineStartOf } from "./kept-lines.ts"
+import { findLinesWithOwnSemicolons, lineStartOf } from "./kept-lines.ts"
 import { printAsWritten } from "./lines.ts"
 import type { Source } from "./source.ts"
 import {
@@ -146,8 +146,9 @@ export function printStyleUnitSpacing(source: Source, style: Node): Doc {
 
 /**
  * ER and requirement discard simple same-line style-unit padding. Keep trivia,
- * physical/Unicode line boundaries and complete semicolon-sensitive lines on
- * their original path (diagrams/er.md and diagrams/requirement.md, Style context).
+ * physical/Unicode line boundaries and complete semicolon-sensitive lines (a
+ * line that holds a `;` of its own, not one that separates statements and is
+ * dropped) on their original path (diagrams/er.md and diagrams/requirement.md, Style context).
  */
 export function styleUnitsCanCompact(
   source: Source,
@@ -164,42 +165,51 @@ export function styleUnitsCanCompact(
         !text.includes("\u2029")
       )
     }) &&
-    !holdsKeptSemicolon(
-      source,
-      lineStartOf(source, start),
-      lineEndOf(source, end),
-    ) &&
+    !findLinesWithOwnSemicolons(source).has(lineStartOf(source, start)) &&
     findTriviaBetween(source, start, end).length === 0
   )
 }
 
 /**
- * Puts the `,` between the styles of a `classDef`, `style`, or `linkStyle`
- * statement in the form of ER and requirement: no whitespace before it, where
- * `before`, and one space after it, where `after`. Each side is asked for only
- * where mermaid.js reads the whitespace there as nothing (docs/flowchart.md,
- * docs/class.md, docs/state.md, and docs/block.md, Styles). The commas are
- * looked for in the text of the styles, which one atom holds as written. A `,`
- * after a backslash is part of a style, and so is a space after a backslash.
- * A statement with a style that is all whitespace, with a line break, a
- * comment or a directive, or on a line with a kept `;` stays as written, as in
- * ER (see `styleUnitsCanCompact`).
+ * Prints the styles of a `classDef`, `style`, or `linkStyle` statement in the
+ * form of ER and requirement: no whitespace before the first `:` of a style,
+ * one space after it where the value is not empty, no whitespace before a `,`
+ * and one space after it. mermaid.js draws the same figure whatever the
+ * whitespace there: it takes the whitespace around the name and the value of a
+ * style away before it makes the CSS of the figure (docs/flowchart.md,
+ * Styles). The Db keeps the whitespace in the styles, so it changes (see
+ * `styleDbForFormattingComparison`). The styles lie in the atoms as written,
+ * and the edits are made in the atoms that hold them: where the layout makes
+ * each style an atom of its own, the commas between them are the business of
+ * the gap rules (see `replaceInAtoms`).
+ *
+ * `keepsSpaceBeforeFill` is set for a `linkStyle` with link numbers. Where no
+ * style of such a statement starts with `fill`, mermaid.js adds `fill:none` to
+ * the styles of the link, and a style that starts with whitespace does not
+ * start with `fill`, so a style that starts with `fill` keeps whether
+ * whitespace stands before it, a run of whitespace becoming one space.
+ *
+ * A `,` after a backslash is part of a style, and so is a space after a
+ * backslash. A statement with a style that is all whitespace, with a line
+ * break, a comment or a directive, or on a line with a kept `;` stays as
+ * written, as in ER (see `styleUnitsCanCompact`).
  */
-export function normalizeStyleCommas(
+export function normalizeStyleList(
   source: Source,
   atoms: Atom[],
   statement: {
     readonly range: Range
     readonly styles: readonly (Node | null)[]
   },
-  sides: { readonly before: boolean; readonly after: boolean },
+  keepsSpaceBeforeFill = false,
 ): void {
   const styles = statement.styles.filter((style) => style !== null)
-  if (styles.length !== statement.styles.length) return
   const first = styles.at(0)
   const last = styles.at(-1)
-  if (first === undefined || last === undefined) return
   if (
+    styles.length !== statement.styles.length ||
+    first === undefined ||
+    last === undefined ||
     !styleUnitsCanCompact(
       source,
       statement.range[0],
@@ -209,27 +219,101 @@ export function normalizeStyleCommas(
   ) {
     return
   }
-  const [from, to] = [first.range[0], last.range[1]]
+  // The styles are the text between the commas that no backslash escapes.
   const edits: TextEdit[] = []
-  for (let comma = from; comma < to; comma++) {
-    if (source.text[comma] !== "," || source.text[comma - 1] === "\\") continue
-    if (sides.before) {
-      let start = comma
-      while (start > from && isSpaceOrTab(source.text[start - 1])) start--
-      const before = source.text[start - 1]
-      if (start < comma && start > from && before !== "," && before !== "\\") {
-        edits.push({ range: [start, comma], replacement: "" })
-      }
+  const [from, to] = [first.range[0], last.range[1]]
+  let previousEnd = -1
+  for (let start = from; start <= to;) {
+    let comma = start
+    while (
+      comma < to &&
+      (source.text[comma] !== "," || source.text[comma - 1] === "\\")
+    )
+      comma++
+    const core = trimStyle(source, [start, comma])
+    if (core[0] === core[1]) return
+    addColonEdit(source, core, edits)
+    if (previousEnd !== -1) {
+      const touchesFill =
+        keepsSpaceBeforeFill &&
+        core[0] === start &&
+        source.text.startsWith("fill", core[0])
+      edits.push(
+        { range: [previousEnd, start - 1], replacement: "" },
+        { range: [start, core[0]], replacement: touchesFill ? "" : " " },
+      )
     }
-    if (sides.after) {
-      let end = comma + 1
-      while (end < to && isSpaceOrTab(source.text[end])) end++
-      if (end < to && source.text[end] !== ",") {
-        edits.push({ range: [comma + 1, end], replacement: " " })
-      }
-    }
+    previousEnd = core[1]
+    start = comma + 1
   }
-  replaceInAtoms(source, atoms, edits)
+  // An insertion at the edge of an atom is the business of the gap rules.
+  replaceInAtoms(
+    source,
+    atoms,
+    edits.filter((edit) =>
+      atoms.some((atom) =>
+        edit.range[0] === edit.range[1]
+          ? atom.start < edit.range[0] && edit.range[0] < atom.end
+          : atom.start <= edit.range[0] && edit.range[1] <= atom.end,
+      ),
+    ),
+  )
+}
+
+/**
+ * Prints the text of a style, from `range[0]` to `range[1]`, with the
+ * whitespace around its first `:` as `normalizeStyleList` puts it.
+ */
+export function printStyleWithColon(source: Source, range: Range): Doc {
+  const edits: TextEdit[] = []
+  addColonEdit(source, trimStyle(source, range), edits)
+  const [edit] = edits
+  if (edit === undefined) return printAsWritten(source, ...range)
+  return [
+    printAsWritten(source, range[0], edit.range[0]),
+    edit.replacement,
+    printAsWritten(source, edit.range[1], range[1]),
+  ]
+}
+
+/**
+ * The range of a style without the spaces and tabs at its ends, except a
+ * space after a backslash.
+ */
+function trimStyle(source: Source, range: Range): Range {
+  let [start, end] = range
+  while (start < end && isSpaceOrTab(source.text[start])) start++
+  while (
+    end > start &&
+    isSpaceOrTab(source.text[end - 1]) &&
+    source.text[end - 2] !== "\\"
+  )
+    end--
+  return [start, end]
+}
+
+/**
+ * Adds the edit that takes the whitespace before the first `:` of a style away
+ * and puts one space after it, where the value is not empty. A style without
+ * a name before the `:`, or with an escaped space before it, stays.
+ */
+function addColonEdit(
+  source: Source,
+  [start, end]: Range,
+  edits: TextEdit[],
+): void {
+  const colon = source.text.indexOf(":", start)
+  if (colon <= start || colon >= end) return
+  let nameEnd = colon
+  while (nameEnd > start && isSpaceOrTab(source.text[nameEnd - 1])) nameEnd--
+  if (nameEnd === start) return
+  if (nameEnd < colon && source.text[nameEnd - 1] === "\\") return
+  let valueStart = colon + 1
+  while (valueStart < end && isSpaceOrTab(source.text[valueStart])) valueStart++
+  edits.push({
+    range: [nameEnd, valueStart],
+    replacement: valueStart < end ? ": " : ":",
+  })
 }
 
 /** Whether a character is a space or a tab. */

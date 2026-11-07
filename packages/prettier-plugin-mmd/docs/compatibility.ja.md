@@ -384,6 +384,71 @@ eventmodeling の [Data blocks](./eventmodeling.ja.md#data-blocks)
 [スタイルの行末の空白](./flowchart.ja.md#スタイルの行末の空白)
 を参照してください。
 
+## 同じに描かれるスタイル
+
+flowchart、agentflow、class、state、block の `style`、`classDef`、
+`linkStyle` の文は、ER や requirement と同じ形でスタイルを印字します。
+スタイルの最初の `:` の前に空白を置かず、値が空でなければ、
+後ろに空白を 1 つ置きます。
+スタイルの間の `,` の前にも空白を置かず、後ろに空白を 1 つ置きます。
+`style A fill :#f00,stroke:  #333` は `style A fill: #f00, stroke: #333`
+になります。
+値の中の語と語の間の空白は、書かれたままです。
+[fixture: flowchart/whitespace-between-tokens/style-colon-spaced]
+[fixture: flowchart/whitespace-between-tokens/style-colon-empty-value-kept]
+[fixture: agentflow/single-space-gaps/style-colon-spaced]
+[fixture: class/whitespace-between-tokens/style-colon-spaced]
+[fixture: state/whitespace-between-tokens/style-colon-spaced]
+[fixture: block/styles/style-colon-spaced]
+
+mermaid.js はこの空白を Db に残すので、印字したテキストの Db は、
+書かれたテキストの Db と違いますが、描かれる図は同じです。
+[`styles2Map`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L44-L51)
+は、図形の CSS を作る前に、スタイルの名前と値の前後の空白を取り除きます。
+class の図形と flowchart のリンクは、スタイルを CSS の `style` 属性に入れ、
+`:` や `;` の前後の空白は読まれません。
+それぞれの文について、両方のテキストを mermaid.js 12.3.0 で Chromium に描き、
+SVG と画素が同じであることを確かめました。
+対象は、5 つの図種の `style` と `classDef`、既定のリンクの `linkStyle`、
+それに番号を指定した `linkStyle` の `fill` で始まらないスタイルです。
+
+番号を指定した `linkStyle` は、`,` の後のスタイルが空白で始まるときに、
+描かれる図が変わります。
+[`updateLink`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L417-L440)
+は、リンクのスタイルのどれも `fill` で始まらないときに、`fill:none` を足します。
+前に空白があるスタイルは `fill` で始まりません。
+`linkStyle 0 stroke:#f00,fill:red` ではリンクが赤で塗られ、
+`linkStyle 0 stroke:#f00, fill:red` では mermaid.js が `fill:none`
+を足すので塗られません。
+そのため、flowchart と agentflow では、
+`fill` で始まるスタイルの前に空白があるかないかを保ち、
+空白の連続は空白 1 つにします。
+[fixture: flowchart/whitespace-between-tokens/link-style-fill-after-comma-kept]
+[fixture: agentflow/single-space-gaps/link-style-fill-after-comma-kept]
+この文のほかのスタイルと `linkStyle default` は、1 つの形で印字します。
+[fixture: flowchart/whitespace-between-tokens/link-style-other-after-comma-spaced]
+[fixture: flowchart/whitespace-between-tokens/link-style-default-after-comma-spaced]
+
+次の場合は、文を書かれたまま残します。
+スタイルが改行か U+2028・U+2029 を含む場合、
+文がコメントかディレクティブを含む場合、スタイルが全部空白の場合、
+バックスラッシュの後に空白か `,` がある場合、
+行に自分の `;` がある場合です（[`;` を含む行](#-を含む行)を参照してください）。
+[fixture: flowchart/whitespace-between-tokens/style-colon-escaped-space-kept]
+[fixture: flowchart/whitespace-between-tokens/style-comma-escaped-space-kept]
+[fixture: flowchart/whitespace-between-tokens/style-comma-beside-directive-kept]
+[fixture: flowchart/whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
+
+テストは、印字したテキストの Db を、
+書かれたテキストの Db
+からスタイルの余白を戻して比べます（`tests/style-margins.ts` の
+`styleDbForFormattingComparison`）。
+スタイルが書かれたものと、両端と最初の `:` の前後の空白だけが違うときは、
+書かれた方を採ります。
+ほかの違いは、リンクのスタイルの数も含めて、失敗とします。
+固定している mermaid.js の版を上げるときは、これらの種類の文を描き直し、
+SVG と画素を比べてから、例外を残します。
+
 ## ラベルの先頭の空白
 
 mermaid.js は引用符のないラベルの先頭の空白を取り除き、整形も取り除きます。
@@ -405,6 +470,12 @@ mermaid.js は引用符のないラベルの先頭の空白を取り除き、整
 mermaid.js はディレクティブを取り除き、その両側のテキストをつないで読みます。
 そのため同じ印字行の中では、
 ディレクティブの各側に空白が書かれていたかどうかを保ちます。
+mermaid.js はディレクティブを除いたテキストを読むので、
+残る空白を変えてはいけません。
+`note for` のような単位や `title` の後のテキストは、
+空白をちょうど 1 文字読みます。
+片側だけに空白があったディレクティブの両側に空白 1 つずつを置くと、
+空白が 2 つ残るからです。
 `flowchart %%{init: {}}%%LR` はそのまま残します。
 `flowchart%%{init: {}}%%LR` は拒否されるからです。
 [fixture: flowchart/directives/whitespace-on-each-side-kept]
@@ -1253,7 +1324,7 @@ Db や字句解析器が読むものは変えません。
   `style` か `classDef`、その後の `:`、`:` との間に空白のない `#`、
   その後の `;` を持つ行です。
   [fixture: statements-one-per-line/line-rule-line-kept-together]
-  [fixture: multi-line-statements/semicolon-inside-kept]
+  [fixture: multi-line-statements/semicolon-inside-joined]
 - コメント行や指令を含む文は必要な改行を残し、
   [構造の継続行](#コメントやディレクティブの前後の構造の継続行)をそろえます。
   [fixture: multi-line-statements/comment-line-inside-kept]
@@ -1314,7 +1385,7 @@ Db や字句解析器が読むものは変えません。
   `style` か `classDef`、その後の `:`、`:` との間に空白のない `#`、
   その後の `;` を持つ行です。
   [fixture: statements-one-per-line/line-rule-line-kept-together]
-  [fixture: multi-line-statements/semicolon-on-the-last-line-kept]
+  [fixture: multi-line-statements/semicolon-on-the-last-line-joined]
 - コメント行や指令を含む点と accessibility の文は必要な改行を残し、
   [構造の継続行](#コメントやディレクティブの前後の構造の継続行)をそろえます。
   [fixture: multi-line-statements/comment-line-inside-kept]
@@ -1355,10 +1426,9 @@ Db や字句解析器が読むものは変えません。
   `(right down)` の向きは `right ` で、`( up)` の向きは ` up` です。
   [fixture: shapes/block-arrow-directions-as-written]
   [fixture: shapes/block-arrow-directions-whitespace-kept]
-- `style` と `class` の空白。
-  `,` の後のスタイル、`class` の id、クラス名の空白です。
-  [fixture: styles/style-commas-as-written]
-  [fixture: styles/class-ids-as-written] [fixture: styles/class-name-as-written]
+- `class` の空白。
+  id とクラス名の空白です。 [fixture: styles/class-ids-as-written]
+  [fixture: styles/class-name-as-written]
   [fixture: styles/class-name-with-a-comma-as-written]
 - `%%` で始まる文。
   mermaid.js は node の後の `%%x` を id として読み、
@@ -1611,9 +1681,14 @@ native の `title` と `accDescription` の値の前置空白、方向の文字�
 
 図のコメントの後は、復帰用の空白行と末尾の隙間も含めて全体を保ちます。
 コメントを移して `comment-takes-line-break` の差異を修復しません。
-すべてのセミコロンと、
-共有の `style` と `classDef` の行規則が守る接頭部を保ちます。
-値のノードを分けず、Unicode の区間境界も保ちます。
+すべてのセミコロンと Unicode の区間境界を保ちます。
+保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
+ほかの場所と同じように整形します。
+この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
+`style` か `classDef` の後の最初の `:` から、
+最後の保つ `;` の前の最後の `#` までに空白がない並びを読みます。
+その範囲の隙間と余白は空白の有無を保ち、空白の連続は空白 1 つにします。
+範囲の外は、この図種の通常の規則に従います。
 字下げと値の外の末尾空白は printer が整えます。
 [fixture: c4/comments/comment-header] [fixture: c4/blank-lines/comment-recovery]
 [fixture: c4/final-newline/comment-eof-gap]

@@ -907,16 +907,17 @@ the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps and the
 padding inside that stretch keep whether they hold whitespace, a run becoming
 one space, and the rest of the segment follows the ordinary rules of this
 diagram. Text that no part of the layout holds stays as written. A statement
-over several lines keeps the text of each segment, up to its last kept `;`, as
-written, since the printer joins its lines and a joined line can be one that the
-rule reads. [fixture: semicolons/stretch-kept-rest-formatted] [fixture:
-semicolons/no-stretch-formatted] [fixture: semicolons/semi-line-other-value] The
-first protected line uses its body depth, including item depth; content and
-later columns remain written. Count segments as Mermaid reads them, including
-directives and comment-region joins. Cynefin has no grammatical semicolon, so
-verbatimStyleLines is false: ordinary style/classDef word lines still format.
-Deleting semicolons or relocating their triggers can change the Db or
-acceptance.
+over several lines whose lines, joined with one space or with nothing, could
+change which `;` the line rule ignores keeps the text of each segment, up to its
+last kept `;`, as written; any other statement over several lines is formatted
+like one on a single line. [fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted] [fixture:
+semicolons/semi-line-other-value] The first protected line uses its body depth,
+including item depth; content and later columns remain written. Count segments
+as Mermaid reads them, including directives and comment-region joins. Cynefin
+has no grammatical semicolon, so verbatimStyleLines is false: ordinary
+style/classDef word lines still format. Deleting semicolons or relocating their
+triggers can change the Db or acceptance.
 
 [fixture: cynefin/hidden-boundaries/semicolon-hidden-header-directive]
 
@@ -973,7 +974,7 @@ Output
 
 ```mmd
 cynefin-beta
-  complex "style:#fixed";"SuffixItem"
+  complex "style:#fixed"; "SuffixItem"
 ```
 
 [fixture: cynefin/semicolons/review-semicolon-following-pair]
@@ -1001,6 +1002,16 @@ Output
 cynefin-beta
   complex "a;" clear "b" "c"
 ```
+
+A `;` that the line rule ignores between two statements stands against the token
+before it with one space after it, whatever whitespace was written around it, as
+the gap has one space; the gap right after the keyword keeps its whitespace as
+written. [fixture: semicolons/ignored-semicolon-space-before-attached] [fixture:
+semicolons/ignored-semicolon-space-both-attached] [fixture:
+semicolons/ignored-semicolon-space-after-kept] [fixture:
+semicolons/ignored-semicolon-after-header-keyword-kept] [fixture:
+semicolons/semi-selected-outside-string] [fixture:
+semicolons/semicolon-chaotic-parts]
 
 ### Multiline values
 

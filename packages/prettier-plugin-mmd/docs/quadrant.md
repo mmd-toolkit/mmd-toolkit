@@ -690,12 +690,16 @@ multi-line-statements/point-trivia-with-multiline-label] [fixture:
 multi-line-statements/accessibility-trivia-continuations]
 
 Other statements with multiline trivia retain their layout. Joining comment
-regions and a `;` in the statement or on its final line keep the original layout
-too, because of the line rule (see
+regions keep the original layout too. A statement written over several lines is
+kept as written when joining its lines, with one space or with nothing, could
+change which `;` the line rule ignores; any other statement over several lines
+is joined as usual, also when it holds a `;`. The same decision applies to a `;`
+in another statement on its final line (see
 [Statements one per line](#statements-one-per-line)). [fixture:
+multi-line-statements/semicolon-joining-changes-kept] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
-multi-line-statements/directive-inside-kept] [fixture:
-multi-line-statements/semicolon-on-the-last-line-kept]
+multi-line-statements/directive-inside-kept] A `;` alone does not prevent
+joining. [fixture: multi-line-statements/semicolon-on-the-last-line-joined]
 
 ### Multi-line values
 

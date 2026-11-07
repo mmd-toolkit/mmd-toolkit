@@ -381,7 +381,7 @@ flowchart LR
   subgraph "S" end;
     B
   end
-  style B fill:click;
+  style B fill: click;
   C
   classDef c href;D
   subgraph T end
@@ -518,9 +518,9 @@ style B   fill:#0f0 ;
 ```mmd
 flowchart LR
   A --> B
-  style A fill:#f00
-  classDef c fill:#fff,stroke:#333
-  style B fill:#0f0
+  style A fill: #f00
+  classDef c fill: #fff, stroke: #333
+  style B fill: #0f0
 ```
 
 入力
@@ -588,6 +588,26 @@ flowchart LR
   D
 ```
 
+文の 2 つのトークンの間か同じ行の 2 つの文の間で、行の規則が無視する `;` は、
+ないものとして読まれます。
+そのため、その周りの空白は、`;` がないものとして隙間の通常の規則に従います。
+空白 1 つを置く隙間では、書かれた空白によらず、`;` を直前のトークンに付け、
+後ろに空白 1 つを置きます。
+空白を置かない隙間では、`;` は両側のトークンに接します。
+規則のない隙間では、隙間のどこかに空白が書かれていれば後ろに空白 1 つを置き、
+なければ接したままにします。
+行の規則が読む範囲の中の隙間と、U+2028 か U+2029 を含む隙間、
+図種のキーワードの直後の隙間は、書かれたままの空白を保ちます。
+図種の検出は、`;` を取り除く前のテキストを読むためです。
+`cynefin-beta ;complex` は検出され、`cynefin-beta; complex` は検出されません。
+行の末尾の `;` は、直前のトークンに付けます。
+[fixture: semicolons/ignored-semicolon-before-edge-id-touching]
+[fixture: semicolons/ignored-semicolon-before-edge-id-spaced]
+[test: U+2028 after a `;` before an edge id]
+[test: U+2028 after a `;` and a space before an edge id]
+[test: U+2029 after a `;` before an edge id]
+[test: U+2029 after a `;` and a space before an edge id]
+
 ### 空行
 
 連続する空行は 1 つの空行にします。
@@ -652,17 +672,26 @@ mermaid.js には、接しているときだけ読むトークンがあります
 [fixture: whitespace-between-tokens/header-and-tabs-collapsed]
 [fixture: whitespace-between-tokens/compat-empty-description-block-own-line]
 値の一部である空白は保ちます。
-スタイルの並びの `,` の後の空白は mermaid.js がスタイルに残し、
 subgraph の名前の中の空白はそのタイトルになります。
-スタイルの並びの `,` の前の空白は mermaid.js が落とすので値の一部ではなく、
-ER と requirement と同じく、
-[スタイルとクラス](./er.ja.md#スタイルとクラス)のとおりに落とします。
-`style A fill:#f00 ,color:white` は `style A fill:#f00,color:white` になり、
-`classDef` と `linkStyle` も同じです。
-バックスラッシュがエスケープする空白は残します。
-スタイルの間にコメントやディレクティブがある文、空白だけのスタイルがある文、
-改行や保つ `;` が行にある文も、書かれたまま残します。
+`style`・`classDef`・`linkStyle` の文では、
+各スタイルの最初の `:` の前に空白を置かず、値が空でなければ、
+後ろに空白を 1 つ置きます。
+スタイルの間の `,` の前に空白を置かず、後ろに空白を 1 つ置きます。
+`style A fill :#f00,stroke:  #333` は、
+`style A fill: #f00, stroke: #333` になります。
+[fixture: whitespace-between-tokens/style-colon-spaced]
+[fixture: whitespace-between-tokens/style-colon-empty-value-kept]
 [fixture: whitespace-between-tokens/style-comma-before-dropped]
+番号を指定した `linkStyle` では、`fill` で始まるスタイルの前の `,` の後ろに、
+空白があるかないかを保ち、空白の連続は空白 1 つにします。
+[fixture: whitespace-between-tokens/link-style-fill-after-comma-kept]
+この文のほかのスタイルと `linkStyle default` は、1 つの形で印字します。
+[fixture: whitespace-between-tokens/link-style-other-after-comma-spaced]
+[fixture: whitespace-between-tokens/link-style-default-after-comma-spaced]
+バックスラッシュの後に空白か `,` がある文、コメントやディレクティブがある文、
+空白だけのスタイルがある文、スタイルに改行があるか、行に保つ `;` がある文は、
+書かれたまま残します。
+[fixture: whitespace-between-tokens/style-colon-escaped-space-kept]
 [fixture: whitespace-between-tokens/style-comma-escaped-space-kept]
 [fixture: whitespace-between-tokens/style-comma-beside-directive-kept]
 [fixture: whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
@@ -671,17 +700,18 @@ U+2028 と U+2029 は、その場所に残します。
 [test: U+2029 after the comma of a flowchart style statement]
 `direction` の文の、`direction` の前と値の後のテキストは例外で、
 書かれたまま残します（[方向](#方向)を参照）。
-[fixture: whitespace-between-tokens/style-values-in-class-def-and-link-style-kept]
+[fixture: whitespace-between-tokens/class-def-and-link-style-spaced]
 [fixture: whitespace-between-tokens/subgraph-quoted-name-kept]
 `style`・`classDef`・`linkStyle` の文では、最初のスタイルの前の空白は、
 mermaid.js の文の規則が読むものなので、そこにディレクティブがあるときも、
 空白 1 つにします。
 `style A %%{init: {}}%%  fill:red` と `style A %%{init: {}}%% fill:red` は、
 Db が同じです。
-最初のスタイルの始まりから最後のスタイルまでは、
-`,` の前の空白を除いて書かれたまま残します。
-mermaid.js は残りをスタイルの一部として読むからです。
+スタイルの値の中の語と語の間の空白は、書かれたまま残します。
 [fixture: whitespace-between-tokens/style-inner-whitespace-kept]
+`linkStyle default`、`classDef`、`style` の形は、ER と requirement と同じです。
+[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+を参照してください。
 
 subgraph の `end` の後の U+2028 と U+2029 は mermaid.js にとって空白なので、
 行末の空白と一緒に落とします。
@@ -708,13 +738,13 @@ flowchart   LR
 flowchart LR
   A --> B
   C & D --> E
-  style A fill:#f00
+  style A fill: #f00
   class A c
   F --> G
 ```
 
 入力
-([whitespace-between-tokens/style-values-kept-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-values-kept-input.mmd)):
+([whitespace-between-tokens/style-colon-and-comma-spaced-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-colon-and-comma-spaced-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -723,12 +753,12 @@ flowchart LR
 ```
 
 出力
-([whitespace-between-tokens/style-values-kept-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-values-kept-output.mmd)):
+([whitespace-between-tokens/style-colon-and-comma-spaced-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-colon-and-comma-spaced-output.mmd)):
 
 ```mmd
 flowchart LR
   A
-  style A fill:#f00, stroke:#333
+  style A fill: #f00, stroke: #333
 ```
 
 入力
@@ -1228,10 +1258,13 @@ flowchartはコロンの後のコメントを読み飛ばして後の値を読�
 この短い形は[1行に1文](#1-行に-1-文)の規則に優先しません。
 値や別の文にある非区切りの`;`を含む行では、
 アクセシビリティの文字と`;`の両側の空白を保ちます。
-`;`を含む次行の値も改行を保ちます。
+複数行に書かれた文は、その行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合に、書かれたまま残します。
+それ以外の複数行の文は、`;` を含んでいても通常どおりつなぎます。
 [fixture: accessibility-lines/semicolon-value-kept]
 [fixture: accessibility-lines/neighbour-semicolon-kept]
-[fixture: accessibility-lines/next-line-semicolon-kept]
+`;` があるだけでは、行をつなぐ妨げにはなりません。
+[fixture: accessibility-lines/next-line-semicolon-joined]
 方向の文字列がある行は[字下げ](#字下げ)に従い、原文、改行、桁位置を保ちます。
 ほかの文書化された保持行の理由も優先します。
 [fixture: accessibility-lines/direction-text-kept]
@@ -1861,7 +1894,11 @@ flowchart LR
 [fixture: directives/whitespace-on-both-sides-collapsed]
 [fixture: directives/meets-empty-description-block]
 mermaid.js はディレクティブを除いたテキストを読むので、
-2 つのトークンが離れているかどうかを変えてはいけないからです。
+残る空白を変えてはいけません。
+`note for` のような単位や `title` の後のテキストは、
+空白をちょうど 1 文字読みます。
+片側だけに空白があったディレクティブの両側に空白 1 つずつを置くと、
+空白が 2 つ残るからです。
 ディレクティブの中身は書かれたまま残します。 [fixture: directives/content-kept]
 [fixture: directives/compat-malformed-directive-kept]
 
@@ -2204,7 +2241,9 @@ flowchart LR
 [fixture: style-trailing-whitespace/removed-tab]
 [fixture: style-trailing-whitespace/removed-after-directive]
 mermaid.js はその空白を最後のスタイルの末尾に残すので、
-この規則だけは mermaid.js が保存するものを変えます。
+この規則は mermaid.js が保存するものを変える規則の 1
+つです（ [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+を参照してください）。
 テストは、末尾の空白を除いたスタイルを比べます。
 mermaid.js がその空白を、
 並びの末尾の `,` の後の 1 つのスタイルとして読むときは、空白を保ちます。
@@ -2222,7 +2261,7 @@ mermaid.js がその空白を、
 
 空白が行末にあるので、例は、`\n` を改行とする文字列で書きます。
 `"flowchart LR\n  A --> B\n  style A fill:#f00   \n"` は
-`"flowchart LR\n  A --> B\n  style A fill:#f00\n"` と印字し、
+`"flowchart LR\n  A --> B\n  style A fill: #f00\n"` と印字し、
 `"flowchart LR\n  A\n  style A fill:#f00, \n"` はそのまま印字します（fixture
 `removed` と `whitespace-only-value-kept` は
 [フォルダー](../tests/fixtures/flowchart/style-trailing-whitespace)

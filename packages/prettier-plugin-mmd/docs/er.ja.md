@@ -246,8 +246,9 @@ Db が保つからです。 [fixture: attribute-spacing/keys-comma-space]
 [fixture: attribute-spacing/directive-inside-kept]
 [fixture: attribute-spacing/comment-continuation-with-multiline-value]
 [fixture: attribute-spacing/directive-continuation-tabs]
-semicolon の読みが関わる行と、物理行を結ぶコメント領域は、元の配置を保ちます。
-[fixture: attribute-spacing/semicolon-continuation-kept]
+セミコロンがあるだけでは、継続行をそろえる妨げにはなりません。
+[fixture: attribute-spacing/semicolon-continuation-aligned]
+物理行を結ぶコメント領域は、元の配置を保ちます。
 [test: er/attribute-spacing/comment-region-continuation-kept]
 属性の部分の間にあるディレクティブは、同じ印字行での接触を保ち、
 2 つの属性の間で行に単独で置かれたディレクティブは、その間に残します。
@@ -1604,8 +1605,11 @@ mermaid.js が複数行にわたって読む文は、
 コメント行やディレクティブがある文は改行を残し、
 構造の続きの行と間の注釈を 1 段深く置きます。
 値の中の空白と、各隙間の最初の改行の前の空白は保ちます。
-コメントで結合される領域とセミコロン行の保護対象では、
-文全体を原文のまま残します。
+コメントで結合される領域では、文全体を原文のまま残します。
+複数行に書かれた文は、その行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合に、書かれたまま残します。
+それ以外の複数行の文は、`;` を含んでいても通常どおりつなぎます。
+[fixture: multi-line-statements/semicolon-joining-changes-kept]
 [fixture: multi-line-statements/style-comment-continuation]
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]

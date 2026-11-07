@@ -923,12 +923,16 @@ multi-line-statements/structural-trivia-continuations] [fixture:
 click-statements/trivia-continuation-under-section]
 
 Titles, sections, settings and tasks keep their original multiline trivia
-layout: their value padding is part of the Db. A `;` in a multiline statement, a
-semicolon on its final line, a joining comment region or a U+FEFF list separator
-also keeps the original layout. [fixture:
+layout: their value padding is part of the Db. A statement written over several
+lines is kept as written when joining its lines, with one space or with nothing,
+could change which `;` the line rule ignores; any other statement over several
+lines is joined as usual, also when it holds a `;`. The same decision applies to
+a `;` in another statement on its final line. A joining comment region or a
+U+FEFF list separator also keeps the original layout. [fixture:
+multi-line-statements/semicolon-joining-changes-kept] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
-multi-line-statements/directive-inside-kept] [fixture:
-multi-line-statements/semicolon-inside-kept]
+multi-line-statements/directive-inside-kept] A `;` alone does not prevent
+joining. [fixture: multi-line-statements/semicolon-inside-joined]
 
 Input
 ([multi-line-statements/value-on-next-line-joined-input.mmd](../tests/fixtures/gantt/multi-line-statements/value-on-next-line-joined-input.mmd)):

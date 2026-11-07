@@ -33,7 +33,7 @@ import {
 } from "./kept-lines.ts"
 import { printAsWrittenTrimmed } from "./lines.ts"
 import type { Source } from "./source.ts"
-import { normalizeStyleCommas } from "./statement-rules.ts"
+import { normalizeStyleList } from "./statement-rules.ts"
 import {
   findStructuralToken,
   findTokenEndingBefore,
@@ -447,15 +447,9 @@ function addStyledStatementRules(
     }
   }
   const atoms: Atom[] = [{ start, end: printedEnd }]
-  if (statement.type === "BlockClassDefStatement") {
-    // mermaid.js reads the whitespace around the `,` of the styles of a
-    // `classDef` as nothing, and in a `style` statement as part of the styles
-    // (docs/block.md, Styles).
-    normalizeStyleCommas(source, atoms, statement, {
-      before: true,
-      after: true,
-    })
-  }
+  // mermaid.js draws the same figure whatever the whitespace around the `:`
+  // and the `,` of the styles (docs/block.md, Styles).
+  normalizeStyleList(source, atoms, statement)
   const doc =
     atoms[0].doc ??
     (dropsSemicolon

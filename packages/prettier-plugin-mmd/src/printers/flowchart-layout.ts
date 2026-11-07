@@ -28,7 +28,7 @@ import {
 import { holdsJoiningRegion } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import { findStructuralToken, findTokensBetween } from "./source.ts"
-import { normalizeStyleCommas } from "./statement-rules.ts"
+import { normalizeStyleList } from "./statement-rules.ts"
 
 /**
  * The node types whose text is a value, printed as written. They have no
@@ -148,12 +148,15 @@ export function layoutStatement(
     statement.type === "FlowchartLinkStyleStatement" ||
     statement.type === "FlowchartDefaultLinkStyleStatement"
   ) {
-    // mermaid.js drops the whitespace before the `,` of a list of styles and
-    // keeps the whitespace after it in the style (docs/flowchart.md, Styles).
-    normalizeStyleCommas(source, atoms, statement, {
-      before: true,
-      after: false,
-    })
+    // mermaid.js draws the same figure whatever the whitespace around the `:`
+    // and the `,` of the styles, except before a style that starts with `fill`
+    // in a `linkStyle` with link numbers (docs/flowchart.md, Styles).
+    normalizeStyleList(
+      source,
+      atoms,
+      statement,
+      statement.type === "FlowchartLinkStyleStatement",
+    )
   }
   if (statement.type !== "FlowchartAccDescrBlockStatement") return layout
   return formatDescriptionBlock(

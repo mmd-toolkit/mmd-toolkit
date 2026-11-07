@@ -32,7 +32,7 @@ import {
 import { readGapElement } from "./gap.ts"
 import { holdsJoiningRegion, lineStartOf } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
-import { normalizeStyleCommas } from "./statement-rules.ts"
+import { normalizeStyleList } from "./statement-rules.ts"
 import {
   findStructuralToken,
   findTriviaBetween,
@@ -384,14 +384,16 @@ export function layoutStatement(
       // value text. Preserve these gaps, even across directives, rather than
       // applying flowchart's first-style collapse (diagrams/agentflow.md,
       // Style, classDef, class, and linkStyle; docs/agentflow.md, Single space gaps).
-      // The whitespace before a `,` of the styles is no value text: mermaid.js
-      // drops it, so it is dropped here too (docs/agentflow.md, Single space
-      // gaps).
+      // The whitespace around the `:` and the `,` of the styles does not change
+      // the figure, except before a style that starts with `fill` in a
+      // `linkStyle` with link numbers (docs/agentflow.md, Single space gaps).
       const atoms: Atom[] = [{ start, end }]
-      normalizeStyleCommas(source, atoms, statement, {
-        before: true,
-        after: false,
-      })
+      normalizeStyleList(
+        source,
+        atoms,
+        statement,
+        statement.type === "AgentflowLinkStyleStatement",
+      )
       return { ...keptAsWritten(start, end), atoms }
     }
     case "AgentflowClickUrlStatement":

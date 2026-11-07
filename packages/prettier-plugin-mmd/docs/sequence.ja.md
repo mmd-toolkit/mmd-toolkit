@@ -193,9 +193,9 @@ sequenceDiagram
 `autonumber %%{wrap}%%; A->>B: x; B->>A: y` は、`autonumber %%{wrap}%%;`、
 `A ->> B: x`、`B ->> A: y` と印字します。
 [fixture: statements-one-per-line/autonumber-directive-semicolon-then-statements-split]
-`autonumber`、改行、`5` のように複数行に書かれた文は、ディレクティブと `;` を、
-文と一緒に書かれたまま残します。
-[fixture: statements-one-per-line/directive-semicolon-after-multi-line-statement-kept]
+`autonumber`、改行、`5` のように複数行に書かれた文は、通常どおりつなぎ、
+ディレクティブと `;` を文と一緒に残します。
+[fixture: statements-one-per-line/directive-semicolon-after-multi-line-statement-aligned]
 mermaid.js はディレクティブを取り除き、行末の空白が、
 文に必要な改行を隠すからです。
 その文の最後の単位は、後ろの空白を読みません。
@@ -484,6 +484,11 @@ sequenceDiagram
   A ->> B: x
   )
 ```
+
+文の 2 つのトークンの間で行の規則が無視する `;` は、直前のトークンに付けます。
+隙間に空白が書かれていれば後ろに空白 1 つを置き、なければ接したままにします。
+[fixture: whitespace-between-tokens/ignored-semicolon-before-of-attached]
+[fixture: whitespace-between-tokens/ignored-semicolon-before-of-spaced-after-kept]
 
 ### 矢印の前後の空白
 
@@ -1020,8 +1025,13 @@ sequenceDiagram
 [fixture: multi-line-statements/autonumber-directive-continuation]
 キーワードと本文の間に注釈があるタイトルは、本文の字下げも値に含むので、
 全体を原文のまま残します。
-コメントで結合される領域とセミコロン行の保護対象も、文全体を原文のまま残します。
-[fixture: multi-line-statements/semicolon-inside-kept]
+コメントで結合される領域も、文全体を原文のまま残します。
+複数行に書かれた文は、その行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合に、書かれたまま残します。
+それ以外の複数行の文は、`;` を含んでいても通常どおりつなぎます。
+[fixture: multi-line-statements/semicolon-joining-changes-kept]
+`;` があるだけでは、行をつなぐ妨げにはなりません。
+[fixture: multi-line-statements/semicolon-inside-joined]
 [fixture: multi-line-statements/start-moves-to-own-line]
 説明ブロックは[複数行の値](#複数行の値)に従い、本文の字下げをそろえます。
 

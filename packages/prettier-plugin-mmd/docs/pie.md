@@ -471,9 +471,10 @@ the `:` and the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps
 and the padding inside that stretch keep whether they hold whitespace, a run
 becoming one space, and the rest of the segment follows the ordinary rules of
 this diagram. Text that no part of the layout holds stays as written. A
-statement over several lines keeps the text of each segment, up to its last kept
-`;`, as written, since the printer joins its lines and a joined line can be one
-that the rule reads. [fixture:
+statement over several lines whose lines, joined with one space or with nothing,
+could change which `;` the line rule ignores keeps the text of each segment, up
+to its last kept `;`, as written; any other statement over several lines is
+formatted like one on a single line. [fixture:
 directives-and-semicolons/stretch-kept-rest-formatted] [fixture:
 directives-and-semicolons/no-stretch-formatted] Do not split a protected
 header/body group. Keep every semicolon and both style/classDef passes,
