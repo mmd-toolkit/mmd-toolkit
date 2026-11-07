@@ -389,7 +389,17 @@ mermaid.js の文書の形です。
 mermaid.js は向きの後の空白と、
 最初の向きの前の空白を保つので（`(right down)` の向きは `right ` で、
 `( up)` の向きは ` up`）、そこの空白は Db に入ります。
-`(right,down)`、`(right, down)`、 `(rightdown)` の向きは同じです。
+`,` がないことも Db に入ります（`(rightdown)` の向きは `right` と `down`
+です）。
+`,` の後の空白はどの向きにも入らないので、空白 1 つにします。
+`(right,down)` と `(right,   down)` は `(right, down)` になります。
+そこにあるコメント行やディレクティブは行ごと残り、
+U+2028 と U+2029 はそのまま残します。 [fixture: shapes/block-arrow-comma-space]
+[fixture: shapes/block-arrow-comma-comment-line]
+[test: U+2028 after the comma between the directions of a block arrow]
+[test: U+2029 after the comma between the directions of a block arrow]
+[test: U+2028 before the comma between the directions of a block arrow]
+[test: U+2029 before the comma between the directions of a block arrow]
 [fixture: shapes/block-arrow-touches-the-id]
 [fixture: shapes/block-arrow-parenthesis-touches-the-closing]
 [fixture: shapes/block-arrow-directions-as-written]
@@ -441,7 +451,7 @@ block-beta
   A<["a"]>(right, down)
   B<["b"]>(right down)
   C<["c"]>( up)
-  D<["d"]>(right,down)
+  D<["d"]>(right, down)
   E<["e"]>(rightdown)
 ```
 
@@ -693,7 +703,7 @@ composite の見出しなどの構造 gap では、trivia の改行を保ちま�
 後続の部分と独立した trivia 行は、node の行や composite の内側でも、
 その文より 1 段深くそろえます。
 各 gap の最初の行の末尾、指令の内部全体、値の範囲全体を保ちます。
-block-arrow の方向の内容は原文のままです。
+block-arrow の方向は、`,` の後の空白を除いて原文のままです。
 [fixture: multi-line-statements/structural-trivia-continuations]
 
 物理行を結ぶコメント領域は、元の配置を保ちます。

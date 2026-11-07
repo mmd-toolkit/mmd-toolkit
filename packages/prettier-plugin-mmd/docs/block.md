@@ -369,10 +369,17 @@ A block arrow `<["x"]>` touches its id, and `(` touches the `>` before it
 (`C<["z"]>(right)`). The directions inside the parentheses are printed as
 written: mermaid.js keeps the whitespace after a direction and before the first
 one (`(right down)` has the direction `right ` and `( up)` has ` up`), so
-whitespace there is in the Db, while `(right,down)`, `(right, down)`, and
-`(rightdown)` have the same directions. [fixture:
-shapes/block-arrow-touches-the-id] [fixture:
-shapes/block-arrow-parenthesis-touches-the-closing] [fixture:
+whitespace there is in the Db, and so is the lack of a `,` (`(rightdown)` has
+the directions `right` and `down`). The whitespace after a `,` is in no
+direction, so one space stands there: `(right,down)` and `(right,   down)` are
+printed `(right, down)`. A comment line or a directive there keeps its line, and
+a U+2028 or U+2029 stays where it is. [fixture: shapes/block-arrow-comma-space]
+[fixture: shapes/block-arrow-comma-comment-line] [test: U+2028 after the comma
+between the directions of a block arrow] [test: U+2029 after the comma between
+the directions of a block arrow] [test: U+2028 before the comma between the
+directions of a block arrow] [test: U+2029 before the comma between the
+directions of a block arrow] [fixture: shapes/block-arrow-touches-the-id]
+[fixture: shapes/block-arrow-parenthesis-touches-the-closing] [fixture:
 shapes/block-arrow-directions-as-written] [fixture:
 shapes/block-arrow-directions-whitespace-kept] [fixture:
 shapes/block-arrow-with-a-width]
@@ -422,7 +429,7 @@ block-beta
   A<["a"]>(right, down)
   B<["b"]>(right down)
   C<["c"]>( up)
-  D<["d"]>(right,down)
+  D<["d"]>(right, down)
   E<["e"]>(rightdown)
 ```
 
@@ -661,7 +668,8 @@ Keep trivia line breaks in structural gaps, including node/shape/width and edge
 parts, `columns`, class/style heads and composite heads. Place later parts and
 standalone trivia one continuation level inside the statement, also within rows
 and composites. Preserve first gap-line tails, complete directive interiors and
-whole value ranges; block-arrow direction contents remain as written. [fixture:
+whole value ranges; block-arrow directions remain as written, except for the
+whitespace after a `,`. [fixture:
 multi-line-statements/structural-trivia-continuations]
 
 Joining comment regions retain their original layout. [test: block:

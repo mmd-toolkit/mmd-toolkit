@@ -2048,6 +2048,26 @@ const blockLineSeparatorExamples: readonly (readonly [
   string,
 ])[] = [
   [
+    "U+2028 after the comma between the directions of a block arrow",
+    'block-beta\na<["L"]>(right,\u2028down)\n',
+    'block-beta\n  a<["L"]>(right,\u2028down)\n',
+  ],
+  [
+    "U+2028 before the comma between the directions of a block arrow",
+    'block-beta\na<["L"]>(right\u2028,down)\n',
+    'block-beta\n  a<["L"]>(right\u2028, down)\n',
+  ],
+  [
+    "U+2029 after the comma between the directions of a block arrow",
+    'block-beta\na<["L"]>(right,\u2029down)\n',
+    'block-beta\n  a<["L"]>(right,\u2029down)\n',
+  ],
+  [
+    "U+2029 before the comma between the directions of a block arrow",
+    'block-beta\na<["L"]>(right\u2029,down)\n',
+    'block-beta\n  a<["L"]>(right\u2029, down)\n',
+  ],
+  [
     "U+2028 between two statements of a row",
     "block-beta\na\u2028b\n",
     "block-beta\n  a\u2028b\n",
@@ -2398,6 +2418,16 @@ describe("a block diagram with a whitespace character that no fixture file holds
 /** Fixed kanban cases of Unicode whitespace, comment boundaries, and CR/LF. */
 const kanbanExamples: readonly (readonly [string, string, string, Options?])[] =
   [
+    [
+      "kanban: class-padding-then-u2028",
+      "kanban\n S\n   A\n   ::: hot\u2028",
+      "kanban\n  S\n    A\n    :::hot\n",
+    ],
+    [
+      "kanban: class-padding-then-u2029",
+      "kanban\n S\n   A\n   ::: hot\u2029",
+      "kanban\n  S\n    A\n    :::hot\n",
+    ],
     ["kanban: tab-one-space", "kanban\n\tS\n\t\tA\n", "kanban\n  S\n    A\n"],
     [
       "kanban: blank-whitespace",

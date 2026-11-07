@@ -365,15 +365,25 @@ icons-and-classes/db-decoration-icon-section] [fixture:
 icons-and-classes/gram-decoration-then-child]
 
 The text of a decoration stays as written: the case of the marker (`::ICON(y)`),
-the whitespace inside an icon (`::icon( x )`) and in a class (`::: c  `, whose
+the whitespace inside an icon (`::icon( x )`) and after a class (`:::c  `, whose
 trailing spaces are part of the class), whitespace-only icons and classes, and a
-second icon or class after the first. A later icon replaces an earlier one in
-the Db, and both are kept, because the printer drops no text. The printer never
-moves a decoration onto the line of its node, because that changes the board:
-after a bare node an icon makes a round shape of its text and the rest part of
-the id (`A ::icon(x)` is the node `A ::icon` with the label `x`), a class
-becomes part of the id (`A :::c` is the id `A :::c`), and after a shape both are
-rejected (`S[x] ::icon(star)`, see
+second icon or class after the first. The spaces and tabs between the `:::` and
+the class are dropped: `::: hot` is printed `:::hot`. mermaid.js keeps the text
+after `:::` as the class of the node
+([`decorateNode`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L202-L214))
+and passes no class on to what it draws
+([`getData`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L54-L97)),
+so the board is the same, and a space or a tab does not belong to a class name
+in HTML. A class of only whitespace, one that starts with a directive, and one
+that starts with another whitespace character, such as U+00A0, stay as written.
+[fixture: icons-and-classes/class-padding-after-marker-dropped] [test: kanban:
+class-padding-then-u2028] [test: kanban: class-padding-then-u2029] A later icon
+replaces an earlier one in the Db, and both are kept, because the printer drops
+no text. The printer never moves a decoration onto the line of its node, because
+that changes the board: after a bare node an icon makes a round shape of its
+text and the rest part of the id (`A ::icon(x)` is the node `A ::icon` with the
+label `x`), a class becomes part of the id (`A :::c` is the id `A :::c`), and
+after a shape both are rejected (`S[x] ::icon(star)`, see
 [When a diagram is not formatted](../README.md#when-a-diagram-is-not-formatted)).
 Classes and the icons of sections do not show in the Db that the tests compare,
 but they are text that the author wrote, and they are kept as well. [fixture:

@@ -391,8 +391,22 @@ kanban
 
 飾りのテキストは書かれたまま残します。
 マーカーの大文字小文字（`::ICON(y)`）、アイコンの中の空白（`::icon( x )`）、
-クラスの中の空白（`::: c  ` の末尾の空白はクラスの一部です）、
+クラスの後ろの空白（`:::c  ` の末尾の空白はクラスの一部です）、
 空白だけのアイコンとクラス、最初の後の 2 つめのアイコンやクラスです。
+`:::` とクラスの間の空白とタブは落とし、`::: hot` は `:::hot` になります。
+mermaid.js は `:::` の後のテキストをノードのクラスとして持ちますが、
+描画するデータにクラスは渡しません。
+その箇所は、
+[`decorateNode`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L202-L214)
+と、
+[`getData`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L54-L97)
+にあります。
+そのためボードは変わらず、空白やタブは HTML のクラス名の一部でもありません。
+空白だけのクラス、ディレクティブで始まるクラス、
+U+00A0 のような別の空白文字で始まるクラスは、書かれたまま残します。
+[fixture: icons-and-classes/class-padding-after-marker-dropped]
+[test: kanban: class-padding-then-u2028]
+[test: kanban: class-padding-then-u2029]
 後のアイコンは Db で前のものを置き換えますが、
 印字は何も落とさないので両方を残します。
 飾りをノードの行へ動かすことはしません。
