@@ -19,7 +19,7 @@ This is a third-party project, not affiliated with
 through Prettier, and Prettier formats the whole Markdown file. A project that
 formats its Markdown with another tool, or does not format it, cannot use the
 plugin on its code blocks. This tool gives that project the same formatting of
-the diagrams, with no Prettier configuration.
+the diagrams, and needs no Prettier configuration.
 
 ## Usage
 
@@ -34,8 +34,10 @@ npx mmdfmt --stdin-filepath diagram.mmd < diagram.mmd
 - `--stdin-filepath <path>` reads standard input and writes the result to
   standard output. The path says whether the text is a diagram or Markdown.
 
-There are no formatting options: a diagram is printed with the defaults of the
-plugin, which indent by two spaces.
+There are no formatting options. Where the project has a Prettier configuration,
+its `tabWidth` and `useTabs` for the file apply, found as Prettier's CLI finds
+them, `.editorconfig` included. Otherwise a diagram is indented by two spaces,
+the default of the plugin.
 
 The patterns are globs. Quote them, so that the tool expands them rather than
 your shell. `node_modules` and the files that `.gitignore` lists are skipped.
@@ -72,7 +74,7 @@ A diagram that mermaid.js rejects is not changed, as with the plugin.
 
 The text of a diagram is formatted by Prettier with `prettier-plugin-mmd`, which
 this package depends on, so the rules, the fixtures, and the compatibility notes
-of the plugin apply to it. The user installs this package only and writes no
+of the plugin apply to it. The user installs this package only, and needs no
 Prettier configuration.
 
 One result differs from the plugin in Markdown, in favor of the diagram:
@@ -86,7 +88,7 @@ that a fence inside another code block is not taken for a diagram.
 
 ## What it does not do
 
-- It does not format anything but diagrams, and it does not read Prettier's
-  configuration.
+- It formats nothing but diagrams. Of a Prettier configuration it uses only the
+  indentation; the plugins and the other options there are not used.
 - It reports no mistakes in a diagram beyond syntax errors;
   [`@mmd-toolkit/eslint-plugin`](../eslint-plugin) does that.
