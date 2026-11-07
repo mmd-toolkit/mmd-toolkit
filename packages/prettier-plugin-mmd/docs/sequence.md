@@ -971,18 +971,22 @@ rule 2). So `Alice ->>`, a space, a line break, and `Bob: hi` is printed as
 `Alice ->> Bob: hi`. [fixture: multi-line-statements/joined] [fixture:
 multi-line-statements/more-lines-joined]
 
-A statement with comments or directives keeps its line breaks, while structural
-continuations and intervening trivia stand one level deeper. The whitespace
+Each line break of a statement is decided on its own. A line break next to a
+comment or a directive stays, while structural continuations and intervening
+trivia stand one level deeper, and the other line breaks of the statement are
+joined: `autonumber`, a line break, `5 %%{init: {}}%%`, a line break, and `2` is
+printed as `autonumber 5 %%{init: {}}%%`, a line break, and `2`. The whitespace
 before the first line break of each gap is retained: it can make mermaid.js read
 later lines as part of the same statement. Whitespace inside values stays
-unchanged. [fixture: multi-line-statements/comment-inside-kept] [fixture:
+unchanged. [fixture: multi-line-statements/breaks-decided-one-by-one] [fixture:
+multi-line-statements/comment-inside-kept] [fixture:
 multi-line-statements/autonumber-comment-continuation] [fixture:
 multi-line-statements/autonumber-directive-continuation] A title with trivia
 between its keyword and text keeps its complete source, since its text includes
-indentation. Joining regions also stay as written. A statement written over
-several lines is kept as written when joining its lines, with one space or with
-nothing, could change which `;` the line rule ignores; any other statement over
-several lines is joined as usual, also when it holds a `;`. [fixture:
+indentation. Joining regions also stay as written. A line break stays where
+joining it, with one space or with nothing, could change which `;` the line rule
+ignores, and where a `;` decides the end of the last line; any other line break
+is joined as usual, also in a statement that holds a `;`. [fixture:
 multi-line-statements/semicolon-joining-changes-kept] A `;` alone does not
 prevent joining. [fixture: multi-line-statements/semicolon-inside-joined]
 [fixture: multi-line-statements/start-moves-to-own-line] Description blocks

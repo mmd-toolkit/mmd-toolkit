@@ -231,18 +231,23 @@ export function alignBlockOpeningLine(
  * Some grammars require a non-LF whitespace run to start before a retained LF.
  * Keep each first gap-line tail, including complete trivia, while later lines
  * use ordinary continuation columns (diagrams/requirement.md, Whitespace;
- * docs/xychart.md, Multi-line statements).
+ * docs/xychart.md, Multi-line statements). `keepsBreak` says, for the gap from
+ * `from` to `to`, whether its line break stays: a layout that joins the other
+ * line breaks leaves the atoms before them whole.
  */
 export function keepFirstGapLineTails(
   source: Source,
   atoms: readonly Atom[],
+  keepsBreak: (from: number, to: number) => boolean = () => true,
 ): Atom[] {
   return atoms.map((atom, index) => {
     const next = atoms[index + 1]
     if (next === undefined) return atom
     for (let end = atom.end; end < next.start;) {
       const part = readGapElement(source, end)
-      if (part.element.kind === "lineTerminator") return { ...atom, end }
+      if (part.element.kind === "lineTerminator") {
+        return keepsBreak(atom.end, next.start) ? { ...atom, end } : atom
+      }
       end = part.end
     }
     return atom

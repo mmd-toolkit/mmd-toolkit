@@ -19,11 +19,16 @@ import {
   formatDescriptionBlock,
   keepFirstGapLineTails,
   layoutCompactEmptyDescriptionBlockWithFallback,
-  spansLinesThatCannotJoin,
   toAsciiLowerCase,
   walk,
 } from "./layout.ts"
-import { holdsJoiningRegion, printedEndOf } from "./kept-lines.ts"
+import {
+  findKeptBreaks,
+  gapKeepsLineBreak,
+  holdsJoiningRegion,
+  printedEndOf,
+  spansKeptBreaks,
+} from "./kept-lines.ts"
 import { trimTextAfterKeyword } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
 import {
@@ -247,14 +252,17 @@ export function layoutSequenceStatement(
   end: number,
 ): AtomLayout {
   const start = statement.range[0]
+  const keptBreaks =
+    statement.type === "SequenceAccDescrBlockStatement"
+      ? new Set<number>()
+      : findKeptBreaks(source, start, end)
   const keepsLineBreaks =
     statement.type !== "SequenceAccDescrBlockStatement" &&
-    spansLinesThatCannotJoin(source, start, end)
+    spansKeptBreaks(source, keptBreaks, start, end)
   if (
     keepsLineBreaks &&
     (statement.type === "SequenceTitleStatement" ||
-      holdsJoiningRegion(source, start, end) ||
-      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
+      holdsJoiningRegion(source, start, end))
   ) {
     return {
       atoms: [{ start, end }],
@@ -303,10 +311,12 @@ export function layoutSequenceStatement(
   }
   const atoms = collectAtoms(source, start, end, values, tail)
   return {
-    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+    atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
+      gapKeepsLineBreak(source, keptBreaks, from, to),
+    ),
     rules: statementRules(source, statement),
     outdented: new Set(),
-    lineBreaks: keepsLineBreaks ? "kept" : "joined",
+    lineBreaks: "joined",
   }
 }
 

@@ -19,7 +19,13 @@ import { printAtoms } from "./atoms.ts"
 import { holdsDirection } from "./accessibility-lines.ts"
 import { findWrittenWhitespaceEnd } from "./gap.ts"
 import { findClassSemicolonLines } from "./class-kept-lines.ts"
-import { holdsJoiningRegion, lineStartOf } from "./kept-lines.ts"
+import {
+  findKeptBreaks,
+  gapKeepsLineBreak,
+  holdsJoiningRegion,
+  lineStartOf,
+  spansKeptBreaks,
+} from "./kept-lines.ts"
 import { findOpenString } from "./lines.ts"
 import {
   collectAtoms,
@@ -32,7 +38,6 @@ import {
   formatDescriptionBlock,
   keepFirstGapLineTails,
   layoutCompactEmptyDescriptionBlockWithFallback,
-  spansLinesThatCannotJoin,
   walk,
 } from "./layout.ts"
 import type { Source } from "./source.ts"
@@ -300,11 +305,10 @@ export function layoutClassStatement(
         )
       : layoutExpandedBlock()
   }
-  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  const keptBreaks = findKeptBreaks(source, start, end)
   if (
-    keepsLineBreaks &&
-    (holdsJoiningRegion(source, start, end) ||
-      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
+    spansKeptBreaks(source, keptBreaks, start, end) &&
+    holdsJoiningRegion(source, start, end)
   ) {
     return {
       atoms: [{ start, end }],
@@ -372,10 +376,12 @@ export function layoutClassStatement(
     normalizeStyleList(source, atoms, statement)
   }
   return {
-    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+    atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
+      gapKeepsLineBreak(source, keptBreaks, from, to),
+    ),
     rules: statementRules(source, statement),
     outdented: new Set(),
-    lineBreaks: keepsLineBreaks || keepsDirectionValue ? "kept" : "joined",
+    lineBreaks: keepsDirectionValue ? "kept" : "joined",
   }
 }
 

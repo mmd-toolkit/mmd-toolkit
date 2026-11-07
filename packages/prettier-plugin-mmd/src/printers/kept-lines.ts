@@ -9,6 +9,7 @@ import {
   findTokenStartingAt,
   findTokensBetween,
   findTriviaBetween,
+  isSpaceOrTab,
   isWhitespace,
 } from "./source.ts"
 
@@ -944,31 +945,29 @@ function findSemicolonIgnoredByWord(text: string, word: string): number {
   return -1
 }
 
+/** A physical line of a statement, and what the line rule reads in it. */
+interface StatementLine {
+  /** The line feed that ends the line before it; null for the first line. */
+  readonly breakBefore: number | null
+  readonly segments: readonly ReadableSegment[]
+}
+
 /**
- * Whether joining the lines of the statement from `start` to `end` into one
- * can change which `;` the line rule ignores (common.md, The `style` and
- * `classDef` lines). The rule reads each line, and a segment of it that a
- * U+2028 or U+2029 ends, so a `;` can come to a line that matches the rule
- * while it did not on its own line, and the rule would ignore it, or the rule
- * can come to ignore another `;` of the line. The segments of the lines are
- * joined with one space and with nothing, whichever a layout prints between
- * them, and the `;` that the rule ignores in the joined line must be those
- * that it ignores in the segments on their own. The first and the last line
- * hold the text of the other statements on them where the line keeps its
- * statements together (see `findSemicolonLines`), and otherwise only the
- * statement, since the printer puts each statement on a line of its own. This
- * is the one decision about whether the line breaks of a statement can go.
+ * The lines of the statement from `start` to `end` as the line rule of
+ * mermaid.js reads them. The first and the last line hold the text of the
+ * other statements on them where the line keeps its statements together (see
+ * `findSemicolonLines`), and otherwise only the statement, since the printer
+ * puts each statement on a line of its own.
  */
-export function joiningChangesIgnoredSemicolon(
+function readStatementLines(
   source: Source,
   start: number,
   end: number,
-): boolean {
-  if (!source.text.slice(start, end).includes("\n")) return false
+): StatementLine[] {
   const keptTogether = findSemicolonLines(source)
   const firstLine = lineStartOf(source, start)
   const lastLine = lineStartOf(source, end - 1)
-  const segments: ReadableSegment[] = []
+  const lines: StatementLine[] = []
   for (
     let lineStart = firstLine;
     lineStart <= lastLine;
@@ -983,7 +982,36 @@ export function joiningChangesIgnoredSemicolon(
       lineStart === lastLine && !keptTogether.has(lastLine)
         ? Math.min(end, lineEnd)
         : lineEnd
-    appendItems(segments, readSegments(source, from, to))
+    lines.push({
+      breakBefore: lineStart === firstLine ? null : lineStart - 1,
+      segments: readSegments(source, from, to),
+    })
+  }
+  return lines
+}
+
+/**
+ * Whether joining the lines of the statement from `start` to `end` into one
+ * can change which `;` the line rule ignores (common.md, The `style` and
+ * `classDef` lines). The rule reads each line, and a segment of it that a
+ * U+2028 or U+2029 ends, so a `;` can come to a line that matches the rule
+ * while it did not on its own line, and the rule would ignore it, or the rule
+ * can come to ignore another `;` of the line. The segments of the lines are
+ * joined with one space and with nothing, whichever a layout prints between
+ * them, and the `;` that the rule ignores in the joined line must be those
+ * that it ignores in the segments on their own (see `readStatementLines`).
+ * This is the one decision about whether the line breaks of a statement can
+ * go.
+ */
+export function joiningChangesIgnoredSemicolon(
+  source: Source,
+  start: number,
+  end: number,
+): boolean {
+  if (!source.text.slice(start, end).includes("\n")) return false
+  const segments: ReadableSegment[] = []
+  for (const line of readStatementLines(source, start, end)) {
+    appendItems(segments, line.segments)
   }
   const alone = ignoredSemicolonsIn(segments)
   return ["", " "].some((joint) => {
@@ -1001,6 +1029,151 @@ export function joiningChangesIgnoredSemicolon(
       together.some((offset, index) => offset !== alone[index])
     )
   })
+}
+
+/**
+ * The line feeds of the statement from `start` to `end` that a printer cannot
+ * turn into whitespace, each decided on its own, from the first to the last
+ * (docs/flowchart.md, Semicolons; the line breaks of a gap that holds a
+ * comment or a directive are decided where the gap is printed):
+ *
+ * - The line break before a line joins the lines before it only if the `;`
+ *   that the line rule ignores in the joined line are those that it ignores in
+ *   the lines on their own, with one space and with nothing between them (see
+ *   `joiningChangesIgnoredSemicolon`). A line that does not join starts the
+ *   next join.
+ * - The line break before the last line stays where a `;` decides the end of
+ *   that line (see `findLinesEndedBySemicolon`).
+ * - A line break stays next to a comment or a directive: only whitespace lies
+ *   between them. A comment takes the rest of its line, and a directive that a
+ *   joined line keeps beside other text changes the whitespace that remains
+ *   when mermaid.js removes it.
+ */
+export function findKeptBreaks(
+  source: Source,
+  start: number,
+  end: number,
+): ReadonlySet<number> {
+  const kept = new Set<number>()
+  if (!source.text.slice(start, end).includes("\n")) return kept
+  for (
+    let at = source.text.indexOf("\n", start);
+    at !== -1 && at < end;
+    at = source.text.indexOf("\n", at + 1)
+  ) {
+    if (isNextToTrivia(source, at, start, end)) kept.add(at)
+  }
+  const lines = readStatementLines(source, start, end)
+  const joints = ["", " "]
+  let merged = joints.map(() => lines[0].segments)
+  let mergedAlone = ignoredSemicolonsIn(lines[0].segments)
+  for (const line of lines.slice(1)) {
+    const alone = ignoredSemicolonsIn(line.segments)
+    const expected = [...mergedAlone, ...alone]
+    const together = joints.map((joint, index) =>
+      joinLines(merged[index], line.segments, joint),
+    )
+    const joins = together.every((segments) => {
+      const ignored = ignoredSemicolonsIn(segments)
+      return (
+        ignored.length === expected.length &&
+        ignored.every((offset, index) => offset === expected[index])
+      )
+    })
+    if (joins) {
+      merged = together
+      mergedAlone = expected
+    } else {
+      kept.add(line.breakBefore!)
+      merged = joints.map(() => line.segments)
+      mergedAlone = alone
+    }
+  }
+  if (findLinesEndedBySemicolon(source).has(lineStartOf(source, end - 1))) {
+    const last = lines.at(-1)!.breakBefore
+    if (last !== null) kept.add(last)
+  }
+  return kept
+}
+
+/**
+ * Whether only whitespace lies between the line feed at `at` and a comment or
+ * a directive of the statement from `start` to `end` that ends before it or
+ * starts after it.
+ */
+function isNextToTrivia(
+  source: Source,
+  at: number,
+  start: number,
+  end: number,
+): boolean {
+  const { text } = source
+  let before = at - 1
+  while (before >= start && isSpaceOrTab(text[before])) before--
+  let after = at + 1
+  while (after < end && isSpaceOrTab(text[after])) after++
+  const earlier = before >= start ? findTriviaAt(source, before) : undefined
+  const later = after < end ? findTriviaAt(source, after) : undefined
+  return (
+    (earlier !== undefined && earlier.range[0] >= start) ||
+    (later !== undefined && later.range[1] <= end)
+  )
+}
+
+/**
+ * Whether the statement from `start` to `end` lies on several lines and has a
+ * line break that stays: a line feed of `kept` (see `findKeptBreaks`), or a
+ * comment or a directive in the statement.
+ */
+export function spansKeptBreaks(
+  source: Source,
+  kept: ReadonlySet<number>,
+  start: number,
+  end: number,
+): boolean {
+  return (
+    source.text.slice(start, end).includes("\n") &&
+    (kept.size > 0 || findTriviaBetween(source, start, end).length > 0)
+  )
+}
+
+/**
+ * Whether the gap from `from` to `to`, which holds a line break, stays broken
+ * where the layout joins its line breaks: it holds a line feed of `kept` (see
+ * `findKeptBreaks`), or a comment or a directive, which a joined line would
+ * give the rest of the line or a gap of other whitespace.
+ */
+export function gapKeepsLineBreak(
+  source: Source,
+  kept: ReadonlySet<number>,
+  from: number,
+  to: number,
+): boolean {
+  for (const offset of kept) if (from <= offset && offset < to) return true
+  return findTriviaBetween(source, from, to).length > 0
+}
+
+/**
+ * The segments of two sets of lines with the last segment of the first and the
+ * first segment of the second joined by `joint`; an offset of -1 stands for
+ * the characters of the joint, which the source does not hold.
+ */
+function joinLines(
+  first: readonly ReadableSegment[],
+  second: readonly ReadableSegment[],
+  joint: string,
+): ReadableSegment[] {
+  if (first.length === 0 || second.length === 0) return [...first, ...second]
+  const last = first[first.length - 1]
+  const next = second[0]
+  return [
+    ...first.slice(0, -1),
+    {
+      text: last.text + joint + next.text,
+      offsets: [...last.offsets, ...[...joint].map(() => -1), ...next.offsets],
+    },
+    ...second.slice(1),
+  ]
 }
 
 /** The characters of a line-rule segment, with their offsets in the source. */

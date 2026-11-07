@@ -937,6 +937,12 @@ directives alone do not trigger complete-line protection. A Root directive
 before the header is omitted in the same way, and the lines of the body after it
 are protected or formatted as before.
 
+The whitespace around a `;` of a word line stays as written, since it changes
+how mermaid.js reads the line: `A -> B;` at the end of a line is rejected, while
+`A -> B;` followed by spaces is accepted, so the printer does not choose a form
+that mermaid.js reads otherwise. [fixture:
+wardley/semicolons/word-line-semicolon-whitespace-kept]
+
 [fixture: wardley/semicolons/style-label]
 
 [fixture: wardley/semicolons/style-selected-delimiter]

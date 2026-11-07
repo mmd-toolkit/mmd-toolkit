@@ -2,7 +2,11 @@ import type { Doc } from "prettier"
 import type { Range } from "@mmd-toolkit/ast"
 import { builders } from "prettier/doc"
 import { endsWithSpaceOrTab, printAbsentItems, readGap } from "./gap.ts"
-import { isInsideStyleRuleStretch } from "./kept-lines.ts"
+import {
+  findKeptBreaks,
+  gapKeepsLineBreak,
+  isInsideStyleRuleStretch,
+} from "./kept-lines.ts"
 import type { Line } from "./lines.ts"
 import {
   lineBreakBetween,
@@ -159,6 +163,13 @@ export function printAtoms(
     currentWrittenBreak = undefined
   }
 
+  // A layout that joins its line breaks keeps the ones that cannot go: the
+  // statement is not kept whole for them (see `findKeptBreaks`).
+  const keptBreaks: ReadonlySet<number> =
+    layout.lineBreaks === "joined" && layout.atoms.length > 0
+      ? findKeptBreaks(source, layout.atoms[0].start, layout.atoms.at(-1)!.end)
+      : new Set()
+
   for (const atom of layout.atoms) {
     const text = source.text.slice(atom.start, atom.end)
     const alignedIndentation =
@@ -194,7 +205,12 @@ export function printAtoms(
       if (
         gap.breaksLine &&
         (layout.lineBreaks === "joined" ||
-          layout.joinedBefore?.has(atom.start) === true)
+          layout.joinedBefore?.has(atom.start) === true) &&
+        !(
+          layout.lineBreaks === "joined" &&
+          layout.joinedBefore?.has(atom.start) !== true &&
+          gapKeepsLineBreak(source, keptBreaks, previous.end, atom.start)
+        )
       ) {
         if (
           gap.trailing !== null ||

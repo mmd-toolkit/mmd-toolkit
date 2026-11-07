@@ -1025,9 +1025,9 @@ where the text may be: so `direction`, a line break, and `LR` is printed as
 `direction LR`. [fixture: multi-line-statements/joined] [fixture:
 multi-line-statements/acc-descr-joined] [fixture:
 multi-line-statements/empty-line-inside-joined] [corpus fixture:
-class/lex-direction-line-value-next-line] A statement with a comment or
-directive keeps its line breaks, while structural continuations and intervening
-trivia stand one level deeper, as in a sequence diagram (see
+class/lex-direction-line-value-next-line] A line break next to a comment or a
+directive stays, while structural continuations and intervening trivia stand one
+level deeper, as in a sequence diagram (see
 [Multi-line statements](./sequence.md#multi-line-statements)). Whitespace inside
 values remains unchanged. The whitespace before the first line break of each gap
 is retained; joining regions keep the whole statement as written. A `;` does not
