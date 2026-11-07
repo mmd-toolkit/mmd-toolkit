@@ -2,7 +2,11 @@
 "prettier-plugin-mmd": minor
 ---
 
-Remove the whitespace before a `,` in the style lists of `flowchart`,
-`agentflow`, `class` and `state`, and of a `classDef` in `block`, and print one
-space after it in `state` and in a `classDef` of `block`:
-`style A fill:#f00 , stroke:#333` becomes `style A fill:#f00, stroke:#333`.
+Print the styles of `style`, `classDef` and `linkStyle` in `flowchart`,
+`agentflow`, `class`, `state` and `block` as `ER` and `requirement` print them,
+with one space after the first `:` of a style and after each `,`, and none
+before them: `style A fill:#f9f,stroke:#333` becomes
+`style A fill: #f9f, stroke: #333`. mermaid.js draws both the same. The space
+after a `,` before a `fill` style of a numbered `linkStyle` keeps whether it is
+there, since mermaid.js adds `fill:none` to that link when no style starts with
+`fill`.
