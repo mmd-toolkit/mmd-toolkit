@@ -204,13 +204,36 @@ agentflow/db-connector-repeated-without-title]
 **Classes and styles.** Class application appends the class to the vertex, first
 edge, and flow with each id, where present. A style statement applies the vertex
 step to its one id, including commas, creating a missing vertex. A classDef
-appends styles for each name, including null as empty text, replacing an escaped
-comma by a comma. Other style commas remain separators. Trim only trailing style
-whitespace in the summary. [fixture: agentflow/db-all-fields] [fixture:
-agentflow/gram-class-semicolon] [fixture: agentflow/gram-classdef-multi]
-[fixture: agentflow/gram-classdef-escaped-comma] [fixture:
-agentflow/gram-style-whitespace-after-comma] [fixture:
+appends styles for each name, replacing an escaped comma by a comma. Other style
+commas remain separators. Keep each style's converted value and the line
+whitespace after its range (JavaScript `\s` without LF and CR). [fixture:
+agentflow/db-all-fields] [fixture: agentflow/gram-class-semicolon] [fixture:
+agentflow/gram-classdef-multi] [fixture: agentflow/gram-classdef-escaped-comma]
+[fixture: agentflow/gram-style-whitespace-after-comma] [fixture:
 agentflow/db-node-style-first-leading-spaces]
+
+A null style reads its whitespace after the preceding comma; a first null style
+reads after the statement's one-character `space` separator. Thus `style A  `
+has one value of one space, and `style A fill:red,` followed by a tab keeps that
+tab as its second value. [fixture: agentflow/gram-style-all-null] [fixture:
+agentflow/gram-classdef-all-null] [fixture:
+agentflow/gram-default-linkstyle-all-null] [fixture:
+agentflow/gram-style-whitespace-after-comma]
+
+Read the whitespace in converted text, skipping closed empty description blocks
+and joining the whitespace around them, up to the first non-whitespace
+character, comma, real semicolon or line terminator. An escaped comma still
+keeps its following whitespace: `classDef hot x:y\, ` gives `x:y,` followed by
+one space. [fixture: agentflow/db-style-trailing-whitespace] [fixture:
+agentflow/lex-style-preprocessing-semicolon] [fixture:
+agentflow/gram-tail-style-semicolons] [fixture:
+agentflow/gram-empty-description-splits-interpolate-spaces] [fixture:
+agentflow/gram-classdef-escaped-comma-whitespace-tail] The statement comment
+rule takes the ASCII spaces/tabs immediately before its comment; those are
+trivia, while NBSP remains a style value. [fixture:
+agentflow/comment-after-style] [fixture: agentflow/gram-tail-classdef-comment]
+[fixture: agentflow/gram-tail-linkstyle-comment] [fixture:
+agentflow/gram-style-null-before-comment-nbsp]
 
 Numbered linkStyle replaces each named edge's interpolation when supplied and
 styles when present. Add `fill:none` if no style starts with `fill`, testing

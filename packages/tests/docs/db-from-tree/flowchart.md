@@ -49,9 +49,9 @@ flowchart/db-label-line-separator-trimmed] The text of a link is made in the
 same way. The other values are those of the
 [shared leaf nodes](../../../spec/docs/ast.md#shared-leaf-nodes): the `name` of
 an Identifier and the `value` of a StringLiteral, a NumericLiteral, or a
-FlowchartLiteral. A null element of a list of ids, class names, or styles stands
-for the empty text (see **Style statements**). [fixture:
-flowchart/db-linkstyle-whitespace-only-style] [fixture:
+FlowchartLiteral. A null element of a list of ids or class names stands for the
+empty text; a null style stands for its whitespace (see **Style statements**).
+[fixture: flowchart/db-linkstyle-whitespace-only-style] [fixture:
 flowchart/db-classdef-whitespace-only-style] [fixture:
 flowchart/db-linkstyle-default-whitespace-only-style] [fixture:
 flowchart/db-class-ids-empty-subgraph-id] A null `value` of an accessibility
@@ -335,18 +335,34 @@ The subgraph has:
   flowchart/config-inherit-dir-no-header-direction]
 - `classes`: none, until the class step adds some.
 
-**Style statements.** Each style gives its value, or the empty text when it is
-null. Its range starts right after the `,` before it, or, for the first style,
-at the end of the `space` unit that the rule of the statement reads before
-`styles`, with the whitespace there, which mermaid.js reads, and it ends at its
-last character that is not whitespace, before the empty description blocks and
-the separator of the statement (see
-[FlowchartStyleStatement](../../../spec/docs/ast/flowchart.md#flowchartstylestatement)):
-the last styles of `classDef c fill:red accDescr {}`,
-`linkStyle 0 stroke:red accDescr {}`, and
-`linkStyle default stroke:red accDescr {}` are `fill:red`, `stroke:red`, and
-`stroke:red`, and in `linkStyle 0 interpolate basis accDescr {} ;`, the style
-that is all whitespace is null. [fixture:
+**Style statements.** A Db style value is the converted value of the tree's
+style followed by the line whitespace after its range. Line whitespace is
+JavaScript `\s` without LF and CR; a physical line terminator ends the value.
+Read through the common removals, so directives, comment regions and ignored
+semicolons add no characters. Stop at the first non-whitespace character,
+including a comma or a real semicolon. [fixture:
+flowchart/db-style-trailing-whitespace-characters] [fixture:
+flowchart/tokens-style-ignored-semicolon-then-spaces] [fixture:
+flowchart/tokens-style-directive-after-comma] [fixture:
+flowchart/gram-style-semicolon-ends-statement]
+
+A style that is all whitespace is null in the tree; its Db value is that
+whitespace. Read it right after the preceding comma, or, for the first style,
+after the one-character `space` unit that the statement consumes before `styles`
+(see
+[FlowchartStyleStatement](../../../spec/docs/ast/flowchart.md#flowchartstylestatement)).
+Thus `style A fill:red, ` has a final value of one space, and `style A  ` has
+one value of one space. [fixture: flowchart/db-style-whitespace-only-value]
+[fixture: flowchart/gram-style-whitespace] [fixture:
+flowchart/db-classdef-whitespace-only-style] [fixture:
+flowchart/db-linkstyle-whitespace-only-style] [fixture:
+flowchart/db-linkstyle-default-whitespace-only-style]
+
+Skip the characters of closed empty description blocks while reading that
+whitespace, keeping the whitespace before, between and after them together.
+`linkStyle 0 stroke:red accDescr {} ;C` has `stroke:red` followed by two spaces.
+`linkStyle 0 interpolate basis accDescr {} ;` has a null style whose Db value is
+one space, after the statement consumes its first space. [fixture:
 flowchart/gram-empty-description-block-after-style-before-semicolon] [fixture:
 flowchart/gram-empty-description-block-after-classdef] [fixture:
 flowchart/gram-empty-description-block-after-classdef-before-semicolon]
@@ -355,25 +371,28 @@ flowchart/gram-empty-description-block-after-linkstyle-before-semicolon]
 [fixture:
 flowchart/gram-empty-description-block-splits-spaces-after-interpolate]
 [fixture: flowchart/gram-empty-description-block-after-linkstyle-default]
-`style` applies the vertex step with the id, not split at commas, and its
-styles, so it adds a vertex that no statement has made yet: `style C fill:red`
-after `A-->B` adds C with the style `fill:red`. [fixture:
-flowchart/db-style-unknown-vertex] A `style` statement before the other
-statements of a vertex gives it the style, as `style A fill:red` before `A-->B`
-does, and the vertex step does not look at subgraphs, so `style S fill:red`
-after `subgraph S` adds a vertex `S` beside the subgraph. [fixture:
-flowchart/db-style-before-vertex] [fixture: flowchart/db-style-subgraph-id]
-`classDef` reads each `\,` in its styles as `,`; for each class name, a class is
-added at the end if none has that name, and the styles are appended to it.
-`classDef c fill:a\ ,stroke:b` has the two styles `fill:a\` and `stroke:b`, and
-`classDef c fill:a\,  stroke:b` the one style `fill:a,`, two spaces, and
-`stroke:b` (see
+[fixture: flowchart/name-semicolon-whitespace-bbc9fd27] [fixture:
+flowchart/name-semicolon-whitespace-c53c0d40] `style` applies the vertex step
+with the id, not split at commas, and its styles, so it adds a vertex that no
+statement has made yet: `style C fill:red` after `A-->B` adds C with the style
+`fill:red`. [fixture: flowchart/db-style-unknown-vertex] A `style` statement
+before the other statements of a vertex gives it the style, as
+`style A fill:red` before `A-->B` does, and the vertex step does not look at
+subgraphs, so `style S fill:red` after `subgraph S` adds a vertex `S` beside the
+subgraph. [fixture: flowchart/db-style-before-vertex] [fixture:
+flowchart/db-style-subgraph-id] `classDef` reads each `\,` in its styles as `,`;
+for each class name, a class is added at the end if none has that name, and the
+styles are appended to it. `classDef c fill:a\ ,stroke:b` has two styles:
+`fill:a\` followed by one space, and `stroke:b`. `classDef c fill:a\,  stroke:b`
+has the one style `fill:a,`, two spaces, and `stroke:b` (see
 [Style, class, and link style statements](../../../spec/docs/diagrams/flowchart.md#style-class-and-link-style-statements)).
 `class` applies the class step with its ids and class name. [fixture:
 flowchart/db-class-def-escaped-comma] [fixture:
 flowchart/db-classdef-escape-space-before-comma] [fixture:
 flowchart/db-classdef-escape-space-after-comma] [fixture:
-flowchart/db-classdef-appended-twice]
+flowchart/db-classdef-appended-twice] The same trailing-whitespace reading
+applies after an escaped comma: `classDef c fill:x\, ` has `fill:x,` followed by
+one space. [fixture: flowchart/gram-classdef-escaped-comma-then-space]
 
 **Link style statements.** A `linkStyle` statement first sets the interpolate of
 each numbered edge, when it has `interpolate`, and then, when it has styles,

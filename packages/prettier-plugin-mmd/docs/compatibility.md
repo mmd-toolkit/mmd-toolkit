@@ -371,6 +371,12 @@ so was the SVG, without the generated ids and without that whitespace: for
 `style` and `classDef` in the five diagram types, and for the styles of a
 `linkStyle`, with link numbers or `default`, except for the cases below.
 
+A `classDef` in a treemap drops the whitespace at the end of its styles:
+`classDef zz color:red  ` is printed `classDef zz color:red`. mermaid.js keeps
+it in the Db and draws the same figure: the pixels were the same with the class
+put on a node. [fixture: treemap/styles/trailing-before-semicolon] [fixture:
+treemap/trailing-whitespace/style-content]
+
 A `linkStyle` with link numbers is drawn differently where a style after a `,`
 starts with whitespace.
 [`updateLink`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L417-L440)
@@ -601,9 +607,20 @@ whitespace that HTML does not draw. The nodes are numbered, not compared by
 their ids or texts, so two nodes that get the same text by the change are still
 two nodes, drawn as before. A text that becomes a string was drawn differently.
 
+A kanban board follows the same rules for the texts of its cards, the labels of
+its columns and cards, and its icons and classes (see
+[Kanban](./kanban.md#shapes)). The id of a column is the exception: mermaid.js
+tells two columns apart by it. `todo [A]` and `todo[B]` are two columns, drawn
+apart, and with the space gone they were drawn differently. The id of a card is
+not compared, and `id1 [x]` and `id1[x]` were drawn the same, also where two
+cards got the same id by the change. [fixture:
+kanban/shapes/card-id-before-shape-dropped] [fixture:
+kanban/shapes/id-before-shape]
+
 The tests compare the Db of the printed text with the texts of the nodes
 restored from the Db of the written text (`mindmapDbForFormattingComparison` in
-`tests/mindmap-text-margins.ts`): a text that differs from the written one only
+`tests/mindmap-text-margins.ts` and `kanbanDbForFormattingComparison` in
+`tests/kanban-text-margins.ts`): a text that differs from the written one only
 by the spaces and tabs at its ends takes the written text, and any other
 difference, among them a text that became a string, fails. When the pinned
 mermaid.js is updated, draw both texts of each case again and compare the SVG

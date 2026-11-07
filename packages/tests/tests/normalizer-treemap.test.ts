@@ -141,7 +141,7 @@ describe("treemap normalization", () => {
         { name: "Negative", value: "-Infinity" },
         { name: "Invalid", value: "NaN" },
       ],
-      classDefs: [{ id: "styled", styles: ["fill:red", " color:blue", ""] }],
+      classDefs: [{ id: "styled", styles: ["fill:red \t", " color:blue", ""] }],
     })
     expect(styles[0]).toBe("fill:red \t")
     expect(Object.is(children[0].value, -0)).toBe(true)

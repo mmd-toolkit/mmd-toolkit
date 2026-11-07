@@ -2659,7 +2659,7 @@ const kanbanExamples: readonly (readonly [string, string, string, Options?])[] =
     [
       "kanban: bare-trailing-trim",
       "kanban\n S   \n   A\t \n",
-      "kanban\n  S   \n    A\t \n",
+      "kanban\n  S   \n    A\n",
     ],
     [
       "kanban: closed-trailing-trim",
@@ -2852,7 +2852,7 @@ const kanbanExamples: readonly (readonly [string, string, string, Options?])[] =
     [
       "kanban: db-metadata-comment-ls",
       "kanban\n S@{}%% c\u2028   A\n",
-      "kanban\n  S@{}%% c\u2028   A\n",
+      "kanban\n  S@{ }%% c\u2028   A\n",
     ],
     [
       "kanban: shape-comment-ps",
@@ -3087,9 +3087,15 @@ describe("kanban whitespace and line boundaries", () => {
     const output = await format(input, options)
     expect(output).toBe(expected)
     expect(await format(output, options)).toBe(output)
-    expect(dbOfText(output, defaultEmbedded())).toEqual(
-      dbOfText(input, defaultEmbedded()),
-    )
+    const dbBefore = dbOfText(input, defaultEmbedded())
+    expect(
+      dbForFormattingComparison(
+        dbBefore,
+        dbOfText(output, defaultEmbedded()),
+        input,
+        output,
+      ),
+    ).toEqual(dbBefore)
     expect(
       dataBlockEmbeddedForFormattingComparison(
         writtenEmbeddedTexts(input),

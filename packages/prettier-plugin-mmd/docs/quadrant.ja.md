@@ -724,7 +724,8 @@ mermaid.js が複数行にわたって読む文は、
 それ以外の複数行の文は、改行が残る場合、書かれたままにします。
 最終行の別の文にある `;` も、同じ判定をします。
 [1 行 1 文](#1-行-1-文)を参照してください。
-[fixture: multi-line-statements/breaks-decided-one-by-one] [fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
+[fixture: multi-line-statements/breaks-decided-one-by-one]
+[fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
 [fixture: multi-line-statements/semicolon-joining-changes-kept]
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]

@@ -58,8 +58,8 @@ trim した後のテキストが 2 文字以上で、両端が二重引用符な
 ほかの値は [共通の葉のノード](../../../spec/docs/ast.ja.md#共通の葉のノード)
 の値で、Identifier の `name` と、StringLiteral、NumericLiteral、
 FlowchartLiteral の `value` です。
-id、クラス名、スタイルのリストの null の要素は、
-空のテキストを表します（**スタイルの文**を参照）。
+id とクラス名のリストの null の要素は、空のテキストを表します。
+null のスタイルは、その空白を表します（**スタイルの文**を参照）。
 [fixture: flowchart/db-linkstyle-whitespace-only-style] [fixture:
 flowchart/db-classdef-whitespace-only-style]
 [fixture: flowchart/db-linkstyle-default-whitespace-only-style]
@@ -405,26 +405,43 @@ subgraph は次のものを持ちます。
 - `classes`: クラスの手順が加えるまではなし。
 
 **スタイルの文。**
-各スタイルは、その値を与え、null なら空のテキストを与えます。
-その範囲は、その前の `,` のすぐ後から、
-最初のスタイルは文の規則が `styles` の前に読む `space` の単位の終わりから、
-mermaid.js が読むそこの空白を含めて始まり、文の空の説明ブロックと区切りの前の、
-空白でない最後の文字で終わります。
+Db のスタイルの値は、木のスタイルの値を変換した形と、範囲の後ろの行内空白です。
+行内空白は JavaScript の `\s` から LF と CR を除いた文字で、
+物理的な行終端は値を終えます。
+共通の除去を経て読み、directive、コメント領域、
+無視されるセミコロンは加えません。
+コンマや本当のセミコロンを含む、最初の空白でない文字で止めます。
+[fixture: flowchart/db-style-trailing-whitespace-characters]
+[fixture: flowchart/tokens-style-ignored-semicolon-then-spaces]
+[fixture: flowchart/tokens-style-directive-after-comma]
+[fixture: flowchart/gram-style-semicolon-ends-statement]
+
+すべて空白のスタイルは木では null で、Db の値はその空白です。
+前のコンマの直後から読みます。
+最初のスタイルなら、文が `styles` の前に読む 1 文字の `space` 単位の後からです。
 [FlowchartStyleStatement](../../../spec/docs/ast/flowchart.ja.md#flowchartstylestatement)
 を参照。
-`classDef c fill:red accDescr {}`、`linkStyle 0 stroke:red accDescr {}`、
-`linkStyle default stroke:red accDescr {}` の最後のスタイルは、`fill:red`、
-`stroke:red`、`stroke:red` で、
-`linkStyle 0 interpolate basis accDescr {} ;` の、
-すべて空白のスタイルは null です。
+`style A fill:red, ` の最後の値は空白 1 つで、`style A  ` の値も空白 1 つです。
+[fixture: flowchart/db-style-whitespace-only-value]
+[fixture: flowchart/gram-style-whitespace]
+[fixture: flowchart/db-classdef-whitespace-only-style]
+[fixture: flowchart/db-linkstyle-whitespace-only-style]
+[fixture: flowchart/db-linkstyle-default-whitespace-only-style]
+
+その空白を読む間、閉じた空の説明ブロックの文字は飛ばし、ブロックの前、間、
+後の空白を合わせます。
+`linkStyle 0 stroke:red accDescr {} ;C` は、`stroke:red` と空白 2 つです。
+`linkStyle 0 interpolate basis accDescr {} ;` のスタイルは null で、
+文が最初の空白を読んだ後の Db の値は空白 1 つです。
 [fixture: flowchart/gram-empty-description-block-after-style-before-semicolon]
-[fixture: flowchart/gram-empty-description-block-after-classdef] [fixture:
-flowchart/gram-empty-description-block-after-classdef-before-semicolon]
-[fixture: flowchart/gram-empty-description-block-after-linkstyle] [fixture:
-flowchart/gram-empty-description-block-after-linkstyle-before-semicolon]
-[fixture:
-flowchart/gram-empty-description-block-splits-spaces-after-interpolate]
+[fixture: flowchart/gram-empty-description-block-after-classdef]
+[fixture: flowchart/gram-empty-description-block-after-classdef-before-semicolon]
+[fixture: flowchart/gram-empty-description-block-after-linkstyle]
+[fixture: flowchart/gram-empty-description-block-after-linkstyle-before-semicolon]
+[fixture: flowchart/gram-empty-description-block-splits-spaces-after-interpolate]
 [fixture: flowchart/gram-empty-description-block-after-linkstyle-default]
+[fixture: flowchart/name-semicolon-whitespace-bbc9fd27]
+[fixture: flowchart/name-semicolon-whitespace-c53c0d40]
 `style` は、カンマで分けない id と、そのスタイルで、頂点の手順を適用します。
 そのため、まだどの文も作っていない頂点を加えます。
 `A-->B` の後の `style C fill:red` は、スタイル `fill:red` を持つ C を加えます。
@@ -438,7 +455,8 @@ flowchart/db-style-subgraph-id]
 `classDef` は、そのスタイルの各 `\,` を `,` として読みます。
 各クラス名について、その名前のクラスがなければ末尾に加え、
 スタイルをそれに加えます。
-`classDef c fill:a\ ,stroke:b` のスタイルは `fill:a\` と `stroke:b` の 2 つで、
+`classDef c fill:a\ ,stroke:b` のスタイルは、`fill:a\` と空白 1 つ、
+および `stroke:b` の 2 つで、
 `classDef c fill:a\,  stroke:b` のスタイルは `fill:a,`、空白 2 つ、
 `stroke:b` の 1 つです。
 [style、class、linkStyle の文](../../../spec/docs/diagrams/flowchart.ja.md#styleclasslinkstyle-の文)
@@ -448,6 +466,9 @@ flowchart/db-style-subgraph-id]
 flowchart/db-classdef-escape-space-before-comma] [fixture:
 flowchart/db-classdef-escape-space-after-comma]
 [fixture: flowchart/db-classdef-appended-twice]
+エスケープされたコンマの後も同じように末尾の空白を読みます。
+`classDef c fill:x\, ` の値は、`fill:x,` と空白 1 つです。
+[fixture: flowchart/gram-classdef-escaped-comma-then-space]
 
 **linkStyle の文。**
 `linkStyle` の文は、

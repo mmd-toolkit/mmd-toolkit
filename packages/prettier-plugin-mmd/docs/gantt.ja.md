@@ -981,7 +981,8 @@ click 文などの trivia 行を整形する文では、
 それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
 最終行の別の文にある `;` も、同じ判定をします。
 物理行を結ぶコメント領域とリスト区切りの U+FEFF も、元の配置を保ちます。
-[fixture: multi-line-statements/breaks-decided-one-by-one] [fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
+[fixture: multi-line-statements/breaks-decided-one-by-one]
+[fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
 [fixture: multi-line-statements/semicolon-joining-changes-kept]
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]

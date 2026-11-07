@@ -234,15 +234,40 @@ global はコンテナーも外側への所属も寄与しない。
 クラスの適用は各 id の頂点、最初の辺、flow があれば、
 それぞれのクラスへ追加する。
 style 文はカンマを含む一つの id で頂点の処理を行い、未定義の頂点も作る。
-classDef は各名前のスタイルへ追加し、null を空テキストにし、
-エスケープされたカンマをカンマにする。
+classDef は各名前のスタイルへ追加し、エスケープされたカンマをカンマにする。
 ほかのスタイルのカンマは区切りである。
-要約ではスタイル末尾の空白だけを除く。 [fixture: agentflow/db-all-fields]
-[fixture: agentflow/gram-class-semicolon]
+スタイルの値を変換した形と、範囲の後ろの行内空白を残す。
+行内空白は JavaScript の `\s` から LF と CR を除いた文字である。
+[fixture: agentflow/db-all-fields] [fixture: agentflow/gram-class-semicolon]
 [fixture: agentflow/gram-classdef-multi]
 [fixture: agentflow/gram-classdef-escaped-comma]
 [fixture: agentflow/gram-style-whitespace-after-comma]
 [fixture: agentflow/db-node-style-first-leading-spaces]
+
+null のスタイルは前のコンマの直後の空白を読む。
+最初の null のスタイルなら、文が読む 1 文字の `space` 区切りの後から読む。
+`style A  ` の値は空白 1 つで、`style A fill:red,` の後にタブがあれば、
+2 つ目の値はそのタブになる。 [fixture: agentflow/gram-style-all-null]
+[fixture: agentflow/gram-classdef-all-null]
+[fixture: agentflow/gram-default-linkstyle-all-null]
+[fixture: agentflow/gram-style-whitespace-after-comma]
+
+空白は変換したテキストから読み、閉じた空の説明ブロックの文字を飛ばし、
+その前後の空白を合わせる。
+最初の空白でない文字、コンマ、本当のセミコロン、行終端で止める。
+エスケープされたコンマの後の空白も残す。
+`classDef hot x:y\, ` は、`x:y,` と空白 1 つになる。
+[fixture: agentflow/db-style-trailing-whitespace]
+[fixture: agentflow/lex-style-preprocessing-semicolon]
+[fixture: agentflow/gram-tail-style-semicolons]
+[fixture: agentflow/gram-empty-description-splits-interpolate-spaces]
+[fixture: agentflow/gram-classdef-escaped-comma-whitespace-tail]
+文のコメント規則が読む、コメントの直前の ASCII 空白とタブは trivia であり、
+スタイルの値に加えない。
+一方、NBSP はスタイルの値に残る。 [fixture: agentflow/comment-after-style]
+[fixture: agentflow/gram-tail-classdef-comment]
+[fixture: agentflow/gram-tail-linkstyle-comment]
+[fixture: agentflow/gram-style-null-before-comment-nbsp]
 
 番号付き linkStyle は、指定された補間と、存在するスタイルを各辺へ置き換える。
 `fill` で始まるスタイルがなければ `fill:none` を足す。

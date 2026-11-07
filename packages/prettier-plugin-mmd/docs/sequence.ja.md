@@ -1037,7 +1037,8 @@ sequenceDiagram
 各隙間の最初の改行の前の空白は保ちます。
 その空白によって、mermaid.js が後の行も同じ文の一部として読むためです。
 値の中の空白は変えません。
-[fixture: multi-line-statements/breaks-decided-one-by-one] [fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
+[fixture: multi-line-statements/breaks-decided-one-by-one]
+[fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
 [fixture: multi-line-statements/comment-inside-kept]
 [fixture: multi-line-statements/autonumber-comment-continuation]
 [fixture: multi-line-statements/autonumber-directive-continuation]

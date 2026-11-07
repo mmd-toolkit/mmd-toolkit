@@ -414,6 +414,13 @@ class の図形と flowchart のリンクは、スタイルを CSS の `style` �
 それに番号か `default` を指定した `linkStyle` のスタイルですが、
 次の場合を除きます。
 
+treemap の `classDef` は、スタイルの末尾の空白を落とします。
+`classDef zz color:red  ` は `classDef zz color:red` と印字します。
+mermaid.js はその空白を Db に残しますが、同じ図を描きます。
+クラスをノードに付けて描いたところ、画素は同じでした。
+[fixture: treemap/styles/trailing-before-semicolon]
+[fixture: treemap/trailing-whitespace/style-content]
+
 番号を指定した `linkStyle` は、`,` の後のスタイルが空白で始まるときに、
 描かれる図が変わります。
 [`updateLink`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L417-L440)
@@ -656,10 +663,20 @@ class は要素の class の並びに入り、
 以前と同じに描かれます。
 文字列になるテキストは、描かれ方が異なりました。
 
+kanban のボードも、カードのテキスト、列とカードのラベル、icon、class に、
+同じ規則を適用します（[Kanban](./kanban.ja.md#形)を参照）。
+列の id は例外で、mermaid.js はそれで 2 つの列を区別します。
+`todo [A]` と `todo[B]` は別々に描かれる 2 つの列で、
+空白を除くと描かれ方が異なりました。
+カードの id は比べないので、`id1 [x]` と `id1[x]` は同じに描かれ、
+変更で 2 つのカードの id が同じになる場合も同じでした。
+[fixture: kanban/shapes/card-id-before-shape-dropped]
+[fixture: kanban/shapes/id-before-shape]
+
 テストは、印字したテキストの Db に、
 書かれたテキストの Db からノードのテキストを戻して比べます。
-`tests/mindmap-text-margins.ts` の関数、
-`mindmapDbForFormattingComparison` を使います。
+`tests/mindmap-text-margins.ts` の `mindmapDbForFormattingComparison` と、
+`tests/kanban-text-margins.ts` の `kanbanDbForFormattingComparison` を使います。
 テキストが書かれたものと、両端の空白とタブだけが違うときは、
 書かれた方を採ります。
 ほかの違いは、文字列になったテキストも含めて失敗とします。

@@ -99,7 +99,8 @@ Correctness is defined by the pinned mermaid.js.
      [Data blocks](packages/prettier-plugin-mmd/docs/eventmodeling.md#data-blocks);
    - the margin changes to eligible state note paragraphs, defined in
      [Notes](packages/prettier-plugin-mmd/docs/state.md#notes);
-   - the whitespace around the first `:` and the `,` of styles, defined in
+   - the whitespace around the first `:` and the `,` of styles, and at the end
+     of a style, defined in
      [Styles that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#styles-that-are-drawn-the-same);
    - the whitespace at the start of a title, and of the date format and the axis
      format of a Gantt chart, defined in
@@ -107,7 +108,8 @@ Correctness is defined by the pinned mermaid.js.
    - the whitespace around the arguments of a `click` call in flowchart,
      agentflow, class, and Gantt diagrams, defined in
      [Call arguments that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#call-arguments-that-are-drawn-the-same);
-   - the spaces and tabs at the ends of the texts of a mindmap node, defined in
+   - the spaces and tabs at the ends of the texts of a mindmap node and of a
+     kanban card, defined in
      [Mindmap texts that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#mindmap-texts-that-are-drawn-the-same).
 
 ## What each package is responsible for

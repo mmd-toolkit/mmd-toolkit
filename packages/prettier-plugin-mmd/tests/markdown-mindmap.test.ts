@@ -19,7 +19,7 @@ describe("a mindmap in a Markdown code block", () => {
         "# Title\n\n```mermaid\nmindmap\n      root((x))\n          a   \n          b\n```\n",
       ),
     ).toBe(
-      "# Title\n\n```mermaid\nmindmap\n  root((x))\n      a   \n      b\n```\n",
+      "# Title\n\n```mermaid\nmindmap\n  root((x))\n      a\n      b\n```\n",
     )
   })
 
@@ -31,9 +31,9 @@ describe("a mindmap in a Markdown code block", () => {
     ).toBe("- item\n\n  ```mermaid\n  mindmap\n    root\n      a\n  ```\n")
   })
 
-  it("keeps the whitespace at the end of a node text", async () => {
+  it("drops the whitespace at the end of a node text", async () => {
     expect(
       await formatTwice("```mermaid\nmindmap\n  root   \n    a\n```\n"),
-    ).toBe("```mermaid\nmindmap\n  root   \n    a\n```\n")
+    ).toBe("```mermaid\nmindmap\n  root\n    a\n```\n")
   })
 })

@@ -792,7 +792,8 @@ title、ヘッダー、軸、plot、アクセシビリティの行の文では�
 後続の部分と独立した trivia 行を、その文より 1 段深くそろえます。
 文を続ける空白は LF より前から始まる必要があるため、各 gap の最初の行の末尾と、
 その中の完全な inline 指令を保ちます。
-[fixture: multi-line-statements/breaks-decided-one-by-one] [fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
+[fixture: multi-line-statements/breaks-decided-one-by-one]
+[fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
 [fixture: multi-line-statements/structural-trivia-continuations]
 [fixture: multi-line-statements/axis-trivia-with-multiline-string]
 指令の内部も原文どおりです。

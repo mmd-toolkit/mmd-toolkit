@@ -9,7 +9,7 @@ import type { TreemapDiagram, TreemapRow } from "./treemap-tree.ts"
 import type { TreeRoot } from "./tree.ts"
 import { descriptionOf } from "./values.ts"
 
-/** Apply the ordered class-style substitutions, then split and trim entries. */
+/** Apply the ordered class-style substitutions, then split entries, retaining whitespace. */
 function stylesOf(value: string): string[] {
   // Mermaid protects `\,` with `§§§`, changes remaining commas to `;`, then
   // restores each `§§§` before splitting. Authored signs share that marker,
@@ -19,7 +19,6 @@ function stylesOf(value: string): string[] {
     .replaceAll(",", ";")
     .replaceAll("§§§", ",")
     .split(";")
-    .map((style) => style.trimEnd())
 }
 
 /** docs/db-from-tree/treemap.md: project the nested forest and publish classes and common values. */

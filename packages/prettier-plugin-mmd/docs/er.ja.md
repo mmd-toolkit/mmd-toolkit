@@ -1600,7 +1600,8 @@ mermaid.js が複数行にわたって読む文は、
 改行が字句解析器にとって空白である所では 1 行に印字します。
 `accTitle` と `accDescr` の `:` の後、`direction` と値の間、
 空白の後の `classDef` と `style` の文の中です。
-[fixture: multi-line-statements/breaks-decided-one-by-one] [fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
+[fixture: multi-line-statements/breaks-decided-one-by-one]
+[fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
 [fixture: multi-line-statements/accessibility-text-joined]
 [fixture: multi-line-statements/direction-value-joined]
 [fixture: multi-line-statements/style-over-lines-joined]

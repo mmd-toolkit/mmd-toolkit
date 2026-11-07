@@ -887,7 +887,8 @@ section の下でも後続の構造部分と独立した trivia 行を文より 
 
 title と section、event テキストの続きでは、値の空白が Db の一部なので、
 複数行の trivia を含む配置を元のまま保ちます。
-[fixture: multi-line-statements/breaks-decided-one-by-one] [fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
+[fixture: multi-line-statements/breaks-decided-one-by-one]
+[fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 event の `:` の後ろにある、字下げされた指令だけの行は、

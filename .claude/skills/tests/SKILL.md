@@ -299,11 +299,14 @@ diagram; an imported common rule does not establish how the diagram uses it.
      give it (class's link target, `_top` under `securityLevel: sandbox`). Run
      every fixture with a different `securityLevel` and check that the summaries
      do not change;
-   - whitespace left in a value where the formatter changes it (the whitespace
-     at the end of style values). Compare with the formatting choices of the
-     diagram type (`packages/prettier-plugin-mmd/docs/<diagram>.md`). Before
-     dropping it, check that mermaid.js does not read the whitespace (a sequence
-     title of only whitespace still takes room as a title, so it is kept);
+   - whitespace left in a value (the whitespace at the end of style values).
+     Drop it only when the code that draws is shown not to read it. That a
+     formatter changes it is no reason to drop it: a formatted text must give
+     the same Db, and a formatting that changes the Db is an exception of its
+     own (AGENTS.md, 4). The code that draws an edge reads the whitespace at the
+     end of a style (the color of the arrowhead is the first `stroke:` of the
+     styles that has a character after it, taken with `trim()`), and a sequence
+     title of only whitespace still takes room as a title, so both are kept;
    - a field set only by `@{ ... }` data blocks. Such a field is kept, and
      implementations get it through `dataBlockEffects`
      (`docs/embedded-data.md`);

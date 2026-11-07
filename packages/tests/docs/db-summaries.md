@@ -72,21 +72,24 @@ reason given:
   flowchart/tokens-callback-name-trailing-space] [fixture:
   flowchart/tokens-callback-arguments-spaces-at-ends]
 - Internal bookkeeping (`vertexCounter`, `subCount`, `posCrossRef`, ...).
-- Whitespace at the end of each style value (`vertices[].styles`,
-  `classDefs[].styles`, `edges[].style`, `edgeDefaults.style`). The grammar
-  keeps the whitespace written before a comma or the end of the line in the
-  value, but nothing in mermaid.js reads it, and the formatter removes
-  whitespace at the end of these lines. The characters removed are those of
-  `String.prototype.trimEnd()`, which are exactly the ones the grammar can leave
-  there. In the tree, that whitespace is outside the range of the style (see
-  **Style statements** in
-  [db-from-tree/flowchart.md](./db-from-tree/flowchart.md)). Whitespace at the
-  start of a value is kept: it can change the Db (`linkStyle` adds `fill:none`
-  when no value starts with `fill`). [fixture:
-  flowchart/db-style-trailing-whitespace-characters] [fixture:
-  flowchart/db-linkstyle-default-trailing-whitespace]
 
 Other values of the summary:
+
+- Whitespace at both ends of each style value is kept (`vertices[].styles`,
+  `classDefs[].styles`, `edges[].style`, `edgeDefaults.style`). The edge
+  renderer
+  [edges.js](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L953-L957)
+  reads the first `/stroke:([^;]+)/` match from the style string, and
+  [edgeMarker.ts](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edgeMarker.ts#L104-L108)
+  tests the colour with `trim()`. A whitespace-only match gives no coloured
+  arrowhead, so `linkStyle 0 stroke: ,stroke:#f00` and
+  `linkStyle 0 stroke:,stroke:#f00` give different arrowhead colours. In the
+  tree, trailing whitespace lies outside the style range (see **Style
+  statements** in [db-from-tree/flowchart.md](./db-from-tree/flowchart.md)).
+  Leading whitespace is also significant: `linkStyle` adds `fill:none` when no
+  value starts with `fill`. [fixture:
+  flowchart/db-style-trailing-whitespace-characters] [fixture:
+  flowchart/db-linkstyle-default-trailing-whitespace]
 
 - Texts (labels, subgraph and diagram titles, `accTitle`, `accDescr`, tooltips)
   are recorded before HTML sanitization, and `vertices[].link` is the URL as
@@ -272,13 +275,14 @@ reason given:
   `ClassDB.setClickFunc`, also for a name that is no class. [fixture:
   class/db-callback-names-comma] [fixture:
   class/tokens-callback-name-trailing-space]
-- Whitespace at the end of each style value (`classes[].styles`), as in the
-  flowchart summary: the grammar keeps the whitespace written before a comma or
-  the end of the line, and nothing reads it. [fixture:
-  class/db-style-trailing-whitespace-eol] [fixture:
-  class/db-class-def-trailing-whitespace]
 
 Other values of the summary:
+
+- Whitespace at both ends of each style value (`classes[].styles`) is kept, as
+  in the flowchart summary. Style strings are read when drawing, and trailing
+  whitespace can change arrowhead colours as described above. [fixture:
+  class/db-style-trailing-whitespace-eol] [fixture:
+  class/db-class-def-trailing-whitespace]
 
 - `classes[].text` is kept, although it is built from the label and the type:
   `addClass` writes the type as `&lt;T&gt;` and a label statement as `<T>`
@@ -15963,11 +15967,12 @@ post-parse validator. DOM ids, `haveCallback`, derived class `textStyles` and
 layout geometry add no independent authored information. [fixture:
 agentflow/db-all-fields] [fixture: agentflow/db-diagnostic-position-variant]
 
-Trailing style whitespace is removed. Text is recorded before DOMPurify, URLs
-are trimmed without sanitization, and callbacks are captured before the security
-check. All four supported security levels give the same summary. Unsupported
-levels still use common `htmlLabels` processing, including
-`flowchart.htmlLabels` fallback; inherited flow directions use
+Trailing style whitespace is kept, as in flowchart: style strings can give
+different arrowhead colours when that whitespace changes. Text is recorded
+before DOMPurify, URLs are trimmed without sanitization, and callbacks are
+captured before the security check. All four supported security levels give the
+same summary. Unsupported levels still use common `htmlLabels` processing,
+including `flowchart.htmlLabels` fallback; inherited flow directions use
 `flowchart.inheritDir`. Layout selection, including elk, adds no summary field.
 No time, random id or browser stand-in beyond the existing sanitizer setup is
 needed. [fixture: agentflow/config-security-strict] [fixture:
@@ -19080,8 +19085,8 @@ keys. Class styles replace `\,` with `§§§`, remaining commas with `;`, then
 nonoverlapping `§§§` groups with commas from left to right, before splitting at
 `;`. Authored `§§§` therefore becomes an internal comma too: `a§§§b` becomes
 `a,b`, `a§§§§b` becomes `a,§b`, and `§§\,x` becomes `,§§x`. Empty entries
-remain. Each style loses only its trailing whitespace, using `trimEnd()`; its
-leading whitespace stays. [fixture: treemap/db-class-forward] [fixture:
+remain. Each style keeps its leading and trailing whitespace, as do the other
+style summaries. [fixture: treemap/db-class-forward] [fixture:
 treemap/db-class-repeat] [fixture: treemap/db-class-unused] [fixture:
 treemap/db-class-missing] [fixture: treemap/db-prototype-names] [fixture:
 treemap/db-class-empty-final] [fixture: treemap/db-class-escaped-comma]

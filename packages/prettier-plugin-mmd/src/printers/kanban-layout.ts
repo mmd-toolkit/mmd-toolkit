@@ -28,6 +28,7 @@ import {
   findTokenStartingAt,
   findTriviaBetween,
   isCommentLine,
+  isSpaceOrTab,
   isWhitespace,
 } from "./source.ts"
 
@@ -153,11 +154,11 @@ export function kanbanLines(source: Source): readonly KanbanLine[] {
 
 /**
  * Every character inside a node, decoration, or opaque suffix is retained,
- * except the spaces and tabs between the `:::` of a class line with no
- * directive and the first other character of its class: the class text is only
- * a class name for the rendering, so ` hot` and `hot` name the same class
- * (docs/kanban.md, Icons and classes). A class of only whitespace stays as
- * written. The spaces and tabs at the ends of the text of a card, of the text
+ * except the spaces and tabs at the ends of the text of a class line with no
+ * directive, between the `:::` and the first other character of its class and
+ * after the last: the class text is only a class name for the rendering, so
+ * ` hot ` and `hot` name the same class (docs/kanban.md, Icons and classes). A
+ * class of only whitespace stays as written. The spaces and tabs at the ends of the text of a card, of the text
  * of its shape, and of an icon go too (see `printKanbanText`).
  */
 export function layoutKanbanLine(source: Source, line: KanbanLine): AtomLayout {
@@ -173,13 +174,15 @@ export function layoutKanbanLine(source: Source, line: KanbanLine): AtomLayout {
       lineBreaks: "kept",
     }
   }
-  let textStart = cssClass.range[0]
-  while (
-    textStart < cssClass.range[1] &&
-    (source.text[textStart] === " " || source.text[textStart] === "\t")
-  )
+  let [textStart, textEnd] = cssClass.range
+  while (textStart < textEnd && isSpaceOrTab(source.text[textStart]))
     textStart++
-  if (textStart === cssClass.range[0] || textStart === cssClass.range[1]) {
+  while (textEnd > textStart && isSpaceOrTab(source.text[textEnd - 1]))
+    textEnd--
+  if (
+    textStart === textEnd ||
+    (textStart === cssClass.range[0] && textEnd === cssClass.range[1])
+  ) {
     return keptAsWritten(start, line.range[1])
   }
   return {
@@ -187,7 +190,7 @@ export function layoutKanbanLine(source: Source, line: KanbanLine): AtomLayout {
       {
         start,
         end: line.range[1],
-        doc: [":::", printAsWritten(source, textStart, line.range[1])],
+        doc: [":::", printAsWritten(source, textStart, textEnd)],
       },
     ],
     rules: new Map(),

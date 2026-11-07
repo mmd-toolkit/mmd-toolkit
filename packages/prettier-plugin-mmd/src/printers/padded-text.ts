@@ -53,8 +53,8 @@ export function isPlainLine(
   return (
     trimBlanks(after) === "" &&
     !written.includes("\n") &&
-    !written.includes(" ") &&
-    !written.includes(" ") &&
+    !written.includes("\u2028") &&
+    !written.includes("\u2029") &&
     !written.includes("%%")
   )
 }

@@ -1132,7 +1132,8 @@ requirement のキーワードと名前の間、関係文の単位の間、フ�
 それにあたります。
 `style`・`classDef`・`class` 文の行末の文字列が始める文は、
 style の文脈の改行の後で続きます。
-[fixture: multi-line-statements/breaks-decided-one-by-one] [fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
+[fixture: multi-line-statements/breaks-decided-one-by-one]
+[fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
 [fixture: multi-line-statements/kind-and-name-joined]
 [fixture: multi-line-statements/relationship-joined]
 [fixture: multi-line-statements/direction-value-joined]

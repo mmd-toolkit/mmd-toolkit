@@ -1436,6 +1436,7 @@ stateDiagram-v2
 [corpus fixture: state/db-style-semicolons]
 [corpus fixture: state/db-classdef-semicolons]
 [fixture: multi-line-statements/breaks-decided-one-by-one]
+[fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
 [fixture: multi-line-statements/semicolon-kept]
 `;` があるだけでは、行をつなぐ妨げにはなりません。
 [fixture: multi-line-statements/semicolon-in-id-joined]

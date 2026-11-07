@@ -11,6 +11,7 @@ export const styleDiagramTypes: ReadonlySet<string> = new Set([
   "flowchart-v2",
   "stateDiagram",
   "swimlane",
+  "treemap",
 ])
 
 /** The diagram types whose styles can reach a link. */

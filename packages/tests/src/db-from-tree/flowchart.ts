@@ -4,7 +4,8 @@ import {
   classDefStyleOf,
   dbTypeOf,
   diagramDirectionOf,
-  styleValues,
+  emptyDescriptionBlocksOf,
+  graphStyleValuesOf,
 } from "./graph-values.ts"
 import type { DataBlockEffect, EmbeddedValues } from "../mermaid.ts"
 import type { DbSummary, JsonObject } from "../types.ts"
@@ -315,6 +316,9 @@ class FlowchartDbBuilder {
   /** The converted form of ranges of the source. */
   private readonly text: ConvertedText
 
+  /** Empty description blocks do not contribute characters to style values. */
+  private readonly emptyBlocks: readonly TreeRange[]
+
   /** The delimiters of the strings of the tree. */
   private readonly strings: StringDelimiters
 
@@ -331,6 +335,7 @@ class FlowchartDbBuilder {
       readConvertedCharacters(source, root),
     )
     this.text = new ConvertedText(this.characters)
+    this.emptyBlocks = emptyDescriptionBlocksOf(diagram.body)
     this.strings = new StringDelimiters(root, this.characters)
     this.replace = textReplacementOf(embedded.config)
     this.direction = diagramDirectionOf(diagram.direction)
@@ -371,22 +376,17 @@ class FlowchartDbBuilder {
       title: this.replace(title),
       accTitle: this.accTitle,
       accDescr: this.accDescr,
-      vertices: [...this.vertices.values()].map((vertex): JsonObject => ({
-        ...(vertex as JsonObject),
-        styles: styleValues(vertex.styles),
-      })),
-      edges: this.edges.map((edge): JsonObject => ({
-        ...(edge as JsonObject),
-        ...(edge.style === undefined ? {} : { style: styleValues(edge.style) }),
-      })),
+      vertices: [...this.vertices.values()].map(
+        (vertex) => vertex as JsonObject,
+      ),
+      edges: this.edges.map((edge) => edge as JsonObject),
       edgeDefaults: {
         interpolate: this.defaultInterpolate,
-        style:
-          this.defaultStyle === null ? null : styleValues(this.defaultStyle),
+        style: this.defaultStyle,
       },
       classDefs: [...this.classDefs.values()].map((classDef) => ({
         id: classDef.id,
-        styles: styleValues(classDef.styles),
+        styles: classDef.styles,
       })),
       subgraphs: this.subgraphs.map((subgraph) => subgraph as JsonObject),
       tooltips: [...this.tooltips].map(([id, text]) => ({ id, text })),
@@ -560,12 +560,10 @@ class FlowchartDbBuilder {
 
   /**
    * Style statements: the styles of `statement`, in converted form: the
-   * value of each, or the empty text for a null style.
+   * value of each followed by its line whitespace, including a null style's whitespace.
    */
   private stylesOf(statement: StatementWithStyles): string[] {
-    return statement.styles.map((style) =>
-      style === null ? "" : this.text.of(style.range),
-    )
+    return graphStyleValuesOf(statement, this.text, this.emptyBlocks)
   }
 
   /**

@@ -355,11 +355,19 @@ class/db-css-class-statement-digit] [fixture: class/db-css-class-list-space]
 [fixture: class/db-css-class-before-class]
 
 **スタイル。**
-スタイルのテキストは、
-その値です（[ClassLiteral](../../../spec/docs/ast/class.ja.md#classliteral)
-を参照）。
-スタイルの文の**スタイルの値**は、
-そのスタイルのテキストを各 `,` で分けたものです。
+スタイルのトークンのテキストを変換してつなぎ、その値として読みます。
+[ClassLiteral](../../../spec/docs/ast/class.ja.md#classliteral) を参照。
+範囲の後ろに続く行内空白を加えます。
+行内空白は JavaScript の `\s` から LF と CR を除いた文字で、
+最初の空白でない文字か物理的な行終端で止めます。
+この変換した読みでは、directive、コメント領域、
+無視されるセミコロンは文字を加えません。
+各 `,` で分けた結果が Db の値で、それぞれの先頭と末尾の空白を残します。
+[fixture: class/db-style-trailing-whitespace-eol]
+[fixture: class/db-class-def-trailing-whitespace]
+[fixture: class/db-style-spaces]
+[fixture: class/tokens-style-label-space-before-directive]
+[fixture: class/tokens-style-space-ignored-semicolon]
 そのため、`,` で終わるスタイルは、最後の値が空のテキストです。
 `style A fill:red,` の値は `fill:red` と空のテキストです。
 [fixture: class/db-style-empty-value]
