@@ -40,7 +40,7 @@
     "test:update": "pnpm --filter @mmd-toolkit/parser run build && node tests/update-fixtures.ts"
   },
   "peerDependencies": {
-    "@mmd-toolkit/ast": "workspace:*",
+    "@mmd-toolkit/ast": "*",
     "prettier": "^3.0.0"
   },
   "peerDependenciesMeta": {

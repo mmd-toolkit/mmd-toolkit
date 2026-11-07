@@ -22,7 +22,8 @@ npm install --save-dev @mmd-toolkit/ast
 
 The parser, `prettier-plugin-mmd`, and `@mmd-toolkit/eslint-plugin` declare this
 package as an optional peer dependency, so that their users download it only
-when they use the types.
+when they use the types. The parser asks for its own version; the two plugins
+accept any version.
 
 ## Usage
 

@@ -44,7 +44,7 @@
     "test:update": "rimraf --glob \"tests/**/__snapshots__\" && UPDATE_SNAPSHOTS=true vitest run"
   },
   "peerDependencies": {
-    "@mmd-toolkit/ast": "workspace:*",
+    "@mmd-toolkit/ast": "*",
     "eslint": "^10.0.0"
   },
   "peerDependenciesMeta": {

@@ -23,6 +23,7 @@ npm install --save-dev @mmd-toolkit/ast
 パーサー、`prettier-plugin-mmd`、`@mmd-toolkit/eslint-plugin` は、
 このパッケージを任意の peer 依存にしています。
 利用者が、型を使うときだけダウンロードするようにするためです。
+パーサーは自分と同じ版を求め、2 つのプラグインはどの版でも受け付けます。
 
 ## 使い方
 
