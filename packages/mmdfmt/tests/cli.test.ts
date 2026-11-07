@@ -24,6 +24,28 @@ function noFileMatches(pattern: string): string {
   return `mmdfmt: error: no file ending in .md, .markdown, .mmd, or .mermaid matches ${JSON.stringify(pattern)}\n`
 }
 
+/**
+ * The texts that the tool gives gunshi for the usage: the description of each
+ * argument and each example (src/main.ts). The tests look for them rather than
+ * compare the usage, whose layout gunshi decides.
+ */
+const usageTexts = [
+  "Rewrite the files that change, and list them",
+  "List the files that --write would change",
+  "Format standard input as the file at this path, and write the result to standard output",
+  "The files, directories, or globs of the files to format",
+  'mmdfmt --write "**/*.{md,mmd,mermaid}"',
+  'mmdfmt --check "**/*.{md,mmd,mermaid}"',
+  "mmdfmt --stdin-filepath diagram.mmd < diagram.mmd",
+]
+
+/** Expects `text` to show the usage. */
+function expectUsage(text: string): void {
+  for (const usageText of usageTexts) {
+    expect(text).toContain(usageText)
+  }
+}
+
 describe("Usage: --write and --check", () => {
   beforeEach(() => {
     project.write({
@@ -46,18 +68,6 @@ describe("Usage: --write and --check", () => {
 
   it("reads --write=false as --write", async () => {
     expect(await project.run(["--write=false", "a.mmd"])).toEqual({
-      code: 0,
-      stdout: listed("a.mmd"),
-      stderr: "",
-    })
-    expect(project.read("a.mmd")).toBe(formattedDiagram)
-  })
-
-  it.each([
-    [["--stdin-filepath=", "--write", "a.mmd"]],
-    [["--stdin-filepath", "", "--write", "a.mmd"]],
-  ])("reads an empty --stdin-filepath as absent: %j", async (args) => {
-    expect(await project.run(args)).toEqual({
       code: 0,
       stdout: listed("a.mmd"),
       stderr: "",
@@ -148,42 +158,53 @@ describe("Usage: --stdin-filepath", () => {
 })
 
 describe("Usage: --help and --version", () => {
-  it("--help prints the usage", async () => {
-    const run = await project.run(["--help"])
+  it.each([[["--help"]], [["-h"]]])("prints the usage for %j", async (args) => {
+    const run = await project.run(args)
     expect(run.code).toBe(0)
-    expect(run.stdout.startsWith("Usage: mmdfmt --write <pattern>...\n")).toBe(
-      true,
-    )
     expect(run.stderr).toBe("")
+    expectUsage(run.stdout)
+    expect(run.stdout).toContain(packageJson.description)
+    expect(run.stdout).toContain(`mmdfmt v${packageJson.version}`)
+    // The usage ends as gunshi draws it, with no line ending added: the run
+    // without arguments writes that usage alone.
+    const usage = (await project.run([])).stderr
+    expect(run.stdout.endsWith(usage)).toBe(true)
   })
 
-  it("--version prints the version", async () => {
-    expect(await project.run(["--version"])).toEqual({
-      code: 0,
-      stdout: `${packageJson.version}\n`,
-      stderr: "",
-    })
-  })
+  it.each([[["--version"]], [["-v"]]])(
+    "prints the version for %j",
+    async (args) => {
+      expect(await project.run(args)).toEqual({
+        code: 0,
+        stdout: `${packageJson.version}\n`,
+        stderr: "",
+      })
+    },
+  )
 
   it.each([
     [["--help", "--write", "a.mmd"]],
     [["--help", "--write", "--check"]],
-    [["--help", "--version"]],
-    [["--version", "--help"]],
+    [["-h", "--check", "a.mmd"]],
+    [["--help", "--stdin-filepath"]],
   ])("prints only the usage for %j", async (args) => {
     project.write({ "a.mmd": diagram })
     const run = await project.run(args)
     expect(run.code).toBe(0)
-    expect(run.stdout.startsWith("Usage: mmdfmt --write <pattern>...\n")).toBe(
-      true,
-    )
     expect(run.stderr).toBe("")
+    expectUsage(run.stdout)
     expect(project.read("a.mmd")).toBe(diagram)
   })
 
-  it("--version prints only the version with --check and a pattern", async () => {
+  it.each([
+    [["--version", "--check", "a.mmd"]],
+    [["--help", "--version"]],
+    [["--version", "--help"]],
+    [["-hv"]],
+    [["--version", "--stdin-filepath"]],
+  ])("prints only the version for %j", async (args) => {
     project.write({ "a.mmd": diagram })
-    expect(await project.run(["--version", "--check", "a.mmd"])).toEqual({
+    expect(await project.run(args)).toEqual({
       code: 0,
       stdout: `${packageJson.version}\n`,
       stderr: "",
@@ -192,68 +213,83 @@ describe("Usage: --help and --version", () => {
   })
 })
 
-describe("Usage: anything else prints the usage and exits with 2", () => {
+describe("Usage: no argument at all prints the usage and exits with 2", () => {
+  it("prints only the usage to standard error", async () => {
+    const run = await project.run([])
+    expect(run.code).toBe(2)
+    expect(run.stdout).toBe("")
+    expectUsage(run.stderr)
+    expect(run.stderr).not.toContain("mmdfmt: error")
+  })
+})
+
+describe("Usage: anything else is an error with exit 2", () => {
   beforeEach(() => {
     project.write({ "a.mmd": diagram })
   })
 
   it.each([
-    [[], "no patterns of the files to format"],
     [["a.mmd"], "give --write or --check with the patterns"],
+    [["--write"], "no patterns of the files to format"],
+    [["--write", "--"], "no patterns of the files to format"],
     [
       ["--write", "--check", "a.mmd"],
-      "--write and --check cannot be given together",
+      "Optional argument '--write' conflicts with '--check'",
+    ],
+    [
+      ["--check", "--write", "a.mmd"],
+      "Optional argument '--write' conflicts with '--check'",
     ],
     [
       ["--stdin-filepath", "a.mmd", "a.mmd"],
-      "--stdin-filepath takes no patterns, and neither --write nor --check",
+      "--stdin-filepath takes no patterns",
+    ],
+    [
+      ["--stdin-filepath", "a.mmd", "--", "a.mmd"],
+      "--stdin-filepath takes no patterns",
     ],
     [
       ["--stdin-filepath", "a.mmd", "--write"],
-      "--stdin-filepath takes no patterns, and neither --write nor --check",
+      "Optional argument '--write' conflicts with '--stdin-filepath'",
+    ],
+    [
+      ["--write", "--stdin-filepath", "a.mmd"],
+      "Optional argument '--write' conflicts with '--stdin-filepath'",
     ],
     [
       ["--stdin-filepath", "a.mmd", "--check"],
-      "--stdin-filepath takes no patterns, and neither --write nor --check",
+      "Optional argument '--check' conflicts with '--stdin-filepath'",
     ],
-    [["-h"], "Unknown option: -h"],
-    [["-v"], "Unknown option: -v"],
+    [
+      ["--stdin-filepath=", "--write", "a.mmd"],
+      "Optional argument '--write' conflicts with '--stdin-filepath'",
+    ],
+    [
+      ["--stdin-filepath", "", "--write", "a.mmd"],
+      "Optional argument '--write' conflicts with '--stdin-filepath'",
+    ],
+    [
+      ["--stdin-filepath=", "a.mmd"],
+      "give --write or --check with the patterns",
+    ],
+    [["--stdin-filepath="], "no patterns of the files to format"],
     [["-x", "a.mmd"], "Unknown option: -x"],
     [["--no-write", "a.mmd"], "Unknown option: --no-write"],
     [["-wc", "a.mmd"], "Unknown option: -w\nmmdfmt: error: Unknown option: -c"],
+    [["--fix", "a.mmd"], "Unknown option: --fix"],
     [["--help", "--fix"], "Unknown option: --fix"],
     [["--version", "--fix"], "Unknown option: --fix"],
     [
       ["--stdin-filepath"],
       "Optional argument '--stdin-filepath' should be 'string'",
     ],
-    [
-      ["--help", "--stdin-filepath"],
-      "Optional argument '--stdin-filepath' should be 'string'",
-    ],
-    [
-      ["--version", "--stdin-filepath"],
-      "Optional argument '--stdin-filepath' should be 'string'",
-    ],
+    [["--stdinFilepath", "a.mmd"], "Unknown option: --stdinFilepath"],
   ])("%j", async (args, message) => {
-    const run = await project.run(args)
-    expect(run.code).toBe(2)
-    expect(run.stdout).toBe("")
-    expect(
-      run.stderr.startsWith(`mmdfmt: error: ${message}\n\nUsage: mmdfmt`),
-    ).toBe(true)
-    expect(project.read("a.mmd")).toBe(diagram)
-  })
-
-  it("an unknown option", async () => {
-    const run = await project.run(["--fix", "a.mmd"])
-    expect(run.code).toBe(2)
-    expect(run.stdout).toBe("")
-    expect(
-      run.stderr.startsWith(
-        "mmdfmt: error: Unknown option: --fix\n\nUsage: mmdfmt",
-      ),
-    ).toBe(true)
+    expect(await project.run(args)).toEqual({
+      code: 2,
+      stdout: "",
+      stderr: `mmdfmt: error: ${message}\n`,
+    })
     expect(project.read("a.mmd")).toBe(diagram)
   })
 })

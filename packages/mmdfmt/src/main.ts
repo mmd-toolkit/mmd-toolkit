@@ -1,8 +1,6 @@
 import { readFile, writeFile } from "node:fs/promises"
 import path from "node:path"
-import { hasPriorityValidationError } from "gunshi"
-import type { Args, CommandContext } from "gunshi/bone"
-import { cli } from "gunshi/bone"
+import { cli, define, isArgsValidationError } from "gunshi"
 import packageJson from "../package.json" with { type: "json" }
 import type { Diagnostic } from "./diagnostic.ts"
 import { fileEndings, formatFile, kindOf } from "./format-file.ts"
@@ -20,33 +18,10 @@ export interface Io {
 /** The exit codes (README, Exit codes). */
 const exitCodes = { ok: 0, changed: 1, error: 2 } as const
 
-/** The options that the tool accepts (README, Usage). */
-const commandArgs = {
-  write: { type: "boolean" },
-  check: { type: "boolean" },
-  "stdin-filepath": { type: "string" },
-  help: { type: "boolean" },
-  version: { type: "boolean" },
-} satisfies Args
-
-/** The gunshi context for the tool's declared options. */
-type MmdfmtContext = CommandContext<{ args: typeof commandArgs }>
-
-const usage = `Usage: mmdfmt --write <pattern>...
-       mmdfmt --check <pattern>...
-       mmdfmt --stdin-filepath <path>
-
-Formats Mermaid diagrams, and nothing else: .mmd and .mermaid files, and the
-mermaid and mmd code blocks of .md and .markdown files.
-
-Options:
-  --write                  Rewrite the files that change, and list them.
-  --check                  List the files that --write would change.
-  --stdin-filepath <path>  Format standard input as the file at <path>, and
-                           write the result to standard output.
-  --help                   Print this usage.
-  --version                Print the version.
-`
+/** The examples in the usage, one on a line (README, Usage). */
+const examples = `mmdfmt --write "**/*.{md,mmd,mermaid}"
+mmdfmt --check "**/*.{md,mmd,mermaid}"
+mmdfmt --stdin-filepath diagram.mmd < diagram.mmd`
 
 /** The endings of the files that the tool formats, as a message names them. */
 const endingsInWords = `${fileEndings.slice(0, -1).join(", ")}, or ${fileEndings.at(-1)}`
@@ -54,69 +29,95 @@ const endingsInWords = `${fileEndings.slice(0, -1).join(", ")}, or ${fileEndings
 /** Runs the tool with its arguments, and returns the exit code (README, Usage). */
 export async function main(args: readonly string[], io: Io): Promise<number> {
   let code: number = exitCodes.ok
-  try {
-    await cli<typeof commandArgs>(
-      [...args],
-      {
-        args: commandArgs,
-        /** Carries the exit code out of gunshi's command runner. */
-        async run(ctx) {
-          code = await runCommand(ctx, io)
-        },
+  const command = define({
+    toKebab: true,
+    // gunshi adds --help and --version, draws the usage from the descriptions,
+    // and rejects the options that conflict.
+    args: {
+      write: {
+        type: "boolean",
+        description: "Rewrite the files that change, and list them",
+        conflicts: ["check", "stdinFilepath"],
       },
-      { strict: true },
-    )
+      check: {
+        type: "boolean",
+        description: "List the files that --write would change",
+        conflicts: ["write", "stdinFilepath"],
+      },
+      stdinFilepath: {
+        type: "string",
+        description:
+          "Format standard input as the file at this path, and write the result to standard output",
+        conflicts: ["write", "check"],
+      },
+      patterns: {
+        type: "positional",
+        multiple: true,
+        required: false,
+        description: "The files, directories, or globs of the files to format",
+      },
+    },
+    examples,
+    /** Runs the mode that the arguments select, and keeps its exit code. */
+    async run(ctx) {
+      // No argument at all prints the usage (README, Usage), drawn by the
+      // renderer that gunshi also draws it with for --help.
+      if (args.length === 0) {
+        const usage = await ctx.env.renderUsage?.(ctx)
+        io.stderr(usage ?? "")
+        code = exitCodes.error
+        return
+      }
+      const { write, check, stdinFilepath } = ctx.values
+      // gunshi puts the arguments after `--` in rest rather than in patterns.
+      const patterns = [...(ctx.values.patterns ?? []), ...ctx.rest]
+      if (stdinFilepath !== undefined) {
+        code =
+          patterns.length > 0
+            ? argumentError(io, ["--stdin-filepath takes no patterns"])
+            : await formatStandardInput(stdinFilepath, io)
+      } else if (patterns.length === 0) {
+        code = argumentError(io, ["no patterns of the files to format"])
+      } else if (!write && !check) {
+        code = argumentError(io, ["give --write or --check with the patterns"])
+      } else {
+        code = await formatFiles(patterns, write ? "write" : "check", io)
+      }
+    },
+  })
+  try {
+    // gunshi writes the usage, the version, and its errors to standard output
+    // with console.log, and has no option for where it writes them. The tool
+    // writes the result of --stdin-filepath to standard output, so an error
+    // must go to standard error instead. With usageSilent, gunshi writes
+    // nothing: it returns the usage and the version, and throws its errors,
+    // and the tool writes them. When gunshi can be told where to write, tell
+    // it, and drop usageSilent and the writing here and in run.
+    const printed = await cli([...args], command, {
+      name: "mmdfmt",
+      version: packageJson.version,
+      // gunshi shows it with the version above the usage.
+      description: packageJson.description,
+      strict: true,
+      usageSilent: true,
+    })
+    // gunshi returns the usage for --help, which ends with a line ending, and
+    // the version for --version, which does not.
+    if (printed !== undefined) {
+      io.stdout(printed.endsWith("\n") ? printed : `${printed}\n`)
+    }
   } catch (error) {
-    // gunshi throws unknown-option errors (its priority validation errors)
-    // before running the command.
-    if (error instanceof AggregateError && hasPriorityValidationError(error)) {
-      return usageError(io, error.errors.map(messageOf))
+    // gunshi throws the errors that it finds in the arguments, without running
+    // the command.
+    if (
+      error instanceof AggregateError &&
+      error.errors.every(isArgsValidationError)
+    ) {
+      return argumentError(io, error.errors.map(messageOf))
     }
     throw error
   }
   return code
-}
-
-/** Checks the options and selects the mode (README, Usage). */
-async function runCommand(
-  ctx: Readonly<MmdfmtContext>,
-  io: Io,
-): Promise<number> {
-  // gunshi passes validation errors other than unknown options to the command,
-  // for example --stdin-filepath without a value.
-  if (ctx.validationError) {
-    return usageError(io, ctx.validationError.errors.map(messageOf))
-  }
-  const { values } = ctx
-  if (values.help) {
-    io.stdout(usage)
-    return exitCodes.ok
-  }
-  if (values.version) {
-    io.stdout(`${packageJson.version}\n`)
-    return exitCodes.ok
-  }
-  // gunshi puts arguments after `--` in rest rather than positionals.
-  const positionals = [...ctx.positionals, ...ctx.rest]
-  const stdinFilepath = values["stdin-filepath"]
-  if (stdinFilepath !== undefined) {
-    if (positionals.length > 0 || values.write || values.check) {
-      return usageError(io, [
-        "--stdin-filepath takes no patterns, and neither --write nor --check",
-      ])
-    }
-    return formatStandardInput(stdinFilepath, io)
-  }
-  if (positionals.length === 0) {
-    return usageError(io, ["no patterns of the files to format"])
-  }
-  if (values.write && values.check) {
-    return usageError(io, ["--write and --check cannot be given together"])
-  }
-  if (!values.write && !values.check) {
-    return usageError(io, ["give --write or --check with the patterns"])
-  }
-  return formatFiles(positionals, values.write ? "write" : "check", io)
 }
 
 /**
@@ -209,12 +210,11 @@ function isError(diagnostic: Diagnostic): boolean {
   return diagnostic.severity === "error"
 }
 
-/** Reports wrong uses with the usage once, and returns 2 (README, Usage). */
-function usageError(io: Io, messages: readonly string[]): number {
+/** Reports wrong uses of the arguments, and returns 2 (README, Usage). */
+function argumentError(io: Io, messages: readonly string[]): number {
   for (const message of messages) {
     io.stderr(`mmdfmt: error: ${message}\n`)
   }
-  io.stderr(`\n${usage}`)
   return exitCodes.error
 }
 

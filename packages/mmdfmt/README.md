@@ -42,23 +42,26 @@ npx mmdfmt --stdin-filepath diagram.mmd < diagram.mmd
   which Prettier configuration and ignore files apply. A path that the
   [patterns](#patterns) would skip gets its input back unchanged, and a path
   that does not end in one of the endings below is an error.
-- `--help` prints the usage, and `--version` prints the version.
+- `-h` or `--help` prints the usage, and `-v` or `--version` prints the version,
+  on standard output.
 
 The tool takes patterns with either `--write` or `--check`, or
 `--stdin-filepath` without them. `--help` and `--version` only print, whatever
-patterns and options listed here are given with them; `--help` is taken when
-both are given. Any other combination of these options and patterns, for example
-no argument at all, prints the usage and exits with `2`. So does an option that
-is not listed here, or `--stdin-filepath` without its path, also together with
-`--help` or `--version`.
+patterns and options listed here are given with them, `--stdin-filepath` without
+its path included; `--version` is taken when both are given. No argument at all
+prints the usage to standard error and exits with `2`. Any other combination of
+these options and patterns writes an error to standard error and exits with `2`.
+So does an option that is not listed here, also together with `--help` or
+`--version`, and `--stdin-filepath` without its path.
 
-The arguments are read by the library [gunshi](https://gunshi.dev), as it reads
-them. An option that takes no value is given by its name alone, and a value
-written after `=` is not read: `--write=false` is read as `--write`. An empty
-path of `--stdin-filepath`, as in `--stdin-filepath=` or `--stdin-filepath ""`,
-is read as if the option were not given: `mmdfmt --stdin-filepath= --write a.md`
-formats `a.md`. The arguments after `--` are patterns too, so that a file whose
-name starts with `-` can be given: `mmdfmt --write -- -a.md` formats `-a.md`.
+The library [gunshi](https://gunshi.dev) reads the arguments, and draws the
+usage from the options. An option that takes no value is given by its name
+alone, and a value written after `=` is not read: `--write=false` is read as
+`--write`. An empty path of `--stdin-filepath`, as in `--stdin-filepath=` or
+`--stdin-filepath ""`, is an error: the path is not read, and the option still
+conflicts with `--write` and `--check`. The arguments after `--` are patterns
+too, so that a file whose name starts with `-` can be given:
+`mmdfmt --write -- -a.md` formats `-a.md`.
 
 ### Patterns
 
