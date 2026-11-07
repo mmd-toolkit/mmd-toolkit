@@ -454,14 +454,14 @@ packet
 ### Global directives
 
 Use shared Root directive attachment and preserve opaque content, order,
-component boundaries and value-internal text. Within a printed line, keep
-whether each side touches or is separated. When formatting splits units that
-were on the same line, a directive in their gap moves with the following unit:
-its right boundary stays touching or separated, while its left contact is
-broken. Ordinary standalone starts align one body step in; multiline interiors
-and EOF-reaching endings stay written. Common removal supplies no separator, and
-deleting init can change row configuration. Native hidden DIRECTIVE stays a
-separate owned node.
+component boundaries and value-internal text. Within a printed line, place a
+directive as under [Directives](./flowchart.md#directives). When formatting
+splits units that were on the same line, a directive in their gap moves with the
+following unit: its right boundary stays touching or separated, while its left
+contact is broken. Ordinary standalone starts align one body step in; multiline
+interiors and EOF-reaching endings stay written. Common removal supplies no
+separator, and deleting init can change row configuration. Native hidden
+DIRECTIVE stays a separate owned node.
 
 [fixture: packet/global-directives/header-to-body]
 
@@ -485,7 +485,7 @@ Output
 packet
   0%%{wrap}%%: "Global"
   accTitle%%{wrap}%%: Access
-  accDescr%%{wrap}%%{ Detail }
+  accDescr %%{wrap}%%{ Detail }
 ```
 
 ### Hidden yaml

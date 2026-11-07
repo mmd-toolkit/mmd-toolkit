@@ -28,7 +28,7 @@ import {
 import { holdsJoiningRegion } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import { findStructuralToken, findTokensBetween } from "./source.ts"
-import { normalizeStyleList } from "./statement-rules.ts"
+import { normalizeBlankLabels, normalizeStyleList } from "./statement-rules.ts"
 
 /**
  * The node types whose text is a value, printed as written. They have no
@@ -136,6 +136,7 @@ export function layoutStatement(
     addBlankCallbackRule(source, statement, rules)
   }
   const atoms = collectAtoms(source, start, end, values, kept)
+  normalizeBlankLabels(source, atoms, values)
   const layout: AtomLayout = {
     atoms,
     rules,

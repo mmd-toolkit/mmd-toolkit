@@ -15,7 +15,7 @@ import {
   spansLinesThatCannotJoin,
 } from "./layout.ts"
 import { holdsJoiningRegion } from "./kept-lines.ts"
-import { accessibilityRules } from "./statement-rules.ts"
+import { accessibilityRules, trimTextAfterKeyword } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
 
 /**
@@ -144,6 +144,15 @@ export function layoutJourneyStatement(
     end,
     collectValueNodes(statement, journeyValueNodeTypes),
     [],
+  )
+  trimTextAfterKeyword(
+    source,
+    atoms,
+    statement.type === "JourneyTitleStatement"
+      ? statement.value.range
+      : statement.type === "JourneySectionStatement"
+        ? statement.name.range
+        : null,
   )
   const remainder = findBlankRemainder(source, statement)
   if (remainder !== null) atoms.push(remainder)

@@ -130,10 +130,10 @@ agentflow の文書にあるタイトル付きの見出し 19 件は、すべて
 flowchart と同じ形で、agentflowだけ違う形を選ぶ理由がないためです。
 タイトルが別に読まれる所（`[ /x/ ]`、agentflow の `[ x@ ]`）には、
 空白を 1 つ残します。
-タイトルの端にディレクティブがあれば、その隣の隙間は、
-空白が書かれていれば 1 つにして残します。
-`flow F[ %%{x}%% T ]` は `flow F[ %%{x}%% T]` に、
-`flow G[ T %%{x}%% ]` は `flow G[T %%{x}%% ]` になります。
+タイトルの端にディレクティブがあれば、隙間に空白を置かないので、
+括弧とタイトルに接します。
+`flow F[ %%{x}%% T ]` は `flow F[%%{x}%%T]` に、
+`flow G[ T %%{x}%% ]` は `flow G[T%%{x}%%]` になります。
 `]` と同じ行にある U+2028 と U+2029 は残し、
 継続行の先頭にあるものは字下げとして読まれます。
 [fixture: names-and-headings/heading-title-directive-at-edge]
@@ -156,9 +156,9 @@ flowchart と同じ形で、agentflowだけ違う形を選ぶ理由がないた�
 名前がディレクティブまで続くので、
 書かれたまま残します（`flow F   %%{init: {}}%% [T]` は変わりません）。
 `[` がディレクティブに接していると、名前はディレクティブの前で終わり、
-その前の空白は 1 つになります（`flow H   %%{init: {}}%%[T]` は
-`flow H %%{init: {}}%%[T]` になります）。
-[fixture: names-and-headings/name-heading-title-beside-directive-kept]
+タイトルは名前に接するので、ディレクティブの前の空白は落とします。
+`flow H   %%{init: {}}%%[T]` は `flow H%%{init: {}}%%[T]` になります。
+[fixture: names-and-headings/name-heading-title-beside-directive]
 [fixture: names-and-headings/name-heading-title-gap-run-beside-directive]
 [test: agentflow: a comment and U+2028 between a flow name and its title]
 `:` と `#` の間の隙間は、flowchart と同じく、空白があるかないかを保ちます。
@@ -185,9 +185,8 @@ mermaid.js が名前の後の空白を trim するので Db は同じであり�
 `flow   F["T"]` は `flow F["T"]` に、
 空白が続く `global` は `global` になります。
 [fixture: names-and-headings/heading-word-gap-collapsed]
-隙間にディレクティブがあれば、その両側に空白があるかどうかを保ち、
-空白の連なりは空白 1 つにします（[ディレクティブ](#directives)を参照）。
-[fixture: names-and-headings/heading-word-gap-beside-directive-kept]
+隙間のディレクティブは、[ディレクティブ](#directives)のとおりに置きます。
+[fixture: names-and-headings/heading-word-gap-beside-directive]
 ここまでは名前が 1 つの部分のときの規則で、複数の部分からなる名前は、
 上に書いたとおり書かれたまま残します。
 [fixture: names-and-headings/name-heading-title-multi-part-name-kept]
@@ -410,7 +409,8 @@ agentflow-beta TB
 
 [ラベルの内側の空白](./flowchart.ja.md#ラベルの内側の空白)と同じく、
 Mermaidが捨てる通常の裸のラベルの外側空白を取り除きます。
-内部、引用形式、空白だけのラベルの文字は保ちます。
+内部と引用形式・Markdown 形式のラベルの文字は保ちます。
+空白とタブだけのラベルは、空白 1 つに印字します。
 先頭のスラッシュ、逆スラッシュ、ダッシュ、引用符、
 最初の語にある@によって別の構文になるときは、両端に空白1つを残します。
 斜辺の閉じ`?]`と`=]`の前には空白を足しません。
@@ -679,8 +679,9 @@ agentflow-beta TB
 ### Directives
 
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)と同じ理由です。
-除去で区切りが生まれないため、内容、順序、接触、後続行の桁位置を保ちます。
-独立したdirectiveを揃え、害のない隙間だけを整えます。
+除去で区切りが生まれないため、内容、順序、後続行の桁位置を保ちます。
+独立したdirectiveを揃え、同じ印字行の中のディレクティブは、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 見出しの区切りの後のdirectiveは、後続文との接触の有無を保ち、
 flowchartと同じく本文へ移します。
 Dbは同じで、agentflowだけ見出しに付ける理由がないためです。
@@ -815,10 +816,9 @@ flowchartの継続行の規則を同じ理由で再利用するためです。
 [Kept lines](#kept-lines)の非区切りの`;`を含む行は、
 アクセシビリティの文字と`;`の脇の空白を保ちます。
 セミコロンが別の文にある場合も同じです。
-複数行に書かれた文は、その行を空白 1 つか何も挟まずにつなぐと、
-行の規則が無視する `;` が変わりうる場合に、書かれたまま残します。
-それ以外の複数行の文は、`;` を含んでいても通常どおりつなぎます。
-[fixture: accessibility/semicolon-value-kept]
+複数行に書かれた文は、文を区切る `;` を含んでいても、つなぎます。
+ほかの `;` がない行では、プリンタが文を 1 行ずつに分けて置くので、
+その文だけをつなぎます。 [fixture: accessibility/semicolon-value-kept]
 [fixture: accessibility/neighbour-semicolon-kept]
 `;` があるだけでは、行をつなぐ妨げにはなりません。
 [fixture: accessibility/next-line-semicolon-joined]

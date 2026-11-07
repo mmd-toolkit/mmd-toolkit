@@ -670,9 +670,9 @@ ASCII の数字が続くと、カーディナリティ `only-one` だからで�
 [fixture: relationship-spacing/entity-only-before-one-kept]
 [corpus fixture: er/lex-only-one-two-spaces]
 関係の単位の間にあるディレクティブは、その位置に残し、
-両側に空白があるかどうかは変えず、空白の連なりは空白 1 つにします。
-[fixture: relationship-spacing/directive-between-units-kept]
-[fixture: relationship-spacing/directive-between-units-runs-collapsed]
+[ディレクティブ](#ディレクティブ)のとおりに置きます。
+[fixture: relationship-spacing/directive-between-units]
+[fixture: relationship-spacing/directive-between-units-runs]
 
 入力
 ([relationship-spacing/symbols-and-words-input.mmd](../tests/fixtures/er/relationship-spacing/symbols-and-words-input.mmd)):
@@ -764,10 +764,10 @@ erDiagram
 つの後に置きます（[属性ブロック](#属性ブロック)を参照）。
 名前は、引用符の有無も数も含めて、書かれたまま残します。
 [fixture: entities/names-kept]
-実体の部分の間にあるディレクティブは、両側に空白があるかどうかは変えず、
-空白の連なりは空白 1 つにします。
-[fixture: entities/directive-between-parts-kept]
-[fixture: entities/directive-between-parts-runs-collapsed]
+実体の部分の間にあるディレクティブは、
+[ディレクティブ](#ディレクティブ)のとおりに置きます。
+[fixture: entities/directive-between-parts]
+[fixture: entities/directive-between-parts-runs]
 
 入力
 ([entities/alias-tight-input.mmd](../tests/fixtures/er/entities/alias-tight-input.mmd)):
@@ -831,10 +831,10 @@ mermaid.js は、どちらの書き方も同じ subgraph として読みます�
 mermaid.js が空白 1 つで結ぶからです。 [fixture: subgraphs/header-spacing]
 [fixture: subgraphs/title-touches-name] [fixture: subgraphs/title-names-spaced]
 [fixture: subgraphs/quoted-and-number-ids]
-名前と `[` の間にディレクティブがあれば、その両側に空白があるかどうかは変えず、
-空白の連なりは空白 1 つにします（[ディレクティブ](#ディレクティブ)を参照）。
-[fixture: subgraphs/title-beside-directive-kept]
-[fixture: subgraphs/title-beside-directive-runs-collapsed]
+名前と `[` の間のディレクティブは、
+[ディレクティブ](#ディレクティブ)のとおりに置きます。
+[fixture: subgraphs/title-beside-directive]
+[fixture: subgraphs/title-beside-directive-runs]
 そこにある U+2028 と U+2029 は、そのまま残します。
 [test: U+2028 between an ER subgraph name and its title]
 [test: U+2029 between an ER subgraph name and its title]
@@ -1336,13 +1336,14 @@ erDiagram
 ### ディレクティブ
 
 行に単独で置かれたディレクティブは、周りの文と同じ段に置きます。
-同じ印字行の中では、両側に空白が書かれているかどうかを保ちます。
-空白があれば空白 1 つを置き、トークンに接していれば接したままにします。
+同じ印字行の中では、flowchart と同じく、
+隙間をディレクティブがないものとして印字し、
+ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
 [fixture: directives/kept] [fixture: directives/before-header]
 [fixture: directives/after-header-on-same-line]
 [fixture: directives/after-header-touching-kept]
-[fixture: directives/whitespace-on-both-sides-collapsed]
-[fixture: directives/touching-one-side-kept]
+[fixture: directives/whitespace-on-both-sides]
+[fixture: directives/touching-one-side]
 [fixture: directives/after-statement-at-end-of-line]
 [fixture: directives/in-blocks]
 閉じていないディレクティブはテキストの残りを取り込むので、書かれたまま残します。
@@ -1353,7 +1354,7 @@ erDiagram
 間の directive を次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
 
-[fixture: er/directives/whitespace-on-both-sides-collapsed]
+[fixture: er/directives/whitespace-on-both-sides]
 
 入力
 ([directives/kept-input.mmd](../tests/fixtures/er/directives/kept-input.mmd)):
@@ -1378,7 +1379,7 @@ erDiagram
 ```
 
 入力
-([directives/touching-one-side-kept-input.mmd](../tests/fixtures/er/directives/touching-one-side-kept-input.mmd)):
+([directives/touching-one-side-input.mmd](../tests/fixtures/er/directives/touching-one-side-input.mmd)):
 
 ```mmd
 erDiagram
@@ -1387,7 +1388,7 @@ A||--o{ %%{init: {}}%%B : y
 ```
 
 出力
-([directives/touching-one-side-kept-output.mmd](../tests/fixtures/er/directives/touching-one-side-kept-output.mmd)):
+([directives/touching-one-side-output.mmd](../tests/fixtures/er/directives/touching-one-side-output.mmd)):
 
 ```mmd
 erDiagram
@@ -1396,7 +1397,7 @@ erDiagram
 ```
 
 入力
-([directives/whitespace-on-both-sides-collapsed-input.mmd](../tests/fixtures/er/directives/whitespace-on-both-sides-collapsed-input.mmd)):
+([directives/whitespace-on-both-sides-input.mmd](../tests/fixtures/er/directives/whitespace-on-both-sides-input.mmd)):
 
 ```mmd
 erDiagram
@@ -1405,11 +1406,11 @@ C  %%{init: {}}%%  D
 ```
 
 出力
-([directives/whitespace-on-both-sides-collapsed-output.mmd](../tests/fixtures/er/directives/whitespace-on-both-sides-collapsed-output.mmd)):
+([directives/whitespace-on-both-sides-output.mmd](../tests/fixtures/er/directives/whitespace-on-both-sides-output.mmd)):
 
 ```mmd
 erDiagram
-  A %%{init: {}}%% ||--o{ B : x
+  A %%{init: {}}%%||--o{ B : x
   C
   %%{init: {}}%% D
 ```

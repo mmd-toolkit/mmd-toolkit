@@ -91,10 +91,10 @@ mermaid.js は引用符の隣の空白を拒否するので、
 欄の中の空白は残します。 [fixture: commas/spaces-around-commas-dropped]
 [fixture: commas/space-after-comma-dropped]
 [fixture: commas/spaces-inside-fields-kept]
-コンマの隣の指令は、
-隣に空白が書かれていれば空白 1 つを残し（[指令](#指令)を参照）、
-空白だけの欄は空白 1 つにするので、2 つが並ぶことがあります。
-`a,   %%{init: {}}%%,1` は `a,  %%{init: {}}%%,1` になり、空白は 2 つです。
+コンマの隣には空白を置かないので、
+コンマの隣の指令はコンマに接します（[指令](#指令)を参照）。
+空白だけの欄は空白 1 つにします。
+`a,   %%{init: {}}%%,1` は `a, %%{init: {}}%%,1` になります。
 [fixture: directives/next-to-commas]
 mermaid.js は引用符の隣の空白を拒否するので、文字列はコンマに接します。
 文字列の後のコンマの後の空白は、次の欄の空白として読まれるので、落とします。
@@ -403,8 +403,10 @@ mermaid.js に拒否されるからです。 [fixture: directives/kept]
 接していれば接したまま、空白があれば空白 1 つにします。
 [fixture: directives/after-the-value]
 [fixture: directives/at-the-start-of-a-record]
-コンマの隣の指令は、隣に空白が書かれていれば、
-空白 1 つを残します（空白だけの欄は[コンマ](#コンマ)を参照）。
+コンマの隣の指令は、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
+コンマの隣には空白を置かないので、
+指令はコンマに接します（空白だけの欄は[コンマ](#コンマ)を参照）。
 [fixture: directives/next-to-commas]
 
 欄や文字列の中の指令は、テキストの一部なので残します。

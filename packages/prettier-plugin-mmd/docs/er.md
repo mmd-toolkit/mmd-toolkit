@@ -649,10 +649,9 @@ one space between its words, so two spaces or a tab make `only` an entity
 (diagrams/er.md, The statement context, keywords and what follows them).
 [fixture: relationship-spacing/entity-only-before-one-kept] [corpus fixture:
 er/lex-only-one-two-spaces] A directive between the units of a relationship
-stays where it is and keeps whether whitespace was written on each side of it, a
-run of whitespace becoming one space. [fixture:
-relationship-spacing/directive-between-units-kept] [fixture:
-relationship-spacing/directive-between-units-runs-collapsed]
+stays where it is and is placed as under [Directives](#directives). [fixture:
+relationship-spacing/directive-between-units] [fixture:
+relationship-spacing/directive-between-units-runs]
 
 Input
 ([relationship-spacing/symbols-and-words-input.mmd](../tests/fixtures/er/relationship-spacing/symbols-and-words-input.mmd)):
@@ -742,10 +741,9 @@ and are separated by a `,` that touches the classes on both sides:
 [fixture: entities/alias-and-classes] The `{` of an attribute block stands after
 one space (see [Attribute blocks](#attribute-blocks)). The names are kept as
 written, quoted or not, numbers included. [fixture: entities/names-kept] A
-directive between the parts of an entity keeps whether whitespace was written on
-each side of it, a run of whitespace becoming one space. [fixture:
-entities/directive-between-parts-kept] [fixture:
-entities/directive-between-parts-runs-collapsed]
+directive between the parts of an entity is placed as under
+[Directives](#directives). [fixture: entities/directive-between-parts] [fixture:
+entities/directive-between-parts-runs]
 
 Input
 ([entities/alias-tight-input.mmd](../tests/fixtures/er/entities/alias-tight-input.mmd)):
@@ -815,12 +813,11 @@ subgraphs/end-on-the-line-of-a-statement] [fixture: subgraphs/end-case-kept]
 [fixture: subgraphs/entity-after-end] A subgraph without statements is printed
 with its `end` on the next line. [fixture: subgraphs/empty]
 
-A directive between the name and the `[` keeps whether whitespace was written on
-each side of it, a run of whitespace becoming one space, as under
-[Directives](#directives). [fixture: subgraphs/title-beside-directive-kept]
-[fixture: subgraphs/title-beside-directive-runs-collapsed] A U+2028 or U+2029
-there stays as written. [test: U+2028 between an ER subgraph name and its title]
-[test: U+2029 between an ER subgraph name and its title]
+A directive between the name and the `[` is placed as under
+[Directives](#directives). [fixture: subgraphs/title-beside-directive] [fixture:
+subgraphs/title-beside-directive-runs] A U+2028 or U+2029 there stays as
+written. [test: U+2028 between an ER subgraph name and its title] [test: U+2029
+between an ER subgraph name and its title]
 
 Empty description blocks that follow the name or the title on the line of the
 header are the first statements of the body, and stay on the line of the header,
@@ -1299,23 +1296,22 @@ erDiagram
 ### Directives
 
 A directive on a line of its own stands at the level of the statements around
-it, and a directive within a printed line keeps whether whitespace is written on
-each side of it: where it is, one space stands there, and where it touches a
-token, it keeps touching. [fixture: directives/kept] [fixture:
+it, and a directive within a printed line is placed as in a flowchart: the gap
+is printed as without the directive, and the directive stands after its space
+and touches the unit that follows it. [fixture: directives/kept] [fixture:
 directives/before-header] [fixture: directives/after-header-on-same-line]
 [fixture: directives/after-header-touching-kept] [fixture:
-directives/whitespace-on-both-sides-collapsed] [fixture:
-directives/touching-one-side-kept] [fixture:
-directives/after-statement-at-end-of-line] [fixture: directives/in-blocks] A
-directive that is not closed takes the rest of the text, and is kept as written.
-[fixture: directives/unclosed-at-end-of-text-kept] [fixture:
-directives/unclosed-after-statement-kept]
+directives/whitespace-on-both-sides] [fixture: directives/touching-one-side]
+[fixture: directives/after-statement-at-end-of-line] [fixture:
+directives/in-blocks] A directive that is not closed takes the rest of the text,
+and is kept as written. [fixture: directives/unclosed-at-end-of-text-kept]
+[fixture: directives/unclosed-after-statement-kept]
 
 When formatting splits units that were on the same line, a directive in their
 gap moves with the following unit. Keep its right-side contact or separation;
 break its left contact.
 
-[fixture: er/directives/whitespace-on-both-sides-collapsed]
+[fixture: er/directives/whitespace-on-both-sides]
 
 Input
 ([directives/kept-input.mmd](../tests/fixtures/er/directives/kept-input.mmd)):
@@ -1340,7 +1336,7 @@ erDiagram
 ```
 
 Input
-([directives/touching-one-side-kept-input.mmd](../tests/fixtures/er/directives/touching-one-side-kept-input.mmd)):
+([directives/touching-one-side-input.mmd](../tests/fixtures/er/directives/touching-one-side-input.mmd)):
 
 ```mmd
 erDiagram
@@ -1349,7 +1345,7 @@ A||--o{ %%{init: {}}%%B : y
 ```
 
 Output
-([directives/touching-one-side-kept-output.mmd](../tests/fixtures/er/directives/touching-one-side-kept-output.mmd)):
+([directives/touching-one-side-output.mmd](../tests/fixtures/er/directives/touching-one-side-output.mmd)):
 
 ```mmd
 erDiagram
@@ -1358,7 +1354,7 @@ erDiagram
 ```
 
 Input
-([directives/whitespace-on-both-sides-collapsed-input.mmd](../tests/fixtures/er/directives/whitespace-on-both-sides-collapsed-input.mmd)):
+([directives/whitespace-on-both-sides-input.mmd](../tests/fixtures/er/directives/whitespace-on-both-sides-input.mmd)):
 
 ```mmd
 erDiagram
@@ -1367,11 +1363,11 @@ C  %%{init: {}}%%  D
 ```
 
 Output
-([directives/whitespace-on-both-sides-collapsed-output.mmd](../tests/fixtures/er/directives/whitespace-on-both-sides-collapsed-output.mmd)):
+([directives/whitespace-on-both-sides-output.mmd](../tests/fixtures/er/directives/whitespace-on-both-sides-output.mmd)):
 
 ```mmd
 erDiagram
-  A %%{init: {}}%% ||--o{ B : x
+  A %%{init: {}}%%||--o{ B : x
   C
   %%{init: {}}%% D
 ```

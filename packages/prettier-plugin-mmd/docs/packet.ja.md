@@ -457,7 +457,8 @@ packet
 
 共有の Root directive の配置規則を使い、opaque な内容、順序、
 component の境界と値内部の文字列を保ちます。
-同じ印字行の中では、両側の接触・分離を保ちます。
+同じ印字行の中のディレクティブは、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 元は同じ行にあった単位を別の行へ分けるときは、
 間の directive を次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
@@ -488,7 +489,7 @@ native hidden DIRECTIVE は別の所有ノードのままです。
 packet
   0%%{wrap}%%: "Global"
   accTitle%%{wrap}%%: Access
-  accDescr%%{wrap}%%{ Detail }
+  accDescr %%{wrap}%%{ Detail }
 ```
 
 ### Hidden yaml

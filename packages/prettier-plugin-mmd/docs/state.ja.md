@@ -398,8 +398,7 @@ ER 図の `:::` はすでにこの形で印字しており、mermaid.js の文�
 空白が書かれていた隙間を空白 1 つのまま残します。
 `state "y" as D:::c` は別名の規則で `state "y" as D :::c` になります。
 [fixture: whitespace-between-tokens/css-class-in-definition-kept]
-隙間にディレクティブがあれば、
-その両側の空白の有無を保ちます（[ディレクティブ](#ディレクティブ)を参照）。
+隙間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
 U+2028 と U+2029 は、そのまま残します。
 [test: U+2028 before the `:::` of a state]
 [test: U+2029 after the `:::` of a state]
@@ -428,7 +427,7 @@ mermaid.js は state 図では `,` の前後の空白を何もないものとし
 空白だけのスタイルがある文、スタイルに改行があるか、行に保つ `;` がある文は、
 書かれたままにします。 [fixture: whitespace-between-tokens/comma-kept]
 [fixture: whitespace-between-tokens/style-comma-spaced]
-[fixture: whitespace-between-tokens/style-comma-beside-directive-kept]
+[fixture: whitespace-between-tokens/style-comma-beside-directive]
 [fixture: whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
 スタイルの間の U+2028 と U+2029 は、その場所に残します。
 [test: U+2028 before the comma of a state classDef statement]
@@ -463,11 +462,11 @@ mermaid.js の文書は、この文の例 2 件を `,` の後ろに空白を置�
 `class A,` と次の行の `B c` は `class A,B c` になります。
 `,` の前にディレクティブがあっても同じで、`,` の後ろの id は `,` に接します。
 [fixture: whitespace-between-tokens/class-ids-line-break-and-directive]
-`,` の後ろの隙間にディレクティブがあれば、その両側に空白があるかどうかは変えず、
-空白の連なりは空白 1 つにします（[ディレクティブ](#ディレクティブ)を参照）。
+`,` の後ろの隙間のディレクティブは、
+[ディレクティブ](#ディレクティブ)のとおりに置きます。
 行の line rule が無視する `;` のある行は、書かれたまま残します。
-[fixture: whitespace-between-tokens/class-ids-beside-directive-kept]
-[fixture: whitespace-between-tokens/class-ids-beside-directive-runs-collapsed]
+[fixture: whitespace-between-tokens/class-ids-beside-directive]
+[fixture: whitespace-between-tokens/class-ids-beside-directive-runs]
 [fixture: whitespace-between-tokens/class-ids-with-ignored-semicolon]
 `,` の後ろの U+2028 と U+2029 は、そのまま残します。
 [test: U+2028 after the comma of a state class statement]
@@ -873,10 +872,10 @@ id が空の場合も同じです。
 `note "t"as N` と `note "t" asN` は `note "t" as N` と印字します。
 mermaid.js はこの 3 つの書き方を同じに読み、
 別名の定義の `as` と id も同じ形で印字します（[別名](#別名)を参照）。
-隙間にディレクティブがあれば、その両側に空白が書かれていたかを保ち、
+隙間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
 U+2028 と U+2029 はそのまま残します。
 [fixture: notes/floating-note-as-gaps-spaced]
-[fixture: notes/floating-note-as-beside-directive-kept]
+[fixture: notes/floating-note-as-beside-directive]
 [test: U+2028 before the `as` of a floating note]
 [test: U+2029 between the `as` and the id of a floating note]
 
@@ -1076,12 +1075,13 @@ stateDiagram-v2
 ### ディレクティブ
 
 flowchart と同じです。
-行に単独のディレクティブは周りの文と同じ段に置き、同じ印字行の中では、
-両側に空白が書かれているかどうかを保ちます。
-書かれていればそこに空白 1 つを置き、トークンに接していれば接したまま残します。
+行に単独のディレクティブは周りの文と同じ段に置きます。
+同じ印字行の中では、flowchart と同じく、
+隙間をディレクティブがないものとして印字し、
+ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
 [fixture: directives/kept] [fixture: directives/before-header]
 [fixture: directives/after-statement]
-[fixture: directives/whitespace-on-each-side-kept]
+[fixture: directives/whitespace-on-each-side]
 
 元は同じ行にあった単位を別の行へ分けるときは、
 間の directive を次の単位に付けます。
@@ -1112,7 +1112,7 @@ stateDiagram-v2
     %%{init: {}}%%
     B
   }
-  Foo%%{init: {}}%% --> B
+  Foo %%{init: {}}%%--> B
 ```
 
 ### フロントマターの YAML

@@ -19,7 +19,7 @@ describe("a Gantt chart in a Markdown code block", () => {
         "# Title\n\n```mermaid\ngantt\ntitle   T\nsection S\nA task   :a1,2014-01-01,30d\n```\n",
       ),
     ).toBe(
-      "# Title\n\n```mermaid\ngantt\n  title   T\n  section S\n    A task   :a1, 2014-01-01, 30d\n```\n",
+      "# Title\n\n```mermaid\ngantt\n  title T\n  section S\n    A task   :a1, 2014-01-01, 30d\n```\n",
     )
   })
 

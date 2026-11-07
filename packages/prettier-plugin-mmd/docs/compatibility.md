@@ -21,7 +21,7 @@ A directive (`%%{ ... }%%`) and a `;` that the line rule ignores (see
 they are removed, and the text on their two sides is joined. They may lie
 between any two tokens, and inside a string, a backquoted name, and a text that
 may contain whitespace: the text of a label, a class name, a participant id of a
-sequence diagram. [fixture: flowchart/directives/touching-token-kept] [fixture:
+sequence diagram. [fixture: flowchart/directives/touching-token] [fixture:
 flowchart/directives/compat-directive-in-string] [fixture:
 state/directives/compat-directive-in-string] [fixture:
 class/directives/compat-directive-in-backquoted-name] [fixture:
@@ -405,6 +405,56 @@ other difference, among them the number of styles of a link, fails. When the
 pinned mermaid.js is updated, draw the statements of each of these kinds again
 and compare the SVG and the pixels before the exception stays.
 
+## Texts after a keyword that are drawn the same
+
+A title, the name of a section, and the date format and the axis format of a
+Gantt chart are printed with one space after their keyword and without the
+whitespace at the start of their text, in Gantt, user journey, timeline,
+sequence, and Venn diagrams: `title   Plan` is printed `title Plan`, and
+`dateFormat   YYYY-MM-DD` is printed `dateFormat YYYY-MM-DD`. The whitespace
+inside the text and at its end stays as written, and so does a text of spaces
+and tabs only. [fixture: gantt/titles-and-sections/text-padding-dropped]
+[fixture: gantt/settings/format-padding-dropped] [fixture:
+journey/titles-and-sections/text-padding-dropped] [fixture:
+timeline/titles-and-sections/text-padding-dropped] [fixture:
+sequence/title/text-padding-dropped] [fixture:
+sequence/title/text-padding-dropped-colon] [fixture:
+venn/title/text-padding-dropped]
+
+mermaid.js reads one whitespace character after the keyword and keeps the rest
+in the Db, so the Db of the printed text differs from the Db of the written
+text, but it draws the same figure. Each renderer puts the text into an SVG
+`text` element with `text()`, which draws no whitespace at its start:
+[Gantt](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttRenderer.js#L194-L199),
+[user journey](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/user-journey/journeyRenderer.ts#L166-L176),
+[timeline](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/timeline/timelineRenderer.ts#L209-L216),
+[sequence](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/sequenceRenderer.ts#L1450-L1456),
+and
+[Venn](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L76-L86).
+The date format is trimmed before the dates are read
+([`getStartDate`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttDb.js#L305-L359)),
+and the axis format is only the format of the labels of the axis. Both texts of
+each kind were drawn with mermaid.js 12.3.0 in Chromium, and the SVG, without
+the generated ids, and the pixels were the same.
+
+Two settings of a Gantt chart are drawn differently where whitespace stands
+before the value, and stay as written. A tick interval is matched as a whole
+against the intervals that it names
+([`makeGrid`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttRenderer.js#L665-L668)),
+so a space before `1day` turns its ticks into the default ones. A date format of
+`D` has the axis of days only where it has no whitespace around it
+([`makeGrid`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttRenderer.js#L650-L659)).
+[fixture: gantt/settings/format-padding-kept-where-drawn-differently]
+
+The tests compare the Db of the printed text with the whitespace at the start of
+its texts restored from the Db of the written text
+(`keywordTextDbForFormattingComparison` in `tests/keyword-text-margins.ts`): a
+title, a section, a date format, or an axis format that differs from the written
+one only by the spaces and tabs at its start takes the written text, and any
+other difference fails. When the pinned mermaid.js is updated, draw both texts
+of each kind again and compare the SVG and the pixels before the exception
+stays.
+
 ## Whitespace at the start of a label
 
 mermaid.js drops whitespace at the start of a label without quotes, and so does
@@ -423,19 +473,24 @@ word of the label contains `@`.
 
 ## Directives between tokens
 
-mermaid.js removes a directive and reads the text on its two sides joined.
-Within a printed line, formatting therefore keeps whether whitespace was written
-on each side of a directive. mermaid.js reads the text without the directive, so
-the whitespace that remains must not change: a unit such as `note for`, or the
-text after `title`, reads exactly one whitespace character, and one space on
-each side of a directive that had it on one side only would leave two. For
-example, `flowchart %%{init: {}}%%LR` stays as it is, because
-`flowchart%%{init: {}}%%LR` would be rejected. [fixture:
-flowchart/directives/whitespace-on-each-side-kept] [fixture:
-flowchart/directives/touching-token-kept] [fixture:
-sequence/directives/compat-whitespace-on-one-side-of-directive-kept] [fixture:
-class/directives/compat-whitespace-on-one-side-of-directive-kept] [fixture:
-state/directives/compat-whitespace-on-one-side-of-directive-kept] See
+mermaid.js removes a directive and reads the text on its two sides joined, so
+the whitespace that remains is that of the two sides together. A unit such as
+`note for`, or the text after `title`, reads exactly one whitespace character,
+and a space on each side of a directive would leave two. Within a printed line,
+formatting therefore prints the gap as its ordinary rule prints it without the
+directive, and puts the directive after the space of that rule, so that it
+touches the unit after it. Where the rule has no space, the directive touches
+both units. For example, `note%%{init: {}}%% for A "t"` is printed
+`note %%{init: {}}%%for A "t"`, and `A  %%{init: {}}%%  --> B` is printed
+`A %%{init: {}}%%--> B`. [fixture: flowchart/directives/whitespace-on-each-side]
+[fixture: flowchart/directives/touching-token] [fixture:
+flowchart/directives/whitespace-on-both-sides] [fixture:
+class/directives/count-sensitive-unit] [fixture:
+sequence/directives/compat-whitespace-on-one-side-of-directive] [fixture:
+class/directives/compat-whitespace-on-one-side-of-directive] [fixture:
+state/directives/compat-whitespace-on-one-side-of-directive] The gap stays as
+written where the line rule of mermaid.js may read its whitespace, and where a
+directive stands at the start or at the end of the printed line. See
 [Directives](./flowchart.md#directives).
 
 ## Structural continuations around comments and directives
@@ -1965,14 +2020,15 @@ info/frontmatter-yaml/frontmatter-zero-minimum]
 
 All semicolons remain, and shared source-segment protection keeps crossing
 values/trivia and protected header/body groups whole; changing a trigger's
-segment can change acceptance. Global directive source remains, with each side's
-contact retained within a printed line, since removing init can change
-configuration despite the empty Db. Physical EOL and EOF-reaching global endings
-use the shared path. Prettier removes/restores a leading BOM; inside the plugin,
-an opening-fence BOM can therefore make hidden YAML read as real frontmatter. A
-BOM repeated before the closer instead causes the shared standalone syntax-error
-limitation. Markdown trims final payload padding; interior hidden boundaries
-remain. [fixture: info/semicolons/semicolon-style-classdef] [fixture:
+segment can change acceptance. Global directive source remains, placed in its
+gap as under [Directives](./flowchart.md#directives), since removing init can
+change configuration despite the empty Db. Physical EOL and EOF-reaching global
+endings use the shared path. Prettier removes/restores a leading BOM; inside the
+plugin, an opening-fence BOM can therefore make hidden YAML read as real
+frontmatter. A BOM repeated before the closer instead causes the shared
+standalone syntax-error limitation. Markdown trims final payload padding;
+interior hidden boundaries remain. [fixture:
+info/semicolons/semicolon-style-classdef] [fixture:
 info/global-directives/global-config-align] [fixture:
 info/final-newline/final-open-global] [test:
 info/line-terminators-and-unicode/bom-frontmatter-opening] [corpus fixture:
@@ -2861,10 +2917,11 @@ line uses body or item depth; its content and subsequent columns remain written.
 Mermaid's reading determines segments, including removed directives and comment
 joins. Cynefin has no grammatical semicolons, so style/classDef word lines
 without semicolons still format; complete word-line preservation does not apply.
-Root directives retain contact within a printed line. At split statement/item
-boundaries they attach to the following unit, retaining the right boundary and
-breaking left contact. Native comments retain LS/PS as content. These boundaries
-can affect selection, values and acceptance. [fixture:
+Root directives within a printed line are placed as under
+[Directives](./flowchart.md#directives). At split statement/item boundaries they
+attach to the following unit, retaining the right boundary and breaking left
+contact. Native comments retain LS/PS as content. These boundaries can affect
+selection, values and acceptance. [fixture:
 cynefin/semicolons/semi-selected-before-arrow] [fixture:
 cynefin/semicolons/semi-item-body-indentation] [fixture:
 cynefin/semicolons/semi-plain-style-line-formats] [fixture:

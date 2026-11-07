@@ -316,7 +316,7 @@ mermaid.js が trim するからです。
 この規則はディレクティブを除いた行を読むので、その中の `style`、`:`、`#`、
 `;` は区間を作りません。
 `service%%{style}%% s0(logos:aws)[ #y; ]` は
-`service%%{style}%% s0(logos:aws)[#y;]` に、
+`service %%{style}%%s0(logos:aws)[#y;]` に、
 `service style1(logos:aws)[ #y ]%%{init:{"a":";"}}%%` は `[#y]` になります。
 `;` がディレクティブの外にある `[ #y; ]` は、空白を残します。
 [fixture: architecture/label-content/title-padding-line-rule-chars-in-directive]
@@ -752,7 +752,8 @@ architecture-beta
 ### Global directives
 
 Root directive の内容・順序・所有位置を保ちます。
-同じ印字行の中では、両側の接触・分離を保ちます。
+同じ印字行の中のディレクティブは、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 元は同じ行にあった単位を別の行へ分けるときは、
 間の directive を次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
@@ -803,7 +804,7 @@ common の除去は両側を結合するため、
 architecture-beta
   service composite(%%{wrap}%%cloud%%{wrap}%%)
   service target
-  composite{%%{wrap}%%group%%{wrap}%%}:R < %%{wrap}%% --> L:target
+  composite{%%{wrap}%%group%%{wrap}%%}:R <%%{wrap}%%--> L:target
 ```
 
 ### Hidden forms

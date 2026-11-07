@@ -653,6 +653,21 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
     "flowchart LR\n  Z[style:#x];\u2029;\n  B\n",
   ],
   [
+    "U+2028 before a directive in the gap of a flowchart",
+    "flowchart LR\nA\u2028%%{init: {}}%% --> B\n",
+    "flowchart LR\n  A\u2028%%{init: {}}%% --> B\n",
+  ],
+  [
+    "U+2029 after a directive in the gap of a flowchart",
+    "flowchart LR\nA %%{init: {}}%%\u2029--> B\n",
+    "flowchart LR\n  A %%{init: {}}%%\u2029--> B\n",
+  ],
+  [
+    "U+2028 beside a directive between a `:` and a `#` of a flowchart",
+    "flowchart LR\nsubgraph style:\u2028%%{init: {}}%%[#x;]\nA\nend\n",
+    "flowchart LR\n  subgraph style:\u2028%%{init: {}}%%[#x;]\n    A\n  end\n",
+  ],
+  [
     "a `;` after a directive that is not closed and U+2028",
     "flowchart LR\nA %%{init: {}\u2028;\nB\n",
     "flowchart LR\n  A %%{init: {}\u2028;\n  B\n",
@@ -3739,7 +3754,7 @@ const vennExamples: readonly (readonly [string, string, string])[] = [
   [
     "venn: nbsp-title-separator",
     "venn-beta\ntitle\u00a0 T",
-    "venn-beta\ntitle  T\n",
+    "venn-beta\ntitle T\n",
   ],
   [
     "venn: bom-title-separator",
@@ -3810,9 +3825,14 @@ describe("Venn whitespace and line boundaries", () => {
     expect(await format(output)).toBe(output)
     const original = input.startsWith("\uFEFF") ? input.slice(1) : input
     const formatted = output.startsWith("\uFEFF") ? output.slice(1) : output
-    expect(dbOfText(formatted, defaultEmbedded())).toEqual(
-      dbOfText(original, defaultEmbedded()),
-    )
+    expect(
+      dbForFormattingComparison(
+        dbOfText(original, defaultEmbedded()),
+        dbOfText(formatted, defaultEmbedded()),
+        original,
+        formatted,
+      ),
+    ).toEqual(dbOfText(original, defaultEmbedded()))
     expect(writtenEmbeddedTexts(formatted)).toEqual(
       writtenEmbeddedTexts(original),
     )

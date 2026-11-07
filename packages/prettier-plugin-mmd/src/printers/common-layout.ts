@@ -132,7 +132,15 @@ export function layoutCommonLine(
   let valueStart = value?.range[0] ?? delimiter.range[1]
   let valueEnd = value?.range[1] ?? valueStart
   if (!hasTrivia) {
-    while (valueStart < valueEnd && source.text[valueStart].trim() === "")
+    // The text of a value that follows a second whitespace character starts
+    // at that character, so a `;` that the line rule ignores can come before
+    // the first character that is read. It is a gap item, as it is when one
+    // whitespace character stands before it.
+    while (
+      valueStart < valueEnd &&
+      (source.text[valueStart].trim() === "" ||
+        source.ignoredSemicolons.has(valueStart))
+    )
       valueStart++
     while (valueStart < valueEnd && source.text[valueEnd - 1].trim() === "")
       valueEnd--

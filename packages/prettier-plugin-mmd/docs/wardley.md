@@ -793,14 +793,14 @@ wardley-beta
 
 ### Global directives
 
-Keep Root directive source, order and ownership. Within a printed line, keep
-whether each side touches or is separated. When formatting splits units that
-were on the same line, a directive in their gap moves with the following unit:
-its right boundary stays touching or separated, while its left contact is
-broken. Ordinary standalone directives align with their body; multiline
-interiors and EOF-reaching unfinished endings remain written. Do not format
-their JSON or reorder them: common removal joins surrounding text and can change
-acceptance or values. Native hidden directives remain separate nodes.
+Keep Root directive source, order and ownership. Within a printed line, place a
+directive as under [Directives](./flowchart.md#directives). When formatting
+splits units that were on the same line, a directive in their gap moves with the
+following unit: its right boundary stays touching or separated, while its left
+contact is broken. Ordinary standalone directives align with their body;
+multiline interiors and EOF-reaching unfinished endings remain written. Do not
+format their JSON or reorder them: common removal joins surrounding text and can
+change acceptance or values. Native hidden directives remain separate nodes.
 
 [fixture: wardley/global-directives/header-to-body]
 
@@ -831,7 +831,7 @@ Output
 
 ```mmd
 wardley-beta
-  component%%{wrap}%%Glued [0.3, 0.6]
+  component %%{wrap}%%Glued [0.3, 0.6]
 ```
 
 ### Comments

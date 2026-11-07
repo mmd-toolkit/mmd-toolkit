@@ -101,8 +101,9 @@ pie 固有の選択であり、
 [Mermaid の pie の例](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/pie.md#L68-L73)
 の綴りに従います。
 両方の引用符と空ラベルにも適用します。
-directive のある gap は各側の接触の有無を保持し、
-hidden form は物理的な境界も保持します。
+directive のある gap は、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
+hidden form は物理的な境界を保持します。
 これらは区切りを供給しないためです。
 
 固定例: [fixture: pie/sections/section-colon]
@@ -487,7 +488,8 @@ pie
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)を再利用します。
 共通の削除は区切りを供給せず、セミコロンの選択は原文の区間を読むためです。
 単位の間の位置、複数行の内部、EOF までの末尾を保持します。
-同じ印字行の中では、両側の接触・分離を保ちます。
+同じ印字行の中のディレクティブは、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 元は同じ行にあった単位を別の行へ分けるときは、
 間の directive を次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
@@ -530,7 +532,7 @@ Unicode の区間境界、directive が再結合する trigger、
 [test: pie/directives-and-semicolons/selected-ls-segments]
 [fixture: pie/directives-and-semicolons/global-joined-trigger]
 [fixture: pie/directives-and-semicolons/global-header-first-statement]
-[fixture: pie/directives-and-semicolons/global-gap-side-presence]
+[fixture: pie/directives-and-semicolons/global-gap-sides]
 [fixture: pie/directives-and-semicolons/global-value-boundaries]
 [fixture: pie/directives-and-semicolons/selected-one-three-padding]
 [fixture: pie/directives-and-semicolons/selected-comment-semicolon]

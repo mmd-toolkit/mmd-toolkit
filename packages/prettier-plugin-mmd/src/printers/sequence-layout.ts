@@ -24,6 +24,7 @@ import {
   walk,
 } from "./layout.ts"
 import { holdsJoiningRegion, printedEndOf } from "./kept-lines.ts"
+import { trimTextAfterKeyword } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
 import {
   findStructuralToken,
@@ -328,8 +329,13 @@ function layoutTitle(
   const keepsSeparator =
     source.text[separator] === "\u2028" || source.text[separator] === "\u2029"
   const text: Atom = { start: keepsSeparator ? separator : separator + 1, end }
+  const atoms: Atom[] = [{ start: statement.range[0], end: separator }, text]
+  // mermaid.js keeps the whitespace after the separator in the title, and
+  // draws the same text without it (docs/compatibility.md, Texts after a
+  // keyword that are drawn the same).
+  if (!keepsSeparator) trimTextAfterKeyword(source, atoms, [text.start, end])
   return {
-    atoms: [{ start: statement.range[0], end: separator }, text],
+    atoms,
     rules: keepsSeparator ? new Map() : new Map([[text.start, "space"]]),
     outdented: new Set(),
     lineBreaks: "joined",

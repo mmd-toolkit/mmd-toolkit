@@ -1447,7 +1447,8 @@ railroad-peg-beta
 ### 共有 directive
 
 Root directive を source span から元の所有位置に1回印字します。
-通常の IR 呼出しの隙間以外では、同じ印字行の中で両側の接触・分離を保ちます。
+通常の IR 呼出しの隙間以外では、同じ印字行の中のディレクティブは、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 元は同じ行にあった単位を別の行へ分けるときは、
 間の directive を次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
@@ -1490,7 +1491,7 @@ directive は引数のそばに保ち、引用値の leaf 呼出しも複数行�
 
 ```mmd
 railroad-beta
-  r%%{wrap}%% = %%{wrap}%%terminal("a%%{wrap}%%last");
+  r %%{wrap}%%= %%{wrap}%%terminal("a%%{wrap}%%last");
 ```
 
 入力（escape 表記）: `"railroad-ebnf-beta\nr = %%{wrap}%% \"global\";"`。
@@ -1500,7 +1501,7 @@ railroad-beta
 
 ```mmd
 railroad-ebnf-beta
-  r = %%{wrap}%% "global";
+  r = %%{wrap}%%"global";
 ```
 
 入力（escape 表記）:
@@ -1511,7 +1512,7 @@ railroad-ebnf-beta
 
 ```mmd
 railroad-abnf-beta
-  r = 2%%{wrap}%%*%%{wrap}%%4 %%{wrap}%% "global" %x4%%{wrap}%%1;
+  r = 2%%{wrap}%%*%%{wrap}%%4%%{wrap}%%"global" %x4%%{wrap}%%1;
 ```
 
 入力（escape 表記）: `"railroad-peg-beta\nr <- &%%{wrap}%% \"global\";"`。
@@ -1521,7 +1522,7 @@ railroad-abnf-beta
 
 ```mmd
 railroad-peg-beta
-  r <- &%%{wrap}%% "global";
+  r <- &%%{wrap}%%"global";
 ```
 
 ### hidden form の保持

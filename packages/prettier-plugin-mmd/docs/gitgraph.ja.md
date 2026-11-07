@@ -511,7 +511,8 @@ gitGraph %% header
 ### Global directives
 
 global directive の内容・順序・単位の間の位置を保持します。
-同じ印字行の中では、両側の接触・分離を保ちます。
+同じ印字行の中のディレクティブは、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 元は同じ行にあった単位を別の行へ分けるときは、
 間の directive を次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
@@ -538,7 +539,7 @@ atomic な語の分断は仕様どおり拒否します。
 ```mmd
 gitGraph
   commit id%%{wrap}%%: "A"
-  commit id:%%{wrap}%% "B"
+  commit id: %%{wrap}%%"B"
 ```
 
 ### Hidden yaml

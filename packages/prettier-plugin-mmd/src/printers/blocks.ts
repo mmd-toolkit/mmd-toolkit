@@ -6,14 +6,13 @@ import type { Gap, ItemRun } from "./gap.ts"
 import type { GapRule } from "./atoms.ts"
 import {
   endsWithSpaceOrTab,
-  printIgnoredSemicolons,
+  printAbsentItems,
   readGap,
   readGapElement,
 } from "./gap.ts"
 import type { KeptLines } from "./kept-lines.ts"
 import {
   holdsJoiningRegion,
-  isInsideStyleRuleStretch,
   lineEndOf,
   lineStartOf,
   withJoinedLines,
@@ -37,7 +36,6 @@ import {
   findTokenEndingBefore,
   findTokenStartingAt,
   findTokensBetween,
-  isDiagramKeywordEnd,
   isStructural,
   isWhitespace,
 } from "./source.ts"
@@ -1132,13 +1130,12 @@ interface InlinePlace {
 }
 
 /**
- * Prints a gap within a kept line: its `;` and directives. A `;` that the line
- * rule ignores follows the ordinary rule of the gap (see
- * `printIgnoredSemicolons`); the other items have one space on each side where
- * the source has whitespace, and nothing where it has none, but no space at
- * the start or the end of the line. Whitespace in
- * `relocatedWhitespace` is not printed: the planned indentation of the next
- * statement supplies it.
+ * Prints a gap within a kept line: its `;` and directives. A directive and a
+ * `;` that the line rule ignores follow the ordinary rule of the gap (see
+ * `printAbsentItems`); the other items have one space on each side where the
+ * source has whitespace, and nothing where it has none, but no space at the
+ * start or the end of the line. Whitespace in `relocatedWhitespace` is not
+ * printed: the planned indentation of the next statement supplies it.
  */
 export function printInlineGap(
   source: Source,
@@ -1175,17 +1172,10 @@ export function printInlineGap(
       [...source.text.slice(start, end)].some(isWhitespace)
     return spaced ? " " : ""
   }
-  // A `;` that the line rule ignores is removed from the text: the gap follows
-  // its ordinary rule as if it were absent, unless the line rule may read the
-  // gap, it holds a U+2028 or U+2029, or it follows the keyword of the diagram.
-  const written = source.text.slice(start, end)
-  const absent =
-    written.includes("\u2028") ||
-    written.includes("\u2029") ||
-    isInsideStyleRuleStretch(source, start, end) ||
-    isDiagramKeywordEnd(source, start)
-      ? null
-      : printIgnoredSemicolons(run, ordinaryRule, place)
+  // A directive and a `;` that the line rule ignores are removed from the
+  // text: the gap follows its ordinary rule as if they were absent (see
+  // `printAbsentItems`).
+  const absent = printAbsentItems(source, start, end, run, ordinaryRule, place)
   if (absent !== null) return absent
   return [
     run.spaceBefore && !place.atLineStart ? " " : "",

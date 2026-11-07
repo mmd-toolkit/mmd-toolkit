@@ -11,7 +11,7 @@ import {
   printClosedBlock,
   printDiagramBlock,
 } from "./blocks.ts"
-import { semicolonSegmentEnd, styleRuleStretchEnd } from "./kept-lines.ts"
+import { semicolonSegmentEnd } from "./kept-lines.ts"
 import { expectToken, layoutKeywordHeader } from "./layout.ts"
 import { indentationOf } from "./lines.ts"
 import type { Source } from "./source.ts"
@@ -85,7 +85,6 @@ function printStatements(
     isDroppedAtTopLevel: () => false,
     keepsWhitespaceLineAfterComment: false,
     keepsDirectiveLinesUnindented: false,
-    keptInlineGapEnd: (start) => styleRuleStretchEnd(source, start),
     diagramLineEnd: (offset) => semicolonSegmentEnd(source, offset),
     keepsTrailingWhitespaceInKeptTrivia: true,
   }

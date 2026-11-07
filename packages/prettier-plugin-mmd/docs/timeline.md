@@ -563,9 +563,12 @@ timeline
 
 ### Titles and sections
 
-`title` and `section` are printed with the value as written, the whitespace at
-its ends included, which the Db keeps, and one space as the separator after the
-keyword, whatever character was written there, as in a user journey. [fixture:
+`title` and `section` are printed with one space after the keyword, whatever
+whitespace was written there, as in a user journey, and the value as written,
+the whitespace at its end included, which the Db keeps (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+`title   History` is printed `title History`. [fixture:
+titles-and-sections/text-padding-dropped] [fixture:
 titles-and-sections/value-whitespace-kept] [fixture:
 titles-and-sections/one-space-after-keyword] A value written on a later line is
 printed after the keyword on one line; a comment line between them makes the
@@ -577,7 +580,7 @@ titles-and-sections/comment-line-inside-kept] The value holds `:`, `#`, `%`, and
 starts an event. [fixture: titles-and-sections/special-characters-in-values]
 [fixture: titles-and-sections/section-ends-at-colon] A directive between the
 keyword and the value stays where it is (see [Directives](#directives)).
-[fixture: titles-and-sections/directive-between-keyword-and-value-kept]
+[fixture: titles-and-sections/directive-between-keyword-and-value]
 
 Input
 ([titles-and-sections/special-characters-in-values-input.mmd](../tests/fixtures/timeline/titles-and-sections/special-characters-in-values-input.mmd)):
@@ -662,9 +665,9 @@ header-and-direction/second-word-is-a-period] [fixture:
 header-and-direction/direction-on-its-own-line-is-a-period]
 
 A comment after the direction stays on the line (see [Comments](#comments)), and
-a directive before it or after it keeps one space on each side, as everywhere
-else (see [Directives](#directives)). The whitespace at the end of the line is
-dropped. [fixture: header-and-direction/comment-after-the-direction] [fixture:
+a directive before it or after it is placed as everywhere else (see
+[Directives](#directives)). The whitespace at the end of the line is dropped.
+[fixture: header-and-direction/comment-after-the-direction] [fixture:
 header-and-direction/directive-before-the-direction] [fixture:
 header-and-direction/directive-after-the-direction] [fixture:
 header-and-direction/trailing-whitespace-dropped]
@@ -698,7 +701,7 @@ Output
 ([header-and-direction/directive-before-the-direction-output.mmd](../tests/fixtures/timeline/header-and-direction/directive-before-the-direction-output.mmd)):
 
 ```mmd
-timeline %%{init: {}}%% TD
+timeline %%{init: {}}%%TD
   title T
 ```
 
@@ -1089,9 +1092,9 @@ timeline
 ### Directives
 
 A directive on a line of its own stands at the level of the statement after it,
-as in a user journey, and a directive within a printed line keeps whether
-whitespace is written on each side of it: where it is, one space stands there,
-and where it touches a token, it keeps touching. [fixture: directives/kept]
+as in a user journey, and a directive within a printed line is placed as in a
+flowchart: the gap is printed as without the directive, and the directive stands
+after its space and touches the unit that follows it. [fixture: directives/kept]
 [fixture: directives/levels-around-sections] [fixture: directives/before-header]
 [fixture: directives/after-header-on-same-line] [fixture:
 directives/after-header-touching-kept] [fixture:
@@ -1104,10 +1107,10 @@ break its left contact.
 
 [fixture: timeline/directives/whitespace-on-both-sides-collapsed]
 
-A directive between two units stays in its authored gap; same-line contact or
-separation on either side stays. Structural continuation columns follow
+A directive between two units stays in its authored gap, placed as under
+[Directives](#directives). Structural continuation columns follow
 [Multi-line statements](#multi-line-statements). A directive inside a value is
-part of that text. [fixture: directives/between-units-kept] [fixture:
+part of that text. [fixture: directives/between-units] [fixture:
 directives/inside-values-kept] [fixture: directives/over-lines-kept] A directive
 that is not closed takes the rest of the text, and is kept as written. [fixture:
 directives/unclosed-at-end-of-text-kept] [fixture:
@@ -1140,7 +1143,7 @@ timeline
 ```
 
 Input
-([directives/between-units-kept-input.mmd](../tests/fixtures/timeline/directives/between-units-kept-input.mmd)):
+([directives/between-units-input.mmd](../tests/fixtures/timeline/directives/between-units-input.mmd)):
 
 ```mmd
 timeline
@@ -1150,12 +1153,12 @@ c : e%%{init: {}}%%: f
 ```
 
 Output
-([directives/between-units-kept-output.mmd](../tests/fixtures/timeline/directives/between-units-kept-output.mmd)):
+([directives/between-units-output.mmd](../tests/fixtures/timeline/directives/between-units-output.mmd)):
 
 ```mmd
 timeline
   a %%{init: {}}%%: e
-  b:%%{init: {}}%% e
+  b: %%{init: {}}%%e
   c : e%%{init: {}}%%: f
 ```
 

@@ -32,7 +32,7 @@ import {
 import { readGapElement } from "./gap.ts"
 import { holdsJoiningRegion, lineStartOf } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
-import { normalizeStyleList } from "./statement-rules.ts"
+import { normalizeBlankLabels, normalizeStyleList } from "./statement-rules.ts"
 import {
   findStructuralToken,
   findTriviaBetween,
@@ -60,8 +60,10 @@ function layoutRange(
   rules: ReadonlyMap<number, GapRule>,
 ): AtomLayout {
   if (holdsJoiningRegion(source, start, end)) return keptAsWritten(start, end)
+  const atoms = collectAtoms(source, start, end, values, kept)
+  normalizeBlankLabels(source, atoms, values)
   return {
-    atoms: collectAtoms(source, start, end, values, kept),
+    atoms,
     rules,
     outdented: new Set(),
     lineBreaks: "kept",

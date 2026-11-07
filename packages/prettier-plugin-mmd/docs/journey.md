@@ -398,13 +398,17 @@ journey
 
 ### Titles and sections
 
-`title` and `section` are printed with the value as written, the whitespace at
-its ends included, which the Db keeps, and one space as the separator after the
-keyword, whatever character was written there, so that the separator has one
-form, as in a Gantt chart. [fixture: titles-and-sections/value-whitespace-kept]
-[fixture: titles-and-sections/one-space-after-keyword] A value written on a
-later line is printed after the keyword on one line; a comment line between them
-makes the statement printed as written (see
+`title` and `section` are printed with one space after the keyword, whatever
+whitespace was written there, so that the separator has one form, as in a Gantt
+chart, and the value as written, the whitespace at its end included, which the
+Db keeps (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+`title   My trip` is printed `title My trip`. [fixture:
+titles-and-sections/text-padding-dropped] [fixture:
+titles-and-sections/value-whitespace-kept] [fixture:
+titles-and-sections/one-space-after-keyword] A value written on a later line is
+printed after the keyword on one line; a comment line between them makes the
+statement printed as written (see
 [Multi-line statements](#multi-line-statements)). [fixture:
 titles-and-sections/value-on-next-line] [fixture:
 titles-and-sections/comment-line-inside-kept] The value holds `:`, `%`, and `%%`
@@ -414,7 +418,7 @@ titles-and-sections/value-ends-at-hash] The whitespace before that `#` is part
 of the value, and stays. [fixture:
 titles-and-sections/whitespace-before-hash-is-the-value] A directive between the
 keyword and the value stays where it is (see [Directives](#directives)).
-[fixture: titles-and-sections/directive-between-keyword-and-value-kept]
+[fixture: titles-and-sections/directive-between-keyword-and-value]
 
 Input
 ([titles-and-sections/special-characters-in-values-input.mmd](../tests/fixtures/journey/titles-and-sections/special-characters-in-values-input.mmd)):
@@ -621,10 +625,11 @@ multi-line-statements/value-on-next-line-joined] In `accTitle` and `accDescr:`
 statements, keep trivia line breaks and align later structural parts and
 standalone trivia one continuation level inside the statement, also under a
 section. Preserve each first gap-line tail and complete directive interiors.
-Joining comment regions keep their original layout. A statement written over
-several lines is kept as written when joining its lines, with one space or with
-nothing, could change which `;` the line rule ignores; any other statement over
-several lines is joined as usual, also when it holds a `;`. [fixture:
+Joining comment regions keep their original layout. A `;` does not keep a
+statement over several lines from being joined: no `;` separates statements in a
+journey, and the first line of such a statement holds only its keyword, so
+joining its lines cannot change which `;` the line rule ignores. [fixture:
+multi-line-statements/semicolon-value-joined] [fixture:
 multi-line-statements/accessibility-trivia-continuations]
 
 Titles and sections keep their original multiline trivia layout, because their
@@ -813,9 +818,9 @@ journey # c
 ### Directives
 
 A directive on a line of its own stands at the level of the statement after it,
-and a directive within a printed line keeps whether whitespace is written on
-each side of it: where it is, one space stands there, and where it touches a
-token, it keeps touching. [fixture: directives/kept] [fixture:
+and a directive within a printed line is placed as in a flowchart: the gap is
+printed as without the directive, and the directive stands after its space and
+touches the unit that follows it. [fixture: directives/kept] [fixture:
 directives/levels-around-sections] [fixture: directives/before-header] [fixture:
 directives/after-header-on-same-line] [fixture:
 directives/after-header-touching-kept] [fixture:
@@ -828,10 +833,10 @@ break its left contact.
 
 [fixture: journey/directives/split-directive-gap]
 
-A directive between two units stays in its authored gap; same-line contact or
-separation on either side stays. Structural continuation columns follow
+A directive between two units stays in its authored gap, placed as under
+[Directives](#directives). Structural continuation columns follow
 [Multi-line statements](#multi-line-statements). A directive inside a value is
-part of that text. [fixture: directives/between-units-kept] [fixture:
+part of that text. [fixture: directives/between-units] [fixture:
 directives/inside-values-kept] [fixture: directives/over-lines-kept] A directive
 that is not closed takes the rest of the text, and is kept as written. [fixture:
 directives/unclosed-at-end-of-text-kept] [fixture:
@@ -864,7 +869,7 @@ journey
 ```
 
 Input
-([directives/between-units-kept-input.mmd](../tests/fixtures/journey/directives/between-units-kept-input.mmd)):
+([directives/between-units-input.mmd](../tests/fixtures/journey/directives/between-units-input.mmd)):
 
 ```mmd
 journey
@@ -874,12 +879,12 @@ C: 5%%{init: {}}%%: Me
 ```
 
 Output
-([directives/between-units-kept-output.mmd](../tests/fixtures/journey/directives/between-units-kept-output.mmd)):
+([directives/between-units-output.mmd](../tests/fixtures/journey/directives/between-units-output.mmd)):
 
 ```mmd
 journey
   A %%{init: {}}%%: 5
-  B:%%{init: {}}%% 5
+  B: %%{init: {}}%%5
   C: 5%%{init: {}}%%: Me
 ```
 

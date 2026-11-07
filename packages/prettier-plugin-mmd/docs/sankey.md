@@ -87,14 +87,13 @@ without quotes and none before a string. With the commas touching there is one
 rule, and it is the form that the documentation of mermaid.js writes. The
 whitespace inside a field stays. [fixture: commas/spaces-around-commas-dropped]
 [fixture: commas/space-after-comma-dropped] [fixture:
-commas/spaces-inside-fields-kept] A directive next to a comma keeps one space
-where whitespace was written beside it (see [Directives](#directives)), and a
-field of spaces only is printed as one space, so the two together can stand side
-by side: `a,   %%{init: {}}%%,1` is printed `a,  %%{init: {}}%%,1`, with two
-spaces. [fixture: directives/next-to-commas] A space next to a quote is rejected
-by mermaid.js, so a string touches its commas, and the space before a field
-after a string, which is read as the whitespace of that field, is dropped.
-[fixture: commas/quoted-fields-touch-commas]
+commas/spaces-inside-fields-kept] A directive next to a comma touches it, as a
+comma has no space beside it (see [Directives](#directives)), and a field of
+spaces only is printed as one space: `a,   %%{init: {}}%%,1` is printed
+`a, %%{init: {}}%%,1`. [fixture: directives/next-to-commas] A space next to a
+quote is rejected by mermaid.js, so a string touches its commas, and the space
+before a field after a string, which is read as the whitespace of that field, is
+dropped. [fixture: commas/quoted-fields-touch-commas]
 
 A field of spaces only is a field with an empty text, and an empty field is
 rejected, so it is printed as one space: the number of the spaces is not in the
@@ -391,9 +390,10 @@ touching, as in the other diagram types. A directive at the start of a record
 keeps whether whitespace is written between it and the record: touching stays
 touching, and whitespace becomes one space. [fixture:
 directives/after-the-value] [fixture: directives/at-the-start-of-a-record] A
-directive next to a comma keeps one space where whitespace was written beside
-it, as anywhere (see [Commas](#commas) for a field of spaces only). [fixture:
-directives/next-to-commas]
+directive next to a comma is placed as under
+[Directives](./flowchart.md#directives): a comma has no space beside it, so the
+directive touches it (see [Commas](#commas) for a field of spaces only).
+[fixture: directives/next-to-commas]
 
 A directive inside a field or a string is part of the text and stays. A
 directive that is not closed takes the rest of the text, and is kept as written.

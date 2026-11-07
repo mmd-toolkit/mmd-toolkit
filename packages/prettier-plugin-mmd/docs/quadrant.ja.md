@@ -259,9 +259,8 @@ mermaid.js の文書では、
 [fixture: keywords-and-texts/word-after-title-keyword-is-a-point-name]
 [fixture: keywords-and-texts/inner-whitespace-of-a-title-kept]
 
-キーワードとテキストの間にディレクティブがあれば、[指令](#指令)と同じく、
-その両側に空白が書かれていたかを保ちます。
-[fixture: keywords-and-texts/directive-beside-keyword-kept]
+キーワードとテキストの間のディレクティブは、[指令](#指令)のとおりに置きます。
+[fixture: keywords-and-texts/directive-beside-keyword]
 軸や象限のキーワードの直後にある U+2028 と U+2029 は、
 テキストの最初の文字なので（[行区切り文字](#行区切り文字)を参照）、
 その前に空白を 1 つ置き、`title` の後にあるものはそのまま残します。
@@ -894,12 +893,10 @@ quadrantChart
 ### 指令
 
 指令は元の単位の間に残します。
-同じ印字行の中では、両側の空白の有無を保ちます。
-空白が書かれていれば空白 1 つ、接していれば接したままです。
-mermaid.js は、テキスト、名前、文字列の中の指令の前後を結んで読むので、
-文の内部では、指令の隣が接しているか、
-離れているかを保ちます（[ディレクティブ](./journey.ja.md#ディレクティブ)
-を参照）。
+同じ印字行の中では、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
+隙間をディレクティブがないものとして印字し、
+ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
 単独の行にある指令は、後ろの文と同じ段に置き、
 行の中で 2 つの文の間にある指令は、後ろの文と一緒に動きます。
 [fixture: directives/directive-line-at-the-level-of-the-next-statement]
@@ -951,8 +948,8 @@ x-axis%%{init: {}}%%L
 
 ```mmd
 quadrantChart
-  quadrant-1 %%{init: {}}%% A
-  x-axis%%{init: {}}%%L
+  quadrant-1 %%{init: {}}%%A
+  x-axis %%{init: {}}%%L
 ```
 
 ### フロントマターの YAML

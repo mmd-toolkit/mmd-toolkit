@@ -118,9 +118,9 @@ are written so, and the Db is the same for both forms. The whitespace inside the
 brackets of the title is dropped, so `[ T ]` is printed `[T]` and `["x" ]` is
 printed `["x"]`, as in flowchart; Agentflow has no reason to choose a different
 form. One space stays where the title would be read otherwise (`[ /x/ ]`, and
-`[ x@ ]` in Agentflow). A directive at an edge of the title keeps the gap beside
-it, one space where whitespace was written: `flow F[ %%{x}%% T ]` is printed
-`flow F[ %%{x}%% T]`, and `flow G[ T %%{x}%% ]` is printed `flow G[T %%{x}%% ]`.
+`[ x@ ]` in Agentflow). A directive at an edge of the title touches the bracket
+and the title, as the gap has no space: `flow F[ %%{x}%% T ]` is printed
+`flow F[%%{x}%%T]`, and `flow G[ T %%{x}%% ]` is printed `flow G[T%%{x}%%]`.
 [fixture: names-and-headings/heading-title-directive-at-edge] A U+2028 or U+2029
 on the line of the `]` stays, and one at the start of a continuation line is
 read as its indentation. [test: agentflow: U+2028 inside the brackets of a flow
@@ -140,10 +140,10 @@ whitespace was written after it: that whitespace becomes one space. The
 whitespace before the directive stays as written while the `[` is apart from the
 directive, since the name then runs through the directive
 (`flow F   %%{init: {}}%% [T]` is not changed). When the `[` touches the
-directive, the name ends before the directive, and the whitespace before it
-becomes one space (`flow H   %%{init: {}}%%[T]` is printed
-`flow H %%{init: {}}%%[T]`). [fixture:
-names-and-headings/name-heading-title-beside-directive-kept] [fixture:
+directive, the name ends before the directive and the title touches the name, so
+the whitespace before the directive is dropped (`flow H   %%{init: {}}%%[T]` is
+printed `flow H%%{init: {}}%%[T]`). [fixture:
+names-and-headings/name-heading-title-beside-directive] [fixture:
 names-and-headings/name-heading-title-gap-run-beside-directive] [test:
 agentflow: a comment and U+2028 between a flow name and its title] Between a `:`
 and a `#` of a line that the line rule may read, the gap keeps whether it holds
@@ -169,10 +169,9 @@ however many spaces or tabs were written: the word takes one whitespace
 character, and mermaid.js trims the rest from the name. `flow   F["T"]` is
 printed `flow F["T"]`, and `global` followed by spaces is printed `global`.
 [fixture: names-and-headings/heading-word-gap-collapsed] A directive in the gap
-keeps whether whitespace was written on each side of it, a run of whitespace
-becoming one space, as under [Directives](#directives). [fixture:
-names-and-headings/heading-word-gap-beside-directive-kept] This holds where the
-name is a single part; a name of several parts is kept as written, as above.
+is placed as under [Directives](#directives). [fixture:
+names-and-headings/heading-word-gap-beside-directive] This holds where the name
+is a single part; a name of several parts is kept as written, as above.
 [fixture: names-and-headings/name-heading-title-multi-part-name-kept] A U+2028
 or U+2029 in the gap stays where it is. [test: agentflow: U+2028 after the flow
 word] [test: agentflow: U+2029 after the connector word]
@@ -380,17 +379,18 @@ agentflow-beta TB
 ### Labels
 
 Reuse [Label inner whitespace](./flowchart.md#label-inner-whitespace): Mermaid
-discards ordinary bare exterior padding, whereas internal, quoted/markdown and
-whitespace-only label text stays. Keep one leading/trailing space for slash,
-backslash, dash, quote characters, and when `@` in the first word would make it
-read as an edge id; put no space before slanted ?]/=] closers. Agentflow label
-comments are different: their preceding spaces/tabs are label content, so
-preserve that padding, the comment and its LF/continuation columns, including a
-closing bracket that belongs to the comment rather than closing the shape.
-Tildes remain content. Shape spellings, entities and HTML remain authored.
-[fixture: labels/labels-closers] [fixture: labels/labels-leading-sensitive]
-[fixture: labels/labels-leading-at-sign] [fixture: labels/labels-padding]
-[fixture: labels/labels-tilde] [fixture: labels/labels-trim-sensitive-unsafe]
+discards ordinary bare exterior padding, whereas internal and quoted/markdown
+label text stays, and a label of spaces and tabs only is printed as one space.
+Keep one leading/trailing space for slash, backslash, dash, quote characters,
+and when `@` in the first word would make it read as an edge id; put no space
+before slanted ?]/=] closers. Agentflow label comments are different: their
+preceding spaces/tabs are label content, so preserve that padding, the comment
+and its LF/continuation columns, including a closing bracket that belongs to the
+comment rather than closing the shape. Tildes remain content. Shape spellings,
+entities and HTML remain authored. [fixture: labels/labels-closers] [fixture:
+labels/labels-leading-sensitive] [fixture: labels/labels-leading-at-sign]
+[fixture: labels/labels-padding] [fixture: labels/labels-tilde] [fixture:
+labels/labels-trim-sensitive-unsafe]
 
 Flow/connector heading titles follow
 [Subgraph header](./flowchart.md#subgraph-header) instead: drop the whitespace
@@ -635,14 +635,14 @@ agentflow-beta TB
 ### Directives
 
 Reuse [Directives](./flowchart.md#directives) for the same reason: removal
-supplies no separator. Keep contents, order, touching and continuation columns,
-align standalone directives, and collapse only harmless gap sides. A directive
-after a header separator moves into the body with its following statement,
-keeping whether they touch, just as in flowchart: the Db is the same, and no
-reason specific to Agentflow calls for attaching it to the header instead. A
-line already kept under Kept lines stays together. [fixture:
-directives/header-directive-before-body] [fixture:
-directives/header-directive-touching-body] [fixture:
+supplies no separator. Keep contents, order and continuation columns, align
+standalone directives, and place a directive within a printed line as under
+[Directives](./flowchart.md#directives). A directive after a header separator
+moves into the body with its following statement, keeping whether they touch,
+just as in flowchart: the Db is the same, and no reason specific to Agentflow
+calls for attaching it to the header instead. A line already kept under Kept
+lines stays together. [fixture: directives/header-directive-before-body]
+[fixture: directives/header-directive-touching-body] [fixture:
 directives/header-touching-kept-line] [fixture: directives/directive-gap]
 [fixture: directives/directive-header] [fixture: directives/directive-multiline]
 [fixture: directives/directive-touch] [fixture: directives/directive-value]
@@ -766,9 +766,9 @@ agentflow/lex-directive-acctitle-next-line]
 The same exceptions apply: non-separator `;` lines under
 [Kept lines](#kept-lines) retain the accessibility text and whitespace beside
 `;`, including when the semicolon is in another statement. A statement written
-over several lines is kept as written when joining its lines, with one space or
-with nothing, could change which `;` the line rule ignores; any other statement
-over several lines is joined as usual, also when it holds a `;`. [fixture:
+over several lines is joined also when it holds a `;` that separates statements:
+on a line that holds no other `;`, the printer puts the statements on lines of
+their own, so only the statement itself is joined. [fixture:
 accessibility/semicolon-value-kept] [fixture:
 accessibility/neighbour-semicolon-kept] A `;` alone does not prevent joining.
 [fixture: accessibility/next-line-semicolon-joined] Direction-text lines keep

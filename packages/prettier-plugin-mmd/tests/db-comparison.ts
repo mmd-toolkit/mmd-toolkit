@@ -1,6 +1,10 @@
 import type { DbSummary } from "@mmd-toolkit/tests"
 import { parse } from "@mmd-toolkit/parser"
 import { eventmodelingDbForFormattingComparison } from "./eventmodeling-data-margins.ts"
+import {
+  keywordTextDbForFormattingComparison,
+  keywordTextDiagramTypes,
+} from "./keyword-text-margins.ts"
 import { stateDbForFormattingComparison } from "./state-note-margins.ts"
 import {
   styleDbForFormattingComparison,
@@ -26,6 +30,8 @@ export function dbForFormattingComparison(
     type === "stateDiagram"
       ? stateDbForFormattingComparison(before, after, beforeSource, afterSource)
       : after
+  if (keywordTextDiagramTypes.has(type))
+    return keywordTextDbForFormattingComparison(before, compared)
   return styleDiagramTypes.has(type)
     ? styleDbForFormattingComparison(before, compared)
     : compared

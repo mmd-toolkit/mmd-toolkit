@@ -981,13 +981,13 @@ eventmodeling/frontmatter-extra-whitespace-line-boundary]
 
 ### Global directives
 
-Use the shared directive placement: on the same printed line retain contact or
-separation on each side. When statements, clauses or items split into lines,
-attach an intervening directive to the following unit, retaining right contact.
-Keep content, order, multiline interiors, positions inside values and unfinished
-EOF endings. Standalone starts align with the owning body. Common boundaries
-retain the full original gap instead of this ordinary spacing; a removed
-directive cannot replace required whitespace.
+Use the shared directive placement: on the same printed line place a directive
+as under [Directives](./flowchart.md#directives). When statements, clauses or
+items split into lines, attach an intervening directive to the following unit,
+retaining right contact. Keep content, order, multiline interiors, positions
+inside values and unfinished EOF endings. Standalone starts align with the
+owning body. Common boundaries retain the full original gap instead of this
+ordinary spacing; a removed directive cannot replace required whitespace.
 
 [fixture: eventmodeling/global-directives/directive-same-line-contacts]
 
@@ -1016,7 +1016,7 @@ Output
 
 ```mmd
 eventmodeling
-tf%%{wrap}%% 01 evt Alpha%%{wrap}%%->>%%{wrap}%%02
+tf %%{wrap}%%01 evt Alpha %%{wrap}%%->> %%{wrap}%%02
 ```
 
 ### Semicolons

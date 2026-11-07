@@ -113,6 +113,25 @@ export function isWhitespace(character: string): boolean {
   return character.trim() === ""
 }
 
+/** Whether a character is a space or a tab. */
+export function isSpaceOrTab(character: string): boolean {
+  return character === " " || character === "\t"
+}
+
+/**
+ * The offset of the first character from `start` on that is no space and no
+ * tab, or `end` where the range holds nothing else.
+ */
+export function skipSpacesAndTabs(
+  source: Source,
+  start: number,
+  end: number,
+): number {
+  let offset = start
+  while (offset < end && isSpaceOrTab(source.text[offset])) offset++
+  return offset
+}
+
 /**
  * The length of the line terminator that starts at `offset`: 2 for `\r\n`, 1
  * for a lone `\r` or `\n`, and 0 where none starts.

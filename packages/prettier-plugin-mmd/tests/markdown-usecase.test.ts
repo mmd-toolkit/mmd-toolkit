@@ -118,9 +118,9 @@ const cases: readonly MarkdownCase[] = [
       "%%{wrap}%%\nusecase-beta %%{init: {}}%%\nactor %%{wrap}%% Reader",
     options: {},
     output:
-      "```mermaid\n%%{wrap}%%\nusecase-beta %%{init: {}}%%\n  actor %%{wrap}%% Reader\n```\n",
+      "```mermaid\n%%{wrap}%%\nusecase-beta %%{init: {}}%%\n  actor %%{wrap}%%Reader\n```\n",
     payloadOutput:
-      "%%{wrap}%%\nusecase-beta %%{init: {}}%%\n  actor %%{wrap}%% Reader\n",
+      "%%{wrap}%%\nusecase-beta %%{init: {}}%%\n  actor %%{wrap}%%Reader\n",
     rejected: false,
   },
   {

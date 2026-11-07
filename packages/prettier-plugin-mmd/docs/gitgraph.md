@@ -495,13 +495,13 @@ gitGraph %% header
 ### Global directives
 
 Keep global directive content, order and authored gaps. Within a printed line,
-keep whether each side touches or is separated. When formatting splits units
-that were on the same line, a directive in their gap moves with the following
-unit: its right boundary stays touching or separated, while its left contact is
-broken. Ordinary standalone starting indentation becomes one body step. Preserve
-directives inside strings, word/colon boundaries and EOF-reaching unclosed
-forms. Their opaque text and independent configuration effect must not be
-reconstructed. Atomic cuts remain specified failures.
+place a directive as under [Directives](./flowchart.md#directives). When
+formatting splits units that were on the same line, a directive in their gap
+moves with the following unit: its right boundary stays touching or separated,
+while its left contact is broken. Ordinary standalone starting indentation
+becomes one body step. Preserve directives inside strings, word/colon boundaries
+and EOF-reaching unclosed forms. Their opaque text and independent configuration
+effect must not be reconstructed. Atomic cuts remain specified failures.
 
 [fixture: gitgraph/global-directives/header-to-body]
 
@@ -520,7 +520,7 @@ Output
 ```mmd
 gitGraph
   commit id%%{wrap}%%: "A"
-  commit id:%%{wrap}%% "B"
+  commit id: %%{wrap}%%"B"
 ```
 
 ### Hidden yaml

@@ -595,14 +595,17 @@ set A[style:#x;y] set B:2
 
 ### Title
 
-The consumed first title separator becomes one ASCII space for readability;
-every later value character, including leading/trailing whitespace and
-statement-looking words, stays as written, because everything after the one
-separator is the title value in the tree and in the Db, so trimming or
-collapsing it changes the Db. Indentation on the next source line belongs to the
-value, so `title` LF `  T` prints as `title   T`. LF and the broader accepted
-title separators may normalize, but trivia, joined regions and kept parts
-protect their written boundaries. [corpus fixture:
+The consumed first title separator becomes one ASCII space for readability, and
+so do the spaces and tabs after it: mermaid.js keeps them in the Db, but draws
+the same title without them (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+Every later value character, including trailing whitespace and statement-looking
+words, stays as written, because everything after the one separator is the title
+value in the tree and in the Db, so trimming or collapsing it changes the Db.
+Indentation on the next source line belongs to the value, so `title` LF `  T`
+prints as `title T`. [fixture: venn/title/text-padding-dropped] LF and the
+broader accepted title separators may normalize, but trivia, joined regions and
+kept parts protect their written boundaries. [corpus fixture:
 venn/db-frontmatter-title-overridden] [corpus fixture: venn/db-title-on-header]
 [corpus fixture: venn/db-title-only-whitespace] [corpus fixture:
 venn/db-title-padding] [corpus fixture: venn/db-title-value-next-line] [corpus
@@ -624,14 +627,14 @@ Output
 
 ```mmd
 venn-beta
-title   T
+title T
 ```
 
 ### Directives
 
 Standalone directives align with nearby statements to show their association;
-inline directives retain their containing line, order, contents and touching
-relations, with ordinary spaced gap sides reduced to one space. A leading
+inline directives retain their containing line, order and contents, and are
+placed in their gaps as under [Directives](./flowchart.md#directives). A leading
 directive retains the positive versus zero logical indentation of implicit
 versus explicit text, choosing exterior indentation before the first directive
 while keeping its internal gap relations. Embedded, multiline, semicolon-stopped
@@ -704,7 +707,7 @@ Output
 
 ```mmd
 venn-beta
-set A %%{init: {}}%% [L]:2
+set A%%{init: {}}%%[L]:2
 ```
 
 Input (escaped):

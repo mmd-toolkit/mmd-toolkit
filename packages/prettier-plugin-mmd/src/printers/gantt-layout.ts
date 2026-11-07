@@ -23,6 +23,7 @@ import { holdsJoiningRegion } from "./kept-lines.ts"
 import {
   accessibilityRules,
   findCallRangeWithTrivia,
+  trimTextAfterKeyword,
 } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
 import { findTokenEndingBefore, findTokensBetween } from "./source.ts"
@@ -210,6 +211,11 @@ export function layoutGanttStatement(
     collectValueNodes(statement, ganttValueNodeTypes),
     findCallArgumentsStretches(source, statement),
   )
+  trimTextAfterKeyword(
+    source,
+    atoms,
+    textAfterKeyword(source, statement)?.range ?? null,
+  )
   const remainder = findBlankRemainder(source, statement)
   if (remainder !== null) atoms.push(remainder)
   return {
@@ -217,6 +223,34 @@ export function layoutGanttStatement(
     rules: statementRules(source, statement, atoms, remainder),
     outdented: new Set(),
     lineBreaks: keepsLineBreaks ? "kept" : "joined",
+  }
+}
+
+/**
+ * The text after the keyword of a statement whose whitespace at the start
+ * mermaid.js leaves out of the figure (docs/compatibility.md, Texts after a
+ * keyword that are drawn the same): a title, the name of a section, a date
+ * format, an axis format. A tick interval is matched against its whole text,
+ * so a space before it turns the ticks into the default ones. A date format
+ * of `D` has another axis than the same text with whitespace around it
+ * (ganttRenderer.ts, `makeGrid`).
+ */
+function textAfterKeyword(
+  source: Source,
+  statement: GanttStatement,
+): Node | null {
+  switch (statement.type) {
+    case "GanttTitleStatement":
+    case "GanttAxisFormatStatement":
+      return statement.value
+    case "GanttSectionStatement":
+      return statement.name
+    case "GanttDateFormatStatement":
+      return source.text.slice(...statement.value.range).trim() === "D"
+        ? null
+        : statement.value
+    default:
+      return null
   }
 }
 

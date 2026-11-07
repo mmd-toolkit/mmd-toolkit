@@ -167,9 +167,9 @@ cynefin-beta
 ### Component spacing
 
 Separate ordinary domain/item components that remain on one line by one space,
-making the components distinct. Global trivia keeps both sides within a printed
-line; split gaps follow [Global directives](#global-directives). Hidden closing
-padding and semicolon prefixes retain their protected text.
+making the components distinct. A global directive within a printed line is
+placed as under [Global directives](#global-directives), and so are split gaps.
+Hidden closing padding and semicolon prefixes retain their protected text.
 
 [fixture: cynefin/component-spacing/domain-hidden-contact]
 
@@ -405,7 +405,10 @@ one space before a nonempty value and retain its internal text. Empty or
 whitespace-only values print as bare title and never take text from the next
 line. This chooses a compact Db-equal edge without interpreting quotes as string
 delimiters. Preserve empty resets and trivia contact. A single separator
-space/tab is outside the range of a null title.
+space/tab is outside the range of a null title. A `;` that the line rule ignores
+before the first character of the value is a gap item whether one whitespace
+character or more comes before it: `title  ;T` and `title ;T` are printed alike.
+[fixture: cynefin/semicolons/ignored-semicolon-title-value-second-space]
 
 [fixture: cynefin/title/title-edges]
 
@@ -760,14 +763,14 @@ cynefin-beta
 
 ### Global directives
 
-Keep Root directive source and order. Within a printed line, keep whether each
-side touches or is separated. When formatting splits units that were on the same
-line, a directive in their gap moves with the following unit: its right boundary
-stays touching or separated, while its left contact is broken. Ordinary
-standalone lines align with their body, including item depth between items.
-Multiline interiors and unfinished EOF endings remain written. Reordering
-directives or editing their JSON can change the text that common removal joins;
-native hidden directives remain separate forms.
+Keep Root directive source and order. Within a printed line, place a directive
+as under [Directives](./flowchart.md#directives). When formatting splits units
+that were on the same line, a directive in their gap moves with the following
+unit: its right boundary stays touching or separated, while its left contact is
+broken. Ordinary standalone lines align with their body, including item depth
+between items. Multiline interiors and unfinished EOF endings remain written.
+Reordering directives or editing their JSON can change the text that common
+removal joins; native hidden directives remain separate forms.
 
 [fixture: cynefin/global-directives/header-to-body]
 
@@ -795,7 +798,7 @@ Output
 
 ```mmd
 cynefin-beta
-  complex%%{wrap}%%-->%%{wrap}%%clear%%{wrap}%%:%%{wrap}%%'GlobalLabel'
+  complex %%{wrap}%%--> %%{wrap}%%clear %%{wrap}%%: %%{wrap}%%'GlobalLabel'
 ```
 
 ### Comments

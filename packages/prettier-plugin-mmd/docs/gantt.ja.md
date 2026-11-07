@@ -394,10 +394,20 @@ gantt
 
 ### 設定
 
-`dateFormat`、`axisFormat`、`tickInterval`、`todayMarker` は、値を、
-両端の空白も含めて書かれたまま印字します。
+`dateFormat` と `axisFormat` は、キーワードの後に空白を 1 つ置き、
+その後に値を印字します。
+mermaid.js は値の先頭の空白を Db に残しますが、
+その空白がなくても同じ図を描きます。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+`dateFormat   YYYY-MM-DD` は `dateFormat YYYY-MM-DD` と印字します。
+[fixture: settings/format-padding-dropped]
+`D` の日付書式は、前後に空白がないときだけ日単位の軸を描くので、
+書かれたままにします。
+`tickInterval` も、値全体を読んでいて、
+前に空白があると目盛りが既定のものになるので、書かれたままにします。
+[fixture: settings/format-padding-kept-where-drawn-differently]
+それ以外は、値を、末尾の空白も含めて書かれたまま印字します。
 Db は値をそのまま持つので、
-空白 2 つの `dateFormat  YYYY-MM-DD` は空白と `YYYY-MM-DD` の書式を持ち、
 末尾に空白 2 つがある `todayMarker off` は別のマーカーです。
 [fixture: settings/value-whitespace-kept]
 `todayMarker` の値は `#` を含み、どの値も `%%` をテキストの文字として含みます。
@@ -413,7 +423,7 @@ Db は値をそのまま持つので、
 [fixture: settings/value-on-next-line]
 キーワードと値の間のディレクティブは、
 その位置に残します（[ディレクティブ](#ディレクティブ)を参照）。
-[fixture: settings/directive-between-keyword-and-value-kept]
+[fixture: settings/directive-between-keyword-and-value]
 
 入力
 ([settings/value-on-next-line-input.mmd](../tests/fixtures/gantt/settings/value-on-next-line-input.mmd)):
@@ -432,7 +442,7 @@ axisFormat
 ```mmd
 gantt
   dateFormat YYYY-MM-DD
-  axisFormat  %m
+  axisFormat %m
 ```
 
 入力
@@ -456,8 +466,12 @@ gantt
 ### タイトルとセクション
 
 `title` と `section` も設定と同じに印字します。
-値は両端の空白も含めて書かれたまま（Db が持つ）で、
+値は末尾の空白も含めて書かれたまま（Db が持つ）で、
 キーワードの後の区切りは空白 1 つです。
+値の先頭の空白は除きます。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+`title   Plan` は `title Plan` と印字します。
+[fixture: titles-and-sections/text-padding-dropped]
 [fixture: titles-and-sections/value-whitespace-kept]
 [fixture: titles-and-sections/one-space-after-keyword]
 [fixture: titles-and-sections/value-on-next-line]
@@ -465,7 +479,7 @@ gantt
 [fixture: titles-and-sections/special-characters-in-values]
 キーワードと値の間のディレクティブは、
 その位置に残します（[ディレクティブ](#ディレクティブ)を参照）。
-[fixture: titles-and-sections/directive-between-keyword-and-value-kept]
+[fixture: titles-and-sections/directive-between-keyword-and-value]
 後の行に書かれた値は、キーワードの後に寄せて 1 行にします。
 間にコメント行があれば、
 文は書かれたまま印字します（[複数行の文](#複数行の文)を参照）。
@@ -522,10 +536,9 @@ Db はどの区切りでも同じなので、区切りの種類は作者のも�
 項目の大文字小文字は残します（mermaid.js が小文字にします）。
 [fixture: lists/items-case-kept]
 キーワードと最初の項目の間と、項目の間のディレクティブは、その位置に残し、
-両側に空白があるかどうかは変えず、空白の連なりは空白 1 つにします。
-[fixture: lists/directive-after-keyword-kept]
-[fixture: lists/directive-between-items-kept]
-[fixture: lists/directive-in-list-runs-collapsed]
+[ディレクティブ](#ディレクティブ)のとおりに置きます。
+[fixture: lists/directive-after-keyword]
+[fixture: lists/directive-between-items] [fixture: lists/directive-in-list-runs]
 
 項目のない `,` はそのまま残します。 [fixture: lists/empty-items-kept]
 リストの末尾の空白は落とします。 [fixture: lists/trailing-whitespace-dropped]
@@ -594,7 +607,7 @@ gantt
 `inclusiveEndDates` の後も同じです。
 [fixture: weekday-and-weekend/trailing-whitespace-dropped]
 キーワードと日の間のディレクティブはその位置に残します。
-[fixture: weekday-and-weekend/directive-between-keyword-and-day-kept]
+[fixture: weekday-and-weekend/directive-between-keyword-and-day]
 
 入力
 ([weekday-and-weekend/day-case-kept-input.mmd](../tests/fixtures/gantt/weekday-and-weekend/day-case-kept-input.mmd)):
@@ -718,7 +731,7 @@ Db が持ちます。
 部分の間にコメント行かディレクティブがあると、その改行を保ち、
 [複数行の文](#複数行の文)に従って構造部分の続きの列をそろえます。
 [fixture: click-statements/comment-line-between-parts-kept]
-[fixture: click-statements/directive-between-parts-kept]
+[fixture: click-statements/directive-between-parts]
 
 入力
 ([click-statements/ids-touch-commas-input.mmd](../tests/fixtures/gantt/click-statements/ids-touch-commas-input.mmd)):
@@ -1074,7 +1087,8 @@ gantt
 説明ブロックの括弧が該当します。
 引数が空白だけの呼び出しの括弧は互いに接し、`f(    )` は `f()` になります。
 mermaid.js はどちらも同じ呼び出しとして読むからです。
-括弧の間にディレクティブがあれば、その両側の空白の有無を保ちます。
+括弧の間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおり、
+両側の括弧に接します。
 括弧の間に改行があっても同じで、そこにあるコメント行は 1 行のまま残ります。
 [fixture: whitespace-between-tokens/blank-arguments]
 [fixture: click-statements/callback-blank-parentheses-touch]
@@ -1235,13 +1249,14 @@ gantt
 ### ディレクティブ
 
 単独の行のディレクティブは周りの文と同じ段に置きます。
-同じ印字行の中では、両側の空白の有無を残します。
-空白がある所には空白 1 つを置き、接している所は接したままにします。
+同じ印字行の中では、flowchart と同じく、
+隙間をディレクティブがないものとして印字し、
+ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
 [fixture: directives/kept] [fixture: directives/before-header]
 [fixture: directives/after-header-on-same-line]
 [fixture: directives/after-header-touching-kept]
 [fixture: directives/whitespace-on-both-sides-collapsed]
-[fixture: directives/touching-one-side-kept]
+[fixture: directives/touching-one-side]
 [fixture: directives/after-statement-at-end-of-line]
 [fixture: directives/statement-after-directive-line]
 
@@ -1251,10 +1266,10 @@ gantt
 
 [fixture: gantt/directives/split-directive-gap]
 
-文の単位の間の指令は元の gap に残し、同じ行の両側の接触・分離を保ちます。
+文の単位の間の指令は元の gap に残し、
+[ディレクティブ](#ディレクティブ)のとおりに置きます。
 構造部分の続きの列は[複数行の文](#複数行の文)に従います。
-値の中の指令は、そのテキストの一部です。
-[fixture: directives/between-units-kept]
+値の中の指令は、そのテキストの一部です。 [fixture: directives/between-units]
 [fixture: directives/between-task-parts-kept]
 [fixture: directives/inside-values-kept] [fixture: directives/over-lines-kept]
 閉じられていないディレクティブはテキストの残りを取り、書かれたまま残します。
@@ -1284,7 +1299,7 @@ gantt
 ```
 
 入力
-([directives/touching-one-side-kept-input.mmd](../tests/fixtures/gantt/directives/touching-one-side-kept-input.mmd)):
+([directives/touching-one-side-input.mmd](../tests/fixtures/gantt/directives/touching-one-side-input.mmd)):
 
 ```mmd
 gantt
@@ -1293,16 +1308,16 @@ title%%{init: {}}%% T
 ```
 
 出力
-([directives/touching-one-side-kept-output.mmd](../tests/fixtures/gantt/directives/touching-one-side-kept-output.mmd)):
+([directives/touching-one-side-output.mmd](../tests/fixtures/gantt/directives/touching-one-side-output.mmd)):
 
 ```mmd
 gantt
   weekday monday %%{init: {}}%%
-  title%%{init: {}}%% T
+  title %%{init: {}}%%T
 ```
 
 入力
-([directives/between-units-kept-input.mmd](../tests/fixtures/gantt/directives/between-units-kept-input.mmd)):
+([directives/between-units-input.mmd](../tests/fixtures/gantt/directives/between-units-input.mmd)):
 
 ```mmd
 gantt
@@ -1313,11 +1328,11 @@ click id1 call f%%{init: {}}%%()
 ```
 
 出力
-([directives/between-units-kept-output.mmd](../tests/fixtures/gantt/directives/between-units-kept-output.mmd)):
+([directives/between-units-output.mmd](../tests/fixtures/gantt/directives/between-units-output.mmd)):
 
 ```mmd
 gantt
-  weekday %%{init: {}}%% monday
+  weekday %%{init: {}}%%monday
   a :id1, 1d
   click %%{init: {}}%%id1 href "u"
   click id1 call f%%{init: {}}%%()

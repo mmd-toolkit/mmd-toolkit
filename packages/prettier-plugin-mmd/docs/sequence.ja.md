@@ -306,9 +306,9 @@ mermaid.js の文書では、
 [`alt Describing text`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L492))。
 [fixture: whitespace-between-tokens/wrap-text-spaced]
 [fixture: whitespace-between-tokens/block-text-touching-spaced]
-隙間にディレクティブがあれば、[ディレクティブ](#ディレクティブ)と同じく、
-その両側に空白が書かれていたかを保ち、U+2028 と U+2029 はそのまま残します。
-[fixture: whitespace-between-tokens/block-text-beside-directive-kept]
+隙間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
+U+2028 と U+2029 はそのまま残します。
+[fixture: whitespace-between-tokens/block-text-beside-directive]
 [test: U+2028 between a block keyword and its text]
 [test: U+2029 between a wrap prefix and its text]
 2 人の参加者にまたがるノートの id の間の `,` は、
@@ -407,11 +407,12 @@ NBSP、全角空白、BOM も同じです。
 [fixture: whitespace-between-tokens/data-block-space-before-removed-alias]
 [fixture: whitespace-between-tokens/data-block-multi-line-space-before-removed]
 [fixture: whitespace-between-tokens/data-block-space-before-removed-between-statements]
-id と `@{` の間に directive があるときは、
-[ディレクティブ](#ディレクティブ)と同じく、
-その前後の空白を書かれたまま残します。
-U+2028 か U+2029 があるときも同じです。
-[fixture: whitespace-between-tokens/data-block-space-before-kept-after-directive]
+id と `@{` の間のディレクティブは、
+[ディレクティブ](#ディレクティブ)のとおりに置きます。
+隙間に空白を置かないので、両方に接します。
+`participant A %%{init: {}}%% @{ "type": "queue" }` は、
+`participant A%%{init: {}}%%@{ "type": "queue" }` と印字します。
+[fixture: whitespace-between-tokens/data-block-space-before-after-directive]
 内容は、[複数行の値](#複数行の値)で対象となる余白と、
 1 行のブロックの両端の半角空白とタブを除いて保ちます。
 両端は[データブロック](./flowchart.ja.md#データブロック)と同じく、
@@ -520,12 +521,12 @@ mermaid.js の文書で `+` か `-` のあるメッセージ 12 件のうち、
 [中央接続の例](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L392-L394)
 にあります。
 空白を削るのは、隙間が空白だけでできているときに限ります。
-隙間にディレクティブがあれば、その両側に空白があるかどうかは変えず、
-空白の連なりは空白 1 つにします（[ディレクティブ](#ディレクティブ)を参照）。
-`A%%{init: {}}%%->>B: v` は矢印の前に空白を置かず、
-`A ->> +%%{init: {}}%% B: v` はディレクティブの後の空白を残します。
-[fixture: arrow-spacing/directive-beside-arrow-kept]
-[fixture: arrow-spacing/touching-beside-directive-kept]
+隙間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
+`A%%{init: {}}%%->>B: v` は `A %%{init: {}}%%->> B: v` に、
+`A ->> +%%{init: {}}%% B: v` は `A ->> +%%{init: {}}%%B: v` と印字します。
+`+` は行き先に接するからです。 [fixture: arrow-spacing/directive-beside-arrow]
+[fixture: arrow-spacing/directive-beside-arrow-runs]
+[fixture: arrow-spacing/touching-beside-directive]
 隙間の中の改行は[複数行の文](#複数行の文)と同じく 1 行に結び、
 空白も改行と一緒になくなります。
 コメント行があるときは行を保ちます。
@@ -633,10 +634,10 @@ sequenceDiagram
 テキストの前の `:` と、`accTitle` と `accDescr` の後の `:` は、前のものに接し、
 後に空白を 1 つ置きます。
 mermaid.js の文書の sequence 図の書き方と同じです。
-ディレクティブの隣では、
-書かれた空白を残します（[ディレクティブ](#ディレクティブ)を参照）。
+ディレクティブの隣でも同じで、
+ディレクティブは[ディレクティブ](#ディレクティブ)のとおりに置きます。
 [fixture: colons/spaced] [fixture: colons/other-statements-spaced]
-[fixture: colons/directive-around-colon-kept]
+[fixture: colons/directive-around-colon]
 mermaid.js はテキストを両端の空白を除いて読みます。
 テキストが空のときは、`:` の後に何も置きません。 [fixture: colons/spaced]
 [fixture: colons/empty-text]
@@ -675,13 +676,22 @@ sequenceDiagram
 
 ### タイトル
 
-`title` と `title:` の後には空白を 1 つ置き、行の残りは書かれたまま残します。
-キーワードの後のディレクティブは、間に空白が書かれているかどうかを残します。
-`title %%{init: {}}%% T` はディレクティブの前に空白を 1 つ置き、
-`title%%{init: {}}%% U` と `title:%%{init: {}}%% V` は接したまま残します。
+`title` と `title:` の後には空白を 1 つ置き、
+行の残りは先頭の空白を除いて書かれたまま残します。
+`title   My diagram` は `title My diagram` と印字します。
+[fixture: title/text-padding-dropped]
+[fixture: title/text-padding-dropped-colon]
+キーワードとその後の空白 1 文字の間のディレクティブは、
+キーワードに接したまま残します。
+`title%%{init: {}}%% U` と `title:%%{init: {}}%% V` は変えません。
+その 1 文字の後のディレクティブはテキストの一部で、テキストの先頭の空白は、
+ディレクティブの前後の空白も除きます。
+`title %%{init: {}}%% T` は `title %%{init: {}}%%T` と印字します。
 [fixture: title/directive-after-keyword-kept]
 mermaid.js はキーワードの後の空白 1 文字を読み、それは改行でもよく、
-その後のすべてを、先頭と末尾の空白も含めてタイトルに入れます。
+その後のすべてを、先頭と末尾の空白も含めてタイトルに入れ、
+先頭の空白を除いてタイトルを描きます。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 そのため、`title`、改行、`A->>B: x` は `title A->>B: x` と印字し、
 次の行がタイトルになることが見えます。
 mermaid.js はそのように読みます。 [fixture: title/separator]
@@ -713,7 +723,7 @@ title:	Tab
 ```mmd
 sequenceDiagram
   title A->>B: x
-  title  Two spaces
+  title Two spaces
   title: Tab
 ```
 
@@ -934,11 +944,12 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
 ### ディレクティブ
 
 flowchart と同じです。
-行に単独のディレクティブは周りの文と同じ段に置き、同じ印字行の中では、
-両側に空白が書かれているかどうかを保ちます。
-書かれていればそこに空白 1 つを置き、トークンに接していれば接したまま残します。
+行に単独のディレクティブは周りの文と同じ段に置きます。
+同じ印字行の中では、flowchart と同じく、
+隙間をディレクティブがないものとして印字し、
+ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
 [fixture: directives/kept] [fixture: directives/section-edges-kept]
-[fixture: directives/whitespace-on-each-side-kept]
+[fixture: directives/whitespace-on-each-side]
 [fixture: directives/touching-kept] [fixture: directives/block-lines-kept]
 
 元は同じ行にあった単位を別の行へ分けるときは、

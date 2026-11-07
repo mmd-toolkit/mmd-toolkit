@@ -270,9 +270,9 @@ are dropped, since mermaid.js trims them (it keeps a no-break space, which
 stays): `systemBoundary S[ x ]` is printed `systemBoundary S[x]`, and `S("x" )`
 is printed `S("x")`. [fixture: system-boundaries/boundary-title-padding-dropped]
 [fixture: system-boundaries/boundary-title-opener-touches-id] A directive at an
-edge of the title keeps the gap beside it, one space where whitespace was
-written (`S[ %%{x}%% T ]` is printed `S[ %%{x}%% T]`). The padding is dropped on
-a line with a kept `;` too, apart from the stretch read by the line rule (see
+edge of the title touches the bracket and the title, as the gap has no space
+(`S[ %%{x}%% T ]` is printed `S[%%{x}%%T]`). The padding is dropped on a line
+with a kept `;` too, apart from the stretch read by the line rule (see
 [Statements and semicolons](#statements-and-semicolons)): dropping it outside
 that stretch moves no `;`, so the line rule selects the same one. `S[ a;b ]` is
 printed `S[a;b]`, and `S[ a; ]` is printed `S[a;]`. One space stays where the
@@ -286,11 +286,10 @@ it stays. [fixture: system-boundaries/boundary-title-directive-or-semicolon]
 usecase: U+2028 inside the brackets of a boundary title] [test: usecase: U+2029
 inside the brackets of a boundary title] [test: usecase: U+2028 inside the
 brackets of a boundary title with a semicolon] [test: usecase: U+2029 inside the
-brackets of a boundary title with a semicolon] A directive in the gap keeps
-whether whitespace was written on each side of it, a run of whitespace becoming
-one space, as under flowchart's Directives. [fixture:
+brackets of a boundary title with a semicolon] A directive in the gap is placed
+as under flowchart's Directives. [fixture:
 system-boundaries/boundary-id-title-directed-gap] [fixture:
-system-boundaries/boundary-id-title-directed-gap-runs-collapsed] Preserve native
+system-boundaries/boundary-id-title-directed-gap-runs] Preserve native
 metadata/classes and repeated declarations; body membership comes from the AST's
 single declaration-body level.
 
@@ -354,8 +353,8 @@ Space the arrow and endpoint exactly as the AST records them: `A --order` prints
 `A --o rder`, while `A -- order` keeps `order`. Forward `--o`/`--x` are tried
 before markerless `--` without a word boundary, so adding or removing a gap
 inside those units changes the reading. Longer markerless dash runs and
-uppercase O/X keep their recorded target; directives at complete boundaries
-retain their gap sides. [fixture:
+uppercase O/X keep their recorded target; a directive in a gap at a complete
+boundary is placed as under [Directives](#directives). [fixture:
 arrow-id-boundaries/arrow-marker-both-gap-sides] This differs from class's
 o-marker boundary. Recovering an apparent intended id belongs to lint, not
 formatting.
@@ -826,9 +825,10 @@ usecase-beta
 ### Directives
 
 Reuse [shared directive attachment](./class.md#directives): removal supplies no
-separator. Keep directive contents, order, touching and multiline columns; align
-standalone directives and collapse only harmless exterior HWS gap sides.
-[fixture: system-boundaries/boundary-id-title-directed-gap] [fixture:
+separator. Keep directive contents, order and multiline columns; align
+standalone directives, and place a directive within a printed line as under
+flowchart's Directives. [fixture:
+system-boundaries/boundary-id-title-directed-gap] [fixture:
 arrows/semantic-operator-directives] [fixture:
 arrow-id-boundaries/arrow-marker-both-gap-sides] Header-line directives remain
 with the header. Value-side gaps, CSS name/value spans and opaque JSON remain
@@ -860,7 +860,7 @@ Output
 
 ```mmd
 usecase-beta
-  actor %%{init: {}}%% User
+  actor %%{init: {}}%%User
 ```
 
 ### Multiline values and order

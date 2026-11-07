@@ -351,10 +351,10 @@ ER 図の関係文も単位の間は空白 1 つです。
 [fixture: relationship-spacing/every-relation]
 引用符のない名前の中の空白は名前の一部です。
 [fixture: relationship-spacing/multi-word-names]
-単位の間のディレクティブは、その場に残し、両側に空白があるかどうかは変えず、
-空白の連なりは空白 1 つにします。
-[fixture: relationship-spacing/directive-between-units-kept]
-[fixture: relationship-spacing/directive-between-units-runs-collapsed]
+単位の間のディレクティブは、その場に残し、
+[ディレクティブ](#ディレクティブ)のとおりに置きます。
+[fixture: relationship-spacing/directive-between-units]
+[fixture: relationship-spacing/directive-between-units-runs]
 空白の後で改行して複数行に書かれた関係文は、
 コメントやディレクティブが結合を妨げる場合を除き、1 行にします。
 結合しない場合は、
@@ -394,7 +394,7 @@ requirementDiagram
 ```
 
 入力
-([relationship-spacing/directive-between-units-kept-input.mmd](../tests/fixtures/requirement/relationship-spacing/directive-between-units-kept-input.mmd)):
+([relationship-spacing/directive-between-units-input.mmd](../tests/fixtures/requirement/relationship-spacing/directive-between-units-input.mmd)):
 
 ```mmd
 requirementDiagram
@@ -403,12 +403,12 @@ a  %%{init: {}}%% - contains -> b
 ```
 
 出力
-([relationship-spacing/directive-between-units-kept-output.mmd](../tests/fixtures/requirement/relationship-spacing/directive-between-units-kept-output.mmd)):
+([relationship-spacing/directive-between-units-output.mmd](../tests/fixtures/requirement/relationship-spacing/directive-between-units-output.mmd)):
 
 ```mmd
 requirementDiagram
-  a -%%{init: {}}%%satisfies -> b
-  a %%{init: {}}%% - contains -> b
+  a - %%{init: {}}%%satisfies -> b
+  a %%{init: {}}%%- contains -> b
 ```
 
 ### クラスの並び
@@ -423,7 +423,7 @@ requirement、element、名前とクラスだけの文で、`:::` の後に書�
 その空白はクラスの一部です。 [fixture: class-lists/string-classes]
 [fixture: class-lists/classes-with-spaces]
 各部の間のディレクティブは、その場に残します。
-[fixture: class-lists/directive-between-parts-kept]
+[fixture: class-lists/directive-between-parts]
 
 入力
 ([class-lists/in-requirement-and-element-input.mmd](../tests/fixtures/requirement/class-lists/in-requirement-and-element-input.mmd)):
@@ -1426,19 +1426,18 @@ requirementDiagram
 
 単独の行のディレクティブは、周りの文と同じ段に置き、
 本体の中ではフィールドと同じ段に置きます。
-文の行にあるディレクティブは、両側に空白が書かれているかを残します。
-あれば空白 1 つを置き、トークンに接していれば接したままにします。
+文の行の中では、flowchart と同じく、隙間をディレクティブがないものとして印字し、
+ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
 [fixture: directives/kept] [fixture: directives/in-body]
 [fixture: directives/before-header]
 [fixture: directives/after-header-on-same-line]
-[fixture: directives/whitespace-on-both-sides-collapsed]
+[fixture: directives/whitespace-on-both-sides]
 [fixture: directives/after-statement-at-end-of-line]
 
 文の 2 つの単位の間のディレクティブは、その場に残し、
-両側に空白があるかどうかは変えず、空白の連なりは空白 1 つにします。
+[ディレクティブ](#ディレクティブ)のとおりに置きます。
 テキストの中のディレクティブは、テキストの一部です。
-[fixture: directives/between-units-kept]
-[fixture: directives/between-units-runs-collapsed]
+[fixture: directives/between-units] [fixture: directives/between-units-runs]
 [fixture: directives/inside-values-kept]
 閉じられていないディレクティブはテキストの残りを取り、書かれたまま残します。
 [fixture: directives/unclosed-at-end-of-text-kept]
@@ -1473,7 +1472,7 @@ requirementDiagram
 ```
 
 入力
-([directives/between-units-kept-input.mmd](../tests/fixtures/requirement/directives/between-units-kept-input.mmd)):
+([directives/between-units-input.mmd](../tests/fixtures/requirement/directives/between-units-input.mmd)):
 
 ```mmd
 requirementDiagram
@@ -1484,13 +1483,13 @@ id:%%{init: {}}%% 1
 ```
 
 出力
-([directives/between-units-kept-output.mmd](../tests/fixtures/requirement/directives/between-units-kept-output.mmd)):
+([directives/between-units-output.mmd](../tests/fixtures/requirement/directives/between-units-output.mmd)):
 
 ```mmd
 requirementDiagram
-  a -%%{init: {}}%% satisfies -> b
-  requirement r%%{init: {}}%%{
-    id:%%{init: {}}%% 1
+  a - %%{init: {}}%%satisfies -> b
+  requirement r %%{init: {}}%%{
+    id: %%{init: {}}%%1
   }
 ```
 

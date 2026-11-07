@@ -2,6 +2,7 @@ import type {
   ClassAnnotation,
   ClassCallbackStatement,
   ClassDeclaration,
+  ClassAttribute,
   ClassMethod,
   ClassName,
   ClassNamespaceStatement,
@@ -493,27 +494,29 @@ function findMemberStretches(source: Source, statement: Node): Atom[] {
       start: range[0],
       end: range[1],
       doc:
-        statement.member.type === "ClassMethod"
-          ? printClassMethod(source, statement.member)
+        statement.member.type === "ClassMethod" ||
+        statement.member.type === "ClassAttribute"
+          ? printClassMember(source, statement.member)
           : undefined,
     },
   ]
 }
 
 /**
- * Method fields already exclude harmless exterior padding. Keep their contents
- * and classifier tails, formatting only the gaps around the AST fields
+ * Member fields already exclude harmless exterior padding. Keep their contents
+ * and, in a method, its classifier tail and return type, formatting only the
+ * gaps around the AST fields: the classifier of an attribute touches its text
  * (diagrams/class.md, Member lines; docs/class.md, Member lines).
  */
-export function printClassMethod(
+export function printClassMember(
   source: Source,
-  method: ClassMethod,
+  member: ClassMethod | ClassAttribute,
 ): Doc | undefined {
-  const [start, end] = method.range
+  const [start, end] = member.range
   const text = source.text.slice(start, end)
   if (
-    method.textBefore !== null ||
-    method.textAfter !== null ||
+    (member.type === "ClassMethod" &&
+      (member.textBefore !== null || member.textAfter !== null)) ||
     text.includes("\n") ||
     text.includes("\u2028") ||
     text.includes("\u2029") ||
@@ -522,13 +525,16 @@ export function printClassMethod(
     findTriviaBetween(source, start, end).length > 0
   )
     return undefined
-  const values = collectValueNodes(method, classValueNodeTypes)
+  const values = collectValueNodes(member, classValueNodeTypes)
   const atoms = collectAtoms(source, start, end, values, [])
   const rules = new Map<number, GapRule>()
   for (const atom of atoms.slice(1))
     rules.set(
       atom.start,
-      atom.start === method.returnType?.range[0] ? "space" : "none",
+      member.type === "ClassMethod" &&
+        atom.start === member.returnType?.range[0]
+        ? "space"
+        : "none",
     )
   return printAtoms(
     source,

@@ -1444,18 +1444,24 @@ marker 後を詰めると class がまとまり、icon の内側の空白は文�
 
 ```mmd
 treeView-beta
-  entry :::%%{wrap}%% X
+  entry :::%%{wrap}%%X
 ```
 
 ### Descriptions
 
-`##` 後の literal は、前後の padding、空白だけの値、LS・PS、
+`##` と description のテキストの間には、元の空白とタブがいくつあっても、
+なくても、空白 1 つを置きます。
+mermaid.js が description からそれらを取り除いて同じ図を描くので、
+`##   text` と `##text` は `## text` と印字します。
+description の残りの literal は、末尾の padding、空白だけの値、LS・PS、
 percent の文字と注釈らしい文字を含めて丸ごと保ちます。
 null は null のままです。
-Db の等しい trim も原文を失い、内部の空白の変更は description を変ええます。
+残りの部分の Db の等しい trim も原文を失い、
+内部の空白の変更は description を変ええます。
 `##` の前の gap は Annotation gaps に従います。
 
 [fixture: treeview/descriptions/description-padding]
+[fixture: treeview/descriptions/description-touches-marker]
 
 [fixture: treeview/descriptions/description-empty]
 
@@ -1608,6 +1614,10 @@ null と空白だけの値は bare の `title` とし、内部の文字は保ち
 次の行から値を取らず、Db の等しい一定の外側の配置を選ぶためです。
 `titlex` と `title"node"` は AST の境界に従い、
 summary に出ない title も残します。
+値の最初の文字より前にある、行の規則が無視する `;` は、
+その前の空白が 1 文字でもそれ以上でも、隙間の項目です。
+`title  ;T` と `title ;T` は同じように印字します。
+[fixture: treeview/semicolons/ignored-semicolon-title-value-second-space]
 
 [fixture: treeview/title/title-shared]
 
@@ -2044,7 +2054,10 @@ treeView-beta
 ### Directives
 
 directive の原文と順序を保ちます。
-同じ印字行では両側の接触と分離を保ちます。
+同じ印字行では、title、accessibility の文、
+または `:::` の後のクラスの隙間にあるディレクティブは、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
+それ以外の隙間では、両側の接触と分離を保ちます。
 ただし、
 [Statements one per line](#statements-one-per-line) に従って新しく作る directive
 だけの行へ移す directive の間は例外です。

@@ -1472,18 +1472,22 @@ Output
 
 ```mmd
 treeView-beta
-  entry :::%%{wrap}%% X
+  entry :::%%{wrap}%%X
 ```
 
 ### Descriptions
 
-Keep the full description literal after `##`, including leading/trailing
+One space stands between `##` and the text of a description, whether the spaces
+and tabs there were many, or none: `##   text` and `##text` are printed
+`## text`, since mermaid.js trims them from the description and draws the same
+figure. Keep the rest of the description literal, including its trailing
 padding, whitespace-only text, LS/PS, percent text and apparent annotation
-syntax. Null stays null. Db-equal trimming would still erase authored text;
-internal whitespace changes can change the description. The gap before `##`
-follows Annotation gaps.
+syntax. Null stays null. Db-equal trimming of the rest would still erase
+authored text; internal whitespace changes can change the description. The gap
+before `##` follows Annotation gaps.
 
-[fixture: treeview/descriptions/description-padding]
+[fixture: treeview/descriptions/description-padding] [fixture:
+treeview/descriptions/description-touches-marker]
 
 [fixture: treeview/descriptions/description-empty]
 
@@ -1636,7 +1640,10 @@ Keep common statements in their preamble and source order. Use shared
 null/whitespace-only values, preserving internal text. This chooses consistent
 Db-equivalent outer spacing without taking a next-line value. Follow AST
 boundaries for `titlex` and `title"node"`; title still stays written when the
-summary omits it.
+summary omits it. A `;` that the line rule ignores before the first character of
+the value is a gap item whether one whitespace character or more comes before
+it: `title  ;T` and `title ;T` are printed alike. [fixture:
+treeview/semicolons/ignored-semicolon-title-value-second-space]
 
 [fixture: treeview/title/title-shared]
 
@@ -2062,7 +2069,9 @@ treeView-beta
 
 ### Directives
 
-Keep directive text and order. Within one printed line retain contact or
+Keep directive text and order. Within one printed line a directive in the gap of
+a title, an accessibility statement, or the class after `:::` is placed as under
+[Directives](./flowchart.md#directives); in the other gaps it retains contact or
 separation on each side, except between directives moved to a new directive-only
 line as described in [Statements one per line](#statements-one-per-line). When
 units split, attach the directive to the following unit and retain its right

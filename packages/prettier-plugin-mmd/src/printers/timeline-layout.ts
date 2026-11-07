@@ -24,7 +24,7 @@ import {
   spansLinesThatCannotJoin,
   toAsciiLowerCase,
 } from "./layout.ts"
-import { accessibilityRules } from "./statement-rules.ts"
+import { accessibilityRules, trimTextAfterKeyword } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
 import { findStructuralToken } from "./source.ts"
 
@@ -143,6 +143,15 @@ export function layoutTimelineStatement(
     end,
     collectValueNodes(statement, timelineValueNodeTypes),
     [],
+  )
+  trimTextAfterKeyword(
+    source,
+    atoms,
+    statement.type === "TimelineTitleStatement"
+      ? statement.value.range
+      : statement.type === "TimelineSectionStatement"
+        ? statement.name.range
+        : null,
   )
   return {
     atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,

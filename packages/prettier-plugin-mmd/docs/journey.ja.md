@@ -414,9 +414,12 @@ journey
 ### タイトルとセクション
 
 `title` と `section` は、値を、
-両端の空白も含めて書かれたまま印字します（Db が持ちます）。
-キーワードの後の区切りは、書かれた文字によらず空白 1 つです。
+末尾の空白も含めて書かれたまま印字します（Db が持ちます）。
+キーワードの後の区切りは、書かれた空白によらず空白 1 つです。
 区切りの形を 1 つにするためで、Gantt 図と同じです。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+`title   My trip` は `title My trip` と印字します。
+[fixture: titles-and-sections/text-padding-dropped]
 [fixture: titles-and-sections/value-whitespace-kept]
 [fixture: titles-and-sections/one-space-after-keyword]
 後の行に書かれた値は、キーワードの後に寄せて 1 行にします。
@@ -431,7 +434,7 @@ journey
 [fixture: titles-and-sections/whitespace-before-hash-is-the-value]
 キーワードと値の間のディレクティブは、
 その位置に残します（[ディレクティブ](#ディレクティブ)を参照）。
-[fixture: titles-and-sections/directive-between-keyword-and-value-kept]
+[fixture: titles-and-sections/directive-between-keyword-and-value]
 
 入力
 ([titles-and-sections/special-characters-in-values-input.mmd](../tests/fixtures/journey/titles-and-sections/special-characters-in-values-input.mmd)):
@@ -646,9 +649,11 @@ mermaid.js が複数行にわたって読む文は、
 section の下でも後続の構造部分と独立した trivia 行を文より 1 段深くそろえます。
 各 gap の最初の行の末尾と、指令の内部全体を保ちます。
 物理行を結ぶコメント領域は、元の配置を保ちます。
-複数行に書かれた文は、その行を空白 1 つか何も挟まずにつなぐと、
-行の規則が無視する `;` が変わりうる場合に、書かれたまま残します。
-それ以外の複数行の文は、`;` を含んでいても通常どおりつなぎます。
+`;` があるだけでは、複数行に書かれた文をつなぐ妨げにはなりません。
+journey では文の区切りに `;` を使えず、
+そのような文の最初の行にはキーワードしかないので、行をつないでも、
+行の規則が無視する `;` は変わりません。
+[fixture: multi-line-statements/semicolon-value-joined]
 [fixture: multi-line-statements/accessibility-trivia-continuations]
 
 title と section では、値の空白が Db の一部なので、
@@ -839,8 +844,9 @@ journey # c
 ### ディレクティブ
 
 単独の行のディレクティブは、その次の文と同じ段に置きます。
-同じ印字行の中では、両側の空白の有無を残します。
-空白がある所には空白 1 つを置き、接している所は接したままにします。
+同じ印字行の中では、flowchart と同じく、
+隙間をディレクティブがないものとして印字し、
+ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
 [fixture: directives/kept] [fixture: directives/levels-around-sections]
 [fixture: directives/before-header]
 [fixture: directives/after-header-on-same-line]
@@ -854,10 +860,10 @@ journey # c
 
 [fixture: journey/directives/split-directive-gap]
 
-文の単位の間の指令は元の gap に残し、同じ行の両側の接触・分離を保ちます。
+文の単位の間の指令は元の gap に残し、
+[ディレクティブ](#ディレクティブ)のとおりに置きます。
 構造部分の続きの列は[複数行の文](#複数行の文)に従います。
-値の中の指令は、そのテキストの一部です。
-[fixture: directives/between-units-kept]
+値の中の指令は、そのテキストの一部です。 [fixture: directives/between-units]
 [fixture: directives/inside-values-kept] [fixture: directives/over-lines-kept]
 閉じられていないディレクティブはテキストの残りを取り、書かれたまま残します。
 [fixture: directives/unclosed-at-end-of-text-kept]
@@ -890,7 +896,7 @@ journey
 ```
 
 入力
-([directives/between-units-kept-input.mmd](../tests/fixtures/journey/directives/between-units-kept-input.mmd)):
+([directives/between-units-input.mmd](../tests/fixtures/journey/directives/between-units-input.mmd)):
 
 ```mmd
 journey
@@ -900,12 +906,12 @@ C: 5%%{init: {}}%%: Me
 ```
 
 出力
-([directives/between-units-kept-output.mmd](../tests/fixtures/journey/directives/between-units-kept-output.mmd)):
+([directives/between-units-output.mmd](../tests/fixtures/journey/directives/between-units-output.mmd)):
 
 ```mmd
 journey
   A %%{init: {}}%%: 5
-  B:%%{init: {}}%% 5
+  B: %%{init: {}}%%5
   C: 5%%{init: {}}%%: Me
 ```
 

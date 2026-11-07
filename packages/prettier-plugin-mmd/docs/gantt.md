@@ -386,12 +386,20 @@ gantt
 
 ### Settings
 
-`dateFormat`, `axisFormat`, `tickInterval`, and `todayMarker` are printed with
-their value as written, the whitespace at its ends included: the Db keeps the
-value as it is, so `dateFormat  YYYY-MM-DD` with two spaces has the format of a
-space and `YYYY-MM-DD`, and `todayMarker off` followed by two spaces is another
-marker. [fixture: settings/value-whitespace-kept] The value of `todayMarker`
-holds `#`, and every value holds `%%`, as characters of the text; the value of
+`dateFormat` and `axisFormat` are printed with one space after the keyword and
+the value after it: mermaid.js keeps the whitespace at the start of the value in
+the Db, but draws the same figure without it (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+`dateFormat   YYYY-MM-DD` is printed `dateFormat YYYY-MM-DD`. [fixture:
+settings/format-padding-dropped] A date format of `D` stays as written, since
+the axis of days is drawn only where `D` has no whitespace around it, and so
+does `tickInterval`, which is read as a whole, so that whitespace before it
+turns its ticks into the default ones. [fixture:
+settings/format-padding-kept-where-drawn-differently] The values are otherwise
+printed as written, the whitespace at their ends included: the Db keeps the
+value as it is, so `todayMarker off` followed by two spaces is another marker.
+[fixture: settings/value-whitespace-kept] The value of `todayMarker` holds `#`,
+and every value holds `%%`, as characters of the text; the value of
 `todayMarker` ends at a `;`, and the value of `dateFormat`, `axisFormat`, and
 `tickInterval` ends at a `#` or a `;` (see
 [Statements one per line](#statements-one-per-line)). [fixture:
@@ -403,7 +411,7 @@ feed: the character is not in the Db, and the separator has one form. [fixture:
 settings/one-space-after-keyword] [fixture: settings/value-on-next-line] A
 directive between the keyword and the value stays where it is (see
 [Directives](#directives)). [fixture:
-settings/directive-between-keyword-and-value-kept]
+settings/directive-between-keyword-and-value]
 
 Input
 ([settings/value-on-next-line-input.mmd](../tests/fixtures/gantt/settings/value-on-next-line-input.mmd)):
@@ -422,7 +430,7 @@ Output
 ```mmd
 gantt
   dateFormat YYYY-MM-DD
-  axisFormat  %m
+  axisFormat %m
 ```
 
 Input
@@ -445,18 +453,21 @@ gantt
 
 ### Titles and sections
 
-`title` and `section` are printed as the settings are: the value as written, the
-whitespace at its ends included, which the Db keeps, and one space as the
-separator after the keyword. [fixture:
+`title` and `section` are printed as the settings are: one space after the
+keyword, and the value as written, the whitespace at its end included, which the
+Db keeps; the whitespace at the start of the value is left out (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+`title   Plan` is printed `title Plan`. [fixture:
+titles-and-sections/text-padding-dropped] [fixture:
 titles-and-sections/value-whitespace-kept] [fixture:
 titles-and-sections/one-space-after-keyword] [fixture:
 titles-and-sections/value-on-next-line] The value holds `:`, `#`, `;`, and `%%`
 as characters. [fixture: titles-and-sections/special-characters-in-values] A
 directive between the keyword and the value stays where it is (see
 [Directives](#directives)). [fixture:
-titles-and-sections/directive-between-keyword-and-value-kept] A value written on
-a later line is printed after the keyword on one line; a comment line between
-them makes the statement printed as written (see
+titles-and-sections/directive-between-keyword-and-value] A value written on a
+later line is printed after the keyword on one line; a comment line between them
+makes the statement printed as written (see
 [Multi-line statements](#multi-line-statements)). [fixture:
 titles-and-sections/comment-line-inside-kept]
 
@@ -509,10 +520,9 @@ is the same for every separator, so the kind of separator is the author's.
 [fixture: lists/separators-as-written] [fixture: lists/dates-and-days] The case
 of the items is kept: mermaid.js lowers it. [fixture: lists/items-case-kept] A
 directive between the keyword and the first item, or between two items, stays
-where it is and keeps whether whitespace was written on each side of it, a run
-of whitespace becoming one space. [fixture: lists/directive-after-keyword-kept]
-[fixture: lists/directive-between-items-kept] [fixture:
-lists/directive-in-list-runs-collapsed]
+where it is and is placed as under [Directives](#directives). [fixture:
+lists/directive-after-keyword] [fixture: lists/directive-between-items]
+[fixture: lists/directive-in-list-runs]
 
 Commas with no item between them stay as written. [fixture:
 lists/empty-items-kept] The whitespace at the end of a list is dropped.
@@ -580,7 +590,7 @@ weekday-and-weekend/one-space] [fixture: weekday-and-weekend/day-case-kept]
 line is dropped, after `inclusiveEndDates` too. [fixture:
 weekday-and-weekend/trailing-whitespace-dropped] A directive between the keyword
 and the day stays where it is. [fixture:
-weekday-and-weekend/directive-between-keyword-and-day-kept]
+weekday-and-weekend/directive-between-keyword-and-day]
 
 Input
 ([weekday-and-weekend/day-case-kept-input.mmd](../tests/fixtures/gantt/weekday-and-weekend/day-case-kept-input.mmd)):
@@ -701,7 +711,7 @@ lines is printed as written (see [Multi-line values](#multi-line-values)).
 between the parts keeps its line breaks, with ordinary structural continuations
 aligned under [Multi-line statements](#multi-line-statements). [fixture:
 click-statements/comment-line-between-parts-kept] [fixture:
-click-statements/directive-between-parts-kept]
+click-statements/directive-between-parts]
 
 Input
 ([click-statements/ids-touch-commas-input.mmd](../tests/fixtures/gantt/click-statements/ids-touch-commas-input.mmd)):
@@ -1049,9 +1059,9 @@ Where no rule above applies, a run of whitespace between two tokens of a
 statement becomes one space, and tokens that touch keep touching, as the braces
 of a description block. The parentheses of a call with blank arguments touch
 each other: `f(    )` is printed `f()`, since mermaid.js reads it as the same
-call. A directive between them keeps whether whitespace was written on each side
-of it. The same holds for the parentheses with a line break between them, while
-a comment line there stays on its own line. [fixture:
+call. A directive between them touches both parentheses, as under
+[Directives](#directives). The same holds for the parentheses with a line break
+between them, while a comment line there stays on its own line. [fixture:
 whitespace-between-tokens/blank-arguments] [fixture:
 click-statements/callback-blank-parentheses-touch] [fixture:
 click-statements/callback-blank-parentheses-lines] A U+2028 or U+2029 between
@@ -1213,13 +1223,13 @@ gantt
 ### Directives
 
 A directive on a line of its own stands at the level of the statements around
-it, and a directive within a printed line keeps whether whitespace is written on
-each side of it: where it is, one space stands there, and where it touches a
-token, it keeps touching. [fixture: directives/kept] [fixture:
+it, and a directive within a printed line is placed as in a flowchart: the gap
+is printed as without the directive, and the directive stands after its space
+and touches the unit that follows it. [fixture: directives/kept] [fixture:
 directives/before-header] [fixture: directives/after-header-on-same-line]
 [fixture: directives/after-header-touching-kept] [fixture:
 directives/whitespace-on-both-sides-collapsed] [fixture:
-directives/touching-one-side-kept] [fixture:
+directives/touching-one-side] [fixture:
 directives/after-statement-at-end-of-line] [fixture:
 directives/statement-after-directive-line]
 
@@ -1229,10 +1239,10 @@ break its left contact.
 
 [fixture: gantt/directives/split-directive-gap]
 
-A directive between two units stays in its authored gap; same-line contact or
-separation on either side stays. Structural continuation columns follow
+A directive between two units stays in its authored gap, placed as under
+[Directives](#directives). Structural continuation columns follow
 [Multi-line statements](#multi-line-statements). A directive inside a value is
-part of that text. [fixture: directives/between-units-kept] [fixture:
+part of that text. [fixture: directives/between-units] [fixture:
 directives/between-task-parts-kept] [fixture: directives/inside-values-kept]
 [fixture: directives/over-lines-kept] A directive that is not closed takes the
 rest of the text, and is kept as written. [fixture:
@@ -1262,7 +1272,7 @@ gantt
 ```
 
 Input
-([directives/touching-one-side-kept-input.mmd](../tests/fixtures/gantt/directives/touching-one-side-kept-input.mmd)):
+([directives/touching-one-side-input.mmd](../tests/fixtures/gantt/directives/touching-one-side-input.mmd)):
 
 ```mmd
 gantt
@@ -1271,16 +1281,16 @@ title%%{init: {}}%% T
 ```
 
 Output
-([directives/touching-one-side-kept-output.mmd](../tests/fixtures/gantt/directives/touching-one-side-kept-output.mmd)):
+([directives/touching-one-side-output.mmd](../tests/fixtures/gantt/directives/touching-one-side-output.mmd)):
 
 ```mmd
 gantt
   weekday monday %%{init: {}}%%
-  title%%{init: {}}%% T
+  title %%{init: {}}%%T
 ```
 
 Input
-([directives/between-units-kept-input.mmd](../tests/fixtures/gantt/directives/between-units-kept-input.mmd)):
+([directives/between-units-input.mmd](../tests/fixtures/gantt/directives/between-units-input.mmd)):
 
 ```mmd
 gantt
@@ -1291,11 +1301,11 @@ click id1 call f%%{init: {}}%%()
 ```
 
 Output
-([directives/between-units-kept-output.mmd](../tests/fixtures/gantt/directives/between-units-kept-output.mmd)):
+([directives/between-units-output.mmd](../tests/fixtures/gantt/directives/between-units-output.mmd)):
 
 ```mmd
 gantt
-  weekday %%{init: {}}%% monday
+  weekday %%{init: {}}%%monday
   a :id1, 1d
   click %%{init: {}}%%id1 href "u"
   click id1 call f%%{init: {}}%%()

@@ -311,7 +311,7 @@ while `service s(logos:aws)[ #y; ]` has no `style` before the `:` and is printed
 `service s(logos:aws)[#y;]`. The rule reads a line without its directives, so a
 `style`, a `:`, a `#`, or a `;` inside one makes no stretch:
 `service%%{style}%% s0(logos:aws)[ #y; ]` is printed
-`service%%{style}%% s0(logos:aws)[#y;]`,
+`service %%{style}%%s0(logos:aws)[#y;]`,
 `service style1(logos:aws)[ #y ]%%{init:{"a":";"}}%%` is printed with `[#y]`,
 and the same line with a `;` outside the directive, `[ #y; ]`, keeps its space.
 [fixture: label-content/title-padding-line-rule-chars-in-directive] A `%%` in
@@ -738,15 +738,15 @@ architecture-beta
 
 ### Global directives
 
-Keep Root directive content, order and ownership. Within a printed line, keep
-whether each side touches or is separated. When formatting splits units that
-were on the same line, a directive in their gap moves with the following unit:
-its right boundary stays touching or separated, while its left contact is
-broken. Ordinary standalone starts align one body step in; multiline interiors
-and EOF-reaching endings stay written. Common removal joins surrounding text, so
-deleting component-boundary whitespace can reject a declaration. Preserve
-component/value-internal directives rather than treating their opaque text as
-JSON.
+Keep Root directive content, order and ownership. Within a printed line, place a
+directive as under [Directives](./flowchart.md#directives). When formatting
+splits units that were on the same line, a directive in their gap moves with the
+following unit: its right boundary stays touching or separated, while its left
+contact is broken. Ordinary standalone starts align one body step in; multiline
+interiors and EOF-reaching endings stay written. Common removal joins
+surrounding text, so deleting component-boundary whitespace can reject a
+declaration. Preserve component/value-internal directives rather than treating
+their opaque text as JSON.
 
 [fixture: architecture/global-directives/header-to-body]
 
@@ -790,7 +790,7 @@ Output
 architecture-beta
   service composite(%%{wrap}%%cloud%%{wrap}%%)
   service target
-  composite{%%{wrap}%%group%%{wrap}%%}:R < %%{wrap}%% --> L:target
+  composite{%%{wrap}%%group%%{wrap}%%}:R <%%{wrap}%%--> L:target
 ```
 
 ### Hidden forms

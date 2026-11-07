@@ -249,10 +249,10 @@ keywords-and-texts/quadrant-ten-spaced] [fixture:
 keywords-and-texts/word-after-title-keyword-is-a-point-name] [fixture:
 keywords-and-texts/inner-whitespace-of-a-title-kept]
 
-A directive between the keyword and its text keeps whether whitespace was
-written on each side of it, as under [Directives](#directives). [fixture:
-keywords-and-texts/directive-beside-keyword-kept] A U+2028 or U+2029 right after
-an axis or quadrant keyword is the first character of the text (see
+A directive between the keyword and its text is placed as under
+[Directives](#directives). [fixture:
+keywords-and-texts/directive-beside-keyword] A U+2028 or U+2029 right after an
+axis or quadrant keyword is the first character of the text (see
 [Line separators](#line-separators)), so one space is put before it, while one
 after `title` stays where it is. [test: U+2028 between an axis keyword and its
 text] [test: U+2029 between a quadrant keyword and its text] [test: U+2028 after
@@ -859,13 +859,12 @@ quadrantChart
 
 ### Directives
 
-Keep directives in their authored gaps. Within a printed line, each side keeps
-whether it touches: one space where whitespace was written beside it, touching
-where it was not. mermaid.js joins the text around a directive in a text, a
-name, and a string, so retain touching versus separated gaps within a statement
-(see [Directives](./journey.md#directives)). A directive on a line of its own
-stands at the level of the statement after it, and a directive between two
-statements on a line moves with the statement after it. [fixture:
+Keep directives in their authored gaps. Within a printed line, a directive is
+placed as under [Directives](./flowchart.md#directives): the gap is printed as
+without the directive, and the directive stands after its space and touches the
+unit that follows it. A directive on a line of its own stands at the level of
+the statement after it, and a directive between two statements on a line moves
+with the statement after it. [fixture:
 directives/directive-line-at-the-level-of-the-next-statement] [fixture:
 directives/directive-line-before-the-header] [fixture:
 directives/directive-after-a-statement-spaced] [fixture:
@@ -916,8 +915,8 @@ Output
 
 ```mmd
 quadrantChart
-  quadrant-1 %%{init: {}}%% A
-  x-axis%%{init: {}}%%L
+  quadrant-1 %%{init: {}}%%A
+  x-axis %%{init: {}}%%L
 ```
 
 ### Frontmatter YAML

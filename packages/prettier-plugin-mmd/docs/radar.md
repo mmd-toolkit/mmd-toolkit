@@ -627,15 +627,15 @@ radar-beta
 ### Global directives
 
 Keep Root directive content, order and ownership, including
-component/value-internal directives. Within a printed line, keep whether each
-side touches or is separated. When formatting splits units that were on the same
-line, a directive in their gap moves with the following unit: its right boundary
-stays touching or separated, while its left contact is broken. Ordinary
-standalone starts use one body step; multiline interiors and EOF-reaching
-unfinished endings remain written. Never format these as JSON or gather them
-elsewhere: removal joins surrounding text, so deleting a component-boundary
-space can reject an accepted keyword/value pair. Native RadarIgnoredText
-directives are separate authored nodes.
+component/value-internal directives. Within a printed line, place a directive as
+under [Directives](./flowchart.md#directives). When formatting splits units that
+were on the same line, a directive in their gap moves with the following unit:
+its right boundary stays touching or separated, while its left contact is
+broken. Ordinary standalone starts use one body step; multiline interiors and
+EOF-reaching unfinished endings remain written. Never format these as JSON or
+gather them elsewhere: removal joins surrounding text, so deleting a
+component-boundary space can reject an accepted keyword/value pair. Native
+RadarIgnoredText directives are separate authored nodes.
 
 [fixture: radar/global-directives/header-to-body]
 

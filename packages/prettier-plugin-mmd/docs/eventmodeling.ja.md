@@ -985,7 +985,8 @@ frontmatter の場合も含めて確かめます。
 ### Global directives
 
 共有 directive 配置を使います。
-同じ印字行では両側それぞれの接触・分離を保ちます。
+同じ印字行のディレクティブは、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 文・clause・item を行に分ける場合、間の directive は次の単位へ付け、
 右の接し方を保ちます。
 内容、順序、複数行の内部、値の中の位置、未完 EOF の終端を保ちます。
@@ -1017,7 +1018,7 @@ frontmatter の場合も含めて確かめます。
 
 ```mmd
 eventmodeling
-tf%%{wrap}%% 01 evt Alpha%%{wrap}%%->>%%{wrap}%%02
+tf %%{wrap}%%01 evt Alpha %%{wrap}%%->> %%{wrap}%%02
 ```
 
 ### Semicolons

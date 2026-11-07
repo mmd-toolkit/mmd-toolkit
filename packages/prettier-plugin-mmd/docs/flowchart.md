@@ -681,12 +681,13 @@ exception, kept as written (see [Direction](#direction)). [fixture:
 whitespace-between-tokens/class-def-and-link-style-spaced] [fixture:
 whitespace-between-tokens/subgraph-quoted-name-kept] In a `style`, `classDef`,
 or `linkStyle` statement, the whitespace before the first style, which the
-statement rule of mermaid.js reads, becomes one space, also around a directive
-there: `style A %%{init: {}}%%  fill:red` and `style A %%{init: {}}%% fill:red`
-give the same Db. The whitespace between the words of a style value stays as
-written. [fixture: whitespace-between-tokens/style-inner-whitespace-kept]
-`linkStyle default`, `classDef`, and `style` use the same form as ER and
-requirement (see
+statement rule of mermaid.js reads, becomes one space, which stands before a
+directive there, as under [Directives](#directives):
+`style A %%{init: {}}%%  fill:red` is printed `style A %%{init: {}}%%fill:red`,
+and the two give the same Db. The whitespace between the words of a style value
+stays as written. [fixture:
+whitespace-between-tokens/style-inner-whitespace-kept] `linkStyle default`,
+`classDef`, and `style` use the same form as ER and requirement (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 
 U+2028 and U+2029 after the `end` of a subgraph are whitespace to mermaid.js,
@@ -757,7 +758,7 @@ flowchart LR
 ```
 
 Input
-([whitespace-between-tokens/style-after-directives-collapsed-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-after-directives-collapsed-input.mmd)):
+([whitespace-between-tokens/style-after-directives-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-after-directives-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -770,16 +771,16 @@ linkStyle default interpolate   basis   %%{init: {}}%%  %%{init: {}}%%stroke:red
 ```
 
 Output
-([whitespace-between-tokens/style-after-directives-collapsed-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-after-directives-collapsed-output.mmd)):
+([whitespace-between-tokens/style-after-directives-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-after-directives-output.mmd)):
 
 ```mmd
 flowchart LR
   A
-  style A %%{init: {}}%% %%{init: {}}%%fill:red
-  classDef a,b %%{init: {}}%% %%{init: {}}%% fill:red
+  style A %%{init: {}}%%%%{init: {}}%%fill:red
+  classDef a,b %%{init: {}}%%%%{init: {}}%%fill:red
   A --> A
-  linkStyle 0 %%{init: {}}%% fill:red
-  linkStyle default interpolate basis %%{init: {}}%% %%{init: {}}%%stroke:red
+  linkStyle 0 %%{init: {}}%%fill:red
+  linkStyle default interpolate basis %%{init: {}}%%%%{init: {}}%%stroke:red
 ```
 
 The whitespace between the name of the function after `call` and the `(` that
@@ -789,8 +790,8 @@ mermaid.js reads the name up to the `(`, whitespace included, so
 whitespace-between-tokens/callback-name-arguments-forms-kept] The parentheses of
 a call with blank arguments touch each other: `click A call f( )` is printed
 `click A call f()`, since mermaid.js reads both as the same call with no
-arguments. A directive between them keeps whether whitespace was written on each
-side of it, as under [Directives](#directives). [fixture:
+arguments. A directive between them touches both parentheses, as under
+[Directives](#directives). [fixture:
 whitespace-between-tokens/callback-blank-parentheses-touch] A statement written
 over several lines is kept as written, so it keeps the line break between the
 parentheses and a comment line there. [fixture:
@@ -857,11 +858,14 @@ arrow-spacing/edge-id-arrow-like-with-link-text] [fixture:
 arrow-spacing/edge-id-arrow-like-chain] [fixture:
 arrow-spacing/edge-id-arrow-like-after-whitespace-is-link-text] Any other edge
 id has one space before it, such as `=a`, `~~a`, `.a`, `x-a`, and `x~~~a`.
-[fixture: arrow-spacing/edge-id-not-arrow-like-gets-one-space] A directive or an
-ignored `;` between the shape and the edge id keeps whether whitespace was
-written on each side of it, a run of whitespace becoming one space. [fixture:
+[fixture: arrow-spacing/edge-id-not-arrow-like-gets-one-space] The whitespace of
+the gap between the shape and the edge id decides whether the edge id is one, so
+the gap has no ordinary rule: where whitespace was written anywhere in the gap,
+around a directive or an ignored `;` or between them, one space stands in it,
+before the directive, and none where it was not. The directive and the `;` are
+placed as under [Directives](#directives). [fixture:
 arrow-spacing/edge-id-arrow-like-after-directive] [fixture:
-arrow-spacing/edge-id-arrow-like-after-directive-runs-collapsed] [fixture:
+arrow-spacing/edge-id-arrow-like-after-directive-runs] [fixture:
 arrow-spacing/edge-id-arrow-like-after-ignored-semicolon] [fixture:
 arrow-spacing/edge-id-arrow-like-after-ignored-semicolon-runs-collapsed]
 
@@ -967,18 +971,21 @@ flowchart LR
 
 Whitespace at the ends of a label without quotes is dropped, as mermaid.js drops
 it. [fixture: label-inner-whitespace/trimmed-every-shape] Whitespace inside the
-label is kept, and so is a label that is only whitespace (`A[]` would be
-rejected). [fixture: label-inner-whitespace/all-whitespace-every-shape-kept] A
-label in quotes is kept as written, except for the whitespace between its
-closing quote and the closing bracket, which is dropped: `A["x" ]` is printed
-`A["x"]`, and so is `B{"x" }`, `C(("x" ))`, and `D[/"t" /]`. [fixture:
-label-inner-whitespace/quotes-kept] [fixture:
-label-inner-whitespace/string-closing-touches] Only whitespace on the line of
-the closing quote is dropped: a line break, a comment line, a directive, or a
-U+2028 or U+2029 on that line between the quote and the bracket stays, and a
-bracket after a line break stands as a continuation line. A U+2028 or U+2029 at
-the start of a continuation line is read as its indentation, so it is replaced
-by the indentation that the printer gives the line. [fixture:
+label is kept. A label that is only spaces and tabs is printed as one space:
+mermaid.js reads the same empty text for any number of them and draws the same
+figure, and it rejects a label of no character (`A[]`), so one space is the
+least that keeps the label. `A[   ]` is printed `A[ ]`, and so is every other
+shape, and the label of a link between `|`. [fixture:
+label-inner-whitespace/all-whitespace-every-shape] A label in quotes is kept as
+written, except for the whitespace between its closing quote and the closing
+bracket, which is dropped: `A["x" ]` is printed `A["x"]`, and so is `B{"x" }`,
+`C(("x" ))`, and `D[/"t" /]`. [fixture: label-inner-whitespace/quotes-kept]
+[fixture: label-inner-whitespace/string-closing-touches] Only whitespace on the
+line of the closing quote is dropped: a line break, a comment line, a directive,
+or a U+2028 or U+2029 on that line between the quote and the bracket stays, and
+a bracket after a line break stands as a continuation line. A U+2028 or U+2029
+at the start of a continuation line is read as its indentation, so it is
+replaced by the indentation that the printer gives the line. [fixture:
 label-inner-whitespace/string-closing-break-and-directive-kept] [test: U+2028
 between the closing quote and the bracket of a flowchart label] [test: U+2029
 between the closing quote and the bracket of a flowchart label] The closing `|`
@@ -1277,7 +1284,7 @@ accessibility-lines/block-right-padding-only] A block stays as written when it
 holds a comment or a directive, or a line break, and so does a block whose text
 holds a `%%{`, as in `accDescr {A%%{}%% B`, where the first `}` closes the block
 and padding it would change the directive. [fixture:
-accessibility-lines/block-text-beside-directive-kept] [fixture:
+accessibility-lines/block-text-beside-directive] [fixture:
 pie/description-blocks/block-first-brace] A block on a line that keeps its `;`
 gets no added space, whatever its text is, since the line rule of mermaid.js
 reads the whole line (see [Semicolons](#semicolons)): `{a;b}` and `{a; b}` stay
@@ -1822,16 +1829,42 @@ directives/own-line-between-comment-and-empty-line] Within a printed line, a
 directive stays in its authored gap. [fixture:
 directives/after-header-on-same-line] [fixture:
 directives/after-end-on-same-line] [fixture:
-directives/after-last-statement-without-line-break] Where whitespace was written
-on a side of the directive, one space stands there; where the directive touched
-a token, it keeps touching it. [fixture:
-directives/whitespace-on-both-sides-collapsed] [fixture:
-directives/meets-empty-description-block] mermaid.js reads the text without the
-directive, so the whitespace that remains must not change: a unit such as
-`note for`, or the text after `title`, reads exactly one whitespace character,
-and one space on each side of a directive that had it on one side only would
-leave two. The content of a directive is kept as written. [fixture:
-directives/compat-malformed-directive-kept] [fixture: directives/content-kept]
+directives/after-last-statement-without-line-break]
+
+mermaid.js removes a directive from the text before it reads it, so the
+whitespace that remains is that of the two sides of the directive together: a
+unit such as `note for`, or the text after `title`, reads exactly one whitespace
+character, and a space on each side of a directive would leave two. The gap
+therefore prints as its ordinary rule prints it without the directive, and the
+directive stands after the space of that rule, touching the unit that follows
+it: `A  %%{init: {}}%%  --> B`, `A %%{init: {}}%%--> B`, and
+`A%%{init: {}}%%-->B` are all printed `A %%{init: {}}%%--> B`. [fixture:
+directives/whitespace-on-both-sides] [fixture:
+directives/whitespace-on-each-side] [fixture: directives/touching-token]
+[fixture: directives/header-keyword-touching] [fixture:
+directives/meets-empty-description-block] [fixture:
+class/directives/count-sensitive-unit] Where the rule has no space, the
+directive touches the units on both sides: `click C call m( %%{x}%%  )` is
+printed `click C call m(%%{x}%%)`. [fixture:
+whitespace-between-tokens/callback-blank-parentheses-touch] Directives in one
+gap touch each other. [fixture: directives/several-in-gap]
+
+A gap whose whitespace the line rule of mermaid.js may read (see
+[Semicolons](#semicolons)) keeps the whitespace written on each side of the
+directive, a run becoming one space. [fixture: directives/in-line-rule-stretch]
+A gap that holds a U+2028 or U+2029 stays as written, since replacing the
+character would join the two segments that the line rule reads. [test: U+2028
+before a directive in the gap of a flowchart] [test: U+2029 after a directive in
+the gap of a flowchart] [test: U+2028 beside a directive between a `:` and a `#`
+of a flowchart] A `;` that the line rule ignores (see [Semicolons](#semicolons))
+in the gap of a directive stays in the order written, and the space of the rule
+stands before the first directive: `A[style:#x] --> B ;%%{init: {}}%% --> C` is
+printed `A[style:#x] --> B; %%{init: {}}%%--> C`, and
+`A[style:#x] --> B %%{init: {}}%% ; --> C` is printed
+`A[style:#x] --> B %%{init: {}}%%;--> C`. [fixture:
+directives/ignored-semicolon-and-directive-in-gap] The content of a directive is
+kept as written. [fixture: directives/compat-malformed-directive-kept] [fixture:
+directives/content-kept]
 
 When formatting splits units that were on the same line, a directive in their
 gap moves with the following unit. Keep its right-side contact or separation;
@@ -1879,7 +1912,7 @@ flowchart LR
 ```
 
 Input
-([directives/touching-token-kept-input.mmd](../tests/fixtures/flowchart/directives/touching-token-kept-input.mmd)):
+([directives/touching-token-input.mmd](../tests/fixtures/flowchart/directives/touching-token-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -1887,15 +1920,15 @@ flowchart LR
 ```
 
 Output
-([directives/touching-token-kept-output.mmd](../tests/fixtures/flowchart/directives/touching-token-kept-output.mmd)):
+([directives/touching-token-output.mmd](../tests/fixtures/flowchart/directives/touching-token-output.mmd)):
 
 ```mmd
 flowchart LR
-  A%%{init: {}}%%--> B
+  A %%{init: {}}%%--> B
 ```
 
 Input
-([directives/whitespace-on-each-side-kept-input.mmd](../tests/fixtures/flowchart/directives/whitespace-on-each-side-kept-input.mmd)):
+([directives/whitespace-on-each-side-input.mmd](../tests/fixtures/flowchart/directives/whitespace-on-each-side-input.mmd)):
 
 ```mmd
 flowchart %%{init: {}}%%LR
@@ -1906,14 +1939,14 @@ B%%{init: {}}%% --> C
 ```
 
 Output
-([directives/whitespace-on-each-side-kept-output.mmd](../tests/fixtures/flowchart/directives/whitespace-on-each-side-kept-output.mmd)):
+([directives/whitespace-on-each-side-output.mmd](../tests/fixtures/flowchart/directives/whitespace-on-each-side-output.mmd)):
 
 ```mmd
 flowchart %%{init: {}}%%LR
   A
   style A %%{init: {}}%%fill:red
   click A %%{init: {}}%%href "u"
-  B%%{init: {}}%% --> C
+  B %%{init: {}}%%--> C
 ```
 
 A directive that is not closed runs to the end of the text, as mermaid.js reads
@@ -1951,11 +1984,10 @@ direction/statement-holds-text-kept] The direction of the header stands after
 one space, also where a symbol touched the keyword: `graph>` is printed
 `graph >`, and `flowchart^` is printed `flowchart ^`. The whitespace is not in
 the Db, and a letter direction such as `TD` already needs the space. A directive
-between them keeps whether whitespace was written on each side of it, and a
-U+2028 or U+2029 stays where it is. [fixture:
-direction/header-symbol-touching-spaced] [fixture:
-direction/header-symbol-beside-directive-kept] [test: U+2029 between the graph
-keyword and its direction]
+between them is placed as under [Directives](#directives), and a U+2028 or
+U+2029 stays where it is. [fixture: direction/header-symbol-touching-spaced]
+[fixture: direction/header-symbol-beside-directive-kept] [test: U+2029 between
+the graph keyword and its direction]
 
 Input
 ([direction/kept-input.mmd](../tests/fixtures/flowchart/direction/kept-input.mmd)):
@@ -2020,16 +2052,15 @@ line that holds `style` or `classDef` before the `:` and a `;` after the `#`, as
 in `subgraph style: [#x;]`, it keeps whether it holds whitespace, as under
 [Semicolons](#semicolons); `subgraph a: [#x;]` and `subgraph style: [#x]` have
 no such `;` and touch. [fixture: subgraph-header/title-after-colon-before-hash]
-A directive in the gap keeps whether whitespace was written on each side of it,
-a run of whitespace becoming one space, as under [Directives](#directives).
-[fixture: subgraph-header/title-beside-directive-kept] [fixture:
-subgraph-header/title-beside-directive-runs-collapsed] A U+2028 or U+2029 in the
-gap stays where it is. [test: U+2028 between a subgraph name and its title]
-[test: U+2029 and spaces between a subgraph name and its title] An empty
-description block that follows the title is the first statement of the body, as
-before. [fixture: subgraph-header/title-before-empty-description-block] A name
-written without a title keeps the whitespace after it, which mermaid.js reads as
-part of the name. [fixture: subgraph-header/name-trailing-run-kept] [fixture:
+A directive in the gap is placed as under [Directives](#directives). [fixture:
+subgraph-header/title-beside-directive] [fixture:
+subgraph-header/title-beside-directive-runs] A U+2028 or U+2029 in the gap stays
+where it is. [test: U+2028 between a subgraph name and its title] [test: U+2029
+and spaces between a subgraph name and its title] An empty description block
+that follows the title is the first statement of the body, as before. [fixture:
+subgraph-header/title-before-empty-description-block] A name written without a
+title keeps the whitespace after it, which mermaid.js reads as part of the name.
+[fixture: subgraph-header/name-trailing-run-kept] [fixture:
 subgraph-header/name-trailing-whitespace-kept] [fixture:
 subgraph-header/name-whitespace-before-directive-kept] [fixture:
 subgraph-header/name-whitespace-after-directive-kept] So does the whitespace

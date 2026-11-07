@@ -340,16 +340,16 @@ relationship-spacing/string-names] The direction of the arrow is kept, since
 case of the relation. [fixture: relationship-spacing/relation-case-kept]
 [fixture: relationship-spacing/every-relation] The whitespace inside an unquoted
 name is part of it. [fixture: relationship-spacing/multi-word-names] A directive
-between the units stays where it is and keeps whether whitespace was written on
-each side of it, a run of whitespace becoming one space. [fixture:
-relationship-spacing/directive-between-units-kept] [fixture:
-relationship-spacing/directive-between-units-runs-collapsed] A relationship
-written over several lines, where the line break follows whitespace, is printed
-on one line unless a comment or directive prevents joining. In that case, later
-structural parts and standalone trivia stand one level inside the relationship.
-Keep each gap's first line tail, since a whitespace run must start before LF to
-continue the relationship, and retain complete multiline directives and name
-interiors. [fixture: relationship-spacing/over-lines-joined] [fixture:
+between the units stays where it is and is placed as under
+[Directives](#directives). [fixture:
+relationship-spacing/directive-between-units] [fixture:
+relationship-spacing/directive-between-units-runs] A relationship written over
+several lines, where the line break follows whitespace, is printed on one line
+unless a comment or directive prevents joining. In that case, later structural
+parts and standalone trivia stand one level inside the relationship. Keep each
+gap's first line tail, since a whitespace run must start before LF to continue
+the relationship, and retain complete multiline directives and name interiors.
+[fixture: relationship-spacing/over-lines-joined] [fixture:
 relationship-spacing/comment-continuation-with-multiline-names] [fixture:
 relationship-spacing/directive-continuation-four-spaces] [fixture:
 relationship-spacing/multiline-directive-line-tail] A statement whose lines,
@@ -381,7 +381,7 @@ requirementDiagram
 ```
 
 Input
-([relationship-spacing/directive-between-units-kept-input.mmd](../tests/fixtures/requirement/relationship-spacing/directive-between-units-kept-input.mmd)):
+([relationship-spacing/directive-between-units-input.mmd](../tests/fixtures/requirement/relationship-spacing/directive-between-units-input.mmd)):
 
 ```mmd
 requirementDiagram
@@ -390,12 +390,12 @@ a  %%{init: {}}%% - contains -> b
 ```
 
 Output
-([relationship-spacing/directive-between-units-kept-output.mmd](../tests/fixtures/requirement/relationship-spacing/directive-between-units-kept-output.mmd)):
+([relationship-spacing/directive-between-units-output.mmd](../tests/fixtures/requirement/relationship-spacing/directive-between-units-output.mmd)):
 
 ```mmd
 requirementDiagram
-  a -%%{init: {}}%%satisfies -> b
-  a %%{init: {}}%% - contains -> b
+  a - %%{init: {}}%%satisfies -> b
+  a %%{init: {}}%%- contains -> b
 ```
 
 ### Class lists
@@ -409,7 +409,7 @@ of mermaid.js are written. [fixture: class-lists/in-requirement-and-element]
 may hold whitespace between its words, which is part of the class. [fixture:
 class-lists/string-classes] [fixture: class-lists/classes-with-spaces] A
 directive between the parts stays where it is. [fixture:
-class-lists/directive-between-parts-kept]
+class-lists/directive-between-parts]
 
 Input
 ([class-lists/in-requirement-and-element-input.mmd](../tests/fixtures/requirement/class-lists/in-requirement-and-element-input.mmd)):
@@ -1385,21 +1385,19 @@ requirementDiagram
 
 A directive on a line of its own stands at the level of the statements around
 it, in a body at the level of the fields, and a directive on the line of a
-statement keeps whether whitespace is written on each side of it: where it is,
-one space stands there, and where it touches a token, it keeps touching.
-[fixture: directives/kept] [fixture: directives/in-body] [fixture:
+statement is placed as in a flowchart: the gap is printed as without the
+directive, and the directive stands after its space and touches the unit that
+follows it. [fixture: directives/kept] [fixture: directives/in-body] [fixture:
 directives/before-header] [fixture: directives/after-header-on-same-line]
-[fixture: directives/whitespace-on-both-sides-collapsed] [fixture:
+[fixture: directives/whitespace-on-both-sides] [fixture:
 directives/after-statement-at-end-of-line]
 
-A directive between two units of a statement stays where it is and keeps whether
-whitespace was written on each side of it, a run of whitespace becoming one
-space, and a directive inside a text is part of the text. [fixture:
-directives/between-units-kept] [fixture:
-directives/between-units-runs-collapsed] [fixture:
-directives/inside-values-kept] A directive that is not closed takes the rest of
-the text, and is kept as written. [fixture:
-directives/unclosed-at-end-of-text-kept] [fixture:
+A directive between two units of a statement stays where it is and is placed as
+under [Directives](#directives), and a directive inside a text is part of the
+text. [fixture: directives/between-units] [fixture:
+directives/between-units-runs] [fixture: directives/inside-values-kept] A
+directive that is not closed takes the rest of the text, and is kept as written.
+[fixture: directives/unclosed-at-end-of-text-kept] [fixture:
 directives/unclosed-after-statement-kept]
 
 Input
@@ -1431,7 +1429,7 @@ requirementDiagram
 ```
 
 Input
-([directives/between-units-kept-input.mmd](../tests/fixtures/requirement/directives/between-units-kept-input.mmd)):
+([directives/between-units-input.mmd](../tests/fixtures/requirement/directives/between-units-input.mmd)):
 
 ```mmd
 requirementDiagram
@@ -1442,13 +1440,13 @@ id:%%{init: {}}%% 1
 ```
 
 Output
-([directives/between-units-kept-output.mmd](../tests/fixtures/requirement/directives/between-units-kept-output.mmd)):
+([directives/between-units-output.mmd](../tests/fixtures/requirement/directives/between-units-output.mmd)):
 
 ```mmd
 requirementDiagram
-  a -%%{init: {}}%% satisfies -> b
-  requirement r%%{init: {}}%%{
-    id:%%{init: {}}%% 1
+  a - %%{init: {}}%%satisfies -> b
+  requirement r %%{init: {}}%%{
+    id: %%{init: {}}%%1
   }
 ```
 

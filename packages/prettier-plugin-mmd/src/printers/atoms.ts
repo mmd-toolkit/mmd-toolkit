@@ -1,7 +1,7 @@
 import type { Doc } from "prettier"
 import type { Range } from "@mmd-toolkit/ast"
 import { builders } from "prettier/doc"
-import { endsWithSpaceOrTab, printIgnoredSemicolons, readGap } from "./gap.ts"
+import { endsWithSpaceOrTab, printAbsentItems, readGap } from "./gap.ts"
 import { isInsideStyleRuleStretch } from "./kept-lines.ts"
 import type { Line } from "./lines.ts"
 import {
@@ -11,7 +11,6 @@ import {
   withTrailing,
 } from "./lines.ts"
 import type { Source } from "./source.ts"
-import { isDiagramKeywordEnd } from "./source.ts"
 
 const { indent } = builders
 
@@ -242,21 +241,19 @@ export function printAtoms(
           : undefined
         if (gap.leading !== null) current = [withLeading(gap.leading, "")]
       } else if (gap.trailing !== null || gap.leading !== null) {
-        // mermaid.js removes a `;` that the line rule ignores from the text, so
-        // the gap follows its ordinary rule as if the `;` were absent. The
-        // other items keep the whitespace written on each side of them, and so
-        // does a gap that the line rule may read, that holds a U+2028 or
-        // U+2029, or that follows the keyword of the diagram (docs/flowchart.md,
-        // Directives and Semicolons).
-        const written = source.text.slice(previous.end, atom.start)
+        // mermaid.js removes a directive and a `;` that the line rule ignores
+        // from the text, so the gap follows its ordinary rule as if they were
+        // absent (see `printAbsentItems`). The other items keep the whitespace
+        // written on each side of them.
         const absent =
-          gap.trailing === null &&
-          gap.leading !== null &&
-          !written.includes("\u2028") &&
-          !written.includes("\u2029") &&
-          !isInsideStyleRuleStretch(source, previous.end, atom.start) &&
-          !isDiagramKeywordEnd(source, previous.end)
-            ? printIgnoredSemicolons(gap.leading, layout.rules.get(atom.start))
+          gap.trailing === null && gap.leading !== null
+            ? printAbsentItems(
+                source,
+                previous.end,
+                atom.start,
+                gap.leading,
+                layout.rules.get(atom.start),
+              )
             : null
         if (absent !== null) current.push(absent)
         else {

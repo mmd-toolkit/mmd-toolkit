@@ -100,7 +100,10 @@ Correctness is defined by the pinned mermaid.js.
    - the margin changes to eligible state note paragraphs, defined in
      [Notes](packages/prettier-plugin-mmd/docs/state.md#notes);
    - the whitespace around the first `:` and the `,` of styles, defined in
-     [Styles that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#styles-that-are-drawn-the-same).
+     [Styles that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#styles-that-are-drawn-the-same);
+   - the whitespace at the start of a title, a section name, and the date format
+     and the axis format of a Gantt chart, defined in
+     [Texts after a keyword that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#texts-after-a-keyword-that-are-drawn-the-same).
 
 ## What each package is responsible for
 

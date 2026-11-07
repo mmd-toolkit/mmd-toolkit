@@ -584,9 +584,12 @@ timeline
 ### title と section
 
 `title` と `section` は、値を書かれたまま印字します。
-両端の空白も Db が持つので残します。
-キーワードの後ろの区切りは、書かれた文字が何であっても空白 1 つにします。
+末尾の空白も Db が持つので残します。
+キーワードの後ろの区切りは、書かれた空白が何であっても空白 1 つにします。
 この形は journey と同じです。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+`title   History` は `title History` と印字します。
+[fixture: titles-and-sections/text-padding-dropped]
 [fixture: titles-and-sections/value-whitespace-kept]
 [fixture: titles-and-sections/one-space-after-keyword]
 後ろの行に書かれた値は、キーワードの後ろに寄せて 1 行にします。
@@ -599,7 +602,7 @@ timeline
 [fixture: titles-and-sections/special-characters-in-values]
 [fixture: titles-and-sections/section-ends-at-colon]
 キーワードと値の間の指令は、その場所に残します（[指令](#指令)を参照）。
-[fixture: titles-and-sections/directive-between-keyword-and-value-kept]
+[fixture: titles-and-sections/directive-between-keyword-and-value]
 
 入力
 ([titles-and-sections/special-characters-in-values-input.mmd](../tests/fixtures/timeline/titles-and-sections/special-characters-in-values-input.mmd)):
@@ -688,8 +691,7 @@ Db は大文字にして読みます。
 [fixture: header-and-direction/direction-on-its-own-line-is-a-period]
 
 方向の後ろのコメントは行に残します（[コメント](#コメント)を参照）。
-方向の前後の指令は、ほかと同じく、
-両側に空白 1 つを残します（[指令](#指令)を参照）。
+方向の前後の指令は、ほかと同じように置きます（[指令](#指令)を参照）。
 行末の空白は落とします。
 [fixture: header-and-direction/comment-after-the-direction]
 [fixture: header-and-direction/directive-before-the-direction]
@@ -725,7 +727,7 @@ title T
 ([header-and-direction/directive-before-the-direction-output.mmd](../tests/fixtures/timeline/header-and-direction/directive-before-the-direction-output.mmd)):
 
 ```mmd
-timeline %%{init: {}}%% TD
+timeline %%{init: {}}%%TD
   title T
 ```
 
@@ -1126,11 +1128,12 @@ timeline
 
 ### 指令
 
-単独の行にある指令は、後ろの文と同じ段に置きます。
-同じ印字行の中では、両側に空白が書かれているかを残します。
-空白があればそこに空白 1 つを置き、トークンに接していれば接したままにします。
-journey と同じ規則です。 [fixture: directives/kept]
-[fixture: directives/levels-around-sections] [fixture: directives/before-header]
+単独の行にある指令は、journey と同じく、後ろの文と同じ段に置きます。
+同じ印字行の中では、flowchart と同じく、
+隙間をディレクティブがないものとして印字し、
+ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
+[fixture: directives/kept] [fixture: directives/levels-around-sections]
+[fixture: directives/before-header]
 [fixture: directives/after-header-on-same-line]
 [fixture: directives/after-header-touching-kept]
 [fixture: directives/whitespace-on-both-sides-collapsed]
@@ -1142,10 +1145,9 @@ journey と同じ規則です。 [fixture: directives/kept]
 
 [fixture: timeline/directives/whitespace-on-both-sides-collapsed]
 
-文の単位の間の指令は元の gap に残し、同じ行の両側の接触・分離を保ちます。
+文の単位の間の指令は元の gap に残し、[指令](#指令)のとおりに置きます。
 構造部分の続きの列は[複数行の文](#複数行の文)に従います。
-値の中の指令は、そのテキストの一部です。
-[fixture: directives/between-units-kept]
+値の中の指令は、そのテキストの一部です。 [fixture: directives/between-units]
 [fixture: directives/inside-values-kept] [fixture: directives/over-lines-kept]
 閉じていない指令はテキストの残りを取り、書かれたまま残します。
 [fixture: directives/unclosed-at-end-of-text-kept]
@@ -1178,7 +1180,7 @@ timeline
 ```
 
 入力
-([directives/between-units-kept-input.mmd](../tests/fixtures/timeline/directives/between-units-kept-input.mmd)):
+([directives/between-units-input.mmd](../tests/fixtures/timeline/directives/between-units-input.mmd)):
 
 ```mmd
 timeline
@@ -1188,12 +1190,12 @@ c : e%%{init: {}}%%: f
 ```
 
 出力
-([directives/between-units-kept-output.mmd](../tests/fixtures/timeline/directives/between-units-kept-output.mmd)):
+([directives/between-units-output.mmd](../tests/fixtures/timeline/directives/between-units-output.mmd)):
 
 ```mmd
 timeline
   a %%{init: {}}%%: e
-  b:%%{init: {}}%% e
+  b: %%{init: {}}%%e
   c : e%%{init: {}}%%: f
 ```
 

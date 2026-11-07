@@ -24,7 +24,7 @@ mermaid.js と同じく、取り除いて前後のテキストをつないで読
 任意の 2 つのトークンの間、文字列、バッククォートの名前、
 空白を含みうるテキスト（ラベルのテキスト、class のクラス名、
 sequence 図の参加者の id）の中に置けます。
-[fixture: flowchart/directives/touching-token-kept]
+[fixture: flowchart/directives/touching-token]
 [fixture: flowchart/directives/compat-directive-in-string]
 [fixture: state/directives/compat-directive-in-string]
 [fixture: class/directives/compat-directive-in-backquoted-name]
@@ -449,6 +449,59 @@ SVG と画素が同じであることを確かめました。
 固定している mermaid.js の版を上げるときは、これらの種類の文を描き直し、
 SVG と画素を比べてから、例外を残します。
 
+## 同じに描かれるキーワードの後のテキスト
+
+Gantt、user journey、timeline、sequence、Venn の図では、タイトル、セクション名、
+Gantt 図の日付書式と軸の書式を、キーワードの後に空白を 1 つ置き、
+テキストの先頭の空白を除いて印字します。
+`title   Plan` は `title Plan` と印字し、
+`dateFormat   YYYY-MM-DD` は `dateFormat YYYY-MM-DD` と印字します。
+テキストの中と末尾の空白は書かれたままにし、
+空白とタブだけのテキストも書かれたままにします。
+[fixture: gantt/titles-and-sections/text-padding-dropped]
+[fixture: gantt/settings/format-padding-dropped]
+[fixture: journey/titles-and-sections/text-padding-dropped]
+[fixture: timeline/titles-and-sections/text-padding-dropped]
+[fixture: sequence/title/text-padding-dropped]
+[fixture: sequence/title/text-padding-dropped-colon]
+[fixture: venn/title/text-padding-dropped]
+
+mermaid.js はキーワードの後の空白 1 文字を読み、残りを Db に残すので、
+印字したテキストの Db は、書かれたテキストの Db と違いますが、
+描かれる図は同じです。
+各レンダラーは `text()` でテキストを SVG の `text` 要素に入れ、
+先頭の空白を描きません。
+（[Gantt](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttRenderer.js#L194-L199)、
+[user journey](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/user-journey/journeyRenderer.ts#L166-L176)、
+[timeline](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/timeline/timelineRenderer.ts#L209-L216)、
+[sequence](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/sequenceRenderer.ts#L1450-L1456)、
+[Venn](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L76-L86)）。
+日付書式は、日付を読む前に両端の空白を取り除きます。
+（[`getStartDate`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttDb.js#L305-L359)）。
+軸の書式は、軸のラベルの書式だけです。
+それぞれの種類について、両方のテキストを mermaid.js 12.3.0 で Chromium に描き、
+生成された id を除いた SVG と画素が同じであることを確かめました。
+
+Gantt 図の 2 つの設定は、値の前に空白があると描かれる図が変わるので、
+書かれたままにします。
+目盛りの間隔は、指定された間隔と値全体を照合するので、
+`1day` の前に空白があると目盛りが既定のものになります。
+（[`makeGrid`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttRenderer.js#L665-L668)）。
+`D` の日付書式は、前後に空白がないときだけ日単位の軸を描きます。
+（[`makeGrid`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttRenderer.js#L650-L659)）。
+[fixture: gantt/settings/format-padding-kept-where-drawn-differently]
+
+テストは、印字したテキストの Db に、
+書かれたテキストの Db から各テキストの先頭の空白を戻して比べます。
+`tests/keyword-text-margins.ts` の関数、
+`keywordTextDbForFormattingComparison` を使います。
+タイトル、セクション名、日付書式、軸の書式が、書かれたものと、
+先頭の空白とタブだけが違うときは、書かれた方を採ります。
+ほかの違いは失敗とします。
+固定している mermaid.js の版を上げるときは、
+それぞれの種類の両方のテキストを描き直し、SVG と画素を比べてから、
+例外を残します。
+
 ## ラベルの先頭の空白
 
 mermaid.js は引用符のないラベルの先頭の空白を取り除き、整形も取り除きます。
@@ -467,22 +520,26 @@ mermaid.js は引用符のないラベルの先頭の空白を取り除き、整
 
 ## トークンの間のディレクティブ
 
-mermaid.js はディレクティブを取り除き、その両側のテキストをつないで読みます。
-そのため同じ印字行の中では、
-ディレクティブの各側に空白が書かれていたかどうかを保ちます。
-mermaid.js はディレクティブを除いたテキストを読むので、
-残る空白を変えてはいけません。
+mermaid.js はディレクティブを取り除き、その両側のテキストをつないで読むので、
+残る空白は、両側の空白を合わせたものです。
 `note for` のような単位や `title` の後のテキストは、
 空白をちょうど 1 文字読みます。
-片側だけに空白があったディレクティブの両側に空白 1 つずつを置くと、
-空白が 2 つ残るからです。
-`flowchart %%{init: {}}%%LR` はそのまま残します。
-`flowchart%%{init: {}}%%LR` は拒否されるからです。
-[fixture: flowchart/directives/whitespace-on-each-side-kept]
-[fixture: flowchart/directives/touching-token-kept]
-[fixture: sequence/directives/compat-whitespace-on-one-side-of-directive-kept]
-[fixture: class/directives/compat-whitespace-on-one-side-of-directive-kept]
-[fixture: state/directives/compat-whitespace-on-one-side-of-directive-kept]
+ディレクティブの両側に空白 1 つずつを置くと、空白が 2 つ残ります。
+そのため同じ印字行の中では、隙間をディレクティブがないものとして、
+隙間の通常の規則どおりに印字し、ディレクティブをその規則の空白の後ろに置いて、
+後ろの単位に接します。
+規則が空白を置かない隙間では、ディレクティブは両側の単位に接します。
+たとえば、`note%%{init: {}}%% for A "t"` は `note %%{init: {}}%%for A "t"` に、
+`A  %%{init: {}}%%  --> B` は `A %%{init: {}}%%--> B` と印字します。
+[fixture: flowchart/directives/whitespace-on-each-side]
+[fixture: flowchart/directives/touching-token]
+[fixture: flowchart/directives/whitespace-on-both-sides]
+[fixture: class/directives/count-sensitive-unit]
+[fixture: sequence/directives/compat-whitespace-on-one-side-of-directive]
+[fixture: class/directives/compat-whitespace-on-one-side-of-directive]
+[fixture: state/directives/compat-whitespace-on-one-side-of-directive]
+mermaid.js の行の規則が隙間の空白を読む可能性のある所と、
+ディレクティブが印字行の先頭か末尾にある所では、隙間は書かれたまま残します。
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)を参照してください。
 
 ## コメントやディレクティブの前後の構造の継続行
@@ -2107,7 +2164,8 @@ hidden YAML の閉じは列を保ちます。
 すべての semicolon を残し、共有の source segment 保護で、
 交差する値・trivia と保護された見出し・本文 group を完全な形に保ちます。
 trigger の segment 変更は受理を変えうるためです。
-global directive の原文を保ち、同じ印字行の中では左右の接触も保ちます。
+global directive の原文を保ち、隙間の中では、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 info の Db が空でも init の削除は設定を変えうるためです。
 物理 EOL と EOF に達する global の終端は共有経路を使います。
 Prettier は先頭 BOM を除去・復元します。
@@ -3065,7 +3123,8 @@ segment は mermaid の読みで決まります。
 cynefin に文法上の semicolon はないため、
 semicolon のない style・classDef の語の行も整形し、
 語を含む行全体の保持は適用しません。
-同じ印字行の中では Root directive の接触を保ちます。
+同じ印字行の中の Root directive は、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 文や項目を行に分ける所では directive を次の単位に付け、右側を保ち、
 左側の接触は切れます。
 native comment は LS・PS を内容に残します。

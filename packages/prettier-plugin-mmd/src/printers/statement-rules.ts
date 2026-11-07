@@ -11,7 +11,9 @@ import {
   findStructuralTokenEndingBefore,
   findTokensBetween,
   findTriviaBetween,
+  isSpaceOrTab,
   isStructural,
+  skipSpacesAndTabs,
 } from "./source.ts"
 
 /**
@@ -261,6 +263,66 @@ export function normalizeStyleList(
 }
 
 /**
+ * Leaves the spaces and tabs at the start of the text that a statement holds
+ * after its keyword out of what is printed: a title, the name of a section, a
+ * setting. The keyword takes one whitespace character, and mermaid.js keeps
+ * the rest in the Db, but draws the same text without it (docs/compatibility.md,
+ * Texts after a keyword that are drawn the same). A directive among those
+ * spaces and tabs is removed from the text before it is read, so the spaces and
+ * tabs after it count too, and it stays where it is: `title  %%{x}%%  T` and
+ * `title %%{x}%% T` are read as the title `T` with the same blanks before it. A
+ * text of spaces and tabs and directives only stays as written.
+ */
+export function trimTextAfterKeyword(
+  source: Source,
+  atoms: Atom[],
+  text: Range | null,
+): void {
+  if (text === null) return
+  const [from, to] = text
+  const edits: TextEdit[] = []
+  let offset = from
+  for (;;) {
+    const blanks = skipSpacesAndTabs(source, offset, to)
+    if (blanks > offset)
+      edits.push({ range: [offset, blanks], replacement: "" })
+    if (blanks >= to) return
+    const directive = findTriviaBetween(source, blanks, blanks + 1).find(
+      (item) => item.type === "Directive" && item.range[0] === blanks,
+    )
+    if (directive === undefined) break
+    offset = directive.range[1]
+  }
+  replaceInAtoms(source, atoms, edits)
+}
+
+/**
+ * Prints the label without quotes of a shape or a link that holds nothing but
+ * spaces and tabs as one space: mermaid.js reads the same empty text for any
+ * number of them, draws the same figure, and rejects a label of no character
+ * (docs/flowchart.md, Label inner whitespace). A label with a line break or a
+ * comment in it stays as written.
+ */
+export function normalizeBlankLabels(
+  source: Source,
+  atoms: Atom[],
+  values: readonly Node[],
+): void {
+  const edits: TextEdit[] = []
+  for (const value of values) {
+    if (
+      (value.type !== "FlowchartLabel" && value.type !== "AgentflowLabel") ||
+      value.kind !== "text"
+    )
+      continue
+    const text = source.text.slice(...value.range)
+    if (text !== " " && text !== "" && [...text].every(isSpaceOrTab))
+      edits.push({ range: value.range, replacement: " " })
+  }
+  replaceInAtoms(source, atoms, edits)
+}
+
+/**
  * Prints the text of a style, from `range[0]` to `range[1]`, with the
  * whitespace around its first `:` as `normalizeStyleList` puts it.
  */
@@ -314,11 +376,6 @@ function addColonEdit(
     range: [nameEnd, valueStart],
     replacement: valueStart < end ? ": " : ":",
   })
-}
-
-/** Whether a character is a space or a tab. */
-function isSpaceOrTab(character: string): boolean {
-  return character === " " || character === "\t"
 }
 
 /**

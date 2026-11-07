@@ -95,8 +95,8 @@ Print a section as `"label" : value`, with one space on both sides of the colon
 and no width alignment. This pie-specific choice follows the spelling in
 [Mermaid pie examples](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/pie.md#L68-L73).
 Both quoted label forms and empty labels follow this rule. A gap containing a
-directive keeps its touching/separated sides; a hidden form also keeps its
-physical boundary, since these items supply no separator.
+directive is placed as under [Directives](./flowchart.md#directives); a hidden
+form keeps its physical boundary, since these items supply no separator.
 
 Fixed cases: [fixture: pie/sections/section-colon] [fixture:
 pie/sections/section-colon-tight-authored] [fixture:
@@ -460,25 +460,25 @@ pie
 Reuse [global directive opacity](./flowchart.md#directives): common removal
 supplies no separator, and semicolon selection reads source segments. Keep
 directives in their authored gaps, including multiline contents and EOF-reaching
-endings. Within a printed line, keep whether each side touches or is separated.
-When formatting splits units that were on the same line, a directive in their
-gap moves with the following unit: its right boundary stays touching or
-separated, while its left contact is broken. A segment that holds a kept `;` is
-formatted as anywhere else, except where formatting could change which `;` the
-line rule ignores. The rule reads a segment from the first `:` after `style` or
-`classDef` to the last `#` before its last kept `;`, with no whitespace between
-the `:` and the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps
-and the padding inside that stretch keep whether they hold whitespace, a run
-becoming one space, and the rest of the segment follows the ordinary rules of
-this diagram. Text that no part of the layout holds stays as written. A
-statement over several lines whose lines, joined with one space or with nothing,
-could change which `;` the line rule ignores keeps the text of each segment, up
-to its last kept `;`, as written; any other statement over several lines is
-formatted like one on a single line. [fixture:
-directives-and-semicolons/stretch-kept-rest-formatted] [fixture:
-directives-and-semicolons/no-stretch-formatted] Do not split a protected
-header/body group. Keep every semicolon and both style/classDef passes,
-case/colon-hash whitespace distinctions, Unicode segment bounds,
+endings. Within a printed line, place a directive as under
+[Directives](./flowchart.md#directives). When formatting splits units that were
+on the same line, a directive in their gap moves with the following unit: its
+right boundary stays touching or separated, while its left contact is broken. A
+segment that holds a kept `;` is formatted as anywhere else, except where
+formatting could change which `;` the line rule ignores. The rule reads a
+segment from the first `:` after `style` or `classDef` to the last `#` before
+its last kept `;`, with no whitespace between the `:` and the `#` (see
+[Semicolons](./flowchart.md#semicolons)), so the gaps and the padding inside
+that stretch keep whether they hold whitespace, a run becoming one space, and
+the rest of the segment follows the ordinary rules of this diagram. Text that no
+part of the layout holds stays as written. A statement over several lines whose
+lines, joined with one space or with nothing, could change which `;` the line
+rule ignores keeps the text of each segment, up to its last kept `;`, as
+written; any other statement over several lines is formatted like one on a
+single line. [fixture: directives-and-semicolons/stretch-kept-rest-formatted]
+[fixture: directives-and-semicolons/no-stretch-formatted] Do not split a
+protected header/body group. Keep every semicolon and both style/classDef
+passes, case/colon-hash whitespace distinctions, Unicode segment bounds,
 directive-rejoined triggers and comment semicolons. Atomic keyword/number cuts
 remain specified failures.
 
@@ -501,7 +501,7 @@ pie/directives-and-semicolons/selected-comment-tail] [test:
 pie/directives-and-semicolons/selected-ls-segments] [fixture:
 pie/directives-and-semicolons/global-joined-trigger] [fixture:
 pie/directives-and-semicolons/global-header-first-statement] [fixture:
-pie/directives-and-semicolons/global-gap-side-presence] [fixture:
+pie/directives-and-semicolons/global-gap-sides] [fixture:
 pie/directives-and-semicolons/global-value-boundaries] [fixture:
 pie/directives-and-semicolons/selected-one-three-padding] [fixture:
 pie/directives-and-semicolons/selected-comment-semicolon] [fixture:

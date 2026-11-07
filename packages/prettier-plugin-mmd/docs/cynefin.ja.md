@@ -166,8 +166,9 @@ cynefin-beta
 ### Component spacing
 
 同じ行に残る普通の領域と項目の部品は 1 space で分け、部品を見分けやすくします。
-同じ印字行の中の global trivia は両側の接触を保ちます。
-行に分ける所の配置は [Global directives](#global-directives) に従います。
+同じ印字行の中の global directive は、
+[Global directives](#global-directives) のとおりに置きます。
+行に分ける所も同じです。
 hidden closer の padding と semicolon の prefix は保護されたままにします。
 
 [fixture: cynefin/component-spacing/domain-hidden-contact]
@@ -406,6 +407,10 @@ cynefin-beta
 引用符を文字列の区切りと解釈せず、Db が等しい簡潔な外端を選びます。
 空の代入によるリセットと trivia の接触を残します。
 null の title の separator 1 space・tab は範囲の外にあります。
+値の最初の文字より前にある、行の規則が無視する `;` は、
+その前の空白が 1 文字でもそれ以上でも、隙間の項目です。
+`title  ;T` と `title ;T` は同じように印字します。
+[fixture: cynefin/semicolons/ignored-semicolon-title-value-second-space]
 
 [fixture: cynefin/title/title-edges]
 
@@ -766,7 +771,8 @@ cynefin-beta
 ### Global directives
 
 Root directive の source と順を保ちます。
-同じ印字行の中では、両側の接触・分離を保ちます。
+同じ印字行の中のディレクティブは、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 元は同じ行にあった単位を別の行へ分けるときは、
 間の directive を次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
@@ -801,7 +807,7 @@ native hidden directive は別の形として扱います。
 
 ```mmd
 cynefin-beta
-  complex%%{wrap}%%-->%%{wrap}%%clear%%{wrap}%%:%%{wrap}%%'GlobalLabel'
+  complex %%{wrap}%%--> %%{wrap}%%clear %%{wrap}%%: %%{wrap}%%'GlobalLabel'
 ```
 
 ### Comments

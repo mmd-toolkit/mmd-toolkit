@@ -1,7 +1,7 @@
 import type { Node, Range, Token } from "@mmd-toolkit/ast"
 import type { Doc } from "prettier"
 import { utils } from "prettier/doc"
-import { isDroppedSemicolon } from "./kept-lines.ts"
+import { isDroppedSemicolon, isInsideStyleRuleStretch } from "./kept-lines.ts"
 import type { Source, Trivia } from "./source.ts"
 import {
   findCoveringRange,
@@ -9,6 +9,7 @@ import {
   findDirectiveEndingAt,
   findFirstIndex,
   isCommentLine,
+  isDiagramKeywordEnd,
   findTokenStartingAt,
   findTriviaBetween,
   isWhitespace,
@@ -23,10 +24,10 @@ const { replaceEndOfLine } = utils
  * line rule ignores (`ignoredSemicolons`): no node contains them. A caller
  * can also supply complete opaque AST nodes for retained source forms. All
  * items are printed as written. The whitespace around them is that of the
- * ordinary rule of the gap, as if they were not there, when each is a `;`
- * that the line rule ignores (see `printIgnoredSemicolons`), and otherwise the
- * whitespace that the source has on each side of each, with nothing where it
- * has none (docs/flowchart.md, Directives and Semicolons).
+ * ordinary rule of the gap, as if they were not there, when each is a
+ * directive or a `;` that the line rule ignores (see `printAbsentItems`), and
+ * otherwise the whitespace that the source has on each side of each, with
+ * nothing where it has none (docs/flowchart.md, Directives and Semicolons).
  */
 export type GapItem = Trivia | Token | Node
 
@@ -46,15 +47,23 @@ export interface ItemRun {
   /** Whether the source had whitespace between two of the printed items. */
   readonly spaceWithin: boolean
   /**
-   * The number of items when each is a `;` that the line rule ignores; null
-   * when the run holds any other item, such as a directive or a comment.
+   * The items, when each is a directive or a `;` that the line rule ignores,
+   * which mermaid.js reads as not there; null when the run holds any other
+   * item, such as a comment.
    */
-  readonly ignoredSemicolons: number | null
+  readonly absentItems: readonly AbsentItem[] | null
   /**
    * Whether the run ends with whitespace that must be kept: a comment that
    * ends with spaces or tabs. `%% ` is a comment; `%%` is not.
    */
   readonly endsWithWhitespace: boolean
+}
+
+/** An item that mermaid.js reads as not there. */
+export interface AbsentItem {
+  readonly doc: Doc
+  /** Whether it is a `;`, which stands against what comes before it. */
+  readonly isSemicolon: boolean
 }
 
 /** A line of the source that holds only items, such as a comment line. */
@@ -688,10 +697,16 @@ function toRun(
     spaceBefore,
     spaceAfter: spaceAfter || spacePending,
     spaceWithin,
-    ignoredSemicolons: parts.every(
-      (part) => !part.separates && part.item.type === "IgnoredSemicolon",
+    absentItems: parts.every(
+      (part) =>
+        !part.separates &&
+        (part.item.type === "Directive" ||
+          part.item.type === "IgnoredSemicolon"),
     )
-      ? parts.length
+      ? parts.map((part) => ({
+          doc: printItem(source, part.item),
+          isSemicolon: part.item.type === "IgnoredSemicolon",
+        }))
       : null,
     endsWithWhitespace: endsWithSpaceOrTab(
       source.text.slice(printed.item.range[0], printed.item.range[1]),
@@ -700,24 +715,36 @@ function toRun(
 }
 
 /**
- * Prints the items of a gap that lies within one line, when each is a `;` that
- * the line rule ignores, and null when the run holds any other item.
- * mermaid.js removes such a `;` from the text (common.md, Style and
- * classDef lines), so the whitespace around it follows the ordinary rule of
- * the gap as if it were absent, and not the whitespace that the source has on
- * each side of it. `rule` is that rule: one space, none, or, where the gap
- * has no rule, one space where the source has whitespace in the gap and none
- * where it has none. Where the rule has one space, a `;` stands against what
- * comes before it and has one space after it; where it has none, the `;`
- * touches what is on both sides. `place` says that nothing is printed before
- * or after the gap on its line, where the gap prints no space after it and
- * the whitespace of the source there is not that of the gap. The caller keeps
- * the whitespace of a gap that the line rule may read (see
- * `isInsideStyleRuleStretch`), of a gap that holds a U+2028 or U+2029, and of
- * the gap after the keyword of the diagram, which diagram detection reads with
- * the `;` (docs/cynefin.md, Semicolons).
+ * Prints the items of a gap that lies within one line, when each is a
+ * directive or a `;` that the line rule ignores, and null when the run holds
+ * any other item or the gap is one of those that stay as written. mermaid.js
+ * removes both from the text (common.md, A directive is a token boundary, and
+ * Style and classDef lines), so the whitespace of the gap is that of its
+ * ordinary rule as if they were absent: what the text without them reads must
+ * be what the ordinary rule prints. `rule` is that rule: one space, none, or,
+ * where the gap has no rule, one space where the source has whitespace in the
+ * gap and none where it has none. The items stay in the order written: a `;`
+ * stands against what comes before it. Where the rule has one space, the space
+ * stands before the first directive, or follows the `;` where there is no
+ * directive, and the directives touch each other and what follows them, so that
+ * they move with the next unit when a line is split (docs/flowchart.md,
+ * Directives). Where it has none, the items touch what is on both sides.
+ *
+ * The gap from `start` to `end` stays as written where the line rule may read
+ * its whitespace (see `isInsideStyleRuleStretch`; null), and where it holds a
+ * U+2028 or U+2029, which ends the segment that the line rule reads, so that
+ * replacing it would change which `;` the rule ignores (the gap itself, if it
+ * holds directives only; null, if it holds a `;`). A gap that holds a `;` right
+ * after the keyword of the diagram stays as written too (null), since diagram
+ * detection reads the `;` (docs/cynefin.md, Semicolons). `place` says that nothing is printed before or after the gap on
+ * its line, where the gap prints no space after it and the whitespace of the
+ * source there is not that of the gap; a run with a directive there stays as
+ * written (null).
  */
-export function printIgnoredSemicolons(
+export function printAbsentItems(
+  source: Source,
+  start: number,
+  end: number,
   run: ItemRun,
   rule: "space" | "none" | undefined,
   place: { readonly atLineStart: boolean; readonly atLineEnd: boolean } = {
@@ -725,17 +752,34 @@ export function printIgnoredSemicolons(
     atLineEnd: false,
   },
 ): Doc | null {
-  if (run.ignoredSemicolons === null) return null
+  const { absentItems: items } = run
+  if (items === null) return null
+  const hasDirective = items.some((item) => !item.isSemicolon)
+  if (hasDirective && (place.atLineStart || place.atLineEnd)) return null
+  if (isInsideStyleRuleStretch(source, start, end)) return null
+  const written = source.text.slice(start, end)
+  const holdsLineSeparator =
+    written.includes("\u2028") || written.includes("\u2029")
+  if (items.some((item) => item.isSemicolon)) {
+    if (holdsLineSeparator || isDiagramKeywordEnd(source, start)) return null
+  } else if (holdsLineSeparator) return replaceEndOfLine(written)
   const apart =
     rule === undefined
       ? (run.spaceBefore && !place.atLineStart) ||
         (run.spaceAfter && !place.atLineEnd) ||
         run.spaceWithin
       : rule === "space"
-  return [
-    ";".repeat(run.ignoredSemicolons),
-    apart && !place.atLineEnd ? " " : "",
-  ]
+  const doc: Doc[] = []
+  let spaced = false
+  for (const item of items) {
+    if (apart && !spaced && !item.isSemicolon) {
+      doc.push(" ")
+      spaced = true
+    }
+    doc.push(item.doc)
+  }
+  if (apart && !spaced && !place.atLineEnd) doc.push(" ")
+  return doc
 }
 
 /**

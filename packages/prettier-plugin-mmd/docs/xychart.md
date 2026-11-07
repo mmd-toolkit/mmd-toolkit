@@ -937,12 +937,11 @@ xychart
 
 ### Directives
 
-Keep directives in their authored gaps. Within a printed line, each side keeps
-whether it touches: one space where whitespace was written beside it, touching
-where it was not. mermaid.js joins the text around a directive in a text without
-quotes and in a string, so retain touching versus separated gaps within a
-statement (see [Directives](./journey.md#directives)). A directive on a line of
-its own stands at the level of the statement after it. [fixture:
+Keep directives in their authored gaps. Within a printed line, a directive is
+placed as under [Directives](./flowchart.md#directives): the gap is printed as
+without the directive, and the directive stands after its space and touches the
+unit that follows it. A directive on a line of its own stands at the level of
+the statement after it. [fixture:
 directives/directive-line-at-the-level-of-the-next-statement] [fixture:
 directives/directive-line-before-the-header] [fixture:
 directives/directive-after-a-statement-spaced] [fixture:
@@ -995,8 +994,8 @@ Output
 
 ```mmd
 xychart
-  line %%{init: {}}%% [1]
-  x-axis%%{init: {}}%%[a]
+  line %%{init: {}}%%[1]
+  x-axis %%{init: {}}%%[a]
 ```
 
 ### Frontmatter YAML

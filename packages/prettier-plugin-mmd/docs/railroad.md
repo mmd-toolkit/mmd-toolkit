@@ -1428,13 +1428,14 @@ railroad-peg-beta
 ### Global directives
 
 Print every Root directive from its source span once at its owner position.
-Outside ordinary IR call gaps, keep whether each side touches or is separated
-within a printed line. When formatting splits units that were on the same line,
-a directive in their gap moves with the following unit: its right boundary stays
-touching or separated, while its left contact is broken. Use one body step for
-ordinary standalone directives. Do not format their contents as JSON or collect
-them before the header. Uniform added spaces can change strings, repeat
-components, numeric values and predicate operands after common removal.
+Outside ordinary IR call gaps, place a directive within a printed line as under
+[Directives](./flowchart.md#directives). When formatting splits units that were
+on the same line, a directive in their gap moves with the following unit: its
+right boundary stays touching or separated, while its left contact is broken.
+Use one body step for ordinary standalone directives. Do not format their
+contents as JSON or collect them before the header. Uniform added spaces can
+change strings, repeat components, numeric values and predicate operands after
+common removal.
 
 Ordinary IR call gaps use the same outside spacing and structural placement as
 comments. A directive stays beside its argument and makes a quoted leaf call
@@ -1471,7 +1472,7 @@ Output
 
 ```mmd
 railroad-beta
-  r%%{wrap}%% = %%{wrap}%%terminal("a%%{wrap}%%last");
+  r %%{wrap}%%= %%{wrap}%%terminal("a%%{wrap}%%last");
 ```
 
 Input (escaped): `"railroad-ebnf-beta\nr = %%{wrap}%% \"global\";"`.
@@ -1481,7 +1482,7 @@ Output
 
 ```mmd
 railroad-ebnf-beta
-  r = %%{wrap}%% "global";
+  r = %%{wrap}%%"global";
 ```
 
 Input (escaped):
@@ -1492,7 +1493,7 @@ Output
 
 ```mmd
 railroad-abnf-beta
-  r = 2%%{wrap}%%*%%{wrap}%%4 %%{wrap}%% "global" %x4%%{wrap}%%1;
+  r = 2%%{wrap}%%*%%{wrap}%%4%%{wrap}%%"global" %x4%%{wrap}%%1;
 ```
 
 Input (escaped): `"railroad-peg-beta\nr <- &%%{wrap}%% \"global\";"`.
@@ -1502,7 +1503,7 @@ Output
 
 ```mmd
 railroad-peg-beta
-  r <- &%%{wrap}%% "global";
+  r <- &%%{wrap}%%"global";
 ```
 
 ### Hidden forms

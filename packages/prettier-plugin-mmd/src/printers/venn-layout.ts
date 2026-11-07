@@ -8,6 +8,7 @@ import {
   protectSemicolonPrefixes,
   trimBracketedText,
 } from "./layout.ts"
+import { trimTextAfterKeyword } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
 import { findTriviaBetween } from "./source.ts"
 
@@ -96,6 +97,9 @@ export function layoutVennStatement(
   // (docs/venn.md, Labels).
   if ("label" in statement && statement.label !== null) {
     trimBracketedText(source, atoms, statement.label.range)
+  }
+  if (statement.type === "VennTitleStatement") {
+    trimTextAfterKeyword(source, atoms, statement.value.range)
   }
   const rules = new Map<number, GapRule>()
   for (let index = 1; index < atoms.length; index++) {

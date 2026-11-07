@@ -391,14 +391,13 @@ examples of the documentation of mermaid.js write it so
 `state C ::: c {` keep the gap they have, one space where whitespace was
 written, and `state "y" as D:::c` is printed `state "y" as D :::c` by the rule
 of the alias. [fixture: whitespace-between-tokens/css-class-in-definition-kept]
-A directive in the gap keeps whether whitespace was written on each side of it,
-as under [Directives](#directives), and a U+2028 or U+2029 stays where it is.
-[test: U+2028 before the `:::` of a state] [test: U+2029 after the `:::` of a
-state] This holds for the `""` that mermaid.js does not read; the quotes of a
-floating note are kept as written. [fixture:
-whitespace-between-tokens/floating-note-quotes-kept] In a `classDef` or a
-`style` statement, each style has no whitespace before its first `:` and one
-space after it where the value is not empty. The `,` between styles has no
+A directive in the gap is placed as under [Directives](#directives), and a
+U+2028 or U+2029 stays where it is. [test: U+2028 before the `:::` of a state]
+[test: U+2029 after the `:::` of a state] This holds for the `""` that
+mermaid.js does not read; the quotes of a floating note are kept as written.
+[fixture: whitespace-between-tokens/floating-note-quotes-kept] In a `classDef`
+or a `style` statement, each style has no whitespace before its first `:` and
+one space after it where the value is not empty. The `,` between styles has no
 whitespace before it and one space after it, as in ER and requirement (see
 [Styles and classes](./er.md#styles-and-classes)):
 `classDef c fill:#f00 , color:white` is printed
@@ -413,7 +412,7 @@ or a directive, where a style is all whitespace, or where a style holds a line
 break or its line holds a kept `;`. [fixture:
 whitespace-between-tokens/comma-kept] [fixture:
 whitespace-between-tokens/style-comma-spaced] [fixture:
-whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
+whitespace-between-tokens/style-comma-beside-directive] [fixture:
 whitespace-between-tokens/style-comma-with-kept-semicolon-kept] A U+2028 or
 U+2029 among the styles stays where it is. [test: U+2028 before the comma of a
 state classDef statement] [test: U+2029 after the comma of a state classDef
@@ -443,11 +442,10 @@ whitespace-between-tokens/comma-kept] A line break after the `,` is joined, so
 `class A,` and `B c` on the next line are printed `class A,B c`, and a directive
 before the `,` does not change that: the id after the `,` touches it. [fixture:
 whitespace-between-tokens/class-ids-line-break-and-directive] A directive in the
-gap after the `,` keeps whether whitespace was written on each side of it, a run
-of whitespace becoming one space, as under [Directives](#directives), and a `;`
-that the line rule ignores keeps its line as written. [fixture:
-whitespace-between-tokens/class-ids-beside-directive-kept] [fixture:
-whitespace-between-tokens/class-ids-beside-directive-runs-collapsed] [fixture:
+gap after the `,` is placed as under [Directives](#directives), and a `;` that
+the line rule ignores keeps its line as written. [fixture:
+whitespace-between-tokens/class-ids-beside-directive] [fixture:
+whitespace-between-tokens/class-ids-beside-directive-runs] [fixture:
 whitespace-between-tokens/class-ids-with-ignored-semicolon] A U+2028 or U+2029
 after the `,` stays where it is. [test: U+2028 after the comma of a state class
 statement] [test: U+2029 after the comma of a state class statement]
@@ -822,10 +820,10 @@ notes/over-lines] The `as` of a floating note stands after one space, and so
 does the id after it, also where they touched: `note "t"as N` and `note "t" asN`
 are printed `note "t" as N`. mermaid.js reads the three spellings the same, and
 the `as` and the id of an alias definition are printed in the same way (see
-[Aliases](#aliases)). A directive in the gap keeps whether whitespace was
-written on each side of it, and a U+2028 or U+2029 stays where it is. [fixture:
+[Aliases](#aliases)). A directive in the gap is placed as under
+[Directives](#directives), and a U+2028 or U+2029 stays where it is. [fixture:
 notes/floating-note-as-gaps-spaced] [fixture:
-notes/floating-note-as-beside-directive-kept] [test: U+2028 before the `as` of a
+notes/floating-note-as-beside-directive] [test: U+2028 before the `as` of a
 floating note] [test: U+2029 between the `as` and the id of a floating note]
 
 Input ([notes/kept-input.mmd](../tests/fixtures/state/notes/kept-input.mmd)):
@@ -1019,11 +1017,11 @@ stateDiagram-v2
 ### Directives
 
 As in a flowchart: a directive on a line of its own stands at the level of the
-statements around it, and a directive within a printed line keeps whether
-whitespace is written on each side of it: where it is, one space stands there,
-and where the directive touches a token, it keeps touching. [fixture:
-directives/kept] [fixture: directives/before-header] [fixture:
-directives/after-statement] [fixture: directives/whitespace-on-each-side-kept]
+statements around it, and a directive within a printed line is placed as in a
+flowchart: the gap is printed as without the directive, and the directive stands
+after its space and touches the unit that follows it. [fixture: directives/kept]
+[fixture: directives/before-header] [fixture: directives/after-statement]
+[fixture: directives/whitespace-on-each-side]
 
 When formatting splits units that were on the same line, a directive in their
 gap moves with the following unit. Keep its right-side contact or separation;
@@ -1054,7 +1052,7 @@ stateDiagram-v2
     %%{init: {}}%%
     B
   }
-  Foo%%{init: {}}%% --> B
+  Foo %%{init: {}}%%--> B
 ```
 
 ### Frontmatter YAML

@@ -982,12 +982,10 @@ xychart
 ### 指令
 
 指令は元の単位の間に残します。
-同じ印字行の中では、両側の空白の有無を保ちます。
-空白が書かれていれば空白 1 つ、接していれば接したままです。
-mermaid.js は、引用符なしの文字列と文字列の中の指令の前後を結んで読むので、
-文の内部では、指令の隣が接しているか、
-離れているかを保ちます（[ディレクティブ](./journey.ja.md#ディレクティブ)
-を参照）。
+同じ印字行の中では、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
+隙間をディレクティブがないものとして印字し、
+ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
 単独の行にある指令は、後ろの文と同じ段に置きます。
 [fixture: directives/directive-line-at-the-level-of-the-next-statement]
 [fixture: directives/directive-line-before-the-header]
@@ -1041,8 +1039,8 @@ x-axis%%{init: {}}%%[a]
 
 ```mmd
 xychart
-  line %%{init: {}}%% [1]
-  x-axis%%{init: {}}%%[a]
+  line %%{init: {}}%%[1]
+  x-axis %%{init: {}}%%[a]
 ```
 
 ### フロントマターの YAML

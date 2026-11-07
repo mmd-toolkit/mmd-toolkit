@@ -605,8 +605,8 @@ mindmap
 A directive on a line of its own stands at the level of the line after it. A
 directive on the line of a node keeps whether whitespace is written on each side
 of it: where it is, one space stands there, and where it touches, it keeps
-touching, as in the other diagram types. [fixture: directives/kept] [fixture:
-directives/between-nodes] [fixture: directives/before-the-header] [fixture:
+touching. [fixture: directives/kept] [fixture: directives/between-nodes]
+[fixture: directives/before-the-header] [fixture:
 directives/after-the-header-on-the-same-line] [fixture:
 directives/after-the-header-touching] [fixture: directives/after-a-shape]
 

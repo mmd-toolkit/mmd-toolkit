@@ -301,9 +301,8 @@ mermaid.js がそれらを trim するからです（no-break space は trim
 `S("x" )` は `S("x")` になります。
 [fixture: system-boundaries/boundary-title-padding-dropped]
 [fixture: system-boundaries/boundary-title-opener-touches-id]
-タイトルの端にディレクティブがあれば、その隣の隙間は、
-空白が書かれていれば 1 つにして残します（`S[ %%{x}%% T ]` は `S[ %%{x}%% T]`
-になります）。
+タイトルの端にディレクティブがあれば、隙間に空白を置かないので、
+括弧とタイトルに接します（`S[ %%{x}%% T ]` は `S[%%{x}%%T]` になります）。
 保つ `;` のある行でも空白は落とします。
 ただし、[Statements and semicolons](#statements-and-semicolons)のとおり、
 行の規則が読む範囲は除きます。
@@ -324,10 +323,10 @@ U+2028 や U+2029 を含む空白は、書かれたまま残します。
 [test: usecase: U+2029 inside the brackets of a boundary title]
 [test: usecase: U+2028 inside the brackets of a boundary title with a semicolon]
 [test: usecase: U+2029 inside the brackets of a boundary title with a semicolon]
-隙間にディレクティブがあれば、その両側に空白があるかどうかは変えず、
-空白の連なりは空白 1 つにします。
+隙間のディレクティブは、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 [fixture: system-boundaries/boundary-id-title-directed-gap]
-[fixture: system-boundaries/boundary-id-title-directed-gap-runs-collapsed]
+[fixture: system-boundaries/boundary-id-title-directed-gap-runs]
 native metadata、class、繰り返しの宣言を保ち、
 所属は AST の 1 段の宣言本文から決めます。
 
@@ -398,7 +397,8 @@ usecase-beta
 前向きの `--o` と `--x` は語境界を調べずにマーカーなしの `--` より先に読むため、
 その単位の中に隙間を足したり消したりすると読みが変わります。
 長いマーカーなしのダッシュ列と大文字の O、X も記録された端点を保ちます。
-完全な単位の境界の directive は、両側の隙間の有無を保ちます。
+完全な単位の境界の隙間にあるディレクティブは、
+[ディレクティブ](#directives)のとおりに置きます。
 [fixture: arrow-id-boundaries/arrow-marker-both-gap-sides]
 これは class の o マーカーの境界と異なります。
 見かけ上の意図から id を復元するのは lint の仕事です。
@@ -898,8 +898,9 @@ usecase-beta
 
 共有の[ディレクティブ](./class.ja.md#ディレクティブ)を再利用します。
 除去は区切りを補いません。
-内容、順序、接している関係、複数行の列を保ち、独立した directive は揃えます。
-無害な外側の水平空白だけをまとめます。
+内容、順序、複数行の列を保ち、独立した directive は揃えます。
+同じ印字行の中のディレクティブは、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 [fixture: system-boundaries/boundary-id-title-directed-gap]
 [fixture: arrows/semantic-operator-directives]
 [fixture: arrow-id-boundaries/arrow-marker-both-gap-sides]
@@ -937,7 +938,7 @@ native の引用キーと値は directive の断片を含められます。
 
 ```mmd
 usecase-beta
-  actor %%{init: {}}%% User
+  actor %%{init: {}}%%User
 ```
 
 ### Multiline values and order

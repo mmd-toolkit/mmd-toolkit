@@ -175,7 +175,7 @@ classDiagram
   class C:::c { }
   class D { }
   class E { }
-  class F { %%{init: {}}%% }
+  class F { %%{init: {}}%%}
 ```
 
 ### Blank lines
@@ -247,28 +247,26 @@ of its documentation write `class Animal:::someclass`, `class Animal:::pink`,
 and `class Animal:::styleClass`, with and without a body
 ([here](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L780-L833)).
 [fixture: whitespace-between-tokens/css-class-touches-separator] A directive in
-the gap keeps whether whitespace was written on each side of it, as under
-[Directives](#directives), and a U+2028 or U+2029 stays where it is. [test:
-U+2028 before the `:::` of a class] [test: U+2029 after the `:::` of a class]
-The annotation of a class, `<<interface>>`, has one space before the `<<` (or
-after the `>>`, where it stands before the class) and nothing inside the
-delimiters: `class S<<i>>` and `class S <<  i  >>` are printed `class S <<i>>`,
-and `<<interface>>Class01` and `<< interface>>Class01` are printed
-`<<interface>> Class01`. mermaid.js trims the text of an annotation outside a
-body, so every spelling gives the same Db. The documentation of mermaid.js
-writes both placements with this spacing:
+the gap is placed as under [Directives](#directives), and a U+2028 or U+2029
+stays where it is. [test: U+2028 before the `:::` of a class] [test: U+2029
+after the `:::` of a class] The annotation of a class, `<<interface>>`, has one
+space before the `<<` (or after the `>>`, where it stands before the class) and
+nothing inside the delimiters: `class S<<i>>` and `class S <<  i  >>` are
+printed `class S <<i>>`, and `<<interface>>Class01` and `<< interface>>Class01`
+are printed `<<interface>> Class01`. mermaid.js trims the text of an annotation
+outside a body, so every spelling gives the same Db. The documentation of
+mermaid.js writes both placements with this spacing:
 [`class Shape <<interface>>`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L544)
 and
 [`<<interface>> Shape`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L552).
 [fixture: whitespace-between-tokens/annotation-spaced-once] A directive in the
-gap keeps whether whitespace was written on each side of it, a run of whitespace
-becoming one space, as under [Directives](#directives). [fixture:
-whitespace-between-tokens/annotation-beside-directive-runs-collapsed] The
-annotation line in a body is not an annotation of this kind: its text is part of
-the Db, and it stays as written (see [Member lines](#member-lines)). A U+2028 or
-U+2029 stays where it is. [test: U+2028 before the `<<` of a class annotation]
-The rest of this holds for a label in brackets, and the words of `note for`,
-`click`, `style`, and `cssClass` statements. [fixture:
+gap is placed as under [Directives](#directives). [fixture:
+whitespace-between-tokens/annotation-beside-directive-runs] The annotation line
+in a body is not an annotation of this kind: its text is part of the Db, and it
+stays as written (see [Member lines](#member-lines)). A U+2028 or U+2029 stays
+where it is. [test: U+2028 before the `<<` of a class annotation] The rest of
+this holds for a label in brackets, and the words of `note for`, `click`,
+`style`, and `cssClass` statements. [fixture:
 whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/after-name-collapsed] [fixture:
 whitespace-between-tokens/words-collapsed] [fixture:
@@ -294,16 +292,15 @@ writes a space before each string
 [fixture: whitespace-between-tokens/note-and-name-strings-touching-spaced]
 [fixture: whitespace-between-tokens/link-strings-touching-spaced] [fixture:
 whitespace-between-tokens/call-after-generic-touching-spaced] A directive in the
-gap keeps whether whitespace was written on each side of it, as under
-[Directives](#directives), and a U+2028 or U+2029 stays where it is. [fixture:
-whitespace-between-tokens/strings-beside-directive-kept] [test: U+2028 between
-the note keyword and its string] [test: U+2029 between the class of a note and
-its string] [test: U+2028 between the class keyword and a backquoted name]
-[test: U+2029 between a link and its URL] [test: U+2028 between the URL and the
-tooltip of a link] [test: U+2029 between the tooltip and the target of a link]
-[test: U+2028 between the cssClass keyword and its string] [test: U+2029 between
-a callback and its tooltip] [test: U+2028 between a generic type and the call of
-a callback]
+gap is placed as under [Directives](#directives), and a U+2028 or U+2029 stays
+where it is. [fixture: whitespace-between-tokens/strings-beside-directive]
+[test: U+2028 between the note keyword and its string] [test: U+2029 between the
+class of a note and its string] [test: U+2028 between the class keyword and a
+backquoted name] [test: U+2029 between a link and its URL] [test: U+2028 between
+the URL and the tooltip of a link] [test: U+2029 between the tooltip and the
+target of a link] [test: U+2028 between the cssClass keyword and its string]
+[test: U+2029 between a callback and its tooltip] [test: U+2028 between a
+generic type and the call of a callback]
 
 The names of a `classDef` statement are separated by a `,` that touches both
 names: `classDef c1 , c2 fill:#f00` is printed `classDef c1,c2 fill: #f00`, as
@@ -313,12 +310,11 @@ spelling as the same statement, so nothing forces the form, and its
 documentation writes the one example touching
 ([`classDef firstClassName,secondClassName`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L761)).
 [fixture: whitespace-between-tokens/classdef-names-touching] A directive in the
-gap keeps whether whitespace was written on each side of it, a run of whitespace
-becoming one space, as under [Directives](#directives); the whitespace before a
-`,` is dropped, as without the directive. [fixture:
-whitespace-between-tokens/classdef-names-beside-directive-kept] [fixture:
-whitespace-between-tokens/classdef-names-beside-directive-runs-collapsed] A `;`
-or a `#` that ends the statement follows
+gap is placed as under [Directives](#directives): the gaps beside a `,` have no
+space, so the directive touches the names and the `,`. [fixture:
+whitespace-between-tokens/classdef-names-beside-directive] [fixture:
+whitespace-between-tokens/classdef-names-beside-directive-runs] A `;` or a `#`
+that ends the statement follows
 [Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement).
 [fixture: whitespace-between-tokens/classdef-names-touching-before-terminator] A
 U+2028 or U+2029 after the `,` stays where it is. [test: U+2028 after the comma
@@ -388,8 +384,8 @@ mermaid.js reads the name up to the `(`, whitespace included, so
 there is kept too, and the statement stays on two lines. The parentheses of a
 call with blank arguments touch each other: `click A call f( )` is printed
 `click A call f()`, since mermaid.js reads both as the same call with no
-arguments. A directive between them keeps whether whitespace was written on each
-side of it, as under [Directives](#directives). [fixture:
+arguments. A directive between them touches both parentheses, as under
+[Directives](#directives). [fixture:
 whitespace-between-tokens/callback-blank-parentheses-touch] So do the
 parentheses with a line break between them, while a comment line there stays on
 its own line. [fixture:
@@ -443,7 +439,7 @@ arrow are tokens of their own, which may be written with whitespace between
 them; they are printed touching, as one arrow: `A <|  --  * B` becomes
 `A <|--* B`. [fixture: arrow-spacing/spaced] [fixture:
 arrow-spacing/end-or-line-apart-joined] [fixture:
-arrow-spacing/directive-between-arrow-tokens-kept]
+arrow-spacing/directive-between-arrow-tokens]
 
 Input
 ([arrow-spacing/spaced-input.mmd](../tests/fixtures/class/arrow-spacing/spaced-input.mmd)):
@@ -532,9 +528,9 @@ classDiagram
 The `:` of a label after a relation or a class name has one space on each side,
 as mermaid.js's documentation writes it: `A-->B:x` becomes `A --> B : x`, and
 `A:+int x` becomes `A : +int x`. [fixture: labels/spaced] [fixture:
-labels/directive-around-colon-kept] A sequence diagram writes the `:` touching
-what comes before it (see [Colons in the sequence rules](./sequence.md#colons));
-each follows the documentation of its diagram type. The `:` after `accTitle` and
+labels/directive-around-colon] A sequence diagram writes the `:` touching what
+comes before it (see [Colons in the sequence rules](./sequence.md#colons)); each
+follows the documentation of its diagram type. The `:` after `accTitle` and
 `accDescr` touches the keyword and has one space after it, as in the other
 diagram types and in the documentation of mermaid.js. [fixture:
 labels/accessibility-text-kept] [fixture: multi-line-statements/joined]
@@ -548,9 +544,9 @@ reads every spelling as the same label, and its documentation writes the `[`
 touching the name
 ([`namespace Auth["Authentication Service"]`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L404)),
 as a flowchart subgraph and an agentflow heading print it. [fixture:
-labels/bracket-touches-name] A directive beside the string keeps the gap next to
-it, one space where whitespace was written: `class D[ %%{x}%% "x" ]` is printed
-`class D[ %%{x}%% "x"]`. A U+2028 or U+2029 before the `]` stays. [fixture:
+labels/bracket-touches-name] A directive beside the string touches the bracket
+and the string, as the gap has no space: `class D[ %%{x}%% "x" ]` is printed
+`class D[%%{x}%%"x"]`. A U+2028 or U+2029 before the `]` stays. [fixture:
 labels/bracket-directive-at-edge] [test: U+2028 inside the brackets of a class
 label] [test: U+2029 inside the brackets of a class label] [test: U+2028 between
 a class name and its label] [fixture: labels/bracket-padding-dropped]
@@ -624,10 +620,13 @@ retain their complete source. [fixture: member-lines/method-padding] [fixture:
 member-lines/method-values-and-classifiers-kept] [fixture:
 member-lines/method-trivia-and-semicolon-kept]
 
-Attribute and annotation lines, in a body or after the `:` of a class name, keep
-their contents as written. Methods preserve their name, parameter and
-return-type contents, including generic spelling and classifier-related tails.
-[fixture: member-lines/kept] [fixture: member-lines/percent-text-kept] [fixture:
+The classifier of an attribute touches its text, as in the documentation of
+mermaid.js: `+attr string *` is printed `+attr string*`. [fixture:
+member-lines/attribute-classifier-touches] Attribute and annotation lines, in a
+body or after the `:` of a class name, keep their contents as written. Methods
+preserve their name, parameter and return-type contents, including generic
+spelling and classifier-related tails. [fixture: member-lines/kept] [fixture:
+member-lines/percent-text-kept] [fixture:
 member-lines/trailing-whitespace-dropped] [fixture:
 member-lines/directive-inside-kept] [corpus fixture: class/lex-member-percent]
 mermaid.js divides each member into its parts by its text, and the whitespace
@@ -772,17 +771,17 @@ comments/empty-line-after-comment-kept]
 ### Directives
 
 As in a flowchart: a directive on a line of its own stands at the level of the
-statements around it, and a directive on the line of a statement keeps whether
-whitespace is written on each side of it: where it is, one space stands there,
-and where the directive touches a token, it keeps touching. [fixture:
+statements around it, and a directive on the line of a statement is placed as in
+a flowchart: the gap is printed as without the directive, and the directive
+stands after its space and touches the unit that follows it. [fixture:
 directives/kept] [fixture: directives/before-header] [fixture:
 directives/in-namespace] [fixture: directives/after-header-on-same-line]
-[fixture: directives/whitespace-on-both-sides-collapsed] [fixture:
+[fixture: directives/whitespace-on-both-sides] [fixture:
 directives/whitespace-before-collapsed-at-end] [fixture:
-directives/touching-one-side-kept] [fixture:
-directives/after-braces-on-same-line] [fixture:
+directives/touching-one-side] [fixture: directives/count-sensitive-unit]
+[fixture: directives/after-braces-on-same-line] [fixture:
 member-bodies/directive-only-over-lines-kept] [fixture:
-arrow-spacing/directive-between-arrow-tokens-kept]
+arrow-spacing/directive-between-arrow-tokens]
 
 Input
 ([directives/kept-input.mmd](../tests/fixtures/class/directives/kept-input.mmd)):
@@ -1031,11 +1030,12 @@ directive keeps its line breaks, while structural continuations and intervening
 trivia stand one level deeper, as in a sequence diagram (see
 [Multi-line statements](./sequence.md#multi-line-statements)). Whitespace inside
 values remains unchanged. The whitespace before the first line break of each gap
-is retained; joining regions keep the whole statement as written. A statement
-written over several lines is kept as written when joining its lines, with one
-space or with nothing, could change which `;` the line rule ignores; any other
-statement over several lines is joined as usual, also when it holds a `;`.
-[fixture: multi-line-statements/comment-inside-kept] [fixture:
+is retained; joining regions keep the whole statement as written. A `;` does not
+keep a statement over several lines from being joined: no `;` separates
+statements in a class diagram, and the first line of such a statement holds only
+its keyword, so joining its lines cannot change which `;` the line rule ignores.
+[fixture: multi-line-statements/semicolon-value-joined] [fixture:
+multi-line-statements/comment-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept] [fixture:
 multi-line-statements/comment-inside-title-kept] A statement with a comment line
 after U+2028 or U+2029 inside it is a joining region: mermaid.js removes the
@@ -1133,7 +1133,7 @@ direction-lines/text-after-value-separated] [fixture:
 direction-lines/text-before-touching-kept] [fixture:
 direction-lines/text-before-collapsed] [fixture: direction-lines/in-namespace]
 [fixture: direction-lines/values-and-tabs] [fixture:
-direction-lines/directive-around-value-kept] [fixture:
+direction-lines/directive-around-value] [fixture:
 direction-lines/comment-after-value-kept] [corpus fixture:
 class/lex-direction-in-namespace] [corpus fixture:
 class/lex-direction-in-member-body] A word that starts with `direction` and

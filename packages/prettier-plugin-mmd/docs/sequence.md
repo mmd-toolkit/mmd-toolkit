@@ -295,16 +295,15 @@ space after every block keyword
 ([`loop Loop text`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L472),
 [`alt Describing text`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L492)).
 [fixture: whitespace-between-tokens/wrap-text-spaced] [fixture:
-whitespace-between-tokens/block-text-touching-spaced] A directive in the gap
-keeps whether whitespace was written on each side of it, as under
-[Directives](#directives), and a U+2028 or U+2029 stays where it is. [fixture:
-whitespace-between-tokens/block-text-beside-directive-kept] [test: U+2028
-between a block keyword and its text] [test: U+2029 between a wrap prefix and
-its text] The `,` between the ids of a note over two participants touches both
-ids, as in `note over A,B`: `note over A , B` is printed `note over A,B`. Every
-spelling that mermaid.js accepts gives the same Db, so nothing forces the form;
-the five notes over two participants in the documentation of mermaid.js are all
-written `A,B`
+whitespace-between-tokens/block-text-touching-spaced] A directive in the gap is
+placed as under [Directives](#directives), and a U+2028 or U+2029 stays where it
+is. [fixture: whitespace-between-tokens/block-text-beside-directive] [test:
+U+2028 between a block keyword and its text] [test: U+2029 between a wrap prefix
+and its text] The `,` between the ids of a note over two participants touches
+both ids, as in `note over A,B`: `note over A , B` is printed `note over A,B`.
+Every spelling that mermaid.js accepts gives the same Db, so nothing forces the
+form; the five notes over two participants in the documentation of mermaid.js
+are all written `A,B`
 ([two](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L49-L77)
 and
 [three](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L445-L464)).
@@ -389,10 +388,12 @@ whitespace-between-tokens/data-block-space-before-removed] [fixture:
 whitespace-between-tokens/data-block-space-before-removed-alias] [fixture:
 whitespace-between-tokens/data-block-multi-line-space-before-removed] [fixture:
 whitespace-between-tokens/data-block-space-before-removed-between-statements] A
-directive between the id and `@{` keeps the whitespace around it as written, as
-under [Directives](#directives), and so does a U+2028 or U+2029. [fixture:
-whitespace-between-tokens/data-block-space-before-kept-after-directive] Its
-contents stay written except for the eligible margins in
+directive between the id and `@{` is placed as under [Directives](#directives),
+touching both, as the gap has no space:
+`participant A %%{init: {}}%% @{ "type": "queue" }` is printed
+`participant A%%{init: {}}%%@{ "type": "queue" }`. [fixture:
+whitespace-between-tokens/data-block-space-before-after-directive] Its contents
+stay written except for the eligible margins in
 [Multi-line values](#multi-line-values) and the spaces and tabs at the ends of a
 block on one line, which become one space each, as in
 [Data blocks](./flowchart.md#data-blocks): `participant A@{"type":"queue"}`
@@ -492,15 +493,14 @@ and are printed with the sign on the target as well. Its three messages with
 `()` write it touching its id
 ([central connections](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L392-L394)).
 The whitespace is dropped only where a gap holds nothing but whitespace. A
-directive in the gap keeps whether whitespace was written on each side of it, a
-run of whitespace becoming one space, as under [Directives](#directives):
-`A%%{init: {}}%%->>B: v` has no space before its arrow, and
-`A ->> +%%{init: {}}%% B: v` keeps the space after the directive. [fixture:
-arrow-spacing/directive-beside-arrow-kept] [fixture:
-arrow-spacing/directive-beside-arrow-runs-collapsed] [fixture:
-arrow-spacing/touching-beside-directive-kept] A line break in the gap is joined
-as in [Multi-line statements](#multi-line-statements), and the whitespace goes
-with it; a comment line keeps the lines. [fixture:
+directive in the gap is placed as under [Directives](#directives):
+`A%%{init: {}}%%->>B: v` is printed `A %%{init: {}}%%->> B: v`, and
+`A ->> +%%{init: {}}%% B: v` is printed `A ->> +%%{init: {}}%%B: v`, since the
+`+` touches the target. [fixture: arrow-spacing/directive-beside-arrow]
+[fixture: arrow-spacing/directive-beside-arrow-runs] [fixture:
+arrow-spacing/touching-beside-directive] A line break in the gap is joined as in
+[Multi-line statements](#multi-line-statements), and the whitespace goes with
+it; a comment line keeps the lines. [fixture:
 arrow-spacing/touching-over-line-breaks-joined] [fixture:
 arrow-spacing/touching-with-comment-line-kept] A U+2028 or U+2029 in a gap on
 one line stays where it is, with the whitespace beside it. [test: U+2028 between
@@ -597,13 +597,13 @@ sequenceDiagram
 The `:` before the text of a message, a note, and a `links`, `link`,
 `properties`, or `details` statement, and the `:` after `accTitle` and
 `accDescr`, touch what comes before them and have one space after them, as the
-documentation of mermaid.js writes a sequence diagram, except next to a
-directive, where the whitespace written is kept (see [Directives](#directives)).
-[fixture: colons/spaced] [fixture: colons/other-statements-spaced] [fixture:
-colons/directive-around-colon-kept] mermaid.js reads the text without the
-whitespace at its ends. When the text is empty, nothing follows the `:`.
-[fixture: colons/spaced] [fixture: colons/empty-text] A line break after the `:`
-of `accTitle` is whitespace for mermaid.js, so the next line is its text: an
+documentation of mermaid.js writes a sequence diagram, also next to a directive,
+which is placed as under [Directives](#directives). [fixture: colons/spaced]
+[fixture: colons/other-statements-spaced] [fixture:
+colons/directive-around-colon] mermaid.js reads the text without the whitespace
+at its ends. When the text is empty, nothing follows the `:`. [fixture:
+colons/spaced] [fixture: colons/empty-text] A line break after the `:` of
+`accTitle` is whitespace for mermaid.js, so the next line is its text: an
 `accTitle:` with no text cannot stand before another statement. [fixture:
 colons/acc-title-colon-line-break]
 
@@ -638,18 +638,26 @@ sequenceDiagram
 ### Title
 
 `title` and `title:` are followed by one space, and the rest of the line is kept
-as written. A directive after the keyword keeps whether whitespace is written
-between them: `title %%{init: {}}%% T` has one space before the directive, and
-`title%%{init: {}}%% U` and `title:%%{init: {}}%% V` keep it touching. [fixture:
-title/directive-after-keyword-kept] mermaid.js reads one whitespace character
-after the keyword, which may be a line break, and keeps everything after it in
-the title, the whitespace at its start and at its end included. So `title`, a
-line break, and `A->>B: x` is printed as `title A->>B: x`, which shows that the
-next line is the title: mermaid.js reads it so. [fixture: title/separator]
-[corpus fixture: sequence/lex-title-line-break] [corpus fixture:
-sequence/db-title-next-line-indented] [fixture: title/tab-and-colon-line-break]
-[fixture: title/line-break-indented] The whitespace at the end of a title is
-kept. [fixture: title/trailing-whitespace-kept] [fixture:
+as written, except for the whitespace at its start: `title   My diagram` is
+printed `title My diagram`. [fixture: title/text-padding-dropped] [fixture:
+title/text-padding-dropped-colon] A directive between the keyword and the one
+whitespace character after it stays against the keyword: `title%%{init: {}}%% U`
+and `title:%%{init: {}}%% V` are not changed. A directive after that character
+is part of the text, and the whitespace at the start of the text, around the
+directive too, is left out: `title %%{init: {}}%% T` is printed
+`title %%{init: {}}%%T`. [fixture: title/directive-after-keyword-kept]
+mermaid.js reads one whitespace character after the keyword, which may be a line
+break, and keeps everything after it in the title, the whitespace at its start
+and at its end included, and draws the title without the whitespace at its start
+(see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+So `title`, a line break, and `A->>B: x` is printed as `title A->>B: x`, which
+shows that the next line is the title: mermaid.js reads it so. [fixture:
+title/separator] [corpus fixture: sequence/lex-title-line-break] [corpus
+fixture: sequence/db-title-next-line-indented] [fixture:
+title/tab-and-colon-line-break] [fixture: title/line-break-indented] The
+whitespace at the end of a title is kept. [fixture:
+title/trailing-whitespace-kept] [fixture:
 title/semicolon-after-whitespace-dropped] It is at the end of a line, so the
 example is written as strings, in which `\n` is a line break:
 `"sequenceDiagram\ntitle Kept   \nA->>B: x\n"` is printed as
@@ -674,7 +682,7 @@ Output
 ```mmd
 sequenceDiagram
   title A->>B: x
-  title  Two spaces
+  title Two spaces
   title: Tab
 ```
 
@@ -882,11 +890,11 @@ statements-one-per-line/ignored-semicolon-next-to-semicolon-kept]
 ### Directives
 
 As in a flowchart: a directive on a line of its own stands at the level of the
-statements around it, and a directive within a printed line keeps whether
-whitespace is written on each side of it: where it is, one space stands there,
-and where the directive touches a token, it keeps touching. [fixture:
-directives/kept] [fixture: directives/section-edges-kept] [fixture:
-directives/whitespace-on-each-side-kept] [fixture: directives/touching-kept]
+statements around it, and a directive within a printed line is placed as in a
+flowchart: the gap is printed as without the directive, and the directive stands
+after its space and touches the unit that follows it. [fixture: directives/kept]
+[fixture: directives/section-edges-kept] [fixture:
+directives/whitespace-on-each-side] [fixture: directives/touching-kept]
 [fixture: directives/block-lines-kept]
 
 When formatting splits units that were on the same line, a directive in their
