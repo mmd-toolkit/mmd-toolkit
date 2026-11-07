@@ -10,6 +10,8 @@ mermaid-js とは関係のない第三者のプロジェクトです。
 ここでいう `mmd` は Mermaid の図の記法のことで、
 MultiMarkdown や MikuMikuDance ではありません。
 
+文書: [フォーマッター](https://mmd-toolkit.github.io/mmd-toolkit/ja/formatter/)。
+
 ## Playground
 
 ブラウザーで、このプラグインによる整形結果を確認できます。

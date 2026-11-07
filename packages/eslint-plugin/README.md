@@ -17,6 +17,8 @@ the Mermaid diagram syntax, not MultiMarkdown or MikuMikuDance.
 Try lint diagnostics, automatic fixes, and editor suggestions in
 [ESLint Online Playground](https://eslint-online-playground.netlify.app/#@mmd-toolkit/eslint-plugin).
 
+Documentation: [Linter](https://mmd-toolkit.github.io/mmd-toolkit/linter/).
+
 ## Installation
 
 Install the package next to ESLint 10. It is an ES module and needs Node.js

@@ -8,6 +8,8 @@ and `.mermaid` files, and `mermaid` code blocks in Markdown.
 This is a third-party project, not affiliated with mermaid-js. `mmd` here means
 the Mermaid diagram syntax, not MultiMarkdown or MikuMikuDance.
 
+Documentation: [Formatter](https://mmd-toolkit.github.io/mmd-toolkit/formatter/).
+
 ## Playground
 
 Preview this plugin's formatting in the browser. The **Formatted** tab updates

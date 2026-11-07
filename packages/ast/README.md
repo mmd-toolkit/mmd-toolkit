@@ -11,6 +11,8 @@ The package holds types only and no code that runs.
 
 It is a third-party project, not affiliated with mermaid-js.
 
+Documentation: [Parser API](https://mmd-toolkit.github.io/mmd-toolkit/parser/api.html).
+
 ## Installation
 
 Install it next to the parser, at the version of the parser or a later

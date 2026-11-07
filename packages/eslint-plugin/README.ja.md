@@ -20,6 +20,8 @@ MultiMarkdown や MikuMikuDance ではありません。
 [ESLint Online Playground](https://eslint-online-playground.netlify.app/#@mmd-toolkit/eslint-plugin)
 で、診断、自動修正、エディターの修正候補を試せます。
 
+文書: [リンター](https://mmd-toolkit.github.io/mmd-toolkit/ja/linter/)。
+
 ## 導入
 
 このパッケージは、ESLint 10 と一緒に入れます。

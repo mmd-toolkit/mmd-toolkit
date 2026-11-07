@@ -7,6 +7,8 @@ a tree that keeps every character of the input, with the position of every part.
 
 It is a third-party project, not affiliated with mermaid-js.
 
+Documentation: [Parser](https://mmd-toolkit.github.io/mmd-toolkit/parser/).
+
 ## Playground
 
 Inspect the AST, tokens, comments, directives, and frontmatter returned by this

@@ -7,6 +7,8 @@ Mermaid 記法（`.mmd`）のパーサーです。
 
 mermaid-js とは無関係の第三者プロジェクトです。
 
+文書: [パーサー](https://mmd-toolkit.github.io/mmd-toolkit/ja/parser/)。
+
 ## Playground
 
 ブラウザーで、このパーサーが返す構文木、トークン、コメント、ディレクティブ、

@@ -11,6 +11,8 @@
 
 mermaid-js とは関係のない、第三者のプロジェクトです。
 
+文書: [パーサーの API](https://mmd-toolkit.github.io/mmd-toolkit/ja/parser/api.html)。
+
 ## 導入
 
 パーサーの版か、互換のある新しい版を、パーサーと一緒に入れます。
