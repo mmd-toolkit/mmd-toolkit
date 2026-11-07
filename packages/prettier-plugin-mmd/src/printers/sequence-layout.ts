@@ -1,5 +1,6 @@
 import type {
   Node,
+  SequenceIdentifier,
   SequenceMessageStatement,
   SequenceStatement,
   SequenceTitleStatement,
@@ -385,6 +386,7 @@ function statementRules(
       addColonRules(source, statement.to.range[1], statement.text, rules)
       break
     case "SequenceNoteStatement":
+      addCommaRules(source, statement.ids, rules)
       addColonRules(
         source,
         (statement.ids.at(-1) ?? statement).range[1],
@@ -424,6 +426,8 @@ function statementRules(
  * after it, before the `+`, `-`, or `()` that may follow it, or before the
  * target; none on either side when the source is an id that a following
  * space would make another unit (see `isReadOtherwiseBeforeWhitespace`).
+ * The `()` of the source touches the source, and the `+`, `-`, or `()`
+ * before the target touches the target (docs/sequence.md, Arrow spacing).
  * The arrow is printed from its token, whose range is the range of the
  * arrow node.
  */
@@ -442,6 +446,38 @@ function addArrowRules(
     : "space"
   rules.set(arrow.range[0], rule)
   rules.set(next.range[0], rule)
+  if (statement.fromCentralConnection) {
+    rules.set(
+      expectToken(
+        findStructuralToken(source, statement.from.range[1]),
+        "the `()` after the source of a message",
+      ).range[0],
+      "none",
+    )
+  }
+  if (statement.activation !== null || statement.toCentralConnection) {
+    rules.set(statement.to.range[0], "none")
+  }
+}
+
+/**
+ * Adds the rules of the `,` between the ids of a note: none before it and
+ * none after it (docs/sequence.md, Arrow spacing).
+ */
+function addCommaRules(
+  source: Source,
+  ids: readonly SequenceIdentifier[],
+  rules: Map<number, GapRule>,
+): void {
+  for (let index = 1; index < ids.length; index++) {
+    const comma = expectToken(
+      findStructuralToken(source, ids[index - 1].range[1]),
+      "the `,` between the ids of a note",
+    )
+    expectValue(comma, ",")
+    rules.set(comma.range[0], "none")
+    rules.set(ids[index].range[0], "none")
+  }
 }
 
 /**

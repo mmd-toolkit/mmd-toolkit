@@ -288,14 +288,25 @@ sequenceDiagram
 接しているトークンは接したまま残します。
 flowchart と同じです。 [fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/tabs-collapsed]
-そのため、矢印や id の隣の `+`、`-`、`()`、`note over A,B` の `,`、
 `wrap:` などの折り返しの接頭辞とその本文の間は、
 空白が書かれているかどうかを保ちます。
-[fixture: whitespace-between-tokens/collapsed]
-[fixture: arrow-spacing/plus-and-minus-kept]
-[fixture: arrow-spacing/parentheses-whitespace-kept]
-[fixture: whitespace-between-tokens/comma-whitespace-kept]
 [fixture: whitespace-between-tokens/wrap-prefix-kept]
+2 人の参加者にまたがるノートの id の間の `,` は、
+`note over A,B` のように両側の id に接します。
+`note over A , B` は `note over A,B` になります。
+mermaid.js が受け付ける書き方は、どれも同じ Db になるので、
+形を強いるものはありません。
+mermaid.js の文書にある、2 人の参加者にまたがるノート 5 件は、
+すべて `A,B` と書かれています。
+そのうち 2 件は、
+[ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L49-L77)
+にあります。
+残る 3 件は、
+[ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L445-L464)
+にあります。 [fixture: whitespace-between-tokens/collapsed]
+[fixture: whitespace-between-tokens/comma-touching]
+`,` の隣の隙間にあるものは、
+[矢印の前後の空白](#矢印の前後の空白)と同じに扱います。
 キーワードは、書かれた大文字小文字のまま残します。
 例えば `PARTICIPANT A`、`Note LEFT OF A` です。
 mermaid.js は大文字小文字にかかわらず読むからです。
@@ -324,7 +335,7 @@ sequenceDiagram
   autonumber 10 5
   create participant C
   A ->> C: x
-  note over A ,C: n
+  note over A,C: n
   A ->> B: wrap:x
   A ->> B: wrap: y
 ```
@@ -459,14 +470,50 @@ sequenceDiagram
 メッセージの矢印の前後には、flowchart の辺と同じく、空白を 1 つずつ置きます。
 `Alice->>Bob: hi` は `Alice ->> Bob: hi` になります。
 [fixture: arrow-spacing/spaced]
-矢印の後の `+`、`-`、`()` と、矢印の前の `()` は、
-書かれたとおり id の隣に残します。 [fixture: arrow-spacing/plus-and-minus-kept]
-[fixture: arrow-spacing/parentheses-whitespace-kept]
-矢印は書かれたまま印字します。 [fixture: arrow-spacing/arrows-kept]
-ディレクティブの隣では、
-書かれた空白を残します（[ディレクティブ](#ディレクティブ)を参照）。
-`A%%{init: {}}%%->>B: v` は、矢印の前に空白を置きません。
+矢印の後の `+`、`-`、`()` は宛先に接し、矢印の前の `()` は送り元に接します。
+`A ->> + B` は `A ->> +B` に、`A () ->> () B` は `A() ->> ()B` になります。
+[fixture: arrow-spacing/plus-and-minus-touching]
+[fixture: arrow-spacing/parentheses-touching]
+空白があってもなくても、 mermaid.js は同じメッセージとして読むので、
+形を強いるものはありません。
+整形は `A->>+B` をすでに `A ->> +B` にしています。
+mermaid.js の文書で `+` か `-` のあるメッセージ 12 件のうち、
+10 件は記号が宛先に接しています（`->>+John`、`-->>-Alice`）。
+そのうち 6 件は、
+[有効化の例](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L413-L424)
+にあります。
+残る 4 件は、
+[入れ子の例](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L664-L669)
+にあります。
+残る 2 件は記号が矢印に接していて（`->>+ John`）、
+これも記号が宛先に接する形に整形します。
+その 2 件は
+[ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L671-L672)
+にあります。
+`()` のあるメッセージ 3 件は、`()` が id に接しています。
+その 3 件は
+[中央接続の例](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L392-L394)
+にあります。
+空白を削るのは、隙間が 1 行の空白だけでできているときに限ります。
+隙間にディレクティブがあれば、
+その両側に書かれた空白を残します（[ディレクティブ](#ディレクティブ)を参照）。
+`A%%{init: {}}%%->>B: v` は矢印の前に空白を置かず、
+`A ->> +%%{init: {}}%% B: v` はディレクティブの後の空白を残します。
 [fixture: arrow-spacing/directive-beside-arrow-kept]
+[fixture: arrow-spacing/touching-beside-directive-kept]
+隙間の中の改行は[複数行の文](#複数行の文)と同じく 1 行に結び、
+コメント行があるときは行を保ちます。
+[fixture: arrow-spacing/touching-over-line-breaks-joined]
+[fixture: arrow-spacing/touching-with-comment-line-kept]
+`;` や空行で区切られた文も、同じように整形します。
+[fixture: arrow-spacing/touching-between-semicolons]
+[fixture: arrow-spacing/touching-after-blank-lines]
+隙間の中の U+2028 と U+2029 は、そのまま残します。
+[test: U+2028 between a `+` and an id] [test: U+2029 between a `-` and an id]
+[test: U+2028 between an id and `()`] [test: U+2029 between `()` and an id]
+[test: U+2029 between an id of a note and the `,`]
+[test: U+2028 between the `,` of a note and an id]
+矢印は書かれたまま印字します。 [fixture: arrow-spacing/arrows-kept]
 
 入力
 ([arrow-spacing/spaced-input.mmd](../tests/fixtures/sequence/arrow-spacing/spaced-input.mmd)):

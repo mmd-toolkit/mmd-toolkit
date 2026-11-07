@@ -256,7 +256,8 @@ const semicolonExamples: readonly (readonly [string, string, string])[] = [
  *   goes on as part of the directive, without indentation.
  * - U+2028 and U+2029 as the whitespace character after `title`, and between
  *   two parts of a statement (an id and an arrow, an arrow and an id, an id
- *   and `as`), stay where they are: they are not whitespace to every rule of
+ *   and `as`, a `+`, `-`, or `()` and an id, an id and `()`, an id of a note
+ *   and the `,`), stay where they are: they are not whitespace to every rule of
  *   mermaid.js, and a space or a line break in their place could be read
  *   otherwise. The whitespace beside the other parts is formatted as usual.
  * - On a line that holds a `;` that the line rule ignores and, after it, a
@@ -408,6 +409,36 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
     "U+2029 between an arrow and an id",
     "sequenceDiagram\nA->>\u2029B: y\n",
     "sequenceDiagram\n  A ->>\u2029B: y\n",
+  ],
+  [
+    "U+2028 between a `+` and an id",
+    "sequenceDiagram\nA->>+\u2028B: x\n",
+    "sequenceDiagram\n  A ->> +\u2028B: x\n",
+  ],
+  [
+    "U+2029 between a `-` and an id",
+    "sequenceDiagram\nA->>+B: x\nB->>-\u2029A: y\n",
+    "sequenceDiagram\n  A ->> +B: x\n  B ->> -\u2029A: y\n",
+  ],
+  [
+    "U+2028 between an id and `()`",
+    "sequenceDiagram\nA\u2028()->>B: x\n",
+    "sequenceDiagram\n  A\u2028() ->> B: x\n",
+  ],
+  [
+    "U+2029 between `()` and an id",
+    "sequenceDiagram\nA->>()\u2029B: x\n",
+    "sequenceDiagram\n  A ->> ()\u2029B: x\n",
+  ],
+  [
+    "U+2029 between an id of a note and the `,`",
+    "sequenceDiagram\nNote over A\u2029 , B: x\n",
+    "sequenceDiagram\n  Note over A\u2029 ,B: x\n",
+  ],
+  [
+    "U+2028 between the `,` of a note and an id",
+    "sequenceDiagram\nNote over A ,\u2028 B: x\n",
+    "sequenceDiagram\n  Note over A,\u2028 B: x\n",
   ],
   [
     "U+2028 between an id and `as`",

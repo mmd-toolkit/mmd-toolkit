@@ -281,17 +281,22 @@ sequenceDiagram
 Within a line, a run of spaces and tabs between two tokens becomes one space,
 and tokens that touch keep touching, as in a flowchart. [fixture:
 whitespace-between-tokens/collapsed] [fixture:
-whitespace-between-tokens/tabs-collapsed] So `+`, `-`, and `()` next to an arrow
-or an id, the `,` of `note over A,B`, and a wrap prefix such as `wrap:` before
-its text keep whether whitespace is written next to them. [fixture:
-whitespace-between-tokens/collapsed] [fixture:
-arrow-spacing/plus-and-minus-kept] [fixture:
-arrow-spacing/parentheses-whitespace-kept] [fixture:
-whitespace-between-tokens/comma-whitespace-kept] [fixture:
-whitespace-between-tokens/wrap-prefix-kept] Keywords keep the case in which they
-are written (`PARTICIPANT A`, `Note LEFT OF A`). mermaid.js reads them in any
-case and the Db is the same, so nothing forces the case; it is the author's, and
-the printer does not rewrite it. [fixture:
+whitespace-between-tokens/tabs-collapsed] A wrap prefix such as `wrap:` before
+its text keeps whether whitespace is written next to it. [fixture:
+whitespace-between-tokens/wrap-prefix-kept] The `,` between the ids of a note
+over two participants touches both ids, as in `note over A,B`: `note over A , B`
+is printed `note over A,B`. Every spelling that mermaid.js accepts gives the
+same Db, so nothing forces the form; the five notes over two participants in the
+documentation of mermaid.js are all written `A,B`
+([two](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L49-L77)
+and
+[three](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L445-L464)).
+[fixture: whitespace-between-tokens/collapsed] [fixture:
+whitespace-between-tokens/comma-touching] What stands in the gap beside the `,`
+is treated as in [Arrow spacing](#arrow-spacing). Keywords keep the case in
+which they are written (`PARTICIPANT A`, `Note LEFT OF A`). mermaid.js reads
+them in any case and the Db is the same, so nothing forces the case; it is the
+author's, and the printer does not rewrite it. [fixture:
 whitespace-between-tokens/keyword-case-kept]
 
 Input
@@ -317,7 +322,7 @@ sequenceDiagram
   autonumber 10 5
   create participant C
   A ->> C: x
-  note over A ,C: n
+  note over A,C: n
   A ->> B: wrap:x
   A ->> B: wrap: y
 ```
@@ -445,12 +450,40 @@ sequenceDiagram
 
 A message has one space before and after its arrow, as a flowchart link does:
 `Alice->>Bob: hi` becomes `Alice ->> Bob: hi`. [fixture: arrow-spacing/spaced]
-The `+`, `-`, or `()` after the arrow, and the `()` before it, stay next to the
-id as written. [fixture: arrow-spacing/plus-and-minus-kept] [fixture:
-arrow-spacing/parentheses-whitespace-kept] The arrow is printed as written.
-[fixture: arrow-spacing/arrows-kept] Next to a directive, the whitespace written
-is kept, as under [Directives](#directives): `A%%{init: {}}%%->>B: v` has no
-space before its arrow. [fixture: arrow-spacing/directive-beside-arrow-kept]
+The `+`, `-`, or `()` after the arrow touches the target, and the `()` before
+the arrow touches the source: `A ->> + B` is printed `A ->> +B`, and
+`A () ->> () B` is printed `A() ->> ()B`. [fixture:
+arrow-spacing/plus-and-minus-touching] [fixture:
+arrow-spacing/parentheses-touching] mermaid.js reads the spellings with and
+without the whitespace as the same message, so nothing forces the form. The
+printer already gives `A->>+B` the form `A ->> +B`, and ten of the twelve
+messages with a `+` or `-` in the documentation of mermaid.js write the sign
+touching the target (`->>+John`, `-->>-Alice`;
+[the activation examples](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L413-L424)
+and
+[the nested ones](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L664-L669)).
+The other two write the sign touching the arrow, `->>+ John`
+([here](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L671-L672)),
+and are printed with the sign on the target as well. Its three messages with
+`()` write it touching its id
+([central connections](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L392-L394)).
+The whitespace is dropped only where a gap holds nothing but whitespace on one
+line. A directive in the gap keeps the whitespace written on each side of it, as
+under [Directives](#directives): `A%%{init: {}}%%->>B: v` has no space before
+its arrow, and `A ->> +%%{init: {}}%% B: v` keeps the space after the directive.
+[fixture: arrow-spacing/directive-beside-arrow-kept] [fixture:
+arrow-spacing/touching-beside-directive-kept] A line break in the gap is joined
+as in [Multi-line statements](#multi-line-statements), and a comment line keeps
+the lines. [fixture: arrow-spacing/touching-over-line-breaks-joined] [fixture:
+arrow-spacing/touching-with-comment-line-kept] Statements separated by a `;` or
+by an empty line are printed the same way. [fixture:
+arrow-spacing/touching-between-semicolons] [fixture:
+arrow-spacing/touching-after-blank-lines] A U+2028 or U+2029 in the gap stays
+where it is. [test: U+2028 between a `+` and an id] [test: U+2029 between a `-`
+and an id] [test: U+2028 between an id and `()`] [test: U+2029 between `()` and
+an id] [test: U+2029 between an id of a note and the `,`] [test: U+2028 between
+the `,` of a note and an id] The arrow is printed as written. [fixture:
+arrow-spacing/arrows-kept]
 
 Input
 ([arrow-spacing/spaced-input.mmd](../tests/fixtures/sequence/arrow-spacing/spaced-input.mmd)):
