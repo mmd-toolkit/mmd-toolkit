@@ -84,6 +84,7 @@ git のタグ `@mmd-toolkit/spec@<版>` が付きます。
 | `packages/ast`                 | 構文木の TypeScript の型。                     |
 | `packages/parser`              | パーサー。                                     |
 | `packages/prettier-plugin-mmd` | Prettier のプラグイン。                        |
+| `packages/mmdfmt`              | コマンドラインのフォーマッター。               |
 | `packages/eslint-plugin`       | ESLint のプラグイン。                          |
 | `packages/textmate-grammar`    | TextMate の文法。                              |
 | `.claude`                      | Claude Code のスキル、設定、hook。             |

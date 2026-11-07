@@ -305,6 +305,24 @@ importers:
         specifier: ^3.9.0
         version: 3.9.9
 
+  packages/mmdfmt:
+    dependencies:
+      '@mmd-toolkit/parser':
+        specifier: workspace:^
+        version: link:../parser
+      gunshi:
+        specifier: ^0.37.3
+        version: 0.37.3
+      prettier:
+        specifier: ^3.9.0
+        version: 3.9.9
+      prettier-plugin-mmd:
+        specifier: workspace:^
+        version: link:../prettier-plugin-mmd
+      tinyglobby:
+        specifier: ^0.2.17
+        version: 0.2.17
+
   packages/parser:
     devDependencies:
       '@mmd-toolkit/ast':
@@ -2280,6 +2298,10 @@ packages:
 
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
+
+  gunshi@0.37.3:
+    resolution: {integrity: sha512-uwm23bguqDcleEetknuQnF5okLcgmQPM3iv4aWVHTPDbiSs9shh02F079NCY0mWkrIRjHqNhgmzW6k0FCXhy1g==}
+    engines: {node: '>= 22'}
 
   hachure-fill@0.5.2:
     resolution: {integrity: sha512-3GKBOn+m2LX9iq+JC1064cSFprJY4jL1jCXTcpnfER5HYE2l/4EfWSGzkPa/ZDBmYI0ZOEj5VHV/eKnPGkHuOg==}
@@ -5342,6 +5364,8 @@ snapshots:
   graceful-fs@4.2.10: {}
 
   graceful-fs@4.2.11: {}
+
+  gunshi@0.37.3: {}
 
   hachure-fill@0.5.2: {}
 

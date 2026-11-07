@@ -7,7 +7,7 @@ version is `AGENTS.ja.md`.
 
 A third-party project unrelated to [mermaid-js](https://mermaid.js.org/). For
 the Mermaid text syntax (`.mmd`), covering every diagram type that mermaid.js
-has, it builds these seven things.
+has, it builds these eight things.
 
 | Package                        | npm name                        | Contents                             |
 | ------------------------------ | ------------------------------- | ------------------------------------ |
@@ -16,6 +16,7 @@ has, it builds these seven things.
 | `packages/ast`                 | `@mmd-toolkit/ast`              | TypeScript types of the tree         |
 | `packages/parser`              | `@mmd-toolkit/parser`           | Parser that returns an AST           |
 | `packages/prettier-plugin-mmd` | `prettier-plugin-mmd`           | Formatter, as a Prettier plugin      |
+| `packages/mmdfmt`              | `mmdfmt`                        | Formatter, as a command-line tool    |
 | `packages/eslint-plugin`       | `@mmd-toolkit/eslint-plugin`    | Linter, as an ESLint language plugin |
 | `packages/textmate-grammar`    | `@mmd-toolkit/textmate-grammar` | Highlighting, as a TextMate grammar  |
 
@@ -118,6 +119,10 @@ package.
 - `packages/prettier-plugin-mmd`: the formatter, with one printer for each
   diagram type, following formatting choices that are decided explicitly, item
   by item. Skill `prettier-plugin`.
+- `packages/mmdfmt`: the command-line formatter. It formats `.mmd` and
+  `.mermaid` files and the diagrams in the code blocks of Markdown files with
+  Prettier and `prettier-plugin-mmd`, and changes nothing else; its README
+  defines what it does. Skill `prettier-plugin`.
 - `packages/eslint-plugin`: the linter, an ESLint language plugin. A rule
   reports a mistake of the author that mermaid.js accepts without a word and
   reads as something other than what was meant. Which rules exist is decided
@@ -134,16 +139,17 @@ package.
 A change to one of these reaches the packages that use it; change them in the
 same change.
 
-| Interface                                        | Defined in | Used by                                         |
-| ------------------------------------------------ | ---------- | ----------------------------------------------- |
-| Fixture format and loader                        | tests      | spec, parser, prettier-plugin, textmate-grammar |
-| Function that extracts mermaid's Db              | tests      | parser, prettier-plugin                         |
-| Fixture CLIs (`tools/fixtures.ts`)               | tests      | spec, parser                                    |
-| Db summaries and the checks of recorded trees    | tests      | parser                                          |
-| AST definition (`docs/ast.md`, `docs/ast/*.md`)  | spec       | parser, prettier-plugin, eslint-plugin          |
-| Tokens and positions (`docs/tokens.md`, …)       | parser     | tests, prettier-plugin, eslint-plugin           |
-| Types of the tree (`src/ast.ts`, `src/ast/*.ts`) | ast        | parser, prettier-plugin, eslint-plugin          |
-| The parser API (`parse()`, errors, traversal)    | parser     | prettier-plugin, eslint-plugin                  |
+| Interface                                        | Defined in      | Used by                                         |
+| ------------------------------------------------ | --------------- | ----------------------------------------------- |
+| Fixture format and loader                        | tests           | spec, parser, prettier-plugin, textmate-grammar |
+| Function that extracts mermaid's Db              | tests           | parser, prettier-plugin                         |
+| Fixture CLIs (`tools/fixtures.ts`)               | tests           | spec, parser                                    |
+| Db summaries and the checks of recorded trees    | tests           | parser                                          |
+| AST definition (`docs/ast.md`, `docs/ast/*.md`)  | spec            | parser, prettier-plugin, eslint-plugin          |
+| Tokens and positions (`docs/tokens.md`, …)       | parser          | tests, prettier-plugin, eslint-plugin           |
+| Types of the tree (`src/ast.ts`, `src/ast/*.ts`) | ast             | parser, prettier-plugin, eslint-plugin          |
+| The parser API (`parse()`, errors, traversal)    | parser          | prettier-plugin, eslint-plugin, mmdfmt          |
+| The plugin and its language (`src/index.ts`)     | prettier-plugin | mmdfmt                                          |
 
 ## Principles
 
