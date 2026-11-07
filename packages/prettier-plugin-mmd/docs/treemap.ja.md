@@ -473,6 +473,31 @@ directive を残して `;` を消します。
 ほかの図種と同じです。
 [fixture: semicolons/class-terminator-hash-directive-dropped]
 
+`;` が残るときは、その後ろの空白が次の文に字下げを与える run です。
+同じ行で `;` の後ろにあるコメントや directive の前の空白、
+directive とコメントの間の空白、行末の空白がこれに当たります。
+mermaid.js は directive の両側の空白を 1 つの run として数えます。
+次の行にもう 1 つ run があると、2 つ目の字下げとして読んで拒否します。
+[corpus fixture: treemap/gram-class-tail-space-next-indent]
+この run は、[Carried indentation](#carried-indentation) と同じく、
+次の文の計画された列へ 1 回だけ移します。
+そのため、コメントや directive は `;` に接し、
+directive の後ろのコメントも directive に接します。
+[fixture: semicolons/class-terminator-comment-run-moved]
+[fixture: semicolons/class-terminator-directive-run-moved]
+行の規則が無視する `;` でも同じです。
+[fixture: semicolons/class-terminator-ignored-run-moved]
+[fixture: semicolons/class-terminator-ignored-comment-run-moved]
+style のない `classDef` でも同じです。
+[fixture: semicolons/class-terminator-styleless-run-moved]
+次の文が `classDef` のときも同じです。
+[fixture: semicolons/class-terminator-class-run-moved]
+間にコメント行や空行があるときも同じです。
+[fixture: semicolons/class-terminator-comment-lines-run-moved]
+`;` の後ろに空白がないときは、次の row の字下げはその row 自身のものなので、
+計画された列に印字します。
+[fixture: semicolons/class-terminator-comment-row-indented-kept]
+
 それ以外の書かれた semicolon は保ちます。
 選ばれて無視されるもの、別の `;` の隣にあるもの、値の文字です。
 共有の行と prefix の保護を使い、区間の原文と列を保ちます。

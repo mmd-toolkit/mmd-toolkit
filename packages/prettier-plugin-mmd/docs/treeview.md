@@ -742,6 +742,16 @@ excluded by the lexical reading do not carry. This preserves parentage without
 adding a second indentation run. Fixed or value-owned source boundaries follow
 Branch prefixes.
 
+A `;` that the line rule ignores and that stays after a quote does not stop the
+carry. The run before the `;`, after it, or before a comment or a directive that
+follows it moves the same way, because mermaid.js reads it as the indentation
+and rejects a second run on the next line. [corpus fixture:
+treeview/gram-class-tail-space-next-indent] The `;`, the comment and the
+directive then touch each other and the node. [fixture:
+treeview/carried-indentation/carry-quote-semicolon-comment] [fixture:
+treeview/carried-indentation/carry-quote-semicolon-directive] [fixture:
+treeview/carried-indentation/carry-quote-run-before-semicolon]
+
 [fixture: treeview/carried-indentation/carry-quote]
 
 [fixture: treeview/carried-indentation/carry-class]

@@ -459,6 +459,27 @@ semicolons/class-terminator-entity-kept] and when another `;` is beside it.
 a `;` that the line rule ignores stays and the `;` is dropped, as in the other
 diagram types. [fixture: semicolons/class-terminator-hash-directive-dropped]
 
+Where the `;` stays, the whitespace after it is the run that indents the next
+statement: the whitespace before a comment or a directive that follows it on its
+line, between a directive and a comment, and at the end of the line. mermaid.js
+counts the whitespace on both sides of a directive as one run and reads a second
+run on the next line as a second indentation, which it rejects. [corpus fixture:
+treemap/gram-class-tail-space-next-indent] The run moves once to the planned
+column of the next statement, as in [Carried indentation](#carried-indentation),
+so the comment or the directive touches the `;`, and a comment touches a
+directive before it. [fixture: semicolons/class-terminator-comment-run-moved]
+[fixture: semicolons/class-terminator-directive-run-moved] This holds for a `;`
+that the line rule ignores, [fixture:
+semicolons/class-terminator-ignored-run-moved] [fixture:
+semicolons/class-terminator-ignored-comment-run-moved] for a `classDef` without
+a style, [fixture: semicolons/class-terminator-styleless-run-moved] when the
+next statement is a `classDef`, [fixture:
+semicolons/class-terminator-class-run-moved] and when comment lines and blank
+lines lie between. [fixture:
+semicolons/class-terminator-comment-lines-run-moved] Without whitespace after
+the `;`, the indentation of the next row is its own and is printed at its
+planned column. [fixture: semicolons/class-terminator-comment-row-indented-kept]
+
 Keep every other authored semicolon: selected ignored semicolons, a `;` beside
 another `;`, and value characters. Use shared kept-line and protected-prefix
 rules; protected segments retain their source text and columns, with no extra
