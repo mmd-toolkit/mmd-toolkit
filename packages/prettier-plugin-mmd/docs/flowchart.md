@@ -152,7 +152,9 @@ statements-one-per-line/separated-by-semicolons-after-data-block]
 A line that holds a `;` other than one that separates statements, such as the
 `;` in `A[x;]`, in `accTitle: a;b`, or in a comment, keeps its statements and
 its `;` instead: they are not split into lines of their own, and its `;` stay
-where they are, with the whitespace on each side of them as written. [fixture:
+where they are, keeping whether whitespace was written on each side of them, a
+run of whitespace becoming one space. [fixture:
+statements-one-per-line/kept-semicolon-runs-collapsed] [fixture:
 statements-one-per-line/compat-semicolon-in-label-without-style-kept] [fixture:
 statements-one-per-line/inner-semicolon-kept] [fixture:
 statements-one-per-line/comment-semicolon-not-separator] The statements are
@@ -809,9 +811,12 @@ arrow-spacing/edge-id-arrow-like-chain] [fixture:
 arrow-spacing/edge-id-arrow-like-after-whitespace-is-link-text] Any other edge
 id has one space before it, such as `=a`, `~~a`, `.a`, `x-a`, and `x~~~a`.
 [fixture: arrow-spacing/edge-id-not-arrow-like-gets-one-space] A directive or an
-ignored `;` between the shape and the edge id keeps the whitespace on each side
-as written. [fixture: arrow-spacing/edge-id-arrow-like-after-directive]
-[fixture: arrow-spacing/edge-id-arrow-like-after-ignored-semicolon]
+ignored `;` between the shape and the edge id keeps whether whitespace was
+written on each side of it, a run of whitespace becoming one space. [fixture:
+arrow-spacing/edge-id-arrow-like-after-directive] [fixture:
+arrow-spacing/edge-id-arrow-like-after-directive-runs-collapsed] [fixture:
+arrow-spacing/edge-id-arrow-like-after-ignored-semicolon] [fixture:
+arrow-spacing/edge-id-arrow-like-after-ignored-semicolon-runs-collapsed]
 
 Input
 ([arrow-spacing/plain-input.mmd](../tests/fixtures/flowchart/arrow-spacing/plain-input.mmd)):

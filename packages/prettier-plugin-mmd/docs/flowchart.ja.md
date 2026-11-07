@@ -154,7 +154,9 @@ accDescr: d ; direction LR
 
 ただし、文を区切る `;` 以外の `;` を含む行は、文と `;` を行に残します。
 `A[x;]`、`accTitle: a;b`、コメントの中の `;` などがそうした `;` です。
-文を別の行に分けず、`;` はその位置に、両側の空白も書かれたとおりにして残します。
+文を別の行に分けず、`;` はその位置に残し、両側に空白があるかどうかは変えず、
+空白の連なりは空白 1 つにします。
+[fixture: statements-one-per-line/kept-semicolon-runs-collapsed]
 [fixture: statements-one-per-line/inner-semicolon-kept]
 [fixture: statements-one-per-line/comment-semicolon-not-separator]
 [fixture: statements-one-per-line/compat-semicolon-in-label-without-style-kept]
@@ -831,9 +833,11 @@ flowchart LR
 それ以外の辺の id の前には、空白を 1 つ置きます（`=a`、`~~a`、`.a`、`x-a`、
 `x~~~a` など）。 [fixture: arrow-spacing/edge-id-not-arrow-like-gets-one-space]
 形と辺の id の間にディレクティブか無視される `;` があるときは、
-その両側の空白を書かれたまま残します。
+その両側に空白があるかどうかは変えず、空白の連なりは空白 1 つにします。
 [fixture: arrow-spacing/edge-id-arrow-like-after-directive]
+[fixture: arrow-spacing/edge-id-arrow-like-after-directive-runs-collapsed]
 [fixture: arrow-spacing/edge-id-arrow-like-after-ignored-semicolon]
+[fixture: arrow-spacing/edge-id-arrow-like-after-ignored-semicolon-runs-collapsed]
 
 入力
 ([arrow-spacing/plain-input.mmd](../tests/fixtures/flowchart/arrow-spacing/plain-input.mmd)):

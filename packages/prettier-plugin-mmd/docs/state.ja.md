@@ -441,10 +441,11 @@ mermaid.js の文書は、この文の例 2 件を `,` の後ろに空白を置�
 `class A,` と次の行の `B c` は `class A,B c` になります。
 `,` の前にディレクティブがあっても同じで、`,` の後ろの id は `,` に接します。
 [fixture: whitespace-between-tokens/class-ids-line-break-and-directive]
-`,` の後ろの隙間にディレクティブがあれば、
-その両側に書かれた空白を残します（[ディレクティブ](#ディレクティブ)を参照）。
+`,` の後ろの隙間にディレクティブがあれば、その両側に空白があるかどうかは変えず、
+空白の連なりは空白 1 つにします（[ディレクティブ](#ディレクティブ)を参照）。
 行の line rule が無視する `;` のある行は、書かれたまま残します。
 [fixture: whitespace-between-tokens/class-ids-beside-directive-kept]
+[fixture: whitespace-between-tokens/class-ids-beside-directive-runs-collapsed]
 [fixture: whitespace-between-tokens/class-ids-with-ignored-semicolon]
 `,` の後ろの U+2028 と U+2029 は、そのまま残します。
 [test: U+2028 after the comma of a state class statement]

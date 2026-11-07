@@ -291,8 +291,10 @@ mermaid.js がタイトルを trim するからです。
 `S("x" )` は `S("x")` になります。
 [fixture: system-boundaries/boundary-title-padding-dropped]
 [fixture: system-boundaries/boundary-title-opener-touches-id]
-隙間にディレクティブがあれば、その両側に書かれた空白を残します。
+隙間にディレクティブがあれば、その両側に空白があるかどうかは変えず、
+空白の連なりは空白 1 つにします。
 [fixture: system-boundaries/boundary-id-title-directed-gap]
+[fixture: system-boundaries/boundary-id-title-directed-gap-runs-collapsed]
 native metadata、class、繰り返しの宣言を保ち、
 所属は AST の 1 段の宣言本文から決めます。
 

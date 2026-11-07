@@ -424,12 +424,14 @@ whitespace-between-tokens/comma-kept] A line break after the `,` is joined, so
 `class A,` and `B c` on the next line are printed `class A,B c`, and a directive
 before the `,` does not change that: the id after the `,` touches it. [fixture:
 whitespace-between-tokens/class-ids-line-break-and-directive] A directive in the
-gap after the `,` keeps the whitespace written on each side of it, as under
-[Directives](#directives), and a `;` that the line rule ignores keeps its line
-as written. [fixture: whitespace-between-tokens/class-ids-beside-directive-kept]
-[fixture: whitespace-between-tokens/class-ids-with-ignored-semicolon] A U+2028
-or U+2029 after the `,` stays where it is. [test: U+2028 after the comma of a
-state class statement] [test: U+2029 after the comma of a state class statement]
+gap after the `,` keeps whether whitespace was written on each side of it, a run
+of whitespace becoming one space, as under [Directives](#directives), and a `;`
+that the line rule ignores keeps its line as written. [fixture:
+whitespace-between-tokens/class-ids-beside-directive-kept] [fixture:
+whitespace-between-tokens/class-ids-beside-directive-runs-collapsed] [fixture:
+whitespace-between-tokens/class-ids-with-ignored-semicolon] A U+2028 or U+2029
+after the `,` stays where it is. [test: U+2028 after the comma of a state class
+statement] [test: U+2029 after the comma of a state class statement]
 
 Input
 ([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/state/whitespace-between-tokens/collapsed-input.mmd)):

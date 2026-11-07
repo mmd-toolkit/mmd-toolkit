@@ -260,8 +260,10 @@ dropped, since mermaid.js trims the title: `systemBoundary S[ x ]` is printed
 `systemBoundary S[x]`, and `S("x" )` is printed `S("x")`. [fixture:
 system-boundaries/boundary-title-padding-dropped] [fixture:
 system-boundaries/boundary-title-opener-touches-id] A directive in the gap keeps
-the whitespace written on each side of it, as under flowchart's Directives.
-[fixture: system-boundaries/boundary-id-title-directed-gap] Preserve native
+whether whitespace was written on each side of it, a run of whitespace becoming
+one space, as under flowchart's Directives. [fixture:
+system-boundaries/boundary-id-title-directed-gap] [fixture:
+system-boundaries/boundary-id-title-directed-gap-runs-collapsed] Preserve native
 metadata/classes and repeated declarations; body membership comes from the AST's
 single declaration-body level.
 

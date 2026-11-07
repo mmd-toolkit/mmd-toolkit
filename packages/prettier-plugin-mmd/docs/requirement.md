@@ -340,8 +340,10 @@ relationship-spacing/string-names] The direction of the arrow is kept, since
 case of the relation. [fixture: relationship-spacing/relation-case-kept]
 [fixture: relationship-spacing/every-relation] The whitespace inside an unquoted
 name is part of it. [fixture: relationship-spacing/multi-word-names] A directive
-between the units stays where it is, with the whitespace written on each side of
-it. [fixture: relationship-spacing/directive-between-units-kept] A relationship
+between the units stays where it is and keeps whether whitespace was written on
+each side of it, a run of whitespace becoming one space. [fixture:
+relationship-spacing/directive-between-units-kept] [fixture:
+relationship-spacing/directive-between-units-runs-collapsed] A relationship
 written over several lines, where the line break follows whitespace, is printed
 on one line unless a comment or directive prevents joining. In that case, later
 structural parts and standalone trivia stand one level inside the relationship.
@@ -1384,9 +1386,11 @@ directives/before-header] [fixture: directives/after-header-on-same-line]
 [fixture: directives/whitespace-on-both-sides-collapsed] [fixture:
 directives/after-statement-at-end-of-line]
 
-A directive between two units of a statement stays where it is, with the
-whitespace written on each side of it, and a directive inside a text is part of
-the text. [fixture: directives/between-units-kept] [fixture:
+A directive between two units of a statement stays where it is and keeps whether
+whitespace was written on each side of it, a run of whitespace becoming one
+space, and a directive inside a text is part of the text. [fixture:
+directives/between-units-kept] [fixture:
+directives/between-units-runs-collapsed] [fixture:
 directives/inside-values-kept] A directive that is not closed takes the rest of
 the text, and is kept as written. [fixture:
 directives/unclosed-at-end-of-text-kept] [fixture:

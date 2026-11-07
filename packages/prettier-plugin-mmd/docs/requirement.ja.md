@@ -352,8 +352,10 @@ ER 図の関係文も単位の間は空白 1 つです。
 [fixture: relationship-spacing/every-relation]
 引用符のない名前の中の空白は名前の一部です。
 [fixture: relationship-spacing/multi-word-names]
-単位の間のディレクティブは、その場に残し、両側に書かれた空白も残します。
+単位の間のディレクティブは、その場に残し、両側に空白があるかどうかは変えず、
+空白の連なりは空白 1 つにします。
 [fixture: relationship-spacing/directive-between-units-kept]
+[fixture: relationship-spacing/directive-between-units-runs-collapsed]
 空白の後で改行して複数行に書かれた関係文は、
 コメントやディレクティブが結合を妨げる場合を除き、1 行にします。
 結合しない場合は、
@@ -1427,9 +1429,10 @@ requirementDiagram
 [fixture: directives/after-statement-at-end-of-line]
 
 文の 2 つの単位の間のディレクティブは、その場に残し、
-両側に書かれた空白も残します。
+両側に空白があるかどうかは変えず、空白の連なりは空白 1 つにします。
 テキストの中のディレクティブは、テキストの一部です。
 [fixture: directives/between-units-kept]
+[fixture: directives/between-units-runs-collapsed]
 [fixture: directives/inside-values-kept]
 閉じられていないディレクティブはテキストの残りを取り、書かれたまま残します。
 [fixture: directives/unclosed-at-end-of-text-kept]

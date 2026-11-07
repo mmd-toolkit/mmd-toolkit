@@ -509,9 +509,10 @@ is the same for every separator, so the kind of separator is the author's.
 [fixture: lists/separators-as-written] [fixture: lists/dates-and-days] The case
 of the items is kept: mermaid.js lowers it. [fixture: lists/items-case-kept] A
 directive between the keyword and the first item, or between two items, stays
-where it is, with the whitespace written on each side of it. [fixture:
-lists/directive-after-keyword-kept] [fixture:
-lists/directive-between-items-kept]
+where it is and keeps whether whitespace was written on each side of it, a run
+of whitespace becoming one space. [fixture: lists/directive-after-keyword-kept]
+[fixture: lists/directive-between-items-kept] [fixture:
+lists/directive-in-list-runs-collapsed]
 
 Commas with no item between them stay as written. [fixture:
 lists/empty-items-kept] The whitespace at the end of a list is dropped.

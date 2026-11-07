@@ -521,10 +521,11 @@ Db はどの区切りでも同じなので、区切りの種類は作者のも�
 [fixture: lists/separators-as-written] [fixture: lists/dates-and-days]
 項目の大文字小文字は残します（mermaid.js が小文字にします）。
 [fixture: lists/items-case-kept]
-キーワードと最初の項目の間と、項目の間のディレクティブは、
-両側に書かれた空白を保ってその位置に残します。
+キーワードと最初の項目の間と、項目の間のディレクティブは、その位置に残し、
+両側に空白があるかどうかは変えず、空白の連なりは空白 1 つにします。
 [fixture: lists/directive-after-keyword-kept]
 [fixture: lists/directive-between-items-kept]
+[fixture: lists/directive-in-list-runs-collapsed]
 
 項目のない `,` はそのまま残します。 [fixture: lists/empty-items-kept]
 リストの末尾の空白は落とします。 [fixture: lists/trailing-whitespace-dropped]
