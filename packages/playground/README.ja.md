@@ -3,7 +3,7 @@
 English version: [README.md](./README.md)
 
 ブラウザーで[Mermaid](https://mermaid.js.org/)のテキストを編集し、
-mmd-toolkitが生成する構文木と、 Prettierによる整形結果を確認できます。
+mmd-toolkitが生成する構文木と、Prettierによる整形結果を確認できます。
 
 [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)
 を開いて使えます。

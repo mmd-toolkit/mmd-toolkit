@@ -7,7 +7,7 @@ Shiki、VitePress、Monaco、VS CodeなどのTextMateホストで、
 Mermaidのテキストに色を付けます。
 32図種すべてのヘッダーとキーワード、要素の名前、ラベル、型、図形、スタイル、
 コメント、ディレクティブに色を付け、frontmatterはYAMLとして色付けします。
-規則はmmd-toolkitの[仕様](../spec/README.ja.md)に従います。
+すべての規則を、mmd-toolkitの[仕様](../spec/README.ja.md)から書いています。
 仕様の読みと色が違う場所は、[制限](#制限)に書きました。
 
 [mermaid-js](https://mermaid.js.org/)とは関係のない、

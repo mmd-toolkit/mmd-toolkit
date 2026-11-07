@@ -186,7 +186,8 @@ Returns the `Root` of the tree:
   character that is not whitespace or a line terminator is in a token or a
   comment.
 - `comments`: every comment. Its `mark` is the characters of its mark, such as
-  `%%`, and its `value` is the text after the mark.
+  `%%`, and its `value` is the text after the mark. The rest of a comment that a
+  comment line cuts has the `mark` `null`.
 - `directives`: every `%%{ ... }%%` directive, with its `name`, its `value` (the
   text inside), and whether it is `closed`.
 - `frontmatter`: the frontmatter, or `null`. Its `value` is the YAML text as

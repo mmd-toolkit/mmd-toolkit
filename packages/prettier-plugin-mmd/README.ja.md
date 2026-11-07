@@ -142,10 +142,11 @@ flowchart LR
 - `style`、`classDef`、`linkStyle` の行の末尾の空白を取り除きます。
   mermaid.js は、その空白を最後のスタイルの末尾に残します。
 - `eventmodeling` のデータとノートのブロックの中の行は、
-  [Data blocks](./docs/eventmodeling.ja.md#data-blocks) の規則で揃えます。
-  mermaid.js が持つテキストの空白は変わりますが、描画は変わりません。
+  [Data blocks](./docs/eventmodeling.ja.md#data-blocks)
+  の規則が許す場合に揃えます。
+  mermaid.js が持つテキストの空白が変わることがありますが、描画は変わりません。
 - `end note` で閉じる state ノートの単一の段落は、
-  [ノート](./docs/state.ja.md#ノート)の規則で揃えます。
+  [ノート](./docs/state.ja.md#ノート)の規則が許す場合に揃えます。
   行内の強調やコードの表記を含む行も対象です。
   変わるのは行頭の空白だけで、描画は変わりません。
   余白が表示に影響するほかの本文は、後続の余白を原文のまま保ちます。

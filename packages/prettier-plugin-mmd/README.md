@@ -130,15 +130,15 @@ The formatting rules of each diagram type are in its document:
 - Formatting a formatted diagram again changes nothing.
 - Whitespace at the end of a `style`, `classDef`, or `linkStyle` line is
   removed. mermaid.js keeps it at the end of the last style.
-- The lines inside `eventmodeling` data and note blocks are aligned by the
-  [Data blocks](./docs/eventmodeling.md#data-blocks) rule. This changes the
-  spaces in the text that mermaid.js keeps, while the rendered diagram stays the
-  same.
-- A single paragraph in a state note closed by `end note` is aligned by the
-  [Notes](./docs/state.md#notes) rule, including lines with inline emphasis and
-  code notation. Only the spaces at the start of its lines change, and the
-  rendered diagram stays the same. Other bodies whose margins affect the drawing
-  keep the margins of their later lines as written.
+- The lines inside `eventmodeling` data and note blocks are aligned where the
+  [Data blocks](./docs/eventmodeling.md#data-blocks) rule permits it. This can
+  change the spaces in the text that mermaid.js keeps, while the rendered
+  diagram stays the same.
+- A single paragraph in a state note closed by `end note` is aligned where the
+  [Notes](./docs/state.md#notes) rule permits it, including lines with inline
+  emphasis and code notation. Only the whitespace at the start of its lines
+  changes, and the rendered diagram stays the same. Other bodies whose margins
+  affect the drawing keep the margins of their later lines as written.
 - The content of directives, of `@{ ... }` data blocks, and of the frontmatter
   is not checked. A diagram that mermaid.js rejects because of that content is
   still formatted. Directives are kept as written. A `@{ ... }` data block keeps

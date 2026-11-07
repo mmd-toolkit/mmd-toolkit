@@ -191,6 +191,7 @@ const tokenCount = root.tokens.length // 8
   空白でも行終端子でもない文字は、どれもトークンかコメントにあります。
 - `comments`: すべてのコメント。
   `mark` は `%%` などの印の文字で、`value` は印の後のテキストです。
+  コメント行に切られたコメントの残りの部分の `mark` は `null` です。
 - `directives`: すべての `%%{ ... }%%` のディレクティブ。
   `name`、`value`（内側のテキスト）、閉じているかどうかの `closed` を持ちます。
 - `frontmatter`: フロントマター。
