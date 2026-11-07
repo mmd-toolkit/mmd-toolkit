@@ -566,6 +566,21 @@ describe("a store that cannot be written", () => {
   })
 })
 
+/**
+ * Waits for a prune in the background to end. The process writes the marker of
+ * the prune first and removes its lock last, so the marker alone does not show
+ * that it ended.
+ */
+async function pruneEnded(root: string): Promise<void> {
+  await vi.waitFor(
+    () => {
+      expect(existsSync(path.join(root, ".pruned"))).toBe(true)
+      expect(existsSync(path.join(root, ".pruning"))).toBe(false)
+    },
+    { timeout: 20_000 },
+  )
+}
+
 describe("pruning in the background", () => {
   const today = new Date().toISOString().slice(0, 10)
 
@@ -579,14 +594,8 @@ describe("pruning in the background", () => {
 
   it("prunes in a process of its own, which marks the store too full", async () => {
     storeTooFull().pruneInBackground()
-    await vi.waitFor(
-      () => {
-        expect(existsSync(path.join(directory, ".pruned"))).toBe(true)
-      },
-      { timeout: 20_000 },
-    )
+    await pruneEnded(directory)
     expect(existsSync(path.join(directory, ".full"))).toBe(true)
-    expect(existsSync(path.join(directory, ".pruning"))).toBe(false)
   }, 30_000)
 
   it("does not prune again soon after a prune, nor while a prune runs", async () => {
@@ -647,14 +656,8 @@ describe("pruning in the background", () => {
   it("starts a prune when the lock is there before its process id is written", async () => {
     writeFileSync(path.join(directory, ".pruning"), "")
     storeTooFull().pruneInBackground()
-    await vi.waitFor(
-      () => {
-        expect(existsSync(path.join(directory, ".pruned"))).toBe(true)
-      },
-      { timeout: 20_000 },
-    )
+    await pruneEnded(directory)
     expect(existsSync(path.join(directory, ".full"))).toBe(true)
-    expect(existsSync(path.join(directory, ".pruning"))).toBe(false)
   }, 30_000)
 })
 
@@ -768,12 +771,7 @@ describe("run from the build", () => {
     store.write("a", {}, RUN)
     store.write("b", {}, RUN)
     store.pruneInBackground()
-    await vi.waitFor(
-      () => {
-        expect(existsSync(path.join(directory, ".pruned"))).toBe(true)
-      },
-      { timeout: 20_000 },
-    )
+    await pruneEnded(directory)
     expect(existsSync(path.join(directory, ".full"))).toBe(true)
   }, 60_000)
 
@@ -820,12 +818,7 @@ await runMermaidWithEmbeddedData(text)`,
       ),
     ).toBe(true)
     // The prune that the run started ends before the tree is removed.
-    await vi.waitFor(
-      () => {
-        expect(existsSync(path.join(storeDirectory, ".pruned"))).toBe(true)
-      },
-      { timeout: 20_000 },
-    )
+    await pruneEnded(storeDirectory)
   }, 60_000)
 })
 
