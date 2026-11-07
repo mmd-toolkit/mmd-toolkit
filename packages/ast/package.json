@@ -1,6 +1,6 @@
 {
   "name": "@mmd-toolkit/ast",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "TypeScript types of the abstract syntax tree of @mmd-toolkit/parser",
   "license": "MIT",
   "repository": {

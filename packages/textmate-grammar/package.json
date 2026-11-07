@@ -1,6 +1,6 @@
 {
   "name": "@mmd-toolkit/textmate-grammar",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "TextMate grammar for Mermaid text covering every diagram type in the specification, for Shiki, Monaco and VS Code",
   "license": "MIT",
   "repository": {

@@ -1,5 +1,14 @@
 # @mmd-toolkit/parser
 
+## 0.3.1
+
+### Patch Changes
+
+- [#64](https://github.com/mmd-toolkit/mmd-toolkit/pull/64) [`b817905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/b8179056e2aebd764c260fbd7fee9a65fe27d00d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Rewrite the README for users: it links to the documentation site and gives an
+  overview of the API and of the differences from mermaid.js.
+- Updated dependencies [[`b817905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/b8179056e2aebd764c260fbd7fee9a65fe27d00d)]:
+  - @mmd-toolkit/ast@0.3.1
+
 ## 0.3.0
 
 ### Minor Changes

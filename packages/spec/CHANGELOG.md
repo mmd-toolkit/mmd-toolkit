@@ -1,5 +1,13 @@
 # @mmd-toolkit/spec
 
+## 0.3.2
+
+### Patch Changes
+
+- [#66](https://github.com/mmd-toolkit/mmd-toolkit/pull/66) [`102b660`](https://github.com/mmd-toolkit/mmd-toolkit/commit/102b660aad8f3b19fef0e2b0022427c121830da9) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Remove the stray spaces after `、` and `。` in the Japanese documents.
+
+- [#64](https://github.com/mmd-toolkit/mmd-toolkit/pull/64) [`b817905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/b8179056e2aebd764c260fbd7fee9a65fe27d00d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Link the Mermaid site from the README.
+
 ## 0.3.1
 
 ### Patch Changes
