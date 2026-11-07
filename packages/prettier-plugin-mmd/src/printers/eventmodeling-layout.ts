@@ -30,9 +30,9 @@ import {
   keptAsWritten,
   layoutKeywordHeader,
   protectSemicolonPrefixes,
-  spansLinesThatCannotJoin,
   walk,
 } from "./layout.ts"
+import { findKeptBreaks, gapKeepsLineBreak } from "./kept-lines.ts"
 import { printAsWritten } from "./lines.ts"
 import type { Source } from "./source.ts"
 import {
@@ -232,7 +232,7 @@ function layoutComponents(
   const rules = new Map<number, GapRule>()
   const joinedBefore = new Set<number>()
   const writtenGapsBefore = new Set<number>()
-  const canJoin = !spansLinesThatCannotJoin(source, start, end)
+  const keptBreaks = findKeptBreaks(source, start, end)
   // Reuse authored title starts instead of searching all values at each edge.
   const titleStarts = new Set(
     values
@@ -263,7 +263,7 @@ function layoutComponents(
         writtenGapsBefore.add(atom.start)
       if (
         !titleBoundary &&
-        canJoin &&
+        !gapKeepsLineBreak(source, keptBreaks, previous.end, atom.start) &&
         findTriviaBetween(source, previous.end, atom.start).length === 0
       )
         joinedBefore.add(atom.start)

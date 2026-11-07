@@ -2,12 +2,13 @@ import type { RequirementDiagram, RequirementStatement } from "@mmd-toolkit/ast"
 import { holdsDirection } from "./accessibility-lines.ts"
 import type { KeptLines } from "./kept-lines.ts"
 import {
+  findKeptBreaks,
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
   findSemicolonLines,
   lineStartOf,
+  spansKeptBreaks,
 } from "./kept-lines.ts"
-import { spansLinesThatCannotJoin } from "./layout.ts"
 import type { Source } from "./source.ts"
 
 /** The kept lines of each source, found once per source. */
@@ -58,7 +59,7 @@ function diagramOf(source: Source): RequirementDiagram {
 /**
  * The lines on which a statement that the next lines continue starts after a
  * `style`, `classDef`, or `class` statement, when the statement cannot be
- * joined into one line (see `spansLinesThatCannotJoin`) or the line keeps
+ * joined into one line (see `spansKeptBreaks`) or the line keeps
  * its statements together because it holds a `;` (see `findSemicolonLines`).
  * The lexer is still in the style context after such a statement, so a string on its line
  * starts the next statement and the line feed after it, not the statement
@@ -84,8 +85,9 @@ function findLinesOfContinuedStatements(
       previous !== undefined &&
       endsInStyleContext(previous) &&
       lineStartOf(source, previous.range[1] - 1) === line &&
-      (spansLinesThatCannotJoin(
+      (spansKeptBreaks(
         source,
+        findKeptBreaks(source, statement.range[0], statement.range[1]),
         statement.range[0],
         statement.range[1],
       ) ||

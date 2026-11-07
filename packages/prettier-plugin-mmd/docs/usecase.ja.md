@@ -261,7 +261,7 @@ LS、PS、NBSP は内部の内容になれます。
 [test: usecase: stereotype-unicode-gap-sides]
 保護した共通コメント領域とセミコロンの接頭部は、
 交差する値を余白も含めて全体のまま保ちます。
-[fixture: stereotypes/semicolon-padding-kept]
+[fixture: stereotypes/semicolon-padding-dropped]
 [test: usecase: stereotype-comment-region-padding-kept]
 物理的な複数行、空、未完の拒否入力は修復しません。
 [corpus fixture: usecase/gram-stereotype-newline]

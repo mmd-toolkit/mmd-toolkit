@@ -1030,7 +1030,7 @@ cynefin-beta
 [fixture: semicolons/ignored-semicolon-space-after-kept]
 [fixture: semicolons/ignored-semicolon-after-header-keyword-kept]
 [fixture: semicolons/semi-selected-outside-string]
-[fixture: semicolons/semicolon-chaotic-parts]
+[corpus fixture: cynefin/semicolon-chaotic-parts]
 
 ### Multiline values
 

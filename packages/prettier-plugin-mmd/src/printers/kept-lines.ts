@@ -926,21 +926,27 @@ function ignoredSemicolonsIn(segments: readonly ReadableSegment[]): number[] {
 
 /**
  * The index of the last `;` of a segment when it matches the line rule for
- * `word`, and -1 otherwise.
+ * `word`, and -1 otherwise: the segment holds the word, later a `:`, then
+ * characters that are not whitespace and a `#`, and later than that `#` a `;`.
+ * The first `#` of the characters after the first `:` that reaches one is the
+ * earliest that the rule can take, so no other `#` need be tried.
  */
 function findSemicolonIgnoredByWord(text: string, word: string): number {
   const first = text.indexOf(word)
   const semicolon = text.lastIndexOf(";")
   if (first === -1 || semicolon === -1) return -1
-  for (
-    let colon = text.indexOf(":", first + word.length);
-    colon !== -1;
-    colon = text.indexOf(":", colon + 1)
-  ) {
-    let after = colon + 1
-    while (after < text.length && !isWhitespace(text[after])) after++
-    const hash = text.lastIndexOf("#", after - 1)
-    if (hash > colon && hash < semicolon) return semicolon
+  let colon = text.indexOf(":", first + word.length)
+  while (colon !== -1) {
+    let stop = colon + 1
+    while (
+      stop < text.length &&
+      text[stop] !== "#" &&
+      !isWhitespace(text[stop])
+    )
+      stop++
+    if (text[stop] === "#") return stop < semicolon ? semicolon : -1
+    // A later `:` among the characters reaches the same whitespace.
+    colon = text.indexOf(":", stop)
   }
   return -1
 }
@@ -1070,8 +1076,9 @@ export function findKeptBreaks(
   for (const line of lines.slice(1)) {
     const alone = ignoredSemicolonsIn(line.segments)
     const expected = [...mergedAlone, ...alone]
+    const before = merged
     const together = joints.map((joint, index) =>
-      joinLines(merged[index], line.segments, joint),
+      joinLines(before[index], line.segments, joint),
     )
     const joins = together.every((segments) => {
       const ignored = ignoredSemicolonsIn(segments)

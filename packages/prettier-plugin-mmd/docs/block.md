@@ -542,11 +542,14 @@ whitespace before it and one space after it, as in ER and requirement (see
 the same form. The whitespace between the words of a value stays as written. The
 Db changes, but mermaid.js draws the same figure (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
-[fixture: styles/style-colon-spaced] A statement stays as written where
-whitespace or a `,` follows a backslash, where it holds a comment or a
-directive, where a style is all whitespace, or where a style holds a line break
-or its line holds a kept `;`. The whitespace at the end of the statement is
-dropped, as in a flowchart (see
+[fixture: styles/style-colon-spaced] A backslash does not escape a `,` here:
+`fill:a\,b ,stroke:c` is printed `fill: a\, b, stroke: c`. A space after a
+backslash before the `:` stays, since taking it away would escape the `:`.
+[fixture: styles/style-backslash-before-comma] [fixture:
+styles/style-colon-escaped-space-kept] A statement stays as written where it
+holds a comment or a directive, where a style is all whitespace, or where a
+style holds a line break or its line holds a kept `;`. The whitespace at the end
+of the statement is dropped, as in a flowchart (see
 [Style trailing whitespace](./flowchart.md#style-trailing-whitespace)).
 [fixture: styles/class-definition-spaces] [fixture: styles/style-spaces]
 [fixture: styles/class-spaces] [fixture: styles/style-commas-spaced] [fixture:
@@ -694,24 +697,25 @@ whitespace after a `,`. [fixture:
 multi-line-statements/structural-trivia-continuations]
 
 Joining comment regions retain their original layout. [test: block:
-ls-comment-in-composite-head] [test: block: ps-comment-in-composite-head] A
-statement written over several lines is kept as written when joining its lines,
-with one space or with nothing, could change which `;` the line rule ignores;
-any other statement over several lines is joined as usual, also when it holds a
-`;`. See [Rows](#rows) and
+ls-comment-in-composite-head] [test: block: ps-comment-in-composite-head] A line
+break stays where joining it, with one space or with nothing, could change which
+`;` the line rule ignores, and where a `;` ends the last line; any other line
+break is joined as usual, also in a statement that holds a `;`. A statement that
+keeps a line break keeps its styles as written. See [Rows](#rows) and
 [A line that a `;` ends](./compatibility.md#a-line-that-a--ends). The line rule
 of mermaid.js removes the last `;` of a line that holds `style` or `classDef`, a
-later `:`, a `#` after that with no whitespace between them, and a later `;`;
-moving a statement away from such a line changes which `;` is the last (in
-`A["style:#a"] B;C D;` the `;` of `D;` is the one removed and the id is `B;C`;
-on a line without `D;`, the `;` of `B;C` would be removed), so the statements of
-such a line stay on it and its kept `;` stays. The exception for a style
-terminator is described in
+later `:`, a `#` after that with no whitespace between them, and a later `;`
+(the first such `#` decides, so `B[":#a;#b"]` matches); moving a statement away
+from such a line changes which `;` is the last (in `A["style:#a"] B;C D;` the
+`;` of `D;` is the one removed and the id is `B;C`; on a line without `D;`, the
+`;` of `B;C` would be removed), so the statements of such a line stay on it and
+its kept `;` stays. The exception for a style terminator is described in
 [Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement).
 The whitespace between the `:` and the `#` stays as well, since it decides
 whether the rule applies: `A["style:"]-->B["#z"];` keeps its arrow touching, and
 with spaces around the arrow the rule does not apply, and the `;` is an id of
-its own. [fixture: multi-line-statements/columns-over-lines-joined] [fixture:
+its own. [fixture: multi-line-statements/breaks-decided-one-by-one] [fixture:
+multi-line-statements/columns-over-lines-joined] [fixture:
 multi-line-statements/edge-over-lines-joined] [fixture:
 multi-line-statements/shape-over-lines-joined] [fixture:
 multi-line-statements/class-definition-line-break-in-the-head] [fixture:
@@ -730,6 +734,7 @@ multi-line-statements/semicolon-id-after-columns-kept] [fixture:
 multi-line-statements/semicolon-id-statement-on-its-own-line] [fixture:
 multi-line-statements/line-rule-semicolon-after-touching-arrow-kept] [fixture:
 multi-line-statements/line-rule-semicolon-after-an-id-kept] [fixture:
+multi-line-statements/line-rule-first-hash-after-colon-kept] [fixture:
 multi-line-statements/semicolon-after-spaced-arrow-is-an-id]
 
 ### Comments

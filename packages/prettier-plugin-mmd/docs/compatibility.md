@@ -366,10 +366,11 @@ takes the whitespace around the name and the value of a style away before it
 makes the CSS of a shape, and the shapes of class diagrams and the links of
 flowcharts put the styles into the CSS `style` attribute, in which the
 whitespace around `:` and `;` is not read. Both texts of each kind of statement
-were drawn with mermaid.js 12.3.0 in Chromium, and the SVG and the pixels were
-the same: for `style` and `classDef` in the five diagram types, for `linkStyle`
-with the default links, and for the styles of a `linkStyle` with link numbers
-that do not start with `fill`.
+were drawn with mermaid.js 12.3.0 in Chromium, and the pixels were the same, and
+so was the SVG, without the generated ids and without that whitespace: for
+`style` and `classDef` in the five diagram types, for `linkStyle` with the
+default links, and for the styles of a `linkStyle` with link numbers that do not
+start with `fill`, and do not have a name that ends with `stroke`.
 
 A `linkStyle` with link numbers is drawn differently where a style after a `,`
 starts with whitespace.
@@ -378,22 +379,57 @@ adds `fill:none` to the styles of a link when none of them starts with `fill`,
 and a style with a space before it does not. In
 `linkStyle 0 stroke:#f00,fill:red` the link is filled with red; in
 `linkStyle 0 stroke:#f00, fill:red` mermaid.js adds `fill:none`, and it is not.
-So in flowchart and agentflow a style that starts with `fill` keeps whether
-whitespace stands before it, a run of whitespace becoming one space. [fixture:
+So in flowchart and agentflow a style that starts with `fill`, `fill-opacity`
+included, keeps whether whitespace stands before it, a run of whitespace
+becoming one space. [fixture:
 flowchart/whitespace-between-tokens/link-style-fill-after-comma-kept] [fixture:
-agentflow/single-space-gaps/link-style-fill-after-comma-kept] The other styles
-of such a statement, and `linkStyle default`, are printed in the one form.
-[fixture:
+flowchart/whitespace-between-tokens/link-style-fill-opacity-after-comma-kept]
+[fixture: agentflow/single-space-gaps/link-style-fill-after-comma-kept]
+[fixture: agentflow/single-space-gaps/link-style-fill-opacity-after-comma-kept]
+The other styles of such a statement, and `linkStyle default`, are printed in
+the one form. [fixture:
 flowchart/whitespace-between-tokens/link-style-other-after-comma-spaced]
 [fixture:
 flowchart/whitespace-between-tokens/link-style-default-after-comma-spaced]
 
+A style of a link is read for `stroke:`.
+[`insertEdge`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L956-L957)
+looks for `stroke:` in the styles of a link, and
+[`addEdgeMarker`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edgeMarker.ts#L105-L127)
+makes the arrowheads of that colour; `stroke :` is no match. In
+`linkStyle 0 stroke :#f00` the line is red and the arrowhead keeps its theme
+colour, and in `linkStyle 0 stroke: #f00` both are red, so the pixels differ,
+with the same result for `linkStyle default` and for a `classDef` that is put on
+a link. So in flowchart and agentflow, in a `linkStyle` and in a `classDef`, a
+name that ends with `stroke` keeps whether whitespace stands between it and the
+`:`, a run of whitespace becoming one space: `linkStyle 0 stroke  :#f00` is
+printed `linkStyle 0 stroke : #f00`. A `style` styles a node, and is printed in
+the one form: the pixels of `style A stroke :#f00` and `style A stroke: #f00`
+were the same. [fixture:
+flowchart/whitespace-between-tokens/link-style-stroke-before-colon-kept]
+[fixture:
+flowchart/whitespace-between-tokens/class-def-stroke-before-colon-kept]
+[fixture: flowchart/whitespace-between-tokens/style-stroke-before-colon-spaced]
+[fixture: agentflow/single-space-gaps/link-style-stroke-before-colon-kept]
+
+A backslash escapes a `,` in a style of flowchart and agentflow: `fill:a\,b` is
+the style `fill:a,b`. A space between the backslash and the `,` therefore stays:
+without it, the `,` would be part of the style instead of ending it. In the
+other diagram types the `,` always ends a style, and a backslash before it is no
+reason to keep anything. A space after a backslash before the `:` stays in all
+of them, since taking it away would escape the `:`. [fixture:
+flowchart/whitespace-between-tokens/style-escaped-space-before-comma] [fixture:
+agentflow/single-space-gaps/style-escaped-space-before-comma] [fixture:
+block/styles/style-backslash-before-comma] [fixture:
+class/whitespace-between-tokens/style-backslash-before-comma] [fixture:
+state/whitespace-between-tokens/style-backslash-before-comma]
+
 A statement stays as written where a style holds a line break or a U+2028 or
 U+2029, where the statement holds a comment or a directive, where a style is all
-whitespace, where a space or a `,` follows a backslash, and where its line holds
-a `;` of its own (see [Lines that hold a `;`](#lines-that-hold-a-)). [fixture:
+whitespace, and where its line holds a `;` of its own (see
+[Lines that hold a `;`](#lines-that-hold-a-)). [fixture:
+flowchart/whitespace-between-tokens/style-blank-style-kept] [fixture:
 flowchart/whitespace-between-tokens/style-colon-escaped-space-kept] [fixture:
-flowchart/whitespace-between-tokens/style-comma-escaped-space-kept] [fixture:
 flowchart/whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
 flowchart/whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
 
@@ -401,25 +437,31 @@ The tests compare the Db of the printed text with the margins of its styles
 restored from the Db of the written text (`styleDbForFormattingComparison` in
 `tests/style-margins.ts`): a style that differs from the written one only by the
 whitespace at its ends and around its first `:` takes the written text, and any
-other difference, among them the number of styles of a link, fails. When the
-pinned mermaid.js is updated, draw the statements of each of these kinds again
-and compare the SVG and the pixels before the exception stays.
+other difference, among them the number of styles of a link and the presence of
+whitespace before the `:` of a `stroke` in a style that can reach a link, fails.
+When the pinned mermaid.js is updated, draw the statements of each of these
+kinds again and compare the SVG and the pixels before the exception stays.
 
 ## Texts after a keyword that are drawn the same
 
-A title, the name of a section, and the date format and the axis format of a
-Gantt chart are printed with one space after their keyword and without the
-whitespace at the start of their text, in Gantt, user journey, timeline,
-sequence, and Venn diagrams: `title   Plan` is printed `title Plan`, and
-`dateFormat   YYYY-MM-DD` is printed `dateFormat YYYY-MM-DD`. The whitespace
-inside the text and at its end stays as written, and so does a text of spaces
-and tabs only. [fixture: gantt/titles-and-sections/text-padding-dropped]
-[fixture: gantt/settings/format-padding-dropped] [fixture:
-journey/titles-and-sections/text-padding-dropped] [fixture:
-timeline/titles-and-sections/text-padding-dropped] [fixture:
+A title, and the date format and the axis format of a Gantt chart, are printed
+with one space after their keyword and without the whitespace at the start of
+their text, in Gantt, user journey, timeline, sequence, and Venn diagrams:
+`title   Plan` is printed `title Plan`, and `dateFormat   YYYY-MM-DD` is printed
+`dateFormat YYYY-MM-DD`. The whitespace inside the text and at its end stays as
+written, and so does a text of spaces and tabs only. [fixture:
+gantt/titles-and-sections/title-padding-dropped] [fixture:
+gantt/titles-and-sections/title-blank-kept] [fixture:
+gantt/settings/format-padding-dropped] [fixture:
+gantt/settings/format-blank-kept] [fixture:
+journey/titles-and-sections/title-padding-dropped] [fixture:
+journey/titles-and-sections/title-blank-kept] [fixture:
+timeline/titles-and-sections/title-padding-dropped] [fixture:
+timeline/titles-and-sections/title-blank-kept] [fixture:
 sequence/title/text-padding-dropped] [fixture:
 sequence/title/text-padding-dropped-colon] [fixture:
-venn/title/text-padding-dropped]
+sequence/title/title-blank-kept] [fixture: venn/title/text-padding-dropped]
+[fixture: venn/title/title-blank-kept]
 
 mermaid.js reads one whitespace character after the keyword and keeps the rest
 in the Db, so the Db of the printed text differs from the Db of the written
@@ -434,8 +476,25 @@ and
 The date format is trimmed before the dates are read
 ([`getStartDate`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttDb.js#L305-L359)),
 and the axis format is only the format of the labels of the axis. Both texts of
-each kind were drawn with mermaid.js 12.3.0 in Chromium, and the SVG, without
-the generated ids, and the pixels were the same.
+each kind were drawn with mermaid.js 12.3.0 in Chromium, and the pixels were the
+same, and so was the SVG, without the generated ids and without the whitespace
+at the start of a text.
+
+The name of a section is not printed in this form. The renderers tell two
+sections apart by their names, so two names that differ only by the whitespace
+at their start are two sections, and not any longer once the whitespace is taken
+away. Gantt gives the tasks of a section a band of their own
+([`checkUnique`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttRenderer.js#L120-L126)),
+user journey starts a new box where the name of the section changes
+([`drawTasks`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/user-journey/journeyRenderer.ts#L297-L324)),
+and timeline collects the events of the sections with the same name
+([`draw`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/timeline/timelineRenderer.ts#L144)).
+`section A` and `section  A` in a row draw two sections, `section A` and
+`section A` one, and the figures differ in the colour of the bands, in the
+number of boxes, and in the width. [fixture:
+gantt/titles-and-sections/section-padding-kept] [fixture:
+journey/titles-and-sections/section-padding-kept] [fixture:
+timeline/titles-and-sections/section-padding-kept]
 
 Two settings of a Gantt chart are drawn differently where whitespace stands
 before the value, and stay as written. A tick interval is matched as a whole
@@ -449,11 +508,11 @@ so a space before `1day` turns its ticks into the default ones. A date format of
 The tests compare the Db of the printed text with the whitespace at the start of
 its texts restored from the Db of the written text
 (`keywordTextDbForFormattingComparison` in `tests/keyword-text-margins.ts`): a
-title, a section, a date format, or an axis format that differs from the written
-one only by the spaces and tabs at its start takes the written text, and any
-other difference fails. When the pinned mermaid.js is updated, draw both texts
-of each kind again and compare the SVG and the pixels before the exception
-stays.
+title, a date format, or an axis format that differs from the written one only
+by the spaces and tabs at its start takes the written text, and any other
+difference, among them one in the name of a section, fails. When the pinned
+mermaid.js is updated, draw both texts of each kind again and compare the SVG
+and the pixels before the exception stays.
 
 ## Whitespace at the start of a label
 
@@ -488,9 +547,11 @@ flowchart/directives/whitespace-on-both-sides] [fixture:
 class/directives/count-sensitive-unit] [fixture:
 sequence/directives/compat-whitespace-on-one-side-of-directive] [fixture:
 class/directives/compat-whitespace-on-one-side-of-directive] [fixture:
-state/directives/compat-whitespace-on-one-side-of-directive] The gap stays as
-written where the line rule of mermaid.js may read its whitespace, and where a
-directive stands at the start or at the end of the printed line. See
+state/directives/compat-whitespace-on-one-side-of-directive] The gap keeps
+whether it holds whitespace, a run becoming one space, where the line rule of
+mermaid.js may read its whitespace, and where a directive stands at the start or
+at the end of the printed line. [fixture:
+flowchart/directives/line-edge-whitespace] See
 [Directives](./flowchart.md#directives).
 
 ## Structural continuations around comments and directives
@@ -1860,15 +1921,14 @@ Stereotype declaration suffixes retain whether whitespace is present before `<<`
 and inside each delimiter, including inside system boundaries. A nonempty run
 becomes one space; absent whitespace stays absent. Mermaid trims the interior
 ends; whitespace before `<<` is structural. Interior text remains written;
-protected semicolon prefixes and common comment regions retain their complete
-values. This reuses the
+protected common comment regions retain their complete values. This reuses the
 [class statement-annotation rule](./class.md#whitespace-between-tokens).
 [fixture: usecase/stereotypes/stereotype-padding] [fixture:
 usecase/stereotypes/opener-gap-sides] [test: usecase: stereotype-opener-tab]
 [fixture: usecase/stereotypes/stereotype-inner-kept] [fixture:
 usecase/stereotypes/side-padding] [fixture:
 usecase/stereotypes/boundary-suffixes] [fixture:
-usecase/stereotypes/semicolon-padding-kept] [test: usecase:
+usecase/stereotypes/semicolon-padding-dropped] [test: usecase:
 stereotype-comment-region-padding-kept]
 
 Written labels/quotes, boundary title padding and continuation columns remain
@@ -2911,17 +2971,16 @@ cynefin/retained-prefix/prefix-retained-yaml] [fixture:
 cynefin/frontmatter-yaml/frontmatter-safe-yaml] [fixture:
 cynefin/description-blocks/description-empty]
 
-Keep every semicolon with shared textual-prefix protection through the last
-semicolon of a segment and whole crossing values/trivia. The first protected
-line uses body or item depth; its content and subsequent columns remain written.
-Mermaid's reading determines segments, including removed directives and comment
-joins. Cynefin has no grammatical semicolons, so style/classDef word lines
-without semicolons still format; complete word-line preservation does not apply.
-Root directives within a printed line are placed as under
-[Directives](./flowchart.md#directives). At split statement/item boundaries they
-attach to the following unit, retaining the right boundary and breaking left
-contact. Native comments retain LS/PS as content. These boundaries can affect
-selection, values and acceptance. [fixture:
+Keep every authored semicolon. A segment that holds a kept `;` is formatted as
+anywhere else, except where formatting could change which `;` the line rule
+ignores (see [Semicolons](./cynefin.md#semicolons)). Mermaid's reading
+determines segments, including removed directives and comment joins. Cynefin has
+no grammatical semicolons, so style/classDef word lines without semicolons still
+format; complete word-line preservation does not apply. Root directives within a
+printed line are placed as under [Directives](./flowchart.md#directives). At
+split statement/item boundaries they attach to the following unit, retaining the
+right boundary and breaking left contact. Native comments retain LS/PS as
+content. These boundaries can affect selection, values and acceptance. [fixture:
 cynefin/semicolons/semi-selected-before-arrow] [fixture:
 cynefin/semicolons/semi-item-body-indentation] [fixture:
 cynefin/semicolons/semi-plain-style-line-formats] [fixture:
@@ -3030,17 +3089,18 @@ eventmodeling/hidden-forms/gwt-required-source-and-given-hidden-gaps] [fixture:
 eventmodeling/frontmatter-yaml/retained-prefix-whole] [fixture:
 eventmodeling/frontmatter-yaml/safe-real-yaml]
 
-All authored semicolons use shared textual-prefix protection, including a child
-body's opening edge. The first protected body line aligns with the body; later
-columns and value-owned padding remain written. There are no grammatical
-semicolons, so a style/classDef word alone does not freeze the entire line.
-Directives keep both contacts within a printed line; when units split, the
-directive moves with the following unit. Common-value intervals override this
-ordinary placement. Comments keep their marks and contents; native line comments
-include LS/PS. When units split, intervening inline comments and directives move
-with the following unit in source order. This shared placement treats comments
-alike across diagram types. [fixture:
-eventmodeling/comments/mixed-directive-order] [fixture:
+Keep every authored semicolon, including one at a child body's opening edge. A
+segment that holds a kept `;` is formatted as anywhere else, except where
+formatting could change which `;` the line rule ignores (see
+[Semicolons](./eventmodeling.md#semicolons)); value-owned padding remains
+written. There are no grammatical semicolons, so a style/classDef word alone
+does not freeze the entire line. Directives keep both contacts within a printed
+line; when units split, the directive moves with the following unit.
+Common-value intervals override this ordinary placement. Comments keep their
+marks and contents; native line comments include LS/PS. When units split,
+intervening inline comments and directives move with the following unit in
+source order. This shared placement treats comments alike across diagram types.
+[fixture: eventmodeling/comments/mixed-directive-order] [fixture:
 eventmodeling/semicolons/gwt-protected-opening-kept] [fixture:
 eventmodeling/semicolons/no-grammar-semicolon-style-word-line-formats] [fixture:
 eventmodeling/global-directives/directive-follows-split-next-gwt-item] [test:

@@ -597,6 +597,23 @@ leading-margin adjustment can therefore change raw Db values while preserving
 the rendered diagram. This is an explicit formatter exception; it changes no
 parser, specification or recorded Mermaid Db reading.
 
+The renderer takes the body of a data block between the `{` and the closing `}`
+and passes it to `wrapLabel` in
+[`calculateTextProps`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/eventmodeling/db.ts#L358-L371),
+which splits it at every space and drops the empty pieces
+([`wrapLabel`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/utils.ts#L559-L594)).
+A run of spaces at the start of a line after the first therefore draws as one
+space, whatever its length, and no space at all draws as none. The spaces at the
+start of the first line draw as none. Both texts of each case were drawn with
+mermaid.js 12.3.0 in Chromium, and the SVG, without the generated ids, and the
+pixels were the same for a margin of another length on every line and for a
+margin added to the first line; a margin added to a later line that had none
+changed the figure, which is why such a body stays as written. The tests compare
+the Db of the printed text with the margins of the bodies restored from the Db
+of the written text (`eventmodelingDbForFormattingComparison` in
+`tests/eventmodeling-data-margins.ts`). When the pinned mermaid.js is updated,
+draw both texts of each case again before the exception stays.
+
 [fixture: eventmodeling/final-newline/final-block-padding-kept]
 
 Input (escaped):

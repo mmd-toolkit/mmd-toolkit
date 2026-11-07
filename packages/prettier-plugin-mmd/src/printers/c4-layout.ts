@@ -25,7 +25,12 @@ import {
   spansLinesThatCannotJoin,
   spaceDescriptionOpening,
 } from "./layout.ts"
-import { holdsJoiningRegion, lineStartOf } from "./kept-lines.ts"
+import {
+  findKeptBreaks,
+  gapKeepsLineBreak,
+  holdsJoiningRegion,
+  lineStartOf,
+} from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import {
   findTokenEndingBefore,
@@ -244,12 +249,6 @@ export function layoutC4Call(
       )
     }
   }
-  // Structural LF and trivia stay in their gaps. Only textual semicolon
-  // segments need the whole multiline call kept (diagrams/c4.md, Directives
-  // inside units; docs/c4.md, Argument spacing and Line rule and semicolons).
-  if (spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true })) {
-    return keptAsWritten(start, end)
-  }
   const values = collectValueNodes(statement, c4ValueNodeTypes).filter(
     (value) => value.range[1] <= end,
   )
@@ -434,17 +433,13 @@ export function layoutC4Text(source: Source, statement: C4Text): AtomLayout {
     statement.type === "C4AccTitleStatement" ||
     statement.type === "C4AccDescrStatement"
   ) {
-    const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+    const keptBreaks = findKeptBreaks(source, start, end)
     // Colon forms trim exterior whitespace; their structural trivia gaps
     // can align while retained LF still shields direction text. Native
     // title forms below instead own their additional separator whitespace
     // (diagrams/c4.md, Title and accessibility contexts; docs/c4.md,
     // Accessibility lines and Direction rejection).
-    if (
-      holdsJoiningRegion(source, start, end) ||
-      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true })
-    )
-      return keptAsWritten(start, end)
+    if (holdsJoiningRegion(source, start, end)) return keptAsWritten(start, end)
     const atoms = collectAtoms(
       source,
       start,
@@ -453,7 +448,9 @@ export function layoutC4Text(source: Source, statement: C4Text): AtomLayout {
       [],
     )
     return {
-      atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+      atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
+        gapKeepsLineBreak(source, keptBreaks, from, to),
+      ),
       rules:
         statement.value === null
           ? new Map()
@@ -462,7 +459,7 @@ export function layoutC4Text(source: Source, statement: C4Text): AtomLayout {
               value: statement.value,
             }),
       outdented: new Set(),
-      lineBreaks: keepsLineBreaks ? "kept" : "joined",
+      lineBreaks: "joined",
     }
   }
   if (

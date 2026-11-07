@@ -352,11 +352,11 @@ the relationship, and retain complete multiline directives and name interiors.
 [fixture: relationship-spacing/over-lines-joined] [fixture:
 relationship-spacing/comment-continuation-with-multiline-names] [fixture:
 relationship-spacing/directive-continuation-four-spaces] [fixture:
-relationship-spacing/multiline-directive-line-tail] A statement whose lines,
-joined, could change which `;` the line rule ignores, and comment regions that
-join physical lines, keep their original layout. [fixture:
-multi-line-statements/relationship-last-line-semicolon-kept] [test:
-requirement/relationship-spacing/comment-region-continuation-kept]
+relationship-spacing/multiline-directive-line-tail] A line break stays where
+joining it could change which `;` the line rule ignores, and where a `;` ends
+the last line; comment regions that join physical lines keep their original
+layout. [fixture: multi-line-statements/relationship-last-line-semicolon-kept]
+[test: requirement/relationship-spacing/comment-region-continuation-kept]
 
 Input
 ([relationship-spacing/spaces-and-touching-input.mmd](../tests/fixtures/requirement/relationship-spacing/spaces-and-touching-input.mmd)):
@@ -503,9 +503,12 @@ reads such a name the same way on one line. [fixture:
 styles-and-classes/class-over-lines-joined] [fixture:
 styles-and-classes/class-uppercase-digit-next-line] Otherwise the line break
 stays, and the later lines stand one level deeper. [fixture:
-styles-and-classes/class-over-lines-kept] A statement with a comment line keeps
-its line breaks, while the comment and structural continuations stand one level
-deeper. [fixture: styles-and-classes/class-over-lines-with-comment-line-kept]
+styles-and-classes/class-over-lines-kept] A name that holds a directive is no
+`style-word`, since the style context rejects a directive inside a unit.
+[fixture: styles-and-classes/class-name-with-directive-kept] A line break next
+to a comment line stays, while the comment and structural continuations stand
+one level deeper. [fixture:
+styles-and-classes/class-over-lines-with-comment-line-kept]
 
 Input
 ([styles-and-classes/class-def-names-input.mmd](../tests/fixtures/requirement/styles-and-classes/class-def-names-input.mmd)):
@@ -1096,6 +1099,7 @@ between the units of a relationship, around the `:` of a field and of `accTitle`
 and `accDescr`, and between `direction` and its value. The statement that a
 string at the end of a `style`, `classDef`, or `class` statement starts goes on
 after the line break of the style context. [fixture:
+multi-line-statements/breaks-decided-one-by-one] [fixture:
 multi-line-statements/kind-and-name-joined] [fixture:
 multi-line-statements/relationship-joined] [fixture:
 multi-line-statements/direction-value-joined] [fixture:
@@ -1104,10 +1108,11 @@ multi-line-statements/string-continued-joined] Comments and directives keep line
 breaks without freezing structural columns: continuations and intervening trivia
 stand one level deeper. This applies to block headers, fields, relationships and
 other statements. Whitespace inside values and before the first line break of
-each gap stays. Joining regions keep their complete source. A statement written
-over several lines is kept as written when joining its lines, with one space or
-with nothing, could change which `;` the line rule ignores; any other statement
-over several lines is joined as usual, also when it holds a `;`. [test:
+each gap stays. Joining regions keep their complete source. A line break stays
+where joining it, with one space or with nothing, could change which `;` the
+line rule ignores, and where a `;` ends the last line; any other line break is
+joined as usual, also in a statement that holds a `;`. A statement that keeps a
+line break keeps its styles as written. [test:
 requirement/multi-line-statements/header-and-field-comment-regions-ls] [test:
 requirement/multi-line-statements/header-and-field-comment-regions-ps] [fixture:
 multi-line-statements/header-directive-continuation] [fixture:

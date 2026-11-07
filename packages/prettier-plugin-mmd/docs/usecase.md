@@ -234,13 +234,14 @@ content; exterior common whitespace follows the padding rule. [fixture:
 stereotypes/stereotype-plain-backslash] [fixture: stereotypes/directive-padding]
 [fixture: stereotypes/directive-gap-sides] [test: usecase:
 stereotype-unicode-exterior-padding] [test: usecase:
-stereotype-unicode-gap-sides] Protected common comment regions and semicolon
-prefixes still retain complete crossing values, including their padding.
-[fixture: stereotypes/semicolon-padding-kept] [test: usecase:
-stereotype-comment-region-padding-kept] Physical multiline, empty and unclosed
-failures are never repaired. [corpus fixture: usecase/gram-stereotype-newline]
-[corpus fixture: usecase/gram-stereotype-empty] [corpus fixture:
-usecase/gram-stereotype-open]
+stereotype-unicode-gap-sides] Protected common comment regions still retain
+complete crossing values, including their padding. [test: usecase:
+stereotype-comment-region-padding-kept] A `;` in the interior is no reason to
+keep the padding: the line rule reads only the stretch from a `:` to a `#`, and
+the padding is outside it. [fixture: stereotypes/semicolon-padding-dropped]
+Physical multiline, empty and unclosed failures are never repaired. [corpus
+fixture: usecase/gram-stereotype-newline] [corpus fixture:
+usecase/gram-stereotype-empty] [corpus fixture: usecase/gram-stereotype-open]
 
 [fixture: stereotypes/stereotype-padding] [fixture:
 stereotypes/stereotype-inner-kept] [fixture: stereotypes/stereotype-punctuation]

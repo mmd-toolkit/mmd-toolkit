@@ -640,16 +640,17 @@ sequenceDiagram
 `title` and `title:` are followed by one space, and the rest of the line is kept
 as written, except for the whitespace at its start: `title   My diagram` is
 printed `title My diagram`. [fixture: title/text-padding-dropped] [fixture:
-title/text-padding-dropped-colon] A directive between the keyword and the one
-whitespace character after it stays against the keyword: `title%%{init: {}}%% U`
-and `title:%%{init: {}}%% V` are not changed. A directive after that character
-is part of the text, and the whitespace at the start of the text, around the
-directive too, is left out: `title %%{init: {}}%% T` is printed
-`title %%{init: {}}%%T`. [fixture: title/directive-after-keyword-kept]
-mermaid.js reads one whitespace character after the keyword, which may be a line
-break, and keeps everything after it in the title, the whitespace at its start
-and at its end included, and draws the title without the whitespace at its start
-(see
+title/text-padding-dropped-colon] A title of spaces and tabs only stays as
+written. [fixture: title/title-blank-kept] A directive between the keyword and
+the one whitespace character after it stays against the keyword:
+`title%%{init: {}}%% U` and `title:%%{init: {}}%% V` are not changed. A
+directive after that character is part of the text, and the whitespace at the
+start of the text, around the directive too, is left out:
+`title %%{init: {}}%% T` is printed `title %%{init: {}}%%T`. [fixture:
+title/directive-after-keyword-kept] mermaid.js reads one whitespace character
+after the keyword, which may be a line break, and keeps everything after it in
+the title, the whitespace at its start and at its end included, and draws the
+title without the whitespace at its start (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 So `title`, a line break, and `A->>B: x` is printed as `title A->>B: x`, which
 shows that the next line is the title: mermaid.js reads it so. [fixture:

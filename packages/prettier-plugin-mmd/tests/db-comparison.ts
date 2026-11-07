@@ -33,6 +33,6 @@ export function dbForFormattingComparison(
   if (keywordTextDiagramTypes.has(type))
     return keywordTextDbForFormattingComparison(before, compared)
   return styleDiagramTypes.has(type)
-    ? styleDbForFormattingComparison(before, compared)
+    ? styleDbForFormattingComparison(before, compared, type)
     : compared
 }

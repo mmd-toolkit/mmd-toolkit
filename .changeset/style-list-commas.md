@@ -9,4 +9,7 @@ before them: `style A fill:#f9f,stroke:#333` becomes
 `style A fill: #f9f, stroke: #333`. mermaid.js draws both the same. The space
 after a `,` before a `fill` style of a numbered `linkStyle` keeps whether it is
 there, since mermaid.js adds `fill:none` to that link when no style starts with
-`fill`.
+`fill`. In `flowchart` and `agentflow`, a `linkStyle` and a `classDef`, which
+can reach a link, keep whether whitespace stands between `stroke` and its `:`,
+since mermaid.js colours the arrowheads of a link only for `stroke:`; and a
+space between a backslash and a `,` stays, since `\,` is a `,` in the style.

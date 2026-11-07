@@ -603,9 +603,10 @@ Every later value character, including trailing whitespace and statement-looking
 words, stays as written, because everything after the one separator is the title
 value in the tree and in the Db, so trimming or collapsing it changes the Db.
 Indentation on the next source line belongs to the value, so `title` LF `  T`
-prints as `title T`. [fixture: venn/title/text-padding-dropped] LF and the
-broader accepted title separators may normalize, but trivia, joined regions and
-kept parts protect their written boundaries. [corpus fixture:
+prints as `title T`. [fixture: venn/title/text-padding-dropped] A title of
+spaces and tabs only stays as written. [fixture: venn/title/title-blank-kept] LF
+and the broader accepted title separators may normalize, but trivia, joined
+regions and kept parts protect their written boundaries. [corpus fixture:
 venn/db-frontmatter-title-overridden] [corpus fixture: venn/db-title-on-header]
 [corpus fixture: venn/db-title-only-whitespace] [corpus fixture:
 venn/db-title-padding] [corpus fixture: venn/db-title-value-next-line] [corpus

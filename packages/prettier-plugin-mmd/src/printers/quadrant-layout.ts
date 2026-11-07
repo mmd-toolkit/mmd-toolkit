@@ -16,12 +16,14 @@ import {
   keepFirstGapLineTails,
   keptAsWritten,
   layoutDescriptionBlock,
-  spansLinesThatCannotJoin,
 } from "./layout.ts"
 import {
+  findKeptBreaks,
   findSemicolonLines,
+  gapKeepsLineBreak,
   holdsJoiningRegion,
   lineStartOf,
+  spansKeptBreaks,
 } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import {
@@ -75,7 +77,8 @@ export function layoutQuadrantStatement(
       quadrantValueNodeTypes,
     )
   }
-  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  const keptBreaks = findKeptBreaks(source, start, end)
+  const keepsLineBreaks = spansKeptBreaks(source, keptBreaks, start, end)
   const formatsTriviaLines =
     statement.type === "QuadrantPointStatement" ||
     statement.type === "QuadrantAccTitleStatement" ||
@@ -84,9 +87,7 @@ export function layoutQuadrantStatement(
   // Value columns, semicolon lines and removed-line regions stay written.
   if (
     keepsLineBreaks &&
-    (!formatsTriviaLines ||
-      holdsJoiningRegion(source, start, end) ||
-      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
+    (!formatsTriviaLines || holdsJoiningRegion(source, start, end))
   ) {
     return keptAsWritten(start, end)
   }
@@ -107,12 +108,12 @@ export function layoutQuadrantStatement(
     styleStarts.has(atom.start) ? formatStyleAtom(source, atom) : atom,
   )
   return {
-    atoms: keepsLineBreaks
-      ? keepFirstGapLineTails(source, styledAtoms)
-      : styledAtoms,
+    atoms: keepFirstGapLineTails(source, styledAtoms, (from, to) =>
+      gapKeepsLineBreak(source, keptBreaks, from, to),
+    ),
     rules: statementRules(source, statement),
     outdented: new Set(),
-    lineBreaks: keepsLineBreaks ? "kept" : "joined",
+    lineBreaks: "joined",
   }
 }
 

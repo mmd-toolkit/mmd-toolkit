@@ -736,10 +736,10 @@ function toRun(
  * replacing it would change which `;` the rule ignores (the gap itself, if it
  * holds directives only; null, if it holds a `;`). A gap that holds a `;` right
  * after the keyword of the diagram stays as written too (null), since diagram
- * detection reads the `;` (docs/cynefin.md, Semicolons). `place` says that nothing is printed before or after the gap on
- * its line, where the gap prints no space after it and the whitespace of the
- * source there is not that of the gap; a run with a directive there stays as
- * written (null).
+ * detection reads the `;` (docs/cynefin.md, Semicolons). `place` says that
+ * nothing is printed before or after the gap on its line, where the gap prints
+ * no space after it and the whitespace of the source there is not that of the
+ * gap; a run with a directive there stays as written (null).
  */
 export function printAbsentItems(
   source: Source,

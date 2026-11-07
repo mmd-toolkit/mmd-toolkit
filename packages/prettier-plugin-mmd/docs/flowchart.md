@@ -662,16 +662,30 @@ whitespace-between-tokens/style-colon-spaced] [fixture:
 whitespace-between-tokens/style-colon-empty-value-kept] [fixture:
 whitespace-between-tokens/style-comma-before-dropped] A `linkStyle` with link
 numbers keeps whether whitespace follows the `,` before a style that starts with
-`fill`, a run of whitespace becoming one space. [fixture:
-whitespace-between-tokens/link-style-fill-after-comma-kept] The other styles of
-such a statement, and `linkStyle default`, use the one form. [fixture:
+`fill`, a run of whitespace becoming one space; a style that starts with
+`fill-opacity` counts, as mermaid.js reads only the start. [fixture:
+whitespace-between-tokens/link-style-fill-after-comma-kept] [fixture:
+whitespace-between-tokens/link-style-fill-opacity-after-comma-kept] The other
+styles of such a statement, and `linkStyle default`, use the one form. [fixture:
 whitespace-between-tokens/link-style-other-after-comma-spaced] [fixture:
-whitespace-between-tokens/link-style-default-after-comma-spaced] A statement
-stays as written where whitespace or a `,` follows a backslash, where it holds a
-comment or a directive, where a style is all whitespace, or where a style holds
-a line break or its line holds a kept `;`. [fixture:
+whitespace-between-tokens/link-style-default-after-comma-spaced] In a
+`linkStyle` or a `classDef`, which can reach a link, a name that ends with
+`stroke` keeps whether whitespace stands between it and the `:`, a run of
+whitespace becoming one space, since mermaid.js looks for `stroke:` in the
+styles of a link to colour its arrowheads. [fixture:
+whitespace-between-tokens/link-style-stroke-before-colon-kept] [fixture:
+whitespace-between-tokens/class-def-stroke-before-colon-kept] A `style` styles a
+node, and uses the one form. [fixture:
+whitespace-between-tokens/style-stroke-before-colon-spaced] A `,` after a
+backslash is part of its style, and a space between the backslash and the `,`
+stays, since taking it away would make the `,` part of the style:
+`fill:a\ ,stroke:b` is printed `fill: a\ , stroke: b`. A space after a backslash
+before the `:` stays as well, since taking it away would escape the `:`. A
+statement stays as written where it holds a comment or a directive, where a
+style is all whitespace, or where a style holds a line break or its line holds a
+kept `;`. [fixture: whitespace-between-tokens/style-blank-style-kept] [fixture:
 whitespace-between-tokens/style-colon-escaped-space-kept] [fixture:
-whitespace-between-tokens/style-comma-escaped-space-kept] [fixture:
+whitespace-between-tokens/style-escaped-space-before-comma] [fixture:
 whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
 whitespace-between-tokens/style-comma-with-kept-semicolon-kept] A U+2028 or
 U+2029 stays where it is. [test: U+2028 before the comma of a flowchart style
@@ -1852,14 +1866,18 @@ gap touch each other. [fixture: directives/several-in-gap]
 A gap whose whitespace the line rule of mermaid.js may read (see
 [Semicolons](#semicolons)) keeps the whitespace written on each side of the
 directive, a run becoming one space. [fixture: directives/in-line-rule-stretch]
-A gap that holds a U+2028 or U+2029 stays as written, since replacing the
-character would join the two segments that the line rule reads. [test: U+2028
-before a directive in the gap of a flowchart] [test: U+2029 after a directive in
-the gap of a flowchart] [test: U+2028 beside a directive between a `:` and a `#`
-of a flowchart] A `;` that the line rule ignores (see [Semicolons](#semicolons))
-in the gap of a directive stays in the order written, and the space of the rule
-stands before the first directive: `A[style:#x] --> B ;%%{init: {}}%% --> C` is
-printed `A[style:#x] --> B; %%{init: {}}%%--> C`, and
+A directive at the start or at the end of a printed line keeps whether its gap
+with the unit beside it holds whitespace, a run becoming one space: no unit
+stands on its other side, and the gap needs no rule of its own. [fixture:
+directives/line-edge-whitespace] A gap that holds a U+2028 or U+2029 stays as
+written, since replacing the character would join the two segments that the line
+rule reads. [test: U+2028 before a directive in the gap of a flowchart] [test:
+U+2029 after a directive in the gap of a flowchart] [test: U+2028 beside a
+directive between a `:` and a `#` of a flowchart] A `;` that the line rule
+ignores (see [Semicolons](#semicolons)) in the gap of a directive stays in the
+order written, and the space of the rule stands before the first directive:
+`A[style:#x] --> B ;%%{init: {}}%% --> C` is printed
+`A[style:#x] --> B; %%{init: {}}%%--> C`, and
 `A[style:#x] --> B %%{init: {}}%% ; --> C` is printed
 `A[style:#x] --> B %%{init: {}}%%;--> C`. [fixture:
 directives/ignored-semicolon-and-directive-in-gap] The content of a directive is

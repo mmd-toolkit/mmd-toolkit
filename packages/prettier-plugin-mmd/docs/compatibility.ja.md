@@ -1995,7 +1995,7 @@ class の[トークンの間の空白](./class.ja.md#トークンの間の空白
 [fixture: usecase/stereotypes/stereotype-inner-kept]
 [fixture: usecase/stereotypes/side-padding]
 [fixture: usecase/stereotypes/boundary-suffixes]
-[fixture: usecase/stereotypes/semicolon-padding-kept]
+[fixture: usecase/stereotypes/semicolon-padding-dropped]
 [test: usecase: stereotype-comment-region-padding-kept]
 
 ラベルと引用、境界タイトルの余白、継続列は、

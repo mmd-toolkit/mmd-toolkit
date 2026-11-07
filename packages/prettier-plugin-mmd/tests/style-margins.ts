@@ -1,4 +1,6 @@
-import type { DbSummary, JsonValue } from "@mmd-toolkit/tests"
+import type { DbSummary } from "@mmd-toolkit/tests"
+import type { DbPath } from "./db-restore.ts"
+import { restoreStrings } from "./db-restore.ts"
 
 /** The diagram types whose styles the formatter prints in one form. */
 export const styleDiagramTypes: ReadonlySet<string> = new Set([
@@ -11,22 +13,43 @@ export const styleDiagramTypes: ReadonlySet<string> = new Set([
   "swimlane",
 ])
 
+/** The diagram types whose styles can reach a link. */
+const linkStyleDiagramTypes: ReadonlySet<string> = new Set([
+  "agentflow",
+  "flowchart-elk",
+  "flowchart-v2",
+  "swimlane",
+])
+
 /**
  * The text of a style without the whitespace that mermaid.js takes away
  * before it draws the figure: at its ends, and around its first `:`
- * (docs/flowchart.md, Styles).
+ * (docs/flowchart.md, Styles). Where `readsStroke` is set, mermaid.js looks for
+ * `stroke:` in the style, so whether whitespace stands between a name that ends
+ * with `stroke` and the `:` is no margin; its amount is.
  */
-function withoutStyleMargins(style: string): string {
+function withoutStyleMargins(style: string, readsStroke: boolean): string {
   const trimmed = style.trim()
   const colon = trimmed.indexOf(":")
-  return colon <= 0
-    ? trimmed
-    : `${trimmed.slice(0, colon).trimEnd()}:${trimmed.slice(colon + 1).trimStart()}`
+  if (colon <= 0) return trimmed
+  const name = trimmed.slice(0, colon).trimEnd()
+  const gap = readsStroke && name.endsWith("stroke") && name.length < colon
+  return `${name}${gap ? " " : ""}:${trimmed.slice(colon + 1).trimStart()}`
 }
 
 /** Whether a Db key holds the styles of a vertex, a class, or a link. */
 function isStyleKey(key: string): boolean {
   return key === "styles" || key === "style"
+}
+
+/**
+ * Whether the styles at a place of the Db can reach a link: the styles of a
+ * link, of the default of the links, and of a class, which can be put on a
+ * link.
+ */
+function reachesLink(path: DbPath): boolean {
+  const [key, owner] = [path.at(-1), path.at(-2)]
+  return key === "style" || (key === "styles" && owner === "classDefs")
 }
 
 /**
@@ -38,50 +61,26 @@ function isStyleKey(key: string): boolean {
  * the whitespace at its ends and around its first `:` is restored from the
  * written Db. Every other difference stays, among them the number of styles
  * (a numbered `linkStyle` gets a `fill:none` where no style starts with
- * `fill`).
+ * `fill`). In a diagram whose styles can reach a link, mermaid.js looks for
+ * `stroke:` in the styles of the link to colour its arrowheads, so whether
+ * whitespace stands before the `:` of a name that ends with `stroke` is no
+ * margin there.
  */
 export function styleDbForFormattingComparison(
   before: DbSummary | null,
   after: DbSummary | null,
+  diagramType: string,
 ): DbSummary | null {
   if (before === null || after === null) return after
-  return restore(before, after, undefined) as DbSummary
-}
-
-/** Whether a JSON value is an object. */
-function isObject(
-  value: JsonValue,
-): value is { readonly [key: string]: JsonValue } {
-  return typeof value === "object" && value !== null && !Array.isArray(value)
-}
-
-/** Restores the styles of `after` that `before` holds with other margins. */
-function restore(
-  before: JsonValue,
-  after: JsonValue,
-  key: string | undefined,
-): JsonValue {
-  if (Array.isArray(before) && Array.isArray(after)) {
-    if (before.length !== after.length) return after
-    return after.map((item, index) => {
-      const written = before[index]
-      return key !== undefined &&
-        isStyleKey(key) &&
-        typeof item === "string" &&
-        typeof written === "string" &&
-        withoutStyleMargins(item) === withoutStyleMargins(written)
-        ? written
-        : restore(written, item, undefined)
-    })
-  }
-  if (isObject(before) && isObject(after)) {
-    const written = before
-    return Object.fromEntries(
-      Object.entries(after).map(([name, value]) => [
-        name,
-        name in written ? restore(written[name], value, name) : value,
-      ]),
-    )
-  }
-  return after
+  const linksCanBeStyled = linkStyleDiagramTypes.has(diagramType)
+  return restoreStrings(before, after, (written, printed, path) => {
+    const key = path.at(-1)
+    const margins = linksCanBeStyled && reachesLink(path)
+    return key !== undefined &&
+      isStyleKey(key) &&
+      withoutStyleMargins(printed, margins) ===
+        withoutStyleMargins(written, margins)
+      ? written
+      : printed
+  }) as DbSummary
 }

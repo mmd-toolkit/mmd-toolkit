@@ -328,11 +328,12 @@ styles has no whitespace before it and one space after it:
 stays as written. mermaid.js keeps the margins in the Db but draws the same
 figure (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
-[fixture: whitespace-between-tokens/style-colon-spaced] A statement stays as
-written where whitespace or a `,` follows a backslash, where it holds a comment
-or a directive, where a style is all whitespace, or where a style holds a line
-break or its line holds a kept `;`. [fixture:
-whitespace-between-tokens/style-comma-before-dropped] [fixture:
+[fixture: whitespace-between-tokens/style-colon-spaced] A backslash does not
+escape a `,` here: `fill:a\,b ,stroke:c` is printed `fill: a\, b, stroke: c`.
+[fixture: whitespace-between-tokens/style-backslash-before-comma] A statement
+stays as written where it holds a comment or a directive, where a style is all
+whitespace, or where a style holds a line break or its line holds a kept `;`.
+[fixture: whitespace-between-tokens/style-comma-before-dropped] [fixture:
 whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
 whitespace-between-tokens/style-colon-and-comma-spaced] A U+2028 or U+2029 among
 the styles keeps the statement as written. [test: U+2028 before the comma of a

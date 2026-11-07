@@ -150,7 +150,8 @@ export function printStyleUnitSpacing(source: Source, style: Node): Doc {
  * ER and requirement discard simple same-line style-unit padding. Keep trivia,
  * physical/Unicode line boundaries and complete semicolon-sensitive lines (a
  * line that holds a `;` of its own, not one that separates statements and is
- * dropped) on their original path (diagrams/er.md and diagrams/requirement.md, Style context).
+ * dropped) on their original path (diagrams/er.md and diagrams/requirement.md,
+ * Style context).
  */
 export function styleUnitsCanCompact(
   source: Source,
@@ -172,6 +173,19 @@ export function styleUnitsCanCompact(
   )
 }
 
+/** What the styles of a statement reach, which decides what stays as written. */
+export interface StyleListUse {
+  /** The statement is a `linkStyle` with link numbers. */
+  readonly keepsSpaceBeforeFill?: boolean
+  /** The styles can reach a link: a `linkStyle`, a `classDef`. */
+  readonly keepsGapAfterStroke?: boolean
+  /**
+   * A backslash escapes a `,` (flowchart and agentflow): `a\,b` is one style,
+   * and a space between the backslash and a `,` decides that.
+   */
+  readonly escapesComma?: boolean
+}
+
 /**
  * Prints the styles of a `classDef`, `style`, or `linkStyle` statement in the
  * form of ER and requirement: no whitespace before the first `:` of a style,
@@ -191,10 +205,19 @@ export function styleUnitsCanCompact(
  * start with `fill`, so a style that starts with `fill` keeps whether
  * whitespace stands before it, a run of whitespace becoming one space.
  *
- * A `,` after a backslash is part of a style, and so is a space after a
- * backslash. A statement with a style that is all whitespace, with a line
- * break, a comment or a directive, or on a line with a kept `;` stays as
- * written, as in ER (see `styleUnitsCanCompact`).
+ * `keepsGapAfterStroke` is set for the statements whose styles can reach a
+ * link. mermaid.js looks for `stroke:` in the styles of a link to colour its
+ * arrowheads, so a name that ends with `stroke` keeps whether whitespace stands
+ * between it and the `:`, a run of whitespace becoming one space
+ * (docs/compatibility.md, Styles that are drawn the same).
+ *
+ * Where `escapesComma` is set, a `,` after a backslash is part of a style, and
+ * so is a space after a backslash at the end of one: taking that space away
+ * would make the `,` part of the style. A space after a backslash before the
+ * `:` stays as well, since CSS reads the escaped space as part of the name. A
+ * statement with a style that is all whitespace, with a line break, a comment
+ * or a directive, or on a line with a kept `;` stays as written, as in ER (see
+ * `styleUnitsCanCompact`).
  */
 export function normalizeStyleList(
   source: Source,
@@ -203,7 +226,11 @@ export function normalizeStyleList(
     readonly range: Range
     readonly styles: readonly (Node | null)[]
   },
-  keepsSpaceBeforeFill = false,
+  {
+    keepsSpaceBeforeFill = false,
+    keepsGapAfterStroke = false,
+    escapesComma = false,
+  }: StyleListUse = {},
 ): void {
   const styles = statement.styles.filter((style) => style !== null)
   const first = styles.at(0)
@@ -227,14 +254,10 @@ export function normalizeStyleList(
   let previousEnd = -1
   for (let start = from; start <= to;) {
     let comma = start
-    while (
-      comma < to &&
-      (source.text[comma] !== "," || source.text[comma - 1] === "\\")
-    )
-      comma++
-    const core = trimStyle(source, [start, comma])
+    while (comma < to && !endsStyle(source, comma, escapesComma)) comma++
+    const core = trimStyle(source, [start, comma], escapesComma)
     if (core[0] === core[1]) return
-    addColonEdit(source, core, edits)
+    addColonEdit(source, core, edits, keepsGapAfterStroke)
     if (previousEnd !== -1) {
       const touchesFill =
         keepsSpaceBeforeFill &&
@@ -264,10 +287,10 @@ export function normalizeStyleList(
 
 /**
  * Leaves the spaces and tabs at the start of the text that a statement holds
- * after its keyword out of what is printed: a title, the name of a section, a
- * setting. The keyword takes one whitespace character, and mermaid.js keeps
- * the rest in the Db, but draws the same text without it (docs/compatibility.md,
- * Texts after a keyword that are drawn the same). A directive among those
+ * after its keyword out of what is printed: a title, a setting. The keyword
+ * takes one whitespace character, and mermaid.js keeps the rest in the Db, but
+ * draws the same text without it (docs/compatibility.md, Texts after a keyword
+ * that are drawn the same). A directive among those
  * spaces and tabs is removed from the text before it is read, so the spaces and
  * tabs after it count too, and it stays where it is: `title  %%{x}%%  T` and
  * `title %%{x}%% T` are read as the title `T` with the same blanks before it. A
@@ -292,6 +315,69 @@ export function trimTextAfterKeyword(
     )
     if (directive === undefined) break
     offset = directive.range[1]
+  }
+  replaceInAtoms(source, atoms, edits)
+}
+
+/**
+ * Prints the arguments of a `click` call in one form: no whitespace at their
+ * ends or before a `,`, and one space after it. mermaid.js splits the text at
+ * every `,` that has an even number of `"` after it, trims each part, and
+ * takes a part in quotes without them, so it calls the function with the same
+ * arguments whatever the whitespace around the parts. The Db keeps the text,
+ * so it changes (see `clickCallDbForFormattingComparison`). A `,` inside
+ * quotes is no part of the split, and the whitespace beside it stays. Arguments
+ * with a line break, a comment or a directive, with an empty part, or with
+ * nothing but whitespace stay as written (docs/compatibility.md, Call arguments
+ * that are drawn the same).
+ */
+export function normalizeCallArguments(
+  source: Source,
+  atoms: Atom[],
+  range: Range | null,
+): void {
+  if (range === null) return
+  const text = source.text.slice(...range)
+  if (
+    text.includes("\n") ||
+    text.includes("\u2028") ||
+    text.includes("\u2029") ||
+    text.includes("%%")
+  )
+    return
+  const quotes = [...text].filter((character) => character === '"').length
+  const parts: Range[] = []
+  const separators: number[] = []
+  let quotesBefore = 0
+  let partStart = 0
+  for (let index = 0; index <= text.length; index++) {
+    const character = text[index]
+    if (character === '"') quotesBefore++
+    if (
+      index < text.length &&
+      !(character === "," && (quotes - quotesBefore) % 2 === 0)
+    )
+      continue
+    parts.push([partStart, index])
+    separators.push(index)
+    partStart = index + 1
+  }
+  const trimmed = parts.map(([start, end]): Range => {
+    let [from, to] = [start, end]
+    while (from < to && isSpaceOrTab(text[from])) from++
+    while (to > from && isSpaceOrTab(text[to - 1])) to--
+    return [from, to]
+  })
+  if (trimmed.some(([from, to]) => from === to)) return
+  const edits: TextEdit[] = []
+  const [offset] = range
+  for (const [index, [from, to]] of trimmed.entries()) {
+    const [start, end] = parts[index]
+    edits.push({
+      range: [offset + start, offset + from],
+      replacement: index === 0 ? "" : " ",
+    })
+    edits.push({ range: [offset + to, offset + end], replacement: "" })
   }
   replaceInAtoms(source, atoms, edits)
 }
@@ -328,7 +414,7 @@ export function normalizeBlankLabels(
  */
 export function printStyleWithColon(source: Source, range: Range): Doc {
   const edits: TextEdit[] = []
-  addColonEdit(source, trimStyle(source, range), edits)
+  addColonEdit(source, trimStyle(source, range, false), edits, false)
   const [edit] = edits
   if (edit === undefined) return printAsWritten(source, ...range)
   return [
@@ -339,16 +425,47 @@ export function printStyleWithColon(source: Source, range: Range): Doc {
 }
 
 /**
- * The range of a style without the spaces and tabs at its ends, except a
- * space after a backslash.
+ * Whether the character at `offset` ends a style: a `,`, unless a backslash
+ * before it escapes it where `escapesComma` is set.
  */
-function trimStyle(source: Source, range: Range): Range {
+function endsStyle(
+  source: Source,
+  offset: number,
+  escapesComma: boolean,
+): boolean {
+  return (
+    source.text[offset] === "," &&
+    !(escapesComma && source.text[offset - 1] === "\\")
+  )
+}
+
+/**
+ * Whether the space or tab at `offset` follows a backslash that keeps it,
+ * where `keepsEscapedSpace` is set.
+ */
+function isEscapedSpace(
+  source: Source,
+  offset: number,
+  keepsEscapedSpace: boolean,
+): boolean {
+  return keepsEscapedSpace && source.text[offset - 1] === "\\"
+}
+
+/**
+ * The range of a style without the spaces and tabs at its ends, except a
+ * space after a backslash where `keepsEscapedSpace` is set.
+ */
+function trimStyle(
+  source: Source,
+  range: Range,
+  keepsEscapedSpace: boolean,
+): Range {
   let [start, end] = range
   while (start < end && isSpaceOrTab(source.text[start])) start++
   while (
     end > start &&
     isSpaceOrTab(source.text[end - 1]) &&
-    source.text[end - 2] !== "\\"
+    !isEscapedSpace(source, end - 1, keepsEscapedSpace)
   )
     end--
   return [start, end]
@@ -357,12 +474,15 @@ function trimStyle(source: Source, range: Range): Range {
 /**
  * Adds the edit that takes the whitespace before the first `:` of a style away
  * and puts one space after it, where the value is not empty. A style without
- * a name before the `:`, or with an escaped space before it, stays.
+ * a name before the `:`, or with an escaped space before it, stays. Where
+ * `keepsGapAfterStroke` is set and the name ends with `stroke`, one space
+ * stays before the `:` if whitespace stood there.
  */
 function addColonEdit(
   source: Source,
   [start, end]: Range,
   edits: TextEdit[],
+  keepsGapAfterStroke: boolean,
 ): void {
   const colon = source.text.indexOf(":", start)
   if (colon <= start || colon >= end) return
@@ -372,9 +492,13 @@ function addColonEdit(
   if (nameEnd < colon && source.text[nameEnd - 1] === "\\") return
   let valueStart = colon + 1
   while (valueStart < end && isSpaceOrTab(source.text[valueStart])) valueStart++
+  const spaceBeforeColon =
+    keepsGapAfterStroke &&
+    nameEnd < colon &&
+    source.text.slice(Math.max(start, nameEnd - 6), nameEnd) === "stroke"
   edits.push({
     range: [nameEnd, valueStart],
-    replacement: valueStart < end ? ": " : ":",
+    replacement: `${spaceBeforeColon ? " " : ""}:${valueStart < end ? " " : ""}`,
   })
 }
 

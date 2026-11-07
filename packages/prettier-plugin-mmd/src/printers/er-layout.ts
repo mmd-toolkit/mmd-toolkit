@@ -10,7 +10,13 @@ import type {
 } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
-import { holdsJoiningRegion, isDroppedSemicolon } from "./kept-lines.ts"
+import {
+  findKeptBreaks,
+  gapKeepsLineBreak,
+  holdsJoiningRegion,
+  isDroppedSemicolon,
+  spansKeptBreaks,
+} from "./kept-lines.ts"
 import {
   collectAtoms,
   collectValueNodes,
@@ -19,7 +25,6 @@ import {
   keepFirstGapLineTails,
   keptAsWritten,
   layoutDescriptionBlock,
-  spansLinesThatCannotJoin,
   toAsciiLowerCase,
 } from "./layout.ts"
 import type { Source } from "./source.ts"
@@ -297,18 +302,19 @@ export function layoutErStatement(
       preservesBodyColumns: preservesDescriptionColumns,
     })
   }
-  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
-  if (
-    keepsLineBreaks &&
-    (holdsJoiningRegion(source, start, end) ||
-      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
-  ) {
+  const keptBreaks = findKeptBreaks(source, start, end)
+  const keepsLineBreaks = spansKeptBreaks(source, keptBreaks, start, end)
+  if (keepsLineBreaks && holdsJoiningRegion(source, start, end)) {
     return keptAsWritten(start, end)
   }
   const kept = findKeptStretches(source, statement)
+  // A statement with a kept line break keeps its styles as written: printing
+  // them changes whether joining its lines is safe, so a second pass would
+  // join them.
   const styles =
     (statement.type === "ErStyleStatement" ||
       statement.type === "ErClassDefStatement") &&
+    !keepsLineBreaks &&
     styleUnitsCanCompact(source, start, end, statement.styles)
       ? statement.styles
       : []
@@ -326,10 +332,12 @@ export function layoutErStatement(
     kept,
   )
   return {
-    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+    atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
+      gapKeepsLineBreak(source, keptBreaks, from, to),
+    ),
     rules: statementRules(source, statement, styles.length > 0),
     outdented: new Set(),
-    lineBreaks: keepsLineBreaks ? "kept" : "joined",
+    lineBreaks: "joined",
   }
 }
 
@@ -388,11 +396,10 @@ export function layoutAttribute(
   attribute: ErAttribute,
 ): AtomLayout {
   const [start, end] = attribute.range
-  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  const keptBreaks = findKeptBreaks(source, start, end)
   if (
-    keepsLineBreaks &&
-    (holdsJoiningRegion(source, start, end) ||
-      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
+    spansKeptBreaks(source, keptBreaks, start, end) &&
+    holdsJoiningRegion(source, start, end)
   ) {
     return keptAsWritten(start, end)
   }
@@ -411,16 +418,20 @@ export function layoutAttribute(
     rules.set(attribute.comment.range[0], "space")
   }
   return {
-    atoms: collectAtoms(
+    atoms: keepFirstGapLineTails(
       source,
-      start,
-      end,
-      collectValueNodes(attribute, erValueNodeTypes),
-      [],
+      collectAtoms(
+        source,
+        start,
+        end,
+        collectValueNodes(attribute, erValueNodeTypes),
+        [],
+      ),
+      (from, to) => gapKeepsLineBreak(source, keptBreaks, from, to),
     ),
     rules,
     outdented: new Set(),
-    lineBreaks: keepsLineBreaks ? "kept" : "joined",
+    lineBreaks: "joined",
   }
 }
 

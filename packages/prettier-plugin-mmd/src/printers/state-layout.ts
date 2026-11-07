@@ -14,15 +14,19 @@ import type {
 } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import { Marked, type Token as MarkdownToken } from "marked"
+import type { Doc } from "prettier"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { holdsDirection } from "./accessibility-lines.ts"
 import { findWrittenWhitespaceEnd } from "./gap.ts"
 import {
+  findKeptBreaks,
+  gapKeepsLineBreak,
   holdsJoiningRegion,
   isDroppedSemicolon,
   lineEndOf,
   lineStartOf,
   printedEndOf,
+  spansKeptBreaks,
 } from "./kept-lines.ts"
 import {
   alignBlockOpeningLine,
@@ -37,7 +41,6 @@ import {
   keepFirstGapLineTails,
   keptAsWritten,
   layoutCompactEmptyDescriptionBlockWithFallback,
-  spansLinesThatCannotJoin,
   toAsciiLowerCase,
   walk,
 } from "./layout.ts"
@@ -48,6 +51,7 @@ import {
   findTokenEndingBefore,
   findTokensBetween,
   findTriviaBetween,
+  isSpaceOrTab,
   isStructural,
   isWhitespace,
 } from "./source.ts"
@@ -216,10 +220,9 @@ export function layoutBodyOpening(
 ): AtomLayout {
   const start = statement.range[0]
   const end = opening.range[1]
-  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  const keptBreaks = findKeptBreaks(source, start, end)
   if (
     holdsJoiningRegion(source, start, end) ||
-    spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }) ||
     hasReadOtherwiseTextBeforeBody(statement) ||
     followsStateName
   ) {
@@ -241,10 +244,12 @@ export function layoutBodyOpening(
   return alignBlockOpeningLine(
     source,
     {
-      atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+      atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
+        gapKeepsLineBreak(source, keptBreaks, from, to),
+      ),
       rules,
       outdented: new Set([opening.range[0]]),
-      lineBreaks: keepsLineBreaks ? "kept" : "joined",
+      lineBreaks: "joined",
     },
     opening.range[0],
   )
@@ -335,10 +340,9 @@ export function layoutStateStatement(
   ) {
     return layoutNoteOverLines(source, statement, end, noteIndentation)
   }
-  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  const keptBreaks = findKeptBreaks(source, start, end)
   if (
     holdsJoiningRegion(source, start, end) ||
-    spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }) ||
     ((statement.type === "StateCompositeStatement" ||
       statement.type === "StateAliasDefinitionStatement") &&
       hasReadOtherwiseTextBeforeBody(statement))
@@ -346,7 +350,7 @@ export function layoutStateStatement(
     return keptAsWritten(start, end)
   }
   const kept = [
-    ...findNoteStretches(statement, end),
+    ...findNoteStretches(source, statement, end),
     ...findSecondDescriptionStretches(source, statement, end),
     ...findBlankDescriptionStretches(source, statement, end),
     ...findDroppedSemicolonStretches(source, statement),
@@ -377,18 +381,23 @@ export function layoutStateStatement(
     kept,
   )
   if (
-    statement.type === "StateClassDefStatement" ||
-    statement.type === "StateStyleStatement"
+    (statement.type === "StateClassDefStatement" ||
+      statement.type === "StateStyleStatement") &&
+    !spansKeptBreaks(source, keptBreaks, start, end)
   ) {
     // mermaid.js draws the same figure whatever the whitespace around the `:`
-    // of the styles (docs/state.md, Styles).
+    // of the styles (docs/state.md, Styles). A statement with a kept line break
+    // keeps its styles as written: printing them changes whether joining its
+    // lines is safe, so a second pass would join them.
     normalizeStyleList(source, atoms, statement)
   }
   return {
-    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+    atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
+      gapKeepsLineBreak(source, keptBreaks, from, to),
+    ),
     rules: statementRules(source, statement),
     outdented: new Set(),
-    lineBreaks: keepsLineBreaks || keepsDirectionValue ? "kept" : "joined",
+    lineBreaks: keepsDirectionValue ? "kept" : "joined",
   }
 }
 
@@ -687,11 +696,45 @@ function isNoteOverLines(
  * `note left of%%x A`, touches the position, as written, and stands before
  * the id, one space before it.
  */
-function findNoteStretches(statement: StateStatement, end: number): Atom[] {
+function findNoteStretches(
+  source: Source,
+  statement: StateStatement,
+  end: number,
+): Atom[] {
   if (statement.type !== "StateNoteStatement" || statement.state === null) {
     return []
   }
-  return [{ start: statement.state.range[1], end }]
+  const start = statement.state.range[1]
+  return [{ start, end, doc: printNoteColonAndText(source, start, end) }]
+}
+
+/**
+ * A note on one line whose first two characters after the id are a `:` and a
+ * space or a tab, in either order, is printed with the `:` after one space and
+ * the text after one space: ` : text`. mermaid.js drops those two characters,
+ * trims the rest, and draws the same note whatever the whitespace around the
+ * `:` and the text (docs/state.md, Notes). Any other start, an empty text, a
+ * comment or a directive, or a character other than an ASCII one in the text
+ * stays as written.
+ */
+function printNoteColonAndText(
+  source: Source,
+  start: number,
+  end: number,
+): Doc | undefined {
+  const text = source.text.slice(start, end)
+  const colonFirst = text.startsWith(":") && isSpaceOrTab(text[1] ?? "")
+  const spaceFirst = isSpaceOrTab(text[0] ?? "") && text[1] === ":"
+  if (
+    (!colonFirst && !spaceFirst) ||
+    text.includes("%%") ||
+    [...text].some(
+      (character) => character > "~" || (character < " " && character !== "\t"),
+    )
+  )
+    return undefined
+  const body = text.slice(2).trim()
+  return body === "" ? undefined : ` : ${body}`
 }
 
 /**

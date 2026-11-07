@@ -2901,7 +2901,7 @@ ABNF terminators.
 
 [corpus fixture: railroad/ebnf-tail-comment]
 
-[corpus fixture: railroad/abnf-tail-comment]
+[corpus fixture: railroad/abnf-tail-percent-comment]
 
 [corpus fixture: railroad/peg-tail-comment]
 

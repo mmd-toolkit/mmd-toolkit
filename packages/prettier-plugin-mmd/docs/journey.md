@@ -398,13 +398,18 @@ journey
 
 ### Titles and sections
 
-`title` and `section` are printed with one space after the keyword, whatever
-whitespace was written there, so that the separator has one form, as in a Gantt
-chart, and the value as written, the whitespace at its end included, which the
-Db keeps (see
+A `title` is printed with one space after the keyword, so that the separator has
+one form, as in a Gantt chart, and the value as written, the whitespace at its
+end included, which the Db keeps; the whitespace at the start of the value is
+left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-`title   My trip` is printed `title My trip`. [fixture:
-titles-and-sections/text-padding-dropped] [fixture:
+`title   My trip` is printed `title My trip`. The name of a `section` is printed
+as written, the whitespace at its start included: two sections whose names
+differ by it are drawn apart, and would not be once it is left out. A title of
+spaces and tabs only stays as written. [fixture:
+titles-and-sections/title-padding-dropped] [fixture:
+titles-and-sections/title-blank-kept] [fixture:
+titles-and-sections/section-padding-kept] [fixture:
 titles-and-sections/value-whitespace-kept] [fixture:
 titles-and-sections/one-space-after-keyword] A value written on a later line is
 printed after the keyword on one line; a comment line between them makes the
@@ -621,6 +626,7 @@ A statement that mermaid.js reads over several lines is printed on one line
 where the line break is whitespace to the lexer: after `title`, `section`,
 `accTitle:`, and `accDescr:`, and around the `:` of `accTitle` and `accDescr`. A
 task is never written over several lines. [fixture:
+multi-line-statements/breaks-decided-one-by-one] [fixture:
 multi-line-statements/value-on-next-line-joined] In `accTitle` and `accDescr:`
 statements, keep trivia line breaks and align later structural parts and
 standalone trivia one continuation level inside the statement, also under a

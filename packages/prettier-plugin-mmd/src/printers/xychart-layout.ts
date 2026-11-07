@@ -12,7 +12,12 @@ import type {
   XychartYAxisStatement,
 } from "@mmd-toolkit/ast"
 import type { AtomLayout, GapRule } from "./atoms.ts"
-import { holdsJoiningRegion } from "./kept-lines.ts"
+import {
+  findKeptBreaks,
+  gapKeepsLineBreak,
+  holdsJoiningRegion,
+  spansKeptBreaks,
+} from "./kept-lines.ts"
 import {
   collectAtoms,
   collectValueNodes,
@@ -21,7 +26,6 @@ import {
   keepFirstGapLineTails,
   keptAsWritten,
   layoutDescriptionBlock,
-  spansLinesThatCannotJoin,
 } from "./layout.ts"
 import type { Source } from "./source.ts"
 import {
@@ -86,12 +90,9 @@ export function layoutXychartHeader(
   header: XychartHeader,
 ): AtomLayout {
   const [start, end] = header.range
-  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
-  if (
-    keepsLineBreaks &&
-    (holdsJoiningRegion(source, start, end) ||
-      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
-  ) {
+  const keptBreaks = findKeptBreaks(source, start, end)
+  const keepsLineBreaks = spansKeptBreaks(source, keptBreaks, start, end)
+  if (keepsLineBreaks && holdsJoiningRegion(source, start, end)) {
     return keptAsWritten(start, end)
   }
   const keyword = expectToken(findStructuralToken(source, start), "the header")
@@ -105,10 +106,12 @@ export function layoutXychartHeader(
   }
   const atoms = collectAtoms(source, start, end, [], [])
   return {
-    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+    atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
+      gapKeepsLineBreak(source, keptBreaks, from, to),
+    ),
     rules,
     outdented: new Set(),
-    lineBreaks: keepsLineBreaks ? "kept" : "joined",
+    lineBreaks: "joined",
   }
 }
 
@@ -140,20 +143,19 @@ export function layoutXychartStatement(
       descriptionBlockTextTypes,
     )
   }
-  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
-  if (
-    keepsLineBreaks &&
-    (holdsJoiningRegion(source, start, end) ||
-      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
-  ) {
+  const keptBreaks = findKeptBreaks(source, start, end)
+  const keepsLineBreaks = spansKeptBreaks(source, keptBreaks, start, end)
+  if (keepsLineBreaks && holdsJoiningRegion(source, start, end)) {
     return keptAsWritten(start, end)
   }
   const atoms = collectAtoms(source, start, end, valueNodesOf(statement), [])
   return {
-    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+    atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
+      gapKeepsLineBreak(source, keptBreaks, from, to),
+    ),
     rules: statementRules(source, statement),
     outdented: new Set(),
-    lineBreaks: keepsLineBreaks ? "kept" : "joined",
+    lineBreaks: "joined",
   }
 }
 

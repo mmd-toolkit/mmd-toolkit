@@ -1,4 +1,5 @@
-import type { DbSummary, JsonValue } from "@mmd-toolkit/tests"
+import type { DbSummary } from "@mmd-toolkit/tests"
+import { restoreStrings } from "./db-restore.ts"
 
 /** The diagram types whose texts after a keyword the formatter trims. */
 export const keywordTextDiagramTypes: ReadonlySet<string> = new Set([
@@ -10,15 +11,14 @@ export const keywordTextDiagramTypes: ReadonlySet<string> = new Set([
 ])
 
 /**
- * The keys of the Db that hold the text after a keyword: a title, the name of
- * a section (`sections` holds them all, and a task holds its own), and the
- * date format and the axis format of a Gantt chart.
+ * The keys of the Db that hold the text after a keyword: a title, and the date
+ * format and the axis format of a Gantt chart. The name of a section is not
+ * one: two sections that differ by their leading whitespace are two sections
+ * (docs/compatibility.md, Texts after a keyword that are drawn the same).
  */
 const keywordTextKeys: ReadonlySet<string> = new Set([
   "axisFormat",
   "dateFormat",
-  "section",
-  "sections",
   "title",
 ])
 
@@ -42,40 +42,12 @@ export function keywordTextDbForFormattingComparison(
   after: DbSummary | null,
 ): DbSummary | null {
   if (before === null || after === null) return after
-  return restore(before, after, undefined) as DbSummary
-}
-
-/** Whether a JSON value is an object. */
-function isObject(
-  value: JsonValue,
-): value is { readonly [key: string]: JsonValue } {
-  return typeof value === "object" && value !== null && !Array.isArray(value)
-}
-
-/** Restores the texts of `after` that `before` holds with other leading blanks. */
-function restore(
-  before: JsonValue,
-  after: JsonValue,
-  key: string | undefined,
-): JsonValue {
-  if (typeof before === "string" && typeof after === "string") {
+  return restoreStrings(before, after, (written, printed, path) => {
+    const key = path.at(-1)
     return key !== undefined &&
       keywordTextKeys.has(key) &&
-      withoutLeadingBlanks(before) === withoutLeadingBlanks(after)
-      ? before
-      : after
-  }
-  if (Array.isArray(before) && Array.isArray(after)) {
-    if (before.length !== after.length) return after
-    return after.map((item, index) => restore(before[index], item, key))
-  }
-  if (isObject(before) && isObject(after)) {
-    return Object.fromEntries(
-      Object.entries(after).map(([name, value]) => [
-        name,
-        name in before ? restore(before[name], value, name) : value,
-      ]),
-    )
-  }
-  return after
+      withoutLeadingBlanks(written) === withoutLeadingBlanks(printed)
+      ? written
+      : printed
+  }) as DbSummary
 }

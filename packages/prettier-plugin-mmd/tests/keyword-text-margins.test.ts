@@ -16,14 +16,6 @@ const restored: readonly DbPair[] = [
     after: { title: "X  Y  " },
   },
   {
-    name: "the whitespace before a section and the section of its tasks",
-    before: {
-      sections: ["  S"],
-      tasks: [{ section: "  S", task: "t" }],
-    },
-    after: { sections: ["S"], tasks: [{ section: "S", task: "t" }] },
-  },
-  {
     name: "the whitespace before a date format and an axis format",
     before: { dateFormat: "  YYYY-MM-DD", axisFormat: "\t%Y" },
     after: { dateFormat: "YYYY-MM-DD", axisFormat: "%Y" },
@@ -60,6 +52,17 @@ const kept: readonly DbPair[] = [
     name: "the whitespace before a text that is no keyword text",
     before: { tasks: [{ task: "  t" }] },
     after: { tasks: [{ task: "t" }] },
+  },
+  {
+    name: "the whitespace before a section, which tells two sections apart",
+    before: {
+      sections: ["S", " S"],
+      tasks: [{ section: " S", task: "t" }],
+    },
+    after: {
+      sections: ["S", "S"],
+      tasks: [{ section: "S", task: "t" }],
+    },
   },
   {
     name: "a list of sections of another length",

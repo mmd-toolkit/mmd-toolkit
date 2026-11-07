@@ -17,9 +17,13 @@ import {
   keepFirstGapLineTails,
   keptAsWritten,
   layoutDescriptionBlock,
-  spansLinesThatCannotJoin,
 } from "./layout.ts"
-import { holdsJoiningRegion } from "./kept-lines.ts"
+import {
+  findKeptBreaks,
+  gapKeepsLineBreak,
+  holdsJoiningRegion,
+  spansKeptBreaks,
+} from "./kept-lines.ts"
 import {
   accessibilityRules,
   findCallRangeWithTrivia,
@@ -182,7 +186,8 @@ export function layoutGanttStatement(
   if (statement.type === "GanttAccDescrBlockStatement") {
     return layoutDescriptionBlock(source, statement, end, ganttValueNodeTypes)
   }
-  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  const keptBreaks = findKeptBreaks(source, start, end)
+  const keepsLineBreaks = spansKeptBreaks(source, keptBreaks, start, end)
   const formatsTriviaLines =
     statement.type === "GanttClickStatement" ||
     statement.type === "GanttWeekdayStatement" ||
@@ -195,11 +200,7 @@ export function layoutGanttStatement(
   // Value columns, semicolon lines and removed-line regions stay written.
   if (
     (keepsLineBreaks &&
-      (!formatsTriviaLines ||
-        holdsJoiningRegion(source, start, end) ||
-        spansLinesThatCannotJoin(source, start, end, {
-          ignoresTrivia: true,
-        }))) ||
+      (!formatsTriviaLines || holdsJoiningRegion(source, start, end))) ||
     holdsCaseIgnoredSeparator(source, statement, end)
   ) {
     return keptAsWritten(start, end)
@@ -219,21 +220,24 @@ export function layoutGanttStatement(
   const remainder = findBlankRemainder(source, statement)
   if (remainder !== null) atoms.push(remainder)
   return {
-    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+    atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
+      gapKeepsLineBreak(source, keptBreaks, from, to),
+    ),
     rules: statementRules(source, statement, atoms, remainder),
     outdented: new Set(),
-    lineBreaks: keepsLineBreaks ? "kept" : "joined",
+    lineBreaks: "joined",
   }
 }
 
 /**
  * The text after the keyword of a statement whose whitespace at the start
  * mermaid.js leaves out of the figure (docs/compatibility.md, Texts after a
- * keyword that are drawn the same): a title, the name of a section, a date
- * format, an axis format. A tick interval is matched against its whole text,
- * so a space before it turns the ticks into the default ones. A date format
- * of `D` has another axis than the same text with whitespace around it
- * (ganttRenderer.ts, `makeGrid`).
+ * keyword that are drawn the same): a title, a date format, an axis format.
+ * The name of a section is not one: texts that differ by their whitespace are
+ * two sections, and not once they are printed alike. A tick interval is
+ * matched against its whole text, so a space before it turns the ticks into
+ * the default ones. A date format of `D` has another axis than the same text
+ * with whitespace around it (ganttRenderer.ts, `makeGrid`).
  */
 function textAfterKeyword(
   source: Source,
@@ -243,8 +247,6 @@ function textAfterKeyword(
     case "GanttTitleStatement":
     case "GanttAxisFormatStatement":
       return statement.value
-    case "GanttSectionStatement":
-      return statement.name
     case "GanttDateFormatStatement":
       return source.text.slice(...statement.value.range).trim() === "D"
         ? null

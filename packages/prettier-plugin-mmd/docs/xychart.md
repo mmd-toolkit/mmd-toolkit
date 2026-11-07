@@ -753,7 +753,8 @@ gaps: titles, headers, axes, plots and accessibility line statements. Place
 later parts and standalone trivia lines one continuation level inside their
 statement. Preserve each gap's first line tail, including complete inline
 directives: its whitespace must start before LF for the statement to continue.
-[fixture: multi-line-statements/structural-trivia-continuations] [fixture:
+[fixture: multi-line-statements/breaks-decided-one-by-one] [fixture:
+multi-line-statements/structural-trivia-continuations] [fixture:
 multi-line-statements/axis-trivia-with-multiline-string] Directive interiors
 stay written. [fixture:
 multi-line-statements/bare-title-multiline-directive-tail] A comment line takes
@@ -762,11 +763,11 @@ the rest of the line it stands on, so the joined `title A %% c B` has the title
 [fixture: multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept] Quoted contents stay whole,
 including their internal line breaks and columns. [fixture:
-multi-line-statements/quoted-title-trivia] A statement written over several
-lines is kept as written when joining its lines, with one space or with nothing,
-could change which `;` the line rule ignores; any other statement over several
-lines is joined as usual, also when it holds a `;`. The same decision applies to
-a `;` in another statement on its final line (see
+multi-line-statements/quoted-title-trivia] A line break stays where joining it,
+with one space or with nothing, could change which `;` the line rule ignores,
+and where a `;` ends the last line; any other line break is joined as usual,
+also in a statement that holds a `;`. The same decision applies to a `;` in
+another statement on its final line (see
 [Statements one per line](#statements-one-per-line)). [fixture:
 multi-line-statements/semicolon-joining-changes-kept] [fixture:
 multi-line-statements/semicolon-inside-joined] [fixture:

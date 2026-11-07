@@ -12,7 +12,12 @@ import type {
 import { util } from "prettier"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { readGap } from "./gap.ts"
-import { holdsJoiningRegion } from "./kept-lines.ts"
+import {
+  findKeptBreaks,
+  gapKeepsLineBreak,
+  holdsJoiningRegion,
+  spansKeptBreaks,
+} from "./kept-lines.ts"
 import {
   collectAtoms,
   collectValueNodes,
@@ -20,8 +25,8 @@ import {
   expectValue,
   keepFirstGapLineTails,
   keptAsWritten,
-  layoutDescriptionBlock,
   spansLinesThatCannotJoin,
+  layoutDescriptionBlock,
   toAsciiLowerCase,
 } from "./layout.ts"
 import { accessibilityRules, trimTextAfterKeyword } from "./statement-rules.ts"
@@ -123,7 +128,8 @@ export function layoutTimelineStatement(
     default:
       break
   }
-  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  const keptBreaks = findKeptBreaks(source, start, end)
+  const keepsLineBreaks = spansKeptBreaks(source, keptBreaks, start, end)
   const formatsTriviaLines =
     statement.type === "TimelineAccTitleStatement" ||
     statement.type === "TimelineAccDescrStatement"
@@ -131,9 +137,7 @@ export function layoutTimelineStatement(
   // Value columns, semicolon lines and removed-line regions stay written.
   if (
     keepsLineBreaks &&
-    (!formatsTriviaLines ||
-      holdsJoiningRegion(source, start, end) ||
-      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
+    (!formatsTriviaLines || holdsJoiningRegion(source, start, end))
   ) {
     return keptAsWritten(start, end)
   }
@@ -147,17 +151,15 @@ export function layoutTimelineStatement(
   trimTextAfterKeyword(
     source,
     atoms,
-    statement.type === "TimelineTitleStatement"
-      ? statement.value.range
-      : statement.type === "TimelineSectionStatement"
-        ? statement.name.range
-        : null,
+    statement.type === "TimelineTitleStatement" ? statement.value.range : null,
   )
   return {
-    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+    atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
+      gapKeepsLineBreak(source, keptBreaks, from, to),
+    ),
     rules: textStatementRules(source, statement),
     outdented: new Set(),
-    lineBreaks: keepsLineBreaks ? "kept" : "joined",
+    lineBreaks: "joined",
   }
 }
 
@@ -196,7 +198,9 @@ function textStatementRules(
  * The separator may be a line break, with the text on the next line: that
  * line break is whitespace to the lexer, and the text moves to the line of
  * the `:`. A statement with such a line break, and a comment, a directive, or
- * a `;` in it, is kept as written (see `spansLinesThatCannotJoin`).
+ * a `;` in it, is kept as written (see `spansLinesThatCannotJoin`): the Db
+ * keeps the whitespace at the start of an event, so a continuation line cannot
+ * take the indentation that the other layouts give it.
  */
 function layoutEvents(
   source: Source,

@@ -368,11 +368,14 @@ export function layoutClassStatement(
     kept,
   )
   if (
-    statement.type === "ClassClassDefStatement" ||
-    statement.type === "ClassStyleStatement"
+    (statement.type === "ClassClassDefStatement" ||
+      statement.type === "ClassStyleStatement") &&
+    !spansKeptBreaks(source, keptBreaks, start, end)
   ) {
     // mermaid.js draws the same figure whatever the whitespace around the `:`
-    // and the `,` of the styles (docs/class.md, Styles).
+    // and the `,` of the styles (docs/class.md, Styles). A statement with a
+    // kept line break keeps its styles as written: printing them changes
+    // whether joining its lines is safe, so a second pass would join them.
     normalizeStyleList(source, atoms, statement)
   }
   return {

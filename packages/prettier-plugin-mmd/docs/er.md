@@ -1553,17 +1553,19 @@ A statement that mermaid.js reads over several lines is printed on one line
 where the line break is whitespace to the lexer: after the `:` of `accTitle` and
 `accDescr`, between `direction` and its value, and in a `classDef` or `style`
 statement after whitespace. [fixture:
+multi-line-statements/breaks-decided-one-by-one] [fixture:
 multi-line-statements/accessibility-text-joined] [fixture:
 multi-line-statements/direction-value-joined] [fixture:
 multi-line-statements/style-over-lines-joined] A statement with a comment or
 directive keeps its line breaks; structural continuations and intervening trivia
 stand one level deeper. Whitespace inside values and before the first line break
 of each gap stays unchanged. Joining regions keep the whole statement as
-written. A statement written over several lines is kept as written when joining
-its lines, with one space or with nothing, could change which `;` the line rule
-ignores; any other statement over several lines is joined as usual, also when it
-holds a `;`. [fixture: multi-line-statements/semicolon-joining-changes-kept]
-[fixture: multi-line-statements/style-comment-continuation] [fixture:
+written. A line break stays where joining it, with one space or with nothing,
+could change which `;` the line rule ignores, and where a `;` ends the last
+line; any other line break is joined as usual, also in a statement that holds a
+`;`. A statement that keeps a line break keeps its styles as written. [fixture:
+multi-line-statements/semicolon-joining-changes-kept] [fixture:
+multi-line-statements/style-comment-continuation] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept]
 

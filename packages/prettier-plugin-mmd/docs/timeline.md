@@ -563,12 +563,17 @@ timeline
 
 ### Titles and sections
 
-`title` and `section` are printed with one space after the keyword, whatever
-whitespace was written there, as in a user journey, and the value as written,
-the whitespace at its end included, which the Db keeps (see
+A `title` is printed with one space after the keyword, as in a user journey, and
+the value as written, the whitespace at its end included, which the Db keeps;
+the whitespace at the start of the value is left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-`title   History` is printed `title History`. [fixture:
-titles-and-sections/text-padding-dropped] [fixture:
+`title   History` is printed `title History`. The name of a `section` is printed
+as written, the whitespace at its start included: two sections whose names
+differ by it are drawn apart, and would not be once it is left out. A title of
+spaces and tabs only stays as written. [fixture:
+titles-and-sections/title-padding-dropped] [fixture:
+titles-and-sections/title-blank-kept] [fixture:
+titles-and-sections/section-padding-kept] [fixture:
 titles-and-sections/value-whitespace-kept] [fixture:
 titles-and-sections/one-space-after-keyword] A value written on a later line is
 printed after the keyword on one line; a comment line between them makes the
@@ -851,15 +856,18 @@ multi-line-statements/accessibility-trivia-continuations]
 
 Titles and sections, and event-text continuations, keep their original multiline
 trivia layout, because their value padding belongs to the Db. [fixture:
+multi-line-statements/breaks-decided-one-by-one] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept] After the colon of an event, an
 indented line of only a directive is the whitespace that starts the event, so
 the event is printed on the line of the colon, with that whitespace, and the
 directive after it. [fixture:
-multi-line-statements/directive-line-after-the-colon-is-the-text] A statement
-written over several lines is kept as written when joining its lines, with one
-space or with nothing, could change which `;` the line rule ignores; any other
-statement over several lines is joined as usual, also when it holds a `;`. See
+multi-line-statements/directive-line-after-the-colon-is-the-text] In an
+accessibility statement, a line break stays where joining it, with one space or
+with nothing, could change which `;` the line rule ignores, and where a `;` ends
+the last line; any other line break is joined as usual, also in a statement that
+holds a `;`. A title, a section, a period and an event are kept as written when
+a line break of them stays: the Db keeps the whitespace at their start. See
 [Statements one per line](#statements-one-per-line). [fixture:
 multi-line-statements/semicolon-joining-changes-kept] A `;` alone does not
 prevent joining. [fixture:

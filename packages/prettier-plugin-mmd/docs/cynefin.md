@@ -169,7 +169,8 @@ cynefin-beta
 Separate ordinary domain/item components that remain on one line by one space,
 making the components distinct. A global directive within a printed line is
 placed as under [Global directives](#global-directives), and so are split gaps.
-Hidden closing padding and semicolon prefixes retain their protected text.
+Hidden closing padding retains its protected text. A kept `;` protects no other
+text than the stretch of the line rule (see [Semicolons](#semicolons)).
 
 [fixture: cynefin/component-spacing/domain-hidden-contact]
 
@@ -284,7 +285,6 @@ Print item and transition-label StringLiteral source spans unchanged, including
 quote choice, escapes, empty values, interior padding, HTML/entities and
 native-looking text. singleQuote does not requote them. Even Db-equal requoting
 loses authored spelling; trimming or decoding escapes can change the value.
-Shared semicolon protection applies first.
 
 [fixture: cynefin/strings/strings-quotes]
 
@@ -1013,8 +1013,8 @@ written. [fixture: semicolons/ignored-semicolon-space-before-attached] [fixture:
 semicolons/ignored-semicolon-space-both-attached] [fixture:
 semicolons/ignored-semicolon-space-after-kept] [fixture:
 semicolons/ignored-semicolon-after-header-keyword-kept] [fixture:
-semicolons/semi-selected-outside-string] [fixture:
-semicolons/semicolon-chaotic-parts]
+semicolons/semi-selected-outside-string] [corpus fixture:
+cynefin/semicolon-chaotic-parts]
 
 ### Multiline values
 

@@ -406,11 +406,14 @@ value stays as written. mermaid.js reads the whitespace around the `,` as
 nothing in a state diagram, but keeps the whitespace around the `:` in the Db;
 the figure is the same (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
-[fixture: whitespace-between-tokens/style-colon-spaced] A statement stays as
-written where whitespace or a `,` follows a backslash, where it holds a comment
-or a directive, where a style is all whitespace, or where a style holds a line
-break or its line holds a kept `;`. [fixture:
-whitespace-between-tokens/comma-kept] [fixture:
+[fixture: whitespace-between-tokens/style-colon-spaced] A backslash does not
+escape a `,` here: `fill:a\,b ,stroke:c` is printed `fill: a\, b, stroke: c`. A
+space after a backslash before the `:` stays, since taking it away would escape
+the `:`. [fixture: whitespace-between-tokens/style-backslash-before-comma]
+[fixture: whitespace-between-tokens/style-colon-escaped-space-kept] A statement
+stays as written where it holds a comment or a directive, where a style is all
+whitespace, or where a style holds a line break or its line holds a kept `;`.
+[fixture: whitespace-between-tokens/comma-kept] [fixture:
 whitespace-between-tokens/style-comma-spaced] [fixture:
 whitespace-between-tokens/style-comma-beside-directive] [fixture:
 whitespace-between-tokens/style-comma-with-kept-semicolon-kept] A U+2028 or
@@ -708,6 +711,19 @@ source. [fixture: notes/html-note-kept] [fixture: notes/html-pre-first-line]
 [fixture: notes/whitespace-only-body] [fixture: notes/html-break-first-line]
 [fixture: notes/html-first-line-tabs] [fixture:
 notes/html-first-line-zero-width] [fixture: notes/first-tab-markup-margin]
+
+Mermaid keeps the margins in the Db, so the Db of the printed note differs from
+the Db of the written note, but it draws the same figure. Both texts of each
+fixture of this section whose printed note differs from the written one were
+drawn with mermaid.js 12.3.0 in Chromium, after the state that the note refers
+to was declared where the fixture does not declare it. The SVG, without the
+generated ids, and the pixels were the same, except for
+`notes/over-lines-empty-id-kept`, whose note refers to an empty id and which
+mermaid.js 12.3.0 cannot draw in either form. The tests compare the Db of the
+printed text with the margins of the notes restored from the Db of the written
+text (`stateDbForFormattingComparison` in `tests/state-note-margins.ts`). When
+the pinned mermaid.js is updated, draw both texts of each fixture again before
+the exception stays.
 
 For example, the first line of the following note uses the configured four
 spaces. Its blank-separated later paragraphs retain their two spaces: moving
@@ -1316,14 +1332,15 @@ stateDiagram-v2
     LR
 ```
 
-A statement written over several lines is kept as written when joining its
-lines, with one space or with nothing, could change which `;` the line rule
-ignores; any other statement over several lines is joined as usual, also when it
-holds a `;`. [corpus fixture: state/db-style-semicolons] [corpus fixture:
-state/db-classdef-semicolons] [fixture: multi-line-statements/semicolon-kept] A
-`;` alone does not prevent joining. [fixture:
-multi-line-statements/semicolon-in-id-joined] The line rule of mermaid.js (the
-specification's
+A line break stays where joining it, with one space or with nothing, could
+change which `;` the line rule ignores, and where a `;` ends the last line; any
+other line break is joined as usual, also in a statement that holds a `;`. A
+statement that keeps a line break keeps its styles as written. [corpus fixture:
+state/db-style-semicolons] [corpus fixture: state/db-classdef-semicolons]
+[fixture: multi-line-statements/breaks-decided-one-by-one] [fixture:
+multi-line-statements/semicolon-kept] A `;` alone does not prevent joining.
+[fixture: multi-line-statements/semicolon-in-id-joined] The line rule of
+mermaid.js (the specification's
 [`style` and `classDef` lines](../../spec/docs/common.md#style-and-classdef-lines))
 reads the text of one line: in `classDef`, a line break, and `c fill:#f00;` it
 does not match the second line, so `#f00;` is an entity, while on one line, as
@@ -1346,7 +1363,7 @@ Output
 ```mmd
 stateDiagram-v2
   classDef
-  c fill:#f00;
+    c fill:#f00;
 ```
 
 ### Line separators

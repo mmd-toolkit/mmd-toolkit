@@ -1429,7 +1429,7 @@ stateDiagram-v2
 ```mmd
 stateDiagram-v2
   classDef
-  c fill:#f00;
+    c fill:#f00;
 ```
 
 ### 行区切り文字

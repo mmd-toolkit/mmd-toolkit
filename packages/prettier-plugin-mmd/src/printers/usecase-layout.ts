@@ -317,10 +317,8 @@ export function layoutUsecaseStatement(
     const index = atoms.findIndex(
       (atom) =>
         atom.start === stereotype.value.range[0] &&
-        atom.end === stereotype.value.range[1] &&
-        !source.text.slice(atom.start, atom.end).includes(";"),
+        atom.end === stereotype.value.range[1],
     )
-    // A prefix that crosses a value keeps its complete written padding too.
     if (index === -1) continue
     atoms[index] = { start: stereotype.range[0], end: stereotype.range[1] }
   }

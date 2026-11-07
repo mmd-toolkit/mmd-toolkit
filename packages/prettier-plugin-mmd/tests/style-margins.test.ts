@@ -5,11 +5,28 @@ import { styleDbForFormattingComparison } from "./style-margins.ts"
 /** Two Dbs of a text, before and after it is formatted. */
 interface DbPair {
   readonly name: string
+  readonly diagramType?: string
   readonly before: DbSummary
   readonly after: DbSummary
 }
 
 const restored: readonly DbPair[] = [
+  {
+    name: "the whitespace before the colon of stroke in a style of a vertex",
+    before: { vertices: [{ id: "A", styles: ["stroke :#f00"] }] },
+    after: { vertices: [{ id: "A", styles: ["stroke: #f00"] }] },
+  },
+  {
+    name: "the whitespace before the colon of stroke where no link is styled",
+    diagramType: "stateDiagram",
+    before: { classDefs: [{ id: "c", styles: ["stroke :#f00"] }] },
+    after: { classDefs: [{ id: "c", styles: ["stroke: #f00"] }] },
+  },
+  {
+    name: "a run of whitespace before the colon of stroke in a link",
+    before: { edges: [{ id: "L", style: ["stroke\t :#f00"] }] },
+    after: { edges: [{ id: "L", style: ["stroke : #f00"] }] },
+  },
   {
     name: "the whitespace around the first colon and the comma",
     before: {
@@ -32,6 +49,22 @@ const restored: readonly DbPair[] = [
 ]
 
 const kept: readonly DbPair[] = [
+  {
+    name: "no whitespace before the colon of stroke in a link",
+    before: { edges: [{ id: "L", style: ["stroke :#f00"] }] },
+    after: { edges: [{ id: "L", style: ["stroke: #f00"] }] },
+  },
+  {
+    name: "no whitespace before the colon of stroke in the default of the links",
+    before: { edgeDefaults: { style: ["stroke :#f00"] } },
+    after: { edgeDefaults: { style: ["stroke: #f00"] } },
+  },
+  {
+    name: "no whitespace before the colon of stroke in a class",
+    diagramType: "agentflow",
+    before: { classDefs: [{ id: "c", styles: ["stroke :#f00"] }] },
+    after: { classDefs: [{ id: "c", styles: ["stroke: #f00"] }] },
+  },
   {
     name: "a changed value",
     before: { vertices: [{ id: "A", styles: ["fill:#f00"] }] },
@@ -62,15 +95,27 @@ const kept: readonly DbPair[] = [
 ]
 
 describe("the margins of styles that the formatter changes", () => {
-  it.each(restored)("restores $name", ({ before, after }) => {
-    expect(styleDbForFormattingComparison(before, after)).toEqual(before)
-  })
+  it.each(restored)(
+    "restores $name",
+    ({ before, after, diagramType = "flowchart-v2" }) => {
+      expect(
+        styleDbForFormattingComparison(before, after, diagramType),
+      ).toEqual(before)
+    },
+  )
 
-  it.each(kept)("keeps $name as a difference", ({ before, after }) => {
-    expect(styleDbForFormattingComparison(before, after)).toEqual(after)
-  })
+  it.each(kept)(
+    "keeps $name as a difference",
+    ({ before, after, diagramType = "flowchart-v2" }) => {
+      expect(
+        styleDbForFormattingComparison(before, after, diagramType),
+      ).toEqual(after)
+    },
+  )
 
   it("passes a Db that is missing through", () => {
-    expect(styleDbForFormattingComparison(null, null)).toBeNull()
+    expect(
+      styleDbForFormattingComparison(null, null, "flowchart-v2"),
+    ).toBeNull()
   })
 })

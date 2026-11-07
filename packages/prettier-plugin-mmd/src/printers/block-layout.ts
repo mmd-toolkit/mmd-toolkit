@@ -22,14 +22,16 @@ import {
   keepFirstGapLineTails,
   keptAsWritten,
   layoutDescriptionBlock,
-  spansLinesThatCannotJoin,
   walk,
 } from "./layout.ts"
 import { readGap } from "./gap.ts"
 import {
+  findKeptBreaks,
+  gapKeepsLineBreak,
   holdsJoiningRegion,
   isDroppedSemicolon,
   lineStartOf,
+  spansKeptBreaks,
 } from "./kept-lines.ts"
 import { printAsWrittenTrimmed } from "./lines.ts"
 import type { Source } from "./source.ts"
@@ -205,12 +207,9 @@ export function layoutCompositeHead(
   }
   const start = keyword.range[0]
   const end = head.range[1]
-  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
-  if (
-    keepsLineBreaks &&
-    (holdsJoiningRegion(source, start, end) ||
-      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
-  ) {
+  const keptBreaks = findKeptBreaks(source, start, end)
+  const keepsLineBreaks = spansKeptBreaks(source, keptBreaks, start, end)
+  if (keepsLineBreaks && holdsJoiningRegion(source, start, end)) {
     return keptAsWritten(start, end)
   }
   const layout = layoutBlockStatement(source, head)
@@ -219,10 +218,12 @@ export function layoutCompositeHead(
     ...layout.atoms,
   ]
   return {
-    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+    atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
+      gapKeepsLineBreak(source, keptBreaks, from, to),
+    ),
     rules: new Map([...layout.rules, [head.range[0], "none"]]),
     outdented: new Set(),
-    lineBreaks: keepsLineBreaks ? "kept" : "joined",
+    lineBreaks: "joined",
   }
 }
 
@@ -268,12 +269,9 @@ export function layoutBlockStatement(
       { formatsEmptyTrivia: true },
     )
   }
-  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
-  if (
-    keepsLineBreaks &&
-    (holdsJoiningRegion(source, start, end) ||
-      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
-  ) {
+  const keptBreaks = findKeptBreaks(source, start, end)
+  const keepsLineBreaks = spansKeptBreaks(source, keptBreaks, start, end)
+  if (keepsLineBreaks && holdsJoiningRegion(source, start, end)) {
     return keptAsWritten(start, end)
   }
   const rules = new Map<number, GapRule>()
@@ -290,7 +288,7 @@ export function layoutBlockStatement(
       break
     case "BlockClassDefStatement":
     case "BlockStyleStatement":
-      addStyledStatementRules(source, statement, rules, kept)
+      addStyledStatementRules(source, statement, rules, kept, !keepsLineBreaks)
       break
     case "BlockClassStatement":
       addClassRules(statement, rules, kept)
@@ -308,10 +306,12 @@ export function layoutBlockStatement(
     kept,
   )
   return {
-    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+    atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
+      gapKeepsLineBreak(source, keptBreaks, from, to),
+    ),
     rules,
     outdented: new Set(),
-    lineBreaks: keepsLineBreaks ? "kept" : "joined",
+    lineBreaks: "joined",
   }
 }
 
@@ -422,6 +422,7 @@ function addColumnsRules(
 /**
  * The rules of a `classDef` or a `style` statement: the name or the id
  * stands after one space, and so does the list of styles, printed as written
+ * or, where `printsStyles` is set, in the one form of the styles
  * (docs/block.md, Styles).
  */
 function addStyledStatementRules(
@@ -429,6 +430,7 @@ function addStyledStatementRules(
   statement: BlockClassDefStatement | BlockStyleStatement,
   rules: Map<number, GapRule>,
   kept: Atom[],
+  printsStyles: boolean,
 ): void {
   const name =
     statement.type === "BlockStyleStatement" ? statement.id : statement.name
@@ -448,8 +450,10 @@ function addStyledStatementRules(
   }
   const atoms: Atom[] = [{ start, end: printedEnd }]
   // mermaid.js draws the same figure whatever the whitespace around the `:`
-  // and the `,` of the styles (docs/block.md, Styles).
-  normalizeStyleList(source, atoms, statement)
+  // and the `,` of the styles (docs/block.md, Styles). A statement with a kept
+  // line break keeps its styles as written: printing them changes whether
+  // joining its lines is safe, so a second pass would join them.
+  if (printsStyles) normalizeStyleList(source, atoms, statement)
   const doc =
     atoms[0].doc ??
     (dropsSemicolon

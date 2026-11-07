@@ -277,11 +277,24 @@ it and one space after it: `style A fill :#f00,stroke:  #333` is printed
 `style A fill: #f00, stroke: #333`. [fixture:
 single-space-gaps/style-colon-spaced] A `linkStyle` with link numbers keeps
 whether whitespace follows the `,` before a style that starts with `fill`, a run
-of whitespace becoming one space. [fixture:
-single-space-gaps/link-style-fill-after-comma-kept] The other styles of such a
-statement, and `linkStyle default`, use the one form (see
+of whitespace becoming one space; `fill-opacity` counts, as mermaid.js reads
+only the start. [fixture: single-space-gaps/link-style-fill-after-comma-kept]
+[fixture: single-space-gaps/link-style-fill-opacity-after-comma-kept] The other
+styles of such a statement, and `linkStyle default`, use the one form (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
-A statement stays as written where whitespace or a `,` follows a backslash,
+In a `linkStyle` or a `classDef`, which can reach a link, a name that ends with
+`stroke` keeps whether whitespace stands between it and the `:`, a run of
+whitespace becoming one space (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
+[fixture: single-space-gaps/link-style-stroke-before-colon-kept] [fixture:
+single-space-gaps/class-def-stroke-before-colon-kept] A `style` styles a node,
+and uses the one form. [fixture:
+single-space-gaps/style-stroke-before-colon-spaced] A `,` after a backslash is
+part of its style, and a space between the backslash and the `,` stays, since
+taking it away would make the `,` part of the style. A space after a backslash
+before the `:` stays as well, since taking it away would escape the `:`.
+[fixture: single-space-gaps/style-escaped-space-before-comma] [fixture:
+single-space-gaps/style-colon-escaped-space-kept] A statement stays as written
 where it holds a directive or a comment, where a style is all whitespace, or
 where a style holds a line break, U+2028, or U+2029, or its line holds a kept
 `;`. [fixture: single-space-gaps/classdef-first-tab] [fixture:
