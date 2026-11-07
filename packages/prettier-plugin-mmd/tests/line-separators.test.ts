@@ -497,6 +497,16 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
  */
 const flowchartExamples: readonly (readonly [string, string, string])[] = [
   [
+    "U+2028 between the parentheses of a blank flowchart callback",
+    "flowchart TD\nA\nclick A call f(\u2028)",
+    "flowchart TD\n  A\n  click A call f(\u2028)\n",
+  ],
+  [
+    "U+2029 between the parentheses of a blank flowchart callback",
+    "flowchart TD\nA\nclick A call f(\u2029)",
+    "flowchart TD\n  A\n  click A call f(\u2029)\n",
+  ],
+  [
     "U+2028 in the text of a flowchart description block",
     "flowchart LR\naccDescr {a\u2028b}\nA\n",
     "flowchart LR\n  accDescr {a\u2028b}\n  A\n",
@@ -628,6 +638,16 @@ const classLineSeparatorExamples: readonly (readonly [
   string,
   string,
 ])[] = [
+  [
+    "U+2028 between the parentheses of a blank class callback",
+    "classDiagram\nclass A\nclick A call f(\u2028)",
+    "classDiagram\n  class A\n  click A call f(\u2028)\n",
+  ],
+  [
+    "U+2029 between the parentheses of a blank class callback",
+    "classDiagram\nclass A\nclick A call f(\u2029)",
+    "classDiagram\n  class A\n  click A call f(\u2029)\n",
+  ],
   [
     "U+2028 before the `<<` of a class annotation",
     "classDiagram\nclass S\u2028<<i>>\n",
@@ -765,6 +785,16 @@ const ganttLineSeparatorExamples: readonly (readonly [
   string,
   string,
 ])[] = [
+  [
+    "U+2028 between the parentheses of a blank Gantt callback",
+    "gantt\na : id1, 1d\nclick id1 call f(\u2028)",
+    "gantt\n  a :id1, 1d\n  click id1 call f(\u2028)\n",
+  ],
+  [
+    "U+2029 between the parentheses of a blank Gantt callback",
+    "gantt\na : id1, 1d\nclick id1 call f(\u2029)",
+    "gantt\n  a :id1, 1d\n  click id1 call f(\u2029)\n",
+  ],
   [
     "U+2028 between the header and a statement",
     "gantt\u2028title T\n",

@@ -737,7 +737,18 @@ The whitespace between the name of the function after `call` and the `(` that
 follows it is kept as written, with the parentheses and their arguments:
 mermaid.js reads the name up to the `(`, whitespace included, so
 `click A call fn  ()` calls the function named `fn` and two spaces. [fixture:
-whitespace-between-tokens/callback-name-arguments-forms-kept]
+whitespace-between-tokens/callback-name-arguments-forms-kept] The parentheses of
+a call with blank arguments touch each other: `click A call f( )` is printed
+`click A call f()`, since mermaid.js reads both as the same call with no
+arguments. A directive between them keeps whether whitespace was written on each
+side of it, as under [Directives](#directives). [fixture:
+whitespace-between-tokens/callback-blank-parentheses-touch] A statement written
+over several lines is kept as written, so it keeps the line break between the
+parentheses and a comment line there. [fixture:
+whitespace-between-tokens/callback-blank-parentheses-lines] A U+2028 or U+2029
+between them stays where it is. [test: U+2028 between the parentheses of a blank
+flowchart callback] [test: U+2029 between the parentheses of a blank flowchart
+callback]
 
 A callback written without `call` is a click id, with no `(` after it (see
 [FlowchartClickCallbackStatement](../../spec/docs/ast/flowchart.md#flowchartclickcallbackstatement)),

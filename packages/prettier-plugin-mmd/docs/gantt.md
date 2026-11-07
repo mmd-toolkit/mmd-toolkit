@@ -689,9 +689,10 @@ the tasks that its ids name. [fixture:
 click-statements/ids-unknown-and-duplicate]
 
 The name of a call and its arguments are printed as written, with the whitespace
-and the line breaks in them: `f ()` has the name `f` and a space, and
-`f( 1, 2 )` the arguments of a space, `1, 2`, and a space, which the Db keeps.
-The string of a link is printed as written. [fixture:
+and the line breaks in them, except that blank arguments are dropped (see
+[Whitespace between tokens](#whitespace-between-tokens)): `f ()` has the name
+`f` and a space, and `f( 1, 2 )` the arguments of a space, `1, 2`, and a space,
+which the Db keeps. The string of a link is printed as written. [fixture:
 click-statements/call-name-and-arguments-kept] [fixture:
 click-statements/href-string-kept] A string or an argument list written over
 lines is printed as written (see [Multi-line values](#multi-line-values)).
@@ -771,7 +772,7 @@ gantt
   click id1 call f ()
   click id1 call f( 1, 2 )
   click id1 call f(1,2)
-  click id1 call f( )
+  click id1 call f()
   click id1 call f()
 ```
 
@@ -1040,9 +1041,17 @@ gantt
 ### Whitespace between tokens
 
 Where no rule above applies, a run of whitespace between two tokens of a
-statement becomes one space, and tokens that touch keep touching: the whitespace
-between the parentheses of a call with blank arguments, and the braces of a
-description block. [fixture: whitespace-between-tokens/blank-arguments] The
+statement becomes one space, and tokens that touch keep touching, as the braces
+of a description block. The parentheses of a call with blank arguments touch
+each other: `f(    )` is printed `f()`, since mermaid.js reads it as the same
+call. A directive between them keeps whether whitespace was written on each side
+of it. The same holds for the parentheses with a line break between them, while
+a comment line there stays on its own line. [fixture:
+whitespace-between-tokens/blank-arguments] [fixture:
+click-statements/callback-blank-parentheses-touch] [fixture:
+click-statements/callback-blank-parentheses-lines] A U+2028 or U+2029 between
+them stays where it is. [test: U+2028 between the parentheses of a blank Gantt
+callback] [test: U+2029 between the parentheses of a blank Gantt callback] The
 whitespace at the end of the header's line is dropped. [fixture:
 whitespace-between-tokens/trailing-whitespace-after-header] The values are not
 formatted: see [Task data](#task-data), [Settings](#settings), and
@@ -1064,7 +1073,7 @@ Output
 ```mmd
 gantt
   a :id1, 1d
-  click id1 call f( )
+  click id1 call f()
   click id1 call f()
 ```
 

@@ -3,6 +3,7 @@ import type {
   FlowchartStatement,
   FlowchartSubgraphStatement,
   Node,
+  Token,
 } from "@mmd-toolkit/ast"
 import {
   addHeadingTitleRules,
@@ -129,7 +130,9 @@ export function layoutStatement(
       ? vertexStatementRules(source, statement)
       : statement.type === "FlowchartAccDescrBlockStatement"
         ? descriptionOpeningRules(source, start)
-        : new Map()
+        : statement.type === "FlowchartClickCallbackStatement"
+          ? callbackRules(source, statement)
+          : new Map()
   const layout: AtomLayout = {
     atoms: collectAtoms(source, start, end, values, kept),
     rules,
@@ -171,7 +174,8 @@ function findOutdentedAtoms(
  *   spaces after the directive belong to the style. The whitespace around
  *   its commas is part of the values that mermaid.js stores, also when a
  *   style is all whitespace and has no node.
- * - the parentheses of a callback with the arguments between them.
+ * - the parentheses of a callback with arguments, with the arguments between
+ *   them.
  * - an `accDescr { ... }` block from the `{` to the end of its text and of
  *   the comments and directives after the text, when the text starts on a
  *   later line than the `{`: its lines keep their columns
@@ -202,7 +206,7 @@ function findKeptStretches(
     }
     case "FlowchartClickCallbackStatement":
       if (spansLines(source, statement)) return [whole]
-      return findCallbackParentheses(source, statement)
+      return findCallbackArgumentsStretch(source, statement)
     case "FlowchartClickUrlStatement":
       return spansLines(source, statement) ? [whole] : []
     case "FlowchartAccDescrBlockStatement":
@@ -253,14 +257,14 @@ function spansLines(source: Source, statement: Node): boolean {
     .includes("\n")
 }
 
-/** The parentheses after `call` with the arguments between them, if any. */
+/** The parentheses after `call`, if any. */
 function findCallbackParentheses(
   source: Source,
   statement: FlowchartClickCallbackStatement,
-): Atom[] {
+): { readonly opening: Token; readonly closing: Token } | null {
   const opening = findStructuralToken(source, statement.callback.range[1])
   if (opening?.value !== "(" || opening.range[0] >= statement.range[1]) {
-    return []
+    return null
   }
   const closing = expectToken(
     findStructuralToken(
@@ -270,7 +274,40 @@ function findCallbackParentheses(
     "the `)` of callback arguments",
   )
   expectValue(closing, ")")
-  return [{ start: opening.range[0], end: closing.range[1] }]
+  return { opening, closing }
+}
+
+/**
+ * The parentheses of a callback with arguments, from the `(` to the `)`, as
+ * a stretch printed as written. Blank parentheses, `f( )`, have no arguments
+ * to keep (see `callbackRules`).
+ */
+function findCallbackArgumentsStretch(
+  source: Source,
+  statement: FlowchartClickCallbackStatement,
+): Atom[] {
+  const parentheses = findCallbackParentheses(source, statement)
+  if (parentheses === null || statement.arguments === null) return []
+  return [
+    { start: parentheses.opening.range[0], end: parentheses.closing.range[1] },
+  ]
+}
+
+/**
+ * The rules of a click statement with a callback: the `)` of blank
+ * parentheses touches the `(`, since mermaid.js reads `f( )` and `f()` the
+ * same (docs/flowchart.md, Click statements).
+ */
+function callbackRules(
+  source: Source,
+  statement: FlowchartClickCallbackStatement,
+): Map<number, GapRule> {
+  const rules = new Map<number, GapRule>()
+  const parentheses = findCallbackParentheses(source, statement)
+  if (parentheses !== null && statement.arguments === null) {
+    rules.set(parentheses.closing.range[0], "none")
+  }
+  return rules
 }
 
 /**

@@ -362,8 +362,9 @@ function listRules(
  * touches the id before it and the id after it touches the `,`, since a space
  * ends the id text; each part stands after one space, and so does the name
  * of a call and the string of a link; the `(` touches the name, whose range
- * keeps the whitespace before it, and the arguments touch the parentheses
- * (docs/gantt.md, Click statements).
+ * keeps the whitespace before it, and the arguments touch the parentheses,
+ * which touch each other where the arguments are blank (docs/gantt.md, Click
+ * statements).
  */
 function clickRules(
   source: Source,
@@ -387,15 +388,10 @@ function clickRules(
       rule = previousIsComma ? "none" : "space"
     } else if (isPunctuator && token.value === ",") {
       rule = index === 0 ? "space" : "none"
-    } else if (isPunctuator && token.value === "(") {
+    } else if (isPunctuator && (token.value === "(" || token.value === ")")) {
       rule = "none"
     } else if (atom.start === argsStart) {
       rule = "none"
-    } else if (isPunctuator && token.value === ")") {
-      // The `)` touches the arguments. Where the arguments are blank, there
-      // are none to touch, and the whitespace between the parentheses stays
-      // as in the source, a run of it as one space.
-      rule = argsStart === undefined ? undefined : "none"
     } else {
       // A keyword (`call`, `href`), the name of a call, or the string of a link.
       rule = "space"

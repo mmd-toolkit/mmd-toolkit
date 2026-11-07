@@ -755,6 +755,17 @@ flowchart LR
 mermaid.js は、名前を `(` の前まで、空白も含めて読むので、
 `click A call fn  ()` は、 `fn` と 2 つの空白を名前とする関数を呼びます。
 [fixture: whitespace-between-tokens/callback-name-arguments-forms-kept]
+引数が空白だけの呼び出しの括弧は互いに接し、
+`click A call f( )` は `click A call f()` になります。
+mermaid.js はどちらも引数のない同じ呼び出しとして読むからです。
+括弧の間にディレクティブがあれば、
+その両側の空白の有無を保ちます（[ディレクティブ](#ディレクティブ)を参照）。
+[fixture: whitespace-between-tokens/callback-blank-parentheses-touch]
+複数行に書かれた文は書かれたまま残すので、括弧の間の改行とコメント行も残ります。
+[fixture: whitespace-between-tokens/callback-blank-parentheses-lines]
+括弧の間の U+2028 と U+2029 は、そのまま残します。
+[test: U+2028 between the parentheses of a blank flowchart callback]
+[test: U+2029 between the parentheses of a blank flowchart callback]
 
 `call` なしで書いたコールバックは、後ろに `(` のない click の id であり、
 `call` の後の名前の規則は当てはまりません（詳しくは、

@@ -1,5 +1,6 @@
 import type {
   ClassAnnotation,
+  ClassCallbackStatement,
   ClassDeclaration,
   ClassMethod,
   ClassName,
@@ -652,6 +653,9 @@ function statementRules(
         rules,
       )
       break
+    case "ClassCallbackStatement":
+      addBlankCallbackRules(source, statement, rules)
+      break
     case "ClassDeclaration":
       addDeclarationRules(source, statement, rules)
       if (statement.members !== null) {
@@ -669,6 +673,28 @@ function statementRules(
       break
   }
   return rules
+}
+
+/**
+ * Adds the rule of the blank parentheses of a callback, `f( )`: the `)`
+ * touches the `(`, since mermaid.js reads `f( )` and `f()` the same
+ * (docs/class.md, Whitespace between tokens). The whitespace between the
+ * callback name and the `(` is part of the name and is not changed.
+ */
+function addBlankCallbackRules(
+  source: Source,
+  statement: ClassCallbackStatement,
+  rules: Map<number, GapRule>,
+): void {
+  if (statement.arguments !== null) return
+  const opening = findStructuralToken(source, statement.callback.range[1])
+  if (opening?.value !== "(" || opening.range[0] >= statement.range[1]) return
+  const closing = expectToken(
+    findStructuralToken(source, opening.range[1]),
+    "the `)` of callback arguments",
+  )
+  expectValue(closing, ")")
+  rules.set(closing.range[0], "none")
 }
 
 /**
