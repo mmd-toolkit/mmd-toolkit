@@ -870,7 +870,9 @@ function isBracketPadding(character: string): boolean {
  * the brackets: mermaid.js trims it, so `[ API ]` and `["x" ]` read as `[API]`
  * and `["x"]` (docs/architecture.md, Label content). A text of only
  * whitespace, one that holds a comment or a directive, and one with no such
- * space stay as written.
+ * space stay as written. So does a text that no atom of its own holds, as when
+ * a protected `;` prefix has taken the atom in (see `protectSemicolonPrefixes`,
+ * docs/architecture.md, Semicolons).
  */
 export function trimBracketedText(
   source: Source,

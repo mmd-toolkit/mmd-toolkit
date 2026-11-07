@@ -3,12 +3,13 @@ import type {
   FlowchartStatement,
   FlowchartSubgraphStatement,
   Node,
-  Token,
 } from "@mmd-toolkit/ast"
 import {
   addHeadingTitleRules,
   addShapeRules,
   addLinkRules,
+  breaksBetweenParts,
+  findCallbackParentheses,
   layoutGraphAccessibility,
 } from "./graph-layout.ts"
 import { findFlowchartKeptLines } from "./flowchart-kept-lines.ts"
@@ -18,7 +19,6 @@ import {
   collectValueNodes,
   descriptionOpeningRules,
   expectToken,
-  expectValue,
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
   formatDescriptionBlock,
@@ -204,11 +204,16 @@ function findKeptStretches(
     case "FlowchartDefaultLinkStyleStatement": {
       return [{ start: findStylesStart(source, statement), end }]
     }
-    case "FlowchartClickCallbackStatement":
-      if (breaksBetweenParts(source, statement)) return [whole]
-      return findCallbackArgumentsStretch(source, statement)
+    case "FlowchartClickCallbackStatement": {
+      const stretches = findCallbackArgumentsStretch(source, statement)
+      return breaksBetweenParts(source, statement, valueNodeTypes, stretches)
+        ? [whole]
+        : stretches
+    }
     case "FlowchartClickUrlStatement":
-      return breaksBetweenParts(source, statement) ? [whole] : []
+      return breaksBetweenParts(source, statement, valueNodeTypes, [])
+        ? [whole]
+        : []
     case "FlowchartAccDescrBlockStatement":
       return findAccDescrBlockStretches(source, statement)
     case "FlowchartEmptyStatement":
@@ -248,52 +253,6 @@ function findStylesStart(
     first.range[0],
   ).find((token) => token.value === ",")
   return comma?.range[0] ?? first.range[0]
-}
-
-/**
- * Whether a line feed of a statement stands outside its values: between its
- * parts, or in a comment or a directive. A line feed inside a string or in
- * the arguments of a callback is part of that value, printed as written, and
- * moves no line of the statement.
- */
-function breaksBetweenParts(
-  source: Source,
-  statement: Exclude<FlowchartStatement, FlowchartSubgraphStatement>,
-): boolean {
-  const values = collectValueNodes(statement, valueNodeTypes)
-  for (
-    let offset = source.text.indexOf("\n", statement.range[0]);
-    offset !== -1 && offset < statement.range[1];
-    offset = source.text.indexOf("\n", offset + 1)
-  ) {
-    if (
-      !values.some(
-        (value) => value.range[0] <= offset && offset < value.range[1],
-      )
-    )
-      return true
-  }
-  return false
-}
-
-/** The parentheses after `call`, if any. */
-function findCallbackParentheses(
-  source: Source,
-  statement: FlowchartClickCallbackStatement,
-): { readonly opening: Token; readonly closing: Token } | null {
-  const opening = findStructuralToken(source, statement.callback.range[1])
-  if (opening?.value !== "(" || opening.range[0] >= statement.range[1]) {
-    return null
-  }
-  const closing = expectToken(
-    findStructuralToken(
-      source,
-      statement.arguments?.range[1] ?? opening.range[1],
-    ),
-    "the `)` of callback arguments",
-  )
-  expectValue(closing, ")")
-  return { opening, closing }
 }
 
 /**

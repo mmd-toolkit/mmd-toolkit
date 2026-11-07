@@ -329,14 +329,19 @@ style A, "B" fill:red
 A bracket label touches its name or text id for a compact suffix; its
 bare/quoted form and every interior character stay as written, except the
 spaces, tabs, and no-break spaces next to the brackets, which mermaid.js trims:
-`set A[ L ]` is printed `set A[L]`. [fixture: labels/bare-label-padding-dropped]
-Whitespace inside quotes belongs to the value, and stays: an empty quoted label
-or bare whitespace label omits the Db label, whereas quoted whitespace stores an
-empty label. Embedded trivia stays inside the label, and gap items retain
-attachment instead of applying tight spacing. [fixture:
-venn/labels/specified-c4-label-title] [fixture: venn/labels/all-suffixes]
-[corpus fixture: venn/db-form-text-string-label] [corpus fixture:
-venn/db-form-union-label] [corpus fixture:
+`set A[ L ]` is printed `set A[L]`. A label that holds a directive stays as
+written, and so does the text through the last kept `;` of a line, a protected
+stretch (see Terms): `set A[ a; ]` and `set B[ a;b ]` are not changed. A U+2028
+or U+2029 before the `]` stays. [fixture:
+labels/bracket-padding-with-directive-or-semicolon-kept] [test: U+2028 inside
+the brackets of a venn label] [test: U+2029 inside the brackets of a venn label]
+[fixture: labels/bare-label-padding-dropped] Whitespace inside quotes belongs to
+the value, and stays: an empty quoted label or bare whitespace label omits the
+Db label, whereas quoted whitespace stores an empty label. Embedded trivia stays
+inside the label, and gap items retain attachment instead of applying tight
+spacing. [fixture: venn/labels/specified-c4-label-title] [fixture:
+venn/labels/all-suffixes] [corpus fixture: venn/db-form-text-string-label]
+[corpus fixture: venn/db-form-union-label] [corpus fixture:
 venn/lex-directive-label-delimiter-gap] [corpus fixture:
 venn/lex-label-bare-comment-only] [corpus fixture: venn/lex-label-bare-padding]
 [corpus fixture: venn/lex-label-quoted-comment-only] [corpus fixture:

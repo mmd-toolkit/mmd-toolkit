@@ -115,7 +115,12 @@ are written so, and the Db is the same for both forms. The whitespace inside the
 brackets of the title is dropped, so `[ T ]` is printed `[T]` and `["x" ]` is
 printed `["x"]`, as in flowchart; Agentflow has no reason to choose a different
 form. One space stays where the title would be read otherwise (`[ /x/ ]`, and
-`[ x@ ]` in Agentflow). [fixture:
+`[ x@ ]` in Agentflow). A directive at an edge of the title keeps the gap beside
+it, one space where whitespace was written: `flow F[ %%{x}%% T ]` is printed
+`flow F[ %%{x}%% T]`, and `flow G[ T %%{x}%% ]` is printed `flow G[T %%{x}%% ]`.
+[fixture: names-and-headings/heading-title-directive-at-edge] A U+2028 or U+2029
+before the `]` stays. [test: agentflow: U+2028 inside the brackets of a flow
+title] [test: agentflow: U+2029 inside the brackets of a flow title] [fixture:
 names-and-headings/heading-title-padding-dropped] [fixture:
 names-and-headings/name-heading-touches-title] [fixture:
 names-and-headings/name-heading-touches-title-kinds] A name of several parts,
@@ -127,8 +132,13 @@ string the Db would be the same, and the name is kept the same way. [fixture:
 names-and-headings/name-heading-title-multi-part-name-kept] A directive or a
 comment that ends the name keeps the whitespace written after it, as under
 [Directives](#directives), and a directive inside the gap keeps whether
-whitespace was written after it: that whitespace becomes one space, while the
-whitespace before it belongs to the name and stays as written. [fixture:
+whitespace was written after it: that whitespace becomes one space. The
+whitespace before the directive stays as written while the `[` is apart from the
+directive, since the name then runs through the directive
+(`flow F   %%{init: {}}%% [T]` is not changed). When the `[` touches the
+directive, the name ends before the directive, and the whitespace before it
+becomes one space (`flow H   %%{init: {}}%%[T]` is printed
+`flow H %%{init: {}}%%[T]`). [fixture:
 names-and-headings/name-heading-title-beside-directive-kept] [fixture:
 names-and-headings/name-heading-title-gap-run-beside-directive] [test:
 agentflow: a comment and U+2028 between a flow name and its title] Between a `:`
@@ -850,10 +860,11 @@ for the description-body indentation described in
 [Accessibility](#accessibility). Indent ordinary continuation tokens one
 additional step; keep string/markdown/split text, Name, metadata, directive and
 multiline click continuation columns. An extra whitespace character in a click
-gap can reject. Agentflow folds only line whitespace immediately before the next
-LF after a closing brace; later blank LFs remain. Keep those raw value lines,
-including LS/PS/VT/FF/NBSP, and never align an opaque data closer as an
-accessibility closer. [fixture:
+gap after the ids and the callback can reject (see
+[Click statements](#click-statements)). Agentflow folds only line whitespace
+immediately before the next LF after a closing brace; later blank LFs remain.
+Keep those raw value lines, including LS/PS/VT/FF/NBSP, and never align an
+opaque data closer as an accessibility closer. [fixture:
 multiline-statements-and-values/brace-blank-kept] [fixture:
 multiline-statements-and-values/multiline-chain] [fixture:
 multiline-statements-and-values/multiline-string]
@@ -1041,6 +1052,21 @@ A tab before a fixed link target also stays written, and directives inside a
 retained click prefix keep their touching gaps. [fixture:
 click-statements/target-required-tab] [fixture:
 click-statements/prefix-with-directive]
+
+The parentheses of a call with blank arguments touch each other, as in
+[flowchart](./flowchart.md#whitespace-between-tokens): `click A call f( )` is
+printed `click A call f()`, also before a tooltip or an erased prefix, since
+mermaid.js reads both spellings as the same call. `f ()`, with whitespace before
+the `(`, stays, because the name takes that whitespace. The whitespace after the
+`)` stays written, since one more whitespace character there can reject.
+[fixture: click-statements/callback-blank-parentheses-touch] [test: agentflow:
+U+2028 between the parentheses of a blank callback] [test: agentflow: U+2029
+between the parentheses of a blank callback] A statement whose line breaks are
+all inside a string or between the parentheses has its first click-keyword gap
+normalized like one on a single line, and the rest stays written:
+`click   A "/u" "x` and `  y"` on the next line is printed `click A "/u" "x` and
+`  y"`. A line break in a gap keeps the statement as written. [fixture:
+click-statements/string-over-lines-keyword-gap]
 
 Input (escaped): `"agentflow-beta TB\nA\nclick   A cb\n"`. [fixture:
 click-statements/click-keyword-gap]

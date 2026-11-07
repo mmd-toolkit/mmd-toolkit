@@ -372,14 +372,18 @@ one (`(right down)` has the direction `right ` and `( up)` has ` up`), so
 whitespace there is in the Db, and so is the lack of a `,` (`(rightdown)` has
 the directions `right` and `down`). The whitespace after a `,` is in no
 direction, so one space stands there: `(right,down)` and `(right,   down)` are
-printed `(right, down)`. A comment line or a directive there keeps its line, and
-a U+2028 or U+2029 stays where it is. [fixture: shapes/block-arrow-comma-space]
-[fixture: shapes/block-arrow-comma-comment-line] [test: U+2028 after the comma
-between the directions of a block arrow] [test: U+2029 after the comma between
-the directions of a block arrow] [test: U+2028 before the comma between the
-directions of a block arrow] [test: U+2029 before the comma between the
-directions of a block arrow] [fixture: shapes/block-arrow-touches-the-id]
-[fixture: shapes/block-arrow-parenthesis-touches-the-closing] [fixture:
+printed `(right, down)`, except on a line that keeps a `;` (a kept line), where
+no space is added: `a<["style:"]>(x,down)  b["#y;"]` keeps `(x,down)`, while
+`(x,   down)` there is still printed `(x, down)`. [fixture:
+shapes/block-arrow-comma-on-kept-line] A comment line or a directive there keeps
+its line, and a U+2028 or U+2029 stays where it is. [fixture:
+shapes/block-arrow-comma-space] [fixture: shapes/block-arrow-comma-comment-line]
+[test: U+2028 after the comma between the directions of a block arrow] [test:
+U+2029 after the comma between the directions of a block arrow] [test: U+2028
+before the comma between the directions of a block arrow] [test: U+2029 before
+the comma between the directions of a block arrow] [fixture:
+shapes/block-arrow-touches-the-id] [fixture:
+shapes/block-arrow-parenthesis-touches-the-closing] [fixture:
 shapes/block-arrow-directions-as-written] [fixture:
 shapes/block-arrow-directions-whitespace-kept] [fixture:
 shapes/block-arrow-with-a-width]

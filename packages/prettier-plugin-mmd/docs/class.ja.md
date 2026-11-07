@@ -531,6 +531,13 @@ sequence 図では `:` を前のものに接して書きます（詳しくは、
 `namespace Auth[ "x" ]` は `namespace Auth["x"]` に、
 `class A["x" ]` は `class A["x"]` になります。
 mermaid.js はどの書き方も同じラベルとして読みます。
+文字列の隣にディレクティブがあれば、その隣の隙間は、
+空白が書かれていれば 1 つにして残します。
+`class D[ %%{x}%% "x" ]` は `class D[ %%{x}%% "x"]` になります。
+`]` の前の U+2028 と U+2029 は残します。
+[fixture: labels/bracket-directive-at-edge]
+[test: U+2028 inside the brackets of a class label]
+[test: U+2029 inside the brackets of a class label]
 [fixture: labels/bracket-padding-dropped]
 [fixture: labels/accessibility-text-kept]
 

@@ -283,12 +283,23 @@ flowchart の [subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダ
 `systemBoundary S [t]` は `systemBoundary S[t]` に、
 `systemBoundary S (t)` は `systemBoundary S(t)` になります。
 mermaid.js は、空白のある書き方も接する書き方も同じ境界として読みます。
-括弧の内側の空白は落とします。
-mermaid.js がタイトルを trim するからです。
+括弧の内側の空白とタブは落とします。
+mermaid.js がそれらを trim するからです（no-break space は trim
+しないので残ります）。
 `systemBoundary S[ x ]` は `systemBoundary S[x]` に、
 `S("x" )` は `S("x")` になります。
 [fixture: system-boundaries/boundary-title-padding-dropped]
 [fixture: system-boundaries/boundary-title-opener-touches-id]
+タイトルの端にディレクティブがあれば、その隣の隙間は、
+空白が書かれていれば 1 つにして残します（`S[ %%{x}%% T ]` は `S[ %%{x}%% T]`
+になります）。
+保つ `;` のある行では、
+最後の `;` までのテキストが保護されます（Statements and semicolons を参照）。
+`S[ a;b ]` は `S[ a;b]` になり、`;` の前の空白は残り、後の空白は落ちます。
+`]` の前の U+2028 と U+2029 は残します。
+[fixture: system-boundaries/boundary-title-directive-or-semicolon]
+[test: usecase: U+2028 inside the brackets of a boundary title]
+[test: usecase: U+2029 inside the brackets of a boundary title]
 隙間にディレクティブがあれば、その両側に空白があるかどうかは変えず、
 空白の連なりは空白 1 つにします。
 [fixture: system-boundaries/boundary-id-title-directed-gap]

@@ -926,7 +926,13 @@ label in quotes is kept as written, except for the whitespace between its
 closing quote and the closing bracket, which is dropped: `A["x" ]` is printed
 `A["x"]`, and so is `B{"x" }`, `C(("x" ))`, and `D[/"t" /]`. [fixture:
 label-inner-whitespace/quotes-kept] [fixture:
-label-inner-whitespace/string-closing-touches]
+label-inner-whitespace/string-closing-touches] Only whitespace on the line of
+the closing quote is dropped: a line break, a comment line, a directive, or a
+U+2028 or U+2029 between the quote and the bracket stays, and a bracket after a
+line break stands as a continuation line. [fixture:
+label-inner-whitespace/string-closing-break-and-directive-kept] [test: U+2028
+between the closing quote and the bracket of a flowchart label] [test: U+2029
+between the closing quote and the bracket of a flowchart label]
 
 The whitespace at the start of a label is kept, as one space, when the label
 would be read differently without it: when the label starts with `/`, `\`, `-`,
@@ -1307,25 +1313,31 @@ multi-line-statements/label-over-lines] [fixture:
 multi-line-statements/directive-inside] Comment lines inside it stay inside it,
 at the level of its later lines. [fixture:
 multi-line-statements/several-comments-inside] A `click` statement with a line
-break between its parts, or in a comment or a directive, is kept as written,
-because mermaid.js rejects some of them when a later line is indented. [fixture:
-multi-line-statements/click-in-subgraph-kept] [fixture:
-multi-line-statements/click-forms-kept] [fixture:
-multi-line-statements/click-comment-inside-kept] A line break inside a string or
-inside the arguments of a call is part of that value, which is printed as
-written, and no later line of the statement is indented. The other gaps of such
-a statement follow the ordinary rules: `click   A "/u" "x` and `y"` on the next
-line is printed `click A "/u" "x` and `y"`, as the statement on one line would
-be. [fixture: multi-line-statements/click-string-over-lines-collapsed] [fixture:
-multi-line-statements/click-callback-args-over-lines-collapsed] A directive, a
+break in a gap between its parts, or in a comment or a directive that stands in
+such a gap, is kept as written, because mermaid.js rejects some of them when a
+later line is indented. [fixture: multi-line-statements/click-in-subgraph-kept]
+[fixture: multi-line-statements/click-forms-kept] [fixture:
+multi-line-statements/click-comment-inside-kept] A line break inside a string,
+or between the `(` and the `)` of a call with arguments, is part of that value
+(a comment or a directive there included), which is printed as written, and no
+later line of the statement is indented. The other gaps of such a statement
+follow the ordinary rules: `click   A "/u" "x` and `y"` on the next line is
+printed `click A "/u" "x` and `y"`, as the statement on one line would be.
+[fixture: multi-line-statements/click-string-over-lines-collapsed] [fixture:
+multi-line-statements/click-callback-args-over-lines-collapsed] [fixture:
+multi-line-statements/click-string-over-lines-directive-inside] A directive, a
 `;`, a comment line, or an empty line beside it is treated as for a statement on
 one line. [fixture:
 multi-line-statements/click-string-over-lines-beside-directive] [fixture:
 multi-line-statements/click-string-over-lines-with-semicolon] [fixture:
+multi-line-statements/click-string-over-lines-semicolon-kept] [fixture:
 multi-line-statements/click-string-over-lines-comment-and-empty-line] A U+2028
-or U+2029 between its parts stays where it is. [test: U+2028 between the parts
-of a flowchart click statement with a string over lines] [test: U+2029 between
-the parts of a flowchart click statement with a string over lines]
+or U+2029 between its parts stays where it is, also after a string that runs
+over lines. [test: U+2028 between the parts of a flowchart click statement with
+a string over lines] [test: U+2029 between the parts of a flowchart click
+statement with a string over lines] [test: U+2028 after the string of a
+flowchart click statement with a string over lines] [test: U+2029 after the
+string of a flowchart click statement with a string over lines]
 
 A diagram header or subgraph header with a comment line after U+2028 or U+2029
 keeps that span as written: mermaid.js removes the comment line and its
@@ -1909,7 +1921,15 @@ a shape (see [Label inner whitespace](#label-inner-whitespace)):
 space stays where the title would be read otherwise, with the same rule as for a
 label: `[ /x/ ]` and `[ \x\ ]` stay, since `[/x/]` would be rejected. [fixture:
 subgraph-header/title-padding-dropped] [fixture:
-subgraph-header/title-interior-whitespace-dropped]
+subgraph-header/title-interior-whitespace-dropped] Whitespace beside a line
+break, a comment line, or a U+2028 or U+2029 in the brackets stays as written.
+[fixture: subgraph-header/title-padding-beside-line-break] [test: U+2028 in the
+title of a flowchart subgraph header] [test: U+2029 in the title of a flowchart
+subgraph header] On a line that the line rule may read, the whitespace after the
+`[` of a title that follows `style:` stays: `subgraph style:[ #x; ]` is printed
+`subgraph style:[ #x;]`, while `subgraph a: [ #x; ]` is printed
+`subgraph a:[#x;]`, since no `style` stands before its `:`. [fixture:
+subgraph-header/title-padding-on-line-rule-line]
 
 The `[` of the title touches the name of the subgraph: `subgraph S [t]` is
 printed `subgraph S[t]`, whatever the name is: a word, several words, a string,

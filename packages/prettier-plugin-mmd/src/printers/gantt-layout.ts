@@ -20,15 +20,12 @@ import {
   spansLinesThatCannotJoin,
 } from "./layout.ts"
 import { holdsJoiningRegion } from "./kept-lines.ts"
-import { accessibilityRules } from "./statement-rules.ts"
-import type { Source } from "./source.ts"
 import {
-  findStructuralToken,
-  findStructuralTokenEndingBefore,
-  findTokenEndingBefore,
-  findTokensBetween,
-  findTriviaBetween,
-} from "./source.ts"
+  accessibilityRules,
+  findCallRangeWithTrivia,
+} from "./statement-rules.ts"
+import type { Source } from "./source.ts"
+import { findTokenEndingBefore, findTokensBetween } from "./source.ts"
 
 /**
  * The node types of a Gantt chart whose text is a value, printed as written:
@@ -225,9 +222,7 @@ export function layoutGanttStatement(
 
 /**
  * The arguments of a call with a comment or a directive among them, from the
- * `(` through the `)`, printed as written: the whitespace before the `)` is
- * part of the arguments in the Db, and a comment line before the `)` would
- * otherwise indent it (docs/gantt.md, Click statements).
+ * `(` through the `)`, printed as written (see `findCallRangeWithTrivia`).
  */
 function findCallArgumentsStretches(
   source: Source,
@@ -236,20 +231,8 @@ function findCallArgumentsStretches(
   const args =
     statement.type === "GanttClickStatement" ? statement.call?.args : null
   if (args === null || args === undefined) return []
-  const opening = expectToken(
-    findStructuralTokenEndingBefore(source, args.range[0]),
-    "the `(` of a call",
-  )
-  expectValue(opening, "(")
-  const closing = expectToken(
-    findStructuralToken(source, args.range[1]),
-    "the `)` of a call",
-  )
-  expectValue(closing, ")")
-  return findTriviaBetween(source, opening.range[1], closing.range[0]).length >
-    0
-    ? [{ start: opening.range[0], end: closing.range[1] }]
-    : []
+  const call = findCallRangeWithTrivia(source, args)
+  return call === null ? [] : [{ start: call[0], end: call[1] }]
 }
 
 /**

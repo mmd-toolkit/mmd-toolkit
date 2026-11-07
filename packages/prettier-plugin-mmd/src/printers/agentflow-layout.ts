@@ -13,6 +13,8 @@ import {
   addHeadingTitleRules,
   addLinkRules,
   addShapeRules,
+  breaksBetweenParts,
+  findCallbackParentheses,
   layoutGraphAccessibility,
 } from "./graph-layout.ts"
 import { findAgentflowKeptLines } from "./agentflow-kept-lines.ts"
@@ -304,6 +306,46 @@ export function classifyAgentflowStatement(
   }
 }
 
+/**
+ * Adds the stretches of a click statement that are printed as written: from
+ * its first id to its end, except the whitespace between the parentheses of a
+ * call with blank arguments, `f( )`, which is dropped (docs/agentflow.md,
+ * Click statements).
+ */
+function addClickKeptStretches(
+  source: Source,
+  statement: Extract<
+    AgentflowStatement,
+    { type: "AgentflowClickUrlStatement" | "AgentflowClickCallbackStatement" }
+  >,
+  end: number,
+  kept: Atom[],
+  rules: Map<number, GapRule>,
+): void {
+  const idsStart = expectToken(
+    findStructuralToken(
+      source,
+      expectToken(findStructuralToken(source, statement.range[0]), "click")
+        .range[1],
+    ),
+    "click ids",
+  ).range[0]
+  const parentheses =
+    statement.type === "AgentflowClickCallbackStatement" &&
+    statement.arguments === null
+      ? findCallbackParentheses(source, statement)
+      : null
+  if (parentheses === null) {
+    kept.push({ start: idsStart, end })
+    return
+  }
+  kept.push(
+    { start: idsStart, end: parentheses.opening.range[1] },
+    { start: parentheses.closing.range[0], end },
+  )
+  rules.set(parentheses.closing.range[0], "none")
+}
+
 /** Agentflow statements use flowchart's shared graph spacing and atom printer. */
 export function layoutStatement(
   source: Source,
@@ -340,20 +382,14 @@ export function layoutStatement(
       // later physical columns belong to the authored click spelling; extra
       // whitespace units can reject (diagrams/agentflow.md, Click, call, and href;
       // docs/agentflow.md, Click statements and Multiline statements and values).
-      if (source.text.slice(start, end).includes("\n"))
+      if (breaksBetweenParts(source, statement, agentflowValueNodeTypes, [])) {
         return keptAsWritten(start, end)
+      }
       // Only the ordinary gap after the first click keyword is exterior to
-      // its ids, values and retained prefixes.
-      kept.push({
-        start: expectToken(
-          findStructuralToken(
-            source,
-            expectToken(findStructuralToken(source, start), "click").range[1],
-          ),
-          "click ids",
-        ).range[0],
-        end,
-      })
+      // its ids, values and retained prefixes, and the whitespace between the
+      // parentheses of a call with blank arguments, which mermaid.js reads as
+      // no arguments.
+      addClickKeptStretches(source, statement, end, kept, rules)
       break
     case "AgentflowEmptyStatement":
       return keptAsWritten(start, end)

@@ -495,7 +495,12 @@ written. [fixture: labels/spaced] [fixture: labels/accessibility-text-kept] The
 string between the brackets of a class or a namespace has nothing between it and
 the brackets: `namespace Auth[ "x" ]` is printed `namespace Auth["x"]`, and
 `class A["x" ]` is printed `class A["x"]`. mermaid.js reads every spelling as
-the same label. [fixture: labels/bracket-padding-dropped]
+the same label. A directive beside the string keeps the gap next to it, one
+space where whitespace was written: `class D[ %%{x}%% "x" ]` is printed
+`class D[ %%{x}%% "x"]`. A U+2028 or U+2029 before the `]` stays. [fixture:
+labels/bracket-directive-at-edge] [test: U+2028 inside the brackets of a class
+label] [test: U+2029 inside the brackets of a class label] [fixture:
+labels/bracket-padding-dropped]
 
 Input
 ([labels/spaced-input.mmd](../tests/fixtures/class/labels/spaced-input.mmd)):

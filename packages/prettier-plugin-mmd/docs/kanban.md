@@ -374,16 +374,21 @@ after `:::` as the class of the node
 and passes no class on to what it draws
 ([`getData`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L54-L97)),
 so the board is the same, and a space or a tab does not belong to a class name
-in HTML. A class of only whitespace, one that starts with a directive, and one
-that starts with another whitespace character, such as U+00A0, stay as written.
-[fixture: icons-and-classes/class-padding-after-marker-dropped] [test: kanban:
-class-padding-then-u2028] [test: kanban: class-padding-then-u2029] A later icon
-replaces an earlier one in the Db, and both are kept, because the printer drops
-no text. The printer never moves a decoration onto the line of its node, because
-that changes the board: after a bare node an icon makes a round shape of its
-text and the rest part of the id (`A ::icon(x)` is the node `A ::icon` with the
-label `x`), a class becomes part of the id (`A :::c` is the id `A :::c`), and
-after a shape both are rejected (`S[x] ::icon(star)`, see
+in HTML. A class of only whitespace stays as written, and so does a class line
+with a directive anywhere on it (`::: hot %%{x}%%`, `::: h%%{x}%%ot`,
+`%%{x}%%::: hot`): a line with a directive is printed as written (see
+[Directives](#directives)). Only spaces and tabs are dropped: `:::` followed by
+spaces and a U+00A0 is printed with the U+00A0 next to the `:::`, and it stays.
+[fixture: icons-and-classes/class-padding-after-marker-dropped] [fixture:
+icons-and-classes/class-with-directive-kept] [test: kanban:
+class-spaces-then-no-break-space] [test: kanban: class-padding-then-u2028]
+[test: kanban: class-padding-then-u2029] A later icon replaces an earlier one in
+the Db, and both are kept, because the printer drops no text. The printer never
+moves a decoration onto the line of its node, because that changes the board:
+after a bare node an icon makes a round shape of its text and the rest part of
+the id (`A ::icon(x)` is the node `A ::icon` with the label `x`), a class
+becomes part of the id (`A :::c` is the id `A :::c`), and after a shape both are
+rejected (`S[x] ::icon(star)`, see
 [When a diagram is not formatted](../README.md#when-a-diagram-is-not-formatted)).
 Classes and the icons of sections do not show in the Db that the tests compare,
 but they are text that the author wrote, and they are kept as well. [fixture:

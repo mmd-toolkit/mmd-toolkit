@@ -497,6 +497,36 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
  */
 const flowchartExamples: readonly (readonly [string, string, string])[] = [
   [
+    "U+2028 between the closing quote and the bracket of a flowchart label",
+    'flowchart LR\nA["x"\u2028]\n',
+    'flowchart LR\n  A["x"\u2028]\n',
+  ],
+  [
+    "U+2028 in the title of a flowchart subgraph header",
+    "flowchart LR\nsubgraph S[ T\u2028]\nA\nend\n",
+    "flowchart LR\n  subgraph S[T\u2028]\n    A\n  end\n",
+  ],
+  [
+    "U+2028 after the string of a flowchart click statement with a string over lines",
+    'flowchart LR\nA\nclick   A "x\ny"   \u2028  "t"\n',
+    'flowchart LR\n  A\n  click A "x\ny"   \u2028  "t"\n',
+  ],
+  [
+    "U+2029 between the closing quote and the bracket of a flowchart label",
+    'flowchart LR\nA["x"\u2029]\n',
+    'flowchart LR\n  A["x"\u2029]\n',
+  ],
+  [
+    "U+2029 in the title of a flowchart subgraph header",
+    "flowchart LR\nsubgraph S[ T\u2029]\nA\nend\n",
+    "flowchart LR\n  subgraph S[T\u2029]\n    A\n  end\n",
+  ],
+  [
+    "U+2029 after the string of a flowchart click statement with a string over lines",
+    'flowchart LR\nA\nclick   A "x\ny"   \u2029  "t"\n',
+    'flowchart LR\n  A\n  click A "x\ny"   \u2029  "t"\n',
+  ],
+  [
     "U+2028 between the parts of a flowchart click statement with a string over lines",
     'flowchart LR\nA\nclick   A\u2028"/u" "x\ny"\n',
     'flowchart LR\n  A\n  click A\u2028"/u" "x\ny"\n',
@@ -648,6 +678,16 @@ const classLineSeparatorExamples: readonly (readonly [
   string,
   string,
 ])[] = [
+  [
+    "U+2028 inside the brackets of a class label",
+    'classDiagram\nclass D[ "x"\u2028]\n',
+    'classDiagram\n  class D["x"\u2028]\n',
+  ],
+  [
+    "U+2029 inside the brackets of a class label",
+    'classDiagram\nclass D[ "x"\u2029]\n',
+    'classDiagram\n  class D["x"\u2029]\n',
+  ],
   [
     "U+2028 between the parentheses of a blank class callback",
     "classDiagram\nclass A\nclick A call f(\u2028)",
@@ -2429,6 +2469,11 @@ describe("a block diagram with a whitespace character that no fixture file holds
 const kanbanExamples: readonly (readonly [string, string, string, Options?])[] =
   [
     [
+      "kanban: class-spaces-then-no-break-space",
+      "kanban\n S\n   A\n   :::  \u00a0hot\n",
+      "kanban\n  S\n    A\n    :::\u00a0hot\n",
+    ],
+    [
       "kanban: class-padding-then-u2028",
       "kanban\n S\n   A\n   ::: hot\u2028",
       "kanban\n  S\n    A\n    :::hot\n",
@@ -3452,6 +3497,16 @@ describe("C4 whitespace and line boundaries", () => {
 
 /** Venn separators are characters inside values and whole diagram comments. */
 const vennExamples: readonly (readonly [string, string, string])[] = [
+  [
+    "U+2028 inside the brackets of a venn label",
+    "venn-beta\nset A[ T\u2028]\n",
+    "venn-beta\nset A[T\u2028]\n",
+  ],
+  [
+    "U+2029 inside the brackets of a venn label",
+    "venn-beta\nset A[ T\u2029]\n",
+    "venn-beta\nset A[T\u2029]\n",
+  ],
   [
     "venn: crlf-values",
     'venn-beta\r\nset "A\r\n B"[L\r\n M]\r\nstyle A fill:rgb(1,\r\n 2,3)\r\n',

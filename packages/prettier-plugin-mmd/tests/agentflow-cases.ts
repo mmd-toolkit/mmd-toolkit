@@ -10,6 +10,26 @@ export interface AgentflowCase {
 
 export const agentflowCases: readonly AgentflowCase[] = [
   {
+    name: "agentflow: U+2028 inside the brackets of a flow title",
+    input: "agentflow-beta TB\nflow F[ T\u2028]\nA\nend\n",
+    output: "agentflow-beta TB\n  flow F[T\u2028]\n    A\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 inside the brackets of a flow title",
+    input: "agentflow-beta TB\nflow F[ T\u2029]\nA\nend\n",
+    output: "agentflow-beta TB\n  flow F[T\u2029]\n    A\n  end\n",
+  },
+  {
+    name: "agentflow: U+2028 between the parentheses of a blank callback",
+    input: 'agentflow-beta TB\nA\nclick A call f(\u2028) "t"\n',
+    output: 'agentflow-beta TB\n  A\n  click A call f(\u2028) "t"\n',
+  },
+  {
+    name: "agentflow: U+2029 between the parentheses of a blank callback",
+    input: 'agentflow-beta TB\nA\nclick A call f(\u2029) "t"\n',
+    output: 'agentflow-beta TB\n  A\n  click A call f(\u2029) "t"\n',
+  },
+  {
     name: "agentflow: eol-crlf",
     input: 'agentflow-beta TB\r\nA["a\r\n b"]\r\n',
     output: 'agentflow-beta TB\n  A["a\n b"]\n',

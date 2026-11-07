@@ -948,6 +948,12 @@ flowchart LR
 `A["x" ]` は `A["x"]` に、`B{"x" }`、`C(("x" ))`、`D[/"t" /]` も同じです。
 [fixture: label-inner-whitespace/quotes-kept]
 [fixture: label-inner-whitespace/string-closing-touches]
+落とすのは、閉じの引用符と同じ行にある空白だけです。
+引用符と括弧の間の改行、コメント行、ディレクティブ、U+2028、U+2029 は残り、
+改行の後の括弧は継続行になります。
+[fixture: label-inner-whitespace/string-closing-break-and-directive-kept]
+[test: U+2028 between the closing quote and the bracket of a flowchart label]
+[test: U+2029 between the closing quote and the bracket of a flowchart label]
 
 ラベルの先頭の空白は、それがないとラベルの読み方が変わるときは、
 空白 1 つとして残します。
@@ -1335,27 +1341,33 @@ sequence、class、state は、そこでは改行が空白の後でだけ数え�
 [fixture: multi-line-statements/directive-inside]
 途中のコメント行は文の中に残り、2 行目以降と同じ段に置きます。
 [fixture: multi-line-statements/several-comments-inside]
-部品の間、コメント、ディレクティブの中に改行がある `click` の文は、
+部品の間の隙間、
+またはその隙間にあるコメントやディレクティブの中に改行がある `click` の文は、
 書かれたまま残します。
 mermaid.js は、2 行目以降が字下げされていると、その一部を拒否するからです。
 [fixture: multi-line-statements/click-in-subgraph-kept]
 [fixture: multi-line-statements/click-forms-kept]
 [fixture: multi-line-statements/click-comment-inside-kept]
-文字列の中や呼び出しの引数の中にある改行は、その値の一部で、
+文字列の中や、引数のある呼び出しの `(` と `)` の間にある改行は、
+その値の一部（そこにあるコメントやディレクティブも含みます）で、
 値は書かれたまま印字し、文の後の行を字下げすることもありません。
 そのような文のほかの隙間には、普通の規則を掛けます。
 `click   A "/u" "x` と次の行の `y"` は、
 1 行の文と同じように `click A "/u" "x` と `y"` になります。
 [fixture: multi-line-statements/click-string-over-lines-collapsed]
 [fixture: multi-line-statements/click-callback-args-over-lines-collapsed]
+[fixture: multi-line-statements/click-string-over-lines-directive-inside]
 隣にディレクティブ、`;`、コメント行、空行があるときも、
 1 行の文と同じに扱います。
 [fixture: multi-line-statements/click-string-over-lines-beside-directive]
 [fixture: multi-line-statements/click-string-over-lines-with-semicolon]
+[fixture: multi-line-statements/click-string-over-lines-semicolon-kept]
 [fixture: multi-line-statements/click-string-over-lines-comment-and-empty-line]
-部品の間の U+2028 と U+2029 は、そのまま残します。
+部品の間の U+2028 と U+2029 は、複数行の文字列の後でも、そのまま残します。
 [test: U+2028 between the parts of a flowchart click statement with a string over lines]
 [test: U+2029 between the parts of a flowchart click statement with a string over lines]
+[test: U+2028 after the string of a flowchart click statement with a string over lines]
+[test: U+2029 after the string of a flowchart click statement with a string over lines]
 
 図のヘッダーや subgraph のヘッダーで、
 U+2028 や U+2029 の後にコメント行がある範囲は書かれたまま残します。
@@ -1974,6 +1986,17 @@ mermaid.js は、どちらの書き方も同じ subgraph として読みます�
 `[ /x/ ]` や `[ \x\ ]` はそのままです。
 `[/x/]` は拒否されるからです。 [fixture: subgraph-header/title-padding-dropped]
 [fixture: subgraph-header/title-interior-whitespace-dropped]
+括弧の中の改行、コメント行、U+2028、U+2029 の隣にある空白は、
+書かれたまま残します。
+[fixture: subgraph-header/title-padding-beside-line-break]
+[test: U+2028 in the title of a flowchart subgraph header]
+[test: U+2029 in the title of a flowchart subgraph header]
+行の規則が読むかもしれない行では、
+`style:` の後のタイトルの `[` の後の空白が残ります。
+`subgraph style:[ #x; ]` は `subgraph style:[ #x;]` になり、
+`subgraph a: [ #x; ]` は、
+`:` の前に `style` がないので `subgraph a:[#x;]` になります。
+[fixture: subgraph-header/title-padding-on-line-rule-line]
 
 タイトルの `[` は subgraph の名前に接します。
 `subgraph S [t]` は `subgraph S[t]` になります。

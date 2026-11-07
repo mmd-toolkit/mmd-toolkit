@@ -11,9 +11,10 @@ import type {
   FlowchartStatement,
   Token,
 } from "@mmd-toolkit/ast"
-import type { AtomLayout, GapRule } from "./atoms.ts"
+import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import {
   collectAtoms,
+  collectValueNodes,
   expectToken,
   expectValue,
   keptAsWritten,
@@ -44,23 +45,19 @@ export function addShapeRules(
   shape: GraphShape,
   rules: Map<number, GapRule>,
 ): void {
+  const closing = expectToken(
+    findStructuralToken(source, shape.label.range[1]),
+    "the closing bracket of a shape",
+  )
   if (shape.label.kind !== "text") {
     // The closing bracket touches the closing quote: mermaid.js reads the
     // whitespace after the quote as nothing (docs/flowchart.md, Label inner
     // whitespace).
-    const closing = expectToken(
-      findStructuralToken(source, shape.label.range[1]),
-      "the closing bracket of a shape",
-    )
     rules.set(closing.range[0], "none")
     return
   }
   const edge = labelEdgeRule(source, shape.label)
   rules.set(shape.label.range[0], edge)
-  const closing = expectToken(
-    findStructuralToken(source, shape.label.range[1]),
-    "the closing bracket of a shape",
-  )
   rules.set(closing.range[0], takesTextBefore(closing) ? "none" : edge)
 }
 
@@ -410,4 +407,63 @@ function keepsGraphAccessibility(
     spansLinesThatCannotJoin(source, start, end) ||
     findTriviaBetween(source, start, end).length > 0
   )
+}
+
+/**
+ * Whether a line feed of a click statement stands outside its values and
+ * outside `stretches`: between its parts, or in a comment or a directive that
+ * stands between them. A line feed inside a string, or inside the parentheses
+ * of a call with arguments, is part of that value, which is printed as
+ * written, and moves no line of the statement.
+ */
+export function breaksBetweenParts(
+  source: Source,
+  statement: Node,
+  valueTypes: ReadonlySet<Node["type"]>,
+  stretches: readonly Atom[],
+): boolean {
+  const values = collectValueNodes(statement, valueTypes)
+  for (
+    let offset = source.text.indexOf("\n", statement.range[0]);
+    offset !== -1 && offset < statement.range[1];
+    offset = source.text.indexOf("\n", offset + 1)
+  ) {
+    if (
+      !values.some(
+        (value) => value.range[0] <= offset && offset < value.range[1],
+      ) &&
+      !stretches.some(
+        (stretch) => stretch.start <= offset && offset < stretch.end,
+      )
+    )
+      return true
+  }
+  return false
+}
+
+/**
+ * The parentheses after the name of `call`, if any: the `(` after the
+ * callback and the `)` after its arguments.
+ */
+export function findCallbackParentheses(
+  source: Source,
+  statement: {
+    readonly range: Range
+    readonly callback: Node
+    readonly arguments: Node | null
+  },
+): { readonly opening: Token; readonly closing: Token } | null {
+  const opening = findStructuralToken(source, statement.callback.range[1])
+  if (opening?.value !== "(" || opening.range[0] >= statement.range[1]) {
+    return null
+  }
+  const closing = expectToken(
+    findStructuralToken(
+      source,
+      statement.arguments?.range[1] ?? opening.range[1],
+    ),
+    "the `)` of callback arguments",
+  )
+  expectValue(closing, ")")
+  return { opening, closing }
 }

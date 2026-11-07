@@ -402,9 +402,15 @@ mermaid.js は `:::` の後のテキストをノードのクラスとして持�
 [`getData`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L54-L97)
 にあります。
 そのためボードは変わらず、空白やタブは HTML のクラス名の一部でもありません。
-空白だけのクラス、ディレクティブで始まるクラス、
-U+00A0 のような別の空白文字で始まるクラスは、書かれたまま残します。
+空白だけのクラスと、
+行のどこかにディレクティブがあるクラス行（`::: hot %%{x}%%`、`::: h%%{x}%%ot`、
+`%%{x}%%::: hot`）は、書かれたまま残します。
+ディレクティブのある行は書かれたまま印字するからです（Directives を参照）。
+落とすのは空白とタブだけで、`:::` の後の空白と U+00A0 は、
+U+00A0 が `:::` に接する形で印字され、U+00A0 は残ります。
 [fixture: icons-and-classes/class-padding-after-marker-dropped]
+[fixture: icons-and-classes/class-with-directive-kept]
+[test: kanban: class-spaces-then-no-break-space]
 [test: kanban: class-padding-then-u2028]
 [test: kanban: class-padding-then-u2029]
 後のアイコンは Db で前のものを置き換えますが、

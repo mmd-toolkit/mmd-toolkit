@@ -393,6 +393,10 @@ mermaid.js は向きの後の空白と、
 です）。
 `,` の後の空白はどの向きにも入らないので、空白 1 つにします。
 `(right,down)` と `(right,   down)` は `(right, down)` になります。
+`;` を保つ行（保つ行）では空白を足さないので、
+`a<["style:"]>(x,down)  b["#y;"]` の `(x,down)` はそのままで、
+そこの `(x,   down)` は `(x, down)` になります。
+[fixture: shapes/block-arrow-comma-on-kept-line]
 そこにあるコメント行やディレクティブは行ごと残り、
 U+2028 と U+2029 はそのまま残します。 [fixture: shapes/block-arrow-comma-space]
 [fixture: shapes/block-arrow-comma-comment-line]

@@ -255,13 +255,21 @@ system-boundaries/boundary-header-comment-empty] Reuse the heading form of
 `[` or `(`, touches the id, so `systemBoundary S [t]` is printed
 `systemBoundary S[t]` and `systemBoundary S (t)` is printed
 `systemBoundary S(t)`. mermaid.js reads the spaced and the touching spellings as
-the same boundary. The whitespace inside the brackets or the parentheses is
-dropped, since mermaid.js trims the title: `systemBoundary S[ x ]` is printed
-`systemBoundary S[x]`, and `S("x" )` is printed `S("x")`. [fixture:
-system-boundaries/boundary-title-padding-dropped] [fixture:
-system-boundaries/boundary-title-opener-touches-id] A directive in the gap keeps
-whether whitespace was written on each side of it, a run of whitespace becoming
-one space, as under flowchart's Directives. [fixture:
+the same boundary. The spaces and tabs inside the brackets or the parentheses
+are dropped, since mermaid.js trims them (it keeps a no-break space, which
+stays): `systemBoundary S[ x ]` is printed `systemBoundary S[x]`, and `S("x" )`
+is printed `S("x")`. [fixture: system-boundaries/boundary-title-padding-dropped]
+[fixture: system-boundaries/boundary-title-opener-touches-id] A directive at an
+edge of the title keeps the gap beside it, one space where whitespace was
+written (`S[ %%{x}%% T ]` is printed `S[ %%{x}%% T]`). On a line with a kept
+`;`, the text through the last `;` is protected (see Statements and semicolons),
+so `S[ a;b ]` is printed `S[ a;b]`: the padding before the `;` stays and the
+padding after it is dropped. A U+2028 or U+2029 before the `]` stays. [fixture:
+system-boundaries/boundary-title-directive-or-semicolon] [test: usecase: U+2028
+inside the brackets of a boundary title] [test: usecase: U+2029 inside the
+brackets of a boundary title] A directive in the gap keeps whether whitespace
+was written on each side of it, a run of whitespace becoming one space, as under
+flowchart's Directives. [fixture:
 system-boundaries/boundary-id-title-directed-gap] [fixture:
 system-boundaries/boundary-id-title-directed-gap-runs-collapsed] Preserve native
 metadata/classes and repeated declarations; body membership comes from the AST's

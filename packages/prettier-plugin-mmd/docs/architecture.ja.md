@@ -300,6 +300,13 @@ mermaid.js が trim するからです。
 `group a(cloud)[ API ]` は `group a(cloud)[API]` に、
 `service s(server)["x" ]` は `service s(server)["x"]` になります。
 [fixture: architecture/label-content/title-edge-whitespace-dropped]
+行の最後の保つ `;` までのテキストは保護されるので（Semicolons を参照）、
+そうした行のタイトルは空白を保ちます。
+`group g(cloud)[ a;b ]` と `service s(server)[ x; ] in g` は変わりません。
+`]` の前の U+2028 と U+2029 は残します。
+[fixture: architecture/label-content/title-directive-or-semicolon-kept]
+[test: architecture/label-content/title-u2028]
+[test: architecture/label-content/title-u2029]
 テキストの中の連続空白、タブ、空白だけの値、quoted の空値、escape、HTML、
 entity、hidden に見える文字は保ちます。
 Db がこれらを区別するためです。

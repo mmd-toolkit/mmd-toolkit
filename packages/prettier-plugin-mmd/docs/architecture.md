@@ -297,8 +297,14 @@ Preserve bracket interiors, except the spaces, tabs, and no-break spaces next to
 the brackets of the title of a group or a service: mermaid.js trims them, so
 `group a(cloud)[ API ]` is printed `group a(cloud)[API]` and
 `service s(server)["x" ]` is printed `service s(server)["x"]`. [fixture:
-label-content/title-edge-whitespace-dropped] Repeated spaces, tabs inside the
-text, whitespace-only and quoted-empty content, escapes, HTML, entities and
+label-content/title-edge-whitespace-dropped] The text through the last kept `;`
+of a line is protected (see Semicolons), so a title on such a line keeps its
+padding: `group g(cloud)[ a;b ]` and `service s(server)[ x; ] in g` are not
+changed. A U+2028 or U+2029 before the `]` stays. [fixture:
+label-content/title-directive-or-semicolon-kept] [test:
+architecture/label-content/title-u2028] [test:
+architecture/label-content/title-u2029] Repeated spaces, tabs inside the text,
+whitespace-only and quoted-empty content, escapes, HTML, entities and
 hidden-looking text stay: the Db can distinguish these values, and a title with
 a comment or a directive stays as written. Physical CR/CRLF alone follow the
 shared host policy.

@@ -56,7 +56,11 @@ export interface KanbanLine {
    * which is indentation too; null for any other line.
    */
   readonly leading: LeadingDirectives | null
-  /** For a class line, the text after its `:::`; null for any other line. */
+  /**
+   * For a class line with no directive on it, the text after its `:::`; null
+   * for any other line, a class line with a directive included, which is
+   * printed as written.
+   */
   readonly cssClass: Node | null
 }
 
@@ -139,10 +143,11 @@ export function kanbanLines(source: Source): readonly KanbanLine[] {
 
 /**
  * Every character inside a node, decoration, or opaque suffix is retained,
- * except the spaces and tabs between the `:::` of a class line and its class:
- * the class text is only a class name for the rendering, so ` hot` and `hot`
- * name the same class (docs/kanban.md, Icons and classes). A class of only
- * whitespace, and one that starts with a directive, stay as written.
+ * except the spaces and tabs between the `:::` of a class line with no
+ * directive and the first other character of its class: the class text is only
+ * a class name for the rendering, so ` hot` and `hot` name the same class
+ * (docs/kanban.md, Icons and classes). A class of only whitespace stays as
+ * written.
  */
 export function layoutKanbanLine(source: Source, line: KanbanLine): AtomLayout {
   const start = line.leading?.textStart ?? line.range[0]
@@ -154,13 +159,7 @@ export function layoutKanbanLine(source: Source, line: KanbanLine): AtomLayout {
     (source.text[textStart] === " " || source.text[textStart] === "\t")
   )
     textStart++
-  if (
-    textStart === cssClass.range[0] ||
-    textStart === cssClass.range[1] ||
-    source.text.slice(start, cssClass.range[0]) !== ":::" ||
-    findTriviaBetween(source, textStart, cssClass.range[1]).at(0)?.range[0] ===
-      textStart
-  ) {
+  if (textStart === cssClass.range[0] || textStart === cssClass.range[1]) {
     return keptAsWritten(start, line.range[1])
   }
   return {

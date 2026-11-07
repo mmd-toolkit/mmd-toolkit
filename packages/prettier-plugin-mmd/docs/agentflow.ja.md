@@ -125,6 +125,14 @@ agentflow の文書にあるタイトル付きの見出し 19 件は、すべて
 flowchart と同じ形で、agentflowだけ違う形を選ぶ理由がないためです。
 タイトルが別に読まれる所（`[ /x/ ]`、agentflow の `[ x@ ]`）には、
 空白を 1 つ残します。
+タイトルの端にディレクティブがあれば、その隣の隙間は、
+空白が書かれていれば 1 つにして残します。
+`flow F[ %%{x}%% T ]` は `flow F[ %%{x}%% T]` に、
+`flow G[ T %%{x}%% ]` は `flow G[T %%{x}%% ]` になります。
+`]` の前の U+2028 と U+2029 は残します。
+[fixture: names-and-headings/heading-title-directive-at-edge]
+[test: agentflow: U+2028 inside the brackets of a flow title]
+[test: agentflow: U+2029 inside the brackets of a flow title]
 [fixture: names-and-headings/heading-title-padding-dropped]
 [fixture: names-and-headings/name-heading-touches-title]
 [fixture: names-and-headings/name-heading-touches-title-kinds]
@@ -138,7 +146,12 @@ flowchart と同じ形で、agentflowだけ違う形を選ぶ理由がないた�
 [ディレクティブ](#directives)と同じく保ちます。
 隙間の中にディレクティブがあれば、その後ろに空白があるかどうかを保ち、
 書かれていればその空白は 1 つにします。
-ディレクティブの前の空白は名前に属するので、書かれたまま残します。
+ディレクティブの前の空白は、`[` がディレクティブから離れているあいだは、
+名前がディレクティブまで続くので、
+書かれたまま残します（`flow F   %%{init: {}}%% [T]` は変わりません）。
+`[` がディレクティブに接していると、名前はディレクティブの前で終わり、
+その前の空白は 1 つになります（`flow H   %%{init: {}}%%[T]` は
+`flow H %%{init: {}}%%[T]` になります）。
 [fixture: names-and-headings/name-heading-title-beside-directive-kept]
 [fixture: names-and-headings/name-heading-title-gap-run-beside-directive]
 [test: agentflow: a comment and U+2028 between a flow name and its title]
@@ -897,7 +910,9 @@ agentflow-beta TB
 通常の継続トークンはさらに1段深くします。
 文字列、markdown、分割文字、Name、データ、directive、
 複数行clickの後続行の桁位置を保ちます。
-clickに余分な空白単位を足すと拒否される場合があります。
+idと呼び出しの後のclickの隙間に、余分な空白単位を足すと、
+拒否される場合があります。
+詳しくは[clickの文](#click-statements)を参照してください。
 agentflowが閉じ波括弧の後で畳むのは直後のLF前の行空白だけです。
 それ以降の空のLFと、LS/PS/VT/FF/NBSPを含む元の値の行を保ちます。
 不透明なデータの閉じ括弧をaccessibilityの閉じ括弧として揃えません。
@@ -1097,6 +1112,24 @@ tooltip/target前に必須の空白1文字を保ち、末尾の空の説明は�
 保持するclickの前置き内のdirectiveも接触する隙間を保ちます。
 [fixture: click-statements/target-required-tab]
 [fixture: click-statements/prefix-with-directive]
+
+引数が空白だけの呼び出しの括弧は、
+[flowchart](./flowchart.ja.md#トークンの間の空白)と同じく互いに接します。
+`click A call f( )` は、
+tooltip や消された前置きが続くときも `click A call f()` になります。
+mermaid.js はどちらの書き方も同じ呼び出しとして読むからです。
+`(` の前に空白がある `f ()` は、名前がその空白を取るので変えません。
+`)` の後の空白は、ここで空白がもう 1 文字あると拒否されることがあるので、
+書かれたままです。 [fixture: click-statements/callback-blank-parentheses-touch]
+[test: agentflow: U+2028 between the parentheses of a blank callback]
+[test: agentflow: U+2029 between the parentheses of a blank callback]
+改行がすべて文字列の中か括弧の間にある文は、
+最初の click キーワードの後の隙間を 1 行の文と同じに整え、
+残りは書かれたままにします。
+`click   A "/u" "x` と次の行の `  y"` は、
+`click A "/u" "x` と `  y"` になります。
+隙間に改行があれば、文は書かれたまま残します。
+[fixture: click-statements/string-over-lines-keyword-gap]
 
 入力（escape 表記）: `"agentflow-beta TB\nA\nclick   A cb\n"`。
 [fixture: click-statements/click-keyword-gap]

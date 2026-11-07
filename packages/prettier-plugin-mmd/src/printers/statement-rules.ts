@@ -232,3 +232,30 @@ export function accessibilityRules(
   if (statement.value !== null) rules.set(statement.value.range[0], "space")
   return rules
 }
+
+/**
+ * The range from the `(` through the `)` around the arguments of a call, when
+ * a comment or a directive stands among them; otherwise null. The whitespace
+ * before the `)` is part of the arguments in the Db, and a comment line before
+ * the `)` would otherwise indent it, so class and gantt print this range as
+ * written (docs/class.md and docs/gantt.md, call arguments).
+ */
+export function findCallRangeWithTrivia(
+  source: Source,
+  args: Node,
+): Range | null {
+  const opening = expectToken(
+    findStructuralTokenEndingBefore(source, args.range[0]),
+    "the `(` of a call",
+  )
+  expectValue(opening, "(")
+  const closing = expectToken(
+    findStructuralToken(source, args.range[1]),
+    "the `)` of a call",
+  )
+  expectValue(closing, ")")
+  return findTriviaBetween(source, opening.range[1], closing.range[0]).length >
+    0
+    ? [opening.range[0], closing.range[1]]
+    : null
+}

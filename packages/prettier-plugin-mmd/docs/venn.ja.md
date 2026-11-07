@@ -357,6 +357,13 @@ style A, "B" fill:red
 no-break space は例外です。
 mermaid.js が trim するからです。
 `set A[ L ]` は `set A[L]` になります。
+ディレクティブを含むラベルと、
+行の最後の保つ `;` までのテキスト（保護された範囲）は、書かれたまま残るので、
+`set A[ a; ]` と `set B[ a;b ]` は変わりません。
+`]` の前の U+2028 と U+2029 は残します。
+[fixture: labels/bracket-padding-with-directive-or-semicolon-kept]
+[test: U+2028 inside the brackets of a venn label]
+[test: U+2029 inside the brackets of a venn label]
 [fixture: labels/bare-label-padding-dropped]
 引用符の中の空白は値の一部なので、保ちます。
 空の引用符つきラベルと裸の空白ラベルは Db のラベルを省き、
