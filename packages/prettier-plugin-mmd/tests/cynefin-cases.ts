@@ -87,7 +87,7 @@ export const cynefinCases: readonly CynefinCase[] = [
   {
     name: "cynefin/line-terminators-and-unicode/unicode-block-opener",
     input: "cynefin-beta\naccDescr\u00a0\u2028{UnicodeGap}",
-    output: "cynefin-beta\n  accDescr {UnicodeGap}\n",
+    output: "cynefin-beta\n  accDescr { UnicodeGap }\n",
     options: {},
   },
   {

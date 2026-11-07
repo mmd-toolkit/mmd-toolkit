@@ -1182,20 +1182,41 @@ accessibility-lines/empty-block-semicolon-kept] [fixture:
 accessibility-lines/empty-block-directive-kept] [fixture:
 multi-line-values/accdescr-block-comment-only]
 
-Nonempty blocks follow [Multi-line values](#multi-line-values): `{a}` stays
-`{a}`, `{ a }` stays `{ a }`, and `{  a  }` becomes `{ a }`. Whitespace runs
-around the text collapse; absent whitespace is not added. [fixture:
+Nonempty blocks follow [Multi-line values](#multi-line-values): the text of a
+block on one line stands between one space on each side, so `{a}`, `{ a }`,
+`{  a  }`, `{  a}`, and `{a  }` all become `{ a }`. mermaid.js trims the text,
+so the whitespace at its ends carries no meaning, and the `@{ ... }` blocks of
+[Data blocks](#data-blocks) are printed the same way. The documentation of
+mermaid.js has no example of a block on one line. [fixture:
 accessibility-lines/block-tight-text] [fixture:
 accessibility-lines/block-spaced-text] [fixture:
-accessibility-lines/block-padded-text] Independently, `{  a}` becomes `{ a}` and
-`{a  }` becomes `{a }`; each side keeps whether it had whitespace. [fixture:
+accessibility-lines/block-padded-text] [fixture:
 accessibility-lines/block-left-padding-only] [fixture:
-accessibility-lines/block-right-padding-only] Multiline body columns follow the
-top-level or subgraph rules in [Multi-line values](#multi-line-values), and a
-closing brace on its own line aligns with `accDescr`, whether written at column
-zero or indented. This is the same form as the sibling diagrams, with no
-flowchart-specific reason to differ. [fixture:
-accessibility-lines/block-close-column-zero] [fixture:
+accessibility-lines/block-right-padding-only] A block stays as written when it
+holds a comment or a directive, or a line break, and so does a block whose text
+holds a `%%{`, as in `accDescr {A%%{}%% B`, where the first `}` closes the block
+and padding it would change the directive. [fixture:
+accessibility-lines/block-text-beside-directive-kept] [fixture:
+pie/description-blocks/block-first-brace] A block on a line that keeps its `;`
+gets no added space, whatever its text is, since the line rule of mermaid.js
+reads the whole line (see [Semicolons](#semicolons)): `{a;b}` and `{a; b}` stay
+as written, and so does a block in `A[style];accDescr {b:c;}D#z;`, where the
+added space would break the `:` and `#` that the rule pairs. A run of spaces at
+an end of such a block still becomes one space: `{  a;b  }` is printed
+`{ a;b }`. [fixture: accessibility-lines/block-text-with-semicolon-kept]
+[fixture: accessibility-lines/block-on-style-line-kept] A `;` that only
+separates statements is dropped, and the block is padded. [fixture:
+accessibility-lines/block-text-with-semicolons-padded] A U+2028 or U+2029 in the
+text makes it several lines, and stays. [test: U+2028 in the text of a flowchart
+description block] [test: U+2029 in the text of a flowchart description block]
+Whitespace at the ends that is not an ASCII space or tab, such as a no-break
+space, is trimmed by mermaid.js too and prints as one space. [test: no-break
+spaces at the ends of the text of a flowchart description block] Multiline body
+columns follow the top-level or subgraph rules in
+[Multi-line values](#multi-line-values), and a closing brace on its own line
+aligns with `accDescr`, whether written at column zero or indented. This is the
+same form as the sibling diagrams, with no flowchart-specific reason to differ.
+[fixture: accessibility-lines/block-close-column-zero] [fixture:
 accessibility-lines/block-close-indented] [fixture:
 accessibility-lines/block-comment-close-column-zero] [fixture:
 accessibility-lines/block-comment-close-indented] The same empty-block and
@@ -1221,7 +1242,7 @@ Output
 
 ```mmd
 flowchart LR
-  accDescr {a}
+  accDescr { a }
   A[Block spacing]
 ```
 
@@ -1533,9 +1554,9 @@ block stands at the level of the `accDescr` it closes. [fixture:
 multi-line-values/accdescr-block-kept] Comment contents inside such a block are
 kept, with their columns following the same top-level or subgraph rule.
 [fixture: multi-line-values/accdescr-block-comment-line-in-subgraph-kept] When
-the text starts on the line of the `{`, whitespace runs around it become one
-space, as between tokens; absent whitespace is not added. Empty blocks without
-trivia instead follow [Accessibility lines](#accessibility-lines). [fixture:
+the text starts on the line of the `{`, it stands between one space on each side
+(see [Accessibility lines](#accessibility-lines)). Empty blocks without trivia
+instead follow [Accessibility lines](#accessibility-lines). [fixture:
 multi-line-values/accdescr-block-text-starts-on-brace-line] A block without
 text, whose lines are only comment lines, holds no value: its comment lines
 stand one level deeper than the `accDescr`, as comment lines inside a statement
@@ -1851,12 +1872,33 @@ The title's interior whitespace stays as written, so `[ T ]` remains `[ T ]`:
 both forms have the same Db, and the heading keeps the author's title spelling.
 [fixture: subgraph-header/title-interior-whitespace-kept]
 
-Whether there is whitespace between the id of a subgraph and its title in
-brackets is kept as written; a run of it becomes one space. [fixture:
-subgraph-header/title-run-of-whitespace-becomes-one] mermaid.js reads both forms
-the same, and both are in use, so the choice is left to the author. A name
-written without a title keeps the whitespace after it, which mermaid.js reads as
-part of the name. [fixture: subgraph-header/name-trailing-run-kept] [fixture:
+The `[` of the title touches the name of the subgraph: `subgraph S [t]` is
+printed `subgraph S[t]`, whatever the name is: a word, several words, a string,
+or a markdown string. [fixture: subgraph-header/title-whitespace-before-dropped]
+[fixture: subgraph-header/title-touches-name] [fixture:
+subgraph-header/title-touches-name-kinds] mermaid.js reads both forms the same,
+so nothing forces the form. The `[` of the label of a node touches its id, as in
+`A[t]`, and the headings of an agentflow touch their titles, as in `flow F[T]`:
+all 19 headings with a title in
+[the documentation of agentflow](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/agentflow.md#L26-L363)
+are written so. The documentation of flowchart has two subgraphs with a title,
+and both have a space
+([`subgraph ide1 [one]`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L1030),
+[`subgraph one [My Group]`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L1109)),
+which does not decide the form. Where the gap lies between a `:` and a `#` of a
+line that holds `style` or `classDef` before the `:` and a `;` after the `#`, as
+in `subgraph style: [#x;]`, it keeps whether it holds whitespace, as under
+[Semicolons](#semicolons); `subgraph a: [#x;]` and `subgraph style: [#x]` have
+no such `;` and touch. [fixture: subgraph-header/title-after-colon-before-hash]
+A directive in the gap keeps the whitespace written on each side of it, as under
+[Directives](#directives). [fixture:
+subgraph-header/title-beside-directive-kept] A U+2028 or U+2029 in the gap stays
+where it is. [test: U+2028 between a subgraph name and its title] [test: U+2029
+and spaces between a subgraph name and its title] An empty description block
+that follows the title is the first statement of the body, as before. [fixture:
+subgraph-header/title-before-empty-description-block] A name written without a
+title keeps the whitespace after it, which mermaid.js reads as part of the name.
+[fixture: subgraph-header/name-trailing-run-kept] [fixture:
 subgraph-header/name-trailing-whitespace-kept] [fixture:
 subgraph-header/name-whitespace-before-directive-kept] [fixture:
 subgraph-header/name-whitespace-after-directive-kept] So does the whitespace
@@ -1925,7 +1967,7 @@ flowchart LR
 ```
 
 Input
-([subgraph-header/title-spacing-kept-input.mmd](../tests/fixtures/flowchart/subgraph-header/title-spacing-kept-input.mmd)):
+([subgraph-header/title-touches-name-input.mmd](../tests/fixtures/flowchart/subgraph-header/title-touches-name-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -1938,14 +1980,14 @@ flowchart LR
 ```
 
 Output
-([subgraph-header/title-spacing-kept-output.mmd](../tests/fixtures/flowchart/subgraph-header/title-spacing-kept-output.mmd)):
+([subgraph-header/title-touches-name-output.mmd](../tests/fixtures/flowchart/subgraph-header/title-touches-name-output.mmd)):
 
 ```mmd
 flowchart LR
   subgraph S[Title]
     A
   end
-  subgraph T [Title]
+  subgraph T[Title]
     B
   end
 ```

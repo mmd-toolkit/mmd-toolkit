@@ -1180,14 +1180,14 @@ railroad-peg-beta
 
 Use shared layoutDescriptionBlock through the common-description layout.
 Whitespace-only interiors become `{}` because no content needs surrounding
-padding. Put one space between `accDescr` and `{`, and leave `{Text}` tight;
-written exterior spaces remain one space where present. Join a plain
-keyword-to-opener gap. Ordinary description body and standalone comment lines
-align one level inside the statement: the Db removes indentation after LF. Keep
-line breaks, internal blank lines and trailing whitespace, and align a separate
-closing brace with the statement. Directives and shared removed comment regions
-keep their complete source. Comment/directive-only blocks retain their contents
-through the shared fallback, rather than being emptied.
+padding. Put one space between `accDescr` and `{`, and print `{Text}` as
+`{ Text }`. Join a plain keyword-to-opener gap. Ordinary description body and
+standalone comment lines align one level inside the statement: the Db removes
+indentation after LF. Keep line breaks, internal blank lines and trailing
+whitespace, and align a separate closing brace with the statement. Directives
+and shared removed comment regions keep their complete source.
+Comment/directive-only blocks retain their contents through the shared fallback,
+rather than being emptied.
 
 [fixture: railroad/description-blocks/abnf-edges]
 
@@ -1221,7 +1221,7 @@ Output
 
 ```mmd
 railroad-beta
-  accDescr {Text}
+  accDescr { Text }
   accDescr { Text }
   accDescr {}
   r = terminal("block");
@@ -1235,7 +1235,7 @@ Output
 
 ```mmd
 railroad-ebnf-beta
-  accDescr {Text}
+  accDescr { Text }
   accDescr { Text }
   accDescr {}
   r = "block";
@@ -1249,7 +1249,7 @@ Output
 
 ```mmd
 railroad-abnf-beta
-  accDescr {Text}
+  accDescr { Text }
   accDescr { Text }
   accDescr {}
   r = "block";
@@ -1263,7 +1263,7 @@ Output
 
 ```mmd
 railroad-peg-beta
-  accDescr {Text}
+  accDescr { Text }
   accDescr { Text }
   accDescr {}
   r <- "block";
@@ -1670,7 +1670,7 @@ Output
 
 ```mmd
 railroad-beta
-  accDescr {moved}
+  accDescr { moved }
   %%{!after metadata}%%
 
   r = terminal("after moved");
@@ -1684,7 +1684,7 @@ Output
 
 ```mmd
 railroad-ebnf-beta
-  accDescr {moved}
+  accDescr { moved }
   %%{!after metadata}%%
 
   r = "after moved";
@@ -1698,7 +1698,7 @@ Output
 
 ```mmd
 railroad-abnf-beta
-  accDescr {moved}
+  accDescr { moved }
   %%{!after metadata}%%
 
   r = "after moved";
@@ -1712,7 +1712,7 @@ Output
 
 ```mmd
 railroad-peg-beta
-  accDescr {moved}
+  accDescr { moved }
   %%{!after metadata}%%
 
   r <- "after moved";
@@ -2822,7 +2822,7 @@ Output
 
 ```mmd
 railroad-ebnf-beta
-  accDescr {old}
+  accDescr { old }
   accDescr {}
   z = later;
   a = "first";
@@ -2854,7 +2854,7 @@ Output
 
 ```mmd
 railroad-peg-beta
-  accDescr {old}
+  accDescr { old }
   accDescr {}
   z <- later;
   a <- "first";

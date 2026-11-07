@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Messages: a line feed right after the `-` is a `newline` unit, which the message does not take there, also before an indented line."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...mactivate AA ->> -  x: b\n---------------------^\nExpecting 'link', 'ACTOR', got 'NEWLINE'"
+  }
+}

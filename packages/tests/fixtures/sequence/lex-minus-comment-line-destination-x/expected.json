@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Messages: the comment line is left out, and a line feed right after the `-` is a `newline` unit, which the message does not take there, so the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...mactivate AA ->> -x: b\n---------------------^\nExpecting 'link', 'ACTOR', got 'NEWLINE'"
+  }
+}

@@ -602,14 +602,14 @@ treemap
 
 Use shared description-block layout. Put one space between `accDescr` and `{`,
 even when they originally touched, to distinguish the keyword from its body.
-Preserve touching interior edges; existing edge whitespace becomes one space,
-while whitespace-only interiors become `{}` because no text needs surrounding
-padding. Join plain opener whitespace, keep comment/directive contents and their
-boundaries, and align body lines one step inside the statement while retaining
-internal blank lines. Mermaid discards indentation after LF from the
-description. The body uses the configured indentation, including tabs and the
-positive minimum step at width zero. Align a separate opener or closer with its
-statement. The first `}` still closes the block.
+Print text on one line between one space on each side, whether it touched the
+braces or not, while whitespace-only interiors become `{}` because no text needs
+surrounding padding. Join plain opener whitespace, keep comment/directive
+contents and their boundaries, and align body lines one step inside the
+statement while retaining internal blank lines. Mermaid discards indentation
+after LF from the description. The body uses the configured indentation,
+including tabs and the positive minimum step at width zero. Align a separate
+opener or closer with its statement. The first `}` still closes the block.
 
 [fixture: treemap/description-blocks/empty]
 

@@ -553,15 +553,15 @@ architecture-beta
 ### Description blocks
 
 Reuse shared `layoutDescriptionBlock`: separate the keyword and opening brace
-with one space so the block boundary is clear. Interior edges stay touching
-where written; present outer runs become one space. Whitespace-only interiors
-become `{}` because no text needs surrounding space. Plain opener whitespace can
-join; real trivia keeps its break. Keep comment/directive-only interiors.
-Ordinary description body and standalone comment lines align one level inside
-the statement, since the Db removes indentation after LF. Keep line breaks,
-internal blank lines and trailing whitespace. Directives and shared removed
-comment regions keep their complete source. A separate closer aligns with the
-statement; the first closing brace still ends the value.
+with one space so the block boundary is clear. Text on one line stands between
+one space on each side, whether it touched the braces or not. Whitespace-only
+interiors become `{}` because no text needs surrounding space. Plain opener
+whitespace can join; real trivia keeps its break. Keep comment/directive-only
+interiors. Ordinary description body and standalone comment lines align one
+level inside the statement, since the Db removes indentation after LF. Keep line
+breaks, internal blank lines and trailing whitespace. Directives and shared
+removed comment regions keep their complete source. A separate closer aligns
+with the statement; the first closing brace still ends the value.
 
 [fixture: architecture/description-blocks/asymmetric]
 
@@ -603,9 +603,9 @@ Output
 
 ```mmd
 architecture-beta
-  accDescr {A }
-  accDescr { B}
-  accDescr {C}
+  accDescr { A }
+  accDescr { B }
+  accDescr { C }
   accDescr { D }
 ```
 
@@ -678,7 +678,7 @@ Output
 ```mmd
 architecture-beta
   service percent "A%%B" [C%%D]
-  accDescr {E%%F}
+  accDescr { E%%F }
   title Topic%% inline
 ```
 
@@ -948,7 +948,7 @@ architecture-beta
   junction j
   a:R -- L:j
   align row a j
-  accDescr {D}
+  accDescr { D }
 ```
 
 ### Frontmatter yaml
@@ -1217,7 +1217,7 @@ architecture-beta
   title
   accTitle: First
   accTitle:
-  accDescr {First}
+  accDescr { First }
   accDescr {}
 ```
 

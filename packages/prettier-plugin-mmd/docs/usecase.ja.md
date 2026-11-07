@@ -273,12 +273,15 @@ usecase-beta
 空の境界や空の引用名も同じです。
 [fixture: system-boundaries/boundary-header-comment-empty]
 flowchart の [subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダー)
-の選択を再利用します。
-id とタイトルの隙間は、あれば空白 1 個にし、接していれば接したままにします。
-丸括弧と角括弧、および内部の余白は書かれたままです。
+の見出しの形を再利用します。
+タイトルの開き `[` または `(` は id に接します。
+`systemBoundary S [t]` は `systemBoundary S[t]` に、
+`systemBoundary S (t)` は `systemBoundary S(t)` になります。
+mermaid.js は、空白のある書き方も接する書き方も同じ境界として読みます。
+括弧の内部の余白は書かれたままです。
+[fixture: system-boundaries/boundary-title-opener-touches-id]
+隙間にディレクティブがあれば、その両側に書かれた空白を残します。
 [fixture: system-boundaries/boundary-id-title-directed-gap]
-タイトルの余白を詰めても Db は等しいですが、
-見出しを flowchart と揃えることで別の方針を増やしません。
 native metadata、class、繰り返しの宣言を保ち、
 所属は AST の 1 段の宣言本文から決めます。
 
@@ -298,7 +301,7 @@ native metadata、class、繰り返しの宣言を保ち、
 
 ```mmd
 usecase-beta
-  systemBoundary Box [ Display ]@{ type: 'package' }:::box,group
+  systemBoundary Box[ Display ]@{ type: 'package' }:::box,group
     actor User
     A@{ business: true }
   end
@@ -719,6 +722,8 @@ Db が同じになる外側の空白を、兄弟の図種と同じ形に揃え�
 Mermaid が説明から LF 後の字下げを除くためです。
 `accDescr` と `{` の間は、元が接していても空白 1 個にします。
 keyword と本文の開始を見分けやすくするためです。
+1 行のブロックの文字は、括弧に接して書かれていても、
+両側に空白を 1 つずつ置きます（`{ a }`）。
 [fixture: direction-and-accessibility/keyword-brace-touching]
 [fixture: direction-and-accessibility/keyword-brace-space]
 [fixture: direction-and-accessibility/keyword-brace-run]

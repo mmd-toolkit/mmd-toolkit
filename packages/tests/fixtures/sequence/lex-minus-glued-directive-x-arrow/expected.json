@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Messages: the directive is left out, so `-x` is an arrow, and the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...amactivate AA ->> -x: b\n---------------------^\nExpecting 'link', '+', '-', '()', 'ACTOR', got 'SOLID_CROSS'"
+  }
+}

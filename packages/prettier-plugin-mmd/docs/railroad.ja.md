@@ -1196,8 +1196,8 @@ railroad-peg-beta
 
 共有の common-description 配置から layoutDescriptionBlock を使います。
 空白だけの内部は、囲む内容がないため `{}` にします。
-`accDescr` と `{` の間に空白を 1 つ置き、`{Text}` は保ち、
-外端に書かれた空白は存在する側に1 space 残します。
+`accDescr` と `{` の間に空白を 1 つ置き、
+`{Text}` は `{ Text }` として印字します。
 keyword と opener の間の通常の改行は join します。
 通常の説明本文と独立したコメント行は文より1段内側に揃えます。
 Db で LF 後の字下げが取り除かれるためです。
@@ -1237,7 +1237,7 @@ directive と共有の除去対象となるコメント領域は原文全体を�
 
 ```mmd
 railroad-beta
-  accDescr {Text}
+  accDescr { Text }
   accDescr { Text }
   accDescr {}
   r = terminal("block");
@@ -1251,7 +1251,7 @@ railroad-beta
 
 ```mmd
 railroad-ebnf-beta
-  accDescr {Text}
+  accDescr { Text }
   accDescr { Text }
   accDescr {}
   r = "block";
@@ -1265,7 +1265,7 @@ railroad-ebnf-beta
 
 ```mmd
 railroad-abnf-beta
-  accDescr {Text}
+  accDescr { Text }
   accDescr { Text }
   accDescr {}
   r = "block";
@@ -1279,7 +1279,7 @@ railroad-abnf-beta
 
 ```mmd
 railroad-peg-beta
-  accDescr {Text}
+  accDescr { Text }
   accDescr { Text }
   accDescr {}
   r <- "block";
@@ -1694,7 +1694,7 @@ closer 後の space と tab、inline の接触を共有の hidden-gap 保護で�
 
 ```mmd
 railroad-beta
-  accDescr {moved}
+  accDescr { moved }
   %%{!after metadata}%%
 
   r = terminal("after moved");
@@ -1708,7 +1708,7 @@ railroad-beta
 
 ```mmd
 railroad-ebnf-beta
-  accDescr {moved}
+  accDescr { moved }
   %%{!after metadata}%%
 
   r = "after moved";
@@ -1722,7 +1722,7 @@ railroad-ebnf-beta
 
 ```mmd
 railroad-abnf-beta
-  accDescr {moved}
+  accDescr { moved }
   %%{!after metadata}%%
 
   r = "after moved";
@@ -1736,7 +1736,7 @@ railroad-abnf-beta
 
 ```mmd
 railroad-peg-beta
-  accDescr {moved}
+  accDescr { moved }
   %%{!after metadata}%%
 
   r <- "after moved";
@@ -2860,7 +2860,7 @@ railroad-beta
 
 ```mmd
 railroad-ebnf-beta
-  accDescr {old}
+  accDescr { old }
   accDescr {}
   z = later;
   a = "first";
@@ -2892,7 +2892,7 @@ railroad-abnf-beta
 
 ```mmd
 railroad-peg-beta
-  accDescr {old}
+  accDescr { old }
   accDescr {}
   z <- later;
   a <- "first";

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Messages: `-x` is the first arrow that matches, so a second arrow follows the first; the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...amactivate AA ->> -xy: b\n---------------------^\nExpecting 'link', '+', '-', '()', 'ACTOR', got 'SOLID_CROSS'"
+  }
+}

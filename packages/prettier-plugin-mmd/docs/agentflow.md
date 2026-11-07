@@ -107,11 +107,32 @@ agentflow-beta TB
 ### Names and headings
 
 Reuse [Subgraph header](./flowchart.md#subgraph-header) for an ordinary
-single-part name with an explicit title: retain whether its title touches the
-name and collapse an exterior whitespace run, because both forms are in use.
-Keep the title's interior whitespace, so `[ T ]` remains `[ T ]`; Agentflow has
-the same Db for both forms and no reason to choose a different form from
-flowchart. [fixture: names-and-headings/name-heading-padding]
+single-part name with an explicit title: the `[` of the title touches the name,
+so `flow F [T]` is printed `flow F[T]`, and so is `connector F [T]`. All 19
+headings with a title in
+[the documentation of agentflow](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/agentflow.md#L26-L363)
+are written so, and the Db is the same for both forms. Keep the title's interior
+whitespace, so `[ T ]` remains `[ T ]`; Agentflow has no reason to choose a
+different form from flowchart. [fixture:
+names-and-headings/name-heading-touches-title] [fixture:
+names-and-headings/name-heading-touches-title-kinds] A name of several parts,
+with an erased `click` or an empty string in it, is kept as written from its
+first part to its last, the whitespace before the title included, as under the
+rules below. After `click`, that whitespace ends the click id, so
+`flow F click [T]` and `flow F click[T]` are different headings; after an empty
+string the Db would be the same, and the name is kept the same way. [fixture:
+names-and-headings/name-heading-title-multi-part-name-kept] A directive or a
+comment that ends the name keeps the whitespace written after it, as under
+[Directives](#directives), and a directive inside the gap keeps the whitespace
+on each side of it. [fixture:
+names-and-headings/name-heading-title-beside-directive-kept] [test: agentflow: a
+comment and U+2028 between a flow name and its title] Between a `:` and a `#` of
+a line that the line rule may read, the gap keeps whether it holds whitespace,
+as in flowchart. [fixture:
+names-and-headings/name-heading-title-after-colon-before-hash] A U+2028 or
+U+2029 in the gap stays where it is. [test: agentflow: U+2028 between a flow
+name and its title] [test: agentflow: U+2029 between a connector name and its
+title]
 
 A whitespace-only name before an explicit title keeps its written characters:
 removing them would remove the required name. [fixture:
@@ -313,7 +334,7 @@ Tildes remain content. Shape spellings, entities and HTML remain authored.
 Flow/connector heading titles follow
 [Subgraph header](./flowchart.md#subgraph-header) instead: keep their interior
 whitespace, including `[ T ]`, for the same reason as flowchart. [fixture:
-names-and-headings/name-heading-padding]
+names-and-headings/name-heading-touches-title]
 
 Input (escaped): `"agentflow-beta TB\nA[text]"`. [fixture:
 labels/labels-quote-unsafe]
@@ -713,12 +734,12 @@ empty-block-unicode] Kept lines and directive interiors retain their authored
 layout. [fixture: accessibility/empty-block-semicolon-kept] [fixture:
 accessibility/empty-block-directive-kept]
 
-For nonempty blocks, `{a}` stays `{a}`, `{ a }` stays `{ a }`, and `{  a  }`
-becomes `{ a }`: collapse whitespace runs around text without adding absent
-whitespace, as in the sibling diagrams. [fixture:
+For nonempty blocks on one line, the text stands between one space on each side,
+as in the sibling diagrams (see
+[Accessibility lines](./flowchart.md#accessibility-lines)): `{a}`, `{ a }`,
+`{  a  }`, `{  a}`, and `{a  }` all become `{ a }`. [fixture:
 accessibility/block-tight-text] [fixture: accessibility/block-spaced-text]
-[fixture: accessibility/block-padded-text] Independently, `{  a}` becomes `{ a}`
-and `{a  }` becomes `{a }`; each side keeps whether it had whitespace. [fixture:
+[fixture: accessibility/block-padded-text] [fixture:
 accessibility/block-left-padding-only] [fixture:
 accessibility/block-right-padding-only] At the top level, align the body lines
 of a closed description block one step inside its statement: Mermaid discards
@@ -766,7 +787,7 @@ Output
 
 ```mmd
 agentflow-beta TB
-  accDescr {a}
+  accDescr { a }
   A[Block spacing]
 ```
 

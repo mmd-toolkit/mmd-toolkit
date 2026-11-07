@@ -31,4 +31,19 @@ export const agentflowCases: readonly AgentflowCase[] = [
     input: 'agentflow-beta TB\nconnector F click ""\u2028B\nA',
     output: 'agentflow-beta TB\n  connector F click ""\u2028B\n  A\n',
   },
+  {
+    name: "agentflow: U+2028 between a flow name and its title",
+    input: "agentflow-beta TB\nflow F\u2028[T]\nA\nend",
+    output: "agentflow-beta TB\n  flow F\u2028[T]\n    A\n  end\n",
+  },
+  {
+    name: "agentflow: a comment and U+2028 between a flow name and its title",
+    input: "agentflow-beta TB\nflow F %% c\u2028 [T]\nA\nend",
+    output: "agentflow-beta TB\n  flow F %% c\u2028 [T]\n    A\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 between a connector name and its title",
+    input: "agentflow-beta TB\nconnector G \u2029[T]",
+    output: "agentflow-beta TB\n  connector G \u2029[T]\n",
+  },
 ]

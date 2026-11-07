@@ -567,8 +567,8 @@ title の中の `;`、`#`、`%%`、引用符、キーワードは、そのテキ
 `accDescr { ... }` の本文行は、文より 1 段深くそろえます。
 Mermaid が説明から LF 後の字下げを除くためです。
 `}` は文と同じ段に置きます。
-`{` と同じ行のテキストは、書かれた括弧の間に空白があれば空白 1 つを置き、
-括弧がテキストに接していれば接したままにします。
+`{` と同じ行のテキストは、括弧に接して書かれていても、
+括弧の内側に空白を 1 つずつ置きます。
 閉じていないブロックは拒否されるので、印字しません。
 [fixture: titles-and-accessibility-statements/block-lines-kept]
 [fixture: titles-and-accessibility-statements/block-text-on-the-opening-line]

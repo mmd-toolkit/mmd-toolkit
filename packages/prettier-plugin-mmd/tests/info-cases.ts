@@ -83,14 +83,14 @@ export const infoCases: readonly InfoCase[] = [
   {
     name: "info/line-terminators-and-unicode/eol-cr-hidden",
     input: "info\raccDescr {D}%%{}%% \rtitle Topic\r",
-    output: "info\n  accDescr {D}%%{}%% \n  title Topic\n",
+    output: "info\n  accDescr { D }%%{}%% \n  title Topic\n",
     options: {},
   },
   {
     name: "info/line-terminators-and-unicode/eol-crlf-yaml",
     input:
       "info\r\naccDescr {D}---\r\nx: ignored\r\n---\r\n\r\ntitle Topic\r\n",
-    output: "info\n  accDescr {D}---\nx: ignored\n---\n\n  title Topic\n",
+    output: "info\n  accDescr { D }---\nx: ignored\n---\n\n  title Topic\n",
     options: {},
   },
   {
@@ -102,7 +102,7 @@ export const infoCases: readonly InfoCase[] = [
   {
     name: "info/line-terminators-and-unicode/eol-output-cr",
     input: "info\naccDescr {D}\n",
-    output: "info\r  accDescr {D}\r",
+    output: "info\r  accDescr { D }\r",
     options: { endOfLine: "cr" },
   },
   {

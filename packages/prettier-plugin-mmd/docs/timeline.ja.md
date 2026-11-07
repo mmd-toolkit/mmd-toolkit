@@ -745,7 +745,8 @@ journey と同じ形です。
 テキストのある `accDescr` ブロックは、入力でキーワードに接していても、
 通常の gap では `{` の前に空白 1 つを置きます。
 保護対象の trivia やセミコロンの配置では、その gap を保ちます。
-`{` の行にあるテキストは両側に空白 1 つ、その後ろに `}` を置きます。
+`{` の行にあるテキストは、括弧に接して書かれていても両側に空白 1 つ、
+その後ろに `}` を置きます。
 後ろのテキスト行はその文より 1 段深く置き、
 `}` はその文の段に置きます（[複数行の値](#複数行の値)を参照）。
 [fixture: accessibility-statements/block-text-on-opening-line]
@@ -1004,7 +1005,8 @@ timeline
 上のどの規則も当てはまらないところでは、
 文のトークンの間の空白の並びを空白 1 つにし、
 接しているトークンは接したままにします。
-説明ブロックの波括弧がその例です。
+1 行の説明ブロックの文字は、括弧に接して書かれていても、
+両側に空白を 1 つずつ置きます。
 [fixture: whitespace-between-tokens/description-block-braces]
 ヘッダーの行末の空白は落とします。
 [fixture: whitespace-between-tokens/trailing-whitespace-after-header]
@@ -1028,8 +1030,8 @@ accDescr {f}
 ```mmd
 timeline
   accDescr { d }
-  accDescr {e}
-  accDescr {f}
+  accDescr { e }
+  accDescr { f }
 ```
 
 ### コメント

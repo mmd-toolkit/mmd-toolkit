@@ -265,6 +265,26 @@ flowchart と同じです。 [fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/tabs-collapsed]
 
+`classDef` 文の名前を区切る `,` は、両側の名前に接します。
+`classDef c1 , c2 fill:#f00` は `classDef c1,c2 fill:#f00` になります。
+ER、requirement、
+usecase
+の一覧と同じです（[スタイルとクラス](./er.ja.md#スタイルとクラス)を参照）。
+mermaid.js はどの書き方も同じ文として読むので、形を強いるものはありません。
+mermaid.js の文書にある例 1 件は、接する形で書かれています。
+その例は、
+[`classDef firstClassName,secondClassName`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L761)
+です。 [fixture: whitespace-between-tokens/classdef-names-touching]
+隙間にディレクティブがあれば、
+その両側に書かれた空白を残します（[ディレクティブ](#ディレクティブ)を参照）。
+[fixture: whitespace-between-tokens/classdef-names-beside-directive-kept]
+文を終わらせる `;` や `#` は、
+[スタイル文の末尾のセミコロン](#スタイル文の末尾のセミコロン)に従います。
+[fixture: whitespace-between-tokens/classdef-names-touching-before-terminator]
+`,` の後ろの U+2028 と U+2029 は、そのまま残します。
+[test: U+2028 after the comma of a classDef statement]
+[test: U+2029 after the comma of a classDef statement]
+
 クラスの本体や namespace を閉じる `}` の後の U+2028 と U+2029 は、
 mermaid.js にとって空白なので、行末の空白と一緒に落とします。
 [test: U+2029 after the `}` of a class body]
@@ -837,6 +857,19 @@ Mermaid が説明からこの字下げを除くためです。
 [fixture: multi-line-values/backquoted-name-kept]
 [fixture: multi-line-values/label-string-kept]
 [fixture: multi-line-values/generic-in-relation-kept]
+
+1 行のブロックの文字は、両側に空白を 1 つずつ置きます。
+これは、
+[flowchart のアクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)
+と同じ形です。
+`accDescr {a b}`、`accDescr {  a b  }`、`accDescr {  a b}`、
+`accDescr {a b  }` は、どれも `accDescr { a b }` になります。
+mermaid.js は文字を trim するので、両端の空白に意味はありません。
+文字の中にディレクティブがあるブロックは、書かれたままにします。
+`;` を残す行にあるブロックは、空白を足しませんが、
+端の空白の連なりは空白 1
+つにします（[セミコロン](./flowchart.ja.md#セミコロン)を参照）。
+[fixture: multi-line-values/block-text-on-one-line-padded]
 
 入力
 ([multi-line-values/kept-input.mmd](../tests/fixtures/class/multi-line-values/kept-input.mmd)):

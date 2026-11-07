@@ -1,0 +1,16 @@
+sequenceDiagram
+  A ->> + 
+    %% c
+    B: a
+  B ->> - 
+    %% c
+    A: b
+  A() 
+    %% c
+    ->> B: c
+  A ->> () 
+    %% c
+    B: d
+  Note over A, 
+    %% c
+    B: e

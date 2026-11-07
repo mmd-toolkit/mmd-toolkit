@@ -480,10 +480,10 @@ radar-beta
 ### Description blocks
 
 Route descriptions through shared `layoutDescriptionBlock`. Separate the keyword
-and opening brace with one space so the block boundary is clear. Touching
-interior edges remain touching; present exterior runs become one space.
-Whitespace-only interiors become `{}` because no text needs surrounding space.
-Plain opener whitespace joins; real trivia keeps its break. Preserve
+and opening brace with one space so the block boundary is clear. Text on one
+line stands between one space on each side, whether it touched the braces or
+not. Whitespace-only interiors become `{}` because no text needs surrounding
+space. Plain opener whitespace joins; real trivia keeps its break. Preserve
 comment/directive-only interiors. Ordinary description body and standalone
 comment lines align one level inside the statement: the Db removes indentation
 after LF. Keep line breaks, internal blanks and trailing whitespace; align a
@@ -519,10 +519,10 @@ Output
 
 ```mmd
 radar-beta
-  accDescr {Word}
   accDescr { Word }
-  accDescr {Left }
-  accDescr { Right}
+  accDescr { Word }
+  accDescr { Left }
+  accDescr { Right }
 ```
 
 ### Multiline values
@@ -621,7 +621,7 @@ Output
 ```mmd
 radar-beta
   axis North["N%%literal"]
-  accDescr {a%%literal}
+  accDescr { a%%literal }
 ```
 
 ### Global directives
@@ -938,7 +938,7 @@ radar-beta
   axis North
   curve trial{4}
   ticks 7
-  accDescr {Detail}
+  accDescr { Detail }
 ```
 
 ### Frontmatter yaml
@@ -1055,7 +1055,7 @@ Output
 
 ```mmd
 radar-beta
-  accDescr {Detail}%%{!suffix}%%
+  accDescr { Detail }%%{!suffix}%%
 ```
 
 ### Specified readings

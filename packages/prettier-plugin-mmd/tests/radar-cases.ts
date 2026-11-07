@@ -58,7 +58,7 @@ export const radarCases: readonly RadarCase[] = [
   {
     name: "radar/line-terminators-and-unicode/unicode-block-opener",
     input: "radar-beta\naccDescr\u2028{Detail}\n",
-    output: "radar-beta\n  accDescr {Detail}\n",
+    output: "radar-beta\n  accDescr { Detail }\n",
     options: {},
   },
   {

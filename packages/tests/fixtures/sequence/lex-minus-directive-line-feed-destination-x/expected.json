@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Messages: the directive is left out, so a line feed comes right after the `-`, and the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...mactivate AA ->> -x: b\n---------------------^\nExpecting 'link', 'ACTOR', got 'NEWLINE'"
+  }
+}

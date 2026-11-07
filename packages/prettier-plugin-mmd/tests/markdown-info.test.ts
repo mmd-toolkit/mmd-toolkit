@@ -73,10 +73,10 @@ const cases: readonly MarkdownCase[] = [
   {
     name: "info Markdown: hidden-boundary",
     payloadInput: "info\naccDescr {D}%%{}%% \ntitle Topic",
-    payloadOutput: "info\n  accDescr {D}%%{}%% \n  title Topic\n",
+    payloadOutput: "info\n  accDescr { D }%%{}%% \n  title Topic\n",
     options: {},
     input: "```mermaid\ninfo\naccDescr {D}%%{}%% \ntitle Topic\n```\n",
-    output: "```mermaid\ninfo\n  accDescr {D}%%{}%% \n  title Topic\n```\n",
+    output: "```mermaid\ninfo\n  accDescr { D }%%{}%% \n  title Topic\n```\n",
   },
   {
     name: "info Markdown: preheader",
@@ -100,11 +100,11 @@ const cases: readonly MarkdownCase[] = [
   {
     name: "info Markdown: global-and-semicolons",
     payloadInput: "%%{wrap}%%\ninfo title style:#a;b\naccDescr {D}",
-    payloadOutput: "%%{wrap}%%\ninfo title style:#a;b\n  accDescr {D}\n",
+    payloadOutput: "%%{wrap}%%\ninfo title style:#a;b\n  accDescr { D }\n",
     options: {},
     input: "```mermaid\n%%{wrap}%%\ninfo title style:#a;b\naccDescr {D}\n```\n",
     output:
-      "```mermaid\n%%{wrap}%%\ninfo title style:#a;b\n  accDescr {D}\n```\n",
+      "```mermaid\n%%{wrap}%%\ninfo title style:#a;b\n  accDescr { D }\n```\n",
   },
   {
     name: "info Markdown: final-comment",
@@ -118,11 +118,11 @@ const cases: readonly MarkdownCase[] = [
   {
     name: "info Markdown: final-hidden-padding",
     payloadInput: "info\naccDescr {D}%%{}%% \t",
-    payloadOutput: "info\n  accDescr {D}%%{}%%\n",
+    payloadOutput: "info\n  accDescr { D }%%{}%%\n",
     options: {},
     hostTrims: true,
     input: "```mermaid\ninfo\naccDescr {D}%%{}%% \t\n```\n",
-    output: "```mermaid\ninfo\n  accDescr {D}%%{}%%\n```\n",
+    output: "```mermaid\ninfo\n  accDescr { D }%%{}%%\n```\n",
   },
   {
     name: "info Markdown: rejected",

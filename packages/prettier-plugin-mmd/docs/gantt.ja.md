@@ -811,9 +811,8 @@ gantt
 `accDescr { ... }` の本文行は、文より 1 段深くそろえます。
 Mermaid が説明から LF 後の字下げを除くためです。
 `}` は文と同じ段に置きます。
-`{` の行にテキストがあるときは、
-離れて書かれていれば括弧の内側に空白 1 つを置き、
-テキストに接する括弧は接したままにします。
+`{` の行にテキストがあるときは、括弧に接して書かれていても、
+括弧の内側に空白を 1 つずつ置きます。
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-text-on-opening-line]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]

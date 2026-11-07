@@ -502,9 +502,9 @@ including when they were written touching. Existing opener-line breaks retain
 their own rules. Protected trivia and semicolon layouts keep their gaps. Align
 the lines of an `accDescr { ... }` body one step inside its statement. Mermaid
 discards indentation after LF from the description. Its `}` stands at the level
-of its statement; a text on the line of the `{` has one space inside the braces
-where it was written apart, and the braces that touch their text keep touching.
-[fixture: accessibility-statements/block-lines-kept] [fixture:
+of its statement; a text on the line of the `{` has one space inside each brace,
+also where the braces touched it. [fixture:
+accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-text-on-opening-line] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept] Whitespace inside
 the text is part of it, and stays. [fixture:
@@ -711,8 +711,9 @@ journey
 ### Whitespace between tokens
 
 Where no rule above applies, a run of whitespace between two tokens of a
-statement becomes one space, and tokens that touch keep touching: the braces of
-a description block. [fixture:
+statement becomes one space, and tokens that touch keep touching; the text of a
+description block on one line stands between one space on each side, also where
+the braces touched it. [fixture:
 whitespace-between-tokens/description-block-braces] The whitespace at the end of
 the header's line is dropped. [fixture:
 whitespace-between-tokens/trailing-whitespace-after-header] The values are not
@@ -735,8 +736,8 @@ Output
 ```mmd
 journey
   accDescr { d }
-  accDescr {e}
-  accDescr {f}
+  accDescr { e }
+  accDescr { f }
 ```
 
 ### Comments

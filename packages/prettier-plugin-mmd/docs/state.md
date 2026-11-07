@@ -380,8 +380,8 @@ the words of an alias definition and a pseudostate mark, which get one space
 whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/tabs-collapsed] [fixture:
 whitespace-between-tokens/touching-class-kept] This holds for `:::`, the `""`
-that mermaid.js does not read, and the `,` of a style or a class statement; the
-quotes of a floating note are kept as written. [fixture:
+that mermaid.js does not read, and the `,` of a style statement; the quotes of a
+floating note are kept as written. [fixture:
 whitespace-between-tokens/comma-kept] [fixture:
 whitespace-between-tokens/floating-note-quotes-kept] Whether whitespace is
 written before a `""` is kept: `state x"" {` is the composite state `x""`, and
@@ -392,6 +392,30 @@ same, so nothing forces the case; it is the author's, and the printer does not
 rewrite it. The position of a note, such as `Left Of`, is part of the diagram as
 written. [fixture: whitespace-between-tokens/keyword-case-kept] [fixture:
 whitespace-between-tokens/keyword-case-more-kept]
+
+The ids of a `class` statement are separated by a `,` that touches the id after
+it: `class A, B c` is printed `class A,B c`, as the lists of ER, requirement,
+and usecase are (see [Styles and classes](./er.md#styles-and-classes)).
+mermaid.js reads `A,B`, `A, B`, and `A,  B` as the same statement, so nothing
+forces the form. Its documentation writes the two examples of the statement with
+a space after the comma
+([`class Moving, Crash movement`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/stateDiagram.md#L397)),
+which does not decide the form. [fixture:
+whitespace-between-tokens/class-ids-touching] Whitespace written before a `,`
+ends the ids, and what follows is the name of the class: `class A ,B c` is the
+state `A` with the class `,B c`. Those forms stay as written, with the
+whitespace after the `,`. [fixture:
+whitespace-between-tokens/class-ids-space-before-comma-kept] [fixture:
+whitespace-between-tokens/comma-kept] A line break after the `,` is joined, so
+`class A,` and `B c` on the next line are printed `class A,B c`, and a directive
+before the `,` does not change that: the id after the `,` touches it. [fixture:
+whitespace-between-tokens/class-ids-line-break-and-directive] A directive in the
+gap after the `,` keeps the whitespace written on each side of it, as under
+[Directives](#directives), and a `;` that the line rule ignores keeps its line
+as written. [fixture: whitespace-between-tokens/class-ids-beside-directive-kept]
+[fixture: whitespace-between-tokens/class-ids-with-ignored-semicolon] A U+2028
+or U+2029 after the `,` stays where it is. [test: U+2028 after the comma of a
+state class statement] [test: U+2029 after the comma of a state class statement]
 
 Input
 ([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/state/whitespace-between-tokens/collapsed-input.mmd)):
@@ -1050,6 +1074,16 @@ the restricted [Notes](#notes) rule. [fixture: notes/payment-prose] The text of
 a floating note written over several lines stays as written. [fixture:
 multi-line-values/kept] [fixture:
 multi-line-values/floating-note-empty-line-kept]
+
+The text of a block on one line stands between one space on each side, as in
+[flowchart's accessibility lines](./flowchart.md#accessibility-lines):
+`accDescr {a b}`, `accDescr {  a b  }`, `accDescr {  a b}`, and
+`accDescr {a b  }` are printed `accDescr { a b }`. mermaid.js trims the text, so
+the whitespace at its ends carries no meaning. A block with a directive in its
+text stays as written. A block on a line that keeps its `;` gets no added space,
+and a run of spaces at its ends still becomes one space (see
+[Semicolons](./flowchart.md#semicolons)). [fixture:
+multi-line-values/block-text-on-one-line-padded]
 
 Input
 ([multi-line-values/kept-input.mmd](../tests/fixtures/state/multi-line-values/kept-input.mmd)):
