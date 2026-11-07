@@ -134,6 +134,17 @@ U+2029 in the gap stays where it is. [test: agentflow: U+2028 between a flow
 name and its title] [test: agentflow: U+2029 between a connector name and its
 title]
 
+The whitespace after the word `flow`, `connector`, or `global` is one space,
+however many spaces or tabs were written: the word takes one whitespace
+character, and mermaid.js trims the rest from the name. `flow   F["T"]` is
+printed `flow F["T"]`, and `global` followed by spaces is printed `global`.
+[fixture: names-and-headings/heading-word-gap-collapsed] A directive in the gap
+keeps the whitespace written on each side of it, as under
+[Directives](#directives). [fixture:
+names-and-headings/heading-word-gap-beside-directive-kept] A U+2028 or U+2029 in
+the gap stays where it is. [test: agentflow: U+2028 after the flow word] [test:
+agentflow: U+2029 after the connector word]
+
 A whitespace-only name before an explicit title keeps its written characters:
 removing them would remove the required name. [fixture:
 names-and-headings/whitespace-name-before-title]

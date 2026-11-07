@@ -42,6 +42,16 @@ export const agentflowCases: readonly AgentflowCase[] = [
     output: "agentflow-beta TB\n  flow F %% c\u2028 [T]\n    A\n  end\n",
   },
   {
+    name: "agentflow: U+2028 after the flow word",
+    input: "agentflow-beta TB\nflow \u2028 F\nA\nend",
+    output: "agentflow-beta TB\n  flow \u2028 F\n    A\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 after the connector word",
+    input: "agentflow-beta TB\nconnector  \u2029F",
+    output: "agentflow-beta TB\n  connector  \u2029F\n",
+  },
+  {
     name: "agentflow: U+2029 between a connector name and its title",
     input: "agentflow-beta TB\nconnector G \u2029[T]",
     output: "agentflow-beta TB\n  connector G \u2029[T]\n",

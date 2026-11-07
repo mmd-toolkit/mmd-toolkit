@@ -141,6 +141,19 @@ agentflowだけ違う形を選ぶ理由がないためです。
 [test: agentflow: U+2028 between a flow name and its title]
 [test: agentflow: U+2029 between a connector name and its title]
 
+`flow`、`connector`、`global` の後ろの空白は、
+空白やタブがいくつ書かれていても空白 1 つにします。
+キーワードが空白を 1 文字取り、残りは mermaid.js が名前から trim するからです。
+`flow   F["T"]` は `flow F["T"]` に、
+空白が続く `global` は `global` になります。
+[fixture: names-and-headings/heading-word-gap-collapsed]
+隙間にディレクティブがあれば、
+その両側に書かれた空白を残します（[ディレクティブ](#directives)を参照）。
+[fixture: names-and-headings/heading-word-gap-beside-directive-kept]
+隙間の U+2028 と U+2029 は、そのまま残します。
+[test: agentflow: U+2028 after the flow word]
+[test: agentflow: U+2029 after the connector word]
+
 明示的なタイトルの前にある空白だけの名前は、書かれた文字を保ちます。
 除くと、必要な名前がなくなるためです。 [fixture:
 names-and-headings/whitespace-name-before-title]

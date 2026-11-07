@@ -77,16 +77,31 @@ export function layoutContainerHeader(
     return layoutRange(source, node.range[0], end, [], [], new Map())
   }
   const name = node.name
+  let nameStart = name.range[0]
   let nameEnd = name.range[1]
   const rules = new Map<number, GapRule>()
   // Only an ordinary single-fragment explicit-title heading shares flowchart's
   // title-gap rules. Erased click/empty forms and their context-exit gaps
   // are Name text (diagrams/agentflow.md, Names; docs/agentflow.md, Names and headings).
-  if (node.title !== null && name.parts.length === 1) {
-    while (nameEnd > name.range[0] && isWhitespace(source.text[nameEnd - 1]))
-      nameEnd--
+  if (name.parts.length === 1) {
+    // The keyword takes one whitespace character, and the rest of the
+    // whitespace after it is read with the name, which mermaid.js trims: it
+    // is printed as the one space of the gap (docs/agentflow.md, Names and
+    // headings).
+    while (nameStart < nameEnd && isWhitespace(source.text[nameStart])) {
+      nameStart++
+    }
+    if (node.title !== null) {
+      while (nameEnd > nameStart && isWhitespace(source.text[nameEnd - 1]))
+        nameEnd--
+    }
     // A whitespace-only name still needs its written character.
-    if (nameEnd === name.range[0]) nameEnd = name.range[1]
+    if (nameEnd === nameStart) {
+      nameStart = name.range[0]
+      nameEnd = name.range[1]
+    }
+  }
+  if (node.title !== null && name.parts.length === 1) {
     // The `[` of the title touches the name, as in a flowchart, unless a
     // directive or comment ends the name: the whitespace after it is kept as
     // under Directives (docs/agentflow.md, Names and headings).
@@ -114,7 +129,7 @@ export function layoutContainerHeader(
           ).range[0]
     nameEnd = suffixStart ?? findNamePrintedEnd(source, name)
   }
-  const nameAtom = { start: name.range[0], end: nameEnd }
+  const nameAtom = { start: nameStart, end: nameEnd }
   const values: Node[] = [
     ...node.data,
     ...(node.title === null ? [] : [node.title]),
