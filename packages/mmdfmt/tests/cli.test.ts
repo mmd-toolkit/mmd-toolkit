@@ -234,6 +234,18 @@ describe("Patterns", () => {
     })
   })
 
+  it.runIf(process.platform === "win32")(
+    "reads a \\ of a glob as / on Windows",
+    async () => {
+      project.write({ "docs/a.md": markdown })
+      expect(await project.run(["--check", "docs\\*.md"])).toEqual({
+        code: 1,
+        stdout: listed("docs/a.md"),
+        stderr: "",
+      })
+    },
+  )
+
   it("formats only the files of the four endings that a glob matches", async () => {
     project.write({ "a.mmd": diagram, "b.txt": diagram, "c.mmd.bak": diagram })
     expect(await project.run(["--check", "*"])).toEqual({

@@ -66,9 +66,13 @@ async function filesOfPattern(pattern: string, cwd: string): Promise<string[]> {
   const target = path.resolve(cwd, pattern)
   const stats = await stat(target).catch(() => undefined)
   if (stats?.isFile()) return [target]
+  // On Windows, Prettier's CLI reads a `\` of a glob as `/`, the separator of
+  // globs; so does this (README, Patterns).
+  const globPattern =
+    process.platform === "win32" ? pattern.replaceAll("\\", "/") : pattern
   const found = stats?.isDirectory()
     ? await globFiles("**/*", target)
-    : await globFiles(pattern, cwd)
+    : await globFiles(globPattern, cwd)
   return found.filter((file) => !isUnderSkippedDirectory(file, cwd))
 }
 

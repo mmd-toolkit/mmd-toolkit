@@ -58,6 +58,7 @@ npx mmdfmt --stdin-filepath diagram.mmd < diagram.mmd
 - ほかのパターンは glob で、一致するファイルを、
   名前がドットで始まるものも含めて選びます。
   シェルでなくツールが展開するように、引用符で囲みます。
+  Windows では、Prettier の CLI と同じく、glob の `\` を `/` と読みます。
 
 ディレクトリと glob は、Prettier の CLI と同じく、
 `node_modules` とバージョン管理のディレクトリ（`.git`、`.hg`、`.jj`、`.sl`、

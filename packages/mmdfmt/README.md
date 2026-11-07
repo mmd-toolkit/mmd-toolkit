@@ -56,7 +56,8 @@ A pattern selects files:
 - The path of a directory selects the files under it.
 - Any other pattern is a glob, and selects the files that it matches, also those
   whose names start with a dot. Quote it, so that the tool expands it rather
-  than your shell.
+  than your shell. On Windows, a `\` in a glob is read as `/`, as Prettier's CLI
+  reads it.
 
 A directory or a glob selects no file under `node_modules` or under the
 directories of version control systems (`.git`, `.hg`, `.jj`, `.sl`, `.svn`), as
