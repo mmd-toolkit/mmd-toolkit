@@ -16,7 +16,7 @@ function lines(...texts: readonly string[]): string {
   return texts.map((text) => `${text}\n`).join("")
 }
 
-describe("What is formatted: the same blocks as the plugin", () => {
+describe("Code blocks in detail: the same blocks as the plugin", () => {
   it.each([
     lines("```mermaid", "flowchart LR", "A-->B", "```"),
     lines("```mmd", "flowchart LR", "A-->B", "```"),
@@ -95,7 +95,7 @@ describe("What is formatted: the same blocks as the plugin", () => {
   })
 })
 
-describe("How it relates to the other packages: two results differ from the plugin in Markdown", () => {
+describe("If you know Prettier: two results differ from the plugin in Markdown", () => {
   it("keeps the whitespace at the end of the last line, which Prettier removes", async () => {
     const text = lines(
       "```mermaid",

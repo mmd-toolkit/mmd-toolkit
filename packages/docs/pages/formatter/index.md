@@ -4,9 +4,9 @@
 with Prettier. Use it for `.mmd` and `.mermaid` files and Mermaid code blocks in
 Markdown.
 
-If Prettier does not format your Markdown and you want only the Mermaid diagrams
-formatted, use the [`mmdfmt`](./mmdfmt.md) command instead. It formats the
-diagrams as the plugin does and leaves the rest of each file as it is.
+If you want your diagrams formatted but do not let Prettier format your
+Markdown, use the [`mmdfmt`](./mmdfmt.md) command instead. It formats the
+diagrams as the plugin does, and leaves everything else as you wrote it.
 
 You can try formatting
 [online in the Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)

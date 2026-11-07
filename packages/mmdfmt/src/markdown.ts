@@ -42,7 +42,7 @@ const diagramLanguages: ReadonlySet<string> = new Set(["mermaid", "mmd"])
 
 /**
  * Formats the diagrams in the code blocks of a Markdown file and changes
- * nothing else (README, What is formatted).
+ * nothing else (README, Code blocks in detail).
  */
 export async function formatMarkdown(
   text: string,
@@ -83,7 +83,7 @@ async function parseMarkdown(text: string): Promise<MarkdownNode> {
 /**
  * The code blocks of diagrams in a Markdown tree, in the order of the file,
  * without those that Prettier leaves as written for a `prettier-ignore`
- * comment (README, What is formatted): the node right after
+ * comment (README, Excluding files): the node right after
  * `<!-- prettier-ignore -->` among the children of any node, and the nodes
  * between `<!-- prettier-ignore-start -->` and the next
  * `<!-- prettier-ignore-end -->` among the children of the root.
@@ -318,7 +318,7 @@ function hasOneEmptyLine(block: DiagramBlock, lines: readonly Line[]): boolean {
  * What starts a new content line of a block: what stands before the opening
  * fence on its line, with the characters of a list marker turned into spaces,
  * so that the line takes the indentation and the `>` of the block's container
- * and the indentation of the fence (README, What is formatted). Tabs stay as
+ * and the indentation of the fence (README, Code blocks in detail). Tabs stay as
  * written, and with them the columns. A prefix that ends with `>` takes a
  * space: a block quote reads one space after its `>` as part of its marker, so
  * without it a line of the diagram that starts with a space would lose it.

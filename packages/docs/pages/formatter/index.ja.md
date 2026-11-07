@@ -4,9 +4,9 @@
 Prettierで整形するプラグインです。
 `.mmd`・`.mermaid`ファイルと、Markdown内のMermaidコードブロックに使えます。
 
-PrettierでMarkdownを整形せず、Mermaidの図だけを整形したい場合は、
+図を整形したいけれど、MarkdownにはPrettierを使わない場合は、
 代わりに[`mmdfmt`](./mmdfmt.ja.md)コマンドを使います。
-図をプラグインと同じように整形し、ファイルのほかの部分はそのまま残します。
+図をプラグインと同じように整形し、ほかはすべて書いたまま残します。
 
 [Playgroundでオンラインの整形を試せます](https://mmd-toolkit.github.io/mmd-toolkit/playground/)。
 インストールは不要です。

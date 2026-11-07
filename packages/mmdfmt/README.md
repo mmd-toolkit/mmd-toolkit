@@ -2,211 +2,336 @@
 
 Japanese version: [README.ja.md](./README.ja.md)
 
-A command-line tool that formats [Mermaid](https://mermaid.js.org/) diagrams and
-nothing else: `.mmd` and `.mermaid` files, and the `mermaid` and `mmd` code
-blocks of Markdown files. The rest of a Markdown file stays byte for byte as it
-is, so the tool works next to any Markdown formatter, or without one.
+Format the [Mermaid](https://mermaid.js.org/) diagrams in your Markdown and
+`.mmd` files, and leave everything else as you wrote it.
+
+`mmdfmt` formats `.mmd` and `.mermaid` files, and the `mermaid` and `mmd` code
+blocks of `.md` and `.markdown` files. The rest of a Markdown file stays byte
+for byte as it is. The diagrams are formatted by
+[Prettier](https://prettier.io/) with
+[`prettier-plugin-mmd`](../prettier-plugin-mmd), the Mermaid plugin for
+Prettier, so they come out as that plugin prints them, apart from the two cases
+in [If you know Prettier](#if-you-know-prettier).
 
 This is a third-party project, not affiliated with
-[mermaid-js](https://mermaid.js.org/).
+[mermaid-js](https://mermaid.js.org/). The
+[mmdfmt guide](https://mmd-toolkit.github.io/mmd-toolkit/formatter/mmdfmt.html)
+is on the documentation site.
 
-Documentation:
-[mmdfmt](https://mmd-toolkit.github.io/mmd-toolkit/formatter/mmdfmt.html).
+## When to use it
 
-## Why it exists
+Use `mmdfmt` when you want your diagrams formatted but do not let Prettier
+format your Markdown:
 
-[`prettier-plugin-mmd`](../prettier-plugin-mmd) reaches a code block only
-through Prettier, and Prettier formats the whole Markdown file. A project that
-formats its Markdown with another tool, or does not format it, cannot use the
-plugin on its code blocks. This tool gives that project the same formatting of
-the diagrams, and needs no Prettier configuration.
+- You format Markdown with another formatter, such as `markdownlint --fix` or
+  dprint. Prettier would rewrite the same text its own way.
+- You keep your Markdown as you write it, on purpose.
+- You use Prettier for other files, and keep it off your Markdown.
+
+If Prettier already formats your Markdown, add `prettier-plugin-mmd` to it
+instead: Prettier then formats the diagrams in the same run, and you do not need
+`mmdfmt`.
+
+`mmdfmt` needs no Prettier setup; it is one command.
+
+## What it does not do
+
+- It formats nothing but diagrams.
+- It reports no mistakes in a diagram beyond what mermaid.js rejects;
+  [`@mmd-toolkit/eslint-plugin`](../eslint-plugin) does that.
+
+## Quick start
+
+`mmdfmt` needs Node.js `^22.13.0 || >=24`. `--write` rewrites files in place, so
+commit your work first, or see which files would change with
+`npx mmdfmt --check .`. To format every diagram under the current directory:
+
+```sh
+npx mmdfmt --write .
+```
+
+Only the diagrams change. This `notes.md`:
+
+<!-- prettier-ignore -->
+````md
+# Notes
+
+*   A list item that mmdfmt leaves as it is.
+
+```mermaid
+flowchart LR
+  A --> B; B --> C
+```
+````
+
+becomes:
+
+<!-- prettier-ignore -->
+````md
+# Notes
+
+*   A list item that mmdfmt leaves as it is.
+
+```mermaid
+flowchart LR
+  A --> B
+  B --> C
+```
+````
+
+Without `mmdfmt` installed, `npx` asks to download it and runs its latest
+version; to keep using one version, [install it](#installation).
 
 ## Installation
 
-It needs Node.js `^22.13.0 || >=24`.
+A new version of `mmdfmt` can format a diagram a little differently. Pin an
+exact version in your project, so that everyone who works on it, and your CI,
+format the same way:
 
 ```sh
-npm install --save-dev mmdfmt
+npm install --save-dev --save-exact mmdfmt
 ```
+
+With pnpm, `pnpm add --save-dev --save-exact mmdfmt`. `npx mmdfmt` (or
+`pnpm exec mmdfmt`) then runs that version.
+
+To use it yourself across many repositories, install it globally, and run it as
+`mmdfmt`:
+
+```sh
+npm install --global mmdfmt
+```
+
+A global install is not pinned to a project, so two machines can format a
+diagram differently.
 
 ## Usage
 
 ```sh
-npx mmdfmt --write "**/*.{md,mmd,mermaid}"
-npx mmdfmt --check "**/*.{md,mmd,mermaid}"
-npx mmdfmt --stdin-filepath diagram.mmd < diagram.mmd
+mmdfmt --write <pattern>...
+mmdfmt --check <pattern>...
+mmdfmt --stdin-filepath <path>
 ```
 
-- `--write` rewrites the files that change, and lists them on standard output.
-- `--check` changes nothing, and lists on standard output the files that
-  `--write` would change.
-- `--stdin-filepath <path>` reads standard input and writes the result to
-  standard output. The path says whether the text is a diagram or Markdown, and
-  which Prettier configuration and ignore files apply. A path that the
-  [patterns](#patterns) would skip gets its input back unchanged, and a path
-  that does not end in one of the endings below is an error.
-- `-h` or `--help` prints the usage, and `-v` or `--version` prints the version,
-  on standard output.
+| Option                    | What it does                                                                                 |
+| ------------------------- | -------------------------------------------------------------------------------------------- |
+| `--write`                 | Formats the files in place, and lists on standard output the ones that changed.              |
+| `--check`                 | Changes nothing. Lists on standard output the files that `--write` would change.             |
+| `--stdin-filepath <path>` | Formats standard input as if it were the file at `<path>`, and writes it to standard output. |
+| `-h`, `--help`            | Prints the usage on standard output.                                                         |
+| `-v`, `--version`         | Prints the version on standard output.                                                       |
 
-The tool takes patterns with either `--write` or `--check`, or
-`--stdin-filepath` without them. `--help` and `--version` only print, whatever
-patterns and options listed here are given with them, `--stdin-filepath` without
-its path included; `--version` is taken when both are given. No argument at all
-prints the usage to standard error and exits with `2`. Any other combination of
-these options and patterns writes an error to standard error and exits with `2`.
-So does an option that is not listed here, also together with `--help` or
-`--version`, and `--stdin-filepath` without its path when neither `--help` nor
-`--version` is given.
+Give patterns with either `--write` or `--check`, or give `--stdin-filepath`
+alone. `--help` and `--version` only print, whatever else of this table is given
+with them. Any other combination is an error. With no argument at all, `mmdfmt`
+prints the usage on standard error and exits with `2`.
 
-The library [gunshi](https://gunshi.dev) reads the arguments, and draws the
-usage from the options. An option that takes no value is given by its name
-alone, and a value written after `=` is not read: `--write=false` is read as
-`--write`. gunshi does not read an empty path of `--stdin-filepath`, as in
-`--stdin-filepath=` or `--stdin-filepath ""`, so that without `--help` or
-`--version` it is an error, as a missing path is; with `--write` or `--check`,
-the error given is that the options conflict. The arguments after `--` are
-patterns too, so that a file whose name starts with `-` can be given:
-`mmdfmt --write -- -a.md` formats `-a.md`.
+There are no other options: no formatting options, no configuration file of its
+own, and no option for an ignore file. An option that takes no value ignores a
+value written after `=`: `--write=false` is read as `--write`, as the argument
+library [gunshi](https://gunshi.dev) reads it.
 
 ### Patterns
 
-A pattern selects files:
-
 - The path of a file selects that file.
-- The path of a directory selects the files under it.
-- Any other pattern is a glob, and selects the files that it matches, also those
-  whose names start with a dot. Quote it, so that the tool expands it rather
-  than your shell. On Windows, a `\` in a glob is read as `/`, as Prettier's CLI
-  reads it.
+- The path of a directory, such as `.`, selects the files under it.
+- Any other pattern is a glob, which also matches names that start with a dot.
+  Quote it, so that `mmdfmt` expands it rather than your shell:
+  `npx mmdfmt --write "docs/**/*.md"`. On Windows, a `\` in a glob is read as
+  `/`.
+- A pattern that starts with `!` takes the files it matches out of the others.
+  See [Excluding files](#excluding-files).
+- After `--`, every argument is a pattern, so a file whose name starts with `-`
+  can be given: `mmdfmt --write -- -a.md`.
 
-A directory or a glob selects no file under `node_modules` or under the
-directories of version control systems (`.git`, `.hg`, `.jj`, `.sl`, `.svn`), as
-Prettier's CLI does not look into them.
+Of the selected files, those ending in `.md`, `.markdown`, `.mmd`, or `.mermaid`
+are formatted, each once, however many patterns select it. A pattern that
+selects none of them is an error: `mmdfmt --check .` fails in a project without
+such a file, and so does a file with another ending given by name. A pattern
+whose files a `!` pattern all takes out is an error too, as in Prettier's CLI. A
+pattern that selects only files that the `.gitignore` lists is not an error, and
+neither is the path of a file under `node_modules` or a directory of version
+control ([Excluding files](#excluding-files)).
 
-Of the selected files, those whose names end in `.md`, `.markdown`, `.mmd`, or
-`.mermaid` are formatted, each once, however many patterns select it. A pattern
-that selects none of them is an error.
+## Excluding files
 
-A selected file is skipped, as Prettier's CLI skips it, when it is under one of
-those directories, which only its own path can select, or when the `.gitignore`
-or the `.prettierignore` of the current directory lists it. A pattern that
-selects only skipped files is not an error.
+`mmdfmt` leaves out:
 
-### Formatting options
+- the files under `node_modules`, and under the directories of version control
+  (`.git`, `.hg`, `.jj`, `.sl`, `.svn`);
+- the files that the `.gitignore` in the directory where you run `mmdfmt` lists.
+  Other `.gitignore` files, in subdirectories or above, are not read;
+- the files that a `!` pattern matches. In bash, put such a pattern in single
+  quotes, since `!` in double quotes starts a history expansion:
+  `npx mmdfmt --write . '!vendor/**'`. In the Windows command prompt, use double
+  quotes.
 
-There are no formatting options. Where the project has a Prettier configuration,
-its `tabWidth` and `useTabs` for the file apply, found as Prettier's CLI finds
-them, `.editorconfig` included; for a code block, the file is the Markdown file.
-Otherwise a diagram is indented by two spaces, the default of the plugin.
+`mmdfmt` does not read `.prettierignore`. A project that keeps Prettier off its
+Markdown by listing it there still gets its diagrams formatted.
 
-## What is formatted
+To leave one diagram in a Markdown file as it is, put `<!-- prettier-ignore -->`
+before its code block, with nothing between them but blank lines. Outside lists
+and block quotes, `<!-- prettier-ignore-start -->` and
+`<!-- prettier-ignore-end -->` leave every diagram between them. These are the
+comments that Prettier reads. To leave a whole `.mmd` file as it is, exclude it
+with a `!` pattern or `.gitignore`.
 
-- Files ending in `.mmd` or `.mermaid`, as a whole.
-- In files ending in `.md` or `.markdown`, fenced code blocks whose info string
-  has `mermaid` or `mmd` as its first word, the same blocks as the plugin. The
-  match is case-sensitive.
+## Checking in CI
 
-The code blocks are found with Prettier's Markdown parser rather than by
-scanning lines, as Prettier finds them: a fence inside another code block is not
-taken for a diagram, and a block inside a list or a block quote is found. A
-block that Prettier leaves as written for a comment is left as it is too: the
-block right after `<!-- prettier-ignore -->`, in any container, and the blocks
-between `<!-- prettier-ignore-start -->` and `<!-- prettier-ignore-end -->` at
-the top level of the file.
+Install `mmdfmt` in the project, install the dependencies in CI (`npm ci`), and
+run:
 
-Only the lines between the fences change. A block inside a list or a block quote
-keeps its place: each line that the tool writes starts with what stands before
-the opening fence, with the marker of a list replaced by spaces, so that the
-line keeps the indentation and the `>` of its container. Where the fence follows
-a `>` at once, the lines get a space after that `>`: a block quote takes one
-space after its `>` as part of its marker, so a line of the diagram that starts
-with a space would lose that space otherwise. An empty line gets that start
-without the spaces at its end: in a block quote, it keeps only the `>`.
+```sh
+npx mmdfmt --check .
+```
 
-A block that is not closed runs to the end of its list item, its block quote, or
-the file, as Prettier's Markdown parser reads it, and is formatted all the same.
-When it ends the file without a line ending, its last line still has none.
+When a file is not formatted, `--check` lists it on standard output and exits
+with `1`. When every file is formatted, it prints nothing and exits with `0`.
+Without the dependencies installed, `npx` would run the latest version instead
+of the pinned one.
 
-A tab in the indentation of a line can be read partly as indentation and partly
-as the text of the diagram: inside a list item indented by two spaces, a tab at
-the start of a line reaches the fourth column, and its last two columns are
-text. A block with such a line is not formatted, and a warning gives the
-position of the tab: the text of the diagram is not written as such in the file,
-so it cannot be replaced alone.
+A `.mmd` or `.mermaid` file whose diagram mermaid.js rejects fails the check
+with `2`. A diagram in Markdown that mermaid.js rejects gives only a warning,
+because a document can show a broken diagram on purpose, and `mmdfmt` has no
+option to fail on it. To fail CI on such a diagram, lint the Markdown with
+[`@mmd-toolkit/eslint-plugin`](../eslint-plugin), which reports it.
 
-A block whose opening fence stands on the line of a footnote label, as in
-`[^1]: ```mermaid`, is not formatted either, and a warning gives the position of
-the fence: the lines of a footnote are indented by four spaces, not by what
-stands before the fence.
+In a project without any diagram file, `--check .` fails with `2`; give the
+directories that hold diagrams instead of `.`.
 
-Text that is empty or only whitespace is formatted as an empty text, as Prettier
-formats it, without an error or a warning: a code block of only blank lines, or
-a `.mmd` file of them, becomes empty.
+## Formatting before a commit
 
-A file keeps its line endings. Each line that the tool writes ends as the first
-line of the file ends, or with `\n` in a file of one line. In a Markdown file,
-the tool writes only the lines of the diagrams that change.
+With [lint-staged](https://github.com/lint-staged/lint-staged), which a Git hook
+manager such as husky or simple-git-hooks runs on each commit, add this to
+`package.json`:
 
-## When a diagram cannot be read
+```json
+{
+  "lint-staged": {
+    "*.{md,markdown,mmd,mermaid}": "mmdfmt --write"
+  }
+}
+```
 
-A diagram that mermaid.js rejects is not changed, as with the plugin.
+Keep the glob to these four endings: `mmdfmt` has no option such as Prettier's
+`--ignore-unknown`, and a file with another ending is an error. lint-staged
+passes absolute paths, which `mmdfmt` accepts.
 
-- In a `.mmd` or `.mermaid` file, it is an error, with its position.
-- In a Markdown code block, it is a warning, with its position, and the other
-  blocks of the file are formatted. A document can show a rejected diagram on
-  purpose, so such a block does not fail a run.
+## From an editor or another tool
 
-Errors and warnings go to standard error, one on a line, as
-`path:line:column: error: message` or `path:line:column: warning: message`. The
-line and the column, both counted from 1, are those of the file, also for a code
-block: a line ends at `\n`, `\r\n`, or `\r`, and a column counts UTF-16 code
-units, as most editors count them.
+`mmdfmt` has no editor extension. An editor or a tool that runs a formatter on
+standard input can run:
 
-## Exit codes
+```sh
+mmdfmt --stdin-filepath docs/guide.md
+```
 
-| Code | Meaning                                                          |
-| ---- | ---------------------------------------------------------------- |
-| `0`  | Nothing went wrong, and with `--check`, every file is formatted. |
-| `1`  | With `--check`, a file would change, and nothing went wrong.     |
-| `2`  | An error.                                                        |
+with the text of the file on standard input, and take the formatted text from
+standard output. The file at the path is neither read nor written. The path, if
+relative, is resolved against the directory where `mmdfmt` runs; its ending says
+whether the text is a diagram or Markdown, and its directory says which
+`.editorconfig` and Prettier configuration apply.
 
-An error is a syntax error in a diagram file, a file that cannot be read or
-written, a pattern that selects no file, a Prettier configuration that cannot be
-read, or a wrong use of the options. With an error, the code is `2` even when a
-file would change.
+- A Markdown text is written out in full, formatted or already formatted, and
+  the exit code is `0`, also when a diagram in it is rejected; the warning goes
+  to standard error.
+- A diagram whose text mermaid.js rejects gets nothing on standard output, an
+  error on standard error, and the exit code `2`.
+- A path under `node_modules` or a directory of version control, or listed in
+  the `.gitignore` of the directory where `mmdfmt` runs, gets its text back
+  unchanged.
+- A path with another ending is an error.
 
-## How it relates to the other packages
+## Indentation
 
-The text of a diagram is formatted by Prettier with `prettier-plugin-mmd`, which
-this package depends on, so the rules, the fixtures, and the compatibility notes
-of the plugin apply to it. The user installs this package only, and needs no
-Prettier configuration.
+A diagram is indented by two spaces. When an `.editorconfig` or a Prettier
+configuration applies to the file, its indentation is used: `indent_style`,
+`indent_size`, and `tab_width` of `.editorconfig`, or `useTabs` and `tabWidth`
+of a [Prettier configuration file](https://prettier.io/docs/configuration),
+found as Prettier's CLI finds them, `overrides` included. For a code block, the
+file is the Markdown file. A configuration file that cannot be read is an error.
+For example, this `.editorconfig` indents diagrams by four spaces:
 
-Two results differ from the plugin in Markdown:
+```ini
+[*.{md,mmd,mermaid}]
+indent_style = space
+indent_size = 4
+```
+
+Nothing else of a configuration is used.
+
+## Errors and exit codes
+
+A diagram that mermaid.js rejects is left as it is, and reported on standard
+error with its line and column in the file. The other files, and the other
+diagrams of the file, are still formatted:
+
+```txt
+docs/flow.mmd:3:1: error: Unexpected end of text
+notes.md:6:1: warning: Unexpected end of text
+```
+
+In a `.mmd` or `.mermaid` file, it is an error. In a Markdown code block, it is
+a warning. Lines and columns count from 1, and a column counts UTF-16 code
+units, as most editors do.
+[Formatter compatibility](https://mmd-toolkit.github.io/mmd-toolkit/formatter/compatibility.html)
+explains which diagrams are rejected.
+
+| Code | Meaning                                                       |
+| ---- | ------------------------------------------------------------- |
+| `0`  | No errors, and with `--check`, every file is formatted.       |
+| `1`  | With `--check`, a file would change, and there are no errors. |
+| `2`  | An error.                                                     |
+
+An error is a rejected diagram in a `.mmd` or `.mermaid` file, a file that
+cannot be read or written, a pattern that selects no file, a configuration that
+cannot be read, or a wrong use of the options. With an error, the code is `2`
+even when a file would change.
+
+## If you know Prettier
+
+The diagrams are formatted by Prettier with `prettier-plugin-mmd`, so the rules
+of the plugin apply. Two results differ from running Prettier with the plugin on
+Markdown:
 
 - Prettier removes the whitespace at the end of the last line of a code block,
-  also where mermaid.js reads it
+  even where mermaid.js treats it as part of the diagram
   ([Markdown code blocks](../prettier-plugin-mmd/docs/compatibility.md#markdown-code-blocks)).
-  This tool replaces only the text of the block, so that whitespace stays.
-- Prettier formats a code block of Markdown, such as one whose info string is
-  `md`, as a Markdown document, and with it the diagrams in its code blocks.
-  This tool formats the diagrams of the file and leaves the content of every
-  other code block as it is.
+  `mmdfmt` replaces only the text of the block, so that whitespace stays.
+- Prettier formats a code block of Markdown, such as one marked `md`, as a
+  Markdown document, and with it the diagrams in its code blocks. `mmdfmt`
+  leaves every other code block as it is.
 
-## What it does not do
+The command differs from Prettier's CLI too: it does not read `.prettierignore`,
+has no `--ignore-path`, `--ignore-unknown`, or formatting options, and uses only
+the indentation of a configuration.
 
-- It formats nothing but diagrams. Of a Prettier configuration it uses only the
-  indentation; the plugins and the other options there are not used.
-- It reports no mistakes in a diagram beyond syntax errors;
-  [`@mmd-toolkit/eslint-plugin`](../eslint-plugin) does that.
+## Code blocks in detail
+
+The code blocks are those whose info string has `mermaid` or `mmd` as its first
+word, case-sensitively, found as Prettier's Markdown parser finds them. A fence
+inside another code block is not taken for a diagram, and a block inside a list
+or a block quote is found. Only the lines between the fences change, and a block
+inside a list or a block quote keeps its indentation and its `>`.
+
+A block that is not closed runs to the end of its list item, its block quote, or
+the file, and is formatted all the same.
+
+Two kinds of block are left as written, with a warning that gives the position:
+
+- a block with a tab in its indentation that is read partly as indentation and
+  partly as the diagram, as at the start of a line in a list item indented by
+  two spaces;
+- a block whose opening fence stands on the line of a footnote label, as in
+  `[^1]: ```mermaid`.
+
+A diagram that is empty or only whitespace becomes empty. A file keeps its line
+endings.
 
 ## Documentation
 
-- [mmdfmt guide](https://mmd-toolkit.github.io/mmd-toolkit/formatter/mmdfmt.html):
-  installation, usage, exit codes, and the differences from Prettier with the
-  plugin.
 - [Formatter options](https://mmd-toolkit.github.io/mmd-toolkit/formatter/options.html):
-  how `tabWidth` and `useTabs` indent diagrams.
+  how the indentation applies to diagrams.
 - [Formatter compatibility](https://mmd-toolkit.github.io/mmd-toolkit/formatter/compatibility.html):
-  syntax errors, differences from mermaid.js, and the limits of the guarantees
-  of the formatting that this tool applies.
+  rejected diagrams, differences from mermaid.js, and what the formatting
+  guarantees.

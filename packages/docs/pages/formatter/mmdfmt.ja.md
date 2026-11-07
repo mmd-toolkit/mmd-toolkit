@@ -1,36 +1,56 @@
 # mmdfmtで図だけを整形する
 
-`mmdfmt`は、Mermaidの図だけを整形するコマンドです。
-`.mmd`・`.mermaid`ファイルと、
-Markdown内の`mermaid`・`mmd`コードブロックを整形します。
+Markdownと`.mmd`ファイルの[Mermaid](https://mermaid.js.org/)の図を整形し、
+ほかはすべて書いたまま残します。
+
+`mmdfmt`は`.mmd`と`.mermaid`ファイルと、
+`.md`と`.markdown`ファイルの`mermaid`と`mmd`コードブロックを整形します。
 Markdownファイルのほかの部分は、1バイトも変えません。
+図は、[Prettier](https://prettier.io/)と、
+そのMermaidプラグインの[`prettier-plugin-mmd`](./index.ja.md)で整形します。
+[Prettierを知っている方へ](#prettierを知っている方へ)の2つの場合を除き、
+プラグインと同じ結果になります。
 
-Markdownを別のツールで整形している場合や、整形していない場合など、
-PrettierでMarkdownを整形しないときに使います。
-[`prettier-plugin-mmd`](./index.ja.md)がコードブロックを整形するには、
-Prettierを通す必要があり、PrettierはMarkdownファイル全体を整形します。
-`mmdfmt`は、図だけをPrettierとプラグインで整形するため、
-図の整形結果はプラグインと同じで、プロジェクトにPrettierの設定は不要です。
+## どんなときに使うか
 
-## インストール
+図を整形したいけれど、MarkdownはPrettierで整形しないときに使います。
 
-プロジェクトに`mmdfmt`をインストールします。
+- `markdownlint --fix`やdprintなど、別のフォーマッターでMarkdownを整形する。
+  Prettierを使うと、同じテキストをPrettierのやり方で書き換えてしまいます。
+- Markdownを、意図して書いたまま保つ。
+- ほかのファイルにはPrettierを使い、Markdownには使わない。
+
+すでにPrettierでMarkdownを整形しているなら、
+代わりに`prettier-plugin-mmd`を追加してください。
+同じ実行で図も整形されるため、`mmdfmt`は不要です。
+
+`mmdfmt`はPrettierの設定なしに、1つのコマンドで使えます。
+
+## しないこと
+
+- 図のほかは整形しません。
+- 図の誤りは、mermaid.jsが拒否するもの以外は報告しません。
+  それは[`@mmd-toolkit/eslint-plugin`](../linter/index.ja.md)が行います。
+
+## まず使ってみる
+
+`mmdfmt`にはNode.js `^22.13.0 || >=24`が必要です。
+`--write`はファイルを直接書き換えるので、先に作業をコミットするか、
+`npx mmdfmt --check .`でどのファイルが変わるか確認してください。
+現在のディレクトリの下にある図をすべて整形するには、次を実行します。
 
 ```sh
-npm install --save-dev mmdfmt
+npx mmdfmt --write .
 ```
 
-Node.js `^22.13.0 || >=24`が必要です。
-
-## 最初のファイルを整形する
-
-次のMarkdownを`notes.md`として保存します。
+変わるのは図だけです。
+この`notes.md`は、
 
 <!-- prettier-ignore -->
 ````md
 # Notes
 
-*   Prettier would rewrite this list item.
+*   A list item that mmdfmt leaves as it is.
 
 ```mermaid
 flowchart LR
@@ -38,20 +58,13 @@ flowchart LR
 ```
 ````
 
-ファイルを指定し、`--write`で`mmdfmt`を実行します。
-
-```sh
-npx mmdfmt --write notes.md
-```
-
-`mmdfmt`は、変わるファイルを書き換え、標準出力にその一覧を書きます。
-変わるのは図だけで、リスト項目の`*`と空白はそのまま残ります。
+次のようになります。
 
 <!-- prettier-ignore -->
 ````md
 # Notes
 
-*   Prettier would rewrite this list item.
+*   A list item that mmdfmt leaves as it is.
 
 ```mermaid
 flowchart LR
@@ -60,92 +73,253 @@ flowchart LR
 ```
 ````
 
-プロジェクト全体を整形するには、globを指定します。
-シェルではなく`mmdfmt`が展開するように、引用符で囲みます。
+`mmdfmt`をインストールしていない場合、`npx`はダウンロードしてよいか尋ね、
+最新版を実行します。
+同じバージョンを使い続けるには、[インストール](#インストール)してください。
+
+## インストール
+
+`mmdfmt`の新しいバージョンでは、図の整形が少し変わることがあります。
+プロジェクトに関わる全員とCIが同じように整形するよう、
+プロジェクトでバージョンを厳密に固定します。
 
 ```sh
-npx mmdfmt --write "**/*.{md,mmd,mermaid}"
+npm install --save-dev --save-exact mmdfmt
 ```
 
-## CIで整形を確認する
+pnpmでは、`pnpm add --save-dev --save-exact mmdfmt`を使います。
+以降は`npx mmdfmt`（または`pnpm exec mmdfmt`）がそのバージョンを実行します。
 
-`--check`はファイルを変えず、`--write`で変わるファイルを列挙します。
-変わるファイルがあると終了コード`1`を返すため、
-CIジョブを失敗させることができます。
+自分で複数のリポジトリにまたがって使うには、グローバルにインストールし、
+`mmdfmt`として実行します。
 
 ```sh
-npx mmdfmt --check "**/*.{md,mmd,mermaid}"
+npm install --global mmdfmt
 ```
 
-## 標準入力
+グローバルなインストールはプロジェクトに固定されないので、
+2台のマシンで図の整形結果が異なることがあります。
 
-`--stdin-filepath`は標準入力を整形し、結果を標準出力に書きます。
-パスは、テキストが図かMarkdownかと、
-どの設定と無視ファイルが適用されるかを示します。
-そのパスのファイルを読み書きすることはありません。
+## 使い方
 
 ```sh
-npx mmdfmt --stdin-filepath diagram.mmd < diagram.mmd
+mmdfmt --write <pattern>...
+mmdfmt --check <pattern>...
+mmdfmt --stdin-filepath <path>
 ```
 
-## 整形するファイル
+| オプション                | 動作                                                           |
+| ------------------------- | -------------------------------------------------------------- |
+| `--write`                 | ファイルを直接整形し、変わったものを標準出力に挙げます。       |
+| `--check`                 | 何も変えず、`--write`が変えるファイルを標準出力に挙げます。    |
+| `--stdin-filepath <path>` | 標準入力を`<path>`のファイルとして整形し、標準出力に書きます。 |
+| `-h`, `--help`            | 使い方を標準出力に書きます。                                   |
+| `-v`, `--version`         | バージョンを標準出力に書きます。                               |
 
-パターンには、ファイルのパス、ディレクトリーのパス、globを指定できます。
-パターンで選ばれたファイルのうち、
-拡張子が`.md`・`.markdown`・`.mmd`・`.mermaid`のものを整形します。
+`--write`か`--check`のどちらかにパターンを付けるか、
+`--stdin-filepath`を単独で指定します。
+`--help`と`--version`は、表のほかのオプションを一緒に付けても出力するだけです。
+ほかの組み合わせはエラーです。
+引数がまったくないときは、`mmdfmt`は使い方を標準エラー出力に書き、
+`2`で終了します。
+
+ほかのオプションはありません。
+整形オプションも、独自の設定ファイルも、
+無視ファイルを指定するオプションもありません。
+値を取らないオプションは、`=`の後ろの値を無視します。
+引数のライブラリ[gunshi](https://gunshi.dev)が読むとおり、
+`--write=false`は`--write`と同じに読みます。
+
+### パターン
+
+- ファイルのパスは、そのファイルを選びます。
+- `.`などのディレクトリのパスは、その下のファイルを選びます。
+- ほかのパターンはglobで、名前がドットで始まるものにも一致します。
+  シェルではなく`mmdfmt`が展開するよう、引用符で囲みます。
+  例: `npx mmdfmt --write "docs/**/*.md"`。
+  Windowsでは、globの`\`を`/`と読みます。
+- `!`で始まるパターンは、
+  一致するファイルをほかのパターンの選択から取り除きます。
+  [ファイルの除外](#ファイルの除外)を参照してください。
+- `--`の後ろの引数はすべてパターンなので、`mmdfmt --write -- -a.md`のように、
+  `-`で始まる名前のファイルも渡せます。
+
+選んだファイルのうち、名前が`.md`、`.markdown`、`.mmd`、
+`.mermaid`で終わるものを、いくつのパターンが選んでも1回ずつ整形します。
 そのどれも選ばないパターンはエラーです。
+そのようなファイルのないプロジェクトでは`mmdfmt --check .`は失敗し、
+ほかの語尾のファイルを名前で指定しても同じです。
+PrettierのCLIと同じく、
+`!`のパターンによって選んだファイルがすべて取り除かれるパターンもエラーです。
+`.gitignore`が挙げるファイルだけを選ぶパターンはエラーではなく、
+`node_modules`やバージョン管理のディレクトリの下にあるファイルのパスも、
+エラーではありません（[ファイルの除外](#ファイルの除外)）。
 
-PrettierのCLIと同じく、`mmdfmt`は、
-`node_modules`やバージョン管理のディレクトリーの下にあるファイルを除外します。
-カレントディレクトリーに`.gitignore`や`.prettierignore`があれば、
-それらが挙げるファイルも除外します。
-Markdownでは、
-`<!-- prettier-ignore -->`の直後のコードブロックをそのまま残します。
+## ファイルの除外
+
+`mmdfmt`は次のファイルを除外します。
+
+- `node_modules`と、バージョン管理のディレクトリ（`.git`、`.hg`、`.jj`、`.sl`、
+  `.svn`）の下にあるファイル。
+- `mmdfmt`を実行するディレクトリの`.gitignore`が挙げるファイル。
+  サブディレクトリや親ディレクトリの`.gitignore`は読みません。
+- `!`のパターンに一致するファイル。
+  bashでは、二重引用符内の`!`は履歴展開を始めるため、単一引用符で囲みます。
+  例: `npx mmdfmt --write . '!vendor/**'`。
+  Windowsのコマンドプロンプトでは二重引用符を使います。
+
+`mmdfmt`は`.prettierignore`を読みません。
+そこにMarkdownを挙げてPrettierで整形しないようにしたプロジェクトでも、
+図を整形できます。
+
+Markdownファイルの図を1つそのまま残すには、
+コードブロックの前に`<!-- prettier-ignore -->`を置き、
+間には空行以外を入れません。
+リストや引用の外では、
+`<!-- prettier-ignore-start -->`と
+`<!-- prettier-ignore-end -->`の間の図をすべてそのまま残します。
+これらはPrettierが読むコメントです。
+`.mmd`ファイル全体をそのまま残すには、`!`のパターンか`.gitignore`で除外します。
+
+## CIで確認する
+
+プロジェクトに`mmdfmt`をインストールし、
+CIで依存パッケージをインストールして（`npm ci`）、次を実行します。
+
+```sh
+npx mmdfmt --check .
+```
+
+整形されていないファイルがあると、`--check`は標準出力に挙げ、`1`で終了します。
+すべて整形済みなら、何も出力せず`0`で終了します。
+依存パッケージをインストールしていないと、
+`npx`は固定したバージョンではなく最新版を実行してしまいます。
+
+mermaid.jsが拒否する図のある`.mmd`や`.mermaid`ファイルは、
+`2`でチェックに失敗します。
+Markdown内の図をmermaid.jsが拒否しても、警告にとどまります。
+文書では壊れた図を意図して示すことがあり、
+`mmdfmt`にはそれで失敗させるオプションはありません。
+そのような図でCIを失敗させるには、
+図を報告する[`@mmd-toolkit/eslint-plugin`](../linter/markdown.ja.md)で
+Markdownをlintします。
+
+図のファイルが1つもないプロジェクトでは、`--check .`は`2`で失敗します。
+`.`の代わりに、図のあるディレクトリを指定してください。
+
+## コミット前に整形する
+
+huskyやsimple-git-hooksなどのGitフックマネージャーがコミットごとに実行する
+[lint-staged](https://github.com/lint-staged/lint-staged)を使う場合は、
+`package.json`に次を追加します。
+
+```json
+{
+  "lint-staged": {
+    "*.{md,markdown,mmd,mermaid}": "mmdfmt --write"
+  }
+}
+```
+
+globはこの4つの語尾に限ってください。
+`mmdfmt`にはPrettierの`--ignore-unknown`のようなオプションはなく、
+ほかの語尾のファイルはエラーです。
+lint-stagedが渡す絶対パスを、`mmdfmt`は受け付けます。
+
+## エディターやほかのツールから使う
+
+`mmdfmt`にはエディターの拡張機能はありません。
+標準入力に対してフォーマッターを実行するエディターやツールでは、
+ファイルのテキストを標準入力に渡して次を実行し、
+標準出力から整形結果を受け取れます。
+
+```sh
+mmdfmt --stdin-filepath docs/guide.md
+```
+
+そのパスのファイルは、読み書きしません。
+相対パスは`mmdfmt`を実行するディレクトリを基準に解決します。
+パスの語尾がテキストを図として読むかMarkdownとして読むかを決め、
+ディレクトリがどの`.editorconfig`とPrettierの設定を適用するかを決めます。
+
+- Markdownのテキストは、整形したか、すでに整形済みかにかかわらず全体を出力し、
+  図が拒否されても終了コードは`0`です。
+  警告は標準エラー出力に書きます。
+- mermaid.jsがテキストを拒否する図では、標準出力に何も書かず、
+  標準エラー出力にエラーを書き、終了コードは`2`です。
+- `node_modules`やバージョン管理のディレクトリの下にあるパス、
+  または`mmdfmt`を実行するディレクトリの`.gitignore`が挙げるパスでは、
+  テキストをそのまま返します。
+- ほかの語尾のパスはエラーです。
 
 ## インデント
 
-`mmdfmt`には整形オプションはありません。
-図のインデントはスペース2個です。
-プロジェクトにPrettierの設定や`.editorconfig`がある場合は、
-その`tabWidth`と`useTabs`を使います。
-[オプション](./options.ja.md)では、これらによる図のインデントを説明しています。
+図のインデントは空白2つです。
+ファイルに`.editorconfig`やPrettierの設定が適用されるときは、
+そのインデントを使います。
+`.editorconfig`の`indent_style`、`indent_size`、`tab_width`、
+または[Prettierの設定ファイル](https://prettier.io/docs/configuration)の
+`useTabs`と`tabWidth`で、`overrides`も含めてPrettierのCLIと同じように探します。
+コードブロックでは、そのファイルはMarkdownファイルです。
+読めない設定ファイルはエラーです。
+たとえば、この`.editorconfig`は図に空白4つのインデントを付けます。
+
+```ini
+[*.{md,mmd,mermaid}]
+indent_style = space
+indent_size = 4
+```
+
 設定のほかの項目は使いません。
 
 ## エラーと終了コード
 
-mermaid.jsが拒否する図は、そのまま残します。
-`.mmd`・`.mermaid`ファイルではエラーです。
-Markdownのコードブロックでは警告になり、ファイルのほかのブロックは整形します。
-文書は拒否される図を意図して載せることがあるためです。
-エラーと警告は、ファイル内の行と桁を付けて標準エラー出力に書きます。
+mermaid.jsが拒否する図はそのまま残し、
+ファイル内の行と桁を付けて標準エラー出力に報告します。
+ほかのファイルと、同じファイルのほかの図は整形します。
 
 ```txt
 docs/flow.mmd:3:1: error: Unexpected end of text
 notes.md:6:1: warning: Unexpected end of text
 ```
 
-| 終了コード | 意味                                                  |
-| ---------- | ----------------------------------------------------- |
-| `0`        | 問題がなく、`--check`ではどのファイルも整形済みです。 |
-| `1`        | `--check`で、変わるファイルがあり、問題はありません。 |
-| `2`        | エラーです。                                          |
+`.mmd`や`.mermaid`ファイルではエラーです。
+Markdownのコードブロックでは警告です。
+行と桁は1から数え、桁は多くのエディターと同じくUTF-16のコード単位で数えます。
+どの図が拒否されるかは、
+[フォーマッターの互換性](./compatibility.ja.md)で説明しています。
 
-エラーとは、図のファイルの構文エラー、読み込みか書き込みができないファイル、
-ファイルを選ばないパターン、読み込めないPrettierの設定、
+| コード | 意味                                                    |
+| ------ | ------------------------------------------------------- |
+| `0`    | エラーがなく、`--check`ではどのファイルも整形済みです。 |
+| `1`    | `--check`で、変わるファイルがあり、エラーはありません。 |
+| `2`    | エラーです。                                            |
+
+エラーとは、`.mmd`や`.mermaid`ファイル内の拒否された図、
+読めないか書けないファイル、ファイルを選ばないパターン、読めない設定、
 オプションの誤った使い方です。
 エラーがあれば、変わるファイルがあっても終了コードは`2`です。
 
-## Prettierとプラグインによる整形との違い
+## Prettierを知っている方へ
 
-Markdownでは、Prettierとプラグインによる整形と結果が異なる点が2つあります。
+図はPrettierと`prettier-plugin-mmd`で整形するので、
+プラグインの規則が適用されます。
+MarkdownにPrettierとプラグインを使う場合とは、結果が2点で異なります。
 
 - Prettierは、コードブロックの最後の行の末尾の空白を、
-  mermaid.jsが読む場合も取り除きます（[互換性](./compatibility.ja.md)）。
-  `mmdfmt`はブロックのテキストだけを置き換えるため、その空白は残ります。
-- Prettierは、Markdownのコードブロック（`md`と指定したものなど）を、
-  Markdown文書として整形し、その中のコードブロックの図も整形します。
+  mermaid.jsが図の一部として読む場合も、
+  取り除きます（[行末の空白](./compatibility.ja.md#行末の空白)）。
+  `mmdfmt`はブロックのテキストだけを置き換えるので、その空白は残ります。
+- Prettierは、`md`と指定したものなど、
+  MarkdownのコードブロックをMarkdown文書として整形し、
+  その中のコードブロックの図も整形します。
   `mmdfmt`はほかのコードブロックをすべてそのまま残します。
 
-[`mmdfmt`のREADME](../../../mmdfmt/README.ja.md)では、
-リストや引用内のコードブロック、インデント内のタブ、改行コードなど、
-すべての場合を詳しく説明しています。
+コマンドもPrettierのCLIとは異なります。
+`.prettierignore`は読まず、`--ignore-path`、`--ignore-unknown`、
+整形オプションはなく、設定からはインデントだけを使います。
+
+[`mmdfmt`のREADME](../../../mmdfmt/README.ja.md#コードブロックの詳細)では、
+コードブロックを詳しく説明しています。
+整形するブロック、リストや引用の中のブロック、警告してそのまま残すブロック、
+改行コードについてです。

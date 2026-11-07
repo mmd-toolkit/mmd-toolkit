@@ -15,7 +15,7 @@ export interface Io {
   readonly stderr: (text: string) => void
 }
 
-/** The exit codes (README, Exit codes). */
+/** The exit codes (README, Errors and exit codes). */
 const exitCodes = { ok: 0, changed: 1, error: 2 } as const
 
 /** The examples in the usage, one on a line (README, Usage). */
@@ -105,7 +105,7 @@ export async function main(args: readonly string[], io: Io): Promise<number> {
     // reaches standard output but the usage of --help and the version, see
     // whether usageSilent and the writing here and in run can go. 1.0 also
     // sets the exit code to 1 when it writes an error, where the tool exits
-    // with 2 for a wrong use (README, Exit codes): decide again which code a
+    // with 2 for a wrong use (README, Errors and exit codes): decide again which code a
     // wrong use exits with. With usageSilent, 1.0 still writes no error and
     // throws it, as 0.37 does.
     const printed = await cli([...args], command, {
@@ -144,12 +144,25 @@ async function formatFiles(
   mode: "write" | "check",
   io: Io,
 ): Promise<number> {
-  const { files, unmatched } = await selectFiles(patterns, io.cwd)
-  let failed = unmatched.length > 0
+  const { files, onlyExcluding, unmatched, excluded } = await selectFiles(
+    patterns,
+    io.cwd,
+  )
+  if (onlyExcluding) {
+    return argumentError(io, [
+      "no patterns of the files to format; a pattern that starts with ! only excludes files",
+    ])
+  }
+  let failed = unmatched.length > 0 || excluded.length > 0
   let changed = false
   for (const pattern of unmatched) {
     io.stderr(
       `mmdfmt: error: no file ending in ${endingsInWords} matches ${JSON.stringify(pattern)}\n`,
+    )
+  }
+  for (const pattern of excluded) {
+    io.stderr(
+      `mmdfmt: error: a pattern that starts with ! excludes the file ${JSON.stringify(pattern)}\n`,
     )
   }
   for (const file of files) {
