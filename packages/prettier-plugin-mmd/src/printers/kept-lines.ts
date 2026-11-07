@@ -1,5 +1,5 @@
 import type { Node, Range } from "@mmd-toolkit/ast"
-import { findNodes, minOf, maxOf } from "./collections.ts"
+import { appendItems, findNodes, minOf, maxOf } from "./collections.ts"
 import type { Source } from "./source.ts"
 import {
   findDirectiveEndingAt,
@@ -720,37 +720,38 @@ const styleRuleStretchesBySource = new WeakMap<
 >()
 
 /**
- * The index in `line`, which starts at `start`, of its last `;` that the
- * printer keeps, or -1. The printer drops the `;` that the line rule ignores
- * at the end of the line (see `isDroppedSemicolon`), and the `;` tokens that
- * separate statements on a line that keeps no `;` of its own (see
- * `findSemicolonLines`). A `;` inside a token or a comment stays. The line
- * that it prints has the rule only through the `;` that stay, so a stretch is
- * decided by those, or a second formatting would find none.
+ * The index in `segment` of its last `;` that the printer keeps, or -1. The
+ * printer drops the `;` that the line rule ignores at the end of the line (see
+ * `isDroppedSemicolon`), and the `;` tokens that separate statements on a line
+ * that keeps no `;` of its own (see `findSemicolonLines`). A `;` inside a token
+ * stays. The line that it prints has the rule only through the `;` that stay,
+ * so a stretch is decided by those, or a second formatting would find none.
+ * `lineStart` is the start of the line that holds the segment.
  */
 function findLastKeptSemicolon(
   source: Source,
-  start: number,
-  line: string,
+  lineStart: number,
+  segment: ReadableSegment,
 ): number {
-  const keepsSeparators = findSemicolonLines(source).has(start)
-  for (let index = line.lastIndexOf(";"); index !== -1;) {
-    const offset = start + index
+  const keepsSeparators = findSemicolonLines(source).has(lineStart)
+  for (let index = segment.text.lastIndexOf(";"); index !== -1;) {
+    const offset = segment.offsets[index]
     const isToken = findTokenStartingAt(source, offset)?.value === ";"
     if (!isToken || (keepsSeparators && !isDroppedSemicolon(source, offset))) {
       return index
     }
-    index = index === 0 ? -1 : line.lastIndexOf(";", index - 1)
+    index = index === 0 ? -1 : segment.text.lastIndexOf(";", index - 1)
   }
   return -1
 }
 
 /**
- * The stretch of each line that holds `style` or `classDef`, later a `:`,
- * later a `#`, and later a `;`: from the first `:` after the word to the last
- * `#` before the last `;`. Every pair of a `:` and a later `#` of the line lies
- * in it, so the whitespace that may decide the rule lies in it (see
- * `isInsideStyleRuleStretch`).
+ * The stretch of each line-rule segment that holds `style` or `classDef`, later
+ * a `:`, later a `#`, and later a `;`: from the first `:` after the word to the
+ * last `#` before the last `;`. The segment is what the rule reads, without
+ * the directives and the comments (see `readSegments`). Every pair of a `:` and
+ * a later `#` of the segment lies in it, so the whitespace that may decide the
+ * rule lies in it (see `isInsideStyleRuleStretch`).
  */
 function findStyleRuleStretches(
   source: Source,
@@ -761,8 +762,7 @@ function findStyleRuleStretches(
   let start = 0
   while (start <= source.text.length) {
     const end = lineEndOf(source, start)
-    const stretch = findPotentialStyleRuleStretch(source, start, end)
-    if (stretch !== null) stretches.push(stretch)
+    appendItems(stretches, findPotentialStyleRuleStretches(source, start, end))
     start = end + 1
   }
   styleRuleStretchesBySource.set(source, stretches)
@@ -852,25 +852,88 @@ export function findVerbatimStyleLines(source: Source): ReadonlySet<number> {
 }
 
 /**
- * The conservative colon/hash stretch used for ordinary gaps. Railroad and
- * Wardley instead keep complete lines containing the shared words as written
- * (common.md, The `style` and `classDef` lines; docs/railroad.md and
+ * The colon/hash stretches of the line from `start` to `end`, one for each
+ * line-rule segment that has one, used for ordinary gaps. The rule reads a
+ * segment without its directives and without the comment regions (in agentflow
+ * and eventmodeling the comment regions are read), and a segment ends at a
+ * U+2028 or U+2029 that no directive or comment holds (common.md, The `style`
+ * and `classDef` lines). Railroad and Wardley instead keep complete lines
+ * containing the shared words as written (docs/railroad.md and
  * docs/wardley.md, Semicolons).
  */
-function findPotentialStyleRuleStretch(
+function findPotentialStyleRuleStretches(
   source: Source,
   start: number,
   end: number,
-): readonly [number, number] | null {
+): readonly (readonly [number, number])[] {
   const first = lineStartOf(source, start)
-  const text = source.text.slice(first, lineEndOf(source, end))
-  const semicolon = findLastKeptSemicolon(source, first, text)
-  if (semicolon < 0) return null
-  const firstWord = findStyleWord(text)
-  if (firstWord === -1) return null
-  const colon = text.indexOf(":", firstWord)
-  const hash = text.lastIndexOf("#", semicolon)
-  return colon !== -1 && colon < hash ? [first + colon, first + hash] : null
+  const lineEnd = lineEndOf(source, end)
+  if (!source.text.slice(first, lineEnd).includes(";")) return []
+  const stretches: (readonly [number, number])[] = []
+  for (const segment of readSegments(source, first, lineEnd)) {
+    const semicolon = findLastKeptSemicolon(source, first, segment)
+    if (semicolon < 0) continue
+    const firstWord = findStyleWord(segment.text)
+    if (firstWord === -1) continue
+    const colon = segment.text.indexOf(":", firstWord)
+    const hash = segment.text.lastIndexOf("#", semicolon)
+    if (colon !== -1 && colon < hash) {
+      stretches.push([segment.offsets[colon], segment.offsets[hash]])
+    }
+  }
+  return stretches
+}
+
+/** The characters of a line-rule segment, with their offsets in the source. */
+interface ReadableSegment {
+  readonly text: string
+  readonly offsets: readonly number[]
+}
+
+/**
+ * The segments that the line rule reads in the line from `start` to `end`: the
+ * characters outside every directive, and outside every comment unless the
+ * diagram reads its comment regions, split at the U+2028 and U+2029 that lie
+ * outside all comments and directives (common.md, The `style` and `classDef`
+ * lines).
+ */
+function readSegments(
+  source: Source,
+  start: number,
+  end: number,
+): ReadableSegment[] {
+  const readsComments =
+    source.root.body.type === "AgentflowDiagram" ||
+    source.root.body.type === "EventmodelingDiagram"
+  const trivia = findTriviaBetween(source, start, end)
+  const segments: ReadableSegment[] = []
+  let text = ""
+  let offsets: number[] = []
+  let next = 0
+  for (let offset = start; offset < end; offset++) {
+    while (next < trivia.length && trivia[next].range[1] <= offset) next++
+    const item = trivia[next]
+    if (item !== undefined && item.range[0] <= offset) {
+      if (item.type === "Directive" || !readsComments) {
+        offset = item.range[1] - 1
+        continue
+      }
+    }
+    const character = source.text[offset]
+    if (
+      (character === "\u2028" || character === "\u2029") &&
+      (item === undefined || item.range[0] > offset)
+    ) {
+      segments.push({ text, offsets })
+      text = ""
+      offsets = []
+      continue
+    }
+    text += character
+    offsets.push(offset)
+  }
+  segments.push({ text, offsets })
+  return segments
 }
 
 /**

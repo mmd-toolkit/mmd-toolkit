@@ -169,7 +169,12 @@ label `style:` followed by the entity `#x;`, while `A[style:#x;]` has the label
 its statements together, whether it contains `style` or not. The rule reads only
 `style`, `:`, `#`, and `;`, so the whitespace between other tokens may change,
 but not the whitespace between a `:` and a later `#` (see
-[Semicolons](#semicolons)).
+[Semicolons](#semicolons)). The rule reads a line without its directives and
+without its comments (agentflow and eventmodeling read their comments, too), so
+a `style`, a `:`, a `#`, or a `;` inside a directive or a comment does not
+count: `A[style:]-->B %%{init:{"x":"#;"}}%%` is printed
+`A[style:] --> B %%{init:{"x":"#;"}}%%`, as a line with no `#` or `;` is.
+[fixture: semicolons/line-rule-chars-only-in-directive]
 
 Input
 ([statements-one-per-line/separated-by-semicolons-input.mmd](../tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-input.mmd)):

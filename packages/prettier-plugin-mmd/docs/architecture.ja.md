@@ -312,6 +312,17 @@ mermaid.js が trim するからです。
 `service style(logos:aws)[ #y; ]` は `service style(logos:aws)[ #y;]` になり、
 `:` の前に `style` がない `service s(logos:aws)[ #y; ]` は
 `service s(logos:aws)[#y;]` になります。
+この規則はディレクティブとコメントを除いた行を読むので、その中の `style`、`:`、
+`#`、`;` は区間を作りません。
+`service%%{style}%% s0(logos:aws)[ #y; ]` は
+`service%%{style}%% s0(logos:aws)[#y;]` に、
+`service style1(logos:aws)[ #y ]%%{init:{"a":";"}}%%` は `[#y]` になります。
+`;` がディレクティブの外にある `[ #y; ]` は、空白を残します。
+ディレクティブにもコメントにも含まれない U+2028 と U+2029 は、
+規則が読む行を終わらせるので、その前の `:` とその後の `;` は区間を作りません。
+[fixture: architecture/label-content/title-padding-line-rule-chars-in-directive-or-comment]
+[test: architecture/label-content/title-style-rule-ends-at-u2028]
+[test: architecture/label-content/title-style-rule-ends-at-u2029]
 コメントやディレクティブを含むタイトルと、U+2028 や U+2029 を含む空白は、
 書かれたまま残します。
 [fixture: architecture/label-content/title-padding-with-directive-or-semicolon]

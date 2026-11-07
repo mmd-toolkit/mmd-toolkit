@@ -10,6 +10,18 @@ interface ArchitectureCase {
 
 export const architectureCases: readonly ArchitectureCase[] = [
   {
+    name: "architecture/label-content/title-style-rule-ends-at-u2028",
+    input: "architecture-beta\nservice style(logos:aws)[ #y \u2028x; ]\n",
+    output: "architecture-beta\n  service style(logos:aws)[#y \u2028x;]\n",
+    options: {},
+  },
+  {
+    name: "architecture/label-content/title-style-rule-ends-at-u2029",
+    input: "architecture-beta\nservice style(logos:aws)[ #y \u2029x; ]\n",
+    output: "architecture-beta\n  service style(logos:aws)[#y \u2029x;]\n",
+    options: {},
+  },
+  {
     name: "architecture/label-content/title-with-semicolon-u2028",
     input: "architecture-beta\ngroup g(cloud)[ a;b \u2028]\n",
     output: "architecture-beta\n  group g(cloud)[a;b \u2028]\n",

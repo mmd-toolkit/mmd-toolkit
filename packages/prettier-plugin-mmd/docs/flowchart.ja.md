@@ -176,6 +176,13 @@ mermaid.js は、一部の行（`style`、`:`、`#` がこの順に `;` の前�
 ほかのトークンの間の空白は変えてかまいません。
 ただし、`:` とその後の `#` の間の空白は、
 あるかないかを変えません（[セミコロン](#セミコロン)を参照）。
+この規則は、
+ディレクティブとコメントを除いた行を読みます（agentflow と eventmodeling
+はコメントも読みます）。
+そのため、ディレクティブやコメントの中の `style`、`:`、`#`、`;` は数えません。
+`A[style:]-->B %%{init:{"x":"#;"}}%%` は、
+`#` や `;` のない行と同じく `A[style:] --> B %%{init:{"x":"#;"}}%%` になります。
+[fixture: semicolons/line-rule-chars-only-in-directive]
 
 入力
 ([statements-one-per-line/separated-by-semicolons-input.mmd](../tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-input.mmd)):
