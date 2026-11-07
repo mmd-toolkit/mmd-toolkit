@@ -26,8 +26,8 @@ npm install @mmd-toolkit/parser
 
 ES モジュールで、Node.js `^20.19.0 || ^22.13.0 || >=24` が要ります。
 
-TypeScript の型を使うには、
-パーサーと同じ版の [`@mmd-toolkit/ast`](../ast) も入れます。
+TypeScript の型を使うには、パーサーの版か、
+互換のある新しい版の [`@mmd-toolkit/ast`](../ast) も入れます。
 
 ```sh
 npm install --save-dev @mmd-toolkit/ast

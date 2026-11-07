@@ -26,7 +26,7 @@ npm install @mmd-toolkit/parser
 It is an ES module and needs Node.js `^20.19.0 || ^22.13.0 || >=24`.
 
 To use the TypeScript types, also install [`@mmd-toolkit/ast`](../ast), at the
-same version as the parser:
+version of the parser or a later compatible one:
 
 ```sh
 npm install --save-dev @mmd-toolkit/ast

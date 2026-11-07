@@ -15,8 +15,8 @@ Install the parser in your project:
 npm install @mmd-toolkit/parser
 ```
 
-To use the TypeScript types, also install `@mmd-toolkit/ast`, at the same
-version as the parser:
+To use the TypeScript types, also install `@mmd-toolkit/ast`, at the version of
+the parser or a later compatible one:
 
 ```sh
 npm install --save-dev @mmd-toolkit/ast

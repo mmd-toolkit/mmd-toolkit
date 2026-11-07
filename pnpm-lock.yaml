@@ -280,7 +280,7 @@ importers:
         specifier: ^0.7.3
         version: 0.7.3
       '@mmd-toolkit/parser':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../parser
       '@ota-meshi/ast-token-store':
         specifier: ^0.3.0
@@ -372,7 +372,7 @@ importers:
   packages/prettier-plugin-mmd:
     dependencies:
       '@mmd-toolkit/parser':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../parser
       marked:
         specifier: 18.1.3

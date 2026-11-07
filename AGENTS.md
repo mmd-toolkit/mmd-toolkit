@@ -104,9 +104,9 @@ package.
 - `packages/ast`: the TypeScript types of the tree, which follow the definition
   in the specification. It holds types only. The parser, the formatter, and the
   linter have it as an optional peer dependency, so that their users download it
-  only when they use the types: the parser at the same version, so that the
-  types match it, and the formatter and the linter at any version, so that
-  updating one of them alone installs. Skill `parser`.
+  only when they use the types: the parser at its own version or a later
+  compatible one, so that the types match it, and the formatter and the linter
+  at any version, so that updating one of them alone installs. Skill `parser`.
 - `packages/parser`: the reference implementation of the specification, and the
   specification of the tokens and positions of the tree (its `docs/tokens.md`
   and `docs/positions.md`). Every behavior it implements comes from the
