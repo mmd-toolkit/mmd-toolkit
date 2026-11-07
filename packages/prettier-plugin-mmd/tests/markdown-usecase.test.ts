@@ -59,9 +59,9 @@ const cases: readonly MarkdownCase[] = [
       "usecase-beta\nsystemBoundary Portal\nactor Member <<  person  >>, Clerk<<operator>>\nFind(Search)<<task>>\nCard[Preview] <<  ui  card  >>\nend",
     options: {},
     output:
-      "```mermaid\nusecase-beta\n  systemBoundary Portal\n    actor Member << person >>, Clerk<<operator>>\n    Find(Search)<<task>>\n    Card[Preview] << ui  card >>\n  end\n```\n",
+      "```mermaid\nusecase-beta\n  systemBoundary Portal\n    actor Member <<person>>, Clerk <<operator>>\n    Find(Search) <<task>>\n    Card[Preview] <<ui  card>>\n  end\n```\n",
     payloadOutput:
-      "usecase-beta\n  systemBoundary Portal\n    actor Member << person >>, Clerk<<operator>>\n    Find(Search)<<task>>\n    Card[Preview] << ui  card >>\n  end\n",
+      "usecase-beta\n  systemBoundary Portal\n    actor Member <<person>>, Clerk <<operator>>\n    Find(Search) <<task>>\n    Card[Preview] <<ui  card>>\n  end\n",
     rejected: false,
   },
   {

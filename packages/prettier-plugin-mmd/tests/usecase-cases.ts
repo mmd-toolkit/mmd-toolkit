@@ -224,7 +224,7 @@ export const usecaseCases: readonly UsecaseCase[] = [
     input:
       "usecase-beta\nactor User <<\u00a0\u2028  service\u00a0\u2028inside\u2029  text  \u2029\u00a0>>",
     output:
-      "usecase-beta\n  actor User << service\u00a0\u2028inside\u2029  text >>\n",
+      "usecase-beta\n  actor User <<service\u00a0\u2028inside\u2029  text>>\n",
     options: {},
   },
   {
@@ -238,7 +238,7 @@ export const usecaseCases: readonly UsecaseCase[] = [
     name: "usecase: stereotype-unicode-gap-sides",
     id: "usecase/stereotypes/unicode-gap-sides",
     input: "usecase-beta\nA <<\u2028\u00a0left>>\nB <<right\u2029\u00a0>>",
-    output: "usecase-beta\n  A << left>>\n  B <<right >>\n",
+    output: "usecase-beta\n  A <<left>>\n  B <<right>>\n",
     options: {},
   },
   {
