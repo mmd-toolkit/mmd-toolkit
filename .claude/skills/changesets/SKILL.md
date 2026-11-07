@@ -47,22 +47,58 @@ One file `.changeset/<short-kebab-name>.md`:
 
 ```md
 ---
-"@mmd-toolkit/eslint-plugin": minor
+"prettier-plugin-mmd": minor
 ---
 
-One or two sentences, for the changelog, in the words of a user of the package.
+Print a one-line `@{ ... }` with one space inside each end: `A@{shape: rect}`
+becomes `A@{ shape: rect }`.
 ```
 
-- The front matter names every package the change touches, each with its bump.
-  For a published package: `patch` for a fix that makes the package do what it
-  already claimed; `minor` for a behavior a user can notice, a new rule, report,
-  fix, or export; `major` for a change that breaks a published API after 1.0.
-  For the specification, while its version is below 1.0: `minor` for a change
-  that an implementation must follow (what is accepted, how it is read, the
-  tree, the detection of a diagram type, a diagram type added or removed),
-  `patch` for any other change (wording, examples, links, fixture citations).
-- The sentences say what changed for the user and why it matters, not how it was
-  implemented or reviewed. Name the rule, the option, or the diagram type
-  concerned in backticks. For the specification, the user is an implementation:
-  name the diagram type and the section that changed.
-- Several unrelated changes in one pull request get one changeset each.
+The text goes as it stands into the changelog of every package in the front
+matter and into the release pull request, where a user reads it to decide
+whether to upgrade.
+
+What one changeset holds:
+
+- One change that a user would name in one phrase. A pull request with several
+  changes has a changeset for each, and a change to one form in several diagram
+  types is one change.
+- One package, with its bump. A change that reaches several packages has a
+  changeset for each, saying what changes for the users of that package: text
+  about another package tells them nothing. For a `fixed` group, name only the
+  package that changed. A package that only takes a new version of a dependency
+  needs none: its changelog lists the update.
+- A change that is not released yet has one entry. When a later change extends
+  it, edit the file in `.changeset/` instead of adding a second one.
+
+How it reads:
+
+- At most two sentences. The first starts with what changes, as a verb (`Print`,
+  `Report`, `Accept`, `Fix`). The second, only if it is needed, says what the
+  user has to do.
+- A change of what the formatter prints shows one example, before and after. A
+  change of what a lint rule reports names the rule and shows one reported form.
+- Leave out the forms that stay as they were and the conditions of a rule: the
+  rules documents hold them. Name one only when a user would take it for a bug
+  or has to act on it.
+- Use the words of a user of the package. A word from the rules documents or the
+  specification (`Db`, a kept line, the tree) and a comparison with what another
+  diagram type does tell that user nothing. Say what changed, not how it was
+  implemented or reviewed, and why only if the user can act on it.
+- A change that makes code of a user stop working says first what to change in
+  that code.
+- Name the rule, the option, or the diagram type concerned in backticks. For the
+  specification, the user is an implementation: name the diagram type and the
+  section that changed.
+
+The bump: for a published package, `patch` for a fix that makes the package do
+what it already claimed; `minor` for a behavior a user can notice, a new rule,
+report, fix, or export; `major` for a change that breaks a published API after
+1.0. For the specification, while its version is below 1.0: `minor` for a change
+that an implementation must follow (what is accepted, how it is read, the tree,
+the detection of a diagram type, a diagram type added or removed), `patch` for
+any other change (wording, examples, links, fixture citations).
+
+Before the pull request, read the files in `.changeset/` for each package
+together, as its changelog will show them: an entry that repeats another is
+merged with it, and one that holds two changes is split.
