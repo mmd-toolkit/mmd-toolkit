@@ -51,7 +51,7 @@
 文法が取る空の文字列、つまりプロットや軸の題やラベルの空の文字列は、
 2 つの引用符の `String` トークンです。
 `line "" [1]` は、`String` トークン `""` を持ちます。
-テキストが空白だけの説明ブロック、つまり空の説明ブロックは、 `accDescr`、`{`、
+テキストが空白だけの説明ブロック、つまり空の説明ブロックは、`accDescr`、`{`、
 `}` のトークンだけを持ち、閉じていないものは `}` を持ちません。
 テキストの終わりで、テキストのない `accTitle:` や `accDescr:` は、
 キーワードと `:` のトークンだけを持ちます。
@@ -72,7 +72,7 @@
 その間の `Directive` トークンを持ちます。
 `title "style:#x;y"` は、`StringFragment` トークン `"style:#x` と `y"` と、
 その間の `IgnoredSemicolon` トークンを持ちます。
-一方、 `ti%%{init: {}}%%tle T` は拒否されます。
+一方、`ti%%{init: {}}%%tle T` は拒否されます。
 [fixture: xychart/db-x-axis-band-directive-in-word]
 [fixture: xychart/lex-title-style-line-semicolon]
 [fixture: xychart/div-directive-in-keyword]

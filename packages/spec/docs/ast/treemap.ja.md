@@ -21,7 +21,7 @@ section・leaf・class 定義のソースの字下げは全て残す。
 [fixture: treemap/db-class-indented]
 [fixture: treemap/db-leaf-closes-open-sections]
 
-StringLiteral.value は共通 trivia を除く書かれた内側とし、 escape を復号しない。
+StringLiteral.value は共通 trivia を除く書かれた内側とし、escape を復号しない。
 raw には元の両端の引用符、directive、ソースの改行も含め、
 間の全てのソース文字を残す。
 空の文字列もノードとし、closed は true とする。
@@ -113,15 +113,15 @@ Root.diagramType は `treemap`。
 [fixture: treemap/gram-written-tree] [fixture: treemap/hidden-comment-eof]
 [fixture: treemap/comment-bare]
 
-TreemapBodyItem は TreemapSection、TreemapLeaf、 TreemapClassDefStatement、
-TreemapTitleStatement、 TreemapAccTitleStatement、TreemapAccDescrStatement、
+TreemapBodyItem は TreemapSection、TreemapLeaf、TreemapClassDefStatement、
+TreemapTitleStatement、TreemapAccTitleStatement、TreemapAccDescrStatement、
 TreemapAccDescrBlockStatement のいずれか。
 公開する最後の値だけでなく、反復・空の共通の形も一つずつ保つ。
 body に直接置く section と leaf は根だけとする。
 独立した非階層の文は最初の階層ノードより前と最後より後だけ body に残す。
 間の文は「gap の所有」に従って statementsBefore に置く。
 空行・Comment は body 要素を作らず、body は空でもよい。
-native comment は共有 Comment record とし、 TreemapIgnoredText は作らない。
+native comment は共有 Comment record とし、TreemapIgnoredText は作らない。
 [fixture: treemap/gram-written-tree] [fixture: treemap/common-repeat]
 [fixture: treemap/common-repeat-empty]
 [fixture: treemap/common-block-empty-interleaved]
@@ -227,7 +227,7 @@ name はこの位置の文法に従い二文字以上。
 style は名前の後の最大の区切り空白と終端 semicolon を除き、
 内容が空なら空 literal でなく null とする。
 directive だけの style も null となる。
-元の comma、escaped comma、quote、percent text、 U+2028・U+2029、
+元の comma、escaped comma、quote、percent text、U+2028・U+2029、
 末尾空白を一つの literal に保つ。
 定義を分割・統合しない。 [fixture: treemap/db-class-indented]
 [fixture: treemap/gram-class-name-two-characters]
@@ -269,7 +269,7 @@ value は title と正確に一つの ASCII space・tab の後から始め、
 範囲は title から値の最後の文字までとし、null なら title の終端まで。
 keyword の前の padding、外側の trivia、文の終端の改行は除く。
 空・上書きされる出現も含め、それぞれ独立して保つ。
-Comment は共有 record とし、 hidden な接尾辞の欄は加えない。
+Comment は共有 record とし、hidden な接尾辞の欄は加えない。
 [fixture: treemap/common-title-eof] [fixture: treemap/common-title-one-space]
 [fixture: treemap/common-title-one-tab]
 [fixture: treemap/common-title-two-spaces]
@@ -294,7 +294,7 @@ value は colon の直後の行 text とし、両端の padding を保つ。
 範囲は accTitle から、null なら colon、そうでなければ値の最後の文字まで。
 keyword の前の padding、外側の trivia、文の終端の改行は除く。
 空・上書きされる出現も含め、それぞれ独立して保つ。
-Comment は共有 record とし、 hidden な接尾辞の欄は加えない。
+Comment は共有 record とし、hidden な接尾辞の欄は加えない。
 [fixture: treemap/common-acctitle-eof]
 [fixture: treemap/common-acctitle-whitespace-only]
 [fixture: treemap/common-line-whitespace]
@@ -319,7 +319,7 @@ colon の後の brace のような text も行の値のままである。
 範囲は accDescr から、null なら colon、そうでなければ値の最後の文字まで。
 keyword の前の padding、外側の trivia、文の終端の改行は除く。
 空・上書きされる出現も含め、それぞれ独立して保つ。
-Comment は共有 record とし、 hidden な接尾辞の欄は加えない。
+Comment は共有 record とし、hidden な接尾辞の欄は加えない。
 [fixture: treemap/common-description-eof]
 [fixture: treemap/common-description-whitespace-only]
 [fixture: treemap/common-accdescr-colon-block-priority]
@@ -345,11 +345,10 @@ value は brace の内側から、外側両端の共通 Notation の空白だけ
 [fixture: treemap/common-block-escaped-close]
 
 子の欄: `value`。
-範囲は accDescr から最初の closing brace までとし、
-null でも両方の区切りを含む。
+範囲は accDescr から最初の closing brace までとし、null でも両方の区切りを含む。
 keyword の前の padding、外側の trivia、文の終端の改行は除く。
 空・上書きされる出現も含め、それぞれ独立して保つ。
-Comment は共有 record とし、 hidden な接尾辞の欄は加えない。
+Comment は共有 record とし、hidden な接尾辞の欄は加えない。
 [fixture: treemap/common-block-whitespace] [fixture: treemap/line-block-values]
 [fixture: treemap/common-block-whitespace-only]
 [fixture: treemap/common-block-empty-interleaved]

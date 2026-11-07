@@ -8,12 +8,11 @@
 [diagrams/requirement.ja.md](../diagrams/requirement.ja.md) で定めます。
 
 この図種の本体は [RequirementDiagram](#requirementdiagram) です。
-欄の値は、
-[ast.ja.md](../ast.ja.md#ノード)が値の書かれたテキストを定めるとおり、
+欄の値は、[ast.ja.md](../ast.ja.md#ノード)が値の書かれたテキストを定めるとおり、
 書き手が書いたものを保ち、
 [common.ja.md](../common.ja.md#ソースの読み方) の変換後の形ではありません。
 この図種で値が空白で始まったり終わったりするのは、引用符の中だけです。
-引用符なしの名前や値は、その行の後ろの空白を読み、 mermaid.js が取り除くとおり、
+引用符なしの名前や値は、その行の後ろの空白を読み、mermaid.js が取り除くとおり、
 それを書かれたテキストから外します。
 [名前と値](../diagrams/requirement.ja.md#単位と文脈) を参照してください。
 この図種の StringLiteral（名前、クラス、値）は、常に閉じていて空ではありません。
@@ -196,10 +195,10 @@ requirement/db-keywords-upper-case]
 | `right`        | RequirementIdentifier か StringLiteral | 関係の後の名前。                                    |
 
 子の欄: `left`、`right`。
-種類は `contains`、`copies`、`derives`、`satisfies`、`verifies`、 `refines`、
+種類は `contains`、`copies`、`derives`、`satisfies`、`verifies`、`refines`、
 `traces` のどれかで、書かれた大文字小文字によらず小文字です。
 欄は名前が書かれた順を保ちます。
-矢印は元から先を指すので、 `b <- copies - a` は a から b への関係です。
+矢印は元から先を指すので、`b <- copies - a` は a から b への関係です。
 [fixture: requirement/db-relationship-arrows] [fixture:
 requirement/gram-relationship-backward-glued] [fixture:
 requirement/lex-relationship-upper-case] [fixture:
@@ -296,8 +295,8 @@ RequirementClassStatement と同じく、その名前の要求か要素にクラ
 
 子の欄: `name`、`cssClasses`。
 RequirementClassStatement ではないのは、書き方が違うからです。
-名前は 1 つで、 `class` がありません。
-[fixture: requirement/db-class-colon-form] [fixture:
+名前は 1 つで、`class` がありません。 [fixture: requirement/db-class-colon-form]
+[fixture:
 requirement/gram-class-shorthand-spaced] [fixture:
 requirement/lex-style-string-then-shorthand]
 
@@ -358,8 +357,8 @@ requirement/lex-acc-descr-at-end]
 ### RequirementIdentifier
 
 引用符なしで書いた名前です。
-要求や要素の名前、関係の端、クラス名、 `style`、`classDef`、
-`class` の後の名前で、 `unquoted-text` か `style-word` の単位です。
+要求や要素の名前、関係の端、クラス名、`style`、`classDef`、
+`class` の後の名前で、`unquoted-text` か `style-word` の単位です。
 
 | 欄     | 型     | 意味                                                                       |
 | ------ | ------ | -------------------------------------------------------------------------- |
@@ -368,7 +367,7 @@ requirement/lex-acc-descr-at-end]
 子の欄はありません。
 [Identifier](../ast.ja.md#identifier) ではなく図の名前のノードなのは、
 `unquoted-text` の単位が文字の間に空白を持てるからです。
-`requirement  spaced name  {` は要求 `spaced name` で、 `a`、U+00A0、
+`requirement  spaced name  {` は要求 `spaced name` で、`a`、U+00A0、
 `b` は 1 つの名前です。
 その行の名前の後ろの空白は、U+00A0 を含めて単位と一緒に読まれ、
 書かれたテキストには入りません。
@@ -418,10 +417,10 @@ requirement/db-acc-descr-block]
 | `value` | string | 書かれたテキスト（[ast.ja.md](../ast.ja.md#ノード) を参照）。 |
 
 子の欄はありません。
-本体の空の説明ブロックは、1 つずつが、 `accDescr {}`、`accDescr { }`、
+本体の空の説明ブロックは、1 つずつが、`accDescr {}`、`accDescr { }`、
 `accDescr {`・改行・`}` のようなブロックのテキストを持つ 1 つのノードです。
-行のどこにあっても同じで、 `{` の後、フィールドの前、
-値が文字列のフィールドの後、 `}` の前にあります。
+行のどこにあっても同じで、`{` の後、フィールドの前、値が文字列のフィールドの後、
+`}` の前にあります。
 [fixture: requirement/lex-direction-line-text-before-and-after] [fixture:
 requirement/gram-empty-description-block-in-body] [fixture:
 requirement/gram-empty-description-block-after-brace] [fixture:

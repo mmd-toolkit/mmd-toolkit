@@ -88,7 +88,7 @@ requirement と element の本体だけです（**Requirements** を参照）。
 - StringLiteral は、その範囲から引用符を除いた変換した形を持ちます。
   引用符の間の文字はすべて保ち、空白も改行も、
   引用符なしのテキストが持てない `#`、`%`、`:`、`,`、`-`、`{`、`}` も保ちます。
-  引用符付きの名前と、同じテキストの引用符なしの名前は、 1 つの名前です。
+  引用符付きの名前と、同じテキストの引用符なしの名前は、1 つの名前です。
   [fixture: requirement/db-requirement-quoted-values]
   [fixture: requirement/db-relationship-quoted-names]
   [fixture: requirement/lex-string-hash-percent]
@@ -125,7 +125,7 @@ requirement と element の本体だけです（**Requirements** を参照）。
   `accTitle: style:#x a;b` のタイトルは `style:#x ab`、
   `"style:#x" - satisfies -> b;c` の端は `bc` です。
   `style` の行でない行の `;` は、テキストの文字です。
-  `id: 1;` の id は `1;`、 `style r fill:red;` の style は `fill:red;` です。
+  `id: 1;` の id は `1;`、`style r fill:red;` の style は `fill:red;` です。
   [fixture: requirement/tokens-ignored-semicolon-in-style]
   [fixture: requirement/tokens-ignored-semicolon-in-acc-title]
   [fixture: requirement/tokens-ignored-semicolon-in-acc-descr]
@@ -233,7 +233,7 @@ requirement の文は、その名前の requirement がなければ requirements
 requirement は名前で保ち、文が初めてその名前を挙げた順に並べます。
 
 - requirement は、名前、kind が表す `type`、欄の `requirementId`、`text`、
-  `risk`、`verifyMethod` を持ち、 style は持ちません。
+  `risk`、`verifyMethod` を持ち、style は持ちません。
   本体が設定しない欄は、空のテキストです。
   木の語に Db が与える名前は、次の表のとおりです。
 
@@ -292,7 +292,7 @@ requirement は名前で保ち、文が初めてその名前を挙げた順に�
 - すでにある requirement と同じ名前の文は、kind が何であっても、
   その requirement の欄を、本体も含めて何も変えません。
   requirement と element は同じ名前を持てます。
-  名前はどんな名前でもよく、 `__proto__` や `constructor` も同じです。
+  名前はどんな名前でもよく、`__proto__` や `constructor` も同じです。
   [fixture: requirement/db-requirement-name-repeated]
   [fixture: requirement/db-requirement-and-element-same-name]
   [fixture: requirement/spec-requirement-diagram-7e4de658]
@@ -359,8 +359,8 @@ requirement と element は、どれも最初にクラス `default` を持ちま
   名前の順に進み、対象のない最初の名前で止まります。
   それより後ろの名前には何も渡りません。
   複数の文の style は積み重なります。
-  requirement と element が同じ名前を持つときは、
-  requirement が style を得ます。 [fixture: requirement/db-style-statement]
+  requirement と element が同じ名前を持つときは、requirement が style を得ます。
+  [fixture: requirement/db-style-statement]
   [fixture: requirement/db-style-unknown-name]
   [fixture: requirement/db-class-statement-unknown-name-first]
   [fixture: requirement/db-requirement-and-element-same-name]
@@ -376,7 +376,7 @@ requirement と element は、どれも最初にクラス `default` を持ちま
   クラスごとに、対象は、
   その時点でそのクラスが持つ style を `cssStyles` の後ろに加えます。
   クラスに `classDef` は要りません。
-  同じクラスを 2 回挙げれば、 2 回残ります。
+  同じクラスを 2 回挙げれば、2 回残ります。
   [fixture: requirement/db-class-statement]
   [fixture: requirement/db-class-statement-unknown-name-first]
   [fixture: requirement/db-class-colon-form]

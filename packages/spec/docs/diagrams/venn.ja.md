@@ -131,7 +131,7 @@ newline 単位は行頭の文脈へ入ります。 [fixture: venn/db-indent-widt
    [fixture: venn/lex-comment-swallowed-nbsp]
    [fixture: venn/lex-comment-swallowed-nbsp-between-statements]
 
-3. 行頭の文脈では、 LF の直前のスペースとタブを読み飛ばします。
+3. 行頭の文脈では、LF の直前のスペースとタブを読み飛ばします。
    [fixture: venn/db-indent-blank-line] [fixture: venn/lex-tab-whitespace-line]
 
 4. 行頭の文脈では、暗黙 text モードが有効なとき、
@@ -237,8 +237,8 @@ newline 単位は行頭の文脈へ入ります。 [fixture: venn/db-indent-widt
     [fixture: venn/gram-title-hash-color-outside-title]
     [fixture: venn/lex-after-title-semicolon]
 
-13. 境界付きのキーワード `venn-beta`、`set`、`union`、`text`、 `style` は、
-    それぞれ `header`、`set-keyword`、`union-keyword`、 `text-keyword`、
+13. 境界付きのキーワード `venn-beta`、`set`、`union`、`text`、`style` は、
+    それぞれ `header`、`set-keyword`、`union-keyword`、`text-keyword`、
     `style-keyword` 単位を作ります。 [fixture: venn/header-only]
     [fixture: venn/lex-keyword-set-upper]
     [fixture: venn/lex-keyword-union-upper]
@@ -247,7 +247,7 @@ newline 単位は行頭の文脈へ入ります。 [fixture: venn/db-indent-widt
     [fixture: venn/gram-first-rule-keyword-prefix-name]
     [fixture: venn/lex-first-rule-comment-before-multiline-string]
 
-14. `["`、`"` 以外の任意個の文字、 `"]` は `quoted-label` 単位を作ります。
+14. `["`、`"` 以外の任意個の文字、`"]` は `quoted-label` 単位を作ります。
     [fixture: venn/db-label-empty] [fixture: venn/db-form-set-label]
     [fixture: venn/lex-label-quoted-close-bracket-inside]
     [fixture: venn/lex-label-blank-line]
@@ -255,7 +255,7 @@ newline 単位は行頭の文脈へ入ります。 [fixture: venn/db-indent-widt
     [fixture: venn/lex-label-quoted-ignored-semicolon-only]
     [fixture: venn/lex-label-quoted-comment-only]
 
-15. `[`、`]` と `"` 以外の一つ以上の文字、 `]` は `bare-label` 単位を作ります。
+15. `[`、`]` と `"` 以外の一つ以上の文字、`]` は `bare-label` 単位を作ります。
     [fixture: venn/db-set-label]
     [fixture: venn/lex-label-bare-open-bracket-inside]
     [fixture: venn/lex-label-bare-whitespace-line]
@@ -266,7 +266,7 @@ newline 単位は行頭の文脈へ入ります。 [fixture: venn/db-indent-widt
     [fixture: venn/lex-label-bare-comment-only]
 
 16. 省略可能な符号と十進数字列は、
-    小数点と一つ以上の小数桁を省略可能な接尾辞として、 `number` 単位を作ります。
+    小数点と一つ以上の小数桁を省略可能な接尾辞として、`number` 単位を作ります。
     [fixture: venn/db-size-plus] [fixture: venn/db-size-fraction]
     [fixture: venn/db-size-signed-fraction]
     [fixture: venn/db-size-leading-zeros] [fixture: venn/db-size-negative]
@@ -315,7 +315,7 @@ newline 単位は行頭の文脈へ入ります。 [fixture: venn/db-indent-widt
     [fixture: venn/gram-first-rule-keyword-prefix-name]
     [fixture: venn/lex-first-rule-comment-before-multiline-string]
 
-21. `"`、`"` 以外の任意個の文字、 `"` は `string` 単位を作ります。
+21. `"`、`"` 以外の任意個の文字、`"` は `string` 単位を作ります。
     [fixture: venn/db-empty-identifiers]
     [fixture: venn/lex-identifier-blank-line]
     [fixture: venn/gram-string-escape-quote]
@@ -378,16 +378,15 @@ CRLF と単独の CR は、文字列とラベルの内部も含めて LF とし�
 [fixture: venn/lex-comment-swallowed-cr]
 
 見出しの後の値の単位の外側で、先に試す規則がその文字を読まない場合は、
-ASCII のスペース、タブ、 LF だけを受理します。
-[fixture: venn/lex-tab-line-start] [fixture: venn/lex-tab-line-end]
-[fixture: venn/lex-nbsp-header-after] [fixture: venn/lex-nbsp-line-start]
-[fixture: venn/lex-nbsp-line-end] [fixture: venn/lex-nbsp-text-end]
-[fixture: venn/lex-bom-line-start] [fixture: venn/lex-ff-line-start]
-[fixture: venn/lex-vt-line-start] [fixture: venn/lex-ideographic-line-start]
-[fixture: venn/lex-ls-line-start] [fixture: venn/lex-ps-line-start]
-[fixture: venn/lex-comment-swallowed-nbsp]
+ASCII のスペース、タブ、LF だけを受理します。 [fixture: venn/lex-tab-line-start]
+[fixture: venn/lex-tab-line-end] [fixture: venn/lex-nbsp-header-after]
+[fixture: venn/lex-nbsp-line-start] [fixture: venn/lex-nbsp-line-end]
+[fixture: venn/lex-nbsp-text-end] [fixture: venn/lex-bom-line-start]
+[fixture: venn/lex-ff-line-start] [fixture: venn/lex-vt-line-start]
+[fixture: venn/lex-ideographic-line-start] [fixture: venn/lex-ls-line-start]
+[fixture: venn/lex-ps-line-start] [fixture: venn/lex-comment-swallowed-nbsp]
 [fixture: venn/lex-comment-swallowed-nbsp-between-statements]
-垂直タブ、改ページ、U+00A0、U+3000、U+FEFF、U+2028、 U+2029 はそこで拒否します。
+垂直タブ、改ページ、U+00A0、U+3000、U+FEFF、U+2028、U+2029 はそこで拒否します。
 [fixture: venn/lex-tab-line-start] [fixture: venn/lex-tab-line-end]
 [fixture: venn/lex-nbsp-header-after] [fixture: venn/lex-nbsp-line-start]
 [fixture: venn/lex-nbsp-line-end] [fixture: venn/lex-nbsp-text-end]
@@ -395,8 +394,8 @@ ASCII のスペース、タブ、 LF だけを受理します。
 [fixture: venn/lex-vt-line-start] [fixture: venn/lex-ideographic-line-start]
 [fixture: venn/lex-ls-line-start] [fixture: venn/lex-ps-line-start]
 
-単位の位置では、図のテキストに残る `%%` の直前にある垂直タブ、改ページ、
-U+00A0、U+1680、U+2000–U+200A、U+202F、U+205F、 U+3000、U+FEFF、U+2028、
+単位の位置では、図のテキストに残る `%%` の直前にある垂直タブ、改ページ、U+00A0、
+U+1680、U+2000–U+200A、U+202F、U+205F、U+3000、U+FEFF、U+2028、
 U+2029 を規則 2 が飲み込みます。 [fixture: venn/lex-comment-swallowed-nbsp]
 [fixture: venn/lex-comment-swallowed-nbsp-between-statements]
 [fixture: venn/lex-comment-swallowed-vt]
@@ -421,7 +420,7 @@ U+2029 を規則 2 が飲み込みます。 [fixture: venn/lex-comment-swallowed
 [fixture: venn/lex-comment-swallowed-cr]
 
 共通の [コメント行](../common.ja.md#コメント行) の規則は、
-U+2028 か U+2029 の直後のコメントの開始位置から、 `%% c` を取り除きます。
+U+2028 か U+2029 の直後のコメントの開始位置から、`%% c` を取り除きます。
 [fixture: venn/gram-comment-prefix-line-separator]
 [fixture: venn/gram-comment-prefix-line-separator-u2029]
 その除去か共通の [ディレクティブの除去](../common.ja.md#ディレクティブの位置)
@@ -519,7 +518,7 @@ U+0085 は空白ではありません。 [fixture: venn/lex-tab-header-before]
 [fixture: venn/lex-label-bare-comment-only]
 [fixture: venn/lex-label-quoted-comment-only]
 
-図のコメントは字句規則を試す位置でのみ始まり、 LF の直前で終わり、
+図のコメントは字句規則を試す位置でのみ始まり、LF の直前で終わり、
 U+2028 と U+2029 では終わりません。 [fixture: venn/lex-inline-comment-spaced]
 [fixture: venn/lex-after-set-comment]
 [fixture: venn/lex-inline-comment-line-separators]
@@ -573,7 +572,7 @@ U+2028 と U+2029 では終わりません。 [fixture: venn/lex-inline-comment-
 [fixture: venn/gram-style-required-key-eaten]
 [fixture: venn/gram-union-target-eaten]
 [fixture: venn/gram-eaten-fragment-between-keyword-and-id]
-`set A%% c`、`set A:2%% c`、 `text A 2%% c` は拒否します。
+`set A%% c`、`set A:2%% c`、`text A 2%% c` は拒否します。
 [fixture: venn/lex-inline-comment-eats-id]
 [fixture: venn/lex-after-set-size-comment-glued]
 [fixture: venn/lex-after-text-number-comment-glued]
@@ -641,7 +640,7 @@ U+2028 と U+2029 では終わりません。 [fixture: venn/lex-inline-comment-
 [fixture: venn/lex-identifier-directive-only]
 [fixture: venn/gram-style-value-directive-only]
 
-角括弧と引用符の区切りは別々の文字なので、 `[` と開き引用符の間か、
+角括弧と引用符の区切りは別々の文字なので、`[` と開き引用符の間か、
 閉じ引用符と `]` の間にディレクティブを置けます。
 [fixture: venn/lex-directive-label-delimiter-gap]
 [fixture: venn/lex-directive-label-closing-delimiter-gap]
@@ -1278,7 +1277,7 @@ newline を置けません。 [fixture: venn/lex-gap-set-lf]
 
 ### 集合と名前のリスト
 
-`set` は名前を一つ取り、 `union` はカンマで区切った名前を二つ以上取ります。
+`set` は名前を一つ取り、`union` はカンマで区切った名前を二つ以上取ります。
 [fixture: venn/db-form-set] [fixture: venn/db-form-union]
 [fixture: venn/gram-set-list] [fixture: venn/gram-union-one]
 [fixture: venn/gram-extra-set-no-id] [fixture: venn/gram-extra-union-no-id]
@@ -1324,7 +1323,7 @@ size は一つの数の単位である必要があります。 [fixture: venn/gr
 [fixture: venn/gram-size-hex] [fixture: venn/gram-size-infinity]
 [fixture: venn/gram-size-nan] [fixture: venn/gram-size-fullwidth]
 [fixture: venn/gram-size-suffix]
-指数、末尾の点、十六進記法、`NaN`、`Infinity`、 ASCII 以外の数字、
+指数、末尾の点、十六進記法、`NaN`、`Infinity`、ASCII 以外の数字、
 後続の識別子は拒否します。 [fixture: venn/gram-size-empty]
 [fixture: venn/gram-size-exponent] [fixture: venn/gram-size-trailing-point]
 [fixture: venn/gram-size-hex] [fixture: venn/gram-size-infinity]
@@ -1333,7 +1332,7 @@ size は一つの数の単位である必要があります。 [fixture: venn/gr
 
 ### text と暗黙 text モード
 
-明示の `text` は対象名のリストと、 id として識別子、文字列、
+明示の `text` は対象名のリストと、id として識別子、文字列、
 数のいずれかを持ちます。 [fixture: venn/db-form-text-id]
 [fixture: venn/db-form-text-string] [fixture: venn/db-form-text-number]
 [fixture: venn/db-form-text-id-label] [fixture: venn/db-form-text-string-label]
@@ -1463,7 +1462,7 @@ newline 単位の後では、有効な暗黙マーカーを先に選ぶ場合を
 [fixture: venn/gram-indent-after-empty-braces-explicit-string]
 [fixture: venn/gram-indent-after-empty-braces-explicit-target-list]
 
-共通のコメント行の除去は、 `%%{` で始まる行を図のコメントの規則に残します。
+共通のコメント行の除去は、`%%{` で始まる行を図のコメントの規則に残します。
 [fixture: venn/lex-empty-braces-percent-between-set-and-text]
 [fixture: venn/gram-indent-empty-braces-after-blank]
 [fixture: venn/lex-indent-union-empty-braces]
@@ -1658,7 +1657,7 @@ mermaid.js は C4 を選び、入力を拒否します。
 [fixture: venn/lex-c4-c4container-frontmatter]
 
 **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.ja.md)**
-frontmatter が `title: <a` を持つ場合、 `set "b="c">d"` はここでは拒否しますが、
+frontmatter が `title: <a` を持つ場合、`set "b="c">d"` はここでは拒否しますが、
 mermaid.js は内側の属性の引用符を変換して受理します。
 [fixture: venn/div-html-tag-starts-in-frontmatter]
 [fixture: venn/gram-html-tag-body-only-reference]

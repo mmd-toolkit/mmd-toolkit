@@ -44,7 +44,7 @@ mermaid.js が入力を拒否するとき、その読みが、
 
 記録する設定の中では、非有限の数を、
 予約した 1 欄のオブジェクト `{ "nonFinite": "Infinity" }`、
-`{ "nonFinite": "-Infinity" }`、 `{ "nonFinite": "NaN" }` で表します。
+`{ "nonFinite": "-Infinity" }`、`{ "nonFinite": "NaN" }` で表します。
 配列の要素を含め、入れ子の中にも同じ形を使います。
 有限の数は JSON の数のままです。
 `"Infinity"`、`"-Infinity"`、`"NaN"` などの文字列は文字列のままです。
@@ -78,7 +78,7 @@ Db の値は、それらのキーに左右されません。
 - `runMermaidWithEmbeddedData(text, { config })` は、
   `runMermaid()` の結果とこれらの値を 1 回の実行で返す。
 
-生成器は、これらから fixture の値を記録し、 `fixtures:check` が、
+生成器は、これらから fixture の値を記録し、`fixtures:check` が、
 記録した値を mermaid.js と比べます。
 
 ## `config` と `title`
@@ -103,7 +103,7 @@ mermaid.js がブロックを適用した順に並べた一覧です。
 
 flowchart では、`A@{ ... }@{ ... }` のように間を空けずに続くブロックは、
 1 つと数えます。
-文法がそれらの中身を連結して、 1 回の呼び出しで渡すためです。
+文法がそれらの中身を連結して、1 回の呼び出しで渡すためです。
 出典は
 [`flow.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L396-L401)
 です。
@@ -174,7 +174,7 @@ kanban の Db のパッチは
 出典は
 [`kanban.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/parser/kanban.jison#L126-L133)
 です。
-共有 Db の状態はモジュール変数にあるため、 Db を消去し、
+共有 Db の状態はモジュール変数にあるため、Db を消去し、
 元のノード追加と装飾の呼び出しでそれまでの状態を復元します。
 次の解析の前に Db の `clear()` とともに記録した効果と問題も消します。
 [fixture: kanban/db-metadata-all] [fixture: kanban/db-metadata-repeated-id]

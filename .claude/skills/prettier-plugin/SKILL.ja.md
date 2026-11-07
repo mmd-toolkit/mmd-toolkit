@@ -162,7 +162,7 @@ printer の規則は、項目ごとに選ばれた選択肢で決まる。
   項目の各側に空白があったかどうかを保つ。
   空白を足す・消す規則は、項目のない隙間にだけ使う。
   隙間の読み方は `readGapElement` の 1 か所にあり、ほかの走査もこれを使う。
-- 図種によらない共通の部分は、`root.ts`、`frontmatter-yaml.ts`、 `parser.ts`、
+- 図種によらない共通の部分は、`root.ts`、`frontmatter-yaml.ts`、`parser.ts`、
   `printer.ts` にある。
   フロントマター、本文の前のコメントとディレクティブ、ファイル末尾の改行、
   Markdown のコードブロックがそれに当たる。
@@ -214,7 +214,7 @@ printer の規則は、項目ごとに選ばれた選択肢で決まる。
   この package の fixture にしない。
   `tests/line-separators.test.ts` のように、テストのコードにエスケープで書き、
   書いた後にファイルのバイト列を確かめる。
-- Db の保ち方（`tests/db-reading.ts`。 fixture、コーパス、
+- Db の保ち方（`tests/db-reading.ts`。fixture、コーパス、
   line-separators のテストが使う）: mermaid.js は動かさない。
   `dbOfText` が、テキストの木から、
   `@mmd-toolkit/tests` の `dbFromTree` で Db を作る。
@@ -237,7 +237,7 @@ printer の規則は、項目ごとに選ばれた選択肢で決まる。
   に、
   リポジトリのルートの `tools/src/specified-reading.ts` の共有の
   `specifiedRunOf` の経路で従い、拒否の原因の埋め込みブロックか、
-  受理条件が名指す設定の鍵だけを除き、 Mermaid が導くタイトルと、
+  受理条件が名指す設定の鍵だけを除き、Mermaid が導くタイトルと、
   ほかの設定を保つ。
 - 整形されるが比べる Db のない場合はテストと報告に明示し、
   共有の冪等と原文の検査はその場合にも当てる。
@@ -248,14 +248,14 @@ printer の規則は、項目ごとに選ばれた選択肢で決まる。
   この共有の検査は値の中の空白や `;` の保持を証明しないので、
   その規則には出力全体を比べる fixture を置く。
 - unit 形式: dispatch、失敗の扱い、Markdown のコードブロック。
-  ファイルは `tests/dispatch.test.ts`、`failure.test.ts`、 `markdown.test.ts`、
+  ファイルは `tests/dispatch.test.ts`、`failure.test.ts`、`markdown.test.ts`、
   `markdown-flowchart.test.ts`。
   図種を足したら、Markdown の中で実際に整形される例を足す。
 - コーパス: `tests/corpus.test.ts` は `@mmd-toolkit/tests` の共通の fixture
   を読み、
   `tests/corpus/<diagram>.test.ts` は同パッケージのその図種の fixture を読む。
   それぞれ `tests/corpus.ts` の `testCorpus` を呼び、整形する fixture すべてで、
-  例外を出さず、冪等で、 Db と埋め込みデータを保つことを確かめる。
+  例外を出さず、冪等で、Db と埋め込みデータを保つことを確かめる。
   新しい図種にはファイルを足す。
 - 整形の失敗は、コーパスの fixture が守る。
   コーパスの fixture は `@mmd-toolkit/tests` で作る。
@@ -354,19 +354,19 @@ printer の規則は、項目ごとに選ばれた選択肢で決まる。
     `-t` なしで `line-separators`、`markdown-venn`、`value-nodes`、
     `line-terminators`、`dispatch`。
   - `ishikawa*.ts`: `format` と `corpus` を `-t ishikawa` で。
-    `-t` なしで `ishikawa`、`markdown-ishikawa`、`value-nodes`、 `dispatch`、
+    `-t` なしで `ishikawa`、`markdown-ishikawa`、`value-nodes`、`dispatch`、
     `empty-description-blocks`。
   - `agentflow*.ts`: `format` と `corpus` を `-t agentflow` で。
-    `-t` なしで `agentflow`、`markdown-agentflow`、`value-nodes`、 `dispatch`、
-    `empty-description-blocks`、`accessibility-blocks`、 `graph-accessibility`。
+    `-t` なしで `agentflow`、`markdown-agentflow`、`value-nodes`、`dispatch`、
+    `empty-description-blocks`、`accessibility-blocks`、`graph-accessibility`。
   - `pie*.ts`: `format` と `corpus` を `-t pie` で。
-    `-t` なしで `pie`、`markdown-pie`、`value-nodes`、 `dispatch`、
+    `-t` なしで `pie`、`markdown-pie`、`value-nodes`、`dispatch`、
     `empty-description-blocks`。
   - `gitgraph*.ts`: `format` と `corpus` を `-t gitgraph` で。
-    `-t` なしで `gitgraph`、`markdown-gitgraph`、`value-nodes`、 `dispatch`、
+    `-t` なしで `gitgraph`、`markdown-gitgraph`、`value-nodes`、`dispatch`、
     `empty-description-blocks`。
   - `info*.ts`: `format` と `corpus` を `-t info` で。
-    `-t` なしで `info`、`markdown-info`、`value-nodes`、 `dispatch`、
+    `-t` なしで `info`、`markdown-info`、`value-nodes`、`dispatch`、
     `empty-description-blocks`。
   - `architecture*.ts`: `format` と `corpus` を `-t architecture` で。
     `-t` なしで `architecture`、`markdown-architecture`、`value-nodes`、
@@ -402,11 +402,10 @@ printer の規則は、項目ごとに選ばれた選択肢で決まる。
     図種ごとのファイル。
   - `tests/db-reading.ts`、
     `tests/helpers.ts`: それを import するすべてのテスト。
-- 文書を読むテスト: `tests/docs.test.ts` は、
-  規則の文書（`docs/<図種>.md`。英語と日本語）、README、
-  fixture のフォルダーを読む。
+- 文書を読むテスト: `tests/docs.test.ts` は、規則の文書（`docs/<図種>.md`。
+  英語と日本語）、README、fixture のフォルダーを読む。
   これらのどれかを変えたら、文書だけの変更でも回す。
-- 既定の実行は `pnpm vitest run --project prettier-plugin-mmd` で、 fixture、
+- 既定の実行は `pnpm vitest run --project prettier-plugin-mmd` で、fixture、
   コーパス、単体テスト。
   完了を報告する前に 1 回回す。
 - 共有の印字を切り出す・変えるときは、
@@ -435,7 +434,7 @@ printer の規則は、項目ごとに選ばれた選択肢で決まる。
   フォルダーを指す（例のない規則は `docs.test.ts` の一覧に足す）。
 - 例のコードブロックを手で写すと、fixture とずれる。
   下書き（見出しと文と、例を置く場所の印）から、
-  fixture の中身を差し込んで文書を作り、 `npx prettier --write` を掛ける。
+  fixture の中身を差し込んで文書を作り、`npx prettier --write` を掛ける。
 - `docs/compatibility.md` と `.ja.md`: mermaid.js と違う箇所と、
   整形が書かれたまま残す箇所を、理由とともに書く。
 - `README.md` と `.ja.md`: 対応する図種、保証と制限。

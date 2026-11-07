@@ -104,7 +104,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
   それ以外のコメントには持ちません。
   gantt 図の図のコメントは、印 `%%` と `%` を持ち、
   journey 図と requirement 図と timeline 図の図のコメントは、印 `#`、`%%`、
-  `%` を持ち、 mindmap 図、xychart 図、C4 図、quadrant chart の図のコメントは、
+  `%` を持ち、mindmap 図、xychart 図、C4 図、quadrant chart の図のコメントは、
   印 `%%` を持ちます。
   印のない断片は、コメント領域に続きます（parser/docs/tokens.md の Comment、
   [common.md](../../spec/docs/common.md#comment-lines) の Comment lines）。
@@ -132,7 +132,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
   [fixture: railroad/ebnf-comment-c-open-mark-directive]
   [fixture: railroad/ebnf-comment-iso-open-mark-directive]
 - **ディレクティブ。**
-  木のディレクティブは走査が見つけたものと同じで、 `closed` と、
+  木のディレクティブは走査が見つけたものと同じで、`closed` と、
   末尾の空白を除いた一致の範囲を持ちます（ast.md の Directive、
   common.md の Where a directive is）。
 - **トークン。**
@@ -171,7 +171,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     報告は連続ごとに 1 つで、1 か所（`reportCutEntries()`）で作り、
     連続の最初のトークンに付けます。
     断片を順に挙げ、それらがつくるテキストを添えます。
-    そのため、`sub`、切れ目、`graph` は `subgraph` の断片で、 `su`、切れ目、
+    そのため、`sub`、切れ目、`graph` は `subgraph` の断片で、`su`、切れ目、
     `bgr`、切れ目、`aph` もそうです。
     後者は、どの 2 つをつないでもキーワードになりません。
     疑似状態の印と空の説明ブロックの始まり（`<<choice>>`、切れ目、
@@ -232,7 +232,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
 - **値。**
   値を持つノードの値は、その範囲のソースから、
   `src/check-tree/values.ts` の表が型ごとに当てる 1 つの規則で作られます（ast.md
-  の Nodes、 `ast/<図種>.md`）。
+  の Nodes、`ast/<図種>.md`）。
   下を参照してください。
 - **トークンと値のノード。**
   値のトークンは値のノードの中にあります。
@@ -276,8 +276,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
     種類は Tokens の表のとおりで、`:`、`,`、`{`、`}`、`(`、`)` が `Punctuator`、
     ほかは `Keyword` です。
     図の header `gantt`（大文字小文字もこのとおり）、文のキーワード、
-    アクセシビリティ文の `:` か波括弧、 call 部分の `call` と括弧、
-    タスクのデータの `:` とコンマ、 click 文の `click` とコンマと `href` です。
+    アクセシビリティ文の `:` か波括弧、call 部分の `call` と括弧、
+    タスクのデータの `:` とコンマ、click 文の `click` とコンマと `href` です。
     weekday 文と weekend 文の `day` （小文字にしたそのトークンで、
     7 つの曜日か `friday` と `saturday`）。
     タグ（5 つの語のどれか。大文字小文字もこのとおり）、項目、idは、
@@ -289,7 +289,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     コールバックの名前（`(` まで続きます）と、
     その引数（括弧の間が空白だけなら null）。
     値のトークンの種類。
-    `GanttLiteral` のトークンは `RawText`、 id とリストの項目は `Identifier`、
+    `GanttLiteral` のトークンは `RawText`、id とリストの項目は `Identifier`、
     タグは `RawText`（ディレクティブが切れば断片ごとに 1 つ）です。
     文と call 部分の範囲。
     ノードのトークンと子ノードの最初から最後までで、
@@ -325,7 +325,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     トークンはテキストを小文字にしたもの、子ノードは欄の名前を、
     ラベルとして 1 つの並びにします。
     requirement と element は、キーワード、名前、
-    `:::` とクラス（クラスの間は `,`。クラスがなければ両方ありません）、 `{`、
+    `:::` とクラス（クラスの間は `,`。クラスがなければ両方ありません）、`{`、
     項目、`}` です。
     関係は、左の名前、`-`、関係、`->`、右の名前です。
     `backward` なら `<-`、関係、`-` です。
@@ -348,7 +348,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     欄の子ノードの型は、その表の型です（`REQUIREMENT_CHILD_TYPES`、
     ast/requirement.md の Type の列と合うことをテストが確かめます）。
     引用符のない名前とテキストは、空でなく、空白で始まらず終わらず、
-    名前とフィールドの値は ASCII の単語文字で始まり、 `:`、`,`、`{`、`<`、`>`、
+    名前とフィールドの値は ASCII の単語文字で始まり、`:`、`,`、`{`、`<`、`>`、
     `-`、`=` と改行を含みません。
     スタイルは `,` を含みません（diagrams/requirement.md の Names and values、
     The style context）。
@@ -392,7 +392,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     出典は ast/mindmap.md の MindmapNode です。
     ノードテキストは終わりの空白を保ちます。
     形はその終わりから始まり、形がなければ行はその直後に終わります。
-    空白で始まらず、 `(`、`[`、`)`、`{`、`}` と行終端子を含まず、 `%%`、
+    空白で始まらず、`(`、`[`、`)`、`{`、`}` と行終端子を含まず、`%%`、
     `::icon(`（大文字小文字は問いません）、`:::`、
     キーワード `mindmap` で始まりません。
     これらは、
@@ -416,13 +416,13 @@ const problems: TreeProblem[] = checkTree(text, tree)
     テキストは `)`、`]`、`(`、`}` を含まず、文字列は `"` を含まず、
     マークダウン文字列はバッククォートと `"` を含みません。
     トークンの種類は `parser/docs/tokens/mindmap.md` のとおりです。
-    ノードが自分で書くトークンは、 `:::`、icon の行の `)`、
+    ノードが自分で書くトークンは、`:::`、icon の行の `)`、
     形の開き記号と閉じ記号が `Punctuator`、
     ヘッダと `::icon(` が `Keyword` です。
     ノードテキスト、形のテキスト、icon、class のトークンは `RawText`、
     文字列とマークダウン文字列のトークンは `String` か `StringFragment` です。
     子の欄 `id`、`shape`、`decorations`、`children` は書かれた順で、
-    列もそうです（ast.md の Nodes。 ast/mindmap.md は例外を述べません）。
+    列もそうです（ast.md の Nodes。ast/mindmap.md は例外を述べません）。
     ノードが自分で書くトークンをつないだものは、
     図では小文字の `mindmap`（diagrams/mindmap.md の Detection）、
     icon の行では `::icon(`（大文字小文字は問いません）と `)`、
@@ -432,15 +432,15 @@ const problems: TreeProblem[] = checkTree(text, tree)
     リテラルとラベルの範囲は、トークンの始まりから終わりまでで、
     これはすべての木の検査が読みます。
   - timeline: 検査は木とソースのテキストを読みます。
-    欄の子ノードの型は、
-    その表の型です（`TIMELINE_CHILD_TYPES`。 ast/timeline.md の Type の列と、
+    欄の子ノードの型は、その表の型です（`TIMELINE_CHILD_TYPES`。
+    ast/timeline.md の Type の列と、
     その `TimelineStatement` の文が挙げる文とに合うことをテストが確かめます）。
     direction は大文字小文字を問わず `LR` か `TD` で（`TIMELINE_DIRECTIONS`、
     Meaning の列と合うことをテストが確かめます）、
     event の文の events は空ではありません。
     period は空ではなく、空白で始まらず、
     実体の `#` のほかに `#` を含まず（common.md の Entities）、
-    `:` と行終端子を含まず、 `#`、`:`、行終端子、
+    `:` と行終端子を含まず、`#`、`:`、行終端子、
     テキストの終わりの前で終わります（diagrams/timeline.md の The statement
     context、規則 14）。
     period の始まりから先の、
@@ -451,7 +451,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     空白（改行も含む）の後ろに `:` か `{` を持つ `accTitle` と `accDescr` です。
     そのため、period かどうかは period の後ろの行が決めます。
     event は、`:` と空白 1 文字（改行も含む）の後ろのテキストです。
-    空ではなく、行終端子を含まず、`:` は空白でない文字の前にしか含まず、 `:`、
+    空ではなく、行終端子を含まず、`:` は空白でない文字の前にしか含まず、`:`、
     行終端子、テキストの終わりの前で終わります。
     その前の項目との間には、その `:` とその 1 文字のほかに、
     空白と図のコメントしかありません（規則 13）。
@@ -471,7 +471,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     子の欄はソースの順です（ast.md の Nodes、
     ast/timeline.md は例外を述べません）。
     トークンの種類は `parser/docs/tokens/timeline.md` のとおりです。
-    ノードが自分で書くトークンは、 `:`、`{`、`}` が `Punctuator`、ヘッダー、
+    ノードが自分で書くトークンは、`:`、`{`、`}` が `Punctuator`、ヘッダー、
     direction、キーワードが `Keyword` です。
     テキストのトークンは `RawText` です。
     ノードが自分で書くトークンをつないだものは、
@@ -486,9 +486,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
     リテラルの範囲は、トークンの始まりから終わりまでで、
     これはすべての木の検査が読みます。
   - sankey: 検査は木とソースのテキストを読みます。
-    欄の子ノードは、
-    その表の型です（`SANKEY_CHILD_TYPES`。テストが ast/sankey.md の Type
-    の列と合わせます）。
+    欄の子ノードは、その表の型です（`SANKEY_CHILD_TYPES`。
+    テストが ast/sankey.md の Type の列と合わせます）。
     図の body にはリンクが 1 つ以上あります。
     SankeyIdentifier と SankeyLiteral の値は、両端に空白がなく、
     文字の間の空白と、`"` と `,` 以外の ASCII の印字可能文字を含みます。
@@ -505,7 +504,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     ヘッダーと各レコードは、それぞれ自分の行にあります。
     ヘッダーと最初のレコードの間、2 つのレコードの間には、
     ディレクティブとコメント行を除き、行終端を含む空白だけがあります。
-    リンクは 2 つの `Punctuator` のトークン `,` を書き、 source、最初の `,`、
+    リンクは 2 つの `Punctuator` のトークン `,` を書き、source、最初の `,`、
     target、2 つ目の `,`、value は、間に空白だけを置いてこの順に続きます。
     引用符のない欄のトークンは `RawText` で、
     ディレクティブや無視される `;` で複数に切れることがあります。
@@ -515,9 +514,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
     前後の空白を除いたトークンの範囲です（`parser/docs/tokens/sankey.md` と
     `parser/docs/positions/sankey.md`）。
   - xychart: 検査は木とソースのテキストを読みます。
-    欄の子ノードは、
-    その表の型です（`XYCHART_CHILD_TYPES`。テストが ast/xychart.md の Type
-    の列と合わせます）。
+    欄の子ノードは、その表の型です（`XYCHART_CHILD_TYPES`。
+    テストが ast/xychart.md の Type の列と合わせます）。
     図にはヘッダーが 1 つ以上、band にはカテゴリーが 1 つ以上、
     プロットには値が 1 つ以上あります。
     ヘッダーは最初の文より前にあります（ast/xychart.md の XychartDiagram）。
@@ -529,7 +527,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     title は空ではなく、軸の文には title かデータ、またはその両方があり、
     引用符で空の title の後ろにはデータがあり、
     カテゴリーは空ではありません（ast/xychart.md の XychartTitleStatement、
-    XychartXAxisStatement、 XychartYAxisStatement、XychartBand）。
+    XychartXAxisStatement、XychartYAxisStatement、XychartBand）。
     引用符のないテキストは、空ではなく、ASCII の英字と数字と `-`、`_`、`.`、
     `+`、`=`、`*`、`&`、
     `#` を含みます（diagrams/xychart.md の The statement context の規則 6）。
@@ -585,15 +583,15 @@ const problems: TreeProblem[] = checkTree(text, tree)
     象限の文の番号はキーワードの数字で、
     1 から 4 です（QuadrantQuadrantStatement）。
     ラベルの種類は `text`、`string`、
-    `markdown` です（`QUADRANT_AXES` と `QUADRANT_LABEL_KINDS`。テストが Meaning
-    の列と合わせます）。
+    `markdown` です（`QUADRANT_AXES` と `QUADRANT_LABEL_KINDS`。
+    テストが Meaning の列と合わせます）。
     値はその書かれたテキストで、文字列かマークダウン文字列では、
     内容に残りの書かれたテキストを続けたものです（QuadrantLabel）。
     引用符のないテキストは語で始まり、英字、数字、ASCII の外の文字、
     句読点 `!$%&'*+,./=?\_#`、バッククォート、`-`、空白を含みます。
     文字列は空でなく、その後ろはテキストの残りで、
     文字列を含みません（diagrams/quadrant.md の The statement context、Texts、
-    Strings、 Empty strings）。
+    Strings、Empty strings）。
     文字は、テキストを変換した形のものです。
     その形では、
     実体は ASCII の外の文字です（Entities, HTML attribute quotes, and `style`
@@ -607,7 +605,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     改行・U+2028・U+2029 以外の 1 文字と数字を続けたものです（The point
     context）。
     `classDef` のクラスの名前は、変換した形で、英字、数字、ASCII の外の文字、
-    `&`、`#`、`*`、 `-`、`,`、`:` を含み、空白を含みません（Classes）。
+    `&`、`#`、`*`、`-`、`,`、`:` を含み、空白を含みません（Classes）。
     スタイルは、英字、数字、`:`、`#`、`-`、空白を含み、
     `QUADRANT_STYLE_NAMES` の名前、`:`、
     その名前の形の値です（Points と Rejections outside the grammar）。
@@ -694,7 +692,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     保持した形式の間でも trivia のままである。
     本文の gap と hidden の境界は広げない。
     共有の coverage、raw・written 値、token kind、範囲の hull も検査する。
-    履歴の受理条件は、 parser と上記の fixture の受理の比較で確かめる。
+    履歴の受理条件は、parser と上記の fixture の受理の比較で確かめる。
     [fixture: gitgraph/title-tab] [fixture:
     gitgraph/lex-description-line-null] [fixture:
     gitgraph/lex-description-block-only-directive] [fixture:
@@ -735,7 +733,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     保持した形式の間でも trivia である。
     本文の通常の gap は広げない。
     RawText は共通の切断だけで分割できる。
-    共有の coverage、欄、written 値、範囲、 token の検査も行う。
+    共有の coverage、欄、written 値、範囲、token の検査も行う。
     [fixture: info/lex-flag-hidden-two] [fixture:
     info/lex-hidden-after-visible-eol] [fixture: info/lex-yaml-three-fences]
     [fixture: info/lex-yaml-two-empty] [fixture:
@@ -753,7 +751,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
   - treeview: 13 の node 型、
     子の欄と訪問順は
     [ast/treeview.ja.md](../../spec/docs/ast/treeview.ja.md)に従う。
-    大文字小文字を区別する見出し全体と優先順での読み、 bare 名・引用名の全体、
+    大文字小文字を区別する見出し全体と優先順での読み、bare 名・引用名の全体、
     class と icon の atom、注釈と共通文の部品を調べる。
     値は書かれた空白を保ち、共通の除去の後に何も残らない場合だけ null にする。
     空白だけの内容は literal に保つ。
@@ -828,7 +826,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     Arrow の値 ->> と none/solid/arrow の欄を一致させる。
     Data tag はタグがないときだけ null。
     Clause は kind、空でない item の body、必須・任意の順序を保つ。
-    参照は書かれた名前のままで、 validator や linking の条件は足さない。
+    参照は書かれた名前のままで、validator や linking の条件は足さない。
     [fixture: eventmodeling/gram-written-tree]
     [fixture: eventmodeling/lex-keyword-prefix-name]
     [fixture: eventmodeling/lex-name-custom-header-dot]
@@ -952,8 +950,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
     その項目の textBefore に属する。
     次の項目が無ければ Diagram.body に属する。
     hidden の LF の消費を先に適用して可視 LF を決める。
-    遷移の欄は textBeforeArrow、textBeforeTo、textBeforeColon、
-    textBeforeLabel、textAfter。
+    遷移の欄は textBeforeArrow、textBeforeTo、textBeforeColon、textBeforeLabel、
+    textAfter。
     label が無ければコロンと label の gap は空。
     共通文の末尾の形は可視 EOL の前までで、その後の形は body に属する。
     [fixture: cynefin/hidden-domain-item-members]
@@ -1125,11 +1123,11 @@ const problems: TreeProblem[] = checkTree(text, tree)
     それがなければ空の fallback を使います。
     native directive は境界のある最初の閉じを取ります。
     保持する範囲に、前の padding、消費する LF、追加された LF を含めません。
-    railroad は visible EOL の区切りを要求しないので、 LF だけ、余分の LF、
+    railroad は visible EOL の区切りを要求しないので、LF だけ、余分の LF、
     閉じの後の空白、EOF の対照例を受け入れます。
     native Comment は方言の行または block の規則に従い、
     先行する字句の代わりになったり、先に始まる文字列、special sequence、
-    metadata、 hidden の形の中で始まったりできません。
+    metadata、hidden の形の中で始まったりできません。
     [fixture: railroad/ir-hidden-yaml-adjacent-later]
     [fixture: railroad/ir-hidden-yaml-adjacent-eof]
     [fixture: railroad/ir-native-directive-adjacent]
@@ -1258,7 +1256,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     固定 option の語は token と照らし、数の葉は符号なし小数の綴りを保つ。
     ID は最長の綴りと、
     先行する keyword・数・boolean・graticule・共通形を調べる。
-    境界のある bare 見出しは、 label bracket・entry brace の直前なら名前になる。
+    境界のある bare 見出しは、label bracket・entry brace の直前なら名前になる。
     string は同じ quote で閉じ、定めた escape 境界を守る。
     これらは木の条件であり、軸参照の不足など意味上の受理条件は parser が扱う。
     [fixture: radar/gram-written-tree] [fixture: radar/gram-inline-statements]
@@ -1296,7 +1294,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     [fixture: radar/gram-entry-newline-after-comma]
     [fixture: radar/gram-entry-before-comma-native-spare]
 
-    共通形は共有の composite 値の検査を使い、 null と空白だけの値、
+    共通形は共有の composite 値の検査を使い、null と空白だけの値、
     description の最初の閉じを区別する。
     後の文に可視 EOL が必要なのは共通文だけ。
     余分な LF、閉じの後の space、EOF は別の場合として調べる。
@@ -1643,7 +1641,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     通常の断片を最大にし、書かれた空白を保ちます。
     string/markdown の kind は最初の寄与する断片だけが持てます。
     click 文脈を抜けるちょうど一つの空白は断片外です。
-    click の後に認識された空文字列や空 markdown 文字列は、 Label を寄与せずに、
+    click の後に認識された空文字列や空 markdown 文字列は、Label を寄与せずに、
     単位を読むという要件を満たします。
     flow では、後続の裸の断片には文脈を抜ける一空白が必要です。
     何も読んでいない末尾の click は不正です。
@@ -1659,7 +1657,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     kind はそれぞれ empty-string と empty-markdown-string です。
     先頭や末尾のセミコロン、
     名前の最初の寄与する断片も含みます（diagrams/agentflow.md の Names, strings,
-    and click text、 ast/agentflow.md の AgentflowName）。
+    and click text、ast/agentflow.md の AgentflowName）。
     [fixture: agentflow/lex-connector-name-click-empty-string-adjacent-text]
     [fixture: agentflow/lex-connector-name-click-empty-string-adjacent-semicolon]
     [fixture: agentflow/lex-connector-name-click-empty-string-no-id-adjacent-semicolon]
@@ -1937,8 +1935,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
     [fixture: usecase/gram-style-json-prefix-identifier-control]
 
     actor/entity の接尾部、図形、引用だけの名前、actor リスト、
-    分割・意味付き関連、一段の boundary、メタデータ更新、ノート、
-    JSON の接頭部、class/style リスト、アクセシビリティは、
+    分割・意味付き関連、一段の boundary、メタデータ更新、ノート、JSON の接頭部、
+    class/style リスト、アクセシビリティは、
     記述された子と句読記号だけを持ちます。
     矢印のフィールドは記述された記号・線種・ダッシュまたはドット数です。
     ネイティブメタデータでは、コンマ・改行の区切り、キーとコロンと値の行内継続、
@@ -2158,7 +2156,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     [fixture: venn/lex-comment-swallowed-cr]
     U+0085 は空白ではなく、この位置では無視されるテキストに残ります。
     [fixture: venn/lex-swallowed-nel-gap]
-    図のコメントは LF の前で終わり、 U+2028 と U+2029 では終わりません。
+    図のコメントは LF の前で終わり、U+2028 と U+2029 では終わりません。
     出典は
     [diagrams/venn.md の Comments](../../spec/docs/diagrams/venn.md#comments-and-swallowed-fragments)
     です。
@@ -2257,7 +2255,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     [fixture: treemap/lex-indent-comment-ps-semicolon-space]
     [fixture: treeview/lex-indent-comment-ps-semicolon-space]
 
-  - block: 子の型は `BLOCK_CHILD_TYPES` に従い、 ast/block.md と合わせます。
+  - block: 子の型は `BLOCK_CHILD_TYPES` に従い、ast/block.md と合わせます。
     図と複合ブロックの本体、class の id、スタイルの区間リストは空にできず、
     本体が空の説明ブロックだけでもいけません。
     null にできる欄は書かれた形と合い、幅はコロンの直後にあり、
@@ -2312,7 +2310,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
 値の欄（`value` か `name`）を持つすべての型がこの規則に従います。
 表がほかの作り方を与える型は、その仕様の文とともに挙げます。
 
-- 単位をつないだ値（`Identifier`、`ClassIdentifier`、class の矢印、 class 図、
+- 単位をつないだ値（`Identifier`、`ClassIdentifier`、class の矢印、class 図、
   ER 図、requirement 図のスタイル）は、単位の間の空白を除きます。
   つないだトークンが値です。
   `Identifier` は 1 つのトークンです。
@@ -2412,7 +2410,7 @@ null になりうる欄は、ソースがそれを書く所で null にし、書
 
 検査しないものがあります。
 
-- 行の規則が無視する `;` のすべてに、 `IgnoredSemicolon` のトークンがある、
+- 行の規則が無視する `;` のすべてに、`IgnoredSemicolon` のトークンがある、
   という条件。
   行の規則を 2 か所に書かないために、トークンは与えられたものとして扱い、
   その正しさは Db の比べに任せます。
@@ -2480,7 +2478,7 @@ sankey の名前を挙げた fixture の記録した木で、
 その索引が示す木で各欄を壊します。
 その欄を持つ記録した木ならどれでもかまいません。
 欄が起こすべき問題のメッセージが、どの木でも同じだからです。
-また、null になりうる文字列の各欄の両方向と、 `null-fields.ts` の各規則と、
+また、null になりうる文字列の各欄の両方向と、`null-fields.ts` の各規則と、
 メッセージにトークンの位置を含む box のテキストの 2 つの部分に、
 名前を付けた場合を持ちます（fixture、型、欄、
 そのノードの問題の正確なメッセージ）。
@@ -2499,9 +2497,9 @@ class 図と ER 図のスタイルは後者です。
 理由とともに挙げます。
 すべての型がどちらかであることも求めます。
 コメント行が切る図のコメントの fixture も名前で挙げます。
-コメントが line feed で終わる 8 つと、 CRLF、単独の CR、
+コメントが line feed で終わる 8 つと、CRLF、単独の CR、
 テキストの終わりで終わるものが 1 つずつです。
-記録した木が受け入れられることを求め、 CRLF と単独の CR では、
+記録した木が受け入れられることを求め、CRLF と単独の CR では、
 別の行終端子を持つ値が、正確なメッセージで報告されることを求めます。
 `tests/check-tree-comments.test.ts` は、図のコメントとコメント行が line feed、
 CRLF、単独の CR、テキストの終わりで終わる木を手で作り、
@@ -2510,10 +2508,10 @@ CRLF、単独の CR、テキストの終わりで終わる木を手で作り、
 各場合は、名前を挙げた fixture の記録した木を取り、そのトークンの 1 つの中に、
 ディレクティブ、または行の規則が無視する `;` を、1 回から 3 回書きます。
 そのトークンを切る parser が記録するとおりに木を作り直します。
-場合は、`Identifier`、`Numeric`、 `Keyword`（各図種で 2 つの断片に、
-flowchart では 3 つと 4 つにも）、 `Punctuator`（各図種で 2 つの断片に、
-flowchart では 3 つにも。 sequence、class、state、ER の断片は、
-その図種が持たないテキストです）、 `String` トークンに切った `String` で、
+場合は、`Identifier`、`Numeric`、`Keyword`（各図種で 2 つの断片に、
+flowchart では 3 つと 4 つにも）、`Punctuator`（各図種で 2 つの断片に、
+flowchart では 3 つにも。sequence、class、state、ER の断片は、
+その図種が持たないテキストです）、`String` トークンに切った `String` で、
 どれもディレクティブか `;` で切ります。
 どの場合でも、場合の名前が挙げる条件の問題を、
 場所とメッセージを正確に報告することを求め、
@@ -2560,6 +2558,6 @@ fixture の元の木に問題がないことも求めます。
 すべての木が満たす条件 (位置、すべての文字が置かれること、トークンの順序、
 切れ目、コメント、ディレクティブ、frontmatter) を壊すものは、
 おもに手で作った木に行います (`check-tree.test.ts`、
-`check-tree-comments.test.ts`、 `check-tree-cut-units.test.ts`)。
+`check-tree-comments.test.ts`、`check-tree-cut-units.test.ts`)。
 木の形、フィールドと値、トークンの端の空白、リテラル、図種の条件を壊すものは、
 記録した木に行い、図種の条件は名前を挙げた fixture の記録した木に行います。

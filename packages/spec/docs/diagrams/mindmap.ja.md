@@ -7,7 +7,7 @@ mermaid.js の正となるソース：
 - [`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison)
 - [`mindmapDb.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts)
 - [`mindmap/`](https://github.com/mermaid-js/mermaid/tree/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/mindmap)
-  の中のテスト（`*.spec.ts`、 `*.test.ts`）
+  の中のテスト（`*.spec.ts`、`*.test.ts`）
 
 この文書は、図種 `mindmap`、マインドマップを扱います。
 木のノードは [ast/mindmap.ja.md](../ast/mindmap.ja.md) で定めます。
@@ -30,7 +30,7 @@ mindmap/header-after-whitespace-line]
 大文字小文字を区別せず、
 語の文字が続かない形で読みます（[文の文脈](#文の文脈) を参照）。
 そのため `mindmapx` は、ノードのテキストなので、検出されて拒否されます。
-一方、`mindmap-x` はヘッダーとその行の根 `-x` で、 `mindmap(x)` はヘッダーと、
+一方、`mindmap-x` はヘッダーとその行の根 `-x` で、`mindmap(x)` はヘッダーと、
 根である形です。
 最初のノードはヘッダーの行に置けます。
 空白の後に置けて、形か語の文字以外の文字で始まるならヘッダーの直後にも置けます。
@@ -50,7 +50,7 @@ mindmap/db-first-node-after-header-tab]
 ヘッダーの後には、ほかの何があっても足ります。
 改行、単独の CR、空白、U+2028、コメント、根です。
 改行が続く `mindmap`、`mindmap `、`mindmap %% c`、`mindmap%% c`、
-`mindmap %%{init: {}}%%`、 `mindmap`・改行・コメント行かディレクティブの行は、
+`mindmap %%{init: {}}%%`、`mindmap`・改行・コメント行かディレクティブの行は、
 どれもテキストの終わりにあるとき、ノードのない図です。
 [fixture: mindmap/db-header-without-line-feed] [fixture:
 mindmap/header-indented-at-end] [fixture: mindmap/header-directive-at-end]
@@ -139,13 +139,13 @@ mindmap/lex-indent-line-separator] [fixture: mindmap/lex-indent-vertical-tab]
 mindmap/lex-indent-around-directive]
 
 **ノードのテキスト。**
-文の文脈では、 `(`、`[`、`)`、`{`、`}`、改行以外の、
+文の文脈では、`(`、`[`、`)`、`{`、`}`、改行以外の、
 できるだけ多くの 1 つ以上の文字が `node-text` の単位です（[文の文脈](#文の文脈)
 の規則 8）。
 そのテキストは終わりの空白を保ち、mermaid.js もそれをノードに保ちます。
 空白文字 3 つが続く `root` はノード `root   ` です。
 最初の文字の後の `]`、`:`、`#`、`"`、`%%`、`:::`、U+2028 はその文字です。
-`a]b`、`a: b # c`、`a"b`、`root %% c`、`a:::b`、 `a`、U+2028、
+`a]b`、`a: b # c`、`a"b`、`root %% c`、`a:::b`、`a`、U+2028、
 `b` はノードのテキストで、ほかのどの規則も読まない `::x` と `-x` もそうです。
 単独の `{`、`}`、ノードのテキストの後の `}}` は、どの規則も読みません。
 `a{b`、`a}b`、`a}}` は拒否されます。
@@ -174,7 +174,7 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
 の規則が単位に当てはまります。
 テキストの単位か文字列の単位の中のディレクティブは mermaid.js の読みを保ち、
 それ以外の単位の中のディレクティブは入力を拒否させます。
-**テキストの単位**は、 `node-text`、`shape-text`、`icon-text`、
+**テキストの単位**は、`node-text`、`shape-text`、`icon-text`、
 `class-text` です。
 **文字列の単位**は、`string` と `markdown-string` です。
 ほかの単位、つまりキーワード `mindmap`、`::icon(`、`:::`、形の開きと閉じは、
@@ -283,8 +283,8 @@ mindmap/div-ignored-semicolon-in-opener]
   mindmap/lex-keyword-prefix-as-node] [fixture:
   mindmap/lex-keyword-inside-node-text]
 - ノードのテキストは最初の `(`、`[`、`)`、`{`、`}` まで続くので、
-  その後の開きは形を始め、 `-)` は単位が始まるところでだけ形を始めます。
-  `r-)text(-` はノードのテキスト `r-` と形 `)text(-` で、 `-)x(-` は形だけです。
+  その後の開きは形を始め、`-)` は単位が始まるところでだけ形を始めます。
+  `r-)text(-` はノードのテキスト `r-` と形 `)text(-` で、`-)x(-` は形だけです。
   [fixture: mindmap/db-shape-explode-dash-form] [fixture:
   mindmap/gram-shape-dash-opener-without-id]
 - `::icon(` と `:::` は、単位が始まるところでだけ icon か class の行を始めます。
@@ -301,7 +301,7 @@ mindmap/div-ignored-semicolon-in-opener]
    間に何もないときは `empty-markdown-string` の単位です。
    `` "` `` の後に、ほかのもの、つまり `"`、`"` が続かない `` ` ``、
    テキストの終わりが先に来るときは、入力は拒否され、規則 2 は試しません。
-   ``a["`x"]``、``a["`x" ]``、``a["`"]``、 ``a["`x`y"]``、```a["`x``"]```、
+   ``a["`x"]``、``a["`x" ]``、``a["`"]``、``a["`x`y"]``、```a["`x``"]```、
    テキストの終わりの ``a["`x`` は拒否されます。
    [fixture: mindmap/db-shape-markdown-string] [fixture:
    mindmap/lex-markdown-string-quote] [fixture:
@@ -319,11 +319,11 @@ mindmap/div-ignored-semicolon-in-opener]
 4. `)`、`]`、`(`、`}` 以外の、改行を含む、できるだけ多くの 1 つ以上の文字。
    `shape-text` の単位です。 [fixture: mindmap/gram-shape-text-line-feed]
 
-`}}` を始めない `}` はどの規則も読まないので、 `a[x}y]`、`a[}]`、
+`}}` を始めない `}` はどの規則も読まないので、`a[x}y]`、`a[}]`、
 `a{{x}y}}` は拒否されます。
 `{`、`[`、最初の文字の後の `"`、`%%` は形のテキストの文字で、
 形のテキストは行をまたげます。
-`a[x{y]`、`a[x[y]`、`a[x"y]`、`a[%% c]`、 `a[x`、改行、`y]` は形です。
+`a[x{y]`、`a[x[y]`、`a[x"y]`、`a[%% c]`、`a[x`、改行、`y]` は形です。
 `"` が文字列なのは単位が始まるところ、つまり開きの直後だけです。
 `a[ "x" ]` はテキスト `"x"` を持ちます。
 規則 4 は `)` の前の `-` を読むので、
@@ -341,14 +341,14 @@ mindmap/gram-shape-dash-closer-after-string]
 
 ### icon と class の文脈
 
-icon の文脈では、`)` が文脈を出て、 `)` 以外の、
+icon の文脈では、`)` が文脈を出て、`)` 以外の、
 改行を含む 1 つ以上の文字が `icon-text` の単位です。
 `::icon(x`、改行、`  a)` は、icon `x`、改行、空白文字 2 つ、`a` を持ちます。
 class の文脈では、改行、U+2028、
 U+2029 以外の 1 つ以上の文字が `class-text` の単位で、文脈を出ます。
 改行、U+2028、U+2029 は、単位なしで文脈を出ます。
 そのため class の行はその行区間の残りを取ります。
-`:::c ::icon(x)` は class `c ::icon(x)` を持ち、 `:::a`、U+2028、
+`:::c ::icon(x)` は class `c ::icon(x)` を持ち、`:::a`、U+2028、
 `b` は 1 つの行の class とノードのテキストで、拒否されます。 [fixture:
 mindmap/gram-icon-line-feed] [fixture: mindmap/db-icon-line] [fixture:
 mindmap/gram-class-takes-rest-of-line] [fixture:
@@ -373,8 +373,7 @@ mindmap/lex-percent-brace-line-between-nodes]
 改行、U+2028、U+2029 がそれを終え、
 U+2028 か U+2029 の後のテキストは新しい行として読まれ、
 その字下げはその文字から始まります。
-`a[x] %% c`、U+2028、`y` は、ノード `a[x]` と、
-1 文字の字下げのノード `y` です。
+`a[x] %% c`、U+2028、`y` は、ノード `a[x]` と、1 文字の字下げのノード `y` です。
 ノードのテキスト、形のテキスト、class の中では、`%%` はテキストの文字です。
 図のコメントの**印**は `%%` で、その値はその後のテキストです。 [fixture:
 mindmap/lex-comment-after-header] [fixture:
@@ -424,8 +423,8 @@ class-line = ":::" class-text
 ノード、icon、class は、それぞれそれだけの行に置きます。
 形か icon の後には、その行で空白とコメントしか続けられず、
 ノードのテキストはその行の終わりまで続きます。
-`a["x"]y`、`a[x] y`、`a[x]]`、`a[x] :::c`、`::icon(x) y`、
-`::icon(x)::icon(y)`、`::icon(x):::c` は拒否され、形の後の空白は何も変えません。
+`a["x"]y`、`a[x] y`、`a[x]]`、`a[x] :::c`、`::icon(x) y`、`::icon(x)::icon(y)`、
+`::icon(x):::c` は拒否され、形の後の空白は何も変えません。
 最初のノードはヘッダーの行に置けて、
 ヘッダーで図のテキストを終えることはできません（[検出](#検出) を参照）。
 [fixture: mindmap/gram-shape-then-text-glued]
@@ -442,7 +441,7 @@ mindmap/gram-shape-trailing-whitespace]
 字下げがそれより小さいノードの子です。
 そのため、前のノードと同じだけ字下げしたノードは、その下のノードの後に来る、
 その兄弟で、ノードは親より何文字多く字下げしてもかまいません。
-`root`、`    a`、`  b`、`    c` の 4 行では、 a と b が根の子で、
+`root`、`    a`、`  b`、`    c` の 4 行では、a と b が根の子で、
 c は b の子です。
 タブは 1 文字と数えるので、行 `\ta` の後の `  b` は a の子です。
 最初のノードではなく、
@@ -472,7 +471,7 @@ mindmap/db-shape-without-id] [fixture: mindmap/db-shape-without-id-circle]
 mindmap/db-shape-id-with-parentheses]
 
 閉じは開きに合わなくてかまいません。
-`[text)`、`((x)`、`(x))`、`(x]`、`-)x(-` は形で、 `(-text-)` は開き `(-`、
+`[text)`、`((x)`、`(x))`、`(x]`、`-)x(-` は形で、`(-text-)` は開き `(-`、
 テキスト `text-`、閉じ `)` です。
 mermaid.js が開きと閉じから形の種類をどう読むかは、
 tests パッケージの要約にあります。
@@ -518,7 +517,7 @@ icon の行は icon を、class の行は class を、最後に足されたノ�
 その前の最も近いノードの行のノードです。
 ノードは icon の行と class の行を 2 つ以上持てます。
 子の行の前の icon の行は、その前のノードを飾ります。
-icon は括弧の中の空白を保ち、 class は両端の空白を保ちます。
+icon は括弧の中の空白を保ち、class は両端の空白を保ちます。
 [fixture: mindmap/db-icon-line] [fixture:
 mindmap/db-icon-twice] [fixture: mindmap/db-icon-and-class-on-child] [fixture:
 mindmap/db-icon-indent-ignored] [fixture: mindmap/gram-icon-then-child]

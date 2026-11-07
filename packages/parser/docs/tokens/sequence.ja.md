@@ -15,7 +15,7 @@
 [diagrams/sequence.ja.md](../../../spec/docs/diagrams/sequence.ja.md#字句構造)
 の単位から作ります。
 すべて空白ではない各単位と、`title` か `title:` の文の `title-text` の単位と、
-U+2028 か U+2029 を持つ箱の `text` の単位は、 1 つのトークンで、
+U+2028 か U+2029 を持つ箱の `text` の単位は、1 つのトークンで、
 その種類はこの表のとおりです。
 [SequenceTitleStatement](../../../spec/docs/ast/sequence.ja.md#sequencetitlestatement)
 と、
@@ -56,7 +56,7 @@ U+2028 か U+2029 を持つ箱の `text` の単位は、 1 つのトークンで
 [fixture: sequence/db-box-colour-then-spaces-and-line-separator]
 
 トークンは、その単位から両端の空白を除いたものです。
-ただし、 mermaid.js がその空白を値の一部として読むところは除きます。
+ただし、mermaid.js がその空白を値の一部として読むところは除きます。
 [トークン](../tokens.ja.md#トークン) を参照。
 `title` か `title:` の文の `title-text` の単位のトークンは単位の全体で、
 `accTitle:` のものは、mermaid.js が削る両端の空白を除いたものです。
@@ -66,18 +66,18 @@ U+2028 か U+2029 を持つ箱の `text` の単位は、 1 つのトークンで
 [fixture: sequence/db-box-colour-then-spaces-and-line-separator]
 [SequenceBoxText](../../../spec/docs/ast/sequence.ja.md#sequenceboxtext)
 を参照。
-箱のテキストで、色の候補と残りの間の空白は、 SequenceBoxText の値に入り、
+箱のテキストで、色の候補と残りの間の空白は、SequenceBoxText の値に入り、
 そのどちらの部分にも入りません。
 この空白は、SequenceBoxText が持つ、それ自体の `RawText` のトークンです。
 その中のディレクティブは、どのトークンとも同じくそれを切ります。
-`box Aqua G` は、トークン `Aqua`、空白、 `G` を持ちます。
+`box Aqua G` は、トークン `Aqua`、空白、`G` を持ちます。
 [fixture: sequence/tokens-box-text-space-between-parts]
 [fixture: sequence/tokens-box-text-directive-between-parts]
 色の候補の直後のディレクティブは、その空白の外にあるので、
 空白がなければそのトークンはありません。
 `box red%%{init: {}}%%-team` は、トークン `red`、ディレクティブ、
-`-team` を持ち、 `box red%%{init: {}}%% text` は、トークン `red`、
-ディレクティブ、空白、 `text` を持ちます。
+`-team` を持ち、`box red%%{init: {}}%% text` は、トークン `red`、
+ディレクティブ、空白、`text` を持ちます。
 [fixture: sequence/tokens-box-text-directive-between-parts-without-space]
 [fixture: sequence/tokens-box-text-directive-then-space-before-remainder]
 改行から読む `newline` の単位は空白で、トークンになりません。
@@ -86,7 +86,7 @@ U+2028 か U+2029 を持つ箱の `text` の単位は、 1 つのトークンで
 トークンを断片に切ります。
 [ディレクティブが切るトークン](../tokens.ja.md#ディレクティブが切るトークン)
 を参照。
-空白 2 個が続く `title x %%{init: {}}%%` のトークンは、 `x` と空白 1 個、
+空白 2 個が続く `title x %%{init: {}}%%` のトークンは、`x` と空白 1 個、
 そして空白 2 個で、タイトルは `x` と空白 3 個です。
 [fixture: sequence/tokens-title-directive-then-spaces]
 `RawText` でないトークンの中のディレクティブと無視される `;` は、
@@ -101,14 +101,14 @@ U+2028 か U+2029 を持つ箱の `text` の単位は、 1 つのトークンで
 - 参加者の id は 1 つの `RawText` のトークンで、
   mermaid.js が id の一部として読む、中の空白もそのトークンに入ります。
   ディレクティブや無視される `;` は、どのテキストとも同じくそれを切ります。
-  `participant A %%{init: {}}%% B` はトークン `A ` と ` B` を持ち、 id は `A`、
-  空白 2 つ、 `B` です。 [fixture: sequence/tokens-directive-participant-spaces]
+  `participant A %%{init: {}}%% B` はトークン `A ` と ` B` を持ち、id は `A`、
+  空白 2 つ、`B` です。 [fixture: sequence/tokens-directive-participant-spaces]
   [fixture: sequence/tokens-ignored-semicolon-in-participant-id]
 - キーワード `left of` と `right of` は、語ごとに 1 つの、
   2 つの `Keyword` のトークンです。
   語の間の空白に接したディレクティブや無視される `;` は、
   2 つのトークンの間にあります。
-  `Note left%%{init: {}}%% of A: t` は、 mermaid.js と同じく note です。
+  `Note left%%{init: {}}%% of A: t` は、mermaid.js と同じく note です。
   [fixture: sequence/lex-directive-between-left-and-of]
   [fixture: sequence/tokens-ignored-semicolon-between-left-and-of]
 - テキストの前の `:` と、`accTitle` と `accDescr` の後の `:` は、

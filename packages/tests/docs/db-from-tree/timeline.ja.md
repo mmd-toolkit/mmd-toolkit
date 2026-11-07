@@ -35,7 +35,7 @@ Db は、メソッドに渡されたものを持ちます。
 **変換した形。**
 どの値も[変換した形](../../../spec/docs/common.ja.md#ソースの読み方)で読むので、
 エンティティは、period でも、ほかのどのテキストでも、プレースホルダです。
-`a#35; b : c#35; d` は、period が `a`、プレースホルダ、`b` で、 event が `c`、
+`a#35; b : c#35; d` は、period が `a`、プレースホルダ、`b` で、event が `c`、
 プレースホルダ、` d` のタスクです。
 title、section の名前、アクセシビリティのテキストでも同じです。
 同じ形では、各行終端（`\r\n` と単独の `\r` も）を `\n` として読みます。
@@ -81,7 +81,7 @@ title、section の名前、アクセシビリティのテキストでも同じ�
   [fixture: timeline/lex-event-semicolon-in-style-line]
   [fixture: timeline/lex-event-semicolon-in-style-line-second-event]
 - テキストの両端の空白は、木が持つとおりに残ります。
-  period はコロン、`#`、改行の前の空白を持ち、 event、title、
+  period はコロン、`#`、改行の前の空白を持ち、event、title、
   section の名前は両端の空白を持ちます。
   空白だけの名前も同じで、行を終えるディレクティブが続いても同じです。
   [fixture: timeline/db-period-and-event]
@@ -125,8 +125,8 @@ event の文はその前の period を参照します（**period と event** を
 [fixture: timeline/gram-empty-description-blocks-then-period]
 
 **既定。**
-文がなければ、Db は、direction が `LR` で、 title、`accTitle`、
-`accDescr` が空のテキストで、 section とタスクはありません。
+文がなければ、Db は、direction が `LR` で、title、`accTitle`、
+`accDescr` が空のテキストで、section とタスクはありません。
 フロントマターのタイトルは、図のタイトルではありません。
 timeline の Db にはそれを受け取るメソッドがないので、
 木が持たないフロントマターは読みません。 [fixture: timeline/db-header-only]
@@ -136,7 +136,7 @@ timeline の Db にはそれを受け取るメソッドがないので、
 **direction。**
 ヘッダーに direction がなければ `LR` です。
 あれば、書かれたとおりの direction を大文字にしたものです。
-`td` は `TD`、 `Lr` は `LR` です。 [fixture: timeline/db-direction-lr]
+`td` は `TD`、`Lr` は `LR` です。 [fixture: timeline/db-direction-lr]
 [fixture: timeline/db-direction-td] [fixture: timeline/db-direction-lower-case]
 [fixture: timeline/db-direction-mixed-case]
 [fixture: timeline/header-direction-twice]
@@ -170,7 +170,7 @@ period の文は、タスクを 1 つ加えます。
 - event の文は、その event を、最後のタスクに加えます。
   そのタスクと event の文の間にどんな文があっても同じです。
   title、section、アクセシビリティのテキスト、空の説明ブロックです。
-  タスクは自分の `section` を保つので、 section の文の後ろに書いた event は、
+  タスクは自分の `section` を保つので、section の文の後ろに書いた event は、
   その前の section の中にあります。
   どの period よりも前にある event の文は、木にありません。
   そういう入力は拒否されます。

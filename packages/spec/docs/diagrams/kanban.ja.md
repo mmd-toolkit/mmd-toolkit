@@ -58,7 +58,7 @@ mermaid.js が列への所属とメタデータの効果をどう読むかは、
 本文で単位が始まるところの 2 つ目のヘッダー語は拒否します。
 [fixture: kanban/header-twice] [fixture: kanban/header-twice-indented]
 [fixture: kanban/header-twice-same-line]
-`kanbanX`、`kanban2`、`kanban_`、 `a.kanban` はノード本文です。
+`kanbanX`、`kanban2`、`kanban_`、`a.kanban` はノード本文です。
 [fixture: kanban/lex-keyword-kanban-letter]
 [fixture: kanban/lex-keyword-kanban-digit]
 [fixture: kanban/lex-keyword-kanban-underscore]
@@ -123,7 +123,7 @@ CRLF と単独の CR は改行です。 [fixture: kanban/lex-crlf-quoted-value]
 [fixture: kanban/lex-label-comment-line]
 [fixture: kanban/lex-metadata-comment-line]
 [fixture: kanban/lex-metadata-directive-line]
-ノード本文、形のラベル、 class 本文の途中の `%%` はそのテキストの一部です。
+ノード本文、形のラベル、class 本文の途中の `%%` はそのテキストの一部です。
 [fixture: kanban/lex-comment-quoted-inline]
 [fixture: kanban/db-grid-comment-item-id]
 [fixture: kanban/db-grid-comment-item-label-bare]
@@ -183,7 +183,7 @@ kanban の位置で読みます。 [fixture: kanban/lex-c4-c4container-id]
 
 値の外の空白は単位を隔てます。
 字下げは改行以外の空白文字を各 1 文字と数えます。
-タブ、改ページ、垂直タブ、U+FEFF、U+00A0、U+3000、U+2028、 U+2029 を含みます。
+タブ、改ページ、垂直タブ、U+FEFF、U+00A0、U+3000、U+2028、U+2029 を含みます。
 [fixture: kanban/db-indent-tabs] [fixture: kanban/lex-tab-line-start]
 [fixture: kanban/lex-bom-line-start] [fixture: kanban/lex-nbsp-line-start]
 [fixture: kanban/lex-ideographic-line-start] [fixture: kanban/lex-ls-line-start]
@@ -499,7 +499,7 @@ columns の文はありません。
 [fixture: kanban/lex-keyword-title-upper]
 そうした語が行の終わりにあっても、次の行を取りません。
 空の行、コメント行、ディレクティブの行を挟んでも同じです。
-`title` に行 `A[Work]` が続くと、 2 つのノードです。
+`title` に行 `A[Work]` が続くと、2 つのノードです。
 [fixture: kanban/lex-keyword-gap-accdescr-blank-line]
 [fixture: kanban/lex-keyword-gap-accdescr-comment-line]
 [fixture: kanban/lex-keyword-gap-accdescr-directive-line]
@@ -608,8 +608,8 @@ icon は大文字小文字を区別しない `::icon(` で始まります。
 [fixture: kanban/db-decoration-inline]
 
 class は `:::` で始まります。
-空白を含む行区間の残り全体を空でない `class-text` に取り、
-class の文脈を出ます。 [fixture: kanban/db-decoration-class-item]
+空白を含む行区間の残り全体を空でない `class-text` に取り、class の文脈を出ます。
+[fixture: kanban/db-decoration-class-item]
 [fixture: kanban/db-grid-comment-item-class]
 [fixture: kanban/lex-class-trailing-spaces]
 [fixture: kanban/gram-whitespace-class]
@@ -618,11 +618,11 @@ class の文脈を出ます。 [fixture: kanban/db-decoration-class-item]
 [fixture: kanban/gram-class-ls] [fixture: kanban/lex-class-ls-lf]
 [fixture: kanban/gram-class-first-ls] [fixture: kanban/gram-grid-ps-item-class]
 
-icon の文脈では空でない本文を先に読み、 `)` で文脈を出ます。
+icon の文脈では空でない本文を先に読み、`)` で文脈を出ます。
 [fixture: kanban/db-decoration-icon-item] [fixture: kanban/lex-icon-multiline]
 class 本文を読むと class の文脈を出ます。
 空でない class 本文の後の区切り文字は文の文脈で読みます。
-`:::a`、U+2028、 `b` は 1 行の 2 文として拒否します。
+`:::a`、U+2028、`b` は 1 行の 2 文として拒否します。
 [fixture: kanban/gram-class-ls] [fixture: kanban/lex-class-ls-lf]
 [fixture: kanban/gram-grid-ps-item-class]
 
@@ -635,7 +635,7 @@ class 本文を読むと class の文脈を出ます。
 1. `"` は `data-quote` の単位で、引用データの文脈に入ります。
    [fixture: kanban/db-metadata-quotes-empty]
    [fixture: kanban/db-metadata-brace-in-quoted]
-2. `}`、`^`、 `"` 以外の 1 つ以上の文字は `data-text` の単位です。
+2. `}`、`^`、`"` 以外の 1 つ以上の文字は `data-text` の単位です。
    [fixture: kanban/db-metadata-all] [fixture: kanban/db-metadata-whitespace]
 3. `}` は `}` の単位で、その文脈を出ます。 [fixture: kanban/db-metadata-all]
    [fixture: kanban/db-metadata-empty]
@@ -882,7 +882,7 @@ class と裸のノード本文は末尾の本文を保ちます。
 [fixture: kanban/lex-after-class-end-of-text]
 [fixture: kanban/spec-kanban-0cd8856c] [fixture: kanban/spec-kanban-764a099a]
 [テキストの終わり](../common.ja.md#テキストの終わり) を参照してください。
-形、文字列、markdown 文字列、 icon は閉じる必要があります。
+形、文字列、markdown 文字列、icon は閉じる必要があります。
 [fixture: kanban/gram-unclosed-shape] [fixture: kanban/gram-unclosed-quote]
 [fixture: kanban/gram-unclosed-markdown] [fixture: kanban/gram-unclosed-icon]
 class はソースの終わりで終えられます。
@@ -919,7 +919,7 @@ id は一意でなくてもかまいません。 [fixture: kanban/db-section-thr
 形は開き、空でない `shape-text`、`string`、
 `markdown-string` のどれか 1 つのラベル、閉じです。
 [fixture: kanban/db-shape-square] [fixture: kanban/db-markdown-label]
-閉じは開きと一致しなくてもよく、 `[text)` も形です。
+閉じは開きと一致しなくてもよく、`[text)` も形です。
 [fixture: kanban/db-shape-mismatched]
 `[]`、`[""]`、形の中の 2 つの文字列は拒否します。
 [fixture: kanban/gram-empty-label] [fixture: kanban/gram-empty-quoted-label]
@@ -1233,8 +1233,7 @@ title や classDef に見える本文はノードのままとし、
 
 - **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.ja.md).**
   フロントマターで始まるタグは後の kanban ラベルの引用符を変換しません。
-  フロントマターに `title: <a` があるとき、
-  `S["b="c">d"]` はここでは拒否します。
+  フロントマターに `title: <a` があるとき、`S["b="c">d"]` はここでは拒否します。
   mermaid.js は受理します。 [fixture: kanban/div-frontmatter-open-tag]
 
 - **[`c4-keyword-anywhere`](../known-divergences/c4-keyword-anywhere.ja.md).**

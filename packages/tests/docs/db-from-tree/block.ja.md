@@ -90,7 +90,7 @@
 
 9. **ノード。**
    形状のないノードは変換形の id を id とラベルに持ち、型は `na`、
-   `widthInColumns` は指定した幅または 1 とし、 id の大文字小文字を保ちます。
+   `widthInColumns` は指定した幅または 1 とし、id の大文字小文字を保ちます。
    [fixture: block/db-name-no-final-line-feed] [fixture: block/db-name-case]
    [fixture: block/db-width-zero] [fixture: block/db-width-leading-zeros]
 
@@ -276,6 +276,6 @@
 
 27. [db-from-tree.md](../db-from-tree.md#the-replacement-of-characters) の
     `textReplacementOf(embedded.config)` は、ノード、ブロック矢印、
-    複合ブロック、辺のラベルの変換形の内容を読んだ後だけに適用し、 id、クラス、
+    複合ブロック、辺のラベルの変換形の内容を読んだ後だけに適用し、id、クラス、
     スタイル、方向には適用しません。
     [fixture: block/config-security-level-other-all]

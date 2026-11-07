@@ -38,7 +38,7 @@
 [fixture: gitgraph/lex-hidden-yaml-block-eof]
 
 [共通の trivia](../../../spec/docs/common.md#reading-a-source)は String 項目を
-StringFragment、 RawText 項目を RawText に分割します。
+StringFragment、RawText 項目を RawText に分割します。
 語・参照・整数の内部での分割は拒否しますが、
 オプションの語とコロンの境界では許可します。
 [fixture: gitgraph/directive-in-string]

@@ -16,7 +16,7 @@ fixture の作り直し、追加と印付け、mermaid.js からの入力の収�
 
 ## mermaid から図種の入力を集める
 
-`collect.ts` は、1 つの図種について、 mermaid のチェックアウトのテストファイル、
+`collect.ts` は、1 つの図種について、mermaid のチェックアウトのテストファイル、
 文書、デモのページを読みます。
 何を取るかは
 [maintaining-fixtures.ja.md](../packages/tests/docs/maintaining-fixtures.ja.md)
@@ -30,7 +30,7 @@ Langium の図種では、mermaid の parser パッケージのその図種の�
 集めるテストファイルの一覧と除外の理由は、
 `collect.ts` の `SPEC_FILES` だけが持ちます。
 mermaid の無関係なテストファイル、例えば `mermaid.spec.ts`、
-`mermaidAPI.spec.ts`、 `diagram.spec.ts`、`rendering-util` の下のテスト、
+`mermaidAPI.spec.ts`、`diagram.spec.ts`、`rendering-util` の下のテスト、
 端から端までのテストにあるテキストは集めません。
 
 1. mermaid を、pin した版のタグで clone します。

@@ -4,7 +4,7 @@
 
 range は[記述された木](../../../spec/docs/ast/eventmodeling.md)を元ソースの
 UTF-16 オフセットで実装します。
-Root はソース全体を覆い、 CR/CRLF と未変換の値の表記を保ちます。
+Root はソース全体を覆い、CR/CRLF と未変換の値の表記を保ちます。
 [fixture: eventmodeling/gram-written-tree] [fixture: eventmodeling/line-cr]
 [fixture: eventmodeling/line-crlf] [fixture: eventmodeling/entity-common]
 [fixture: eventmodeling/html-common]
@@ -39,7 +39,7 @@ QualifiedName は head から最後の部分までです。
 各 tail member は最初の textBeforeDot 形式、なければ dot から名前末尾です。
 SourceReference と DataReference は最初の textBefore 形式、
 なければ ->> または [[ から frame 名または ]] までです。
-Arrow は ->> 全体、 Identifier は個々の名前または数字列の atom を覆います。
+Arrow は ->> 全体、Identifier は個々の名前または数字列の atom を覆います。
 [fixture: eventmodeling/lex-qualified-hidden-components]
 [fixture: eventmodeling/space-qualified-name]
 [fixture: eventmodeling/lex-hidden-source-frame-gap]

@@ -103,8 +103,8 @@ accDescr ブロックの RawText 項目は、有効な閉じ波括弧の直前�
 [fixture: treeview/box-block-tail-decoration-opener-gap-selector]
 
 共通 directive、コメント領域、選択されたセミコロンは、
-RawText と String を分断し、 String の断片は StringFragment になる。
-ヘッダー・共通キーワード、`icon`、クラス名、完全なアイコン参照、 `:::`、
+RawText と String を分断し、String の断片は StringFragment になる。
+ヘッダー・共通キーワード、`icon`、クラス名、完全なアイコン参照、`:::`、
 `##` の内部の分断は拒否する。
 完全な構成要素間の trivia は許すが、欠けた空白を補わない。
 枝と横棒の各要素の間にも、その trivia を置ける。

@@ -26,9 +26,9 @@
 
 子の欄: `root`。
 見出しのノードや beta の欄はありません。
-空行、コメント、 directive は図固有のノードを作りません。
+空行、コメント、directive は図固有のノードを作りません。
 タイトルやアクセシビリティの欄もありません。
-そのように見えるテキストは節点であり、 frontmatter は共通の根に保持します。
+そのように見えるテキストは節点であり、frontmatter は共通の根に保持します。
 [fixture: ishikawa/header-only-lf] [fixture: ishikawa/header-beta-only-lf]
 [fixture: ishikawa/header-lf-directive-eof]
 [fixture: ishikawa/gram-root-comment-only-document]

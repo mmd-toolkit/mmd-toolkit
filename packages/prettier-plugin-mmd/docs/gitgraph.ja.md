@@ -47,7 +47,7 @@ gitGraph
 見出しは第 1 列、
 通常の本文の文・独立コメント・global directive は設定した 1 段下に置きます。
 履歴は平坦なので branch の後に段を増やしません。
-gitgraph の列に文法上の意味がないため、 `tabWidth: 0` は空白 0 個、
+gitgraph の列に文法上の意味がないため、`tabWidth: 0` は空白 0 個、
 `useTabs` は幅 0 でも tab 1 個です。
 木の構造を見せ、その他の値の続きの列・hidden の閉じ・保護部分は変えません。
 
@@ -164,7 +164,7 @@ gitGraph
 
 ### Option colons
 
-`id: "A"`、`msg: "M"`、`tag: "T"`、`type: NORMAL`、 `parent: "A"`、
+`id: "A"`、`msg: "M"`、`tag: "T"`、`type: NORMAL`、`parent: "A"`、
 `order: 2` と印字します。
 colon は語に接し、通常の値の前は空白 1 個です。
 共通の accessibility の colon と同じ形です。
@@ -416,7 +416,7 @@ Db で LF 後の字下げが取り除かれるためです。
 改行、内部の空行、行末空白を保持します。
 directive と共有の除去対象となるコメント領域は原文全体を保ちます。
 空白だけの内側は、囲む空白を要する本文がないため `{}` と印字します。
-タブ、改行、 Unicode の空白も同じです。
+タブ、改行、Unicode の空白も同じです。
 [fixture: title-and-common-values/empty-whitespace-interiors]
 [test: gitgraph Unicode and tab interiors]
 コメントや directive だけの block も trivia を残します。

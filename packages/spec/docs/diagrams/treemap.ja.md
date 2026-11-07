@@ -10,7 +10,7 @@
 
 ## 検出
 
-[detection.md](../detection.md) の 31 番、 [treemap の detector][detector] は、
+[detection.md](../detection.md) の 31 番、[treemap の detector][detector] は、
 後続の境界を要求せず小文字の接頭辞 `treemap` を選ぶ。
 受理する見出しは `treemap-beta` と `treemap` で、
 どちらの diagram id も `treemap` である。
@@ -53,7 +53,7 @@ treemap に native YAML の規則はなく、通した block でも拒否する�
 本文行のない隣接 fence、閉じの欠落、字下げの不一致、開始の四本の dash、
 閉じの接尾辞、後続改行のない閉じは skip を止める。
 先頭の trim が開始側の字下げだけを除き、不一致を作る場合もある。
-閉じの padding と LF が検出の条件を満たしても、 native の読みは拒否する。
+閉じの padding と LF が検出の条件を満たしても、native の読みは拒否する。
 [fixture: treemap/retained-yaml-no-bare] [fixture: treemap/frontmatter-unclosed]
 [fixture: treemap/detect-retained-indent-mismatch]
 [fixture: treemap/detect-retained-four-dashes]
@@ -142,14 +142,14 @@ native YAML・DIRECTIVE の unit や、一般の Unicode の空白を無視す�
 ### 見出しと字下げ
 
 どちらの見出しも単語や空白の境界を要求しない。
-引用した row や title を直後に続けられるが、 `treemapX` は読めない接尾辞を残す。
+引用した row や title を直後に続けられるが、`treemapX` は読めない接尾辞を残す。
 完全な構成要素の間の global directive はこの規則を変えない。
 [fixture: treemap/header-inline-section] [fixture: treemap/header-inline-leaf]
 [fixture: treemap/header-glued-title] [fixture: treemap/header-beta-glued-title]
 [fixture: treemap/header-letter-suffix]
 [fixture: treemap/directive-header-glued]
 
-indentation unit は ASCII の space・tab を一文字ずつ数え、 tab を展開しない。
+indentation unit は ASCII の space・tab を一文字ずつ数え、tab を展開しない。
 文法上の位置は row の前と leaf の値の separator の前後だけである。
 完全な unit の間には hidden newline を挟める。
 特に selector の marker と identifier は字下げなしで後の行へ置けるが、
@@ -169,8 +169,7 @@ selector 内の gap ではない。
 [fixture: treemap/gram-selector-followed-by-indented-row]
 
 row の字下げは物理行の先頭だけから来るとは限らない。
-直前の見出し・section・leaf の行末、
-classDef の semicolon の後の space・tab も、
+直前の見出し・section・leaf の行末、classDef の semicolon の後の space・tab も、
 hidden newline を越えてその字下げになり得る。
 空白だけの行からも同様に取る。
 別の行の連続は別々の unit のままであり、
@@ -239,7 +238,7 @@ hyphen、Unicode の英字、引用符、entity、
 [fixture: treemap/gram-selector-number]
 
 number unit は数字・underscore・dot・comma を可能な限り多く読む。
-開始位置では identifier と comma の規則が先であり、 `_12` は identifier、
+開始位置では identifier と comma の規則が先であり、`_12` は identifier、
 `,12` は comma で始まるため leaf の数にはならない。
 数字か dot で始まれば、その後の comma・underscore は同じ数に含む。
 次の quoted row の前の末尾 comma も同じである。
@@ -269,7 +268,7 @@ number unit は数字・underscore・dot・comma を可能な限り多く読む�
 [fixture: treemap/db-number-subnormal] [fixture: treemap/db-number-underflow]
 
 文字列は double または single quote で開き、次の同じ quote で閉じる。
-空でもよく、反対の quote、backslash、改行、 U+2028・U+2029 を含められる。
+空でもよく、反対の quote、backslash、改行、U+2028・U+2029 を含められる。
 backslash は quote を escape せず、文字も復号しない。
 backslash 直後の物理的な LF も許す。
 閉じない文字列は拒否する。
@@ -301,7 +300,7 @@ class 名、任意の空白に導かれる style text、高々一つの末尾 se
 style text の前の区切りの空白を最大限に読む。
 LF や空行を越え、
 次の quoted row や classDef が新しい文でなく style になる場合がある。
-style text 自体は最初の semicolon か改行の手前までの全ての文字であり、 comma、
+style text 自体は最初の semicolon か改行の手前までの全ての文字であり、comma、
 colon、quote、percent 対、U+2028・U+2029 も含む。
 空の style も許す。
 無視されない第 2 の semicolon は読めず、拒否する。
@@ -348,7 +347,7 @@ keyword だけの選択肢も許す。
 acc-title-line は `accTitle`、任意の ASCII space・tab、
 colon と空でもよい行 text を読む。
 acc-descr-line も `accDescr` について同じとし、block 形式より先に試す。
-両方の行値は最初の percent 対か改行で終わり、 U+2028・U+2029 を含められる。
+両方の行値は最初の percent 対か改行で終わり、U+2028・U+2029 を含められる。
 colon の前の padding に Unicode の空白や改行は含めない。
 [fixture: treemap/common-acctitle-eof] [fixture: treemap/common-description-eof]
 [fixture: treemap/common-accdescr-colon-block-priority]
@@ -357,7 +356,7 @@ colon の前の padding に Unicode の空白や改行は含めない。
 [fixture: treemap/common-acctitle-next-statement]
 [fixture: treemap/common-accdescr-next-statement]
 
-acc-descr-block は `accDescr`、零文字以上の共通 Notation の空白、 `{`、
+acc-descr-block は `accDescr`、零文字以上の共通 Notation の空白、`{`、
 最初の `}` までの任意の文字、必須の閉じを読む。
 開始記号の前の空白には、改行、BOM、U+2028、
 除かれる共通 directive・comment region を含められる。
@@ -426,7 +425,7 @@ TreemapIgnoredText や hidden な形の gap node は作らない。
 
 共通 directive・ignored-semicolon の境界規則では、
 複合形の書かれた構成要素を区別する。
-見出し、classDef keyword、class 名、共通の keyword、 number、identifier、
+見出し、classDef keyword、class 名、共通の keyword、number、identifier、
 `:::` は原子である。
 class style、共通の値 text、string の内側は text・string の位置とし、
 空白だけの部分は透過とする。

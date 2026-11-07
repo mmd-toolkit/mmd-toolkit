@@ -2,7 +2,7 @@
 
 英語版: [known-divergences.md](./known-divergences.md)
 
-この仕様は mmd-toolkit のパーサーが実装するもので、 Mermaid のテキストを、
+この仕様は mmd-toolkit のパーサーが実装するもので、Mermaid のテキストを、
 固定した版の mermaid.js と同じに読みます。
 同じ入力を受理・拒否し、受理した入力には同じ Db、
 つまり mermaid.js が図を描くもとにする値を与えます。
@@ -72,7 +72,7 @@ mermaid.js では flowchart の文法で拒否され、
    空の文字列、空の markdown 文字列、空の call、
    class で文の始まるところか文の最後の単位の後にある、空の文字列と空の call、
    class の本体のメンバーが始まるところにある、空の文字列、どこにあっても、
-   gantt の空の href と空の call、どこにあっても、 requirement の空の文字列、
+   gantt の空の href と空の call、どこにあっても、requirement の空の文字列、
    mindmap と kanban の空の icon、空の class の行、
    形の中の空の文字列と空の markdown 文字列、
    軸やプロットのタイトルの全体でも値のラベルの全体でもない、
@@ -106,10 +106,10 @@ mermaid.js の issue と pull request を探し、
 mermaid.js が埋め込みデータの中身を検証して拒否する場合と、
 拒否がパイプラインの段階や字句解析器の規則の順から生じ（上の 2 つ目の理由）、
 この仕様の直接の規則の方が多くを受理する場合です（`embedded-data-opaque`、
-`c4-keyword-anywhere`、 `bare-percent-line-before-header`、
+`c4-keyword-anywhere`、`bare-percent-line-before-header`、
 `percent-brace-after-unit`）。
 2 つ目の理由の差異は両方向になることもあり、
 mermaid.js だけが受理する入力の中に、
 この仕様だけが受理する入力が混じります（`comment-takes-character`、
-`comment-takes-line-break`、 `name-start-reads-unit`、
+`comment-takes-line-break`、`name-start-reads-unit`、
 `html-tag-in-frontmatter`）。

@@ -72,10 +72,10 @@
 [FlowchartStyleStatement](../../../spec/docs/ast/flowchart.ja.md#flowchartstylestatement)
 と、
 [FlowchartSubgraphStatement](../../../spec/docs/ast/flowchart.ja.md#flowchartsubgraphstatement)
-と、 [ラベル](../../../spec/docs/diagrams/flowchart.ja.md#ラベル) を参照。
+と、[ラベル](../../../spec/docs/diagrams/flowchart.ja.md#ラベル) を参照。
 `A["x" y]` のラベルはトークン `"x"` と ` y` を持ち、
-文字列の後にディレクティブがある `A["x" %%{init: {}}%% y]` では、 `"x"`、空白、
-ディレクティブ、 ` y` を持ちます。
+文字列の後にディレクティブがある `A["x" %%{init: {}}%% y]` では、`"x"`、空白、
+ディレクティブ、` y` を持ちます。
 [fixture: flowchart/gram-label-string-then-text]
 [fixture: flowchart/tokens-label-string-then-text-space]
 [fixture: flowchart/tokens-label-string-directive-then-text]

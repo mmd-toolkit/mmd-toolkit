@@ -64,10 +64,10 @@ fixture は 1 件ごとに、
 このパッケージのディレクトリ `fixtures/<diagram>/<name>/` です。
 絶対パスは `getFixturesRoot()` で得られます。
 `<diagram>` は、図種（`flowchart`、`sequence`、`class`、`state`、`er`、`gantt`、
-`journey`、 `requirement`、`mindmap`、`timeline`、`sankey`、`xychart`、
-`quadrant`、 `block`、`kanban`、`c4`、`venn`、`ishikawa`、`agentflow`、
-`usecase`、`pie`、 `gitgraph`、`info`、`packet`、`architecture`、`radar`、
-`treemap`、 `treeview`、`railroad`、`wardley`、`eventmodeling`）か、
+`journey`、`requirement`、`mindmap`、`timeline`、`sankey`、`xychart`、
+`quadrant`、`block`、`kanban`、`c4`、`venn`、`ishikawa`、`agentflow`、
+`usecase`、`pie`、`gitgraph`、`info`、`packet`、`architecture`、`radar`、
+`treemap`、`treeview`、`railroad`、`wardley`、`eventmodeling`）か、
 `common` です。
 `common` は、全図種に共通する構文（フロントマター、ディレクティブ、コメント、
 図種の検出）のためのものです。
@@ -86,7 +86,7 @@ fixture は 1 件ごとに、
   [docs/expected-results.ja.md](./docs/expected-results.ja.md) を参照。
 - `ast.json`: 参照実装（`@mmd-toolkit/parser`）がその入力に対して返す木。
   参照実装が受理する入力にだけある。
-- `parse-error.json`: 参照実装がその入力を拒否する `ParseError` の、 `message`、
+- `parse-error.json`: 参照実装がその入力を拒否する `ParseError` の、`message`、
   `range`、`loc`。
   参照実装がそうして拒否する入力にだけある。
   エラーの位置は仕様が定めず、参照実装が決める。
@@ -142,15 +142,15 @@ fixture を読みます。
 mermaid.js は読み込みません。
 
 - `loadFixtures(diagram)`: `"common"`、`"flowchart"`、`"sequence"`、`"class"`、
-  `"state"`、 `"er"`、 `"gantt"`、`"journey"`、`"requirement"`、`"mindmap"`、
-  `"timeline"`、 `"sankey"`、`"xychart"`、`"quadrant"`、`"block"`、 `"kanban"`、
-  `"c4"`、 `"venn"`、`"ishikawa"`、`"agentflow"`、`"usecase"`、 `"pie"`、
-  `"gitGraph"`、 `"info"`、`"packet"`、`"architecture"`、`"radar"`、
-  `"treemap"`、 `"treeview"`、`"railroad"`、`"wardley"`、
+  `"state"`、`"er"`、`"gantt"`、`"journey"`、`"requirement"`、`"mindmap"`、
+  `"timeline"`、`"sankey"`、`"xychart"`、`"quadrant"`、`"block"`、`"kanban"`、
+  `"c4"`、`"venn"`、`"ishikawa"`、`"agentflow"`、`"usecase"`、`"pie"`、
+  `"gitGraph"`、`"info"`、`"packet"`、`"architecture"`、`"radar"`、`"treemap"`、
+  `"treeview"`、`"railroad"`、`"wardley"`、
   `"eventmodeling"` のどれかの fixture を、名前順に返す。
   それぞれは `diagram`、`name`、`input`（`input.mmd` のテキスト）、`source`、
-  `config` と `knownDivergence`（あるとき）、
-  `specified`（ファイルがあるとき）、`expected` を持つ。
+  `config` と `knownDivergence`（あるとき）、`specified`（ファイルがあるとき）、
+  `expected` を持つ。
   `expected` は `{ accepted: true, diagramType, db }` か
   `{ accepted: false, error }`。
   ファイルは 1 つずつ読む。
@@ -232,7 +232,7 @@ mermaid.js は読み込みません。
 - `getDefaultConfig()`: `embedded.config`
   がそれとの差になる設定（`fixtures/default-config.json`）。
 - `embeddedValuesOf(fixture)`: fixture の入力について `resolveEmbeddedData()`
-  が返す値を、 fixture が記録したものから作る。
+  が返す値を、fixture が記録したものから作る。
   合わせる読み（`specified`、なければ `expected`）に対する値。
   拒否のときは `undefined`。
 - `dbFromTree(text, tree, embedded, isColor)`: 記録した木（`ast.json`）が表す Db
@@ -259,7 +259,7 @@ mermaid.js は読み込みません。
 pin した mermaid.js を Node で動かします。
 
 - `runMermaid(text, { config })`: `{ accepted: true, diagramType, db }` か
-  `{ accepted: false, error }` を、 `expected.json` が記録する形で返す。
+  `{ accepted: false, error }` を、`expected.json` が記録する形で返す。
 - `resolveEmbeddedData(text, { config })`: mermaid.js がフロントマター、
   ディレクティブ、`@{ ... }` のデータブロックから導く値を返す。
   それらを読まない実装のためのもの。
@@ -315,7 +315,7 @@ pin した mermaid.js を Node で動かします。
   それと比べても、実装がその値をどう導くかは検査されません。
 - `expected.json` の `db` は、どの fixture でも要約です。
   `embedded-data-opaque` の指定読み（`specified.json`）は、
-  不透明なデータから比較の Db を導けないとき、 `db` が `null` です。
+  不透明なデータから比較の Db を導けないとき、`db` が `null` です。
   Db の要約は、`db` が `null` でないところだけで比べてください。
 - mermaid.js の呼び出しは 1 つずつ実行し、
   どの呼び出しも mermaid.js の既定の設定と、渡したサイト設定から始まります。

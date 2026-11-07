@@ -8,15 +8,14 @@
 [diagrams/gantt.ja.md](../diagrams/gantt.ja.md) で定めます。
 
 この図種の本体は [GanttDiagram](#ganttdiagram) です。
-欄の値は、
-[ast.ja.md](../ast.ja.md#ノード)が値の書かれたテキストを定めるとおり、
+欄の値は、[ast.ja.md](../ast.ja.md#ノード)が値の書かれたテキストを定めるとおり、
 書き手が書いたものを保ち、
 [common.ja.md](../common.ja.md#ソースの読み方) の変換後の形ではありません。
-値が空白で始まったり終わったりするのは、 mermaid.js が読むとおりに、
+値が空白で始まったり終わったりするのは、mermaid.js が読むとおりに、
 その単位が空白を自分の文字として持つところだけです。
 [ノード](../ast.ja.md#ノード) を参照してください。
 この図種では、コロンの前の空白を保つタスクの説明、両端の空白を保つタイトル、
-section の名前、設定の値、 `(` の前の空白と改行を保つコールバック名がそうです。
+section の名前、設定の値、`(` の前の空白と改行を保つコールバック名がそうです。
 それ以外では、値の両端の空白は値の外です。
 
 **タスク**はチャートの棒で、説明と、
@@ -36,12 +35,11 @@ section の名前、設定の値、 `(` の前の空白と改行を保つコー�
 ヘッダーのキーワードは欄ではありません。
 
 **GanttStatement** は、GanttTaskStatement、GanttClickStatement、
-GanttDateFormatStatement、GanttAxisFormatStatement、
-GanttTickIntervalStatement、GanttTodayMarkerStatement、 GanttIncludesStatement、
-GanttExcludesStatement、 GanttInclusiveEndDatesStatement、
-GanttWeekdayStatement、 GanttWeekendStatement、GanttTitleStatement、
-GanttSectionStatement、 GanttAccTitleStatement、GanttAccDescrStatement、
-GanttAccDescrBlockStatement のいずれかです。
+GanttDateFormatStatement、GanttAxisFormatStatement、GanttTickIntervalStatement、
+GanttTodayMarkerStatement、GanttIncludesStatement、GanttExcludesStatement、
+GanttInclusiveEndDatesStatement、GanttWeekdayStatement、GanttWeekendStatement、
+GanttTitleStatement、GanttSectionStatement、GanttAccTitleStatement、
+GanttAccDescrStatement、GanttAccDescrBlockStatement のいずれかです。
 
 改行はどの文にも属さず、空行はノードを作りません。
 以下のどのノードの子の欄もソースの順です。
@@ -71,7 +69,7 @@ GanttAccDescrBlockStatement のいずれかです。
 タグは 1 つの `data-item` の単位、つまりテキストの単位なので、
 その中にディレクティブがあってもよく、
 名前はディレクティブを除いた書かれたテキストです。
-`do%%{init: {}}%%ne` は、 mermaid.js と同じくタグ `done` です。
+`do%%{init: {}}%%ne` は、mermaid.js と同じくタグ `done` です。
 [fixture: gantt/gram-task-tag-cut-by-directive]
 [単位の中のディレクティブ](../diagrams/gantt.ja.md#単位の中のディレクティブ)
 を参照してください。
@@ -194,7 +192,7 @@ GanttDateFormatStatement と同じです。 [fixture: gantt/db-tick-interval]
 | `value` | GanttLiteral | `todayMarker` と 1 つの空白文字の後の、行の終わりまでのテキスト。 |
 
 子の欄: `value`。
-テキストは `#` を含められ、 `;` と改行の前で終わります。
+テキストは `#` を含められ、`;` と改行の前で終わります。
 [fixture: gantt/db-today-marker] [fixture: gantt/db-today-marker-off]
 [fixture: gantt/lex-todaymarker-hash]
 
@@ -271,7 +269,7 @@ gantt/db-weekend-saturday]
 | `value` | GanttLiteral | `title` と 1 つの空白文字の後の、行の終わりまでのテキスト。 |
 
 子の欄: `value`。
-値は両端の空白を保ち、`:`、`#`、`;`、 `%%` を文字として持ちます。
+値は両端の空白を保ち、`:`、`#`、`;`、`%%` を文字として持ちます。
 [fixture: gantt/db-title-statement] [fixture: gantt/lex-title-two-spaces]
 [fixture: gantt/lex-title-trailing-spaces] [fixture:
 gantt/lex-title-hash-semicolon-percent]

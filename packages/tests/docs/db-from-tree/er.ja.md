@@ -38,7 +38,7 @@ id を無作為に作ることはなく、レイアウトのデータから取�
 エンティティは、名前の中でもテキストの中でもプレースホルダです。
 `A#amp; ||--o{ B : x` はエンティティ `Aﬂ°amp¶ß` からの関係を持ちます。
 引用符付きの名前、別名、ロール（引用符付きでも、なくても）、
-属性のコメントとバッククォートの語、クラス名、style、 subgraph の id と title、
+属性のコメントとバッククォートの語、クラス名、style、subgraph の id と title、
 アクセシビリティのテキストでも同じです。
 同じ形では、各行終端（`\r\n` と単独の `\r` も）を `\n` として読みます。
 これはバッククォートの語、コメント、ロールの文字列の中でのことです。
@@ -78,8 +78,8 @@ U+2028 は行終端ではなく、値の中にそのまま残ります。
   属性の語のバッククォートです。
   そのため `"A B"` は名前 `A B` で、
   そのエンティティの id は `entity-A B-0` です。
-  引用符付きの名前と、同じテキストの引用符なしの名前は、
-  1 つのエンティティです。 [fixture: er/db-entity-name-quoted-spaces]
+  引用符付きの名前と、同じテキストの引用符なしの名前は、1 つのエンティティです。
+  [fixture: er/db-entity-name-quoted-spaces]
   [fixture: er/db-entity-name-quoted-same-as-bare]
   [fixture: er/db-entity-name-quoted-line-separator]
   [fixture: er/db-role-quoted] [fixture: er/db-attribute-backquoted]
@@ -98,7 +98,7 @@ U+2028 は行終端ではなく、値の中にそのまま残ります。
   [fixture: er/tokens-comment-line-in-comment-string]
   [fixture: er/tokens-comment-line-in-backquoted-word]
 - 行規則が無視する `;` も、文字列やテキストの中では変換した形にありません。
-  そのため、引用符付きの名前、別名、コメント、ロール、 subgraph の title は、
+  そのため、引用符付きの名前、別名、コメント、ロール、subgraph の title は、
   それを除いたテキストを持ちます。
   名前、数、キー、属性ブロックの語では、`;` がその単位を切り、
   入力は拒否されます。 [fixture: er/db-entity-name-quoted-ignored-semicolon]
@@ -348,10 +348,10 @@ subgraph の id は、trim したテキストです（**Subgraphs** を参照）
 **クラスの定義。**
 `classDef` 文は、その style を、順に、各名前の定義に加えます。
 定義がなければ、列の末尾に作ります。
-同じ名前の 2 つ目の `classDef` は、 style を最初の定義に加え、
+同じ名前の 2 つ目の `classDef` は、style を最初の定義に加え、
 位置は動かしません。
 どのエンティティも使わない定義も残り、名前 `default` もほかの名前と同じです。
-style は文の style のテキストで、 `color` を含むものも含みます。
+style は文の style のテキストで、`color` を含むものも含みます。
 [fixture: er/db-class-def-styles] [fixture: er/db-class-def-several-styles]
 [fixture: er/db-class-def-twice] [fixture: er/db-class-def-twice-empty-line]
 [fixture: er/db-class-def-ids] [fixture: er/db-class-def-unused]
@@ -472,7 +472,7 @@ title はフロントマターのもので、文字の置き換えをします�
 テキストのない description ブロックは何も変えません。
 テキストは次の行から始まってもかまいません。
 `accTitle:` の次の行が `A` なら、title は `A` です。
-`accTitle: style:#x;y;` では、最後の `;` が無視され、 `#x;` はエンティティです。
+`accTitle: style:#x;y;` では、最後の `;` が無視され、`#x;` はエンティティです。
 [fixture: er/db-acc-title-line] [fixture: er/db-acc-title-spaces]
 [fixture: er/db-acc-title-replaces] [fixture: er/db-acc-title-twice]
 [fixture: er/db-acc-title-empty-takes-next-line]
@@ -493,7 +493,7 @@ title はフロントマターのもので、文字の置き換えをします�
 
 ## 文字の置き換え
 
-Db が `sanitizeText` に通すテキストは 4 つで、 title、`accTitle`、`accDescr`、
+Db が `sanitizeText` に通すテキストは 4 つで、title、`accTitle`、`accDescr`、
 subgraph の title です。
 `erDbOf()` は、
 [db-from-tree.ja.md](../db-from-tree.ja.md#文字の置き換え) の置き換え

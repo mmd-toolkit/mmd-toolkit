@@ -24,8 +24,8 @@
   [fixture: common/frontmatter-nonleading-sequence]
   [fixture: common/frontmatter-nonleading-state]
   [fixture: common/frontmatter-after-bare-percent-flowchart]
-- pie、gitgraph、info、packet、architecture、radar、 treemap、railroad、
-  wardley、cynefin、eventmodeling 以外で、
+- pie、gitgraph、info、packet、architecture、radar、treemap、railroad、wardley、
+  cynefin、eventmodeling 以外で、
   [図種の検出](../../spec/docs/common.ja.md#図種の検出) の、
   ヘッダーの前のもう一度の読みで見つかるディレクティブ: `range` は、
   その開きの `%%{`。
@@ -72,7 +72,7 @@
   [fixture: flowchart/gram-circle-gap]
   [fixture: flowchart/gram-empty-description-block-after-class-statement]
   [fixture: flowchart/db-style-trailing-comma]
-- 存在しないリンクを指す `linkStyle` の番号では、 `range` はその番号。
+- 存在しないリンクを指す `linkStyle` の番号では、`range` はその番号。
   [fixture: flowchart/gram-linkstyle-before-link]
 - メンバー `hasOwnProperty` の後にほかのメンバーが続く subgraph では、
   `range` はそのほかのメンバー、つまり `hasOwnProperty` の後の最初のメンバー。
@@ -101,7 +101,7 @@
 
 ## シーケンス図の中
 
-- 字句解析器のどの規則も一致しない位置では、 `range` はその 1 文字。
+- 字句解析器のどの規則も一致しない位置では、`range` はその 1 文字。
   [fixture: sequence/lex-id-context-line-break]
 - 文法が単位を読めない位置では、`range` はその単位から空白を除いた範囲。
   テキストの終わりでは、flowchart と同じく、テキストの終わりの空の範囲。
@@ -118,7 +118,7 @@
     メッセージは `A participant that exists already cannot be created`。
     `create` とそのキーワードの後の id。
     [fixture: sequence/gram-create-after-message]
-  - create の後で、作った参加者へ行かないメッセージと、 destroy の後で、
+  - create の後で、作った参加者へ行かないメッセージと、destroy の後で、
     消した参加者から来ず、そこへも行かないメッセージ。
     メッセージはそれぞれ
     `The message after create must go to the created participant` と
@@ -132,7 +132,7 @@
 ## クラス図の中
 
 - 図のテキストの最初の単位がヘッダーのキーワードでないとき（`classDiagramX`
-  など）は、 `range` はその単位で、
+  など）は、`range` はその単位で、
   メッセージは `A class diagram starts with classDiagram or classDiagram-v2`。
   字句解析器は、その単位を読んだところで報告する。
   その後のテキストが、終わってはいけない文脈で終わるときも同じである。
@@ -184,7 +184,7 @@
   下のテキストの終わりの規則に従う。
   [fixture: state/lex-composite-ignored-percent-rejected]
   [fixture: state/gram-scale-without-width]
-- `state` と `{` の間に語が 2 つあるときは、 `range` は最初の語から `{` までで、
+- `state` と `{` の間に語が 2 つあるときは、`range` は最初の語から `{` までで、
   メッセージは `A state name before { must be a single word`。
   [fixture: state/lex-state-two-names-body]
 - 終わってはいけない文脈でテキストが終わるときは、
@@ -202,7 +202,7 @@
     メッセージは `The note has no text before the end of the text`、
     `The note has no state before the end of the text`、
     `The note has no end note before the end of the text`。
-    最後のものは、 `end note` の行が後に続かない複数行の note にも使う。
+    最後のものは、`end note` の行が後に続かない複数行の note にも使う。
     [fixture: state/lex-note-without-position-at-end]
     [fixture: state/lex-note-no-state-at-end]
     [fixture: state/lex-end-note-two-spaces]
@@ -391,7 +391,7 @@
   [fixture: mindmap/header-directive-at-end]
 - 文法が単位を読めない位置では、`range` はその単位から空白を除いた範囲。
   テキストの終わりでは、flowchart と同じく、テキストの終わりの空の範囲。
-  `r[]` は `]` で、 `r[text] tail` は `tail` で報告する。
+  `r[]` は `]` で、`r[text] tail` は `tail` で報告する。
   [fixture: mindmap/db-shape-empty-description]
   [fixture: mindmap/db-shape-text-after-end]
 - 文法の外の 2 つの拒否は、文法がその行を読むところで行う。
@@ -452,7 +452,7 @@
   [fixture: sankey/gram-whitespace-line-between]
   [fixture: sankey/header-word-suffix] [fixture: sankey/gram-two-columns]
   [fixture: sankey/header-only]
-- 間に何もない 2 つの引用符は単位を読まないので、 `range` はその後の単位か、
+- 間に何もない 2 つの引用符は単位を読まないので、`range` はその後の単位か、
   テキストの終わり。
   `"",c,1` は `,` で拒否される。 [fixture: sankey/gram-quoted-empty]
   [fixture: sankey/gram-quoted-empty-value]
@@ -496,12 +496,12 @@
 ## 四象限チャートの中
 
 - 字句解析器のどの規則も合わない位置では、`range` はそこの文字。
-  括弧、`|`、 markdown 文字列の中の `"` がそうである。
+  括弧、`|`、markdown 文字列の中の `"` がそうである。
   [fixture: quadrant/gram-quadrant-parens] [fixture: quadrant/gram-point-parens]
   [fixture: quadrant/gram-quadrant-pipe]
   [fixture: quadrant/gram-markdown-string-quote-inside]
 - 終わってはいけない文脈でテキストが終わるときは、
-  最後の文字の後に空白しかないときも含めて、 `range` はその文脈に入ったもので、
+  最後の文字の後に空白しかないときも含めて、`range` はその文脈に入ったもので、
   メッセージは何が閉じていないかを示す。
   - 文字列の開きの `"`。
     メッセージは `The string has no closing " before the end of the text`。
@@ -551,7 +551,7 @@
   [fixture: block/gram-name-dash] [fixture: block/gram-spec-space-before-string]
   [fixture: block/gram-arrow-unknown]
 - 終わってはいけない文脈でテキストが終わるときは、
-  最後の文字の後に空白しかないときも含めて、 `range` はその文脈に入ったもので、
+  最後の文字の後に空白しかないときも含めて、`range` はその文脈に入ったもので、
   メッセージは何が閉じていないかを示す。
   - 文字列の開きの `"`。
     メッセージは `The string has no closing " before the end of the text`。
@@ -893,7 +893,7 @@ agentflow に予約語 click のエラーはない。
 
 コメントの前に残る物理改行が、ネイティブプロパティのキー・コロン・値や、
 CSS のダッシュ接頭部と語を分ける場合、そのエラー範囲は空です。
-CSS のその間の U+2028 は、 label-symbol 単位全体を報告します。
+CSS のその間の U+2028 は、label-symbol 単位全体を報告します。
 [fixture: usecase/gram-native-key-comment-region-keeps-line-break]
 [fixture: usecase/gram-native-value-comment-region-keeps-line-break]
 [fixture: usecase/gram-css-name-comment-region-lf]
@@ -1110,7 +1110,7 @@ CSS のその間の U+2028 は、 label-symbol 単位全体を報告します。
   `range` はそのディレクティブで、メッセージは `Unexpected directive`。
   [fixture: flowchart/div-directive-in-arrow-length]
 - `ignored-semicolon-as-token-boundary`: そのようなトークンの内側に、
-  行の規則が無視する `;` があるときは、 `range` はその `;` で、
+  行の規則が無視する `;` があるときは、`range` はその `;` で、
   メッセージは `Unexpected ; that the line rule ignores`。
   [fixture: flowchart/div-ignored-semicolon-in-arrow]
 - `click-reserved-word`: クリックの文を始めない `click` では、
@@ -1140,7 +1140,7 @@ CSS のその間の U+2028 は、 label-symbol 単位全体を報告します。
   [fixture: flowchart/gram-label-empty-string]
   文の始まりの `click` とその click の id の間では、
   最初の空の文字列を報告します。
-  空の文字列の後に click の id がないときは、 `click` を報告します。
+  空の文字列の後に click の id がないときは、`click` を報告します。
   [fixture: flowchart/gram-click-empty-string-before-id]
   [fixture: flowchart/gram-click-bare-before-vertex-statement]
   クラス図では、空の形に、空のバッククォートの名前（2 つのバッククォート）と、
@@ -1344,7 +1344,7 @@ YAML は範囲のダッシュへ戻り、後の字句・文法エラーになり
 ブロック全体ではなく最初のハイフンを指します。
 保持された一行の二回目走査形式は Comment になり得ますが、
 複数行形式のコメントでない閉じ行は読めません。
-複数ルート、空名、 NaN に追加の意味エラーを適用しません。
+複数ルート、空名、NaN に追加の意味エラーを適用しません。
 [fixture: treemap/detect-retained-body-yaml-no-native]
 [fixture: treemap/detect-second-scan-single-line-comment]
 [fixture: treemap/detect-second-scan-multiline-rejected]

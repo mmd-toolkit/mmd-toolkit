@@ -52,7 +52,7 @@ Root.diagramType は cynefin で、
 [fixture: cynefin/db-all-fields]
 
 CynefinBodyItem は CynefinDomainStatement、CynefinTransitionStatement、
-CynefinTitleStatement、 CynefinAccTitleStatement、CynefinAccDescrStatement、
+CynefinTitleStatement、CynefinAccTitleStatement、CynefinAccDescrStatement、
 CynefinAccDescrBlockStatement、CynefinIgnoredText のいずれかである。
 自己遷移、置き換えられるブロックや空のブロック、空の共通の文を含む全出現を保つ。
 空行とコメントだけの行は本文の項目を加えない。 [fixture: cynefin/db-self-loops]
@@ -154,7 +154,7 @@ textAfter は次の項目か文、または最初の可視の LF までの形を
 
 子の欄: `textBeforeArrow`、`arrow`、`textBeforeTo`、`textBeforeColon`、
 `textBeforeLabel`、`label`、`textAfter`。
-from と to はそれぞれ complex、 complicated、clear、chaotic、confusion で、
+from と to はそれぞれ complex、complicated、clear、chaotic、confusion で、
 子でない。
 範囲は from から最後の textAfter の形まで、無ければラベルの閉じまで、
 ラベルも無ければ to まで。
@@ -353,7 +353,7 @@ directive 状の一致の失敗は共有の Comment にもなり、
 可視の LF を探す前に native の消費を決める。
 次の所有の規則は一致全体にソース順で適用し、空白やコメントの node は加えない。
 囲む文はその member をまたぐ。
-消費した改行を囲む文がまたいでも、 ignored node 自身の範囲の外に置く。
+消費した改行を囲む文がまたいでも、ignored node 自身の範囲の外に置く。
 [fixture: cynefin/hidden-domain-item-members]
 [fixture: cynefin/hidden-item-after-visible-eol]
 [fixture: cynefin/hidden-domain-end-after-visible-eol]

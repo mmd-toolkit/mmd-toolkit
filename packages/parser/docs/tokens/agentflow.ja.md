@@ -37,7 +37,7 @@
 [fixture: agentflow/db-connector-repeated-without-title]
 
 id とリストの各部分は、複数単位でも一つの Identifier 項目になる。
-部分を分けるコンマは独立した Punctuator 項目で、 null の部分にはトークンがない。
+部分を分けるコンマは独立した Punctuator 項目で、null の部分にはトークンがない。
 [fixture: agentflow/gram-id-numbers-unicode]
 [fixture: agentflow/gram-class-target-empty-ends]
 [fixture: agentflow/gram-classdef-trailing-empty-name]

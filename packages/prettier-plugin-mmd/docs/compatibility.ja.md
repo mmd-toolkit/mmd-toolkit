@@ -48,7 +48,7 @@ mermaid.js はそれを受理します。
 [corpus fixture: class/div-directive-in-triple-colon]
 [corpus fixture: state/div-directive-in-id]
 たとえば、mermaid.js は、`sub%%{init: {}}%%graph S` を、
-キーワード `subgraph` として読み、 `A%%{init: {}}%%B-->C` を、
+キーワード `subgraph` として読み、`A%%{init: {}}%%B-->C` を、
 ノード `AB` として読みます。
 受理する入力では、ディレクティブは、周りのテキストと一緒に、
 書かれたまま印字します。
@@ -159,7 +159,7 @@ mermaid.js は、そうした位置の多くでそれらを受理し、ないも
 空の description ブロックは報告しません。
 行に単独で書いたときや、
 同じ行の別の文の後に書いたときは（`A accDescr {}` は頂点 A と空の description
-ブロックです）、 descriptionブロックの文です。
+ブロックです）、descriptionブロックの文です。
 文字とtriviaのない通常の閉じたブロックの内側は、改行があっても`{}`です。
 接する語は`accDescr{}`と接したままにします。
 説明ブロックの文法がある全図種で、空白だけの内側をこの形に揃えます。
@@ -173,7 +173,7 @@ mermaid.js は、そうした位置の多くでそれらを受理し、ないも
 [test: block Unicode and tab interiors] [test: c4 Unicode and tab interiors]
 [fixture: flowchart/accessibility-lines/empty-block-touching-keyword]
 [アクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)に従い、
-囲む文字がないので内側の空白も不要で、 Dbが同じ兄弟のusecaseの形に揃えます。
+囲む文字がないので内側の空白も不要で、Dbが同じ兄弟のusecaseの形に揃えます。
 [fixture:
 flowchart/statements-one-per-line/compat-empty-description-block-before-statement]
 [fixture:
@@ -188,7 +188,7 @@ flowchart/multi-line-values/compat-empty-description-block-line-break-kept]
 class 図でも同じです。
 文法が文字列をとらない所の空の文字列、空のバッククォートの名前、
 クラス名を終えない空のジェネリック型、空の call、
-文の中にある空の説明ブロックがそうで、 `"" A --> B`、`class A``B`、
+文の中にある空の説明ブロックがそうで、`"" A --> B`、`class A``B`、
 `class A~~B` は構文エラーとして報告します。
 [corpus fixture: class/div-empty-string-statement-start]
 [corpus fixture: class/div-empty-backquoted-in-name]
@@ -234,7 +234,7 @@ mermaid.js は、その文字をコメントの一部として読む場所があ
 [corpus fixture: sequence/div-comment-after-text-colon]
 [corpus fixture: sequence/div-comment-after-one-character-id]
 このプラグインは、コメントの印の前に空白が書かれているかどうかを保ちます。
-そのため、 mermaid.js は `autonumber 5%% c` を前と同じに読みます。
+そのため、mermaid.js は `autonumber 5%% c` を前と同じに読みます。
 [fixture: sequence/comments/compat-comment-touching-number-kept]
 [fixture: sequence/comments/compat-comment-after-number-spaced-kept]
 `A->>B:%% c` は `A ->> B: %% c` と印字し、
@@ -288,8 +288,8 @@ mermaid.js が拒否する入力を受理することはありません。
 
 ### バッククォートの名前とジェネリック型の始まり
 
-class 図では、バッククォートの名前やジェネリック型のテキストは、 `"`、`~`、
-`<<`、`>>`、`note` などのキーワードで始まってもかまいません。
+class 図では、バッククォートの名前やジェネリック型のテキストは、`"`、`~`、`<<`、
+`>>`、`note` などのキーワードで始まってもかまいません。
 定義は、
 仕様の
 [`name-start-reads-unit`](../../spec/docs/known-divergences/name-start-reads-unit.ja.md)
@@ -368,7 +368,7 @@ block/multi-line-statements/line-rule-semicolon-after-touching-arrow-kept]
 
 ## スタイルの末尾の空白
 
-`style`、`classDef`、 `linkStyle` の文の末尾の空白は取り除きます。
+`style`、`classDef`、`linkStyle` の文の末尾の空白は取り除きます。
 [fixture: flowchart/style-trailing-whitespace/removed]
 mermaid.js はその空白を最後のスタイルの末尾に残すので、
 ここでは整形が mermaid.js の保存するものを変えます。
@@ -443,7 +443,7 @@ class の関数名から `(` までの空白は値の一部として保ちます
 
 Gantt の click・暦・リスト・accessibility の構造、
 journey と timeline の accessibility 行、quadrant の点と accessibility、
-block の構造、 XY チャートのヘッダー・軸・plot・accessibility も同じです。
+block の構造、XY チャートのヘッダー・軸・plot・accessibility も同じです。
 literal の文字は字下げし直しません。
 Gantt の設定・task・title・section、journey と timeline の title・section、
 timeline の event は値に属する空白を保ちます。
@@ -569,7 +569,7 @@ state のスタイル文と block の `classDef` 文では、最後のスタイ�
   そのようなディレクティブの走査は、引数の後の空白を、行送りも含めて取り、
   `;` がそれを止めます。
   `%%{wrap foo;` と次の行 `participant D` は、
-  `;` でディレクティブが終わりますが、 `;` がないと、行送りと次の行まで、
+  `;` でディレクティブが終わりますが、`;` がないと、行送りと次の行まで、
   ディレクティブが取ります。 [fixture:
   sequence/statements-one-per-line/compat-unclosed-directive-semicolon-kept]
   [fixture:
@@ -648,8 +648,8 @@ state/statements-one-per-line/compat-unclosed-directive-joins-next-line]
 [fixture: class/directives/compat-unclosed-directive-joins-next-line]
 [corpus fixture: common/directive-word-argument-unclosed-next-line]
 `participant A@{ "style": "x:#y" };participant C%%{init: {}`、行送り、U+2029、
-`;participant D` は、行の規則にとって 1 行で、
-`participant C` を別の行に移すと、その `;` は無視されなくなります。
+`;participant D` は、行の規則にとって 1 行で、`participant C` を別の行に移すと、
+その `;` は無視されなくなります。
 [corpus fixture: sequence/ignored-semicolon-after-directive-435fa018]
 class 図と state 図では、その行送りの後の文は、その段の字下げをせず、
 書かれたまま残します。
@@ -675,7 +675,7 @@ U+2028 か U+2029 を含む空白は、ディレクティブがどこにあっ�
 文字を空白にすると、引数がその先に届き、続く文を、
 次の `}%%` かテキストの終わりまで取ってしまいます。
 `class A%%{init: {}`、空白、U+2028、`class D`、`class B` は、
-クラス `AclassD` と `B` を宣言し、U+2028 を空白にすると、 `A` だけになります。
+クラス `AclassD` と `B` を宣言し、U+2028 を空白にすると、`A` だけになります。
 [corpus fixture: class/unclosed-directive-separator-whitespace-5cfdfca6]
 
 ## 方向のテキストを含む行
@@ -707,7 +707,7 @@ flowchart本文は共有の意味を持つ字下げの下限を使い、
 [fixture: flowchart/indentation/zero-direction-directive]
 [fixture: flowchart/indentation/zero-direction-style-prefix]
 同じ下限を、幅0で読みが変わる [mindmap](./mindmap.ja.md#インデント)、
-[kanban](./kanban.ja.md#インデント)、 [Venn](./venn.ja.md#indentation)、
+[kanban](./kanban.ja.md#インデント)、[Venn](./venn.ja.md#indentation)、
 [Ishikawa](./ishikawa.ja.md#indentation)、
 [Agentflow](./agentflow.ja.md#indentation)、[class](./class.ja.md#字下げ)、
 [YAML](#フロントマター)でも使います。
@@ -774,10 +774,10 @@ semicolon の保護があるメソッドは原文を保ちます。
 [fixture: class/member-lines/method-trivia-and-semicolon-kept]
 [fixture: class/member-lines/kept] [fixture: class/generic-types/kept]
 空白だけのラベルは、行末の、`:` の後の空白を残します。
-`A --> B : ` は空の題を持ち、 `A --> B` は題を持ちません。
+`A --> B : ` は空の題を持ち、`A --> B` は題を持ちません。
 [fixture: class/labels/blank-kept]
 `;` を含む行では、ラベルの `:` の後に空白があるかどうかを書かれたまま残します。
-mermaid.js の行単位の規則は、 `:` の直後から `#` までのテキストを読むからです。
+mermaid.js の行単位の規則は、`:` の直後から `#` までのテキストを読むからです。
 [fixture: class/labels/semicolon-line-kept]
 [ラベル](./class.ja.md#ラベル)と[メンバーの行](./class.ja.md#メンバーの行)
 を参照してください。
@@ -887,12 +887,12 @@ trivia、セミコロン、保護された結合領域がある場合は、
 [fixture: state/notes/strikethrough-spanning-lines-kept]
 [fixture: state/notes/marker-at-paragraph-boundary-kept]
 
-別名の定義の 2 つ目の説明は、 mermaid.js が読む両端の空白ごと、
+別名の定義の 2 つ目の説明は、mermaid.js が読む両端の空白ごと、
 書かれたまま残します。 [fixture: state/aliases/second-description-kept]
 `state` の後の名前と空の文字列は、`state` の行に残します。
 2 つ目の名前を行に単独で置くと、状態を足すからです。
 [fixture: state/statements-one-per-line/state-names-kept]
-`{` の直前の `%%` と空の説明ブロックは、 `{` まで書かれたまま残します。
+`{` の直前の `%%` と空の説明ブロックは、`{` まで書かれたまま残します。
 [fixture: state/composite-states/compat-comment-after-name-before-body]
 [fixture: state/composite-states/compat-comment-line-before-body]
 [fixture: state/composite-states/percent-before-body-kept]
@@ -938,7 +938,7 @@ mermaid.js は、一部の ER の行を、置かれた場所や周りの空白�
   間にディレクティブがあっても同じです。
   `1` の後に空白（改行を含む）とそのような文字が続くと、
   カーディナリティ `only-one` になる（diagrams/er.md、カーディナリティ、
-  規則 11）ので、 `1a` は行に残し、 `1one to one B : x` は接したままにします。
+  規則 11）ので、`1a` は行に残し、`1one to one B : x` は接したままにします。
   [fixture: er/statements-one-per-line/number-name-then-name-kept]
   [fixture: er/relationship-spacing/number-name-before-unit-kept]
   [corpus fixture: er/lex-name-number-then-letter]
@@ -961,7 +961,7 @@ mermaid.js は、一部の ER の行を、置かれた場所や周りの空白�
 mermaid.js は、Gantt 図の一部の値の空白を持ち、一部の行を、
 その行の空白で読みを決めます。
 そのため、整形は書かれたまま残します。
-[タスクのデータ](./gantt.ja.md#タスクのデータ)、 [設定](./gantt.ja.md#設定)、
+[タスクのデータ](./gantt.ja.md#タスクのデータ)、[設定](./gantt.ja.md#設定)、
 [タイトルとセクション](./gantt.ja.md#タイトルとセクション)、
 [リスト](./gantt.ja.md#リスト)を参照してください。
 
@@ -975,7 +975,7 @@ mermaid.js は、Gantt 図の一部の値の空白を持ち、一部の行を、
   [fixture: gantt/task-data/description-padding-kept]
 - タスクのデータの項目の中の空白、項目の数、タグの大文字小文字。
   `after   a1` は書かれたままの 1 つの項目で、
-  `a : 1d,` は `a : 1d` にない空の項目を持ち、 `Done` はタグではありません。
+  `a : 1d,` は `a : 1d` にない空の項目を持ち、`Done` はタグではありません。
   [fixture: gantt/task-data/inner-whitespace-kept]
   [fixture: gantt/task-data/empty-items]
   [fixture: gantt/keyword-case/tags-case-kept]
@@ -993,7 +993,7 @@ mermaid.js は、Gantt 図の一部の値の空白を持ち、一部の行を、
   空白など、ほかの空白の後ろなら `σ` です。
   [test: U+FEFF between the items of a list]
 - 呼び出しの名前と引数の、中の空白。
-  `f ()`、`f( 1, 2 )`、 `f(1,2)` は 3 つの別の呼び出しです。
+  `f ()`、`f( 1, 2 )`、`f(1,2)` は 3 つの別の呼び出しです。
   [fixture: gantt/click-statements/call-name-and-arguments-kept]
 - `;` を含む行。
   mermaid.js の行の規則は行のテキストを読むので、その行の文を行に残します。
@@ -1036,11 +1036,11 @@ mermaid.js は、journey の一部の値の空白を持ち、一部の行を、
   [fixture: journey/titles-and-sections/whitespace-before-hash-is-the-value]
   [fixture: journey/task-data/hash-ends-the-data]
 - 人の中の空白と、人の数。
-  `Me  Two` は書かれたままの 1 人で、 `a,` は `a` にない空の人を持ちます。
+  `Me  Two` は書かれたままの 1 人で、`a,` は `a` にない空の人を持ちます。
   [fixture: journey/task-data/people-inner-whitespace-kept]
   [fixture: journey/task-data/empty-people]
 - 空白だけのデータを持つタスクの `:` の後の空白。
-  mermaid.js はコロンの後にデータの 1 文字を要求するので、 `A:` は拒否され、
+  mermaid.js はコロンの後にデータの 1 文字を要求するので、`A:` は拒否され、
   `A: ` はタスクであり、空白 1 文字を残します。
   [fixture: journey/task-data/whitespace-only-data]
 - `;` を含む行。
@@ -1052,8 +1052,7 @@ mermaid.js は、journey の一部の値の空白を持ち、一部の行を、
 mermaid.js は、requirement 図の名前や値の一部の空白を持ち、一部の行を、
 その行の置かれた場所で読みを決めます。
 そのため、整形は書かれたまま残します。
-[名前](./requirement.ja.md#名前)、
-[フィールド](./requirement.ja.md#フィールド)、
+[名前](./requirement.ja.md#名前)、[フィールド](./requirement.ja.md#フィールド)、
 [スタイルとクラス](./requirement.ja.md#スタイルとクラス)、
 [1 行に 1 文](./requirement.ja.md#1-行に-1-文)を参照してください。
 
@@ -1084,7 +1083,7 @@ mermaid.js は、requirement 図の名前や値の一部の空白を持ち、一
   そこでは引用符のない名前が `style-word` なので、文が拒否されます。
   [fixture: requirement/styles-and-classes/class-over-lines-kept]
 - 印字する最初の行に `direction` と方向を含む `accTitle`、`accDescr:`、
-  `accDescr {` の文は、 ER 図と同じく 1 桁目を保ちます。
+  `accDescr {` の文は、ER 図と同じく 1 桁目を保ちます。
   [fixture: requirement/accessibility-statements/first-column-kept]
 - `;` を含む行。
   mermaid.js の行の規則は行のテキストを読むので、その行の文を行に残します。
@@ -1093,7 +1092,7 @@ mermaid.js は、requirement 図の名前や値の一部の空白を持ち、一
   [fixture: requirement/statements-one-per-line/semicolon-line-kept] [fixture:
   requirement/multi-line-statements/relationship-last-line-semicolon-kept]
 - フィールドのない本体。
-  mermaid.js は `{` の後に改行を要するので、 `{` と `}` を 2 行に置きます。
+  mermaid.js は `{` の後に改行を要するので、`{` と `}` を 2 行に置きます。
   [fixture: requirement/bodies/empty-body-on-two-lines]
 
 ## 字下げか空行で決まる mindmap の行
@@ -1155,7 +1154,7 @@ mermaid.js は、timeline の period、event、title、section の名前の空�
   timeline/statements-one-per-line/section-without-trailing-whitespace-moves-the-event]
 - 行に `title` か `section` だけがあって period になるものの後ろの、
   指令だけの行。
-  指令の前の空白が title や section のテキストになるので、 1 列目に置きます。
+  指令の前の空白が title や section のテキストになるので、1 列目に置きます。
   [fixture: timeline/periods-and-events/title-word-then-directive-line]
 - title と section のキーワードと本文の間にコメント行か指令がある場合は、
   値に属する空白を含めて原文のまま残します。
@@ -1182,7 +1181,7 @@ mermaid.js は sankey 図を CSV として読みます。
 - すべての行を 1 列目に置くこと。
   文字列で始まる記録は、引用符の前の空白が拒否されるので字下げできません。
   指令だけの行は、指令を取り除くと空白だけの行になり、それも拒否されます。
-  そのためどの行も字下げせず、 `useTabs` と `tabWidth` は効きません。
+  そのためどの行も字下げせず、`useTabs` と `tabWidth` は効きません。
   [fixture: sankey/indentation/quoted-first-record-at-the-first-column]
   [fixture: sankey/indentation/use-tabs]
   [fixture: sankey/indentation/directive-lines-at-the-first-column]
@@ -1251,7 +1250,7 @@ Db や字句解析器が読むものは変えません。
   保持する `;` も書かれたままです。
   削除するスタイルの終端は、
   [スタイルの規則](./block.ja.md#スタイル文の末尾のセミコロン)に従います。
-  `style` か `classDef`、その後の `:`、 `:` との間に空白のない `#`、
+  `style` か `classDef`、その後の `:`、`:` との間に空白のない `#`、
   その後の `;` を持つ行です。
   [fixture: statements-one-per-line/line-rule-line-kept-together]
   [fixture: multi-line-statements/semicolon-inside-kept]
@@ -1269,7 +1268,7 @@ Db や字句解析器が読むものは変えません。
   [test: U+2028 between the words of a title]
 - 既知の差異 `title-digit-after-axis-statement` の入力は、仕様は受理し、
   mermaid.js は拒否します。
-  文を別々の行に置くと、mermaid.js が結果を受理し、 Db は仕様の読みのままです。
+  文を別々の行に置くと、mermaid.js が結果を受理し、Db は仕様の読みのままです。
   [fixture: statements-one-per-line/axis-then-title-with-a-digit-split]
   [fixture: statements-one-per-line/axis-band-then-title-with-a-digit-split]
 
@@ -1296,7 +1295,7 @@ Db や字句解析器が読むものは変えません。
   [fixture: keywords-and-texts/word-after-title-keyword-is-a-point-name]
 - 点の座標はテキストです。
   `0.30` は `0.3` ではありません。 [fixture: points/coordinates-as-written]
-- 後ろにテキストのない軸の矢印は、 Db が左のテキストの一部として読みます。
+- 後ろにテキストのない軸の矢印は、Db が左のテキストの一部として読みます。
   [fixture: axes/arrow-only]
 - 文字列。
   中の空白と改行は Db に入り、引用符は書き手が選びます。
@@ -1312,7 +1311,7 @@ Db や字句解析器が読むものは変えません。
   保持する `;` も書かれたままです。
   削除するスタイルの終端は、
   [スタイルの規則](./block.ja.md#スタイル文の末尾のセミコロン)に従います。
-  `style` か `classDef`、その後の `:`、 `:` との間に空白のない `#`、
+  `style` か `classDef`、その後の `:`、`:` との間に空白のない `#`、
   その後の `;` を持つ行です。
   [fixture: statements-one-per-line/line-rule-line-kept-together]
   [fixture: multi-line-statements/semicolon-on-the-last-line-kept]
@@ -1353,7 +1352,7 @@ Db や字句解析器が読むものは変えません。
 [複数行の文](./block.ja.md#複数行の文)を参照してください。
 
 - ブロック矢印の括弧の中の空白は Db に入ります。
-  `(right down)` の向きは `right ` で、 `( up)` の向きは ` up` です。
+  `(right down)` の向きは `right ` で、`( up)` の向きは ` up` です。
   [fixture: shapes/block-arrow-directions-as-written]
   [fixture: shapes/block-arrow-directions-whitespace-kept]
 - `style` と `class` の空白。
@@ -1377,7 +1376,7 @@ Db や字句解析器が読むものは変えません。
   保持する `;` も書かれたままです。
   削除するスタイルの終端は、
   [スタイルの規則](./block.ja.md#スタイル文の末尾のセミコロン)に従います。
-  `style` か `classDef`、その後の `:`、 `:` との間に空白のない `#`、
+  `style` か `classDef`、その後の `:`、`:` との間に空白のない `#`、
   その後の `;` を持つ行です。
   [fixture: multi-line-statements/line-rule-line-kept]
   [fixture: multi-line-statements/line-rule-line-kept-with-columns]
@@ -1450,7 +1449,7 @@ Prettier はそうした行を印字します。
 [fixture: flowchart/frontmatter-yaml/indented-delimiters-kept]
 [fixture: flowchart/frontmatter-yaml/delimiter-line-kept]
 
-YAML が、`<` の後に ASCII の英字、数字、 `_` のいずれかが続く箇所を含むときは、
+YAML が、`<` の後に ASCII の英字、数字、`_` のいずれかが続く箇所を含むときは、
 YAML を書かれたまま残します。
 整形後の YAML も、入れている Prettier の YAML 整形への備えとして確かめますが、
 整形後にだけ `<` が現れる入力は見つかっていません。
@@ -1614,7 +1613,7 @@ native の `title` と `accDescription` の値の前置空白、方向の文字�
 コメントを移して `comment-takes-line-break` の差異を修復しません。
 すべてのセミコロンと、
 共有の `style` と `classDef` の行規則が守る接頭部を保ちます。
-値のノードを分けず、 Unicode の区間境界も保ちます。
+値のノードを分けず、Unicode の区間境界も保ちます。
 字下げと値の外の末尾空白は printer が整えます。
 [fixture: c4/comments/comment-header] [fixture: c4/blank-lines/comment-recovery]
 [fixture: c4/final-newline/comment-eof-gap]
@@ -1706,7 +1705,7 @@ semicolon は全て残し、共有の区間保持の経路で、
 末尾の図コメントの隙間は全体を保ちます。
 受理した差異は仕様の木を使い、失敗は修復しません。
 生の拒否には生の Db はありません。
-ガード付き frontmatter、設定の CR と LF への変換、 EOF の directive、
+ガード付き frontmatter、設定の CR と LF への変換、EOF の directive、
 Markdown のホストの処理は、共有の経路を使います。
 
 [test: ishikawa: ls-comment-boundary] [test: ishikawa: ps-comment-boundary]
@@ -1762,7 +1761,7 @@ click予約語の例外は使いません。
 end/globalはLFではなくASCIIの空白とタブを取り、
 波括弧後に畳むのは直後のLF前の空白だけです。
 データは書かれた出現に別々に保ちます。
-内容だけの拒否には仕様の不透明な読みを使い、 rawの拒否にはDbがありません。
+内容だけの拒否には仕様の不透明な読みを使い、rawの拒否にはDbがありません。
 [fixture: agentflow/comments/comment-looking-values]
 [fixture: agentflow/multiline-statements-and-values/brace-blank-kept]
 [corpus fixture: agentflow/db-data-block-invalid-yaml]
@@ -1799,7 +1798,7 @@ JSON の表データは不透明で、@ と波括弧の隙間、数とエスケ�
 対象となる余白は [JSON tables](./usecase.ja.md#json-tables) に従います。
 効果を渡さない整形 fixture では、共有の Db 比較を null とし、原文を比較します。
 コーパスは存在する記録済みの効果を使います。
-CSS 宣言全体は、 Mermaid が保存するコロンの両側と `--` の隙間を保ちます。
+CSS 宣言全体は、Mermaid が保存するコロンの両側と `--` の隙間を保ちます。
 [fixture: usecase/native-metadata/metadata-inline]
 [fixture: usecase/native-metadata/metadata-blank-lines-kept]
 [fixture: usecase/json-tables/json-opaque]
@@ -1851,7 +1850,7 @@ accessibility 行は class と C4 の規則を再利用し、
 を参照してください。 [fixture: usecase/direction-and-accessibility/a11y-padding]
 [fixture: usecase/direction-and-accessibility/a11y-closer-aligned]
 
-stereotype の宣言接尾辞は、systemBoundary 内も含め、 `<<` の前と、
+stereotype の宣言接尾辞は、systemBoundary 内も含め、`<<` の前と、
 各区切りの内側の空白の有無を保ちます。
 空白があれば 1 個に縮め、なければ足しません。
 Mermaid は内部の両端を除き、`<<` の前の空白は構造上の空白です。
@@ -1984,7 +1983,7 @@ Markdown は最終 payload 行の padding を消しますが、
 
 既知の差異は仕様に従います。
 atomic な directive と semicolon の分断、本文だけの frontmatter HTML、
-opaque な埋め込みデータ、C4 検出、 bare percent の見出し前 trivia が対象です。
+opaque な埋め込みデータ、C4 検出、bare percent の見出し前 trivia が対象です。
 不正 YAML を含め raw の拒否に raw Db はなく、
 利用できる仕様の読みを別に検査します。
 空の quoted option と空の description block は受理したままです。
@@ -2119,8 +2118,8 @@ Markdown は payload 最終行の padding を trim します。
 
 6つの[指定読み](./packet.ja.md#specified-readings)が、
 keyword・整数の atomic cut、本文だけの frontmatter HTML、
-opaque な埋め込みデータ、 C4 検出と通過した bare percent trivia を扱います。
-受理を変える本文の `packet.bitsPerRow` は指定の比較経路に従い、 site 設定、
+opaque な埋め込みデータ、C4 検出と通過した bare percent trivia を扱います。
+受理を変える本文の `packet.bitsPerRow` は指定の比較経路に従い、site 設定、
 title と他の設定を残します。
 raw 拒否には raw Db や、受理されたとみなす埋め込み効果はありません。
 hidden form、空 label と空説明には新たな差異は不要です。
@@ -2136,7 +2135,7 @@ Markdown では埋め込みを辞退して payload を修復しません。
 
 [architecture の規則](./architecture.ja.md)は、
 角括弧ラベルの全 source 範囲を保ちます。
-bare・quoted の kind、引用符の綴り、端の空白、quoted の空値、 escape、HTML、
+bare・quoted の kind、引用符の綴り、端の空白、quoted の空値、escape、HTML、
 entity も含みます。
 内側の空白や escape の変換は Db を変え得ます。
 文字 icon は StringLiteral の source 全体、名前付き icon は名前を保ちます。
@@ -2204,7 +2203,7 @@ subnormal、underflow、overflow を保ちます。
 double 値から再出力しません。
 option の値は作者のままです。
 ticks の制限、min・max の並べ替え、描画設定からの置換はしません。
-ラベルの StringLiteral は引用符、空・空白だけの文字列、escape、HTML、 entity、
+ラベルの StringLiteral は引用符、空・空白だけの文字列、escape、HTML、entity、
 内部の空白を保ち、singleQuote でも書き換えません。
 空ラベルの削除は ID への fallback を変えます。
 内部の空白の書き換えでも Db が変わりえます。
@@ -2285,7 +2284,7 @@ Markdown host は最終行の空白を削ります。
 
 ## treemap の親子と作者の値
 
-[treemap の規則](./treemap.ja.md)は、 AST の children にある森の順序を保ちます。
+[treemap の規則](./treemap.ja.md)は、AST の children にある森の順序を保ちます。
 木は、space と tab を各 1 文字と数える、
 行の割り当て済みの indent を反映しています。
 leaf は section を閉じますが親にはならず、class と common の文は参加しません。
@@ -2796,7 +2795,7 @@ railroad/semicolons/peg-value-last-line]
 
 common line と説明ブロックは共有の配置に従います。
 hidden YAML と native directive は AST の owner ごとに RailroadIgnoredText の
-span 全体を保ち、 range 外の消費 LF と closing padding も残します。
+span 全体を保ち、range 外の消費 LF と closing padding も残します。
 見出し自身の form だけに header-edge の例外を使います。
 本文の form は、見出しの行から文を移した後も共有の予備 LF 規則に従います。
 保持 prefix 全体を保ち、無効だった YAML が frontmatter になるのを防ぎます。
@@ -3000,8 +2999,8 @@ native comment は LS・PS を内容に残します。
 [test: cynefin/comments/comment-ls-native-content]
 [test: cynefin/comments/comment-unicode-join]
 
-既存の[六つの指定読み](./cynefin.ja.md#specified-readings)は、 atom 内の cut、
-frontmatter の HTML、opaque embedded data、 passed bare-percent trivia、
+既存の[六つの指定読み](./cynefin.ja.md#specified-readings)は、atom 内の cut、
+frontmatter の HTML、opaque embedded data、passed bare-percent trivia、
 C4 の語を扱います。
 raw 拒否には raw Db がなく、
 cynefin 固有の差異や acceptance-setting key は加えません。
@@ -3024,7 +3023,7 @@ Markdown は最終 code line の hidden padding を削りますが、単独整�
 
 eventmodeling の[規則](./eventmodeling.ja.md)は、
 [Data blocks](./eventmodeling.ja.md#data-blocks) の限定的な ASCII 空白 margin
-変更を除き、 inline data と block の内容を保ちます。
+変更を除き、inline data と block の内容を保ちます。
 この変更は空でない本文行をすべて `tabWidth` 個、
 通常の見出しの継続行が残る場合は `2 * tabWidth` 個の空白で字下げし、データ項目、
 JSON、code の構造は解釈しません。
@@ -3036,7 +3035,7 @@ native hidden を含む見出しは従来の本文の段を保ちます。
 [fixture: eventmodeling/declarations-and-notes/data-and-note-headers]
 [fixture: eventmodeling/hidden-forms/hidden-data-tag-owners]
 
-この変更は描画を保ちながら raw Db 値を変える場合がありますが、 parser、仕様、
+この変更は描画を保ちながら raw Db 値を変える場合がありますが、parser、仕様、
 記録された Mermaid の読みは変えません。
 ほかの payload の文字、引用符、波括弧、空行、行末の空白、
 見かけの後続文は保ちます。
@@ -3045,7 +3044,7 @@ block-data は直後の LF を消費し、それ以外の空白は lookahead で
 閉じの空白と LS・PS の境界は EOF でも保ちます。
 block closer の字下げは拒否を、
 lookahead の LF への置換は比較 Db の変更を起こす場合があります。
-native data は埋め込まれた設定として評価せず、 source から直接読みます。
+native data は埋め込まれた設定として評価せず、source から直接読みます。
 [fixture: eventmodeling/data-blocks/body-overindented-first-line]
 [fixture: eventmodeling/data-blocks/body-overindented-later-line]
 [fixture: eventmodeling/inline-data/greedy-apparent-frames-kept]
@@ -3054,7 +3053,7 @@ native data は埋め込まれた設定として評価せず、 source から直
 [test: eventmodeling/line-terminators-and-unicode/block-ls-boundary-stays-outside-value]
 [fixture: eventmodeling/final-newline/final-block-padding-kept]
 
-普通のトップレベルの文は第 1 列から始め、 frame、model entity、data、
+普通のトップレベルの文は第 1 列から始め、frame、model entity、data、
 note の宣言を、無字下げ必須の閉じ波括弧と同じ段にそろえます。
 GWT の clause と item は設定の字下げで入れ子にします。
 margin の規則の対象外である data の本文は、原文の列を保ちます。
@@ -3128,7 +3127,7 @@ comment は mark と内容を保ち、native 行 comment は LS・PS を含み�
 
 既存の 5 つの [specified reading](./eventmodeling.ja.md#specified-readings)
 に従い、差異は足しません。
-対象は atomic な directive・semicolon の分断、 frontmatter を跨ぐ HTML quote、
+対象は atomic な directive・semicolon の分断、frontmatter を跨ぐ HTML quote、
 opaque な埋め込み設定、後出の C4 語です。
 raw 拒否には raw Db がありません。
 拒否ファイルは構文エラーを報告して書き換えず、

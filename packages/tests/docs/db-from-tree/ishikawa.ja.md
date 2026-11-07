@@ -35,7 +35,7 @@
    [fixture: ishikawa/lex-html-tag-crosses-directive]
    [fixture: ishikawa/lex-html-tag-ends-in-comment-line]
 2. **ノード文字列。**
-   変換後の文字列を trim し、 `textReplacementOf(embedded.config)` を適用する。
+   変換後の文字列を trim し、`textReplacementOf(embedded.config)` を適用する。
    共通のサニタイザーの読みは
    [db-from-tree.md](../db-from-tree.md#the-replacement-of-characters) に従う。
    引用符、内部の空白、アクセシビリティやデータブロックに見える文字列も残る。

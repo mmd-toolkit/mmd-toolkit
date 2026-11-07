@@ -26,11 +26,11 @@ description:
    実装してみて、決定が成り立たないと分かったら（条件が木から読めない、
    fix や提案が確かめられない、など）、その根拠を持って決定に戻る。
 2. テストが読む例を持つ、規則の英語の文書。
-3. SKILL `eslint-plugin` の「方針と基準」の節と、 SKILL `conventions`。
+3. SKILL `eslint-plugin` の「方針と基準」の節と、SKILL `conventions`。
    前者は `.claude/skills/eslint-plugin/SKILL.md` にある。
 4. 木の定義: `packages/spec/docs/ast.md` と `packages/spec/docs/ast/<図種>.md`。
 5. `packages/eslint-plugin/docs/development.md` の Writing a rule、
-   The fixtures of the rules、Snapshots、 Rules and their documents。
+   The fixtures of the rules、Snapshots、Rules and their documents。
 
 ## 2. 規則とは独立に、事実を確かめる
 
@@ -216,8 +216,8 @@ SKILL `conventions` の決まり（テストの実行）に従う。
 文書の変更でこれらを回すのは、これらが読むものを変えたとき、つまり例、
 最初の段落、規則のファイルを変えたときだけである。
 
-言語のテストは、 `tests/language.test.ts`、`tests/token-store.test.ts`、
-`tests/diagram-rules.test.ts` で、 `tests/language-inputs.ts` の fixture、
+言語のテストは、`tests/language.test.ts`、`tests/token-store.test.ts`、
+`tests/diagram-rules.test.ts` で、`tests/language-inputs.ts` の fixture、
 つまり言語がそれだけで扱う場合ごとの 1 つに掛ける。
 言語、ソースコード、図種のハンドラー、parser に変更が及ぶときに回し、
 規則 1 つの変更のたびには回さない。
@@ -239,8 +239,8 @@ SKILL `conventions` の決まり（テストの実行）に従う。
     `npx vitest run`（テストの全体）と `pnpm run check:docs`。
   - リポジトリのルートから、
     `npx eslint packages/eslint-plugin` （パッケージの中で動かす ESLint は、
-    ルートの設定を読まない）、 `pnpm run lint:docs`、`pnpm run lint:chars`、
-    `pnpm run format:check`、 `npx tsc --noEmit`。
+    ルートの設定を読まない）、`pnpm run lint:docs`、`pnpm run lint:chars`、
+    `pnpm run format:check`、`npx tsc --noEmit`。
 - コミットも push も、
   ステージの変更もしない（`git mv` と `git rm` はステージを変える）。
   `rm` と `mv` をそのまま使う。

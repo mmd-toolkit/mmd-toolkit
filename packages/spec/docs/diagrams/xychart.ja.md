@@ -31,7 +31,7 @@ mermaid.js の正となるソース：
 大文字小文字を区別せずに比べ、
 語の文字が続かないものです（[文の文脈](#文の文脈) を参照）。
 2 つのヘッダーは同じ図種です。
-`xychart-BETA` はヘッダーで、 `xychart-betax`、`xychartx`、`xychart-1`、
+`xychart-BETA` はヘッダーで、`xychart-betax`、`xychartx`、`xychart-1`、
 `xychart-betaé` は拒否されます。
 ヘッダーだけのテキストでもかまいません。
 [fixture: xychart/header-beta-upper-case-suffix]
@@ -148,7 +148,7 @@ mermaid.js の正となるソース：
 単位の一部にならずに単位の間にあり、その中の改行も同じです（下の改行を参照）。
 文の前後、テキストの語の間、角括弧、コンマ、矢印の周りです。
 U+2028 と U+2029 は改行ではありません。
-`line [1]`、U+2028、`bar [2]` は、 1 つの行の 2 つの文です。
+`line [1]`、U+2028、`bar [2]` は、1 つの行の 2 つの文です。
 [fixture: xychart/db-statement-tab-indented]
 [fixture: xychart/db-lines-form-feed-before-statement]
 [fixture: xychart/db-lines-vertical-tab-before-statement]
@@ -226,7 +226,7 @@ U+2028 と U+2029 は改行ではありません。
 空白文字がなければ拒否されます。
 空白で終わる行の後のコメント行は、
 図のテキストの行ではないので（[コメント行](../common.ja.md#コメント行)
-を参照）、 `title A`、空白文字、改行、行 `%% c`、`B` はタイトル `AB` で、
+を参照）、`title A`、空白文字、改行、行 `%% c`、`B` はタイトル `AB` で、
 空白文字がなければ拒否されます。
 `%%` だけの行はこの字句解析器のコメントで（[コメント](#コメント) を参照）、
 その改行文字は改行なので、`title A`、空白文字、行 `%%`、`B` は拒否されます。
@@ -304,7 +304,7 @@ U+2028 と U+2029 は改行ではありません。
 文字列とアクセシビリティのテキストの中では、それはテキストの文字で、
 テキストはエンティティを書かれたとおりに保ちます。
 `title "a#35;b"` はタイトル `a#35;b` を持ちます。
-その外ではどの規則も読まないので、 `title a#35;b`、分類 `a#35;b`、
+その外ではどの規則も読まないので、`title a#35;b`、分類 `a#35;b`、
 軸やプロットのタイトル `a#35;b` は拒否されます。
 [fixture: xychart/lex-title-entity-in-quotes] [fixture: xychart/db-label-entity]
 [fixture: xychart/db-plot-title-entity] [fixture: xychart/db-x-axis-band-entity]
@@ -390,11 +390,11 @@ mermaid.js がディレクティブを除いた後にテキストを読むのと
 それ以外の単位の中のディレクティブは入力を拒否させます。
 **テキストの単位**は、`word`、`acc-title-text`、`acc-description-text`、
 `description-block-text` です。
-ほかの単位、つまりヘッダー、向き、キーワード、`number`、`-->`、角括弧、 `,`、
+ほかの単位、つまりヘッダー、向き、キーワード、`number`、`-->`、角括弧、`,`、
 `;`、`:`、`{`、`}` はテキストの単位ではありません。
 
 - テキストの語の間、語の中、文字列の中、
-  アクセシビリティのテキストの中のディレクティブは、 mermaid.js と同じく、
+  アクセシビリティのテキストの中のディレクティブは、mermaid.js と同じく、
   その前後をつなぎます。
   `title A%%{init: {}}%% B` はタイトル `AB` を、
   分類 `a%%{init: {}}%%b` は分類 `ab` を、
@@ -484,24 +484,24 @@ mermaid.js がディレクティブを除いた後にテキストを読むのと
 単位が始まるどの位置でも、キーワードを語より先に試し、
 文字の語は続く文字をすべて読みます。
 そのため、キーワードは文字の並びの頭で読まれます。
-語の中の数字、`_`、`-`、`.` の後でもそうなので、 `a1bar`、`T_line`、`a-title`、
-`a.line`、`a-xychart`、 `a-x-axis` はキーワードを持ち、拒否されます。
+語の中の数字、`_`、`-`、`.` の後でもそうなので、`a1bar`、`T_line`、`a-title`、
+`a.line`、`a-xychart`、`a-x-axis` はキーワードを持ち、拒否されます。
 一方、`titleX`、`Titled`、`Barbara`、`a-titles`、`1accTitle` は語です。
 規則 3 の最初の項目のキーワードは、
 `-` や `.` などの語の文字でない文字が続いてもそのキーワードで、
 その文字は次の単位を始めます。
-`x-axis-foo` と `y-axis-foo` はタイトル `-foo` の軸、
-`title-x` はタイトル `-x`、 `line.5` と `bar.5` はタイトル `.5` のプロットです。
+`x-axis-foo` と `y-axis-foo` はタイトル `-foo` の軸、`title-x` はタイトル `-x`、
+`line.5` と `bar.5` はタイトル `.5` のプロットです。
 `vertical` と `horizontal` は、後に境界が要りません。
 `Verticals` と `a_vertical` は向きを持って拒否され、`aVertical` は語です。
 別の大文字小文字のキーワードもキーワードです。
 `Title`、`TITLE`、`Bar`、`LINE`、`X-AXIS`、`ACCTITLE:`、
-`ACCDESCR {` は文を始め、 `title Title` は拒否されます。
+`ACCDESCR {` は文を始め、`title Title` は拒否されます。
 引用符なしのキーワードはテキストになりません。
 `title line`、分類 `line`、軸のタイトル `Title` は拒否され、
 引用符の中とアクセシビリティのテキストではキーワードもテキストです。
 `:` のない `accTitle` は語の文字です。
-`accTitle` と `:` の間の文字、数字、ダッシュと、 `accTitle` の中の空白文字は、
+`accTitle` と `:` の間の文字、数字、ダッシュと、`accTitle` の中の空白文字は、
 入力を拒否させます。 [fixture: xychart/db-x-axis-keyword-glued-hyphen-title]
 [fixture: xychart/db-y-axis-keyword-glued-hyphen-title]
 [fixture: xychart/db-title-keyword-glued-hyphen]
@@ -562,7 +562,7 @@ mermaid.js がディレクティブを除いた後にテキストを読むのと
 [fixture: xychart/db-title-quoted-keyword]
 [fixture: xychart/db-x-axis-band-quoted-keyword]
 
-そのため、引用符なしのテキストは、ASCII の文字、数字、 `-`、`_`、`.`、`+`、`=`、
+そのため、引用符なしのテキストは、ASCII の文字、数字、`-`、`_`、`.`、`+`、`=`、
 `*`、`&`、`#` でできています。
 `#` はコメントではなく、`title T # c` はタイトル `T#c` を持ちます。
 ほかの文字は、どの規則も読まないか、どのテキストも取らない単位です。
@@ -616,7 +616,7 @@ ASCII の外の文字は、タイトル、分類、軸やプロットのタイ�
 
 `x-axis` と `y-axis` は軸の文脈に入ります。
 軸の文脈は、その文の終わりで終わります。
-改行はこの文脈を出て `newline` の単位になり、 `;` とキーワードはこの文脈を出て、
+改行はこの文脈を出て `newline` の単位になり、`;` とキーワードはこの文脈を出て、
 下の文脈で読まれます。
 ただし、`accDescr` と `{` はこの文脈の上に説明ブロックの文脈を積むので、
 `}` の後も軸の文脈が続きます。
@@ -642,7 +642,7 @@ ASCII の外の文字は、タイトル、分類、軸やプロットのタイ�
    `.` と数字: `number` の単位。
 
 そのため、数字は数を始め、引用符なしの軸のタイトルは数字を持ちません。
-`x-axis Q1`、`x-axis A-1`、`x-axis A_1`、`x-axis Year 2024`、 `y-axis 2024`、
+`x-axis Q1`、`x-axis A-1`、`x-axis A_1`、`x-axis Year 2024`、`y-axis 2024`、
 `y-axis Revenue2024`、`x-axis a.5` は拒否されます。
 `x-axis T1 --> 2` はタイトル `T` と範囲です。
 一方、`x-axis "Q1"`、`a-b`、
@@ -679,7 +679,7 @@ ASCII の外の文字は、タイトル、分類、軸やプロットのタイ�
 [fixture: xychart/db-x-axis-title-quoted-glued-band]
 
 数は指数を持たず、後に数字のない `.` も持ちません。
-`1e3 --> 5` と `1. --> 2` は拒否され、 `.5`、`007`、`-0`、`+1`、
+`1e3 --> 5` と `1. --> 2` は拒否され、`.5`、`007`、`-0`、`+1`、
 20 桁の数は数です。 [fixture: xychart/db-x-axis-range-decimal]
 [fixture: xychart/db-x-axis-range-leading-zeros]
 [fixture: xychart/db-x-axis-range-negative]
@@ -758,8 +758,8 @@ mermaid.js はそのようなタイトルの数字を軸の文脈で読んで拒
 規則は、文の文脈の規則の前に、この文脈を出る `]` と、
 軸の文脈と同じ数を置いたものです。
 値は数です。
-`.5`、`-1`、`+.5`、`007`、`-0`、20 桁と 400 桁の数は値で、 `1e3`、`Infinity`、
-`NaN`、`5.`、`1.5.2`、`1_0`、`abc`、 `-4aa5` は拒否されます。
+`.5`、`-1`、`+.5`、`007`、`-0`、20 桁と 400 桁の数は値で、`1e3`、`Infinity`、
+`NaN`、`5.`、`1.5.2`、`1_0`、`abc`、`-4aa5` は拒否されます。
 [fixture: xychart/db-plot-values-one] [fixture: xychart/db-line-values]
 [fixture: xychart/db-bar-values] [fixture: xychart/db-plot-values-no-spaces]
 [fixture: xychart/db-plot-values-spaces]
@@ -793,7 +793,7 @@ mermaid.js はそのようなタイトルの数字を軸の文脈で読んで拒
 引用符の間に何もない文字列は、
 空のテキストの `string` の単位です（[空の文字列](#空の文字列) を参照）。
 文字列にエスケープはありません。
-2 つ目の `"` が文字列を終えるので、 `"a""b"` は 2 つの文字列です。
+2 つ目の `"` が文字列を終えるので、`"a""b"` は 2 つの文字列です。
 閉じていない文字列は入力を拒否させます。 [fixture: xychart/db-title-quoted]
 [fixture: xychart/db-title-quoted-spaces-trimmed]
 [fixture: xychart/db-title-quoted-special]
@@ -903,7 +903,7 @@ markdown 文字列、つまり引用符の後に逆引用符が続くものは�
 テキストの終わりまで空白しか続かないとき、単位は空です。
 `:` の前には改行も含めて空白を置け、
 その間にコメント行やディレクティブの行があってもかまいません。
-U+00A0、U+2028、U+2029、U+3000、 U+FEFF も `:` の前後の空白です。
+U+00A0、U+2028、U+2029、U+3000、U+FEFF も `:` の前後の空白です。
 [fixture: xychart/db-acc-title-nbsp-before-colon]
 [fixture: xychart/db-acc-title-ideographic-before-colon]
 [fixture: xychart/db-acc-title-bom-before-colon]
@@ -1433,8 +1433,8 @@ mermaid.js は、そのような入力を、ブロックがないものとして
 閉じていない空の説明ブロックはテキストの終わりまで続き、
 mermaid.js はそれに空のテキストのトークンを読むので、
 トークンのない形ではありません。
-`title T accDescr {` がテキストの終わりにあるときのように、
-mermaid.js と同じく、文が始まるところでだけ受理されます。
+`title T accDescr {` がテキストの終わりにあるときのように、mermaid.js と同じく、
+文が始まるところでだけ受理されます。
 [fixture: xychart/db-acc-descr-unclosed-empty-block-after-line]
 [fixture: xychart/db-acc-descr-unclosed-empty-block-spaces]
 [fixture: xychart/db-acc-descr-unclosed-empty-block-line-feeds]

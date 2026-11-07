@@ -30,7 +30,7 @@ quadrant chart は、始まりと終わりにテキストを持つ 2 つの**軸
 
 子の欄: `body`。
 ヘッダーは欄ではありません。
-ヘッダーは 1 つで、 2 つ目のヘッダーは入力を拒否させます。
+ヘッダーは 1 つで、2 つ目のヘッダーは入力を拒否させます。
 改行、`;`、空行、空の文はどの文にも属さず、ノードを作りません。
 ヘッダーがあって文のないテキストは受理されます。
 [fixture: quadrant/spec-quadrant-jison-fe2d2340]
@@ -54,7 +54,7 @@ QuadrantClassDefStatement のどれかです。
 U+00A0 や U+3000 など表記の空白文字も除きます。
 mermaid.js がタイトルをそう読むからです。
 `title   T   ` は値 `T` を、`title`、U+00A0、`T` は値 `T` を持ち、
-`title` だけと、 `title` と U+3000 だけは値 null を持ちます。
+`title` だけと、`title` と U+3000 だけは値 null を持ちます。
 [fixture: quadrant/db-title-nbsp-before-text]
 [fixture: quadrant/db-title-ideographic-only]
 [fixture: quadrant/db-ends-title-nbsp-end]
@@ -96,7 +96,7 @@ U+00A0 など表記の空白文字も含めて両端の空白を除いたテキ�
 [fixture: quadrant/db-acc-title-ls-after-colon]
 [fixture: quadrant/db-acc-title-ps-after-colon]
 テキストの終わりまで空白しかない `accTitle:` は、U+00A0 だけでも拒否されます。
-`accTitle:`、U+3000、改行、 `title T` は値 `title T` を持ちます。
+`accTitle:`、U+3000、改行、`title T` は値 `title T` を持ちます。
 [fixture: quadrant/gram-acc-title-nbsp-only]
 [fixture: quadrant/db-acc-title-ideographic-then-next-line]
 [fixture: quadrant/db-acc-title-next-line-keyword]
@@ -138,7 +138,7 @@ QuadrantAccTitleStatement と同じく、テキストはテキストを持つ最
 ブロックは必ず閉じます。
 テキストがその中で終わることはできません。
 4 行の `accDescr {`、`D`、`E`、`}` は値 `D`、改行文字、`E` を持ちます。
-`accDescr {x`、U+00A0、 `}` は値 `x` を持ちます。
+`accDescr {x`、U+00A0、`}` は値 `x` を持ちます。
 [fixture: quadrant/db-acc-descr-block-nbsp-before-brace-close]
 `accDescr {}`、2 行の `accDescr {` と `}`、
 U+3000 だけのブロックは値 null を持ち、何も変えません。
@@ -260,7 +260,7 @@ tests パッケージの要約と
 
 子の欄はありません。
 引用符なしのテキストは、mermaid.js が読むとおり、語の間の空白を保ちます。
-`quadrant-1   A  b   ` は値 `A  b` を、 `quadrant-1 a`、タブ、`b` は値 `a`、
+`quadrant-1   A  b   ` は値 `A  b` を、`quadrant-1 a`、タブ、`b` は値 `a`、
 タブ、`b` を持ちます。
 文字列は、両端の空白も含めて、引用符の間にあるものを保ちます。
 `x-axis "  "` と `--> R` の始まりは、

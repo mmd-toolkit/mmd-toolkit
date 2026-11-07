@@ -8,11 +8,10 @@
 で定めます。
 
 この図種の本体は [ErDiagram](#erdiagram) です。
-欄の値は、
-[ast.ja.md](../ast.ja.md#ノード)が値の書かれたテキストを定めるとおり、
+欄の値は、[ast.ja.md](../ast.ja.md#ノード)が値の書かれたテキストを定めるとおり、
 書き手が書いたものを保ち、
 [common.ja.md](../common.ja.md#ソースの読み方) の変換後の形ではありません。
-値が空白で始まったり終わったりするのは、 mermaid.js が読むとおりに、
+値が空白で始まったり終わったりするのは、mermaid.js が読むとおりに、
 その単位が空白を自分の文字として持つところだけです。
 [ノード](../ast.ja.md#ノード) を参照してください。
 この図種では、名前の文字である U+00A0 のような、
@@ -83,7 +82,7 @@ er/gram-empty-backquotes-alone]
 ### ErAttribute
 
 実体の属性 1 つです。
-`string name`、`string? middleName`、 `int id PK, FK "the key"`。
+`string name`、`string? middleName`、`int id PK, FK "the key"`。
 
 | 欄         | 型                            | 意味                                                                                                                                          |
 | ---------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -136,7 +135,7 @@ er/gram-relationship-both-classes]
 | `name`       | ErIdentifier か StringLiteral | 実体の名前。ErEntityStatement と同じです。                                   |
 | `cssClasses` | ErIdentifier のリスト         | `:::` の後の、`,` の単位で区切ったクラス。ソースの順。`:::` がないときは空。 |
 
-子の欄: `name`、 `cssClasses`。 [fixture: er/gram-relationship-left-classes]
+子の欄: `name`、`cssClasses`。 [fixture: er/gram-relationship-left-classes]
 [fixture:
 er/gram-relationship-right-classes] [fixture:
 er/gram-relationship-string-names] [fixture:
@@ -145,7 +144,7 @@ er/gram-relationship-number-names]
 ### ErRelationship
 
 関係の 2 つの実体の間の 3 つの単位です。
-`||--o{`、 `one or more to zero or one`、`}|..|{`、`u--o{`。
+`||--o{`、`one or more to zero or one`、`}|..|{`、`u--o{`。
 
 | 欄                 | 型     | 意味                                 |
 | ------------------ | ------ | ------------------------------------ |
@@ -155,7 +154,7 @@ er/gram-relationship-number-names]
 
 子の欄はありません。
 濃度の語は `zero-or-one`、`zero-or-more`、`one-or-more`、`only-one`、
-`md-parent` で、 [文の文脈](../diagrams/er.ja.md#文の文脈) の単位の名前です。
+`md-parent` で、[文の文脈](../diagrams/er.ja.md#文の文脈) の単位の名前です。
 単位のつづりによりません。
 `|o`、`one or zero`、`zero or one` はどれも `zero-or-one` で、
 `--` と `to` はどちらも `identifying` です。
@@ -306,7 +305,7 @@ ErAccTitleStatement と同じく、値が nullになることはありません�
 
 引用符なしで書いた名前です。
 実体の名前と別名、ロール、クラス名、`style` や `classDef` の後の名前、
-属性の型と名前で、 `name`、`number`、`style-text`、`word`、
+属性の型と名前で、`name`、`number`、`style-text`、`word`、
 `tilde-word` の単位です。
 
 | 欄     | 型     | 意味                                                                       |

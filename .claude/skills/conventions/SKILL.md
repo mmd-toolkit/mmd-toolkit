@@ -99,21 +99,22 @@ The procedures of a package are in the skill of that package.
   below the table. Prettier does not wrap Japanese text, which has no
   whitespace, so it keeps the line breaks of the Japanese documents as written
   (`proseWrap: "preserve"` for `*.ja.md`), and `pnpm run lint:md --fix` writes
-  them: one sentence on a line, and a long sentence broken after a `、`, or,
-  where no `、` lets it fit, at a space beside a code span, a link, or a Latin
-  word, so that no line of prose is longer than 80 columns, counting a
-  full-width character as two. A line that is longer only because one link, code
-  span, or bracketed reference is itself longer is left as it is. A sentence
-  that cannot be laid out this way is left as written and reported, for its
-  author to split or to give a `、`. A `。` inside brackets does not end a
-  sentence, and a closing emphasis mark stays with its sentence. The body is
-  wrapped before its following `[fixture: …]` citations are placed: they
-  continue from the body's last line with one space, and those that do not fit
-  go on continuation lines. One space is added before a citation that
+  them: one sentence on a line, and a long sentence broken after a `、` or a
+  `。` inside brackets, or, where no such mark lets it fit, at a space beside a
+  code span, a link, or a Latin word, so that no line of prose is longer than 80
+  columns, counting a full-width character as two. A line that is longer only
+  because one link, code span, or bracketed reference is itself longer is left
+  as it is. A sentence that cannot be laid out this way is left as written and
+  reported, for its author to split or to give a `、`. A `。` inside brackets
+  does not end a sentence, and a closing emphasis mark stays with its sentence.
+  The body is wrapped before its following `[fixture: …]` citations are placed:
+  they continue from the body's last line with one space, and those that do not
+  fit go on continuation lines. One space is added before a citation that
   immediately follows `。`; directly adjacent citations remain adjacent. Where a
   line break between a full-width and a half-width character, or between two
-  half-width characters, is removed, one space takes its place.
-  `pnpm run lint:md` checks all of this.
+  half-width characters, is removed, one space takes its place. A `、` or a `。`
+  takes no space after it, neither where a line break is removed nor where one
+  is written, except before a citation. `pnpm run lint:md` checks all of this.
 - A code block that holds Mermaid text has the info string `mmd`, not `mermaid`
   and not `text`. GitHub highlights it and does not try to render it as a
   diagram, which matters because many examples are rejected or are edge cases on

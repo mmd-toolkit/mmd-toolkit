@@ -101,7 +101,7 @@ Db が持つものが要約になります。
 小文字の向きの語 `horizontal` は `horizontal` に、それ以外の語は、
 どの大文字小文字でも `vertical` にします。
 向きのないヘッダーは向きを変えないので、向きを持つヘッダーは設定より優先し、
-向きのない 2 つ目のヘッダーは、 1 つ目が決めたものを変えません。
+向きのない 2 つ目のヘッダーは、1 つ目が決めたものを変えません。
 [fixture: xychart/config-orientation-setting-horizontal]
 [fixture: xychart/config-orientation-directive]
 [fixture: xychart/config-orientation-frontmatter]
@@ -239,7 +239,7 @@ line は、読んだあとのラベルの 1 つでも空でなければ、
 
 Db は、次のテキストを `sanitizeText` に通します。
 タイトル（フロントマターと `title` 文）、アクセシビリティのタイトルと説明、
-軸のタイトル、カテゴリー、プロットのタイトル、 line が持つ値のラベルです。
+軸のタイトル、カテゴリー、プロットのタイトル、line が持つ値のラベルです。
 `xychartDbOf()` は、これらのテキストにだけ、
 [db-from-tree.md](../db-from-tree.md#the-replacement-of-characters) の置き換え
 `textReplacementOf(embedded.config)` を適用します。

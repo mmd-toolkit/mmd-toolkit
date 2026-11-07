@@ -72,13 +72,13 @@ JSON 接頭部の id は、キーワードと同じ綴りでも Identifier で�
 [fixture: usecase/gram-metadata-tail-newline-before-comma]
 [fixture: usecase/gram-metadata-tail-newline-before-comma-newline]
 
-プロパティ間のコンマの後は、 0 個以上の改行を許します。
+プロパティ間のコンマの後は、0 個以上の改行を許します。
 [fixture: usecase/gram-metadata-property-comma-no-newline]
 [fixture: usecase/gram-metadata-property-comma-one-newline]
 [fixture: usecase/gram-metadata-property-comma-two-newlines]
 [fixture: usecase/gram-metadata-property-comma-three-newlines]
 
-ASCII HWS は改行数を変えず、 CRLF は 1 改行として数えます。
+ASCII HWS は改行数を変えず、CRLF は 1 改行として数えます。
 [fixture: usecase/gram-metadata-trailing-comma-one-newline-hws]
 [fixture: usecase/gram-metadata-trailing-comma-two-newlines-hws]
 [fixture: usecase/gram-metadata-property-comma-one-newline-hws]
@@ -128,7 +128,7 @@ UsecaseIdentifier は、その HWS も保ちます。
 [fixture: usecase/gram-css-name-comment-region-lf]
 [fixture: usecase/gram-css-name-comment-region-ls]
 
-CSS 値は、コロン直後の HWS と引用符付きの成分も含む、 1 つの RawText 項目で、
+CSS 値は、コロン直後の HWS と引用符付きの成分も含む、1 つの RawText 項目で、
 末尾の読み飛ばした HWS を除きます。
 区切りのコンマは別の Punctuator ですが、
 引用符内やエスケープしたコンマは値に残ります。

@@ -18,7 +18,7 @@ fixture の置き方と確かめ方は、
 
 ### インデント
 
-ヘッダーの後の文は、ヘッダーより 1 段深く置き、 `section` の後の文は、
+ヘッダーの後の文は、ヘッダーより 1 段深く置き、`section` の後の文は、
 次の `section` まで、さらに 1 段深く置きます。
 タスクも、ほかのどの文も同じです。
 `section` 自体は最初の段です。
@@ -271,11 +271,11 @@ score と人は、コロンの後でも `,` の後でも、空白 1 つの後に
 コロンと `,` は前の値に接します。
 それらの周りの空白は Db に入らないので、残しません。
 空白は値の前にだけ置きます。
-Gantt 図と同じ規則で、 mermaid.js の文書の task 行の多くがこの形です。
+Gantt 図と同じ規則で、mermaid.js の文書の task 行の多くがこの形です。
 [fixture: task-data/colon-spacing] [fixture: task-data/people-comma-spacing]
 空の score や空の人は何も印字しないので、その前に空白を置きません。
 `A: : Me` は `A:: Me` に、`A: 3: a, ,b` は `A: 3: a,, b` になります。
-空の人は、 mermaid.js が名前として読むので残します。
+空の人は、mermaid.js が名前として読むので残します。
 [fixture: task-data/empty-score] [fixture: task-data/empty-people]
 [fixture: task-data/no-people-no-score]
 
@@ -416,7 +416,7 @@ journey
 `title` と `section` は、値を、
 両端の空白も含めて書かれたまま印字します（Db が持ちます）。
 キーワードの後の区切りは、書かれた文字によらず空白 1 つです。
-区切りの形を 1 つにするためで、 Gantt 図と同じです。
+区切りの形を 1 つにするためで、Gantt 図と同じです。
 [fixture: titles-and-sections/value-whitespace-kept]
 [fixture: titles-and-sections/one-space-after-keyword]
 後の行に書かれた値は、キーワードの後に寄せて 1 行にします。
@@ -424,7 +424,7 @@ journey
 文は書かれたまま印字します（[複数行の文](#複数行の文)を参照）。
 [fixture: titles-and-sections/value-on-next-line]
 [fixture: titles-and-sections/comment-line-inside-kept]
-値は `:`、`%`、`%%` を文字として含み、 `#` で終わります。
+値は `:`、`%`、`%%` を文字として含み、`#` で終わります。
 [fixture: titles-and-sections/special-characters-in-values]
 [fixture: titles-and-sections/value-ends-at-hash]
 その `#` の前の空白は値の一部で、残ります。
@@ -510,7 +510,7 @@ journey
 コロンの形は Gantt 図と同じです。
 [fixture: accessibility-statements/colon-touches-keyword]
 [fixture: accessibility-statements/text-whitespace-dropped]
-テキストは `:`、`;`、`%`、 `%%` を文字として含みます。
+テキストは `:`、`;`、`%`、`%%` を文字として含みます。
 [fixture: accessibility-statements/special-characters-in-text]
 後の行に書かれたテキストと、キーワードより後の行に書かれたコロンは、
 1 行に合わせます。 [fixture: accessibility-statements/text-on-next-line-joined]
@@ -783,7 +783,7 @@ journey
 行を分けると、
 `title` と `section` の後では Db が変わります（`#`
 の前の空白が値の一部だからです）。
-そのため、コメントは文の行に残す 1 つの規則にして、 Gantt 図と同じにします。
+そのため、コメントは文の行に残す 1 つの規則にして、Gantt 図と同じにします。
 [fixture: comments/after-header] [fixture: comments/after-header-glued]
 [fixture: comments/after-header-percent] [fixture: comments/after-statement]
 [fixture: comments/after-statement-glued]
@@ -909,7 +909,7 @@ journey
 ### フロントマターの YAML
 
 flowchart と同じです。
-`---` の行の間の YAML は Prettier の YAML 整形で整形し、 `---` の行は、
+`---` の行の間の YAML は Prettier の YAML 整形で整形し、`---` の行は、
 末尾の空白も含めて書かれたまま残します。 [fixture: frontmatter-yaml/formatted]
 [fixture: frontmatter-yaml/closing-delimiter-whitespace-kept]
 Prettier が読めない YAML は書かれたまま残します。
@@ -972,7 +972,7 @@ U+2028 と U+2029 は、journey の単位の間の空白であり、
 文の間では、どの空白とも同じ改行として扱い、文はそれぞれの行に移ります。
 文の中で、これを含む間隔は書かれたまま印字し、説明、タイトル、セクション名、
 無視されるデータ、アクセシビリティのテキストの中のものも書かれたまま残します。
-例は文字列で書かれていて、`\u2028` は U+2028、 `\n` は改行です。
+例は文字列で書かれていて、`\u2028` は U+2028、`\n` は改行です。
 [test: U+2028 between the header and a statement]
 [test: U+2028 between a description block and a task]
 [test: U+2028 inside a task description]
@@ -991,7 +991,7 @@ U+00A0 と U+FEFF は、字句解析器にとって単位の間の空白であ�
 字句解析器が空白 1 文字を読む所（キーワードの後の区切りなど）には、
 空白 1 つを置き、タスクの score と人の周りでは空白と同じに落とし、
 タスクのコロンの前では説明が保ちます。
-例は文字列で書かれていて、`\u00a0` は U+00A0、 `\ufeff` は U+FEFF です。
+例は文字列で書かれていて、`\u00a0` は U+00A0、`\ufeff` は U+FEFF です。
 [test: U+00A0 after a title keyword] [test: U+00A0 around the score of a task]
 [test: U+00A0 around the people of a task]
 [test: U+00A0 before the second colon of a task]

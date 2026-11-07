@@ -26,7 +26,7 @@
 
 範囲は、source から value までで、文字列の引用符を含みます。
 レコードの周りの空白と、その後の改行は、範囲の外にあります。
-`  a , b , 1` と 2 つの空白は、 `a , b , 1` を覆います。
+`  a , b , 1` と 2 つの空白は、`a , b , 1` を覆います。
 [fixture: sankey/db-fields-trimmed] [fixture: sankey/db-quoted-fields]
 [fixture: sankey/db-spaces-only-source-id-first-record]
 

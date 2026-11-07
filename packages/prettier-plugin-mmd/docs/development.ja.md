@@ -90,9 +90,9 @@ Db は mermaid.js から読みません。
 入力の埋め込みデータ（フロントマター、ディレクティブ、
 データブロック）から mermaid.js が導く値を使います。
 コーパスは、fixture ごとにその値（`embeddedValuesOf`）と、
-入力の Db（`expected.json`。仕様が違う読み方をするものは
-`specified.json`）を記録しているので、コーパスのテストは、
-整形後のテキストの Db を、記録された Db と比べます。
+入力の Db（`expected.json`。
+仕様が違う読み方をするものは `specified.json`）を記録しているので、
+コーパスのテストは、整形後のテキストの Db を、記録された Db と比べます。
 ほかのテストには記録がないので、整形後のテキストの Db を、入力の Db と、
 既定の値で比べます。
 
@@ -137,25 +137,25 @@ YAML の値を保つことはその整形に頼ります。
   Prettier の path を、
   printer がいるノードの型に絞る関数は `paths.ts` にあります。
   図種ごとに、次のファイルがあり、`blocks.ts` に `BlockRules` を渡します。
-  printer は `flowchart.ts`、`agentflow.ts`、`sequence.ts`、 `class.ts`、
-  `state.ts`、 `er.ts`、`gantt.ts`、`journey.ts`、`requirement.ts`、
-  `mindmap.ts`、 `timeline.ts`、`sankey.ts`、`xychart.ts`、`quadrant.ts`、
+  printer は `flowchart.ts`、`agentflow.ts`、`sequence.ts`、`class.ts`、
+  `state.ts`、`er.ts`、`gantt.ts`、`journey.ts`、`requirement.ts`、
+  `mindmap.ts`、`timeline.ts`、`sankey.ts`、`xychart.ts`、`quadrant.ts`、
   `block.ts`、`kanban.ts`、`c4.ts`、`venn.ts`、`ishikawa.ts`、
   `usecase.ts` です。
   文の配置は `flowchart-layout.ts`、`agentflow-layout.ts`、
-  `sequence-layout.ts`、 `class-layout.ts`、`state-layout.ts`、`er-layout.ts`、
-  `gantt-layout.ts`、 `journey-layout.ts`、`requirement-layout.ts`、
-  `mindmap-layout.ts`、 `timeline-layout.ts`、`sankey-layout.ts`、
-  `xychart-layout.ts`、 `quadrant-layout.ts`、`block-layout.ts`、
-  `kanban-layout.ts`、 `c4-layout.ts`、`venn-layout.ts`、`ishikawa-layout.ts`、
+  `sequence-layout.ts`、`class-layout.ts`、`state-layout.ts`、`er-layout.ts`、
+  `gantt-layout.ts`、`journey-layout.ts`、`requirement-layout.ts`、
+  `mindmap-layout.ts`、`timeline-layout.ts`、`sankey-layout.ts`、
+  `xychart-layout.ts`、`quadrant-layout.ts`、`block-layout.ts`、
+  `kanban-layout.ts`、`c4-layout.ts`、`venn-layout.ts`、`ishikawa-layout.ts`、
   `usecase-layout.ts` です。
   保つ行は `flowchart-kept-lines.ts`、`agentflow-kept-lines.ts`、
-  `sequence-kept-lines.ts`、 `class-kept-lines.ts`、`state-kept-lines.ts`、
-  `er-kept-lines.ts`、 `gantt-kept-lines.ts`、`journey-kept-lines.ts`、
+  `sequence-kept-lines.ts`、`class-kept-lines.ts`、`state-kept-lines.ts`、
+  `er-kept-lines.ts`、`gantt-kept-lines.ts`、`journey-kept-lines.ts`、
   `requirement-kept-lines.ts`、`mindmap-kept-lines.ts`、
-  `timeline-kept-lines.ts`、`sankey-kept-lines.ts`、 `xychart-kept-lines.ts`、
-  `quadrant-kept-lines.ts`、 `block-kept-lines.ts`、`kanban-kept-lines.ts`、
-  `c4-kept-lines.ts`、 `venn-kept-lines.ts`、`ishikawa-kept-lines.ts`、
+  `timeline-kept-lines.ts`、`sankey-kept-lines.ts`、`xychart-kept-lines.ts`、
+  `quadrant-kept-lines.ts`、`block-kept-lines.ts`、`kanban-kept-lines.ts`、
+  `c4-kept-lines.ts`、`venn-kept-lines.ts`、`ishikawa-kept-lines.ts`、
   `usecase-kept-lines.ts` です。
   保つ行の共通の部分は `kept-lines.ts` にあります。
   `BlockRules` は、保つ行、文の印字の終わり、文を持つ文、
@@ -229,7 +229,7 @@ pnpm --filter prettier-plugin-mmd run test:update
 [docs/treemap.md](./treemap.md)、[docs/treeview.md](./treeview.md)、
 [docs/usecase.md](./usecase.md)、[docs/venn.md](./venn.md)、
 [docs/wardley.md](./wardley.md)、[docs/xychart.md](./xychart.md) です。
-それらでは、 `###` の見出しが規則で、その fixture のフォルダーは、
+それらでは、`###` の見出しが規則で、その fixture のフォルダーは、
 図種のフォルダーの下の、見出しを小文字にし、空白を `-` にしたものです。
 「Arrow spacing」は `arrow-spacing` です。
 文書の中の例は、fixture のファイルへのリンクと `:` で終わる行、空行、
@@ -300,8 +300,8 @@ Unicode で終わる手前のコメントにある semicolon が、
 `corpus/agentflow.test.ts` は仕様の拒否も含む全入力を読み、
 出力の木と記録済みのDbを確認します。
 
-`graph-layout.ts`と`graph-kept-lines.ts`で、 flowchartの隙間、
-nullのstyleの末尾、セミコロン選択、方向の優先順位を共有します。
+`graph-layout.ts`と`graph-kept-lines.ts`で、flowchartの隙間、nullのstyleの末尾、
+セミコロン選択、方向の優先順位を共有します。
 agentflowの値と文法の違いは専用のモジュールに理由を書きます。
 `RootTextPlan`は配置を適用する前に計画を測ります。
 書かれたfrontmatterとdirectiveの範囲を使い、50000単位のコメント分岐を保ちます。
@@ -345,7 +345,7 @@ atom 全体を含む保持部分の処理を Venn と共有します。
 [pie の規則](./pie.ja.md)は固定した整形 fixture、
 `pie-cases.ts` の escape で表した Unicode・CR の例、
 `markdown-pie.test.ts` の実際の Markdown host を引用します。
-`format.test.ts` と `pie.test.ts` は正確な出力、冪等性、 Db の一致、
+`format.test.ts` と `pie.test.ts` は正確な出力、冪等性、Db の一致、
 embedded の原文を確認します。
 escape 表記の例では木の不変条件も確認します。
 `corpus/pie.test.ts` は、

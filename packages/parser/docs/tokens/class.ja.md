@@ -59,7 +59,7 @@
 両端の空白を除いたものです。
 スタイルと名前の部分からなる名前のほかの `RawText` の項目では、
 並びの単位の間に空白を挟んでもかまいません。
-ただし、 mermaid.js がその空白を値の一部として読むところは除きます。
+ただし、mermaid.js がその空白を値の一部として読むところは除きます。
 [トークン](../tokens.ja.md#トークン) を参照。
 `generic-text` の単位、メンバーの行の `annotation-name` の単位、
 `member-name` と `return-type` の単位、
@@ -142,7 +142,7 @@
   [fixture: class/lex-relation-without-whitespace]
 - キーワード `note for` は、語ごとに 1 つの、2 つの `Keyword` のトークンです。
   語の間の空白に接したディレクティブは、2 つのトークンの間にあります。
-  `note%%{init: {}}%% for A "t"` は、 mermaid.js と同じく A の note です。
+  `note%%{init: {}}%% for A "t"` は、mermaid.js と同じく A の note です。
   [fixture: class/lex-directive-between-note-and-for]
 - 閉じていないバッククォートの名前は、終わりの空白と改行を含めて、
   mermaid.js が名前に読む最後の文字までの、

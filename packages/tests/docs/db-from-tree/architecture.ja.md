@@ -90,7 +90,7 @@
    lhsId/rhsId は変換後の参照、lhsDir/rhsDir は arrow の方向から読む。
    lhsInto/rhsInto は marker が arrow かどうかで決める。
    書かれた marker のどちらの文字も true になる。
-   lhsGroup/rhsGroup は boolean として写し、 false と、
+   lhsGroup/rhsGroup は boolean として写し、false と、
    group に入らないノードの modifier も保つ。
    arrow の title は工程 4 で変換し、null だけを省く。
    辺の順序、重複辺、自己辺、同じ port 方向を保つ。
