@@ -24,7 +24,7 @@ features:
   - title: Formatter
     details:
       "Format .mmd and .mermaid files and Mermaid code blocks in Markdown with
-      prettier-plugin-mmd."
+      prettier-plugin-mmd, or format only the diagrams with the mmdfmt command."
     link: /formatter/
   - title: Linter
     details:

@@ -10,6 +10,9 @@ is, so the tool works next to any Markdown formatter, or without one.
 This is a third-party project, not affiliated with
 [mermaid-js](https://mermaid.js.org/).
 
+Documentation:
+[mmdfmt](https://mmd-toolkit.github.io/mmd-toolkit/formatter/mmdfmt.html).
+
 ## Why it exists
 
 [`prettier-plugin-mmd`](../prettier-plugin-mmd) reaches a code block only
@@ -196,3 +199,14 @@ Two results differ from the plugin in Markdown:
   indentation; the plugins and the other options there are not used.
 - It reports no mistakes in a diagram beyond syntax errors;
   [`@mmd-toolkit/eslint-plugin`](../eslint-plugin) does that.
+
+## Documentation
+
+- [mmdfmt guide](https://mmd-toolkit.github.io/mmd-toolkit/formatter/mmdfmt.html):
+  installation, usage, exit codes, and the differences from Prettier with the
+  plugin.
+- [Formatter options](https://mmd-toolkit.github.io/mmd-toolkit/formatter/options.html):
+  how `tabWidth` and `useTabs` indent diagrams.
+- [Formatter compatibility](https://mmd-toolkit.github.io/mmd-toolkit/formatter/compatibility.html):
+  syntax errors, differences from mermaid.js, and the limits of the guarantees
+  of the formatting that this tool applies.

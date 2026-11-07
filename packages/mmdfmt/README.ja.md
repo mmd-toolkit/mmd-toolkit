@@ -10,6 +10,9 @@ Markdown のファイルのほかの部分は 1 バイトも変えないので�
 
 [mermaid-js](https://mermaid.js.org/) とは関係のない第三者のプロジェクトです。
 
+文書:
+[mmdfmt](https://mmd-toolkit.github.io/mmd-toolkit/ja/formatter/mmdfmt.html)。
+
 ## なぜ作るか
 
 [`prettier-plugin-mmd`](../prettier-plugin-mmd) がコードブロックに届くのは
@@ -218,3 +221,12 @@ Markdown では、結果が 2 点でプラグインと違います。
   そこに挙がるプラグインやほかのオプションは使いません。
 - 図の誤りは、構文エラーのほかは報告しません。
   それは [`@mmd-toolkit/eslint-plugin`](../eslint-plugin) の役割です。
+
+## 文書
+
+- [mmdfmt の案内](https://mmd-toolkit.github.io/mmd-toolkit/ja/formatter/mmdfmt.html):
+  導入、使い方、終了コード、Prettier とプラグインによる整形との違い。
+- [フォーマッターのオプション](https://mmd-toolkit.github.io/mmd-toolkit/ja/formatter/options.html):
+  `tabWidth` と `useTabs` による図の字下げ。
+- [フォーマッターの互換性](https://mmd-toolkit.github.io/mmd-toolkit/ja/formatter/compatibility.html):
+  構文エラーの扱い、mermaid.js との違い、このツールが行う整形の保証の範囲。
