@@ -629,6 +629,11 @@ const classLineSeparatorExamples: readonly (readonly [
   string,
 ])[] = [
   [
+    "U+2028 before the `<<` of a class annotation",
+    "classDiagram\nclass S\u2028<<i>>\n",
+    "classDiagram\n  class S\u2028<<i>>\n",
+  ],
+  [
     "U+2028 before the `:::` of a class",
     "classDiagram\nclass A\u2028:::c\n",
     "classDiagram\n  class A\u2028:::c\n",

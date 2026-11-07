@@ -217,12 +217,19 @@ usecase-beta
 
 class の[トークンの間の空白](./class.ja.md#トークンの間の空白)
 の隙間を再利用します。
-各区切りの内側の空白の有無を保ち、あれば ASCII 空白 1 個に縮めます。
-`<<a>>` はそのまま、`<<  a  >>` は `<< a >>` になります。
-左右を別々に扱い、空白は足しません。
-`<<` の前も同じ class の規則に従い、接していれば接したまま、
-空白があれば ASCII 空白 1 個に縮めます。 [fixture: stereotypes/opener-gap-sides]
-[test: usecase: stereotype-opener-tab]
+`<<` の前に空白を 1 つ置き、区切りの内側には何も置きません。
+`A[a]<<R>>` と `A[a] <<  R  >>` は `A[a] <<R>>` になります。
+mermaid.js は文字を trim するので、どの書き方も同じ Db になります。
+mermaid.js の文書の例 5 件も、`<<...>>` を空白の後に、文字に接して書いています。
+その 3 件は、
+[ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/usecase.md#L141-L144)
+にあります。
+残る 2 件は、
+[ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/usecase.md#L546-L549)
+にあります。
+文字の端にディレクティブやコメントがあるときは、その隣の空白の側を保ちます。
+[fixture: stereotypes/stereotype-spaced-once]
+[fixture: stereotypes/opener-gap-sides] [test: usecase: stereotype-opener-tab]
 actor と use case の両方に適用し、
 関係の端点や systemBoundary 内の宣言も同じです。
 Mermaid は内部の両端を除き、`<<` の前の空白は構造上の空白です。
@@ -264,7 +271,7 @@ LS、PS、NBSP は内部の内容になれます。
 
 ```mmd
 usecase-beta
-  actor User << service  user >>
+  actor User <<service  user>>
 ```
 
 ### System boundaries

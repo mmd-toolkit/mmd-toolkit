@@ -1,4 +1,5 @@
 import type {
+  ClassAnnotation,
   ClassDeclaration,
   ClassMethod,
   ClassName,
@@ -212,6 +213,9 @@ export function layoutBlockOpening(
   const rules = new Map<number, GapRule>([[opening.range[0], "space"]])
   if (statement.type === "ClassDeclaration" && statement.cssClass !== null) {
     addCssClassRules(source, statement.cssClass, rules)
+  }
+  if (statement.type === "ClassDeclaration" && statement.annotation !== null) {
+    addAnnotationRules(source, statement.annotation, null, rules)
   }
   return {
     atoms: collectAtoms(
@@ -549,6 +553,39 @@ function containsRange(stretch: Atom, node: Node): boolean {
   return stretch.start <= node.range[0] && node.range[1] <= stretch.end
 }
 
+/**
+ * Adds the rules of the annotation of a class statement, `<<interface>>`:
+ * one space stands before the `<<` and after the `>>`, and nothing stands
+ * inside them, whatever whitespace the text was written with: mermaid.js
+ * trims the text of an annotation outside a body (docs/class.md, Whitespace
+ * between tokens). `after` is the start of what follows the `>>` on the
+ * line, if a class name stands there.
+ */
+function addAnnotationRules(
+  source: Source,
+  annotation: ClassAnnotation,
+  after: number | null,
+  rules: Map<number, GapRule>,
+): void {
+  const tokens = findTokensBetween(
+    source,
+    annotation.range[0],
+    annotation.range[1],
+  )
+  const opening = tokens.at(0)
+  const closing = tokens.at(-1)
+  if (opening === undefined || closing === undefined) return
+  expectValue(opening, "<<")
+  expectValue(closing, ">>")
+  rules.set(opening.range[0], "space")
+  const first = tokens.at(1)
+  if (first !== undefined && first !== closing) {
+    rules.set(first.range[0], "none")
+    rules.set(closing.range[0], "none")
+  }
+  if (after !== null) rules.set(after, "space")
+}
+
 /** The gap rules of a statement. */
 function statementRules(
   source: Source,
@@ -571,7 +608,18 @@ function statementRules(
       // Styles).
       addNameListRules(source, statement.cssClasses, rules)
       break
+    case "ClassAnnotationStatement":
+      addAnnotationRules(
+        source,
+        statement.annotation,
+        statement.class.range[0],
+        rules,
+      )
+      break
     case "ClassDeclaration":
+      if (statement.annotation !== null) {
+        addAnnotationRules(source, statement.annotation, null, rules)
+      }
       if (statement.cssClass !== null) {
         addCssClassRules(source, statement.cssClass, rules)
       }

@@ -269,7 +269,29 @@ mermaid.js の文書の例 2 件は、
 U+2028 と U+2029 は、そのまま残します。
 [test: U+2028 before the `:::` of a class]
 [test: U+2029 after the `:::` of a class]
-以下は、名前の後の注釈、角括弧のラベル、 `note for`、`click`、`style`、
+クラスの注釈 `<<interface>>` は、
+`<<` の前（クラスの前にあるときは `>>` の後）に空白を 1 つ置き、
+区切りの内側には何も置きません。
+`class S<<i>>` と `class S <<  i  >>` は `class S <<i>>` に、
+`<<interface>>Class01` と `<< interface>>Class01` は `<<interface>> Class01`
+になります。
+本体の外の注釈は mermaid.js が文字を trim するので、
+どの書き方も同じ Db になります。
+mermaid.js の文書は、両方の置き場所をこの空白で書いています。
+`class Shape <<interface>>` は、
+[ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L544)
+にあります。
+`<<interface>> Shape` は、
+[ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L552)
+にあります。 [fixture: whitespace-between-tokens/annotation-spaced-once]
+隙間にディレクティブがあれば、
+その両側に書かれた空白を残します（[ディレクティブ](#ディレクティブ)を参照）。
+本体の中の注釈の行は、この種類の注釈ではありません。
+文字が Db に入るので、
+書かれたままにします（[メンバーの行](#メンバーの行)を参照）。
+U+2028 と U+2029 は、そのまま残します。
+[test: U+2028 before the `<<` of a class annotation]
+以下は、角括弧のラベル、 `note for`、`click`、`style`、
 `cssClass` の文の語の間も同じです。
 [fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/after-name-collapsed]

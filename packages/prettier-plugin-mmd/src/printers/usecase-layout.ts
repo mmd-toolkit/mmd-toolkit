@@ -429,9 +429,26 @@ function addElementRules(
       findStructuralToken(source, element.stereotype.range[1]),
       "the stereotype closer",
     )
+    const opening = expectToken(
+      findStructuralTokenEndingBefore(source, element.stereotype.range[0]),
+      "the stereotype opener",
+    )
     stereotypes.push({ value: element.stereotype, range })
     joinedBefore.add(range[0])
     joinedBefore.add(closing.range[0])
+    // One space stands before the `<<` and nothing inside the delimiters, as
+    // in the annotation of a class (docs/usecase.md, Stereotypes).
+    rules.set(opening.range[0], "space")
+    // A directive or a comment at an end of the text is part of the text,
+    // and the whitespace beside it keeps its written side (docs/usecase.md,
+    // Stereotypes).
+    const edgeTrivia = findTriviaBetween(source, range[0], range[1]).some(
+      (item) => item.range[0] === range[0] || item.range[1] === range[1],
+    )
+    if (!edgeTrivia) {
+      rules.set(range[0], "none")
+      rules.set(closing.range[0], "none")
+    }
   }
   addClassListRules(source, element.classes, element.range[0], rules)
 }

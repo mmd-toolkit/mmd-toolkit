@@ -247,9 +247,24 @@ of its documentation write `class Animal:::someclass`, without and with a body
 the gap keeps the whitespace written on each side of it, as under
 [Directives](#directives), and a U+2028 or U+2029 stays where it is. [test:
 U+2028 before the `:::` of a class] [test: U+2029 after the `:::` of a class]
-The rest of this holds for an annotation after a name, a label in brackets, and
-the words of `note for`, `click`, `style`, and `cssClass` statements. [fixture:
-whitespace-between-tokens/collapsed] [fixture:
+The annotation of a class, `<<interface>>`, has one space before the `<<` (or
+after the `>>`, where it stands before the class) and nothing inside the
+delimiters: `class S<<i>>` and `class S <<  i  >>` are printed `class S <<i>>`,
+and `<<interface>>Class01` and `<< interface>>Class01` are printed
+`<<interface>> Class01`. mermaid.js trims the text of an annotation outside a
+body, so every spelling gives the same Db. The documentation of mermaid.js
+writes both placements with this spacing:
+[`class Shape <<interface>>`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L544)
+and
+[`<<interface>> Shape`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L552).
+[fixture: whitespace-between-tokens/annotation-spaced-once] A directive in the
+gap keeps the whitespace written on each side of it, as under
+[Directives](#directives). The annotation line in a body is not an annotation of
+this kind: its text is part of the Db, and it stays as written (see
+[Member lines](#member-lines)). A U+2028 or U+2029 stays where it is. [test:
+U+2028 before the `<<` of a class annotation] The rest of this holds for a label
+in brackets, and the words of `note for`, `click`, `style`, and `cssClass`
+statements. [fixture: whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/after-name-collapsed] [fixture:
 whitespace-between-tokens/words-collapsed] [fixture:
 whitespace-between-tokens/tabs-collapsed] A line that holds only a class name,
