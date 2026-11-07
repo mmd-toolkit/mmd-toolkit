@@ -1,6 +1,7 @@
 # パーサー
 
-`@mmd-toolkit/parser`は、Mermaidの図のテキストを抽象構文木（AST）に解析します。
+`@mmd-toolkit/parser`は、[Mermaid](https://mermaid.js.org/)の図のテキストを、
+抽象構文木（AST）に解析します。
 JavaScriptやTypeScriptで図の内容を調べたり、処理したりするために使えます。
 
 [Playgroundでオンラインの解析を試せます](https://mmd-toolkit.github.io/mmd-toolkit/playground/)。
@@ -13,6 +14,8 @@ JavaScriptやTypeScriptで図の内容を調べたり、処理したりするた
 ```sh
 npm install @mmd-toolkit/parser
 ```
+
+ESモジュールで、Node.js `^20.19.0 || ^22.13.0 || >=24`が必要です。
 
 TypeScriptの型を使うには、パーサーの版か、
 互換のある新しい版の`@mmd-toolkit/ast`も入れます。

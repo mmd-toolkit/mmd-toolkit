@@ -21,7 +21,7 @@
 mermaid.js がフロントマターとディレクティブから設定をどう求めるかを述べます。
 一部の図の Db がその設定を読むからです。
 各図の Db を作る手順（[db-from-tree/](./db-from-tree/)）は設定を考慮し、
-Db の値を検査する側は、 mermaid.js 自身の関数で設定を求めます。
+Db の値を検査する側は、mermaid.js 自身の関数で設定を求めます。
 設定を求める途中で mermaid.js が入力を拒否する場合は、以下でそう述べます。
 この仕様は、そのような入力を受理します。
 
@@ -117,8 +117,8 @@ pin した mermaid.js に同梱された js-yaml 4.3.0 がその JSON
   タイトルは `<a b="c">` です。
   [fixture: flowchart/frontmatter-title-html-attribute] [fixture:
   common/frontmatter-title-escaped-quotes-in-tag]
-  引用符のないスカラーでは、 `0x1F` は `31`、`017` は `17`、
-  `TRUE` は `true` になり、 `1e400` は文字列 `1e400` のままで、
+  引用符のないスカラーでは、`0x1F` は `31`、`017` は `17`、
+  `TRUE` は `true` になり、`1e400` は文字列 `1e400` のままで、
   `~` は null なのでタイトルはありません。 [fixture: common/config-title-list]
   [fixture: common/config-title-number] [fixture: common/config-title-mapping]
   [fixture: common/config-title-hex] [fixture: common/config-title-leading-zero]
@@ -143,7 +143,7 @@ pin した mermaid.js に同梱された js-yaml 4.3.0 がその JSON
     ないか空であれば、空のマッピングに置き換えられます。
     その後 `gantt` が文字列、数、真のどれかであれば、
     mermaid.js は入力を `TypeError` で拒否します。
-    そうでなければ、 `gantt` の `displayMode` に文字列形を入れます。
+    そうでなければ、`gantt` の `displayMode` に文字列形を入れます。
     [fixture: common/config-display-mode-gantt-primitive]
   - フロントマターの設定がリストなら、何もコピーされず、
     そのリストは何ももたらしません（[テキストの設定](#テキストの設定) を参照）。
@@ -396,7 +396,7 @@ mermaid.js は入力を `TypeError` で拒否します。
 リストから取り除いた文字列は、その位置を空けたままにし、
 後の合成はその位置を飛ばします。
 [既定の `secure` の一覧](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/schemas/config.schema.yaml#L343-L356)
-は、 `secure`、`securityLevel`、`startOnLoad`、`maxTextSize`、
+は、`secure`、`securityLevel`、`startOnLoad`、`maxTextSize`、
 `suppressErrorRendering`、`maxEdges` です。
 `secure` 自身が含まれるので、テキストはこの一覧を変えられません。
 [fixture: common/config-secure-key-ignored]

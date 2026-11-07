@@ -13,7 +13,7 @@
 書き手が書いたものを保ちます。
 [common.ja.md](../common.ja.md#ソースの読み方) の変換した形ではありません。
 mermaid.js が値を Db にどう読むか（形の型、2 回定めたブロック、
-辺の連鎖など）は、 tests パッケージの要約にあります。
+辺の連鎖など）は、tests パッケージの要約にあります。
 
 block diagram は**ブロック**を列に並べます。
 ブロックは、ノード、`space` のブロック、
@@ -68,7 +68,7 @@ BlockAccDescrBlockStatement のどれかです。
 | `id`    | Identifier                          | id。                              |
 | `shape` | BlockShape、BlockArrowShape か null | 形かブロック矢印。なければ null。 |
 
-子の欄: `id`、 `shape`。 [fixture: block/db-shape-square]
+子の欄: `id`、`shape`。 [fixture: block/db-shape-square]
 [fixture: block/db-arrow-two]
 
 ### BlockShape
@@ -318,7 +318,7 @@ mermaid.js がそう読むからです。
 最初のスタイルは空白でない最初の文字から始まり、
 最後のものは空白でない最後の文字で終わります。
 `style A  fill:#f00 ,stroke:#333  ` は、スペースが続く `fill:#f00` と、
-`stroke:#333` のスタイルを持ち、 `style A fill:#f00 , stroke:#333` は、
+`stroke:#333` のスタイルを持ち、`style A fill:#f00 , stroke:#333` は、
 スペースが続く `fill:#f00` と、
 スペースの後の `stroke:#333` のスタイルを持ちます。
 空白だけの部分は、その空白のリテラルです。
@@ -331,7 +331,7 @@ mermaid.js が `style` のスタイルにそれを保つからです。
 `style A fill:#f00,  ` は最後に null を持ちます。
 行の残りの両端の空白は、どのスタイルにも属さないからです。
 `classDef` のスタイルも同じ形です。
-Db がそれをどう trim するかは、 tests パッケージの要約にあります。
+Db がそれをどう trim するかは、tests パッケージの要約にあります。
 [fixture: block/db-class-apply-names-spaces]
 [fixture: block/db-class-def-color-fill] [fixture: block/db-style-spaces]
 [fixture: block/db-style-spaces-at-line-ends]

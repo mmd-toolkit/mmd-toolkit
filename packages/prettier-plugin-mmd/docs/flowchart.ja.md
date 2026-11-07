@@ -23,7 +23,7 @@ subgraph の文はその `subgraph` の行より 1 段深く置き、
 1 段は Prettier の `useTabs` と `tabWidth` オプションで指定し、
 下記の下限を適用します。
 既定は空白 2 つで、Prettier が整形するほかの言語と同じです。
-ヘッダーの後の文を 1 段深くするのは、 mermaid.js の文書の書き方です。
+ヘッダーの後の文を 1 段深くするのは、mermaid.js の文書の書き方です。
 [fixture: indentation/use-tabs]
 通常の字下げは木の構造から決めます。
 入力の桁位置は subgraph の所属を決めません。 [fixture: indentation/statements]
@@ -148,7 +148,7 @@ accDescr: d ; direction LR
 [fixture: statements-one-per-line/compat-empty-description-block-before-statement]
 [fixture: statements-one-per-line/compat-empty-description-block-after-data-block]
 1 行に書かれ `;` で区切られた文は、行に分けます。
-`;` は文を区切るだけで、 1 行に複数の文があると読みにくいからです。
+`;` は文を区切るだけで、1 行に複数の文があると読みにくいからです。
 [fixture: statements-one-per-line/separated-by-semicolons-meets-others]
 [fixture: statements-one-per-line/separated-by-semicolons-after-data-block]
 
@@ -309,7 +309,7 @@ flowchart LR
 単語が subgraph の名前や、スタイル、クラス定義、
 リンクスタイルのテキストの終わりにあるときも同じです。
 その単語は `end`、`click`、`call`、`href` で、スタイルのテキストでは、
-`fill:click` のように、 ASCII の英数字以外の文字の後にあっても終わりの単語です。
+`fill:click` のように、ASCII の英数字以外の文字の後にあっても終わりの単語です。
 [fixture: statements-one-per-line/semicolon-after-style-text-word-kept]
 [fixture: statements-one-per-line/semicolon-after-style-text-not-word-split]
 英字（大文字も含む）か数字の後にある単語は、独立した単語ではないので、
@@ -317,14 +317,14 @@ flowchart LR
 [fixture: statements-one-per-line/semicolon-after-style-text-after-capital-not-word-split]
 名前の中の `end` は、その後の空白を、改行も含めて取ります。
 そのため、`subgraph Front end` に改行と `A` が続くと、名前は `Front end`、改行、
-`A` で、メンバーはなく、 `subgraph Front end ;` ではメンバー A があります。
+`A` で、メンバーはなく、`subgraph Front end ;` ではメンバー A があります。
 `;` が後の行にあるときも、`;` はそのまま残り、その前の空白も書かれたまま、
 `subgraph` の行の一部になります。
 [corpus fixture: flowchart/semicolon-after-end-name-2a3a795c]
 [fixture: statements-one-per-line/name-semicolon-after-directive-line]
 名前の後の改行を読むのは `end` と `click` だけで、一覧のほかの単語は、
 文のテキストと一覧を共用しているために入っています。
-そこで `;` を残しても、 mermaid.js が読むものは変わりません。
+そこで `;` を残しても、mermaid.js が読むものは変わりません。
 [fixture: statements-one-per-line/semicolon-after-name-word-kept]
 [corpus fixture: flowchart/name-semicolon-whitespace-0c9483e4]
 [corpus fixture: flowchart/name-semicolon-whitespace-0fd5a434]
@@ -588,7 +588,7 @@ Prettier がコードでそうするのと同じで、空行は文をまとま�
 [fixture: blank-lines/inside-multi-line-statement]
 [fixture: blank-lines/around-comment-lines]
 [fixture: blank-lines/around-directive-lines]
-テキストの先頭と末尾、 subgraph の先頭と末尾の空行は取り除きます。
+テキストの先頭と末尾、subgraph の先頭と末尾の空行は取り除きます。
 [fixture: blank-lines/after-comment-before-header]
 [fixture: blank-lines/after-frontmatter]
 行をまたいで書かれた値（ラベルなど）のテキストの中の空行は、
@@ -755,7 +755,7 @@ flowchart LR
 `call` の後の関数名と、その後の `(` の間の空白は、括弧と引数と一緒に、
 書かれたまま残します。
 mermaid.js は、名前を `(` の前まで、空白も含めて読むので、
-`click A call fn  ()` は、 `fn` と 2 つの空白を名前とする関数を呼びます。
+`click A call fn  ()` は、`fn` と 2 つの空白を名前とする関数を呼びます。
 [fixture: whitespace-between-tokens/callback-name-arguments-forms-kept]
 引数が空白だけの呼び出しの括弧は互いに接し、
 `click A call f( )` は `click A call f()` になります。
@@ -812,7 +812,7 @@ flowchart LR
 [fixture: arrow-spacing/edge-id-with-labels]
 [fixture: arrow-spacing/edge-id-whitespace-before-arrow-dropped]
 引用符で囲んだ `|` の間のラベルは、ほかの引用符で囲んだラベルと同じく、
-書かれたまま残し（詳しくは、 [ラベルの内側の空白](#ラベルの内側の空白)を参照）、
+書かれたまま残し（詳しくは、[ラベルの内側の空白](#ラベルの内側の空白)を参照）、
 その `|` は矢印と引用符に接します。
 [fixture: arrow-spacing/pipe-label-string-kept]
 
@@ -821,7 +821,7 @@ flowchart LR
 前の形に接して印字します。
 この id は、前に空白がないときだけ辺の id です。
 空白の後では字句解析が矢印を読み、残りはそのテキストになるか、
-入力が拒否されるので、 `A[x]--a@-->B` の辺の id は `--a`、
+入力が拒否されるので、`A[x]--a@-->B` の辺の id は `--a`、
 `A[x] --a@-->B` のリンクのテキストは `a@` です。
 [fixture: arrow-spacing/edge-id-arrow-like-kept-attached]
 [fixture: arrow-spacing/edge-id-arrow-like-with-head]
@@ -939,7 +939,7 @@ flowchart LR
 
 ### ラベルの内側の空白
 
-引用符のないラベルの両端の空白は、 mermaid.js が取り除くのと同じく取り除きます。
+引用符のないラベルの両端の空白は、mermaid.js が取り除くのと同じく取り除きます。
 [fixture: label-inner-whitespace/trimmed-every-shape]
 ラベルの中の空白は保ち、空白だけのラベルも保ちます（`A[]` は拒否されます）。
 [fixture: label-inner-whitespace/all-whitespace-every-shape-kept]
@@ -957,20 +957,20 @@ flowchart LR
 [fixture: label-inner-whitespace/leading-whitespace-run-becomes-one]
 [fixture: label-inner-whitespace/compat-leading-backslash-kept]
 空白がないと、`A[ /x/]` はラベル `x` の lean-right の形に、
-`A( -x-)` は ellipse になり、 `A>x@ ]` は拒否されます。
+`A( -x-)` は ellipse になり、`A>x@ ]` は拒否されます。
 辺の id の並びが `>` で止まらず、`A>x` を辺の id として読むからです。
 そうしたラベルは、末尾にも空白 1 つを置きます。
 `A[ /x/]` は `A[ /x/ ]` になります。
 ただし、斜めの形の閉じの `?]` と `=]` の前には置きません。
 mermaid.js が、その空白と `?` や `=` をテキストとして読むからです。
 `A[/ -x/?]` はそのままです。
-この規則は、`@` を除き、どの形でも、 `|` の間のテキストでも同じです。
+この規則は、`@` を除き、どの形でも、`|` の間のテキストでも同じです。
 [fixture: label-inner-whitespace/leading-whitespace-every-shape-kept]
 [fixture: label-inner-whitespace/leading-whitespace-pipe-label-kept]
 
 `>` 以外で開く形では、ラベルの中の `@` に空白は要りません。
-辺の id の並びは、括弧類と `|` で止まるので、
-`A[x@]` と `A-->|x@|B` のラベルは、空白があってもなくても `x@` です。
+辺の id の並びは、括弧類と `|` で止まるので、`A[x@]` と `A-->|x@|B` のラベルは、
+空白があってもなくても `x@` です。
 `A[ user@example.com ]` は `A[user@example.com]` になります。
 [fixture: label-inner-whitespace/leading-whitespace-at-sign-trimmed]
 agentflow では違います。
@@ -1084,7 +1084,7 @@ flowchart LR
 2 つの矢印の間のテキストか、矢印の後の `|` の間のテキストです。
 [fixture: link-label-form/other-link-kinds-kept]
 一方の形をもう一方に変えるには、`|` を含むラベルの規則が要ります。
-`A -- a|b --> B` は受理されますが、 `A -->|a|b| B` は拒否されます。
+`A -- a|b --> B` は受理されますが、`A -->|a|b| B` は拒否されます。
 [fixture: link-label-form/pipe-in-text-between-arrows-kept]
 
 入力
@@ -1167,7 +1167,7 @@ flowchartの通常のアクセシビリティ行に固有の理由はないの�
 
 値の内部の空白、インラインの`%%`と`#`は値の文字として保ちます。
 [fixture: accessibility-lines/inline-percent-hash]
-値が空または空白だけでも文の形を保ち、 `accTitle:`または`accDescr:`とし、
+値が空または空白だけでも文の形を保ち、`accTitle:`または`accDescr:`とし、
 後ろに空白を足しません。 [fixture: accessibility-lines/empty-title]
 [fixture: accessibility-lines/empty-description]
 [corpus fixture: flowchart/gram-acc-title-empty-at-end]
@@ -1218,7 +1218,7 @@ CRには共通の改行の正規化を使います。
 usecaseのDbが同じ形に従います。 [fixture: accessibility-lines/empty-block-tight]
 [fixture: accessibility-lines/empty-block-spaced]
 [fixture: accessibility-lines/empty-block-lines]
-空ブロック内で受理するNBSP、U+2028、 U+2029も落とします。
+空ブロック内で受理するNBSP、U+2028、U+2029も落とします。
 [test: accessibility blocks: flowchart empty-block-unicode]
 保持行の例外を優先し、コメントやdirectiveがあるブロックは従来の配置を保ちます。
 [fixture: accessibility-lines/empty-block-semicolon-kept]
@@ -1264,7 +1264,7 @@ mermaid.js が trim するので、空白 1 つで印字します。
 [複数行の値](#複数行の値)のトップレベルと subgraph の規則に従い、
 単独行の閉じ括弧を `accDescr` に揃えます。
 閉じ括弧が0桁目でも字下げされていても同じです。
-兄弟の図種と同じ形で、 flowchart固有の理由はありません。
+兄弟の図種と同じ形で、flowchart固有の理由はありません。
 [fixture: accessibility-lines/block-close-column-zero]
 [fixture: accessibility-lines/block-close-indented]
 [fixture: accessibility-lines/block-comment-close-column-zero]
@@ -1333,7 +1333,7 @@ sequence、class、state は、そこでは改行が空白の後でだけ数え�
 行をつなぎます。 [fixture: multi-line-statements/continuation-in-subgraph]
 [fixture: multi-line-statements/label-over-lines]
 [fixture: multi-line-statements/directive-inside]
-途中のコメント行は文の中に残り、 2 行目以降と同じ段に置きます。
+途中のコメント行は文の中に残り、2 行目以降と同じ段に置きます。
 [fixture: multi-line-statements/several-comments-inside]
 部品の間、コメント、ディレクティブの中に改行がある `click` の文は、
 書かれたまま残します。
@@ -1470,7 +1470,7 @@ U+00A0 などの空白は文字列の一部として残します。
 - 文字列が 1 桁目の `---`、`...`、`%` で始まるとき。
   mermaid.js は、`---` か `...` の後に空白か終わりが続く始まりを、
   YAML の文書区切りとして読みます。
-  前に空白があれば普通の文字列になるので、 `A@{---}` は拒否され、
+  前に空白があれば普通の文字列になるので、`A@{---}` は拒否され、
   `A@{ --- }` は受理されます。
   `---x` のような始まりは区切りでなく、
   `%a: 1` は空白があってもなくても拒否されますが、
@@ -1481,7 +1481,7 @@ U+00A0 などの空白は文字列の一部として残します。
   [fixture: data-blocks/one-line-document-marker-after-space-padded]
 - U+2028 か U+2029 を含むとき。
   mermaid.js はこの文字列を 1 行として包み、
-  空白があってもなくても同じに読みますが、 1 行のブロックの規則は、
+  空白があってもなくても同じに読みますが、1 行のブロックの規則は、
   この 2 つを含めて改行のない文字列に限ります。
   [test: data blocks: flowchart one line with U+2028 inside]
   [test: data blocks: flowchart one line with U+2029 inside]
@@ -1925,7 +1925,7 @@ flowchart %%{init: {}}%%LR
 ### 方向
 
 方向は書かれたまま残します。
-ヘッダーでも `direction` の文でも、 `TD` を `TB` に変えません。
+ヘッダーでも `direction` の文でも、`TD` を `TB` に変えません。
 [fixture: direction/header-td-kept]
 [fixture: direction/statement-td-kept-with-other-header]
 [fixture: direction/statement-values-kept]
@@ -1997,7 +1997,7 @@ flowchart の文書にあるタイトル付きの subgraph は 2 件で、
 [`subgraph one [My Group]`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L1109)
 です。
 これは形を決める根拠にはなりません。
-隙間が、`:` と `#` の間にあり、 `:` の前に `style` か `classDef` があり、
+隙間が、`:` と `#` の間にあり、`:` の前に `style` か `classDef` があり、
 `#` の後ろに `;` がある行にあるとき（`subgraph style: [#x;]`）、
 その隙間は空白があるかないかを保ちます（[セミコロン](#セミコロン)と同じです）。
 `subgraph a: [#x;]` と `subgraph style: [#x]` にはその `;` がないので、
@@ -2132,7 +2132,7 @@ flowchart LR
 
 ### スタイルの行末の空白
 
-`style`、`classDef`、 `linkStyle` の文の末尾の空白は取り除きます。
+`style`、`classDef`、`linkStyle` の文の末尾の空白は取り除きます。
 [fixture: style-trailing-whitespace/removed]
 [fixture: style-trailing-whitespace/removed-tab]
 [fixture: style-trailing-whitespace/removed-after-directive]
@@ -2164,7 +2164,7 @@ mermaid.js がその空白を、
 ### フロントマターの YAML
 
 `---` の行の間の YAML は、Prettier の YAML 整形で整形します。
-パーサーは YAML を読まないので、 YAML として整形するのは整形器の仕事です。
+パーサーは YAML を読まないので、YAML として整形するのは整形器の仕事です。
 [fixture: frontmatter-yaml/compat-unknown-config-formatted]
 `---` の行は、行末の空白とタブも含めて、書かれたまま残します。
 [fixture: frontmatter-yaml/closing-delimiter-whitespace-kept]
@@ -2180,7 +2180,7 @@ Prettier は、
 書かれたまま残します。
 mermaid.js は YAML を読む前に、フロントマターを含むテキスト全体で、
 HTML タグの中の `="..."` を書き換えます。
-そうした値の引用符を変えると、 mermaid.js が読むものが変わることがあります。
+そうした値の引用符を変えると、mermaid.js が読むものが変わることがあります。
 [fixture: frontmatter-yaml/compat-tag-start-digit-kept]
 [fixture: frontmatter-yaml/compat-tag-start-underscore-kept]
 [fixture: frontmatter-yaml/compat-less-than-without-tag-formatted]

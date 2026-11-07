@@ -46,7 +46,7 @@ CIでは`--frozen-lockfile`でインストールします。
 ルートは`createVaporApp`でマウントします。
 
 編集から150 ms後に解析します。
-ASTの走査はパーサーの公開APIの`visitorKeys`を使い、 tokens、comments、
+ASTの走査はパーサーの公開APIの`visitorKeys`を使い、tokens、comments、
 directives、frontmatterは補助レコードとして扱います。
 ソース範囲はUTF-16オフセットの半開区間で、
 パーサーの行番号ではなくMonacoのモデルで変換します。
@@ -93,7 +93,7 @@ pnpm --filter @mmd-toolkit/playground test:e2e
 ```
 
 単体テストでURLの変換、大きな共有入力、AST範囲の選択を確認します。
-PlaywrightでPagesのサブパス上の本番ビルドを、 Chromium、Firefox、
+PlaywrightでPagesのサブパス上の本番ビルドを、Chromium、Firefox、
 WebKitで操作します。
 HMRのテストはパーサーとフォーマッターの隔離したコピーを編集し、
 作業中のライブラリーファイルを変更しません。
@@ -102,7 +102,7 @@ HMRのテストはパーサーとフォーマッターの隔離したコピー�
 
 公開先は
 [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)です。
-Viteのbaseは`/mmd-toolkit/playground/`で、エディターワーカー、 ShikiのWASM、
+Viteのbaseは`/mmd-toolkit/playground/`で、エディターワーカー、ShikiのWASM、
 遅延読み込みする整形資産もこのパスに従います。
 ビルドの出力先は`lib/`です。
 
@@ -113,7 +113,7 @@ pnpm --filter @mmd-toolkit/playground preview
 
 Previewは、本番ビルドをブラウザーで自動表示します。
 
-[pages.yml](../../../.github/workflows/pages.yml)は、 PRを検証し、
+[pages.yml](../../../.github/workflows/pages.yml)は、PRを検証し、
 mainの変更と手動実行でビルドします。
 ドキュメントとPlaygroundのビルドジョブは独立して実行します。
 mainではドキュメントを成果物のルートに、

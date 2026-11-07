@@ -13,7 +13,7 @@ builder は parser の受理検査を繰り返さない。
 ## 木から概要を組み立てる
 
 1. **変換した値。**
-   共通の converted-text reader でソースの除去、 CR・CRLF、
+   共通の converted-text reader でソースの除去、CR・CRLF、
    本文の HTML 属性の引用符、entity marker を読む。
    GitgraphIgnoredText はすべて無視する。
    裸の参照は変換したテキストを読む。
@@ -60,7 +60,7 @@ builder は parser の受理検査を繰り返さない。
    gitgraph/gram-commit-repeated-options] [fixture:
    gitgraph/gram-merge-empty-id] [fixture: gitgraph/db-three-definitions]
 4. **公開。**
-   文をソース順に読み、 branch の先端と選択中の branch は中間状態だけに保つ。
+   文をソース順に読み、branch の先端と選択中の branch は中間状態だけに保つ。
    branch 作成は現在の先端をコピーして新 branch を選ぶ。
    checkout・switch は既存の先端を選ぶ。
    通常の commit は現在の先端を親に持ち、空の branch なら親を持たない。

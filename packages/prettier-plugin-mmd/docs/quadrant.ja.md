@@ -93,7 +93,7 @@ title、アクセシビリティのテキスト、説明ブロックの中の `;
 テキストの文字なので残ります。
 `title T; quadrant-1 A` は 1 つの title です。
 `title T accDescr {}` のように title の中にある空の説明ブロックは、
-title の一部なので、 title と一緒に残ります。
+title の一部なので、title と一緒に残ります。
 [fixture: statements-one-per-line/semicolon-in-a-title-is-text]
 [fixture: statements-one-per-line/semicolon-in-an-accessibility-text-is-text]
 [fixture: statements-one-per-line/empty-description-block-in-a-title-stays]
@@ -259,7 +259,7 @@ mermaid.js の読みを知らせる lint の規則が扱う場所で、
 2 つの単語の間のタブはテキストの中のタブで、改ページも同じです。
 テキストの両端の空白は、Db が落とすので落とします。
 文字列とその後の単語は、間の空白を保ちます。
-`"a" b` のテキストは `a b` で、 `"a"b` のテキストは `ab` だからです。
+`"a" b` のテキストは `a b` で、`"a"b` のテキストは `ab` だからです。
 [fixture: keywords-and-texts/inner-whitespace-kept]
 [fixture: keywords-and-texts/whitespace-at-the-ends-dropped]
 [fixture: keywords-and-texts/string-then-text-whitespace-kept]
@@ -311,7 +311,7 @@ mermaid.js は、矢印の周りの空白があってもなくても同じに読
 空白 1 つは mermaid.js の文書が使う形で、
 テキストの中の空白（[キーワードとテキスト](#キーワードとテキスト)
 を参照）が隠してしまう、最初のテキストの終わりを示します。
-矢印の長さは Db に入りませんが、書き手が書いたものなので、 `--->` は残します。
+矢印の長さは Db に入りませんが、書き手が書いたものなので、`--->` は残します。
 [fixture: axes/arrow-touching] [fixture: axes/arrow-with-more-whitespace]
 [fixture: axes/arrow-touching-on-one-side] [fixture: axes/arrow-length-kept]
 [fixture: axes/text-inner-whitespace-kept] [fixture: axes/strings]
@@ -361,7 +361,7 @@ quadrantChart
 ### 点
 
 点は `名前: [x, y]` と印字します。
-`:` は名前に接し、`[` の前は空白 1 つ、 `[` の後と `]` の前に空白は置かず、
+`:` は名前に接し、`[` の前は空白 1 つ、`[` の後と `]` の前に空白は置かず、
 コンマの前に空白は置かず、後ろに空白 1 つを置きます。
 `:::` の後のクラス名は名前に接し、
 `:` はクラス名に接します（`A:::c1: [0.3, 0.6]`）。
@@ -815,7 +815,7 @@ title、アクセシビリティのテキスト、説明ブロック、文字列
 
 文の後ろのコメントは、文の行に残します。
 前に空白が書かれていれば空白 1 つ、書かれていなければ接したままにします。
-空白がどこにあっても Db は同じですが、 mermaid.js は、
+空白がどこにあっても Db は同じですが、mermaid.js は、
 1 文字の単位に接した `%%` を、
 その文字と一緒に読みます（既知の差異 `comment-takes-character`）。
 `x-axis L%% c` は拒否され、`quadrant-1 a b%% c` のテキストは `a` です。

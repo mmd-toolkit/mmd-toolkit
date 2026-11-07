@@ -25,7 +25,7 @@
 範囲は、説明から、データの最後のトークンまでです。
 最後のトークンは、最後の項目か、後の項目が null のときは最後の `,` か、
 データが空白だけのときは `:` です。
-`a : 1d,` は `a : 1d,` を覆い、 `a :` と 3 つの空白は `a :` を覆います。
+`a : 1d,` は `a : 1d,` を覆い、`a :` と 3 つの空白は `a :` を覆います。
 [fixture: gantt/gram-task] [fixture: gantt/gram-task-trailing-comma]
 [fixture: gantt/lex-task-data-whitespace-only]
 
@@ -59,6 +59,6 @@
 それを含みます（[トークン](../tokens/gantt.ja.md#トークン) を参照）。
 値はその範囲の書かれたテキストです。
 `a  : 1d` の説明は、`a` とコロンの前の 2 つの空白を覆います。
-`title T` と 2 つの空白のタイトルは、 `T` と 2 つの空白を覆います。
+`title T` と 2 つの空白のタイトルは、`T` と 2 つの空白を覆います。
 [fixture: gantt/lex-task-text-trailing-spaces]
 [fixture: gantt/lex-title-trailing-spaces]

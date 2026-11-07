@@ -2,20 +2,23 @@
 
 Japanese version: [README.ja.md](./README.ja.md)
 
-An [ESLint](https://eslint.org/) language plugin for Mermaid diagrams. It lints
-`.mmd` and `.mermaid` files, and `mermaid` and `mmd` code blocks in Markdown.
+An [ESLint](https://eslint.org/) language plugin for
+[Mermaid](https://mermaid.js.org/) diagrams. It lints `.mmd` and `.mermaid`
+files, and `mermaid` and `mmd` code blocks in Markdown.
 
 It reports text that mermaid.js rejects as a parsing error. Its rules report
 mistakes that mermaid.js accepts without a word but reads as something other
 than what the author most likely meant, such as a `style` statement for an id
-that the diagram never defines. It gives ESLint the tree of
-[`@mmd-toolkit/parser`](../parser), so the rules read the tree, not the text.
+that the diagram never defines.
 
-This is a third-party project, not affiliated with mermaid-js. `mmd` here means
-the Mermaid diagram syntax, not MultiMarkdown or MikuMikuDance.
+This is a third-party project, not affiliated with
+[mermaid-js](https://mermaid.js.org/). `mmd` here means the Mermaid diagram
+syntax, not MultiMarkdown or MikuMikuDance.
 
 Try lint diagnostics, automatic fixes, and editor suggestions in
 [ESLint Online Playground](https://eslint-online-playground.netlify.app/#@mmd-toolkit/eslint-plugin).
+
+Documentation: [Linter](https://mmd-toolkit.github.io/mmd-toolkit/linter/).
 
 ## Installation
 
@@ -104,8 +107,9 @@ A `mermaid` block whose text holds no diagram is reported as a parsing error. A
 block with no line between its fences is not reported.
 
 With this processor, one ESLint run checks the code blocks and not the Markdown
-text itself. [Linting Markdown](../docs/pages/linter/markdown.md) shows how to
-check both.
+text itself.
+[Linting Markdown](https://mmd-toolkit.github.io/mmd-toolkit/linter/markdown.html)
+shows how to check both.
 
 ## Configuration comments
 
@@ -120,17 +124,19 @@ flowchart LR
 `%% eslint-disable`, `%% eslint-enable`, `%% eslint-disable-next-line`, and
 `%% eslint <rule>: <config>` are read. A Mermaid comment fills its line, so
 `%% eslint-disable-line` applies only to the comment itself. See
-[Configuration comments](../docs/pages/linter/comments.md).
+[Configuration comments](https://mmd-toolkit.github.io/mmd-toolkit/linter/comments.html).
 
 ## Diagrams and rules
 
 The plugin reads every diagram type of mermaid.js 12.3.0, the version that the
-toolkit follows; see [Diagram support](../docs/pages/reference/support.md). It
-accepts and rejects the same text as mermaid.js, except for the
+toolkit follows; see
+[Diagram support](https://mmd-toolkit.github.io/mmd-toolkit/reference/support.html).
+It accepts and rejects the same text as mermaid.js, except for the
 [known divergences](../spec/docs/known-divergences.md).
 
-The rules are in two groups, and [docs/rules/index.md](./docs/rules/index.md)
-lists them all, with a document for each rule:
+The rules are in two groups, and the
+[list of rules](https://mmd-toolkit.github.io/mmd-toolkit/linter/rules/) has
+them all, with a document for each rule:
 
 - Rules for one diagram type, with the id `@mmd-toolkit/<diagram>-<name>`, such
   as `@mmd-toolkit/flowchart-no-undef`. Every diagram type except `info` and
@@ -148,9 +154,11 @@ and apply in your editor.
 
 ## Documentation
 
-- [Linter guide](../docs/pages/linter/index.md): setup and what is checked.
-- [Configuration](../docs/pages/linter/configuration.md): choosing rules and
-  combining configurations.
-- [docs/rules/index.md](./docs/rules/index.md): the rules.
+- [Linter guide](https://mmd-toolkit.github.io/mmd-toolkit/linter/): setup and
+  what is checked.
+- [Configuration](https://mmd-toolkit.github.io/mmd-toolkit/linter/configuration.html):
+  choosing rules and combining configurations.
+- [Rules](https://mmd-toolkit.github.io/mmd-toolkit/linter/rules/): what each
+  rule reports, with examples.
 - [docs/development.md](./docs/development.md): how the plugin is built and
-  tested.
+  tested, for people who work on it.

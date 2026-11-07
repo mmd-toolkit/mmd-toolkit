@@ -19,8 +19,7 @@ since: v0.1.0
 
 <!-- end auto-generated rule notice -->
 
-Cynefin 図は、
-`accDescr` が行かブロックで設定するアクセシブルな説明を 1 つ持つ。
+Cynefin 図は、`accDescr` が行かブロックで設定するアクセシブルな説明を 1 つ持つ。
 後の `accDescr` は、前に設定した説明をエラーなしに置き換え、前の説明は失われる。
 
 ## 規則の詳細

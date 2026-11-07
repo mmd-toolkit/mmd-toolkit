@@ -11,7 +11,7 @@ mindmap 図の木から Db の要約を作る手順です。
 要約の欄は [db-summaries.ja.md](../db-summaries.ja.md#mindmap) にあります。
 
 mermaid.js は、構文解析の間に Db を作ります。
-文法は、ノード、icon、 class のいずれかがある行ごとに Db のメソッドを呼びます。
+文法は、ノード、icon、class のいずれかがある行ごとに Db のメソッドを呼びます。
 出典は
 [`statement`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L99-L108)、
 [`node`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L112-L126)
@@ -45,7 +45,7 @@ class のどれでもプレースホルダです。
 同じ形では、各行終端（`\r\n` と単独の `\r` も）を `\n` として読みます。
 これは文字列、マークダウン文字列、形のテキスト、icon の中でのことです。
 各属性の引用符は `'` として読みます。
-これはノードのテキスト、形のテキスト、icon、 class の中でのことです。
+これはノードのテキスト、形のテキスト、icon、class の中でのことです。
 [fixture: mindmap/entity-placeholder-in-node-text]
 [fixture: mindmap/entity-placeholder-numeric]
 [fixture: mindmap/entity-placeholder-in-description]
@@ -127,10 +127,10 @@ Db はノードを出現順に足し、ノードを、
 それより前にあって level が小さい最も近いノードに渡します。
 そのため、前のノードと同じ字下げのノードは、
 そのノードの下にあるノードの後ろに続きます。
-木は、各ノードを、 Db が選ぶノードの子として持ちます。
+木は、各ノードを、Db が選ぶノードの子として持ちます。
 [字下げと親](../../../spec/docs/diagrams/mindmap.ja.md#字下げと親) を参照。
 builder は、ノードの子を level を比べずに木から、出現順に取ります。
-同じテキストの 2 つのノードは、 2 つのノードです。
+同じテキストの 2 つのノードは、2 つのノードです。
 [fixture: mindmap/db-indent-parent-is-nearest-shallower]
 [fixture: mindmap/db-indent-sibling-after-deeper]
 [fixture: mindmap/gram-indent-between-earlier-levels]
@@ -171,11 +171,11 @@ builder は、ノードの子を level を比べずに木から、出現順に�
 形があるときは、opener から決まります。
 `[` は 2、`((` は 3、`)` は 4、`))` は 5、`{{` は 6、`(-` と `-)` は 0 です。
 `(` は closer からも決まり、`)` なら 1、それ以外の closer なら 4 です。
-ほかの opener では closer は何も決めないので、 `[text)` は 2、
-`((x)` は 3 です。 [fixture: mindmap/db-shape-rect]
-[fixture: mindmap/db-shape-rounded] [fixture: mindmap/db-shape-circle]
-[fixture: mindmap/db-shape-cloud] [fixture: mindmap/db-shape-bang]
-[fixture: mindmap/db-shape-hexagon] [fixture: mindmap/db-shape-cloud-dash-form]
+ほかの opener では closer は何も決めないので、`[text)` は 2、`((x)` は 3 です。
+[fixture: mindmap/db-shape-rect] [fixture: mindmap/db-shape-rounded]
+[fixture: mindmap/db-shape-circle] [fixture: mindmap/db-shape-cloud]
+[fixture: mindmap/db-shape-bang] [fixture: mindmap/db-shape-hexagon]
+[fixture: mindmap/db-shape-cloud-dash-form]
 [fixture: mindmap/db-shape-explode-dash-form]
 [fixture: mindmap/db-shape-mismatched-end]
 [fixture: mindmap/gram-shape-round-other-closer]
@@ -214,7 +214,7 @@ icon の行と class の行は互いに独立で、
 
 ## 文字の置き換え
 
-Db が `sanitizeText` に通すノードのテキストは 4 つで、 id、説明、icon、
+Db が `sanitizeText` に通すノードのテキストは 4 つで、id、説明、icon、
 class です。
 `mindmapDbOf()` は、
 [db-from-tree.ja.md](../db-from-tree.ja.md#文字の置き換え)の置き換え

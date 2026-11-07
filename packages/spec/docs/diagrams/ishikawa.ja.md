@@ -66,7 +66,7 @@ CR と CRLF は LF と同じく 1 つの改行です。
 [fixture: ishikawa/div-header-blank-node]
 
 1. 0 個以上の空白文字に続く `%%` は図のコメントを始めます。
-   本文は、改行、 U+2028、U+2029、テキストの終わりまでを最大限読みます。
+   本文は、改行、U+2028、U+2029、テキストの終わりまでを最大限読みます。
    印の前の空白は空白類です。 [fixture: ishikawa/header-before-bare-pair]
    [fixture: ishikawa/gram-preserved-comment-after-root]
    [fixture: ishikawa/comment-preserved-u2028]
@@ -149,8 +149,8 @@ U+2028 または U+2029 だけの物理行は空行です。
 [fixture: ishikawa/div-header-ps-line-node]
 
 5. `node-text` は、改行以外の 1 個以上の文字を最大限読みます。
-   内部の空白、 U+2028 と U+2029、句読記号、引用符、バッククォート、
-   バックスラッシュ、NUL、 U+0085、U+200B を含みます。
+   内部の空白、U+2028 と U+2029、句読記号、引用符、バッククォート、
+   バックスラッシュ、NUL、U+0085、U+200B を含みます。
    U+0085 と U+200B は先頭でも字下げではなくテキストです。
    引用文字列の文脈やエスケープ構文はありません。
    [fixture: ishikawa/gram-spaces-inside-text]
@@ -201,8 +201,8 @@ U+2028 や U+2029 の後の物理行の残りと改行を除くことがあり�
 [fixture: ishikawa/lex-indent-comment-region-ps]
 
 図のコメントの印は `%%`、値はその後の本文です。
-末尾の改行や区切りは含まず、 `%%{}%%` の本文は `{}%%` です。
-共通規則に従い、 2 個の `%` の間や通常のテキストに directive を置けます。
+末尾の改行や区切りは含まず、`%%{}%%` の本文は `{}%%` です。
+共通規則に従い、2 個の `%` の間や通常のテキストに directive を置けます。
 `#` と単独の `%` はコメントを始めません。
 [fixture: ishikawa/gram-preserved-comment-after-root]
 [fixture: ishikawa/comment-directive-between-marks]
@@ -276,7 +276,7 @@ directive で分断できません。
 
 beta の境界が合わなければ、通常の見出しが選ばれ、接尾部は節点のテキストです。
 `-betaX` の前や中にある directive は許します。
-数に見える散文も節点のテキストなので、 `1`、directive、
+数に見える散文も節点のテキストなので、`1`、directive、
 `2` も 1 つのテキストの値として許します。
 [fixture: ishikawa/lex-directive-before-beta-fallback-text]
 [fixture: ishikawa/lex-directive-in-beta-fallback-text]
@@ -393,7 +393,7 @@ node = indentation? node-text
 
 節点は空でないテキストであり、宣言や参照ではありません。
 繰り返しも別の節点として保ちます。
-数、プロトタイプのプロパティ名、`title`、 `accTitle:`、`accDescr:`、
+数、プロトタイプのプロパティ名、`title`、`accTitle:`、`accDescr:`、
 `accDescr {}` は通常のテキストであり、
 タイトル文やアクセシビリティ文の構文はありません。
 [fixture: ishikawa/db-three-definitions] [fixture: ishikawa/db-number-labels]
@@ -580,14 +580,14 @@ frontmatter の境界には共通構文を適用し、空の区切り行の隣�
   [fixture: ishikawa/db-data-block-is-text]
 
 - **[c4-keyword-anywhere](../known-divergences/c4-keyword-anywhere.ja.md):**
-  節点のテキスト内の `C4Container`、 `C4Component`、`C4Dynamic`、
+  節点のテキスト内の `C4Container`、`C4Component`、`C4Dynamic`、
   `C4Deployment` で Ishikawa の見出しを上書きしません。
   その語が検出するテキストに残ると、mermaid.js は C4 を選んで拒否します。
   `C4Context` は上書きしません。
   除かれる共通のコメントや directive では上書きしません。
   行内の `%` のテキストは節点のテキストのままですが、
   検出でその接尾部を除くのは、物理行終端が続く場合だけです。
-  EOF では、後に U+2028 や U+2029 だけがある形も含め、 C4 の語が検出に残るため、
+  EOF では、後に U+2028 や U+2029 だけがある形も含め、C4 の語が検出に残るため、
   この差異になります。 [fixture: ishikawa/detect-c4-container-text]
   [fixture: ishikawa/detect-c4-component-root]
   [fixture: ishikawa/detect-c4-dynamic-quoted]

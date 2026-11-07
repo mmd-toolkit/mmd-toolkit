@@ -145,7 +145,7 @@ stateDiagram-v2
 `state X` の次の行の `%%{}` は、
 mermaid.js が読まない `%%` を持つ X の本体を開きます。
 一方、1 行の `state X %%{}` は、X と、空の本体を持つ複合状態 `%%` です。
-また、 `%%` の後に空白があるとコメントになります。
+また、`%%` の後に空白があるとコメントになります。
 [fixture: composite-states/percent-before-body-kept]
 [fixture: composite-states/percent-space-brace-comment]
 `{` の前の空の説明ブロックも、書かれたまま残します。
@@ -218,10 +218,10 @@ accDescr {}{
 
 `state` の名前の後に続く文は、`{` を含むときは、書かれた行のまま残します。
 状態の文脈は、名前、その後の改行、次の行の `{` までを、
-`{` の前の 2 つの名前として読み、 mermaid.js はそれを拒否するからです。
+`{` の前の 2 つの名前として読み、mermaid.js はそれを拒否するからです。
 `state foo` に `state B {` の行が続くと拒否されますが、
 `state B` に `{` の行が続くと受理されます。
-そのため、`{` はその名前の行に移さず、 id を次の行に書いたノートの行も、
+そのため、`{` はその名前の行に移さず、id を次の行に書いたノートの行も、
 書かれたまま残します。 [fixture: composite-states/brace-after-state-name-kept]
 ディレクティブやコメントの中の `{` は本体ではないので、
 そのような `{` だけを含む文は、ほかと同じように整形します。
@@ -276,11 +276,11 @@ click 文の後の空の説明ブロックも同じです。
 `state` の後の名前は、`state` の行に残します。
 `state a b` は 2 つの文で、`b` を行に単独で置くと状態 b を足しますが、
 `state a b` は足さないからです。 [corpus fixture: state/lex-state-without-body]
-`state x "" y` と `state z ""` の、 mermaid.js が読まない `""` も同じです。
+`state x "" y` と `state z ""` の、mermaid.js が読まない `""` も同じです。
 [fixture: statements-one-per-line/state-names-kept]
 保持する `;` を含む行は、flowchart と同じく、
 その行の文を残します（[1 行に 1 文](./flowchart.ja.md#1-行に-1-文)を参照）。
-state 図では、 `;` は id の文字です。
+state 図では、`;` は id の文字です。
 [fixture: statements-one-per-line/line-with-semicolon-kept]
 [fixture: statements-one-per-line/line-with-ignored-semicolon-kept]
 そのような行にある複合状態の `}` が、行の上で後ろに文を従えているときは、
@@ -388,7 +388,7 @@ stateDiagram-v2
 `A :::c` と `A ::: c` は `A:::c` になります。
 ER 図と同じです。
 mermaid.js はどの書き方も同じ状態として読むので、形を強いるものはありません。
-ER 図の `:::` はすでにこの形で印字しており、 mermaid.js の文書の例 5 件も、
+ER 図の `:::` はすでにこの形で印字しており、mermaid.js の文書の例 5 件も、
 この書き方です。
 その範囲は、
 [ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/stateDiagram.md#L448-L470)
@@ -412,10 +412,10 @@ mermaid.js が読まない `""` とスタイル文の `,` も同じです。
 書かれたまま残します。 [fixture: whitespace-between-tokens/comma-kept]
 [fixture: whitespace-between-tokens/floating-note-quotes-kept]
 `""` の前に空白が書かれているかどうかは保ちます。
-`state x"" {` は複合状態 `x""` で、 `state x "" {` は複合状態 `x` だからです。
+`state x"" {` は複合状態 `x""` で、`state x "" {` は複合状態 `x` だからです。
 [fixture: whitespace-between-tokens/quotes-before-brace-kept]
 キーワードは、書かれた大文字小文字のまま残します。
-mermaid.js は大文字小文字にかかわらず読み、 `Left Of` のようなノートの位置は、
+mermaid.js は大文字小文字にかかわらず読み、`Left Of` のようなノートの位置は、
 書かれたまま図に入るからです。
 [fixture: whitespace-between-tokens/keyword-case-kept]
 
@@ -533,7 +533,7 @@ stateDiagram-v2
 `scale`、`classDef`、`class`、`style`、`state`、`note`、`stateDiagram` の語は、
 大文字小文字によらず、後に空白が続くときだけキーワードで、ほかでは id です。
 これらのキーワードと同じ名前の id からの遷移と、
-`:::` の後のクラスがその名前の状態からの遷移は、 `scale-->B` のように、
+`:::` の後のクラスがその名前の状態からの遷移は、`scale-->B` のように、
 矢印の両側を接したまま残します。
 `scale -->B` は scale 文の始まりになるからです。
 [fixture: arrow-spacing/touching-before-keyword-kept]
@@ -579,7 +579,7 @@ mermaid.js の公式ドキュメントの主な例に合わせて、空白を 1 
 [fixture: descriptions-and-labels/class-named-style-then-description-kept]
 テキストは書かれたまま残します。 [fixture: descriptions-and-labels/text-kept]
 空白だけの説明は、`:` の後の空白を残します。
-`A : ` は説明を与えませんが、 `A :` は拒否されるからです。
+`A : ` は説明を与えませんが、`A :` は拒否されるからです。
 [corpus fixture: state/gram-description-blank]
 [corpus fixture: state/gram-description-colon-only]
 [fixture: descriptions-and-labels/blank-kept]
@@ -617,7 +617,7 @@ stateDiagram-v2
 `;` を含む行では、class 図と同じく、
 `:` の後に空白が書かれているかどうかを保ちます（[ラベル](./class.ja.md#ラベル)
 を参照）。
-mermaid.js の行単位の規則は、 `:` の直後から `#` までのテキストを読むからです。
+mermaid.js の行単位の規則は、`:` の直後から `#` までのテキストを読むからです。
 [fixture: descriptions-and-labels/semicolon-line-kept]
 [fixture: descriptions-and-labels/semicolon-line-space-after-colon-kept]
 
@@ -1006,7 +1006,7 @@ stateDiagram-v2
 [fixture: statements-one-per-line/split-then-comment]
 [fixture: comments/after-last-statement-without-line-break]
 [fixture: comments/header-comment-without-line-break]
-説明、ラベル、ノート、スタイルの中では、 `%%` と `#` はテキストの一部です。
+説明、ラベル、ノート、スタイルの中では、`%%` と `#` はテキストの一部です。
 [fixture: comments/text-in-values-kept]
 [fixture: comments/text-in-note-lines-kept]
 
@@ -1260,9 +1260,9 @@ stateDiagram-v2
 ### 複数行の文
 
 複数行に書かれた文は、1 行にまとめて印字します。
-state 図で文が次の行に続けられるのは、 `state` の後、`as` の後、
-ノートの位置の後、 `classDef` と `style` とその名前の後、`scale` の後、
-`direction` の後、 `accTitle` と `accDescr` の `:` の後です。
+state 図で文が次の行に続けられるのは、`state` の後、`as` の後、
+ノートの位置の後、`classDef` と `style` とその名前の後、`scale` の後、
+`direction` の後、`accTitle` と `accDescr` の `:` の後です。
 [corpus fixture: state/lex-direction-value-next-line]
 [fixture: multi-line-statements/joined]
 [fixture: multi-line-statements/joined-after-as]
@@ -1271,13 +1271,13 @@ state 図で文が次の行に続けられるのは、 `state` の後、`as` の
 [fixture: multi-line-statements/empty-line-inside-joined]
 `accTitle:` や `accDescr:` の次行の値は、結合すると方向文になる場合、
 改行と通常の継続行の字下げを保ちます。
-判定するのは `direction`、空白の連続と、 `TB`、`BT`、`RL`、`LR` のいずれかで、
+判定するのは `direction`、空白の連続と、`TB`、`BT`、`RL`、`LR` のいずれかで、
 大文字小文字を区別しません。
 値の他のテキストの後にある場合も同じです。
 図の方向に変えず、タイトルや説明を保つためです。
 そのため `"accTitle:\n direction LR"` は `"  accTitle:\n    direction LR"`
 と印字します。
-`TD` は state の方向ではないので、 `direction TD` は結合します。
+`TD` は state の方向ではないので、`direction TD` は結合します。
 [fixture: multi-line-statements/next-line-direction-title]
 [fixture: multi-line-statements/next-line-direction-description]
 [fixture: multi-line-statements/next-line-direction-lower-value]
@@ -1440,7 +1440,7 @@ state 図では、mermaid.js が擬似状態の印、方向の行、
 `state a`、U+2028、`b <<fork>>` は名前 `a` とフォーク `b` ですが、
 U+2028 の代わりに空白を置くと、フォーク `a b` になります。
 [corpus fixture: state/lex-pseudostate-mark-after-line-separator]
-文字が見えないので、例は、 `\u2028` を U+2028、
+文字が見えないので、例は、`\u2028` を U+2028、
 `\n` を改行とする文字列で書きます。
 `"stateDiagram-v2\nstate a\u2028b <<fork>>\n"` は
 `"stateDiagram-v2\n  state a\u2028b <<fork>>\n"` と印字し、文字は残ります。
@@ -1481,7 +1481,7 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
 
 - 値のテキスト。
   説明、ラベル、ノート、`as` の後の id、擬似状態の名前、スタイル、
-  `class` 文の CSS クラス、 `accTitle` と `accDescr` のテキスト。
+  `class` 文の CSS クラス、`accTitle` と `accDescr` のテキスト。
   [fixture: whitespace-between-tokens/style-text-kept]
   [fixture: descriptions-and-labels/acc-text-kept] [fixture: aliases/id-kept]
 - 1 行のノートの id の後、別名の定義の 2 つ目の説明、
@@ -1496,7 +1496,7 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
 - U+2028 か U+2029 を含む行。
 - セミコロン行かコメントで結合される領域の保護対象の文。
 - 注釈を含む隙間の最初の改行の前の空白。
-- 方向の行の、 `direction` の前と値の後のテキスト。
+- 方向の行の、`direction` の前と値の後のテキスト。
   [corpus fixture: state/lex-direction-line-same-line-transition]
   [fixture: whitespace-between-tokens/direction-line-text-kept]
 - ヘッダーの綴り。

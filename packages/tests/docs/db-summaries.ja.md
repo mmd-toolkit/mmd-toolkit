@@ -14,7 +14,7 @@ mermaid.js の Db の要約が何を持ち、図種ごとに何を捨てるか�
 `src/normalizers/index.ts` に図種 ID ごとに登録します。
 各図種の要約の形は下に述べ、
 木からそれを作る手順は [db-from-tree/](./db-from-tree/)（`flowchart.ja.md`、
-`sequence.ja.md`、 `class.ja.md`、`state.ja.md`、`er.ja.md`）にあります。
+`sequence.ja.md`、`class.ja.md`、`state.ja.md`、`er.ja.md`）にあります。
 
 ## 要約がまだない図種
 
@@ -69,7 +69,7 @@ mermaid.js の Db の要約が何を持ち、図種ごとに何を捨てるか�
   呼び出しを受けたとおりに記録します。
   Db が無視する呼び出し（頂点でない id、
   `loose` でない `securityLevel`）も記録します。
-  `id` は渡された id、`name` は関数の名前、 `args` は括弧の間のテキストを、
+  `id` は渡された id、`name` は関数の名前、`args` は括弧の間のテキストを、
   両端の空白も含めて書かれたとおりにしたもの（括弧がないか、
   括弧の間が空白だけなら null）です。 [fixture: flowchart/gram-click-call]
   [fixture: flowchart/db-click-callback-whitespace-arguments]
@@ -127,7 +127,7 @@ mermaid.js の Db の要約が何を持ち、図種ごとに何を捨てるか�
   [fixture: flowchart/spec-subgraph-57671598]
 - 節点の `icon`、`form`、`pos`、`img`、`constraint`、`assetWidth`、
   `assetHeight`、辺の `animate`、`animation`、`step`、
-  subgraph の `metadata` は、 `@{ ... }` のデータブロックだけが設定します。
+  subgraph の `metadata` は、`@{ ... }` のデータブロックだけが設定します。
   [embedded-data.ja.md](./embedded-data.ja.md) を参照してください。
   [fixture: flowchart/db-data-block-asset-width]
 - 辺は、データブロックが正の整数を与えたときだけ `step` を持ちます。
@@ -168,7 +168,7 @@ mermaid.js の Db の要約が何を持ち、図種ごとに何を捨てるか�
 | `destroyedActors` | destroy された参加者。`id` と `messageIndex`。                            |
 | `messages`        | メッセージ、ノート、autonumber の設定、活性化、ブロックの始まりと終わり。 |
 
-参加者は、`name`、`description`、`wrap`、`prevActor`、`nextActor`、 `links`、
+参加者は、`name`、`description`、`wrap`、`prevActor`、`nextActor`、`links`、
 `properties`、`type`、`box`（その箱の `boxes` の中の位置）を持ちます。
 Db が設定しない欄は、要約にありません。
 
@@ -222,7 +222,7 @@ actor の box は、`boxes` の中の位置で表します。
 - actor の `type` と説明は、その `@{ ... }` のデータブロックでも決まる。
   [embedded-data.ja.md](./embedded-data.ja.md) を参照。
 - participant の id は `link` でもよい（`participant link as Channel`、
-  `link->>A: message`、 `link link: Help @ https://example.com/channel`）。
+  `link->>A: message`、`link link: Help @ https://example.com/channel`）。
   `link`、`links`、`properties`、`details` は、後ろに space か tab が続き、
   さらに `/`、`\`、`+`、`(`、`)`、`<`、`>`、`:`、`,`、`;`、`-`、空白、
   LF 以外の文字が来るときだけ、
@@ -309,13 +309,13 @@ lollipop の関係が作るインターフェース（描画が描く）です�
 要約のそのほかの値:
 
 - `classes[].text` は保つ。
-  ラベルと型から作られるが、 `addClass` は型を `&lt;T&gt;` と、
+  ラベルと型から作られるが、`addClass` は型を `&lt;T&gt;` と、
   ラベルの文は `<T>` と書くので、ラベルと型だけからは決まらない。
   出典は
   [`addClass`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/classDb.ts#L112-L137)
   です。
 - `classes[].haveCallback` は保つ。
-  flowchart と違い、 `setClickEvent` はどの `securityLevel` でもこれを付ける。
+  flowchart と違い、`setClickEvent` はどの `securityLevel` でもこれを付ける。
   [fixture: class/config-security-level-loose-click]
   [`setClickEvent`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/classDb.ts#L434-L444)
   を参照。
@@ -355,7 +355,7 @@ lollipop の関係が作るインターフェース（描画が描く）です�
 `stateDiagram` の Db を要約します。
 mermaid.js は、`stateDiagram` と `stateDiagram-v2` のどちらも、
 この ID として検出します。
-要約の元は、描画が描くレイアウトのデータで、 mermaid.js は構文解析の間に、
+要約の元は、描画が描くレイアウトのデータで、mermaid.js は構文解析の間に、
 文からこれを作ります。
 出典は
 [`getData`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/state/stateDb.ts#L763-L778)
@@ -404,8 +404,8 @@ Db はほかに 2 つの形を持ちますが、どちらも要約しません�
   `classDefs[].textStyles`（`styles` から）、
   状態とそのノートを囲むグループ（ラベルと位置は最後のノートのもの）。
 
-複合状態の最後の `--` の後の領域は、 mermaid.js が無作為に作る id を持ちます。
-これを、ノードの順に、 `generated-region-1`、`generated-region-2`、
+複合状態の最後の `--` の後の領域は、mermaid.js が無作為に作る id を持ちます。
+これを、ノードの順に、`generated-region-1`、`generated-region-2`、
 …… と記録します。
 出典は
 [`docTranslator`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/state/stateDb.ts#L366-L375)
@@ -417,7 +417,7 @@ Db はほかに 2 つの形を持ちますが、どちらも要約しません�
 値は、Db が持つとおりに、空白も含めて記録します。
 要約は、`look` では同じです。
 `securityLevel` が `strict`、`loose`、`antiscript`、
-`sandbox` のどれかなら同じで、 `htmlLabels` も、
+`sandbox` のどれかなら同じで、`htmlLabels` も、
 mermaid.js が文字を置き換えるのでなければ同じです。
 ほかの `securityLevel` で HTML ラベルが有効なときは、状態のラベルと説明、
 note のテキスト、遷移のラベルが置き換えた文字を持ちます。
@@ -471,7 +471,7 @@ Db は、ブラウザーの機能も、時刻も、乱数も読まず、
 - `entities[].cssClasses`: テキスト `default` に `classes` の名前を続けたもの。
   名前は `classes` にある。
 - `classes[].textStyles`: `color` を含む style の `fill` を `bgFill`
-  に置き換えたもので、 `styles` だけから作る。
+  に置き換えたもので、`styles` だけから作る。
 - `subGraphs[].labelType`: ラベルの種類 `markdown` で、文法は選ばない。
 - id による subgraph の引き表、subgraph の数え上げ、
   構文解析中の subgraph の深さ: subgraph のリストから導けるか、
@@ -499,7 +499,7 @@ Db は、ブラウザーの機能も、時刻も、乱数も読まず、
   [fixture: er/db-entity-names-case]
   [fixture: er/db-relationship-quoted-entities]
 - 名前は、字句解析が読んだとおりに記録します。
-  数字だけでも、`-`、`.`、`*`、ASCII 以外の文字を含んでもよく、 U+2028、U+2029、
+  数字だけでも、`-`、`.`、`*`、ASCII 以外の文字を含んでもよく、U+2028、U+2029、
   U+00A0 は名前の一部です。
   文の単位の間では、これらは空白ではありません。
   [fixture: er/db-entity-name-numbers] [fixture: er/db-entity-name-characters]
@@ -589,13 +589,13 @@ Db は、ブラウザーの機能も、時刻も、乱数も読まず、
 - `class A,B c` は、リストの各エンティティに `c` を与えます。
   エンティティでない名前には何も与えず、それを作りもしません。
   文の後で作ったエンティティは、そのクラスを持ちません。
-  リストのコンマの前後の空白は関係なく、 `default` という名前のクラスも、
+  リストのコンマの前後の空白は関係なく、`default` という名前のクラスも、
   ほかと同じに記録します。 [fixture: er/db-class-undefined-entity]
   [fixture: er/db-class-before-entity] [fixture: er/db-class-list-spaces]
   [fixture: er/db-class-named-default]
   [fixture: er/db-class-name-line-separator]
 - `A:::c1,c2` は、エンティティ A を作って、リストのクラスを与えます。
-  関係の最初のエンティティ、2 番目、または両方にも同じに与え、 alias の後と、
+  関係の最初のエンティティ、2 番目、または両方にも同じに与え、alias の後と、
   ブロックの前にも置けます。 [fixture: er/db-class-separator]
   [fixture: er/db-class-separator-relationship-first]
   [fixture: er/db-class-separator-relationship-second]
@@ -628,29 +628,29 @@ Db は、ブラウザーの機能も、時刻も、乱数も読まず、
   関係は、まだないエンティティを作ります。
   その名前の subgraph が文より前に終わっていれば、
   端は代わりにその subgraph の id です（**subgraph** を参照）。
-  関係はソースの順で、 2 度書かれたものは 2 つ残ります。
+  関係はソースの順で、2 度書かれたものは 2 つ残ります。
   [fixture: er/db-relationship-source-order]
 - `cardA` は線の右に書かれた多重度、`cardB` は左に書かれたものです。
-  mermaid.js の名前のとおりで、`||--o{` では、 `cardA` が `ZERO_OR_MORE`、
+  mermaid.js の名前のとおりで、`||--o{` では、`cardA` が `ZERO_OR_MORE`、
   `cardB` が `ONLY_ONE` です。
   書き方の意味は、どちら側でも同じです。 [fixture: er/db-cardinality-sides]
   [fixture: er/db-cardinality-symbol-either-side]
 - 多重度の書き方です。
   語の大文字と小文字は区別しません。
-  - `ONLY_ONE`: `||`、`one`、`only one`、 `1`。
+  - `ONLY_ONE`: `||`、`one`、`only one`、`1`。
     [fixture: er/db-cardinality-symbols-only-one]
     [fixture: er/db-cardinality-words-only-one]
     [fixture: er/db-cardinality-digit-one]
-  - `ZERO_OR_ONE`: `|o`、`o|`、`zero or one`、 `one or zero`。
+  - `ZERO_OR_ONE`: `|o`、`o|`、`zero or one`、`one or zero`。
     [fixture: er/db-cardinality-symbols-zero-or-one]
     [fixture: er/db-cardinality-words-zero-or-one]
   - `ZERO_OR_MORE`: `}o`、`o{`、`zero or more`、`zero or many`、`0+`、
-    `many(0)`、 `many`。 [fixture: er/db-cardinality-symbols-zero-or-more]
+    `many(0)`、`many`。 [fixture: er/db-cardinality-symbols-zero-or-more]
     [fixture: er/db-cardinality-words-zero-or-more]
     [fixture: er/db-cardinality-plus]
     [fixture: er/db-cardinality-many-with-count]
     [fixture: er/db-cardinality-many]
-  - `ONE_OR_MORE`: `}|`、`|{`、`one or more`、`one or many`、`1+`、 `many(1)`。
+  - `ONE_OR_MORE`: `}|`、`|{`、`one or more`、`one or many`、`1+`、`many(1)`。
     [fixture: er/db-cardinality-symbols-one-or-more]
     [fixture: er/db-cardinality-words-one-or-more]
     [fixture: er/db-cardinality-plus]
@@ -666,7 +666,7 @@ Db は、ブラウザーの機能も、時刻も、乱数も読まず、
     [fixture: er/lex-md-parent-right-glued-dot]
     [fixture: er/lex-md-parent-both-glued]
   - 語が大文字や混ざった形でも同じです。 [fixture: er/db-cardinality-words-case]
-- `relType` は、`--` と `to` が `IDENTIFYING`、 `..`、`.-`、`-.`、
+- `relType` は、`--` と `to` が `IDENTIFYING`、`..`、`.-`、`-.`、
   `optionally to` が `NON_IDENTIFYING` です。
   [fixture: er/db-cardinality-symbols-only-one]
   [fixture: er/db-relationship-type-to] [fixture: er/db-relationship-type-dots]
@@ -692,7 +692,7 @@ Db は、ブラウザーの機能も、時刻も、乱数も読まず、
   同じ名前の 2 つ目の `classDef` は、最初のものに style を加え、
   順は動かしません。
   名前のリストを持つ `classDef` は、各名前を定義します。
-  どのエンティティも使わない定義も残り、 `default` という名前も残ります。
+  どのエンティティも使わない定義も残り、`default` という名前も残ります。
   [fixture: er/db-class-def-styles] [fixture: er/db-class-def-several-styles]
   [fixture: er/db-class-def-twice] [fixture: er/db-class-def-ids]
   [fixture: er/db-class-def-unused] [fixture: er/db-class-def-default]
@@ -786,7 +786,7 @@ Db は、ブラウザーの機能も、時刻も、乱数も読まず、
   その名前を持つエンティティと subgraph のすべてに適用されます。
   同じ id の subgraph が 2 つあれば最後のものに、
   エンティティも同じ名前を持てばそのエンティティにも適用されます。
-  subgraph より前の文は何もせず、 `style` の文はエンティティを作りません。
+  subgraph より前の文は何もせず、`style` の文はエンティティを作りません。
   [fixture: er/db-subgraph-class-statement]
   [fixture: er/db-subgraph-style-statement]
   [fixture: er/db-subgraph-class-before-definition]
@@ -805,7 +805,7 @@ Db は、ブラウザーの機能も、時刻も、乱数も読まず、
   [fixture: er/db-direction-line-text-after]
 - `title` は、フロントマターからだけ来ます。
   文法には `title` の文の規則がありますがトークンがないので、
-  行 `title My ER` は、エンティティ `title`、`My`、 `ER` を作ります。
+  行 `title My ER` は、エンティティ `title`、`My`、`ER` を作ります。
   [fixture: er/db-title-frontmatter] [fixture: er/db-title-frontmatter-quoted]
   [fixture: er/db-title-line-is-entities]
 - `accTitle` は、`accTitle:` の後のテキストの前後の空白を取ったもので、
@@ -963,7 +963,7 @@ Db は、
   実行した日（タスクでない id の後ろの開始と、
   タスクでない id までの終了は
   [今日](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttDb.js#L345-L347)
-  になる）、 `dayjs` が `dateFormat` をどう読むかに依存します。
+  になる）、`dayjs` が `dateFormat` をどう読むかに依存します。
   また、日付でない開始に対しては例外を投げますが、テキストは受理されます。
   出典は
   [`Invalid date`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttDb.js#L371-L371)
@@ -980,7 +980,7 @@ Db は、
 - `topAxis`: これを設定するのはメソッド `enableTopAxis()` だけですが、
   文 `topAxis` が呼ぶのは
   [`yy.TopAxis()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L141-L141)
-  で、 Db にはありません。
+  で、Db にはありません。
   そのため mermaid.js はこの文を `TypeError` で拒否し、
   受理されるテキストでこのフラグを立てるものはありません。
   [fixture: gantt/db-top-axis-statement]
@@ -1060,11 +1060,11 @@ Db は、
   [fixture: gantt/db-task-description-spaces]
 - コロンの後ろの data は、タグ（後述）を除いてからコンマで項目に分けます。
   [`parseData`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttDb.js#L536-L590)
-  は、 1 項目を終了、2 項目を開始と終了、 3 項目を id、開始、終了と読みます。
+  は、1 項目を終了、2 項目を開始と終了、3 項目を id、開始、終了と読みます。
   1 項目のとき開始は `prevTaskEnd` で、前のタスクの id を持ちます。
   最初のタスクには id がありません。 [fixture: gantt/db-task-id-written]
   [fixture: gantt/db-task-forms] [fixture: gantt/db-task-empty-data]
-- 4 項目以上のタスクは `id` を持たず、 `raw` は開始も終了も持ちません。
+- 4 項目以上のタスクは `id` を持たず、`raw` は開始も終了も持ちません。
   [fixture: gantt/db-task-four-items]
 - 項目は trim し、書かれたままで保ちます。
   id の後ろの開始（`after a b`）、id までの終了（`until`）、
@@ -1086,7 +1086,7 @@ Db は、
 - `order` は、タスクの中での番号で、0 から始まります。
   `vert` のタスクは -1 で、番号を取りません。 [fixture: gantt/db-task-vert]
 - `id` は一意ではありません。
-  同じ id を持つ後のタスクを、 `click` は見つけます。
+  同じ id を持つ後のタスクを、`click` は見つけます。
   [fixture: gantt/db-task-duplicate-id]
 
 **リンクと click**
@@ -1102,10 +1102,10 @@ Db は、
 - `click` の id は、コンマで区切ったリストです。
   [fixture: gantt/db-click-ids-list]
 - `links` は、`href` の URL を書かれたままで、タスクごとに 1 つ持ちます。
-  位置は最初のリンクの位置で、 URL は最後のリンクのものです。
+  位置は最初のリンクの位置で、URL は最後のリンクのものです。
   [fixture: gantt/db-click-links-order]
 - `clickCalls` は、文法が行った呼び出しをそのまま持ちます。
-  `id` は書かれたままの id のリスト（タスクでない id も含む）、 `name` は関数、
+  `id` は書かれたままの id のリスト（タスクでない id も含む）、`name` は関数、
   `args` は括弧の間のテキストを書かれたままで、なければ null です。
   [fixture: gantt/db-click-call-args] [fixture: gantt/db-click-ids-list]
 
@@ -1129,7 +1129,7 @@ Db は、
 `journey` の Db を要約します。
 Db は、ブラウザーの機能も、時刻も、乱数も読まず、構文にリンクもありません。
 このため、要約に Db のパッチはいりません。
-Db は、すべての journey 図が共有する 1 つのオブジェクトで、 `clear()` が、
+Db は、すべての journey 図が共有する 1 つのオブジェクトで、`clear()` が、
 構文解析のたびにその状態を初期化します。
 [`getTasks()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L35-L47)
 は、呼ぶたびに、タスクを自分の一覧に加えます。
@@ -1203,8 +1203,7 @@ Db は、すべての journey 図が共有する 1 つのオブジェクトで�
   有限の数でない score は、JSON にそのような数がないので、
   数のテキストで記録します。
   数でない部分は `NaN` です。
-  部分 `Infinity` と `-Infinity`、
-  `1e400` のように倍精度に収まらない大きな数は、
+  部分 `Infinity` と `-Infinity`、`1e400` のように倍精度に収まらない大きな数は、
   `Infinity` か `-Infinity` です。 [fixture: journey/db-task-score-not-a-number]
   [fixture: journey/db-task-score-infinity]
   [fixture: journey/db-task-score-negative-infinity]
@@ -1325,9 +1324,9 @@ Db はブラウザの機能も、時刻も、乱数も読まず、構文にリ�
   `Requirement`、`Functional Requirement`、`Interface Requirement`、
   `Performance Requirement`、`Physical Requirement`、
   `Design Constraint` のどれかです。
-  `risk` は `Low`、`Medium`、`High`、 `verifyMethod` は `Analysis`、
+  `risk` は `Low`、`Medium`、`High`、`verifyMethod` は `Analysis`、
   `Demonstration`、`Inspection`、`Test` です。
-  構文の語は大文字小文字を問わず読み、 Db はここに挙げた名前で持ちます。
+  構文の語は大文字小文字を問わず読み、Db はここに挙げた名前で持ちます。
   [fixture: requirement/db-keywords-upper-case]
   [fixture: requirement/spec-requirement-diagram-54ea0a9d]
   [fixture: requirement/spec-requirement-diagram-d1dc0373]
@@ -1358,7 +1357,7 @@ Db はブラウザの機能も、時刻も、乱数も読まず、構文にリ�
   2 回目がどちらであっても同じです。
   requirement と element は同じ名前を持て、
   その名前を指す文は requirement にだけ働きます。
-  名前はどんな名前でもよく、 `__proto__` や `constructor` も名前です。
+  名前はどんな名前でもよく、`__proto__` や `constructor` も名前です。
   [fixture: requirement/db-requirement-definition-again-with-class]
   [fixture: requirement/db-element-definition-with-class-of-requirement]
   [fixture: requirement/db-element-definition-again-with-class]
@@ -1698,8 +1697,8 @@ Db は、すべての timeline 図が共有する 1 つのモジュールで、
   [fixture: timeline/header-direction-twice]
 - ヘッダーは小文字だけが検出されます。
   ヘッダーの行でその後ろにあるものは、行と同じに読みます。
-  period、タイトル、section、アクセシビリティのタイトル、
-  `#` か `%` のコメント、取り除かれるディレクティブです。
+  period、タイトル、section、アクセシビリティのタイトル、`#` か `%` のコメント、
+  取り除かれるディレクティブです。
   event は、そこでは task がないので、拒否されます。
   ヘッダーに続けて書いた語はヘッダーではありません。
   ヘッダーの後ろのダッシュは period `-x` を始め、
@@ -1770,7 +1769,7 @@ Db は、すべての timeline 図が共有する 1 つのモジュールで、
   [fixture: timeline/gram-title-colon-glued]
 - フロントマターのタイトルは、図のタイトルではありません。
   [Diagram](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/Diagram.ts#L52-L54)
-  は、 `setDiagramTitle` を持つ Db にだけタイトルを渡し、
+  は、`setDiagramTitle` を持つ Db にだけタイトルを渡し、
   timeline の Db にはそのメソッドがないからです。
   `title` の文は、どちらの場合もタイトルです。
   [fixture: timeline/db-title-frontmatter]
@@ -1907,7 +1906,7 @@ Db は、すべての timeline 図が共有する 1 つのモジュールで、
   [fixture: timeline/db-names-of-object-prototype]
   [fixture: timeline/db-period-cjk]
 - [event](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L34)
-  は、 `:` と空白 1 文字の後ろのテキストで、その前のタスクのものです。
+  は、`:` と空白 1 文字の後ろのテキストで、その前のタスクのものです。
   後ろに空白がある次の `:` か、行末までです。
   後ろに空白のない `:` は event の文字です。
   後ろに空白のある `:` は、前に何があっても event を終わらせ、
@@ -1942,7 +1941,7 @@ Db は、すべての timeline 図が共有する 1 つのモジュールで、
   [fixture: timeline/gram-event-trailing-colon-space]
   [fixture: timeline/gram-event-colon-at-end-glued]
 - 独立した行の event は、その前の最後のタスクのものです。
-  間にある空の行、空白だけの行、コメント行、ディレクティブの行、 title、
+  間にある空の行、空白だけの行、コメント行、ディレクティブの行、title、
   アクセシビリティのタイトルと説明、section は、タスクを終わらせません。
   どのタスクよりも前の event は task がなく、Db が `TypeError` を投げるので、
   入力は拒否されます。 [fixture: timeline/db-event-own-line]
@@ -1972,14 +1971,14 @@ Db は、すべての timeline 図が共有する 1 つのモジュールで、
   [fixture: timeline/db-event-colon-only-twice]
 - 引用符、括弧、矢印、マークアップ、リンク、バックスラッシュ、
   基本多言語面の外の文字は、テキストの文字です。
-  `;` もテキストの文字ですが、 `style` の行の行規則が捨てる 1 つは除きます。
+  `;` もテキストの文字ですが、`style` の行の行規則が捨てる 1 つは除きます。
   [fixture: timeline/db-event-semicolons]
   [fixture: timeline/db-event-links-and-tags]
   [fixture: timeline/db-event-quotes-and-brackets]
   [fixture: timeline/db-event-arrows] [fixture: timeline/db-event-backslash-n]
   [fixture: timeline/db-event-non-bmp]
 - event の中の `#` と `%%`、event が `#` か `%%` だけのこと、
-  event に続けた `%%` は、 event の文字です。 [fixture: timeline/db-event-hash]
+  event に続けた `%%` は、event の文字です。 [fixture: timeline/db-event-hash]
   [fixture: timeline/db-event-percent]
   [fixture: timeline/db-event-percent-glued]
   [fixture: timeline/db-event-only-hash]
@@ -1990,7 +1989,7 @@ Db は、すべての timeline 図が共有する 1 つのモジュールで、
   コメント行のインデントは何も変えず、タスクとその event の間にも、
   ヘッダーの直後にも置けます。
   period の後ろの `#` は、行末まで続くコメントを始めます。
-  その後ろの event は失われ、 `#` の前の空白は period に残ります。
+  その後ろの event は失われ、`#` の前の空白は period に残ります。
   [fixture: timeline/db-comment-hash-line]
   [fixture: timeline/db-comment-percent-line]
   [fixture: timeline/db-comment-hash-only]
@@ -2016,7 +2015,7 @@ Db は、すべての timeline 図が共有する 1 つのモジュールで、
   [コメントの規則](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L15)
   が、トークンの先頭で、`}` 以外の 1 文字を `%%` の前に取るからで、
   タスクは失われます。
-  2 文字以上の後ろや、`}` の後ろでは、 period の文字です。
+  2 文字以上の後ろや、`}` の後ろでは、period の文字です。
   [fixture: timeline/db-comment-percent-after-period]
   [fixture: timeline/db-comment-percent-after-period-glued]
   [fixture: timeline/db-comment-percent-after-period-glued-no-space]
@@ -2024,7 +2023,7 @@ Db は、すべての timeline 図が共有する 1 つのモジュールで、
   [fixture: timeline/db-comment-percent-after-closing-brace]
   [fixture: timeline/db-comment-percent-glued-in-event]
 - [`style` 行と `classDef` 行](../../spec/docs/common.ja.md#style-行と-classdef-行)
-  の共通の行規則は、 timeline のテキストにも、どの図種とも同じに働きます。
+  の共通の行規則は、timeline のテキストにも、どの図種とも同じに働きます。
   小文字の `style` か `classDef`、`:`、空白でない文字、`#`、
   その後ろの `;` を持つ行では、行の最後の `;` が捨てられます。
   その前にある `;` は、文字参照を終わらせることがあります。
@@ -2057,7 +2056,7 @@ Db は、すべての timeline 図が共有する 1 つのモジュールで、
   インデントがあれば、そのインデントが title、section、event になり、
   次の行は task です。
   インデントがなければ空の行が残ります。
-  テキストの中の空の行も同じで、 `title` と `section` は period に、
+  テキストの中の空の行も同じで、`title` と `section` は period に、
   `:` は拒否されます。
   `accTitle:` と `accDescr:` の後ろでは、
   空白がディレクティブの行と空の行を取るので、テキストは次の行です。
@@ -2126,7 +2125,7 @@ Db は、すべての timeline 図が共有する 1 つのモジュールで、
   文字を置き換えたものを持ちます（[db-from-tree.md](./db-from-tree.md)
   の文字の置き換えを参照）。
   section、period、event は変わりません。
-  テーマと timeline の設定は、 Db を何も変えません。
+  テーマと timeline の設定は、Db を何も変えません。
   [fixture: timeline/config-security-level-other-title-and-accessibility]
   [fixture: timeline/config-security-level-other-accessibility-block]
   [fixture: timeline/config-security-level-other-html-labels-false]
@@ -2411,7 +2410,7 @@ Db は、すべての sankey 図が共有する 1 つのモジュールで、
   です。
   数はテキストの先頭から読まれます。
   符号、小数点、指数、先頭の点が読まれ、数の後ろは捨てられます（`1abc`、`1 2`、
-  `1_000`、`1.2.3`。 `0x10` は `0` です。数の後ろの `%`、`#`、`;`、
+  `1_000`、`1.2.3`。`0x10` は `0` です。数の後ろの `%`、`#`、`;`、
   空白と `;` も、捨てられるテキストの一部です）。
   負の値は受け入れられます。
   `-0` は Db では数 -0 ですが、JSON に -0 はないので、要約は 0 です。
@@ -2498,7 +2497,7 @@ Db は、すべての sankey 図が共有する 1 つのモジュールで、
   タイトルの空白は残ります。
   文法に `title` の文もアクセシビリティの文もないので、
   そのような行はレコードとして読まれ、欄の数のために拒否されます。
-  フロントマターの設定は、 Db を何も変えません。
+  フロントマターの設定は、Db を何も変えません。
   [fixture: sankey/db-title-frontmatter]
   [fixture: sankey/db-title-frontmatter-spaces]
   [fixture: sankey/gram-title-statement]
@@ -2542,7 +2541,7 @@ Db は、すべての sankey 図が共有する 1 つのモジュールで、
 プロットは、`type`（`line` か `bar`）、`title`、`data`、
 ラベルが書かれた line では `pointLabels` を持ちます。
 有限でない数は、JSON にそのような数がないので、数のテキスト（`"Infinity"`、
-`"-Infinity"`）になり、 `-0` は、JSON に -0 がないので 0 です。
+`"-Infinity"`）になり、`-0` は、JSON に -0 がないので 0 です。
 
 `normalizeXyChart()`（`src/normalizers/xychart.ts`）は、
 `xychart` の Db を要約します。
@@ -2588,7 +2587,7 @@ Db が持つとおりに保ちます。
 
 - ヘッダーは `xychart` か `xychart-beta` です。
   [検出器](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/xychart/xychartDetector.ts#L9-L11)
-  は小文字だけを読むので、 `XYCHART` と `Xychart-Beta` は拒否されますが、
+  は小文字だけを読むので、`XYCHART` と `Xychart-Beta` は拒否されますが、
   字句解析は大文字小文字を問わず読みます。
   ヘッダーに続けて書いた語、ダッシュと数字、ASCII の外の文字は、
   ヘッダーではありません。
@@ -2616,7 +2615,7 @@ Db が持つとおりに保ちます。
   ディレクティブの行は、何も変えません。
   ヘッダーに続けて書いたディレクティブは取り除かれ、その後ろのコメントは、
   空白があってもなくても読み飛ばされます。
-  ヘッダーの前でも後ろでも、 `%%` だけの行と `%%{ }%%` の行はコメント行です。
+  ヘッダーの前でも後ろでも、`%%` だけの行と `%%{ }%%` の行はコメント行です。
   [fixture: xychart/header-indented] [fixture: xychart/header-tab-indented]
   [fixture: xychart/header-after-bare-percent-line]
   [fixture: xychart/header-after-bare-percent-line-and-whitespace-line]
@@ -2669,7 +2668,7 @@ Db が持つとおりに保ちます。
   `orientation` は設定 `xyChart.chartOrientation` で、既定は `vertical` です。
   設定がサイトのものでも、フロントマターのものでも、
   ディレクティブのものでも同じで、ヘッダーの語が設定に優先します。
-  図のほかの設定、テーマ、パレットの色は、 Db を何も変えません。
+  図のほかの設定、テーマ、パレットの色は、Db を何も変えません。
   [fixture: xychart/config-orientation-directive]
   [fixture: xychart/config-orientation-frontmatter]
   [fixture: xychart/config-orientation-frontmatter-header-wins]
@@ -2885,14 +2884,14 @@ Db が持つとおりに保ちます。
   引用符のタイトルを 2 つ書くと拒否されます。
   引用符のないタイトルは、英字と `_`、`.`、`&`、`=`、`*`、`#`、`+`、
   `-` を含められますが、数字は含められません。
-  数字は数を始め、数はタイトルの一部ではないので、 `Q1`、`A-1`、`Year 2024`、
-  `2024` は軸のタイトルとして拒否され、 `"Q1"` は受理されます。
+  数字は数を始め、数はタイトルの一部ではないので、`Q1`、`A-1`、`Year 2024`、
+  `2024` は軸のタイトルとして拒否され、`"Q1"` は受理されます。
   図のタイトル、プロットのタイトル、カテゴリーは数字を含められます。
   文のテキストはその行にあり、
   キーワードとテキストやカッコの間のコメントや改行はそれらをつなぎません。
   その文は拒否されます。
   キーワードは大文字小文字を問わず、カッコや引用符を空白なしで続けられます。
-  文字を続けて書くと拒否され、 `x-axis` だけも拒否されます。
+  文字を続けて書くと拒否され、`x-axis` だけも拒否されます。
   [fixture: xychart/db-x-axis-title-at-end-of-text]
   [fixture: xychart/db-x-axis-title-bare-characters]
   [fixture: xychart/db-x-axis-title-bare-hyphen]
@@ -2955,7 +2954,7 @@ Db が持つとおりに保ちます。
   引用符のないキーワードは大文字小文字を問わず拒否されます。
   閉じカッコの前にコンマがある一覧、空の一覧、空白だけの一覧、
   引用符で空のテキスト、項目の間に改行がある一覧、
-  語に ASCII の外の文字や単独の `%` がある一覧、 2 つ書いた一覧、
+  語に ASCII の外の文字や単独の `%` がある一覧、2 つ書いた一覧、
   後ろにテキストがある一覧、閉じない一覧は拒否されます。
   [fixture: xychart/db-x-axis-band] [fixture: xychart/db-x-axis-band-characters]
   [fixture: xychart/db-x-axis-band-digit]
@@ -3020,7 +3019,7 @@ Db が持つとおりに保ちます。
   [fixture: xychart/gram-y-axis-title-bare-letters-digits]
   [fixture: xychart/gram-y-axis-title-bare-title-keyword]
 - プロットは `line` か `bar`、省略できるタイトル（引用符か語）、
-  `[` と `]` の間のコンマで分けた値で、 `{ type, title, data }` になります。
+  `[` と `]` の間のコンマで分けた値で、`{ type, title, data }` になります。
   キーワードは大文字小文字を問わず、カッコを空白なしで続けられ、
   タブで分けられます。
   キーワードに続けて書いた語、カッコのない値、空のカッコ、
@@ -3168,9 +3167,9 @@ Db が持つとおりに保ちます。
   テキストの終わりで閉じないブロックは空の説明を設定し、
   空のブロック（波括弧だけ、
   または間に空白だけ）は何も設定せずに前の説明を保ちます。
-  行の説明とブロックは互いを置き換え、 `}` はブロックを終え、
+  行の説明とブロックは互いを置き換え、`}` はブロックを終え、
   その後ろのテキストは文として読まれます。
-  ブロックの中の CRLF は行を 1 つの改行でつなぎ、 U+2028 はテキストの文字です。
+  ブロックの中の CRLF は行を 1 つの改行でつなぎ、U+2028 はテキストの文字です。
   [fixture: xychart/db-acc-descr]
   [fixture: xychart/db-acc-descr-blank-lines-then-text]
   [fixture: xychart/db-acc-descr-block]
@@ -3259,7 +3258,7 @@ Db が持つとおりに保ちます。
   [fixture: xychart/config-security-level-other-orientation-horizontal]
   [fixture: xychart/config-security-level-sandbox-all]
 - テキストを持つ場所は、タイトル、アクセシビリティのタイトル、
-  行の説明と波括弧の説明、x 軸のタイトル、カテゴリー、 y 軸のタイトル、
+  行の説明と波括弧の説明、x 軸のタイトル、カテゴリー、y 軸のタイトル、
   プロットのタイトル、ラベルです。
   アクセシビリティのテキストとラベルを除く場所は、
   引用符なしでも引用符つきでもテキストを持ちます。
@@ -3582,11 +3581,11 @@ Db は、すべての quadrant 図が共有する 1 つのオブジェクトで�
 そのため要約は、そこに配置が残すもの（象限、軸、
 点のテキスト）を Db が持つとおりに取ります。
 配置は、点のクラス名、書いたとおりの座標、書いたとおりのスタイル、
-クラスを残さないので、 Db のパッチ（`patchQuadrantDb()`）が、
+クラスを残さないので、Db のパッチ（`patchQuadrantDb()`）が、
 [`addPoint()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L95-L106)
 と、
 [`addClass()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L108-L110)
-が受け取るものを、 Db が受理した後に記録します。
+が受け取るものを、Db が受理した後に記録します。
 スタイルは、
 書かれたものから
 [`parseStyles()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L64-L93)
@@ -3630,7 +3629,7 @@ Db は 1 つなので、パッチは Db 自体に当てられ、
 - ヘッダーは `quadrantChart` です。
 
   [検出器](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/quadrant-chart/quadrantDetector.ts#L9-L11)
-  はこの大文字小文字のとおりに読むので、 `QUADRANTCHART`、`quadrantchart`、
+  はこの大文字小文字のとおりに読むので、`QUADRANTCHART`、`quadrantchart`、
   `QuadrantChart` は検出されません。
   ヘッダーに続けて書いた語、ダッシュと語、数字、ASCII の外の文字は、
   文が始まらない場所のテキストなので、拒否されます。
@@ -3724,7 +3723,7 @@ Db は 1 つなので、パッチは Db 自体に当てられ、
   [fixture: quadrant/gram-title-after-axis-text]
 - タイトルは行の残りを、両端の空白とタブを除いて取ります。
   行のどの文字もテキストで、引用符、`;`、`#`、1 つの `%`、`%%` とその後ろ、
-  コロン、ダッシュ、 ASCII の外の文字、タグも同じなので、
+  コロン、ダッシュ、ASCII の外の文字、タグも同じなので、
   `;` の後ろの文もタイトルの一部です。
   コメントの規則は適用されません。
   中のディレクティブは、字句解析がテキストを読む前に取り除かれます。
@@ -3878,7 +3877,7 @@ Db は 1 つなので、パッチは Db 自体に当てられ、
   矢印があってその後ろに何もないテキストは、
   最初のテキストの後ろに ` ⟶` を付けたもの（`L ⟶`）を設定して、
   2 つ目はそのままです。
-  矢印はダッシュ 2 つ以上と `>` で、周りの空白はあってもなくてもよく、 `->`、
+  矢印はダッシュ 2 つ以上と `>` で、周りの空白はあってもなくてもよく、`->`、
   `-- >`、2 つ目の矢印、前にテキストのない矢印、矢印だけ、
   キーワードだけは拒否されます。
   軸の文は、名指したものだけを設定して残りを保ちます。
@@ -4269,7 +4268,7 @@ Db は 1 つなので、パッチは Db 自体に当てられ、
   空の文字列は拒否されます。
   `Object.prototype` の名前は普通の名前です。
   キーワードは名前ではなく、`x-axis: [0.3, 0.6]`、`quadrant-1: [0.3, 0.6]`、
-  `classDef: [0.3, 0.6]`、 `quadrantChart: [0.3, 0.6]` は拒否されます。
+  `classDef: [0.3, 0.6]`、`quadrantChart: [0.3, 0.6]` は拒否されます。
   一方 `title: [0.3, 0.6]` はタイトル、
   `accTitle: [0.3, 0.6]` はアクセシビリティのタイトルで、
   引用符の中のキーワードは名前で、
@@ -4466,7 +4465,7 @@ Db は 1 つなので、パッチは Db 自体に当てられ、
   `classDef c1 color: #f00;` は拒否され、次の行の頭の `;` は空の文です。
   スタイルの後ろのコメントは読み飛ばされ、
   1 桁の数字で終わる色（`#ff0`）に続けたコメントは、
-  その数字を取って色が拒否されますが、 `#f00` に続けたものは何も取らず、
+  その数字を取って色が拒否されますが、`#f00` に続けたものは何も取らず、
   スタイルの間のタブは値の一部になって拒否されます。
   [fixture: quadrant/db-classdef-comment-after]
   [fixture: quadrant/db-classdef-comment-glued]
@@ -4495,7 +4494,7 @@ Db は 1 つなので、パッチは Db 自体に当てられ、
   中の `;`、キーワード、`#` はコメントの一部で、
   `%%` だけの行と `%%%` もコメントです。
   最初の文の前、文の間、点の間、テキストの終わりのコメント行は、
-  改行があってもなくても何も変えず、 CRLF と CR だけはコメントを終え、
+  改行があってもなくても何も変えず、CRLF と CR だけはコメントを終え、
   U+2028 はコメントの一部です。
   1 つの `%` はコメントを始めず、閉じる `}%%` のない `%%{` もコメントではなく、
   どちらの行も拒否されます。
@@ -4522,7 +4521,7 @@ Db は 1 つなので、パッチは Db 自体に当てられ、
   字句解析は、英字の並び、数字の並び、ASCII の外の文字の並び、
   そのほかの 1 文字を、それぞれ単位として読みます。
   コメントは `ab1` の `1`、`aé` の `é`、`ab,` の `,`、`Lm-` の `-`、
-  `a b` の `b` を取りますが、 `ab12` や `a日本` からは何も取りません。
+  `a b` の `b` を取りますが、`ab12` や `a日本` からは何も取りません。
   取られた文字は、行の残りといっしょに捨てられます。
   [fixture: quadrant/div-comment-unit-letter-then-non-ascii]
   [fixture: quadrant/div-comment-unit-letters-then-digit]
@@ -4533,7 +4532,7 @@ Db は 1 つなので、パッチは Db 自体に当てられ、
   [fixture: quadrant/div-comment-unit-word-after-space]
 - ディレクティブは、テキストが読まれる前に、どこにあっても取り除かれます。
   自分の行、行の中の文の前、文の後ろ、語に続けた位置、
-  キーワード・名前・数・引用符のテキストの中、 `;` で区切った文の間、
+  キーワード・名前・数・引用符のテキストの中、`;` で区切った文の間、
   行をまたいだ位置が含まれます。
   出典は [Directives](../../spec/docs/common.md#directives) です。
   図の設定を持つディレクティブは、Db を何も変えません。
@@ -4584,7 +4583,7 @@ Db は 1 つなので、パッチは Db 自体に当てられ、
   その文字が 1 文字の単位であるときに最後の文字を取ります。
   1 文字だけの象限のテキストと 1 桁のスタイルの値が空になって文が拒否され、
   軸の右のテキストが取られて左のテキストに矢印が付いた形が残ります。
-  点の閉じ角括弧の後ろや、 2 文字以上の単位の後ろでは何も取りません。
+  点の閉じ角括弧の後ろや、2 文字以上の単位の後ろでは何も取りません。
   [fixture: quadrant/db-after-acc-descr-cr]
   [fixture: quadrant/db-after-acc-descr-crlf]
   [fixture: quadrant/db-after-acc-descr-directive]
@@ -4686,7 +4685,7 @@ Db は 1 つなので、パッチは Db 自体に当てられ、
 - mermaid.js の `style` と `classDef` の行の規則は、
   どのテキストにも適用されます。
   `style:` か `classDef:`、その後ろの `#`、その後ろの `;` を持つ行では、
-  最後の `;` が落とされ、 `style:#x;y` は `style:#xy` になります。
+  最後の `;` が落とされ、`style:#x;y` は `style:#xy` になります。
   タイトル、アクセシビリティのテキスト、引用符のテキスト、
   `classDef` のクラスの名前で見られます。
   軸や象限の引用符なしのテキストと点の名前はコロンを取らず、
@@ -4719,7 +4718,7 @@ Db は 1 つなので、パッチは Db 自体に当てられ、
   参照は `#`、語か数字、`;` で、`#b;` も参照です。
   `;` のない `#35` は参照ではなく、
   `&amp;` も参照ではなく書いたとおりに残りますが、`&#35;` の `#35;` は参照です。
-  続けた 2 つの参照は、 2 つの代替の文字列になります。
+  続けた 2 つの参照は、2 つの代替の文字列になります。
   [fixture: quadrant/db-grid-entity-acc-descr]
   [fixture: quadrant/db-grid-entity-acc-descr-block]
   [fixture: quadrant/db-grid-entity-acc-title]
@@ -5262,7 +5261,7 @@ Db は 1 つなので、パッチは Db 自体に当てられ、
   [fixture: quadrant/div-frontmatter-invalid-yaml]
 - 図の設定（`quadrantChart`: 幅と高さ、余白とフォントの大きさ、軸の位置、
   点の半径）、テーマ、テーマの変数は、サイト、フロントマター、
-  ディレクティブのどれが与えても、 Db を変えません。
+  ディレクティブのどれが与えても、Db を変えません。
   点の半径はテキストが与えたもので、半径のない点は半径を持ちません。
   スキーマに載っていない設定 `showXAxis` と `showYAxis` は、
   レイアウトのラベルを隠します。
@@ -5327,7 +5326,7 @@ Db は 1 つなので、パッチは Db 自体に当てられ、
   テキストが独立した文になるからです。
   アクセシビリティのキーワードは、次の行をテキストとします。
   間のコメント行とディレクティブの行は取り除かれ、行の内容は何でもよく、点、
-  象限の文、`classDef` の行、 `title` の行でもよく、
+  象限の文、`classDef` の行、`title` の行でもよく、
   `title` の行はタイトルを設定しません。
   [fixture: quadrant/gram-keyword-line-feed-classdef]
   [fixture: quadrant/gram-keyword-line-feed-quadrant]
@@ -5427,7 +5426,7 @@ Db は 1 つなので、パッチは Db 自体に当てられ、
   [fixture: quadrant/db-classdef-prototype-to-string-redefined]
   [fixture: quadrant/db-classdef-prototype-twice]
   [fixture: quadrant/db-classdef-prototype-used]
-- 同じ名前の定義が複数あるときは、 3 つのタイトルや象限の 3 つのテキストが、
+- 同じ名前の定義が複数あるときは、3 つのタイトルや象限の 3 つのテキストが、
   最後の値になります。
   交互に設定した 2 つの象限は、それぞれの最後のテキストを保ちます。
   軸では、3 つ目の文が名指したものを設定するので、
@@ -5496,7 +5495,7 @@ Db は 1 つなので、パッチは Db 自体に当てられ、
   [fixture: quadrant/gram-empty-string-in-brackets]
   [fixture: quadrant/gram-empty-string-twice-quadrant]
 - 語 `C4Container`、`C4Component`、`C4Dynamic`、
-  `C4Deployment` がテキストのどこかにあると、 mermaid.js は C4 図を検出し、
+  `C4Deployment` がテキストのどこかにあると、mermaid.js は C4 図を検出し、
   その図がテキストを拒否します。
   タイトル、アクセシビリティのテキスト、象限のテキスト、引用符の名前、
   クラス名で起きます。
@@ -5516,7 +5515,7 @@ Db は 1 つなので、パッチは Db 自体に当てられ、
   点のスタイルの後ろのタブは読み飛ばされ、
   `classDef` の行の後ろでも読み飛ばされるのはタブだけです。
   文の前のタブは読み飛ばされ、
-  キーワードで始まる文の前の U+FEFF は拒否されますが、 U+FEFF で始まる点は、
+  キーワードで始まる文の前の U+FEFF は拒否されますが、U+FEFF で始まる点は、
   それを名前に含め、切り詰められます。
   [fixture: quadrant/db-ends-acc-descr-bom-end]
   [fixture: quadrant/db-ends-acc-descr-bom-end-of-text]
@@ -5905,7 +5904,7 @@ Db は id の最初のブロックを残し、新しいブロックを子の並�
 次のものは、理由があって要約から除きます。
 
 - composite の `colorIndex`。
-  描画のためのパレットの番号で、 composite の順に数えます。
+  描画のためのパレットの番号で、composite の順に数えます。
 - クラスの `textStyles`。
   色を指すスタイルを描画のために書き直したもので、スタイルから決まります。
 - 辺の `id` と `type`。
@@ -5918,7 +5917,7 @@ Db は id の最初のブロックを残し、新しいブロックを子の並�
 - `block:` の後ろに辺の文が続く composite の欄 `0`、`1`、`2`。
   Db は文の 3 つのブロックの並びを composite に展開し、その欄は何も読みません。
 - 描画が埋める配置（`size`、`intersect`、`node`）。
-  構文解析のあいだ、 Db は持ちません。
+  構文解析のあいだ、Db は持ちません。
 - `getColumns()`。
   `columns` のない、または `0` のブロックには子の数を返します。
   残す欄から決まります。
@@ -5959,7 +5958,7 @@ Db は 1 つなので、パッチは Db そのものに当てます。
   そこでは、`;` と `%%` とその後ろのテキストは node であり、
   区切りでもコメントでもありません。
   2 つ目の見出しは composite を開き、`end` で閉じなければなりません。
-  1 行だけの見出し、見出しの行の後ろ、 `block` の形のどれでも同じです。
+  1 行だけの見出し、見出しの行の後ろ、`block` の形のどれでも同じです。
   [fixture: block/header-spaced-word-suffix]
   [fixture: block/header-statement-on-header-line]
   [fixture: block/header-statement-on-header-line-tab]
@@ -6063,7 +6062,7 @@ Db は 1 つなので、パッチは Db そのものに当てます。
 - `columns` と数の間は、字句解析器の空白ならなんでもよく、改行と空行も含みます。
   数の後ろに同じ行で node を続けられます。
   数の後ろの `;` は node です。
-  node の幅は columns によらず保たれ、 columns より広い幅も変わりません。
+  node の幅は columns によらず保たれ、columns より広い幅も変わりません。
   [fixture: block/db-columns-tab] [fixture: block/db-columns-line-feed]
   [fixture: block/db-columns-blank-line] [fixture: block/db-columns-nbsp]
   [fixture: block/db-columns-ideographic] [fixture: block/db-columns-ls]
@@ -6162,10 +6161,10 @@ Db は 1 つなので、パッチは Db そのものに当てます。
 - id の後ろの shape は node の type を決め、
   引用符の間のテキストが label になります。
   `[ ]` は `square`、`( )` は `round`、`(( ))` は `circle`、
-  `((( )))` は `doublecircle`、 `([ ])` は `stadium`、`[[ ]]` は `subroutine`、
-  `[( )]` は `cylinder`、 `{ }` は `diamond`、`{{ }}` は `hexagon`、
-  `> ]` は `rect_left_inv_arrow`、 `[/ /]` は `lean_right`、
-  `[\ \]` は `lean_left`、`[/ \]` は `trapezoid`、 `[\ /]` は `inv_trapezoid`、
+  `((( )))` は `doublecircle`、`([ ])` は `stadium`、`[[ ]]` は `subroutine`、
+  `[( )]` は `cylinder`、`{ }` は `diamond`、`{{ }}` は `hexagon`、
+  `> ]` は `rect_left_inv_arrow`、`[/ /]` は `lean_right`、
+  `[\ \]` は `lean_left`、`[/ \]` は `trapezoid`、`[\ /]` は `inv_trapezoid`、
   `<[ ]>( )` は `block_arrow` です。
   shape のない node の type は `na` です。 [fixture: block/db-shape-square]
   [fixture: block/db-shape-round] [fixture: block/db-shape-circle]
@@ -6178,7 +6177,7 @@ Db は 1 つなので、パッチは Db そのものに当てます。
   [fixture: block/db-shape-block-arrow]
 - 開きと閉じの文字の組がこれらのどれでもなければ type を持ちません。
   Db は `na` を与え、label は残ります。
-  `) (`、`)) ((`、`(- -)`、`-) (-`、 `( ]`、`[ )`、`> }`、`{ ]`、
+  `) (`、`)) ((`、`(- -)`、`-) (-`、`( ]`、`[ )`、`> }`、`{ ]`、
   `(( )` のような合わない組、余分な `]` がそうです。
   `[| |]` と `[[[ ]]]` は shape でなく、拒否されます。
   id と shape の間に空白や改行を置けます。
@@ -6228,8 +6227,8 @@ Db は 1 つなので、パッチは Db そのものに当てます。
   文字列の中の `"` も、前にバックスラッシュがあってもなくても拒否されます。
   文字列の中の `"` 以外の文字は label の一部です。
   括弧、`<` と `>`、矢印、`:`、`;`、`#`、`%`、`%%`、アポストロフィ、
-  バッククォート、バックスラッシュ、 ASCII の外の文字、絵文字、
-  `end` や `columns 2` のようなキーワード、 `__proto__` です。
+  バッククォート、バックスラッシュ、ASCII の外の文字、絵文字、
+  `end` や `columns 2` のようなキーワード、`__proto__` です。
   バッククォートで始まる文字列（markdown 文字列）は拒否されます。
   [fixture: block/db-label-plain] [fixture: block/gram-label-empty]
   [fixture: block/db-label-spaces] [fixture: block/db-label-padded]
@@ -6263,7 +6262,7 @@ Db は 1 つなので、パッチは Db そのものに当てます。
   文字参照はその代替の文字列として読み、
   `;` のない `#` と数字は文字参照ではありません。
   HTML タグの属性の引用符の `"` は `'` として読むので、文字列を終えません。
-  HTML タグ、`<br>`、 `&amp;` はそのまま残ります。
+  HTML タグ、`<br>`、`&amp;` はそのまま残ります。
   [fixture: block/db-label-line-feed] [fixture: block/db-label-crlf]
   [fixture: block/db-label-cr] [fixture: block/db-label-tab]
   [fixture: block/db-label-ls] [fixture: block/db-label-ps]
@@ -6732,7 +6731,7 @@ Db は 1 つなので、パッチは Db そのものに当てます。
   `class A ,B c` は A にクラス `,B c` を適用します。
   id の中の `;` や `-` は id を終えます。
   大文字小文字の違う id は別の id です。
-  コンマの後ろの空白は改行でもよく、 id のない `class` が、
+  コンマの後ろの空白は改行でもよく、id のない `class` が、
   テキストの終わりの前にあれば拒否されます。
   コンマの後ろのコメント行やディレクティブは id から除かれ、
   その前の空白が残ります。
@@ -6865,7 +6864,7 @@ Db は 1 つなので、パッチは Db そのものに当てます。
   `block:root` はそのブロックに label `""` を与え、
   composite のブロックを `unplaced` に別に載せます。
   `class root c` はクラスを、`style root` はスタイルを与えます。
-  辺は `root` から始めても、 `root` で終えてもかまいません。
+  辺は `root` から始めても、`root` で終えてもかまいません。
   [fixture: block/db-proto-root] [fixture: block/db-proto-root-twice]
   [fixture: block/db-proto-root-width] [fixture: block/db-proto-root-label]
   [fixture: block/db-proto-root-columns]
@@ -7007,8 +7006,8 @@ Db は 1 つなので、パッチは Db そのものに当てます。
 - ディレクティブ `%%{...}%%` は、どこにあっても取り除かれ、
   両側の部分がつながります。
   id の中、文字列の中、見出しの中、ブロック矢印の方向の中、
-  キーワード `columns`、`class`、`end` の中、 id と幅や shape の間、
-  幅の `:` や `space:` と数の間、 shape やブロック矢印のラベルの前後、
+  キーワード `columns`、`class`、`end` の中、id と幅や shape の間、
+  幅の `:` や `space:` と数の間、shape やブロック矢印のラベルの前後、
   文の末尾がその例です。
   どの名前のディレクティブも取り除かれ、複数行にわたっても、
   2 つ続いても同じです。
@@ -7145,7 +7144,7 @@ Db は 1 つなので、パッチは Db そのものに当てます。
   ただし、単独の CR と CRLF は改行になります。
   `;`、`#`、`%`、`:`、`,`、`-`、`|`、`'`、バッククォート、バックスラッシュ、
   括弧、波括弧、`<`、`>`、`=`、続く句読点、矢印、`%%`、HTML タグ、`&amp;`、
-  キーワード、`__proto__`、 `constructor`、`root`、 ASCII の外の文字、絵文字、
+  キーワード、`__proto__`、`constructor`、`root`、ASCII の外の文字、絵文字、
   数字もテキストの一部です。
   ただし `"` は文字列を終え、その文字列は拒否されます。
   文字列の中のコメント行と、ディレクティブは取り除かれます。
@@ -7395,7 +7394,7 @@ Db は 1 つなので、パッチは Db そのものに当てます。
   [fixture: block/db-grid-classdef-rule-edge-label]
   [fixture: block/db-grid-classdef-rule-composite-label]
 - node の id の中の `;`、`#`、`%`、`,`、`|`、`'`、`"`、バッククォート、
-  バックスラッシュ、`]`、`%%`、文字参照、`&amp;`、 `__proto__`、`constructor`、
+  バックスラッシュ、`]`、`%%`、文字参照、`&amp;`、`__proto__`、`constructor`、
   `root`、ASCII の外の文字、絵文字、数字、何もないものは、id の一部です。
   中のディレクティブは取り除かれ、コメント行は id を終えます。
   `[`、`(`、`{`、矢印でない `-`、`:`、`=`、`<`、`>`、`}`、`)`、続く句読点、
@@ -8395,14 +8394,14 @@ Db は 1 つなので、パッチは Db そのものに当てます。
   [fixture: block/config-theme-dark]
 - `block:` の後ろの id では、空白以外の文字は node の id と同じに読みます。
   `;`、`#`、`%`、`,`、`|`、`'`、`"`、バッククォート、バックスラッシュ、`]`、
-  `%%`、文字参照、`&amp;`、 `__proto__`、`constructor`、`root`、
+  `%%`、文字参照、`&amp;`、`__proto__`、`constructor`、`root`、
   ASCII の外の文字、絵文字、数字は id の一部です。
   中のディレクティブは取り除かれ、コメント行は id を終えます。
   中の矢印は文を辺の文にし、composite は id を持ちません。
   id の後ろの `columns 2`、`space`、`class A c`、
   `classDef c fill:red` は composite の文です。
   `style A fill:red` は拒否され、`[`、`(`、`{`、`)`、`}`、`<`、`>`、`=`、`:`、
-  HTML、続く句読点、行の規則、`end`、`block`、 `block-beta` も拒否されます。
+  HTML、続く句読点、行の規則、`end`、`block`、`block-beta` も拒否されます。
   [fixture: block/db-grid-semicolon-composite-id]
   [fixture: block/db-grid-hash-composite-id]
   [fixture: block/db-grid-percent-composite-id]
@@ -8664,8 +8663,7 @@ Db は 1 つなので、パッチは Db そのものに当てます。
   ディレクティブは、矢印の中、`<` の後ろ、矢じりの前、
   label を始めるダッシュの中で取り除かれ、部分がつながります。
   `--` の 2 つのダッシュの間のものは `A -- B` を残し、拒否されます。
-  辺の label の周りの空白は何も変えず、
-  label の中の 2 つの文字列は拒否されます。
+  辺の label の周りの空白は何も変えず、label の中の 2 つの文字列は拒否されます。
   [fixture: block/gram-spec-single-dash-arrow]
   [fixture: block/gram-spec-edge-to-block-keyword]
   [fixture: block/gram-spec-colon-colon-colon]
@@ -8882,7 +8880,7 @@ Db は 1 つなので、パッチは Db そのものに当てます。
 他の深さは直前の列の項目にする。
 要約はインデントそのもの（`level`）を保持しない。
 [描画器](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/kanbanRenderer.ts#L16-L73)
-は `isGroup` と `parentId` で列と項目を分け、 `level` を読まない。
+は `isGroup` と `parentId` で列と項目を分け、`level` を読まない。
 [fixture: kanban/db-indent-tabs] [fixture: kanban/db-indent-unindented]
 [fixture: kanban/db-indent-deeper] [fixture: kanban/db-indent-shallower-last]
 
@@ -8911,8 +8909,8 @@ Db は 1 つなので、パッチは Db そのものに当てます。
 [fixture: kanban/db-metadata-section-icon]
 
 [`addNode()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L99-L165)
-は JSON schema の YAML を読み、真と評価する値だけを適用し、 `ticket`、
-`assigned`、 `icon` は `toString()` で文字列にする。
+は JSON schema の YAML を読み、真と評価する値だけを適用し、`ticket`、
+`assigned`、`icon` は `toString()` で文字列にする。
 [fixture: kanban/db-metadata-ticket-number]
 [fixture: kanban/db-metadata-assigned-list]
 [fixture: kanban/db-metadata-icon-true]
@@ -8933,8 +8931,8 @@ Db は 1 つなので、パッチは Db そのものに当てます。
 [fixture: kanban/db-metadata-priority-nested-non-finite]
 [fixture: kanban/db-metadata-priority-own-prototype-key]
 
-真と評価する `label` は説明を置換して `getData()` で文字列化し、 false、0、
-null、空文字列なら元の説明を残す。 [fixture: kanban/db-metadata-label-number]
+真と評価する `label` は説明を置換して `getData()` で文字列化し、false、0、null、
+空文字列なら元の説明を残す。 [fixture: kanban/db-metadata-label-number]
 [fixture: kanban/db-metadata-label-list]
 [fixture: kanban/db-metadata-label-false]
 [fixture: kanban/db-metadata-label-zero]
@@ -8992,7 +8990,7 @@ kanban の 1 つのノードに隣り合う `@{ ... }` ブロックは、
 [fixture: kanban/db-shape-square] [fixture: kanban/db-shape-round]
 [fixture: kanban/db-shape-circle] [fixture: kanban/db-shape-hexagon]
 
-描画設定の `look`、`width`、 `padding` と要素の表も省く。
+描画設定の `look`、`width`、`padding` と要素の表も省く。
 [fixture: kanban/db-frontmatter-drawing-config]
 [fixture: kanban/db-directive-drawing-config]
 
@@ -9005,7 +9003,7 @@ kanban の 1 つのノードに隣り合う `@{ ... }` ブロックは、
 [fixture: kanban/db-decoration-class-section]
 [fixture: kanban/db-decoration-class-item]
 
-Db に表題とアクセシビリティの setter はなく、 frontmatter の表題は要約を変えず、
+Db に表題とアクセシビリティの setter はなく、frontmatter の表題は要約を変えず、
 `title`、`accTitle:`、`accDescr:` は通常のノードになり、
 `accDescr {}` は拒否する。 [fixture: kanban/header-after-frontmatter]
 [fixture: kanban/db-frontmatter-accessibility]
@@ -9079,7 +9077,7 @@ Db の状態はモジュール内に隠されているため、
 [fixture: kanban/db-metadata-all] [fixture: kanban/db-metadata-repeated-id]
 [fixture: kanban/db-decoration-icon-twice] [fixture: kanban/header-only-lf]
 
-共有サニタイザーを無効にした既定値、`strict`、`loose`、 `antiscript`、
+共有サニタイザーを無効にした既定値、`strict`、`loose`、`antiscript`、
 `sandbox` は同じ文字を保持する。
 [fixture: kanban/config-security-level-other-html-labels-false]
 
@@ -9253,7 +9251,7 @@ Db がそこから何を読むかを記録する。
 最初の列のテキストとしてそのまま保たれる: `ampersand-entity`、`arrow`、
 `backslash`、`backtick`、`close-square`、`colon`、`comma`、`dash`、`emoji`、
 `equals`、`greater-than`、`hash`、`html`、`html-br`、`less-than`、`percent`、
-`pipe`、`quote`、 `single-quote`。
+`pipe`、`quote`、`single-quote`。
 [fixture: kanban/db-grid-ampersand-entity-header-line]
 [fixture: kanban/db-grid-arrow-header-line]
 [fixture: kanban/db-grid-backslash-header-line]
@@ -9275,7 +9273,7 @@ Db がそこから何を読むかを記録する。
 [fixture: kanban/db-grid-single-quote-header-line]
 前の空白が落ち、残りが保たれる: `arrow-spaced`、`keyword-block`、
 `keyword-class`、`keyword-classdef`、`keyword-columns`、`keyword-end`、
-`keyword-space`、 `keyword-style`。
+`keyword-space`、`keyword-style`。
 [fixture: kanban/db-grid-arrow-spaced-header-line]
 [fixture: kanban/db-grid-keyword-block-header-line]
 [fixture: kanban/db-grid-keyword-class-header-line]
@@ -9291,13 +9289,13 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 実体参照の代用文字として読まれる（common.md の Entities）: `entity`、
 `entity-named`。 [fixture: kanban/db-grid-entity-header-line]
 [fixture: kanban/db-grid-entity-named-header-line]
-字句解析器が拒否する: `close-brace`、`open-brace`、 `punct`。
+字句解析器が拒否する: `close-brace`、`open-brace`、`punct`。
 [fixture: kanban/gram-grid-close-brace-header-line]
 [fixture: kanban/gram-grid-open-brace-header-line]
 [fixture: kanban/gram-grid-punct-header-line]
-文法が拒否する: `classdef-rule`、`close-round`、`comment-line`、 `constructor`、
-`digits`、`directive-line`、`keyword`、`keyword-header`、`lf`、 `open-round`、
-`open-square`、`proto`、`root`、`spaces`、 `style-rule`。
+文法が拒否する: `classdef-rule`、`close-round`、`comment-line`、`constructor`、
+`digits`、`directive-line`、`keyword`、`keyword-header`、`lf`、`open-round`、
+`open-square`、`proto`、`root`、`spaces`、`style-rule`。
 [fixture: kanban/gram-grid-classdef-rule-header-line]
 [fixture: kanban/gram-grid-close-round-header-line]
 [fixture: kanban/gram-grid-comment-line-header-line]
@@ -9322,19 +9320,19 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-entity-named-section-id]
 ディレクティブとして取り除かれる: `directive`。
 [fixture: kanban/db-grid-directive-section-id]
-最初の `;` が行の規則で落ちる: `classdef-rule`、 `style-rule`。
+最初の `;` が行の規則で落ちる: `classdef-rule`、`style-rule`。
 [fixture: kanban/db-grid-classdef-rule-section-id]
 [fixture: kanban/db-grid-style-rule-section-id]
-そこで値が終わり、`a` になる: `close-round`、`open-round`、 `open-square`。
+そこで値が終わり、`a` になる: `close-round`、`open-round`、`open-square`。
 [fixture: kanban/db-grid-close-round-section-id]
 [fixture: kanban/db-grid-open-round-section-id]
 [fixture: kanban/db-grid-open-square-section-id]
-字句解析器が拒否する: `close-brace`、`open-brace`、 `punct`。
+字句解析器が拒否する: `close-brace`、`open-brace`、`punct`。
 [fixture: kanban/gram-grid-close-brace-section-id]
 [fixture: kanban/gram-grid-open-brace-section-id]
 [fixture: kanban/gram-grid-punct-section-id]
 Db が拒否する: 項目の前に列がない（`Items without section detected`）:
-`comment-line`、`cr`、`crlf`、`directive-line`、 `lf`。
+`comment-line`、`cr`、`crlf`、`directive-line`、`lf`。
 [fixture: kanban/gram-grid-comment-line-section-id]
 [fixture: kanban/gram-grid-cr-section-id]
 [fixture: kanban/gram-grid-crlf-section-id]
@@ -9396,11 +9394,11 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-entity-named-item-id]
 ディレクティブとして取り除かれる: `directive`。
 [fixture: kanban/db-grid-directive-item-id]
-最初の `;` が行の規則で落ちる: `classdef-rule`、 `style-rule`。
+最初の `;` が行の規則で落ちる: `classdef-rule`、`style-rule`。
 [fixture: kanban/db-grid-classdef-rule-item-id]
 [fixture: kanban/db-grid-style-rule-item-id]
 そこで値が終わり、`a` になる: `close-round`、`comment-line`、`cr`、`crlf`、
-`directive-line`、`lf`、`open-round`、 `open-square`。
+`directive-line`、`lf`、`open-round`、`open-square`。
 [fixture: kanban/db-grid-close-round-item-id]
 [fixture: kanban/db-grid-comment-line-item-id]
 [fixture: kanban/db-grid-cr-item-id] [fixture: kanban/db-grid-crlf-item-id]
@@ -9408,7 +9406,7 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-lf-item-id]
 [fixture: kanban/db-grid-open-round-item-id]
 [fixture: kanban/db-grid-open-square-item-id]
-字句解析器が拒否する: `close-brace`、`open-brace`、 `punct`。
+字句解析器が拒否する: `close-brace`、`open-brace`、`punct`。
 [fixture: kanban/gram-grid-close-brace-item-id]
 [fixture: kanban/gram-grid-open-brace-item-id]
 [fixture: kanban/gram-grid-punct-item-id]
@@ -9456,16 +9454,16 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-entity-named-section-label-bare]
 ディレクティブとして取り除かれる: `directive`。
 [fixture: kanban/db-grid-directive-section-label-bare]
-最初の `;` が行の規則で落ちる: `classdef-rule`、 `style-rule`。
+最初の `;` が行の規則で落ちる: `classdef-rule`、`style-rule`。
 [fixture: kanban/db-grid-classdef-rule-section-label-bare]
 [fixture: kanban/db-grid-style-rule-section-label-bare]
-1 つの改行として読まれる: `comment-line`、`cr`、 `crlf`。
+1 つの改行として読まれる: `comment-line`、`cr`、`crlf`。
 [fixture: kanban/db-grid-comment-line-section-label-bare]
 [fixture: kanban/db-grid-cr-section-label-bare]
 [fixture: kanban/db-grid-crlf-section-label-bare]
 2 つの改行として読まれる: `directive-line`。
 [fixture: kanban/db-grid-directive-line-section-label-bare]
-文法が拒否する: `close-brace`、`close-round`、`close-square`、 `open-round`。
+文法が拒否する: `close-brace`、`close-round`、`close-square`、`open-round`。
 [fixture: kanban/gram-grid-close-brace-section-label-bare]
 [fixture: kanban/gram-grid-close-round-section-label-bare]
 [fixture: kanban/gram-grid-close-square-section-label-bare]
@@ -9530,10 +9528,10 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-entity-named-section-label-quoted]
 ディレクティブとして取り除かれる: `directive`。
 [fixture: kanban/db-grid-directive-section-label-quoted]
-最初の `;` が行の規則で落ちる: `classdef-rule`、 `style-rule`。
+最初の `;` が行の規則で落ちる: `classdef-rule`、`style-rule`。
 [fixture: kanban/db-grid-classdef-rule-section-label-quoted]
 [fixture: kanban/db-grid-style-rule-section-label-quoted]
-1 つの改行として読まれる: `comment-line`、`cr`、 `crlf`。
+1 つの改行として読まれる: `comment-line`、`cr`、`crlf`。
 [fixture: kanban/db-grid-comment-line-section-label-quoted]
 [fixture: kanban/db-grid-cr-section-label-quoted]
 [fixture: kanban/db-grid-crlf-section-label-quoted]
@@ -9603,16 +9601,16 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-entity-named-section-label-markdown]
 ディレクティブとして取り除かれる: `directive`。
 [fixture: kanban/db-grid-directive-section-label-markdown]
-最初の `;` が行の規則で落ちる: `classdef-rule`、 `style-rule`。
+最初の `;` が行の規則で落ちる: `classdef-rule`、`style-rule`。
 [fixture: kanban/db-grid-classdef-rule-section-label-markdown]
 [fixture: kanban/db-grid-style-rule-section-label-markdown]
-1 つの改行として読まれる: `comment-line`、`cr`、 `crlf`。
+1 つの改行として読まれる: `comment-line`、`cr`、`crlf`。
 [fixture: kanban/db-grid-comment-line-section-label-markdown]
 [fixture: kanban/db-grid-cr-section-label-markdown]
 [fixture: kanban/db-grid-crlf-section-label-markdown]
 2 つの改行として読まれる: `directive-line`。
 [fixture: kanban/db-grid-directive-line-section-label-markdown]
-字句解析器が拒否する: `backtick`、 `quote`。
+字句解析器が拒否する: `backtick`、`quote`。
 [fixture: kanban/gram-grid-backtick-section-label-markdown]
 [fixture: kanban/gram-grid-quote-section-label-markdown]
 そのまま保たれる: 他の種類。
@@ -9677,16 +9675,16 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-entity-named-item-label-bare]
 ディレクティブとして取り除かれる: `directive`。
 [fixture: kanban/db-grid-directive-item-label-bare]
-最初の `;` が行の規則で落ちる: `classdef-rule`、 `style-rule`。
+最初の `;` が行の規則で落ちる: `classdef-rule`、`style-rule`。
 [fixture: kanban/db-grid-classdef-rule-item-label-bare]
 [fixture: kanban/db-grid-style-rule-item-label-bare]
-1 つの改行として読まれる: `comment-line`、`cr`、 `crlf`。
+1 つの改行として読まれる: `comment-line`、`cr`、`crlf`。
 [fixture: kanban/db-grid-comment-line-item-label-bare]
 [fixture: kanban/db-grid-cr-item-label-bare]
 [fixture: kanban/db-grid-crlf-item-label-bare]
 2 つの改行として読まれる: `directive-line`。
 [fixture: kanban/db-grid-directive-line-item-label-bare]
-文法が拒否する: `close-brace`、`close-round`、`close-square`、 `open-round`。
+文法が拒否する: `close-brace`、`close-round`、`close-square`、`open-round`。
 [fixture: kanban/gram-grid-close-brace-item-label-bare]
 [fixture: kanban/gram-grid-close-round-item-label-bare]
 [fixture: kanban/gram-grid-close-square-item-label-bare]
@@ -9751,10 +9749,10 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-entity-named-item-label-quoted]
 ディレクティブとして取り除かれる: `directive`。
 [fixture: kanban/db-grid-directive-item-label-quoted]
-最初の `;` が行の規則で落ちる: `classdef-rule`、 `style-rule`。
+最初の `;` が行の規則で落ちる: `classdef-rule`、`style-rule`。
 [fixture: kanban/db-grid-classdef-rule-item-label-quoted]
 [fixture: kanban/db-grid-style-rule-item-label-quoted]
-1 つの改行として読まれる: `comment-line`、`cr`、 `crlf`。
+1 つの改行として読まれる: `comment-line`、`cr`、`crlf`。
 [fixture: kanban/db-grid-comment-line-item-label-quoted]
 [fixture: kanban/db-grid-cr-item-label-quoted]
 [fixture: kanban/db-grid-crlf-item-label-quoted]
@@ -9824,16 +9822,16 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-entity-named-item-label-markdown]
 ディレクティブとして取り除かれる: `directive`。
 [fixture: kanban/db-grid-directive-item-label-markdown]
-最初の `;` が行の規則で落ちる: `classdef-rule`、 `style-rule`。
+最初の `;` が行の規則で落ちる: `classdef-rule`、`style-rule`。
 [fixture: kanban/db-grid-classdef-rule-item-label-markdown]
 [fixture: kanban/db-grid-style-rule-item-label-markdown]
-1 つの改行として読まれる: `comment-line`、`cr`、 `crlf`。
+1 つの改行として読まれる: `comment-line`、`cr`、`crlf`。
 [fixture: kanban/db-grid-comment-line-item-label-markdown]
 [fixture: kanban/db-grid-cr-item-label-markdown]
 [fixture: kanban/db-grid-crlf-item-label-markdown]
 2 つの改行として読まれる: `directive-line`。
 [fixture: kanban/db-grid-directive-line-item-label-markdown]
-字句解析器が拒否する: `backtick`、 `quote`。
+字句解析器が拒否する: `backtick`、`quote`。
 [fixture: kanban/gram-grid-backtick-item-label-markdown]
 [fixture: kanban/gram-grid-quote-item-label-markdown]
 そのまま保たれる: 他の種類。
@@ -9892,17 +9890,17 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 
 `section-icon` は列の後の `::icon( )` の名前。
 読まれるが、要約は変わらない: `ampersand-entity`、`arrow`、`arrow-spaced`、
-`backslash`、`backtick`、`bom`、`classdef-rule`、`close-brace`、
-`close-square`、`colon`、`comma`、`comment`、`comment-line`、`constructor`、
-`cr`、`crlf`、`dash`、`digits`、`directive`、`directive-line`、`emoji`、
-`empty`、`entity`、`entity-named`、`equals`、`ff`、`greater-than`、`hash`、
-`html`、`html-attribute`、`html-br`、`ideographic`、`keyword`、
-`keyword-block`、`keyword-class`、`keyword-classdef`、`keyword-columns`、
-`keyword-end`、`keyword-header`、`keyword-space`、`keyword-style`、
-`less-than`、`lf`、`ls`、`nbsp`、`nel`、`nonascii`、`open-brace`、
-`open-round`、`open-square`、`percent`、`pipe`、`proto`、`ps`、`punct`、
-`quote`、`root`、`semicolon`、`single-quote`、`spaces`、`style-rule`、`tab`、
-`vt`。 [fixture: kanban/db-grid-ampersand-entity-section-icon]
+`backslash`、`backtick`、`bom`、`classdef-rule`、`close-brace`、`close-square`、
+`colon`、`comma`、`comment`、`comment-line`、`constructor`、`cr`、`crlf`、
+`dash`、`digits`、`directive`、`directive-line`、`emoji`、`empty`、`entity`、
+`entity-named`、`equals`、`ff`、`greater-than`、`hash`、`html`、
+`html-attribute`、`html-br`、`ideographic`、`keyword`、`keyword-block`、
+`keyword-class`、`keyword-classdef`、`keyword-columns`、`keyword-end`、
+`keyword-header`、`keyword-space`、`keyword-style`、`less-than`、`lf`、`ls`、
+`nbsp`、`nel`、`nonascii`、`open-brace`、`open-round`、`open-square`、
+`percent`、`pipe`、`proto`、`ps`、`punct`、`quote`、`root`、`semicolon`、
+`single-quote`、`spaces`、`style-rule`、`tab`、`vt`。
+[fixture: kanban/db-grid-ampersand-entity-section-icon]
 [fixture: kanban/db-grid-arrow-section-icon]
 [fixture: kanban/db-grid-arrow-spaced-section-icon]
 [fixture: kanban/db-grid-backslash-section-icon]
@@ -9976,10 +9974,10 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-entity-named-item-icon]
 ディレクティブとして取り除かれる: `directive`。
 [fixture: kanban/db-grid-directive-item-icon]
-最初の `;` が行の規則で落ちる: `classdef-rule`、 `style-rule`。
+最初の `;` が行の規則で落ちる: `classdef-rule`、`style-rule`。
 [fixture: kanban/db-grid-classdef-rule-item-icon]
 [fixture: kanban/db-grid-style-rule-item-icon]
-1 つの改行として読まれる: `comment-line`、`cr`、 `crlf`。
+1 つの改行として読まれる: `comment-line`、`cr`、`crlf`。
 [fixture: kanban/db-grid-comment-line-item-icon]
 [fixture: kanban/db-grid-cr-item-icon] [fixture: kanban/db-grid-crlf-item-icon]
 2 つの改行として読まれる: `directive-line`。
@@ -10039,15 +10037,15 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 
 `section-class` は列の後の `:::` のクラス。
 読まれるが、要約は変わらない: `ampersand-entity`、`arrow`、`arrow-spaced`、
-`backslash`、`backtick`、`bom`、`classdef-rule`、`close-brace`、 `close-round`、
-`close-square`、`colon`、`comma`、`comment`、`constructor`、 `dash`、`digits`、
-`directive`、`emoji`、`empty`、`entity`、`entity-named`、 `equals`、`ff`、
-`greater-than`、`hash`、`html`、`html-attribute`、`html-br`、 `ideographic`、
-`keyword`、`keyword-block`、`keyword-class`、 `keyword-classdef`、
-`keyword-columns`、`keyword-end`、`keyword-header`、 `keyword-space`、
-`keyword-style`、`less-than`、`nbsp`、`nel`、`nonascii`、 `open-brace`、
-`open-round`、`open-square`、`percent`、`pipe`、`proto`、 `punct`、`quote`、
-`root`、`semicolon`、`single-quote`、`spaces`、 `style-rule`、`tab`、 `vt`。
+`backslash`、`backtick`、`bom`、`classdef-rule`、`close-brace`、`close-round`、
+`close-square`、`colon`、`comma`、`comment`、`constructor`、`dash`、`digits`、
+`directive`、`emoji`、`empty`、`entity`、`entity-named`、`equals`、`ff`、
+`greater-than`、`hash`、`html`、`html-attribute`、`html-br`、`ideographic`、
+`keyword`、`keyword-block`、`keyword-class`、`keyword-classdef`、
+`keyword-columns`、`keyword-end`、`keyword-header`、`keyword-space`、
+`keyword-style`、`less-than`、`nbsp`、`nel`、`nonascii`、`open-brace`、
+`open-round`、`open-square`、`percent`、`pipe`、`proto`、`punct`、`quote`、
+`root`、`semicolon`、`single-quote`、`spaces`、`style-rule`、`tab`、`vt`。
 [fixture: kanban/db-grid-ampersand-entity-section-class]
 [fixture: kanban/db-grid-arrow-section-class]
 [fixture: kanban/db-grid-arrow-spaced-section-class]
@@ -10105,10 +10103,10 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-style-rule-section-class]
 [fixture: kanban/db-grid-tab-section-class]
 [fixture: kanban/db-grid-vt-section-class]
-文法が拒否する: `ls`、 `ps`。 [fixture: kanban/gram-grid-ls-section-class]
+文法が拒否する: `ls`、`ps`。 [fixture: kanban/gram-grid-ls-section-class]
 [fixture: kanban/gram-grid-ps-section-class]
 Db が拒否する: 項目の前に列がない（`Items without section detected`）:
-`comment-line`、`cr`、`crlf`、`directive-line`、 `lf`。
+`comment-line`、`cr`、`crlf`、`directive-line`、`lf`。
 [fixture: kanban/gram-grid-comment-line-section-class]
 [fixture: kanban/gram-grid-cr-section-class]
 [fixture: kanban/gram-grid-crlf-section-class]
@@ -10117,16 +10115,16 @@ Db が拒否する: 項目の前に列がない（`Items without section detecte
 
 `item-class` は項目の後の `:::` のクラス。
 読まれるが、要約は変わらない: `ampersand-entity`、`arrow`、`arrow-spaced`、
-`backslash`、`backtick`、`bom`、`classdef-rule`、`close-brace`、 `close-round`、
-`close-square`、`colon`、`comma`、`comment`、`comment-line`、 `constructor`、
-`cr`、`crlf`、`dash`、`digits`、`directive`、`directive-line`、 `emoji`、
-`empty`、`entity`、`entity-named`、`equals`、`ff`、`greater-than`、 `hash`、
-`html`、`html-attribute`、`html-br`、`ideographic`、`keyword`、
-`keyword-block`、`keyword-class`、`keyword-classdef`、`keyword-columns`、
-`keyword-end`、`keyword-header`、`keyword-space`、`keyword-style`、
-`less-than`、`lf`、`nbsp`、`nel`、`nonascii`、`open-brace`、`open-round`、
-`open-square`、`percent`、`pipe`、`proto`、`punct`、`quote`、`root`、
-`semicolon`、`single-quote`、`spaces`、`style-rule`、`tab`、 `vt`。
+`backslash`、`backtick`、`bom`、`classdef-rule`、`close-brace`、`close-round`、
+`close-square`、`colon`、`comma`、`comment`、`comment-line`、`constructor`、
+`cr`、`crlf`、`dash`、`digits`、`directive`、`directive-line`、`emoji`、
+`empty`、`entity`、`entity-named`、`equals`、`ff`、`greater-than`、`hash`、
+`html`、`html-attribute`、`html-br`、`ideographic`、`keyword`、`keyword-block`、
+`keyword-class`、`keyword-classdef`、`keyword-columns`、`keyword-end`、
+`keyword-header`、`keyword-space`、`keyword-style`、`less-than`、`lf`、`nbsp`、
+`nel`、`nonascii`、`open-brace`、`open-round`、`open-square`、`percent`、
+`pipe`、`proto`、`punct`、`quote`、`root`、`semicolon`、`single-quote`、
+`spaces`、`style-rule`、`tab`、`vt`。
 [fixture: kanban/db-grid-ampersand-entity-item-class]
 [fixture: kanban/db-grid-arrow-item-class]
 [fixture: kanban/db-grid-arrow-spaced-item-class]
@@ -10188,7 +10186,7 @@ Db が拒否する: 項目の前に列がない（`Items without section detecte
 [fixture: kanban/db-grid-spaces-item-class]
 [fixture: kanban/db-grid-style-rule-item-class]
 [fixture: kanban/db-grid-tab-item-class] [fixture: kanban/db-grid-vt-item-class]
-文法が拒否する: `ls`、 `ps`。 [fixture: kanban/gram-grid-ls-item-class]
+文法が拒否する: `ls`、`ps`。 [fixture: kanban/gram-grid-ls-item-class]
 [fixture: kanban/gram-grid-ps-item-class]
 
 `metadata-key` は項目のデータブロック `@{ }` のキー。
@@ -10198,9 +10196,9 @@ Db が拒否する: 項目の前に列がない（`Items without section detecte
 `empty`、`entity`、`entity-named`、`equals`、`greater-than`、`hash`、`html`、
 `html-attribute`、`html-br`、`ideographic`、`keyword`、`keyword-block`、
 `keyword-class`、`keyword-classdef`、`keyword-columns`、`keyword-end`、
-`keyword-header`、`keyword-space`、`keyword-style`、`less-than`、`ls`、 `nbsp`、
-`nel`、`nonascii`、`open-round`、`percent`、`pipe`、`proto`、`ps`、 `root`、
-`semicolon`、`single-quote`、`spaces`、`style-rule`、 `tab`。
+`keyword-header`、`keyword-space`、`keyword-style`、`less-than`、`ls`、`nbsp`、
+`nel`、`nonascii`、`open-round`、`percent`、`pipe`、`proto`、`ps`、`root`、
+`semicolon`、`single-quote`、`spaces`、`style-rule`、`tab`。
 [fixture: kanban/db-grid-ampersand-entity-metadata-key]
 [fixture: kanban/db-grid-arrow-metadata-key]
 [fixture: kanban/db-grid-arrow-spaced-metadata-key]
@@ -10253,11 +10251,11 @@ Db が拒否する: 項目の前に列がない（`Items without section detecte
 [fixture: kanban/db-grid-style-rule-metadata-key]
 [fixture: kanban/db-grid-tab-metadata-key]
 字句解析器が拒否する: `punct`。 [fixture: kanban/gram-grid-punct-metadata-key]
-文法が拒否する: `close-brace`、 `quote`。
+文法が拒否する: `close-brace`、`quote`。
 [fixture: kanban/gram-grid-close-brace-metadata-key]
 [fixture: kanban/gram-grid-quote-metadata-key]
-データブロックの YAML が拒否する: `close-square`、`comment-line`、`cr`、
-`crlf`、`directive-line`、`ff`、`lf`、`open-brace`、`open-square`、 `vt`。
+データブロックの YAML が拒否する: `close-square`、`comment-line`、`cr`、`crlf`、
+`directive-line`、`ff`、`lf`、`open-brace`、`open-square`、`vt`。
 [fixture: kanban/gram-grid-close-square-metadata-key]
 [fixture: kanban/gram-grid-comment-line-metadata-key]
 [fixture: kanban/gram-grid-cr-metadata-key]
@@ -10277,16 +10275,16 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-entity-named-metadata-multiline]
 ディレクティブとして取り除かれる: `directive`。
 [fixture: kanban/db-grid-directive-metadata-multiline]
-最初の `;` が行の規則で落ちる: `classdef-rule`、 `style-rule`。
+最初の `;` が行の規則で落ちる: `classdef-rule`、`style-rule`。
 [fixture: kanban/db-grid-classdef-rule-metadata-multiline]
 [fixture: kanban/db-grid-style-rule-metadata-multiline]
 字句解析器が拒否する: `punct`。
 [fixture: kanban/gram-grid-punct-metadata-multiline]
-文法が拒否する: `close-brace`、 `quote`。
+文法が拒否する: `close-brace`、`quote`。
 [fixture: kanban/gram-grid-close-brace-metadata-multiline]
 [fixture: kanban/gram-grid-quote-metadata-multiline]
 データブロックの YAML が拒否する: `comment-line`、`cr`、`crlf`、
-`directive-line`、`ff`、`lf`、 `vt`。
+`directive-line`、`ff`、`lf`、`vt`。
 [fixture: kanban/gram-grid-comment-line-metadata-multiline]
 [fixture: kanban/gram-grid-cr-metadata-multiline]
 [fixture: kanban/gram-grid-crlf-metadata-multiline]
@@ -10352,18 +10350,18 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-entity-named-metadata-label-bare]
 ディレクティブとして取り除かれる: `directive`。
 [fixture: kanban/db-grid-directive-metadata-label-bare]
-最初の `;` が行の規則で落ちる: `classdef-rule`、 `style-rule`。
+最初の `;` が行の規則で落ちる: `classdef-rule`、`style-rule`。
 [fixture: kanban/db-grid-classdef-rule-metadata-label-bare]
 [fixture: kanban/db-grid-style-rule-metadata-label-bare]
-そこで値が終わり、 `a` になる: `comma`。
+そこで値が終わり、`a` になる: `comma`。
 [fixture: kanban/db-grid-comma-metadata-label-bare]
 字句解析器が拒否する: `punct`。
 [fixture: kanban/gram-grid-punct-metadata-label-bare]
-文法が拒否する: `close-brace`、 `quote`。
+文法が拒否する: `close-brace`、`quote`。
 [fixture: kanban/gram-grid-close-brace-metadata-label-bare]
 [fixture: kanban/gram-grid-quote-metadata-label-bare]
-データブロックの YAML が拒否する: `close-square`、`comment-line`、`cr`、
-`crlf`、`directive-line`、`ff`、`lf`、`open-brace`、`open-square`、 `vt`。
+データブロックの YAML が拒否する: `close-square`、`comment-line`、`cr`、`crlf`、
+`directive-line`、`ff`、`lf`、`open-brace`、`open-square`、`vt`。
 [fixture: kanban/gram-grid-close-square-metadata-label-bare]
 [fixture: kanban/gram-grid-comment-line-metadata-label-bare]
 [fixture: kanban/gram-grid-cr-metadata-label-bare]
@@ -10426,7 +10424,7 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-entity-named-metadata-label-single]
 ディレクティブとして取り除かれる: `directive`。
 [fixture: kanban/db-grid-directive-metadata-label-single]
-最初の `;` が行の規則で落ちる: `classdef-rule`、 `style-rule`。
+最初の `;` が行の規則で落ちる: `classdef-rule`、`style-rule`。
 [fixture: kanban/db-grid-classdef-rule-metadata-label-single]
 [fixture: kanban/db-grid-style-rule-metadata-label-single]
 1 つの改行として読まれる: `directive-line`。
@@ -10438,11 +10436,11 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-lf-metadata-label-single]
 字句解析器が拒否する: `punct`。
 [fixture: kanban/gram-grid-punct-metadata-label-single]
-文法が拒否する: `close-brace`、 `quote`。
+文法が拒否する: `close-brace`、`quote`。
 [fixture: kanban/gram-grid-close-brace-metadata-label-single]
 [fixture: kanban/gram-grid-quote-metadata-label-single]
-データブロックの YAML が拒否する: `ff`、`html-attribute`、`single-quote`、
-`vt`。 [fixture: kanban/gram-grid-ff-metadata-label-single]
+データブロックの YAML が拒否する: `ff`、`html-attribute`、`single-quote`、`vt`。
+[fixture: kanban/gram-grid-ff-metadata-label-single]
 [fixture: kanban/gram-grid-html-attribute-metadata-label-single]
 [fixture: kanban/gram-grid-single-quote-metadata-label-single]
 [fixture: kanban/gram-grid-vt-metadata-label-single]
@@ -10503,10 +10501,10 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-entity-named-metadata-label-quoted]
 ディレクティブとして取り除かれる: `directive`。
 [fixture: kanban/db-grid-directive-metadata-label-quoted]
-最初の `;` が行の規則で落ちる: `classdef-rule`、 `style-rule`。
+最初の `;` が行の規則で落ちる: `classdef-rule`、`style-rule`。
 [fixture: kanban/db-grid-classdef-rule-metadata-label-quoted]
 [fixture: kanban/db-grid-style-rule-metadata-label-quoted]
-`<br/>` として読まれる: `comment-line`、`cr`、`crlf`、`directive-line`、 `lf`。
+`<br/>` として読まれる: `comment-line`、`cr`、`crlf`、`directive-line`、`lf`。
 [fixture: kanban/db-grid-comment-line-metadata-label-quoted]
 [fixture: kanban/db-grid-cr-metadata-label-quoted]
 [fixture: kanban/db-grid-crlf-metadata-label-quoted]
@@ -10516,7 +10514,7 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-backslash-metadata-label-quoted]
 文法が拒否する: `quote`。
 [fixture: kanban/gram-grid-quote-metadata-label-quoted]
-データブロックの YAML が拒否する: `ff`、 `vt`。
+データブロックの YAML が拒否する: `ff`、`vt`。
 [fixture: kanban/gram-grid-ff-metadata-label-quoted]
 [fixture: kanban/gram-grid-vt-metadata-label-quoted]
 そのまま保たれる: 他の種類。
@@ -10579,18 +10577,18 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-entity-named-metadata-assigned-bare]
 ディレクティブとして取り除かれる: `directive`。
 [fixture: kanban/db-grid-directive-metadata-assigned-bare]
-最初の `;` が行の規則で落ちる: `classdef-rule`、 `style-rule`。
+最初の `;` が行の規則で落ちる: `classdef-rule`、`style-rule`。
 [fixture: kanban/db-grid-classdef-rule-metadata-assigned-bare]
 [fixture: kanban/db-grid-style-rule-metadata-assigned-bare]
-そこで値が終わり、 `a` になる: `comma`。
+そこで値が終わり、`a` になる: `comma`。
 [fixture: kanban/db-grid-comma-metadata-assigned-bare]
 字句解析器が拒否する: `punct`。
 [fixture: kanban/gram-grid-punct-metadata-assigned-bare]
-文法が拒否する: `close-brace`、 `quote`。
+文法が拒否する: `close-brace`、`quote`。
 [fixture: kanban/gram-grid-close-brace-metadata-assigned-bare]
 [fixture: kanban/gram-grid-quote-metadata-assigned-bare]
-データブロックの YAML が拒否する: `close-square`、`comment-line`、`cr`、
-`crlf`、`directive-line`、`ff`、`lf`、`open-brace`、`open-square`、 `vt`。
+データブロックの YAML が拒否する: `close-square`、`comment-line`、`cr`、`crlf`、
+`directive-line`、`ff`、`lf`、`open-brace`、`open-square`、`vt`。
 [fixture: kanban/gram-grid-close-square-metadata-assigned-bare]
 [fixture: kanban/gram-grid-comment-line-metadata-assigned-bare]
 [fixture: kanban/gram-grid-cr-metadata-assigned-bare]
@@ -10654,7 +10652,7 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-entity-named-metadata-assigned-single]
 ディレクティブとして取り除かれる: `directive`。
 [fixture: kanban/db-grid-directive-metadata-assigned-single]
-最初の `;` が行の規則で落ちる: `classdef-rule`、 `style-rule`。
+最初の `;` が行の規則で落ちる: `classdef-rule`、`style-rule`。
 [fixture: kanban/db-grid-classdef-rule-metadata-assigned-single]
 [fixture: kanban/db-grid-style-rule-metadata-assigned-single]
 1 つの改行として読まれる: `directive-line`。
@@ -10666,11 +10664,11 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-lf-metadata-assigned-single]
 字句解析器が拒否する: `punct`。
 [fixture: kanban/gram-grid-punct-metadata-assigned-single]
-文法が拒否する: `close-brace`、 `quote`。
+文法が拒否する: `close-brace`、`quote`。
 [fixture: kanban/gram-grid-close-brace-metadata-assigned-single]
 [fixture: kanban/gram-grid-quote-metadata-assigned-single]
-データブロックの YAML が拒否する: `ff`、`html-attribute`、`single-quote`、
-`vt`。 [fixture: kanban/gram-grid-ff-metadata-assigned-single]
+データブロックの YAML が拒否する: `ff`、`html-attribute`、`single-quote`、`vt`。
+[fixture: kanban/gram-grid-ff-metadata-assigned-single]
 [fixture: kanban/gram-grid-html-attribute-metadata-assigned-single]
 [fixture: kanban/gram-grid-single-quote-metadata-assigned-single]
 [fixture: kanban/gram-grid-vt-metadata-assigned-single]
@@ -10732,10 +10730,10 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-entity-named-metadata-assigned-quoted]
 ディレクティブとして取り除かれる: `directive`。
 [fixture: kanban/db-grid-directive-metadata-assigned-quoted]
-最初の `;` が行の規則で落ちる: `classdef-rule`、 `style-rule`。
+最初の `;` が行の規則で落ちる: `classdef-rule`、`style-rule`。
 [fixture: kanban/db-grid-classdef-rule-metadata-assigned-quoted]
 [fixture: kanban/db-grid-style-rule-metadata-assigned-quoted]
-`<br/>` として読まれる: `comment-line`、`cr`、`crlf`、`directive-line`、 `lf`。
+`<br/>` として読まれる: `comment-line`、`cr`、`crlf`、`directive-line`、`lf`。
 [fixture: kanban/db-grid-comment-line-metadata-assigned-quoted]
 [fixture: kanban/db-grid-cr-metadata-assigned-quoted]
 [fixture: kanban/db-grid-crlf-metadata-assigned-quoted]
@@ -10745,7 +10743,7 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-backslash-metadata-assigned-quoted]
 文法が拒否する: `quote`。
 [fixture: kanban/gram-grid-quote-metadata-assigned-quoted]
-データブロックの YAML が拒否する: `ff`、 `vt`。
+データブロックの YAML が拒否する: `ff`、`vt`。
 [fixture: kanban/gram-grid-ff-metadata-assigned-quoted]
 [fixture: kanban/gram-grid-vt-metadata-assigned-quoted]
 そのまま保たれる: 他の種類。
@@ -10807,18 +10805,18 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-entity-named-metadata-ticket-bare]
 ディレクティブとして取り除かれる: `directive`。
 [fixture: kanban/db-grid-directive-metadata-ticket-bare]
-最初の `;` が行の規則で落ちる: `classdef-rule`、 `style-rule`。
+最初の `;` が行の規則で落ちる: `classdef-rule`、`style-rule`。
 [fixture: kanban/db-grid-classdef-rule-metadata-ticket-bare]
 [fixture: kanban/db-grid-style-rule-metadata-ticket-bare]
-そこで値が終わり、 `a` になる: `comma`。
+そこで値が終わり、`a` になる: `comma`。
 [fixture: kanban/db-grid-comma-metadata-ticket-bare]
 字句解析器が拒否する: `punct`。
 [fixture: kanban/gram-grid-punct-metadata-ticket-bare]
-文法が拒否する: `close-brace`、 `quote`。
+文法が拒否する: `close-brace`、`quote`。
 [fixture: kanban/gram-grid-close-brace-metadata-ticket-bare]
 [fixture: kanban/gram-grid-quote-metadata-ticket-bare]
-データブロックの YAML が拒否する: `close-square`、`comment-line`、`cr`、
-`crlf`、`directive-line`、`ff`、`lf`、`open-brace`、`open-square`、 `vt`。
+データブロックの YAML が拒否する: `close-square`、`comment-line`、`cr`、`crlf`、
+`directive-line`、`ff`、`lf`、`open-brace`、`open-square`、`vt`。
 [fixture: kanban/gram-grid-close-square-metadata-ticket-bare]
 [fixture: kanban/gram-grid-comment-line-metadata-ticket-bare]
 [fixture: kanban/gram-grid-cr-metadata-ticket-bare]
@@ -10881,7 +10879,7 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-entity-named-metadata-ticket-single]
 ディレクティブとして取り除かれる: `directive`。
 [fixture: kanban/db-grid-directive-metadata-ticket-single]
-最初の `;` が行の規則で落ちる: `classdef-rule`、 `style-rule`。
+最初の `;` が行の規則で落ちる: `classdef-rule`、`style-rule`。
 [fixture: kanban/db-grid-classdef-rule-metadata-ticket-single]
 [fixture: kanban/db-grid-style-rule-metadata-ticket-single]
 1 つの改行として読まれる: `directive-line`。
@@ -10893,11 +10891,11 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-lf-metadata-ticket-single]
 字句解析器が拒否する: `punct`。
 [fixture: kanban/gram-grid-punct-metadata-ticket-single]
-文法が拒否する: `close-brace`、 `quote`。
+文法が拒否する: `close-brace`、`quote`。
 [fixture: kanban/gram-grid-close-brace-metadata-ticket-single]
 [fixture: kanban/gram-grid-quote-metadata-ticket-single]
-データブロックの YAML が拒否する: `ff`、`html-attribute`、`single-quote`、
-`vt`。 [fixture: kanban/gram-grid-ff-metadata-ticket-single]
+データブロックの YAML が拒否する: `ff`、`html-attribute`、`single-quote`、`vt`。
+[fixture: kanban/gram-grid-ff-metadata-ticket-single]
 [fixture: kanban/gram-grid-html-attribute-metadata-ticket-single]
 [fixture: kanban/gram-grid-single-quote-metadata-ticket-single]
 [fixture: kanban/gram-grid-vt-metadata-ticket-single]
@@ -10958,10 +10956,10 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-entity-named-metadata-ticket-quoted]
 ディレクティブとして取り除かれる: `directive`。
 [fixture: kanban/db-grid-directive-metadata-ticket-quoted]
-最初の `;` が行の規則で落ちる: `classdef-rule`、 `style-rule`。
+最初の `;` が行の規則で落ちる: `classdef-rule`、`style-rule`。
 [fixture: kanban/db-grid-classdef-rule-metadata-ticket-quoted]
 [fixture: kanban/db-grid-style-rule-metadata-ticket-quoted]
-`<br/>` として読まれる: `comment-line`、`cr`、`crlf`、`directive-line`、 `lf`。
+`<br/>` として読まれる: `comment-line`、`cr`、`crlf`、`directive-line`、`lf`。
 [fixture: kanban/db-grid-comment-line-metadata-ticket-quoted]
 [fixture: kanban/db-grid-cr-metadata-ticket-quoted]
 [fixture: kanban/db-grid-crlf-metadata-ticket-quoted]
@@ -10971,7 +10969,7 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-backslash-metadata-ticket-quoted]
 文法が拒否する: `quote`。
 [fixture: kanban/gram-grid-quote-metadata-ticket-quoted]
-データブロックの YAML が拒否する: `ff`、 `vt`。
+データブロックの YAML が拒否する: `ff`、`vt`。
 [fixture: kanban/gram-grid-ff-metadata-ticket-quoted]
 [fixture: kanban/gram-grid-vt-metadata-ticket-quoted]
 そのまま保たれる: 他の種類。
@@ -11034,18 +11032,18 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-entity-named-metadata-priority-bare]
 ディレクティブとして取り除かれる: `directive`。
 [fixture: kanban/db-grid-directive-metadata-priority-bare]
-最初の `;` が行の規則で落ちる: `classdef-rule`、 `style-rule`。
+最初の `;` が行の規則で落ちる: `classdef-rule`、`style-rule`。
 [fixture: kanban/db-grid-classdef-rule-metadata-priority-bare]
 [fixture: kanban/db-grid-style-rule-metadata-priority-bare]
-そこで値が終わり、 `a` になる: `comma`。
+そこで値が終わり、`a` になる: `comma`。
 [fixture: kanban/db-grid-comma-metadata-priority-bare]
 字句解析器が拒否する: `punct`。
 [fixture: kanban/gram-grid-punct-metadata-priority-bare]
-文法が拒否する: `close-brace`、 `quote`。
+文法が拒否する: `close-brace`、`quote`。
 [fixture: kanban/gram-grid-close-brace-metadata-priority-bare]
 [fixture: kanban/gram-grid-quote-metadata-priority-bare]
-データブロックの YAML が拒否する: `close-square`、`comment-line`、`cr`、
-`crlf`、`directive-line`、`ff`、`lf`、`open-brace`、`open-square`、 `vt`。
+データブロックの YAML が拒否する: `close-square`、`comment-line`、`cr`、`crlf`、
+`directive-line`、`ff`、`lf`、`open-brace`、`open-square`、`vt`。
 [fixture: kanban/gram-grid-close-square-metadata-priority-bare]
 [fixture: kanban/gram-grid-comment-line-metadata-priority-bare]
 [fixture: kanban/gram-grid-cr-metadata-priority-bare]
@@ -11109,7 +11107,7 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-entity-named-metadata-priority-single]
 ディレクティブとして取り除かれる: `directive`。
 [fixture: kanban/db-grid-directive-metadata-priority-single]
-最初の `;` が行の規則で落ちる: `classdef-rule`、 `style-rule`。
+最初の `;` が行の規則で落ちる: `classdef-rule`、`style-rule`。
 [fixture: kanban/db-grid-classdef-rule-metadata-priority-single]
 [fixture: kanban/db-grid-style-rule-metadata-priority-single]
 1 つの改行として読まれる: `directive-line`。
@@ -11121,11 +11119,11 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-lf-metadata-priority-single]
 字句解析器が拒否する: `punct`。
 [fixture: kanban/gram-grid-punct-metadata-priority-single]
-文法が拒否する: `close-brace`、 `quote`。
+文法が拒否する: `close-brace`、`quote`。
 [fixture: kanban/gram-grid-close-brace-metadata-priority-single]
 [fixture: kanban/gram-grid-quote-metadata-priority-single]
-データブロックの YAML が拒否する: `ff`、`html-attribute`、`single-quote`、
-`vt`。 [fixture: kanban/gram-grid-ff-metadata-priority-single]
+データブロックの YAML が拒否する: `ff`、`html-attribute`、`single-quote`、`vt`。
+[fixture: kanban/gram-grid-ff-metadata-priority-single]
 [fixture: kanban/gram-grid-html-attribute-metadata-priority-single]
 [fixture: kanban/gram-grid-single-quote-metadata-priority-single]
 [fixture: kanban/gram-grid-vt-metadata-priority-single]
@@ -11187,10 +11185,10 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-entity-named-metadata-priority-quoted]
 ディレクティブとして取り除かれる: `directive`。
 [fixture: kanban/db-grid-directive-metadata-priority-quoted]
-最初の `;` が行の規則で落ちる: `classdef-rule`、 `style-rule`。
+最初の `;` が行の規則で落ちる: `classdef-rule`、`style-rule`。
 [fixture: kanban/db-grid-classdef-rule-metadata-priority-quoted]
 [fixture: kanban/db-grid-style-rule-metadata-priority-quoted]
-`<br/>` として読まれる: `comment-line`、`cr`、`crlf`、`directive-line`、 `lf`。
+`<br/>` として読まれる: `comment-line`、`cr`、`crlf`、`directive-line`、`lf`。
 [fixture: kanban/db-grid-comment-line-metadata-priority-quoted]
 [fixture: kanban/db-grid-cr-metadata-priority-quoted]
 [fixture: kanban/db-grid-crlf-metadata-priority-quoted]
@@ -11200,7 +11198,7 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-backslash-metadata-priority-quoted]
 文法が拒否する: `quote`。
 [fixture: kanban/gram-grid-quote-metadata-priority-quoted]
-データブロックの YAML が拒否する: `ff`、 `vt`。
+データブロックの YAML が拒否する: `ff`、`vt`。
 [fixture: kanban/gram-grid-ff-metadata-priority-quoted]
 [fixture: kanban/gram-grid-vt-metadata-priority-quoted]
 そのまま保たれる: 他の種類。
@@ -11262,18 +11260,18 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-entity-named-metadata-icon-bare]
 ディレクティブとして取り除かれる: `directive`。
 [fixture: kanban/db-grid-directive-metadata-icon-bare]
-最初の `;` が行の規則で落ちる: `classdef-rule`、 `style-rule`。
+最初の `;` が行の規則で落ちる: `classdef-rule`、`style-rule`。
 [fixture: kanban/db-grid-classdef-rule-metadata-icon-bare]
 [fixture: kanban/db-grid-style-rule-metadata-icon-bare]
-そこで値が終わり、 `a` になる: `comma`。
+そこで値が終わり、`a` になる: `comma`。
 [fixture: kanban/db-grid-comma-metadata-icon-bare]
 字句解析器が拒否する: `punct`。
 [fixture: kanban/gram-grid-punct-metadata-icon-bare]
-文法が拒否する: `close-brace`、 `quote`。
+文法が拒否する: `close-brace`、`quote`。
 [fixture: kanban/gram-grid-close-brace-metadata-icon-bare]
 [fixture: kanban/gram-grid-quote-metadata-icon-bare]
-データブロックの YAML が拒否する: `close-square`、`comment-line`、`cr`、
-`crlf`、`directive-line`、`ff`、`lf`、`open-brace`、`open-square`、 `vt`。
+データブロックの YAML が拒否する: `close-square`、`comment-line`、`cr`、`crlf`、
+`directive-line`、`ff`、`lf`、`open-brace`、`open-square`、`vt`。
 [fixture: kanban/gram-grid-close-square-metadata-icon-bare]
 [fixture: kanban/gram-grid-comment-line-metadata-icon-bare]
 [fixture: kanban/gram-grid-cr-metadata-icon-bare]
@@ -11336,7 +11334,7 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-entity-named-metadata-icon-single]
 ディレクティブとして取り除かれる: `directive`。
 [fixture: kanban/db-grid-directive-metadata-icon-single]
-最初の `;` が行の規則で落ちる: `classdef-rule`、 `style-rule`。
+最初の `;` が行の規則で落ちる: `classdef-rule`、`style-rule`。
 [fixture: kanban/db-grid-classdef-rule-metadata-icon-single]
 [fixture: kanban/db-grid-style-rule-metadata-icon-single]
 1 つの改行として読まれる: `directive-line`。
@@ -11348,11 +11346,11 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-lf-metadata-icon-single]
 字句解析器が拒否する: `punct`。
 [fixture: kanban/gram-grid-punct-metadata-icon-single]
-文法が拒否する: `close-brace`、 `quote`。
+文法が拒否する: `close-brace`、`quote`。
 [fixture: kanban/gram-grid-close-brace-metadata-icon-single]
 [fixture: kanban/gram-grid-quote-metadata-icon-single]
-データブロックの YAML が拒否する: `ff`、`html-attribute`、`single-quote`、
-`vt`。 [fixture: kanban/gram-grid-ff-metadata-icon-single]
+データブロックの YAML が拒否する: `ff`、`html-attribute`、`single-quote`、`vt`。
+[fixture: kanban/gram-grid-ff-metadata-icon-single]
 [fixture: kanban/gram-grid-html-attribute-metadata-icon-single]
 [fixture: kanban/gram-grid-single-quote-metadata-icon-single]
 [fixture: kanban/gram-grid-vt-metadata-icon-single]
@@ -11413,10 +11411,10 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-entity-named-metadata-icon-quoted]
 ディレクティブとして取り除かれる: `directive`。
 [fixture: kanban/db-grid-directive-metadata-icon-quoted]
-最初の `;` が行の規則で落ちる: `classdef-rule`、 `style-rule`。
+最初の `;` が行の規則で落ちる: `classdef-rule`、`style-rule`。
 [fixture: kanban/db-grid-classdef-rule-metadata-icon-quoted]
 [fixture: kanban/db-grid-style-rule-metadata-icon-quoted]
-`<br/>` として読まれる: `comment-line`、`cr`、`crlf`、`directive-line`、 `lf`。
+`<br/>` として読まれる: `comment-line`、`cr`、`crlf`、`directive-line`、`lf`。
 [fixture: kanban/db-grid-comment-line-metadata-icon-quoted]
 [fixture: kanban/db-grid-cr-metadata-icon-quoted]
 [fixture: kanban/db-grid-crlf-metadata-icon-quoted]
@@ -11425,7 +11423,7 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 バックスペースとして読まれる（YAML のエスケープ `\b`）: `backslash`。
 [fixture: kanban/db-grid-backslash-metadata-icon-quoted]
 文法が拒否する: `quote`。 [fixture: kanban/gram-grid-quote-metadata-icon-quoted]
-データブロックの YAML が拒否する: `ff`、 `vt`。
+データブロックの YAML が拒否する: `ff`、`vt`。
 [fixture: kanban/gram-grid-ff-metadata-icon-quoted]
 [fixture: kanban/gram-grid-vt-metadata-icon-quoted]
 そのまま保たれる: 他の種類。
@@ -11486,8 +11484,8 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 `entity-named`、`equals`、`greater-than`、`hash`、`html`、`html-attribute`、
 `html-br`、`ideographic`、`keyword`、`keyword-block`、`keyword-columns`、
 `keyword-end`、`keyword-header`、`keyword-space`、`less-than`、`ls`、`nbsp`、
-`nel`、`nonascii`、`open-round`、`percent`、`pipe`、`ps`、`root`、 `semicolon`、
-`single-quote`、`spaces`、`style-rule`、 `tab`。
+`nel`、`nonascii`、`open-round`、`percent`、`pipe`、`ps`、`root`、`semicolon`、
+`single-quote`、`spaces`、`style-rule`、`tab`。
 [fixture: kanban/db-grid-ampersand-entity-metadata-shape-bare]
 [fixture: kanban/db-grid-arrow-metadata-shape-bare]
 [fixture: kanban/db-grid-arrow-spaced-metadata-shape-bare]
@@ -11536,11 +11534,11 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/db-grid-tab-metadata-shape-bare]
 字句解析器が拒否する: `punct`。
 [fixture: kanban/gram-grid-punct-metadata-shape-bare]
-文法が拒否する: `close-brace`、 `quote`。
+文法が拒否する: `close-brace`、`quote`。
 [fixture: kanban/gram-grid-close-brace-metadata-shape-bare]
 [fixture: kanban/gram-grid-quote-metadata-shape-bare]
-データブロックの YAML が拒否する: `close-square`、`comment-line`、`cr`、
-`crlf`、`directive-line`、`ff`、`lf`、`open-brace`、`open-square`、 `vt`。
+データブロックの YAML が拒否する: `close-square`、`comment-line`、`cr`、`crlf`、
+`directive-line`、`ff`、`lf`、`open-brace`、`open-square`、`vt`。
 [fixture: kanban/gram-grid-close-square-metadata-shape-bare]
 [fixture: kanban/gram-grid-comment-line-metadata-shape-bare]
 [fixture: kanban/gram-grid-cr-metadata-shape-bare]
@@ -11552,8 +11550,8 @@ HTML 属性の二重引用符が一重引用符として読まれる: `html-attr
 [fixture: kanban/gram-grid-open-square-metadata-shape-bare]
 [fixture: kanban/gram-grid-vt-metadata-shape-bare]
 Db が拒否する: shape 名に大文字か `_` が含まれる（`No such shape`）:
-`classdef-rule`、`keyword-class`、`keyword-classdef`、`keyword-style`、
-`proto`。 [fixture: kanban/gram-grid-classdef-rule-metadata-shape-bare]
+`classdef-rule`、`keyword-class`、`keyword-classdef`、`keyword-style`、`proto`。
+[fixture: kanban/gram-grid-classdef-rule-metadata-shape-bare]
 [fixture: kanban/gram-grid-keyword-class-metadata-shape-bare]
 [fixture: kanban/gram-grid-keyword-classdef-metadata-shape-bare]
 [fixture: kanban/gram-grid-keyword-style-metadata-shape-bare]
@@ -11567,8 +11565,8 @@ Db が拒否する: shape 名に大文字か `_` が含まれる（`No such shap
 `entity-named`、`equals`、`greater-than`、`hash`、`html`、`html-br`、
 `ideographic`、`keyword`、`keyword-block`、`keyword-columns`、`keyword-end`、
 `keyword-header`、`keyword-space`、`less-than`、`lf`、`ls`、`nbsp`、`nel`、
-`nonascii`、`open-brace`、`open-round`、`open-square`、`percent`、`pipe`、
-`ps`、`root`、`semicolon`、`spaces`、`style-rule`、 `tab`。
+`nonascii`、`open-brace`、`open-round`、`open-square`、`percent`、`pipe`、`ps`、
+`root`、`semicolon`、`spaces`、`style-rule`、`tab`。
 [fixture: kanban/db-grid-ampersand-entity-metadata-shape-single]
 [fixture: kanban/db-grid-arrow-metadata-shape-single]
 [fixture: kanban/db-grid-arrow-spaced-metadata-shape-single]
@@ -11623,17 +11621,17 @@ Db が拒否する: shape 名に大文字か `_` が含まれる（`No such shap
 [fixture: kanban/db-grid-tab-metadata-shape-single]
 字句解析器が拒否する: `punct`。
 [fixture: kanban/gram-grid-punct-metadata-shape-single]
-文法が拒否する: `close-brace`、 `quote`。
+文法が拒否する: `close-brace`、`quote`。
 [fixture: kanban/gram-grid-close-brace-metadata-shape-single]
 [fixture: kanban/gram-grid-quote-metadata-shape-single]
-データブロックの YAML が拒否する: `ff`、`html-attribute`、`single-quote`、
-`vt`。 [fixture: kanban/gram-grid-ff-metadata-shape-single]
+データブロックの YAML が拒否する: `ff`、`html-attribute`、`single-quote`、`vt`。
+[fixture: kanban/gram-grid-ff-metadata-shape-single]
 [fixture: kanban/gram-grid-html-attribute-metadata-shape-single]
 [fixture: kanban/gram-grid-single-quote-metadata-shape-single]
 [fixture: kanban/gram-grid-vt-metadata-shape-single]
 Db が拒否する: shape 名に大文字か `_` が含まれる（`No such shape`）:
-`classdef-rule`、`keyword-class`、`keyword-classdef`、`keyword-style`、
-`proto`。 [fixture: kanban/gram-grid-classdef-rule-metadata-shape-single]
+`classdef-rule`、`keyword-class`、`keyword-classdef`、`keyword-style`、`proto`。
+[fixture: kanban/gram-grid-classdef-rule-metadata-shape-single]
 [fixture: kanban/gram-grid-keyword-class-metadata-shape-single]
 [fixture: kanban/gram-grid-keyword-classdef-metadata-shape-single]
 [fixture: kanban/gram-grid-keyword-style-metadata-shape-single]
@@ -11649,7 +11647,7 @@ Db が拒否する: shape 名に大文字か `_` が含まれる（`No such shap
 `keyword-end`、`keyword-header`、`keyword-space`、`less-than`、`lf`、`ls`、
 `nbsp`、`nel`、`nonascii`、`open-brace`、`open-round`、`open-square`、
 `percent`、`pipe`、`ps`、`root`、`semicolon`、`single-quote`、`spaces`、
-`style-rule`、 `tab`。
+`style-rule`、`tab`。
 [fixture: kanban/db-grid-ampersand-entity-metadata-shape-quoted]
 [fixture: kanban/db-grid-arrow-metadata-shape-quoted]
 [fixture: kanban/db-grid-arrow-spaced-metadata-shape-quoted]
@@ -11707,13 +11705,12 @@ Db が拒否する: shape 名に大文字か `_` が含まれる（`No such shap
 [fixture: kanban/db-grid-tab-metadata-shape-quoted]
 文法が拒否する: `quote`。
 [fixture: kanban/gram-grid-quote-metadata-shape-quoted]
-データブロックの YAML が拒否する: `ff`、 `vt`。
+データブロックの YAML が拒否する: `ff`、`vt`。
 [fixture: kanban/gram-grid-ff-metadata-shape-quoted]
 [fixture: kanban/gram-grid-vt-metadata-shape-quoted]
 Db が拒否する: shape 名に大文字か `_` が含まれる（`No such shape`）:
-`classdef-rule`、`keyword-class`、`keyword-classdef`、`keyword-style`、
-`proto`、 `punct`。
-[fixture: kanban/gram-grid-classdef-rule-metadata-shape-quoted]
+`classdef-rule`、`keyword-class`、`keyword-classdef`、`keyword-style`、`proto`、
+`punct`。 [fixture: kanban/gram-grid-classdef-rule-metadata-shape-quoted]
 [fixture: kanban/gram-grid-keyword-class-metadata-shape-quoted]
 [fixture: kanban/gram-grid-keyword-classdef-metadata-shape-quoted]
 [fixture: kanban/gram-grid-keyword-style-metadata-shape-quoted]
@@ -11721,10 +11718,10 @@ Db が拒否する: shape 名に大文字か `_` が含まれる（`No such shap
 [fixture: kanban/gram-grid-punct-metadata-shape-quoted]
 
 データブロックの値は YAML として読む。
-以下の文は、キー `label`、`assigned`、 `ticket`、`priority`、`icon`、
-`shape` が、値の種類ごとに何を読むかを示す。
+以下の文は、キー `label`、`assigned`、`ticket`、`priority`、`icon`、`shape` が、
+値の種類ごとに何を読むかを示す。
 
-プレーン、一重引用符、二重引用符の YAML テキストの値は、`label`、 `assigned`、
+プレーン、一重引用符、二重引用符の YAML テキストの値は、`label`、`assigned`、
 `ticket`、`icon`、`priority` にそのテキストを設定し、
 `label` は書かれたラベルを置き換える。 [fixture: kanban/db-metadata-label-plain]
 [fixture: kanban/db-metadata-assigned-plain]
@@ -11781,7 +11778,7 @@ Db が拒否する: shape 名に大文字か `_` が含まれる（`No such shap
 [fixture: kanban/db-metadata-priority-negative-zero]
 数、負の数、符号付きの数は、`label`、`assigned`、`ticket`、
 `icon` ではそのテキスト（`23`、`-2`、`2`）として読まれ、`priority` は数を保つ。
-`true` はテキスト `true` として読まれ、 `priority` は真偽値を保つ。
+`true` はテキスト `true` として読まれ、`priority` は真偽値を保つ。
 [fixture: kanban/db-metadata-label-number]
 [fixture: kanban/db-metadata-assigned-number]
 [fixture: kanban/db-metadata-ticket-number]
@@ -11819,13 +11816,13 @@ Db が拒否する: shape 名に大文字か `_` が含まれる（`No such shap
 [fixture: kanban/db-metadata-icon-nan-word]
 [fixture: kanban/db-metadata-priority-nan-word]
 リスト `[a, b]` は、`label`、`assigned`、`ticket`、
-`icon` ではコンマでつながれ（`a,b`）、 `priority` はリストを保つ。
+`icon` ではコンマでつながれ（`a,b`）、`priority` はリストを保つ。
 [fixture: kanban/db-metadata-label-list]
 [fixture: kanban/db-metadata-assigned-list]
 [fixture: kanban/db-metadata-ticket-list]
 [fixture: kanban/db-metadata-icon-list]
 [fixture: kanban/db-metadata-priority-list]
-キーは大文字小文字を区別し、`ASSIGNED`、`ICON`、`LABEL`、`PRIORITY`、 `SHAPE`、
+キーは大文字小文字を区別し、`ASSIGNED`、`ICON`、`LABEL`、`PRIORITY`、`SHAPE`、
 `TICKET` は何も設定しない。 [fixture: kanban/db-metadata-label-upper-key]
 [fixture: kanban/db-metadata-assigned-upper-key]
 [fixture: kanban/db-metadata-ticket-upper-key]
@@ -11880,20 +11877,20 @@ Db が拒否する: shape 名に大文字か `_` が含まれる（`No such shap
 [fixture: c4/db-shape-three-definitions] [fixture:
 c4/db-boundary-three-definitions] [fixture: c4/db-rel-three-definitions]
 
-図形は `alias`、`label`、`descr`、`techn`、`typeC4Shape`、 `parentBoundary`、
+図形は `alias`、`label`、`descr`、`techn`、`typeC4Shape`、`parentBoundary`、
 `wrap`、`sprite`、`tags`、`link` と、その他の代入済み属性を保持し、
 undefined のフィールドを省略する。 [fixture: c4/db-all-fields]
 [fixture: c4/db-named-text-fields] [fixture:
 c4/db-style-layout-key-attributes]
 
-境界は `alias`、`label`、`type`、`parentBoundary`、`wrap`、 `tags`、
+境界は `alias`、`label`、`type`、`parentBoundary`、`wrap`、`tags`、
 `link` とその他の代入済み属性を保持し、
 配置ノードは `nodeType` と代入された説明も保持する。 [fixture: c4/db-all-fields]
 [fixture: c4/db-keyword-node-l] [fixture:
 c4/db-keyword-node-r]
 
 最初の境界は初期の `global` であり、ラベルと型は `{ text: "global" }`、
-親は空文字列、 tags と link は null であり、
+親は空文字列、tags と link は null であり、
 宣言とスタイル更新がこの項目を更新できる。 [fixture: c4/db-number-layout-zero]
 [fixture: c4/gram-boundary-global-alias]
 
@@ -11909,7 +11906,7 @@ c4/db-parent-person] [fixture: c4/db-parent-proto] [fixture: c4/db-parent-title]
 [fixture: c4/demo-c4context-61e43307] [fixture: c4/docs-syntax-c4-5f697bdc]
 [fixture: c4/docs-syntax-c4-90f106b9] [fixture: c4/docs-syntax-c4-f96d2403]
 
-関係は `type`、`from`、`to`、`label`、`techn`、`descr`、 `wrap`、`sprite`、
+関係は `type`、`from`、`to`、`label`、`techn`、`descr`、`wrap`、`sprite`、
 `tags`、`link`、代入されたスタイルとオフセット、その他の代入済み属性を保持し、
 端点を解決しない。 [fixture: c4/db-all-fields]
 [fixture: c4/db-alias-constructor] [fixture:
@@ -12368,7 +12365,7 @@ c4/db-named-element-style-tags-slot-1] [fixture:
 c4/db-named-element-style-unknown-slot-1] [fixture:
 c4/db-style-required-named-target]
 
-要素スタイルは `bgColor`、`fontColor`、`borderColor`、`shadowing`、 `shape`、
+要素スタイルは `bgColor`、`fontColor`、`borderColor`、`shadowing`、`shape`、
 `sprite`、`techn`、`legendText`、`legendSprite` を保持し、
 名前付き引数はテキストフィールドと任意キーも直接の値として代入し、
 後の更新は指定されたフィールドだけを置き換える。 [fixture: c4/db-all-fields]
@@ -12411,7 +12408,7 @@ c4/db-named-element-style-unknown-slot-8] [fixture:
 c4/db-named-element-style-unknown-slot-9] [fixture: c4/demo-c4context-61e43307]
 [fixture: c4/docs-syntax-c4-f96d2403]
 
-`UpdateRelStyle` は保存済みの端点の順序付き対だけを更新し、 `textColor`、
+`UpdateRelStyle` は保存済みの端点の順序付き対だけを更新し、`textColor`、
 `lineColor`、`offsetX`、`offsetY` と任意の名前付き属性を保持し、
 後の更新は指定されたフィールドだけを置き換える。
 [fixture: c4/db-style-before-definition] [fixture:
@@ -12527,9 +12524,9 @@ c4/header-dynamic-title-on-header-line] [fixture: c4/header-dynamic-twice]
 c4/db-keyword-componentqueue-ext] [fixture: c4/db-keyword-rel-back]
 
 `title` は最初の区切りの後の文字を追加の先頭末尾空白も保持して取り、
-`accTitle:` は値の両端を削って同じ title を設定し、
-`accTitle` は空のままであり、最後の文が勝つ。 [fixture: c4/db-title-whitespace]
-[fixture: c4/db-acc-title] [fixture:
+`accTitle:` は値の両端を削って同じ title を設定し、`accTitle` は空のままであり、
+最後の文が勝つ。 [fixture: c4/db-title-whitespace] [fixture: c4/db-acc-title]
+[fixture:
 c4/db-title-acc-order] [fixture: c4/db-title-frontmatter] [fixture:
 c4/db-title-plain] [fixture: c4/db-title-spaces] [fixture:
 c4/db-title-spaces-only] [fixture: c4/db-title-tab] [fixture:
@@ -12544,7 +12541,7 @@ c4/db-acctitle-three-times] [fixture: c4/db-acc-title-space-before-colon]
 [fixture: c4/spec-c4-component-ebbe1176]
 [fixture: c4/spec-c4-component-f06e3225] [fixture: c4/spec-c4-diagram-a95fd4b0]
 
-`accDescription` は最初の区切りの後の文字を保持し、 `accDescr:` は値、
+`accDescription` は最初の区切りの後の文字を保持し、`accDescr:` は値、
 空でない `accDescr { ... }` はブロックの両端を削り、すべて `accDescr` を設定し、
 その setter は改行後の空白を削る。 [fixture: c4/db-acc-description-whitespace]
 [fixture:
@@ -12581,7 +12578,7 @@ frontmatter の title とアクセシビリティフィールドは C4 getter �
 [fixture: c4/db-title-frontmatter] [fixture: c4/db-frontmatter-drawing-config]
 
 root の `wrap` 設定が図形、境界、関係へコピーされ、
-undefined と null の指定では省略し、 false とその他の指定値も保持し、
+undefined と null の指定では省略し、false とその他の指定値も保持し、
 ラベルの `wrap:` と `nowrap:` は文字のまま残る。 [fixture: c4/db-wrap-directive]
 [fixture: c4/config-wrap-true] [fixture:
 c4/config-wrap-false] [fixture: c4/config-wrap-null] [fixture:
@@ -12851,7 +12848,7 @@ c4/lex-keyword-gap-updaterelstyle-tab] [fixture: c4/lex-keyword-eof] [fixture:
 c4/gram-empty-block-in-keyword-gap]
 
 呼出しとテキストのキーワードは正確な綴りを必要とし、大文字小文字の変更や、文字、
-数字、下線、ハイフン、 ASCII 外の文字の接尾辞は拒否される。
+数字、下線、ハイフン、ASCII 外の文字の接尾辞は拒否される。
 [fixture: c4/lex-keyword-accdescr-dash] [fixture: c4/lex-keyword-accdescr-digit]
 [fixture: c4/lex-keyword-accdescr-letter] [fixture:
 c4/lex-keyword-accdescr-lower] [fixture: c4/lex-keyword-accdescr-non-ascii]
@@ -13239,7 +13236,7 @@ c4/gram-grid-spaces-header-line] [fixture: c4/gram-grid-style-rule-header-line]
 [fixture: c4/gram-grid-tab-header-line] [fixture: c4/gram-grid-vt-header-line]
 
 文リスト内の direction トークンは、同じ行に単語、句読点、空白、引用符、
-エンティティ、 directive があっても拒否される。
+エンティティ、directive があっても拒否される。
 [fixture: c4/gram-grid-ampersand-entity-direction-line] [fixture:
 c4/gram-grid-arrow-direction-line] [fixture:
 c4/gram-grid-arrow-spaced-direction-line] [fixture:
@@ -13295,7 +13292,7 @@ c4/gram-grid-style-rule-direction-line] [fixture:
 c4/gram-grid-tab-direction-line] [fixture: c4/gram-grid-vt-direction-line]
 
 ヘッダーは大文字小文字を区別し、小文字、大文字、混合した綴りと、単語、数字、
-下線、ハイフン、 ASCII 外の文字の直結した接尾辞は拒否される。
+下線、ハイフン、ASCII 外の文字の直結した接尾辞は拒否される。
 [fixture: c4/header-component-dash-suffix] [fixture:
 c4/header-component-digit-suffix] [fixture:
 c4/header-component-glued-keyword-suffix] [fixture: c4/header-component-lower]
@@ -13328,7 +13325,7 @@ c4/header-dynamic-non-ascii-suffix] [fixture:
 c4/header-dynamic-underscore-suffix] [fixture: c4/header-dynamic-upper]
 [fixture: c4/header-dynamic-word-suffix]
 
-ヘッダー前の空行、空白だけの行、コメント行、 directive 行、
+ヘッダー前の空行、空白だけの行、コメント行、directive 行、
 有効な frontmatter は図と C4 の型を変えない。
 [fixture: c4/header-after-bare-percent-line] [fixture:
 c4/header-after-blank-lines] [fixture: c4/header-after-comment-line] [fixture:
@@ -13350,8 +13347,8 @@ c4/header-after-whitespace-line]
 c4/header-leading-percent-before-different-header] [fixture:
 c4/header-leading-percent-blank] [fixture: c4/div-leading-percent-space-blank]
 
-文の周囲と空白だけの行のタブ、 FF、 VT、 NBSP、 U+3000、 U+FEFF、 U+2028、
-U+2029 は無視し、 CR と CRLF は文を区切ることができる。
+文の周囲と空白だけの行のタブ、FF、VT、NBSP、U+3000、U+FEFF、U+2028、
+U+2029 は無視し、CR と CRLF は文を区切ることができる。
 [fixture: c4/lex-bom-after-header] [fixture: c4/lex-bom-before-header] [fixture:
 c4/lex-bom-line-end] [fixture: c4/lex-bom-line-start] [fixture:
 c4/lex-bom-text-end] [fixture: c4/lex-bom-whitespace-between] [fixture:
@@ -13395,7 +13392,7 @@ c4/lex-vt-line-start] [fixture: c4/lex-vt-text-end] [fixture:
 c4/lex-vt-whitespace-between] [fixture: c4/lex-vt-whitespace-first] [fixture:
 c4/lex-vt-whitespace-last]
 
-タブ、 FF、 VT、 NBSP、 U+3000、 U+FEFF、 U+2028、
+タブ、FF、VT、NBSP、U+3000、U+FEFF、U+2028、
 U+2029 だけでは二つの図の文を区切れない。
 [fixture: c4/lex-bom-between-statements] [fixture: c4/lex-ff-between-statements]
 [fixture: c4/lex-ideographic-between-statements] [fixture:
@@ -13439,8 +13436,8 @@ c4/lex-comment-between-spaces-recovery]
 [fixture: c4/gram-boundary-close-without-newline] [fixture:
 c4/lex-comment-before-close]
 
-通常の文の行では、小文字の `direction` と空白と `TB`、 `BT`、 `RL`、
-`LR` の組が、題名、要素、境界、説明の開始、同じ行のコメントより優先し、
+通常の文の行では、小文字の `direction` と空白と `TB`、`BT`、`RL`、`LR` の組が、
+題名、要素、境界、説明の開始、同じ行のコメントより優先し、
 長い単語内の一致と後続の文字も含む。
 [fixture: c4/gram-direction-bt-inside-label] [fixture:
 c4/gram-direction-bt-line] [fixture: c4/gram-direction-bt-prefix] [fixture:
@@ -13493,11 +13490,11 @@ c4/lex-directive-colon-unclosed-next-line]
 [fixture: c4/db-shape-alias-named-change] [fixture:
 c4/db-rel-endpoint-named-change] [fixture: c4/db-boundary-alias-named-change]
 
-名前付きキーは大文字と小文字を区別し、 `$Tags` と `$tags` は別の属性となる。
+名前付きキーは大文字と小文字を区別し、`$Tags` と `$tags` は別の属性となる。
 [fixture: c4/db-named-case-sensitive]
 
-Person と System の外部、データベース、キュー形式も含む位置引数は、 `alias`、
-`label.text`、 `descr.text`、 `sprite`、 `tags`、 `link` の順に対応する。
+Person と System の外部、データベース、キュー形式も含む位置引数は、`alias`、
+`label.text`、`descr.text`、`sprite`、`tags`、`link` の順に対応する。
 [fixture: c4/db-keyword-person-ext] [fixture: c4/db-keyword-person] [fixture:
 c4/db-keyword-systemqueue-ext] [fixture: c4/db-keyword-systemdb-ext] [fixture:
 c4/db-keyword-system-ext] [fixture: c4/db-keyword-systemqueue] [fixture:
@@ -13512,17 +13509,17 @@ c4/db-keyword-systemdb] [fixture: c4/db-keyword-system]
 [fixture: c4/spec-c4-system-b5a30fc8] [fixture: c4/spec-c4-system-ca506508]
 [fixture: c4/spec-c4-system-f240d0bd]
 
-`Boundary` の位置引数は、 `alias`、 `label.text`、 `type.text`、 `tags`、
+`Boundary` の位置引数は、`alias`、`label.text`、`type.text`、`tags`、
 `link` の順に対応する。 [fixture: c4/db-keyword-boundary]
 [fixture: c4/spec-c4-boundary-08686298] [fixture: c4/spec-c4-boundary-8c562ee4]
 
-`Enterprise_Boundary`、 `System_Boundary`、 `Container_Boundary` の位置引数は、
-`alias`、 `label.text`、 `tags`、 `link` の順に対応する。
+`Enterprise_Boundary`、`System_Boundary`、`Container_Boundary` の位置引数は、
+`alias`、`label.text`、`tags`、`link` の順に対応する。
 [fixture: c4/db-keyword-enterprise-boundary] [fixture:
 c4/db-keyword-system-boundary] [fixture: c4/db-keyword-container-boundary]
 
 Container と Component の外部、データベース、キュー形式も含む位置引数は、
-`alias`、 `label.text`、 `techn.text`、 `descr.text`、 `sprite`、 `tags`、
+`alias`、`label.text`、`techn.text`、`descr.text`、`sprite`、`tags`、
 `link` の順に対応する。 [fixture: c4/db-keyword-containerqueue-ext] [fixture:
 c4/db-keyword-containerdb-ext] [fixture: c4/db-keyword-container-ext] [fixture:
 c4/db-keyword-containerqueue] [fixture: c4/db-keyword-containerdb] [fixture:
@@ -13561,15 +13558,15 @@ c4/db-keyword-component] [fixture: c4/docs-syntax-c4-e233a726]
 [fixture: c4/spec-c4-container-eae6e364]
 [fixture: c4/spec-c4-container-fd30d76e]
 
-`Deployment_Node`、 `Node`、 `Node_L`、 `Node_R` の位置引数は、 `alias`、
-`label.text`、 `type.text`、 `descr.text`、 `ignored sprite`、 `tags`、
+`Deployment_Node`、`Node`、`Node_L`、`Node_R` の位置引数は、`alias`、
+`label.text`、`type.text`、`descr.text`、`ignored sprite`、`tags`、
 `link` の順に対応する。 [fixture: c4/db-keyword-deployment-node]
 [fixture: c4/db-keyword-node] [fixture:
 c4/db-keyword-node-l] [fixture: c4/db-keyword-node-r]
 [fixture: c4/demo-c4context-1d531a27] [fixture: c4/docs-syntax-c4-90f106b9]
 
-RelIndex 以外の関係キーワードの位置引数は、 `from`、 `to`、 `label.text`、
-`techn.text`、 `descr.text`、 `sprite`、 `tags`、 `link` の順に対応する。
+RelIndex 以外の関係キーワードの位置引数は、`from`、`to`、`label.text`、
+`techn.text`、`descr.text`、`sprite`、`tags`、`link` の順に対応する。
 [fixture: c4/db-keyword-rel] [fixture: c4/db-keyword-birel] [fixture:
 c4/db-keyword-rel-up] [fixture: c4/db-keyword-rel-u] [fixture:
 c4/db-keyword-rel-down] [fixture: c4/db-keyword-rel-d] [fixture:
@@ -13577,23 +13574,23 @@ c4/db-keyword-rel-left] [fixture: c4/db-keyword-rel-l] [fixture:
 c4/db-keyword-rel-right] [fixture: c4/db-keyword-rel-r] [fixture:
 c4/db-keyword-rel-back] [fixture: c4/spec-c4-boundary-e7bc47fe]
 
-`RelIndex` の位置引数は、 `discarded index`、 `from`、 `to`、 `label.text`、
-`techn.text`、 `descr.text`、 `sprite`、 `tags`、 `link` の順に対応する。
+`RelIndex` の位置引数は、`discarded index`、`from`、`to`、`label.text`、
+`techn.text`、`descr.text`、`sprite`、`tags`、`link` の順に対応する。
 [fixture: c4/db-keyword-relindex]
 
-`UpdateElementStyle` の位置引数は、 `target alias`、 `bgColor`、 `fontColor`、
-`borderColor`、 `shadowing`、 `shape`、 `sprite`、 `techn`、 `legendText`、
+`UpdateElementStyle` の位置引数は、`target alias`、`bgColor`、`fontColor`、
+`borderColor`、`shadowing`、`shape`、`sprite`、`techn`、`legendText`、
 `legendSprite` の順に対応する。 [fixture: c4/db-keyword-updateelementstyle]
 
-`UpdateRelStyle` の位置引数は、 `target from`、 `target to`、 `textColor`、
-`lineColor`、 `offsetX`、 `offsetY` の順に対応する。
+`UpdateRelStyle` の位置引数は、`target from`、`target to`、`textColor`、
+`lineColor`、`offsetX`、`offsetY` の順に対応する。
 [fixture: c4/db-keyword-updaterelstyle]
 
-`UpdateLayoutConfig` の位置引数は、 `c4ShapeInRow`、
+`UpdateLayoutConfig` の位置引数は、`c4ShapeInRow`、
 `c4BoundaryInRow` の順に対応する。 [fixture: c4/db-keyword-updatelayoutconfig]
 
-型が固定の境界は `ENTERPRISE`、 `SYSTEM`、 `CONTAINER` を設定し、
-`Node` と `Deployment_Node` の nodeType は `node`、 `Node_L` は `nodeL`、
+型が固定の境界は `ENTERPRISE`、`SYSTEM`、`CONTAINER` を設定し、
+`Node` と `Deployment_Node` の nodeType は `node`、`Node_L` は `nodeL`、
 `Node_R` は `nodeR` となる。 [fixture: c4/db-keyword-enterprise-boundary]
 [fixture:
 c4/db-keyword-system-boundary] [fixture: c4/db-keyword-container-boundary]
@@ -13606,8 +13603,8 @@ c4/db-keyword-node-l] [fixture: c4/db-keyword-node-r]
 [fixture: c4/db-keyword-person] [fixture: c4/db-keyword-person-ext]
 [fixture: c4/spec-c4-person-c3534964] [fixture: c4/spec-c4-person-ext-403c6383]
 
-`System`、 `SystemDb`、 `SystemQueue` の図形種別は、 `system`、 `system_db`、
-`system_queue` であり、 `_Ext` 形式は種別の先頭へ `external_` を付ける。
+`System`、`SystemDb`、`SystemQueue` の図形種別は、`system`、`system_db`、
+`system_queue` であり、`_Ext` 形式は種別の先頭へ `external_` を付ける。
 [fixture: c4/db-keyword-system] [fixture: c4/db-keyword-systemdb] [fixture:
 c4/db-keyword-systemqueue] [fixture: c4/db-keyword-system-ext] [fixture:
 c4/db-keyword-systemdb-ext] [fixture: c4/db-keyword-systemqueue-ext]
@@ -13615,8 +13612,8 @@ c4/db-keyword-systemdb-ext] [fixture: c4/db-keyword-systemqueue-ext]
 [fixture: c4/spec-c4-system-8ae77b48] [fixture: c4/spec-c4-system-9c3b4db9]
 [fixture: c4/spec-c4-system-cb5e70a4] [fixture: c4/spec-c4-system-eb1a0dc9]
 
-`Container`、 `ContainerDb`、 `ContainerQueue` の図形種別は、 `container`、
-`container_db`、 `container_queue` であり、
+`Container`、`ContainerDb`、`ContainerQueue` の図形種別は、`container`、
+`container_db`、`container_queue` であり、
 `_Ext` 形式は種別の先頭へ `external_` を付ける。
 [fixture: c4/db-keyword-container] [fixture: c4/db-keyword-containerdb]
 [fixture: c4/db-keyword-containerqueue] [fixture: c4/db-keyword-container-ext]
@@ -13629,8 +13626,8 @@ c4/db-keyword-containerqueue-ext] [fixture: c4/demo-c4context-b284cb21]
 [fixture: c4/spec-c4-container-bbf08ef2]
 [fixture: c4/spec-c4-container-e58a9a00]
 
-`Component`、 `ComponentDb`、 `ComponentQueue` の図形種別は、 `component`、
-`component_db`、 `component_queue` であり、
+`Component`、`ComponentDb`、`ComponentQueue` の図形種別は、`component`、
+`component_db`、`component_queue` であり、
 `_Ext` 形式は種別の先頭へ `external_` を付ける。
 [fixture: c4/db-keyword-component] [fixture: c4/db-keyword-componentdb]
 [fixture: c4/db-keyword-componentqueue] [fixture: c4/db-keyword-component-ext]
@@ -13649,8 +13646,8 @@ c4/db-keyword-componentqueue-ext] [fixture: c4/docs-syntax-c4-e233a726]
 [fixture: c4/spec-c4-component-f06e3225]
 [fixture: c4/spec-c4-component-f8fbb57a]
 
-`Rel` と `RelIndex` の type は `rel`、 `BiRel` は `birel`、
-短形と長形の方向指定は `rel_u`、 `rel_d`、 `rel_l`、 `rel_r`、
+`Rel` と `RelIndex` の type は `rel`、`BiRel` は `birel`、
+短形と長形の方向指定は `rel_u`、`rel_d`、`rel_l`、`rel_r`、
 `Rel_Back` は `rel_b` となる。 [fixture: c4/db-keyword-rel]
 [fixture: c4/db-keyword-relindex] [fixture:
 c4/db-keyword-birel] [fixture: c4/db-keyword-rel-u] [fixture:
@@ -13704,7 +13701,7 @@ c4/gram-arguments-node-empty] [fixture: c4/gram-arguments-person-below]
 [fixture: c4/gram-arguments-rel-empty] [fixture:
 c4/gram-arguments-rel-style-below] [fixture: c4/gram-arguments-rel-style-empty]
 
-端点やラベルの欠落の検査は、 `RelIndex` が index を捨てた後にも適用し、
+端点やラベルの欠落の検査は、`RelIndex` が index を捨てた後にも適用し、
 指定された空文字列は引数として数える。 [fixture: c4/gram-arguments-index-one]
 [fixture: c4/gram-rel-too-few-quoted] [fixture: c4/gram-rel-empty-label]
 [fixture: c4/gram-arguments-rel-empty]
@@ -13808,7 +13805,7 @@ c4/gram-statement-newline-in-call]
 [fixture: c4/gram-named-bare-value] [fixture: c4/gram-named-single-quote]
 [fixture: c4/lex-named-open-eof]
 
-名前付きキーは最初の等号まで内部のコンマ、閉じ丸括弧、 LF、字下げを保持する。
+名前付きキーは最初の等号まで内部のコンマ、閉じ丸括弧、LF、字下げを保持する。
 [fixture: c4/lex-named-key-comma-close] [fixture: c4/lex-named-key-multiline]
 
 名前付きキー `__proto__` への文字列の代入は、
@@ -13840,7 +13837,7 @@ c4/gram-proto-rel-missing-target]
 [fixture: c4/header-context-minimal] [fixture: c4/gram-boundary-nested]
 [fixture: c4/db-rel-self] [fixture: c4/spec-c4-named-attributes-bd7f9fb7]
 
-新しい Container や Component で省略された説明は、 `{ text: "" }` になる。
+新しい Container や Component で省略された説明は、`{ text: "" }` になる。
 [fixture: c4/spec-c4-named-attributes-19f2c0e1]
 [fixture: c4/spec-c4-named-attributes-af0fa0d8]
 
@@ -13848,7 +13845,7 @@ Boundary の型の省略は `{ text: "system" }`、
 配置ノードの型の省略は `{ text: "node" }` となる。
 [fixture: c4/gram-boundary-nested] [fixture: c4/spec-c4-boundary-826935af]
 
-新しく宣言した項目で sprite、 tags、 link がなければ空文字列で埋めずに省略し、
+新しく宣言した項目で sprite、tags、link がなければ空文字列で埋めずに省略し、
 初期の global 境界はそれ自身の null の既定値を保持する。
 [fixture: c4/header-context-minimal] [fixture: c4/gram-boundary-nested]
 [fixture: c4/db-rel-self]
@@ -13856,7 +13853,7 @@ Boundary の型の省略は `{ text: "system" }`、
 ### テキスト値
 
 引数、名前付きキー、題名、アクセシビリティの文字列の内部では、スペース、タブ、
-FF、 VT、 NBSP、 U+3000、 U+FEFF、 U+2028、 U+2029、 U+0085 を保持し、
+FF、VT、NBSP、U+3000、U+FEFF、U+2028、U+2029、U+0085 を保持し、
 両端の削除と accDescr の LF 後の字下げ削除は適用する。
 [fixture: c4/db-grid-bom-title] [fixture: c4/db-grid-ff-title] [fixture:
 c4/db-grid-ideographic-title] [fixture: c4/db-grid-ls-title] [fixture:
@@ -13980,7 +13977,7 @@ c4/db-grid-emoji-style-value] [fixture: c4/db-grid-nonascii-style-value]
 [fixture: c4/db-title-non-ascii] [fixture: c4/db-acctitle-non-ascii] [fixture:
 c4/db-accdescription-non-ascii] [fixture: c4/db-accdescr-non-ascii]
 
-長い文字列内の数字、 `root`、 `constructor`、
+長い文字列内の数字、`root`、`constructor`、
 `__proto__` はテキスト値と名前付きキーに文字のまま残る。
 [fixture: c4/db-grid-constructor-title] [fixture: c4/db-grid-digits-title]
 [fixture: c4/db-grid-proto-title] [fixture: c4/db-grid-root-title] [fixture:
@@ -14026,8 +14023,8 @@ c4/db-grid-root-named-value] [fixture: c4/db-grid-constructor-style-value]
 [fixture: c4/db-grid-digits-style-value] [fixture: c4/db-grid-proto-style-value]
 [fixture: c4/db-grid-root-style-value]
 
-C4 のヘッダーと要素キーワードや、他の図の `block`、 `class`、 `columns`、
-`end`、 `space`、 `style`、 `classDef` は、
+C4 のヘッダーと要素キーワードや、他の図の `block`、`class`、`columns`、`end`、
+`space`、`style`、`classDef` は、
 テキスト値と名前付きキーの中では文字のまま残る。
 [fixture: c4/db-grid-keyword-title] [fixture: c4/db-grid-keyword-block-title]
 [fixture: c4/db-grid-keyword-class-title] [fixture:
@@ -14413,8 +14410,7 @@ c4/db-grid-lf-plain-argument-quoted] [fixture: c4/db-grid-cr-named-key]
 [fixture: c4/db-grid-lf-named-value] [fixture: c4/db-grid-cr-style-value]
 [fixture: c4/db-grid-crlf-style-value] [fixture: c4/db-grid-lf-style-value]
 
-title、 accDescription、 accTitle、
-accDescr の行の値の内部の LF はその値を終え、
+title、accDescription、accTitle、accDescr の行の値の内部の LF はその値を終え、
 これらの入力の残りの引用符なし単語は拒否される。
 [fixture: c4/gram-grid-comment-line-title] [fixture: c4/gram-grid-cr-title]
 [fixture: c4/gram-grid-crlf-title] [fixture: c4/gram-grid-directive-line-title]
@@ -14547,8 +14543,7 @@ c4/db-grid-ampersand-entity-named-key] [fixture:
 c4/db-grid-ampersand-entity-named-value] [fixture:
 c4/db-grid-ampersand-entity-style-value]
 
-Mermaid の文字参照は仮表記で保持し、
-`#N;` は `\ufb02\u00b0\u00b0N\u00b6\u00df`、
+Mermaid の文字参照は仮表記で保持し、`#N;` は `\ufb02\u00b0\u00b0N\u00b6\u00df`、
 `#name;` は `\ufb02\u00b0name\u00b6\u00df` となる。
 [fixture: c4/db-grid-entity-title] [fixture: c4/db-grid-entity-named-title]
 [fixture: c4/db-grid-entity-acc-description] [fixture:
@@ -14602,7 +14597,7 @@ c4/db-acctitle-html] [fixture: c4/db-accdescription-html] [fixture:
 c4/db-accdescr-html] [fixture: c4/demo-c4context-1d531a27]
 [fixture: c4/docs-syntax-c4-90f106b9] [fixture: c4/docs-syntax-c4-bc80e69a]
 
-HTML 属性の文字列内の二重引用符は、 C4 が引数、題名、
+HTML 属性の文字列内の二重引用符は、C4 が引数、題名、
 アクセシビリティの値を読む前に単一引用符となる。
 [fixture: c4/db-grid-html-attribute-title] [fixture:
 c4/db-grid-html-attribute-acc-description] [fixture:
@@ -14732,7 +14727,7 @@ c4/gram-acc-descr-block-unclosed] [fixture:
 c4/lex-acc-block-unclosed-after-text] [fixture: c4/gram-acc-title-block]
 [fixture: c4/gram-acc-description-block]
 
-`title` と `accDescription` は値の前の区切りとして一つの LF、 CRLF、
+`title` と `accDescription` は値の前の区切りとして一つの LF、CRLF、
 U+2028 を取れるが、
 余分な空行や directive 行は値のない状態を残して入力を拒否させることがある。
 [fixture: c4/lex-title-newline-value] [fixture: c4/lex-title-separator-crlf]
@@ -15374,7 +15369,7 @@ directive 行がある場合も拒否する。 [fixture: venn/gram-set-label-nex
 負の桁あふれは `"-Infinity"` として記録する。
 [fixture: venn/db-size-negative-overflow]
 
-サイズの欠落、指数、末尾の小数点、十六進接頭辞、 `NaN`、`Infinity`、
+サイズの欠落、指数、末尾の小数点、十六進接頭辞、`NaN`、`Infinity`、
 非 ASCII 数字、後続の識別子は一つのサイズを構成せず拒否される。
 [fixture: venn/gram-size-empty] [fixture: venn/gram-size-exponent]
 [fixture: venn/gram-size-fullwidth] [fixture: venn/gram-size-hex]
@@ -15394,7 +15389,7 @@ directive 行がある場合も拒否する。 [fixture: venn/gram-set-label-nex
 
 単語境界のある字下げした `text` は直前の集合か重なりを使い、
 相対的な深さによらず一つ以上の空白やタブで字下げでき、空行、空白だけの行、
-除去されたコメント行、 directive 行はこのモードを保つ。
+除去されたコメント行、directive 行はこのモードを保つ。
 [fixture: venn/db-form-indent-id] [fixture: venn/db-form-indent-id-label]
 [fixture: venn/db-form-indent-number] [fixture: venn/db-form-indent-string]
 [fixture: venn/db-form-indent-string-label]
@@ -15435,7 +15430,7 @@ Db は引用符の外側を trim して一組の二重引用符を除く。
 [fixture: venn/gram-union-inner-space]
 
 括弧ラベルは Db が trim する前に括弧と引用符を失うため、
-引用したラベルの内側の空白も trim され、 lexer の空ラベルは省略され、
+引用したラベルの内側の空白も trim され、lexer の空ラベルは省略され、
 引用した空白ラベルは空文字列に、引用しない空白ラベルは省略される。
 [fixture: venn/db-label-double-normalization] [fixture: venn/db-label-empty]
 [fixture: venn/db-label-spaces] [fixture: venn/db-set-label]
@@ -15540,7 +15535,7 @@ style キー `__proto__` への文字列の代入は自分のプロパティを�
 [fixture: venn/gram-style-trailing-comma]
 
 `title` は最初の空白区切りの後の文字を引用符や追加の前後の空白ごと保ち、
-最後のタイトルを使い、 frontmatter の初期タイトルは文で上書きできる。
+最後のタイトルを使い、frontmatter の初期タイトルは文で上書きできる。
 [fixture: venn/db-frontmatter-title]
 [fixture: venn/db-frontmatter-title-overridden] [fixture: venn/db-title-last]
 [fixture: venn/db-title-on-header] [fixture: venn/db-title-only-whitespace]
@@ -15672,9 +15667,9 @@ directive 行は拒否される。 [fixture: venn/lex-gap-set-blank]
 [fixture: venn/lex-reserved-venn-beta-style-value]
 [fixture: venn/lex-reserved-venn-beta-text-id]
 
-lexer の空白はスペースとタブで、 CR と CRLF は LF 区切りとなり、
+lexer の空白はスペースとタブで、CR と CRLF は LF 区切りとなり、
 先頭の JavaScript の空白は検出前に除去できるが、文書内の BOM、NBSP、U+3000、
-U+2028、U+2029、垂直タブ、改ページ、 U+0085 は同じ区切りとして使えない。
+U+2028、U+2029、垂直タブ、改ページ、U+0085 は同じ区切りとして使えない。
 [fixture: venn/lex-bom-header-after] [fixture: venn/lex-bom-header-before]
 [fixture: venn/lex-bom-line-end] [fixture: venn/lex-bom-line-start]
 [fixture: venn/lex-bom-text-end] [fixture: venn/lex-bom-whitespace-line]
@@ -16048,7 +16043,7 @@ Db のフィールドを変えない。 [fixture: venn/db-after-set-space]
 [fixture: venn/lex-inline-comment-eats-id]
 [fixture: venn/lex-inline-comment-spaced]
 
-タイトルの文字は行内のパーセント対と、末尾のスペース、タブ、NBSP、 BOM を保つ。
+タイトルの文字は行内のパーセント対と、末尾のスペース、タブ、NBSP、BOM を保つ。
 [fixture: venn/lex-after-title-bom] [fixture: venn/lex-after-title-comment]
 [fixture: venn/lex-after-title-comment-glued]
 [fixture: venn/lex-after-title-nbsp] [fixture: venn/lex-after-title-spaces]
@@ -16057,7 +16052,7 @@ Db のフィールドを変えない。 [fixture: venn/db-after-set-space]
 タイトル末尾のコロンとスペースはタイトルの文字として残る。
 [fixture: venn/db-after-title-colon-space]
 
-完了したタイトルは LF、空行、CRLF、 EOF で終えられる。
+完了したタイトルは LF、空行、CRLF、EOF で終えられる。
 [fixture: venn/db-after-title-blank] [fixture: venn/db-after-title-crlf]
 [fixture: venn/db-title-eof]
 
@@ -16174,7 +16169,7 @@ style 値に文字として残る。 [fixture: venn/lex-identifier-entity-no-sem
 [fixture: venn/lex-text-entity-no-semicolon]
 [fixture: venn/lex-style-entity-no-semicolon]
 
-HTML 属性値を囲む二重引用符は、 venn が周囲の値を読む前に単一引用符となる。
+HTML 属性値を囲む二重引用符は、venn が周囲の値を読む前に単一引用符となる。
 [fixture: venn/lex-identifier-html-attribute]
 [fixture: venn/lex-label-html-attribute] [fixture: venn/lex-text-html-attribute]
 [fixture: venn/lex-style-html-attribute]
@@ -16302,7 +16297,7 @@ LF はタイトルの文字を終えるため、間に空行、コメント行�
 [fixture: venn/lex-title-style-rule]
 [fixture: venn/lex-title-style-rule-no-hash]
 
-集合には一つの識別子、重なりには識別子列、 style 文には対象が必要で、
+集合には一つの識別子、重なりには識別子列、style 文には対象が必要で、
 単一引用符の集合識別子は拒否される。 [fixture: venn/gram-extra-set-no-id]
 [fixture: venn/gram-extra-set-single-quoted]
 [fixture: venn/gram-extra-union-no-id] [fixture: venn/gram-set-list]
@@ -16327,8 +16322,8 @@ LF はタイトルの文字を終えるため、間に空行、コメント行�
 [fixture: venn/lex-comment-line-before-text] [fixture: venn/lex-comment-only]
 [fixture: venn/lex-directive-only]
 
-タイトルの区切りはタブ、BOM、NBSP、U+3000、U+2028、U+2029、 CR、CRLF、垂直タブ、
-改ページを受け入れるが、 U+0085 は拒否する。
+タイトルの区切りはタブ、BOM、NBSP、U+3000、U+2028、U+2029、CR、CRLF、垂直タブ、
+改ページを受け入れるが、U+0085 は拒否する。
 [fixture: venn/lex-title-separator-bom] [fixture: venn/lex-title-separator-cr]
 [fixture: venn/lex-title-separator-crlf] [fixture: venn/lex-title-separator-ff]
 [fixture: venn/lex-title-separator-ideographic]
@@ -16356,7 +16351,7 @@ LF はタイトルの文字を終えるため、間に空行、コメント行�
 `keyword-style`、`less-than`、`lf`、`ls`、`nbsp`、`nel`、`nonascii`、
 `open-brace`、`open-round`、`open-square`、`percent`、`pipe`、`proto`、`ps`、
 `punct`、`quote`、`root`、`semicolon`、`single-quote`、`spaces`、`style-rule`、
-`tab`、 `vt`。 [fixture: venn/gram-grid-ampersand-entity-header-line]
+`tab`、`vt`。 [fixture: venn/gram-grid-ampersand-entity-header-line]
 [fixture: venn/gram-grid-arrow-header-line]
 [fixture: venn/gram-grid-arrow-spaced-header-line]
 [fixture: venn/gram-grid-backslash-header-line]
@@ -16423,8 +16418,8 @@ LF はタイトルの文字を終えるため、間に空行、コメント行�
 コメントトークンは直前の断片を取り、集合 Z だけを残す。
 対象は `comment`。 [fixture: venn/db-grid-comment-header-line]
 
-`identifier-bare` は集合 id、重なりの要素、 text の対象と引用しない id、
-style の対象が共有する、 ASCII 識別子の lexer と正規化を使う。
+`identifier-bare` は集合 id、重なりの要素、text の対象と引用しない id、
+style の対象が共有する、ASCII 識別子の lexer と正規化を使う。
 
 lexer はこれらの挿入した断片を拒否する。
 対象は `ampersand-entity`、`arrow`、`arrow-spaced`、`backslash`、`backtick`、
@@ -16432,7 +16427,7 @@ lexer はこれらの挿入した断片を拒否する。
 `entity`、`entity-named`、`equals`、`ff`、`greater-than`、`hash`、`html`、
 `html-attribute`、`html-br`、`ideographic`、`less-than`、`ls`、`nbsp`、`nel`、
 `nonascii`、`open-brace`、`open-round`、`open-square`、`percent`、`pipe`、`ps`、
-`punct`、`quote`、`semicolon`、`single-quote`、`style-rule`、 `vt`。
+`punct`、`quote`、`semicolon`、`single-quote`、`style-rule`、`vt`。
 [fixture: venn/gram-grid-ampersand-entity-identifier-bare]
 [fixture: venn/gram-grid-arrow-identifier-bare]
 [fixture: venn/gram-grid-arrow-spaced-identifier-bare]
@@ -16476,7 +16471,7 @@ lexer はこれらの挿入した断片を拒否する。
 対象は `colon`、`comma`、`comment`、`comment-line`、`cr`、`crlf`、
 `directive-line`、`keyword-block`、`keyword-class`、`keyword-classdef`、
 `keyword-columns`、`keyword-end`、`keyword-header`、`keyword-space`、`lf`、
-`spaces`、 `tab`。 [fixture: venn/gram-grid-colon-identifier-bare]
+`spaces`、`tab`。 [fixture: venn/gram-grid-colon-identifier-bare]
 [fixture: venn/gram-grid-comma-identifier-bare]
 [fixture: venn/gram-grid-comment-identifier-bare]
 [fixture: venn/gram-grid-comment-line-identifier-bare]
@@ -16495,7 +16490,7 @@ lexer はこれらの挿入した断片を拒否する。
 [fixture: venn/gram-grid-tab-identifier-bare]
 
 挿入した断片はこの値に文字として残る。
-対象は `constructor`、`dash`、`digits`、`empty`、`keyword`、`proto`、 `root`。
+対象は `constructor`、`dash`、`digits`、`empty`、`keyword`、`proto`、`root`。
 [fixture: venn/db-grid-constructor-identifier-bare]
 [fixture: venn/db-grid-dash-identifier-bare]
 [fixture: venn/db-grid-digits-identifier-bare]
@@ -16522,7 +16517,7 @@ directive は除かれ前後の断片が結合する。
 `keyword-end`、`keyword-header`、`keyword-space`、`keyword-style`、`less-than`、
 `lf`、`ls`、`nbsp`、`nel`、`nonascii`、`open-brace`、`open-round`、
 `open-square`、`percent`、`pipe`、`proto`、`ps`、`punct`、`root`、`semicolon`、
-`single-quote`、`spaces`、`tab`、 `vt`。
+`single-quote`、`spaces`、`tab`、`vt`。
 [fixture: venn/db-grid-ampersand-entity-identifier-quoted]
 [fixture: venn/db-grid-arrow-identifier-quoted]
 [fixture: venn/db-grid-arrow-spaced-identifier-quoted]
@@ -16574,12 +16569,12 @@ directive は除かれ前後の断片が結合する。
 [fixture: venn/lex-vt-quoted-value]
 
 一致する style や classDef の行は最後のセミコロンを失う。
-対象は `classdef-rule`、 `style-rule`。
+対象は `classdef-rule`、`style-rule`。
 [fixture: venn/db-grid-classdef-rule-identifier-quoted]
 [fixture: venn/db-grid-style-rule-identifier-quoted]
 
 挿入した改行や除去したコメント行は一つの LF となる。
-対象は `comment-line`、`cr`、 `crlf`。 [fixture: venn/lex-cr-quoted-value]
+対象は `comment-line`、`cr`、`crlf`。 [fixture: venn/lex-cr-quoted-value]
 [fixture: venn/lex-crlf-quoted-value]
 [fixture: venn/lex-identifier-comment-line]
 
@@ -16590,7 +16585,7 @@ directive は除かれ前後の断片が結合する。
 対象は `directive-line`。 [fixture: venn/lex-identifier-directive-line]
 
 文字参照は共通の前処理のプレースホルダーとなる。
-対象は `entity`、 `entity-named`。 [fixture: venn/lex-identifier-entity-named]
+対象は `entity`、`entity-named`。 [fixture: venn/lex-identifier-entity-named]
 [fixture: venn/lex-identifier-entity-numeric]
 
 HTML 属性の二重引用符は単一引用符となる。
@@ -16611,7 +16606,7 @@ Db の正規化の前にも trim する。
 `keyword-end`、`keyword-header`、`keyword-space`、`keyword-style`、`less-than`、
 `lf`、`ls`、`nbsp`、`nel`、`nonascii`、`open-brace`、`open-round`、
 `open-square`、`percent`、`pipe`、`proto`、`ps`、`punct`、`root`、`semicolon`、
-`single-quote`、`spaces`、`tab`、 `vt`。
+`single-quote`、`spaces`、`tab`、`vt`。
 [fixture: venn/db-grid-ampersand-entity-label-bare]
 [fixture: venn/db-grid-arrow-label-bare]
 [fixture: venn/db-grid-arrow-spaced-label-bare]
@@ -16660,7 +16655,7 @@ Db の正規化の前にも trim する。
 [fixture: venn/db-grid-vt-label-bare]
 
 一致する style や classDef の行は最後のセミコロンを失う。
-対象は `classdef-rule`、 `style-rule`。
+対象は `classdef-rule`、`style-rule`。
 [fixture: venn/db-grid-classdef-rule-label-bare]
 [fixture: venn/db-grid-style-rule-label-bare]
 
@@ -16668,7 +16663,7 @@ Db の正規化の前にも trim する。
 対象は `close-square`。 [fixture: venn/gram-grid-close-square-label-bare]
 
 挿入した改行や除去したコメント行は一つの LF となる。
-対象は `comment-line`、`cr`、 `crlf`。
+対象は `comment-line`、`cr`、`crlf`。
 [fixture: venn/db-grid-comment-line-label-bare]
 [fixture: venn/db-grid-cr-label-bare] [fixture: venn/db-grid-crlf-label-bare]
 
@@ -16679,7 +16674,7 @@ directive は除かれ前後の断片が結合する。
 対象は `directive-line`。 [fixture: venn/db-grid-directive-line-label-bare]
 
 文字参照は共通の前処理のプレースホルダーとなる。
-対象は `entity`、 `entity-named`。 [fixture: venn/db-grid-entity-label-bare]
+対象は `entity`、`entity-named`。 [fixture: venn/db-grid-entity-label-bare]
 [fixture: venn/db-grid-entity-named-label-bare]
 
 HTML 属性の二重引用符は単一引用符となる。
@@ -16700,7 +16695,7 @@ lexer はこれらの挿入した断片を拒否する。
 `keyword-end`、`keyword-header`、`keyword-space`、`keyword-style`、`less-than`、
 `lf`、`ls`、`nbsp`、`nel`、`nonascii`、`open-brace`、`open-round`、
 `open-square`、`percent`、`pipe`、`proto`、`ps`、`punct`、`root`、`semicolon`、
-`single-quote`、`spaces`、`tab`、 `vt`。
+`single-quote`、`spaces`、`tab`、`vt`。
 [fixture: venn/db-grid-ampersand-entity-label-quoted]
 [fixture: venn/db-grid-arrow-label-quoted]
 [fixture: venn/db-grid-arrow-spaced-label-quoted]
@@ -16754,12 +16749,12 @@ lexer はこれらの挿入した断片を拒否する。
 [fixture: venn/db-grid-tab-label-quoted] [fixture: venn/db-grid-vt-label-quoted]
 
 一致する style や classDef の行は最後のセミコロンを失う。
-対象は `classdef-rule`、 `style-rule`。
+対象は `classdef-rule`、`style-rule`。
 [fixture: venn/db-grid-classdef-rule-label-quoted]
 [fixture: venn/db-grid-style-rule-label-quoted]
 
 挿入した改行や除去したコメント行は一つの LF となる。
-対象は `comment-line`、`cr`、 `crlf`。 [fixture: venn/db-grid-cr-label-quoted]
+対象は `comment-line`、`cr`、`crlf`。 [fixture: venn/db-grid-cr-label-quoted]
 [fixture: venn/db-grid-crlf-label-quoted] [fixture: venn/lex-label-comment-line]
 
 directive は除かれ前後の断片が結合する。
@@ -16769,7 +16764,7 @@ directive は除かれ前後の断片が結合する。
 対象は `directive-line`。 [fixture: venn/lex-label-directive-line]
 
 文字参照は共通の前処理のプレースホルダーとなる。
-対象は `entity`、 `entity-named`。 [fixture: venn/lex-label-entity-named]
+対象は `entity`、`entity-named`。 [fixture: venn/lex-label-entity-named]
 [fixture: venn/lex-label-entity-numeric]
 
 HTML 属性の二重引用符は単一引用符となる。
@@ -16786,7 +16781,7 @@ lexer はこれらの挿入した断片を拒否する。
 `entity-named`、`equals`、`ff`、`greater-than`、`hash`、`html`、
 `html-attribute`、`html-br`、`ideographic`、`less-than`、`ls`、`nbsp`、`nel`、
 `nonascii`、`open-brace`、`open-round`、`open-square`、`percent`、`pipe`、`ps`、
-`punct`、`quote`、`semicolon`、`single-quote`、 `vt`。
+`punct`、`quote`、`semicolon`、`single-quote`、`vt`。
 [fixture: venn/gram-grid-ampersand-entity-size]
 [fixture: venn/gram-grid-arrow-size] [fixture: venn/gram-grid-arrow-spaced-size]
 [fixture: venn/gram-grid-backslash-size] [fixture: venn/gram-grid-backtick-size]
@@ -16816,7 +16811,7 @@ lexer はこれらの挿入した断片を拒否する。
 `constructor`、`cr`、`crlf`、`dash`、`directive-line`、`keyword`、
 `keyword-block`、`keyword-class`、`keyword-classdef`、`keyword-columns`、
 `keyword-end`、`keyword-header`、`keyword-space`、`lf`、`proto`、`root`、
-`spaces`、`style-rule`、 `tab`。 [fixture: venn/gram-grid-classdef-rule-size]
+`spaces`、`style-rule`、`tab`。 [fixture: venn/gram-grid-classdef-rule-size]
 [fixture: venn/gram-grid-colon-size] [fixture: venn/gram-grid-comma-size]
 [fixture: venn/gram-grid-comment-line-size]
 [fixture: venn/gram-grid-comment-size]
@@ -16836,7 +16831,7 @@ lexer はこれらの挿入した断片を拒否する。
 [fixture: venn/gram-grid-tab-size]
 
 挿入した断片はこの値に文字として残る。
-対象は `digits`、 `empty`。 [fixture: venn/db-grid-digits-size]
+対象は `digits`、`empty`。 [fixture: venn/db-grid-digits-size]
 [fixture: venn/db-grid-empty-size]
 
 サイズは 12 となる。
@@ -16853,7 +16848,7 @@ lexer はこれらの挿入した断片を拒否する。
 `entity-named`、`equals`、`ff`、`greater-than`、`hash`、`html`、
 `html-attribute`、`html-br`、`ideographic`、`less-than`、`ls`、`nbsp`、`nel`、
 `nonascii`、`open-brace`、`open-round`、`open-square`、`percent`、`pipe`、`ps`、
-`punct`、`quote`、`semicolon`、`single-quote`、 `vt`。
+`punct`、`quote`、`semicolon`、`single-quote`、`vt`。
 [fixture: venn/gram-grid-ampersand-entity-text-number]
 [fixture: venn/gram-grid-arrow-spaced-text-number]
 [fixture: venn/gram-grid-arrow-text-number]
@@ -16896,7 +16891,7 @@ lexer はこれらの挿入した断片を拒否する。
 `constructor`、`cr`、`crlf`、`dash`、`directive-line`、`keyword`、
 `keyword-block`、`keyword-class`、`keyword-classdef`、`keyword-columns`、
 `keyword-end`、`keyword-header`、`keyword-space`、`lf`、`proto`、`root`、
-`spaces`、`style-rule`、 `tab`。
+`spaces`、`style-rule`、`tab`。
 [fixture: venn/gram-grid-classdef-rule-text-number]
 [fixture: venn/gram-grid-colon-text-number]
 [fixture: venn/gram-grid-comma-text-number]
@@ -16923,7 +16918,7 @@ lexer はこれらの挿入した断片を拒否する。
 [fixture: venn/gram-grid-tab-text-number]
 
 挿入した断片はこの値に文字として残る。
-対象は `digits`、 `empty`。 [fixture: venn/db-grid-digits-text-number]
+対象は `digits`、`empty`。 [fixture: venn/db-grid-digits-text-number]
 [fixture: venn/db-grid-empty-text-number]
 
 directive は除かれ前後の断片が結合する。
@@ -16941,7 +16936,7 @@ lexer はこれらの挿入した断片を拒否する。
 `entity`、`entity-named`、`equals`、`ff`、`greater-than`、`hash`、`html`、
 `html-attribute`、`html-br`、`ideographic`、`less-than`、`ls`、`nbsp`、`nel`、
 `nonascii`、`open-brace`、`open-round`、`open-square`、`percent`、`pipe`、`ps`、
-`punct`、`quote`、`semicolon`、`single-quote`、`style-rule`、 `vt`。
+`punct`、`quote`、`semicolon`、`single-quote`、`style-rule`、`vt`。
 [fixture: venn/gram-grid-ampersand-entity-style-key]
 [fixture: venn/gram-grid-arrow-spaced-style-key]
 [fixture: venn/gram-grid-arrow-style-key]
@@ -16983,7 +16978,7 @@ lexer はこれらの挿入した断片を拒否する。
 対象は `colon`、`comma`、`comment`、`comment-line`、`cr`、`crlf`、
 `directive-line`、`keyword-block`、`keyword-class`、`keyword-classdef`、
 `keyword-columns`、`keyword-end`、`keyword-header`、`keyword-space`、
-`keyword-style`、`lf`、`spaces`、 `tab`。
+`keyword-style`、`lf`、`spaces`、`tab`。
 [fixture: venn/gram-grid-colon-style-key]
 [fixture: venn/gram-grid-comma-style-key]
 [fixture: venn/gram-grid-comment-line-style-key]
@@ -17003,7 +16998,7 @@ lexer はこれらの挿入した断片を拒否する。
 [fixture: venn/gram-grid-tab-style-key]
 
 挿入した断片はこの値に文字として残る。
-対象は `constructor`、`dash`、`digits`、`empty`、`keyword`、`proto`、 `root`。
+対象は `constructor`、`dash`、`digits`、`empty`、`keyword`、`proto`、`root`。
 [fixture: venn/db-grid-constructor-style-key]
 [fixture: venn/db-grid-dash-style-key] [fixture: venn/db-grid-digits-style-key]
 [fixture: venn/db-grid-empty-style-key]
@@ -17013,7 +17008,7 @@ lexer はこれらの挿入した断片を拒否する。
 directive は除かれ前後の断片が結合する。
 対象は `directive`。 [fixture: venn/db-grid-directive-style-key]
 
-`style-value` は引用しない値の単語間に断片を挿入し、 rgb、rgba、
+`style-value` は引用しない値の単語間に断片を挿入し、rgb、rgba、
 十六進色の内側は上の色トークンの読みで別に扱う。
 [fixture: venn/db-grid-spaces-style-value]
 [fixture: venn/db-style-rgb-line-separator] [fixture: venn/db-style-hex-five]
@@ -17024,7 +17019,7 @@ lexer はこれらの挿入した断片を拒否する。
 `equals`、`ff`、`greater-than`、`hash`、`html`、`html-attribute`、`html-br`、
 `ideographic`、`less-than`、`ls`、`nbsp`、`nel`、`nonascii`、`open-brace`、
 `open-round`、`open-square`、`percent`、`pipe`、`ps`、`punct`、`quote`、
-`semicolon`、`single-quote`、 `vt`。
+`semicolon`、`single-quote`、`vt`。
 [fixture: venn/gram-grid-ampersand-entity-style-value]
 [fixture: venn/gram-grid-arrow-spaced-style-value]
 [fixture: venn/gram-grid-arrow-style-value]
@@ -17103,14 +17098,14 @@ directive は除かれ前後の断片が結合する。
 対象は `keyword-style`。 [fixture: venn/db-grid-keyword-style-style-value]
 
 引用しない値のトークン間の空白は一つのスペースとなる。
-対象は `spaces`、 `tab`。 [fixture: venn/db-grid-spaces-style-value]
+対象は `spaces`、`tab`。 [fixture: venn/db-grid-spaces-style-value]
 [fixture: venn/db-grid-tab-style-value]
 
 `title` はタイトルのトークン全体と共通の setter を使い、
 venn の文字列の正規化を使わない。
 
 lexer はこれらの挿入した断片を拒否する。
-対象は `ampersand-entity`、`classdef-rule`、`hash`、`semicolon`、 `style-rule`。
+対象は `ampersand-entity`、`classdef-rule`、`hash`、`semicolon`、`style-rule`。
 [fixture: venn/gram-grid-ampersand-entity-title]
 [fixture: venn/gram-grid-classdef-rule-title]
 [fixture: venn/gram-grid-hash-title] [fixture: venn/gram-grid-semicolon-title]
@@ -17124,7 +17119,7 @@ lexer はこれらの挿入した断片を拒否する。
 `keyword-classdef`、`keyword-columns`、`keyword-end`、`keyword-header`、
 `keyword-space`、`keyword-style`、`less-than`、`ls`、`nbsp`、`nel`、`nonascii`、
 `open-brace`、`open-round`、`open-square`、`percent`、`pipe`、`proto`、`ps`、
-`punct`、`quote`、`root`、`single-quote`、`spaces`、`tab`、 `vt`。
+`punct`、`quote`、`root`、`single-quote`、`spaces`、`tab`、`vt`。
 [fixture: venn/db-grid-arrow-spaced-title] [fixture: venn/db-grid-arrow-title]
 [fixture: venn/db-grid-backslash-title] [fixture: venn/db-grid-backtick-title]
 [fixture: venn/db-grid-bom-title] [fixture: venn/db-grid-close-brace-title]
@@ -17158,7 +17153,7 @@ lexer はこれらの挿入した断片を拒否する。
 [fixture: venn/db-grid-tab-title] [fixture: venn/db-grid-vt-title]
 
 文法 はこれらの挿入した断片を拒否する。
-対象は `comment-line`、`cr`、`crlf`、`directive-line`、 `lf`。
+対象は `comment-line`、`cr`、`crlf`、`directive-line`、`lf`。
 [fixture: venn/gram-grid-cr-title] [fixture: venn/gram-grid-crlf-title]
 [fixture: venn/gram-grid-lf-title] [fixture: venn/lex-title-comment-line]
 [fixture: venn/lex-title-directive-line]
@@ -17167,7 +17162,7 @@ directive は除かれ前後の断片が結合する。
 対象は `directive`。 [fixture: venn/lex-title-directive-middle]
 
 文字参照は共通の前処理のプレースホルダーとなる。
-対象は `entity`、 `entity-named`。 [fixture: venn/lex-title-entity-named]
+対象は `entity`、`entity-named`。 [fixture: venn/lex-title-entity-named]
 [fixture: venn/lex-title-entity-numeric]
 
 HTML 属性の二重引用符は単一引用符となる。
@@ -17198,17 +17193,17 @@ HTML 属性の二重引用符は単一引用符となる。
 getter、レコードの形、metadata 呼出しの引数位置が一致するため、
 flowchart のレコード正規化と Db パッチを再利用する。
 [`draw()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/renderer.ts#L17-L61)
-は `direction` をレイアウト、 `title` をタイトル挿入に使う。
+は `direction` をレイアウト、`title` をタイトル挿入に使う。
 共通の
 [`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/mermaidAPI.ts#L628-L630)
-が、 `accTitle` と `accDescr` をアクセシビリティに使う。
+が、`accTitle` と `accDescr` をアクセシビリティに使う。
 [fixture: agentflow/db-all-fields]
 
 頂点は `id`、`text`、`labelType`、`type`、`styles`、`classes`、`props` と、
 省略可能な `dir`、`link`、`linkTarget`、`metadata`、`isConnector` を保持する。
 [`addNodeFromVertex()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1613-L1664)
 は id を頂点と親の検索、テキストと種類をラベル、style と class を CSS、
-方向をレイアウト、 link と target をリンクに使う。
+方向をレイアウト、link と target をリンクに使う。
 [`getTypeFromVertex()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1571-L1587)
 は `type` から形を選ぶ。
 Map の順序が頂点の順序を決める。
@@ -17228,12 +17223,12 @@ Map の順序が頂点の順序を決める。
 [fixture: agentflow/gram-props-repeated]
 
 辺は `start`、`end`、`type`、`stroke`、`length`、`text`、`labelType`、
-`classes`、`id` と、省略可能な `interpolate`、`style`、 `animate`、`animation`、
+`classes`、`id` と、省略可能な `interpolate`、`style`、`animate`、`animation`、
 `metadata` を保持する。
 [`getData()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
-は端点と順序で辺を結び、 `type` で矢印、`stroke` で線種と太さ、
+は端点と順序で辺を結び、`type` で矢印、`stroke` で線種と太さ、
 `length` で最小長を決める。
-テキストと種類はラベル、class はコンパイル済み CSS、補間、 style、
+テキストと種類はラベル、class はコンパイル済み CSS、補間、style、
 animation は共通の辺描画へ渡る。
 生成 id も描画する辺と後続 metadata の宛先を識別する。
 デフォルトは既存の辺を含む curve/style の代替値なので、
@@ -17262,7 +17257,7 @@ animation は共通の辺描画へ渡る。
 [`getData()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
 は id と所属を入れ子と折畳みの祖先、完了順を走査と配色順、
 タイトルと種類をグループのラベルと形に使う。
-class は CSS、方向はレイアウト、 `metadata.view` は折畳み表示に使う。
+class は CSS、方向はレイアウト、`metadata.view` は折畳み表示に使う。
 `global` はコンテナーを作らず所属を変える。
 同じコンテナー id の頂点は、
 その style と class がグループの描画レコードを更新するため残す。
@@ -17325,7 +17320,7 @@ flowchart の asset フィールドへは昇格しない。
 metadata の非有限数は配列や mapping 内も再帰的に、
 共通の `numberOrText()` の規則で文字列 `"Infinity"`、`"-Infinity"`、
 `"NaN"` にする。
-Mermaid は頂点、辺、flow、 connector のこの数値を受理する。
+Mermaid は頂点、辺、flow、connector のこの数値を受理する。
 YAML の `1e999` は文字列なので `"1e999"` のまま保持する。
 観測処理の抽出上の問題は解析後に報告するため記録し、
 その抽出エラーを解析拒否にしない。
@@ -17342,7 +17337,7 @@ routing は既存の flow、connector、辺（生成 id も含む）、頂点の
 prototype 形の metadata キーは再帰的に除く。
 flow の前の block は頂点の descriptor に残る。
 後の connector 宣言は先の頂点 metadata を置き換える。
-connector と辺、 flow と connector の id 衝突もこの優先順に従う。
+connector と辺、flow と connector の id 衝突もこの優先順に従う。
 [fixture: agentflow/db-connector-edge-id-collision]
 [fixture: agentflow/db-flow-connector-collision]
 [fixture: agentflow/db-generated-edge-id-metadata-target]
@@ -17463,7 +17458,7 @@ normalizer は `getData()` を呼ばない。
 残りの状態は省く。
 `edgeSemantic` は type と stroke から導出でき、
 `isUserDefinedId` は描画が読まない。
-カウンター（`vertexCounter`、`subCount`、 `firstGraphFlag`、`version`、
+カウンター（`vertexCounter`、`subCount`、`firstGraphFlag`、`version`、
 `secCount`）、`posCrossRef`、`diagramId` は解析、索引、DOM の管理用である。
 レコードに既にある生成 element id は残す。
 `config` は別に記録する。
@@ -17570,7 +17565,7 @@ square、ellipse、trapezoid のラベルが閉じていなければ、
 空白を挟む連続セミコロンは頂点、辺、class、style、linkStyle、click、metadata、
 connector、flow と global の終端、閉じた description を区切り、
 区切り自体のレコードは作らない。
-末尾空白の前のコロンは頂点、辺の端点、 connector の id に属する。
+末尾空白の前のコロンは頂点、辺の端点、connector の id に属する。
 flow や global の `end` の後なら、コロンだけの別の頂点になる。
 [fixture: agentflow/lex-node-spaced-semis]
 [fixture: agentflow/lex-edge-spaced-semis]
@@ -17607,7 +17602,7 @@ connector と辺の後では受理する。
 閉じた description や direction の後のコメントと閉じた directive は、
 後の文を残す。
 description の後の未閉鎖の directive は後の頂点を飲み込む。
-flow 内の direction の後では閉じる `end` も飲み込み、 flow を拒否する。
+flow 内の direction の後では閉じる `end` も飲み込み、flow を拒否する。
 [fixture: agentflow/lex-description-tail-comment]
 [fixture: agentflow/lex-description-tail-directive]
 [fixture: agentflow/lex-description-tail-open-directive]
@@ -17687,7 +17682,7 @@ props の値は単一の `NODE_STRING` なので、その場所の Unicode token
 [fixture: agentflow/lex-props-unicode-value]
 
 引用符付きの flow と connector の名前、flow タイトル、アクセシビリティの値、
-metadata scalar 内の U+2028 と U+2029 は、 LF にならず値の中に残る。
+metadata scalar 内の U+2028 と U+2029 は、LF にならず値の中に残る。
 [fixture: agentflow/lex-flow-name-u2029]
 [fixture: agentflow/lex-flow-title-u2028]
 [fixture: agentflow/lex-connector-name-u2028]
@@ -17701,7 +17696,7 @@ U+2028 と U+2029 の後のコメント区間は前後の頂点を残す。
 ラベル内ではコメントを除いた後も区切り文字と LF が残る。
 その区切りで終わる未閉鎖の object directive は `A` と `B` を結合し、
 閉じた複数行の directive でも結合する。
-CR、directive、 LF の境界は `A` と `B` を別に残す。
+CR、directive、LF の境界は `A` と `B` を別に残す。
 [fixture: agentflow/lex-comment-directive-between-marks]
 [fixture: agentflow/lex-comment-ls-region]
 [fixture: agentflow/lex-comment-ps-bare-region]
@@ -17721,7 +17716,7 @@ EOF の前に U+2028 や U+2029 が続いても解析できない。
 [fixture: agentflow/lex-header-comment-ps-eof]
 
 lexer は `SPACE` を一文字ずつ返す。
-style、classDef、class、linkStyle の後、 class の値の前、`interpolate` の後、
+style、classDef、class、linkStyle の後、class の値の前、`interpolate` の後、
 click の tooltip の前で二つの SPACE は拒否する。
 flow と connector の名前は二つ目を吸収して trim する。
 `end` の後の NBSP は別の頂点の前に置ける。
@@ -17786,7 +17781,7 @@ flow の名前とタイトル、connector のタイトル、
 tooltip は行を消費した後に拒否する。
 行頭のアクセシビリティの値はこのテキストを残すが、
 字下げすると direction 規則が行を消費する。
-セミコロンの後では前の頂点が消え、 U+2028 と U+2029 の後では入力を拒否する。
+セミコロンの後では前の頂点が消え、U+2028 と U+2029 の後では入力を拒否する。
 [fixture: agentflow/lex-direction-greedy-square]
 [fixture: agentflow/lex-direction-greedy-string]
 [fixture: agentflow/lex-direction-greedy-markdown]
@@ -17805,8 +17800,8 @@ tooltip は行を消費した後に拒否する。
 [fixture: agentflow/lex-direction-in-tooltip]
 
 [`addDiagrams()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L44-L126)
-では agentflow の検出が C4 より先なので、 id、通常と引用符付きのラベル、
-コメント、frontmatter、 directive 内の C4 の語は図の id を変えない。
+では agentflow の検出が C4 より先なので、id、通常と引用符付きのラベル、
+コメント、frontmatter、directive 内の C4 の語は図の id を変えない。
 先頭のセミコロンは検出を妨げる。
 [fixture: agentflow/lex-detect-c4-container-label]
 [fixture: agentflow/lex-detect-c4-component-id]
@@ -17841,7 +17836,7 @@ frontmatter タイトル内の HTML 属性の引用符は一重引用符にな�
 空の string と markdown の辺ラベルは拒否するが、
 引用符付きの空白だけの辺ラベルは空文字列として受理する。
 符号付きゼロ、指数、十六進数に見える linkStyle の添字は構文で拒否する。
-`00` と範囲外の大きな整数は文字列キーで配列を検索し、 TypeError を投げる。
+`00` と範囲外の大きな整数は文字列キーで配列を検索し、TypeError を投げる。
 [fixture: agentflow/lex-edge-link-id-quoted]
 [fixture: agentflow/lex-reference-long-length-at-cap]
 [fixture: agentflow/lex-normal-long-length-at-cap]
@@ -17893,8 +17888,8 @@ cylinder の開き記号の内部の directive は、形を認識する前に除
 [fixture: agentflow/div-directive-in-style-separator]
 [fixture: agentflow/div-directive-in-triple-colon]
 
-directive の除去は頂点 id（`style` で始まる id も含む）、 click と辺の id、
-class 定義と class 対象の名前、補間名、 linkStyle の十進添字、
+directive の除去は頂点 id（`style` で始まる id も含む）、click と辺の id、
+class 定義と class 対象の名前、補間名、linkStyle の十進添字、
 property 括弧の二つの id run を結合する。
 [fixture: agentflow/div-directive-in-id]
 [fixture: agentflow/div-directive-in-id-starting-with-style]
@@ -17937,7 +17932,7 @@ hexagon の開き記号を再構成する。
 [fixture: agentflow/div-ignored-semicolon-in-hexagon-opening]
 
 この規則は三重コロンのどちらの分割位置も結合する。
-頂点、group、click、辺、style の id、class 定義と対象の名前、 CSS class 名、
+頂点、group、click、辺、style の id、class 定義と対象の名前、CSS class 名、
 linkStyle の十進添字も結合する。
 [fixture: agentflow/div-ignored-semicolon-in-triple-colon]
 [fixture: agentflow/div-ignored-semicolon-in-style-separator]
@@ -18077,7 +18072,7 @@ U+0085（NEL）は、単独の行でもノードの文字列として保持さ�
 [fixture: ishikawa/gram-after-child-spaced-semicolons]
 Db に渡す前の共通の
 [`encodeEntities()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/utils.ts#L895-L916)
-の前処理は、 hash の後の最後のセミコロンを取り除く。
+の前処理は、hash の後の最後のセミコロンを取り除く。
 条件は、その行の前方に正確な大文字小文字の `style` または `classDef` があり、
 後続のコロンと hash の間に空白がないことである。
 [fixture: ishikawa/lex-root-style-semicolon]
@@ -18168,9 +18163,9 @@ AST はモデルを複製してソースと文の範囲を加えます。
 保存済みレコードは、その変換前の著者のテキストを一度ずつ保持します。
 [fixture: usecase/db-all-fields]
 
-アクターは `id`、`label`、`labelType`、`type`、`business`、 `classes`、
+アクターは `id`、`label`、`labelType`、`type`、`business`、`classes`、
 `styles` と、省略可能な `icon`、`stereotype`、`parentId` を保持します。
-ユースケースは `id`、`label`、`labelType`、`shape`、`business`、 `classes`、
+ユースケースは `id`、`label`、`labelType`、`shape`、`business`、`classes`、
 `styles` と、省略可能な `stereotype`、`parentId` を保持します。
 [`getData()` のアクターとユースケースのループ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L337-L387)
 は ID を端点、ラベルと型をテキスト、型・形状・business・icon を図形に使います。
@@ -18188,8 +18183,8 @@ Map の順序がレイアウトのノード順を与えます。 [fixture: useca
 [fixture: usecase/db-all-fields]
 [fixture: usecase/db-boundary-three-definitions]
 
-関連は `source`、`target`、`type`、`arrowType`、`minlen`、 `classes`、`styles`、
-`animate` と、省略可能な `animation`、 `label`、`labelType` を保持します。
+関連は `source`、`target`、`type`、`arrowType`、`minlen`、`classes`、`styles`、
+`animate` と、省略可能な `animation`、`label`、`labelType` を保持します。
 明示された辺 ID がある場合だけ `id` も保持します。
 [`関連の変換`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L254-L283)
 は実線・点線、矢印のマーカー、意味を示すラベルを選びます。
@@ -18211,7 +18206,7 @@ Map の順序がレイアウトのノード順を与えます。 [fixture: useca
 
 JSON 表は値とソースのプロパティ順を保持します。
 [`JSON 行への変換`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L139-L219)
-は両方を読み、 JavaScript のキー順だけでは整数風のキーが並び替わるためです。
+は両方を読み、JavaScript のキー順だけでは整数風のキーが並び替わるためです。
 クラスとスタイルは
 [`表のループ`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L411-L425)
 へ渡ります。
@@ -18255,7 +18250,7 @@ Db パッチは、
 宣言の記述順に `dataBlockEffects` へ記録します。
 `commit` を捕捉し、公開される文の一覧から各 JSON の読みを取り出します。
 宣言より前の関連が表を参照すると、JSON の Map 順は記述順と異なります。
-木は JSON の内部を不透明に保持するため、 `dbFromTree` は JSON リーダーを持たず、
+木は JSON の内部を不透明に保持するため、`dbFromTree` は JSON リーダーを持たず、
 この effect を消費します。 [fixture: usecase/db-json-source-map-order]
 [fixture: usecase/gram-json-empty]
 
@@ -18444,7 +18439,7 @@ CSS の構成要素として拒否される。 [fixture: usecase/lex-style-three
 [fixture: usecase/lex-classdef-hash-three]
 [fixture: usecase/lex-classdef-hash-two-padding]
 
-同じ前処理は、 actor と境界のラベル内の `style fill:#abc;;;` も、
+同じ前処理は、actor と境界のラベル内の `style fill:#abc;;;` も、
 `style fill:\uFB02\u00B0abc\u00B6\u00DF;`（エスケープ表記）に変える。
 [fixture: usecase/lex-style-trigger-actor]
 [fixture: usecase/lex-style-trigger-boundary]
@@ -18508,7 +18503,7 @@ actor のラベルの前後の U+00A0、境界ラベルの前後の U+FEFF、
 [fixture: usecase/lex-stereotype-cr] [fixture: usecase/lex-stereotype-crlf]
 
 例の完全な図では、CR と CRLF はアクセシビリティ、方向、actor、境界、要素、関係、
-ノート、JSON、メタデータ、classDef、class、 style の各文を区切る。
+ノート、JSON、メタデータ、classDef、class、style の各文を区切る。
 [fixture: usecase/lex-statements-cr] [fixture: usecase/lex-statements-crlf]
 
 行全体のコメントは CR でも CRLF でも終わる。
@@ -18523,7 +18518,7 @@ actor のラベルの前後の U+00A0、境界ラベルの前後の U+FEFF、
 markdown 文字列は、バックスラッシュの後でも、
 最初のバッククォートと二重引用符の組で閉じる。
 その後にラベル文字列が続く例は拒否される。
-バッククォートを伴わない二重引用符は、 markdown 本文内に残る。
+バッククォートを伴わない二重引用符は、markdown 本文内に残る。
 [fixture: usecase/lex-markdown-earliest-close]
 [fixture: usecase/lex-markdown-close-backslash]
 [fixture: usecase/lex-markdown-embedded-double]
@@ -18539,8 +18534,7 @@ markdown 文字列は、バックスラッシュの後でも、
 
 閉じない引用符を持つ JSON の値は、
 次の行も未閉鎖オブジェクトのトークンに取り込み、拒否される。
-`json` と id の間の U+00A0 は、
-JSON 宣言の mode を切り替えるトークンを作らない。
+`json` と id の間の U+00A0 は、JSON 宣言の mode を切り替えるトークンを作らない。
 [fixture: usecase/lex-json-mode-unclosed-string]
 [fixture: usecase/lex-json-nbsp-gap]
 
@@ -18626,7 +18620,7 @@ actor のラベルまたは境界のタイトルを、同じ本文でも異な�
 [fixture: usecase/gram-forbidden-uppercase]
 
 `A <--- text -- B` の長い左側は拒否される。
-ラベル付きの後向き丸印・交差印矢印の長い右側は受理され、 `minlen: 1` となる。
+ラベル付きの後向き丸印・交差印矢印の長い右側は受理され、`minlen: 1` となる。
 [fixture: usecase/gram-backward-long-labeled-left]
 [fixture: usecase/gram-back-circle-long-right-label]
 [fixture: usecase/gram-back-cross-long-right-label]
@@ -18648,7 +18642,7 @@ class の割り当て順、classDef の定義順、直接の style は別々に�
 
 整数の icon 値は文字列として保存され、actor の type が icon になるが、
 小数の icon 値は拒否される。
-icon を空文字列に更新すると、icon が除かれ、 actor の type は normal に戻る。
+icon を空文字列に更新すると、icon が除かれ、actor の type は normal に戻る。
 [fixture: usecase/gram-metadata-number-icon]
 [fixture: usecase/gram-metadata-decimal-icon]
 [fixture: usecase/gram-actor-icon-clear]
@@ -18657,7 +18651,7 @@ icon を空文字列に更新すると、icon が除かれ、 actor の type は
 例の package から rect への更新では、最終的な type は `rect` となる。
 [fixture: usecase/gram-boundary-three-classes-types]
 
-小文字の `td`、`tb`、`bt`、 `rl` は方向値として拒否される。
+小文字の `td`、`tb`、`bt`、`rl` は方向値として拒否される。
 [fixture: usecase/gram-direction-lower-td]
 [fixture: usecase/gram-direction-lower-tb]
 [fixture: usecase/gram-direction-lower-bt]
@@ -18790,7 +18784,7 @@ JSON の閉じ引用符の前のバックスラッシュ二つは、一つのバ
   どれも保存された区分や `showData` を変えない。
   [fixture: pie/config-drawing-only] [fixture: pie/frontmatter-config]
   [fixture: pie/directive-before-header]
-- 合計、割合、絞り込んだ扇形のリスト、色、角度、重心、凡例の位置、 SVG の寸法、
+- 合計、割合、絞り込んだ扇形のリスト、色、角度、重心、凡例の位置、SVG の寸法、
   フォントの計測値は描画時の派生値。
   独立した、作者が指定する Db の状態を加えない。 [fixture: pie/db-all-fields]
 
@@ -18823,7 +18817,7 @@ global な
 [directive の除去](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/utils.ts#L199-L202)
 は、
 [directive のパターン](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagram-api/regexes.ts#L12-L13)
-を使い、 hidden terminal は別の字句規則となる。
+を使い、hidden terminal は別の字句規則となる。
 
 global な directive 除去は、`accTitle` とコロン、
 `accDescr` とブロック開始の波括弧をつなげられる。
@@ -18848,7 +18842,7 @@ global な directive 除去は、`accTitle` とコロン、
 保存される pie の値を変えない。 [fixture: pie/review-directive-unknown-type]
 [fixture: pie/review-directive-invalid-init]
 
-`pie`、`showData`、`title`、`accTitle`、 `accDescr` の中の未閉 directive は、
+`pie`、`showData`、`title`、`accTitle`、`accDescr` の中の未閉 directive は、
 拒否される接頭部分を残す。
 不完全なヘッダーの場合は検出に失敗する。
 [fixture: pie/review-directive-open-inside-header]
@@ -18881,7 +18875,7 @@ hidden directive は空白の境界の前で閉じるが、
 [fixture: pie/review-directive-hidden-word-boundary]
 [fixture: pie/review-directive-hidden-space-boundary]
 
-U+2028 はその閉じ境界を満たすが、 token 間では字句として読めず、
+U+2028 はその閉じ境界を満たすが、token 間では字句として読めず、
 拒否の原因になる。 [fixture: pie/review-hidden-directive-ls-boundary]
 
 ヘッダー直後の hidden directive は LF を消費でき、
@@ -18954,7 +18948,7 @@ global な除去を通過した directive に見える形は、
 [fixture: pie/review-eol-acctitle-spaced-semicolons]
 [fixture: pie/review-eol-acctitle-two-glued]
 
-一行の説明も、直結したセミコロン、離れたセミコロン、 `; ;`、
+一行の説明も、直結したセミコロン、離れたセミコロン、`; ;`、
 直結した `;;` を値のテキストとして保つ。
 [fixture: pie/review-eol-accdescr-semicolon]
 [fixture: pie/review-eol-accdescr-space-semicolon]
@@ -19003,7 +18997,7 @@ hidden の `YAML` terminal が YAML として解析せず読み飛ばす。
 
 区分や説明ブロックの直後の同じ行にある hidden YAML ブロックは、
 閉じの `---` の直後の LF を消費する。
-EOL 用の改行が残らない場合、後続の文は拒否されるが、 EOF は EOL を満たす。
+EOL 用の改行が残らない場合、後続の文は拒否されるが、EOF は EOL を満たす。
 [fixture: pie/review-yaml-after-section] [fixture: pie/review-yaml-after-block]
 [fixture: pie/gram-section-eof-hidden-yaml]
 [fixture: pie/gram-block-eof-hidden-yaml]
@@ -19049,8 +19043,8 @@ Db のタイトルを渡さない。 [fixture: pie/review-yaml-frontmatter-null-
 [fixture: pie/review-frontmatter-zero-title]
 [fixture: pie/review-frontmatter-empty-string-title]
 
-例の frontmatter の true、オブジェクト、配列のタイトルは、 `true`、
-`[object Object]`、 `A,B` になる。 [fixture: pie/review-frontmatter-true-title]
+例の frontmatter の true、オブジェクト、配列のタイトルは、`true`、
+`[object Object]`、`A,B` になる。 [fixture: pie/review-frontmatter-true-title]
 [fixture: pie/review-frontmatter-object-title]
 [fixture: pie/review-frontmatter-array-title]
 
@@ -19134,7 +19128,7 @@ CR と LF はその値の token の外の行の区切りとなる。
 STRING の変換を受けずに残る。 [fixture: pie/review-common-quotes-backslashes]
 [fixture: pie/review-block-quotes-backslashes]
 
-ブロック内の空白だけの行は縮約され、 `accDescr` と `{` の間の空の行や U+2028、
+ブロック内の空白だけの行は縮約され、`accDescr` と `{` の間の空の行や U+2028、
 U+2029 は、ブロックの terminal の中で消費され得る。
 [fixture: pie/review-block-whitespace-only-lines]
 [fixture: pie/review-block-unicode-opener-separators]
@@ -19165,7 +19159,7 @@ U+2029 は、ブロックの terminal の中で消費され得る。
 共通の最後の値を渡す。 [fixture: pie/review-db-common-third-definitions]
 
 空白だけの最後のアクセシビリティの値は、それより前の AST の値を消し、
-空白だけの最後の本文タイトルは、 Db の frontmatter のタイトルを保つ。
+空白だけの最後の本文タイトルは、Db の frontmatter のタイトルを保つ。
 [fixture: pie/review-acctitle-whitespace-final]
 [fixture: pie/review-accdescr-whitespace-final]
 [fixture: pie/review-frontmatter-whitespace-body-final]
@@ -19305,7 +19299,7 @@ style に見えるテキストのセミコロンをそのまま保つ。
 | `branches`                      | 描画順の `{ name }`。                                                                                      |
 
 renderer は commit の id、種別、tag、親、連番、ブランチ順、方向を読む。
-commit の message、ブランチの先端、 HEAD、
+commit の message、ブランチの先端、HEAD、
 選択中のブランチは renderer が読まないので省く。
 途中のブランチ選択は後の commit の親と作成元ブランチに表れ、
 最後の checkout は要約の field を増やさない。
@@ -19393,7 +19387,7 @@ custom-id フラグを持つ。
 
 merge は自分自身のブランチ、元側で作られた現在の先端、存在しない・空のブランチ、
 同じ先端、既存の custom id を拒否する。
-branch 作成は既存名を拒否し、 checkout/switch は未知の名を拒否する。
+branch 作成は既存名を拒否し、checkout/switch は未知の名を拒否する。
 [fixture: gitgraph/db-merge-self-empty] [fixture: gitgraph/db-merge-self]
 [fixture: gitgraph/db-merge-current-created-on-source]
 [fixture: gitgraph/db-merge-empty-current]
@@ -19416,7 +19410,7 @@ branch 作成は既存名を拒否し、 checkout/switch は未知の名を拒�
 [fixture: gitgraph/gram-cherry-pick-empty-parent]
 
 cherry-pick は未指定・空・未知の元 id、現在のブランチで作られた元 commit、
-空の移植先、直接の親ではない指定 parent、 parent のない merge 元を拒否する。
+空の移植先、直接の親ではない指定 parent、parent のない merge 元を拒否する。
 これらは文法解析に成功した後の Db による拒否。
 [fixture: gitgraph/db-cherry-pick-missing]
 [fixture: gitgraph/db-cherry-pick-empty-id]
@@ -19500,7 +19494,7 @@ entry と statement の規則は `gitGraph`、`gitGraph:`、離したコロン�
 
 キーワードは大文字小文字を区別する。
 token builder は `gitGraph` だけに JavaScript の空白/EOF または percent
-対の先読み境界を加え、 `gitGraph:` には加えない。
+対の先読み境界を加え、`gitGraph:` には加えない。
 他のキーワードの接頭辞は、より長い REFERENCE の代替になることがあり、
 一般的な最長一致ではない。
 検出自体は大文字小文字を区別する `gitGraph` の接頭辞だけを見るので、
@@ -19551,7 +19545,7 @@ token builder は `gitGraph` だけに JavaScript の空白/EOF または percen
 [fixture: gitgraph/lex-keyword-type-suffix]
 
 長さ順のキーワードの後で、到達可能な terminal の順序は ACC_DESCR、ACC_TITLE、
-TITLE、INT、STRING、NEWLINE、 WHITESPACE、YAML、DIRECTIVE、SINGLE_LINE_COMMENT、
+TITLE、INT、STRING、NEWLINE、WHITESPACE、YAML、DIRECTIVE、SINGLE_LINE_COMMENT、
 REFERENCE。
 BOOLEAN、FLOAT、NUMBER、ID には到達しない。
 このため INT は数字で始まる名を分割し、
@@ -19611,7 +19605,7 @@ b/f/n/r/t/v/0 は制御文字になり、未知の escape は slash を落とす
 
 共通の行値は共通空白を両端から除き、2 文字以上続く ASCII space/TAB を縮める。
 block は引用符や escape に保護されず最初の右波括弧で閉じる。
-変換は各行の端を除き、 ASCII 空白の連続と CR/LF の連続を縮める。
+変換は各行の端を除き、ASCII 空白の連続と CR/LF の連続を縮める。
 空でも最後の AST 代入が勝ち、空でない最終変換値だけを共通 Db に渡す。
 空の最終 title は frontmatter を保ち、
 空の最終 accessibility 値は clear 後の既定値を残す。
@@ -19666,7 +19660,7 @@ lexer または parser の error があれば拒否する。
 
 import された hidden terminal は、
 global directive の除去や実際の先頭 frontmatter と別の規則。
-hidden YAML は本文を解析せず、 title/configuration も適用しない。
+hidden YAML は本文を解析せず、title/configuration も適用しない。
 検出は先頭以外の frontmatter 型 block を 1 個通過でき、gitgraph はこれを隠す。
 隣り合う本文の fence は hidden YAML に一致できるが、
 先頭の隣り合う fence は実際の frontmatter ではない。
@@ -19691,7 +19685,7 @@ closer は LF または共通空白/EOF 境界を必要とする。
 
 保持する block 1 個の通過は bare percent 行と second-scan directive
 より前に行う。
-2 個目の block、bare brace 行の後、 second-scan directive の後、
+2 個目の block、bare brace 行の後、second-scan directive の後、
 両 fence を同じだけ字下げした block はこの通過ができない。
 実際の frontmatter の後や second-scan directive の前の block は通過できる。
 [fixture: gitgraph/detect-two-nonleading-blocks]
@@ -19729,8 +19723,8 @@ closer の条件を満たす LS/NBSP も、通常の gap に残れば字句解�
 すべての文と共通値の後で、hidden DIRECTIVE は唯一の EOL の LF を消費し、
 後続文を拒否させる。
 余分な LF や closer 後の space があれば EOL を保つ。
-EOF では追加された LF を消費しても、 EOF 自体が EOL を満たす。
-hidden YAML も commit、branch、 checkout、switch、merge、cherry-pick、
+EOF では追加された LF を消費しても、EOF 自体が EOL を満たす。
+hidden YAML も commit、branch、checkout、switch、merge、cherry-pick、
 description block の後で同じ効果を持つ。
 共通の 1 行値の後では opener の `---` が値の text になる。
 bare reference は opener の dash を吸収することがある。
@@ -19850,8 +19844,8 @@ global comment region は文字列・block 内でも除去し、
 先頭の Unicode 空白は除去する。
 一方、保持された bare percent 行の後では、
 検出が通過した空白も Mermaid の lexer に届く。
-ASCII space/TAB は成功するが、VT、FF、NBSP、 BOM、U+1680、U+2000–U+200A、
-U+202F、U+205F、U+3000、LS、PS は、ヘッダー直前でも空白だけの行でも拒否する。
+ASCII space/TAB は成功するが、VT、FF、NBSP、BOM、U+1680、U+2000–U+200A、U+202F、
+U+205F、U+3000、LS、PS は、ヘッダー直前でも空白だけの行でも拒否する。
 保持された YAML や second-scan directive の後でも同じ。
 [fixture: gitgraph/comment-string] [fixture: gitgraph/comment-block]
 [fixture: gitgraph/comment-bare-string]
@@ -20027,7 +20021,7 @@ message text は受理するが要約では省く。
 共通の style/classDef 行前処理は、引用 id、message、tag、ブランチ名、
 すべての共通形式を含む任意の text から最後のセミコロンを除去できる。
 trigger ごとに最後の 1 個だけを除去し、2 個の trigger は 2 個除去できる。
-大文字小文字の変更、 hash の欠落、コロン後の空白、
+大文字小文字の変更、hash の欠落、コロン後の空白、
 LF/LS/PS による別 segment は trigger を妨げ、
 directive 除去は再構成することがある。
 frontmatter の title はこの段階を通らない。
@@ -20092,7 +20086,7 @@ native comment と global に除去する閉じた directive は、
 数字を含む bare reference にドットがあっても REFERENCE になるとは限らない。
 ゼロの INT 分岐は直ちに `0` を取り、
 非ゼロの複数桁では INT がドットの前で短い接頭辞へ backtrack できる。
-このため `1.2.3` とは異なり、 bare 名 `0.1` と `12.3` は拒否する。
+このため `1.2.3` とは異なり、bare 名 `0.1` と `12.3` は拒否する。
 [fixture: gitgraph/lex-reference-zero-before-dot]
 [fixture: gitgraph/lex-reference-multiple-digits-before-dot]
 [fixture: gitgraph/lex-reference-digit-dot]
@@ -20197,14 +20191,14 @@ Db の値は登録しない。
 [fixture: info/common-title-nbsp-only] [fixture: info/space-common-interior]
 [fixture: info/space-block-interior]
 
-複数行の description block は字下げと空行を受理し、 Db の field は加えない。
+複数行の description block は字下げと空行を受理し、Db の field は加えない。
 [fixture: info/accdescr-block-lines]
 
 colon のない accessibility title、`title:`、
 共通キーワードの不正な suffix や大文字小文字違いは拒否する。
 NBSP は title separator や accessibility colon gap に使えず、
 LS は行 description の colon gap に使えない。
-block brace の前には LF、空行、LS、 BOM を置ける。
+block brace の前には LF、空行、LS、BOM を置ける。
 [fixture: info/acctitle-no-colon] [fixture: info/title-colon]
 [fixture: info/title-digit-suffix] [fixture: info/title-letter-suffix]
 [fixture: info/title-dash-suffix] [fixture: info/title-unicode-suffix]
@@ -20233,7 +20227,7 @@ backslash は closer を保護しない。
 共通形式の間の空行と、EOF にある最後の block/行値は受理する。
 header、flag、block 後の semicolon と colon-space は拒否するが、
 共通行値の中の semicolon text は受理する。
-block 後の tab は hidden whitespace、 LS と PS は拒否する。
+block 後の tab は hidden whitespace、LS と PS は拒否する。
 [fixture: info/common-blank-lines] [fixture: info/end-block-eof]
 [fixture: info/end-common-eof] [fixture: info/end-header-semicolon]
 [fixture: info/end-header-spaced-semicolon]
@@ -20258,7 +20252,7 @@ LS/PS は native newline や body gap ではないが、
 
 ### 除去、hidden form、検出
 
-global directive 除去は、キーワード、keyword/colon の境界、 block brace、
+global directive 除去は、キーワード、keyword/colon の境界、block brace、
 text 値を再結合できる。
 キーワード間の境界を壊すこともあり、残る space が control になる。
 閉じない directive は残りの source 全体や、後の word と LF を取れる。
@@ -20283,7 +20277,7 @@ hidden YAML/DIRECTIVE は global 除去や実際の frontmatter と別。
 条件を満たす closer の直後の LF は消費し、他の空白境界は先読みだけ。
 header/flag 後には可視 EOL を残す必要がない。
 各共通行値や description block 後で唯一の LF を消費すると次の文を拒否し、
-余分な LF、closer 後の space、 EOF は受理する。
+余分な LF、closer 後の space、EOF は受理する。
 [fixture: info/hidden-directive-body]
 [fixture: info/hidden-directive-glued-header]
 [fixture: info/hidden-directive-flag-next-common]
@@ -20315,7 +20309,7 @@ header/flag に直結した YAML の dash はキーワード境界を満たさ�
 hidden form の前に既に見える EOL があれば文を区切れる。
 hidden YAML は body を decode せず、
 隣接 fence と ASCII opener padding を受理する。
-閉じない block、字下げした closer、Unicode opener padding、 dash 4 個、
+閉じない block、字下げした closer、Unicode opener padding、dash 4 個、
 後に有効 closer のない closer suffix は拒否する。
 条件を満たさない早い closer は通過できる。
 [fixture: info/hidden-yaml-after-header] [fixture: info/hidden-yaml-flag-glued]
@@ -20412,7 +20406,7 @@ info の hidden YAML が title/config を適用せず、YAML も decode せず�
 
 native hidden gap は ASCII space/tab だけ。
 最初の diagram unit より前の JavaScript whitespace は global に trim するが、
-header 後、EOF、 hidden closer 後の同じ非 ASCII 空白は拒否する。
+header 後、EOF、hidden closer 後の同じ非 ASCII 空白は拒否する。
 [fixture: info/space-header-tab] [fixture: info/space-header-vt]
 [fixture: info/space-header-ff] [fixture: info/space-header-nbsp]
 [fixture: info/space-header-bom] [fixture: info/space-header-1680]
@@ -20427,7 +20421,7 @@ header 後、EOF、 hidden closer 後の同じ非 ASCII 空白は拒否する。
 [fixture: info/hidden-directive-close-ls] [fixture: info/hidden-yaml-close-ls]
 
 検出が通過した bare `%%` 行の後も ASCII space/tab は使える。
-VT、FF、NBSP、BOM、U+1680、U+2000–U+200A、U+202F、U+205F、 U+3000、LS、PS は、
+VT、FF、NBSP、BOM、U+1680、U+2000–U+200A、U+202F、U+205F、U+3000、LS、PS は、
 header 直前でも空白だけの行でも拒否する。
 retained YAML/directive の後も LS/BOM や LS だけの行は拒否し、
 ASCII control は受理する。
@@ -20549,8 +20543,7 @@ LF で終わる comment の control は info として受理する。
 が読む行。
 行とブロックは並べ替えず、隣り合う同じラベルもまとめない。
 [adapter](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/packet/parser.ts#L18-L90)
-は公開前に省略された端点を補い、
-`packet.bitsPerRow` の境界でブロックを分割する。
+は公開前に省略された端点を補い、`packet.bitsPerRow` の境界でブロックを分割する。
 要約はその端点と繰り返されたラベルを残す。
 境界でちょうど終わる場合、末尾に空の行を作らない。 [fixture: packet/gram-mixed]
 [fixture: packet/db-row-split] [fixture: packet/db-row-exact]
@@ -20585,7 +20578,7 @@ frontmatter と init のどちらからも、負、0、文字列の値を指定�
 adapter は端点の計算では文字列を行番号と掛けるが、
 ループの上限では `1` を連結する（`"81"`）。
 行幅 `2.5` は受理されて小数の端点を公開する場合があり、
-`true` は 1 ビットずつの行を公開し、 `null` は既定の幅 32 を残す。
+`true` は 1 ビットずつの行を公開し、`null` は既定の幅 32 を残す。
 [fixture: packet/config-frontmatter-row-numeric-string]
 [fixture: packet/config-init-row-numeric-string]
 [fixture: packet/config-frontmatter-row-fraction-accepted]
@@ -20752,7 +20745,7 @@ converter の `ARCH_TEXT_ICON` 分岐には到達しません。
 [detector](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/radar/detector.ts#L7-L11)
 は `radar-beta` を検出し、
 [文法](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/radar/radar.langium#L4-L17)
-は `radar-beta:` と、 `radar-beta :` も許す。
+は `radar-beta:` と、`radar-beta :` も許す。
 [fixture: radar/spec-radar-test-ts-f0c0291e]
 [fixture: radar/header-colon-inline] [fixture: radar/header-separated-colon]
 
@@ -20797,10 +20790,10 @@ renderer が描かない曲線も、公開値は要約に残す。
 
 各 option は最後の指定を採る。
 [既定値](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/radar/db.ts#L23-L40)
-は `showLegend: true`、 `ticks: 5`、`max: null`、`min: 0`、
+は `showLegend: true`、`ticks: 5`、`max: null`、`min: 0`、
 `graticule: "circle"`。
 [`setOptions()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/radar/db.ts#L93-L117)
-は最後の ticks を 32 以下に抑え、 0 と小数は保持する。
+は最後の ticks を 32 以下に抑え、0 と小数は保持する。
 要約は最大値 null を描画時の自動最大値で置き換えず、
 entry を上下限へ切り詰めない。 [fixture: radar/db-options-repeat]
 [fixture: radar/db-ticks-cap-last] [fixture: radar/db-ticks-cap-before-final]
@@ -20839,7 +20832,7 @@ entry を上下限へ切り詰めない。 [fixture: radar/db-options-repeat]
 - [`getConfig()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/radar/db.ts#L42-L54)
   の設定。
   公開処理はこれを読まない。
-  `radar.width`、`height`、各 margin、`axisScaleFactor`、 `axisLabelFactor`、
+  `radar.width`、`height`、各 margin、`axisScaleFactor`、`axisLabelFactor`、
   `curveTension`、`useMaxWidth` は描画だけに効く。
   `showLegend`、`ticks`、`max`、`min`、
   `graticule` と同名の設定も Db options には渡らない。
@@ -20856,7 +20849,7 @@ entry を上下限へ切り詰めない。 [fixture: radar/db-options-repeat]
   [描画時に導出する](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/radar/renderer.ts#L21-L173)。
   色も
   [テーマ変数から導出する](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/radar/styles.ts#L8-L46)。
-  生成される identity、browser に依存する公開処理、 Db patch はない。
+  生成される identity、browser に依存する公開処理、Db patch はない。
   [fixture: radar/config-drawing-only]
 
 ## treemap
@@ -20981,7 +20974,7 @@ class style は `\,` を `§§§` に、残るコンマを `;` に置き換え�
   [fixture: treemap/db-class-repeat]
 - [`getConfig()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/treemap/db.ts#L28-L35)。
   公開処理は treemap の設定を読まない。
-  padding、寸法、値の表示と書式、 `useMaxWidth` は描画だけに効く。
+  padding、寸法、値の表示と書式、`useMaxWidth` は描画だけに効く。
   renderer は `borderWidth`、`valueFontSize`、`labelFontSize` を読まない。
   設定は site または embedded config に残す。
   opaque-data 比較で除く treemap の受理判定キーはない。
@@ -21054,11 +21047,11 @@ Db パッチは不要。
   `zeroOrMore` と `oneOrMore` の下限は 0 と 1、上限は Infinity。
   [fixture: railroad/ir-db-singletons] [fixture: railroad/ir-db-all-fields]
 - [EBNF](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/railroad/parser/ebnfParser.ts#L30-L156):
-  単一要素の sequence、 choice と group は畳む。
+  単一要素の sequence、choice と group は畳む。
   角括弧と後置 `?` は `optional`、波括弧と `*` は下限 0、
   `+` は下限 1 の repetition となり、上限は Infinity。
   後置演算子は出現順に適用する。
-  例外 `A - B` は A、terminal `-`、 B の sequence となる。
+  例外 `A - B` は A、terminal `-`、B の sequence となる。
   [fixture: railroad/ebnf-db-singletons] [fixture: railroad/ebnf-db-all-fields]
   [fixture: railroad/ebnf-db-postfix-order]
 - [ABNF](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/railroad/parser/abnfParser.ts#L26-L120):
@@ -21080,16 +21073,16 @@ Db パッチは不要。
   [fixture: railroad/abnf-db-repeat-overflow]
   [fixture: railroad/abnf-db-repeat-max-overflow]
 - [PEG](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/railroad/parser/pegParser.ts#L27-L148):
-  単一要素の sequence、 choice と group は畳む。
+  単一要素の sequence、choice と group は畳む。
   後置 `?`、`*`、`+` は同じ optional と repetition の形になる。
   dot は special の `.` となる。
   predicate は `&` または `!` と、その後に対象の terminal の二重引用文字列、
   参照名または special の文字列を持つ special となる。
   畳み込み後に terminal、nonterminal、special でない対象は `(...)` となる。
   元の式の木は公開されない。
-  対象の terminal の値にある引用符と改行は、
-  predicate のラベルで escape しない。 [fixture: railroad/peg-db-singletons]
-  [fixture: railroad/peg-db-all-fields] [fixture: railroad/peg-db-predicates]
+  対象の terminal の値にある引用符と改行は、predicate のラベルで escape しない。
+  [fixture: railroad/peg-db-singletons] [fixture: railroad/peg-db-all-fields]
+  [fixture: railroad/peg-db-predicates]
   [fixture: railroad/peg-db-predicate-singleton-group]
   [fixture: railroad/peg-db-predicate-predicate]
   [fixture: railroad/peg-db-predicate-quote-newline]
@@ -21097,7 +21090,7 @@ Db パッチは不要。
 [IR](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/railroad/valueConverter.ts#L5-L34)、
 [EBNF](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/railroad-ebnf/valueConverter.ts#L5-L34)、
 [PEG](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/railroad-peg/valueConverter.ts#L5-L34)
-の文字列の変換は、両端の単一引用符または二重引用符を除き、 `\n`、`\r`、
+の文字列の変換は、両端の単一引用符または二重引用符を除き、`\n`、`\r`、
 `\t` を制御文字に、ほかの backslash escape `\x` を `x` にする。
 [fixture: railroad/ir-lex-string-conversion]
 [fixture: railroad/ebnf-lex-string-conversion]
@@ -21208,7 +21201,7 @@ renderer は
 [fixture: wardley/frontmatter-empty-body-title]
 
 [adapter](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L92-L171)
-は、 anchor、component、pipeline の子の順に公開し、種類の中では記載順を保つ。
+は、anchor、component、pipeline の子の順に公開し、種類の中では記載順を保つ。
 通常の node の id と label は名前で、pipeline の子の id は `${parent}_${name}`、
 label は子の名前となる。
 子の `y` は親の公開値を引き継ぐ。
@@ -21220,7 +21213,7 @@ label は子の名前となる。
 
 builder の
 [Map の更新](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L92-L133)
-は、 node、trend、pipeline の初回登録位置を保って値を置き換える。
+は、node、trend、pipeline の初回登録位置を保って値を置き換える。
 node の再定義で label offset を省くと以前の値が残るが、
 strategy などの公開された undefined は以前の値を上書きする。
 component は省略時も `inertia: false` を公開し、
@@ -21245,7 +21238,7 @@ flow のラベルは空文字でもセミコロンのラベルに優先する。
 
 [座標変換](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L9-L30)
 は、進化を `x`、可視性を `y` とする。
-座標は double に直した値で比較し、 1 以下なら 100 倍し、
+座標は double に直した値で比較し、1 以下なら 100 倍し、
 それより大きければ百分率として保つ。
 結果の double が 0 以上 100 以下でなければ拒否する。
 注釈と加速・減速の座標も、記載した二つの値をこの順に入れ替える。
@@ -21261,7 +21254,7 @@ flow のラベルは空文字でもセミコロンのラベルに優先する。
 [fixture: wardley/number-offset-negative-zero]
 
 [残りの公開処理](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L189-L226)
-は、 note、注釈、加速・減速をそれぞれ記載順に保持する。
+は、note、注釈、加速・減速をそれぞれ記載順に保持する。
 重複と空文字も残す。
 存在しない id の evolve は公開せず、その目標の範囲も調べない。
 size と evolution は最後の AST の代入を使う。
@@ -21278,7 +21271,7 @@ annotations box は最初の一つだけを変換し、公開する。
 有限数は数値のまま、
 非有限数は `toJsonObject()` が共通の `numberOrText()` で `"Infinity"`,
 `"-Infinity"`、負のゼロは 0 とする。
-座標の overflow は正規化より前に拒否されるが、 size、ラベル offset、段階境界、
+座標の overflow は正規化より前に拒否されるが、size、ラベル offset、段階境界、
 注釈番号は overflow し得る。
 小数の精度、非正規化数、
 underflow は注入された converter の既定の数値変換に従う。
@@ -21322,7 +21315,7 @@ underflow は注入された converter の既定の数値変換に従う。
 
 標準の securityLevel では要約は同じになる。
 site の値が `other` で `htmlLabels: true` なら、
-共通のメタデータだけで文字が置き換わり、 Wardley 固有のテキストは変わらない。
+共通のメタデータだけで文字が置き換わり、Wardley 固有のテキストは変わらない。
 [fixture: wardley/config-security-level-other]
 公開処理はブラウザ global、時刻、乱数を読まない。
 外部リンクと data block もなく、Db の patch は不要である。
@@ -21409,7 +21402,7 @@ cynefin の
 要約から除くもの:
 
 - [`getConfig()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/cynefin/cynefinDb.ts#L71-L77)
-  が返す設定、 theme の色、SVG id、文字の計測値、画面座標。
+  が返す設定、theme の色、SVG id、文字の計測値、画面座標。
   [renderer](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L73-L118)
   が描画設定を読んで形状を求める。
   [境界の helper](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/cynefin/cynefinBoundaries.ts#L31-L79)
@@ -21470,7 +21463,7 @@ builder は呼ばない。 [fixture: eventmodeling/header-only]
 は共通 getter を読む。
 EM terminal 名は
 [`valueConverter.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/common/valueConverter.ts#L6-L41)
-の `TITLE`、 `ACC_TITLE`、`ACC_DESCR` と異なる。
+の `TITLE`、`ACC_TITLE`、`ACC_DESCR` と異なる。
 fallback は keyword と区切りを含む terminal 全体を残す。
 [`commonDb.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/common/commonDb.ts#L16-L24)
 setter は title の先頭空白と description の LF 後の空白を除く。
@@ -21581,7 +21574,7 @@ source frame を名指す reset frame は、
 同じ名前の frame は拒否される。
 [`setAst()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/eventmodeling/db.ts#L139-L150)
 は Db が AST を保つ前に `Duplicate event modeling frame ID "01" on line 3`
-を投げ、 parse は `Error` で失敗する。 [fixture: eventmodeling/db-all-aliases]
+を投げ、parse は `Error` で失敗する。 [fixture: eventmodeling/db-all-aliases]
 [fixture: eventmodeling/db-qualified-names]
 [fixture: eventmodeling/db-frame-order]
 [fixture: eventmodeling/db-frame-duplicates]
@@ -21591,7 +21584,7 @@ source の探索は frame 宣言順に `$refText` の所属を調べる。
 参照の記述順と重複は読まれないため、要約はソートした集合を持つ。
 空集合では暗黙の関係を推論するが、
 一致先のない非空集合はその代用にならないので区別を残す。
-前方参照と自己参照も文字列であり、 Langium の `.ref` は読まない。
+前方参照と自己参照も文字列であり、Langium の `.ref` は読まない。
 [fixture: eventmodeling/db-source-order]
 [fixture: eventmodeling/db-source-order-control]
 [fixture: eventmodeling/db-source-missing]
@@ -21644,12 +21637,12 @@ GWT は AST にあるが
   [fixture: eventmodeling/frontmatter-title]
 - data type：
   [`db.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/eventmodeling/db.ts#L330-L378)
-  と描画は tag を参照せず、 JSON、Markdown、HTML などとして本文を解析しない。
+  と描画は tag を参照せず、JSON、Markdown、HTML などとして本文を解析しない。
   native な text terminal であり、opaque な `@{ ... }` ではない。
   `dataBlockEffects` はない。 [fixture: eventmodeling/data-all-types]
   [fixture: eventmodeling/data-block-types]
   [fixture: eventmodeling/lex-inline-empty]
-- 残りの AST、CST、container、参照オブジェクト、 model entity、note、GWT、
+- 残りの AST、CST、container、参照オブジェクト、model entity、note、GWT、
   未使用 data：描画入力を追加しない。 [fixture: eventmodeling/db-all-fields]
   [fixture: eventmodeling/db-entities-notes-gwt]
 - 座標、寸法、HTML、色、swimlane、
@@ -21693,7 +21686,7 @@ opaque-data の比較は独立した有効な frontmatter title と設定を残�
 は parse の前に LF を足す。
 EOF で閉じる data block の公開値には、その LF も含まれ得る。
 要約はそれも保持する。
-閉じた後の空白は、 LF を消費しない lookahead の境界にもなる。
+閉じた後の空白は、LF を消費しない lookahead の境界にもなる。
 [fixture: eventmodeling/data-block-close-eof]
 [fixture: eventmodeling/data-block-close-space]
 
@@ -21765,7 +21758,7 @@ parse の前の
 [directive とコメントの除去](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/preprocess.ts#L33-L65)
 および、
 [選ばれたセミコロンの除去と文字参照の符号化](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/utils.ts#L895-L919)
-の後で、 LF で区切る物理行を処理する。
+の後で、LF で区切る物理行を処理する。
 [Diagram.fromText](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/Diagram.ts#L77-L83)
 がこの順序で adapter に渡す。
 行の中か行だけの directive とともに除かれた罫線の文字は、
@@ -21782,7 +21775,7 @@ treeview/box-physical-comment-line]
 前処理は引用符やアクセシビリティのブロックの状態を持たない。
 どちらの値の中でも、罫線モードでは branch のない装飾だけの物理行が消え、
 通常の字下げ行は拒否されうる。
-空の物理行は残り、 U+2028 と U+2029 は物理行を区切らない。
+空の物理行は残り、U+2028 と U+2029 は物理行を区切らない。
 [fixture: treeview/box-drop-decoration] [fixture: treeview/box-block-decoration]
 [fixture:
 treeview/box-block-decoration-plain] [fixture: treeview/box-block-indent-error]
@@ -21854,7 +21847,7 @@ branch の深さにする。 [fixture: treeview/box-infer-first-column]
   既定値や filename/extension の対応は
   [`getNodeIcon()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/treeView/icons.ts#L77-L100)
   が描画時に解決する。
-  `treeView.*` は parse と公開へ影響せず、 opaque data の受理の鍵もない。
+  `treeView.*` は parse と公開へ影響せず、opaque data の受理の鍵もない。
   [fixture: treeview/config-drawing-site] [fixture:
   treeview/config-frontmatter-drawing] [fixture: treeview/config-init-drawing]
   [fixture: treeview/config-frontmatter-cannot-rescue] [fixture:
@@ -21865,7 +21858,7 @@ branch の深さにする。 [fixture: treeview/box-infer-first-column]
 adapter は description、
 共通 setter はアクセシビリティのテキストを sanitize する。
 サイトの `securityLevel` が未知の値なら DOMPurify を無効にしていても markup
-の文字を置き換え、 `htmlLabels` を無効にすると置き換えを行わない。
+の文字を置き換え、`htmlLabels` を無効にすると置き換えを行わない。
 [fixture: treeview/config-security-level-default] [fixture:
 treeview/config-security-level-other] [fixture:
 treeview/config-security-level-other-html-false]

@@ -18,7 +18,7 @@ Root はソース全体を覆い、PieDiagram はヘッダー前の最初の保�
 [fixture: pie/comment-section-eof] [fixture: pie/lex-yaml-after-showdata-eof]
 
 PieSectionStatement はラベルの開き引用符から数値か最後の textAfter までで、
-コロンと各欄の隠し形式を含み、 EOL は除きます。 [fixture: pie/label-empty]
+コロンと各欄の隠し形式を含み、EOL は除きます。 [fixture: pie/label-empty]
 [fixture: pie/review-yaml-between-label-colon]
 [fixture: pie/frontmatter-between-section-parts]
 [fixture: pie/lex-yaml-before-colon-two-blocks]
@@ -52,7 +52,7 @@ null ならコロンまでです。 [fixture: pie/title-spaces]
 [fixture: pie/gram-block-eof-hidden-yaml] [fixture: pie/yaml-inline-after-title]
 
 PieLiteral は空白を含む空でない行の値全体か、
-両端の共通空白を除くブロックの内部で、 null に葉の範囲はありません。
+両端の共通空白を除くブロックの内部で、null に葉の範囲はありません。
 [fixture: pie/title-spaces] [fixture: pie/title-whitespace-last]
 [fixture: pie/acctitle-spaces] [fixture: pie/accdescr-spaces]
 [fixture: pie/accdescr-block-unicode-trim]

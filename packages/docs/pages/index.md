@@ -48,7 +48,8 @@ features:
 ## About mmd-toolkit
 
 mmd-toolkit is a third-party project for Mermaid diagram text, not affiliated
-with mermaid-js. Here, `mmd` refers to that text and its `.mmd` file extension.
+with [mermaid-js](https://mermaid.js.org/). Here, `mmd` refers to that text and
+its `.mmd` file extension.
 
 ## Try it online
 

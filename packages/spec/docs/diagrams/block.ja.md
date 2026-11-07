@@ -12,7 +12,7 @@ mermaid.js の正となるソース：
 この文書は図種 `block` を扱います。
 木のノードは [ast/block.ja.md](../ast/block.ja.md) で定めます。
 mermaid.js が受理したテキストを Db にどう読むか（ブロックの順、
-2 回定めたブロック、形の型）は、 tests パッケージの要約にあります。
+2 回定めたブロック、形の型）は、tests パッケージの要約にあります。
 
 ## 検出
 
@@ -71,7 +71,7 @@ mermaid.js はそれをヘッダーの前のノードとして読み、入力を
 `end` がそれを閉じなければなりません（[入れ子のブロック](#入れ子のブロック)
 を参照）。
 ヘッダーの後では、垂直タブ、改ページ、ASCII 外の空白文字は空白で、
-CR と CRLF は行を終え、 U+0085 はその後の id の一部です。
+CR と CRLF は行を終え、U+0085 はその後の id の一部です。
 [fixture: block/header-spaced-word-suffix]
 [fixture: block/header-statement-on-header-line]
 [fixture: block/header-statement-on-header-line-tab]
@@ -115,11 +115,11 @@ CR と CRLF は行を終え、 U+0085 はその後の id の一部です。
 空白は [表記](../common.ja.md#表記) の集合で、改行文字も含みます。
 ソースの改行はスペースと同じく空白なので、文に区切りは要らず、
 文は複数の行にわたってかまいません。
-2 つの id の間では、タブ、垂直タブ、改ページ、CR、CRLF、 U+00A0、U+2028、
-U+2029、U+3000、U+FEFF がそれらを分けます。
+2 つの id の間では、タブ、垂直タブ、改ページ、CR、CRLF、U+00A0、U+2028、U+2029、
+U+3000、U+FEFF がそれらを分けます。
 一方、U+0085 は空白ではなく、2 つの語を 1 つの id にします。
 文の部分の間のコメント行とディレクティブの行は図のテキストに含まれないので、
-`columns`、行 `%% c`、 `2` は `columns 2` です。
+`columns`、行 `%% c`、`2` は `columns 2` です。
 [fixture: block/db-name-tab-between] [fixture: block/db-name-nbsp-between]
 [fixture: block/db-name-ideographic-between]
 [fixture: block/db-name-bom-between] [fixture: block/db-name-ls-between]
@@ -270,7 +270,7 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
 そして
 [ディレクティブはトークンの境界](../common.ja.md#ディレクティブはトークンの境界)
 の規則が単位に当たります。
-文字列、クラス名、スタイルの中のディレクティブは mermaid.js の読みを保ち、 id、
+文字列、クラス名、スタイルの中のディレクティブは mermaid.js の読みを保ち、id、
 キーワード、ヘッダー、矢印、ブロック矢印の方向、
 `classDef` のクラスの名前の中のディレクティブは入力を拒否させます。
 mermaid.js は部分をつなぎます。
@@ -375,9 +375,8 @@ mermaid.js は部分をつなぎます。
 キーワードはこの大文字小文字でだけ読まれます。
 単位が始まるどの位置でも、キーワードを id より先に試し、
 id は持てる文字をすべて読むので、語の中のキーワードは id の一部です。
-`friend`、`endless`、`mycolumns`、`blockade`、`classy`、`styled`、 `spaceship`、
-`space1` は id で、 `space.a`、`space;`、`end.x`、
-`end;` はキーワードと id です。
+`friend`、`endless`、`mycolumns`、`blockade`、`classy`、`styled`、`spaceship`、
+`space1` は id で、`space.a`、`space;`、`end.x`、`end;` はキーワードと id です。
 ほかの大文字小文字のキーワードは id です。
 `Space`、`END`、`Columns 2`、`COLUMNS 2` は id で、
 `end` が入れ子のブロックを閉じるはずのところの `END` は、
@@ -390,7 +389,7 @@ id は持てる文字をすべて読むので、語の中のキーワードは i
 `title t` は 2 つの id で、`default`、`linkStyle`、
 `interpolate` は拒否されます。
 id は矢印より先に試すので、ダッシュの前の `x`、`o`、`~` は id を始めます。
-`A x--x B` は id A と `x` からの辺で、 `~~~` と `A~~~B` は id です。
+`A x--x B` は id A と `x` からの辺で、`~~~` と `A~~~B` は id です。
 [fixture: block/db-statement-many-line] [fixture: block/db-statement-mixed-line]
 [fixture: block/db-statement-columns-between]
 [fixture: block/db-statement-statements-then-class]
@@ -441,7 +440,7 @@ id は矢印より先に試すので、ダッシュの前の `x`、`o`、`~` は
 [fixture: block/db-columns-two-numbers]
 
 そのため、id は `_`、`.`、`/`、`,`、`|`、`#`、`&`、`%`、`$`、`*`、`+`、`~`、
-`^`、 `@`、`!`、`?`、逆引用符、バックスラッシュ、`;`、`"`、`]`、制御文字と、
+`^`、`@`、`!`、`?`、逆引用符、バックスラッシュ、`;`、`"`、`]`、制御文字と、
 空白を除くすべての ASCII 外の文字を持ち、そのどれで始まってもかまいません。
 `A;B`、`50%`、`A"x"`、`A""` は id で、
 id とスペースの後の `;` はそれだけで id です。
@@ -840,7 +839,7 @@ ASCII 外の文字です。
 id と開きの間の空白はかまいません（`A ("x")`）。
 どの開きもどの閉じに出会ってもかまいません。
 `["x")`、`("x"]`、`-)"x"(-`、
-`[|"x"]` のように mermaid.js の形でない組は受理され、 Db で型を持ちません。
+`[|"x"]` のように mermaid.js の形でない組は受理され、Db で型を持ちません。
 `[|"x"|]` と `[[["x"]]]` は拒否され、前に id のない形も拒否されます。
 [fixture: block/db-shape-square] [fixture: block/db-shape-round]
 [fixture: block/db-shape-circle] [fixture: block/db-shape-doublecircle]
@@ -910,7 +909,7 @@ id と開きの間の空白はかまいません（`A ("x")`）。
 2 つの方向の間には何も要りません。
 `(right down)`、`(right, down)`、`(rightdown)` は方向 `right` と `down` です。
 方向がないもの、知らない語、大文字、終わりの `,`、続く 2 つの `,`、
-`<[` の括弧の中の空白は拒否され、 `]` だけで閉じた `<[` も拒否されます。
+`<[` の括弧の中の空白は拒否され、`]` だけで閉じた `<[` も拒否されます。
 [fixture: block/db-arrow-left] [fixture: block/db-arrow-up]
 [fixture: block/db-arrow-down] [fixture: block/db-arrow-x]
 [fixture: block/db-arrow-y] [fixture: block/db-arrow-two]
@@ -1227,7 +1226,7 @@ id にくっついていてもかまいません（`A-->B`、`A--xB`）。
 まわりの空白とともに辺のラベルの文脈に入ります。
 この文脈は文字列を読み、それから矢印を読んで文脈を出ます。
 矢印は開きの矢印と違う線でもかまわず、`A -- "x" ==> B` は受理されます。
-引用符のないラベル、空のラベル、 markdown のラベルは拒否されます。
+引用符のないラベル、空のラベル、markdown のラベルは拒否されます。
 [fixture: block/db-edge-arrow] [fixture: block/db-edge-open]
 [fixture: block/db-edge-thick] [fixture: block/db-edge-thick-open]
 [fixture: block/db-edge-dotted] [fixture: block/db-edge-dotted-open]
@@ -1320,7 +1319,7 @@ statement = node-statement | space-statement | columns-statement
 図はヘッダーと 1 つ以上の文で、文は空白だけを挟んで続きます。
 ノード、辺、`columns`、`space`、入れ子のブロックは、いくつでも、
 どの順でも 1 つの行に立てられ、字下げ、空行、空白だけの行は何も変えません。
-文の後の `;`、`%%`、`#` は id で、 `classDef`、`class`、
+文の後の `;`、`%%`、`#` は id で、`classDef`、`class`、
 `style` の後では行の残りの一部です。
 mermaid.js の文書の例は受理されます。
 [fixture: block/db-tail-node-comment-glued]
@@ -1498,7 +1497,7 @@ width          = ":" digits
 ノードは、形かブロック矢印を持つ id か、どちらも持たない id です。
 幅は文の最初のノードにだけ続き、
 `:` の前の空白は改行も含めてあってもなくてもかまいません。
-`A:2`、`A["x"]:2`、`A :2`、`A:2 --> B` は受理され、 `A --> B:2`、
+`A:2`、`A["x"]:2`、`A :2`、`A:2 --> B` は受理され、`A --> B:2`、
 `:` の後のスペース、数字のない `:`、符号、2 つの幅は拒否されます。
 数字の後は別に読まれます（`A:2.5` は幅 2 と id `.5`）。
 [fixture: block/db-width-plain] [fixture: block/db-width-one]
@@ -1530,7 +1529,7 @@ block-arrow = "<[" string "]>" "(" direction+ ")"
 
 形は、開き、文字列、閉じです（[形](#形) を参照）。
 ブロック矢印は、文字列とその方向です（[ブロック矢印](#ブロック矢印) を参照）。
-文字列は空にならず、 markdown 文字列にもなりません。
+文字列は空にならず、markdown 文字列にもなりません。
 [fixture: block/db-shape-square] [fixture: block/db-shape-round]
 [fixture: block/db-shape-block-arrow]
 
@@ -1575,7 +1574,7 @@ columns-statement = "columns" ( digits | "auto" )
 ```
 
 `space` と `space:N` はそれだけで文です。
-`space` は形も、後の幅も、辺も取らず、 `space :2`、`space: 2`、
+`space` は形も、後の幅も、辺も取らず、`space :2`、`space: 2`、
 数字のない `space:`、符号は拒否されます。
 `columns` はそれが立つブロックの列数を決め、
 `columns` とその数の間の空白は改行を持てます。 [fixture: block/db-space-plain]
@@ -1789,13 +1788,13 @@ style-statement     = "style" class-ids style ( "," style )*
 ```
 
 `classDef`、`class`、`style` とその後の改行も含む空白の後、クラスの定義、
-クラス、スタイルの文脈は、 1 つ以上の ASCII の語の文字（英字、数字、
+クラス、スタイルの文脈は、1 つ以上の ASCII の語の文字（英字、数字、
 `_`）を `class-id` の単位として読みます。
 クラスとスタイルの文脈では、`class-ids` の単位として読み、この単位は `,`、
 改行も含む空白（なくてもよい）、語の文字の並びをいくつでも続けられます。
 それから行の残りを、クラス名かスタイルとして読みます。
 クラスの定義の文脈では、`class-id` の後に改行も含めて空白が要るので、
-そのスタイルは次の行から始められ、 `classDef c` に行 `class A c` が続くと、
+そのスタイルは次の行から始められ、`classDef c` に行 `class A c` が続くと、
 スタイル `class A c` のクラス `c` を定めます。
 `classDef DEFAULT`、`-` か `:` か ASCII 外の文字を持つ名前、
 名前かスタイルのない `classDef` は拒否され、`default` は名前です。
@@ -2384,7 +2383,7 @@ id `A,B` のブロックがないときの `style A,B`、
   ラベル `"style:#a"` を持つ行のように `style` 行の行の規則が当たる行では、
   id やキーワードの中の無視される `;` は、ここでは入力を拒否させ、
   mermaid.js は部分をつなぎます。
-  `A["style:#a"] B;C` は、 mermaid.js では id `BC` を持ちます。
+  `A["style:#a"] B;C` は、mermaid.js では id `BC` を持ちます。
   [fixture: block/div-ignored-semicolon-in-id]
   [fixture: block/div-ignored-semicolon-in-keyword]
 - **[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md)。**
@@ -2397,7 +2396,7 @@ id `A,B` のブロックがないときの `style A,B`、
   `C4Component`、`C4Dynamic`、`C4Deployment` は、
   mermaid.js にテキストを C4 のパーサーへ渡させ、それが拒否します。
   ここではテキストは block diagram です。
-  `C4Context` はどちらでもテキストの先頭でだけ数えるので、 id です。
+  `C4Context` はどちらでもテキストの先頭でだけ数えるので、id です。
   [fixture: block/div-c4-component-in-id]
   [fixture: block/div-c4-container-after-node]
   [fixture: block/gram-c4-container-before-header]

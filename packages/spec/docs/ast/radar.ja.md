@@ -47,7 +47,7 @@ textBeforeHeader は検出点から残る native hidden-yaml と、
 第 2 scan の hidden-directive を持つ。
 通した裸の percent 行は共有 Comment とし、付随する空白・改行は trivia とする。
 それらを読み直したり残存 node の範囲へ加えたりしない。
-複数の残存形は別々に保ち、 native の閉じの境界を要求する。
+複数の残存形は別々に保ち、native の閉じの境界を要求する。
 [fixture: radar/retained-yaml-control] [fixture: radar/detect-secondscan-native]
 [fixture: radar/detect-secondscan-native-glued]
 [fixture: radar/detect-secondscan-native-twice]
@@ -90,7 +90,7 @@ RadarIgnoredText のいずれか。
 その member の接尾辞を含め、EOL と外の padding を除く。
 一つの axis keyword が、空でない comma 区切りの群を所有する。
 同じ行でも axis keyword が別なら別の文とする。
-comma は句読点のままで、 separator node や別の配列欄にはしない。
+comma は句読点のままで、separator node や別の配列欄にはしない。
 [fixture: radar/gram-written-tree] [fixture: radar/db-all-fields]
 [fixture: radar/gram-inline-statements] [fixture: radar/lex-hidden-axis-comma]
 [fixture: radar/gram-axis-trailing-comma]
@@ -146,7 +146,7 @@ comma のない次の option は別の RadarOptionsStatement を始める。
 
 子の欄: `textBefore`、`name`、`textBeforeLabel`、`textBeforeLabelValue`、
 `label`、`textBeforeLabelClose`、`textAfter`。
-範囲は最初の textBefore、なければ name から、 label があれば終了 bracket、
+範囲は最初の textBefore、なければ name から、label があれば終了 bracket、
 なければ name までとし、textAfter へ広げる。
 name は id の原綴を保つ。
 label は bracket の形全体がない場合だけ null とし、
@@ -240,7 +240,7 @@ colon があれば textBeforeColon は名前と colon の間、
 textBeforeValue は colon の後。
 colon がなければ textBeforeColon は空で、
 名前と数の間の全 native hidden form を textBeforeValue が所有する。
-colon の有無は句読点に保ち、 AST の flag は作らない。
+colon の有無は句読点に保ち、AST の flag は作らない。
 [fixture: radar/gram-written-tree]
 [fixture: radar/gram-detailed-colon-mixed-spelling]
 [fixture: radar/gram-detailed-entry-comment]
@@ -281,7 +281,7 @@ textBeforeValue は完成した keyword の後とする。
 
 value は固定語 true または false を文字列で保ち、
 変換後の boolean や子の葉にしない。
-位置はその単位が持ち、 name/raw の欄を別に加えない。
+位置はその単位が持ち、name/raw の欄を別に加えない。
 [fixture: radar/gram-written-tree] [fixture: radar/db-options-repeat]
 [fixture: radar/gram-option-boolean-number]
 [fixture: radar/div-directive-boolean-atom]
@@ -614,7 +614,7 @@ hidden の LF 消費は可視の separator を変えるが、
 名前つき curve は、どの軸も使わない Z:9 を保つ。
 数の curve は同じ群内でも別の member とする。
 ticks の raw は 33 のまま保つ。
-4 種の common 形は、 description の両形も含め別々の node とする。
+4 種の common 形は、description の両形も含め別々の node とする。
 [fixture: radar/gram-written-tree]
 
 ```mmd

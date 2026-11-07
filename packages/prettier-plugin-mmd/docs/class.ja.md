@@ -252,7 +252,7 @@ flowchart と同じです。 [fixture: whitespace-between-tokens/collapsed]
 `class Foo Bar` はクラス `FooBar` を宣言し、
 書かれたとおり `class Foo Bar` と印字します。
 部分をつなぐとキーワードになることがあるからです。
-例えば `class no te` は `note` を宣言しますが、 `class note` は拒否されます。
+例えば `class no te` は `note` を宣言しますが、`class note` は拒否されます。
 [fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/name-parts-keyword-kept]
 クラスの `:::` は、前の名前にも後ろの CSS クラスにも接します。
@@ -292,7 +292,7 @@ mermaid.js の文書は、両方の置き場所をこの空白で書いていま
 書かれたままにします（[メンバーの行](#メンバーの行)を参照）。
 U+2028 と U+2029 は、そのまま残します。
 [test: U+2028 before the `<<` of a class annotation]
-以下は、角括弧のラベル、 `note for`、`click`、`style`、
+以下は、角括弧のラベル、`note for`、`click`、`style`、
 `cssClass` の文の語の間も同じです。
 [fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/after-name-collapsed]
@@ -380,7 +380,7 @@ mermaid.js はどちらも引数のない同じ呼び出しとして読むから
 [test: U+2028 between the parentheses of a blank class callback]
 [test: U+2029 between the parentheses of a blank class callback]
 コメント行やディレクティブを含む引数は、`)` まで書かれたまま印字します。
-`)` の前の空白は Db では引数の一部なので、 `)` の前にコメント行があっても、
+`)` の前の空白は Db では引数の一部なので、`)` の前にコメント行があっても、
 字下げしてはいけないからです。
 [fixture: whitespace-between-tokens/callback-args-comment-line-kept]
 [fixture: whitespace-between-tokens/callback-name-kept]
@@ -516,7 +516,7 @@ classDiagram
 
 関係やクラス名の後のラベルの `:` の両側には、
 mermaid.js のドキュメントの書き方のとおり、空白を 1 つずつ置きます。
-`A-->B:x` は `A --> B : x` に、 `A:+int x` は `A : +int x` になります。
+`A-->B:x` は `A --> B : x` に、`A:+int x` は `A : +int x` になります。
 [fixture: labels/spaced] [fixture: labels/directive-around-colon-kept]
 sequence 図では `:` を前のものに接して書きます（詳しくは、
 [sequence 図の整形規則のコロン](./sequence.ja.md#コロン) を参照）。
@@ -570,7 +570,7 @@ mermaid.js の行単位の規則は、テキスト `style` の後の `:` に、
 空白のないテキストを経て `#` が続く行で、
 最後の `;` を無視します（[1 行に 1 文](./flowchart.ja.md#1-行に-1-文)を参照）。
 `styleA fill:#f00;` はクラス `styleAfill` にメンバー `#f00` を足し、
-`:` の後に空白を入れると、 `;` がメンバーの一部になります。
+`:` の後に空白を入れると、`;` がメンバーの一部になります。
 [fixture: labels/semicolon-line-kept]
 [fixture: labels/semicolon-line-with-directive-kept]
 [fixture: directives/ignored-semicolon-next-to-another-kept]
@@ -613,7 +613,7 @@ generic のつづりと classifier に伴う末尾も保ちます。
 [corpus fixture: class/lex-member-percent]
 mermaid.js はメンバーの行をそのテキストで部分に分け、
 可視性の印の後の空白は名前の一部になるからです。
-`+ foo()` の名前は空白の付いた ` foo` で、 `+foo()` の名前は `foo` です。
+`+ foo()` の名前は空白の付いた ` foo` で、`+foo()` の名前は `foo` です。
 [fixture: member-lines/kept]
 [corpus fixture: class/gram-member-visibility-whitespace-body-0184dca2]
 注釈の行 `<< y z >>` は、テキストの周りの空白も Db に残ります。
@@ -648,7 +648,7 @@ classDiagram
 ### ジェネリック型
 
 ジェネリック型は、最初の `~` から 2 つ目の `~` まで書かれたまま残します。
-その間の空白は Db の型の一部で、 `List~ T ~` の型は、
+その間の空白は Db の型の一部で、`List~ T ~` の型は、
 `T` の両側に空白がある `" T "` だからです（文字列として書いています）。
 [fixture: generic-types/kept] [fixture: generic-types/class-with-body-kept]
 [fixture: generic-types/in-member-and-note-kept]
@@ -683,7 +683,7 @@ classDiagram
 [fixture: comments/before-header] [fixture: comments/in-namespace]
 [fixture: comments/last-in-body] [fixture: comments/text-kept]
 [fixture: member-bodies/comment-only-over-lines-kept]
-文の後のコメントはその行に残し、 `%%` の前に空白が書かれているかどうかは、
+文の後のコメントはその行に残し、`%%` の前に空白が書かれているかどうかは、
 sequence 図と同じく保ちます。 [fixture: comments/kept]
 [fixture: comments/whitespace-run-before-collapsed]
 [fixture: comments/after-header-touching-kept]
@@ -801,7 +801,7 @@ mermaid.js が取り除くコメント行の後のディレクティブだけの
 [fixture: directives/bare-marker-with-braces]
 [fixture: directives/bare-marker-at-end-of-text]
 [corpus fixture: class/lex-bare-percent-line-between-statements]
-ディレクティブは空白ではないので、 mermaid.js にとって、
+ディレクティブは空白ではないので、mermaid.js にとって、
 その行は空白だけの行ではありませんが、字下げすると空白だけの行になります。
 行送りを取るコメントの後では、空白だけの行が、
 コメントが取るものを終わらせます（[コメント](#コメント)を参照）。
@@ -1011,7 +1011,7 @@ classDiagram
 class 図では、改行は文を終えます。
 ただし、`direction` の後では値が次の行にあってよく、
 `accTitle` と `accDescr` の `:` の後ではテキストが次の行にあってよいので、
-`direction`、改行、 `LR` は `direction LR` と印字します。
+`direction`、改行、`LR` は `direction LR` と印字します。
 [fixture: multi-line-statements/joined]
 [fixture: multi-line-statements/acc-descr-joined]
 [fixture: multi-line-statements/empty-line-inside-joined]
@@ -1094,8 +1094,7 @@ TDとほかの大小文字はその方向行の規則ではないので、通常
 [fixture: multi-line-statements/title-next-direction-td]
 [fixture: multi-line-statements/description-next-direction-td]
 [fixture: multi-line-statements/lower-case-direction-value]
-`tabWidth: 0`と`useTabs`でも設定の継続幅を使い、
-CRも正規化後に同じ判断をします。
+`tabWidth: 0`と`useTabs`でも設定の継続幅を使い、CRも正規化後に同じ判断をします。
 [fixture: multi-line-statements/direction-value-zero-width]
 [fixture: multi-line-statements/direction-value-tabs]
 [test: accessibility revisions: class direction-value-cr]
@@ -1172,7 +1171,7 @@ classDiagram
 行に単独の `accDescr {}` は、mermaid.js と同じく拒否されます。
 そうした行は、文を一緒に残します。
 その行に本体を持つクラスは、ほかのクラスと同じように印字し、
-メンバーは 1 段深く、 `}` はその行と同じ段に置きます。
+メンバーは 1 段深く、`}` はその行と同じ段に置きます。
 [fixture: empty-description-blocks/before-class-with-body-indented]
 [fixture: empty-description-blocks/kept-with-statement]
 [fixture: empty-description-blocks/after-statement]

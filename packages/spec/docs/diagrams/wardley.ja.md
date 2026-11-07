@@ -149,7 +149,7 @@ import された padding は native space/tab padding と同じ形で、
 
 ### keyword と名前の境界
 
-strategy は優先順に build、buy、outsource、 market。
+strategy は優先順に build、buy、outsource、market。
 [fixture: wardley/db-inertia-forms]
 [fixture: wardley/spec-wardley-parser-95189f48]
 
@@ -366,7 +366,7 @@ block の値は両端の共通 whitespace だけを除き、中身がなくな�
 空 block も文になる。
 反復した出現は別に保つ。
 導出されるメタデータは [AbstractMermaidValueConverter][converter] と
-[populateCommonDb][populate-common] に基づき、 tests の要約が定める。
+[populateCommonDb][populate-common] に基づき、tests の要約が定める。
 [fixture: wardley/common-empty-literals]
 [fixture: wardley/common-title-two-spaces] [fixture: wardley/common-title-tabs]
 [fixture: wardley/common-block-whitespace] [fixture: wardley/common-line-ls-ps]
@@ -731,7 +731,7 @@ security level が変わっても Wardley の名前に共通のテキストの s
 [fixture: wardley/number-negative-zero] [fixture: wardley/number-nan]
 
 後の宣言が名前を置き換える場合も、anchor、top-level component、note、
-annotation、accelerator、 deaccelerator の全出現の両座標を検査する。
+annotation、accelerator、deaccelerator の全出現の両座標を検査する。
 pipeline の各子の evolution も検査する。
 source の欄名が x/y である annotation/force の構文も含め、
 二値の位置の記述順は visibility、evolution。
@@ -858,7 +858,7 @@ tests の [Db-from-tree の契約](../../../tests/docs/db-from-tree.ja.md)
 global directive は固定語、id-name、数、
 不可分な arrow/port/marker を分割できない。
 共有記録に原文は残せるが、atom の内部に作者の隙間はない。
-完全な部品の境界、spaced-name のテキスト、string、 hidden の句読点は読めるまま。
+完全な部品の境界、spaced-name のテキスト、string、hidden の句読点は読めるまま。
 [fixture: wardley/directive-keyword-middle] [fixture: wardley/directive-number]
 [fixture: wardley/directive-header-inside]
 [fixture: wardley/directive-id-inside]

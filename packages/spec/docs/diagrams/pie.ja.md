@@ -27,7 +27,7 @@ HTML 属性の引用符、実体参照、選ばれたセミコロンの規則を
 検出がヘッダー前で通過させた裸のパーセント対の行は、
 印が `%%` の共通の Comment です。
 `%%{}%%`、`%%{!}%%`、閉じない `%%{!` の行も含みます。
-PieIgnoredText ではなく、 pie の字句規則で読み直しません。
+PieIgnoredText ではなく、pie の字句規則で読み直しません。
 [fixture: pie/directive-before-header] [fixture: pie/comment-before-header]
 [fixture: pie/html-all-texts] [fixture: pie/entity-all-texts]
 [fixture: pie/style-label-trigger] [fixture: pie/review-comment-bare-header-eof]
@@ -208,7 +208,7 @@ pie の隠れた YAML と隠れた DIRECTIVE の規則で読みます。
 テキストの終わり、`%%` のいずれかが必要です。
 境界は共通のディレクティブを除いたテキストで判断します。
 キーワードと showData やラベルの間に接着したディレクティブは、境界を与えません。
-英字、数字、underscore、ダッシュ、ASCII 外の字母、コロン、 `#`、単独の `%`、
+英字、数字、underscore、ダッシュ、ASCII 外の字母、コロン、`#`、単独の `%`、
 開き波括弧、引用符はこの境界を満たしません。 [fixture: pie/header-letter-suffix]
 [fixture: pie/header-digit-suffix] [fixture: pie/header-underscore-suffix]
 [fixture: pie/header-dash-suffix] [fixture: pie/header-unicode-suffix]
@@ -679,7 +679,7 @@ AST は書かれたテキストを保ちます。
 ## 既知の差異
 
 **[directive-as-token-boundary](../known-divergences/directive-as-token-boundary.ja.md)。**
-固定したキーワードか数の内部の共通のディレクティブは、 Mermaid が結合しても、
+固定したキーワードか数の内部の共通のディレクティブは、Mermaid が結合しても、
 ここでは拒否します。
 完全な構成要素の境界と書かれたテキストでは受理します。
 この規則によって Mermaid が拒否する入力を受理することはありません。
@@ -696,7 +696,7 @@ AST は書かれたテキストを保ちます。
 **[ignored-semicolon-as-token-boundary](../known-divergences/ignored-semicolon-as-token-boundary.ja.md)。**
 固定したキーワードか数の内部の、選ばれたセミコロンも同じ拒否の規則です。
 テキストと隠れた形の中身では共通のトリビアとして保てます。
-差異は、 Mermaid が結合して受理する原子的な単位をここで拒否する向きだけです。
+差異は、Mermaid が結合して受理する原子的な単位をここで拒否する向きだけです。
 [fixture: pie/div-atomic-semicolon-number]
 [fixture: pie/div-selected-semicolon-title-keyword]
 [fixture: pie/div-selected-semicolon-showdata]
@@ -714,7 +714,7 @@ AST は書かれたテキストを保ちます。
 [fixture: pie/div-review-frontmatter-html-cross-label]
 
 **[embedded-data-opaque](../known-divergences/embedded-data-opaque.ja.md)。**
-先頭のフロントマターの不正な内容は、 Mermaid が拒否しても、
+先頭のフロントマターの不正な内容は、Mermaid が拒否しても、
 ここでは不透明なテキストとして受理します。
 HTML 属性の引用符の変換で不正になった YAML も含みます。
 この規則で反対向きの差異はありません。

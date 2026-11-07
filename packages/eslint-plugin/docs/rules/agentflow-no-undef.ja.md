@@ -34,7 +34,7 @@ mermaid.js は文をエラーなしに受理するが、文は意図した要素
 
 `style` は未知の id に頂点を作るので、同じ id の後の `style`、`class`、
 `click` は報告しない。
-予約 id `connectors` は形付きでも `style` でも通常の頂点を作らないので、 flow、
+予約 id `connectors` は形付きでも `style` でも通常の頂点を作らないので、flow、
 connector、明示したリンク id が別に宣言しなければ、その使用を毎回報告する。
 
 id は書いたとおりに比べるので、文字参照や HTML の属性の引用符によって、

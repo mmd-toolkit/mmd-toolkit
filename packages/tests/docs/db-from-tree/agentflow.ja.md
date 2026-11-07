@@ -66,7 +66,7 @@ frontmatter の trivia 全体の後から、directive を除き、CRLF を一つ
 frontmatter のタイトルは `embedded` から取り、なければ空にする。
 [db-from-tree.ja.md](../db-from-tree.ja.md#文字の置き換え) の
 `textReplacementOf(embedded.config)` でサニタイズする。
-ヘッダー方向がなければ TB、TD は TB、`>` は LR、`<` は RL、 `v` は TB、
+ヘッダー方向がなければ TB、TD は TB、`>` は LR、`<` は RL、`v` は TB、
 `^` は BT にする。
 BR を含め、ほかの綴られた方向はそのまま使う。
 方向文が変えるのは、図全体でなく、それを直接含む flow の方向だけである。
@@ -110,7 +110,7 @@ BR を含め、ほかの綴られた方向はそのまま使う。
 [fixture: agentflow/gram-style-suffix] [fixture: agentflow/gram-group-spaces]
 [fixture: agentflow/gram-edge-chain] [fixture: agentflow/db-data-block-routing]
 
-sequence、failure、reference の矢印はそれぞれ、 `arrow_point`/normal、
+sequence、failure、reference の矢印はそれぞれ、`arrow_point`/normal、
 `arrow_cross`/normal、`arrow_open`/dotted になる。
 実線の Db の長さはダッシュ数から一を引き、reference はドット数を使う。
 どちらも十で止め、木の長さは制限しない。

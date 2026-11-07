@@ -37,7 +37,7 @@ mermaid.jsの読みが違うからと結果を戻しません。
 見出しを見つけやすくし、見出しと本文でTDの方針を揃えるためです。
 agentflowが受理する見出しは小文字の`agentflow-beta`だけです。
 方向の省略と記号を保ち、次行のLRは頂点のままです。
-通常の後続文は本文へ移し、 directiveの付着はDirectivesに従います。
+通常の後続文は本文へ移し、directiveの付着はDirectivesに従います。
 [fixture: header/header-column] [fixture: header/header-direction-spelling]
 [fixture: header/header-inline-separated]
 [fixture: header/header-next-line-direction] [fixture: header/header-symbol]
@@ -60,7 +60,7 @@ connectorには本文がありません。
 `useTabs`では1段をタブ1つにします。
 agentflowは共有の意味を持つ字下げ幅を使い、
 `tabWidth: 0`でも本文の1段を最低1つの空白にします。
-字下げのある`accTitle: direction LR`は方向文ですが、 1桁目へ移すとDbが変わり、
+字下げのある`accTitle: direction LR`は方向文ですが、1桁目へ移すとDbが変わり、
 styleで始まる方向行は拒否されるためです。
 桁位置で読みが変わる非方向行はDirectionに従って元の字下げを保ちます。
 [fixture: indentation/indent-direction-unsafe]
@@ -89,7 +89,7 @@ flowchartの [字下げ](./flowchart.ja.md#字下げ) と
 globalはコンテナーを出力しなくても所属を変えるのでブロックのままです。
 名前やデータを補いません。
 agentflowのend/globalが取る空白はASCIIの空白とタブだけです。
-LFを名前へ取り込まず、 endの後のセミコロンは親の本文の独立した空文です。
+LFを名前へ取り込まず、endの後のセミコロンは親の本文の独立した空文です。
 [fixture: containers/containers-empty] [fixture: containers/containers-one-line]
 [fixture: containers/end-name-not-greedy]
 [fixture: containers/global-flatten-unsafe]
@@ -216,7 +216,7 @@ click の ID として読む名前が、終了文字なしで EOF に達する�
 加えるのは [Final newline](#final-newline) の末尾の LF だけです。
 [fixture: names-and-headings/name-click-exit-eof]
 
-clickのIDの読みを終える文字の後の通常の空行は、 Blank linesに従います。
+clickのIDの読みを終える文字の後の通常の空行は、Blank linesに従います。
 [fixture: names-and-headings/name-exit-lf-empty-line]
 [fixture: names-and-headings/name-ordinary-fragment-blank]
 
@@ -225,7 +225,7 @@ clickのIDの読みを終える文字の後の通常の空行は、 Blank lines�
 `;`の前の空白は名前の文字ですが、印字するLFの前では名前でないためです。
 Kept linesによってセミコロンが同じ行に残る場合は保ちます。
 [fixture: names-and-headings/empty-description-kept-separator]
-flowとconnectorの名前、空白、タブ、空白の連続、 LFが続く区切りと、
+flowとconnectorの名前、空白、タブ、空白の連続、LFが続く区切りと、
 区切りの連続に適用します。
 [fixture: names-and-headings/empty-description-space-flow]
 [fixture: names-and-headings/empty-description-tab-flow]
@@ -252,7 +252,7 @@ agentflow-beta TB
 ### Single space gaps
 
 flowchartの [トークンの間の空白](./flowchart.ja.md#トークンの間の空白)
-と異なり、 style/classDef/class/linkStyleの後、classの値とinterpolate名、
+と異なり、style/classDef/class/linkStyleの後、classの値とinterpolate名、
 tooltipの前の必須の空白1文字の隙間は決して揃えません。
 文法が空白1文字だけを取り、その後の空白は値の文字で、
 トークンを期待する場所に空白が2文字あると拒否されることもあるためです。
@@ -372,7 +372,7 @@ agentflowのラベルコメントの直前の空白とタブは値の文字な�
 
 flow/connectorの見出しのタイトルは、
 [subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダー)に従います。
-flowchartと同じ理由で、 `[ T ]`を含め括弧の内側の空白を落とします。
+flowchartと同じ理由で、`[ T ]`を含め括弧の内側の空白を落とします。
 [fixture: names-and-headings/name-heading-touches-title]
 
 入力（escape 表記）: `"agentflow-beta TB\nA[text]"`。
@@ -668,10 +668,10 @@ frontmatterには保護付きYAML整形を使え、CR/LF変換も共通のまま
 [corpus fixture: agentflow/comment-default-size-above-crlf]
 記録済みの範囲で計画を測り、出力の再解析やサイト設定の推測はしません。
 
-たとえば`tabWidth: 0`の固定入力`size-utf16-exact-zero`は、 UTF-16が50000単位、
+たとえば`tabWidth: 0`の固定入力`size-utf16-exact-zero`は、UTF-16が50000単位、
 コードポイントが49999です。
 出力は本文の先頭の空白2つと末尾を含め、入力と同じです。
-空白を1つに揃えると、 Unicodeの文字数で誤って判断したことになります。
+空白を1つに揃えると、Unicodeの文字数で誤って判断したことになります。
 [fixture: default-size-branches/size-utf16-exact-zero]
 
 ### Direction
@@ -723,8 +723,8 @@ agentflow-beta TB
 [アクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)
 を同じ理由で再利用します。
 Dbが同じ形から選ぶ場合は、その図種の理由がなければ兄弟の図種に揃えるためです。
-agentflowの通常のアクセシビリティ行に固有の理由はないので、 C4、class、
-usecaseと両方のgraphで、 `accTitle: value`と`accDescr: value`に揃えます。
+agentflowの通常のアクセシビリティ行に固有の理由はないので、C4、class、
+usecaseと両方のgraphで、`accTitle: value`と`accDescr: value`に揃えます。
 コロンを語に接し、両端をtrimした値の前にASCII空白1つを置き、
 内部の空白とインラインの`%%`と`#`を値の文字として保ちます。
 [fixture: accessibility/tight-colon] [fixture: accessibility/spaced-colon]
@@ -784,7 +784,7 @@ flowchartと同じ理由で同じ規則を使います。
 外側の語と波括弧の隙間は、元が接していても空白 1 個にします。
 語と本文の開始を見分けやすくするためで、`accDescr {}` と印字します。
 [fixture: accessibility/empty-block-touching-keyword]
-囲む文字がないので内側の空白も不要で、 usecaseのDbが同じ形に従います。
+囲む文字がないので内側の空白も不要で、usecaseのDbが同じ形に従います。
 [fixture: accessibility/empty-block-tight]
 [fixture: accessibility/empty-block-spaced]
 [fixture: accessibility/empty-block-lines]
@@ -811,7 +811,7 @@ flow または global の本文では、原文がメンバーの決定にも使�
 元の列を保ちます。
 global 本文の原文を変えると、後続の flow のメンバーが変わる場合があります。
 [fixture: accessibility/global-description-membership-kept]
-単独行の閉じ括弧は、 0桁目でも字下げされていても`accDescr`に揃えます。
+単独行の閉じ括弧は、0桁目でも字下げされていても`accDescr`に揃えます。
 [fixture: accessibility/block-close-column-zero]
 [fixture: accessibility/block-close-indented]
 [fixture: accessibility/block-comment-close-column-zero]
@@ -822,7 +822,7 @@ global 本文の原文を変えると、後続の flow のメンバーが変わ�
 未閉鎖ブロックの内容と EOF の末尾は原文どおり保ち、括弧や改行を足しません。
 flowchart と異なり、コメントに見える説明行も値であり、
 字下げは同じブロックの文脈の規則に従います。
-文法が割り当てる閉じた空の説明文は別の文で、 Nameとclick内ではIgnoredTextです。
+文法が割り当てる閉じた空の説明文は別の文で、Nameとclick内ではIgnoredTextです。
 空のstyleと後続の空の説明ブロックはKept linesに従って同じ行に保ちます。
 文の先頭にある、消される空の文字列、空のmarkdown文字列、空のcallは文ではなく、
 `tokenless-empty-forms`として拒否します。
@@ -892,8 +892,7 @@ agentflow-beta TB
 
 [複数行の文](./flowchart.ja.md#複数行の文)と、
 [複数行の値](./flowchart.ja.md#複数行の値)を同じ理由で再利用します。
-改行位置は著者が選び、
-[Accessibility](#accessibility) の説明本文の字下げを除き、
+改行位置は著者が選び、[Accessibility](#accessibility) の説明本文の字下げを除き、
 値の後続行の桁位置は文字だからです。
 通常の継続トークンはさらに1段深くします。
 文字列、markdown、分割文字、Name、データ、directive、
@@ -953,7 +952,7 @@ Db要約はstyleの末尾空白を正規化しますが、
 空の説明で分かれた空白だけのstyleを保ちます。
 最初のstyleの追加空白は先頭の値なので保ちます。
 名前の末尾はNames and headingsに従います。
-ラベルコメント脇、文字列、データ、コメント、 directive、
+ラベルコメント脇、文字列、データ、コメント、directive、
 値の後続行の空白も保ちます。
 禁止されるclass/callback/titleの空白は拒否のままで、
 サイズ保護が削除に優先します。 [fixture: trailing-whitespace/trailing-comment]
@@ -995,7 +994,7 @@ BOMとfrontmatterの共通の制限も適用します。
 [フロントマターの YAML](./flowchart.ja.md#フロントマターの-yaml)と
 [フロントマター](./compatibility.ja.md#フロントマター)を同じ理由で再利用します。
 安全なYAMLは通常整形し、危険な文字は読みを保つため残します。
-区切り行とその空白、不正なYAML、字下げされた区切り、 HTMLタグの開始、
+区切り行とその空白、不正なYAML、字下げされた区切り、HTMLタグの開始、
 整形で区切りが現れる場合を保ちます。
 YAMLにはsignificantIndentationWidthの共通の最小幅1を使います。
 tabWidthが0でも同じで、agentflow本文も同じ最小幅を使います。

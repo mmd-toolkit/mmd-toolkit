@@ -7,7 +7,7 @@ mermaid.js の正となるソース：
 - [`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison)
 - [`requirementDb.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/requirement/requirementDb.ts)
 - [`requirement/`](https://github.com/mermaid-js/mermaid/tree/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/requirement)
-  の中のテスト（`*.spec.js`、 `*.spec.ts`）
+  の中のテスト（`*.spec.js`、`*.spec.ts`）
 
 この文書は、図種 `requirement`、要求図を扱います。
 木のノードは [ast/requirement.ja.md](../ast/requirement.ja.md) で定めます。
@@ -37,8 +37,7 @@ requirement/header-upper-case] [fixture: requirement/header-capitalized]
 一方、
 `requirementDiagram element e {`
 のようにヘッダーの行でその後に文を書くと拒否され、テキストのある説明ブロック、
-`accTitle` の行、 `requirementDiagram-x`、
-`requirementDiagram;` も拒否されます。
+`accTitle` の行、`requirementDiagram-x`、`requirementDiagram;` も拒否されます。
 ヘッダーの後の、空白文字かタブで始まる空白は、
 その後の改行を取るので（[単位と文脈](#単位と文脈) を参照）、
 空白文字 2 つかタブと改行が続く `requirementDiagram` は拒否されます。
@@ -114,7 +113,7 @@ requirement/lex-html-attribute-quote-in-acc-descr-block]
 この図の mermaid.js の字句解析器は、
 文字の大文字小文字を区別せずに比べます（[表記](../common.ja.md#表記) を参照）。
 `REQUIREMENT r {`、`ID: 1`、`RISK: HIGH`、`VERIFYMETHOD: INSPECTION`、
-`ELEMENT e {`、`DOCREF: d`、`a - SATISFIES -> b`、`DIRECTION BT`、 `CLASSDEF`、
+`ELEMENT e {`、`DOCREF: d`、`a - SATISFIES -> b`、`DIRECTION BT`、`CLASSDEF`、
 `STYLE`、`CLASS`、`ACCTITLE: T`、`ACCDESCR: D`、`accdescr {` は、
 この文書が書く形の語と同じに読まれます。
 [fixture: requirement/db-keywords-upper-case] [fixture:
@@ -178,7 +177,7 @@ requirement/lex-style-trailing-spaces-at-end]
 それ以外のところでは何も変えません。
 空白文字 2 つと改行が続く `}` や、
 空白文字 2 つと改行が続く `"b"` への関係の後には、いつもどおり次の文が続きます。
-`id`、空白文字 2 つ、改行、`: 1` はフィールド `id: 1` で、 `id`、改行、
+`id`、空白文字 2 つ、改行、`: 1` はフィールド `id: 1` で、`id`、改行、
 `: 1` は拒否されます。
 引用符なしの名前や値は、その行の後ろの空白を読むので（規則 23）、
 空白文字と改行が続く `id: 1` はフィールドです。
@@ -201,23 +200,23 @@ requirement/lex-tab-before-field] [fixture: requirement/lex-blank-lines-in-body]
 
 **名前と値。**
 文の文脈では、ASCII の語の文字 1 つと、それに続く `:`、`,`、改行、`{`、`<`、
-`>`、`-`、 `=` 以外の 0 個以上の文字（できるだけ多く）が、
+`>`、`-`、`=` 以外の 0 個以上の文字（できるだけ多く）が、
 `unquoted-text` の単位です（規則 23）。
 文法がそれを取る位置によって、名前か値です。
 その書かれたテキストは、mermaid.js が取り除くとおり、
 規則が読む後ろの空白を除き、文字の間の空白は U+00A0 と U+2028 を含めて保ちます。
-`requirement  spaced name  {` は要求 `spaced name` で、 `a`、U+00A0、
-`b` は 1 つの名前、 U+00A0 と `{` が続く `a` は名前 `a` です。
+`requirement  spaced name  {` は要求 `spaced name` で、`a`、U+00A0、
+`b` は 1 つの名前、U+00A0 と `{` が続く `a` は名前 `a` です。
 `#`、`%`、`;`、`}`、`.` は、最初の文字の後では単位の文字です。
-`r#1`、`r}`、`r.1`、`r %c`、`1r`、`b # c` は名前で、 `a #b`、`1;`、
+`r#1`、`r}`、`r.1`、`r %c`、`1r`、`b # c` は名前で、`a #b`、`1;`、
 `1 %c` は値です。
-名前や値は ASCII の語の文字で始まり、 `=`、`-`、`:`、`,` で終わります。
-`é`、`-r`、`a=b` は名前として、 `a-b`、`a:b`、`a,b`、`a > b`、
+名前や値は ASCII の語の文字で始まり、`=`、`-`、`:`、`,` で終わります。
+`é`、`-r`、`a=b` は名前として、`a-b`、`a:b`、`a,b`、`a > b`、
 `été` は値として拒否されます。
 文字列はどれも持てます（[要求](#要求) を参照）。
 エンティティのプレースホルダーは ASCII
 の外の文字でできているので（[エンティティ](../common.ja.md#エンティティ)
-を参照）、 `a#amp; b` は 1 つの名前か値 `aﬂ°amp¶ß b` で、
+を参照）、`a#amp; b` は 1 つの名前か値 `aﬂ°amp¶ß b` で、
 名前はエンティティでは始まれません。
 [fixture: requirement/db-requirement-name-spaces] [fixture:
 requirement/lex-whitespace-nbsp-in-name] [fixture:
@@ -241,10 +240,10 @@ requirement/entity-placeholder-in-unquoted-value] [fixture:
 requirement/entity-placeholder-at-name-start]
 
 **文字列。**
-文の文脈と style の文脈では、 `"`、`"` 以外の 0 個以上の文字（改行を含む）、
+文の文脈と style の文脈では、`"`、`"` 以外の 0 個以上の文字（改行を含む）、
 `"` は、引用符の間に文字があれば `string` の単位、
 なければ `empty-string` の単位です。
-`string` のテキストは引用符の間の文字なので、 `#`、`%`、`:`、`,`、`-`、`{`、
+`string` のテキストは引用符の間の文字なので、`#`、`%`、`:`、`,`、`-`、`{`、
 `}` はその文字です。
 その中の HTML タグの属性の引用符は `'` として読まれるので、
 文字列は最後の引用符まで続きます。
@@ -311,7 +310,7 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
 **名前の単位**は、`style`、`classDef`、
 `class` の後の名前かクラスである `style-word` です。
 **テキストの単位**は、`unquoted-text`（名前も値も）、
-スタイルの中の `style-word`、 `title-text`、`description-text`、
+スタイルの中の `style-word`、`title-text`、`description-text`、
 `description-block-text`、`direction-text` です。
 `unquoted-text` が名前のときもテキストの単位なのは、
 ASCII の空白で区切られた複数の語を持て、
@@ -322,7 +321,7 @@ mermaid.js がそれを 1 つの名前として読むからです。
 **文字列の単位**は `string` です。
 
 - `requirement a%%{init: {}}%%b {` は要求 `ab`、
-  `a - satisfies -> b%%{init: {}}%%c` の先は `bc`、 `r:::c%%{init: {}}%%d`、
+  `a - satisfies -> b%%{init: {}}%%c` の先は `bc`、`r:::c%%{init: {}}%%d`、
   `requirement r:::c%%{init: {}}%%d {`、
   `class r`・改行・`c%%{init: {}}%%d` は r にクラス `cd` を与え、
   `text: a%%{init: {}}%%b` と `text: "a%%{init: {}}%%b"` のテキストは `ab`、
@@ -431,7 +430,7 @@ requirement/tokens-unclosed-directive-after-style]
 本体の中、`{` の直後、説明ブロックの中、`accTitle:` とそのテキストの間、
 `direction` とその値の間でも同じで、複数行の文字列の中では、
 文字列のコメント領域です。
-`text: "a`、コメント行、`b"` のテキストは `a`、改行、 `b` です。
+`text: "a`、コメント行、`b"` のテキストは `a`、改行、`b` です。
 [fixture: requirement/tokens-comment-line-in-body] [fixture:
 requirement/tokens-comment-line-after-brace]
 [fixture: requirement/tokens-comment-line-after-acc-title-colon] [fixture:
@@ -447,7 +446,7 @@ requirement/tokens-comment-line-in-acc-block]
 `accDescr: style:#x a;b`、説明ブロックの中の同じテキスト、
 文字列の値 `text: "style:#x a;b"` も同じです。
 `accTitle: style:#x a;b;c;` のタイトルは `style:#x a;b;c` です。
-`;` が 2 つあると最後のものだけが無視され、 `#f00;` はエンティティになります。
+`;` が 2 つあると最後のものだけが無視され、`#f00;` はエンティティになります。
 そのプレースホルダーは style の文脈のどの規則も読まないので、
 `style r fill:#f00;stroke:#0f0;` は拒否されます。
 テキストの単位の中の無視される `;` も、mermaid.js の読みを保ちます。
@@ -474,7 +473,7 @@ mermaid.js は 2 つの部分を 1 つとして読みます。
 
 文の文脈では、字句解析器は次の規則を順に試します。
 
-1. `title`、1 つの空白文字（改行を含む）、 `#`、改行、
+1. `title`、1 つの空白文字（改行を含む）、`#`、改行、
    `;` 以外の 1 つ以上の文字： `title` の単位で、文法のどの規則も取りません。
    [fixture: requirement/lex-title-statement] [fixture:
    requirement/lex-title-line-feed]
@@ -511,10 +510,10 @@ mermaid.js は 2 つの部分を 1 つとして読みます。
 13. `:::`：`:::` の単位。 [fixture: requirement/db-class-colon-form]
 14. `:`：`:` の単位。 [fixture: requirement/db-requirement-all-fields]
 15. キーワード `id`、`text`、`risk`、`verifyMethod`、要求の種類 `requirement`、
-    `functionalRequirement`、 `interfaceRequirement`、`performanceRequirement`、
+    `functionalRequirement`、`interfaceRequirement`、`performanceRequirement`、
     `physicalRequirement`、`designConstraint`、リスク `low`、`medium`、`high`、
-    方法 `analysis`、`demonstration`、`inspection`、`test`、 `element`、
-    関係 `contains`、`copies`、`derives`、`satisfies`、 `verifies`、`refines`、
+    方法 `analysis`、`demonstration`、`inspection`、`test`、`element`、
+    関係 `contains`、`copies`、`derives`、`satisfies`、`verifies`、`refines`、
     `traces`、および `type` と `docref`：キーワードの名前の単位。
     [fixture: requirement/db-requirement-all-fields] [fixture:
     requirement/db-element-fields] [fixture: requirement/db-relationship-arrows]
@@ -549,7 +548,7 @@ requirement/lex-semicolon-line] [fixture: requirement/lex-less-than-alone]
 - キーワードは単位が始まるところではどこでもキーワードで、
   名前や値はキーワードでは始まれません。
   `requirement test req {`、`text: test`、`text: high risk`、
-  `a - satisfies -> element` は拒否され、 `test_x` と `tests` は名前と値です。
+  `a - satisfies -> element` は拒否され、`test_x` と `tests` は名前と値です。
   [fixture: requirement/lex-name-starts-with-keyword] [fixture:
   requirement/lex-value-keyword] [fixture:
   requirement/lex-value-keyword-then-words] [fixture:
@@ -603,7 +602,7 @@ requirement/lex-keyword-then-e-acute]
 `a - satisfies -> direction LR` は方向を決めて関係を持たず、
 `classDef a direction LR` はクラスを定めず、
 `requirement direction LR {` は方向の行で、その後の行の `}` は何も閉じません。
-`accTitle: direction LR` はタイトルで、 3 行の `accDescr {`、`direction LR`、
+`accTitle: direction LR` はタイトルで、3 行の `accDescr {`、`direction LR`、
 `}` のブロックの説明は `direction LR` です。
 本体の中の方向の行は行全体を取ります。
 本体の中の `text: direction TB` と、本体の終わりの `} direction LR` は、
@@ -688,7 +687,7 @@ requirement/lex-style-dash-next-line]
 `style r\tfill:red`、`opacity:0.5`、`fill:é` は拒否され、
 style の文脈には `accDescr {` の規則がないので、
 `style r accDescr {} fill:red` も拒否されます。
-style の文脈を出るのは規則 9 だけで、 class の文を終える文字列の後でも、
+style の文脈を出るのは規則 9 だけで、class の文を終える文字列の後でも、
 `style` や `classDef`
 の文のスタイルの後にあって次の文を始める文字列の後でも同じです。
 そのため `class r "c" accDescr {}`、`style r fill:red "a" accDescr {}`、
@@ -696,7 +695,7 @@ style の文脈を出るのは規則 9 だけで、 class の文を終える文�
 そこでは `accDescr` は `style-word`、
 `#` は class の文が取らない `style-hash` の単位なので、これらは拒否されます。
 文脈を出る改行は単位ではないので、文は次の行に文の文脈で続けられます。
-`class r`、改行、`c` は r にクラス c を与え、 `class r,e`、改行、`c,d` と、
+`class r`、改行、`c` は r にクラス c を与え、`class r,e`、改行、`c,d` と、
 `class`、改行、`"r" "c"` も同じです。
 スタイルやクラスの後の文字列は次の文を始め、次の行がそれを続けられます。
 `style r fill:red "r"`、改行、`:::c` は r にクラス c を与え、
@@ -796,9 +795,9 @@ requirement/lex-hash-comment-after-close-brace]
 requirement/lex-percent-comment-after-verify-method] [fixture:
 requirement/lex-hash-comment-after-string-target] [fixture:
 requirement/lex-percent-comment-after-string-value]
-図のコメントの**印**は、`#` で始まるときは `#`、 `%%` で始まるときは `%%`、
+図のコメントの**印**は、`#` で始まるときは `#`、`%%` で始まるときは `%%`、
 それ以外は `%` で、値は印の後のテキストです。
-`# c` の値は空白文字と `c`、`% c` の値も同じ、 `%%` だけの値は空、
+`# c` の値は空白文字と `c`、`% c` の値も同じ、`%%` だけの値は空、
 `%%{ }%%` の値は `{ }%%` です。
 印は、字句解析器が読むとおり、ディレクティブのないテキストで見つけ、値は、
 コメント行と同じく、ディレクティブを含めた印の後のソースのテキストです。
@@ -807,7 +806,7 @@ requirement/lex-percent-comment-after-string-value]
 style の文脈の `#` は `style-hash` の単位で、スタイルは取り、
 class の文は取らないので、
 `class r c #x` は拒否されます（[style の文脈](#style-の文脈) を参照）。
-一方、文の文脈の `r:::"c"` の後では、 `#x` はコメントです。
+一方、文の文脈の `r:::"c"` の後では、`#x` はコメントです。
 [fixture: requirement/lex-name-percent] [fixture: requirement/lex-value-hash]
 [fixture: requirement/lex-string-hash-percent] [fixture:
 requirement/lex-style-hash-after-style]
@@ -875,7 +874,7 @@ name      = unquoted-text | string
 引用符なしのテキストの後には、
 その行にはテキストを終えるもの以外は続けられません。
 `id: 1 text: t` は値 `1 text` に `:` が続いたもので拒否され、
-`a - satisfies -> b - traces -> c` は、 `-` で始まる文がないので拒否されます。
+`a - satisfies -> b - traces -> c` は、`-` で始まる文がないので拒否されます。
 mermaid.js の文法には `title` の文の規則がなく、
 その字句解析器は `title` とその後のテキストを、
 文法が取らない単位として読みます（[文の文脈](#文の文脈) の規則 1）。
@@ -956,7 +955,7 @@ requirement/spec-requirement-diagram-29c59902]
 - `:::` の後のクラスは、`,` で区切った引用符なしのテキストか文字列です。
   引用符なしのクラスは `{` で終わり、空白文字を持てます。
   `requirement r:::a,b {`、`requirement r ::: c {`、`requirement r:::c{`、
-  `requirement r:::a b {`、 `requirement r:::"a b" {` は受理されます。
+  `requirement r:::a b {`、`requirement r:::"a b" {` は受理されます。
   [fixture: requirement/db-class-in-definition] [fixture:
   requirement/gram-requirement-separator-spaced] [fixture:
   requirement/gram-requirement-separator-glued-brace] [fixture:
@@ -979,7 +978,7 @@ element-field     = ( "type" | "docref" ) ":" field-value
 前の要素の名前を繰り返してもかまいません。
 mermaid.js が要素を Db にどう読むかは、tests パッケージの要約にあります。
 要求と要素は同じ名前を持てます。
-要素の中の `id: 1` は拒否され、 `docref` は中に `:` を持つ文字列にでき、
+要素の中の `id: 1` は拒否され、`docref` は中に `:` を持つ文字列にでき、
 引用符なしの `docref` は `-` で終わります。
 [fixture: requirement/db-element-fields] [fixture:
 requirement/db-element-defaults] [fixture:
@@ -1005,7 +1004,7 @@ relation               = "contains" | "copies" | "derives" | "satisfies"
 名前は要求や要素の名前でなくてもかまわず、同じ関係を 2 回書いてもかまいません。
 単位の間に空白は要りません。
 `a-satisfies->b` と `a<-satisfies-b` は関係です。
-`a - likes -> b`、`a - satisfies - > b`、 `- satisfies -> b` は拒否されます。
+`a - likes -> b`、`a - satisfies - > b`、`- satisfies -> b` は拒否されます。
 [fixture: requirement/db-relationship-arrows] [fixture:
 requirement/db-relationship-undefined-names] [fixture:
 requirement/db-relationships-repeated] [fixture:
@@ -1058,8 +1057,8 @@ accessibility-statement   = "accTitle" ":" title-text
   `style r fill:"red x"` は拒否されます。
   style
   の文脈を出る改行の後ではスタイルの単位を読まず（[style の文脈](#style-の文脈)
-  の規則 9）、 `style` や `classDef` の後の名前は `style-word` か文字列なので、
-  `style r fill:red`・改行・`: x - satisfies -> y`、 `style "r"`・改行・同じ行、
+  の規則 9）、`style` や `classDef` の後の名前は `style-word` か文字列なので、
+  `style r fill:red`・改行・`: x - satisfies -> y`、`style "r"`・改行・同じ行、
   `classDef c fill:red`・改行・`,stroke:blue`、
   `style r`・改行・`,e fill:red` は拒否されます。
   [fixture: requirement/lex-style-colon-next-line] [fixture:
@@ -1086,14 +1085,14 @@ accessibility-statement   = "accTitle" ":" title-text
   tests パッケージの要約にあります。
 - `class` の文は、`,` で区切った名前の 2 つのリストです。
   要求や要素の名前と、クラスです。
-  最初のリストは `,` が前にない最初の名前で終わり、
-  2 つ目は `newline` の単位か、`,` でも名前でもない単位で終わります。
+  最初のリストは `,` が前にない最初の名前で終わり、2 つ目は `newline` の単位か、
+  `,` でも名前でもない単位で終わります。
   `class r,e a,b`、`class r , e c`、`class r "my c"` は受理され、
   `class r` と `class r c d` は拒否されます。
   style の文脈を出る改行は単位ではないので（[style の文脈](#style-の文脈)
   を参照）、その後では文の文脈の名前や `,` がリストを続けます。
   `class r c`・改行・`,d`（`, d` や `,"d"` でも同じ）は r にクラス c と d
-  を与え、 `class r`・改行・`c`・改行・`,d` では、
+  を与え、`class r`・改行・`c`・改行・`,d` では、
   `c` の後の改行が文を終える `newline` の単位なので、入力は拒否されます。
   [fixture: requirement/lex-class-second-list-comma-next-line] [fixture:
   requirement/lex-class-second-list-comma-space-next-line] [fixture:
@@ -1117,7 +1116,7 @@ accessibility-statement   = "accTitle" ":" title-text
   requirement/gram-class-shorthand-spaced]
 - アクセシビリティの文はタイトルか説明を決め、どちらも、行でもブロックでも、
   何度書いてもかまいません。
-  mermaid.js がそれらを Db にどう読むかは、 tests パッケージの要約にあります。
+  mermaid.js がそれらを Db にどう読むかは、tests パッケージの要約にあります。
   [fixture: requirement/db-acc-title-descr] [fixture:
   requirement/db-acc-descr-block] [fixture:
   requirement/db-acc-descr-block-then-line] [fixture:
@@ -1161,7 +1160,7 @@ mermaid.js はそれにトークンを読まず、
 `:::` やクラスの `,` の後、文字列のクラスとその後の `,` や `{` の間、
 フィールドの名前とその `:` の間、`:` と値の間、関係の 2 つの単位の間です。
 そのため、`r:::"a" accDescr {} ,b`、`class r`・改行・`"c" accDescr {} ,d`、
-`class r`・改行・`accDescr {} c` は、 `,b`、`,d`、
+`class r`・改行・`accDescr {} c` は、`,b`、`,d`、
 クラス `c` が文を続けるので拒否されます。
 一方、
 `class r`・改行・`"c" accDescr {}` と `style r fill:red`・改行・`accDescr {}`

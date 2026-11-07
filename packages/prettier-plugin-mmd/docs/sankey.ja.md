@@ -125,8 +125,7 @@ mermaid.js の行の規則は、`style` か `classDef` と、その後ろの `:`
 [fixture: commas/style-line-spaces-between-colon-and-hash-become-one]
 行の最後の `;` を規則が無視しているときは、その `;` を残します。
 落とすと行の最後の `;` が別の `;` になり、
-`style:#x,b;c,1;` の右は `b;c` ですが、
-`style:#x,b;c,1` の右は `bc` だからです。
+`style:#x,b;c,1;` の右は `b;c` ですが、`style:#x,b;c,1` の右は `bc` だからです。
 [fixture: commas/ignored-semicolon-at-the-end-kept]
 `;` を落とすと行の終わりが変わる行は、コンマの周りの空白も含めて、
 書かれたまま印字します。
@@ -478,7 +477,7 @@ mermaid.js が受理するタブ、U+00A0、U+3000、U+2028、U+2029、U+FEFF �
 テキストの末尾にあるものだけです。
 テキストの末尾では、空白は読む前に落とされます。
 出力ではそれらを落とし、テキストは最後の記録の後の改行で終わります。
-例は文字列で書き、`\u00a0` は U+00A0、`\u3000` は U+3000、 `\n` は改行です。
+例は文字列で書き、`\u00a0` は U+00A0、`\u3000` は U+3000、`\n` は改行です。
 [test: U+00A0 at the end of the text]
 [test: U+3000 at the end of the text without a line feed]
 [test: U+2028 at the end of the text without a line feed]

@@ -26,7 +26,7 @@ period と、そのほかのすべての文です。
 timeline の木は平らで、文のまとまりを表す block を持たないので、文の段は、
 ほかの文の中での位置で決まります。
 これは journey と Gantt 図の規則で、section の period は、
-mermaid.js の文書の書き方と同じく、 section の中に置きます。
+mermaid.js の文書の書き方と同じく、section の中に置きます。
 [fixture: indentation/sections-and-periods-nested]
 [fixture: indentation/statements-before-the-first-section]
 [fixture: indentation/every-statement-under-a-section]
@@ -140,7 +140,7 @@ section の名前は、Db で `:` の前の空白を持つので、
 `section T : Google` は section `T ` と event です。
 event を自分の行に移すと、section の行の末尾にその空白が残ってしまいます。
 そのため 2 つは同じ行に残し、間の空白は書かれたままにします。
-`section T: Google` のようにその空白がなければ、 event は自分の行に移します。
+`section T: Google` のようにその空白がなければ、event は自分の行に移します。
 [fixture: statements-one-per-line/section-with-trailing-whitespace-keeps-the-event]
 [fixture: statements-one-per-line/section-with-trailing-whitespace-keeps-the-events]
 [fixture: statements-one-per-line/section-with-trailing-tab-keeps-the-event]
@@ -739,7 +739,7 @@ journey と同じ形です。
 テキストと `:` が後ろの行にあるときは、キーワードの行に寄せます。
 [fixture: accessibility-statements/text-on-next-line-joined]
 [fixture: accessibility-statements/keyword-and-colon-over-lines-joined]
-テキストは `:`、`;`、`#`、`%`、 `%%` を文字として持ちます。
+テキストは `:`、`;`、`#`、`%`、`%%` を文字として持ちます。
 [fixture: accessibility-statements/special-characters-in-text]
 
 テキストのある `accDescr` ブロックは、入力でキーワードに接していても、
@@ -1261,7 +1261,7 @@ U+2028 と U+2029 は、timeline の単位の間では空白で、テキスト�
 文の中の隙間にあるものは書かれたまま印字し、テキストも同じです。
 period、event、title、section の名前、accessibility のテキストは、
 それを残します。
-例は文字列で書き、`\u2028` は U+2028、 `\n` は改行です。
+例は文字列で書き、`\u2028` は U+2028、`\n` は改行です。
 [test: U+2028 between the header and a statement]
 [test: U+2028 between the header and a period]
 [test: U+2028 between a description block and a period]

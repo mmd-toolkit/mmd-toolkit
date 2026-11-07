@@ -185,7 +185,7 @@ mermaid.js の字句解析器は、
 ディレクティブの前に空白があれば、どちらも関係とクラス C を読みます。
 [fixture: class/div-comment-then-directive-line] [fixture:
 class/lex-comment-then-indented-directive-line]
-ただし mermaid.js は、字句解析器がテキストを読む前に、 `%%` の後に文字のある、
+ただし mermaid.js は、字句解析器がテキストを読む前に、`%%` の後に文字のある、
 ディレクティブでないコメント行を、
 すぐ前の空白だけの行と一緒に除きます（mermaid.js の
 [`cleanupComments`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagram-api/comments.ts#L6-L8)）。
@@ -249,7 +249,7 @@ mermaid.js が次の行をつなぐのは、その字句の規則の作りから
   は見出しと呼び出しを別の行に置き、
   行の途中のコメントが後続の改行を取る規則を示していません。
   `mermaid-js/mermaid` の issue と pull request を、
-  2026-10-21 に `C4 comment in:title,body`、 `C4 newline in:title,body`、
+  2026-10-21 に `C4 comment in:title,body`、`C4 newline in:title,body`、
   `C4 "inline comments" in:title,body`、
   `C4 comment "line break" in:title,body` で検索したところ、
   [PR #8504](https://github.com/mermaid-js/mermaid/pull/8504) が見つかりました。

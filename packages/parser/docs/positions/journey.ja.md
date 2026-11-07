@@ -39,8 +39,8 @@
 範囲は、キーワードから、テキストの終わりまでです。
 トークンが保つテキストの終わりの空白も含みます。
 [トークン](../tokens/journey.ja.md#トークン) を参照。
-`title T` と 3 つの空白は 3 つの空白も覆い、 `section` と 2 つの空白は、
-名前が空白 1 つで、 2 つの空白を覆います。
+`title T` と 3 つの空白は 3 つの空白も覆い、`section` と 2 つの空白は、
+名前が空白 1 つで、2 つの空白を覆います。
 [fixture: journey/lex-title-trailing-spaces]
 [fixture: journey/lex-section-whitespace-only]
 
@@ -56,7 +56,7 @@
 それを含みます（[トークン](../tokens/journey.ja.md#トークン) を参照）。
 値はその範囲の書かれたテキストです。
 `Make tea  : 3` の説明は、`Make tea` とコロンの前の 2 つの空白を覆います。
-`title T` と 3 つの空白のタイトルは、 `T` と 3 つの空白を覆います。
+`title T` と 3 つの空白のタイトルは、`T` と 3 つの空白を覆います。
 [fixture: journey/db-task-description-spaces]
 [fixture: journey/lex-title-trailing-spaces]
 

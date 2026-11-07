@@ -579,13 +579,13 @@ for (const input of inputs) {
        図種の id で `grep -l` して探す。
    - jison の図の字句規則（`/^(?:...)/` の形の正規表現）は、
      `grep -o` で抜き出す。
-   - Langium の図にはその規則がない（pie、gitgraph、info、
-     architecture。【実行】）。
+   - Langium の図にはその規則がない（pie、gitgraph、info、architecture。
+     【実行】）。
      Db が変わるかは未確認として扱う。
 5. 例: `%%` だけの行。
    - flowchart-v2 だけが頂点 `%%` を作る【実行】。
    - er と sankey は拒否する【実行】。
-   - sequence、classDiagram、stateDiagram、gantt、journey、timeline、 mindmap、
+   - sequence、classDiagram、stateDiagram、gantt、journey、timeline、mindmap、
      kanban、c4、quadrantChart、xychart には、
      `%%` で始まる行をコメントとして読む字句規則がある。
      grep で抜き出して確かめた【実行】。
@@ -595,9 +595,8 @@ for (const input of inputs) {
 
 決めた規則ごとに、次を示す。
 
-- 規則の名前（`<図種>-<名前>`、
-  共通なら `<名前>`。 id は `@mmd-toolkit/` の後に名前を付けたもの）と、
-  共通か図種か。
+- 規則の名前（`<図種>-<名前>`、共通なら `<名前>`。
+  id は `@mmd-toolkit/` の後に名前を付けたもの）と、共通か図種か。
 - 何を報告するか（1 文）。
 - 理由: mermaid がどう読むか、なぜ普通の書き方で起き、
   書かれたものと違う結果になるか。
@@ -664,8 +663,8 @@ mermaid.js はそのテキストも捨て（基準 1）、
    mermaid.js は書いたとおりに読むが報告する、と文書が書く場合も調べる。
 2. 基準 2: 場合ごとに 2 節の問いで調べる。
    報告が、出力が何を失う、置き換える、効かなくする、加えるかを、
-   書き手のつもりの推定なしに言い、
-   mermaid.js の文書が示す書き方を報告しないか、である。
+   書き手のつもりの推定なしに言い、mermaid.js の文書が示す書き方を報告しないか、
+   である。
    後で埋めるために残した空のブロックのように、
    書き手がその形をわざと書きうるところでは、そこで報告が何を言うかを注に書く。
 3. 基準 3: 規則ごとに mermaid.js の issue と PR を検索し、
@@ -931,7 +930,7 @@ requirement の `<diagram>-no-empty-description-block`:
 requirement の `<diagram>-no-unclosed-description-block`:
 
 1. 形、データブロック、本体、JSON の `}` が閉じるブロックは、
-   そこまでの行を取り、 `}` のないブロック（flowchart、sequence、state）は、
+   そこまでの行を取り、`}` のないブロック（flowchart、sequence、state）は、
    説明を空にする。
    `{` を持ち、後の行の自分の `}` で終わる説明も報告し、
    mermaid.js はそれを書いたとおりに読む。
@@ -954,12 +953,12 @@ state-no-ignored-text、er-no-ignored-text、requirement-no-ignored-text:
    mermaid.js の文書は `:` の後に空白を置いてノートを書き、
    `note left of A : hi` のようにそう書けば、
    何も捨てられない（実行）（「state note colon character」「note first
-   character missing」「state note text」、
-   題名の「note state」。それについてのものはない）。
+   character missing」「state note text」、題名の「note state」。
+   それについてのものはない）。
 2. なし。
    `direction TB // vertical` のように、
    書き手がほかの言語の書き方のコメントのつもりで書いた、方向の後のテキストは、
-   mermaid.js のコメントでなく、捨てられる（実行。 5 つの図種のそれぞれ）。
+   mermaid.js のコメントでなく、捨てられる（実行。5 つの図種のそれぞれ）。
    報告はそれを、書き手のつもりの推定なしに言う。
 3. 「direction subgraph same line」「direction statement ignored」「subgraph
    direction」「classDiagram direction」「stateDiagram direction」「erDiagram
@@ -1049,8 +1048,8 @@ subgraph は、先に終わった subgraph が持つメンバーを除く。
 そのため、後の subgraph の文で、リンク、クラス、データブロックがなく、
 前に書いた頂点について新しいことを言わないもの、つまり id だけか、名前、
 プロパティ、ラベル、ラベルの種類が同じ形だけのものは報告する。
-後の subgraph は頂点を持たない（実行。`subgraph a` の中の `A` の後の
-`subgraph b` の中の `A` は、`A` を a に残す）。
+後の subgraph は頂点を持たない（実行。
+`subgraph a` の中の `A` の後の `subgraph b` の中の `A` は、`A` を a に残す）。
 ただし、前の subgraph が後の subgraph の中に入れ子であるときと、
 同じ id であるときは、何も失われないので報告しない。
 そうした文の頂点は、1 つずつ数える。
@@ -1106,14 +1105,14 @@ flowchart-no-redefined-subgraph: (1) 同じ subgraph の id の宣言は、
 何も失わない。
 subgraph が持つ題は、最初の宣言に書いた題、その宣言が題を書かないときは、
 それが書く名前である。
-mermaid.js はその名前を題として示し、
-mermaid.js が生成する id ではない（実行。`subgraph S` は題 `S` を持ち、
+mermaid.js はその名前を題として示し、mermaid.js が生成する id ではない（実行。
+`subgraph S` は題 `S` を持ち、
 id が `subGraph0` になる `subgraph a b` は題 `a b` を持つ）。
 題は、flowchart-no-redefined-vertex のラベルと同じく、書いたとおりに比べる。
-fixture: `subgraph a b` の後の `subgraph subGraph0 [a b]`（報告しない。題は
-`a b` のまま）と、
-`subgraph a b` の後の `subgraph subGraph0 [subGraph0]`（報告する。`subGraph0`
-が失われる。実行）。
+fixture: `subgraph a b` の後の `subgraph subGraph0 [a b]`（報告しない。
+題は `a b` のまま）と、
+`subgraph a b` の後の `subgraph subGraph0 [subGraph0]`（報告する。
+`subGraph0` が失われる。実行）。
 (3) 「duplicate subgraph」「subgraph same id」「subgraph redeclare」「subgraph
 title overwritten」。
 [#8326](https://github.com/mermaid-js/mermaid/issues/8326)（closed）と
@@ -1168,7 +1167,7 @@ mermaid.js は、JSON を読む前に、すべての `'` を `"` に変える（
 修正なしで報告する。
 (2) なし。
 `{'theme': 'dark'}` や `{"fontFamily": "Arial'}` のように変えた後の JSON
-として正しいものと、 `\u0027` は報告しない。
+として正しいものと、`\u0027` は報告しない。
 [#3640](https://github.com/mermaid-js/mermaid/issues/3640)（open）は、
 引用符に関するものである。
 語の引数やなしは構文を知らないことによる。
@@ -1211,7 +1210,7 @@ mermaid.js は正しい JSON のオブジェクトを `#` で切るからであ�
 (3) 「links json」「properties sequence json」「links」「links hash」「links
 fragment」、題名の「hash sequence」。
 [#5419](https://github.com/mermaid-js/mermaid/issues/5419) （open、
-Type: Bug / Error）は、 `#` が sequence 図のテキストを空にすると報告している。
+Type: Bug / Error）は、`#` が sequence 図のテキストを空にすると報告している。
 (4) JSON のオブジェクトを書く。
 
 sequence-no-link-without-separator: (1) ラベルは最後の 2 文字を失い、
@@ -1305,8 +1304,8 @@ mermaid.js が持つとおりに比べて同じ値の後のフィールドは報
 
 requirement-no-duplicate-name: (1) 同じ種類の後の文は、種類や、
 残る文が持たない値の欄を失う。
-違う種類の文はその名前の 2 つ目の箱を作り、両方が残るので、
-報告しない（実行。 2 つのノード `x`）。
+違う種類の文はその名前の 2 つ目の箱を作り、両方が残るので、報告しない（実行。
+2 つのノード `x`）。
 (2) なし。
 (3) 「requirement duplicate」「requirement」。
 (4) どちらかに別の名前を与える。
@@ -1351,7 +1350,7 @@ parseFloat」、題名の「sankey」。
 sankey-no-empty-node: (1) 引用符の中も含め、空白だけの source や target は、
 名前のないノードを、そこへのリンクとともに加える（実行）。
 (2) なし。
-空白を残して名前を消したものは、 journey-no-empty-person と同じく、
+空白を残して名前を消したものは、journey-no-empty-person と同じく、
 報告する誤りである。
 (3) 題名の「sankey」。
 (4) 名前を書くか、レコードを除く。
@@ -1389,7 +1388,7 @@ XY チャートの規則。
   (4) カテゴリーと同じ数の値を書く。
 
 四象限チャートの規則。
-検索は題名と本文の「quadrant」と「quadrantChart」で、 point、classDef、
+検索は題名と本文の「quadrant」と「quadrantChart」で、point、classDef、
 coordinates、x-axis、range、lexer、comma、number、NaN、hex、
 radius の語も添えた。
 open の [#8084](https://github.com/mermaid-js/mermaid/pull/8084) は、
@@ -1436,9 +1435,9 @@ open の [#8084](https://github.com/mermaid-js/mermaid/pull/8084) は、
   (4) 小数点を書く。
 
 ブロック図の規則。
-検索は題名と本文の「block」で、 chain、composite、class、styles、columns、
-shape、arrow、redefined、whitespace、 duplicate、comma、width、edge、before、
-direction、label、link の語も添えた。
+検索は題名と本文の「block」で、chain、composite、class、styles、columns、shape、
+arrow、redefined、whitespace、duplicate、comma、width、edge、before、direction、
+label、link の語も添えた。
 open の [#8279](https://github.com/mermaid-js/mermaid/pull/8279) は、
 どのブロックも持たない id への `style`（いまは拒否される）を変え、
 [#8310](https://github.com/mermaid-js/mermaid/pull/8310)（open）は、
@@ -1501,13 +1500,13 @@ mermaid.js はそれを 1 度描く。
   辺の動作（`nodeStatement link node`）がブロックに入れない。
 
 カンバン図の規則。
-検索は題名と本文の「kanban」で、 metadata、priority、duplicate、
+検索は題名と本文の「kanban」で、metadata、priority、duplicate、
 icon の語も添えた。
 [#8117](https://github.com/mermaid-js/mermaid/issues/8117)（open）はキー
-`status` を提案しているが、 mermaid.js はいまそれを読まない。
+`status` を提案しているが、mermaid.js はいまそれを読まない。
 
 - kanban-no-invalid-metadata-key、kanban-no-invalid-priority: (1) `assigned`、
-  `ticket`、`priority`、`icon`、`label`、 `shape` 以外のキーは何も設定しない。
+  `ticket`、`priority`、`icon`、`label`、`shape` 以外のキーは何も設定しない。
   別の大文字小文字のキーと、
   YAML が 1 つのキーと読む空白のない `ticket:DOC-1` も同じである。
   `Very High`、`High`、`Medium`、`Low`、`Very Low` 以外の priority は、
@@ -1525,7 +1524,7 @@ icon の語も添えた。
   1 つのノードのブロックは、mermaid.js がつなぐとおりに 1 つとして読む。
   priority の規則は、項目の priority のうち 5 つのどれでもないもの（`high`、
   `" High "`、`Urgent`、`0`、ほかの数、リスト）を報告し、ないもの、`null`、
-  `false`、空のもの、 mermaid.js が持たない列の priority は報告しない。
+  `false`、空のもの、mermaid.js が持たない列の priority は報告しない。
   どちらもリリースの後まで保留する。
   採らないのではない。
   文書と fixture はリポジトリになく、この注と mermaid.js の実行から書く。
@@ -1574,7 +1573,7 @@ UpdateElementStyle before、attribute case、accTitle、sprite、offset の語�
   欄をもう一度与える後のスタイル更新や同じ更新の後の引数は、
   空の引数の空の値でも、前の値を置き換える（実行）。
   (2) なし。
-  欄が持つ値を与えるもの、対象がまだ持たない欄、 `$alias`、`$from`、`$to`、
+  欄が持つ値を与えるもの、対象がまだ持たない欄、`$alias`、`$from`、`$to`、
   宣言の値は報告しない。
   (3) 「UpdateElementStyle」「UpdateRelStyle」:
   [#8087](https://github.com/mermaid-js/mermaid/pull/8087)（open）は、
@@ -1603,8 +1602,8 @@ open の [#8471](https://github.com/mermaid-js/mermaid/pull/8471) は、
   和の 2 つの大きさはその間の重なりを与える（大きさは実行、
   円とラベルは読んだ）。
   (2) なし。
-  字下げした `text` を続けるためにもう一度書いた集合は、
-  2 度描かれるので報告し、文書はそのために行の初めの `text A A3` を示す。
+  字下げした `text` を続けるためにもう一度書いた集合は、2 度描かれるので報告し、
+  文書はそのために行の初めの `text A A3` を示す。
   (4) 領域はそれぞれ 1 度宣言する。
   subset は、
   木（VennSubsetStatement）と mermaid.js の Db（`getSubsetData`）と同じく、
@@ -1616,7 +1615,7 @@ open の [#8471](https://github.com/mermaid-js/mermaid/pull/8471) は、
   描画は文書が挙げる 5 つのプロパティだけを読み、
   mermaid.js はほかのものを書いたとおりの名前で持つ（Db は実行、描画は読んだ）。
   (2) なし。
-  対象がすでに持つ値、まだ持たないプロパティ、 5 つのプロパティは報告しない。
+  対象がすでに持つ値、まだ持たないプロパティ、5 つのプロパティは報告しない。
   (4) プロパティはそれぞれ 1 度与え、5 つのどれかを書く。
   venn-no-invalid-style-key の名前は、上の名前と同じく invalid を使う。
 - venn-no-undef: (1) どの文も宣言しない領域の文字のノードは置かれず、
@@ -1665,7 +1664,7 @@ flow title、direction、accDescr、duplicate、shape の語を加えたもの�
   描かれる形、種類は報告しない。
   (4) 要素ごとに自分の id を与える。
   2 つの規則は id ごとの 1 つの記録を共有し、報告する文で分かれる。
-  agentflow-no-redefined-vertex は、 flowchart-no-redefined-vertex の条件で、
+  agentflow-no-redefined-vertex は、flowchart-no-redefined-vertex の条件で、
   後の flow にもう一度書いた頂点も報告する（実行）。
   ただし、`global` のブロックの頂点は最上位に残るので報告しない。
   文書は、flow の間で共有するノードにそのブロックを示す。
@@ -1678,7 +1677,7 @@ flow title、direction、accDescr、duplicate、shape の語を加えたもの�
   前の flow の素の `C` の後の宣言は、`C` が connector になるので効く。
   前のどの flow も持たないときの b の中の `connector C` は b に入る（実行）。
 - agentflow-no-redefined-flow: (1) 同じ id の flow は合わされ、
-  空でない後のタイトルが前のものを、 flow が終わる順に置き換える（実行）。
+  空でない後のタイトルが前のものを、flow が終わる順に置き換える（実行）。
   (2) なし。
   メンバーを足すためにタイトルなしでもう一度書いた flow は報告しない。
   (4) id ごとにタイトルを 1 つ書く。
@@ -1737,8 +1736,8 @@ metadata、direction、accDescr、animate、animation の語を加えたもの�
   (4) 要素のキーごとに値を 1 つ与える。
 - usecase-no-redefined-class: (1) 後の `classDef`
   はクラスの定義全体を置き換え（`applyClassDefinitions` を読んだ）、
-  描画はその中の各プロパティの最後の値を取る（`getCompiledStyles`
-  を読んだ。実行）。
+  描画はその中の各プロパティの最後の値を取る（`getCompiledStyles` を読んだ。
+  実行）。
   そのため、後の定義が落とすか変えるスタイルは失われ、
   足すスタイルは何も失わない。
   flowchart、ブロック図、agentflow では、代わりに CSS が決める（2 節を見る）。
@@ -1767,7 +1766,7 @@ pie のパーサーを、今のパーサーとバイト単位で同じ値を与�
   (4) ラベルごとに区分を 1 つ書く。
 - pie-no-duplicate-title、pie-no-duplicate-description、
   pie-no-empty-description-block: 上のタイトル、説明、
-  空のブロックの規則の注を持ち、 pie の読みの違いは次のとおりである。
+  空のブロックの規則の注を持ち、pie の読みの違いは次のとおりである。
   パーサーは最後の `title`、`accTitle`、`accDescr` を保ち、
   `populateCommonDb` は空でないときだけそれを設定するので、
   最後に書いた空のものは値を空にするか、
@@ -1789,8 +1788,8 @@ parent」「gitGraph message」「gitGraph tag」「gitGraph title」。
 - gitgraph-no-duplicate-option: (1) 文法は `id`、`type`、
   `parent` にそれぞれ 1 つの値を当てるので、最後に書いたものが保たれ、
   前のものは、
-  mermaid.js が受理しなかったはずの値でも失われる（`gitGraph.langium`
-  を読んだ。実行）。
+  mermaid.js が受理しなかったはずの値でも失われる（`gitGraph.langium` を読んだ。
+  実行）。
   (2) なし。
   もう一度与えた同じ値、足されるタグ、描画が示さないメッセージは報告しない。
   (4) オプションごとに値を 1 つ与える。
@@ -1810,10 +1809,10 @@ parent」「gitGraph message」「gitGraph tag」「gitGraph title」。
   [#7441](https://github.com/mermaid-js/mermaid/pull/7441) が警告を足した
   flowchart-no-undef と同じである。
   [文書](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/gitgraph.md#L485-L504)
-  の鉄道の例は `commit id:"Boston"` を 2 度書き、 2 つ目が 1 つ目を置き換える。
+  の鉄道の例は `commit id:"Boston"` を 2 度書き、2 つ目が 1 つ目を置き換える。
   これは #4838 が報告した振る舞いであり、文書が意図して示す書き方ではない。
   (2) なし。
-  文の最後の `id:` がその id であり、 mermaid.js が作る id は比べない。
+  文の最後の `id:` がその id であり、mermaid.js が作る id は比べない。
   (4) コミットごとに自分の id を与える。
 - gitgraph-no-duplicate-title、gitgraph-no-duplicate-description、
   gitgraph-no-empty-description-block: gitgraph
@@ -1843,15 +1842,15 @@ title」「architecture accTitle」「architecture accDescr」。
   `accTitle` だけを比べる。
 - architecture-no-reversed-marker: (1) 文法は `<` と `>` を、
   どちらもそれが立つ端の矢じりとして読む（`architecture.langium`
-  を読んだ）ので、 `>--<` は `<-->` として描かれ、
+  を読んだ）ので、`>--<` は `<-->` として描かれ、
   矢じりは書いたのと逆を向く（実行）。
   (2) なし。
   文書は左に `<`、右に `>` を書き、ラベルの中の `<` や `>` は文字である。
   (4) 左に `<`、右に `>` を書く。
 - architecture-no-ungrouped-modifier: (1) group に属さない端では、
   `{group}` は辺の端を group の余白と 4 だけ動かすので、
-  辺は service に届かずに止まり、
-  group は描かれない（`svgDraw.ts` を読んだ。実行）。
+  辺は service に届かずに止まり、group は描かれない（`svgDraw.ts` を読んだ。
+  実行）。
   Db は 1 つの group の 2 つの service の間の `{group}` を受理しないが、
   group に属さない端のものは受理する（`architectureDb.ts` を読んだ）。
   (2) なし。
@@ -1890,7 +1889,7 @@ min max」「radar title」「radar accDescr」「radar axis」。
   [`setOptions`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/radar/db.ts#L93-L117)
   で、実行して確かめた）。
   (2) なし。
-  もう一度与えた同じ値は報告せず、 mermaid.js は輪を 32 までしか描かないので、
+  もう一度与えた同じ値は報告せず、mermaid.js は輪を 32 までしか描かないので、
   32 を越える `ticks` は 32 として比べる。
   (4) オプションごとに値を 1 つ与える。
 - radar-no-reversed-range: (1) 最小値が最大値より大きいと、
@@ -1900,13 +1899,13 @@ min max」「radar title」「radar accDescr」「radar axis」。
   `max` がないとき、mermaid.js が値から取る最大値を規則は計算せず、
   文書がそれを述べる。
   (4) `max` より小さい `min` を書く。
-  名前は、逆に書いた値についての、 architecture-no-reversed-marker にならう。
+  名前は、逆に書いた値についての、architecture-no-reversed-marker にならう。
 - radar-no-duplicate-title、radar-no-duplicate-description、
   radar-no-empty-description-block、
   radar-no-unclosed-description-block: radar はタイトルと説明を同じに読み、
   タイトルを描くので、
-  上の pie の規則の注を持つ（radar の `parser.ts` と `renderer.ts`
-  を読んだ。実行）。
+  上の pie の規則の注を持つ（radar の `parser.ts` と `renderer.ts` を読んだ。
+  実行）。
   どの曲線も `}` を持つので、閉じていないブロックは次の曲線で閉じ、
   そこまでの軸と曲線を取る（実行）。
   閉じないブロックの規則はそれを usecase の規則の条件で報告し、
@@ -1917,12 +1916,12 @@ treemap の規則。
 accDescr」「treemap classDef」「treemap whitespace」。
 
 - treemap-no-invalid-value: (1) 値の変換はカンマを除き、
-  残りを `parseFloat` で読むので、 `1_000` は 1、 `1.2.3` は 1.2、
+  残りを `parseFloat` で読むので、`1_000` は 1、`1.2.3` は 1.2、
   `.` は数でない（treemap の `valueConverter.ts` を読んだ。実行）。
   値は数字、`_`、`.`、`,` だけを持つので、条件の `_`、2 つ以上の `.`、
   数字がないことは、全体を読まれない値とちょうど一致する。
-  小数点のつもりのカンマも除かれる（`0,5` は 5、
-  `1.234,5` は 1.2345。実行）ので、後に数字の続く `.` の後のカンマと、
+  小数点のつもりのカンマも除かれる（`0,5` は 5、`1.234,5` は 1.2345。
+  実行）ので、後に数字の続く `.` の後のカンマと、
   数字が続く最後のカンマの後が 3 桁でないカンマも報告する。
   西洋式でもインド式（`1,00,000`）でも、
   桁区切りはそこにカンマを置かないからである。
@@ -1958,8 +1957,8 @@ cynefin の規則。
 
 - cynefin-no-redefined-domain: (1) Db は領域の項目をその名前の下に、
   前に保った項目の上から保つので、
-  後の文が繰り返さない項目は Db と描画から失われる（`cynefinDb.ts`
-  を読んだ。実行）。
+  後の文が繰り返さない項目は Db と描画から失われる（`cynefinDb.ts` を読んだ。
+  実行）。
   (2) なし。
   項目を足したり並べ替えたりしても、すべての項目を保つ文は報告せず、
   2 度書いた項目は 2 つと数える。
@@ -2056,8 +2055,8 @@ frame」「eventmodeling duplicate」。
   (4) 名前を直す。
 - eventmodeling-no-redefined-data: (1)
   フレームはその名前の最初のデータブロックを示し、
-  その名前の後のブロックは決して示されない（`calculateTextProps`
-  を読んだ。実行）。
+  その名前の後のブロックは決して示されない（`calculateTextProps` を読んだ。
+  実行）。
   (2) なし。
   どのフレームも参照しない名前と同じ中身は報告せず、データの型は比べない。
   mermaid.js は空白と行を書いたとおりに示すので、
@@ -2069,8 +2068,8 @@ frame」「eventmodeling duplicate」。
   eventmodeling-no-duplicate-description: (1) パーサーは最後の `accTitle`
   と最後の `accDescr` を保ち、
   mermaid.js はキーワードを含めた文全体を保ってそれが空にならないので、
-  `populateCommonDb` はそれを設定する（終端記号と `populateCommonDb`
-  を読んだ。実行）。
+  `populateCommonDb` はそれを設定する（終端記号と `populateCommonDb` を読んだ。
+  実行）。
   (2) なし。
   前の文字が空なら何も失われない。
   文字は共通の helper で語として比べるので、
@@ -2132,8 +2131,7 @@ iconify と `defaultIconPack` でアイコンを解決し、
   アイコンは `getNodeIcon` が設定なしに解決するとおりに比べるので、
   `icon()` と `icon(none)` は 1 つで、`file` は `mermaid-treeview:file` である。
   アイコンを隠すことも値なので、`icon()` の後のアイコンは報告する。
-  規則は設定を読まず、
-  `defaultIconPack` が解決する名前は文書が述べる限界である。
+  規則は設定を読まず、`defaultIconPack` が解決する名前は文書が述べる限界である。
   (4) 注釈は種類ごとに 1 つにする。
   名前は、それを注釈と呼ぶ文書に従う。
 - treeview-no-duplicate-title、treeview-no-duplicate-description、
@@ -2218,8 +2216,8 @@ mermaid.js が変わるかは定まっていない。
    の後に空白を足す）は候補にしない。
    エディタが保存のときに行末の空白を消すと元に戻るからである。
 
-書き換えを提案でなく自動修正（`meta.fixable`。`eslint --fix`
-とエディタが保存のときに当てる）にするのは、
+書き換えを提案でなく自動修正（`meta.fixable`。
+`eslint --fix` とエディタが保存のときに当てる）にするのは、
 次の 2 つがともに成り立つときだけである。
 1 つ目に、結果が書き手のつもりだと疑いなく言え、
 mermaid.js がそれをつもりどおりに読む。
@@ -2331,9 +2329,8 @@ fixture: 上の sankey の値（出さない）と、
   `A<["x"]>(right ,`、空の行、` down)`（出す）。
 - 空のブロックを消す: 文の条件で消す。
   flowchart では、空のブロックを消しても Db は変わらない（実行）。
-  ディレクティブを持つブロックは、
-  上のディレクティブの規則により消さない（実行。消すと、
-  subgraph が `inheritDir` で得た方向を失う）。
+  ディレクティブを持つブロックは、上のディレクティブの規則により消さない（実行。
+  消すと、subgraph が `inheritDir` で得た方向を失う）。
   ブロックが説明を空にする図種（architecture、cynefin、gitgraph、packet、pie、
   radar、railroad、treemap、treeview、usecase、wardley）と、
   自分の文字を説明にする図種（eventmodeling）では、
@@ -2373,8 +2370,8 @@ fixture: 上の sankey の値（出さない）と、
   `A{y}` の `}` がブロックを閉じるからである（実行）。
   条件は、ブロックのテキストが、ブロックの `{` より後の行に `{` を持ち、
   閉じる `}` がその行に単独でないことで、ブロックを閉じる `}` は、
-  その行の形かデータブロックのもの（行をまたぐものも含む。`B{` の後の
-  `y}`。実行）である。
+  その行の形かデータブロックのもの（行をまたぐものも含む。`B{` の後の `y}`。
+  実行）である。
   `}` の前にその行で空白とディレクティブしかないとき、後に何があっても、
   `}` はその行に単独である（`};`、`} C`。実行）。
   `accDescr {`、`uses { here`、`}` は書き手の `}` で閉じる。
@@ -2403,9 +2400,8 @@ fixture: 上の sankey の値（出さない）と、
   xychart の `<diagram>-no-unclosed-description-block`:
   テキストの終わりで閉じる。
   er、eventmodeling、radar、requirement、treeview、
-  usecase のものは提案を付けない（基準
-  3。ありうる閉じ方は行を戻す。ブロックがノードになる treeview では、
-  名前を閉じることも行を戻す）。
+  usecase のものは提案を付けない（基準 3。ありうる閉じ方は行を戻す。
+  ブロックがノードになる treeview では、名前を閉じることも行を戻す）。
 - class: class-no-duplicate-description、class-no-duplicate-title、
   class-no-bare-class-name、class-no-ignored-text、
   class-no-unclosed-backquote は提案を付けない。
@@ -2423,8 +2419,8 @@ fixture: 上の sankey の値（出さない）と、
   前の行のほかの文字の後のコメントも、同じ規則が報告し、
   同じ通しで移すからである。
   class-no-redefined-class は提案を付けない。
-  ありうる直しは 2 つのクラスの一方の新しい id だからである（基準
-  1。flowchart-no-redefined-vertex と同じ）。
+  ありうる直しは 2 つのクラスの一方の新しい id だからである（基準 1。
+  flowchart-no-redefined-vertex と同じ）。
   class-no-undef は提案を付けない。
   どのクラスのつもりかをテキストは示さないからである。
 - c4: c4-no-duplicate-description、c4-no-duplicate-title、
@@ -2444,8 +2440,8 @@ fixture: 上の sankey の値（出さない）と、
   `title-digit-after-axis-statement`。`x-axis A; line [1]`、`title B`、
   `title Q1` で `title B` を消すと拒まれ、`x-axis A; line [1]; line [2]`、
   `accDescr: a`、`accDescr: b`、
-  `title Q1` で `accDescr: a` か `accDescr: b` の行を消すと拒まれる。`bar [2]`
-  でも同じ。実行）。
+  `title Q1` で `accDescr: a` か `accDescr: b` の行を消すと拒まれる。
+  `bar [2]` でも同じ。実行）。
   どの結果が拒まれるかは、仕様が述べないその字句解析の手順で決まるからである。
   xychart-no-invalid-orientation は、向きを小文字で書く（実行）。
   xychart-no-extra-value は提案を付けない。
@@ -2453,8 +2449,8 @@ fixture: 上の sankey の値（出さない）と、
   xychart-no-redefined-axis は提案を付けない。
   文が軸の一部だけを設定することがあり、どちらかを消すと、
   他方が設定しない部分が変わるからである。
-- flowchart: flowchart-no-ignored-text は提案を付けない（基準
-  3。分けると行を戻す）。
+- flowchart: flowchart-no-ignored-text は提案を付けない（基準 3。
+  分けると行を戻す）。
   flowchart-no-redefined-vertex は提案を付けない。
   ありうる直しは新しい id である（基準 1）。
   flowchart-no-undef は提案を付けない。
@@ -2477,10 +2473,9 @@ fixture: 上の sankey の値（出さない）と、
   usecase-no-duplicate-metadata は、venn-no-duplicate-style と同じく、
   このプロパティか前のプロパティを消す（実行）。
   fixture: `actor A` の後の `A@{ type: hollow }`、`A@{ type: hollow }`、
-  `A@{ type: awesome }`（3 つ目を消すものは出し、
-  2 つ目を消すものは出さない。最初の `hollow`
-  がなお置き換えられるからである。パーサーも mermaid.js
-  も受理する。実行。アクターは `normal`、`hollow`、
+  `A@{ type: awesome }`（3 つ目を消すものは出し、2 つ目を消すものは出さない。
+  最初の `hollow` がなお置き換えられるからである。
+  パーサーも mermaid.js も受理する。実行。アクターは `normal`、`hollow`、
   `awesome` を取る。`packages/spec/docs/diagrams/usecase.ja.md`）。
   usecase-no-redefined-class は、この `classDef` か前のものを消す。
   ほかのクラスも定義する文は消さない（実行）。
@@ -2565,8 +2560,8 @@ fixture: 上の sankey の値（出さない）と、
   この文か前の文を消す（実行）。
   quadrant-no-invalid-coordinate は、小数の `,` の代わりに `.` を書く（実行）。
   `,` を持つ座標はいつも `0`、`,`、
-  数字である（`packages/spec/docs/diagrams/quadrant.ja.md` の座標。`1,5`
-  は拒まれる）。
+  数字である（`packages/spec/docs/diagrams/quadrant.ja.md` の座標。
+  `1,5` は拒まれる）。
   そのため結果はいつも 0 から 1 の数で、この書き換えに条件は要らない。
   fixture: `A: [0,3, 0,6]`（両方の座標に出す）。
   quadrant-no-redefined-axis は、
@@ -2633,8 +2628,8 @@ fixture: 上の sankey の値（出さない）と、
   仕様は拒まれる結果を挙げており、それらの書き換えは出さない。
   gitgraph では、
   `merge` と `cherry-pick` の実際の `id:` と `parent:`
-  が拒否を決める（`packages/spec/docs/diagrams/gitgraph.ja.md`
-  の拒否の表。コミットを名指す merge の id、知らない cherry-pick の元、
+  が拒否を決める（`packages/spec/docs/diagrams/gitgraph.ja.md` の拒否の表。
+  コミットを名指す merge の id、知らない cherry-pick の元、
   直接の親でない parent）。
   そのため、この 2 つの文の `id:` と `parent:` のオプションを消すものは出さず、
   `type:` のオプションと `commit`
@@ -2642,8 +2637,8 @@ fixture: 上の sankey の値（出さない）と、
   `cherry-pick id: "missing" id: "B"` は拒まれる。実行）。
   wardley では、
   最初の `annotations`
-  の座標だけを調べる（`packages/spec/docs/diagrams/wardley.ja.md`。1 以下の値は
-  100 倍し、0 未満か 100 を超える結果は拒まれる）。
+  の座標だけを調べる（`packages/spec/docs/diagrams/wardley.ja.md`。
+  1 以下の値は 100 倍し、0 未満か 100 を超える結果は拒まれる）。
   そのため、最初の `annotations` を消すものは、
   次のものの座標がその検査を通るときだけ出す。
   地図の外の注釈の位置が最初に残ると拒まれるからである（実行）。
@@ -2666,12 +2661,12 @@ fixture: 上の sankey の値（出さない）と、
   ありうる直しは、新しいラベル、ほかの軸の名前、
   新しい名前だからである（基準 1）。
   eventmodeling-no-undef は提案を付けない。
-- 共通の規則: no-unclosed-directive は提案を付けない（基準
-  3。ディレクティブを閉じると、それが取っていた行が戻る）。
+- 共通の規則: no-unclosed-directive は提案を付けない（基準 3。
+  ディレクティブを閉じると、それが取っていた行が戻る）。
   no-invalid-init-directive は、報告した `'` と `\'` のそれぞれに `\u0027` を、
   報告した `"` のそれぞれに `\"` を書き、
-  報告した末尾の `,` を 1 つずつ消す（報告は 7 節のその注のとおり。その手順を
-  Node で実行）。
+  報告した末尾の `,` を 1 つずつ消す（報告は 7 節のその注のとおり。
+  その手順を Node で実行）。
   さらに、別の大文字小文字でだけ `init` か `initialize` で終わる名前を、
   引数がないか、語か、mermaid.js が読める JSON（構造の誤りも、末尾の `,` も、
   壊す引用符もないもの）のとき、小文字で書く。
@@ -2703,7 +2698,7 @@ fixture: 上の sankey の値（出さない）と、
     gantt-no-unknown-exclude（項目で始まる `excludes` の語は 1 つだけである）、
     quadrant-no-invalid-coordinate、xychart-no-invalid-orientation。
   - no-invalid-init-directive（3 つの書き換えすべて）、
-    sequence-no-invalid-json、 sequence-no-ignored-text、
+    sequence-no-invalid-json、sequence-no-ignored-text、
     sequence-no-link-without-separator、
     state-no-ignored-text（ノートの `:` の後の空白）。
   - sankey-no-invalid-value と treemap-no-invalid-value の、

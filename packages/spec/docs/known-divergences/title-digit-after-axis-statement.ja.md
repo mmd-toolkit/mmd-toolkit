@@ -167,8 +167,8 @@ CRLF と単独の CR は 1 つの改行文字として、空行の改行文字�
   行の終わりの空白文字の後のコメント、字下げしたタイトル。
   3 つの段では、タイトルの行や空行は 1 つの段しか降ろしません。
   一方、その行で軸の文の前にあるプロットの文、最後のプロットの文の後の軸の文、
-  その後のアクセシビリティのタイトル、 1 つの段での単独の CR、
-  字下げしたタイトル、フロントマター、 2 つの段でのタイトルの前の空行、
+  その後のアクセシビリティのタイトル、1 つの段での単独の CR、
+  字下げしたタイトル、フロントマター、2 つの段でのタイトルの前の空行、
   3 つの段での 2 つの空行は、両方が同じに読みます。
   [fixture: xychart/div-title-digit-next-line-after-axis-and-plot]
   [fixture: xychart/div-title-digit-next-line-after-two-axes]
@@ -194,7 +194,7 @@ CRLF と単独の CR は 1 つの改行文字として、空行の改行文字�
   [fixture: xychart/db-title-quoted-digit-next-line-after-axis-and-plot]
   [fixture: xychart/db-title-digit-after-axis-plot-lines]
 - 何も降ろさない改行文字を越えて: コメント行（その前に空行があるときも）、
-  2 つの段を持つ行の後の `%%` だけの行、 `accTitle:` や `accDescr:` の後や、
+  2 つの段を持つ行の後の `%%` だけの行、`accTitle:` や `accDescr:` の後や、
   その `:` や `{` の周りの改行文字、文字列の中の改行文字、
   ディレクティブの中の改行文字。
   一方、`%%` だけの行とその後の空行と、
@@ -239,7 +239,7 @@ CRLF と単独の CR は 1 つの改行文字として、空行の改行文字�
 ## mermaid.js がそう読む理由
 
 [`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L17-L73)
-の字句解析器は、 `x-axis` と `y-axis` で状態 `axis_data` に、
+の字句解析器は、`x-axis` と `y-axis` で状態 `axis_data` に、
 `line` と `bar` で状態 `data` に入り、どちらも今の状態の上に積みます。
 一番上の状態を出るのは、
 その状態の規則 `(\r?\n)` が読む改行文字のところだけです。
@@ -275,9 +275,9 @@ mermaid.js はそれを受理します。
 ## mermaid.js の文書と issue
 
 - [XY chart の構文](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/xyChart.md)
-  は各文をそれだけの行に書き、 `;` についても、
+  は各文をそれだけの行に書き、`;` についても、
   図のタイトルの数字についても何も述べていません。
 - これについての issue と pull request は見つかりませんでした（2026-10-15 に
-  `xychart semicolon`、 `xychart title digits`、 `xychart axis numbers`、
-  `xychart parse error`、 `xychart lexical`、 `XY chart parse error`、
+  `xychart semicolon`、`xychart title digits`、`xychart axis numbers`、
+  `xychart parse error`、`xychart lexical`、`XY chart parse error`、
   `XY chart semicolon` で検索）。

@@ -171,7 +171,7 @@ value は title と一つだけの ASCII space/tab の後から行値の末尾�
 最後の textAfter があればそこまで広げ、EOL と無関係な外側 padding を除く。
 最初の可視 EOL 前の hidden な形は textAfter、その後は body に属する。
 反復・空の出現も別々に保つ。
-native comment は共有 Comment とし、 hidden な接尾辞の要素にはしない。
+native comment は共有 Comment とし、hidden な接尾辞の要素にはしない。
 [fixture: packet/title-empty] [fixture: packet/lex-title-one-space]
 [fixture: packet/lex-title-one-tab] [fixture: packet/lex-title-two-spaces]
 [fixture: packet/lex-title-directive-only]
@@ -198,7 +198,7 @@ value は colon 直後の行テキストで、両端の padding を保つ。
 最後の textAfter があればそこまで広げ、EOL と無関係な外側 padding を除く。
 最初の可視 EOL 前の hidden な形は textAfter、その後は body に属する。
 反復・空の出現も別々に保つ。
-native comment は共有 Comment とし、 hidden な接尾辞の要素にはしない。
+native comment は共有 Comment とし、hidden な接尾辞の要素にはしない。
 [fixture: packet/acctitle-empty] [fixture: packet/acctitle-repeat-empty]
 [fixture: packet/lex-acctitle-directive-only]
 [fixture: packet/hidden-directive-acctitle-eof]
@@ -227,7 +227,7 @@ colon の後の brace らしい内容もこの行形のままである。
 最後の textAfter があればそこまで広げ、EOL と無関係な外側 padding を除く。
 最初の可視 EOL 前の hidden な形は textAfter、その後は body に属する。
 反復・空の出現も別々に保つ。
-native comment は共有 Comment とし、 hidden な接尾辞の要素にはしない。
+native comment は共有 Comment とし、hidden な接尾辞の要素にはしない。
 [fixture: packet/accdescr-line-empty]
 [fixture: packet/lex-accdescr-whitespace-only]
 [fixture: packet/lex-accdescr-directive-only]
@@ -260,7 +260,7 @@ value は brace の内側で、両端の共通空白だけを除く。
 最後の textAfter があればそこまで広げ、EOL と無関係な外側 padding を除く。
 最初の可視 EOL 前の hidden な形は textAfter、その後は body に属する。
 反復・空の出現も別々に保つ。
-native comment は共有 Comment とし、 hidden な接尾辞の要素にはしない。
+native comment は共有 Comment とし、hidden な接尾辞の要素にはしない。
 [fixture: packet/gram-empty-description] [fixture: packet/accdescr-block-lines]
 [fixture: packet/lex-description-whitespace-only]
 [fixture: packet/lex-description-directive-only]
@@ -282,7 +282,7 @@ null に空の literal は作らない。
 共通 directive、comment region、選ばれた semicolon を除き、ほかの改行、quote、
 entity、escape の綴りはすべて保つ。
 空白の圧縮や escape の復号はしない。
-quote らしい共通テキストも PacketLiteral のままで、 quote の閉じは不要である。
+quote らしい共通テキストも PacketLiteral のままで、quote の閉じは不要である。
 [fixture: packet/common-whitespace] [fixture: packet/common-block-comment]
 [fixture: packet/directive-title-value]
 [fixture: packet/directive-description-value] [fixture: packet/style-title]
@@ -358,7 +358,7 @@ packet
 ```
 
 PacketDiagram.body は、count.raw が `2` の PacketRelativeBlockStatement、
-start.raw が `2` の PacketSingleBlockStatement、 start.raw が `3`、
+start.raw が `2` の PacketSingleBlockStatement、start.raw が `3`、
 end.raw が `5` の PacketRangeBlockStatement の順となる。
 相対ノードに start/end、単一ノードに end は合成しない。
 範囲は公開が複数行にわたっても一つのノードのままである。

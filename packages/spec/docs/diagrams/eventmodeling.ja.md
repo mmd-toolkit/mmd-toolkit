@@ -246,7 +246,7 @@ qualified-name は一個以上の identifier を dot の句読点で結ぶ。
 dot の両側には native 空白、コメント、hidden を置けるが、segment の欠落、
 先頭や末尾の dot は拒否する。
 data の宣言名、bracket の data 参照、
-GWT item の参照は一個の identifier を必要とし、 qualified-name の形ではない。
+GWT item の参照は一個の identifier を必要とし、qualified-name の形ではない。
 [fixture: eventmodeling/db-qualified-names]
 [fixture: eventmodeling/space-qualified-name]
 [fixture: eventmodeling/lex-qualified-hidden-components]
@@ -461,7 +461,7 @@ quote と backslash は closer を保護せず、閉じない形は拒否する�
 [fixture: eventmodeling/gram-empty-payload-after-removals]
 [fixture: eventmodeling/gram-description-block-empty-after-removal]
 
-keyword と brace の間では、 whitespace の一致より先に共通 directive を除く。
+keyword と brace の間では、whitespace の一致より先に共通 directive を除く。
 空行も許す。
 コメント行を含め、native comment は composite の単位に挿入できないので、
 この間のコメント行は拒否する。
@@ -534,12 +534,12 @@ hidden-directive が失敗したら percent-comment を試す。
 block の値、slash block comment、hidden の形の中のコメント行は、
 その text の一部になる。
 コメント行は CR か LF でだけ終わる。
-その中の U+2028 や U+2029 では終わらないので、 `%% a`、U+2028、
+その中の U+2028 や U+2029 では終わらないので、`%% a`、U+2028、
 `tf 01 evt A` は全体が 1 つのコメントになる。
 コメント行の中の共通 directive は、どこでもと同じく除かれ、
 行の残りはコメントに残る。
 `%% a %%{init: {}}%% tf 09 evt Z` では frame はコメントの一部で、
-data block の中の行 `%% c %%{init: {}}%% d` は、 `%% c`、空白 2 個、
+data block の中の行 `%% c %%{init: {}}%% d` は、`%% c`、空白 2 個、
 `d` を値に残す。 [fixture: eventmodeling/comment-line-line-separator]
 [fixture: eventmodeling/comment-line-paragraph-separator]
 [fixture: eventmodeling/comment-line-directive]

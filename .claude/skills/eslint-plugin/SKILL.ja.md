@@ -12,7 +12,7 @@ description:
 
 `@mmd-toolkit/eslint-plugin` は、
 Mermaid の図のテキストのための ESLint の言語プラグインである。
-その規則の文書を、すべての主張を mermaid.js、 `@mmd-toolkit/parser` の木、
+その規則の文書を、すべての主張を mermaid.js、`@mmd-toolkit/parser` の木、
 fixture で確かめて書く手順。
 規則の実装は、SKILL `eslint-plugin-rules` で扱う。
 文書はそれぞれ `src/rules/` の規則のファイルに属し、それは 6 節で扱う。
@@ -380,7 +380,7 @@ rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の 4 節にある
    例外は、空白の有無そのものが要点で、わざと書いたまま残す例だけで、
    そのときは文書にそう書く。
    使う fixture の `expected.json` が文書の主張どおりであることを確かめる。
-   例にする fixture は、従う例も含めて、 `accepted` が true のものだけにする。
+   例にする fixture は、従う例も含めて、`accepted` が true のものだけにする。
    fixture のない例と主張には、SKILL `tests` の手順で fixture を足す。
    それを示す最小の入力と、その fixture が答える規則の文書の主張を添え、
    `pnpm run fixtures:add` で足して、
@@ -443,7 +443,7 @@ rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の 4 節にある
   `<!-- end auto-generated rules list -->` までのすべて。
   そこには共通の規則の表と図種ごとの表があり、行は英語の説明、
   日本語の文書の最初の段落（日本語の文書のない規則では、
-  英語の説明と英語の文書へのリンク）、 `recommended` が有効にする規則の ✅、
+  英語の説明と英語の文書へのリンク）、`recommended` が有効にする規則の ✅、
   自動修正を持つ規則の 🔧、修正候補を出す規則の 💡 を持つ。
   これらは手で書かない。
   日本語の文書の最初の段落を変えたら、`update` を実行する。

@@ -2,11 +2,16 @@
 
 Japanese version: [README.ja.md](./README.ja.md)
 
-A [Prettier](https://prettier.io/) plugin that formats Mermaid diagrams: `.mmd`
-and `.mermaid` files, and `mermaid` code blocks in Markdown.
+A [Prettier](https://prettier.io/) plugin that formats
+[Mermaid](https://mermaid.js.org/) diagrams: `.mmd` and `.mermaid` files, and
+`mermaid` code blocks in Markdown.
 
-This is a third-party project, not affiliated with mermaid-js. `mmd` here means
-the Mermaid diagram syntax, not MultiMarkdown or MikuMikuDance.
+This is a third-party project, not affiliated with
+[mermaid-js](https://mermaid.js.org/). `mmd` here means the Mermaid diagram
+syntax, not MultiMarkdown or MikuMikuDance.
+
+Documentation:
+[Formatter](https://mmd-toolkit.github.io/mmd-toolkit/formatter/).
 
 ## Playground
 
@@ -14,7 +19,7 @@ Preview this plugin's formatting in the browser. The **Formatted** tab updates
 as you edit, with **Indent** and **Use tabs** controls. Use **Apply to source**
 to replace the input with the result.
 
-Public URL: [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/).
+Open the [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/).
 
 For usage, see the [Playground guide](../playground/README.md).
 
@@ -44,7 +49,7 @@ npx prettier --write "**/*.{mmd,mermaid,md}"
 ## Example
 
 Input
-([statements-one-per-line/separated-by-semicolons-input.mmd](./tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-input.mmd)):
+([file](./tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -53,7 +58,7 @@ flowchart LR
 ```
 
 Output
-([statements-one-per-line/separated-by-semicolons-output.mmd](./tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-output.mmd)):
+([file](./tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -71,75 +76,27 @@ flowchart LR
 - Files ending in `.mmd` or `.mermaid`.
 - Markdown code blocks whose info string has `mermaid` or `mmd` as its first
   word. The match is case-sensitive: `Mermaid` and `mermaidx` are not formatted.
-- Flowcharts: diagrams that start with `flowchart`, `graph`, `flowchart-elk`, or
-  `swimlane-beta`. The formatting rules, with examples, are in
-  [docs/flowchart.md](./docs/flowchart.md).
-- Agentflow: diagrams that start with `agentflow-beta`. The formatting rules,
-  with examples, are in [docs/agentflow.md](./docs/agentflow.md).
-- Sequence diagrams: diagrams that start with `sequenceDiagram`. The formatting
-  rules, with examples, are in [docs/sequence.md](./docs/sequence.md).
-- Class diagrams: diagrams that start with `classDiagram` or `classDiagram-v2`.
-  The formatting rules, with examples, are in [docs/class.md](./docs/class.md).
-- State diagrams: diagrams that start with `stateDiagram` or `stateDiagram-v2`.
-  The formatting rules, with examples, are in [docs/state.md](./docs/state.md).
-- ER diagrams: diagrams that start with `erDiagram`. The formatting rules, with
-  examples, are in [docs/er.md](./docs/er.md).
-- Gantt charts: diagrams that start with `gantt`. The formatting rules, with
-  examples, are in [docs/gantt.md](./docs/gantt.md).
-- User journeys: diagrams that start with `journey`. The formatting rules, with
-  examples, are in [docs/journey.md](./docs/journey.md).
-- Requirement diagrams: diagrams that start with `requirementDiagram`. The
-  formatting rules, with examples, are in
-  [docs/requirement.md](./docs/requirement.md).
-- Mindmaps: diagrams that start with `mindmap`. The formatting rules, with
-  examples, are in [docs/mindmap.md](./docs/mindmap.md).
-- Timelines: diagrams that start with `timeline`. The formatting rules, with
-  examples, are in [docs/timeline.md](./docs/timeline.md).
-- Sankey diagrams: diagrams that start with `sankey` or `sankey-beta`. The
-  formatting rules, with examples, are in [docs/sankey.md](./docs/sankey.md).
-- XY charts: diagrams that start with `xychart` or `xychart-beta`. The
-  formatting rules, with examples, are in [docs/xychart.md](./docs/xychart.md).
-- Quadrant charts: diagrams that start with `quadrantChart`. The formatting
-  rules, with examples, are in [docs/quadrant.md](./docs/quadrant.md).
-- Kanban boards: diagrams that start with `kanban`. The formatting rules, with
-  examples, are in [docs/kanban.md](./docs/kanban.md).
-- C4 diagrams: `C4Context`, `C4Container`, `C4Component`, `C4Dynamic`, and
-  `C4Deployment`. The formatting rules, with examples, are in
-  [docs/c4.md](./docs/c4.md).
-- Venn diagrams: diagrams that start with `venn-beta`. The formatting rules,
-  with examples, are in [docs/venn.md](./docs/venn.md).
-- Ishikawa diagrams: `ishikawa` and `ishikawa-beta`, including accepted case
-  variants. The formatting rules are in [docs/ishikawa.md](./docs/ishikawa.md).
-- Usecase diagrams: diagrams that start with `usecase-beta`. The formatting
-  rules are in [docs/usecase.md](./docs/usecase.md).
-- Pie charts: diagrams that start with `pie`, including `showData`. The
-  formatting rules are in [docs/pie.md](./docs/pie.md).
-- Info diagrams: diagrams that start with `info`, including `showInfo`. The
-  formatting rules are in [docs/info.md](./docs/info.md).
-- Git graphs: diagrams that start with `gitGraph`. The formatting rules are in
-  [docs/gitgraph.md](./docs/gitgraph.md).
-- Architecture diagrams: `architecture-beta`. The formatting rules are in
-  [docs/architecture.md](./docs/architecture.md).
-- Treemap diagrams: `treemap` and `treemap-beta`. The formatting rules are in
-  [docs/treemap.md](./docs/treemap.md).
-- Treeview diagrams: `treeView-beta`. The formatting rules are in
-  [docs/treeview.md](./docs/treeview.md).
-- Radar diagrams: `radar-beta`. The formatting rules are in
-  [docs/radar.md](./docs/radar.md).
-- Wardley maps: `wardley-beta`. The formatting rules are in
-  [docs/wardley.md](./docs/wardley.md).
-- Railroad diagrams: `railroad-beta`, `railroad-ebnf-beta`, `railroad-abnf-beta`
-  and `railroad-peg-beta`. The formatting rules are in
-  [docs/railroad.md](./docs/railroad.md).
-- Cynefin diagrams: `cynefin-beta` and `cynefin-beta:`. The formatting rules are
-  in [docs/cynefin.md](./docs/cynefin.md).
-- Eventmodeling diagrams: `eventmodeling`. The formatting rules are in
-  [docs/eventmodeling.md](./docs/eventmodeling.md).
-- Packet diagrams: `packet` and `packet-beta`. The formatting rules are in
-  [docs/packet.md](./docs/packet.md).
-- Block diagrams: diagrams that start with `block-beta` or `block`. The
-  formatting rules, with examples, are in [docs/block.md](./docs/block.md).
+- Every diagram type of mermaid.js.
 - The YAML frontmatter of these diagrams, with Prettier's YAML formatter.
+
+The formatting rules of each diagram type are in its document:
+[flowcharts](./docs/flowchart.md), [Agentflow](./docs/agentflow.md),
+[sequence diagrams](./docs/sequence.md), [class diagrams](./docs/class.md),
+[state diagrams](./docs/state.md), [ER diagrams](./docs/er.md),
+[Gantt charts](./docs/gantt.md), [user journeys](./docs/journey.md),
+[requirement diagrams](./docs/requirement.md), [mindmaps](./docs/mindmap.md),
+[timelines](./docs/timeline.md), [sankey diagrams](./docs/sankey.md),
+[XY charts](./docs/xychart.md), [quadrant charts](./docs/quadrant.md),
+[kanban boards](./docs/kanban.md), [C4 diagrams](./docs/c4.md),
+[Venn diagrams](./docs/venn.md), [Ishikawa diagrams](./docs/ishikawa.md),
+[usecase diagrams](./docs/usecase.md), [pie charts](./docs/pie.md),
+[info diagrams](./docs/info.md), [git graphs](./docs/gitgraph.md),
+[architecture diagrams](./docs/architecture.md), [treemaps](./docs/treemap.md),
+[treeviews](./docs/treeview.md), [radar diagrams](./docs/radar.md),
+[Wardley maps](./docs/wardley.md), [railroad diagrams](./docs/railroad.md),
+[cynefin diagrams](./docs/cynefin.md),
+[eventmodeling diagrams](./docs/eventmodeling.md),
+[packet diagrams](./docs/packet.md), and [block diagrams](./docs/block.md).
 
 ## Options
 
@@ -161,35 +118,36 @@ flowchart LR
   `subgraph Handle click events`: in flowchart, `click` is a reserved word. An
   empty string between tokens, as in `A-->|x""|B`, is reported too. The full
   list is in [docs/compatibility.md](./docs/compatibility.md).
-- The `error` pseudo-diagram of mermaid.js, a text of the word `error` with only
-  comments, directives, and line breaks around it, is not changed, except that
-  line endings follow `endOfLine`. In Markdown, it is left to Prettier.
+- A text of only the word `error`, with comments, directives, and line breaks
+  around it, is not changed, except that line endings follow `endOfLine`:
+  mermaid.js reads it as its `error` pseudo-diagram. In Markdown, it is left to
+  Prettier.
 
 ## Guarantees and limitations
 
 - Formatting preserves what mermaid.js reads, apart from the documented
   whitespace changes below.
+- Formatting a formatted diagram again changes nothing.
 - Whitespace at the end of a `style`, `classDef`, or `linkStyle` line is
   removed. mermaid.js keeps it at the end of the last style.
-- For `eventmodeling` block data and notes, the
-  [Data blocks](./docs/eventmodeling.md#data-blocks) rule permits a restricted
-  ASCII space margin adjustment. This can change raw Db values while preserving
-  the rendered diagram.
-- Single paragraphs in state notes closed by `end note` follow the restricted
-  [Notes](./docs/state.md#notes) rule, including lines with inline emphasis and
-  code notation. Only leading ASCII spaces may change in `notes[].text`, while
-  the rendered diagram stays the same. Other margin-sensitive bodies keep their
-  later margins as written.
-- Formatting a formatted diagram again changes nothing.
-- The content of directives, of opaque `@{ ... }` data blocks, and of the
-  frontmatter is not checked. A diagram that mermaid.js rejects because of that
-  content is still formatted. Directives are kept as written. An opaque
-  `@{ ... }` data block keeps its content too; a block on one line is printed
-  with one space inside each end, and only a multi-line block that meets the
-  conditions in [Data blocks](./docs/flowchart.md#data-blocks) has all its lines
-  moved by the same number of spaces. The frontmatter is formatted only when
-  Prettier can read it as YAML. Native usecase metadata properties are parsed
-  and validated as syntax.
+- The lines inside `eventmodeling` data and note blocks are aligned where the
+  [Data blocks](./docs/eventmodeling.md#data-blocks) rule permits it. This can
+  change the spaces in the text that mermaid.js keeps, while the rendered
+  diagram stays the same.
+- A single paragraph in a state note closed by `end note` is aligned where the
+  [Notes](./docs/state.md#notes) rule permits it, including lines with inline
+  emphasis and code notation. Only the whitespace at the start of its lines
+  changes, and the rendered diagram stays the same. Other bodies whose margins
+  affect the drawing keep the margins of their later lines as written.
+- The content of directives, of `@{ ... }` data blocks, and of the frontmatter
+  is not checked. A diagram that mermaid.js rejects because of that content is
+  still formatted. Directives are kept as written. A `@{ ... }` data block keeps
+  its content too; a block on one line is printed with one space inside each
+  end, and only a multi-line block that meets the conditions in
+  [Data blocks](./docs/flowchart.md#data-blocks) has all its lines moved by the
+  same number of spaces. The frontmatter is formatted only when Prettier can
+  read it as YAML. The metadata properties of a usecase diagram are syntax of
+  the diagram, so they are read and checked.
 - A flowchart with more edges than mermaid.js allows, 500 by default (its
   `maxEdges` site setting), is rejected by mermaid.js but still formatted: the
   plugin does not know the site settings.
@@ -205,48 +163,14 @@ The reasons and the details are in
 
 ## Documentation
 
-- [docs/flowchart.md](./docs/flowchart.md): the formatting rules for flowcharts.
-- [docs/agentflow.md](./docs/agentflow.md): the formatting rules for Agentflow.
-- [docs/sequence.md](./docs/sequence.md): the formatting rules for sequence
-  diagrams.
-- [docs/class.md](./docs/class.md): the formatting rules for class diagrams.
-- [docs/state.md](./docs/state.md): the formatting rules for state diagrams.
-- [docs/er.md](./docs/er.md): the formatting rules for ER diagrams.
-- [docs/gantt.md](./docs/gantt.md): the formatting rules for Gantt charts.
-- [docs/journey.md](./docs/journey.md): the formatting rules for user journeys.
-- [docs/requirement.md](./docs/requirement.md): the formatting rules for
-  requirement diagrams.
-- [docs/mindmap.md](./docs/mindmap.md): the formatting rules for mindmaps.
-- [docs/timeline.md](./docs/timeline.md): the formatting rules for timelines.
-- [docs/sankey.md](./docs/sankey.md): the formatting rules for sankey diagrams.
-- [docs/xychart.md](./docs/xychart.md): the formatting rules for XY charts.
-- [docs/quadrant.md](./docs/quadrant.md): the formatting rules for quadrant
-  charts.
-- [docs/kanban.md](./docs/kanban.md): the formatting rules for kanban boards.
-- [docs/c4.md](./docs/c4.md): the formatting rules for C4 diagrams.
-- [docs/venn.md](./docs/venn.md): the formatting rules for Venn diagrams.
-- [docs/ishikawa.md](./docs/ishikawa.md): the formatting rules for Ishikawa
-  diagrams.
-- [docs/usecase.md](./docs/usecase.md): the formatting rules for usecase
-  diagrams.
-- [docs/pie.md](./docs/pie.md): the formatting rules for pie charts.
-- [docs/info.md](./docs/info.md): the formatting rules for info diagrams.
-- [docs/gitgraph.md](./docs/gitgraph.md): the formatting rules for git graphs.
-- [docs/architecture.md](./docs/architecture.md): the formatting rules for
-  architecture diagrams.
-- [docs/treemap.md](./docs/treemap.md): the formatting rules for treemaps.
-- [docs/treeview.md](./docs/treeview.md): the formatting rules for treeviews.
-- [docs/radar.md](./docs/radar.md): the formatting rules for radar diagrams.
-- [docs/wardley.md](./docs/wardley.md): the formatting rules for Wardley maps.
-- [docs/railroad.md](./docs/railroad.md): the formatting rules for railroad
-  diagrams.
-- [docs/cynefin.md](./docs/cynefin.md): the formatting rules for cynefin
-  diagrams.
-- [docs/eventmodeling.md](./docs/eventmodeling.md): Eventmodeling formatting
-  rules.
-- [docs/packet.md](./docs/packet.md): the formatting rules for packet diagrams.
-- [docs/block.md](./docs/block.md): the formatting rules for block diagrams.
-- [docs/compatibility.md](./docs/compatibility.md): where the plugin differs
-  from mermaid.js, and why.
+- [Formatter guide](https://mmd-toolkit.github.io/mmd-toolkit/formatter/):
+  installation,
+  [configuration](https://mmd-toolkit.github.io/mmd-toolkit/formatter/configuration.html),
+  and
+  [options](https://mmd-toolkit.github.io/mmd-toolkit/formatter/options.html).
+- [Formatter compatibility](https://mmd-toolkit.github.io/mmd-toolkit/formatter/compatibility.html):
+  syntax errors, differences from mermaid.js, and the limits of the guarantees.
+- [docs/compatibility.md](./docs/compatibility.md): every place where the plugin
+  differs from mermaid.js, and why.
 - [docs/development.md](./docs/development.md): the tests and the fixtures, for
   people who work on the plugin.

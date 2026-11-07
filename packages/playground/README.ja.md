@@ -2,10 +2,11 @@
 
 English version: [README.md](./README.md)
 
-ブラウザーでMermaidのテキストを編集し、 mmd-toolkitが生成する構文木と、
-Prettierによる整形結果を確認できます。
+ブラウザーで[Mermaid](https://mermaid.js.org/)のテキストを編集し、
+mmd-toolkitが生成する構文木と、Prettierによる整形結果を確認できます。
 
-公開URL: [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)。
+[Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)
+を開いて使えます。
 
 画面は英語で、デスクトップブラウザーを対象にしています。
 
@@ -23,7 +24,7 @@ Prettierによる整形結果を確認できます。
 
 ## 構文木を調べる
 
-**AST**タブではTreeとJSONの表示に加えて、 Tokens、Comments、Directives、
+**AST**タブではTreeとJSONの表示に加えて、Tokens、Comments、Directives、
 Frontmatterを個別に確認できます。
 
 - ツリーの行をクリックすると、その行を選択し、子の展開と縮小を切り替えます。

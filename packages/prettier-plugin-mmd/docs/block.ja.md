@@ -85,7 +85,7 @@ mermaid.js は `block: G` と `block:G` を同じに読むので、
 見出しの後の最初の文と、`end` の後の文は、自分の行に移します。
 1 行に書かれた composite（`block:G a b end`）も同じで、
 どの composite も同じ形に置き、字下げが中身を示します。
-`end` は自分の行に置き、 `block:` と同じ段にします。
+`end` は自分の行に置き、`block:` と同じ段にします。
 [fixture: composites/colon-touches-the-node]
 [fixture: composites/colon-and-node-on-different-lines]
 [fixture: composites/width-kept]
@@ -154,7 +154,7 @@ node を 1 行ずつに分けると、その行が見えなくなり、
 その行に残し、文の間は空白 1 つにします。
 連なりの中の 2 つの文の間の改行は、書かれた場所に残し、空行は 1 つにします。
 それ以外の文は自分の行に置きます。
-`columns`、composite の見出し、`end`、 `classDef`、`class`、`style`、
+`columns`、composite の見出し、`end`、`classDef`、`class`、`style`、
 空の説明ブロックです。
 `columns 3` と同じ行にある文は次の行へ移します（`columns 3 a b c` は、
 `columns 3` と、行 `a b c` になります）。
@@ -483,8 +483,8 @@ block-beta
 mermaid.js は、矢印の周りの空白があってもなくても同じ辺として読むので、
 この形は選択です。
 mermaid.js の文書の辺の書き方で、矢印と後ろの id の間の空白は、
-印がどこで終わり id がどこで始まるかを示します（`I --x J`。 `I--xJ`
-では見えません）。
+印がどこで終わり id がどこで始まるかを示します（`I --x J`。
+`I--xJ` では見えません）。
 `x` か `o` で終わる id も、後ろの矢印から離れます（`A x --x B`、`Ao --> B`）。
 線の長さ（`---->`）は Db に入りませんが、書き手が書いたものなので残します。
 [fixture: edges/spaces-around-an-arrow] [fixture: edges/spaces-around-a-label]
@@ -546,7 +546,7 @@ block-beta
 で削除する終端を除き、書かれたまま印字します。
 `style` と `class` の空白は Db に入ります。
 `style A fill:#f00 , stroke:#333` のスタイルは、
-`fill:#f00 ` と ` stroke:#333` で、 `class A, B c1` は ` B` を空白つきで探し、
+`fill:#f00 ` と ` stroke:#333` で、`class A, B c1` は ` B` を空白つきで探し、
 既存の `B` が見つからず、図に載らない新しいブロックに class を付け、
 `class A c   d` のクラス名は `c   d` で、
 `class A , B   c1` のクラス名は `, B   c1` です。
@@ -554,7 +554,7 @@ block-beta
 `classDef` の空白は Db に入りませんが、スタイルは同じに書かれたまま印字します。
 flowchart
 と同じ規則で（[トークンの間の空白](./flowchart.ja.md#トークンの間の空白)
-を参照）、 3 つの文を 1 つの規則にし、
+を参照）、3 つの文を 1 つの規則にし、
 印字がスタイルの並びを分けないようにするためです。
 文の最後の空白は、
 flowchart の [スタイルの行末の空白](./flowchart.ja.md#スタイルの行末の空白)
@@ -693,7 +693,7 @@ block
 ### 複数行の文
 
 mermaid.js が複数行にわたって読む文は、1 行に印字します。
-改行は字句解析器にとって空白で、 `columns`、辺、幅、形、
+改行は字句解析器にとって空白で、`columns`、辺、幅、形、
 composite の見出しの中の改行もそうです。
 改行は空白 1 つに置き換えます。
 ほかの図も同じ規則で文の行をつなぎます（[複数行の文](./xychart.ja.md#複数行の文)
@@ -716,13 +716,13 @@ mermaid.js の行の規則は、`style` か `classDef`、その後の `:`、そ�
 `:` との間に空白のない `#`、その後の `;` を持つ行の、最後の `;` を取り除きます。
 そのような行から文を動かすと、
 どの `;` が最後かが変わるので（`A["style:#a"] B;C D;` で取り除かれるのは `D;` の
-`;` で、 id は `B;C` です。 `D;` のない行では、`B;C` の `;` が取り除かれます）、
+`;` で、id は `B;C` です。`D;` のない行では、`B;C` の `;` が取り除かれます）、
 その行の文はその行に残し、保持する `;` も書かれたままにします。
 スタイルの終端の例外は、
 [スタイル文の末尾のセミコロン](#スタイル文の末尾のセミコロン)に従います。
 `:` と `#` の間の空白も、規則が効くかどうかを決めるので、そのままです。
 `A["style:"]-->B["#z"];` は矢印が接したままで、
-矢印の周りに空白があると規則は効かず、 `;` はそれだけの id になります。
+矢印の周りに空白があると規則は効かず、`;` はそれだけの id になります。
 [fixture: multi-line-statements/columns-over-lines-joined]
 [fixture: multi-line-statements/edge-over-lines-joined]
 [fixture: multi-line-statements/shape-over-lines-joined]
@@ -981,7 +981,7 @@ U+2028 と U+2029 は、ブロック図の単位の間の空白で、空白と�
 それを含む、行の中の隙間は、書かれたまま印字します。
 ほかの図と同じです（[行区切り文字](./journey.ja.md#行区切り文字)を参照）。
 隙間の代わりに印字が改行を置く所と、行末の隙間では、一緒に落とします。
-それらの後のコメント行は、 mermaid.js が 1 行として読む行をつなぎ（詳しくは、
+それらの後のコメント行は、mermaid.js が 1 行として読む行をつなぎ（詳しくは、
 [U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
 を参照）、その行の文は書かれたまま印字します。
 ラベルの中では文字で、そのまま残ります。

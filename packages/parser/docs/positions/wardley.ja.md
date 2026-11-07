@@ -59,7 +59,7 @@ WardleyArrow は字形全体またはフローのプラスからマーカーま�
 それ以外の行文は値の最後の文字まで、ブロックは必須の最初の閉じ波括弧までを覆う。
 いずれも textAfter まで延ばす。
 WardleyLiteral はタイトル区切り、コロン、ラベルのセミコロンの後の余白を保つ。
-ブロック値は外側の共通空白のみを除き、 null には葉がない。
+ブロック値は外側の共通空白のみを除き、null には葉がない。
 [fixture: wardley/common-empty-literals] [fixture: wardley/common-title-tabs]
 [fixture: wardley/common-line-whitespace]
 [fixture: wardley/common-block-whitespace]

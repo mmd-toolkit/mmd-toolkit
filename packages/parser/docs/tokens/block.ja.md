@@ -48,7 +48,7 @@
 語の中のものは入力を拒否させます。
 `( right , down)` は、スペースの `RawText` トークン、
 `Keyword` トークン `right`、スペースの `RawText` トークン、
-`Punctuator` トークン `,`、 `Keyword` トークン `down` を持ちます。
+`Punctuator` トークン `,`、`Keyword` トークン `down` を持ちます。
 `,` の後の空白は、どのトークンにも入りません。
 `class` のクラス名は、中の空白を含めて 1 つの `RawText` トークンです。
 `class A c d` は `RawText` トークン `c d` を持ちます。
@@ -58,7 +58,7 @@
 [fixture: block/db-arrow-comment-line-before-first]
 [fixture: block/db-class-apply-names-spaces]
 
-`,` の後の `class` の id は、 `,` の後の空白を持ちます。
+`,` の後の `class` の id は、`,` の後の空白を持ちます。
 [BlockClassStatement](../../../spec/docs/ast/block.ja.md#blockclassstatement)
 を参照。
 `,` の後の空白は、それだけで 1 つの `RawText` トークンで、
@@ -80,7 +80,7 @@
 を参照。
 
 スタイルは、その値の全体にわたる 1 つの `RawText` トークンです。
-値は 2 つの `,` の間の部分で、 `,` との間にある両端の空白を含みます。
+値は 2 つの `,` の間の部分で、`,` との間にある両端の空白を含みます。
 [BlockLiteral](../../../spec/docs/ast/block.ja.md#blockliteral) を参照。
 最初のスタイルは行の残りの空白でない最初の文字から始まり、
 最後のスタイルは空白でない最後の文字で終わります。
@@ -104,7 +104,7 @@
 を参照。
 `A -- "a%%{init: {}}%%b" --> B` は、`StringFragment` トークン `"a` と `b"` と、
 その間の `Directive` トークンを持ちます。
-一方、 `A%%{init: {}}%%B` は拒否されます。
+一方、`A%%{init: {}}%%B` は拒否されます。
 [fixture: block/db-edge-label-directive]
 [fixture: block/db-grid-directive-style-text]
 [fixture: block/db-class-apply-directive] [fixture: block/div-directive-in-id]

@@ -4,16 +4,18 @@
 
 英語版: [README.md](./README.md)
 
-Mermaid の図の記法のためのサードパーティ製ツール群です。
+[Mermaid](https://mermaid.js.org/) の図の記法のための、
+サードパーティ製ツール群です。
 フォーマッター、リンター、パーサー、文書としての仕様、
 適合性のコーパスからなります。
-mermaid-js とは無関係です。
+[mermaid-js](https://mermaid.js.org/) とは無関係です。
 
 `mmd` は Mermaid の図のテキストに使われる拡張子 `.mmd` を指します。
 同じ略称を使う MultiMarkdown や MikuMikuDance とは関係ありません。
 
 mermaid.js のすべての図種に対応しています。
-フォーマッター、リンター、パーサーは npm に公開しています。
+フォーマッター、リンター、パーサー、その TypeScript の型、TextMate の文法は、
+npm に公開しています。
 仕様とテストは、このリポジトリの中で使うもので、公開しません。
 
 ## ドキュメント
@@ -27,7 +29,8 @@ lint の規則の文書があります。
 ブラウザーでMermaidのテキストを編集し、構文木やトークン、
 Prettierによる整形結果を確認できます。
 
-公開URL: [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)。
+[Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)
+を開いて使えます。
 
 **Examples**でサンプルを選ぶか、**Source**にテキストを貼り付けます。
 編集に合わせて、**AST**と**Formatted**の表示が更新されます。

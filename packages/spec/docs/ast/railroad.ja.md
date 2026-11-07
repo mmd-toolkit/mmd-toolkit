@@ -18,7 +18,7 @@ raw は元の引用符、escape の綴り、source の改行、内部の共通 t
 closed は true とする。
 空文字列もノードとして保つ。
 ABNF の十進 count は共有の NumericLiteral の定義に従い、全桁を raw に保つ。
-省略した bound は null で、 0 を合成しない。
+省略した bound は null で、0 を合成しない。
 [fixture: railroad/ir-db-empty-strings] [fixture: railroad/ebnf-db-empty-string]
 [fixture: railroad/abnf-db-empty-string] [fixture: railroad/peg-db-empty-string]
 [fixture: railroad/ir-lex-string-conversion]
@@ -34,7 +34,7 @@ RailroadExpression は選んだ方言で許す式を指す。
 IR は 8 個の Call 型だけを許す。
 自然記法の方言は Identifier と StringLiteral を wrapper なしで直接許し、
 さらに次の式ノードを許す。
-EBNF は choice、sequence、group、optional group、repetition group、 postfix、
+EBNF は choice、sequence、group、optional group、repetition group、postfix、
 exception、special sequence。
 ABNF は choice、sequence、group、optional group、repeat、numeric value。
 PEG は choice、sequence、group、postfix、predicate、any expression。
@@ -148,7 +148,7 @@ separator がないか、共通の除去後に内容がなければ null。
 [fixture: railroad/ir-common-acctitle-eof]
 
 value は colon の直後の行の text で、両端の padding も保つ。
-共通の除去後に内容がなければ null で、 whitespace-only の text は literal。
+共通の除去後に内容がなければ null で、whitespace-only の text は literal。
 [fixture: railroad/ir-common-whitespace-shapes]
 [fixture: railroad/ebnf-common-whitespace-shapes]
 [fixture: railroad/abnf-common-whitespace-shapes]
@@ -207,7 +207,7 @@ value が null でも両方の brace を含む。
 value は brace の内部の、外端の共通 Notation の空白だけを除いたもの。
 空、whitespace-only、共通 directive だけ、comment region だけの内容は null。
 内部の padding、引用符、escape、source 改行は保つ。
-closer は必須で、 closed の欄は要らない。
+closer は必須で、closed の欄は要らない。
 [fixture: railroad/ir-common-whitespace-shapes]
 [fixture: railroad/ebnf-common-whitespace-shapes]
 [fixture: railroad/abnf-common-whitespace-shapes]
@@ -435,7 +435,7 @@ call を Identifier、裸の文字列、正規化した terminal node に置き�
 子の欄: `alternatives`。
 範囲: 最初の式の先頭から最後の式の末尾まで。
 EBNF の縦棒、ABNF/PEG の slash は token に、選択肢の順序はすべて保つ。
-1 選択肢はこの wrapper を作らずその式とし、 IR の choice call は別の型を使う。
+1 選択肢はこの wrapper を作らずその式とし、IR の choice call は別の型を使う。
 [fixture: railroad/ebnf-gram-written-tree]
 [fixture: railroad/abnf-gram-written-tree]
 [fixture: railroad/peg-gram-written-tree] [fixture: railroad/ebnf-db-singletons]
@@ -453,7 +453,7 @@ EBNF の縦棒、ABNF/PEG の slash は token に、選択肢の順序はすべ�
 子の欄: `elements`。
 範囲: 最初の式の先頭から最後の式の末尾まで。
 EBNF の任意の comma は句読点として保ち、隣接を合成 comma に置き換えない。
-1 要素はこの wrapper を作らずその式とし、 IR の sequence call は別に保つ。
+1 要素はこの wrapper を作らずその式とし、IR の sequence call は別に保つ。
 [fixture: railroad/ebnf-gram-written-tree]
 [fixture: railroad/abnf-gram-written-tree]
 [fixture: railroad/peg-gram-written-tree] [fixture: railroad/ebnf-db-singletons]
@@ -529,7 +529,7 @@ EBNF で許す形。
 範囲: operand の先頭から後置記号まで。
 EBNF の後置列は書かれた順に左から入れ子にし、PEG はこの層で 1 suffix まで。
 記号は operator の欄と token の両方に保つ。
-IR call、optional group、 brace の repetition とは別の型である。
+IR call、optional group、brace の repetition とは別の型である。
 [fixture: railroad/ebnf-gram-written-tree]
 [fixture: railroad/peg-gram-written-tree]
 [fixture: railroad/ebnf-db-postfix-order]
@@ -588,7 +588,7 @@ value はその delimiter と共通 trivia だけを除き、外端と内部の�
 範囲: 書かれた count または star の先頭から、その primary の末尾まで。
 両端値が 0/1 回を表す場合もこの形を保ち、
 optional group や正規化した汎用 repetition に置き換えない。
-その primary は、 group なしでは別の repeat prefix を持てない。
+その primary は、group なしでは別の repeat prefix を持てない。
 [fixture: railroad/abnf-gram-written-tree]
 [fixture: railroad/abnf-db-repeat-optional]
 [fixture: railroad/abnf-db-repeat-implicit-optional]
@@ -632,7 +632,7 @@ native whitespace と hidden form は部品を分断できないが、
 範囲: percent sign から最後の十六進の字までで、内部の共通 trivia も跨ぐ。
 value は base の字の case、全桁、dot、hyphen を保ち、共通 directive、
 comment region、選ばれたセミコロンだけを除く。
-専用の text の葉であり、 NumericLiteral や変換済み文字コードの list ではない。
+専用の text の葉であり、NumericLiteral や変換済み文字コードの list ではない。
 [fixture: railroad/abnf-numval-boundaries]
 [fixture: railroad/abnf-numval-suffix]
 [fixture: railroad/abnf-directive-numval-prefix]
@@ -650,7 +650,7 @@ comment region、選ばれたセミコロンだけを除く。
 
 子の欄: `textBeforeElement`、`element`。
 範囲: 前置記号から suffix operand の末尾まで。
-比較 Db が label だけを公開する場合も、 group、postfix、
+比較 Db が label だけを公開する場合も、group、postfix、
 内部の全 operand node を保つ。
 2 個目の直接の prefix は許さず、別の predicate は書かれた group の内部に置ける。
 [fixture: railroad/peg-gram-written-tree] [fixture: railroad/peg-db-predicates]
@@ -702,7 +702,7 @@ metadata の suffix の欄も visible EOL による所有規則もない。
 単一 operand と引用引数の call は、opener の後と closer の前の形を専用欄に持つ。
 sequence/choice call は内部の全形を member に持つ。
 comma の前は前の member の textAfter、後は次の member の textBefore。
-最初と最後の member は、 call の括弧のすぐ内側の形も持つ。
+最初と最後の member は、call の括弧のすぐ内側の形も持つ。
 [fixture: railroad/ir-native-ownership]
 
 自然記法の choice/sequence の list では、

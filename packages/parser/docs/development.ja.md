@@ -86,9 +86,9 @@ flowchart とクラス図と状態図と ER 図と要求図の方向の行は `s
 flowchart とクラス図の文字の規則の Unicode の文字は `src/unicode-letters.ts`
 にあります。
 シーケンス図の字句解析器が `#` と `%` を、クラス図の字句解析器が `%%` を、
-状態図の字句解析器が `#` と `%%` を、 Gantt チャートの字句解析器が `%` を、
-journey 図と要求図と timeline の字句解析器が `#` と `%` を、 mindmap、
-kanban 図、C4 図、venn 図、Ishikawa 図の字句解析器が `%%` を読むように、
+状態図の字句解析器が `#` と `%%` を、Gantt チャートの字句解析器が `%` を、
+journey 図と要求図と timeline の字句解析器が `#` と `%` を、mindmap、kanban 図、
+C4 図、venn 図、Ishikawa 図の字句解析器が `%%` を読むように、
 図のコメントを読む図は、それを共通の部分に渡し、
 共通の部分が `Root.comments` に記録します。
 中にコメント領域があれば、トークンと同じく、そこで切ります。
@@ -233,8 +233,7 @@ data・shape・callback などの共通生成規則には、
 [fixture: agentflow/lex-brace-ls-without-lf]
 
 frontmatter と directive の除去後、
-正規化した長さが UTF-16 で 50000 単位以下なら、
-agentflow と eventmodeling では、
+正規化した長さが UTF-16 で 50000 単位以下なら、agentflow と eventmodeling では、
 SourceLexer は共通コメント領域を除去せずに行区間を読みます。
 先頭の trivia と独自のコメントは、その図の字句解析器が読みます。
 上限を超える場合は、どちらも共通のコメント除去経路を使います。
@@ -308,7 +307,7 @@ src/common-form-unit-lexer.ts で info と共通の形式を共有します。
 再帰下降で記述された 3 種のブロックと隠れた隙間を保持します。
 共通のトークン検査の後、src/diagrams/packet/acceptance.ts が、
 順序どおりの倍精度演算とデフォルト幅 32 の行反復を適用します。
-テストは同じ解析へ外部サイトの幅を適用し、 parse(text) の API は固定のままです。
+テストは同じ解析へ外部サイトの幅を適用し、parse(text) の API は固定のままです。
 [fixture: packet/gram-mixed] [fixture: packet/gram-hidden-range-gap-spaced]
 [fixture: packet/db-explicit-start-rounded]
 [fixture: packet/config-fraction-reject]
@@ -318,7 +317,7 @@ radar の lexer は [最初に一致する字句規則](../../spec/docs/diagrams
 再帰下降で記述されたコンマグループ、省略可能な entry のコロン、
 hidden form の gap を保持します。
 共通のトークン検査後、各名前付き曲線に宣言された全軸名があることを確かめます。
-後から宣言した軸も対象で、 radar 設定は受理を変えません。
+後から宣言した軸も対象で、radar 設定は受理を変えません。
 [fixture: radar/gram-written-tree] [fixture: radar/lex-hidden-entry-comma]
 [fixture: radar/db-forward-axis] [fixture: radar/error-reference-missing]
 [fixture: radar/config-site-invalid-cannot-rescue]

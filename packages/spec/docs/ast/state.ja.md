@@ -50,8 +50,8 @@ StateCompositeStatement、StateAliasDefinitionStatement、
 StatePseudostateDefinitionStatement、StateDividerStatement、StateNoteStatement、
 StateFloatingNoteStatement、StateIgnoredStatement、StateClickStatement、
 StateClassDefStatement、StateClassStatement、StateStyleStatement、
-StateDirectionStatement、 StateAccTitleStatement、StateAccDescrStatement、
-StateAccDescrBlockStatement、 StateScaleStatement、
+StateDirectionStatement、StateAccTitleStatement、StateAccDescrStatement、
+StateAccDescrBlockStatement、StateScaleStatement、
 StateHideEmptyDescriptionStatement のどれかです。
 
 改行はどの文にも属さず、空の行はノードを作りません。
@@ -94,7 +94,7 @@ state 図の矢印はこの 1 つだけで、端の印がなく、線の種類�
 | `state`    | Identifier または StateTerminal | 状態の id か `[*]`。                     |
 | `cssClass` | Identifier または null          | `:::` の後の CSS クラス。なければ null。 |
 
-子の欄: `state`、 `cssClass`。 [fixture: state/gram-style-separator-transition]
+子の欄: `state`、`cssClass`。 [fixture: state/gram-style-separator-transition]
 [fixture:
 state/gram-terminal-style-separator]
 
@@ -251,7 +251,7 @@ id は空白を持てます。
 `-` 以外の文字で、その後にノートの id が続きます（`note left of%%x A : t`）。
 [fixture: state/lex-note-id-ignored-percent-after-position]
 ノートの id は、最初の文字でも `%%` の前で終わり、そのときは空です。
-`note right of %% c S`、行 `x`、`end note` では、 `state` は null で、
+`note right of %% c S`、行 `x`、`end note` では、`state` は null で、
 テキストは `%%` で始まります。 [fixture: state/lex-note-mixed-case]
 [fixture: state/lex-note-block] [fixture: state/lex-note-block-empty]
 [fixture: state/lex-note-id-percent-block]
@@ -331,7 +331,7 @@ state/lex-classdef-without-styles] [fixture: state/db-classdef-empty-items]
 | `states`   | Identifier の列          | 状態の id。ソースの順。                    |
 | `cssClass` | StateLiteral または null | 行の残り、つまり CSS クラス。空なら null。 |
 
-子の欄: `states`、 `cssClass`。 [fixture: state/lex-class-ids-space]
+子の欄: `states`、`cssClass`。 [fixture: state/lex-class-ids-space]
 [fixture: state/lex-class-name-spaces] [fixture: state/lex-class-without-name]
 
 ### StateStyleStatement
@@ -344,7 +344,7 @@ state/lex-classdef-without-styles] [fixture: state/db-classdef-empty-items]
 | `styles` | （StateLiteral または null）の列 | StateClassDefStatement と同じスタイル。                    |
 
 子の欄: `states`、`styles`。
-`style ,A,,B, fill:red` の states は、null、A、null、B、 null です。
+`style ,A,,B, fill:red` の states は、null、A、null、B、null です。
 [fixture: state/tokens-style-empty-items]
 スタイルは、空の部分を null とする StateClassDefStatement と同じものですが、
 テキストのない `style` の文は、mermaid.js が空のスタイル 1 つを与えるので、
@@ -366,7 +366,7 @@ state/lex-style-without-styles] [fixture: state/db-style-empty-items]
 | `direction`  | 文字列                       | `TB`、`BT`、`RL`、`LR` のどれか。                      |
 | `textAfter`  | StateIgnoredText または null | 方向の行の値の後のテキスト。なければ null。            |
 
-子の欄: `textBefore`、 `textAfter`。
+子の欄: `textBefore`、`textAfter`。
 [fixture: state/lex-direction-line-in-description] [fixture:
 state/lex-direction-lower-case]
 
@@ -381,7 +381,7 @@ state/lex-direction-lower-case]
 子の欄: `value`。
 `:` の後の空白は改行も含めて一緒に読まれるので、
 値が null になるのはテキストの終わりだけです。
-`#`、`;`、 `%%` はテキストの文字です。 [fixture: state/lex-acc-title-next-line]
+`#`、`;`、`%%` はテキストの文字です。 [fixture: state/lex-acc-title-next-line]
 [fixture: state/lex-acc-title-at-end] [fixture: state/lex-acc-title-semicolon]
 
 ### StateAccDescrStatement

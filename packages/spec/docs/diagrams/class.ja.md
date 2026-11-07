@@ -66,7 +66,7 @@ mermaid.js と同じく入力は拒否されます。
 class/lex-bare-percent-line-then-blank-line] [fixture:
 class/lex-bare-percent-line-then-spaces-line]
 ヘッダーの前のそれ以外のテキスト（`#` の行など）は検出点の図のテキストで、
-どの検出器も一致せず、 mermaid.js と同じく入力は拒否されます。
+どの検出器も一致せず、mermaid.js と同じく入力は拒否されます。
 [fixture: class/header-after-hash-line]
 
 ## 字句構造
@@ -100,7 +100,7 @@ class/lex-keyword-before-dash]
 
 字句解析器は、図のテキストを**単位**に分けます。
 文法は単位の上に書かれます。
-各単位は、文法が使う名前と、 **テキスト**、
+各単位は、文法が使う名前と、**テキスト**、
 つまりそれが読んだ文字を変換した形で持ちます。
 
 字句解析器は**文脈**のスタックを持ち、文の文脈から始めます。
@@ -149,17 +149,17 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
 の規則が、単位に当てはまります。
 テキストと文字列の単位の中のディレクティブは、入力の mermaid.js の読み方を保ち、
 名前の単位を含む、ほかの単位の中のディレクティブは、入力を拒否させます。
-**名前の単位**は、 `style` の後の `word`、`classDef` の文の各 `word`、
+**名前の単位**は、`style` の後の `word`、`classDef` の文の各 `word`、
 `cssClass` の文の `word`、文の `:::` の後や `<<` と `>>` の間の名前の部分です。
 **テキストの単位**は、バッククォートの名前の前にあるか、
 バッククォートの名前のない、クラスの名前や名前空間の名前の、
-間に空白を置ける名前の部分と `.` の単位、 `generic-text` の単位、
-`label` の単位の `:` の後のテキスト、 `member-name`、`parameters`、
+間に空白を置ける名前の部分と `.` の単位、`generic-text` の単位、
+`label` の単位の `:` の後のテキスト、`member-name`、`parameters`、
 `return-type`、`annotation-name` の単位、
 `callback-name` か `callback-arguments` の単位、スタイルのすべての単位、
 `title-text`、`description-text`、`description-block-text` の単位、
 `direction-text` の単位、方法の行の読まれない部分です。
-**文字列の単位**は、 `string` と `backquoted` の単位です。
+**文字列の単位**は、`string` と `backquoted` の単位です。
 [fixture: class/div-directive-in-style-id]
 [fixture: class/div-directive-in-class-def-name]
 [fixture: class/div-directive-in-css-class-name]
@@ -183,7 +183,7 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
   `A --> B : x%%{init: {}}%%y` はラベル `xy` を持ちます。
   どれも mermaid.js と同じです。
   無視される `;` も同じで、多重度 `"style:#x"` の後の、
-  `A "style:#x" --> B;C` は、 `BC` への関係を持ちます。
+  `A "style:#x" --> B;C` は、`BC` への関係を持ちます。
   [fixture: class/lex-directive-in-name]
   [fixture: class/lex-directive-in-dotted-name]
   [fixture: class/lex-directive-in-namespace-name]
@@ -218,7 +218,7 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
   class/lex-directive-in-backquoted-namespace]
   ディレクティブだけの文字列とバッククォートの名前は、空のものとして読まれます。
   `note "%%{init: {}}%%"` と ``class `%%{init: {}}%%` `` は、
-  区切りの間に何もないときと同じく拒否され、 `A "%%{init: {}}%%" --> B` は、
+  区切りの間に何もないときと同じく拒否され、`A "%%{init: {}}%%" --> B` は、
   `A "" --> B` と同じく空の多重度を持ちます。
   [fixture: class/lex-directive-in-string-only] [fixture:
   class/lex-directive-in-backquoted-name-only] [fixture:
@@ -276,8 +276,8 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
 8. キーワード `classDiagram-v2` と `classDiagram`: `header` の単位。
    [fixture: common/detect-minimal-class-diagram] [fixture: class/header-v2]
 9. `[*]`: `[*]` の単位。 [fixture: class/lex-edge-state-in-statement]
-10. `call` と、
-    その後に続く空白のすべて（1 文字以上。行終端を含む）: `call` の単位。
+10. `call` と、その後に続く空白のすべて（1 文字以上。
+    行終端を含む）: `call` の単位。
     コールバック名の文脈に入る。 [fixture: class/lex-call-prefix]
     [fixture: class/lex-callback-name-multi-line]
     [fixture: class/lex-call-two-spaces]
@@ -305,30 +305,30 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
 - キーワードは、単位が始まるところならどこでもキーワードです。
   `class note`、`class link`、`class o`、`class _self` は拒否され、
   `note` への関係も拒否されます。
-  一方、`class noteX` と `class order` は、 `noteX` と `order` を宣言します。
+  一方、`class noteX` と `class order` は、`noteX` と `order` を宣言します。
   [fixture: class/lex-keyword-note-as-name] [fixture:
   class/lex-keyword-link-as-name] [fixture: class/lex-keyword-o-as-name]
   [fixture: class/lex-keyword-link-target-as-name] [fixture:
   class/lex-keyword-prefix-of-note] [fixture: class/lex-keyword-o-prefix]
   [fixture: class/lex-keyword-note-relation-end]
 - `o` が関係の端になるのは、後に語の文字が続かないときだけです。
-  `A --o B` は集約で、 `A --oB` は、A からクラス `oB` への、端のない関係です。
+  `A --o B` は集約で、`A --oB` は、A からクラス `oB` への、端のない関係です。
   [fixture: class/lex-aggregation-end] [fixture: class/lex-o-before-word]
 - `call` がキーワードになるのは、後に空白があるときだけです。
-  `class callX` は `callX` を宣言し、 `A --> call` は拒否されます。
+  `class callX` は `callX` を宣言し、`A --> call` は拒否されます。
   [fixture: class/lex-call-prefix] [fixture: class/lex-call-at-end]
 - ラベル（共有の規則 9）は、`:`、`;`、改行で終わります。
   ラベルの中の `%%` はその一部です。
   `A --> B : x %% c` のラベルは `x %% c` です。
   2 つ目の `:` は 2 つ目のラベルを始め、文法はそれを取りません。
   `A --> B : x : y` と `A : foo(a: int)` は拒否されます。
-  `;` はどの規則にも当たらないので、 `A : x;y` は拒否されます。
+  `;` はどの規則にも当たらないので、`A : x;y` は拒否されます。
   [fixture: class/lex-label-percent] [fixture: class/lex-label-two-colons]
   [fixture: class/lex-label-colon-in-member] [fixture:
   class/lex-label-semicolon]
 - `;`、`{`、`}`、`|`、`)` の続かない `(`、`)`、`@`、`^` は、
   文の文脈のどの規則にも当たりません。
-  `class A; class B`、`A | B`、 `A@B --> C` は拒否されます。
+  `class A; class B`、`A | B`、`A@B --> C` は拒否されます。
   [fixture: class/lex-semicolon] [fixture: class/lex-pipe] [fixture:
   class/lex-at]
 - エンティティは、
@@ -342,8 +342,8 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
 
 **方向の行。**
 今の位置から、改行、U+2028、U+2029 を含まない文字の並びで、
-後が続けられる最も長いもの、 `direction`、改行を含む 1 個以上の空白、 `TB`、
-`BT`、`RL`、`LR` のどれか、
+後が続けられる最も長いもの、`direction`、改行を含む 1 個以上の空白、`TB`、`BT`、
+`RL`、`LR` のどれか、
 そして次の改行の手前までのすべての文字です（改行は含みません）。
 規則は、`direction` の前の文字を `direction-text` の単位、
 `direction` を `direction` の単位、値を `direction-value` の単位、
@@ -412,7 +412,7 @@ mermaid.js は `direction-text` の単位を読みません。
    [fixture: class/gram-name-word-then-backquoted]
    [文字列、バッククォートの名前、ジェネリクスの型](#文字列バッククォートの名前ジェネリクスの型)
    を参照してください。
-6. キーワード `_self`、`_blank`、`_parent`、 `_top`: `link-target` の単位。
+6. キーワード `_self`、`_blank`、`_parent`、`_top`: `link-target` の単位。
    [fixture: class/lex-keyword-link-target-as-name]
    [fixture: class/spec-class-diagram-ab0cb6e2]
    [fixture: class/spec-class-diagram-3b723e23]
@@ -427,11 +427,11 @@ mermaid.js は `direction-text` の単位を読みません。
 9. `:` と、`:`、`;`、改行以外の 1 個以上の文字をできるだけ多く: `label` の単位。
    [fixture: class/gram-member-statement] [fixture: class/lex-label-percent]
 10. `:::`: `:::` の単位。 [fixture: class/db-css-class-digit]
-11. `-`、`.`、`+`、`%`、 `=`: そのテキストの名前の単位。
+11. `-`、`.`、`+`、`%`、`=`: そのテキストの名前の単位。
     [fixture: class/gram-name-dash-spaces] [fixture: class/gram-name-dots]
     [fixture: class/gram-member-statement] [fixture: class/lex-plus-in-name]
     [fixture: class/lex-equals-in-name] [fixture: class/lex-percent-in-name]
-12. 1 個以上の ASCII の英字、ASCII の数字、 `_`: `word` の単位。
+12. 1 個以上の ASCII の英字、ASCII の数字、`_`: `word` の単位。
     [fixture: class/gram-name-digits]
 13. `[` と `]`: そのテキストの名前の単位。 [fixture: class/db-class-label-type]
 14. `!`、`$`、`&`、`'`、`?`、`\`、`/` のどれか、
@@ -446,7 +446,7 @@ mermaid.js は `direction-text` の単位を読みません。
 [fixture: class/lex-note-for-two-spaces] [fixture: class/lex-note-for-tab]
 空白は図のテキストで数え、その隣のディレクティブは 2 つの単位の間にあります。
 `note%%{init: {}}%% for A "t"` と `note %%{init: {}}%%for A "t"` は A
-のノートで、 `note %%{init: {}}%% for A "t"` は空白が 2 つなので拒否されます。
+のノートで、`note %%{init: {}}%% for A "t"` は空白が 2 つなので拒否されます。
 どれも mermaid.js と同じです。
 [fixture: class/lex-directive-between-note-and-for] [fixture:
 class/lex-directive-between-space-and-for] [fixture:
@@ -491,13 +491,13 @@ class/lex-note-for-directive-between-spaces]
    [fixture: class/lex-member-body-one-line]
 
 そのため、メンバーの行は改行、`{`、`}` で終わります。
-`class A { +x }` はメンバー `+x` を持ち、 `class A {+x`、改行、
+`class A { +x }` はメンバー `+x` を持ち、`class A {+x`、改行、
 `+y}` はメンバー `+x` と `+y` を持ちます。
 [fixture: class/lex-member-body-one-line] [fixture:
 class/lex-member-body-close-on-member-line]
 `"` が文字列を始めるのはメンバーが始まるところだけで、
 文法はそこで文字列を取りません。
-メンバーの行 `"x"` は拒否され、 `+foo "bar"` は引用符を含むメンバーです。
+メンバーの行 `"x"` は拒否され、`+foo "bar"` は引用符を含むメンバーです。
 [fixture: class/lex-member-quote-at-start] [fixture:
 class/lex-member-quote-inside]
 メンバーが始まるところの空の文字列も、テキストの前を含めて拒否されます。
@@ -620,7 +620,7 @@ class/db-member-name-space-then-tab] [fixture: class/db-member-name-tab]
 2. メンバーの名前のテキスト、つまり開き括弧の前のテキストの、
    `member-name` の単位。 [fixture: class/db-member-name-space]
 3. `(` の単位、2 つの括弧の間のテキストから両端の空白を除いた、
-   空でないものの `parameters` の単位、 `)` の単位。
+   空でないものの `parameters` の単位、`)` の単位。
    [fixture: class/lex-member-method-blank-parameters]
    [fixture: class/lex-directive-in-parameters]
 4. 閉じ括弧の直後の文字が分類子の記号なら、その `classifier` の単位。
@@ -642,8 +642,8 @@ mermaid.js は、方法の行を、文字が U+2028 と U+2029 に合わない�
 区間は、始めの空白を含めて、書かれたとおりに分けます。
 可視性の記号は、区間の最初の文字のときだけ分けて置かれ、
 その空白の後の `(` は最初の文字ではありません。
-`x`、U+2028、`+b(c)` は可視性 `+` を持つ方法 `b` ですが、 `x`、U+2028、
-` +b(c)` は可視性のない方法 `+b` で、 `x`、U+2028、` (c)` は、
+`x`、U+2028、`+b(c)` は可視性 `+` を持つ方法 `b` ですが、`x`、U+2028、
+` +b(c)` は可視性のない方法 `+b` で、`x`、U+2028、` (c)` は、
 `(` の前の空白を名前とする方法です。
 [fixture: class/lex-member-method-segment-visibility-first] [fixture:
 class/lex-member-method-segment-space-before-visibility] [fixture:
@@ -653,7 +653,7 @@ class/lex-member-method-segment-space-only-name]
 区間の前のテキストと、戻り値の型の後のテキストは、
 それぞれ両端の空白を除いて何かが残るとき、`ignored-text` の単位で、
 mermaid.js はそれを読みません。
-空白だけのテキストは単位にならないので、 `+b(c) in`、U+2028、空白は、
+空白だけのテキストは単位にならないので、`+b(c) in`、U+2028、空白は、
 戻り値の型 `in` を持ち、後のテキストを持ちません。
 [fixture: class/tokens-member-method-ignored-text-blank]
 `+a`、U+2028、`b(c) int` は、可視性のない方法 `b` で、
@@ -665,7 +665,7 @@ class/lex-member-method-line-separator-after] [fixture:
 class/lex-member-method-line-separator-after-parenthesis]
 属性の行と注釈の行は、そのようなパターンを使わずに分けるので、
 U+2028 と U+2029 はほかの文字と同じくその文字です。
-`+a`、U+2028、`b$` は、名前が `a`、U+2028、 `b` の属性です。
+`+a`、U+2028、`b$` は、名前が `a`、U+2028、`b` の属性です。
 [fixture: class/lex-member-attribute-line-separator] [fixture:
 class/lex-member-annotation-line-separator]
 
@@ -684,12 +684,12 @@ mermaid.js は、文法が受理した後に、それらに対して、
 - `+foo(a(b)) int` は、引数 `b)` と戻り値の型 `int` を持つ方法 `foo(a` です。
   [fixture: class/lex-member-method-nested-parentheses]
 - `+(a)` は方法 `+` です。
-  可視性の記号を離すと、 `(` が最初の文字になるからです。
+  可視性の記号を離すと、`(` が最初の文字になるからです。
   [fixture: class/lex-member-method-visibility-as-name]
 - `+foo()$ int` は分類子 `$` と戻り値の型 `int` を持ち、
   `-bar() int$` は戻り値の型 `int` と分類子 `$` を持ちます。
   [fixture: class/lex-member-classifiers]
-- `<<x)>>` は注釈で、 `<<x>` は属性です。
+- `<<x)>>` は注釈で、`<<x>` は属性です。
   [fixture: class/lex-member-annotation-with-parenthesis] [fixture:
   class/lex-member-annotation-unclosed]
 
@@ -710,7 +710,7 @@ mermaid.js は、文法が受理した後に、それらに対して、
 7. 共有の規則。 [fixture: class/lex-directive-in-namespace-name]
 
 `{` は名前の行に要ります。
-`namespace A`、改行、 `{` は拒否されます。
+`namespace A`、改行、`{` は拒否されます。
 [fixture: class/lex-namespace-brace-next-line]
 
 ### 名前空間の本体の文脈
@@ -732,7 +732,7 @@ mermaid.js は、文法が受理した後に、それらに対して、
 本体の `}` の後、字句解析器は名前空間の文脈に戻り、
 `}` の後の改行がその文脈を出ます。
 文の文脈自身の規則は、本体の中では当てはまりません。
-そこでは、ノートの後のコメントは拒否され、 `style` と方向の行も拒否されます。
+そこでは、ノートの後のコメントは拒否され、`style` と方向の行も拒否されます。
 [fixture: class/lex-namespace-body-comment] [fixture:
 class/lex-namespace-body-style] [fixture: class/lex-direction-in-namespace]
 2 つの名前空間は 1 つの行で閉じてかまいません。
@@ -790,7 +790,7 @@ class/lex-backquote-unclosed-directive-at-end]
 
 バッククォートの名前とジェネリクスの型のテキストは、
 どの文字で始まってもかまいません。
-mermaid.js の字句解析器は、バッククォートの状態とジェネリクスの状態で、 `"`、
+mermaid.js の字句解析器は、バッククォートの状態とジェネリクスの状態で、`"`、
 （バッククォートでは）`~`、`<<` と `>>`、キーワード `cssClass`、`callback`、
 `link`、`click`、`note`、`href` の規則を、
 テキストの規則より先に試します（mermaid.js の
@@ -839,7 +839,7 @@ class/lex-backquote-around-generic]
 2. `(`: `(` の単位。
    文脈を出て、コールバックの引数の文脈に入る。
    [fixture: class/lex-callback-arguments-multi-line]
-3. 改行を含む、 `(` 以外の 1 個以上の文字: `callback-name` の単位。
+3. 改行を含む、`(` 以外の 1 個以上の文字: `callback-name` の単位。
    [fixture: class/lex-callback-name-multi-line]
 
 コールバックの引数の文脈では、`)` は `)` の単位で文脈を出て、
@@ -914,7 +914,7 @@ class/lex-acc-title-next-line]
 引用符のないテキストは次のものです。
 `generic-text`、`:` の後の `label` のテキスト、メンバーの行の `member-name`、
 `parameters`、`return-type`、`annotation-name`、
-`callback-name` と `callback-arguments`、`style-text`、 `title-text`、
+`callback-name` と `callback-arguments`、`style-text`、`title-text`、
 `description-text`、`description-block-text`。
 
 ### 図と文
@@ -1020,7 +1020,7 @@ namespace-name = ( name-part "."? )* ( name-part | "backquoted" )
 [fixture: class/gram-name-dash-spaces]
 `.` は、前後に空白があっても名前の一部で、
 名前を始めることも終えることもできません。
-`class A . B` は `A.B` を宣言し、 `class A.` と `class .A` は拒否されます。
+`class A . B` は `A.B` を宣言し、`class A.` と `class .A` は拒否されます。
 [fixture: class/gram-name-dot-spaces] [fixture: class/gram-name-dot-end]
 [fixture: class/gram-name-dot-start]
 ジェネリクスの型は名前を終えます。
@@ -1035,7 +1035,7 @@ namespace-name = ( name-part "."? )* ( name-part | "backquoted" )
 [`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L244-L258)）。
 ``class A.`b c` `` は `A.b c` を、``class A`b c` `` は `Ab c` を宣言します。
 バッククォートの名前は名前を終えます。
-``class `b c`A `` と、 2 つのバッククォートの名前からなる名前は拒否されます。
+``class `b c`A `` と、2 つのバッククォートの名前からなる名前は拒否されます。
 [fixture: class/gram-name-prefix-backquoted] [fixture:
 class/gram-name-word-then-backquoted] [fixture:
 class/gram-name-backquoted-then-word] [fixture: class/gram-name-two-backquoted]
@@ -1064,7 +1064,7 @@ class/gram-class-css-class-dash] [fixture:
 class/gram-class-annotation-two-words]
 `:::` の後のメンバーの本体には、少なくとも 1 つのメンバーの行が要り、
 空白だけの行も数えます。
-`class A:::c {}` は拒否され、 `class A:::c { }` は受理されます。
+`class A:::c {}` は拒否され、`class A:::c { }` は受理されます。
 [fixture: class/gram-class-css-class-empty-body] [fixture:
 class/gram-class-css-class-blank-body]
 [fixture: class/spec-class-diagram-b5349b23]
@@ -1086,7 +1086,7 @@ attribute-line       = visibility? member-name? classifier?
 ノードを作りません。
 ラベルのないメンバーの文は、クラスの名前だけの文です。
 `Foo` の行がそうです。
-class 図には title の文がなく、 `title Animals` もそのような行で、
+class 図には title の文がなく、`title Animals` もそのような行で、
 クラスの名前 `titleAnimals` です。 [fixture: class/gram-member-statement]
 [fixture:
 class/db-member-statement-blank] [fixture: class/gram-name-alone] [fixture:
@@ -1320,7 +1320,7 @@ class 図に当てはまり、次のように表れます。
   文の中の空の説明ブロックは、ここでは入力を拒否にします。
   mermaid.js はそれらにトークンを読まず、入力を受理します。
   `"" A --> B`、`A ""`、メンバーが始まるところの `""`、`class A""B`、
-  `class A``B`、`class A~~B`、 `A call () --> B`、`call () A`、`A call ()`、
+  `class A``B`、`class A~~B`、`A call () --> B`、`call () A`、`A call ()`、
   `A accDescr {} --> B` です。
   文の始まりと文の最後の単位の後の空の文字列と空の呼び出しは、
   どの文でも拒否します。
@@ -1375,12 +1375,12 @@ class 図に当てはまり、次のように表れます。
   mermaid.js は、コメントの後の改行をコメントに取り込み、
   次の行を同じ文の一部として読みます。
   そのため、`classDiagram %% c` に文が続くものと、
-  `A --> B %% c` の次の行が `class C` のものは、 mermaid.js は拒否し、
+  `A --> B %% c` の次の行が `class C` のものは、mermaid.js は拒否し、
   この仕様は受理します。
   `A --> B %% c` の次の行が `A : +int age` だと、
   mermaid.js では A から `BA` への関係を持つ 1 つの文、
   この仕様では関係とメンバーです。
-  `A --> %% c` の次の行が `B` だと、 mermaid.js では A から B への関係、
+  `A --> %% c` の次の行が `B` だと、mermaid.js では A から B への関係、
   この仕様では拒否です。
   空白だけの行は mermaid.js が改行を取るのを止めるので、
   それがコメントの後にあれば、どちらも 2 つの文を読みます。

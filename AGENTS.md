@@ -5,9 +5,9 @@ version is `AGENTS.ja.md`.
 
 ## Project
 
-A third-party project unrelated to mermaid-js. For the Mermaid text syntax
-(`.mmd`), covering every diagram type that mermaid.js has, it builds these seven
-things.
+A third-party project unrelated to [mermaid-js](https://mermaid.js.org/). For
+the Mermaid text syntax (`.mmd`), covering every diagram type that mermaid.js
+has, it builds these seven things.
 
 | Package                        | npm name                        | Contents                             |
 | ------------------------------ | ------------------------------- | ------------------------------------ |

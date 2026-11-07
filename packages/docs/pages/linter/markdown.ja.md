@@ -33,7 +33,7 @@ Markdownファイルに対してESLintを実行します。
 npx eslint diagram.md
 ```
 
-`@mmd-toolkit/flowchart-no-undef`が、 `diagram.md`の7行目、
+`@mmd-toolkit/flowchart-no-undef`が、`diagram.md`の7行目、
 9列目の`C`を報告します。
 processorは、それぞれの図の診断を元のMarkdown上の位置に対応させます。
 シーケンス図の例には報告がありません。

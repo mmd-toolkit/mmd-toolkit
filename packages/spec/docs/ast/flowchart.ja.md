@@ -34,7 +34,7 @@ subgraph の名前のすぐ後の空の説明ブロックの間か後の空白�
 
 flowchart のノード、つまり図の箱の 1 つ 1 つは、木のノードと紛れないように、
 mermaid.js の Db と同じくここでは**頂点**（vertex）と呼びます。
-**リンク**（link）は、 1 本の矢印とそれに属するものです。
+**リンク**（link）は、1 本の矢印とそれに属するものです。
 
 下のどのノードの子の欄もソースの順です。
 2 つの矢印の間にテキストを持つ [FlowchartLink](#flowchartlink) だけが、
@@ -115,7 +115,7 @@ FlowchartAccDescrStatement、FlowchartAccDescrBlockStatement のどれかです�
 | `cssClass` | Identifier または null     | `:::` の後の CSS クラス。カンマを含む。なければ null。           |
 | `data`     | FlowchartDataBlock の列    | 頂点の直後に続けて書いたデータブロック。ソースの順。なければ空。 |
 
-子の欄: `id`、`shape`、`cssClass`、 `data`。
+子の欄: `id`、`shape`、`cssClass`、`data`。
 [fixture: flowchart/gram-vertex-id-comma] [fixture:
 flowchart/gram-vertex-class-comma]
 
@@ -247,7 +247,7 @@ flowchart/tokens-subgraph-title-all-whitespace]
 子の欄はありません。
 値は、改行を含めて内側の空白を保ちます。
 両端に空白を持つのは、mermaid.js がそれを読むところ、
-つまり `,` の後のスタイルの始まり、 `call` の後のコールバックの名前の終わり、
+つまり `,` の後のスタイルの始まり、`call` の後のコールバックの名前の終わり、
 その引数の両端だけで、ほかのところでリテラルの周りに書かれた空白は、
 どのノードにも属しません。
 スタイルのようにテキストがすべて空白になるところでは、
@@ -324,7 +324,7 @@ flowchart/db-subgraph-string-name-trailing-space]
 ブロックは `body` の文だからですが、mermaid.js はそれを名前に読みます。
 `subgraph "S"accDescr {} accDescr {}` と `subgraph "S"accDescr {} ;` は、
 作った id を持ちます。
-この形でだけ、 Db はその空白をソースから読みます。
+この形でだけ、Db はその空白をソースから読みます。
 [fixture: flowchart/db-subgraph-name-space-between-empty-description-blocks]
 [fixture:
 flowchart/db-subgraph-name-space-after-empty-description-block-before-semicolon]
@@ -349,7 +349,7 @@ mermaid.js は `,` の後のその始まりの空白をタブも含めて読み�
 そのため、スタイルのリテラルは、その前の `,` のすぐ後から、
 最初のスタイルは文がその前に読む空白の後から始まり、
 空白でない最後の文字で終わります。
-`style A fill:#f00 ,  stroke:#333 ` のスタイルは、 `fill:#f00` と、
+`style A fill:#f00 ,  stroke:#333 ` のスタイルは、`fill:#f00` と、
 空白 2 つの後の `stroke:#333` です。
 [fixture: flowchart/db-style-tabs-after-comma] [fixture:
 flowchart/db-linkstyle-leading-space-fill]
@@ -376,7 +376,7 @@ flowchart/db-style-whitespace-only-value]
 | `cssClasses` | (Identifier または null) の列       | CSS クラス。`classDef` の後の `id-list` の、`,` の単位の間の部分。ソースの順。空の部分は null（[flowchart.ja.md](../diagrams/flowchart.ja.md#styleclasslinkstyle-の文) を参照）。                      |
 | `styles`     | (FlowchartLiteral または null) の列 | スタイル。FlowchartStyleStatement と同じ。ただし、`\` の直後の `,` は 2 つのスタイルを分けず、スタイルの一部になる（[flowchart.ja.md](../diagrams/flowchart.ja.md#styleclasslinkstyle-の文) を参照）。 |
 
-子の欄: `cssClasses`、 `styles`。 [fixture: flowchart/db-classdef-names-empty]
+子の欄: `cssClasses`、`styles`。 [fixture: flowchart/db-classdef-names-empty]
 [fixture:
 flowchart/db-classdef-names-trailing-comma]
 
@@ -387,7 +387,7 @@ flowchart/db-classdef-names-trailing-comma]
 | `ids`      | (Identifier または null) の列 | `class` の後の最初の id をリストとして読んだもの。その `id-list` の、`,` の単位の間の部分。空の部分は null。 |
 | `cssClass` | Identifier                    | 2 つ目の id、つまり CSS クラス。カンマを含む。                                                               |
 
-子の欄: `ids`、 `cssClass`。 [fixture: flowchart/db-class-ids-empty-first]
+子の欄: `ids`、`cssClass`。 [fixture: flowchart/db-class-ids-empty-first]
 [fixture:
 flowchart/db-class-ids-only-comma] [fixture: flowchart/gram-class-name-comma]
 
@@ -405,7 +405,7 @@ flowchart/db-class-ids-only-comma] [fixture: flowchart/gram-class-name-comma]
 
 子の欄: `ids`、`callback`、`arguments`、`tooltip`。
 `call` の後の名前は `(` の前の空白を保ちます。
-mermaid.js はそれを関数の名前の一部として渡し、 `click A call f (x)` は、
+mermaid.js はそれを関数の名前の一部として渡し、`click A call f (x)` は、
 `f` と空白という名前の関数を呼びます。
 mermaid.js は引数を書かれたとおりに渡し、その後、引用符の外の `,` ごとに分けて、
 それぞれの両端を削ります。
@@ -426,7 +426,7 @@ URL にリンクするクリックの文です。
 | `tooltip` | StringLiteral または null     | FlowchartClickCallbackStatement と同じ。                                                                                            |
 | `target`  | 文字列または null             | リンク先。`_self`、`_blank`、`_parent`、`_top` のどれか（[文の文脈](../diagrams/flowchart.ja.md#文の文脈) を参照）。なければ null。 |
 
-子の欄: `ids`、`url`、 `tooltip`。
+子の欄: `ids`、`url`、`tooltip`。
 [fixture: flowchart/db-click-ids-empty-tooltip] [fixture:
 flowchart/lex-click-id-comma]
 
@@ -479,7 +479,7 @@ flowchart/lex-direction-line-text-before-directive-inside] [fixture:
 flowchart/lex-direction-line-in-label] [fixture:
 flowchart/lex-direction-line-text-after-value] [fixture:
 flowchart/lex-direction-line-text-after-directive-inside]
-`direction`、改行、 `TB` はどちらも持ちません。
+`direction`、改行、`TB` はどちらも持ちません。
 [fixture: flowchart/lex-direction-line-top-level-next-line]
 
 ### FlowchartAccTitleStatement

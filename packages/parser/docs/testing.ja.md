@@ -19,15 +19,14 @@ fixture としてコーパスに足します。
 `tests/helpers/recorded-diagrams.ts` が挙げる図種のディレクトリの、
 すべての fixture を 1 回ずつ parse し、次を確かめます。
 
-- パースの結果が、 fixture がパーサーのために記録したものと同じであること。
+- パースの結果が、fixture がパーサーのために記録したものと同じであること。
   [記録したパースの結果](#記録したパースの結果) を参照。
 - 受理・拒否と図種が、fixture が記録した mermaid.js のものと、
   fixture の `knownDivergence` の印が求めるとおりに合うこと。
   印がなければ mermaid.js の結果、印があれば仕様の結果です。
 
 ここでは木も Db も確かめません。
-`@mmd-toolkit/tests` が、
-記録した各木を確かめ（`check-tree-corpus.test.ts`。
+`@mmd-toolkit/tests` が、記録した各木を確かめ（`check-tree-corpus.test.ts`。
 [木の検査](#木の検査)を参照）、その木から Db を組んで、
 fixture が記録した Db と比べます（`db-from-tree.test.ts`）。
 
@@ -83,8 +82,8 @@ token の綴り・範囲、gap の所有を検査します。
 expectDivergenceForm を呼びます。
 この関数が拒否する形、トークンを切る形の参照の読み、
 フロントマターの属性の引用符、読み過ごす % だけの行、
-ヘッダーの後の C4 キーワードを確かめ、 agentflow、gitgraph、info、Ishikawa、
-pie、usecase、venn のテストは、このループでの検査を共有します。
+ヘッダーの後の C4 キーワードを確かめ、agentflow、gitgraph、info、Ishikawa、pie、
+usecase、venn のテストは、このループでの検査を共有します。
 [fixture: gitgraph/div-directive-in-commit]
 [fixture: gitgraph/div-frontmatter-cross-string-enable]
 [fixture: usecase/div-comment-preheader-bare]
@@ -127,7 +126,7 @@ pie、usecase、venn のテストは、このループでの検査を共有し�
 - `comment-takes-line-break`: 入力が、
   行の中で単位の後にある図のコメントを持つクラス図であること。
   そのコメントは、パーサーの字句解析器と単位から求めます。
-  Gantt チャートでは、 mermaid.js が直接たどり着く、
+  Gantt チャートでは、mermaid.js が直接たどり着く、
   印が `%` のコメントを持つこと。
   直接たどり着くかどうかは
   [コメント](../../spec/docs/diagrams/gantt.ja.md#コメント) の定めのとおりで、
@@ -139,7 +138,7 @@ pie、usecase、venn のテストは、このループでの検査を共有し�
   mermaid.js が直接たどり着くものを持つ Gantt チャートであること。
   同じように求めます。
 - `blank-line-after-header-or-comments`: 入力が、ヘッダーの後か 2 つの文の間に、
-  差異の 4 つの場合のどれかの空行と図のコメントを持つ、 mindmap、kanban 図、
+  差異の 4 つの場合のどれかの空行と図のコメントを持つ、mindmap、kanban 図、
   Ishikawa 図のいずれかであること。
   パーサーの単位と図のコメントの行から求めます。
   `newline` 単位は行を終え、n 個の改行の単位は n 行を終えます。
@@ -199,7 +198,7 @@ gitgraph では、埋め込みの設定により受理判定がどちらの方�
 パーサーが参照入力を受理すること。
 そして、それらのクリックの id のテキストが、
 参照入力の木の 1 つの葉ノードの範囲に収まることです。
-パーサーが参照入力を拒否するのは、 `subgraph a,b` の `,` のように、
+パーサーが参照入力を拒否するのは、`subgraph a,b` の `,` のように、
 クリックの id が文の文脈が別に読む場所にあるときで、何も比べません。
 [fixture: flowchart/db-subgraph-id-click-comma-blank-line]
 
@@ -207,7 +206,7 @@ gitgraph では、埋め込みの設定により受理判定がどちらの方�
 コメント領域と空の形を除いたものです。
 空の形とは、それぞれの空の文字列、`call` から `)` までのそれぞれの空の呼び出し、
 文でない空の説明ブロックの `accDescr` から `}` まで、クラス図では、
-それぞれの空のバッククォートの名前と空のジェネリクスの型、 ER 図では、
+それぞれの空のバッククォートの名前と空のジェネリクスの型、ER 図では、
 それぞれの `empty-backquotes` 単位です。
 ER 図の空のバッククォートは、どこにあっても mermaid.js は何も読みません。
 空の説明ブロックが文でないのは、文の始まりでも、
@@ -218,7 +217,7 @@ state の文の `textBeforeBody` が持たないときです。
 濃度、線、`:`、`:::`、`,`、`[` の後と、
 `class` の文の最初の名前の並びの中がそれです。
 ブロックの後の単位がその文を続けるときもそうです。
-濃度、`:::`、`{`、`[`、`:`、 `,` がそれです。
+濃度、`:::`、`{`、`[`、`:`、`,` がそれです。
 [fixture: er/div-empty-description-block-in-relationship]
 [fixture: er/div-empty-description-block-in-class]
 [fixture: er/gram-empty-description-block-between-names]
@@ -330,12 +329,11 @@ fixture の入力と並べて `packages/tests/fixtures/<diagram>/<fixture 名>/`
 
 - パーサーが受理する入力では、`ast.json` に木を置きます。
   中身は、位置を含めた `JSON.stringify(root, null, 2)` です。
-- パーサーが拒否する入力では、`parse-error.json` に、
-  `ParseError` の `message`、`range`、
-  `loc` を置きます（`index` は `range` の始まりです）。
+- パーサーが拒否する入力では、`parse-error.json` に、`ParseError` の `message`、
+  `range`、`loc` を置きます（`index` は `range` の始まりです）。
   パーサーが拒否を報告する位置の記録です。
   既知の差異では原因の形（[`error-positions.md`](./error-positions.ja.md)
-  を参照）、 mermaid.js も拒否する入力では、一般の規則が決める位置です。
+  を参照）、mermaid.js も拒否する入力では、一般の規則が決める位置です。
   拒否も木と同じだけ記録され、
   報告する位置が変わればファイルの変化として現れます。
 - fixture は 2 つのうちどちらか一方を持ちます。
@@ -390,12 +388,12 @@ fixture を改名・削除するときは、古いファイルも一緒に動か
   `src/ast/class.ts`、`src/ast/state.ts` にあります。
   `^` が示す範囲を、ノードの範囲と比べます。
 - README の「使い方」の例を parse し、示している値と木を結果と比べます。
-- 単体テストが、`common.md` の各規則、検出器の表、
-  `visitorKeys`（子の欄の順も。 [木の検査](#木の検査)を参照）と
-  `traverseNodes`、 flowchart の木とそのトークン、
+- 単体テストが、`common.md` の各規則、検出器の表、`visitorKeys`（子の欄の順も。
+  [木の検査](#木の検査)を参照）と `traverseNodes`、
+  flowchart の木とそのトークン、
   シーケンス図とクラス図と状態図の木とそのトークンと文法の外の拒否を扱います。
 
-`tests/agentflow.test.ts` は、名前で指した fixture で、 Name、コメント、見出し、
+`tests/agentflow.test.ts` は、名前で指した fixture で、Name、コメント、見出し、
 矢印、メタデータ、click 接頭辞の構造を検査します。
 サイト設定の maxEdges による受理結果は、
 flowchart と同様に parse() と別に検査します。
@@ -408,7 +406,7 @@ flowchart と同様に parse() と別に検査します。
 `tests/fixtures.test.ts` が記録と受理判定を比べます。
 
 `tests/pie.test.ts` は、名前で指した fixture で、隠し形式の所有先、
-共通値の余白と null、重複、両方の引用符、 double 変換を検査します。
+共通値の余白と null、重複、両方の引用符、double 変換を検査します。
 不可分な境界の参照入力は、
 共通の fixture ループが元の expected Db
 と比べます（[既知の差異](#既知の差異)を参照）。

@@ -102,7 +102,7 @@ metadata と stereotype は別々に書かれた形を保ちます。
 明示形状の両側の区切りは entity の書かれた句読点です。
 宣言か参照かの boolean は作らず、構文の欄と親の位置で決めます。
 actor や JSON に解決される端点も別の型に変えません。
-`rectangle` は toolkit の完全な形状名で、 mermaid の `rect` ではありません。
+`rectangle` は toolkit の完全な形状名で、mermaid の `rect` ではありません。
 [fixture: usecase/gram-labeled-source-metadata-declaration]
 [fixture: usecase/gram-target-metadata-declaration]
 [fixture: usecase/lex-label-unquoted-hws-trim]
@@ -322,7 +322,7 @@ usecase で共通の opaque block に入るのはこのブロックだけです�
 
 子の欄はありません。
 範囲は direction から値までです。
-固定集合のキーワードはスカラー欄で、 Identifier の子を作りません。
+固定集合のキーワードはスカラー欄で、Identifier の子を作りません。
 [fixture: usecase/db-semantic-case]
 [fixture: usecase/gram-direction-adjacent-quoted]
 [fixture: usecase/db-direction-all] [fixture: usecase/db-direction-td]
@@ -377,7 +377,7 @@ class のスタイルをこの節点の直接の styles に展開しません。
 範囲は最初のプロパティ単位から最後の値の構成単位までです。
 コロン前の余白は範囲内の trivia、コロン後の余白は value に入ります。
 引用成分や `\,` で保護しないコンマは宣言を分けます。
-null の宣言や末尾コンマはなく、 CSS 関数や文字列成分を解釈・復号しません。
+null の宣言や末尾コンマはなく、CSS 関数や文字列成分を解釈・復号しません。
 [fixture: usecase/lex-css-property-padding]
 [fixture: usecase/lex-style-quoted-value-and-comma]
 [fixture: usecase/gram-css-empty-string-component]

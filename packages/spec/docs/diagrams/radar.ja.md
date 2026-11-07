@@ -15,7 +15,7 @@ Db の導出値は
 後続の境界を要求せず小文字の接頭辞 radar-beta を選ぶ。
 受理する見出しは radar-beta、radar-beta:、radar-beta と別の colon の 3 形。
 裸の radar、大文字、見出しの反復、不正な接尾辞は拒否する。
-検出は構文検査より先なので、 radar の選択だけでは受理を決めない。
+検出は構文検査より先なので、radar の選択だけでは受理を決めない。
 [fixture: radar/header-colon-inline] [fixture: radar/header-separated-colon]
 [fixture: radar/header-bare] [fixture: radar/header-uppercase]
 [fixture: radar/header-repeated] [fixture: radar/header-letter-suffix]
@@ -102,7 +102,7 @@ ASCII の対照と、通過した Unicode の trivia は区別する。
 全規則間の最長一致ではない。
 結合 colon の見出しを除く語 keyword は長い id の代替を持つが、句読点は持たない。
 実効順の根拠は [module.ts][module]、[tokenBuilder.ts][builder]、
-[共通の keyword builder][common-builder]、 import した文法である。
+[共通の keyword builder][common-builder]、import した文法である。
 [fixture: radar/lex-id-keyword-prefix] [fixture: radar/lex-id-keywords]
 [fixture: radar/lex-id-numeric-leading] [fixture: radar/lex-id-title-prefix]
 [fixture: radar/lex-bare-accessibility-ids] [fixture: radar/lex-false-prefix-id]
@@ -166,9 +166,9 @@ colon を省略できる文法も字句の優先順は変えない。
 [fixture: radar/lex-bare-accessibility-axis-only]
 [fixture: radar/lex-bare-accessibility-no-colon-reference]
 
-[custom matcher][common-builder] が制限するのは裸の radar-beta だけであり、 %%、
+[custom matcher][common-builder] が制限するのは裸の radar-beta だけであり、%%、
 共通 Notation の空白、EOF の直前で終わる必要がある。
-その空白は U+0009–U+000D、U+0020、U+00A0、U+1680、U+2000–U+200A、 U+2028、
+その空白は U+0009–U+000D、U+0020、U+00A0、U+1680、U+2000–U+200A、U+2028、
 U+2029、U+202F、U+205F、U+3000、U+FEFF である。
 境界を満たしても後続文字が合法な隙間になるわけではない。
 他の語 keyword は長い id の代替以外に空白境界を要求しない。
@@ -194,7 +194,7 @@ native の hidden form が間の LF を消費してもよい。
 除かれる directive 自体は separator にならない。
 radar-beta と axis の間に directive を置き、除去後が radar-betaaxis なら拒否し、
 space が残れば受理する。
-axis、curve、 5 種の option keyword にも同じ長い id の規則を適用する。
+axis、curve、5 種の option keyword にも同じ長い id の規則を適用する。
 [fixture: radar/directive-header-glued] [fixture: radar/directive-header-space]
 [fixture: radar/directive-axis-glued] [fixture: radar/directive-curve-glued]
 [fixture: radar/directive-showlegend] [fixture: radar/directive-ticks]
@@ -209,7 +209,7 @@ number は先に ASCII 数字 1 個以上、dot、数字 1 個以上を試し、
 zero 以外で始まる形にも、直後が dot でない条件を要求する。
 繰返しは残る条件が成立する限り長く取る。
 小数の leading zero は許すが、整数の leading zero、符号、小数点の片側の欠落、
-指数、NaN、 Infinity の綴りは数ではない。
+指数、NaN、Infinity の綴りは数ではない。
 [fixture: radar/db-number-leading-zero-decimal]
 [fixture: radar/number-leading-zero] [fixture: radar/number-plus]
 [fixture: radar/number-negative] [fixture: radar/number-negative-zero]
@@ -301,7 +301,7 @@ hidden-yaml は ASCII padding の後、---、任意の ASCII padding、LF で始
 成立する限り本文の文字数を少なくする。
 それが失敗した場合だけ、隣接する空の fence を試す。
 内容には LF・LS・PS を含められる。
-閉じは本文の LF に直結し、字下げを許さず、 LF、共通 Notation の空白、
+閉じは本文の LF に直結し、字下げを許さず、LF、共通 Notation の空白、
 EOF の直前で終わる。
 条件を満たさない閉じを越えて、後の適格な閉じを採ってもよい。
 [fixture: radar/hidden-yaml-adjacent-later]
@@ -324,7 +324,7 @@ native YAML 自体は properties や設定を適用せず、
 [fixture: radar/detect-retained-opener-nbsp]
 [fixture: radar/detect-retained-closer-u3000]
 
-hidden-directive は任意の ASCII padding の後、%%{ と任意の内容を読み、 LF、
+hidden-directive は任意の ASCII padding の後、%%{ と任意の内容を読み、LF、
 共通 Notation の空白、EOF の直前で終わる最初の }%% までを取る。
 内容は LF・LS・PS や空・nonword の本文を許す。
 条件を満たさない閉じは通り越してもよい。
@@ -404,7 +404,7 @@ global directive は二つの percent 文字の間にも置ける。
 通常の semicolon は文の separator ではない。
 行の common 値の semicolon は、
 共有の style/classDef 規則が選ばない限り値に残る。
-axis、curve、option、 block の後に semicolon が残れば拒否する。
+axis、curve、option、block の後に semicolon が残れば拒否する。
 [fixture: radar/common-block-comment]
 [fixture: radar/lex-common-hidden-percent-block-owner]
 [fixture: radar/tail-title-semicolon] [fixture: radar/tail-acctitle-semicolon]
@@ -593,20 +593,20 @@ opaque-data の比較で取り除く radar 固有の受理判定キーはない�
 
 次の既存 6 識別子を適用する。
 native hidden の形全体は RadarIgnoredText に持てるため、それを理由に拒否しない。
-空 label と空 description 文も保ち、 tokenless-empty-forms にはしない。
+空 label と空 description 文も保ち、tokenless-empty-forms にはしない。
 [fixture: radar/lex-hidden-yaml-two-nonempty]
 [fixture: radar/lex-hidden-native-body-separators]
 [fixture: radar/db-empty-labels] [fixture: radar/common-block-empty-interleaved]
 
 [directive-as-token-boundary](../known-divergences/directive-as-token-boundary.md)
-では、 id・数・固定語の内部の global directive を拒否する。
+では、id・数・固定語の内部の global directive を拒否する。
 boolean/graticule の語と common keyword も固定語に含む。
 一体の atom の内部には ignored-text node を置く位置がない。
 完成した作者の部品の間には global directive を置ける。
 見出しの語と colon、common keyword と colon/brace、label の括弧と string、
 entry の軸名・colon・数、list member と comma がその境界である。
 除去後も正しい字句の境界を満たす必要がある。
-string、common 値、 native hidden の内容にも置ける。
+string、common 値、native hidden の内容にも置ける。
 [fixture: radar/directive-header-middle] [fixture: radar/directive-axis-name]
 [fixture: radar/directive-curve-name] [fixture: radar/directive-number]
 [fixture: radar/directive-reference] [fixture: radar/div-directive-boolean-atom]
@@ -632,7 +632,7 @@ string、common 値、 native hidden の内容にも置ける。
 [fixture: radar/lex-hidden-native-closer-global]
 
 [ignored-semicolon-as-token-boundary](../known-divergences/ignored-semicolon-as-token-boundary.md)
-では同じく、 id・数・固定語の内部の選択 semicolon を接合せず拒否する。
+では同じく、id・数・固定語の内部の選択 semicolon を接合せず拒否する。
 完成した部品間や text・string・hidden form 内の選択 semicolon は trivia とする。
 この規則も通常の semicolon を separator にはしない。
 [fixture: radar/div-semicolon-id] [fixture: radar/div-semicolon-number]

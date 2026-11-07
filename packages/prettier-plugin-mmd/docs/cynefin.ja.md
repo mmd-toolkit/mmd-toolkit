@@ -84,7 +84,7 @@ cynefin-beta
 
 本文の文は設定の 1 段、領域の項目は 2 段にします。
 親は列ではなく、木の項目リストで決まるためです。
-tabWidth が 0 なら空白は加えず、 useTabs は幅が 0 でも 1 段に 1 tab を使います。
+tabWidth が 0 なら空白は加えず、useTabs は幅が 0 でも 1 段に 1 tab を使います。
 説明本文以外の値の継続行と保護された内部は元の列を保ちます。
 
 [fixture: cynefin/indentation/indent-two]
@@ -733,7 +733,7 @@ textBeforeHeader があれば共有の keepsPrefix で、
 見出し keyword の直前まで prefix 全体を保ちます。
 先頭 LF、passed trivia、second-scan directive、
 real・retained YAML の順を保ちます。
-掃除すると無視された YAML が有効な frontmatter になり、 title、設定、
+掃除すると無視された YAML が有効な frontmatter になり、title、設定、
 受理を変え得るためです。
 
 [fixture: cynefin/retained-prefix/prefix-retained-yaml]
@@ -806,7 +806,7 @@ cynefin-beta
 
 ### Comments
 
-普通の独立コメントは所属本文の段、項目間は項目の段、 prefix は第 1 列にします。
+普通の独立コメントは所属本文の段、項目間は項目の段、prefix は第 1 列にします。
 inline コメントは行と接触を保ち、元から離れていれば 1 space にします。
 印、内容、末尾の padding を残します。
 native comment は CR・LF で終わり、LS・PS は内容です。
@@ -1144,7 +1144,7 @@ cynefin-beta
 普通の受理ファイルは設定の改行 1 個で終えます。
 空領域、最後のコメント、閉じた hidden form も同じです。
 ファイルの終わりをそろえるため、普通の末尾空行は削ります。
-未完の global directive、retained prefix の境界、 hidden に要る padding、
+未完の global directive、retained prefix の境界、hidden に要る padding、
 保護された終わりを優先します。
 
 [fixture: cynefin/final-newline/final-newline-domain]
@@ -1176,12 +1176,12 @@ cynefin-beta
 
 既存の六つの差異に従います。
 directive-as-token-boundary、ignored-semicolon-as-token-boundary、
-html-tag-in-frontmatter、embedded-data-opaque、
-bare-percent-line-before-header、c4-keyword-anywhere です。
+html-tag-in-frontmatter、embedded-data-opaque、bare-percent-line-before-header、
+c4-keyword-anywhere です。
 cynefin 固有の acceptance-setting key や差異は加えません。
 raw 拒否には raw Db がないので、
 利用できる指定読みと embedded effect を使います。
-単独の parse 失敗は出力せず構文エラーとし、 Markdown は embedding を辞退して、
+単独の parse 失敗は出力せず構文エラーとし、Markdown は embedding を辞退して、
 拒否 payload を host に任せます。
 
 [test: cynefin/specified-readings/divergence-opaque-yaml]

@@ -1,6 +1,7 @@
 # 互換性
 
-mmd-toolkitは、**mermaid.js 12.3.0**を互換性の基準とします。
+mmd-toolkitは、
+**[mermaid.js](https://mermaid.js.org/) 12.3.0**を互換性の基準とします。
 対応する図の種類は、[図の対応状況](./support.ja.md)を参照してください。
 
 ## 保証する性質

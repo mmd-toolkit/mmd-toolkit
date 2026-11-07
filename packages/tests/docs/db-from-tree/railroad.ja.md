@@ -83,7 +83,7 @@ Root.diagramType で IR、EBNF、ABNF、PEG を選び、
    choice と sequence の member の順を保ち、group は内部の定義を公開する。
    角括弧は optional となる。
    EBNF の波括弧は下限 0、上限 Infinity の repetition、
-   後置の ?、 *、+ は optional または下限 0/1、
+   後置の ?、*、+ は optional または下限 0/1、
    上限 Infinity の repetition となり、書かれた入れ子の順を保つ。
    EBNF の例外は、左の定義、terminal の dash、右の定義の sequence となり、
    左にある sequence の入れ子も保つ。 [fixture: railroad/ebnf-db-all-fields]
@@ -99,7 +99,7 @@ Root.diagramType で IR、EBNF、ABNF、PEG を選び、
    公開する両方の境界に共有の `numberOrText()` を適用し、
    非有限値を文字列にする。
    NumericValue は変換済みの綴り全体を terminal とし、基数の大文字小文字、数字、
-   dot、 hyphen を保つ。 [fixture: railroad/abnf-db-repeat-optional]
+   dot、hyphen を保つ。 [fixture: railroad/abnf-db-repeat-optional]
    [fixture: railroad/abnf-db-repeat-implicit-optional]
    [fixture: railroad/abnf-db-repeat-zero-padded-optional]
    [fixture: railroad/abnf-db-repeat-implicit-zero]
@@ -113,8 +113,8 @@ Root.diagramType で IR、EBNF、ABNF、PEG を選び、
 7. **PEG の後置と述語。**
    後置は同じ optional と repetition の形を使う。
    dot は special の dot となる。
-   述語の対象全体を先に変換し、接頭辞と、 terminal の二重引用文字列、
-   nonterminal の名前、 special のテキストでラベルを作る。
+   述語の対象全体を先に変換し、接頭辞と、terminal の二重引用文字列、
+   nonterminal の名前、special のテキストでラベルを作る。
    変換後の対象がそれ以外の型なら (...) となる。
    terminal の値の引用符と変換後の改行は escape しない。
    group 内の述語を対象にする述語は、公開済みの special に接頭辞を付ける。

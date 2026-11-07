@@ -1,7 +1,8 @@
 # リンター
 
 `@mmd-toolkit/eslint-plugin`は、
-ESLintでMermaidの図の構文エラーと書き間違いを検出するプラグインです。
+[Mermaid](https://mermaid.js.org/)の図の構文エラーと書き間違いを、
+ESLintで検出するプラグインです。
 
 [ESLint Online Playground](https://eslint-online-playground.netlify.app/#@mmd-toolkit/eslint-plugin)
 で、診断、自動修正、エディターの修正候補を試せます。
@@ -13,6 +14,8 @@ ESLintでMermaidの図の構文エラーと書き間違いを検出するプラ�
 ```sh
 npm install --save-dev eslint@10 @mmd-toolkit/eslint-plugin @eslint/markdown
 ```
+
+プラグインはESモジュールで、Node.js `^20.19.0 || ^22.13.0 || >=24`が必要です。
 
 プロジェクトのルートに、
 [ESLintの設定ファイル][eslint-config]を`eslint.config.mjs`として作成します。

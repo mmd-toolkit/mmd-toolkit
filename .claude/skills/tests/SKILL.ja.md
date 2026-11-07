@@ -259,7 +259,7 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    は PIE_SECTION_LABEL を名指すが、
    [文法](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/pie/pie.langium#L1-L20)
    は STRING を呼び、既定の escape 変換に進む。
-   到達する単位について、両方の引用符、未知の escape、精度、 overflow、
+   到達する単位について、両方の引用符、未知の escape、精度、overflow、
    underflow を集める。
    前の図種の単位に到達しない所は、拒否の対照を置き、理由を記す。
 5. 回復した AST だけでなく公開の受理の門を読む。
@@ -297,7 +297,7 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
 
 ### 5.2 正規化関数
 
-1. clone の中で、文法、AST から Db への adapter があればそれ、 Db の実装、
+1. clone の中で、文法、AST から Db への adapter があればそれ、Db の実装、
    renderer を開く。
    private・closure 内の状態と、
    公開の呼出しを全部挙げる（Jison の `yy.` 呼出しか、
@@ -353,7 +353,7 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
      生成された同一性・参照と証明できる位置だけを、定めた生成順で置き換え、
      後の文に書かれたものも含め、著者の placeholder 名を予約する。
      著者のテキストから id に見える部分文字列を探さない。
-     記録が変換より前で、公開が変換後に由来を決めるなら、 converter を写さず、
+     記録が変換より前で、公開が変換後に由来を決めるなら、converter を写さず、
      記録が依る同値性を明記してテストする。
      拒否後の reset と、生成の 2 回の安定を確かめる。
    - テキストではなく、実行の時刻や偶然に依る値（gantt は日付を、
@@ -381,11 +381,11 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    要るなら同じファイルに書いて `dbPatches` に登録する。
    登録には、mermaid が受理し、
    その図種 ID として検出するテキストを添える（`classDiagram`
-   だけでは拒否されるので、 class の見本は class を 1 つ持つ）。
+   だけでは拒否されるので、class の見本は class を 1 つ持つ）。
    `runMermaid()` は、どの入力を解析するよりも前に、
    すべての Db クラスにパッチを当てる。
    Db のメソッドが、Node にないブラウザの関数（`window`、`document`、
-   `Option`）を呼ぶと、 `MermaidEnvironmentError` になる。
+   `Option`）を呼ぶと、`MermaidEnvironmentError` になる。
    そのときは、パッチがその呼び出しの間だけ、
    その関数の代役を与える（`src/normalizers/browser-stand-ins.ts`）。
    mermaid の処理は書き写さない。
@@ -427,7 +427,7 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    それ以外が変われば、理由を調べる。
    それらの fixture は要約を持ち、木を持たない。
    `tests/db-from-tree.test.ts` の `DIAGRAM_TYPES_WITHOUT_RECORDED_TREES`
-   にその図種を足し、 parser が木を記録したら外して、
+   にその図種を足し、parser が木を記録したら外して、
    builder を記録した木で走らせるよう、同じファイルの `DIAGRAMS` に足す。
    その図種のノードの型の接頭辞（`Requirement`）も、
    `tests/check-tree-recorded.ts` の `NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES`
@@ -457,7 +457,7 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    除くファイルには理由を書く。
    spec ファイルが import するモジュールと、
    テキストを受け取る関数（図種のパーサーの `parse`、
-   `Diagram.fromText` など）のスタブは、 `spec-recorder.ts` の一覧に足す。
+   `Diagram.fromText` など）のスタブは、`spec-recorder.ts` の一覧に足す。
    この一覧は全図種で共有する。
 3. spec ファイルの記録器（`tools/src/spec-recorder.ts`）は、
    各 spec ファイルをスタブに対して実行する。
@@ -496,7 +496,7 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    ブラウザで実際のページと照らすと、確かめられる。
    この照合だけは、収集と違い、clone に依存を入れる必要がある。
    clone の開発サーバー（`pnpm run dev`）を起動する。
-   これは demos のページが import する `mermaid.esm.mjs` を作り、 demos を配る。
+   これは demos のページが import する `mermaid.esm.mjs` を作り、demos を配る。
    demos のページを開いて照らす。
 5. 収集した入力には `config` を付けない。
    名前は `<出どころ>-<ファイル>-<入力の SHA-256 の先頭 8 桁の 16 進数>`
@@ -525,8 +525,8 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    書く前に、これまでの図種で必要になった場合の種類を、
    新しい図種の文と fixture に先に当てる。
    一覧にして当て、当てはまらない種類は、省かずに理由を書く。
-   どの種類でも、構文のテキストを持つ場所すべて（欄、名前、文字列、
-   ブロック。引用符の内外、最初の行とあとの行）を mermaid.js で確かめる。
+   どの種類でも、構文のテキストを持つ場所すべて（欄、名前、文字列、ブロック。
+   引用符の内外、最初の行とあとの行）を mermaid.js で確かめる。
    入力は、一覧の文言からでなく、これまでの図種の fixture の名前から取る。
    近い 2 つの図種の手書きの fixture の名前を `ls` で一覧にし、名前ごとに、
    新しい図種での対応か、対応しない理由を書く。
@@ -570,7 +570,7 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
      空白だけの行。
    - 複数の行にまたがる値の途中にあるコメント行とディレクティブの行。
    - Db がテキストから読む数。
-     符号、`-0`（Db は -0 で、JSON は 0 と書く）、 `NaN`、`Infinity`、
+     符号、`-0`（Db は -0 で、JSON は 0 と書く）、`NaN`、`Infinity`、
      倍精度に収まらない大きな数、数の後ろのテキスト。
    - Db が読む埋め込み設定の値。
    - `html-tag-in-frontmatter` の受理の両方向と値だけの違い。
@@ -580,7 +580,7 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
      開きをテキストとして取り込む行の値も含める。
    - hidden ブロックの隣接する fence。
      本文のある選択肢を空の fallback より先に試し、
-     後に適合する閉じがある場合とない場合、 EOF と閉じの空白も含める。
+     後に適合する閉じがある場合とない場合、EOF と閉じの空白も含める。
    - 省略可能なヘッダーのフラグの後に、同じ行で文が続く場合。
    - 重複した定義の 2 度目に、`-0` のような意味上の境目の値を置く場合。
      両方の順で、どの値が残るか、
@@ -591,7 +591,7 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
      文の後とヘッダーの行で、EOF で終わるコメントにも置く。
      LF で終わる対照も含める。
    - 通過した裸の `%%` 行とヘッダーの間の空白。
-     VT、FF、NBSP、BOM、U+1680、U+2000〜U+200A、U+202F、U+205F、 U+3000、LS、
+     VT、FF、NBSP、BOM、U+1680、U+2000〜U+200A、U+202F、U+205F、U+3000、LS、
      PS をそれぞれ空白だけの行とヘッダーの直前に置く。
      ASCII の空白・タブの対照も含める。
    - 検出がブロックを 1 つ飛ばす場合。
@@ -600,7 +600,7 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
      開きと閉じが同じ字下げの形を調べる。
    - keyword の直後に global な directive が接着し、
      その後に次の keyword や値が接着する場合。
-     境界は、 global な directive と選ばれたセミコロンを除いた文で判定する。
+     境界は、global な directive と選ばれたセミコロンを除いた文で判定する。
    - 各図種の atom（固定語、ヘッダーの keyword、矢印、共通の keyword、
      空白を含められない class 名や icon の値）の中と、
      作者が書いた部品の間にある global な directive と選ばれたセミコロン。
@@ -744,7 +744,7 @@ tests の生成器（`fixtures:add-many` など）で足す（方針と手順は
    形ごとに 1 件だけ残す。
    入力の形は、入力のうち、
    字と数字の並びをそれぞれ 1 つの印にしたものである（キーワードは、
-   書かれた大文字小文字のまま残すので、 `State` と `state` は別の形である）。
+   書かれた大文字小文字のまま残すので、`State` と `state` は別の形である）。
    ほかの文字は、すべて残す。
    空白、U+2028、U+2029、記号、ディレクティブとコメントの中身である。
    比べるのは、失敗の入力の同じファイルの中だけにする。
@@ -822,7 +822,7 @@ tests の生成器（`fixtures:add-many` など）で足す（方針と手順は
      `getDiagramLoader` を export しているファイルがそれに当たる。
      古い名前のままだと、
      設定を読むすべての fixture が `Cannot find module` で失敗する。
-   - `docs/` と `tools/collect.ts` の、 mermaid.js のソースへのパーマリンク。
+   - `docs/` と `tools/collect.ts` の、mermaid.js のソースへのパーマリンク。
      コミットを替え、行番号を新しい版の同じコードへ移す。
      2 つのタグの間のファイルの行の差分で各範囲を写す script を使うと、
      行が変わらなかった範囲は見つかる。
@@ -905,7 +905,7 @@ tests の生成器（`fixtures:add-many` など）で足す（方針と手順は
      `getDiagramFromText()` が食い違うか、
      Node にない機能を mermaid.js が使っている。
      `runMermaid()` の手順が成り立たない。
-     そのような入力をどう記録するかは、 `docs/expected-results.md` の定義と、
+     そのような入力をどう記録するかは、`docs/expected-results.md` の定義と、
      実装が比べる相手を変える。
      そのため、選択肢と fixture と推奨を示して決定を求め、決まってから進む。
    - `knownDivergence` の印が付いた行: 印がまだ当てはまるかは、

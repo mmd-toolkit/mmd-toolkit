@@ -20,7 +20,7 @@ classDiagram
 ```
 
 バッククォートの名前は、`` ` ``、`` ` `` 以外の文字、`` ` `` で、
-ジェネリクスの型のテキストは、 2 つの `~` の間の `~` 以外の文字です。
+ジェネリクスの型のテキストは、2 つの `~` の間の `~` 以外の文字です。
 [fixture: class/spec-class-diagram-c327a7be]
 [fixture: class/lex-generic-plain-type]
 [文字列、バッククォートの名前、ジェネリクスの型](../diagrams/class.ja.md#文字列バッククォートの名前ジェネリクスの型)

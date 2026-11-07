@@ -7,7 +7,7 @@
 [info の空の概要](../db-summaries.md#info) を組み立てる。
 受理した木には常に `{}` を返す。
 showInfo、共通の 4 形式、hidden text は Db の欄に寄与しない。
-書かれた出現は木に保ち、 version・effective title は合成しない。
+書かれた出現は木に保ち、version・effective title は合成しない。
 [fixture: info/header-lf] [fixture: info/header-inline-flag] [fixture:
 info/common-all] [fixture: info/common-flag-all]
 [fixture: info/hidden-yaml-body]

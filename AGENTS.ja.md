@@ -5,7 +5,7 @@
 
 ## プロジェクト
 
-mermaid-js とは無関係の第三者プロジェクト。
+[mermaid-js](https://mermaid.js.org/) とは無関係の第三者プロジェクト。
 Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象に次の 7 つを作る。
 
 | パッケージ                     | npm 名                          | 内容                                |
@@ -34,7 +34,7 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
       mermaid.js が読まない、捨てる、
       または書かれたものと違う意味で読むテキストは、
       ノードにできるところではノードにする（`FlowchartIgnoredText`、
-      文を始める空の説明ブロック、 `create destroy A`）。
+      文を始める空の説明ブロック、`create destroy A`）。
       そのとき入力は受理し、書かれたとおりに木に示し、
       読み違いは lint の規則に任せる。
       この問いは、挙動の原因が何であっても、

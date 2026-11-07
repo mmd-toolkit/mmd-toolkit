@@ -124,8 +124,8 @@ PieAccDescrStatement、PieAccDescrBlockStatement、PieIgnoredText のいずれ�
 [fixture: pie/yaml-inline-after-title]
 [fixture: pie/lex-yaml-before-colon-two-blocks]
 [fixture: pie/lex-hidden-before-colon-lf]
-コロンとその数の間の隣接する YAML の区切り 3 行は、
-1 個の textBeforeValue です。 [fixture: pie/lex-yaml-three-fences-before-value]
+コロンとその数の間の隣接する YAML の区切り 3 行は、1 個の textBeforeValue です。
+[fixture: pie/lex-yaml-three-fences-before-value]
 
 StringLiteral は、対応する引用符の間の書かれた内容を、復号せずに持ちます。
 raw は元の引用符つきのソース全体を保ち、closed は true です。
@@ -156,7 +156,7 @@ NumericLiteral は raw に元の綴り、value に共通の double を保ちま�
 
 title と ASCII 空白かタブ 1 個の後から行の値の末尾までです。
 残る両端の空白は保ちます。
-その区切りの後に何もない場合と、 title に区切りがない場合は null です。
+その区切りの後に何もない場合と、title に区切りがない場合は null です。
 [fixture: pie/title-spaces] [fixture: pie/review-title-bare-lone-eof]
 [fixture: pie/lex-empty-title-vs-null-reference]
 [fixture: pie/title-whitespace-last] [fixture: pie/title-comment]
