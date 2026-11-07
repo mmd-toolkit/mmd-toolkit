@@ -353,8 +353,38 @@ style A, "B" fill:red
 ### Labels
 
 角括弧ラベルは名前か text の id に接し、短い接尾部にします。
-裸と引用符つきの形と内部の全ての文字を保ちます。
-Db の空白除去は値を編集する理由にはしません。
+裸と引用符つきの形と内部の全ての文字を保ちますが、括弧に接する空白、タブ、
+no-break space は例外です。
+mermaid.js が trim するからです。
+`set A[ L ]` は `set A[L]` になります。
+ディレクティブを含むラベルは、書かれたまま残します。
+保つ `;` のある行でも空白は落とします。
+その行では最後の `;` までのテキストが保護された範囲ですが（Terms を参照）、
+空白を落としても `;` は動かないので、行の規則は同じ `;` を選びます。
+`set A[ a; ]` は `set A[a;]` に、`set B[ a;b ]` は `set B[a;b]` になります。
+空白が、行の規則が読むかもしれない行の `:` と `#` の間にあるときは、
+空白 1 つを残します。
+空白があるかどうかが、無視される `;` を決めるからです。
+`set "style:"[ #x; ]` は `set "style:"[ #x;]` になり、
+`:` の前に `style` がない `set "a:b"[ #x; ]` は `set "a:b"[#x;]` になります。
+ディレクティブの中の `style`、`:`、`#`、`;` は、
+規則が読まないので区間を作りません。
+`set "style:"[ #x ]%%{init:{"a":";"}}%%` は
+`set "style:"[#x]%%{init:{"a":";"}}%%` になります。
+[fixture: venn/labels/bracket-padding-line-rule-chars-in-directive]
+行の途中の `%%` はコメント行ではないので、規則はそのテキストを読みます。
+`set "style:b"[ #x ] %% c;` は `set "style:b"[ #x] %% c;` になり、
+`set "classDef:#a;style:"[ x ]%%#c;` は変わりません。
+[fixture: venn/labels/bracket-padding-line-rule-chars-in-comment]
+U+2028 や U+2029 を含む空白は、書かれたまま残します。
+[fixture: labels/bracket-padding-with-directive-or-semicolon]
+[fixture: labels/bracket-padding-in-style-rule-stretch]
+[test: U+2028 inside the brackets of a venn label]
+[test: U+2029 inside the brackets of a venn label]
+[test: U+2028 inside the brackets of a venn label with a semicolon]
+[test: U+2029 inside the brackets of a venn label with a semicolon]
+[fixture: labels/bare-label-padding-dropped]
+引用符の中の空白は値の一部なので、保ちます。
 空の引用符つきラベルと裸の空白ラベルは Db のラベルを省き、
 引用符内の空白は空のラベルを保存します。
 内部の項目はラベル内に保ち、隙間の項目は接触関係を優先します。
@@ -392,7 +422,7 @@ Db の空白除去は値を編集する理由にはしません。
 
 ```mmd
 venn-beta
-set A[ L ]:002.00
+set A[L]:002.00
   text item[" Label "]
 ```
 

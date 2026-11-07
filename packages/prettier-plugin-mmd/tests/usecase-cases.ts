@@ -11,6 +11,34 @@ interface UsecaseCase {
 
 export const usecaseCases: readonly UsecaseCase[] = [
   {
+    name: "usecase: U+2028 inside the brackets of a boundary title with a semicolon",
+    id: "usecase/line-terminators/boundary-title-semicolon-u2028",
+    input: "usecase-beta\nsystemBoundary S[ a;b \u2028]\nTask\nend\n",
+    output: "usecase-beta\n  systemBoundary S[a;b \u2028]\n    Task\n  end\n",
+    options: {},
+  },
+  {
+    name: "usecase: U+2029 inside the brackets of a boundary title with a semicolon",
+    id: "usecase/line-terminators/boundary-title-semicolon-u2029",
+    input: "usecase-beta\nsystemBoundary S[ a;b \u2029]\nTask\nend\n",
+    output: "usecase-beta\n  systemBoundary S[a;b \u2029]\n    Task\n  end\n",
+    options: {},
+  },
+  {
+    name: "usecase: U+2028 inside the brackets of a boundary title",
+    id: "usecase/line-terminators/boundary-title-u2028",
+    input: "usecase-beta\nsystemBoundary S[ T\u2028]\nTask\nend\n",
+    output: "usecase-beta\n  systemBoundary S[T\u2028]\n    Task\n  end\n",
+    options: {},
+  },
+  {
+    name: "usecase: U+2029 inside the brackets of a boundary title",
+    id: "usecase/line-terminators/boundary-title-u2029",
+    input: "usecase-beta\nsystemBoundary S[ T\u2029]\nTask\nend\n",
+    output: "usecase-beta\n  systemBoundary S[T\u2029]\n    Task\n  end\n",
+    options: {},
+  },
+  {
     name: "usecase: terminal-comment-tab",
     id: "usecase/comments/terminal-comment-tab",
     input: "usecase-beta\nTask\n%% tail\t",
@@ -198,7 +226,7 @@ export const usecaseCases: readonly UsecaseCase[] = [
     input:
       "usecase-beta\nsystemBoundary Scope [\u00a0 Display\ufeff ]\nTask\nend",
     output:
-      "usecase-beta\n  systemBoundary Scope[\u00a0 Display\ufeff ]\n    Task\n  end\n",
+      "usecase-beta\n  systemBoundary Scope[\u00a0 Display\ufeff]\n    Task\n  end\n",
     options: {},
   },
   {
@@ -224,7 +252,7 @@ export const usecaseCases: readonly UsecaseCase[] = [
     input:
       "usecase-beta\nactor User <<\u00a0\u2028  service\u00a0\u2028inside\u2029  text  \u2029\u00a0>>",
     output:
-      "usecase-beta\n  actor User << service\u00a0\u2028inside\u2029  text >>\n",
+      "usecase-beta\n  actor User <<service\u00a0\u2028inside\u2029  text>>\n",
     options: {},
   },
   {
@@ -238,7 +266,7 @@ export const usecaseCases: readonly UsecaseCase[] = [
     name: "usecase: stereotype-unicode-gap-sides",
     id: "usecase/stereotypes/unicode-gap-sides",
     input: "usecase-beta\nA <<\u2028\u00a0left>>\nB <<right\u2029\u00a0>>",
-    output: "usecase-beta\n  A << left>>\n  B <<right >>\n",
+    output: "usecase-beta\n  A <<left>>\n  B <<right>>\n",
     options: {},
   },
   {

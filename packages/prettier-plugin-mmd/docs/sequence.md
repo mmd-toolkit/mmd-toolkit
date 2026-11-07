@@ -469,10 +469,12 @@ and are printed with the sign on the target as well. Its three messages with
 `()` write it touching its id
 ([central connections](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L392-L394)).
 The whitespace is dropped only where a gap holds nothing but whitespace. A
-directive in the gap keeps the whitespace written on each side of it, as under
-[Directives](#directives): `A%%{init: {}}%%->>B: v` has no space before its
-arrow, and `A ->> +%%{init: {}}%% B: v` keeps the space after the directive.
-[fixture: arrow-spacing/directive-beside-arrow-kept] [fixture:
+directive in the gap keeps whether whitespace was written on each side of it, a
+run of whitespace becoming one space, as under [Directives](#directives):
+`A%%{init: {}}%%->>B: v` has no space before its arrow, and
+`A ->> +%%{init: {}}%% B: v` keeps the space after the directive. [fixture:
+arrow-spacing/directive-beside-arrow-kept] [fixture:
+arrow-spacing/directive-beside-arrow-runs-collapsed] [fixture:
 arrow-spacing/touching-beside-directive-kept] A line break in the gap is joined
 as in [Multi-line statements](#multi-line-statements), and the whitespace goes
 with it; a comment line keeps the lines. [fixture:

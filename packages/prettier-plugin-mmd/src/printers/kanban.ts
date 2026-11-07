@@ -55,7 +55,7 @@ export function printKanban(
       placements.get(line)?.head ?? "",
       printAtoms(
         source,
-        formatDataBlocks(source, layoutKanbanLine(line), line.range, {
+        formatDataBlocks(source, layoutKanbanLine(source, line), line.range, {
           kept: findKanbanKeptLines(source),
           statement: (options.useTabs ? "\t" : " ").repeat(
             significantIndentationOf(options, 1).length * line.depth,

@@ -6,6 +6,7 @@ import {
   collectValueNodes,
   keptAsWritten,
   protectSemicolonPrefixes,
+  trimBracketedText,
 } from "./layout.ts"
 import type { Source } from "./source.ts"
 import { findTriviaBetween } from "./source.ts"
@@ -91,6 +92,11 @@ export function layoutVennStatement(
   // nonmatches. Folding whole atoms keeps a crossing value exactly once
   // (common.md, Style and classDef lines; docs/venn.md, Line rule and kept lines).
   atoms = protectSemicolonPrefixes(source, start, end, atoms)
+  // mermaid.js trims the text of a label in brackets: `[ L ]` is printed `[L]`
+  // (docs/venn.md, Labels).
+  if ("label" in statement && statement.label !== null) {
+    trimBracketedText(source, atoms, statement.label.range)
+  }
   const rules = new Map<number, GapRule>()
   for (let index = 1; index < atoms.length; index++) {
     const previous = atoms[index - 1]

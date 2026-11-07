@@ -152,7 +152,9 @@ statements-one-per-line/separated-by-semicolons-after-data-block]
 A line that holds a `;` other than one that separates statements, such as the
 `;` in `A[x;]`, in `accTitle: a;b`, or in a comment, keeps its statements and
 its `;` instead: they are not split into lines of their own, and its `;` stay
-where they are, with the whitespace on each side of them as written. [fixture:
+where they are, keeping whether whitespace was written on each side of them, a
+run of whitespace becoming one space. [fixture:
+statements-one-per-line/kept-semicolon-runs-collapsed] [fixture:
 statements-one-per-line/compat-semicolon-in-label-without-style-kept] [fixture:
 statements-one-per-line/inner-semicolon-kept] [fixture:
 statements-one-per-line/comment-semicolon-not-separator] The statements are
@@ -167,7 +169,14 @@ label `style:` followed by the entity `#x;`, while `A[style:#x;]` has the label
 its statements together, whether it contains `style` or not. The rule reads only
 `style`, `:`, `#`, and `;`, so the whitespace between other tokens may change,
 but not the whitespace between a `:` and a later `#` (see
-[Semicolons](#semicolons)).
+[Semicolons](#semicolons)). The rule reads a line without its directives and
+without the comment lines that mermaid.js removes, so a `style`, a `:`, a `#`,
+or a `;` inside a directive does not count:
+`A[style:]-->B %%{init:{"x":"#;"}}%%` is printed
+`A[style:] --> B %%{init:{"x":"#;"}}%%`, as a line with no `#` or `;` is. A `%%`
+in the middle of a line is no comment line, and the rule reads its text (see
+[Label content](./architecture.md#label-content)). [fixture:
+semicolons/line-rule-chars-only-in-directive]
 
 Input
 ([statements-one-per-line/separated-by-semicolons-input.mmd](../tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-input.mmd)):
@@ -737,7 +746,18 @@ The whitespace between the name of the function after `call` and the `(` that
 follows it is kept as written, with the parentheses and their arguments:
 mermaid.js reads the name up to the `(`, whitespace included, so
 `click A call fn  ()` calls the function named `fn` and two spaces. [fixture:
-whitespace-between-tokens/callback-name-arguments-forms-kept]
+whitespace-between-tokens/callback-name-arguments-forms-kept] The parentheses of
+a call with blank arguments touch each other: `click A call f( )` is printed
+`click A call f()`, since mermaid.js reads both as the same call with no
+arguments. A directive between them keeps whether whitespace was written on each
+side of it, as under [Directives](#directives). [fixture:
+whitespace-between-tokens/callback-blank-parentheses-touch] A statement written
+over several lines is kept as written, so it keeps the line break between the
+parentheses and a comment line there. [fixture:
+whitespace-between-tokens/callback-blank-parentheses-lines] A U+2028 or U+2029
+between them stays where it is. [test: U+2028 between the parentheses of a blank
+flowchart callback] [test: U+2029 between the parentheses of a blank flowchart
+callback]
 
 A callback written without `call` is a click id, with no `(` after it (see
 [FlowchartClickCallbackStatement](../../spec/docs/ast/flowchart.md#flowchartclickcallbackstatement)),
@@ -798,9 +818,12 @@ arrow-spacing/edge-id-arrow-like-chain] [fixture:
 arrow-spacing/edge-id-arrow-like-after-whitespace-is-link-text] Any other edge
 id has one space before it, such as `=a`, `~~a`, `.a`, `x-a`, and `x~~~a`.
 [fixture: arrow-spacing/edge-id-not-arrow-like-gets-one-space] A directive or an
-ignored `;` between the shape and the edge id keeps the whitespace on each side
-as written. [fixture: arrow-spacing/edge-id-arrow-like-after-directive]
-[fixture: arrow-spacing/edge-id-arrow-like-after-ignored-semicolon]
+ignored `;` between the shape and the edge id keeps whether whitespace was
+written on each side of it, a run of whitespace becoming one space. [fixture:
+arrow-spacing/edge-id-arrow-like-after-directive] [fixture:
+arrow-spacing/edge-id-arrow-like-after-directive-runs-collapsed] [fixture:
+arrow-spacing/edge-id-arrow-like-after-ignored-semicolon] [fixture:
+arrow-spacing/edge-id-arrow-like-after-ignored-semicolon-runs-collapsed]
 
 Input
 ([arrow-spacing/plain-input.mmd](../tests/fixtures/flowchart/arrow-spacing/plain-input.mmd)):
@@ -906,8 +929,19 @@ Whitespace at the ends of a label without quotes is dropped, as mermaid.js drops
 it. [fixture: label-inner-whitespace/trimmed-every-shape] Whitespace inside the
 label is kept, and so is a label that is only whitespace (`A[]` would be
 rejected). [fixture: label-inner-whitespace/all-whitespace-every-shape-kept] A
-label in quotes is kept as written. [fixture:
-label-inner-whitespace/quotes-kept]
+label in quotes is kept as written, except for the whitespace between its
+closing quote and the closing bracket, which is dropped: `A["x" ]` is printed
+`A["x"]`, and so is `B{"x" }`, `C(("x" ))`, and `D[/"t" /]`. [fixture:
+label-inner-whitespace/quotes-kept] [fixture:
+label-inner-whitespace/string-closing-touches] Only whitespace on the line of
+the closing quote is dropped: a line break, a comment line, a directive, or a
+U+2028 or U+2029 on that line between the quote and the bracket stays, and a
+bracket after a line break stands as a continuation line. A U+2028 or U+2029 at
+the start of a continuation line is read as its indentation, so it is replaced
+by the indentation that the printer gives the line. [fixture:
+label-inner-whitespace/string-closing-break-and-directive-kept] [test: U+2028
+between the closing quote and the bracket of a flowchart label] [test: U+2029
+between the closing quote and the bracket of a flowchart label]
 
 The whitespace at the start of a label is kept, as one space, when the label
 would be read differently without it: when the label starts with `/`, `\`, `-`,
@@ -1287,11 +1321,33 @@ whitespace. [fixture: multi-line-statements/continuation-in-subgraph] [fixture:
 multi-line-statements/label-over-lines] [fixture:
 multi-line-statements/directive-inside] Comment lines inside it stay inside it,
 at the level of its later lines. [fixture:
-multi-line-statements/several-comments-inside] A `click` statement written over
-several lines is kept as written, because mermaid.js rejects some of them when a
+multi-line-statements/several-comments-inside] A `click` statement with a line
+break in a gap between its parts, or in a comment or a directive that stands in
+such a gap, is kept as written, because mermaid.js rejects some of them when a
 later line is indented. [fixture: multi-line-statements/click-in-subgraph-kept]
 [fixture: multi-line-statements/click-forms-kept] [fixture:
-multi-line-statements/click-comment-inside-kept]
+multi-line-statements/click-comment-inside-kept] A line break inside a string,
+or between the `(` and the `)` of a call with arguments, is part of that value
+(a comment or a directive there included), which is printed as written, and no
+later line of the statement is indented. The other gaps of such a statement
+follow the ordinary rules: `click   A "/u" "x` and `y"` on the next line is
+printed `click A "/u" "x` and `y"`, as the statement on one line would be.
+[fixture: multi-line-statements/click-string-over-lines-collapsed] [fixture:
+multi-line-statements/click-callback-args-over-lines-collapsed] [fixture:
+multi-line-statements/click-callback-args-comment-line-collapsed] [fixture:
+multi-line-statements/click-string-over-lines-directive-inside] A directive, a
+`;`, a comment line, or an empty line beside it is treated as for a statement on
+one line. [fixture:
+multi-line-statements/click-string-over-lines-beside-directive] [fixture:
+multi-line-statements/click-string-over-lines-with-semicolon] [fixture:
+multi-line-statements/click-string-over-lines-semicolon-kept] [fixture:
+multi-line-statements/click-string-over-lines-comment-and-empty-line] A U+2028
+or U+2029 between its parts stays where it is, also after a string that runs
+over lines. [test: U+2028 between the parts of a flowchart click statement with
+a string over lines] [test: U+2029 between the parts of a flowchart click
+statement with a string over lines] [test: U+2028 after the string of a
+flowchart click statement with a string over lines] [test: U+2029 after the
+string of a flowchart click statement with a string over lines]
 
 A diagram header or subgraph header with a comment line after U+2028 or U+2029
 keeps that span as written: mermaid.js removes the comment line and its
@@ -1868,9 +1924,26 @@ flowchart TD
 
 ### Subgraph header
 
-The title's interior whitespace stays as written, so `[ T ]` remains `[ T ]`:
-both forms have the same Db, and the heading keeps the author's title spelling.
-[fixture: subgraph-header/title-interior-whitespace-kept]
+The whitespace inside the brackets of the title is dropped, as for the label of
+a shape (see [Label inner whitespace](#label-inner-whitespace)):
+`subgraph S[ T ]` is printed `subgraph S[T]`, and `subgraph S["x" ]` is printed
+`subgraph S["x"]`. mermaid.js reads both spellings as the same subgraph. One
+space stays where the title would be read otherwise, with the same rule as for a
+label: `[ /x/ ]` and `[ \x\ ]` stay, since `[/x/]` would be rejected. [fixture:
+subgraph-header/title-padding-dropped] [fixture:
+subgraph-header/title-interior-whitespace-dropped] A line break or a comment
+line in the brackets stays, as a line of the header: the whitespace before the
+line break is dropped, as at the end of any line, and the bracket after it
+stands as a continuation line. [fixture:
+subgraph-header/title-padding-beside-line-break] A U+2028 or U+2029 on a line of
+the brackets stays where it is, and one at the start of a continuation line is
+read as its indentation. [test: U+2028 in the title of a flowchart subgraph
+header] [test: U+2029 in the title of a flowchart subgraph header] On a line
+that the line rule may read, the whitespace after the `[` of a title that
+follows `style:` stays: `subgraph style:[ #x; ]` is printed
+`subgraph style:[ #x;]`, while `subgraph a: [ #x; ]` is printed
+`subgraph a:[#x;]`, since no `style` stands before its `:`. [fixture:
+subgraph-header/title-padding-on-line-rule-line]
 
 The `[` of the title touches the name of the subgraph: `subgraph S [t]` is
 printed `subgraph S[t]`, whatever the name is: a word, several words, a string,
@@ -1890,15 +1963,16 @@ line that holds `style` or `classDef` before the `:` and a `;` after the `#`, as
 in `subgraph style: [#x;]`, it keeps whether it holds whitespace, as under
 [Semicolons](#semicolons); `subgraph a: [#x;]` and `subgraph style: [#x]` have
 no such `;` and touch. [fixture: subgraph-header/title-after-colon-before-hash]
-A directive in the gap keeps the whitespace written on each side of it, as under
-[Directives](#directives). [fixture:
-subgraph-header/title-beside-directive-kept] A U+2028 or U+2029 in the gap stays
-where it is. [test: U+2028 between a subgraph name and its title] [test: U+2029
-and spaces between a subgraph name and its title] An empty description block
-that follows the title is the first statement of the body, as before. [fixture:
-subgraph-header/title-before-empty-description-block] A name written without a
-title keeps the whitespace after it, which mermaid.js reads as part of the name.
-[fixture: subgraph-header/name-trailing-run-kept] [fixture:
+A directive in the gap keeps whether whitespace was written on each side of it,
+a run of whitespace becoming one space, as under [Directives](#directives).
+[fixture: subgraph-header/title-beside-directive-kept] [fixture:
+subgraph-header/title-beside-directive-runs-collapsed] A U+2028 or U+2029 in the
+gap stays where it is. [test: U+2028 between a subgraph name and its title]
+[test: U+2029 and spaces between a subgraph name and its title] An empty
+description block that follows the title is the first statement of the body, as
+before. [fixture: subgraph-header/title-before-empty-description-block] A name
+written without a title keeps the whitespace after it, which mermaid.js reads as
+part of the name. [fixture: subgraph-header/name-trailing-run-kept] [fixture:
 subgraph-header/name-trailing-whitespace-kept] [fixture:
 subgraph-header/name-whitespace-before-directive-kept] [fixture:
 subgraph-header/name-whitespace-after-directive-kept] So does the whitespace

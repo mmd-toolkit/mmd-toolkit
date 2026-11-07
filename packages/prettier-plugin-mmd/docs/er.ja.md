@@ -668,9 +668,10 @@ ASCII の数字が続くと、カーディナリティ `only-one` だからで�
 キーワードとその後ろ）。
 [fixture: relationship-spacing/entity-only-before-one-kept]
 [corpus fixture: er/lex-only-one-two-spaces]
-関係の単位の間にあるディレクティブは、
-両側に書かれた空白を保ってその位置に残します。
+関係の単位の間にあるディレクティブは、その位置に残し、
+両側に空白があるかどうかは変えず、空白の連なりは空白 1 つにします。
 [fixture: relationship-spacing/directive-between-units-kept]
+[fixture: relationship-spacing/directive-between-units-runs-collapsed]
 
 入力
 ([relationship-spacing/symbols-and-words-input.mmd](../tests/fixtures/er/relationship-spacing/symbols-and-words-input.mmd)):
@@ -762,8 +763,10 @@ erDiagram
 つの後に置きます（[属性ブロック](#属性ブロック)を参照）。
 名前は、引用符の有無も数も含めて、書かれたまま残します。
 [fixture: entities/names-kept]
-実体の部分の間にあるディレクティブは、両側に書かれた空白を保ちます。
+実体の部分の間にあるディレクティブは、両側に空白があるかどうかは変えず、
+空白の連なりは空白 1 つにします。
 [fixture: entities/directive-between-parts-kept]
+[fixture: entities/directive-between-parts-runs-collapsed]
 
 入力
 ([entities/alias-tight-input.mmd](../tests/fixtures/er/entities/alias-tight-input.mmd)):
@@ -827,9 +830,10 @@ mermaid.js は、どちらの書き方も同じ subgraph として読みます�
 mermaid.js が空白 1 つで結ぶからです。 [fixture: subgraphs/header-spacing]
 [fixture: subgraphs/title-touches-name] [fixture: subgraphs/title-names-spaced]
 [fixture: subgraphs/quoted-and-number-ids]
-名前と `[` の間にディレクティブがあれば、
-その両側に書かれた空白を残します（[ディレクティブ](#ディレクティブ)を参照）。
+名前と `[` の間にディレクティブがあれば、その両側に空白があるかどうかは変えず、
+空白の連なりは空白 1 つにします（[ディレクティブ](#ディレクティブ)を参照）。
 [fixture: subgraphs/title-beside-directive-kept]
+[fixture: subgraphs/title-beside-directive-runs-collapsed]
 そこにある U+2028 と U+2029 は、そのまま残します。
 [test: U+2028 between an ER subgraph name and its title]
 [test: U+2029 between an ER subgraph name and its title]

@@ -391,8 +391,28 @@ kanban
 
 飾りのテキストは書かれたまま残します。
 マーカーの大文字小文字（`::ICON(y)`）、アイコンの中の空白（`::icon( x )`）、
-クラスの中の空白（`::: c  ` の末尾の空白はクラスの一部です）、
+クラスの後ろの空白（`:::c  ` の末尾の空白はクラスの一部です）、
 空白だけのアイコンとクラス、最初の後の 2 つめのアイコンやクラスです。
+`:::` とクラスの間の空白とタブは落とし、`::: hot` は `:::hot` になります。
+mermaid.js は `:::` の後のテキストをノードのクラスとして持ちますが、
+描画するデータにクラスは渡しません。
+その箇所は、
+[`decorateNode`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L202-L214)
+と、
+[`getData`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L54-L97)
+にあります。
+そのためボードは変わらず、空白やタブは HTML のクラス名の一部でもありません。
+空白だけのクラスと、
+行のどこかにディレクティブがあるクラス行（`::: hot %%{x}%%`、`::: h%%{x}%%ot`、
+`%%{x}%%::: hot`）は、書かれたまま残します。
+ディレクティブのある行は書かれたまま印字するからです（Directives を参照）。
+落とすのは空白とタブだけで、`:::` の後の空白と U+00A0 は、
+U+00A0 が `:::` に接する形で印字され、U+00A0 は残ります。
+[fixture: icons-and-classes/class-padding-after-marker-dropped]
+[fixture: icons-and-classes/class-with-directive-kept]
+[test: kanban: class-spaces-then-no-break-space]
+[test: kanban: class-padding-then-u2028]
+[test: kanban: class-padding-then-u2029]
 後のアイコンは Db で前のものを置き換えますが、
 印字は何も落とさないので両方を残します。
 飾りをノードの行へ動かすことはしません。

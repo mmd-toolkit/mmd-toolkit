@@ -327,11 +327,35 @@ style A, "B" fill:red
 ### Labels
 
 A bracket label touches its name or text id for a compact suffix; its
-bare/quoted form and every interior character stay as written. Db trimming does
-not authorize value edits: an empty quoted label or bare whitespace label omits
-the Db label, whereas quoted whitespace stores an empty label. Embedded trivia
-stays inside the label, and gap items retain attachment instead of applying
-tight spacing. [fixture: venn/labels/specified-c4-label-title] [fixture:
+bare/quoted form and every interior character stay as written, except the
+spaces, tabs, and no-break spaces next to the brackets, which mermaid.js trims:
+`set A[ L ]` is printed `set A[L]`. A label that holds a directive stays as
+written. The padding is dropped on a line with a kept `;` too, where the text
+through the last `;` is a protected stretch (see Terms): it moves no `;`, so the
+line rule selects the same one. `set A[ a; ]` is printed `set A[a;]` and
+`set B[ a;b ]` is printed `set B[a;b]`. One space stays where the padding lies
+between a `:` and a `#` of a line that the line rule may read, since whether it
+is there decides which `;` is ignored: `set "style:"[ #x; ]` is printed
+`set "style:"[ #x;]`, while `set "a:b"[ #x; ]` has no `style` before the `:` and
+is printed `set "a:b"[#x;]`. A `style`, a `:`, a `#`, or a `;` inside a
+directive is not read by the rule, so it makes no stretch:
+`set "style:"[ #x ]%%{init:{"a":";"}}%%` is printed
+`set "style:"[#x]%%{init:{"a":";"}}%%`. [fixture:
+labels/bracket-padding-line-rule-chars-in-directive] A `%%` in the middle of a
+line is no comment line, so the rule reads its text: `set "style:b"[ #x ] %% c;`
+is printed `set "style:b"[ #x] %% c;`, and `set "classDef:#a;style:"[ x ]%%#c;`
+is not changed. [fixture: labels/bracket-padding-line-rule-chars-in-comment] A
+padding with a U+2028 or U+2029 in it stays. [fixture:
+labels/bracket-padding-with-directive-or-semicolon] [fixture:
+labels/bracket-padding-in-style-rule-stretch] [test: U+2028 inside the brackets
+of a venn label] [test: U+2029 inside the brackets of a venn label] [test:
+U+2028 inside the brackets of a venn label with a semicolon] [test: U+2029
+inside the brackets of a venn label with a semicolon] [fixture:
+labels/bare-label-padding-dropped] Whitespace inside quotes belongs to the
+value, and stays: an empty quoted label or bare whitespace label omits the Db
+label, whereas quoted whitespace stores an empty label. Embedded trivia stays
+inside the label, and gap items retain attachment instead of applying tight
+spacing. [fixture: venn/labels/specified-c4-label-title] [fixture:
 venn/labels/all-suffixes] [corpus fixture: venn/db-form-text-string-label]
 [corpus fixture: venn/db-form-union-label] [corpus fixture:
 venn/lex-directive-label-delimiter-gap] [corpus fixture:
@@ -360,7 +384,7 @@ Output
 
 ```mmd
 venn-beta
-set A[ L ]:002.00
+set A[L]:002.00
   text item[" Label "]
 ```
 

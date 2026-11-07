@@ -10,8 +10,11 @@ import type {
 import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import {
+  addHeadingTitleRules,
   addLinkRules,
   addShapeRules,
+  breaksBetweenParts,
+  addBlankCallbackRule,
   layoutGraphAccessibility,
 } from "./graph-layout.ts"
 import { findAgentflowKeptLines } from "./agentflow-kept-lines.ts"
@@ -77,28 +80,49 @@ export function layoutContainerHeader(
     return layoutRange(source, node.range[0], end, [], [], new Map())
   }
   const name = node.name
+  let nameStart = name.range[0]
   let nameEnd = name.range[1]
   const rules = new Map<number, GapRule>()
-  // Only an ordinary single-fragment explicit-title heading shares flowchart's
-  // title-gap rules. Erased click/empty forms and their context-exit gaps
-  // are Name text (diagrams/agentflow.md, Names; docs/agentflow.md, Names and headings).
-  if (node.title !== null && name.parts.length === 1) {
-    while (nameEnd > name.range[0] && isWhitespace(source.text[nameEnd - 1]))
-      nameEnd--
+  // Only an ordinary single-fragment heading shares flowchart's heading
+  // rules. Erased click/empty forms and their context-exit gaps are Name text
+  // (diagrams/agentflow.md, Names; docs/agentflow.md, Names and headings).
+  if (name.parts.length === 1) {
+    // The keyword takes one whitespace character, and the rest of the
+    // whitespace after it is read with the name, which mermaid.js trims: the
+    // name starts at its first character, past the directives and comments
+    // before it, which stand in the gap with the whitespace around them
+    // (docs/agentflow.md, Names and headings).
+    while (nameStart < nameEnd) {
+      const trivia = findTriviaBetween(source, nameStart, nameStart + 1).at(0)
+      if (trivia !== undefined) nameStart = Math.min(trivia.range[1], nameEnd)
+      else if (isWhitespace(source.text[nameStart])) nameStart++
+      else break
+    }
+    if (node.title !== null) {
+      while (nameEnd > nameStart && isWhitespace(source.text[nameEnd - 1]))
+        nameEnd--
+    }
     // A whitespace-only name still needs its written character.
-    if (nameEnd === name.range[0]) nameEnd = name.range[1]
-    // The `[` of the title touches the name, as in a flowchart, unless a
-    // directive or comment ends the name: the whitespace after it is kept as
-    // under Directives (docs/agentflow.md, Names and headings).
-    const lastTrivia = findTriviaBetween(source, name.range[0], nameEnd).at(-1)
-    if (lastTrivia?.range[1] !== nameEnd) {
-      rules.set(
-        expectToken(
-          findStructuralToken(source, name.range[1]),
-          "the heading title opener",
-        ).range[0],
-        "none",
+    if (nameEnd === nameStart) {
+      nameStart = name.range[0]
+      nameEnd = name.range[1]
+    }
+    if (node.title !== null) {
+      // The `[` of the title touches the name, as in a flowchart, unless a
+      // directive or comment ends the name: the whitespace after it is kept
+      // as under Directives.
+      const lastTrivia = findTriviaBetween(source, name.range[0], nameEnd).at(
+        -1,
       )
+      if (lastTrivia?.range[1] !== nameEnd) {
+        rules.set(
+          expectToken(
+            findStructuralToken(source, name.range[1]),
+            "the heading title opener",
+          ).range[0],
+          "none",
+        )
+      }
     }
   } else if (name.parts.length > 1) {
     // A click-context exit is outside the last Name fragment. Preserve its
@@ -114,7 +138,8 @@ export function layoutContainerHeader(
           ).range[0]
     nameEnd = suffixStart ?? findNamePrintedEnd(source, name)
   }
-  const nameAtom = { start: name.range[0], end: nameEnd }
+  if (node.title !== null) addHeadingTitleRules(source, node.title, rules)
+  const nameAtom = { start: nameStart, end: nameEnd }
   const values: Node[] = [
     ...node.data,
     ...(node.title === null ? [] : [node.title]),
@@ -281,6 +306,44 @@ export function classifyAgentflowStatement(
   }
 }
 
+/**
+ * Adds the stretches of a click statement that are printed as written: from
+ * its first id to its end, except the whitespace between the parentheses of a
+ * call with blank arguments, `f( )`, which is dropped (docs/agentflow.md,
+ * Click statements).
+ */
+function addClickKeptStretches(
+  source: Source,
+  statement: Extract<
+    AgentflowStatement,
+    { type: "AgentflowClickUrlStatement" | "AgentflowClickCallbackStatement" }
+  >,
+  end: number,
+  kept: Atom[],
+  rules: Map<number, GapRule>,
+): void {
+  const idsStart = expectToken(
+    findStructuralToken(
+      source,
+      expectToken(findStructuralToken(source, statement.range[0]), "click")
+        .range[1],
+    ),
+    "click ids",
+  ).range[0]
+  const parentheses =
+    statement.type === "AgentflowClickCallbackStatement"
+      ? addBlankCallbackRule(source, statement, rules)
+      : null
+  if (parentheses === null) {
+    kept.push({ start: idsStart, end })
+    return
+  }
+  kept.push(
+    { start: idsStart, end: parentheses.opening.range[1] },
+    { start: parentheses.closing.range[0], end },
+  )
+}
+
 /** Agentflow statements use flowchart's shared graph spacing and atom printer. */
 export function layoutStatement(
   source: Source,
@@ -317,20 +380,14 @@ export function layoutStatement(
       // later physical columns belong to the authored click spelling; extra
       // whitespace units can reject (diagrams/agentflow.md, Click, call, and href;
       // docs/agentflow.md, Click statements and Multiline statements and values).
-      if (source.text.slice(start, end).includes("\n"))
+      if (breaksBetweenParts(source, statement, agentflowValueNodeTypes, [])) {
         return keptAsWritten(start, end)
+      }
       // Only the ordinary gap after the first click keyword is exterior to
-      // its ids, values and retained prefixes.
-      kept.push({
-        start: expectToken(
-          findStructuralToken(
-            source,
-            expectToken(findStructuralToken(source, start), "click").range[1],
-          ),
-          "click ids",
-        ).range[0],
-        end,
-      })
+      // its ids, values and retained prefixes, and the whitespace between the
+      // parentheses of a call with blank arguments, which mermaid.js reads as
+      // no arguments.
+      addClickKeptStretches(source, statement, end, kept, rules)
       break
     case "AgentflowEmptyStatement":
       return keptAsWritten(start, end)

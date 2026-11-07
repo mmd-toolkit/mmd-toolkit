@@ -792,15 +792,43 @@ block/db-closer-square-then-triple-open]
 `<[` enters the block arrow context, which reads a string, then `]>`,
 whitespace, and `(`, and then the directions context, which reads one or more
 **directions** and `)`, and leaves both. A direction is `right`, `left`, `up`,
-`down`, `x`, or `y`, in lower case; a `,` and whitespace may stand before a
-direction, line feeds included, and two directions need nothing between them:
-`(right down)`, `(right, down)`, and `(rightdown)` are the directions `right`
-and `down`. No direction, an unknown word, upper case, a `,` at the end or two
-in a row, and whitespace inside the brackets of `<[` are rejected, and so is
-`<[` closed by `]` alone. [fixture: block/db-arrow-left] [fixture:
-block/db-arrow-up] [fixture: block/db-arrow-down] [fixture: block/db-arrow-x]
-[fixture: block/db-arrow-y] [fixture: block/db-arrow-two] [fixture:
-block/db-arrow-all] [fixture: block/db-arrow-no-space] [fixture:
+`down`, `x`, or `y`, in lower case. A `,` may stand before a direction, and
+whitespace, line feeds included, may stand before and after a direction and
+after that `,`, except between `(` and a `,` before the first direction: `(,x)`,
+`(, x)`, `( x)`, and `(right ,down)` are accepted, while `( ,x)` and `( , x)`
+are rejected, and so is the same with a tab, a line feed, an empty line, or
+U+2028 in place of the first space. Directives, comment lines, and an ignored
+`;` are left out before this rule applies: `(%%{init: {}}%%,x)` is accepted, and
+`( %%{init: {}}%%,x)` is rejected. An empty description block cannot stand
+there. [fixture: block/gram-arrow-space-before-leading-comma] [fixture:
+block/gram-arrow-space-before-leading-comma-space] [fixture:
+block/gram-arrow-tab-before-leading-comma] [fixture:
+block/gram-arrow-line-feed-before-leading-comma] [fixture:
+block/gram-arrow-line-separator-before-leading-comma] [fixture:
+block/gram-arrow-space-before-leading-comma-two] [fixture:
+block/gram-arrow-directive-space-before-leading-comma] [fixture:
+block/gram-arrow-space-directive-before-leading-comma] [fixture:
+block/gram-arrow-comment-line-before-leading-comma] [fixture:
+block/gram-arrow-empty-line-before-leading-comma] [fixture:
+block/gram-arrow-space-ignored-semicolon-before-leading-comma] [fixture:
+block/gram-arrow-empty-description-block-before-leading-comma] [fixture:
+block/db-arrow-leading-comma-space] [fixture: block/db-arrow-leading-comma-tab]
+[fixture: block/db-arrow-leading-comma-line-feed] [fixture:
+block/db-arrow-leading-comma-line-separator] [fixture:
+block/db-arrow-leading-comma-comment-line] [fixture:
+block/db-arrow-directive-before-leading-comma] [fixture:
+block/db-arrow-ignored-semicolon-before-leading-comma] [fixture:
+block/db-arrow-space-before-later-comma] [fixture:
+block/db-arrow-line-feed-before-later-comma] [fixture:
+block/db-arrow-comment-line-before-later-comma] [fixture:
+block/db-arrow-ignored-semicolon-before-later-comma] Two directions need nothing
+between them: `(right down)`, `(right, down)`, and `(rightdown)` are the
+directions `right` and `down`. No direction, an unknown word, upper case, a `,`
+at the end or two in a row, and whitespace inside the brackets of `<[` are
+rejected, and so is `<[` closed by `]` alone. [fixture: block/db-arrow-left]
+[fixture: block/db-arrow-up] [fixture: block/db-arrow-down] [fixture:
+block/db-arrow-x] [fixture: block/db-arrow-y] [fixture: block/db-arrow-two]
+[fixture: block/db-arrow-all] [fixture: block/db-arrow-no-space] [fixture:
 block/db-arrow-spaces] [fixture: block/db-arrow-trailing-space] [fixture:
 block/db-arrow-leading-space] [fixture: block/db-arrow-tab] [fixture:
 block/db-arrow-line-feed] [fixture: block/db-arrow-twice] [fixture:

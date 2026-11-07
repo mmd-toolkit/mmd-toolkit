@@ -7,6 +7,7 @@ import { printAsWritten } from "./lines.ts"
 import type { Source } from "./source.ts"
 import {
   findStructuralToken,
+  findStructuralTokenEndingBefore,
   findTokensBetween,
   findTriviaBetween,
   isStructural,
@@ -42,6 +43,24 @@ export function addClassListRules(
       rules.set(token.range[0], "none")
     }
   }
+}
+
+/**
+ * Adds the rules of the class after a `:::`: the `:::` touches what is before
+ * it, and the class touches the `:::`, as in `A:::c`.
+ */
+export function addCssClassRules(
+  source: Source,
+  cssClass: Node,
+  rules: Map<number, GapRule>,
+): void {
+  const separator = expectToken(
+    findStructuralTokenEndingBefore(source, cssClass.range[0]),
+    "the `:::` before a class",
+  )
+  expectValue(separator, ":::")
+  rules.set(separator.range[0], "none")
+  rules.set(cssClass.range[0], "none")
 }
 
 /**
@@ -212,4 +231,31 @@ export function accessibilityRules(
   const rules = new Map<number, GapRule>([[colon.range[0], "none"]])
   if (statement.value !== null) rules.set(statement.value.range[0], "space")
   return rules
+}
+
+/**
+ * The range from the `(` through the `)` around the arguments of a call, when
+ * a comment or a directive stands among them; otherwise null. The whitespace
+ * before the `)` is part of the arguments in the Db, and a comment line before
+ * the `)` would otherwise indent it, so class and gantt print this range as
+ * written (docs/class.md and docs/gantt.md, call arguments).
+ */
+export function findCallRangeWithTrivia(
+  source: Source,
+  args: Node,
+): Range | null {
+  const opening = expectToken(
+    findStructuralTokenEndingBefore(source, args.range[0]),
+    "the `(` of a call",
+  )
+  expectValue(opening, "(")
+  const closing = expectToken(
+    findStructuralToken(source, args.range[1]),
+    "the `)` of a call",
+  )
+  expectValue(closing, ")")
+  return findTriviaBetween(source, opening.range[1], closing.range[0]).length >
+    0
+    ? [opening.range[0], closing.range[1]]
+    : null
 }

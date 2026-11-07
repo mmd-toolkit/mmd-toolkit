@@ -15,6 +15,7 @@ import {
 import type { LeadingDirectives } from "./indentation-lines.ts"
 import type { AtomLayout } from "./atoms.ts"
 import { expectToken, keptAsWritten } from "./layout.ts"
+import { printAsWritten } from "./lines.ts"
 import type { Source } from "./source.ts"
 import {
   findFirstIndex,
@@ -55,6 +56,12 @@ export interface KanbanLine {
    * which is indentation too; null for any other line.
    */
   readonly leading: LeadingDirectives | null
+  /**
+   * For a class line with no directive on it, the text after its `:::`; null
+   * for any other line, a class line with a directive included, which is
+   * printed as written.
+   */
+  readonly cssClass: Node | null
 }
 
 /** The lines of each board, found once per source. */
@@ -118,6 +125,7 @@ export function kanbanLines(source: Source): readonly KanbanLine[] {
         depth,
         separatorWidth,
         leading: null,
+        cssClass: node.type === "KanbanClassStatement" ? node.cssClass : null,
       }
     }
     let content = textStart
@@ -128,13 +136,44 @@ export function kanbanLines(source: Source): readonly KanbanLine[] {
       depth,
       separatorWidth,
       leading: findLeadingDirectives(source, content, node.range[0]),
+      cssClass: null,
     }
   }
 }
 
-/** Every character inside a node, decoration, or opaque suffix is retained. */
-export function layoutKanbanLine(line: KanbanLine): AtomLayout {
-  return keptAsWritten(line.leading?.textStart ?? line.range[0], line.range[1])
+/**
+ * Every character inside a node, decoration, or opaque suffix is retained,
+ * except the spaces and tabs between the `:::` of a class line with no
+ * directive and the first other character of its class: the class text is only
+ * a class name for the rendering, so ` hot` and `hot` name the same class
+ * (docs/kanban.md, Icons and classes). A class of only whitespace stays as
+ * written.
+ */
+export function layoutKanbanLine(source: Source, line: KanbanLine): AtomLayout {
+  const start = line.leading?.textStart ?? line.range[0]
+  const { cssClass } = line
+  if (cssClass === null) return keptAsWritten(start, line.range[1])
+  let textStart = cssClass.range[0]
+  while (
+    textStart < cssClass.range[1] &&
+    (source.text[textStart] === " " || source.text[textStart] === "\t")
+  )
+    textStart++
+  if (textStart === cssClass.range[0] || textStart === cssClass.range[1]) {
+    return keptAsWritten(start, line.range[1])
+  }
+  return {
+    atoms: [
+      {
+        start,
+        end: line.range[1],
+        doc: [":::", printAsWritten(source, textStart, line.range[1])],
+      },
+    ],
+    rules: new Map(),
+    outdented: new Set(),
+    lineBreaks: "kept",
+  }
 }
 
 /**

@@ -379,9 +379,23 @@ the words of an alias definition and a pseudostate mark, which get one space
 (see [Aliases](#aliases) and [Pseudostates](#pseudostates)). [fixture:
 whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/tabs-collapsed] [fixture:
-whitespace-between-tokens/touching-class-kept] This holds for `:::`, the `""`
-that mermaid.js does not read, and the `,` of a style statement; the quotes of a
-floating note are kept as written. [fixture:
+whitespace-between-tokens/touching-class-kept] The `:::` of a state reference,
+in a transition or on a line of its own, touches the state before it and the
+class after it: `A :::c` and `A ::: c` are printed `A:::c`, as in an ER diagram.
+mermaid.js reads every spelling as the same state, so nothing forces the form;
+the printer already prints the `:::` of an ER diagram this way, and the five
+examples of the documentation of mermaid.js write it so
+([`Still:::notMoving` and the others](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/stateDiagram.md#L448-L470)).
+[fixture: whitespace-between-tokens/css-class-touches-separator] The `:::` of a
+`state` definition is not moved: `state A :::c`, `state "x" as B ::: c`, and
+`state C ::: c {` keep the gap they have, one space where whitespace was
+written, and `state "y" as D:::c` is printed `state "y" as D :::c` by the rule
+of the alias. [fixture: whitespace-between-tokens/css-class-in-definition-kept]
+A directive in the gap keeps whether whitespace was written on each side of it,
+as under [Directives](#directives), and a U+2028 or U+2029 stays where it is.
+[test: U+2028 before the `:::` of a state] [test: U+2029 after the `:::` of a
+state] This holds for the `""` that mermaid.js does not read and the `,` of a
+style statement; the quotes of a floating note are kept as written. [fixture:
 whitespace-between-tokens/comma-kept] [fixture:
 whitespace-between-tokens/floating-note-quotes-kept] Whether whitespace is
 written before a `""` is kept: `state x"" {` is the composite state `x""`, and
@@ -410,12 +424,14 @@ whitespace-between-tokens/comma-kept] A line break after the `,` is joined, so
 `class A,` and `B c` on the next line are printed `class A,B c`, and a directive
 before the `,` does not change that: the id after the `,` touches it. [fixture:
 whitespace-between-tokens/class-ids-line-break-and-directive] A directive in the
-gap after the `,` keeps the whitespace written on each side of it, as under
-[Directives](#directives), and a `;` that the line rule ignores keeps its line
-as written. [fixture: whitespace-between-tokens/class-ids-beside-directive-kept]
-[fixture: whitespace-between-tokens/class-ids-with-ignored-semicolon] A U+2028
-or U+2029 after the `,` stays where it is. [test: U+2028 after the comma of a
-state class statement] [test: U+2029 after the comma of a state class statement]
+gap after the `,` keeps whether whitespace was written on each side of it, a run
+of whitespace becoming one space, as under [Directives](#directives), and a `;`
+that the line rule ignores keeps its line as written. [fixture:
+whitespace-between-tokens/class-ids-beside-directive-kept] [fixture:
+whitespace-between-tokens/class-ids-beside-directive-runs-collapsed] [fixture:
+whitespace-between-tokens/class-ids-with-ignored-semicolon] A U+2028 or U+2029
+after the `,` stays where it is. [test: U+2028 after the comma of a state class
+statement] [test: U+2029 after the comma of a state class statement]
 
 Input
 ([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/state/whitespace-between-tokens/collapsed-input.mmd)):
@@ -436,7 +452,7 @@ Output
 
 ```mmd
 stateDiagram-v2
-  A ::: highlight
+  A:::highlight
   state f1 <<fork>>
   state "" x
   classDef c fill:red , stroke:blue

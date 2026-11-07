@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Block arrows: whitespace after a direction may stand before the `,` of the next one."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "a",
+          "label": "L",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            "right ",
+            "down"
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

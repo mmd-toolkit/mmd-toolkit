@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Block arrows: the comment line is left out, and the line feeds after the `,` of the first direction are whitespace that may stand there."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "a",
+          "label": "L",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            "x"
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

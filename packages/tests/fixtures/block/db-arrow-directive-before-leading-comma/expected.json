@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Block arrows: the directive is left out, so nothing stands between `(` and the `,`; the direction is `x`."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "a",
+          "label": "L",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            "x"
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

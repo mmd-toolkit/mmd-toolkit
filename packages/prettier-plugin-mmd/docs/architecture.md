@@ -288,15 +288,54 @@ Output
 
 ```mmd
 architecture-beta
-  service padded[ "x" ]
+  service padded["x"]
 ```
 
 ### Label content
 
-Preserve bracket interiors exactly: edge padding, repeated spaces, tabs,
-whitespace-only and quoted-empty content, escapes, HTML, entities and
-hidden-looking text. The Db can distinguish these values; normalizing them is
-not exterior spacing. Physical CR/CRLF alone follow the shared host policy.
+Preserve bracket interiors, except the spaces, tabs, and no-break spaces next to
+the brackets of the title of a group or a service: mermaid.js trims them, so
+`group a(cloud)[ API ]` is printed `group a(cloud)[API]` and
+`service s(server)["x" ]` is printed `service s(server)["x"]`. [fixture:
+label-content/title-edge-whitespace-dropped] This holds on a line with a kept
+`;` too, where the text through the last `;` is protected (see Semicolons):
+dropping the padding moves no `;`, adds none and removes none, so the line rule
+selects the same `;`. `group g(cloud)[ a;b ]` is printed `group g(cloud)[a;b]`,
+and `service s(server)[ x; ] in g` is printed `service s(server)[x;] in g`. One
+space stays where the padding lies between a `:` and a `#` of a line that the
+line rule may read, since whether it is there decides which `;` is ignored:
+`service style(logos:aws)[ #y; ]` is printed `service style(logos:aws)[ #y;]`,
+while `service s(logos:aws)[ #y; ]` has no `style` before the `:` and is printed
+`service s(logos:aws)[#y;]`. The rule reads a line without its directives, so a
+`style`, a `:`, a `#`, or a `;` inside one makes no stretch:
+`service%%{style}%% s0(logos:aws)[ #y; ]` is printed
+`service%%{style}%% s0(logos:aws)[#y;]`,
+`service style1(logos:aws)[ #y ]%%{init:{"a":";"}}%%` is printed with `[#y]`,
+and the same line with a `;` outside the directive, `[ #y; ]`, keeps its space.
+[fixture: label-content/title-padding-line-rule-chars-in-directive] A `%%` in
+the middle of a line is no comment line, so the rule reads its text:
+`service style3(logos:aws)[ #y ] %% note;` is printed
+`service style3(logos:aws)[ #y] %% note;`, since the `;` of the note lets the
+rule match from the `:` of `logos:aws`, and
+`service classDef(logos:aws)[#a;style: ]%%#c;` is not changed, since the `#` and
+the `;` after the `%%` take part in the rule. [fixture:
+label-content/title-padding-line-rule-chars-in-comment] A U+2028 or U+2029 that
+no directive or comment holds ends the line that the rule reads, so a `:` before
+it and a `;` after it make no stretch. [test:
+architecture/label-content/title-style-rule-ends-at-u2028] [test:
+architecture/label-content/title-style-rule-ends-at-u2029] A title with a
+comment or a directive stays as written, and so does a padding with a U+2028 or
+U+2029 in it. [fixture: label-content/title-padding-with-directive-or-semicolon]
+[fixture: label-content/title-padding-in-style-rule-stretch] [fixture:
+label-content/title-padding-after-colon-without-style] [test:
+architecture/label-content/title-u2028] [test:
+architecture/label-content/title-u2029] [test:
+architecture/label-content/title-with-semicolon-u2028] [test:
+architecture/label-content/title-with-semicolon-u2029] Repeated spaces, tabs
+inside the text, whitespace-only and quoted-empty content, escapes, HTML,
+entities and hidden-looking text stay: the Db can distinguish these values, and
+a title with a comment or a directive stays as written. Physical CR/CRLF alone
+follow the shared host policy.
 
 [fixture: architecture/label-content/bare-padding]
 
@@ -329,7 +368,7 @@ Output
 
 ```mmd
 architecture-beta
-  group labels[  A  B	 C  ]
+  group labels[A  B	 C]
 ```
 
 ### Port colons

@@ -13,6 +13,7 @@ import { holdsJoiningRegion } from "./kept-lines.ts"
 import {
   collectAtoms,
   collectValueNodes,
+  dropPaddings,
   expectToken,
   keptAsWritten,
   layoutDescriptionBlock,
@@ -133,6 +134,7 @@ export function layoutUsecaseStatement(
   const keptBreaksBefore = new Set<number>()
   const kept: Atom[] = []
   const stereotypes: StereotypeLayout[] = []
+  const titlePads: Range[] = []
 
   /** Adds one node's structural rules, excluding a boundary's body. */
   function visit(node: Node): void {
@@ -170,7 +172,18 @@ export function layoutUsecaseStatement(
         // The title opener touches the id, as in a flowchart subgraph
         // (docs/usecase.md, System boundaries).
         rules.set(opening.range[0], "none")
-        kept.push({ start: opening.range[0], end: closing.range[1] })
+        // Nothing stands inside the brackets or the parentheses: mermaid.js
+        // trims the title (docs/usecase.md, System boundaries).
+        rules.set(statement.title.range[0], "none")
+        rules.set(closing.range[0], "none")
+        kept.push({
+          start: statement.title.range[0],
+          end: statement.title.range[1],
+        })
+        titlePads.push(
+          [opening.range[1], statement.title.range[0]],
+          [statement.title.range[1], closing.range[0]],
+        )
       }
       addClassListRules(source, statement.classes, statement.range[0], rules)
       break
@@ -296,6 +309,10 @@ export function layoutUsecaseStatement(
     end,
     collectAtoms(source, start, end, values, kept),
   )
+  // The padding of a title that a protected `;` prefix holds is dropped there,
+  // as a gap outside the prefix is by its rule (docs/usecase.md, System
+  // boundaries).
+  dropPaddings(source, atoms, titlePads)
   for (const stereotype of stereotypes) {
     const index = atoms.findIndex(
       (atom) =>
@@ -429,9 +446,26 @@ function addElementRules(
       findStructuralToken(source, element.stereotype.range[1]),
       "the stereotype closer",
     )
+    const opening = expectToken(
+      findStructuralTokenEndingBefore(source, element.stereotype.range[0]),
+      "the stereotype opener",
+    )
     stereotypes.push({ value: element.stereotype, range })
     joinedBefore.add(range[0])
     joinedBefore.add(closing.range[0])
+    // One space stands before the `<<` and nothing inside the delimiters, as
+    // in the annotation of a class (docs/usecase.md, Stereotypes).
+    rules.set(opening.range[0], "space")
+    // A directive or a comment at an end of the text is part of the text,
+    // and the whitespace beside it keeps its written side (docs/usecase.md,
+    // Stereotypes).
+    const edgeTrivia = findTriviaBetween(source, range[0], range[1]).some(
+      (item) => item.range[0] === range[0] || item.range[1] === range[1],
+    )
+    if (!edgeTrivia) {
+      rules.set(range[0], "none")
+      rules.set(closing.range[0], "none")
+    }
   }
   addClassListRules(source, element.classes, element.range[0], rules)
 }

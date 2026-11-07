@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "whitespace may not stand between `(` and the `,` of the first direction, so an empty line before it makes the input rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nblock-betaa<[\"L\"]>(,x)\n-------------------^"
+  }
+}
