@@ -131,6 +131,7 @@ export function layoutArchitectureStatement(
           throw new Error("prettier-plugin-mmd: no architecture line")
         rules.set(bundle.start, "space")
         rules.set(last.range[0], "space")
+        titleRange = statement.arrow.title?.range ?? null
       } else if (
         statement.type === "ArchitectureGroupStatement" ||
         statement.type === "ArchitectureServiceStatement"
@@ -159,9 +160,9 @@ export function layoutArchitectureStatement(
       )
   }
   const atoms = protectSemicolonPrefixes(source, start, end, layout.atoms)
-  // mermaid.js trims the title of a group or a service, also in the prefix of
-  // a line with a `;`, which the protected atom holds (docs/architecture.md,
-  // Label content).
+  // mermaid.js trims the title of a group or a service and the label of an
+  // edge, also in the prefix of a line with a `;`, which the protected atom
+  // holds (docs/architecture.md, Label content).
   if (titleRange !== null) trimBracketedText(source, atoms, titleRange)
   return protectHiddenGaps({ ...layout, atoms }, hidden)
 }

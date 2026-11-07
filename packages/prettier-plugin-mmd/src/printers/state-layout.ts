@@ -4,6 +4,7 @@ import type {
   StateAliasDefinitionStatement,
   StateCompositeStatement,
   StateLiteral,
+  StateFloatingNoteStatement,
   StateNoteStatement,
   StateReference,
   StateStatement,
@@ -985,10 +986,33 @@ function statementRules(
     case "StateClassStatement":
       addClassIdListRules(source, statement.states, rules)
       break
+    case "StateFloatingNoteStatement":
+      addFloatingNoteRules(source, statement, rules)
+      break
     default:
       break
   }
   return rules
+}
+
+/**
+ * Adds the rules of the parts of a floating note after its closing quotes:
+ * one space before the `as` and before the id, as in an alias definition
+ * (docs/state.md, Notes). mermaid.js reads `note "t"as N` as it reads
+ * `note "t" as N`, and `as` needs whitespace after it already, so the spaces
+ * change nothing it reads. The quotes are kept as written.
+ */
+function addFloatingNoteRules(
+  source: Source,
+  statement: StateFloatingNoteStatement,
+  rules: Map<number, GapRule>,
+): void {
+  const asKeyword = expectToken(
+    findTokenEndingBefore(source, statement.id?.range[0] ?? statement.range[1]),
+    "the `as` of a floating note",
+  )
+  rules.set(asKeyword.range[0], "space")
+  if (statement.id !== null) rules.set(statement.id.range[0], "space")
 }
 
 /**

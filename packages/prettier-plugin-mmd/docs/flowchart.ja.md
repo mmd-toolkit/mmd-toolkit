@@ -965,6 +965,11 @@ flowchart LR
 [fixture: label-inner-whitespace/string-closing-break-and-directive-kept]
 [test: U+2028 between the closing quote and the bracket of a flowchart label]
 [test: U+2029 between the closing quote and the bracket of a flowchart label]
+接続のラベルを閉じる `|` も同じく閉じ引用符に接します。
+`A-->|"x" |B` は `A -->|"x"| B` と印字し、引用符と `|` の間のディレクティブ、
+U+2028、U+2029 は残します。
+[fixture: label-inner-whitespace/pipe-string-closing-touches]
+[test: U+2028 between the closing quote and the `|` of a flowchart edge label]
 
 ラベルの先頭の空白は、それがないとラベルの読み方が変わるときは、
 空白 1 つとして残します。
@@ -1964,6 +1969,14 @@ mermaid.js は subgraph の中の `direction` の文の `TD`
 `A[direction TB]` のような行も `direction` の文で、頂点も接続も読まれず、
 そのように、その段の字下げで印字します。
 [fixture: direction/statement-holds-text-kept]
+ヘッダーの方向は、記号がキーワードに接していても空白 1 つの後に置きます。
+`graph>` は `graph >` に、`flowchart^` は `flowchart ^` と印字します。
+この空白は Db に入らず、`TD` のような文字の方向には、もともと空白が必要です。
+その間にディレクティブがあれば、その両側に空白が書かれていたかを保ち、
+U+2028 と U+2029 はそのまま残します。
+[fixture: direction/header-symbol-touching-spaced]
+[fixture: direction/header-symbol-beside-directive-kept]
+[test: U+2029 between the graph keyword and its direction]
 
 入力
 ([direction/kept-input.mmd](../tests/fixtures/flowchart/direction/kept-input.mmd)):

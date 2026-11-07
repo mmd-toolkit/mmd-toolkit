@@ -1,11 +1,13 @@
 import type {
   AgentflowClickCallbackStatement,
+  AgentflowDiagram,
   AgentflowLabel,
   Node,
   Range,
   AgentflowLink,
   AgentflowShape,
   FlowchartClickCallbackStatement,
+  FlowchartDiagram,
   FlowchartLabel,
   FlowchartLink,
   FlowchartShape,
@@ -118,14 +120,19 @@ export function addLinkRules(
   )
   expectValue(opening, "|")
   rules.set(opening.range[0], "none")
-  if (link.label.kind !== "text") return
-  const edge = labelEdgeRule(source, link.label)
-  rules.set(link.label.range[0], edge)
   const closing = expectToken(
     findStructuralToken(source, link.label.range[1]),
     "the second `|` of a link label",
   )
   expectValue(closing, "|")
+  if (link.label.kind !== "text") {
+    // The closing `|` touches the closing quote, as the closing bracket of a
+    // shape does (docs/flowchart.md, Label inner whitespace).
+    rules.set(closing.range[0], "none")
+    return
+  }
+  const edge = labelEdgeRule(source, link.label)
+  rules.set(link.label.range[0], edge)
   rules.set(closing.range[0], edge)
 }
 
@@ -241,17 +248,34 @@ function keepsLeadingWhitespace(label: GraphLabel, opening: Token): boolean {
   return label.value.slice(0, wordEnd).includes("@")
 }
 
-/** Graph headers share the authored keyword/direction layout. */
+/**
+ * Graph headers share the authored keyword/direction layout. The direction
+ * stands after one space, also where a symbol such as `<` touched the keyword
+ * (docs/flowchart.md, Direction).
+ */
 export function layoutGraphHeader(
   source: Source,
-  diagram: Node,
+  diagram: AgentflowDiagram | FlowchartDiagram,
   end: number,
 ): AtomLayout {
   if (holdsJoiningRegion(source, diagram.range[0], end))
     return keptAsWritten(diagram.range[0], end)
+  const rules = new Map<number, GapRule>()
+  if (diagram.direction !== null) {
+    const keyword = expectToken(
+      findStructuralToken(source, diagram.range[0]),
+      "the keyword of a header",
+    )
+    const direction = expectToken(
+      findStructuralToken(source, keyword.range[1]),
+      "the direction of a header",
+    )
+    expectValue(direction, diagram.direction)
+    rules.set(direction.range[0], "space")
+  }
   return {
     atoms: collectAtoms(source, diagram.range[0], end, [], []),
-    rules: new Map(),
+    rules,
     outdented: new Set(),
     lineBreaks: "kept",
   }

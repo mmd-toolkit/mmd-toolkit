@@ -98,7 +98,15 @@ export function layoutContainerHeader(
       else if (isWhitespace(source.text[nameStart])) nameStart++
       else break
     }
-    if (node.title !== null) {
+    // The data block of a heading without a title touches the name, whose
+    // trailing whitespace mermaid.js trims, as the `[` of a title does; a name
+    // that holds a directive or a comment is kept as written
+    // (docs/agentflow.md, Names and headings).
+    const touchesData =
+      node.title === null &&
+      node.data.length > 0 &&
+      findTriviaBetween(source, name.range[0], name.range[1]).length === 0
+    if (node.title !== null || touchesData) {
       while (nameEnd > nameStart && isWhitespace(source.text[nameEnd - 1]))
         nameEnd--
     }
@@ -107,6 +115,7 @@ export function layoutContainerHeader(
       nameStart = name.range[0]
       nameEnd = name.range[1]
     }
+    if (touchesData) rules.set(node.data[0].range[0], "none")
     if (node.title !== null) {
       // The `[` of the title touches the name, as in a flowchart, unless a
       // directive or comment ends the name: the whitespace after it is kept

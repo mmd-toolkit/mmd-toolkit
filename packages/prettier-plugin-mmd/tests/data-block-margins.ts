@@ -86,6 +86,19 @@ function isPaddedOneLine(before: string, after: string): boolean {
 }
 
 /**
+ * The block with the spaces and tabs removed between the `@` and the `{` of
+ * its head, which the formatter drops from the JSON table of a use case
+ * diagram (docs/usecase.md, JSON tables). A block with a directive is left
+ * as it is, since the formatter leaves it as written.
+ */
+function withoutHeadPadding(block: string): string {
+  if (!block.startsWith("@") || block.includes("%%{")) return block
+  let brace = "@".length
+  while (block[brace] === " " || block[brace] === "\t") brace++
+  return block[brace] === "{" ? `@${block.slice(brace)}` : block
+}
+
+/**
  * Whether `after` is `before` with its lines moved by one number of spaces:
  * the same rows, the same first row, the same text in each row that holds
  * text, a blank row as wide as the move leaves it (empty where it leaves none),
@@ -94,6 +107,8 @@ function isPaddedOneLine(before: string, after: string): boolean {
  */
 function isAllowedMove(before: string, after: string): boolean {
   if (before === after) return true
+  const head = withoutHeadPadding(before)
+  if (head !== before) return isAllowedMove(head, after)
   if (!before.includes("\n") && !after.includes("\n"))
     return isPaddedOneLine(before, after)
   const rowsBefore = before.split("\n")

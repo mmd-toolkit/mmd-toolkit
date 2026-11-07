@@ -1675,13 +1675,13 @@ usecase/frontmatter-yaml/frontmatter-zero]
 
 Native `@{...}` metadata is parsed and validated syntax: only structural
 whitespace changes, with all written separators, blank lines, spelling, order
-and duplicates retained. JSON table data is opaque, including its @-to-brace
-gap, number/escape spelling and property order; eligible margins follow
-[JSON tables](./usecase.md#json-tables). Formatting fixtures without supplied
-effects use the shared null Db comparison and written-source check; the corpus
-uses recorded effects where available. Full CSS declarations keep both colon
-padding sides and the `--` name gap, which Mermaid stores. [fixture:
-usecase/native-metadata/metadata-inline] [fixture:
+and duplicates retained. JSON table data is opaque, including its number/escape
+spelling and property order, but the `{` of its head touches the `@`; eligible
+margins follow [JSON tables](./usecase.md#json-tables). Formatting fixtures
+without supplied effects use the shared null Db comparison and written-source
+check; the corpus uses recorded effects where available. Full CSS declarations
+keep both colon padding sides and the `--` name gap, which Mermaid stores.
+[fixture: usecase/native-metadata/metadata-inline] [fixture:
 usecase/native-metadata/metadata-blank-lines-kept] [fixture:
 usecase/json-tables/json-opaque] [fixture:
 usecase/classes-and-styles/css-colon-padding] [fixture:
@@ -1988,13 +1988,15 @@ packet/c4container-label] [test: packet Markdown: rejected]
 ## Architecture values and hidden boundaries
 
 The [architecture rules](./architecture.md) keep bracketed labels as complete
-source ranges, including bare/quoted kind, quote spelling, edge padding, empty
-quoted text, escapes, HTML and entities. Interior whitespace and escape
-conversion can change the Db. Text icons retain their complete StringLiteral
-source, and named icons retain their names: trimming, decoding or replacing
-these values can change what mermaid.js reads. `singleQuote` does not rewrite
-icons or labels. Keep the actual arrow marker characters, including reversed
-`>--<`, rather than reconstructing them from presence flags. [fixture:
+source ranges, including bare/quoted kind, quote spelling, empty quoted text,
+escapes, HTML and entities, except for the spaces, tabs, and no-break spaces
+next to the brackets of a title or an arrow label, which are dropped (see
+[Label content](./architecture.md#label-content)). Interior whitespace and
+escape conversion can change the Db. Text icons retain their complete
+StringLiteral source, and named icons retain their names: trimming, decoding or
+replacing these values can change what mermaid.js reads. `singleQuote` does not
+rewrite icons or labels. Keep the actual arrow marker characters, including
+reversed `>--<`, rather than reconstructing them from presence flags. [fixture:
 architecture/label-forms/padded-quotes] [fixture:
 architecture/label-content/bare-padding] [fixture:
 architecture/label-content/html-entities] [fixture:

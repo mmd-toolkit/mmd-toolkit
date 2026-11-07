@@ -217,6 +217,7 @@ export function layoutBlockOpening(
   }
   const rules = new Map<number, GapRule>([[opening.range[0], "space"]])
   addDeclarationRules(source, statement, rules)
+  addGenericRules(source, statement, opening.range[0], rules)
   return {
     atoms: collectAtoms(
       source,
@@ -603,6 +604,11 @@ function addDeclarationRules(
   statement: ClassDeclaration | ClassNamespaceStatement,
   rules: Map<number, GapRule>,
 ): void {
+  const name =
+    statement.type === "ClassDeclaration"
+      ? statement.name
+      : (statement.prefix ?? statement.name)
+  rules.set(name.range[0], "space")
   if (statement.label !== null) {
     addLabelBracketRules(source, statement.label, rules)
   }
@@ -617,21 +623,45 @@ function addDeclarationRules(
 
 /**
  * Adds the rules of the string between the `[` and the `]` of a class or a
- * namespace: nothing stands between the brackets and the quotes, whatever
- * whitespace was written there (docs/class.md, Labels).
+ * namespace: nothing stands between the name and the `[`, nor between the
+ * brackets and the quotes, whatever whitespace was written there
+ * (docs/class.md, Labels).
  */
 function addLabelBracketRules(
   source: Source,
   label: StringLiteral,
   rules: Map<number, GapRule>,
 ): void {
+  const opening = expectToken(
+    findStructuralTokenEndingBefore(source, label.range[0]),
+    "the `[` before the label of a class",
+  )
+  expectValue(opening, "[")
   const closing = expectToken(
     findStructuralToken(source, label.range[1]),
     "the `]` after the label of a class",
   )
   expectValue(closing, "]")
+  rules.set(opening.range[0], "none")
   rules.set(label.range[0], "none")
   rules.set(closing.range[0], "none")
+}
+
+/**
+ * Adds the rule of the first `~` of the generic type of each class name in a
+ * node before `end`: it touches what comes before it, whatever whitespace was
+ * written there, since the whitespace between the name and the `~` is not in
+ * the Db (docs/class.md, Generic types).
+ */
+function addGenericRules(
+  source: Source,
+  node: Node,
+  end: number,
+  rules: Map<number, GapRule>,
+): void {
+  for (const stretch of findGenericStretches(source, node, end)) {
+    rules.set(stretch.start, "none")
+  }
 }
 
 /** The gap rules of a statement. */
@@ -664,7 +694,33 @@ function statementRules(
         rules,
       )
       break
+    case "ClassNoteStatement":
+      if (statement.class !== null) rules.set(statement.class.range[0], "space")
+      rules.set(statement.text.range[0], "space")
+      break
+    case "ClassLinkStatement":
+      rules.set(statement.class.range[0], "space")
+      rules.set(statement.url.range[0], "space")
+      if (statement.tooltip !== null) {
+        rules.set(statement.tooltip.range[0], "space")
+      }
+      if (statement.target !== null) {
+        const target = expectToken(
+          findStructuralToken(
+            source,
+            (statement.tooltip ?? statement.url).range[1],
+          ),
+          "the link target of a link statement",
+        )
+        rules.set(target.range[0], "space")
+      }
+      break
+    case "ClassCssClassStatement":
+      rules.set(statement.idList.range[0], "space")
+      rules.set(statement.cssClass.range[0], "space")
+      break
     case "ClassCallbackStatement":
+      addCallbackRules(source, statement, rules)
       addBlankCallbackRules(source, statement, rules)
       break
     case "ClassDeclaration":
@@ -683,7 +739,33 @@ function statementRules(
     default:
       break
   }
+  addGenericRules(source, statement, statement.range[1], rules)
   return rules
+}
+
+/**
+ * Adds the rules of the units of a callback statement, each after one space:
+ * the class name, the `call` keyword, a function name written as a string,
+ * and the tooltip (docs/class.md, Whitespace between tokens).
+ */
+function addCallbackRules(
+  source: Source,
+  statement: ClassCallbackStatement,
+  rules: Map<number, GapRule>,
+): void {
+  rules.set(statement.class.range[0], "space")
+  if (statement.callback.type === "StringLiteral") {
+    rules.set(statement.callback.range[0], "space")
+  } else {
+    const keyword = expectToken(
+      findStructuralToken(source, statement.class.range[1]),
+      "the `call` of a callback statement",
+    )
+    rules.set(keyword.range[0], "space")
+  }
+  if (statement.tooltip !== null) {
+    rules.set(statement.tooltip.range[0], "space")
+  }
 }
 
 /**

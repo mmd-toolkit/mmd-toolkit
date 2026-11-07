@@ -846,6 +846,17 @@ id が空の場合も同じです。
 その本文は `:` だけです。 [fixture: notes/blank-text-kept]
 独立したノートの引用符は書かれたまま残します。
 `note ""floating" as N` の本文は `floating` です。 [fixture: notes/over-lines]
+浮遊ノートの `as` とその後の id は、前のものに接していても、
+それぞれ空白 1 つの後に置きます。
+`note "t"as N` と `note "t" asN` は `note "t" as N` と印字します。
+mermaid.js はこの 3 つの書き方を同じに読み、
+別名の定義の `as` と id も同じ形で印字します（[別名](#別名)を参照）。
+隙間にディレクティブがあれば、その両側に空白が書かれていたかを保ち、
+U+2028 と U+2029 はそのまま残します。
+[fixture: notes/floating-note-as-gaps-spaced]
+[fixture: notes/floating-note-as-beside-directive-kept]
+[test: U+2028 before the `as` of a floating note]
+[test: U+2029 between the `as` and the id of a floating note]
 
 入力 ([notes/kept-input.mmd](../tests/fixtures/state/notes/kept-input.mmd)):
 

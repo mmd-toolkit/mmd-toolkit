@@ -549,9 +549,17 @@ usecase-beta
 
 [埋め込みデータは検査しない](./compatibility.ja.md#埋め込みデータは検査しない)
 を再利用します。
-`@`、`{` の前の隙間、JSON の内容を、以下の一定量の余白の移動を除いて保ちます。
+JSON の内容を、以下の一定量の余白の移動を除いて保ちます。
 外側の json と id の隙間、および class の接尾辞を整え、
 データの前は通常の空白 1 個にします。
+`{` は `@` に接し、`json A @ {"a":1}` は `json A @{"a":1}` と印字します。
+その間の空白とタブは Db に入らず、
+mermaid.js の文書でも `@{` と書いているためです
+([`json Payload@{`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/usecase.md#L334))。
+`@` と `{` の間にディレクティブがある先頭部分は書かれたまま残します。
+[fixture: json-tables/head-padding-dropped]
+[fixture: json-tables/empty-head-padding-dropped]
+[fixture: json-tables/head-beside-directive-kept]
 [fixture: json-tables/json-prefix-id-at-multiline-directive]
 入れ子、重複、整数キーの順序、数とエスケープ、コメント風の文字を保ちます。
 キーの並べ替えは `propertyOrder` を変える場合があります。
@@ -590,7 +598,7 @@ CR と LF は `endOfLine` に従い、
 [test: data blocks: JSON leading tab kept] [test: data blocks: usecase U+2029]
 [test: data blocks: usecase CRLF]
 
-1 行の JSON table は書かれたままにします。
+1 行の JSON table は、`@` と `{` の間の空白を除いて、書かれたままにします。
 `{` と `}` は JSON 自身の括弧であり、
 mermaid.js が括弧を付けて読むブロックの両端ではないので、
 [データブロック](./flowchart.ja.md#データブロック)の空白 1
@@ -602,7 +610,6 @@ mermaid.js が括弧を付けて読むブロックの両端ではないので、
 [fixture: json-tables/json-order-kept]
 [fixture: json-tables/json-directive-opaque]
 [fixture: json-tables/numbers-escapes-and-comment-text]
-[fixture: json-tables/empty-prefix-gap]
 
 入力（escape 表記）:
 `"usecase-beta\njson  Table  @ {\n \"2\": 2, \"1\": {\"z\":1}, \"2\": 3\n} ::: data , table"`
@@ -612,7 +619,7 @@ mermaid.js が括弧を付けて読むブロックの両端ではないので、
 
 ```mmd
 usecase-beta
-  json Table @ {
+  json Table @{
     "2": 2, "1": {"z":1}, "2": 3
   }:::data,table
 ```

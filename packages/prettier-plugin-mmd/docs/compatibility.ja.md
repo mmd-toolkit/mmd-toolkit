@@ -1793,8 +1793,8 @@ usecase は書かれた AST に従います。
 
 native の `@{...}` metadata は解析と検証を行う構文です。
 構造の空白だけを変え、書かれた区切り、空行、綴り、順序、重複をすべて保ちます。
-JSON の表データは不透明で、@ と波括弧の隙間、数とエスケープの綴り、
-プロパティの順序も含み、
+JSON の表データは不透明で、数とエスケープの綴り、プロパティの順序も含みますが、
+先頭部分の `{` は `@` に接し、
 対象となる余白は [JSON tables](./usecase.ja.md#json-tables) に従います。
 効果を渡さない整形 fixture では、共有の Db 比較を null とし、原文を比較します。
 コーパスは存在する記録済みの効果を使います。
@@ -2135,8 +2135,11 @@ Markdown では埋め込みを辞退して payload を修復しません。
 
 [architecture の規則](./architecture.ja.md)は、
 角括弧ラベルの全 source 範囲を保ちます。
-bare・quoted の kind、引用符の綴り、端の空白、quoted の空値、escape、HTML、
+bare・quoted の kind、引用符の綴り、quoted の空値、escape、HTML、
 entity も含みます。
+ただし、タイトルや矢印のラベルの括弧に接する空白、タブ、
+no-break space は除きます。
+[Label content](./architecture.ja.md#label-content) を参照してください。
 内側の空白や escape の変換は Db を変え得ます。
 文字 icon は StringLiteral の source 全体、名前付き icon は名前を保ちます。
 trim、decode、置き換えは mermaid.js の読みを変え得るためです。

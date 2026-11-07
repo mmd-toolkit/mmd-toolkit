@@ -158,10 +158,14 @@ function statementRules(
   const rules = new Map<number, GapRule>()
   switch (statement.type) {
     case "QuadrantTitleStatement":
+      // The keyword and its text stand apart by one space, also where they
+      // touched (docs/quadrant.md, Keywords and texts).
+      if (statement.value !== null) {
+        rules.set(statement.value.range[0], "space")
+      }
+      break
     case "QuadrantQuadrantStatement":
-      // The keyword and its text are apart by one space where they were
-      // apart, and touch where they touched (docs/quadrant.md, Keywords and
-      // texts): the default rule of a gap.
+      rules.set(statement.text.range[0], "space")
       break
     case "QuadrantAxisStatement":
       addAxisRules(source, statement, rules)
@@ -185,14 +189,16 @@ function statementRules(
 }
 
 /**
- * The rules of an axis statement: the arrow stands after one space, and so
- * does the text after it (docs/quadrant.md, Axes).
+ * The rules of an axis statement: the text stands after the keyword, the
+ * arrow after the text, and the text after the arrow, each after one space
+ * (docs/quadrant.md, Keywords and texts and Axes).
  */
 function addAxisRules(
   source: Source,
   statement: QuadrantAxisStatement,
   rules: Map<number, GapRule>,
 ): void {
+  rules.set(statement.start.range[0], "space")
   if (!statement.arrow) return
   const arrow = expectToken(
     findStructuralToken(source, statement.start.range[1]),

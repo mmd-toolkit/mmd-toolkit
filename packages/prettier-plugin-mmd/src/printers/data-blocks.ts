@@ -81,7 +81,8 @@ export interface DataBlockPlacement {
  * `padDataBlock`), and, where the statement holds no other block, a block of
  * several lines printed one level inside the statement, with its closing `}`
  * on a line of its own at the column of the statement, in spaces (see
- * `moveDataBlock`).
+ * `moveDataBlock`). The `{` of a JSON table of a use case diagram is printed
+ * right after its `@` (see `findJsonTableBrace`).
  */
 export function formatDataBlocks(
   source: Source,
@@ -97,11 +98,16 @@ export function formatDataBlocks(
   let changed = false
   for (let index = first; index < afterLast; index++) {
     const block = all[index]
-    const doc = isOneLine(source.text.slice(...block.range))
-      ? padDataBlock(source, all, index, placement.kept)
-      : afterLast - first === 1 && placement.tabWidth !== 0
-        ? moveDataBlock(source, block, range, placement)
-        : undefined
+    const brace = findJsonTableBrace(source, block, placement.kept)
+    const doc =
+      (isOneLine(source.text.slice(...block.range))
+        ? padDataBlock(source, all, index, placement.kept)
+        : afterLast - first === 1 && placement.tabWidth !== 0
+          ? moveDataBlock(source, block, range, placement, brace)
+          : undefined) ??
+      (brace === null
+        ? undefined
+        : ["@", printAsWritten(source, brace, block.range[1])])
     if (doc === undefined) continue
     // The atoms are in source order and do not overlap, so the first one that
     // ends at or after the block is the one that holds it, if any does.
@@ -128,6 +134,33 @@ export function formatDataBlocks(
     changed = true
   }
   return changed ? { ...layout, atoms } : layout
+}
+
+/**
+ * The offset of the `{` of a JSON table of a use case diagram that spaces or
+ * tabs separate from its `@`, or null: the printer puts the `{` right after
+ * the `@`, as the other data blocks have their `@{`, and the whitespace
+ * between them is not in the Db (docs/usecase.md, JSON tables). A block that
+ * holds a directive, or that lies on a kept line, stays as written.
+ */
+function findJsonTableBrace(
+  source: Source,
+  block: Node,
+  kept: KeptLines,
+): number | null {
+  if (block.type !== "UsecaseJsonDataBlock") return null
+  const text = source.text.slice(...block.range)
+  const brace = text.indexOf("{")
+  if (
+    brace <= "@".length ||
+    text.includes("%%{") ||
+    holdsKeptLine(source, block.range, kept) ||
+    !Array.from(text.slice("@".length, brace)).every(
+      (character) => character === " " || character === "\t",
+    )
+  )
+    return null
+  return block.range[0] + brace
 }
 
 /** Whether a text holds no line break: LF, CR, U+2028 or U+2029. */
@@ -249,6 +282,7 @@ function moveDataBlock(
   block: Node,
   statement: Range,
   placement: DataBlockPlacement,
+  brace: number | null,
 ): Doc | undefined {
   const text = source.text.slice(...block.range)
   if (
@@ -258,7 +292,8 @@ function moveDataBlock(
   )
     return undefined
   const rows = text.split("\n")
-  const opening = rows[0]
+  const opening =
+    brace === null ? rows[0] : `@${rows[0].slice(brace - block.range[0])}`
   const last = rows.at(-1) as string
   if (
     rows.length < 2 ||

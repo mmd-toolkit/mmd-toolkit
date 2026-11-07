@@ -294,8 +294,9 @@ architecture-beta
 
 ### Label content
 
-角括弧の内側はそのまま保ちますが、
-group と service のタイトルの括弧に接する空白、タブ、no-break space は例外です。
+角括弧の内側はそのまま保ちますが、group と service のタイトル、
+および矢印のラベル（[Arrow labels](#arrow-labels) を参照）の括弧に接する空白、
+タブ、no-break space は例外です。
 mermaid.js が trim するからです。
 `group a(cloud)[ API ]` は `group a(cloud)[API]` に、
 `service s(server)["x" ]` は `service s(server)["x"]` になります。
@@ -439,14 +440,29 @@ architecture-beta
 
 ラベル付きの線は `a:R <-[label]-> L:b` と印字します。
 単 dash、角括弧ラベル全体、marker を視覚上の1単位にします。
-通常の外側の隙間だけを除き、空白付きの引用符風の文字や quoted の空値も、
-ラベルの全範囲を保ちます。
+通常の外側の隙間と、ラベルの括弧に接する空白、タブ、no-break space を、
+group や service のタイトルと同じく除きます。
+[Label content](#label-content) を参照してください。
+`a:R -[ Label ]- L:b` は `a:R -[Label]- L:b` に、
+`a:R - [ "x" ] - L:b` は `a:R -["x"]- L:b` と印字します。
+mermaid.js がラベルを trim するので Db は同じです。
+quoted の空値も含め、ラベルの残りの範囲を保ちます。
+コメントやディレクティブがあるラベルと、U+2028 や U+2029 を含む空白は、
+書かれたまま残します。
 
 [fixture: architecture/arrow-labels/edge-label-padded-quote]
 
 [fixture: architecture/arrow-labels/edge-label-quoted]
 
 [fixture: architecture/arrow-labels/labelled-dash-tight]
+
+[fixture: architecture/arrow-labels/edge-label-padding-dropped]
+
+[fixture: architecture/arrow-labels/edge-label-directive-kept]
+
+[test: architecture/arrow-labels/edge-label-padding-u2028]
+
+[test: architecture/arrow-labels/edge-label-padding-u2029]
 
 [corpus fixture: architecture/gram-edge-reversed-labeled-markers]
 
@@ -462,7 +478,7 @@ architecture-beta
 architecture-beta
   service a
   service b
-  a:R -[ "x" ]- L:b
+  a:R -["x"]- L:b
 ```
 
 ### Group modifiers

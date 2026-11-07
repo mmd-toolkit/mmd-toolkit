@@ -501,9 +501,16 @@ usecase-beta
 ### JSON tables
 
 Reuse [opaque data retention](./compatibility.md#embedded-data-is-not-checked):
-keep `@`, its gap before `{`, and the JSON contents, apart from the uniform
-margin movement below. Format exterior json/id gaps and class suffixes; one
-ordinary gap precedes the data. [fixture:
+keep the JSON contents, apart from the uniform margin movement below. Format
+exterior json/id gaps and class suffixes; one ordinary gap precedes the data.
+The `{` touches the `@`: `json A @ {"a":1}` is printed `json A @{"a":1}`, since
+the spaces and tabs between them are not in the Db, and the documentation of
+mermaid.js writes `@{`
+([`json Payload@{`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/usecase.md#L334)).
+A head with a directive between the `@` and the `{` stays as written. [fixture:
+json-tables/head-padding-dropped] [fixture:
+json-tables/empty-head-padding-dropped] [fixture:
+json-tables/head-beside-directive-kept] [fixture:
 json-tables/json-prefix-id-at-multiline-directive] Nested objects, duplicates,
 integer-key order, numbers/escapes and apparent comments stay authored. Sorting
 keys can change `propertyOrder`. Balanced malformed contents follow the
@@ -538,17 +545,17 @@ json-tables/inline-opening-kept] [fixture: json-tables/directive-inside-kept]
 json-tables/surrounding-trivia] [test: data blocks: JSON leading tab kept]
 [test: data blocks: usecase U+2029] [test: data blocks: usecase CRLF]
 
-A JSON table on one line stays as written: its `{` and `}` are the braces of the
-JSON itself, not the ends of a block that mermaid.js wraps in braces, so the
-one-space padding of [Data blocks](./flowchart.md#data-blocks) does not apply to
-it. [fixture: json-tables/one-line-kept]
+A JSON table on one line stays as written, apart from the whitespace between the
+`@` and the `{`: its `{` and `}` are the braces of the JSON itself, not the ends
+of a block that mermaid.js wraps in braces, so the one-space padding of
+[Data blocks](./flowchart.md#data-blocks) does not apply to it. [fixture:
+json-tables/one-line-kept]
 
 [fixture: json-tables/json-opaque] [corpus fixture:
 usecase/gram-json-prefix-id-control] [fixture: json-tables/json-invalid-opaque]
 [fixture: json-tables/json-order-kept] [fixture:
 json-tables/json-directive-opaque] [fixture:
-json-tables/numbers-escapes-and-comment-text] [fixture:
-json-tables/empty-prefix-gap]
+json-tables/numbers-escapes-and-comment-text]
 
 Input (escaped):
 `"usecase-beta\njson  Table  @ {\n \"2\": 2, \"1\": {\"z\":1}, \"2\": 3\n} ::: data , table"`
@@ -558,7 +565,7 @@ Output
 
 ```mmd
 usecase-beta
-  json Table @ {
+  json Table @{
     "2": 2, "1": {"z":1}, "2": 3
   }:::data,table
 ```

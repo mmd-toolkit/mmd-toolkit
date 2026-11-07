@@ -227,7 +227,9 @@ classDiagram
 ### Whitespace between tokens
 
 Within a line, a run of spaces and tabs between two tokens becomes one space,
-and tokens that touch keep touching, as in a flowchart. [fixture:
+and tokens that touch keep touching, as in a flowchart, except for the cases
+named below: a string, a backquoted name, or the `call` keyword after what comes
+before it, the `[` of a label, and the `~` of a generic type. [fixture:
 whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/tabs-collapsed] [fixture:
 empty-description-blocks/touching-kept] [fixture:
@@ -274,6 +276,34 @@ whitespace-between-tokens/tabs-collapsed] A line that holds only a class name,
 which declares nothing, is kept at the level of the statements around it.
 [fixture: whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/tabs-collapsed]
+
+A string, a backquoted name, or the `call` keyword that touches what comes
+before it is separated from it by one space in a `class`, `namespace`, `note`,
+`link`, `click`, or `cssClass` statement: `note"n"` is printed `note "n"`,
+`note for A"n"` is printed `note for A "n"`, `` class`C D` `` and
+``namespace`N M` {`` are printed with a space after the keyword, `link A"u""t"`
+is printed `link A "u" "t"`, `click B href"u""t"_self` is printed
+`click B href "u" "t" _self`, `cssClass"A,B"c` is printed `cssClass "A,B" c`,
+`click C call f()"t"` is printed `click C call f() "t"`, and
+`click C~T~call f()` is printed `click C~T~ call f()`. mermaid.js reads every
+spelling as the same statement, so nothing forces the form; its documentation
+writes a space before each string
+([`note "…"` and `note for MyClass "…"`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L639-L640),
+[`link Shape "…" "…"` and `click Shape2 href "…" "…"`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L650-L652),
+[`cssClass "nodeId1,nodeId2" className`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L773)).
+[fixture: whitespace-between-tokens/note-and-name-strings-touching-spaced]
+[fixture: whitespace-between-tokens/link-strings-touching-spaced] [fixture:
+whitespace-between-tokens/call-after-generic-touching-spaced] A directive in the
+gap keeps whether whitespace was written on each side of it, as under
+[Directives](#directives), and a U+2028 or U+2029 stays where it is. [fixture:
+whitespace-between-tokens/strings-beside-directive-kept] [test: U+2028 between
+the note keyword and its string] [test: U+2029 between the class of a note and
+its string] [test: U+2028 between the class keyword and a backquoted name]
+[test: U+2029 between a link and its URL] [test: U+2028 between the URL and the
+tooltip of a link] [test: U+2029 between the tooltip and the target of a link]
+[test: U+2028 between the cssClass keyword and its string] [test: U+2029 between
+a callback and its tooltip] [test: U+2028 between a generic type and the call of
+a callback]
 
 The names of a `classDef` statement are separated by a `,` that touches both
 names: `classDef c1 , c2 fill:#f00` is printed `classDef c1,c2 fill:#f00`, as
@@ -492,15 +522,20 @@ diagram types and in the documentation of mermaid.js. [fixture:
 labels/accessibility-text-kept] [fixture: multi-line-statements/joined]
 [fixture: multi-line-statements/acc-descr-joined] The text of a label is kept as
 written. [fixture: labels/spaced] [fixture: labels/accessibility-text-kept] The
-string between the brackets of a class or a namespace has nothing between it and
-the brackets: `namespace Auth[ "x" ]` is printed `namespace Auth["x"]`, and
-`class A["x" ]` is printed `class A["x"]`. mermaid.js reads every spelling as
-the same label. A directive beside the string keeps the gap next to it, one
-space where whitespace was written: `class D[ %%{x}%% "x" ]` is printed
+label in brackets of a class or a namespace has nothing between the name and the
+`[`, and nothing between the brackets and the string: `namespace Auth ["x"]` is
+printed `namespace Auth["x"]`, `namespace Auth[ "x" ]` is printed
+`namespace Auth["x"]`, and `class A["x" ]` is printed `class A["x"]`. mermaid.js
+reads every spelling as the same label, and its documentation writes the `[`
+touching the name
+([`namespace Auth["Authentication Service"]`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L404)),
+as a flowchart subgraph and an agentflow heading print it. [fixture:
+labels/bracket-touches-name] A directive beside the string keeps the gap next to
+it, one space where whitespace was written: `class D[ %%{x}%% "x" ]` is printed
 `class D[ %%{x}%% "x"]`. A U+2028 or U+2029 before the `]` stays. [fixture:
 labels/bracket-directive-at-edge] [test: U+2028 inside the brackets of a class
-label] [test: U+2029 inside the brackets of a class label] [fixture:
-labels/bracket-padding-dropped]
+label] [test: U+2029 inside the brackets of a class label] [test: U+2028 between
+a class name and its label] [fixture: labels/bracket-padding-dropped]
 
 Input
 ([labels/spaced-input.mmd](../tests/fixtures/class/labels/spaced-input.mmd)):
@@ -619,7 +654,15 @@ type `" T "`, written as a string, with a space on each side of the `T`.
 [fixture: generic-types/in-member-and-note-kept] [fixture:
 generic-types/directive-inside-kept] [fixture:
 generic-types/whitespace-before-collapsed-inside-kept] [fixture:
-generic-types/empty-kept]
+generic-types/empty-kept] The first `~` of a generic type touches the name
+before it, whatever whitespace was written there: `class A ~T~` is printed
+`class A~T~`, and `A ~T~ --> B ~U~` is printed `A~T~ --> B~U~`. The whitespace
+between the name and the `~` is not in the Db, and the documentation of
+mermaid.js writes every generic type touching its name
+([`class Square~Shape~{` and `List~int~ position`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L227-L231)).
+[fixture: generic-types/touches-name] [fixture:
+generic-types/whitespace-before-collapsed-inside-kept] [test: U+2029 between a
+class name and its generic type]
 
 Input
 ([generic-types/kept-input.mmd](../tests/fixtures/class/generic-types/kept-input.mmd)):
@@ -1072,7 +1115,11 @@ direction-lines/text-before-collapsed] [fixture: direction-lines/in-namespace]
 direction-lines/directive-around-value-kept] [fixture:
 direction-lines/comment-after-value-kept] [corpus fixture:
 class/lex-direction-in-namespace] [corpus fixture:
-class/lex-direction-in-member-body]
+class/lex-direction-in-member-body] A word that starts with `direction` and
+touches its value, such as `directionLR`, is the name of a class and not a
+direction line, since mermaid.js reads `direction` as a keyword only when
+whitespace follows it, so it stays as written. [fixture:
+direction-lines/no-whitespace-is-a-class-kept]
 
 Input
 ([direction-lines/text-kept-input.mmd](../tests/fixtures/class/direction-lines/text-kept-input.mmd)):

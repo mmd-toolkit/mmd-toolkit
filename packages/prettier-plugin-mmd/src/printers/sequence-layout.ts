@@ -21,6 +21,7 @@ import {
   layoutCompactEmptyDescriptionBlockWithFallback,
   spansLinesThatCannotJoin,
   toAsciiLowerCase,
+  walk,
 } from "./layout.ts"
 import { holdsJoiningRegion, printedEndOf } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
@@ -198,6 +199,13 @@ export function layoutBlockHeader(
     text?.type === "SequenceBoxText"
       ? [{ start: text.range[0], end: text.range[1] }]
       : []
+  const rules = new Map<number, GapRule>()
+  if (text !== null) {
+    // The text stands after one space, also where it touched the keyword
+    // (docs/sequence.md, Whitespace between tokens).
+    rules.set(text.range[0], "space")
+    addWrapRules(text, rules)
+  }
   return {
     atoms: collectAtoms(
       source,
@@ -206,7 +214,7 @@ export function layoutBlockHeader(
       kept.length === 0 ? valuesOf(text) : [],
       kept,
     ),
-    rules: new Map(),
+    rules,
     outdented: new Set(),
     lineBreaks: "kept",
   }
@@ -418,7 +426,22 @@ function statementRules(
     default:
       break
   }
+  addWrapRules(statement, rules)
   return rules
+}
+
+/**
+ * Adds the rule of the text after the prefix `wrap:` or `nowrap:` of each text
+ * in a node: it stands after one space, also where it touched the prefix
+ * (docs/sequence.md, Whitespace between tokens).
+ */
+function addWrapRules(node: Node, rules: Map<number, GapRule>): void {
+  walk(node, (child) => {
+    if (child.type !== "SequenceText") return
+    if (child.wrap !== null && child.value !== null) {
+      rules.set(child.value.range[0], "space")
+    }
+  })
 }
 
 /**

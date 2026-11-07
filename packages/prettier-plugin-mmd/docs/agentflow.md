@@ -38,7 +38,10 @@ written, and next-line LR remains a vertex. Ordinary header followers move into
 the body; directive attachment follows Directives. [fixture:
 header/header-column] [fixture: header/header-direction-spelling] [fixture:
 header/header-inline-separated] [fixture: header/header-next-line-direction]
-[fixture: header/header-symbol]
+[fixture: header/header-symbol] A symbol direction stands after one space, as in
+[flowchart](./flowchart.md#direction): `agentflow-beta<` is printed
+`agentflow-beta <`. [fixture: header/header-symbol-touching-spaced] [test:
+agentflow: U+2028 between the header keyword and its direction]
 
 Input (escaped): `"agentflow-beta"`. [fixture: header/header-only]
 
@@ -149,6 +152,17 @@ names-and-headings/name-heading-title-after-colon-before-hash] A U+2028 or
 U+2029 in the gap stays where it is. [test: agentflow: U+2028 between a flow
 name and its title] [test: agentflow: U+2029 between a connector name and its
 title]
+
+The `@{` of a data block touches an ordinary single-part name that has no title,
+as the `[` of a title does: `connector github @{ protocol: "mcp" }` is printed
+`connector github@{ protocol: "mcp" }`, and `flow F  @{ a: 1 }` is printed
+`flow F@{ a: 1 }`. mermaid.js trims the whitespace after the name, so the Db is
+the same, and the documentation of mermaid.js writes the `@{` of a data block
+touching the id or title before it
+([`create["create_issue"]@{ ... }`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/agentflow.md#L290)).
+A name that holds a directive or a comment is kept as written, as above.
+[fixture: names-and-headings/heading-data-touches-name] [test: agentflow: U+2029
+between a connector name and its data block]
 
 The whitespace after the word `flow`, `connector`, or `global` is one space,
 however many spaces or tabs were written: the word takes one whitespace
@@ -332,7 +346,10 @@ percent text and line breaks; do not invent another string or split reference
 form. [fixture: edge-labels/edge-label-forms] [fixture:
 edge-labels/split-pipe-content] A string between pipes keeps its text, and the
 pipes touch the arrow and the quotes: `A  -->  |"x  y"|B` is printed as
-`A -->|"x  y"| B`. [fixture: edge-labels/pipe-label-string-kept]
+`A -->|"x  y"| B`. [fixture: edge-labels/pipe-label-string-kept] So does a
+closing pipe that was written apart from the closing quote: `A-->|"x" |B` is
+printed `A -->|"x"| B`. [fixture: edge-labels/pipe-string-closing-touches]
+[test: agentflow: U+2028 between the closing quote and the `|` of an edge label]
 
 Input (escaped): `"agentflow-beta TB\nA --> |x| B"`. [fixture:
 edge-labels/pipe-label-gap]

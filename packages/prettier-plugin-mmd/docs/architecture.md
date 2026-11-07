@@ -294,7 +294,8 @@ architecture-beta
 ### Label content
 
 Preserve bracket interiors, except the spaces, tabs, and no-break spaces next to
-the brackets of the title of a group or a service: mermaid.js trims them, so
+the brackets of the title of a group or a service and of the label of an arrow
+(see [Arrow labels](#arrow-labels)): mermaid.js trims them, so
 `group a(cloud)[ API ]` is printed `group a(cloud)[API]` and
 `service s(server)["x" ]` is printed `service s(server)["x"]`. [fixture:
 label-content/title-edge-whitespace-dropped] This holds on a line with a kept
@@ -428,15 +429,28 @@ architecture-beta
 ### Arrow labels
 
 Print labelled lines as `a:R <-[label]-> L:b`: the single dashes, whole
-bracketed label and markers form one visual unit. Remove only ordinary exterior
-gaps; preserve the complete label range, including padded quote-looking text and
-empty quoted content.
+bracketed label and markers form one visual unit. Remove the ordinary exterior
+gaps, and the spaces, tabs, and no-break spaces next to the brackets of the
+label, as for the title of a group or a service (see
+[Label content](#label-content)): `a:R -[ Label ]- L:b` is printed
+`a:R -[Label]- L:b`, and `a:R - [ "x" ] - L:b` is printed `a:R -["x"]- L:b`.
+mermaid.js trims the label, so the Db is the same. Preserve the rest of the
+label range, including empty quoted content. A label with a comment or a
+directive stays as written, and so does a padding with a U+2028 or U+2029 in it.
 
 [fixture: architecture/arrow-labels/edge-label-padded-quote]
 
 [fixture: architecture/arrow-labels/edge-label-quoted]
 
 [fixture: architecture/arrow-labels/labelled-dash-tight]
+
+[fixture: architecture/arrow-labels/edge-label-padding-dropped]
+
+[fixture: architecture/arrow-labels/edge-label-directive-kept]
+
+[test: architecture/arrow-labels/edge-label-padding-u2028]
+
+[test: architecture/arrow-labels/edge-label-padding-u2029]
 
 [corpus fixture: architecture/gram-edge-reversed-labeled-markers]
 
@@ -452,7 +466,7 @@ Output
 architecture-beta
   service a
   service b
-  a:R -[ "x" ]- L:b
+  a:R -["x"]- L:b
 ```
 
 ### Group modifiers

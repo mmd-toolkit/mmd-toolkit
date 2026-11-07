@@ -237,22 +237,37 @@ quadrantChart %% c
 
 文のキーワードとテキストは、空白 1 つで離します。
 空白の連なりは空白 1 つにします。
+テキストや文字列に接しているキーワードには、空白を 1 つ加えます。
+`x-axisL --> R` は `x-axis L --> R` に、`quadrant-3C` は `quadrant-3 C` に、
+`title-x` は `title -x` に、`title"T"` は `title "T"` と印字します。
 その間の空白は Db に入りません。
+そのため、形は選べます。
 `x-axisL --> R` と `x-axis L --> R` は同じ軸で、
 `quadrant-10 A` は象限 1 とテキスト `0 A` なので、`quadrant-1 0 A` と同じです。
-接しているキーワードとテキストは、接したままにします。
-ほかの図でも、接しているトークンはそうします。
-空白を足すと、Db では見えない書き換えになります。
-`quadrant-10 A` のように、書き手が別の象限を意図したかもしれない形は、
-mermaid.js の読みを知らせる lint の規則が扱う場所で、
-整形が書き換えるものではありません。 [fixture: keywords-and-texts/title-spaces]
+印字する空白は、その読み方を示します。
+空白はテキストの始まりを示し、キーワードがテキストに接しているとそれが隠れます。
+mermaid.js の文書では、
+すべてのキーワードをテキストから離して書いています
+([`title`、`x-axis`、`y-axis`、`quadrant-1` から `quadrant-4`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/quadrantChart.md#L13-L19))。
+[fixture: keywords-and-texts/title-spaces]
 [fixture: keywords-and-texts/title-tab]
 [fixture: keywords-and-texts/axis-keyword-spaces]
 [fixture: keywords-and-texts/quadrant-keyword-spaces]
-[fixture: keywords-and-texts/keyword-touching-kept]
-[fixture: keywords-and-texts/quadrant-ten-kept]
+[fixture: keywords-and-texts/keyword-touching-spaced]
+[fixture: keywords-and-texts/string-touching-spaced]
+[fixture: keywords-and-texts/quadrant-ten-spaced]
 [fixture: keywords-and-texts/word-after-title-keyword-is-a-point-name]
 [fixture: keywords-and-texts/inner-whitespace-of-a-title-kept]
+
+キーワードとテキストの間にディレクティブがあれば、[指令](#指令)と同じく、
+その両側に空白が書かれていたかを保ちます。
+[fixture: keywords-and-texts/directive-beside-keyword-kept]
+軸や象限のキーワードの直後にある U+2028 と U+2029 は、
+テキストの最初の文字なので（[行区切り文字](#行区切り文字)を参照）、
+その前に空白を 1 つ置き、`title` の後にあるものはそのまま残します。
+[test: U+2028 between an axis keyword and its text]
+[test: U+2029 between a quadrant keyword and its text]
+[test: U+2028 after a title keyword]
 
 テキストの中の空白は Db に入るので、書かれたまま残します。
 `quadrant-1 a    b` のテキストは `a    b` で、
@@ -282,7 +297,7 @@ quadrantChart
 ```
 
 入力
-([keywords-and-texts/keyword-touching-kept-input.mmd](../tests/fixtures/quadrant/keywords-and-texts/keyword-touching-kept-input.mmd)):
+([keywords-and-texts/keyword-touching-spaced-input.mmd](../tests/fixtures/quadrant/keywords-and-texts/keyword-touching-spaced-input.mmd)):
 
 ```mmd
 quadrantChart
@@ -292,13 +307,13 @@ title-x
 ```
 
 出力
-([keywords-and-texts/keyword-touching-kept-output.mmd](../tests/fixtures/quadrant/keywords-and-texts/keyword-touching-kept-output.mmd)):
+([keywords-and-texts/keyword-touching-spaced-output.mmd](../tests/fixtures/quadrant/keywords-and-texts/keyword-touching-spaced-output.mmd)):
 
 ```mmd
 quadrantChart
-  x-axisL --> R
-  quadrant-3C
-  title-x
+  x-axis L --> R
+  quadrant-3 C
+  title -x
 ```
 
 ### 軸

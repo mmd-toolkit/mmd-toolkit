@@ -41,6 +41,11 @@ agentflowが受理する見出しは小文字の`agentflow-beta`だけです。
 [fixture: header/header-column] [fixture: header/header-direction-spelling]
 [fixture: header/header-inline-separated]
 [fixture: header/header-next-line-direction] [fixture: header/header-symbol]
+記号の方向は、
+[flowchart](./flowchart.ja.md#方向)と同じく空白 1 つの後に置きます。
+`agentflow-beta<` は `agentflow-beta <` と印字します。
+[fixture: header/header-symbol-touching-spaced]
+[test: agentflow: U+2028 between the header keyword and its direction]
 
 入力（escape 表記）: `"agentflow-beta"`。 [fixture: header/header-only]
 
@@ -161,6 +166,18 @@ flowchart と同じ形で、agentflowだけ違う形を選ぶ理由がないた�
 隙間の U+2028 と U+2029 は、そのまま残します。
 [test: agentflow: U+2028 between a flow name and its title]
 [test: agentflow: U+2029 between a connector name and its title]
+
+データブロックの `@{` は、タイトルがない通常の 1 つの部分からなる名前に、
+タイトルの `[` と同じく接します。
+`connector github @{ protocol: "mcp" }` は
+`connector github@{ protocol: "mcp" }` に、
+`flow F  @{ a: 1 }` は `flow F@{ a: 1 }` と印字します。
+mermaid.js が名前の後の空白を trim するので Db は同じであり、
+その文書ではデータブロックの `@{` を前の id やタイトルに接して書いています
+([`create["create_issue"]@{ ... }`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/agentflow.md#L290))。
+ディレクティブやコメントを含む名前は、上に書いたとおり書かれたまま残します。
+[fixture: names-and-headings/heading-data-touches-name]
+[test: agentflow: U+2029 between a connector name and its data block]
 
 `flow`、`connector`、`global` の後ろの空白は、
 空白やタブがいくつ書かれていても空白 1 つにします。
@@ -355,6 +372,10 @@ agentflow-beta TB
 パイプの間の文字列は文字を保ち、パイプは矢印と引用符に接します。
 `A  -->  |"x  y"|B` は `A -->|"x  y"| B` と印字します。
 [fixture: edge-labels/pipe-label-string-kept]
+閉じ引用符から離して書かれた閉じパイプも同じで、
+`A-->|"x" |B` は `A -->|"x"| B` と印字します。
+[fixture: edge-labels/pipe-string-closing-touches]
+[test: agentflow: U+2028 between the closing quote and the `|` of an edge label]
 
 入力（escape 表記）: `"agentflow-beta TB\nA --> |x| B"`。
 [fixture: edge-labels/pipe-label-gap]

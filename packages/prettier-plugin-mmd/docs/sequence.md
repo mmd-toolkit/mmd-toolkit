@@ -279,15 +279,31 @@ sequenceDiagram
 ### Whitespace between tokens
 
 Within a line, a run of spaces and tabs between two tokens becomes one space,
-and tokens that touch keep touching, as in a flowchart. [fixture:
+and tokens that touch keep touching, as in a flowchart, except for the text
+after a prefix or a keyword of a block, which stands after one space. [fixture:
 whitespace-between-tokens/collapsed] [fixture:
-whitespace-between-tokens/tabs-collapsed] A wrap prefix such as `wrap:` before
-its text keeps whether whitespace is written next to it. [fixture:
-whitespace-between-tokens/wrap-prefix-kept] The `,` between the ids of a note
-over two participants touches both ids, as in `note over A,B`: `note over A , B`
-is printed `note over A,B`. Every spelling that mermaid.js accepts gives the
-same Db, so nothing forces the form; the five notes over two participants in the
-documentation of mermaid.js are all written `A,B`
+whitespace-between-tokens/tabs-collapsed] A wrap prefix, `wrap:` or `nowrap:`,
+is separated from its text by one space, also where they touched: `A->>B:wrap:x`
+is printed `A ->> B: wrap: x`, and so is the text of a note or of the alias of a
+participant. The text after the keyword of a block or a section (`loop`, `alt`,
+`else`, `opt`, `par`, `and`, `critical`, `option`, `break`, `rect`, `box`)
+stands after one space too: `loop$$x$$` is printed `loop $$x$$`, and
+`par-:<>,;# comment` is printed `par -:<>,;# comment`. The whitespace is not in
+the Db, so the form is a choice, and the documentation of mermaid.js writes a
+space after every block keyword
+([`loop Loop text`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L472),
+[`alt Describing text`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L492)).
+[fixture: whitespace-between-tokens/wrap-text-spaced] [fixture:
+whitespace-between-tokens/block-text-touching-spaced] A directive in the gap
+keeps whether whitespace was written on each side of it, as under
+[Directives](#directives), and a U+2028 or U+2029 stays where it is. [fixture:
+whitespace-between-tokens/block-text-beside-directive-kept] [test: U+2028
+between a block keyword and its text] [test: U+2029 between a wrap prefix and
+its text] The `,` between the ids of a note over two participants touches both
+ids, as in `note over A,B`: `note over A , B` is printed `note over A,B`. Every
+spelling that mermaid.js accepts gives the same Db, so nothing forces the form;
+the five notes over two participants in the documentation of mermaid.js are all
+written `A,B`
 ([two](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L49-L77)
 and
 [three](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L445-L464)).
@@ -323,7 +339,7 @@ sequenceDiagram
   create participant C
   A ->> C: x
   note over A,C: n
-  A ->> B: wrap:x
+  A ->> B: wrap: x
   A ->> B: wrap: y
 ```
 
@@ -609,7 +625,7 @@ sequenceDiagram
   note over A: n
   links A: {"a": "b"}
   accTitle: t
-  A ->> B: :nowrap:z
+  A ->> B: :nowrap: z
 ```
 
 ### Title

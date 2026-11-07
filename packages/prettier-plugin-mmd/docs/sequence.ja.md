@@ -286,11 +286,31 @@ sequenceDiagram
 
 行の中で、2 つのトークンの間の空白とタブの連続は空白 1 つにし、
 接しているトークンは接したまま残します。
-flowchart と同じです。 [fixture: whitespace-between-tokens/collapsed]
+flowchart と同じです。
+ただし、接頭辞やブロックのキーワードの後のテキストは、空白 1 つの後に置きます。
+[fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/tabs-collapsed]
-`wrap:` などの折り返しの接頭辞とその本文の間は、
-空白が書かれているかどうかを保ちます。
-[fixture: whitespace-between-tokens/wrap-prefix-kept]
+折り返しの接頭辞 `wrap:` と `nowrap:` は、テキストに接していても、
+間に空白を 1 つ置きます。
+`A->>B:wrap:x` は `A ->> B: wrap: x` と印字し、
+ノートや参加者の別名のテキストも同じにします。
+ブロックや節のキーワード（`loop`、`alt`、`else`、`opt`、`par`、`and`、
+`critical`、`option`、`break`、`rect`、`box`）の後のテキストも、
+空白 1 つの後に置きます。
+`loop$$x$$` は `loop $$x$$` に、
+`par-:<>,;# comment` は `par -:<>,;# comment` と印字します。
+この空白は Db に入らないので形は選べます。
+mermaid.js の文書では、
+すべてのブロックのキーワードの後に空白を書いています
+([`loop Loop text`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L472)、
+[`alt Describing text`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L492))。
+[fixture: whitespace-between-tokens/wrap-text-spaced]
+[fixture: whitespace-between-tokens/block-text-touching-spaced]
+隙間にディレクティブがあれば、[ディレクティブ](#ディレクティブ)と同じく、
+その両側に空白が書かれていたかを保ち、U+2028 と U+2029 はそのまま残します。
+[fixture: whitespace-between-tokens/block-text-beside-directive-kept]
+[test: U+2028 between a block keyword and its text]
+[test: U+2029 between a wrap prefix and its text]
 2 人の参加者にまたがるノートの id の間の `,` は、
 `note over A,B` のように両側の id に接します。
 `note over A , B` は `note over A,B` になります。
@@ -336,7 +356,7 @@ sequenceDiagram
   create participant C
   A ->> C: x
   note over A,C: n
-  A ->> B: wrap:x
+  A ->> B: wrap: x
   A ->> B: wrap: y
 ```
 
@@ -645,7 +665,7 @@ sequenceDiagram
   note over A: n
   links A: {"a": "b"}
   accTitle: t
-  A ->> B: :nowrap:z
+  A ->> B: :nowrap: z
 ```
 
 ### タイトル

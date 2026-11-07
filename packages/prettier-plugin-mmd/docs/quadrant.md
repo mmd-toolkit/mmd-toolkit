@@ -229,21 +229,34 @@ quadrantChart %% c
 
 ### Keywords and texts
 
-The keyword of a statement and its text are separated by one space; a run of
-whitespace becomes one space. Whitespace between them is not in the Db:
+The keyword of a statement and its text are separated by one space. A run of
+whitespace becomes one space, and a keyword that touches its text or string gets
+one: `x-axisL --> R` is printed `x-axis L --> R`, `quadrant-3C` is printed
+`quadrant-3 C`, `title-x` is printed `title -x`, and `title"T"` is printed
+`title "T"`. Whitespace between them is not in the Db, so the form is a choice:
 `x-axisL --> R` and `x-axis L --> R` are the same axis, and `quadrant-10 A` is
-the quadrant 1 with the text `0 A`, the same as `quadrant-1 0 A`. A keyword and
-a text that touch keep touching, as tokens that touch do in the other diagrams.
-Writing a space between them would be a change that the author cannot see in the
-Db, and a form like `quadrant-10 A`, which mermaid.js reads as another quadrant
-than the author may have meant, is for a lint rule to report, not for the
-formatter to rewrite. [fixture: keywords-and-texts/title-spaces] [fixture:
+the quadrant 1 with the text `0 A`, the same as `quadrant-1 0 A`, which the
+printed space shows. A space marks where the text starts, which a keyword glued
+to its text hides, and the documentation of mermaid.js writes every keyword
+apart from its text
+([`title`, `x-axis`, `y-axis`, and `quadrant-1` to `quadrant-4`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/quadrantChart.md#L13-L19)).
+[fixture: keywords-and-texts/title-spaces] [fixture:
 keywords-and-texts/title-tab] [fixture: keywords-and-texts/axis-keyword-spaces]
 [fixture: keywords-and-texts/quadrant-keyword-spaces] [fixture:
-keywords-and-texts/keyword-touching-kept] [fixture:
-keywords-and-texts/quadrant-ten-kept] [fixture:
+keywords-and-texts/keyword-touching-spaced] [fixture:
+keywords-and-texts/string-touching-spaced] [fixture:
+keywords-and-texts/quadrant-ten-spaced] [fixture:
 keywords-and-texts/word-after-title-keyword-is-a-point-name] [fixture:
 keywords-and-texts/inner-whitespace-of-a-title-kept]
+
+A directive between the keyword and its text keeps whether whitespace was
+written on each side of it, as under [Directives](#directives). [fixture:
+keywords-and-texts/directive-beside-keyword-kept] A U+2028 or U+2029 right after
+an axis or quadrant keyword is the first character of the text (see
+[Line separators](#line-separators)), so one space is put before it, while one
+after `title` stays where it is. [test: U+2028 between an axis keyword and its
+text] [test: U+2029 between a quadrant keyword and its text] [test: U+2028 after
+a title keyword]
 
 The whitespace inside a text is in the Db and stays as written:
 `quadrant-1 a    b` has the text `a    b`, a tab between two words is a tab in
@@ -272,7 +285,7 @@ quadrantChart
 ```
 
 Input
-([keywords-and-texts/keyword-touching-kept-input.mmd](../tests/fixtures/quadrant/keywords-and-texts/keyword-touching-kept-input.mmd)):
+([keywords-and-texts/keyword-touching-spaced-input.mmd](../tests/fixtures/quadrant/keywords-and-texts/keyword-touching-spaced-input.mmd)):
 
 ```mmd
 quadrantChart
@@ -282,13 +295,13 @@ title-x
 ```
 
 Output
-([keywords-and-texts/keyword-touching-kept-output.mmd](../tests/fixtures/quadrant/keywords-and-texts/keyword-touching-kept-output.mmd)):
+([keywords-and-texts/keyword-touching-spaced-output.mmd](../tests/fixtures/quadrant/keywords-and-texts/keyword-touching-spaced-output.mmd)):
 
 ```mmd
 quadrantChart
-  x-axisL --> R
-  quadrant-3C
-  title-x
+  x-axis L --> R
+  quadrant-3 C
+  title -x
 ```
 
 ### Axes

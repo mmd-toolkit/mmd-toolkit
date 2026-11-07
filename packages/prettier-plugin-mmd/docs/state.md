@@ -799,7 +799,15 @@ accepted, while `note left of A :` is rejected; so does a note with two
 whitespace characters before the `:` and nothing after it, whose text is the `:`
 alone. [fixture: notes/blank-text-kept] The quotes of a floating note are kept
 as written: `note ""floating" as N` has the text `floating`. [fixture:
-notes/over-lines]
+notes/over-lines] The `as` of a floating note stands after one space, and so
+does the id after it, also where they touched: `note "t"as N` and `note "t" asN`
+are printed `note "t" as N`. mermaid.js reads the three spellings the same, and
+the `as` and the id of an alias definition are printed in the same way (see
+[Aliases](#aliases)). A directive in the gap keeps whether whitespace was
+written on each side of it, and a U+2028 or U+2029 stays where it is. [fixture:
+notes/floating-note-as-gaps-spaced] [fixture:
+notes/floating-note-as-beside-directive-kept] [test: U+2028 before the `as` of a
+floating note] [test: U+2029 between the `as` and the id of a floating note]
 
 Input ([notes/kept-input.mmd](../tests/fixtures/state/notes/kept-input.mmd)):
 

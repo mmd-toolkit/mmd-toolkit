@@ -941,7 +941,12 @@ the start of a continuation line is read as its indentation, so it is replaced
 by the indentation that the printer gives the line. [fixture:
 label-inner-whitespace/string-closing-break-and-directive-kept] [test: U+2028
 between the closing quote and the bracket of a flowchart label] [test: U+2029
-between the closing quote and the bracket of a flowchart label]
+between the closing quote and the bracket of a flowchart label] The closing `|`
+of the label of a link touches the closing quote in the same way: `A-->|"x" |B`
+is printed `A -->|"x"| B`, and a directive, or a U+2028 or U+2029, between the
+quote and the `|` stays. [fixture:
+label-inner-whitespace/pipe-string-closing-touches] [test: U+2028 between the
+closing quote and the `|` of a flowchart edge label]
 
 The whitespace at the start of a label is kept, as one space, when the label
 would be read differently without it: when the label starts with `/`, `\`, `-`,
@@ -1898,7 +1903,15 @@ whitespace between it and `direction`, and between `direction` and the value,
 becomes one space, as between any tokens. A line such as `A[direction TB]` is a
 `direction` statement too, its vertices and links are not read, and it is
 printed so, at the indentation of its level. [fixture:
-direction/statement-holds-text-kept]
+direction/statement-holds-text-kept] The direction of the header stands after
+one space, also where a symbol touched the keyword: `graph>` is printed
+`graph >`, and `flowchart^` is printed `flowchart ^`. The whitespace is not in
+the Db, and a letter direction such as `TD` already needs the space. A directive
+between them keeps whether whitespace was written on each side of it, and a
+U+2028 or U+2029 stays where it is. [fixture:
+direction/header-symbol-touching-spaced] [fixture:
+direction/header-symbol-beside-directive-kept] [test: U+2029 between the graph
+keyword and its direction]
 
 Input
 ([direction/kept-input.mmd](../tests/fixtures/flowchart/direction/kept-input.mmd)):

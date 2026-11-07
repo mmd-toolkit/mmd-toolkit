@@ -209,6 +209,16 @@ const examples: readonly (readonly [string, string, string])[] = [
     "stateDiagram-v2\nstate a\n  \u2028b <<fork>>\n",
     "stateDiagram-v2\n  state a\n  \u2028b <<fork>>\n",
   ],
+  [
+    "U+2028 before the `as` of a floating note",
+    'stateDiagram-v2\nstate A\nnote "x"\u2028as N1\n',
+    'stateDiagram-v2\n  state A\n  note "x"\u2028as N1\n',
+  ],
+  [
+    "U+2029 between the `as` and the id of a floating note",
+    'stateDiagram-v2\nstate A\nnote "x" as\u2029N1\n',
+    'stateDiagram-v2\n  state A\n  note "x" as\u2029N1\n',
+  ],
 ]
 
 /**
@@ -480,6 +490,16 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
     'sequenceDiagram\nparticipant   Z@{ "style": "x:#y" };participant   B;C\u2029 participant D\nA  ->>  B: y\n',
     'sequenceDiagram\n  participant   Z@{ "style": "x:#y" };participant   B;C\u2029 participant D\n  A ->> B: y\n',
   ],
+  [
+    "U+2028 between a block keyword and its text",
+    "sequenceDiagram\nA->>B: x\nloop\u2028x\nA->>B: y\nend\n",
+    "sequenceDiagram\n  A ->> B: x\n  loop\u2028x\n    A ->> B: y\n  end\n",
+  ],
+  [
+    "U+2029 between a wrap prefix and its text",
+    "sequenceDiagram\nA->>B: wrap:\u2029x\n",
+    "sequenceDiagram\n  A ->> B: wrap:\u2029x\n",
+  ],
 ]
 
 /**
@@ -631,6 +651,16 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
     "flowchart LR\nA\n    style   A   fill:#f96;\u2029 ;\nB\n",
     "flowchart LR\n  A\n  style   A   fill:#f96;\u2029 ;\n  B\n",
   ],
+  [
+    "U+2028 between the closing quote and the `|` of a flowchart edge label",
+    'flowchart TD\nA-->|"x"\u2028|B\n',
+    'flowchart TD\n  A -->|"x"\u2028| B\n',
+  ],
+  [
+    "U+2029 between the graph keyword and its direction",
+    "graph\u2029<\nA\n",
+    "graph\u2029<\n  A\n",
+  ],
 ]
 
 /**
@@ -742,6 +772,61 @@ const classLineSeparatorExamples: readonly (readonly [
     "class: ps-comment-in-relation-statement",
     "classDiagram\nA   -->   B\u2029%% keep\n  : x\nclass C\n",
     "classDiagram\n  A   -->   B\u2029%% keep\n  : x\n  class C\n",
+  ],
+  [
+    "U+2028 between the note keyword and its string",
+    'classDiagram\nclass A\nnote\u2028"x"\n',
+    'classDiagram\n  class A\n  note\u2028"x"\n',
+  ],
+  [
+    "U+2029 between the class of a note and its string",
+    'classDiagram\nclass A\nnote for A\u2029"x"\n',
+    'classDiagram\n  class A\n  note for A\u2029"x"\n',
+  ],
+  [
+    "U+2028 between the class keyword and a backquoted name",
+    "classDiagram\nclass\u2028`A B`\n",
+    "classDiagram\n  class\u2028`A B`\n",
+  ],
+  [
+    "U+2029 between a link and its URL",
+    'classDiagram\nclass A\nlink A\u2029"u"\n',
+    'classDiagram\n  class A\n  link A\u2029"u"\n',
+  ],
+  [
+    "U+2028 between the URL and the tooltip of a link",
+    'classDiagram\nclass A\nlink A "u"\u2028"tip"\n',
+    'classDiagram\n  class A\n  link A "u"\u2028"tip"\n',
+  ],
+  [
+    "U+2029 between the tooltip and the target of a link",
+    'classDiagram\nclass A\nclick A href "u" "tip"\u2029_self\n',
+    'classDiagram\n  class A\n  click A href "u" "tip"\u2029_self\n',
+  ],
+  [
+    "U+2028 between the cssClass keyword and its string",
+    'classDiagram\nclass A\ncssClass\u2028"A" c\n',
+    'classDiagram\n  class A\n  cssClass\u2028"A" c\n',
+  ],
+  [
+    "U+2029 between a callback and its tooltip",
+    'classDiagram\nclass A\nclick A call f()\u2029"tip"\n',
+    'classDiagram\n  class A\n  click A call f()\u2029"tip"\n',
+  ],
+  [
+    "U+2028 between a class name and its label",
+    'classDiagram\nclass A\u2028["x"]\n',
+    'classDiagram\n  class A\u2028["x"]\n',
+  ],
+  [
+    "U+2029 between a class name and its generic type",
+    "classDiagram\nclass A\u2029~T~\n",
+    "classDiagram\n  class A\u2029~T~\n",
+  ],
+  [
+    "U+2028 between a generic type and the call of a callback",
+    "classDiagram\nclass A~T~\nclick A~T~\u2028call f()\n",
+    "classDiagram\n  class A~T~\n  click A~T~\u2028call f()\n",
   ],
 ]
 
@@ -1996,6 +2081,16 @@ const quadrantLineSeparatorExamples: readonly (readonly [
     "U+2028 in the name of a class",
     "quadrantChart\nclassDef a\u2028b color: #f00\n",
     "quadrantChart\n  classDef a\u2028b color: #f00\n",
+  ],
+  [
+    "U+2028 between an axis keyword and its text",
+    "quadrantChart\nx-axis\u2028L --> R\n",
+    "quadrantChart\n  x-axis \u2028L --> R\n",
+  ],
+  [
+    "U+2029 between a quadrant keyword and its text",
+    "quadrantChart\nquadrant-1\u2029Plan\n",
+    "quadrantChart\n  quadrant-1 \u2029Plan\n",
   ],
 ]
 
