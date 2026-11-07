@@ -1,6 +1,8 @@
 import { readFile, writeFile } from "node:fs/promises"
 import path from "node:path"
-import { parseArgs } from "node:util"
+import { hasPriorityValidationError } from "gunshi"
+import type { Args, CommandContext } from "gunshi/bone"
+import { cli } from "gunshi/bone"
 import packageJson from "../package.json" with { type: "json" }
 import type { Diagnostic } from "./diagnostic.ts"
 import { fileEndings, formatFile, kindOf } from "./format-file.ts"
@@ -17,6 +19,18 @@ export interface Io {
 
 /** The exit codes (README, Exit codes). */
 const exitCodes = { ok: 0, changed: 1, error: 2 } as const
+
+/** The options that the tool accepts (README, Usage). */
+const commandArgs = {
+  write: { type: "boolean" },
+  check: { type: "boolean" },
+  "stdin-filepath": { type: "string" },
+  help: { type: "boolean" },
+  version: { type: "boolean" },
+} satisfies Args
+
+/** The gunshi context for the tool's declared options. */
+type MmdfmtContext = CommandContext<{ args: typeof commandArgs }>
 
 const usage = `Usage: mmdfmt --write <pattern>...
        mmdfmt --check <pattern>...
@@ -37,26 +51,43 @@ Options:
 /** The endings of the files that the tool formats, as a message names them. */
 const endingsInWords = `${fileEndings.slice(0, -1).join(", ")}, or ${fileEndings.at(-1)}`
 
-/** Runs the tool with its arguments, and returns the exit code. */
+/** Runs the tool with its arguments, and returns the exit code (README, Usage). */
 export async function main(args: readonly string[], io: Io): Promise<number> {
-  let parsed
+  let code: number = exitCodes.ok
   try {
-    parsed = parseArgs({
-      args: [...args],
-      allowPositionals: true,
-      strict: true,
-      options: {
-        write: { type: "boolean" },
-        check: { type: "boolean" },
-        "stdin-filepath": { type: "string" },
-        help: { type: "boolean" },
-        version: { type: "boolean" },
+    await cli<typeof commandArgs>(
+      [...args],
+      {
+        args: commandArgs,
+        /** Carries the exit code out of gunshi's command runner. */
+        async run(ctx) {
+          code = await runCommand(ctx, io)
+        },
       },
-    })
+      { strict: true },
+    )
   } catch (error) {
-    return usageError(io, messageOf(error))
+    // gunshi throws unknown-option errors (its priority validation errors)
+    // before running the command.
+    if (error instanceof AggregateError && hasPriorityValidationError(error)) {
+      return usageError(io, error.errors.map(messageOf))
+    }
+    throw error
   }
-  const { values, positionals } = parsed
+  return code
+}
+
+/** Checks the options and selects the mode (README, Usage). */
+async function runCommand(
+  ctx: Readonly<MmdfmtContext>,
+  io: Io,
+): Promise<number> {
+  // gunshi passes validation errors other than unknown options to the command,
+  // for example --stdin-filepath without a value.
+  if (ctx.validationError) {
+    return usageError(io, ctx.validationError.errors.map(messageOf))
+  }
+  const { values } = ctx
   if (values.help) {
     io.stdout(usage)
     return exitCodes.ok
@@ -65,24 +96,25 @@ export async function main(args: readonly string[], io: Io): Promise<number> {
     io.stdout(`${packageJson.version}\n`)
     return exitCodes.ok
   }
+  // gunshi puts arguments after `--` in rest rather than positionals.
+  const positionals = [...ctx.positionals, ...ctx.rest]
   const stdinFilepath = values["stdin-filepath"]
   if (stdinFilepath !== undefined) {
     if (positionals.length > 0 || values.write || values.check) {
-      return usageError(
-        io,
+      return usageError(io, [
         "--stdin-filepath takes no patterns, and neither --write nor --check",
-      )
+      ])
     }
     return formatStandardInput(stdinFilepath, io)
   }
   if (positionals.length === 0) {
-    return usageError(io, "no patterns of the files to format")
+    return usageError(io, ["no patterns of the files to format"])
   }
   if (values.write && values.check) {
-    return usageError(io, "--write and --check cannot be given together")
+    return usageError(io, ["--write and --check cannot be given together"])
   }
   if (!values.write && !values.check) {
-    return usageError(io, "give --write or --check with the patterns")
+    return usageError(io, ["give --write or --check with the patterns"])
   }
   return formatFiles(positionals, values.write ? "write" : "check", io)
 }
@@ -177,9 +209,12 @@ function isError(diagnostic: Diagnostic): boolean {
   return diagnostic.severity === "error"
 }
 
-/** Reports a wrong use of the options, with the usage, and returns its code. */
-function usageError(io: Io, message: string): number {
-  io.stderr(`mmdfmt: error: ${message}\n\n${usage}`)
+/** Reports wrong uses with the usage once, and returns 2 (README, Usage). */
+function usageError(io: Io, messages: readonly string[]): number {
+  for (const message of messages) {
+    io.stderr(`mmdfmt: error: ${message}\n`)
+  }
+  io.stderr(`\n${usage}`)
   return exitCodes.error
 }
 

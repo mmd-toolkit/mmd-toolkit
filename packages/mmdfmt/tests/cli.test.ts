@@ -44,6 +44,27 @@ describe("Usage: --write and --check", () => {
     expect(project.read("c.mmd")).toBe(formattedDiagram)
   })
 
+  it("reads --write=false as --write", async () => {
+    expect(await project.run(["--write=false", "a.mmd"])).toEqual({
+      code: 0,
+      stdout: listed("a.mmd"),
+      stderr: "",
+    })
+    expect(project.read("a.mmd")).toBe(formattedDiagram)
+  })
+
+  it.each([
+    [["--stdin-filepath=", "--write", "a.mmd"]],
+    [["--stdin-filepath", "", "--write", "a.mmd"]],
+  ])("reads an empty --stdin-filepath as absent: %j", async (args) => {
+    expect(await project.run(args)).toEqual({
+      code: 0,
+      stdout: listed("a.mmd"),
+      stderr: "",
+    })
+    expect(project.read("a.mmd")).toBe(formattedDiagram)
+  })
+
   it("--check changes nothing, lists the files that --write would change, and exits with 1", async () => {
     expect(await project.run(["--check", "*.mmd", "*.md"])).toEqual({
       code: 1,
@@ -143,6 +164,32 @@ describe("Usage: --help and --version", () => {
       stderr: "",
     })
   })
+
+  it.each([
+    [["--help", "--write", "a.mmd"]],
+    [["--help", "--write", "--check"]],
+    [["--help", "--version"]],
+    [["--version", "--help"]],
+  ])("prints only the usage for %j", async (args) => {
+    project.write({ "a.mmd": diagram })
+    const run = await project.run(args)
+    expect(run.code).toBe(0)
+    expect(run.stdout.startsWith("Usage: mmdfmt --write <pattern>...\n")).toBe(
+      true,
+    )
+    expect(run.stderr).toBe("")
+    expect(project.read("a.mmd")).toBe(diagram)
+  })
+
+  it("--version prints only the version with --check and a pattern", async () => {
+    project.write({ "a.mmd": diagram })
+    expect(await project.run(["--version", "--check", "a.mmd"])).toEqual({
+      code: 0,
+      stdout: `${packageJson.version}\n`,
+      stderr: "",
+    })
+    expect(project.read("a.mmd")).toBe(diagram)
+  })
 })
 
 describe("Usage: anything else prints the usage and exits with 2", () => {
@@ -169,6 +216,25 @@ describe("Usage: anything else prints the usage and exits with 2", () => {
       ["--stdin-filepath", "a.mmd", "--check"],
       "--stdin-filepath takes no patterns, and neither --write nor --check",
     ],
+    [["-h"], "Unknown option: -h"],
+    [["-v"], "Unknown option: -v"],
+    [["-x", "a.mmd"], "Unknown option: -x"],
+    [["--no-write", "a.mmd"], "Unknown option: --no-write"],
+    [["-wc", "a.mmd"], "Unknown option: -w\nmmdfmt: error: Unknown option: -c"],
+    [["--help", "--fix"], "Unknown option: --fix"],
+    [["--version", "--fix"], "Unknown option: --fix"],
+    [
+      ["--stdin-filepath"],
+      "Optional argument '--stdin-filepath' should be 'string'",
+    ],
+    [
+      ["--help", "--stdin-filepath"],
+      "Optional argument '--stdin-filepath' should be 'string'",
+    ],
+    [
+      ["--version", "--stdin-filepath"],
+      "Optional argument '--stdin-filepath' should be 'string'",
+    ],
   ])("%j", async (args, message) => {
     const run = await project.run(args)
     expect(run.code).toBe(2)
@@ -182,10 +248,13 @@ describe("Usage: anything else prints the usage and exits with 2", () => {
   it("an unknown option", async () => {
     const run = await project.run(["--fix", "a.mmd"])
     expect(run.code).toBe(2)
-    expect(run.stderr.startsWith("mmdfmt: error: Unknown option '--fix'")).toBe(
-      true,
-    )
-    expect(run.stderr).toContain("\n\nUsage: mmdfmt")
+    expect(run.stdout).toBe("")
+    expect(
+      run.stderr.startsWith(
+        "mmdfmt: error: Unknown option: --fix\n\nUsage: mmdfmt",
+      ),
+    ).toBe(true)
+    expect(project.read("a.mmd")).toBe(diagram)
   })
 })
 
@@ -197,6 +266,37 @@ describe("Patterns", () => {
       stdout: listed("docs/a.md"),
       stderr: "",
     })
+  })
+
+  it("takes arguments after -- as patterns", async () => {
+    project.write({ "a.mmd": diagram })
+    expect(await project.run(["--check", "--", "a.mmd"])).toEqual({
+      code: 1,
+      stdout: listed("a.mmd"),
+      stderr: "",
+    })
+    expect(project.read("a.mmd")).toBe(diagram)
+  })
+
+  it("formats a file whose name starts with - after --", async () => {
+    project.write({ "-a.mmd": diagram })
+    expect(await project.run(["--write", "--", "-a.mmd"])).toEqual({
+      code: 0,
+      stdout: listed("-a.mmd"),
+      stderr: "",
+    })
+    expect(project.read("-a.mmd")).toBe(formattedDiagram)
+  })
+
+  it("takes patterns before and after --", async () => {
+    project.write({ "a.mmd": diagram, "b.mmd": diagram })
+    expect(await project.run(["--check", "a.mmd", "--", "b.mmd"])).toEqual({
+      code: 1,
+      stdout: listed("a.mmd", "b.mmd"),
+      stderr: "",
+    })
+    expect(project.read("a.mmd")).toBe(diagram)
+    expect(project.read("b.mmd")).toBe(diagram)
   })
 
   it("selects the files under a directory, of the four endings", async () => {

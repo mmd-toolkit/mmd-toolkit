@@ -23,7 +23,7 @@
     "lib"
   ],
   "engines": {
-    "node": "^20.19.0 || ^22.13.0 || >=24"
+    "node": "^22.13.0 || >=24"
   },
   "keywords": [
     "mermaid",
@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "@mmd-toolkit/parser": "workspace:^",
+    "gunshi": "^0.37.3",
     "prettier": "^3.9.0",
     "prettier-plugin-mmd": "workspace:^",
     "tinyglobby": "^0.2.17"

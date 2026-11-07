@@ -20,7 +20,7 @@ the diagrams, and needs no Prettier configuration.
 
 ## Installation
 
-It needs Node.js `^20.19.0 || ^22.13.0 || >=24`.
+It needs Node.js `^22.13.0 || >=24`.
 
 ```sh
 npm install --save-dev mmdfmt
@@ -45,8 +45,20 @@ npx mmdfmt --stdin-filepath diagram.mmd < diagram.mmd
 - `--help` prints the usage, and `--version` prints the version.
 
 The tool takes patterns with either `--write` or `--check`, or
-`--stdin-filepath` without them. Given anything else, for example no argument at
-all, it prints the usage and exits with `2`.
+`--stdin-filepath` without them. `--help` and `--version` only print, whatever
+patterns and options listed here are given with them; `--help` is taken when
+both are given. Any other combination of these options and patterns, for example
+no argument at all, prints the usage and exits with `2`. So does an option that
+is not listed here, or `--stdin-filepath` without its path, also together with
+`--help` or `--version`.
+
+The arguments are read by the library [gunshi](https://gunshi.dev), as it reads
+them. An option that takes no value is given by its name alone, and a value
+written after `=` is not read: `--write=false` is read as `--write`. An empty
+path of `--stdin-filepath`, as in `--stdin-filepath=` or `--stdin-filepath ""`,
+is read as if the option were not given: `mmdfmt --stdin-filepath= --write a.md`
+formats `a.md`. The arguments after `--` are patterns too, so that a file whose
+name starts with `-` can be given: `mmdfmt --write -- -a.md` formats `-a.md`.
 
 ### Patterns
 
