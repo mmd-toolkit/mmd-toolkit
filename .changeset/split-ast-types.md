@@ -15,4 +15,4 @@ an optional peer dependency, so a type check of their configuration without
 `skipLibCheck` needs it installed.
 
 The plugins now depend on `@mmd-toolkit/parser` with a caret range, so that the
-formatter and the linter share one parser where their versions differ.
+formatter and the linter share one parser while both ask for the same minor.
