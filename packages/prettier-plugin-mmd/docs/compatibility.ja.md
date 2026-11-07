@@ -1122,7 +1122,7 @@ mermaid.js は、Gantt 図の一部の値の空白を持ち、一部の行を、
   [test: U+FEFF between the items of a list]
 - 呼び出しの名前と引数の、中の空白。
   `f ()`、`f( 1, 2 )`、`f(1,2)` は 3 つの別の呼び出しです。
-  [fixture: gantt/click-statements/call-name-and-arguments-kept]
+  [fixture: gantt/click-statements/call-name-kept-arguments-spaced]
 - `;` を含む行。
   mermaid.js の行の規則は行のテキストを読むので、その行の文を行に残します。
   [fixture: gantt/statements-one-per-line/ignored-semicolon-line-kept]

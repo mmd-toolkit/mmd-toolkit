@@ -723,7 +723,7 @@ ID の間の `,` は両側の ID に接します。
 `f ()` の名前は `f` と空白で、`f( 1, 2 )` の引数は空白、`1, 2`、空白であり、
 Db が持ちます。
 リンクの文字列も書かれたままです。
-[fixture: click-statements/call-name-and-arguments-kept]
+[fixture: click-statements/call-name-kept-arguments-spaced]
 [fixture: click-statements/href-string-kept]
 複数行に書かれた文字列や引数は、
 書かれたまま印字します（[複数行の値](#複数行の値)を参照）。
@@ -782,7 +782,7 @@ gantt
 ```
 
 入力
-([click-statements/call-name-and-arguments-kept-input.mmd](../tests/fixtures/gantt/click-statements/call-name-and-arguments-kept-input.mmd)):
+([click-statements/call-name-kept-arguments-spaced-input.mmd](../tests/fixtures/gantt/click-statements/call-name-and-arguments-kept-input.mmd)):
 
 ```mmd
 gantt
@@ -795,7 +795,7 @@ click id1 call   f()
 ```
 
 出力
-([click-statements/call-name-and-arguments-kept-output.mmd](../tests/fixtures/gantt/click-statements/call-name-and-arguments-kept-output.mmd)):
+([click-statements/call-name-kept-arguments-spaced-output.mmd](../tests/fixtures/gantt/click-statements/call-name-and-arguments-kept-output.mmd)):
 
 ```mmd
 gantt

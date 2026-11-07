@@ -798,11 +798,18 @@ flowchart LR
 ```
 
 The whitespace between the name of the function after `call` and the `(` that
-follows it is kept as written, with the parentheses and their arguments:
-mermaid.js reads the name up to the `(`, whitespace included, so
-`click A call fn  ()` calls the function named `fn` and two spaces. [fixture:
-whitespace-between-tokens/callback-name-arguments-forms-kept] The parentheses of
-a call with blank arguments touch each other: `click A call f( )` is printed
+follows it is kept as written: mermaid.js reads the name up to the `(`,
+whitespace included, so `click A call fn  ()` calls the function named `fn` and
+two spaces. [fixture:
+whitespace-between-tokens/callback-name-arguments-forms-kept] The arguments have
+no whitespace at their ends or before a `,`, and one space after it:
+`click A call f(  "x" ,y )` is printed `click A call f("x", y)`, since
+mermaid.js splits the arguments at the `,` outside quotes and trims each part,
+and calls the function with the same arguments (see
+[Call arguments that are drawn the same](./compatibility.md#call-arguments-that-are-drawn-the-same)).
+The whitespace inside quotes stays, and so do arguments with an empty part.
+[fixture: whitespace-between-tokens/callback-arguments-spaced] The parentheses
+of a call with blank arguments touch each other: `click A call f( )` is printed
 `click A call f()`, since mermaid.js reads both as the same call with no
 arguments. A directive between them touches both parentheses, as under
 [Directives](#directives). [fixture:
@@ -839,7 +846,7 @@ Output
 flowchart LR
   A
   B
-  click A call fn  ( x )
+  click A call fn  (x)
   click B call gn   (y, z)
 ```
 
@@ -1507,10 +1514,12 @@ so the spaces and tabs at its ends carry no meaning. [fixture:
 data-blocks/one-line-padded] [fixture: data-blocks/one-line-padded-zero-width]
 Only spaces and tabs are removed: other whitespace, such as U+00A0, is part of
 the text. [test: data blocks: flowchart one line with no-break spaces at the
-ends] The block stays as written
+ends] A block that holds nothing but spaces and tabs, or nothing, is printed
+`@{ }`: mermaid.js reads an empty flow mapping, so the Db and the figure are the
+same for `A@{}`, `A@{   }`, and `A@{ }`. In a sequence diagram `@{}` is
+rejected, and `@{   }` is accepted. [fixture:
+data-blocks/one-line-space-only-padded] The block stays as written
 
-- when it holds nothing but spaces and tabs: `A@{}` is rejected, while `A@{   }`
-  is accepted; [fixture: data-blocks/one-line-space-only-kept]
 - when a `%%{` lies in it: a directive keeps its text and its columns, as it
   does in a block of several lines; [fixture:
   data-blocks/one-line-directive-kept]

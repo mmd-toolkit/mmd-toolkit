@@ -45,6 +45,7 @@ import {
   addCssClassRules,
   addNameListRules,
   findCallRangeWithTrivia,
+  normalizeCallArguments,
   normalizeStyleList,
 } from "./statement-rules.ts"
 import {
@@ -367,6 +368,9 @@ export function layoutClassStatement(
     ),
     kept,
   )
+  if (statement.type === "ClassCallbackStatement") {
+    normalizeCallArguments(source, atoms, statement.arguments?.range ?? null)
+  }
   if (
     (statement.type === "ClassClassDefStatement" ||
       statement.type === "ClassStyleStatement") &&

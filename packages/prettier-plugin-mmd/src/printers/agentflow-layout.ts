@@ -32,7 +32,11 @@ import {
 import { readGapElement } from "./gap.ts"
 import { holdsJoiningRegion, lineStartOf } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
-import { normalizeBlankLabels, normalizeStyleList } from "./statement-rules.ts"
+import {
+  normalizeBlankLabels,
+  normalizeCallArguments,
+  normalizeStyleList,
+} from "./statement-rules.ts"
 import {
   findStructuralToken,
   findTriviaBetween,
@@ -467,6 +471,11 @@ export function layoutStatement(
       descriptionLayout,
       preservesDescriptionColumns,
     )
+  }
+  if (statement.type === "AgentflowClickCallbackStatement") {
+    const atoms = [...layout.atoms]
+    normalizeCallArguments(source, atoms, statement.arguments?.range ?? null)
+    return { ...layout, atoms }
   }
   return layout
 }

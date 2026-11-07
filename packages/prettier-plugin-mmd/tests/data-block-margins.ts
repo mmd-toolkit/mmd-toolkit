@@ -82,7 +82,9 @@ function isPaddedOneLine(before: string, after: string): boolean {
     start++
   while (end > start && (inside[end - 1] === " " || inside[end - 1] === "\t"))
     end--
-  return start < end && after === `@{ ${inside.slice(start, end)} }`
+  return start < end
+    ? after === `@{ ${inside.slice(start, end)} }`
+    : after === "@{ }"
 }
 
 /**

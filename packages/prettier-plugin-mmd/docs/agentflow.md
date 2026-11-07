@@ -461,7 +461,7 @@ metadata-blocks/metadata-multiline]
 A block on one line is printed with one space inside each end, and stays as
 written in the cases listed under [Data blocks](./flowchart.md#data-blocks).
 [fixture: metadata-blocks/one-line-padded] [fixture:
-metadata-blocks/one-line-space-only-kept] [fixture:
+metadata-blocks/one-line-space-only-padded] [fixture:
 metadata-blocks/one-line-directive-kept] [fixture:
 metadata-blocks/one-line-kept-line-kept] [fixture:
 metadata-blocks/one-line-touching-blocks-kept] [fixture:
@@ -1107,7 +1107,12 @@ retained click prefix keep their touching gaps. [fixture:
 click-statements/target-required-tab] [fixture:
 click-statements/prefix-with-directive]
 
-The parentheses of a call with blank arguments touch each other, as in
+The arguments of a call have no whitespace at their ends or before a `,`, and
+one space after it, as in [flowchart](./flowchart.md#whitespace-between-tokens):
+`click A call f(  "x" ,y )` is printed `click A call f("x", y)` (see
+[Call arguments that are drawn the same](./compatibility.md#call-arguments-that-are-drawn-the-same)).
+[fixture: click-statements/callback-arguments-spaced] The parentheses of a call
+with blank arguments touch each other, as in
 [flowchart](./flowchart.md#whitespace-between-tokens): `click A call f( )` is
 printed `click A call f()`, also before a tooltip or an erased prefix, since
 mermaid.js reads both spellings as the same call. `f ()`, with whitespace before

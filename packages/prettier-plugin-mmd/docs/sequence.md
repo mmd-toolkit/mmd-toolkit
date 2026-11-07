@@ -400,7 +400,7 @@ block on one line, which become one space each, as in
 becomes `participant A@{ "type":"queue" }`. [fixture:
 whitespace-between-tokens/data-block-padded] The block stays as written where
 that rule says so. [fixture:
-whitespace-between-tokens/data-block-space-only-kept] [fixture:
+whitespace-between-tokens/data-block-space-only-padded] [fixture:
 whitespace-between-tokens/data-block-directive-kept] [fixture:
 whitespace-between-tokens/data-block-kept-line-kept] [test: data blocks:
 sequence one line with U+2028 inside] [test: data blocks: sequence one line with

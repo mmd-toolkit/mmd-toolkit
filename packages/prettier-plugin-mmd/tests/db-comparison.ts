@@ -1,5 +1,9 @@
 import type { DbSummary } from "@mmd-toolkit/tests"
 import { parse } from "@mmd-toolkit/parser"
+import {
+  clickCallDbForFormattingComparison,
+  clickCallDiagramTypes,
+} from "./click-call-margins.ts"
 import { eventmodelingDbForFormattingComparison } from "./eventmodeling-data-margins.ts"
 import {
   keywordTextDbForFormattingComparison,
@@ -26,13 +30,19 @@ export function dbForFormattingComparison(
   const type = parse(beforeSource).diagramType
   if (type === "eventmodeling")
     return eventmodelingDbForFormattingComparison(before, after)
-  const compared =
-    type === "stateDiagram"
-      ? stateDbForFormattingComparison(before, after, beforeSource, afterSource)
-      : after
+  let compared = after
+  if (type === "stateDiagram")
+    compared = stateDbForFormattingComparison(
+      before,
+      compared,
+      beforeSource,
+      afterSource,
+    )
   if (keywordTextDiagramTypes.has(type))
-    return keywordTextDbForFormattingComparison(before, compared)
-  return styleDiagramTypes.has(type)
-    ? styleDbForFormattingComparison(before, compared, type)
-    : compared
+    compared = keywordTextDbForFormattingComparison(before, compared)
+  if (styleDiagramTypes.has(type))
+    compared = styleDbForFormattingComparison(before, compared, type)
+  if (clickCallDiagramTypes.has(type))
+    compared = clickCallDbForFormattingComparison(before, compared)
+  return compared
 }

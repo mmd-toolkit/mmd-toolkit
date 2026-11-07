@@ -28,7 +28,11 @@ import {
 import { holdsJoiningRegion } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import { findStructuralToken, findTokensBetween } from "./source.ts"
-import { normalizeBlankLabels, normalizeStyleList } from "./statement-rules.ts"
+import {
+  normalizeBlankLabels,
+  normalizeCallArguments,
+  normalizeStyleList,
+} from "./statement-rules.ts"
 
 /**
  * The node types whose text is a value, printed as written. They have no
@@ -137,6 +141,9 @@ export function layoutStatement(
   }
   const atoms = collectAtoms(source, start, end, values, kept)
   normalizeBlankLabels(source, atoms, values)
+  if (statement.type === "FlowchartClickCallbackStatement") {
+    normalizeCallArguments(source, atoms, statement.arguments?.range ?? null)
+  }
   const layout: AtomLayout = {
     atoms,
     rules,

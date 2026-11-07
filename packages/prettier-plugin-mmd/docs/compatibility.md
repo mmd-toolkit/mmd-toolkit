@@ -71,7 +71,7 @@ Directives stay as written. A data block on one line in flowchart, agentflow,
 kanban and sequence is printed with one space inside each end, and stays as
 written where [Data blocks](./flowchart.md#data-blocks) says so. [fixture:
 flowchart/data-blocks/one-line-padded] [fixture:
-flowchart/data-blocks/one-line-space-only-kept] [fixture:
+flowchart/data-blocks/one-line-space-only-padded] [fixture:
 flowchart/data-blocks/one-line-touching-blocks-kept] [fixture:
 flowchart/data-blocks/one-line-separate-blocks-padded] Eligible multiline data
 blocks in flowchart, agentflow, kanban and sequence, and usecase JSON tables,
@@ -513,6 +513,40 @@ by the spaces and tabs at its start takes the written text, and any other
 difference, among them one in the name of a section, fails. When the pinned
 mermaid.js is updated, draw both texts of each kind again and compare the SVG
 and the pixels before the exception stays.
+
+## Call arguments that are drawn the same
+
+The arguments of a `click` call in flowchart, agentflow, class, and Gantt
+diagrams are printed without whitespace at their ends or before a `,`, and with
+one space after it: `click A call f(  "x" ,y ,   z  )` is printed
+`click A call f("x", y, z)`. The whitespace inside quotes stays, and so does the
+whitespace beside a `,` inside quotes. Arguments with an empty part, with a line
+break, or with a comment or a directive stay as written. [fixture:
+flowchart/whitespace-between-tokens/callback-arguments-spaced] [fixture:
+agentflow/click-statements/callback-arguments-spaced] [fixture:
+class/whitespace-between-tokens/callback-arguments-spaced] [fixture:
+gantt/click-statements/call-arguments-spaced]
+
+mermaid.js keeps the text between the parentheses in the Db, so the Db of the
+printed text differs from the Db of the written text, but it calls the function
+with the same arguments. Each of the four diagram types splits the text at every
+`,` that has an even number of `"` after it, trims each part, and takes a part
+that starts and ends with `"` without them
+([flowchart](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L533-L545),
+[class](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/classDb.ts#L458-L471),
+[Gantt](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttDb.js#L752-L765),
+[agentflow](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L963-L976)).
+The function is bound only where `securityLevel` is `loose`. Both texts of each
+case were drawn with mermaid.js 12.3.0 in Chromium at that level and the nodes
+were clicked: the function got the same arguments, `x`, `y`, and `z` for both
+spellings above, in all four diagram types, while a change inside quotes changed
+them.
+
+The tests compare the Db of the printed text with the arguments restored from
+the Db of the written text (`clickCallDbForFormattingComparison` in
+`tests/click-call-margins.ts`): arguments that are read as the same parts take
+the written text, and any other difference fails. When the pinned mermaid.js is
+updated, click both texts of each kind again before the exception stays.
 
 ## Whitespace at the start of a label
 
@@ -1104,9 +1138,10 @@ See [Task data](./gantt.md#task-data), [Settings](./gantt.md#settings),
   ignores U+FEFF, so a capital sigma after it, at the end of a word, is `ς`,
   while after a space, or any other whitespace, it is `σ`. [test: U+FEFF between
   the items of a list]
-- The name and the arguments of a call, with their whitespace: `f ()`,
-  `f( 1, 2 )`, and `f(1,2)` are three calls. [fixture:
-  gantt/click-statements/call-name-and-arguments-kept]
+- The name of a call, with its whitespace: `f ()` and `f()` call two functions,
+  while the whitespace in the arguments is printed in one form (see
+  [Call arguments that are drawn the same](#call-arguments-that-are-drawn-the-same)).
+  [fixture: gantt/click-statements/call-name-kept-arguments-spaced]
 - A line that holds a kept `;`: its statements stay on it, since the line rule
   of mermaid.js reads the text of the line. [fixture:
   gantt/statements-one-per-line/ignored-semicolon-line-kept]

@@ -379,11 +379,17 @@ classDiagram
 ```
 
 The whitespace between the name of the function after `call` and the `(` that
-follows it is kept as written, with the parentheses and their arguments:
-mermaid.js reads the name up to the `(`, whitespace included, so
-`click A call fn  ()` calls the function named `fn` and two spaces. A line break
-there is kept too, and the statement stays on two lines. The parentheses of a
-call with blank arguments touch each other: `click A call f( )` is printed
+follows it is kept as written: mermaid.js reads the name up to the `(`,
+whitespace included, so `click A call fn  ()` calls the function named `fn` and
+two spaces. A line break there is kept too, and the statement stays on two
+lines. The arguments have no whitespace at their ends or before a `,`, and one
+space after it: `click A call f(  "x" ,y )` is printed `click A call f("x", y)`,
+since mermaid.js splits the arguments at the `,` outside quotes and trims each
+part, and calls the function with the same arguments (see
+[Call arguments that are drawn the same](./compatibility.md#call-arguments-that-are-drawn-the-same)).
+The whitespace inside quotes stays, and so do arguments with an empty part.
+[fixture: whitespace-between-tokens/callback-arguments-spaced] The parentheses
+of a call with blank arguments touch each other: `click A call f( )` is printed
 `click A call f()`, since mermaid.js reads both as the same call with no
 arguments. A directive between them touches both parentheses, as under
 [Directives](#directives). [fixture:
@@ -423,7 +429,7 @@ Output
 classDiagram
   class A
   class B
-  click A call fn  ( x )
+  click A call fn  (x)
   click B call gn
 (y)
   click B call hn   ()
@@ -1029,9 +1035,10 @@ multi-line-statements/empty-line-inside-joined] [corpus fixture:
 class/lex-direction-line-value-next-line] A line break next to a comment or a
 directive stays, while structural continuations and intervening trivia stand one
 level deeper, as in a sequence diagram (see
-[Multi-line statements](./sequence.md#multi-line-statements)). Whitespace inside
-values remains unchanged. The whitespace before the first line break of each gap
-is retained; joining regions keep the whole statement as written. A `;` does not
+[Multi-line statements](./sequence.md#multi-line-statements)). [fixture:
+multi-line-statements/breaks-decided-one-by-one] Whitespace inside values
+remains unchanged. The whitespace before the first line break of each gap is
+retained; joining regions keep the whole statement as written. A `;` does not
 keep a statement over several lines from being joined: no `;` separates
 statements in a class diagram, and the first line of such a statement holds only
 its keyword, so joining its lines cannot change which `;` the line rule ignores.

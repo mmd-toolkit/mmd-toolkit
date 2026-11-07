@@ -27,6 +27,7 @@ import {
 import {
   accessibilityRules,
   findCallRangeWithTrivia,
+  normalizeCallArguments,
   trimTextAfterKeyword,
 } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
@@ -217,6 +218,9 @@ export function layoutGanttStatement(
     atoms,
     textAfterKeyword(source, statement)?.range ?? null,
   )
+  if (statement.type === "GanttClickStatement") {
+    normalizeCallArguments(source, atoms, statement.call?.args?.range ?? null)
+  }
   const remainder = findBlankRemainder(source, statement)
   if (remainder !== null) atoms.push(remainder)
   return {

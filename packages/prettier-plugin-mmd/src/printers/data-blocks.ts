@@ -175,7 +175,8 @@ function isOneLine(text: string): boolean {
 
 /**
  * The block of one line printed with one space inside each end, `@{ shape:
- * circle }`; undefined where it stays as written. These diagram types read the
+ * circle }`, and a block of nothing but spaces and tabs, or of nothing, as
+ * `@{ }`; undefined where it stays as written. These diagram types read the
  * text inside `@{` and `}` as the lines of a YAML flow mapping
  * (docs/flowchart.md, Data blocks), so the spaces and tabs at its ends carry no
  * meaning. A block is padded only if
@@ -183,8 +184,6 @@ function isOneLine(text: string): boolean {
  * - it is one of `paddedTypes`;
  * - no `%%{` lies in it: a directive in the block is written as it stands;
  * - it is on no kept line (see `KeptLines`);
- * - something other than spaces and tabs stands in it: of a block that holds
- *   none, `@{}` is rejected while `@{   }` is accepted;
  * - its text does not start at the first column with `---`, `...`, or `%`: a
  *   space before `---` or `...` makes a document marker an ordinary string, so
  *   `@{---}` is rejected while `@{ --- }` is accepted; the starts that are no
@@ -220,7 +219,7 @@ function padDataBlock(
   let end = text.length - 1
   while (start < end && (text[start] === " " || text[start] === "\t")) start++
   while (end > start && (text[end - 1] === " " || text[end - 1] === "\t")) end--
-  if (start === end) return undefined
+  if (start === end) return "@{ }"
   return ["@{ ", text.slice(start, end), " }"]
 }
 

@@ -705,17 +705,23 @@ click-statements/trailing-whitespace-dropped] The statement does not depend on
 the tasks that its ids name. [fixture:
 click-statements/ids-unknown-and-duplicate]
 
-The name of a call and its arguments are printed as written, with the whitespace
-and the line breaks in them, except that blank arguments are dropped (see
-[Whitespace between tokens](#whitespace-between-tokens)): `f ()` has the name
-`f` and a space, and `f( 1, 2 )` the arguments of a space, `1, 2`, and a space,
-which the Db keeps. The string of a link is printed as written. [fixture:
-click-statements/call-name-and-arguments-kept] [fixture:
-click-statements/href-string-kept] A string or an argument list written over
-lines is printed as written (see [Multi-line values](#multi-line-values)).
-[fixture: click-statements/string-over-lines-kept] A comment line or directive
-between the parts keeps its line breaks, with ordinary structural continuations
-aligned under [Multi-line statements](#multi-line-statements). [fixture:
+The name of a call is printed as written, with the whitespace and the line
+breaks in it (see [Whitespace between tokens](#whitespace-between-tokens)):
+`f ()` has the name `f` and a space. The arguments have no whitespace at their
+ends or before a `,`, and one space after it: `f( 1,2 )` is printed `f(1, 2)`,
+since mermaid.js splits the arguments at the `,` outside quotes and trims each
+part, and calls the function with the same arguments (see
+[Call arguments that are drawn the same](./compatibility.md#call-arguments-that-are-drawn-the-same)).
+The whitespace inside quotes stays, and so do arguments with an empty part;
+blank arguments are dropped. [fixture:
+click-statements/call-name-kept-arguments-spaced] [fixture:
+click-statements/call-arguments-spaced] The string of a link is printed as
+written. [fixture: click-statements/href-string-kept] A string or an argument
+list written over lines is printed as written (see
+[Multi-line values](#multi-line-values)). [fixture:
+click-statements/string-over-lines-kept] A comment line or directive between the
+parts keeps its line breaks, with ordinary structural continuations aligned
+under [Multi-line statements](#multi-line-statements). [fixture:
 click-statements/comment-line-between-parts-kept] [fixture:
 click-statements/directive-between-parts]
 
@@ -768,7 +774,7 @@ gantt
 ```
 
 Input
-([click-statements/call-name-and-arguments-kept-input.mmd](../tests/fixtures/gantt/click-statements/call-name-and-arguments-kept-input.mmd)):
+([click-statements/call-name-kept-arguments-spaced-input.mmd](../tests/fixtures/gantt/click-statements/call-name-kept-arguments-spaced-input.mmd)):
 
 ```mmd
 gantt
@@ -781,14 +787,14 @@ click id1 call   f()
 ```
 
 Output
-([click-statements/call-name-and-arguments-kept-output.mmd](../tests/fixtures/gantt/click-statements/call-name-and-arguments-kept-output.mmd)):
+([click-statements/call-name-kept-arguments-spaced-output.mmd](../tests/fixtures/gantt/click-statements/call-name-kept-arguments-spaced-output.mmd)):
 
 ```mmd
 gantt
   a :id1, 1d
   click id1 call f ()
-  click id1 call f( 1, 2 )
-  click id1 call f(1,2)
+  click id1 call f(1, 2)
+  click id1 call f(1, 2)
   click id1 call f()
   click id1 call f()
 ```

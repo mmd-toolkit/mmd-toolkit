@@ -452,7 +452,7 @@ A block on one line is printed with one space inside each end, as in
 [Data blocks](./flowchart.md#data-blocks): `A@{ticket: X}` becomes
 `A@{ ticket: X }`. The block stays as written in the cases listed there.
 [fixture: data-blocks/one-line-padded] [fixture:
-data-blocks/one-line-space-only-kept] [fixture:
+data-blocks/one-line-space-only-padded] [fixture:
 data-blocks/one-line-directive-kept] [fixture:
 data-blocks/one-line-kept-line-kept] [fixture:
 data-blocks/one-line-touching-blocks-kept] [fixture:

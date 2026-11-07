@@ -633,16 +633,24 @@ stateDiagram-v2
 
 ### Notes
 
-What follows the id of a note on one line, its `:` and its text, is kept as
-written: mermaid.js reads the text from right after the id, without its first
-two characters, so `note left of A:hi` has the text `i`, and
+What follows the id of a note on one line, its `:` and its text, is read by
+mermaid.js from right after the id, without its first two characters, and
+trimmed: `note left of A:hi` has the text `i`, and
 `note right of A  : two spaces` the text `: two spaces`. [fixture: notes/kept]
-In `note left of A:h` the `:` and the `h` are the two characters that mermaid.js
-drops, so the note has no text, and the whitespace after the `h` is dropped.
-[fixture: notes/one-character-text-kept] [corpus fixture:
-state/lex-note-colon-then-one-character] The whitespace before the id becomes
-one space. A text that mermaid.js does not read right after the position, as in
-`note left of%%x A`, keeps touching the position.
+Where the first two characters are a `:` and a space or a tab, in either order,
+the note is printed with the `:` after one space and the text after one space,
+whatever whitespace was written there: `note right of A: x` and
+`note left of A\t:\tz` are printed `note right of A : x` and
+`note left of A : z`. The whitespace inside the text stays. The Db and the
+figure are the same. [fixture: notes/colon-and-text-spaced] Any other start
+stays as written, and so does a note with an empty text, with a comment or a
+directive, or with a character other than an ASCII one. [fixture:
+notes/colon-and-text-kept] In `note left of A:h` the `:` and the `h` are the two
+characters that mermaid.js drops, so the note has no text, and the whitespace
+after the `h` is dropped. [fixture: notes/one-character-text-kept] [corpus
+fixture: state/lex-note-colon-then-one-character] The whitespace before the id
+becomes one space. A text that mermaid.js does not read right after the
+position, as in `note left of%%x A`, keeps touching the position.
 
 The pinned Mermaid renders `stateDiagram-v2` notes as Markdown labels, setting
 `labelType` to `markdown` in
