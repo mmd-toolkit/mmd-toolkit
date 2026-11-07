@@ -1,6 +1,6 @@
 import { chmodSync } from "node:fs"
 import path from "node:path"
-import { afterEach, beforeEach, describe, expect, it } from "vitest"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import packageJson from "../package.json" with { type: "json" }
 import { Project, listed } from "./helpers.ts"
 
@@ -44,6 +44,9 @@ function expectUsage(text: string): void {
   for (const usageText of usageTexts) {
     expect(text).toContain(usageText)
   }
+  // The line of the option, which gunshi names in kebab case (`toKebab`); an
+  // example names the option too, but without the `<` of its value.
+  expect(text).toContain("--stdin-filepath <")
 }
 
 describe("Usage: --write and --check", () => {
@@ -187,6 +190,7 @@ describe("Usage: --help and --version", () => {
     [["--help", "--write", "--check"]],
     [["-h", "--check", "a.mmd"]],
     [["--help", "--stdin-filepath"]],
+    [["--help", "--stdin-filepath="]],
   ])("prints only the usage for %j", async (args) => {
     project.write({ "a.mmd": diagram })
     const run = await project.run(args)
@@ -202,6 +206,7 @@ describe("Usage: --help and --version", () => {
     [["--version", "--help"]],
     [["-hv"]],
     [["--version", "--stdin-filepath"]],
+    [["--version", "--stdin-filepath="]],
   ])("prints only the version for %j", async (args) => {
     project.write({ "a.mmd": diagram })
     expect(await project.run(args)).toEqual({
@@ -210,6 +215,29 @@ describe("Usage: --help and --version", () => {
       stderr: "",
     })
     expect(project.read("a.mmd")).toBe(diagram)
+  })
+})
+
+describe("Usage: gunshi writes nothing itself", () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  // gunshi writes with console.log unless the tool sets usageSilent: the
+  // header on every run, the usage, the version, and its errors. The tool
+  // writes them itself instead, so that none of them mixes with the result of
+  // --stdin-filepath on standard output.
+  it.each([
+    [["--stdin-filepath", "a.mmd"]],
+    [["--help"]],
+    [["--version"]],
+    [["--fix", "a.mmd"]],
+    [["--write", "--check", "a.mmd"]],
+    [[]],
+  ])("calls no console.log for %j", async (args) => {
+    const log = vi.spyOn(console, "log").mockImplementation(() => undefined)
+    await project.run(args, diagram)
+    expect(log).not.toHaveBeenCalled()
   })
 })
 
@@ -229,66 +257,71 @@ describe("Usage: anything else is an error with exit 2", () => {
   })
 
   it.each([
-    [["a.mmd"], "give --write or --check with the patterns"],
-    [["--write"], "no patterns of the files to format"],
-    [["--write", "--"], "no patterns of the files to format"],
+    [["a.mmd"], ["give --write or --check with the patterns"]],
+    [["--write"], ["no patterns of the files to format"]],
+    [["--write", "--"], ["no patterns of the files to format"]],
     [
       ["--write", "--check", "a.mmd"],
-      "Optional argument '--write' conflicts with '--check'",
+      ["Optional argument '--write' conflicts with '--check'"],
     ],
     [
       ["--check", "--write", "a.mmd"],
-      "Optional argument '--write' conflicts with '--check'",
+      ["Optional argument '--write' conflicts with '--check'"],
     ],
     [
       ["--stdin-filepath", "a.mmd", "a.mmd"],
-      "--stdin-filepath takes no patterns",
+      ["--stdin-filepath takes no patterns"],
     ],
     [
       ["--stdin-filepath", "a.mmd", "--", "a.mmd"],
-      "--stdin-filepath takes no patterns",
+      ["--stdin-filepath takes no patterns"],
     ],
     [
       ["--stdin-filepath", "a.mmd", "--write"],
-      "Optional argument '--write' conflicts with '--stdin-filepath'",
+      ["Optional argument '--write' conflicts with '--stdin-filepath'"],
     ],
     [
       ["--write", "--stdin-filepath", "a.mmd"],
-      "Optional argument '--write' conflicts with '--stdin-filepath'",
+      ["Optional argument '--write' conflicts with '--stdin-filepath'"],
     ],
     [
       ["--stdin-filepath", "a.mmd", "--check"],
-      "Optional argument '--check' conflicts with '--stdin-filepath'",
+      ["Optional argument '--check' conflicts with '--stdin-filepath'"],
     ],
     [
       ["--stdin-filepath=", "--write", "a.mmd"],
-      "Optional argument '--write' conflicts with '--stdin-filepath'",
+      ["Optional argument '--write' conflicts with '--stdin-filepath'"],
     ],
     [
       ["--stdin-filepath", "", "--write", "a.mmd"],
-      "Optional argument '--write' conflicts with '--stdin-filepath'",
+      ["Optional argument '--write' conflicts with '--stdin-filepath'"],
     ],
     [
-      ["--stdin-filepath=", "a.mmd"],
-      "give --write or --check with the patterns",
+      ["--stdin-filepath=", "--check", "a.mmd"],
+      ["Optional argument '--check' conflicts with '--stdin-filepath'"],
     ],
-    [["--stdin-filepath="], "no patterns of the files to format"],
-    [["-x", "a.mmd"], "Unknown option: -x"],
-    [["--no-write", "a.mmd"], "Unknown option: --no-write"],
-    [["-wc", "a.mmd"], "Unknown option: -w\nmmdfmt: error: Unknown option: -c"],
-    [["--fix", "a.mmd"], "Unknown option: --fix"],
-    [["--help", "--fix"], "Unknown option: --fix"],
-    [["--version", "--fix"], "Unknown option: --fix"],
+    [["--stdin-filepath="], ["--stdin-filepath needs a path"]],
+    [["--stdin-filepath", ""], ["--stdin-filepath needs a path"]],
+    [["--stdin-filepath=", "a.mmd"], ["--stdin-filepath needs a path"]],
+    [["-x", "a.mmd"], ["Unknown option: -x"]],
+    [["--no-write", "a.mmd"], ["Unknown option: --no-write"]],
+    [
+      ["-wc", "a.mmd"],
+      ["Unknown option: -w", "Unknown option: -c"],
+    ],
+    [["--fix", "a.mmd"], ["Unknown option: --fix"]],
+    [["--help", "--fix"], ["Unknown option: --fix"]],
+    [["--version", "--fix"], ["Unknown option: --fix"]],
     [
       ["--stdin-filepath"],
-      "Optional argument '--stdin-filepath' should be 'string'",
+      ["Optional argument '--stdin-filepath' should be 'string'"],
     ],
-    [["--stdinFilepath", "a.mmd"], "Unknown option: --stdinFilepath"],
-  ])("%j", async (args, message) => {
+    [["--stdinFilepath", "a.mmd"], ["Unknown option: --stdinFilepath"]],
+  ])("%j", async (args, messages) => {
     expect(await project.run(args)).toEqual({
       code: 2,
       stdout: "",
-      stderr: `mmdfmt: error: ${message}\n`,
+      stderr: messages.map((message) => `mmdfmt: error: ${message}\n`).join(""),
     })
     expect(project.read("a.mmd")).toBe(diagram)
   })

@@ -76,6 +76,10 @@ export async function main(args: readonly string[], io: Io): Promise<number> {
           patterns.length > 0
             ? argumentError(io, ["--stdin-filepath takes no patterns"])
             : await formatStandardInput(stdinFilepath, io)
+      } else if (ctx.explicit.stdinFilepath) {
+        // gunshi gives no value for an empty path, as in --stdin-filepath=,
+        // though the option is given (README, Usage).
+        code = argumentError(io, ["--stdin-filepath needs a path"])
       } else if (patterns.length === 0) {
         code = argumentError(io, ["no patterns of the files to format"])
       } else if (!write && !check) {

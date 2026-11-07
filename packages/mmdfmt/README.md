@@ -52,15 +52,17 @@ its path included; `--version` is taken when both are given. No argument at all
 prints the usage to standard error and exits with `2`. Any other combination of
 these options and patterns writes an error to standard error and exits with `2`.
 So does an option that is not listed here, also together with `--help` or
-`--version`, and `--stdin-filepath` without its path.
+`--version`, and `--stdin-filepath` without its path when neither `--help` nor
+`--version` is given.
 
 The library [gunshi](https://gunshi.dev) reads the arguments, and draws the
 usage from the options. An option that takes no value is given by its name
 alone, and a value written after `=` is not read: `--write=false` is read as
-`--write`. An empty path of `--stdin-filepath`, as in `--stdin-filepath=` or
-`--stdin-filepath ""`, is an error: the path is not read, and the option still
-conflicts with `--write` and `--check`. The arguments after `--` are patterns
-too, so that a file whose name starts with `-` can be given:
+`--write`. gunshi does not read an empty path of `--stdin-filepath`, as in
+`--stdin-filepath=` or `--stdin-filepath ""`, so that without `--help` or
+`--version` it is an error, as a missing path is; with `--write` or `--check`,
+the error given is that the options conflict. The arguments after `--` are
+patterns too, so that a file whose name starts with `-` can be given:
 `mmdfmt --write -- -a.md` formats `-a.md`.
 
 ### Patterns

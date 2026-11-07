@@ -54,16 +54,20 @@ npx mmdfmt --stdin-filepath diagram.mmd < diagram.mmd
 これらのオプションとパターンのほかの組み合わせでは、
 エラーを標準エラー出力に書き、`2` で終了します。
 ここに挙げていないオプションも、`--help` や `--version` と一緒に付けても同じで、
-パスのない `--stdin-filepath` でも同じです。
+パスのない `--stdin-filepath` は、
+`--help` も `--version` も付けないときだけエラーです。
 
 ライブラリ [gunshi](https://gunshi.dev) が引数を読み、
 オプションから使い方を組み立てます。
 値を取らないオプションは名前だけで決まり、`=` の後ろの値は読みません。
 `--write=false` は `--write` と同じに読みます。
-`--stdin-filepath` のパスが空のとき（`--stdin-filepath=` や
-`--stdin-filepath ""`）はエラーです。
-パスは読まず、
-それでもこのオプションは `--write` と `--check` と競合するからです。
+gunshi は、
+`--stdin-filepath` の空のパス（`--stdin-filepath=` や
+`--stdin-filepath ""`）を読みません。
+そのため、`--help` も `--version` も付けないときは、
+パスがない場合と同じくエラーです。
+`--write` か `--check` と一緒に付けたときは、
+オプション同士が競合するというエラーを出します。
 `--` の後ろの引数もパターンなので、`-` で始まる名前のファイルも渡せます。
 `mmdfmt --write -- -a.md` は `-a.md` を整形します。
 
