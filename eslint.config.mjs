@@ -169,6 +169,18 @@ export default [
     },
   },
   {
+    // The build of mmdfmt publishes src/cli.ts as lib/cli.mjs, the file that
+    // its `bin` names; eslint-plugin-n checks each source as the file it is
+    // published as (n/hashbang requires the shebang of a `bin` file).
+    files: ["packages/mmdfmt/src/**/*.ts"],
+    settings: {
+      n: {
+        typescriptExtensionMap: [],
+        convertPath: { "src/**/*.ts": ["^src/(.+)\\.ts$", "lib/$1.mjs"] },
+      },
+    },
+  },
+  {
     // The tests of the parser compare its results with what the fixtures
     // record; they neither run mermaid.js nor generate inputs. The modules
     // that load mermaid.js stay out of them, however they are named, except

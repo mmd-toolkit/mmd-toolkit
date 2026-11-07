@@ -3,25 +3,25 @@ name: changesets
 description:
   Add the changeset that a change to a released package needs, in the same
   change. Use when a change touches `packages/ast`, `packages/parser`,
-  `packages/prettier-plugin-mmd`, `packages/eslint-plugin`, or
-  `packages/textmate-grammar` in a way a user of the package can see, when a
+  `packages/prettier-plugin-mmd`, `packages/mmdfmt`, `packages/eslint-plugin`,
+  or `packages/textmate-grammar` in a way a user of the package can see, when a
   change touches `packages/spec`, and before opening or updating a pull request.
 ---
 
 # Changesets
 
 The packages `@mmd-toolkit/ast`, `@mmd-toolkit/parser`, `prettier-plugin-mmd`,
-`@mmd-toolkit/eslint-plugin`, and `@mmd-toolkit/textmate-grammar` are published
-from `main` with Changesets (CONTRIBUTING.md, Releases). `@mmd-toolkit/ast` and
-`@mmd-toolkit/parser` are a `fixed` group of `.changeset/config.json`: a bump of
-one bumps the other to the same version, so a changeset names only the package
-that changed. The specification, `@mmd-toolkit/spec`, is not published to npm
-but is released the same way: a release gives it a version, a changelog entry,
-and the git tag `@mmd-toolkit/spec@<version>`, so that an implementation can
-name the version of the specification it follows and read what changed since. A
-change to one of these six ships with a changeset in the same pull request;
-without it, the change is left out of the next version's changelog and its
-version bump.
+`mmdfmt`, `@mmd-toolkit/eslint-plugin`, and `@mmd-toolkit/textmate-grammar` are
+published from `main` with Changesets (CONTRIBUTING.md, Releases).
+`@mmd-toolkit/ast` and `@mmd-toolkit/parser` are a `fixed` group of
+`.changeset/config.json`: a bump of one bumps the other to the same version, so
+a changeset names only the package that changed. The specification,
+`@mmd-toolkit/spec`, is not published to npm but is released the same way: a
+release gives it a version, a changelog entry, and the git tag
+`@mmd-toolkit/spec@<version>`, so that an implementation can name the version of
+the specification it follows and read what changed since. A change to one of
+these seven ships with a changeset in the same pull request; without it, the
+change is left out of the next version's changelog and its version bump.
 
 ## When a changeset is needed
 
