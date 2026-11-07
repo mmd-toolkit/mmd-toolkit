@@ -467,12 +467,13 @@ one run
 ([Headers and indentation](../../spec/docs/diagrams/treemap.md#headers-and-indentation)),
 [corpus fixture: treemap/gram-indent-around-global-directive] and reads a second
 run on the next line as a second indentation, which it rejects. [corpus fixture:
-treemap/gram-class-tail-space-next-indent] The run moves once to the planned
-column of the next statement, as in [Carried indentation](#carried-indentation),
-so the comment or the directive touches the `;`, and a comment or a directive
-touches a directive before it. When the whitespace on the two sides of a
-directive makes the run, their sum counts. [fixture:
-semicolons/class-terminator-comment-run-moved] [fixture:
+treemap/gram-class-tail-space-next-indent] [corpus fixture:
+treemap/gram-class-directive-tail-space-next-indent] The run moves once to the
+planned column of the next statement, as in
+[Carried indentation](#carried-indentation), so the comment or the directive
+touches the `;`, and a comment or a directive touches a directive before it.
+When the whitespace on the two sides of a directive makes the run, their sum
+counts. [fixture: semicolons/class-terminator-comment-run-moved] [fixture:
 semicolons/class-terminator-directive-run-moved] [fixture:
 semicolons/class-terminator-directives-run-moved] [fixture:
 semicolons/class-terminator-run-sum-moved] This holds when a `;` that the line

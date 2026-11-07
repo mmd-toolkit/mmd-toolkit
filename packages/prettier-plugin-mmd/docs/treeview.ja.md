@@ -744,10 +744,12 @@ treeView-beta
 同じように移します。
 間にコメント行、空行、directive の行があっても同じです。
 mermaid.js は改行を隠すので、引用名や class の後ろの run の後で、
+間に行の規則が無視する `;` があるときも、
 次の行にもう 1 つ run があると拒否します
 ([字下げと行](../../spec/docs/diagrams/treeview.ja.md#字下げと行))。
 [corpus fixture: treeview/gram-quoted-tail-space-next-indent]
 [corpus fixture: treeview/gram-class-tail-space-next-indent]
+[corpus fixture: treeview/gram-quoted-ignored-semicolon-tail-space-next-indent]
 移した後は、`;`、コメント、directive、ノードが互いに接します。
 [fixture: treeview/carried-indentation/carry-quote-semicolon-comment]
 [fixture: treeview/carried-indentation/carry-quote-semicolon-directive]

@@ -481,6 +481,7 @@ mermaid.js は directive の両側の空白を 1 つの run として数えま�
 [corpus fixture: treemap/gram-indent-around-global-directive]
 次の行にもう 1 つ run があると、2 つ目の字下げとして読んで拒否します。
 [corpus fixture: treemap/gram-class-tail-space-next-indent]
+[corpus fixture: treemap/gram-class-directive-tail-space-next-indent]
 この run は、[Carried indentation](#carried-indentation) と同じく、
 次の文の計画された列へ 1 回だけ移します。
 そのため、コメントや directive は `;` に接し、

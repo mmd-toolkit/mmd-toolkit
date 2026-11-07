@@ -747,11 +747,12 @@ not stop the carry. The run before the `;`, after it, or before a comment or a
 directive that follows it moves the same way, and comment lines, blank lines and
 directive lines may lie between. Newlines are hidden to mermaid.js, so it
 rejects a second run on the next line after a run that follows a quote or a
-class
+class, also when a `;` that the line rule ignores lies between
 ([Indentation and lines](../../spec/docs/diagrams/treeview.md#indentation-and-lines)).
 [corpus fixture: treeview/gram-quoted-tail-space-next-indent] [corpus fixture:
-treeview/gram-class-tail-space-next-indent] The `;`, the comment and the
-directive then touch each other and the node. [fixture:
+treeview/gram-class-tail-space-next-indent] [corpus fixture:
+treeview/gram-quoted-ignored-semicolon-tail-space-next-indent] The `;`, the
+comment and the directive then touch each other and the node. [fixture:
 treeview/carried-indentation/carry-quote-semicolon-comment] [fixture:
 treeview/carried-indentation/carry-quote-semicolon-directive] [fixture:
 treeview/carried-indentation/carry-quote-run-before-semicolon] [fixture:
