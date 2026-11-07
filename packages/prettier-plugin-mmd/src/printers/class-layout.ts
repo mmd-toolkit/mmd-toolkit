@@ -33,7 +33,7 @@ import {
   walk,
 } from "./layout.ts"
 import type { Source } from "./source.ts"
-import { addNameListRules } from "./statement-rules.ts"
+import { addCssClassRules, addNameListRules } from "./statement-rules.ts"
 import {
   findStructuralToken,
   findStructuralTokenEndingBefore,
@@ -210,6 +210,9 @@ export function layoutBlockOpening(
     }
   }
   const rules = new Map<number, GapRule>([[opening.range[0], "space"]])
+  if (statement.type === "ClassDeclaration" && statement.cssClass !== null) {
+    addCssClassRules(source, statement.cssClass, rules)
+  }
   return {
     atoms: collectAtoms(
       source,
@@ -569,6 +572,9 @@ function statementRules(
       addNameListRules(source, statement.cssClasses, rules)
       break
     case "ClassDeclaration":
+      if (statement.cssClass !== null) {
+        addCssClassRules(source, statement.cssClass, rules)
+      }
       if (statement.members !== null) {
         const { opening, closing } = findMemberBraces(source, statement)
         rules.set(

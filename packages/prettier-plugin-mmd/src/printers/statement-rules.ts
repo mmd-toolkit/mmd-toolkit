@@ -7,6 +7,7 @@ import { printAsWritten } from "./lines.ts"
 import type { Source } from "./source.ts"
 import {
   findStructuralToken,
+  findStructuralTokenEndingBefore,
   findTokensBetween,
   findTriviaBetween,
   isStructural,
@@ -42,6 +43,24 @@ export function addClassListRules(
       rules.set(token.range[0], "none")
     }
   }
+}
+
+/**
+ * Adds the rules of the class after a `:::`: the `:::` touches what is before
+ * it, and the class touches the `:::`, as in `A:::c`.
+ */
+export function addCssClassRules(
+  source: Source,
+  cssClass: Node,
+  rules: Map<number, GapRule>,
+): void {
+  const separator = expectToken(
+    findStructuralTokenEndingBefore(source, cssClass.range[0]),
+    "the `:::` before a class",
+  )
+  expectValue(separator, ":::")
+  rules.set(separator.range[0], "none")
+  rules.set(cssClass.range[0], "none")
 }
 
 /**

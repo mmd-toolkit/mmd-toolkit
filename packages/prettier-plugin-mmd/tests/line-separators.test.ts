@@ -50,6 +50,16 @@ function format(text: string, options: Options = {}): Promise<string> {
  */
 const examples: readonly (readonly [string, string, string])[] = [
   [
+    "U+2028 before the `:::` of a state",
+    "stateDiagram-v2\nA\u2028:::c\n",
+    "stateDiagram-v2\n  A\u2028:::c\n",
+  ],
+  [
+    "U+2029 after the `:::` of a state",
+    "stateDiagram-v2\nA:::\u2029c\n",
+    "stateDiagram-v2\n  A:::\u2029c\n",
+  ],
+  [
     "U+2028 after the comma of a state class statement",
     "stateDiagram-v2\nA --> B\nclass A,\u2028B c\nclassDef c fill:#f00\n",
     "stateDiagram-v2\n  A --> B\n  class A,\u2028B c\n  classDef c fill:#f00\n",
@@ -618,6 +628,16 @@ const classLineSeparatorExamples: readonly (readonly [
   string,
   string,
 ])[] = [
+  [
+    "U+2028 before the `:::` of a class",
+    "classDiagram\nclass A\u2028:::c\n",
+    "classDiagram\n  class A\u2028:::c\n",
+  ],
+  [
+    "U+2029 after the `:::` of a class",
+    "classDiagram\nclass A:::\u2029c\n",
+    "classDiagram\n  class A:::\u2029c\n",
+  ],
   [
     "U+2028 after the comma of a classDef statement",
     "classDiagram\nclass A\nclassDef c1,\u2028c2 fill:#f00\n",

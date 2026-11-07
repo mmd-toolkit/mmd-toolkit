@@ -237,9 +237,18 @@ name parts of a class name: `class Foo Bar` declares the class `FooBar`, and it
 is printed as `class Foo Bar`, as written; joining the parts could make a
 keyword, as in `class no te`, which declares `note`, while `class note` is
 rejected. [fixture: whitespace-between-tokens/collapsed] [fixture:
-whitespace-between-tokens/name-parts-keyword-kept] It holds as well for an
-annotation or a CSS class after a name, a label in brackets, and the words of
-`note for`, `click`, `style`, and `cssClass` statements. [fixture:
+whitespace-between-tokens/name-parts-keyword-kept] The `:::` of a CSS class
+touches the name before it and the class after it: `class A :::c` and
+`class A ::: c` are printed `class A:::c`, as in an ER diagram. mermaid.js reads
+every spelling as the same class, so nothing forces the form; the two examples
+of its documentation write `class Animal:::someclass`, without and with a body
+([here](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L780-L788)).
+[fixture: whitespace-between-tokens/css-class-touches-separator] A directive in
+the gap keeps the whitespace written on each side of it, as under
+[Directives](#directives), and a U+2028 or U+2029 stays where it is. [test:
+U+2028 before the `:::` of a class] [test: U+2029 after the `:::` of a class]
+The rest of this holds for an annotation after a name, a label in brackets, and
+the words of `note for`, `click`, `style`, and `cssClass` statements. [fixture:
 whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/after-name-collapsed] [fixture:
 whitespace-between-tokens/words-collapsed] [fixture:

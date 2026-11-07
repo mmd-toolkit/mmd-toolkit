@@ -379,9 +379,19 @@ the words of an alias definition and a pseudostate mark, which get one space
 (see [Aliases](#aliases) and [Pseudostates](#pseudostates)). [fixture:
 whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/tabs-collapsed] [fixture:
-whitespace-between-tokens/touching-class-kept] This holds for `:::`, the `""`
-that mermaid.js does not read, and the `,` of a style statement; the quotes of a
-floating note are kept as written. [fixture:
+whitespace-between-tokens/touching-class-kept] The `:::` of a state touches the
+state before it and the class after it: `A :::c` and `A ::: c` are printed
+`A:::c`, as in an ER diagram. mermaid.js reads every spelling as the same state,
+so nothing forces the form; the printer already prints the `:::` of an ER
+diagram this way, and the five examples of the documentation of mermaid.js write
+it so
+([`Still:::notMoving` and the others](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/stateDiagram.md#L448-L470)).
+[fixture: whitespace-between-tokens/css-class-touches-separator] A directive in
+the gap keeps the whitespace written on each side of it, as under
+[Directives](#directives), and a U+2028 or U+2029 stays where it is. [test:
+U+2028 before the `:::` of a state] [test: U+2029 after the `:::` of a state]
+This holds for the `""` that mermaid.js does not read and the `,` of a style
+statement; the quotes of a floating note are kept as written. [fixture:
 whitespace-between-tokens/comma-kept] [fixture:
 whitespace-between-tokens/floating-note-quotes-kept] Whether whitespace is
 written before a `""` is kept: `state x"" {` is the composite state `x""`, and
@@ -436,7 +446,7 @@ Output
 
 ```mmd
 stateDiagram-v2
-  A ::: highlight
+  A:::highlight
   state f1 <<fork>>
   state "" x
   classDef c fill:red , stroke:blue

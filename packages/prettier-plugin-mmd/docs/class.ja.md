@@ -255,7 +255,21 @@ flowchart と同じです。 [fixture: whitespace-between-tokens/collapsed]
 例えば `class no te` は `note` を宣言しますが、 `class note` は拒否されます。
 [fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/name-parts-keyword-kept]
-名前の後の注釈や CSS クラス、角括弧のラベル、 `note for`、`click`、`style`、
+クラスの `:::` は、前の名前にも後ろの CSS クラスにも接します。
+`class A :::c` と `class A ::: c` は `class A:::c` になります。
+ER 図と同じです。
+mermaid.js はどの書き方も同じクラスとして読むので、形を強いるものはありません。
+mermaid.js の文書の例 2 件は、
+本体なしと本体ありで `class Animal:::someclass` と書いています。
+その範囲は、
+[ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L780-L788)
+にあります。 [fixture: whitespace-between-tokens/css-class-touches-separator]
+隙間にディレクティブがあれば、
+その両側に書かれた空白を残します（[ディレクティブ](#ディレクティブ)を参照）。
+U+2028 と U+2029 は、そのまま残します。
+[test: U+2028 before the `:::` of a class]
+[test: U+2029 after the `:::` of a class]
+以下は、名前の後の注釈、角括弧のラベル、 `note for`、`click`、`style`、
 `cssClass` の文の語の間も同じです。
 [fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/after-name-collapsed]
