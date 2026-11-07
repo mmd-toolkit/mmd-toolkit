@@ -34,8 +34,13 @@ export interface SelectedFile {
 export interface Selection {
   /** In the order of the patterns, each file once. */
   readonly files: readonly SelectedFile[]
-  /** Whether every pattern is one that excludes files, so that none selects any. */
-  readonly onlyExcluding: boolean
+  /**
+   * Whether no pattern is left to select files: each one starts with `!`, or
+   * names a path in a skipped directory.
+   */
+  readonly noSelectingPattern: boolean
+  /** The patterns that name a path in a skipped directory, which are skipped. */
+  readonly skipped: readonly string[]
   /** The patterns that select no file that the tool formats. */
   readonly unmatched: readonly string[]
   /** The paths of files, given as patterns, that an excluding pattern matches. */
@@ -53,10 +58,12 @@ type SelectingPattern =
 
 /**
  * Selects the files that the patterns name, of those the tool formats, as
- * Prettier's CLI reads the patterns (README, Patterns). A pattern is first the
- * path of a file or of a directory. Otherwise, a pattern that starts with `!`
- * excludes the files that the glob after it matches from what every other
- * pattern selects, and any other pattern is a glob.
+ * Prettier's CLI reads the patterns (README, Patterns). A pattern that names a
+ * path in a skipped directory, a file, a directory, or a glob, is skipped. A
+ * pattern is then first the path of a file or of a directory. Otherwise, a
+ * pattern that starts with `!` excludes the files that the glob after it
+ * matches from what every other pattern selects, and any other pattern is a
+ * glob.
  */
 export async function selectFiles(
   patterns: readonly string[],
@@ -64,8 +71,13 @@ export async function selectFiles(
 ): Promise<Selection> {
   const selecting: SelectingPattern[] = []
   const excluding: string[] = []
+  const skipped: string[] = []
   for (const pattern of patterns) {
     const target = path.resolve(cwd, pattern)
+    if (passesSkippedDirectory(target, cwd)) {
+      skipped.push(pattern)
+      continue
+    }
     const stats = await stat(target).catch(() => undefined)
     if (stats?.isFile()) {
       selecting.push({ kind: "file", text: pattern, path: target })
@@ -100,7 +112,8 @@ export async function selectFiles(
   }
   return {
     files: [...files.values()],
-    onlyExcluding: selecting.length === 0,
+    noSelectingPattern: selecting.length === 0,
+    skipped,
     unmatched,
     excluded,
   }
@@ -173,10 +186,18 @@ async function globFiles(
   return found.map((file) => path.resolve(file))
 }
 
+/**
+ * Whether a path, taken from `cwd`, is one of the skipped directories or passes
+ * through one, as Prettier's CLI decides it for a pattern.
+ */
+function passesSkippedDirectory(target: string, cwd: string): boolean {
+  const names = path.relative(cwd, target).split(path.sep)
+  return names.some((name) => skippedDirectories.includes(name))
+}
+
 /** Whether a file is under one of the skipped directories of `cwd`. */
 function isUnderSkippedDirectory(file: string, cwd: string): boolean {
-  const directories = path.relative(cwd, path.dirname(file)).split(path.sep)
-  return directories.some((name) => skippedDirectories.includes(name))
+  return passesSkippedDirectory(path.dirname(file), cwd)
 }
 
 /**

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { ignoreBrokenPipe } from "./broken-pipe.ts"
 import { main } from "./main.ts"
 
 /** Reads standard input to its end, as UTF-8. */
@@ -8,6 +9,8 @@ async function readStdin(): Promise<string> {
   for await (const chunk of process.stdin) text += chunk
   return text
 }
+
+process.stdout.on("error", ignoreBrokenPipe)
 
 process.exitCode = await main(process.argv.slice(2), {
   cwd: process.cwd(),

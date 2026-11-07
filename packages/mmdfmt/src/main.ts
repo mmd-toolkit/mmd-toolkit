@@ -144,13 +144,14 @@ async function formatFiles(
   mode: "write" | "check",
   io: Io,
 ): Promise<number> {
-  const { files, onlyExcluding, unmatched, excluded } = await selectFiles(
-    patterns,
-    io.cwd,
-  )
-  if (onlyExcluding) {
+  const { files, noSelectingPattern, skipped, unmatched, excluded } =
+    await selectFiles(patterns, io.cwd)
+  // As in Prettier's CLI, patterns that leave nothing to select are an error.
+  if (noSelectingPattern) {
     return argumentError(io, [
-      "no patterns of the files to format; a pattern that starts with ! only excludes files",
+      skipped.length > 0
+        ? "no patterns of the files to format; a pattern in node_modules or a directory of version control is skipped"
+        : "no patterns of the files to format; a pattern that starts with ! only excludes files",
     ])
   }
   let failed = unmatched.length > 0 || excluded.length > 0

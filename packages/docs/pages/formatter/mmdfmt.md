@@ -123,6 +123,10 @@ own, and no option for an ignore file. An option that takes no value ignores a
 value written after `=`: `--write=false` is read as `--write`, as the argument
 library [gunshi](https://gunshi.dev) reads it.
 
+When the reader of standard output goes away, as `head` does once it has its
+lines, `mmdfmt` writes no more there and says nothing, and finishes the run:
+`--write` still rewrites every file, and the exit code still tells the result.
+
 ### Patterns
 
 - The path of a file selects that file.
@@ -141,16 +145,20 @@ are formatted, each once, however many patterns select it. A pattern that
 selects none of them is an error: `mmdfmt --check .` fails in a project without
 such a file, and so does a file with another ending given by name. A pattern
 whose files a `!` pattern all takes out is an error too, as in Prettier's CLI. A
-pattern that selects only files that the `.gitignore` lists is not an error, and
-neither is the path of a file under `node_modules` or a directory of version
-control ([Excluding files](#excluding-files)).
+pattern that selects only files that the `.gitignore` lists is not an error.
+
+As Prettier's CLI does, `mmdfmt` skips without a word a pattern that names a
+path in `node_modules` or in a directory of version control, whether a file, a
+directory, or a glob, such as `node_modules/pkg` or `"node_modules/**/*.md"`.
+When no pattern is left to select files, that is an error.
 
 ## Excluding files
 
 `mmdfmt` leaves out:
 
 - the files under `node_modules`, and under the directories of version control
-  (`.git`, `.hg`, `.jj`, `.sl`, `.svn`);
+  (`.git`, `.hg`, `.jj`, `.sl`, `.svn`), also when a pattern names them
+  ([Patterns](#patterns));
 - the files that the `.gitignore` in the directory where you run `mmdfmt` lists.
   Other `.gitignore` files, in subdirectories or above, are not read;
 - the files that a `!` pattern matches. In bash, put such a pattern in single

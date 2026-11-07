@@ -131,6 +131,10 @@ own, and no option for an ignore file. An option that takes no value ignores a
 value written after `=`: `--write=false` is read as `--write`, as the argument
 library [gunshi](https://gunshi.dev) reads it.
 
+When the reader of standard output goes away, as `head` does once it has its
+lines, `mmdfmt` writes no more there and says nothing, and finishes the run:
+`--write` still rewrites every file, and the exit code still tells the result.
+
 ### Patterns
 
 - The path of a file selects that file.
@@ -149,16 +153,20 @@ are formatted, each once, however many patterns select it. A pattern that
 selects none of them is an error: `mmdfmt --check .` fails in a project without
 such a file, and so does a file with another ending given by name. A pattern
 whose files a `!` pattern all takes out is an error too, as in Prettier's CLI. A
-pattern that selects only files that the `.gitignore` lists is not an error, and
-neither is the path of a file under `node_modules` or a directory of version
-control ([Excluding files](#excluding-files)).
+pattern that selects only files that the `.gitignore` lists is not an error.
+
+As Prettier's CLI does, `mmdfmt` skips without a word a pattern that names a
+path in `node_modules` or in a directory of version control, whether a file, a
+directory, or a glob, such as `node_modules/pkg` or `"node_modules/**/*.md"`.
+When no pattern is left to select files, that is an error.
 
 ## Excluding files
 
 `mmdfmt` leaves out:
 
 - the files under `node_modules`, and under the directories of version control
-  (`.git`, `.hg`, `.jj`, `.sl`, `.svn`);
+  (`.git`, `.hg`, `.jj`, `.sl`, `.svn`), also when a pattern names them
+  ([Patterns](#patterns));
 - the files that the `.gitignore` in the directory where you run `mmdfmt` lists.
   Other `.gitignore` files, in subdirectories or above, are not read;
 - the files that a `!` pattern matches. In bash, put such a pattern in single
@@ -311,11 +319,44 @@ the indentation of a configuration.
 The code blocks are those whose info string has `mermaid` or `mmd` as its first
 word, case-sensitively, found as Prettier's Markdown parser finds them. A fence
 inside another code block is not taken for a diagram, and a block inside a list
-or a block quote is found. Only the lines between the fences change, and a block
-inside a list or a block quote keeps its indentation and its `>`.
+or a block quote is found.
+
+Only the lines between the fences change. Each line that `mmdfmt` writes starts
+with what stands before the opening fence on its line, with a list marker turned
+into spaces, so that the diagram stays in its list item and its block quote. An
+empty line gets that start without the spaces at its end, so that in a block
+quote it is a `>` alone. For example, this block:
+
+<!-- prettier-ignore -->
+````md
+> - ```mermaid
+>   flowchart LR
+>   A-->B
+>
+>   B-->C
+>   ```
+````
+
+becomes:
+
+<!-- prettier-ignore -->
+````md
+> - ```mermaid
+>   flowchart LR
+>     A --> B
+>
+>     B --> C
+>   ```
+````
+
+When the opening fence follows a `>` at once, as in `>```mermaid`, the lines get
+a space after the `>`. A block quote reads one space after its `>` as part of
+its marker, so a line of the diagram that starts with a space would lose it
+otherwise.
 
 A block that is not closed runs to the end of its list item, its block quote, or
-the file, and is formatted all the same.
+the file, and is formatted all the same. When it ends the file without a line
+ending, its last line still has none.
 
 Two kinds of block are left as written, with a warning that gives the position:
 
@@ -325,8 +366,12 @@ Two kinds of block are left as written, with a warning that gives the position:
 - a block whose opening fence stands on the line of a footnote label, as in
   `[^1]: ```mermaid`.
 
-A diagram that is empty or only whitespace becomes empty. A file keeps its line
-endings.
+A diagram that is empty or only whitespace becomes empty.
+
+A file keeps its line endings. Each line that `mmdfmt` writes ends as the first
+line of the file ends, or with `\n` in a file of one line. In a Markdown file,
+only the lines of the diagrams that change are written. For the line and the
+column of an error or a warning, a line ends at `\n`, `\r\n`, or `\r`.
 
 ## Documentation
 

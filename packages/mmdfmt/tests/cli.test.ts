@@ -2,6 +2,7 @@ import { chmodSync } from "node:fs"
 import path from "node:path"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import packageJson from "../package.json" with { type: "json" }
+import { ignoreBrokenPipe } from "../src/broken-pipe.ts"
 import { Project, listed } from "./helpers.ts"
 
 let project: Project
@@ -343,6 +344,20 @@ describe("Usage: anything else is an error with exit 2", () => {
   })
 })
 
+describe("Usage: a reader of standard output that goes away", () => {
+  it("ignores EPIPE when the reader goes away", () => {
+    const error = Object.assign(new Error("write EPIPE"), { code: "EPIPE" })
+    expect(() => ignoreBrokenPipe(error)).not.toThrow()
+  })
+
+  it("throws an error with another code", () => {
+    const error = Object.assign(new Error("permission denied"), {
+      code: "EACCES",
+    })
+    expect(() => ignoreBrokenPipe(error)).toThrow(error)
+  })
+})
+
 describe("Patterns", () => {
   it("selects a file by its path", async () => {
     project.write({ "docs/a.md": markdown, "b.mmd": diagram })
@@ -490,7 +505,7 @@ describe("Excluding files: node_modules, version control, and .gitignore", () =>
     })
   })
 
-  it("is an error for a glob or a directory that has files only under them", async () => {
+  it("skips patterns in node_modules, leaving none to select files", async () => {
     project.write({ "node_modules/x/b.md": markdown })
     expect(
       await project.run(["--check", "node_modules/**/*.md", "node_modules"]),
@@ -498,8 +513,67 @@ describe("Excluding files: node_modules, version control, and .gitignore", () =>
       code: 2,
       stdout: "",
       stderr:
-        noFileMatches("node_modules/**/*.md") + noFileMatches("node_modules"),
+        "mmdfmt: error: no patterns of the files to format; a pattern in node_modules or a directory of version control is skipped\n",
     })
+    expect(project.read("node_modules/x/b.md")).toBe(markdown)
+  })
+
+  it.each([
+    [["--check", "node_modules/x", "docs"]],
+    [["--check", "node_modules/x/a.md", "docs"]],
+    [["--check", "node_modules/**/*.md", "docs"]],
+  ])(
+    "skips a pattern in node_modules and checks the other files: %j",
+    async (args) => {
+      project.write({
+        "node_modules/x/a.md": markdown,
+        "docs/b.md": markdown,
+      })
+      expect(await project.run(args)).toEqual({
+        code: 1,
+        stdout: listed("docs/b.md"),
+        stderr: "",
+      })
+      expect(project.read("node_modules/x/a.md")).toBe(markdown)
+      expect(project.read("docs/b.md")).toBe(markdown)
+    },
+  )
+
+  it("skips a pattern in .git and checks the other files", async () => {
+    project.write({ ".git/y/c.md": markdown, "docs/b.md": markdown })
+    expect(await project.run(["--check", ".git/y", "docs"])).toEqual({
+      code: 1,
+      stdout: listed("docs/b.md"),
+      stderr: "",
+    })
+    expect(project.read(".git/y/c.md")).toBe(markdown)
+    expect(project.read("docs/b.md")).toBe(markdown)
+  })
+
+  it.each([
+    [["--check", "node_modules/x"]],
+    [["--check", "node_modules/x/a.md"]],
+  ])("is an error when the only pattern is skipped: %j", async (args) => {
+    project.write({ "node_modules/x/a.md": markdown })
+    expect(await project.run(args)).toEqual({
+      code: 2,
+      stdout: "",
+      stderr:
+        "mmdfmt: error: no patterns of the files to format; a pattern in node_modules or a directory of version control is skipped\n",
+    })
+    expect(project.read("node_modules/x/a.md")).toBe(markdown)
+  })
+
+  it("skips a file in node_modules and rewrites the other files", async () => {
+    project.write({
+      "node_modules/x/a.md": markdown,
+      "docs/b.md": markdown,
+    })
+    expect(
+      await project.run(["--write", "node_modules/x/a.md", "docs"]),
+    ).toEqual({ code: 0, stdout: listed("docs/b.md"), stderr: "" })
+    expect(project.read("node_modules/x/a.md")).toBe(markdown)
+    expect(project.read("docs/b.md")).toBe(formattedMarkdown)
   })
 
   it("skips the files that the .gitignore of the current directory lists", async () => {
