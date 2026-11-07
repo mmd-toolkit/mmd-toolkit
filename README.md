@@ -4,16 +4,16 @@
 
 Japanese version: [README.ja.md](./README.ja.md)
 
-Third-party tooling for the Mermaid diagram syntax: a formatter, a linter, a
-parser, a written specification, and a conformance corpus. Not affiliated with
-mermaid-js.
+Third-party tooling for the [Mermaid](https://mermaid.js.org/) diagram syntax: a
+formatter, a linter, a parser, a written specification, and a conformance
+corpus. Not affiliated with [mermaid-js](https://mermaid.js.org/).
 
 `mmd` refers to the `.mmd` file extension used for Mermaid diagram text. It is
 unrelated to MultiMarkdown and MikuMikuDance, which also use the abbreviation.
 
-Every diagram type of mermaid.js is supported. The formatter, the linter, and
-the parser are published to npm. The specification and the tests are used from
-this repository and are not published.
+Every diagram type of mermaid.js is supported. The formatter, the linter, the
+parser, its TypeScript types, and the TextMate grammar are published to npm. The
+specification and the tests are used from this repository and are not published.
 
 ## Documentation
 
@@ -26,7 +26,7 @@ reference, and the documents of the lint rules.
 The Playground lets you edit Mermaid text, inspect its syntax tree and tokens,
 and preview Prettier formatting in your browser.
 
-Public URL: [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/).
+Open the [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/).
 
 Choose a sample from **Examples** or paste text into **Source**. The **AST** and
 **Formatted** tabs update as you edit. Choose **Share**, then **Copy Link**, to

@@ -698,7 +698,7 @@ pnpm run format:check
   共通の指定の読みの経路でコーパスの `specified.json` を作るよう頼む。
   申告を `tests/helpers/known-divergences.ts` に足す。
   参照入力と申告の字句の判断は、独自の規則でなく、すべてパーサーの単位から取る。
-  `docs/testing.md` の「既知の差異」と、README の違いの一覧に足す。
+  `docs/testing.md` の「既知の差異」に足す。
 - 仕様が、
   参照の読み方ですべての違いを説明できると主張するときは（sequence の
   `comment-takes-character`）、その形を置ける各場所が、その主張の場合である。

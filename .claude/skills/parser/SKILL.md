@@ -645,8 +645,7 @@ wiring, tests and records.
   ask the tests package for it. Add its declaration to
   `tests/helpers/known-divergences.ts`. Take every lexical decision of the
   reference input and of the declaration from the parser's units, not from rules
-  of its own. Add it to "Known divergences" in `docs/testing.md` and to the
-  differences in the README.
+  of its own. Add it to "Known divergences" in `docs/testing.md`.
 - When the specification claims that its reference reading explains every
   difference (in sequence, `comment-takes-character`), each place where the form
   can stand is a case of that claim: ask for a fixture of each (section 3), and

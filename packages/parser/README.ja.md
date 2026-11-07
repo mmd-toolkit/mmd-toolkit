@@ -2,10 +2,12 @@
 
 英語版: [README.md](./README.md)
 
-Mermaid 記法（`.mmd`）のパーサーです。
+[Mermaid](https://mermaid.js.org/) 記法（`.mmd`）のパーサーです。
 図のテキストを、入力のすべての文字を保ち、各部分の位置を持つ木にします。
 
-mermaid-js とは無関係の第三者プロジェクトです。
+[mermaid-js](https://mermaid.js.org/) とは無関係の第三者プロジェクトです。
+
+文書: [パーサー](https://mmd-toolkit.github.io/mmd-toolkit/ja/parser/)。
 
 ## Playground
 
@@ -14,7 +16,8 @@ mermaid-js とは無関係の第三者プロジェクトです。
 ツリーの項目を選ぶとソースの対応範囲が強調表示され、
 ソースのカーソルを動かすと対応する項目が選択されます。
 
-公開URL: [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)。
+[Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)
+を開いて使えます。
 
 操作方法は[Playgroundの使い方](../playground/README.ja.md)を参照してください。
 
@@ -169,6 +172,10 @@ const tokenCount = root.tokens.length // 8
 
 ## API
 
+詳しくは
+[パーサーの API](https://mmd-toolkit.github.io/mmd-toolkit/ja/parser/api.html)
+のページにあります。
+
 ### `parse(text)`
 
 木の `Root` を返します。
@@ -179,37 +186,12 @@ const tokenCount = root.tokens.length // 8
   例えば `FlowchartDiagram`。
 - `tokens`: すべてのトークン。
   ソース順。
-  図のトークンと、ほかのトークンとコメントの外にある各ディレクティブの、
-  `Directive` のトークンと、フロントマターがあれば、
-  最初にフロントマターのトークンがあります。
-  開く `---` と閉じる `---` が `Punctuator` のトークンで、その間の本文が、
-  すべて空白でなければ `RawText` のトークンです。
   トークンは、`Keyword` や `RawText` などの `type` と、
   範囲のソースのテキストである `value` を持ちます。
   空白でも行終端子でもない文字は、どれもトークンかコメントにあります。
-  コメントはどのトークンの中にもありません。
-  複数行の引用符つきのラベルのように、コメント行をまたぐトークンは、
-  そこで断片に切られます。
-  中にディレクティブや、行の規則が無視する `;` を持つ、
-  テキストや引用符つきの文字列も同じです。
-  [トークン](./docs/tokens.ja.md#トークン) を参照。
-  引用符つきの文字列の断片は `StringFragment` のトークンです。
 - `comments`: すべてのコメント。
-  `%%` のコメント行、ヘッダーの前の `%%` だけの行や `%%{ }%%` の行、
-  図種の字句解析器がコメントとして読むものです。
-  後者は、シーケンス図の行の途中の `#` や `%`、クラス図の文の後の `%%`、
-  状態図の `#` と `%%` などです。
-  `mark` は印の文字です。
-  印は、コメント行とクラス図のコメントなら `%%`、
-  シーケンス図のコメントなら先頭の `#`、`%%`、`%`、
-  状態図のコメントなら先頭の `#` か `%%` です。
-  `value` は印の後のテキストです。
-  U+2028 か U+2029 の後のコメント行は、それをまたいで続く図種のコメントを、
-  トークンと同じく切ります。
-  コメント行の後の部分は別のコメントで、 `mark` は `null`、
-  `value` はそのテキストです。
-  状態図で `A %% x`、U+2029、行 `%% end`、行 `B` は、コメント `%% x`、`%% end`、
-  `B` を持ち、状態は A だけです。
+  `mark` は `%%` などの印の文字で、`value` は印の後のテキストです。
+  コメント行に切られたコメントの残りの部分の `mark` は `null` です。
 - `directives`: すべての `%%{ ... }%%` のディレクティブ。
   `name`、`value`（内側のテキスト）、閉じているかどうかの `closed` を持ちます。
 - `frontmatter`: フロントマター。
@@ -311,164 +293,37 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
 
 ## mermaid.js との違い
 
-`parse()` は、mermaid.js 12.3.0 が受理するものを受理し、
-拒否するものを拒否します。
-ただし次の違いがあります。
+`parse()` は、mermaid.js 12.3.0 が受理するものを受理し、拒否するものを拒否し、
+受理したテキストを同じ図として読みます。
+例外は、仕様の[既知の差異](../spec/docs/known-divergences.ja.md)です。
+それぞれの文書に、違いが出る入力と、どちらでも同じに読まれる書き方があります。
+たとえば:
 
-- 空白を含まない名前、キーワード、矢印、数、記号の内側にディレクティブがあると、
+- `sub%%{init: {}}%%graph S` のようにキーワードの内側にディレクティブがあると、
   `parse()` は例外を投げます。
   mermaid.js は前後のテキストをつないで読みます。
-  [`directive-as-token-boundary`](../spec/docs/known-divergences/directive-as-token-boundary.ja.md)
-  を参照。
-
-- `style` 行と `classDef` 行の規則が無視する `;` が、
-  そのようなトークンの内側にあるときも、例外を投げます。
-  mermaid.js はその `;` を除き、前後のテキストをつないで読みます。
-  [`ignored-semicolon-as-token-boundary`](../spec/docs/known-divergences/ignored-semicolon-as-token-boundary.ja.md)
-  を参照。
-
+- flowchart では `click` は予約語です。
+  `parse()` は click 文の先頭でだけ受け付け、
+  `subgraph click me` のようにそれ以外の場所では例外を投げます。
+  mermaid.js はこれを受理し、書かれたものとは違う図を描くことがよくあります。
 - フロントマター、ディレクティブ、
-  `@{ ... }` のデータブロックの中身は確かめないので、中身が壊れている、
-  形が違う、知らない名前（形の名前など）を挙げている、
-  という理由で mermaid.js が拒否する入力も受理します。
-  [`embedded-data-opaque`](../spec/docs/known-divergences/embedded-data-opaque.ja.md)
-  を参照。
+  `@{ ... }` のデータブロックの中身は検査しません。
+  その中身が壊れている、形が違う、
+  図形など未知のものを指すという理由で mermaid.js が拒否する入力も受理します。
 
-- フロントマターで始まる HTML タグは、図のテキストの読み方を変えません。
-  [`html-tag-in-frontmatter`](../spec/docs/known-divergences/html-tag-in-frontmatter.ja.md)
-  を参照。
+`parse()` は mermaid.js のサイトの設定を知らないので、
+辺の数が `maxEdges`（既定 500）を超える flowchart も受理します。
 
-- flowchart では、`click` は予約語です。
-  `parse()` はクリックの文の始まりでだけ受け付け、
-  `subgraph click me` や `click A href "u" click "tip"` のように、
-  それ以外の場所では例外を投げます。
-  mermaid.js はこれらを受理し、多くは書かれたものと違うものを描きます。
-  [`click-reserved-word`](../spec/docs/known-divergences/click-reserved-word.ja.md)
-  を参照。
-
-- flowchart では、空の文字列（`""`）と空の呼び出し（`call ()`）は、
-  どこにも書けません。
-  空の説明のブロック（`accDescr {}`）は、文の始まりにだけ書けます。
-  それ以外の場所では、`A[""x]` や `A call ()-->B` のように、
-  `parse()` は例外を投げます。
-  mermaid.js は、それらがないかのように入力を受理します。
-  [`tokenless-empty-forms`](../spec/docs/known-divergences/tokenless-empty-forms.ja.md)
-  を参照。
-  シーケンス図でも、
-  空の説明のブロックについて同じです（`A->>accDescr {}B: x` など）。
-  クラス図では、空の文字列、空の呼び出し、空の説明のブロックに加えて、
-  空のバッククォートの名前（` `` `）と、
-  クラスの名前の終わりでない空のジェネリクスの型（`~~`、
-  `class A~~B` など）についても同じです。
-  多重度やツールチップとしての空の文字列と、
-  クラスの名前の終わりの `~~` は受理します。
-  状態図では、空の説明のブロックについて同じです（`A accDescr {} --> B` など）。
-  ER 図では、空の説明のブロック（`A accDescr {} ||--o{ B : x` など）と、
-  属性の中の空のバッククォートについて同じです。
-  属性の中とは、型と名前の間、キーやコメントの前です。
-  2 つの属性の間の空のバッククォートは受理します。
-  Gantt チャートでは、空の href（`href ""`）と空の call について、
-  どこにあっても同じです（`href ""` の行や `click id1 href "" call f()` など）。
-  空の説明のブロックについては、click の文の中で同じです。
-  click の文の中とは、id と最初の部分の間、2 つの部分の間です。
-  文の始まりでは、空の説明のブロックはそれだけで 1 つの文として受理します。
-  要求図では、空の文字列について、
-  どこにあっても同じです（`""` の行や `id: "" 1` など）。
-  空の説明のブロックについては、
-  文の中で同じです（`a - accDescr {} satisfies -> b` など）。
-  文の始まりでは、空の説明のブロックは文で、要求や要素の本文の行では、
-  本文の項目です。
-  mindmap と kanban 図では、空の icon（`::icon()`）、
-  空の class の行（その行で後に何もない `:::`）、
-  形の中の空の文字列や空の markdown 文字列について、
-  どこにあっても同じです（`a[""x]` など）。
-
-- mindmap、kanban 図、Ishikawa 図では、空行、空白だけの行、コメントは、
-  ヘッダーの後のどこにあっても何も変えません。
-  mermaid.js は、ヘッダーと最初のノードの間の空行や、
-  2 つのノードの間の `%%` だけの行に続く空行など、その一部を拒否します。
-  [`blank-line-after-header-or-comments`](../spec/docs/known-divergences/blank-line-after-header-or-comments.ja.md)
-  を参照。
-
-- シーケンス図では、コメントは `%%` から始まり、
-  数の後に `%%` が続いてもかまいません。
-  mermaid.js は、そこで規則が始まるときには、
-  `%%` の前の文字をコメントに含めます。
-  `autonumber 10%% c` は、ここでは 10 から始まり、mermaid.js は拒否します。
-  `C%% c` だけの行は、ここでは拒否し、mermaid.js はコメントとして読みます。
-  Gantt チャートでは、単位の 1 文字目の直後の `%` は、その単位の文字です。
-  mermaid.js は、その文字と行の残りをコメントとして読みます。
-  `a% : 1d` は、ここではタスクで、mermaid.js ではタスクがありません。
-  `t%itle T` は、ここでは拒否します。
-  journey 図では、単位の 1 文字目の直後の `%%` について、同じことが言えます。
-  `A%%B: 5` は、ここではタスクで、mermaid.js ではタスクがありません。
-  `A: 5;%% c` は、ここでは拒否します。
-  timeline でも同じで、`a%% c` は、ここでは period で、
-  mermaid.js では何もありません。
-  `:%% c` は、ここでは拒否します。
-  [`comment-takes-character`](../spec/docs/known-divergences/comment-takes-character.ja.md)
-  を参照。
-
-- クラス図では、文の後のコメントは、その行の終わりで終わります。
-  mermaid.js は、その後の改行も取り込み、次の行を同じ文の続きとして読みます。
-  `A --> B %% c` の次に `class C` の行が続く入力は、ここでは受理し、
-  mermaid.js は拒否します。
-  Gantt チャートでも、click の文の中の `%` のコメントは、
-  その行の終わりで終わります。
-  mermaid.js は、その後の改行を取り込みます。
-  `click id1 %c` の次に `href "u"` の行が続く入力は、ここでは拒否し、
-  mermaid.js はリンクを設定します。
-  [`comment-takes-line-break`](../spec/docs/known-divergences/comment-takes-line-break.ja.md)
-  を参照。
-
-- Gantt チャートでは、ディレクティブを始めない `%%{` は、
-  単位が始まるところならどこでもコメントです。
-  mermaid.js は、単位の直後のように、字句解析器がその位置に直接いるところでは、
-  これを拒否します。
-  `gantt%%{ }%%` の次に `title T` の行が続く入力は、ここでは受理します。
-  [`percent-brace-after-unit`](../spec/docs/known-divergences/percent-brace-after-unit.ja.md)
-  を参照。
-
-- クラス図では、バッククォートの名前とジェネリクスの型は、
-  どの文字で始まってもかまいません。
-  ``class `note` `` はクラス `note` を宣言し、mermaid.js はこれを拒否します。
-  ``A `"1"` --> B`` では、mermaid.js は文字列 `"1"` を多重度として読み、
-  `parse()` はクラス `A"1"` からの関係として読みます。
-  [`name-start-reads-unit`](../spec/docs/known-divergences/name-start-reads-unit.ja.md)
-  を参照。
-
-- クラス図は、
-  ヘッダー（`classDiagram` か
-  `classDiagram-v2`）と改行で始まらなければなりません。
-  mermaid.js は、`classDiagramX` のように、
-  ヘッダーの語にほかの語の文字が続くテキストも、
-  `accTitle:` などのすぐ後でテキストが終わるときは受理します。
-  `parse()` は例外を投げます。
-  [`headerless-empty-ending`](../spec/docs/known-divergences/headerless-empty-ending.ja.md)
-  を参照。
-
-- `parse()` は、図種をテキストの始まりでだけ見つけます。
-  ほかの図種のヘッダーを持ち、その後に `C4Container`、`C4Component`、
-  `C4Dynamic`、`C4Deployment` のどれかを含むテキストは、その図種として読みます。
-  mermaid.js は、そのテキストを C4 の構文解析器に渡します。
-  [`c4-keyword-anywhere`](../spec/docs/known-divergences/c4-keyword-anywhere.ja.md)
-  を参照。
-
-- ヘッダーの前の `%%` だけの行や `%%{ }%%` の行は、どの図種でもコメントです。
-  mermaid.js は、flowchart と ER 図のヘッダーの前のそうした行、
-  状態図のヘッダーの前の `%%{ }%%` の行、
-  クラス図と ER 図のヘッダーの前でそうした行の後にある空白だけの行を拒否します。
-  Gantt チャート、journey 図、要求図、timeline、sankey 図では、
-  ヘッダーの前のそうした行を、後に空白だけの行があってもなくても拒否します。
-  [`bare-percent-line-before-header`](../spec/docs/known-divergences/bare-percent-line-before-header.ja.md)
-  を参照。
-
-- `parse()` はサイトの設定を知らないので、
-  辺の数が `maxEdges`（既定 500）を超える flowchart も受理します。
-- これらの違いによる拒否も、ほかと同じ `ParseError` です。
+これらの違いによる拒否も、ほかと同じ `ParseError` です。
 
 ## 文書
 
+- [パーサーの案内](https://mmd-toolkit.github.io/mmd-toolkit/ja/parser/)、
+  [API](https://mmd-toolkit.github.io/mmd-toolkit/ja/parser/api.html)、
+  [ASTの走査](https://mmd-toolkit.github.io/mmd-toolkit/ja/parser/traversal.html):
+  パーサーの使い方。
+- [互換性](https://mmd-toolkit.github.io/mmd-toolkit/ja/reference/):
+  保証することと、mermaid.js との違い。
 - 仕様: [`ast.md`](../spec/docs/ast.ja.md)（木）、
   各図のノードの文書（[対応している図](#対応している図)の表から辿れます）、
   [`common.md`](../spec/docs/common.ja.md)（すべての図に共通の規則）。
@@ -477,5 +332,6 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
   木の不変条件。
 - [`docs/error-positions.ja.md`](./docs/error-positions.ja.md): `ParseError`
   が指す位置。
-- [`docs/development.ja.md`](./docs/development.ja.md): パーサーの作り。
-- [`docs/testing.ja.md`](./docs/testing.ja.md): テストのしかた。
+- パーサーを開発する人向け:
+  [`docs/development.ja.md`](./docs/development.ja.md)、
+  [`docs/testing.ja.md`](./docs/testing.ja.md)。

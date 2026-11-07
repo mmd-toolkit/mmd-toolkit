@@ -2,10 +2,10 @@
 
 Japanese version: [README.ja.md](./README.ja.md)
 
-Edit Mermaid text, inspect the syntax tree produced by mmd-toolkit, and preview
-Prettier formatting in your browser.
+Edit [Mermaid](https://mermaid.js.org/) text, inspect the syntax tree produced
+by mmd-toolkit, and preview Prettier formatting in your browser.
 
-Public URL: [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/).
+Open the [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/).
 
 The interface is in English and is intended for desktop browsers.
 

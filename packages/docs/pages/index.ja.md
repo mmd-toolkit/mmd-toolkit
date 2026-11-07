@@ -51,7 +51,7 @@ features:
 ## mmd-toolkitについて
 
 mmd-toolkitはMermaidの図のテキストを扱う第三者プロジェクトで、
-mermaid-jsとは無関係です。
+[mermaid-js](https://mermaid.js.org/)とは無関係です。
 `mmd`は、その図のテキストと拡張子`.mmd`を指します。
 
 ## オンラインで試す

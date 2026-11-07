@@ -1,7 +1,8 @@
 # Compatibility
 
-mmd-toolkit uses **mermaid.js 12.3.0** as its compatibility reference. See
-[Diagram support](./support.md) for the diagram types covered.
+mmd-toolkit uses **[mermaid.js](https://mermaid.js.org/) 12.3.0** as its
+compatibility reference. See [Diagram support](./support.md) for the diagram
+types covered.
 
 ## Guarantees
 

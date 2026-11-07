@@ -2,12 +2,13 @@
 
 英語版: [README.md](./README.md)
 
-Mermaid の図の記法（`.mmd`）を、mermaid.js が読むとおりに定めた仕様です。
+[Mermaid](https://mermaid.js.org/) の図の記法（`.mmd`）を、
+mermaid.js が読むとおりに定めた仕様です。
 図のテキストについて、mermaid.js が受理するかどうか、受理するテキストの構文木、
 mermaid.js がそれについて記録する値を定めます。
 パーサーを実装する人や、Mermaid のテキストを扱うツールを書く人に向けたものです。
 
-mermaid-js とは関係のない、第三者のプロジェクトです。
+[mermaid-js](https://mermaid.js.org/) とは関係のない、第三者のプロジェクトです。
 このパッケージは npm に公開しません。
 仕様は [`docs/`](./docs) の下の文書です。
 仕様の版は、リポジトリの git のタグ `@mmd-toolkit/spec@<版>` です。
