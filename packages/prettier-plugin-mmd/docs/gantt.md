@@ -1051,8 +1051,12 @@ whitespace-between-tokens/blank-arguments] [fixture:
 click-statements/callback-blank-parentheses-touch] [fixture:
 click-statements/callback-blank-parentheses-lines] A U+2028 or U+2029 between
 them stays where it is. [test: U+2028 between the parentheses of a blank Gantt
-callback] [test: U+2029 between the parentheses of a blank Gantt callback] The
-whitespace at the end of the header's line is dropped. [fixture:
+callback] [test: U+2029 between the parentheses of a blank Gantt callback]
+Arguments with a comment line or a directive among them are printed as written
+through the `)`: the whitespace before the `)` is part of the arguments in the
+Db, so a comment line before the `)` must not indent it. [fixture:
+click-statements/callback-args-comment-line-kept] The whitespace at the end of
+the header's line is dropped. [fixture:
 whitespace-between-tokens/trailing-whitespace-after-header] The values are not
 formatted: see [Task data](#task-data), [Settings](#settings), and
 [Titles and sections](#titles-and-sections).

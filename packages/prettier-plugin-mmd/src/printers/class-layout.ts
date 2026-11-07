@@ -325,7 +325,10 @@ export function layoutClassStatement(
       "the `(` after a callback name",
     )
     expectValue(opening, "(")
-    kept.push({ start: statement.callback.range[0], end: opening.range[1] })
+    kept.push({
+      start: statement.callback.range[0],
+      end: findCallArgumentsEnd(source, statement, opening) ?? opening.range[1],
+    })
   }
   // Joining a next-line accessibility value can expose class's greedy,
   // case-sensitive direction rule. Keep the previous continuation layout;
@@ -673,6 +676,30 @@ function statementRules(
       break
   }
   return rules
+}
+
+/**
+ * Where the arguments of a callback end, through the `)`, when a comment or a
+ * directive stands among them; otherwise null. The whitespace before the `)`
+ * is part of the arguments in the Db, and a comment line before the `)` would
+ * otherwise indent it, so the arguments and the `)` are printed as written
+ * (docs/class.md, Whitespace between tokens).
+ */
+function findCallArgumentsEnd(
+  source: Source,
+  statement: ClassCallbackStatement,
+  opening: Token,
+): number | null {
+  if (statement.arguments === null) return null
+  const closing = expectToken(
+    findStructuralToken(source, statement.arguments.range[1]),
+    "the `)` of callback arguments",
+  )
+  expectValue(closing, ")")
+  return findTriviaBetween(source, opening.range[1], closing.range[0]).length >
+    0
+    ? closing.range[1]
+    : null
 }
 
 /**

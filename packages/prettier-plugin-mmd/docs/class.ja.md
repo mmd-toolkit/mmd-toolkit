@@ -284,8 +284,9 @@ mermaid.js の文書は、両方の置き場所をこの空白で書いていま
 `<<interface>> Shape` は、
 [ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L552)
 にあります。 [fixture: whitespace-between-tokens/annotation-spaced-once]
-隙間にディレクティブがあれば、
-その両側に書かれた空白を残します（[ディレクティブ](#ディレクティブ)を参照）。
+隙間にディレクティブがあれば、その両側に空白があるかどうかは変えず、
+空白の連なりは空白 1 つにします（[ディレクティブ](#ディレクティブ)を参照）。
+[fixture: whitespace-between-tokens/annotation-beside-directive-runs-collapsed]
 本体の中の注釈の行は、この種類の注釈ではありません。
 文字が Db に入るので、
 書かれたままにします（[メンバーの行](#メンバーの行)を参照）。
@@ -311,9 +312,11 @@ mermaid.js の文書にある例 1 件は、接する形で書かれています
 その例は、
 [`classDef firstClassName,secondClassName`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L761)
 です。 [fixture: whitespace-between-tokens/classdef-names-touching]
-隙間にディレクティブがあれば、
-その両側に書かれた空白を残します（[ディレクティブ](#ディレクティブ)を参照）。
+隙間にディレクティブがあれば、その両側に空白があるかどうかは変えず、
+空白の連なりは空白 1 つにします（[ディレクティブ](#ディレクティブ)を参照）。
+`,` の前の空白は、ディレクティブがなくても落とします。
 [fixture: whitespace-between-tokens/classdef-names-beside-directive-kept]
+[fixture: whitespace-between-tokens/classdef-names-beside-directive-runs-collapsed]
 文を終わらせる `;` や `#` は、
 [スタイル文の末尾のセミコロン](#スタイル文の末尾のセミコロン)に従います。
 [fixture: whitespace-between-tokens/classdef-names-touching-before-terminator]
@@ -376,6 +379,10 @@ mermaid.js はどちらも引数のない同じ呼び出しとして読むから
 括弧の間の U+2028 と U+2029 は、そのまま残します。
 [test: U+2028 between the parentheses of a blank class callback]
 [test: U+2029 between the parentheses of a blank class callback]
+コメント行やディレクティブを含む引数は、`)` まで書かれたまま印字します。
+`)` の前の空白は Db では引数の一部なので、 `)` の前にコメント行があっても、
+字下げしてはいけないからです。
+[fixture: whitespace-between-tokens/callback-args-comment-line-kept]
 [fixture: whitespace-between-tokens/callback-name-kept]
 [fixture: whitespace-between-tokens/callback-name-tab-kept]
 [fixture: whitespace-between-tokens/callback-name-directive-kept]

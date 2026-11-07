@@ -259,13 +259,15 @@ writes both placements with this spacing:
 and
 [`<<interface>> Shape`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L552).
 [fixture: whitespace-between-tokens/annotation-spaced-once] A directive in the
-gap keeps the whitespace written on each side of it, as under
-[Directives](#directives). The annotation line in a body is not an annotation of
-this kind: its text is part of the Db, and it stays as written (see
-[Member lines](#member-lines)). A U+2028 or U+2029 stays where it is. [test:
-U+2028 before the `<<` of a class annotation] The rest of this holds for a label
-in brackets, and the words of `note for`, `click`, `style`, and `cssClass`
-statements. [fixture: whitespace-between-tokens/collapsed] [fixture:
+gap keeps whether whitespace was written on each side of it, a run of whitespace
+becoming one space, as under [Directives](#directives). [fixture:
+whitespace-between-tokens/annotation-beside-directive-runs-collapsed] The
+annotation line in a body is not an annotation of this kind: its text is part of
+the Db, and it stays as written (see [Member lines](#member-lines)). A U+2028 or
+U+2029 stays where it is. [test: U+2028 before the `<<` of a class annotation]
+The rest of this holds for a label in brackets, and the words of `note for`,
+`click`, `style`, and `cssClass` statements. [fixture:
+whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/after-name-collapsed] [fixture:
 whitespace-between-tokens/words-collapsed] [fixture:
 whitespace-between-tokens/tabs-collapsed] A line that holds only a class name,
@@ -281,10 +283,12 @@ spelling as the same statement, so nothing forces the form, and its
 documentation writes the one example touching
 ([`classDef firstClassName,secondClassName`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L761)).
 [fixture: whitespace-between-tokens/classdef-names-touching] A directive in the
-gap keeps the whitespace written on each side of it, as under
-[Directives](#directives). [fixture:
-whitespace-between-tokens/classdef-names-beside-directive-kept] A `;` or a `#`
-that ends the statement follows
+gap keeps whether whitespace was written on each side of it, a run of whitespace
+becoming one space, as under [Directives](#directives); the whitespace before a
+`,` is dropped, as without the directive. [fixture:
+whitespace-between-tokens/classdef-names-beside-directive-kept] [fixture:
+whitespace-between-tokens/classdef-names-beside-directive-runs-collapsed] A `;`
+or a `#` that ends the statement follows
 [Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement).
 [fixture: whitespace-between-tokens/classdef-names-touching-before-terminator] A
 U+2028 or U+2029 after the `,` stays where it is. [test: U+2028 after the comma
@@ -344,7 +348,11 @@ its own line. [fixture:
 whitespace-between-tokens/callback-blank-parentheses-lines] A U+2028 or U+2029
 between them stays where it is. [test: U+2028 between the parentheses of a blank
 class callback] [test: U+2029 between the parentheses of a blank class callback]
-[fixture: whitespace-between-tokens/callback-name-kept] [fixture:
+Arguments with a comment line or a directive among them are printed as written
+through the `)`: the whitespace before the `)` is part of the arguments in the
+Db, so a comment line before the `)` must not indent it. [fixture:
+whitespace-between-tokens/callback-args-comment-line-kept] [fixture:
+whitespace-between-tokens/callback-name-kept] [fixture:
 whitespace-between-tokens/callback-name-tab-kept] [fixture:
 whitespace-between-tokens/callback-name-directive-kept] [fixture:
 whitespace-between-tokens/callback-name-comment-line-kept] [corpus fixture:

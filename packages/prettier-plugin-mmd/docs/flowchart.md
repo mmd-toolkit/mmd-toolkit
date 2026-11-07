@@ -1301,11 +1301,26 @@ whitespace. [fixture: multi-line-statements/continuation-in-subgraph] [fixture:
 multi-line-statements/label-over-lines] [fixture:
 multi-line-statements/directive-inside] Comment lines inside it stay inside it,
 at the level of its later lines. [fixture:
-multi-line-statements/several-comments-inside] A `click` statement written over
-several lines is kept as written, because mermaid.js rejects some of them when a
-later line is indented. [fixture: multi-line-statements/click-in-subgraph-kept]
-[fixture: multi-line-statements/click-forms-kept] [fixture:
-multi-line-statements/click-comment-inside-kept]
+multi-line-statements/several-comments-inside] A `click` statement with a line
+break between its parts, or in a comment or a directive, is kept as written,
+because mermaid.js rejects some of them when a later line is indented. [fixture:
+multi-line-statements/click-in-subgraph-kept] [fixture:
+multi-line-statements/click-forms-kept] [fixture:
+multi-line-statements/click-comment-inside-kept] A line break inside a string or
+inside the arguments of a call is part of that value, which is printed as
+written, and no later line of the statement is indented. The other gaps of such
+a statement follow the ordinary rules: `click   A "/u" "x` and `y"` on the next
+line is printed `click A "/u" "x` and `y"`, as the statement on one line would
+be. [fixture: multi-line-statements/click-string-over-lines-collapsed] [fixture:
+multi-line-statements/click-callback-args-over-lines-collapsed] A directive, a
+`;`, a comment line, or an empty line beside it is treated as for a statement on
+one line. [fixture:
+multi-line-statements/click-string-over-lines-beside-directive] [fixture:
+multi-line-statements/click-string-over-lines-with-semicolon] [fixture:
+multi-line-statements/click-string-over-lines-comment-and-empty-line] A U+2028
+or U+2029 between its parts stays where it is. [test: U+2028 between the parts
+of a flowchart click statement with a string over lines] [test: U+2029 between
+the parts of a flowchart click statement with a string over lines]
 
 A diagram header or subgraph header with a comment line after U+2028 or U+2029
 keeps that span as written: mermaid.js removes the comment line and its
@@ -1909,15 +1924,16 @@ line that holds `style` or `classDef` before the `:` and a `;` after the `#`, as
 in `subgraph style: [#x;]`, it keeps whether it holds whitespace, as under
 [Semicolons](#semicolons); `subgraph a: [#x;]` and `subgraph style: [#x]` have
 no such `;` and touch. [fixture: subgraph-header/title-after-colon-before-hash]
-A directive in the gap keeps the whitespace written on each side of it, as under
-[Directives](#directives). [fixture:
-subgraph-header/title-beside-directive-kept] A U+2028 or U+2029 in the gap stays
-where it is. [test: U+2028 between a subgraph name and its title] [test: U+2029
-and spaces between a subgraph name and its title] An empty description block
-that follows the title is the first statement of the body, as before. [fixture:
-subgraph-header/title-before-empty-description-block] A name written without a
-title keeps the whitespace after it, which mermaid.js reads as part of the name.
-[fixture: subgraph-header/name-trailing-run-kept] [fixture:
+A directive in the gap keeps whether whitespace was written on each side of it,
+a run of whitespace becoming one space, as under [Directives](#directives).
+[fixture: subgraph-header/title-beside-directive-kept] [fixture:
+subgraph-header/title-beside-directive-runs-collapsed] A U+2028 or U+2029 in the
+gap stays where it is. [test: U+2028 between a subgraph name and its title]
+[test: U+2029 and spaces between a subgraph name and its title] An empty
+description block that follows the title is the first statement of the body, as
+before. [fixture: subgraph-header/title-before-empty-description-block] A name
+written without a title keeps the whitespace after it, which mermaid.js reads as
+part of the name. [fixture: subgraph-header/name-trailing-run-kept] [fixture:
 subgraph-header/name-trailing-whitespace-kept] [fixture:
 subgraph-header/name-whitespace-before-directive-kept] [fixture:
 subgraph-header/name-whitespace-after-directive-kept] So does the whitespace

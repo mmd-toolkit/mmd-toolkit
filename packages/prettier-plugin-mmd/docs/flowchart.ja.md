@@ -1331,11 +1331,27 @@ sequence、class、state は、そこでは改行が空白の後でだけ数え�
 [fixture: multi-line-statements/directive-inside]
 途中のコメント行は文の中に残り、 2 行目以降と同じ段に置きます。
 [fixture: multi-line-statements/several-comments-inside]
-複数行に書かれた `click` の文は書かれたまま残します。
+部品の間、コメント、ディレクティブの中に改行がある `click` の文は、
+書かれたまま残します。
 mermaid.js は、2 行目以降が字下げされていると、その一部を拒否するからです。
 [fixture: multi-line-statements/click-in-subgraph-kept]
 [fixture: multi-line-statements/click-forms-kept]
 [fixture: multi-line-statements/click-comment-inside-kept]
+文字列の中や呼び出しの引数の中にある改行は、その値の一部で、
+値は書かれたまま印字し、文の後の行を字下げすることもありません。
+そのような文のほかの隙間には、普通の規則を掛けます。
+`click   A "/u" "x` と次の行の `y"` は、
+1 行の文と同じように `click A "/u" "x` と `y"` になります。
+[fixture: multi-line-statements/click-string-over-lines-collapsed]
+[fixture: multi-line-statements/click-callback-args-over-lines-collapsed]
+隣にディレクティブ、`;`、コメント行、空行があるときも、
+1 行の文と同じに扱います。
+[fixture: multi-line-statements/click-string-over-lines-beside-directive]
+[fixture: multi-line-statements/click-string-over-lines-with-semicolon]
+[fixture: multi-line-statements/click-string-over-lines-comment-and-empty-line]
+部品の間の U+2028 と U+2029 は、そのまま残します。
+[test: U+2028 between the parts of a flowchart click statement with a string over lines]
+[test: U+2029 between the parts of a flowchart click statement with a string over lines]
 
 図のヘッダーや subgraph のヘッダーで、
 U+2028 や U+2029 の後にコメント行がある範囲は書かれたまま残します。
@@ -1982,9 +1998,10 @@ flowchart の文書にあるタイトル付きの subgraph は 2 件で、
 その隙間は空白があるかないかを保ちます（[セミコロン](#セミコロン)と同じです）。
 `subgraph a: [#x;]` と `subgraph style: [#x]` にはその `;` がないので、
 接します。 [fixture: subgraph-header/title-after-colon-before-hash]
-隙間にディレクティブがあれば、
-その両側に書かれた空白を残します（[ディレクティブ](#ディレクティブ)を参照）。
+隙間にディレクティブがあれば、その両側に空白があるかどうかは変えず、
+空白の連なりは空白 1 つにします（[ディレクティブ](#ディレクティブ)を参照）。
 [fixture: subgraph-header/title-beside-directive-kept]
+[fixture: subgraph-header/title-beside-directive-runs-collapsed]
 隙間の U+2028 と U+2029 は、そのまま残します。
 [test: U+2028 between a subgraph name and its title]
 [test: U+2029 and spaces between a subgraph name and its title]

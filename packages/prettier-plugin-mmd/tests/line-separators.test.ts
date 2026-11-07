@@ -497,6 +497,16 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
  */
 const flowchartExamples: readonly (readonly [string, string, string])[] = [
   [
+    "U+2028 between the parts of a flowchart click statement with a string over lines",
+    'flowchart LR\nA\nclick   A\u2028"/u" "x\ny"\n',
+    'flowchart LR\n  A\n  click A\u2028"/u" "x\ny"\n',
+  ],
+  [
+    "U+2029 between the parts of a flowchart click statement with a string over lines",
+    'flowchart LR\nA\nclick   A\u2029"/u" "x\ny"\n',
+    'flowchart LR\n  A\n  click A\u2029"/u" "x\ny"\n',
+  ],
+  [
     "U+2028 between the parentheses of a blank flowchart callback",
     "flowchart TD\nA\nclick A call f(\u2028)",
     "flowchart TD\n  A\n  click A call f(\u2028)\n",

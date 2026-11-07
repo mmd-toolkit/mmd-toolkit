@@ -1075,6 +1075,10 @@ mermaid.js はどちらも同じ呼び出しとして読むからです。
 括弧の間の U+2028 と U+2029 は、そのまま残します。
 [test: U+2028 between the parentheses of a blank Gantt callback]
 [test: U+2029 between the parentheses of a blank Gantt callback]
+コメント行やディレクティブを含む引数は、`)` まで書かれたまま印字します。
+`)` の前の空白は Db では引数の一部なので、 `)` の前にコメント行があっても、
+字下げしてはいけないからです。
+[fixture: click-statements/callback-args-comment-line-kept]
 ヘッダーの行末の空白は落とします。
 [fixture: whitespace-between-tokens/trailing-whitespace-after-header]
 値は整形しません（[タスクのデータ](#タスクのデータ)、[設定](#設定)、
