@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Block arrows: a line feed may follow the `,` of the first direction."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "a",
+          "label": "L",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            "x"
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

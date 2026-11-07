@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "whitespace may not stand between `(` and the `,` of the first direction, and the ignored `;` is left out, so the space is that whitespace; the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...etaa<[\"style:#x\"]>( ,x)\n----------------------^"
+  }
+}

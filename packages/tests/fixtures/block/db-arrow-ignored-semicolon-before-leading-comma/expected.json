@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Block arrows: the `;` of the line is ignored, so nothing stands between `(` and the `,`; the direction is `x`."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "a",
+          "label": "style:#x",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            "x"
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}
