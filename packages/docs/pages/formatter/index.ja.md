@@ -1,7 +1,7 @@
 # フォーマッター
 
-`prettier-plugin-mmd`は、
-PrettierでMermaidの図のテキストを整形するプラグインです。
+`prettier-plugin-mmd`は、 [Mermaid](https://mermaid.js.org/)の図のテキストを、
+Prettierで整形するプラグインです。
 `.mmd`・`.mermaid`ファイルと、Markdown内のMermaidコードブロックに使えます。
 
 [Playgroundでオンラインの整形を試せます](https://mmd-toolkit.github.io/mmd-toolkit/playground/)。

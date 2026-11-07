@@ -2,11 +2,12 @@
 
 英語版: [README.md](./README.md)
 
-Mermaid 記法の実装を、mermaid.js と比べてテストするための fixture と道具です。
+[Mermaid](https://mermaid.js.org/) 記法の実装を、
+mermaid.js と比べてテストするための fixture と道具です。
 どの fixture も、pin した mermaid.js（`mermaid@12.3.0`）が、
 その入力をどう扱ったかを記録しています。
 
-mermaid-js とは関係のない、第三者のプロジェクトです。
+[mermaid-js](https://mermaid.js.org/) とは関係のない、第三者のプロジェクトです。
 
 ## 導入
 

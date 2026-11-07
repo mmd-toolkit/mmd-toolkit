@@ -2,15 +2,16 @@
 
 Japanese version: [README.ja.md](./README.ja.md)
 
-A TextMate grammar for the Mermaid diagram syntax (`.mmd`). It colors the 32
-diagram types of the [specification](../spec/README.md) of mmd-toolkit: their
-headers and keywords, the names of elements, labels, types, shapes, styles,
-comments and directives, and the frontmatter as YAML. Every rule is written from
-the specification, so the forms people write are colored as the kinds of unit
-that the specification reads there; [Limits](#limits) states where the grammar
-colors otherwise.
+A TextMate grammar for the [Mermaid](https://mermaid.js.org/) diagram syntax
+(`.mmd`), for coloring Mermaid text in Shiki, VitePress, Monaco, VS Code, and
+other TextMate hosts. It colors all 32 diagram types: their headers and
+keywords, the names of elements, labels, types, shapes, styles, comments and
+directives, and the frontmatter as YAML. The rules follow the
+[specification](../spec/README.md) of mmd-toolkit; [Limits](#limits) states
+where the colors differ from what the specification reads.
 
-It is a third-party project, not affiliated with mermaid-js.
+It is a third-party project, not affiliated with
+[mermaid-js](https://mermaid.js.org/).
 
 ## Playground
 

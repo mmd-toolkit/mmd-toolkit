@@ -1,7 +1,8 @@
 # Parser
 
-`@mmd-toolkit/parser` parses Mermaid diagram text into an abstract syntax tree
-(AST) for inspecting and processing diagrams in JavaScript or TypeScript.
+`@mmd-toolkit/parser` parses [Mermaid](https://mermaid.js.org/) diagram text
+into an abstract syntax tree (AST) for inspecting and processing diagrams in
+JavaScript or TypeScript.
 
 You can try the parser
 [online in the Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)

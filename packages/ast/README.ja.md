@@ -2,16 +2,18 @@
 
 英語版: [README.md](./README.md)
 
-[`@mmd-toolkit/parser`](../parser) が返す構文木の TypeScript の型です。
+[`@mmd-toolkit/parser`](../parser) が返す、
+[Mermaid](https://mermaid.js.org/) の図の構文木の TypeScript の型です。
 `Root`、`FlowchartVertex`、`Identifier` など、すべてのノードの型と、
 図種 id の合併型 `DiagramType` を持ちます。
 名前と欄は、仕様の [`ast.md`](../spec/docs/ast.ja.md) のものです。
 
 このパッケージは型だけを持ち、実行するコードはありません。
 
-mermaid-js とは関係のない、第三者のプロジェクトです。
+[mermaid-js](https://mermaid.js.org/) とは関係のない、第三者のプロジェクトです。
 
-文書: [パーサーの API](https://mmd-toolkit.github.io/mmd-toolkit/ja/parser/api.html)。
+文書:
+[パーサーの API](https://mmd-toolkit.github.io/mmd-toolkit/ja/parser/api.html)。
 
 ## 導入
 

@@ -2,11 +2,13 @@
 
 Japanese version: [README.ja.md](./README.ja.md)
 
-Fixtures and tools for testing an implementation of the Mermaid diagram syntax
-against mermaid.js. Every fixture records what the pinned mermaid.js
-(`mermaid@12.3.0`) does with its input.
+Fixtures and tools for testing an implementation of the
+[Mermaid](https://mermaid.js.org/) diagram syntax against mermaid.js. Every
+fixture records what the pinned mermaid.js (`mermaid@12.3.0`) does with its
+input.
 
-This is a third-party project, unrelated to mermaid-js.
+This is a third-party project, unrelated to
+[mermaid-js](https://mermaid.js.org/).
 
 ## Installation
 

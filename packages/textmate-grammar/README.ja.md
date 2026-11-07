@@ -2,15 +2,16 @@
 
 英語版: [README.md](./README.md)
 
-Mermaidの図の構文（`.mmd`）のためのTextMate文法です。
-mmd-toolkitの[仕様](../spec/README.ja.md)の32図種に色を付けます。
-ヘッダーとキーワード、要素の名前、ラベル、型、図形、スタイル、コメント、
-ディレクティブに色を付け、frontmatterはYAMLとして色付けします。
-すべての規則を仕様から書いているので、人が書く形は、
-仕様がそこで読む単位の種類として色付けされます。
-そうならない場所は、[制限](#制限)に書きました。
+[Mermaid](https://mermaid.js.org/)の図の構文（`.mmd`）のためのTextMate文法です。
+Shiki、VitePress、Monaco、VS CodeなどのTextMateホストで、
+Mermaidのテキストに色を付けます。
+32図種すべてのヘッダーとキーワード、要素の名前、ラベル、型、図形、スタイル、
+コメント、ディレクティブに色を付け、frontmatterはYAMLとして色付けします。
+規則はmmd-toolkitの[仕様](../spec/README.ja.md)に従います。
+仕様の読みと色が違う場所は、[制限](#制限)に書きました。
 
-mermaid-jsとは関係のない、サードパーティのプロジェクトです。
+[mermaid-js](https://mermaid.js.org/)とは関係のない、
+サードパーティのプロジェクトです。
 
 ## Playground
 

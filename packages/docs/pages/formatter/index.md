@@ -1,7 +1,8 @@
 # Formatter
 
-`prettier-plugin-mmd` formats Mermaid diagram text with Prettier. Use it for
-`.mmd` and `.mermaid` files and Mermaid code blocks in Markdown.
+`prettier-plugin-mmd` formats [Mermaid](https://mermaid.js.org/) diagram text
+with Prettier. Use it for `.mmd` and `.mermaid` files and Mermaid code blocks in
+Markdown.
 
 You can try formatting
 [online in the Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)

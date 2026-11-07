@@ -2,15 +2,17 @@
 
 英語版: [README.md](./README.md)
 
-Mermaid の図を整形する [Prettier](https://prettier.io/) プラグインです。
+[Mermaid](https://mermaid.js.org/) の図を整形する
+[Prettier](https://prettier.io/) プラグインです。
 `.mmd` と `.mermaid` のファイルと、
 Markdown の中の `mermaid` のコードブロックを整形します。
 
-mermaid-js とは関係のない第三者のプロジェクトです。
+[mermaid-js](https://mermaid.js.org/) とは関係のない第三者のプロジェクトです。
 ここでいう `mmd` は Mermaid の図の記法のことで、
 MultiMarkdown や MikuMikuDance ではありません。
 
-文書: [フォーマッター](https://mmd-toolkit.github.io/mmd-toolkit/ja/formatter/)。
+文書:
+[フォーマッター](https://mmd-toolkit.github.io/mmd-toolkit/ja/formatter/)。
 
 ## Playground
 
@@ -19,7 +21,8 @@ MultiMarkdown や MikuMikuDance ではありません。
 **Indent**と**Use tabs**で字下げを設定できます。
 **Apply to source**で、入力を整形結果に置き換えられます。
 
-公開URL: [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)。
+[Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)
+を開いて使えます。
 
 操作方法は[Playgroundの使い方](../playground/README.ja.md)を参照してください。
 
@@ -52,7 +55,7 @@ npx prettier --write "**/*.{mmd,mermaid,md}"
 ## 例
 
 入力
-([statements-one-per-line/separated-by-semicolons-input.mmd](./tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-input.mmd)):
+([ファイル](./tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -61,7 +64,7 @@ flowchart LR
 ```
 
 出力
-([statements-one-per-line/separated-by-semicolons-output.mmd](./tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-output.mmd)):
+([ファイル](./tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -80,106 +83,27 @@ flowchart LR
 - Markdown の、情報文字列の最初の語が `mermaid` か `mmd` のコードブロック。
   大文字と小文字を区別するので、`Mermaid` は整形しません。
   `mermaidx` も整形しません。
-- flowchart。
-  `flowchart`、`graph`、`flowchart-elk`、`swimlane-beta` で始まる図です。
-  整形の規則は、
-  例とともに [docs/flowchart.ja.md](./docs/flowchart.ja.md) にあります。
-- agentflow。
-  `agentflow-beta`で始まる図です。
-  整形規則と例は[docs/agentflow.ja.md](./docs/agentflow.ja.md)にあります。
-- sequence 図。
-  `sequenceDiagram` で始まる図です。
-  整形の規則は、
-  例とともに [docs/sequence.ja.md](./docs/sequence.ja.md) にあります。
-- class 図。
-  `classDiagram` か `classDiagram-v2` で始まる図です。
-  整形の規則は、例とともに [docs/class.ja.md](./docs/class.ja.md) にあります。
-- state 図。
-  `stateDiagram` か `stateDiagram-v2` で始まる図です。
-  整形の規則は、例とともに [docs/state.ja.md](./docs/state.ja.md) にあります。
-- ER 図。
-  `erDiagram` で始まる図です。
-  整形の規則は、例とともに [docs/er.ja.md](./docs/er.ja.md) にあります。
-- Gantt 図。
-  `gantt` で始まる図です。
-  整形の規則は、例とともに [docs/gantt.ja.md](./docs/gantt.ja.md) にあります。
-- journey 図。
-  `journey` で始まる図です。
-  整形の規則は、
-  例とともに [docs/journey.ja.md](./docs/journey.ja.md) にあります。
-- requirement 図。
-  `requirementDiagram` で始まる図です。
-  整形の規則は、
-  例とともに [docs/requirement.ja.md](./docs/requirement.ja.md) にあります。
-- mindmap。
-  `mindmap` で始まる図です。
-  整形の規則は、
-  例とともに [docs/mindmap.ja.md](./docs/mindmap.ja.md) にあります。
-- timeline。
-  `timeline` で始まる図です。
-  整形の規則は、
-  例とともに [docs/timeline.ja.md](./docs/timeline.ja.md) にあります。
-- sankey 図。
-  `sankey` か `sankey-beta` で始まる図です。
-  整形の規則は、例とともに [docs/sankey.ja.md](./docs/sankey.ja.md) にあります。
-- XY チャート。
-  `xychart` か `xychart-beta` で始まる図です。
-  整形の規則は、
-  例とともに [docs/xychart.ja.md](./docs/xychart.ja.md) にあります。
-- 象限チャート。
-  `quadrantChart` で始まる図です。
-  整形の規則は、
-  例とともに [docs/quadrant.ja.md](./docs/quadrant.ja.md) にあります。
-- kanban。
-  `kanban` で始まる図です。
-  整形の規則は、例とともに [docs/kanban.ja.md](./docs/kanban.ja.md) にあります。
-- C4 図。
-  `C4Context`、`C4Container`、`C4Component`、`C4Dynamic`、
-  `C4Deployment` で始まる図です。
-  整形の規則は、例とともに [docs/c4.ja.md](./docs/c4.ja.md) にあります。
-- Venn 図。
-  `venn-beta` で始まる図です。
-  整形の規則は、例とともに [docs/venn.ja.md](./docs/venn.ja.md) にあります。
-- Ishikawa 図。
-  `ishikawa` と `ishikawa-beta` で始まる図で、
-  受理する大文字小文字の表記も扱います。
-  整形の規則は [docs/ishikawa.ja.md](./docs/ishikawa.ja.md) にあります。
-- Usecase 図。
-  `usecase-beta` で始まる図です。
-  整形の規則は [docs/usecase.ja.md](./docs/usecase.ja.md) にあります。
-- Pie 図。
-  `pie` で始まる図で、`showData` も扱います。
-  整形の規則は [docs/pie.ja.md](./docs/pie.ja.md) にあります。
-- Info 図。
-  `info` で始まる図で、`showInfo` も扱います。
-  整形の規則は [docs/info.ja.md](./docs/info.ja.md) にあります。
-- Git graph。
-  `gitGraph` で始まる図です。
-  整形の規則は [docs/gitgraph.ja.md](./docs/gitgraph.ja.md) にあります。
-- architecture 図: `architecture-beta` で始まる図です。
-  整形の規則は [docs/architecture.ja.md](./docs/architecture.ja.md) にあります。
-- treemap 図: `treemap` と `treemap-beta` で始まる図です。
-  整形の規則は [docs/treemap.ja.md](./docs/treemap.ja.md) にあります。
-- treeview 図: `treeView-beta` で始まる図です。
-  整形の規則は [docs/treeview.ja.md](./docs/treeview.ja.md) にあります。
-- radar 図: `radar-beta` で始まる図です。
-  整形の規則は [docs/radar.ja.md](./docs/radar.ja.md) にあります。
-- Wardley 図: `wardley-beta` で始まる図です。
-  整形の規則は [docs/wardley.ja.md](./docs/wardley.ja.md) にあります。
-- railroad 図: `railroad-beta`、`railroad-ebnf-beta`、 `railroad-abnf-beta`、
-  `railroad-peg-beta` で始まる図です。
-  整形の規則は [docs/railroad.ja.md](./docs/railroad.ja.md) にあります。
-- cynefin 図: `cynefin-beta` と `cynefin-beta:` で始まる図です。
-  整形の規則は [docs/cynefin.ja.md](./docs/cynefin.ja.md) にあります。
-- eventmodeling 図: `eventmodeling` で始まる図です。
-  規則は [docs/eventmodeling.ja.md](./docs/eventmodeling.ja.md) にあります。
-- packet 図: `packet` と `packet-beta` で始まる図です。
-  整形の規則は [docs/packet.ja.md](./docs/packet.ja.md) にあります。
-- ブロック図。
-  `block-beta` か `block` で始まる図です。
-  整形の規則は、例とともに [docs/block.ja.md](./docs/block.ja.md) にあります。
+- mermaid.js のすべての図種。
 - これらの図の YAML のフロントマター。
   Prettier の YAML 整形で整形します。
+
+図種ごとの整形の規則は、それぞれの文書にあります。
+[flowchart](./docs/flowchart.ja.md)、[agentflow](./docs/agentflow.ja.md)、
+[sequence](./docs/sequence.ja.md)、[class](./docs/class.ja.md)、
+[state](./docs/state.ja.md)、[ER](./docs/er.ja.md)、
+[Gantt](./docs/gantt.ja.md)、[journey](./docs/journey.ja.md)、
+[requirement](./docs/requirement.ja.md)、[mindmap](./docs/mindmap.ja.md)、
+[timeline](./docs/timeline.ja.md)、[sankey](./docs/sankey.ja.md)、
+[xychart](./docs/xychart.ja.md)、[quadrant](./docs/quadrant.ja.md)、
+[kanban](./docs/kanban.ja.md)、[C4](./docs/c4.ja.md)、
+[Venn](./docs/venn.ja.md)、[Ishikawa](./docs/ishikawa.ja.md)、
+[usecase](./docs/usecase.ja.md)、[pie](./docs/pie.ja.md)、
+[info](./docs/info.ja.md)、[gitGraph](./docs/gitgraph.ja.md)、
+[architecture](./docs/architecture.ja.md)、[treemap](./docs/treemap.ja.md)、
+[treeview](./docs/treeview.ja.md)、[radar](./docs/radar.ja.md)、
+[Wardley](./docs/wardley.ja.md)、[railroad](./docs/railroad.ja.md)、
+[cynefin](./docs/cynefin.ja.md)、[eventmodeling](./docs/eventmodeling.ja.md)、
+[packet](./docs/packet.ja.md)、[block](./docs/block.ja.md)。
 
 ## オプション
 
@@ -205,38 +129,36 @@ flowchart LR
   flowchart では、`click` は予約語です。
   `A-->|x""|B` のように、トークンの間に空の文字列がある場合もそうです。
   一覧は [docs/compatibility.ja.md](./docs/compatibility.ja.md) にあります。
-- mermaid.js の `error` 擬似図は変えません。
-  `error` という語と、
-  その周りのコメント・ディレクティブ・改行だけでできたテキストです。
+- `error` という語と、
+  その周りのコメント・ディレクティブ・改行だけでできたテキストは変えません。
+  mermaid.js はこれを `error` 擬似図として読みます。
   ただし、改行コードは `endOfLine` に従います。
   Markdown では、Prettier に任せます。
 
 ## 保証と制限
 
 - 次に記す空白の変更を除き、mermaid.js の読み取りを保ちます。
+- 整形した図をもう一度整形しても、何も変わりません。
 - `style`、`classDef`、`linkStyle` の行の末尾の空白を取り除きます。
   mermaid.js は、その空白を最後のスタイルの末尾に残します。
-- `eventmodeling` の block data と note は、
-  [Data blocks](./docs/eventmodeling.ja.md#data-blocks) の規則で、
-  ASCII 空白の margin を限定的に変更します。
-  描画を保ちながら、raw Db 値が変わる場合があります。
+- `eventmodeling` のデータとノートのブロックの中の行は、
+  [Data blocks](./docs/eventmodeling.ja.md#data-blocks) の規則で揃えます。
+  mermaid.js が持つテキストの空白は変わりますが、描画は変わりません。
 - `end note` で閉じる state ノートの単一の段落は、
-  [ノート](./docs/state.ja.md#ノート)の限定規則に従います。
+  [ノート](./docs/state.ja.md#ノート)の規則で揃えます。
   行内の強調やコードの表記を含む行も対象です。
-  描画を保ちながら、
-  `notes[].text` の行頭の ASCII 空白だけが変わる場合があります。
+  変わるのは行頭の空白だけで、描画は変わりません。
   余白が表示に影響するほかの本文は、後続の余白を原文のまま保ちます。
-- 整形した図をもう一度整形しても、何も変わりません。
-- ディレクティブ、不透明な `@{ ... }` のデータブロック、
+- ディレクティブ、`@{ ... }` のデータブロック、
   フロントマターの中身は検査しません。
   その中身のために mermaid.js が拒否する図も整形します。
   ディレクティブは書かれたまま残します。
-  不透明な `@{ ... }` データブロックも中身を残し、1 行のブロックは、
+  `@{ ... }` のデータブロックも中身を残し、1 行のブロックは、
   両端の内側に空白を 1 つずつ置いて印字します。
   複数行のブロックだけ、条件を満たすときに全行を同じ数の空白で動かします。
   条件は[データブロック](./docs/flowchart.ja.md#データブロック)にあります。
   フロントマターは Prettier が YAML として読めるときだけ整形します。
-  usecase の native metadata は構文として解析し、プロパティを検証します。
+  usecase のメタデータのプロパティは図の構文なので、読み取って検査します。
 - mermaid.js が許すより多くの辺を持つ flowchart は、mermaid.js は拒否しますが、
   ここでは整形します。
   許す数は、サイト設定の `maxEdges` で、既定で 500 本です。
@@ -253,42 +175,13 @@ flowchart LR
 
 ## 文書
 
-- [docs/flowchart.ja.md](./docs/flowchart.ja.md): flowchart の整形の規則。
-- [docs/agentflow.ja.md](./docs/agentflow.ja.md): agentflow の整形の規則。
-- [docs/sequence.ja.md](./docs/sequence.ja.md): sequence 図の整形の規則。
-- [docs/class.ja.md](./docs/class.ja.md): class 図の整形の規則。
-- [docs/state.ja.md](./docs/state.ja.md): state 図の整形の規則。
-- [docs/er.ja.md](./docs/er.ja.md): ER 図の整形の規則。
-- [docs/gantt.ja.md](./docs/gantt.ja.md): Gantt 図の整形の規則。
-- [docs/journey.ja.md](./docs/journey.ja.md): journey 図の整形の規則。
-- [docs/requirement.ja.md](./docs/requirement.ja.md): requirement
-  図の整形の規則。
-- [docs/mindmap.ja.md](./docs/mindmap.ja.md): mindmap の整形の規則。
-- [docs/timeline.ja.md](./docs/timeline.ja.md): timeline の整形の規則。
-- [docs/sankey.ja.md](./docs/sankey.ja.md): sankey 図の整形の規則。
-- [docs/xychart.ja.md](./docs/xychart.ja.md): XY チャートの整形の規則。
-- [docs/quadrant.ja.md](./docs/quadrant.ja.md): 象限チャートの整形の規則。
-- [docs/kanban.ja.md](./docs/kanban.ja.md): kanban の整形の規則。
-- [docs/c4.ja.md](./docs/c4.ja.md): C4 図の整形の規則。
-- [docs/venn.ja.md](./docs/venn.ja.md): Venn 図の整形の規則。
-- [docs/ishikawa.ja.md](./docs/ishikawa.ja.md): Ishikawa 図の整形の規則。
-- [docs/usecase.ja.md](./docs/usecase.ja.md): usecase 図の整形の規則。
-- [docs/pie.ja.md](./docs/pie.ja.md): pie 図の整形の規則。
-- [docs/info.ja.md](./docs/info.ja.md): info の整形の規則。
-- [docs/gitgraph.ja.md](./docs/gitgraph.ja.md): gitgraph の整形の規則。
-- [docs/architecture.ja.md](./docs/architecture.ja.md): architecture
-  図の整形の規則。
-- [docs/treemap.ja.md](./docs/treemap.ja.md): treemap 図の整形の規則。
-- [docs/treeview.ja.md](./docs/treeview.ja.md): treeview 図の整形の規則。
-- [docs/radar.ja.md](./docs/radar.ja.md): radar 図の整形の規則。
-- [docs/wardley.ja.md](./docs/wardley.ja.md): Wardley 図の整形の規則。
-- [docs/railroad.ja.md](./docs/railroad.ja.md): railroad 図の整形の規則。
-- [docs/cynefin.ja.md](./docs/cynefin.ja.md): cynefin 図の整形規則。
-- [docs/eventmodeling.ja.md](./docs/eventmodeling.ja.md): eventmodeling
-  図の整形規則。
-- [docs/packet.ja.md](./docs/packet.ja.md): packet 図の整形の規則。
-- [docs/block.ja.md](./docs/block.ja.md): ブロック図の整形の規則。
-- [docs/compatibility.ja.md](./docs/compatibility.ja.md): mermaid.js
-  と違う箇所と、その理由。
+- [フォーマッターの案内](https://mmd-toolkit.github.io/mmd-toolkit/ja/formatter/):
+  導入、
+  [設定](https://mmd-toolkit.github.io/mmd-toolkit/ja/formatter/configuration.html)、
+  [オプション](https://mmd-toolkit.github.io/mmd-toolkit/ja/formatter/options.html)。
+- [フォーマッターの互換性](https://mmd-toolkit.github.io/mmd-toolkit/ja/formatter/compatibility.html):
+  構文エラーの扱い、mermaid.js との違い、保証の範囲。
+- [docs/compatibility.ja.md](./docs/compatibility.ja.md): プラグインが
+  mermaid.js と違うすべての箇所と、その理由。
 - [docs/development.ja.md](./docs/development.ja.md): テストと fixture。
   プラグインを開発する人向けです。

@@ -1,7 +1,7 @@
 # Linter
 
 `@mmd-toolkit/eslint-plugin` uses ESLint to report syntax errors and mistakes in
-Mermaid diagram text.
+[Mermaid](https://mermaid.js.org/) diagram text.
 
 Try lint diagnostics, automatic fixes, and editor suggestions in
 [ESLint Online Playground](https://eslint-online-playground.netlify.app/#@mmd-toolkit/eslint-plugin).

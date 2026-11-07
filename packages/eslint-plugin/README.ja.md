@@ -2,7 +2,8 @@
 
 英語版: [README.md](./README.md)
 
-Mermaid の図のための [ESLint](https://eslint.org/) の言語プラグインです。
+[Mermaid](https://mermaid.js.org/) の図のための [ESLint](https://eslint.org/)
+の言語プラグインです。
 `.mmd` と `.mermaid` のファイルと、
 Markdown の中の `mermaid` と `mmd` のコードブロックを検査します。
 
@@ -10,10 +11,8 @@ mermaid.js が拒否するテキストは、パースのエラーとして報告
 規則は、mermaid.js が何も言わずに受け入れるものの、
 書き手がおそらく意図したものとは違うものとして読む誤りを報告します。
 たとえば、図に定義のない id への `style` 文です。
-[`@mmd-toolkit/parser`](../parser) の木を ESLint に渡すので、
-規則はテキストでなく木を読みます。
 
-mermaid-js とは関係のない第三者のプロジェクトです。
+[mermaid-js](https://mermaid.js.org/) とは関係のない第三者のプロジェクトです。
 ここでいう `mmd` は Mermaid の図の記法のことで、
 MultiMarkdown や MikuMikuDance ではありません。
 
@@ -115,7 +114,8 @@ export default [...markdown.configs.processor, mmd.configs.recommended]
 このプロセッサーでは、1 回の ESLint の実行で検査されるのはコードブロックで、
 Markdown のテキスト自体ではありません。
 両方を検査する方法は、
-[Markdown の検査](../docs/pages/linter/markdown.ja.md)にあります。
+[Markdown の検査](https://mmd-toolkit.github.io/mmd-toolkit/ja/linter/markdown.html)
+にあります。
 
 ## 設定のコメント
 
@@ -132,19 +132,22 @@ flowchart LR
 `%% eslint <規則>: <設定>` を読みます。
 Mermaid のコメントは行全体を占めるので、
 `%% eslint-disable-line` はそのコメント自身にだけ当たります。
-[設定のコメント](../docs/pages/linter/comments.ja.md)を参照してください。
+[設定のコメント](https://mmd-toolkit.github.io/mmd-toolkit/ja/linter/comments.html)
+を参照してください。
 
 ## 図種と規則
 
 このプラグインは、mermaid.js 12.3.0 のすべての図種を読みます。
 これは、このツール群が基準にしている版です。
-[図種の対応](../docs/pages/reference/support.ja.md)を参照してください。
+[図種の対応](https://mmd-toolkit.github.io/mmd-toolkit/ja/reference/support.html)
+を参照してください。
 受け入れるテキストと拒否するテキストは、mermaid.js と同じです。
-例外は[既知の相違](../spec/docs/known-divergences.ja.md)です。
+例外は[既知の差異](../spec/docs/known-divergences.ja.md)です。
 
 規則は 2 つの種類に分かれます。
-すべての規則は [docs/rules/index.ja.md](./docs/rules/index.ja.md) に挙げてあり、
-規則ごとに文書があります。
+すべての規則は
+[規則の一覧](https://mmd-toolkit.github.io/mmd-toolkit/ja/linter/rules/)
+に挙げてあり、規則ごとに文書があります。
 
 - 1 つの図種の規則。
   id は `@mmd-toolkit/<図種>-<名前>` で、
@@ -166,7 +169,11 @@ Mermaid のコメントは行全体を占めるので、
 
 ## 文書
 
-- [Linter のガイド](../docs/pages/linter/index.ja.md): 設定と、検査する内容。
-- [設定](../docs/pages/linter/configuration.ja.md): 規則の選び方と、組み合わせ。
-- [docs/rules/index.ja.md](./docs/rules/index.ja.md): 規則。
+- [リンターの案内](https://mmd-toolkit.github.io/mmd-toolkit/ja/linter/):
+  設定と、検査する内容。
+- [設定](https://mmd-toolkit.github.io/mmd-toolkit/ja/linter/configuration.html):
+  規則の選び方と、組み合わせ。
+- [規則](https://mmd-toolkit.github.io/mmd-toolkit/ja/linter/rules/):
+  各規則が報告するものと、その例。
 - [docs/development.ja.md](./docs/development.ja.md): プラグインの作りとテスト。
+  開発する人向けです。
