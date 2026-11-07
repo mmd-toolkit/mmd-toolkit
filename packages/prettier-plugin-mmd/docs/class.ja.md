@@ -865,8 +865,10 @@ Mermaid が説明からこの字下げを除くためです。
 `accDescr {a b}`、`accDescr {  a b  }`、`accDescr {  a b}`、
 `accDescr {a b  }` は、どれも `accDescr { a b }` になります。
 mermaid.js は文字を trim するので、両端の空白に意味はありません。
-文字の中にディレクティブがあるブロックと、`;` を残す行にあるブロックは、
-書かれたままにします（[セミコロン](./flowchart.ja.md#セミコロン)を参照）。
+文字の中にディレクティブがあるブロックは、書かれたままにします。
+`;` を残す行にあるブロックは、空白を足しませんが、
+端の空白の連なりは空白 1
+つにします（[セミコロン](./flowchart.ja.md#セミコロン)を参照）。
 [fixture: multi-line-values/block-text-on-one-line-padded]
 
 入力

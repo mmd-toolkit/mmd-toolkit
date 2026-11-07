@@ -1198,13 +1198,14 @@ holds a `%%{`, as in `accDescr {A%%{}%% B`, where the first `}` closes the block
 and padding it would change the directive. [fixture:
 accessibility-lines/block-text-beside-directive-kept] [fixture:
 pie/description-blocks/block-first-brace] A block on a line that keeps its `;`
-stays as written, whatever its text is, since the line rule of mermaid.js reads
-the whole line (see [Semicolons](#semicolons)): `{a;b}` and `{a; b}` stay, and
-so does a block in `A[style];accDescr {b:c;}D#z;`, where the added space would
-break the `:` and `#` that the rule pairs. [fixture:
-accessibility-lines/block-text-with-semicolon-kept] [fixture:
-accessibility-lines/block-on-style-line-kept] A `;` that only separates
-statements is dropped, and the block is padded. [fixture:
+gets no added space, whatever its text is, since the line rule of mermaid.js
+reads the whole line (see [Semicolons](#semicolons)): `{a;b}` and `{a; b}` stay
+as written, and so does a block in `A[style];accDescr {b:c;}D#z;`, where the
+added space would break the `:` and `#` that the rule pairs. A run of spaces at
+an end of such a block still becomes one space: `{  a;b  }` is printed
+`{ a;b }`. [fixture: accessibility-lines/block-text-with-semicolon-kept]
+[fixture: accessibility-lines/block-on-style-line-kept] A `;` that only
+separates statements is dropped, and the block is padded. [fixture:
 accessibility-lines/block-text-with-semicolons-padded] A U+2028 or U+2029 in the
 text makes it several lines, and stays. [test: U+2028 in the text of a flowchart
 description block] [test: U+2029 in the text of a flowchart description block]

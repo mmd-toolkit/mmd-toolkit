@@ -1224,12 +1224,14 @@ mermaid.js の文書には、1 行のブロックの例がありません。
 空白を足すとディレクティブが変わります。
 [fixture: accessibility-lines/block-text-beside-directive-kept]
 [fixture: pie/description-blocks/block-first-brace]
-`;` を残す行にあるブロックは、文字が何であっても書かれたままにします。
+`;` を残す行にあるブロックは、文字が何であっても、空白を足しません。
 mermaid.js の line rule
 が行全体を読むからです（[セミコロン](#セミコロン)を参照）。
 `{a;b}` と `{a; b}` はそのままです。
 `A[style];accDescr {b:c;}D#z;` のブロックも、空白を足すと、
 line rule が組にする `:` と `#` を壊すので、そのままです。
+端の空白の連なりは、空白 1 つにします。
+`{  a;b  }` は `{ a;b }` になります。
 [fixture: accessibility-lines/block-text-with-semicolon-kept]
 [fixture: accessibility-lines/block-on-style-line-kept]
 文を区切るだけの `;` は落とされ、ブロックは整えます。
