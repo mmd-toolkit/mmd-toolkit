@@ -365,9 +365,24 @@ icons-and-classes/db-decoration-icon-section] [fixture:
 icons-and-classes/gram-decoration-then-child]
 
 The text of a decoration stays as written: the case of the marker (`::ICON(y)`),
-the whitespace inside an icon (`::icon( x )`) and in a class (`::: c  `, whose
+the whitespace inside an icon (`::icon( x )`) and after a class (`:::c  `, whose
 trailing spaces are part of the class), whitespace-only icons and classes, and a
-second icon or class after the first. A later icon replaces an earlier one in
+second icon or class after the first. The spaces and tabs between the `:::` and
+the class are dropped: `::: hot` is printed `:::hot`. mermaid.js keeps the text
+after `:::` as the class of the node
+([`decorateNode`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L202-L214))
+and passes no class on to what it draws
+([`getData`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L54-L97)),
+so the board is the same, and a space or a tab does not belong to a class name
+in HTML. A class of only whitespace stays as written, and so does a class line
+with a directive anywhere on it (`::: hot %%{x}%%`, `::: h%%{x}%%ot`,
+`%%{x}%%::: hot`): a line with a directive is printed as written (see
+[Directives](#directives)). Only spaces and tabs are dropped: `:::` followed by
+spaces and a U+00A0 is printed with the U+00A0 next to the `:::`, and it stays.
+[fixture: icons-and-classes/class-padding-after-marker-dropped] [fixture:
+icons-and-classes/class-with-directive-kept] [test: kanban:
+class-spaces-then-no-break-space] [test: kanban: class-padding-then-u2028]
+[test: kanban: class-padding-then-u2029] A later icon replaces an earlier one in
 the Db, and both are kept, because the printer drops no text. The printer never
 moves a decoration onto the line of its node, because that changes the board:
 after a bare node an icon makes a round shape of its text and the rest part of

@@ -10,6 +10,26 @@ export interface AgentflowCase {
 
 export const agentflowCases: readonly AgentflowCase[] = [
   {
+    name: "agentflow: U+2028 inside the brackets of a flow title",
+    input: "agentflow-beta TB\nflow F[ T\u2028]\nA\nend\n",
+    output: "agentflow-beta TB\n  flow F[T\u2028]\n    A\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 inside the brackets of a flow title",
+    input: "agentflow-beta TB\nflow F[ T\u2029]\nA\nend\n",
+    output: "agentflow-beta TB\n  flow F[T\u2029]\n    A\n  end\n",
+  },
+  {
+    name: "agentflow: U+2028 between the parentheses of a blank callback",
+    input: 'agentflow-beta TB\nA\nclick A call f(\u2028) "t"\n',
+    output: 'agentflow-beta TB\n  A\n  click A call f(\u2028) "t"\n',
+  },
+  {
+    name: "agentflow: U+2029 between the parentheses of a blank callback",
+    input: 'agentflow-beta TB\nA\nclick A call f(\u2029) "t"\n',
+    output: 'agentflow-beta TB\n  A\n  click A call f(\u2029) "t"\n',
+  },
+  {
     name: "agentflow: eol-crlf",
     input: 'agentflow-beta TB\r\nA["a\r\n b"]\r\n',
     output: 'agentflow-beta TB\n  A["a\n b"]\n',
@@ -40,6 +60,16 @@ export const agentflowCases: readonly AgentflowCase[] = [
     name: "agentflow: a comment and U+2028 between a flow name and its title",
     input: "agentflow-beta TB\nflow F %% c\u2028 [T]\nA\nend",
     output: "agentflow-beta TB\n  flow F %% c\u2028 [T]\n    A\n  end\n",
+  },
+  {
+    name: "agentflow: U+2028 after the flow word",
+    input: "agentflow-beta TB\nflow \u2028 F\nA\nend",
+    output: "agentflow-beta TB\n  flow \u2028 F\n    A\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 after the connector word",
+    input: "agentflow-beta TB\nconnector  \u2029F",
+    output: "agentflow-beta TB\n  connector  \u2029F\n",
   },
   {
     name: "agentflow: U+2029 between a connector name and its title",

@@ -1,9 +1,11 @@
 import type {
+  AgentflowClickCallbackStatement,
   AgentflowLabel,
   Node,
   Range,
   AgentflowLink,
   AgentflowShape,
+  FlowchartClickCallbackStatement,
   FlowchartLabel,
   FlowchartLink,
   FlowchartShape,
@@ -11,9 +13,10 @@ import type {
   FlowchartStatement,
   Token,
 } from "@mmd-toolkit/ast"
-import type { AtomLayout, GapRule } from "./atoms.ts"
+import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import {
   collectAtoms,
+  collectValueNodes,
   expectToken,
   expectValue,
   keptAsWritten,
@@ -37,6 +40,8 @@ import {
 type GraphLabel = AgentflowLabel | FlowchartLabel
 type GraphLink = AgentflowLink | FlowchartLink
 type GraphShape = AgentflowShape | FlowchartShape
+type GraphCallbackStatement =
+  AgentflowClickCallbackStatement | FlowchartClickCallbackStatement
 
 /** Adds the rules of a shape. */
 export function addShapeRules(
@@ -44,14 +49,41 @@ export function addShapeRules(
   shape: GraphShape,
   rules: Map<number, GapRule>,
 ): void {
-  if (shape.label.kind !== "text") return
-  const edge = labelEdgeRule(source, shape.label)
-  rules.set(shape.label.range[0], edge)
   const closing = expectToken(
     findStructuralToken(source, shape.label.range[1]),
     "the closing bracket of a shape",
   )
+  if (shape.label.kind !== "text") {
+    // The closing bracket touches the closing quote: mermaid.js reads the
+    // whitespace after the quote as nothing (docs/flowchart.md, Label inner
+    // whitespace).
+    rules.set(closing.range[0], "none")
+    return
+  }
+  const edge = labelEdgeRule(source, shape.label)
+  rules.set(shape.label.range[0], edge)
   rules.set(closing.range[0], takesTextBefore(closing) ? "none" : edge)
+}
+
+/**
+ * Adds the rules of the title of a heading, `subgraph S[ T ]` or
+ * `flow F[ T ]`: the whitespace inside its brackets is dropped as for the
+ * label of a shape, except where the label would be read otherwise (see
+ * `labelEdgeRule`); a title in quotes has none before the quote and none
+ * after it (docs/flowchart.md, Subgraph header).
+ */
+export function addHeadingTitleRules(
+  source: Source,
+  title: GraphLabel,
+  rules: Map<number, GapRule>,
+): void {
+  const closing = expectToken(
+    findStructuralToken(source, title.range[1]),
+    "the `]` after the title of a heading",
+  )
+  const edge = title.kind === "text" ? labelEdgeRule(source, title) : "none"
+  rules.set(title.range[0], edge)
+  rules.set(closing.range[0], edge)
 }
 
 /** Adds the rules of a link. */
@@ -379,4 +411,88 @@ function keepsGraphAccessibility(
     spansLinesThatCannotJoin(source, start, end) ||
     findTriviaBetween(source, start, end).length > 0
   )
+}
+
+/**
+ * Whether a line feed of a click statement stands outside its values and
+ * outside `stretches`: between its parts, or in a comment or a directive that
+ * stands between them. A line feed inside a string, or inside the parentheses
+ * of a call with arguments, is part of that value, which is printed as
+ * written, and moves no line of the statement.
+ */
+export function breaksBetweenParts(
+  source: Source,
+  statement: Node,
+  valueTypes: ReadonlySet<Node["type"]>,
+  stretches: readonly Atom[],
+): boolean {
+  const values = collectValueNodes(statement, valueTypes)
+  for (
+    let offset = source.text.indexOf("\n", statement.range[0]);
+    offset !== -1 && offset < statement.range[1];
+    offset = source.text.indexOf("\n", offset + 1)
+  ) {
+    if (
+      !values.some(
+        (value) => value.range[0] <= offset && offset < value.range[1],
+      ) &&
+      !stretches.some(
+        (stretch) => stretch.start <= offset && offset < stretch.end,
+      )
+    )
+      return true
+  }
+  return false
+}
+
+/**
+ * The parentheses after the name of `call`, if any: the `(` after the
+ * callback and the `)` after its arguments.
+ */
+function findCallbackParentheses(
+  source: Source,
+  statement: GraphCallbackStatement,
+): { readonly opening: Token; readonly closing: Token } | null {
+  const opening = findStructuralToken(source, statement.callback.range[1])
+  if (opening?.value !== "(" || opening.range[0] >= statement.range[1]) {
+    return null
+  }
+  const closing = expectToken(
+    findStructuralToken(
+      source,
+      statement.arguments?.range[1] ?? opening.range[1],
+    ),
+    "the `)` of callback arguments",
+  )
+  expectValue(closing, ")")
+  return { opening, closing }
+}
+
+/**
+ * The parentheses of a call with arguments, from the `(` to the `)`, or null
+ * where there are none or they are blank.
+ */
+export function findCallArgumentsParentheses(
+  source: Source,
+  statement: GraphCallbackStatement,
+): Range | null {
+  const parentheses = findCallbackParentheses(source, statement)
+  if (parentheses === null || statement.arguments === null) return null
+  return [parentheses.opening.range[0], parentheses.closing.range[1]]
+}
+
+/**
+ * Adds the rule of blank parentheses, `f( )`: the `)` touches the `(`, since
+ * mermaid.js reads `f( )` and `f()` the same (docs/flowchart.md, Click
+ * statements). Returns the parentheses where they are blank, null otherwise.
+ */
+export function addBlankCallbackRule(
+  source: Source,
+  statement: GraphCallbackStatement,
+  rules: Map<number, GapRule>,
+): { readonly opening: Token; readonly closing: Token } | null {
+  const parentheses = findCallbackParentheses(source, statement)
+  if (parentheses === null || statement.arguments !== null) return null
+  rules.set(parentheses.closing.range[0], "none")
+  return parentheses
 }

@@ -494,7 +494,15 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   without quotes, a `-` inside an id, whitespace inside the brackets of a shape,
   and an unknown direction. [fixture: block/gram-label-unquoted] [fixture:
   block/gram-name-dash] [fixture: block/gram-spec-space-before-string] [fixture:
-  block/gram-arrow-unknown]
+  block/gram-arrow-unknown] Whitespace between the `(` of a block arrow and a
+  `,` before the first direction is such a place, at its first character, also
+  where a directive, a comment line, or an ignored `;` lies in it. [fixture:
+  block/gram-arrow-space-before-leading-comma] [fixture:
+  block/gram-arrow-line-feed-before-leading-comma] [fixture:
+  block/gram-arrow-directive-space-before-leading-comma] [fixture:
+  block/gram-arrow-space-directive-before-leading-comma] [fixture:
+  block/gram-arrow-comment-line-before-leading-comma] [fixture:
+  block/gram-arrow-space-ignored-semicolon-before-leading-comma]
 - When the text ends in a context that may not end there, also with only
   whitespace after the last character, `range` is what entered that context, and
   the message says what is not closed: the opening `"` of a string

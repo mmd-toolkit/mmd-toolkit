@@ -38,6 +38,7 @@ import {
   findTokenEndingBefore,
   findTokenStartingAt,
   findTokensBetween,
+  isStructural,
 } from "./source.ts"
 
 /**
@@ -316,8 +317,8 @@ export function layoutBlockStatement(
  * The rules of a node statement: a shape and a block arrow touch their id,
  * the `:` of a width touches what is before it, and an arrow, the label
  * between two arrows, and the node after them stand after one space
- * (docs/block.md, Shapes and Edges). The directions of a block arrow, with
- * the parentheses around them, are printed as written.
+ * (docs/block.md, Shapes and Edges). The directions of a block arrow are
+ * printed as written, and one space stands after each `,` between them.
  */
 function addNodeStatementRules(
   source: Source,
@@ -346,7 +347,13 @@ function addNodeStatementRules(
   }
 }
 
-/** Adds the rules of the shape of a node, if it has one. */
+/**
+ * Adds the rules of the shape of a node, if it has one. A block arrow has the
+ * `(` touching the `]>`. Its directions are printed as written, each with the
+ * `,` after it, since the whitespace in and before a direction is in the Db,
+ * and so is the lack of a `,`; the whitespace after a `,` belongs to no
+ * direction, and one space stands there (docs/block.md, Shapes).
+ */
 function addNodeRules(
   source: Source,
   node: BlockNode,
@@ -368,7 +375,26 @@ function addNodeRules(
   )
   expectValue(opening, "(")
   rules.set(opening.range[0], "none")
-  kept.push({ start: opening.range[0], end: shape.range[1] })
+  let start = opening.range[0]
+  for (const token of findTokensBetween(
+    source,
+    opening.range[1],
+    shape.range[1],
+  )) {
+    if (!isStructural(source, token) || token.value !== ",") continue
+    kept.push({ start, end: token.range[1] })
+    const next = shape.directions.find(
+      (direction) => direction.range[0] >= token.range[1],
+    )
+    if (next === undefined) {
+      throw new Error(
+        `prettier-plugin-mmd: no direction after the "," at offset ${token.range[0]}`,
+      )
+    }
+    rules.set(next.range[0], "space")
+    start = next.range[0]
+  }
+  kept.push({ start, end: shape.range[1] })
 }
 
 /**

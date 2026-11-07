@@ -910,12 +910,16 @@ export class BlockUnitLexer extends UnitLexer<Context, UnitName, Unit> {
    * whitespace that a direction holds (ast/block.md, BlockArrowShape) is a
    * `direction-space` unit whose token keeps it: the whitespace after a
    * direction, and the whitespace after the `(` when a direction follows
-   * it; other whitespace, such as that after a `,`, reads no unit.
+   * it; other whitespace, such as that after a `,`, reads no unit. No rule
+   * matches whitespace between the `(` and a `,` before the first direction.
    */
   private readInDirectionsContext(at: DiagramCharacter): void {
     if (isWhitespace(at.codePoint)) {
       const end = skipWhitespace(this.reader, at)
       const previous = this.units.at(-1)?.name
+      if (previous === "(" && end?.codePoint === COMMA) {
+        throw this.noRuleMatches(at)
+      }
       if (
         previous === "direction" ||
         (previous === "(" && this.directionAt(end) !== null)

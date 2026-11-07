@@ -120,8 +120,21 @@ agentflow の文書にあるタイトル付きの見出し 19 件は、すべて
 [ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/agentflow.md#L26-L363)
 にあります。
 どちらの形でも Db は同じです。
-タイトルの内側の空白は保ち、`[ T ]`を`[ T ]`のままにします。
-agentflowだけ違う形を選ぶ理由がないためです。
+タイトルの括弧の内側の空白は落とし、`[ T ]` は `[T]` に、
+`["x" ]` は `["x"]` にします。
+flowchart と同じ形で、agentflowだけ違う形を選ぶ理由がないためです。
+タイトルが別に読まれる所（`[ /x/ ]`、agentflow の `[ x@ ]`）には、
+空白を 1 つ残します。
+タイトルの端にディレクティブがあれば、その隣の隙間は、
+空白が書かれていれば 1 つにして残します。
+`flow F[ %%{x}%% T ]` は `flow F[ %%{x}%% T]` に、
+`flow G[ T %%{x}%% ]` は `flow G[T %%{x}%% ]` になります。
+`]` と同じ行にある U+2028 と U+2029 は残し、
+継続行の先頭にあるものは字下げとして読まれます。
+[fixture: names-and-headings/heading-title-directive-at-edge]
+[test: agentflow: U+2028 inside the brackets of a flow title]
+[test: agentflow: U+2029 inside the brackets of a flow title]
+[fixture: names-and-headings/heading-title-padding-dropped]
 [fixture: names-and-headings/name-heading-touches-title]
 [fixture: names-and-headings/name-heading-touches-title-kinds]
 複数の部分からなる名前（消された `click` や空の文字列を含む名前）は、
@@ -132,14 +145,38 @@ agentflowだけ違う形を選ぶ理由がないためです。
 [fixture: names-and-headings/name-heading-title-multi-part-name-kept]
 名前をディレクティブかコメントが終わらせるときは、その後ろに書かれた空白を、
 [ディレクティブ](#directives)と同じく保ちます。
-隙間の中にディレクティブがあれば、その両側の空白も保ちます。
+隙間の中にディレクティブがあれば、その後ろに空白があるかどうかを保ち、
+書かれていればその空白は 1 つにします。
+ディレクティブの前の空白は、`[` がディレクティブから離れているあいだは、
+名前がディレクティブまで続くので、
+書かれたまま残します（`flow F   %%{init: {}}%% [T]` は変わりません）。
+`[` がディレクティブに接していると、名前はディレクティブの前で終わり、
+その前の空白は 1 つになります（`flow H   %%{init: {}}%%[T]` は
+`flow H %%{init: {}}%%[T]` になります）。
 [fixture: names-and-headings/name-heading-title-beside-directive-kept]
+[fixture: names-and-headings/name-heading-title-gap-run-beside-directive]
 [test: agentflow: a comment and U+2028 between a flow name and its title]
 `:` と `#` の間の隙間は、flowchart と同じく、空白があるかないかを保ちます。
 [fixture: names-and-headings/name-heading-title-after-colon-before-hash]
 隙間の U+2028 と U+2029 は、そのまま残します。
 [test: agentflow: U+2028 between a flow name and its title]
 [test: agentflow: U+2029 between a connector name and its title]
+
+`flow`、`connector`、`global` の後ろの空白は、
+空白やタブがいくつ書かれていても空白 1 つにします。
+キーワードが空白を 1 文字取り、残りは mermaid.js が名前から trim するからです。
+`flow   F["T"]` は `flow F["T"]` に、
+空白が続く `global` は `global` になります。
+[fixture: names-and-headings/heading-word-gap-collapsed]
+隙間にディレクティブがあれば、その両側に空白があるかどうかを保ち、
+空白の連なりは空白 1 つにします（[ディレクティブ](#directives)を参照）。
+[fixture: names-and-headings/heading-word-gap-beside-directive-kept]
+ここまでは名前が 1 つの部分のときの規則で、複数の部分からなる名前は、
+上に書いたとおり書かれたまま残します。
+[fixture: names-and-headings/name-heading-title-multi-part-name-kept]
+隙間の U+2028 と U+2029 は、そのまま残します。
+[test: agentflow: U+2028 after the flow word]
+[test: agentflow: U+2029 after the connector word]
 
 明示的なタイトルの前にある空白だけの名前は、書かれた文字を保ちます。
 除くと、必要な名前がなくなるためです。 [fixture:
@@ -349,7 +386,7 @@ agentflowのラベルコメントの直前の空白とタブは値の文字な�
 
 flow/connectorの見出しのタイトルは、
 [subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダー)に従います。
-flowchartと同じ理由で、`[ T ]`を含め内側の空白を保ちます。
+flowchartと同じ理由で、`[ T ]`を含め括弧の内側の空白を落とします。
 [fixture: names-and-headings/name-heading-touches-title]
 
 入力（escape 表記）: `"agentflow-beta TB\nA[text]"`。
@@ -480,6 +517,13 @@ Kept linesと、空のstyleに続く空の説明ブロックの同じ行の保�
 [fixture: semicolons/semicolon-before-directive]
 [fixture: semicolons/semicolons-drop-member-unsafe]
 [fixture: semicolons/semicolons-flow] [fixture: semicolons/semicolons-global]
+
+行の規則は、
+agentflow が受け付ける行の途中の `%%` コメントのテキストを読みますが、
+ディレクティブは読みません。
+`A[style:]-->B %% #x;` は矢印を詰めたままで、
+`C[style:]-->D %%{init:{"x":"#;"}}%%` はほかの行と同じく空白を入れて印字します。
+[fixture: semicolons/line-rule-comment-read]
 
 入力（escape 表記）: `"agentflow-beta TB\nA;B;; ;"`。
 [fixture: semicolons/semicolons-top]
@@ -874,7 +918,9 @@ agentflow-beta TB
 通常の継続トークンはさらに1段深くします。
 文字列、markdown、分割文字、Name、データ、directive、
 複数行clickの後続行の桁位置を保ちます。
-clickに余分な空白単位を足すと拒否される場合があります。
+idと呼び出しの後のclickの隙間に、余分な空白単位を足すと、
+拒否される場合があります。
+詳しくは[clickの文](#click-statements)を参照してください。
 agentflowが閉じ波括弧の後で畳むのは直後のLF前の行空白だけです。
 それ以降の空のLFと、LS/PS/VT/FF/NBSPを含む元の値の行を保ちます。
 不透明なデータの閉じ括弧をaccessibilityの閉じ括弧として揃えません。
@@ -1074,6 +1120,26 @@ tooltip/target前に必須の空白1文字を保ち、末尾の空の説明は�
 保持するclickの前置き内のdirectiveも接触する隙間を保ちます。
 [fixture: click-statements/target-required-tab]
 [fixture: click-statements/prefix-with-directive]
+
+引数が空白だけの呼び出しの括弧は、
+[flowchart](./flowchart.ja.md#トークンの間の空白)と同じく互いに接します。
+`click A call f( )` は、
+tooltip や消された前置きが続くときも `click A call f()` になります。
+mermaid.js はどちらの書き方も同じ呼び出しとして読むからです。
+`(` の前に空白がある `f ()` は、名前がその空白を取るので変えません。
+`)` の後の空白は、ここで空白がもう 1 文字あると拒否されることがあるので、
+書かれたままです。 [fixture: click-statements/callback-blank-parentheses-touch]
+[test: agentflow: U+2028 between the parentheses of a blank callback]
+[test: agentflow: U+2029 between the parentheses of a blank callback]
+改行がすべて文字列の中か、引数のある呼び出しの括弧の間にある文は、
+最初の click キーワードの後の隙間を 1 行の文と同じに整え、
+残りは書かれたままにします。
+`click   A "/u" "x` と次の行の `  y"` は、
+`click A "/u" "x` と `  y"` になります。
+隙間に改行があるとき、または空の `f(` と `)` の間に改行があるときは、
+文を書かれたまま残します。
+[fixture: click-statements/string-over-lines-keyword-gap]
+[fixture: click-statements/callback-parentheses-over-lines]
 
 入力（escape 表記）: `"agentflow-beta TB\nA\nclick   A cb\n"`。
 [fixture: click-statements/click-keyword-gap]

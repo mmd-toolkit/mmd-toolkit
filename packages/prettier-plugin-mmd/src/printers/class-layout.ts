@@ -1,4 +1,6 @@
 import type {
+  ClassAnnotation,
+  ClassCallbackStatement,
   ClassDeclaration,
   ClassMethod,
   ClassName,
@@ -33,7 +35,11 @@ import {
   walk,
 } from "./layout.ts"
 import type { Source } from "./source.ts"
-import { addNameListRules } from "./statement-rules.ts"
+import {
+  addCssClassRules,
+  addNameListRules,
+  findCallRangeWithTrivia,
+} from "./statement-rules.ts"
 import {
   findStructuralToken,
   findStructuralTokenEndingBefore,
@@ -210,6 +216,7 @@ export function layoutBlockOpening(
     }
   }
   const rules = new Map<number, GapRule>([[opening.range[0], "space"]])
+  addDeclarationRules(source, statement, rules)
   return {
     atoms: collectAtoms(
       source,
@@ -322,7 +329,14 @@ export function layoutClassStatement(
       "the `(` after a callback name",
     )
     expectValue(opening, "(")
-    kept.push({ start: statement.callback.range[0], end: opening.range[1] })
+    const call =
+      statement.arguments === null
+        ? null
+        : findCallRangeWithTrivia(source, statement.arguments)
+    kept.push({
+      start: statement.callback.range[0],
+      end: call?.[1] ?? opening.range[1],
+    })
   }
   // Joining a next-line accessibility value can expose class's greedy,
   // case-sensitive direction rule. Keep the previous continuation layout;
@@ -546,6 +560,80 @@ function containsRange(stretch: Atom, node: Node): boolean {
   return stretch.start <= node.range[0] && node.range[1] <= stretch.end
 }
 
+/**
+ * Adds the rules of the annotation of a class statement, `<<interface>>`:
+ * one space stands before the `<<` and after the `>>`, and nothing stands
+ * inside them, whatever whitespace the text was written with: mermaid.js
+ * trims the text of an annotation outside a body (docs/class.md, Whitespace
+ * between tokens). `after` is the start of what follows the `>>` on the
+ * line, if a class name stands there.
+ */
+function addAnnotationRules(
+  source: Source,
+  annotation: ClassAnnotation,
+  after: number | null,
+  rules: Map<number, GapRule>,
+): void {
+  const tokens = findTokensBetween(
+    source,
+    annotation.range[0],
+    annotation.range[1],
+  )
+  const opening = tokens.at(0)
+  const closing = tokens.at(-1)
+  if (opening === undefined || closing === undefined) return
+  expectValue(opening, "<<")
+  expectValue(closing, ">>")
+  rules.set(opening.range[0], "space")
+  const first = tokens.at(1)
+  if (first !== undefined && first !== closing) {
+    rules.set(first.range[0], "none")
+    rules.set(closing.range[0], "none")
+  }
+  if (after !== null) rules.set(after, "space")
+}
+
+/**
+ * Adds the rules of what follows the name of a class or a namespace: the
+ * string between brackets, the CSS class after `:::`, and the annotation
+ * (docs/class.md, Labels and Whitespace between tokens).
+ */
+function addDeclarationRules(
+  source: Source,
+  statement: ClassDeclaration | ClassNamespaceStatement,
+  rules: Map<number, GapRule>,
+): void {
+  if (statement.label !== null) {
+    addLabelBracketRules(source, statement.label, rules)
+  }
+  if (statement.type !== "ClassDeclaration") return
+  if (statement.cssClass !== null) {
+    addCssClassRules(source, statement.cssClass, rules)
+  }
+  if (statement.annotation !== null) {
+    addAnnotationRules(source, statement.annotation, null, rules)
+  }
+}
+
+/**
+ * Adds the rules of the string between the `[` and the `]` of a class or a
+ * namespace: nothing stands between the brackets and the quotes, whatever
+ * whitespace was written there (docs/class.md, Labels).
+ */
+function addLabelBracketRules(
+  source: Source,
+  label: StringLiteral,
+  rules: Map<number, GapRule>,
+): void {
+  const closing = expectToken(
+    findStructuralToken(source, label.range[1]),
+    "the `]` after the label of a class",
+  )
+  expectValue(closing, "]")
+  rules.set(label.range[0], "none")
+  rules.set(closing.range[0], "none")
+}
+
 /** The gap rules of a statement. */
 function statementRules(
   source: Source,
@@ -568,7 +656,19 @@ function statementRules(
       // Styles).
       addNameListRules(source, statement.cssClasses, rules)
       break
+    case "ClassAnnotationStatement":
+      addAnnotationRules(
+        source,
+        statement.annotation,
+        statement.class.range[0],
+        rules,
+      )
+      break
+    case "ClassCallbackStatement":
+      addBlankCallbackRules(source, statement, rules)
+      break
     case "ClassDeclaration":
+      addDeclarationRules(source, statement, rules)
       if (statement.members !== null) {
         const { opening, closing } = findMemberBraces(source, statement)
         rules.set(
@@ -584,6 +684,28 @@ function statementRules(
       break
   }
   return rules
+}
+
+/**
+ * Adds the rule of the blank parentheses of a callback, `f( )`: the `)`
+ * touches the `(`, since mermaid.js reads `f( )` and `f()` the same
+ * (docs/class.md, Whitespace between tokens). The whitespace between the
+ * callback name and the `(` is part of the name and is not changed.
+ */
+function addBlankCallbackRules(
+  source: Source,
+  statement: ClassCallbackStatement,
+  rules: Map<number, GapRule>,
+): void {
+  if (statement.arguments !== null) return
+  const opening = findStructuralToken(source, statement.callback.range[1])
+  if (opening?.value !== "(" || opening.range[0] >= statement.range[1]) return
+  const closing = expectToken(
+    findStructuralToken(source, opening.range[1]),
+    "the `)` of callback arguments",
+  )
+  expectValue(closing, ")")
+  rules.set(closing.range[0], "none")
 }
 
 /**

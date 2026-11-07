@@ -383,11 +383,31 @@ stateDiagram-v2
 [fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/tabs-collapsed]
 [fixture: whitespace-between-tokens/touching-class-kept]
+遷移の中や単独の行にある状態参照の `:::` は、
+前の状態にも後ろのクラスにも接します。
+`A :::c` と `A ::: c` は `A:::c` になります。
+ER 図と同じです。
+mermaid.js はどの書き方も同じ状態として読むので、形を強いるものはありません。
+ER 図の `:::` はすでにこの形で印字しており、mermaid.js の文書の例 5 件も、
+この書き方です。
+その範囲は、
+[ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/stateDiagram.md#L448-L470)
+にあります。 [fixture: whitespace-between-tokens/css-class-touches-separator]
+`state` 定義の `:::` は動かしません。
+`state A :::c`、`state "x" as B ::: c`、`state C ::: c {` は、
+空白が書かれていた隙間を空白 1 つのまま残します。
+`state "y" as D:::c` は別名の規則で `state "y" as D :::c` になります。
+[fixture: whitespace-between-tokens/css-class-in-definition-kept]
+隙間にディレクティブがあれば、
+その両側の空白の有無を保ちます（[ディレクティブ](#ディレクティブ)を参照）。
+U+2028 と U+2029 は、そのまま残します。
+[test: U+2028 before the `:::` of a state]
+[test: U+2029 after the `:::` of a state]
 flowchart
 と同じです（[トークンの間の空白](./flowchart.ja.md#トークンの間の空白)を参照）。
 ただし、別名の定義の語と擬似状態の印は、
 空白 1 つを置きます（[別名](#別名)と[擬似状態](#擬似状態)を参照）。
-`:::`、mermaid.js が読まない `""`、スタイル文の `,` も同じです。
+mermaid.js が読まない `""` とスタイル文の `,` も同じです。
 状態に結び付けない独立したノート（`note "..." as ...`）の引用符は、
 書かれたまま残します。 [fixture: whitespace-between-tokens/comma-kept]
 [fixture: whitespace-between-tokens/floating-note-quotes-kept]
@@ -421,10 +441,11 @@ mermaid.js の文書は、この文の例 2 件を `,` の後ろに空白を置�
 `class A,` と次の行の `B c` は `class A,B c` になります。
 `,` の前にディレクティブがあっても同じで、`,` の後ろの id は `,` に接します。
 [fixture: whitespace-between-tokens/class-ids-line-break-and-directive]
-`,` の後ろの隙間にディレクティブがあれば、
-その両側に書かれた空白を残します（[ディレクティブ](#ディレクティブ)を参照）。
+`,` の後ろの隙間にディレクティブがあれば、その両側に空白があるかどうかは変えず、
+空白の連なりは空白 1 つにします（[ディレクティブ](#ディレクティブ)を参照）。
 行の line rule が無視する `;` のある行は、書かれたまま残します。
 [fixture: whitespace-between-tokens/class-ids-beside-directive-kept]
+[fixture: whitespace-between-tokens/class-ids-beside-directive-runs-collapsed]
 [fixture: whitespace-between-tokens/class-ids-with-ignored-semicolon]
 `,` の後ろの U+2028 と U+2029 は、そのまま残します。
 [test: U+2028 after the comma of a state class statement]
@@ -450,7 +471,7 @@ hide empty description
 
 ```mmd
 stateDiagram-v2
-  A ::: highlight
+  A:::highlight
   state f1 <<fork>>
   state "" x
   classDef c fill:red , stroke:blue

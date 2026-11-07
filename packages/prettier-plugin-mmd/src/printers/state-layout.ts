@@ -36,6 +36,7 @@ import {
   layoutCompactEmptyDescriptionBlockWithFallback,
   spansLinesThatCannotJoin,
   toAsciiLowerCase,
+  walk,
 } from "./layout.ts"
 import { printAsWrittenTrimmed } from "./lines.ts"
 import type { Source } from "./source.ts"
@@ -49,6 +50,7 @@ import {
   isWhitespace,
 } from "./source.ts"
 import { findStateSemicolonLines } from "./state-kept-lines.ts"
+import { addCssClassRules } from "./statement-rules.ts"
 
 /**
  * The node types of a state diagram whose text is a value, printed as
@@ -914,6 +916,11 @@ function statementRules(
   statement: StateSimpleStatement | StateBodyStatement,
 ): Map<number, GapRule> {
   const rules = new Map<number, GapRule>()
+  walk(statement, (node) => {
+    if (node.type === "StateReference" && node.cssClass !== null) {
+      addCssClassRules(source, node.cssClass, rules)
+    }
+  })
   switch (statement.type) {
     case "StateTransitionStatement": {
       const arrow = expectToken(

@@ -495,8 +495,8 @@ mermaid.js の文書で `+` か `-` のあるメッセージ 12 件のうち、
 [中央接続の例](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L392-L394)
 にあります。
 空白を削るのは、隙間が空白だけでできているときに限ります。
-隙間にディレクティブがあれば、
-その両側に書かれた空白を残します（[ディレクティブ](#ディレクティブ)を参照）。
+隙間にディレクティブがあれば、その両側に空白があるかどうかは変えず、
+空白の連なりは空白 1 つにします（[ディレクティブ](#ディレクティブ)を参照）。
 `A%%{init: {}}%%->>B: v` は矢印の前に空白を置かず、
 `A ->> +%%{init: {}}%% B: v` はディレクティブの後の空白を残します。
 [fixture: arrow-spacing/directive-beside-arrow-kept]

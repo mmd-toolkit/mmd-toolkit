@@ -200,20 +200,23 @@ usecase-beta
 ### Stereotypes
 
 Reuse the spacing of annotations attached to
-[class statements](./class.md#whitespace-between-tokens): keep whether
-whitespace is present inside each delimiter, shrinking a nonempty run to one
-ASCII space. Thus `<<a>>` stays `<<a>>`, while `<<  a  >>` becomes `<< a >>`;
-each side is independent, and no padding is added. The gap before `<<` follows
-the same class rule: touching stays touching, and existing whitespace becomes
-one ASCII space. [fixture: stereotypes/opener-gap-sides] [test: usecase:
-stereotype-opener-tab] Actors and use cases follow the same rule, including
-relationship endpoints and declarations inside system boundaries. Mermaid trims
-the interior ends; whitespace before `<<` is structural. Both spacing choices
-keep the Db, so usecase follows the shared rule. [fixture:
-stereotypes/stereotype-inner-kept] [fixture: stereotypes/stereotype-padding]
-[fixture: stereotypes/declaration-suffixes] [fixture: stereotypes/side-padding]
-[fixture: stereotypes/endpoint-suffixes] [fixture:
-stereotypes/boundary-suffixes]
+[class statements](./class.md#whitespace-between-tokens): one space stands
+before the `<<`, and nothing stands inside the delimiters. Thus `A[a]<<R>>` and
+`A[a] <<  R  >>` are printed `A[a] <<R>>`. mermaid.js trims the text, so every
+spelling gives the same Db, and the five examples of its documentation write
+`<<...>>` after a space and touching its text
+([the examples](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/usecase.md#L141-L144),
+[two more](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/usecase.md#L546-L549)).
+Where a directive or a comment stands at an end of the text, the whitespace
+beside it keeps its written side. [fixture: stereotypes/stereotype-spaced-once]
+[fixture: stereotypes/opener-gap-sides] [test: usecase: stereotype-opener-tab]
+Actors and use cases follow the same rule, including relationship endpoints and
+declarations inside system boundaries. Mermaid trims the interior ends;
+whitespace before `<<` is structural. Both spacing choices keep the Db, so
+usecase follows the shared rule. [fixture: stereotypes/stereotype-inner-kept]
+[fixture: stereotypes/stereotype-padding] [fixture:
+stereotypes/declaration-suffixes] [fixture: stereotypes/side-padding] [fixture:
+stereotypes/endpoint-suffixes] [fixture: stereotypes/boundary-suffixes]
 
 Keep the interior text as written: word gaps, nested openers, quotes,
 backslashes, punctuation and directives remain. LS/PS and NBSP can be interior
@@ -240,7 +243,7 @@ Output
 
 ```mmd
 usecase-beta
-  actor User << service  user >>
+  actor User <<service  user>>
 ```
 
 ### System boundaries
@@ -252,10 +255,32 @@ system-boundaries/boundary-header-comment-empty] Reuse the heading form of
 `[` or `(`, touches the id, so `systemBoundary S [t]` is printed
 `systemBoundary S[t]` and `systemBoundary S (t)` is printed
 `systemBoundary S(t)`. mermaid.js reads the spaced and the touching spellings as
-the same boundary. The padding inside the brackets stays written. [fixture:
-system-boundaries/boundary-title-opener-touches-id] A directive in the gap keeps
-the whitespace written on each side of it, as under flowchart's Directives.
-[fixture: system-boundaries/boundary-id-title-directed-gap] Preserve native
+the same boundary. The spaces and tabs inside the brackets or the parentheses
+are dropped, since mermaid.js trims them (it keeps a no-break space, which
+stays): `systemBoundary S[ x ]` is printed `systemBoundary S[x]`, and `S("x" )`
+is printed `S("x")`. [fixture: system-boundaries/boundary-title-padding-dropped]
+[fixture: system-boundaries/boundary-title-opener-touches-id] A directive at an
+edge of the title keeps the gap beside it, one space where whitespace was
+written (`S[ %%{x}%% T ]` is printed `S[ %%{x}%% T]`). The padding is dropped on
+a line with a kept `;` too, where the text through the last `;` is protected
+(see Statements and semicolons): dropping it moves no `;`, so the line rule
+selects the same one. `S[ a;b ]` is printed `S[a;b]`, and `S[ a; ]` is printed
+`S[a;]`. One space stays where the padding lies between a `:` and a `#` of a
+line that the line rule may read, as in architecture and venn. A usecase id
+cannot hold a `:`, and a `:` inside a directive is not read by the line rule, so
+no `:` stands before the title for the rule:
+`systemBoundary mystyle%%{init:{}}%%[ #x; ]` is printed
+`systemBoundary mystyle%%{init:{}}%%[#x;]`. A padding with a U+2028 or U+2029 in
+it stays. [fixture: system-boundaries/boundary-title-directive-or-semicolon]
+[fixture: system-boundaries/boundary-title-padding-after-directive-colon] [test:
+usecase: U+2028 inside the brackets of a boundary title] [test: usecase: U+2029
+inside the brackets of a boundary title] [test: usecase: U+2028 inside the
+brackets of a boundary title with a semicolon] [test: usecase: U+2029 inside the
+brackets of a boundary title with a semicolon] A directive in the gap keeps
+whether whitespace was written on each side of it, a run of whitespace becoming
+one space, as under flowchart's Directives. [fixture:
+system-boundaries/boundary-id-title-directed-gap] [fixture:
+system-boundaries/boundary-id-title-directed-gap-runs-collapsed] Preserve native
 metadata/classes and repeated declarations; body membership comes from the AST's
 single declaration-body level.
 
@@ -274,7 +299,7 @@ Output
 
 ```mmd
 usecase-beta
-  systemBoundary Box[ Display ]@{ type: 'package' }:::box,group
+  systemBoundary Box[Display]@{ type: 'package' }:::box,group
     actor User
     A@{ business: true }
   end

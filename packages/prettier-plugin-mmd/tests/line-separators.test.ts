@@ -50,6 +50,16 @@ function format(text: string, options: Options = {}): Promise<string> {
  */
 const examples: readonly (readonly [string, string, string])[] = [
   [
+    "U+2028 before the `:::` of a state",
+    "stateDiagram-v2\nA\u2028:::c\n",
+    "stateDiagram-v2\n  A\u2028:::c\n",
+  ],
+  [
+    "U+2029 after the `:::` of a state",
+    "stateDiagram-v2\nA:::\u2029c\n",
+    "stateDiagram-v2\n  A:::\u2029c\n",
+  ],
+  [
     "U+2028 after the comma of a state class statement",
     "stateDiagram-v2\nA --> B\nclass A,\u2028B c\nclassDef c fill:#f00\n",
     "stateDiagram-v2\n  A --> B\n  class A,\u2028B c\n  classDef c fill:#f00\n",
@@ -487,6 +497,56 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
  */
 const flowchartExamples: readonly (readonly [string, string, string])[] = [
   [
+    "U+2028 between the closing quote and the bracket of a flowchart label",
+    'flowchart LR\nA["x"\u2028]\n',
+    'flowchart LR\n  A["x"\u2028]\n',
+  ],
+  [
+    "U+2028 in the title of a flowchart subgraph header",
+    "flowchart LR\nsubgraph S[ T\u2028]\nA\nend\n",
+    "flowchart LR\n  subgraph S[T\u2028]\n    A\n  end\n",
+  ],
+  [
+    "U+2028 after the string of a flowchart click statement with a string over lines",
+    'flowchart LR\nA\nclick   A "x\ny"   \u2028  "t"\n',
+    'flowchart LR\n  A\n  click A "x\ny"   \u2028  "t"\n',
+  ],
+  [
+    "U+2029 between the closing quote and the bracket of a flowchart label",
+    'flowchart LR\nA["x"\u2029]\n',
+    'flowchart LR\n  A["x"\u2029]\n',
+  ],
+  [
+    "U+2029 in the title of a flowchart subgraph header",
+    "flowchart LR\nsubgraph S[ T\u2029]\nA\nend\n",
+    "flowchart LR\n  subgraph S[T\u2029]\n    A\n  end\n",
+  ],
+  [
+    "U+2029 after the string of a flowchart click statement with a string over lines",
+    'flowchart LR\nA\nclick   A "x\ny"   \u2029  "t"\n',
+    'flowchart LR\n  A\n  click A "x\ny"   \u2029  "t"\n',
+  ],
+  [
+    "U+2028 between the parts of a flowchart click statement with a string over lines",
+    'flowchart LR\nA\nclick   A\u2028"/u" "x\ny"\n',
+    'flowchart LR\n  A\n  click A\u2028"/u" "x\ny"\n',
+  ],
+  [
+    "U+2029 between the parts of a flowchart click statement with a string over lines",
+    'flowchart LR\nA\nclick   A\u2029"/u" "x\ny"\n',
+    'flowchart LR\n  A\n  click A\u2029"/u" "x\ny"\n',
+  ],
+  [
+    "U+2028 between the parentheses of a blank flowchart callback",
+    "flowchart TD\nA\nclick A call f(\u2028)",
+    "flowchart TD\n  A\n  click A call f(\u2028)\n",
+  ],
+  [
+    "U+2029 between the parentheses of a blank flowchart callback",
+    "flowchart TD\nA\nclick A call f(\u2029)",
+    "flowchart TD\n  A\n  click A call f(\u2029)\n",
+  ],
+  [
     "U+2028 in the text of a flowchart description block",
     "flowchart LR\naccDescr {a\u2028b}\nA\n",
     "flowchart LR\n  accDescr {a\u2028b}\n  A\n",
@@ -619,6 +679,41 @@ const classLineSeparatorExamples: readonly (readonly [
   string,
 ])[] = [
   [
+    "U+2028 inside the brackets of a class label",
+    'classDiagram\nclass D[ "x"\u2028]\n',
+    'classDiagram\n  class D["x"\u2028]\n',
+  ],
+  [
+    "U+2029 inside the brackets of a class label",
+    'classDiagram\nclass D[ "x"\u2029]\n',
+    'classDiagram\n  class D["x"\u2029]\n',
+  ],
+  [
+    "U+2028 between the parentheses of a blank class callback",
+    "classDiagram\nclass A\nclick A call f(\u2028)",
+    "classDiagram\n  class A\n  click A call f(\u2028)\n",
+  ],
+  [
+    "U+2029 between the parentheses of a blank class callback",
+    "classDiagram\nclass A\nclick A call f(\u2029)",
+    "classDiagram\n  class A\n  click A call f(\u2029)\n",
+  ],
+  [
+    "U+2028 before the `<<` of a class annotation",
+    "classDiagram\nclass S\u2028<<i>>\n",
+    "classDiagram\n  class S\u2028<<i>>\n",
+  ],
+  [
+    "U+2028 before the `:::` of a class",
+    "classDiagram\nclass A\u2028:::c\n",
+    "classDiagram\n  class A\u2028:::c\n",
+  ],
+  [
+    "U+2029 after the `:::` of a class",
+    "classDiagram\nclass A:::\u2029c\n",
+    "classDiagram\n  class A:::\u2029c\n",
+  ],
+  [
     "U+2028 after the comma of a classDef statement",
     "classDiagram\nclass A\nclassDef c1,\u2028c2 fill:#f00\n",
     "classDiagram\n  class A\n  classDef c1,\u2028c2 fill:#f00\n",
@@ -740,6 +835,16 @@ const ganttLineSeparatorExamples: readonly (readonly [
   string,
   string,
 ])[] = [
+  [
+    "U+2028 between the parentheses of a blank Gantt callback",
+    "gantt\na : id1, 1d\nclick id1 call f(\u2028)",
+    "gantt\n  a :id1, 1d\n  click id1 call f(\u2028)\n",
+  ],
+  [
+    "U+2029 between the parentheses of a blank Gantt callback",
+    "gantt\na : id1, 1d\nclick id1 call f(\u2029)",
+    "gantt\n  a :id1, 1d\n  click id1 call f(\u2029)\n",
+  ],
   [
     "U+2028 between the header and a statement",
     "gantt\u2028title T\n",
@@ -1993,6 +2098,26 @@ const blockLineSeparatorExamples: readonly (readonly [
   string,
 ])[] = [
   [
+    "U+2028 after the comma between the directions of a block arrow",
+    'block-beta\na<["L"]>(right,\u2028down)\n',
+    'block-beta\n  a<["L"]>(right,\u2028down)\n',
+  ],
+  [
+    "U+2028 before the comma between the directions of a block arrow",
+    'block-beta\na<["L"]>(right\u2028,down)\n',
+    'block-beta\n  a<["L"]>(right\u2028, down)\n',
+  ],
+  [
+    "U+2029 after the comma between the directions of a block arrow",
+    'block-beta\na<["L"]>(right,\u2029down)\n',
+    'block-beta\n  a<["L"]>(right,\u2029down)\n',
+  ],
+  [
+    "U+2029 before the comma between the directions of a block arrow",
+    'block-beta\na<["L"]>(right\u2029,down)\n',
+    'block-beta\n  a<["L"]>(right\u2029, down)\n',
+  ],
+  [
     "U+2028 between two statements of a row",
     "block-beta\na\u2028b\n",
     "block-beta\n  a\u2028b\n",
@@ -2343,6 +2468,21 @@ describe("a block diagram with a whitespace character that no fixture file holds
 /** Fixed kanban cases of Unicode whitespace, comment boundaries, and CR/LF. */
 const kanbanExamples: readonly (readonly [string, string, string, Options?])[] =
   [
+    [
+      "kanban: class-spaces-then-no-break-space",
+      "kanban\n S\n   A\n   :::  \u00a0hot\n",
+      "kanban\n  S\n    A\n    :::\u00a0hot\n",
+    ],
+    [
+      "kanban: class-padding-then-u2028",
+      "kanban\n S\n   A\n   ::: hot\u2028",
+      "kanban\n  S\n    A\n    :::hot\n",
+    ],
+    [
+      "kanban: class-padding-then-u2029",
+      "kanban\n S\n   A\n   ::: hot\u2029",
+      "kanban\n  S\n    A\n    :::hot\n",
+    ],
     ["kanban: tab-one-space", "kanban\n\tS\n\t\tA\n", "kanban\n  S\n    A\n"],
     [
       "kanban: blank-whitespace",
@@ -3358,6 +3498,26 @@ describe("C4 whitespace and line boundaries", () => {
 /** Venn separators are characters inside values and whole diagram comments. */
 const vennExamples: readonly (readonly [string, string, string])[] = [
   [
+    "U+2028 inside the brackets of a venn label with a semicolon",
+    "venn-beta\nset A[ a;b \u2028]\n",
+    "venn-beta\nset A[a;b \u2028]\n",
+  ],
+  [
+    "U+2029 inside the brackets of a venn label with a semicolon",
+    "venn-beta\nset A[ a;b \u2029]\n",
+    "venn-beta\nset A[a;b \u2029]\n",
+  ],
+  [
+    "U+2028 inside the brackets of a venn label",
+    "venn-beta\nset A[ T\u2028]\n",
+    "venn-beta\nset A[T\u2028]\n",
+  ],
+  [
+    "U+2029 inside the brackets of a venn label",
+    "venn-beta\nset A[ T\u2029]\n",
+    "venn-beta\nset A[T\u2029]\n",
+  ],
+  [
     "venn: crlf-values",
     'venn-beta\r\nset "A\r\n B"[L\r\n M]\r\nstyle A fill:rgb(1,\r\n 2,3)\r\n',
     'venn-beta\nset "A\n B"[L\n M]\nstyle A fill:rgb(1,\n 2,3)\n',
@@ -3411,7 +3571,7 @@ const vennExamples: readonly (readonly [string, string, string])[] = [
   [
     "venn: nbsp-value-kept",
     'venn-beta\nset " A\u00a0B "[ L\u00a0M ]\nstyle A fill:rgb(1,\u00a02,3)',
-    'venn-beta\nset " A\u00a0B "[ L\u00a0M ]\nstyle A fill:rgb(1,\u00a02,3)\n',
+    'venn-beta\nset " A\u00a0B "[L\u00a0M]\nstyle A fill:rgb(1,\u00a02,3)\n',
   ],
   ["venn: ff-title-separator", "venn-beta\ntitle\fT", "venn-beta\ntitle T\n"],
   [

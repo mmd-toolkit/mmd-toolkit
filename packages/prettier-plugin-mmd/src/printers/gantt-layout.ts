@@ -20,7 +20,10 @@ import {
   spansLinesThatCannotJoin,
 } from "./layout.ts"
 import { holdsJoiningRegion } from "./kept-lines.ts"
-import { accessibilityRules } from "./statement-rules.ts"
+import {
+  accessibilityRules,
+  findCallRangeWithTrivia,
+} from "./statement-rules.ts"
 import type { Source } from "./source.ts"
 import { findTokenEndingBefore, findTokensBetween } from "./source.ts"
 
@@ -205,7 +208,7 @@ export function layoutGanttStatement(
     start,
     end,
     collectValueNodes(statement, ganttValueNodeTypes),
-    [],
+    findCallArgumentsStretches(source, statement),
   )
   const remainder = findBlankRemainder(source, statement)
   if (remainder !== null) atoms.push(remainder)
@@ -215,6 +218,21 @@ export function layoutGanttStatement(
     outdented: new Set(),
     lineBreaks: keepsLineBreaks ? "kept" : "joined",
   }
+}
+
+/**
+ * The arguments of a call with a comment or a directive among them, from the
+ * `(` through the `)`, printed as written (see `findCallRangeWithTrivia`).
+ */
+function findCallArgumentsStretches(
+  source: Source,
+  statement: GanttStatement,
+): Atom[] {
+  const args =
+    statement.type === "GanttClickStatement" ? statement.call?.args : null
+  if (args === null || args === undefined) return []
+  const call = findCallRangeWithTrivia(source, args)
+  return call === null ? [] : [{ start: call[0], end: call[1] }]
 }
 
 /**
@@ -362,8 +380,9 @@ function listRules(
  * touches the id before it and the id after it touches the `,`, since a space
  * ends the id text; each part stands after one space, and so does the name
  * of a call and the string of a link; the `(` touches the name, whose range
- * keeps the whitespace before it, and the arguments touch the parentheses
- * (docs/gantt.md, Click statements).
+ * keeps the whitespace before it, and the arguments touch the parentheses,
+ * which touch each other where the arguments are blank (docs/gantt.md, Click
+ * statements).
  */
 function clickRules(
   source: Source,
@@ -387,15 +406,10 @@ function clickRules(
       rule = previousIsComma ? "none" : "space"
     } else if (isPunctuator && token.value === ",") {
       rule = index === 0 ? "space" : "none"
-    } else if (isPunctuator && token.value === "(") {
+    } else if (isPunctuator && (token.value === "(" || token.value === ")")) {
       rule = "none"
     } else if (atom.start === argsStart) {
       rule = "none"
-    } else if (isPunctuator && token.value === ")") {
-      // The `)` touches the arguments. Where the arguments are blank, there
-      // are none to touch, and the whitespace between the parentheses stays
-      // as in the source, a run of it as one space.
-      rule = argsStart === undefined ? undefined : "none"
     } else {
       // A keyword (`call`, `href`), the name of a call, or the string of a link.
       rule = "space"

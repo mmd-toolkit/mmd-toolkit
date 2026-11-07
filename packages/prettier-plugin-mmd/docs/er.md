@@ -648,8 +648,10 @@ one space between its words, so two spaces or a tab make `only` an entity
 (diagrams/er.md, The statement context, keywords and what follows them).
 [fixture: relationship-spacing/entity-only-before-one-kept] [corpus fixture:
 er/lex-only-one-two-spaces] A directive between the units of a relationship
-stays where it is, with the whitespace written on each side of it. [fixture:
-relationship-spacing/directive-between-units-kept]
+stays where it is and keeps whether whitespace was written on each side of it, a
+run of whitespace becoming one space. [fixture:
+relationship-spacing/directive-between-units-kept] [fixture:
+relationship-spacing/directive-between-units-runs-collapsed]
 
 Input
 ([relationship-spacing/symbols-and-words-input.mmd](../tests/fixtures/er/relationship-spacing/symbols-and-words-input.mmd)):
@@ -739,8 +741,10 @@ and are separated by a `,` that touches the classes on both sides:
 [fixture: entities/alias-and-classes] The `{` of an attribute block stands after
 one space (see [Attribute blocks](#attribute-blocks)). The names are kept as
 written, quoted or not, numbers included. [fixture: entities/names-kept] A
-directive between the parts of an entity keeps the whitespace written on each
-side of it. [fixture: entities/directive-between-parts-kept]
+directive between the parts of an entity keeps whether whitespace was written on
+each side of it, a run of whitespace becoming one space. [fixture:
+entities/directive-between-parts-kept] [fixture:
+entities/directive-between-parts-runs-collapsed]
 
 Input
 ([entities/alias-tight-input.mmd](../tests/fixtures/er/entities/alias-tight-input.mmd)):
@@ -810,11 +814,12 @@ subgraphs/end-on-the-line-of-a-statement] [fixture: subgraphs/end-case-kept]
 [fixture: subgraphs/entity-after-end] A subgraph without statements is printed
 with its `end` on the next line. [fixture: subgraphs/empty]
 
-A directive between the name and the `[` keeps the whitespace written on each
-side of it, as under [Directives](#directives). [fixture:
-subgraphs/title-beside-directive-kept] A U+2028 or U+2029 there stays as
-written. [test: U+2028 between an ER subgraph name and its title] [test: U+2029
-between an ER subgraph name and its title]
+A directive between the name and the `[` keeps whether whitespace was written on
+each side of it, a run of whitespace becoming one space, as under
+[Directives](#directives). [fixture: subgraphs/title-beside-directive-kept]
+[fixture: subgraphs/title-beside-directive-runs-collapsed] A U+2028 or U+2029
+there stays as written. [test: U+2028 between an ER subgraph name and its title]
+[test: U+2029 between an ER subgraph name and its title]
 
 Empty description blocks that follow the name or the title on the line of the
 header are the first statements of the body, and stay on the line of the header,

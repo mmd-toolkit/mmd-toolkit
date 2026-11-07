@@ -10,6 +10,42 @@ interface ArchitectureCase {
 
 export const architectureCases: readonly ArchitectureCase[] = [
   {
+    name: "architecture/label-content/title-style-rule-ends-at-u2028",
+    input: "architecture-beta\nservice style(logos:aws)[ #y \u2028x; ]\n",
+    output: "architecture-beta\n  service style(logos:aws)[#y \u2028x;]\n",
+    options: {},
+  },
+  {
+    name: "architecture/label-content/title-style-rule-ends-at-u2029",
+    input: "architecture-beta\nservice style(logos:aws)[ #y \u2029x; ]\n",
+    output: "architecture-beta\n  service style(logos:aws)[#y \u2029x;]\n",
+    options: {},
+  },
+  {
+    name: "architecture/label-content/title-with-semicolon-u2028",
+    input: "architecture-beta\ngroup g(cloud)[ a;b \u2028]\n",
+    output: "architecture-beta\n  group g(cloud)[a;b \u2028]\n",
+    options: {},
+  },
+  {
+    name: "architecture/label-content/title-with-semicolon-u2029",
+    input: "architecture-beta\ngroup g(cloud)[ a;b \u2029]\n",
+    output: "architecture-beta\n  group g(cloud)[a;b \u2029]\n",
+    options: {},
+  },
+  {
+    name: "architecture/label-content/title-u2028",
+    input: "architecture-beta\ngroup g(cloud)[ T\u2028]\n",
+    output: "architecture-beta\n  group g(cloud)[T\u2028]\n",
+    options: {},
+  },
+  {
+    name: "architecture/label-content/title-u2029",
+    input: "architecture-beta\ngroup g(cloud)[ T\u2029]\n",
+    output: "architecture-beta\n  group g(cloud)[T\u2029]\n",
+    options: {},
+  },
+  {
     name: "architecture/description-blocks/unicode-empty",
     input: "architecture-beta\naccDescr{ \t\n\u2028\u00a0}\n",
     output: "architecture-beta\n  accDescr {}\n",

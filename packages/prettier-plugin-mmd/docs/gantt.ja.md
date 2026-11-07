@@ -521,10 +521,11 @@ Db はどの区切りでも同じなので、区切りの種類は作者のも�
 [fixture: lists/separators-as-written] [fixture: lists/dates-and-days]
 項目の大文字小文字は残します（mermaid.js が小文字にします）。
 [fixture: lists/items-case-kept]
-キーワードと最初の項目の間と、項目の間のディレクティブは、
-両側に書かれた空白を保ってその位置に残します。
+キーワードと最初の項目の間と、項目の間のディレクティブは、その位置に残し、
+両側に空白があるかどうかは変えず、空白の連なりは空白 1 つにします。
 [fixture: lists/directive-after-keyword-kept]
 [fixture: lists/directive-between-items-kept]
+[fixture: lists/directive-in-list-runs-collapsed]
 
 項目のない `,` はそのまま残します。 [fixture: lists/empty-items-kept]
 リストの末尾の空白は落とします。 [fixture: lists/trailing-whitespace-dropped]
@@ -704,7 +705,8 @@ ID の間の `,` は両側の ID に接します。
 文は、ID が指すタスクに依存しません。
 [fixture: click-statements/ids-unknown-and-duplicate]
 
-呼び出しの名前と引数は、中の空白と改行も含めて書かれたまま印字します。
+呼び出しの名前と引数は、中の空白と改行も含めて書かれたまま印字しますが、
+空白だけの引数は落とします（[トークンの間の空白](#トークンの間の空白)を参照）。
 `f ()` の名前は `f` と空白で、`f( 1, 2 )` の引数は空白、`1, 2`、空白であり、
 Db が持ちます。
 リンクの文字列も書かれたままです。
@@ -788,7 +790,7 @@ gantt
   click id1 call f ()
   click id1 call f( 1, 2 )
   click id1 call f(1,2)
-  click id1 call f( )
+  click id1 call f()
   click id1 call f()
 ```
 
@@ -1063,8 +1065,21 @@ gantt
 
 上の規則が当てはまらない所では、文のトークンの間の空白の連続は空白 1 つにし、
 接しているトークンは接したままにします。
-引数が空白だけの呼び出しの括弧の間と、説明ブロックの括弧が該当します。
+説明ブロックの括弧が該当します。
+引数が空白だけの呼び出しの括弧は互いに接し、`f(    )` は `f()` になります。
+mermaid.js はどちらも同じ呼び出しとして読むからです。
+括弧の間にディレクティブがあれば、その両側の空白の有無を保ちます。
+括弧の間に改行があっても同じで、そこにあるコメント行は 1 行のまま残ります。
 [fixture: whitespace-between-tokens/blank-arguments]
+[fixture: click-statements/callback-blank-parentheses-touch]
+[fixture: click-statements/callback-blank-parentheses-lines]
+括弧の間の U+2028 と U+2029 は、そのまま残します。
+[test: U+2028 between the parentheses of a blank Gantt callback]
+[test: U+2029 between the parentheses of a blank Gantt callback]
+コメント行やディレクティブを含む引数は、`)` まで書かれたまま印字します。
+`)` の前の空白は Db では引数の一部なので、`)` の前にコメント行があっても、
+字下げしてはいけないからです。
+[fixture: click-statements/callback-args-comment-line-kept]
 ヘッダーの行末の空白は落とします。
 [fixture: whitespace-between-tokens/trailing-whitespace-after-header]
 値は整形しません（[タスクのデータ](#タスクのデータ)、[設定](#設定)、
@@ -1086,7 +1101,7 @@ click id1 call f()
 ```mmd
 gantt
   a :id1, 1d
-  click id1 call f( )
+  click id1 call f()
   click id1 call f()
 ```
 

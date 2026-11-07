@@ -154,7 +154,9 @@ accDescr: d ; direction LR
 
 ただし、文を区切る `;` 以外の `;` を含む行は、文と `;` を行に残します。
 `A[x;]`、`accTitle: a;b`、コメントの中の `;` などがそうした `;` です。
-文を別の行に分けず、`;` はその位置に、両側の空白も書かれたとおりにして残します。
+文を別の行に分けず、`;` はその位置に残し、両側に空白があるかどうかは変えず、
+空白の連なりは空白 1 つにします。
+[fixture: statements-one-per-line/kept-semicolon-runs-collapsed]
 [fixture: statements-one-per-line/inner-semicolon-kept]
 [fixture: statements-one-per-line/comment-semicolon-not-separator]
 [fixture: statements-one-per-line/compat-semicolon-in-label-without-style-kept]
@@ -174,6 +176,15 @@ mermaid.js は、一部の行（`style`、`:`、`#` がこの順に `;` の前�
 ほかのトークンの間の空白は変えてかまいません。
 ただし、`:` とその後の `#` の間の空白は、
 あるかないかを変えません（[セミコロン](#セミコロン)を参照）。
+この規則は、ディレクティブと、
+mermaid.js が取り除くコメント行を除いた行を読みます。
+そのため、ディレクティブの中の `style`、`:`、`#`、`;` は数えません。
+`A[style:]-->B %%{init:{"x":"#;"}}%%` は、
+`#` や `;` のない行と同じく `A[style:] --> B %%{init:{"x":"#;"}}%%` になります。
+行の途中の `%%` はコメント行ではなく、規則はそのテキストを読みます。
+詳しくは次の節を参照してください。
+[Label content](./architecture.ja.md#label-content)
+[fixture: semicolons/line-rule-chars-only-in-directive]
 
 入力
 ([statements-one-per-line/separated-by-semicolons-input.mmd](../tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-input.mmd)):
@@ -755,6 +766,17 @@ flowchart LR
 mermaid.js は、名前を `(` の前まで、空白も含めて読むので、
 `click A call fn  ()` は、`fn` と 2 つの空白を名前とする関数を呼びます。
 [fixture: whitespace-between-tokens/callback-name-arguments-forms-kept]
+引数が空白だけの呼び出しの括弧は互いに接し、
+`click A call f( )` は `click A call f()` になります。
+mermaid.js はどちらも引数のない同じ呼び出しとして読むからです。
+括弧の間にディレクティブがあれば、
+その両側の空白の有無を保ちます（[ディレクティブ](#ディレクティブ)を参照）。
+[fixture: whitespace-between-tokens/callback-blank-parentheses-touch]
+複数行に書かれた文は書かれたまま残すので、括弧の間の改行とコメント行も残ります。
+[fixture: whitespace-between-tokens/callback-blank-parentheses-lines]
+括弧の間の U+2028 と U+2029 は、そのまま残します。
+[test: U+2028 between the parentheses of a blank flowchart callback]
+[test: U+2029 between the parentheses of a blank flowchart callback]
 
 `call` なしで書いたコールバックは、後ろに `(` のない click の id であり、
 `call` の後の名前の規則は当てはまりません（詳しくは、
@@ -820,9 +842,11 @@ flowchart LR
 それ以外の辺の id の前には、空白を 1 つ置きます（`=a`、`~~a`、`.a`、`x-a`、
 `x~~~a` など）。 [fixture: arrow-spacing/edge-id-not-arrow-like-gets-one-space]
 形と辺の id の間にディレクティブか無視される `;` があるときは、
-その両側の空白を書かれたまま残します。
+その両側に空白があるかどうかは変えず、空白の連なりは空白 1 つにします。
 [fixture: arrow-spacing/edge-id-arrow-like-after-directive]
+[fixture: arrow-spacing/edge-id-arrow-like-after-directive-runs-collapsed]
 [fixture: arrow-spacing/edge-id-arrow-like-after-ignored-semicolon]
+[fixture: arrow-spacing/edge-id-arrow-like-after-ignored-semicolon-runs-collapsed]
 
 入力
 ([arrow-spacing/plain-input.mmd](../tests/fixtures/flowchart/arrow-spacing/plain-input.mmd)):
@@ -928,8 +952,19 @@ flowchart LR
 [fixture: label-inner-whitespace/trimmed-every-shape]
 ラベルの中の空白は保ち、空白だけのラベルも保ちます（`A[]` は拒否されます）。
 [fixture: label-inner-whitespace/all-whitespace-every-shape-kept]
-引用符で囲んだラベルは書かれたまま残します。
+引用符で囲んだラベルは書かれたまま残しますが、
+閉じの引用符と閉じ括弧の間の空白は落とします。
+`A["x" ]` は `A["x"]` に、`B{"x" }`、`C(("x" ))`、`D[/"t" /]` も同じです。
 [fixture: label-inner-whitespace/quotes-kept]
+[fixture: label-inner-whitespace/string-closing-touches]
+落とすのは、閉じの引用符と同じ行にある空白だけです。
+引用符と括弧の間の改行、コメント行、ディレクティブと、
+その行にある U+2028 と U+2029 は残り、改行の後の括弧は継続行になります。
+継続行の先頭にある U+2028 と U+2029 は字下げとして読まれるので、
+印字が行に与える字下げに置き換わります。
+[fixture: label-inner-whitespace/string-closing-break-and-directive-kept]
+[test: U+2028 between the closing quote and the bracket of a flowchart label]
+[test: U+2029 between the closing quote and the bracket of a flowchart label]
 
 ラベルの先頭の空白は、それがないとラベルの読み方が変わるときは、
 空白 1 つとして残します。
@@ -1317,11 +1352,34 @@ sequence、class、state は、そこでは改行が空白の後でだけ数え�
 [fixture: multi-line-statements/directive-inside]
 途中のコメント行は文の中に残り、2 行目以降と同じ段に置きます。
 [fixture: multi-line-statements/several-comments-inside]
-複数行に書かれた `click` の文は書かれたまま残します。
+部品の間の隙間、
+またはその隙間にあるコメントやディレクティブの中に改行がある `click` の文は、
+書かれたまま残します。
 mermaid.js は、2 行目以降が字下げされていると、その一部を拒否するからです。
 [fixture: multi-line-statements/click-in-subgraph-kept]
 [fixture: multi-line-statements/click-forms-kept]
 [fixture: multi-line-statements/click-comment-inside-kept]
+文字列の中や、引数のある呼び出しの `(` と `)` の間にある改行は、
+その値の一部（そこにあるコメントやディレクティブも含みます）で、
+値は書かれたまま印字し、文の後の行を字下げすることもありません。
+そのような文のほかの隙間には、普通の規則を掛けます。
+`click   A "/u" "x` と次の行の `y"` は、
+1 行の文と同じように `click A "/u" "x` と `y"` になります。
+[fixture: multi-line-statements/click-string-over-lines-collapsed]
+[fixture: multi-line-statements/click-callback-args-over-lines-collapsed]
+[fixture: multi-line-statements/click-callback-args-comment-line-collapsed]
+[fixture: multi-line-statements/click-string-over-lines-directive-inside]
+隣にディレクティブ、`;`、コメント行、空行があるときも、
+1 行の文と同じに扱います。
+[fixture: multi-line-statements/click-string-over-lines-beside-directive]
+[fixture: multi-line-statements/click-string-over-lines-with-semicolon]
+[fixture: multi-line-statements/click-string-over-lines-semicolon-kept]
+[fixture: multi-line-statements/click-string-over-lines-comment-and-empty-line]
+部品の間の U+2028 と U+2029 は、複数行の文字列の後でも、そのまま残します。
+[test: U+2028 between the parts of a flowchart click statement with a string over lines]
+[test: U+2029 between the parts of a flowchart click statement with a string over lines]
+[test: U+2028 after the string of a flowchart click statement with a string over lines]
+[test: U+2029 after the string of a flowchart click statement with a string over lines]
 
 図のヘッダーや subgraph のヘッダーで、
 U+2028 や U+2029 の後にコメント行がある範囲は書かれたまま残します。
@@ -1931,9 +1989,29 @@ flowchart TD
 
 ### subgraph のヘッダー
 
-タイトルの内側の空白を保ち、`[ T ]`を`[ T ]`のままにします。
-Dbは同じで、見出しには著者のタイトルの書き方を保つためです。
-[fixture: subgraph-header/title-interior-whitespace-kept]
+タイトルの括弧の内側の空白は、ノードのラベルと同じように、
+落とします（[ラベルの内側の空白](#ラベルの内側の空白)を参照）。
+`subgraph S[ T ]` は `subgraph S[T]` に、
+`subgraph S["x" ]` は `subgraph S["x"]` になります。
+mermaid.js は、どちらの書き方も同じ subgraph として読みます。
+タイトルが別に読まれる所には、ラベルと同じ規則で空白を 1 つ残します。
+`[ /x/ ]` や `[ \x\ ]` はそのままです。
+`[/x/]` は拒否されるからです。 [fixture: subgraph-header/title-padding-dropped]
+[fixture: subgraph-header/title-interior-whitespace-dropped]
+括弧の中の改行とコメント行は、ヘッダーの行として残ります。
+改行の前の空白は、どの行末でもそうであるように落ち、
+その後の括弧は継続行になります。
+[fixture: subgraph-header/title-padding-beside-line-break]
+括弧の中の行にある U+2028 と U+2029 は残り、
+継続行の先頭にあるものは字下げとして読まれます。
+[test: U+2028 in the title of a flowchart subgraph header]
+[test: U+2029 in the title of a flowchart subgraph header]
+行の規則が読むかもしれない行では、
+`style:` の後のタイトルの `[` の後の空白が残ります。
+`subgraph style:[ #x; ]` は `subgraph style:[ #x;]` になり、
+`subgraph a: [ #x; ]` は、
+`:` の前に `style` がないので `subgraph a:[#x;]` になります。
+[fixture: subgraph-header/title-padding-on-line-rule-line]
 
 タイトルの `[` は subgraph の名前に接します。
 `subgraph S [t]` は `subgraph S[t]` になります。
@@ -1962,9 +2040,10 @@ flowchart の文書にあるタイトル付きの subgraph は 2 件で、
 その隙間は空白があるかないかを保ちます（[セミコロン](#セミコロン)と同じです）。
 `subgraph a: [#x;]` と `subgraph style: [#x]` にはその `;` がないので、
 接します。 [fixture: subgraph-header/title-after-colon-before-hash]
-隙間にディレクティブがあれば、
-その両側に書かれた空白を残します（[ディレクティブ](#ディレクティブ)を参照）。
+隙間にディレクティブがあれば、その両側に空白があるかどうかは変えず、
+空白の連なりは空白 1 つにします（[ディレクティブ](#ディレクティブ)を参照）。
 [fixture: subgraph-header/title-beside-directive-kept]
+[fixture: subgraph-header/title-beside-directive-runs-collapsed]
 隙間の U+2028 と U+2029 は、そのまま残します。
 [test: U+2028 between a subgraph name and its title]
 [test: U+2029 and spaces between a subgraph name and its title]

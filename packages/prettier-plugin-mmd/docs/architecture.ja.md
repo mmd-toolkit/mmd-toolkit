@@ -289,14 +289,60 @@ Db が等しい引用符変更でも、選ばれた kind と原形を失うた�
 
 ```mmd
 architecture-beta
-  service padded[ "x" ]
+  service padded["x"]
 ```
 
 ### Label content
 
-角括弧の内側は、端の空白、連続空白、タブ、空白だけの値、quoted の空値、escape、
-HTML、entity、hidden に見える文字もそのまま保ちます。
-Db がこれらを区別するため、外側の空白のようには正規化しません。
+角括弧の内側はそのまま保ちますが、
+group と service のタイトルの括弧に接する空白、タブ、no-break space は例外です。
+mermaid.js が trim するからです。
+`group a(cloud)[ API ]` は `group a(cloud)[API]` に、
+`service s(server)["x" ]` は `service s(server)["x"]` になります。
+[fixture: architecture/label-content/title-edge-whitespace-dropped]
+保つ `;` のある行でも同じです。
+その行では最後の `;` までのテキストが保護されますが（Semicolons を参照）、
+空白を落としても `;` は動かず、増えも減りもしないので、
+行の規則は同じ `;` を選びます。
+`group g(cloud)[ a;b ]` は `group g(cloud)[a;b]` に、
+`service s(server)[ x; ] in g` は `service s(server)[x;] in g` になります。
+空白が、行の規則が読むかもしれない行の `:` と `#` の間にあるときは、
+空白 1 つを残します。
+空白があるかどうかが、無視される `;` を決めるからです。
+`service style(logos:aws)[ #y; ]` は `service style(logos:aws)[ #y;]` になり、
+`:` の前に `style` がない `service s(logos:aws)[ #y; ]` は
+`service s(logos:aws)[#y;]` になります。
+この規則はディレクティブを除いた行を読むので、その中の `style`、`:`、`#`、
+`;` は区間を作りません。
+`service%%{style}%% s0(logos:aws)[ #y; ]` は
+`service%%{style}%% s0(logos:aws)[#y;]` に、
+`service style1(logos:aws)[ #y ]%%{init:{"a":";"}}%%` は `[#y]` になります。
+`;` がディレクティブの外にある `[ #y; ]` は、空白を残します。
+[fixture: architecture/label-content/title-padding-line-rule-chars-in-directive]
+行の途中の `%%` はコメント行ではないので、規則はそのテキストを読みます。
+`service style3(logos:aws)[ #y ] %% note;` は
+`service style3(logos:aws)[ #y] %% note;` になります。
+注の `;` があるので、規則は `logos:aws` の `:` から合うからです。
+`service classDef(logos:aws)[#a;style: ]%%#c;` は、
+`%%` の後の `#` と `;` も規則に加わるので、変わりません。
+[fixture: architecture/label-content/title-padding-line-rule-chars-in-comment]
+ディレクティブにもコメントにも含まれない U+2028 と U+2029 は、
+規則が読む行を終わらせるので、その前の `:` とその後の `;` は区間を作りません。
+[test: architecture/label-content/title-style-rule-ends-at-u2028]
+[test: architecture/label-content/title-style-rule-ends-at-u2029]
+コメントやディレクティブを含むタイトルと、U+2028 や U+2029 を含む空白は、
+書かれたまま残します。
+[fixture: architecture/label-content/title-padding-with-directive-or-semicolon]
+[fixture: architecture/label-content/title-padding-in-style-rule-stretch]
+[fixture: architecture/label-content/title-padding-after-colon-without-style]
+[test: architecture/label-content/title-u2028]
+[test: architecture/label-content/title-u2029]
+[test: architecture/label-content/title-with-semicolon-u2028]
+[test: architecture/label-content/title-with-semicolon-u2029]
+テキストの中の連続空白、タブ、空白だけの値、quoted の空値、escape、HTML、
+entity、hidden に見える文字は保ちます。
+Db がこれらを区別するためです。
+コメントやディレクティブのあるタイトルも、そのままです。
 物理 CR・CRLF だけは共有の host 方針に従います。
 
 [fixture: architecture/label-content/bare-padding]
@@ -330,7 +376,7 @@ Db がこれらを区別するため、外側の空白のようには正規化�
 
 ```mmd
 architecture-beta
-  group labels[  A  B	 C  ]
+  group labels[A  B	 C]
 ```
 
 ### Port colons

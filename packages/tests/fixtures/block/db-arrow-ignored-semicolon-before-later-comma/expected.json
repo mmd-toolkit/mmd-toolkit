@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Block arrows: the `;` of the line is ignored, and the space after a direction may stand before the `,` of the next one."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "a",
+          "label": "style:#x",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            "right ",
+            "x"
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

@@ -905,7 +905,38 @@ id と開きの間の空白はかまいません（`A ("x")`）。
 この文脈は文字列を読み、それから `]>`、空白、`(` を読み、方向の文脈に入ります。
 方向の文脈は 1 つ以上の**方向**と `)` を読み、両方の文脈を出ます。
 方向は、小文字の `right`、`left`、`up`、`down`、`x`、`y` です。
-方向の前には、改行も含めて `,` と空白を置けて、
+方向の前には `,` を置けます。
+改行も含めて、空白を方向の前後とその `,` の後に置けますが、
+`(` と最初の方向の前の `,` の間には置けません。
+`(,x)`、`(, x)`、`( x)`、`(right ,down)` は受理され、
+`( ,x)` と `( , x)` は拒否されます。
+最初の空白の代わりにタブ、改行、空行、U+2028 を置いたものも拒否されます。
+ディレクティブ、コメント行、無視される `;` は、この規則の前に除かれます。
+`(%%{init: {}}%%,x)` は受理され、`( %%{init: {}}%%,x)` は拒否されます。
+空の説明ブロックはそこに置けません。
+[fixture: block/gram-arrow-space-before-leading-comma]
+[fixture: block/gram-arrow-space-before-leading-comma-space]
+[fixture: block/gram-arrow-tab-before-leading-comma]
+[fixture: block/gram-arrow-line-feed-before-leading-comma]
+[fixture: block/gram-arrow-line-separator-before-leading-comma]
+[fixture: block/gram-arrow-space-before-leading-comma-two]
+[fixture: block/gram-arrow-directive-space-before-leading-comma]
+[fixture: block/gram-arrow-space-directive-before-leading-comma]
+[fixture: block/gram-arrow-comment-line-before-leading-comma]
+[fixture: block/gram-arrow-empty-line-before-leading-comma]
+[fixture: block/gram-arrow-space-ignored-semicolon-before-leading-comma]
+[fixture: block/gram-arrow-empty-description-block-before-leading-comma]
+[fixture: block/db-arrow-leading-comma-space]
+[fixture: block/db-arrow-leading-comma-tab]
+[fixture: block/db-arrow-leading-comma-line-feed]
+[fixture: block/db-arrow-leading-comma-line-separator]
+[fixture: block/db-arrow-leading-comma-comment-line]
+[fixture: block/db-arrow-directive-before-leading-comma]
+[fixture: block/db-arrow-ignored-semicolon-before-leading-comma]
+[fixture: block/db-arrow-space-before-later-comma]
+[fixture: block/db-arrow-line-feed-before-later-comma]
+[fixture: block/db-arrow-comment-line-before-later-comma]
+[fixture: block/db-arrow-ignored-semicolon-before-later-comma]
 2 つの方向の間には何も要りません。
 `(right down)`、`(right, down)`、`(rightdown)` は方向 `right` と `down` です。
 方向がないもの、知らない語、大文字、終わりの `,`、続く 2 つの `,`、

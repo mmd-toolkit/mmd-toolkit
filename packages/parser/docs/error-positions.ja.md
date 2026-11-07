@@ -550,6 +550,15 @@
   未知の方向がそうである。 [fixture: block/gram-label-unquoted]
   [fixture: block/gram-name-dash] [fixture: block/gram-spec-space-before-string]
   [fixture: block/gram-arrow-unknown]
+  ブロック矢印の `(` と、最初の向きの前の `,` の間の空白もそうで、
+  その最初の文字を指す。
+  ディレクティブ、コメント行、無視される `;` が間にあっても同じである。
+  [fixture: block/gram-arrow-space-before-leading-comma]
+  [fixture: block/gram-arrow-line-feed-before-leading-comma]
+  [fixture: block/gram-arrow-directive-space-before-leading-comma]
+  [fixture: block/gram-arrow-space-directive-before-leading-comma]
+  [fixture: block/gram-arrow-comment-line-before-leading-comma]
+  [fixture: block/gram-arrow-space-ignored-semicolon-before-leading-comma]
 - 終わってはいけない文脈でテキストが終わるときは、
   最後の文字の後に空白しかないときも含めて、`range` はその文脈に入ったもので、
   メッセージは何が閉じていないかを示す。

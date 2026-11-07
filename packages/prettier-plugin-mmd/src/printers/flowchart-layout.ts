@@ -1,12 +1,15 @@
 import type {
-  FlowchartClickCallbackStatement,
   FlowchartStatement,
   FlowchartSubgraphStatement,
   Node,
 } from "@mmd-toolkit/ast"
 import {
+  addHeadingTitleRules,
   addShapeRules,
   addLinkRules,
+  breaksBetweenParts,
+  addBlankCallbackRule,
+  findCallArgumentsParentheses,
   layoutGraphAccessibility,
 } from "./graph-layout.ts"
 import { findFlowchartKeptLines } from "./flowchart-kept-lines.ts"
@@ -16,7 +19,6 @@ import {
   collectValueNodes,
   descriptionOpeningRules,
   expectToken,
-  expectValue,
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
   formatDescriptionBlock,
@@ -84,6 +86,7 @@ export function layoutSubgraphHeader(
       ).range[0],
       "none",
     )
+    addHeadingTitleRules(source, subgraph.title, rules)
   }
   return {
     atoms: collectAtoms(
@@ -128,6 +131,9 @@ export function layoutStatement(
       : statement.type === "FlowchartAccDescrBlockStatement"
         ? descriptionOpeningRules(source, start)
         : new Map()
+  if (statement.type === "FlowchartClickCallbackStatement") {
+    addBlankCallbackRule(source, statement, rules)
+  }
   const layout: AtomLayout = {
     atoms: collectAtoms(source, start, end, values, kept),
     rules,
@@ -169,7 +175,8 @@ function findOutdentedAtoms(
  *   spaces after the directive belong to the style. The whitespace around
  *   its commas is part of the values that mermaid.js stores, also when a
  *   style is all whitespace and has no node.
- * - the parentheses of a callback with the arguments between them.
+ * - the parentheses of a callback with arguments, with the arguments between
+ *   them.
  * - an `accDescr { ... }` block from the `{` to the end of its text and of
  *   the comments and directives after the text, when the text starts on a
  *   later line than the `{`: its lines keep their columns
@@ -198,11 +205,20 @@ function findKeptStretches(
     case "FlowchartDefaultLinkStyleStatement": {
       return [{ start: findStylesStart(source, statement), end }]
     }
-    case "FlowchartClickCallbackStatement":
-      if (spansLines(source, statement)) return [whole]
-      return findCallbackParentheses(source, statement)
+    case "FlowchartClickCallbackStatement": {
+      const parentheses = findCallArgumentsParentheses(source, statement)
+      const stretches =
+        parentheses === null
+          ? []
+          : [{ start: parentheses[0], end: parentheses[1] }]
+      return breaksBetweenParts(source, statement, valueNodeTypes, stretches)
+        ? [whole]
+        : stretches
+    }
     case "FlowchartClickUrlStatement":
-      return spansLines(source, statement) ? [whole] : []
+      return breaksBetweenParts(source, statement, valueNodeTypes, [])
+        ? [whole]
+        : []
     case "FlowchartAccDescrBlockStatement":
       return findAccDescrBlockStretches(source, statement)
     case "FlowchartEmptyStatement":
@@ -242,33 +258,6 @@ function findStylesStart(
     first.range[0],
   ).find((token) => token.value === ",")
   return comma?.range[0] ?? first.range[0]
-}
-
-/** Whether a statement's source contains a line terminator. */
-function spansLines(source: Source, statement: Node): boolean {
-  return source.text
-    .slice(statement.range[0], statement.range[1])
-    .includes("\n")
-}
-
-/** The parentheses after `call` with the arguments between them, if any. */
-function findCallbackParentheses(
-  source: Source,
-  statement: FlowchartClickCallbackStatement,
-): Atom[] {
-  const opening = findStructuralToken(source, statement.callback.range[1])
-  if (opening?.value !== "(" || opening.range[0] >= statement.range[1]) {
-    return []
-  }
-  const closing = expectToken(
-    findStructuralToken(
-      source,
-      statement.arguments?.range[1] ?? opening.range[1],
-    ),
-    "the `)` of callback arguments",
-  )
-  expectValue(closing, ")")
-  return [{ start: opening.range[0], end: closing.range[1] }]
 }
 
 /**
