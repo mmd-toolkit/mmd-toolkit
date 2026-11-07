@@ -44,7 +44,17 @@ export function addShapeRules(
   shape: GraphShape,
   rules: Map<number, GapRule>,
 ): void {
-  if (shape.label.kind !== "text") return
+  if (shape.label.kind !== "text") {
+    // The closing bracket touches the closing quote: mermaid.js reads the
+    // whitespace after the quote as nothing (docs/flowchart.md, Label inner
+    // whitespace).
+    const closing = expectToken(
+      findStructuralToken(source, shape.label.range[1]),
+      "the closing bracket of a shape",
+    )
+    rules.set(closing.range[0], "none")
+    return
+  }
   const edge = labelEdgeRule(source, shape.label)
   rules.set(shape.label.range[0], edge)
   const closing = expectToken(
@@ -52,6 +62,27 @@ export function addShapeRules(
     "the closing bracket of a shape",
   )
   rules.set(closing.range[0], takesTextBefore(closing) ? "none" : edge)
+}
+
+/**
+ * Adds the rules of the title of a heading, `subgraph S[ T ]` or
+ * `flow F[ T ]`: the whitespace inside its brackets is dropped as for the
+ * label of a shape, except where the label would be read otherwise (see
+ * `labelEdgeRule`); a title in quotes has none before the quote and none
+ * after it (docs/flowchart.md, Subgraph header).
+ */
+export function addHeadingTitleRules(
+  source: Source,
+  title: GraphLabel,
+  rules: Map<number, GapRule>,
+): void {
+  const closing = expectToken(
+    findStructuralToken(source, title.range[1]),
+    "the `]` after the title of a heading",
+  )
+  const edge = title.kind === "text" ? labelEdgeRule(source, title) : "none"
+  rules.set(title.range[0], edge)
+  rules.set(closing.range[0], edge)
 }
 
 /** Adds the rules of a link. */

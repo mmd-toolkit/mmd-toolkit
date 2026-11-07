@@ -472,7 +472,11 @@ each follows the documentation of its diagram type. The `:` after `accTitle` and
 diagram types and in the documentation of mermaid.js. [fixture:
 labels/accessibility-text-kept] [fixture: multi-line-statements/joined]
 [fixture: multi-line-statements/acc-descr-joined] The text of a label is kept as
-written. [fixture: labels/spaced] [fixture: labels/accessibility-text-kept]
+written. [fixture: labels/spaced] [fixture: labels/accessibility-text-kept] The
+string between the brackets of a class or a namespace has nothing between it and
+the brackets: `namespace Auth[ "x" ]` is printed `namespace Auth["x"]`, and
+`class A["x" ]` is printed `class A["x"]`. mermaid.js reads every spelling as
+the same label. [fixture: labels/bracket-padding-dropped]
 
 Input
 ([labels/spaced-input.mmd](../tests/fixtures/class/labels/spaced-input.mmd)):

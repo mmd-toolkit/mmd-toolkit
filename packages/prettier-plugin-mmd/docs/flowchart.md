@@ -906,8 +906,11 @@ Whitespace at the ends of a label without quotes is dropped, as mermaid.js drops
 it. [fixture: label-inner-whitespace/trimmed-every-shape] Whitespace inside the
 label is kept, and so is a label that is only whitespace (`A[]` would be
 rejected). [fixture: label-inner-whitespace/all-whitespace-every-shape-kept] A
-label in quotes is kept as written. [fixture:
-label-inner-whitespace/quotes-kept]
+label in quotes is kept as written, except for the whitespace between its
+closing quote and the closing bracket, which is dropped: `A["x" ]` is printed
+`A["x"]`, and so is `B{"x" }`, `C(("x" ))`, and `D[/"t" /]`. [fixture:
+label-inner-whitespace/quotes-kept] [fixture:
+label-inner-whitespace/string-closing-touches]
 
 The whitespace at the start of a label is kept, as one space, when the label
 would be read differently without it: when the label starts with `/`, `\`, `-`,
@@ -1868,9 +1871,14 @@ flowchart TD
 
 ### Subgraph header
 
-The title's interior whitespace stays as written, so `[ T ]` remains `[ T ]`:
-both forms have the same Db, and the heading keeps the author's title spelling.
-[fixture: subgraph-header/title-interior-whitespace-kept]
+The whitespace inside the brackets of the title is dropped, as for the label of
+a shape (see [Label inner whitespace](#label-inner-whitespace)):
+`subgraph S[ T ]` is printed `subgraph S[T]`, and `subgraph S["x" ]` is printed
+`subgraph S["x"]`. mermaid.js reads both spellings as the same subgraph. One
+space stays where the title would be read otherwise, with the same rule as for a
+label: `[ /x/ ]` and `[ \x\ ]` stay, since `[/x/]` would be rejected. [fixture:
+subgraph-header/title-padding-dropped] [fixture:
+subgraph-header/title-interior-whitespace-dropped]
 
 The `[` of the title touches the name of the subgraph: `subgraph S [t]` is
 printed `subgraph S[t]`, whatever the name is: a word, several words, a string,

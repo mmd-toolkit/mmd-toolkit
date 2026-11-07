@@ -285,7 +285,11 @@ flowchart の [subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダ
 `systemBoundary S [t]` は `systemBoundary S[t]` に、
 `systemBoundary S (t)` は `systemBoundary S(t)` になります。
 mermaid.js は、空白のある書き方も接する書き方も同じ境界として読みます。
-括弧の内部の余白は書かれたままです。
+括弧の内側の空白は落とします。
+mermaid.js がタイトルを trim するからです。
+`systemBoundary S[ x ]` は `systemBoundary S[x]` に、
+`S("x" )` は `S("x")` になります。
+[fixture: system-boundaries/boundary-title-padding-dropped]
 [fixture: system-boundaries/boundary-title-opener-touches-id]
 隙間にディレクティブがあれば、その両側に書かれた空白を残します。
 [fixture: system-boundaries/boundary-id-title-directed-gap]
@@ -308,7 +312,7 @@ native metadata、class、繰り返しの宣言を保ち、
 
 ```mmd
 usecase-beta
-  systemBoundary Box[ Display ]@{ type: 'package' }:::box,group
+  systemBoundary Box[Display]@{ type: 'package' }:::box,group
     actor User
     A@{ business: true }
   end

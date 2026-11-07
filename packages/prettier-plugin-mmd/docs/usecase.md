@@ -255,7 +255,10 @@ system-boundaries/boundary-header-comment-empty] Reuse the heading form of
 `[` or `(`, touches the id, so `systemBoundary S [t]` is printed
 `systemBoundary S[t]` and `systemBoundary S (t)` is printed
 `systemBoundary S(t)`. mermaid.js reads the spaced and the touching spellings as
-the same boundary. The padding inside the brackets stays written. [fixture:
+the same boundary. The whitespace inside the brackets or the parentheses is
+dropped, since mermaid.js trims the title: `systemBoundary S[ x ]` is printed
+`systemBoundary S[x]`, and `S("x" )` is printed `S("x")`. [fixture:
+system-boundaries/boundary-title-padding-dropped] [fixture:
 system-boundaries/boundary-title-opener-touches-id] A directive in the gap keeps
 the whitespace written on each side of it, as under flowchart's Directives.
 [fixture: system-boundaries/boundary-id-title-directed-gap] Preserve native
@@ -277,7 +280,7 @@ Output
 
 ```mmd
 usecase-beta
-  systemBoundary Box[ Display ]@{ type: 'package' }:::box,group
+  systemBoundary Box[Display]@{ type: 'package' }:::box,group
     actor User
     A@{ business: true }
   end

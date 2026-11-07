@@ -120,8 +120,12 @@ agentflow の文書にあるタイトル付きの見出し 19 件は、すべて
 [ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/agentflow.md#L26-L363)
 にあります。
 どちらの形でも Db は同じです。
-タイトルの内側の空白は保ち、`[ T ]`を`[ T ]`のままにします。
-agentflowだけ違う形を選ぶ理由がないためです。
+タイトルの括弧の内側の空白は落とし、`[ T ]` は `[T]` に、
+`["x" ]` は `["x"]` にします。
+flowchart と同じ形で、agentflowだけ違う形を選ぶ理由がないためです。
+タイトルが別に読まれる所（`[ /x/ ]`、agentflow の `[ x@ ]`）には、
+空白を 1 つ残します。
+[fixture: names-and-headings/heading-title-padding-dropped]
 [fixture: names-and-headings/name-heading-touches-title]
 [fixture: names-and-headings/name-heading-touches-title-kinds]
 複数の部分からなる名前（消された `click` や空の文字列を含む名前）は、
@@ -362,7 +366,7 @@ agentflowのラベルコメントの直前の空白とタブは値の文字な�
 
 flow/connectorの見出しのタイトルは、
 [subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダー)に従います。
-flowchartと同じ理由で、 `[ T ]`を含め内側の空白を保ちます。
+flowchartと同じ理由で、 `[ T ]`を含め括弧の内側の空白を落とします。
 [fixture: names-and-headings/name-heading-touches-title]
 
 入力（escape 表記）: `"agentflow-beta TB\nA[text]"`。

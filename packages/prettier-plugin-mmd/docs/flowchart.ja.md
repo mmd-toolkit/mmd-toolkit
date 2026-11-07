@@ -928,8 +928,11 @@ flowchart LR
 [fixture: label-inner-whitespace/trimmed-every-shape]
 ラベルの中の空白は保ち、空白だけのラベルも保ちます（`A[]` は拒否されます）。
 [fixture: label-inner-whitespace/all-whitespace-every-shape-kept]
-引用符で囲んだラベルは書かれたまま残します。
+引用符で囲んだラベルは書かれたまま残しますが、
+閉じの引用符と閉じ括弧の間の空白は落とします。
+`A["x" ]` は `A["x"]` に、`B{"x" }`、`C(("x" ))`、`D[/"t" /]` も同じです。
 [fixture: label-inner-whitespace/quotes-kept]
+[fixture: label-inner-whitespace/string-closing-touches]
 
 ラベルの先頭の空白は、それがないとラベルの読み方が変わるときは、
 空白 1 つとして残します。
@@ -1931,9 +1934,15 @@ flowchart TD
 
 ### subgraph のヘッダー
 
-タイトルの内側の空白を保ち、`[ T ]`を`[ T ]`のままにします。
-Dbは同じで、見出しには著者のタイトルの書き方を保つためです。
-[fixture: subgraph-header/title-interior-whitespace-kept]
+タイトルの括弧の内側の空白は、ノードのラベルと同じように、
+落とします（[ラベルの内側の空白](#ラベルの内側の空白)を参照）。
+`subgraph S[ T ]` は `subgraph S[T]` に、
+`subgraph S["x" ]` は `subgraph S["x"]` になります。
+mermaid.js は、どちらの書き方も同じ subgraph として読みます。
+タイトルが別に読まれる所には、ラベルと同じ規則で空白を 1 つ残します。
+`[ /x/ ]` や `[ \x\ ]` はそのままです。
+`[/x/]` は拒否されるからです。 [fixture: subgraph-header/title-padding-dropped]
+[fixture: subgraph-header/title-interior-whitespace-dropped]
 
 タイトルの `[` は subgraph の名前に接します。
 `subgraph S [t]` は `subgraph S[t]` になります。

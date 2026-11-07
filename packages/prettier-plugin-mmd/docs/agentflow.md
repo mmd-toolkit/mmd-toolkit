@@ -111,9 +111,12 @@ single-part name with an explicit title: the `[` of the title touches the name,
 so `flow F [T]` is printed `flow F[T]`, and so is `connector F [T]`. All 19
 headings with a title in
 [the documentation of agentflow](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/agentflow.md#L26-L363)
-are written so, and the Db is the same for both forms. Keep the title's interior
-whitespace, so `[ T ]` remains `[ T ]`; Agentflow has no reason to choose a
-different form from flowchart. [fixture:
+are written so, and the Db is the same for both forms. The whitespace inside the
+brackets of the title is dropped, so `[ T ]` is printed `[T]` and `["x" ]` is
+printed `["x"]`, as in flowchart; Agentflow has no reason to choose a different
+form. One space stays where the title would be read otherwise (`[ /x/ ]`, and
+`[ x@ ]` in Agentflow). [fixture:
+names-and-headings/heading-title-padding-dropped] [fixture:
 names-and-headings/name-heading-touches-title] [fixture:
 names-and-headings/name-heading-touches-title-kinds] A name of several parts,
 with an erased `click` or an empty string in it, is kept as written from its
@@ -343,9 +346,9 @@ Tildes remain content. Shape spellings, entities and HTML remain authored.
 [fixture: labels/labels-tilde] [fixture: labels/labels-trim-sensitive-unsafe]
 
 Flow/connector heading titles follow
-[Subgraph header](./flowchart.md#subgraph-header) instead: keep their interior
-whitespace, including `[ T ]`, for the same reason as flowchart. [fixture:
-names-and-headings/name-heading-touches-title]
+[Subgraph header](./flowchart.md#subgraph-header) instead: drop the whitespace
+inside their brackets, including `[ T ]`, for the same reason as flowchart.
+[fixture: names-and-headings/name-heading-touches-title]
 
 Input (escaped): `"agentflow-beta TB\nA[text]"`. [fixture:
 labels/labels-quote-unsafe]

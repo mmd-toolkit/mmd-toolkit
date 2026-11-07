@@ -12,6 +12,7 @@ import {
   collectValueNodes,
   expectToken,
   protectSemicolonPrefixes,
+  trimBracketedText,
 } from "./layout.ts"
 import type { Source } from "./source.ts"
 import {
@@ -139,11 +140,13 @@ export function layoutArchitectureStatement(
         }
         if (statement.icon?.type === "Identifier")
           rules.set(statement.icon.range[0], "none")
-        if (statement.title !== null)
+        if (statement.title !== null) {
           rules.set(
             statement.title.range[0],
             statement.icon?.type === "StringLiteral" ? "space" : "none",
           )
+          trimBracketedText(source, atoms, statement.title.range)
+        }
       }
       layout = { atoms, rules, outdented: new Set(), lineBreaks: "kept" }
       break

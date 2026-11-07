@@ -289,14 +289,21 @@ Db が等しい引用符変更でも、選ばれた kind と原形を失うた�
 
 ```mmd
 architecture-beta
-  service padded[ "x" ]
+  service padded["x"]
 ```
 
 ### Label content
 
-角括弧の内側は、端の空白、連続空白、タブ、空白だけの値、quoted の空値、 escape、
-HTML、entity、hidden に見える文字もそのまま保ちます。
-Db がこれらを区別するため、外側の空白のようには正規化しません。
+角括弧の内側はそのまま保ちますが、
+group と service のタイトルの括弧に接する空白、タブ、no-break space は例外です。
+mermaid.js が trim するからです。
+`group a(cloud)[ API ]` は `group a(cloud)[API]` に、
+`service s(server)["x" ]` は `service s(server)["x"]` になります。
+[fixture: architecture/label-content/title-edge-whitespace-dropped]
+テキストの中の連続空白、タブ、空白だけの値、quoted の空値、 escape、 HTML、
+entity、hidden に見える文字は保ちます。
+Db がこれらを区別するためです。
+コメントやディレクティブのあるタイトルも、そのままです。
 物理 CR・CRLF だけは共有の host 方針に従います。
 
 [fixture: architecture/label-content/bare-padding]
@@ -330,7 +337,7 @@ Db がこれらを区別するため、外側の空白のようには正規化�
 
 ```mmd
 architecture-beta
-  group labels[  A  B	 C  ]
+  group labels[A  B	 C]
 ```
 
 ### Port colons

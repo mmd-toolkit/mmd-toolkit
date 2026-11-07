@@ -327,13 +327,16 @@ style A, "B" fill:red
 ### Labels
 
 A bracket label touches its name or text id for a compact suffix; its
-bare/quoted form and every interior character stay as written. Db trimming does
-not authorize value edits: an empty quoted label or bare whitespace label omits
-the Db label, whereas quoted whitespace stores an empty label. Embedded trivia
-stays inside the label, and gap items retain attachment instead of applying
-tight spacing. [fixture: venn/labels/specified-c4-label-title] [fixture:
-venn/labels/all-suffixes] [corpus fixture: venn/db-form-text-string-label]
-[corpus fixture: venn/db-form-union-label] [corpus fixture:
+bare/quoted form and every interior character stay as written, except the
+spaces, tabs, and no-break spaces next to the brackets, which mermaid.js trims:
+`set A[ L ]` is printed `set A[L]`. [fixture: labels/bare-label-padding-dropped]
+Whitespace inside quotes belongs to the value, and stays: an empty quoted label
+or bare whitespace label omits the Db label, whereas quoted whitespace stores an
+empty label. Embedded trivia stays inside the label, and gap items retain
+attachment instead of applying tight spacing. [fixture:
+venn/labels/specified-c4-label-title] [fixture: venn/labels/all-suffixes]
+[corpus fixture: venn/db-form-text-string-label] [corpus fixture:
+venn/db-form-union-label] [corpus fixture:
 venn/lex-directive-label-delimiter-gap] [corpus fixture:
 venn/lex-label-bare-comment-only] [corpus fixture: venn/lex-label-bare-padding]
 [corpus fixture: venn/lex-label-quoted-comment-only] [corpus fixture:
@@ -360,7 +363,7 @@ Output
 
 ```mmd
 venn-beta
-set A[ L ]:002.00
+set A[L]:002.00
   text item[" Label "]
 ```
 

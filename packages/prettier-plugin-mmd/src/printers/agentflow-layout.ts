@@ -10,6 +10,7 @@ import type {
 import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import {
+  addHeadingTitleRules,
   addLinkRules,
   addShapeRules,
   layoutGraphAccessibility,
@@ -80,16 +81,20 @@ export function layoutContainerHeader(
   let nameStart = name.range[0]
   let nameEnd = name.range[1]
   const rules = new Map<number, GapRule>()
-  // Only an ordinary single-fragment explicit-title heading shares flowchart's
-  // title-gap rules. Erased click/empty forms and their context-exit gaps
-  // are Name text (diagrams/agentflow.md, Names; docs/agentflow.md, Names and headings).
+  // Only an ordinary single-fragment heading shares flowchart's heading
+  // rules. Erased click/empty forms and their context-exit gaps are Name text
+  // (diagrams/agentflow.md, Names; docs/agentflow.md, Names and headings).
   if (name.parts.length === 1) {
     // The keyword takes one whitespace character, and the rest of the
-    // whitespace after it is read with the name, which mermaid.js trims: it
-    // is printed as the one space of the gap (docs/agentflow.md, Names and
-    // headings).
-    while (nameStart < nameEnd && isWhitespace(source.text[nameStart])) {
-      nameStart++
+    // whitespace after it is read with the name, which mermaid.js trims: the
+    // name starts at its first character, past the directives and comments
+    // before it, which stand in the gap with the whitespace around them
+    // (docs/agentflow.md, Names and headings).
+    while (nameStart < nameEnd) {
+      const trivia = findTriviaBetween(source, nameStart, nameStart + 1).at(0)
+      if (trivia !== undefined) nameStart = Math.min(trivia.range[1], nameEnd)
+      else if (isWhitespace(source.text[nameStart])) nameStart++
+      else break
     }
     if (node.title !== null) {
       while (nameEnd > nameStart && isWhitespace(source.text[nameEnd - 1]))
@@ -100,20 +105,22 @@ export function layoutContainerHeader(
       nameStart = name.range[0]
       nameEnd = name.range[1]
     }
-  }
-  if (node.title !== null && name.parts.length === 1) {
-    // The `[` of the title touches the name, as in a flowchart, unless a
-    // directive or comment ends the name: the whitespace after it is kept as
-    // under Directives (docs/agentflow.md, Names and headings).
-    const lastTrivia = findTriviaBetween(source, name.range[0], nameEnd).at(-1)
-    if (lastTrivia?.range[1] !== nameEnd) {
-      rules.set(
-        expectToken(
-          findStructuralToken(source, name.range[1]),
-          "the heading title opener",
-        ).range[0],
-        "none",
+    if (node.title !== null) {
+      // The `[` of the title touches the name, as in a flowchart, unless a
+      // directive or comment ends the name: the whitespace after it is kept
+      // as under Directives.
+      const lastTrivia = findTriviaBetween(source, name.range[0], nameEnd).at(
+        -1,
       )
+      if (lastTrivia?.range[1] !== nameEnd) {
+        rules.set(
+          expectToken(
+            findStructuralToken(source, name.range[1]),
+            "the heading title opener",
+          ).range[0],
+          "none",
+        )
+      }
     }
   } else if (name.parts.length > 1) {
     // A click-context exit is outside the last Name fragment. Preserve its
@@ -129,6 +136,7 @@ export function layoutContainerHeader(
           ).range[0]
     nameEnd = suffixStart ?? findNamePrintedEnd(source, name)
   }
+  if (node.title !== null) addHeadingTitleRules(source, node.title, rules)
   const nameAtom = { start: nameStart, end: nameEnd }
   const values: Node[] = [
     ...node.data,

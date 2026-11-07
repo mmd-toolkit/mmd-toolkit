@@ -5,6 +5,7 @@ import type {
   Node,
 } from "@mmd-toolkit/ast"
 import {
+  addHeadingTitleRules,
   addShapeRules,
   addLinkRules,
   layoutGraphAccessibility,
@@ -84,6 +85,7 @@ export function layoutSubgraphHeader(
       ).range[0],
       "none",
     )
+    addHeadingTitleRules(source, subgraph.title, rules)
   }
   return {
     atoms: collectAtoms(

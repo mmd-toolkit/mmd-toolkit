@@ -509,6 +509,11 @@ sequence 図では `:` を前のものに接して書きます（詳しくは、
 [fixture: multi-line-statements/joined]
 [fixture: multi-line-statements/acc-descr-joined]
 ラベルのテキストは書かれたまま残します。 [fixture: labels/spaced]
+クラスや namespace の角括弧の間の文字列は、括弧との間に何も置きません。
+`namespace Auth[ "x" ]` は `namespace Auth["x"]` に、
+`class A["x" ]` は `class A["x"]` になります。
+mermaid.js はどの書き方も同じラベルとして読みます。
+[fixture: labels/bracket-padding-dropped]
 [fixture: labels/accessibility-text-kept]
 
 入力

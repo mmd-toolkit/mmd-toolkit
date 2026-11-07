@@ -288,15 +288,20 @@ Output
 
 ```mmd
 architecture-beta
-  service padded[ "x" ]
+  service padded["x"]
 ```
 
 ### Label content
 
-Preserve bracket interiors exactly: edge padding, repeated spaces, tabs,
-whitespace-only and quoted-empty content, escapes, HTML, entities and
-hidden-looking text. The Db can distinguish these values; normalizing them is
-not exterior spacing. Physical CR/CRLF alone follow the shared host policy.
+Preserve bracket interiors, except the spaces, tabs, and no-break spaces next to
+the brackets of the title of a group or a service: mermaid.js trims them, so
+`group a(cloud)[ API ]` is printed `group a(cloud)[API]` and
+`service s(server)["x" ]` is printed `service s(server)["x"]`. [fixture:
+label-content/title-edge-whitespace-dropped] Repeated spaces, tabs inside the
+text, whitespace-only and quoted-empty content, escapes, HTML, entities and
+hidden-looking text stay: the Db can distinguish these values, and a title with
+a comment or a directive stays as written. Physical CR/CRLF alone follow the
+shared host policy.
 
 [fixture: architecture/label-content/bare-padding]
 
@@ -329,7 +334,7 @@ Output
 
 ```mmd
 architecture-beta
-  group labels[  A  B	 C  ]
+  group labels[A  B	 C]
 ```
 
 ### Port colons

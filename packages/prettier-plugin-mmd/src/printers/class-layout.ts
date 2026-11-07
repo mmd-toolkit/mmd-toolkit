@@ -211,12 +211,7 @@ export function layoutBlockOpening(
     }
   }
   const rules = new Map<number, GapRule>([[opening.range[0], "space"]])
-  if (statement.type === "ClassDeclaration" && statement.cssClass !== null) {
-    addCssClassRules(source, statement.cssClass, rules)
-  }
-  if (statement.type === "ClassDeclaration" && statement.annotation !== null) {
-    addAnnotationRules(source, statement.annotation, null, rules)
-  }
+  addDeclarationRules(source, statement, rules)
   return {
     atoms: collectAtoms(
       source,
@@ -586,6 +581,47 @@ function addAnnotationRules(
   if (after !== null) rules.set(after, "space")
 }
 
+/**
+ * Adds the rules of what follows the name of a class or a namespace: the
+ * string between brackets, the CSS class after `:::`, and the annotation
+ * (docs/class.md, Labels and Whitespace between tokens).
+ */
+function addDeclarationRules(
+  source: Source,
+  statement: ClassDeclaration | ClassNamespaceStatement,
+  rules: Map<number, GapRule>,
+): void {
+  if (statement.label !== null) {
+    addLabelBracketRules(source, statement.label, rules)
+  }
+  if (statement.type !== "ClassDeclaration") return
+  if (statement.cssClass !== null) {
+    addCssClassRules(source, statement.cssClass, rules)
+  }
+  if (statement.annotation !== null) {
+    addAnnotationRules(source, statement.annotation, null, rules)
+  }
+}
+
+/**
+ * Adds the rules of the string between the `[` and the `]` of a class or a
+ * namespace: nothing stands between the brackets and the quotes, whatever
+ * whitespace was written there (docs/class.md, Labels).
+ */
+function addLabelBracketRules(
+  source: Source,
+  label: StringLiteral,
+  rules: Map<number, GapRule>,
+): void {
+  const closing = expectToken(
+    findStructuralToken(source, label.range[1]),
+    "the `]` after the label of a class",
+  )
+  expectValue(closing, "]")
+  rules.set(label.range[0], "none")
+  rules.set(closing.range[0], "none")
+}
+
 /** The gap rules of a statement. */
 function statementRules(
   source: Source,
@@ -617,12 +653,7 @@ function statementRules(
       )
       break
     case "ClassDeclaration":
-      if (statement.annotation !== null) {
-        addAnnotationRules(source, statement.annotation, null, rules)
-      }
-      if (statement.cssClass !== null) {
-        addCssClassRules(source, statement.cssClass, rules)
-      }
+      addDeclarationRules(source, statement, rules)
       if (statement.members !== null) {
         const { opening, closing } = findMemberBraces(source, statement)
         rules.set(

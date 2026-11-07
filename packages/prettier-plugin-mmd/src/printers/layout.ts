@@ -2,6 +2,7 @@ import type { Node, Range, Token } from "@mmd-toolkit/ast"
 import { visitorKeys } from "@mmd-toolkit/parser"
 import type { Atom, AtomLayout } from "./atoms.ts"
 import { readGapElement } from "./gap.ts"
+import { printAsWritten } from "./lines.ts"
 import {
   findSemicolonLines,
   findVerbatimStyleLines,
@@ -856,4 +857,42 @@ export function protectSemicolonPrefixes(
         ),
     ),
   ].sort((a, b) => a.start - b.start)
+}
+
+/** A space, a tab, or a no-break space: what mermaid.js trims from a label. */
+function isBracketPadding(character: string): boolean {
+  return character === " " || character === "\t" || character === "\u00a0"
+}
+
+/**
+ * Replaces the atom of a text in brackets, `[ API ]` (the range holds the
+ * brackets), by the text without the spaces, tabs, and no-break spaces next to
+ * the brackets: mermaid.js trims it, so `[ API ]` and `["x" ]` read as `[API]`
+ * and `["x"]` (docs/architecture.md, Label content). A text of only
+ * whitespace, one that holds a comment or a directive, and one with no such
+ * space stay as written.
+ */
+export function trimBracketedText(
+  source: Source,
+  atoms: Atom[],
+  range: Range,
+): void {
+  let from = range[0] + 1
+  let to = range[1] - 1
+  while (from < to && isBracketPadding(source.text[from])) from++
+  while (to > from && isBracketPadding(source.text[to - 1])) to--
+  const index = atoms.findIndex(
+    (atom) => atom.start === range[0] && atom.end === range[1],
+  )
+  if (
+    index === -1 ||
+    from === to ||
+    (from === range[0] + 1 && to === range[1] - 1) ||
+    findTriviaBetween(source, range[0], range[1]).length > 0
+  )
+    return
+  atoms[index] = {
+    ...atoms[index],
+    doc: ["[", printAsWritten(source, from, to), "]"],
+  }
 }

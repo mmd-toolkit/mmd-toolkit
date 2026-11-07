@@ -170,7 +170,14 @@ export function layoutUsecaseStatement(
         // The title opener touches the id, as in a flowchart subgraph
         // (docs/usecase.md, System boundaries).
         rules.set(opening.range[0], "none")
-        kept.push({ start: opening.range[0], end: closing.range[1] })
+        // Nothing stands inside the brackets or the parentheses: mermaid.js
+        // trims the title (docs/usecase.md, System boundaries).
+        rules.set(statement.title.range[0], "none")
+        rules.set(closing.range[0], "none")
+        kept.push({
+          start: statement.title.range[0],
+          end: statement.title.range[1],
+        })
       }
       addClassListRules(source, statement.classes, statement.range[0], rules)
       break

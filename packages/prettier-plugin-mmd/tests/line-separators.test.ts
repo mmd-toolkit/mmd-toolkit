@@ -3436,7 +3436,7 @@ const vennExamples: readonly (readonly [string, string, string])[] = [
   [
     "venn: nbsp-value-kept",
     'venn-beta\nset " A\u00a0B "[ L\u00a0M ]\nstyle A fill:rgb(1,\u00a02,3)',
-    'venn-beta\nset " A\u00a0B "[ L\u00a0M ]\nstyle A fill:rgb(1,\u00a02,3)\n',
+    'venn-beta\nset " A\u00a0B "[L\u00a0M]\nstyle A fill:rgb(1,\u00a02,3)\n',
   ],
   ["venn: ff-title-separator", "venn-beta\ntitle\fT", "venn-beta\ntitle T\n"],
   [
