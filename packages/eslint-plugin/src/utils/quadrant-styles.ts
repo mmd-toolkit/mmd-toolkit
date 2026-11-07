@@ -1,4 +1,4 @@
-import type { QuadrantLiteral } from "@mmd-toolkit/parser"
+import type { QuadrantLiteral } from "@mmd-toolkit/ast"
 
 /** A style of a point or of a class: its name and the value that mermaid.js keeps. */
 export interface QuadrantStyle {

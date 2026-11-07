@@ -1,4 +1,4 @@
-import type { BlockNode, BlockNodeStatement, Node } from "@mmd-toolkit/parser"
+import type { BlockNode, BlockNodeStatement, Node } from "@mmd-toolkit/ast"
 
 /** Whether this statement is the head itself, rather than part of its body. */
 export function isCompositeHead(

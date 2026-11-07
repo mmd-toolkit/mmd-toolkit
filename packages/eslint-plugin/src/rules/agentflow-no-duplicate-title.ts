@@ -1,4 +1,4 @@
-import type { AgentflowAccTitleStatement } from "@mmd-toolkit/parser"
+import type { AgentflowAccTitleStatement } from "@mmd-toolkit/ast"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { normalizeLineTerminators, titleText } from "../utils/acc-text.ts"

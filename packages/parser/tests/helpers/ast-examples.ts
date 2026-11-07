@@ -1,4 +1,4 @@
-import type { Range } from "../../src/index.ts"
+import type { Range } from "@mmd-toolkit/ast"
 
 // The comments of the node types in `packages/ast/src/ast.ts` and
 // `packages/ast/src/ast/<diagram>.ts` show examples of the syntax of each node

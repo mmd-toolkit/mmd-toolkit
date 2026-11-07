@@ -1,11 +1,6 @@
 import type { Parser, ParserOptions } from "prettier"
-import type {
-  Node,
-  ParseError,
-  Position,
-  Range,
-  Root,
-} from "@mmd-toolkit/parser"
+import type { Node, Position, Range, Root } from "@mmd-toolkit/ast"
+import type { ParseError } from "@mmd-toolkit/parser"
 import { parse } from "@mmd-toolkit/parser"
 import type { DiagramPrinter, DiagramTextRules } from "./printers/index.ts"
 import { diagramPrinters, diagramTextRules } from "./printers/index.ts"

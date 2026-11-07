@@ -1,4 +1,4 @@
-import type { GanttLiteral, GanttTaskStatement } from "@mmd-toolkit/parser"
+import type { GanttLiteral, GanttTaskStatement } from "@mmd-toolkit/ast"
 
 /**
  * The roles that mermaid.js gives the items of the data of a task, after the

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 import type { Fixture } from "@mmd-toolkit/tests"
 import { loadFixtures } from "@mmd-toolkit/tests"
-import type { TreemapBodyItem, TreemapDiagram } from "../src/index.ts"
+import type { TreemapBodyItem, TreemapDiagram } from "@mmd-toolkit/ast"
 import { parse, traverseNodes, visitorKeys } from "../src/index.ts"
 import { treemapLexingOf } from "./helpers/reference-inputs.ts"
 

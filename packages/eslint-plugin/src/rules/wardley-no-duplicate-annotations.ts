@@ -1,5 +1,5 @@
 import type { SuggestedEdit } from "@eslint/core"
-import type { WardleyAnnotationsStatement } from "@mmd-toolkit/parser"
+import type { WardleyAnnotationsStatement } from "@mmd-toolkit/ast"
 import type { MermaidSourceCode } from "../source-code.ts"
 import { oneOfTwoRemovals } from "../utils/removal.ts"
 import type { MermaidRuleDefinition } from "../rule-types.ts"

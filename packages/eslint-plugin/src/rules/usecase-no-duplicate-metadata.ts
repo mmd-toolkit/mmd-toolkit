@@ -4,17 +4,15 @@ import type {
   UsecaseMetadataAssignmentStatement,
   UsecaseMetadataProperty,
   UsecaseSystemBoundaryStatement,
-} from "@mmd-toolkit/parser"
-import type { MermaidSourceCode } from "../source-code.ts"
-import { commaRemovalRange } from "../utils/comma-parts.ts"
-import { canCompactRange } from "../utils/compact-range.ts"
-import { removalRange } from "../utils/removal.ts"
-import type {
   Identifier,
   StringLiteral,
   UsecaseLabel,
   UsecaseMetadata,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
+import type { MermaidSourceCode } from "../source-code.ts"
+import { commaRemovalRange } from "../utils/comma-parts.ts"
+import { canCompactRange } from "../utils/compact-range.ts"
+import { removalRange } from "../utils/removal.ts"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { normalizeLineTerminators } from "../utils/acc-text.ts"

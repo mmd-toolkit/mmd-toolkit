@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { loadFixtures, DATA_BLOCK_NODE_TYPES } from "@mmd-toolkit/tests"
-import type { Root, UsecaseDiagram } from "../src/index.ts"
+import type { Root, UsecaseDiagram } from "@mmd-toolkit/ast"
 import { parse, ParseError, traverseNodes } from "../src/index.ts"
 
 describe("usecase fixtures", async () => {

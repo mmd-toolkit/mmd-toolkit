@@ -5,7 +5,7 @@
  */
 import type { Linter } from "eslint"
 import { Linter as LinterClass } from "eslint"
-import type { Node } from "@mmd-toolkit/parser"
+import type { Node } from "@mmd-toolkit/ast"
 import plugin from "../src/index.ts"
 import type { MermaidRuleDefinition, MermaidSourceCode } from "../src/index.ts"
 

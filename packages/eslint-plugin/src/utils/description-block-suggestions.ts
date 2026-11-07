@@ -1,5 +1,5 @@
 import type { SuggestedEdit } from "@eslint/core"
-import type { Node, Token } from "@mmd-toolkit/parser"
+import type { Node, Token } from "@mmd-toolkit/ast"
 import type { MermaidSourceCode } from "../source-code.ts"
 import { braceLineOf } from "./description-block.ts"
 import { removalRange } from "./removal.ts"

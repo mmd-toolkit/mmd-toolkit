@@ -1,4 +1,4 @@
-import type { BlockStyleStatement } from "@mmd-toolkit/parser"
+import type { BlockStyleStatement } from "@mmd-toolkit/ast"
 import { oneOfTwoRemovals } from "../utils/removal.ts"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"

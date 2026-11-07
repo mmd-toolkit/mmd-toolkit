@@ -4,7 +4,7 @@ import type {
   KanbanNode,
   Node,
   Range,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import {
   findLeadingDirectives,
   findNodeLineEnd,

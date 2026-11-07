@@ -1,7 +1,7 @@
 import { canEditRange } from "../utils/edit-range.ts"
 import { canCompactRange } from "../utils/compact-range.ts"
 import type { SuggestedEdit } from "@eslint/core"
-import type { BlockNodeStatement, Range } from "@mmd-toolkit/parser"
+import type { BlockNodeStatement, Range } from "@mmd-toolkit/ast"
 import { traverseNodes } from "@mmd-toolkit/parser"
 import type { MermaidSourceCode } from "../source-code.ts"
 import type { MermaidRuleDefinition } from "../rule-types.ts"

@@ -10,7 +10,7 @@ import type {
   XychartStatement,
   XychartXAxisStatement,
   XychartYAxisStatement,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { AtomLayout, GapRule } from "./atoms.ts"
 import { holdsJoiningRegion } from "./kept-lines.ts"
 import {

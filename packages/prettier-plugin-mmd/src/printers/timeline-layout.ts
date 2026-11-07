@@ -8,7 +8,7 @@ import type {
   TimelineStatement,
   TimelineTitleStatement,
   Token,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import { util } from "prettier"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { readGap } from "./gap.ts"

@@ -8,7 +8,7 @@ import {
 } from "vue"
 import type { Ref, ShallowRef, ComputedRef } from "vue"
 import type * as Formatter from "./formatter.ts"
-import type { Range, Root } from "@mmd-toolkit/parser"
+import type { Range, Root } from "@mmd-toolkit/ast"
 import { onParserUpdate, parseSource, visitNodes } from "./engine.ts"
 import { defaultSource } from "./examples.ts"
 import { decodeState, encodeState } from "./share.ts"

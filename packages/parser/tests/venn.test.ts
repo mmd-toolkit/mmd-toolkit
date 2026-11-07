@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { loadFixtures } from "@mmd-toolkit/tests"
-import type { Root, VennDiagram } from "../src/index.ts"
+import type { Root, VennDiagram } from "@mmd-toolkit/ast"
 import { ParseError, parse } from "../src/index.ts"
 
 describe("venn fixtures", async () => {

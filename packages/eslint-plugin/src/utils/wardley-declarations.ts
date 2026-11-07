@@ -8,7 +8,7 @@ import type {
   WardleyIdentifier,
   WardleyPipelineComponent,
   WardleyPipelineStatement,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import { normalizeLineTerminators } from "./acc-text.ts"
 
 /** Written names retain spaces, case and escapes; only line endings are normalized. */

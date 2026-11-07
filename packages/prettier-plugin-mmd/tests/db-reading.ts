@@ -38,7 +38,7 @@ import type {
   Range,
   TreeviewBranchPrefix,
   TreeviewIgnoredText,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import { parse, visitorKeys } from "@mmd-toolkit/parser"
 import { significantIndentationWidth } from "../src/printers/lines.ts"
 

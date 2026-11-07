@@ -1,5 +1,5 @@
 import type { AstPath, Doc, ParserOptions } from "prettier"
-import type { DiagramBody } from "@mmd-toolkit/parser"
+import type { DiagramBody } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import { printBlockDiagram } from "./block.ts"
 import { printError } from "./error.ts"

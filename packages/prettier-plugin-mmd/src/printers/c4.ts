@@ -1,5 +1,5 @@
 import type { AstPath, Doc, ParserOptions } from "prettier"
-import type { C4Statement } from "@mmd-toolkit/parser"
+import type { C4Statement } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
 import type { AtomLayout } from "./atoms.ts"

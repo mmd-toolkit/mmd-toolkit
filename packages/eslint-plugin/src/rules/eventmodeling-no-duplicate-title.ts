@@ -1,4 +1,4 @@
-import type { EventmodelingAccTitleStatement } from "@mmd-toolkit/parser"
+import type { EventmodelingAccTitleStatement } from "@mmd-toolkit/ast"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { commonTitleText } from "../utils/common-value-text.ts"

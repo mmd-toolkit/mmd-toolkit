@@ -1,6 +1,7 @@
 import { readFileSync, readdirSync } from "node:fs"
 import { describe, expect, expectTypeOf, it } from "vitest"
-import type { Node, Visitor, VisitorKeys } from "../src/index.ts"
+import type { Node } from "@mmd-toolkit/ast"
+import type { Visitor, VisitorKeys } from "../src/index.ts"
 import { parse, traverseNodes, visitorKeys } from "../src/index.ts"
 import { allNodeTypes, holdsNode } from "./helpers/node-types.ts"
 

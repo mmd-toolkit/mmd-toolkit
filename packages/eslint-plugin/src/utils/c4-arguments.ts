@@ -5,7 +5,7 @@ import type {
   C4NamedAttribute,
   C4RelationshipStatement,
   C4UpdateStatement,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import { normalizeLineTerminators } from "./acc-text.ts"
 
 /** The four C4 call families, all with one written-order argument list. */

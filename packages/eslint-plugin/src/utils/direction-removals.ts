@@ -3,7 +3,7 @@ import type {
   AgentflowDirectionStatement,
   FlowchartDirectionStatement,
   UsecaseDirectionStatement,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { MermaidSourceCode } from "../source-code.ts"
 import { removalRange } from "./removal.ts"
 

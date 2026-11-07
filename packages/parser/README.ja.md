@@ -34,7 +34,7 @@ npm install --save-dev @mmd-toolkit/ast
 ```
 
 パーサーは、これを任意の peer 依存にしています。
-入れないと、`parse()` は `any` を返し、`Root` などの型の import は失敗します。
+入れないと、`parse()` は `any` を返します。
 `skipLibCheck` が無効なら、
 TypeScript はパーサーの宣言ファイルで `TS2307` を報告します。
 
@@ -258,9 +258,10 @@ try {
 
 ### 型
 
-[`@mmd-toolkit/ast`](../ast) を入れると（[導入](#導入)を参照）、 `Root`、
+[`@mmd-toolkit/ast`](../ast)（[導入](#導入)を参照）は、`Root`、
 `FlowchartVertex`、`Identifier` など、すべてのノードの TypeScript の型と、
 図種 id の合併型 `DiagramType` を公開しています。
+パーサーが公開するのは、`Visitor` など、パーサー自身の型だけです。
 名前と欄は、仕様の [`ast.md`](../spec/docs/ast.ja.md) と、
 各図のノードの文書のものです。
 各図のノードの文書は、[対応している図](#対応している図)の表から辿れます。

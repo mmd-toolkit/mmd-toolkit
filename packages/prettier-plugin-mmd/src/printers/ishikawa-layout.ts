@@ -3,7 +3,7 @@ import type {
   IshikawaNode,
   Node,
   Range,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { AtomLayout } from "./atoms.ts"
 import {
   findLeadingDirectives,

@@ -1,5 +1,5 @@
 import type { AstPath, Doc, ParserOptions } from "prettier"
-import type { SankeyLinkStatement } from "@mmd-toolkit/parser"
+import type { SankeyLinkStatement } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
 import type { BlockRules } from "./blocks.ts"

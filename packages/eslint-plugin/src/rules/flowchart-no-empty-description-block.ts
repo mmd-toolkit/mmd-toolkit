@@ -2,7 +2,7 @@ import type { SuggestedEdit } from "@eslint/core"
 import type {
   FlowchartAccDescrBlockStatement,
   FlowchartSubgraphStatement,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import type { MermaidSourceCode } from "../source-code.ts"

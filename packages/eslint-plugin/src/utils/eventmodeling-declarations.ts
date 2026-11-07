@@ -4,7 +4,7 @@ import type {
   EventmodelingResetFrameStatement,
   EventmodelingTimeFrameStatement,
   Identifier,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 
 /** Written identifier identity retains case and the leading zeros of frame names. */
 export function eventmodelingNameText(node: Identifier): string {

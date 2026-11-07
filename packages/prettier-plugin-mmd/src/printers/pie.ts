@@ -1,4 +1,4 @@
-import type { PieDiagram, PieBodyItem } from "@mmd-toolkit/parser"
+import type { PieDiagram, PieBodyItem } from "@mmd-toolkit/ast"
 import type { FlatHiddenPrinter } from "./flat-hidden-diagram.ts"
 import { createFlatHiddenDiagramPrinter } from "./flat-hidden-diagram.ts"
 import { layoutPieHeader, layoutPieStatement } from "./pie-layout.ts"

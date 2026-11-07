@@ -20,14 +20,14 @@ npm install @mmd-toolkit/parser
 npm install --save-dev @mmd-toolkit/ast
 ```
 
-パーサーは、このパッケージを任意の peer 依存にしています。
-`prettier-plugin-mmd` と `@mmd-toolkit/eslint-plugin` の利用者が、
-これをダウンロードしないようにするためです。
+パーサー、`prettier-plugin-mmd`、`@mmd-toolkit/eslint-plugin` は、
+このパッケージを任意の peer 依存にしています。
+利用者が、型を使うときだけダウンロードするようにするためです。
 
 ## 使い方
 
-型は、すべての型を export するパーサーからも、
-このパッケージからも import できます。
+型は、このパッケージから import します。
+パーサーは export しません。
 
 ```ts
 import { parse } from "@mmd-toolkit/parser"

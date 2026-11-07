@@ -20,13 +20,13 @@ npm install @mmd-toolkit/parser
 npm install --save-dev @mmd-toolkit/ast
 ```
 
-The parser declares this package as an optional peer dependency, so that
-`prettier-plugin-mmd` and `@mmd-toolkit/eslint-plugin` do not download it.
+The parser, `prettier-plugin-mmd`, and `@mmd-toolkit/eslint-plugin` declare this
+package as an optional peer dependency, so that their users download it only
+when they use the types.
 
 ## Usage
 
-Import the types from the parser, which exports all of them, or from this
-package:
+Import the types from this package; the parser does not export them:
 
 ```ts
 import { parse } from "@mmd-toolkit/parser"

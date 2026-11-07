@@ -1,7 +1,7 @@
 import type {
   RequirementElementStatement,
   RequirementRequirementStatement,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 
 /** A statement that defines a requirement or an element, with a body. */
 export type BoxStatement =

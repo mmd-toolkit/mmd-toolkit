@@ -4,7 +4,7 @@ import type {
   CustomRuleTypeDefinitions,
   CustomRuleVisitorWithExit,
 } from "@eslint/plugin-kit"
-import type { Node } from "@mmd-toolkit/parser"
+import type { Node } from "@mmd-toolkit/ast"
 import type { MermaidSourceCode, MermaidSyntaxElement } from "./source-code.ts"
 
 /**

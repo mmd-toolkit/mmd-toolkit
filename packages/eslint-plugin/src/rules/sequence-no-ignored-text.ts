@@ -1,10 +1,7 @@
 import { canEditRange } from "../utils/edit-range.ts"
 import { canCompactRange } from "../utils/compact-range.ts"
 import type { RuleFixer } from "@eslint/core"
-import type {
-  SequenceIgnoredStatement,
-  SequenceText,
-} from "@mmd-toolkit/parser"
+import type { SequenceIgnoredStatement, SequenceText } from "@mmd-toolkit/ast"
 import type { MermaidSourceCode } from "../source-code.ts"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"

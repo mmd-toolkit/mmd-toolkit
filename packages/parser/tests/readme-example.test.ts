@@ -6,7 +6,7 @@
  */
 import { readFileSync } from "node:fs"
 import { describe, expect, it } from "vitest"
-import type { Root } from "../src/index.ts"
+import type { Root } from "@mmd-toolkit/ast"
 import { parse } from "../src/index.ts"
 
 /** The README files that carry the example. */

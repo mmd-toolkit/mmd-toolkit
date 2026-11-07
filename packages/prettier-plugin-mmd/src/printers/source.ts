@@ -1,10 +1,4 @@
-import type {
-  Comment,
-  Directive,
-  Range,
-  Root,
-  Token,
-} from "@mmd-toolkit/parser"
+import type { Comment, Directive, Range, Root, Token } from "@mmd-toolkit/ast"
 
 /**
  * A comment as the printers read it: its kind, its range, and its mark. A

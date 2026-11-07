@@ -1,4 +1,4 @@
-import type { Identifier, StringLiteral } from "@mmd-toolkit/parser"
+import type { Identifier, StringLiteral } from "@mmd-toolkit/ast"
 import { normalizeLineTerminators } from "./acc-text.ts"
 
 /** A written Venn name, without quotes and with normalized line terminators. */

@@ -1,4 +1,3 @@
-export type * from "@mmd-toolkit/ast"
 export { ParseError } from "./errors.ts"
 export { parse } from "./parse.ts"
 export type { Visitor } from "./traverse.ts"

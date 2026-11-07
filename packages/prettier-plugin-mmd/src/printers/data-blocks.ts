@@ -1,4 +1,4 @@
-import type { Node, Range } from "@mmd-toolkit/parser"
+import type { Node, Range } from "@mmd-toolkit/ast"
 import type { Doc } from "prettier"
 import { builders } from "prettier/doc"
 import type { AtomLayout } from "./atoms.ts"

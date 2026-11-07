@@ -1,5 +1,5 @@
 import { appendItems } from "./collections.ts"
-import type { Range, StateStatement } from "@mmd-toolkit/parser"
+import type { Range, StateStatement } from "@mmd-toolkit/ast"
 import type { KeptLines } from "./kept-lines.ts"
 import {
   findLinesEndedBySemicolon,

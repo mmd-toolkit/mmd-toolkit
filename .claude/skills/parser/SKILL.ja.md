@@ -217,7 +217,6 @@ flowchart のファイルが手本になる。
 2. `packages/ast/src/ast.ts`: `DiagramBody` に図の本体のノードを足す。
 3. `src/visitor-keys/<図種>.ts` を書き、`src/visitor-keys.ts` で展開する。
 4. `packages/ast/src/index.ts`: 新しいファイルの型を公開する。
-   パーサーは 1 行で全部を公開する。
    `parse()` の API は共有のインターフェースなので（AGENTS.md）、
    公開した型を結果に示す。
    prettier-plugin と eslint-plugin がその型の上に作る。

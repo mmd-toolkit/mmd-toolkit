@@ -1,4 +1,4 @@
-import type { InfoDiagram, InfoBodyItem } from "@mmd-toolkit/parser"
+import type { InfoDiagram, InfoBodyItem } from "@mmd-toolkit/ast"
 import type { FlatHiddenPrinter } from "./flat-hidden-diagram.ts"
 import { createFlatHiddenDiagramPrinter } from "./flat-hidden-diagram.ts"
 import { layoutInfoHeader, layoutInfoStatement } from "./info-layout.ts"

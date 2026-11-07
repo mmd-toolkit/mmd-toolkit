@@ -6,7 +6,7 @@ import { layoutKeywordHeader } from "./layout.ts"
 import type { SectionedDiagram } from "./sectioned.ts"
 import { printSectionedDiagram } from "./sectioned.ts"
 import type { Source } from "./source.ts"
-import type { GanttStatement } from "@mmd-toolkit/parser"
+import type { GanttStatement } from "@mmd-toolkit/ast"
 
 /**
  * The Gantt chart as a diagram that a `section` groups. mermaid.js reads its

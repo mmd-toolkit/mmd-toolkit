@@ -9,7 +9,7 @@ import { layoutKeywordHeader } from "./layout.ts"
 import type { SectionedDiagram } from "./sectioned.ts"
 import { printSectionedDiagram } from "./sectioned.ts"
 import type { Source } from "./source.ts"
-import type { JourneyStatement } from "@mmd-toolkit/parser"
+import type { JourneyStatement } from "@mmd-toolkit/ast"
 
 /** The user journey as a diagram that a `section` groups. */
 const journeyDiagram: SectionedDiagram<JourneyStatement> = {

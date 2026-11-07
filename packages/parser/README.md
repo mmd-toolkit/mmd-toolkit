@@ -33,8 +33,8 @@ npm install --save-dev @mmd-toolkit/ast
 ```
 
 The parser declares it as an optional peer dependency. Without it, `parse()`
-returns `any`, importing a type such as `Root` fails, and with `skipLibCheck`
-off TypeScript reports `TS2307` in the declaration file of the parser.
+returns `any`, and with `skipLibCheck` off TypeScript reports `TS2307` in the
+declaration file of the parser.
 
 ## Usage
 
@@ -243,12 +243,12 @@ try {
 
 ### Types
 
-With [`@mmd-toolkit/ast`](../ast) installed (see [Installation](#installation)),
-the package exports a TypeScript type for every node, such as `Root`,
-`FlowchartVertex`, and `Identifier`, and `DiagramType`, the union of the diagram
-type ids. The names and fields are those of the specification's
-[`ast.md`](../spec/docs/ast.md) and of the node document of each diagram, linked
-from [Supported diagrams](#supported-diagrams).
+[`@mmd-toolkit/ast`](../ast) (see [Installation](#installation)) exports a
+TypeScript type for every node, such as `Root`, `FlowchartVertex`, and
+`Identifier`, and `DiagramType`, the union of the diagram type ids; the parser
+exports only its own types, such as `Visitor`. The names and fields are those of
+the specification's [`ast.md`](../spec/docs/ast.md) and of the node document of
+each diagram, linked from [Supported diagrams](#supported-diagrams).
 
 ## Walking the tree
 

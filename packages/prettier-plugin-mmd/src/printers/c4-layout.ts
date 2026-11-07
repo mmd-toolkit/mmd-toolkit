@@ -9,7 +9,7 @@ import type {
   Node,
   Range,
   Token,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { maxOf } from "./collections.ts"
 import {

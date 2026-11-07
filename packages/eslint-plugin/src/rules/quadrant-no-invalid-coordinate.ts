@@ -2,7 +2,7 @@ import { canEditRange } from "../utils/edit-range.ts"
 import { canCompactRange } from "../utils/compact-range.ts"
 import type { MermaidSourceCode } from "../source-code.ts"
 import type { RuleFixer } from "@eslint/core"
-import type { QuadrantLiteral } from "@mmd-toolkit/parser"
+import type { QuadrantLiteral } from "@mmd-toolkit/ast"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 

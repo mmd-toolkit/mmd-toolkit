@@ -1,6 +1,6 @@
 import type { AstPath, Doc, ParserOptions } from "prettier"
 import { builders } from "prettier/doc"
-import type { Node, Token } from "@mmd-toolkit/parser"
+import type { Node, Token } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import type { AtomLayout } from "./atoms.ts"
 import { printAtoms } from "./atoms.ts"

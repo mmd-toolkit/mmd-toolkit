@@ -41,8 +41,9 @@ GitHub][positions] for their format.
 
 ## Types and diagram-specific fields
 
-With `@mmd-toolkit/ast` installed (see [Installation](./index.md#installation)),
-the package exports these types, as well as a type for each diagram node:
+`@mmd-toolkit/ast` (see [Installation](./index.md#installation)) exports these
+types, as well as a type for each diagram node. `Visitor` and `VisitorKeys` are
+the only types that `@mmd-toolkit/parser` exports:
 
 | Types                                                       | Purpose                                             |
 | ----------------------------------------------------------- | --------------------------------------------------- |
@@ -59,7 +60,7 @@ a flowchart:
 
 ```ts
 import { parse } from "@mmd-toolkit/parser"
-import type { DiagramBody, Root } from "@mmd-toolkit/parser"
+import type { DiagramBody, Root } from "@mmd-toolkit/ast"
 
 const root: Root = parse("flowchart LR\n  A[Start] --> B\n")
 const body: DiagramBody = root.body

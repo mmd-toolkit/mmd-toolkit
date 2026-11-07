@@ -1,4 +1,4 @@
-import type { Node, Range, Root } from "@mmd-toolkit/parser"
+import type { Node, Range, Root } from "@mmd-toolkit/ast"
 import { getVisitorKeys, visitNodes } from "./engine.ts"
 
 /** A source selection, distinct from metadata on the immutable parsed tree. */

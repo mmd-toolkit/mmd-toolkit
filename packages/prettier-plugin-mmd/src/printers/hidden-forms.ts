@@ -1,4 +1,4 @@
-import type { Node } from "@mmd-toolkit/parser"
+import type { Node } from "@mmd-toolkit/ast"
 import { builders } from "prettier/doc"
 import type { AtomLayout } from "./atoms.ts"
 import type { BlockRules } from "./blocks.ts"

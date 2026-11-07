@@ -1,6 +1,6 @@
 import type { Doc, ParserOptions } from "prettier"
 import { builders, utils } from "prettier/doc"
-import type { StringLiteral } from "@mmd-toolkit/parser"
+import type { StringLiteral } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import type { ItemRun } from "./gap.ts"
 import { walk } from "./layout.ts"

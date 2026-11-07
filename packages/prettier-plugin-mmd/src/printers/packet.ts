@@ -1,4 +1,4 @@
-import type { PacketDiagram, PacketBodyItem } from "@mmd-toolkit/parser"
+import type { PacketDiagram, PacketBodyItem } from "@mmd-toolkit/ast"
 import type { FlatHiddenPrinter } from "./flat-hidden-diagram.ts"
 import { createFlatHiddenDiagramPrinter } from "./flat-hidden-diagram.ts"
 import { layoutPacketHeader, layoutPacketStatement } from "./packet-layout.ts"

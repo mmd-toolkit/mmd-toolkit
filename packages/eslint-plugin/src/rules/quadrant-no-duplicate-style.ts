@@ -1,11 +1,11 @@
 import type { SuggestedEdit } from "@eslint/core"
-import type { QuadrantLiteral } from "@mmd-toolkit/parser"
-import type { MermaidSourceCode } from "../source-code.ts"
-import { commaRemovalRange } from "../utils/comma-parts.ts"
 import type {
+  QuadrantLiteral,
   QuadrantClassDefStatement,
   QuadrantPointStatement,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
+import type { MermaidSourceCode } from "../source-code.ts"
+import { commaRemovalRange } from "../utils/comma-parts.ts"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { styleOf } from "../utils/quadrant-styles.ts"

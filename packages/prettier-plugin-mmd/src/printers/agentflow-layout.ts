@@ -6,7 +6,7 @@ import type {
   AgentflowStatement,
   AgentflowName,
   Node,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import {

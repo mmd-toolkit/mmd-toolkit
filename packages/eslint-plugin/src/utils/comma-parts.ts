@@ -1,6 +1,6 @@
 import { canEditRange } from "./edit-range.ts"
 import { canCompactRange } from "./compact-range.ts"
-import type { Node, Range } from "@mmd-toolkit/parser"
+import type { Node, Range } from "@mmd-toolkit/ast"
 import type { MermaidSourceCode } from "../source-code.ts"
 
 /** Remove one comma-delimited part with the separator on its side of the gap. */

@@ -1,4 +1,4 @@
-import type { Node, Range } from "@mmd-toolkit/parser"
+import type { Node, Range } from "@mmd-toolkit/ast"
 import type { Doc } from "prettier"
 import type { GapRule } from "./atoms.ts"
 import { expectToken, expectValue } from "./layout.ts"

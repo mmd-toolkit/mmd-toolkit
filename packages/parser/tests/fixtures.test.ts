@@ -59,7 +59,7 @@ import {
   getFixturesRoot,
   loadFixtures,
 } from "@mmd-toolkit/tests"
-import type { Location, Range, Token } from "../src/index.ts"
+import type { Location, Range, Token } from "@mmd-toolkit/ast"
 import { parse } from "../src/index.ts"
 import { dbOfTree } from "./helpers/db-of-tree.ts"
 import type { Outcome, Parsed } from "./helpers/known-divergences.ts"

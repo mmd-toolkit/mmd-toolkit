@@ -3,7 +3,7 @@ import type {
   FlowchartDiagram,
   FlowchartStatement,
   FlowchartSubgraphStatement,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
 import { formatDataBlocks } from "./data-blocks.ts"

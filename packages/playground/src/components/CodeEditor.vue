@@ -1,6 +1,6 @@
 <script setup lang="ts" vapor>
 import { onMounted, onBeforeUnmount, watch, useTemplateRef } from "vue"
-import type { Range } from "@mmd-toolkit/parser"
+import type { Range } from "@mmd-toolkit/ast"
 import { initializeEditors, monaco } from "../editor.ts"
 
 const props = defineProps<{

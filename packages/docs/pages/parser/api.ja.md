@@ -42,7 +42,8 @@ frontmatterの位置情報は`range`と`loc`から取得できます。
 
 ## 型と図固有のフィールド
 
-`@mmd-toolkit/ast`を入れると、各図のノードの型に加えて、次の型を公開しています。
+`@mmd-toolkit/ast`は、各図のノードの型に加えて、次の型を公開しています。
+`@mmd-toolkit/parser`が公開する型は、`Visitor`と`VisitorKeys`だけです。
 [インストール](./index.ja.md#インストール)を参照してください。
 
 | 型                                                          | 用途                                              |
@@ -59,7 +60,7 @@ frontmatterの位置情報は`range`と`loc`から取得できます。
 
 ```ts
 import { parse } from "@mmd-toolkit/parser"
-import type { DiagramBody, Root } from "@mmd-toolkit/parser"
+import type { DiagramBody, Root } from "@mmd-toolkit/ast"
 
 const root: Root = parse("flowchart LR\n  A[Start] --> B\n")
 const body: DiagramBody = root.body

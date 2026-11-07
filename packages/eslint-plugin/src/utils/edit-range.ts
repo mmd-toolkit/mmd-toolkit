@@ -1,4 +1,4 @@
-import type { Range } from "@mmd-toolkit/parser"
+import type { Range } from "@mmd-toolkit/ast"
 import type { MermaidSourceCode } from "../source-code.ts"
 
 /** Replacing or removing a range must not take any part of a directive with it. */

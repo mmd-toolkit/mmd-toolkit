@@ -4,7 +4,7 @@ import type {
   InfoDiagram,
   InfoIgnoredText,
   Token,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { AtomLayout, GapRule } from "./atoms.ts"
 import {
   collectAtoms,

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { loadFixtures } from "@mmd-toolkit/tests"
-import type { PieDiagram } from "../src/index.ts"
+import type { PieDiagram } from "@mmd-toolkit/ast"
 import { parse } from "../src/index.ts"
 
 describe("pie fixtures", async () => {

@@ -1,4 +1,4 @@
-import type { AgentflowLink, FlowchartLink } from "@mmd-toolkit/parser"
+import type { AgentflowLink, FlowchartLink } from "@mmd-toolkit/ast"
 import { normalizeLineTerminators } from "./acc-text.ts"
 
 /** The statement kinds that contain bodies or link chains in each graph tree. */

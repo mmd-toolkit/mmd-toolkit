@@ -1,4 +1,4 @@
-import type { RequirementName } from "@mmd-toolkit/parser"
+import type { RequirementName } from "@mmd-toolkit/ast"
 
 /**
  * The text of a name of a requirement diagram: the name of a requirement, of an

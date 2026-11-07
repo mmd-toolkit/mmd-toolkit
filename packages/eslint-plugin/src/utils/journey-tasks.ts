@@ -1,4 +1,4 @@
-import type { JourneyTaskStatement, Token } from "@mmd-toolkit/parser"
+import type { JourneyTaskStatement, Token } from "@mmd-toolkit/ast"
 import type { MermaidSourceCode } from "../source-code.ts"
 
 /** The separators of the data of a task, as `Punctuator` tokens. */

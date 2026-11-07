@@ -102,9 +102,9 @@ package.
   documents do not refer to the parser's specification of tokens and positions.
   Skill `spec`.
 - `packages/ast`: the TypeScript types of the tree, which follow the definition
-  in the specification. It holds types only. The parser has it as an optional
-  peer dependency at the same version, so that the users of the formatter and of
-  the linter do not download it. Skill `parser`.
+  in the specification. It holds types only. The parser, the formatter, and the
+  linter have it as an optional peer dependency at the same version, so that
+  their users download it only when they use the types. Skill `parser`.
 - `packages/parser`: the reference implementation of the specification, and the
   specification of the tokens and positions of the tree (its `docs/tokens.md`
   and `docs/positions.md`). Every behavior it implements comes from the

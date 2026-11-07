@@ -1,6 +1,6 @@
 import { appendItems } from "./collections.ts"
 import type { AstPath, Doc, ParserOptions } from "prettier"
-import type { Node, Range } from "@mmd-toolkit/parser"
+import type { Node, Range } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { printAtoms } from "./atoms.ts"

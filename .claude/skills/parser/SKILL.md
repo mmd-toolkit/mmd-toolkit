@@ -203,10 +203,9 @@ Add them in this order; the flowchart files are the model.
    `FlowchartNode`).
 2. `packages/ast/src/ast.ts`: add the body node of the diagram to `DiagramBody`.
 3. `src/visitor-keys/<diagram>.ts`, spread into `src/visitor-keys.ts`.
-4. `packages/ast/src/index.ts`: export the types of the new file; the parser
-   exports all of them with one line. The `parse()` API is a shared interface
-   (AGENTS.md); show the exported types in the result, since prettier-plugin and
-   eslint-plugin build on them.
+4. `packages/ast/src/index.ts`: export the types of the new file. The `parse()`
+   API is a shared interface (AGENTS.md); show the exported types in the result,
+   since prettier-plugin and eslint-plugin build on them.
 5. `src/parse.ts`: the `case` of the diagram type ids, calling the diagram's
    parser. Several ids can share one parser (the flowchart has `flowchart-v2`,
    `flowchart-elk`, and `swimlane`). The `default` of that `switch` checks with

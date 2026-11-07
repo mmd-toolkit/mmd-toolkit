@@ -1,4 +1,4 @@
-import type { C4Statement } from "@mmd-toolkit/parser"
+import type { C4Statement } from "@mmd-toolkit/ast"
 import type { KeptLines } from "./kept-lines.ts"
 import {
   findLinesEndedBySemicolon,

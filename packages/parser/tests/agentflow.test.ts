@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { loadFixtures } from "@mmd-toolkit/tests"
-import type { AgentflowDiagram, Root } from "../src/index.ts"
+import type { AgentflowDiagram, Root } from "@mmd-toolkit/ast"
 import { parse, ParseError, traverseNodes } from "../src/index.ts"
 
 describe("agentflow fixtures", async () => {

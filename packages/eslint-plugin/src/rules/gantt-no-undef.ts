@@ -2,7 +2,7 @@ import type {
   GanttClickStatement,
   GanttLiteral,
   GanttTaskStatement,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { itemRolesOf, taskIdsOf } from "../utils/gantt-tasks.ts"

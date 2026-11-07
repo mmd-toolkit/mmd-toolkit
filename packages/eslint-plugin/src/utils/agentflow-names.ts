@@ -1,4 +1,4 @@
-import type { AgentflowLabel, AgentflowName } from "@mmd-toolkit/parser"
+import type { AgentflowLabel, AgentflowName } from "@mmd-toolkit/ast"
 import { normalizeLineTerminators } from "./acc-text.ts"
 
 /** The written name, without erased parts or whitespace at its ends. */

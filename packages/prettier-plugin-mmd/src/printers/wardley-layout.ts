@@ -5,7 +5,7 @@ import type {
   WardleyDiagram,
   WardleyIgnoredText,
   WardleyPipelineStatement,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { AtomLayout, GapRule } from "./atoms.ts"
 import type { HiddenBlockLayout } from "./flat-hidden-diagram.ts"
 import { layoutCommonDescription, layoutCommonLine } from "./common-layout.ts"

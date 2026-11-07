@@ -6,7 +6,7 @@ import type {
   AgentflowShape,
   AgentflowVertex,
   Node,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { MermaidRuleVisitor } from "../rule-types.ts"
 import {
   agentflowConnectorId,

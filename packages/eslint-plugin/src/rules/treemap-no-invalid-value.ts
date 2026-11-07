@@ -1,7 +1,7 @@
 import { canEditRange } from "../utils/edit-range.ts"
 import type { RuleFixer, SuggestedEdit } from "@eslint/core"
 import type { MermaidSourceCode } from "../source-code.ts"
-import type { NumericLiteral } from "@mmd-toolkit/parser"
+import type { NumericLiteral } from "@mmd-toolkit/ast"
 import {
   numberWithoutDigitSeparators,
   numberWithDecimalPoint,

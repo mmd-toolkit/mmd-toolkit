@@ -1,6 +1,6 @@
 import type { DbSummary, DbTreeRoot, EmbeddedValues } from "@mmd-toolkit/tests"
 import { cssSupportsColor, dbFromTree } from "@mmd-toolkit/tests"
-import type { Root } from "../../src/index.ts"
+import type { Root } from "@mmd-toolkit/ast"
 
 /**
  * The Db summary that the tree `root` of the source `text` denotes, as

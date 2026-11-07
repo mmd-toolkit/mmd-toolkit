@@ -1,4 +1,4 @@
-import type { RailroadDiagram, RailroadBodyItem } from "@mmd-toolkit/parser"
+import type { RailroadDiagram, RailroadBodyItem } from "@mmd-toolkit/ast"
 import type { FlatHiddenPrinter } from "./flat-hidden-diagram.ts"
 import { createFlatHiddenDiagramPrinter } from "./flat-hidden-diagram.ts"
 import {

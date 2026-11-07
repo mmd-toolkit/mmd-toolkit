@@ -2,7 +2,7 @@ import type {
   C4BoundaryStatement,
   C4ElementStatement,
   C4UpdateStatement,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { MermaidRuleVisitor } from "../rule-types.ts"
 import {
   c4ArgumentValue,

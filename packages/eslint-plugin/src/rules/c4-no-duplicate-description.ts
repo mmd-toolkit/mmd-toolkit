@@ -2,7 +2,7 @@ import type {
   C4AccDescriptionStatement,
   C4AccDescrStatement,
   C4AccDescrBlockStatement,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { accDescrTextOf } from "../utils/acc-text.ts"

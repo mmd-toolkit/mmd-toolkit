@@ -1,4 +1,4 @@
-import type { Node, Range, VennStatement } from "@mmd-toolkit/parser"
+import type { Node, Range, VennStatement } from "@mmd-toolkit/ast"
 import type { AtomLayout, GapRule } from "./atoms.ts"
 import { lineStartOf } from "./kept-lines.ts"
 import {

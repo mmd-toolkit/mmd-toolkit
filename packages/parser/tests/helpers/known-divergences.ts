@@ -8,7 +8,7 @@ import { checkPacketBlocks } from "../../src/diagrams/packet/acceptance.ts"
  * with a divergence has its form.
  */
 import type { MermaidConfig } from "@mmd-toolkit/tests"
-import type { Range, Root, TokenKind } from "../../src/index.ts"
+import type { Range, Root, TokenKind } from "@mmd-toolkit/ast"
 import { ParseError, parse, traverseNodes } from "../../src/index.ts"
 import { isWhitespace } from "../../src/character-classes.ts"
 import { findDirectives } from "../../src/directives.ts"

@@ -390,7 +390,7 @@ Node は型の注記を取り除いて実行するので、スクリプトを変
 ```ts
 import { readFileSync } from "node:fs"
 import { parse } from "<repo>/packages/parser/src/index.ts"
-import type { Root } from "<repo>/packages/parser/src/index.ts"
+import type { Root } from "<repo>/packages/ast/src/index.ts"
 import { runMermaid } from "<repo>/packages/tests/src/mermaid.ts"
 
 const casesPath = process.argv[2]

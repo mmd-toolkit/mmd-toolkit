@@ -12,8 +12,6 @@ import type {
   GitgraphNode,
   PieNode,
   UsecaseNode,
-} from "@mmd-toolkit/ast"
-import type {
   ClassNode,
   ErNode,
   FlowchartNode,
@@ -33,7 +31,7 @@ import type {
   VennNode,
   IshikawaTreeNode,
   AgentflowNode,
-} from "../../src/index.ts"
+} from "@mmd-toolkit/ast"
 
 /** ast.md, Shared leaf nodes: the node types, as the tests expect them. */
 export const sharedLeafNodeTypes: readonly string[] = [
