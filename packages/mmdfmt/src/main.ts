@@ -90,13 +90,24 @@ export async function main(args: readonly string[], io: Io): Promise<number> {
     },
   })
   try {
-    // gunshi writes the usage, the version, and its errors to standard output
-    // with console.log, and has no option for where it writes them. The tool
-    // writes the result of --stdin-filepath to standard output, so an error
-    // must go to standard error instead. With usageSilent, gunshi writes
-    // nothing: it returns the usage and the version, and throws its errors,
-    // and the tool writes them. When gunshi can be told where to write, tell
-    // it, and drop usageSilent and the writing here and in run.
+    // gunshi 0.37 writes to standard output with console.log, and has no
+    // option for where it writes: a header before every command, the usage,
+    // the version, and its errors. The tool writes the result of
+    // --stdin-filepath to standard output, where none of them may mix in. With
+    // usageSilent, gunshi writes nothing: it returns the usage and the
+    // version, and throws its errors, and the tool writes them.
+    //
+    // When gunshi is updated to 1.0, check what it writes without
+    // usageSilent. Two changes of 1.0 write the header only with the usage
+    // (https://github.com/kazupon/gunshi/pull/843) and write the errors to
+    // standard error with console.error
+    // (https://github.com/kazupon/gunshi/pull/844). If nothing of gunshi then
+    // reaches standard output but the usage of --help and the version, see
+    // whether usageSilent and the writing here and in run can go. 1.0 also
+    // sets the exit code to 1 when it writes an error, where the tool exits
+    // with 2 for a wrong use (README, Exit codes): decide again which code a
+    // wrong use exits with. With usageSilent, 1.0 still writes no error and
+    // throws it, as 0.37 does.
     const printed = await cli([...args], command, {
       name: "mmdfmt",
       version: packageJson.version,
