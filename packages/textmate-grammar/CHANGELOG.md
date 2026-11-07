@@ -1,5 +1,11 @@
 # @mmd-toolkit/textmate-grammar
 
+## 0.1.1
+
+### Patch Changes
+
+- [#64](https://github.com/mmd-toolkit/mmd-toolkit/pull/64) [`b817905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/b8179056e2aebd764c260fbd7fee9a65fe27d00d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Say in the README which hosts the grammar is for, and link the Mermaid site.
+
 ## 0.1.0
 
 ### Minor Changes
