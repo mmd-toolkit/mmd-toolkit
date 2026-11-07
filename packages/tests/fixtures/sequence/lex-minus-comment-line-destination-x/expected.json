@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "sequence.md Messages: the comment line is left out, and the line feed after the `-` makes the input rejected."
+    "note": "sequence.md Messages: the comment line is left out, and a line feed right after the `-` is a `newline` unit, which the message does not take there, so the input is rejected."
   },
   "accepted": false,
   "error": {

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Messages: mermaid.js reads no token for the block, the whitespace before it ends at the block, and the line feed after it is a `newline` unit, so both reject the input."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...A ->> - accDescr {}x: b\n----------------------^\nExpecting 'link', 'ACTOR', got 'NEWLINE'"
+  }
+}

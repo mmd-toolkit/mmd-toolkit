@@ -927,10 +927,29 @@ sequence/lex-empty-text]
 矢印を始めない行き先に空白は要りません。
 `A ->> -y: b` は `-` と行き先 `y` を持ちます。
 [fixture: sequence/lex-minus-glued-destination-y]
-行き先は `-` の行に置きます。
-その間の改行は、後にコメント行が続いても拒否されます。
+`-` の直後の改行は `newline` の単位で、
+メッセージはそこでそれを取りません（規則 1）。
+そのため、`A ->> -`、改行、`x: b` は拒否されます。
+改行の後に空行やコメント行が続いても、`x` の前に字下げがあっても、
+改行の前にディレクティブがあっても同じで、
+改行の前に空白と空の説明ブロックがあるものも同じです。
 [fixture: sequence/lex-minus-line-feed-destination-x]
 [fixture: sequence/lex-minus-comment-line-destination-x]
+[fixture: sequence/lex-minus-empty-line-destination-x]
+[fixture: sequence/lex-minus-line-feed-indent-destination-x]
+[fixture: sequence/lex-minus-directive-line-feed-destination-x]
+[fixture: sequence/lex-minus-empty-description-block-line-feed-destination-x]
+改行の前から始まる空白は、改行を越えます（規則 2）。
+`A ->> -`、空白、改行、`x: b` は `-` と行き先 `x` を持ちます。
+空白の代わりにタブや U+2028 でも、改行の後に空行やコメント行が続いても、
+`x` の前に字下げがあっても、空白の後にディレクティブがあっても同じです。
+[fixture: sequence/lex-minus-trailing-space-destination-x]
+[fixture: sequence/lex-minus-trailing-tab-destination-x]
+[fixture: sequence/lex-minus-trailing-line-separator-destination-x]
+[fixture: sequence/lex-minus-trailing-space-comment-line-destination-x]
+[fixture: sequence/lex-minus-trailing-space-empty-line-destination-x]
+[fixture: sequence/lex-minus-trailing-space-indent-destination-x]
+[fixture: sequence/lex-minus-trailing-space-directive-destination-x]
 その間の空の説明ブロックはメッセージの中にあるので、ここでは拒否されます。
 mermaid.js は `A ->> -accDescr {}x: b` を受理します。
 [`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md)

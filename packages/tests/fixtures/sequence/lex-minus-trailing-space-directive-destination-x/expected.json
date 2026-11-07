@@ -1,0 +1,63 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Messages: the directive is left out, so the space after the `-` runs over the line feed."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "x"
+      },
+      {
+        "name": "x",
+        "description": "x",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "A",
+        "message": "",
+        "wrap": false,
+        "type": 17,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "A",
+        "to": "x",
+        "message": "b",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "A",
+        "message": "",
+        "wrap": false,
+        "type": 18,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "sequence.md Messages: the destination must follow on the line of the `-`, so the line feed makes the input rejected."
+    "note": "sequence.md Messages: a line feed right after the `-` is a `newline` unit, which the message does not take there, so the input is rejected."
   },
   "accepted": false,
   "error": {
