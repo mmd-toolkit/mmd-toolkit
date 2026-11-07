@@ -3,6 +3,7 @@ import type {
   ArchitectureBodyItem,
   ArchitectureDiagram,
   ArchitectureIgnoredText,
+  Range,
 } from "@mmd-toolkit/ast"
 import type { AtomLayout, GapRule } from "./atoms.ts"
 import { layoutCommonDescription, layoutCommonLine } from "./common-layout.ts"
@@ -68,6 +69,7 @@ export function layoutArchitectureStatement(
       value.type === "ArchitectureIgnoredText",
   )
   let layout: AtomLayout
+  let titleRange: Range | null = null
   switch (statement.type) {
     case "ArchitectureIgnoredText":
       layout = {
@@ -145,7 +147,7 @@ export function layoutArchitectureStatement(
             statement.title.range[0],
             statement.icon?.type === "StringLiteral" ? "space" : "none",
           )
-          trimBracketedText(source, atoms, statement.title.range)
+          titleRange = statement.title.range
         }
       }
       layout = { atoms, rules, outdented: new Set(), lineBreaks: "kept" }
@@ -156,11 +158,10 @@ export function layoutArchitectureStatement(
         `prettier-plugin-mmd: unknown architecture item ${JSON.stringify(statement satisfies never)}`,
       )
   }
-  return protectHiddenGaps(
-    {
-      ...layout,
-      atoms: protectSemicolonPrefixes(source, start, end, layout.atoms),
-    },
-    hidden,
-  )
+  const atoms = protectSemicolonPrefixes(source, start, end, layout.atoms)
+  // mermaid.js trims the title of a group or a service, also in the prefix of
+  // a line with a `;`, which the protected atom holds (docs/architecture.md,
+  // Label content).
+  if (titleRange !== null) trimBracketedText(source, atoms, titleRange)
+  return protectHiddenGaps({ ...layout, atoms }, hidden)
 }

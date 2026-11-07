@@ -1,5 +1,6 @@
 import type { Node, Range, Token } from "@mmd-toolkit/ast"
 import { visitorKeys } from "@mmd-toolkit/parser"
+import type { Doc } from "prettier"
 import type { Atom, AtomLayout } from "./atoms.ts"
 import { readGapElement } from "./gap.ts"
 import { printAsWritten } from "./lines.ts"
@@ -7,6 +8,7 @@ import {
   findSemicolonLines,
   findVerbatimStyleLines,
   isDroppedSemicolon,
+  isInsideStyleRuleStretch,
   lineEndOf,
   lineStartOf,
   semicolonSegmentEnd,
@@ -865,14 +867,13 @@ function isBracketPadding(character: string): boolean {
 }
 
 /**
- * Replaces the atom of a text in brackets, `[ API ]` (the range holds the
- * brackets), by the text without the spaces, tabs, and no-break spaces next to
- * the brackets: mermaid.js trims it, so `[ API ]` and `["x" ]` read as `[API]`
- * and `["x"]` (docs/architecture.md, Label content). A text of only
- * whitespace, one that holds a comment or a directive, and one with no such
- * space stay as written. So does a text that no atom of its own holds, as when
- * a protected `;` prefix has taken the atom in (see `protectSemicolonPrefixes`,
- * docs/architecture.md, Semicolons).
+ * Drops the whitespace of the text in brackets, `[ API ]` (the range holds the
+ * brackets), next to the brackets: the spaces, tabs, and no-break spaces that
+ * mermaid.js trims, so `[ API ]` and `["x" ]` read as `[API]` and `["x"]`
+ * (docs/architecture.md, Label content). A text of only whitespace, one that
+ * holds a comment or a directive, and one with no such space stay as written.
+ * The whitespace is dropped wherever an atom holds it, also inside a protected
+ * `;` prefix (see `protectSemicolonPrefixes` and `dropPaddings`).
  */
 export function trimBracketedText(
   source: Source,
@@ -883,18 +884,57 @@ export function trimBracketedText(
   let to = range[1] - 1
   while (from < to && isBracketPadding(source.text[from])) from++
   while (to > from && isBracketPadding(source.text[to - 1])) to--
-  const index = atoms.findIndex(
-    (atom) => atom.start === range[0] && atom.end === range[1],
-  )
-  if (
-    index === -1 ||
-    from === to ||
-    (from === range[0] + 1 && to === range[1] - 1) ||
-    findTriviaBetween(source, range[0], range[1]).length > 0
-  )
+  if (from === to || findTriviaBetween(source, range[0], range[1]).length > 0)
     return
-  atoms[index] = {
-    ...atoms[index],
-    doc: ["[", printAsWritten(source, from, to), "]"],
+  dropPaddings(source, atoms, [
+    [range[0] + 1, from],
+    [to, range[1] - 1],
+  ])
+}
+
+/**
+ * Drops the whitespace of each range in `pads` that an atom holds, by giving
+ * that atom a replacement that leaves it out. A pad is the spaces, tabs, and
+ * no-break spaces between a bracket and the text, which mermaid.js trims; a
+ * range with anything else in it is left as written. A gap between two atoms is not
+ * held by one, and is dropped by a rule of its own. Where the whitespace lies
+ * between a `:` and a `#` of a line that the line rule of mermaid.js may read
+ * (see `isInsideStyleRuleStretch`), one space stays: whether it is there
+ * decides which `;` of the line is ignored, as for a gap in flowchart.
+ */
+export function dropPaddings(
+  source: Source,
+  atoms: Atom[],
+  pads: readonly Range[],
+): void {
+  const edits = new Map<number, { range: Range; replacement: string }[]>()
+  for (const pad of pads) {
+    if (pad[0] >= pad[1]) continue
+    // A line terminator, a comment, or a directive between the bracket and the
+    // text is no padding, and stays.
+    if (!Array.from(source.text.slice(pad[0], pad[1])).every(isBracketPadding))
+      continue
+    const index = atoms.findIndex(
+      (atom) => atom.start <= pad[0] && pad[1] <= atom.end,
+    )
+    if (index === -1 || atoms[index].doc !== undefined) continue
+    const replacement = isInsideStyleRuleStretch(source, pad[0], pad[1])
+      ? " "
+      : ""
+    if (replacement === source.text.slice(pad[0], pad[1])) continue
+    const list = edits.get(index) ?? []
+    list.push({ range: pad, replacement })
+    edits.set(index, list)
+  }
+  for (const [index, list] of edits) {
+    const atom = atoms[index]
+    const parts: Doc[] = []
+    let at = atom.start
+    for (const edit of list.sort((a, b) => a.range[0] - b.range[0])) {
+      parts.push(printAsWritten(source, at, edit.range[0]), edit.replacement)
+      at = edit.range[1]
+    }
+    parts.push(printAsWritten(source, at, atom.end))
+    atoms[index] = { ...atom, doc: parts }
   }
 }

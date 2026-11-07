@@ -949,8 +949,10 @@ flowchart LR
 [fixture: label-inner-whitespace/quotes-kept]
 [fixture: label-inner-whitespace/string-closing-touches]
 落とすのは、閉じの引用符と同じ行にある空白だけです。
-引用符と括弧の間の改行、コメント行、ディレクティブ、U+2028、U+2029 は残り、
-改行の後の括弧は継続行になります。
+引用符と括弧の間の改行、コメント行、ディレクティブと、
+その行にある U+2028 と U+2029 は残り、改行の後の括弧は継続行になります。
+継続行の先頭にある U+2028 と U+2029 は字下げとして読まれるので、
+印字が行に与える字下げに置き換わります。
 [fixture: label-inner-whitespace/string-closing-break-and-directive-kept]
 [test: U+2028 between the closing quote and the bracket of a flowchart label]
 [test: U+2029 between the closing quote and the bracket of a flowchart label]
@@ -1356,6 +1358,7 @@ mermaid.js は、2 行目以降が字下げされていると、その一部を�
 1 行の文と同じように `click A "/u" "x` と `y"` になります。
 [fixture: multi-line-statements/click-string-over-lines-collapsed]
 [fixture: multi-line-statements/click-callback-args-over-lines-collapsed]
+[fixture: multi-line-statements/click-callback-args-comment-line-collapsed]
 [fixture: multi-line-statements/click-string-over-lines-directive-inside]
 隣にディレクティブ、`;`、コメント行、空行があるときも、
 1 行の文と同じに扱います。
@@ -1986,9 +1989,12 @@ mermaid.js は、どちらの書き方も同じ subgraph として読みます�
 `[ /x/ ]` や `[ \x\ ]` はそのままです。
 `[/x/]` は拒否されるからです。 [fixture: subgraph-header/title-padding-dropped]
 [fixture: subgraph-header/title-interior-whitespace-dropped]
-括弧の中の改行、コメント行、U+2028、U+2029 の隣にある空白は、
-書かれたまま残します。
+括弧の中の改行とコメント行は、ヘッダーの行として残ります。
+改行の前の空白は、どの行末でもそうであるように落ち、
+その後の括弧は継続行になります。
 [fixture: subgraph-header/title-padding-beside-line-break]
+括弧の中の行にある U+2028 と U+2029 は残り、
+継続行の先頭にあるものは字下げとして読まれます。
 [test: U+2028 in the title of a flowchart subgraph header]
 [test: U+2029 in the title of a flowchart subgraph header]
 行の規則が読むかもしれない行では、

@@ -129,7 +129,8 @@ flowchart と同じ形で、agentflowだけ違う形を選ぶ理由がないた�
 空白が書かれていれば 1 つにして残します。
 `flow F[ %%{x}%% T ]` は `flow F[ %%{x}%% T]` に、
 `flow G[ T %%{x}%% ]` は `flow G[T %%{x}%% ]` になります。
-`]` の前の U+2028 と U+2029 は残します。
+`]` と同じ行にある U+2028 と U+2029 は残し、
+継続行の先頭にあるものは字下げとして読まれます。
 [fixture: names-and-headings/heading-title-directive-at-edge]
 [test: agentflow: U+2028 inside the brackets of a flow title]
 [test: agentflow: U+2029 inside the brackets of a flow title]
@@ -1123,13 +1124,15 @@ mermaid.js はどちらの書き方も同じ呼び出しとして読むからで
 書かれたままです。 [fixture: click-statements/callback-blank-parentheses-touch]
 [test: agentflow: U+2028 between the parentheses of a blank callback]
 [test: agentflow: U+2029 between the parentheses of a blank callback]
-改行がすべて文字列の中か括弧の間にある文は、
+改行がすべて文字列の中か、引数のある呼び出しの括弧の間にある文は、
 最初の click キーワードの後の隙間を 1 行の文と同じに整え、
 残りは書かれたままにします。
 `click   A "/u" "x` と次の行の `  y"` は、
 `click A "/u" "x` と `  y"` になります。
-隙間に改行があれば、文は書かれたまま残します。
+隙間に改行があるとき、または空の `f(` と `)` の間に改行があるときは、
+文を書かれたまま残します。
 [fixture: click-statements/string-over-lines-keyword-gap]
+[fixture: click-statements/callback-parentheses-over-lines]
 
 入力（escape 表記）: `"agentflow-beta TB\nA\nclick   A cb\n"`。
 [fixture: click-statements/click-keyword-gap]

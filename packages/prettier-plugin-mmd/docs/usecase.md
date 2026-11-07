@@ -261,13 +261,18 @@ stays): `systemBoundary S[ x ]` is printed `systemBoundary S[x]`, and `S("x" )`
 is printed `S("x")`. [fixture: system-boundaries/boundary-title-padding-dropped]
 [fixture: system-boundaries/boundary-title-opener-touches-id] A directive at an
 edge of the title keeps the gap beside it, one space where whitespace was
-written (`S[ %%{x}%% T ]` is printed `S[ %%{x}%% T]`). On a line with a kept
-`;`, the text through the last `;` is protected (see Statements and semicolons),
-so `S[ a;b ]` is printed `S[ a;b]`: the padding before the `;` stays and the
-padding after it is dropped. A U+2028 or U+2029 before the `]` stays. [fixture:
+written (`S[ %%{x}%% T ]` is printed `S[ %%{x}%% T]`). The padding is dropped on
+a line with a kept `;` too, where the text through the last `;` is protected
+(see Statements and semicolons): dropping it moves no `;`, so the line rule
+selects the same one. `S[ a;b ]` is printed `S[a;b]`, and `S[ a; ]` is printed
+`S[a;]`. One space stays where the padding lies between a `:` and a `#` of a
+line that the line rule may read, as in architecture and venn. A padding with a
+U+2028 or U+2029 in it stays. [fixture:
 system-boundaries/boundary-title-directive-or-semicolon] [test: usecase: U+2028
 inside the brackets of a boundary title] [test: usecase: U+2029 inside the
-brackets of a boundary title] A directive in the gap keeps whether whitespace
+brackets of a boundary title] [test: usecase: U+2028 inside the brackets of a
+boundary title with a semicolon] [test: usecase: U+2029 inside the brackets of a
+boundary title with a semicolon] A directive in the gap keeps whether whitespace
 was written on each side of it, a run of whitespace becoming one space, as under
 flowchart's Directives. [fixture:
 system-boundaries/boundary-id-title-directed-gap] [fixture:

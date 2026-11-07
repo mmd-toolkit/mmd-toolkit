@@ -928,8 +928,10 @@ closing quote and the closing bracket, which is dropped: `A["x" ]` is printed
 label-inner-whitespace/quotes-kept] [fixture:
 label-inner-whitespace/string-closing-touches] Only whitespace on the line of
 the closing quote is dropped: a line break, a comment line, a directive, or a
-U+2028 or U+2029 between the quote and the bracket stays, and a bracket after a
-line break stands as a continuation line. [fixture:
+U+2028 or U+2029 on that line between the quote and the bracket stays, and a
+bracket after a line break stands as a continuation line. A U+2028 or U+2029 at
+the start of a continuation line is read as its indentation, so it is replaced
+by the indentation that the printer gives the line. [fixture:
 label-inner-whitespace/string-closing-break-and-directive-kept] [test: U+2028
 between the closing quote and the bracket of a flowchart label] [test: U+2029
 between the closing quote and the bracket of a flowchart label]
@@ -1325,6 +1327,7 @@ follow the ordinary rules: `click   A "/u" "x` and `y"` on the next line is
 printed `click A "/u" "x` and `y"`, as the statement on one line would be.
 [fixture: multi-line-statements/click-string-over-lines-collapsed] [fixture:
 multi-line-statements/click-callback-args-over-lines-collapsed] [fixture:
+multi-line-statements/click-callback-args-comment-line-collapsed] [fixture:
 multi-line-statements/click-string-over-lines-directive-inside] A directive, a
 `;`, a comment line, or an empty line beside it is treated as for a statement on
 one line. [fixture:
@@ -1921,12 +1924,16 @@ a shape (see [Label inner whitespace](#label-inner-whitespace)):
 space stays where the title would be read otherwise, with the same rule as for a
 label: `[ /x/ ]` and `[ \x\ ]` stay, since `[/x/]` would be rejected. [fixture:
 subgraph-header/title-padding-dropped] [fixture:
-subgraph-header/title-interior-whitespace-dropped] Whitespace beside a line
-break, a comment line, or a U+2028 or U+2029 in the brackets stays as written.
-[fixture: subgraph-header/title-padding-beside-line-break] [test: U+2028 in the
-title of a flowchart subgraph header] [test: U+2029 in the title of a flowchart
-subgraph header] On a line that the line rule may read, the whitespace after the
-`[` of a title that follows `style:` stays: `subgraph style:[ #x; ]` is printed
+subgraph-header/title-interior-whitespace-dropped] A line break or a comment
+line in the brackets stays, as a line of the header: the whitespace before the
+line break is dropped, as at the end of any line, and the bracket after it
+stands as a continuation line. [fixture:
+subgraph-header/title-padding-beside-line-break] A U+2028 or U+2029 on a line of
+the brackets stays where it is, and one at the start of a continuation line is
+read as its indentation. [test: U+2028 in the title of a flowchart subgraph
+header] [test: U+2029 in the title of a flowchart subgraph header] On a line
+that the line rule may read, the whitespace after the `[` of a title that
+follows `style:` stays: `subgraph style:[ #x; ]` is printed
 `subgraph style:[ #x;]`, while `subgraph a: [ #x; ]` is printed
 `subgraph a:[#x;]`, since no `style` stands before its `:`. [fixture:
 subgraph-header/title-padding-on-line-rule-line]

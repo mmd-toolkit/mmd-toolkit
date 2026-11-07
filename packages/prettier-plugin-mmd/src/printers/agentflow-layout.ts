@@ -14,7 +14,7 @@ import {
   addLinkRules,
   addShapeRules,
   breaksBetweenParts,
-  findCallbackParentheses,
+  addBlankCallbackRule,
   layoutGraphAccessibility,
 } from "./graph-layout.ts"
 import { findAgentflowKeptLines } from "./agentflow-kept-lines.ts"
@@ -331,9 +331,8 @@ function addClickKeptStretches(
     "click ids",
   ).range[0]
   const parentheses =
-    statement.type === "AgentflowClickCallbackStatement" &&
-    statement.arguments === null
-      ? findCallbackParentheses(source, statement)
+    statement.type === "AgentflowClickCallbackStatement"
+      ? addBlankCallbackRule(source, statement, rules)
       : null
   if (parentheses === null) {
     kept.push({ start: idsStart, end })
@@ -343,7 +342,6 @@ function addClickKeptStretches(
     { start: idsStart, end: parentheses.opening.range[1] },
     { start: parentheses.closing.range[0], end },
   )
-  rules.set(parentheses.closing.range[0], "none")
 }
 
 /** Agentflow statements use flowchart's shared graph spacing and atom printer. */

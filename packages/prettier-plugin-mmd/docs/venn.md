@@ -330,14 +330,22 @@ A bracket label touches its name or text id for a compact suffix; its
 bare/quoted form and every interior character stay as written, except the
 spaces, tabs, and no-break spaces next to the brackets, which mermaid.js trims:
 `set A[ L ]` is printed `set A[L]`. A label that holds a directive stays as
-written, and so does the text through the last kept `;` of a line, a protected
-stretch (see Terms): `set A[ a; ]` and `set B[ a;b ]` are not changed. A U+2028
-or U+2029 before the `]` stays. [fixture:
-labels/bracket-padding-with-directive-or-semicolon-kept] [test: U+2028 inside
-the brackets of a venn label] [test: U+2029 inside the brackets of a venn label]
-[fixture: labels/bare-label-padding-dropped] Whitespace inside quotes belongs to
-the value, and stays: an empty quoted label or bare whitespace label omits the
-Db label, whereas quoted whitespace stores an empty label. Embedded trivia stays
+written. The padding is dropped on a line with a kept `;` too, where the text
+through the last `;` is a protected stretch (see Terms): it moves no `;`, so the
+line rule selects the same one. `set A[ a; ]` is printed `set A[a;]` and
+`set B[ a;b ]` is printed `set B[a;b]`. One space stays where the padding lies
+between a `:` and a `#` of a line that the line rule may read, since whether it
+is there decides which `;` is ignored: `set "style:"[ #x; ]` is printed
+`set "style:"[ #x;]`, while `set "a:b"[ #x; ]` has no `style` before the `:` and
+is printed `set "a:b"[#x;]`. A padding with a U+2028 or U+2029 in it stays.
+[fixture: labels/bracket-padding-with-directive-or-semicolon] [fixture:
+labels/bracket-padding-in-style-rule-stretch] [test: U+2028 inside the brackets
+of a venn label] [test: U+2029 inside the brackets of a venn label] [test:
+U+2028 inside the brackets of a venn label with a semicolon] [test: U+2029
+inside the brackets of a venn label with a semicolon] [fixture:
+labels/bare-label-padding-dropped] Whitespace inside quotes belongs to the
+value, and stays: an empty quoted label or bare whitespace label omits the Db
+label, whereas quoted whitespace stores an empty label. Embedded trivia stays
 inside the label, and gap items retain attachment instead of applying tight
 spacing. [fixture: venn/labels/specified-c4-label-title] [fixture:
 venn/labels/all-suffixes] [corpus fixture: venn/db-form-text-string-label]

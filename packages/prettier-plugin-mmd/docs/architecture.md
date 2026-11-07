@@ -297,17 +297,28 @@ Preserve bracket interiors, except the spaces, tabs, and no-break spaces next to
 the brackets of the title of a group or a service: mermaid.js trims them, so
 `group a(cloud)[ API ]` is printed `group a(cloud)[API]` and
 `service s(server)["x" ]` is printed `service s(server)["x"]`. [fixture:
-label-content/title-edge-whitespace-dropped] The text through the last kept `;`
-of a line is protected (see Semicolons), so a title on such a line keeps its
-padding: `group g(cloud)[ a;b ]` and `service s(server)[ x; ] in g` are not
-changed. A U+2028 or U+2029 before the `]` stays. [fixture:
-label-content/title-directive-or-semicolon-kept] [test:
+label-content/title-edge-whitespace-dropped] This holds on a line with a kept
+`;` too, where the text through the last `;` is protected (see Semicolons):
+dropping the padding moves no `;`, adds none and removes none, so the line rule
+selects the same `;`. `group g(cloud)[ a;b ]` is printed `group g(cloud)[a;b]`,
+and `service s(server)[ x; ] in g` is printed `service s(server)[x;] in g`. One
+space stays where the padding lies between a `:` and a `#` of a line that the
+line rule may read, since whether it is there decides which `;` is ignored:
+`service style(logos:aws)[ #y; ]` is printed `service style(logos:aws)[ #y;]`,
+while `service s(logos:aws)[ #y; ]` has no `style` before the `:` and is printed
+`service s(logos:aws)[#y;]`. A title with a comment or a directive stays as
+written, and so does a padding with a U+2028 or U+2029 in it. [fixture:
+label-content/title-padding-with-directive-or-semicolon] [fixture:
+label-content/title-padding-in-style-rule-stretch] [fixture:
+label-content/title-padding-after-colon-without-style] [test:
 architecture/label-content/title-u2028] [test:
-architecture/label-content/title-u2029] Repeated spaces, tabs inside the text,
-whitespace-only and quoted-empty content, escapes, HTML, entities and
-hidden-looking text stay: the Db can distinguish these values, and a title with
-a comment or a directive stays as written. Physical CR/CRLF alone follow the
-shared host policy.
+architecture/label-content/title-u2029] [test:
+architecture/label-content/title-with-semicolon-u2028] [test:
+architecture/label-content/title-with-semicolon-u2029] Repeated spaces, tabs
+inside the text, whitespace-only and quoted-empty content, escapes, HTML,
+entities and hidden-looking text stay: the Db can distinguish these values, and
+a title with a comment or a directive stays as written. Physical CR/CRLF alone
+follow the shared host policy.
 
 [fixture: architecture/label-content/bare-padding]
 

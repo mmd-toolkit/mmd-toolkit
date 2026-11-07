@@ -1,5 +1,4 @@
 import type {
-  FlowchartClickCallbackStatement,
   FlowchartStatement,
   FlowchartSubgraphStatement,
   Node,
@@ -9,7 +8,8 @@ import {
   addShapeRules,
   addLinkRules,
   breaksBetweenParts,
-  findCallbackParentheses,
+  addBlankCallbackRule,
+  findCallArgumentsParentheses,
   layoutGraphAccessibility,
 } from "./graph-layout.ts"
 import { findFlowchartKeptLines } from "./flowchart-kept-lines.ts"
@@ -130,9 +130,10 @@ export function layoutStatement(
       ? vertexStatementRules(source, statement)
       : statement.type === "FlowchartAccDescrBlockStatement"
         ? descriptionOpeningRules(source, start)
-        : statement.type === "FlowchartClickCallbackStatement"
-          ? callbackRules(source, statement)
-          : new Map()
+        : new Map()
+  if (statement.type === "FlowchartClickCallbackStatement") {
+    addBlankCallbackRule(source, statement, rules)
+  }
   const layout: AtomLayout = {
     atoms: collectAtoms(source, start, end, values, kept),
     rules,
@@ -205,7 +206,11 @@ function findKeptStretches(
       return [{ start: findStylesStart(source, statement), end }]
     }
     case "FlowchartClickCallbackStatement": {
-      const stretches = findCallbackArgumentsStretch(source, statement)
+      const parentheses = findCallArgumentsParentheses(source, statement)
+      const stretches =
+        parentheses === null
+          ? []
+          : [{ start: parentheses[0], end: parentheses[1] }]
       return breaksBetweenParts(source, statement, valueNodeTypes, stretches)
         ? [whole]
         : stretches
@@ -253,39 +258,6 @@ function findStylesStart(
     first.range[0],
   ).find((token) => token.value === ",")
   return comma?.range[0] ?? first.range[0]
-}
-
-/**
- * The parentheses of a callback with arguments, from the `(` to the `)`, as
- * a stretch printed as written. Blank parentheses, `f( )`, have no arguments
- * to keep (see `callbackRules`).
- */
-function findCallbackArgumentsStretch(
-  source: Source,
-  statement: FlowchartClickCallbackStatement,
-): Atom[] {
-  const parentheses = findCallbackParentheses(source, statement)
-  if (parentheses === null || statement.arguments === null) return []
-  return [
-    { start: parentheses.opening.range[0], end: parentheses.closing.range[1] },
-  ]
-}
-
-/**
- * The rules of a click statement with a callback: the `)` of blank
- * parentheses touches the `(`, since mermaid.js reads `f( )` and `f()` the
- * same (docs/flowchart.md, Click statements).
- */
-function callbackRules(
-  source: Source,
-  statement: FlowchartClickCallbackStatement,
-): Map<number, GapRule> {
-  const rules = new Map<number, GapRule>()
-  const parentheses = findCallbackParentheses(source, statement)
-  if (parentheses !== null && statement.arguments === null) {
-    rules.set(parentheses.closing.range[0], "none")
-  }
-  return rules
 }
 
 /**

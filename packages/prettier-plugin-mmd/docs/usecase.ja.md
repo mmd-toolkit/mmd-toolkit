@@ -293,13 +293,18 @@ mermaid.js がそれらを trim するからです（no-break space は trim
 タイトルの端にディレクティブがあれば、その隣の隙間は、
 空白が書かれていれば 1 つにして残します（`S[ %%{x}%% T ]` は `S[ %%{x}%% T]`
 になります）。
-保つ `;` のある行では、
-最後の `;` までのテキストが保護されます（Statements and semicolons を参照）。
-`S[ a;b ]` は `S[ a;b]` になり、`;` の前の空白は残り、後の空白は落ちます。
-`]` の前の U+2028 と U+2029 は残します。
+保つ `;` のある行でも空白は落とします。
+その行では最後の `;` までのテキストが保護されますが（Statements and semicolons
+を参照）、空白を落としても `;` は動かないので、行の規則は同じ `;` を選びます。
+`S[ a;b ]` は `S[a;b]` に、`S[ a; ]` は `S[a;]` になります。
+空白が、行の規則が読むかもしれない行の `:` と `#` の間にあるときは、
+architecture や venn と同じく、空白 1 つを残します。
+U+2028 や U+2029 を含む空白は、書かれたまま残します。
 [fixture: system-boundaries/boundary-title-directive-or-semicolon]
 [test: usecase: U+2028 inside the brackets of a boundary title]
 [test: usecase: U+2029 inside the brackets of a boundary title]
+[test: usecase: U+2028 inside the brackets of a boundary title with a semicolon]
+[test: usecase: U+2029 inside the brackets of a boundary title with a semicolon]
 隙間にディレクティブがあれば、その両側に空白があるかどうかは変えず、
 空白の連なりは空白 1 つにします。
 [fixture: system-boundaries/boundary-id-title-directed-gap]

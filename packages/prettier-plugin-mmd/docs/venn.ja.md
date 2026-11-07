@@ -357,13 +357,23 @@ style A, "B" fill:red
 no-break space は例外です。
 mermaid.js が trim するからです。
 `set A[ L ]` は `set A[L]` になります。
-ディレクティブを含むラベルと、
-行の最後の保つ `;` までのテキスト（保護された範囲）は、書かれたまま残るので、
-`set A[ a; ]` と `set B[ a;b ]` は変わりません。
-`]` の前の U+2028 と U+2029 は残します。
-[fixture: labels/bracket-padding-with-directive-or-semicolon-kept]
+ディレクティブを含むラベルは、書かれたまま残します。
+保つ `;` のある行でも空白は落とします。
+その行では最後の `;` までのテキストが保護された範囲ですが（Terms を参照）、
+空白を落としても `;` は動かないので、行の規則は同じ `;` を選びます。
+`set A[ a; ]` は `set A[a;]` に、`set B[ a;b ]` は `set B[a;b]` になります。
+空白が、行の規則が読むかもしれない行の `:` と `#` の間にあるときは、
+空白 1 つを残します。
+空白があるかどうかが、無視される `;` を決めるからです。
+`set "style:"[ #x; ]` は `set "style:"[ #x;]` になり、
+`:` の前に `style` がない `set "a:b"[ #x; ]` は `set "a:b"[#x;]` になります。
+U+2028 や U+2029 を含む空白は、書かれたまま残します。
+[fixture: labels/bracket-padding-with-directive-or-semicolon]
+[fixture: labels/bracket-padding-in-style-rule-stretch]
 [test: U+2028 inside the brackets of a venn label]
 [test: U+2029 inside the brackets of a venn label]
+[test: U+2028 inside the brackets of a venn label with a semicolon]
+[test: U+2029 inside the brackets of a venn label with a semicolon]
 [fixture: labels/bare-label-padding-dropped]
 引用符の中の空白は値の一部なので、保ちます。
 空の引用符つきラベルと裸の空白ラベルは Db のラベルを省き、

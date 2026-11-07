@@ -119,7 +119,8 @@ form. One space stays where the title would be read otherwise (`[ /x/ ]`, and
 it, one space where whitespace was written: `flow F[ %%{x}%% T ]` is printed
 `flow F[ %%{x}%% T]`, and `flow G[ T %%{x}%% ]` is printed `flow G[T %%{x}%% ]`.
 [fixture: names-and-headings/heading-title-directive-at-edge] A U+2028 or U+2029
-before the `]` stays. [test: agentflow: U+2028 inside the brackets of a flow
+on the line of the `]` stays, and one at the start of a continuation line is
+read as its indentation. [test: agentflow: U+2028 inside the brackets of a flow
 title] [test: agentflow: U+2029 inside the brackets of a flow title] [fixture:
 names-and-headings/heading-title-padding-dropped] [fixture:
 names-and-headings/name-heading-touches-title] [fixture:
@@ -1062,11 +1063,13 @@ the `(`, stays, because the name takes that whitespace. The whitespace after the
 [fixture: click-statements/callback-blank-parentheses-touch] [test: agentflow:
 U+2028 between the parentheses of a blank callback] [test: agentflow: U+2029
 between the parentheses of a blank callback] A statement whose line breaks are
-all inside a string or between the parentheses has its first click-keyword gap
-normalized like one on a single line, and the rest stays written:
-`click   A "/u" "x` and `  y"` on the next line is printed `click A "/u" "x` and
-`  y"`. A line break in a gap keeps the statement as written. [fixture:
-click-statements/string-over-lines-keyword-gap]
+all inside a string or between the parentheses of a call with arguments has its
+first click-keyword gap normalized like one on a single line, and the rest stays
+written: `click   A "/u" "x` and `  y"` on the next line is printed
+`click A "/u" "x` and `  y"`. A line break in a gap, or between the blank
+parentheses of `f(` and `)`, keeps the statement as written. [fixture:
+click-statements/string-over-lines-keyword-gap] [fixture:
+click-statements/callback-parentheses-over-lines]
 
 Input (escaped): `"agentflow-beta TB\nA\nclick   A cb\n"`. [fixture:
 click-statements/click-keyword-gap]

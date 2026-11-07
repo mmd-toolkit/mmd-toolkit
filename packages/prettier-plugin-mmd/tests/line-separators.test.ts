@@ -3498,6 +3498,16 @@ describe("C4 whitespace and line boundaries", () => {
 /** Venn separators are characters inside values and whole diagram comments. */
 const vennExamples: readonly (readonly [string, string, string])[] = [
   [
+    "U+2028 inside the brackets of a venn label with a semicolon",
+    "venn-beta\nset A[ a;b \u2028]\n",
+    "venn-beta\nset A[a;b \u2028]\n",
+  ],
+  [
+    "U+2029 inside the brackets of a venn label with a semicolon",
+    "venn-beta\nset A[ a;b \u2029]\n",
+    "venn-beta\nset A[a;b \u2029]\n",
+  ],
+  [
     "U+2028 inside the brackets of a venn label",
     "venn-beta\nset A[ T\u2028]\n",
     "venn-beta\nset A[T\u2028]\n",

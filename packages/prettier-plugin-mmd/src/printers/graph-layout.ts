@@ -1,9 +1,11 @@
 import type {
+  AgentflowClickCallbackStatement,
   AgentflowLabel,
   Node,
   Range,
   AgentflowLink,
   AgentflowShape,
+  FlowchartClickCallbackStatement,
   FlowchartLabel,
   FlowchartLink,
   FlowchartShape,
@@ -38,6 +40,8 @@ import {
 type GraphLabel = AgentflowLabel | FlowchartLabel
 type GraphLink = AgentflowLink | FlowchartLink
 type GraphShape = AgentflowShape | FlowchartShape
+type GraphCallbackStatement =
+  AgentflowClickCallbackStatement | FlowchartClickCallbackStatement
 
 /** Adds the rules of a shape. */
 export function addShapeRules(
@@ -445,13 +449,9 @@ export function breaksBetweenParts(
  * The parentheses after the name of `call`, if any: the `(` after the
  * callback and the `)` after its arguments.
  */
-export function findCallbackParentheses(
+function findCallbackParentheses(
   source: Source,
-  statement: {
-    readonly range: Range
-    readonly callback: Node
-    readonly arguments: Node | null
-  },
+  statement: GraphCallbackStatement,
 ): { readonly opening: Token; readonly closing: Token } | null {
   const opening = findStructuralToken(source, statement.callback.range[1])
   if (opening?.value !== "(" || opening.range[0] >= statement.range[1]) {
@@ -466,4 +466,33 @@ export function findCallbackParentheses(
   )
   expectValue(closing, ")")
   return { opening, closing }
+}
+
+/**
+ * The parentheses of a call with arguments, from the `(` to the `)`, or null
+ * where there are none or they are blank.
+ */
+export function findCallArgumentsParentheses(
+  source: Source,
+  statement: GraphCallbackStatement,
+): Range | null {
+  const parentheses = findCallbackParentheses(source, statement)
+  if (parentheses === null || statement.arguments === null) return null
+  return [parentheses.opening.range[0], parentheses.closing.range[1]]
+}
+
+/**
+ * Adds the rule of blank parentheses, `f( )`: the `)` touches the `(`, since
+ * mermaid.js reads `f( )` and `f()` the same (docs/flowchart.md, Click
+ * statements). Returns the parentheses where they are blank, null otherwise.
+ */
+export function addBlankCallbackRule(
+  source: Source,
+  statement: GraphCallbackStatement,
+  rules: Map<number, GapRule>,
+): { readonly opening: Token; readonly closing: Token } | null {
+  const parentheses = findCallbackParentheses(source, statement)
+  if (parentheses === null || statement.arguments !== null) return null
+  rules.set(parentheses.closing.range[0], "none")
+  return parentheses
 }

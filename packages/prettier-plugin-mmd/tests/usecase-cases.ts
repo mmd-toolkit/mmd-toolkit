@@ -11,6 +11,20 @@ interface UsecaseCase {
 
 export const usecaseCases: readonly UsecaseCase[] = [
   {
+    name: "usecase: U+2028 inside the brackets of a boundary title with a semicolon",
+    id: "usecase/line-terminators/boundary-title-semicolon-u2028",
+    input: "usecase-beta\nsystemBoundary S[ a;b \u2028]\nTask\nend\n",
+    output: "usecase-beta\n  systemBoundary S[a;b \u2028]\n    Task\n  end\n",
+    options: {},
+  },
+  {
+    name: "usecase: U+2029 inside the brackets of a boundary title with a semicolon",
+    id: "usecase/line-terminators/boundary-title-semicolon-u2029",
+    input: "usecase-beta\nsystemBoundary S[ a;b \u2029]\nTask\nend\n",
+    output: "usecase-beta\n  systemBoundary S[a;b \u2029]\n    Task\n  end\n",
+    options: {},
+  },
+  {
     name: "usecase: U+2028 inside the brackets of a boundary title",
     id: "usecase/line-terminators/boundary-title-u2028",
     input: "usecase-beta\nsystemBoundary S[ T\u2028]\nTask\nend\n",

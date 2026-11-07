@@ -13,6 +13,7 @@ import { holdsJoiningRegion } from "./kept-lines.ts"
 import {
   collectAtoms,
   collectValueNodes,
+  dropPaddings,
   expectToken,
   keptAsWritten,
   layoutDescriptionBlock,
@@ -133,6 +134,7 @@ export function layoutUsecaseStatement(
   const keptBreaksBefore = new Set<number>()
   const kept: Atom[] = []
   const stereotypes: StereotypeLayout[] = []
+  const titlePads: Range[] = []
 
   /** Adds one node's structural rules, excluding a boundary's body. */
   function visit(node: Node): void {
@@ -178,6 +180,10 @@ export function layoutUsecaseStatement(
           start: statement.title.range[0],
           end: statement.title.range[1],
         })
+        titlePads.push(
+          [opening.range[1], statement.title.range[0]],
+          [statement.title.range[1], closing.range[0]],
+        )
       }
       addClassListRules(source, statement.classes, statement.range[0], rules)
       break
@@ -303,6 +309,10 @@ export function layoutUsecaseStatement(
     end,
     collectAtoms(source, start, end, values, kept),
   )
+  // The padding of a title that a protected `;` prefix holds is dropped there,
+  // as a gap outside the prefix is by its rule (docs/usecase.md, System
+  // boundaries).
+  dropPaddings(source, atoms, titlePads)
   for (const stereotype of stereotypes) {
     const index = atoms.findIndex(
       (atom) =>

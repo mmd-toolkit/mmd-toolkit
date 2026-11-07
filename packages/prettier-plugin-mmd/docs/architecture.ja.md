@@ -300,13 +300,27 @@ mermaid.js が trim するからです。
 `group a(cloud)[ API ]` は `group a(cloud)[API]` に、
 `service s(server)["x" ]` は `service s(server)["x"]` になります。
 [fixture: architecture/label-content/title-edge-whitespace-dropped]
-行の最後の保つ `;` までのテキストは保護されるので（Semicolons を参照）、
-そうした行のタイトルは空白を保ちます。
-`group g(cloud)[ a;b ]` と `service s(server)[ x; ] in g` は変わりません。
-`]` の前の U+2028 と U+2029 は残します。
-[fixture: architecture/label-content/title-directive-or-semicolon-kept]
+保つ `;` のある行でも同じです。
+その行では最後の `;` までのテキストが保護されますが（Semicolons を参照）、
+空白を落としても `;` は動かず、増えも減りもしないので、
+行の規則は同じ `;` を選びます。
+`group g(cloud)[ a;b ]` は `group g(cloud)[a;b]` に、
+`service s(server)[ x; ] in g` は `service s(server)[x;] in g` になります。
+空白が、行の規則が読むかもしれない行の `:` と `#` の間にあるときは、
+空白 1 つを残します。
+空白があるかどうかが、無視される `;` を決めるからです。
+`service style(logos:aws)[ #y; ]` は `service style(logos:aws)[ #y;]` になり、
+`:` の前に `style` がない `service s(logos:aws)[ #y; ]` は
+`service s(logos:aws)[#y;]` になります。
+コメントやディレクティブを含むタイトルと、U+2028 や U+2029 を含む空白は、
+書かれたまま残します。
+[fixture: architecture/label-content/title-padding-with-directive-or-semicolon]
+[fixture: architecture/label-content/title-padding-in-style-rule-stretch]
+[fixture: architecture/label-content/title-padding-after-colon-without-style]
 [test: architecture/label-content/title-u2028]
 [test: architecture/label-content/title-u2029]
+[test: architecture/label-content/title-with-semicolon-u2028]
+[test: architecture/label-content/title-with-semicolon-u2029]
 テキストの中の連続空白、タブ、空白だけの値、quoted の空値、escape、HTML、
 entity、hidden に見える文字は保ちます。
 Db がこれらを区別するためです。
