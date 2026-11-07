@@ -1,4 +1,5 @@
 import type {
+  Identifier,
   Node,
   StateAliasDefinitionStatement,
   StateCompositeStatement,
@@ -29,7 +30,7 @@ import {
   expectValue,
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
-  indentDescriptionLines,
+  formatDescriptionBlock,
   keepFirstGapLineTails,
   keptAsWritten,
   layoutCompactEmptyDescriptionBlockWithFallback,
@@ -296,7 +297,7 @@ export function layoutStateStatement(
     /** Builds the existing value, trivia and closing-brace layout. */
     function originalLayout(): AtomLayout {
       const closing = findAccDescrBlockClosing(source, block)
-      return indentDescriptionLines(source, block, {
+      return formatDescriptionBlock(source, block, {
         atoms: collectAtoms(
           source,
           start,
@@ -974,10 +975,36 @@ function statementRules(
     case "StateAccDescrStatement":
       addAccessibilityColonRules(source, statement, rules)
       break
+    case "StateClassStatement":
+      addClassIdListRules(source, statement.states, rules)
+      break
     default:
       break
   }
   return rules
+}
+
+/**
+ * Adds the rules of the `,` between the ids of a `class` statement: an id
+ * after a `,` touches it. The ids end at whitespace before a `,`, and mermaid.js
+ * reads the rest as the name of the class, so `class A ,B c` has the one id `A`
+ * and stays as written (docs/state.md, Whitespace between tokens).
+ */
+function addClassIdListRules(
+  source: Source,
+  states: readonly Identifier[],
+  rules: Map<number, GapRule>,
+): void {
+  for (let index = 1; index < states.length; index++) {
+    expectValue(
+      expectToken(
+        findStructuralToken(source, states[index - 1].range[1]),
+        "the `,` between the ids of a `class` statement",
+      ),
+      ",",
+    )
+    rules.set(states[index].range[0], "none")
+  }
 }
 
 /**

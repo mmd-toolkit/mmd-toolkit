@@ -1,0 +1,63 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Control: with the `-` glued to a destination that starts with `y`, which is no arrow, is the `-` a deactivation and `y` the destination?"
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "y"
+      },
+      {
+        "name": "y",
+        "description": "y",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "A",
+        "message": "",
+        "wrap": false,
+        "type": 17,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "A",
+        "to": "y",
+        "message": "b",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "A",
+        "message": "",
+        "wrap": false,
+        "type": 18,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

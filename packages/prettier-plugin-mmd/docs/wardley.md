@@ -581,14 +581,15 @@ wardley-beta
 Use the shared accessibility line layout for accTitle: Value and accDescr:
 Value, retaining empty assignments. Description blocks go through the shared
 description layout: separate the keyword and { by one ordinary space even when
-written touching, keep interior edge contact, compact whitespace-only interiors
-to {}, join plain opener whitespace and align a separate closer. Protected
-trivia and semicolon layouts keep their gaps. Ordinary description body and
-standalone comment lines align one level inside the statement: the Db removes
-indentation after LF. Keep line breaks, internal blanks and trailing whitespace.
-Directives and shared removed comment regions keep their complete source. Trivia
-keeps its shared continuation layout. These are the common Db-equal forms; there
-is no text for whitespace-only block interiors to surround.
+written touching, put text on one line between one space on each side, compact
+whitespace-only interiors to {}, join plain opener whitespace and align a
+separate closer. Protected trivia and semicolon layouts keep their gaps.
+Ordinary description body and standalone comment lines align one level inside
+the statement: the Db removes indentation after LF. Keep line breaks, internal
+blanks and trailing whitespace. Directives and shared removed comment regions
+keep their complete source. Trivia keeps its shared continuation layout. These
+are the common Db-equal forms; there is no text for whitespace-only block
+interiors to surround.
 
 [fixture: wardley/accessibility/access-lines]
 

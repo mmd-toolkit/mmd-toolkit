@@ -492,7 +492,7 @@ radar-beta
 
 説明は共有の `layoutDescriptionBlock` を通します。
 ブロックの境界がわかるよう、keyword と opener の間に空白を1個置きます。
-内端の接触は保ち、存在する外端の空白は 1 個にします。
+1 行のテキストは、括弧に接して書かれていても、両側に空白を 1 つずつ置きます。
 空白だけの内部は、空白で囲む文字がないため `{}` にします。
 opener 前の普通の空白は結合し、実際の trivia のある改行は残します。
 コメント・directive だけの内部を保ちます。
@@ -531,10 +531,10 @@ directive と共有の除去対象となるコメント領域は原文全体を�
 
 ```mmd
 radar-beta
-  accDescr {Word}
   accDescr { Word }
-  accDescr {Left }
-  accDescr { Right}
+  accDescr { Word }
+  accDescr { Left }
+  accDescr { Right }
 ```
 
 ### Multiline values
@@ -634,7 +634,7 @@ native コメントは物理 EOL で終わり、LS・PS は内容のままです
 ```mmd
 radar-beta
   axis North["N%%literal"]
-  accDescr {a%%literal}
+  accDescr { a%%literal }
 ```
 
 ### Global directives
@@ -960,7 +960,7 @@ radar-beta
   axis North
   curve trial{4}
   ticks 7
-  accDescr {Detail}
+  accDescr { Detail }
 ```
 
 ### Frontmatter yaml
@@ -1079,7 +1079,7 @@ EOF に届く global directive の末尾と必要な hidden・prefix の境界�
 
 ```mmd
 radar-beta
-  accDescr {Detail}%%{!suffix}%%
+  accDescr { Detail }%%{!suffix}%%
 ```
 
 ### Specified readings

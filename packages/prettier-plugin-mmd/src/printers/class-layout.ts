@@ -26,13 +26,14 @@ import {
   expectValue,
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
-  indentDescriptionLines,
+  formatDescriptionBlock,
   keepFirstGapLineTails,
   layoutCompactEmptyDescriptionBlockWithFallback,
   spansLinesThatCannotJoin,
   walk,
 } from "./layout.ts"
 import type { Source } from "./source.ts"
+import { addNameListRules } from "./statement-rules.ts"
 import {
   findStructuralToken,
   findStructuralTokenEndingBefore,
@@ -266,7 +267,7 @@ export function layoutClassStatement(
     /** Keeps the block's line breaks, including those around empty trivia. */
     function layoutExpandedBlock(): AtomLayout {
       const closing = findAccDescrBlockClosing(source, block)
-      return indentDescriptionLines(source, block, {
+      return formatDescriptionBlock(source, block, {
         atoms: collectAtoms(
           source,
           start,
@@ -561,6 +562,11 @@ function statementRules(
     case "ClassAccTitleStatement":
     case "ClassAccDescrStatement":
       addAccessibilityColonRules(source, statement, rules)
+      break
+    case "ClassClassDefStatement":
+      // The `,` between the names touches both of them (docs/class.md,
+      // Styles).
+      addNameListRules(source, statement.cssClasses, rules)
       break
     case "ClassDeclaration":
       if (statement.members !== null) {

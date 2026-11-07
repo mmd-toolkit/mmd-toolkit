@@ -19,7 +19,7 @@ import {
   expectValue,
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
-  indentDescriptionLines,
+  formatDescriptionBlock,
   keptAsWritten,
   walk,
 } from "./layout.ts"
@@ -74,6 +74,17 @@ export function layoutSubgraphHeader(
       : []
   const values: Node[] =
     subgraph.title === null ? [] : [subgraph.name, subgraph.title]
+  // The `[` of the title touches the name (docs/flowchart.md, Subgraph header).
+  const rules = new Map<number, GapRule>()
+  if (subgraph.title !== null) {
+    rules.set(
+      expectToken(
+        findStructuralToken(source, subgraph.name.range[1]),
+        "the `[` before the title of a subgraph",
+      ).range[0],
+      "none",
+    )
+  }
   return {
     atoms: collectAtoms(
       source,
@@ -82,7 +93,7 @@ export function layoutSubgraphHeader(
       values,
       kept,
     ).filter((atom) => kept.includes(atom) || !startsInside(kept, atom)),
-    rules: new Map(),
+    rules,
     outdented: new Set(),
     lineBreaks: "kept",
   }
@@ -123,10 +134,13 @@ export function layoutStatement(
     outdented: findOutdentedAtoms(source, statement),
     lineBreaks: "kept",
   }
-  return statement.type === "FlowchartAccDescrBlockStatement" &&
-    !preservesDescriptionColumns
-    ? indentDescriptionLines(source, statement, layout)
-    : layout
+  if (statement.type !== "FlowchartAccDescrBlockStatement") return layout
+  return formatDescriptionBlock(
+    source,
+    statement,
+    layout,
+    preservesDescriptionColumns,
+  )
 }
 
 /**

@@ -409,7 +409,7 @@ gitGraph
 通常の gap では、
 接して書かれていても `accDescr` と `{` の間に空白 1 つを置きます。
 保護対象の trivia やセミコロンの配置では、その gap を保ちます。
-内部でテキストに接する側は接したまま、既存の辺の空白は 1 個にします。
+1 行のテキストは、括弧に接して書かれていても、両側に空白を 1 つずつ置きます。
 別行の閉じは文に揃えます。
 通常の説明本文と独立したコメント行は、文より1段内側に揃えます。
 Db で LF 後の字下げが取り除かれるためです。
@@ -738,7 +738,7 @@ hidden の閉じの padding は必要な EOL を可視に保つため、EOF で�
 gitGraph
   commit id: "A"
   branch b order: 2
-  accDescr {D}
+  accDescr { D }
 ```
 
 ### Line terminators and unicode

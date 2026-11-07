@@ -899,6 +899,63 @@ message-statement = id arrow ( "+" | "-" | "()" )? id ":" text-part
 [fixture: sequence/gram-message-central-connection-then-activation] [fixture:
 sequence/lex-empty-text]
 
+矢印は `-` の単位より先に読むので（規則 22 と 24）、
+最初の矢印の後で矢印を始める `-` は、その矢印になります。
+`A ->> -x: b`、`A ->> -X: b`、`A ->> -|\: b`、`A ->> -|/: b`、
+`A ->> -xy: b` は、 2 つ目の矢印を持ち、拒否されます。
+[fixture: sequence/lex-minus-glued-x-arrow]
+[fixture: sequence/lex-minus-glued-upper-x-arrow]
+[fixture: sequence/lex-minus-glued-bar-backslash-arrow]
+[fixture: sequence/lex-minus-glued-bar-slash-arrow]
+[fixture: sequence/lex-minus-glued-x-name-arrow]
+`-` の後の空白は、それを `-` の単位のままにします。
+`A ->> - x: b` は `-` と行き先 `x` を持ち、`X`、`|\`、`|/`、`xy` も同じで、
+空白の代わりにタブや U+2028 でも同じです。
+[fixture: sequence/lex-minus-space-destination-x]
+[fixture: sequence/lex-minus-space-destination-upper-x]
+[fixture: sequence/lex-minus-space-destination-bar-backslash]
+[fixture: sequence/lex-minus-space-destination-bar-slash]
+[fixture: sequence/lex-minus-space-destination-x-name]
+[fixture: sequence/lex-minus-tab-destination-x]
+[fixture: sequence/lex-minus-line-separator-destination-x]
+ディレクティブは先に除かれるので、それだけでは両者を分けません。
+`A ->> -%%{init: {}}%%x: b` は拒否され、
+`A ->> - %%{init: {}}%%x: b` と `A ->> -%%{init: {}}%% x: b` は受理されます。
+[fixture: sequence/lex-minus-space-directive-destination-x]
+[fixture: sequence/lex-minus-directive-space-destination-x]
+[fixture: sequence/lex-minus-glued-directive-x-arrow]
+矢印を始めない行き先に空白は要りません。
+`A ->> -y: b` は `-` と行き先 `y` を持ちます。
+[fixture: sequence/lex-minus-glued-destination-y]
+`-` の直後の改行は `newline` の単位で、
+メッセージはそこでそれを取りません（規則 1）。
+そのため、`A ->> -`、改行、`x: b` は拒否されます。
+改行の後に空行やコメント行が続いても、`x` の前に字下げがあっても、
+改行の前にディレクティブがあっても同じで、
+改行の前に空白と空の説明ブロックがあるものも同じです。
+[fixture: sequence/lex-minus-line-feed-destination-x]
+[fixture: sequence/lex-minus-comment-line-destination-x]
+[fixture: sequence/lex-minus-empty-line-destination-x]
+[fixture: sequence/lex-minus-line-feed-indent-destination-x]
+[fixture: sequence/lex-minus-directive-line-feed-destination-x]
+[fixture: sequence/lex-minus-empty-description-block-line-feed-destination-x]
+改行の前から始まる空白は、改行を越えます（規則 2）。
+`A ->> -`、空白、改行、`x: b` は `-` と行き先 `x` を持ちます。
+空白の代わりにタブや U+2028 でも、改行の後に空行やコメント行が続いても、
+`x` の前に字下げがあっても、空白の後にディレクティブがあっても同じです。
+[fixture: sequence/lex-minus-trailing-space-destination-x]
+[fixture: sequence/lex-minus-trailing-tab-destination-x]
+[fixture: sequence/lex-minus-trailing-line-separator-destination-x]
+[fixture: sequence/lex-minus-trailing-space-comment-line-destination-x]
+[fixture: sequence/lex-minus-trailing-space-empty-line-destination-x]
+[fixture: sequence/lex-minus-trailing-space-indent-destination-x]
+[fixture: sequence/lex-minus-trailing-space-directive-destination-x]
+その間の空の説明ブロックはメッセージの中にあるので、ここでは拒否されます。
+mermaid.js は `A ->> -accDescr {}x: b` を受理します。
+[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md)
+を参照してください。
+[fixture: sequence/div-empty-description-block-between-minus-and-destination]
+
 ### ほかの文
 
 ```text

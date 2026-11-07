@@ -248,6 +248,23 @@ which declares nothing, is kept at the level of the statements around it.
 [fixture: whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/tabs-collapsed]
 
+The names of a `classDef` statement are separated by a `,` that touches both
+names: `classDef c1 , c2 fill:#f00` is printed `classDef c1,c2 fill:#f00`, as
+the lists of ER, requirement, and usecase are (see
+[Styles and classes](./er.md#styles-and-classes)). mermaid.js reads every
+spelling as the same statement, so nothing forces the form, and its
+documentation writes the one example touching
+([`classDef firstClassName,secondClassName`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L761)).
+[fixture: whitespace-between-tokens/classdef-names-touching] A directive in the
+gap keeps the whitespace written on each side of it, as under
+[Directives](#directives). [fixture:
+whitespace-between-tokens/classdef-names-beside-directive-kept] A `;` or a `#`
+that ends the statement follows
+[Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement).
+[fixture: whitespace-between-tokens/classdef-names-touching-before-terminator] A
+U+2028 or U+2029 after the `,` stays where it is. [test: U+2028 after the comma
+of a classDef statement] [test: U+2029 after the comma of a classDef statement]
+
 U+2028 and U+2029 after the `}` that closes a class body or a namespace are
 whitespace to mermaid.js, and are dropped with the whitespace at the end of the
 line. [test: U+2029 after the `}` of a class body] [test: U+2028 after the `}`
@@ -803,6 +820,16 @@ multi-line-values/block-empty-line-kept] [fixture:
 multi-line-values/backquoted-name-kept] [fixture:
 multi-line-values/label-string-kept] [fixture:
 multi-line-values/generic-in-relation-kept]
+
+The text of a block on one line stands between one space on each side, as in
+[flowchart's accessibility lines](./flowchart.md#accessibility-lines):
+`accDescr {a b}`, `accDescr {  a b  }`, `accDescr {  a b}`, and
+`accDescr {a b  }` are printed `accDescr { a b }`. mermaid.js trims the text, so
+the whitespace at its ends carries no meaning. A block with a directive in its
+text stays as written. A block on a line that keeps its `;` gets no added space,
+and a run of spaces at its ends still becomes one space (see
+[Semicolons](./flowchart.md#semicolons)). [fixture:
+multi-line-values/block-text-on-one-line-padded]
 
 Input
 ([multi-line-values/kept-input.mmd](../tests/fixtures/class/multi-line-values/kept-input.mmd)):

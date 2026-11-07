@@ -173,7 +173,7 @@ info
 
 [共有の description 配置](./pie.ja.md#description-blocks)を使います。
 ブロックの境界がわかるよう、keyword と opener の間に空白を1個置きます。
-内部の辺の接触を保ち、ある外端空白列だけを1個にします。
+1 行のテキストは、括弧に接して書かれていても、両側に空白を 1 つずつ置きます。
 通常の opener 空白は物理改行や Unicode 境界を越えて結合します。
 実際の opener trivia は改行を保ち、共有の継続字下げを使います。
 空白だけの block は、囲む本文がないため `{}` にします。
@@ -209,10 +209,10 @@ directive と共有の除去対象となるコメント領域は原文全体を�
 
 ```mmd
 info
-  accDescr {D}
   accDescr { D }
-  accDescr {D }
-  accDescr { D}
+  accDescr { D }
+  accDescr { D }
+  accDescr { D }
 ```
 
 ### Authored values
@@ -579,7 +579,7 @@ hidden の閉じの padding は EOF でも保持します。
 
 ```mmd
 info showInfo
-  accDescr {D}
+  accDescr { D }
 ```
 
 ### Frontmatter yaml

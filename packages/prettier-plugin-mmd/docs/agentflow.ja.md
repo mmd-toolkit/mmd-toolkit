@@ -111,12 +111,35 @@ agentflow-beta TB
 ### Names and headings
 
 通常の1断片の名前に明示的なタイトルがある場合は、
-[subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダー)と同じ理由で、
-タイトルとの接触を保ち、外側の連続する空白を1つにします。
-どちらの書き方も使われるためです。
+[subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダー)に従い、
+タイトルの `[` を名前に接します。
+`flow F [T]` は `flow F[T]` に、
+`connector F [T]` は `connector F[T]` になります。
+agentflow の文書にあるタイトル付きの見出し 19 件は、すべてこの書き方です。
+その範囲は、
+[ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/agentflow.md#L26-L363)
+にあります。
+どちらの形でも Db は同じです。
 タイトルの内側の空白は保ち、`[ T ]`を`[ T ]`のままにします。
-Dbは同じで、 agentflowだけ違う形を選ぶ理由がないためです。
-[fixture: names-and-headings/name-heading-padding]
+agentflowだけ違う形を選ぶ理由がないためです。
+[fixture: names-and-headings/name-heading-touches-title]
+[fixture: names-and-headings/name-heading-touches-title-kinds]
+複数の部分からなる名前（消された `click` や空の文字列を含む名前）は、
+最初の部分から最後の部分まで、タイトルの前の空白を含めて、書かれたまま残します。
+`click` の後では、その空白が click の id を終わらせるので、
+`flow F click [T]` と `flow F click[T]` は別の見出しです。
+空の文字列の後では Db は同じですが、名前を同じように書かれたまま残します。
+[fixture: names-and-headings/name-heading-title-multi-part-name-kept]
+名前をディレクティブかコメントが終わらせるときは、その後ろに書かれた空白を、
+[ディレクティブ](#directives)と同じく保ちます。
+隙間の中にディレクティブがあれば、その両側の空白も保ちます。
+[fixture: names-and-headings/name-heading-title-beside-directive-kept]
+[test: agentflow: a comment and U+2028 between a flow name and its title]
+`:` と `#` の間の隙間は、flowchart と同じく、空白があるかないかを保ちます。
+[fixture: names-and-headings/name-heading-title-after-colon-before-hash]
+隙間の U+2028 と U+2029 は、そのまま残します。
+[test: agentflow: U+2028 between a flow name and its title]
+[test: agentflow: U+2029 between a connector name and its title]
 
 明示的なタイトルの前にある空白だけの名前は、書かれた文字を保ちます。
 除くと、必要な名前がなくなるためです。 [fixture:
@@ -327,7 +350,7 @@ agentflowのラベルコメントの直前の空白とタブは値の文字な�
 flow/connectorの見出しのタイトルは、
 [subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダー)に従います。
 flowchartと同じ理由で、 `[ T ]`を含め内側の空白を保ちます。
-[fixture: names-and-headings/name-heading-padding]
+[fixture: names-and-headings/name-heading-touches-title]
 
 入力（escape 表記）: `"agentflow-beta TB\nA[text]"`。
 [fixture: labels/labels-quote-unsafe]
@@ -748,12 +771,15 @@ flowchartと同じ理由で同じ規則を使います。
 [fixture: accessibility/empty-block-semicolon-kept]
 [fixture: accessibility/empty-block-directive-kept]
 
-空でないブロックは`{a}`と`{ a }`を保ち、`{  a  }`は`{ a }`です。
-兄弟の図種と同じく、文字の両側の空白列を1つにし、空白がなければ足しません。
+空でない 1 行のブロックの文字は、両側に空白を 1 つずつ置きます。
+兄弟の図種と同じ形です。
+詳しくは、
+[アクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)
+を参照してください。
+`{a}`、`{ a }`、`{  a  }`、`{  a}`、`{a  }` は、どれも `{ a }` になります。
 [fixture: accessibility/block-tight-text]
 [fixture: accessibility/block-spaced-text]
 [fixture: accessibility/block-padded-text]
-左右を別々に扱い、`{  a}`は`{ a}`、 `{a  }`は`{a }`にします。
 [fixture: accessibility/block-left-padding-only]
 [fixture: accessibility/block-right-padding-only]
 トップレベルの閉じた説明ブロックの本文は文より 1 段深くそろえます。
@@ -803,7 +829,7 @@ agentflow-beta TB
 
 ```mmd
 agentflow-beta TB
-  accDescr {a}
+  accDescr { a }
   A[Block spacing]
 ```
 

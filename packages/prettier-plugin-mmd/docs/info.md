@@ -171,17 +171,18 @@ info
 ### Description blocks
 
 Reuse the [shared description layout](./pie.md#description-blocks). Separate the
-keyword and opening brace with one space so the block boundary is clear. Keep
-touching interior edges; collapse present exterior runs to one space, including
-plain opener whitespace across physical or Unicode line boundaries. Real opener
-trivia keeps its break and uses the shared continuation indentation. Empty
-whitespace-only blocks print `{}` because no text needs surrounding spaces.
-Comment-only blocks keep their comments one level inside; a standalone closer
-aligns with the statement. Ordinary description body and standalone comment
-lines align one level inside the statement; LF indentation is absent from the
-Db. Keep line breaks, interior blank lines and trailing whitespace. Directives
-and shared removed comment regions keep their complete source. Quotes and
-backslashes do not protect the first closing brace.
+keyword and opening brace with one space so the block boundary is clear. Print
+text on one line between one space on each side, whether it touched the braces
+or not; collapse exterior runs to one space, including plain opener whitespace
+across physical or Unicode line boundaries. Real opener trivia keeps its break
+and uses the shared continuation indentation. Empty whitespace-only blocks print
+`{}` because no text needs surrounding spaces. Comment-only blocks keep their
+comments one level inside; a standalone closer aligns with the statement.
+Ordinary description body and standalone comment lines align one level inside
+the statement; LF indentation is absent from the Db. Keep line breaks, interior
+blank lines and trailing whitespace. Directives and shared removed comment
+regions keep their complete source. Quotes and backslashes do not protect the
+first closing brace.
 
 [fixture: info/description-blocks/block-gap-presence]
 
@@ -207,10 +208,10 @@ Output
 
 ```mmd
 info
-  accDescr {D}
   accDescr { D }
-  accDescr {D }
-  accDescr { D}
+  accDescr { D }
+  accDescr { D }
+  accDescr { D }
 ```
 
 ### Authored values
@@ -573,7 +574,7 @@ Output
 
 ```mmd
 info showInfo
-  accDescr {D}
+  accDescr { D }
 ```
 
 ### Frontmatter yaml

@@ -58,7 +58,7 @@ Output
 erDiagram
   subgraph Outer
     A
-    subgraph Inner [Title]
+    subgraph Inner[Title]
       B ||--o{ C : x
     end
     D
@@ -794,18 +794,27 @@ erDiagram
 
 ### Subgraphs
 
-The name of a subgraph stands after one space, and so does its title, in
-brackets with nothing inside them; the names of the title are separated by one
-space, also where they were written touching: mermaid.js joins them with one
-space. [fixture: subgraphs/header-spacing] [fixture:
-subgraphs/title-names-spaced] [fixture: subgraphs/quoted-and-number-ids] The
-statements of the body stand one level deeper, and `end` stands on a line of its
-own at the level of the subgraph, in the case in which it is written; a
-statement that follows the `end` on its line stands on the line after it.
-[fixture: subgraphs/end-on-the-line-of-a-statement] [fixture:
-subgraphs/end-case-kept] [fixture: subgraphs/entity-after-end] A subgraph
-without statements is printed with its `end` on the next line. [fixture:
-subgraphs/empty]
+The name of a subgraph stands after one space, and the `[` of its title touches
+the name: `subgraph S [t]` is printed `subgraph S[t]`, as in
+[a flowchart](./flowchart.md#subgraph-header), since the same word with the same
+title has no reason for the opposite form. mermaid.js reads both spellings as
+the same subgraph. Nothing stands inside the brackets, and the names of the
+title are separated by one space, also where they were written touching:
+mermaid.js joins them with one space. [fixture: subgraphs/header-spacing]
+[fixture: subgraphs/title-touches-name] [fixture: subgraphs/title-names-spaced]
+[fixture: subgraphs/quoted-and-number-ids] The statements of the body stand one
+level deeper, and `end` stands on a line of its own at the level of the
+subgraph, in the case in which it is written; a statement that follows the `end`
+on its line stands on the line after it. [fixture:
+subgraphs/end-on-the-line-of-a-statement] [fixture: subgraphs/end-case-kept]
+[fixture: subgraphs/entity-after-end] A subgraph without statements is printed
+with its `end` on the next line. [fixture: subgraphs/empty]
+
+A directive between the name and the `[` keeps the whitespace written on each
+side of it, as under [Directives](#directives). [fixture:
+subgraphs/title-beside-directive-kept] A U+2028 or U+2029 there stays as
+written. [test: U+2028 between an ER subgraph name and its title] [test: U+2029
+between an ER subgraph name and its title]
 
 Empty description blocks that follow the name or the title on the line of the
 header are the first statements of the body, and stay on the line of the header,
@@ -835,13 +844,13 @@ Output
 
 ```mmd
 erDiagram
-  subgraph S ["T 1" x]
+  subgraph S["T 1" x]
     A
   end
-  subgraph U [a "b"]
+  subgraph U[a "b"]
     B
   end
-  subgraph V [12 3.5]
+  subgraph V[12 3.5]
     C
   end
 ```
@@ -871,7 +880,7 @@ erDiagram
   subgraph S accDescr {} accDescr {}
     A
   end
-  subgraph T [Title] accDescr {}
+  subgraph T[Title] accDescr {}
     B
   end
   subgraph U
@@ -1065,7 +1074,7 @@ directive interiors stay written. Inside a subgraph, keep the original body
 columns because the raw description also participates in its membership reading.
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines] Its `}` stands at
 the level of its statement; a text on the line of the `{` has one space inside
-the braces where it was written apart. [fixture:
+each brace, also where the braces touched it. [fixture:
 accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept] [fixture:
 accessibility-statements/block-text-on-opening-line] An empty block is a

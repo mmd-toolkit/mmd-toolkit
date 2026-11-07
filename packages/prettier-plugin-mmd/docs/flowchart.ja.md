@@ -1208,14 +1208,40 @@ usecaseのDbが同じ形に従います。 [fixture: accessibility-lines/empty-b
 [fixture: multi-line-values/accdescr-block-comment-only]
 
 空でないブロックは[複数行の値](#複数行の値)に従います。
-`{a}`と`{ a }`はそのまま、`{  a  }`は`{ a }`です。
-文字の両側の空白列を1つにし、空白がなければ足しません。
+1 行のブロックの文字は、両側に空白を 1 つずつ置きます。
+`{a}`、`{ a }`、`{  a  }`、`{  a}`、`{a  }` は、どれも `{ a }` になります。
+mermaid.js は文字を trim するので、両端の空白に意味はありません。
+[データブロック](#データブロック)の `@{ ... }` も同じ形で印字します。
+mermaid.js の文書には、1 行のブロックの例がありません。
 [fixture: accessibility-lines/block-tight-text]
 [fixture: accessibility-lines/block-spaced-text]
 [fixture: accessibility-lines/block-padded-text]
-左右を別々に扱い、`{  a}`は`{ a}`、 `{a  }`は`{a }`にします。
 [fixture: accessibility-lines/block-left-padding-only]
 [fixture: accessibility-lines/block-right-padding-only]
+コメントやディレクティブ、改行があるブロックは、書かれたままにします。
+文字に `%%{` があるブロックも同じです。
+`accDescr {A%%{}%% B` では最初の `}` がブロックを閉じるので、
+空白を足すとディレクティブが変わります。
+[fixture: accessibility-lines/block-text-beside-directive-kept]
+[fixture: pie/description-blocks/block-first-brace]
+`;` を残す行にあるブロックは、文字が何であっても、空白を足しません。
+mermaid.js の line rule
+が行全体を読むからです（[セミコロン](#セミコロン)を参照）。
+`{a;b}` と `{a; b}` はそのままです。
+`A[style];accDescr {b:c;}D#z;` のブロックも、空白を足すと、
+line rule が組にする `:` と `#` を壊すので、そのままです。
+端の空白の連なりは、空白 1 つにします。
+`{  a;b  }` は `{ a;b }` になります。
+[fixture: accessibility-lines/block-text-with-semicolon-kept]
+[fixture: accessibility-lines/block-on-style-line-kept]
+文を区切るだけの `;` は落とされ、ブロックは整えます。
+[fixture: accessibility-lines/block-text-with-semicolons-padded]
+文字の中の U+2028 と U+2029 は、文字を複数行にするので、そのまま残します。
+[test: U+2028 in the text of a flowchart description block]
+[test: U+2029 in the text of a flowchart description block]
+ASCII の空白とタブでない端の空白（no-break space など）も、
+mermaid.js が trim するので、空白 1 つで印字します。
+[test: no-break spaces at the ends of the text of a flowchart description block]
 複数行の本文は、
 [複数行の値](#複数行の値)のトップレベルと subgraph の規則に従い、
 単独行の閉じ括弧を `accDescr` に揃えます。
@@ -1247,7 +1273,7 @@ flowchart LR
 
 ```mmd
 flowchart LR
-  accDescr {a}
+  accDescr { a }
   A[Block spacing]
 ```
 
@@ -1909,12 +1935,41 @@ flowchart TD
 Dbは同じで、見出しには著者のタイトルの書き方を保つためです。
 [fixture: subgraph-header/title-interior-whitespace-kept]
 
-subgraph の id と角括弧のタイトルの間に空白があるかないかは、
-書かれたまま残します。
-空白の連続は空白 1 つにします。
-[fixture: subgraph-header/title-run-of-whitespace-becomes-one]
-mermaid.js はどちらの形も同じに読み、どちらも使われているので、
-書き手に任せます。
+タイトルの `[` は subgraph の名前に接します。
+`subgraph S [t]` は `subgraph S[t]` になります。
+名前が 1 語でも、複数の語でも、文字列でも、markdown 文字列でも同じです。
+[fixture: subgraph-header/title-whitespace-before-dropped]
+[fixture: subgraph-header/title-touches-name]
+[fixture: subgraph-header/title-touches-name-kinds]
+mermaid.js はどちらの形も同じに読むので、形を強いるものはありません。
+ノードのラベルの `[` は id に接し（`A[t]`）、
+agentflow の見出しもタイトルに接します（`flow F[T]`）。
+agentflow の文書にあるタイトル付きの見出し 19 件は、すべてこの書き方です。
+その範囲は、
+[ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/agentflow.md#L26-L363)
+にあります。
+flowchart の文書にあるタイトル付きの subgraph は 2 件で、
+どちらも空白があります。
+1 件目は、
+[`subgraph ide1 [one]`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L1030)
+です。
+2 件目は、
+[`subgraph one [My Group]`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L1109)
+です。
+これは形を決める根拠にはなりません。
+隙間が、`:` と `#` の間にあり、 `:` の前に `style` か `classDef` があり、
+`#` の後ろに `;` がある行にあるとき（`subgraph style: [#x;]`）、
+その隙間は空白があるかないかを保ちます（[セミコロン](#セミコロン)と同じです）。
+`subgraph a: [#x;]` と `subgraph style: [#x]` にはその `;` がないので、
+接します。 [fixture: subgraph-header/title-after-colon-before-hash]
+隙間にディレクティブがあれば、
+その両側に書かれた空白を残します（[ディレクティブ](#ディレクティブ)を参照）。
+[fixture: subgraph-header/title-beside-directive-kept]
+隙間の U+2028 と U+2029 は、そのまま残します。
+[test: U+2028 between a subgraph name and its title]
+[test: U+2029 and spaces between a subgraph name and its title]
+タイトルの後ろの空の説明ブロックは、これまでどおり本体の最初の文になります。
+[fixture: subgraph-header/title-before-empty-description-block]
 タイトルなしで書かれた名前は、その後の空白を保ちます。
 mermaid.js はその空白を名前の一部として読みます。
 [fixture: subgraph-header/name-trailing-run-kept]
@@ -1989,7 +2044,7 @@ flowchart LR
 ```
 
 入力
-([subgraph-header/title-spacing-kept-input.mmd](../tests/fixtures/flowchart/subgraph-header/title-spacing-kept-input.mmd)):
+([subgraph-header/title-touches-name-input.mmd](../tests/fixtures/flowchart/subgraph-header/title-touches-name-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -2002,14 +2057,14 @@ flowchart LR
 ```
 
 出力
-([subgraph-header/title-spacing-kept-output.mmd](../tests/fixtures/flowchart/subgraph-header/title-spacing-kept-output.mmd)):
+([subgraph-header/title-touches-name-output.mmd](../tests/fixtures/flowchart/subgraph-header/title-touches-name-output.mmd)):
 
 ```mmd
 flowchart LR
   subgraph S[Title]
     A
   end
-  subgraph T [Title]
+  subgraph T[Title]
     B
   end
 ```

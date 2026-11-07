@@ -59,7 +59,7 @@ E
 erDiagram
   subgraph Outer
     A
-    subgraph Inner [Title]
+    subgraph Inner[Title]
       B ||--o{ C : x
     end
     D
@@ -817,12 +817,22 @@ erDiagram
 
 ### subgraph
 
-subgraph の名前は空白 1 つの後に置き、タイトルも同じで、
+subgraph の名前は空白 1 つの後に置き、タイトルの `[` は名前に接します。
+`subgraph S [t]` は `subgraph S[t]` になります。
+同じ語で同じタイトルの形が逆になる理由がないので、
+[flowchart](./flowchart.ja.md#subgraph-のヘッダー)と同じ形です。
+mermaid.js は、どちらの書き方も同じ subgraph として読みます。
 角括弧の中には何も置きません。
 タイトルの名前は、接して書かれていても空白 1 つで区切ります。
 mermaid.js が空白 1 つで結ぶからです。 [fixture: subgraphs/header-spacing]
-[fixture: subgraphs/title-names-spaced]
+[fixture: subgraphs/title-touches-name] [fixture: subgraphs/title-names-spaced]
 [fixture: subgraphs/quoted-and-number-ids]
+名前と `[` の間にディレクティブがあれば、
+その両側に書かれた空白を残します（[ディレクティブ](#ディレクティブ)を参照）。
+[fixture: subgraphs/title-beside-directive-kept]
+そこにある U+2028 と U+2029 は、そのまま残します。
+[test: U+2028 between an ER subgraph name and its title]
+[test: U+2029 between an ER subgraph name and its title]
 本体の文は 1 段深く置き、`end` は、書かれた大文字小文字で、
 subgraph と同じ段に、行に単独で置きます。
 `end` の後に同じ行で続く文は、次の行に置きます。
@@ -860,13 +870,13 @@ end
 
 ```mmd
 erDiagram
-  subgraph S ["T 1" x]
+  subgraph S["T 1" x]
     A
   end
-  subgraph U [a "b"]
+  subgraph U[a "b"]
     B
   end
-  subgraph V [12 3.5]
+  subgraph V[12 3.5]
     C
   end
 ```
@@ -896,7 +906,7 @@ erDiagram
   subgraph S accDescr {} accDescr {}
     A
   end
-  subgraph T [Title] accDescr {}
+  subgraph T[Title] accDescr {}
     B
   end
   subgraph U
@@ -1099,8 +1109,8 @@ subgraph 内では、生の説明がその所属の読みにも使われるた�
 本文の元の列を保ちます。
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines]
 `}` は文と同じ段に置きます。
-`{` の行にあるテキストは、離して書かれていれば、
-波括弧の内側に空白を 1 つ置きます。
+`{` の行にあるテキストは、括弧に接して書かれていても、
+波括弧の内側に空白を 1 つずつ置きます。
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
 [fixture: accessibility-statements/block-text-on-opening-line]

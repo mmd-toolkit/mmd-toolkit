@@ -543,10 +543,10 @@ including when they were written touching. Existing opener-line breaks retain
 their own rules. Protected trivia and semicolon layouts keep their gaps. Align
 the lines of an `accDescr { ... }` body one step inside its statement. Mermaid
 discards indentation after LF from the description. Its `}` stands at the level
-of its statement; a text on the line of the `{` has one space inside the braces
-where it was written apart, and the braces that touch their text keep touching.
-A block that is not closed makes the input rejected, so it is not printed.
-[fixture: titles-and-accessibility-statements/block-lines-kept] [fixture:
+of its statement; a text on the line of the `{` has one space inside each brace,
+also where the braces touched it. A block that is not closed makes the input
+rejected, so it is not printed. [fixture:
+titles-and-accessibility-statements/block-lines-kept] [fixture:
 titles-and-accessibility-statements/block-text-on-the-opening-line] [fixture:
 titles-and-accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
 [fixture:

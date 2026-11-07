@@ -477,9 +477,9 @@ cynefin-beta
 
 Route accDescr blocks through the shared description layout. Whitespace-only
 interiors become `{}`. Separate the keyword and opening brace with one space so
-the block boundary is clear; touching interior edges remain touching and
-ordinary existing edge padding becomes one space. Join plain opener whitespace
-and align a separate closer with the statement. Ordinary description body and
+the block boundary is clear; text on one line stands between one space on each
+side, whether it touched the braces or not. Join plain opener whitespace and
+align a separate closer with the statement. Ordinary description body and
 standalone comment lines align one level inside it, since the Db removes
 indentation after LF. Keep line breaks, internal blanks and trailing whitespace.
 Directives and shared removed comment regions keep their complete source.
@@ -894,7 +894,7 @@ cynefin-beta
   complex
     "StructuralTail"
   clear --> chaotic
-  accDescr {Done}
+  accDescr { Done }
 ```
 
 ### Semicolons

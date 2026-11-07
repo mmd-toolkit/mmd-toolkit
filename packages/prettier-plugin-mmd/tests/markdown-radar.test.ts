@@ -87,10 +87,10 @@ const cases: readonly MarkdownCase[] = [
     input:
       "```mermaid\nradar-beta\naccDescr {Detail}%%{}%% \naxis following_host\n```\n",
     output:
-      "```mermaid\nradar-beta\n  accDescr {Detail}%%{}%% \n  axis following_host\n```\n",
+      "```mermaid\nradar-beta\n  accDescr { Detail }%%{}%% \n  axis following_host\n```\n",
     payloadInput: "radar-beta\naccDescr {Detail}%%{}%% \naxis following_host",
     payloadOutput:
-      "radar-beta\n  accDescr {Detail}%%{}%% \n  axis following_host\n",
+      "radar-beta\n  accDescr { Detail }%%{}%% \n  axis following_host\n",
     options: {},
   },
   {
@@ -141,9 +141,9 @@ const cases: readonly MarkdownCase[] = [
   {
     name: "radar Markdown: final-hidden-padding",
     input: "```mermaid\nradar-beta\naccDescr {Final detail}%%{}%% \n```\n",
-    output: "```mermaid\nradar-beta\n  accDescr {Final detail}%%{}%%\n```\n",
+    output: "```mermaid\nradar-beta\n  accDescr { Final detail }%%{}%%\n```\n",
     payloadInput: "radar-beta\naccDescr {Final detail}%%{}%% ",
-    payloadOutput: "radar-beta\n  accDescr {Final detail}%%{}%%\n",
+    payloadOutput: "radar-beta\n  accDescr { Final detail }%%{}%%\n",
     options: {},
     hostTrims: true,
   },

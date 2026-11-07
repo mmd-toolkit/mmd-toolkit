@@ -66,7 +66,7 @@ YAML だけは共有の最小幅を使います。
 pie
 "Zero" : 0
 accTitle: direction LR
-accDescr {direction TB}
+accDescr { direction TB }
 ```
 
 ### Statements one per line
@@ -261,8 +261,7 @@ pie は独自の形を選ばず、
 の決定（[flowchart](./flowchart.ja.md#アクセシビリティの行)、
 [C4](./c4.ja.md#説明ブロック)）に従います。
 通常の gap では、接して書かれていても語と開き括弧の間に空白 1 つを置きます。
-内部でテキストに接した側は接したまま、既存の空白の連なりは 1 つにします。
-内側に新しい空白は加えません。
+1 行のテキストは、括弧に接して書かれていても、両側に空白を 1 つずつ置きます。
 保護対象の trivia やセミコロンの配置では、その gap を保ちます。
 開き括弧の前が空白だけなら改行や Unicode の境界も結合できます。
 コメント・directive の改行は残します。
@@ -477,7 +476,7 @@ LS・PS は区切りではなく、
 ```mmd
 pie
   "percent %% label" : 3
-  accDescr {a%% text}
+  accDescr { a%% text }
   accTitle: a%% real comment
 ```
 
@@ -618,7 +617,7 @@ EOF も含め残します。
 ```mmd
 pie showData
   "Data" : 2
-  accDescr {a}
+  accDescr { a }
 ```
 
 ### Multiline values and order

@@ -50,6 +50,16 @@ function format(text: string, options: Options = {}): Promise<string> {
  */
 const examples: readonly (readonly [string, string, string])[] = [
   [
+    "U+2028 after the comma of a state class statement",
+    "stateDiagram-v2\nA --> B\nclass A,\u2028B c\nclassDef c fill:#f00\n",
+    "stateDiagram-v2\n  A --> B\n  class A,\u2028B c\n  classDef c fill:#f00\n",
+  ],
+  [
+    "U+2029 after the comma of a state class statement",
+    "stateDiagram-v2\nA --> B\nclass A, \u2029 B c\nclassDef c fill:#f00\n",
+    "stateDiagram-v2\n  A --> B\n  class A, \u2029 B c\n  classDef c fill:#f00\n",
+  ],
+  [
     "U+00A0 at the start of a later note row",
     "stateDiagram-v2\nnote right of Paid\n        Payment\n\u00a0wallet\nend note\n",
     "stateDiagram-v2\n  note right of Paid\n    Payment\n\u00a0wallet\n  end note\n",
@@ -256,7 +266,8 @@ const semicolonExamples: readonly (readonly [string, string, string])[] = [
  *   goes on as part of the directive, without indentation.
  * - U+2028 and U+2029 as the whitespace character after `title`, and between
  *   two parts of a statement (an id and an arrow, an arrow and an id, an id
- *   and `as`), stay where they are: they are not whitespace to every rule of
+ *   and `as`, a `+`, `-`, or `()` and an id, an id and `()`, an id of a note
+ *   and the `,`), stay where they are: they are not whitespace to every rule of
  *   mermaid.js, and a space or a line break in their place could be read
  *   otherwise. The whitespace beside the other parts is formatted as usual.
  * - On a line that holds a `;` that the line rule ignores and, after it, a
@@ -410,6 +421,36 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
     "sequenceDiagram\n  A ->>\u2029B: y\n",
   ],
   [
+    "U+2028 between a `+` and an id",
+    "sequenceDiagram\nA->>+\u2028B: x\n",
+    "sequenceDiagram\n  A ->> +\u2028B: x\n",
+  ],
+  [
+    "U+2029 between a `-` and an id",
+    "sequenceDiagram\nA->>+B: x\nB->>-\u2029A: y\n",
+    "sequenceDiagram\n  A ->> +B: x\n  B ->> -\u2029A: y\n",
+  ],
+  [
+    "U+2028 between an id and `()`",
+    "sequenceDiagram\nA\u2028()->>B: x\n",
+    "sequenceDiagram\n  A\u2028() ->> B: x\n",
+  ],
+  [
+    "U+2029 between `()` and an id",
+    "sequenceDiagram\nA->>()\u2029B: x\n",
+    "sequenceDiagram\n  A ->> ()\u2029B: x\n",
+  ],
+  [
+    "U+2029 between an id of a note and the `,`",
+    "sequenceDiagram\nNote over A\u2029 , B: x\n",
+    "sequenceDiagram\n  Note over A\u2029 ,B: x\n",
+  ],
+  [
+    "U+2028 between the `,` of a note and an id",
+    "sequenceDiagram\nNote over A ,\u2028 B: x\n",
+    "sequenceDiagram\n  Note over A,\u2028 B: x\n",
+  ],
+  [
     "U+2028 between an id and `as`",
     "sequenceDiagram\nparticipant C\u2028 as   Carol\n",
     "sequenceDiagram\n  participant C\u2028 as Carol\n",
@@ -445,6 +486,31 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
  *   the `;` ends it.
  */
 const flowchartExamples: readonly (readonly [string, string, string])[] = [
+  [
+    "U+2028 in the text of a flowchart description block",
+    "flowchart LR\naccDescr {a\u2028b}\nA\n",
+    "flowchart LR\n  accDescr {a\u2028b}\n  A\n",
+  ],
+  [
+    "U+2029 in the text of a flowchart description block",
+    "flowchart LR\naccDescr {a\u2029b}\nA\n",
+    "flowchart LR\n  accDescr {a\u2029b}\n  A\n",
+  ],
+  [
+    "no-break spaces at the ends of the text of a flowchart description block",
+    "flowchart LR\naccDescr {\u00a0a\u00a0}\nA\n",
+    "flowchart LR\n  accDescr { a }\n  A\n",
+  ],
+  [
+    "U+2028 between a subgraph name and its title",
+    "flowchart LR\nsubgraph S\u2028[t]\nA\nend\n",
+    "flowchart LR\n  subgraph S\u2028[t]\n    A\n  end\n",
+  ],
+  [
+    "U+2029 and spaces between a subgraph name and its title",
+    "flowchart LR\nsubgraph S \u2029 [t]\nA\nend\n",
+    "flowchart LR\n  subgraph S \u2029 [t]\n    A\n  end\n",
+  ],
   [
     "a comment line after U+2028 in a flowchart header",
     "flowchart\u2028%% c\n TD\nA\n",
@@ -553,6 +619,16 @@ const classLineSeparatorExamples: readonly (readonly [
   string,
 ])[] = [
   [
+    "U+2028 after the comma of a classDef statement",
+    "classDiagram\nclass A\nclassDef c1,\u2028c2 fill:#f00\n",
+    "classDiagram\n  class A\n  classDef c1,\u2028c2 fill:#f00\n",
+  ],
+  [
+    "U+2029 after the comma of a classDef statement",
+    "classDiagram\nclass A\nclassDef c1 ,\u2029 c2 fill:#f00\n",
+    "classDiagram\n  class A\n  classDef c1,\u2029 c2 fill:#f00\n",
+  ],
+  [
     "class: ls-comment-in-namespace-opening",
     "classDiagram\nnamespace Box\u2028%% keep\n {\nclass Node\n}\n",
     "classDiagram\n  namespace Box\u2028%% keep\n {\n    class Node\n  }\n",
@@ -580,6 +656,16 @@ const classLineSeparatorExamples: readonly (readonly [
  * one is printed as written (docs/er.md, Line separators).
  */
 const erExamples: readonly (readonly [string, string, string])[] = [
+  [
+    "U+2028 between an ER subgraph name and its title",
+    "erDiagram\nsubgraph S\u2028[t]\nA\nend\n",
+    "erDiagram\n  subgraph S\u2028[t]\n    A\n  end\n",
+  ],
+  [
+    "U+2029 between an ER subgraph name and its title",
+    "erDiagram\nsubgraph S\u2029[t]\nA\nend\n",
+    "erDiagram\n  subgraph S\u2029[t]\n    A\n  end\n",
+  ],
   [
     "a comment line after U+2028 in an ER subgraph header",
     "erDiagram\nsubgraph S\u2028%% c\n [T]\nA\nend\n",
