@@ -1,4 +1,4 @@
-# mmd-format
+# mmdfmt
 
 Japanese version: [README.ja.md](./README.ja.md)
 
@@ -24,17 +24,18 @@ the diagrams, with no Prettier configuration.
 ## Usage
 
 ```sh
-npx mmd-format --write "**/*.{md,mmd,mermaid}"
-npx mmd-format --check "**/*.{md,mmd,mermaid}"
-npx mmd-format --stdin-filepath diagram.mmd < diagram.mmd
+npx mmdfmt --write "**/*.{md,mmd,mermaid}"
+npx mmdfmt --check "**/*.{md,mmd,mermaid}"
+npx mmdfmt --stdin-filepath diagram.mmd < diagram.mmd
 ```
 
 - `--write` rewrites the files that change.
 - `--check` changes nothing, and lists the files that `--write` would change.
 - `--stdin-filepath <path>` reads standard input and writes the result to
   standard output. The path says whether the text is a diagram or Markdown.
-- `--tab-width <n>` and `--use-tabs` set the indentation, as `tabWidth` and
-  `useTabs` do for the plugin. The default is two spaces.
+
+There are no formatting options: a diagram is printed with the defaults of the
+plugin, which indent by two spaces.
 
 The patterns are globs. Quote them, so that the tool expands them rather than
 your shell. `node_modules` and the files that `.gitignore` lists are skipped.

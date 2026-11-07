@@ -1,4 +1,4 @@
-# mmd-format
+# mmdfmt
 
 英語版: [README.md](./README.md)
 
@@ -25,18 +25,18 @@ Prettier の設定なしで提供します。
 ## 使い方
 
 ```sh
-npx mmd-format --write "**/*.{md,mmd,mermaid}"
-npx mmd-format --check "**/*.{md,mmd,mermaid}"
-npx mmd-format --stdin-filepath diagram.mmd < diagram.mmd
+npx mmdfmt --write "**/*.{md,mmd,mermaid}"
+npx mmdfmt --check "**/*.{md,mmd,mermaid}"
+npx mmdfmt --stdin-filepath diagram.mmd < diagram.mmd
 ```
 
 - `--write` は、変わるファイルを書き換えます。
 - `--check` は何も変えず、`--write` が変えるファイルを挙げます。
 - `--stdin-filepath <path>` は標準入力を読み、結果を標準出力に書きます。
   パスは、テキストが図か Markdown かを示します。
-- `--tab-width <n>` と `--use-tabs` は字下げを決めます。
-  プラグインの `tabWidth` と `useTabs` と同じです。
-  既定は空白 2 つです。
+
+整形のオプションはありません。
+図はプラグインの既定で印字し、字下げは空白 2 つです。
 
 パターンは glob です。
 シェルでなくツールが展開するように、引用符で囲みます。
