@@ -145,6 +145,7 @@ condition, the indentation denoted by a
 [fixture: treeview/db-class-tail-space] [fixture: treeview/db-icon-tail-space]
 [fixture: treeview/space-line-tab] [fixture: treeview/box-blank-space-indent]
 [fixture: treeview/gram-quoted-tail-space-next-indent] [fixture:
+treeview/gram-quoted-ignored-semicolon-tail-space-next-indent] [fixture:
 treeview/gram-class-tail-space-next-indent] [fixture:
 treeview/gram-icon-tail-space-next-indent] [fixture:
 treeview/box-tail-quoted-prefix-collision] [fixture:
