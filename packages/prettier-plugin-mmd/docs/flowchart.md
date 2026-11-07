@@ -1851,12 +1851,28 @@ The title's interior whitespace stays as written, so `[ T ]` remains `[ T ]`:
 both forms have the same Db, and the heading keeps the author's title spelling.
 [fixture: subgraph-header/title-interior-whitespace-kept]
 
-Whether there is whitespace between the id of a subgraph and its title in
-brackets is kept as written; a run of it becomes one space. [fixture:
-subgraph-header/title-run-of-whitespace-becomes-one] mermaid.js reads both forms
-the same, and both are in use, so the choice is left to the author. A name
-written without a title keeps the whitespace after it, which mermaid.js reads as
-part of the name. [fixture: subgraph-header/name-trailing-run-kept] [fixture:
+The `[` of the title touches the name of the subgraph: `subgraph S [t]` is
+printed `subgraph S[t]`, whatever the name is: a word, several words, a string,
+or a markdown string. [fixture: subgraph-header/title-whitespace-before-dropped]
+[fixture: subgraph-header/title-touches-name] [fixture:
+subgraph-header/title-touches-name-kinds] mermaid.js reads both forms the same,
+so nothing forces the form. The `[` of the label of a node touches its id, as in
+`A[t]`, and the headings of an agentflow touch their titles, as in `flow F[T]`:
+all 19 headings with a title in
+[the documentation of agentflow](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/agentflow.md#L26-L363)
+are written so. The documentation of flowchart has two subgraphs with a title,
+and both have a space
+([`subgraph ide1 [one]`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L1030),
+[`subgraph one [My Group]`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L1109)),
+which does not decide the form. A directive in the gap keeps the whitespace
+written on each side of it, as under [Directives](#directives). [fixture:
+subgraph-header/title-beside-directive-kept] A U+2028 or U+2029 in the gap stays
+where it is. [test: U+2028 between a subgraph name and its title] [test: U+2029
+and spaces between a subgraph name and its title] An empty description block
+that follows the title is the first statement of the body, as before. [fixture:
+subgraph-header/title-before-empty-description-block] A name written without a
+title keeps the whitespace after it, which mermaid.js reads as part of the name.
+[fixture: subgraph-header/name-trailing-run-kept] [fixture:
 subgraph-header/name-trailing-whitespace-kept] [fixture:
 subgraph-header/name-whitespace-before-directive-kept] [fixture:
 subgraph-header/name-whitespace-after-directive-kept] So does the whitespace
@@ -1925,7 +1941,7 @@ flowchart LR
 ```
 
 Input
-([subgraph-header/title-spacing-kept-input.mmd](../tests/fixtures/flowchart/subgraph-header/title-spacing-kept-input.mmd)):
+([subgraph-header/title-touches-name-input.mmd](../tests/fixtures/flowchart/subgraph-header/title-touches-name-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -1938,14 +1954,14 @@ flowchart LR
 ```
 
 Output
-([subgraph-header/title-spacing-kept-output.mmd](../tests/fixtures/flowchart/subgraph-header/title-spacing-kept-output.mmd)):
+([subgraph-header/title-touches-name-output.mmd](../tests/fixtures/flowchart/subgraph-header/title-touches-name-output.mmd)):
 
 ```mmd
 flowchart LR
   subgraph S[Title]
     A
   end
-  subgraph T [Title]
+  subgraph T[Title]
     B
   end
 ```

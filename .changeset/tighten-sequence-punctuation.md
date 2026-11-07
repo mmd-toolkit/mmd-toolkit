@@ -5,4 +5,5 @@
 Print the punctuation of a `sequence` message or note one way. `+`, `-`, and
 `()` touch the participant, as in `A ->> +B` and `A() ->> ()B`, and the comma of
 a note touches both ids, as in `Note over A,B`. mermaid.js reads the same
-diagram either way. Whitespace around a directive stays as written.
+diagram either way. Whitespace around a directive stays as written, and so does
+the space in `A ->> - x`, where `-x` would be read as an arrow.

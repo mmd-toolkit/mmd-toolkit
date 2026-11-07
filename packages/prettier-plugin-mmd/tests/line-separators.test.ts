@@ -477,6 +477,16 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
  */
 const flowchartExamples: readonly (readonly [string, string, string])[] = [
   [
+    "U+2028 between a subgraph name and its title",
+    "flowchart LR\nsubgraph S\u2028[t]\nA\nend\n",
+    "flowchart LR\n  subgraph S\u2028[t]\n    A\n  end\n",
+  ],
+  [
+    "U+2029 and spaces between a subgraph name and its title",
+    "flowchart LR\nsubgraph S \u2029 [t]\nA\nend\n",
+    "flowchart LR\n  subgraph S \u2029 [t]\n    A\n  end\n",
+  ],
+  [
     "a comment line after U+2028 in a flowchart header",
     "flowchart\u2028%% c\n TD\nA\n",
     "flowchart\u2028%% c\n TD\n  A\n",

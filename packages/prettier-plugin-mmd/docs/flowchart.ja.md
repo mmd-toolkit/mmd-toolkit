@@ -1909,12 +1909,36 @@ flowchart TD
 Dbは同じで、見出しには著者のタイトルの書き方を保つためです。
 [fixture: subgraph-header/title-interior-whitespace-kept]
 
-subgraph の id と角括弧のタイトルの間に空白があるかないかは、
-書かれたまま残します。
-空白の連続は空白 1 つにします。
-[fixture: subgraph-header/title-run-of-whitespace-becomes-one]
-mermaid.js はどちらの形も同じに読み、どちらも使われているので、
-書き手に任せます。
+タイトルの `[` は subgraph の名前に接します。
+`subgraph S [t]` は `subgraph S[t]` になります。
+名前が 1 語でも、複数の語でも、文字列でも、markdown 文字列でも同じです。
+[fixture: subgraph-header/title-whitespace-before-dropped]
+[fixture: subgraph-header/title-touches-name]
+[fixture: subgraph-header/title-touches-name-kinds]
+mermaid.js はどちらの形も同じに読むので、形を強いるものはありません。
+ノードのラベルの `[` は id に接し（`A[t]`）、
+agentflow の見出しもタイトルに接します（`flow F[T]`）。
+agentflow の文書にあるタイトル付きの見出し 19 件は、すべてこの書き方です。
+その範囲は、
+[ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/agentflow.md#L26-L363)
+にあります。
+flowchart の文書にあるタイトル付きの subgraph は 2 件で、
+どちらも空白があります。
+1 件目は、
+[`subgraph ide1 [one]`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L1030)
+です。
+2 件目は、
+[`subgraph one [My Group]`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L1109)
+です。
+これは形を決める根拠にはなりません。
+隙間にディレクティブがあれば、
+その両側に書かれた空白を残します（[ディレクティブ](#ディレクティブ)を参照）。
+[fixture: subgraph-header/title-beside-directive-kept]
+隙間の U+2028 と U+2029 は、そのまま残します。
+[test: U+2028 between a subgraph name and its title]
+[test: U+2029 and spaces between a subgraph name and its title]
+タイトルの後ろの空の説明ブロックは、これまでどおり本体の最初の文になります。
+[fixture: subgraph-header/title-before-empty-description-block]
 タイトルなしで書かれた名前は、その後の空白を保ちます。
 mermaid.js はその空白を名前の一部として読みます。
 [fixture: subgraph-header/name-trailing-run-kept]
@@ -1989,7 +2013,7 @@ flowchart LR
 ```
 
 入力
-([subgraph-header/title-spacing-kept-input.mmd](../tests/fixtures/flowchart/subgraph-header/title-spacing-kept-input.mmd)):
+([subgraph-header/title-touches-name-input.mmd](../tests/fixtures/flowchart/subgraph-header/title-touches-name-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -2002,14 +2026,14 @@ flowchart LR
 ```
 
 出力
-([subgraph-header/title-spacing-kept-output.mmd](../tests/fixtures/flowchart/subgraph-header/title-spacing-kept-output.mmd)):
+([subgraph-header/title-touches-name-output.mmd](../tests/fixtures/flowchart/subgraph-header/title-touches-name-output.mmd)):
 
 ```mmd
 flowchart LR
   subgraph S[Title]
     A
   end
-  subgraph T [Title]
+  subgraph T[Title]
     B
   end
 ```

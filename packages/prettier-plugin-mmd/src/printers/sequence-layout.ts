@@ -374,7 +374,7 @@ export function findTitleText(
   )
 }
 
-/** The gap rules of a statement: around its arrow and its `:`. */
+/** The gap rules of a statement: around its arrow, its `,`, and its `:`. */
 function statementRules(
   source: Source,
   statement: SequenceSimpleStatement,
@@ -441,9 +441,13 @@ function addArrowRules(
     findStructuralToken(source, arrow.range[1]),
     "what follows the arrow of a message",
   )
-  const rule = isReadOtherwiseBeforeWhitespace(statement.from.name)
-    ? "none"
-    : "space"
+  // A `()` between the source and the arrow ends the id, so no whitespace
+  // after the id is at stake (see `isReadOtherwiseBeforeWhitespace`).
+  const rule =
+    !statement.fromCentralConnection &&
+    isReadOtherwiseBeforeWhitespace(statement.from.name)
+      ? "none"
+      : "space"
   rules.set(arrow.range[0], rule)
   rules.set(next.range[0], rule)
   if (statement.fromCentralConnection) {
@@ -456,28 +460,50 @@ function addArrowRules(
     )
   }
   if (statement.activation !== null || statement.toCentralConnection) {
-    rules.set(statement.to.range[0], "none")
+    // The `-` of an activation and the first characters of the target would
+    // read as an arrow (see `isReadAsArrowAfterMinus`).
+    rules.set(
+      statement.to.range[0],
+      statement.activation === "-" && isReadAsArrowAfterMinus(statement.to.name)
+        ? "space"
+        : "none",
+    )
   }
 }
 
 /**
- * Adds the rules of the `,` between the ids of a note: none before it and
- * none after it (docs/sequence.md, Arrow spacing).
+ * Whether an id is spelled so that, touching a `-` before it, the lexer reads
+ * the two as an arrow: `-x` and `-X`, since the lexer ignores case, and `-|\`
+ * and `-|/` (diagrams/sequence.md, The statement context). So `A ->> - x: b`
+ * keeps its space: `A ->> -x: b` is rejected.
+ */
+function isReadAsArrowAfterMinus(id: string): boolean {
+  return (
+    toAsciiLowerCase(id).startsWith("x") ||
+    id.startsWith("|\\") ||
+    id.startsWith("|/")
+  )
+}
+
+/**
+ * Adds the rules of the `,` between the two ids of a note over two
+ * participants: none before it and none after it (docs/sequence.md,
+ * Whitespace between tokens). A note with one id has no `,`.
  */
 function addCommaRules(
   source: Source,
   ids: readonly SequenceIdentifier[],
   rules: Map<number, GapRule>,
 ): void {
-  for (let index = 1; index < ids.length; index++) {
-    const comma = expectToken(
-      findStructuralToken(source, ids[index - 1].range[1]),
-      "the `,` between the ids of a note",
-    )
-    expectValue(comma, ",")
-    rules.set(comma.range[0], "none")
-    rules.set(ids[index].range[0], "none")
-  }
+  if (ids.length < 2) return
+  const [first, second] = ids
+  const comma = expectToken(
+    findStructuralToken(source, first.range[1]),
+    "the `,` between the ids of a note",
+  )
+  expectValue(comma, ",")
+  rules.set(comma.range[0], "none")
+  rules.set(second.range[0], "none")
 }
 
 /**

@@ -29,7 +29,11 @@ import {
 import { readGapElement } from "./gap.ts"
 import { holdsJoiningRegion, lineStartOf } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
-import { findStructuralToken, isWhitespace } from "./source.ts"
+import {
+  findStructuralToken,
+  findTriviaBetween,
+  isWhitespace,
+} from "./source.ts"
 
 /** Written leaf values; the leaf coverage test accounts for the other leaves. */
 export const agentflowValueNodeTypes: ReadonlySet<Node["type"]> = new Set([
@@ -102,6 +106,24 @@ export function layoutContainerHeader(
     ...(node.title === null ? [] : [node.title]),
   ]
   const rules = new Map<number, GapRule>()
+  // The `[` of the title of an ordinary heading touches its name, as in a
+  // flowchart, unless a directive or comment ends the name: the whitespace
+  // after it is kept as under Directives (docs/agentflow.md, Names and
+  // headings).
+  const lastTrivia = findTriviaBetween(source, name.range[0], nameEnd).at(-1)
+  if (
+    node.title !== null &&
+    name.parts.length === 1 &&
+    lastTrivia?.range[1] !== nameEnd
+  ) {
+    rules.set(
+      expectToken(
+        findStructuralToken(source, name.range[1]),
+        "the heading title opener",
+      ).range[0],
+      "none",
+    )
+  }
   const layout = layoutRange(
     source,
     node.range[0],

@@ -455,8 +455,9 @@ the arrow touches the source: `A ->> + B` is printed `A ->> +B`, and
 `A () ->> () B` is printed `A() ->> ()B`. [fixture:
 arrow-spacing/plus-and-minus-touching] [fixture:
 arrow-spacing/parentheses-touching] mermaid.js reads the spellings with and
-without the whitespace as the same message, so nothing forces the form. The
-printer already gives `A->>+B` the form `A ->> +B`, and ten of the twelve
+without the whitespace as the same message, except for a `-` before a target
+that would read as an arrow with it (below), so nothing else forces the form.
+The printer already gives `A->>+B` the form `A ->> +B`, and ten of the twelve
 messages with a `+` or `-` in the documentation of mermaid.js write the sign
 touching the target (`->>+John`, `-->>-Alice`;
 [the activation examples](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L413-L424)
@@ -467,23 +468,36 @@ The other two write the sign touching the arrow, `->>+ John`
 and are printed with the sign on the target as well. Its three messages with
 `()` write it touching its id
 ([central connections](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L392-L394)).
-The whitespace is dropped only where a gap holds nothing but whitespace on one
-line. A directive in the gap keeps the whitespace written on each side of it, as
-under [Directives](#directives): `A%%{init: {}}%%->>B: v` has no space before
-its arrow, and `A ->> +%%{init: {}}%% B: v` keeps the space after the directive.
+The whitespace is dropped only where a gap holds nothing but whitespace. A
+directive in the gap keeps the whitespace written on each side of it, as under
+[Directives](#directives): `A%%{init: {}}%%->>B: v` has no space before its
+arrow, and `A ->> +%%{init: {}}%% B: v` keeps the space after the directive.
 [fixture: arrow-spacing/directive-beside-arrow-kept] [fixture:
 arrow-spacing/touching-beside-directive-kept] A line break in the gap is joined
-as in [Multi-line statements](#multi-line-statements), and a comment line keeps
-the lines. [fixture: arrow-spacing/touching-over-line-breaks-joined] [fixture:
-arrow-spacing/touching-with-comment-line-kept] Statements separated by a `;` or
-by an empty line are printed the same way. [fixture:
-arrow-spacing/touching-between-semicolons] [fixture:
-arrow-spacing/touching-after-blank-lines] A U+2028 or U+2029 in the gap stays
-where it is. [test: U+2028 between a `+` and an id] [test: U+2029 between a `-`
-and an id] [test: U+2028 between an id and `()`] [test: U+2029 between `()` and
-an id] [test: U+2029 between an id of a note and the `,`] [test: U+2028 between
-the `,` of a note and an id] The arrow is printed as written. [fixture:
-arrow-spacing/arrows-kept]
+as in [Multi-line statements](#multi-line-statements), and the whitespace goes
+with it; a comment line keeps the lines. [fixture:
+arrow-spacing/touching-over-line-breaks-joined] [fixture:
+arrow-spacing/touching-with-comment-line-kept] A U+2028 or U+2029 in a gap on
+one line stays where it is, with the whitespace beside it. [test: U+2028 between
+a `+` and an id] [test: U+2029 between a `-` and an id] [test: U+2028 between an
+id and `()`] [test: U+2029 between `()` and an id] [test: U+2029 between an id
+of a note and the `,`] [test: U+2028 between the `,` of a note and an id]
+Statements separated by a `;` or by an empty line are printed the same way.
+[fixture: arrow-spacing/touching-between-semicolons] [fixture:
+arrow-spacing/touching-after-blank-lines] A line with a `;` that the line rule
+of mermaid.js ignores follows
+[Statements one per line](#statements-one-per-line): `A ->> + B: style:#x;` is
+printed `A ->> +B: style:#x;`, while `A () ->> () B: style:#x;;` stays as
+written. [fixture: arrow-spacing/touching-with-ignored-semicolon] The arrow is
+printed as written. [fixture: arrow-spacing/arrows-kept]
+
+The `-` keeps its space before a target that would read as an arrow with it:
+`-x` and `-X`, since the lexer ignores case, `-|\`, and `-|/` are arrows, so
+`A ->> - x: b` stays and `A ->> -x: b` is rejected. Ids such as `x`, `X`,
+`Xavier`, and `|\y` are the targets in question. A `+` and a `()` are never the
+start of an arrow, and a target that does not start so touches the `-`.
+[fixture: arrow-spacing/minus-before-arrow-like-target-spaced] [corpus fixture:
+sequence/lex-minus-space-destination-x]
 
 Input
 ([arrow-spacing/spaced-input.mmd](../tests/fixtures/sequence/arrow-spacing/spaced-input.mmd)):
@@ -514,8 +528,10 @@ sequenceDiagram
 ```
 
 A message whose source is an id that whitespace after it would make another unit
-keeps its arrow touching on both sides. Two rules of the lexer need whitespace
-after what they read (the specification's
+keeps its arrow touching on both sides, unless a `()` follows the id:
+`1() ->> B` and `title() ->> B` are spaced, since the `()` ends the id.
+[fixture: arrow-spacing/central-connection-after-number-or-title] Two rules of
+the lexer need whitespace after what they read (the specification's
 [The statement context](../../spec/docs/diagrams/sequence.md#the-statement-context)):
 a number, one or more digits, optionally with `.` and one or two digits, or `.`
 and one or two digits, which must be followed by whitespace or `%%`; and

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Messages: the destination must follow on the line of the `-`, so the line feed makes the input rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...mactivate AA ->> -x: b\n---------------------^\nExpecting 'link', 'ACTOR', got 'NEWLINE'"
+  }
+}

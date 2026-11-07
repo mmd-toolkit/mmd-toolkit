@@ -474,8 +474,8 @@ sequenceDiagram
 `A ->> + B` は `A ->> +B` に、`A () ->> () B` は `A() ->> ()B` になります。
 [fixture: arrow-spacing/plus-and-minus-touching]
 [fixture: arrow-spacing/parentheses-touching]
-空白があってもなくても、 mermaid.js は同じメッセージとして読むので、
-形を強いるものはありません。
+空白があってもなくても、 mermaid.js は同じメッセージとして読みます。
+例外は、矢印として読まれる始まりの宛先の前の `-` だけです（下記）。
 整形は `A->>+B` をすでに `A ->> +B` にしています。
 mermaid.js の文書で `+` か `-` のあるメッセージ 12 件のうち、
 10 件は記号が宛先に接しています（`->>+John`、`-->>-Alice`）。
@@ -494,7 +494,7 @@ mermaid.js の文書で `+` か `-` のあるメッセージ 12 件のうち、
 その 3 件は
 [中央接続の例](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L392-L394)
 にあります。
-空白を削るのは、隙間が 1 行の空白だけでできているときに限ります。
+空白を削るのは、隙間が空白だけでできているときに限ります。
 隙間にディレクティブがあれば、
 その両側に書かれた空白を残します（[ディレクティブ](#ディレクティブ)を参照）。
 `A%%{init: {}}%%->>B: v` は矢印の前に空白を置かず、
@@ -502,18 +502,32 @@ mermaid.js の文書で `+` か `-` のあるメッセージ 12 件のうち、
 [fixture: arrow-spacing/directive-beside-arrow-kept]
 [fixture: arrow-spacing/touching-beside-directive-kept]
 隙間の中の改行は[複数行の文](#複数行の文)と同じく 1 行に結び、
+空白も改行と一緒になくなります。
 コメント行があるときは行を保ちます。
 [fixture: arrow-spacing/touching-over-line-breaks-joined]
 [fixture: arrow-spacing/touching-with-comment-line-kept]
-`;` や空行で区切られた文も、同じように整形します。
-[fixture: arrow-spacing/touching-between-semicolons]
-[fixture: arrow-spacing/touching-after-blank-lines]
-隙間の中の U+2028 と U+2029 は、そのまま残します。
+1 行の隙間の中の U+2028 と U+2029 は、隣の空白とともにそのまま残します。
 [test: U+2028 between a `+` and an id] [test: U+2029 between a `-` and an id]
 [test: U+2028 between an id and `()`] [test: U+2029 between `()` and an id]
 [test: U+2029 between an id of a note and the `,`]
 [test: U+2028 between the `,` of a note and an id]
+`;` や空行で区切られた文も、同じように整形します。
+[fixture: arrow-spacing/touching-between-semicolons]
+[fixture: arrow-spacing/touching-after-blank-lines]
+mermaid.js の line rule が `;` を無視する行は、
+[1 行に 1 文](#1-行に-1-文)に従います。
+`A ->> + B: style:#x;` は `A ->> +B: style:#x;` になり、
+`A () ->> () B: style:#x;;` は書かれたままです。
+[fixture: arrow-spacing/touching-with-ignored-semicolon]
 矢印は書かれたまま印字します。 [fixture: arrow-spacing/arrows-kept]
+
+`-` は、その後ろの宛先と合わせると矢印として読まれる場合、空白を残します。
+`-x`、`-X`（字句解析は大文字小文字を区別しません）、`-|\`、`-|/` は矢印なので、
+`A ->> - x: b` は空白を残し、`A ->> -x: b` は拒否されます。
+対象になるのは、`x`、`X`、`Xavier`、`|\y` のような宛先です。
+`+` と `()` は矢印の始まりにならず、そのように始まらない宛先は `-` に接します。
+[fixture: arrow-spacing/minus-before-arrow-like-target-spaced]
+[corpus fixture: sequence/lex-minus-space-destination-x]
 
 入力
 ([arrow-spacing/spaced-input.mmd](../tests/fixtures/sequence/arrow-spacing/spaced-input.mmd)):
@@ -545,6 +559,10 @@ sequenceDiagram
 
 送り元が、後に空白が続くと別の単位として読まれる id のメッセージは、
 矢印の両側を空白なしで接したままにします。
+ただし id の後に `()` が続くときは別で、
+`1() ->> B` と `title() ->> B` には空白を置きます。
+`()` が id を終わらせるためです。
+[fixture: arrow-spacing/central-connection-after-number-or-title]
 字句解析の規則のうち、
 読むものの後に空白を要するものが 2 つあります（仕様の
 [文の文脈](../../spec/docs/diagrams/sequence.ja.md#文の文脈)）。

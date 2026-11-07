@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "With the `-` glued to `|/`, is `-|/` read as an arrow instead of a deactivation and a destination, so that the message is rejected?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...amactivate AA ->> -|/: b\n---------------------^\nExpecting 'link', '+', '-', '()', 'ACTOR', got 'SOLID_ARROW_BOTTOM'"
+  }
+}

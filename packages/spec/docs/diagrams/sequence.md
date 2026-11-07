@@ -800,6 +800,38 @@ sequence/gram-message-activation-then-central-connection] [fixture:
 sequence/gram-message-central-connection-then-activation] [fixture:
 sequence/lex-empty-text]
 
+An arrow is read before a `-` unit (rules 22 and 24), so a `-` that starts an
+arrow after the first arrow is that arrow: `A ->> -x: b`, `A ->> -X: b`,
+`A ->> -|\: b`, `A ->> -|/: b`, and `A ->> -xy: b` have a second arrow and are
+rejected. [fixture: sequence/lex-minus-glued-x-arrow] [fixture:
+sequence/lex-minus-glued-upper-x-arrow] [fixture:
+sequence/lex-minus-glued-bar-backslash-arrow] [fixture:
+sequence/lex-minus-glued-bar-slash-arrow] [fixture:
+sequence/lex-minus-glued-x-name-arrow] Whitespace after the `-` keeps it a `-`
+unit: `A ->> - x: b` has the `-` and the destination `x`, and so do `X`, `|\`,
+`|/`, and `xy`, also with a tab or U+2028 in place of the space. [fixture:
+sequence/lex-minus-space-destination-x] [fixture:
+sequence/lex-minus-space-destination-upper-x] [fixture:
+sequence/lex-minus-space-destination-bar-backslash] [fixture:
+sequence/lex-minus-space-destination-bar-slash] [fixture:
+sequence/lex-minus-space-destination-x-name] [fixture:
+sequence/lex-minus-tab-destination-x] [fixture:
+sequence/lex-minus-line-separator-destination-x] A directive is left out first,
+so it does not separate them by itself: `A ->> -%%{init: {}}%%x: b` is rejected,
+while `A ->> - %%{init: {}}%%x: b` and `A ->> -%%{init: {}}%% x: b` are
+accepted. [fixture: sequence/lex-minus-space-directive-destination-x] [fixture:
+sequence/lex-minus-directive-space-destination-x] [fixture:
+sequence/lex-minus-glued-directive-x-arrow] A destination that starts no arrow
+needs no whitespace: `A ->> -y: b` has the `-` and the destination `y`.
+[fixture: sequence/lex-minus-glued-destination-y] The destination stays on the
+line of the `-`: a line break between them is rejected, also with a comment line
+after it. [fixture: sequence/lex-minus-line-feed-destination-x] [fixture:
+sequence/lex-minus-comment-line-destination-x] An empty description block
+between them lies inside the message and is rejected here, while mermaid.js
+accepts `A ->> -accDescr {}x: b` (see
+[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.md)).
+[fixture: sequence/div-empty-description-block-between-minus-and-destination]
+
 ### Other statements
 
 ```text

@@ -111,12 +111,30 @@ agentflow-beta TB
 ### Names and headings
 
 通常の1断片の名前に明示的なタイトルがある場合は、
-[subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダー)と同じ理由で、
-タイトルとの接触を保ち、外側の連続する空白を1つにします。
-どちらの書き方も使われるためです。
+[subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダー)に従い、
+タイトルの `[` を名前に接します。
+`flow F [T]` は `flow F[T]` に、
+`connector F [T]` は `connector F[T]` になります。
+agentflow の文書にあるタイトル付きの見出し 19 件は、すべてこの書き方です。
+その範囲は、
+[ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/agentflow.md#L26-L363)
+にあります。
+どちらの形でも Db は同じです。
 タイトルの内側の空白は保ち、`[ T ]`を`[ T ]`のままにします。
-Dbは同じで、 agentflowだけ違う形を選ぶ理由がないためです。
-[fixture: names-and-headings/name-heading-padding]
+agentflowだけ違う形を選ぶ理由がないためです。
+[fixture: names-and-headings/name-heading-touches-title]
+[fixture: names-and-headings/name-heading-touches-title-kinds]
+複数の部分からなる名前（消された `click` や空の文字列を含む名前）は、
+タイトルの前の空白を保ちます。
+名前の本文がその空白を読むためです。
+[fixture: names-and-headings/name-heading-title-multi-part-name-kept]
+名前をディレクティブかコメントが終わらせるときは、その後ろに書かれた空白を、
+[ディレクティブ](#directives)と同じく保ちます。
+隙間の中にディレクティブがあれば、その両側の空白も保ちます。
+[fixture: names-and-headings/name-heading-title-beside-directive-kept]
+隙間の U+2028 と U+2029 は、そのまま残します。
+[test: agentflow: U+2028 between a flow name and its title]
+[test: agentflow: U+2029 between a connector name and its title]
 
 明示的なタイトルの前にある空白だけの名前は、書かれた文字を保ちます。
 除くと、必要な名前がなくなるためです。 [fixture:
@@ -327,7 +345,7 @@ agentflowのラベルコメントの直前の空白とタブは値の文字な�
 flow/connectorの見出しのタイトルは、
 [subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダー)に従います。
 flowchartと同じ理由で、 `[ T ]`を含め内側の空白を保ちます。
-[fixture: names-and-headings/name-heading-padding]
+[fixture: names-and-headings/name-heading-touches-title]
 
 入力（escape 表記）: `"agentflow-beta TB\nA[text]"`。
 [fixture: labels/labels-quote-unsafe]
