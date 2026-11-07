@@ -214,8 +214,9 @@ type BlockResult =
 /**
  * Formats the diagram of a code block. Only the content lines change: the
  * lines between the opening fence and the closing fence, or the end of the
- * block when it is not closed. The line of the opening fence keeps its text,
- * and its line ending too unless the diagram becomes empty.
+ * block, without its blank lines there, when it is not closed. The line of the
+ * opening fence keeps its text, and its line ending too unless the diagram
+ * becomes empty.
  */
 async function formatBlock(
   block: DiagramBlock,
@@ -239,7 +240,16 @@ async function formatBlock(
       },
     }
   }
-  const values = valueLinesOf(block, lines)
+  // The lines of the diagram: the content lines, except, in a block that is
+  // not closed, the empty lines and the lines of only spaces and tabs at its
+  // end. Markdown reads those as part of the block, but they also part it from
+  // what follows it, as an empty line between two items of a list does, which
+  // keeps the list loose; they are left as written (README, Code blocks in
+  // detail).
+  const contentValues = valueLinesOf(block, lines)
+  const values = isClosed(block, lines, contentValues.length)
+    ? contentValues
+    : withoutTrailingBlankLines(contentValues)
   const prefixes: string[] = []
   for (const [index, value] of values.entries()) {
     const line = lines[start + index].text
@@ -350,6 +360,43 @@ function hasOneEmptyLine(block: DiagramBlock, lines: readonly Line[]): boolean {
   if (!reachesNext) return false
   const line = lines[next].text
   return !line.includes("`") && !line.includes("~")
+}
+
+/**
+ * Whether a block has a closing fence: the line after its content lines, which
+ * the block reaches into with the characters of a fence. A block that is not
+ * closed ends where its container or the file ends, on its last content line,
+ * or on the next line with no more of it than the indentation and the `>` of
+ * its container.
+ */
+function isClosed(
+  block: DiagramBlock,
+  lines: readonly Line[],
+  contentLineCount: number,
+): boolean {
+  const next = block.position.start.line + contentLineCount
+  const { end } = block.position
+  if (end.line - 1 !== next) return false
+  const reached = lines[next].text.slice(0, end.column - 1)
+  return reached.includes("`") || reached.includes("~")
+}
+
+/**
+ * The lines without the lines at their end that are blank as Markdown reads
+ * them: empty, or of only spaces and tabs.
+ */
+function withoutTrailingBlankLines(values: readonly string[]): string[] {
+  let count = values.length
+  while (count > 0 && isBlank(values[count - 1])) count--
+  return values.slice(0, count)
+}
+
+/** Whether a line is empty or holds only spaces and tabs. */
+function isBlank(text: string): boolean {
+  for (const character of text) {
+    if (character !== " " && character !== "\t") return false
+  }
+  return true
 }
 
 /**

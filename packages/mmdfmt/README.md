@@ -359,7 +359,11 @@ otherwise.
 
 A block that is not closed runs to the end of its list item, its block quote, or
 the file, and is formatted all the same. When it ends the file without a line
-ending, its last line still has none.
+ending, its last line still has none. The lines at its end that are empty or
+hold only spaces and tabs are left as written, and so is a block that holds
+nothing else. Markdown reads them as part of the block, but they also part it
+from what follows, as an empty line between two items keeps a list loose, with
+space between its items.
 
 Two kinds of block are left as written, with a warning that gives the position:
 
@@ -369,14 +373,14 @@ Two kinds of block are left as written, with a warning that gives the position:
 - a block whose opening fence stands on the line of a footnote label, as in
   `[^1]: ```mermaid`.
 
-A diagram that is empty or only whitespace becomes empty.
+A diagram that is empty or only whitespace between its fences becomes empty.
 
 A file keeps its line endings. Each line that `mmdfmt` writes ends as the first
 line of the file ends, or with `\n` in a file of one line, except the last,
 which ends as the last line of the diagram ended before formatting. The line
-after the block then follows the same line ending as before; another one could
-join with that line's into one, as a `\r` before an empty line that ends with
-`\n` is read as one `\r\n`, and the number of lines would change. When the
+after the lines written then follows the same line ending as before; another one
+could join with that line's into one, as a `\r` before an empty line that ends
+with `\n` is read as one `\r\n`, and the number of lines would change. When the
 diagram becomes empty, the line of the opening fence ends that way in place of
 its own: the one change outside the lines between the fences. In a Markdown
 file, only the lines of the diagrams that change are written. For the line and
