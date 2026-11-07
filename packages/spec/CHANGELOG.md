@@ -1,5 +1,15 @@
 # @mmd-toolkit/spec
 
+## 0.3.1
+
+### Patch Changes
+
+- [#59](https://github.com/mmd-toolkit/mmd-toolkit/pull/59) [`4a6be00`](https://github.com/mmd-toolkit/mmd-toolkit/commit/4a6be00cd4dc012d5a75e17540419e6d81eaf4de) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Cite the treemap and treeView fixtures where a directive or an ignored `;` lies
+  in the run at the end of a line and the next line is indented.
+
+- [#60](https://github.com/mmd-toolkit/mmd-toolkit/pull/60) [`f41858e`](https://github.com/mmd-toolkit/mmd-toolkit/commit/f41858ef670c82de824f7a0f875b4968abdbf8b8) Thanks [@ota-meshi](https://github.com/ota-meshi)! - State how sequence reads a `-` after an arrow when the destination starts an
+  arrow, as in `A ->> -x: b`.
+
 ## 0.3.0
 
 ### Minor Changes
