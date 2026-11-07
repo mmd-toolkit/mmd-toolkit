@@ -2,6 +2,7 @@ import { format } from "prettier"
 import plugin from "prettier-plugin-mmd"
 import { describe, expect, it } from "vitest"
 import { formatMarkdown } from "../src/markdown.ts"
+import { lines } from "./helpers.ts"
 
 /** How many times a Markdown text holds the formatted form of `A-->B`. */
 function formattedDiagrams(text: string): number {
@@ -10,11 +11,6 @@ function formattedDiagrams(text: string): number {
 
 /** The diagram block `A-->B`, unformatted, with its fences. */
 const block = ["```mmd", "flowchart LR", "A-->B", "```"]
-
-/** A Markdown text from its lines, each ended by `\n`. */
-function lines(...texts: readonly string[]): string {
-  return texts.map((text) => `${text}\n`).join("")
-}
 
 describe("Code blocks in detail: the same blocks as the plugin", () => {
   it.each([
@@ -87,10 +83,14 @@ describe("Code blocks in detail: the same blocks as the plugin", () => {
       parser: "markdown",
       plugins: [plugin],
     })
-    const byTool = await formatMarkdown(text, {
-      tabWidth: undefined,
-      useTabs: undefined,
-    })
+    const byTool = await formatMarkdown(
+      text,
+      {
+        tabWidth: undefined,
+        useTabs: undefined,
+      },
+      "output",
+    )
     expect(formattedDiagrams(byTool.text)).toBe(formattedDiagrams(byPrettier))
   })
 })
@@ -108,10 +108,14 @@ describe("If you know Prettier: two results differ from the plugin in Markdown",
       parser: "markdown",
       plugins: [plugin],
     })
-    const byTool = await formatMarkdown(text, {
-      tabWidth: undefined,
-      useTabs: undefined,
-    })
+    const byTool = await formatMarkdown(
+      text,
+      {
+        tabWidth: undefined,
+        useTabs: undefined,
+      },
+      "output",
+    )
     expect(byPrettier).toContain("  style A fill:#f00,\n")
     expect(byTool).toEqual({
       text: lines(
@@ -138,10 +142,14 @@ describe("If you know Prettier: two results differ from the plugin in Markdown",
       parser: "markdown",
       plugins: [plugin],
     })
-    const byTool = await formatMarkdown(text, {
-      tabWidth: undefined,
-      useTabs: undefined,
-    })
+    const byTool = await formatMarkdown(
+      text,
+      {
+        tabWidth: undefined,
+        useTabs: undefined,
+      },
+      "output",
+    )
     expect(formattedDiagrams(byPrettier)).toBe(1)
     expect(byTool).toEqual({ text, diagnostics: [] })
   })

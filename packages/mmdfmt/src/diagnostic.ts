@@ -11,6 +11,16 @@ export interface Diagnostic {
   readonly position: Position
 }
 
+/**
+ * The text whose lines a diagnostic counts: the text as it was read, or the
+ * text after formatting. A person opens the file after the run to fix what is
+ * reported, so a diagnostic gives its position in the text that the run leaves:
+ * the text after formatting with `--write` and `--stdin-filepath`, and the text
+ * as it was read with `--check`, which writes nothing (README, Errors and exit
+ * codes).
+ */
+export type PositionsIn = "input" | "output"
+
 /** The text of a file after formatting, and what was reported about it. */
 export interface FormatResult {
   readonly text: string

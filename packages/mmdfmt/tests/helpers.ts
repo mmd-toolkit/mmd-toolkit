@@ -64,6 +64,11 @@ export class Project {
   }
 }
 
+/** A text of lines, each ended by `\n`. */
+export function lines(...texts: readonly string[]): string {
+  return texts.map((text) => `${text}\n`).join("")
+}
+
 /** The lines of a list that the tool prints, from paths written with `/`. */
 export function listed(...names: readonly string[]): string {
   return names.map((name) => `${path.join(...name.split("/"))}\n`).join("")

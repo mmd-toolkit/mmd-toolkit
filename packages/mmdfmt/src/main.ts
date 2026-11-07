@@ -171,7 +171,12 @@ async function formatFiles(
     try {
       if (await isSkipped(file.path, io.cwd)) continue
       const text = await readFile(file.path, "utf8")
-      const result = await formatFile(text, file.path, file.kind)
+      const result = await formatFile(
+        text,
+        file.path,
+        file.kind,
+        mode === "write" ? "output" : "input",
+      )
       report(io, name, result.diagnostics)
       if (result.diagnostics.some(isError)) {
         failed = true
@@ -210,7 +215,7 @@ async function formatStandardInput(filepath: string, io: Io): Promise<number> {
       io.stdout(text)
       return exitCodes.ok
     }
-    const result = await formatFile(text, file, kind)
+    const result = await formatFile(text, file, kind, "output")
     report(io, filepath, result.diagnostics)
     if (result.diagnostics.some(isError)) return exitCodes.error
     io.stdout(result.text)

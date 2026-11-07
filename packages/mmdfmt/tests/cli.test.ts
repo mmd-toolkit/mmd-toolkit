@@ -3,7 +3,7 @@ import path from "node:path"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import packageJson from "../package.json" with { type: "json" }
 import { ignoreBrokenPipe } from "../src/broken-pipe.ts"
-import { Project, listed } from "./helpers.ts"
+import { Project, lines, listed } from "./helpers.ts"
 
 let project: Project
 
@@ -925,6 +925,102 @@ describe("Errors and exit codes: an error in a .mmd or .mermaid file", () => {
       stdout: "",
       stderr: "a.md:3:6: warning: Unexpected character\n",
     })
+  })
+})
+
+describe("Errors and exit codes: a warning with its position in the file", () => {
+  const input = lines(
+    "> ```mermaid",
+    "> flowchart LR",
+    "> A-->B; B-->C; C-->D",
+    "> ```",
+    "",
+    "> ```mermaid",
+    "> flowchart LR",
+    "> A-->",
+    "> ```",
+    "",
+    "> ```mermaid",
+    "> flowchart LR",
+    "> A-->B; B-->C",
+    "> ```",
+  )
+  const formatted = lines(
+    "> ```mermaid",
+    "> flowchart LR",
+    ">   A --> B",
+    ">   B --> C",
+    ">   C --> D",
+    "> ```",
+    "",
+    "> ```mermaid",
+    "> flowchart LR",
+    "> A-->",
+    "> ```",
+    "",
+    "> ```mermaid",
+    "> flowchart LR",
+    ">   A --> B",
+    ">   B --> C",
+    "> ```",
+  )
+
+  it("--write gives the position of a warning in the file it wrote", async () => {
+    project.write({ "b.md": input })
+    expect(await project.run(["--write", "b.md"])).toEqual({
+      code: 0,
+      stdout: listed("b.md"),
+      stderr: "b.md:11:1: warning: Unexpected end of text\n",
+    })
+    expect(project.read("b.md")).toBe(formatted)
+  })
+
+  it("--stdin-filepath gives the position of a warning in the text it writes", async () => {
+    expect(await project.run(["--stdin-filepath", "b.md"], input)).toEqual({
+      code: 0,
+      stdout: formatted,
+      stderr: "b.md:11:1: warning: Unexpected end of text\n",
+    })
+  })
+
+  it("--check gives the position of a warning in the file as it is", async () => {
+    project.write({ "b.md": input })
+    expect(await project.run(["--check", "b.md"])).toEqual({
+      code: 1,
+      stdout: listed("b.md"),
+      stderr: "b.md:9:1: warning: Unexpected end of text\n",
+    })
+    expect(project.read("b.md")).toBe(input)
+  })
+
+  /**
+   * A file whose first line ends with `\r` and the others with `\n`, with a
+   * diagram that gains a line before a rejected one.
+   */
+  const mixedInput =
+    "# T\r> ```mermaid\n> flowchart LR\n> A-->B; B-->C\n\n> next\n\n```mermaid\nflowchart LR\nA-->B)\n```\n"
+  /** The file above after formatting. */
+  const mixedFormatted =
+    "# T\r> ```mermaid\n> flowchart LR\r>   A --> B\r>   B --> C\n\n> next\n\n```mermaid\nflowchart LR\nA-->B)\n```\n"
+
+  it("--write gives the position of a warning in the file it wrote, whose lines end in two ways", async () => {
+    project.write({ "b.md": mixedInput })
+    expect(await project.run(["--write", "b.md"])).toEqual({
+      code: 0,
+      stdout: listed("b.md"),
+      stderr: "b.md:11:6: warning: Unexpected character\n",
+    })
+    expect(project.read("b.md")).toBe(mixedFormatted)
+  })
+
+  it("--stdin-filepath gives the position of a warning in the text it writes, whose lines end in two ways", async () => {
+    expect(await project.run(["--stdin-filepath", "b.md"], mixedInput)).toEqual(
+      {
+        code: 0,
+        stdout: mixedFormatted,
+        stderr: "b.md:11:6: warning: Unexpected character\n",
+      },
+    )
   })
 })
 
