@@ -16,6 +16,8 @@ Prettierで整形するプラグインです。
 npm install --save-dev prettier@3 prettier-plugin-mmd
 ```
 
+プラグインには、Node.js `^20.19.0 || ^22.13.0 || >=24`が必要です。
+
 ## 最初の図を整形する
 
 次の入力を`diagram.mmd`として保存します。

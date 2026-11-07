@@ -17,6 +17,8 @@ Install Prettier and the plugin in your project:
 npm install --save-dev prettier@3 prettier-plugin-mmd
 ```
 
+The plugin needs Node.js `^20.19.0 || ^22.13.0 || >=24`.
+
 ## Format your first diagram
 
 Save this input as `diagram.mmd`:

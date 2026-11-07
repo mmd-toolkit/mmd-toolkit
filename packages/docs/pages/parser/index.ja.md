@@ -15,6 +15,8 @@ JavaScriptやTypeScriptで図の内容を調べたり、処理したりするた
 npm install @mmd-toolkit/parser
 ```
 
+ESモジュールで、Node.js `^20.19.0 || ^22.13.0 || >=24`が必要です。
+
 TypeScriptの型を使うには、パーサーの版か、
 互換のある新しい版の`@mmd-toolkit/ast`も入れます。
 

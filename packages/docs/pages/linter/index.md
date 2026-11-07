@@ -14,6 +14,8 @@ Install ESLint 10, the plugin, and `@eslint/markdown` in your project:
 npm install --save-dev eslint@10 @mmd-toolkit/eslint-plugin @eslint/markdown
 ```
 
+The plugin is an ES module and needs Node.js `^20.19.0 || ^22.13.0 || >=24`.
+
 Create an [ESLint configuration file][eslint-config] named `eslint.config.mjs`
 in the project root:
 

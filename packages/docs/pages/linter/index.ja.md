@@ -15,6 +15,8 @@ ESLintで検出するプラグインです。
 npm install --save-dev eslint@10 @mmd-toolkit/eslint-plugin @eslint/markdown
 ```
 
+プラグインはESモジュールで、Node.js `^20.19.0 || ^22.13.0 || >=24`が必要です。
+
 プロジェクトのルートに、
 [ESLintの設定ファイル][eslint-config]を`eslint.config.mjs`として作成します。
 
