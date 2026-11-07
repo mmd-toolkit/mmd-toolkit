@@ -126,7 +126,7 @@ Db は、メソッドに渡されたものを保ちます。
 
 **既定値。**
 文がなければ、Db のタイトル（フロントマターのタイトルがあればそれ）、
-`accTitle`、`accDescr` は空のテキストで、 section もタスクもありません。
+`accTitle`、`accDescr` は空のテキストで、section もタスクもありません。
 [fixture: journey/header-only] [fixture: journey/db-title-frontmatter]
 
 **タイトルと section。**

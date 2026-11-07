@@ -70,7 +70,7 @@ erDiagram
 ### 属性ブロック
 
 属性ブロックの `{` は、空白 1 つの後に、実体の行に置きます。
-各属性は、1 段深く、行に 1 つずつ置き、 `}` は、実体と同じ段に、
+各属性は、1 段深く、行に 1 つずつ置き、`}` は、実体と同じ段に、
 行に単独で置きます。 [fixture: attribute-blocks/opening-brace-after-one-space]
 [fixture: attribute-blocks/split]
 1 行に書かれたブロックや、最初の属性が `{` の行に、
@@ -81,7 +81,7 @@ mermaid.js は属性ブロックを改行に関係なく読むので、同じ属
 `}` の後に同じ行で続く文は、行に単独で置きます。
 [fixture: attribute-blocks/entity-after-closing-brace]
 [corpus fixture: er/gram-block-then-name-one-line]
-`{` の前の名前、別名、クラスは、 [実体](#実体)と同じに整形します。
+`{` の前の名前、別名、クラスは、[実体](#実体)と同じに整形します。
 [fixture: attribute-blocks/alias-and-classes]
 
 空白しかない空のブロックは、どう書かれていても、
@@ -342,7 +342,7 @@ erDiagram
 ER 図の 2 つの文を区切るものはなく、
 mermaid.js は 1 行に続けて書かれた文も読みます。
 各文は行に単独で置きます。
-1 行に 2 つの文があると読みにくく、 flowchart、sequence、class、
+1 行に 2 つの文があると読みにくく、flowchart、sequence、class、
 state も 1 行に 1 つの文を印字します。
 `A B` は実体 A と B で、関係は 1 行に、その役割の後の実体は次の行に置き、
 属性ブロックの `}`、subgraph の `end`、ヘッダーの後に続く文も、
@@ -365,7 +365,7 @@ state も 1 行に 1 つの文を印字します。
 2 つの場合は、文を 1 行に残します。
 実体 `1` の直後に、空白なしで、またはディレクティブだけを挟んで、別の文や、
 その subgraph の `end` が続くときは、そのままにします。
-`1a` は実体 `1` と `a` ですが、 `1` と文字を 2 行に分けたり、
+`1a` は実体 `1` と `a` ですが、`1` と文字を 2 行に分けたり、
 間に空白を置いたりすると、
 カーディナリティ `only-one` と名前になるからです（diagrams/er.md、
 カーディナリティ、数、関係の線、規則 11）。
@@ -387,7 +387,7 @@ mermaid.js の行の規則は行のテキストを読み、テキストを別の
 [fixture: statements-one-per-line/semicolon-line-kept]
 [fixture: statements-one-per-line/ignored-semicolon-line-kept]
 そのような行にある属性ブロックの `}` や subgraph の `end` が、
-行の上で後ろに文を従えているときは、 `}` や `end` が単独の行に移り、
+行の上で後ろに文を従えているときは、`}` や `end` が単独の行に移り、
 文は `;` のない行に残ってしまうので、行に残し、
 行はトークンの間の空白を通常どおりにして印字します。
 後ろに文がなければ、ほかのブロックと同じく単独の行に置きます。
@@ -656,7 +656,7 @@ mermaid.js の文書の例は、記号を接し、語の単位を空白で分け
 [corpus fixture: er/lex-md-parent-right-glued-name]
 実体 `1` は、文字、数字、
 `_` で始まるカーディナリティに接して書かれていれば接したままにします。
-`1` の後に、改行を含む 1 つ以上の空白と、 ASCII の文字、`_`、`"`、`'`、
+`1` の後に、改行を含む 1 つ以上の空白と、ASCII の文字、`_`、`"`、`'`、
 ASCII の数字が続くと、カーディナリティ `only-one` だからです（diagrams/er.md、
 カーディナリティ、数、関係の線、規則 11）。
 [fixture: relationship-spacing/number-name-before-unit-kept]
@@ -756,7 +756,7 @@ erDiagram
 `p [ Person ]` は `p[Person]` にします。 [fixture: entities/alias-tight]
 `:::` の後のクラスは `:::` に接し、両側のクラスに接する `,` で区切ります。
 `A ::: c1 , c2` は `A:::c1,c2` にします。
-別名と `:::` を接する書き方が、 mermaid.js の文書の例の多くです。
+別名と `:::` を接する書き方が、mermaid.js の文書の例の多くです。
 [fixture: entities/classes-tight] [fixture: entities/alias-and-classes]
 属性ブロックの `{` は空白 1
 つの後に置きます（[属性ブロック](#属性ブロック)を参照）。
@@ -833,12 +833,12 @@ mermaid.js が空白 1 つで結ぶからです。 [fixture: subgraphs/header-sp
 そこにある U+2028 と U+2029 は、そのまま残します。
 [test: U+2028 between an ER subgraph name and its title]
 [test: U+2029 between an ER subgraph name and its title]
-本体の文は 1 段深く置き、`end` は、書かれた大文字小文字で、
-subgraph と同じ段に、行に単独で置きます。
+本体の文は 1 段深く置き、`end` は、書かれた大文字小文字で、subgraph と同じ段に、
+行に単独で置きます。
 `end` の後に同じ行で続く文は、次の行に置きます。
 [fixture: subgraphs/end-on-the-line-of-a-statement]
 [fixture: subgraphs/end-case-kept] [fixture: subgraphs/entity-after-end]
-文のない subgraph は、 `end` を次の行に置いて印字します。
+文のない subgraph は、`end` を次の行に置いて印字します。
 [fixture: subgraphs/empty]
 
 名前やタイトルの後、見出しの行にある空の説明ブロックは、本体の最初の文で、
@@ -923,7 +923,7 @@ erDiagram
 `direction` と値の間には空白 1 つを置き、値は書かれた大文字小文字を保ちます。
 大文字小文字は作者のものだからです。 [fixture: direction/spacing]
 [fixture: direction/text-kept] [fixture: direction/case-kept]
-後の行に書かれた値は、 `direction` の後に 1 行で印字します。
+後の行に書かれた値は、`direction` の後に 1 行で印字します。
 [fixture: direction/value-on-next-line-joined]
 [corpus fixture: er/lex-direction-value-next-line]
 ディレクティブやコメント行がある方向の行は改行を残し、
@@ -998,7 +998,7 @@ Mermaid はスタイルの単位をつなげて読むため、
 [fixture: styles-and-classes/keyword-case-kept]
 
 キーワードや名前の後の空白が改行を取り込んで、
-複数行に書かれた `classDef` と `style` の文は、 1 行に印字します。
+複数行に書かれた `classDef` と `style` の文は、1 行に印字します。
 [fixture: styles-and-classes/over-lines-joined]
 最後のスタイルの末尾の空白はその後の改行を取り込み、
 次の行がスタイルの続きになります。
@@ -1121,7 +1121,7 @@ subgraph 内では、生の説明がその所属の読みにも使われるた�
 キーワードと開始括弧の間には空白を 1 つ置きます。
 空白で囲む本文がないので、Db が同じ形の選択は、
 [flowchart のアクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)、
-agentflow、 usecase に合わせます。
+agentflow、usecase に合わせます。
 [test: accessibility revisions: er empty-description-nbsp]
 コメントやディレクティブがあるブロックは、改行と完全な内容を保ち、
 普通の独立した trivia はブロックの内側にそろえます。
@@ -1146,8 +1146,8 @@ subgraph の中でも 1 桁目を保ちます（diagrams/er.md、方向の行）
 文には含まれません。
 数えるのは最初に印字される行です。
 後の行に書かれたテキストは `:`
-の行に寄せるので（[複数行の文](#複数行の文)を参照）、 `accTitle:`、改行、
-`direction LR` は、 1 桁目の `accTitle: direction LR` として印字します。
+の行に寄せるので（[複数行の文](#複数行の文)を参照）、`accTitle:`、改行、
+`direction LR` は、1 桁目の `accTitle: direction LR` として印字します。
 `direction` と方向の間のコメント行とディレクティブは、
 字句解析器がそれらなしにテキストを読むので、飛ばし（diagrams/er.md、
 単位の間のトリビア）、空行も同じです。
@@ -1412,7 +1412,7 @@ erDiagram
 ### フロントマター YAML
 
 flowchart と同じです。
-`---` の行の間の YAML は Prettier の YAML 整形で整形し、 `---` の行は、
+`---` の行の間の YAML は Prettier の YAML 整形で整形し、`---` の行は、
 各行末の空白とタブも含めて、書かれたまま残します。
 [fixture: frontmatter-yaml/formatted]
 [fixture: frontmatter-yaml/config-formatted]
@@ -1592,7 +1592,7 @@ erDiagram
 
 mermaid.js が複数行にわたって読む文は、
 改行が字句解析器にとって空白である所では 1 行に印字します。
-`accTitle` と `accDescr` の `:` の後、 `direction` と値の間、
+`accTitle` と `accDescr` の `:` の後、`direction` と値の間、
 空白の後の `classDef` と `style` の文の中です。
 [fixture: multi-line-statements/accessibility-text-joined]
 [fixture: multi-line-statements/direction-value-joined]
@@ -1658,9 +1658,9 @@ erDiagram
 U+2028 や U+2029 を含む空白は、トークンの間で書かれたまま残し、
 それを含む名前も同じです。
 ER 図では、空白そのものを読む規則を除き、これらは名前の文字です。
-文字が見えないので、例は文字列で書き、 `\u2028` を U+2028、
-`\n` を改行とします。 [test: U+2028 inside an entity name]
-[test: U+2029 inside a role name] [test: U+2028 before the colon of a role]
+文字が見えないので、例は文字列で書き、`\u2028` を U+2028、`\n` を改行とします。
+[test: U+2028 inside an entity name] [test: U+2029 inside a role name]
+[test: U+2028 before the colon of a role]
 [test: U+2028 between direction and its value]
 [test: U+2028 in the text after a direction]
 [test: U+2028 inside an attribute name]

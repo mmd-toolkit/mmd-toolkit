@@ -75,9 +75,8 @@ usecase-beta
 
 ### Indentation
 
-所属を見える形にするため、
-class の[字下げ](./class.ja.md#字下げ)を再利用します。
-ヘッダーの下を設定の 1 段、境界内の宣言を 2 段とし、 `end` は開始文に揃えます。
+所属を見える形にするため、class の[字下げ](./class.ja.md#字下げ)を再利用します。
+ヘッダーの下を設定の 1 段、境界内の宣言を 2 段とし、`end` は開始文に揃えます。
 [fixture: system-boundaries/boundary-header-comment-empty]
 1 段は `tabWidth` と `useTabs` に従い、既定は空白 2 個、
 タブを使う場合は各段に 1 個です。
@@ -118,14 +117,13 @@ usecase-beta
 各 native 文は、文法が要求する物理行を保ちます。
 セミコロンは文を区切らず、actor の一覧はコンマを使います。
 [スタイル文の末尾のセミコロン](#semicolons-at-the-end-of-a-style-statement)
-の例外を除き、
-C4 の[行規則とセミコロン](./c4.ja.md#行規則とセミコロン)に従って、
+の例外を除き、C4 の[行規則とセミコロン](./c4.ja.md#行規則とセミコロン)に従って、
 セミコロンを保ちます。
 各区間の最初の非空白文字から最後の保持するセミコロンまでを保持し、
-境界をまたぐ値、 CSS 宣言、コメント、directive は全体を含めます。
+境界をまたぐ値、CSS 宣言、コメント、directive は全体を含めます。
 外側の字下げと安全な後続部分は整形します。
 [fixture: native-metadata/metadata-selected-semicolon-between-properties]
-二つの文字列処理、コロンとハッシュの間の空白の有無、 Unicode の区間境界、
+二つの文字列処理、コロンとハッシュの間の空白の有無、Unicode の区間境界、
 未完 directive を止めるセミコロンの読みを保ちます。
 
 [fixture: statements-and-semicolons/statements-lines]
@@ -716,7 +714,7 @@ Db が同じになる外側の空白を、兄弟の図種と同じ形に揃え�
 [fixture: direction-and-accessibility/a11y-trimmed]
 [test: usecase: a11y-unicode-exterior]
 
-説明ブロックは、 class の[複数行の値](./class.ja.md#複数行の値)と同じく、
+説明ブロックは、class の[複数行の値](./class.ja.md#複数行の値)と同じく、
 本文行を文より 1 段深くし、独立した `}` を文の字下げに揃えます。
 コメント行だけが入ったブロックも同じ配置です。
 Mermaid が説明から LF 後の字下げを除くためです。
@@ -1036,7 +1034,7 @@ usecase-beta
 共有の[末尾の改行](./c4.ja.md#末尾の改行)を再利用し、
 通常の受理入力は設定された改行 1 個で終えます。
 ヘッダーだけ、裸のコメント、空の accessibility 行も同じです。
-各規則が残す値の余白を改行の前に保ち、 accessibility 行の外側の空白は、
+各規則が残す値の余白を改行の前に保ち、accessibility 行の外側の空白は、
 その規則に従って除きます。
 EOF まで続く directive の値に文字を加えません。
 [test: usecase: terminal-comment-tab] [test: usecase: terminal-a11y-tab]

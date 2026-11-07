@@ -28,7 +28,7 @@ flowchart LR
 文の中、同じ行の文の後、id、スタイル、サブグラフの名前の中です。
 文字列の中や、長い id の一部の語は `click` の単位ではなく、
 どちらもテキストとして読みます。
-`A["click"]` はラベル `click` を持ち、 `click-node` は頂点です。
+`A["click"]` はラベル `click` を持ち、`click-node` は頂点です。
 [fixture: flowchart/gram-label-string-click] [fixture:
 flowchart/spec-flow-singlenode-ada86e69]
 
@@ -107,7 +107,7 @@ mermaid.js がクリックの文脈を出る 1 つの空白文字を除いた入
 この仕様がその入力に与える Db は、mermaid.js が入力に与える Db と同じです。
 `A:click "" b-->C` は、頂点 `A:b` と C への辺を持つ `A:b-->C` として読まれます。
 `subgraph click me` は、空の行が続くところでは、その前にコメントの行があっても、
-id `me` の `subgraph me` として読まれ、 U+2028 か U+2029 と改行が続くところ、
+id `me` の `subgraph me` として読まれ、U+2028 か U+2029 と改行が続くところ、
 `me` の後にディレクティブが続くところでも同じです。
 行単位の規則が最後の `;` を無視する `classDef a:click "" b fill:#f00;` は、
 `classDef a:b fill:#f00;` として読まれます。
@@ -126,8 +126,7 @@ id `me` の `subgraph me` として読まれ、 U+2028 か U+2029 と改行が�
 `subgraph meaccDescr {}` になって、mermaid.js はそれを拒否し、
 `subgraph click m;e` では `;` が `subgraph m;e` の区切りになり、
 `subgraph click a,b` に空の行が続くものでは、`,` が `,` の単位になります。
-名前は `,` の単位を取らないので、
-`subgraph a,b` は mermaid.js でも拒否されます。
+名前は `,` の単位を取らないので、`subgraph a,b` は mermaid.js でも拒否されます。
 [fixture: flowchart/gram-subgraph-name-click]
 [fixture: flowchart/gram-subgraph-name-click-empty-description-block]
 [fixture: flowchart/gram-subgraph-name-click-semicolon-in-id]
@@ -176,7 +175,7 @@ mermaid.js のメンテナーは `click` を予約語として扱い、
   `click` は予約されたキーワードだと答えて閉じました。
   ラベルは `Type: Bug / Error` と `Status: Triage` です。
 - [Issue #7023](https://github.com/mermaid-js/mermaid/issues/7023) 「node named
-  click is not rendered in flowgraph」は、 `click --- abc;` についてのものです。
+  click is not rendered in flowgraph」は、`click --- abc;` についてのものです。
   mermaid.js はこれをクリック文として読んで空の図を描き、
   この仕様も同じに読みます。
   2026-10-02 の時点で open で、

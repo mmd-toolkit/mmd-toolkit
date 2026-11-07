@@ -68,7 +68,7 @@ kanban の隣り合うデータブロックは別々のノードに保ちます�
 
 C4 では frontmatter とディレクティブの内容は不透明なので、
 正しく区切られた frontmatter の `title: [` のような無効な YAML は、
-ここでは図を拒否せず、 mermaid.js は拒否します。
+ここでは図を拒否せず、mermaid.js は拒否します。
 [fixture: c4/div-frontmatter-invalid-yaml]
 
 C4 には `@{ ... }` のデータブロック形式はありません。
@@ -192,7 +192,7 @@ AST）は、埋め込まれたデータを書かれたとおりに持ちます�
   [fixture: common/config-theme-variables-string-rejected]
   [fixture: common/config-theme-colour-rejected]
 
-- init ディレクティブがあるときに mermaid.js が行う、 2 回目の判定の失敗。
+- init ディレクティブがあるときに mermaid.js が行う、2 回目の判定の失敗。
   [fixture: common/config-init-detection-rejects]
 
 - 正しい YAML でないデータブロック。 [fixture: flowchart/div-data-invalid-yaml]
@@ -265,8 +265,8 @@ sequence のメッセージを wrap させます。
 ## 書き手にとっての結果
 
 フロントマターやデータブロックの壊れた YAML、型の違う設定の値、
-mermaid.js が知らない形を持つ図は、 mmd-toolkit のパーサーで受理され、
-フォーマッターで整形され、 mermaid.js は拒否します。
+mermaid.js が知らない形を持つ図は、mmd-toolkit のパーサーで受理され、
+フォーマッターで整形され、mermaid.js は拒否します。
 そのような誤りを、mmd-toolkit のパーサーは報告しません。
 埋め込まれたデータの値の検査は、ほかのツールに任せます。
 
@@ -309,7 +309,7 @@ connector の見出しの全てのブロックの内部を、隣接するもの�
 結合したブロックの YAML の失敗、再帰する alias の失敗は、
 木の構築ではなく内容に依存します。
 既存の逆方向の条件により受理します。
-YAML のプロパティの木、キーの除去、 alias の解決は不要です。
+YAML のプロパティの木、キーの除去、alias の解決は不要です。
 [fixture: agentflow/db-data-block-invalid-yaml]
 [fixture: agentflow/db-data-block-unknown-shape]
 [fixture: agentflow/db-metadata-adjacent-no-comma]
@@ -421,7 +421,7 @@ gitgraph では、初期分岐 `main` と、
 で定めた既定のエスケープです。
 比較に使う設定から除く鍵は、
 `gitGraph.mainBranchName` と `gitGraph.htmlLabels` です。
-ほかの設定の値と、 Mermaid が導くタイトルは残します。
+ほかの設定の値と、Mermaid が導くタイトルは残します。
 [fixture: gitgraph/div-frontmatter-main-branch-preserves-title]
 [fixture: gitgraph/div-frontmatter-html-labels-default-comparison]
 [fixture: gitgraph/div-init-html-labels-default-comparison]
@@ -450,7 +450,7 @@ Mermaid は `develop` または `MetroLine1` の checkout を受理します。
 逆方向では、フロントマターの `mainBranchName: dev` により、
 Mermaid は `branch dev` を重複、`checkout main` を未知として拒否します。
 この仕様はどちらも受理します。
-init ディレクティブで同じ名前を設定した `branch dev` も、 Mermaid では拒否し、
+init ディレクティブで同じ名前を設定した `branch dev` も、Mermaid では拒否し、
 ここでは受理します。
 5 入力すべてにこの識別子の印を付け、指定の読みには逆の受理を記録します。
 [fixture: gitgraph/docs-community-contributing-05cdc44b]
@@ -523,7 +523,7 @@ architecture は frontmatter と共通 directive の内容を、
 比較では拒否された data だけを除き、独立した設定は残す。
 native hidden YAML/DIRECTIVE の本文は ignored form であり、設定 block ではない。
 正しい埋め込み設定から除く architecture の acceptance key はない。
-描画設定、maxEdges、 maxTextSize はこの図の public parse の受理を変えない。
+描画設定、maxEdges、maxTextSize はこの図の public parse の受理を変えない。
 [fixture: architecture/div-frontmatter-invalid-yaml]
 [fixture: architecture/div-frontmatter-duplicate-key]
 [fixture: architecture/div-init-fontfamily-number]
@@ -682,7 +682,7 @@ opaque な設定 block ではありません。
 [fixture: eventmodeling/data-all-types]
 
 [event-modeling.langium](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L70)
-が単位を、 [図の構文](../diagrams/eventmodeling.ja.md)が直接の境目を定義します。
+が単位を、[図の構文](../diagrams/eventmodeling.ja.md)が直接の境目を定義します。
 
 ### Treeview
 
@@ -694,7 +694,7 @@ primitive な init と wrap の組合せは、
 Mermaid が拒否して opaque な読みが受理する場合があります。
 その参照を作るときも隣の有効な title・設定を保ちます。
 [adapter](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/treeView/parser.ts#L11-L57)
-と、 [図の構文](../diagrams/treeview.ja.md) には、
+と、[図の構文](../diagrams/treeview.ja.md) には、
 隠れた意味の gate はありません。 [fixture: treeview/div-frontmatter-invalid]
 [fixture: treeview/config-frontmatter-fontfamily-number]
 [fixture: treeview/config-init-fontfamily-number]
@@ -713,7 +713,7 @@ Mermaid が拒否して opaque な読みが受理する場合があります。
 は `c4.wrap` を設定する正しい YAML のフロントマターを示し、
 不正な埋め込み YAML の扱いは述べていません。
 `mermaid-js/mermaid` の issue と pull request を、
-2026-10-21 に `C4 YAML in:title,body`、 `C4 "invalid YAML" in:title,body`、
+2026-10-21 に `C4 YAML in:title,body`、`C4 "invalid YAML" in:title,body`、
 `C4 frontmatter in:title,body` で検索したところ、
 [issue #7949](https://github.com/mermaid-js/mermaid/issues/7949)
 が見つかりました。
@@ -727,8 +727,7 @@ issue や pull request は見つかりませんでした。
 [venn の文書](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/venn.md)
 は正しい YAML frontmatter を示しますが、不正な YAML の受理条件は述べていません。
 2026-10-21 に `mermaid-js/mermaid` の issue と PR を `venn YAML in:title,body`、
-`venn "invalid YAML" in:title,body`、
-`venn frontmatter in:title,body` で検索し、
+`venn "invalid YAML" in:title,body`、`venn frontmatter in:title,body` で検索し、
 venn の frontmatter 内の不正な YAML の受理に関する報告は見つかりませんでした。
 
 - ピン留めした
@@ -782,8 +781,8 @@ ELK の配置設定を提案する
 gitgraph の
 [gitgraph.md](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/gitgraph.md)
 は、見出しと各コマンドを説明します。
-2026-10-23 に issue・PR を `gitGraph`、`gitGraph directive`、 `gitGraph YAML`、
-`gitGraph semicolon`、`gitGraph keyword`、 `gitGraph duplicate`、
+2026-10-23 に issue・PR を `gitGraph`、`gitGraph directive`、`gitGraph YAML`、
+`gitGraph semicolon`、`gitGraph keyword`、`gitGraph duplicate`、
 `gitGraph cherry-pick` で検索しました。
 確認した結果には、この共通の境界を決定するものはありませんでした。
 [#4838](https://github.com/mermaid-js/mermaid/issues/4838) は終了済みで Status:
@@ -799,7 +798,7 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
   2026-10-23 に `info showInfo`、`info directive`、`info semicolon`、
   `info accTitle` で issue と PR を検索しました。
   [#7601](https://github.com/mermaid-js/mermaid/issues/7601) は info/showInfo
-  の描画を報告し、 open、Type: Bug / Error、Status: Triage でした。
+  の描画を報告し、open、Type: Bug / Error、Status: Triage でした。
   検査した結果には、
   この構文の拒否を決める info 固有のメンテナーの判断はありません。
   この節は既存の直接の規則に従います。
@@ -846,15 +845,15 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
 
 - Railroad:
   [pin した構文の文書](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/railroad.md#L1-L288)
-  は 4 記法、 EBNF の例外、ABNF のセミコロンの comment、
+  は 4 記法、EBNF の例外、ABNF のセミコロンの comment、
   PEG の predicate を説明します。
   native の残る YAML と frontmatter を跨ぐ HTML の引用符の文脈は定義しません。
   2026-10-26 に公式 repository の issue と PR を railroad frontmatter、
   railroad directive、railroad semicolon、railroad comment で検索しました。
   [#7979](https://github.com/mermaid-js/mermaid/issues/7979) は demo
-  の見出し名の報告（closed、 Triage）、
+  の見出し名の報告（closed、Triage）、
   [#6620](https://github.com/mermaid-js/mermaid/issues/6620) は ABNF
-  の図種の提案（open、 Discussion Needed）です。
+  の図種の提案（open、Discussion Needed）です。
   どちらも、これらの前処理の境界について、
   メンテナーが defect と判断した事実ではありません。
   この差異はその判断でなく既存の共通規則に従います。
@@ -891,7 +890,7 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は重�
 
 pin した
 [eventmodeling.md](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/eventmodeling.md#L41-L340)
-は frame、 data、tag を説明しますが、共有の前処理の境目を定義しません。
+は frame、data、tag を説明しますが、共有の前処理の境目を定義しません。
 2026-10-26 に公式 issue と PR を eventmodeling title、eventmodeling parser、
 event modeling data、eventmodeling accTitle、
 eventmodeling validator で検索しました。
@@ -908,7 +907,7 @@ eventmodeling validator で検索しました。
 は字下げ・引用名・注釈・罫線を説明します。
 この共通の境目を定義してはいません。
 2026-10-26 に公式 issue/PR を `treeView quoted`、`treeView indentation`、
-`treeView box`、 `treeView quotes`、`treeView whitespace`、
+`treeView box`、`treeView quotes`、`treeView whitespace`、
 `treeView accDescr` で検索しました。
 [PR #7721](https://github.com/mermaid-js/mermaid/pull/7721) は罫線を追加した
 merged の PR、

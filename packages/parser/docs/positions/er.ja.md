@@ -24,7 +24,7 @@
 
 それぞれの濃度と線は、それぞれ 1 つのトークンです。
 範囲は、間の空白を越えて、最初のものから最後のものまでです。
-`A || -- o{ B : has` では、 `||` から `o{` までです。
+`A || -- o{ B : has` では、`||` から `o{` までです。
 [fixture: er/lex-relationship-spaces-in-spec]
 
 ### ErSubgraphStatement

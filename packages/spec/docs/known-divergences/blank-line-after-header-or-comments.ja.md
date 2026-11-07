@@ -283,8 +283,8 @@ mindmap/div-header-trailing-spaces-then-node]
 ## mermaid.js がそう読む理由
 
 [`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L21-L30)
-の字句解析器は、 `\s*%%.*`、
-つまり前の空白と改行を含むコメントを 1 つのトークンとして、 `[\s]+[\n]`、
+の字句解析器は、`\s*%%.*`、
+つまり前の空白と改行を含むコメントを 1 つのトークンとして、`[\s]+[\n]`、
 つまり最後の改行までの空白の並びを、同じトークン `SPACELINE` として読みます。
 その文法は、`SPACELINE` を、それだけの文として、
 または前の文の終わりとして取り（mermaid.js の
@@ -335,7 +335,7 @@ Ishikawa も
 どちらも節点ではありません。
 その組だけに依存する受理条件を保つ節点はありません。
 直接の規則は書かれた節点のテキストと字下げをすべて保ちます。
-この理由で受理する入力は増えますが、 mermaid.js が受理する入力を拒否しません。
+この理由で受理する入力は増えますが、mermaid.js が受理する入力を拒否しません。
 [fixture: ishikawa/div-header-blank-node]
 [fixture: ishikawa/div-between-comment-blank-node]
 [fixture: ishikawa/gram-header-comment-blank-node]
@@ -369,19 +369,19 @@ mindmap/div-two-comments-line-separator-between-nodes]
 - [マインドマップの構文](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/mindmap.md)
   は、マインドマップの行の間の空の行やコメントについて何も述べていません。
 - それについての issue と pull request は見つかりませんでした（2026-10-15 に
-  `mindmap empty line`、 `mindmap blank line`、 `mindmap comment`、
-  `mindmap newline`、 `mindmap parse`、`mindmap error` で検索）。
+  `mindmap empty line`、`mindmap blank line`、`mindmap comment`、
+  `mindmap newline`、`mindmap parse`、`mindmap error` で検索）。
 - [kanban の構文](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/kanban.md)
-  は、 kanban の図の行の間の空の行やコメントについて何も述べず、
+  は、kanban の図の行の間の空の行やコメントについて何も述べず、
   字下げが大切だと述べるだけです。
 - それについての issue と pull request は見つかりませんでした（2026-10-21 に
-  `kanban comment`、 `kanban blank line`、`kanban empty line`、
-  `kanban newline`、`kanban parse`、 `kanban error`、`kanban` で検索）。
+  `kanban comment`、`kanban blank line`、`kanban empty line`、`kanban newline`、
+  `kanban parse`、`kanban error`、`kanban` で検索）。
   見つかった issue と pull request は、`style` の文（#8118）、
   `:::` のクラス（#8119）、`accTitle`（#8120）など、別の件についてのものです。
 - ピン留めした
   [Ishikawa syntax](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/ishikawa.md#L1-L38)
   は字下げを説明しますが、空行やコメントの組の規則は述べません。
-  2026-10-21 に issue と pull request を `ishikawa blank`、 `ishikawa comment`、
+  2026-10-21 に issue と pull request を `ishikawa blank`、`ishikawa comment`、
   `ishikawa header` で検索し、
   これらの 4 つの場合についての報告は見つかりませんでした。

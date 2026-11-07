@@ -62,7 +62,7 @@
 
 `participant A%%{init: {}}%% c%%B` では、
 参加者の 1 つの単位がトークン `A` と ` c%%B` に切られます。
-` c%%B` は、 id が持つ空白を含みます。
+` c%%B` は、id が持つ空白を含みます。
 [fixture: sequence/lex-directive-in-id-before-space]
 [fixture: sequence/tokens-ignored-semicolon-in-participant-id]
 [fixture: sequence/db-participant-empty-alias]

@@ -21,6 +21,12 @@ const OPEN = new Map([
   ["(", ")"],
 ])
 
+/**
+ * The marks that hold their own space: no space follows them, and a line can
+ * break after them. Within a sentence, a `。` is one inside brackets.
+ */
+const MARKS_WITHOUT_SPACE = new Set(["、", "。"])
+
 /** The paragraph's source characters and original container prefixes. */
 function paragraphTokens(entry) {
   const { text, node } = entry
@@ -85,8 +91,17 @@ function paragraphTokens(entry) {
   return { tokens, firstPrefix, continuation, start, end }
 }
 
+/** Whether no space stands between `left` and `right`, by the mark `left`. */
+function endsWithoutSpace(left, right, citationStarts) {
+  return (
+    MARKS_WITHOUT_SPACE.has(left.value) &&
+    !left.protectedSpan &&
+    !citationStarts.has(right.from)
+  )
+}
+
 /** Joins soft breaks, preserving protected ranges and Markdown hard breaks. */
-function joinLines(tokens) {
+function joinLines(tokens, citationStarts) {
   const result = []
   for (let i = 0; i < tokens.length; i++) {
     const token = tokens[i]
@@ -104,17 +119,39 @@ function joinLines(tokens) {
       result.push(token)
       continue
     }
-    const bothWide = isWide(left.value) && isWide(right.value)
+    const noSpace =
+      (isWide(left.value) && isWide(right.value)) ||
+      endsWithoutSpace(left, right, citationStarts)
     let from = token.from
     while (result.at(-1)?.value === " " && !result.at(-1).protectedSpan)
       from = result.pop().from
     result.push({
-      value: bothWide ? "" : " ",
+      value: noSpace ? "" : " ",
       from,
       to: token.to,
       raw: "",
       joined: true,
     })
+  }
+  return result
+}
+
+/** Empties the spaces written after a mark that takes none. */
+function dropSpacesAfterMarks(tokens, citationStarts) {
+  const result = [...tokens]
+  for (let i = 0; i < result.length; i++) {
+    let next = i + 1
+    while (result[next]?.value === " " && !result[next].protectedSpan) next++
+    const right = result[next]
+    if (
+      next === i + 1 ||
+      !right ||
+      right.value === "\n" ||
+      !endsWithoutSpace(result[i], right, citationStarts)
+    )
+      continue
+    for (let at = i + 1; at < next; at++)
+      result[at] = { ...result[at], value: "", raw: "", joined: true }
   }
   return result
 }
@@ -288,8 +325,8 @@ function spaceBreak(tokens, i, info) {
   return { end: i, next }
 }
 
-/** A break after the comma `i`, or null. */
-function commaBreak(tokens, i, info) {
+/** A break after the mark `i`, or null. */
+function markBreak(tokens, i, info) {
   let next = i + 1
   while (tokens[next]?.value === " ") next++
   if (!allowed(tokens[i], tokens[next], tokens[i].to, info)) return null
@@ -300,7 +337,7 @@ function commaBreak(tokens, i, info) {
 /** The last allowed break whose line fits within the limit, or null. */
 function lastBreakWithin(tokens, prefix, info) {
   let width = widthOf(prefix)
-  let comma = null
+  let mark = null
   let space = null
   for (let i = 0; i < tokens.length; i++) {
     const token = tokens[i]
@@ -308,9 +345,10 @@ function lastBreakWithin(tokens, prefix, info) {
       space = spaceBreak(tokens, i, info) ?? space
     width += widthOf(token.value)
     if (width > LIMIT) break
-    if (token.value === "、") comma = commaBreak(tokens, i, info) ?? comma
+    if (MARKS_WITHOUT_SPACE.has(token.value))
+      mark = markBreak(tokens, i, info) ?? mark
   }
-  return comma ?? space
+  return mark ?? space
 }
 
 /** The first allowed break of the line, or null. */
@@ -320,8 +358,8 @@ function firstBreak(tokens, info) {
     const found =
       token.value === " " && tokens[i - 1]?.value !== " "
         ? spaceBreak(tokens, i, info)
-        : token.value === "、"
-          ? commaBreak(tokens, i, info)
+        : MARKS_WITHOUT_SPACE.has(token.value)
+          ? markBreak(tokens, i, info)
           : null
     if (found !== null) return found
   }
@@ -427,7 +465,11 @@ function paragraphTree(source, continuation) {
 function paragraphNormalForm(entry) {
   const { text } = entry
   const original = paragraphTokens(entry)
-  const joined = joinLines(original.tokens)
+  const citationStarts = new Set(entry.citations.map(([from]) => from))
+  const joined = dropSpacesAfterMarks(
+    joinLines(original.tokens, citationStarts),
+    citationStarts,
+  )
   const ranges = sentences(joined, entry)
   const pieces = []
   const unfixable = []
@@ -502,7 +544,7 @@ export const jaLineBreaks = {
     schema: [],
     messages: {
       normalize:
-        "Use one sentence per line and wrap long sentences after 、 or at a space within 80 columns, with following references on the last line or continuation lines.",
+        "Use one sentence per line and wrap long sentences after 、 or at a space within 80 columns, with no space after 、 or 。 and following references on the last line or continuation lines.",
       cannotFit:
         "This sentence is {{width}} columns wide and cannot be broken after 、 or at a space within 80 columns: split it or add a 、.",
     },

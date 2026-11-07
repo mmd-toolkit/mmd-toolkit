@@ -63,7 +63,7 @@
 [fixture: pie/label-crlf] [fixture: pie/review-directive-hidden-crlf]
 
 最後の字句規則は図固有のパーセント対のコメントを、物理改行の直前までの、
-印が `%%` の共通 Comment レコードにし、 LS と PS では終了しません。
+印が `%%` の共通 Comment レコードにし、LS と PS では終了しません。
 [fixture: pie/comment-section-glued] [fixture: pie/comment-section-eof]
 [fixture: pie/comment-ls] [fixture: pie/comment-ps]
 

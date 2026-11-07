@@ -54,7 +54,7 @@ mermaid.js は最後の区域に無作為の id を与えます。
 1 から）を `generated-region-` に続けたものを、
 その id が現れるところすべてで持ちます。
 例えば、`state X {` の本体が、区切りの文のある `state Y {` と、
-自身の区切りの文を持つとき、 Y の最後の区域は `generated-region-1`、
+自身の区切りの文を持つとき、Y の最後の区域は `generated-region-1`、
 X の最後の区域は `generated-region-2` です。
 Y の最後の区域のノードが、列の中で先に来るからです。
 また、最後の区域の終了状態の id は `generated-region-1_end` です。
@@ -62,7 +62,7 @@ Y の最後の区域のノードが、列の中で先に来るからです。
 2 つが 1 つの id にまとまります。
 定義がその id で説明する区切りの状態や区域（`state "a" as divider-id-1`）は、
 ほかの状態と同じく、それらの定義のラベルと説明を持ちます。
-どの定義も説明しないものは、空のラベルを持ち、 `description` を持ちません。
+どの定義も説明しないものは、空のラベルを持ち、`description` を持ちません。
 [fixture: state/db-last-region-alias-with-spaces] [fixture:
 state/db-last-region-terminal-composite] [fixture:
 state/db-last-region-numbers-follow-node-order] [fixture:
@@ -101,7 +101,7 @@ state/db-region-one-description]
   ほかの本体はそのまま巡り、その中の各区切りの文は、
   本体なしでその id の状態を訪れます。
   そのため `state A {`、`B`、`--`、`}` は、B に親 A を与え、その後に、
-  形 `divider` で `dir` のない状態 `divider-id-1` を、 A の中に置きます。
+  形 `divider` で `dir` のない状態 `divider-id-1` を、A の中に置きます。
   最後の区切りの文の後のディレクティブ、コメント行、空行、
   U+2028 は文ではないので、本体は分けられないままです。
   `style` の文は文なので、本体は分けられ、最後の区域は状態を持ちません。
@@ -157,7 +157,7 @@ id が空、`</choice>`、`</join></fork>` の状態は、ノードを作りま�
   それらを訪れの説明に置き換えます。
   説明を持つ後の訪れは、そのどれかが id やすでにあるものと同じでも、
   その説明をほかの後に加えます。
-  `A : x`、`A : y`、`A : z` は、A にラベル `x` と説明 `y`、 `z` を与えます。
+  `A : x`、`A : y`、`A : z` は、A にラベル `x` と説明 `y`、`z` を与えます。
   [fixture: state/db-description-id-alone] [fixture:
   state/db-description-equal-to-id] [fixture:
   state/db-description-id-after-description] [fixture:
@@ -219,11 +219,11 @@ id が空、`</choice>`、`</join></fork>` の状態は、ノードを作りま�
   [fixture: state/db-alias-blank-terminal-after-note]
   [fixture: state/db-alias-id-terminal]
 - `dir`。
-  本体のある最初の訪れが、その本体の最後の方向の文の向きか、 `TB` を決めます。
+  本体のある最初の訪れが、その本体の最後の方向の文の向きか、`TB` を決めます。
   本体が空でも同じです。
   後の本体はそれを変えません。
   入れ子の本体の方向の文は、その本体だけのものです。
-  `state A {` の中の `state B {` が `direction LR` と `C` を持てば、 B は `LR`、
+  `state A {` の中の `state B {` が `direction LR` と `C` を持てば、B は `LR`、
   A は `TB` を持ちます。
   分けられた本体の方向の文はその区域の中にあるので、
   そのような合成状態は `TB` を持ち、各区域は、
@@ -247,7 +247,7 @@ id が空、`</choice>`、`</join></fork>` の状態は、ノードを作りま�
 ブロックのテキストは、各行の空白を保ち、空行も行です。
 行 `a`、空行、` b` は、`a`、2 つの改行、` b` を与えます。
 ディレクティブだけの行は、その空白を保つので、行 `a`、
-ディレクティブの前に空白 1 つのその行、` b` は、 `a`、改行、空白 1 つ、改行、
+ディレクティブの前に空白 1 つのその行、` b` は、`a`、改行、空白 1 つ、改行、
 ` b` を与えます。 [fixture: state/lex-note-mixed-case] [fixture:
 state/lex-note-colon-without-space] [fixture:
 state/lex-note-two-spaces-before-colon] [fixture: state/lex-note-block]
@@ -258,7 +258,7 @@ state/db-note-block-empty-line] [fixture: state/db-note-block-directive-line]
 ほかを `description` として持ちます。
 説明が 1 つなら、`description` は空のリストです。
 ほかの状態は、その id を `label` として持ち、`description` を持ちません。
-区域と区切りの文は空のラベルを持ち、 `description` を持ちません。
+区域と区切りの文は空のラベルを持ち、`description` を持ちません。
 [fixture: state/lex-composite-divider]
 本体があり、説明が 2 つ以上の状態は拒否されます。
 [fixture: state/db-composite-two-descriptions] [fixture:
@@ -278,7 +278,7 @@ state/gram-region-two-descriptions]
   定義の文の `cssClass` は何も加えません。
   click の文の StateReference の `cssClass` も、
   合成状態の本体の中の遷移の `cssClass` も、何も加えません。
-  P の本体の中の `A:::c --> B` は、 A にクラスを与えません。
+  P の本体の中の `A:::c --> B` は、A にクラスを与えません。
   [fixture: state/db-classes-order] [fixture:
   state/db-classes-order-transition-first] [fixture: state/db-class-twice-same]
   [fixture: state/db-definition-css-class] [fixture:
@@ -292,7 +292,7 @@ state/gram-region-two-descriptions]
   `A,:::e --> B` は A にクラスを与えます。
   空の部分は、どの文も訪れない id と同じく、状態を加えません。
   矢印の後の StateTerminal も、そのクラスを受けます。
-  `A --> [*]:::c` は、 `root_end` にクラス `c` を与えます。
+  `A --> [*]:::c` は、`root_end` にクラス `c` を与えます。
   [fixture: state/db-css-class-reference-comma]
   [fixture: state/db-css-class-reference-two-ids]
   [fixture: state/db-css-class-reference-comma-after-arrow]
@@ -318,7 +318,7 @@ state/gram-region-two-descriptions]
   `style A %%{init: {}}%%` は空のスタイル 1 つを与えます。
   `style A fill:#f00;` は `fill:#f00` を与えます。
   `style A fill:#f00;b;c` では最後の `;` だけが無視されるので、
-  `#f00;` はエンティティで、スタイルは `fill:`、そのプレースホルダ、 `bc` です。
+  `#f00;` はエンティティで、スタイルは `fill:`、そのプレースホルダ、`bc` です。
   [fixture: state/db-style-replaced] [fixture: state/db-style-semicolons]
   [fixture: state/db-style-two-semicolons-in-part] [fixture:
   state/db-style-semicolon-after-space] [fixture: state/db-style-empty-items]
@@ -330,7 +330,7 @@ state/gram-region-two-descriptions]
   [fixture: state/db-style-ignored-semicolon-last-only] [fixture:
   state/db-style-before-state] [fixture: state/db-top-style-applies-nested]
 
-合成状態の本体の中の `classDef`、`class`、 `style` の文は何も変えません。
+合成状態の本体の中の `classDef`、`class`、`style` の文は何も変えません。
 [fixture: state/db-nested-class-statement] [fixture:
 state/db-nested-classdef] [fixture: state/db-nested-style]
 
@@ -341,7 +341,7 @@ state/db-nested-classdef] [fixture: state/db-nested-style]
 そのクラス名の後の、行の終わりまでのテキストを `,` ごとに分け、
 各部分から最初の `;` を除き、その後に両端の空白を除いたもので、
 `style` の文と同じく空の部分も含みます。
-`style` の文との違いは `;` だけで、 `style` の部分はすべての `;` を失い、
+`style` の文との違いは `;` だけで、`style` の部分はすべての `;` を失い、
 `classDef` の部分は最初の 1 つだけを失います。
 そのため `classDef c a;b;c,d;e;f` は `ab;c` と `de;f` を与え、
 各部分がそれぞれの最初の `;` を失います。
@@ -352,7 +352,7 @@ state/db-nested-classdef] [fixture: state/db-nested-style]
 `style` の文と同じく、テキストは、コメント行を挟んで後の行から始まることがあり、
 ディレクティブと、行の規則が無視する `;` を除いて読みます。
 `classDef c a:#f00;b,d;e` では、2 つ目の部分の最後の `;` が無視されるので、
-スタイルは `a:`、エンティティ `#f00;` のプレースホルダ、`b` と、 `de` です。
+スタイルは `a:`、エンティティ `#f00;` のプレースホルダ、`b` と、`de` です。
 [fixture: state/db-classdef-appended] [fixture: state/db-classdef-semicolons]
 [fixture: state/db-classdef-semicolon-in-each-part] [fixture:
 state/db-classdef-semicolon-after-space] [fixture:
@@ -395,7 +395,7 @@ state/db-acc-descr-trailing-whitespace] [fixture:
 state/db-acc-descr-block-whitespace-before-close]
 ブロックの中では、空行と、ディレクティブだけの行も、その空白です。
 行 `a`、空行、`b` は、`a`、改行、`b` を与えます。
-改行の前の空白は残るので、`a` の後に空白 2 つと改行が続けば、 `a`、空白 2 つ、
+改行の前の空白は残るので、`a` の後に空白 2 つと改行が続けば、`a`、空白 2 つ、
 改行を与えます。
 U+2028 は改行の後では空白ですが、改行ではないので、
 2 つの語の間の U+2028 は説明に残ります。
@@ -441,7 +441,7 @@ mermaid.js は、そのテキストを読んだ後、テキストの終わりで
 空のテキストを 2 つ目のブロックとして読むからです。
 `accDescr: d` の後に、`accDescr {` と、テキストの終わりの行 `x` が続くと、
 説明は空になり、タイトルはそのままです。
-そのようなブロックはテキストの残りを取るので、 `A --> B` の後に、`accDescr {`、
+そのようなブロックはテキストの残りを取るので、`A --> B` の後に、`accDescr {`、
 行 `never`、行 `C --> D` が続くものは、状態 C と D を持ちません。
 [fixture: state/db-acc-descr-block-unclosed-takes-lines] [fixture:
 state/lex-acc-descr-block-unclosed] [fixture:

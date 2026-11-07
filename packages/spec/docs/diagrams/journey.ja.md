@@ -31,7 +31,7 @@ mermaid.js での正本:
 ヘッダーだけの入力も、後ろに改行がなくても受理されます。
 `journey:` は拒否されます。
 ヘッダーの後の `:` は文法の取らない単位だからです。
-一方、 `journey#c` と `journey%c` はヘッダーとコメントです。
+一方、`journey#c` と `journey%c` はヘッダーとコメントです。
 [fixture: journey/header-digit-suffix] [fixture:
 journey/header-word-suffix-task] [fixture: journey/header-dash-suffix-task]
 [fixture: journey/header-statement-same-line] [fixture:
@@ -199,13 +199,12 @@ mermaid.js がディレクティブを除いた後のテキストを読むのと
 テキストの単位の中のディレクティブは mermaid.js の読みを保ち、
 それ以外の単位の中のディレクティブは入力を拒否させます。
 この図種には名前の単位も文字列の単位もありません。
-**テキストの単位**は、`title-text`、`section-text`、`task-text`、 `score`、
-`person`、`ignored-data`、`acc-title-text`、 `acc-description-text`、
+**テキストの単位**は、`title-text`、`section-text`、`task-text`、`score`、
+`person`、`ignored-data`、`acc-title-text`、`acc-description-text`、
 `acc-description-block-text` です。
 
-- `a%%{init: {}}%%b: 5` はタスク `ab`、 `A: 1%%{init: {}}%%0` はスコア `10`、
-  `A: 5: M%%{init: {}}%%e` は人 `Me`、
-  `title a%%{init: {}}%%b` はタイトル `ab`、
+- `a%%{init: {}}%%b: 5` はタスク `ab`、`A: 1%%{init: {}}%%0` はスコア `10`、
+  `A: 5: M%%{init: {}}%%e` は人 `Me`、`title a%%{init: {}}%%b` はタイトル `ab`、
   `section S%%{init: {}}%%T` は section `ST`、
   `accTitle: a%%{init: {}}%%b` はアクセシビリティのタイトル `ab` で、
   `accDescr: a%%{init: {}}%%b` と `accDescr { a%%{init: {}}%%b }`
@@ -224,7 +223,7 @@ mermaid.js がディレクティブを除いた後のテキストを読むのと
   journey/lex-directive-in-ignored-data] [fixture:
   journey/lex-directive-after-space-in-ignored-data]
 - 2 つの単位の間のディレクティブは、単位の種類によらず許されます。
-  `title %%{init: {}}%%T`、`title%%{init: {}}%% T`、 `A %%{init: {}}%%: 5`、
+  `title %%{init: {}}%%T`、`title%%{init: {}}%% T`、`A %%{init: {}}%%: 5`、
   `A:%%{init: {}}%% 5`、`A: 5%%{init: {}}%%: Me`、
 
   `accTitle%%{init: {}}%%: T`、`accDescr %%{init: {}}%%{ d }`、
@@ -241,11 +240,11 @@ mermaid.js がディレクティブを除いた後のテキストを読むのと
   journey/lex-directive-between-acc-descr-and-brace] [fixture:
   journey/header-then-directive-same-line]
 
-- `jour%%{init: {}}%%ney`、`ti%%{init: {}}%%tle T`、 `sec%%{init: {}}%%tion S`、
-  `acc%%{init: {}}%%Title: T`、 `acc%%{init: {}}%%Descr: d`、
+- `jour%%{init: {}}%%ney`、`ti%%{init: {}}%%tle T`、`sec%%{init: {}}%%tion S`、
+  `acc%%{init: {}}%%Title: T`、`acc%%{init: {}}%%Descr: d`、
   `acc%%{init: {}}%%Descr { d }` では、
   ディレクティブがキーワードの中にあります。
-  入力は拒否され、 mermaid.js は 2 つの部分を 1 つとして読んで受理します。
+  入力は拒否され、mermaid.js は 2 つの部分を 1 つとして読んで受理します。
   [fixture: journey/div-directive-in-header-keyword]
   [fixture: journey/div-directive-in-title-keyword]
   [fixture: journey/div-directive-in-section-keyword]
@@ -289,7 +288,7 @@ journey/lex-directive-after-person]
 [ディレクティブの位置](../common.ja.md#ディレクティブの位置)
 を参照してください。
 `A: 5 %%{init: {}` に行 `B: 3` が続くものは、
-スコアが `5` の 1 つのタスク `A` を持ち、 `journey`、行 `%%{init: {}`、
+スコアが `5` の 1 つのタスク `A` を持ち、`journey`、行 `%%{init: {}`、
 行 `A: 1` はタスクを持たず、
 タスクの行が続く `title T %%{init: {}` はタイトル `T ` を持ち、
 タスクを持ちません。 [fixture: journey/tokens-unclosed-directive-in-data-line]
@@ -298,7 +297,7 @@ journey/tokens-unclosed-directive-after-header] [fixture:
 journey/tokens-unclosed-directive-in-title]
 コメント行は、字句解析器がテキストを読む前に除かれます。
 説明ブロックの中、キーワードとその後に続くものの間でも同じです。
-`title`、コメント行、`T` はタイトル `T` を持ち、 `section` と `S`、
+`title`、コメント行、`T` はタイトル `T` を持ち、`section` と `S`、
 `accTitle:` と `T` も同じです。
 コメント行だけを持つブロックは空の説明ブロックです。
 [fixture: journey/tokens-comment-line-in-acc-block] [fixture:
@@ -315,8 +314,8 @@ journey/tokens-comment-line-after-acc-title-colon]
 説明ブロックの中、または、文の前の同じ行の説明ブロックが `#` を持つときは、
 その後の文の中です。
 テキストの単位の中では、2 つの部分が mermaid.js と同じく 1 つとして読まれます。
-同じ行の `accDescr { style:#x }` の後では、 `A;B: 5` はタスク `AB`、
-`A: 5;6` はスコア `56`、`A: 5: M;e` は人 `Me`、 `title T;U` はタイトル `TU`、
+同じ行の `accDescr { style:#x }` の後では、`A;B: 5` はタスク `AB`、
+`A: 5;6` はスコア `56`、`A: 5: M;e` は人 `Me`、`title T;U` はタイトル `TU`、
 `section S;T` は section `ST` です。
 `accTitle: style:#x;` はアクセシビリティのタイトル `style:#x` を持ち、
 説明 `accDescr: style:#x;` とブロック `accDescr { style:#x; }` も同じです。
@@ -357,7 +356,7 @@ journey/tokens-ignored-semicolon-first-of-two-in-title]
    [fixture: journey/lex-hash-comment-line] [fixture:
    journey/lex-hash-comment-after-data]
 5. キーワード `journey`: `header` の単位。 [fixture: journey/header-only]
-6. `title`、改行を含む 1 つの空白文字、 `#`、`;`、
+6. `title`、改行を含む 1 つの空白文字、`#`、`;`、
    改行以外の 1 つ以上の文字: `title` の単位と `title-text` の単位。
    テキストは 1 つの空白文字の後の文字です。
    [fixture: journey/db-title-statement] [fixture:
@@ -387,7 +386,7 @@ journey/tokens-ignored-semicolon-first-of-two-in-title]
    journey/lex-acc-descr-block-no-space] [fixture:
    journey/lex-acc-descr-block-spaces] [fixture:
    journey/lex-acc-descr-block-line-feed-before-brace]
-10. `section`、改行を含む 1 つの空白文字、 `#`、`:`、`;`、
+10. `section`、改行を含む 1 つの空白文字、`#`、`:`、`;`、
     改行以外の 1 つ以上の文字: `section` の単位と `section-text` の単位。
     テキストは 1 つの空白文字の後の文字です。 [fixture: journey/db-sections]
     [fixture:
@@ -428,7 +427,7 @@ journey/tokens-ignored-semicolon-first-of-two-in-title]
 `;` の単位がそうです。
 `;` は文の文脈のどの単位の文字でもありません。
 タイトルのテキスト、section のテキスト、タスクのテキスト、
-タスクのデータの後でも、ヘッダーの後でも、説明ブロックの後でも、 1 行だけでも、
+タスクのデータの後でも、ヘッダーの後でも、説明ブロックの後でも、1 行だけでも、
 `;` の単位で、入力は拒否されます。 [fixture: journey/lex-task-text-only]
 [fixture: journey/lex-task-brace-line] [fixture: journey/lex-title-at-end]
 [fixture: journey/lex-task-colon-at-end] [fixture: journey/lex-semicolon-line]
@@ -450,7 +449,7 @@ journey/lex-semicolon-after-block]
   `journey title T`、`journey A: 5`、`accDescr { d } A: 5`、
   `accDescr { d }accDescr { e }` がそうです。
   一方、タイトルのテキスト、section のテキスト、タスクのデータは、
-  `#` か `;` までの行の残りを取るので、 `title T A: 5` はタイトル `T A: 5` で、
+  `#` か `;` までの行の残りを取るので、`title T A: 5` はタイトル `T A: 5` で、
   `A: 5 B: 3` はスコアの部分が `5 B`、人が `3` の 1 つのタスク `A` です。
   `section S A: 5` は section `S A` にデータが続くもので、拒否されます。
   [fixture: journey/header-statement-same-line] [fixture:
@@ -471,9 +470,9 @@ journey/lex-semicolon-after-block]
 後ろの語の文字は、語全体をタスクのテキストにし（`journey2` と `journeyX: 1` は、
 ヘッダーを持たず、拒否されます）、後ろの `-`、`{`、`"`、`:`、`#`、`%`、改行、
 テキストの終わりは、キーワードを終えます。
-`journey-x: 1` はヘッダーとタスク `-x`、 `journey{: 1` はヘッダーとタスク `{`、
+`journey-x: 1` はヘッダーとタスク `-x`、`journey{: 1` はヘッダーとタスク `{`、
 `journey"x": 1` はヘッダーとタスク `"x"`、
-`journey#c` と `journey%c` はヘッダーとコメントで、 `journey:` は拒否されます。
+`journey#c` と `journey%c` はヘッダーとコメントで、`journey:` は拒否されます。
 `:` の単位はどの規則も取らないからです。
 ASCII の外の文字も語の文字ではありません。
 `journeyé: 5` はヘッダーとタスク `é` です。
@@ -490,11 +489,11 @@ journey/header-non-ascii-letter-task] [fixture: journey/header-line-feed-only]
 2 つ目の改行の後、空白と改行の後、`#` の位置、テキストの終わり、
 `section` では `:` の位置のように、テキストが始まれないところでは、
 語はデータのあるなしにかかわらずタスクのテキストです。
-`title\n\nT`、`title`、`title `、`section`、`section\n\nS`、 `title#x`、
+`title\n\nT`、`title`、`title `、`section`、`section\n\nS`、`title#x`、
 `section#x`、`title%x`、`section%x` は拒否され、
-`title:T` と `section:S` は説明がその語のタスクで、 `titles: 5`、`title2: 5`、
-`title-x: 5`、`title{: 5`、`title"x": 5`、 `titleé: 5`、`sectionx: 5`、
-`section2: 5`、`section-x: 5`、 `section{: 5`、`section"x": 5` はタスクです。
+`title:T` と `section:S` は説明がその語のタスクで、`titles: 5`、`title2: 5`、
+`title-x: 5`、`title{: 5`、`title"x": 5`、`titleé: 5`、`sectionx: 5`、
+`section2: 5`、`section-x: 5`、`section{: 5`、`section"x": 5` はタスクです。
 テキストが空白だけのタイトルや section も読まれます。
 行の終わりの `title` と 2 つの空白は空白 1 つのタイトルを持ち、
 `section` も同じです。 [fixture: journey/lex-title-line-feed-value] [fixture:
@@ -521,9 +520,9 @@ journey/lex-section-brace-task] [fixture: journey/lex-section-quote-task]
 `accTitle` と `accDescr` は、空白を挟んでも挟まなくても、
 後ろに `:` か `{` があるときだけキーワードです。
 `accTitlex: T`、`accTitle2: T`、`accTitle-: T`、`accTitle{: T`、
-`accDescrx: T` は説明がその語のタスクで、 `accTitle#x`、`accTitle%x`、
+`accDescrx: T` は説明がその語のタスクで、`accTitle#x`、`accTitle%x`、
 テキストの終わりの `accTitle` や `accDescr`
-はデータのないタスクのテキストで拒否され、 `accTitle`、改行、
+はデータのないタスクのテキストで拒否され、`accTitle`、改行、
 `: T` はアクセシビリティのタイトル `T` を持ちます。
 [fixture: journey/lex-acc-title-word-suffix-task] [fixture:
 journey/lex-acc-title-digit-suffix-task] [fixture:
@@ -568,7 +567,7 @@ journey/lex-acc-title-at-end] [fixture: journey/lex-acc-title-space-at-end]
 
 1. `}`: `}` の単位。
    文脈を出ます。 [fixture: journey/db-acc-descr-block]
-2. 改行を含む、 `}` 以外の 1 つ以上の文字: `acc-description-block-text` の単位。
+2. 改行を含む、`}` 以外の 1 つ以上の文字: `acc-description-block-text` の単位。
    [fixture: journey/db-acc-descr-block] [fixture:
    journey/gram-acc-descr-block-brace-inside] [fixture:
    journey/gram-acc-descr-block-hash-semicolon]
@@ -592,7 +591,7 @@ journey/gram-acc-descr-block-double-close]
 行の終わりまで続き、mermaid.js が何もないものとして読むテキストです。
 これは [common.ja.md](../common.ja.md#コメント行) のコメント行ではありません。
 コメント行は字句解析器がテキストを読む前に除かれます。
-図のコメントは行の途中から始まることができ、 `%%` だけの行、`% c`、`%x`、
+図のコメントは行の途中から始まることができ、`%%` だけの行、`% c`、`%x`、
 `%%{ }%%` の行は、コメント行ではなく図のコメントです。
 [fixture: journey/lex-hash-comment-line] [fixture:
 journey/lex-bare-percent-line-after-task] [fixture:
@@ -604,7 +603,7 @@ journey/lex-percent-comment-line] [fixture: journey/lex-percent-x-line]
 改行はその一部ではありません。
 図のコメントの**印**は、`#` で始まるなら `#`、`%%` で始まるなら `%%`、
 それ以外なら `%` で、その値は印の後のテキストです。
-`# c` の値は空白と `c`、`%% c` と `% c` の値も同じで、 `%%` だけの値は空、
+`# c` の値は空白と `c`、`%% c` と `% c` の値も同じで、`%%` だけの値は空、
 `%%{ }%%` の値は `{ }%%` です。
 ディレクティブを始めない `%%{`
 （[ディレクティブの位置](../common.ja.md#ディレクティブの位置) を参照）は、
@@ -639,7 +638,7 @@ journey/lex-percent-comment-after-block] [fixture:
 journey/lex-percent-mark-split-by-directive] [fixture:
 journey/lex-directive-in-percent-comment]
 単位の始まる位置で `{` が続く `%` は、タスクのテキストの文字です。
-`%{x}: 5` はタスク `%{x}` で、 `%{x}` だけは拒否されます。
+`%{x}: 5` はタスク `%{x}` で、`%{x}` だけは拒否されます。
 [fixture: journey/lex-percent-brace-task] [fixture:
 journey/lex-percent-brace-task-indented] [fixture:
 journey/lex-percent-brace-text-only]
@@ -669,7 +668,7 @@ mermaid.js はその文字と行の残りを 1
 単位の始まる位置にない `%%` は、規則 11 と規則 12 が言うとおり、
 それを持つ単位の文字で、単位の最初の文字の直後でも同じです。
 `A%%B: 5` はここではタスク `A%%B` で、mermaid.js ではタスクのないコメントです。
-`A: 5;%% c`、`title x;%% c`、`journey;%% c`、`section a:%% c`、 `journey:%% c`、
+`A: 5;%% c`、`title x;%% c`、`journey;%% c`、`section a:%% c`、`journey:%% c`、
 `accDescr { x }a%% c` はここでは拒否されます。
 `;`、データの付いた `:`、データのないタスクのテキストを、
 どの規則も取らないからです。
@@ -775,7 +774,7 @@ journey/db-task-description-spaces] [fixture: journey/lex-task-colon-at-end]
   これは、部分の両端の空白を除いたテキストの `score` の単位で、
   部分が空か空白だけのときは単位がありません。
   `abc` や `5, 6` のように数を書かない部分も受理されます。
-  mermaid.js がスコアを数としてどう読むかは、 tests パッケージの要約にあります。
+  mermaid.js がスコアを数としてどう読むかは、tests パッケージの要約にあります。
   [fixture: journey/db-task-score-only] [fixture:
   journey/db-task-score-spaces] [fixture: journey/lex-task-score-nbsp-trimmed]
   [fixture: journey/db-task-score-empty]
@@ -793,7 +792,7 @@ journey/db-task-description-spaces] [fixture: journey/lex-task-colon-at-end]
   を参照）。
   人はいつもコンマの数より 1 つ多くあります。
   `A: 3: a,,b` は人 `a`、空の人、`b` を持ち、
-  `A: 3: ` と `A: 5:` は空の人を 1 つ持ち、 `A: 3: Me, You ,  Them` は人 `Me`、
+  `A: 3: ` と `A: 5:` は空の人を 1 つ持ち、`A: 3: Me, You ,  Them` は人 `Me`、
   `You`、`Them` を持ちます。
   2 つ目のコロンがなければ、タスクは人を持ちません。
   [fixture: journey/db-task-people] [fixture:
@@ -836,7 +835,7 @@ section-statement = "section" section-text
 section の文の名前は、その `section-text` の単位の書かれたとおりのテキストです。
 タイトルと section の名前は繰り返してもかまいません。
 mermaid.js がタイトル、フロントマターのタイトル、section を Db にどう読むか、
-タスクがどの section に属するかは、 tests パッケージの要約にあります。
+タスクがどの section に属するかは、tests パッケージの要約にあります。
 [fixture: journey/db-title-statement] [fixture:
 journey/db-title-frontmatter] [fixture:
 journey/db-title-statement-after-frontmatter] [fixture:
@@ -915,7 +914,7 @@ mermaid.js の Db は、その文法が受理するどの入力にも例外を�
   キーワードの中のディレクティブは、この仕様では入力を拒否させ、
   mermaid.js は受理します（[単位の中のディレクティブ](#単位の中のディレクティブ)
   を参照）。
-  ヘッダー、`title`、`section`、`accTitle`、 `accDescr` の中がそうです。
+  ヘッダー、`title`、`section`、`accTitle`、`accDescr` の中がそうです。
   [fixture: journey/div-directive-in-header-keyword] [fixture:
   journey/div-directive-in-title-keyword] [fixture:
   journey/div-directive-in-section-keyword] [fixture:
@@ -928,8 +927,8 @@ mermaid.js の Db は、その文法が受理するどの入力にも例外を�
   mermaid.js は `;` を除いて部分を 1 つとして読みます。
   規則が探す `style`、`:`、`#` は、同じ行の文の前の説明ブロックにあります。
   同じ行の `accDescr { style:#x }` の後の `ti;tle T`、`sec;tion S`、
-  `accTi;tle: T`、`accDe;scr: d` は、 `;` のない文として読まれます。
-  テキストの単位の中と、2 つの単位の間では、 mermaid.js の読みが保たれます。
+  `accTi;tle: T`、`accDe;scr: d` は、`;` のない文として読まれます。
+  テキストの単位の中と、2 つの単位の間では、mermaid.js の読みが保たれます。
   [fixture: journey/div-ignored-semicolon-in-title-keyword]
   [fixture: journey/div-ignored-semicolon-in-section-keyword]
   [fixture: journey/div-ignored-semicolon-in-acc-title-keyword]
@@ -954,7 +953,7 @@ mermaid.js の Db は、その文法が受理するどの入力にも例外を�
 - **[`comment-takes-character`](../known-divergences/comment-takes-character.ja.md)。**
   単位の最初の文字（`}` でも空白でもない文字）の直後の `%%` は、
   ここでは [コメント](#コメント) が言うとおりに読まれます。
-  コメントは単位の始まる位置でだけ始まるので、 `%%` は単位の一部か、
+  コメントは単位の始まる位置でだけ始まるので、`%%` は単位の一部か、
   その前の文字が文法の取らない単位です。
   mermaid.js はその文字と行の残りを 1 つのコメントとして読みます。
   差異は両方向です。
@@ -962,7 +961,7 @@ mermaid.js の Db は、その文法が受理するどの入力にも例外を�
   `A: 5;%% c`、`title x;%% c`、`journey;%% c`、`section a:%% c`、
   `journey:%% c`、`accDescr { x }a%% c` は、ここでは拒否され、
   mermaid.js は受理します。
-  `A:%% c` はここではタスクで、 mermaid.js は拒否します。
+  `A:%% c` はここではタスクで、mermaid.js は拒否します。
   [fixture: journey/div-comment-after-task-text-start] [fixture:
   journey/div-comment-after-indented-task-text-start] [fixture:
   journey/div-comment-after-semicolon-after-data] [fixture:

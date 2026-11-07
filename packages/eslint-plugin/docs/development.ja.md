@@ -49,7 +49,7 @@ parser が変わったら、
   `%% eslint <規則>: <設定>`）のスナップショット。
   入力は `tests/fixtures/inline-config/`。
 - `tests/markdown.test.ts`: `tests/fixtures/markdown/` の `mermaid` と `mmd`
-  のコードブロックを、 `@eslint/markdown` のプロセッサーを通して検査する。
+  のコードブロックを、`@eslint/markdown` のプロセッサーを通して検査する。
   報告は Markdown のファイルの位置になる。
 - `tests/diagram-rules.test.ts`: 図種の規則それぞれが登録するセレクターを調べ、
   すべてがその図種のノードの型であることを確かめる。
@@ -180,7 +180,7 @@ vitest は `globals: true` でそれを用意します。
 - `vitest -u` ではスナップショットが更新されません。
   テスターは `--update` を `process.argv` から読み、
   それは vitest のワーカーに届かないからです。
-  スクリプト `test:update` は、 `tests/` の下のすべての `__snapshots__` を消し、
+  スクリプト `test:update` は、`tests/` の下のすべての `__snapshots__` を消し、
   `UPDATE_SNAPSHOTS=true` でテストを実行し直し、テスターが、
   ないスナップショットを書きます。
 - それ以外の実行は、パッケージで始めても、リポジトリのルートで始めても、
@@ -215,7 +215,7 @@ vitest は `globals: true` でそれを用意します。
   `TextSourceCodeBase` にはその形を渡します。
   その既定は、単独の `\r` で行を終えません。
 - 列は、木と同じく 0 から数え、言語は `columnStart: 0` でそれを示します。
-  ESLint はこれをパースのエラーには当てないので、 `ParseError` の列は、
+  ESLint はこれをパースのエラーには当てないので、`ParseError` の列は、
   報告するときに 1 から数えます。
 - 言語はオプションを持たず、
   ほかの道具が `languageOptions` に入れたものを無視します。
@@ -228,8 +228,8 @@ vitest は `globals: true` でそれを用意します。
   ディレクティブとフロントマターは設定しません。
 - ソースコードは、
   [`@ota-meshi/ast-token-store`](https://github.com/ota-meshi/ast-token-store)
-  の `TokenStore` の方法（`getFirstToken`、 `getTokenBefore`、`getTokens`、
-  `getCommentsInside`、 `commentsExistBetween`、
+  の `TokenStore` の方法（`getFirstToken`、`getTokenBefore`、`getTokens`、
+  `getCommentsInside`、`commentsExistBetween`、
   `isSpaceBetween` など）を持ちます。
   ストアが定めるとおりに、`Root.tokens` と `Root.comments` から答えます。
   トークンには、種類 `Directive` のトークンとしてディレクティブが、
@@ -282,7 +282,7 @@ ESLint は、`@` で始まる id を、最後の `/` でプラグインと規則
 名前の接頭辞で表します。
 
 文書が挙げるものは、規則が持ちます。
-`meta.docs.description` は英語の説明で、 `meta.docs.recommended` は、
+`meta.docs.description` は英語の説明で、`meta.docs.recommended` は、
 `recommended` の設定がその規則を有効にするかどうかです。
 規則から作るファイルは、次の 2 つのコマンドで最新に保ちます。
 
@@ -359,7 +359,7 @@ pnpm --filter @mmd-toolkit/eslint-plugin run check:docs
 コードブロックが、その規則を有効にするコメントで始まっていないときです。
 最初の段落の中の改行は問いません。
 
-規則と文書がこのように食い違うと、 `update` は `src/rules/index.ts` だけを書き、
+規則と文書がこのように食い違うと、`update` は `src/rules/index.ts` だけを書き、
 文書の生成する部分は書かずに失敗します。
 索引の一覧は説明を文書から取るので、
 英語の文書が欠けているあいだは一覧を作れないためです。
@@ -416,7 +416,7 @@ pnpm --filter @mmd-toolkit/eslint-plugin run check:docs
   規則の文書は、オプションがあるかを言い、規則がオプションを持つかは、
   rule-ideas の SKILL が決めます。
   どの提案も、適用した後に mermaid.js がテキストをどう読むかを言います。
-  自動修正と提案は、`create` から分けた関数で組み立て、 `create` は、
+  自動修正と提案は、`create` から分けた関数で組み立て、`create` は、
   その関数が返すものを `context.report` に渡します。
   自動修正は、編集できない所では出しません。
   文やトークンを消す提案は、

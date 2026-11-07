@@ -20,7 +20,7 @@
    行末の共通の空白を除く。
    引用名とブロックの境目はこれらの行を保護しない。
    葉の外の prefix と装飾の node は公開する項目を作らない。
-   書き換えたソース、人工のソース token、 native YAML の node は作らない。
+   書き換えたソース、人工のソース token、native YAML の node は作らない。
    [fixture: treeview/directive-bare-middle]
    [fixture: treeview/comment-line-in-quotes] [fixture: treeview/entity-double]
    [fixture: treeview/html-bare] [fixture: treeview/text-double-crlf]

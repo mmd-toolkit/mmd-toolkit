@@ -6,9 +6,8 @@
 検出器がどこを見るかは、
 common.ja.md の [図種の検出](./common.ja.md#図種の検出) で定めています。
 ここでも同じ 2 つの言葉を使います。
-**検出点**は、先頭のトリビアでないテキストの最初の位置、
-**たどり着いた位置**は、検出点から、
-検出が飛ばす 1 つのフロントマター形のブロック、`%%` だけの行、
+**検出点**は、先頭のトリビアでないテキストの最初の位置、**たどり着いた位置**は、
+検出点から、検出が飛ばす 1 つのフロントマター形のブロック、`%%` だけの行、
 ディレクティブの先へ進んだ位置です。
 検出器はたどり着いた位置からの図のテキストを見ます。
 ただし `error` 疑似図種の検出器の条件は、検出点から述べます。
@@ -37,7 +36,7 @@ common.ja.md の [図種の検出](./common.ja.md#図種の検出) で定めて�
     キーワードであり（大文字小文字を区別しない）、テキストの終わりまで、
     空白と行終端しか続かない。
 - **大文字小文字**は、キーワードをどう比べるかです。
-  **区別する**か、 [表記](./common.ja.md#表記) の意味で**区別しない**かです。
+  **区別する**か、[表記](./common.ja.md#表記) の意味で**区別しない**かです。
 - **キーワードの後**は、キーワードの直後に何が来てよいかです。
   - **何が続いてもよい**: 検出器は、キーワードの後の文字に条件を付けません。
     たとえば `flowchartLR` は `flowchart` で始まります。
@@ -160,7 +159,7 @@ agentflow の文法はこれらの接尾部の形を拒否します。
 項目 12 の
 [infoDetector.ts](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/info/infoDetector.ts#L7-L11)
 は、接尾の境界なしで正確な小文字の接頭辞 `info` を選びます。
-`information` は検出後に字句で拒否し、 `Info` と `INFO` は選びません。
+`information` は検出後に字句で拒否し、`Info` と `INFO` は選びません。
 [fixture: info/header-lf] [fixture: info/detect-lower-suffix]
 [fixture: info/detect-titlecase] [fixture: info/detect-uppercase]
 
@@ -327,7 +326,7 @@ native YAML の規則は無く、検出が通過した block も見出しの前�
   [表記](./common.ja.md#表記) の意味で大文字小文字を区別しない比較と同じです。
   [fixture: common/error-pseudo-diagram] [fixture: common/error-uppercase]
 
-- **大きな機能のときだけ登録される項目**: 項目 3〜5 は、 mermaid.js が
+- **大きな機能のときだけ登録される項目**: 項目 3〜5 は、mermaid.js が
 
 [`includeLargeFeatures`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L85-L87)
 を付けてビルドされたときだけ登録されます。

@@ -57,8 +57,8 @@ mermaid.js が読むとおりの木の値から作ります。
 各行終端を `\n`、各属性の引用符を `'`、各エンティティをその置換文字列とします。
 ディレクティブとコメント行は、
 common.md の Where a directive is と Comment lines の規則で、
-テキストそのものから見つけます（`src/source-scan.ts` の
-`scanSource()`。記録した木の検査も使うので、規則は 1 か所に書きます）。
+テキストそのものから見つけます（`src/source-scan.ts` の `scanSource()`。
+記録した木の検査も使うので、規則は 1 か所に書きます）。
 ディレクティブと、その走査が後ろに取るもの、そしてコメント行です。
 コメント行は、`%%` のうち、次の 2 つを満たすものです。
 コメントの始まりとの間に、空白とディレクティブだけがあること。
@@ -229,9 +229,8 @@ Db の値のうち、ノードが直接は与えない範囲のテキストを�
   パーサーが設定を知らないので、木に対して `exceedsMaxEdges()` が確かめます。
   関数が読む `maxEdges` は、設定が辺の最大数として文書化する、負でない整数です。
   それ以外の値のときの結果は定めません（`maxEdges` が 1.5 のとき、
-  mermaid.js は辺 2 つを受理しますが、
-  関数は拒否します。 `Infinity` では `runMermaid()` が例外を投げるので、
-  比べる結果がありません）。
+  mermaid.js は辺 2 つを受理しますが、関数は拒否します。
+  `Infinity` では `runMermaid()` が例外を投げるので、比べる結果がありません）。
   上限 0 は最初の辺を拒否し、辺のない入力は上限 0 でも受理します。
   [fixture: flowchart/config-max-edges-zero-exceeded]
   [fixture: flowchart/config-max-edges-zero-no-edge]
@@ -337,7 +336,7 @@ HTML ラベルが有効で、`securityLevel` が `strict`、`loose`、`antiscrip
 そのあとで `#br#` をそれぞれ `<br/>` に書きます。
 作者が書いた `#br#` も `<br/>` になります。
 改行タグは、`<`、省略できる `/`、大文字小文字を問わない `br`、空白、
-省略できる `/`、 `>` です。
+省略できる `/`、`>` です。
 [fixture: flowchart/config-security-level-other-line-breaks]
 [fixture: flowchart/config-security-level-other-line-breaks-spaced]
 タグは `#br#` を置き換える前に、左から重ならずに見つけます。
@@ -355,7 +354,7 @@ HTML ラベルが有効で、`securityLevel` が `strict`、`loose`、`antiscrip
 - flowchart: 頂点のラベルとリンクのテキスト（markdown 文字列のテキスト、
   後で引用符を除く文字列を含む）、
   subgraph のタイトル（タイトルがなければ名前）、ツールチップ、
-  フロントマターの title、`accTitle`、 `accDescr`（1 行のものとブロック）。
+  フロントマターの title、`accTitle`、`accDescr`（1 行のものとブロック）。
   [fixture: flowchart/config-security-level-other-label-characters]
   [fixture: flowchart/config-security-level-other-edge-label]
   [fixture: flowchart/config-security-level-other-markdown-label]
@@ -375,7 +374,7 @@ HTML ラベルが有効で、`securityLevel` が `strict`、`loose`、`antiscrip
 - class: title、`accTitle`、`accDescr`、クラスのラベル、
   ジェネリック型とそれを持つクラスの text、クラスの id、クラス本体の属性、
   メソッド（引数と戻り値の型を含む）、アノテーション、関係の多重度とラベル、
-  click、link、 callback のツールチップ。
+  click、link、callback のツールチップ。
   [fixture: class/config-security-level-other-diagram-title]
   [fixture: class/config-security-level-other-acc-title]
   [fixture: class/config-security-level-other-acc-descr]
@@ -391,7 +390,7 @@ HTML ラベルが有効で、`securityLevel` が `strict`、`loose`、`antiscrip
   [fixture: class/config-security-level-other-note-as-written]
   文のアノテーションとリンクの target は、置き換えが変える文字を持ちません。
   [fixture: class/config-security-level-other-annotation-statement]
-- state: title、`accTitle`、`accDescr`、状態のラベルと説明、 note のテキスト、
+- state: title、`accTitle`、`accDescr`、状態のラベルと説明、note のテキスト、
   遷移のラベル。
   click の URL とツールチップには届きません。
   [fixture: state/config-security-level-other-diagram-title]
@@ -417,7 +416,7 @@ HTML ラベルが有効で、`securityLevel` が `strict`、`loose`、`antiscrip
   [fixture: sequence/config-security-level-other-texts-as-written]
 - ER: title、`accTitle`、`accDescr`、subgraph の title。
   名前、別名、属性の型と名前とコメント、ロール、subgraph の id、
-  subgraph のノード、クラス、 style には届きません。
+  subgraph のノード、クラス、style には届きません。
   [fixture: er/config-security-level-other-diagram-title]
   [fixture: er/config-security-level-other-acc-title]
   [fixture: er/config-security-level-other-acc-descr]
@@ -441,7 +440,7 @@ HTML ラベルが有効で、`securityLevel` が `strict`、`loose`、`antiscrip
   [fixture: gantt/config-security-level-other-click-as-written]
 - journey: title（フロントマターのものと `title` の文のもの）、`accTitle`、
   `accDescr`（行のものとブロックのもの）。
-  タスクの説明、スコア、人、 section の名前には届きません。
+  タスクの説明、スコア、人、section の名前には届きません。
   [fixture: journey/config-security-level-other-title]
   [fixture: journey/config-security-level-other-diagram-title]
   [fixture: journey/config-security-level-other-acc-title]
@@ -464,7 +463,7 @@ HTML ラベルが有効で、`securityLevel` が `strict`、`loose`、`antiscrip
 - timeline: `title` の文の title、`accTitle`、
   `accDescr`（行のものとブロックのもの）。
   フロントマターの title は読みません。
-  period、event、 section の名前には届きません。
+  period、event、section の名前には届きません。
   [fixture: timeline/config-security-level-other-title-and-accessibility]
   [fixture: timeline/config-security-level-other-accessibility-block]
   [fixture: timeline/config-security-level-other-sections-periods-events]
@@ -504,7 +503,7 @@ HTML ラベルが有効で、`securityLevel` が `strict`、`loose`、`antiscrip
   class/config-security-level-other-name-note-and-interface-as-written]
 - クラスのメンバー: 置き換えは、可視性の印を読む前の行全体に対して行うので、
   印と名前をいっしょに置き換えます。
-  `#br#` で始まる行に可視性はなく、 `#` の次がそれ以外なら、
+  `#br#` で始まる行に可視性はなく、`#` の次がそれ以外なら、
   可視性は protected です。
   [fixture: class/config-security-level-other-member-hash-line-break]
 - 状態の id: 状態のラベルは、説明が置き換えるまでは置き換えた id で、

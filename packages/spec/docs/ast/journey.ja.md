@@ -8,11 +8,10 @@
 [diagrams/journey.ja.md](../diagrams/journey.ja.md) で定めます。
 
 この図種の本体は [JourneyDiagram](#journeydiagram) です。
-欄の値は、
-[ast.ja.md](../ast.ja.md#ノード)が値の書かれたテキストを定めるとおり、
+欄の値は、[ast.ja.md](../ast.ja.md#ノード)が値の書かれたテキストを定めるとおり、
 書き手が書いたものを保ち、
 [common.ja.md](../common.ja.md#ソースの読み方) の変換後の形ではありません。
-値が空白で始まったり終わったりするのは、 mermaid.js が読むとおりに、
+値が空白で始まったり終わったりするのは、mermaid.js が読むとおりに、
 その単位が空白を自分の文字として持つところだけです。
 [ノード](../ast.ja.md#ノード) を参照してください。
 この図種では、コロンの前の空白を保つタスクの説明と、
@@ -38,7 +37,7 @@
 ヘッダーのキーワードは欄ではありません。
 
 **JourneyStatement** は、JourneyTaskStatement、JourneyTitleStatement、
-JourneySectionStatement、JourneyAccTitleStatement、 JourneyAccDescrStatement、
+JourneySectionStatement、JourneyAccTitleStatement、JourneyAccDescrStatement、
 JourneyAccDescrBlockStatement のいずれかです。
 
 改行はどの文にも属さず、空行はノードを作りません。
@@ -71,7 +70,7 @@ JourneyAccDescrBlockStatement のいずれかです。
 あれば少なくとも 1 つの要素を持ちます。
 
 `A: 5` はスコア `5` を持ち、人を持ちません。
-`A: 3: Me, You ,  Them` は人 `Me`、`You`、`Them` を、 `A: 3: a,,b` は人 `a`、
+`A: 3: Me, You ,  Them` は人 `Me`、`You`、`Them` を、`A: 3: a,,b` は人 `a`、
 null、`b` を持ちます。
 `A: 3: ` と `A: 5:` は null の人を 1 つ持ち、`A: : x` はスコアを持ちません。
 `A:  3 : x` はスコア `3`、`A: abc: x` はスコア `abc`、
@@ -95,7 +94,7 @@ journey/gram-task-third-colon-at-end]
 | `value` | JourneyLiteral | `title` と 1 つの空白文字の後の、`#`、`;`、改行のどれかまでのテキスト。 |
 
 子の欄: `value`。
-値は両端の空白を保ち、 `:` と `%%` を文字として持ちます。
+値は両端の空白を保ち、`:` と `%%` を文字として持ちます。
 [fixture: journey/db-title-statement] [fixture:
 journey/lex-title-two-spaces] [fixture: journey/lex-title-trailing-spaces]
 [fixture: journey/lex-title-colon-inside] [fixture:

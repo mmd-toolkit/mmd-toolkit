@@ -7,7 +7,7 @@ sequence 図の木から Db の要約を作る手順です。
 がこれを実装します（[db-from-tree.ja.md](../db-from-tree.ja.md) を参照）。
 構文と木は、
 仕様の [diagrams/sequence.ja.md](../../../spec/docs/diagrams/sequence.ja.md)
-と、 [ast/sequence.ja.md](../../../spec/docs/ast/sequence.ja.md) が定めます。
+と、[ast/sequence.ja.md](../../../spec/docs/ast/sequence.ja.md) が定めます。
 
 フロントマターの図のタイトルと、設定に依る Db の値は、木からは来ません。
 Db の値を確かめる側が、
@@ -37,10 +37,10 @@ sequence/config-wrap-true-sequence-wrap-false-site]
 両端の空白は、[表記](../../../spec/docs/common.ja.md#表記) の空白です。
 `A->>B:` の後に U+00A0、U+FEFF、`x`、U+3000、U+2003 が続くとき、
 テキストは `x` です。
-U+0085 と U+180E は空白ではないので、 `x` の両側に残ります。
+U+0085 と U+180E は空白ではないので、`x` の両側に残ります。
 [fixture: sequence/db-message-text-unicode-whitespace-ends]
 [fixture: sequence/db-message-text-non-whitespace-ends-kept]
-id の後の空白も同じで、`participant A`、U+3000、 U+00A0 は `A` を加えます。
+id の後の空白も同じで、`participant A`、U+3000、U+00A0 は `A` を加えます。
 [fixture: sequence/db-participant-id-unicode-whitespace-ends]
 `:` の後が空白だけのメッセージは空のテキストを持ち、
 `A->>B: wrap:` は空のテキストと真の折り返しを持ちます。
@@ -74,7 +74,7 @@ id を挙げるどの文も同じです。 [fixture: sequence/db-participant-id-
 [fixture: sequence/db-note-left-id-entity]
 [fixture: sequence/db-create-destroy-id-entity]
 テキストも同じように変換した形で読みます。
-`note over A: a#amp;b` のテキストは `aﬂ°amp¶ßb` で、 `as` の後の説明、
+`note over A: a#amp;b` のテキストは `aﬂ°amp¶ßb` で、`as` の後の説明、
 ブロックのテキスト、色の後の箱の名前も同じです。
 タイトルとアクセシビリティの値も同じです。
 [fixture: sequence/db-note-text-entity]
@@ -110,7 +110,7 @@ id、説明、種類、データブロックを持つ参加者を加えると、
   `actor A` は種類 `participant` も保ちます。
   文が説明を持つのは `as` があるときで、その後ろに何もなくても持ちます。
   その説明は空のテキストです。
-  `participant A as Alice` の後の `participant A as` は、 A を、
+  `participant A as Alice` の後の `participant A as` は、A を、
   id ではなく空の説明で新しく記録します。
   データブロックが `alias` を設定するときも、
   文は説明を持ちます（[Db の中のデータブロック](#db-の中のデータブロック)
@@ -157,7 +157,7 @@ id、説明、種類、データブロックを持つ参加者を加えると、
   `box a`、`participant A`、`participant A as X`、`end` では、
   `actorKeys` は A を 2 回持ちます。
   `participant A` が 2 つなら 1 回です。
-  箱の前と箱の中の `participant A` では、 `actorKeys` は空で、
+  箱の前と箱の中の `participant A` では、`actorKeys` は空で、
   A はその箱を持ちます。
   箱の外では、参加者は箱を保ちます。
   [fixture: sequence/spec-sequence-diagram-f1763a40] [fixture:
@@ -195,18 +195,18 @@ sequence/db-destroy-participant] [fixture:
 sequence/db-create-participant-before-message]
 `messageIndex` が数える `messages` の項目は、種類によらずすべてです。
 `autonumber`、`note over A: n`、`loop x`、`A->>+B: m`、
-`create participant C` では、`create` の前の項目は、 `autonumber`、ノート、
-ループの始まり、メッセージ、`+` の項目で、 `messageIndex` は 5 です。
+`create participant C` では、`create` の前の項目は、`autonumber`、ノート、
+ループの始まり、メッセージ、`+` の項目で、`messageIndex` は 5 です。
 同じ id の 2 つ目の `destroy` は、1 つ目の記録を置き換えます。
 最初のメッセージの後と 2 つ目のメッセージの後の `destroy B` は、
-`destroyedActors` に B を 1 つだけ与え、 `messageIndex` は 2 つ目のものです。
+`destroyedActors` に B を 1 つだけ与え、`messageIndex` は 2 つ目のものです。
 [fixture: sequence/db-create-message-index-counts-entries]
 [fixture: sequence/db-destroy-twice-replaces-index]
 `create` の付いた destroy の文は、
 その id で `create participant` と同じことをします。
 種類が `participant` で、id を説明とする参加者を加え、
 `createdActors` に記録します。
-`destroyedActors` には何も記録せず、 `create` の後の検査が当てはまります。
+`destroyedActors` には何も記録せず、`create` の後の検査が当てはまります。
 [fixture: sequence/gram-create-destroy] [fixture:
 sequence/db-create-destroy-then-destroy] [fixture:
 sequence/gram-create-destroy-without-message] [fixture:
@@ -233,8 +233,8 @@ sequence/gram-create-destroy-existing]
   その後に、宛先の型 59 の項目と、送り手の型 60 の項目。
 - それ以外: `activate` は偽で、`centralConnection` は 0。
 
-1 つの参加者の項目は、`from` にその id を持ち、`to` を持たず、 `message` は空、
-`wrap` は設定の折り返しの設定、`activate` は偽、 `centralConnection` は 0 です。
+1 つの参加者の項目は、`from` にその id を持ち、`to` を持たず、`message` は空、
+`wrap` は設定の折り返しの設定、`activate` は偽、`centralConnection` は 0 です。
 `activate` と `deactivate` は、そのような型 17 と型 18 の項目を加えます。
 [fixture: sequence/db-message-activate-target] [fixture:
 sequence/db-message-central-connection-target] [fixture:
@@ -246,7 +246,7 @@ sequence/db-message-central-connection-both]
 ノートは項目を 1 つ加えます。
 その項目は、`from` と `to` にその id（`,` のある `over` なら 2 つの id）を持ち、
 `message` はテキスト、`wrap` はその折り返し、`type` は 2 です。
-`placement` は、`left of` なら 0、`right of` なら 1、 `over` なら 2 です。
+`placement` は、`left of` なら 0、`right of` なら 1、`over` なら 2 です。
 [fixture: sequence/db-note-over-two] [fixture: sequence/db-note-left-of]
 
 **autonumber。**
@@ -255,7 +255,7 @@ sequence/db-message-central-connection-both]
 `start` は 1 つ目の数で、`step` は 2 つ目の数、なければ 1 です。
 0 もほかと同じ数なので、`autonumber 0 0` は `start` 0 と `step` 0 を与え、
 `step` は 1 になりません。
-数は、そのテキストの変換した形が書く数で、 double に収まらない大きさのときは、
+数は、そのテキストの変換した形が書く数で、double に収まらない大きさのときは、
 要約と同じく、テキスト `Infinity` か `-Infinity` です。
 [fixture: sequence/db-autonumber-start-overflow]
 [fixture: sequence/db-autonumber-step-overflow]
@@ -275,7 +275,7 @@ sequence/db-autonumber-start] [fixture: sequence/db-autonumber-start-step]
 テキストのない `else` は空のテキストを与えます。
 [fixture: sequence/db-block-alt-two-else]
 接頭辞のないテキストも設定の折り返しの設定を持つので、設定が真なら、始まり、節、
-`end` の `wrap` は真で、 `loop nowrap: x` の `wrap` は偽、その `end` は真です。
+`end` の `wrap` は真で、`loop nowrap: x` の `wrap` は偽、その `end` は真です。
 [fixture: sequence/config-wrap-site-block-sections]
 [fixture: sequence/config-wrap-site-block-nowrap-prefix]
 型は次のとおりです。
@@ -314,7 +314,7 @@ mermaid.js はそれをブラウザに問い合わせます。
 参加者の `links` か `properties` に写します。
 前の文のキーに加え、すでにあるキーは置き換えます。
 JSON のオブジェクトのキーはその名前です。
-JSON の配列は、各要素を 0 から数えた位置の下に与え、 JSON の文字列は、
+JSON の配列は、各要素を 0 から数えた位置の下に与え、JSON の文字列は、
 各 UTF-16 コード単位を 0 から数えた位置の下に与えます。
 数、`true`、`false`、`null` は何も与えません。
 文字列 `"a`、U+1F600、`"` はキー `0`、`1`、`2` を与え、
@@ -359,7 +359,7 @@ URL はその `@` より後のテキストで、それぞれ両端の空白を�
 `@` が 2 番目の文字なら、ラベルは空です。
 `@` がないときは、ラベルはテキストから最後の 2 文字を除いたもの、
 URL はテキスト全体です。
-`link A: Dash @ https://x` は `Dash` を、 `link A: Dash@https://x` は `Das` を、
+`link A: Dash @ https://x` は `Dash` を、`link A: Dash@https://x` は `Das` を、
 `link A: @ https://alic` は `@ https://ali` に `https://alic` を設定し、
 `link A: x@https://u` は空のラベルを設定し、
 `link A: no at` は `no` に `no at` を設定します。
@@ -411,7 +411,7 @@ sequence/db-details-adds-participant]
 `accTitle:   x   ` と `accDescr:   x   ` の両端の空白は除かれます。
 ブロックの中では、改行とその後の空白は、空行をまたいでも 1 つの改行で、
 改行の前の空白は残ります。
-`a`、空行 2 つ、空白 3 個の後の `b` と空白 2 個、空白 2 個の後の `c` は、 `a`、
+`a`、空行 2 つ、空白 3 個の後の `b` と空白 2 個、空白 2 個の後の `c` は、`a`、
 改行、`b` と空白 2 個、改行、`c` を与えます。
 `\r\n` で書いた行終端も 1 つの改行です。
 値は変換後の形です。
@@ -419,7 +419,7 @@ sequence/db-details-adds-participant]
 エンティティのプレースホルダを持ちます。
 ブロックの中のそれだけの行のディレクティブは何も読まれず、
 その前後の改行は 1 つとして読まれます。
-`a`、ディレクティブの行、`b` は、`a`、改行、 `b` を与えます。
+`a`、ディレクティブの行、`b` は、`a`、改行、`b` を与えます。
 [fixture: sequence/db-title-spaces] [fixture:
 sequence/db-title-whitespace-only] [fixture: sequence/db-title-legacy]
 [fixture: sequence/db-title-legacy-spaces]
@@ -457,7 +457,7 @@ sequence/db-acc-descr-block-after-message]
 テキストのない閉じたブロックは、空白、改行、コメント行だけを持つものも、
 何も変えません。
 `accDescr: x` の後の `accDescr {}`、`accDescr { }`、
-波括弧の間に改行のあるブロックは、 `x` を保ちます。
+波括弧の間に改行のあるブロックは、`x` を保ちます。
 [fixture: sequence/db-title-replaces-frontmatter] [fixture:
 sequence/db-title-replaces] [fixture: sequence/db-acc-title-replaces] [fixture:
 sequence/db-acc-descr-replaces] [fixture:
@@ -488,14 +488,14 @@ U+2028 か U+2029 で終わる行の直後のコメント行は、その行を�
 `C->>D: y` の 1 つのメッセージを持ちます。
 `as` の後の説明、id、`title`、`accTitle:`、`accDescr:` のテキスト、
 `accDescr {` のブロックの行も同じです。
-`accDescr {`、`x` と U+2028、コメント行、`y`、`}` の説明は、 `x`、U+2028、
+`accDescr {`、`x` と U+2028、コメント行、`y`、`}` の説明は、`x`、U+2028、
 `y` です。
 箱では、コメント行の次の行がそのテキストの一部になり、
 テキストは U+2028 を持つので、名前はなく、`fill` は `transparent` です。
 `box red`、U+2028、コメント行、`participant A`、`end` では、
 参加者の文は読まれず、箱は参加者を持ちません。
 ディレクティブの行と空行は、行を続けません。
-`A->>B: x`、U+2028、そのどちらか、`C->>D: y` は、 2 つのメッセージを持ちます。
+`A->>B: x`、U+2028、そのどちらか、`C->>D: y` は、2 つのメッセージを持ちます。
 [fixture: sequence/db-message-text-line-separator-then-comment-line]
 [fixture: sequence/db-participant-description-line-separator-then-comment-line]
 [fixture: sequence/db-participant-id-line-separator-then-comment-line]
@@ -517,12 +517,12 @@ U+2028 か U+2029 で終わる行の直後のコメント行は、その行を�
   始まりと終わりの記号 `arrow` は 33 です。
   線 `dotted` では 1 大きく、6、1、4、25、34 です。
 - 終わりの記号が `half-arrow-top`、`half-arrow-bottom`、`half-stick-top`、
-  `half-stick-bottom` のとき: 線 `solid` では 41、42、43、44、
-  `dotted` では 51、52、53、54 です。
+  `half-stick-bottom` のとき: 線 `solid` では 41、42、43、44、`dotted` では 51、
+  52、53、54 です。
 - そのような始まりの記号のとき: 線 `solid` では 45、46、47、48、
   `dotted` では 55、56、57、58 です。
 
-そのため、`->>` は 0、`<<-->>` は 34、`-//` は 44、 `//--` は 57 です。
+そのため、`->>` は 0、`<<-->>` は 34、`-//` は 44、`//--` は 57 です。
 [fixture: sequence/db-arrow-types]
 
 ## 箱の色
@@ -547,16 +547,16 @@ mermaid.js は、箱のテキストを色の候補と残りに分け、
 テキストによらず `fill` が `transparent` で名前を持たず、
 答えは問い合わせません。
 行の終わりで U+2028 が続く `box red-team` と `box aqua` は、
-U+2028 の周りに空白があっても、 `box red`、U+2029、`team` も、名前を持たず、
+U+2028 の周りに空白があっても、`box red`、U+2029、`team` も、名前を持たず、
 `fill` は `transparent` です。
 一方、空白が続く `box red-team` は、`fill` が `red` で、名前は `-team` です。
-色の関数の引数の間に U+2028 があるときも、 `box rgb(1,`、U+2028、
+色の関数の引数の間に U+2028 があるときも、`box rgb(1,`、U+2028、
 ` 2, 3) G` は同じです。
-`(` の前の空白と終わりの両方にあるときも、 `box rgb`、U+2028、`(1, 2, 3) G`、
+`(` の前の空白と終わりの両方にあるときも、`box rgb`、U+2028、`(1, 2, 3) G`、
 U+2028 は同じです。
 語の中にあるときも、`box re`、U+2028、`d team` は同じです。
 色の候補のないテキストにあるときも、`box -x`、U+2028、`y` は同じです。
-テキストの前の U+2028 は、行の文脈が何も読まない空白なので、 `box`、空白、
+テキストの前の U+2028 は、行の文脈が何も読まない空白なので、`box`、空白、
 U+2028、`red team` は、`fill` が `red` で名前は `team` です。
 それらの文字が色の候補のその空白にだけあるときは、分け方は当てはまり、候補は、
 下の `rgb (0, 0, 255)` と同じく色ではありません。
@@ -565,9 +565,9 @@ U+2028、`red team` は、`fill` が `red` で名前は `team` です。
 `box rgb`、U+2028、`(1, 2, 3) G` と、`hsl` と U+2029 2 つの同じ形は、
 `fill` が `transparent` で、U+2028 か U+2029 を含むテキスト全体が名前です。
 一方、`box rgb(1, 2, 3)`、U+2028、` G` は名前を持ちません。
-`box rgba`、U+2028、`(1, 2, 3, 0.5) G` と、 `box hsla`、U+2029、
-`(1, 2%, 3%, 0.5) G` と、 `box rgb`、空白、U+2028、U+2029、空白、
-`(1, 2, 3) G` も、 `fill` が `transparent` で、テキスト全体が名前です。
+`box rgba`、U+2028、`(1, 2, 3, 0.5) G` と、`box hsla`、U+2029、
+`(1, 2%, 3%, 0.5) G` と、`box rgb`、空白、U+2028、U+2029、空白、
+`(1, 2, 3) G` も、`fill` が `transparent` で、テキスト全体が名前です。
 [fixture: sequence/db-box-line-separator-in-colour-function] [fixture:
 sequence/db-box-paragraph-separator-in-colour-function] [fixture:
 sequence/db-box-line-separator-after-colour-function]

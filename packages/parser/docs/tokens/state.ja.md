@@ -61,7 +61,7 @@
 **トークン**は、同じ項目で同じ種類の単位が、
 間に何も挟まずに続く最長の並び（`RawText` の項目では、空白を挟んでもよい）です。
 トークンは端に空白を持ちません。
-ただし、 mermaid.js がその空白を値の一部として読むところは除きます。
+ただし、mermaid.js がその空白を値の一部として読むところは除きます。
 [トークン](../tokens.ja.md#トークン) を参照。
 `second-description` の単位のトークンは単位の全体です。
 [fixture: state/db-alias-blank-second-description]
@@ -89,7 +89,7 @@
 - キーワード `left of`、`right of`、`end note`、`hide empty description` は、
   語ごとに 1 つの `Keyword` のトークンです。
   2 つの語の間の空白に接したディレクティブは、2 つのトークンの間にあります。
-  `note left%%{init: {}}%% of A: t` は、 mermaid.js と同じくノートです。
+  `note left%%{init: {}}%% of A: t` は、mermaid.js と同じくノートです。
   [fixture: state/lex-directive-between-left-and-of]
   [fixture: state/lex-directive-between-end-and-note]
   [fixture: state/lex-directive-between-hide-and-empty]
@@ -100,7 +100,7 @@
 - 浮いたノートの `"` の単位は、2 つが続くところでも、
   それぞれ 1 つの `Punctuator` のトークンです。
   `note ""x" as N` は 3 つの `"` のトークンを持ち、
-  2 つは `RawText` のトークン `x` の前に、 1 つはその後にあります。
+  2 つは `RawText` のトークン `x` の前に、1 つはその後にあります。
   [fixture: state/lex-floating-note-extra-quote-before-text]
 - 空の説明ブロックの単位は、文の `textBeforeBody` の中でも種類を保ちます。
   `Keyword` のトークン `accDescr` と、`Punctuator` のトークン `{` と `}` で、
@@ -116,9 +116,9 @@
   `accTitle: style:#x;`、複数行のノートの `style:#x` の後、
   説明が `style:#x` である `A : style:#x;` でも同じで、
   合成状態の本体でも同じです。
-  行の規則が変えない `A : x;` では、 `;` は `Identifier` のトークンで、
+  行の規則が変えない `A : x;` では、`;` は `Identifier` のトークンで、
   状態の id です。
-  `A : style:#x; B` では、 `;` が説明を `RawText` のトークン `style:#x` と、
+  `A : style:#x; B` では、`;` が説明を `RawText` のトークン `style:#x` と、
   `;` の後の空白を含む ` B` に切り、説明は `style:#x B` です。
   [fixture: state/tokens-classdef-ignored-semicolon] [fixture:
   state/tokens-acc-title-ignored-semicolon] [fixture:

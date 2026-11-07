@@ -28,7 +28,7 @@
    [fixture: cynefin/directive-every-field]
    [fixture: cynefin/hidden-yaml-common-directive]
 2. **共通の代入。**
-   変換した CynefinLiteral の範囲を読み、 null は空のテキストにする。
+   変換した CynefinLiteral の範囲を読み、null は空のテキストにする。
    共有の `commonValue` を使う。
    行の値の前後を trim し、連続する ASCII の空白とタブを畳む。
    ブロックでは各行も trim し、連続する改行を畳む。

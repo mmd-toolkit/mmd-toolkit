@@ -41,7 +41,7 @@ info
 
 平坦な本文を読みやすくするため、
 通常の文と独立したコメント・directive を見出しから1段下げます。
-info の列に文法上の意味がないため、 `tabWidth: 0` は空白0個、
+info の列に文法上の意味がないため、`tabWidth: 0` は空白0個、
 `useTabs` は幅0でも tab 1個です。
 値の継続列、hidden の内部と閉じ、保持 prefix は保持規則に従います。
 YAML には共有の正の最小幅を使います。
@@ -98,7 +98,7 @@ info
 
 ### Title
 
-外側の空白に一つの簡潔な形を与え、内部の本文を保つため、 `title`、空白1個、
+外側の空白に一つの簡潔な形を与え、内部の本文を保つため、`title`、空白1個、
 共通空白を外端から除いた値を印字します。
 null または空白だけの値は裸の `title` にします。
 空行、コメント、directive を挟んでも、次の物理行を値に取り込みません。
@@ -807,7 +807,7 @@ Markdown は共有経路で embedding を辞退します。
 
 共有の
 [Markdown のコードブロック](./compatibility.ja.md#markdown-のコードブロック)
-を使い、 dedent 済み payload に info の規則を適用します。
+を使い、dedent 済み payload に info の規則を適用します。
 fence、list、quote の字下げと EOL は host に任せます。
 実 host は payload の Db と原文とは別に確認します。
 Markdown は最終行の hidden 境界を含む padding を削除します。

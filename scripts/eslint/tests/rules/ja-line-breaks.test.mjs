@@ -47,6 +47,26 @@ const valid = [
     code: "parser の説明です。",
   },
   {
+    name: "a citation after a comma keeps its space",
+    code: "その後に、 [fixture: a/b] 続きます。",
+  },
+  {
+    name: "a citation after a period keeps its space",
+    code: "説明です。 [fixture: a/b]",
+  },
+  {
+    name: "a citation after a period inside brackets keeps its space",
+    code: "説明（内側。 [fixture: a/b]）です。",
+  },
+  {
+    name: "a hard break after a comma keeps its spaces",
+    code: "説明を、  \n次の文です。",
+  },
+  {
+    name: "a space after a comma inside a code span stays",
+    code: "`a、 b` の説明です。",
+  },
+  {
     name: "single protected range may exceed 80",
     code: "`a-single-protected-name-that-is-longer-than-eighty-columns-and-has-no-break-opportunity-inside-it`",
   },
@@ -156,6 +176,61 @@ const invalid = [
     name: "join mixed neighbors and their indentation",
     code: "説明を変える \n  `accDescr` 文です。",
     output: "説明を変える `accDescr` 文です。",
+    errors: [{ messageId: "normalize" }],
+  },
+  {
+    name: "join after a comma without a space before a code span",
+    code: "説明を、\n`accDescr` で変えます。",
+    output: "説明を、`accDescr` で変えます。",
+    errors: [{ messageId: "normalize" }],
+  },
+  {
+    name: "join after a comma without a space before a link",
+    code: "説明は、\n[Mermaid](https://example.com/) にあります。",
+    output: "説明は、[Mermaid](https://example.com/) にあります。",
+    errors: [{ messageId: "normalize" }],
+  },
+  {
+    name: "join after a comma without a space before a Latin word",
+    code: "説明を、\nparser が読みます。",
+    output: "説明を、parser が読みます。",
+    errors: [{ messageId: "normalize" }],
+  },
+  {
+    name: "join after a period inside brackets without a space",
+    code: "説明（内側。\nparser の話）です。",
+    output: "説明（内側。parser の話）です。",
+    errors: [{ messageId: "normalize" }],
+  },
+  {
+    name: "break after a period inside brackets where nothing else fits",
+    code: "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほ（まみむめも。[リンクの文字列](https://example.com/a-path-that-is-long-enough)を参照）。",
+    output:
+      "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほ（まみむめも。\n[リンクの文字列](https://example.com/a-path-that-is-long-enough)を参照）。",
+    errors: [{ messageId: "normalize" }],
+  },
+  {
+    name: "remove a written space after a comma",
+    code: "説明を、 `accDescr` で変えます。",
+    output: "説明を、`accDescr` で変えます。",
+    errors: [{ messageId: "normalize" }],
+  },
+  {
+    name: "remove a written space before a wide character",
+    code: "説明を、 変えます。",
+    output: "説明を、変えます。",
+    errors: [{ messageId: "normalize" }],
+  },
+  {
+    name: "remove every written space after a comma",
+    code: "説明を、   parser が読みます。",
+    output: "説明を、parser が読みます。",
+    errors: [{ messageId: "normalize" }],
+  },
+  {
+    name: "remove a written space after a period inside brackets",
+    code: "説明（内側。 parser の話）です。",
+    output: "説明（内側。parser の話）です。",
     errors: [{ messageId: "normalize" }],
   },
   {
@@ -660,7 +735,7 @@ const citationCases = {
       errors: [
         {
           message:
-            "Use one sentence per line and wrap long sentences after 、 or at a space within 80 columns, with following references on the last line or continuation lines.",
+            "Use one sentence per line and wrap long sentences after 、 or at a space within 80 columns, with no space after 、 or 。 and following references on the last line or continuation lines.",
         },
       ],
     },

@@ -93,7 +93,7 @@ TreemapLiteral は自身の空白を含む、書かれた行・スタイル値�
 null フィールドに literal はない。
 Identifier は名前だけ、StringLiteral は両引用符を含む。
 NumericLiteral は value が読む接頭部だけでなく、書かれた数値全体を覆う。
-値内の共通 trivia は value から除き、 raw と範囲はソースを保持する。
+値内の共通 trivia は value から除き、raw と範囲はソースを保持する。
 [fixture: treemap/common-title-two-spaces]
 [fixture: treemap/common-acctitle-whitespace-only]
 [fixture: treemap/common-description-whitespace-only]

@@ -26,7 +26,7 @@ common/detect-case-sensitive-sequence]
 1 つの語としてもう一度読みます（[文の文脈](#文の文脈) を参照）。
 そのため、`sequenceDiagramX` は sequence と判定され、拒否されます。
 最初の文は、キーワードと同じ行に続けてかまいません。
-`sequenceDiagram A->>B: x` は、 A から B へのメッセージを持ちます。
+`sequenceDiagram A->>B: x` は、A から B へのメッセージを持ちます。
 [fixture: sequence/header-word-after-keyword] [fixture:
 sequence/header-statement-same-line]
 
@@ -78,7 +78,7 @@ mermaid.js と同じく拒否されます（[検出](./flowchart.ja.md#検出) �
 そのため、`PARTICIPANT A` と `Note LEFT OF A: x` は、
 `participant A` と `note left of A: x` として読まれます。
 単位のテキストは書かれた大文字小文字を保ち、id は書かれたとおりに比べます。
-`participant A` と `participant a` は、 2 つの参加者を挙げます。
+`participant A` と `participant a` は、2 つの参加者を挙げます。
 [fixture: sequence/lex-keyword-upper-case] [fixture:
 sequence/lex-keyword-mixed-case] [fixture: sequence/lex-id-case]
 
@@ -86,7 +86,7 @@ sequence/lex-keyword-mixed-case] [fixture: sequence/lex-id-case]
 
 字句解析器は、図のテキストを**単位**に分けます。
 文法は単位の上に書かれます。
-各単位は、文法が使う名前と、 **テキスト**、
+各単位は、文法が使う名前と、**テキスト**、
 つまりそれが読んだ文字を変換した形で持ちます。
 字句解析器は**文脈**のスタックを持ち、文の文脈から始めます。
 規則は、文脈に入る（スタックの上に積む）か、
@@ -113,7 +113,7 @@ A から B への 1 つだけです。
 図のコメントの**印**は、`#` で始まるものは `#`、`%%` で始まるものは `%%`、
 それ以外は `%` で、その値は印の後のテキストです。
 `%% c` の値は、コメント行と同じく空白と `c` で、`% c` の値も同じです。
-`%%% c` の値は `%`、空白、 `c` です。
+`%%% c` の値は `%`、空白、`c` です。
 [fixture: sequence/lex-percent-comment-after-unit] [fixture:
 sequence/lex-single-percent-comment] [fixture:
 sequence/lex-percent-comment-three-percent]
@@ -149,8 +149,8 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
 **テキストの単位**は、
 空白を含みうる名前である
 [SequenceIdentifier](../ast/sequence.ja.md#sequenceidentifier) の単位、
-つまり `id` の単位と、 `text`、`color-candidate`、`title-text`、
-`description-text`、 `description-block-text`、`data-text` の単位と、
+つまり `id` の単位と、`text`、`color-candidate`、`title-text`、
+`description-text`、`description-block-text`、`data-text` の単位と、
 `invalid` の単位です。
 文字列の単位はありません。
 
@@ -170,13 +170,12 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
   を参照）。
   `participant A%%{init: {}}%% c%%B` の参加者は `A c%%B`、
   `Al%%{init: {}}%% c%%ice->>B: x` の参加者は `Al c%%ice`、
-  `participant A %%{init: {}}%% B` の参加者は `A`、空白 2 つ、 `B` です。
+  `participant A %%{init: {}}%% B` の参加者は `A`、空白 2 つ、`B` です。
   [fixture: sequence/lex-directive-in-id-before-space] [fixture:
   sequence/lex-directive-in-id-run-before-space] [fixture:
   sequence/tokens-directive-participant-spaces]
   無視される `;` も同じで、`style` の規則に当たる行では、
-  `participant B;C` の参加者は `BC`、
-  `B;C->>E: m` は `BC` からのメッセージです。
+  `participant B;C` の参加者は `BC`、`B;C->>E: m` は `BC` からのメッセージです。
   [fixture: sequence/tokens-ignored-semicolon-in-participant-id] [fixture:
   sequence/tokens-ignored-semicolon-in-message-id]
 - `parti%%{init: {}}%%cipant A`、`A-%%{init: {}}%%>>B: x`、
@@ -237,7 +236,7 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
 11. キーワード `end`、`over`、`note`: キーワードを名前とする単位。
     キーワード `links`、`link`、`properties`、
     `details`（`links` を `link` より先に試す）で、
-    その後に 1 個以上の空白かタブと、 `/`、`\`、`+`、`(`、`)`、`<`、`>`、`:`、
+    その後に 1 個以上の空白かタブと、`/`、`\`、`+`、`(`、`)`、`<`、`>`、`:`、
     `,`、`;`、`-`、空白、
     改行以外の文字が続くもの（それらは読まない）: キーワードを名前とする単位。
     それ以外の所では、この 4 つの語は id の並びを始めます（規則 21）。
@@ -333,16 +332,16 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
     `id` の単位で、そのテキストは並びから両端の空白を除いたものです。
     [fixture: sequence/lex-id-run-space]
 22. 矢印。
-    次のうち最初に当たるもの: `->>`、`<<->>`、`-->>`、`<<-->>`、 `->`、`-->`、
-    `-x`、`--x`、`-)`、`--)`、`--|\`、`--|/`、`--\\`、`--//`、 `/|--`、`\|--`、
-    `//--`、`\\--`、`-|\`、`-|/`、`-\\`、`-//`、`/|-`、`\|-`、 `//-`、`\\-`。
+    次のうち最初に当たるもの: `->>`、`<<->>`、`-->>`、`<<-->>`、`->`、`-->`、
+    `-x`、`--x`、`-)`、`--)`、`--|\`、`--|/`、`--\\`、`--//`、`/|--`、`\|--`、
+    `//--`、`\\--`、`-|\`、`-|/`、`-\\`、`-//`、`/|-`、`\|-`、`//-`、`\\-`。
     `arrow` の単位。 [fixture: sequence/db-arrow-types]
 23. `:` と、`#`、`;`、改行の前までのその行の残り: `:` の単位と、その後の残りを、
     テキスト部分として読んだもの。 [fixture: sequence/lex-empty-text]
     [fixture: sequence/lex-hash-ends-text]
     [fixture: sequence/spec-sequence-diagram-543d2299]
     [テキスト部分](#テキスト部分) を参照してください。
-24. `+`、`-`、 `()`: そのテキストを名前とする単位。
+24. `+`、`-`、`()`: そのテキストを名前とする単位。
     [fixture: sequence/db-message-activate-target]
     [fixture: sequence/db-message-central-connection-both]
 25. ほかの 1 文字: `invalid` の単位。
@@ -428,7 +427,7 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
 - id の並びは、[id の並び](#id-の並び) のとおりに終わります。
   id の並びも規則 22 から 24 の単位も始まらない文字は `invalid` の単位で、
   `invalid` の単位の行は受理されます（[文法](#文法) を参照）。
-  `)`、`/`、`\`、`<`、 `>` だけの行は受理されます。
+  `)`、`/`、`\`、`<`、`>` だけの行は受理されます。
   [fixture: sequence/lex-invalid-line-parenthesis] [fixture:
   sequence/lex-invalid-line-slash] [fixture:
   sequence/lex-invalid-line-two-units]
@@ -441,10 +440,10 @@ id の並びは、左から右へ、2 つの手順で読みます。
    できるだけ多く（1 個以上）。
    その後に、 [fixture: sequence/lex-id-run-space]
 2. 続きを、並びの終わりで始められる限り、次々に。
-   続きは、0 個以上の `-` の後に、 `+`、`<`、`-`、`>`、`:`、`,`、`;`、
+   続きは、0 個以上の `-` の後に、`+`、`<`、`-`、`>`、`:`、`,`、`;`、
    改行以外の文字をできるだけ多く（1 個以上）読んだものです。
    続きは、次のどれかが続く位置からは始まりません: `-x`、`-)`、`-\`、`-/`、
-   `-|\`、`-|/`、`--`、`/|-`、`\|-`、`//-`、 `\\-`、 `()`。
+   `-|\`、`-|/`、`--`、`/|-`、`\|-`、`//-`、`\\-`、`()`。
    最初の 11 個は矢印の始まりです。 [fixture: sequence/lex-id-run-dash]
    [fixture: sequence/db-arrow-types]
 
@@ -477,7 +476,7 @@ sequence/lex-id-run-spaces-around-arrow]
 
 ### id の文脈
 
-id の文脈には、 `participant`、`actor`、`destroy`、`activate`、
+id の文脈には、`participant`、`actor`、`destroy`、`activate`、
 `deactivate` で入ります。
 1 つの id を読みます。
 
@@ -526,7 +525,7 @@ sequence/lex-id-context-two-hashes-before-invalid]
 `participant A-B@{ "type": "queue" }` は id `A-B` を、
 `participant A=B@{ "type": "queue" }` は id `A=B` を持ちます。
 `participant A` の後に、空白、タブ、U+2028、またはディレクティブと空白が続き、
-その後に `@{ "type": "queue" }` が続くものは、 id `A` を持ちます。
+その後に `@{ "type": "queue" }` が続くものは、id `A` を持ちます。
 一方、`participant A B@{ "type": "queue" }` は拒否され、
 `@{` の前の改行も拒否されます。
 id の文脈には改行を読む規則がないからです。
@@ -559,17 +558,17 @@ sequence/lex-id-context-colon] [fixture: sequence/lex-id-context-line-break]
 
 このキーワードは大文字小文字を区別せず、
 その前後の空白は改行以外のどの空白でもかまいません。
-`participant A AS B` とタブを使った同じものは、 A に説明 `B` を与えます。
+`participant A AS B` とタブを使った同じものは、A に説明 `B` を与えます。
 [fixture: sequence/lex-alias-upper-case] [fixture: sequence/lex-alias-tabs]
 
 規則 3 は、id かデータブロックと `as` の間に改行があるときに当たります。
 id の文脈の規則 5 とデータの文脈の規則 2 が、
-`as` の前に探す空白は改行を含むので、 `participant A`、改行、`as ->> B: x` は、
+`as` の前に探す空白は改行を含むので、`participant A`、改行、`as ->> B: x` は、
 `A` の後で別名の文脈に入ります。
 別名の文脈は改行の前に `as` を読まず、文字のない `newline` の単位で、
 そこで文を終えます。
 その後の改行は文の文脈の `newline` の単位で、次の行は、
-前の行がないときと同じく読まれる 1 つの文で、 `as` から B へのメッセージです。
+前の行がないときと同じく読まれる 1 つの文で、`as` から B へのメッセージです。
 id の文脈に入るどのキーワードの後でも、id が `as` のときも、
 データブロックの後でも、改行が何個あっても同じです。
 `as B` や `as` だけのように、次の行が文でなければ、入力は拒否されます。
@@ -654,7 +653,7 @@ sequence/lex-acc-title-hash]
 
 ### テキスト部分
 
-**テキスト部分**は、`:` の後か、 `box` 以外の行の文脈に入るキーワードの後の、
+**テキスト部分**は、`:` の後か、`box` 以外の行の文脈に入るキーワードの後の、
 行の残りです。
 その始まりの空白は、どの単位にも属しません。
 その後が**折り返しの接頭辞**で始まるとき、
@@ -689,12 +688,12 @@ mermaid.js も、候補が色かを問い合わせる前に、同じように分
 `box aqua Group` は候補 `aqua` とテキスト `Group`、
 `box rgb(1,2,3)x` は候補 `rgb(1,2,3)` とテキスト `x`、
 `box rgb(1, 2, 3) a) b` は候補 `rgb(1, 2, 3) a)` とテキスト `b`、
-`box rgb( a` は候補 `rgb` とテキスト `( a` を持ち、 `box -x` は候補を持たず、
+`box rgb( a` は候補 `rgb` とテキスト `( a` を持ち、`box -x` は候補を持たず、
 テキスト `-x` を持ちます。
 分け方は答えに依らないので、どちらも単位です。
 候補が色かどうかは答えに依り、折り返しの接頭辞の位置も依ります。
 候補が色でなければ、接頭辞は候補と残りを合わせたテキストから読むからです。
-そのため、 `box` の後に `wrap-prefix` の単位はありません。
+そのため、`box` の後に `wrap-prefix` の単位はありません。
 [fixture: sequence/spec-sequence-diagram-9f31df65] [fixture:
 sequence/db-box-colour-without-space] [fixture:
 sequence/db-box-colour-function-last-parenthesis] [fixture:
@@ -786,7 +785,7 @@ statement           = participant-statement
 sequence/gram-invalid-after-end]
 [fixture: sequence/gram-block-nested-invalid-line]
 テキストが続くつもりだったメッセージの後の `)` の行も、そのような行です。
-`A->>B: call(x`、改行、 `)` のメッセージは `call(x` です。
+`A->>B: call(x`、改行、`)` のメッセージは `call(x` です。
 [fixture: sequence/db-ignored-line-after-wrapped-message] [fixture:
 sequence/db-wrapped-message-closed]
 
@@ -808,7 +807,7 @@ mermaid.js は空の説明ブロックにトークンを読まないので（詳
 テキストのある説明ブロックと、ほかの文は、区切りの前に置けません。
 
 sequence で `newline` の単位が要る文は、参加者、destroy、メッセージ、
-`autonumber`、 activate と deactivate、ノート、links、link、properties、
+`autonumber`、activate と deactivate、ノート、links、link、properties、
 details の文です。
 ブロックがそのような文の最後の単位と `newline` の間に置けるのは、
 その単位がブロックと一緒に読まれないところだけです。
@@ -826,7 +825,7 @@ details の文です。
 [fixture: sequence/gram-empty-description-block-in-alias-text]
 ブロックの前の空白は単独で読まれるので、
 ブロックの後の改行が文の `newline` の単位です。
-`autonumber`、空白 2 つ、`accDescr {}`、改行は受理されますが、 `autonumber`、
+`autonumber`、空白 2 つ、`accDescr {}`、改行は受理されますが、`autonumber`、
 空白 2 つ、改行は、
 空白が改行を隠すので拒否されます（[文の文脈](#文の文脈) を参照）。
 [fixture: sequence/gram-empty-description-block-after-autonumber-spaces]
@@ -856,7 +855,7 @@ box-text              = color-candidate text? | text
 データブロックは埋め込みデータで、その中身は書かれたとおりに保たれ、
 読まれません。
 データブロックは中身を要します。
-`participant A@{}` は mermaid.js と同じく拒否され、 `participant A@{ }` と、
+`participant A@{}` は mermaid.js と同じく拒否され、`participant A@{ }` と、
 波括弧の間に改行のあるものは受理されます。
 [fixture: sequence/gram-data-block-empty]
 [fixture: sequence/gram-data-block-line-break-only]
@@ -890,9 +889,9 @@ message-statement = id arrow ( "+" | "-" | "()" )? id ":" text-part
 ```
 
 メッセージは、矢印の後に `+` か `-` を、矢印の後か前、
-またはその両方に `()` を持てますが、 `+` と `-` は `()` と組み合わせられません。
+またはその両方に `()` を持てますが、`+` と `-` は `()` と組み合わせられません。
 メッセージはテキストを要りますが、それは `:` の後が空でもかまいません。
-`A->>B` は拒否され、 `A->>B:` は受理されます。
+`A->>B` は拒否され、`A->>B:` は受理されます。
 [fixture: sequence/gram-message-without-text]
 [fixture: sequence/db-message-central-connection-both]
 [fixture: sequence/gram-message-activation-then-central-connection]
@@ -902,7 +901,7 @@ sequence/lex-empty-text]
 矢印は `-` の単位より先に読むので（規則 22 と 24）、
 最初の矢印の後で矢印を始める `-` は、その矢印になります。
 `A ->> -x: b`、`A ->> -X: b`、`A ->> -|\: b`、`A ->> -|/: b`、
-`A ->> -xy: b` は、 2 つ目の矢印を持ち、拒否されます。
+`A ->> -xy: b` は、2 つ目の矢印を持ち、拒否されます。
 [fixture: sequence/lex-minus-glued-x-arrow]
 [fixture: sequence/lex-minus-glued-upper-x-arrow]
 [fixture: sequence/lex-minus-glued-bar-backslash-arrow]
@@ -983,7 +982,7 @@ block-statement = ( "loop" | "rect" | "opt" | "break" ) text-part line* "end"
 [fixture: sequence/gram-block-empty-text]
 [fixture: sequence/gram-block-empty-sections]
 [fixture: sequence/gram-block-rect-empty-text]
-どのキーワードもそれぞれの種類のブロックを始め、 `else`、`and`、`option` は、
+どのキーワードもそれぞれの種類のブロックを始め、`else`、`and`、`option` は、
 `alt` のブロック、`par` か `par_over` のブロック、
 `critical` のブロックの節を始めます。 [fixture: sequence/db-block-rect]
 [fixture: sequence/gram-block-loop-else]
@@ -1108,7 +1107,7 @@ mermaid.js は、文法が受理する入力の一部を、Db を作る間に拒
   参加者を加えるのは、参加者の文、`create` の付いた destroy の文、
   そしてメッセージ、ノート、`links`、`link`、`properties`、`details` の文で、
   それが挙げる各 id についてです。
-  `activate`、`deactivate`、 `create` の付かない destroy の文は加えません。
+  `activate`、`deactivate`、`create` の付かない destroy の文は加えません。
   [fixture: sequence/gram-create-existing]
   [fixture: sequence/gram-create-after-message]
   [fixture: sequence/gram-create-after-note]
@@ -1154,7 +1153,7 @@ mermaid.js は、文法が受理する入力の一部を、Db を作る間に拒
   作られるのを待つ参加者は空になります。
   このとき、destroy されるのを待つ参加者は見ません。
   そうでなく、destroy されるのを待つ参加者があれば、メッセージはそこからか、
-  そこへのものでなければならず、 destroy されるのを待つ参加者は空になります。
+  そこへのものでなければならず、destroy されるのを待つ参加者は空になります。
   検査に合わないメッセージは、入力を拒否させます。
 - ほかの文は、どちらの場所も見ず、変えません。
   作られるのを待つ参加者の上のノートはそれを満たさず、
@@ -1198,7 +1197,7 @@ sequence/gram-create-destroy-message-to-other]
   数の中のディレクティブは、ここでは入力を拒否させます。
   mermaid.js はそれを受理します。
   `parti%%{init: {}}%%cipant A`、`A-%%{init: {}}%%>>B: x`、
-  `autonumber 1%%{init: {}}%%0`、 `A->>B: wr%%{init: {}}%%ap:x` がそうです。
+  `autonumber 1%%{init: {}}%%0`、`A->>B: wr%%{init: {}}%%ap:x` がそうです。
   [fixture: sequence/div-directive-in-keyword]
   [fixture: sequence/div-directive-in-arrow]
   [fixture: sequence/div-directive-in-number]
@@ -1208,8 +1207,8 @@ sequence/gram-create-destroy-message-to-other]
   `participant Z@{ "style": "x:#y" };` の後のような、
   `style` の規則に当たる行で、数、キーワード、矢印の中の無視される `;` は、
   ここでは入力を拒否させ、mermaid.js はそれを受理します。
-  `autonumber 1;0`、`autonumber 1 1;0`、`parti;cipant B`、
-  `Note le;ft of A: t`、 `A-;>>B: m` がそうです。
+  `autonumber 1;0`、`autonumber 1 1;0`、`parti;cipant B`、`Note le;ft of A: t`、
+  `A-;>>B: m` がそうです。
   [fixture: sequence/div-ignored-semicolon-in-autonumber-start] [fixture:
   sequence/div-ignored-semicolon-in-autonumber-step] [fixture:
   sequence/div-ignored-semicolon-in-keyword] [fixture:
@@ -1222,7 +1221,7 @@ sequence/gram-create-destroy-message-to-other]
   [fixture:
   sequence/spec-sequence-diagram-335c8c00]
 - **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.ja.md)。**
-  フロントマターに `title: <a` があると、 `A-xB: b="c">d` のメッセージは、
+  フロントマターに `title: <a` があると、`A-xB: b="c">d` のメッセージは、
   mermaid.js では `b='c'>d`、ここでは `b="c">d` です。
   mermaid.js のタグは `"c"` の後の `>` まで届きます。
   `A->>B: b="c">d` のように `>` を持つ矢印が間にあると、
@@ -1243,13 +1242,13 @@ sequence/gram-create-destroy-message-to-other]
 - **[`comment-takes-character`](../known-divergences/comment-takes-character.ja.md)。**
   空白でない文字の直後の `%%` は、
   ここでは [文の文脈](#文の文脈) のとおりに読みます。
-  その前の文字は字句解析器がそこで読むものに残り、 `%%` は、
-  数の後ではコメントを始め、 id の並びの文字の後と `:` の後では、
+  その前の文字は字句解析器がそこで読むものに残り、`%%` は、
+  数の後ではコメントを始め、id の並びの文字の後と `:` の後では、
   id の並びかテキストの文字です。
   mermaid.js は、その前の文字をコメントの一部として読み、
   `%%` の前に数を読みません。
   行 `C%% c` は、mermaid.js が受理し、ここでは拒否されます。
-  `A->>B:%% c` と `autonumber 10%% c` は、 mermaid.js が拒否し、
+  `A->>B:%% c` と `autonumber 10%% c` は、mermaid.js が拒否し、
   ここでは受理されます。
   `autonumber 5%% c` は、ここでは 5 から始まり、
   mermaid.js では始まりを持ちません。

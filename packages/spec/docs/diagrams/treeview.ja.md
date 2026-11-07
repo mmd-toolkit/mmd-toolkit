@@ -33,7 +33,7 @@ frontmatter の記録は Root に属し、treeview の文ではない。
 保持された frontmatter 形のブロックを一つまで通過する。
 ブロックは図のテキストのままである。
 native な YAML の規則は無いため、検出が通過しても拒否する。
-2 個目、裸の行の後、 2 回目の scan の directive の後では、
+2 個目、裸の行の後、2 回目の scan の directive の後では、
 その通過をやり直さない。
 real な frontmatter が保持ブロックに先行してよい。
 [fixture: treeview/detect-block-after-directive]
@@ -124,8 +124,7 @@ hidden な ASCII 空白が indentation に優先することはない。
 [見出しの matcher][keyword]は、
 正確な keyword の直後に common の Notation の空白、`%%`、
 テキストの終端を要求する。
-ここでの空白は ASCII space/tab だけでなく、
-common の Notation の集合全体である。
+ここでの空白は ASCII space/tab だけでなく、common の Notation の集合全体である。
 word character、数字、dash、colon、非 ASCII の文字はその境目を満たさない。
 [fixture: treeview/header-letter] [fixture: treeview/header-digit]
 [fixture: treeview/header-word] [fixture: treeview/header-dash]
@@ -134,7 +133,7 @@ word character、数字、dash、colon、非 ASCII の文字はその境目を�
 [fixture: treeview/header-formfeed-custom-boundary]
 
 境目を満たしても見出しが選ばれるとは限らない。
-末尾の ASCII space/tab、NBSP、 form feed、inline comment、
+末尾の ASCII space/tab、NBSP、form feed、inline comment、
 同じ行の名前で bare-name が見出しより長くなりうる。
 LF は bare-name を延ばさない。
 keyword に接する directive は、除去後に LF が残るなら許すが、
@@ -150,7 +149,7 @@ keyword に接する directive は、除去後に LF が残るなら許すが、
 ### 字下げと行
 
 通常の字下げは ASCII space と tab を各 1 と数える。
-最大の一続きの列であり、 tab stop や特定の倍数ではない。
+最大の一続きの列であり、tab stop や特定の倍数ではない。
 改行は hidden なので、引用名・class・icon の後の列は、
 前の行や空白だけの行からでも次の node の字下げになりうる。
 hidden な改行で分かれた二つの列は結合せず、
@@ -218,8 +217,8 @@ U+2028・U+2029 は行を終えない。 [fixture: treeview/db-bare-tail-space]
 
 quoted-name は一重または二重の引用符で始まり、
 共通規則と罫線規則のもとで次の同じ引用符で閉じる。
-内側は空でもよく、改行を越え、 U+2028・U+2029 を含めてよい。
-backslash は引用符を保護せず、 escape の decode もしない。
+内側は空でもよく、改行を越え、U+2028・U+2029 を含めてよい。
+backslash は引用符を保護せず、escape の decode もしない。
 既に始まった bare 名の内側の引用符は通常の文字である。
 [fixture: treeview/db-empty-names] [fixture: treeview/db-quote-conversion]
 [fixture: treeview/text-double-crlf] [fixture: treeview/text-single-ls]
@@ -296,7 +295,7 @@ hidden な改行や除去されたコメント行は注釈を直前の node か�
 title-line は `title` と正確に 1 個の ASCII space/tab と空でもよい行本文、
 または裸の keyword を読む。
 word boundary は無い。
-`titlex` は空の title と名前に、 `title"node"` は空の title と引用名になりうる。
+`titlex` は空の title と名前に、`title"node"` は空の title と引用名になりうる。
 [fixture: treeview/common-whitespace] [fixture: treeview/common-title-eof]
 [fixture: treeview/common-title-prefix]
 [fixture: treeview/common-title-quoted-next]
@@ -337,7 +336,7 @@ acc-descr-block は `accDescr`、任意個の common の Notation の空白、`{
 native な unit の先頭では、`%%` から次の LF の直前までを共有 Comment とする。
 mark は `%%`、value は mark を含めず、range は mark を含め LF を含めない。
 U+2028・U+2029 と `}%%` らしい閉じもコメント内に残る。
-hidden な改行は EOF の論理的な LF も含め、 LF を別に読む。
+hidden な改行は EOF の論理的な LF も含め、LF を別に読む。
 [fixture: treeview/tail-quoted-comment]
 [fixture: treeview/native-comment-closer-greedy]
 [fixture: treeview/native-comment-ls] [fixture: treeview/native-comment-ps]
@@ -577,7 +576,7 @@ accessibility block の開きの前の空白を始めうる。
 prefix 内の引用符と brace は、包む値を閉じない。
 prefix のテキストには開きの引用符やその行の前の名前・description も含まれ、
 その後に残る bare 名をそこで書かれたものとして読む。
-既に開いた値の内側では、 prefix と装飾をその値の原綴に残し、
+既に開いた値の内側では、prefix と装飾をその値の原綴に残し、
 そこで prefix が表す空白で注釈を始めない。
 この形は直接の読みで受理し、新しい差異として拒否しない。
 [fixture: treeview/box-multiline-annotation-space]
@@ -715,7 +714,7 @@ file と directory らしい名前のどちらも親になれる。
 二つ目の未使用の連続があれば引き続き拒否する。
 LS・PS は名前やコメントの内容としての字句の読みを保ち、
 階層の行区切りを増やさない。
-node の後の空の description block も、 gap の要素にはせず拒否する。
+node の後の空の description block も、gap の要素にはせず拒否する。
 [fixture: treeview/nested-child-directive-unindented]
 [fixture: treeview/nested-child-directive-line]
 [fixture: treeview/box-tail-decoration-directive-inline]
@@ -782,7 +781,7 @@ icon の解決は描画の処理であり、参照の妥当性の gate ではな
 
 [tests の要約](../../../tests/docs/db-summaries.ja.md#treeview)が Db
 の正規化を定める。
-共通値の公開、名前と注釈の変換、directory の末尾の解釈、 sanitize、
+共通値の公開、名前と注釈の変換、directory の末尾の解釈、sanitize、
 導出される森を扱う。
 設定依存の sanitize は外から与える Db の条件であり、
 書かれた葉の値や treeview 固有の受理条件を変えない。

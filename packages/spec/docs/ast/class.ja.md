@@ -18,7 +18,7 @@ mermaid.js がそれを読むところだけです（[ノード](../ast.ja.md#�
 戻り値の型を終える分類子の記号の前の空白、
 閉じていないバッククォートの名前の終わりの空白、`call` の後の、
 コールバックの名前の終わりとその引数の両端の空白です（[ClassName](#classname)、
-[ClassMethod](#classmethod)、 [ClassAnnotation](#classannotation)、
+[ClassMethod](#classmethod)、[ClassAnnotation](#classannotation)、
 [ClassLiteral](#classliteral) を参照）。
 ほかのところでは、値の両端の空白は値の外です。
 
@@ -79,7 +79,7 @@ ClassAccDescrStatement、ClassAccDescrBlockStatement のどれかです。
 `cssClass` と `annotation` は、多くとも一方だけが設定されます。
 空白だけのメンバーの行は、
 どんな空白を持っていても mermaid.js が何も加えないので、ノードを作りません。
-そのため、`class A { }` は空の列を持ち、 `class A` は null を持ちます。
+そのため、`class A { }` は空の列を持ち、`class A` は null を持ちます。
 [fixture: class/gram-class-css-class-blank-body] [fixture:
 class/spec-class-diagram-4eb71456]
 
@@ -215,7 +215,7 @@ class/db-callback-names-comma]
 | `tooltip` | StringLiteral または null | 2 つ目の文字列。なければ null。                                      |
 | `target`  | 文字列または null         | 書いたとおりの `_self`、`_blank`、`_parent`、`_top`。なければ null。 |
 
-子の欄: `class`、`url`、 `tooltip`。 [fixture: class/db-click-href]
+子の欄: `class`、`url`、`tooltip`。 [fixture: class/db-click-href]
 [fixture: class/gram-link-tooltip-empty]
 
 ### ClassStyleStatement
@@ -246,7 +246,7 @@ class/db-callback-names-comma]
 | `cssClasses` | Identifier の列   | `,` で区切った CSS クラス。ソースの順。 |
 | `styles`     | ClassLiteral の列 | ClassStyleStatement と同じスタイル。    |
 
-子の欄: `cssClasses`、 `styles`。
+子の欄: `cssClasses`、`styles`。
 [fixture: class/spec-class-diagram-styles-2057adab]
 
 ### ClassDirectionStatement
@@ -418,9 +418,8 @@ class/db-class-annotation-spaces]
 本体の中かメンバーの文のメンバーの行としては、どんなテキストでもよく、
 mermaid.js はそれを空白を含めて書かれたとおりに読むので、
 `annotation-name` の単位の全体の ClassLiteral です。
-本体の `<< y z >>` の名前は、空白、`y z`、空白で、
-`<<  >>` の名前は空白 2 個で、 `A : <<  >>` でも同じです。
-[fixture: class/tokens-annotation-blank] [fixture:
+本体の `<< y z >>` の名前は、空白、`y z`、空白で、`<<  >>` の名前は空白 2 個で、
+`A : <<  >>` でも同じです。 [fixture: class/tokens-annotation-blank] [fixture:
 class/tokens-annotation-blank-label]
 [fixture: class/spec-class-diagram-280c04be] [fixture:
 class/db-member-annotation-spaces]
@@ -460,10 +459,10 @@ class/gram-name-space-inside-word] [fixture: class/lex-directive-in-name]
 ジェネリクスの型、メンバーの行の注釈、空白で始まるメンバーの名前、
 分類子の記号の前の戻り値の型、
 `call` の後のコールバックの名前とその引数です（[ClassName](#classname)、
-[ClassAnnotation](#classannotation)、 [ClassMethod](#classmethod) を参照）。
+[ClassAnnotation](#classannotation)、[ClassMethod](#classmethod) を参照）。
 コールバックの名前と引数は、mermaid.js が書かれたとおりに渡すので、
-`click A call fn ()` の名前は `fn` と空白で、
-`click A call f( x, y )` の引数は、空白、`x, y`、空白です。
+`click A call fn ()` の名前は `fn` と空白で、`click A call f( x, y )` の引数は、
+空白、`x, y`、空白です。
 mermaid.js は、その後、引数を引用符の外の `,` ごとに分けて、
 それぞれの両端を削ります。 [fixture: class/tokens-callback-name-trailing-space]
 [fixture: class/tokens-callback-arguments-spaces-at-ends]
@@ -481,7 +480,7 @@ class/tokens-generic-blank] [fixture: class/tokens-annotation-blank]
 その単位の書かれたテキストを順につないだものです。
 mermaid.js はスタイルの単位の間の空白を落とすので、
 `style A fill : #f00` のスタイルは `fill: #f00` です。
-一方、 flowchart と state 図はその空白を残します。
+一方、flowchart と state 図はその空白を残します。
 [fixture: class/db-style-spaces] [fixture: class/tokens-style-words-joined]
 [fixture: class/tokens-style-directive-inside-label]
 [fixture: class/tokens-style-label-keeps-space-before-next-colon]

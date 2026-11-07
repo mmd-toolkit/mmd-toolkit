@@ -24,7 +24,7 @@ Db は、ノードごとに、セクションかどうかと、どのセクシ�
 以下の規則では、次の言葉を使います。
 
 - **ノード行**は、セクションか項目を持つ行です。
-  id、省略できる形、省略できるデータブロックでできていて、 `Todo`、
+  id、省略できる形、省略できるデータブロックでできていて、`Todo`、
   `a[Write docs]`、`a[x]@{ticket: T-1}` などです。
 - **飾り行**は、アイコンの行（`::icon(fa fa-star)`）か、
   クラスの行（`:::urgent`）です。
@@ -34,7 +34,7 @@ Db は、ノードごとに、セクションかどうかと、どのセクシ�
   ディレクティブの隣の空白は、字下げかテキストの一部になります。
 - **コメント行**は、`%% note` のように、`%%` の後にテキストを持つ行です。
   mermaid.js は、テキストを読む前に、その改行ごと取り除きます。
-  **図のコメント**は、図の字句解析器が自分で読むコメントで、 `%%` だけの行、
+  **図のコメント**は、図の字句解析器が自分で読むコメントで、`%%` だけの行、
   `%%{ }%%` の行、ヘッダー、形、アイコン、
   データブロックの後の `%%`（`S[x] %% note`）です。
   既知の差異
@@ -54,7 +54,7 @@ mermaid.js が受理する形も拒否します。
 形の中の空の文字列と空の markdown 文字列（`S[""]`）です（既知の差異
 [`tokenless-empty-forms`](../../spec/docs/known-divergences/tokenless-empty-forms.ja.md)）。
 印字はこれらを消しません。
-拒否されたボードは書かれたまま残し、 mermaid.js の Db は判断の根拠になりません。
+拒否されたボードは書かれたまま残し、mermaid.js の Db は判断の根拠になりません。
 空白だけのアイコン、クラス、ラベル、形の外に書かれた `""` のノード、
 空のデータブロック（`A@{}`）は受理され、整形されます。
 パーサーは、YAML として正しくないデータブロックも、
@@ -76,7 +76,7 @@ fixture の置き方と確かめ方は、
 
 空白の設定の1段は `tabWidth: 0` でも1文字以上にします。
 `useTabs` はタブのままです。
-整形で Db を変えてはならず、 1文字が字下げの読みを保つ最小の幅だからです。
+整形で Db を変えてはならず、1文字が字下げの読みを保つ最小の幅だからです。
 
 [fixture: kanban/indentation/tab-width-0]
 [fixture: kanban/indentation/tab-width-0-use-tabs]
@@ -92,7 +92,7 @@ Db は、ノードごとに、セクションかどうかと、どのセクシ�
 セクションはヘッダーより 1 段深く、項目は、書かれた深さに関係なく、
 2 段深く置きます。
 `kanban`、`      S`、`          A`、`             B`、`      T` は、
-`S` と `T` を空白 2 つで、 `A` と `B` を空白 4 つで印字します。
+`S` と `T` を空白 2 つで、`A` と `B` を空白 4 つで印字します。
 [fixture: indentation/sections-and-items]
 [fixture: indentation/written-indentation-dropped]
 [fixture: indentation/first-section-at-the-first-column]
@@ -197,11 +197,11 @@ kanban
 を参照）。
 `;` を持つヘッダーの行も例外ではありません。
 単語 `kanban` には行の規則が読むものがないので、
-ノードは `;` と一緒に動きます（`kanban S;T` は、
-`kanban` と `  S;T` になります。詳しくは、
-[行の規則と保つ行](#行の規則と保つ行)を参照）。 [fixture: header/inline-count]
-[fixture: header/header-column] [fixture: header/header-touching-shape]
-[fixture: header/header-touching-dash] [fixture: header/header-percent-in-text]
+ノードは `;` と一緒に動きます（`kanban S;T` は、`kanban` と `  S;T` になります。
+詳しくは、[行の規則と保つ行](#行の規則と保つ行)を参照）。
+[fixture: header/inline-count] [fixture: header/header-column]
+[fixture: header/header-touching-shape] [fixture: header/header-touching-dash]
+[fixture: header/header-percent-in-text]
 [fixture: header/header-line-with-semicolon-moved]
 [fixture: header/header-directive-with-semicolon]
 [fixture: header/header-line-with-semicolon-then-sections-and-items]
@@ -296,7 +296,7 @@ id のない形（`[S]`）も同じです。 [fixture: shapes/mismatched]
 [fixture: shapes/lex-shape-dash-bare] [fixture: shapes/lex-shape-dash-string]
 
 裸の id と形の間の空白は残します。
-Db は裸の id の末尾の空白を保つので、 `S [x]` の id は空白を含む `S ` です。
+Db は裸の id の末尾の空白を保つので、`S [x]` の id は空白を含む `S ` です。
 [fixture: shapes/id-before-shape]
 
 入力
@@ -401,8 +401,7 @@ kanban
 残りが id の一部になります（`A ::icon(x)` はラベル `x` のノード `A ::icon`
 です）。
 クラスは id の一部になります（`A :::c` の id は `A :::c` です）。
-形の後ろでは、
-どちらも拒否されます（`S[x] ::icon(star)`。
+形の後ろでは、どちらも拒否されます（`S[x] ::icon(star)`。
 [整形しない場合](../README.ja.md#整形しない場合)を参照）。
 クラスとセクションのアイコンは、テストが比べる Db には現れませんが、
 書き手が書いたテキストなので、同じように残します。
@@ -468,7 +467,7 @@ mermaid.js は拒否します（既知の差異
 [fixture: data-blocks/db-metadata-quoted-brace]
 [fixture: data-blocks/data-line-rule-gap]
 
-1 行のブロックは、 [データブロック](./flowchart.ja.md#データブロック)と同じく、
+1 行のブロックは、[データブロック](./flowchart.ja.md#データブロック)と同じく、
 両端の内側に空白を 1 つずつ置いて印字します。
 `A@{ticket: X}` は `A@{ ticket: X }` になります。
 書かれたままにする場合は、そこに挙げたとおりです。
@@ -524,8 +523,8 @@ CRLF と CR は `endOfLine` に従い、値の Unicode separator は文字とし
 ブロックは形の閉じに接し（`A[x]@{ticket: X}`）、そこに空白があると拒否されます。
 裸の id の後では、ブロックの前の空白は id の一部なので、
 `A  @{ticket: X}` の id は `A  ` です。
-続くブロックは接し（`A[x]@{ticket: X,}@{assigned: Ada}`。 mermaid.js
-は中身をつなぎます）、間に置けるのは、
+続くブロックは接し（`A[x]@{ticket: X,}@{assigned: Ada}`。
+mermaid.js は中身をつなぎます）、間に置けるのは、
 ディレクティブだけで（`A@{ticket: X,}%%{init: {}}%%@{assigned: Ada}`）、
 2 つのブロックの間の空白は拒否されます。
 印字は、これらを書かれたまま残します。
@@ -571,7 +570,7 @@ kanban
 ボードの始まりと終わりの空行は、ほかの図種と同じに落とします。
 `kanban`、空行 2 つ、` S` は、`kanban` と `  S` になります。
 ほかに何もないヘッダーの行の `kanban` の後の空白は、空白、タブ、U+00A0、U+3000、
-U+FEFF、改ページ、垂直タブ、U+2028、 U+2029 のどれでも落とします。
+U+FEFF、改ページ、垂直タブ、U+2028、U+2029 のどれでも落とします。
 [fixture: blank-lines/collapsed] [fixture: blank-lines/blank-body-end]
 [fixture: blank-lines/gram-grid-lf-header-line]
 [fixture: blank-lines/decoration-blank-runs-collapsed]
@@ -704,7 +703,7 @@ kanban
 書き手が決めるからです（[mindmap](./mindmap.ja.md#コメント) も同じ選択です）。
 `S[x]   %% c` は `S[x] %% c` になり、`A[y]%% d` は変わりません。
 裸の id の後、ラベルの中、クラスの中の `%%` はテキストの文字で（`S %% x`、
-`A[%% y]`、`:::c %% z`）、 `#` や 1 つの `%` で始まる行はノードのテキストです。
+`A[%% y]`、`:::c %% z`）、`#` や 1 つの `%` で始まる行はノードのテキストです。
 印字はこれらに触りません。
 コメント行は、改行までのテキストと一緒に取り除かれ、
 そこにある U+2028 や U+2029 でも終わりません。
@@ -750,11 +749,11 @@ mermaid.js はディレクティブをインデントとテキストを読む前
 できるだけ大きさを保ちます。
 収まらない分は、Db が読むものを持ちません。
 `kanban`、` S`、`      %%{init: {}}%%  A` では、ノード `A` は項目で、
-字下げは 8 文字（ディレクティブの前に 6、後に 2）ですが、 4 文字になり、
+字下げは 8 文字（ディレクティブの前に 6、後に 2）ですが、4 文字になり、
 ディレクティブの前に 2、後ろに 2 です。
 `    %%{a}%%  %%{b}%%   A` では隙間が 2 と 3 で、`A` は 4 を得るので、
 最後の隙間を 2 に縮め、最初のディレクティブの前には何も置きません。
-行の 2 つの単位の間（`A  %%{init: {}}%%  B[x]`）、データブロックの間、 id、
+行の 2 つの単位の間（`A  %%{init: {}}%%  B[x]`）、データブロックの間、id、
 アイコン、クラス、markdown ラベルの中のディレクティブ、
 閉じていないディレクティブと、それがつなぐ行は、書かれたまま残します。
 [fixture: directives/leading-directive-kept]
@@ -823,7 +822,7 @@ kanban
 
 ### 行の規則と保つ行
 
-mermaid.js は、小文字の単語 `style`、続いて `:`、 `:` との間に空白のない `#`、
+mermaid.js は、小文字の単語 `style`、続いて `:`、`:` との間に空白のない `#`、
 続いて `;` を持つ行の、最後の `;` を無視します。
 次の処理が `classDef` について同じことをします（仕様の
 [`style` 行と `classDef` 行](../../spec/docs/common.ja.md#style-行と-classdef-行)）。

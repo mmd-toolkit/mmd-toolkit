@@ -80,7 +80,7 @@ quadrant では 3 つです。
 閉じた空の説明ブロック、空の文字列 `""`、空の markdown 文字列です。
 2 つの文字列は、どこにあってもこの差異に入ります。
 [空の文字列](../diagrams/quadrant.ja.md#空の文字列) を参照してください。
-block でも同じ 3 つで、 2 つの文字列はどこにあってもこの差異に入ります。
+block でも同じ 3 つで、2 つの文字列はどこにあってもこの差異に入ります。
 [fixture: block/div-empty-string-line] [fixture: block/div-empty-markdown-line]
 [fixture: block/div-empty-block-in-edge]
 [fixture: quadrant/div-empty-string-alone]
@@ -238,7 +238,7 @@ class/div-empty-string-statement-start] [fixture: class/gram-cardinality-empty]
 コメント領域とこれらの形を除いた入力が（コメント領域は
 [ソースの読み方](../common.ja.md#ソースの読み方) を参照）、
 形の単位を除いた入力の単位と同じ単位として、同じ順に読まれるところでは、
-この仕様がその入力に与える Db は、 mermaid.js が入力に与える Db と同じです。
+この仕様がその入力に与える Db は、mermaid.js が入力に与える Db と同じです。
 `subgraph a ""`、行 `A`、行 `end` は、空の文字列を除いた同じ行として読まれ、
 最初の行の後にコメントの行があっても（それも除きます）、
 空の行があっても（それは残します）同じです。
@@ -304,10 +304,10 @@ mermaid.js は、これらの入力から空の文字列を除いたものに、
 `style A "" ;fill:red` は `A` の後に空白が 2 つ並び、
 mermaid.js はそれを拒否します。
 行単位の規則が最後の `;` を無視する `style A "" fill:#f00;` では、
-2 つの空白が合わさり、 mermaid.js は入力にスタイル ` fill:#f00` を、
+2 つの空白が合わさり、mermaid.js は入力にスタイル ` fill:#f00` を、
 空の文字列を除いた入力に `fill:#f00` を与えます。
 U+2028 か U+2029 が続く `subgraph a ""` では、
-空の文字列の前の空白とその後の U+2028 か U+2029 が、 1 つの空白の並びになり、
+空の文字列の前の空白とその後の U+2028 か U+2029 が、1 つの空白の並びになり、
 `subgraph ""%%{init: {}}%% a` の空の文字列の前の空白と、
 ディレクティブの後の空白も、同じく 1 つの並びになります。
 class では、ブロックを除いた `direction accDescr {} LR` は方向の行ですが、
@@ -321,7 +321,7 @@ mermaid.js は入力を別に読みます（下を参照）。
 [fixture: class/div-empty-description-block-between-direction-and-value]
 
 class の 1 つの形は、別に読まれます。
-mermaid.js は class の方向の行を、 `direction`、空白、
+mermaid.js は class の方向の行を、`direction`、空白、
 値にまたがる 1 つの規則で読むので、
 その間の空の説明ブロックはその規則が当たるのを妨げ、
 mermaid.js は `direction` と値を、メンバーの文の 2 つの名前の部分として読み、
@@ -338,14 +338,14 @@ mermaid.js は `direction` と値を、メンバーの文の 2 つの名前の�
 class と state では、ブロックは、
 空白をまたぐ mermaid.js のほかの規則が当たるのも妨げます。
 mermaid.js は `accTitle accDescr {}: t` を、
-メンバーか説明を持つ名前 `accTitle` として読みますが、 `accTitle : t` は題です。
+メンバーか説明を持つ名前 `accTitle` として読みますが、`accTitle : t` は題です。
 この仕様は、ブロックがその文の中にあるので、この入力を拒否します。
 [fixture: class/div-empty-description-block-between-acc-title-and-colon]
 [fixture: state/div-empty-description-block-between-acc-title-and-colon]
 
 これらの形に見えるだけのテキストは、そのどれでもなく、どちらも同じに読みます。
-`A""-->B` の引用符は頂点 `A""` の文字で、
-`accTitle: ""` はタイトル `""` を持ち、 `A[" "]` は空白 1 つの文字列を持ち、
+`A""-->B` の引用符は頂点 `A""` の文字で、`accTitle: ""` はタイトル `""` を持ち、
+`A[" "]` は空白 1 つの文字列を持ち、
 `A["call ()"]` はラベル `call ()` を持ちます。
 [fixture: flowchart/lex-empty-quotes-in-id] [fixture:
 flowchart/lex-acc-title-quotes] [fixture: flowchart/gram-label-space-string]
@@ -371,7 +371,7 @@ mermaid.js が受理し、この仕様が拒否します。
 
 書き手が空のものを表すつもりでこれらの形を書くと、
 mermaid.js もそれを拒否します。
-`A[""]`、`A("")`、`A-->|""|B`、`A -- "" --> B`、 `click A href ""`、
+`A[""]`、`A("")`、`A-->|""|B`、`A -- "" --> B`、`click A href ""`、
 `subgraph ""`、`click A call ()` は、どちらも拒否します。
 [fixture: flowchart/gram-label-empty-string] [fixture:
 flowchart/gram-shape-round-empty-string] [fixture:
@@ -390,12 +390,12 @@ mermaid.js は形をないかのように読むので（[差異](#差異) を参
 たいていはそのテキストを、形のあるテキストと同じに読みます。
 ただし、形を除くと一緒に読まれる 2 つの部分を、形が隔てていたところは別で、
 mermaid.js はそのテキストを違って読むか、拒否します。
-`style A "" ""fill:red` のスタイルは空白と `fill:red` ですが、 `style A`、
+`style A "" ""fill:red` のスタイルは空白と `fill:red` ですが、`style A`、
 空白 2 つ、`fill:red` のスタイルは `fill:red` です。
 `A:""::c` は頂点 `A:::c` ですが、`A:::c` はクラス `c` を持つ頂点 A です。
 class では、`direction accDescr {} LR` は方向を `TB` のままにしますが、
 `direction`、空白 2 つ、`LR` は `LR` を決めます。
-`flowchart""TD` は受理されますが、 `flowchartTD` はヘッダーがなく、
+`flowchart""TD` は受理されますが、`flowchartTD` はヘッダーがなく、
 どちらも拒否します。 [fixture: flowchart/db-style-empty-strings-one-space]
 [fixture: flowchart/db-style-two-spaces-before-style]
 [fixture: flowchart/lex-empty-string-splits-triple-colon]
@@ -496,7 +496,7 @@ mermaid.js がテキストを読まないことは、それだけでは拒否の
 場所は次のとおりです。
 文が始まるところの空の説明ブロックは、sequence の箱の中でも、
 説明ブロックの文で、同じ行にほかの文が続いてもかまいません（例 5）。
-文の最後の単位の後、区切りの前の空の説明ブロックも同じで、 `A accDescr {}`、
+文の最後の単位の後、区切りの前の空の説明ブロックも同じで、`A accDescr {}`、
 class の `note for A "x" accDescr {}`、
 sequence の `autonumber accDescr {}` がそうです。
 ヘッダーの後、その区切りの前の空の説明ブロックも同じで、
@@ -532,10 +532,10 @@ state/div-empty-description-block-before-label]
 木は、flowchart の文の始まりと文の最後の単位の後で mermaid.js が丸ごと捨てる、
 空の文字列、空の markdown 文字列、空の call の文を持ちません。
 class の同じ位置の空の文字列と空の call の文も持ちません。
-flowchart の `""`、`A ""`、`A call ()`、 class の `"" A --> B`、`A ""`、
+flowchart の `""`、`A ""`、`A call ()`、class の `"" A --> B`、`A ""`、
 `call () A`、`A call ()` がこれに当たります。
 class の本体のメンバーが始まるところの空の文字列のメンバーも持ちません。
-`class A {`、改行、`""`、改行、`}` は、 mermaid.js でもメンバーを持ちません。
+`class A {`、改行、`""`、改行、`}` は、mermaid.js でもメンバーを持ちません。
 空の説明ブロックと同じく、その位置には文やメンバーを置けますが、
 これらの形はそれ自体の意味を持って書かれているので、入力は拒否されます。
 [fixture: flowchart/lex-empty-string-line] [fixture: flowchart/lex-empty-string]
@@ -654,12 +654,12 @@ class では:
   ClassCallbackStatement、ClassCssClassStatement、ClassClassDefStatement、
   ClassStyleStatement、
   ClassAnnotationStatement の 2 つの単位の間: `note for accDescr {}A "x"`、
-  `A accDescr {}: x`、 `click accDescr {}A href "u"`、
-  `click A accDescr {} href "u" "t"`、
-  `click A href "u" "t" accDescr {} _self`、`callback A accDescr {} "f"`、
-  `click A call f() accDescr {} "t"`、`cssClass accDescr {}"A" c`、
-  `cssClass "A" accDescr {} c`、`classDef c accDescr {} fill:red`、
-  `style C accDescr {} fill:red`、`<<interface>> accDescr {} Class01`。
+  `A accDescr {}: x`、`click accDescr {}A href "u"`、
+  `click A accDescr {} href "u" "t"`、`click A href "u" "t" accDescr {} _self`、
+  `callback A accDescr {} "f"`、`click A call f() accDescr {} "t"`、
+  `cssClass accDescr {}"A" c`、`cssClass "A" accDescr {} c`、
+  `classDef c accDescr {} fill:red`、`style C accDescr {} fill:red`、
+  `<<interface>> accDescr {} Class01`。
   持つには、その隙間に欄が要る（理由 a）。
   [fixture: class/div-empty-description-block-before-note-class] [fixture:
   class/div-empty-description-block-before-member-colon] [fixture:
@@ -680,22 +680,21 @@ class では:
 sequence では:
 
 - SequenceMessageStatement の 2 つの単位の間: `A->>accDescr {}B: x`、
-  `A() accDescr {}->>()B: x`、`A->> accDescr {}+B: x`、
-  `A->>+ accDescr {}B: x`。
+  `A() accDescr {}->>()B: x`、`A->> accDescr {}+B: x`、`A->>+ accDescr {}B: x`。
   持つには、その隙間に欄が要る（理由 a）。
   [fixture: sequence/gram-empty-description-block-after-arrow] [fixture:
   sequence/div-empty-description-block-after-central-connection] [fixture:
   sequence/div-empty-description-block-before-activation] [fixture:
   sequence/div-empty-description-block-after-activation]
 - SequenceNoteStatement の 2 つの単位の間: `note accDescr {} left of A: x`、
-  `note left of accDescr {} A: x`、 `note over A,accDescr {}B: x`。
+  `note left of accDescr {} A: x`、`note over A,accDescr {}B: x`。
   持つには、その隙間に欄が要る（理由 a）。
   [fixture: sequence/div-empty-description-block-before-note-placement]
   [fixture: sequence/gram-empty-description-block-after-placement] [fixture:
   sequence/div-empty-description-block-between-note-ids]
 - SequenceLinkStatement、SequenceLinksStatement、SequencePropertiesStatement、
   SequenceDetailsStatement の 2 つの単位の間: `link accDescr {}A: x@https://u`、
-  `links accDescr {} A: {"a": "https://u"}`、 `properties accDescr {} A: {}`、
+  `links accDescr {} A: {"a": "https://u"}`、`properties accDescr {} A: {}`、
   `details accDescr {} A: x`。
   持つには、その隙間に欄が要る（理由 a）。
   [fixture: sequence/div-empty-description-block-before-link-id] [fixture:
@@ -732,12 +731,12 @@ state では、どれも文の 2 つの単位の間です:
   `:::` の前の欄。 [fixture: state/div-empty-description-block-before-class]
   [fixture:
   state/div-empty-description-block-before-target-class]
-- `A:::accDescr {}c`: StateReference の、 `:::` とクラスの間の欄。
+- `A:::accDescr {}c`: StateReference の、`:::` とクラスの間の欄。
   [fixture: state/div-empty-description-block-after-class-separator]
-- `click accDescr {} A "u" "t"`: StateClickStatement の、 id の前の欄。
+- `click accDescr {} A "u" "t"`: StateClickStatement の、id の前の欄。
   [fixture: state/div-empty-description-block-in-click-before-id]
 - `click A accDescr {} "u" "t"` と `click A href accDescr {} "u"`:
-  StateClickStatement の、 URL の前の欄。
+  StateClickStatement の、URL の前の欄。
   [fixture: state/div-empty-description-block-in-click-before-url] [fixture:
   state/div-empty-description-block-in-click-after-href]
 - `click A "u" accDescr {} "t"`: StateClickStatement の、ツールチップの前の欄。
@@ -745,11 +744,10 @@ state では、どれも文の 2 つの単位の間です:
 
 er では、どれも文の 2 つの単位の間で、持つにはその隙間に欄が要ります（理由 a）。
 ErRelationshipStatement の `A accDescr {} ||--o{ B : x` と
-`A ||--o{ accDescr {} B : x`、 ErEntityStatement の `A accDescr {} :::c`、
-`A accDescr {} [P]`、 `A[accDescr {} P]`、
+`A ||--o{ accDescr {} B : x`、ErEntityStatement の `A accDescr {} :::c`、
+`A accDescr {} [P]`、`A[accDescr {} P]`、
 ErSubgraphStatement の `subgraph accDescr {} S` と
-`subgraph S [accDescr {} T]`、
-ErClassStatement の `class A accDescr {} a` です。
+`subgraph S [accDescr {} T]`、ErClassStatement の `class A accDescr {} a` です。
 ErAttribute の単位の間の空のバッククォート、
 `int `` a` や `int a `` PK` も同じです（理由 a）。
 2 つの属性の間、最初の属性の前、最後の属性の後では、
@@ -791,7 +789,7 @@ requirement では、文の 2 つの単位の間の空の説明ブロックは�
 RequirementRequirementStatement の `requirement accDescr {} r {`、
 `requirement r:::accDescr {} c {`、`requirement "r" accDescr {} {`、
 フィールドの `id accDescr {}: 1`、`id: accDescr {} 1`、
-`risk: accDescr {} high`、 RequirementElementField の `type: accDescr {} t`、
+`risk: accDescr {} high`、RequirementElementField の `type: accDescr {} t`、
 RequirementRelationshipStatement の `a - accDescr {} satisfies -> b`、
 `a - satisfies accDescr {} -> b`、`a - satisfies -> accDescr {} b`、
 `a <- accDescr {} satisfies - b`、`"a" accDescr {} - satisfies -> b`、
@@ -1106,7 +1104,7 @@ style のコンマの前などです。
   [文書](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/config/accessibility.md#L71-L97)
   共通の説明ブロックの構文を説明します。
   [PR #8498](https://github.com/mermaid-js/mermaid/pull/8498) は 2026-10-22
-  時点で open であり、 as の後の state の id を必須にする提案です。
+  時点で open であり、as の後の state の id を必須にする提案です。
   消される空の説明ブロックではなく、id の欠落を扱うものです。
 
 - er:

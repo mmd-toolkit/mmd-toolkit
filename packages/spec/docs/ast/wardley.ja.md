@@ -16,7 +16,7 @@ bare name は常に WardleyIdentifier。
 raw は quote とすべての source の文字、
 value は共通 trivia を除いた未変換の中身を持ち、closed は true。
 flow label の比較変換は異なるが、原文の葉は同じ。
-NumericLiteral.raw は書いた unsigned の数、 value は百分率化前の double を持つ。
+NumericLiteral.raw は書いた unsigned の数、value は百分率化前の double を持つ。
 [fixture: wardley/db-id-underscore] [fixture: wardley/db-unquoted-names]
 [fixture: wardley/lex-string-conversion]
 [fixture: wardley/directive-every-field]
@@ -50,18 +50,18 @@ native の無視される形は whole WardleyIgnoredText node。
 子の欄: `textBeforeHeader`、`body`。
 範囲: 見出しの前の最初の残存形から、無ければ見出しから、
 最後に書いた見出し/本文の形まで。
-別の header node や alias の欄は作らず、 Root.diagramType は wardley。
+別の header node や alias の欄は作らず、Root.diagramType は wardley。
 [fixture: wardley/header-only] [fixture: wardley/header-glued-statement]
 [fixture: wardley/detect-real-before-retained-secondscan]
 [fixture: wardley/db-all-fields]
 
 WardleyBodyItem は WardleyAnchorStatement、WardleyComponentStatement、
-WardleyLinkStatement、 WardleyEvolveStatement、WardleyPipelineStatement、
-WardleyNoteStatement、 WardleyAnnotationsStatement、WardleyAnnotationStatement、
+WardleyLinkStatement、WardleyEvolveStatement、WardleyPipelineStatement、
+WardleyNoteStatement、WardleyAnnotationsStatement、WardleyAnnotationStatement、
 WardleyAcceleratorStatement、WardleyDeacceleratorStatement、
 WardleyEvolutionStatement、WardleySizeStatement、下の共通の 4 文、
 または WardleyIgnoredText。
-置換される size/evolution/共通文、後の box、 missing evolve、
+置換される size/evolution/共通文、後の box、missing evolve、
 宣言の重複も全出現を保つ。
 有効値や merge 後の node を合成しない。
 空行/comment だけの行は body item を作らない。 [fixture: wardley/db-all-fields]
@@ -128,7 +128,7 @@ textAfter があればそこまで。 [fixture: wardley/db-all-fields]
 [fixture: wardley/hidden-yaml-component-gaps]
 
 WardleyDecoration は WardleyLabelOffsetDecoration、
-WardleySourceStrategyDecoration、 WardleyInertiaDecoration、
+WardleySourceStrategyDecoration、WardleyInertiaDecoration、
 WardleyParenthesizedInertiaDecoration。
 無記載なら空リストで、文法は label offset、strategy、
 inertia の一方の形をこの順で一つずつ許す。
@@ -283,7 +283,7 @@ textAfter があればそこまで。 [fixture: wardley/spec-wardley-parser-2c2c
 継承する visibility、座標 pair、synthetic ID は加えない。
 labelOffset は無記載のときだけ null で、実在する装飾は前の gap を所有する。
 装飾がなければ残る形は textAfter。
-子は固有の EOL を保ち、 source strategy や inertia の装飾は持てない。
+子は固有の EOL を保ち、source strategy や inertia の装飾は持てない。
 [fixture: wardley/hidden-all-unit-gaps] [fixture: wardley/hidden-pipeline-eol]
 [fixture: wardley/lex-hidden-pipeline-child-spare]
 [fixture: wardley/db-pipeline-collision]
@@ -411,7 +411,7 @@ coordinates は decimal の visibility/evolution の組のまま。
 
 子の欄: `stages`。
 範囲: evolution から最後の stage の suffix まで。
-stage separator の -> は句読点であり、 link の arrow にはしない。
+stage separator の -> は句読点であり、link の arrow にはしない。
 [fixture: wardley/db-stages-boundaries] [fixture: wardley/db-singletons-last]
 [fixture: wardley/lex-hidden-evolution-members]
 

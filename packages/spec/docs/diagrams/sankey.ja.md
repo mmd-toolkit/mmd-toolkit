@@ -31,7 +31,7 @@ mermaid.js の正となるソース：
 大文字小文字を区別せず、
 語の文字が続かない形で読みます（[記録の文脈](#記録の文脈) を参照）。
 2 つのヘッダーは同じ図種で、同じ Db を与えます。
-`sankey-beta` と `sankey-BETA` はヘッダーで、 `sankeyx` は検出されて拒否され、
+`sankey-beta` と `sankey-BETA` はヘッダーで、`sankeyx` は検出されて拒否され、
 `sankey-x`、`sankey-beta-x`、`sankeyé`、`sankey-betaé` は、
 その行にテキストが続くヘッダーで、拒否されます。
 ASCII の外の文字は、語の文字でも欄の文字でもないからです。 [fixture:
@@ -96,7 +96,7 @@ sankey/header-after-comment-line] [fixture: sankey/header-after-directive-line]
 テキストは空白でない最後の文字で終わるので、
 字句解析器が最後の文字の後に読む `\n`
 （[テキストの終わり](../common.ja.md#テキストの終わり) を参照）も読まれません。
-改行のない最後の記録、空行か空白文字の行が後に続く最後の記録、 U+3000、U+00A0、
+改行のない最後の記録、空行か空白文字の行が後に続く最後の記録、U+3000、U+00A0、
 U+2028、U+2029、U+FEFF、タブで終わる最後の記録は受理されます。
 テキストの終わりの欄はその空白なしで読まれるので、
 テキストの終わりの `a,b,` と空白文字 1 つは値が空の記録で、拒否されます。
@@ -207,7 +207,7 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
   sankey/db-directive-sankey-settings]
 - `san%%{init: {}}%%key` と `sankey-%%{init: {}}%%beta` では、
   ディレクティブはヘッダーのキーワードの中にあります。
-  入力は拒否され、 mermaid.js は 2 つの部分を 1 つとして読んで受理します。
+  入力は拒否され、mermaid.js は 2 つの部分を 1 つとして読んで受理します。
   [fixture: sankey/div-directive-in-header-keyword]
   [fixture: sankey/div-directive-in-beta-header-keyword]
   [既知の差異](#既知の差異) を参照してください。
@@ -242,12 +242,12 @@ sankey/db-quoted-directive-line]
 `style` の規則か `classDef` の規則に合う行（詳しくは
 [`style` 行と `classDef` 行](../common.ja.md#style-行と-classdef-行)
 を参照）では、最後の `;` が無視されて、欄でも文字列でも読み通されます。
-`style:#x;y,b,1` は source `style:#xy` を持ち、 target でも、
+`style:#x;y,b,1` は source `style:#xy` を持ち、target でも、
 `style` の代わりに `classDef` でも、文字列 `"style:#x;y"` でも、
-文字列の 2 行目でも同じで、 `a;b,style:#x;y,1` は最初の `;` を保ちます。
+文字列の 2 行目でも同じで、`a;b,style:#x;y,1` は最初の `;` を保ちます。
 規則は行ごとに読まれ、文字列の中でも次の行の `;` には届きません。
 規則には、書かれたとおりの `style` か `classDef` と、
-間に空白のない `:` の後の `#` が要るので、 `style: #x;y`、`Style:#x;y`、
+間に空白のない `:` の後の `#` が要るので、`style: #x;y`、`Style:#x;y`、
 `classdef:#x;y` は `;` を保ち、それが `#x;` をエンティティにして入力を拒否させ、
 `style:x;y` は `;` をテキストとして保ちます。
 2 つあると最後のものだけが無視され、その前の `#x;` はエンティティです。
@@ -318,7 +318,7 @@ sankey/db-quoted-space-before-value] [fixture: sankey/spec-sankey-39b0ab0f]
 
 文字列の文脈には `"` の後で入ります（記録の文脈の規則 5）。
 この文脈は 1 つの `string` の単位を読みます。
-1 つ以上の文字で、どの文字も U+0020 から U+007E の `"` 以外の文字、 `,`、改行、
+1 つ以上の文字で、どの文字も U+0020 から U+007E の `"` 以外の文字、`,`、改行、
 `""` のどれかで、その後の `"` が続かない `"` が文脈を出ます。
 文字列のテキストは引用符の間にあるもので、`""` は書かれたとおりです。
 引用符の間に何もない `""` は `string` の単位を読まず、欄ではないので、
@@ -378,7 +378,7 @@ field   = field-text | string
 `newline` の単位は 1 つ以上の改行を表すので、記録の間、ヘッダーの後、
 終わりの空行は何も変えません。
 ヘッダーの後のどの行も記録です。
-タイトルの行、アクセシビリティの文、記録の間の空白だけの行、 `%%` だけの行は、
+タイトルの行、アクセシビリティの文、記録の間の空白だけの行、`%%` だけの行は、
 コンマのない欄で、入力は拒否されます。 [fixture:
 sankey/db-two-links] [fixture: sankey/db-blank-lines-between] [fixture:
 sankey/gram-title-statement] [fixture: sankey/gram-acc-title-statement]
@@ -463,7 +463,7 @@ mermaid.js の Db は、その文法が受理するどの入力でも例外を�
 - **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.ja.md)。**
   フロントマターに `title: <a` があると、
   欄 `x b="c">d` は mermaid.js では `x b='c'>d` で受理されます。
-  ここではフロントマターでタグを探さないので、 `"` は引用符なしの欄に残り、
+  ここではフロントマターでタグを探さないので、`"` は引用符なしの欄に残り、
   入力は拒否されます。
   フロントマターがなければ、`<a b="c">d` のようにテキストで始まるタグは、
   どちらも同じに読みます。 [fixture:

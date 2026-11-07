@@ -205,7 +205,7 @@ NBSP、BOM、LS/PS などの共通空白は、
 後者は、直後が dot にならない範囲で最長に読む。
 ゼロの代替は一桁で終わる。
 非ゼロの一致は dot の前で短くなり得るが、残る文字は引き続き拒否の原因になる。
-符号、小数点、指数、 NaN と Infinity の綴りは整数ではない。
+符号、小数点、指数、NaN と Infinity の綴りは整数ではない。
 [fixture: packet/gram-single-zero] [fixture: packet/gram-leading-zero]
 [fixture: packet/lex-integer-shorter-before-dot]
 [fixture: packet/gram-negative-zero] [fixture: packet/gram-number-dot]
@@ -243,7 +243,7 @@ Db の変換は別である。 [fixture: packet/db-precision-rounded]
 各共通の形の前には ASCII の字下げを置ける。
 `title-line` は `title` 単独、
 またはその後の一つの ASCII space/tab と空でもよい行テキストである。
-`acc-title-line` は `accTitle`、ゼロ個以上の ASCII space/tab、 colon、
+`acc-title-line` は `accTitle`、ゼロ個以上の ASCII space/tab、colon、
 空でもよい行テキストで、`acc-descr-line` は `accDescr` を使う。
 構成要素の規則は大文字小文字を区別し、見出しの独自の境界は使わない。
 二つの accessibility の行形は colon を必要とする。 [fixture: packet/title-empty]
@@ -270,13 +270,13 @@ quote の閉じは不要で、escape は文字列構文ではない。
 [fixture: packet/lex-common-line-percent]
 [fixture: packet/common-line-no-next-value] [fixture: packet/common-comment-gap]
 
-`acc-descr-block` は `accDescr`、ゼロ個以上の共通空白、 `{`、
+`acc-descr-block` は `accDescr`、ゼロ個以上の共通空白、`{`、
 最初の必須の `}` までの任意のテキストである。
 開始の隙間には LF、空行、LS/BOM、共通 directive を置けるが、
 残存する native comment では橋渡しできない。
 内容には LF/LS/PS を含む。
 brace は入れ子にならず、quote と backslash は閉じを保護しない。
-colon があれば代わりに行テキストを選び、 brace もその内容となる。
+colon があれば代わりに行テキストを選び、brace もその内容となる。
 [fixture: packet/accdescr-block-gap-lf]
 [fixture: packet/lex-block-native-comment-inline-gap]
 [fixture: packet/lex-block-gap-comment-region]
@@ -604,7 +604,7 @@ schema の検証を構文上の拒否として追加しない。
 [fixture: packet/error-rounded-following-wide]
 
 入った各反復では、まず保留 start が end を超えれば拒否する。
-保留 end に一を加えた値が行番号と行幅の積以下なら、 fragment はそのまま収まり、
+保留 end に一を加えた値が行番号と行幅の積以下なら、fragment はそのまま収まり、
 残りはない。
 それ以外では収まる end を行番号と行幅の積から一を引いた値とし、
 残りの start を行番号と行幅の積、end を元の保留 end とする。

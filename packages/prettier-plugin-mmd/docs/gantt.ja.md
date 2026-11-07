@@ -18,7 +18,7 @@ fixture の置き方と確かめ方は、
 
 ### インデント
 
-ヘッダーの後の文は、ヘッダーより 1 段深く置き、 `section` の後の文は、
+ヘッダーの後の文は、ヘッダーより 1 段深く置き、`section` の後の文は、
 次の `section` まで、さらに 1 段深く置きます。
 タスク、click 文、設定など、どの文も同じです。
 `section` 自体は最初の段です。
@@ -233,7 +233,7 @@ gantt
 連続する空行は 1 つにし、本体の先頭と末尾の空行は落とします。
 他の図種と同じ規則です。 [fixture: blank-lines/collapsed]
 [fixture: blank-lines/body-edges-dropped]
-文の間の空行は、 1 つにして残します。
+文の間の空行は、1 つにして残します。
 [fixture: blank-lines/between-statements-kept-as-one]
 コメント行の周りの空行も同じに扱います。
 [fixture: blank-lines/around-comment-lines]
@@ -310,12 +310,12 @@ mermaid.js の文書の task 行の多くがこの形で、空白は項目の前
 
 タグと項目は書かれたまま印字します。
 項目の中の空白は項目の一部で、タグの大文字小文字もそうです。
-`after   a1` はそのまま項目であり、 `Done` はタグではありません。
+`after   a1` はそのまま項目であり、`Done` はタグではありません。
 [fixture: task-data/inner-whitespace-kept] [fixture: task-data/tags]
 [fixture: task-data/after-until-forms] [fixture: keyword-case/tags-case-kept]
 
 空の項目は、mermaid.js が項目の数を読むので残します。
-`,` は残り、空の項目は何も印字しないので、 `a : , 1d` は `a :, 1d` になり、
+`,` は残り、空の項目は何も印字しないので、`a : , 1d` は `a :, 1d` になり、
 `a : 1d,` は `,` を保ちます。 [fixture: task-data/empty-items]
 
 空白だけのデータは空の項目 1 つで、
@@ -401,7 +401,7 @@ Db は値をそのまま持つので、
 末尾に空白 2 つがある `todayMarker off` は別のマーカーです。
 [fixture: settings/value-whitespace-kept]
 `todayMarker` の値は `#` を含み、どの値も `%%` をテキストの文字として含みます。
-`todayMarker` の値は `;` で終わり、 `dateFormat`、`axisFormat`、
+`todayMarker` の値は `;` で終わり、`dateFormat`、`axisFormat`、
 `tickInterval` の値は、
 `#` か `;` で終わります（[1 行に 1 文](#1-行に-1-文)を参照）。
 [fixture: settings/hash-semicolon-percent-in-values]
@@ -461,7 +461,7 @@ gantt
 [fixture: titles-and-sections/value-whitespace-kept]
 [fixture: titles-and-sections/one-space-after-keyword]
 [fixture: titles-and-sections/value-on-next-line]
-値は `:`、`#`、`;`、 `%%` を文字として含みます。
+値は `:`、`#`、`;`、`%%` を文字として含みます。
 [fixture: titles-and-sections/special-characters-in-values]
 キーワードと値の間のディレクティブは、
 その位置に残します（[ディレクティブ](#ディレクティブ)を参照）。
@@ -528,7 +528,7 @@ Db はどの区切りでも同じなので、区切りの種類は作者のも�
 
 項目のない `,` はそのまま残します。 [fixture: lists/empty-items-kept]
 リストの末尾の空白は落とします。 [fixture: lists/trailing-whitespace-dropped]
-空白だけのリストは項目を持たず、 mermaid.js はキーワードの後の空白の後ろに、
+空白だけのリストは項目を持たず、mermaid.js はキーワードの後の空白の後ろに、
 リストのテキストの 1 文字を要求するので、キーワードの後に空白 2 文字を、
 書かれたまま残します。 [fixture: lists/whitespace-only]
 
@@ -644,7 +644,7 @@ mermaid.js はどの大文字小文字でも読み、Db は同じです。
 [fixture: keyword-case/keywords-kept]
 [fixture: keyword-case/click-keywords-kept]
 ヘッダーの `gantt` は小文字だけが検出され、タスクのタグは `active`、`done`、
-`crit`、`milestone`、 `vert` の大文字小文字のとおりに読まれるので、
+`crit`、`milestone`、`vert` の大文字小文字のとおりに読まれるので、
 `Done` はタグではなく、変えません。 [fixture: keyword-case/tags-case-kept]
 
 入力
@@ -701,7 +701,7 @@ ID の間の `,` は両側の ID に接します。
 部分は書かれた順序のままです。 [fixture: click-statements/part-order-kept]
 文の末尾の空白は落とします。
 [fixture: click-statements/trailing-whitespace-dropped]
-文は、 ID が指すタスクに依存しません。
+文は、ID が指すタスクに依存しません。
 [fixture: click-statements/ids-unknown-and-duplicate]
 
 呼び出しの名前と引数は、中の空白と改行も含めて書かれたまま印字します。
@@ -798,7 +798,7 @@ gantt
 テキストの両端に空白は置きません。
 [fixture: accessibility-statements/colon-touches-keyword]
 [fixture: accessibility-statements/text-whitespace-dropped]
-テキストは `:`、`#`、`;`、 `%%` を文字として含みます。
+テキストは `:`、`#`、`;`、`%%` を文字として含みます。
 [fixture: accessibility-statements/special-characters-in-text]
 後の行に書かれたテキストと、キーワードより後の行に書かれたコロンは、
 1 行に合わせます。 [fixture: accessibility-statements/text-on-next-line-joined]
@@ -1115,7 +1115,7 @@ mermaid.js は、その `%%{` を、前の空白が 1 文字か、
 また、テキストを読む前にディレクティブを取り除くので、
 ディレクティブだけの行の空白も `%%{` の前の空白に数えます。
 そのため、その前のディレクティブだけの行は、間に空行があってもなくても、
-1 桁目に置き、 `%%{` 自体の行では、その前のディレクティブと、
+1 桁目に置き、`%%{` 自体の行では、その前のディレクティブと、
 その間の空白も数えて、コメントの前の空白が全体で 1 文字になるようにします。
 間に空白がなければ、行頭に空白 1 つ（`useTabs` ならタブ 1 つ）を置きます。
 また、印が `%` のコメントが直接に読まれると、後ろの改行を取るので、
@@ -1305,7 +1305,7 @@ gantt
 ### フロントマターの YAML
 
 flowchart と同じです。
-`---` の行の間の YAML は Prettier の YAML 整形で整形し、 `---` の行は、
+`---` の行の間の YAML は Prettier の YAML 整形で整形し、`---` の行は、
 末尾の空白も含めて書かれたまま残します。 [fixture: frontmatter-yaml/formatted]
 [fixture: frontmatter-yaml/closing-delimiter-whitespace-kept]
 Prettier が読めない YAML は書かれたまま残します。
@@ -1368,7 +1368,7 @@ U+2028 と U+2029 は、Gantt 図の単位の間の空白であり、
 文の間では、どの空白とも同じ改行として扱い、文はそれぞれの行に移ります。
 文の中で、これを含む間隔は書かれたまま印字し、説明、タイトル、セクション名、
 アクセシビリティのテキストの中のものも書かれたまま残します。
-例は文字列で書かれていて、`\u2028` は U+2028、 `\n` は改行です。
+例は文字列で書かれていて、`\u2028` は U+2028、`\n` は改行です。
 [test: U+2028 between the header and a statement]
 [test: U+2028 between two statements]
 [test: U+2028 and whitespace at the end of a statement]
@@ -1389,7 +1389,7 @@ U+00A0 と U+FEFF は、字句解析器にとって単位の間の空白であ�
 空白 1 つを置き、タスクのデータの項目の周りでは空白と同じに落とし、
 タスクのコロンの前では説明が保ち、
 リストでは項目の間の U+FEFF を書かれたまま残します（[リスト](#リスト)を参照）。
-例は文字列で書かれていて、`\u00a0` は U+00A0、 `\ufeff` は U+FEFF です。
+例は文字列で書かれていて、`\u00a0` は U+00A0、`\ufeff` は U+FEFF です。
 [test: U+00A0 after a title keyword] [test: U+00A0 between weekday and its day]
 [test: U+00A0 between two statements] [test: U+00A0 around an item of task data]
 [test: U+00A0 between the items of task data]

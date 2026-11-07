@@ -37,8 +37,8 @@
 子の欄: `body`。 [fixture: venn/header-only] [fixture: venn/header-only-lf]
 空でも構いません。 [fixture: venn/header-only] [fixture: venn/header-only-lf]
 
-VennStatement は VennSubsetStatement、VennTextStatement、 VennStyleStatement、
-VennTitleStatement、 VennIgnoredText のいずれかです。
+VennStatement は VennSubsetStatement、VennTextStatement、VennStyleStatement、
+VennTitleStatement、VennIgnoredText のいずれかです。
 [fixture: venn/db-all-fields] [fixture: venn/db-grid-comment-header-line]
 
 見出しの節点はなく、見出しの行の文は `body` に属します。
@@ -64,7 +64,7 @@ VennTitleStatement、 VennIgnoredText のいずれかです。
 | `label`    | VennLabel か null                    | 省略可能な角括弧ラベル。      |
 | `size`     | NumericLiteral か null               | コロンの後の省略可能な size。 |
 
-子の欄: `sets`、`label`、 `size`。 [fixture: venn/db-form-set-label-size]
+子の欄: `sets`、`label`、`size`。 [fixture: venn/db-form-set-label-size]
 [fixture: venn/db-form-union-label-size]
 
 `kind` はキーワードの小文字形です。 [fixture: venn/lex-keyword-set-upper]
@@ -108,7 +108,7 @@ NumericLiteral は符号付きゼロと桁あふれも含む共通の数の定�
 | `id`       | Identifier、StringLiteral、NumericLiteral   | 書かれた text の id。               |
 | `label`    | VennLabel か null                           | 省略可能な角括弧ラベル。            |
 
-子の欄: `targets`、`id`、 `label`。 [fixture: venn/db-form-text-id-label]
+子の欄: `targets`、`id`、`label`。 [fixture: venn/db-form-text-id-label]
 [fixture: venn/db-form-indent-id-label]
 
 明示の対象は空でない書かれたリストで、綴り、順序、重複を保ちます。
@@ -137,7 +137,7 @@ NumericLiteral は符号付きゼロと桁あふれも含む共通の数の定�
 | `targets`    | Identifier か StringLiteral のリスト | 書かれた対象。         |
 | `properties` | VennStyleProperty のリスト           | 書かれた全プロパティ。 |
 
-子の欄: `targets`、 `properties`。 [fixture: venn/db-form-style-multiple]
+子の欄: `targets`、`properties`。 [fixture: venn/db-form-style-multiple]
 [fixture: venn/db-style-duplicate-key] [fixture: venn/db-style-case-and-order]
 [fixture: venn/db-style-unknown] [fixture: venn/gram-repeated-target-lists]
 両方のリストは空でなく、書かれた順序と繰り返しを保ちます。
@@ -152,7 +152,7 @@ NumericLiteral は符号付きゼロと桁あふれも含む共通の数の定�
 | `key`      | Identifier                   | 裸のプロパティキー。   |
 | `value`    | StringLiteral か VennLiteral | 書かれたプロパティ値。 |
 
-子の欄: `key`、 `value`。 [fixture: venn/db-style-duplicate-key]
+子の欄: `key`、`value`。 [fixture: venn/db-style-duplicate-key]
 [fixture: venn/db-style-prototype-keys]
 [fixture: venn/db-form-style-documented-properties]
 予約語以外のキーは、繰り返すキーとプロトタイプに関係するキーも含め、

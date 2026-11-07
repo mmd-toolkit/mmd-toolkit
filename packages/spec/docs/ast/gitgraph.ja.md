@@ -57,7 +57,7 @@ LR・TB・BT が書かれていなければ direction は null です。
 分離したコロンがなければ textBeforeColon は空で、
 gitGraph に接着したコロンとの間には隙間がありません。
 最後の見出しの構成要素の後の隠れた形は body に入れます。
-同じ隙間に 2 個の形があれば、 2 個のノードにします。
+同じ隙間に 2 個の形があれば、2 個のノードにします。
 [fixture: gitgraph/header-only] [fixture: gitgraph/header-colon]
 [fixture: gitgraph/header-bt] [fixture: gitgraph/header-hidden-before-colon]
 [fixture: gitgraph/header-hidden-before-direction]
@@ -121,8 +121,7 @@ order がなければ null です。
 | `textAfter`        | list of GitgraphIgnoredText | EOL の前の隠れた末尾。 |
 
 子の欄: `textBeforeBranch`、`branch`、`textAfter`。
-範囲は checkout または switch から分岐か最後の隠れた末尾までで、
-EOL を除きます。
+範囲は checkout または switch から分岐か最後の隠れた末尾までで、EOL を除きます。
 keyword は書かれた別名を保ち、子にはしません。 [fixture: gitgraph/gram-checkout]
 [fixture: gitgraph/gram-switch]
 [fixture: gitgraph/lex-hidden-directive-before-checkout-name]
@@ -409,7 +408,7 @@ textAfter があれば最後の形まで延ばし、EOL と無関係な外側の
 value は波括弧の内部で、両端だけの共通の空白を除きます。
 空白と共通の trivia だけなら null です。
 内部の字下げ、物理的な改行、引用符、逆斜線は書かれたまま保ちます。
-最初の閉じ波括弧は必須なので、 closed フィールドは不要です。
+最初の閉じ波括弧は必須なので、closed フィールドは不要です。
 [fixture: gitgraph/lex-description-empty-hidden-tail]
 [fixture: gitgraph/accdescr-block]
 [fixture: gitgraph/common-block-only-whitespace]
@@ -442,7 +441,7 @@ textAfter があれば最後の形まで延ばし、EOL と無関係な外側の
 value から共通のディレクティブ、コメント領域、選択されたセミコロンを除き、
 文が所有する空白を含め、それ以外のソースのテキストをすべて保ちます。
 null に空のリテラルは作りません。
-引用符もリテラルの内容で、 StringLiteral ではありません。
+引用符もリテラルの内容で、StringLiteral ではありません。
 [fixture: gitgraph/common-title-quoted-escape]
 [fixture: gitgraph/common-title-open-quote] [fixture: gitgraph/directive-title]
 [fixture: gitgraph/comment-block] [fixture: gitgraph/title-conversion]

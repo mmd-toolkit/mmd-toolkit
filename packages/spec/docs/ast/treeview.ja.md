@@ -19,7 +19,7 @@ bare の node 名は空白を許す位置なので TreeviewIdentifier を使う�
 StringLiteral.raw は両端の原文の引用符と、共通 trivia も含む間の全字を保つ。
 value は、共有 directive、コメント領域、選択されたセミコロンを除いた、
 書かれた内側であり、escape を decode せず、改行も正規化しない。
-空の引用名も node となり、 closed は true である。
+空の引用名も node となり、closed は true である。
 [fixture: treeview/gram-written-tree] [fixture: treeview/db-empty-names]
 [fixture: treeview/db-quote-conversion]
 [fixture: treeview/directive-double-middle]
@@ -228,7 +228,7 @@ TreeviewAnnotation は TreeviewClassAnnotation、TreeviewIconAnnotation、
 TreeviewDescriptionAnnotation のいずれか。
 書かれていなければ list を空とし、書かれていれば上書き前の class/icon、
 空の description も含め全出現を保つ。
-name の元の slash を残し、 nodeType 欄は持たない。
+name の元の slash を残し、nodeType 欄は持たない。
 [fixture: treeview/gram-written-tree] [fixture: treeview/db-repeat-class]
 [fixture: treeview/db-repeat-icon]
 [fixture: treeview/annotation-description-repeat-empty]
@@ -247,7 +247,7 @@ name の元の slash を残し、 nodeType 欄は持たない。
 範囲: 最初の所有する装飾または prefix、
 それらが無ければ `:::` から class 名の終端まで。
 前の形を所有しないときの `:::` より前の区切り空白を含めない。
-name は非空で null にならず、 `:::` の後の任意の空白を名前の範囲に含めない。
+name は非空で null にならず、`:::` の後の任意の空白を名前の範囲に含めない。
 [fixture: treeview/gram-written-tree] [fixture: treeview/annotation-class-space]
 [fixture: treeview/box-decoration-before-annotation]
 [fixture: treeview/box-annotation-prefix]
@@ -273,14 +273,14 @@ name は非空で null にならず、 `:::` の後の任意の空白を名前�
 範囲: 最初の所有する装飾または prefix、
 それらが無ければ `icon` から閉じ `)` の終端まで。
 共有の除去の後に参照が空のときだけ name は null。
-`icon()` もこの注釈を作り、 `icon(none)` は名前の Identifier を持つ。
+`icon()` もこの注釈を作り、`icon(none)` は名前の Identifier を持つ。
 注釈自体が無ければ list の member が無い。 [fixture: treeview/gram-written-tree]
 [fixture: treeview/db-icon-none] [fixture: treeview/ast-icon-removal-only]
 [fixture: treeview/ast-annotation-prefixes]
 
 `pack:file` や `:file` の全綴りを colon も含め一つの Identifier とする。
 pack を解決せず、参照の別の模型へ分解しない。
-無ければ prefix は null、 textBefore は空。
+無ければ prefix は null、textBefore は空。
 繰り返す各注釈と元の括弧を保つ。 [fixture: treeview/gram-written-tree]
 [fixture: treeview/annotation-icon-leading-colon]
 [fixture: treeview/db-repeat-icon] [fixture: treeview/ast-annotation-prefixes]
@@ -519,7 +519,7 @@ null の欄に空の literal を作らず、空白だけの内容も非空とす
 先頭の空白と dash 列の後の区切り空白を含めない。
 value は共有 trivia 以外の全字を保ち、任意のテキスト、引用符、縦線、
 light/heavy の dash の混在も保つ。
-marker は固定の branch の文字であり、 Identifier ではない。
+marker は固定の branch の文字であり、Identifier ではない。
 [fixture: treeview/box-prefix-nonbmp-column]
 [fixture: treeview/box-written-tree] [fixture: treeview/box-prefix-arbitrary]
 [fixture: treeview/box-quoted-branch] [fixture: treeview/box-heavy]
@@ -549,7 +549,7 @@ prefix は node、注釈、共通文、必須の block の開きの gap に属�
 範囲: 装飾の行の最初から最後の非空白の字まで。
 外端の空白と読みから外れる後続の改行を node の外に置く。
 value は共有 trivia 以外の罫線の字と内側の空白を保つ。
-非空であり、 kind は常に box-decoration。
+非空であり、kind は常に box-decoration。
 空白だけの行はこの node を作らない。 [fixture: treeview/box-written-tree]
 [fixture: treeview/box-mode-dash-only]
 [fixture: treeview/box-unicode-decoration]

@@ -118,7 +118,7 @@ mermaid.js は、数字を含む引用符なしの title が軸の文の後ろ�
 それらの行の後の行にあるときです（既知の差異
 `title-digit-after-axis-statement`）。
 仕様はそれを受理し、mermaid.js も、自分の行に置いた同じ title は受理します。
-そのため、`x-axis A; title Q1` を分けると、 mermaid.js が拒否していた入力が、
+そのため、`x-axis A; title Q1` を分けると、mermaid.js が拒否していた入力が、
 仕様の読みの Db のまま受理されるようになります。
 規則はこの行でも変えません。
 整形が守るのは、mermaid.js が受理する入力の Db で、受理する入力が、
@@ -249,7 +249,7 @@ mermaid.js は向きを、あらゆる種類の空白の後でも、空白と改
 改行は字句解析器にとって空白なので、向きはヘッダーの行に移し、
 誰にも見えない行末の空白を残しません（[複数行の文](#複数行の文)を参照）。
 向きは書かれた大文字小文字のまま印字します。
-小文字の `horizontal` だけが横向きにし、 `Horizontal` は縦向きにするので、
+小文字の `horizontal` だけが横向きにし、`Horizontal` は縦向きにするので、
 大文字小文字は Db に入っています。
 [fixture: header-and-orientation/orientation-after-one-space]
 [fixture: header-and-orientation/orientation-after-a-tab]
@@ -297,7 +297,7 @@ xychart horizontal
 
 引用符なしの文字列（title、軸の title、プロットの title、分類）は、
 単位でできています。
-単位は、文字の連なり、数字の連なり、 `-`、`_`、`.`、`+`、`=`、`*`、`&`、
+単位は、文字の連なり、数字の連なり、`-`、`_`、`.`、`+`、`=`、`*`、`&`、
 `#` の 1 文字のどれかです。
 単位の間の空白は Db に入らない（`title Two   words` も `title Two words` も、
 title は `Twowords`）ので、空白の連なりは空白 1 つにします。
@@ -309,7 +309,7 @@ title は `Twowords`）ので、空白の連なりは空白 1 つにします。
 `x-axis a-1 --> 2` の title は `a` で、範囲は数 `-1` から始まります。
 `-` と `1` の間に空白を置くと、単語 `-` と数 `1` になり、別の図になります。
 離れている単位も、つなげません。
-`title ba r` の title は `bar` ですが、 `title bar` は、
+`title ba r` の title は `bar` ですが、`title bar` は、
 `bar` がキーワードなので違います。
 そのため、印字が変えるのは空白の量だけで、
 単位を離しておく最小の量が空白 1 つです。
@@ -332,7 +332,7 @@ title は `Twowords`）ので、空白の連なりは空白 1 つにします。
 [fixture: text-units/directive-between-words-on-one-side]
 [fixture: text-units/directive-inside-a-category-word]
 
-テキストの前後の空白は、 Db に入らないので落とします。
+テキストの前後の空白は、Db に入らないので落とします。
 [fixture: text-units/whitespace-at-the-ends-dropped]
 
 入力
@@ -506,7 +506,7 @@ xychart
 ### 数
 
 数は書かれたままに印字します。
-範囲の数とプロットの値は、値として読まれるので、 `+1`、`007`、`.5`、`-0`、
+範囲の数とプロットの値は、値として読まれるので、`+1`、`007`、`.5`、`-0`、
 `1.50` は、別の形に書いても Db は同じです。
 ところが、分類や引用符なしの title に書かれた同じ数字は、
 テキストなので（`x-axis [007, .5]` の分類は `007` と `.5`）、
@@ -625,11 +625,11 @@ Mermaid が説明から LF 後の字下げを除くためです。
 `}` は文と同じ段に置きます。
 `{` と同じ行のテキストは、括弧に接して書かれていても、
 括弧の内側に空白を 1 つずつ置きます。
-閉じていないブロックはテキストの最後まで続き、 `}` を足さず、
+閉じていないブロックはテキストの最後まで続き、`}` を足さず、
 EOF の末尾を保ちます。
 mermaid.js はそのブロックのテキストを読まず、印字が `}` を足すと、
 ブロックが説明になってしまうからです（テキストの最後の `accDescr {` と、
-`abc` の説明は Db では空で、 `}` を足すと `abc` になります）。
+`abc` の説明は Db では空で、`}` を足すと `abc` になります）。
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-text-on-the-opening-line]
 [fixture: accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
@@ -868,7 +868,7 @@ xychart
 
 ### キーワードの大文字小文字
 
-キーワード `title`、`x-axis`、`y-axis`、`line`、`bar`、 `accTitle`、
+キーワード `title`、`x-axis`、`y-axis`、`line`、`bar`、`accTitle`、
 `accDescr` は、書かれた大文字小文字のまま印字します。
 mermaid.js はどれも大文字小文字を問わずに読み（`Title`、`LINE`、
 `ACCTITLE:` も文を始めます）、Db は同じです。
@@ -920,7 +920,7 @@ xychart
 
 文の後ろのコメントは、文の行に残します。
 前に空白が書かれていれば空白 1 つ、書かれていなければ接したままにします。
-空白がどこにあっても Db は同じですが、 mermaid.js は、
+空白がどこにあっても Db は同じですが、mermaid.js は、
 1 文字の単位に接した `%%` を、
 その文字と一緒に読みます（既知の差異 `comment-takes-character`）。
 `title T%% c` は拒否され、`title A B%% c` の title は `A` です。

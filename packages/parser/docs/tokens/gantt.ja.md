@@ -41,8 +41,7 @@
 単位が空白を保つ場合を除き、両端の空白を含みません。
 リンクの部分の文字列、つまり `"` 単位とその間の `url-text` は、
 開きの引用符から閉じの引用符までの 1 つの `String` トークンです。
-`href "u"` は、
-`Keyword` トークン `href` と `String` トークン `"u"` を持ちます。
+`href "u"` は、`Keyword` トークン `href` と `String` トークン `"u"` を持ちます。
 [fixture: gantt/gram-click-href]
 ほかの項目はどれも 1 つの単位で、したがって 1 つのトークンです。
 
@@ -55,7 +54,7 @@
 `a` と 2 つの空白のトークンを持ちます）。
 `setting-text`、`marker-text`、`title-text`、
 `section-text` も保ちます（`dateFormat` と、2 つの空白の後の `X` は、
-空白 1 つと `X` のトークンを持ち、 `title T` と 2 つの空白は、
+空白 1 つと `X` のトークンを持ち、`title T` と 2 つの空白は、
 `T` と 2 つの空白のトークンを持ちます）。
 `callback-name` は、`(` の前の空白と改行を含みます（`call f ()` は、
 `f` と空白 1 つのトークンを持ちます）。
@@ -97,7 +96,7 @@ CR や CRLF は、改行と同じくテキストを終わらせます。
 を参照。
 `a : 1%%{init: {}}%%d` は、`RawText` トークン `1` と `d` と、
 その間の `Directive` トークンを持ちます。
-一方、 `click id%%{init: {}}%%1 href "u"` は拒否されます。
+一方、`click id%%{init: {}}%%1 href "u"` は拒否されます。
 [fixture: gantt/lex-directive-in-task-data]
 [fixture: gantt/lex-directive-in-task-text]
 [fixture: gantt/lex-directive-in-href-string]

@@ -75,9 +75,9 @@ U+00A0 も除きます。
 `a` と U+00A0 と `{` はトークン `a` を持ちます。
 mermaid.js が値をトリムするアクセシビリティのテキストも、両端の空白を除きます。
 `accTitle:   t1` と 2 つの空白はトークン `t1` を持ちます。
-`accDescr {`、`  line 1` の行、`  line 2` の行、`}` だけの行は、 `line 1`、
+`accDescr {`、`  line 1` の行、`  line 2` の行、`}` だけの行は、`line 1`、
 改行とインデント、`line 2` のトークンを持ちます。
-字句解析器がブロックのテキストに読み込む、 `}` の前の改行は含みません。
+字句解析器がブロックのテキストに読み込む、`}` の前の改行は含みません。
 [fixture: requirement/db-requirement-name-spaces]
 [fixture: requirement/db-requirement-value-spaces]
 [fixture: requirement/lex-whitespace-nbsp-after-name]

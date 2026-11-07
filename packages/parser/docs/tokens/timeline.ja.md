@@ -50,10 +50,10 @@ event を始めない `:` 単位は、文法のどの規則も取らないので
 `title-text` と `section-text` も保ちます（`title  T` は、
 空白 1 つと `T` のトークンを持ちます）。
 mermaid.js が値をトリムするアクセシビリティのテキスト、つまり `acc-title-text`、
-`acc-description-text`、 `acc-description-block-text` は、それを含みません。
+`acc-description-text`、`acc-description-block-text` は、それを含みません。
 `accTitle: T` と 3 つの空白は、トークン `T` を持ちます。
-`accDescr {`、`  line1` の行、`  line2` の行、`  }` の行は、 `line1`、
-改行とインデント、 `line2` のトークンを持ちます。
+`accDescr {`、`  line1` の行、`  line2` の行、`  }` の行は、`line1`、
+改行とインデント、`line2` のトークンを持ちます。
 [fixture: timeline/db-period-trailing-spaces]
 [fixture: timeline/db-event-leading-spaces]
 [fixture: timeline/db-event-two-spaces] [fixture: timeline/db-title-two-spaces]
@@ -70,7 +70,7 @@ mermaid.js が値をトリムするアクセシビリティのテキスト、つ
 を参照。
 `a : e%%{init: {}}%%f` は、`RawText` トークン `e` と `f` と、
 その間の `Directive` トークンを持ちます。
-一方、 `ti%%{init: {}}%%tle T` は拒否されます。
+一方、`ti%%{init: {}}%%tle T` は拒否されます。
 [fixture: timeline/lex-directive-in-event]
 [fixture: timeline/div-directive-in-title-keyword]
 

@@ -111,7 +111,7 @@ mermaid.js が値の一部として読まない空白と行終端は、どのト
 どれもトークンの外にありません。
 class 図の `style A fill:#f00,color ;:blue` は、
 後ろの空白を含む `fill:#f00,color`、`IgnoredSemicolon` のトークン、
-`:blue` をトークンに持ち、 `classDef c fill:#f00,color ;:blue` も同じです。
+`:blue` をトークンに持ち、`classDef c fill:#f00,color ;:blue` も同じです。
 [fixture: class/tokens-style-ignored-semicolon-after-space]
 [fixture: class/tokens-class-def-ignored-semicolon-after-space]
 これは、mermaid.js が値として読むテキストについての決まりです。
@@ -122,7 +122,7 @@ mermaid.js
 どのトークンにも入りません。
 `state "d" as A`、行 `state %% c`、行 `state {` の `textBeforeBody` は、
 `Keyword` のトークン `state` と `state` を持ち、その間にコメントがあります。
-値は `state`、空白、改行、空白 2 つ、 `state` です。
+値は `state`、空白、改行、空白 2 つ、`state` です。
 [fixture: state/tokens-ignored-text-comment-between-units]
 mermaid.js が値として読むテキストを位置ごとに述べるのは、図の文書です。
 この文書は、値のトークンがそれを覆うことだけを述べます。
@@ -140,14 +140,14 @@ mermaid.js が値として読むテキストを位置ごとに述べるのは、
 `String` のトークンの断片は `StringFragment` のトークンです。
 このように切られてよいのは、`RawText` と `String` のトークンだけです。
 ほかの種類のトークン、つまり名前、数、キーワード、矢印、
-ほかの区切り記号の内側では、 `;` は入力を拒否させ、エラーはその `;` にあります。
+ほかの区切り記号の内側では、`;` は入力を拒否させ、エラーはその `;` にあります。
 [fixture: flowchart/div-ignored-semicolon-in-id]
 [fixture: sequence/div-ignored-semicolon-in-autonumber-start]
 [fixture: flowchart/div-ignored-semicolon-in-keyword]
 [fixture: flowchart/div-ignored-semicolon-in-arrow]
 [fixture: flowchart/div-ignored-semicolon-in-triple-colon]
 [`style` 行と `classDef` 行](../../spec/docs/common.ja.md#style-行と-classdef-行)
-と、 [既知の差異](./error-positions.ja.md#既知の差異) を参照。
+と、[既知の差異](./error-positions.ja.md#既知の差異) を参照。
 flowchart の `A["<span style='color:#f00;font-weight:bold;'>x</span>"]` では、
 行の規則が `bold` の後の `;` を無視し、
 ラベルは `StringFragment` のトークン `"<span style='color:#f00;font-weight:bold`
@@ -177,7 +177,7 @@ common/error-style-semicolon-inside]
 
 ## 根の一覧
 
-`Root` は、 [`ast.ja.md`](../../spec/docs/ast.ja.md#root) の欄のほかに、
+`Root` は、[`ast.ja.md`](../../spec/docs/ast.ja.md#root) の欄のほかに、
 次の欄を持ちます。
 
 | 欄         | 型           | 意味                                                                                   |
@@ -319,7 +319,7 @@ Db が
 [fixture: class/lex-bare-percent-line-between-statements]
 ヘッダーの前では、そうした行は `%%` だけの行で、検出が読んで通り過ぎ、
 図の字句解析器は読み直しません。
-どの図種でも、印 `%%` の図のコメントで、 `%%` から行の終わりまでです。
+どの図種でも、印 `%%` の図のコメントで、`%%` から行の終わりまでです。
 [fixture: sequence/header-after-bare-percent-line]
 [fixture: class/header-after-empty-braces-line]
 [fixture: state/header-after-bare-percent-line]
@@ -335,7 +335,7 @@ mermaid.js が読むときにはないので、行はコメント行の後に続
 領域の側の空白と行終端を除いたものが `Comment` で、
 空か空白だけの断片は `Comment` になりません。
 最後の断片は、どのコメントとも同じく、行終端の前の空白を持ちます。
-state の `state X ""` に ` %% c`、U+2028、行 `%% d`、 `x` と空白の行が続くと、
+state の `state X ""` に ` %% c`、U+2028、行 `%% d`、`x` と空白の行が続くと、
 コメントは `%% c`、`%% d`、空白のついた `x` です。
 U+2028 の前の空白や、領域の後の行の初めの空白 2 つは、
 どのコメントにも入りません。
@@ -344,7 +344,7 @@ U+2028 の前の空白や、領域の後の行の初めの空白 2 つは、
 [fixture: state/tokens-ignored-text-comment-cut-spaces-after-region]
 領域の後の断片は印を持たず、その `mark` は null です。
 その範囲は最初の文字から始まり、値はその範囲のソースのテキストです。
-state の `A %% x`、U+2029、行 `%% end`、行 `B` は、 `%% x`、`%% end`、
+state の `A %% x`、U+2029、行 `%% end`、行 `B` は、`%% x`、`%% end`、
 `B` のコメントをこの順に持ち、状態は A だけです。
 `B` の前に空行があると、図のコメントは `%% end` の後の改行で終わり、
 B は状態です。
@@ -387,7 +387,7 @@ mermaid.js はそれも設定のために読みます。 [fixture: common/direct
 [fixture: common/comment-percent-joined-by-directive]
 印が `%%` の図のコメントも同じです。
 その印はディレクティブを除いたテキストの上で見つけ、
-その 2 つの `%` の間にディレクティブがあってもよく、 `value` は、
+その 2 つの `%` の間にディレクティブがあってもよく、`value` は、
 ディレクティブを含む、印の後のソースのテキストです。
 [fixture: sequence/lex-diagram-comment-directive-between-marks] [fixture:
 sequence/lex-diagram-comment-directive-after-single-mark]
@@ -448,7 +448,7 @@ flowchart/tokens-comment-region-at-label-start]
 `%%` の行がコメント行の前にあるときは、断片は `a`、改行、`%%`、改行と、
 `b` です。
 文字列の `A["a`、行 `%% c`、行 `%%`、行 `b"]` では、
-断片は `StringFragment` のトークン `"a` と改行、そして `%%`、改行、 `b"` です。
+断片は `StringFragment` のトークン `"a` と改行、そして `%%`、改行、`b"` です。
 [fixture: flowchart/tokens-comment-region-then-bare-marker-line] [fixture:
 flowchart/tokens-comment-region-after-bare-marker-line] [fixture:
 flowchart/tokens-comment-region-then-bare-marker-line-in-string]
@@ -481,7 +481,7 @@ state/tokens-comment-region-in-acc-descr-block]
 コメント領域の中で、コメントの `%%` より前にあるディレクティブは、
 領域が 1 つの単位の読む中にあるときも、
 領域がその単位のトークンを切るので（[Comment](#comment) を参照）、
-どのトークンとコメントの外にもあり、 `Directive` のトークンです。
+どのトークンとコメントの外にもあり、`Directive` のトークンです。
 [fixture: common/comment-region-directive-in-string] [fixture:
 common/comment-directive-in-string]
 
@@ -505,7 +505,7 @@ common/comment-directive-in-string]
 開始の `---` で、`Punctuator` のトークン。
 本文がすべて空白でなければ本文で、
 本文の空白でない最初の文字から最後の文字までの `RawText` のトークン。
-閉じる `---` で、 `Punctuator` のトークン。
+閉じる `---` で、`Punctuator` のトークン。
 [fixture: common/frontmatter-empty-body] [fixture: common/frontmatter-indented]
 範囲のほかの部分は空白と行終端です。
 各 `---` の後の同じ行の空白、本文の前の空白だけの行、
@@ -543,7 +543,7 @@ StringLiteral のトークンは、引用符を含む 1 つの `String` のト�
 [fixture: flowchart/gram-label-space-string]
 コメント領域、無視される `;`、ディレクティブがそれを切るときは、
 そのトークンは `StringFragment` のトークンで、範囲はその最初から最後までで、
-領域、`IgnoredSemicolon` のトークン、 `Directive` のトークンを含みます。
+領域、`IgnoredSemicolon` のトークン、`Directive` のトークンを含みます。
 [トークンの中のコメント領域](#トークンの中のコメント領域) と、
 [トークン](#トークン) と、
 [ディレクティブが切るトークン](#ディレクティブが切るトークン) を参照。
@@ -575,7 +575,7 @@ URL のトークンは `StringFragment` のトークン `"u` と `v"` で、
 class 図で、テキストの終わりの `class`、`` `x%%{init: {}}%%y``、改行は、
 `StringFragment` のトークン `` `x`` と、改行を含む `y` を持ちます。
 [fixture: class/lex-backquote-unclosed-directive-inside]
-`class`、`` `x``、改行、`%%{init: {}}%%`、改行は、 `StringFragment` のトークン、
+`class`、`` `x``、改行、`%%{init: {}}%%`、改行は、`StringFragment` のトークン、
 `` `x`` とその後の改行、そして最後の改行を持ちます。
 どちらでも、その間に `Directive` のトークンがあります。
 [fixture: class/lex-backquote-unclosed-directive-after-line-break]
@@ -583,7 +583,7 @@ class 図で、テキストの終わりの `class`、`` `x%%{init: {}}%%y``、�
 ## 数のトークン
 
 NumericLiteral のトークンは、1 つの `Numeric` のトークンです。
-範囲はそのトークンの範囲なので、 `raw` はそのトークンのソースのテキストです。
+範囲はそのトークンの範囲なので、`raw` はそのトークンのソースのテキストです。
 [fixture: state/gram-scale]
 数の中のディレクティブと、行の規則が無視する `;` は、入力を拒否させます。
 [fixture: sequence/div-directive-in-number]
@@ -631,7 +631,7 @@ U+2029 の直後から始まり、それらはどれも並びを切るからで�
 検出器は、検出の追加の除去の後でしかテキストを見ないので、
 トークンは語 `error` だけとは限りません。
 
-- `%%`、改行、`error` のトークンは、 `%%` と `error` です。
+- `%%`、改行、`error` のトークンは、`%%` と `error` です。
   [fixture: common/error-bare-percent-line]
 - 後に改行がある `error %% x` のトークンは、`error`、`%%`、`x` です。
   `%% x` はコメント行ではないのでコメントではなく、検出だけがそれを除きます。
