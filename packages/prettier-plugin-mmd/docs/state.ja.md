@@ -387,7 +387,7 @@ flowchart
 と同じです（[トークンの間の空白](./flowchart.ja.md#トークンの間の空白)を参照）。
 ただし、別名の定義の語と擬似状態の印は、
 空白 1 つを置きます（[別名](#別名)と[擬似状態](#擬似状態)を参照）。
-`:::`、mermaid.js が読まない `""`、スタイルや class 文の `,` も同じです。
+`:::`、mermaid.js が読まない `""`、スタイル文の `,` も同じです。
 状態に結び付けない独立したノート（`note "..." as ...`）の引用符は、
 書かれたまま残します。 [fixture: whitespace-between-tokens/comma-kept]
 [fixture: whitespace-between-tokens/floating-note-quotes-kept]
@@ -398,6 +398,33 @@ flowchart
 mermaid.js は大文字小文字にかかわらず読み、 `Left Of` のようなノートの位置は、
 書かれたまま図に入るからです。
 [fixture: whitespace-between-tokens/keyword-case-kept]
+
+`class` 文の id を区切る `,` は、後ろの id に接します。
+`class A, B c` は `class A,B c` になります。
+ER、requirement、
+usecase
+の一覧と同じです（[スタイルとクラス](./er.ja.md#スタイルとクラス)を参照）。
+mermaid.js は `A,B`、`A, B`、`A,  B` を同じ文として読むので、
+形を強いるものはありません。
+mermaid.js の文書は、この文の例 2 件を `,` の後ろに空白を置いて書いています。
+その 1 件は、
+[`class Moving, Crash movement`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/stateDiagram.md#L397)
+です。
+これは形を決める根拠にはなりません。
+[fixture: whitespace-between-tokens/class-ids-touching]
+`,` の前に空白が書かれていると、そこで id が終わり、残りがクラス名になります。
+`class A ,B c` は状態 `A` とクラス `,B c` です。
+その形は、`,` の後ろの空白も含めて、書かれたまま残します。
+[fixture: whitespace-between-tokens/class-ids-space-before-comma-kept]
+[fixture: whitespace-between-tokens/comma-kept]
+隙間にディレクティブがあれば、
+その両側に書かれた空白を残します（[ディレクティブ](#ディレクティブ)を参照）。
+行の line rule が無視する `;` のある行は、書かれたまま残します。
+[fixture: whitespace-between-tokens/class-ids-beside-directive-kept]
+[fixture: whitespace-between-tokens/class-ids-with-ignored-semicolon]
+`,` の後ろの U+2028 と U+2029 は、そのまま残します。
+[test: U+2028 after the comma of a state class statement]
+[test: U+2029 after the comma of a state class statement]
 [fixture: whitespace-between-tokens/keyword-case-more-kept]
 
 入力
@@ -1092,6 +1119,17 @@ agentflow、usecase に合わせます。
 閉じられていないブロックの行も、テキストの終わりまで、
 閉じたブロックと同じようにそろえ、`}` は加えません。
 [fixture: multi-line-values/unclosed-block-aligned]
+
+1 行のブロックの文字は、両側に空白を 1 つずつ置きます。
+これは、
+[flowchart のアクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)
+と同じ形です。
+`accDescr {a b}`、`accDescr {  a b  }`、`accDescr {  a b}`、
+`accDescr {a b  }` は、どれも `accDescr { a b }` になります。
+mermaid.js は文字を trim するので、両端の空白に意味はありません。
+文字の中にディレクティブや `;` があるブロックは、書かれたままにします。
+[fixture: multi-line-values/block-text-on-one-line-padded]
+
 ブロックノートの段落は、[ノート](#ノート)の限定規則に従います。
 [fixture: notes/payment-prose]
 複数行に書かれた独立したノートの本文は、書かれたまま残します。

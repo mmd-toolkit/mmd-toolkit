@@ -33,6 +33,7 @@ import {
   walk,
 } from "./layout.ts"
 import type { Source } from "./source.ts"
+import { addNameListRules } from "./statement-rules.ts"
 import {
   findStructuralToken,
   findStructuralTokenEndingBefore,
@@ -561,6 +562,11 @@ function statementRules(
     case "ClassAccTitleStatement":
     case "ClassAccDescrStatement":
       addAccessibilityColonRules(source, statement, rules)
+      break
+    case "ClassClassDefStatement":
+      // The `,` between the names touches both of them (docs/class.md,
+      // Styles).
+      addNameListRules(source, statement.cssClasses, rules)
       break
     case "ClassDeclaration":
       if (statement.members !== null) {

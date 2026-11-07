@@ -1099,8 +1099,8 @@ subgraph 内では、生の説明がその所属の読みにも使われるた�
 本文の元の列を保ちます。
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines]
 `}` は文と同じ段に置きます。
-`{` の行にあるテキストは、離して書かれていれば、
-波括弧の内側に空白を 1 つ置きます。
+`{` の行にあるテキストは、括弧に接して書かれていても、
+波括弧の内側に空白を 1 つずつ置きます。
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
 [fixture: accessibility-statements/block-text-on-opening-line]

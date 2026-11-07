@@ -21,6 +21,7 @@ import {
   findAccDescrBlockStretches,
   indentDescriptionLines,
   keptAsWritten,
+  padOneLineDescription,
   walk,
 } from "./layout.ts"
 import { holdsJoiningRegion } from "./kept-lines.ts"
@@ -134,10 +135,10 @@ export function layoutStatement(
     outdented: findOutdentedAtoms(source, statement),
     lineBreaks: "kept",
   }
-  return statement.type === "FlowchartAccDescrBlockStatement" &&
-    !preservesDescriptionColumns
-    ? indentDescriptionLines(source, statement, layout)
-    : layout
+  if (statement.type !== "FlowchartAccDescrBlockStatement") return layout
+  return preservesDescriptionColumns
+    ? padOneLineDescription(source, statement, layout)
+    : indentDescriptionLines(source, statement, layout)
 }
 
 /**

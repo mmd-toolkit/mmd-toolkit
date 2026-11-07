@@ -125,13 +125,18 @@ agentflowだけ違う形を選ぶ理由がないためです。
 [fixture: names-and-headings/name-heading-touches-title]
 [fixture: names-and-headings/name-heading-touches-title-kinds]
 複数の部分からなる名前（消された `click` や空の文字列を含む名前）は、
-タイトルの前の空白を保ちます。
-名前の本文がその空白を読むためです。
+最初の部分から最後の部分まで、タイトルの前の空白を含めて、書かれたまま残します。
+`click` の後では、その空白が click の id を終わらせるので、
+`flow F click [T]` と `flow F click[T]` は別の見出しです。
+空の文字列の後では Db は同じですが、名前を同じように書かれたまま残します。
 [fixture: names-and-headings/name-heading-title-multi-part-name-kept]
 名前をディレクティブかコメントが終わらせるときは、その後ろに書かれた空白を、
 [ディレクティブ](#directives)と同じく保ちます。
 隙間の中にディレクティブがあれば、その両側の空白も保ちます。
 [fixture: names-and-headings/name-heading-title-beside-directive-kept]
+[test: agentflow: a comment and U+2028 between a flow name and its title]
+`:` と `#` の間の隙間は、flowchart と同じく、空白があるかないかを保ちます。
+[fixture: names-and-headings/name-heading-title-after-colon-before-hash]
 隙間の U+2028 と U+2029 は、そのまま残します。
 [test: agentflow: U+2028 between a flow name and its title]
 [test: agentflow: U+2029 between a connector name and its title]
@@ -766,12 +771,15 @@ flowchartと同じ理由で同じ規則を使います。
 [fixture: accessibility/empty-block-semicolon-kept]
 [fixture: accessibility/empty-block-directive-kept]
 
-空でないブロックは`{a}`と`{ a }`を保ち、`{  a  }`は`{ a }`です。
-兄弟の図種と同じく、文字の両側の空白列を1つにし、空白がなければ足しません。
+空でない 1 行のブロックの文字は、両側に空白を 1 つずつ置きます。
+兄弟の図種と同じ形です。
+詳しくは、
+[アクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)
+を参照してください。
+`{a}`、`{ a }`、`{  a  }`、`{  a}`、`{a  }` は、どれも `{ a }` になります。
 [fixture: accessibility/block-tight-text]
 [fixture: accessibility/block-spaced-text]
 [fixture: accessibility/block-padded-text]
-左右を別々に扱い、`{  a}`は`{ a}`、 `{a  }`は`{a }`にします。
 [fixture: accessibility/block-left-padding-only]
 [fixture: accessibility/block-right-padding-only]
 トップレベルの閉じた説明ブロックの本文は文より 1 段深くそろえます。
@@ -821,7 +829,7 @@ agentflow-beta TB
 
 ```mmd
 agentflow-beta TB
-  accDescr {a}
+  accDescr { a }
   A[Block spacing]
 ```
 

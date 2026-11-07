@@ -968,6 +968,14 @@ multi-line-values/empty-whitespace-interiors] [test: sequence Unicode and tab
 interiors] Blocks with comments or directives keep their contents and line
 breaks.
 
+The text of a block on one line stands between one space on each side, as in
+[flowchart's accessibility lines](./flowchart.md#accessibility-lines):
+`accDescr {a b}`, `accDescr {  a b  }`, `accDescr {  a b}`, and
+`accDescr {a b  }` are printed `accDescr { a b }`. mermaid.js trims the text, so
+the whitespace at its ends carries no meaning. A block with a directive in its
+text, or a `;` in its text, stays as written. [fixture:
+multi-line-values/block-text-on-one-line-padded]
+
 Align the lines of an `accDescr { ... }` body one step inside its statement,
 with a separate `}` at the statement's level, as in
 [flowchart's top-level descriptions](./flowchart.md#multi-line-values). Mermaid

@@ -719,6 +719,8 @@ Db が同じになる外側の空白を、兄弟の図種と同じ形に揃え�
 Mermaid が説明から LF 後の字下げを除くためです。
 `accDescr` と `{` の間は、元が接していても空白 1 個にします。
 keyword と本文の開始を見分けやすくするためです。
+1 行のブロックの文字は、括弧に接して書かれていても、
+両側に空白を 1 つずつ置きます（`{ a }`）。
 [fixture: direction-and-accessibility/keyword-brace-touching]
 [fixture: direction-and-accessibility/keyword-brace-space]
 [fixture: direction-and-accessibility/keyword-brace-run]

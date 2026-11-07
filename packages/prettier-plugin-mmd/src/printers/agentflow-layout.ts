@@ -78,14 +78,28 @@ export function layoutContainerHeader(
   }
   const name = node.name
   let nameEnd = name.range[1]
+  const rules = new Map<number, GapRule>()
   // Only an ordinary single-fragment explicit-title heading shares flowchart's
-  // title-gap collapse. Erased click/empty forms and their context-exit gaps
+  // title-gap rules. Erased click/empty forms and their context-exit gaps
   // are Name text (diagrams/agentflow.md, Names; docs/agentflow.md, Names and headings).
   if (node.title !== null && name.parts.length === 1) {
     while (nameEnd > name.range[0] && isWhitespace(source.text[nameEnd - 1]))
       nameEnd--
     // A whitespace-only name still needs its written character.
     if (nameEnd === name.range[0]) nameEnd = name.range[1]
+    // The `[` of the title touches the name, as in a flowchart, unless a
+    // directive or comment ends the name: the whitespace after it is kept as
+    // under Directives (docs/agentflow.md, Names and headings).
+    const lastTrivia = findTriviaBetween(source, name.range[0], nameEnd).at(-1)
+    if (lastTrivia?.range[1] !== nameEnd) {
+      rules.set(
+        expectToken(
+          findStructuralToken(source, name.range[1]),
+          "the heading title opener",
+        ).range[0],
+        "none",
+      )
+    }
   } else if (name.parts.length > 1) {
     // A click-context exit is outside the last Name fragment. Preserve its
     // exact character before a title/data suffix, including a physical LF;
@@ -105,25 +119,6 @@ export function layoutContainerHeader(
     ...node.data,
     ...(node.title === null ? [] : [node.title]),
   ]
-  const rules = new Map<number, GapRule>()
-  // The `[` of the title of an ordinary heading touches its name, as in a
-  // flowchart, unless a directive or comment ends the name: the whitespace
-  // after it is kept as under Directives (docs/agentflow.md, Names and
-  // headings).
-  const lastTrivia = findTriviaBetween(source, name.range[0], nameEnd).at(-1)
-  if (
-    node.title !== null &&
-    name.parts.length === 1 &&
-    lastTrivia?.range[1] !== nameEnd
-  ) {
-    rules.set(
-      expectToken(
-        findStructuralToken(source, name.range[1]),
-        "the heading title opener",
-      ).range[0],
-      "none",
-    )
-  }
   const layout = layoutRange(
     source,
     node.range[0],

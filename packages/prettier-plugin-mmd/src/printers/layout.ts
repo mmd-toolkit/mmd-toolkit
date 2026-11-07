@@ -449,7 +449,7 @@ export function layoutDescriptionBlock(
     }
   }
   return options.preservesBodyColumns
-    ? layout
+    ? padOneLineDescription(source, block, layout)
     : indentDescriptionLines(source, block, layout)
 }
 
@@ -562,15 +562,93 @@ export interface AccDescrBlock {
   readonly opening?: number
 }
 
+/** Whether a character ends a line: LF, CR, U+2028, or U+2029. */
+function isLineBreak(character: string): boolean {
+  return ["\n", "\r", "\u2028", "\u2029"].includes(character)
+}
+
+/**
+ * Pad the text of an `accDescr { ... }` block on one line with one space
+ * inside each brace, `{ a b }`: mermaid.js trims the text, so the whitespace
+ * at its ends carries no meaning, as in the data blocks of
+ * docs/flowchart.md, Data blocks. The block is padded only if it is closed
+ * and the layout holds its text as one atom between the braces, with
+ * nothing but whitespace on one line around it: a comment or a directive in
+ * the block, a line break, a `;` in the text, or a layout that holds the text
+ * in a longer stretch (a kept line, a hidden form) leaves it as it is.
+ */
+export function padOneLineDescription(
+  source: Source,
+  block: AccDescrBlock,
+  layout: AtomLayout,
+): AtomLayout {
+  const closing = findAccDescrBlockClosing(source, block)
+  if (closing === null || closing !== block.range[1] - 1) return layout
+  const keyword = expectToken(
+    findTokenStartingAt(source, block.range[0]),
+    "the description keyword",
+  )
+  const opening = expectToken(
+    findDescriptionOpening(source, keyword, block.opening),
+    "the description opener",
+  )
+  const inside = layout.atoms.filter(
+    (atom) => atom.start >= opening.range[1] && atom.end <= closing,
+  )
+  if (
+    inside.length !== 1 ||
+    !layout.atoms.some((atom) => atom.end === opening.range[1]) ||
+    !layout.atoms.some((atom) => atom.start === closing)
+  )
+    return layout
+  const [text] = inside
+  const around = [
+    source.text.slice(opening.range[1], text.start),
+    source.text.slice(text.end, closing),
+  ]
+  if (
+    text.doc !== undefined ||
+    source.text.slice(text.start, text.end).includes(";") ||
+    [...source.text.slice(text.start, text.end)].some(isLineBreak) ||
+    around.some((gap) =>
+      gap.trim() === "" ? [...gap].some(isLineBreak) : true,
+    ) ||
+    findTriviaBetween(source, opening.range[1], closing).length > 0
+  )
+    return layout
+  return {
+    ...layout,
+    rules: new Map([
+      ...layout.rules,
+      [text.start, "space"],
+      [closing, "space"],
+    ]),
+  }
+}
+
 /**
  * Align ordinary description text after LF without changing its contents or
  * line breaks. The Db setter drops this indentation. Directives and removed
  * line feeds keep their source, and atoms outside the body stay untouched
  * (docs/timeline.md, Multi-line values; docs/pie.md, Description blocks).
+ * Text on one line is padded instead (see `padOneLineDescription`).
  * Callers whose Db also stores the raw description as a member keep their
  * original layout instead (docs/flowchart.md, Multi-line values).
  */
 export function indentDescriptionLines(
+  source: Source,
+  block: AccDescrBlock,
+  layout: AtomLayout,
+): AtomLayout {
+  return padOneLineDescription(
+    source,
+    block,
+    indentMultiLineDescription(source, block, layout),
+  )
+}
+
+/** Align the lines of the text after LF (see `indentDescriptionLines`). */
+function indentMultiLineDescription(
   source: Source,
   block: AccDescrBlock,
   layout: AtomLayout,

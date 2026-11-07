@@ -669,7 +669,8 @@ align body lines one step inside the statement and a separate `}` with the
 statement, including a block whose only content is a comment line. Mermaid
 discards indentation after LF from the description. Put one space between
 `accDescr` and `{`, including when they originally touched, so the keyword and
-body opener have a visible boundary. [fixture:
+body opener have a visible boundary, and put the text of a block on one line
+between one space on each side, as `{ a }`. [fixture:
 direction-and-accessibility/keyword-brace-touching] [fixture:
 direction-and-accessibility/keyword-brace-space] [fixture:
 direction-and-accessibility/keyword-brace-run] [test: accessibility revisions:

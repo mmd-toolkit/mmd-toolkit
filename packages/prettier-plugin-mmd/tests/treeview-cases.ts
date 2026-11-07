@@ -449,13 +449,13 @@ export const treeviewCases: readonly TreeviewCase[] = [
   {
     name: "treeview/decorations/review159-sole-opener-selector-ls",
     input: "treeView-beta\naccDescr\n─\u2028\n{z}\n   title   T\nroot\n",
-    output: "treeView-beta\naccDescr\n─\u2028\n{z}\ntitle T\nroot\n",
+    output: "treeView-beta\naccDescr\n─\u2028\n{ z }\ntitle T\nroot\n",
     options: {},
   },
   {
     name: "treeview/decorations/review159-sole-opener-selector-ps",
     input: "treeView-beta\naccDescr\n─\u2029\n{z}\n   title   T\nroot\n",
-    output: "treeView-beta\naccDescr\n─\u2029\n{z}\ntitle T\nroot\n",
+    output: "treeView-beta\naccDescr\n─\u2029\n{ z }\ntitle T\nroot\n",
     options: {},
   },
   {

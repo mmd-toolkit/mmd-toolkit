@@ -75,7 +75,7 @@ export const treemapCases: readonly TreemapCase[] = [
   {
     name: "treemap/description-blocks/unicode-opener",
     input: "treemap\naccDescr\u2028{Unicode detail}",
-    output: "treemap\n  accDescr {Unicode detail}\n",
+    output: "treemap\n  accDescr { Unicode detail }\n",
     options: {},
   },
   {

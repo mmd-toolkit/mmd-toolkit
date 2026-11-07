@@ -1182,20 +1182,34 @@ accessibility-lines/empty-block-semicolon-kept] [fixture:
 accessibility-lines/empty-block-directive-kept] [fixture:
 multi-line-values/accdescr-block-comment-only]
 
-Nonempty blocks follow [Multi-line values](#multi-line-values): `{a}` stays
-`{a}`, `{ a }` stays `{ a }`, and `{  a  }` becomes `{ a }`. Whitespace runs
-around the text collapse; absent whitespace is not added. [fixture:
-accessibility-lines/block-tight-text] [fixture:
+Nonempty blocks follow [Multi-line values](#multi-line-values): the text of a
+block on one line stands between one space on each side, so `{a}`, `{ a }`,
+`{  a  }`, `{  a}`, and `{a  }` all become `{ a }`. mermaid.js trims the text,
+so the whitespace at its ends carries no meaning, and the `@{ ... }` blocks of
+[Data blocks](#data-blocks) are printed the same way. In the fixtures of the
+corpus, 368 blocks on one line are written with a space on both sides and 186
+with none, and the documentation of mermaid.js has no example of a block on one
+line. [fixture: accessibility-lines/block-tight-text] [fixture:
 accessibility-lines/block-spaced-text] [fixture:
-accessibility-lines/block-padded-text] Independently, `{  a}` becomes `{ a}` and
-`{a  }` becomes `{a }`; each side keeps whether it had whitespace. [fixture:
+accessibility-lines/block-padded-text] [fixture:
 accessibility-lines/block-left-padding-only] [fixture:
-accessibility-lines/block-right-padding-only] Multiline body columns follow the
-top-level or subgraph rules in [Multi-line values](#multi-line-values), and a
-closing brace on its own line aligns with `accDescr`, whether written at column
-zero or indented. This is the same form as the sibling diagrams, with no
-flowchart-specific reason to differ. [fixture:
-accessibility-lines/block-close-column-zero] [fixture:
+accessibility-lines/block-right-padding-only] A block stays as written when it
+holds a comment or a directive, a line break, or a `;` in its text, since the
+line rule of mermaid.js reads the text up to a `;`: `{a;b}` and `{a; b}` stay,
+while a `;` after the block is a separator that the statement drops, and the
+block is padded. [fixture: accessibility-lines/block-text-beside-directive-kept]
+[fixture: accessibility-lines/block-text-with-semicolon-kept] [fixture:
+accessibility-lines/block-text-with-semicolons-padded] A U+2028 or U+2029 in the
+text makes it several lines, and stays. [test: U+2028 in the text of a flowchart
+description block] [test: U+2029 in the text of a flowchart description block]
+Whitespace at the ends that is not an ASCII space or tab, such as a no-break
+space, is trimmed by mermaid.js too and prints as one space. [test: no-break
+spaces at the ends of the text of a flowchart description block] Multiline body
+columns follow the top-level or subgraph rules in
+[Multi-line values](#multi-line-values), and a closing brace on its own line
+aligns with `accDescr`, whether written at column zero or indented. This is the
+same form as the sibling diagrams, with no flowchart-specific reason to differ.
+[fixture: accessibility-lines/block-close-column-zero] [fixture:
 accessibility-lines/block-close-indented] [fixture:
 accessibility-lines/block-comment-close-column-zero] [fixture:
 accessibility-lines/block-comment-close-indented] The same empty-block and
@@ -1221,7 +1235,7 @@ Output
 
 ```mmd
 flowchart LR
-  accDescr {a}
+  accDescr { a }
   A[Block spacing]
 ```
 
@@ -1533,9 +1547,9 @@ block stands at the level of the `accDescr` it closes. [fixture:
 multi-line-values/accdescr-block-kept] Comment contents inside such a block are
 kept, with their columns following the same top-level or subgraph rule.
 [fixture: multi-line-values/accdescr-block-comment-line-in-subgraph-kept] When
-the text starts on the line of the `{`, whitespace runs around it become one
-space, as between tokens; absent whitespace is not added. Empty blocks without
-trivia instead follow [Accessibility lines](#accessibility-lines). [fixture:
+the text starts on the line of the `{`, it stands between one space on each side
+(see [Accessibility lines](#accessibility-lines)). Empty blocks without trivia
+instead follow [Accessibility lines](#accessibility-lines). [fixture:
 multi-line-values/accdescr-block-text-starts-on-brace-line] A block without
 text, whose lines are only comment lines, holds no value: its comment lines
 stand one level deeper than the `accDescr`, as comment lines inside a statement
@@ -1864,8 +1878,13 @@ are written so. The documentation of flowchart has two subgraphs with a title,
 and both have a space
 ([`subgraph ide1 [one]`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L1030),
 [`subgraph one [My Group]`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L1109)),
-which does not decide the form. A directive in the gap keeps the whitespace
-written on each side of it, as under [Directives](#directives). [fixture:
+which does not decide the form. Where the gap lies between a `:` and a `#` of a
+line that holds `style` or `classDef` before the `:` and a `;` after the `#`, as
+in `subgraph style: [#x;]`, it keeps whether it holds whitespace, as under
+[Semicolons](#semicolons); `subgraph a: [#x;]` and `subgraph style: [#x]` have
+no such `;` and touch. [fixture: subgraph-header/title-after-colon-before-hash]
+A directive in the gap keeps the whitespace written on each side of it, as under
+[Directives](#directives). [fixture:
 subgraph-header/title-beside-directive-kept] A U+2028 or U+2029 in the gap stays
 where it is. [test: U+2028 between a subgraph name and its title] [test: U+2029
 and spaces between a subgraph name and its title] An empty description block

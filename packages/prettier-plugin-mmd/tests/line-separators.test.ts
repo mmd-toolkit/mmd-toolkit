@@ -50,6 +50,16 @@ function format(text: string, options: Options = {}): Promise<string> {
  */
 const examples: readonly (readonly [string, string, string])[] = [
   [
+    "U+2028 after the comma of a state class statement",
+    "stateDiagram-v2\nA --> B\nclass A,\u2028B c\nclassDef c fill:#f00\n",
+    "stateDiagram-v2\n  A --> B\n  class A,\u2028B c\n  classDef c fill:#f00\n",
+  ],
+  [
+    "U+2029 after the comma of a state class statement",
+    "stateDiagram-v2\nA --> B\nclass A, \u2029 B c\nclassDef c fill:#f00\n",
+    "stateDiagram-v2\n  A --> B\n  class A, \u2029 B c\n  classDef c fill:#f00\n",
+  ],
+  [
     "U+00A0 at the start of a later note row",
     "stateDiagram-v2\nnote right of Paid\n        Payment\n\u00a0wallet\nend note\n",
     "stateDiagram-v2\n  note right of Paid\n    Payment\n\u00a0wallet\n  end note\n",
@@ -477,6 +487,21 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
  */
 const flowchartExamples: readonly (readonly [string, string, string])[] = [
   [
+    "U+2028 in the text of a flowchart description block",
+    "flowchart LR\naccDescr {a\u2028b}\nA\n",
+    "flowchart LR\n  accDescr {a\u2028b}\n  A\n",
+  ],
+  [
+    "U+2029 in the text of a flowchart description block",
+    "flowchart LR\naccDescr {a\u2029b}\nA\n",
+    "flowchart LR\n  accDescr {a\u2029b}\n  A\n",
+  ],
+  [
+    "no-break spaces at the ends of the text of a flowchart description block",
+    "flowchart LR\naccDescr {\u00a0a\u00a0}\nA\n",
+    "flowchart LR\n  accDescr { a }\n  A\n",
+  ],
+  [
     "U+2028 between a subgraph name and its title",
     "flowchart LR\nsubgraph S\u2028[t]\nA\nend\n",
     "flowchart LR\n  subgraph S\u2028[t]\n    A\n  end\n",
@@ -593,6 +618,16 @@ const classLineSeparatorExamples: readonly (readonly [
   string,
   string,
 ])[] = [
+  [
+    "U+2028 after the comma of a classDef statement",
+    "classDiagram\nclass A\nclassDef c1,\u2028c2 fill:#f00\n",
+    "classDiagram\n  class A\n  classDef c1,\u2028c2 fill:#f00\n",
+  ],
+  [
+    "U+2029 after the comma of a classDef statement",
+    "classDiagram\nclass A\nclassDef c1 ,\u2029 c2 fill:#f00\n",
+    "classDiagram\n  class A\n  classDef c1,\u2029 c2 fill:#f00\n",
+  ],
   [
     "class: ls-comment-in-namespace-opening",
     "classDiagram\nnamespace Box\u2028%% keep\n {\nclass Node\n}\n",

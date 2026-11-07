@@ -523,9 +523,8 @@ journey
 `accDescr { ... }` の本文行は、文より 1 段深くそろえます。
 Mermaid が説明から LF 後の字下げを除くためです。
 `}` は文と同じ段に置きます。
-`{` の行にテキストがあるときは、
-離れて書かれていれば括弧の内側に空白 1 つを置き、
-テキストに接する括弧は接したままにします。
+`{` の行にテキストがあるときは、括弧に接して書かれていても、
+括弧の内側に空白を 1 つずつ置きます。
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-text-on-opening-line]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
@@ -737,7 +736,8 @@ journey
 
 上の規則が当てはまらない所では、文のトークンの間の空白の連続は空白 1 つにし、
 接しているトークンは接したままにします。
-説明ブロックの括弧が該当します。
+1 行の説明ブロックの文字は、括弧に接して書かれていても、
+両側に空白を 1 つずつ置きます。
 [fixture: whitespace-between-tokens/description-block-braces]
 ヘッダーの行末の空白は落とします。
 [fixture: whitespace-between-tokens/trailing-whitespace-after-header]
@@ -760,8 +760,8 @@ accDescr {f}
 ```mmd
 journey
   accDescr { d }
-  accDescr {e}
-  accDescr {f}
+  accDescr { e }
+  accDescr { f }
 ```
 
 ### コメント

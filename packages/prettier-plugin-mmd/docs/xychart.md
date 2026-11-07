@@ -587,13 +587,13 @@ including when they were written touching. Existing opener-line breaks retain
 their own rules. Protected trivia and semicolon layouts keep their gaps. Align
 the lines of an `accDescr { ... }` body one step inside its statement. Mermaid
 discards indentation after LF from the description. Its `}` stands at the level
-of its statement; a text on the line of the `{` has one space inside the braces
-where it was written apart, and the braces that touch their text keep touching.
-A block that is not closed runs to the end of the text, without adding a `}` or
-changing its EOF ending: mermaid.js reads no text for it, and a `}` that the
-printer wrote would make the block a description (`accDescr {` and `abc` at the
-end of the text have an empty description in the Db, and the same with a `}`
-have `abc`). [fixture: accessibility-statements/block-lines-kept] [fixture:
+of its statement; a text on the line of the `{` has one space inside each brace,
+also where the braces touched it. A block that is not closed runs to the end of
+the text, without adding a `}` or changing its EOF ending: mermaid.js reads no
+text for it, and a `}` that the printer wrote would make the block a description
+(`accDescr {` and `abc` at the end of the text have an empty description in the
+Db, and the same with a `}` have `abc`). [fixture:
+accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-text-on-the-opening-line] [fixture:
 accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
 [fixture: accessibility-statements/block-then-statement-on-the-closing-line]

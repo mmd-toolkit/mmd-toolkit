@@ -1761,8 +1761,8 @@ treeView-beta
 
 Use shared description-block layout for ordinary blocks: whitespace-only
 interiors become `{}`. Put one space between `accDescr` and `{`, even when
-originally touching, to distinguish the keyword from its body. Touching interior
-edges remain touching, and ordinary interior edge padding becomes one space.
+originally touching, to distinguish the keyword from its body. Text on one line
+stands between one space on each side, whether it touched the braces or not.
 Join plain opener whitespace, align ordinary body lines one step inside the
 statement, preserve trivia contents, and align separate closers with the
 statement. Mermaid discards indentation after LF from the description. The body

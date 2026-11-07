@@ -1208,14 +1208,32 @@ usecaseのDbが同じ形に従います。 [fixture: accessibility-lines/empty-b
 [fixture: multi-line-values/accdescr-block-comment-only]
 
 空でないブロックは[複数行の値](#複数行の値)に従います。
-`{a}`と`{ a }`はそのまま、`{  a  }`は`{ a }`です。
-文字の両側の空白列を1つにし、空白がなければ足しません。
+1 行のブロックの文字は、両側に空白を 1 つずつ置きます。
+`{a}`、`{ a }`、`{  a  }`、`{  a}`、`{a  }` は、どれも `{ a }` になります。
+mermaid.js は文字を trim するので、両端の空白に意味はありません。
+[データブロック](#データブロック)の `@{ ... }` も同じ形で印字します。
+corpus の fixture にある 1 行のブロックは、両側に空白があるものが 368 件、
+どちらにもないものが 186 件です。
+mermaid.js の文書には、1 行のブロックの例がありません。
 [fixture: accessibility-lines/block-tight-text]
 [fixture: accessibility-lines/block-spaced-text]
 [fixture: accessibility-lines/block-padded-text]
-左右を別々に扱い、`{  a}`は`{ a}`、 `{a  }`は`{a }`にします。
 [fixture: accessibility-lines/block-left-padding-only]
 [fixture: accessibility-lines/block-right-padding-only]
+コメントやディレクティブ、改行、文字の中の `;` があるブロックは、
+書かれたままにします。
+mermaid.js の line rule は `;` までを文字として読むからです。
+`{a;b}` と `{a; b}` はそのままで、ブロックの後ろの `;` は文を区切るので、
+その文は落とされ、ブロックは整えます。
+[fixture: accessibility-lines/block-text-beside-directive-kept]
+[fixture: accessibility-lines/block-text-with-semicolon-kept]
+[fixture: accessibility-lines/block-text-with-semicolons-padded]
+文字の中の U+2028 と U+2029 は、文字を複数行にするので、そのまま残します。
+[test: U+2028 in the text of a flowchart description block]
+[test: U+2029 in the text of a flowchart description block]
+ASCII の空白とタブでない端の空白（no-break space など）も、
+mermaid.js が trim するので、空白 1 つで印字します。
+[test: no-break spaces at the ends of the text of a flowchart description block]
 複数行の本文は、
 [複数行の値](#複数行の値)のトップレベルと subgraph の規則に従い、
 単独行の閉じ括弧を `accDescr` に揃えます。
@@ -1247,7 +1265,7 @@ flowchart LR
 
 ```mmd
 flowchart LR
-  accDescr {a}
+  accDescr { a }
   A[Block spacing]
 ```
 
@@ -1931,6 +1949,11 @@ flowchart の文書にあるタイトル付きの subgraph は 2 件で、
 [`subgraph one [My Group]`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L1109)
 です。
 これは形を決める根拠にはなりません。
+隙間が、`:` と `#` の間にあり、 `:` の前に `style` か `classDef` があり、
+`#` の後ろに `;` がある行にあるとき（`subgraph style: [#x;]`）、
+その隙間は空白があるかないかを保ちます（[セミコロン](#セミコロン)と同じです）。
+`subgraph a: [#x;]` と `subgraph style: [#x]` にはその `;` がないので、
+接します。 [fixture: subgraph-header/title-after-colon-before-hash]
 隙間にディレクティブがあれば、
 その両側に書かれた空白を残します（[ディレクティブ](#ディレクティブ)を参照）。
 [fixture: subgraph-header/title-beside-directive-kept]

@@ -1065,7 +1065,7 @@ directive interiors stay written. Inside a subgraph, keep the original body
 columns because the raw description also participates in its membership reading.
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines] Its `}` stands at
 the level of its statement; a text on the line of the `{` has one space inside
-the braces where it was written apart. [fixture:
+each brace, also where the braces touched it. [fixture:
 accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept] [fixture:
 accessibility-statements/block-text-on-opening-line] An empty block is a
