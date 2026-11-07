@@ -263,8 +263,8 @@ Nothing else of a configuration is used.
 ## Errors and exit codes
 
 A diagram that mermaid.js rejects is left as it is, and reported on standard
-error with its line and column in the file. The other files, and the other
-diagrams of the file, are still formatted:
+error with its line and column. The other files, and the other diagrams of the
+file, are still formatted:
 
 ```txt
 docs/flow.mmd:3:1: error: Unexpected end of text
@@ -272,9 +272,13 @@ notes.md:6:1: warning: Unexpected end of text
 ```
 
 In a `.mmd` or `.mermaid` file, it is an error. In a Markdown code block, it is
-a warning. Lines and columns count from 1, and a column counts UTF-16 code
-units, as most editors do. [Formatter compatibility](./compatibility.md)
-explains which diagrams are rejected.
+a warning. With `--write` and `--stdin-filepath`, the position of a warning is
+in the text after formatting, where the diagrams above it may have gained or
+lost lines, so that it points at the block in what you open after the run. With
+`--check`, which writes nothing, it is in the file as it is. Lines and columns
+count from 1, and a column counts UTF-16 code units, as most editors do.
+[Formatter compatibility](./compatibility.md) explains which diagrams are
+rejected.
 
 | Code | Meaning                                                       |
 | ---- | ------------------------------------------------------------- |

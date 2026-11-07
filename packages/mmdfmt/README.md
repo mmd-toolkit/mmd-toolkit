@@ -271,8 +271,8 @@ Nothing else of a configuration is used.
 ## Errors and exit codes
 
 A diagram that mermaid.js rejects is left as it is, and reported on standard
-error with its line and column in the file. The other files, and the other
-diagrams of the file, are still formatted:
+error with its line and column. The other files, and the other diagrams of the
+file, are still formatted:
 
 ```txt
 docs/flow.mmd:3:1: error: Unexpected end of text
@@ -280,8 +280,11 @@ notes.md:6:1: warning: Unexpected end of text
 ```
 
 In a `.mmd` or `.mermaid` file, it is an error. In a Markdown code block, it is
-a warning. Lines and columns count from 1, and a column counts UTF-16 code
-units, as most editors do.
+a warning. With `--write` and `--stdin-filepath`, the position of a warning is
+in the text after formatting, where the diagrams above it may have gained or
+lost lines, so that it points at the block in what you open after the run. With
+`--check`, which writes nothing, it is in the file as it is. Lines and columns
+count from 1, and a column counts UTF-16 code units, as most editors do.
 [Formatter compatibility](https://mmd-toolkit.github.io/mmd-toolkit/formatter/compatibility.html)
 explains which diagrams are rejected.
 
@@ -369,9 +372,15 @@ Two kinds of block are left as written, with a warning that gives the position:
 A diagram that is empty or only whitespace becomes empty.
 
 A file keeps its line endings. Each line that `mmdfmt` writes ends as the first
-line of the file ends, or with `\n` in a file of one line. In a Markdown file,
-only the lines of the diagrams that change are written. For the line and the
-column of an error or a warning, a line ends at `\n`, `\r\n`, or `\r`.
+line of the file ends, or with `\n` in a file of one line, except the last,
+which ends as the last line of the diagram ended before formatting. The line
+after the block then follows the same line ending as before; another one could
+join with that line's into one, as a `\r` before an empty line that ends with
+`\n` is read as one `\r\n`, and the number of lines would change. When the
+diagram becomes empty, the line of the opening fence ends that way in place of
+its own: the one change outside the lines between the fences. In a Markdown
+file, only the lines of the diagrams that change are written. For the line and
+the column of an error or a warning, a line ends at `\n`, `\r\n`, or `\r`.
 
 ## Documentation
 

@@ -1,7 +1,7 @@
 import { parsers } from "prettier/plugins/markdown"
 import type { Indentation } from "./diagram.ts"
 import { formatDiagram } from "./diagram.ts"
-import type { Diagnostic, FormatResult } from "./diagnostic.ts"
+import type { Diagnostic, FormatResult, PositionsIn } from "./diagnostic.ts"
 import type { Line, LineEnding } from "./lines.ts"
 import { lineEndingOf, positionIn, readText, splitLines } from "./lines.ts"
 
@@ -42,11 +42,13 @@ const diagramLanguages: ReadonlySet<string> = new Set(["mermaid", "mmd"])
 
 /**
  * Formats the diagrams in the code blocks of a Markdown file and changes
- * nothing else (README, Code blocks in detail).
+ * nothing else (README, Code blocks in detail). The warnings give their
+ * positions in the text that `positionsIn` names.
  */
 export async function formatMarkdown(
   text: string,
   indentation: Indentation,
+  positionsIn: PositionsIn,
 ): Promise<FormatResult> {
   const { byteOrderMark, lines, normalized } = readText(text)
   const lineEnding = lineEndingOf(text)
@@ -54,15 +56,28 @@ export async function formatMarkdown(
   let output = byteOrderMark
   // The index of the first line of the file that is not in `output` yet.
   let next = 0
+  // The number of lines that the blocks formatted so far have added, or
+  // removed where it is negative.
+  let addedLines = 0
   for (const block of diagramBlocksOf(await parseMarkdown(normalized))) {
     const result = await formatBlock(block, lines, indentation, lineEnding)
     if (result.kind === "warning") {
-      diagnostics.push(result.diagnostic)
+      // A block with a warning is left as written, so in the text after
+      // formatting only the blocks before it have moved its lines, and its
+      // columns stay.
+      const { diagnostic } = result
+      const { line, column } = diagnostic.position
+      diagnostics.push(
+        positionsIn === "input"
+          ? diagnostic
+          : { ...diagnostic, position: { line: line + addedLines, column } },
+      )
       continue
     }
     if (result.kind === "unchanged") continue
     output += joinLines(lines.slice(next, result.start)) + result.text
     next = result.start + result.count
+    addedLines += result.textLineCount - result.count
   }
   output += joinLines(lines.slice(next))
   return { text: output, diagnostics }
@@ -183,18 +198,24 @@ type BlockResult =
   | { readonly kind: "warning"; readonly diagnostic: Diagnostic }
   | {
       readonly kind: "replaced"
-      /** The index of the first content line in the lines of the file. */
+      /** The index of the line of the opening fence in the lines of the file. */
       readonly start: number
-      /** The number of content lines that `text` replaces. */
+      /**
+       * The number of lines that `text` replaces: the line of the opening
+       * fence and the content lines.
+       */
       readonly count: number
-      /** The new content lines, with their line endings. */
+      /** The lines that replace them, with their line endings. */
       readonly text: string
+      /** The number of lines of `text`. */
+      readonly textLineCount: number
     }
 
 /**
  * Formats the diagram of a code block. Only the content lines change: the
  * lines between the opening fence and the closing fence, or the end of the
- * block when it is not closed.
+ * block when it is not closed. The line of the opening fence keeps its text,
+ * and its line ending too unless the diagram becomes empty.
  */
 async function formatBlock(
   block: DiagramBlock,
@@ -257,32 +278,49 @@ async function formatBlock(
       },
     }
   }
-  // A block that is not closed and ends the file without a line ending keeps
-  // it so: whether the file ends with one is not the diagram's.
+  // The text of a block that is not closed and ends the file without a line
+  // ending has none at its end, and Prettier adds one: whether the file ends
+  // with one is not the diagram's, so it is left out before comparing.
   const formatted =
     !endsWithLineEnding && result.text.endsWith("\n")
       ? result.text.slice(0, -1)
       : result.text
   if (formatted === text) return { kind: "unchanged" }
 
-  const fenceLine = lines[start - 1].text
+  const fenceLine = lines[start - 1]
   const prefix = newLinePrefixOf(
-    fenceLine.slice(0, block.position.start.column - 1),
+    fenceLine.text.slice(0, block.position.start.column - 1),
   )
-  let replacement = ""
+  // The lines written: the line of the opening fence, and after it each
+  // formatted line with the prefix and the line ending of the file.
+  const written: Line[] = [fenceLine]
   for (const line of splitLines(formatted)) {
     // The rest after the last line ending is not a line.
     if (line.ending === "" && line.text === "") break
     // The prefix holds only spaces, tabs, and `>`.
-    replacement +=
-      (line.text === "" ? prefix.trimEnd() : prefix + line.text) +
-      (line.ending === "" ? "" : lineEnding)
+    written.push({
+      text: line.text === "" ? prefix.trimEnd() : prefix + line.text,
+      ending: lineEnding,
+    })
+  }
+  // The last line written, which is the line of the opening fence when the
+  // diagram becomes empty, keeps the line ending of the last content line, so
+  // that the line after the block follows the same line ending as before.
+  // Another one could join with that line's into one: a `\r` before an empty
+  // line that ends with `\n` is read as `\r\n`, and the lines after the block
+  // would change (README, Code blocks in detail). It also keeps a block that
+  // ends the file without a line ending without one.
+  const last = written.length - 1
+  written[last] = {
+    text: written[last].text,
+    ending: lines[start + values.length - 1].ending,
   }
   return {
     kind: "replaced",
-    start,
-    count: values.length,
-    text: replacement,
+    start: start - 1,
+    count: values.length + 1,
+    text: joinLines(written),
+    textLineCount: written.length,
   }
 }
 

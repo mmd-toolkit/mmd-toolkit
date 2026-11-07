@@ -2,18 +2,17 @@ import { describe, expect, it } from "vitest"
 import type { Indentation } from "../src/diagram.ts"
 import type { FormatResult } from "../src/diagnostic.ts"
 import { formatMarkdown } from "../src/markdown.ts"
+import { lines } from "./helpers.ts"
 
 /** The indentation without a Prettier configuration. */
 const noConfiguration: Indentation = { tabWidth: undefined, useTabs: undefined }
 
-/** Formats a Markdown text without a Prettier configuration. */
+/**
+ * Formats a Markdown text without a Prettier configuration, with the positions
+ * in the text after formatting.
+ */
 async function format(text: string): Promise<FormatResult> {
-  return formatMarkdown(text, noConfiguration)
-}
-
-/** A text of lines, each ended by `\n`. */
-function lines(...texts: readonly string[]): string {
-  return texts.map((text) => `${text}\n`).join("")
+  return formatMarkdown(text, noConfiguration, "output")
 }
 
 /** Expects a text to be formatted to `expected`, without a diagnostic. */
@@ -183,6 +182,106 @@ describe("Code blocks in detail: each line written starts with what stands befor
     await expectFormatted(
       lines(">```mermaid", ">flowchart LR", ">A-->B", ">```"),
       lines(">```mermaid", "> flowchart LR", ">   A --> B", ">```"),
+    )
+  })
+
+  it("starts each line that a diagram gains in a block quote with the >, and keeps the closing fence and the lines after the quote", async () => {
+    await expectFormatted(
+      lines(
+        "> ```mermaid",
+        "> flowchart LR",
+        "> A-->B; B-->C; C-->D",
+        "> ```",
+        "",
+        "after",
+      ),
+      lines(
+        "> ```mermaid",
+        "> flowchart LR",
+        ">   A --> B",
+        ">   B --> C",
+        ">   C --> D",
+        "> ```",
+        "",
+        "after",
+      ),
+    )
+  })
+
+  it("writes one > alone for the empty lines that a diagram in a block quote loses", async () => {
+    await expectFormatted(
+      lines(
+        "> ```mermaid",
+        "> flowchart LR",
+        "> A-->B",
+        ">",
+        ">",
+        ">",
+        "> B-->C",
+        "> ```",
+      ),
+      lines(
+        "> ```mermaid",
+        "> flowchart LR",
+        ">   A --> B",
+        ">",
+        ">   B --> C",
+        "> ```",
+      ),
+    )
+  })
+
+  it("starts each line that a diagram gains with every marker of a block quote in a block quote, and of a block quote in a list item", async () => {
+    await expectFormatted(
+      lines(
+        "> > ```mermaid",
+        "> > flowchart LR",
+        "> > A-->B; B-->C",
+        "> > ```",
+      ),
+      lines(
+        "> > ```mermaid",
+        "> > flowchart LR",
+        "> >   A --> B",
+        "> >   B --> C",
+        "> > ```",
+      ),
+    )
+    await expectFormatted(
+      lines(
+        "- item",
+        "  > ```mermaid",
+        "  > flowchart LR",
+        "  > A-->B; B-->C",
+        "  > ```",
+      ),
+      lines(
+        "- item",
+        "  > ```mermaid",
+        "  > flowchart LR",
+        "  >   A --> B",
+        "  >   B --> C",
+        "  > ```",
+      ),
+    )
+  })
+
+  it("starts the lines of a subgraph in a block quote with the >, before their nested indentation", async () => {
+    await expectFormatted(
+      lines(
+        "> ```mermaid",
+        "> flowchart LR",
+        "> subgraph S; A-->B; end",
+        "> ```",
+      ),
+      lines(
+        "> ```mermaid",
+        "> flowchart LR",
+        ">   subgraph S",
+        ">     A --> B",
+        ">   end",
+        "> ```",
+      ),
     )
   })
 
@@ -414,11 +513,47 @@ describe("Code blocks in detail: a file keeps its line endings", () => {
     )
   })
 
-  it("ends the lines that it writes as the first line ends, and keeps the others", async () => {
+  it("ends the lines that it writes as the first line ends, except the last, and keeps the others", async () => {
     await expectFormatted(
       "# T\n\n```mermaid\r\nflowchart LR\r\nA-->B\r\n```\r\n",
-      "# T\n\n```mermaid\r\nflowchart LR\n  A --> B\n```\r\n",
+      "# T\n\n```mermaid\r\nflowchart LR\n  A --> B\r\n```\r\n",
     )
+  })
+
+  it("keeps the line ending of the last line, so that a \\r does not join the \\n of an empty line after the block", async () => {
+    const input = "# T\r> ```mermaid\n> flowchart LR\n> A-->B\n\n> next\n"
+    const output = "# T\r> ```mermaid\n> flowchart LR\r>   A --> B\n\n> next\n"
+    await expectFormatted(input, output)
+    await expectFormatted(output, output)
+  })
+
+  it("ends the line of the opening fence as the last line ended when the diagram becomes empty", async () => {
+    const input = "# T\r> ```mermaid\r>\n\n> next\n"
+    const output = "# T\r> ```mermaid\n\n> next\n"
+    await expectFormatted(input, output)
+    await expectFormatted(output, output)
+  })
+
+  it("keeps the line ending of the last line in a file whose first line ends with \\r\\n", async () => {
+    const input = "# T\r\n> ```mermaid\n> flowchart LR\n> A-->B\n\n> next\n"
+    const output =
+      "# T\r\n> ```mermaid\n> flowchart LR\r\n>   A --> B\n\n> next\n"
+    await expectFormatted(input, output)
+    await expectFormatted(output, output)
+  })
+
+  it("keeps the line ending of the last line in a file of \\n whose block ends its lines with \\r", async () => {
+    const input = "# T\n> ```mermaid\r> flowchart LR\r> A-->B\r\r> next\n"
+    const output = "# T\n> ```mermaid\r> flowchart LR\n>   A --> B\r\r> next\n"
+    await expectFormatted(input, output)
+    await expectFormatted(output, output)
+  })
+
+  it("ends the file without a line ending after the opening fence when a diagram that ends the file without one becomes empty", async () => {
+    const input = "```mermaid\n  "
+    const output = "```mermaid"
+    await expectFormatted(input, output)
+    await expectFormatted(output, output)
   })
 
   it("keeps a byte order mark", async () => {
@@ -512,6 +647,149 @@ describe("Errors and exit codes: a warning with its position in the file", () =>
           severity: "warning",
           message: "Unexpected end of text",
           position: { line: 4, column: 1 },
+        },
+      ],
+    })
+  })
+
+  it("moves a warning up by the lines that a diagram before it loses", async () => {
+    const text = lines(
+      "> ```mermaid",
+      "> flowchart LR",
+      "> A-->B",
+      ">",
+      ">",
+      ">",
+      "> B-->C",
+      "> ```",
+      "",
+      "> ```mermaid",
+      "> flowchart LR",
+      ">\tA-->B",
+      "> ```",
+    )
+    expect(await format(text)).toEqual({
+      text: lines(
+        "> ```mermaid",
+        "> flowchart LR",
+        ">   A --> B",
+        ">",
+        ">   B --> C",
+        "> ```",
+        "",
+        "> ```mermaid",
+        "> flowchart LR",
+        ">\tA-->B",
+        "> ```",
+      ),
+      diagnostics: [
+        {
+          severity: "warning",
+          message:
+            "not formatted: a tab in the indentation of this line is read partly as the text of the diagram",
+          position: { line: 10, column: 2 },
+        },
+      ],
+    })
+  })
+
+  /**
+   * A file whose two diagrams gain lines before a block that is left as
+   * written, with a warning: its opening fence stands on the line of a footnote
+   * label. The tests below format it.
+   */
+  const input = lines(
+    "```mermaid",
+    "flowchart LR",
+    "A-->B; B-->C",
+    "```",
+    "",
+    "> ```mermaid",
+    "> flowchart LR",
+    "> A-->B; B-->C",
+    "> ```",
+    "",
+    "[^1]: ```mermaid",
+    "    flowchart LR",
+    "    A-->B",
+    "    ```",
+  )
+  /** The file above after formatting. */
+  const formatted = lines(
+    "```mermaid",
+    "flowchart LR",
+    "  A --> B",
+    "  B --> C",
+    "```",
+    "",
+    "> ```mermaid",
+    "> flowchart LR",
+    ">   A --> B",
+    ">   B --> C",
+    "> ```",
+    "",
+    "[^1]: ```mermaid",
+    "    flowchart LR",
+    "    A-->B",
+    "    ```",
+  )
+
+  it("moves a warning down by the lines that every diagram before it gains", async () => {
+    expect(await format(input)).toEqual({
+      text: formatted,
+      diagnostics: [
+        {
+          severity: "warning",
+          message:
+            "not formatted: the opening fence stands on the line of a footnote label",
+          position: { line: 13, column: 7 },
+        },
+      ],
+    })
+  })
+
+  it("moves a warning up by all the lines of a diagram before it that becomes empty", async () => {
+    const text = lines(
+      "```mermaid",
+      "",
+      "",
+      "",
+      "```",
+      "",
+      "```mermaid",
+      "flowchart LR",
+      "A-->B)",
+      "```",
+    )
+    expect(await format(text)).toEqual({
+      text: lines(
+        "```mermaid",
+        "```",
+        "",
+        "```mermaid",
+        "flowchart LR",
+        "A-->B)",
+        "```",
+      ),
+      diagnostics: [
+        {
+          severity: "warning",
+          message: "Unexpected character",
+          position: { line: 6, column: 6 },
+        },
+      ],
+    })
+  })
+
+  it("gives the position in the text as it was read when asked for it", async () => {
+    expect(await formatMarkdown(input, noConfiguration, "input")).toEqual({
+      text: formatted,
+      diagnostics: [
+        {
+          severity: "warning",
+          message:
+            "not formatted: the opening fence stands on the line of a footnote label",
+          position: { line: 11, column: 7 },
         },
       ],
     })
