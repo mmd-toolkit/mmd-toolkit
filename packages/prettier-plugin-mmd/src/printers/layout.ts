@@ -900,7 +900,9 @@ export function trimBracketedText(
  * held by one, and is dropped by a rule of its own. Where the whitespace lies
  * between a `:` and a `#` of a line that the line rule of mermaid.js may read
  * (see `isInsideStyleRuleStretch`), one space stays: whether it is there
- * decides which `;` of the line is ignored, as for a gap in flowchart.
+ * decides which `;` of the line is ignored, as for a gap in flowchart. The
+ * atoms are those of `collectAtoms` and `protectSemicolonPrefixes`, which hold
+ * no replacement yet.
  */
 export function dropPaddings(
   source: Source,
@@ -917,7 +919,7 @@ export function dropPaddings(
     const index = atoms.findIndex(
       (atom) => atom.start <= pad[0] && pad[1] <= atom.end,
     )
-    if (index === -1 || atoms[index].doc !== undefined) continue
+    if (index === -1) continue
     const replacement = isInsideStyleRuleStretch(source, pad[0], pad[1])
       ? " "
       : ""

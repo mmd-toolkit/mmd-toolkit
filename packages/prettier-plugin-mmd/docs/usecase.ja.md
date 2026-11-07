@@ -299,8 +299,16 @@ mermaid.js がそれらを trim するからです（no-break space は trim
 `S[ a;b ]` は `S[a;b]` に、`S[ a; ]` は `S[a;]` になります。
 空白が、行の規則が読むかもしれない行の `:` と `#` の間にあるときは、
 architecture や venn と同じく、空白 1 つを残します。
+usecase の id には `:` を書けないので、これが起きるのは、
+タイトルの前のディレクティブに `:` があるときだけです。
+mermaid.js はディレクティブを除いて行を読みますが、
+印字はディレクティブの `:` も数えるので、空白は要らないのに残ります。
+`systemBoundary mystyle%%{init:{}}%%[ #x; ]` は
+`systemBoundary mystyle%%{init:{}}%%[ #x;]` になり、
+`:` のないディレクティブ `%%{wrap}%%` のときは空白を落とします。
 U+2028 や U+2029 を含む空白は、書かれたまま残します。
 [fixture: system-boundaries/boundary-title-directive-or-semicolon]
+[fixture: system-boundaries/boundary-title-padding-after-directive-colon]
 [test: usecase: U+2028 inside the brackets of a boundary title]
 [test: usecase: U+2029 inside the brackets of a boundary title]
 [test: usecase: U+2028 inside the brackets of a boundary title with a semicolon]

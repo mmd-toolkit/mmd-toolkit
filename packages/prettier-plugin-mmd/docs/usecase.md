@@ -266,15 +266,21 @@ a line with a kept `;` too, where the text through the last `;` is protected
 (see Statements and semicolons): dropping it moves no `;`, so the line rule
 selects the same one. `S[ a;b ]` is printed `S[a;b]`, and `S[ a; ]` is printed
 `S[a;]`. One space stays where the padding lies between a `:` and a `#` of a
-line that the line rule may read, as in architecture and venn. A padding with a
-U+2028 or U+2029 in it stays. [fixture:
-system-boundaries/boundary-title-directive-or-semicolon] [test: usecase: U+2028
-inside the brackets of a boundary title] [test: usecase: U+2029 inside the
-brackets of a boundary title] [test: usecase: U+2028 inside the brackets of a
-boundary title with a semicolon] [test: usecase: U+2029 inside the brackets of a
-boundary title with a semicolon] A directive in the gap keeps whether whitespace
-was written on each side of it, a run of whitespace becoming one space, as under
-flowchart's Directives. [fixture:
+line that the line rule may read, as in architecture and venn. A usecase id
+cannot hold a `:`, so this happens only when a directive before the title holds
+one: the printer counts the `:` of the directive, although mermaid.js reads the
+line without it, so the space stays without being needed.
+`systemBoundary mystyle%%{init:{}}%%[ #x; ]` is printed
+`systemBoundary mystyle%%{init:{}}%%[ #x;]`, while the directive `%%{wrap}%%`
+has no `:` and the padding is dropped. A padding with a U+2028 or U+2029 in it
+stays. [fixture: system-boundaries/boundary-title-directive-or-semicolon]
+[fixture: system-boundaries/boundary-title-padding-after-directive-colon] [test:
+usecase: U+2028 inside the brackets of a boundary title] [test: usecase: U+2029
+inside the brackets of a boundary title] [test: usecase: U+2028 inside the
+brackets of a boundary title with a semicolon] [test: usecase: U+2029 inside the
+brackets of a boundary title with a semicolon] A directive in the gap keeps
+whether whitespace was written on each side of it, a run of whitespace becoming
+one space, as under flowchart's Directives. [fixture:
 system-boundaries/boundary-id-title-directed-gap] [fixture:
 system-boundaries/boundary-id-title-directed-gap-runs-collapsed] Preserve native
 metadata/classes and repeated declarations; body membership comes from the AST's
