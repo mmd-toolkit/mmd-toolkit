@@ -360,6 +360,20 @@ mermaid.js の文書にある例 1 件は、接する形で書かれています
 [test: U+2028 after the comma of a classDef statement]
 [test: U+2029 after the comma of a classDef statement]
 
+`classDef` 文と `style` 文のスタイルの `,` の前の空白は落とします。
+mermaid.js がスタイルから落とすからです。
+`style C fill:#f9f  ,  stroke:#333` は、
+`style C fill:#f9f,  stroke:#333` になります。
+`,` の後の空白は、`style` 文と、クラスが `:::` で使う `classDef` では、
+スタイルを示す Db に入るので、書かれたまま残します。
+バックスラッシュがエスケープする空白、スタイルの間のコメントやディレクティブ、
+行にある改行や保つ `;` は、文を書かれたままにします。
+[fixture: whitespace-between-tokens/style-comma-before-dropped]
+[fixture: whitespace-between-tokens/style-comma-beside-directive-kept]
+[fixture: whitespace-between-tokens/style-values-kept]
+スタイルの間に U+2028 や U+2029 があれば、文を書かれたままにします。
+[test: U+2028 before the comma of a class style statement]
+
 クラスの本体や namespace を閉じる `}` の後の U+2028 と U+2029 は、
 mermaid.js にとって空白なので、行末の空白と一緒に落とします。
 [test: U+2029 after the `}` of a class body]
@@ -1332,8 +1346,8 @@ mermaid.js はテキストの終わりの空白と改行もその一部として
 変えると図が変わるか、入力が拒否されるからです。
 
 - 値のテキスト。
-  文字列、バッククォートの名前、ラベルのテキスト、スタイル、
-  `accTitle` と `accDescr` のテキスト。
+  文字列、バッククォートの名前、ラベルのテキスト、
+  スタイル（`,` の前の空白を除きます）、`accTitle` と `accDescr` のテキスト。
   [fixture: whitespace-between-tokens/style-values-kept]
   [fixture: labels/accessibility-text-kept]
 - 属性と注釈の中身、メソッドの各フィールドの中身、

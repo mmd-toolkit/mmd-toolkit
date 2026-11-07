@@ -621,7 +621,7 @@ closer の padding が LF を可視のまま残す場合もあります。
 form を所有する node は変えず、行の配置を保ちます。
 
 native の suffix が同じ行を保つ場合も、
-semicolon で保護した prefix は一度だけ印字します。
+semicolon で保護した区間は一度だけ印字します。
 suffix の owner は保ち、項目の重複で Db を変えません。
 
 [fixture: cynefin/hidden-boundaries/semicolon-hidden-header-directive]
@@ -907,9 +907,20 @@ cynefin-beta
 
 ### Semicolons
 
-共有の textual-prefix 保護で全 semicolon を残します。
-segment の先頭から最後の semicolon までと、交差する値・trivia 全体を保ち、
-安全な suffix の隙間だけを整形します。
+全 semicolon を残します。
+保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
+ほかの場所と同じように整形します。
+この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
+`style` か `classDef` の後の最初の `:` から、
+最後の保つ `;` の前の最後の `#` までに空白がない並びを読みます。
+その範囲の隙間と余白は空白の有無を保ち、空白の連続は空白 1 つにします。
+範囲の外は、この図種の通常の規則に従います。
+どの部分の配置も持たないテキストは、書かれたまま残します。
+複数行にわたる文は、各区間の頭から最後の保つ `;` までを、書かれたまま残します。
+プリンターが文の行をつなぐと、行の規則が読む行になりうるからです。
+[fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted]
+[fixture: semicolons/semi-line-other-value]
 保護した最初の行は所属本文の段にし、項目なら項目の段にします。
 中身と後続行の列は保ちます。
 segment は directive と comment-region の結合を含め、
@@ -973,7 +984,7 @@ semicolon の削除や trigger の移動は Db や受理を変え得るためで
 
 ```mmd
 cynefin-beta
-  complex "style:#fixed"; "SuffixItem"
+  complex "style:#fixed";"SuffixItem"
 ```
 
 [fixture: cynefin/semicolons/review-semicolon-following-pair]

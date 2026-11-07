@@ -12,7 +12,9 @@ import {
   lineEndOf,
   lineStartOf,
   semicolonSegmentEnd,
+  usesVerbatimStyleLines,
 } from "./kept-lines.ts"
+import { appendItems } from "./collections.ts"
 import type { Source } from "./source.ts"
 import {
   findStructuralToken,
@@ -21,6 +23,7 @@ import {
   findTokensBetween,
   findTriviaBetween,
   isStructural,
+  isWhitespace,
 } from "./source.ts"
 
 /**
@@ -801,11 +804,25 @@ export function toAsciiLowerCase(text: string): string {
 }
 
 /**
- * Whole crossing values and CSS declarations stay inside a textual prefix.
- * Its range includes source indentation; later lines add none before it
- * (docs/radar.md, Multi-line statements and Semicolons). Callers can exclude
- * required grammatical terminators, which are separate atoms rather than
- * protected text (docs/railroad.md, Semicolons).
+ * Keeps as written the text of a segment with a kept `;` where formatting it
+ * could change which `;` the line rule of mermaid.js ignores (common.md, The
+ * `style` and `classDef` lines).
+ *
+ * - A statement on one line is formatted as anywhere else. The gaps and the
+ *   padding inside the stretch that the rule reads, from the `:` after
+ *   `style` or `classDef` to the `#` after it, keep whether they hold
+ *   whitespace (see `isInsideStyleRuleStretch`), and the rest of the line may
+ *   change. Text that no atom holds stays as written, as the layout left it to
+ *   this function.
+ * - A statement over several lines, and the diagrams that keep complete word
+ *   lines verbatim (railroad and wardley), keep the whole text of each segment
+ *   up to its last kept `;` (`protectWholePrefixes`): joining the lines of a
+ *   statement could make a line that the rule reads.
+ *
+ * Callers can exclude required grammatical terminators, which are separate
+ * atoms rather than protected text (docs/railroad.md, Semicolons). A kept range
+ * includes source indentation; later lines add none before it (docs/radar.md,
+ * Multi-line statements and Semicolons).
  */
 export function protectSemicolonPrefixes(
   source: Source,
@@ -814,18 +831,74 @@ export function protectSemicolonPrefixes(
   atoms: readonly Atom[],
   structuralSemicolons: ReadonlySet<number> = new Set(),
 ): Atom[] {
+  const text = source.text.slice(start, end)
+  if (
+    usesVerbatimStyleLines(source) ||
+    text.includes("\n") ||
+    text.includes("\r")
+  ) {
+    return protectWholePrefixes(source, start, end, atoms, structuralSemicolons)
+  }
   const kept: Atom[] = []
   for (let position = start; position < end;) {
     const stop = semicolonSegmentEnd(source, position)
-    const segment = source.text.slice(position, stop)
-    let index = segment.lastIndexOf(";")
-    while (
-      index !== -1 &&
-      (structuralSemicolons.has(position + index) ||
-        isDroppedSemicolon(source, position + index))
+    const semicolon = findLastKeptSemicolonIn(
+      source,
+      position,
+      stop,
+      structuralSemicolons,
     )
-      index = index === 0 ? -1 : segment.lastIndexOf(";", index - 1)
-    const semicolon = index === -1 ? -1 : position + index
+    if (semicolon < position) {
+      position = stop + 1
+      continue
+    }
+    appendItems(
+      kept,
+      findUncoveredText(source, position, Math.min(end, semicolon + 1), atoms),
+    )
+    position = stop + 1
+  }
+  return withKept(atoms, kept)
+}
+
+/** The offset of the last `;` of the segment that the printer keeps, or -1. */
+function findLastKeptSemicolonIn(
+  source: Source,
+  position: number,
+  stop: number,
+  structuralSemicolons: ReadonlySet<number>,
+): number {
+  const segment = source.text.slice(position, stop)
+  let index = segment.lastIndexOf(";")
+  while (
+    index !== -1 &&
+    (structuralSemicolons.has(position + index) ||
+      isDroppedSemicolon(source, position + index))
+  )
+    index = index === 0 ? -1 : segment.lastIndexOf(";", index - 1)
+  return index === -1 ? -1 : position + index
+}
+
+/**
+ * The whole text of each segment from its start through its last kept `;`,
+ * with the values and comments that cross it, kept as written.
+ */
+function protectWholePrefixes(
+  source: Source,
+  start: number,
+  end: number,
+  atoms: readonly Atom[],
+  structuralSemicolons: ReadonlySet<number>,
+): Atom[] {
+  const kept: Atom[] = []
+  for (let position = start; position < end;) {
+    const stop = semicolonSegmentEnd(source, position)
+    const semicolon = findLastKeptSemicolonIn(
+      source,
+      position,
+      stop,
+      structuralSemicolons,
+    )
     if (semicolon < position) {
       position = stop + 1
       continue
@@ -850,6 +923,11 @@ export function protectSemicolonPrefixes(
     else kept.push({ start: from, end: through, writtenIndentation: "" })
     position = through
   }
+  return withKept(atoms, kept)
+}
+
+/** The atoms without those inside a kept range, and the kept ranges, in order. */
+function withKept(atoms: readonly Atom[], kept: readonly Atom[]): Atom[] {
   return [
     ...kept,
     ...atoms.filter(
@@ -859,6 +937,41 @@ export function protectSemicolonPrefixes(
         ),
     ),
   ].sort((a, b) => a.start - b.start)
+}
+
+/**
+ * The runs of text between `start` and `end` that no atom holds, as atoms:
+ * the characters that are neither whitespace nor in a comment or a directive.
+ * A layout may leave such text to the protection of a `;` prefix.
+ */
+function findUncoveredText(
+  source: Source,
+  start: number,
+  end: number,
+  atoms: readonly Atom[],
+): Atom[] {
+  const trivia = findTriviaBetween(source, start, end)
+
+  /** Whether an atom, a comment, or a directive holds the character. */
+  function covered(offset: number): boolean {
+    return (
+      atoms.some((atom) => atom.start <= offset && offset < atom.end) ||
+      trivia.some((item) => item.range[0] <= offset && offset < item.range[1])
+    )
+  }
+
+  const runs: Atom[] = []
+  let runStart = -1
+  for (let offset = start; offset <= end; offset++) {
+    const text =
+      offset < end && !isWhitespace(source.text[offset]) && !covered(offset)
+    if (text && runStart === -1) runStart = offset
+    if (!text && runStart !== -1) {
+      runs.push({ start: runStart, end: offset, writtenIndentation: "" })
+      runStart = -1
+    }
+  }
+  return runs
 }
 
 /** A space, a tab, or a no-break space: what mermaid.js trims from a label. */
@@ -909,26 +1022,52 @@ export function dropPaddings(
   atoms: Atom[],
   pads: readonly Range[],
 ): void {
-  const edits = new Map<number, { range: Range; replacement: string }[]>()
+  const edits: TextEdit[] = []
   for (const pad of pads) {
     if (pad[0] >= pad[1]) continue
     // A line terminator, a comment, or a directive between the bracket and the
     // text is no padding, and stays.
     if (!Array.from(source.text.slice(pad[0], pad[1])).every(isBracketPadding))
       continue
-    const index = atoms.findIndex(
-      (atom) => atom.start <= pad[0] && pad[1] <= atom.end,
-    )
-    if (index === -1) continue
-    const replacement = isInsideStyleRuleStretch(source, pad[0], pad[1])
-      ? " "
-      : ""
-    if (replacement === source.text.slice(pad[0], pad[1])) continue
-    const list = edits.get(index) ?? []
-    list.push({ range: pad, replacement })
-    edits.set(index, list)
+    edits.push({
+      range: pad,
+      replacement: isInsideStyleRuleStretch(source, pad[0], pad[1]) ? " " : "",
+    })
   }
-  for (const [index, list] of edits) {
+  replaceInAtoms(source, atoms, edits)
+}
+
+/** A range of the source and the text that is printed in its place. */
+export interface TextEdit {
+  readonly range: Range
+  readonly replacement: string
+}
+
+/**
+ * Prints the replacement of each edit in place of its range, in the atom that
+ * holds the range: the atom is given a replacement that leaves the rest of its
+ * text as written. An edit that no atom holds whole (a gap between two atoms,
+ * which a rule of its own handles), an edit in an atom that already has a
+ * replacement, and one that changes nothing are left out. The atoms are those
+ * of `collectAtoms` and `protectSemicolonPrefixes`.
+ */
+export function replaceInAtoms(
+  source: Source,
+  atoms: Atom[],
+  edits: readonly TextEdit[],
+): void {
+  const byAtom = new Map<number, TextEdit[]>()
+  for (const edit of edits) {
+    const index = atoms.findIndex(
+      (atom) => atom.start <= edit.range[0] && edit.range[1] <= atom.end,
+    )
+    if (index === -1 || atoms[index].doc !== undefined) continue
+    if (edit.replacement === source.text.slice(...edit.range)) continue
+    const list = byAtom.get(index) ?? []
+    list.push(edit)
+    byAtom.set(index, list)
+  }
+  for (const [index, list] of byAtom) {
     const atom = atoms[index]
     const parts: Doc[] = []
     let at = atom.start

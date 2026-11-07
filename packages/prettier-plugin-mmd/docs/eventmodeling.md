@@ -575,8 +575,8 @@ later closer.
 Keep the entire body as written if the opener has padding before LF, the body
 contains `<`, `&` or `%%{`, or a nonblank line starts with a tab or other
 whitespace after its ASCII-space prefix. HTML, entities and directive-looking
-text can make indentation affect rendering. Existing semicolon protection and
-default-size rules also take precedence.
+text can make indentation affect rendering. A body that holds a `;` stays as
+written too: Mermaid's native entity spellings, such as `#amp;`, end in a `;`.
 
 [fixture: eventmodeling/data-blocks/block-interior-unchanged]
 
@@ -1021,14 +1021,25 @@ tf%%{wrap}%% 01 evt Alpha%%{wrap}%%->>%%{wrap}%%02
 
 ### Semicolons
 
-Keep every authored semicolon using shared textual-prefix protection: preserve
-through the last semicolon of each protected segment and every complete crossing
-value or trivia item. The first protected body line aligns with its body;
-contents and later columns remain authored. Required identifier and common-value
-padding takes precedence over structural indentation. Keep a child body's
-opening edge on the protected line too, so a second formatting cannot split it
-differently. This grammar has no grammatical semicolon, so `verbatimStyleLines`
-is false: a `style` or `classDef` word alone does not freeze the whole line.
+Keep every authored semicolon. A segment that holds a kept `;` is formatted as
+anywhere else, except where formatting could change which `;` the line rule
+ignores. The rule reads a segment from the first `:` after `style` or `classDef`
+to the last `#` before its last kept `;`, with no whitespace between the `:` and
+the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps and the
+padding inside that stretch keep whether they hold whitespace, a run becoming
+one space, and the rest of the segment follows the ordinary rules of this
+diagram. Text that no part of the layout holds stays as written. A statement
+over several lines keeps the text of each segment, up to its last kept `;`, as
+written, since the printer joins its lines and a joined line can be one that the
+rule reads. [fixture: semicolons/stretch-kept-rest-formatted] [fixture:
+semicolons/no-stretch-formatted] [fixture:
+semicolons/protected-gwt-title-hidden-gap-remains-zero] The first protected body
+line aligns with its body; contents and later columns remain authored. Required
+identifier and common-value padding takes precedence over structural
+indentation. Keep a child body's opening edge on the protected line too, so a
+second formatting cannot split it differently. This grammar has no grammatical
+semicolon, so `verbatimStyleLines` is false: a `style` or `classDef` word alone
+does not freeze the whole line.
 
 [fixture: eventmodeling/semicolons/native-gwt-value]
 

@@ -561,17 +561,24 @@ block-beta
 `class A c   d` のクラス名は `c   d` で、
 `class A , B   c1` のクラス名は `, B   c1` です。
 `A` の後の空白が id を終わらせるからです。
-`classDef` の空白は Db に入りませんが、スタイルは同じに書かれたまま印字します。
-flowchart
-と同じ規則で（[トークンの間の空白](./flowchart.ja.md#トークンの間の空白)
-を参照）、3 つの文を 1 つの規則にし、
-印字がスタイルの並びを分けないようにするためです。
+`classDef` の空白は Db に入らないので、スタイルを区切る `,` は、
+ER の[スタイルとクラス](./er.ja.md#スタイルとクラス)と同じく、前に空白を置かず、
+後に空白 1 つを置きます。
+`classDef c fill:#f00 , color:white` は、
+`classDef c fill:#f00, color:white` になります。
+スタイルの間のコメントやディレクティブ、行にある改行や保つ `;` は、
+文を書かれたままにします。
+`style` 文のスタイルは、書かれたまま印字します。
 文の最後の空白は、
 flowchart の [スタイルの行末の空白](./flowchart.ja.md#スタイルの行末の空白)
 と同じに落とします。 [fixture: styles/class-definition-spaces]
 [fixture: styles/style-spaces] [fixture: styles/class-spaces]
 [fixture: styles/style-commas-as-written]
 [fixture: styles/class-definition-commas-as-written]
+[fixture: styles/class-definition-comma-spaced]
+[fixture: styles/class-definition-comma-beside-directive-kept]
+[fixture: styles/style-statement-commas-kept]
+[test: U+2029 before the comma of a block classDef statement]
 [fixture: styles/class-ids-as-written]
 [fixture: styles/class-name-with-a-comma-as-written]
 [fixture: styles/class-name-as-written]
@@ -604,7 +611,7 @@ classDef   c1    color:#fff , fill:#000
 ```mmd
 block-beta
   A
-  classDef c1 color:#fff , fill:#000
+  classDef c1 color:#fff, fill:#000
 ```
 
 入力
@@ -696,7 +703,7 @@ block
   A
   classDef c fill:#f00
   style A fill:#f00
-  classDef d fill:#0f0,stroke:#00f
+  classDef d fill:#0f0, stroke:#00f
   style A fill:#0f0,stroke:#00f
 ```
 

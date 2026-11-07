@@ -1643,9 +1643,9 @@ Venn の本文は平らな一覧で、対象を書かない text だけを字下
 空の引用符つきの名前と style も値です。
 裸の空白、引用符内の空白、空の引用符つきラベルの読み分けも保ちます。
 上で述べた行末のスタイルの終端を除き、セミコロンを保ちます。
-最初の非空白から最後の保持するセミコロンまでの接頭部を保護します。
-端にかかる値と項目は全体を保ちます。
-字下げと外側の末尾空白はプリンターの空白で、安全な接尾部は通常どおり整形します。
+保つセミコロンがある行は、
+[Line rule and kept lines](./venn.ja.md#line-rule-and-kept-lines)のとおり、
+行の規則が読む範囲を除いて、ほかの場所と同じように整形します。
 コメントとディレクティブ内の Unicode 区切りは保持部分を切りません。
 Venn の図コメントは LF か末尾まで続きます。
 
@@ -1869,7 +1869,7 @@ class の[トークンの間の空白](./class.ja.md#トークンの間の空白
 ラベルと引用、境界タイトルの余白、継続列は、
 除去や引用の変更で Db が等しい場合も書かれたままです。
 共通コメント領域の結合と LS、PS を越える native コメントを保ちます。
-セミコロンは文を区切らず、文字列の保持部分をすべて保護します。
+セミコロンは文を区切らず、行の規則が読む範囲を保護します。
 六つの既存の乖離は指定の受理と読みに従い、拒否する木は共有の失敗経路に従います。
 [fixture: usecase/labels/label-quote-kinds]
 [fixture: usecase/system-boundaries/boundary-headings]
@@ -1909,7 +1909,7 @@ ignored YAML が frontmatter になるのを防ぎます。
 
 pie の本文は `tabWidth: 0` で字下げ0幅です。
 YAML は共有の最小幅を保ちます。
-セミコロンをすべて残し、交差する値と trivia の prefix 全体を保護します。
+セミコロンをすべて残し、行の規則が読む範囲を保護します。
 物理改行、BOM、末尾改行の処理は共有します。
 Markdown host は最後の code block 行の空白を hidden 境界も含め削ります。
 後続の文の前にある内部の hidden 境界の空白は必要です。
@@ -2308,7 +2308,7 @@ class 名と行が接する場合は接触を保ち、図全体の根の基準�
 [fixture: treemap/comments/mixed-directives]
 class のスタイル区切りの独立した trivia とスタイルの継続行は、
 `classDef` より1段内側にそろえます。
-スタイル本文と、semicolon が保護する接頭部は変えません。
+スタイル本文と、複数行にわたる文の semicolon が保護する区間は変えません。
 [fixture: treemap/style-gaps/css-comment]
 [fixture: treemap/style-gaps/css-directive-tabs]
 [fixture: treemap/style-gaps/css-comment-semicolon-kept]
@@ -2330,7 +2330,8 @@ CSS としては整形しません。
 class の再定義、空代入、未解決の selector、元順を保ちます。
 common 値と説明ブロックは共有の外側の配置を使い、
 内側の文字と trivia を保ちます。
-全 semicolon を保ち、保護区間の内部に字下げを足さず列を保ちます。
+全 semicolon を保ち、複数行にわたる文の保護区間の内部に字下げを足さず、
+列を保ちます。
 
 [fixture: treemap/numbers/underscore] [fixture: treemap/numbers/precision]
 [fixture: treemap/names/quotes] [fixture: treemap/names/physical-columns]

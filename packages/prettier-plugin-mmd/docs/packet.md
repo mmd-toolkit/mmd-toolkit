@@ -643,13 +643,22 @@ packet
 
 ### Semicolons
 
-Keep every semicolon and reuse shared textual segment protection: protect from
-the first non-whitespace character through the last semicolon, extending through
-whole crossing values/comments/directives. Keep protected header/first-statement
-groups together, formatting only safe exterior/suffix gaps. Both style/classDef
-passes, case, colon/hash whitespace, repetitions, Unicode segment bounds and
-directive-rejoined triggers stay written. Removing one selected semicolon can
-select another and change the Db; atomic cuts remain failures.
+Keep every semicolon. A segment that holds a kept `;` is formatted as anywhere
+else, except where formatting could change which `;` the line rule ignores. The
+rule reads a segment from the first `:` after `style` or `classDef` to the last
+`#` before its last kept `;`, with no whitespace between the `:` and the `#`
+(see [Semicolons](./flowchart.md#semicolons)), so the gaps and the padding
+inside that stretch keep whether they hold whitespace, a run becoming one space,
+and the rest of the segment follows the ordinary rules of this diagram. Text
+that no part of the layout holds stays as written. A statement over several
+lines keeps the text of each segment, up to its last kept `;`, as written, since
+the printer joins its lines and a joined line can be one that the rule reads.
+[fixture: semicolons/stretch-kept-rest-formatted] [fixture:
+semicolons/no-stretch-formatted] Keep protected header/first-statement groups
+together. Both style/classDef passes, case, colon/hash whitespace, repetitions,
+Unicode segment bounds and directive-rejoined triggers keep their reading.
+Removing one selected semicolon can select another and change the Db; atomic
+cuts remain failures.
 
 [fixture: packet/semicolons/native-field-value]
 
@@ -680,7 +689,7 @@ packet
   title Text;;
   accTitle: Access;
   accDescr: Detail;;
-  0:"Label;"
+  0: "Label;"
 ```
 
 ### Blank lines

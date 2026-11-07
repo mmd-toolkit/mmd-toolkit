@@ -116,9 +116,9 @@ const cases: readonly MarkdownCase[] = [
     input:
       '```mermaid\n%%{wrap}%%\npacket title style:#a;b\n0:"style:#c;d"\n```\n',
     output:
-      '```mermaid\n%%{wrap}%%\npacket title style:#a;b\n  0:"style:#c;d"\n```\n',
+      '```mermaid\n%%{wrap}%%\npacket title style:#a;b\n  0: "style:#c;d"\n```\n',
     payloadInput: '%%{wrap}%%\npacket title style:#a;b\n0:"style:#c;d"',
-    payloadOutput: '%%{wrap}%%\npacket title style:#a;b\n  0:"style:#c;d"\n',
+    payloadOutput: '%%{wrap}%%\npacket title style:#a;b\n  0: "style:#c;d"\n',
     options: {},
   },
   {

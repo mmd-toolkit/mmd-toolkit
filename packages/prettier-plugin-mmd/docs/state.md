@@ -394,12 +394,25 @@ of the alias. [fixture: whitespace-between-tokens/css-class-in-definition-kept]
 A directive in the gap keeps whether whitespace was written on each side of it,
 as under [Directives](#directives), and a U+2028 or U+2029 stays where it is.
 [test: U+2028 before the `:::` of a state] [test: U+2029 after the `:::` of a
-state] This holds for the `""` that mermaid.js does not read and the `,` of a
-style statement; the quotes of a floating note are kept as written. [fixture:
+state] This holds for the `""` that mermaid.js does not read; the quotes of a
+floating note are kept as written. [fixture:
+whitespace-between-tokens/floating-note-quotes-kept] The `,` between the styles
+of a `classDef` or a `style` statement has no whitespace before it and one space
+after it, as in ER and requirement (see
+[Styles and classes](./er.md#styles-and-classes)):
+`classDef c fill:#f00 , color:white` is printed
+`classDef c fill:#f00, color:white`. mermaid.js reads the whitespace around the
+`,` as nothing in a state diagram, so the Db is the same. A comment or a
+directive among the styles, and a line break or a kept `;` on the line, keep the
+statement as written, and so does a style that is all whitespace. [fixture:
 whitespace-between-tokens/comma-kept] [fixture:
-whitespace-between-tokens/floating-note-quotes-kept] Whether whitespace is
-written before a `""` is kept: `state x"" {` is the composite state `x""`, and
-`state x "" {` the composite state `x`. [fixture:
+whitespace-between-tokens/style-comma-spaced] [fixture:
+whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
+whitespace-between-tokens/style-comma-with-kept-semicolon-kept] A U+2028 or
+U+2029 among the styles stays where it is. [test: U+2028 before the comma of a
+state classDef statement] [test: U+2029 after the comma of a state classDef
+statement] Whether whitespace is written before a `""` is kept: `state x"" {` is
+the composite state `x""`, and `state x "" {` the composite state `x`. [fixture:
 whitespace-between-tokens/quotes-before-brace-kept] Keywords keep the case in
 which they are written. mermaid.js reads them in any case and the Db is the
 same, so nothing forces the case; it is the author's, and the printer does not
@@ -455,7 +468,7 @@ stateDiagram-v2
   A:::highlight
   state f1 <<fork>>
   state "" x
-  classDef c fill:red , stroke:blue
+  classDef c fill:red, stroke:blue
   class A,B c
   scale 350 width
   hide empty description
@@ -1195,8 +1208,8 @@ stateDiagram-v2
   A --> B
   classDef c fill:#f00
   style A fill:#f00
-  classDef d fill:#0f0,stroke:#00f
-  style A fill:#0f0,stroke:#00f
+  classDef d fill:#0f0, stroke:#00f
+  style A fill:#0f0, stroke:#00f
 ```
 
 ### Multi-line statements
@@ -1404,9 +1417,9 @@ the following text is kept as written because changing it would change the
 diagram or the input would be rejected:
 
 - the text of a value: a description, a label, a note, an id after `as`, a
-  pseudostate name, a style, the CSS class of a `class` statement, and the text
-  of `accTitle` and `accDescr`; [fixture:
-  whitespace-between-tokens/style-text-kept] [fixture:
+  pseudostate name, a style, apart from the whitespace around its `,`, the CSS
+  class of a `class` statement, and the text of `accTitle` and `accDescr`;
+  [fixture: whitespace-between-tokens/style-text-kept] [fixture:
   descriptions-and-labels/acc-text-kept] [fixture: aliases/id-kept]
 - what follows the id of a note on one line, the second description of an alias
   definition, and the whitespace after the `:` of a description of only

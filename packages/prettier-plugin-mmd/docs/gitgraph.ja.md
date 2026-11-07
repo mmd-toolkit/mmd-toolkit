@@ -685,14 +685,24 @@ gitGraph
 
 ### Semicolons
 
-すべての semicolon を残し、共通の source segment 保護を使います。
-最初の非空白から最後の semicolon までを、
-交差する値・コメント・directive の全体へ延ばして保持します。
+すべての semicolon を残します。
+保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
+ほかの場所と同じように整形します。
+この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
+`style` か `classDef` の後の最初の `:` から、
+最後の保つ `;` の前の最後の `#` までに空白がない並びを読みます。
+その範囲の隙間と余白は空白の有無を保ち、空白の連続は空白 1 つにします。
+範囲の外は、この図種の通常の規則に従います。
+どの部分の配置も持たないテキストは、書かれたまま残します。
+複数行にわたる文は、各区間の頭から最後の保つ `;` までを、書かれたまま残します。
+プリンターが文の行をつなぐと、行の規則が読む行になりうるからです。
+[fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted]
 保護された見出しと最初の文を分けません。
 style・classDef の pass、colon と hash の空白、大小文字、反復、
 directive が再結合する trigger と LS/PS の境界を残します。
 選ばれた semicolon の削除は別の選択を起こして Db を変えます。
-安全な suffix の隙間だけ整形し、atomic な分断は拒否します。
+atomic な分断は拒否します。
 
 固定例: [fixture: gitgraph/semicolons/native-commit-value]
 

@@ -857,9 +857,20 @@ radar-beta
 
 ### Semicolons
 
-すべての authored semicolon を共有の protectSemicolonPrefixes で保ちます。
-文字区間の最初の非空白から最後の semicolon までを保護します。
-交差する値と trivia を全体で含め、安全な後方の間隙を整えます。
+すべての authored semicolon を保ちます。
+保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
+ほかの場所と同じように整形します。
+この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
+`style` か `classDef` の後の最初の `:` から、
+最後の保つ `;` の前の最後の `#` までに空白がない並びを読みます。
+その範囲の隙間と余白は空白の有無を保ち、空白の連続は空白 1 つにします。
+範囲の外は、この図種の通常の規則に従います。
+どの部分の配置も持たないテキストは、書かれたまま残します。
+複数行にわたる文は、各区間の頭から最後の保つ `;` までを、書かれたまま残します。
+プリンターが文の行をつなぐと、行の規則が読む行になりうるからです。
+[fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted]
+[fixture: multi-line-statements/protected-semicolon-written-indentation]
 保護された見出しと最初の文の群はまとめて残します。
 style・classDef の選択、2 回の除去、大小文字・colon・hash の非該当形、
 Unicode の区間境界、directive 除去後の接合を保ちます。

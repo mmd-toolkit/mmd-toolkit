@@ -634,20 +634,32 @@ and a rule that wrote a space between touching tokens would need an exception
 for every such place. [fixture:
 whitespace-between-tokens/compat-empty-description-block-own-line] [fixture:
 whitespace-between-tokens/header-and-tabs-collapsed] Whitespace that is part of
-a value is kept: the whitespace around the `,` of a list of styles, which
+a value is kept: the whitespace after the `,` of a list of styles, which
 mermaid.js keeps in the style, and the whitespace inside the name of a subgraph,
-which becomes its title. The text of a `direction` statement before `direction`
-and after the value is the exception, kept as written (see
-[Direction](#direction)). [fixture:
+which becomes its title. The whitespace before a `,` of a list of styles is no
+part of a value, since mermaid.js drops it, so it is dropped as in ER and
+requirement (see [Styles and classes](./er.md#styles-and-classes)):
+`style A fill:#f00 ,color:white` is printed `style A fill:#f00,color:white`, and
+so are `classDef` and `linkStyle`. A space that a backslash escapes stays, as
+does a statement with a comment or a directive among its styles, with a style
+that is all whitespace, or with a line break or a kept `;` on its line.
+[fixture: whitespace-between-tokens/style-comma-before-dropped] [fixture:
+whitespace-between-tokens/style-comma-escaped-space-kept] [fixture:
+whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
+whitespace-between-tokens/style-comma-with-kept-semicolon-kept] A U+2028 or
+U+2029 stays where it is. [test: U+2028 before the comma of a flowchart style
+statement] [test: U+2029 after the comma of a flowchart style statement] The
+text of a `direction` statement before `direction` and after the value is the
+exception, kept as written (see [Direction](#direction)). [fixture:
 whitespace-between-tokens/style-values-in-class-def-and-link-style-kept]
 [fixture: whitespace-between-tokens/subgraph-quoted-name-kept] In a `style`,
 `classDef`, or `linkStyle` statement, the whitespace before the first style,
 which the statement rule of mermaid.js reads, becomes one space, also around a
 directive there: `style A %%{init: {}}%%  fill:red` and
 `style A %%{init: {}}%% fill:red` give the same Db. What follows the start of
-the first style, up to the last style, is kept as written: mermaid.js reads it
-as part of the styles. [fixture:
-whitespace-between-tokens/style-inner-whitespace-kept]
+the first style, up to the last style, is kept as written, apart from the
+whitespace before a `,`: mermaid.js reads the rest as part of the styles.
+[fixture: whitespace-between-tokens/style-inner-whitespace-kept]
 
 U+2028 and U+2029 after the `end` of a subgraph are whitespace to mermaid.js,
 and are dropped with the whitespace at the end of the line: `end`, U+2028, and a
@@ -693,7 +705,7 @@ Output
 ```mmd
 flowchart LR
   A
-  style A fill:#f00 , stroke:#333
+  style A fill:#f00, stroke:#333
 ```
 
 Input

@@ -652,8 +652,23 @@ mermaid.js には、接しているときだけ読むトークンがあります
 [fixture: whitespace-between-tokens/header-and-tabs-collapsed]
 [fixture: whitespace-between-tokens/compat-empty-description-block-own-line]
 値の一部である空白は保ちます。
-スタイルの並びの `,` の前後の空白は mermaid.js がスタイルに残し、
+スタイルの並びの `,` の後の空白は mermaid.js がスタイルに残し、
 subgraph の名前の中の空白はそのタイトルになります。
+スタイルの並びの `,` の前の空白は mermaid.js が落とすので値の一部ではなく、
+ER と requirement と同じく、
+[スタイルとクラス](./er.ja.md#スタイルとクラス)のとおりに落とします。
+`style A fill:#f00 ,color:white` は `style A fill:#f00,color:white` になり、
+`classDef` と `linkStyle` も同じです。
+バックスラッシュがエスケープする空白は残します。
+スタイルの間にコメントやディレクティブがある文、空白だけのスタイルがある文、
+改行や保つ `;` が行にある文も、書かれたまま残します。
+[fixture: whitespace-between-tokens/style-comma-before-dropped]
+[fixture: whitespace-between-tokens/style-comma-escaped-space-kept]
+[fixture: whitespace-between-tokens/style-comma-beside-directive-kept]
+[fixture: whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
+U+2028 と U+2029 は、その場所に残します。
+[test: U+2028 before the comma of a flowchart style statement]
+[test: U+2029 after the comma of a flowchart style statement]
 `direction` の文の、`direction` の前と値の後のテキストは例外で、
 書かれたまま残します（[方向](#方向)を参照）。
 [fixture: whitespace-between-tokens/style-values-in-class-def-and-link-style-kept]
@@ -663,8 +678,9 @@ mermaid.js の文の規則が読むものなので、そこにディレクティ
 空白 1 つにします。
 `style A %%{init: {}}%%  fill:red` と `style A %%{init: {}}%% fill:red` は、
 Db が同じです。
-最初のスタイルの始まりから最後のスタイルまでは、書かれたまま残します。
-mermaid.js はそれをスタイルの一部として読むからです。
+最初のスタイルの始まりから最後のスタイルまでは、
+`,` の前の空白を除いて書かれたまま残します。
+mermaid.js は残りをスタイルの一部として読むからです。
 [fixture: whitespace-between-tokens/style-inner-whitespace-kept]
 
 subgraph の `end` の後の U+2028 と U+2029 は mermaid.js にとって空白なので、
@@ -712,7 +728,7 @@ flowchart LR
 ```mmd
 flowchart LR
   A
-  style A fill:#f00 , stroke:#333
+  style A fill:#f00, stroke:#333
 ```
 
 入力

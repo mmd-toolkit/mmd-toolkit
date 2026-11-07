@@ -330,16 +330,17 @@ A bracket label touches its name or text id for a compact suffix; its
 bare/quoted form and every interior character stay as written, except the
 spaces, tabs, and no-break spaces next to the brackets, which mermaid.js trims:
 `set A[ L ]` is printed `set A[L]`. A label that holds a directive stays as
-written. The padding is dropped on a line with a kept `;` too, where the text
-through the last `;` is a protected stretch (see Terms): it moves no `;`, so the
-line rule selects the same one. `set A[ a; ]` is printed `set A[a;]` and
-`set B[ a;b ]` is printed `set B[a;b]`. One space stays where the padding lies
-between a `:` and a `#` of a line that the line rule may read, since whether it
-is there decides which `;` is ignored: `set "style:"[ #x; ]` is printed
-`set "style:"[ #x;]`, while `set "a:b"[ #x; ]` has no `style` before the `:` and
-is printed `set "a:b"[#x;]`. A `style`, a `:`, a `#`, or a `;` inside a
-directive is not read by the rule, so it makes no stretch:
-`set "style:"[ #x ]%%{init:{"a":";"}}%%` is printed
+written. The padding is dropped on a line with a kept `;` too, apart from the
+stretch read by the line rule (see
+[Line rule and kept lines](#line-rule-and-kept-lines)): dropping it outside that
+stretch moves no `;`, so the line rule selects the same one. `set A[ a; ]` is
+printed `set A[a;]` and `set B[ a;b ]` is printed `set B[a;b]`. One space stays
+where the padding lies between a `:` and a `#` of a line that the line rule may
+read, since whether it is there decides which `;` is ignored:
+`set "style:"[ #x; ]` is printed `set "style:"[ #x;]`, while `set "a:b"[ #x; ]`
+has no `style` before the `:` and is printed `set "a:b"[#x;]`. A `style`, a `:`,
+a `#`, or a `;` inside a directive is not read by the rule, so it makes no
+stretch: `set "style:"[ #x ]%%{init:{"a":";"}}%%` is printed
 `set "style:"[#x]%%{init:{"a":";"}}%%`. [fixture:
 labels/bracket-padding-line-rule-chars-in-directive] A `%%` in the middle of a
 line is no comment line, so the rule reads its text: `set "style:b"[ #x ] %% c;`
@@ -512,15 +513,23 @@ style A fill:#0f0, stroke:#00f
 
 Semicolons never separate Venn statements. Except for
 [Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement),
-they stay as written. The printer keeps the protected stretch from the first
-non-whitespace character through the last kept semicolon, extending through any
-crossing value, comment or directive; this keeps the textual line-rule
-selection, including nonmatches and markers across statements. Indentation and
-exterior trailing whitespace belong to the printer, and a safe suffix formats
-normally. The shared rule's segments can end inside a diagram comment, while the
-printer's protected stretch retains that whole comment. Crossing values appear
-once, and an unclosed directive stopped by a semicolon retains its stopping
-boundary.
+they stay as written. A segment that holds a kept `;` is formatted as anywhere
+else, except where formatting could change which `;` the line rule ignores. The
+rule reads a segment from the first `:` after `style` or `classDef` to the last
+`#` before its last kept `;`, with no whitespace between the `:` and the `#`
+(see [Semicolons](./flowchart.md#semicolons)), so the gaps and the padding
+inside that stretch keep whether they hold whitespace, a run becoming one space,
+and the rest of the segment follows the ordinary rules of this diagram. Text
+that no part of the layout holds stays as written. A statement over several
+lines keeps the text of each segment, up to its last kept `;`, as written, since
+the printer joins its lines and a joined line can be one that the rule reads.
+[fixture:
+semicolons-at-the-end-of-a-style-statement/stretch-kept-rest-formatted]
+[fixture: semicolons-at-the-end-of-a-style-statement/no-stretch-formatted]
+[fixture: line-rule-and-kept-lines/crossing-multiline-value] The shared rule's
+segments can end inside a diagram comment, while the printer's protected stretch
+retains that whole comment. Crossing values appear once, and an unclosed
+directive stopped by a semicolon retains its stopping boundary.
 
 [fixture: venn/line-rule-and-kept-lines/crossing-adjacent-values]
 

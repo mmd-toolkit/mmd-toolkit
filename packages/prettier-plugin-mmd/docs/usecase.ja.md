@@ -117,11 +117,20 @@ usecase-beta
 各 native 文は、文法が要求する物理行を保ちます。
 セミコロンは文を区切らず、actor の一覧はコンマを使います。
 [スタイル文の末尾のセミコロン](#semicolons-at-the-end-of-a-style-statement)
-の例外を除き、C4 の[行規則とセミコロン](./c4.ja.md#行規則とセミコロン)に従って、
-セミコロンを保ちます。
-各区間の最初の非空白文字から最後の保持するセミコロンまでを保持し、
-境界をまたぐ値、CSS 宣言、コメント、directive は全体を含めます。
-外側の字下げと安全な後続部分は整形します。
+の例外を除き、セミコロンを保ちます。
+保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
+ほかの場所と同じように整形します。
+この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
+`style` か `classDef` の後の最初の `:` から、
+最後の保つ `;` の前の最後の `#` までに空白がない並びを読みます。
+その範囲の隙間と余白は空白の有無を保ち、空白の連続は空白 1 つにします。
+範囲の外は、この図種の通常の規則に従います。
+どの部分の配置も持たないテキストは、書かれたまま残します。
+複数行にわたる文は、各区間の頭から最後の保つ `;` までを、書かれたまま残します。
+プリンターが文の行をつなぐと、行の規則が読む行になりうるからです。
+[fixture: statements-and-semicolons/stretch-kept-rest-formatted]
+[fixture: statements-and-semicolons/no-stretch-formatted]
+[fixture: json-tables/kept-body-line]
 [fixture: native-metadata/metadata-selected-semicolon-between-properties]
 二つの文字列処理、コロンとハッシュの間の空白の有無、Unicode の区間境界、
 未完 directive を止めるセミコロンの読みを保ちます。
@@ -294,8 +303,10 @@ mermaid.js がそれらを trim するからです（no-break space は trim
 空白が書かれていれば 1 つにして残します（`S[ %%{x}%% T ]` は `S[ %%{x}%% T]`
 になります）。
 保つ `;` のある行でも空白は落とします。
-その行では最後の `;` までのテキストが保護されますが（Statements and semicolons
-を参照）、空白を落としても `;` は動かないので、行の規則は同じ `;` を選びます。
+ただし、[Statements and semicolons](#statements-and-semicolons)のとおり、
+行の規則が読む範囲は除きます。
+その範囲の外の空白を落としても `;` は動かないので、
+行の規則は同じ `;` を選びます。
 `S[ a;b ]` は `S[a;b]` に、`S[ a; ]` は `S[a;]` になります。
 空白が、行の規則が読むかもしれない行の `:` と `#` の間にあるときは、
 architecture や venn と同じく、空白 1 つを残します。

@@ -302,8 +302,8 @@ mermaid.js が trim するからです。
 `service s(server)["x" ]` は `service s(server)["x"]` になります。
 [fixture: architecture/label-content/title-edge-whitespace-dropped]
 保つ `;` のある行でも同じです。
-その行では最後の `;` までのテキストが保護されますが（Semicolons を参照）、
-空白を落としても `;` は動かず、増えも減りもしないので、
+ただし、行の規則が読む範囲は除きます（[Semicolons](#semicolons)を参照）。
+その範囲の外の空白を落としても `;` は動かず、増えも減りもしないので、
 行の規則は同じ `;` を選びます。
 `group g(cloud)[ a;b ]` は `group g(cloud)[a;b]` に、
 `service s(server)[ x; ] in g` は `service s(server)[x;] in g` になります。
@@ -1086,9 +1086,20 @@ architecture-beta
 
 ### Semicolons
 
-作者のセミコロンをすべて保ち、共有の `protectSemicolonPrefixes` を使います。
-最後のセミコロンまでの文字区間を、交差する値と trivia 全体まで延ばして保護し、
-安全な後ろの隙間だけを整えます。
+作者のセミコロンをすべて保ちます。
+保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
+ほかの場所と同じように整形します。
+この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
+`style` か `classDef` の後の最初の `:` から、
+最後の保つ `;` の前の最後の `#` までに空白がない並びを読みます。
+その範囲の隙間と余白は空白の有無を保ち、空白の連続は空白 1 つにします。
+範囲の外は、この図種の通常の規則に従います。
+どの部分の配置も持たないテキストは、書かれたまま残します。
+複数行にわたる文は、各区間の頭から最後の保つ `;` までを、書かれたまま残します。
+プリンターが文の行をつなぐと、行の規則が読む行になりうるからです。
+[fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted]
+[fixture: semicolons/crossing-comment]
 保護された見出し・最初の文は一緒に保ちます。
 選択された1個の削除や style・classDef の trigger 移動は、
 別のセミコロンを選んで Db を変え得るため、両 pass、非 trigger、entity、

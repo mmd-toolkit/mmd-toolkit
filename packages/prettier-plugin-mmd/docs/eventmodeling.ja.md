@@ -579,7 +579,8 @@ body を持つ形の規則が後の閉じまで読む場合は保ちます。
 空でない行の ASCII 空白 prefix の後がタブなどの空白の場合は、
 本文全体を書かれたまま残します。
 HTML、entity、directive 風の text は、字下げで描画が変わる場合があるためです。
-既存の semicolon 保護と既定のサイズ上限の規則も優先します。
+`;` を含む本文も、書かれたまま残します。
+`#amp;` などの Mermaid の native entity の綴りは、`;` で終わるからです。
 
 [fixture: eventmodeling/data-blocks/block-interior-unchanged]
 
@@ -1021,9 +1022,20 @@ tf%%{wrap}%% 01 evt Alpha%%{wrap}%%->>%%{wrap}%%02
 
 ### Semicolons
 
-全 authored semicolon を共有 textual-prefix 保護で残します。
-各 segment の最後の semicolon までと、
-そこを跨ぐ完全な value・trivia を保ちます。
+全 authored semicolon を残します。
+保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
+ほかの場所と同じように整形します。
+この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
+`style` か `classDef` の後の最初の `:` から、
+最後の保つ `;` の前の最後の `#` までに空白がない並びを読みます。
+その範囲の隙間と余白は空白の有無を保ち、空白の連続は空白 1 つにします。
+範囲の外は、この図種の通常の規則に従います。
+どの部分の配置も持たないテキストは、書かれたまま残します。
+複数行にわたる文は、各区間の頭から最後の保つ `;` までを、書かれたまま残します。
+プリンターが文の行をつなぐと、行の規則が読む行になりうるからです。
+[fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted]
+[fixture: semicolons/protected-gwt-title-hidden-gap-remains-zero]
 最初の保護された本文行は所属の段に揃え、内容と後続列は書かれたままです。
 required identifier と共通値の空白は構造上の字下げより優先します。
 子の本文の opening edge も保護行に残し、次の整形で分かれ方が変わるのを防ぎます。

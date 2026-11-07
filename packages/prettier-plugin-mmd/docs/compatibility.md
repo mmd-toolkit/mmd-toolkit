@@ -1535,11 +1535,11 @@ Names, labels, sizes, complete bare/quoted styles, titles, repetitions and
 swallowed fragments remain authored text. Empty quoted names and styles are real
 values; bare whitespace, quoted whitespace and empty quoted labels keep their
 different readings. Except for the line-ending style terminator described above,
-semicolons stay, with the prefix from first non-whitespace through last kept
-semicolon protected and crossing values/trivia whole; indentation and exterior
-trailing spaces remain printer whitespace, and safe suffixes format normally.
-Unicode separators inside comments or directives do not cut the kept part: Venn
-diagram comments continue to LF/EOF.
+semicolons stay, and a line with a kept semicolon is formatted as anywhere else
+apart from the stretch that the line rule reads (see
+[Line rule and kept lines](./venn.md#line-rule-and-kept-lines)). Unicode
+separators inside comments or directives do not cut the kept part: Venn diagram
+comments continue to LF/EOF.
 
 [fixture: venn/name-lists/empty-quoted-targets] [fixture:
 venn/labels/labels-empty-kept] [fixture: venn/style-properties/style-atoms-kept]
@@ -1749,9 +1749,9 @@ stereotype-comment-region-padding-kept]
 Written labels/quotes, boundary title padding and continuation columns remain
 authored even where trimming or requoting would have equal Db. Common
 comment-region joins and native comments through LS/PS stay intact; semicolons
-never separate statements and every textual prefix remains protected. The six
-specified usecase divergences use their specified acceptance/reading, and
-rejected trees follow the shared failure path. [fixture:
+never separate statements and the stretch that the line rule reads is protected.
+The six specified usecase divergences use their specified acceptance/reading,
+and rejected trees follow the shared failure path. [fixture:
 usecase/labels/label-quote-kinds] [fixture:
 usecase/system-boundaries/boundary-headings] [fixture:
 usecase/direction-and-accessibility/a11y-padding] [fixture:
@@ -1786,8 +1786,8 @@ pie/frontmatter-yaml/preheader-leading-lf] [fixture:
 pie/frontmatter-yaml/frontmatter-safe]
 
 Pie uses zero body indentation at `tabWidth: 0`; YAML retains its shared
-positive minimum. Every semicolon remains, with complete crossing value/trivia
-prefixes protected. Physical EOL/BOM and final-newline handling are shared.
+positive minimum. Every semicolon remains, and the stretch that the line rule
+reads is protected. Physical EOL/BOM and final-newline handling are shared.
 Markdown hosts trim final code-block-line padding, including final hidden
 boundary padding; interior hidden boundary padding remains necessary before a
 later statement. [fixture: pie/indentation/indent-zero] [fixture:
@@ -2135,9 +2135,10 @@ directives stay at column one because mermaid.js rejects them when indented.
 treemap/comments/native-nonword] [fixture: treemap/comments/unclosed-directive]
 [fixture: treemap/comments/mixed-directives] In a class-style separator,
 standalone trivia and style continuation align one step inside `classDef`. The
-style text and protected semicolon prefixes remain unchanged. [fixture:
-treemap/style-gaps/css-comment] [fixture: treemap/style-gaps/css-directive-tabs]
-[fixture: treemap/style-gaps/css-comment-semicolon-kept] Protected semicolon row
+style text and the protected semicolon segments of a statement over several
+lines remain unchanged. [fixture: treemap/style-gaps/css-comment] [fixture:
+treemap/style-gaps/css-directive-tabs] [fixture:
+treemap/style-gaps/css-comment-semicolon-kept] Protected semicolon row
 boundaries keep the body as written.
 
 [fixture: treemap/indentation/leaf-closes] [fixture:
@@ -2155,8 +2156,9 @@ physical continuation columns. Class styles remain whole authored literals,
 including internal and trailing padding; they are not reformatted as CSS. Retain
 repeated classes, empty assignments, unresolved selectors and source order.
 Common values and description blocks use shared exterior spacing while retaining
-internal text and trivia. Every semicolon stays, and protected segments retain
-their columns without extra indentation inside them.
+internal text and trivia. Every semicolon stays, and the protected segments of a
+statement over several lines retain their columns without extra indentation
+inside them.
 
 [fixture: treemap/numbers/underscore] [fixture: treemap/numbers/precision]
 [fixture: treemap/names/quotes] [fixture: treemap/names/physical-columns]

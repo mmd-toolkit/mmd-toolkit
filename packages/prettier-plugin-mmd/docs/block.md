@@ -532,16 +532,21 @@ In a `style` and a `class` the whitespace is in the Db.
 no block `B`, and gives the class to a new block that the diagram does not show;
 and the class name of `class A c   d` is `c   d`, and that of `class A , B   c1`
 is `, B   c1`, since the whitespace after `A` ends the ids. In a `classDef` it
-is not, but the styles are printed as written too, as in a flowchart (see
-[Whitespace between tokens](./flowchart.md#whitespace-between-tokens)), so that
-the three statements follow one rule and the printer does not take a list of
-styles apart. The whitespace at the end of the statement is dropped, as in a
-flowchart (see
+is not, so the `,` between the styles has no whitespace before it and one space
+after it, as in ER (see [Styles and classes](./er.md#styles-and-classes)):
+`classDef c fill:#f00 , color:white` is printed
+`classDef c fill:#f00, color:white`. A comment or a directive among the styles,
+and a line break or a kept `;` on the line, keep the statement as written. The
+styles of a `style` statement are printed as written. The whitespace at the end
+of the statement is dropped, as in a flowchart (see
 [Style trailing whitespace](./flowchart.md#style-trailing-whitespace)).
 [fixture: styles/class-definition-spaces] [fixture: styles/style-spaces]
 [fixture: styles/class-spaces] [fixture: styles/style-commas-as-written]
 [fixture: styles/class-definition-commas-as-written] [fixture:
-styles/class-ids-as-written] [fixture:
+styles/class-definition-comma-spaced] [fixture:
+styles/class-definition-comma-beside-directive-kept] [fixture:
+styles/style-statement-commas-kept] [test: U+2029 before the comma of a block
+classDef statement] [fixture: styles/class-ids-as-written] [fixture:
 styles/class-name-with-a-comma-as-written] [fixture:
 styles/class-name-as-written] [fixture: styles/trailing-whitespace-dropped]
 [fixture: styles/styles-with-a-directive]
@@ -570,7 +575,7 @@ Output
 ```mmd
 block-beta
   A
-  classDef c1 color:#fff , fill:#000
+  classDef c1 color:#fff, fill:#000
 ```
 
 Input
@@ -661,7 +666,7 @@ block
   A
   classDef c fill:#f00
   style A fill:#f00
-  classDef d fill:#0f0,stroke:#00f
+  classDef d fill:#0f0, stroke:#00f
   style A fill:#0f0,stroke:#00f
 ```
 

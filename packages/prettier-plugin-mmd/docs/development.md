@@ -305,8 +305,10 @@ so usecase's complete Literal ranges reuse the same formatting decisions.
 and trivia while the existing atom printer aligns properties and the closing
 brace. Other layouts omit it and retain their blank-line policy.
 `semicolonSegmentEnd` and `keptSemicolonPrefixEnd` share C4's existing segment
-bounds; `protectSemicolonPrefixes` shares whole-atom prefix protection with
-Venn. No diagram branch is added to a shared printer.
+bounds; `protectSemicolonPrefixes` keeps the segments of a statement over
+several lines, and the text that no atom holds, as written; the stretch that the
+line rule reads is protected by the gap and padding rules of the atom printer.
+No diagram branch is added to a shared printer.
 
 ## Pie fixture coverage
 

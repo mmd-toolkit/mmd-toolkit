@@ -457,19 +457,28 @@ pie
 
 ### Directives and semicolons
 
-Reuse [global directive opacity](./flowchart.md#directives) and
-[C4 textual semicolon protection](./c4.md#line-rule-and-semicolons), because
-common removal supplies no separator and semicolon selection reads source
-segments. Keep directives in their authored gaps, including multiline contents
-and EOF-reaching endings. Within a printed line, keep whether each side touches
-or is separated. When formatting splits units that were on the same line, a
-directive in their gap moves with the following unit: its right boundary stays
-touching or separated, while its left contact is broken. Protect from the first
-non-whitespace character through the last semicolon, extending through complete
-crossing values/comments/directives; do not split a protected header/body group.
-Keep every semicolon and both style/classDef passes, case/colon-hash whitespace
-distinctions, Unicode segment bounds, directive-rejoined triggers and comment
-semicolons. Format only safe exterior/suffix gaps. Atomic keyword/number cuts
+Reuse [global directive opacity](./flowchart.md#directives): common removal
+supplies no separator, and semicolon selection reads source segments. Keep
+directives in their authored gaps, including multiline contents and EOF-reaching
+endings. Within a printed line, keep whether each side touches or is separated.
+When formatting splits units that were on the same line, a directive in their
+gap moves with the following unit: its right boundary stays touching or
+separated, while its left contact is broken. A segment that holds a kept `;` is
+formatted as anywhere else, except where formatting could change which `;` the
+line rule ignores. The rule reads a segment from the first `:` after `style` or
+`classDef` to the last `#` before its last kept `;`, with no whitespace between
+the `:` and the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps
+and the padding inside that stretch keep whether they hold whitespace, a run
+becoming one space, and the rest of the segment follows the ordinary rules of
+this diagram. Text that no part of the layout holds stays as written. A
+statement over several lines keeps the text of each segment, up to its last kept
+`;`, as written, since the printer joins its lines and a joined line can be one
+that the rule reads. [fixture:
+directives-and-semicolons/stretch-kept-rest-formatted] [fixture:
+directives-and-semicolons/no-stretch-formatted] Do not split a protected
+header/body group. Keep every semicolon and both style/classDef passes,
+case/colon-hash whitespace distinctions, Unicode segment bounds,
+directive-rejoined triggers and comment semicolons. Atomic keyword/number cuts
 remain specified failures.
 
 [fixture: pie/directives-and-semicolons/native-label-value]

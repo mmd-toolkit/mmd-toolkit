@@ -288,14 +288,22 @@ tooltipの前の必須の空白1文字の隙間は決して揃えません。
 文法が空白1文字だけを取り、その後の空白は値の文字で、
 トークンを期待する場所に空白が2文字あると拒否されることもあるためです。
 この1文字として使うタブも保ちます。
-directiveを挟む最初のstyleの先頭空白、値内とコンマ脇の空白、
+directiveを挟む最初のstyleの先頭空白、値内の空白、コンマの後の空白、
 空のstyleリスト項目、classDefのエスケープしたコンマ、順序と反復を保ちます。
 style内部を値として保つ理由はflowchartと同じですが、先頭の隙間は揃えません。
+コンマの前の空白は mermaid.js が落とすので値ではなく、
+[flowchart](./flowchart.ja.md#トークンの間の空白)と同じく落とします。
+`style A fill:#f00 ,color:white` は `style A fill:#f00,color:white` になります。
+バックスラッシュがエスケープする空白、スタイルの間のディレクティブやコメント、
+空白だけのスタイル、行にある改行や保つ `;` は、文を書かれたままにします。
 [fixture: single-space-gaps/classdef-first-tab]
 [fixture: single-space-gaps/linkstyle-first-spaces]
 [fixture: single-space-gaps/style-directive-gap]
 [fixture: single-space-gaps/style-first-spaces]
 [fixture: single-space-gaps/styles-inner-gaps]
+[fixture: single-space-gaps/style-comma-before-dropped]
+[fixture: single-space-gaps/style-comma-beside-directive-kept]
+[test: agentflow: U+2028 before the comma of a style statement]
 
 linkStyleの後とinterpolate名の前のタブは、
 それぞれ文法が要求する空白1文字なので、両方とも保ちます。

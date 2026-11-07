@@ -456,14 +456,22 @@ info
 
 ### Semicolons
 
-Reuse [shared textual segment protection](./pie.md#directives-and-semicolons)
-and keep every semicolon. Protect from the first non-whitespace character
-through the last semicolon, extending through complete crossing
-values/comments/directives. Keep protected header/body groups together, because
-moving a trigger can change semicolon selection and acceptance. Both
+Keep every semicolon. A segment that holds a kept `;` is formatted as anywhere
+else, except where formatting could change which `;` the line rule ignores. The
+rule reads a segment from the first `:` after `style` or `classDef` to the last
+`#` before its last kept `;`, with no whitespace between the `:` and the `#`
+(see [Semicolons](./flowchart.md#semicolons)), so the gaps and the padding
+inside that stretch keep whether they hold whitespace, a run becoming one space,
+and the rest of the segment follows the ordinary rules of this diagram. Text
+that no part of the layout holds stays as written. A statement over several
+lines keeps the text of each segment, up to its last kept `;`, as written, since
+the printer joins its lines and a joined line can be one that the rule reads.
+[fixture: semicolons/stretch-kept-rest-formatted] [fixture:
+semicolons/no-stretch-formatted] Keep protected header/body groups together,
+because moving a trigger can change semicolon selection and acceptance. Both
 style/classDef passes, case and colon/hash whitespace, Unicode segment bounds
-and directive-rejoined triggers retain source; safe exterior/suffix gaps still
-format. A semicolon is not a general info statement separator.
+and directive-rejoined triggers keep their reading. A semicolon is not a general
+info statement separator.
 
 [fixture: info/semicolons/native-description-value]
 

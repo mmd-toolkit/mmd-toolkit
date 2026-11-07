@@ -663,13 +663,22 @@ gitGraph
 
 ### Semicolons
 
-Keep every authored semicolon and reuse shared source-segment protection from
-the first non-whitespace character through the last semicolon, extending through
-whole crossing values/comments/directives. Do not split protected
-header/first-statement groups. Preserve style/classDef passes, colon/hash
-whitespace, case, repeated semicolons and directive-rejoined triggers; LS/PS
-segment bounds stay distinct. Removing a selected semicolon can select another
-and change the Db. Format safe suffix gaps only; atomic cuts remain failures.
+Keep every authored semicolon. A segment that holds a kept `;` is formatted as
+anywhere else, except where formatting could change which `;` the line rule
+ignores. The rule reads a segment from the first `:` after `style` or `classDef`
+to the last `#` before its last kept `;`, with no whitespace between the `:` and
+the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps and the
+padding inside that stretch keep whether they hold whitespace, a run becoming
+one space, and the rest of the segment follows the ordinary rules of this
+diagram. Text that no part of the layout holds stays as written. A statement
+over several lines keeps the text of each segment, up to its last kept `;`, as
+written, since the printer joins its lines and a joined line can be one that the
+rule reads. [fixture: semicolons/stretch-kept-rest-formatted] [fixture:
+semicolons/no-stretch-formatted] Do not split protected header/first-statement
+groups. Preserve style/classDef passes, colon/hash whitespace, case, repeated
+semicolons and directive-rejoined triggers; LS/PS segment bounds stay distinct.
+Removing a selected semicolon can select another and change the Db. Atomic cuts
+remain failures.
 
 Fixed cases: [fixture: gitgraph/semicolons/native-commit-value]
 

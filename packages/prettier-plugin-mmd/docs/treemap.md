@@ -360,8 +360,8 @@ the line breaks in separator gaps containing comments/directives and align their
 standalone trivia and style continuation one level inside `classDef`, so the
 style remains visibly attached to its definition. The maximal separator discards
 this indentation; the style value itself is unchanged. Inline native comments
-that already supply an indentation run and semicolon-protected prefixes retain
-their existing columns.
+that already supply an indentation run and semicolon-protected segments of a
+statement over several lines retain their existing columns.
 
 [fixture: treemap/style-gaps/spaces]
 
@@ -495,12 +495,24 @@ whitespace stays: `classDef zz a:#b ; %% c` keeps its line. [fixture:
 semicolons/class-terminator-ignored-text-after-kept]
 
 Keep every other authored semicolon: selected ignored semicolons, a `;` beside
-another `;`, and value characters. Use shared kept-line and protected-prefix
-rules; protected segments retain their source text and columns, with no extra
-indentation on their inner lines. If a kept line constrains a row boundary,
-preserve the body as written rather than fixing some row indents and normalizing
-others. This keeps parentage and semicolon selection together, including the
-protected ending; it takes precedence over ordinary line and spacing choices.
+another `;`, and value characters. A segment that holds a kept `;` is formatted
+as anywhere else, except where formatting could change which `;` the line rule
+ignores. The rule reads a segment from the first `:` after `style` or `classDef`
+to the last `#` before its last kept `;`, with no whitespace between the `:` and
+the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps and the
+padding inside that stretch keep whether they hold whitespace, a run becoming
+one space, and the rest of the segment follows the ordinary rules of this
+diagram. Text that no part of the layout holds stays as written. A statement
+over several lines keeps the text of each segment, up to its last kept `;`, as
+written, since the printer joins its lines and a joined line can be one that the
+rule reads. [fixture: semicolons/stretch-kept-rest-formatted] [fixture:
+semicolons/no-stretch-formatted] [fixture: semicolons/protected-class-column]
+Protected segments of a statement over several lines retain their source
+columns, with no extra indentation on their inner lines. If a kept line
+constrains a row boundary, preserve the body as written rather than fixing some
+row indents and normalizing others. This keeps parentage and semicolon selection
+together, including the protected ending; it takes precedence over ordinary line
+and spacing choices.
 
 [fixture: treemap/semicolons/terminator]
 

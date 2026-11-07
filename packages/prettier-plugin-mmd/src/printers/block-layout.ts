@@ -33,12 +33,14 @@ import {
 } from "./kept-lines.ts"
 import { printAsWrittenTrimmed } from "./lines.ts"
 import type { Source } from "./source.ts"
+import { normalizeStyleCommas } from "./statement-rules.ts"
 import {
   findStructuralToken,
   findTokenEndingBefore,
   findTokenStartingAt,
   findTokensBetween,
   isStructural,
+  isWhitespace,
 } from "./source.ts"
 
 /**
@@ -435,18 +437,31 @@ function addStyledStatementRules(
   if (start >= statement.range[1]) return
   rules.set(start, "space")
   const semicolon = statement.range[1] - 1
-  if (
+  const dropsSemicolon =
     statement.type === "BlockClassDefStatement" &&
     isDroppedSemicolon(source, semicolon)
-  ) {
-    kept.push({
-      start,
-      end: statement.range[1],
-      doc: printAsWrittenTrimmed(source, start, semicolon),
-    })
-    return
+  let printedEnd = dropsSemicolon ? semicolon : statement.range[1]
+  if (dropsSemicolon) {
+    while (printedEnd > start && isWhitespace(source.text[printedEnd - 1])) {
+      printedEnd--
+    }
   }
-  kept.push({ start, end: statement.range[1] })
+  const atoms: Atom[] = [{ start, end: printedEnd }]
+  if (statement.type === "BlockClassDefStatement") {
+    // mermaid.js reads the whitespace around the `,` of the styles of a
+    // `classDef` as nothing, and in a `style` statement as part of the styles
+    // (docs/block.md, Styles).
+    normalizeStyleCommas(source, atoms, statement, {
+      before: true,
+      after: true,
+    })
+  }
+  const doc =
+    atoms[0].doc ??
+    (dropsSemicolon
+      ? printAsWrittenTrimmed(source, start, semicolon)
+      : undefined)
+  kept.push({ start, end: statement.range[1], ...(doc && { doc }) })
 }
 
 /**

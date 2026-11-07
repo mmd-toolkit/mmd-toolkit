@@ -778,7 +778,7 @@ function findStyleWord(text: string): number {
 }
 
 /** Diagrams whose grammatical punctuation needs complete word-line protection. */
-function usesVerbatimStyleLines(source: Source): boolean {
+export function usesVerbatimStyleLines(source: Source): boolean {
   return semicolonRulesOf(source).verbatimStyleLines !== false
 }
 
@@ -861,7 +861,7 @@ export function findVerbatimStyleLines(source: Source): ReadonlySet<number> {
  * containing the shared words as written (docs/railroad.md and
  * docs/wardley.md, Semicolons).
  */
-function findPotentialStyleRuleStretches(
+export function findPotentialStyleRuleStretches(
   source: Source,
   start: number,
   end: number,

@@ -107,11 +107,19 @@ usecase-beta
 Each native statement keeps its required physical grammar line; semicolons never
 separate statements, and actor lists use commas. Except for
 [Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement),
-keep semicolons as written, following the non-separator
-[C4 kept-prefix policy](./c4.md#line-rule-and-semicolons). Protect text from the
-first non-whitespace character through the last kept semicolon of each segment,
-extending through whole crossing values, CSS declarations, comments and
-directives. Exterior indentation and a safe suffix still format. [fixture:
+keep semicolons as written. A segment that holds a kept `;` is formatted as
+anywhere else, except where formatting could change which `;` the line rule
+ignores. The rule reads a segment from the first `:` after `style` or `classDef`
+to the last `#` before its last kept `;`, with no whitespace between the `:` and
+the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps and the
+padding inside that stretch keep whether they hold whitespace, a run becoming
+one space, and the rest of the segment follows the ordinary rules of this
+diagram. Text that no part of the layout holds stays as written. A statement
+over several lines keeps the text of each segment, up to its last kept `;`, as
+written, since the printer joins its lines and a joined line can be one that the
+rule reads. [fixture: statements-and-semicolons/stretch-kept-rest-formatted]
+[fixture: statements-and-semicolons/no-stretch-formatted] [fixture:
+json-tables/kept-body-line] [fixture:
 native-metadata/metadata-selected-semicolon-between-properties] Both textual
 passes, colon/hash separation, Unicode segment boundaries and an open
 directive's semicolon stop keep their reading.
@@ -262,14 +270,14 @@ is printed `S("x")`. [fixture: system-boundaries/boundary-title-padding-dropped]
 [fixture: system-boundaries/boundary-title-opener-touches-id] A directive at an
 edge of the title keeps the gap beside it, one space where whitespace was
 written (`S[ %%{x}%% T ]` is printed `S[ %%{x}%% T]`). The padding is dropped on
-a line with a kept `;` too, where the text through the last `;` is protected
-(see Statements and semicolons): dropping it moves no `;`, so the line rule
-selects the same one. `S[ a;b ]` is printed `S[a;b]`, and `S[ a; ]` is printed
-`S[a;]`. One space stays where the padding lies between a `:` and a `#` of a
-line that the line rule may read, as in architecture and venn. A usecase id
-cannot hold a `:`, and a `:` inside a directive is not read by the line rule, so
-no `:` stands before the title for the rule:
-`systemBoundary mystyle%%{init:{}}%%[ #x; ]` is printed
+a line with a kept `;` too, apart from the stretch read by the line rule (see
+[Statements and semicolons](#statements-and-semicolons)): dropping it outside
+that stretch moves no `;`, so the line rule selects the same one. `S[ a;b ]` is
+printed `S[a;b]`, and `S[ a; ]` is printed `S[a;]`. One space stays where the
+padding lies between a `:` and a `#` of a line that the line rule may read, as
+in architecture and venn. A usecase id cannot hold a `:`, and a `:` inside a
+directive is not read by the line rule, so no `:` stands before the title for
+the rule: `systemBoundary mystyle%%{init:{}}%%[ #x; ]` is printed
 `systemBoundary mystyle%%{init:{}}%%[#x;]`. A padding with a U+2028 or U+2029 in
 it stays. [fixture: system-boundaries/boundary-title-directive-or-semicolon]
 [fixture: system-boundaries/boundary-title-padding-after-directive-colon] [test:

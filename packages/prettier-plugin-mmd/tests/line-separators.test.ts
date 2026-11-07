@@ -219,6 +219,16 @@ const examples: readonly (readonly [string, string, string])[] = [
     'stateDiagram-v2\nstate A\nnote "x" as\u2029N1\n',
     'stateDiagram-v2\n  state A\n  note "x" as\u2029N1\n',
   ],
+  [
+    "U+2028 before the comma of a state classDef statement",
+    "stateDiagram-v2\nstate A\nclassDef c fill:#f00\u2028 ,color:white\n",
+    "stateDiagram-v2\n  state A\n  classDef c fill:#f00\u2028 ,color:white\n",
+  ],
+  [
+    "U+2029 after the comma of a state classDef statement",
+    "stateDiagram-v2\nstate A\nclassDef c fill:#f00 ,\u2029color:white\n",
+    "stateDiagram-v2\n  state A\n  classDef c fill:#f00 ,\u2029color:white\n",
+  ],
 ]
 
 /**
@@ -661,6 +671,16 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
     "graph\u2029<\nA\n",
     "graph\u2029<\n  A\n",
   ],
+  [
+    "U+2028 before the comma of a flowchart style statement",
+    "flowchart LR\nA-->B\nstyle A fill:#f00\u2028 ,color:white\n",
+    "flowchart LR\n  A --> B\n  style A fill:#f00\u2028,color:white\n",
+  ],
+  [
+    "U+2029 after the comma of a flowchart style statement",
+    "flowchart LR\nA-->B\nstyle A fill:#f00 ,\u2029color:white\n",
+    "flowchart LR\n  A --> B\n  style A fill:#f00 ,\u2029color:white\n",
+  ],
 ]
 
 /**
@@ -827,6 +847,11 @@ const classLineSeparatorExamples: readonly (readonly [
     "U+2028 between a generic type and the call of a callback",
     "classDiagram\nclass A~T~\nclick A~T~\u2028call f()\n",
     "classDiagram\n  class A~T~\n  click A~T~\u2028call f()\n",
+  ],
+  [
+    "U+2028 before the comma of a class style statement",
+    "classDiagram\nclass A\nstyle A fill:#f00\u2028 ,color:white\n",
+    "classDiagram\n  class A\n  style A fill:#f00\u2028 ,color:white\n",
   ],
 ]
 
@@ -2291,6 +2316,11 @@ const blockLineSeparatorExamples: readonly (readonly [
     "block: comment-ls-semicolon-both",
     'block-beta\nblock:r\n A["x"]%% c;\u2028 B["x;y"]\nend\n',
     'block-beta\n  block:r\n    A["x"] %% c;\u2028 B["x;y"]\n  end\n',
+  ],
+  [
+    "U+2029 before the comma of a block classDef statement",
+    "block-beta\nA\nclassDef c fill:#f00\u2029 ,color:white\n",
+    "block-beta\n  A\n  classDef c fill:#f00\u2029 ,color:white\n",
   ],
 ]
 

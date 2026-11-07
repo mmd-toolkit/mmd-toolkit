@@ -1,7 +1,8 @@
 import type { Node, Range } from "@mmd-toolkit/ast"
 import type { Doc } from "prettier"
-import type { GapRule } from "./atoms.ts"
-import { expectToken, expectValue } from "./layout.ts"
+import type { Atom, GapRule } from "./atoms.ts"
+import type { TextEdit } from "./layout.ts"
+import { expectToken, expectValue, replaceInAtoms } from "./layout.ts"
 import { holdsKeptSemicolon, lineEndOf, lineStartOf } from "./kept-lines.ts"
 import { printAsWritten } from "./lines.ts"
 import type { Source } from "./source.ts"
@@ -170,6 +171,70 @@ export function styleUnitsCanCompact(
     ) &&
     findTriviaBetween(source, start, end).length === 0
   )
+}
+
+/**
+ * Puts the `,` between the styles of a `classDef`, `style`, or `linkStyle`
+ * statement in the form of ER and requirement: no whitespace before it, where
+ * `before`, and one space after it, where `after`. Each side is asked for only
+ * where mermaid.js reads the whitespace there as nothing (docs/flowchart.md,
+ * docs/class.md, docs/state.md, and docs/block.md, Styles). The commas are
+ * looked for in the text of the styles, which one atom holds as written. A `,`
+ * after a backslash is part of a style, and so is a space after a backslash.
+ * A statement with a style that is all whitespace, with a line break, a
+ * comment or a directive, or on a line with a kept `;` stays as written, as in
+ * ER (see `styleUnitsCanCompact`).
+ */
+export function normalizeStyleCommas(
+  source: Source,
+  atoms: Atom[],
+  statement: {
+    readonly range: Range
+    readonly styles: readonly (Node | null)[]
+  },
+  sides: { readonly before: boolean; readonly after: boolean },
+): void {
+  const styles = statement.styles.filter((style) => style !== null)
+  if (styles.length !== statement.styles.length) return
+  const first = styles.at(0)
+  const last = styles.at(-1)
+  if (first === undefined || last === undefined) return
+  if (
+    !styleUnitsCanCompact(
+      source,
+      statement.range[0],
+      statement.range[1],
+      styles,
+    )
+  ) {
+    return
+  }
+  const [from, to] = [first.range[0], last.range[1]]
+  const edits: TextEdit[] = []
+  for (let comma = from; comma < to; comma++) {
+    if (source.text[comma] !== "," || source.text[comma - 1] === "\\") continue
+    if (sides.before) {
+      let start = comma
+      while (start > from && isSpaceOrTab(source.text[start - 1])) start--
+      const before = source.text[start - 1]
+      if (start < comma && start > from && before !== "," && before !== "\\") {
+        edits.push({ range: [start, comma], replacement: "" })
+      }
+    }
+    if (sides.after) {
+      let end = comma + 1
+      while (end < to && isSpaceOrTab(source.text[end])) end++
+      if (end < to && source.text[end] !== ",") {
+        edits.push({ range: [comma + 1, end], replacement: " " })
+      }
+    }
+  }
+  replaceInAtoms(source, atoms, edits)
+}
+
+/** Whether a character is a space or a tab. */
+function isSpaceOrTab(character: string): boolean {
+  return character === " " || character === "\t"
 }
 
 /**

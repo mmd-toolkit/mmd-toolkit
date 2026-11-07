@@ -28,6 +28,7 @@ import {
 import { holdsJoiningRegion } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import { findStructuralToken, findTokensBetween } from "./source.ts"
+import { normalizeStyleCommas } from "./statement-rules.ts"
 
 /**
  * The node types whose text is a value, printed as written. They have no
@@ -134,11 +135,25 @@ export function layoutStatement(
   if (statement.type === "FlowchartClickCallbackStatement") {
     addBlankCallbackRule(source, statement, rules)
   }
+  const atoms = collectAtoms(source, start, end, values, kept)
   const layout: AtomLayout = {
-    atoms: collectAtoms(source, start, end, values, kept),
+    atoms,
     rules,
     outdented: findOutdentedAtoms(source, statement),
     lineBreaks: "kept",
+  }
+  if (
+    statement.type === "FlowchartStyleStatement" ||
+    statement.type === "FlowchartClassDefStatement" ||
+    statement.type === "FlowchartLinkStyleStatement" ||
+    statement.type === "FlowchartDefaultLinkStyleStatement"
+  ) {
+    // mermaid.js drops the whitespace before the `,` of a list of styles and
+    // keeps the whitespace after it in the style (docs/flowchart.md, Styles).
+    normalizeStyleCommas(source, atoms, statement, {
+      before: true,
+      after: false,
+    })
   }
   if (statement.type !== "FlowchartAccDescrBlockStatement") return layout
   return formatDescriptionBlock(

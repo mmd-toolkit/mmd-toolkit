@@ -838,10 +838,20 @@ radar-beta
 
 ### Semicolons
 
-Keep every authored semicolon using shared protectSemicolonPrefixes. Protect a
-textual segment from its first non-whitespace through its last semicolon,
-extending through whole crossing values/trivia, and format safe suffix gaps.
-Protected header/first-statement groups remain together. Preserve style/classDef
+Keep every authored semicolon. A segment that holds a kept `;` is formatted as
+anywhere else, except where formatting could change which `;` the line rule
+ignores. The rule reads a segment from the first `:` after `style` or `classDef`
+to the last `#` before its last kept `;`, with no whitespace between the `:` and
+the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps and the
+padding inside that stretch keep whether they hold whitespace, a run becoming
+one space, and the rest of the segment follows the ordinary rules of this
+diagram. Text that no part of the layout holds stays as written. A statement
+over several lines keeps the text of each segment, up to its last kept `;`, as
+written, since the printer joins its lines and a joined line can be one that the
+rule reads. [fixture: semicolons/stretch-kept-rest-formatted] [fixture:
+semicolons/no-stretch-formatted] [fixture:
+multi-line-statements/protected-semicolon-written-indentation] Protected
+header/first-statement groups remain together. Preserve style/classDef
 selection, both removal passes, case/colon/hash nontriggers, Unicode segment
 boundaries and directive-rejoined triggers. Removing even a selected semicolon
 can select another and change a value; radar has no ordinary semicolon

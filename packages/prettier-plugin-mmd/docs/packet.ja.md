@@ -648,12 +648,22 @@ packet
 
 ### Semicolons
 
-全セミコロンを残し、共有の文字列 segment 保護を使います。
-最初の非空白から最後のセミコロンまで、
-交差する値・コメント・ directive 全体へ延ばして保護します。
-保護された見出しと最初の文は分離せず、安全な外側と suffix のみ整えます。
+全セミコロンを残します。
+保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
+ほかの場所と同じように整形します。
+この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
+`style` か `classDef` の後の最初の `:` から、
+最後の保つ `;` の前の最後の `#` までに空白がない並びを読みます。
+その範囲の隙間と余白は空白の有無を保ち、空白の連続は空白 1 つにします。
+範囲の外は、この図種の通常の規則に従います。
+どの部分の配置も持たないテキストは、書かれたまま残します。
+複数行にわたる文は、各区間の頭から最後の保つ `;` までを、書かれたまま残します。
+プリンターが文の行をつなぐと、行の規則が読む行になりうるからです。
+[fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted]
+保護された見出しと最初の文は分離しません。
 style・classDef の両 pass、大文字小文字、colon・hash の空白、反復、
-Unicode の境界と directive で再結合する trigger を保ちます。
+Unicode の境界と directive で再結合する trigger の読みを保ちます。
 選ばれた1個の削除が別の1個を選び、Db を変え得るためです。
 atomic cut は失敗のままです。
 
@@ -686,7 +696,7 @@ packet
   title Text;;
   accTitle: Access;
   accDescr: Detail;;
-  0:"Label;"
+  0: "Label;"
 ```
 
 ### Blank lines

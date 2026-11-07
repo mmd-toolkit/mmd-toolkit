@@ -407,10 +407,27 @@ flowchart
 と同じです（[トークンの間の空白](./flowchart.ja.md#トークンの間の空白)を参照）。
 ただし、別名の定義の語と擬似状態の印は、
 空白 1 つを置きます（[別名](#別名)と[擬似状態](#擬似状態)を参照）。
-mermaid.js が読まない `""` とスタイル文の `,` も同じです。
+mermaid.js が読まない `""` も同じです。
 状態に結び付けない独立したノート（`note "..." as ...`）の引用符は、
-書かれたまま残します。 [fixture: whitespace-between-tokens/comma-kept]
+書かれたまま残します。
 [fixture: whitespace-between-tokens/floating-note-quotes-kept]
+`classDef` 文と `style` 文のスタイルを区切る `,` は、
+ER と requirement と同じく、
+[スタイルとクラス](./er.ja.md#スタイルとクラス)のとおり、前に空白を置かず、
+後に空白 1 つを置きます。
+`classDef c fill:#f00 , color:white` は、
+`classDef c fill:#f00, color:white` になります。
+mermaid.js は state 図では `,` の前後の空白を何もないものとして読むので、
+Db は同じです。
+スタイルの間のコメントやディレクティブ、行にある改行や保つ `;` は、
+文を書かれたままにし、空白だけのスタイルがあるときも同じです。
+[fixture: whitespace-between-tokens/comma-kept]
+[fixture: whitespace-between-tokens/style-comma-spaced]
+[fixture: whitespace-between-tokens/style-comma-beside-directive-kept]
+[fixture: whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
+スタイルの間の U+2028 と U+2029 は、その場所に残します。
+[test: U+2028 before the comma of a state classDef statement]
+[test: U+2029 after the comma of a state classDef statement]
 `""` の前に空白が書かれているかどうかは保ちます。
 `state x"" {` は複合状態 `x""` で、`state x "" {` は複合状態 `x` だからです。
 [fixture: whitespace-between-tokens/quotes-before-brace-kept]
@@ -474,7 +491,7 @@ stateDiagram-v2
   A:::highlight
   state f1 <<fork>>
   state "" x
-  classDef c fill:red , stroke:blue
+  classDef c fill:red, stroke:blue
   class A,B c
   scale 350 width
   hide empty description
@@ -1264,8 +1281,8 @@ stateDiagram-v2
   A --> B
   classDef c fill:#f00
   style A fill:#f00
-  classDef d fill:#0f0,stroke:#00f
-  style A fill:#0f0,stroke:#00f
+  classDef d fill:#0f0, stroke:#00f
+  style A fill:#0f0, stroke:#00f
 ```
 
 ### 複数行の文
@@ -1491,8 +1508,9 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
 変えると図が変わるか、入力が拒否されるからです。
 
 - 値のテキスト。
-  説明、ラベル、ノート、`as` の後の id、擬似状態の名前、スタイル、
-  `class` 文の CSS クラス、`accTitle` と `accDescr` のテキスト。
+  説明、ラベル、ノート、`as` の後の id、擬似状態の名前、
+  スタイル（`,` の前後の空白を除きます）、`class` 文の CSS クラス、
+  `accTitle` と `accDescr` のテキスト。
   [fixture: whitespace-between-tokens/style-text-kept]
   [fixture: descriptions-and-labels/acc-text-kept] [fixture: aliases/id-kept]
 - 1 行のノートの id の後、別名の定義の 2 つ目の説明、

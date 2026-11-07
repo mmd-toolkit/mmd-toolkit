@@ -269,15 +269,23 @@ style/classDef/class/linkStyle, before class values and interpolation names, or
 before tooltips. The grammar consumes exactly one whitespace character;
 following whitespace is value text, and a second character where a token is
 expected can reject. Tabs used as that character remain tabs. Preserve
-first-style leading whitespace even across directives, inner/comma-side style
-whitespace, empty style-list items, escaped classDef commas, order and
-repetition. The flowchart reason for keeping inner styles applies unchanged:
-they are values; its first-style collapse does not. [fixture:
-single-space-gaps/classdef-first-tab] [fixture:
-single-space-gaps/linkstyle-first-spaces] [fixture:
+first-style leading whitespace even across directives, inner style whitespace,
+the whitespace after a comma, empty style-list items, escaped classDef commas,
+order and repetition. The flowchart reason for keeping inner styles applies
+unchanged: they are values; its first-style collapse does not. The whitespace
+before a comma is no value, since mermaid.js drops it, and it is dropped as in
+[flowchart](./flowchart.md#whitespace-between-tokens):
+`style A fill:#f00 ,color:white` is printed `style A fill:#f00,color:white`. A
+space that a backslash escapes, a directive or a comment among the styles, a
+style that is all whitespace, and a line break or a kept `;` on the line keep
+the statement as written. [fixture: single-space-gaps/classdef-first-tab]
+[fixture: single-space-gaps/linkstyle-first-spaces] [fixture:
 single-space-gaps/style-directive-gap] [fixture:
 single-space-gaps/style-first-spaces] [fixture:
-single-space-gaps/styles-inner-gaps]
+single-space-gaps/styles-inner-gaps] [fixture:
+single-space-gaps/style-comma-before-dropped] [fixture:
+single-space-gaps/style-comma-beside-directive-kept] [test: agentflow: U+2028
+before the comma of a style statement]
 
 The tab after linkStyle and the tab before an interpolation name each supply the
 grammar's required single whitespace character; both remain written. [fixture:

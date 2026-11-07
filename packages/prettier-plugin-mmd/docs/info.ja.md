@@ -460,13 +460,22 @@ info
 
 ### Semicolons
 
-[共有の文字列 segment 保護](./pie.ja.md#directives-and-semicolons)を使い、
 すべての semicolon を残します。
-最初の非空白から最後の semicolon までを保護し、交差する値、コメント、
-directive は完全な範囲まで含めます。
+保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
+ほかの場所と同じように整形します。
+この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
+`style` か `classDef` の後の最初の `:` から、
+最後の保つ `;` の前の最後の `#` までに空白がない並びを読みます。
+その範囲の隙間と余白は空白の有無を保ち、空白の連続は空白 1 つにします。
+範囲の外は、この図種の通常の規則に従います。
+どの部分の配置も持たないテキストは、書かれたまま残します。
+複数行にわたる文は、各区間の頭から最後の保つ `;` までを、書かれたまま残します。
+プリンターが文の行をつなぐと、行の規則が読む行になりうるからです。
+[fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted]
 trigger の移動が選択と受理を変えうるため、保護された見出しと本文は分離しません。
 style/classDef の両 pass、大小文字、colon と hash の空白、Unicode 境界、
-directive で再結合する trigger は原文を保ち、安全な外側と suffix は整えます。
+directive で再結合する trigger の読みを保ちます。
 semicolon は info の一般的な文区切りではありません。
 
 [fixture: info/semicolons/native-description-value]

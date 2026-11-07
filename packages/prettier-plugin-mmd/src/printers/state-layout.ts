@@ -5,9 +5,11 @@ import type {
   StateCompositeStatement,
   StateLiteral,
   StateFloatingNoteStatement,
+  StateClassDefStatement,
   StateNoteStatement,
   StateReference,
   StateStatement,
+  StateStyleStatement,
   Token,
 } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
@@ -51,7 +53,7 @@ import {
   isWhitespace,
 } from "./source.ts"
 import { findStateSemicolonLines } from "./state-kept-lines.ts"
-import { addCssClassRules } from "./statement-rules.ts"
+import { addCssClassRules, styleUnitsCanCompact } from "./statement-rules.ts"
 
 /**
  * The node types of a state diagram whose text is a value, printed as
@@ -989,10 +991,49 @@ function statementRules(
     case "StateFloatingNoteStatement":
       addFloatingNoteRules(source, statement, rules)
       break
+    case "StateClassDefStatement":
+    case "StateStyleStatement":
+      addStyleCommaRules(source, statement, rules)
+      break
     default:
       break
   }
   return rules
+}
+
+/**
+ * Adds the rules of the `,` between the styles of a `classDef` or a `style`
+ * statement: none before it and one space after it, as in ER and requirement.
+ * mermaid.js reads the whitespace around the `,` as nothing in a state diagram,
+ * so the Db is the same (docs/state.md, Styles). A statement that
+ * `styleUnitsCanCompact` refuses stays as written, as in ER.
+ */
+function addStyleCommaRules(
+  source: Source,
+  statement: StateClassDefStatement | StateStyleStatement,
+  rules: Map<number, GapRule>,
+): void {
+  const styles = statement.styles.filter((style) => style !== null)
+  if (
+    styles.length !== statement.styles.length ||
+    !styleUnitsCanCompact(
+      source,
+      statement.range[0],
+      statement.range[1],
+      styles,
+    )
+  ) {
+    return
+  }
+  for (let index = 1; index < styles.length; index++) {
+    const comma = expectToken(
+      findStructuralToken(source, styles[index - 1].range[1]),
+      "the comma between styles",
+    )
+    expectValue(comma, ",")
+    rules.set(comma.range[0], "none")
+    rules.set(styles[index].range[0], "space")
+  }
 }
 
 /**

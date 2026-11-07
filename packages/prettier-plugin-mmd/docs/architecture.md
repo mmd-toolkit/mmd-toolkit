@@ -299,10 +299,11 @@ the brackets of the title of a group or a service and of the label of an arrow
 `group a(cloud)[ API ]` is printed `group a(cloud)[API]` and
 `service s(server)["x" ]` is printed `service s(server)["x"]`. [fixture:
 label-content/title-edge-whitespace-dropped] This holds on a line with a kept
-`;` too, where the text through the last `;` is protected (see Semicolons):
-dropping the padding moves no `;`, adds none and removes none, so the line rule
-selects the same `;`. `group g(cloud)[ a;b ]` is printed `group g(cloud)[a;b]`,
-and `service s(server)[ x; ] in g` is printed `service s(server)[x;] in g`. One
+`;` too, apart from the stretch read by the line rule (see
+[Semicolons](#semicolons)): dropping the padding outside that stretch moves no
+`;`, adds none and removes none, so the line rule selects the same `;`.
+`group g(cloud)[ a;b ]` is printed `group g(cloud)[a;b]`, and
+`service s(server)[ x; ] in g` is printed `service s(server)[x;] in g`. One
 space stays where the padding lies between a `:` and a `#` of a line that the
 line rule may read, since whether it is there decides which `;` is ignored:
 `service style(logos:aws)[ #y; ]` is printed `service style(logos:aws)[ #y;]`,
@@ -1070,13 +1071,22 @@ architecture-beta
 
 ### Semicolons
 
-Keep every authored semicolon and use shared `protectSemicolonPrefixes`. Protect
-the textual segment through its last semicolon, extending through whole crossing
-values and trivia; format safe suffix gaps only. Protected
-header/first-statement groups stay together. Removing one selected semicolon or
-moving style/classDef triggers can select another and change the Db, so keep
-both passes, nontriggers, entities, physical value lines and global-rejoined
-triggers.
+Keep every authored semicolon. A segment that holds a kept `;` is formatted as
+anywhere else, except where formatting could change which `;` the line rule
+ignores. The rule reads a segment from the first `:` after `style` or `classDef`
+to the last `#` before its last kept `;`, with no whitespace between the `:` and
+the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps and the
+padding inside that stretch keep whether they hold whitespace, a run becoming
+one space, and the rest of the segment follows the ordinary rules of this
+diagram. Text that no part of the layout holds stays as written. A statement
+over several lines keeps the text of each segment, up to its last kept `;`, as
+written, since the printer joins its lines and a joined line can be one that the
+rule reads. [fixture: semicolons/stretch-kept-rest-formatted] [fixture:
+semicolons/no-stretch-formatted] [fixture: semicolons/crossing-comment]
+Protected header/first-statement groups stay together. Removing one selected
+semicolon or moving style/classDef triggers can select another and change the
+Db, so keep both passes, nontriggers, entities, physical value lines and
+global-rejoined triggers.
 
 [fixture: architecture/semicolons/native-service-value]
 

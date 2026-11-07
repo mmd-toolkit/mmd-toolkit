@@ -2155,14 +2155,26 @@ treeView-beta
 
 ### Semicolons
 
-Keep every authored semicolon through shared textual-prefix and kept-line
-protection; treeview has no grammatical semicolon and style/classDef words alone
-do not freeze a line. Draw a safe outer box head around protected content, while
-protected interiors and value columns remain written. Retain the whole body when
-protected source row boundaries constrain parentage or when another Branch
-prefixes condition applies. These protections compose with unchanged value-owned
-prefixes on the same line or elsewhere in the diagram; they are not permission
-to discard a semicolon or partially redraw an unsafe body.
+Keep every authored semicolon. A segment that holds a kept `;` is formatted as
+anywhere else, except where formatting could change which `;` the line rule
+ignores. The rule reads a segment from the first `:` after `style` or `classDef`
+to the last `#` before its last kept `;`, with no whitespace between the `:` and
+the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps and the
+padding inside that stretch keep whether they hold whitespace, a run becoming
+one space, and the rest of the segment follows the ordinary rules of this
+diagram. Text that no part of the layout holds stays as written. A statement
+over several lines keeps the text of each segment, up to its last kept `;`, as
+written, since the printer joins its lines and a joined line can be one that the
+rule reads. [fixture: semicolons/stretch-kept-rest-formatted] [fixture:
+semicolons/no-stretch-formatted] [fixture:
+semicolons/box-redraw-protected-value-on-enclosed-prefix-line] Treeview has no
+grammatical semicolon and style/classDef words alone do not freeze a line. Draw
+a safe outer box head around protected content, while protected interiors and
+value columns remain written. Retain the whole body when protected source row
+boundaries constrain parentage or when another Branch prefixes condition
+applies. These protections compose with unchanged value-owned prefixes on the
+same line or elsewhere in the diagram; they are not permission to discard a
+semicolon or partially redraw an unsafe body.
 
 [corpus fixture: treeview/semicolon-selected]
 

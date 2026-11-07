@@ -32,6 +32,7 @@ import {
 import { readGapElement } from "./gap.ts"
 import { holdsJoiningRegion, lineStartOf } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
+import { normalizeStyleCommas } from "./statement-rules.ts"
 import {
   findStructuralToken,
   findTriviaBetween,
@@ -373,16 +374,26 @@ export function layoutStatement(
   const rules = new Map<number, GapRule>()
   const kept: Atom[] = []
   switch (statement.type) {
+    case "AgentflowClassStatement":
+      return keptAsWritten(start, end)
     case "AgentflowStyleStatement":
     case "AgentflowClassDefStatement":
-    case "AgentflowClassStatement":
     case "AgentflowLinkStyleStatement":
-    case "AgentflowDefaultLinkStyleStatement":
+    case "AgentflowDefaultLinkStyleStatement": {
       // Exactly one grammar unit precedes a value, and every further space is
       // value text. Preserve these gaps, even across directives, rather than
       // applying flowchart's first-style collapse (diagrams/agentflow.md,
       // Style, classDef, class, and linkStyle; docs/agentflow.md, Single space gaps).
-      return keptAsWritten(start, end)
+      // The whitespace before a `,` of the styles is no value text: mermaid.js
+      // drops it, so it is dropped here too (docs/agentflow.md, Single space
+      // gaps).
+      const atoms: Atom[] = [{ start, end }]
+      normalizeStyleCommas(source, atoms, statement, {
+        before: true,
+        after: false,
+      })
+      return { ...keptAsWritten(start, end), atoms }
+    }
     case "AgentflowClickUrlStatement":
     case "AgentflowClickCallbackStatement":
       // Prefix nodes can straddle href or follow a second call. Their gaps and

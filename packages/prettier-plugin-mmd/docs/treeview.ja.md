@@ -2138,7 +2138,20 @@ treeView-beta
 
 ### Semicolons
 
-すべての semicolon を共有の textual prefix と行の保護で残します。
+すべての semicolon を残します。
+保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
+ほかの場所と同じように整形します。
+この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
+`style` か `classDef` の後の最初の `:` から、
+最後の保つ `;` の前の最後の `#` までに空白がない並びを読みます。
+その範囲の隙間と余白は空白の有無を保ち、空白の連続は空白 1 つにします。
+範囲の外は、この図種の通常の規則に従います。
+どの部分の配置も持たないテキストは、書かれたまま残します。
+複数行にわたる文は、各区間の頭から最後の保つ `;` までを、書かれたまま残します。
+プリンターが文の行をつなぐと、行の規則が読む行になりうるからです。
+[fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted]
+[fixture: semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
 treeview に文法上の semicolon はなく、
 style・classDef の語だけでは行を固定しません。
 保護された内容の外側の安全な罫線は描き直し、内部と値の列は原文のまま保ちます。

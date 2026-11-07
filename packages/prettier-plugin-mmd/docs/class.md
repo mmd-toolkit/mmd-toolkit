@@ -324,6 +324,20 @@ or a `#` that ends the statement follows
 U+2028 or U+2029 after the `,` stays where it is. [test: U+2028 after the comma
 of a classDef statement] [test: U+2029 after the comma of a classDef statement]
 
+The whitespace before a `,` of the styles of a `classDef` or a `style` statement
+is dropped, since mermaid.js drops it from the style:
+`style C fill:#f9f  ,  stroke:#333` is printed
+`style C fill:#f9f,  stroke:#333`. The whitespace after the `,` is in the Db
+where the style is shown, in a `style` statement and in a `classDef` that a
+class uses with `:::`, so it stays as written. A space that a backslash escapes,
+a comment or a directive among the styles, and a line break or a kept `;` on the
+line keep the statement as written. [fixture:
+whitespace-between-tokens/style-comma-before-dropped] [fixture:
+whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
+whitespace-between-tokens/style-values-kept] A U+2028 or U+2029 among the styles
+keeps the statement as written. [test: U+2028 before the comma of a class style
+statement]
+
 U+2028 and U+2029 after the `}` that closes a class body or a namespace are
 whitespace to mermaid.js, and are dropped with the whitespace at the end of the
 line. [test: U+2029 after the `}` of a class body] [test: U+2028 after the `}`
@@ -1255,9 +1269,9 @@ Apart from description-body indentation under
 because changing it would change the diagram or the input would be rejected:
 
 - the text of a value: a string, a backquoted name, the text of a label, a
-  style, and the text of `accTitle` and `accDescr`; [fixture:
-  whitespace-between-tokens/style-values-kept] [fixture:
-  labels/accessibility-text-kept]
+  style, apart from the whitespace before its `,`, and the text of `accTitle`
+  and `accDescr`; [fixture: whitespace-between-tokens/style-values-kept]
+  [fixture: labels/accessibility-text-kept]
 - attribute and annotation contents, method-field contents, and a generic type
   from `~` to `~`;
 - the whitespace after the `:` of a label of only whitespace, and whether
