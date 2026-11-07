@@ -126,12 +126,14 @@ rules below. After `click`, that whitespace ends the click id, so
 string the Db would be the same, and the name is kept the same way. [fixture:
 names-and-headings/name-heading-title-multi-part-name-kept] A directive or a
 comment that ends the name keeps the whitespace written after it, as under
-[Directives](#directives), and a directive inside the gap keeps the whitespace
-on each side of it. [fixture:
-names-and-headings/name-heading-title-beside-directive-kept] [test: agentflow: a
-comment and U+2028 between a flow name and its title] Between a `:` and a `#` of
-a line that the line rule may read, the gap keeps whether it holds whitespace,
-as in flowchart. [fixture:
+[Directives](#directives), and a directive inside the gap keeps whether
+whitespace was written after it: that whitespace becomes one space, while the
+whitespace before it belongs to the name and stays as written. [fixture:
+names-and-headings/name-heading-title-beside-directive-kept] [fixture:
+names-and-headings/name-heading-title-gap-run-beside-directive] [test:
+agentflow: a comment and U+2028 between a flow name and its title] Between a `:`
+and a `#` of a line that the line rule may read, the gap keeps whether it holds
+whitespace, as in flowchart. [fixture:
 names-and-headings/name-heading-title-after-colon-before-hash] A U+2028 or
 U+2029 in the gap stays where it is. [test: agentflow: U+2028 between a flow
 name and its title] [test: agentflow: U+2029 between a connector name and its
@@ -142,11 +144,13 @@ however many spaces or tabs were written: the word takes one whitespace
 character, and mermaid.js trims the rest from the name. `flow   F["T"]` is
 printed `flow F["T"]`, and `global` followed by spaces is printed `global`.
 [fixture: names-and-headings/heading-word-gap-collapsed] A directive in the gap
-keeps the whitespace written on each side of it, as under
-[Directives](#directives). [fixture:
-names-and-headings/heading-word-gap-beside-directive-kept] A U+2028 or U+2029 in
-the gap stays where it is. [test: agentflow: U+2028 after the flow word] [test:
-agentflow: U+2029 after the connector word]
+keeps whether whitespace was written on each side of it, a run of whitespace
+becoming one space, as under [Directives](#directives). [fixture:
+names-and-headings/heading-word-gap-beside-directive-kept] This holds where the
+name is a single part; a name of several parts is kept as written, as above.
+[fixture: names-and-headings/name-heading-title-multi-part-name-kept] A U+2028
+or U+2029 in the gap stays where it is. [test: agentflow: U+2028 after the flow
+word] [test: agentflow: U+2029 after the connector word]
 
 A whitespace-only name before an explicit title keeps its written characters:
 removing them would remove the required name. [fixture:

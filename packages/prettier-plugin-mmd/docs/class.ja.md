@@ -259,13 +259,13 @@ flowchart と同じです。 [fixture: whitespace-between-tokens/collapsed]
 `class A :::c` と `class A ::: c` は `class A:::c` になります。
 ER 図と同じです。
 mermaid.js はどの書き方も同じクラスとして読むので、形を強いるものはありません。
-mermaid.js の文書の例 2 件は、
-本体なしと本体ありで `class Animal:::someclass` と書いています。
+mermaid.js の文書の例 4 件は、本体なしと本体ありで `class Animal:::someclass`、
+`class Animal:::pink`、`class Animal:::styleClass` と書いています。
 その範囲は、
-[ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L780-L788)
+[ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L780-L833)
 にあります。 [fixture: whitespace-between-tokens/css-class-touches-separator]
 隙間にディレクティブがあれば、
-その両側に書かれた空白を残します（[ディレクティブ](#ディレクティブ)を参照）。
+その両側の空白の有無を保ちます（[ディレクティブ](#ディレクティブ)を参照）。
 U+2028 と U+2029 は、そのまま残します。
 [test: U+2028 before the `:::` of a class]
 [test: U+2029 after the `:::` of a class]

@@ -240,11 +240,12 @@ rejected. [fixture: whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/name-parts-keyword-kept] The `:::` of a CSS class
 touches the name before it and the class after it: `class A :::c` and
 `class A ::: c` are printed `class A:::c`, as in an ER diagram. mermaid.js reads
-every spelling as the same class, so nothing forces the form; the two examples
-of its documentation write `class Animal:::someclass`, without and with a body
-([here](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L780-L788)).
+every spelling as the same class, so nothing forces the form; the four examples
+of its documentation write `class Animal:::someclass`, `class Animal:::pink`,
+and `class Animal:::styleClass`, with and without a body
+([here](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L780-L833)).
 [fixture: whitespace-between-tokens/css-class-touches-separator] A directive in
-the gap keeps the whitespace written on each side of it, as under
+the gap keeps whether whitespace was written on each side of it, as under
 [Directives](#directives), and a U+2028 or U+2029 stays where it is. [test:
 U+2028 before the `:::` of a class] [test: U+2029 after the `:::` of a class]
 The annotation of a class, `<<interface>>`, has one space before the `<<` (or

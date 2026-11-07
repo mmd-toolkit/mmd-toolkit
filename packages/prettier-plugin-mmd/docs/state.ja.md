@@ -383,7 +383,8 @@ stateDiagram-v2
 [fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/tabs-collapsed]
 [fixture: whitespace-between-tokens/touching-class-kept]
-状態の `:::` は、前の状態にも後ろのクラスにも接します。
+遷移の中や単独の行にある状態参照の `:::` は、
+前の状態にも後ろのクラスにも接します。
 `A :::c` と `A ::: c` は `A:::c` になります。
 ER 図と同じです。
 mermaid.js はどの書き方も同じ状態として読むので、形を強いるものはありません。
@@ -392,8 +393,13 @@ ER 図の `:::` はすでにこの形で印字しており、 mermaid.js の文�
 その範囲は、
 [ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/stateDiagram.md#L448-L470)
 にあります。 [fixture: whitespace-between-tokens/css-class-touches-separator]
+`state` 定義の `:::` は動かしません。
+`state A :::c`、`state "x" as B ::: c`、`state C ::: c {` は、
+空白が書かれていた隙間を空白 1 つのまま残します。
+`state "y" as D:::c` は別名の規則で `state "y" as D :::c` になります。
+[fixture: whitespace-between-tokens/css-class-in-definition-kept]
 隙間にディレクティブがあれば、
-その両側に書かれた空白を残します（[ディレクティブ](#ディレクティブ)を参照）。
+その両側の空白の有無を保ちます（[ディレクティブ](#ディレクティブ)を参照）。
 U+2028 と U+2029 は、そのまま残します。
 [test: U+2028 before the `:::` of a state]
 [test: U+2029 after the `:::` of a state]

@@ -136,8 +136,11 @@ flowchart と同じ形で、agentflowだけ違う形を選ぶ理由がないた�
 [fixture: names-and-headings/name-heading-title-multi-part-name-kept]
 名前をディレクティブかコメントが終わらせるときは、その後ろに書かれた空白を、
 [ディレクティブ](#directives)と同じく保ちます。
-隙間の中にディレクティブがあれば、その両側の空白も保ちます。
+隙間の中にディレクティブがあれば、その後ろに空白があるかどうかを保ち、
+書かれていればその空白は 1 つにします。
+ディレクティブの前の空白は名前に属するので、書かれたまま残します。
 [fixture: names-and-headings/name-heading-title-beside-directive-kept]
+[fixture: names-and-headings/name-heading-title-gap-run-beside-directive]
 [test: agentflow: a comment and U+2028 between a flow name and its title]
 `:` と `#` の間の隙間は、flowchart と同じく、空白があるかないかを保ちます。
 [fixture: names-and-headings/name-heading-title-after-colon-before-hash]
@@ -151,9 +154,12 @@ flowchart と同じ形で、agentflowだけ違う形を選ぶ理由がないた�
 `flow   F["T"]` は `flow F["T"]` に、
 空白が続く `global` は `global` になります。
 [fixture: names-and-headings/heading-word-gap-collapsed]
-隙間にディレクティブがあれば、
-その両側に書かれた空白を残します（[ディレクティブ](#directives)を参照）。
+隙間にディレクティブがあれば、その両側に空白があるかどうかを保ち、
+空白の連なりは空白 1 つにします（[ディレクティブ](#directives)を参照）。
 [fixture: names-and-headings/heading-word-gap-beside-directive-kept]
+ここまでは名前が 1 つの部分のときの規則で、複数の部分からなる名前は、
+上に書いたとおり書かれたまま残します。
+[fixture: names-and-headings/name-heading-title-multi-part-name-kept]
 隙間の U+2028 と U+2029 は、そのまま残します。
 [test: agentflow: U+2028 after the flow word]
 [test: agentflow: U+2029 after the connector word]
