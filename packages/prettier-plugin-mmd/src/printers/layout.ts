@@ -578,7 +578,9 @@ function isLineBreak(character: string): boolean {
  * and the layout holds its text as one atom between the braces, with
  * nothing but whitespace on one line around it: a comment or a directive in
  * the block (a `%%{` in the text, whose `}` would be read as the closing
- * brace), a line break, or a layout that holds the text
+ * brace), a line break, a line that keeps its `;` (see
+ * `findLinesWithOwnSemicolons`: the line rule of mermaid.js reads its whole
+ * text), or a layout that holds the text
  * in a longer stretch (a kept line, a hidden form) leaves it as it is.
  */
 function padOneLineDescription(
@@ -611,7 +613,7 @@ function padOneLineDescription(
     text.doc !== undefined ||
     [...between].some(isLineBreak) ||
     between.includes("%%{") ||
-    holdsStyleLine(between) ||
+    findSemicolonLines(source).has(lineStartOf(source, closing)) ||
     findTriviaBetween(source, opening.range[1], closing).length > 0
   )
     return layout
@@ -623,18 +625,6 @@ function padOneLineDescription(
       [closing, "space"],
     ]),
   }
-}
-
-/**
- * Whether a text can be read by the line rule of mermaid.js: it holds `style`
- * or `classDef` and a `;` (docs/flowchart.md, Semicolons). The printer keeps
- * the whitespace of such a text where it stands between a `:` and a `#`, so
- * padding the braces around it would touch one side only.
- */
-function holdsStyleLine(text: string): boolean {
-  return (
-    text.includes(";") && (text.includes("style") || text.includes("classDef"))
-  )
 }
 
 /**

@@ -1080,7 +1080,8 @@ The text of a block on one line stands between one space on each side, as in
 `accDescr {a b}`, `accDescr {  a b  }`, `accDescr {  a b}`, and
 `accDescr {a b  }` are printed `accDescr { a b }`. mermaid.js trims the text, so
 the whitespace at its ends carries no meaning. A block with a directive in its
-text stays as written. [fixture:
+text, or on a line that keeps its `;`, stays as written (see
+[Semicolons](./flowchart.md#semicolons)). [fixture:
 multi-line-values/block-text-on-one-line-padded]
 
 Input

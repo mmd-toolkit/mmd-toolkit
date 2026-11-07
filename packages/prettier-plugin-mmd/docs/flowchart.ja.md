@@ -1224,15 +1224,16 @@ mermaid.js の文書には、1 行のブロックの例がありません。
 空白を足すとディレクティブが変わります。
 [fixture: accessibility-lines/block-text-beside-directive-kept]
 [fixture: pie/description-blocks/block-first-brace]
-文字の中の `;` は、空白を足すことを妨げません。
-`{a;b}` は `{ a;b }` になります。
-[fixture: accessibility-lines/block-text-with-semicolon-padded]
+`;` を残す行にあるブロックは、文字が何であっても書かれたままにします。
+mermaid.js の line rule
+が行全体を読むからです（[セミコロン](#セミコロン)を参照）。
+`{a;b}` と `{a; b}` はそのままです。
+`A[style];accDescr {b:c;}D#z;` のブロックも、空白を足すと、
+line rule が組にする `:` と `#` を壊すので、そのままです。
+[fixture: accessibility-lines/block-text-with-semicolon-kept]
+[fixture: accessibility-lines/block-on-style-line-kept]
+文を区切るだけの `;` は落とされ、ブロックは整えます。
 [fixture: accessibility-lines/block-text-with-semicolons-padded]
-文字に `style` か `classDef` と `;` があると、
-mermaid.js の line rule が読むことがあります。
-整形は `:` と `#` の間の空白を保つので（[セミコロン](#セミコロン)を参照）、
-そのブロックは書かれたままにします。
-[fixture: accessibility-lines/block-text-style-line-kept]
 文字の中の U+2028 と U+2029 は、文字を複数行にするので、そのまま残します。
 [test: U+2028 in the text of a flowchart description block]
 [test: U+2029 in the text of a flowchart description block]

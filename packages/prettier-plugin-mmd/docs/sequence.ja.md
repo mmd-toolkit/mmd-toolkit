@@ -1028,7 +1028,8 @@ sequenceDiagram
 `accDescr {a b}`、`accDescr {  a b  }`、`accDescr {  a b}`、
 `accDescr {a b  }` は、どれも `accDescr { a b }` になります。
 mermaid.js は文字を trim するので、両端の空白に意味はありません。
-文字の中にディレクティブがあるブロックは、書かれたままにします。
+文字の中にディレクティブがあるブロックと、`;` を残す行にあるブロックは、
+書かれたままにします（[セミコロン](./flowchart.ja.md#セミコロン)を参照）。
 [fixture: multi-line-values/block-text-on-one-line-padded]
 
 `accDescr { ... }` の本文行は文より 1 段深くそろえ、
