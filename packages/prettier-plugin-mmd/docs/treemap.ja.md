@@ -384,6 +384,8 @@ semicolon で保護する prefix は、従来の列を保ちます。
 
 [fixture: treemap/style-gaps/css-comment-semicolon-kept]
 
+[fixture: treemap/style-gaps/css-comment-terminator-dropped]
+
 入力（escape 表記）: `"treemap\nclassDef zz\n\n  \"Apparent\":2"`
 
 出力
@@ -402,6 +404,7 @@ comma、colon の空白、escaped comma、引用符、percent、空 entry、
 CSS として分割、統合、整形しません。
 綴りや entry の先頭空白は Db を変えうるためです。
 末尾の空白も作者の値の文字として保ちます。
+ただし、消す `;` の前の空白は除きます([Semicolons](#semicolons)を参照)。
 
 [fixture: treemap/styles/written]
 
@@ -421,13 +424,96 @@ CSS として分割、統合、整形しません。
 
 ```mmd
 treemap
-  classDef zz color:red , fill:blue,stroke:rgb(1\,2\,3),;
+  classDef zz color:red , fill:blue,stroke:rgb(1\,2\,3),
 ```
 
 ### Semicolons
 
-書かれた semicolon はすべて保ちます。
-class の終端、選ばれて無視されるもの、値の文字を区別します。
+style を持つ `classDef` を終える `;` が行末にあるときは消します。
+mermaid.js は `;` がなくても同じ文として読むからです。
+`classDef zz fill:red;` のように文の単位である `;` も、
+`classDef zz color:#f00;` のように
+[mermaid.js の行の規則](../../spec/docs/common.ja.md#style-行と-classdef-行)
+が無視する最後の `;` も、同じく消します。
+[fixture: semicolons/class-terminator-dropped]
+[fixture: semicolons/class-terminator-hash-dropped]
+消す `;` の直前の空白も、U+00A0、U+2028、U+2029、U+FEFF を含めて一緒に消します。
+[fixture: semicolons/class-terminator-space-before-dropped]
+[test: treemap/line-terminators-and-unicode/unicode-values]
+[test: treemap/semicolons/class-terminator-unicode-space-before-dropped]
+行の規則が無視する `;` の後ろの空白は style に属するので、これも消します。
+[fixture: semicolons/class-terminator-hash-trailing-whitespace-dropped]
+文がテキストの末尾で終わっていても同じです。
+[fixture: semicolons/class-terminator-end-of-text-dropped]
+消した後の文は、`classDef` の行の通常の配置に従います。
+字下げ、前後の空行とコメント行、前にある空の description block、
+`;` の後ろの空白が次の row に与える字下げです。
+[fixture: semicolons/class-terminator-indented-dropped]
+[fixture: semicolons/class-terminator-trailing-whitespace-dropped]
+[fixture: semicolons/class-terminator-blank-and-comment-lines-dropped]
+[fixture: semicolons/class-terminator-empty-description-block-dropped]
+[fixture: style-gaps/css-comment-terminator-dropped]
+消すと読まれ方が変わる `;` は残します。
+style のない `classDef` の `;` は、消すと次の行が style になります。
+同じ行に別の文が続く `;` も、消すと読まれ方が変わります。
+[fixture: semicolons/terminator]
+[fixture: semicolons/class-terminator-before-row-kept]
+同じ行に続くコメントや directive があるときも残します。
+[fixture: semicolons/class-terminator-comment-kept]
+文の単位である `;` の直前に directive があるときも残します。
+間に空白があっても同じです。
+[fixture: semicolons/class-terminator-directive-kept]
+`classDef zz fill: #f00;` のように、`;` が style の一部であるときも残します。
+`#f00;` が entity だからです。
+[fixture: semicolons/class-terminator-entity-kept]
+別の `;` が隣にあるときも残します。
+[fixture: semicolons/class-terminator-beside-semicolon-kept]
+行の規則が無視する `;` の前に directive があるときは、
+directive を残して `;` を消します。
+ほかの図種と同じです。
+[fixture: semicolons/class-terminator-hash-directive-dropped]
+
+文を終える `;` が残るときは、その後ろの空白が次の文に字下げを与える run です。
+同じ行で `;` とその後ろのコメントや directive の間の空白、
+2 つの directive の間の空白、行末の空白がこれに当たります。
+mermaid.js は directive の両側の空白を 1 つの run として数えます
+([見出しと字下げ](../../spec/docs/diagrams/treemap.ja.md#見出しと字下げ))。
+[corpus fixture: treemap/gram-indent-around-global-directive]
+次の行にもう 1 つ run があると、2 つ目の字下げとして読んで拒否します。
+[corpus fixture: treemap/gram-class-tail-space-next-indent]
+[corpus fixture: treemap/gram-class-directive-tail-space-next-indent]
+この run は、[Carried indentation](#carried-indentation) と同じく、
+次の文の計画された列へ 1 回だけ移します。
+そのため、コメントや directive は `;` に接し、
+コメントや directive は前の directive にも接します。
+directive の両側の空白が run を作るときは、その合計を数えます。
+[fixture: semicolons/class-terminator-comment-run-moved]
+[fixture: semicolons/class-terminator-directive-run-moved]
+[fixture: semicolons/class-terminator-directives-run-moved]
+[fixture: semicolons/class-terminator-run-sum-moved]
+行の規則が無視する `;` がそれに続くときも同じです。
+2 つの `;` の間に空白や directive があるときも同じです。
+[fixture: semicolons/class-terminator-ignored-run-moved]
+[fixture: semicolons/class-terminator-ignored-comment-run-moved]
+[fixture: semicolons/class-terminator-semicolons-run-moved]
+[fixture: semicolons/class-terminator-directive-semicolon-run-moved]
+style のない `classDef` でも同じです。
+[fixture: semicolons/class-terminator-styleless-run-moved]
+次の文が `classDef` のときも同じです。
+[fixture: semicolons/class-terminator-class-run-moved]
+間にコメント行や空行があるときも同じです。
+[fixture: semicolons/class-terminator-comment-lines-run-moved]
+`;` の後ろに空白がないときは、次の row の字下げはその row 自身のものなので、
+計画された列に印字します。
+[fixture: semicolons/class-terminator-comment-row-indented-kept]
+それより前に文を終える `;` がなく、
+行の規則が無視する `;` の後ろに同じ行の文字が続くときは、
+その文字が style の一部になるので、空白も残ります。
+`classDef zz a:#b ; %% c` は行が変わりません。
+[fixture: semicolons/class-terminator-ignored-text-after-kept]
+
+それ以外の書かれた semicolon は保ちます。
+選ばれて無視されるもの、別の `;` の隣にあるもの、値の文字です。
 共有の行と prefix の保護を使い、区間の原文と列を保ちます。
 保護区間の内部の行に字下げを足しません。
 保持する行が row の境界を拘束する場合は、本文を原文保持します。
@@ -745,6 +831,11 @@ Root directive の全文、順序、部品や値の所有位置を保ちます�
 前の行から渡る unit は、代わりに一度だけ次行へ移します。
 class keyword と名前の必須空白を保ち、directive で代用しません。
 
+useTabs のときは、保つ gap も補う字下げもすべて tab で印字します。
+directive の前後の空白は一つの字下げ unit で、
+その各文字は種類を問わず一つと数えるためです（[Tabs](#tabs) を参照）。
+[fixture: treemap/directives/leading-use-tabs]
+
 [fixture: treemap/directives/leading]
 
 [fixture: treemap/directives/shortened]
@@ -952,8 +1043,8 @@ treemap
   "Top"
     "Right": 2
     "Left": 1
-  classDef zz color:red;
-  classDef zz fill:blue;
+  classDef zz color:red
+  classDef zz fill:blue
   title Earlier
   title
 ```

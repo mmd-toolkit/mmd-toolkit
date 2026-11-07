@@ -486,6 +486,10 @@ styles-and-classes/ending-semicolon-kept] Ignored semicolons follow
 [Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement).
 [fixture: styles-and-classes/ignored-style-terminator-dropped]
 
+A style that holds no `:`, such as `4px`, is not a property and value pair, so
+its text stays as written, repeated spaces included; the other styles of the
+statement are spaced as usual. [fixture: styles-and-classes/style-without-colon]
+
 A `class` statement may go on after a line break. The names before the break are
 read in the style context, where an unquoted name is a `style-word`
 (diagrams/requirement.md, The style context, rule 1), and the names after it in

@@ -16,6 +16,14 @@ statement moves below the header. Direction changes the Db, while its omission
 and colon presence remain author choices. Hidden gaps and protected header/body
 groups retain their source boundaries.
 
+A hidden form between `gitGraph` and the direction keeps the gap after it as
+written, because a hidden form consumes an immediately following line feed, and
+moving that gap can reject the input (see
+[Hidden DIRECTIVE and line endings](../../spec/docs/diagrams/gitgraph.md#hidden-directive-and-line-endings)),
+while the gap before it is an ordinary gap: `gitGraph  %%{}%%  LR:` is printed
+as `gitGraph %%{}%%  LR:`. [fixture: gitgraph/header/hidden-before-direction]
+[corpus fixture: gitgraph/header-hidden-before-direction]
+
 Fixed cases: [fixture: gitgraph/header/header-absent] [fixture:
 gitgraph/header/header-colon] [fixture: gitgraph/header/header-lr] [fixture:
 gitgraph/header/header-tb] [fixture: gitgraph/header/header-bt] [corpus fixture:

@@ -7,7 +7,7 @@ import type {
 } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
-import { moveDataBlocks } from "./data-blocks.ts"
+import { formatDataBlocks } from "./data-blocks.ts"
 import { findAgentflowKeptLines } from "./agentflow-kept-lines.ts"
 import type { BlockRules } from "./blocks.ts"
 import {
@@ -90,7 +90,7 @@ export function printAgentflow(
     )
   const statement = classified.statement
   const depth = depthOf(path)
-  const layout = moveDataBlocks(
+  const layout = formatDataBlocks(
     source,
     layoutStatement(
       source,
@@ -174,7 +174,7 @@ function printContainer(
   )
   const headerDoc = printAtoms(
     source,
-    moveDataBlocks(
+    formatDataBlocks(
       source,
       layoutContainerHeader(source, container, headerEnd),
       [container.range[0], headerEnd],

@@ -29,7 +29,8 @@ block is left to Prettier.
 
 Directive arguments and the text of `@{ ... }` data blocks are kept as written.
 The lines of a multi-line data block move with their statement, by one number of
-spaces, where that does not change what mermaid.js reads. YAML frontmatter is
+spaces, where that does not change what mermaid.js reads. A data block on one
+line has one space inside each end, on the same condition. YAML frontmatter is
 formatted with Prettier's YAML formatter when it can be read and formatted
 safely; otherwise, it is kept as written. See [frontmatter
 compatibility][frontmatter] for the exact conditions.

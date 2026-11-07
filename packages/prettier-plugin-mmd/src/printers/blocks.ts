@@ -1,10 +1,10 @@
 import type { Doc, ParserOptions } from "prettier"
-import { builders } from "prettier/doc"
+import { builders, utils } from "prettier/doc"
 import type { Range } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
 import type { Gap, ItemRun } from "./gap.ts"
 import type { GapRule } from "./atoms.ts"
-import { endsWithSpaceOrTab, readGap } from "./gap.ts"
+import { endsWithSpaceOrTab, readGap, readGapElement } from "./gap.ts"
 import type { KeptLines } from "./kept-lines.ts"
 import {
   holdsJoiningRegion,
@@ -26,6 +26,7 @@ import {
 } from "./lines.ts"
 import type { Source } from "./source.ts"
 import {
+  findCoveringRange,
   findFirstIndex,
   findTokenEndingBefore,
   findTokenStartingAt,
@@ -35,6 +36,7 @@ import {
 } from "./source.ts"
 
 const { indent } = builders
+const { replaceEndOfLine } = utils
 
 /**
  * What the printing of a block needs of a statement: where it lies in the
@@ -658,7 +660,10 @@ export function printBlock<Statement extends Positioned>(
   /**
    * Prints a stretch: as written when one of its lines is verbatim or it
    * holds a statement that holds statements, and otherwise its statements
-   * as formatted, with what lies between them (see `printInlineGap`).
+   * as formatted, with what lies between them (see `printInlineGap`). After
+   * its last statement, the whitespace that the planned indentation of the
+   * next statement supplies (`relocatedWhitespace`) is not printed in either
+   * case.
    */
   function printStretch(stretch: Stretch): Line {
     const covered = statements.slice(stretch.first, stretch.after)
@@ -668,12 +673,23 @@ export function printBlock<Statement extends Positioned>(
       (rules.joiningRegionsPrintedAsWritten !== true &&
         holdsJoiningRegion(source, stretch.start, stretch.end))
     ) {
+      // What stands after the last statement is a gap: the whitespace that
+      // the planned indentation of the next statement supplies is not printed.
+      const last = covered.at(-1)
+      const tailStart =
+        last === undefined ? stretch.end : rules.printedEnd(last)
+      const written =
+        source.text.slice(stretch.start, tailStart) +
+        withoutRelocatedWhitespace(
+          source,
+          tailStart,
+          stretch.end,
+          rules.relocatedWhitespace ?? [],
+        )
       return {
-        doc: printAsWritten(source, stretch.start, stretch.end),
+        doc: replaceEndOfLine(written),
         blankBefore: false,
-        endsWithWhitespace: endsWithSpaceOrTab(
-          source.text.slice(stretch.start, stretch.end),
-        ),
+        endsWithWhitespace: endsWithSpaceOrTab(written),
       }
     }
     const parts: Doc[] = []
@@ -721,6 +737,7 @@ export function printBlock<Statement extends Positioned>(
             rules.keptInlineGapEnd,
             undefined,
             rules.omittedRanges,
+            rules.relocatedWhitespace,
           )
     return {
       doc: [...parts, trailing],
@@ -1110,7 +1127,9 @@ interface InlinePlace {
 /**
  * Prints a gap within a kept line: its `;` and directives, with one space
  * on each side where the source has whitespace, and nothing where it has
- * none, but no space at the start or the end of the line.
+ * none, but no space at the start or the end of the line. Whitespace in
+ * `relocatedWhitespace` is not printed: the planned indentation of the next
+ * statement supplies it.
  */
 function printInlineGap(
   source: Source,
@@ -1120,6 +1139,7 @@ function printInlineGap(
   keptEnd?: (start: number) => number,
   ordinaryRule?: GapRule,
   omittedRanges: readonly Range[] = [],
+  relocatedWhitespace: readonly Range[] = [],
 ): Doc {
   if (keptEnd !== undefined && keptEnd(start) > start && end <= keptEnd(start))
     return printAsWritten(source, start, end)
@@ -1129,6 +1149,7 @@ function printInlineGap(
       : ""
   const gap = readGap(source, start, end, true, {
     omitted: omittedRanges,
+    relocatedWhitespace,
   })
   if (gap.breaksLine) {
     throw new Error(
@@ -1150,6 +1171,30 @@ function printInlineGap(
     run.doc,
     run.spaceAfter && !place.atLineEnd ? " " : "",
   ]
+}
+
+/**
+ * The text between two offsets as written, without the whitespace in
+ * `relocatedWhitespace`: a run that the planned indentation of the next
+ * statement supplies, which must not be printed a second time.
+ */
+function withoutRelocatedWhitespace(
+  source: Source,
+  start: number,
+  end: number,
+  relocatedWhitespace: readonly Range[],
+): string {
+  let text = ""
+  for (let offset = start; offset < end;) {
+    const { element, end: next } = readGapElement(source, offset)
+    if (
+      element.kind !== "whitespace" ||
+      findCoveringRange(relocatedWhitespace, offset) === undefined
+    )
+      text += source.text.slice(offset, next)
+    offset = next
+  }
+  return text
 }
 
 /**

@@ -554,6 +554,12 @@ CR と LF は `endOfLine` に従い、
 [test: data blocks: JSON leading tab kept] [test: data blocks: usecase U+2029]
 [test: data blocks: usecase CRLF]
 
+1 行の JSON table は書かれたままにします。
+`{` と `}` は JSON 自身の括弧であり、
+mermaid.js が括弧を付けて読むブロックの両端ではないので、
+[データブロック](./flowchart.ja.md#データブロック)の空白 1
+つの整形は適用しません。 [fixture: json-tables/one-line-kept]
+
 [fixture: json-tables/json-opaque]
 [corpus fixture: usecase/gram-json-prefix-id-control]
 [fixture: json-tables/json-invalid-opaque]

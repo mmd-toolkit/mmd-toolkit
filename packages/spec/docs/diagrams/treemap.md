@@ -176,6 +176,7 @@ treemap/gram-leaf-tail-space-next-indent] [fixture:
 treemap/gram-leaf-tail-tab-next-indent] [fixture:
 treemap/gram-class-tail-space-next-indent] [fixture:
 treemap/gram-class-tail-tab-next-indent] [fixture:
+treemap/gram-class-directive-tail-space-next-indent] [fixture:
 treemap/gram-header-trailing-indent-eof] [fixture:
 treemap/gram-leaf-trailing-indent-eof]
 

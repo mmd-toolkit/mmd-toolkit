@@ -398,6 +398,9 @@ function statementRules(
     case "SequenceDetailsStatement":
       addColonRules(source, statement.id.range[1], statement.text, rules)
       break
+    case "SequenceParticipantStatement":
+      if (statement.data !== null) rules.set(statement.data.range[0], "none")
+      break
     case "SequenceAccTitleStatement":
     case "SequenceAccDescrStatement":
       addColonRules(

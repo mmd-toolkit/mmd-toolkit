@@ -738,6 +738,26 @@ treeView-beta
 字下げの run を重ねず親子を保つためです。
 固定された境界や値の境界は Branch prefixes に従います。
 
+行の規則が無視する `;` が引用名や class の後ろに残るときも、
+持ち越しは止まりません。
+`;` の前、`;` の後ろ、`;` に続くコメントや directive の前の run を、
+同じように移します。
+間にコメント行、空行、directive の行があっても同じです。
+mermaid.js は改行を隠すので、引用名や class の後ろの run の後で、
+間に行の規則が無視する `;` があるときも、
+次の行にもう 1 つ run があると拒否します
+([字下げと行](../../spec/docs/diagrams/treeview.ja.md#字下げと行))。
+[corpus fixture: treeview/gram-quoted-tail-space-next-indent]
+[corpus fixture: treeview/gram-class-tail-space-next-indent]
+[corpus fixture: treeview/gram-quoted-ignored-semicolon-tail-space-next-indent]
+移した後は、`;`、コメント、directive、ノードが互いに接します。
+[fixture: treeview/carried-indentation/carry-quote-semicolon-comment]
+[fixture: treeview/carried-indentation/carry-quote-semicolon-directive]
+[fixture: treeview/carried-indentation/carry-quote-run-before-semicolon]
+[fixture: treeview/carried-indentation/carry-class-semicolon]
+[fixture: treeview/carried-indentation/carry-quote-semicolon-lines]
+[fixture: treeview/carried-indentation/carry-quote-semicolon-directive-line]
+
 [fixture: treeview/carried-indentation/carry-quote]
 
 [fixture: treeview/carried-indentation/carry-class]
@@ -2034,6 +2054,11 @@ directive の原文と順序を保ちます。
 残りの字下げを最初の directive の前に置きます。
 前の行の run を重ねず、割り当て済みの indent を保つためです。
 複数行の内部、値の中の形と EOF の未完の directive は原文のままです。
+
+useTabs のときは、
+行頭の字下げ単位の保つ gap も補う字下げもすべて tab で印字します。
+その単位の各文字は種類を問わず一つと数えるためです（[Tabs](#tabs) を参照）。
+[fixture: treeview/directives/directive-leading-use-tabs]
 
 [fixture: treeview/directives/before-unprefixed-box-root]
 

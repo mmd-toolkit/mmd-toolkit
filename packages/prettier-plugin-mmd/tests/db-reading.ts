@@ -213,7 +213,8 @@ const semicolonSeparatorDiagramTypes: ReadonlySet<DiagramBody["type"]> =
  * The `classDef` and `style` statements of the diagram types that drop the `;`
  * that ends such a statement, and only that one (docs/class.md, docs/state.md,
  * docs/er.md, docs/requirement.md, docs/block.md, docs/venn.md and
- * docs/usecase.md, Semicolons at the end of a style statement).
+ * docs/usecase.md, Semicolons at the end of a style statement; docs/treemap.md,
+ * Semicolons).
  */
 const styleStatementTypes: ReadonlySet<string> = new Set([
   "ClassClassDefStatement",
@@ -229,6 +230,7 @@ const styleStatementTypes: ReadonlySet<string> = new Set([
   "VennStyleStatement",
   "UsecaseClassDefStatement",
   "UsecaseStyleStatement",
+  "TreemapClassDefStatement",
 ])
 
 /**
@@ -251,7 +253,13 @@ function droppableSemicolonsOf(text: string, root: Root): ReadonlySet<number> {
     if (!styleStatementTypes.has(node.type)) return
     const { range } = node as unknown as { range: Range }
     ends.add(range[1])
-    // ER, state and block read a last `;` of a statement as part of its range.
+    // Treemap holds the whitespace after a `;` that the line rule ignores in
+    // the range of the statement.
+    let trimmed = range[1]
+    while (trimmed > range[0] && text[trimmed - 1].trim() === "") trimmed--
+    if (text[trimmed - 1] === ";") ends.add(trimmed - 1)
+    // ER, state, block and treemap read a last `;` of a statement as part of its
+    // range.
     if (text[range[1] - 1] === ";") offsets.add(range[1] - 1)
   })
 

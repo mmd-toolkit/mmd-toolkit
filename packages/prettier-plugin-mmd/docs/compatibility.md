@@ -67,16 +67,22 @@ flowchart/frontmatter-yaml/compat-unknown-config-formatted] [corpus fixture:
 common/directive-bad-json] [corpus fixture: flowchart/div-data-unknown-shape]
 [corpus fixture: flowchart/frontmatter-invalid-yaml]
 
-Directives stay as written. Eligible multiline data blocks in flowchart,
-agentflow, kanban and sequence, and usecase JSON tables, move their body lines
-by one uniform number of ASCII spaces, preserving relative indentation and
-trailing whitespace; a separate `}` aligns with its statement. Inline-opening
-blocks, leading non-space whitespace, embedded directives, column-zero YAML
-markers, kept lines, blocks after the statement's first line and `tabWidth: 0`
-prevent movement. Sequence additionally requires a single text-bearing body line
-because Mermaid trims the whole block. The conditions and their reasons are in
-[Data blocks](./flowchart.md#data-blocks); other blocks keep their columns.
-[fixture: flowchart/data-blocks/deep-nested-yaml] [fixture:
+Directives stay as written. A data block on one line in flowchart, agentflow,
+kanban and sequence is printed with one space inside each end, and stays as
+written where [Data blocks](./flowchart.md#data-blocks) says so. [fixture:
+flowchart/data-blocks/one-line-padded] [fixture:
+flowchart/data-blocks/one-line-space-only-kept] [fixture:
+flowchart/data-blocks/one-line-touching-blocks-kept] [fixture:
+flowchart/data-blocks/one-line-separate-blocks-padded] Eligible multiline data
+blocks in flowchart, agentflow, kanban and sequence, and usecase JSON tables,
+move their body lines by one uniform number of ASCII spaces, preserving relative
+indentation and trailing whitespace; a separate `}` aligns with its statement.
+Inline-opening blocks, leading non-space whitespace, embedded directives,
+column-zero YAML markers, kept lines, blocks after the statement's first line
+and `tabWidth: 0` prevent movement. Sequence additionally requires a single
+text-bearing body line because Mermaid trims the whole block. The conditions and
+their reasons are in [Data blocks](./flowchart.md#data-blocks); other blocks
+keep their columns. [fixture: flowchart/data-blocks/deep-nested-yaml] [fixture:
 flowchart/data-blocks/scalar-blank-lines] [fixture:
 sequence/multi-line-values/data-multiple-lines-kept] [fixture:
 usecase/json-tables/tab-statement-space-body]
@@ -487,10 +493,15 @@ venn/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
 [fixture:
 usecase/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
 Without a `#` in the statement, ER also drops its terminating `;` unit when no
-trivia separates it from the last style. State style statements and block
-`classDef` statements drop a final `;` from the last style only when it is that
-style's sole semicolon and follows non-whitespace text. Other style semicolons
-remain where deleting them changes the Db. [fixture:
+trivia separates it from the last style. A treemap `classDef` statement with a
+style drops its terminating `;` unit on the same condition, with or without a
+`#`. A `;` inside the style, as in `fill: #f00;`, where `#f00;` is an entity,
+stays. [fixture: treemap/semicolons/class-terminator-dropped] [fixture:
+treemap/semicolons/class-terminator-directive-kept] [fixture:
+treemap/semicolons/class-terminator-entity-kept] State style statements and
+block `classDef` statements drop a final `;` from the last style only when it is
+that style's sole semicolon and follows non-whitespace text. Other style
+semicolons remain where deleting them changes the Db. [fixture:
 er/semicolons-at-the-end-of-a-style-statement/unit-terminators] [fixture:
 er/semicolons-at-the-end-of-a-style-statement/directive-before-unit-kept]
 [fixture:
@@ -1429,7 +1440,8 @@ kanban/icons-and-classes/aligned] [fixture:
 kanban/directives/leading-directive-indentation-decided] [fixture:
 kanban/trailing-whitespace/class-trailing-trim]
 
-Data blocks keep their contents apart from the eligible uniform margin change in
+Data blocks keep their contents apart from the eligible uniform margin change
+and the spaces at the ends of a block on one line in
 [Data blocks](./kanban.md#data-blocks), and their attachment, including touching
 adjacent blocks and intervening directives; YAML formatting applies only to
 guarded frontmatter. Complete blank/comment gaps after diagram comments,

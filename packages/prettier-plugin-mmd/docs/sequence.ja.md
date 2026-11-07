@@ -364,9 +364,38 @@ sequenceDiagram
 最初の語が色でないとき、 mermaid.js はテキスト全体を box の名前にするからです。
 [fixture: whitespace-between-tokens/values-kept]
 [fixture: whitespace-between-tokens/box-text-kept]
-参加者のデータブロック `@{ ... }` は id に接したままにします。
-`@{` の前に空白があると、入力が拒否されるからです。
-内容は[複数行の値](#複数行の値)で対象となる余白を除いて保ちます。
+参加者のデータブロック `@{ ... }` は id に接します。
+mermaid.js は、間に空白があっても、ないときと同じ図を読むので、
+空白は取り除きます。
+NBSP、全角空白、BOM も同じです。
+[test: byte order mark between the id of a participant and its data block]
+[test: no-break space between the id of a participant and its data block]
+[test: ideographic space between the id of a participant and its data block]
+データブロックが 1 行でも複数行でも、後ろに `as` が続いても同じです。
+[fixture: whitespace-between-tokens/data-block-space-before-removed]
+[fixture: whitespace-between-tokens/data-block-space-before-removed-alias]
+[fixture: whitespace-between-tokens/data-block-multi-line-space-before-removed]
+[fixture: whitespace-between-tokens/data-block-space-before-removed-between-statements]
+id と `@{` の間に directive があるときは、
+[ディレクティブ](#ディレクティブ)と同じく、
+その前後の空白を書かれたまま残します。
+U+2028 か U+2029 があるときも同じです。
+[fixture: whitespace-between-tokens/data-block-space-before-kept-after-directive]
+内容は、[複数行の値](#複数行の値)で対象となる余白と、
+1 行のブロックの両端の半角空白とタブを除いて保ちます。
+両端は[データブロック](./flowchart.ja.md#データブロック)と同じく、
+空白 1 つずつにします。
+`participant A@{"type":"queue"}` は `participant A@{ "type":"queue" }`
+になります。 [fixture: whitespace-between-tokens/data-block-padded]
+その規則が書かれたままにする場合は、このブロックも書かれたままにします。
+[fixture: whitespace-between-tokens/data-block-space-only-kept]
+[fixture: whitespace-between-tokens/data-block-directive-kept]
+[fixture: whitespace-between-tokens/data-block-kept-line-kept]
+[test: data blocks: sequence one line with U+2028 inside]
+[test: data blocks: sequence one line with U+2029 inside]
+[test: data blocks: sequence one line with no-break spaces at the ends]
+[fixture: whitespace-between-tokens/data-block-padded-zero-width]
+[fixture: whitespace-between-tokens/data-block-surrounding-trivia]
 [fixture: whitespace-between-tokens/data-block-and-ignored-line-kept]
 [fixture: whitespace-between-tokens/actor-data-block-kept]
 行に単独の `)` のように、mermaid.js が何も読まない行は残し、
@@ -784,7 +813,12 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   行の規則は、文字の手前までを行として読むので、その行を書かれたまま残します。
   ダイアグラムコメントの中の `;` はコメントの一部で、
   コメントを書かれたまま残し、行のほかの部分は整形します。
+  文字の後の改行に続く次の行の `;` も、書かれたまま残します。
+  `participant Z@{ "style": "x:#y" };`、U+2028、改行、 `;`、
+  続く文は mermaid.js が受理し、
+  続く文があって 2 つ目の `;` がない同じテキストは拒否されます。
   [test: a `;` after an ignored `;` and U+2029, which the line rule reads as the end of its line]
+  [test: a `;` on the next line after an ignored `;` and U+2028, which the line rule reads as the end of its line]
   [test: statements after an ignored `;`, with a U+2029 later on the line]
 - printer が残す U+2028 か U+2029 の後の `;`。
   `box`、タイトル、subgraph の名前のテキストの終わりにあるものがその例です。
@@ -936,6 +970,11 @@ Mermaid が説明からこの字下げを除くためです。
 `}` は `accDescr` と同じ段に置きます。
 [fixture: multi-line-values/accdescr-block-comment-only]
 [fixture: multi-line-values/accdescr-block-without-text-kept]
+テキストの終わりで閉じる説明ブロック（`accDescr {` の後に `}` がないもの）は、
+mermaid.js が受理します（詳しくは、
+[文の文脈](../../spec/docs/diagrams/sequence.ja.md#文の文脈)を参照）。
+その本文行は、閉じたブロックと同じく文より 1 段深く置き、 `}` は足しません。
+[fixture: multi-line-values/accdescr-block-unclosed-indented]
 
 participant と actor のデータブロックには、
 文字のある本文行がちょうど 1 行の場合だけ、
@@ -1034,7 +1073,7 @@ sequenceDiagram
   `box` のテキストは、それを終える最後の U+2028 か U+2029 までの全体。
 - `title` または `title:` の直後にある区切り文字 1 文字を除き、
   タイトルに含まれる空白。
-- 参加者のデータブロックと、それが id に接していること。
+- 参加者のデータブロックの内容。
 - 数の形か `title` の綴りの送り元に、矢印が接していること。
 - キーワードと本文の間に注釈があるタイトル。
 - セミコロン行かコメントで結合される領域の保護対象の文。

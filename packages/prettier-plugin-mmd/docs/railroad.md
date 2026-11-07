@@ -1879,7 +1879,10 @@ predicting how moving its contents would affect the common line rule.
 The cost is that a rule name, string or comment containing `style` or `classDef`
 leaves that line unformatted, even when no colon or hash follows. Other lines
 follow the ordinary rules. A word found only inside a removed global directive
-does not keep a line; characters joined across a removed directive do count.
+does not keep a line; characters joined across a removed directive do count. A
+global directive on the line before the header is removed in the same way, and
+the lines of the body after it are kept or formatted as before. [fixture:
+railroad/semicolons/ir-word-after-leading-directive]
 
 [fixture: railroad/semicolons/abnf-comment-marker-spaced]
 

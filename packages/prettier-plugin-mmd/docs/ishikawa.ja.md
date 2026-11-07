@@ -168,10 +168,12 @@ ishikawa
 本文の端の普通の空行を除いても Db は同じです。
 図のコメントの後の空行は、そのコメントの区切りの隙間であり、
 本文の端の普通の空行ではないため、区切りの空行は 1 つ保ちます。
-見出しに接する図のコメントの後も同じです。
+見出しに付く図のコメントの後も同じで、見出しに接していても、
+空白で離れていても変わりません（[Comments](#comments) を参照）。
 最後の図コメントの後の隙間は、末尾まで全体を保ちます。
 [fixture: ishikawa/blank-lines/blank-comment-accepted]
 [fixture: ishikawa/blank-lines/blank-header-comment-accepted]
+[fixture: ishikawa/blank-lines/blank-spaced-header-comment-accepted]
 [corpus fixture: ishikawa/gram-last-comment-blank-line]
 [fixture: ishikawa/blank-lines/header-comment-many-blanks]
 [fixture: ishikawa/blank-lines/interior-comment-many-blanks]

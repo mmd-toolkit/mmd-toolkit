@@ -938,6 +938,8 @@ mermaid が 1 行として読む範囲で数えます。
 ほかのセミコロンは区間の最後のセミコロンまでと、
 交差する値と trivia 全体を原文のまま保護します。
 除去される Root directive の内部だけにある語は、行全体を保護する理由にしません。
+ヘッダの前にある Root directive も同じように除かれ、その後の本文の行は、
+従来どおり保護するか整形します。
 
 [fixture: wardley/semicolons/style-label]
 
@@ -992,6 +994,8 @@ mermaid が 1 行として読む範囲で数えます。
 [fixture: wardley/semicolons/style-pipeline-child]
 
 [fixture: wardley/semicolons/style-trivia-line]
+
+[fixture: wardley/semicolons/style-after-leading-directive]
 
 入力（escape 表記）: `"wardley-beta\nAlpha  -> Beta; style:#tone;"`
 

@@ -6,7 +6,7 @@ import type {
 } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
-import { moveDataBlocks } from "./data-blocks.ts"
+import { formatDataBlocks } from "./data-blocks.ts"
 import { lineEndOf } from "./kept-lines.ts"
 import type { BlockRules } from "./blocks.ts"
 import {
@@ -79,7 +79,7 @@ export function printFlowchart(
         FlowchartSubgraphStatement
       >
       const depth = depthOf(path)
-      const layout = moveDataBlocks(
+      const layout = formatDataBlocks(
         source,
         layoutStatement(
           source,

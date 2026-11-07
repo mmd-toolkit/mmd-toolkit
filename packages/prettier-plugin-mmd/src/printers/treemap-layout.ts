@@ -7,7 +7,7 @@ import type {
   TreemapLeaf,
   TreemapSection,
 } from "@mmd-toolkit/parser"
-import type { AtomLayout, GapRule } from "./atoms.ts"
+import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { layoutCommonDescription, layoutCommonLine } from "./common-layout.ts"
 import { readGapElement } from "./gap.ts"
 import type { LeadingDirectives } from "./indentation-lines.ts"
@@ -17,7 +17,12 @@ import {
   collectValueNodes,
   protectSemicolonPrefixes,
 } from "./layout.ts"
-import { lineStartOf } from "./kept-lines.ts"
+import {
+  endingSemicolonOf,
+  isDroppedSemicolon,
+  lineStartOf,
+} from "./kept-lines.ts"
+import { printAsWrittenTrimmed } from "./lines.ts"
 import type { Source } from "./source.ts"
 import { findTokenStartingAt, findTriviaBetween } from "./source.ts"
 
@@ -158,6 +163,28 @@ export function treemapLines(
 }
 
 /**
+ * The style of a `classDef` together with what follows it, printed without the
+ * `;` that ends the statement and without the whitespace around that `;`,
+ * where the printer drops that `;` (see `isDroppedSemicolon`); none where it
+ * keeps it. The `;` is a unit at the end of the statement, or one that the
+ * line rule ignores: right after the statement, or inside its style, which then
+ * holds the whitespace that follows the `;`.
+ */
+function findDroppedSemicolonStretches(
+  source: Source,
+  statement: TreemapBodyItem,
+): Atom[] {
+  if (statement.type !== "TreemapClassDefStatement" || statement.style === null)
+    return []
+  const [start] = statement.style.range
+  const end = statement.range[1]
+  const semicolon = endingSemicolonOf(source, statement.range, statement.style)
+  if (semicolon === undefined || !isDroppedSemicolon(source, semicolon))
+    return []
+  return [{ start, end, doc: printAsWrittenTrimmed(source, start, semicolon) }]
+}
+
+/**
  * Only a trailing comment keeps whitespace before its mark. Standalone
  * comments lose their leading run, while directive interiors are not gaps
  * (diagrams/treemap.md, Comments and authored boundaries;
@@ -209,18 +236,21 @@ export function layoutTreemapStatement(
     case "TreemapSection":
     case "TreemapLeaf":
     case "TreemapClassDefStatement": {
+      const dropped = findDroppedSemicolonStretches(source, statement)
       const atoms = collectAtoms(
         source,
         start,
         end,
         statement.type === "TreemapClassDefStatement"
-          ? collectValueNodes(statement, treemapValueNodeTypes)
+          ? collectValueNodes(statement, treemapValueNodeTypes).filter(
+              (value) => value !== statement.style || dropped.length === 0,
+            )
           : treemapRowParts(statement).flatMap((part) =>
               treemapValueNodeTypes.has(part.type)
                 ? [part]
                 : collectValueNodes(part, treemapValueNodeTypes),
             ),
-        [],
+        dropped,
       )
       const rules = new Map<number, GapRule>()
       const joinedBefore = new Set<number>()

@@ -1,0 +1,7 @@
+sequenceDiagram
+  participant A@{ "type":"queue" }
+  participant B@{ "type": "database" }
+  actor C@{ "type": "actor" }
+  participant D@{ "type": "queue" } as Dee
+  create participant E@{ "type": "queue" }
+  A ->> E: x

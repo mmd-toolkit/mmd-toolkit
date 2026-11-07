@@ -576,6 +576,8 @@ value は共通の除去を含まないので、再構築すると source を失
 
 [fixture: cynefin/hidden-forms/leading-two-forms]
 
+[fixture: cynefin/hidden-forms/hidden-item-after-closer-tab]
+
 [corpus fixture: cynefin/hidden-domain-item-members]
 
 [corpus fixture: cynefin/hidden-all-unit-gaps]

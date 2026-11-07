@@ -162,6 +162,13 @@ connectorの名前では、消される空文字列に直続する文字が`;`�
 [fixture: names-and-headings/name-exit-lf-semicolon]
 [fixture: names-and-headings/name-exit-tab-eof]
 [fixture: names-and-headings/name-ordinary-fragment-blank]
+[fixture: names-and-headings/name-click-exit-before-data-tab]
+[fixture: names-and-headings/name-click-exit-before-title-tab]
+
+click の ID として読む名前が、終了文字なしで EOF に達するときは、
+名前の本文を書かれたとおりに保ちます。
+加えるのは [Final newline](#final-newline) の末尾の LF だけです。
+[fixture: names-and-headings/name-click-exit-eof]
 
 clickのIDの読みを終える文字の後の通常の空行は、 Blank linesに従います。
 [fixture: names-and-headings/name-exit-lf-empty-line]
@@ -285,6 +292,9 @@ agentflow-beta TB
 別の文字列や参照辺の分割形式を補いません。
 [fixture: edge-labels/edge-label-forms]
 [fixture: edge-labels/split-pipe-content]
+パイプの間の文字列は文字を保ち、パイプは矢印と引用符に接します。
+`A  -->  |"x  y"|B` は `A -->|"x  y"| B` と印字します。
+[fixture: edge-labels/pipe-label-string-kept]
 
 入力（escape 表記）: `"agentflow-beta TB\nA --> |x| B"`。
 [fixture: edge-labels/pipe-label-gap]
@@ -370,6 +380,23 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 区切り記号の不備は拒否のままです。 [fixture: metadata-blocks/metadata-adjacent]
 [fixture: metadata-blocks/metadata-alias-rewrite-unsafe]
 [fixture: metadata-blocks/metadata-multiline]
+
+1 行のブロックは、両端の内側に空白を 1 つずつ置いて印字します。
+書かれたままにする場合は、
+[データブロック](./flowchart.ja.md#データブロック)に挙げたとおりです。
+[fixture: metadata-blocks/one-line-padded]
+[fixture: metadata-blocks/one-line-space-only-kept]
+[fixture: metadata-blocks/one-line-directive-kept]
+[fixture: metadata-blocks/one-line-kept-line-kept]
+[fixture: metadata-blocks/one-line-touching-blocks-kept]
+[fixture: metadata-blocks/one-line-separate-blocks-padded]
+[fixture: metadata-blocks/compat-document-marker-data-block-kept]
+[fixture: metadata-blocks/one-line-document-marker-after-space-padded]
+[fixture: metadata-blocks/one-line-padded-zero-width]
+[fixture: metadata-blocks/one-line-surrounding-trivia]
+[test: data blocks: agentflow one line with U+2028 inside]
+[test: data blocks: agentflow one line with no-break spaces at the ends]
+[test: data blocks: agentflow one line with U+2029 inside]
 
 開きの直後が改行のブロックでは、本文の全行を同じ数の半角空白だけ動かし、
 文字がある最も浅い行を文の 1 段内側に置きます。

@@ -152,10 +152,12 @@ or directive-only lines, because blank lines change no node and no parent in
 Ishikawa. A blank after a diagram comment is that comment's separating gap, not
 a plain body-edge blank, so it stays. [fixture: ishikawa/blank-lines/blank-runs]
 [fixture: ishikawa/blank-lines/blank-around-trivia] A separating blank after a
-diagram comment remains one, including after an attached header comment; the
-complete terminal gap after a final diagram comment stays written. [fixture:
+diagram comment remains one, including after an attached header comment,
+touching or spaced (see [Comments](#comments)); the complete terminal gap after
+a final diagram comment stays written. [fixture:
 ishikawa/blank-lines/blank-comment-accepted] [fixture:
-ishikawa/blank-lines/blank-header-comment-accepted] [corpus fixture:
+ishikawa/blank-lines/blank-header-comment-accepted] [fixture:
+ishikawa/blank-lines/blank-spaced-header-comment-accepted] [corpus fixture:
 ishikawa/gram-last-comment-blank-line] [fixture:
 ishikawa/blank-lines/header-comment-many-blanks] [fixture:
 ishikawa/blank-lines/interior-comment-many-blanks] [fixture:

@@ -180,7 +180,7 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
       "%% c",
       "%%{init: {}}%%",
     ],
-    "kanban\n  S[x]\n    A@{ticket: X}\n    ::icon(fa)\n    %% c\n    %%{init: {}}%%\n",
+    "kanban\n  S[x]\n    A@{ ticket: X }\n    ::icon(fa)\n    %% c\n    %%{init: {}}%%\n",
   ],
   [
     "block",

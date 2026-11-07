@@ -304,8 +304,11 @@ class definition, or a link style: `end`, `click`, `call`, and `href` there, and
 the text of a style may end with one after any character that is no letter or
 digit, as `fill:click` does. [fixture:
 statements-one-per-line/semicolon-after-style-text-word-kept] [fixture:
-statements-one-per-line/semicolon-after-style-text-not-word-split] In a name,
-`end` takes the whitespace after it, line feeds included, so
+statements-one-per-line/semicolon-after-style-text-not-word-split] After a
+letter or digit, in upper or lower case, the word is no word of its own, so the
+`;` of `style A fillXclick;` is dropped, as it is after `fillclick`. [fixture:
+statements-one-per-line/semicolon-after-style-text-after-capital-not-word-split]
+In a name, `end` takes the whitespace after it, line feeds included, so
 `subgraph Front end` followed by a line break and `A` has the name `Front end`,
 a line feed, and `A`, and no members, while `subgraph Front end ;` has the
 member A. The `;` stays where it is when it stands on a later line, with the
@@ -428,8 +431,12 @@ written: a `;` after a directive that is not closed, an ignored `;` next to
 another `;`, and one before a U+2028 or U+2029 (see
 [A line that a `;` ends](./compatibility.md#a-line-that-a--ends)). [corpus
 fixture: flowchart/ignored-semicolon-after-directive-1abc682b] [corpus fixture:
-flowchart/style-line-separator-semicolon-2a0f3253] [fixture:
-statements-one-per-line/compat-unclosed-directive-semicolon-kept] [fixture:
+flowchart/style-line-separator-semicolon-2a0f3253] A `style` or `classDef` line
+of this kind is printed as written from the start of its statement, so only the
+indentation before the statement changes. [test: a `classDef` line with a `;`,
+U+2028, and a `;`] [test: a `style` line with a `;`, U+2029, and a `;`]
+[fixture: statements-one-per-line/compat-unclosed-directive-semicolon-kept]
+[fixture:
 statements-one-per-line/compat-ignored-semicolon-next-to-semicolon-kept]
 [fixture: semicolons/kept-after-unclosed-directive] [fixture:
 semicolons/ignored-next-to-another-kept] The whitespace between a `:` and a
@@ -732,6 +739,13 @@ mermaid.js reads the name up to the `(`, whitespace included, so
 `click A call fn  ()` calls the function named `fn` and two spaces. [fixture:
 whitespace-between-tokens/callback-name-arguments-forms-kept]
 
+A callback written without `call` is a click id, with no `(` after it (see
+[FlowchartClickCallbackStatement](../../spec/docs/ast/flowchart.md#flowchartclickcallbackstatement)),
+so the rule for the name after `call` does not apply to it, and the whitespace
+between the parts of the statement becomes one space: `click   A cb   "tip"` is
+printed as `click A cb "tip"`. [fixture:
+whitespace-between-tokens/click-without-call-collapsed]
+
 Input
 ([whitespace-between-tokens/callback-name-kept-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/callback-name-kept-input.mmd)):
 
@@ -765,7 +779,10 @@ arrow-spacing/directive-in-text-between-arrows] A label between `|` touches the
 arrow and its `|`, and an edge id touches its `@` and the arrow. [fixture:
 arrow-spacing/pipe-label-other-link-kinds] [fixture:
 arrow-spacing/edge-id-with-labels] [fixture:
-arrow-spacing/edge-id-whitespace-before-arrow-dropped]
+arrow-spacing/edge-id-whitespace-before-arrow-dropped] A label in quotes between
+`|` is kept as written, as any label in quotes (see
+[Label inner whitespace](#label-inner-whitespace)), and its `|` touch the arrow
+and the quotes. [fixture: arrow-spacing/pipe-label-string-kept]
 
 An edge id that starts as an arrow does (`--`, `==`, `-.`, or dots and then `-`,
 with or without the head `x`, `o`, or `<`, or `~~~` without a head) touches the
@@ -1261,7 +1278,11 @@ preceding whitespace and joins the continuation to the preceding text. [test: a
 comment line after U+2028 in a flowchart header] [test: a comment line after
 U+2029 in a flowchart header] [test: a comment line after U+2028 in a flowchart
 subgraph header] [test: a comment line after U+2029 in a flowchart subgraph
-header]
+header] A statement with such a comment line keeps its span as written, from its
+start to its end, for the same reason (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+[test: a comment line after U+2028 in a flowchart statement] [test: a comment
+line after U+2029 in a flowchart statement]
 
 Input
 ([multi-line-statements/continuation-indented-input.mmd](../tests/fixtures/flowchart/multi-line-statements/continuation-indented-input.mmd)):
@@ -1326,12 +1347,62 @@ cb
 ### Data blocks
 
 Keep each `@{ ... }` attached to its vertex, without formatting its YAML or
-changing its keys, values, delimiters, or line count. For an eligible multiline
-block, move every body line by the same number of ASCII spaces until the
-shallowest line with text stands one level inside its statement. This preserves
-relative indentation, including nested YAML, and can move lines inward or
-outward. A `}` alone on its line aligns with the statement; a `}` after body
-text stays there and moves with that line. [fixture:
+changing its keys, values, delimiters, or line count. Two things change: the
+ends of a block on one line, and the margin of an eligible multiline block.
+
+A block on one line is printed with one space inside each end:
+`A@{shape: circle}` and `A@{   shape: circle   }` become `A@{ shape: circle }`.
+mermaid.js reads the text of a block on one line as a YAML flow mapping, with
+`{` and a line feed before it and a line feed and `}` after it
+([flowchart](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L160-L168),
+[agentflow](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L364-L371),
+[kanban](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L118-L129),
+[sequence](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L164-L172)),
+so the spaces and tabs at its ends carry no meaning. [fixture:
+data-blocks/one-line-padded] [fixture: data-blocks/one-line-padded-zero-width]
+Only spaces and tabs are removed: other whitespace, such as U+00A0, is part of
+the text. [test: data blocks: flowchart one line with no-break spaces at the
+ends] The block stays as written
+
+- when it holds nothing but spaces and tabs: `A@{}` is rejected, while `A@{   }`
+  is accepted; [fixture: data-blocks/one-line-space-only-kept]
+- when a `%%{` lies in it: a directive keeps its text and its columns, as it
+  does in a block of several lines; [fixture:
+  data-blocks/one-line-directive-kept]
+- when its line is kept in full, as under the conditions below; [fixture:
+  data-blocks/one-line-kept-line-kept]
+- when it touches another block, with nothing or only directives between them,
+  as in `}@{`: mermaid.js joins the text of two blocks that touch, so a space
+  inside one end changes the text of both; [fixture:
+  data-blocks/one-line-touching-blocks-kept]
+- when its text starts at the first column with `---`, `...` or `%`. mermaid.js
+  reads `---` or `...` followed by whitespace or the end as a YAML document
+  marker, and a space before it makes it an ordinary string, so `A@{---}` is
+  rejected while `A@{ --- }` is accepted. A start such as `---x` is no marker
+  and `%a: 1` is rejected with or without a space, but the rule for several
+  lines keeps all three starts, and so does this one. A space or tab that is
+  already there lets the block be padded; [fixture:
+  data-blocks/compat-document-marker-data-block-kept] [fixture:
+  data-blocks/one-line-document-marker-after-space-padded]
+- when a U+2028 or U+2029 lies in it: mermaid.js wraps such a text as one line
+  and reads it the same with or without the spaces, but the rule for a block on
+  one line is limited to a text without any line break, these two included.
+  [test: data blocks: flowchart one line with U+2028 inside] [test: data blocks:
+  flowchart one line with U+2029 inside]
+
+Blocks that do not touch are padded each, also several in one statement, and a
+block of one line next to a block of several lines in the same statement.
+[fixture: data-blocks/one-line-separate-blocks-padded] Comments, directives,
+blank lines, empty description blocks and a discarded statement `;` beside the
+block keep their own rules, and CRLF and CR follow `endOfLine`. [fixture:
+data-blocks/one-line-surrounding-trivia] [test: data blocks: flowchart one line
+CRLF] [test: data blocks: flowchart one line CR]
+
+For an eligible multiline block, move every body line by the same number of
+ASCII spaces until the shallowest line with text stands one level inside its
+statement. This preserves relative indentation, including nested YAML, and can
+move lines inward or outward. A `}` alone on its line aligns with the statement;
+a `}` after body text stays there and moves with that line. [fixture:
 data-blocks/zero-and-shallow] [fixture: data-blocks/deep-nested-yaml] [fixture:
 data-blocks/closing-after-text]
 
@@ -1377,8 +1448,9 @@ written:
 - The statement holds no other block, of one line or of several. Once a block
   has moved, the next one would start on a line that is not the statement's
   first, and blocks that touch, as in `}@{`, are read as one text, whose columns
-  the move would split. A statement with two blocks keeps both as written.
-  [fixture: data-blocks/second-block-kept] [fixture:
+  the move would split. A statement with two blocks keeps its blocks of several
+  lines as written; a block of one line in it is padded unless it touches the
+  other. [fixture: data-blocks/second-block-kept] [fixture:
   data-blocks/adjacent-single-line-after-kept] [fixture:
   data-blocks/adjacent-single-line-before-kept] [fixture:
   data-blocks/separate-single-line-block-kept] [fixture:
@@ -1803,6 +1875,17 @@ on the line of the header, as written, with the `;` and the directives after
 them: on a line of their own, the whitespace would be read otherwise, and a `;`
 after a block and a directive would be read as a vertex.
 
+A name that ends with an `end` unit, as in `subgraph Front end`, takes the line
+break after it and the whitespace of the next line (see
+[Subgraphs](../../spec/docs/diagrams/flowchart.md#subgraphs)), so a block on
+that next line follows the name too: its line stays as written, with the
+whitespace before the block, and the lines after it are indented as usual. A
+name in which the letters are no unit of their own, as `Frontend`, does not, and
+the line of the block is indented as usual. [fixture:
+subgraph-header/block-on-line-after-name-ending-in-end-letters] [fixture:
+subgraph-header/block-on-line-after-end-name-kept] [corpus fixture:
+flowchart/db-subgraph-name-end-line-feed-then-empty-description-block]
+
 Input
 ([subgraph-header/whitespace-before-block-kept-input.mmd](../tests/fixtures/flowchart/subgraph-header/whitespace-before-block-kept-input.mmd)):
 
@@ -2067,9 +2150,9 @@ diagram or the input would be rejected:
 - the length of an arrow (`-->` and `--->`), and the header keyword (`graph` or
   `flowchart`); [fixture: arrow-spacing/arrow-length-kept] [fixture:
   direction/header-keyword-kept]
-- the content of directives and, apart from the uniform indentation in
-  [Data blocks](#data-blocks), of `@{ ... }` blocks, which the parser does not
-  read; [fixture:
+- the content of directives and, apart from the uniform indentation and the ends
+  of a block on one line in [Data blocks](#data-blocks), of `@{ ... }` blocks,
+  which the parser does not read; [fixture:
   whitespace-between-tokens/compat-unknown-shape-data-block-kept] [fixture:
   whitespace-between-tokens/data-block-kept] [fixture: directives/content-kept]
 - the lines of strings written over several lines, and of Markdown strings,

@@ -505,6 +505,11 @@ Mermaid はスタイルの単位をつなげて読むため、
 [スタイル文の末尾のセミコロン](#スタイル文の末尾のセミコロン)に従います。
 [fixture: styles-and-classes/ignored-style-terminator-dropped]
 
+`:` を含まないスタイル（`4px` など）は、プロパティと値の組ではないので、
+連続する空白も含めて書かれたまま残します。
+文のほかのスタイルは、通常どおり間隔を整えます。
+[fixture: styles-and-classes/style-without-colon]
+
 `class` 文は、途中で改行して続けられます。
 改行の前の名前は style の文脈で読まれ、
 引用符のない名前は `style-word` です（diagrams/requirement.md、

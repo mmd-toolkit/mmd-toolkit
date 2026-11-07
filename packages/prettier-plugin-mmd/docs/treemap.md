@@ -379,6 +379,8 @@ their existing columns.
 
 [fixture: treemap/style-gaps/css-comment-semicolon-kept]
 
+[fixture: treemap/style-gaps/css-comment-terminator-dropped]
+
 Input (escaped): `"treemap\nclassDef zz\n\n  \"Apparent\":2"`.
 
 Output
@@ -394,7 +396,8 @@ treemap
 Keep the whole TreemapLiteral style span, including comma/colon spacing, escaped
 commas, quotes, percent text, empty entries and trailing spaces/tabs. Do not
 split, merge or format it as CSS. Style spelling and leading entry padding can
-affect the Db; trailing padding is retained as authored value text.
+affect the Db; trailing padding is retained as authored value text, except the
+whitespace before a `;` that is dropped (see [Semicolons](#semicolons)).
 
 [fixture: treemap/styles/written]
 
@@ -414,18 +417,90 @@ Output
 
 ```mmd
 treemap
-  classDef zz color:red , fill:blue,stroke:rgb(1\,2\,3),;
+  classDef zz color:red , fill:blue,stroke:rgb(1\,2\,3),
 ```
 
 ### Semicolons
 
-Keep every authored semicolon: class terminators, selected ignored semicolons
-and value characters. Use shared kept-line and protected-prefix rules; protected
-segments retain their source text and columns, with no extra indentation on
-their inner lines. If a kept line constrains a row boundary, preserve the body
-as written rather than fixing some row indents and normalizing others. This
-keeps parentage and semicolon selection together, including the protected
-ending; it takes precedence over ordinary line and spacing choices.
+A `;` that ends a `classDef` statement with a style, at the end of its line, is
+dropped: mermaid.js reads the statement the same without it. This holds for the
+`;` that is a unit of the statement, as in `classDef zz fill:red;`, and for the
+last `;` that the
+[line rule of mermaid.js](../../spec/docs/common.md#style-and-classdef-lines)
+ignores, as in `classDef zz color:#f00;`. [fixture:
+semicolons/class-terminator-dropped] [fixture:
+semicolons/class-terminator-hash-dropped] Whitespace immediately before the
+dropped `;` is dropped with it, also a U+00A0, U+2028, U+2029 or U+FEFF.
+[fixture: semicolons/class-terminator-space-before-dropped] [test:
+treemap/line-terminators-and-unicode/unicode-values] [test:
+treemap/semicolons/class-terminator-unicode-space-before-dropped] Whitespace
+after a `;` that the line rule ignores belongs to the style and is dropped too.
+[fixture: semicolons/class-terminator-hash-trailing-whitespace-dropped] The
+statement can end the text. [fixture:
+semicolons/class-terminator-end-of-text-dropped] The statement then takes the
+usual layout of a `classDef` line: indentation, blank lines and comment lines
+around it, an empty description block before it, and the run of whitespace after
+the `;` that indents the next row. [fixture:
+semicolons/class-terminator-indented-dropped] [fixture:
+semicolons/class-terminator-trailing-whitespace-dropped] [fixture:
+semicolons/class-terminator-blank-and-comment-lines-dropped] [fixture:
+semicolons/class-terminator-empty-description-block-dropped] [fixture:
+style-gaps/css-comment-terminator-dropped] The `;` stays where dropping it would
+change what is read: after a `classDef` without a style, where the next line
+would become the style, and before another statement on the same line. [fixture:
+semicolons/terminator] [fixture: semicolons/class-terminator-before-row-kept] It
+stays too when a comment or a directive follows it on its line, [fixture:
+semicolons/class-terminator-comment-kept] when a directive stands right before
+the `;` that is a unit of the statement, with or without whitespace between,
+[fixture: semicolons/class-terminator-directive-kept] when it is part of the
+style, as in `classDef zz fill: #f00;`, where `#f00;` is an entity, [fixture:
+semicolons/class-terminator-entity-kept] and when another `;` is beside it.
+[fixture: semicolons/class-terminator-beside-semicolon-kept] A directive before
+a `;` that the line rule ignores stays and the `;` is dropped, as in the other
+diagram types. [fixture: semicolons/class-terminator-hash-directive-dropped]
+
+Where the `;` that ends the statement stays, the whitespace after it is the run
+that indents the next statement: the whitespace between the `;` and a comment or
+a directive that follows it on its line, between two directives, and at the end
+of the line. mermaid.js counts the whitespace on both sides of a directive as
+one run
+([Headers and indentation](../../spec/docs/diagrams/treemap.md#headers-and-indentation)),
+[corpus fixture: treemap/gram-indent-around-global-directive] and reads a second
+run on the next line as a second indentation, which it rejects. [corpus fixture:
+treemap/gram-class-tail-space-next-indent] [corpus fixture:
+treemap/gram-class-directive-tail-space-next-indent] The run moves once to the
+planned column of the next statement, as in
+[Carried indentation](#carried-indentation), so the comment or the directive
+touches the `;`, and a comment or a directive touches a directive before it.
+When the whitespace on the two sides of a directive makes the run, their sum
+counts. [fixture: semicolons/class-terminator-comment-run-moved] [fixture:
+semicolons/class-terminator-directive-run-moved] [fixture:
+semicolons/class-terminator-directives-run-moved] [fixture:
+semicolons/class-terminator-run-sum-moved] This holds when a `;` that the line
+rule ignores follows it, also when whitespace or a directive lies between the
+two `;`. [fixture: semicolons/class-terminator-ignored-run-moved] [fixture:
+semicolons/class-terminator-ignored-comment-run-moved] [fixture:
+semicolons/class-terminator-semicolons-run-moved] [fixture:
+semicolons/class-terminator-directive-semicolon-run-moved] It holds for a
+`classDef` without a style, [fixture:
+semicolons/class-terminator-styleless-run-moved] when the next statement is a
+`classDef`, [fixture: semicolons/class-terminator-class-run-moved] and when
+comment lines and blank lines lie between. [fixture:
+semicolons/class-terminator-comment-lines-run-moved] Without whitespace after
+the `;`, the indentation of the next row is its own and is printed at its
+planned column. [fixture: semicolons/class-terminator-comment-row-indented-kept]
+Where no `;` before it ends the statement, a `;` that the line rule ignores,
+followed by text on its line, makes that text part of the style, so its
+whitespace stays: `classDef zz a:#b ; %% c` keeps its line. [fixture:
+semicolons/class-terminator-ignored-text-after-kept]
+
+Keep every other authored semicolon: selected ignored semicolons, a `;` beside
+another `;`, and value characters. Use shared kept-line and protected-prefix
+rules; protected segments retain their source text and columns, with no extra
+indentation on their inner lines. If a kept line constrains a row boundary,
+preserve the body as written rather than fixing some row indents and normalizing
+others. This keeps parentage and semicolon selection together, including the
+protected ending; it takes precedence over ordinary line and spacing choices.
 
 [fixture: treemap/semicolons/terminator]
 
@@ -724,6 +799,11 @@ remaining configured indentation before the first directive. Earlier-line
 carried units move once instead. Keep necessary class keyword/name whitespace
 and never use a directive as its substitute.
 
+With useTabs, the retained gaps and the supplied indentation are all printed as
+tabs: the whitespace on both sides of the directive is one indentation unit, in
+which each character counts once whatever its kind (see [Tabs](#tabs)).
+[fixture: treemap/directives/leading-use-tabs]
+
 [fixture: treemap/directives/leading]
 
 [fixture: treemap/directives/shortened]
@@ -927,8 +1007,8 @@ treemap
   "Top"
     "Right": 2
     "Left": 1
-  classDef zz color:red;
-  classDef zz fill:blue;
+  classDef zz color:red
+  classDef zz fill:blue
   title Earlier
   title
 ```
