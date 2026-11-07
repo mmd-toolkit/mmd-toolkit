@@ -1,4 +1,4 @@
-import type { Node, Range, Token } from "@mmd-toolkit/parser"
+import type { Node, Range, Token } from "@mmd-toolkit/ast"
 import type { Doc } from "prettier"
 import { utils } from "prettier/doc"
 import { isDroppedSemicolon } from "./kept-lines.ts"

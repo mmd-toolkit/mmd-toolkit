@@ -1,4 +1,4 @@
-import type { Node, SankeyLinkStatement } from "@mmd-toolkit/parser"
+import type { Node, SankeyLinkStatement } from "@mmd-toolkit/ast"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { collectAtoms } from "./layout.ts"
 import type { Source } from "./source.ts"

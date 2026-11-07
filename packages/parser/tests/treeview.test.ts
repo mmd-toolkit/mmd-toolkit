@@ -6,7 +6,7 @@ import type {
   TreeviewDiagram,
   TreeviewLiteral,
   TreeviewNode,
-} from "../src/index.ts"
+} from "@mmd-toolkit/ast"
 import { parse, ParseError, traverseNodes, visitorKeys } from "../src/index.ts"
 import { treeviewLexingOf } from "./helpers/reference-inputs.ts"
 import { problemsOfTree } from "./helpers/tree-problems.ts"

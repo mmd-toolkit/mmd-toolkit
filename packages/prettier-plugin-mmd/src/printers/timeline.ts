@@ -1,5 +1,5 @@
 import type { AstPath, Doc, ParserOptions } from "prettier"
-import type { TimelineStatement } from "@mmd-toolkit/parser"
+import type { TimelineStatement } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import type { SectionedDiagram } from "./sectioned.ts"
 import { printSectionedDiagram } from "./sectioned.ts"

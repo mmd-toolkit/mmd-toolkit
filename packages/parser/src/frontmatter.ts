@@ -1,4 +1,4 @@
-import type { DiagramTokenKind, Frontmatter, Range } from "./ast.ts"
+import type { DiagramTokenKind, Frontmatter, Range } from "@mmd-toolkit/ast"
 import {
   FRONTMATTER_DELIMITER,
   isLineWhitespace,

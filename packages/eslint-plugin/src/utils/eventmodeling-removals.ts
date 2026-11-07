@@ -4,7 +4,7 @@ import type {
   EventmodelingAccDescrStatement,
   EventmodelingAccDescrBlockStatement,
   Range,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { MermaidSourceCode } from "../source-code.ts"
 import { removalRange } from "./removal.ts"
 import { whitespacePartRange } from "./part-removal.ts"

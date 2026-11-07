@@ -3,7 +3,7 @@ import type {
   BlockColumnsStatement,
   BlockCompositeStatement,
   BlockDiagram,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 

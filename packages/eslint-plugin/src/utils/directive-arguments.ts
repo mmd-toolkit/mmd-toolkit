@@ -1,4 +1,4 @@
-import type { Directive, Range } from "@mmd-toolkit/parser"
+import type { Directive, Range } from "@mmd-toolkit/ast"
 import type { JsonValueNode, JsonReading } from "./json.ts"
 import { sameJsonValue, mermaidReadsJson, parseInitJson } from "./json.ts"
 

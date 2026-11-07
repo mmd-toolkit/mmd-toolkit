@@ -1,4 +1,4 @@
-import type { RailroadNode } from "../ast/railroad.ts"
+import type { RailroadNode } from "@mmd-toolkit/ast"
 
 /** ast/railroad.md: child fields in the specified visitor order. */
 export const railroadVisitorKeys: Readonly<

@@ -1,8 +1,8 @@
-import type { Range } from "../../ast.ts"
 import type {
+  Range,
   SequenceArrowLine,
   SequenceArrowMarker,
-} from "../../ast/sequence.ts"
+} from "@mmd-toolkit/ast"
 import {
   isAsciiDigit,
   isLineSegmentSeparator,

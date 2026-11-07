@@ -1,5 +1,5 @@
 import type { AstPath, Doc, ParserOptions } from "prettier"
-import type { MindmapDiagram } from "@mmd-toolkit/parser"
+import type { MindmapDiagram } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
 import type { BlockRules } from "./blocks.ts"

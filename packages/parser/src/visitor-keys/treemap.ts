@@ -1,4 +1,4 @@
-import type { TreemapNode } from "../ast/treemap.ts"
+import type { TreemapNode } from "@mmd-toolkit/ast"
 
 /** ast/treemap.md: child fields in the specified visitor and source order. */
 export const treemapVisitorKeys: Readonly<

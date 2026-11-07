@@ -1,5 +1,7 @@
-import type { Identifier, Range, StringLiteral } from "../../ast.ts"
 import type {
+  Identifier,
+  Range,
+  StringLiteral,
   UsecaseActor,
   UsecaseActorStatement,
   UsecaseArrow,
@@ -17,7 +19,7 @@ import type {
   UsecaseStatement,
   UsecaseStyleDeclaration,
   UsecaseSystemBoundaryStatement,
-} from "../../ast/usecase.ts"
+} from "@mmd-toolkit/ast"
 import type { ParseError } from "../../errors.ts"
 import type { PendingToken, SourceLexer } from "../../source-lexer.ts"
 import { UnitGrammar } from "../../unit-grammar.ts"

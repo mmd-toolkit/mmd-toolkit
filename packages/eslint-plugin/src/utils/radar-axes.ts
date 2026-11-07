@@ -1,4 +1,4 @@
-import type { RadarCurve, RadarDiagram } from "@mmd-toolkit/parser"
+import type { RadarCurve, RadarDiagram } from "@mmd-toolkit/ast"
 
 /** All written axes: repeated declarations count, while references use their ids. */
 export interface RadarAxes {

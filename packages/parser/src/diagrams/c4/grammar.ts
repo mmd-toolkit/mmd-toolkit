@@ -1,6 +1,6 @@
 import { appendItems } from "../../append-items.ts"
-import type { StringLiteral } from "../../ast.ts"
 import type {
+  StringLiteral,
   C4AccDescrBlockStatement,
   C4Argument,
   C4BoundaryKeyword,
@@ -12,7 +12,7 @@ import type {
   C4Statement,
   C4RelationshipKeyword,
   C4UpdateKeyword,
-} from "../../ast/c4.ts"
+} from "@mmd-toolkit/ast"
 import type { ParseError } from "../../errors.ts"
 import type { PendingToken, SourceLexer } from "../../source-lexer.ts"
 import { UnitGrammar } from "../../unit-grammar.ts"

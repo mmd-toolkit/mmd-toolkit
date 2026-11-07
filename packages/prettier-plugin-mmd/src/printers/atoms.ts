@@ -1,5 +1,5 @@
 import type { Doc } from "prettier"
-import type { Range } from "@mmd-toolkit/parser"
+import type { Range } from "@mmd-toolkit/ast"
 import { builders } from "prettier/doc"
 import { endsWithSpaceOrTab, readGap } from "./gap.ts"
 import { isInsideStyleRuleStretch } from "./kept-lines.ts"

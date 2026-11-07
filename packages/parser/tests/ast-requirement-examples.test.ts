@@ -1,22 +1,25 @@
 import { readFileSync } from "node:fs"
 import { describe, expect, it } from "vitest"
-import type { Node, Range } from "../src/index.ts"
+import type { Node, Range } from "@mmd-toolkit/ast"
 import { parse, traverseNodes } from "../src/index.ts"
 import { examplesIn } from "./helpers/ast-examples.ts"
 import { problemsOfTree } from "./helpers/tree-problems.ts"
 import { allRequirementNodeTypes } from "./helpers/node-types.ts"
 
-// The comments of `src/ast/requirement.ts` show examples of the syntax of each
-// node type, with a line of `^` under each line of input for the range of
-// the node. The examples are requirement diagrams. This test parses every
-// example and compares the range.
+// The comments of `packages/ast/src/ast/requirement.ts` show examples of the
+// syntax of each node type, with a line of `^` under each line of input for the
+// range of the node. The examples are requirement diagrams. This test parses
+// every example and compares the range.
 
 /** The header line that the examples of statements stand after. */
 const HEADER = "requirementDiagram\n"
 
 const examples = [
   ...examplesIn(
-    readFileSync(new URL("../src/ast/requirement.ts", import.meta.url), "utf8"),
+    readFileSync(
+      new URL("../../ast/src/ast/requirement.ts", import.meta.url),
+      "utf8",
+    ),
   ),
 ]
 

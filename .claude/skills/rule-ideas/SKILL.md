@@ -376,7 +376,7 @@ so a change to it writes an import of types only as `import type` and uses no
 ```ts
 import { readFileSync } from "node:fs"
 import { parse } from "<repo>/packages/parser/src/index.ts"
-import type { Root } from "<repo>/packages/parser/src/index.ts"
+import type { Root } from "<repo>/packages/ast/src/index.ts"
 import { runMermaid } from "<repo>/packages/tests/src/mermaid.ts"
 
 const casesPath = process.argv[2]

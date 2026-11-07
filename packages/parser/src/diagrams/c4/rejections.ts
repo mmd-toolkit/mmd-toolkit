@@ -1,7 +1,7 @@
 import type { TargetIdentity } from "./declaration-index.ts"
 import { DeclarationIndex } from "./declaration-index.ts"
-import type { StringLiteral } from "../../ast.ts"
 import type {
+  StringLiteral,
   C4Argument,
   C4BoundaryKeyword,
   C4ElementKeyword,
@@ -9,7 +9,7 @@ import type {
   C4NamedAttribute,
   C4RelationshipKeyword,
   C4UpdateKeyword,
-} from "../../ast/c4.ts"
+} from "@mmd-toolkit/ast"
 import { ParseError } from "../../errors.ts"
 
 /** Only the identity needed to find an element-style target is retained. */

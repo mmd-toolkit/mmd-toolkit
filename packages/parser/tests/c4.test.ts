@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { loadFixtures } from "@mmd-toolkit/tests"
-import type { C4Diagram, Root } from "../src/index.ts"
+import type { C4Diagram, Root } from "@mmd-toolkit/ast"
 import { ParseError, parse } from "../src/index.ts"
 
 // This suite never writes records and does not call mermaid.js or dbFromTree.

@@ -4,7 +4,7 @@ import type {
   FlowchartStatement,
   FlowchartSubgraphStatement,
   Token,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { KeptLines } from "./kept-lines.ts"
 import {
   findLinesEndedBySemicolon,

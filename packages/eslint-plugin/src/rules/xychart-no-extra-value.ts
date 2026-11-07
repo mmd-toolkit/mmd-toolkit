@@ -1,4 +1,4 @@
-import type { XychartXAxisStatement } from "@mmd-toolkit/parser"
+import type { XychartXAxisStatement } from "@mmd-toolkit/ast"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 

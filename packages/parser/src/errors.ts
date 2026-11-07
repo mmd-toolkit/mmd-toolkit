@@ -1,4 +1,4 @@
-import type { Location, Range } from "./ast.ts"
+import type { Location, Range } from "@mmd-toolkit/ast"
 
 /** Thrown by `parse()` when the input is rejected. */
 export class ParseError extends SyntaxError {

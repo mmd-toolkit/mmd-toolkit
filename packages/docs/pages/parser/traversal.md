@@ -46,7 +46,8 @@ leave Root null
 
 ## Inspect specific nodes
 
-Check `node.type` to select a node type and narrow its TypeScript type. This
+Check `node.type` to select a node type and narrow its TypeScript type, which
+needs `@mmd-toolkit/ast` (see [Installation](./index.md#installation)). This
 example collects ids from flowchart vertex nodes. The same id can occur in
 multiple nodes, so a `Set` removes duplicates:
 

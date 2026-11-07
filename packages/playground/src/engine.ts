@@ -1,5 +1,6 @@
 import * as parser from "@mmd-toolkit/parser"
-import type { Node, Root, Visitor, VisitorKeys } from "@mmd-toolkit/parser"
+import type { Node, Root } from "@mmd-toolkit/ast"
+import type { Visitor, VisitorKeys } from "@mmd-toolkit/parser"
 
 let api = parser
 const listeners = new Set<() => void>()

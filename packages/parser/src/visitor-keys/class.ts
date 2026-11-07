@@ -1,4 +1,4 @@
-import type { ClassNode } from "../ast/class.ts"
+import type { ClassNode } from "@mmd-toolkit/ast"
 
 /**
  * ast/class.md, Nodes: the child fields of every class node type, as each

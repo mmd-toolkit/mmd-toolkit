@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs"
 import { describe, expect, it } from "vitest"
-import type { Node, Range } from "../src/index.ts"
+import type { Node, Range } from "@mmd-toolkit/ast"
 import { parse, traverseNodes } from "../src/index.ts"
 import { examplesIn } from "./helpers/ast-examples.ts"
 import { problemsOfTree } from "./helpers/tree-problems.ts"
@@ -9,20 +9,24 @@ import {
   sharedLeafNodeTypes,
 } from "./helpers/node-types.ts"
 
-// The comments of `src/ast/flowchart.ts`, and of the shared leaf nodes in
-// `src/ast.ts`, show examples of the syntax of each node type, with a line
-// of `^` under each line of input for the range of the node. The examples
-// are flowcharts. This test parses every example and compares the range.
+// The comments of `packages/ast/src/ast/flowchart.ts`, and of the shared leaf
+// nodes in `packages/ast/src/ast.ts`, show examples of the syntax of each node
+// type, with a line of `^` under each line of input for the range of the node.
+// The examples are flowcharts. This test parses every example and compares the
+// range.
 
 /** The header line that the examples of statements stand after. */
 const HEADER = "flowchart LR\n"
 
 const examples = [
   ...examplesIn(
-    readFileSync(new URL("../src/ast.ts", import.meta.url), "utf8"),
+    readFileSync(new URL("../../ast/src/ast.ts", import.meta.url), "utf8"),
   ),
   ...examplesIn(
-    readFileSync(new URL("../src/ast/flowchart.ts", import.meta.url), "utf8"),
+    readFileSync(
+      new URL("../../ast/src/ast/flowchart.ts", import.meta.url),
+      "utf8",
+    ),
   ),
 ]
 

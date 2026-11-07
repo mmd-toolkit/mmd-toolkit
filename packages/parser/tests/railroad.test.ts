@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 import type { Fixture } from "@mmd-toolkit/tests"
 import { loadFixtures } from "@mmd-toolkit/tests"
-import type { Comment, Node, RailroadDiagram, Root } from "../src/index.ts"
+import type { Comment, Node, RailroadDiagram, Root } from "@mmd-toolkit/ast"
 import { parse, traverseNodes } from "../src/index.ts"
 import { railroadLexingOf } from "./helpers/reference-inputs.ts"
 

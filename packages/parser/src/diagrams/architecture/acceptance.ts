@@ -1,10 +1,11 @@
-import type { Identifier, NodeBase } from "../../ast.ts"
 import type {
+  Identifier,
+  NodeBase,
   ArchitectureDiagram,
   ArchitectureGroupStatement,
   ArchitectureServiceStatement,
   ArchitectureJunctionStatement,
-} from "../../ast/architecture.ts"
+} from "@mmd-toolkit/ast"
 import { ParseError } from "../../errors.ts"
 
 /** Registered declaration kind and a node's optional group, as specified by Semantic acceptance conditions. */

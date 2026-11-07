@@ -1,4 +1,4 @@
-import type { BlockNode } from "@mmd-toolkit/parser"
+import type { BlockNode } from "@mmd-toolkit/ast"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import {

@@ -1,5 +1,7 @@
-import type { DiagramTokenKind, Identifier, StringLiteral } from "../../ast.ts"
 import type {
+  DiagramTokenKind,
+  Identifier,
+  StringLiteral,
   ErAccDescrBlockStatement,
   ErAttribute,
   ErCardinality,
@@ -17,7 +19,7 @@ import type {
   ErRelationshipStatement,
   ErStatement,
   ErStyleStatement,
-} from "../../ast/er.ts"
+} from "@mmd-toolkit/ast"
 import type { EmptyFormKind } from "../../empty-forms.ts"
 import { EMPTY_FORM_KINDS } from "../../empty-forms.ts"
 import type { ParseError } from "../../errors.ts"

@@ -29,6 +29,9 @@ ES モジュールで、Node.js `^20.19.0 || ^22.13.0 || >=24` が必要です�
 npm install --save-dev eslint @mmd-toolkit/eslint-plugin
 ```
 
+TypeScript が `skipLibCheck` を無効にして `eslint.config.ts` を検査するときは、
+木の型の [`@mmd-toolkit/ast`](../ast) も入れます。
+
 ## 使い方
 
 `eslint.config.js` に `recommended` の設定を加えます。

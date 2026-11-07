@@ -1,4 +1,4 @@
-import type { Node, Range } from "@mmd-toolkit/parser"
+import type { Node, Range } from "@mmd-toolkit/ast"
 import type { MermaidSourceCode } from "../source-code.ts"
 
 /** Remove a whitespace-delimited part with the ASCII spaces and tabs before it. */

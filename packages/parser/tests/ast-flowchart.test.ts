@@ -34,7 +34,7 @@ import type {
   NodeBase,
   NumericLiteral,
   StringLiteral,
-} from "../src/index.ts"
+} from "@mmd-toolkit/ast"
 import { traverseNodes, visitorKeys } from "../src/index.ts"
 import {
   allFlowchartNodeTypes,

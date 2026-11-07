@@ -1,4 +1,4 @@
-import type { Range } from "./ast.ts"
+import type { Range } from "@mmd-toolkit/ast"
 import { isOutsideBmp } from "./character-classes.ts"
 import { LINE_FEED } from "./code-points.ts"
 import type { ReadCharacter, SourceLexer } from "./source-lexer.ts"

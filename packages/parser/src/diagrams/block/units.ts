@@ -22,7 +22,7 @@ import type {
   BlockArrowEndMarker,
   BlockArrowLine,
   BlockArrowStartMarker,
-} from "../../ast/block.ts"
+} from "@mmd-toolkit/ast"
 import type {
   DiagramCharacter,
   DiagramPosition,

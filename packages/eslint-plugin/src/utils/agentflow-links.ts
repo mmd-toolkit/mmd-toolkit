@@ -5,7 +5,7 @@ import type {
   AgentflowLink,
   AgentflowStatement,
   AgentflowVertexStatement,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import { linkIdsOf } from "./link-ids.ts"
 
 /** Reuse the table when several rules read the same immutable diagram. */

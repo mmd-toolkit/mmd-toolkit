@@ -7,7 +7,7 @@ import type {
   TreeviewDiagram,
   TreeviewIgnoredText,
   TreeviewNode,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import {
   treeviewBoxCharacters,
   treeviewBranchCharacters,

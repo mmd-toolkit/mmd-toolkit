@@ -13,7 +13,7 @@ import type {
   TreeviewAccDescrBlockStatement,
   UsecaseAccDescrBlockStatement,
   WardleyAccDescrBlockStatement,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { MermaidSourceCode } from "../source-code.ts"
 import { normalizeLineTerminators } from "./acc-text.ts"
 import { textWithoutDirectives } from "./directive-free-text.ts"

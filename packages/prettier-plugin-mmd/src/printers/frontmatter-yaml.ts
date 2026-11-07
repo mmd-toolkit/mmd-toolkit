@@ -1,4 +1,4 @@
-import type { Frontmatter } from "@mmd-toolkit/parser"
+import type { Frontmatter } from "@mmd-toolkit/ast"
 import type { Doc, Options, ParserOptions } from "prettier"
 import { printer } from "prettier/doc"
 import type { MermaidAst } from "../parser.ts"

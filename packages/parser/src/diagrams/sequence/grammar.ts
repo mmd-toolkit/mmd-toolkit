@@ -1,6 +1,7 @@
 import { appendItems } from "../../append-items.ts"
-import type { NumericLiteral, Range } from "../../ast.ts"
 import type {
+  NumericLiteral,
+  Range,
   SequenceAccDescrBlockStatement,
   SequenceAccDescrStatement,
   SequenceAccTitleStatement,
@@ -22,7 +23,7 @@ import type {
   SequenceStatement,
   SequenceText,
   SequenceTitleStatement,
-} from "../../ast/sequence.ts"
+} from "@mmd-toolkit/ast"
 import { significantRangeOf } from "../../diagram-units.ts"
 import type { ParseError } from "../../errors.ts"
 import type { PendingToken, SourceLexer } from "../../source-lexer.ts"

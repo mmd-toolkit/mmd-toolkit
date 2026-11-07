@@ -1,12 +1,14 @@
-import type { Identifier, NodeBase, StringLiteral } from "../../ast.ts"
 import type {
+  Identifier,
+  NodeBase,
+  StringLiteral,
   GitgraphCherryPickStatement,
   GitgraphCommitStatement,
   GitgraphDiagram,
   GitgraphIdOption,
   GitgraphMergeStatement,
   GitgraphParentOption,
-} from "../../ast/gitgraph.ts"
+} from "@mmd-toolkit/ast"
 import { ParseError } from "../../errors.ts"
 import { escapeGitgraphComparison } from "./comparison-values.ts"
 

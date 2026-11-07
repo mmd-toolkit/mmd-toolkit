@@ -8,7 +8,7 @@ import type {
   Node,
   StringLiteral,
   Token,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { Doc } from "prettier"
 import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"

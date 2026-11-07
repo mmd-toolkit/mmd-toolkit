@@ -1,6 +1,6 @@
 import type { Doc, ParserOptions } from "prettier"
 import { builders, utils } from "prettier/doc"
-import type { Range } from "@mmd-toolkit/parser"
+import type { Range } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import type { Gap, ItemRun } from "./gap.ts"
 import type { GapRule } from "./atoms.ts"

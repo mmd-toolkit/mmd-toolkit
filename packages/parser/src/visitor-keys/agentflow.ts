@@ -1,4 +1,4 @@
-import type { AgentflowNode } from "../ast/agentflow.ts"
+import type { AgentflowNode } from "@mmd-toolkit/ast"
 
 /**
  * ast/agentflow.md, Nodes: the child fields of every agentflow node type, as

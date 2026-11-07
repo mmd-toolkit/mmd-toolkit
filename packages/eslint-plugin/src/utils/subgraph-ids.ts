@@ -4,7 +4,7 @@ import type {
   FlowchartSubgraphStatement,
   Node,
   Range,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { MermaidSourceCode } from "../source-code.ts"
 
 // The Db id of a subgraph, from the tree (the tests package, docs/db-from-tree/

@@ -6,7 +6,7 @@ import type {
   OkParseResult,
   ParseResult,
 } from "@eslint/core"
-import type { Node, Root } from "@mmd-toolkit/parser"
+import type { Node, Root } from "@mmd-toolkit/ast"
 import { parse, ParseError, visitorKeys } from "@mmd-toolkit/parser"
 import { MermaidSourceCode } from "./source-code.ts"
 

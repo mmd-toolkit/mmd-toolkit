@@ -1,12 +1,12 @@
 import { readFileSync } from "node:fs"
 import { describe, expect, it } from "vitest"
-import type { Range } from "../src/index.ts"
+import type { Range } from "@mmd-toolkit/ast"
 import { parse, traverseNodes } from "../src/index.ts"
 import { examplesIn } from "./helpers/ast-examples.ts"
 import { allRadarNodeTypes } from "./helpers/node-types.ts"
 
 const examples = examplesIn(
-  readFileSync(new URL("../src/ast/radar.ts", import.meta.url), "utf8"),
+  readFileSync(new URL("../../ast/src/ast/radar.ts", import.meta.url), "utf8"),
 )
 
 describe("the examples in the comments of the radar node types", () => {

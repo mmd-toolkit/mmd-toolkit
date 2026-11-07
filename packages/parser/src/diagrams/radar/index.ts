@@ -1,7 +1,6 @@
 import { DiagramTextWithoutPassedLines } from "../../passed-bare-lines.ts"
-import type { RadarDiagram } from "../../ast/radar.ts"
+import type { RadarDiagram, Root } from "@mmd-toolkit/ast"
 import { ParseError } from "../../errors.ts"
-import type { Root } from "../../ast.ts"
 import type { CommonFormLexing } from "../../common-form-unit-lexer.ts"
 import type { DiagramComment, DiagramInput } from "../../diagram-parsing.ts"
 import { finishDiagram, openDiagramText } from "../../diagram-parsing.ts"

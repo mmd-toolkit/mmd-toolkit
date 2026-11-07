@@ -4,7 +4,7 @@ import type {
   CynefinBodyItem,
   CynefinDomainItem,
   CynefinIgnoredText,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { AtomLayout, GapRule } from "./atoms.ts"
 import type { HiddenOpenBlockLayout } from "./flat-hidden-diagram.ts"
 import { layoutCommonDescription, layoutCommonLine } from "./common-layout.ts"

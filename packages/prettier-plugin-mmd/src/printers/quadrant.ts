@@ -13,7 +13,7 @@ import {
 } from "./quadrant-layout.ts"
 import type { Source } from "./source.ts"
 import { findTokenStartingAt } from "./source.ts"
-import type { QuadrantStatement } from "@mmd-toolkit/parser"
+import type { QuadrantStatement } from "@mmd-toolkit/ast"
 
 /**
  * Prints the body of a quadrant chart and the nodes below it, to the end of

@@ -1,4 +1,4 @@
-import type { FlowchartLabel } from "@mmd-toolkit/parser"
+import type { FlowchartLabel } from "@mmd-toolkit/ast"
 import { normalizeLineTerminators } from "./acc-text.ts"
 
 /** Compare written label content, trimming its ends and reading CRLF and CR as LF. */

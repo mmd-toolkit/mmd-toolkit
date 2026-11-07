@@ -1,4 +1,4 @@
-import type { Node, Range } from "@mmd-toolkit/parser"
+import type { Node, Range } from "@mmd-toolkit/ast"
 import { findNodes, minOf, maxOf } from "./collections.ts"
 import type { Source } from "./source.ts"
 import {

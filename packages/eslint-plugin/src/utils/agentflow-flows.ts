@@ -2,7 +2,7 @@ import type {
   AgentflowDiagram,
   AgentflowFlowStatement,
   AgentflowStatement,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { MermaidRuleVisitor } from "../rule-types.ts"
 import { normalizeLineTerminators } from "./acc-text.ts"
 import { agentflowConnectorId, agentflowNameText } from "./agentflow-names.ts"

@@ -1,4 +1,4 @@
-import type { Range, Root } from "../../ast.ts"
+import type { Range, Root } from "@mmd-toolkit/ast"
 import type { DiagramInput } from "../../diagram-parsing.ts"
 import { DiagramTextReader } from "../../diagram-text.ts"
 import {

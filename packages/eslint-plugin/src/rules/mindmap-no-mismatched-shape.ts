@@ -1,8 +1,11 @@
 import { canEditRange } from "../utils/edit-range.ts"
 import type { SuggestedEdit } from "@eslint/core"
-import type { MindmapShape } from "@mmd-toolkit/parser"
+import type {
+  MindmapShape,
+  MindmapCloser,
+  MindmapOpener,
+} from "@mmd-toolkit/ast"
 import type { MermaidSourceCode } from "../source-code.ts"
-import type { MindmapCloser, MindmapOpener } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 

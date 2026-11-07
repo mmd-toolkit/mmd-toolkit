@@ -1,4 +1,4 @@
-import type { ClassName } from "@mmd-toolkit/parser"
+import type { ClassName } from "@mmd-toolkit/ast"
 
 /**
  * The id of a class name, as the Db of mermaid.js derives it from the tree

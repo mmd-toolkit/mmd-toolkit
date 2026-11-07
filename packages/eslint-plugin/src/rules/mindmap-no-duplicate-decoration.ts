@@ -1,7 +1,7 @@
 import type {
   MindmapClassStatement,
   MindmapIconStatement,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import { oneOfTwoRemovals } from "../utils/removal.ts"
 
 import type { MermaidRuleDefinition } from "../rule-types.ts"

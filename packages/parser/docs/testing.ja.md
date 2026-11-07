@@ -386,7 +386,7 @@ fixture を改名・削除するときは、古いファイルも一緒に動か
 ## そのほかのテスト
 
 - ノード型のコメントにある例を、すべて parse します。
-  コメントは `src/ast/flowchart.ts`、`src/ast/sequence.ts`、
+  コメントは `packages/ast` の `src/ast/flowchart.ts`、`src/ast/sequence.ts`、
   `src/ast/class.ts`、`src/ast/state.ts` にあります。
   `^` が示す範囲を、ノードの範囲と比べます。
 - README の「使い方」の例を parse し、示している値と木を結果と比べます。

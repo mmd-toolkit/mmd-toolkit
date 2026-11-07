@@ -1,6 +1,6 @@
 /** Escaped eventmodeling Unicode/control/EOL cases keep their contextual reading. */
 import { describe, expect, it } from "vitest"
-import type { Node } from "@mmd-toolkit/parser"
+import type { Node } from "@mmd-toolkit/ast"
 import { parse, visitorKeys } from "@mmd-toolkit/parser"
 import { formatMermaid } from "./helpers.ts"
 import {

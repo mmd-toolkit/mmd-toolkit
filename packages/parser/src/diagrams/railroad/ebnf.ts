@@ -1,5 +1,5 @@
 import type { DiagramCharacter } from "../../diagram-text.ts"
-import type { RailroadExpression } from "../../ast/railroad.ts"
+import type { RailroadExpression } from "@mmd-toolkit/ast"
 import { RailroadUnitLexer } from "./units.ts"
 import { RailroadGrammar } from "./grammar.ts"
 

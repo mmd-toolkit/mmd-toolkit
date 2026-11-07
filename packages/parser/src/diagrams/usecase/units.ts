@@ -1,4 +1,4 @@
-import type { UsecaseArrow } from "../../ast/usecase.ts"
+import type { UsecaseArrow } from "@mmd-toolkit/ast"
 import {
   isAsciiDigit,
   isAsciiLetter,

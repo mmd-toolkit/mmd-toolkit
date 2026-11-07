@@ -42,7 +42,8 @@ frontmatterの位置情報は`range`と`loc`から取得できます。
 
 ## 型と図固有のフィールド
 
-各図のノードの型に加えて、次の型を公開しています。
+`@mmd-toolkit/ast`は、各図のノードの型に加えて、次の型を公開しています。
+[インストール](./index.ja.md#インストール)を参照してください。
 
 | 型                                                          | 用途                                              |
 | ----------------------------------------------------------- | ------------------------------------------------- |
@@ -51,14 +52,16 @@ frontmatterの位置情報は`range`と`loc`から取得できます。
 | `DiagramBody`、`DiagramType`                                | 図の本体の型と、図の識別子。                      |
 | `Token`、`TokenKind`、`Comment`、`Directive`、`Frontmatter` | ソースのレコードとトークンの種類。                |
 | `Range`、`Location`、`Position`                             | ソースの位置情報。                                |
-| `Visitor`、`VisitorKeys`                                    | 走査のコールバックと子フィールドの対応表。        |
+
+`@mmd-toolkit/parser`は、走査のコールバックの型`Visitor`と、
+子フィールドの対応表の型`VisitorKeys`を公開しています。
 
 ノードの`type`フィールドを確認すると、TypeScriptで型を絞り込めます。
 次の例では、フローチャートの方向と文の数を読み取ります。
 
 ```ts
 import { parse } from "@mmd-toolkit/parser"
-import type { DiagramBody, Root } from "@mmd-toolkit/parser"
+import type { DiagramBody, Root } from "@mmd-toolkit/ast"
 
 const root: Root = parse("flowchart LR\n  A[Start] --> B\n")
 const body: DiagramBody = root.body

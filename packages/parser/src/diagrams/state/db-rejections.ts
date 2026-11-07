@@ -1,11 +1,12 @@
-import type { Identifier, Range } from "../../ast.ts"
 import type {
+  Identifier,
+  Range,
   StateAliasDefinitionStatement,
   StateDividerStatement,
   StateLiteral,
   StateStatement,
   StateTerminal,
-} from "../../ast/state.ts"
+} from "@mmd-toolkit/ast"
 import { isWhitespace } from "../../character-classes.ts"
 import { ParseError } from "../../errors.ts"
 import type { LineIndex } from "../../positions.ts"

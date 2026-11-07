@@ -6,7 +6,7 @@ import type {
   GitgraphParentOption,
   GitgraphTagOption,
   GitgraphTypeOption,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import { normalizeLineTerminators } from "./acc-text.ts"
 
 /** A single-valued option, compared without mermaid.js's preprocessing. */

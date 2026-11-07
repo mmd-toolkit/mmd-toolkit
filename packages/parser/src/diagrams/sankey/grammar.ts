@@ -1,9 +1,10 @@
-import type { Range, StringLiteral } from "../../ast.ts"
 import type {
+  Range,
+  StringLiteral,
   SankeyIdentifier,
   SankeyLinkStatement,
   SankeyLiteral,
-} from "../../ast/sankey.ts"
+} from "@mmd-toolkit/ast"
 import type { ParseError } from "../../errors.ts"
 import type { PendingToken, SourceLexer } from "../../source-lexer.ts"
 import type { NodePlace } from "../../unit-grammar.ts"

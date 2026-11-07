@@ -1,4 +1,4 @@
-import type { PacketDiagram, PacketBodyItem } from "../../ast/packet.ts"
+import type { PacketDiagram, PacketBodyItem } from "@mmd-toolkit/ast"
 import { ParseError } from "../../errors.ts"
 
 /** diagrams/packet.md, Semantic acceptance conditions: ordered double arithmetic and row-boundary gates. */

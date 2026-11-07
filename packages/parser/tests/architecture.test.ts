@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { loadFixtures } from "@mmd-toolkit/tests"
-import type { ArchitectureDiagram } from "../src/index.ts"
+import type { ArchitectureDiagram } from "@mmd-toolkit/ast"
 import { parse } from "../src/index.ts"
 
 describe("architecture fixtures", async () => {

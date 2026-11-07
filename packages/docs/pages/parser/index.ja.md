@@ -14,6 +14,13 @@ JavaScriptやTypeScriptで図の内容を調べたり、処理したりするた
 npm install @mmd-toolkit/parser
 ```
 
+TypeScriptの型を使うには、パーサーの版か、
+互換のある新しい版の`@mmd-toolkit/ast`も入れます。
+
+```sh
+npm install --save-dev @mmd-toolkit/ast
+```
+
 ## 最初の図を解析する
 
 図のヘッダーを含む、1つの図のテキストを`parse()`に渡します。

@@ -1,6 +1,6 @@
 import type { CheckedRoot, TreeProblem } from "@mmd-toolkit/tests"
 import { checkTree } from "@mmd-toolkit/tests"
-import type { Root } from "../../src/index.ts"
+import type { Root } from "@mmd-toolkit/ast"
 
 /**
  * The check of the tree that `@mmd-toolkit/tests` makes on every recorded

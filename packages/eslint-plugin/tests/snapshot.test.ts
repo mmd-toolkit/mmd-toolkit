@@ -10,7 +10,7 @@
  */
 import type { Rule } from "eslint"
 import { SnapshotRuleTester } from "eslint-snapshot-rule-tester"
-import type { Node } from "@mmd-toolkit/parser"
+import type { Node } from "@mmd-toolkit/ast"
 import type { DiagramType } from "@mmd-toolkit/tests"
 import { loadFixture } from "@mmd-toolkit/tests"
 import type { MermaidRuleDefinition } from "../src/index.ts"

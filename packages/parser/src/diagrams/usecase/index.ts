@@ -1,4 +1,4 @@
-import type { Root } from "../../ast.ts"
+import type { Root } from "@mmd-toolkit/ast"
 import type { DiagramInput } from "../../diagram-parsing.ts"
 import {
   commentsBeforeHeader,

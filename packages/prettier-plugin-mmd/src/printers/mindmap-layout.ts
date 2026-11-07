@@ -5,7 +5,7 @@ import type {
   MindmapIconStatement,
   MindmapNode,
   Node,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { AtomLayout } from "./atoms.ts"
 import { keptAsWritten } from "./layout.ts"
 import {

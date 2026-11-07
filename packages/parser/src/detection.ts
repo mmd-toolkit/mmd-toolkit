@@ -1,4 +1,4 @@
-import type { DiagramType, Range } from "./ast.ts"
+import type { DiagramType, Range } from "@mmd-toolkit/ast"
 import {
   COMMENT_MARKER,
   isWhitespace,

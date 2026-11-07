@@ -1,4 +1,4 @@
-import type { GitgraphNode } from "../ast/gitgraph.ts"
+import type { GitgraphNode } from "@mmd-toolkit/ast"
 
 /** ast/gitgraph.md: the child fields in visitor order. */
 export const gitgraphVisitorKeys: Readonly<

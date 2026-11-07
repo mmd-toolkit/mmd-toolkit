@@ -1,4 +1,4 @@
-import type { QuadrantNode } from "../ast/quadrant.ts"
+import type { QuadrantNode } from "@mmd-toolkit/ast"
 
 /**
  * ast/quadrant.md: the child fields of each quadrant chart node type, as

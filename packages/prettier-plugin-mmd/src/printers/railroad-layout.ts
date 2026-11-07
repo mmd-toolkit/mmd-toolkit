@@ -6,7 +6,7 @@ import type {
   RailroadExpressionMember,
   RailroadIgnoredText,
   RailroadRule,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { Doc } from "prettier"
 import { builders } from "prettier/doc"
 import type { AtomLayout, GapRule } from "./atoms.ts"

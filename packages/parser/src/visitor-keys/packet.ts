@@ -1,4 +1,4 @@
-import type { PacketNode } from "../ast/packet.ts"
+import type { PacketNode } from "@mmd-toolkit/ast"
 
 /** ast/packet.md: child fields in the specified visitor and source order. */
 export const packetVisitorKeys: Readonly<

@@ -1,12 +1,13 @@
-import type { Identifier, NodeBase } from "../../ast.ts"
 import type {
+  Identifier,
+  NodeBase,
   UsecaseActor,
   UsecaseEntity,
   UsecaseLabel,
   UsecaseMetadata,
   UsecaseStatement,
   UsecaseSystemBoundaryStatement,
-} from "../../ast/usecase.ts"
+} from "@mmd-toolkit/ast"
 import { isWordCharacter } from "../../character-classes.ts"
 import { ParseError } from "../../errors.ts"
 import type { ConvertedLeaf } from "./grammar.ts"

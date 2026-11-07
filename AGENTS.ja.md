@@ -6,12 +6,13 @@
 ## プロジェクト
 
 mermaid-js とは無関係の第三者プロジェクト。
-Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象に次の 6 つを作る。
+Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象に次の 7 つを作る。
 
 | パッケージ                     | npm 名                          | 内容                                |
 | ------------------------------ | ------------------------------- | ----------------------------------- |
 | `packages/spec`                | `@mmd-toolkit/spec`             | 構文仕様（private）                 |
 | `packages/tests`               | `@mmd-toolkit/tests`            | 適合性コーパス（private）           |
+| `packages/ast`                 | `@mmd-toolkit/ast`              | 木の TypeScript の型                |
 | `packages/parser`              | `@mmd-toolkit/parser`           | AST を返すパーサー                  |
 | `packages/prettier-plugin-mmd` | `prettier-plugin-mmd`           | Prettier プラグインのフォーマッター |
 | `packages/eslint-plugin`       | `@mmd-toolkit/eslint-plugin`    | ESLint の言語プラグインのリンター   |
@@ -104,6 +105,14 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
   定義の出どころはここで、実装はこれに従う。
   仕様の文書は、parser のトークンと位置の仕様に言及しない。
   SKILL は `spec`。
+- `packages/ast`: 木の TypeScript の型で、仕様の定義に従う。
+  持つのは型だけである。
+  パーサー、フォーマッター、リンターは、これを任意の peer 依存にする。
+  利用者が、型を使うときだけダウンロードするようにするためである。
+  パーサーは自分の版か、互換のある新しい版にして、型をパーサーに合わせる。
+  フォーマッターとリンターはどの版でもよいとして、
+  片方だけを更新しても入るようにする。
+  SKILL は `parser`。
 - `packages/parser`: 仕様の参照実装であり、
   木のトークンと位置の仕様（`docs/tokens.md`、`docs/positions.md`）を持つ。
   実装する挙動は、すべて仕様と fixture から取り、
@@ -142,6 +151,7 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
 | Db の要約と、記録した木の確かめ              | tests      | parser                                          |
 | AST の定義（`docs/ast.md`、`docs/ast/*.md`） | spec       | parser、prettier-plugin、eslint-plugin          |
 | トークンと位置（`docs/tokens.md` ほか）      | parser     | tests、prettier-plugin、eslint-plugin           |
+| 木の型（`src/ast.ts`、`src/ast/*.ts`）       | ast        | parser、prettier-plugin、eslint-plugin          |
 | parser の API（`parse()`、エラー、木の走査） | parser     | prettier-plugin、eslint-plugin                  |
 
 ## 行動原則

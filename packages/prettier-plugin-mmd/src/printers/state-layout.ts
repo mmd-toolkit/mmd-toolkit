@@ -8,7 +8,7 @@ import type {
   StateReference,
   StateStatement,
   Token,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import { Marked, type Token as MarkdownToken } from "marked"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"

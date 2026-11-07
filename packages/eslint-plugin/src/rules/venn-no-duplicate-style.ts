@@ -1,5 +1,5 @@
 import type { SuggestedEdit } from "@eslint/core"
-import type { VennStyleStatement, VennStyleProperty } from "@mmd-toolkit/parser"
+import type { VennStyleStatement, VennStyleProperty } from "@mmd-toolkit/ast"
 import type { MermaidSourceCode } from "../source-code.ts"
 import { commaRemovalRange } from "../utils/comma-parts.ts"
 import { removalRange } from "../utils/removal.ts"

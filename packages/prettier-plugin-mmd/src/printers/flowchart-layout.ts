@@ -3,7 +3,7 @@ import type {
   FlowchartStatement,
   FlowchartSubgraphStatement,
   Node,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import {
   addShapeRules,
   addLinkRules,

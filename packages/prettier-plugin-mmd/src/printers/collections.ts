@@ -1,4 +1,4 @@
-import type { Node } from "@mmd-toolkit/parser"
+import type { Node } from "@mmd-toolkit/ast"
 import { traverseNodes } from "@mmd-toolkit/parser"
 
 // Arrays that grow with the input can exceed V8's argument limit when spread

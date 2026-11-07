@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import type { FlowchartLink, FlowchartStatement, Root } from "../src/index.ts"
+import type { FlowchartLink, FlowchartStatement, Root } from "@mmd-toolkit/ast"
 import { ParseError, parse } from "../src/index.ts"
 import { problemsOfTree } from "./helpers/tree-problems.ts"
 

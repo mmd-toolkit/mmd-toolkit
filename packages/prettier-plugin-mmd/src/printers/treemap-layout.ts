@@ -6,7 +6,7 @@ import type {
   TreemapDiagram,
   TreemapLeaf,
   TreemapSection,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { layoutCommonDescription, layoutCommonLine } from "./common-layout.ts"
 import { readGapElement } from "./gap.ts"

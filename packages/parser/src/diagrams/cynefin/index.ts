@@ -1,6 +1,5 @@
 import { DiagramTextWithoutPassedLines } from "../../passed-bare-lines.ts"
-import type { CynefinDiagram } from "../../ast/cynefin.ts"
-import type { Root } from "../../ast.ts"
+import type { CynefinDiagram, Root } from "@mmd-toolkit/ast"
 import type { CommonFormLexing } from "../../common-form-unit-lexer.ts"
 import type { DiagramComment, DiagramInput } from "../../diagram-parsing.ts"
 import { finishDiagram, openDiagramText } from "../../diagram-parsing.ts"

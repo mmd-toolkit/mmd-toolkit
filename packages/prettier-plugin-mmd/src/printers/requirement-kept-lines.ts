@@ -1,7 +1,4 @@
-import type {
-  RequirementDiagram,
-  RequirementStatement,
-} from "@mmd-toolkit/parser"
+import type { RequirementDiagram, RequirementStatement } from "@mmd-toolkit/ast"
 import { holdsDirection } from "./accessibility-lines.ts"
 import type { KeptLines } from "./kept-lines.ts"
 import {

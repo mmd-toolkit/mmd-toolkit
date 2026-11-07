@@ -1,6 +1,8 @@
-import type { QuadrantClassDefStatement } from "@mmd-toolkit/parser"
+import type {
+  QuadrantClassDefStatement,
+  QuadrantLiteral,
+} from "@mmd-toolkit/ast"
 import { oneOfTwoRemovals } from "../utils/removal.ts"
-import type { QuadrantLiteral } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { styleOf } from "../utils/quadrant-styles.ts"

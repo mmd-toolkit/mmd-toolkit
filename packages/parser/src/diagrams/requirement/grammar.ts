@@ -1,6 +1,7 @@
 import { appendItems } from "../../append-items.ts"
-import type { DiagramTokenKind, StringLiteral } from "../../ast.ts"
 import type {
+  DiagramTokenKind,
+  StringLiteral,
   RequirementAccDescrBlockStatement,
   RequirementAccDescrStatement,
   RequirementAccTitleStatement,
@@ -26,7 +27,7 @@ import type {
   RequirementValueField,
   RequirementVerifyMethod,
   RequirementVerifyMethodField,
-} from "../../ast/requirement.ts"
+} from "@mmd-toolkit/ast"
 import { EMPTY_FORM_KINDS } from "../../empty-forms.ts"
 import type { ParseError } from "../../errors.ts"
 import type { PendingToken, SourceLexer } from "../../source-lexer.ts"

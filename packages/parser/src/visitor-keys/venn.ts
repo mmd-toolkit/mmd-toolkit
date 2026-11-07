@@ -1,4 +1,4 @@
-import type { VennNode } from "../ast/venn.ts"
+import type { VennNode } from "@mmd-toolkit/ast"
 
 /** ast/venn.md: child fields in their specified order. */
 export const vennVisitorKeys: Readonly<

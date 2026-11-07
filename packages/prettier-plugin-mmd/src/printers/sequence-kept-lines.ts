@@ -1,5 +1,5 @@
 import { appendItems } from "./collections.ts"
-import type { SequenceStatement } from "@mmd-toolkit/parser"
+import type { SequenceStatement } from "@mmd-toolkit/ast"
 import type { KeptLines } from "./kept-lines.ts"
 import {
   findLinesWithOwnSemicolons,

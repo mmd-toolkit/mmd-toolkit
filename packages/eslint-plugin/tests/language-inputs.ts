@@ -11,7 +11,7 @@
 import type { DiagramType, Fixture } from "@mmd-toolkit/tests"
 import { loadFixture } from "@mmd-toolkit/tests"
 import { parse } from "@mmd-toolkit/parser"
-import type { Root } from "@mmd-toolkit/parser"
+import type { Root } from "@mmd-toolkit/ast"
 
 /** The tree of `text`, or null where the parser rejects it. */
 function treeOf(text: string): Root | null {

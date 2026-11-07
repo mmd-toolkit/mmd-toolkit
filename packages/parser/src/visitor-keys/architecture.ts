@@ -1,4 +1,4 @@
-import type { ArchitectureNode } from "../ast/architecture.ts"
+import type { ArchitectureNode } from "@mmd-toolkit/ast"
 
 /** ast/architecture.md: child fields in the specified visitor order. */
 export const architectureVisitorKeys: Readonly<

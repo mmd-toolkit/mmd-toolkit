@@ -15,7 +15,7 @@ import type {
   FlowchartSubgraphStatement,
   Range,
   Root,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import { lineEndOf, lineStartOf } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import { findFirstIndex, findTriviaBetween, isWhitespace } from "./source.ts"

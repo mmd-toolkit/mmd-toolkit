@@ -63,9 +63,11 @@ On a push to `main`, the Release workflow opens a pull request that bumps the
 versions and writes the changelogs. It makes that pull request with
 `pnpm run version:ci`, which runs `changeset version` and then
 `pnpm run update`, so the generated files in it are up to date. Merging that
-pull request publishes the packages. The specification, `@mmd-toolkit/spec`, is
-not published to npm; a release gives it a version, a changelog entry, and the
-git tag `@mmd-toolkit/spec@<version>`.
+pull request publishes the packages. `@mmd-toolkit/ast` and
+`@mmd-toolkit/parser` always get the same version (the `fixed` group of
+`.changeset/config.json`). The specification, `@mmd-toolkit/spec`, is not
+published to npm; a release gives it a version, a changelog entry, and the git
+tag `@mmd-toolkit/spec@<version>`.
 
 ## Where things are
 
@@ -73,6 +75,7 @@ git tag `@mmd-toolkit/spec@<version>`.
 | ------------------------------ | ------------------------------------------------------------------ |
 | `packages/spec`                | The specification.                                                 |
 | `packages/tests`               | The fixtures, and what compares an implementation with mermaid.js. |
+| `packages/ast`                 | The TypeScript types of the syntax tree.                           |
 | `packages/parser`              | The parser.                                                        |
 | `packages/prettier-plugin-mmd` | The Prettier plugin.                                               |
 | `packages/eslint-plugin`       | The ESLint plugin.                                                 |

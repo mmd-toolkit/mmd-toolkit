@@ -1,4 +1,4 @@
-import type { AgentflowFlowStatement } from "@mmd-toolkit/parser"
+import type { AgentflowFlowStatement } from "@mmd-toolkit/ast"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { agentflowElementDeclarations } from "../utils/agentflow-elements.ts"

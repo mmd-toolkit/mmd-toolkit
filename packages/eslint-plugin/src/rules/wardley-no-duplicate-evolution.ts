@@ -1,5 +1,5 @@
 import { oneOfTwoRemovals } from "../utils/removal.ts"
-import type { WardleyEvolutionStatement } from "@mmd-toolkit/parser"
+import type { WardleyEvolutionStatement } from "@mmd-toolkit/ast"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { wardleyNameText } from "../utils/wardley-declarations.ts"

@@ -1,17 +1,17 @@
-import type { TreeviewTreeNode } from "../../src/ast/treeview.ts"
-import type { EventmodelingNode } from "../../src/ast/eventmodeling.ts"
-import type { CynefinNode } from "../../src/ast/cynefin.ts"
-import type { WardleyNode } from "../../src/ast/wardley.ts"
-import type { RailroadNode } from "../../src/ast/railroad.ts"
-import type { TreemapNode } from "../../src/ast/treemap.ts"
-import type { RadarNode } from "../../src/ast/radar.ts"
-import type { ArchitectureNode } from "../../src/ast/architecture.ts"
-import type { PacketNode } from "../../src/ast/packet.ts"
-import type { InfoNode } from "../../src/ast/info.ts"
-import type { GitgraphNode } from "../../src/ast/gitgraph.ts"
-import type { PieNode } from "../../src/ast/pie.ts"
-import type { UsecaseNode } from "../../src/ast/usecase.ts"
 import type {
+  TreeviewTreeNode,
+  EventmodelingNode,
+  CynefinNode,
+  WardleyNode,
+  RailroadNode,
+  TreemapNode,
+  RadarNode,
+  ArchitectureNode,
+  PacketNode,
+  InfoNode,
+  GitgraphNode,
+  PieNode,
+  UsecaseNode,
   ClassNode,
   ErNode,
   FlowchartNode,
@@ -31,7 +31,7 @@ import type {
   VennNode,
   IshikawaTreeNode,
   AgentflowNode,
-} from "../../src/index.ts"
+} from "@mmd-toolkit/ast"
 
 /** ast.md, Shared leaf nodes: the node types, as the tests expect them. */
 export const sharedLeafNodeTypes: readonly string[] = [

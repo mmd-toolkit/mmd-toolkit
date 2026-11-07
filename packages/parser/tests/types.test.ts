@@ -3,15 +3,14 @@ import type {
   TreeviewNode,
   TreeviewIgnoredText,
   TreeviewTreeNode,
-} from "../src/ast/treeview.ts"
-import type {
   EventmodelingDiagram,
   EventmodelingNode,
-} from "../src/ast/eventmodeling.ts"
-import type { CynefinDiagram, CynefinNode } from "../src/ast/cynefin.ts"
-import type { WardleyDiagram, WardleyNode } from "../src/ast/wardley.ts"
-import type { RailroadDiagram, RailroadNode } from "../src/ast/railroad.ts"
-import type {
+  CynefinDiagram,
+  CynefinNode,
+  WardleyDiagram,
+  WardleyNode,
+  RailroadDiagram,
+  RailroadNode,
   TreemapDiagram,
   TreemapNode,
   TreemapSection,
@@ -21,22 +20,22 @@ import type {
   TreemapAccTitleStatement,
   TreemapAccDescrStatement,
   TreemapAccDescrBlockStatement,
-} from "../src/ast/treemap.ts"
-import type { RadarDiagram, RadarNode } from "../src/ast/radar.ts"
-import type {
+  RadarDiagram,
+  RadarNode,
   ArchitectureDiagram,
   ArchitectureNode,
-} from "../src/ast/architecture.ts"
-import type { PacketDiagram, PacketNode } from "../src/ast/packet.ts"
-import type { InfoDiagram, InfoNode } from "../src/ast/info.ts"
-import type { GitgraphDiagram, GitgraphNode } from "../src/ast/gitgraph.ts"
-import type { PieDiagram, PieNode } from "../src/ast/pie.ts"
-import type { UsecaseDiagram, UsecaseNode } from "../src/ast/usecase.ts"
-import type { AgentflowDiagram, AgentflowNode } from "../src/ast/agentflow.ts"
-import { readdirSync } from "node:fs"
-import { describe, expect, expectTypeOf, it } from "vitest"
-import { KNOWN_DIVERGENCES } from "@mmd-toolkit/tests"
-import type {
+  PacketDiagram,
+  PacketNode,
+  InfoDiagram,
+  InfoNode,
+  GitgraphDiagram,
+  GitgraphNode,
+  PieDiagram,
+  PieNode,
+  UsecaseDiagram,
+  UsecaseNode,
+  AgentflowDiagram,
+  AgentflowNode,
   Comment,
   DiagramType,
   Directive,
@@ -48,32 +47,47 @@ import type {
   Root,
   StringLiteral,
   Token,
-} from "../src/ast.ts"
-import type { ClassDiagram, ClassNode } from "../src/ast/class.ts"
-import type { FlowchartDiagram, FlowchartNode } from "../src/ast/flowchart.ts"
-import type { SequenceDiagram, SequenceNode } from "../src/ast/sequence.ts"
-import type { StateDiagram, StateNode } from "../src/ast/state.ts"
-import type { ErDiagram, ErNode } from "../src/ast/er.ts"
-import type { GanttDiagram, GanttNode } from "../src/ast/gantt.ts"
-import type { JourneyDiagram, JourneyNode } from "../src/ast/journey.ts"
-import type {
+  ClassDiagram,
+  ClassNode,
+  FlowchartDiagram,
+  FlowchartNode,
+  SequenceDiagram,
+  SequenceNode,
+  StateDiagram,
+  StateNode,
+  ErDiagram,
+  ErNode,
+  GanttDiagram,
+  GanttNode,
+  JourneyDiagram,
+  JourneyNode,
   RequirementDiagram,
   RequirementNode,
-} from "../src/ast/requirement.ts"
-import type { MindmapDiagram, MindmapTreeNode } from "../src/ast/mindmap.ts"
-import type { TimelineDiagram, TimelineNode } from "../src/ast/timeline.ts"
-import type { SankeyDiagram, SankeyNode } from "../src/ast/sankey.ts"
-import type { XychartDiagram, XychartNode } from "../src/ast/xychart.ts"
-import type { QuadrantDiagram, QuadrantNode } from "../src/ast/quadrant.ts"
-import type { BlockDiagram, BlockTreeNode } from "../src/ast/block.ts"
-import type {
+  MindmapDiagram,
+  MindmapTreeNode,
+  TimelineDiagram,
+  TimelineNode,
+  SankeyDiagram,
+  SankeyNode,
+  XychartDiagram,
+  XychartNode,
+  QuadrantDiagram,
+  QuadrantNode,
+  BlockDiagram,
+  BlockTreeNode,
   KanbanDiagram,
   KanbanNode,
   KanbanTreeNode,
-} from "../src/ast/kanban.ts"
-import type { C4Diagram, C4Node } from "../src/ast/c4.ts"
-import type { VennDiagram, VennNode } from "../src/ast/venn.ts"
-import type { IshikawaDiagram, IshikawaTreeNode } from "../src/ast/ishikawa.ts"
+  C4Diagram,
+  C4Node,
+  VennDiagram,
+  VennNode,
+  IshikawaDiagram,
+  IshikawaTreeNode,
+} from "@mmd-toolkit/ast"
+import { readdirSync } from "node:fs"
+import { describe, expect, expectTypeOf, it } from "vitest"
+import { KNOWN_DIVERGENCES } from "@mmd-toolkit/tests"
 import { ParseError } from "../src/errors.ts"
 
 // The checks on types run in the type checker (`tsc` covers tests/); the

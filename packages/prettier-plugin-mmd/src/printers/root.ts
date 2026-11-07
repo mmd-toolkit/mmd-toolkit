@@ -1,5 +1,5 @@
 import type { Doc } from "prettier"
-import type { Frontmatter, Root } from "@mmd-toolkit/parser"
+import type { Frontmatter, Root } from "@mmd-toolkit/ast"
 import { readGap } from "./gap.ts"
 import type { Line } from "./lines.ts"
 import {

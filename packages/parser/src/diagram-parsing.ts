@@ -5,7 +5,7 @@ import type {
   Location,
   Range,
   Root,
-} from "./ast.ts"
+} from "@mmd-toolkit/ast"
 import type { PassedPart } from "./detection.ts"
 import { DiagramTextReader } from "./diagram-text.ts"
 import { findDirectives } from "./directives.ts"

@@ -1,4 +1,4 @@
-import type { ErIdentifier, StringLiteral } from "@mmd-toolkit/parser"
+import type { ErIdentifier, StringLiteral } from "@mmd-toolkit/ast"
 
 /**
  * The text of a name of an ER diagram: an entity name, an alias, or the id of a

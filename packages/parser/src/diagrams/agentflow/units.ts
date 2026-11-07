@@ -1,5 +1,5 @@
 import { GraphUnitLexer, isOneOf } from "../../graph-unit-lexer.ts"
-import type { Range } from "../../ast.ts"
+import type { Range } from "@mmd-toolkit/ast"
 import { isWhitespace } from "../../character-classes.ts"
 import {
   CHARACTER_TABULATION,

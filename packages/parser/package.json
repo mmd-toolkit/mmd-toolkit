@@ -41,7 +41,16 @@
     "show-trees": "node --conditions=source tools/show-trees.ts",
     "diff-trees": "node --conditions=source tools/diff-trees.ts"
   },
+  "peerDependencies": {
+    "@mmd-toolkit/ast": "workspace:^"
+  },
+  "peerDependenciesMeta": {
+    "@mmd-toolkit/ast": {
+      "optional": true
+    }
+  },
   "devDependencies": {
+    "@mmd-toolkit/ast": "workspace:*",
     "@mmd-toolkit/tests": "workspace:*"
   },
   "publishConfig": {

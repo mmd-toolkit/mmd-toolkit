@@ -1,4 +1,4 @@
-import type { KanbanTreeNode } from "../ast/kanban.ts"
+import type { KanbanTreeNode } from "@mmd-toolkit/ast"
 
 /**
  * ast/kanban.md: the child fields of each kanban node type, as each

@@ -1,5 +1,5 @@
 import { directionRemovals } from "../utils/direction-removals.ts"
-import type { AgentflowDirectionStatement } from "@mmd-toolkit/parser"
+import type { AgentflowDirectionStatement } from "@mmd-toolkit/ast"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { agentflowFlowDeclarations } from "../utils/agentflow-flows.ts"

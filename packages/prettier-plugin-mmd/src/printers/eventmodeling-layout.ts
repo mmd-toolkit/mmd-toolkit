@@ -17,7 +17,7 @@ import type {
   EventmodelingResetFrameStatement,
   EventmodelingModelEntityStatement,
   EventmodelingIgnoredText,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import type { HiddenOpenBlockLayout } from "./flat-hidden-diagram.ts"

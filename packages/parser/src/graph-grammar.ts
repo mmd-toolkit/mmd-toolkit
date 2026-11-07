@@ -1,4 +1,9 @@
-import type { Identifier, NumericLiteral, Range, StringLiteral } from "./ast.ts"
+import type {
+  Identifier,
+  NumericLiteral,
+  Range,
+  StringLiteral,
+} from "@mmd-toolkit/ast"
 import { DIGIT_ZERO } from "./code-points.ts"
 import { significantRangeOf } from "./diagram-units.ts"
 import { ParseError } from "./errors.ts"

@@ -44,16 +44,23 @@
     "test:update": "rimraf --glob \"tests/**/__snapshots__\" && UPDATE_SNAPSHOTS=true vitest run"
   },
   "peerDependencies": {
+    "@mmd-toolkit/ast": "*",
     "eslint": "^10.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@mmd-toolkit/ast": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@eslint/core": "^1.2.1",
     "@eslint/plugin-kit": "^0.7.3",
-    "@mmd-toolkit/parser": "workspace:*",
+    "@mmd-toolkit/parser": "workspace:^",
     "@ota-meshi/ast-token-store": "^0.3.0"
   },
   "devDependencies": {
     "@eslint/markdown": "^8.0.3",
+    "@mmd-toolkit/ast": "workspace:*",
     "@mmd-toolkit/tests": "workspace:*",
     "eslint": "^10.0.0",
     "eslint-snapshot-rule-tester": "^0.1.0",

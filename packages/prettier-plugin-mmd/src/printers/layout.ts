@@ -1,4 +1,4 @@
-import type { Node, Range, Token } from "@mmd-toolkit/parser"
+import type { Node, Range, Token } from "@mmd-toolkit/ast"
 import { visitorKeys } from "@mmd-toolkit/parser"
 import type { Atom, AtomLayout } from "./atoms.ts"
 import { readGapElement } from "./gap.ts"

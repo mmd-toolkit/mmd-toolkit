@@ -1,4 +1,4 @@
-import type { XychartNode } from "../ast/xychart.ts"
+import type { XychartNode } from "@mmd-toolkit/ast"
 
 /**
  * ast/xychart.md: the child fields of each XY chart node type, as each

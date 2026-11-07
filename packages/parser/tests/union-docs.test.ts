@@ -97,7 +97,10 @@ function unionDocsOf(text: string, name: string): UnionDocs {
 
 describe("the documented union types", () => {
   for (const [file, names] of Object.entries(DOCUMENTED_UNIONS)) {
-    const text = readFileSync(new URL(`../${file}`, import.meta.url), "utf8")
+    const text = readFileSync(
+      new URL(`../../ast/${file}`, import.meta.url),
+      "utf8",
+    )
     for (const name of names) {
       it(`${name} says the same of each value in its list and in its member`, () => {
         const { list, members } = unionDocsOf(text, name)

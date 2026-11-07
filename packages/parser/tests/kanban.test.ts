@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { loadFixtures } from "@mmd-toolkit/tests"
-import type { KanbanDiagram } from "../src/index.ts"
+import type { KanbanDiagram } from "@mmd-toolkit/ast"
 import { ParseError, parse, visitorKeys } from "../src/index.ts"
 
 describe("kanban fixtures", async () => {

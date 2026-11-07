@@ -1,7 +1,7 @@
 import type { Doc } from "prettier"
 import { lineEndOf, lineStartOf } from "./kept-lines.ts"
 import { printAsWritten } from "./lines.ts"
-import type { Range } from "@mmd-toolkit/parser"
+import type { Range } from "@mmd-toolkit/ast"
 import type { Source } from "./source.ts"
 import {
   findCommentLineEnds,

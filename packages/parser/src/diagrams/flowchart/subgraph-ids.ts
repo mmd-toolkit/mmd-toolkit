@@ -1,5 +1,4 @@
-import type { Range } from "../../ast.ts"
-import type { FlowchartLabel } from "../../ast/flowchart.ts"
+import type { Range, FlowchartLabel } from "@mmd-toolkit/ast"
 import { emptyFormsOf } from "../../empty-forms.ts"
 import { holdsWhitespace, trimmed } from "./subgraph-members.ts"
 import type { Unit, UnitName } from "./units.ts"

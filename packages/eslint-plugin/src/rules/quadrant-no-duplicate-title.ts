@@ -1,7 +1,7 @@
 import type {
   QuadrantAccTitleStatement,
   QuadrantTitleStatement,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { titleText } from "../utils/acc-text.ts"

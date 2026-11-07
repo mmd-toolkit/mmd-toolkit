@@ -1,7 +1,7 @@
 import type {
   RailroadAccDescrBlockStatement,
   RailroadAccDescrStatement,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { isEmptyDescriptionBlock } from "../utils/description-block.ts"

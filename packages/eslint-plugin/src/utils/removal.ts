@@ -1,6 +1,6 @@
 import { canEditRange } from "./edit-range.ts"
 import type { SuggestedEdit } from "@eslint/core"
-import type { Node, Range, Token } from "@mmd-toolkit/parser"
+import type { Node, Range, Token } from "@mmd-toolkit/ast"
 import type { MermaidSourceCode } from "../source-code.ts"
 
 /**

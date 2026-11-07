@@ -44,7 +44,7 @@ import type {
   TreemapAccTitleStatement,
   TreemapAccDescrStatement,
   TreemapAccDescrBlockStatement,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { AtomLayout, GapRule } from "./atoms.ts"
 import { collectAtoms, expectToken, layoutDescriptionBlock } from "./layout.ts"
 import { accessibilityRules } from "./statement-rules.ts"

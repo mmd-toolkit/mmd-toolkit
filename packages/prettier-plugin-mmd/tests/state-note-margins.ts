@@ -4,7 +4,7 @@ import type {
   StateNoteStatement,
   StateStatement,
   Token,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import { parse } from "@mmd-toolkit/parser"
 import type { DbSummary, JsonObject, JsonValue } from "@mmd-toolkit/tests"
 import { isDeepStrictEqual } from "node:util"

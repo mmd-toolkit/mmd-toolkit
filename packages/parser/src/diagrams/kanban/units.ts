@@ -1,5 +1,4 @@
-import type { Range } from "../../ast.ts"
-import type { KanbanCloser, KanbanOpener } from "../../ast/kanban.ts"
+import type { Range, KanbanCloser, KanbanOpener } from "@mmd-toolkit/ast"
 import {
   isLineSegmentSeparator,
   isWhitespace,

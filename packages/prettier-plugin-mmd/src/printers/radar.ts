@@ -2,7 +2,7 @@ import type {
   RadarDiagram,
   RadarBodyItem,
   RadarIgnoredText,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import type { FlatHiddenPrinter } from "./flat-hidden-diagram.ts"
 import { createFlatHiddenDiagramPrinter } from "./flat-hidden-diagram.ts"
 import { layoutRadarHeader, layoutRadarStatement } from "./radar-layout.ts"

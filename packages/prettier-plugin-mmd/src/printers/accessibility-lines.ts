@@ -1,4 +1,4 @@
-import type { Range } from "@mmd-toolkit/parser"
+import type { Range } from "@mmd-toolkit/ast"
 import { spansLinesThatCannotJoin, toAsciiLowerCase } from "./layout.ts"
 import type { Source } from "./source.ts"
 import {

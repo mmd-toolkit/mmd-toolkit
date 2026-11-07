@@ -5,7 +5,7 @@ import type {
   Position,
   Range,
   Root,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import plugin from "../src/index.ts"
 
 /**

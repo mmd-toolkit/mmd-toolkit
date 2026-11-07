@@ -1,4 +1,4 @@
-import type { WardleyLabelOffsetDecoration } from "@mmd-toolkit/parser"
+import type { WardleyLabelOffsetDecoration } from "@mmd-toolkit/ast"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import type { WardleyDeclaration } from "../utils/wardley-declarations.ts"

@@ -1,4 +1,4 @@
-import type { Range } from "@mmd-toolkit/parser"
+import type { Range } from "@mmd-toolkit/ast"
 
 const JSON_NUMBER = /-?(?:0|[1-9]\d*)(?:\.\d+)?(?:(?:E|e)[+-]?\d+)?/uy
 const LITERALS = [true, false, null].map((v) => [String(v), v] as const)

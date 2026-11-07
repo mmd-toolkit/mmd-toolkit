@@ -30,6 +30,7 @@
     "vue": "^3.6.0-rc.10"
   },
   "devDependencies": {
+    "@mmd-toolkit/ast": "workspace:*",
     "@playwright/test": "^1.63.0",
     "@types/node": "^26.0.0",
     "@vitejs/plugin-vue": "^6.0.9",

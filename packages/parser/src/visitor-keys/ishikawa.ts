@@ -1,4 +1,4 @@
-import type { IshikawaTreeNode } from "../ast/ishikawa.ts"
+import type { IshikawaTreeNode } from "@mmd-toolkit/ast"
 
 /** ast/ishikawa.md: child fields in their specified order. */
 export const ishikawaVisitorKeys: Readonly<

@@ -1,4 +1,4 @@
-import type { StateNode } from "../ast/state.ts"
+import type { StateNode } from "@mmd-toolkit/ast"
 
 /**
  * ast/state.md: the child fields of each state node type, as each node's

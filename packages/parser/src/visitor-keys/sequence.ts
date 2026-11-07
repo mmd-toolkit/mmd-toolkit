@@ -1,4 +1,4 @@
-import type { SequenceNode } from "../ast/sequence.ts"
+import type { SequenceNode } from "@mmd-toolkit/ast"
 
 /**
  * ast/sequence.md, Nodes: the child fields of every sequence node type, as

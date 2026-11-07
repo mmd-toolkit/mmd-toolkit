@@ -1,4 +1,4 @@
-import type { Range } from "./ast.ts"
+import type { Range } from "@mmd-toolkit/ast"
 import { isLineSegmentSeparator, isWhitespace } from "./character-classes.ts"
 import type {
   DiagramCharacter,

@@ -1,5 +1,4 @@
-import type { Range } from "../../ast.ts"
-import type { ErCardinality, ErRelationshipLine } from "../../ast/er.ts"
+import type { Range, ErCardinality, ErRelationshipLine } from "@mmd-toolkit/ast"
 import {
   isAsciiDigit,
   isAsciiLetter,

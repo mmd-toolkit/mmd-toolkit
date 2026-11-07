@@ -41,7 +41,8 @@ GitHub][positions] for their format.
 
 ## Types and diagram-specific fields
 
-The package exports these types, as well as a type for each diagram node:
+`@mmd-toolkit/ast` (see [Installation](./index.md#installation)) exports these
+types, as well as a type for each diagram node:
 
 | Types                                                       | Purpose                                             |
 | ----------------------------------------------------------- | --------------------------------------------------- |
@@ -50,7 +51,9 @@ The package exports these types, as well as a type for each diagram node:
 | `DiagramBody`, `DiagramType`                                | Diagram body node types and diagram ids.            |
 | `Token`, `TokenKind`, `Comment`, `Directive`, `Frontmatter` | Source records and token kinds.                     |
 | `Range`, `Location`, `Position`                             | Source positions.                                   |
-| `Visitor`, `VisitorKeys`                                    | The traversal callbacks and child-field mapping.    |
+
+`@mmd-toolkit/parser` exports the types `Visitor` and `VisitorKeys`, the
+traversal callbacks and the child-field mapping.
 
 Use a node's `type` field to narrow its TypeScript type before reading
 diagram-specific fields. This example reads the direction and statement count of
@@ -58,7 +61,7 @@ a flowchart:
 
 ```ts
 import { parse } from "@mmd-toolkit/parser"
-import type { DiagramBody, Root } from "@mmd-toolkit/parser"
+import type { DiagramBody, Root } from "@mmd-toolkit/ast"
 
 const root: Root = parse("flowchart LR\n  A[Start] --> B\n")
 const body: DiagramBody = root.body

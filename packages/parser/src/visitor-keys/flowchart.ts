@@ -1,4 +1,4 @@
-import type { FlowchartNode } from "../ast/flowchart.ts"
+import type { FlowchartNode } from "@mmd-toolkit/ast"
 
 /**
  * ast/flowchart.md, Nodes: the child fields of every flowchart node type, as

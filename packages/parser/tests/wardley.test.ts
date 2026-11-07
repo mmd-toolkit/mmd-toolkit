@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 import type { Fixture } from "@mmd-toolkit/tests"
 import { loadFixtures } from "@mmd-toolkit/tests"
-import type { WardleyDiagram } from "../src/index.ts"
+import type { WardleyDiagram } from "@mmd-toolkit/ast"
 import { parse } from "../src/index.ts"
 import { wardleyLexingOf } from "./helpers/reference-inputs.ts"
 

@@ -1,7 +1,7 @@
 import { canEditRange } from "../utils/edit-range.ts"
 import { canCompactRange } from "../utils/compact-range.ts"
 import type { SuggestedEdit } from "@eslint/core"
-import type { BlockCompositeStatement } from "@mmd-toolkit/parser"
+import type { BlockCompositeStatement } from "@mmd-toolkit/ast"
 import type { MermaidSourceCode } from "../source-code.ts"
 import { indentationOf, lineTerminatorOf } from "../utils/line-text.ts"
 import type { MermaidRuleDefinition } from "../rule-types.ts"

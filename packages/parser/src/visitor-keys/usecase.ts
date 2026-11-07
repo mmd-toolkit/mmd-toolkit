@@ -1,4 +1,4 @@
-import type { UsecaseNode } from "../ast/usecase.ts"
+import type { UsecaseNode } from "@mmd-toolkit/ast"
 
 /** ast/usecase.md: child fields in their specified order. */
 export const usecaseVisitorKeys: Readonly<

@@ -1,4 +1,4 @@
-import type { EventmodelingDiagram } from "@mmd-toolkit/parser"
+import type { EventmodelingDiagram } from "@mmd-toolkit/ast"
 import type { FlatHiddenPrinter } from "./flat-hidden-diagram.ts"
 import { createFlatHiddenDiagramPrinter } from "./flat-hidden-diagram.ts"
 import {

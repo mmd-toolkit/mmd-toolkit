@@ -1,5 +1,5 @@
-import type { Identifier } from "../../ast.ts"
 import type {
+  Identifier,
   QuadrantAccDescrBlockStatement,
   QuadrantAccDescrStatement,
   QuadrantAccTitleStatement,
@@ -12,7 +12,7 @@ import type {
   QuadrantQuadrantStatement,
   QuadrantStatement,
   QuadrantTitleStatement,
-} from "../../ast/quadrant.ts"
+} from "@mmd-toolkit/ast"
 import { isAsciiDigit, isAsciiLetter } from "../../character-classes.ts"
 import { EMPTY_FORM_KINDS } from "../../empty-forms.ts"
 import { ParseError } from "../../errors.ts"

@@ -8,7 +8,7 @@
  * tokens exactly when some character between them is in neither.
  */
 import { describe, expect, it } from "vitest"
-import type { Comment, Node, Range, Root, Token } from "@mmd-toolkit/parser"
+import type { Comment, Node, Range, Root, Token } from "@mmd-toolkit/ast"
 import { traverseNodes } from "@mmd-toolkit/parser"
 import type { MermaidSourceCode } from "../src/index.ts"
 import { observe } from "./helpers.ts"

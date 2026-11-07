@@ -21,6 +21,7 @@
     "types": ["node"],
     // Type-check workspace packages against their sources, not a stale lib/ build.
     "paths": {
+      "@mmd-toolkit/ast": ["./packages/ast/src/index.ts"],
       "@mmd-toolkit/parser": ["./packages/parser/src/index.ts"],
       "@mmd-toolkit/tests": ["./packages/tests/src/index.ts"],
       "@mmd-toolkit/tests/mermaid": ["./packages/tests/src/mermaid.ts"]

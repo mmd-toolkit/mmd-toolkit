@@ -1,4 +1,4 @@
-import type { Range } from "@mmd-toolkit/parser"
+import type { Range } from "@mmd-toolkit/ast"
 import type { MermaidSourceCode } from "../source-code.ts"
 
 /**

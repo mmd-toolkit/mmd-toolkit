@@ -1,5 +1,6 @@
-import type { Identifier, StringLiteral } from "../../ast.ts"
 import type {
+  Identifier,
+  StringLiteral,
   ClassAccDescrBlockStatement,
   ClassAnnotation,
   ClassAnnotationStatement,
@@ -25,7 +26,7 @@ import type {
   ClassStatement,
   ClassStyleStatement,
   ClassVisibility,
-} from "../../ast/class.ts"
+} from "@mmd-toolkit/ast"
 import type { ParseError } from "../../errors.ts"
 import type { PendingToken, SourceLexer } from "../../source-lexer.ts"
 import type { NodePlace } from "../../unit-grammar.ts"

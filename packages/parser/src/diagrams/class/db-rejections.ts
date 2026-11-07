@@ -1,9 +1,9 @@
-import type { Range } from "../../ast.ts"
 import type {
+  Range,
   ClassName,
   ClassNamespaceStatement,
   ClassStatement,
-} from "../../ast/class.ts"
+} from "@mmd-toolkit/ast"
 import { ParseError } from "../../errors.ts"
 import type { LineIndex } from "../../positions.ts"
 import { classIdOf } from "./names.ts"

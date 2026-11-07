@@ -19,7 +19,7 @@ import type {
   Node,
   Root,
   Token,
-} from "@mmd-toolkit/parser"
+} from "@mmd-toolkit/ast"
 import { traverseNodes } from "@mmd-toolkit/parser"
 
 /** Everything in the tree that has a range and a location. */

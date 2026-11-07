@@ -1,4 +1,4 @@
-import type { BlockLiteral } from "@mmd-toolkit/parser"
+import type { BlockLiteral } from "@mmd-toolkit/ast"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { hasLeadingWhitespace } from "../utils/block-class-ids.ts"

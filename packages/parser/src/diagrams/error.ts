@@ -1,4 +1,4 @@
-import type { Range, Root } from "../ast.ts"
+import type { Range, Root } from "@mmd-toolkit/ast"
 import { isWhitespace } from "../character-classes.ts"
 import type { DiagramInput } from "../diagram-parsing.ts"
 import { finishDiagram, openDiagramText } from "../diagram-parsing.ts"
