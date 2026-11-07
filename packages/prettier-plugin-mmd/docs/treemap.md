@@ -459,26 +459,38 @@ semicolons/class-terminator-entity-kept] and when another `;` is beside it.
 a `;` that the line rule ignores stays and the `;` is dropped, as in the other
 diagram types. [fixture: semicolons/class-terminator-hash-directive-dropped]
 
-Where the `;` stays, the whitespace after it is the run that indents the next
-statement: the whitespace before a comment or a directive that follows it on its
-line, between a directive and a comment, and at the end of the line. mermaid.js
-counts the whitespace on both sides of a directive as one run and reads a second
+Where the `;` that ends the statement stays, the whitespace after it is the run
+that indents the next statement: the whitespace between the `;` and a comment or
+a directive that follows it on its line, between two directives, and at the end
+of the line. mermaid.js counts the whitespace on both sides of a directive as
+one run
+([Headers and indentation](../../spec/docs/diagrams/treemap.md#headers-and-indentation)),
+[corpus fixture: treemap/gram-indent-around-global-directive] and reads a second
 run on the next line as a second indentation, which it rejects. [corpus fixture:
 treemap/gram-class-tail-space-next-indent] The run moves once to the planned
 column of the next statement, as in [Carried indentation](#carried-indentation),
-so the comment or the directive touches the `;`, and a comment touches a
-directive before it. [fixture: semicolons/class-terminator-comment-run-moved]
-[fixture: semicolons/class-terminator-directive-run-moved] This holds for a `;`
-that the line rule ignores, [fixture:
-semicolons/class-terminator-ignored-run-moved] [fixture:
-semicolons/class-terminator-ignored-comment-run-moved] for a `classDef` without
-a style, [fixture: semicolons/class-terminator-styleless-run-moved] when the
-next statement is a `classDef`, [fixture:
-semicolons/class-terminator-class-run-moved] and when comment lines and blank
-lines lie between. [fixture:
+so the comment or the directive touches the `;`, and a comment or a directive
+touches a directive before it. When the whitespace on the two sides of a
+directive makes the run, their sum counts. [fixture:
+semicolons/class-terminator-comment-run-moved] [fixture:
+semicolons/class-terminator-directive-run-moved] [fixture:
+semicolons/class-terminator-directives-run-moved] [fixture:
+semicolons/class-terminator-run-sum-moved] This holds when a `;` that the line
+rule ignores follows it, also when whitespace or a directive lies between the
+two `;`. [fixture: semicolons/class-terminator-ignored-run-moved] [fixture:
+semicolons/class-terminator-ignored-comment-run-moved] [fixture:
+semicolons/class-terminator-semicolons-run-moved] [fixture:
+semicolons/class-terminator-directive-semicolon-run-moved] It holds for a
+`classDef` without a style, [fixture:
+semicolons/class-terminator-styleless-run-moved] when the next statement is a
+`classDef`, [fixture: semicolons/class-terminator-class-run-moved] and when
+comment lines and blank lines lie between. [fixture:
 semicolons/class-terminator-comment-lines-run-moved] Without whitespace after
 the `;`, the indentation of the next row is its own and is printed at its
 planned column. [fixture: semicolons/class-terminator-comment-row-indented-kept]
+A `;` that the line rule ignores, followed by text on its line, makes that text
+part of the style, so its whitespace stays: `classDef zz a:#b ; %% c` keeps its
+line. [fixture: semicolons/class-terminator-ignored-text-after-kept]
 
 Keep every other authored semicolon: selected ignored semicolons, a `;` beside
 another `;`, and value characters. Use shared kept-line and protected-prefix

@@ -660,7 +660,10 @@ export function printBlock<Statement extends Positioned>(
   /**
    * Prints a stretch: as written when one of its lines is verbatim or it
    * holds a statement that holds statements, and otherwise its statements
-   * as formatted, with what lies between them (see `printInlineGap`).
+   * as formatted, with what lies between them (see `printInlineGap`). After
+   * its last statement, the whitespace that the planned indentation of the
+   * next statement supplies (`relocatedWhitespace`) is not printed in either
+   * case.
    */
   function printStretch(stretch: Stretch): Line {
     const covered = statements.slice(stretch.first, stretch.after)
@@ -674,21 +677,19 @@ export function printBlock<Statement extends Positioned>(
       // the planned indentation of the next statement supplies is not printed.
       const last = covered.at(-1)
       const tailStart =
-        last === undefined
-          ? stretch.end
-          : Math.min(stretch.end, rules.printedEnd(last))
-      const tail = printAsWrittenWithout(
-        source,
-        tailStart,
-        stretch.end,
-        rules.relocatedWhitespace ?? [],
-      )
+        last === undefined ? stretch.end : rules.printedEnd(last)
+      const written =
+        source.text.slice(stretch.start, tailStart) +
+        withoutRelocatedWhitespace(
+          source,
+          tailStart,
+          stretch.end,
+          rules.relocatedWhitespace ?? [],
+        )
       return {
-        doc: [printAsWritten(source, stretch.start, tailStart), tail.doc],
+        doc: replaceEndOfLine(written),
         blankBefore: false,
-        endsWithWhitespace: endsWithSpaceOrTab(
-          source.text.slice(stretch.start, tailStart) + tail.text,
-        ),
+        endsWithWhitespace: endsWithSpaceOrTab(written),
       }
     }
     const parts: Doc[] = []
@@ -1175,26 +1176,27 @@ function printInlineGap(
 /**
  * The text between two offsets as written, without the whitespace in
  * `relocatedWhitespace`: a run that the planned indentation of the next
- * statement supplies, which must not be printed a second time. The text is
- * returned too, for the checks on how the printed text ends.
+ * statement supplies, which must not be printed a second time. A line
+ * separator that breaks a line stays, as in `scanLines`.
  */
-function printAsWrittenWithout(
+function withoutRelocatedWhitespace(
   source: Source,
   start: number,
   end: number,
   relocatedWhitespace: readonly Range[],
-): { readonly doc: Doc; readonly text: string } {
+): string {
   let text = ""
   for (let offset = start; offset < end;) {
     const { element, end: next } = readGapElement(source, offset)
     if (
       element.kind !== "whitespace" ||
+      element.breaksLine ||
       findCoveringRange(relocatedWhitespace, offset) === undefined
     )
       text += source.text.slice(offset, next)
     offset = next
   }
-  return { doc: replaceEndOfLine(text), text }
+  return text
 }
 
 /**

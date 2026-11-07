@@ -742,15 +742,22 @@ excluded by the lexical reading do not carry. This preserves parentage without
 adding a second indentation run. Fixed or value-owned source boundaries follow
 Branch prefixes.
 
-A `;` that the line rule ignores and that stays after a quote does not stop the
-carry. The run before the `;`, after it, or before a comment or a directive that
-follows it moves the same way, because mermaid.js reads it as the indentation
-and rejects a second run on the next line. [corpus fixture:
+A `;` that the line rule ignores and that stays after a quote or a class does
+not stop the carry. The run before the `;`, after it, or before a comment or a
+directive that follows it moves the same way, and comment lines, blank lines and
+directive lines may lie between. Newlines are hidden to mermaid.js, so it
+rejects a second run on the next line after a run that follows a quote or a
+class
+([Indentation and lines](../../spec/docs/diagrams/treeview.md#indentation-and-lines)).
+[corpus fixture: treeview/gram-quoted-tail-space-next-indent] [corpus fixture:
 treeview/gram-class-tail-space-next-indent] The `;`, the comment and the
 directive then touch each other and the node. [fixture:
 treeview/carried-indentation/carry-quote-semicolon-comment] [fixture:
 treeview/carried-indentation/carry-quote-semicolon-directive] [fixture:
-treeview/carried-indentation/carry-quote-run-before-semicolon]
+treeview/carried-indentation/carry-quote-run-before-semicolon] [fixture:
+treeview/carried-indentation/carry-class-semicolon] [fixture:
+treeview/carried-indentation/carry-quote-semicolon-lines] [fixture:
+treeview/carried-indentation/carry-quote-semicolon-directive-line]
 
 [fixture: treeview/carried-indentation/carry-quote]
 
