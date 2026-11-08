@@ -91,7 +91,13 @@ manufacture a name or data. Agentflow end/global consume only ASCII spaces/tabs;
 they do not absorb LF into a name. A semicolon after end is a separate
 EmptyStatement at the containing depth. [fixture: containers/containers-empty]
 [fixture: containers/containers-one-line] [fixture:
-containers/end-name-not-greedy] [fixture: containers/global-flatten-unsafe]
+containers/end-name-not-greedy] [fixture: containers/global-flatten-unsafe] A
+run of spaces and tabs in the title of a flow is printed as one space, except in
+a markdown string, in a flow with a data block (`F@{ view: "collapsed" }`), and
+in a diagram that names `swimlane`, where mermaid.js wraps the title (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+[fixture: containers/flow-title-runs-collapsed] [fixture:
+containers/flow-title-collapsed-runs-kept]
 
 Input (escaped): `"agentflow-beta TB\nglobal\t \nA\nend B"`. [fixture:
 containers/global-tabs]

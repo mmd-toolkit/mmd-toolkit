@@ -1,7 +1,9 @@
 import type {
+  AgentflowFlowStatement,
   C4BoundaryStatement,
   C4ElementStatement,
   C4RelationshipStatement,
+  FlowchartSubgraphStatement,
   Node,
   Range,
 } from "@mmd-toolkit/ast"
@@ -169,7 +171,7 @@ function findTexts(source: Source): Texts {
   let texts = textsOfSource.get(source)
   if (texts === undefined) {
     const found: { range: Range; blank: boolean }[] = []
-    collectTexts(source.root, found)
+    collectTexts(source, source.root, found)
     found.sort((a, b) => a.range[0] - b.range[0] || b.range[1] - a.range[1])
     const ranges: Range[] = []
     const blanks = new Set<number>()
@@ -216,11 +218,110 @@ function collectC4Texts(
   })
 }
 
+interface SubgraphFacts {
+  /** The ids that a data block (`S@{ … }`) is written for. */
+  readonly dataIds: ReadonlySet<string>
+  /** Whether a data block is written for an id that mermaid.js generates. */
+  readonly generatedId: boolean
+  /** Whether the diagram can draw the lanes of a swimlane diagram. */
+  readonly swimlane: boolean
+}
+
+const subgraphFactsOfSource = new WeakMap<Source, SubgraphFacts>()
+
+/**
+ * What decides how mermaid.js draws the titles of the subgraphs of a diagram
+ * (docs/compatibility.md, Runs of whitespace in a text that are drawn the
+ * same): a data block written for the id of a subgraph (`S@{ view: collapsed }`
+ * draws it as a collapsed group, and mermaid.js names a subgraph whose name
+ * holds whitespace `subGraph0`, `subGraph1`, and so on), and a diagram that
+ * names `swimlane`, which is the header of a swimlane diagram and the value of
+ * the `layout` setting that draws the lanes of any flowchart; a setting can be
+ * written in the frontmatter and in a directive.
+ */
+function findSubgraphFacts(source: Source): SubgraphFacts {
+  let facts = subgraphFactsOfSource.get(source)
+  if (facts === undefined) {
+    const dataIds = new Set<string>()
+    collectDataIds(source, source.root, dataIds)
+    facts = {
+      dataIds,
+      generatedId: [...dataIds].some(isGeneratedSubgraphId),
+      swimlane: source.text.toLowerCase().includes("swimlane"),
+    }
+    subgraphFactsOfSource.set(source, facts)
+  }
+  return facts
+}
+
+/** Whether the id is one that mermaid.js generates for a subgraph: `subGraph0`. */
+function isGeneratedSubgraphId(id: string): boolean {
+  const digits = id.slice("subGraph".length)
+  return (
+    id.startsWith("subGraph") &&
+    digits.length > 0 &&
+    [...digits].every((character) => character >= "0" && character <= "9")
+  )
+}
+
+/** Records the ids of the vertices that carry a data block. */
+function collectDataIds(source: Source, node: Node, ids: Set<string>): void {
+  if (node.type === "FlowchartVertex" || node.type === "AgentflowVertex") {
+    const data = (node as { readonly data?: unknown }).data
+    if (Array.isArray(data) ? data.length > 0 : data != null) {
+      ids.add(source.text.slice(...node.id.range))
+    }
+  }
+  for (const key of visitorKeys[node.type]) {
+    const value = (node as unknown as Record<string, unknown>)[key]
+    for (const child of Array.isArray(value) ? value : [value]) {
+      if (child !== null && child !== undefined) {
+        collectDataIds(source, child as Node, ids)
+      }
+    }
+  }
+}
+
+/**
+ * Records the range of the title of a subgraph, or of a flow of an agentflow
+ * diagram, where mermaid.js draws it without a width: a title that is not a
+ * markdown string, of a subgraph with no data block, in a diagram that does not
+ * name `swimlane`. The three others, a markdown title, a collapsed group, and a
+ * lane, pass the width of the subgraph to `createText`, which wraps the title
+ * and draws its runs there.
+ */
+function collectSubgraphTexts(
+  source: Source,
+  node: AgentflowFlowStatement | FlowchartSubgraphStatement,
+  found: { range: Range; blank: boolean }[],
+): void {
+  const facts = findSubgraphFacts(source)
+  if (facts.swimlane || facts.generatedId) return
+  const title =
+    node.type === "FlowchartSubgraphStatement"
+      ? (node.title ?? node.name)
+      : node.title
+  if (title === null || title.kind === "markdown") return
+  if (node.type === "AgentflowFlowStatement" && node.data.length > 0) return
+  if (node.name !== null) {
+    const id = source.text.slice(...node.name.range).trim()
+    if (facts.dataIds.has(id)) return
+  }
+  found.push({ range: title.range, blank: false })
+}
+
 /** Records the ranges of the texts below `node` in the fields of the slots. */
 function collectTexts(
+  source: Source,
   node: Node,
   found: { range: Range; blank: boolean }[],
 ): void {
+  if (
+    node.type === "FlowchartSubgraphStatement" ||
+    node.type === "AgentflowFlowStatement"
+  ) {
+    collectSubgraphTexts(source, node, found)
+  }
   if (
     node.type === "C4BoundaryStatement" ||
     node.type === "C4ElementStatement" ||
@@ -238,7 +339,7 @@ function collectTexts(
       if (fields.includes(key)) found.push({ range: item.range, blank: false })
       else if (blankFields.includes(key))
         found.push({ range: item.range, blank: true })
-      collectTexts(item, found)
+      collectTexts(source, item, found)
     }
   }
 }

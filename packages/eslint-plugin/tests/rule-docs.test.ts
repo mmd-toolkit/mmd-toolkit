@@ -244,8 +244,8 @@ describe("the examples of a rule document", () => {
 
   it("are printed as the formatter prints them, in both languages", async () => {
     const rendered = await render(`\`\`\`mmd\n${written}\n\`\`\``)
-    for (const document of [rendered.en, rendered.ja]) {
-      expect(document).toContain(`\`\`\`mmd\n${printed}\n\`\`\``)
+    for (const text of [rendered.en, rendered.ja]) {
+      expect(text).toContain(`\`\`\`mmd\n${printed}\n\`\`\``)
     }
   })
 
@@ -253,8 +253,8 @@ describe("the examples of a rule document", () => {
     const rendered = await render(
       `<!-- prettier-ignore -->\n\`\`\`mmd\n${written}\n\`\`\``,
     )
-    for (const document of [rendered.en, rendered.ja]) {
-      expect(document).toContain(`\`\`\`mmd\n${written}\n\`\`\``)
+    for (const text of [rendered.en, rendered.ja]) {
+      expect(text).toContain(`\`\`\`mmd\n${written}\n\`\`\``)
     }
   })
 

@@ -682,7 +682,8 @@ draws the text without the run: `title Sales   report` is printed
 and `quadrant-1 a    b` is printed `quadrant-1 a b`. The texts are the `title`
 and the `accDescr` of every diagram type, and the texts that these diagram types
 draw as SVG text: the labels of an architecture diagram, a block diagram, a
-quadrant chart, and a radar chart, the members and annotations of a class
+quadrant chart, and a radar chart, the titles of the subgraphs of a flowchart
+and the flows of an agentflow diagram, the members and annotations of a class
 diagram, the types of the attributes of an ER diagram, the fields and class
 lists of a requirement diagram, the texts of a sequence diagram (the messages,
 notes, blocks, boxes, and descriptions after `as`), the labels, technologies,
@@ -718,28 +719,58 @@ These stay as written:
   which a `style` or a `classDef` can use to keep the runs of a label. [fixture:
   sequence/whitespace-between-tokens/html-tag-runs-kept] [fixture:
   pie/title/white-space-property-kept]
-- The labels that mermaid.js draws as HTML: the nodes, the edges, and the titles
-  of the subgraphs of a flowchart and an agentflow diagram, the descriptions,
-  transitions, and notes of a state diagram, the nodes of a mindmap, the labels
-  of a relation of a class diagram, and all texts of a use case diagram. A label
-  that reaches its maximum width is laid out with `white-space: break-spaces`,
-  which draws the runs
+- The labels that mermaid.js draws as HTML: the nodes and the edges of a
+  flowchart and an agentflow diagram, the descriptions, transitions, and notes
+  of a state diagram, the nodes of a mindmap, the labels of a relation of a
+  class diagram, and all texts of a use case diagram. A label that reaches its
+  maximum width is laid out with `white-space: break-spaces`, which draws the
+  runs
   ([`createText`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/createText.ts#L61-L77)),
   and whether a label does depends on the font and on the width setting, which
   the formatter does not know. A long label with runs was drawn with and without
-  them, and the pixels differed. The title of a subgraph goes through the same
-  function with the width of the subgraph: a title that is a markdown string
-  with runs was drawn differently, and so was a title of another kind in a lane
-  of a swimlane diagram, which calls the function for every title. A title of
-  another kind in an ordinary subgraph was drawn the same in nine cases (a long
-  title, a small `wrappingWidth`, `htmlLabels: false`, nested subgraphs, edges),
-  but it stays as written like the other labels, since the formatter cannot tell
-  the cases apart. [fixture: flowchart/subgraph-header/title-runs-kept]
-  [fixture: flowchart/label-inner-whitespace/inner-whitespace-kept] [fixture:
+  them, and the pixels differed. [fixture:
+  flowchart/label-inner-whitespace/inner-whitespace-kept] [fixture:
   agentflow/labels/labels-padding] [fixture:
   state/descriptions-and-labels/text-kept] [fixture:
   mindmap/node-text/inner-whitespace-kept] [fixture:
   usecase/labels/label-interior-kept] [fixture: class/labels/spaced]
+- The title of a subgraph of a flowchart, and of a `flow` of an agentflow
+  diagram, that mermaid.js draws with the width of the subgraph, which wraps it:
+  the title is a markdown string
+  ([`rect`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/clusters.js#L40-L50)
+  and
+  [`createContainerGroup`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/clusters.js#L555-L564)
+  pass a markdown title to `createText` with the width, and any other title to
+  [`createLabel`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/createLabel.js#L38-L50),
+  which passes none); the subgraph has a data block (`S@{ view: collapsed }`
+  draws it as a collapsed group, whose title
+  [`labelHelper`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/util.ts#L89-L104)
+  passes to `createText` with a width;
+  [`getData`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L1288-L1301)
+  of a flowchart and
+  [`getData`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1794-L1815)
+  of an agentflow diagram choose it); or the diagram draws lanes (the header
+  `swimlane-beta`, or the setting `layout: swimlane`, which can stand in the
+  frontmatter and in a directive, and which
+  [sets the shape of every group to a lane](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/layout-algorithms/swimlanes/helpers.ts#L174),
+  drawn by
+  [`swimlane`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/clusters/swimlane.js#L50-L55)
+  with the width). A title with runs was drawn with and without them in each of
+  the cases, and the pixels differed in each. A title of any other kind was
+  drawn the same in nine cases of an ordinary subgraph (a long title, a small
+  `wrappingWidth`, `htmlLabels: false`, `layout: elk`, `look: neo`, nested
+  subgraphs, edges, the keyword `graph`) and in an agentflow `flow`, so it is
+  printed with one space. A data block is not read for its keys: any block
+  written for the id of the subgraph keeps its title, and so does a block
+  written for an id like `subGraph0`, which mermaid.js gives to a subgraph whose
+  name holds whitespace; a diagram that names `swimlane` anywhere keeps every
+  title. A setting of the host of mermaid.js, outside the text, is not read.
+  [fixture: flowchart/subgraph-header/markdown-title-runs-kept] [fixture:
+  flowchart/subgraph-header/collapsed-title-runs-kept] [fixture:
+  flowchart/subgraph-header/swimlane-title-runs-kept] [fixture:
+  flowchart/subgraph-header/layout-swimlane-title-runs-kept] [fixture:
+  agentflow/containers/flow-title-runs-collapsed] [fixture:
+  agentflow/containers/flow-title-collapsed-runs-kept]
 - The `accTitle`. mermaid.js puts it into the `title` element of the SVG, which
   the browser shows as a tooltip when the pointer rests on the figure, and
   AGENTS.md compares tooltips. Whether the tooltip shows the runs could not be

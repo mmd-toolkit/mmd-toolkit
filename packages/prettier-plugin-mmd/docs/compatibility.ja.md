@@ -798,7 +798,7 @@ railroad 図の文字列と special sequence です。
   小さい `wrappingWidth`、`htmlLabels: false`、入れ子の subgraph、
   辺）で同じに描かれましたが、フォーマッターは場合を見分けられないので、
   ほかのラベルと同じく書かれたまま残します。
-  [fixture: flowchart/subgraph-header/title-runs-kept]
+  [fixture: flowchart/subgraph-header/markdown-title-runs-kept]
   [fixture: flowchart/label-inner-whitespace/inner-whitespace-kept]
   [fixture: agentflow/labels/labels-padding]
   [fixture: state/descriptions-and-labels/text-kept]

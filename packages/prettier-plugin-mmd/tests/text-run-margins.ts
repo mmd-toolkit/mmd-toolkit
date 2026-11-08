@@ -12,7 +12,7 @@ import { withoutBlanks } from "./db-values.ts"
  * same).
  */
 const textRunPaths: ReadonlyMap<string, ReadonlySet<string>> = new Map([
-  ["agentflow", new Set(["accDescr"])],
+  ["agentflow", new Set(["accDescr", "subgraphs.title"])],
   [
     "architecture",
     new Set(["accDescr", "groups.title", "nodes.iconText", "nodes.title"]),
@@ -45,7 +45,7 @@ const textRunPaths: ReadonlyMap<string, ReadonlySet<string>> = new Map([
   ],
   ["cynefin", new Set(["accDescr", "domains.items.label", "title"])],
   ["er", new Set(["accDescr", "entities.attributes.type"])],
-  ["flowchart-v2", new Set(["accDescr"])],
+  ["flowchart-v2", new Set(["accDescr", "subgraphs.title"])],
   ["gantt", new Set(["accDescr", "title"])],
   ["ishikawa", new Set(["root.children.text", "root.text", "title"])],
   ["journey", new Set(["accDescr", "title"])],
