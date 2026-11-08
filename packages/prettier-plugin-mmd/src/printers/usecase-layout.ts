@@ -15,14 +15,15 @@ import {
   collectValueNodes,
   dropPaddings,
   expectToken,
+  findLayoutEnd,
   keptAsWritten,
   layoutDescriptionBlock,
   walk,
   protectSemicolonPrefixes,
+  replaceInAtoms,
 } from "./layout.ts"
-import type { Source, Trivia } from "./source.ts"
+import type { Source } from "./source.ts"
 import {
-  findDirectiveEndingAt,
   findStructuralToken,
   findStructuralTokenEndingBefore,
   findTokenEndingBefore,
@@ -35,6 +36,8 @@ import {
   addClassListRules,
   addNameListRules,
   classStatementRules,
+  collectTextEndEdits,
+  endsWithDirectives,
 } from "./statement-rules.ts"
 
 /** Value leaves; accessibility/stereotype padding has its own layout rules. */
@@ -334,6 +337,29 @@ export function layoutUsecaseStatement(
 }
 
 /**
+ * Where a statement is printed to: its range, except for a one-line
+ * accessibility statement, which leaves out the whitespace at the end of its
+ * value. That whitespace is then the gap before a directive that follows the
+ * statement on its line, which a gap rule prints as one space, as in the other
+ * diagram types.
+ */
+export function findUsecasePrintedEnd(
+  source: Source,
+  statement: UsecaseStatement,
+): number {
+  const end = statement.range[1]
+  if (
+    statement.type !== "UsecaseAccTitleStatement" &&
+    statement.type !== "UsecaseAccDescrStatement"
+  )
+    return end
+  return Math.min(
+    end,
+    findLayoutEnd(layoutUsecaseStatement(source, statement, end)),
+  )
+}
+
+/**
  * Class/C4's exterior text spacing and aligned description closer, adapted to
  * usecase's complete Literal ranges (ast/usecase.md, UsecaseLiteral;
  * docs/usecase.md, Direction and accessibility). Native next-line statements
@@ -387,23 +413,23 @@ function layoutUsecaseAccessibility(
   ]
   rules.set(separator.range[0], "none")
   if (valueRange !== null) {
-    // Directives that end the value, as they do when whitespace followed them,
-    // are read as ones that stand after the text: each touches what comes
-    // before it, without the whitespace there, so that the same text is
-    // printed in one form.
-    const directives = findTrailingDirectives(source, valueRange)
-    const textEnd =
-      directives.length === 0
-        ? valueRange[1]
-        : trimEnd(source, directives[0].range[0])
-    if (textEnd > valueRange[0]) {
-      atoms.push({ start: valueRange[0], end: textEnd })
-      rules.set(valueRange[0], "space")
-      joinedBefore.add(valueRange[0])
-    }
-    for (const directive of directives) {
-      atoms.push({ start: directive.range[0], end: directive.range[1] })
-      rules.set(directive.range[0], "none")
+    atoms.push({ start: valueRange[0], end: valueRange[1] })
+    rules.set(valueRange[0], "space")
+    joinedBefore.add(valueRange[0])
+    // The directives that end the value are printed as those that end a title
+    // (docs/compatibility.md, Texts after a keyword that are drawn the same).
+    // The runs inside an `accTitle` stay.
+    if (endsWithDirectives(source, valueRange)) {
+      replaceInAtoms(
+        source,
+        atoms,
+        collectTextEndEdits(
+          source,
+          valueRange[0],
+          valueRange[1],
+          statement.type === "UsecaseAccDescrStatement",
+        ),
+      )
     }
   }
   return {
@@ -413,26 +439,6 @@ function layoutUsecaseAccessibility(
     joinedBefore,
     lineBreaks: "kept",
   }
-}
-
-/** The directives that end the range, with only whitespace between them, in order. */
-function findTrailingDirectives(source: Source, range: Range): Trivia[] {
-  const directives: Trivia[] = []
-  let end = range[1]
-  for (;;) {
-    const directive = findDirectiveEndingAt(source, end)
-    if (directive === undefined || directive.range[0] < range[0]) break
-    directives.unshift(directive)
-    end = trimEnd(source, directive.range[0])
-  }
-  return directives
-}
-
-/** The offset after the last character before `offset` that is not whitespace. */
-function trimEnd(source: Source, offset: number): number {
-  let end = offset
-  while (end > 0 && isWhitespace(source.text[end - 1])) end--
-  return end
 }
 
 /** Trims exterior common whitespace while keeping complete embedded trivia. */

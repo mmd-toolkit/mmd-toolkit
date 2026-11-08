@@ -598,16 +598,17 @@ whatever it is. This holds for the title of a Gantt chart, a user journey, a
 timeline, a sequence diagram, a Venn diagram, a C4 diagram, a pie chart, a radar
 chart, a packet diagram, an architecture diagram, a gitGraph, a cynefin diagram,
 a treemap, a Wardley map, a treeView, an info diagram, and a railroad diagram,
-for the `accTitle:` and `accDescr:` lines of those diagram types, for the text
-of a node of an ishikawa diagram, a mindmap, and a treeView, and of a card of a
-kanban board (not the id of a column, which the figure depends on), for the date
-format and the axis format of a Gantt chart, for the `accDescription` of a C4
-diagram, for the last event of a line of a timeline, and for the second
-description of a state alias. The runs of spaces and tabs inside a date format,
-an axis format, or the value of an `accTitle:` line stay as written before the
-directives as they do without them. [fixture:
+for the `accTitle:` and `accDescr:` lines of those diagram types and of a
+usecase diagram, for the text of a node of an ishikawa diagram, a mindmap, and a
+treeView, and of a card of a kanban board (not the id of a column, which the
+figure depends on), for the date format and the axis format of a Gantt chart,
+for the `accDescription` of a C4 diagram, for the last event of a line of a
+timeline, and for the second description of a state alias. The runs of spaces
+and tabs inside a date format, an axis format, or the value of an `accTitle:`
+line stay as written before the directives as they do without them. [fixture:
 ishikawa/trailing-whitespace/directives-end-blanks-dropped] [fixture:
-treeview/trailing-whitespace/directives-end-blanks-dropped] [fixture:
+usecase/direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]
+[fixture: treeview/trailing-whitespace/directives-end-blanks-dropped] [fixture:
 gantt/settings/format-runs-kept-before-directives] [fixture:
 gantt/titles-and-sections/title-two-directives-trailing-blanks-dropped]
 [fixture: pie/title/title-directives-end-blanks-dropped] [fixture:

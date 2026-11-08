@@ -21,6 +21,7 @@ import {
   classifyUsecaseStatement,
   layoutUsecaseStatement,
   usecaseBoundaryHeaderEnd,
+  findUsecasePrintedEnd,
 } from "./usecase-layout.ts"
 
 /** Prints the authored usecase tree using ordinary structural indentation. */
@@ -79,7 +80,7 @@ function printStatements(
 ): PrintedBlock {
   const rules: BlockRules<UsecaseStatement> = {
     kept: findUsecaseKeptLines(source),
-    printedEnd: (statement) => statement.range[1],
+    printedEnd: (statement) => findUsecasePrintedEnd(source, statement),
     holdsStatements: (statement) =>
       classifyUsecaseStatement(statement).kind === "boundary",
     isDroppedAtTopLevel: () => false,
