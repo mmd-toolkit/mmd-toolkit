@@ -427,6 +427,12 @@ mermaid.js は引用符の外の `,` で引数を分け、各部分の両端の�
 （[同じに描かれる呼び出しの引数](./compatibility.ja.md#同じに描かれる呼び出しの引数)）。
 引用符の中の空白は残し、空の部分を含む引数も書かれたままにします。
 [fixture: whitespace-between-tokens/callback-arguments-spaced]
+mermaid.js の行の規則が読むかもしれない引数の間の隙間は、
+空白があるかないかを保ちます。
+`click A call f(style:x,#b;c)` は書かれたまま残します。
+`,` の後に空白を置くと、規則が無視する最後の `;` が変わるからです。
+（[同じに描かれる呼び出しの引数](./compatibility.ja.md#同じに描かれる呼び出しの引数)）。
+[fixture: whitespace-between-tokens/callback-arguments-line-rule-kept]
 引数が空白だけの呼び出しの括弧は互いに接し、
 `click A call f( )` は `click A call f()` になります。
 mermaid.js はどちらも引数のない同じ呼び出しとして読むからです。

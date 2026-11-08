@@ -606,9 +606,9 @@ describe("the citations in the documents", async () => {
     )
 
     // A fixture is cited by its path in the folder of the diagram of the
-    // document, or by its path from the folder of the fixtures. compatibility.md
-    // cites the fixtures of every diagram, and the check looks for the fixture
-    // in the folder of each of them.
+    // document, or by its path from the folder of the fixtures.
+    // compatibility.md cites the fixtures of every diagram, and the check looks
+    // for the fixture in the folder of each of them.
     it.each([document, `${document.slice(0, -3)}.ja.md`])(
       "cites existing fixtures in %s",
       async (fixtureDocument) => {

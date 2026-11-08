@@ -32,9 +32,11 @@ interface StyleReading {
   /**
    * The style is one of a link. Where the look is `handDrawn`, it reads
    * whether a style starts with `stroke:`, so whether whitespace stands before
-   * such a style is no margin; and it draws no colour from a `stroke` with a
-   * value of whitespace only, so whether such a value has whitespace in it is
-   * no margin, though its amount is.
+   * such a style is no margin; it draws no colour from a `stroke` with a value
+   * of whitespace only, so whether such a value has whitespace in it is no
+   * margin; and it joins the styles of a link with `;` as they are, so a style
+   * that ends with a backslash escapes the `;`, and whether whitespace stands
+   * after the backslash is no margin. Where whitespace stands, its amount is.
    */
   readonly readsLinkStyle: boolean
 }
@@ -50,8 +52,11 @@ function withoutStyleMargins(
   { readsStroke, readsLinkStyle }: StyleReading,
 ): string {
   const trimmed = style.trim()
+  const escapedTail =
+    readsLinkStyle && escapesNext(trimmed) && style !== style.trimEnd()
+  const tail = escapedTail ? " " : ""
   const colon = trimmed.indexOf(":")
-  if (colon <= 0) return trimmed
+  if (colon <= 0) return `${trimmed}${tail}`
   const name = trimmed.slice(0, colon).trimEnd()
   const gap = readsStroke && name.endsWith("stroke") && name.length < colon
   const startsWithWhitespace = style !== style.trimStart()
@@ -64,7 +69,14 @@ function withoutStyleMargins(
     name.endsWith("stroke") &&
     value === "" &&
     writtenValue !== ""
-  return `${start ? " " : ""}${name}${gap ? " " : ""}:${blank ? " " : value}`
+  return `${start ? " " : ""}${name}${gap ? " " : ""}:${blank ? " " : value}${tail}`
+}
+
+/** Whether a backslash at the end of a text escapes the next character. */
+function escapesNext(text: string): boolean {
+  let backslashes = 0
+  while (text[text.length - 1 - backslashes] === "\\") backslashes++
+  return backslashes % 2 === 1
 }
 
 /** Whether a Db key holds the styles of a vertex, a class, or a link. */

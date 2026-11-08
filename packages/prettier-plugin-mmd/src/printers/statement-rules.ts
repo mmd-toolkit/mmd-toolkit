@@ -3,7 +3,11 @@ import type { Doc } from "prettier"
 import type { Atom, GapRule } from "./atoms.ts"
 import type { TextEdit } from "./layout.ts"
 import { expectToken, expectValue, replaceInAtoms } from "./layout.ts"
-import { findLinesWithOwnSemicolons, lineStartOf } from "./kept-lines.ts"
+import {
+  findLinesWithOwnSemicolons,
+  isInsideStyleRuleStretch,
+  lineStartOf,
+} from "./kept-lines.ts"
 import { printAsWritten } from "./lines.ts"
 import type { Source } from "./source.ts"
 import {
@@ -173,16 +177,18 @@ export function styleUnitsCanCompact(
   )
 }
 
-/** What the styles of a statement reach, which decides what stays as written. */
+/** What the styles of a statement reach: what stays as written follows. */
 export interface StyleListUse {
   /** The statement is a `linkStyle` with link numbers. */
   readonly keepsSpaceBeforeFill?: boolean
-  /** The statement is a `linkStyle`, with link numbers or `default`. */
-  readonly keepsSpaceBeforeStroke?: boolean
+  /**
+   * The statement is a `linkStyle`, with link numbers or `default`: its styles
+   * are the styles of links, which mermaid.js reads in more ways than the
+   * styles of a node.
+   */
+  readonly isLinkStyle?: boolean
   /** The styles can reach a link: a `linkStyle`, a `classDef`. */
   readonly keepsGapAfterStroke?: boolean
-  /** The statement is a `linkStyle`, with link numbers or `default`. */
-  readonly keepsBlankStrokeValue?: boolean
   /**
    * A backslash escapes a `,`: `a\,b` is one style, and a space between the
    * backslash and a `,` decides that. Only the `classDef` of flowchart and
@@ -211,26 +217,34 @@ export interface StyleListUse {
  * start with `fill`, so a style that starts with `fill` keeps whether
  * whitespace stands before it, a run of whitespace becoming one space.
  *
- * `keepsSpaceBeforeStroke` is set for a `linkStyle`. Where the look is
- * `handDrawn`, mermaid.js takes the first style of a link that starts with
- * `stroke:` as the colour of its arrowheads and defines an arrowhead of that
- * colour; a style that starts with whitespace does not start with `stroke:`.
- * So a style that starts with `stroke:` keeps whether whitespace stands before
- * it, as for `fill`, a run of whitespace becoming one space.
- *
  * `keepsGapAfterStroke` is set for the statements whose styles can reach a
  * link. mermaid.js looks for `stroke:` in the styles of a link to colour its
  * arrowheads, so a name that ends with `stroke` keeps whether whitespace stands
  * between it and the `:`, a run of whitespace becoming one space
  * (docs/compatibility.md, Styles that are drawn the same).
  *
- * `keepsBlankStrokeValue` is set for a `linkStyle`. mermaid.js takes the
- * colour of an arrowhead from the first `stroke:` of the styles of a link and
- * the characters after it up to a `;`, and draws no colour where they are
- * whitespace only: the next `stroke:` is not tried. So a style with a name that
- * ends with `stroke` and a value of spaces and tabs only stays as written, with
- * the whitespace of its value, which reaches up to the `,` after it. The gap
- * after that `,` follows the rules above.
+ * `isLinkStyle` is set for a `linkStyle`, whose styles mermaid.js reads as the
+ * styles of a link in three more ways (docs/compatibility.md, Styles that are
+ * drawn the same):
+ *
+ * - Where the look is `handDrawn`, it takes the first style of a link that
+ *   starts with `stroke:` as the colour of its arrowheads and defines an
+ *   arrowhead of that colour; a style that starts with whitespace does not
+ *   start with `stroke:`. So a style that starts with `stroke:` keeps whether
+ *   whitespace stands before it, as for `fill`, a run of whitespace becoming
+ *   one space.
+ * - It takes the colour of an arrowhead from the first `stroke:` of the styles
+ *   of a link and the characters after it up to a `;`, and draws no colour
+ *   where they are whitespace only: the next `stroke:` is not tried. So a
+ *   style with a name that ends with `stroke` and a value of spaces and tabs
+ *   only stays as written (see `hasBlankStrokeValue`), with the whitespace of
+ *   its value, which reaches up to the `,` after it. The gap after that `,`
+ *   follows the rules above.
+ * - It joins the styles of a link with `;` into one CSS text without taking
+ *   their whitespace away, so a backslash at the end of a style escapes the
+ *   `;` that follows, and the styles after it are lost. So a style that ends
+ *   with a backslash (see `endsWithEscape`) keeps whether whitespace stands
+ *   after it, a run of whitespace becoming its first character.
  *
  * Where `escapesComma` is set, a `,` after a backslash is part of a style, and
  * so is a space after a backslash at the end of one: taking that space away
@@ -249,9 +263,8 @@ export function normalizeStyleList(
   },
   {
     keepsSpaceBeforeFill = false,
-    keepsSpaceBeforeStroke = false,
+    isLinkStyle = false,
     keepsGapAfterStroke = false,
-    keepsBlankStrokeValue = false,
     escapesComma = false,
   }: StyleListUse = {},
 ): void {
@@ -279,18 +292,25 @@ export function normalizeStyleList(
     let comma = start
     while (comma < to && !endsStyle(source, comma, escapesComma)) comma++
     const keepsValue =
-      keepsBlankStrokeValue && hasBlankStrokeValue(source, [start, comma])
-    const core: Range = keepsValue
+      isLinkStyle && hasBlankStrokeValue(source.text.slice(start, comma))
+    let core: Range = keepsValue
       ? [skipSpacesAndTabs(source, start, comma), comma]
       : trimStyle(source, [start, comma], { keepsEscapedSpace: escapesComma })
     if (core[0] === core[1]) return
+    if (
+      isLinkStyle &&
+      !keepsValue &&
+      core[1] < comma &&
+      endsWithEscape(source.text.slice(core[0], core[1]))
+    ) {
+      core = [core[0], core[1] + 1]
+    }
     if (!keepsValue) addColonEdit(source, core, edits, { keepsGapAfterStroke })
     if (previousEnd !== -1) {
       const touchesWord =
         core[0] === start &&
         ((keepsSpaceBeforeFill && source.text.startsWith("fill", core[0])) ||
-          (keepsSpaceBeforeStroke &&
-            source.text.startsWith("stroke:", core[0])))
+          (isLinkStyle && source.text.startsWith("stroke:", core[0])))
       edits.push(
         { range: [previousEnd, start - 1], replacement: "" },
         { range: [start, core[0]], replacement: touchesWord ? "" : " " },
@@ -401,13 +421,36 @@ export function normalizeCallArguments(
   const [offset] = range
   for (const [index, [from, to]] of trimmed.entries()) {
     const [start, end] = parts[index]
-    edits.push({
-      range: [offset + start, offset + from],
-      replacement: index === 0 ? "" : " ",
-    })
-    edits.push({ range: [offset + to, offset + end], replacement: "" })
+    edits.push(
+      callArgumentsGap(
+        source,
+        [offset + start, offset + from],
+        index === 0 ? "" : " ",
+      ),
+      callArgumentsGap(source, [offset + to, offset + end], ""),
+    )
   }
   replaceInAtoms(source, atoms, edits)
+}
+
+/**
+ * The edit of a gap between the arguments of a `click` call, which holds
+ * `range` and takes `replacement`. The line rule of mermaid.js reads the line
+ * of the call: it ignores the last `;` of the line where only characters that
+ * are not whitespace lie between a `:` and a `#` (see
+ * `isInsideStyleRuleStretch`), so `click A call f(style:x,#b;c)` calls `f`
+ * with `#bc`, and `f(style:x, #b;c)` with another text. A gap that the rule
+ * may read keeps whether it holds whitespace: one space where it holds some,
+ * and nothing where the arguments touch.
+ */
+function callArgumentsGap(
+  source: Source,
+  range: Range,
+  replacement: string,
+): TextEdit {
+  if (!isInsideStyleRuleStretch(source, range[0], range[1]))
+    return { range, replacement }
+  return { range, replacement: range[0] === range[1] ? "" : " " }
 }
 
 /**
@@ -471,15 +514,33 @@ function endsStyle(
  * Whether a style has a name that ends with `stroke` and a value of spaces and
  * tabs only, with at least one of them (see `normalizeStyleList`).
  */
-function hasBlankStrokeValue(source: Source, [start, end]: Range): boolean {
-  const colon = source.text.indexOf(":", start)
-  if (colon === -1 || colon >= end) return false
-  const value = source.text.slice(colon + 1, end)
+/**
+ * Whether a style of a link has a `stroke` with a value of spaces and tabs
+ * only, which mermaid.js reads as a colour that is blank and so draws no
+ * colour (see `StyleListUse`, `isLinkStyle`): the name ends with `stroke`, the
+ * `:` follows it at once, and nothing but spaces and tabs, at least one, lies
+ * after the `:`. `text` is the style with the whitespace after it.
+ */
+export function hasBlankStrokeValue(text: string): boolean {
+  const colon = text.indexOf(":")
+  if (colon === -1) return false
+  const value = text.slice(colon + 1)
   return (
     value !== "" &&
     [...value].every(isSpaceOrTab) &&
-    source.text.slice(start, colon).trimEnd().endsWith("stroke")
+    text.slice(0, colon).endsWith("stroke")
   )
+}
+
+/**
+ * Whether the text of a style ends with a backslash that escapes the next
+ * character: an odd number of backslashes lie at its end (`4px\` escapes, and
+ * `4px\\` does not). `text` is the style without the whitespace after it.
+ */
+export function endsWithEscape(text: string): boolean {
+  let backslashes = 0
+  while (text[text.length - 1 - backslashes] === "\\") backslashes++
+  return backslashes % 2 === 1
 }
 
 /**

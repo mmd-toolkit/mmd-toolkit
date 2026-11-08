@@ -27,7 +27,11 @@ import {
 } from "./layout.ts"
 import type { KeptLines } from "./kept-lines.ts"
 import { holdsJoiningRegion, lineStartOf } from "./kept-lines.ts"
-import { accessibilityRules } from "./statement-rules.ts"
+import {
+  accessibilityRules,
+  endsWithEscape,
+  hasBlankStrokeValue,
+} from "./statement-rules.ts"
 import { findWrittenWhitespaceEnd } from "./gap.ts"
 import type { Source } from "./source.ts"
 import {
@@ -37,6 +41,7 @@ import {
   findTokenEndingBefore,
   findTriviaBetween,
   isWhitespace,
+  skipSpacesAndTabs,
 } from "./source.ts"
 
 type GraphLabel = AgentflowLabel | FlowchartLabel
@@ -296,14 +301,20 @@ export function findStyleStatementEnd(
     findTokenEndingBefore(source, statement.range[1]),
     "the end of a style statement",
   )
-  return statement.styles.at(-1) !== null &&
-    !last.value.endsWith(",") &&
-    !(
-      statement.type.endsWith("LinkStyleStatement") &&
-      last.value.trimEnd().endsWith("stroke:")
-    )
-    ? statement.range[1]
-    : findWrittenWhitespaceEnd(source, statement.range[1])
+  const written = findWrittenWhitespaceEnd(source, statement.range[1])
+  if (statement.styles.at(-1) === null || last.value.endsWith(",")) {
+    return written
+  }
+  if (!statement.type.endsWith("LinkStyleStatement")) return statement.range[1]
+  // The whitespace after the last style of a `linkStyle` that mermaid.js reads
+  // (see `normalizeStyleList`).
+  const tail = skipSpacesAndTabs(source, last.range[1], written)
+  if (hasBlankStrokeValue(source.text.slice(last.range[0], tail))) {
+    return written
+  }
+  return tail > last.range[1] && endsWithEscape(last.value)
+    ? last.range[1] + 1
+    : statement.range[1]
 }
 
 /** The end of a graph header's keyword and optional authored direction. */

@@ -295,13 +295,17 @@ and uses the one form. [fixture:
 single-space-gaps/style-stroke-before-colon-spaced] A style of a `linkStyle`
 with a name that ends with `stroke` and a value of spaces and tabs only stays as
 written, as in [flowchart](./flowchart.md#whitespace-between-tokens). [fixture:
-single-space-gaps/link-style-blank-stroke-value-kept] In a `classDef` a `,`
-after a backslash is part of its style, and a space between the backslash and
-the `,` stays, since taking it away would make the `,` part of the style; in a
-`style` and a `linkStyle` the `,` ends a style whatever stands before it. A
-space after a backslash before the `:` stays as well, since taking it away would
-escape the `:`. [fixture: single-space-gaps/style-escaped-space-before-comma]
-[fixture: single-space-gaps/style-backslash-before-comma] [fixture:
+single-space-gaps/link-style-blank-stroke-value-kept] A style of a `linkStyle`
+that ends with a backslash keeps whether whitespace stands after it, a run of
+whitespace becoming its first character, as in
+[flowchart](./flowchart.md#whitespace-between-tokens). [fixture:
+single-space-gaps/link-style-backslash-space-kept] In a `classDef` a `,` after a
+backslash is part of its style, and a space between the backslash and the `,`
+stays, since taking it away would make the `,` part of the style; in a `style`
+and a `linkStyle` the `,` ends a style whatever stands before it. A space after
+a backslash before the `:` stays as well, since taking it away would escape the
+`:`. [fixture: single-space-gaps/style-escaped-space-before-comma] [fixture:
+single-space-gaps/style-backslash-before-comma] [fixture:
 single-space-gaps/style-colon-escaped-space-kept] A statement stays as written
 where it holds a directive or a comment, where a style is all whitespace, or
 where a style holds a line break, U+2028, or U+2029, or its line holds a kept
@@ -971,8 +975,8 @@ agentflow-beta TB
 ### Trailing whitespace
 
 Reuse [Style trailing whitespace](./flowchart.md#style-trailing-whitespace): the
-Db summary normalizes trailing style padding, while an all-whitespace style
-still needs a written whitespace character. Remove harmless exterior and
+tests compare styles without their trailing whitespace, while an all-whitespace
+style still needs a written whitespace character. Remove harmless exterior and
 trailing style padding; keep all-whitespace styles, including the last style
 after commas (including escaped classDef commas), directives, ignored semicolons
 and split empty-description groups. Extra first-style whitespace is leading
@@ -981,7 +985,10 @@ padding, strings, data, comments, directives and later value columns stay.
 Forbidden class/callback/title padding remains rejected; the size guard
 overrides trimming. [fixture: trailing-whitespace/trailing-comment] [fixture:
 trailing-whitespace/trailing-name] [fixture:
-trailing-whitespace/trailing-null-style]
+trailing-whitespace/trailing-null-style] A `linkStyle` that ends with a
+backslash keeps the whitespace after it too, as one character, as in
+[flowchart](./flowchart.md#style-trailing-whitespace). [fixture:
+trailing-whitespace/link-style-backslash-at-end-kept]
 
 Input (escaped): `"agentflow-beta TB\nA   \nA-->B \t\nstyle A fill:red \t"`.
 [fixture: trailing-whitespace/trailing-exterior]
@@ -1119,8 +1126,13 @@ The arguments of a call have no whitespace at their ends or before a `,`, and
 one space after it, as in [flowchart](./flowchart.md#whitespace-between-tokens):
 `click A call f(  "x" ,y )` is printed `click A call f("x", y)` (see
 [Call arguments that are drawn the same](./compatibility.md#call-arguments-that-are-drawn-the-same)).
-[fixture: click-statements/callback-arguments-spaced] The parentheses of a call
-with blank arguments touch each other, as in
+[fixture: click-statements/callback-arguments-spaced] A gap between the
+arguments that the line rule of mermaid.js may read keeps whether it holds
+whitespace: `click A call f(style:x,#b;c)` stays as written, since a space after
+the `,` would change the last `;` that the rule ignores (see
+[Call arguments that are drawn the same](./compatibility.md#call-arguments-that-are-drawn-the-same)).
+[fixture: click-statements/callback-arguments-line-rule-kept] The parentheses of
+a call with blank arguments touch each other, as in
 [flowchart](./flowchart.md#whitespace-between-tokens): `click A call f( )` is
 printed `click A call f()`, also before a tooltip or an erased prefix, since
 mermaid.js reads both spellings as the same call. `f ()`, with whitespace before

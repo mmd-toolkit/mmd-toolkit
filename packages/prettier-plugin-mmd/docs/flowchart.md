@@ -685,13 +685,21 @@ whitespace-between-tokens/style-stroke-before-colon-spaced] A style of a
 only stays as written, since mermaid.js draws no colour of the arrowheads from
 it and does not try a later `stroke:`: `linkStyle 0 stroke: ,   stroke:#f00` is
 printed `linkStyle 0 stroke: , stroke: #f00`. [fixture:
-whitespace-between-tokens/link-style-blank-stroke-value-kept] In a `classDef` a
-`,` after a backslash is part of its style, and a space between the backslash
-and the `,` stays, since taking it away would make the `,` part of the style:
-`classDef c fill:a\ ,stroke:b` is printed `classDef c fill: a\ , stroke: b`. In
-a `style` and a `linkStyle` the `,` ends a style whatever stands before it.
-[fixture: whitespace-between-tokens/style-backslash-before-comma] A space after
-a backslash before the `:` stays as well, since taking it away would escape the
+whitespace-between-tokens/link-style-blank-stroke-value-kept] A style of a
+`linkStyle` that ends with a backslash keeps whether whitespace stands after it,
+a run of whitespace becoming its first character, since mermaid.js joins the
+styles of a link with `;` as they are, and the backslash would escape the `;`:
+`linkStyle 0 stroke-width:4px\ ,stroke:#0f0` is printed
+`linkStyle 0 stroke-width: 4px\ ,stroke: #0f0` (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
+[fixture: whitespace-between-tokens/link-style-backslash-space-kept] In a
+`classDef` a `,` after a backslash is part of its style, and a space between the
+backslash and the `,` stays, since taking it away would make the `,` part of the
+style: `classDef c fill:a\ ,stroke:b` is printed
+`classDef c fill: a\ , stroke: b`. In a `style` and a `linkStyle` the `,` ends a
+style whatever stands before it. [fixture:
+whitespace-between-tokens/style-backslash-before-comma] A space after a
+backslash before the `:` stays as well, since taking it away would escape the
 `:`. A statement stays as written where it holds a comment or a directive, where
 a style is all whitespace, or where a style holds a line break or its line holds
 a kept `;`. [fixture: whitespace-between-tokens/style-blank-style-kept]
@@ -819,10 +827,15 @@ mermaid.js splits the arguments at the `,` outside quotes and trims each part,
 and calls the function with the same arguments (see
 [Call arguments that are drawn the same](./compatibility.md#call-arguments-that-are-drawn-the-same)).
 The whitespace inside quotes stays, and so do arguments with an empty part.
-[fixture: whitespace-between-tokens/callback-arguments-spaced] The parentheses
-of a call with blank arguments touch each other: `click A call f( )` is printed
-`click A call f()`, since mermaid.js reads both as the same call with no
-arguments. A directive between them touches both parentheses, as under
+[fixture: whitespace-between-tokens/callback-arguments-spaced] A gap between the
+arguments that the line rule of mermaid.js may read keeps whether it holds
+whitespace: `click A call f(style:x,#b;c)` stays as written, since a space after
+the `,` would change the last `;` that the rule ignores (see
+[Call arguments that are drawn the same](./compatibility.md#call-arguments-that-are-drawn-the-same)).
+[fixture: whitespace-between-tokens/callback-arguments-line-rule-kept] The
+parentheses of a call with blank arguments touch each other: `click A call f( )`
+is printed `click A call f()`, since mermaid.js reads both as the same call with
+no arguments. A directive between them touches both parentheses, as under
 [Directives](#directives). [fixture:
 whitespace-between-tokens/callback-blank-parentheses-touch] A statement written
 over several lines is kept as written, so it keeps the line break between the
@@ -2226,9 +2239,13 @@ the tests compare styles without their trailing whitespace. The whitespace of a
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)):
 `linkStyle default stroke: ` followed by `linkStyle 0 stroke:#f00` keeps the
 space. [fixture:
-style-trailing-whitespace/link-style-blank-stroke-value-at-end-kept] The
-whitespace is kept when mermaid.js reads it as a style of its own, after a `,`
-at the end of the list, because the statement would be rejected without it: in
+style-trailing-whitespace/link-style-blank-stroke-value-at-end-kept] A
+`linkStyle` that ends with a backslash keeps the whitespace after it too, as one
+character: `linkStyle default stroke-width:4px\ ` followed by
+`linkStyle 0 stroke:#0f0` keeps the space. [fixture:
+style-trailing-whitespace/link-style-backslash-at-end-kept] The whitespace is
+kept when mermaid.js reads it as a style of its own, after a `,` at the end of
+the list, because the statement would be rejected without it: in
 `style A fill:#f00, ` and in `classDef c fill:x\, `. [fixture:
 style-trailing-whitespace/whitespace-only-value-kept] [fixture:
 style-trailing-whitespace/whitespace-only-value-in-link-style-kept] [fixture:

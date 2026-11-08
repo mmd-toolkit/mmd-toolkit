@@ -48,6 +48,13 @@ const kept: readonly DbPair[] = [
     before: call("a, b"),
     after: call("a, b, c"),
   },
+  {
+    // The line rule ignores the last `;` of `f(style:x,#b;c)` and not that of
+    // `f(style:x, #b;c)`, so the text that mermaid.js keeps is another one.
+    name: "a part that the line rule reads differently",
+    before: call("style:x,#bc"),
+    after: call("style:x, ﬂ°b¶ßc"),
+  },
 ]
 
 describe("the whitespace of click call arguments that the formatter changes", () => {

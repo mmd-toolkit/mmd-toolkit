@@ -69,6 +69,27 @@ const restored: readonly DbPair[] = [
       classDefs: [{ id: "c", styles: ["fill: none", " stroke: #f00"] }],
     },
   },
+  {
+    name: "the amount of whitespace after a backslash that ends a style of a link",
+    before: { edges: [{ id: "L", style: ["stroke-width:4px\\\t"] }] },
+    after: { edges: [{ id: "L", style: ["stroke-width: 4px\\ "] }] },
+  },
+  {
+    name: "whitespace after two backslashes that end a style of a link",
+    before: { edges: [{ id: "L", style: ["stroke-width:4px\\\\ "] }] },
+    after: { edges: [{ id: "L", style: ["stroke-width: 4px\\\\"] }] },
+  },
+  {
+    name: "whitespace after a backslash that ends a style of a vertex",
+    before: { vertices: [{ id: "A", styles: ["stroke-width:4px\\ "] }] },
+    after: { vertices: [{ id: "A", styles: ["stroke-width: 4px\\"] }] },
+  },
+  {
+    name: "whitespace after a backslash that ends a style of a class",
+    diagramType: "agentflow",
+    before: { classDefs: [{ id: "c", styles: ["stroke-width:4px\\ "] }] },
+    after: { classDefs: [{ id: "c", styles: ["stroke-width: 4px\\"] }] },
+  },
 ]
 
 const kept: readonly DbPair[] = [
@@ -107,6 +128,16 @@ const kept: readonly DbPair[] = [
     name: "whitespace taken away from a value of a stroke that is whitespace only",
     before: { edges: [{ id: "L", style: ["stroke: "] }] },
     after: { edges: [{ id: "L", style: ["stroke:"] }] },
+  },
+  {
+    name: "whitespace taken away after a backslash that ends a style of a link",
+    before: { edges: [{ id: "L", style: ["stroke-width:4px\\ "] }] },
+    after: { edges: [{ id: "L", style: ["stroke-width: 4px\\"] }] },
+  },
+  {
+    name: "whitespace taken away after a backslash that ends a style of the default of the links",
+    before: { edgeDefaults: { style: ["stroke-width:4px\\ "] } },
+    after: { edgeDefaults: { style: ["stroke-width: 4px\\"] } },
   },
   {
     name: "a changed value",

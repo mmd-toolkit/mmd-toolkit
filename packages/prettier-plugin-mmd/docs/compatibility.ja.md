@@ -501,8 +501,8 @@ flowchart と agentflow の `classDef` では、
 そのため、バックスラッシュと `,` の間の空白は残します。
 空白がないと、`,` はスタイルを終えず、その一部になるからです。
 これらの図種の `style` と `linkStyle`、それにほかの図種では、
-`,` は必ずスタイルを終えるので、その前のバックスラッシュは、
-何かを保つ理由にはなりません。
+`,` は必ずスタイルを終え、その前のバックスラッシュは、
+`,` をエスケープしません。
 `style A fill:#f00\,stroke:#00f` は、
 `fill:#f00\` と `stroke:#00f` の 2 つのスタイルを持ちます。
 バックスラッシュの後で `:` の前にある空白は、どの図種でも、
@@ -514,6 +514,33 @@ flowchart と agentflow の `classDef` では、
 [fixture: block/styles/style-backslash-before-comma]
 [fixture: class/whitespace-between-tokens/style-backslash-before-comma]
 [fixture: state/whitespace-between-tokens/style-backslash-before-comma]
+
+リンクのスタイルの末尾のバックスラッシュの後の空白も読まれます。
+mermaid.js はリンクのスタイルの空白を取り除かず、
+書かれたまま `;` でつないで path の CSS テキストにするので、
+スタイルの末尾のバックスラッシュは後ろの `;` をエスケープし、
+その後のスタイルが失われます。
+（[`insertEdge`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L936-L954)）。
+`linkStyle 0 stroke-width:4px\ ,stroke:#0f0` では線が緑で、
+`linkStyle 0 stroke-width: 4px\,stroke: #0f0` では黒なので、画素が異なります。
+`linkStyle default` と agentflow でも同じ結果です。
+そのため、リンクの番号か `default` を指定した `linkStyle` で、
+バックスラッシュで終わるスタイルは、その後に空白があるかないかを保ち、
+空白の連続は最初の 1 文字にします。
+通常ならスタイル文の末尾の空白を落とす文末でも、同じです。
+（[スタイルの行末の空白](./flowchart.ja.md#スタイルの行末の空白)）。
+末尾の 2 つのバックスラッシュは互いにエスケープし、
+`linkStyle 0 stroke-width:4px\\ ,stroke:#0f0` と、
+その空白がないものの画素は同じだったので、その後の空白は落とします。
+リンクに付けた `classDef` と `style` には影響しません。
+mermaid.js がスタイルを使う前に両端の空白を取り除くからです。
+（[`getCompiledStyles`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L1156-L1168)、
+[`styles2Map`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L44-L51)）。
+両方の書き方の画素は同じでした。
+[fixture: flowchart/whitespace-between-tokens/link-style-backslash-space-kept]
+[fixture: agentflow/single-space-gaps/link-style-backslash-space-kept]
+[fixture: flowchart/style-trailing-whitespace/link-style-backslash-at-end-kept]
+[fixture: agentflow/trailing-whitespace/link-style-backslash-at-end-kept]
 
 次の場合は、文を書かれたまま残します。
 スタイルが改行か U+2028・U+2029 を含む場合、
@@ -624,6 +651,25 @@ flowchart、agentflow、class、Gantt の図の `click` の呼び出しの引数
 [fixture: agentflow/click-statements/callback-arguments-spaced]
 [fixture: class/whitespace-between-tokens/callback-arguments-spaced]
 [fixture: gantt/click-statements/call-arguments-spaced]
+
+mermaid.js の行の規則（[`;` を含む行](#-を含む行)を参照）は、
+呼び出しの行を読みます。
+その行に `style` か `classDef` があり、その後に `:`、その後に `#`、
+さらに後に `;` があり、`:` と `#` の間に空白でない文字だけがあると、
+行の最後の `;` を無視します。
+そのため、`click A call f(style:x,#b;c)` は、
+`style:x` と `#bc` を引数として `f` を呼びます。
+`,` の後に空白がある `click A call f(style:x, #b;c)` は、
+第 2 引数が異なります。
+`;` が無視されなくなり、`#b;` がエンティティコードとして読まれるからです。
+規則が読むかもしれない引数の間の隙間は、空白があるかないかを保ち、
+空白の連続は空白 1 つにするので、最初の呼び出しは書かれたままにします。
+その語は引数の中か、ノードの id など呼び出しの前にあってよく、
+`classDef` も `style` と同じです。
+[fixture: flowchart/whitespace-between-tokens/callback-arguments-line-rule-kept]
+[fixture: agentflow/click-statements/callback-arguments-line-rule-kept]
+[fixture: class/whitespace-between-tokens/callback-arguments-line-rule-kept]
+[fixture: gantt/click-statements/call-arguments-line-rule-kept]
 
 mermaid.js は括弧の間のテキストを Db に残すので、印字したテキストの Db は、
 書かれたテキストの Db と違いますが、同じ引数で関数を呼びます。

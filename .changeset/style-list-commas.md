@@ -14,5 +14,8 @@ reads at its start where the look is `handDrawn`. In `flowchart` and
 `agentflow`, a `linkStyle` and a `classDef`, which can reach a link, keep
 whether whitespace stands between `stroke` and its `:`, and a `linkStyle` keeps
 a `stroke:` with a value of whitespace only, since mermaid.js colours the
-arrowheads of a link only from a `stroke:` with a value; and a space between a
-backslash and a `,` of a `classDef` stays, since `\,` is a `,` in its style.
+arrowheads of a link only from a `stroke:` with a value; a space between a
+backslash and a `,` of a `classDef` stays, since `\,` is a `,` in its style; and
+a `linkStyle` keeps whether whitespace stands after a backslash that ends a
+style, since mermaid.js joins the styles of a link with `;` as they are, and the
+backslash would escape the `;`.

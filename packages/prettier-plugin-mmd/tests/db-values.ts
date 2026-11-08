@@ -7,7 +7,7 @@ export function objectOf(value: JsonValue | undefined): JsonObject | undefined {
     : undefined
 }
 
-/** The number of ASCII spaces that start a text; tabs and others are content. */
+/** The number of ASCII spaces that start a text; tabs and others are text. */
 export function leadingSpaces(value: string): number {
   let end = 0
   while (value[end] === " ") end++

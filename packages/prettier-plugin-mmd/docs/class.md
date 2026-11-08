@@ -388,10 +388,15 @@ since mermaid.js splits the arguments at the `,` outside quotes and trims each
 part, and calls the function with the same arguments (see
 [Call arguments that are drawn the same](./compatibility.md#call-arguments-that-are-drawn-the-same)).
 The whitespace inside quotes stays, and so do arguments with an empty part.
-[fixture: whitespace-between-tokens/callback-arguments-spaced] The parentheses
-of a call with blank arguments touch each other: `click A call f( )` is printed
-`click A call f()`, since mermaid.js reads both as the same call with no
-arguments. A directive between them touches both parentheses, as under
+[fixture: whitespace-between-tokens/callback-arguments-spaced] A gap between the
+arguments that the line rule of mermaid.js may read keeps whether it holds
+whitespace: `click A call f(style:x,#b;c)` stays as written, since a space after
+the `,` would change the last `;` that the rule ignores (see
+[Call arguments that are drawn the same](./compatibility.md#call-arguments-that-are-drawn-the-same)).
+[fixture: whitespace-between-tokens/callback-arguments-line-rule-kept] The
+parentheses of a call with blank arguments touch each other: `click A call f( )`
+is printed `click A call f()`, since mermaid.js reads both as the same call with
+no arguments. A directive between them touches both parentheses, as under
 [Directives](#directives). [fixture:
 whitespace-between-tokens/callback-blank-parentheses-touch] So do the
 parentheses with a line break between them, while a comment line there stays on

@@ -408,7 +408,7 @@ mermaid.js は値の先頭の空白を Db に残しますが、
 `tickInterval` も、値全体を読んでいて、
 前に空白があると目盛りが既定のものになるので、書かれたままにします。
 [fixture: settings/format-padding-kept-where-drawn-differently]
-それ以外は、値を、末尾の空白も含めて書かれたまま印字します。
+それ以外は、値を、両端の空白も含めて書かれたまま印字します。
 Db は値をそのまま持つので、
 末尾に空白 2 つがある `todayMarker off` は別のマーカーです。
 [fixture: settings/value-whitespace-kept]
@@ -739,6 +739,12 @@ mermaid.js は引用符の外の `,` で引数を分け、各部分の両端の�
 空白だけの引数は落とします。
 [fixture: click-statements/call-name-kept-arguments-spaced]
 [fixture: click-statements/call-arguments-spaced]
+mermaid.js の行の規則が読むかもしれない引数の間の隙間は、
+空白があるかないかを保ちます。
+`click t1 call f(style:x,#b;c)` は書かれたまま残します。
+`,` の後に空白を置くと、規則が無視する最後の `;` が変わるからです。
+（[同じに描かれる呼び出しの引数](./compatibility.ja.md#同じに描かれる呼び出しの引数)）。
+[fixture: click-statements/call-arguments-line-rule-kept]
 リンクの文字列も書かれたままです。 [fixture: click-statements/href-string-kept]
 複数行に書かれた文字列や引数は、
 書かれたまま印字します（[複数行の値](#複数行の値)を参照）。

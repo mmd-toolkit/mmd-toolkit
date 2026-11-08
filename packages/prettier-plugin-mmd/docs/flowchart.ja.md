@@ -709,6 +709,14 @@ mermaid.js はそれから矢印の頭に色を付けず、後の `stroke:` も�
 `linkStyle 0 stroke: ,   stroke:#f00` は、
 `linkStyle 0 stroke: , stroke: #f00` と印字します。
 [fixture: whitespace-between-tokens/link-style-blank-stroke-value-kept]
+バックスラッシュで終わる `linkStyle` のスタイルは、
+その後に空白があるかないかを保ち、空白の連続は最初の 1 文字にします。
+mermaid.js はリンクのスタイルを書かれたまま `;` でつなぐので、
+バックスラッシュが `;` をエスケープするからです。
+`linkStyle 0 stroke-width:4px\ ,stroke:#0f0` は、
+`linkStyle 0 stroke-width: 4px\ ,stroke: #0f0` と印字します。
+（[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)）。
+[fixture: whitespace-between-tokens/link-style-backslash-space-kept]
 `classDef` では、バックスラッシュの後の `,` はスタイルの一部です。
 バックスラッシュと `,` の間の空白は、
 除くと `,` がスタイルの一部になるので残します。
@@ -849,6 +857,12 @@ mermaid.js は引用符の外の `,` で引数を分け、各部分の両端の�
 （[同じに描かれる呼び出しの引数](./compatibility.ja.md#同じに描かれる呼び出しの引数)）。
 引用符の中の空白は残し、空の部分を含む引数も書かれたままにします。
 [fixture: whitespace-between-tokens/callback-arguments-spaced]
+mermaid.js の行の規則が読むかもしれない引数の間の隙間は、
+空白があるかないかを保ちます。
+`click A call f(style:x,#b;c)` は書かれたまま残します。
+`,` の後に空白を置くと、規則が無視する最後の `;` が変わるからです。
+（[同じに描かれる呼び出しの引数](./compatibility.ja.md#同じに描かれる呼び出しの引数)）。
+[fixture: whitespace-between-tokens/callback-arguments-line-rule-kept]
 引数が空白だけの呼び出しの括弧は互いに接し、
 `click A call f( )` は `click A call f()` になります。
 mermaid.js はどちらも引数のない同じ呼び出しとして読むからです。
@@ -2335,6 +2349,10 @@ mermaid.js はその空白を最後のスタイルの末尾に残すので、
 `linkStyle default stroke: ` の後に `linkStyle 0 stroke:#f00` がある場合も、
 その空白を保ちます。
 [fixture: style-trailing-whitespace/link-style-blank-stroke-value-at-end-kept]
+バックスラッシュで終わる `linkStyle` は、その後の空白も 1 文字として保ちます。
+`linkStyle default stroke-width:4px\ ` の後に、
+`linkStyle 0 stroke:#0f0` がある場合も、その空白を保ちます。
+[fixture: style-trailing-whitespace/link-style-backslash-at-end-kept]
 mermaid.js がその空白を、
 並びの末尾の `,` の後の 1 つのスタイルとして読むときは、空白を保ちます。
 取り除くと文が拒否されるからです。

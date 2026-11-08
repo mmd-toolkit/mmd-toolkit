@@ -715,9 +715,14 @@ part, and calls the function with the same arguments (see
 The whitespace inside quotes stays, and so do arguments with an empty part;
 blank arguments are dropped. [fixture:
 click-statements/call-name-kept-arguments-spaced] [fixture:
-click-statements/call-arguments-spaced] The string of a link is printed as
-written. [fixture: click-statements/href-string-kept] A string or an argument
-list written over lines is printed as written (see
+click-statements/call-arguments-spaced] A gap between the arguments that the
+line rule of mermaid.js may read keeps whether it holds whitespace:
+`click t1 call f(style:x,#b;c)` stays as written, since a space after the `,`
+would change the last `;` that the rule ignores (see
+[Call arguments that are drawn the same](./compatibility.md#call-arguments-that-are-drawn-the-same)).
+[fixture: click-statements/call-arguments-line-rule-kept] The string of a link
+is printed as written. [fixture: click-statements/href-string-kept] A string or
+an argument list written over lines is printed as written (see
 [Multi-line values](#multi-line-values)). [fixture:
 click-statements/string-over-lines-kept] A comment line or directive between the
 parts keeps its line breaks, with ordinary structural continuations aligned

@@ -321,6 +321,10 @@ look が `handDrawn` のときは、mermaid.js が先頭の `stroke:` を読む�
 `linkStyle` のスタイルのうち、名前が `stroke` で終わり、
 値が空白とタブだけのものは、書かれたまま残します。
 [fixture: single-space-gaps/link-style-blank-stroke-value-kept]
+[flowchart](./flowchart.ja.md#トークンの間の空白)と同じく、
+バックスラッシュで終わる `linkStyle` のスタイルは、
+その後に空白があるかないかを保ち、空白の連続は最初の 1 文字にします。
+[fixture: single-space-gaps/link-style-backslash-space-kept]
 `classDef` では、バックスラッシュの後の `,` はスタイルの一部です。
 バックスラッシュと `,` の間の空白は、
 除くと `,` がスタイルの一部になるので残します。
@@ -1038,7 +1042,7 @@ agentflow-beta TB
 ### Trailing whitespace
 
 [スタイルの行末の空白](./flowchart.ja.md#スタイルの行末の空白) と同じ理由です。
-Db要約はstyleの末尾空白を正規化しますが、
+テストは、末尾の空白を除いたスタイルを比べますが、
 空白だけのstyleには書かれた空白1文字が必要です。
 害のない外側とstyle末尾の空白を落とします。
 コンマ、classDefのエスケープしたコンマ、directive、無視セミコロン、
@@ -1051,6 +1055,9 @@ Db要約はstyleの末尾空白を正規化しますが、
 サイズ保護が削除に優先します。 [fixture: trailing-whitespace/trailing-comment]
 [fixture: trailing-whitespace/trailing-name]
 [fixture: trailing-whitespace/trailing-null-style]
+[flowchart](./flowchart.ja.md#スタイルの行末の空白)と同じく、
+バックスラッシュで終わる `linkStyle` は、その後の空白も 1 文字として保ちます。
+[fixture: trailing-whitespace/link-style-backslash-at-end-kept]
 
 入力（escape 表記）:
 `"agentflow-beta TB\nA   \nA-->B \t\nstyle A fill:red \t"`。
@@ -1196,6 +1203,12 @@ tooltip/target前に必須の空白1文字を保ち、末尾の空の説明は�
 `click A call f(  "x" ,y )` は `click A call f("x", y)` と印字します。
 （[同じに描かれる呼び出しの引数](./compatibility.ja.md#同じに描かれる呼び出しの引数)）。
 [fixture: click-statements/callback-arguments-spaced]
+mermaid.js の行の規則が読むかもしれない引数の間の隙間は、
+空白があるかないかを保ちます。
+`click A call f(style:x,#b;c)` は書かれたまま残します。
+`,` の後に空白を置くと、規則が無視する最後の `;` が変わるからです。
+（[同じに描かれる呼び出しの引数](./compatibility.ja.md#同じに描かれる呼び出しの引数)）。
+[fixture: click-statements/callback-arguments-line-rule-kept]
 引数が空白だけの呼び出しの括弧は、
 [flowchart](./flowchart.ja.md#トークンの間の空白)と同じく互いに接します。
 `click A call f( )` は、

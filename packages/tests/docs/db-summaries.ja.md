@@ -310,7 +310,19 @@ lollipop の関係が作るインターフェース（描画が描く）です�
 
 - style の各値（`classes[].styles`）の両端の空白を、
   flowchart の要約と同じく残す。
-  スタイル文字列は描画時に読まれ、上記のとおり末尾の空白が矢じりの色を変えうる。
+  flowchart で述べた矢じりの色は、ここには当てはまらない。
+  class には `linkStyle` が無く、
+  [関係は自分の `style` で描かれる](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/classDb.ts#L845-L872)。
+  class の箱を描くコードは、
+  class の styles を
+  [`;` でつなぎ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/classBox.ts#L34-L36)、
+  その結果を箱の `style` 属性に入れる。
+  同じ結果から、
+  [`color` を正規表現で取る](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/classBox.ts#L239-L262)。
+  使うキーについては、
+  [各 style を `:` で分けてキーと値を trim する](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L44-L51)。
+  これらのどれも末尾の空白を読まないとは示せておらず、
+  空白は書かれたまま `style` 属性に届くので、残す。
   [fixture: class/db-style-trailing-whitespace-eol]
   [fixture: class/db-class-def-trailing-whitespace]
 

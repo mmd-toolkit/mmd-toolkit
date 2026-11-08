@@ -279,8 +279,17 @@ reason given:
 Other values of the summary:
 
 - Whitespace at both ends of each style value (`classes[].styles`) is kept, as
-  in the flowchart summary. Style strings are read when drawing, and trailing
-  whitespace can change arrowhead colours as described above. [fixture:
+  in the flowchart summary. The arrowhead colour described there does not apply:
+  a class has no `linkStyle`, and a
+  [relation is drawn with a `style` of its own](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/classDb.ts#L845-L872).
+  The code that draws the box of a class
+  [joins its styles with `;`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/classBox.ts#L34-L36),
+  writes the result into the `style` attributes of the box and takes a
+  [`color` from it with a regular expression](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/classBox.ts#L239-L262),
+  and for the keys it uses it
+  [splits each style at `:` and trims the key and the value](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L44-L51).
+  It is not shown that none of these reads the whitespace at the ends, which
+  reaches the `style` attributes as written, so it is kept. [fixture:
   class/db-style-trailing-whitespace-eol] [fixture:
   class/db-class-def-trailing-whitespace]
 

@@ -457,9 +457,9 @@ A backslash escapes a `,` in the `classDef` of flowchart and agentflow:
 and the `,` therefore stays: without it, the `,` would be part of the style
 instead of ending it. In a `style` and a `linkStyle` of these diagram types, and
 in the other diagram types, the `,` always ends a style, and a backslash before
-it is no reason to keep anything: `style A fill:#f00\,stroke:#00f` has the two
-styles `fill:#f00\` and `stroke:#00f`. A space after a backslash before the `:`
-stays in all of them, since taking it away would escape the `:`. [fixture:
+it does not escape it: `style A fill:#f00\,stroke:#00f` has the two styles
+`fill:#f00\` and `stroke:#00f`. A space after a backslash before the `:` stays
+in all of them, since taking it away would escape the `:`. [fixture:
 flowchart/whitespace-between-tokens/style-escaped-space-before-comma] [fixture:
 flowchart/whitespace-between-tokens/style-backslash-before-comma] [fixture:
 agentflow/single-space-gaps/style-escaped-space-before-comma] [fixture:
@@ -467,6 +467,32 @@ agentflow/single-space-gaps/style-backslash-before-comma] [fixture:
 block/styles/style-backslash-before-comma] [fixture:
 class/whitespace-between-tokens/style-backslash-before-comma] [fixture:
 state/whitespace-between-tokens/style-backslash-before-comma]
+
+The whitespace after a backslash at the end of a style of a link is read too.
+[`insertEdge`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L936-L954)
+joins the styles of a link with `;` into the CSS text of its path as they are,
+without taking their whitespace away, so a backslash at the end of a style
+escapes the `;` after it, and the styles after it are lost. In
+`linkStyle 0 stroke-width:4px\ ,stroke:#0f0` the line is green, and in
+`linkStyle 0 stroke-width: 4px\,stroke: #0f0` it is black, so the pixels differ,
+with the same result for `linkStyle default` and in agentflow. So a style of a
+`linkStyle`, with link numbers or `default`, that ends with a backslash keeps
+whether whitespace stands after it, a run of whitespace becoming its first
+character, also at the end of the statement, where the whitespace at the end of
+a style statement is dropped otherwise (see
+[Style trailing whitespace](./flowchart.md#style-trailing-whitespace)). Two
+backslashes at the end escape each other, and the pixels of
+`linkStyle 0 stroke-width:4px\\ ,stroke:#0f0` and of the same without the space
+were the same, so the whitespace after them is dropped. A `classDef` that is put
+on a link and a `style` are not affected: mermaid.js takes the whitespace at the
+ends of their styles away before it uses them
+([`getCompiledStyles`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L1156-L1168),
+[`styles2Map`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L44-L51)),
+and the pixels of both spellings were the same. [fixture:
+flowchart/whitespace-between-tokens/link-style-backslash-space-kept] [fixture:
+agentflow/single-space-gaps/link-style-backslash-space-kept] [fixture:
+flowchart/style-trailing-whitespace/link-style-backslash-at-end-kept] [fixture:
+agentflow/trailing-whitespace/link-style-backslash-at-end-kept]
 
 A statement stays as written where a style holds a line break or a U+2028 or
 U+2029, where the statement holds a comment or a directive, where a style is all
@@ -573,6 +599,22 @@ flowchart/whitespace-between-tokens/callback-arguments-spaced] [fixture:
 agentflow/click-statements/callback-arguments-spaced] [fixture:
 class/whitespace-between-tokens/callback-arguments-spaced] [fixture:
 gantt/click-statements/call-arguments-spaced]
+
+The line rule of mermaid.js (see [Lines that hold a `;`](#lines-that-hold-a-))
+reads the line of a call. Where the line holds `style` or `classDef`, later a
+`:`, later a `#`, and later a `;`, and only characters that are not whitespace
+lie between the `:` and the `#`, it ignores the last `;` of the line. So
+`click A call f(style:x,#b;c)` calls `f` with `style:x` and `#bc`, and
+`click A call f(style:x, #b;c)`, with a space after the `,`, calls it with
+another second argument, since the `;` is then no longer ignored and `#b;` is
+read as an entity code. A gap between the arguments that the rule may read keeps
+whether it holds whitespace, a run becoming one space, so the first call keeps
+its spelling. The word may be in an argument or before the call, such as in the
+id of the node, and `classDef` takes the place of `style`. [fixture:
+flowchart/whitespace-between-tokens/callback-arguments-line-rule-kept] [fixture:
+agentflow/click-statements/callback-arguments-line-rule-kept] [fixture:
+class/whitespace-between-tokens/callback-arguments-line-rule-kept] [fixture:
+gantt/click-statements/call-arguments-line-rule-kept]
 
 mermaid.js keeps the text between the parentheses in the Db, so the Db of the
 printed text differs from the Db of the written text, but it calls the function
