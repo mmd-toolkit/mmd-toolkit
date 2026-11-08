@@ -15,7 +15,10 @@ semicolon の保護は普通の整形より優先します。
 
 見出しを第 1 列に置き、普通の最初の文を次行に移します。
 見出しを見つけやすくするためです。
-Db が等しい別名へ統一せず、作者が書いた `treemap` と `treemap-beta` を保ちます。
+`treemap` と `treemap-beta` のどちらが書かれていても、
+キーワードは `treemap-beta` と印字します。
+mermaid.js の文書の例が `treemap-beta` を使い、どちらも同じに描かれるためです。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 コロンは足さず、空本文も保ちます。
 
 [fixture: treemap/header/stable]
@@ -250,12 +253,17 @@ treemap-beta
 
 ### Numbers
 
-NumericLiteral の source span を保ちます。
-区切り、underscore、dot、先頭と末尾のゼロ、桁を残します。
+NumericLiteral が単純な十進数なら、最短の形で印字します。
+`+`、小数部の末尾のゼロ、末尾の `.` を除き、先頭の `.` の前には `0` を置きます。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+それ以外の source span はすべて書かれたままにします。
+区切り、underscore、2 つ目の dot、整数部の先頭のゼロ、
+15 桁を超えるものが対象です。
 数値 field から印字し直しません。
 Mermaid は `1_000` を 1 と読みます。
 ほかの綴りも丸め、NaN、overflow、underflow になりえます。
 再符号化すると Db が変わったり、拒否される構文になったりします。
+[fixture: treemap/numbers/shortest-form] [fixture: treemap/numbers/forms-kept]
 
 [fixture: treemap/numbers/comma]
 
@@ -294,11 +302,13 @@ treemap-beta
 ### Names
 
 StringLiteral の source span 全体を保ちます。
-引用符、反対側の引用符、空名、padding、backslash、HTML、entity、
-percent の文字と物理継続列を残します。
+空名、padding、backslash、HTML、entity、percent の文字と物理継続列を残します。
 名前の中の空白とタブの連なりは空白 1 つにして印字します。
 空白とタブだけの名前は空白 1 つになります。
-singleQuote では書き換えません。
+`'` で囲んだ名前は `"` で囲んで印字しますが、内容に `'`、`"`、backslash、改行、
+バッククォート、`&`、`#`、`<` が含まれる場合は書かれたままにします。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+`singleQuote` は読みません。
 backslash は引用符を escape せず、`\n` も decode しません。
 これらの書き方は名前や受理を変えうるためです。
 

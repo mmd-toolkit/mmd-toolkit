@@ -218,13 +218,14 @@ xychart
 
 ### ヘッダーと向き
 
-ヘッダーは書かれたままに印字します。
-`xychart` か `xychart-beta` で、大文字小文字も書かれたままです。
-mermaid.js はどちらも同じ図種として読むので、
-綴りは印字側ではなく書き手のものです。
+最初のヘッダーは、`xychart` と `xychart-beta` のどちらで書かれていても、
+`xychart` と印字します。
+mermaid.js はどちらも同じ図種として読み、文書の例が `xychart` を使うためです。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+それ以外の大文字小文字で書かれたヘッダーは、書かれたまま残します。
 2 つ目以降のヘッダーは自分の行に置き、取り除きません。
 向きを持つ後のヘッダーは向きを変え、向きのないものは何も変えませんが、
-書かれたテキストは書き手のものだからです。
+書かれたテキストは綴りも含めて書き手のものだからです。
 gap にコメント行か指令があるヘッダーは、その改行を保ち、
 続きの列をヘッダーより 1 段深くそろえます（[複数行の文](#複数行の文)を参照）。
 [fixture: header-and-orientation/plain-header]
@@ -505,17 +506,16 @@ xychart
 
 ### 数
 
-数は書かれたままに印字します。
-範囲の数とプロットの値は、値として読まれるので、`+1`、`007`、`.5`、`-0`、
-`1.50` は、別の形に書いても Db は同じです。
-ところが、分類や引用符なしの title に書かれた同じ数字は、
-テキストなので（`x-axis [007, .5]` の分類は `007` と `.5`）、
-変えるとチャートが変わります。
-数だけを正規化すると、同じ数字が 1 つのチャートに 2 通りに綴られます。
-そのため、数は書き手のテキストとして残します。
-sankey の値の扱いと同じです（[値](./sankey.ja.md#値)を参照）。
+範囲の数とプロットの値は、値として読まれ、最短の形で印字します。
+`+3` は `3`、`1.50` は `1.5`、`.5` は `0.5` にします。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+分類や引用符なしの title に書かれた同じ数字はテキストで、
+`x-axis [007, .5]` の分類は `007` と `.5` です。
+sankey の値と同じく、書かれたまま残します（[値](./sankey.ja.md#値)を参照）。
+整数部の先頭がゼロの数（`007`）と `-0` も書かれたまま残します。
 [fixture: numbers/range-numbers-one-form] [fixture: numbers/values-one-form]
-[fixture: numbers/categories-are-texts] [fixture: numbers/titles-are-texts]
+[fixture: numbers/forms-kept] [fixture: numbers/categories-are-texts]
+[fixture: numbers/titles-are-texts]
 
 入力
 ([numbers/values-one-form-input.mmd](../tests/fixtures/xychart/numbers/values-one-form-input.mmd)):
@@ -882,11 +882,13 @@ xychart
 
 ### キーワードの大文字小文字
 
-キーワード `title`、`x-axis`、`y-axis`、`line`、`bar`、`accTitle`、
-`accDescr` は、書かれた大文字小文字のまま印字します。
-mermaid.js はどれも大文字小文字を問わずに読み（`Title`、`LINE`、
-`ACCTITLE:` も文を始めます）、Db は同じです。
-そのため、大文字小文字は書き手のもので、強制するものはありません。
+キーワード `title`、`x-axis`、`y-axis`、`line`、`bar` は、
+mermaid.js の文書の例が使う大文字小文字で印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+mermaid.js はどれも大文字小文字を問わずに読み、Db は同じです。
+`Title` と `LINE` も文を始めます。
+`accTitle` と `accDescr` は、例が使わないので、
+書かれた大文字小文字のまま印字します。
 プロットの種類（`line` か `bar`）は、書かれた大文字小文字によらず、
 Db では小文字です。 [fixture: keyword-case/statement-keywords-one-form]
 [fixture: keyword-case/accessibility-keywords-kept]

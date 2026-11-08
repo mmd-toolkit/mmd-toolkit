@@ -659,9 +659,11 @@ timeline
 
 ### キーワードの大文字小文字
 
-キーワードは、書かれた大文字小文字のまま残します。
+キーワード `section` と `title` は、mermaid.js の文書の例のとおり、
+小文字で印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
 mermaid.js はどの大文字小文字でも読み、Db は同じです。
-大文字小文字は強制されないので、作者が選んだものとして、書き換えません。
+アクセシビリティのキーワードは、書かれた大文字小文字のまま残します。
 ヘッダーの `timeline` は、小文字のものだけが検出されます。
 [fixture: keyword-case/keywords-one-form]
 
@@ -693,11 +695,14 @@ timeline
 
 ヘッダーには、同じ行の空白の後ろに、
 方向 `LR` か `TD` を書けます（大文字小文字は問いません）。
-方向は、ヘッダーの行に空白 1 つの後ろに、書かれた大文字小文字のまま印字します。
+方向は、ヘッダーの行に空白 1 つの後ろに印字します。
+`td` は、mermaid.js の文書の例のとおり、`TD` と印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
+`lr` は、書かれた大文字小文字のまま印字します。
 Db は大文字にして読みます。
 空白 1 つは、
 トークンの間の空白（[トークンの間の空白](#トークンの間の空白)）と同じです。
-大文字小文字は作者のものです。 [fixture: header-and-direction/direction-kept]
+[fixture: header-and-direction/direction-kept]
 [fixture: header-and-direction/direction-case-kept]
 [fixture: header-and-direction/spaces-before-the-direction]
 2 つ目の語は period なので、自分の行に移します。

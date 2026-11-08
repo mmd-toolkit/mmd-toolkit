@@ -149,14 +149,21 @@ wardley-beta
 ### 名前と引用
 
 WardleyIdentifier と StringLiteral は source span のまま印字します。
-内部の空白とタブ、ハイフン、括弧、ampersand、引用符、escape、
+内部の空白とタブ、ハイフン、括弧、ampersand、escape、
 空と空白だけの文字列も保ちます。
 ただし、link の label は除き、
 中の空白とタブの連なりは空白 1 つにして印字します。
 （[セミコロンのラベル](#セミコロンのラベル)を参照）。
-singleQuote では書き換えません。
+名前の文字列が `'` で囲まれていれば、`"` で囲んで印字しますが、内容に `'`、`"`、
+backslash、改行、U+2028、U+2029、バッククォート、`&`、`#`、
+`<` が含まれる場合は書かれたままにします。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+`singleQuote` は読みません。
+link の label（`+'moving'>`）は `'` で囲んだままにします。
+mermaid.js がその場所で読む引用符は、それだけだからです。
+[fixture: names-and-quotes/single-quote-sensitive-kept]
 名前の空白を畳むことと文字列の trim は Db を変えます。
-Db が同じ引用符への変更も、原綴を失い escape の再解釈が必要です。
+escape の別の解釈が必要になる引用符への変更はしません。
 
 [fixture: wardley/names-and-quotes/name-spaces]
 
@@ -418,7 +425,7 @@ flow の優先順位で見えなくても、両 port とセミコロンラベル
 
 ```mmd
 wardley-beta
-  Alpha +"moving"> Beta
+  Alpha +'moving'> Beta
 ```
 
 ### セミコロンのラベル

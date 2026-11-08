@@ -433,7 +433,10 @@ set A[L]:002.00
 ### Sizes and numbers
 
 サイズは名前かラベルに `:number` と接し、接尾部を一貫して短い形にします。
-符号、小数、先頭のゼロ、符号つきゼロ、桁あふれの綴りを保ちます。
+通常の十進数のサイズは、最短の形で印字します。
+`+5` は `5`、`-.5` は `-0.5` にします。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+整数部の先頭のゼロ、符号つきゼロ、桁あふれの綴りを保ちます。
 数値の text id も綴りを保ちます。
 書き換えると Db が変わるためです。
 サイズの省略と書かれたゼロは別の形として保ちます。
@@ -861,11 +864,14 @@ style A fill:"red
 
 ### Keyword case and order
 
-書かれた選択を保つため、キーワードの大小文字と全ての宣言、対象、
-プロパティの順序を保ちます。
+キーワード `set`、`union`、`style`、`text`、`title` は、
+mermaid.js の文書の例と同じく、小文字で印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+書かれた選択を保つため、全ての宣言、対象、プロパティの順序を保ちます。
 重複と Db に効果のない項目も含みます。
-名前、キーと色の大小文字も保ちます。
+名前、キーと色の大小文字は保ちます。
 文のキーワードと異なり、セミコロンのテキストの印は大小文字を区別します。
+[fixture: venn/keyword-case-and-order/keyword-case-one-form]
 [fixture: venn/keyword-case-and-order/all-written-repeats]
 [corpus fixture: venn/db-style-three-definitions-same-target]
 [corpus fixture: venn/db-text-three-definitions]

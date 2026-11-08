@@ -10,10 +10,13 @@ English version: [gitgraph.md](./gitgraph.md)
 
 ### Header
 
-正確な `gitGraph`、書かれた方向、colon の有無を保持します。
-通常の隙間は `gitGraph LR:` または `gitGraph:` とし、
+正確な `gitGraph` と書かれた方向を保持します。
+語の直後の colon は、mermaid.js の文書の例では colon なしが 33 例、
+ありが 2 例なので削除しますが、方向の後の colon は残します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+通常の隙間は `gitGraph LR:` または `gitGraph` とし、
 見出し上の最初の文を次行へ移します。
-方向は Db に影響し、省略と colon の有無は作者の選択です。
+方向は Db に影響し、省略は作者の選択です。
 hidden の隙間と保護された見出し・本文の境界は保持します。
 
 `gitGraph` と方向の間にある hidden の形は、直後の改行を取り、
@@ -235,15 +238,18 @@ gitGraph
 
 ### Quotes
 
-StringLiteral は完全な source span で印字し、
-single・double・反対側の引用符と escape を変えません。
-`singleQuote` でも書き換えません。
-再エンコードには escape と前処理の新たな判断が必要で、
+StringLiteral は完全な source span で印字し、escape を変えません。
+`'` で囲まれた文字列は、内容に `'`、`"`、バックスラッシュ、改行、
+バッククォート、`&`、`#`、`<` がない限り、`"` で囲んで印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+`singleQuote` は読みません。
+それ以外の再エンコードには escape と前処理の新たな判断が必要で、
 作者の書き方も失われるためです。
 
 固定例: [fixture: gitgraph/quotes/quotes-one-form]
 [corpus fixture: gitgraph/lex-string-escapes]
 [fixture: gitgraph/quotes/single-quote-option]
+[fixture: gitgraph/quotes/single-quote-sensitive-kept]
 
 入力（escape 表記）: `"gitGraph\ncommit id:'A' msg:\"a'b\" tag:'a\"b'\n"`
 
@@ -257,8 +263,8 @@ gitGraph
 
 ### References
 
-branch・checkout・switch・merge の Identifier と、
-StringLiteral の書き方を保持します。
+branch・checkout・merge の Identifier と、StringLiteral の書き方を保持します。
+文字列は Quotes のとおり `"` で囲んで印字します。
 空・空白のみ・Unicode・予約語・数字風の引用名もそのままです。
 木が形を区別しているので、printer が引用符の除去を判断しません。
 
@@ -351,8 +357,10 @@ gitGraph
 
 ### Checkout aliases
 
-`checkout` と `switch` は後続 commit との位置も含めて保持します。
-履歴への効果が同じでも、作者の同義語を置換する必要はありません。
+`switch` は、後続 commit との位置を保ち、`checkout` と印字します。
+履歴への効果は同じで、mermaid.js の文書の例では `checkout` を 160 回使い、
+`switch` は一度も使っていないためです。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 未知の branch はどちらの語でも拒否します。
 
 固定例: [fixture: gitgraph/checkout-aliases/alias-one-form]

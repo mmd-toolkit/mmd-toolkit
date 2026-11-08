@@ -10,13 +10,14 @@
 ### Header
 
 見出しを第1列に置き、`packet-beta` は、mermaid.js の文書の例が使い、
-同じ図に描くキーワード `packet` と印字します
+同じ図に描くキーワード `packet` と印字します。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
 見出しを明確にするため、通常の最初の文は次行へ移します。
 `packet` だけは直後の境界が必要で、接着した綴りを作りません。
 hidden の境界と保護された見出し・本文の組を優先します。
 hidden YAML ブロックが接する `packet-beta` は保ちます。
-`packet-beta---` が読まれる所で `packet---` は読まれないためです。 [fixture: packet/hidden-yaml/yaml-beta-header]
+`packet-beta---` が読まれる所で `packet---` は読まれないためです。
+[fixture: packet/hidden-yaml/yaml-beta-header]
 
 [fixture: packet/header/header-packet]
 
@@ -205,9 +206,8 @@ packet
 
 StringLiteral の範囲全体を保ちます。
 空 label と escape も含みます。
-`'` で囲まれた文字列は、内容に `'`、`"`、バックスラッシュ、改行、
-U+2028、U+2029、バッククォート、`&`、`#`、`<` がある場合を除き、
-`"` で囲んで印字します
+`'` で囲まれた文字列は、内容に `'`、`"`、バックスラッシュ、改行、U+2028、
+U+2029、バッククォート、`&`、`#`、`<` がある場合を除き、`"` で囲んで印字します。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
 `singleQuote` は読みません。
 その他の再符号化には、escape と前処理の新たな判断が必要です。

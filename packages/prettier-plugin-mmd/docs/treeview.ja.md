@@ -37,6 +37,23 @@ treeView-beta
   Root
 ```
 
+### Keyword case
+
+注釈の `icon(` は小文字でだけ読まれます。
+`ICON(logos:react)` は名前なので、書かれたままにします。
+[fixture: keyword-case/icon-kept]
+
+Input (escaped): `"treeView-beta\n'plain'\nICON(logos:react)"`.
+
+Output
+([keyword-case/icon-kept-output.mmd](../tests/fixtures/treeview/keyword-case/icon-kept-output.mmd)):
+
+```mmd
+treeView-beta
+  "plain"
+  ICON(logos:react)
+```
+
 ### Modes
 
 字下げと罫線のモードを保ちます。
@@ -1493,13 +1510,17 @@ treeView-beta
 ### Names
 
 裸名と StringLiteral の原文の範囲を丸ごと保ちます。
-引用符の選択、空名、backslash、内部の空白、引用符の中の空白、
-HTML と entity の綴り、directory の slash を含みます。
+空名、backslash、内部の空白、引用符の中の空白、HTML と entity の綴り、
+directory の slash を含みます。
 行末にある裸名の末尾の空白とタブだけを除きます。
 （[Trailing whitespace](#trailing-whitespace)を参照）。
-singleQuote で引用し直しません。
-Db の等しい引用変更も綴りを失い、
+`'` で囲んだ文字列は `"` で囲んで印字しますが、内容に `'`、`"`、backslash、
+改行、U+2028、U+2029、バッククォート、`&`、`#`、
+`<` が含まれる場合は書かれたままにします。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+`singleQuote` は読みません。
 padding のある裸の directory を引用すると名前と種類が変わりえます。
+[fixture: treeview/names/single-quote-sensitive-kept]
 
 [fixture: treeview/names/name-bare-tail]
 

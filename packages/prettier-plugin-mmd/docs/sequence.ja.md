@@ -327,10 +327,15 @@ mermaid.js の文書にある、2 人の参加者にまたがるノート 5 件�
 [fixture: whitespace-between-tokens/comma-touching]
 `,` の隣の隙間にあるものは、
 [矢印の前後の空白](#矢印の前後の空白)と同じに扱います。
-キーワードは、書かれた大文字小文字のまま残します。
-例えば `PARTICIPANT A`、`Note LEFT OF A` です。
-mermaid.js は大文字小文字にかかわらず読むからです。
+表にあるキーワードは、そこで示す大文字小文字で印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+`PARTICIPANT A` は `participant A`、`NOTE` は `Note`、`LOOP` は `loop` です。
+mermaid.js は大文字小文字にかかわらず読み、Db は同じです。
+表にないキーワードは、書かれた大文字小文字を保ちます。
+例えば `Note LEFT of A` です。
 [fixture: whitespace-between-tokens/keyword-case-one-form]
+[fixture: keyword-case/statements-one-form]
+[fixture: keyword-case/blocks-one-form]
 
 入力
 ([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/sequence/whitespace-between-tokens/collapsed-input.mmd)):
@@ -383,7 +388,7 @@ sequenceDiagram
   participant B as Bob
   loop x
     A ->> B: y
-  END
+  end
 ```
 
 メッセージ、ノート、ブロック、`box` のテキストと `as` の後の説明の、
@@ -493,6 +498,41 @@ sequenceDiagram
 隙間に空白が書かれていれば後ろに空白 1 つを置き、なければ接したままにします。
 [fixture: whitespace-between-tokens/ignored-semicolon-before-of-attached]
 [fixture: whitespace-between-tokens/ignored-semicolon-before-of-spaced-after-kept]
+
+### Keyword case
+
+表にあるキーワードは、そこで示す大文字小文字で印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+文の `ACTOR`、`AUTONUMBER`、`ACTIVATE`、`DEACTIVATE`、`BOX`、`CREATE`、
+`DESTROY`、`LINK`、`LINKS`、`OVER`、`RIGHT`、`AS`、`OF` と、ブロックの `ALT`、
+`ELSE`、`OPT`、`PAR`、`AND`、`CRITICAL`、`OPTION`、`BREAK`、`RECT`、`LOOP`、
+`END` は小文字で印字し、`NOTE` は `Note` と印字します。
+[fixture: keyword-case/statements-one-form]
+[fixture: keyword-case/statements-one-form-2]
+[fixture: keyword-case/blocks-one-form]
+[fixture: keyword-case/blocks-one-form-2]
+
+Input (escaped):
+`"sequenceDiagram\nACTOR A AS Alice\nparticipant B\nAUTONUMBER\nACTIVATE A\nDEACTIVATE A\nBOX Group\nparticipant C\nEND\nNote OVER A,B: together\nNote RIGHT OF A: side\nLINK A: Docs @ https://example.com\nLINKS B: {\"Docs\":\"https://example.com\"}"`.
+
+出力
+([keyword-case/statements-one-form-output.mmd](../tests/fixtures/sequence/keyword-case/statements-one-form-output.mmd)):
+
+```mmd
+sequenceDiagram
+  actor A as Alice
+  participant B
+  autonumber
+  activate A
+  deactivate A
+  box Group
+    participant C
+  end
+  Note over A,B: together
+  Note right of A: side
+  link A: Docs @ https://example.com
+  links B: {"Docs":"https://example.com"}
+```
 
 ### 矢印の前後の空白
 
@@ -1225,7 +1265,8 @@ sequenceDiagram
 - 矢印。
 
 次のテキストは、どちらの形でも Db が同じなので、選択として書かれたまま残します。
-キーワードの大文字小文字で、作者のものだからです。
+表にないキーワードの大文字小文字です。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 上に挙げたコメントの印の前に空白があるかどうかは、
 `autonumber 5` のような文の後では mermaid.js の読みを決めます。
 ほかの文の後では Db が同じですが、規則を 1 つにするために空白の有無を保ちます。

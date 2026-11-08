@@ -548,10 +548,14 @@ erDiagram
 接しているトークンは、以下の規則が別に定めるものを除き、接したままにします。
 [fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/touching-kept]
-キーワードは、書かれた大文字小文字を保ちます。
-mermaid.js はどの大文字小文字でも読み、
-属性のキーは Db がその大文字小文字を保つからです。
+表にあるキーワードは、そこで示す大文字小文字で印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+`CLASSDEF` は `classDef`、`SUBGRAPH` は `subgraph`、`END` は `end`、
+`ZERO OR MORE` は `zero or more` です。
+ほかのキーワード（`ONE OR MORE`、`CLASS`）は、書かれた大文字小文字を保ちます。
+Db がそのまま保つ属性のキーも同じです。
 [fixture: whitespace-between-tokens/keyword-case-one-form]
+[fixture: relationship-spacing/cardinality-words-case-one-form]
 
 入力
 ([whitespace-between-tokens/touching-kept-input.mmd](../tests/fixtures/er/whitespace-between-tokens/touching-kept-input.mmd)):
@@ -605,7 +609,7 @@ int a PK
 erDiagram
   subgraph S
     A
-  END
+  end
   classDef a fill: red
   CLASS A a
   style A fill: red
@@ -647,10 +651,14 @@ mermaid.js の文書の例は、記号を接し、語の単位を空白で分け
 `many(0)`、`many(1)`、`1+`、`0+`、`u` は記号として扱います。
 `many(0)` の中に空白を置くと拒否されます。
 [corpus fixture: er/lex-many-space-before-parenthesis]
-カーディナリティの綴りは、記号でも語でも、書かれた大文字小文字のまま残します。
+カーディナリティの綴りは、記号でも語でも残します。
 綴りは作者の選択で、記号には同じに読まれる語が複数あるので、
 どの綴りも別の綴りの代わりにはなりません。
-[fixture: relationship-spacing/words-spaced]
+表にある語は、そこで示す大文字小文字で印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+`ZERO OR MORE` は `zero or more` です。
+ほかの語の大文字小文字は保ちます。 [fixture: relationship-spacing/words-spaced]
+[fixture: relationship-spacing/cardinality-words-case-one-form]
 
 3 つの場合は、空白を書かれたまま残します。
 別の空白にすると mermaid.js が別の単位を読むからです。
@@ -840,8 +848,11 @@ mermaid.js が空白 1 つで結ぶからです。 [fixture: subgraphs/header-sp
 そこにある U+2028 と U+2029 は、そのまま残します。
 [test: U+2028 between an ER subgraph name and its title]
 [test: U+2029 between an ER subgraph name and its title]
-本体の文は 1 段深く置き、`end` は、書かれた大文字小文字で、subgraph と同じ段に、
-行に単独で置きます。
+本体の文は 1 段深く置き、`end` は、subgraph と同じ段に行に単独で置き、
+どの大文字小文字でも `end` と印字します。
+本体の `class`、`classDef`、`style` 文のキーワードは、書かれたまま残します。
+mermaid.js が、それを書かれたまま subgraph のノードに並べるからです。
+[fixture: subgraphs/statement-keywords-case-kept]
 `end` の後に同じ行で続く文は、次の行に置きます。
 [fixture: subgraphs/end-on-the-line-of-a-statement]
 [fixture: subgraphs/end-case-one-form] [fixture: subgraphs/entity-after-end]
@@ -927,9 +938,12 @@ erDiagram
 方向の行は、`direction` とその値と、前後の mermaid.js が読まないテキストです。
 テキストは書かれたまま残します。
 テキストと `direction` の間（離して書かれていれば）と、
-`direction` と値の間には空白 1 つを置き、値は書かれた大文字小文字を保ちます。
-大文字小文字は作者のものだからです。 [fixture: direction/spacing]
-[fixture: direction/text-kept] [fixture: direction/case-one-form]
+`direction` と値の間には空白 1 つを置き、値は大文字で印字します。
+`lr` は `LR` です。
+mermaid.js の文書の例で使う形です。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+[fixture: direction/spacing] [fixture: direction/text-kept]
+[fixture: direction/case-one-form] [fixture: direction/case-bt-rl-one-form]
 後の行に書かれた値は、`direction` の後に 1 行で印字します。
 [fixture: direction/value-on-next-line-joined]
 [corpus fixture: er/lex-direction-value-next-line]
@@ -994,7 +1008,8 @@ Mermaid はスタイルの単位をつなげて読むため、
 通常はつなげる見出しや外側の改行があっても、最初の整形で同じ間隔にします。
 スタイル内部の改行区切り、所有する trivia、
 同じ物理行に保持するセミコロンがある場合は、既存のスタイルの配置を保ちます。
-キーワードの大文字小文字は保ちます。
+キーワードの大文字小文字は、綴りの表のとおりに印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 [fixture: styles-and-classes/style-unit-padding]
 [fixture: styles-and-classes/class-def-names]
 [fixture: styles-and-classes/style-names]

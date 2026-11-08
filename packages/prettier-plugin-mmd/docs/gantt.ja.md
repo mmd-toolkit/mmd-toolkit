@@ -608,7 +608,9 @@ gantt
 
 `weekday` と `weekend` の文は、キーワード、空白 1 つ、日の順に印字します。
 間の空白や改行がどれだけ書かれていても同じです。
-日は書かれた大文字小文字を保ちます（Db が小文字にします）。
+`monday` と `friday` は、mermaid.js の文書の例のとおり、小文字で印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
+それ以外の日は、書かれた大文字小文字を保ち、Db が小文字にします。
 [fixture: weekday-and-weekend/one-space]
 [fixture: weekday-and-weekend/day-case-one-form]
 [fixture: weekday-and-weekend/day-on-next-line]
@@ -661,9 +663,13 @@ gantt
 
 ### キーワードの大文字小文字
 
-キーワードは書かれた大文字小文字を保ちます。
+キーワード `axisFormat`、`dateFormat`、`excludes`、`section`、`tickInterval`、
+`title`、`weekday`、`weekend` は、
+mermaid.js の文書の例が使う大文字小文字で印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
 mermaid.js はどの大文字小文字でも読み、Db は同じです。
-大文字小文字は強制されないので、作者が選んだものとして、書き換えません。
+それ以外のキーワード（`TodayMarker`、`Includes`、`INCLUSIVEENDDATES`、
+アクセシビリティのキーワード）は、書かれた大文字小文字を保ちます。
 [fixture: keyword-case/keywords-one-form]
 [fixture: keyword-case/click-keywords-kept]
 ヘッダーの `gantt` は小文字だけが検出され、タスクのタグは `active`、`done`、

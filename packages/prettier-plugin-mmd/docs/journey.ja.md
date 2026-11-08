@@ -485,9 +485,10 @@ journey
 
 ### キーワードの大文字小文字
 
-キーワードは書かれた大文字小文字を保ちます。
+キーワード `section` と `title` は、mermaid.js の文書の例のとおり、
+小文字で印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
 mermaid.js はどの大文字小文字でも読み、Db は同じです。
-大文字小文字は強制されないので、作者が選んだものとして、書き換えません。
 [fixture: keyword-case/keywords-one-form]
 ヘッダーの `journey` は小文字だけが検出されます。
 

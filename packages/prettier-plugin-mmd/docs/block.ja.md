@@ -278,8 +278,10 @@ block
 
 ### ヘッダー
 
-ヘッダー `block-beta` と `block` は書かれたままに印字します。
-mermaid.js はどちらも同じ図種として読むので、綴りは書き手のものです。
+ヘッダーは、`block-beta` と `block` のどちらが書かれていても、
+`block` と印字します。
+mermaid.js はどちらも同じ図種として読み、その文書の例は `block` を使うからです。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 前の空白は落とし、同じ行の後ろの文は自分の行に移します（[行](#行)を参照）。
 [fixture: header/block-beta-one-form] [fixture: header/block-kept]
 [fixture: header/statement-after-the-header-on-a-line-of-its-own]
@@ -301,6 +303,27 @@ c
 block
   a b
   c
+```
+
+### Keyword case
+
+block 図が語をキーワードとして読むのは、小文字のときだけです。
+`COLUMNS`、`SPACE`、`STYLE`、`CLASSDEF` はキーワードではなく id なので、
+書かれたまま残します。
+ヘッダーは例外です（[ヘッダー](#ヘッダー)を参照）。
+[fixture: keyword-case/keywords-kept]
+
+Input (escaped): `"block-beta\nCOLUMNS 2\nSPACE\nSTYLE A\nCLASSDEF c"`.
+
+出力
+([keyword-case/keywords-kept-output.mmd](../tests/fixtures/block/keyword-case/keywords-kept-output.mmd)):
+
+```mmd
+block
+  COLUMNS 2
+  SPACE
+  STYLE A
+  CLASSDEF c
 ```
 
 ### columns と space

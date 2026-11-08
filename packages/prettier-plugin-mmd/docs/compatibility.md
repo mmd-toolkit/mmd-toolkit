@@ -964,7 +964,8 @@ drawing the same; the drawings are the check that nothing else reads the text.
 | Colon of a gitGraph header   |    31 |      31 |             31 |
 
 Of the keyword pairs a sample was drawn, and a pair whose own text, drawn twice,
-already differs was not counted.
+already differs was not counted. When the pinned mermaid.js is updated, the
+examples are counted again and each kind is compared again.
 
 ### Keywords in one case
 
@@ -2407,15 +2408,17 @@ venn/directives/directive-leading-marker] [fixture:
 venn/blank-lines/whitespace-before-empty-braces] [fixture:
 venn/blank-lines/blank-before-empty-braces-explicit]
 
-Names, labels, sizes, complete bare/quoted styles, titles, repetitions and
-swallowed fragments remain authored text. Empty quoted names and styles are real
-values; bare whitespace, quoted whitespace and empty quoted labels keep their
-different readings. Except for the line-ending style terminator described above,
-semicolons stay, and a line with a kept semicolon is formatted as anywhere else
-apart from the stretch that the line rule reads (see
-[Line rule and kept lines](./venn.md#line-rule-and-kept-lines)). Unicode
-separators inside comments or directives do not cut the kept part: Venn diagram
-comments continue to LF/EOF.
+Names, labels, complete bare/quoted styles, titles, repetitions and swallowed
+fragments remain authored text, and so do the sizes that are not plain decimals;
+a plain decimal size is printed in the shortest form (see
+[Spellings that are drawn the same](#spellings-that-are-drawn-the-same)). Empty
+quoted names and styles are real values; bare whitespace, quoted whitespace and
+empty quoted labels keep their different readings. Except for the line-ending
+style terminator described above, semicolons stay, and a line with a kept
+semicolon is formatted as anywhere else apart from the stretch that the line
+rule reads (see [Line rule and kept lines](./venn.md#line-rule-and-kept-lines)).
+Unicode separators inside comments or directives do not cut the kept part: Venn
+diagram comments continue to LF/EOF.
 
 [fixture: venn/name-lists/empty-quoted-targets] [fixture:
 venn/labels/labels-empty-kept] [fixture: venn/style-properties/style-atoms-kept]
@@ -2423,13 +2426,13 @@ venn/labels/labels-empty-kept] [fixture: venn/style-properties/style-atoms-kept]
 venn/line-rule-and-kept-lines/line-rule-suffix-spacing] [test: venn:
 ls-kept-comment-whitespace-line] [test: venn: ps-kept-directive]
 
-Only accepted whitespace roles normalize: ordinary ASCII gaps, configured
-implicit indentation and the title's consumed first separator. CR/CRLF use
-shared EOL handling; Unicode value characters remain, and invalid ordinary gaps
-remain rejected. The shared failure, Markdown, frontmatter and final newline
-paths apply. Specified token-boundary divergences still fail, while C4-detection
-and opaque-YAML divergences use the specified reading; raw rejection provides no
-raw Db.
+Only accepted whitespace roles and the spellings of the section above normalize:
+ordinary ASCII gaps, configured implicit indentation and the title's consumed
+first separator. CR/CRLF use shared EOL handling; Unicode value characters
+remain, and invalid ordinary gaps remain rejected. The shared failure, Markdown,
+frontmatter and final newline paths apply. Specified token-boundary divergences
+still fail, while C4-detection and opaque-YAML divergences use the specified
+reading; raw rejection provides no raw Db.
 
 [fixture: venn/whitespace-characters/tab-gaps] [fixture:
 venn/title/title-next-line] [fixture: venn/header/div-c4-detector] [fixture:
@@ -2621,8 +2624,10 @@ usecase/stereotypes/boundary-suffixes] [fixture:
 usecase/stereotypes/semicolon-padding-dropped] [test: usecase:
 stereotype-comment-region-padding-kept]
 
-Written labels/quotes, boundary title padding and continuation columns remain
-authored even where trimming or requoting would have equal Db. Common
+Written labels, boundary title padding and continuation columns remain authored
+even where trimming would have equal Db; a label between `'` is printed between
+`"` as under
+[Spellings that are drawn the same](#spellings-that-are-drawn-the-same). Common
 comment-region joins and native comments through LS/PS stay intact; semicolons
 never separate statements and the stretch that the line rule reads is protected.
 The six specified usecase divergences use their specified acceptance/reading,
@@ -2803,15 +2808,17 @@ info/div-c4container-title] [corpus fixture: info/div-bare-before-header-ls]
 
 ## Packet hidden boundaries and authored blocks
 
-The [packet rules](./packet.md) keep the authored `packet` / `packet-beta`
-header and all three block forms: range, single and relative. Never reconstruct
-blocks from published rows or remove occurrences after the publication cap.
-Repeated labels stay separate, and empty common assignments remain: deleting an
-empty title can restore an earlier title. Labels retain quotes, padding,
-escapes, HTML, entities and physical continuation columns because rewriting
-these can change the Db. Numeric digits remain written even when double
-conversion rounds or overflows them; exponent/Infinity output is not packet
-syntax. [fixture: packet/block-forms-and-order/block-three-forms] [fixture:
+The [packet rules](./packet.md) print `packet-beta` as `packet` and keep all
+three block forms: range, single and relative. Never reconstruct blocks from
+published rows or remove occurrences after the publication cap. Repeated labels
+stay separate, and empty common assignments remain: deleting an empty title can
+restore an earlier title. Labels retain padding, escapes, HTML, entities and
+physical continuation columns because rewriting these can change the Db; a label
+between `'` is printed between `"` as under
+[Spellings that are drawn the same](#spellings-that-are-drawn-the-same). Numeric
+digits remain written even when double conversion rounds or overflows them;
+exponent/Infinity output is not packet syntax. [fixture:
+packet/block-forms-and-order/block-three-forms] [fixture:
 packet/block-forms-and-order/keep-interleaving] [fixture:
 packet/block-forms-and-order/cap-unpublished-kept] [fixture:
 packet/label-content/label-padding] [fixture:
@@ -2926,10 +2933,11 @@ The [radar rules](./radar.md) retain every axis/curve/options group, entry form,
 optional named-entry colon, repetition and source order. Extra or duplicate
 named entries stay even when publication does not use them; positional and named
 curves remain distinct. The header's optional colon is retained, with ordinary
-preceding whitespace compacted as in gitgraph. NumericLiteral source spans
-preserve leading/trailing decimal zeros, rounded precision, subnormals,
-underflow and overflow rather than printing converted double values. Option
-values remain authored: no tick cap, min/max reorder or replacement from drawing
+preceding whitespace compacted as in gitgraph. NumericLiteral source spans that
+are plain decimals are printed in the shortest form, and the others preserve a
+zero at the start of the integer part, rounded precision, subnormals, underflow
+and overflow rather than printing converted double values. Option values remain
+authored: no tick cap, min/max reorder or replacement from drawing
 configuration. Label StringLiteral spans keep empty/whitespace-only text,
 escapes, HTML, entities, with a run of spaces and tabs inside a label printed as
 one space; a label between `'` is printed between `"` as under
@@ -3032,16 +3040,19 @@ treemap/carried-indentation/whitespace-line] [fixture:
 treemap/comments/carried-space] [fixture: treemap/directives/leading] [fixture:
 treemap/semicolons/body-kept]
 
-Keep numeric source spelling, including commas, underscores, dots and precision;
+Keep numeric source spelling, including commas, underscores, dots and precision,
+except that a plain decimal is printed in the shortest form (see
+[Spellings that are drawn the same](#spellings-that-are-drawn-the-same));
 reprinting the numeric value can change its reading or produce rejected syntax.
-Names keep quotes, empty names, backslashes, entities, HTML and physical
-continuation columns, with a run of spaces and tabs inside a name printed as one
-space. Class styles remain whole authored literals, including internal and
-trailing padding; they are not reformatted as CSS. Retain repeated classes,
-empty assignments, unresolved selectors and source order. Common values and
-description blocks use shared exterior spacing while retaining internal text and
-trivia. Every semicolon stays, and the protected segments of a statement over
-several lines retain their columns without extra indentation inside them.
+Names keep empty names, backslashes, entities, HTML and physical continuation
+columns, with a run of spaces and tabs inside a name printed as one space; a
+name between `'` is printed between `"` as under the same section. Class styles
+remain whole authored literals, including internal and trailing padding; they
+are not reformatted as CSS. Retain repeated classes, empty assignments,
+unresolved selectors and source order. Common values and description blocks use
+shared exterior spacing while retaining internal text and trivia. Every
+semicolon stays, and the protected segments of a statement over several lines
+retain their columns without extra indentation inside them.
 
 [fixture: treemap/numbers/underscore] [fixture: treemap/numbers/precision]
 [fixture: treemap/names/quotes] [fixture: treemap/names/physical-columns]
@@ -3385,20 +3396,21 @@ railroad/long-lines/ir-semicolon-kept] [fixture: railroad/long-lines/ebnf-width]
 [fixture: railroad/long-lines/abnf-width] [fixture:
 railroad/long-lines/peg-width]
 
-Strings keep their complete source spans, including quotes, empty and
-whitespace-only values, escape spelling, HTML, entities and continuation
-columns. singleQuote does not rewrite them. ABNF backslash is ordinary content;
-the other three dialects have backslash escapes. ABNF repeat bounds retain
-leading zeroes, omitted bounds, exact forms and large integers; numeric values
-keep base-letter case, digits, dots and hyphens as raw text. EBNF special
-sequences keep their whole span, including exterior whitespace, with a run of
-spaces and tabs inside printed as one space. Converting these spellings or
-reflowing values can change the Db. PEG predicates keep their entire authored
-operand rather than rebuilding it from a published label. [fixture:
-railroad/quotes/ir-escape] [fixture: railroad/quotes/ebnf-escape] [fixture:
-railroad/quotes/abnf-backslash] [fixture: railroad/quotes/peg-escape] [fixture:
-railroad/quotes/ir-empty-and-text] [fixture:
-railroad/quotes/ebnf-empty-and-text] [fixture:
+Strings keep their complete source spans, including empty and whitespace-only
+values, escape spelling, HTML, entities and continuation columns; an IR, EBNF,
+or PEG string between `'` is printed between `"` as under
+[Spellings that are drawn the same](#spellings-that-are-drawn-the-same), and
+`singleQuote` is not read. ABNF backslash is ordinary content; the other three
+dialects have backslash escapes. ABNF repeat bounds retain leading zeroes,
+omitted bounds, exact forms and large integers; numeric values keep base-letter
+case, digits, dots and hyphens as raw text. EBNF special sequences keep their
+whole span, including exterior whitespace, with a run of spaces and tabs inside
+printed as one space. Converting these spellings or reflowing values can change
+the Db. PEG predicates keep their entire authored operand rather than rebuilding
+it from a published label. [fixture: railroad/quotes/ir-escape] [fixture:
+railroad/quotes/ebnf-escape] [fixture: railroad/quotes/abnf-backslash] [fixture:
+railroad/quotes/peg-escape] [fixture: railroad/quotes/ir-empty-and-text]
+[fixture: railroad/quotes/ebnf-empty-and-text] [fixture:
 railroad/quotes/abnf-empty-and-text] [fixture:
 railroad/quotes/peg-empty-and-text] [fixture: railroad/repeats/abnf-spellings]
 [fixture: railroad/repeats/abnf-zero] [fixture: railroad/repeats/abnf-large]
@@ -3638,8 +3650,10 @@ The [Cynefin rules](./cynefin.md) keep both header spellings, every domain
 redeclaration and empty domain, item order and duplicates, self transitions,
 empty labels and common resets. Domain/item lines express the authored tree;
 columns do not select parents. Rebuilding from the effective Db would lose
-occurrences and can change replacement or reset behavior. Strings retain quotes,
-escapes and interior columns, including empty values and native-looking text.
+occurrences and can change replacement or reset behavior. Strings retain escapes
+and interior columns, including empty values and native-looking text; a string
+between `'` is printed between `"` as under
+[Spellings that are drawn the same](#spellings-that-are-drawn-the-same).
 [fixture: cynefin/empty-domains/empty-domain-last-reset] [fixture:
 cynefin/redeclarations/domain-repeat-order] [fixture:
 cynefin/transition-occurrences/transition-occurrences] [fixture:

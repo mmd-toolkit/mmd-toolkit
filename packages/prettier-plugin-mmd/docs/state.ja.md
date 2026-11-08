@@ -260,6 +260,54 @@ accDescr {}
   N1
 ```
 
+### Header
+
+ヘッダーの綴り、`stateDiagram` と `stateDiagram-v2` は書かれたまま残します。
+mermaid.js の文書の例は `stateDiagram-v2` を 17 回、`stateDiagram` を 5 回使い、
+両方の綴りで描いた 11 組の例のうち、1 組は違う図になったためです。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+[fixture: header/spellings-kept] [fixture: indentation/header-without-v2-kept]
+
+Input (escaped): `"stateDiagram\nSTATE \"legacy\" AS old"`.
+
+出力
+([header/spellings-kept-output.mmd](../tests/fixtures/state/header/spellings-kept-output.mmd)):
+
+```mmd
+stateDiagram
+  state "legacy" as old
+```
+
+### Keyword case
+
+表にあるキーワードは、そこで示す大文字小文字で印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+その中には、`<<choice>>`、`<<fork>>`、`<<join>>` と印字する `<<CHOICE>>`、
+`<<FORK>>`、`<<JOIN>>`、`accTitle:`、`accDescr:` と印字する `ACCTITLE:`、
+`ACCDESCR:` と、`AS`、`END`、`DIRECTION TB` があります。
+ノートの位置、`LEFT OF` と `RIGHT OF` は書かれたまま残します。
+[fixture: keyword-case/pseudo-states-one-form]
+[fixture: keyword-case/accessibility-alias-direction-one-form]
+
+Input (escaped):
+`"stateDiagram-v2\nACCTITLE: title\nACCDESCR: description\nstate \"x\" AS y\nDIRECTION TB\nnote LEFT OF y: left\nnote RIGHT OF y: right\nnote left of y\nbody\nEND NOTE"`.
+
+出力
+([keyword-case/accessibility-alias-direction-one-form-output.mmd](../tests/fixtures/state/keyword-case/accessibility-alias-direction-one-form-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  accTitle: title
+  accDescr: description
+  state "x" as y
+  direction TB
+  note LEFT OF y : left
+  note RIGHT OF y : right
+  note left of y
+    body
+  end note
+```
+
 ### 1 行に 1 文
 
 各文は 1 行に 1 つ置きます。
@@ -445,10 +493,19 @@ mermaid.js は state 図では `,` の前後の空白を何もないものとし
 `""` の前に空白が書かれているかどうかは保ちます。
 `state x"" {` は複合状態 `x""` で、`state x "" {` は複合状態 `x` だからです。
 [fixture: whitespace-between-tokens/quotes-before-brace-kept]
-キーワードは、書かれた大文字小文字のまま残します。
-mermaid.js は大文字小文字にかかわらず読み、`Left Of` のようなノートの位置は、
-書かれたまま図に入るからです。
+表にあるキーワードは、そこで示す大文字小文字で印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+`STATE A {` は `state A {`、`CLASSDEF` は `classDef`、
+`DIRECTION lr` は `direction LR`、`<<CHOICE>>` は `<<choice>>` です。
+mermaid.js は大文字小文字にかかわらず読み、Db は同じです。
+表にないキーワード（`STYLE`、`HIDE EMPTY DESCRIPTION`）は、
+書かれた大文字小文字を保ちます。
+`Left Of` のようなノートの位置は、書かれたまま図の一部になります。
+Db が書かれたまま保つからです。
 [fixture: whitespace-between-tokens/keyword-case-one-form]
+[fixture: whitespace-between-tokens/keyword-case-more-one-form]
+[fixture: keyword-case/pseudo-states-one-form]
+[fixture: keyword-case/accessibility-alias-direction-one-form]
 
 `class` 文の id を区切る `,` は、後ろの id に接します。
 `class A, B c` は `class A,B c` になります。
@@ -481,7 +538,6 @@ mermaid.js の文書は、この文の例 2 件を `,` の後ろに空白を置�
 `,` の後ろの U+2028 と U+2029 は、そのまま残します。
 [test: U+2028 after the comma of a state class statement]
 [test: U+2029 after the comma of a state class statement]
-[fixture: whitespace-between-tokens/keyword-case-more-one-form]
 
 入力
 ([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/state/whitespace-between-tokens/collapsed-input.mmd)):
@@ -1602,10 +1658,11 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
   [fixture: whitespace-between-tokens/direction-line-text-kept]
 - ヘッダーの綴り。
   `stateDiagram` か `stateDiagram-v2`。 [corpus fixture: state/header-v1]
-  [fixture: indentation/header-without-v2-kept]
+  [fixture: indentation/header-without-v2-kept] [fixture: header/spellings-kept]
 
 次のテキストは、どちらの形でも Db が同じなので、選択として書かれたまま残します。
-キーワードの大文字小文字は作者のものです。
+表にないキーワードの大文字小文字です。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 文の後のコメントの印の前に空白が書かれているかどうかも保ち、
 その空白の連なりは空白 1 つで印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。

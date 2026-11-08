@@ -190,14 +190,17 @@ usecase-beta
 ### Labels
 
 C4 の[引数の形](./c4.ja.md#引数の形)と同じく、裸、一重引用、二重引用、
-markdown のラベルは綴りと内部の文字を保ちます。
+markdown のラベルは種類と内部の文字を保ちます。
 空の引用値も残します。
 通常の引用と裸の文字列で Db が等しくても、
 作者の形式を保つことで不要な書き換えを避けます。
 markdown はラベルの種類も変えます。
 裸のラベルを構成する単位の外側にある ASCII の水平空白だけを除きます。
-内部の空白、Unicode の余白、バックスラッシュ、entity、HTML は保ち、
-`singleQuote` で native 文字列を書き換えません。
+内部の空白、Unicode の余白、バックスラッシュ、entity、HTML は保ちます。
+`'` で囲まれた文字列は、テキストに `'`、`"`、バックスラッシュ、改行、U+2028、
+U+2029、バッククォート、`&`、`#`、`<` を含む場合を除き、`"` で囲んで印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+`singleQuote` は読みません。 [fixture: labels/single-quote-sensitive-kept]
 
 [fixture: labels/label-quote-kinds] [fixture: labels/label-empty-quotes]
 [fixture: labels/label-quote-rewrite-one-form]
@@ -358,15 +361,17 @@ usecase-beta
 読みやすい class
 の[矢印の前後の空白](./class.ja.md#矢印の前後の空白)を再利用し、
 実際の usecase 演算子全体の両側を通常の空白 1 個にします。
-方向、マーカー、大小文字、ダッシュと点の数を保ちます。
+方向、マーカー、ダッシュと点の数を保ちます。
 Db の長さが固定される分割矢印の長い右半分も同じです。
-意味を持つ演算子は `..>:InClUdE` または書かれた extend の大小文字で詰め、
-端点の前を空白 1 個にします。
+意味を持つ演算子は、キーワードを mermaid.js の文書の例と同じく小文字にし、
+`..>:include` と `..>:extend` と詰めて印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+その後、端点の前を空白 1 個にします。
 コロンとキーワードは演算子の構文です。
 [fixture: arrows/semantic-operator-directives]
-大小文字を揃えて Db が等しくても、共有の方針に従い作者の綴りを保ちます。
+[fixture: arrows/arrows-semantic-case-one-form]
 端点の交換や演算子の種類の変換はしません。
-方向、マーカー、大小文字、ダッシュと点の数は書かれたままです。
+方向、マーカー、ダッシュと点の数は書かれたままです。
 正規化した Db の演算子は出力しないためです。
 `A---->B` を `A --> B` にすると最小の長さが変わり、
 `A<--B` を `B --> A` にすると始点と終点の順序が変わります。

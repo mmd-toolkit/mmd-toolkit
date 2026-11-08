@@ -2125,14 +2125,21 @@ flowchart %%{init: {}}%%LR
 
 ### 方向
 
-方向は書かれたまま残します。
-ヘッダーでも `direction` の文でも、`TD` を `TB` に変えません。
-[fixture: direction/header-td-one-form]
+ヘッダーのキーワード `graph` は `flowchart` と印字し、
+ヘッダーの方向 `TB` は `TD` と印字します。
+mermaid.js の文書の例では、`TD` は 59 回、`TB` は 8 回使われています。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+[fixture: direction/header-keyword-one-form]
+[fixture: direction/header-td-one-form] [fixture: direction/header-tb-one-form]
+`direction` の文の方向は書かれたまま残します。
+`TD` を `TB` に変えず、`TB` も `TD` に変えません。
 [fixture: direction/statement-td-kept-with-other-header]
 [fixture: direction/statement-values-kept]
-mermaid.js は subgraph の中の `direction` の文の `TD`
-を書かれたとおりに保つので、そこを変えると図が変わり、
-ヘッダーだけを変えると両者が揃わなくなるからです。
+mermaid.js は subgraph の中の `direction` の文の方向を、
+書かれたとおりに Db に保つので、そこを変えると Db が変わります。
+swimlane 図のヘッダーでは、agentflow 図のヘッダーと同じく、
+`TD` を `TB` と印字します（[Header](./agentflow.ja.md#header)を参照）。
+[fixture: direction/swimlane-header-td-one-form]
 `direction` の文では、mermaid.js は `direction` の前と値の後を、
 ラベルや文字列を含みうるテキストとして読み、値の後の `;` はそのテキストに属し、
 区切りではありません。
@@ -2142,7 +2149,7 @@ mermaid.js は subgraph の中の `direction` の文の `TD`
 そのように、その段の字下げで印字します。
 [fixture: direction/statement-holds-text-kept]
 ヘッダーの方向は、記号がキーワードに接していても空白 1 つの後に置きます。
-`graph>` は `graph >` に、`flowchart^` は `flowchart ^` と印字します。
+`graph>` は `flowchart >` に、`flowchart^` は `flowchart ^` と印字します。
 この空白は Db に入らず、`TD` のような文字の方向には、もともと空白が必要です。
 その間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
 U+2028 と U+2029 はそのまま残します。
@@ -2548,10 +2555,7 @@ flowchart LR
   `A&B` は頂点 1 つ、`A & B` は 2 つで、`A &B` は拒否されます。
   空白の連続は、トークンの間と同じく空白 1 つにします。
   [fixture: arrow-spacing/ampersand-spacing-kept]
-- 矢印の長さ（`-->` と `--->`）と、
-  ヘッダーのキーワード（`graph` か `flowchart`）。
-  [fixture: arrow-spacing/arrow-length-kept]
-  [fixture: direction/header-keyword-one-form]
+- 矢印の長さ（`-->` と `--->`）。 [fixture: arrow-spacing/arrow-length-kept]
 - ディレクティブの中身と、
   [データブロック](#データブロック)の一定量の字下げと 1 行のブロックの両端を除く
   `@{ ... }` の中身。

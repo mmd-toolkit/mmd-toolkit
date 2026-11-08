@@ -999,6 +999,291 @@ kanban のボードも、カードのテキスト、列とカードのラベル�
 固定している mermaid.js の版を上げるときは、各場合の両方のテキストを描き直し、
 SVG と画素を比べてから、例外を残します。
 
+## 同じに描かれる綴り
+
+mermaid.js は、トークンの異なる綴りの一部を同じトークンとして読み、
+そこから同じ図を描きます。
+キーワードの別の大文字小文字、`"` の代わりに `'` で囲む文字列、
+末尾にゼロを付けた数、古いヘッダーのキーワードです。
+印字は、そのような綴りを 1 つの形にします。
+トークンの間の空白は、
+ほかの図種が同じ種類の隙間に印字する形にします（上の各節を参照してください）。
+綴りは、固定している mermaid.js の文書の例が、
+ほかのどの形よりも 2 倍以上多く使う形にします。
+そのような形がないとき、または例がその綴りを使わないときは、
+書かれたまま残します。
+例は、[構文のページ][mermaid-syntax-pages]の、
+`mermaid-example` と `mermaid` のコードブロック 541 個です。
+パーサーはそのうち 524 個を読み、以下の数はその 524 個で数えたものです。
+
+[mermaid-syntax-pages]: https://github.com/mermaid-js/mermaid/tree/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax
+
+印字が形をそろえる前に、それぞれの種類を mermaid.js 12.3.0 と比べました。
+綴りを含む各例を別の綴りでも書き、mermaid.js が両方のテキストを読みました。
+別の綴りを mermaid.js が拒否する対（円グラフの数の前の `+`）は数えません。
+両方のテキストを Chromium で描きました。
+数えたどの対も Db は同じで、SVG のスクリーンショットも画素ごとに同じでした。
+同じテキストを 2 回描いてもすでに異なるもの（Agentflow の形と flowchart の
+`hourglass` の線はランダムに描かれ、
+gitGraph のコミット id とラベルの幅も同様です）は、数、コミット id、
+要素の id を除いた SVG が同じでした。
+mermaid.js は Db から描くので、同じ Db が同じ描画の根拠です。
+描画は、ほかにテキストを読むものがないことの確認です。
+
+| 種類                             |  対 | 同じ Db |    同じ描画 |
+| -------------------------------- | --: | ------: | ----------: |
+| 大文字小文字をそろえるキーワード | 445 |     445 | 138（標本） |
+| `"` で囲む文字列                 |  79 |      79 |          79 |
+| 最短の形の数                     |  37 |      37 |          37 |
+| ヘッダーのキーワード             | 175 |     175 |         175 |
+| ヘッダーの向き                   |  75 |      75 |          75 |
+| gitGraph の `switch`             |  27 |      27 |          27 |
+| gitGraph のヘッダーのコロン      |  31 |      31 |          31 |
+
+キーワードの対は標本を描き、
+そのテキストを 2 回描いてもすでに異なる対は数えませんでした。
+固定している mermaid.js の版を上げるときは、例を数え直し、
+それぞれの種類を比べ直します。
+
+### 大文字小文字をそろえるキーワード
+
+次の図種の字句解析器は、キーワードをどの大文字小文字でも読みます。
+印字は、以下のキーワードを示した大文字小文字にし、
+それ以外のキーワードは書かれたままにします。
+
+- ER 図: `BT`、`classDef`、`direction`、`end`、`LR`、`many(0)`、`only one`、
+  `optionally to`、`RL`、`style`、`subgraph`、`TB`、`to`、`zero or more`。
+- Gantt 図: `axisFormat`、`dateFormat`、`excludes`、`friday`、`monday`、
+  `section`、`tickInterval`、`title`、`weekday`、`weekend`。
+- ユーザージャーニー: `section`、`title`。
+- マインドマップ: `::icon(`。
+- 象限図: `classDef`、`quadrant-1`、`quadrant-2`、`quadrant-3`、`quadrant-4`、
+  `title`、`x-axis`、`y-axis`。
+- 要件図: `analysis`、`class`、`classDef`、`contains`、`copies`、
+  `demonstration`、`derives`、`designConstraint`、`direction`、`docRef`、
+  `element`、`functionalRequirement`、`high`、`id`、`inspection`、
+  `interfaceRequirement`、`low`、`LR`、`medium`、`performanceRequirement`、
+  `physicalRequirement`、`refines`、`requirement`、`risk`、`satisfies`、
+  `style`、`test`、`text`、`traces`、`type`、`verifies`、`verifymethod`。
+- シーケンス図: `activate`、`actor`、`alt`、`and`、`as`、`autonumber`、`box`、
+  `break`、`create`、`critical`、`deactivate`、`destroy`、`else`、`end`、
+  `link`、`links`、`loop`、`Note`、`of`、`opt`、`option`、`over`、`par`、
+  `participant`、`rect`、`right`。
+- 状態遷移図: `<<choice>>`、`<<fork>>`、`<<join>>`、`accDescr`、`accTitle`、
+  `as`、`class`、`classDef`、`direction`、`end`、`LR`、`note`、`state`、`TB`。
+- タイムライン: `section`、`TD`、`title`。
+- ユースケース図: `extend`、`include`。
+- Venn 図: `set`、`style`、`text`、`title`、`union`。
+- XY チャート: `bar`、`line`、`title`、`x-axis`、`y-axis`。
+
+例は、各キーワードの印字する大文字小文字を、
+ほかのどの大文字小文字よりも 2 倍以上多く使います。
+`Note` は 7 回、`note` は 1 回書かれ、
+ほかのキーワードは別の大文字小文字で書かれません。
+[fixture: er/whitespace-between-tokens/keyword-case-one-form]
+[fixture: er/direction/case-one-form]
+[fixture: er/direction/case-bt-rl-one-form]
+[fixture: er/subgraphs/end-case-one-form]
+[fixture: er/styles-and-classes/keyword-case-one-form]
+[fixture: er/relationship-spacing/cardinality-words-case-one-form]
+[fixture: gantt/keyword-case/keywords-one-form]
+[fixture: gantt/weekday-and-weekend/day-case-one-form]
+[fixture: journey/keyword-case/keywords-one-form]
+[fixture: mindmap/keyword-case/icon-keyword]
+[fixture: quadrant/keyword-case/statement-keywords-one-form]
+[fixture: quadrant/keyword-case/quadrant-3-4-one-form]
+[fixture: quadrant/styles/class-definition-keyword-case-one-form]
+[fixture: requirement/keyword-case/keywords-one-form]
+[fixture: requirement/keyword-case/types-one-form]
+[fixture: requirement/fields/field-keywords-case-one-form]
+[fixture: requirement/fields/keyword-values-case-one-form]
+[fixture: requirement/fields/keyword-values-low-test-analysis-case-one-form]
+[fixture: requirement/relationship-spacing/relation-case-one-form]
+[fixture: requirement/relationship-spacing/relations-case-one-form]
+[fixture: requirement/styles-and-classes/keyword-case-one-form]
+[fixture: requirement/direction/case-one-form]
+[fixture: sequence/whitespace-between-tokens/keyword-case-one-form]
+[fixture: sequence/keyword-case/statements-one-form]
+[fixture: sequence/keyword-case/blocks-one-form]
+[fixture: state/whitespace-between-tokens/keyword-case-one-form]
+[fixture: state/whitespace-between-tokens/keyword-case-more-one-form]
+[fixture: state/keyword-case/pseudo-states-one-form]
+[fixture: state/keyword-case/accessibility-alias-direction-one-form]
+[fixture: timeline/keyword-case/keywords-one-form]
+[fixture: usecase/arrows/arrows-semantic-case-one-form]
+[fixture: venn/keyword-case-and-order/keyword-case-one-form]
+[fixture: xychart/keyword-case/statement-keywords-one-form]
+
+一覧にないキーワードは書かれたまま残します。
+例が使わないもの、
+ほかの大文字小文字の 2 倍以上使う形がないもの（ER 図のカーディナリティの語
+`ONE OR MORE` と `MANY`、状態遷移図の `HIDE EMPTY DESCRIPTION`）、
+別の大文字小文字で Db か描画が変わるものです。
+ブロック図は `COLUMNS` と `SPACE` を id として読み、
+状態遷移図はノートの `LEFT`、`RIGHT`、`OF` を Db に書かれたまま保ち、
+`LEFT` か `OF` のノートは異なって描かれ、
+treeView は `ICON(…)` を名前の一部として読みます。
+[fixture: er/whitespace-between-tokens/keyword-case-one-form]
+[fixture: state/whitespace-between-tokens/keyword-case-one-form]
+[fixture: block/keyword-case/keywords-kept]
+[fixture: treeview/keyword-case/icon-kept]
+
+ER のサブグラフの本文で、mermaid.js は `class`、`classDef`、
+`style` の文のキーワードを、サブグラフのノードとして書かれたまま列挙します。
+そのため、この 3 つのキーワードは、そこでは大文字小文字を保ち、
+その外では一覧の大文字小文字で印字します。
+[fixture: er/subgraphs/statement-keywords-case-kept]
+
+gitGraph は `switch` を `checkout` として読みます。
+例は `checkout` を 160 回書き、`switch` は書かないので、
+`switch` は `checkout` と印字します。
+[fixture: gitgraph/checkout-aliases/alias-one-form]
+
+### `"` で囲む文字列
+
+cynefin、gitGraph、packet、pie、radar、railroad（IR、EBNF、PEG の記法）、
+treeView、treemap、usecase、wardley の図は、
+文字列を `"` だけでなく `'` でも囲め、mermaid.js は両方を同じに読みます。
+例は、これらの図種の文字列 409 個のうち 408 個を `"` で囲みます。
+残りの 1 個は Wardley の flow のラベルで、`'` で囲んだものだけを読みます。
+印字は `"` を使います。
+Prettier の `singleQuote` オプションは読みません。
+`'` で囲む文字列を読むのはこの 10 図種だけで、
+ほかは拒否するか引用符をテキストの一部として読みます。
+例はそれを使いません。 [fixture: cynefin/strings/strings-quotes]
+[fixture: gitgraph/quotes/quotes-one-form]
+[fixture: packet/quotes/quotes-one-form]
+[fixture: pie/labels/label-quote-one-form]
+[fixture: radar/quotes/quotes-and-empty]
+[fixture: railroad/quotes/ir-empty-and-text]
+[fixture: railroad/quotes/ebnf-empty-and-text]
+[fixture: railroad/quotes/peg-empty-and-text]
+[fixture: treeview/names/name-empty]
+[fixture: usecase/labels/label-quote-rewrite-one-form]
+[fixture: wardley/names-and-quotes/name-quotes-empty]
+
+テキストに `'`、`"`、バックスラッシュ、改行、U+2028、U+2029、バッククォート、
+`&`、`#`、`<` を含む文字列は、書かれたまま残します。
+`"` の間で escape が必要になるか、
+mermaid.js が別の読み方をする文字（`#35;` などのエンティティ、HTML、
+Markdown 文字列）を含むからです。
+Wardley の flow のラベル（`+'moving'>`）は `'` の間に残します。
+[fixture: cynefin/strings/single-quote-sensitive-kept]
+[fixture: gitgraph/quotes/single-quote-sensitive-kept]
+[fixture: packet/quotes/single-quote-sensitive-kept]
+[fixture: pie/labels/single-quote-sensitive-kept]
+[fixture: radar/quotes/single-quote-sensitive-kept]
+[fixture: railroad/quotes/ir-single-quote-sensitive-kept]
+[fixture: railroad/quotes/ebnf-single-quote-sensitive-kept]
+[fixture: railroad/quotes/peg-single-quote-sensitive-kept]
+[fixture: treeview/names/single-quote-sensitive-kept]
+[fixture: treemap/names/single-quote-sensitive-kept]
+[fixture: usecase/labels/single-quote-sensitive-kept]
+[fixture: wardley/names-and-quotes/single-quote-sensitive-kept]
+[fixture: wardley/flows/flow-forward]
+
+### 最短の形の数
+
+円グラフの区分の値、XY チャートの値と範囲、treemap の葉の値、
+radar チャートの `max`、`min`、`ticks` と曲線の値、Venn の集合の大きさは、
+mermaid.js が数として読む数です。
+印字は、`+`、小数部の末尾のゼロ、末尾の `.` をなくし、
+先頭の `.` の前に `0` を置きます。
+`+1.50` は `1.5`、`2.0` は `2`、`3.` は `3`、`.5` は `0.5` です。
+例にあるこれらの図種の数 213 個のうち 210 個はこの形で、
+3 個（すべて XY チャート）は小数部の末尾にゼロがあります。
+[fixture: pie/numbers/shortest-form]
+[fixture: xychart/numbers/range-numbers-one-form]
+[fixture: xychart/numbers/values-one-form]
+[fixture: treemap/numbers/shortest-form] [fixture: treemap/numbers/leading-dot]
+[fixture: radar/numbers/shortest-form]
+[fixture: radar/numbers/raw-option-numbers]
+[fixture: venn/sizes-and-numbers/absent-zero-signs]
+[fixture: venn/sizes-and-numbers/size-spaces]
+
+これらの数は、数をテキストとして書く設定（円グラフの `showData`、
+XY チャートの `showDataLabel`、treemap の値のラベル、
+radar チャートの目盛り）でも描き、描画は同じでした。
+mermaid.js がテキストとして読む数（Venn 図の `text A .5`、
+XY チャートの x 軸の分類 `007`）、整数部の先頭にゼロがある数（`007`）、
+15 桁より多い数、指数のある数（`1e3`）、`-0`、この節にない図種の数は、
+書かれたまま残します。
+Wardley マップの座標は、小数 168 個のうち 81 個で小数部の末尾にゼロがあります。
+[fixture: venn/sizes-and-numbers/text-number-forms]
+[fixture: xychart/numbers/forms-kept] [fixture: pie/numbers/forms-kept]
+[fixture: radar/numbers/forms-kept] [fixture: treemap/numbers/forms-kept]
+[fixture: wardley/numbers/forms-kept]
+
+### ヘッダーのキーワード
+
+次の図種はヘッダーに 2 つのキーワードを読み、
+例は一方をほかの形の 2 倍以上多く使います。
+印字はその形を使います。
+後ろに hidden YAML ブロックが続くヘッダーは、キーワードを保ちます。
+`packet-beta---` が読まれる場所で `packet---` は読まれないからです。
+
+| 書かれた形     | 印字する形      | 例の数（印字する形 / ほかの形） |
+| -------------- | --------------- | ------------------------------- |
+| `block-beta`   | `block`         | 30 / 0                          |
+| `graph`        | `flowchart`     | 116 / 0                         |
+| `ishikawa`     | `ishikawa-beta` | 1 / 0                           |
+| `packet-beta`  | `packet`        | 4 / 0                           |
+| `sankey-beta`  | `sankey`        | 8 / 0                           |
+| `treemap`      | `treemap-beta`  | 8 / 0                           |
+| `xychart-beta` | `xychart`       | 7 / 1                           |
+
+7 つのそれぞれで、描画の `aria-roledescription` とアクセシビリティツリーは、
+どちらのキーワードでも同じです。
+`graph` と `flowchart` は、どちらも `flowchart-v2` として描かれます。
+[fixture: block/header/block-beta-one-form]
+[fixture: flowchart/direction/header-keyword-one-form]
+[fixture: ishikawa/header/header-valid] [fixture: packet/header/header-beta]
+[fixture: packet/hidden-yaml/yaml-beta-header]
+[fixture: sankey/header/sankey-beta] [fixture: treemap/header/common]
+[fixture: xychart/header-and-orientation/beta-header-one-form]
+
+別の大文字小文字のヘッダー（`ISHIKAWA`、`sankey-BETA`、`XYCHART-BETA`）は、
+書かれたまま残します。 [fixture: ishikawa/header/header-stable]
+[fixture: sankey/header/upper-case-beta]
+[fixture: xychart/header-and-orientation/second-header-spelling-and-case-kept]
+
+`stateDiagram` と `stateDiagram-v2` は書かれたまま残します。
+例は `-v2` を 17 回、もう一方を 5 回使いますが、
+mermaid.js は両者で状態遷移図を異なって描きます。
+ほかのヘッダーはキーワードが 1 つだけか、例がもう一方のキーワードを使いません。
+[fixture: state/header/spellings-kept]
+
+### ヘッダーの向き
+
+flowchart のヘッダーの向き `TB` は `TD` と印字します。
+例は `TD` を 59 回、`TB` を 8 回使います。
+agentflow と swimlane のヘッダーの向き `TD` は `TB` と印字します。
+例は `TB` を agentflow で 10 回、swimlane で 1 回使い、`TD` は使いません。
+どの図でも `direction` の文は書かれたまま残します。
+mermaid.js が文の向きを Db に書かれたまま保つからです。
+[fixture: flowchart/direction/header-td-one-form]
+[fixture: flowchart/direction/statement-td-kept-with-other-header]
+[fixture: flowchart/direction/statement-values-kept]
+[fixture: agentflow/header/header-direction-spelling]
+[fixture: flowchart/direction/swimlane-header-td-one-form]
+
+### gitGraph のヘッダー
+
+gitGraph のヘッダーのキーワードの直後の `:` は除きます。
+例は `gitGraph` を 33 回、`gitGraph:` を 2 回書きます。
+[fixture: gitgraph/header/header-colon]
+
+### 書かれたまま残すもの
+
+flowchart の長いリンク（`-->` に対する `--->`）は、
+描いた例では同じ図を描きますが、mermaid.js の文書は、
+[Minimum length of a link][minimum-length-of-a-link]で、
+追加のダッシュがより多くの階層をまたぐリンクを求めると説明しています。
+そのため、長さは作者が書いたままにします。
+[fixture: flowchart/arrow-spacing/arrow-length-kept]
+
+[minimum-length-of-a-link]: https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L933-L955
+
 ## ラベルの先頭の空白
 
 mermaid.js は引用符のないラベルの先頭の空白を取り除き、整形も取り除きます。
@@ -1880,9 +2165,10 @@ Db や字句解析器が読むものは変えません。
   [fixture: quotes/strings-runs-collapsed]
   [fixture: multi-line-values/string-with-line-breaks-kept]
 - 分類と title の数字はテキストなので、`007` や `.5` は書かれたままです。
-  範囲の数とプロットの値も、書き手のテキストとして残します。
+  範囲の数とプロットの値は、最短の形で印字します。
+  [同じに描かれる綴り](#同じに描かれる綴り)を参照してください。
   [fixture: numbers/categories-are-texts]
-  [fixture: numbers/range-numbers-as-written]
+  [fixture: numbers/range-numbers-one-form]
 - 閉じていない `accDescr {` ブロックは、テキストの最後まで続きます。
   mermaid.js はそのテキストを読まず、
   印字が `}` を足すとブロックが説明になってしまいます。
@@ -2287,8 +2573,11 @@ Venn の本文は平らな一覧で、対象を書かない text だけを字下
 [fixture: venn/blank-lines/whitespace-before-empty-braces]
 [fixture: venn/blank-lines/blank-before-empty-braces-explicit]
 
-名前、ラベル、サイズ、裸と引用符つきの style 全体、title、
+名前、ラベル、裸と引用符つきの style 全体、title、
 重複と飲み込まれる断片は書かれたテキストのまま保ちます。
+単純な十進表記ではないサイズも、書かれたテキストのまま保ちます。
+単純な十進表記のサイズは最短の形で印字します。
+[同じに描かれる綴り](#同じに描かれる綴り)を参照してください。
 空の引用符つきの名前と style も値です。
 裸の空白、引用符内の空白、空の引用符つきラベルの読み分けも保ちます。
 上で述べた行末のスタイルの終端を除き、セミコロンを保ちます。
@@ -2305,7 +2594,7 @@ Venn の図コメントは LF か末尾まで続きます。
 [fixture: venn/line-rule-and-kept-lines/line-rule-suffix-spacing]
 [test: venn: ls-kept-comment-whitespace-line] [test: venn: ps-kept-directive]
 
-正規化するのは受理する役割の空白だけです。
+正規化するのは、受理する役割の空白と上の節の綴りだけです。
 通常の ASCII の隙間、設定の暗黙の字下げ、title の最初の区切りです。
 CR と CRLF は共通の改行処理を使います。
 値の Unicode 文字は保ち、不正な通常の隙間は拒否のままです。
@@ -2515,8 +2804,9 @@ class の[トークンの間の空白](./class.ja.md#トークンの間の空白
 [fixture: usecase/stereotypes/semicolon-padding-dropped]
 [test: usecase: stereotype-comment-region-padding-kept]
 
-ラベルと引用、境界タイトルの余白、継続列は、
-除去や引用の変更で Db が等しい場合も書かれたままです。
+ラベル、境界タイトルの余白、継続列は、除去で Db が等しい場合も書かれたままです。
+`'` で囲むラベルは、
+[同じに描かれる綴り](#同じに描かれる綴り)に従って `"` で囲んで印字します。
 共通コメント領域の結合と LS、PS を越える native コメントを保ちます。
 セミコロンは文を区切らず、行の規則が読む範囲を保護します。
 六つの既存の乖離は指定の受理と読みに従い、拒否する木は共有の失敗経路に従います。
@@ -2533,8 +2823,9 @@ accessibility 行の外側の空白は、単独ファイルと Markdown の両�
 
 ## Pie hidden boundaries and authored values
 
-[pie の規則](./pie.ja.md)は引用符、escape、数値の綴り、値の継続列、
-重複と原文の順序を保ちます。
+[pie の規則](./pie.ja.md)は、ラベルの引用符と値の桁を 1 つの形で印字し、escape、
+値の継続列、重複と原文の順序を保ちます。
+[同じに描かれる綴り](#同じに描かれる綴り)を参照してください。
 共通の title/accessibility 行の両端は C4 と同様に整えますが、
 pie は次の物理行の値を結合しません。
 空のラベルと説明 block も実際の構文です。 [fixture: pie/labels/label-quotes]
@@ -2579,9 +2870,11 @@ raw が拒否する C4 判定、前置きの Unicode、opaque YAML には raw Db
 
 ## Gitgraph の hidden 境界と書かれた履歴
 
-[gitgraph の規則](./gitgraph.ja.md)は、見出しの方向と colon の有無、
-checkout の別名、bare と明示的な message、引用符、参照の形、order の桁、
-option と文の全出現の原順序を保持します。
+[gitgraph の規則](./gitgraph.ja.md)は、見出しの方向、bare と明示的な message、
+参照の形、order の桁、option と文の全出現の原順序を保持します。
+見出しの後のコロン、`checkout` の代わりの `switch`、
+文字列の引用符は 1 つの形で印字します。
+[同じに描かれる綴り](#同じに描かれる綴り)を参照してください。
 文字列と参照の padding、escape、HTML、entity、tag の順序は Db を変え、
 cherry-pick の空 tag は既定 tag を抑止します。
 summary に message がなくても削除はしません。
@@ -2711,13 +3004,15 @@ payload を修復しません。 [corpus fixture: info/div-directive-flag-middle
 
 ## Packet の hidden 境界と原綴の block
 
-[packet の規則](./packet.ja.md)は、原綴の `packet`・`packet-beta` と、
+[packet の規則](./packet.ja.md)は、`packet-beta` を `packet` と印字し、
 range・single・relative の3形式を保ちます。
 公開行から block を再構成せず、公開上限後の出現も除きません。
 同じ label は別々に残し、空の共通代入も残します。
 空 title の削除は、それ以前の title を復活させ得るためです。
-label の引用符、padding、escape、HTML、entity と物理的な継続列は、
+label の padding、escape、HTML、entity と物理的な継続列は、
 書き換えが Db を変え得るため保ちます。
+`'` で囲む label は、
+[同じに描かれる綴り](#同じに描かれる綴り)に従って `"` で囲んで印字します。
 数値は double で丸め・overflow しても原綴です。
 指数・Infinity は packet の構文ではありません。
 [fixture: packet/block-forms-and-order/block-three-forms]
@@ -2851,14 +3146,17 @@ Markdown host は payload 最終行の padding を除きますが、
 公開値が使わない余分な名前や重複 entry も残します。
 数だけの curve と名前つき curve は区別します。
 見出しのコロンの有無は保ち、前の普通の空白は gitgraph と同じく詰めます。
-NumericLiteral の source span で、小数の先行・末尾ゼロ、丸められる精度、
-subnormal、underflow、overflow を保ちます。
+単純な十進表記の NumericLiteral の source span は最短の形で印字し、
+その他は整数部の先頭のゼロ、丸められる精度、subnormal、underflow、
+overflow を保ちます。
 double 値から再出力しません。
 option の値は作者のままです。
 ticks の制限、min・max の並べ替え、描画設定からの置換はしません。
-ラベルの StringLiteral は引用符、空・空白だけの文字列、escape、HTML、
-entity を保ち、ラベルの中の空白とタブの連なりは空白 1 つで印字します。
-singleQuote でも書き換えません。
+ラベルの StringLiteral は空・空白だけの文字列、escape、HTML、entity を保ち、
+ラベルの中の空白とタブの連なりは空白 1 つで印字します。
+`'` で囲むラベルは、
+[同じに描かれる綴り](#同じに描かれる綴り)に従って `"` で囲んで印字し、
+`singleQuote` は読みません。
 空ラベルの削除は ID への fallback を変えます。
 [fixture: radar/source-order/declaration-order-kept]
 [fixture: radar/source-order/mixed-curve-forms]
@@ -2973,9 +3271,12 @@ semicolon が保護する行の境界は、本文の原文を保ちます。
 [fixture: treemap/semicolons/body-kept]
 
 数は comma、underscore、dot、精度を含む source の綴りを保ちます。
+ただし、単純な十進表記は最短の形で印字します。
+[同じに描かれる綴り](#同じに描かれる綴り)を参照してください。
 数値から印字し直すと、読みが変わったり拒否される構文になったりします。
-名前は引用符、空名、backslash、entity、HTML、物理継続列を保ち、
+名前は空名、backslash、entity、HTML、物理継続列を保ち、
 名前の中の空白とタブの連なりは空白 1 つで印字します。
+`'` で囲む名前は、同じ節に従って `"` で囲んで印字します。
 class style は内部と末尾の padding を含め、作者の literal 全体として保ちます。
 CSS としては整形しません。
 class の再定義、空代入、未解決の selector、元順を保ちます。
@@ -3328,8 +3629,10 @@ EBNF、ABNF、PEG は平坦な配置を保ちます。
 [fixture: railroad/long-lines/peg-width]
 
 文字列は source span 全体を保ちます。
-引用符、空値、空白だけの値、escape、HTML、entity、継続列も対象です。
-singleQuote では書き換えません。
+空値、空白だけの値、escape、HTML、entity、継続列も対象です。
+`'` で囲む IR、EBNF、PEG の文字列は、
+[同じに描かれる綴り](#同じに描かれる綴り)に従って `"` で囲んで印字し、
+`singleQuote` は読みません。
 ABNF は backslash を普通の文字として読み、他の3方言は escape として読みます。
 ABNF の repeat は先頭ゼロ、上下限の省略、exact 形、巨大な整数を保ちます。
 numeric value は base letter の大小、数字、dot、
@@ -3600,8 +3903,10 @@ semicolon で保護した prefix は一度だけ印字し、suffix の owner を
 項目の順と重複、自己遷移、空ラベル、共通文のリセットを残します。
 領域と項目の行は木を示すもので、列が親を選ぶわけではありません。
 有効な Db からの再構築は出現を失い、置換やリセットの読みを変え得ます。
-文字列は空の値や native form に見える文字も含め、引用符、escape、
-内部の列を保ちます。 [fixture: cynefin/empty-domains/empty-domain-last-reset]
+文字列は空の値や native form に見える文字も含め、escape、内部の列を保ちます。
+`'` で囲む文字列は、
+[同じに描かれる綴り](#同じに描かれる綴り)に従って `"` で囲んで印字します。
+[fixture: cynefin/empty-domains/empty-domain-last-reset]
 [fixture: cynefin/redeclarations/domain-repeat-order]
 [fixture: cynefin/transition-occurrences/transition-occurrences]
 [fixture: cynefin/source-order/source-common-empty-resets]

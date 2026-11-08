@@ -17,10 +17,12 @@ mermaid.js は各入力とその出力を同じ Db として読みます。
 
 ### Header
 
-選ばれた `ishikawa` または `ishikawa-beta` の見出しは、
-受理された綴りと大文字小文字を保ち、1 列目に置きます。
-Db が等しい別の綴りへ変えず、見出しを見つけやすくするためです。
-[fixture: ishikawa/header/header-column]
+見出しは、見つけやすくするために 1 列目に置きます。
+キーワード `ishikawa` は `ishikawa-beta` と印字します。
+mermaid.js の文書の例が使い、同じ図を描くキーワードだからです。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+`ishikawa-beta` と、大文字小文字が異なる見出し（`ISHIKAWA`、`IsHiKaWa`）は、
+書かれたまま残します。 [fixture: ishikawa/header/header-column]
 [fixture: ishikawa/header/header-stable]
 [fixture: ishikawa/header/header-case-alternative]
 [fixture: ishikawa/header/header-lowercase]

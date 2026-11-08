@@ -796,12 +796,15 @@ quadrantChart
 ### キーワードの大文字小文字
 
 キーワード `title`、`x-axis`、`y-axis`、`quadrant-1` から `quadrant-4`、
-`classDef`、`accTitle`、`accDescr` は、書かれた大文字小文字のまま印字します。
-mermaid.js はどれも大文字小文字を問わずに読み（`Title`、`X-Axis`、`CLASSDEF`、
-`ACCTITLE:` も文を始めます）、Db は同じです。
-そのため、大文字小文字は書き手のもので、強制するものはありません。
+`classDef` は、mermaid.js の文書の例が使う大文字小文字で印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
+mermaid.js はどれも大文字小文字を問わずに読み（`Title`、`X-Axis`、
+`CLASSDEF` も文を始めます）、Db は同じです。
+例に使われていない `accTitle` と `accDescr` は、
+書かれた大文字小文字のまま印字します。
 クラスの名前は、大文字小文字も残します。
 [fixture: keyword-case/statement-keywords-one-form]
+[fixture: keyword-case/quadrant-3-4-one-form]
 [fixture: keyword-case/accessibility-keywords-kept]
 
 入力

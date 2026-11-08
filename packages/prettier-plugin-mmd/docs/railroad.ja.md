@@ -667,15 +667,20 @@ railroad-ebnf-beta
 ### 文字列
 
 StringLiteral の source span を保ちます。
-引用符、escape、空文字列、HTML、entity、
-hidden やコメントに見える文字も対象です。
+escape、空文字列、HTML、entity、hidden やコメントに見える文字も対象です。
 文字列の中の空白とタブの連なりは空白 1 つにして印字します。
 空白とタブだけの文字列は空白 1 つになります。
-singleQuote で値を書き換えません。
 IR、EBNF、PEG は両方の引用符と backslash escape を認めます。
+`'` で囲んだ文字列は `"` で囲んで印字しますが、内容に `'`、`"`、backslash、
+改行、U+2028、U+2029、バッククォート、`&`、`#`、
+`<` が含まれる場合は書かれたままにします。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+`singleQuote` は読みません。
 ABNF は二重引用符だけを認め、backslash を普通の文字として読みます。
-再引用に整形上の利点はなく、
-内容の trim や escape の誤解釈で Db が変わるためです。
+内容の trim や escape の誤解釈で Db が変わります。
+[fixture: railroad/quotes/ir-single-quote-sensitive-kept]
+[fixture: railroad/quotes/ebnf-single-quote-sensitive-kept]
+[fixture: railroad/quotes/peg-single-quote-sensitive-kept]
 
 [fixture: railroad/quotes/abnf-backslash]
 
@@ -704,7 +709,7 @@ railroad-beta
   r = sequence(
     terminal(""),
     terminal(" 	 "),
-    nonterminal(''),
+    nonterminal(""),
     special("%%literal --- <b> plain")
   );
 ```

@@ -704,9 +704,9 @@ mindmap
 
 ### キーワードの大文字小文字
 
-キーワードは、書かれた大文字小文字のまま残します。
+`::icon(` は、mermaid.js の文書の例のとおり、小文字で印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
 mermaid.js は `::icon(` をどの大文字小文字でも読み、Db は同じです。
-大文字小文字は強制されないので、作者が選んだものとして、書き換えません。
 ヘッダーは小文字でだけ検出されます。 [fixture: keyword-case/icon-keyword]
 
 入力
@@ -725,8 +725,8 @@ mindmap
 ```mmd
 mindmap
   root
-  ::ICON(x)
-  ::Icon(y)
+  ::icon(x)
+  ::icon(y)
 ```
 
 ### フロントマターの YAML
