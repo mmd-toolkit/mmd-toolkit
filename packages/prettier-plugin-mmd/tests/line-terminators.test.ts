@@ -126,7 +126,7 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
   [
     "sankey",
     ["sankey-beta", "a , b , 1", '"c', 'd", e, 2', "%% c", "%%{init: {}}%%"],
-    'sankey-beta\na,b,1\n"c\nd",e,2\n%% c\n%%{init: {}}%%\n',
+    'sankey\na,b,1\n"c\nd",e,2\n%% c\n%%{init: {}}%%\n',
   ],
   [
     "timeline",
@@ -169,7 +169,7 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
       "%% c",
       "%%{init: {}}%%",
     ],
-    'xychart-beta horizontal\n  title Two words\n  x-axis [a, b]\n  line [1, 2 "x"]\n  accDescr {\n    d\n  }\n  %% c\n  %%{init: {}}%%\n',
+    'xychart horizontal\n  title Two words\n  x-axis [a, b]\n  line [1, 2 "x"]\n  accDescr {\n    d\n  }\n  %% c\n  %%{init: {}}%%\n',
   ],
   [
     "kanban",
@@ -193,7 +193,7 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
       "%% c",
       "%%{init: {}}%%",
     ],
-    "block-beta\n  columns 3\n  a b\n  block:G\n    c --> d\n  end\n  %% c\n  %%{init: {}}%%\n",
+    "block\n  columns 3\n  a b\n  block:G\n    c --> d\n  end\n  %% c\n  %%{init: {}}%%\n",
   ],
   [
     "gantt",

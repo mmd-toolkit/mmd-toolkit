@@ -27,10 +27,10 @@ const cases: readonly MarkdownCase[] = [
     name: "cynefin Markdown: top-level",
     input: "```mermaid\ncynefin-beta:complex\"FencedAlpha\"'FencedBeta'\n```\n",
     output:
-      "```mermaid\ncynefin-beta:\n  complex\n    \"FencedAlpha\"\n    'FencedBeta'\n```\n",
+      '```mermaid\ncynefin-beta:\n  complex\n    "FencedAlpha"\n    "FencedBeta"\n```\n',
     payloadInput: "cynefin-beta:complex\"FencedAlpha\"'FencedBeta'",
     payloadOutput:
-      "cynefin-beta:\n  complex\n    \"FencedAlpha\"\n    'FencedBeta'\n",
+      'cynefin-beta:\n  complex\n    "FencedAlpha"\n    "FencedBeta"\n',
     options: {},
   },
   {

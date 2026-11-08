@@ -2,6 +2,7 @@ import type { Node, Range, Token } from "@mmd-toolkit/ast"
 import { visitorKeys } from "@mmd-toolkit/parser"
 import { keywordSpellings } from "./keyword-spellings.ts"
 import type { Source } from "./source.ts"
+import { findFirstIndex } from "./source.ts"
 
 /** The text to print in place of the token or node at an offset. */
 export interface Respelling {
@@ -25,6 +26,19 @@ const headerSpellings: Readonly<
   sankey: { "sankey-beta": "sankey" },
   treemap: { treemap: "treemap-beta" },
   xychart: { "xychart-beta": "xychart" },
+}
+
+/**
+ * The header directions that name the top-to-bottom direction another way, by
+ * the diagram type and the direction as written (docs/compatibility.md,
+ * Spellings that are drawn the same).
+ */
+const directionSpellings: Readonly<
+  Record<string, Readonly<Record<string, string>>>
+> = {
+  agentflow: { TD: "TB" },
+  "flowchart-v2": { TB: "TD" },
+  swimlane: { TD: "TB" },
 }
 
 /** The diagram types whose strings can be written between `'` as well. */
@@ -125,11 +139,15 @@ function childrenOf(node: Node): Node[] {
   })
 }
 
-/** Records the ranges of the nodes of one type below `node`. */
-function collectRanges(node: Node, type: string, found: Range[]): void {
+/** Records the ranges of the outermost nodes below `node` of a wanted type. */
+function collectRanges(
+  node: Node,
+  isWanted: (type: string) => boolean,
+  found: Range[],
+): void {
   for (const child of childrenOf(node)) {
-    if (child.type === type) found.push(child.range)
-    else collectRanges(child, type, found)
+    if (isWanted(child.type)) found.push(child.range)
+    else collectRanges(child, isWanted, found)
   }
 }
 
@@ -151,9 +169,13 @@ function collectListedKeywords(
           statement.type === "ErClassStatement" ||
           statement.type === "ErStyleStatement"
         ) {
-          const keyword = source.root.tokens.find(
-            (token) => token.range[0] >= statement.range[0],
-          )
+          const keyword =
+            source.root.tokens[
+              findFirstIndex(
+                source.root.tokens,
+                (token) => token.range[0] >= statement.range[0],
+              )
+            ]
           if (keyword !== undefined) found.add(keyword.range[0])
         }
       }
@@ -207,9 +229,9 @@ function respellingsOf(source: Source): SourceRespellings {
     const spellings = keywordSpellings[type] ?? {}
     const tokens = source.root.tokens
     const headerIndex = tokens.findIndex((token) => token.type === "Keyword")
-    // The direction of a flowchart is the keyword that follows its header.
+    // The direction of a header is the keyword that follows it.
     const directionIndex =
-      type === "flowchart-v2" &&
+      directionSpellings[type] !== undefined &&
       headerIndex !== -1 &&
       tokens[headerIndex + 1]?.type === "Keyword" &&
       source.text
@@ -219,24 +241,25 @@ function respellingsOf(source: Source): SourceRespellings {
         : -1
     // The label of a flow of a Wardley map is between `'` only (`+'moving'>`).
     const arrows: Range[] = []
-    collectRanges(source.root, "WardleyArrow", arrows)
+    collectRanges(source.root, (name) => name === "WardleyArrow", arrows)
+    const ignored: Range[] = []
+    collectRanges(source.root, (name) => name.endsWith("IgnoredText"), ignored)
     const listed = new Set<number>()
     if (type === "er") collectListedKeywords(source, source.root, listed)
     tokens.forEach((token, index) => {
       const text = source.text.slice(...token.range)
       let respelled: string | undefined
       if (token.type === "Keyword" && index === headerIndex) {
-        // A minus after the header is the start of a hidden YAML block, as in
-        // `packet-beta---`, which `packet---` does not read.
-        respelled =
-          source.text[token.range[1]] === "-"
-            ? undefined
-            : headerSpellings[type]?.[text]
+        // The printer keeps a hidden YAML block, and a hidden directive, at
+        // the header, as in `packet-beta---`, which `packet---` does not read.
+        respelled = ignored.some(([from]) => from === token.range[1])
+          ? undefined
+          : headerSpellings[type]?.[text]
       } else if (token.type === "Keyword") {
         respelled = listed.has(token.range[0])
           ? undefined
-          : index === directionIndex && text === "TB"
-            ? "TD"
+          : index === directionIndex
+            ? directionSpellings[type]?.[text]
             : spellings[text.toLowerCase()]
       } else if (
         token.type === "String" &&
@@ -301,14 +324,20 @@ export function writtenWithRespellings(
   end: number,
 ): string {
   const { byStart, starts } = respellingsOf(source)
+  // The first respelling that starts at or after `start`.
+  let low = 0
+  let high = starts.length
+  while (low < high) {
+    const middle = (low + high) >> 1
+    if (starts[middle] < start) low = middle + 1
+    else high = middle
+  }
   let text = ""
   let at = start
-  for (const offset of starts) {
-    if (offset < start) continue
-    if (offset >= end) break
-    const respelling = byStart.get(offset)!
+  for (let index = low; index < starts.length && starts[index] < end; index++) {
+    const respelling = byStart.get(starts[index])!
     if (respelling.end > end) break
-    text += source.text.slice(at, offset) + respelling.text
+    text += source.text.slice(at, starts[index]) + respelling.text
     at = respelling.end
   }
   return text + source.text.slice(at, end)

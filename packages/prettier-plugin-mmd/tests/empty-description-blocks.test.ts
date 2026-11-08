@@ -78,13 +78,13 @@ const cases = [
     name: "xychart Unicode and tab interiors",
     input:
       "xychart-beta\naccDescr {\u00a0\u2003\u2028\u2029\ufeff}\naccDescr{\t}\n",
-    output: "xychart-beta\n  accDescr {}\n  accDescr {}\n",
+    output: "xychart\n  accDescr {}\n  accDescr {}\n",
   },
   {
     name: "block Unicode and tab interiors",
     input:
       "block-beta\naccDescr {\u00a0\u2003\u2028\u2029\ufeff}\naccDescr{\t} a\n",
-    output: "block-beta\n  accDescr {}\n  accDescr {}\n  a\n",
+    output: "block\n  accDescr {}\n  accDescr {}\n  a\n",
   },
   {
     name: "c4 Unicode and tab interiors",
@@ -146,7 +146,7 @@ const cases = [
   {
     name: "sankey description-looking field keeps its text",
     input: 'sankey-beta\n"accDescr {  }",B,1\n',
-    output: 'sankey-beta\n"accDescr {  }",B,1\n',
+    output: 'sankey\n"accDescr {  }",B,1\n',
   },
 ]
 

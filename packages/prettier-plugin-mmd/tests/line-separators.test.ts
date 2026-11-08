@@ -715,7 +715,7 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
   [
     "U+2029 between the graph keyword and its direction",
     "graph\u2029<\nA\n",
-    "graph\u2029<\n  A\n",
+    "flowchart\u2029<\n  A\n",
   ],
   [
     "U+2028 before the comma of a flowchart style statement",
@@ -1926,12 +1926,12 @@ const xychartLineSeparatorExamples: readonly (readonly [
   [
     "xychart/multi-line-statements/header-comment-region-ls",
     "xychart-beta\u2028%% orientation\n horizontal\n",
-    "xychart-beta\u2028%% orientation\n horizontal\n",
+    "xychart\u2028%% orientation\n horizontal\n",
   ],
   [
     "xychart/multi-line-statements/header-comment-region-ps",
     "xychart-beta\u2029%% orientation\n horizontal\n",
-    "xychart-beta\u2029%% orientation\n horizontal\n",
+    "xychart\u2029%% orientation\n horizontal\n",
   ],
   [
     "U+2028 between the header and a statement",
@@ -2297,107 +2297,107 @@ const blockLineSeparatorExamples: readonly (readonly [
   [
     "U+2028 after the comma between the directions of a block arrow",
     'block-beta\na<["L"]>(right,\u2028down)\n',
-    'block-beta\n  a<["L"]>(right,\u2028down)\n',
+    'block\n  a<["L"]>(right,\u2028down)\n',
   ],
   [
     "U+2028 before the comma between the directions of a block arrow",
     'block-beta\na<["L"]>(right\u2028,down)\n',
-    'block-beta\n  a<["L"]>(right\u2028, down)\n',
+    'block\n  a<["L"]>(right\u2028, down)\n',
   ],
   [
     "U+2029 after the comma between the directions of a block arrow",
     'block-beta\na<["L"]>(right,\u2029down)\n',
-    'block-beta\n  a<["L"]>(right,\u2029down)\n',
+    'block\n  a<["L"]>(right,\u2029down)\n',
   ],
   [
     "U+2029 before the comma between the directions of a block arrow",
     'block-beta\na<["L"]>(right\u2029,down)\n',
-    'block-beta\n  a<["L"]>(right\u2029, down)\n',
+    'block\n  a<["L"]>(right\u2029, down)\n',
   ],
   [
     "U+2028 between two statements of a row",
     "block-beta\na\u2028b\n",
-    "block-beta\n  a\u2028b\n",
+    "block\n  a\u2028b\n",
   ],
   [
     "U+2029 between two statements of a row",
     "block-beta\na\u2029b\nc\n",
-    "block-beta\n  a\u2029b\n  c\n",
+    "block\n  a\u2029b\n  c\n",
   ],
   [
     "U+2028 around the arrow of an edge",
     "block-beta\nA\u2028-->\u2028B\n",
-    "block-beta\n  A\u2028-->\u2028B\n",
+    "block\n  A\u2028-->\u2028B\n",
   ],
   [
     "U+2028 between an id and its shape",
     'block-beta\nA\u2028("x")\n',
-    'block-beta\n  A\u2028("x")\n',
+    'block\n  A\u2028("x")\n',
   ],
   [
     "U+2028 before the colon of a width",
     "block-beta\nA\u2028:3\n",
-    "block-beta\n  A\u2028:3\n",
+    "block\n  A\u2028:3\n",
   ],
   [
     "U+2028 after columns",
     "block-beta\ncolumns\u20283\n",
-    "block-beta\n  columns\u20283\n",
+    "block\n  columns\u20283\n",
   ],
   [
     "U+2028 in a label",
     'block-beta\nA["a\u2028b"]\n',
-    'block-beta\n  A["a\u2028b"]\n',
+    'block\n  A["a\u2028b"]\n',
   ],
   [
     "U+2028 at the end of a statement of a row",
     "block-beta\nA\u2028\n",
-    "block-beta\n  A\n",
+    "block\n  A\n",
   ],
   [
     "U+2028 before a comment line that joins lines",
     "block-beta\ncolumns\u2028\n%% c\nA\n",
-    "block-beta\n  columns\u2028\n%% c\nA\n",
+    "block\n  columns\u2028\n%% c\nA\n",
   ],
   [
     "U+2029 before comment lines that join lines",
     "block-beta\na\u2029\n%% c\n%% d\nb\nc\n",
-    "block-beta\n  a\u2029\n%% c\n%% d\nb\n  c\n",
+    "block\n  a\u2029\n%% c\n%% d\nb\n  c\n",
   ],
   [
     "U+2028 between a composite head and its body",
     "block-beta\nblock:G\u2028a\u2028end\n",
-    "block-beta\n  block:G\n    a\n  end\n",
+    "block\n  block:G\n    a\n  end\n",
   ],
   [
     "block: ls-comment-in-composite-head",
     "block-beta\nblock:\u2028%% keep\n group:2\nA\nend\n",
-    "block-beta\n  block:\u2028%% keep\n group:2\n    A\n  end\n",
+    "block\n  block:\u2028%% keep\n group:2\n    A\n  end\n",
   ],
   [
     "block: ps-comment-in-composite-head",
     "block-beta\nblock:\u2029%% keep\n group:2\nA\nend\n",
-    "block-beta\n  block:\u2029%% keep\n group:2\n    A\n  end\n",
+    "block\n  block:\u2029%% keep\n group:2\n    A\n  end\n",
   ],
   [
     "block: comment-ls-semicolon-before",
     'block-beta\nblock:r\n A["x"]%% c;\u2028 B["y"]\nend\n',
-    'block-beta\n  block:r\n    A["x"] %% c;\u2028 B["y"]\n  end\n',
+    'block\n  block:r\n    A["x"] %% c;\u2028 B["y"]\n  end\n',
   ],
   [
     "block: comment-ps-semicolon-after",
     'block-beta\nblock:r\n A["x"]%% c\u2029 B["x;y"]\nend\n',
-    'block-beta\n  block:r\n    A["x"] %% c\u2029 B["x;y"]\n  end\n',
+    'block\n  block:r\n    A["x"] %% c\u2029 B["x;y"]\n  end\n',
   ],
   [
     "block: comment-ls-semicolon-both",
     'block-beta\nblock:r\n A["x"]%% c;\u2028 B["x;y"]\nend\n',
-    'block-beta\n  block:r\n    A["x"] %% c;\u2028 B["x;y"]\n  end\n',
+    'block\n  block:r\n    A["x"] %% c;\u2028 B["x;y"]\n  end\n',
   ],
   [
     "U+2029 before the comma of a block classDef statement",
     "block-beta\nA\nclassDef c fill:#f00\u2029 ,color:white\n",
-    "block-beta\n  A\n  classDef c fill:#f00\u2029 ,color:white\n",
+    "block\n  A\n  classDef c fill:#f00\u2029 ,color:white\n",
   ],
 ]
 
@@ -2409,63 +2409,59 @@ const blockWhitespaceExamples: readonly (readonly [string, string, string])[] =
     [
       "U+00A0 between two statements of a row",
       "block-beta\na\u00a0b\n",
-      "block-beta\n  a b\n",
+      "block\n  a b\n",
     ],
     [
       "U+00A0 at the ends of a line",
       "block-beta\n\u00a0a\u00a0\n",
-      "block-beta\n  a\n",
+      "block\n  a\n",
     ],
     [
       "a tab, a vertical tab, a form feed, U+3000, and U+FEFF between units",
       "block-beta\ncolumns\t3\u3000a\ufeffb\fc\u000bd\n",
-      "block-beta\n  columns 3\n  a b c d\n",
+      "block\n  columns 3\n  a b c d\n",
     ],
     [
       "U+00A0 around the arrow of an edge",
       "block-beta\nA\u00a0-->\u00a0B\n",
-      "block-beta\n  A --> B\n",
+      "block\n  A --> B\n",
     ],
     [
       "U+00A0 between an id and its shape",
       'block-beta\nA\u00a0("x")\n',
-      'block-beta\n  A("x")\n',
+      'block\n  A("x")\n',
     ],
     [
       "U+00A0 before the directions of a block arrow",
       'block-beta\nA<["z"]>\u00a0(right)\n',
-      'block-beta\n  A<["z"]>(right)\n',
+      'block\n  A<["z"]>(right)\n',
     ],
     [
       "U+00A0 in a label",
       'block-beta\nA["a\u00a0b"]\n',
-      'block-beta\n  A["a\u00a0b"]\n',
+      'block\n  A["a\u00a0b"]\n',
     ],
     [
       "U+00A0 in a class definition",
       "block-beta\nclassDef\u00a0c1\u00a0fill:#f00\u00a0\n",
-      "block-beta\n  classDef c1 fill: #f00\n",
+      "block\n  classDef c1 fill: #f00\n",
     ],
     [
       "U+00A0 in a style",
       "block-beta\nA\nstyle\u00a0A\u00a0fill:#f00\u00a0\n",
-      "block-beta\n  A\n  style A fill: #f00\n",
+      "block\n  A\n  style A fill: #f00\n",
     ],
     [
       "U+00A0 inside an empty description block",
       "block-beta\naccDescr\u00a0{\u00a0}\u00a0a\n",
-      "block-beta\n  accDescr {}\n  a\n",
+      "block\n  accDescr {}\n  a\n",
     ],
     [
       "U+00A0 in a composite head",
       "block-beta\nblock:\u00a0G\u00a0a\u00a0end\n",
-      "block-beta\n  block:G\n    a\n  end\n",
+      "block\n  block:G\n    a\n  end\n",
     ],
-    [
-      "U+0085 inside an id",
-      "block-beta\na\u0085b\n",
-      "block-beta\n  a\u0085b\n",
-    ],
+    ["U+0085 inside an id", "block-beta\na\u0085b\n", "block\n  a\u0085b\n"],
   ]
 
 describe("a state diagram with a line separator", () => {

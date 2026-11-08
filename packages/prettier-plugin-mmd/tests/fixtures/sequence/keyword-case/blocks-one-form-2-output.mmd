@@ -1,0 +1,14 @@
+sequenceDiagram
+  critical first
+    A ->> B: one
+  option second
+    A ->> B: two
+  end
+  break stop
+    A ->> B: three
+  end
+  rect rgb(200,200,200)
+    loop repeat
+      A ->> B: four
+    end
+  end

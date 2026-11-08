@@ -50,7 +50,7 @@ Examples of **incorrect** code for this rule:
 
 ```mmd
 %% eslint @mmd-toolkit/treemap-no-duplicate-title: error
-treemap
+treemap-beta
   title First
   title Second
   "Revenue": 10
@@ -60,7 +60,7 @@ Examples of **correct** code for this rule:
 
 ```mmd
 %% eslint @mmd-toolkit/treemap-no-duplicate-title: error
-treemap
+treemap-beta
   title Second
   "Revenue": 10
 ```

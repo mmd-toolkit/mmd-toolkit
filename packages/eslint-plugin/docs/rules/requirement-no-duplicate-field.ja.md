@@ -36,6 +36,10 @@ requirement や element の本体で繰り返すフィールドのうち、
 `id: 1`、`id: 2`、`id: 1` は 1 つ、`id: 1`、`id: 2`、`id: 3` は 2 つ報告する。
 フィールドの間の空の説明のブロックは、比較に影響しない。
 
+最後の correct の例は、書いたまま示している。
+2 つの `risk` の値は大文字小文字が違い、整形ツールは同じ大文字小文字で書くが、
+その違いがこの例の示すことだからである。
+
 この規則に**反する**コードの例:
 
 ```mmd
@@ -58,6 +62,7 @@ requirementDiagram
   }
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/requirement-no-duplicate-field: error
 requirementDiagram

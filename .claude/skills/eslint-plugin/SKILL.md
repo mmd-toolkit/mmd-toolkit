@@ -360,19 +360,20 @@ in the background and write its output to a file.
    its tester enables the same rule under `rule-to-test/` and enabling it under
    `@mmd-toolkit/` too would duplicate every report. The comment belongs to the
    published example, not to the corpus fixture: do not change the fixture to
-   add it. An example kept as written on purpose, where the presence or absence
-   of whitespace is the point, is the only exception. `<!-- prettier-ignore -->`
-   stands directly before its code block, in both languages, and a sentence of
-   Rule Details says that the example is shown as written and why: the formatter
-   prints an empty `accDescr` block as `accDescr {}`, so an example with
-   whitespace between the braces is kept. `check:docs` reads neither that
-   sentence nor whether the mark is still needed; a review does. Check that the
-   `expected.json` of each fixture used says what the document claims, and use
-   only fixtures whose `accepted` is true, also for the correct examples. For
-   every example and claim without a fixture, add one by the steps of the skill
-   `tests`: give the smallest input that shows it and the claim of the rule
-   document that the fixture answers, and add it with `pnpm run fixtures:add`,
-   which records what mermaid.js does
+   add it. An example kept as written on purpose, where a way of writing that
+   the formatter prints in one form is the point (whitespace, the case of a
+   value or a keyword, quotes, the form of a number), is the only exception.
+   `<!-- prettier-ignore -->` stands directly before its code block, in both
+   languages, and a sentence of Rule Details says that the example is shown as
+   written and why: the formatter prints an empty `accDescr` block as
+   `accDescr {}`, so an example with whitespace between the braces is kept.
+   `check:docs` reads neither that sentence nor whether the mark is still
+   needed; a review does. Check that the `expected.json` of each fixture used
+   says what the document claims, and use only fixtures whose `accepted` is
+   true, also for the correct examples. For every example and claim without a
+   fixture, add one by the steps of the skill `tests`: give the smallest input
+   that shows it and the claim of the rule document that the fixture answers,
+   and add it with `pnpm run fixtures:add`, which records what mermaid.js does
    (`packages/tests/docs/maintaining-fixtures.md`); then record its tree in the
    parser (the skill `parser`). Read its `expected.json` and use it in the tests
    of the rule. The document change is not done until the fixture exists.

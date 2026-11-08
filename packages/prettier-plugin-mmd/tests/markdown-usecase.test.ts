@@ -74,8 +74,8 @@ const cases: readonly MarkdownCase[] = [
       tabWidth: 0,
     },
     output:
-      "```mermaid\nusecase-beta\nactor Reader@{\ntype: normal,\nicon: ''\n}\n```\n",
-    payloadOutput: "usecase-beta\nactor Reader@{\ntype: normal,\nicon: ''\n}\n",
+      '```mermaid\nusecase-beta\nactor Reader@{\ntype: normal,\nicon: ""\n}\n```\n',
+    payloadOutput: 'usecase-beta\nactor Reader@{\ntype: normal,\nicon: ""\n}\n',
     rejected: false,
   },
   {

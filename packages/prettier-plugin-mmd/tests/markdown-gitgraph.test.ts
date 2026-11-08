@@ -26,9 +26,9 @@ const cases: readonly MarkdownCase[] = [
   {
     name: "gitgraph Markdown: top-level",
     input: '```mermaid\ngitGraph:commit id:"Fence"\n```\n',
-    output: '```mermaid\ngitGraph:\n  commit id: "Fence"\n```\n',
+    output: '```mermaid\ngitGraph\n  commit id: "Fence"\n```\n',
     payloadInput: 'gitGraph:commit id:"Fence"',
-    payloadOutput: 'gitGraph:\n  commit id: "Fence"\n',
+    payloadOutput: 'gitGraph\n  commit id: "Fence"\n',
     options: {},
   },
   {

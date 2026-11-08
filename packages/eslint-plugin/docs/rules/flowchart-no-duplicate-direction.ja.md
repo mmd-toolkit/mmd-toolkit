@@ -42,7 +42,7 @@ mermaid.js は、同じ id の subgraph を、最初のものの方向で 1 つ�
 
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-duplicate-direction: error
-flowchart TB
+flowchart TD
   subgraph S
     direction LR
     A --> B
@@ -54,7 +54,7 @@ flowchart TB
 
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-duplicate-direction: error
-flowchart TB
+flowchart TD
   subgraph S
     direction LR
     A --> B

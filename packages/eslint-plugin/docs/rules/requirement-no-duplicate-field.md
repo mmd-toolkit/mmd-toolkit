@@ -35,6 +35,10 @@ value is not reported: `id: 1`, `id: 2`, and `id: 1` give one report, while
 `id: 1`, `id: 2`, and `id: 3` give two. An empty description block between
 fields does not affect the comparison.
 
+The last correct example is shown as written: its two `risk` values differ in
+case, which the formatter would print in one case, and that difference is what
+the example shows.
+
 Examples of **incorrect** code for this rule:
 
 ```mmd
@@ -57,6 +61,7 @@ requirementDiagram
   }
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/requirement-no-duplicate-field: error
 requirementDiagram

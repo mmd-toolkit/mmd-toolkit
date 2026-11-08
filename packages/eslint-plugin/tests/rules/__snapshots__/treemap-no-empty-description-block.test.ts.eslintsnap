@@ -5,7 +5,7 @@ Test: treemap-no-empty-description-block >> invalid >>> docs/rules/treemap-no-em
 Filename: treemap-no-empty-description-block-incorrect-1.mmd
 
 Code:
-  1 | treemap
+  1 | treemap-beta
   2 |   accDescr {}
     |   ^~~~~~~~~~~ [1]
   3 |   "Revenue": 10
@@ -15,7 +15,7 @@ Code:
     Suggestions:
       - Remove the empty block.
         Output:
-          1 | treemap
+          1 | treemap-beta
           2 |   "Revenue": 10
           3 |
 ---

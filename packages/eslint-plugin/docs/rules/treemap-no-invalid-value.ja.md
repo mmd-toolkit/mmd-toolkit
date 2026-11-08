@@ -45,7 +45,7 @@ mermaid.js は、葉の値のカンマを除き、その先頭から数を読む
 
 ```mmd
 %% eslint @mmd-toolkit/treemap-no-invalid-value: error
-treemap
+treemap-beta
   "Revenue": 1_000
 ```
 
@@ -53,7 +53,7 @@ treemap
 
 ```mmd
 %% eslint @mmd-toolkit/treemap-no-invalid-value: error
-treemap
+treemap-beta
   "Revenue": 1,000
 ```
 

@@ -40,7 +40,7 @@ mermaid.js は、空の `accDescr {}` のブロックをエラーなしに受理
 
 ```mmd
 %% eslint @mmd-toolkit/treemap-no-empty-description-block: error
-treemap
+treemap-beta
   accDescr {}
   "Revenue": 10
 ```
@@ -49,7 +49,7 @@ treemap
 
 ```mmd
 %% eslint @mmd-toolkit/treemap-no-empty-description-block: error
-treemap
+treemap-beta
   accDescr {
     Revenue by product
   }

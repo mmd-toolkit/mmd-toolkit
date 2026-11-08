@@ -29,8 +29,8 @@ const cases: readonly MarkdownCase[] = [
     input: '```mermaid\ntreemap"HostRoot"\n "HostChild":3\n```\n',
     payloadInput: 'treemap"HostRoot"\n "HostChild":3',
     options: {},
-    output: '```mermaid\ntreemap\n  "HostRoot"\n    "HostChild": 3\n```\n',
-    payloadOutput: 'treemap\n  "HostRoot"\n    "HostChild": 3\n',
+    output: '```mermaid\ntreemap-beta\n  "HostRoot"\n    "HostChild": 3\n```\n',
+    payloadOutput: 'treemap-beta\n  "HostRoot"\n    "HostChild": 3\n',
   },
   {
     name: "treemap Markdown: list",
@@ -39,9 +39,9 @@ const cases: readonly MarkdownCase[] = [
     payloadInput: 'treemap\n"ListRoot"\n "ListChild\n  continuation":3',
     options: {},
     output:
-      '- item\n\n  ```mermaid\n  treemap\n    "ListRoot"\n      "ListChild\n    continuation": 3\n  ```\n',
+      '- item\n\n  ```mermaid\n  treemap-beta\n    "ListRoot"\n      "ListChild\n    continuation": 3\n  ```\n',
     payloadOutput:
-      'treemap\n  "ListRoot"\n    "ListChild\n  continuation": 3\n',
+      'treemap-beta\n  "ListRoot"\n    "ListChild\n  continuation": 3\n',
   },
   {
     name: "treemap Markdown: quote",
@@ -49,8 +49,8 @@ const cases: readonly MarkdownCase[] = [
     payloadInput: 'treemap\n"QuoteRoot"\n "QuoteChild":3',
     options: {},
     output:
-      '> ```mmd\n> treemap\n>   "QuoteRoot"\n>     "QuoteChild": 3\n> ```\n',
-    payloadOutput: 'treemap\n  "QuoteRoot"\n    "QuoteChild": 3\n',
+      '> ```mmd\n> treemap-beta\n>   "QuoteRoot"\n>     "QuoteChild": 3\n> ```\n',
+    payloadOutput: 'treemap-beta\n  "QuoteRoot"\n    "QuoteChild": 3\n',
   },
   {
     name: "treemap Markdown: zero",
@@ -59,8 +59,8 @@ const cases: readonly MarkdownCase[] = [
     options: {
       tabWidth: 0,
     },
-    output: '```mermaid\ntreemap\n "ZeroHost"\n  "ZeroChild": 3\n```\n',
-    payloadOutput: 'treemap\n "ZeroHost"\n  "ZeroChild": 3\n',
+    output: '```mermaid\ntreemap-beta\n "ZeroHost"\n  "ZeroChild": 3\n```\n',
+    payloadOutput: 'treemap-beta\n "ZeroHost"\n  "ZeroChild": 3\n',
   },
   {
     name: "treemap Markdown: tabs",
@@ -69,16 +69,17 @@ const cases: readonly MarkdownCase[] = [
     options: {
       useTabs: true,
     },
-    output: '```mermaid\ntreemap\n\t"TabsHost"\n\t\t"TabsChild": 3\n```\n',
-    payloadOutput: 'treemap\n\t"TabsHost"\n\t\t"TabsChild": 3\n',
+    output: '```mermaid\ntreemap-beta\n\t"TabsHost"\n\t\t"TabsChild": 3\n```\n',
+    payloadOutput: 'treemap-beta\n\t"TabsHost"\n\t\t"TabsChild": 3\n',
   },
   {
     name: "treemap Markdown: carried-indent",
     input: '```mermaid\ntreemap\n"CarryHost"  \n"CarryChild":3\n```\n',
     payloadInput: 'treemap\n"CarryHost"  \n"CarryChild":3',
     options: {},
-    output: '```mermaid\ntreemap\n  "CarryHost"\n    "CarryChild": 3\n```\n',
-    payloadOutput: 'treemap\n  "CarryHost"\n    "CarryChild": 3\n',
+    output:
+      '```mermaid\ntreemap-beta\n  "CarryHost"\n    "CarryChild": 3\n```\n',
+    payloadOutput: 'treemap-beta\n  "CarryHost"\n    "CarryChild": 3\n',
   },
   {
     name: "treemap Markdown: directives-comments",
@@ -87,9 +88,9 @@ const cases: readonly MarkdownCase[] = [
     payloadInput: 'treemap\n"TriviaHost"\n%%\n %%{wrap}%% "TriviaChild":3',
     options: {},
     output:
-      '```mermaid\ntreemap\n  "TriviaHost"\n%%\n   %%{wrap}%% "TriviaChild": 3\n```\n',
+      '```mermaid\ntreemap-beta\n  "TriviaHost"\n%%\n   %%{wrap}%% "TriviaChild": 3\n```\n',
     payloadOutput:
-      'treemap\n  "TriviaHost"\n%%\n   %%{wrap}%% "TriviaChild": 3\n',
+      'treemap-beta\n  "TriviaHost"\n%%\n   %%{wrap}%% "TriviaChild": 3\n',
   },
   {
     name: "treemap Markdown: glued-class",
@@ -99,17 +100,17 @@ const cases: readonly MarkdownCase[] = [
       'treemap\nclassDef zz"GluedHost"  "GluedChild":3\n"OtherHost"',
     options: {},
     output:
-      '```mermaid\ntreemap\n  classDef zz"GluedHost"\n  "GluedChild": 3\n"OtherHost"\n```\n',
+      '```mermaid\ntreemap-beta\n  classDef zz"GluedHost"\n  "GluedChild": 3\n"OtherHost"\n```\n',
     payloadOutput:
-      'treemap\n  classDef zz"GluedHost"\n  "GluedChild": 3\n"OtherHost"\n',
+      'treemap-beta\n  classDef zz"GluedHost"\n  "GluedChild": 3\n"OtherHost"\n',
   },
   {
     name: "treemap Markdown: protected",
     input: '```mermaid\ntreemap"style:#navy;":3 "ProtectedHost":4\n```\n',
     payloadInput: 'treemap"style:#navy;":3 "ProtectedHost":4',
     options: {},
-    output: '```mermaid\ntreemap"style:#navy;":3 "ProtectedHost":4\n```\n',
-    payloadOutput: 'treemap"style:#navy;":3 "ProtectedHost":4',
+    output: '```mermaid\ntreemap-beta"style:#navy;":3 "ProtectedHost":4\n```\n',
+    payloadOutput: 'treemap-beta"style:#navy;":3 "ProtectedHost":4',
   },
   {
     name: "treemap Markdown: description",
@@ -118,9 +119,9 @@ const cases: readonly MarkdownCase[] = [
     payloadInput: 'treemap\naccDescr {\n detail\n}\n"DescriptionHost":3',
     options: {},
     output:
-      '```mermaid\ntreemap\n  accDescr {\n    detail\n  }\n  "DescriptionHost": 3\n```\n',
+      '```mermaid\ntreemap-beta\n  accDescr {\n    detail\n  }\n  "DescriptionHost": 3\n```\n',
     payloadOutput:
-      'treemap\n  accDescr {\n    detail\n  }\n  "DescriptionHost": 3\n',
+      'treemap-beta\n  accDescr {\n    detail\n  }\n  "DescriptionHost": 3\n',
   },
   {
     name: "treemap Markdown: frontmatter",
@@ -129,8 +130,8 @@ const cases: readonly MarkdownCase[] = [
     payloadInput: '---\ntitle:   Host map\n---\ntreemap\n"YamlHost":3',
     options: {},
     output:
-      '```mermaid\n---\ntitle: Host map\n---\ntreemap\n  "YamlHost": 3\n```\n',
-    payloadOutput: '---\ntitle: Host map\n---\ntreemap\n  "YamlHost": 3\n',
+      '```mermaid\n---\ntitle: Host map\n---\ntreemap-beta\n  "YamlHost": 3\n```\n',
+    payloadOutput: '---\ntitle: Host map\n---\ntreemap-beta\n  "YamlHost": 3\n',
   },
   {
     name: "treemap Markdown: final-style-padding",
@@ -138,8 +139,8 @@ const cases: readonly MarkdownCase[] = [
     payloadInput: "treemap\nclassDef zz color:navy  ",
     options: {},
     hostTrims: true,
-    output: "```mermaid\ntreemap\n  classDef zz color:navy\n```\n",
-    payloadOutput: "treemap\n  classDef zz color:navy\n",
+    output: "```mermaid\ntreemap-beta\n  classDef zz color:navy\n```\n",
+    payloadOutput: "treemap-beta\n  classDef zz color:navy\n",
   },
   {
     name: "treemap Markdown: rejected",

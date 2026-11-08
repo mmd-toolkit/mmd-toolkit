@@ -302,12 +302,13 @@ enabling it under `@mmd-toolkit/` too would duplicate every report.
 the `mmd` code blocks of a document, and `check:docs` fails on a document that
 it would change. These commands build the parser and the plugin first
 (`build:docs-deps`), so the examples are printed by the formatter of the working
-tree. An example kept as written, where the presence or absence of whitespace is
-the point, has `<!-- prettier-ignore -->` directly before its code block, in
-both languages, and a sentence of Rule Details says that it is shown as written.
-When the formatter changes what it prints, run `update:docs`, then `test:update`
-and read the diff of the snapshots, and look in the prose of the changed
-documents for code spans that quote a changed line.
+tree. An example kept as written, where a way of writing that the formatter
+prints in one form is the point (whitespace, the case of a value, quotes), has
+`<!-- prettier-ignore -->` directly before its code block, in both languages,
+and a sentence of Rule Details says that it is shown as written. When the
+formatter changes what it prints, run `update:docs`, then `test:update` and read
+the diff of the snapshots, and look in the prose of the changed documents for
+code spans that quote a changed line.
 
 The rest of the documents is written by hand. `check:docs` writes nothing and
 fails when `src/rules/index.ts`, a generated part, or an example is out of date,

@@ -19,7 +19,7 @@ describe("an XY chart in a Markdown code block", () => {
         '# Title\n\n```mermaid\n  xychart-beta\n\n  title   Two  words\nx-axis[ a ,b ]\nline Sales[1 "x" , 2]\n```\n',
       ),
     ).toBe(
-      '# Title\n\n```mermaid\nxychart-beta\n  title Two words\n  x-axis [a, b]\n  line Sales [1 "x", 2]\n```\n',
+      '# Title\n\n```mermaid\nxychart\n  title Two words\n  x-axis [a, b]\n  line Sales [1 "x", 2]\n```\n',
     )
   })
 
