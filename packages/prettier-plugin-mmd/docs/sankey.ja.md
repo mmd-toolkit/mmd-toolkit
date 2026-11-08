@@ -212,15 +212,22 @@ Pumped heat,"Heating and cooling, ""homes""",193.026
 
 ### 値
 
-リンクの値は、書かれたまま印字します。
-mermaid.js は値を数として読むので、`1.0`、`1e0`、`+1` は `1` と同じ値で、
-`.5` は `0.5` と同じ値です。
-`abc` も受理され、`NaN` として読まれます。
-どれも書き換えません。
-sankey の値は、数を最短の形で印字する対象ではありません。
+リンクの値は、最短の形で印字します。
+mermaid.js は `parseFloat` で値を数にするので、`1.0`、`+1`、`.5` は、
+それぞれ `1`、`1`、`0.5` と同じ値で、値を示すラベルは、
+テキストではなく数から作られます。
+`1.0` は `1`、`+1` は `1`、`.5` は `0.5` と印字します。
 （[最短の形の数](./compatibility.ja.md#最短の形の数)を参照）。
+単純な十進表記でない値は、書かれたまま残します。
+指数のある数（`1e0`）、整数部の先頭にゼロがある数（`007`）、15 桁より多い数、
+`-0`、mermaid.js がそれぞれ `1` と `0` として読む `1_0` と `0x1`、
+`NaN` として読む `abc` のような数でない値です。
+引用符で囲まれた値も、そのまま残します。
 値の後ろの `%%` や `#` は、コメントではなく欄の文字で、欄と一緒に残します。
-[fixture: values/value-forms-kept] [fixture: values/text-after-the-value-kept]
+そのため、その欄は単純な十進表記ではなく、書かれたまま残します。
+[fixture: values/shortest-form] [fixture: values/forms-kept]
+[fixture: values/shortest-form-with-trivia]
+[fixture: values/text-after-the-value-kept]
 
 入力
 ([values/text-after-the-value-kept-input.mmd](../tests/fixtures/sankey/values/text-after-the-value-kept-input.mmd)):

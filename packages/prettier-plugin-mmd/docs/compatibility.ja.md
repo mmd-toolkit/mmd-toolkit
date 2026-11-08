@@ -1042,6 +1042,7 @@ mermaid.js は Db から描くので、同じ Db が同じ描画の根拠です�
 | 大文字小文字をそろえるキーワード | 445 |     445 | 138（標本） |
 | `"` で囲む文字列                 |  79 |      79 |          79 |
 | 最短の形の数                     |  37 |      37 |          37 |
+| sankey のリンクの値              |  22 |      22 |          22 |
 | ヘッダーの向き                   |  11 |      11 |          11 |
 | gitGraph の `switch`             |  27 |      27 |          27 |
 
@@ -1214,9 +1215,10 @@ XY チャートの `bar` と `line`
 の値と範囲（`a --> b`）の両端（分類は含みません）、treemap の葉の値のうち、
 数字、数字と小数部、小数部だけの形（符号、末尾の `.`、`,`、
 `_` がある葉は書かれたままです）、radar チャートの `max`、`min`、
-`ticks` と曲線の値、
+`ticks` と曲線の値、sankey 図のリンクの値（引用符で囲まれた値や、
+後ろにテキストがある値は含みません）、
 Venn の集合の `:` の後の大きさ（`text` や style の数は含みません）です。
-例にあるこれらの場所の数 213 個のうち 210 個はこの形で、
+例にあるこれらの場所の数 300 個のうち 297 個はこの形で、
 3 個（すべて XY チャートの `49.0`、`103.0`、`177.0`）は、
 小数部の末尾にゼロがあります。 [fixture: pie/numbers/shortest-form]
 [fixture: xychart/numbers/range-numbers-one-form]
@@ -1226,14 +1228,21 @@ Venn の集合の `:` の後の大きさ（`text` や style の数は含みま�
 [fixture: radar/numbers/raw-option-numbers]
 [fixture: venn/sizes-and-numbers/absent-zero-signs]
 [fixture: venn/sizes-and-numbers/size-spaces]
+[fixture: sankey/values/shortest-form]
+[fixture: sankey/values/shortest-form-with-trivia]
 
 これらの数は、数をテキストとして書く設定（円グラフの `showData`、
-XY チャートの `showDataLabel`、treemap の値のラベル、
-radar チャートの目盛り）でも描き、描画は同じでした。
+XY チャートの `showDataLabel`、treemap の値のラベル、radar チャートの目盛り、
+接頭辞と接尾辞を含む sankey 図の値のラベル）でも描き、描画は同じでした。
+sankey のリンクの値は、図を読むときに `parseFloat` で数にされます。
+（[文法のアクション](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L55)）。
+値を示すラベルは、書かれたテキストではなく、その数から作られます。
+（[レンダラー](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sankey/sankeyRenderer.ts#L178)）。
 mermaid.js がテキストとして読む数（Venn 図の `text A 1.50`、style の値、
 XY チャートの x 軸の分類 `007` や `1.50`）、
 整数部の先頭にゼロがある数（`007`）、15 桁より多い数、指数のある数（`1e3`）、
-`-0`、この節にない図種の数は、書かれたまま残します。
+`-0`、単純な十進表記でない値（sankey のリンクの値の `abc`、`1_0`、`0x1`）、
+この節にない図種の数は、書かれたまま残します。
 Wardley マップの座標は、小数 168 個のうち 81 個で小数部の末尾にゼロがあります。
 [fixture: venn/sizes-and-numbers/text-number-forms]
 [fixture: venn/sizes-and-numbers/text-and-style-numbers-kept]
@@ -1241,7 +1250,7 @@ Wardley マップの座標は、小数 168 個のうち 81 個で小数部の末
 [fixture: xychart/numbers/category-trailing-zero-kept]
 [fixture: pie/numbers/forms-kept] [fixture: radar/numbers/forms-kept]
 [fixture: treemap/numbers/forms-kept]
-[fixture: treemap/numbers/trailing-dot-kept]
+[fixture: treemap/numbers/trailing-dot-kept] [fixture: sankey/values/forms-kept]
 [fixture: wardley/numbers/forms-kept]
 
 ### ヘッダーの向き
@@ -1390,6 +1399,13 @@ flowchart は最初の形が 14 個、もう一方が 8 個で、2 倍以上で�
   （[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L250)）、
   12.0.0 と 12.3.0 で同じファイルで、両方の形があります。
   両図種とも 11.10.0 より後なので、それらを読むすべての版で `TD` は `TB` です。
+- sankey 図のリンクの値: sankey の文法がある最初のタグは 10.3.0 で、
+  10.2.4 にはありません。
+  10.3.0、10.3.1、10.4.0、10.5.0、10.6.0、10.7.0、10.8.0、10.9.0、11.0.0、
+  11.4.0、11.8.0、11.10.0、11.14.0、12.0.0、12.3.0 の文法は、
+  `parseFloat($value.trim())` で値を数にするので、`1.0`、`+1`、
+  `.5` を読むすべての版で、`1` と `0.5` が読めます。
+  CHANGELOG.md には、値の読み方についての記述はありません。
 - キーワードの大文字小文字: sequence、Gantt、user journey、ER、requirement、
   state の図の字句解析器は、8.14.0、9.4.3、10.9.0、12.3.0 の文法で、
   大文字小文字を区別しません。

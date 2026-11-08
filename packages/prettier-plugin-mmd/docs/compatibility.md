@@ -966,6 +966,7 @@ that nothing else reads the text.
 | Keywords in one case         |   445 |     445 |   138 (sample) |
 | Strings between `"`          |    79 |      79 |             79 |
 | Numbers in the shortest form |    37 |      37 |             37 |
+| Values of a sankey link      |    22 |      22 |             22 |
 | Header directions            |    11 |      11 |             11 |
 | `switch` of a gitGraph       |    27 |      27 |             27 |
 
@@ -1124,33 +1125,42 @@ pie chart; the values of a `bar` and a `line` and the two ends of a range
 (`a --> b`) of an xychart, not the categories; the value of a treemap leaf, in
 the forms digits, digits with a fraction, and a fraction alone (a leaf with a
 sign, with a `.` at its end, or with a `,` or a `_` in it stays as written); the
-`max`, `min`, `ticks`, and curve values of a radar chart; and the size after the
-`:` of a Venn set, not the numbers of a `text` or of a style. Of the 213 numbers
-in these places in the examples, 210 are in this form and 3 (all in xychart:
-`49.0`, `103.0`, and `177.0`) have a zero at the end of the fraction. [fixture:
-pie/numbers/shortest-form] [fixture: xychart/numbers/range-numbers-one-form]
-[fixture: xychart/numbers/values-one-form] [fixture:
-treemap/numbers/shortest-form] [fixture: treemap/numbers/leading-dot] [fixture:
-radar/numbers/shortest-form] [fixture: radar/numbers/raw-option-numbers]
-[fixture: venn/sizes-and-numbers/absent-zero-signs] [fixture:
-venn/sizes-and-numbers/size-spaces]
+`max`, `min`, `ticks`, and curve values of a radar chart; the value of a link of
+a sankey diagram, not a value in quotes or followed by text; and the size after
+the `:` of a Venn set, not the numbers of a `text` or of a style. Of the 300
+numbers in these places in the examples, 297 are in this form and 3 (all in
+xychart: `49.0`, `103.0`, and `177.0`) have a zero at the end of the fraction.
+[fixture: pie/numbers/shortest-form] [fixture:
+xychart/numbers/range-numbers-one-form] [fixture:
+xychart/numbers/values-one-form] [fixture: treemap/numbers/shortest-form]
+[fixture: treemap/numbers/leading-dot] [fixture: radar/numbers/shortest-form]
+[fixture: radar/numbers/raw-option-numbers] [fixture:
+venn/sizes-and-numbers/absent-zero-signs] [fixture:
+venn/sizes-and-numbers/size-spaces] [fixture: sankey/values/shortest-form]
+[fixture: sankey/values/shortest-form-with-trivia]
 
 These numbers were also drawn with the settings that write a number as text
 (`showData` of a pie chart, `showDataLabel` of an xychart, the value labels of a
-treemap, the ticks of a radar chart), and the drawings were the same. A number
-stays as written where mermaid.js reads it as text (the `text A 1.50` of a Venn
-diagram, the value of a style, a category `007` or `1.50` of the x-axis of an
-xychart), where it has a zero at the start of its integer part (`007`), more
-than 15 digits, an exponent (`1e3`), or is `-0`, and in a diagram type that this
-section does not list: the coordinates of a Wardley map have a zero at the end
-of the fraction in 81 of its 168 decimals. [fixture:
-venn/sizes-and-numbers/text-number-forms] [fixture:
+treemap, the ticks of a radar chart, the value labels of a sankey diagram with
+their prefix and suffix), and the drawings were the same. The value of a sankey
+link is made a number by `parseFloat` when the diagram is read
+([the grammar action](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L55)),
+and the label that shows it is made from that number
+([the renderer](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sankey/sankeyRenderer.ts#L178)),
+not from the text that was written. A number stays as written where mermaid.js
+reads it as text (the `text A 1.50` of a Venn diagram, the value of a style, a
+category `007` or `1.50` of the x-axis of an xychart), where it has a zero at
+the start of its integer part (`007`), more than 15 digits, an exponent (`1e3`),
+or is `-0`, where it is no plain decimal (`abc`, `1_0`, `0x1` as the value of a
+sankey link), and in a diagram type that this section does not list: the
+coordinates of a Wardley map have a zero at the end of the fraction in 81 of its
+168 decimals. [fixture: venn/sizes-and-numbers/text-number-forms] [fixture:
 venn/sizes-and-numbers/text-and-style-numbers-kept] [fixture:
 xychart/numbers/forms-kept] [fixture:
 xychart/numbers/category-trailing-zero-kept] [fixture: pie/numbers/forms-kept]
 [fixture: radar/numbers/forms-kept] [fixture: treemap/numbers/forms-kept]
-[fixture: treemap/numbers/trailing-dot-kept] [fixture:
-wardley/numbers/forms-kept]
+[fixture: treemap/numbers/trailing-dot-kept] [fixture: sankey/values/forms-kept]
+[fixture: wardley/numbers/forms-kept]
 
 ### The direction of a header
 
@@ -1292,6 +1302,13 @@ mermaid.js, show which form each version reads:
   is the same file in 12.0.0 and 12.3.0, and it has both forms. Both diagram
   types are later than 11.10.0, so `TD` is `TB` in every version that reads
   them.
+- The value of a link of a sankey diagram: the sankey grammar is first in the
+  tag 10.3.0 (10.2.4 has none), and the grammar of 10.3.0, 10.3.1, 10.4.0,
+  10.5.0, 10.6.0, 10.7.0, 10.8.0, 10.9.0, 11.0.0, 11.4.0, 11.8.0, 11.10.0,
+  11.14.0, 12.0.0, and 12.3.0 makes the value a number with
+  `parseFloat($value.trim())`, so `1` and `0.5` are read in every version that
+  reads `1.0`, `+1`, or `.5`. The CHANGELOG.md has no entry about how the value
+  is read.
 - The case of a keyword: the lexers of the sequence, Gantt, user journey, ER,
   requirement, and state diagrams are case-insensitive in the grammars of
   8.14.0, 9.4.3, 10.9.0, and 12.3.0. The earliest tags read that have the

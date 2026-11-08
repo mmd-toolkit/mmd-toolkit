@@ -204,15 +204,19 @@ Pumped heat,"Heating and cooling, ""homes""",193.026
 
 ### Values
 
-The value of a link is printed as written: mermaid.js reads it as a number, so
-`1.0`, `1e0`, and `+1` are the same value as `1`, `.5` is the same value as
-`0.5`, and `abc` is accepted and read as `NaN`. None is rewritten; a sankey
-value is not one of the places where a number is printed in the shortest form
-(see
+The value of a link is printed in the shortest form. mermaid.js makes the value
+a number with `parseFloat`, so `1.0`, `+1`, and `.5` are the same value as `1`,
+`1`, and `0.5`, and the label that shows a value is made from the number, not
+from the text. `1.0` is printed `1`, `+1` is `1`, and `.5` is `0.5` (see
 [Numbers in the shortest form](./compatibility.md#numbers-in-the-shortest-form)).
-A `%%` or a `#` after the value is a character of the field, not a comment, and
-stays with it. [fixture: values/value-forms-kept] [fixture:
-values/text-after-the-value-kept]
+A value that is no plain decimal stays as written: an exponent (`1e0`), a zero
+at the start of the integer part (`007`), more than 15 digits, `-0`, `1_0` and
+`0x1`, which mermaid.js reads as `1` and `0`, and a value that is no number,
+such as `abc`, which is read as `NaN`. A value in quotes stays as well. A `%%`
+or a `#` after the value is a character of the field, not a comment, and stays
+with it, so the field is no plain decimal and stays as written. [fixture:
+values/shortest-form] [fixture: values/forms-kept] [fixture:
+values/shortest-form-with-trivia] [fixture: values/text-after-the-value-kept]
 
 Input
 ([values/text-after-the-value-kept-input.mmd](../tests/fixtures/sankey/values/text-after-the-value-kept-input.mmd)):
