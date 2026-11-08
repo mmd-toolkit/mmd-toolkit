@@ -1,0 +1,50 @@
+{
+  "name": "mmdfmt",
+  "version": "0.0.0",
+  "description": "Command-line formatter for Mermaid diagrams in .mmd files and in Markdown code blocks, which changes nothing else",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mmd-toolkit/mmd-toolkit.git",
+    "directory": "packages/mmdfmt"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/ota-meshi"
+  },
+  "type": "module",
+  "bin": {
+    "mmdfmt": "./lib/cli.mjs"
+  },
+  "exports": {
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib"
+  ],
+  "engines": {
+    "node": "^22.13.0 || >=24"
+  },
+  "keywords": [
+    "mermaid",
+    "mmd",
+    "markdown",
+    "formatter",
+    "cli"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "clean": "rimraf lib",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@mmd-toolkit/parser": "workspace:^",
+    "gunshi": "^0.37.3",
+    "prettier": "^3.9.0",
+    "prettier-plugin-mmd": "workspace:^",
+    "tinyglobby": "^0.2.17"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

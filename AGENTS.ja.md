@@ -6,17 +6,18 @@
 ## プロジェクト
 
 [mermaid-js](https://mermaid.js.org/) とは無関係の第三者プロジェクト。
-Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象に次の 7 つを作る。
+Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象に次の 8 つを作る。
 
-| パッケージ                     | npm 名                          | 内容                                |
-| ------------------------------ | ------------------------------- | ----------------------------------- |
-| `packages/spec`                | `@mmd-toolkit/spec`             | 構文仕様（private）                 |
-| `packages/tests`               | `@mmd-toolkit/tests`            | 適合性コーパス（private）           |
-| `packages/ast`                 | `@mmd-toolkit/ast`              | 木の TypeScript の型                |
-| `packages/parser`              | `@mmd-toolkit/parser`           | AST を返すパーサー                  |
-| `packages/prettier-plugin-mmd` | `prettier-plugin-mmd`           | Prettier プラグインのフォーマッター |
-| `packages/eslint-plugin`       | `@mmd-toolkit/eslint-plugin`    | ESLint の言語プラグインのリンター   |
-| `packages/textmate-grammar`    | `@mmd-toolkit/textmate-grammar` | TextMate 文法の色付け               |
+| パッケージ                     | npm 名                          | 内容                                 |
+| ------------------------------ | ------------------------------- | ------------------------------------ |
+| `packages/spec`                | `@mmd-toolkit/spec`             | 構文仕様（private）                  |
+| `packages/tests`               | `@mmd-toolkit/tests`            | 適合性コーパス（private）            |
+| `packages/ast`                 | `@mmd-toolkit/ast`              | 木の TypeScript の型                 |
+| `packages/parser`              | `@mmd-toolkit/parser`           | AST を返すパーサー                   |
+| `packages/prettier-plugin-mmd` | `prettier-plugin-mmd`           | Prettier プラグインのフォーマッター  |
+| `packages/mmdfmt`              | `mmdfmt`                        | コマンドラインツールのフォーマッター |
+| `packages/eslint-plugin`       | `@mmd-toolkit/eslint-plugin`    | ESLint の言語プラグインのリンター    |
+| `packages/textmate-grammar`    | `@mmd-toolkit/textmate-grammar` | TextMate 文法の色付け                |
 
 正しさの基準は pin した mermaid.js 本体。
 
@@ -159,6 +160,11 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
 - `packages/prettier-plugin-mmd`: フォーマッター。
   図種ごとに printer を持ち、項目ごとに明示的に決めた整形方針に従う。
   SKILL は `prettier-plugin`。
+- `packages/mmdfmt`: コマンドラインのフォーマッター。
+  `.mmd` と `.mermaid` のファイルと、Markdown のファイルのコードブロックの図を、
+  Prettier と `prettier-plugin-mmd` で整形し、ほかは変えない。
+  何をするかは README が定める。
+  SKILL は `prettier-plugin`。
 - `packages/eslint-plugin`: リンター。
   ESLint の言語プラグインである。
   規則が報告するのは、書き手の誤りのうち、mermaid.js が黙って受理し、
@@ -178,16 +184,17 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
 これらを変えると使う側のパッケージも変わる。
 同じ変更で直す。
 
-| インターフェース                             | 定義する側 | 使う側                                          |
-| -------------------------------------------- | ---------- | ----------------------------------------------- |
-| fixture の形式とローダー                     | tests      | spec、parser、prettier-plugin、textmate-grammar |
-| mermaid の Db を取り出す関数                 | tests      | parser、prettier-plugin                         |
-| fixture の CLI（`tools/fixtures.ts`）        | tests      | spec、parser                                    |
-| Db の要約と、記録した木の確かめ              | tests      | parser                                          |
-| AST の定義（`docs/ast.md`、`docs/ast/*.md`） | spec       | parser、prettier-plugin、eslint-plugin          |
-| トークンと位置（`docs/tokens.md` ほか）      | parser     | tests、prettier-plugin、eslint-plugin           |
-| 木の型（`src/ast.ts`、`src/ast/*.ts`）       | ast        | parser、prettier-plugin、eslint-plugin          |
-| parser の API（`parse()`、エラー、木の走査） | parser     | prettier-plugin、eslint-plugin                  |
+| インターフェース                             | 定義する側      | 使う側                                          |
+| -------------------------------------------- | --------------- | ----------------------------------------------- |
+| fixture の形式とローダー                     | tests           | spec、parser、prettier-plugin、textmate-grammar |
+| mermaid の Db を取り出す関数                 | tests           | parser、prettier-plugin                         |
+| fixture の CLI（`tools/fixtures.ts`）        | tests           | spec、parser                                    |
+| Db の要約と、記録した木の確かめ              | tests           | parser                                          |
+| AST の定義（`docs/ast.md`、`docs/ast/*.md`） | spec            | parser、prettier-plugin、eslint-plugin          |
+| トークンと位置（`docs/tokens.md` ほか）      | parser          | tests、prettier-plugin、eslint-plugin           |
+| 木の型（`src/ast.ts`、`src/ast/*.ts`）       | ast             | parser、prettier-plugin、eslint-plugin          |
+| parser の API（`parse()`、エラー、木の走査） | parser          | prettier-plugin、eslint-plugin、mmdfmt          |
+| プラグインとその言語（`src/index.ts`）       | prettier-plugin | mmdfmt                                          |
 
 ## 行動原則
 
