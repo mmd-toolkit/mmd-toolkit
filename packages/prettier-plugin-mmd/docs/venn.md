@@ -400,8 +400,11 @@ one compact form. A size that is a plain decimal is printed in the shortest form
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
 A zero at the start of the integer part, signed zero and overflow retain their
 spelling; numeric text ids also retain their spelling because rewriting them
-changes the Db. Absent size and written zero remain distinct written forms.
-[fixture: venn/sizes-and-numbers/absent-zero-signs] [corpus fixture:
+changes the Db, and so do the numbers of a `text` or `style` statement
+(`text A 1.50`, `opacity:0.50`), which mermaid.js reads as text. Absent size and
+written zero remain distinct written forms. [fixture:
+venn/sizes-and-numbers/absent-zero-signs] [fixture:
+venn/sizes-and-numbers/text-and-style-numbers-kept] [corpus fixture:
 venn/db-set-colon-size-inline-directive] [corpus fixture:
 venn/db-set-label-colon-size-inline-directive] [corpus fixture:
 venn/db-size-negative-overflow] [corpus fixture: venn/db-size-negative-zero]

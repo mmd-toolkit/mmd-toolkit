@@ -12,11 +12,16 @@ preserved text and differences from mermaid.js.
 ### Header
 
 Print `radar-beta` at column one and put an ordinary first statement on the next
-line so the heading is easy to find. Keep the author's colon presence; compact
-ordinary whitespace before a separate colon to `radar-beta:`, as in gitgraph's
-[Header](./gitgraph.md#header). That whitespace has no meaning. Hidden forms,
-global trivia and protected semicolon segments keep their source boundaries
-instead. Empty bodies remain empty.
+line so the heading is easy to find. A colon right after the header word is
+removed, together with the whitespace before it: mermaid.js reads `radar-beta:`
+and `radar-beta` as the same header, and the examples in its documentation write
+the header without the colon 3 times against none (see
+[The colon after a header](./compatibility.md#the-colon-after-a-header)). The
+colon stays where a hidden form or a global directive lies between it and the
+word, and where a `;` or the `---` of a hidden YAML block touches it. Hidden
+forms, global trivia and protected semicolon segments keep their source
+boundaries instead. Empty bodies remain empty. [fixture:
+radar/header/colon-removed] [fixture: radar/header/colon-yaml-kept]
 
 [fixture: radar/header/joined-empty]
 

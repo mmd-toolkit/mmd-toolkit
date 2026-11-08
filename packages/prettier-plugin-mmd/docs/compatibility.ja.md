@@ -1004,7 +1004,7 @@ SVG と画素を比べてから、例外を残します。
 mermaid.js は、トークンの異なる綴りの一部を同じトークンとして読み、
 そこから同じ図を描きます。
 キーワードの別の大文字小文字、`"` の代わりに `'` で囲む文字列、
-末尾にゼロを付けた数、古いヘッダーのキーワードです。
+末尾にゼロを付けた数、ER 図の関係の記号の代わりの語です。
 印字は、そのような綴りを 1 つの形にします。
 トークンの間の空白は、
 ほかの図種が同じ種類の隙間に印字する形にします（上の各節を参照してください）。
@@ -1018,13 +1018,20 @@ mermaid.js は、トークンの異なる綴りの一部を同じトークンと
 
 [mermaid-syntax-pages]: https://github.com/mermaid-js/mermaid/tree/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax
 
+比較は固定している mermaid.js だけで行いますが、整形したテキストは、
+ほかの版の mermaid.js でも描かれます。
+そのため、印字する形が、書かれた形を受理するすべての版では受理されないときも、
+綴りを書かれたまま残します。
+[mermaid.js の版](#mermaidjs-の版)に、
+それぞれの種類について調べたことを示します。
+
 印字が形をそろえる前に、それぞれの種類を mermaid.js 12.3.0 と比べました。
 綴りを含む各例を別の綴りでも書き、mermaid.js が両方のテキストを読みました。
 別の綴りを mermaid.js が拒否する対（円グラフの数の前の `+`）は数えません。
 両方のテキストを Chromium で描きました。
 数えたどの対も Db は同じで、SVG のスクリーンショットも画素ごとに同じでした。
-同じテキストを 2 回描いてもすでに異なるもの（Agentflow の形と flowchart の
-`hourglass` の線はランダムに描かれ、
+同じテキストを 2 回描いてもすでに異なるもの（Agentflow の形、
+flowchart の `hourglass`、状態遷移図の choice の線はランダムに描かれ、
 gitGraph のコミット id とラベルの幅も同様です）は、数、コミット id、
 要素の id を除いた SVG が同じでした。
 mermaid.js は Db から描くので、同じ Db が同じ描画の根拠です。
@@ -1035,13 +1042,28 @@ mermaid.js は Db から描くので、同じ Db が同じ描画の根拠です�
 | 大文字小文字をそろえるキーワード | 445 |     445 | 138（標本） |
 | `"` で囲む文字列                 |  79 |      79 |          79 |
 | 最短の形の数                     |  37 |      37 |          37 |
-| ヘッダーのキーワード             | 175 |     175 |         175 |
-| ヘッダーの向き                   |  75 |      75 |          75 |
+| ヘッダーの向き                   |  11 |      11 |          11 |
 | gitGraph の `switch`             |  27 |      27 |          27 |
-| gitGraph のヘッダーのコロン      |  31 |      31 |          31 |
 
 キーワードの対は標本を描き、
 そのテキストを 2 回描いてもすでに異なる対は数えませんでした。
+以下の種類は、例と、Db だけを比べる適合性コーパスの入力で比較しました。
+
+| 種類                     |  例 | 同じ Db と描画 | コーパス | 同じ Db |
+| ------------------------ | --: | -------------: | -------: | ------: |
+| ER 図の関係              |   4 |              4 |       66 |      66 |
+| C4 の `Rel_Up` など      |   1 |              1 |        7 |       7 |
+| EBNF 記法の `::=`        |   9 |              9 |       91 |      91 |
+| 両端が同じ packet の範囲 |   2 |              2 |      133 |     131 |
+| ヘッダーのコロン（除去） |   6 |              6 |      646 |     643 |
+| ヘッダーのコロン（改行） |   0 |              0 |       22 |      21 |
+| リンクのラベル           |  19 |             19 |      170 |     162 |
+
+最後の列に数えないコーパスの対は、mermaid.js が別の綴りを拒否する対です。
+ただし、リンクのラベルの 2 対は例外で、ラベルに `%%` があり、Db が異なります。
+印字は、hidden YAML ブロックに隣接する packet 図の範囲、
+`;` や hidden YAML ブロックの `---` が接するコロン、
+`%%` を含むリンクのラベルを書き換えません。
 固定している mermaid.js の版を上げるときは、例を数え直し、
 それぞれの種類を比べ直します。
 
@@ -1051,8 +1073,8 @@ mermaid.js は Db から描くので、同じ Db が同じ描画の根拠です�
 印字は、以下のキーワードを示した大文字小文字にし、
 それ以外のキーワードは書かれたままにします。
 
-- ER 図: `BT`、`classDef`、`direction`、`end`、`LR`、`many(0)`、`only one`、
-  `optionally to`、`RL`、`style`、`subgraph`、`TB`、`to`、`zero or more`。
+- ER 図: `BT`、`classDef`、`direction`、`end`、`LR`、`RL`、`style`、`subgraph`、
+  `TB`。
 - Gantt 図: `axisFormat`、`dateFormat`、`excludes`、`friday`、`monday`、
   `section`、`tickInterval`、`title`、`weekday`、`weekend`。
 - ユーザージャーニー: `section`、`title`。
@@ -1085,7 +1107,6 @@ mermaid.js は Db から描くので、同じ Db が同じ描画の根拠です�
 [fixture: er/direction/case-bt-rl-one-form]
 [fixture: er/subgraphs/end-case-one-form]
 [fixture: er/styles-and-classes/keyword-case-one-form]
-[fixture: er/relationship-spacing/cardinality-words-case-one-form]
 [fixture: gantt/keyword-case/keywords-one-form]
 [fixture: gantt/weekday-and-weekend/day-case-one-form]
 [fixture: journey/keyword-case/keywords-one-form]
@@ -1115,29 +1136,29 @@ mermaid.js は Db から描くので、同じ Db が同じ描画の根拠です�
 [fixture: xychart/keyword-case/statement-keywords-one-form]
 
 一覧にないキーワードは書かれたまま残します。
-例が使わないもの、
-ほかの大文字小文字の 2 倍以上使う形がないもの（ER 図のカーディナリティの語
-`ONE OR MORE` と `MANY`、状態遷移図の `HIDE EMPTY DESCRIPTION`）、
+例が使わないもの（Gantt 図の `todayMarker`、
+状態遷移図の `HIDE EMPTY DESCRIPTION`）、
+ほかの大文字小文字の 2 倍以上使う形がないもの、
 別の大文字小文字で Db か描画が変わるものです。
 ブロック図は `COLUMNS` と `SPACE` を id として読み、
 状態遷移図はノートの `LEFT`、`RIGHT`、`OF` を Db に書かれたまま保ち、
 `LEFT` か `OF` のノートは異なって描かれ、
+ER 図は属性のキー `PK` と `FK` を Db に書かれたまま保ち、
+Gantt 図はタスクのタグ `done` と `crit` と `after` を保ち、
+XY チャートは `horizontal` を保ち、
 treeView は `ICON(…)` を名前の一部として読みます。
 [fixture: er/whitespace-between-tokens/keyword-case-one-form]
 [fixture: state/whitespace-between-tokens/keyword-case-one-form]
 [fixture: block/keyword-case/keywords-kept]
 [fixture: treeview/keyword-case/icon-kept]
+[fixture: er/attribute-spacing/keys-case-kept]
+[fixture: gantt/keyword-case/tags-case-kept]
 
 ER のサブグラフの本文で、mermaid.js は `class`、`classDef`、
 `style` の文のキーワードを、サブグラフのノードとして書かれたまま列挙します。
 そのため、この 3 つのキーワードは、そこでは大文字小文字を保ち、
 その外では一覧の大文字小文字で印字します。
 [fixture: er/subgraphs/statement-keywords-case-kept]
-
-gitGraph は `switch` を `checkout` として読みます。
-例は `checkout` を 160 回書き、`switch` は書かないので、
-`switch` は `checkout` と印字します。
-[fixture: gitgraph/checkout-aliases/alias-one-form]
 
 ### `"` で囲む文字列
 
@@ -1184,15 +1205,20 @@ Wardley の flow のラベル（`+'moving'>`）は `'` の間に残します。
 
 ### 最短の形の数
 
-円グラフの区分の値、XY チャートの値と範囲、treemap の葉の値、
-radar チャートの `max`、`min`、`ticks` と曲線の値、Venn の集合の大きさは、
-mermaid.js が数として読む数です。
-印字は、`+`、小数部の末尾のゼロ、末尾の `.` をなくし、
+印字は、数の `+`、小数部の末尾のゼロ、末尾の `.` をなくし、
 先頭の `.` の前に `0` を置きます。
-`+1.50` は `1.5`、`2.0` は `2`、`3.` は `3`、`.5` は `0.5` です。
-例にあるこれらの図種の数 213 個のうち 210 個はこの形で、
-3 個（すべて XY チャート）は小数部の末尾にゼロがあります。
-[fixture: pie/numbers/shortest-form]
+`+3` は `3`、`1.50` は `1.5`、`2.0` は `2`、`3.` は `3`、`.5` は `0.5` です。
+対象は、mermaid.js が数として読む数のうち、次の場所だけです。
+円グラフの区分の値、
+XY チャートの `bar` と `line`
+の値と範囲（`a --> b`）の両端（分類は含みません）、treemap の葉の値のうち、
+数字、数字と小数部、小数部だけの形（符号、末尾の `.`、`,`、
+`_` がある葉は書かれたままです）、radar チャートの `max`、`min`、
+`ticks` と曲線の値、
+Venn の集合の `:` の後の大きさ（`text` や style の数は含みません）です。
+例にあるこれらの場所の数 213 個のうち 210 個はこの形で、
+3 個（すべて XY チャートの `49.0`、`103.0`、`177.0`）は、
+小数部の末尾にゼロがあります。 [fixture: pie/numbers/shortest-form]
 [fixture: xychart/numbers/range-numbers-one-form]
 [fixture: xychart/numbers/values-one-form]
 [fixture: treemap/numbers/shortest-form] [fixture: treemap/numbers/leading-dot]
@@ -1204,85 +1230,252 @@ mermaid.js が数として読む数です。
 これらの数は、数をテキストとして書く設定（円グラフの `showData`、
 XY チャートの `showDataLabel`、treemap の値のラベル、
 radar チャートの目盛り）でも描き、描画は同じでした。
-mermaid.js がテキストとして読む数（Venn 図の `text A .5`、
-XY チャートの x 軸の分類 `007`）、整数部の先頭にゼロがある数（`007`）、
-15 桁より多い数、指数のある数（`1e3`）、`-0`、この節にない図種の数は、
-書かれたまま残します。
+mermaid.js がテキストとして読む数（Venn 図の `text A 1.50`、style の値、
+XY チャートの x 軸の分類 `007` や `1.50`）、
+整数部の先頭にゼロがある数（`007`）、15 桁より多い数、指数のある数（`1e3`）、
+`-0`、この節にない図種の数は、書かれたまま残します。
 Wardley マップの座標は、小数 168 個のうち 81 個で小数部の末尾にゼロがあります。
 [fixture: venn/sizes-and-numbers/text-number-forms]
-[fixture: xychart/numbers/forms-kept] [fixture: pie/numbers/forms-kept]
-[fixture: radar/numbers/forms-kept] [fixture: treemap/numbers/forms-kept]
+[fixture: venn/sizes-and-numbers/text-and-style-numbers-kept]
+[fixture: xychart/numbers/forms-kept]
+[fixture: xychart/numbers/category-trailing-zero-kept]
+[fixture: pie/numbers/forms-kept] [fixture: radar/numbers/forms-kept]
+[fixture: treemap/numbers/forms-kept]
+[fixture: treemap/numbers/trailing-dot-kept]
 [fixture: wardley/numbers/forms-kept]
-
-### ヘッダーのキーワード
-
-次の図種はヘッダーに 2 つのキーワードを読み、
-例は一方をほかの形の 2 倍以上多く使います。
-印字はその形を使います。
-後ろに hidden YAML ブロックが続くヘッダーは、キーワードを保ちます。
-`packet-beta---` が読まれる場所で `packet---` は読まれないからです。
-
-| 書かれた形     | 印字する形      | 例の数（印字する形 / ほかの形） |
-| -------------- | --------------- | ------------------------------- |
-| `block-beta`   | `block`         | 30 / 0                          |
-| `graph`        | `flowchart`     | 116 / 0                         |
-| `ishikawa`     | `ishikawa-beta` | 1 / 0                           |
-| `packet-beta`  | `packet`        | 4 / 0                           |
-| `sankey-beta`  | `sankey`        | 8 / 0                           |
-| `treemap`      | `treemap-beta`  | 8 / 0                           |
-| `xychart-beta` | `xychart`       | 7 / 1                           |
-
-7 つのそれぞれで、描画の `aria-roledescription` とアクセシビリティツリーは、
-どちらのキーワードでも同じです。
-`graph` と `flowchart` は、どちらも `flowchart-v2` として描かれます。
-[fixture: block/header/block-beta-one-form]
-[fixture: flowchart/direction/header-keyword-one-form]
-[fixture: ishikawa/header/header-valid] [fixture: packet/header/header-beta]
-[fixture: packet/hidden-yaml/yaml-beta-header]
-[fixture: sankey/header/sankey-beta] [fixture: treemap/header/common]
-[fixture: xychart/header-and-orientation/beta-header-one-form]
-
-別の大文字小文字のヘッダー（`ISHIKAWA`、`sankey-BETA`、`XYCHART-BETA`）は、
-書かれたまま残します。 [fixture: ishikawa/header/header-stable]
-[fixture: sankey/header/upper-case-beta]
-[fixture: xychart/header-and-orientation/second-header-spelling-and-case-kept]
-
-`stateDiagram` と `stateDiagram-v2` は書かれたまま残します。
-例は `-v2` を 17 回、もう一方を 5 回使いますが、
-mermaid.js は両者で状態遷移図を異なって描きます。
-ほかのヘッダーはキーワードが 1 つだけか、例がもう一方のキーワードを使いません。
-[fixture: state/header/spellings-kept]
 
 ### ヘッダーの向き
 
-flowchart のヘッダーの向き `TB` は `TD` と印字します。
-例は `TD` を 59 回、`TB` を 8 回使います。
 agentflow と swimlane のヘッダーの向き `TD` は `TB` と印字します。
 例は `TB` を agentflow で 10 回、swimlane で 1 回使い、`TD` は使いません。
+swimlane の数は、1 つの例で数えたものです。
 どの図でも `direction` の文は書かれたまま残します。
 mermaid.js が文の向きを Db に書かれたまま保つからです。
-[fixture: flowchart/direction/header-td-one-form]
-[fixture: flowchart/direction/statement-td-kept-with-other-header]
-[fixture: flowchart/direction/statement-values-kept]
 [fixture: agentflow/header/header-direction-spelling]
 [fixture: flowchart/direction/swimlane-header-td-one-form]
+[fixture: flowchart/direction/statement-td-kept-with-other-header]
+[fixture: flowchart/direction/statement-values-kept]
 
-### gitGraph のヘッダー
+flowchart のヘッダーは、`TB` も `TD` も書かれたまま残します。
+例は `TD` を 59 回、もう一方を 5 回使いますが、形は変えません。
+[mermaid.js の版](#mermaidjs-の版)を参照してください。
+[fixture: flowchart/direction/header-tb-kept]
+[fixture: flowchart/link-label-form/flowchart-header-both-forms-kept]
 
-gitGraph のヘッダーのキーワードの直後の `:` は除きます。
-例は `gitGraph` を 33 回、`gitGraph:` を 2 回書きます。
+### ER 図の関係
+
+関係のカーディナリティと線は、語の大文字小文字にかかわらず、
+mermaid.js が同じに読む記号で印字します。
+`only one` と `1` は `||`、`zero or one` と `one or zero` は、左では `|o`、
+右では `o|`、`zero or more`、`zero or many`、`many(0)`、`0+` は、左では `}o`、
+右では `o{`、`one or more`、`one or many`、`many(1)`、`1+` は、左では `}|`、
+右では `|{` です。
+線の `to` は `--`、`optionally to`、`.-`、`-.` は `..` です。
+カーディナリティ `u` には記号がなく、書かれたまま残し、
+単位の間にディレクティブがある関係も残します。
+例は記号を 84 回、語とほかの形を 6 回（`only one` が 1 回、
+`zero or more` が 2 回、`many(0)`、`0+`、`1` がそれぞれ 1 回）書きます。
+線は `--` が 39 回、`to` が 2 回、`..` が 3 回、`optionally to` が 1 回です。
+[fixture: er/relationship-spacing/words-to-symbols]
+[fixture: er/relationship-spacing/cardinality-words-case-one-form]
+[fixture: er/relationship-spacing/entity-only-before-cardinality]
+[fixture: er/relationship-spacing/directive-between-word-units-kept]
+
+### キーワードや記号の別の綴り
+
+gitGraph は `switch` を `checkout` として読みます。
+例は `checkout` を 160 回書き、`switch` は書かないので、
+`switch` は `checkout` と印字します。
+C4 は `Rel_Up`、`Rel_Down`、`Rel_Left`、`Rel_Right` を、`Rel_U`、`Rel_D`、
+`Rel_L`、`Rel_R` として読みます。
+例は `Rel_U` と `Rel_R` をそれぞれ 1 回書き、長い形は書かないので、
+長い形は短い形で印字し、`Rel_Back` と `BiRel` は残します。
+railroad 図の EBNF 記法は `::=` を `=` として読みます。
+例は `=` を 35 回書き、`::=` は書かないので、`::=` は `=` と印字します。
+packet 図の範囲の始まりと終わりが同じ位置のときは、その位置だけになります。
+例は位置だけを 7 回書き、両端が同じ範囲は書かないので、
+両端の間に空白と `-` 以外がない限り、`4-4` は `4` と印字します。
+[fixture: gitgraph/checkout-aliases/alias-one-form]
+[fixture: c4/argument-forms/relationship-direction-long-forms]
+[fixture: railroad/assignment/ebnf-assignment-equals]
+[fixture: packet/block-forms-and-order/equal-range-single]
+
+### ヘッダーの後のコロン
+
+cynefin 図と radar 図は、`cynefin-beta:` と `radar-beta:` を、
+コロンのないヘッダーとして読みます。
+例は、どちらの図もコロンのないヘッダーを 3 回書き、コロンつきは書かないので、
+コロンを除き、その行で後に続くものは、コロンのないヘッダーの後と同じく、
+次の行に移します。
+`;` や hidden YAML ブロックの `---` が接するコロンは残します。
+[fixture: cynefin/header/colon-removed]
+[fixture: cynefin/header/colon-semicolon-kept]
+[fixture: radar/header/colon-removed] [fixture: radar/header/colon-yaml-kept]
+
+gitGraph のヘッダーの後のコロンは、書かれたまま残します。
+[mermaid.js の版](#mermaidjs-の版)を参照してください。
 [fixture: gitgraph/header/header-colon]
 
-### 書かれたまま残すもの
+### リンクのラベル
 
-flowchart の長いリンク（`-->` に対する `--->`）は、
-描いた例では同じ図を描きますが、mermaid.js の文書は、
-[Minimum length of a link][minimum-length-of-a-link]で、
-追加のダッシュがより多くの階層をまたぐリンクを求めると説明しています。
-そのため、長さは作者が書いたままにします。
+ラベルは、2 つの矢印の間（`-- text -->`）か、
+矢印の後の `|` の間（`-->|text|`）に書け、mermaid.js は両方を同じに読みます。
+形は、その図種の例が、もう一方の 2 倍以上多く使うものにします。
+agentflow 図は最初の形のリンクが 2 つ、もう一方はないので、
+最初の形を読む矢印 `-->` と `--x` のラベルを、矢印の間に印字します。
+swimlane 図は最初の形がなく、もう一方が 12 個なので、
+flowchart の 8 種類の矢印のラベルを、`|` の間に印字します。
+flowchart は最初の形が 14 個、もう一方が 8 個で、2 倍以上ではないので、
+書かれたまま残します。
+ラベルは、文字、数字、空白、`_`、`,`、`?`、
+`!` の通常のテキストでなければなりません。
+`|` や `%%` があるラベル、文字列、Markdown のラベル、空白だけのラベル、
+空のラベルは、書かれたまま残します。
+[fixture: agentflow/edge-labels/pipes-to-arrows]
+[fixture: agentflow/edge-labels/blank-pipe-label-kept]
+[fixture: flowchart/link-label-form/swimlane-arrows-to-pipes]
+[fixture: flowchart/link-label-form/flowchart-header-both-forms-kept]
+[fixture: flowchart/link-label-form/kept]
+
+### mermaid.js の版
+
+固定している mermaid.js の CHANGELOG.md には、
+この節に挙げるキーワードの大文字小文字、文字列の引用符、
+数の桁についての記述がないので、
+これらを版のために書かれたまま残すことはありません。
+ほかの種類については、mermaid.js の履歴から読んだ CHANGELOG.md と、
+リリースタグの文法が、各版がどの形を読むかを示します。
+
+- gitGraph のヘッダーの後のコロン: 8.14.0 の文法は、規則が `gitGraph:` だけで、
+  9.0.0 の文法は、コロンがあるヘッダーとないヘッダーを読みます。
+  コロンなしで印字したテキストは 8.14.0 で読めないので、
+  コロンは書かれたまま残します。
+- gitGraph の `switch`: 10.9.0 の文法は `checkout` があり、`switch` はなく、
+  11.0.0 の文法は両方があります。
+  `checkout` で印字したテキストは、`switch` を読むすべての版で読めます。
+- ER の関係の記号: 8.8.0、8.14.0、9.0.0 の文法は記号があり、語はなく、
+  9.4.3 の文法は語もあります。
+  記号で印字したテキストは、語を読むすべての版で読めます。
+- C4 の `Rel_Up` など: C4 の文法がある最初のタグは 9.1.7 で、
+  その文法には `Rel_Up` と `Rel_U` の両方があります。
+- EBNF の `::=`: CHANGELOG.md は 11.16.0 に railroad 図を追加し、
+  （[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L601)）、
+  11.16.0 の文法には `=` と `::=` の両方があります。
+- packet 図の範囲: packet 図がある最初の版 11.0.0 の文法は、
+  規則 `start=INT('-' end=INT)?` で位置と範囲を読みます。
+- cynefin 図と radar 図のヘッダーの後のコロン: CHANGELOG.md は、
+  11.6.0 に radar チャートを追加し、
+  （[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L1168)）、
+  11.16.0 に cynefin 図を追加し、
+  （[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L585)）、
+  それぞれの最初のリリースの文法は、
+  コロンがあるヘッダーとないヘッダーを読みます。
+- flowchart のヘッダーの向き: 11.10.0 の CHANGELOG.md は、
+  `TD` の挙動を `TB` と同じに更新したと記します。
+  （[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L1061)）。
+  11.9.0 は `TD` の向きを Db に残し、
+  3 つの subgraph をまたぐノードを結ぶ文書の flowchart の例（`flowchart TB`、
+  `c1-->a2`）を、同じテキストの `TD` 版と異なって描きます。
+  12.3.0 は両者を同じに描きます。
+  11.9.0 は subgraph の `direction TD` も拒否し、11.13.0 は読みます。
+  （[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L860)）。
+  8.14.0、9.4.3、10.9.0 の flowchart の文法は、
+  `TB` と `TD` の両方をヘッダーの向きとして読みます。
+  そのため、`TB` は書かれたまま残します。
+- agentflow 図と swimlane 図のリンクのラベルとヘッダーの向き: CHANGELOG.md は
+  11.16.0 に swimlane 図を追加します。
+  （[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L605)）。
+  swimlane は、両方のラベルの形がある flowchart の文法を読みます。
+  12.0.0 に追加された agentflow 図の文法は、
+  （[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L250)）、
+  12.0.0 と 12.3.0 で同じファイルで、両方の形があります。
+  両図種とも 11.10.0 より後なので、それらを読むすべての版で `TD` は `TB` です。
+- キーワードの大文字小文字: sequence、Gantt、user journey、ER、requirement、
+  state の図の字句解析器は、8.14.0、9.4.3、10.9.0、12.3.0 の文法で、
+  大文字小文字を区別しません。
+  ほかの図種の文法がある、調べた中で最も古いタグも、大文字小文字を区別しません。
+  timeline と mindmap の図は 9.4.0、象限チャートは 10.2.0、
+  XY チャートは 10.6.0、Venn 図は 11.13.0、
+  （[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L836)）、
+  usecase 図は 12.0.0 です。
+  （[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L248)）。
+  8.14.0 より前の版は読んでいません。
+
+### ヘッダーの名前
+
+ヘッダーの名前は書かれたまま残します。
+`block-beta` と `block`、`graph` と `flowchart`、`packet-beta` と `packet`、
+`sankey-beta` と `sankey`、`xychart-beta` と `xychart`、
+`treemap` と `treemap-beta`、`ishikawa` と `ishikawa-beta` です。
+mermaid.js 12.3.0 は、どの対も両方の名前を受理します。
+（[block](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/block/blockDetector.ts#L6)、
+[sankey](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sankey/sankeyDetector.ts#L6)、
+[xychart](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/xychart/xychartDetector.ts#L10)、
+[packet](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/packet/detector.ts#L10)、
+[treemap](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/treemap/detector.ts#L10)、
+[ishikawa](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/ishikawa/ishikawaDetector.ts#L10)、
+[flowchart](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDetector-v2.ts#L9-L11)）。
+どの対も両方の名前で同じに描き、描画の `aria-roledescription` と、
+アクセシビリティツリーは同じで、もう一方の名前で書いた例 175 対は、
+Db も描画も同じでした。
+例は `block` を 30 回、`block-beta` は使わず、`flowchart` を 116 回、
+`graph` は使わず、`packet` を 4 回、もう一方は使わず、`sankey` を 8 回、
+もう一方は使わず、`xychart` を 7 回、もう一方を 1 回、`treemap-beta` を 8 回、
+もう一方は使わず、`ishikawa-beta` を 1 回、もう一方は使いません。
+
+しかし、ほかの版は名前の受理が異なります。
+mermaid.js 11.9.0 は、`-beta` のない `block`、`sankey`、
+`xychart` から図を検出せず、
+CHANGELOG.md は 11.10.0 にこの 3 図種の接尾辞を除きます。
+（[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L1020)）。
+11.9.0 では packet 図が beta を外れ、
+（[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L1087)）、
+11.1.0 と 11.3.0 の文法は `packet-beta` だけを読みます。
+そのため、接尾辞なしで印字したテキストは、それらより前の版では描かれません。
+mermaid.js 11.9.0 は、`graph` と `flowchart`、`treemap-beta` と `treemap` を、
+どちらも読み、CHANGELOG.md は flowchart、treemap、ishikawa の図の名前の変更を、
+記録していません。
+テキストを描く版を知っているのは作者で、フォーマッターは知らないので、
+どの名前も書き換えません。
+別の大文字小文字のヘッダー（`ISHIKAWA`、`sankey-BETA`、`XYCHART-BETA`）も、
+書かれたまま残します。 [fixture: block/header/block-beta-kept]
+[fixture: flowchart/direction/header-keyword-kept]
+[fixture: flowchart/direction/header-td-kept]
+[fixture: ishikawa/header/header-valid] [fixture: ishikawa/header/header-stable]
+[fixture: packet/header/header-beta]
+[fixture: packet/hidden-yaml/yaml-beta-header]
+[fixture: sankey/header/sankey-beta] [fixture: sankey/header/upper-case-beta]
+[fixture: treemap/header/common]
+[fixture: xychart/header-and-orientation/beta-header-kept]
+[fixture: xychart/keyword-case/header-spelling-kept]
+[fixture: xychart/header-and-orientation/second-header-spelling-and-case-kept]
+
+`stateDiagram` と `stateDiagram-v2` も、同じ理由で書かれたまま残します。
+mermaid.js 12.3.0 の検出器は、どちらも統合された状態遷移図で描きます。
+（[そのコメント](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/state/stateDetector-V2.ts#L9)）。
+例の 22 対の Db は同じで、そのうち 21 対の描画は、画素ごとに同じでした。
+22 番目の choice の例（`state if_state <<choice>>`）は、
+ランダムに描くひし形の線だけが異なり、
+同じテキストを 2 回描いても同様に異なります。
+例は `-v2` を 17 回、もう一方を 5 回使います。
+[fixture: state/header/spellings-kept]
+
+### ほかに書かれたまま残すもの
+
+flowchart の長いリンク（`-->` に対する `--->`）は、書かれたまま残します。
+mermaid.js の文書は、追加のダッシュが、
+より多くの階層をまたぐリンクを求めると説明しています。
+（[Minimum length of a link](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L933-L955)）。
+コードも長さをレイアウトに渡します。
+[`flowDb.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L1378)
+は、辺の `minlen` として長さを与えます。
+dagre のレイアウトは
+[`index.js`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/layout-algorithms/dagre/index.js#L759)、
+elk のレイアウトは
+[`render.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/layout-algorithms/elk/render.ts#L2754)
+で、その長さを引き継ぎます。
+描いた例は同じ図でしたが、長さは作者が求めたものです。
 [fixture: flowchart/arrow-spacing/arrow-length-kept]
-
-[minimum-length-of-a-link]: https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L933-L955
 
 ## ラベルの先頭の空白
 

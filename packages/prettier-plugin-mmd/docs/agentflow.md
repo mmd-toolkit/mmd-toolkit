@@ -34,9 +34,12 @@ syntax repair, and the specification already defines the exceptional readings.
 policy: the header is easy to find. Unlike the header of a flowchart, a header
 direction `TD` is printed `TB`, the direction that the examples in the
 documentation of mermaid.js use (10 times, and `TD` never; see
-[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
-Agentflow accepts only exact lower-case `agentflow-beta`. An absent direction
-stays absent, symbol directions stay written, and next-line LR remains a vertex.
+[The direction of a header](./compatibility.md#the-direction-of-a-header)): the
+diagram type is later than the version of mermaid.js that made `TD` behave as
+`TB`, so every version that reads it draws the two the same (see
+[Versions of mermaid.js](./compatibility.md#versions-of-mermaidjs)). Agentflow
+accepts only exact lower-case `agentflow-beta`. An absent direction stays
+absent, symbol directions stay written, and next-line LR remains a vertex.
 Ordinary header followers move into the body; directive attachment follows
 Directives. [fixture: header/header-column] [fixture:
 header/header-direction-spelling] [fixture: header/header-inline-separated]
@@ -411,13 +414,22 @@ agentflow-beta TB
 ### Edge labels
 
 Reuse [Link label form](./flowchart.md#link-label-form) and
-[Arrow spacing](./flowchart.md#arrow-spacing) with their reasons: preserve the
-author's pipe/split form, since split text can contain a pipe, and make
-relations readable. Pipes touch the arrow and their label; split text has one
-exterior space. Print one post-pipe gap. Only sequence/failure support split
-labels. Keep string/markdown kind, bare continuation, and split semicolons,
-percent text and line breaks; do not invent another string or split reference
-form. [fixture: edge-labels/edge-label-forms] [fixture:
+[Arrow spacing](./flowchart.md#arrow-spacing) with their reasons: make relations
+readable. A label of plain text (letters, digits, spaces, `_`, `,`, `?`, and
+`!`) on the arrow `-->` or `--x` is printed between two arrows, the form that
+the examples in the documentation of mermaid.js use twice against none for the
+form between pipes (see
+[The label of a link](./compatibility.md#the-label-of-a-link)): `A -->|x| B` is
+printed `A -- x --> B`. [fixture: edge-labels/pipes-to-arrows] Any other label
+keeps the pipe/split form it is written in, since split text can contain a pipe,
+a label with a `|` or a `%%`, a string, and a Markdown label cannot be printed
+between the arrows, a label of blanks only is rejected between the arrows, and
+only the arrows `-->` and `--x` can have a label between two arrows. [fixture:
+edge-labels/blank-pipe-label-kept] Pipes touch the arrow and their label; split
+text has one exterior space. Print one post-pipe gap. Only sequence/failure
+support split labels. Keep string/markdown kind, bare continuation, and split
+semicolons, percent text and line breaks; do not invent another string or split
+reference form. [fixture: edge-labels/edge-label-forms] [fixture:
 edge-labels/split-pipe-content] A string between pipes keeps its text, and the
 pipes touch the arrow and the quotes: `A  -->  |"x  y"|B` is printed as
 `A -->|"x  y"| B`. [fixture: edge-labels/pipe-label-string-kept] So does a

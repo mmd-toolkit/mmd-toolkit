@@ -10,15 +10,12 @@ escaped fixed tests.
 
 ### Header
 
-Put the header at column one, and print `packet-beta` as `packet`, the keyword
-that the examples in the documentation of mermaid.js use and that draws the same
-(see
-[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
-Move an ordinary first statement below it for a visible heading. Only `packet`
-requires a following boundary; never create a glued spelling. Hidden boundaries
-and protected header/body groups take precedence: a `packet-beta` that a hidden
-YAML block touches stays, since `packet---` is not read where `packet-beta---`
-is. [fixture: packet/hidden-yaml/yaml-beta-header]
+Keep the authored `packet` or `packet-beta` keyword at column one. Move an
+ordinary first statement below it for a visible heading. Only `packet` requires
+a following boundary; never create a glued spelling. Hidden boundaries and
+protected header/body groups take precedence. Keep the authored synonym:
+mermaid.js before 11.9.0 reads `packet-beta` only (see
+[The names of a header](./compatibility.md#the-names-of-a-header)).
 
 [fixture: packet/header/header-packet]
 
@@ -103,11 +100,18 @@ packet
 
 ### Block forms and order
 
-Keep `start-end`, `start` and `+count` as their three authored AST forms,
-including equal endpoints. Keep every occurrence in order, repeated labels and
-empty common assignments. Never merge or reconstruct statements from the Db: row
-splitting and the publication cap lose authored structure, and deleting empty
-assignments can change the final value.
+Keep `start-end`, `start` and `+count` as their three authored AST forms, except
+that a range whose two ends are written the same is printed as the position
+alone: `3-3` is `3`, since mermaid.js reads both the same and the examples in
+its documentation write the position alone 7 times against none of the range
+with equal ends (see
+[Spellings that are drawn the same](./compatibility.md#other-spellings-of-a-keyword-or-of-a-punctuation-mark)).
+A range with something other than whitespace and the `-` between its ends stays
+as written. [fixture: packet/block-forms-and-order/equal-range-single] Keep
+every occurrence in order, repeated labels and empty common assignments. Never
+merge or reconstruct statements from the Db: row splitting and the publication
+cap lose authored structure, and deleting empty assignments can change the final
+value.
 
 [fixture: packet/block-forms-and-order/block-three-forms]
 

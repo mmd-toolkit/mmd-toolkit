@@ -13,11 +13,10 @@ from mermaid.js.
 ### Header
 
 Put the header at column one and an ordinary first statement on the next line,
-making the heading easy to find. The keyword is printed `treemap-beta`, whether
-`treemap` or `treemap-beta` is written, since the examples in the documentation
-of mermaid.js use `treemap-beta` and both draw the same (see
-[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
-Add no colon; an empty body stays empty.
+making the heading easy to find. Preserve the authored `treemap` or
+`treemap-beta` keyword rather than choosing between Db-equivalent aliases (see
+[The names of a header](./compatibility.md#the-names-of-a-header)). Add no
+colon; an empty body stays empty.
 
 [fixture: treemap/header/stable]
 
@@ -252,16 +251,17 @@ treemap
 
 ### Numbers
 
-A NumericLiteral that is a plain decimal is printed in the shortest form: no
-`+`, no zero at the end of the fraction, no `.` at the end, and a `0` before a
-`.` at the start (see
+A NumericLiteral that is digits with an optional fraction, or a fraction alone,
+is printed in the shortest form: no zero at the end of the fraction and a `0`
+before a `.` at the start (`1.50` is `1.5`, and `.5` is `0.5`; see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
-Every other source span stays as written: separators, underscores, a second dot,
-a zero at the start of the integer part, and more than 15 digits. Do not reprint
-its numeric value. Mermaid reads `1_000` as 1; other spellings can round, become
-NaN, overflow or underflow. Re-encoding can change the Db or produce rejected
-numeric syntax. [fixture: treemap/numbers/shortest-form] [fixture:
-treemap/numbers/forms-kept]
+Every other source span stays as written: a sign, a `.` at the end, separators,
+underscores, a second dot, a zero at the start of the integer part, and more
+than 15 digits. Do not reprint its numeric value. Mermaid reads `1_000` as 1;
+other spellings can round, become NaN, overflow or underflow. Re-encoding can
+change the Db or produce rejected numeric syntax. [fixture:
+treemap/numbers/shortest-form] [fixture: treemap/numbers/forms-kept] [fixture:
+treemap/numbers/trailing-dot-kept]
 
 [fixture: treemap/numbers/comma]
 

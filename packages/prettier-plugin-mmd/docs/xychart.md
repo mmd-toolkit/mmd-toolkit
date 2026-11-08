@@ -210,18 +210,18 @@ xychart
 
 ### Header and orientation
 
-The first header is printed `xychart`, whether `xychart` or `xychart-beta` is
-written: mermaid.js reads them as the same diagram type, and the examples in its
-documentation use `xychart` (see
-[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
-A header in another case stays as written. A header after the first stands on a
-line of its own, and none is dropped: a later header with an orientation changes
-the orientation, and one without changes nothing, but the text is the author's,
-with its spelling. A header with a comment or directive in its gap keeps that
-line break and aligns its continuation one level inside the header (see
-[Multi-line statements](#multi-line-statements)). [fixture:
+The header is printed as written: `xychart` or `xychart-beta`, in the case
+written. mermaid.js 12.3.0 reads them as the same diagram type, but mermaid.js
+11.9.0 detects `xychart-beta` only, so the spelling is the author's, not the
+printer's (see
+[The names of a header](./compatibility.md#the-names-of-a-header)). A header
+after the first stands on a line of its own, and none is dropped: a later header
+with an orientation changes the orientation, and one without changes nothing,
+but the text is the author's. A header with a comment or directive in its gap
+keeps that line break and aligns its continuation one level inside the header
+(see [Multi-line statements](#multi-line-statements)). [fixture:
 header-and-orientation/plain-header] [fixture:
-header-and-orientation/beta-header-one-form] [fixture:
+header-and-orientation/beta-header-kept] [fixture:
 header-and-orientation/header-only] [fixture:
 header-and-orientation/vertical-kept] [fixture:
 header-and-orientation/second-header-on-its-own-line] [fixture:
@@ -249,7 +249,7 @@ header-and-orientation/orientation-after-a-tab] [fixture:
 header-and-orientation/orientation-on-the-next-line-joined] [fixture:
 header-and-orientation/orientation-on-the-next-line-after-a-tab] [fixture:
 header-and-orientation/orientation-case-kept] [fixture:
-header-and-orientation/orientation-upper-case-one-form] [fixture:
+header-and-orientation/orientation-upper-case-kept] [fixture:
 header-and-orientation/orientation-and-comment]
 
 Input
@@ -851,7 +851,7 @@ the examples do not use. The Db holds the kind of a plot, `line` or `bar`, in
 lower case whatever the case written. [fixture:
 keyword-case/statement-keywords-one-form] [fixture:
 keyword-case/accessibility-keywords-kept] [fixture:
-keyword-case/header-spelling-one-form]
+keyword-case/header-spelling-kept]
 
 Input
 ([keyword-case/statement-keywords-one-form-input.mmd](../tests/fixtures/xychart/keyword-case/statement-keywords-one-form-input.mmd)):

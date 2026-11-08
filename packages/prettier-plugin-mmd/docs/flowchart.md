@@ -68,7 +68,7 @@ Output
 ([indentation/nested-subgraphs-output.mmd](../tests/fixtures/flowchart/indentation/nested-subgraphs-output.mmd)):
 
 ```mmd
-flowchart TD
+flowchart TB
   subgraph outer
     subgraph inner
       A --> B
@@ -1180,10 +1180,22 @@ flowchart LR
 ### Link label form
 
 A link label keeps the form it is written in: text between two arrows, or text
-between `|` after the arrow. [fixture: link-label-form/other-link-kinds-kept]
-Turning one form into the other would need rules for labels that hold a `|`:
-`A -- a|b --> B` is accepted, and `A -->|a|b| B` is not. [fixture:
+between `|` after the arrow. The examples in the documentation of mermaid.js use
+the first form 14 times and the second 8 times, which is not twice as often (see
+[The label of a link](./compatibility.md#the-label-of-a-link)). [fixture:
+link-label-form/other-link-kinds-kept] [fixture:
+link-label-form/flowchart-header-both-forms-kept] Turning one form into the
+other would need rules for labels that hold a `|`: `A -- a|b --> B` is accepted,
+and `A -->|a|b| B` is not. [fixture:
 link-label-form/pipe-in-text-between-arrows-kept]
+
+The label of a link of a swimlane diagram is printed between `|`, since the
+examples in the documentation of mermaid.js use that form 12 times and the other
+none. This holds for a label of plain text (letters, digits, spaces, `_`, `,`,
+`?`, and `!`) and for the eight arrows `-->`, `---`, `--o`, `--x`, `-.->`,
+`-.-`, `==>`, and `===`: `A -- text --> B` is printed `A -->|text| B`. A label
+that holds a `|` or a `%%`, a string, and a Markdown label stay as written.
+[fixture: link-label-form/swimlane-arrows-to-pipes]
 
 Input
 ([link-label-form/kept-input.mmd](../tests/fixtures/flowchart/link-label-form/kept-input.mmd)):
@@ -2036,29 +2048,32 @@ the examples are written as strings, in which `\n` is a line break:
 
 ### Direction
 
-The header keyword `graph` is printed `flowchart`, and the header direction `TB`
-is printed `TD`, which the examples in the documentation of mermaid.js use 59
-times against 8 (see
-[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
-[fixture: direction/header-keyword-one-form] [fixture:
-direction/header-td-one-form] [fixture: direction/header-tb-one-form] The
-direction of a `direction` statement is kept as written: `TD` is not changed to
-`TB`, and `TB` is not changed to `TD`. [fixture:
+The direction is kept as written: `TD` is not changed to `TB`, and `TB` is not
+changed to `TD`, in the header or in a `direction` statement. mermaid.js 12.3.0
+draws the two the same, but mermaid.js 11.9.0 draws a flowchart with `TB` in its
+header differently from the same text with `TD`, and the header keyword is kept
+as written too (see
+[Versions of mermaid.js](./compatibility.md#versions-of-mermaidjs) and
+[The names of a header](./compatibility.md#the-names-of-a-header)). [fixture:
+direction/header-td-kept] [fixture: direction/header-tb-kept] [fixture:
+direction/header-keyword-kept] [fixture:
 direction/statement-td-kept-with-other-header] [fixture:
-direction/statement-values-kept] mermaid.js keeps the direction of a `direction`
-statement in a subgraph as written in the Db, so changing it there would change
-the Db. The header of a swimlane diagram is printed with `TB` for `TD`, as the
-header of an agentflow diagram is (see [Header](./agentflow.md#header)).
-[fixture: direction/swimlane-header-td-one-form] In a `direction` statement
-mermaid.js reads the text before `direction` and after the value as text, which
-may hold labels and strings, and a `;` after the value belongs to that text and
-is no separator. The text is kept as written; the whitespace between it and
+direction/statement-values-kept] mermaid.js keeps the `TD` of a `direction`
+statement in a subgraph as written, so changing it there would change the
+diagram, and changing only the header would make the two disagree. The header of
+a swimlane diagram is printed with `TB` for `TD`, as the header of an agentflow
+diagram is (see [Header](./agentflow.md#header)); both diagram types are later
+than the version that made `TD` behave as `TB`. [fixture:
+direction/swimlane-header-td-one-form] In a `direction` statement mermaid.js
+reads the text before `direction` and after the value as text, which may hold
+labels and strings, and a `;` after the value belongs to that text and is no
+separator. The text is kept as written; the whitespace between it and
 `direction`, and between `direction` and the value, becomes one space, as
 between any tokens. A line such as `A[direction TB]` is a `direction` statement
 too, its vertices and links are not read, and it is printed so, at the
 indentation of its level. [fixture: direction/statement-holds-text-kept] The
 direction of the header stands after one space, also where a symbol touched the
-keyword: `graph>` is printed `flowchart >`, and `flowchart^` is printed
+keyword: `graph>` is printed `graph >`, and `flowchart^` is printed
 `flowchart ^`. The whitespace is not in the Db, and a letter direction such as
 `TD` already needs the space. A directive between them is placed as under
 [Directives](#directives), and a U+2028 or U+2029 stays where it is. [fixture:
@@ -2439,8 +2454,9 @@ diagram or the input would be rejected:
 - whether there is whitespace around `&`: `A&B` is one vertex, `A & B` two, and
   `A &B` is rejected (a run of whitespace becomes one space, as between tokens);
   [fixture: arrow-spacing/ampersand-spacing-kept]
-- the length of an arrow (`-->` and `--->`); [fixture:
-  arrow-spacing/arrow-length-kept]
+- the length of an arrow (`-->` and `--->`), and the header keyword (`graph` or
+  `flowchart`); [fixture: arrow-spacing/arrow-length-kept] [fixture:
+  direction/header-keyword-kept]
 - the content of directives and, apart from the uniform indentation and the ends
   of a block on one line in [Data blocks](#data-blocks), of `@{ ... }` blocks,
   which the parser does not read; [fixture:

@@ -15,11 +15,15 @@
 
 `radar-beta` を第 1 列に置き、普通の最初の文を次の行へ移します。
 見出しを見つけやすくするためです。
-作者が書いたコロンの有無を保ちます。
-別置コロン前の普通の空白は意味を持たないため、`radar-beta:` に詰めます。
-gitgraph の [Header](./gitgraph.ja.md#header) と同じ選択です。
+見出しの語の直後のコロンは、その前の空白とともに落とします。
+mermaid.js は `radar-beta:` と `radar-beta` を同じ見出しとして読み、
+文書の例はコロンのない見出しを 3 回使い、ある形は使わないためです。
+（[ヘッダーの後のコロン](./compatibility.ja.md#ヘッダーの後のコロン)を参照）。
+コロンと語の間に hidden form か global directive があるときと、
+`;` か hidden YAML ブロックの `---` がコロンに接するときは、コロンを残します。
 hidden form、global trivia、semicolon の保護区間では境界を保ちます。
-空の本文は空のままです。
+空の本文は空のままです。 [fixture: radar/header/colon-removed]
+[fixture: radar/header/colon-yaml-kept]
 
 [fixture: radar/header/joined-empty]
 
@@ -61,7 +65,7 @@ hidden form、global trivia、semicolon の保護区間では境界を保ちま�
 ([header/join-separated-inline-alternative-output.mmd](../tests/fixtures/radar/header/join-separated-inline-alternative-output.mmd)):
 
 ```mmd
-radar-beta:
+radar-beta
   curve trial{4}
 ```
 

@@ -259,10 +259,10 @@ accDescr {}
 ### Header
 
 The spelling of the header, `stateDiagram` or `stateDiagram-v2`, stays as
-written: the examples in the documentation of mermaid.js use `stateDiagram-v2`
-17 times and `stateDiagram` 5 times, and of the 11 pairs of examples that were
-drawn in both spellings one was drawn differently (see
-[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+written, like the name of any other header (see
+[The names of a header](./compatibility.md#the-names-of-a-header)): the examples
+in the documentation of mermaid.js use `stateDiagram-v2` 17 times and
+`stateDiagram` 5 times, and mermaid.js 12.3.0 draws both with the same diagram.
 [fixture: header/spellings-kept] [fixture: indentation/header-without-v2-kept]
 
 Input (escaped): `"stateDiagram\nSTATE \"legacy\" AS old"`.

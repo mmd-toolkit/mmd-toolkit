@@ -25,11 +25,13 @@ pnpm --filter @mmd-toolkit/eslint-plugin run test:update
 
 テストは、`@mmd-toolkit/parser` と `@mmd-toolkit/tests` のビルドではなく、
 ソースを import します（`vitest.config.ts` を参照）。
-そのため、ビルドの手順は要りません。
-プラグインのビルドと、そのソースを import して Node で動かすスクリプトは、
-parser を `lib/` のビルドから読みます。
-parser が変わったら、
-`pnpm --filter @mmd-toolkit/parser run build` で作り直します。
+そのため、ほとんどのテストは、ビルドの手順が要りません。
+文書を生成する `tests/rule-docs.test.ts` のテストは例外です。
+Prettier が Mermaid のプラグインを `docs/prettier.config.js` から読み、
+その読み込みに別名は効かないので、parser を `lib/` のビルドから読みます。
+プラグインのビルドと、そのソースを import して Node で動かすスクリプトも、
+同じです。
+parser が変わったら、`pnpm run build:parser` で作り直します。
 
 ## テスト
 
@@ -360,6 +362,12 @@ pnpm --filter @mmd-toolkit/eslint-plugin run check:docs
 それは build したパッケージなので、`update`、`update:docs`、`check:docs`、
 `format`、`format:check` は、
 先に parser を build します（ルートの `pnpm run build:parser`）。
+保存時に整形するエディターには、Node 22.18 以降（ルートの `engines` の版）と、
+build した parser が要り、プラグインや parser が変わったら、
+読み込んだモジュールを持ち続けるので、再読み込みが要ります。
+プラグインは作業ツリーから読むので、
+`packages/prettier-plugin-mmd/src` に書きかけのファイルがあると、
+書き終えるまで、これらのコマンドが失敗します。
 フォーマッターが 1 つの形に印字する書き方（空白、大文字小文字、
 引用符など）が要点で、わざと書いたまま残す例には、コードブロックの直前に、
 英日とも `<!-- prettier-ignore -->` を置き、規則の詳細の文で、

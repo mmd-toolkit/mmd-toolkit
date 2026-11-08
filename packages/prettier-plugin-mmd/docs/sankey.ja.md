@@ -52,7 +52,7 @@ Characters と Diagram and records）。
 ([indentation/header-and-records-at-the-first-column-output.mmd](../tests/fixtures/sankey/indentation/header-and-records-at-the-first-column-output.mmd)):
 
 ```mmd
-sankey
+sankey-beta
 a,b,1
 c,d,2
 ```
@@ -308,11 +308,10 @@ c,d,2
 
 ### ヘッダー
 
-ヘッダーの `sankey-beta` は `sankey` と印字します。
-mermaid.js はどちらも同じ図種として読みます。
-Db も同じで、mermaid.js の文書の例は `sankey` を使うからです。
-（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
-大文字小文字が異なる見出し（`sankey-BETA`）は、書かれたまま残します。
+ヘッダーの `sankey` と `sankey-beta` は、書かれた大文字小文字を保ちます。
+mermaid.js 12.3.0 ではどちらも同じ図種で、Db も同じですが、
+mermaid.js 11.9.0 は `sankey-beta` だけを読むため、作者が書いた綴りを保ちます。
+（[ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)を参照）。
 ヘッダーは 1 列目に置き、その行には何も続けません。
 mermaid.js は、指令とコメント行以外が続くと拒否します。 [fixture: header/sankey]
 [fixture: header/sankey-beta] [fixture: header/upper-case-beta]

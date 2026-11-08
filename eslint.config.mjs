@@ -169,6 +169,15 @@ export default [
     },
   },
   {
+    files: ["**/*.{ts,mts,cts}"],
+    rules: {
+      // Node's type stripping keeps `import { type A } from "m"` as
+      // `import {} from "m"`, which loads `m`; a package with types only, such
+      // as @mmd-toolkit/ast, then fails to load. `import type` is erased whole.
+      "@typescript-eslint/no-import-type-side-effects": "error",
+    },
+  },
+  {
     // The build of mmdfmt publishes src/cli.ts as lib/cli.mjs, the file that
     // its `bin` names; eslint-plugin-n checks each source as the file it is
     // published as (n/hashbang requires the shebang of a `bin` file).

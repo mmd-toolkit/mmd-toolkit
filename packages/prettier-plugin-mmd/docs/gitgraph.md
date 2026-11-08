@@ -10,14 +10,13 @@ cases.
 
 ### Header
 
-Keep the exact `gitGraph` word and the authored direction. A colon right after
-the word is removed, as the examples in the documentation of mermaid.js write
-the header without it (33 against 2; see
-[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
-while the colon after a direction stays. Print ordinary gaps as `gitGraph LR:`
-or `gitGraph`; an ordinary inline first statement moves below the header.
-Direction changes the Db, while its omission remains an author choice. Hidden
-gaps and protected header/body groups retain their source boundaries.
+Keep the exact `gitGraph` word, authored direction and optional colon. Print
+ordinary gaps as `gitGraph LR:` or `gitGraph:`; an ordinary inline first
+statement moves below the header. Direction changes the Db, while its omission
+and colon presence remain author choices: mermaid.js 8.14.0 reads the header
+with the colon only, and the colon-less header is read from 9.0.0 (see
+[Versions of mermaid.js](./compatibility.md#versions-of-mermaidjs)). Hidden gaps
+and protected header/body groups retain their source boundaries.
 
 A hidden form between `gitGraph` and the direction keeps the gap after it as
 written, because a hidden form consumes an immediately following line feed, and

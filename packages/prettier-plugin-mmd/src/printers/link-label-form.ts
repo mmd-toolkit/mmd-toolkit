@@ -106,7 +106,7 @@ export function findLinkLabelRespellings(
     if (arrow === null || label === null || label.kind !== "text") continue
     const text = source.text.slice(...label.range)
     if (
-      text === "" ||
+      text.trim() === "" ||
       [...text].some((character) => !plainLabelCharacters.includes(character))
     ) {
       continue
@@ -115,18 +115,18 @@ export function findLinkLabelRespellings(
       tokens,
       (token) => token.range[0] >= label.range[0],
     )
-    const textOf = (token: Token | undefined): string =>
-      token === undefined ? "" : source.text.slice(...token.range)
     if (form === "arrows" && opening === null) {
       const parts = tokens.slice(index - 2, index + 2)
-      const arrows = labelledArrows[textOf(parts[0])]
+      const arrows = labelledArrows[textOf(source, parts[0])]
       if (
         arrows === undefined ||
-        !arrowsBetween[source.root.diagramType].includes(textOf(parts[0])) ||
+        !arrowsBetween[source.root.diagramType].includes(
+          textOf(source, parts[0]),
+        ) ||
         parts.length !== 4 ||
         parts[0].range[0] !== arrow.range[0] ||
-        textOf(parts[1]) !== "|" ||
-        textOf(parts[3]) !== "|" ||
+        textOf(source, parts[1]) !== "|" ||
+        textOf(source, parts[3]) !== "|" ||
         !isOnlyBlanksBetween(source, parts)
       ) {
         continue
@@ -137,8 +137,8 @@ export function findLinkLabelRespellings(
       })
     } else if (form === "pipes" && opening !== null) {
       const parts = tokens.slice(index - 1, index + 2)
-      const openingText = textOf(parts[0])
-      const closingText = textOf(parts[2])
+      const openingText = textOf(source, parts[0])
+      const closingText = textOf(source, parts[2])
       const pipeArrow = Object.keys(labelledArrows).find(
         (candidate) =>
           labelledArrows[candidate].opening === openingText &&
@@ -160,6 +160,11 @@ export function findLinkLabelRespellings(
       })
     }
   }
+}
+
+/** The text of a token, or an empty text where there is no token. */
+function textOf(source: Source, token: Token | undefined): string {
+  return token === undefined ? "" : source.text.slice(...token.range)
 }
 
 /** Whether nothing but spaces and tabs lies between consecutive tokens. */

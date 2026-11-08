@@ -439,8 +439,11 @@ set A[L]:002.00
 整数部の先頭のゼロ、符号つきゼロ、桁あふれの綴りを保ちます。
 数値の text id も綴りを保ちます。
 書き換えると Db が変わるためです。
+`text` 文と `style` 文の数（`text A 1.50`、`opacity:0.50`）も、
+mermaid.js がテキストとして読むため、綴りを保ちます。
 サイズの省略と書かれたゼロは別の形として保ちます。
 [fixture: venn/sizes-and-numbers/absent-zero-signs]
+[fixture: venn/sizes-and-numbers/text-and-style-numbers-kept]
 [corpus fixture: venn/db-set-colon-size-inline-directive]
 [corpus fixture: venn/db-set-label-colon-size-inline-directive]
 [corpus fixture: venn/db-size-negative-overflow]

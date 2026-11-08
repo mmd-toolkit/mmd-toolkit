@@ -380,8 +380,9 @@ in the background and write its output to a file.
 
 ## 5. Checks after writing
 
-1. Run `npx prettier --write` on the documents written, twice; the second run
-   must change nothing.
+1. Run `pnpm run build:parser` at the root (the formatter reads the built
+   parser), then `npx prettier --write` on the documents written, twice; the
+   second run must change nothing.
 2. Run `pnpm --filter @mmd-toolkit/eslint-plugin run update` (section 6). It
    builds the parser first (the source of the formatter imports it by name), so
    the examples are printed by the formatter of the working tree; the rule is in

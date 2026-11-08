@@ -16,13 +16,15 @@ export interface Respelling {
 /**
  * The header directions that name the top-to-bottom direction another way, by
  * the diagram type and the direction as written (docs/compatibility.md,
- * Spellings that are drawn the same).
+ * Spellings that are drawn the same). The diagram types listed appeared in a
+ * version of mermaid.js after 11.10.0, which made `TD` behave as `TB`. The
+ * header of a flowchart is not listed: a version before 11.10.0 draws it
+ * differently with `TD` than with `TB`.
  */
 const directionSpellings: Readonly<
   Record<string, Readonly<Record<string, string>>>
 > = {
   agentflow: { TD: "TB" },
-  "flowchart-v2": { TB: "TD" },
   swimlane: { TD: "TB" },
 }
 
@@ -355,6 +357,14 @@ function isTouchedAfter(source: Source, offset: number): boolean {
   return source.text[offset] === ";" || source.text[offset] === "-"
 }
 
+/** The relationships of an ER diagram under a node, in source order. */
+function collectRelationships(node: Node, relationships: Node[]): void {
+  for (const child of childrenOf(node)) {
+    if (child.type === "ErRelationship") relationships.push(child)
+    else collectRelationships(child, relationships)
+  }
+}
+
 /**
  * Records the respelling of the three units of each relationship of an ER
  * diagram as symbols: `only one to zero or more` is `||--o{`.
@@ -364,13 +374,7 @@ function findRelationshipRespellings(
   found: Map<number, Respelling>,
 ): void {
   const relationships: Node[] = []
-  const collect = (node: Node): void => {
-    for (const child of childrenOf(node)) {
-      if (child.type === "ErRelationship") relationships.push(child)
-      else collect(child)
-    }
-  }
-  collect(source.root)
+  collectRelationships(source.root, relationships)
   for (const relationship of relationships) {
     if (relationship.type !== "ErRelationship") continue
     const units = source.root.tokens.filter(

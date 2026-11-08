@@ -550,10 +550,10 @@ erDiagram
 [fixture: whitespace-between-tokens/touching-kept]
 表にあるキーワードは、そこで示す大文字小文字で印字します。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
-`CLASSDEF` は `classDef`、`SUBGRAPH` は `subgraph`、`END` は `end`、
-`ZERO OR MORE` は `zero or more` です。
-ほかのキーワード（`ONE OR MORE`、`CLASS`）は、書かれた大文字小文字を保ちます。
+`CLASSDEF` は `classDef`、`SUBGRAPH` は `subgraph`、`END` は `end` です。
+ほかのキーワード（`CLASS`）は、書かれた大文字小文字を保ちます。
 Db がそのまま保つ属性のキーも同じです。
+関係の語は記号として印字します（[関係の空白](#関係の空白)を参照）。
 [fixture: whitespace-between-tokens/keyword-case-one-form]
 [fixture: relationship-spacing/cardinality-words-case-one-form]
 
@@ -578,7 +578,7 @@ erDiagram
   p[P]
   accDescr { D }
   A ||--u-B : x
-  1one to one B : x
+  1 ||--|| B : x
 ```
 
 入力
@@ -617,7 +617,7 @@ erDiagram
   ACCTITLE: T
   ACCDESCR: D
   ACCDESCR { D }
-  A ONE OR MORE to MANY B : x
+  A }|--o{ B : x
   A {
     int a PK
   }
@@ -637,47 +637,49 @@ erDiagram
 実体のクラスは、`:::` と、その間の `,` に両側で接します。
 [fixture: relationship-spacing/names-and-classes]
 
-関係の 3 つの単位、つまり両側のカーディナリティとその間の線は、
-両方が記号で書かれているときは互いに接し、
-どちらかが語で書かれているときは空白 1 つで区切ります。
-`A || -- o{ B` は `A ||--o{ B` に、
-`A ||--only one B` は `A ||-- only one B` にします。
-mermaid.js の文書の例は、記号を接し、語の単位を空白で分けているので、
-1 つの規則でどちらも保てるからです。
-[fixture: relationship-spacing/symbols-touch]
+関係のカーディナリティと線は、語と記号のどちらが書かれていても、
+記号で印字します。
+mermaid.js は `only one`、`zero or more`、`many(0)`、`to` などの語を `||`、
+`}o`、`o{`、`--` の記号として読み、その文書の例は記号を 84 回、
+語とほかの形を 6 回使うためです。
+（[ER 図の関係](./compatibility.ja.md#er-図の関係)を参照）。
+[fixture: relationship-spacing/words-to-symbols]
+[fixture: relationship-spacing/cardinality-words-case-one-form]
 [fixture: relationship-spacing/words-spaced]
+関係の 3 つの単位、つまり両側のカーディナリティとその間の線は、互いに接します。
+文書の例は記号を接して書くためです。
+`A || -- o{ B` は `A ||--o{ B` に、`A ||--only one B` は `A ||--|| B` にします。
+[fixture: relationship-spacing/symbols-touch]
 [fixture: relationship-spacing/symbols-and-words]
 [corpus fixture: er/lex-relationship-spaces-in-spec]
-`many(0)`、`many(1)`、`1+`、`0+`、`u` は記号として扱います。
+`u` は記号として扱い、書かれたまま残します。
 `many(0)` の中に空白を置くと拒否されます。
 [corpus fixture: er/lex-many-space-before-parenthesis]
-カーディナリティの綴りは、記号でも語でも残します。
-綴りは作者の選択で、記号には同じに読まれる語が複数あるので、
-どの綴りも別の綴りの代わりにはなりません。
-表にある語は、そこで示す大文字小文字で印字します。
-（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
-`ZERO OR MORE` は `zero or more` です。
-ほかの語の大文字小文字は保ちます。 [fixture: relationship-spacing/words-spaced]
-[fixture: relationship-spacing/cardinality-words-case-one-form]
+単位の間にディレクティブがある関係は、書かれた語を保ちます。
+[fixture: relationship-spacing/directive-between-word-units-kept]
 
-3 つの場合は、空白を書かれたまま残します。
-別の空白にすると mermaid.js が別の単位を読むからです。
+3 つの場合は、注意が必要です。
+空白や綴りを変えると mermaid.js が別の単位を読むからです。
 右のカーディナリティ `u` は、名前の直前でだけ `md-parent` なので、
 右の実体に接したままにします。 [fixture: relationship-spacing/md-parent]
 [corpus fixture: er/lex-md-parent-right-glued-name]
-実体 `1` は、文字、数字、
-`_` で始まるカーディナリティに接して書かれていれば接したままにします。
+実体 `1` は、文字、数字、`_` で始まる形で印字するカーディナリティに接します。
 `1` の後に、改行を含む 1 つ以上の空白と、ASCII の文字、`_`、`"`、`'`、
 ASCII の数字が続くと、カーディナリティ `only-one` だからです（diagrams/er.md、
 カーディナリティ、数、関係の線、規則 11）。
+記号として印字する語の前には、空白を置きます。
+`1one to one B` は `1 ||--|| B` と印字します。
 [fixture: relationship-spacing/number-name-before-unit-kept]
 [corpus fixture: er/lex-one-space-letter]
-実体 `only` は、`one` で始まるカーディナリティの前の空白を保ちます。
+実体 `only` は、`one` で始まるカーディナリティの前でも実体のままです。
 空白がちょうど 1 つの `only one` はカーディナリティ `only one`（規則 9）で、
 複数の語のキーワードは語の間の空白がちょうど 1 つなので、
 空白 2 つやタブなら `only` は実体です（diagrams/er.md、文の文脈、
 キーワードとその後ろ）。
+カーディナリティは、その記号として印字します。
+`only  one to one B` は `only ||--|| B` と印字します。
 [fixture: relationship-spacing/entity-only-before-one-kept]
+[fixture: relationship-spacing/entity-only-before-cardinality]
 [corpus fixture: er/lex-only-one-two-spaces]
 関係の単位の間にあるディレクティブは、その位置に残し、
 [ディレクティブ](#ディレクティブ)のとおりに置きます。
@@ -704,14 +706,14 @@ A many(0) to one B : x
 
 ```mmd
 erDiagram
-  A one or more --|{ B : x
-  A one or more --|{ B : x
-  A ||-- only one B : x
-  A ||-- only one B : x
-  A || to || B : x
-  A || to || B : x
-  A 1 to 1 B : x
-  A many(0) to one B : x
+  A }|--|{ B : x
+  A }|--|{ B : x
+  A ||--|| B : x
+  A ||--|| B : x
+  A ||--|| B : x
+  A ||--|| B : x
+  A ||--|| B : x
+  A }o--|| B : x
 ```
 
 入力
@@ -755,11 +757,11 @@ A many to one B : x
 
 ```mmd
 erDiagram
-  A one or more to zero or more B : x
-  A only one to one B : x
-  A zero or one optionally to one or zero B : x
-  A ONE OR MORE to MANY B : x
-  A many to one B : x
+  A }|--o{ B : x
+  A ||--|| B : x
+  A |o..o| B : x
+  A }|--o{ B : x
+  A }o--|| B : x
 ```
 
 ### 実体

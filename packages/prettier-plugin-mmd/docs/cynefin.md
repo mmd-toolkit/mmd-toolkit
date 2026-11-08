@@ -11,7 +11,14 @@ Formatting rules for cynefin-beta and cynefin-beta:, following the
 
 ### Header
 
-Keep cynefin-beta or cynefin-beta: at column one, retaining the authored colon.
+Put cynefin-beta at column one. A colon right after the header word is removed:
+mermaid.js reads `cynefin-beta:` and `cynefin-beta` as the same header, and the
+examples in its documentation write the header without the colon 3 times against
+none (see
+[The colon after a header](./compatibility.md#the-colon-after-a-header)). The
+colon stays where a hidden form or a global directive lies between it and the
+word, and where a `;` or the `---` of a hidden YAML block touches it. [fixture:
+cynefin/header/colon-removed] [fixture: cynefin/header/colon-semicolon-kept]
 Move an ordinary first statement to the next line so the header is easy to find.
 Global directive contact, hidden neighbors and protected lines use their shared
 rules: a kept header line also keeps its domain and item openings on that line.

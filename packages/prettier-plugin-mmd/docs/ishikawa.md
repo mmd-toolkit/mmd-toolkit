@@ -17,14 +17,12 @@ running Mermaid.
 
 ### Header
 
-The header stands at column one, which makes it easy to find. The keyword
-`ishikawa` is printed `ishikawa-beta`, the keyword that the examples in the
-documentation of mermaid.js use and that draws the same (see
-[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same));
-`ishikawa-beta` and a header in another case (`ISHIKAWA`, `IsHiKaWa`) stay as
-written. [fixture: ishikawa/header/header-column] [fixture:
-ishikawa/header/header-stable] [fixture:
-ishikawa/header/header-case-alternative] [fixture:
+The selected written `ishikawa` or `ishikawa-beta` header stands at column one,
+retaining its accepted case and stable/beta spelling. This makes the header easy
+to find without replacing an authored choice with a Db-equal spelling (see
+[The names of a header](./compatibility.md#the-names-of-a-header)). [fixture:
+ishikawa/header/header-column] [fixture: ishikawa/header/header-stable]
+[fixture: ishikawa/header/header-case-alternative] [fixture:
 ishikawa/header/header-lowercase] [fixture: ishikawa/header/header-valid]
 Exterior padding disappears; a failed beta boundary leaves its suffix with the
 root, and attached trivia follows the rules below. [fixture:

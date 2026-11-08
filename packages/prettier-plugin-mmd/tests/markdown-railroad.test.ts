@@ -72,11 +72,11 @@ const cases: readonly MarkdownCase[] = [
     input:
       '- item\n\n  ```mermaid\n  railroad-ebnf-beta\n  accDescr {\n   first\n     continuation\n  }\n  r::=( "fenced" );\n  ```\n',
     output:
-      '- item\n\n  ```mermaid\n  railroad-ebnf-beta\n    accDescr {\n      first\n      continuation\n    }\n    r ::= ("fenced");\n  ```\n',
+      '- item\n\n  ```mermaid\n  railroad-ebnf-beta\n    accDescr {\n      first\n      continuation\n    }\n    r = ("fenced");\n  ```\n',
     payloadInput:
       'railroad-ebnf-beta\naccDescr {\n first\n   continuation\n}\nr::=( "fenced" );',
     payloadOutput:
-      'railroad-ebnf-beta\n  accDescr {\n    first\n    continuation\n  }\n  r ::= ("fenced");\n',
+      'railroad-ebnf-beta\n  accDescr {\n    first\n    continuation\n  }\n  r = ("fenced");\n',
     options: {},
   },
   {

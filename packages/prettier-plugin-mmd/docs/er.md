@@ -538,9 +538,10 @@ and tokens that touch keep touching, unless a rule below says otherwise.
 whitespace-between-tokens/touching-kept] A keyword of the table under
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
 is printed in the case shown there (`CLASSDEF` is `classDef`, `SUBGRAPH` is
-`subgraph`, `END` is `end`, and `ZERO OR MORE` is `zero or more`). Any other
-keyword keeps the case in which it is written (`ONE OR MORE`, `CLASS`), and so
-do the keys of an attribute, which the Db keeps. [fixture:
+`subgraph`, and `END` is `end`). Any other keyword keeps the case in which it is
+written (`CLASS`), and so do the keys of an attribute, which the Db keeps. The
+words of a relationship are printed as symbols (see
+[Relationship spacing](#relationship-spacing)). [fixture:
 whitespace-between-tokens/keyword-case-one-form] [fixture:
 relationship-spacing/cardinality-words-case-one-form]
 
@@ -623,41 +624,45 @@ relationship-spacing/role-forms] [corpus fixture: er/lex-relationship-no-spaces]
 `:::` and the `,` between them. [fixture:
 relationship-spacing/names-and-classes]
 
-The three units of the relationship, the cardinality on each side and the line
-between them, touch each other where both are written with symbols, and are
-separated by one space where either is written with a word, since the examples
-in the documentation of mermaid.js write symbols touching and words apart, and
-one rule keeps both: `A || -- o{ B` is printed `A ||--o{ B`, and
-`A ||--only one B` is printed `A ||-- only one B`. [fixture:
-relationship-spacing/symbols-touch] [fixture: relationship-spacing/words-spaced]
-[fixture: relationship-spacing/symbols-and-words] [corpus fixture:
-er/lex-relationship-spaces-in-spec] `many(0)`, `many(1)`, `1+`, `0+`, and `u`
-count as symbols: a space inside `many(0)` is rejected. [corpus fixture:
-er/lex-many-space-before-parenthesis] The spelling of a cardinality is kept,
-symbols or words: it is the author's choice, and a symbol has several words that
-read the same, so no spelling stands for another. The case of a word that the
-table under
-[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
-lists is printed as shown there (`ZERO OR MORE` is `zero or more`); the case of
-any other word is kept. [fixture: relationship-spacing/words-spaced] [fixture:
-relationship-spacing/cardinality-words-case-one-form]
+The cardinalities and the line of a relationship are printed as symbols,
+whatever words or symbols were written: mermaid.js reads `only one`,
+`zero or more`, `many(0)`, `to`, and the other words as the symbols `||`, `}o`,
+`o{`, and `--`, and the examples in its documentation write the symbols 84 times
+and the words and the other forms 6 times (see
+[The relationships of an ER diagram](./compatibility.md#the-relationships-of-an-er-diagram)).
+[fixture: relationship-spacing/words-to-symbols] [fixture:
+relationship-spacing/cardinality-words-case-one-form] [fixture:
+relationship-spacing/words-spaced] The three units of the relationship, the
+cardinality on each side and the line between them, touch each other, since the
+examples write symbols touching: `A || -- o{ B` is printed `A ||--o{ B`, and
+`A ||--only one B` is printed `A ||--|| B`. [fixture:
+relationship-spacing/symbols-touch] [fixture:
+relationship-spacing/symbols-and-words] [corpus fixture:
+er/lex-relationship-spaces-in-spec] `u` counts as a symbol and stays as written,
+and a space inside `many(0)` is rejected. [corpus fixture:
+er/lex-many-space-before-parenthesis] A relationship with a directive between
+its units keeps the words that were written. [fixture:
+relationship-spacing/directive-between-word-units-kept]
 
-Three cases keep the whitespace as it is written, since another one would make
+Three cases need care, since another whitespace or spelling would make
 mermaid.js read other units. A right cardinality `u`, which is `md-parent` only
 right before the name, touches the right entity. [fixture:
 relationship-spacing/md-parent] [corpus fixture:
-er/lex-md-parent-right-glued-name] The entity `1` touches a cardinality that
-starts with a letter, a digit, or `_` where it was written so, since `1`
-followed by one or more whitespace characters, line feeds included, and an ASCII
-letter, `_`, `"`, `'`, or an ASCII digit is the cardinality `only-one`
-(diagrams/er.md, The cardinalities, numbers, and relationship lines, rule 11).
+er/lex-md-parent-right-glued-name] The entity `1` touches a cardinality that is
+printed starting with a letter, a digit, or `_`, since `1` followed by one or
+more whitespace characters, line feeds included, and an ASCII letter, `_`, `"`,
+`'`, or an ASCII digit is the cardinality `only-one` (diagrams/er.md, The
+cardinalities, numbers, and relationship lines, rule 11); a word that is printed
+as a symbol has a space before it: `1one to one B` is printed `1 ||--|| B`.
 [fixture: relationship-spacing/number-name-before-unit-kept] [corpus fixture:
-er/lex-one-space-letter] And the entity `only` keeps the whitespace before a
+er/lex-one-space-letter] And the entity `only` stays an entity before a
 cardinality that starts with `one`: `only one` with exactly one space is the
 cardinality `only one` (rule 9), while a keyword of several words has exactly
 one space between its words, so two spaces or a tab make `only` an entity
-(diagrams/er.md, The statement context, keywords and what follows them).
-[fixture: relationship-spacing/entity-only-before-one-kept] [corpus fixture:
+(diagrams/er.md, The statement context, keywords and what follows them), and the
+cardinality is printed as its symbol: `only  one to one B` is printed
+`only ||--|| B`. [fixture: relationship-spacing/entity-only-before-one-kept]
+[fixture: relationship-spacing/entity-only-before-cardinality] [corpus fixture:
 er/lex-only-one-two-spaces] A directive between the units of a relationship
 stays where it is and is placed as under [Directives](#directives). [fixture:
 relationship-spacing/directive-between-units] [fixture:

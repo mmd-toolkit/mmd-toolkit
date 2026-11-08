@@ -94,18 +94,21 @@ Correctness is defined by the pinned mermaid.js.
    pinned mermaid.js only, while the formatted text is also drawn by other
    versions of mermaid.js. So a spelling is also kept as written where the form
    that would be printed is not accepted by every version that accepts the form
-   that was written: the name of a header (`block-beta` and `block`), which the
-   versions accept differently, and the colon after the header of a gitGraph,
-   which older versions require. The CHANGELOG.md of mermaid.js, or the history
-   of its grammar, shows which version added a form. The check is that
-   formatting does not change the Db. A formatting that changes the Db but not
-   the drawing is an exception. Each kind of exception has a section that
-   defines it, with links to the code of the pinned mermaid.js that shows why
-   the drawing stays the same and the result of drawing both texts, and the
-   tests compare the Db with the differences of that kind restored, one function
-   for each kind, which `packages/prettier-plugin-mmd/tests/db-comparison.ts`
-   calls. When the pinned mermaid.js is updated, each exception is checked again
-   by drawing. The kinds are:
+   that was written, or is drawn differently by one of them: the name of a
+   header (`block-beta` and `block`), which the versions accept differently, the
+   colon after the header of a gitGraph, which older versions require, and the
+   direction of the header of a flowchart (`TB` and `TD`), which the versions
+   before 11.10.0 draw differently. The CHANGELOG.md of mermaid.js, or the
+   history of its grammar, shows which version added or changed a form. The
+   check is that formatting does not change the Db. A formatting that changes
+   the Db but not the drawing is an exception. Each kind of exception has a
+   section that defines it, with links to the code of the pinned mermaid.js that
+   shows why the drawing stays the same and the result of drawing both texts,
+   and the tests compare the Db with the differences of that kind restored, one
+   function for each kind, which
+   `packages/prettier-plugin-mmd/tests/db-comparison.ts` calls. When the pinned
+   mermaid.js is updated, each exception is checked again by drawing. The kinds
+   are:
    - the limited ASCII space margin changes to eventmodeling block bodies,
      defined in
      [Data blocks](packages/prettier-plugin-mmd/docs/eventmodeling.md#data-blocks);

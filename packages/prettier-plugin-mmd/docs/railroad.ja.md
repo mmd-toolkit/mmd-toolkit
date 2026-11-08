@@ -235,7 +235,7 @@ railroad-beta
 ```mmd
 railroad-ebnf-beta
   a = "first";
-  b ::= a;
+  b = a;
 ```
 
 入力（escape 表記）: `"railroad-abnf-beta\nr=\"terminator\" \t;"`。
@@ -262,9 +262,13 @@ railroad-peg-beta
 ### 代入
 
 代入の両側を通常の1 space にし、名前の列は揃えません。
-IR と ABNF の `=`、EBNF の各 `=` または `::=`、PEG の `<-` を保ちます。
-EBNF の2形は同じ Db ですが、原文の記号を置き換える必要はありません。
+IR と ABNF の `=`、PEG の `<-` を保ち、EBNF の `::=` は `=` と印字します。
+EBNF の2形は同じ Db で、mermaid.js の文書の例は `=` を 35 回使い、
+`::=` は使わないためです。
+（[キーワードや記号の別の綴り](./compatibility.ja.md#キーワードや記号の別の綴り)
+を参照）。
 複合記号は1 token のままにします。
+[fixture: railroad/assignment/ebnf-assignment-equals]
 
 [fixture: railroad/assignment/abnf-spaces]
 
@@ -294,7 +298,7 @@ railroad-beta
 
 ```mmd
 railroad-ebnf-beta
-  longName ::= "assignment";
+  longName = "assignment";
   s = "short";
 ```
 
@@ -921,7 +925,7 @@ railroad-beta
 
 ```mmd
 railroad-ebnf-beta
-  r ::=
+  r =
     ("joined", other) - "except"+
     | ["tail"];
 ```

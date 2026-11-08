@@ -9,15 +9,13 @@
 
 ### Header
 
-見出しを第1列に置き、`packet-beta` は、mermaid.js の文書の例が使い、
-同じ図に描くキーワード `packet` と印字します。
-（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
+書かれたキーワード `packet` または `packet-beta` を第1列に置きます。
 見出しを明確にするため、通常の最初の文は次行へ移します。
 `packet` だけは直後の境界が必要で、接着した綴りを作りません。
 hidden の境界と保護された見出し・本文の組を優先します。
-hidden YAML ブロックが接する `packet-beta` は保ちます。
-`packet-beta---` が読まれる所で `packet---` は読まれないためです。
-[fixture: packet/hidden-yaml/yaml-beta-header]
+同義の名前は、書かれたまま保ちます。
+11.9.0 より前の mermaid.js は `packet-beta` だけを読むためです。
+（[ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)を参照）。
 
 [fixture: packet/header/header-packet]
 
@@ -102,8 +100,15 @@ packet
 
 ### Block forms and order
 
-`start-end`、`start`、`+count` の3つの AST 形式を保ちます。
-両端が等しい範囲もそのままです。
+`start-end`、`start`、`+count` の3つの AST 形式を保ちますが、
+両端が同じ綴りの範囲は、位置だけで印字します。
+`3-3` は `3` になります。
+mermaid.js は両方を同じに読み、文書の例は位置だけを 7 回使い、
+両端が等しい範囲は使わないためです。
+（[同じに描かれる綴り](./compatibility.ja.md#キーワードや記号の別の綴り)
+を参照）。
+両端の間に空白と `-` 以外がある範囲は、書かれたままにします。
+[fixture: packet/block-forms-and-order/equal-range-single]
 同じ label と空の共通代入を含め、全出現を順に残します。
 Db から文を再構成したり併合したりしません。
 行分割と公開上限は作者の構造を失い、空代入の削除は最終値を変えるためです。
@@ -126,7 +131,7 @@ Db から文を再構成したり併合したりしません。
 packet
   +2: "relative"
   2: "single"
-  3-3: "equal range"
+  3: "equal range"
 ```
 
 ### Range dash
@@ -291,7 +296,7 @@ double は原綴を失い、拒否される指数や Infinity の構文にもな
 
 ```mmd
 packet
-  0-0: "Zero"
+  0: "Zero"
 ```
 
 ### Title

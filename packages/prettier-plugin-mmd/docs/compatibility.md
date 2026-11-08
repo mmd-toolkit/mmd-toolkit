@@ -930,16 +930,23 @@ and the pixels before the exception stays.
 
 mermaid.js reads some different spellings of a token as the same token and draws
 the same figure from them: a keyword in another case, a string between `'`
-instead of `"`, a number with a zero at the end, the older keyword of a header.
-The printer writes such a spelling in one form. For the whitespace between
-tokens the form is the one that the other diagram types print for the same kind
-of gap (see the sections above). For a spelling, the form is the one that the
-examples in the documentation of the pinned mermaid.js use at least twice as
-often as any other form. Where no form is used that often, or the examples use
-none, the spelling is kept as written. The examples are the 541 fenced
-`mermaid-example` and `mermaid` blocks of the
+instead of `"`, a number with a zero at the end, the words of a relationship of
+an ER diagram instead of its symbols. The printer writes such a spelling in one
+form. For the whitespace between tokens the form is the one that the other
+diagram types print for the same kind of gap (see the sections above). For a
+spelling, the form is the one that the examples in the documentation of the
+pinned mermaid.js use at least twice as often as any other form. Where no form
+is used that often, or the examples use none, the spelling is kept as written.
+The examples are the 541 fenced `mermaid-example` and `mermaid` blocks of the
 [syntax pages](https://github.com/mermaid-js/mermaid/tree/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax);
 the parser reads 524 of them, and the counts below are counts in those 524.
+
+The comparisons use the pinned mermaid.js only, while the formatted text is also
+drawn by other versions of mermaid.js. So a spelling is also kept as written
+where the form that would be printed is not accepted by every version that
+accepts the form that was written.
+[Versions of mermaid.js](#versions-of-mermaidjs) shows what was read for each
+kind.
 
 Each kind was compared with mermaid.js 12.3.0 before the printer wrote its form.
 For each example that holds the spelling, the example was written again in the
@@ -947,33 +954,50 @@ other spelling, and mermaid.js read both texts; a pair whose other spelling
 mermaid.js rejects (a `+` before a number in a pie chart) is not counted. Both
 texts were drawn in Chromium. In every counted pair the Db was the same, and the
 SVG screenshots were the same, pixel for pixel; where the same text drawn twice
-already differs (the strokes of the Agentflow shapes and of the `hourglass` of a
-flowchart are drawn at random, and so are the commit ids and the widths of the
-labels of a gitGraph), the SVG without its numbers, commit ids, and element ids
-was the same. mermaid.js draws from the Db, so the same Db is what makes the
-drawing the same; the drawings are the check that nothing else reads the text.
+already differs (the strokes of the Agentflow shapes, of the `hourglass` of a
+flowchart, and of the choice of a state diagram are drawn at random, and so are
+the commit ids and the widths of the labels of a gitGraph), the SVG without its
+numbers, commit ids, and element ids was the same. mermaid.js draws from the Db,
+so the same Db is what makes the drawing the same; the drawings are the check
+that nothing else reads the text.
 
 | Kind                         | Pairs | Same Db | Drawn the same |
 | ---------------------------- | ----: | ------: | -------------: |
 | Keywords in one case         |   445 |     445 |   138 (sample) |
 | Strings between `"`          |    79 |      79 |             79 |
 | Numbers in the shortest form |    37 |      37 |             37 |
-| Header keywords              |   175 |     175 |            175 |
-| Header directions            |    75 |      75 |             75 |
+| Header directions            |    11 |      11 |             11 |
 | `switch` of a gitGraph       |    27 |      27 |             27 |
-| Colon of a gitGraph header   |    31 |      31 |             31 |
 
 Of the keyword pairs a sample was drawn, and a pair whose own text, drawn twice,
-already differs was not counted. When the pinned mermaid.js is updated, the
-examples are counted again and each kind is compared again.
+already differs was not counted. The kinds below were compared in the examples
+and, with the Db only, in the inputs of the conformance corpus:
+
+| Kind                               | Examples | Same Db and drawing | Corpus | Same Db |
+| ---------------------------------- | -------: | ------------------: | -----: | ------: |
+| Relationships of an ER diagram     |        4 |                   4 |     66 |      66 |
+| `Rel_Up` and the like of C4        |        1 |                   1 |      7 |       7 |
+| `::=` of the EBNF notation         |        9 |                   9 |     91 |      91 |
+| A packet range with equal ends     |        2 |                   2 |    133 |     131 |
+| The colon of a header (removed)    |        6 |                   6 |    646 |     643 |
+| The colon of a header (line break) |        0 |                   0 |     22 |      21 |
+| The label of a link                |       19 |                  19 |    170 |     162 |
+
+A corpus pair that is not counted in the last column is a pair of which
+mermaid.js rejects the other spelling, except two pairs of the label of a link,
+which have a `%%` in the label and a different Db. The printer does not rewrite
+a range of a packet diagram next to a hidden YAML block, a colon that a `;` or
+the `---` of a hidden YAML block touches, or the label of a link with a `%%` in
+it. When the pinned mermaid.js is updated, the examples are counted again and
+each kind is compared again.
 
 ### Keywords in one case
 
 The lexers of these diagram types read a keyword in any case. The printer writes
 the keywords below in the case shown, and every other keyword as written.
 
-- ER diagram: `BT`, `classDef`, `direction`, `end`, `LR`, `many(0)`, `only one`,
-  `optionally to`, `RL`, `style`, `subgraph`, `TB`, `to`, `zero or more`.
+- ER diagram: `BT`, `classDef`, `direction`, `end`, `LR`, `RL`, `style`,
+  `subgraph`, `TB`.
 - Gantt chart: `axisFormat`, `dateFormat`, `excludes`, `friday`, `monday`,
   `section`, `tickInterval`, `title`, `weekday`, `weekend`.
 - User journey: `section`, `title`.
@@ -1004,7 +1028,6 @@ er/whitespace-between-tokens/keyword-case-one-form] [fixture:
 er/direction/case-one-form] [fixture: er/direction/case-bt-rl-one-form]
 [fixture: er/subgraphs/end-case-one-form] [fixture:
 er/styles-and-classes/keyword-case-one-form] [fixture:
-er/relationship-spacing/cardinality-words-case-one-form] [fixture:
 gantt/keyword-case/keywords-one-form] [fixture:
 gantt/weekday-and-weekend/day-case-one-form] [fixture:
 journey/keyword-case/keywords-one-form] [fixture:
@@ -1034,24 +1057,24 @@ venn/keyword-case-and-order/keyword-case-one-form] [fixture:
 xychart/keyword-case/statement-keywords-one-form]
 
 A keyword that the table does not list stays as written: one that the examples
-do not use, or use in no case twice as often as in another (the cardinality
-words `ONE OR MORE` and `MANY` of an ER diagram, the `HIDE EMPTY DESCRIPTION` of
-a state diagram), and one whose other case changes the Db or the drawing. A
-block diagram reads `COLUMNS` and `SPACE` as ids, a state diagram keeps the
-`LEFT`, `RIGHT`, and `OF` of a note in its Db as written, and a note with `LEFT`
-or `OF` was drawn differently, and a treeView reads `ICON(…)` as part of a name.
-[fixture: er/whitespace-between-tokens/keyword-case-one-form] [fixture:
-state/whitespace-between-tokens/keyword-case-one-form] [fixture:
+do not use (the `todayMarker` of a Gantt chart, the `HIDE EMPTY DESCRIPTION` of
+a state diagram), one that the examples use in no case twice as often as in
+another, and one whose other case changes the Db or the drawing. A block diagram
+reads `COLUMNS` and `SPACE` as ids, a state diagram keeps the `LEFT`, `RIGHT`,
+and `OF` of a note in its Db as written, and a note with `LEFT` or `OF` was
+drawn differently, an ER diagram keeps the key `PK` or `FK` of an attribute in
+its Db as written, a Gantt chart keeps the tags `done` and `crit` and the
+`after` of a task, an xychart keeps `horizontal`, and a treeView reads `ICON(…)`
+as part of a name. [fixture: er/whitespace-between-tokens/keyword-case-one-form]
+[fixture: state/whitespace-between-tokens/keyword-case-one-form] [fixture:
 block/keyword-case/keywords-kept] [fixture: treeview/keyword-case/icon-kept]
+[fixture: er/attribute-spacing/keys-case-kept] [fixture:
+gantt/keyword-case/tags-case-kept]
 
 In the body of an ER subgraph, mermaid.js lists the keyword of a `class`,
 `classDef`, or `style` statement as a node of the subgraph, as written, so those
 three keywords keep their case there and are printed in the table's case outside
 it. [fixture: er/subgraphs/statement-keywords-case-kept]
-
-gitGraph reads `switch` as `checkout`. The examples write `checkout` 160 times
-and never `switch`, so `switch` is printed `checkout`. [fixture:
-gitgraph/checkout-aliases/alias-one-form]
 
 ### Strings between `"`
 
@@ -1093,97 +1116,261 @@ wardley/flows/flow-forward]
 
 ### Numbers in the shortest form
 
-The value of a section of a pie chart, the values and the range of an xychart,
-the value of a treemap leaf, the `max`, `min`, `ticks`, and curve values of a
-radar chart, and the size of a Venn set are numbers that mermaid.js reads as
-numbers. The printer writes them with no `+`, no zero at the end of the
-fraction, no `.` at the end, and a `0` before a `.` at the start: `+1.50` is
-`1.5`, `2.0` is `2`, `3.` is `3`, and `.5` is `0.5`. Of the 213 numbers of these
-diagram types in the examples, 210 are in this form and 3 (all in xychart) have
-a zero at the end of the fraction. [fixture: pie/numbers/shortest-form]
-[fixture: xychart/numbers/range-numbers-one-form] [fixture:
-xychart/numbers/values-one-form] [fixture: treemap/numbers/shortest-form]
-[fixture: treemap/numbers/leading-dot] [fixture: radar/numbers/shortest-form]
-[fixture: radar/numbers/raw-option-numbers] [fixture:
-venn/sizes-and-numbers/absent-zero-signs] [fixture:
+A number is printed with no `+`, no zero at the end of the fraction, no `.` at
+the end, and a `0` before a `.` at the start: `+3` is `3`, `1.50` is `1.5`,
+`2.0` is `2`, `3.` is `3`, and `.5` is `0.5`. This holds for the numbers that
+mermaid.js reads as numbers, in these places only: the value of a section of a
+pie chart; the values of a `bar` and a `line` and the two ends of a range
+(`a --> b`) of an xychart, not the categories; the value of a treemap leaf, in
+the forms digits, digits with a fraction, and a fraction alone (a leaf with a
+sign, with a `.` at its end, or with a `,` or a `_` in it stays as written); the
+`max`, `min`, `ticks`, and curve values of a radar chart; and the size after the
+`:` of a Venn set, not the numbers of a `text` or of a style. Of the 213 numbers
+in these places in the examples, 210 are in this form and 3 (all in xychart:
+`49.0`, `103.0`, and `177.0`) have a zero at the end of the fraction. [fixture:
+pie/numbers/shortest-form] [fixture: xychart/numbers/range-numbers-one-form]
+[fixture: xychart/numbers/values-one-form] [fixture:
+treemap/numbers/shortest-form] [fixture: treemap/numbers/leading-dot] [fixture:
+radar/numbers/shortest-form] [fixture: radar/numbers/raw-option-numbers]
+[fixture: venn/sizes-and-numbers/absent-zero-signs] [fixture:
 venn/sizes-and-numbers/size-spaces]
 
 These numbers were also drawn with the settings that write a number as text
 (`showData` of a pie chart, `showDataLabel` of an xychart, the value labels of a
 treemap, the ticks of a radar chart), and the drawings were the same. A number
-stays as written where mermaid.js reads it as text (the `text A .5` of a Venn
-diagram, a category `007` of the x-axis of an xychart), where it has a zero at
-the start of its integer part (`007`), more than 15 digits, an exponent (`1e3`),
-or is `-0`, and in a diagram type that this section does not list: the
-coordinates of a Wardley map have a zero at the end of the fraction in 81 of its
-168 decimals. [fixture: venn/sizes-and-numbers/text-number-forms] [fixture:
-xychart/numbers/forms-kept] [fixture: pie/numbers/forms-kept] [fixture:
-radar/numbers/forms-kept] [fixture: treemap/numbers/forms-kept] [fixture:
+stays as written where mermaid.js reads it as text (the `text A 1.50` of a Venn
+diagram, the value of a style, a category `007` or `1.50` of the x-axis of an
+xychart), where it has a zero at the start of its integer part (`007`), more
+than 15 digits, an exponent (`1e3`), or is `-0`, and in a diagram type that this
+section does not list: the coordinates of a Wardley map have a zero at the end
+of the fraction in 81 of its 168 decimals. [fixture:
+venn/sizes-and-numbers/text-number-forms] [fixture:
+venn/sizes-and-numbers/text-and-style-numbers-kept] [fixture:
+xychart/numbers/forms-kept] [fixture:
+xychart/numbers/category-trailing-zero-kept] [fixture: pie/numbers/forms-kept]
+[fixture: radar/numbers/forms-kept] [fixture: treemap/numbers/forms-kept]
+[fixture: treemap/numbers/trailing-dot-kept] [fixture:
 wardley/numbers/forms-kept]
-
-### Header keywords
-
-These diagram types read two keywords for the header, and the examples use one
-of them at least twice as often. The printer writes that one. A header that is
-followed by a hidden YAML block keeps its keyword, since `packet---` is not read
-where `packet-beta---` is.
-
-| Written        | Printed         | Examples as printed / the other |
-| -------------- | --------------- | ------------------------------- |
-| `block-beta`   | `block`         | 30 / 0                          |
-| `graph`        | `flowchart`     | 116 / 0                         |
-| `ishikawa`     | `ishikawa-beta` | 1 / 0                           |
-| `packet-beta`  | `packet`        | 4 / 0                           |
-| `sankey-beta`  | `sankey`        | 8 / 0                           |
-| `treemap`      | `treemap-beta`  | 8 / 0                           |
-| `xychart-beta` | `xychart`       | 7 / 1                           |
-
-The `aria-roledescription` of the drawing and its accessibility tree are the
-same for both keywords of each of the seven. `graph` and `flowchart` are both
-drawn as `flowchart-v2`. [fixture: block/header/block-beta-one-form] [fixture:
-flowchart/direction/header-keyword-one-form] [fixture:
-ishikawa/header/header-valid] [fixture: packet/header/header-beta] [fixture:
-packet/hidden-yaml/yaml-beta-header] [fixture: sankey/header/sankey-beta]
-[fixture: treemap/header/common] [fixture:
-xychart/header-and-orientation/beta-header-one-form]
-
-A header in another case (`ISHIKAWA`, `sankey-BETA`, `XYCHART-BETA`) stays as
-written. [fixture: ishikawa/header/header-stable] [fixture:
-sankey/header/upper-case-beta] [fixture:
-xychart/header-and-orientation/second-header-spelling-and-case-kept]
-
-`stateDiagram` and `stateDiagram-v2` stay as written: the examples use `-v2` 17
-times and the other 5 times, and mermaid.js draws a state diagram differently
-under the two. Another header has one keyword only, or the examples use none of
-its other keyword. [fixture: state/header/spellings-kept]
 
 ### The direction of a header
 
-The direction `TB` of a flowchart header is printed `TD`, which the examples use
-59 times against 8. The direction `TD` of an agentflow or swimlane header is
-printed `TB`, which the examples use 10 times in agentflow and once in swimlane,
-and `TD` never. A `direction` statement stays as written in all of them:
-mermaid.js keeps the direction of the statement as written in the Db. [fixture:
-flowchart/direction/header-td-one-form] [fixture:
+The direction `TD` of an agentflow or swimlane header is printed `TB`, which the
+examples use 10 times in agentflow and once in swimlane, and `TD` never; the
+swimlane count is a single example. A `direction` statement stays as written in
+all of them: mermaid.js keeps the direction of the statement as written in the
+Db. [fixture: agentflow/header/header-direction-spelling] [fixture:
+flowchart/direction/swimlane-header-td-one-form] [fixture:
 flowchart/direction/statement-td-kept-with-other-header] [fixture:
-flowchart/direction/statement-values-kept] [fixture:
-agentflow/header/header-direction-spelling] [fixture:
-flowchart/direction/swimlane-header-td-one-form]
+flowchart/direction/statement-values-kept]
 
-### The header of a gitGraph
+The header of a flowchart stays as written, `TB` or `TD`, though the examples
+use `TD` 59 times against 5: see
+[Versions of mermaid.js](#versions-of-mermaidjs). [fixture:
+flowchart/direction/header-tb-kept] [fixture:
+flowchart/link-label-form/flowchart-header-both-forms-kept]
 
-A `:` right after the header keyword of a gitGraph is removed: the examples
-write `gitGraph` 33 times and `gitGraph:` twice. [fixture:
+### The relationships of an ER diagram
+
+The cardinalities and the line of a relationship are printed as the symbols that
+mermaid.js reads the same, whatever the case of the words: `only one` and `1`
+are `||`; `zero or one` and `one or zero` are `|o` on the left and `o|` on the
+right; `zero or more`, `zero or many`, `many(0)`, and `0+` are `}o` on the left
+and `o{` on the right; `one or more`, `one or many`, `many(1)`, and `1+` are
+`}|` on the left and `|{` on the right. The line `to` is `--`, and the lines
+`optionally to`, `.-`, and `-.` are `..`. The cardinality `u` has no symbol and
+stays as written, and so does a relationship with a directive between its units.
+The examples write the symbols 84 times and the words and the other forms 6
+times (`only one` once, `zero or more` twice, `many(0)` once, `0+` once, and `1`
+once), and the line as `--` 39 times against `to` twice and as `..` 3 times
+against `optionally to` once. [fixture:
+er/relationship-spacing/words-to-symbols] [fixture:
+er/relationship-spacing/cardinality-words-case-one-form] [fixture:
+er/relationship-spacing/entity-only-before-cardinality] [fixture:
+er/relationship-spacing/directive-between-word-units-kept]
+
+### Other spellings of a keyword or of a punctuation mark
+
+gitGraph reads `switch` as `checkout`; the examples write `checkout` 160 times
+and never `switch`, so `switch` is printed `checkout`. C4 reads `Rel_Up`,
+`Rel_Down`, `Rel_Left`, and `Rel_Right` as `Rel_U`, `Rel_D`, `Rel_L`, and
+`Rel_R`; the examples write `Rel_U` once and `Rel_R` once and none of the long
+forms, so the long forms are printed short, and `Rel_Back` and `BiRel` stay. The
+EBNF notation of a railroad diagram reads `::=` as `=`; the examples write `=`
+35 times and `::=` never, so `::=` is printed `=`. A range of a packet diagram
+that starts and ends at the same position is the position alone; the examples
+write the position alone 7 times and the range with equal ends never, so `4-4`
+is printed `4`, unless something other than whitespace and the `-` lies between
+the ends. [fixture: gitgraph/checkout-aliases/alias-one-form] [fixture:
+c4/argument-forms/relationship-direction-long-forms] [fixture:
+railroad/assignment/ebnf-assignment-equals] [fixture:
+packet/block-forms-and-order/equal-range-single]
+
+### The colon after a header
+
+A cynefin or a radar diagram reads `cynefin-beta:` and `radar-beta:` as the
+header without the colon. The examples write the header without the colon 3
+times in each, and with it never, so the colon is removed, and what follows it
+on the line goes to the next line as it does after a header without the colon.
+The colon stays where a `;` or the `---` of a hidden YAML block touches it.
+[fixture: cynefin/header/colon-removed] [fixture:
+cynefin/header/colon-semicolon-kept] [fixture: radar/header/colon-removed]
+[fixture: radar/header/colon-yaml-kept]
+
+The colon after the header of a gitGraph stays as written: see
+[Versions of mermaid.js](#versions-of-mermaidjs). [fixture:
 gitgraph/header/header-colon]
 
-### What stays as written
+### The label of a link
 
-A longer link of a flowchart (`--->` for `-->`) draws the same figure in the
-examples that were drawn, but the documentation of mermaid.js says that extra
-dashes ask for a link that spans more ranks
+A label can be written between two arrows (`-- text -->`) or between `|` after
+the arrow (`-->|text|`), and mermaid.js reads both the same. The form is the one
+that the examples of the diagram type use at least twice as often as the other:
+an agentflow diagram has 2 links of the first form and none of the second, so
+its label is printed between the arrows, for the arrows `-->` and `--x`, which
+it reads in the first form; a swimlane diagram has none of the first form and 12
+of the second, so its label is printed between `|`, for the eight arrows of a
+flowchart; a flowchart has 14 of the first form and 8 of the second, which is
+not twice as often, and stays as written. The label must be plain text (letters,
+digits, spaces, `_`, `,`, `?`, and `!`); a label with a `|` or a `%%`, a string,
+a Markdown label, a label of blanks only, and an empty label stay as written.
+[fixture: agentflow/edge-labels/pipes-to-arrows] [fixture:
+agentflow/edge-labels/blank-pipe-label-kept] [fixture:
+flowchart/link-label-form/swimlane-arrows-to-pipes] [fixture:
+flowchart/link-label-form/flowchart-header-both-forms-kept] [fixture:
+flowchart/link-label-form/kept]
+
+### Versions of mermaid.js
+
+The CHANGELOG.md of the pinned mermaid.js has no entry about the case of
+keywords, the quotes of strings, or the digits of the numbers that this section
+lists, so none of these is kept for its version. For the other kinds the
+CHANGELOG.md and the grammars of the release tags, read from the history of
+mermaid.js, show which form each version reads:
+
+- The colon after the header of a gitGraph: the grammar of 8.14.0 has the rule
+  `gitGraph:` only, and the grammar of 9.0.0 reads the header with the colon and
+  without it. A text printed without the colon is not read by 8.14.0, so the
+  colon stays as written.
+- `switch` of a gitGraph: the grammar of 10.9.0 has `checkout` and no `switch`,
+  and the grammar of 11.0.0 has both. A text printed with `checkout` is read by
+  every version that reads `switch`.
+- The symbols of an ER relationship: the grammars of 8.8.0, 8.14.0, and 9.0.0
+  have the symbols and no word, and the grammar of 9.4.3 has the words as well.
+  A text printed with the symbols is read by every version that reads the words.
+- `Rel_Up` and the like of C4: the first tag with a C4 grammar is 9.1.7, and
+  that grammar has `Rel_Up` and `Rel_U` both.
+- `::=` of EBNF: the CHANGELOG.md adds the railroad diagrams in 11.16.0
+  ([the entry](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L601)),
+  and the grammar of 11.16.0 has `=` and `::=` both.
+- The range of a packet diagram: the grammar of 11.0.0, the first with the
+  packet diagram, reads a position and a range with the rule
+  `start=INT('-' end=INT)?`.
+- The colon after the header of a cynefin or a radar diagram: the CHANGELOG.md
+  adds the radar chart in 11.6.0
+  ([the entry](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L1168))
+  and the cynefin diagram in 11.16.0
+  ([the entry](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L585)),
+  and the grammar of each in its first release reads the header with the colon
+  and without it.
+- The direction of the header of a flowchart: the CHANGELOG.md of 11.10.0 says
+  that the behavior of `TD` is updated to be the same as that of `TB`
+  ([the entry](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L1061)).
+  Version 11.9.0 keeps the direction `TD` in the Db and draws the flowchart
+  example of the documentation that links nodes across three subgraphs
+  (`flowchart TB`, `c1-->a2`) differently from the same text with `TD`; 12.3.0
+  draws them the same. Version 11.9.0 also rejects `direction TD` in a subgraph,
+  which 11.13.0 reads
+  ([the entry](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L860)).
+  The flowchart grammars of 8.14.0, 9.4.3, and 10.9.0 read `TB` and `TD` both as
+  the direction of a header. So `TB` stays as written.
+- The label of a link and the direction of a header in agentflow and swimlane
+  diagrams: the CHANGELOG.md adds the swimlane diagram in 11.16.0
+  ([the entry](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L605));
+  it reads the grammar of the flowchart, which has both forms of a label. The
+  grammar of the agentflow diagram, added in 12.0.0
+  ([the entry](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L250)),
+  is the same file in 12.0.0 and 12.3.0, and it has both forms. Both diagram
+  types are later than 11.10.0, so `TD` is `TB` in every version that reads
+  them.
+- The case of a keyword: the lexers of the sequence, Gantt, user journey, ER,
+  requirement, and state diagrams are case-insensitive in the grammars of
+  8.14.0, 9.4.3, 10.9.0, and 12.3.0. The earliest tags read that have the
+  grammar of another diagram type are case-insensitive as well: 9.4.0 for the
+  timeline and the mindmap diagrams, 10.2.0 for the quadrant chart, 10.6.0 for
+  the xychart, 11.13.0
+  ([the entry](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L836))
+  for the Venn diagram, and 12.0.0
+  ([the entry](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L248))
+  for the use case diagram. Versions before 8.14.0 were not read.
+
+### The names of a header
+
+The name of a header stays as written: `block-beta` and `block`, `graph` and
+`flowchart`, `packet-beta` and `packet`, `sankey-beta` and `sankey`,
+`xychart-beta` and `xychart`, `treemap` and `treemap-beta`, `ishikawa` and
+`ishikawa-beta`. mermaid.js 12.3.0 accepts both names of each pair
+([block](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/block/blockDetector.ts#L6),
+[sankey](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sankey/sankeyDetector.ts#L6),
+[xychart](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/xychart/xychartDetector.ts#L10),
+[packet](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/packet/detector.ts#L10),
+[treemap](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/treemap/detector.ts#L10),
+[ishikawa](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/ishikawa/ishikawaDetector.ts#L10),
+[flowchart](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDetector-v2.ts#L9-L11)),
+and the two names of a pair draw the same: the `aria-roledescription` of the
+drawing and its accessibility tree are the same for both, and 175 pairs of the
+examples, written with the other name, gave the same Db and the same drawing.
+The examples use `block` 30 times against none of `block-beta`, `flowchart` 116
+against none of `graph`, `packet` 4 against none, `sankey` 8 against none,
+`xychart` 7 against 1, `treemap-beta` 8 against none, and `ishikawa-beta` once
+against none.
+
+But other versions accept the names differently. mermaid.js 11.9.0 detects no
+diagram from `block`, `sankey`, or `xychart` without `-beta`, and the
+CHANGELOG.md removes the suffix of these three diagrams in 11.10.0
+([the entry](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L1020)).
+It moves the packet diagram out of beta in 11.9.0
+([the entry](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L1087)),
+and the grammars of 11.1.0 and 11.3.0 read `packet-beta` only. So a text printed
+without the suffix is not drawn by the versions before them. mermaid.js 11.9.0
+reads `graph` and `flowchart`, and `treemap-beta` and `treemap`, both, and the
+CHANGELOG.md records no change of the names of the flowchart, treemap, and
+ishikawa diagrams. The version that draws a text is known to its writer and not
+to the formatter, so none of the names is rewritten. A header in another case
+(`ISHIKAWA`, `sankey-BETA`, `XYCHART-BETA`) stays as written as well. [fixture:
+block/header/block-beta-kept] [fixture: flowchart/direction/header-keyword-kept]
+[fixture: flowchart/direction/header-td-kept] [fixture:
+ishikawa/header/header-valid] [fixture: ishikawa/header/header-stable] [fixture:
+packet/header/header-beta] [fixture: packet/hidden-yaml/yaml-beta-header]
+[fixture: sankey/header/sankey-beta] [fixture: sankey/header/upper-case-beta]
+[fixture: treemap/header/common] [fixture:
+xychart/header-and-orientation/beta-header-kept] [fixture:
+xychart/keyword-case/header-spelling-kept] [fixture:
+xychart/header-and-orientation/second-header-spelling-and-case-kept]
+
+`stateDiagram` and `stateDiagram-v2` stay as written for the same reason. The
+detector of mermaid.js 12.3.0 draws both with the unified state diagram
+([the comment](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/state/stateDetector-V2.ts#L9)).
+The 22 pairs of the examples gave the same Db, and 21 of their drawings were the
+same, pixel for pixel. The 22nd, the choice example
+(`state if_state <<choice>>`), differs only in the strokes of the diamond, which
+are drawn at random: the same text drawn twice differs in the same way. The
+examples use `-v2` 17 times and the other 5 times. [fixture:
+state/header/spellings-kept]
+
+### What else stays as written
+
+A longer link of a flowchart (`--->` for `-->`) stays as written. The
+documentation of mermaid.js says that extra dashes ask for a link that spans
+more ranks
 ([Minimum length of a link](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L933-L955)),
-so the length is the author's. [fixture:
-flowchart/arrow-spacing/arrow-length-kept]
+and the code passes the length on to the layout:
+[`flowDb.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L1378)
+gives it as `minlen` of the edge, which the dagre layout
+([`index.js`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/layout-algorithms/dagre/index.js#L759))
+and the elk layout
+([`render.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/layout-algorithms/elk/render.ts#L2754))
+take over. The examples that were drawn gave the same figure, but the length is
+the author's request. [fixture: flowchart/arrow-spacing/arrow-length-kept]
 
 ## Whitespace at the start of a label
 

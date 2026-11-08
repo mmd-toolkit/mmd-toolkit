@@ -558,8 +558,22 @@ function renderRuleDocument(
  * temporary directories, where Prettier finds no configuration.
  */
 async function formatMarkdown(text: string, path: string): Promise<string> {
-  const options = await resolveConfig(path, { config: DOCS_PRETTIER_CONFIG })
-  return format(text, { ...options, filepath: path })
+  try {
+    // The Prettier CLI and editors read `.editorconfig`; its API does not
+    // unless asked, so a setting there would make them disagree with this.
+    const options = await resolveConfig(path, {
+      config: DOCS_PRETTIER_CONFIG,
+      editorconfig: true,
+    })
+    return await format(text, { ...options, filepath: path })
+  } catch (error) {
+    // Prettier names the document it was formatting, not the cause, which is
+    // often the built parser that the source of the formatter imports.
+    throw new Error(
+      `Prettier could not format ${path} with ${DOCS_PRETTIER_CONFIG}. If the cause is a module missing under packages/parser/lib, run \`pnpm run build:parser\` at the root of the repository.`,
+      { cause: error },
+    )
+  }
 }
 
 /**

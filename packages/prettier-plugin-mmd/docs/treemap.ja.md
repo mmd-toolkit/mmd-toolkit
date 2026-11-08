@@ -15,10 +15,9 @@ semicolon の保護は普通の整形より優先します。
 
 見出しを第 1 列に置き、普通の最初の文を次行に移します。
 見出しを見つけやすくするためです。
-`treemap` と `treemap-beta` のどちらが書かれていても、
-キーワードは `treemap-beta` と印字します。
-mermaid.js の文書の例が `treemap-beta` を使い、どちらも同じに描かれるためです。
-（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+Db が同じになる別名から一つを選ばず、
+書かれたキーワード `treemap` または `treemap-beta`
+を保ちます（[ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)を参照）。
 コロンは足さず、空本文も保ちます。
 
 [fixture: treemap/header/stable]
@@ -35,7 +34,7 @@ mermaid.js の文書の例が `treemap-beta` を使い、どちらも同じに�
 ([header/stable-output.mmd](../tests/fixtures/treemap/header/stable-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "HeadingRoot"
     "HeadingChild": 3
 ```
@@ -85,7 +84,7 @@ style と終端のない classDef に行が接する場合は接触を保ち、
 ([indentation/irregular-output.mmd](../tests/fixtures/treemap/indentation/irregular-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "Top"
     "Branch"
       "Tip": 3
@@ -132,7 +131,7 @@ common コメントの除去で前の空白だけの run が消えていても�
 ([carried-indentation/section-space-output.mmd](../tests/fixtures/treemap/carried-indentation/section-space-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "Top"
     "Tip": 2
 ```
@@ -155,7 +154,7 @@ useTabs なら深さごとに 1 tab、それ以外は設定の正の幅の space
 出力 ([tabs/mixed-output.mmd](../tests/fixtures/treemap/tabs/mixed-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "TabRoot"
     "Branch"
       "Tip": 3
@@ -190,7 +189,7 @@ title や class style が既に所有する文字は、別文にしません。
 ([statements-one-per-line/adjacent-output.mmd](../tests/fixtures/treemap/statements-one-per-line/adjacent-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "Top"
     "Left": 1
     "Right", 2
@@ -218,7 +217,7 @@ trivia のある gap は接触を保ちます。
 ([separators/colon-output.mmd](../tests/fixtures/treemap/separators/colon-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "Colon": 1,234.5
 ```
 
@@ -247,23 +246,26 @@ trivia のない marker と名前の間の改行を詰め、`:::` の前後に�
 ([selectors/section-newlines-output.mmd](../tests/fixtures/treemap/selectors/section-newlines-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "Section":::zz
 ```
 
 ### Numbers
 
-NumericLiteral が単純な十進数なら、最短の形で印字します。
-`+`、小数部の末尾のゼロ、末尾の `.` を除き、先頭の `.` の前には `0` を置きます。
+NumericLiteral が数字の並びに任意の小数部を続けた形か、小数部だけの形なら、
+最短の形で印字します。
+小数部の末尾のゼロを除き、先頭の `.` の前には `0` を置きます。
+`1.50` は `1.5`、`.5` は `0.5` になります。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 それ以外の source span はすべて書かれたままにします。
-区切り、underscore、2 つ目の dot、整数部の先頭のゼロ、
+符号、末尾の `.`、区切り、underscore、2 つ目の dot、整数部の先頭のゼロ、
 15 桁を超えるものが対象です。
 数値 field から印字し直しません。
 Mermaid は `1_000` を 1 と読みます。
 ほかの綴りも丸め、NaN、overflow、underflow になりえます。
 再符号化すると Db が変わったり、拒否される構文になったりします。
 [fixture: treemap/numbers/shortest-form] [fixture: treemap/numbers/forms-kept]
+[fixture: treemap/numbers/trailing-dot-kept]
 
 [fixture: treemap/numbers/comma]
 
@@ -295,7 +297,7 @@ Mermaid は `1_000` を 1 と読みます。
 ([numbers/underscore-output.mmd](../tests/fixtures/treemap/numbers/underscore-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "Underscore": 1_000
 ```
 
@@ -336,7 +338,7 @@ backslash は引用符を escape せず、`\n` も decode しません。
 ([names/quotes-output.mmd](../tests/fixtures/treemap/names/quotes-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   ' Other "quote" ': 1
 ```
 
@@ -362,7 +364,7 @@ selector と違い、class 名は 2 文字以上必要です。
 ([class-definitions/keyword-newline-output.mmd](../tests/fixtures/treemap/class-definitions/keyword-newline-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   classDef zz
 ```
 
@@ -403,7 +405,7 @@ style がその定義に属することを見分けやすくするためです�
 ([style-gaps/row-on-next-line-output.mmd](../tests/fixtures/treemap/style-gaps/row-on-next-line-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   classDef zz "Apparent":2
 ```
 
@@ -434,7 +436,7 @@ CSS として分割、統合、整形しません。
 ([styles/written-output.mmd](../tests/fixtures/treemap/styles/written-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   classDef zz color:red , fill:blue,stroke:rgb(1\,2\,3),
 ```
 
@@ -572,7 +574,7 @@ style のない `classDef` でも同じです。
 ([semicolons/protected-class-column-output.mmd](../tests/fixtures/treemap/semicolons/protected-class-column-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   classDef zz
    color:#navy;;
 ```
@@ -607,7 +609,7 @@ trivia を持つ値は書かれた境界を保ちます。
 ([title/padding-output.mmd](../tests/fixtures/treemap/title/padding-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   title Topic words
   "AfterTitle": 3
 ```
@@ -641,7 +643,7 @@ trivia の境界を保ち、次行の値を連結しません。
 ([accessibility-lines/title-padding-output.mmd](../tests/fixtures/treemap/accessibility-lines/title-padding-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   accTitle: Access  words
 ```
 
@@ -698,7 +700,7 @@ Mermaid が説明から LF 後の字下げを除くためです。
 ([description-blocks/continuation-output.mmd](../tests/fixtures/treemap/description-blocks/continuation-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   accDescr {
     first
 
@@ -726,7 +728,7 @@ printWidth によって名前、数、style、common 値を折り返しません
 ([long-lines/name-and-number-output.mmd](../tests/fixtures/treemap/long-lines/name-and-number-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "A deliberately long name preserves every word and its internal spaces": 12345678901234567890
 ```
 
@@ -765,7 +767,7 @@ leaf の区切りと数の継続行は文にそろえます。
 ([component-newlines/selector-comment-output.mmd](../tests/fixtures/treemap/component-newlines/selector-comment-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "Selector": 2%% gap
 :::zz
 ```
@@ -839,7 +841,7 @@ native コメント内の LS と PS は内容として保ちます。
 ([comments/standalone-output.mmd](../tests/fixtures/treemap/comments/standalone-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "Top"
     %% before child
     "Tip": 2
@@ -888,7 +890,7 @@ directive の前後の空白は一つの字下げ unit で、
 ([directives/leading-output.mmd](../tests/fixtures/treemap/directives/leading-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "Top"
    %%{wrap}%% "Tip": 2
 ```
@@ -918,7 +920,7 @@ frontmatter に昇格させる native hidden YAML はありません。
 
 ```mmd
 %% leading note
-treemap-beta
+treemap
   "Prefix": 2
 ```
 
@@ -947,7 +949,7 @@ treemap-beta
 ([blank-lines/ordinary-output.mmd](../tests/fixtures/treemap/blank-lines/ordinary-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "Top"
 
     "Tip": 2
@@ -1036,7 +1038,7 @@ title: |
  Second
 config: { treemap: { padding: 3 } }
 ---
-treemap-beta
+treemap
  "YamlZero": 2
 ```
 
@@ -1065,7 +1067,7 @@ class の蓄積、リセット、順序、親子を変えうるため、sort、�
 ([source-order/repetitions-output.mmd](../tests/fixtures/treemap/source-order/repetitions-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "Top"
     "Right": 2
     "Left": 1
@@ -1105,7 +1107,7 @@ EOF まで届く未完の Root directive と保護された本文の末尾は、
 ([final-newline/comment-output.mmd](../tests/fixtures/treemap/final-newline/comment-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "FinalComment": 2
   %% final
 ```

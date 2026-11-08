@@ -10,13 +10,13 @@ English version: [gitgraph.md](./gitgraph.md)
 
 ### Header
 
-正確な `gitGraph` と書かれた方向を保持します。
-語の直後の colon は、mermaid.js の文書の例では colon なしが 33 例、
-ありが 2 例なので削除しますが、方向の後の colon は残します。
-（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
-通常の隙間は `gitGraph LR:` または `gitGraph` とし、
+正確な `gitGraph` と書かれた方向と colon の有無を保持します。
+通常の隙間は `gitGraph LR:` または `gitGraph:` とし、
 見出し上の最初の文を次行へ移します。
-方向は Db に影響し、省略は作者の選択です。
+方向は Db に影響し、省略と colon の有無は作者の選択です。
+mermaid.js 8.14.0 は colon ありの見出しだけを読み、
+colon なしの見出しは 9.0.0 から読むためです。
+（[mermaid.js の版](./compatibility.ja.md#mermaidjs-の版)を参照）。
 hidden の隙間と保護された見出し・本文の境界は保持します。
 
 `gitGraph` と方向の間にある hidden の形は、直後の改行を取り、
@@ -91,7 +91,7 @@ gitgraph に区切りの semicolon はありません。
 ([statements-one-per-line/eol-header-inline-output.mmd](../tests/fixtures/gitgraph/statements-one-per-line/eol-header-inline-output.mmd)):
 
 ```mmd
-gitGraph
+gitGraph:
   commit id: "a"
 ```
 
@@ -331,7 +331,7 @@ order を使って branch を並べ替えません。
 ([order-numbers/precision-digits-output.mmd](../tests/fixtures/gitgraph/order-numbers/precision-digits-output.mmd)):
 
 ```mmd
-gitGraph
+gitGraph:
   branch release order: 9007199254740993
 ```
 

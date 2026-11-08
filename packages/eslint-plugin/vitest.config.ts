@@ -12,7 +12,10 @@ const config: ViteUserConfig = defineConfig({
     // Test against the sources of the workspace packages, as the root
     // tsconfig `paths` do, so that the tests do not depend on stale builds.
     // The first entry that matches wins, so each subpath comes before the
-    // package itself.
+    // package itself. The tests that render rule documents are the exception:
+    // Prettier loads the plugin for Mermaid natively, through
+    // `docs/prettier.config.js`, so they read the built parser
+    // (`pnpm run build:parser`).
     alias: [
       {
         find: "@mmd-toolkit/parser",

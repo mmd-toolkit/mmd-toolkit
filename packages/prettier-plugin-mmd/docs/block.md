@@ -266,13 +266,13 @@ block-beta
 
 ### Header
 
-The header is printed `block`, whether `block-beta` or `block` is written:
-mermaid.js reads them as the same diagram type, and the examples in its
-documentation use `block` (see
-[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
-The whitespace before it is dropped, and a statement after it on its line goes
-to a line of its own (see [Rows](#rows)). [fixture: header/block-beta-one-form]
-[fixture: header/block-kept] [fixture:
+The header, `block-beta` or `block`, is printed as written: mermaid.js 12.3.0
+reads them as the same diagram type, but mermaid.js 11.9.0 detects `block-beta`
+only, so the spelling is the author's (see
+[The names of a header](./compatibility.md#the-names-of-a-header)). The
+whitespace before it is dropped, and a statement after it on its line goes to a
+line of its own (see [Rows](#rows)). [fixture: header/block-beta-kept] [fixture:
+header/block-kept] [fixture:
 header/statement-after-the-header-on-a-line-of-its-own] [fixture:
 header/columns-after-the-header-on-a-line-of-its-own] [fixture:
 header/leading-whitespace-dropped]

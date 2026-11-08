@@ -404,7 +404,8 @@ rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の 4 節にある
 
 ## 5. 書いた後の検査
 
-1. 書いた文書に `npx prettier --write` を 2 回かけ、
+1. ルートで `pnpm run build:parser` を実行し（フォーマッターは build した parser
+   を読む）、書いた文書に `npx prettier --write` を 2 回かけ、
    2 回目で何も変わらないことを確かめる。
 2. `pnpm --filter @mmd-toolkit/eslint-plugin run update` を実行する（6 節）。
    先に parser を build する（フォーマッターのソースが名前で読み込むため）ので、

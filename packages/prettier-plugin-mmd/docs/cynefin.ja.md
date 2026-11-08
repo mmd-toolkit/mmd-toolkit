@@ -11,7 +11,15 @@ cynefin-beta と cynefin-beta: の整形規則です。
 
 ### Header
 
-cynefin-beta と cynefin-beta: は第 1 列に置き、colon の有無を保ちます。
+cynefin-beta は第 1 列に置きます。
+見出しの語の直後の colon は削除します。
+mermaid.js は `cynefin-beta:` と `cynefin-beta` を同じ見出しとして読み、
+その文書の例は colon なしを 3 回使い、colon ありは使わないためです。
+（[ヘッダーの後のコロン](./compatibility.ja.md#ヘッダーの後のコロン)を参照）。
+語との間に hidden の形か global directive があるときと、
+`;` か hidden YAML block の `---` が接するときは、colon を保ちます。
+[fixture: cynefin/header/colon-removed]
+[fixture: cynefin/header/colon-semicolon-kept]
 普通の最初の文は次の行へ移し、見出しを見つけやすくします。
 global directive の接触、hidden の隣接、保護行は共有規則に従います。
 見出し行を保つときは、その行の領域と項目の開きも同じ行に保ちます。

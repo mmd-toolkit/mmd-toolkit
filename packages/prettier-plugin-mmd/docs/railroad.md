@@ -258,9 +258,12 @@ railroad-peg-beta
 ### Assignment
 
 Put one ordinary space on either side of the assignment, without aligning names.
-IR and ABNF keep `=`, EBNF keeps each authored `=` or `::=`, and PEG keeps `<-`.
-Both EBNF forms have the same Db, but replacing an authored delimiter adds no
-readability. Compound delimiters remain whole tokens.
+IR and ABNF keep `=`, EBNF prints `::=` as `=`, and PEG keeps `<-`. Both EBNF
+forms have the same Db, and the examples in the documentation of mermaid.js
+write `=` 35 times and `::=` never (see
+[Other spellings of a keyword or of a punctuation mark](./compatibility.md#other-spellings-of-a-keyword-or-of-a-punctuation-mark)).
+Compound delimiters remain whole tokens. [fixture:
+railroad/assignment/ebnf-assignment-equals]
 
 [fixture: railroad/assignment/abnf-spaces]
 

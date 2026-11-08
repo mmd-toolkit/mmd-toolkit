@@ -263,10 +263,11 @@ accDescr {}
 ### Header
 
 ヘッダーの綴り、`stateDiagram` と `stateDiagram-v2` は書かれたまま残します。
+ほかのヘッダーの名前と同じです。
+（[ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)を参照）。
 mermaid.js の文書の例は `stateDiagram-v2` を 17 回、`stateDiagram` を 5 回使い、
-両方の綴りで描いた 11 組の例のうち、1 組は違う図になったためです。
-（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
-[fixture: header/spellings-kept] [fixture: indentation/header-without-v2-kept]
+mermaid.js 12.3.0 はどちらも同じ図に描きます。 [fixture: header/spellings-kept]
+[fixture: indentation/header-without-v2-kept]
 
 Input (escaped): `"stateDiagram\nSTATE \"legacy\" AS old"`.
 

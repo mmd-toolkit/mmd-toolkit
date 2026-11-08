@@ -218,18 +218,19 @@ xychart
 
 ### ヘッダーと向き
 
-最初のヘッダーは、`xychart` と `xychart-beta` のどちらで書かれていても、
-`xychart` と印字します。
-mermaid.js はどちらも同じ図種として読み、文書の例が `xychart` を使うためです。
-（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
-それ以外の大文字小文字で書かれたヘッダーは、書かれたまま残します。
+ヘッダーは、`xychart` と `xychart-beta` のどちらも、
+書かれた大文字小文字のまま印字します。
+mermaid.js 12.3.0 はどちらも同じ図種として読みますが、
+mermaid.js 11.9.0 は `xychart-beta` だけを検出するため、
+綴りは整形器ではなく書き手が決めます。
+（[ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)を参照）。
 2 つ目以降のヘッダーは自分の行に置き、取り除きません。
 向きを持つ後のヘッダーは向きを変え、向きのないものは何も変えませんが、
-書かれたテキストは綴りも含めて書き手のものだからです。
+書かれたテキストは書き手のものだからです。
 gap にコメント行か指令があるヘッダーは、その改行を保ち、
 続きの列をヘッダーより 1 段深くそろえます（[複数行の文](#複数行の文)を参照）。
 [fixture: header-and-orientation/plain-header]
-[fixture: header-and-orientation/beta-header-one-form]
+[fixture: header-and-orientation/beta-header-kept]
 [fixture: header-and-orientation/header-only]
 [fixture: header-and-orientation/vertical-kept]
 [fixture: header-and-orientation/second-header-on-its-own-line]
@@ -257,7 +258,7 @@ mermaid.js は向きを、あらゆる種類の空白の後でも、空白と改
 [fixture: header-and-orientation/orientation-on-the-next-line-joined]
 [fixture: header-and-orientation/orientation-on-the-next-line-after-a-tab]
 [fixture: header-and-orientation/orientation-case-kept]
-[fixture: header-and-orientation/orientation-upper-case-one-form]
+[fixture: header-and-orientation/orientation-upper-case-kept]
 [fixture: header-and-orientation/orientation-and-comment]
 
 入力
@@ -892,7 +893,7 @@ mermaid.js はどれも大文字小文字を問わずに読み、Db は同じで
 プロットの種類（`line` か `bar`）は、書かれた大文字小文字によらず、
 Db では小文字です。 [fixture: keyword-case/statement-keywords-one-form]
 [fixture: keyword-case/accessibility-keywords-kept]
-[fixture: keyword-case/header-spelling-one-form]
+[fixture: keyword-case/header-spelling-kept]
 
 入力
 ([keyword-case/statement-keywords-one-form-input.mmd](../tests/fixtures/xychart/keyword-case/statement-keywords-one-form-input.mmd)):
