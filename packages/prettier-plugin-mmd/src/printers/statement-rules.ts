@@ -371,14 +371,16 @@ export function normalizeStyleList(
 
 /**
  * Leaves the spaces and tabs at the start of the text that a statement holds
- * after its keyword out of what is printed: a title, a setting. The keyword
+ * after its keyword out of what is printed, and those at its end: a title, a setting. The keyword
  * takes one whitespace character, and mermaid.js keeps the rest in the Db, but
  * draws the same text without it (docs/compatibility.md, Texts after a keyword
  * that are drawn the same). A directive among those
  * spaces and tabs is removed from the text before it is read, so the spaces and
  * tabs after it count too, and it stays where it is: `title  %%{x}%%  T` and
- * `title %%{x}%% T` are read as the title `T` with the same blanks before it. A
- * text of spaces and tabs and directives only stays as written.
+ * `title %%{x}%% T` are read as the title `T` with the same blanks before it.
+ * The spaces and tabs at its end are left out too: mermaid.js keeps them in the
+ * Db, and draws the same text without them. A text of spaces and tabs and
+ * directives only stays as written.
  */
 export function trimTextAfterKeyword(
   source: Source,
@@ -399,6 +401,31 @@ export function trimTextAfterKeyword(
     )
     if (directive === undefined) break
     offset = directive.range[1]
+  }
+  // The end is read the same way: a directive there is removed from the text,
+  // so the spaces and tabs before it are at the end too. The gap before a
+  // directive is that of the directive, though (see `isInsideStyleRuleStretch`
+  // and Directives in docs/compatibility.md), so where a directive starts at
+  // the end of the text, the end stays as written.
+  if (
+    findTriviaBetween(source, to, to + 1).some(
+      (item) => item.type === "Directive" && item.range[0] === to,
+    )
+  ) {
+    replaceInAtoms(source, atoms, edits)
+    return
+  }
+  let position = to
+  for (;;) {
+    let blanks = position
+    while (blanks > offset && isSpaceOrTab(source.text[blanks - 1])) blanks--
+    if (blanks < position)
+      edits.push({ range: [blanks, position], replacement: "" })
+    const directive = findTriviaBetween(source, blanks - 1, blanks).find(
+      (item) => item.type === "Directive" && item.range[1] === blanks,
+    )
+    if (directive === undefined || directive.range[0] <= offset) break
+    position = directive.range[0]
   }
   replaceInAtoms(source, atoms, edits)
 }

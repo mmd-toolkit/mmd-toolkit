@@ -844,12 +844,16 @@ whitespace after its `:`, as a description does: `note left of A : ` is
 accepted, while `note left of A :` is rejected; so does a note with two
 whitespace characters before the `:` and nothing after it, whose text is the `:`
 alone. [fixture: notes/blank-text-kept] The quotes of a floating note are kept
-as written: `note ""floating" as N` has the text `floating`. [fixture:
-notes/over-lines] The `as` of a floating note stands after one space, and so
-does the id after it, also where they touched: `note "t"as N` and `note "t" asN`
-are printed `note "t" as N`. mermaid.js reads the three spellings the same, and
-the `as` and the id of an alias definition are printed in the same way (see
-[Aliases](#aliases)). A directive in the gap is placed as under
+as written, and so is the text between them with its whitespace, as the inside
+of a quoted label is in flowchart: `note ""floating" as N` has the text
+`floating`, and `note "  floating   text  " as N` stays. mermaid.js reads the
+same text and draws the same note whatever the whitespace there; the Db and the
+pixels were the same. [fixture: notes/floating-note-text-whitespace-kept]
+[fixture: notes/over-lines] The `as` of a floating note stands after one space,
+and so does the id after it, also where they touched: `note "t"as N` and
+`note "t" asN` are printed `note "t" as N`. mermaid.js reads the three spellings
+the same, and the `as` and the id of an alias definition are printed in the same
+way (see [Aliases](#aliases)). A directive in the gap is placed as under
 [Directives](#directives), and a U+2028 or U+2029 stays where it is. [fixture:
 notes/floating-note-as-gaps-spaced] [fixture:
 notes/floating-note-as-beside-directive] [test: U+2028 before the `as` of a

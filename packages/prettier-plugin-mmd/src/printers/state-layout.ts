@@ -351,6 +351,7 @@ export function layoutStateStatement(
   }
   const kept = [
     ...findNoteStretches(source, statement, end),
+    ...findFloatingNoteStretches(source, statement),
     ...findSecondDescriptionStretches(source, statement, end),
     ...findBlankDescriptionStretches(source, statement, end),
     ...findDroppedSemicolonStretches(source, statement),
@@ -706,6 +707,39 @@ function findNoteStretches(
   }
   const start = statement.state.range[1]
   return [{ start, end, doc: printNoteColonAndText(source, start, end) }]
+}
+
+/**
+ * The stretch of a floating note from its opening quote to its closing quote,
+ * as written. The text between the quotes is no value of its own in the tree,
+ * so the gaps around it would be printed as one space, though the whitespace in
+ * quotes is text: flowchart keeps the inside of a quoted label as written, and
+ * so does a floating note (docs/state.md, Notes). A statement without both
+ * quotes has no such stretch.
+ */
+function findFloatingNoteStretches(
+  source: Source,
+  statement: StateStatement,
+): Atom[] {
+  if (statement.type !== "StateFloatingNoteStatement") return []
+  const keyword = findStructuralToken(source, statement.range[0])
+  const asKeyword = findTokenEndingBefore(
+    source,
+    statement.id?.range[0] ?? statement.range[1],
+  )
+  if (keyword === undefined || asKeyword === undefined) return []
+  const opening = findStructuralToken(source, keyword.range[1])
+  const closing = findStructuralTokenEndingBefore(source, asKeyword.range[0])
+  if (
+    opening === undefined ||
+    closing === undefined ||
+    opening.value !== '"' ||
+    closing.value !== '"' ||
+    opening.range[0] >= closing.range[0]
+  ) {
+    return []
+  }
+  return [{ start: opening.range[0], end: closing.range[1] }]
 }
 
 /**
