@@ -644,11 +644,23 @@ timeline の行の最後の event と、別名を持つ state の 2 つ目の説
 `title T  %%{x}%%  ` も `title T  %%{x}%%` も `title T %%{x}%%` と印字します。
 この文は、ディレクティブが 1 つの場合について述べています。
 テキストの後にディレクティブが 2 つ以上ある場合は、
-その間と最後のディレクティブの後の空白は、
-ディレクティブの規則に従って印字するので、
-最後のディレクティブの後に空白があるテキストとないテキストでは、
-印字する形が変わることがあります。
-（[ディレクティブ](./flowchart.ja.md#ディレクティブ)を参照してください）。
+最後のディレクティブの後の空白による変化が、図種によって異なります。
+Gantt 図の `title` は、書かれたまま（`title T  %%{x}%%  %%{y}%%`）にしますが、
+最後のディレクティブの後に空白があると、
+各ディレクティブの前に空白を 1 つ置いて（`title T %%{x}%% %%{y}%%`）印字します。
+timeline の行の最後の event と、別名を持つ state の 2 つ目の説明は、
+最後のディレクティブの後の空白を除き、残りは書かれたままにします。
+Venn 図の `title` と、C4 図の `title` と `accDescription` は、
+最後のディレクティブの後の空白も含め、書かれたままにします。
+[fixture: gantt/titles-and-sections/title-two-directives-gap-kept] [fixture:
+gantt/titles-and-sections/title-two-directives-trailing-blanks-gaps-collapsed]
+[fixture:
+timeline/periods-and-events/event-two-directives-trailing-blanks-dropped]
+[fixture:
+state/aliases/second-description-two-directives-trailing-blanks-dropped]
+[fixture: venn/title/title-two-directives-trailing-blanks-kept]
+[fixture: c4/title-and-accdescription/title-two-directives-trailing-blanks-kept]
+[fixture: c4/title-and-accdescription/description-two-directives-trailing-blanks-kept]
 [fixture: gantt/titles-and-sections/title-trailing-directive-blanks-dropped]
 [fixture: venn/title/title-trailing-directive-blanks-dropped]
 [fixture: c4/title-and-accdescription/title-trailing-directive-blanks-dropped]

@@ -583,17 +583,34 @@ a timeline and the second description of a state with an alias lose the
 whitespace at their end in the same way, not the whitespace at their start,
 which aligns the colons of a timeline: `2020 : e   ` is printed `2020 : e`, and
 `state "d" as A : x   ` is printed `state "d" as A : x`. Where a comment follows
-the text on its line, one space separates it from the text, and where a
-directive does, the gap before the directive stays, whether the directive is the
-last thing on the line or whitespace follows it, which is dropped like any
+the text on its line, one space separates it from the text. Where a directive
+does, the gap before it is one space after a title and after the
+`accDescription` of a C4 diagram, and stays after the last event of a timeline
+line and after the second description of a state alias, whether the directive is
+the last thing on the line or whitespace follows it, which is dropped like any
 whitespace at the end of the line: `title T  %%{x}%%  ` and `title T  %%{x}%%`
-are both printed `title T %%{x}%%`. The sentence is about one directive: with
-two or more directives after the text, the whitespace between them and after the
-last one is printed by the rules of directives (see
-[Directives](./flowchart.md#directives)), and a text with whitespace after the
-last directive can be printed in another form than one without. [fixture:
-gantt/titles-and-sections/title-trailing-directive-blanks-dropped] [fixture:
-venn/title/title-trailing-directive-blanks-dropped] [fixture:
+are both printed `title T %%{x}%%`, and `state "d" as A : x  %%{x}%%  ` is
+printed `state "d" as A : x  %%{x}%%`. Those forms hold for one directive. With
+two or more directives after the text, the diagram types differ in what the
+whitespace after the last directive changes. The `title` of a Gantt chart is
+kept as written (`title T  %%{x}%%  %%{y}%%`), and is printed with one space
+before each directive (`title T %%{x}%% %%{y}%%`) once whitespace follows the
+last directive. The last event of a timeline line and the second description of
+a state alias drop the whitespace after the last directive and keep the rest as
+written. The `title` of a Venn diagram, and the `title` and the `accDescription`
+of a C4 diagram, are kept as written, the whitespace after the last directive
+included. [fixture: gantt/titles-and-sections/title-two-directives-gap-kept]
+[fixture:
+gantt/titles-and-sections/title-two-directives-trailing-blanks-gaps-collapsed]
+[fixture:
+timeline/periods-and-events/event-two-directives-trailing-blanks-dropped]
+[fixture:
+state/aliases/second-description-two-directives-trailing-blanks-dropped]
+[fixture: venn/title/title-two-directives-trailing-blanks-kept] [fixture:
+c4/title-and-accdescription/title-two-directives-trailing-blanks-kept] [fixture:
+c4/title-and-accdescription/description-two-directives-trailing-blanks-kept]
+[fixture: gantt/titles-and-sections/title-trailing-directive-blanks-dropped]
+[fixture: venn/title/title-trailing-directive-blanks-dropped] [fixture:
 c4/title-and-accdescription/title-trailing-directive-blanks-dropped] [fixture:
 c4/title-and-accdescription/description-trailing-directive-blanks-dropped]
 [fixture: timeline/periods-and-events/event-trailing-directive-gap-kept]
