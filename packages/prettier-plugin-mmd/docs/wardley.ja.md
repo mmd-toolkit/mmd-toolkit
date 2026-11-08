@@ -569,7 +569,7 @@ wardley-beta
 
 ```mmd
 wardley-beta
-  title A  subject
+  title A subject
 ```
 
 ### アクセシビリティ
@@ -617,8 +617,8 @@ Db が同じ共通の形を選び、空白だけの内部には囲むテキス�
 
 ```mmd
 wardley-beta
-  accTitle: A  B
-  accDescr: C  D
+  accTitle: A B
+  accDescr: C D
 ```
 
 ### hidden form

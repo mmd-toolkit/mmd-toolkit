@@ -170,8 +170,11 @@ spaces is printed `flow F`, and so is `flow F ;` followed by a line, where the
 `;` becomes a line break. mermaid.js trims the name, so the Db is the same, and
 `flow F` followed by spaces and `flow F` are one flow. A name that holds a
 directive or a comment, a name of several parts, and a name of whitespace only
-are kept as written, as above. [fixture:
-trailing-whitespace/trailing-name-dropped] [fixture:
+are kept as written, as above. At the end of the name, U+2028 and U+2029 are
+characters of the name and no spaces or tabs: the spaces after one go, and the
+spaces before it stay. [test: agentflow: U+2028 and spaces at the end of a flow
+name] [test: agentflow: U+2029 and spaces at the end of a connector name]
+[fixture: trailing-whitespace/trailing-name-dropped] [fixture:
 containers/end-name-not-greedy] [fixture:
 names-and-headings/heading-word-gap-before-semicolon] [fixture:
 names-and-headings/name-directive-trailing-kept]
@@ -204,14 +207,22 @@ names-and-headings/name-whitespace-only] [fixture:
 names-and-headings/directive-after-erased-string]
 
 After name text read as a click id, exactly one whitespace character ends that
-reading. Keep that character, including a tab or LF, before a title, data,
-separator or EOF; additional whitespace belongs to the next name part. Empty
-strings and empty markdown strings erase no such ending character. If whitespace
-already separates an erased form from later name text, it has ended the click
-reading: do not take another LF after the name or add a blank line. In connector
-names, text directly after an erased empty string may begin with `;`. When LF
-ends that click-id text, keep it before the statement-separating LF; removing it
-would merge the next statement into the name and can reject it. [fixture:
+reading. Keep that character, including a tab or LF, before a title, data, or a
+statement that follows, also one after a `;` that becomes a line break: without
+it the line break ends the id and the next statement is read as a part of the
+name, so the Db differs. Drop a space or tab where nothing follows it but
+whitespace, line breaks, and separators: the text then ends the id, as at EOF
+without the character, and the Db and the figure are the same. [fixture:
+names-and-headings/name-exit-space-before-statement-kept] [fixture:
+names-and-headings/name-exit-space-before-separator-statement-kept] [fixture:
+names-and-headings/name-exit-space-before-blank-end-dropped] Additional
+whitespace belongs to the next name part. Empty strings and empty markdown
+strings erase no such ending character. If whitespace already separates an
+erased form from later name text, it has ended the click reading: do not take
+another LF after the name or add a blank line. In connector names, text directly
+after an erased empty string may begin with `;`. When LF ends that click-id
+text, keep it before the statement-separating LF; removing it would merge the
+next statement into the name and can reject it. [fixture:
 names-and-headings/connector-empty-string-adjacent-semicolon-exit] [fixture:
 names-and-headings/connector-empty-string-adjacent-text-exit] [fixture:
 names-and-headings/click-empty-string-lf-body] [fixture:
@@ -782,7 +793,7 @@ line, so C4, class, usecase and both graph types share `accTitle: value` and
 `accDescr: value`. The colon touches the keyword, one ASCII space precedes the
 trimmed value, and internal whitespace, inline `%%` and `#` remain value text.
 [fixture: accessibility/tight-colon] [fixture: accessibility/spaced-colon]
-[fixture: accessibility/value-padding] [fixture:
+[fixture: accessibility/value-runs-collapsed] [fixture:
 accessibility/inline-percent-hash] Empty and whitespace-only values keep
 `accTitle:` or `accDescr:` without a following space. [fixture:
 accessibility/empty-title] [fixture: accessibility/empty-description] [fixture:

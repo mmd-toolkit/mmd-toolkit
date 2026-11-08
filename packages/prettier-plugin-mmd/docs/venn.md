@@ -602,20 +602,22 @@ without them (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 Every later value character, including statement-looking words, stays as
 written, because everything after the one separator is the title value in the
-tree and in the Db. Indentation on the next source line belongs to the value, so
-`title` LF `  T` prints as `title T`. [fixture: venn/title/text-padding-dropped]
-A title of spaces and tabs only stays as written. [fixture:
-venn/title/title-blank-kept] LF and the broader accepted title separators may
-normalize, but trivia, joined regions and kept parts protect their written
-boundaries. [corpus fixture: venn/db-frontmatter-title-overridden] [corpus
-fixture: venn/db-title-on-header] [corpus fixture:
-venn/db-title-only-whitespace] [corpus fixture: venn/db-title-padding] [corpus
-fixture: venn/db-title-value-next-line] [corpus fixture:
-venn/lex-gap-title-comment] [fixture: venn/title/repeated-title] [fixture:
-venn/title/title-directive] [fixture: venn/title/title-inline-percent] [fixture:
-venn/title/title-next-line] [fixture: venn/title/title-statement-words]
-[fixture: venn/title/title-tab-separator] [fixture:
-venn/title/title-ends-dropped-at-end-of-input] [fixture:
+tree and in the Db. At the end of the title, U+2028 and U+2029 are characters of
+the title and no spaces or tabs: the spaces after one are left out, and the
+spaces before it stay. [test: venn: title-line-separator-spaces] Indentation on
+the next source line belongs to the value, so `title` LF `  T` prints as
+`title T`. [fixture: venn/title/text-padding-dropped] A title of spaces and tabs
+only stays as written. [fixture: venn/title/title-blank-kept] LF and the broader
+accepted title separators may normalize, but trivia, joined regions and kept
+parts protect their written boundaries. [corpus fixture:
+venn/db-frontmatter-title-overridden] [corpus fixture: venn/db-title-on-header]
+[corpus fixture: venn/db-title-only-whitespace] [corpus fixture:
+venn/db-title-padding] [corpus fixture: venn/db-title-value-next-line] [corpus
+fixture: venn/lex-gap-title-comment] [fixture: venn/title/repeated-title]
+[fixture: venn/title/title-directive] [fixture: venn/title/title-inline-percent]
+[fixture: venn/title/title-next-line] [fixture:
+venn/title/title-statement-words] [fixture: venn/title/title-tab-separator]
+[fixture: venn/title/title-ends-dropped-at-end-of-input] [fixture:
 venn/title/title-whitespace-only]
 
 Input (escaped):

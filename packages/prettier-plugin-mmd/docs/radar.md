@@ -446,7 +446,7 @@ Output
 
 ```mmd
 radar-beta
-  title Topic  words
+  title Topic words
 ```
 
 ### Accessibility lines
@@ -473,8 +473,8 @@ Output
 
 ```mmd
 radar-beta
-  accTitle: Access  words
-  accDescr: Detail  words
+  accTitle: Access words
+  accDescr: Detail words
 ```
 
 ### Description blocks

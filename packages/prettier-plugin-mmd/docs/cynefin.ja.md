@@ -444,7 +444,7 @@ null の title の separator 1 space・tab は範囲の外にあります。
 
 ```mmd
 cynefin-beta
-  title Title  inside		text
+  title Title inside text
 ```
 
 ### Accessibility lines
@@ -476,8 +476,8 @@ colon 後のかっこは行の値として残します。
 
 ```mmd
 cynefin-beta
-  accTitle: Access  Title
-  accDescr: Access		Description
+  accTitle: Access Title
+  accDescr: Access Description
 ```
 
 ### Description blocks

@@ -230,6 +230,11 @@ const examples: readonly (readonly [string, string, string])[] = [
     "stateDiagram-v2\nstate A\nclassDef c fill:#f00 ,\u2029color:white\n",
     "stateDiagram-v2\n  state A\n  classDef c fill:#f00 ,\u2029color:white\n",
   ],
+  [
+    "a second description of an alias with spaces after a U+2028",
+    'stateDiagram-v2\nstate "d" as A : x  \u2028  \nB\n',
+    'stateDiagram-v2\n  state "d" as A : x  \u2028  \n  B\n',
+  ],
 ]
 
 /**
@@ -510,6 +515,11 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
     "U+2029 between a wrap prefix and its text",
     "sequenceDiagram\nA->>B: wrap:\u2029x\n",
     "sequenceDiagram\n  A ->> B: wrap:\u2029x\n",
+  ],
+  [
+    "U+2028 and spaces at the end of a title",
+    "sequenceDiagram\ntitle T  \u2028  \nA->>B: x\n",
+    "sequenceDiagram\n  title T  \u2028\n  A ->> B: x\n",
   ],
 ]
 
@@ -1051,6 +1061,16 @@ const ganttLineSeparatorExamples: readonly (readonly [
     'gantt\na : id1, 1d\nclick id1\u2028href "u"\n',
     'gantt\n  a :id1, 1d\n  click id1\u2028href "u"\n',
   ],
+  [
+    "U+2028 and spaces at the end of a title",
+    "gantt\ntitle T  \u2028  \n",
+    "gantt\n  title T  \u2028\n",
+  ],
+  [
+    "U+2029 and spaces at the end of a date format",
+    "gantt\ndateFormat X  \u2029  \n",
+    "gantt\n  dateFormat X  \u2029\n",
+  ],
 ]
 
 /**
@@ -1176,6 +1196,11 @@ const journeyLineSeparatorExamples: readonly (readonly [
     "U+2028 after the colon of accTitle",
     "journey\naccTitle:\u2028T\n",
     "journey\n  accTitle:\u2028T\n",
+  ],
+  [
+    "U+2028 and spaces at the end of a journey title",
+    "journey\ntitle T  \u2028  \n",
+    "journey\n  title T  \u2028\n",
   ],
 ]
 
@@ -1754,6 +1779,16 @@ const timelineLineSeparatorExamples: readonly (readonly [
     "U+2028 between the header and a direction",
     "timeline\u2028TD\n",
     "timeline\n  TD\n",
+  ],
+  [
+    "U+2029 and spaces at the end of a timeline title",
+    "timeline\ntitle T  \u2029  \n",
+    "timeline\n  title T  \u2029\n",
+  ],
+  [
+    "U+2028 and spaces at the end of the last event of a line",
+    "timeline\n2020 : e  \u2028  \n",
+    "timeline\n  2020 : e  \u2028\n",
   ],
 ]
 
@@ -3641,6 +3676,16 @@ const c4Examples: readonly (readonly [string, string, string])[] = [
     'C4Context\nSystem_Boundary(b, "x;")\n\u2029      {\nPerson(a,"A")\n}\n',
     'C4Context\n  System_Boundary(b, "x;") {\n    Person(a, "A")\n  }\n',
   ],
+  [
+    "c4: title-line-separator-spaces",
+    'C4Context\ntitle T  \u2028  \nPerson(a, "A")\n',
+    'C4Context\n  title T  \u2028\n  Person(a, "A")\n',
+  ],
+  [
+    "c4: accdescription-line-separator-spaces",
+    'C4Context\naccDescription D  \u2029  \nPerson(a, "A")\n',
+    'C4Context\n  accDescription D  \u2029\n  Person(a, "A")\n',
+  ],
 ]
 
 describe("C4 whitespace and line boundaries", () => {
@@ -3827,6 +3872,11 @@ const vennExamples: readonly (readonly [string, string, string])[] = [
     "venn: ps-comment-competing-semicolon",
     "venn-beta\nset A[style:#x;y]%% c\u2029tail;",
     "venn-beta\nset A[style:#x;y]%% c\u2029tail;\n",
+  ],
+  [
+    "venn: title-line-separator-spaces",
+    "venn-beta\ntitle T  \u2028  \n",
+    "venn-beta\ntitle T  \u2028\n",
   ],
 ]
 

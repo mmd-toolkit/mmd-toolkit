@@ -211,7 +211,7 @@ pie は次の物理行を title に結合しません。
 
 ```mmd
 pie
-  title Sales  report
+  title Sales report
   "Sales" : 8
 ```
 
@@ -247,8 +247,8 @@ hidden form と保持する文字 group の gap を残します。
 
 ```mmd
 pie
-  accTitle: Title  words
-  accDescr: Description  text
+  accTitle: Title words
+  accDescr: Description text
   "Line" : 1
 ```
 

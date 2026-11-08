@@ -434,12 +434,12 @@ Output
 
 ```mmd
 sequenceDiagram
-  A ->> B: x   y
-  box Group   1
+  A ->> B: x y
+  box Group 1
     participant C
   end
-  links A: {"a":  "b"}
-  loop every  minute
+  links A: {"a": "b"}
+  loop every minute
     A ->> B: z
   end
 ```
@@ -844,6 +844,10 @@ characters as escapes too (see
   stays as written, with the `;`. [test: U+2028 as the whitespace character
   after `title`, with a `;` after it] [test: U+2029 as the whitespace character
   after `title`]
+- At the end of a title, where they are characters of the text and no spaces or
+  tabs: the spaces after one are left out with the other whitespace at the end
+  of the title, and the spaces before it stay. [test: U+2028 and spaces at the
+  end of a title]
 - After the `end` of a block, which is not kept: `end`, U+2028, and a line break
   is printed as `end`, as mermaid.js reads the character there as whitespace.
   [test: U+2028 after the `end` of a block of a sequence diagram] [test: U+2029

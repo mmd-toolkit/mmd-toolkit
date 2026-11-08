@@ -197,7 +197,7 @@ Output
 
 ```mmd
 pie
-  title Sales  report
+  title Sales report
   "Sales" : 8
 ```
 
@@ -231,8 +231,8 @@ Output
 
 ```mmd
 pie
-  accTitle: Title  words
-  accDescr: Description  text
+  accTitle: Title words
+  accDescr: Description text
   "Line" : 1
 ```
 

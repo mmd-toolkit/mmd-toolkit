@@ -434,7 +434,7 @@ Output
 
 ```mmd
 gitGraph
-  title A  B	 C
+  title A B C
 ```
 
 ### Multiline values

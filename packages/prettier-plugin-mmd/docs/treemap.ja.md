@@ -325,7 +325,7 @@ backslash は引用符を escape せず、`\n` も decode しません。
 
 ```mmd
 treemap
-  '  Other "quote"  ': 1
+  ' Other "quote" ': 1
 ```
 
 ### Class definitions
@@ -595,7 +595,7 @@ trivia を持つ値は書かれた境界を保ちます。
 
 ```mmd
 treemap
-  title Topic  words
+  title Topic words
   "AfterTitle": 3
 ```
 
@@ -629,7 +629,7 @@ trivia の境界を保ち、次行の値を連結しません。
 
 ```mmd
 treemap
-  accTitle: Access  words
+  accTitle: Access words
 ```
 
 ### Description blocks

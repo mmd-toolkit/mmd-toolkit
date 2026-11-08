@@ -1392,30 +1392,33 @@ stateDiagram-v2
 
 ### Line separators
 
-A line that holds U+2028 or U+2029 is kept as written, except for whitespace
-inside a compact empty description block: no text there needs protecting. A
-separator outside that interior still keeps the line as written. [test: state
-Unicode and tab interiors] [test: state multiline Unicode interior] [test: state
-exterior separator keeps the line] [test: state separator with comment stays
-written] A composite statement whose opening line holds one keeps it, and its
-body is printed as any other body: `state a b`, U+2028, and `{` keeps the
-character and indents the statements of the body. So does one on the closing
-line, as in `state A {`, a body line `B`, and `}` followed by U+2028: the
-whitespace after the `}` stays as written, with the character, and the body is
-indented. [test: U+2028 before the brace of a composite statement] [test: U+2028
-on the closing line of a composite statement] [test: U+2029 and whitespace
-before it on the closing line of a composite statement] [test: U+2028 on the
-closing line of a composite statement in a body] [test: U+2028 after the closing
-brace at the end of the text] [test: U+2028 on the opening and on the closing
-line of a composite statement] A composite statement in the body of another is
-printed so too, whatever the closing lines of the two hold. [test: U+2028 on the
-closing lines of a composite statement and of one in its body] [test: U+2028 on
-the closing lines of three nested composite statements] A composite statement
-whose body has a line that holds one, whose body is empty and whose closing line
-holds one (`state A {`, a line of whitespace, and `}`: the statement has no
-block to indent, and the line stays as written), whose closing `}` does not
-start its line (`B }`, or a directive before it), or whose closing line holds,
-after the character, a comment line or a `;` that another rule keeps (see
+A line that holds U+2028 or U+2029 is kept as written, the second description of
+an alias included, whitespace after the character too: `state "d" as A : x`, two
+spaces, U+2028, and two spaces stays as written. [test: a second description of
+an alias with spaces after a U+2028] Whitespace inside a compact empty
+description block is the exception: no text there needs protecting. A separator
+outside that interior still keeps the line as written. [test: state Unicode and
+tab interiors] [test: state multiline Unicode interior] [test: state exterior
+separator keeps the line] [test: state separator with comment stays written] A
+composite statement whose opening line holds one keeps it, and its body is
+printed as any other body: `state a b`, U+2028, and `{` keeps the character and
+indents the statements of the body. So does one on the closing line, as in
+`state A {`, a body line `B`, and `}` followed by U+2028: the whitespace after
+the `}` stays as written, with the character, and the body is indented. [test:
+U+2028 before the brace of a composite statement] [test: U+2028 on the closing
+line of a composite statement] [test: U+2029 and whitespace before it on the
+closing line of a composite statement] [test: U+2028 on the closing line of a
+composite statement in a body] [test: U+2028 after the closing brace at the end
+of the text] [test: U+2028 on the opening and on the closing line of a composite
+statement] A composite statement in the body of another is printed so too,
+whatever the closing lines of the two hold. [test: U+2028 on the closing lines
+of a composite statement and of one in its body] [test: U+2028 on the closing
+lines of three nested composite statements] A composite statement whose body has
+a line that holds one, whose body is empty and whose closing line holds one
+(`state A {`, a line of whitespace, and `}`: the statement has no block to
+indent, and the line stays as written), whose closing `}` does not start its
+line (`B }`, or a directive before it), or whose closing line holds, after the
+character, a comment line or a `;` that another rule keeps (see
 [A line that a `;` ends](./compatibility.md#a-line-that-a--ends) and
 [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)),
 is printed as written as a whole, and its body is not indented again. [test:

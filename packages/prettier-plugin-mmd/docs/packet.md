@@ -246,8 +246,8 @@ Output
 
 ```mmd
 packet
-  0: "  A  B	 C  "
-  1: " 	 "
+  0: " A B C "
+  1: " "
 ```
 
 ### Numbers
@@ -310,7 +310,7 @@ Output
 
 ```mmd
 packet
-  title Topic  words
+  title Topic words
 ```
 
 ### Accessibility lines
@@ -337,8 +337,8 @@ Output
 
 ```mmd
 packet
-  accTitle: Access  words
-  accDescr: Details  words
+  accTitle: Access words
+  accDescr: Details words
 ```
 
 ### Description blocks

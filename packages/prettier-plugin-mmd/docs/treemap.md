@@ -322,7 +322,7 @@ Output
 
 ```mmd
 treemap
-  '  Other "quote"  ': 1
+  ' Other "quote" ': 1
 ```
 
 ### Class definitions
@@ -575,7 +575,7 @@ Output
 
 ```mmd
 treemap
-  title Topic  words
+  title Topic words
   "AfterTitle": 3
 ```
 
@@ -608,7 +608,7 @@ Output
 
 ```mmd
 treemap
-  accTitle: Access  words
+  accTitle: Access words
 ```
 
 ### Description blocks

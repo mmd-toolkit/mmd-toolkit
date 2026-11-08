@@ -179,6 +179,19 @@ mermaid.js が名前の後の空白を trim するので Db は同じであり�
 [fixture: names-and-headings/heading-data-touches-name]
 [test: agentflow: U+2029 between a connector name and its data block]
 
+タイトルもデータブロックもない通常の 1 つの部分からなる名前では、
+末尾の空白も同じように落とします。
+`flow F` の後ろに空白が 2 つあれば `flow F` と印字し、
+`flow F ;` の後ろに行が続いて `;` が改行になる場合も同じです。
+mermaid.js が名前を trim するので Db は同じであり、
+空白が続く `flow F` と `flow F` は 1 つの flow になります。
+ディレクティブやコメントを含む名前、複数の部分からなる名前、空白だけの名前は、
+上に書いたとおり書かれたまま残します。
+[fixture: trailing-whitespace/trailing-name-dropped]
+[fixture: containers/end-name-not-greedy]
+[fixture: names-and-headings/heading-word-gap-before-semicolon]
+[fixture: names-and-headings/name-directive-trailing-kept]
+
 `flow`、`connector`、`global` の後ろの空白は、
 空白やタブがいくつ書かれていても空白 1 つにします。
 キーワードが空白を 1 文字取り、残りは mermaid.js が名前から trim するからです。
@@ -682,6 +695,7 @@ agentflow-beta TB
 
 実コメントの前に連続する通常の区切りと最上位の空文も取り除きます。
 [fixture: comments/repeated-separators-before-comment]
+[fixture: comments/comment-looking-values] [fixture: comments/comments-align]
 
 [コメント](./flowchart.ja.md#コメント)と同じ理由で、
 独立したコメントを近隣の文に揃え、著者の全文と末尾空白を保ちます。
@@ -823,7 +837,7 @@ usecaseと両方のgraphで、`accTitle: value`と`accDescr: value`に揃えま�
 コロンを語に接し、両端をtrimした値の前にASCII空白1つを置き、
 内部の空白とインラインの`%%`と`#`を値の文字として保ちます。
 [fixture: accessibility/tight-colon] [fixture: accessibility/spaced-colon]
-[fixture: accessibility/value-padding]
+[fixture: accessibility/value-runs-collapsed]
 [fixture: accessibility/inline-percent-hash]
 空と空白だけの値も`accTitle:`または`accDescr:`の文として保ち、
 後ろに空白を足しません。 [fixture: accessibility/empty-title]

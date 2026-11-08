@@ -1404,7 +1404,11 @@ description] [test: U+2028 before the colon of a task] [test: U+2028 between the
 items of task data] [test: U+2028 after a title keyword] [test: U+2029 inside a
 title] [test: U+2028 between the items of a list] [test: U+2028 between weekday
 and its day] [test: U+2028 after the colon of accTitle] [test: U+2028 between a
-click id and its part]
+click id and its part] At the end of a title, a date format, or an axis format,
+U+2028 and U+2029 are characters of the text and no spaces or tabs: the spaces
+after one are left out with the other whitespace at the end of the text, and the
+spaces before it stay. [test: U+2028 and spaces at the end of a title] [test:
+U+2029 and spaces at the end of a date format]
 
 ### Whitespace characters
 

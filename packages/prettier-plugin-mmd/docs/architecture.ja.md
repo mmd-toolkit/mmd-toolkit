@@ -377,7 +377,7 @@ Db がこれらを区別するためです。
 
 ```mmd
 architecture-beta
-  group labels[A  B	 C]
+  group labels[A B C]
 ```
 
 ### Port colons

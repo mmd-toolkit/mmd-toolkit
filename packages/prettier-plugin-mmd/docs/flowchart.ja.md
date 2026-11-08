@@ -743,7 +743,7 @@ U+2028 と U+2029 は、その場所に残します。
 `direction` の文の、`direction` の前と値の後のテキストは例外で、
 書かれたまま残します（[方向](#方向)を参照）。
 [fixture: whitespace-between-tokens/class-def-and-link-style-spaced]
-[fixture: whitespace-between-tokens/subgraph-quoted-name-kept]
+[fixture: whitespace-between-tokens/subgraph-quoted-name-runs-collapsed]
 `style`・`classDef`・`linkStyle` の文では、最初のスタイルの前の空白は、
 mermaid.js の文の規則が読むものなので、空白 1 つにします。
 そこにディレクティブがあれば、[ディレクティブ](#ディレクティブ)のとおり、
@@ -805,7 +805,7 @@ flowchart LR
 ```
 
 入力
-([whitespace-between-tokens/subgraph-name-kept-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-kept-input.mmd)):
+([whitespace-between-tokens/subgraph-name-runs-collapsed-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-runs-collapsed-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -815,11 +815,11 @@ flowchart LR
 ```
 
 出力
-([whitespace-between-tokens/subgraph-name-kept-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-kept-output.mmd)):
+([whitespace-between-tokens/subgraph-name-runs-collapsed-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-runs-collapsed-output.mmd)):
 
 ```mmd
 flowchart LR
-  subgraph a   b
+  subgraph a b
     A
   end
 ```
@@ -1135,7 +1135,7 @@ flowchart LR
 ```
 
 入力
-([label-inner-whitespace/inner-whitespace-kept-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/inner-whitespace-kept-input.mmd)):
+([label-inner-whitespace/inner-whitespace-kept-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/inner-runs-collapsed-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -1143,11 +1143,11 @@ flowchart LR
 ```
 
 出力
-([label-inner-whitespace/inner-whitespace-kept-output.mmd](../tests/fixtures/flowchart/label-inner-whitespace/inner-whitespace-kept-output.mmd)):
+([label-inner-whitespace/inner-whitespace-kept-output.mmd](../tests/fixtures/flowchart/label-inner-whitespace/inner-runs-collapsed-output.mmd)):
 
 ```mmd
 flowchart LR
-  A[hello   world]
+  A[hello world]
 ```
 
 入力
@@ -1293,7 +1293,7 @@ flowchart LR
 コロンを語に接し、値の前にASCII空白1つを置き、値の両端の空白を落とします。
 [fixture: accessibility-lines/tight-colon]
 [fixture: accessibility-lines/spaced-colon]
-[fixture: accessibility-lines/value-padding]
+[fixture: accessibility-lines/value-runs-collapsed]
 Dbが同じ形から選ぶ場合は、その図種の理由がなければ兄弟の図種に揃えます。
 flowchartの通常のアクセシビリティ行に固有の理由はないので、
 [C4](./c4.ja.md#アクセシビリティの行)、[class](./class.ja.md#ラベル)、
@@ -2220,7 +2220,7 @@ flowchart の文書にあるタイトル付きの subgraph は 2 件で、
 [fixture: subgraph-header/title-before-empty-description-block]
 タイトルなしで書かれた名前は、その後の空白を保ちます。
 mermaid.js はその空白を名前の一部として読みます。
-[fixture: subgraph-header/name-trailing-run-kept]
+[fixture: subgraph-header/name-trailing-run-collapsed]
 [fixture: subgraph-header/name-trailing-whitespace-kept]
 [fixture: subgraph-header/name-whitespace-before-directive-kept]
 [fixture: subgraph-header/name-whitespace-after-directive-kept]

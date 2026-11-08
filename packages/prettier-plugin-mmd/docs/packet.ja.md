@@ -248,8 +248,8 @@ trim、圧縮、decode は Db を変え得るためです。
 
 ```mmd
 packet
-  0: "  A  B	 C  "
-  1: " 	 "
+  0: " A B C "
+  1: " "
 ```
 
 ### Numbers
@@ -311,7 +311,7 @@ null または空白だけの値は裸の `title` にします。
 
 ```mmd
 packet
-  title Topic  words
+  title Topic words
 ```
 
 ### Accessibility lines
@@ -339,8 +339,8 @@ colon 後の brace は行値です。
 
 ```mmd
 packet
-  accTitle: Access  words
-  accDescr: Details  words
+  accTitle: Access words
+  accDescr: Details words
 ```
 
 ### Description blocks

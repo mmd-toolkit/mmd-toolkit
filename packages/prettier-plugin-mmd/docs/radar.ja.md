@@ -456,7 +456,7 @@ trivia のある値と保護区間は原文の間隙を保ちます。
 
 ```mmd
 radar-beta
-  title Topic  words
+  title Topic words
 ```
 
 ### Accessibility lines
@@ -484,8 +484,8 @@ trivia・hidden・semicolon の保護を優先します。
 
 ```mmd
 radar-beta
-  accTitle: Access  words
-  accDescr: Detail  words
+  accTitle: Access words
+  accDescr: Detail words
 ```
 
 ### Description blocks

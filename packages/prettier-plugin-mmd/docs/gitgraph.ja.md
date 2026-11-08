@@ -448,7 +448,7 @@ colon 後の波括弧は行値のままです。
 
 ```mmd
 gitGraph
-  title A  B	 C
+  title A B C
 ```
 
 ### Multiline values

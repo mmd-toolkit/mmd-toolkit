@@ -48,6 +48,7 @@ import type {
 import type { AtomLayout, GapRule } from "./atoms.ts"
 import { collectAtoms, expectToken, layoutDescriptionBlock } from "./layout.ts"
 import { accessibilityRules } from "./statement-rules.ts"
+import { collapsedRunsAtom } from "./text-runs.ts"
 import type { Source } from "./source.ts"
 import {
   findStructuralToken,
@@ -163,7 +164,14 @@ export function layoutCommonLine(
   let layout: AtomLayout = {
     atoms: [
       ...collectAtoms(source, start, delimiter.range[1], [], []),
-      ...(printedValue === null ? [] : [{ start: valueStart, end: valueEnd }]),
+      ...(printedValue === null
+        ? []
+        : [
+            // The runs inside the text are drawn as one space (docs/
+            // compatibility.md, Runs of whitespace in a text that are drawn
+            // the same).
+            collapsedRunsAtom(source, { start: valueStart, end: valueEnd }),
+          ]),
       ...(statement.textAfter ?? []).map((item) => ({
         start: item.range[0],
         end: item.range[1],

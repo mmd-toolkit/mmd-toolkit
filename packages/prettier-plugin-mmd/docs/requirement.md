@@ -258,10 +258,10 @@ Output
 requirementDiagram
   requirement r {
     id: "1"
-    text: " a:  b, c "
+    text: " a: b, c "
   }
   element e {
-    type: "a  b"
+    type: "a b"
     docref: "http://x.test/a-b"
   }
 ```
@@ -1039,7 +1039,7 @@ Output
 ```mmd
 requirementDiagram
 accTitle: direction LR
-accDescr: direction  TB
+accDescr: direction TB
 accDescr { direction RL }
   accDescr {
     direction BT

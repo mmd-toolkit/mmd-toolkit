@@ -97,4 +97,14 @@ export const agentflowCases: readonly AgentflowCase[] = [
     output:
       "agentflow-beta TB\n  A --> B\n  style A fill: #f00\u2028, color: white\n",
   },
+  {
+    name: "agentflow: U+2028 and spaces at the end of a flow name",
+    input: "agentflow-beta TB\nflow F  \u2028  \nA\nend\n",
+    output: "agentflow-beta TB\n  flow F  \u2028\n    A\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 and spaces at the end of a connector name",
+    input: "agentflow-beta TB\nconnector F  \u2029  \n",
+    output: "agentflow-beta TB\n  connector F  \u2029\n",
+  },
 ]

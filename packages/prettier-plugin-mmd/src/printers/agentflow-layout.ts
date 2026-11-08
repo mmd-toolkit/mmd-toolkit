@@ -40,6 +40,7 @@ import {
 import {
   findStructuralToken,
   findTriviaBetween,
+  isSpaceOrTab,
   isWhitespace,
 } from "./source.ts"
 
@@ -114,8 +115,13 @@ export function layoutContainerHeader(
       findTriviaBetween(source, name.range[0], name.range[1]).length === 0
     const touchesData =
       node.title === null && node.data.length > 0 && holdsNoTrivia
-    if (node.title !== null || holdsNoTrivia) {
+    if (node.title !== null || touchesData) {
       while (nameEnd > nameStart && isWhitespace(source.text[nameEnd - 1]))
+        nameEnd--
+    } else if (holdsNoTrivia) {
+      // At the end of the heading only the spaces and tabs go: U+2028 and
+      // U+2029 are characters of the text there.
+      while (nameEnd > nameStart && isSpaceOrTab(source.text[nameEnd - 1]))
         nameEnd--
     }
     // A whitespace-only name still needs its written character.
@@ -221,8 +227,13 @@ export function findNamePrintedEnd(
     const { element, end } = readGapElement(source, position)
     if (element.kind === "item" && element.item.type !== "Comment")
       position = end
-    else if (element.kind === "whitespace") return end
-    else if (
+    else if (element.kind === "whitespace") {
+      // The space or tab that ends the click id is not needed when nothing
+      // follows it: the text then ends the id, as at EOF without it.
+      return isSpaceOrTab(source.text[position]) && endsTheInput(source, end)
+        ? name.range[1]
+        : end
+    } else if (
       element.kind === "lineTerminator" &&
       source.text.slice(end).trim() !== ""
     )
@@ -230,6 +241,25 @@ export function findNamePrintedEnd(
     else return name.range[1]
   }
   return name.range[1]
+}
+
+/**
+ * Whether nothing but whitespace, line breaks, and `;` that separate statements
+ * follows `offset`, so that the statement before it is the last of the text.
+ */
+function endsTheInput(source: Source, offset: number): boolean {
+  let position = offset
+  while (position < source.text.length) {
+    const { element, end } = readGapElement(source, position)
+    if (
+      element.kind !== "whitespace" &&
+      element.kind !== "lineTerminator" &&
+      element.kind !== "separator"
+    )
+      return false
+    position = end
+  }
+  return true
 }
 
 /**

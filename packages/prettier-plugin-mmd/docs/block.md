@@ -456,7 +456,7 @@ Output
 
 ```mmd
 block-beta
-  A["  two  spaces  "]
+  A[" two spaces "]
   B["a
    b"]
 ```

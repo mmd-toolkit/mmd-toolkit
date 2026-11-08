@@ -2436,11 +2436,16 @@ node, so the Db and the figure are the same without them. A description of
 spaces and tabs only, the whitespace inside a quoted name, the text of a
 standalone comment, and every other whitespace character stay as written, and so
 does the gap before a directive that follows a node, which belongs to the
-directive. Move structural carried runs once. Common line values use shared
-outer trimming; a branch-line tail already excluded from the value is removed
-rather than carried. Adding a branch that would newly trim an owned tail retains
-the body. This avoids confusing value text with structural padding; significant
-fixture tails are not shown in code blocks.
+directive. At the end of a name or a description, U+2028 and U+2029 are
+characters of the text and no spaces or tabs: the spaces after one are left out,
+and the spaces before it stay. [test:
+treeview/trailing-whitespace/spaces-after-trailing-line-separator] [test:
+treeview/trailing-whitespace/description-spaces-after-trailing-line-separator]
+Move structural carried runs once. Common line values use shared outer trimming;
+a branch-line tail already excluded from the value is removed rather than
+carried. Adding a branch that would newly trim an owned tail retains the body.
+This avoids confusing value text with structural padding; significant fixture
+tails are not shown in code blocks.
 
 [fixture: treeview/trailing-whitespace/trailing-bare-dropped]
 

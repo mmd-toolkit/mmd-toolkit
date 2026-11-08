@@ -571,7 +571,7 @@ Output
 
 ```mmd
 wardley-beta
-  title A  subject
+  title A subject
 ```
 
 ### Accessibility
@@ -616,8 +616,8 @@ Output
 
 ```mmd
 wardley-beta
-  accTitle: A  B
-  accDescr: C  D
+  accTitle: A B
+  accDescr: C D
 ```
 
 ### Hidden forms

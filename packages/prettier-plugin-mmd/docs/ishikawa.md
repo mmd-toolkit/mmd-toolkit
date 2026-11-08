@@ -590,24 +590,25 @@ Input and output (escaped):
 ### Line separators
 
 LS (`\u2028`) and PS (`\u2029`) inside literals and directives remain
-characters, also at the end of a literal. LF uses the
-[Physical lines](#physical-lines) rule and separates ordinary node lines.
-[fixture: ishikawa/line-separators/lf-root-and-cause] [fixture:
-ishikawa/line-separators/lf-sibling-causes] [test: ishikawa: ls-ps-values]
-[test: ishikawa: ls-value-split-unsafe] [test: ishikawa: ps-value-split-unsafe]
-[test: ishikawa: ls-ps-line-rule] Blank-only lines collapse, and leading
-separators normalize as indentation. [test: ishikawa: unicode-blank-lines]
-[corpus fixture: ishikawa/div-header-ls-line-node] [corpus fixture:
-ishikawa/div-header-ps-line-node] An actual diagram-comment ending keeps its
-separator, counting it once toward the next node's chosen depth and supplying
-only the remaining characters. Mermaid counts that separator as one character of
-the next node's indentation, so the printed total must be the node's chosen
-depth indentation: a shallower total makes the node a sibling of the previous
-cause instead of its child, which changes the Db. Keeping the separator, rather
-than replacing it with a line feed (which keeps the tree too), follows kanban's
-boundary-preserving choice and needs no separate policy that repairs Mermaid's
-comment/blank pairing. An LF comment ending instead starts a new line without
-contributing an indentation character. [fixture:
+characters, also at the end of a literal, where the spaces and tabs after one
+are left out and those before it stay. [test: ishikawa: spaces after a trailing
+line separator] LF uses the [Physical lines](#physical-lines) rule and separates
+ordinary node lines. [fixture: ishikawa/line-separators/lf-root-and-cause]
+[fixture: ishikawa/line-separators/lf-sibling-causes] [test: ishikawa:
+ls-ps-values] [test: ishikawa: ls-value-split-unsafe] [test: ishikawa:
+ps-value-split-unsafe] [test: ishikawa: ls-ps-line-rule] Blank-only lines
+collapse, and leading separators normalize as indentation. [test: ishikawa:
+unicode-blank-lines] [corpus fixture: ishikawa/div-header-ls-line-node] [corpus
+fixture: ishikawa/div-header-ps-line-node] An actual diagram-comment ending
+keeps its separator, counting it once toward the next node's chosen depth and
+supplying only the remaining characters. Mermaid counts that separator as one
+character of the next node's indentation, so the printed total must be the
+node's chosen depth indentation: a shallower total makes the node a sibling of
+the previous cause instead of its child, which changes the Db. Keeping the
+separator, rather than replacing it with a line feed (which keeps the tree too),
+follows kanban's boundary-preserving choice and needs no separate policy that
+repairs Mermaid's comment/blank pairing. An LF comment ending instead starts a
+new line without contributing an indentation character. [fixture:
 ishikawa/line-separators/lf-comment-boundary] [test: ishikawa:
 ls-comment-boundary] [test: ishikawa: kept-comment-ls-before] [test: ishikawa:
 kept-comment-ps-after] [test: ishikawa: selected-comment-ls-both] [test:

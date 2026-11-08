@@ -441,7 +441,7 @@ Output
 
 ```mmd
 cynefin-beta
-  title Title  inside		text
+  title Title inside text
 ```
 
 ### Accessibility lines
@@ -472,8 +472,8 @@ Output
 
 ```mmd
 cynefin-beta
-  accTitle: Access  Title
-  accDescr: Access		Description
+  accTitle: Access Title
+  accDescr: Access Description
 ```
 
 ### Description blocks

@@ -1248,7 +1248,12 @@ U+2028 between a description block and a period] [test: U+2028 inside a period]
 [test: U+2028 before the second colon of an event] [test: U+2028 after the colon
 of an event] [test: U+2028 after a title keyword] [test: U+2029 inside a title]
 [test: U+2028 at the end of a section name] [test: U+2028 after the colon of an
-accessibility title] [test: U+2028 between the header and a direction]
+accessibility title] [test: U+2028 between the header and a direction] At the
+end of a title and at the end of the last event of a line, U+2028 and U+2029 are
+characters of the text and no spaces or tabs: the spaces after one are left out
+with the other whitespace at the end of the text, and the spaces before it stay.
+[test: U+2029 and spaces at the end of a timeline title] [test: U+2028 and
+spaces at the end of the last event of a line]
 
 ### Whitespace characters
 

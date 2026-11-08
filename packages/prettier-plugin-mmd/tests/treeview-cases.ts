@@ -559,4 +559,16 @@ export const treeviewCases: readonly TreeviewCase[] = [
     output: 'treeView-beta\n  Root\n    "A"%% c;\u2028 "B;y"\n    Other\n',
     options: {},
   },
+  {
+    name: "treeview/trailing-whitespace/spaces-after-trailing-line-separator",
+    input: "treeView-beta\nR  \u2028  \n",
+    output: "treeView-beta\n  R  \u2028\n",
+    options: {},
+  },
+  {
+    name: "treeview/trailing-whitespace/description-spaces-after-trailing-line-separator",
+    input: "treeView-beta\nR ## d  \u2029  \n",
+    output: "treeView-beta\n  R ## d  \u2029\n",
+    options: {},
+  },
 ]

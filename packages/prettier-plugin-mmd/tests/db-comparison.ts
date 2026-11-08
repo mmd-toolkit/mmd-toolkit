@@ -22,6 +22,10 @@ import {
   styleDbForFormattingComparison,
   styleDiagramTypes,
 } from "./style-margins.ts"
+import {
+  textRunDbForFormattingComparison,
+  textRunDiagramTypes,
+} from "./text-run-margins.ts"
 
 /**
  * The Db of a formatted text with the differences restored that the formatter
@@ -46,6 +50,10 @@ export function dbForFormattingComparison(
       beforeSource,
       afterSource,
     )
+  // The runs come first: a text that lost its ends and its runs is restored
+  // to the written runs, and then to the written ends.
+  if (textRunDiagramTypes.has(type))
+    compared = textRunDbForFormattingComparison(before, compared, type)
   if (keywordTextDiagramTypes.has(type))
     compared = keywordTextDbForFormattingComparison(before, compared, type)
   if (styleDiagramTypes.has(type))

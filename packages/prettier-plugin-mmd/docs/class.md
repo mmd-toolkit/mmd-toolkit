@@ -597,7 +597,7 @@ Output
 ```mmd
 classDiagram
   A --> B : x
-  A --> B : x  y
+  A --> B : x y
   A : +int x
   A : -bar() int
 ```
@@ -684,11 +684,11 @@ Output
 ```mmd
 classDiagram
   class A {
-    + spaced  name
-    +foo(a ,  b) int$
+    + spaced name
+    +foo(a , b) int$
     << y  z >>
   }
-  A : -  bar()
+  A : - bar()
 ```
 
 ### Generic types

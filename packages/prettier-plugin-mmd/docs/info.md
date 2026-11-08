@@ -130,7 +130,7 @@ Output
 
 ```mmd
 info
-  title Topic  words
+  title Topic words
 ```
 
 ### Accessibility lines
@@ -164,8 +164,8 @@ Output
 
 ```mmd
 info
-  accTitle: Access  words
-  accDescr: Details  words
+  accTitle: Access words
+  accDescr: Details words
 ```
 
 ### Description blocks

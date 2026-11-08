@@ -456,12 +456,12 @@ end
 
 ```mmd
 sequenceDiagram
-  A ->> B: x   y
-  box Group   1
+  A ->> B: x y
+  box Group 1
     participant C
   end
-  links A: {"a":  "b"}
-  loop every  minute
+  links A: {"a": "b"}
+  loop every minute
     A ->> B: z
   end
 ```

@@ -967,7 +967,10 @@ U+2028 before the colon of a task] [test: U+2028 before the second colon of a
 task] [test: U+2028 between the people of a task] [test: U+2028 in the ignored
 data of a task] [test: U+2028 after a title keyword] [test: U+2029 inside a
 title] [test: U+2028 at the end of a section] [test: U+2028 after the colon of
-accTitle]
+accTitle] At the end of a title, U+2028 and U+2029 are characters of the text
+and no spaces or tabs: the spaces after one are left out with the other
+whitespace at the end of the title, and the spaces before it stay. [test: U+2028
+and spaces at the end of a journey title]
 
 ### Whitespace characters
 

@@ -129,7 +129,7 @@ trivia を含む値、hidden suffix、semicolon 保護では原文の境界を�
 
 ```mmd
 info
-  title Topic  words
+  title Topic words
 ```
 
 ### Accessibility lines
@@ -165,8 +165,8 @@ hidden suffix と保護 gap は保持します。
 
 ```mmd
 info
-  accTitle: Access  words
-  accDescr: Details  words
+  accTitle: Access words
+  accDescr: Details words
 ```
 
 ### Description blocks

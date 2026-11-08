@@ -716,7 +716,7 @@ statement] [test: U+2029 after the comma of a flowchart style statement] The
 text of a `direction` statement before `direction` and after the value is the
 exception, kept as written (see [Direction](#direction)). [fixture:
 whitespace-between-tokens/class-def-and-link-style-spaced] [fixture:
-whitespace-between-tokens/subgraph-quoted-name-kept] In a `style`, `classDef`,
+whitespace-between-tokens/subgraph-quoted-name-runs-collapsed] In a `style`, `classDef`,
 or `linkStyle` statement, the whitespace before the first style, which the
 statement rule of mermaid.js reads, becomes one space, which stands before a
 directive there, as under [Directives](#directives):
@@ -775,7 +775,7 @@ flowchart LR
 ```
 
 Input
-([whitespace-between-tokens/subgraph-name-kept-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-kept-input.mmd)):
+([whitespace-between-tokens/subgraph-name-runs-collapsed-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-runs-collapsed-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -785,11 +785,11 @@ flowchart LR
 ```
 
 Output
-([whitespace-between-tokens/subgraph-name-kept-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-kept-output.mmd)):
+([whitespace-between-tokens/subgraph-name-runs-collapsed-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-runs-collapsed-output.mmd)):
 
 ```mmd
 flowchart LR
-  subgraph a   b
+  subgraph a b
     A
   end
 ```
@@ -1092,7 +1092,7 @@ flowchart LR
 ```
 
 Input
-([label-inner-whitespace/inner-whitespace-kept-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/inner-whitespace-kept-input.mmd)):
+([label-inner-whitespace/inner-whitespace-kept-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/inner-runs-collapsed-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -1100,11 +1100,11 @@ flowchart LR
 ```
 
 Output
-([label-inner-whitespace/inner-whitespace-kept-output.mmd](../tests/fixtures/flowchart/label-inner-whitespace/inner-whitespace-kept-output.mmd)):
+([label-inner-whitespace/inner-whitespace-kept-output.mmd](../tests/fixtures/flowchart/label-inner-whitespace/inner-runs-collapsed-output.mmd)):
 
 ```mmd
 flowchart LR
-  A[hello   world]
+  A[hello world]
 ```
 
 Input
@@ -1248,7 +1248,7 @@ An ordinary accessibility line prints `accTitle: value` or `accDescr: value`:
 the colon touches the keyword, one ASCII space precedes the value, and
 whitespace at both ends of the value is dropped. [fixture:
 accessibility-lines/tight-colon] [fixture: accessibility-lines/spaced-colon]
-[fixture: accessibility-lines/value-padding] Among Db-equal forms, follow the
+[fixture: accessibility-lines/value-runs-collapsed] Among Db-equal forms, follow the
 sibling diagram types unless the diagram has a reason of its own. Flowchart has
 none for an ordinary accessibility line, so it uses the same compact form as
 [C4](./c4.md#accessibility-lines), [class](./class.md#labels) and
@@ -2115,7 +2115,7 @@ and spaces between a subgraph name and its title] An empty description block
 that follows the title is the first statement of the body, as before. [fixture:
 subgraph-header/title-before-empty-description-block] A name written without a
 title keeps the whitespace after it, which mermaid.js reads as part of the name.
-[fixture: subgraph-header/name-trailing-run-kept] [fixture:
+[fixture: subgraph-header/name-trailing-run-collapsed] [fixture:
 subgraph-header/name-trailing-whitespace-kept] [fixture:
 subgraph-header/name-whitespace-before-directive-kept] [fixture:
 subgraph-header/name-whitespace-after-directive-kept] So does the whitespace

@@ -649,7 +649,7 @@ Output
 
 ```mmd
 railroad-ebnf-beta
-  r = ?  first  second	 ?;
+  r = ? first second ?;
 ```
 
 ### Quotes
@@ -701,7 +701,7 @@ Output
 
 ```mmd
 railroad-ebnf-beta
-  r = "", '' " 	 " "%%literal --- <b> plain";
+  r = "", '' " " "%%literal --- <b> plain";
 ```
 
 Input (escaped): `"railroad-abnf-beta\nr=\"q\\n\\t\\q\";"`.
@@ -724,7 +724,7 @@ Output
 
 ```mmd
 railroad-peg-beta
-  r <- "" '' " 	 " "%%literal --- <b> plain";
+  r <- "" '' " " "%%literal --- <b> plain";
 ```
 
 ### Long lines

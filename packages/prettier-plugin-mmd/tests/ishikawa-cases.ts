@@ -375,4 +375,12 @@ export const ishikawaCases: readonly IshikawaCase[] = [
     options: {},
     rejected: false,
   },
+  {
+    rule: "trailing-whitespace",
+    name: "ishikawa: spaces after a trailing line separator",
+    input: "ishikawa\nR  \u2028  \n A  \u2029\n",
+    output: "ishikawa\n  R  \u2028\n    A  \u2029\n",
+    options: {},
+    rejected: false,
+  },
 ]
