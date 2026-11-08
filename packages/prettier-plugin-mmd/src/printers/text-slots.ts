@@ -1,3 +1,8 @@
+import type {
+  C4BoundaryKeyword,
+  C4ElementKeyword,
+  C4RelationshipKeyword,
+} from "@mmd-toolkit/ast"
 import type { TextSlots } from "./text-runs.ts"
 
 /**
@@ -11,7 +16,6 @@ export const textSlots: TextSlots = {
   // flowchart
   FlowchartAccDescrStatement: ["value"],
   FlowchartAccTitleStatement: ["value"],
-  FlowchartSubgraphStatement: ["name", "title"],
   // agentflow
   AgentflowAccDescrStatement: ["value"],
   AgentflowAccTitleStatement: ["value"],
@@ -118,3 +122,108 @@ export const textSlots: TextSlots = {
   UsecaseAccTitleStatement: ["value"],
   XychartAccDescrBlockStatement: ["value"],
 }
+
+/**
+ * The fields where a text of spaces and tabs only is printed as one space: the
+ * grammar rejects the empty text there, and mermaid.js reads the same empty
+ * text for any number of them (docs/compatibility.md, Runs of whitespace in a
+ * text that are drawn the same).
+ */
+export const blankTextSlots: TextSlots = {
+  KanbanClassStatement: ["cssClass"],
+  KanbanIconStatement: ["icon"],
+  MindmapClassStatement: ["cssClass"],
+  MindmapIconStatement: ["icon"],
+  MindmapShape: ["label"],
+}
+
+/**
+ * The fields that hold a text whose runs of spaces and tabs the formatter
+ * prints as one space, unless the node is a markdown string (its `kind` is
+ * `"markdown"`): mermaid.js lays out a markdown string at a maximum width, and
+ * where it wraps, `white-space: break-spaces` draws the runs of its first line
+ * (docs/compatibility.md, Runs of whitespace in a text that are drawn the
+ * same). A subgraph that has a title of another kind grows to fit it, so that
+ * the title does not wrap.
+ */
+export const plainTextSlots: TextSlots = {
+  FlowchartSubgraphStatement: ["name", "title"],
+}
+
+const c4PersonOrSystem = ["alias", "label", "descr"]
+const c4Container = ["alias", "label", "techn", "descr"]
+const c4Boundary = ["alias", "label", "type"]
+const c4Node = ["alias", "label", "type", "descr"]
+const c4Relationship = ["from", "to", "label", "techn", "descr"]
+
+/**
+ * What each argument of a C4 statement is, by keyword and in the order of the
+ * arguments: mermaid.js reads an argument by its place, whichever of the
+ * arguments before it are named (docs/c4.md, Argument forms).
+ */
+export const c4ArgumentFields: Readonly<
+  Record<
+    C4BoundaryKeyword | C4ElementKeyword | C4RelationshipKeyword,
+    readonly string[]
+  >
+> = {
+  Person: c4PersonOrSystem,
+  Person_Ext: c4PersonOrSystem,
+  System: c4PersonOrSystem,
+  SystemDb: c4PersonOrSystem,
+  SystemQueue: c4PersonOrSystem,
+  System_Ext: c4PersonOrSystem,
+  SystemDb_Ext: c4PersonOrSystem,
+  SystemQueue_Ext: c4PersonOrSystem,
+  Container: c4Container,
+  ContainerDb: c4Container,
+  ContainerQueue: c4Container,
+  Container_Ext: c4Container,
+  ContainerDb_Ext: c4Container,
+  ContainerQueue_Ext: c4Container,
+  Component: c4Container,
+  ComponentDb: c4Container,
+  ComponentQueue: c4Container,
+  Component_Ext: c4Container,
+  ComponentDb_Ext: c4Container,
+  ComponentQueue_Ext: c4Container,
+  Boundary: c4Boundary,
+  Enterprise_Boundary: c4Boundary,
+  System_Boundary: c4Boundary,
+  Container_Boundary: c4Boundary,
+  Deployment_Node: c4Node,
+  Node: c4Node,
+  Node_L: c4Node,
+  Node_R: c4Node,
+  Rel: c4Relationship,
+  BiRel: c4Relationship,
+  Rel_U: c4Relationship,
+  Rel_Up: c4Relationship,
+  Rel_D: c4Relationship,
+  Rel_Down: c4Relationship,
+  Rel_L: c4Relationship,
+  Rel_Left: c4Relationship,
+  Rel_R: c4Relationship,
+  Rel_Right: c4Relationship,
+  Rel_Back: c4Relationship,
+  RelIndex: ["index", "from", "to", "label", "techn", "descr"],
+}
+
+/** The arguments of a C4 statement that are texts, written as a string or bare. */
+export const c4TextFields: ReadonlySet<string> = new Set([
+  "label",
+  "techn",
+  "type",
+  "descr",
+])
+
+/**
+ * The arguments of a C4 statement that are texts also where they are named
+ * (`$descr="D"`), and stand at the place that their name has: mermaid.js reads
+ * a named `label` or `type` at the place of another argument in a way that
+ * depends on that place.
+ */
+export const c4NamedTextFields: ReadonlySet<string> = new Set([
+  "techn",
+  "descr",
+])

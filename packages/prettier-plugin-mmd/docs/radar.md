@@ -389,9 +389,9 @@ radar-beta
 ### Quotes
 
 Keep each label's complete StringLiteral source span: single/double quotes,
-opposite quotes, empty/whitespace-only text, escapes, HTML, entities and
-hidden-looking text, with a run of spaces and tabs inside the text printed as
-one space (see
+opposite quotes, empty text, escapes, HTML, entities and hidden-looking text,
+with a run of spaces and tabs inside the text printed as one space, so a text of
+spaces and tabs only becomes one space: `["   "]` is printed `[" "]` (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 singleQuote does not re-encode it. Removing an empty label changes the ID
 fallback.

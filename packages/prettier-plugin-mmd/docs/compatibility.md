@@ -596,6 +596,7 @@ journey/titles-and-sections/title-hash-gap-one-space-section-kept] [fixture:
 timeline/titles-and-sections/title-padding-dropped] [fixture:
 timeline/titles-and-sections/title-blank-kept] [fixture:
 timeline/periods-and-events/event-padding-kept-end-dropped] [fixture:
+timeline/periods-and-events/event-end-before-continuation-dropped] [fixture:
 sequence/title/text-padding-dropped] [fixture:
 sequence/title/text-padding-dropped-colon] [fixture:
 sequence/title/trailing-whitespace-dropped] [fixture:
@@ -675,25 +676,32 @@ draws the text without the run: `title Sales   report` is printed
 and `quadrant-1 a    b` is printed `quadrant-1 a b`. The texts are the `title`,
 the `accTitle`, and the `accDescr` of every diagram type, and the texts that
 these diagram types draw as SVG text: the labels of an architecture diagram, a
-block diagram, a quadrant chart, and a radar chart, the members and annotations
-of a class diagram, the types of the attributes of an ER diagram, the fields and
-class lists of a requirement diagram, the texts of a sequence diagram (the
-messages, notes, blocks, boxes, and descriptions after `as`), the literals of a
-Cynefin diagram and an ishikawa diagram, the labels of a packet and a Venn
-diagram, the links of a Wardley map, the names of a treemap, and the strings and
-special sequences of a railroad diagram. [fixture: pie/title/title-inner-text]
-[fixture: pie/accessibility-lines/accessibility-inner-tab] [fixture:
+block diagram, a quadrant chart, and a radar chart, the names and titles of the
+subgraphs of a flowchart, the members and annotations of a class diagram, the
+types of the attributes of an ER diagram, the fields and class lists of a
+requirement diagram, the texts of a sequence diagram (the messages, notes,
+blocks, boxes, and descriptions after `as`), the literals of a Cynefin diagram
+and an ishikawa diagram, the labels of a packet and a Venn diagram, the links of
+a Wardley map, the names of a treemap, and the strings and special sequences of
+a railroad diagram. A string of spaces and tabs only is a string like any other:
+`["   "]` is printed `[" "]`. [fixture: pie/title/title-inner-text] [fixture:
+pie/accessibility-lines/accessibility-inner-tab] [fixture:
 quadrant/keywords-and-texts/inner-runs-collapsed] [fixture:
 sequence/whitespace-between-tokens/values-runs-collapsed] [fixture:
 class/member-lines/runs-collapsed] [fixture: block/shapes/label-runs-collapsed]
 [fixture: er/attribute-spacing/tilde-word-runs-collapsed] [fixture:
 requirement/fields/value-inner-runs-collapsed] [fixture:
 radar/quotes/padding-label] [fixture: railroad/quotes/ebnf-empty-and-text]
+[fixture: radar/quotes/whitespace-only-labels] [fixture:
+treemap/names/whitespace]
 
 These stay as written:
 
-- A text of spaces and tabs only. [fixture:
-  gantt/titles-and-sections/title-blank-kept]
+- A text of spaces and tabs only that is not a string, except for the icon, the
+  class, and the shape text of a mindmap node and a kanban card, which are
+  printed as one space (see
+  [Mindmap texts that are drawn the same](#mindmap-texts-that-are-drawn-the-same)).
+  [fixture: gantt/titles-and-sections/title-blank-kept]
 - A text over several lines, and a text with a comment, a directive, or a U+2028
   or U+2029 in it, whose lines and marks mermaid.js reads by their place.
   [fixture: pie/directives-and-semicolons/global-value]
@@ -717,6 +725,12 @@ These stay as written:
   state/descriptions-and-labels/text-kept] [fixture:
   mindmap/node-text/inner-whitespace-kept] [fixture:
   usecase/labels/label-interior-kept] [fixture: class/labels/spaced]
+- The name or the title of a subgraph of a flowchart that is a markdown string.
+  A subgraph grows to fit a title of another kind, so that the title does not
+  wrap, and the runs are not drawn; the markdown string is laid out at a maximum
+  width like the labels above, and a long one with runs was drawn with and
+  without them, and the pixels differed. [fixture:
+  flowchart/subgraph-header/markdown-title-runs-kept]
 - The names that other statements refer to: two names that differ by a run are
   two things, and are one once the run is gone. A pair of such names was drawn
   for the labels of a pie chart, the nodes of a Sankey diagram, the names of a
@@ -818,14 +832,14 @@ that wraps draws its runs (see
 [Runs of whitespace in a text that are drawn the same](#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 A shape text that would start with a quote once its padding is gone (`a[ "x" ]`
 is a text with its quotes, `a["x"]` a string), a string, a markdown string, a
-text of nothing but spaces and tabs, a text over lines, and a line with a
-comment or a directive in it or after it stay as written. [fixture:
-mindmap/node-text/trailing-whitespace-dropped] [fixture:
+text over lines, and a line with a comment or a directive in it or after it stay
+as written. A text of nothing but spaces and tabs is printed as one space.
+[fixture: mindmap/node-text/trailing-whitespace-dropped] [fixture:
 mindmap/node-text/space-before-a-shape-dropped] [fixture:
 mindmap/shapes/inner-padding-dropped] [fixture:
 mindmap/decorations/padding-in-icon-and-class-dropped] [fixture:
 mindmap/shapes/padding-kept-where-drawn-differently] [fixture:
-mindmap/decorations/blank-icon-and-class-kept] [fixture:
+mindmap/decorations/blank-icon-and-class-one-space] [fixture:
 mindmap/node-text/inner-whitespace-kept]
 
 mermaid.js keeps the texts in the Db (`nodeId`, `descr`, `icon`, and `class`),
@@ -1605,8 +1619,9 @@ at the end of the last event of a line. See
   the one character after its colon, so `2004 : a` and `2004: a` are different
   periods, and the padding that aligns the colons stays. The whitespace at the
   end of a period is part of the text too, and so is that at the end of an event
-  that another colon follows; the whitespace at the end of the last event of a
-  line is left out (see
+  that another colon follows on its line; the whitespace at the end of the last
+  event of a line is left out, including an event that a line break separates
+  from the next colon (see
   [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same)).
   [fixture: timeline/periods-and-events/period-whitespace-kept] [fixture:
   timeline/periods-and-events/event-padding-kept-end-dropped] [fixture:

@@ -655,13 +655,13 @@ railroad-ebnf-beta
 
 ### Quotes
 
-Keep StringLiteral source spans unchanged: quotes, escapes, empty and
-whitespace-only strings, HTML, entities and hidden/comment-looking text, with a
-run of spaces and tabs inside a string printed as one space. singleQuote does
-not rewrite these values. IR, EBNF and PEG allow both quote forms and backslash
-escapes; ABNF allows double quotes only and treats backslash as ordinary text.
-Requoting adds no formatting benefit, while trimming content or using the wrong
-escape model changes the Db.
+Keep StringLiteral source spans unchanged: quotes, escapes, empty strings, HTML,
+entities and hidden/comment-looking text, with a run of spaces and tabs inside a
+string printed as one space, so a string of spaces and tabs only becomes one
+space. singleQuote does not rewrite these values. IR, EBNF and PEG allow both
+quote forms and backslash escapes; ABNF allows double quotes only and treats
+backslash as ordinary text. Requoting adds no formatting benefit, while trimming
+content or using the wrong escape model changes the Db.
 
 [fixture: railroad/quotes/abnf-backslash]
 

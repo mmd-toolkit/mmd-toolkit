@@ -355,14 +355,14 @@ inside the brackets of a venn label with a semicolon] [fixture:
 labels/bare-label-padding-dropped] A run of spaces and tabs inside a label is
 printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
-also inside quotes. A quoted label of whitespace only stays: an empty quoted
-label or bare whitespace label omits the Db label, whereas quoted whitespace
-stores an empty label. Embedded trivia stays inside the label, and gap items
-retain attachment instead of applying tight spacing. [fixture:
-venn/labels/specified-c4-label-title] [fixture: venn/labels/all-suffixes]
-[corpus fixture: venn/db-form-text-string-label] [corpus fixture:
-venn/db-form-union-label] [corpus fixture:
-venn/lex-directive-label-delimiter-gap] [corpus fixture:
+also inside quotes. A quoted label of whitespace only stays quoted, with its
+whitespace printed as one space: an empty quoted label or bare whitespace label
+omits the Db label, whereas quoted whitespace stores an empty label. Embedded
+trivia stays inside the label, and gap items retain attachment instead of
+applying tight spacing. [fixture: venn/labels/specified-c4-label-title]
+[fixture: venn/labels/all-suffixes] [corpus fixture:
+venn/db-form-text-string-label] [corpus fixture: venn/db-form-union-label]
+[corpus fixture: venn/lex-directive-label-delimiter-gap] [corpus fixture:
 venn/lex-label-bare-comment-only] [corpus fixture: venn/lex-label-bare-padding]
 [corpus fixture: venn/lex-label-quoted-comment-only] [corpus fixture:
 venn/lex-label-quoted-directive-only] [corpus fixture:

@@ -371,10 +371,10 @@ export function normalizeStyleList(
 
 /**
  * Leaves the spaces and tabs at the start of the text that a statement holds
- * after its keyword out of what is printed, and those at its end: a title, a setting. The keyword
- * takes one whitespace character, and mermaid.js keeps the rest in the Db, but
- * draws the same text without it (docs/compatibility.md, Texts after a keyword
- * that are drawn the same). A directive among those
+ * after its keyword out of what is printed, and those at its end: a title, a
+ * setting. The keyword takes one whitespace character, and mermaid.js keeps the
+ * rest in the Db, but draws the same text without it (docs/compatibility.md,
+ * Texts after a keyword that are drawn the same). A directive among those
  * spaces and tabs is removed from the text before it is read, so the spaces and
  * tabs after it count too, and it stays where it is: `title  %%{x}%%  T` and
  * `title %%{x}%% T` are read as the title `T` with the same blanks before it.

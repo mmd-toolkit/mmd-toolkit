@@ -18,6 +18,7 @@ import {
   holdsJoiningRegion,
   spansKeptBreaks,
 } from "./kept-lines.ts"
+import type { TextEdit } from "./layout.ts"
 import {
   collectAtoms,
   collectValueNodes,
@@ -219,6 +220,7 @@ function layoutEvents(
   const rules = new Map<number, GapRule>()
   const joinedBefore = new Set<number>()
   const alignedColons = new Set<number>()
+  const lineEnds: Node[] = []
   let statementPadding: string | undefined =
     statement.type === "TimelineEventStatement" ? "" : undefined
   for (const event of statement.events) {
@@ -254,12 +256,21 @@ function layoutEvents(
     if (readGap(source, colon.end, event.range[0], true).breaksLine) {
       joinedBefore.add(event.range[0])
     }
+    const previous = statement.events[statement.events.indexOf(event) - 1]
+    if (
+      previous !== undefined &&
+      readGap(source, previous.range[1], colon.start, true).breaksLine
+    ) {
+      lineEnds.push(previous)
+    }
     rules.set(event.range[0], "space")
   }
   if (joinedBefore.size > 0 && spansLinesThatCannotJoin(source, start, end)) {
     return keptAsWritten(start, end)
   }
-  trimLastEventEnd(source, atoms, statement.events.at(-1))
+  const last = statement.events.at(-1)
+  if (last !== undefined) lineEnds.push(last)
+  trimEventEnds(source, atoms, lineEnds)
   return {
     atoms: atoms.map((atom) =>
       alignedColons.has(atom.start) ? { ...atom, statementPadding } : atom,
@@ -272,23 +283,28 @@ function layoutEvents(
 }
 
 /**
- * Leaves the spaces and tabs at the end of the last event of a line out of what
- * is printed. mermaid.js keeps them in the Db as the end of the event and draws
- * the same text without them; the whitespace before the next `:` of a line is
- * padding of the colons and stays (docs/timeline.md, Periods and events). An
- * event of whitespace only stays as written.
+ * Leaves the spaces and tabs at the end of the events that end their line out
+ * of what is printed: the last event of the statement, and an event that a line
+ * break separates from the next `:`. mermaid.js keeps them in the Db as the end
+ * of the event and draws the same text without them; the whitespace before a
+ * `:` on the same line is padding of the colons and stays (docs/timeline.md,
+ * Periods and events). An event of whitespace only stays as written.
  */
-function trimLastEventEnd(
+function trimEventEnds(
   source: Source,
   atoms: Atom[],
-  event: Node | undefined,
+  events: readonly Node[],
 ): void {
-  if (event === undefined) return
-  const [from, to] = event.range
-  let contentEnd = to
-  while (contentEnd > from && isSpaceOrTab(source.text[contentEnd - 1])) {
-    contentEnd--
+  const edits: TextEdit[] = []
+  for (const event of events) {
+    const [from, to] = event.range
+    let contentEnd = to
+    while (contentEnd > from && isSpaceOrTab(source.text[contentEnd - 1])) {
+      contentEnd--
+    }
+    if (contentEnd !== from && contentEnd !== to) {
+      edits.push({ range: [contentEnd, to], replacement: "" })
+    }
   }
-  if (contentEnd === from || contentEnd === to) return
-  replaceInAtoms(source, atoms, [{ range: [contentEnd, to], replacement: "" }])
+  if (edits.length > 0) replaceInAtoms(source, atoms, edits)
 }

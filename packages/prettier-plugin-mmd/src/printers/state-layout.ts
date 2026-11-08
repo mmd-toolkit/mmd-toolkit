@@ -607,10 +607,10 @@ function findBlankDescriptionStretches(
  * The stretch of the second description of an alias definition without a
  * body: from its `:` to the end of the statement, as written, without the
  * whitespace at the end of the line when nothing follows the second
- * description and the text is not whitespace only. mermaid.js reads the text between the first `:` and the second
- * `:` or the end, whitespace included: `state "d" as A :x` and
- * `state "d" as A : x` give A different second descriptions
- * (docs/state.md, Aliases).
+ * description and the text is not whitespace only. mermaid.js reads the text
+ * between the first `:` and the second `:` or the end, whitespace included:
+ * `state "d" as A :x` and `state "d" as A : x` give A different second
+ * descriptions (docs/state.md, Aliases).
  */
 function findSecondDescriptionStretches(
   source: Source,

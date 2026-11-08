@@ -292,11 +292,11 @@ treemap
 ### Names
 
 Keep complete StringLiteral source spans: single/double quotes, opposite quotes,
-empty/whitespace-only names, padding, backslashes, HTML, entities, percent text
-and physical continuation columns, with a run of spaces and tabs inside the name
-printed as one space. singleQuote does not rewrite them. Backslashes do not
-escape quotes or decode `\n`; these authored choices can affect the name or
-acceptance.
+empty names, padding, backslashes, HTML, entities, percent text and physical
+continuation columns, with a run of spaces and tabs inside the name printed as
+one space, so a name of spaces and tabs only becomes one space. singleQuote does
+not rewrite them. Backslashes do not escape quotes or decode `\n`; these
+authored choices can affect the name or acceptance.
 
 [fixture: treemap/names/quotes]
 

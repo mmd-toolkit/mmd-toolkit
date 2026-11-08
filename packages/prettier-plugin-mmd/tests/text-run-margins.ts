@@ -24,7 +24,23 @@ const textRunPaths: ReadonlyMap<string, ReadonlySet<string>> = new Map([
     ]),
   ],
   ["block", new Set(["root.children.classes", "root.children.label"])],
-  ["c4", new Set(["accDescr", "accTitle", "title"])],
+  [
+    "c4",
+    new Set([
+      "accDescr",
+      "accTitle",
+      "boundaries.descr.text",
+      "boundaries.label.text",
+      "boundaries.type.text",
+      "rels.descr.text",
+      "rels.label.text",
+      "rels.techn.text",
+      "shapes.descr.text",
+      "shapes.label.text",
+      "shapes.techn.text",
+      "title",
+    ]),
+  ],
   [
     "classDiagram",
     new Set([

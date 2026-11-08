@@ -300,11 +300,14 @@ character after its colon: `2004 : a` and `2004: a` are different periods,
 `a :   e` has the event `  e`, and `a : e   ` the event `e   `. So the padding
 that aligns the colons of a timeline stays, and a colon that touches its period
 keeps touching it; `a : e   ` at the end of a line is printed `a : e`, and
-`c : g   : h` stays as written. [fixture:
+`c : g   : h` stays as written. An event that a line break separates from the
+next colon ends its line too: in `2020 : e1  ` followed by a line `: e2`, the
+whitespace after `e1` is left out. [fixture:
 periods-and-events/period-whitespace-kept] [fixture:
 periods-and-events/event-padding-kept-end-dropped] [fixture:
 periods-and-events/whitespace-only-event] [fixture:
-periods-and-events/period-trailing-kept-event-end-dropped] A colon, a `#`, and a
+periods-and-events/period-trailing-kept-event-end-dropped] [fixture:
+periods-and-events/event-end-before-continuation-dropped] A colon, a `#`, and a
 `%%` in an event are characters of its text, and so are the colons that no
 whitespace follows. [fixture: periods-and-events/colon-inside-event] [fixture:
 periods-and-events/special-characters-in-events] A `;` is a character of a text

@@ -1,10 +1,23 @@
-import type { Node, Range } from "@mmd-toolkit/ast"
+import type {
+  C4BoundaryStatement,
+  C4ElementStatement,
+  C4RelationshipStatement,
+  Node,
+  Range,
+} from "@mmd-toolkit/ast"
 import type { Doc } from "prettier"
 import { visitorKeys } from "@mmd-toolkit/parser"
 import type { Atom } from "./atoms.ts"
 import type { Source } from "./source.ts"
 import { findCoveringRange, findTriviaBetween, isSpaceOrTab } from "./source.ts"
-import { textSlots } from "./text-slots.ts"
+import {
+  blankTextSlots,
+  c4ArgumentFields,
+  c4NamedTextFields,
+  c4TextFields,
+  plainTextSlots,
+  textSlots,
+} from "./text-slots.ts"
 
 const holdsProperty = new WeakMap<Source, boolean>()
 
@@ -51,9 +64,19 @@ export function collapseRuns(text: string): string {
  * that has a planned layout keeps it, with the runs of its text printed as
  * one space.
  */
-export function collapsedRunsAtom(source: Source, atom: Atom): Atom {
+export function collapsedRunsAtom(
+  source: Source,
+  atom: Atom,
+  options: { readonly printsBlankAsOne?: boolean } = {},
+): Atom {
   const text = source.text.slice(atom.start, atom.end)
-  if (collapseRuns(text) === " ") return atom
+  if (collapseRuns(text) === " ") {
+    return options.printsBlankAsOne === true &&
+      text !== " " &&
+      atom.doc === undefined
+      ? { ...atom, doc: " " }
+      : atom
+  }
   if (text.includes("<") || holdsWhiteSpaceProperty(source)) return atom
   if (
     [...text].some(
@@ -90,42 +113,101 @@ function collapseDoc(doc: Doc): Doc {
  */
 export type TextSlots = Readonly<Record<string, readonly string[]>>
 
-const textsOfSource = new WeakMap<Source, readonly Range[]>()
+interface Texts {
+  /** The ranges of the texts, in source order and disjoint. */
+  readonly ranges: readonly Range[]
+  /** The starts of the ranges where a text of spaces and tabs only is one space. */
+  readonly blanks: ReadonlySet<number>
+}
+
+const textsOfSource = new WeakMap<Source, Texts>()
 
 /**
- * The ranges of the texts of the tree that `textSlots` lists, in source order
- * and disjoint: of two nested texts, the outer one.
+ * The texts of the tree that `textSlots`, `plainTextSlots`, and
+ * `blankTextSlots` list: of two nested texts, the outer one, and none over
+ * several lines, whose lines keep their columns.
  */
-function findTexts(source: Source): readonly Range[] {
+function findTexts(source: Source): Texts {
   let texts = textsOfSource.get(source)
   if (texts === undefined) {
-    const found: Range[] = []
+    const found: { range: Range; blank: boolean }[] = []
     collectTexts(source.root, found)
-    found.sort((a, b) => a[0] - b[0] || b[1] - a[1])
-    // The lines of a text over several lines keep their columns.
-    const outer: Range[] = []
-    for (const range of found) {
+    found.sort((a, b) => a.range[0] - b.range[0] || b.range[1] - a.range[1])
+    const ranges: Range[] = []
+    const blanks = new Set<number>()
+    for (const { range, blank } of found) {
       if (
-        (outer.length === 0 || range[0] >= outer[outer.length - 1][1]) &&
+        (ranges.length === 0 || range[0] >= ranges[ranges.length - 1][1]) &&
         !source.text.slice(range[0], range[1]).includes("\n")
-      )
-        outer.push(range)
+      ) {
+        ranges.push(range)
+        if (blank) blanks.add(range[0])
+      }
     }
-    texts = outer
+    texts = { ranges, blanks }
     textsOfSource.set(source, texts)
   }
   return texts
 }
 
+/** Whether the node is a markdown string, which a `kind` field tells. */
+function isMarkdownString(node: Node): boolean {
+  return (node as { readonly kind?: unknown }).kind === "markdown"
+}
+
+/**
+ * Records the ranges of the texts among the arguments of a C4 statement: a
+ * string or a bare literal at the place of a text, and a named attribute of a
+ * text at its own place (see `c4ArgumentFields`).
+ */
+function collectC4Texts(
+  node: C4BoundaryStatement | C4ElementStatement | C4RelationshipStatement,
+  found: { range: Range; blank: boolean }[],
+): void {
+  const fields = c4ArgumentFields[node.keyword]
+  node.arguments.forEach((argument, index) => {
+    const field = fields[index]
+    if (argument === null || field === undefined) return
+    if (
+      (argument.type === "StringLiteral" || argument.type === "C4Literal") &&
+      c4TextFields.has(field)
+    ) {
+      found.push({ range: argument.range, blank: false })
+    } else if (
+      argument.type === "C4NamedAttribute" &&
+      c4NamedTextFields.has(field) &&
+      argument.key?.value === field
+    ) {
+      found.push({ range: argument.value.range, blank: false })
+    }
+  })
+}
+
 /** Records the ranges of the texts below `node` in the fields of the slots. */
-function collectTexts(node: Node, found: Range[]): void {
+function collectTexts(
+  node: Node,
+  found: { range: Range; blank: boolean }[],
+): void {
+  if (
+    node.type === "C4BoundaryStatement" ||
+    node.type === "C4ElementStatement" ||
+    node.type === "C4RelationshipStatement"
+  ) {
+    collectC4Texts(node, found)
+  }
   const fields = textSlots[node.type] ?? []
+  const blankFields = blankTextSlots[node.type] ?? []
+  const plainFields = plainTextSlots[node.type] ?? []
   for (const key of visitorKeys[node.type]) {
     const value = (node as unknown as Record<string, unknown>)[key]
     for (const child of Array.isArray(value) ? value : [value]) {
       if (child === null || child === undefined) continue
       const item = child as Node
-      if (fields.includes(key)) found.push(item.range)
+      if (fields.includes(key)) found.push({ range: item.range, blank: false })
+      else if (blankFields.includes(key))
+        found.push({ range: item.range, blank: true })
+      else if (plainFields.includes(key) && !isMarkdownString(item))
+        found.push({ range: item.range, blank: false })
       collectTexts(item, found)
     }
   }
@@ -140,11 +222,14 @@ export function collapseTextAtoms(
   source: Source,
   atoms: readonly Atom[],
 ): readonly Atom[] {
-  const texts = findTexts(source)
-  if (texts.length === 0) return atoms
-  return atoms.map((atom) =>
-    findCoveringRange(texts, atom.start, atom.end) !== undefined
-      ? collapsedRunsAtom(source, atom)
-      : atom,
-  )
+  const { ranges, blanks } = findTexts(source)
+  if (ranges.length === 0) return atoms
+  return atoms.map((atom) => {
+    const text = findCoveringRange(ranges, atom.start, atom.end)
+    return text === undefined
+      ? atom
+      : collapsedRunsAtom(source, atom, {
+          printsBlankAsOne: blanks.has(text[0]),
+        })
+  })
 }

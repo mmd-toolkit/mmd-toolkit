@@ -151,7 +151,9 @@ wardley-beta
 
 Keep WardleyIdentifier and StringLiteral source spans, including internal
 spaces/tabs, hyphens, parentheses, ampersands, quote styles, escapes, empty
-strings and whitespace-only strings. singleQuote does not re-encode them.
+strings and whitespace-only strings, except for the label of a link, which
+prints a run of spaces and tabs as one space (see
+[Semicolon labels](#semicolon-labels)). singleQuote does not re-encode them.
 Collapsing name whitespace or trimming string contents changes the Db; even
 Db-equal requoting loses the authored spelling and needs another escape
 interpretation.

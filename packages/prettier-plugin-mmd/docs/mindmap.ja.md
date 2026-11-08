@@ -215,7 +215,7 @@ mermaid.js はその空白を Db に残しますが、同じノードを描き�
 （[同じに描かれる mindmap のテキスト](./compatibility.ja.md#同じに描かれる-mindmap-のテキスト)）。
 テキストの中の空白は残し、空白とタブだけのテキストも残します。
 [fixture: decorations/padding-in-icon-and-class-dropped]
-[fixture: decorations/blank-icon-and-class-kept]
+[fixture: decorations/blank-icon-and-class-one-space]
 icon の閉じ括弧の後ろの空白は Db に入らないので落とします。
 [fixture: decorations/trailing-whitespace-after-icon-dropped]
 

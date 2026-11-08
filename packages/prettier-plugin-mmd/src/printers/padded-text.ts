@@ -61,15 +61,18 @@ export function isPlainLine(
 
 /**
  * A line of an icon or a class: the text of the range `whole` with the part
- * `inner` trimmed; undefined where `inner` holds nothing but spaces and tabs.
+ * `inner` trimmed; where `inner` holds nothing but spaces and tabs, it is one
+ * space, which is the least that keeps the text (an empty one is rejected), and
+ * undefined where it is one space already.
  */
 export function printPaddedLiteral(
   source: Source,
   whole: Range,
   inner: Range,
 ): string | undefined {
-  const text = trimBlanks(source.text.slice(...inner))
-  if (text === "") return undefined
+  const written = source.text.slice(...inner)
+  const text = trimBlanks(written) === "" ? " " : trimBlanks(written)
+  if (text === written) return undefined
   return (
     source.text.slice(whole[0], inner[0]) +
     text +
@@ -79,9 +82,10 @@ export function printPaddedLiteral(
 
 /**
  * The shape with the spaces and tabs at the ends of its text left out. A string
- * and a markdown string keep theirs, and so does a text of nothing but spaces
- * and tabs, and a text that would start with a quote once its padding is gone:
- * `a[ "x" ]` has the text `"x"` with its quotes, and `a["x"]` is a string.
+ * and a markdown string keep theirs, and so does a text that would start with a
+ * quote once its padding is gone: `a[ "x" ]` has the text `"x"` with its
+ * quotes, and `a["x"]` is a string. A text of nothing but spaces and tabs is
+ * printed as one space.
  */
 export function printShapeWithoutPadding(
   source: Source,
@@ -90,11 +94,14 @@ export function printShapeWithoutPadding(
   const { label } = shape
   const text = source.text.slice(...label.range)
   const trimmed = trimBlanks(text)
-  const keepsPadding =
-    label.kind !== "text" || trimmed === "" || trimmed.startsWith('"')
+  const keepsPadding = label.kind !== "text" || trimmed.startsWith('"')
   return (
     source.text.slice(shape.range[0], label.range[0]) +
-    (keepsPadding ? text : trimmed) +
+    (trimmed === "" && label.kind === "text"
+      ? " "
+      : keepsPadding
+        ? text
+        : trimmed) +
     source.text.slice(label.range[1], shape.range[1])
   )
 }

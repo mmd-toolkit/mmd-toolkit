@@ -373,21 +373,24 @@ icons-and-classes/db-decoration-icon-section] [fixture:
 icons-and-classes/gram-decoration-then-child]
 
 The text of a decoration stays as written: the case of the marker (`::ICON(y)`),
-the whitespace inside an icon and a class, whitespace-only icons and classes,
-and a second icon or class after the first. The spaces and tabs at the ends of
-an icon and of a class are dropped: `::icon( x )` is printed `::icon(x)`, and
-`::: hot ` is printed `:::hot`. mermaid.js keeps the text after `:::` as the
-class of the node
+the whitespace inside an icon and a class, and a second icon or class after the
+first. The spaces and tabs at the ends of an icon and of a class are dropped:
+`::icon( x )` is printed `::icon(x)`, and `::: hot ` is printed `:::hot`.
+mermaid.js keeps the text after `:::` as the class of the node
 ([`decorateNode`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L202-L214))
 and passes no class on to what it draws
 ([`getData`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L54-L97)),
 so the board is the same, and a space or a tab does not belong to a class name
-in HTML. A class of only whitespace stays as written, and so does a class line
-with a directive anywhere on it (`::: hot %%{x}%%`, `::: h%%{x}%%ot`,
-`%%{x}%%::: hot`): a line with a directive is printed as written (see
-[Directives](#directives)). Only spaces and tabs are dropped: `:::` followed by
-spaces and a U+00A0 is printed with the U+00A0 next to the `:::`, and it stays.
-[fixture: icons-and-classes/class-padding-after-marker-dropped] [fixture:
+in HTML. A class or an icon of only whitespace is printed as one space, which is
+the least that keeps it (an empty one is rejected), so `::icon(  )` is printed
+`::icon( )` and `:::` followed by two spaces is printed `:::` followed by one.
+[fixture: icons-and-classes/gram-whitespace-icon] [fixture:
+icons-and-classes/gram-whitespace-class] A class line with a directive anywhere
+on it (`::: hot %%{x}%%`, `::: h%%{x}%%ot`, `%%{x}%%::: hot`): a line with a
+directive is printed as written (see [Directives](#directives)). Only spaces and
+tabs are dropped: `:::` followed by spaces and a U+00A0 is printed with the
+U+00A0 next to the `:::`, and it stays. [fixture:
+icons-and-classes/class-padding-after-marker-dropped] [fixture:
 icons-and-classes/class-with-directive-kept] [test: kanban:
 class-spaces-then-no-break-space] [test: kanban: class-padding-then-u2028]
 [test: kanban: class-padding-then-u2029] A later icon replaces an earlier one in

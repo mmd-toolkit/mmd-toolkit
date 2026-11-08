@@ -208,9 +208,11 @@ tabs at their ends: `::icon( fa fa-book )` is printed `::icon(fa fa-book)`, and
 `::: big red ` is printed `:::big red`. mermaid.js keeps them in the Db and
 draws the same node (see
 [Mindmap texts that are drawn the same](./compatibility.md#mindmap-texts-that-are-drawn-the-same)).
-The whitespace inside the text stays, and so does a text of nothing but spaces
-and tabs. [fixture: decorations/padding-in-icon-and-class-dropped] [fixture:
-decorations/blank-icon-and-class-kept] The whitespace after the closing
+The whitespace inside the text stays, and a text of nothing but spaces and tabs
+is printed as one space, which is the least that keeps the text: an empty icon
+or class is rejected, and mermaid.js reads the same empty text for any number of
+them. [fixture: decorations/padding-in-icon-and-class-dropped] [fixture:
+decorations/blank-icon-and-class-one-space] The whitespace after the closing
 parenthesis of an icon is not in the Db, and is dropped. [fixture:
 decorations/trailing-whitespace-after-icon-dropped]
 
@@ -339,11 +341,11 @@ is printed `a[x]`. mermaid.js keeps them in the Db and draws the same node. A
 string is a string only right after the opener, so `a[ "x" ]` has the text `"x"`
 with its quotes, and `a["x"]` and `a[x]` have the same text; none is rewritten
 into another, and the padding of a text that would start with a quote once it is
-gone stays. A string, a markdown string, a text of nothing but spaces and tabs,
-and a text over lines stay as written. [fixture: shapes/inner-padding-dropped]
-[fixture: shapes/text-and-string-forms] [fixture: shapes/markdown-string]
-[fixture: shapes/padding-kept-where-drawn-differently] The whitespace after a
-shape is not in the Db, and is dropped. [fixture:
+gone stays. A string, a markdown string, and a text over lines stay as written,
+and a text of nothing but spaces and tabs is printed as one space. [fixture:
+shapes/inner-padding-dropped] [fixture: shapes/text-and-string-forms] [fixture:
+shapes/markdown-string] [fixture: shapes/padding-kept-where-drawn-differently]
+The whitespace after a shape is not in the Db, and is dropped. [fixture:
 shapes/trailing-whitespace-dropped]
 
 Input

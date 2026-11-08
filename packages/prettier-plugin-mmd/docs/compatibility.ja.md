@@ -893,7 +893,7 @@ mindmap のノードのテキスト、形のテキスト、icon、class は、
 [fixture: mindmap/shapes/inner-padding-dropped]
 [fixture: mindmap/decorations/padding-in-icon-and-class-dropped]
 [fixture: mindmap/shapes/padding-kept-where-drawn-differently]
-[fixture: mindmap/decorations/blank-icon-and-class-kept]
+[fixture: mindmap/decorations/blank-icon-and-class-one-space]
 [fixture: mindmap/node-text/inner-whitespace-kept]
 
 mermaid.js はテキストを Db（`nodeId`、`descr`、`icon`、`class`）に残すので、

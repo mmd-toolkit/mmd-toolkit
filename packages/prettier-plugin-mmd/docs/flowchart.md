@@ -651,13 +651,17 @@ tokens only when they touch, as `A%%{init: {}}%%B-->C`, which is the id `AB`,
 and a rule that wrote a space between touching tokens would need an exception
 for every such place. [fixture:
 whitespace-between-tokens/compat-empty-description-block-own-line] [fixture:
-whitespace-between-tokens/header-and-tabs-collapsed] Whitespace that is part of
-a value is kept, such as the whitespace inside the name of a subgraph, which
-becomes its title. In a `style`, `classDef`, or `linkStyle` statement, each
-style has no whitespace before its first `:` and one space after it where the
-value is not empty. The `,` between styles has no whitespace before it and one
-space after it: `style A fill :#f00,stroke:  #333` is printed
-`style A fill: #f00, stroke: #333`. [fixture:
+whitespace-between-tokens/header-and-tabs-collapsed] A run of spaces and tabs
+inside the name of a subgraph, which becomes its title, is printed as one space
+(see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+except in a markdown string, which wraps and then draws the run. [fixture:
+whitespace-between-tokens/subgraph-name-runs-collapsed] [fixture:
+subgraph-header/markdown-title-runs-kept] In a `style`, `classDef`, or
+`linkStyle` statement, each style has no whitespace before its first `:` and one
+space after it where the value is not empty. The `,` between styles has no
+whitespace before it and one space after it: `style A fill :#f00,stroke:  #333`
+is printed `style A fill: #f00, stroke: #333`. [fixture:
 whitespace-between-tokens/style-colon-spaced] [fixture:
 whitespace-between-tokens/style-colon-empty-value-kept] [fixture:
 whitespace-between-tokens/style-comma-before-dropped] A `linkStyle` with link
