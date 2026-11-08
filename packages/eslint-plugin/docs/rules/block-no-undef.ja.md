@@ -41,7 +41,7 @@ id は大文字小文字を区別する。
 %% eslint @mmd-toolkit/block-no-undef: error
 block
   A
-  classDef c fill:#f00
+  classDef c fill: #f00
   class Typo c
 ```
 
@@ -51,7 +51,7 @@ block
 %% eslint @mmd-toolkit/block-no-undef: error
 block
   A
-  classDef c fill:#f00
+  classDef c fill: #f00
   class A c
 ```
 

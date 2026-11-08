@@ -847,8 +847,12 @@ Dbが同じ形から選ぶ場合は、その図種の理由がなければ兄弟
 agentflowの通常のアクセシビリティ行に固有の理由はないので、C4、class、
 usecaseと両方のgraphで、`accTitle: value`と`accDescr: value`に揃えます。
 コロンを語に接し、両端をtrimした値の前にASCII空白1つを置き、
-内部の空白とインラインの`%%`と`#`を値の文字として保ちます。
-[fixture: accessibility/tight-colon] [fixture: accessibility/spaced-colon]
+インラインの`%%`と`#`を値の文字として保ちます。
+`accDescr` の値の中の空白とタブの連なりは、空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+`accTitle` はブラウザがツールチップとして表示するので、
+その連なりは書かれたまま残します。 [fixture: accessibility/tight-colon]
+[fixture: accessibility/spaced-colon]
 [fixture: accessibility/value-runs-collapsed]
 [fixture: accessibility/inline-percent-hash]
 空と空白だけの値も`accTitle:`または`accDescr:`の文として保ち、

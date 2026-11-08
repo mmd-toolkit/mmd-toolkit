@@ -112,7 +112,7 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
      が定める。
    - mermaid.js が連なりを描かずにテキストを描く場合の、
      テキスト中の空白とタブの連なり。
-     タイトル、アクセシビリティのテキスト、
+     タイトル、アクセシビリティの説明、
      SVG のテキストとしてラベルを描く図種のラベルが対象です。
      [同じに描かれるテキスト中の空白の連なり](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)
      が定めます。
@@ -195,6 +195,7 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
 | 木の型（`src/ast.ts`、`src/ast/*.ts`）       | ast             | parser、prettier-plugin、eslint-plugin          |
 | parser の API（`parse()`、エラー、木の走査） | parser          | prettier-plugin、eslint-plugin、mmdfmt          |
 | プラグインとその言語（`src/index.ts`）       | prettier-plugin | mmdfmt                                          |
+| 規則の文書の例の印字される形                 | prettier-plugin | eslint-plugin                                   |
 
 ## 行動原則
 

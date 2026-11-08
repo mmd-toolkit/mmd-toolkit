@@ -36,6 +36,10 @@ An empty description block changes nothing and is neither reported nor used for
 later comparisons. A colon form whose value is on a later line still sets that
 value, including after blank, comment, or directive lines.
 
+The last correct example is shown as written: its two descriptions are indented
+differently on the second line, which the formatter would print the same way,
+and that difference is what the example shows.
+
 Examples of **incorrect** code for this rule:
 
 ```mmd
@@ -70,6 +74,7 @@ C4Context
   accDescr {}Person(a, "A")
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/c4-no-duplicate-description: error
 C4Context

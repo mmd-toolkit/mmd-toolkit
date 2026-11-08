@@ -8,6 +8,7 @@ import type {
 import type { Doc } from "prettier"
 import { visitorKeys } from "@mmd-toolkit/parser"
 import type { Atom } from "./atoms.ts"
+import type { TextEdit } from "./layout.ts"
 import type { Source } from "./source.ts"
 import { findCoveringRange, findTriviaBetween, isSpaceOrTab } from "./source.ts"
 import {
@@ -54,14 +55,10 @@ export function collapseRuns(text: string): string {
 /**
  * The atom of a text with its runs of spaces and tabs printed as one space,
  * or the atom itself where it has none, or where the text is nothing but
- * spaces and tabs, or where the text holds something that must stay as
- * written: a comment or a directive, a line break, or a U+2028 or U+2029,
- * which are characters of the text and mark where a rule of mermaid.js reads
- * the line, or a `<`, which may start an HTML tag that keeps the whitespace
- * (`<pre>`). The same holds for every text of a diagram that holds
- * `white-space`, which a style can use to keep the runs of a label. An atom
- * that has a planned layout keeps it, with the runs of its text printed as
- * one space.
+ * spaces and tabs, or where the text stays as written (see
+ * `staysAsWritten`), which a style that keeps the runs of a label can need
+ * for every text of a diagram that holds `white-space`. An atom that has a
+ * planned layout keeps it, with the runs of its text printed as one space.
  */
 export function collapsedRunsAtom(
   source: Source,
@@ -76,8 +73,23 @@ export function collapsedRunsAtom(
       ? { ...atom, doc: " " }
       : atom
   }
-  if (text.includes("<") || holdsWhiteSpaceProperty(source)) return atom
-  if (
+  if (staysAsWritten(source, atom.start, atom.end)) return atom
+  const doc = collapseDoc(atom.doc ?? text)
+  return doc === (atom.doc ?? text) ? atom : { ...atom, doc }
+}
+
+/**
+ * Whether the text at `[start, end)` stays as written: it holds a comment or a
+ * directive, a line break, or a U+2028 or U+2029, which are characters of the
+ * text and mark where a rule of mermaid.js reads the line, or a `<`, which may
+ * start an HTML tag that keeps the whitespace (`<pre>`), or the diagram holds
+ * `white-space`.
+ */
+function staysAsWritten(source: Source, start: number, end: number): boolean {
+  const text = source.text.slice(start, end)
+  return (
+    text.includes("<") ||
+    holdsWhiteSpaceProperty(source) ||
     [...text].some(
       (character) =>
         character === "\n" ||
@@ -85,11 +97,35 @@ export function collapsedRunsAtom(
         character === "\u2028" ||
         character === "\u2029",
     ) ||
-    findTriviaBetween(source, atom.start, atom.end).length > 0
+    findTriviaBetween(source, start, end).length > 0
   )
-    return atom
-  const doc = collapseDoc(atom.doc ?? text)
-  return doc === (atom.doc ?? text) ? atom : { ...atom, doc }
+}
+
+/**
+ * The edits that print each run of spaces and tabs at `[start, end)` as one
+ * space, or none where the text stays as written (see `collapsedRunsAtom`). A
+ * layout that makes its own edits to a text uses them for the part of the text
+ * that the atom-wide collapse cannot reach: a text that a directive ends.
+ */
+export function collapseRunEdits(
+  source: Source,
+  start: number,
+  end: number,
+): TextEdit[] {
+  if (staysAsWritten(source, start, end)) return []
+  const edits: TextEdit[] = []
+  let position = start
+  while (position < end) {
+    if (!isSpaceOrTab(source.text[position])) {
+      position++
+      continue
+    }
+    let runEnd = position
+    while (runEnd < end && isSpaceOrTab(source.text[runEnd])) runEnd++
+    edits.push({ range: [position, runEnd], replacement: " " })
+    position = runEnd
+  }
+  return edits
 }
 
 /** The doc with the runs of spaces and tabs in its strings printed as one. */
@@ -115,7 +151,10 @@ export type TextSlots = Readonly<Record<string, readonly string[]>>
 interface Texts {
   /** The ranges of the texts, in source order and disjoint. */
   readonly ranges: readonly Range[]
-  /** The starts of the ranges where a text of spaces and tabs only is one space. */
+  /**
+   * The starts of the ranges where a text of spaces and tabs only is one
+   * space.
+   */
   readonly blanks: ReadonlySet<number>
 }
 

@@ -724,10 +724,11 @@ timeline %%{init: {}}%%TD
 
 The `:` of `accTitle` and `accDescr` touches the keyword and has one space after
 it, as in a user journey; the text has no whitespace at its ends, which the Db
-does not keep, and a run of spaces and tabs inside it is printed as one space
-(see
-[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
-[fixture: accessibility-statements/colon-touches-keyword] [fixture:
+does not keep, and a run of spaces and tabs inside the text of an `accDescr` is
+printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+while that of an `accTitle` stays as written, since the browser shows it as a
+tooltip. [fixture: accessibility-statements/colon-touches-keyword] [fixture:
 accessibility-statements/text-whitespace-dropped] [fixture:
 accessibility-statements/title-and-accessibility-runs-collapsed] The text and
 the colon may stand on later lines, and are printed on the line of the keyword.

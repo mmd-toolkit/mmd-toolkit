@@ -544,11 +544,14 @@ titles-and-accessibility-statements/title-keyword-case]
 The `:` of `accTitle` and `accDescr` touches the keyword and has one space after
 it, as in the other diagrams (see
 [Accessibility statements](./xychart.md#accessibility-statements)). The text has
-no whitespace at its ends, and a run of spaces and tabs inside it is printed as
-one space, which the Db keeps. A text written on a later line, a colon written
-on a later line than the keyword, and whitespace before the colon are printed on
-one line: the line breaks are whitespace to the lexer, and the text of the
-statement is the same. [fixture:
+no whitespace at its ends. A run of spaces and tabs inside the text of an
+`accDescr` is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+and that of an `accTitle` stays as written, since the browser shows it as a
+tooltip; the Db keeps both. A text written on a later line, a colon written on a
+later line than the keyword, and whitespace before the colon are printed on one
+line: the line breaks are whitespace to the lexer, and the text of the statement
+is the same. [fixture:
 titles-and-accessibility-statements/colon-touches-keyword] [fixture:
 titles-and-accessibility-statements/colon-without-space-after] [fixture:
 titles-and-accessibility-statements/text-whitespace-dropped] [fixture:

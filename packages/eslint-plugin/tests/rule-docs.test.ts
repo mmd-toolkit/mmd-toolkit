@@ -203,6 +203,68 @@ describe("the first released version of a rule", () => {
   })
 })
 
+describe("the examples of a rule document", () => {
+  const name = "flowchart-no-undef"
+  /** An example that the formatter changes: it prints spaces around an arrow. */
+  const written = "flowchart LR\n  A-->B"
+  const printed = "flowchart LR\n  A --> B"
+  let directory: string
+
+  /** The rule document in `language` with `body` after its first paragraph. */
+  function document(language: "en" | "ja", body: string): string {
+    return language === "en"
+      ? `# A placeholder title\n\nJapanese version: [flowchart-no-undef.ja.md](./flowchart-no-undef.ja.md)\n\nDisallow an id that the diagram does not define.\n\n## Rule Details\n\n${body}\n`
+      : `# 仮の見出し\n\n英語版: [flowchart-no-undef.md](./flowchart-no-undef.md)\n\n図が定義していない id を禁止する。\n\n## 規則の詳細\n\n${body}\n`
+  }
+
+  /** Renders both documents of the rule after writing `body` into them. */
+  async function render(body: string): Promise<{ en: string; ja: string }> {
+    const index =
+      "# Rules\n\n<!-- begin auto-generated rules list -->\n<!-- end auto-generated rules list -->\n"
+    writeFileSync(`${directory}index.md`, index)
+    writeFileSync(`${directory}index.ja.md`, index)
+    for (const language of ["en", "ja"] as const) {
+      writeFileSync(
+        ruleDocumentPath(directory, name, language),
+        document(language, body),
+      )
+    }
+    const documents = await renderDocuments(directory, [name])
+    return {
+      en: documents.get(ruleDocumentPath(directory, name, "en")) ?? "",
+      ja: documents.get(ruleDocumentPath(directory, name, "ja")) ?? "",
+    }
+  }
+
+  beforeEach(() => {
+    directory = `${mkdtempSync(join(tmpdir(), "mmd-rule-examples-"))}/`
+  })
+
+  afterEach(() => rmSync(directory, { recursive: true, force: true }))
+
+  it("are printed as the formatter prints them, in both languages", async () => {
+    const rendered = await render(`\`\`\`mmd\n${written}\n\`\`\``)
+    for (const document of [rendered.en, rendered.ja]) {
+      expect(document).toContain(`\`\`\`mmd\n${printed}\n\`\`\``)
+    }
+  })
+
+  it("stay as written under a prettier-ignore comment", async () => {
+    const rendered = await render(
+      `<!-- prettier-ignore -->\n\`\`\`mmd\n${written}\n\`\`\``,
+    )
+    for (const document of [rendered.en, rendered.ja]) {
+      expect(document).toContain(`\`\`\`mmd\n${written}\n\`\`\``)
+    }
+  })
+
+  it("keep the comment line of the rule that opens an example", async () => {
+    const comment = `%% eslint @mmd-toolkit/${name}: error`
+    const rendered = await render(`\`\`\`mmd\n${comment}\n${written}\n\`\`\``)
+    expect(rendered.en).toContain(`\`\`\`mmd\n${comment}\n${printed}\n\`\`\``)
+  })
+})
+
 describe("rule example directives", () => {
   let directory: string
 

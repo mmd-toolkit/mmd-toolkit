@@ -475,7 +475,7 @@ Output
 
 ```mmd
 radar-beta
-  accTitle: Access words
+  accTitle: Access  words
   accDescr: Detail words
 ```
 

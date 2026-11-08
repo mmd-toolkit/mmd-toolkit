@@ -567,9 +567,11 @@ multi-line-statements/joined] [fixture: multi-line-statements/acc-descr-joined]
 The text of a label after a relation is kept as written: a label that wraps
 draws its runs, so a run is not one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
-[fixture: labels/spaced] A run of spaces and tabs in the text of `accTitle` and
-`accDescr` is printed as one space. [fixture:
-labels/accessibility-text-runs-collapsed] [fixture:
+[fixture: labels/spaced] A run of spaces and tabs in the text of `accDescr` is
+printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+and that of `accTitle` stays as written, since the browser shows it as a
+tooltip. [fixture: labels/accessibility-text-runs-collapsed] [fixture:
 labels/acc-block-runs-collapsed] The label in brackets of a class or a namespace
 has nothing between the name and the `[`, and nothing between the brackets and
 the string: `namespace Auth ["x"]` is printed `namespace Auth["x"]`,
@@ -1314,7 +1316,7 @@ because changing it would change the diagram or the input would be rejected:
 
 - the text of a value: a string, a backquoted name, the text of a label, a
   style, apart from the whitespace around its first `:` and its `,`, and the
-  text of `accTitle` and `accDescr`; [fixture:
+  text of `accTitle`; [fixture:
   whitespace-between-tokens/style-colon-and-comma-spaced] [fixture:
   labels/accessibility-text-runs-collapsed]
 - attribute and annotation contents, method-field contents, and a generic type

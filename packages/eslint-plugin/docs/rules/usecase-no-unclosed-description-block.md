@@ -42,8 +42,8 @@ Examples of **incorrect** code for this rule:
 %% eslint @mmd-toolkit/usecase-no-unclosed-description-block: error
 usecase-beta
   accDescr { first
-  A --> B
-  actor C@{ type: hollow }
+    A --> B
+    actor C@{ type: hollow }
   D
 ```
 

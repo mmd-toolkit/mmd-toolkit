@@ -35,8 +35,12 @@ empty.
 Empty blocks are also reported after a statement or the header, in a flow or
 connector name, or before the URL or tooltip of a `click` statement.
 
+The formatter prints an empty block as `accDescr {}`. The example with
+whitespace inside the braces is shown as written.
+
 Examples of **incorrect** code for this rule:
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/agentflow-no-empty-description-block: error
 agentflow-beta TB

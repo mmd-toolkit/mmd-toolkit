@@ -624,7 +624,7 @@ Output
 
 ```mmd
 wardley-beta
-  accTitle: A B
+  accTitle: A  B
   accDescr: C D
 ```
 

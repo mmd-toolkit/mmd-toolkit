@@ -36,6 +36,10 @@ CR と CRLF は LF として比べ、改行の後の空白は無視する。
 コロン形式の値が後の行にあっても、空行、コメント行、
 ディレクティブの行を挟んでも、その値を設定する。
 
+最後の correct の例は、書いたまま示している。
+2 つの説明の 2 行目は字下げが違い、整形ツールは同じ字下げにするが、
+その違いがこの例の示すことだからである。
+
 この規則に**反する**コードの例:
 
 ```mmd
@@ -70,6 +74,7 @@ C4Context
   accDescr {}Person(a, "A")
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/c4-no-duplicate-description: error
 C4Context

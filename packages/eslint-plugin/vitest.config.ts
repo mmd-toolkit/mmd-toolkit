@@ -22,6 +22,10 @@ const config: ViteUserConfig = defineConfig({
         find: "@mmd-toolkit/tests",
         replacement: local("../tests/src/index.ts"),
       },
+      {
+        find: "prettier-plugin-mmd",
+        replacement: local("../prettier-plugin-mmd/src/index.ts"),
+      },
     ],
   },
   test: {

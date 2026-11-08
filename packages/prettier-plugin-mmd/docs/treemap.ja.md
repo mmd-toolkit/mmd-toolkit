@@ -632,7 +632,7 @@ trivia の境界を保ち、次行の値を連結しません。
 
 ```mmd
 treemap
-  accTitle: Access words
+  accTitle: Access  words
 ```
 
 ### Description blocks

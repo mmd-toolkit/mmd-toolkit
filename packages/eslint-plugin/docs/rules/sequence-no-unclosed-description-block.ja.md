@@ -56,7 +56,7 @@ sequenceDiagram
 sequenceDiagram
   A ->> B: x
   accDescr { y
-  B ->> A: z
+    B ->> A: z
 ```
 
 この規則に**従う**コードの例:

@@ -36,6 +36,9 @@ An empty block on the line of another statement, as in `accDescr {} 2020 : a`,
 is reported too. Inside the text of a title, a section, a period, or an event,
 `accDescr {}` is part of that text and is not reported.
 
+The formatter prints an empty block as `accDescr {}`. The example with
+whitespace inside the braces is shown as written.
+
 Examples of **incorrect** code for this rule:
 
 ```mmd
@@ -45,6 +48,7 @@ timeline
   2020 : Launch
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/timeline-no-empty-description-block: error
 timeline

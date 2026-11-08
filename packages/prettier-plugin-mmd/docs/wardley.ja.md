@@ -626,7 +626,7 @@ Db が同じ共通の形を選び、空白だけの内部には囲むテキス�
 
 ```mmd
 wardley-beta
-  accTitle: A B
+  accTitle: A  B
   accDescr: C D
 ```
 

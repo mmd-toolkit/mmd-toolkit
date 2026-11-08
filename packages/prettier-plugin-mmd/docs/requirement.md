@@ -947,9 +947,11 @@ requirementDiagram
 ### Accessibility statements
 
 The `:` of `accTitle` and `accDescr` touches the keyword and has one space after
-it; the text has no whitespace at its ends, and a run of spaces and tabs inside
-it is printed as one space. [fixture:
-accessibility-statements/colon-touches-keyword] [fixture:
+it; the text has no whitespace at its ends. A run of spaces and tabs inside the
+text of an `accDescr` is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+and that of an `accTitle` stays as written, since the browser shows it as a
+tooltip. [fixture: accessibility-statements/colon-touches-keyword] [fixture:
 accessibility-statements/title-and-description] [fixture:
 accessibility-statements/inner-runs-collapsed] The text holds `;`, `#`, and `%%`
 as characters. [fixture: accessibility-statements/special-characters-in-text] A

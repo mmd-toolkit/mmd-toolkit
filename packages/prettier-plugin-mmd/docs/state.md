@@ -571,9 +571,10 @@ stateDiagram-v2
 
 The `:` after `accTitle` and `accDescr` touches the keyword and has one space
 after it: `accTitle  :  t` becomes `accTitle: t`, and a run of spaces and tabs
-in the text is printed as one space (see
-[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
-[fixture: descriptions-and-labels/acc-text-runs-collapsed] [fixture:
+in the text of an `accDescr` is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+while that of an `accTitle` stays as written, since the browser shows it as a
+tooltip. [fixture: descriptions-and-labels/acc-text-runs-collapsed] [fixture:
 descriptions-and-labels/acc-block-runs-collapsed] The `:` of a description and
 of a transition label has one space on each side, as mermaid.js's documentation
 writes most of its labels: `A-->B:submit` becomes `A --> B : submit`. [fixture:
@@ -1475,8 +1476,8 @@ diagram or the input would be rejected:
 
 - the text of a value: a description, a label, a note, an id after `as`, a
   pseudostate name, a style, apart from the whitespace around its first `:` and
-  its `,`, the CSS class of a `class` statement, and the text of `accTitle` and
-  `accDescr`; [fixture: whitespace-between-tokens/style-text-kept] [fixture:
+  its `,`, the CSS class of a `class` statement, and the text of `accTitle`;
+  [fixture: whitespace-between-tokens/style-text-kept] [fixture:
   descriptions-and-labels/acc-text-runs-collapsed] [fixture: aliases/id-kept]
 - what follows the id of a note on one line, the second description of an alias
   definition, and the whitespace after the `:` of a description of only

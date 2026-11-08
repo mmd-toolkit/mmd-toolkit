@@ -297,16 +297,28 @@ to enable that rule and show its diagnostics. The snapshot test helper removes
 only this comment: its tester enables the rule under `rule-to-test/`, so
 enabling it under `@mmd-toolkit/` too would duplicate every report.
 
+`update` also prints the examples as the formatter prints them.
+`tools/rule-docs.ts` gives `prettier-plugin-mmd` to Prettier, which then formats
+the `mmd` code blocks of a document, and `check:docs` fails on a document that
+it would change. These commands build the parser and the plugin first
+(`build:docs-deps`), so the examples are printed by the formatter of the working
+tree. An example kept as written, where the presence or absence of whitespace is
+the point, has `<!-- prettier-ignore -->` directly before its code block, in
+both languages, and a sentence of Rule Details says that it is shown as written.
+When the formatter changes what it prints, run `update:docs`, then `test:update`
+and read the diff of the snapshots, and look in the prose of the changed
+documents for code spans that quote a changed line.
+
 The rest of the documents is written by hand. `check:docs` writes nothing and
-fails when `src/rules/index.ts` or a generated part is out of date, when a rule
-has no English document or no test file, when a document belongs to no rule (a
-Japanese document without its English original is one), when the first paragraph
-of an English document is not `meta.docs.description` of its rule, when a rule
-document links to a document of the same directory that does not exist (a
-Japanese document that links to the Japanese version of a rule that has none),
-when the `mmd` code blocks of a Japanese document are not those of the English
-one, in the same order, when a code block does not start with its rule's
-enabling comment. Line breaks inside a first paragraph do not matter.
+fails when `src/rules/index.ts`, a generated part, or an example is out of date,
+when a rule has no English document or no test file, when a document belongs to
+no rule (a Japanese document without its English original is one), when the
+first paragraph of an English document is not `meta.docs.description` of its
+rule, when a rule document links to a document of the same directory that does
+not exist (a Japanese document that links to the Japanese version of a rule that
+has none), when the `mmd` code blocks of a Japanese document are not those of
+the English one, in the same order, when a code block does not start with its
+rule's enabling comment. Line breaks inside a first paragraph do not matter.
 
 When the rules and the documents do not match in one of these ways, `update`
 writes `src/rules/index.ts` but none of the generated parts of the documents,

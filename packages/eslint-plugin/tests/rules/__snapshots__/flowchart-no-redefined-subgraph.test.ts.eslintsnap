@@ -6,11 +6,11 @@ Filename: flowchart-no-redefined-subgraph-incorrect-1.mmd
 
 Code:
   1 | flowchart LR
-  2 |   subgraph S [One]
+  2 |   subgraph S[One]
   3 |     A
   4 |   end
-  5 |   subgraph S [Two]
-    |               ^~~ [1]
+  5 |   subgraph S[Two]
+    |              ^~~ [1]
   6 |     B
   7 |   end
   8 |

@@ -158,8 +158,9 @@ export function kanbanLines(source: Source): readonly KanbanLine[] {
  * directive, between the `:::` and the first other character of its class and
  * after the last: the class text is only a class name for the rendering, so
  * ` hot ` and `hot` name the same class (docs/kanban.md, Icons and classes). A
- * class of only whitespace stays as written. The spaces and tabs at the ends of the text of a card, of the text
- * of its shape, and of an icon go too (see `printKanbanText`).
+ * class of only whitespace is printed as one space. The spaces and tabs at the
+ * ends of the text of a card, of the text of its shape, and of an icon go too
+ * (see `printKanbanText`).
  */
 export function layoutKanbanLine(source: Source, line: KanbanLine): AtomLayout {
   const start = line.leading?.textStart ?? line.range[0]
@@ -179,11 +180,20 @@ export function layoutKanbanLine(source: Source, line: KanbanLine): AtomLayout {
     textStart++
   while (textEnd > textStart && isSpaceOrTab(source.text[textEnd - 1]))
     textEnd--
-  if (
-    textStart === textEnd ||
-    (textStart === cssClass.range[0] && textEnd === cssClass.range[1])
-  ) {
+  if (textStart === cssClass.range[0] && textEnd === cssClass.range[1]) {
     return keptAsWritten(start, line.range[1])
+  }
+  if (textStart === textEnd) {
+    // A class of spaces and tabs only is printed as one space: the grammar
+    // rejects an empty class (docs/kanban.md, Icons and classes).
+    return source.text.slice(...cssClass.range) === " "
+      ? keptAsWritten(start, line.range[1])
+      : {
+          atoms: [{ start, end: line.range[1], doc: [":::", " "] }],
+          rules: new Map(),
+          outdented: new Set(),
+          lineBreaks: "kept",
+        }
   }
   return {
     atoms: [

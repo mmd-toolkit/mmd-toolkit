@@ -976,8 +976,11 @@ requirementDiagram
 ### アクセシビリティの文
 
 `accTitle` と `accDescr` の `:` はキーワードに接し、後ろに空白 1 つを置きます。
-テキストの両端の空白は落とし、
-中の空白とタブの連なりは空白 1 つにして印字します。
+テキストの両端の空白は落とします。
+`accDescr` のテキストの中の空白とタブの連なりは、空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+`accTitle` はブラウザがツールチップとして表示するので、
+その連なりは書かれたまま残します。
 [fixture: accessibility-statements/colon-touches-keyword]
 [fixture: accessibility-statements/title-and-description]
 [fixture: accessibility-statements/inner-runs-collapsed]

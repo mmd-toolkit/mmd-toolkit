@@ -486,7 +486,7 @@ trivia・hidden・semicolon の保護を優先します。
 
 ```mmd
 radar-beta
-  accTitle: Access words
+  accTitle: Access  words
   accDescr: Detail words
 ```
 

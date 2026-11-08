@@ -36,6 +36,9 @@ since: v0.1.0
 文と同じ行でその前か最後の部分の後にある空のブロック、
 ヘッダーの行でその後にある空のブロック、ボックスの中の空のブロックも報告する。
 
+整形ツールは、空のブロックを `accDescr {}` と書く。
+波括弧の中に空白がある例は、書いたまま示している。
+
 この規則に**反する**コードの例:
 
 ```mmd
@@ -45,6 +48,7 @@ sequenceDiagram
   accDescr {}
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/sequence-no-empty-description-block: error
 sequenceDiagram
@@ -52,6 +56,7 @@ sequenceDiagram
   accDescr { }
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/sequence-no-empty-description-block: error
 sequenceDiagram

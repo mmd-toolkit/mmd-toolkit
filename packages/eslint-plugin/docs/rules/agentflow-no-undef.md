@@ -47,7 +47,7 @@ Examples of **incorrect** code for this rule:
 %% eslint @mmd-toolkit/agentflow-no-undef: error
 agentflow-beta TB
   A --> B
-  style C fill:red
+  style C fill: red
 ```
 
 ```mmd
@@ -65,7 +65,7 @@ Examples of **correct** code for this rule:
 %% eslint @mmd-toolkit/agentflow-no-undef: error
 agentflow-beta TB
   A --> B
-  style A fill:red
+  style A fill: red
 ```
 
 ```mmd

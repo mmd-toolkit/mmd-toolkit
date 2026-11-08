@@ -7,7 +7,7 @@ Filename: state-no-undef-incorrect-1.mmd
 Code:
   1 | stateDiagram-v2
   2 |   A --> B
-  3 |   style Z fill:#f00
+  3 |   style Z fill: #f00
     |         ^ [1]
   4 |
 

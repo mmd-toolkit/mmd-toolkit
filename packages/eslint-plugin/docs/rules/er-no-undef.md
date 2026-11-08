@@ -25,7 +25,7 @@ name in `style` or `class` that is neither an entity name nor a subgraph id
 anywhere in the diagram. Entities named in relationships or in any subgraph
 count as defined.
 
-An alias does not count as a name: `style Person fill:red` after `p[Person]` is
+An alias does not count as a name: `style Person fill: red` after `p[Person]` is
 reported. Quotes around an entity name do not change it, so `style A` can name
 `"A"`. A statement before the entity or subgraph that it names is not reported,
 although mermaid.js does nothing with it there: it names an entity or subgraph
@@ -37,14 +37,14 @@ Examples of **incorrect** code for this rule:
 %% eslint @mmd-toolkit/er-no-undef: error
 erDiagram
   A
-  style Z fill:red
+  style Z fill: red
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/er-no-undef: error
 erDiagram
   p[Person]
-  style Person fill:red
+  style Person fill: red
 ```
 
 Examples of **correct** code for this rule:
@@ -53,7 +53,7 @@ Examples of **correct** code for this rule:
 %% eslint @mmd-toolkit/er-no-undef: error
 erDiagram
   A
-  style A fill:red
+  style A fill: red
   class A c
 ```
 

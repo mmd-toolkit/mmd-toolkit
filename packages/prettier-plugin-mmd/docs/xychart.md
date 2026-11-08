@@ -567,9 +567,12 @@ xychart
 The `:` of `accTitle` and `accDescr` touches the keyword and has one space after
 it, as in the other diagrams (see
 [Accessibility statements](./journey.md#accessibility-statements)). The text has
-no whitespace at its ends, and a run of spaces and tabs inside it is printed as
-one space, which the Db keeps (`accTitle: a   b` has the title `a   b` and is
-printed `accTitle: a b`). A text written on a later line, a colon written on a
+no whitespace at its ends. A run of spaces and tabs inside the text of an
+`accDescr` is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+and that of an `accTitle` stays as written, since the browser shows it as a
+tooltip, which the Db keeps (`accTitle: a  b` has the title `a  b` and is
+printed `accTitle: a  b`). A text written on a later line, a colon written on a
 later line than the keyword, and whitespace before the colon are printed on one
 line: the line breaks are whitespace to the lexer, and the text of the statement
 is the same. An `accTitle:` or `accDescr:` without text, at the end of the text,

@@ -774,6 +774,12 @@ Db が同じになる外側の空白を、兄弟の図種と同じ形に揃え�
 本文行を文より 1 段深くし、独立した `}` を文の字下げに揃えます。
 コメント行だけが入ったブロックも同じ配置です。
 Mermaid が説明から LF 後の字下げを除くためです。
+`accTitle` か `accDescr` の値の最後にある directive は、後ろに空白が続いても、
+テキストの後ろにある directive と同じに読むので、
+前の空白を除いてテキストに接します。
+`accTitle: Column zero  %%{x}%%  ` も `accTitle: Column zero  %%{x}%%` も、
+`accTitle: Column zero%%{x}%%` と印字します。
+[fixture: direction-and-accessibility/acctitle-trailing-directive-touches]
 `accDescr` と `{` の間は、元が接していても空白 1 個にします。
 keyword と本文の開始を見分けやすくするためです。
 1 行のブロックの文字は、括弧に接して書かれていても、

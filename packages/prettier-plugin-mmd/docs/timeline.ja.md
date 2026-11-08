@@ -751,8 +751,10 @@ timeline %%{init: {}}%%TD
 `accTitle` と `accDescr` の `:` はキーワードに接し、後ろに空白 1 つを置きます。
 journey と同じ形です。
 テキストの両端の空白は Db が持たないので落とします。
-中の空白とタブの連なりは、空白 1 つで印字します。
+`accDescr` のテキストの中の空白とタブの連なりは、空白 1 つで印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+`accTitle` はブラウザがツールチップとして表示するので、
+その連なりは書かれたまま残します。
 [fixture: accessibility-statements/colon-touches-keyword]
 [fixture: accessibility-statements/text-whitespace-dropped]
 [fixture: accessibility-statements/title-and-accessibility-runs-collapsed]

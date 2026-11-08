@@ -20,8 +20,9 @@ import {
   walk,
   protectSemicolonPrefixes,
 } from "./layout.ts"
-import type { Source } from "./source.ts"
+import type { Source, Trivia } from "./source.ts"
 import {
+  findDirectiveEndingAt,
   findStructuralToken,
   findStructuralTokenEndingBefore,
   findTokenEndingBefore,
@@ -386,9 +387,24 @@ function layoutUsecaseAccessibility(
   ]
   rules.set(separator.range[0], "none")
   if (valueRange !== null) {
-    atoms.push({ start: valueRange[0], end: valueRange[1] })
-    rules.set(valueRange[0], "space")
-    joinedBefore.add(valueRange[0])
+    // Directives that end the value, as they do when whitespace followed them,
+    // are read as ones that stand after the text: each touches what comes
+    // before it, without the whitespace there, so that the same text is
+    // printed in one form.
+    const directives = findTrailingDirectives(source, valueRange)
+    const textEnd =
+      directives.length === 0
+        ? valueRange[1]
+        : trimEnd(source, directives[0].range[0])
+    if (textEnd > valueRange[0]) {
+      atoms.push({ start: valueRange[0], end: textEnd })
+      rules.set(valueRange[0], "space")
+      joinedBefore.add(valueRange[0])
+    }
+    for (const directive of directives) {
+      atoms.push({ start: directive.range[0], end: directive.range[1] })
+      rules.set(directive.range[0], "none")
+    }
   }
   return {
     atoms: protectSemicolonPrefixes(source, start, end, atoms),
@@ -397,6 +413,26 @@ function layoutUsecaseAccessibility(
     joinedBefore,
     lineBreaks: "kept",
   }
+}
+
+/** The directives that end the range, with only whitespace between them, in order. */
+function findTrailingDirectives(source: Source, range: Range): Trivia[] {
+  const directives: Trivia[] = []
+  let end = range[1]
+  for (;;) {
+    const directive = findDirectiveEndingAt(source, end)
+    if (directive === undefined || directive.range[0] < range[0]) break
+    directives.unshift(directive)
+    end = trimEnd(source, directive.range[0])
+  }
+  return directives
+}
+
+/** The offset after the last character before `offset` that is not whitespace. */
+function trimEnd(source: Source, offset: number): number {
+  let end = offset
+  while (end > 0 && isWhitespace(source.text[end - 1])) end--
+  return end
 }
 
 /** Trims exterior common whitespace while keeping complete embedded trivia. */

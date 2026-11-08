@@ -35,7 +35,7 @@ since: v0.1.0
 %% eslint @mmd-toolkit/requirement-no-unclosed-description-block: error
 requirementDiagram
   accDescr { x
-  requirement r {
+    requirement r {
     id: 1
   }
   element e {

@@ -73,8 +73,6 @@ jobs:
           node-version: "lts/*"
       - name: Install Packages
         run: pnpm install --frozen-lockfile
-      - name: Build parser for rule document checks
-        run: pnpm --filter @mmd-toolkit/parser run build
       - name: Markdown document check
         run: pnpm run lint:md
       - name: Document check

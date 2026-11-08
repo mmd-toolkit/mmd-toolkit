@@ -8,8 +8,8 @@ Code:
   1 | xychart
   2 |   accDescr { Monthly sales
     |   ^~~~~~~~~~ [1]
-  3 |   title Sales
-  4 |   line [1, 2]
+  3 |     title Sales
+  4 |     line [1, 2]
   5 |
 
 [1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
@@ -18,8 +18,8 @@ Code:
         Output:
           1 | xychart
           2 |   accDescr { Monthly sales
-          3 |   title Sales
-          4 |   line [1, 2]
+          3 |     title Sales
+          4 |     line [1, 2]
           5 | }
           6 |
 ---

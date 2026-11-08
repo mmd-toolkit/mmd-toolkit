@@ -36,6 +36,9 @@ since: v0.1.0
 タイトル、設定、タスクのテキストの中やタスクのデータの中の `accDescr {}` は、
 そのテキストの一部なので報告しない。
 
+整形ツールは、空のブロックを `accDescr {}` と書く。
+波括弧の中に空白がある例は、書いたまま示している。
+
 この規則に**反する**コードの例:
 
 ```mmd
@@ -46,6 +49,7 @@ gantt
   Design :2024-01-06, 3d
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/gantt-no-empty-description-block: error
 gantt

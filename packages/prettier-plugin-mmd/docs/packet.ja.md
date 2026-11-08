@@ -341,7 +341,7 @@ colon 後の brace は行値です。
 
 ```mmd
 packet
-  accTitle: Access words
+  accTitle: Access  words
   accDescr: Details words
 ```
 

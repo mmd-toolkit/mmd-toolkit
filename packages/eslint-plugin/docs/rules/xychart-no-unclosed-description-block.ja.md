@@ -35,8 +35,8 @@ mermaid.js はエラーなしに受理する。
 %% eslint @mmd-toolkit/xychart-no-unclosed-description-block: error
 xychart
   accDescr { Monthly sales
-  title Sales
-  line [1, 2]
+    title Sales
+    line [1, 2]
 ```
 
 この規則に**従う**コードの例:

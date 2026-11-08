@@ -651,17 +651,16 @@ tokens only when they touch, as `A%%{init: {}}%%B-->C`, which is the id `AB`,
 and a rule that wrote a space between touching tokens would need an exception
 for every such place. [fixture:
 whitespace-between-tokens/compat-empty-description-block-own-line] [fixture:
-whitespace-between-tokens/header-and-tabs-collapsed] A run of spaces and tabs
-inside the name of a subgraph, which becomes its title, is printed as one space
-(see
-[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
-except in a markdown string, which wraps and then draws the run. [fixture:
-whitespace-between-tokens/subgraph-name-kept] [fixture:
-subgraph-header/title-runs-kept] In a `style`, `classDef`, or
-`linkStyle` statement, each style has no whitespace before its first `:` and one
-space after it where the value is not empty. The `,` between styles has no
-whitespace before it and one space after it: `style A fill :#f00,stroke:  #333`
-is printed `style A fill: #f00, stroke: #333`. [fixture:
+whitespace-between-tokens/header-and-tabs-collapsed] Whitespace that is part of
+a value is kept, such as the whitespace inside the name of a subgraph, which
+becomes its title, and which mermaid.js draws as an HTML label (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+[fixture: whitespace-between-tokens/subgraph-name-kept] [fixture:
+subgraph-header/title-runs-kept] In a `style`, `classDef`, or `linkStyle`
+statement, each style has no whitespace before its first `:` and one space after
+it where the value is not empty. The `,` between styles has no whitespace before
+it and one space after it: `style A fill :#f00,stroke:  #333` is printed
+`style A fill: #f00, stroke: #333`. [fixture:
 whitespace-between-tokens/style-colon-spaced] [fixture:
 whitespace-between-tokens/style-colon-empty-value-kept] [fixture:
 whitespace-between-tokens/style-comma-before-dropped] A `linkStyle` with link
@@ -720,10 +719,10 @@ statement] [test: U+2029 after the comma of a flowchart style statement] The
 text of a `direction` statement before `direction` and after the value is the
 exception, kept as written (see [Direction](#direction)). [fixture:
 whitespace-between-tokens/class-def-and-link-style-spaced] [fixture:
-whitespace-between-tokens/subgraph-quoted-name-kept] In a `style`,
-`classDef`, or `linkStyle` statement, the whitespace before the first style,
-which the statement rule of mermaid.js reads, becomes one space, which stands
-before a directive there, as under [Directives](#directives):
+whitespace-between-tokens/subgraph-quoted-name-kept] In a `style`, `classDef`,
+or `linkStyle` statement, the whitespace before the first style, which the
+statement rule of mermaid.js reads, becomes one space, which stands before a
+directive there, as under [Directives](#directives):
 `style A %%{init: {}}%%  fill:red` is printed `style A %%{init: {}}%%fill:red`,
 and the two give the same Db. The whitespace between the words of a style value
 stays as written. [fixture:
@@ -779,7 +778,7 @@ flowchart LR
 ```
 
 Input
-([whitespace-between-tokens/subgraph-name-kept-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-runs-collapsed-input.mmd)):
+([whitespace-between-tokens/subgraph-name-kept-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-kept-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -789,11 +788,11 @@ flowchart LR
 ```
 
 Output
-([whitespace-between-tokens/subgraph-name-kept-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-runs-collapsed-output.mmd)):
+([whitespace-between-tokens/subgraph-name-kept-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-kept-output.mmd)):
 
 ```mmd
 flowchart LR
-  subgraph a b
+  subgraph a   b
     A
   end
 ```
@@ -1258,9 +1257,11 @@ has none for an ordinary accessibility line, so it uses the same compact form as
 [C4](./c4.md#accessibility-lines), [class](./class.md#labels) and
 [usecase](./usecase.md#direction-and-accessibility).
 
-A run of spaces and tabs inside the value is printed as one space (see
+A run of spaces and tabs inside the value of an `accDescr` is printed as one
+space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
-and inline `%%` and `#` remain value text. [fixture:
+and that of an `accTitle` stays as written, since the browser shows it as a
+tooltip; inline `%%` and `#` remain value text. [fixture:
 accessibility-lines/value-runs-collapsed] [fixture:
 accessibility-lines/block-runs-collapsed] [fixture:
 accessibility-lines/inline-percent-hash] An empty or whitespace-only value keeps

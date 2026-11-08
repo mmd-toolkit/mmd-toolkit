@@ -1706,7 +1706,10 @@ treeView-beta
 
 Use shared `accTitle: value` and `accDescr: value`: colon touching the keyword,
 one space before trimmed nonempty values, no trailing space for empty values.
-Print a run of spaces and tabs inside the value as one space, and retain
+Print a run of spaces and tabs inside the value of an `accDescr` as one space
+(see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+but not that of an `accTitle`, which the browser shows as a tooltip, and retain
 brace-looking line values and trivia boundaries. The common converter permits
 these equivalent outer gaps. Never borrow text from the next line.
 

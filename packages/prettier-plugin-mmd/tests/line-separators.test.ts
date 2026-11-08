@@ -3377,6 +3377,16 @@ const c4Examples: readonly (readonly [string, string, string])[] = [
     'C4Context\n  Person(a, "A \u00a0\ufeff\u000b\u000c\u3000B")\n',
   ],
   [
+    "c4: ls-inside-label-keeps-runs",
+    'C4Context\nPerson(a,"A  \u2028  B","D  E")',
+    'C4Context\n  Person(a, "A  \u2028  B", "D E")\n',
+  ],
+  [
+    "c4: ps-inside-description-keeps-runs",
+    'C4Context\nPerson(a,"A  B","D  \u2029  E")',
+    'C4Context\n  Person(a, "A B", "D  \u2029  E")\n',
+  ],
+  [
     "c4: tab-before-quote",
     'C4Context\nPerson(a,\t"A", "D")',
     'C4Context\n  Person(a,\t"A", "D")\n',

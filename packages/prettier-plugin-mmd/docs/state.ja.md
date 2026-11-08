@@ -599,8 +599,10 @@ stateDiagram-v2
 `accTitle` と `accDescr` の後の `:` は、キーワードに接し、
 後に空白を 1 つ置きます。
 `accTitle  :  t` は `accTitle: t` になります。
-テキストの中の空白とタブの連なりは、空白 1 つで印字します。
+`accDescr` のテキストの中の空白とタブの連なりは、空白 1 つで印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+`accTitle` はブラウザがツールチップとして表示するので、
+その連なりは書かれたまま残します。
 [fixture: descriptions-and-labels/acc-text-runs-collapsed]
 [fixture: descriptions-and-labels/acc-block-runs-collapsed]
 説明と遷移のラベルの `:` の両側には、
@@ -1579,7 +1581,7 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
 - 値のテキスト。
   説明、ラベル、ノート、`as` の後の id、擬似状態の名前、
   スタイル（最初の `:` と `,` の前後の空白を除きます）、
-  `class` 文の CSS クラス、`accTitle` と `accDescr` のテキスト。
+  `class` 文の CSS クラス、`accTitle` のテキスト。
   [fixture: whitespace-between-tokens/style-text-kept]
   [fixture: descriptions-and-labels/acc-text-runs-collapsed]
   [fixture: aliases/id-kept]

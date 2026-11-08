@@ -9,7 +9,7 @@ Code:
     |               ^~~~~~~~~~ [1]
   2 |   tf 01 ui Cart
   3 |   tf 02 cmd Buy { item }
-  4 |   tf 03 evt Bought
+  4 | tf 03 evt Bought
   5 |
 
 [1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.

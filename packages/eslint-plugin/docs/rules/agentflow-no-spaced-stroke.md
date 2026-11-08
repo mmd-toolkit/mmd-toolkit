@@ -15,10 +15,10 @@ The `recommended` configuration does not enable this rule.
 <!-- end auto-generated rule notice -->
 
 The mermaid.js documentation writes the name of a style directly before the `:`,
-as in `stroke:#f00`. A `stroke` with whitespace before the `:` is not a form
+as in `stroke: #f00`. A `stroke` with whitespace before the `:` is not a form
 that the documentation shows. mermaid.js finds the colour of the arrowhead of a
 link by looking for `stroke:` in the styles of the link, so it does not give the
-arrowhead the colour of `stroke :#f00`, although a browser draws the line in
+arrowhead the colour of `stroke : #f00`, although a browser draws the line in
 that colour.
 
 ## Rule Details
@@ -29,9 +29,9 @@ named `stroke` in lower case when whitespace stands between the name and the
 in a `classDef`, whether or not a link takes it. A `stroke` in a `style`
 statement is not reported: `style` gives a style to a vertex or a subgraph and
 never to a link, so there is no arrowhead for the form to affect, and a browser
-reads `stroke :#f00` there as it reads `stroke:#f00`. A name that only ends with
-`stroke`, such as `text-stroke`, and a name in another case, such as `Stroke`,
-are not reported.
+reads `stroke : #f00` there as it reads `stroke: #f00`. A name that only ends
+with `stroke`, such as `text-stroke`, and a name in another case, such as
+`Stroke`, are not reported.
 
 Examples of **incorrect** code for this rule:
 
@@ -39,14 +39,14 @@ Examples of **incorrect** code for this rule:
 %% eslint @mmd-toolkit/agentflow-no-spaced-stroke: error
 agentflow-beta TB
   A --> B
-  linkStyle 0 stroke :#f00,stroke-width:4px
+  linkStyle 0 stroke : #f00, stroke-width: 4px
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/agentflow-no-spaced-stroke: error
 agentflow-beta TB
   A --> B
-  classDef hot stroke :#f00
+  classDef hot stroke : #f00
   class A hot
 ```
 
@@ -56,14 +56,14 @@ Examples of **correct** code for this rule:
 %% eslint @mmd-toolkit/agentflow-no-spaced-stroke: error
 agentflow-beta TB
   A --> B
-  linkStyle 0 stroke:#f00,stroke-width:4px
+  linkStyle 0 stroke: #f00, stroke-width: 4px
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/agentflow-no-spaced-stroke: error
 agentflow-beta TB
   A --> B
-  classDef hot stroke:#f00
+  classDef hot stroke: #f00
   class A hot
 ```
 
@@ -73,10 +73,10 @@ This rule has no options.
 
 ## When Not To Use It
 
-mermaid.js reads `stroke :#f00` as intended where the drawing does not depend on
-the arrowhead, and a pull request of mermaid.js gives arrowheads the colour of
-their line in the browsers that support it. Turn the rule off if you write the
-form on purpose, or once that change is part of the version you use.
+mermaid.js reads `stroke : #f00` as intended where the drawing does not depend
+on the arrowhead, and a pull request of mermaid.js gives arrowheads the colour
+of their line in the browsers that support it. Turn the rule off if you write
+the form on purpose, or once that change is part of the version you use.
 
 ## Related Rules
 

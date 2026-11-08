@@ -34,6 +34,9 @@ meant to do nothing.
 
 An empty block before or after a point on the same line is reported too.
 
+The formatter prints an empty block as `accDescr {}`. The example with
+whitespace inside the braces is shown as written.
+
 Examples of **incorrect** code for this rule:
 
 ```mmd
@@ -43,6 +46,7 @@ quadrantChart
   A: [0.3, 0.6]
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/quadrant-no-empty-description-block: error
 quadrantChart

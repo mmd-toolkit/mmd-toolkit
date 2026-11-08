@@ -14,11 +14,11 @@
 
 <!-- end auto-generated rule notice -->
 
-mermaid.js の文書では、`stroke:#f00` のように、
+mermaid.js の文書では、`stroke: #f00` のように、
 スタイルの名前を `:` の直前に書く。
 `:` の前に空白のある `stroke` は、文書に示されている形ではない。
 mermaid.js は、リンクのスタイルの中の `stroke:` を探して矢じりの色を決めるので、
-ブラウザーが `stroke :#f00` の色で線を描いても、矢じりにはその色を付けない。
+ブラウザーが `stroke : #f00` の色で線を描いても、矢じりにはその色を付けない。
 
 ## 規則の詳細
 
@@ -29,7 +29,7 @@ mermaid.js は、リンクのスタイルの中の `stroke:` を探して矢じ�
 小文字の `stroke` という名前と `:` の間に空白があるスタイルを報告する。
 `style` の文の `stroke` は、`style` が頂点か subgraph にスタイルを付け、
 リンクには付けないので、この形が影響を与える矢じりがなく、
-ブラウザーはそこで `stroke :#f00` を `stroke:#f00` と同じに読むため、
+ブラウザーはそこで `stroke : #f00` を `stroke: #f00` と同じに読むため、
 報告しない。
 `text-stroke` のように名前が `stroke` で終わるだけのものや、
 `Stroke` のように大文字と小文字が違う名前は報告しない。
@@ -40,14 +40,14 @@ mermaid.js は、リンクのスタイルの中の `stroke:` を探して矢じ�
 %% eslint @mmd-toolkit/flowchart-no-spaced-stroke: error
 flowchart LR
   A --> B
-  linkStyle 0 stroke :#f00,stroke-width:4px
+  linkStyle 0 stroke : #f00, stroke-width: 4px
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-spaced-stroke: error
 flowchart LR
   A --> B
-  classDef hot stroke :#f00
+  classDef hot stroke : #f00
   class A hot
 ```
 
@@ -57,14 +57,14 @@ flowchart LR
 %% eslint @mmd-toolkit/flowchart-no-spaced-stroke: error
 flowchart LR
   A --> B
-  linkStyle 0 stroke:#f00,stroke-width:4px
+  linkStyle 0 stroke: #f00, stroke-width: 4px
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-spaced-stroke: error
 flowchart LR
   A --> B
-  classDef hot stroke:#f00
+  classDef hot stroke: #f00
   class A hot
 ```
 
@@ -75,7 +75,7 @@ flowchart LR
 ## 使わないとき
 
 描画が矢じりに左右されないところでは、
-mermaid.js は `stroke :#f00` を意図どおりに読む。
+mermaid.js は `stroke : #f00` を意図どおりに読む。
 mermaid.js のプルリクエストには、対応するブラウザーで、
 矢じりに線と同じ色を与える変更がある。
 この形を意図して書くときや、使っている版にその変更が入ったときは、

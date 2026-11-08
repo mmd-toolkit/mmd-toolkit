@@ -55,7 +55,7 @@ Examples of **incorrect** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/eventmodeling-no-duplicate-description: error
 eventmodeling accDescr: First
-  tf 01 evt Bought accDescr: Second
+tf 01 evt Bought accDescr: Second
 ```
 
 Examples of **correct** code for this rule:
@@ -63,7 +63,7 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/eventmodeling-no-duplicate-description: error
 eventmodeling accDescr: Second
-  tf 01 evt Bought
+tf 01 evt Bought
 ```
 
 ## Options

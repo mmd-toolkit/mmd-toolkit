@@ -38,7 +38,7 @@ Examples of **incorrect** code for this rule:
 %% eslint @mmd-toolkit/block-no-spaced-class-id: error
 block
   A B
-  classDef c fill:#f00
+  classDef c fill: #f00
   class A, B c
 ```
 
@@ -48,7 +48,7 @@ Examples of **correct** code for this rule:
 %% eslint @mmd-toolkit/block-no-spaced-class-id: error
 block
   A B
-  classDef c fill:#f00
+  classDef c fill: #f00
   class A,B c
 ```
 

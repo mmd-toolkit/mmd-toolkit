@@ -6,13 +6,13 @@ Filename: eventmodeling-no-redefined-data-incorrect-1.mmd
 
 Code:
   1 | eventmodeling
-  2 |   tf 01 evt Bought [[Payload]]
-  3 |   data Payload {
-  4 | first
+  2 | tf 01 evt Bought [[Payload]]
+  3 | data Payload {
+  4 |   first
   5 | }
-  6 |   data Payload {
-    |        ^~~~~~~ [1]
-  7 | second
+  6 | data Payload {
+    |      ^~~~~~~ [1]
+  7 |   second
   8 | }
   9 |
 

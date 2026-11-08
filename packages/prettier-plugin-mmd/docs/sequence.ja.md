@@ -683,7 +683,10 @@ sequenceDiagram
 行の残りは先頭と末尾の空白を除いて書かれたまま残します。
 `title   My diagram  ` は `title My diagram` と印字します。
 テキストの中の空白とタブの連なりも、空白 1 つで印字します。
-`accTitle` と `accDescr` も同じです。
+`accDescr` も同じです。
+`accTitle` はブラウザがツールチップとして表示するので、
+その連なりは書かれたまま残します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 [fixture: title/accessibility-runs-collapsed]
 [fixture: title/text-padding-dropped]
 [fixture: title/text-padding-dropped-colon]

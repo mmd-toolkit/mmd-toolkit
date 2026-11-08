@@ -34,8 +34,8 @@ Examples of **incorrect** code for this rule:
 %% eslint @mmd-toolkit/xychart-no-unclosed-description-block: error
 xychart
   accDescr { Monthly sales
-  title Sales
-  line [1, 2]
+    title Sales
+    line [1, 2]
 ```
 
 Examples of **correct** code for this rule:

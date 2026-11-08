@@ -50,7 +50,7 @@ mermaid.js が、コメント行をブロックの文字として保つからで
 eventmodeling accDescr { first
   tf 01 ui Cart
   tf 02 cmd Buy { item }
-  tf 03 evt Bought
+tf 03 evt Bought
 ```
 
 この規則に**従う**コードの例:
@@ -58,9 +58,9 @@ eventmodeling accDescr { first
 ```mmd
 %% eslint @mmd-toolkit/eventmodeling-no-unclosed-description-block: error
 eventmodeling accDescr { first }
-  tf 01 ui Cart
-  tf 02 cmd Buy { item }
-  tf 03 evt Bought
+tf 01 ui Cart
+tf 02 cmd Buy { item }
+tf 03 evt Bought
 ```
 
 ```mmd
@@ -68,7 +68,7 @@ eventmodeling accDescr { first }
 eventmodeling accDescr {
   uses { here
 }
-  tf 01 cmd Buy { item }
+tf 01 cmd Buy { item }
 ```
 
 ## オプション

@@ -25,7 +25,7 @@ since: v0.1.0
 図のどこにも実体の名前や subgraph の id としてないものを報告する。
 関係で名指す実体や、どの subgraph の中で名指す実体も、定義済みと数える。
 
-別名は名前と数えず、`p[Person]` の後の `style Person fill:red` は報告する。
+別名は名前と数えず、`p[Person]` の後の `style Person fill: red` は報告する。
 実体の名前を囲む引用符は名前を変えないので、`style A` は `"A"` を名指せる。
 名指す実体や subgraph より前の文は、mermaid.js がそこで何もしなくても、
 図の実体や subgraph を正しく名指しているので報告しない。
@@ -36,14 +36,14 @@ since: v0.1.0
 %% eslint @mmd-toolkit/er-no-undef: error
 erDiagram
   A
-  style Z fill:red
+  style Z fill: red
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/er-no-undef: error
 erDiagram
   p[Person]
-  style Person fill:red
+  style Person fill: red
 ```
 
 この規則に**従う**コードの例:
@@ -52,7 +52,7 @@ erDiagram
 %% eslint @mmd-toolkit/er-no-undef: error
 erDiagram
   A
-  style A fill:red
+  style A fill: red
   class A c
 ```
 

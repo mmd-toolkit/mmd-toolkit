@@ -29,10 +29,10 @@ This rule applies to block diagrams (`block-beta` and `block`). It reports a
 Reordering or adding styles is not reported.
 
 A `style` with nothing after the id changes nothing and is not compared.
-`style A ,` after `style A fill:#f00` is reported, because its empty parts
+`style A ,` after `style A fill: #f00` is reported, because its empty parts
 replace the fill. Comparisons ignore whitespace at the ends and around the
 colon, and treat a run of whitespace in a value as one space. Other spellings
-are compared as written, so `fill:#F00` after `fill:#f00` is reported.
+are compared as written, so `fill: #F00` after `fill: #f00` is reported.
 
 Statements for the same block are compared across composite blocks. The styles
 of a `classDef` are not compared.
@@ -43,8 +43,8 @@ Examples of **incorrect** code for this rule:
 %% eslint @mmd-toolkit/block-no-redefined-style: error
 block
   A
-  style A fill:#f00
-  style A stroke:#00f
+  style A fill: #f00
+  style A stroke: #00f
 ```
 
 Examples of **correct** code for this rule:
@@ -53,7 +53,7 @@ Examples of **correct** code for this rule:
 %% eslint @mmd-toolkit/block-no-redefined-style: error
 block
   A
-  style A fill:#f00,stroke:#00f
+  style A fill: #f00, stroke: #00f
 ```
 
 ## Options

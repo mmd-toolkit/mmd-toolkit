@@ -791,11 +791,14 @@ reason: among Db-equal forms, follow the sibling diagram types unless there is a
 reason of this diagram's own. Agentflow has none for an ordinary accessibility
 line, so C4, class, usecase and both graph types share `accTitle: value` and
 `accDescr: value`. The colon touches the keyword, one ASCII space precedes the
-trimmed value, and internal whitespace, inline `%%` and `#` remain value text.
-[fixture: accessibility/tight-colon] [fixture: accessibility/spaced-colon]
-[fixture: accessibility/value-runs-collapsed] [fixture:
-accessibility/inline-percent-hash] Empty and whitespace-only values keep
-`accTitle:` or `accDescr:` without a following space. [fixture:
+trimmed value, and inline `%%` and `#` remain value text. A run of spaces and
+tabs inside the value of an `accDescr` is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+and that of an `accTitle` stays as written, since the browser shows it as a
+tooltip. [fixture: accessibility/tight-colon] [fixture:
+accessibility/spaced-colon] [fixture: accessibility/value-runs-collapsed]
+[fixture: accessibility/inline-percent-hash] Empty and whitespace-only values
+keep `accTitle:` or `accDescr:` without a following space. [fixture:
 accessibility/empty-title] [fixture: accessibility/empty-description] [fixture:
 accessibility/accessibility-empty-null] [corpus fixture:
 agentflow/db-acctitle-eof] [corpus fixture: agentflow/db-accdescr-eof]

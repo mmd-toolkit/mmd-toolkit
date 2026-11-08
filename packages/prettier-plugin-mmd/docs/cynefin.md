@@ -474,7 +474,7 @@ Output
 
 ```mmd
 cynefin-beta
-  accTitle: Access Title
+  accTitle: Access  Title
   accDescr: Access Description
 ```
 

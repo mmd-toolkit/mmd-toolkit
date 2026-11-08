@@ -17,9 +17,9 @@ const restored: readonly DbPair[] = [
     after: { title: "Sales report" },
   },
   {
-    name: "a tab in the texts of the accessibility statements",
-    before: { accTitle: "a\tb", accDescr: "c \t d" },
-    after: { accTitle: "a b", accDescr: "c d" },
+    name: "a tab in the description of the accessibility statements",
+    before: { accDescr: "c \t d" },
+    after: { accDescr: "c d" },
   },
 ]
 
@@ -38,6 +38,11 @@ const kept: readonly DbPair[] = [
     name: "the whitespace at the end of a title, which is another exception",
     before: { title: "Sales  " },
     after: { title: "Sales" },
+  },
+  {
+    name: "a run in the title of the accessibility statements, which the browser shows as a tooltip",
+    before: { accTitle: "a  b" },
+    after: { accTitle: "a b" },
   },
   {
     name: "a run in a name that other statements refer to",

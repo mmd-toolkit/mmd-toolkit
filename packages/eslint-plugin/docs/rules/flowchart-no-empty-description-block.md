@@ -35,6 +35,9 @@ in later.
 
 Empty blocks are also reported after a statement or the header on the same line.
 
+The formatter prints an empty block as `accDescr {}`. The examples with
+whitespace inside the braces are shown as written.
+
 Examples of **incorrect** code for this rule:
 
 ```mmd
@@ -44,6 +47,7 @@ flowchart LR
   accDescr {}
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-empty-description-block: error
 flowchart LR
@@ -51,6 +55,7 @@ flowchart LR
   accDescr { }
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-empty-description-block: error
 flowchart LR

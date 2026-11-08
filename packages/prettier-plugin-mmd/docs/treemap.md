@@ -611,7 +611,7 @@ Output
 
 ```mmd
 treemap
-  accTitle: Access words
+  accTitle: Access  words
 ```
 
 ### Description blocks

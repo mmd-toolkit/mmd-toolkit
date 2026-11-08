@@ -68,7 +68,7 @@ classDiagram
 %% eslint @mmd-toolkit/class-no-undef: error
 classDiagram
   class A
-  style A fill : #f00 , stroke-width: 2px
+  style A fill: #f00, stroke-width: 2px
 ```
 
 ```mmd

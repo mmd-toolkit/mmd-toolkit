@@ -347,9 +347,23 @@ pnpm --filter @mmd-toolkit/eslint-plugin run check:docs
 テスターが規則を `rule-to-test/` の下で有効にするため、
 `@mmd-toolkit/` の下でも有効にすると、すべての報告が二重になるからです。
 
+`update` は、例もフォーマッターが印字する形にします。
+`tools/rule-docs.ts` が `prettier-plugin-mmd` を Prettier に渡すので、
+Prettier は文書の `mmd` コードブロックを整形し、`check:docs` は、
+Prettier が変える文書があると失敗します。
+これらのコマンドは、
+先に parser とプラグインを build する（`build:docs-deps`）ので、
+例は作業ツリーのフォーマッターが印字します。
+空白の有無が要点で、わざと書いたまま残す例には、コードブロックの直前に、
+英日とも `<!-- prettier-ignore -->` を置き、規則の詳細の文で、
+書いたまま示していることを述べます。
+フォーマッターが印字する形を変えたら、`update:docs` を実行し、
+続けて `test:update` を実行してスナップショットの差分を読み、
+書き換えた文書の本文から、変わった行を引いているコードスパンを探します。
+
 文書のほかの部分は手で書きます。
 `check:docs` は何も書かず、次のときに失敗します。
-`src/rules/index.ts` か生成する部分が最新でないとき、
+`src/rules/index.ts`、生成する部分、例のどれかが最新でないとき、
 規則に英語の文書かテストのファイルがないとき、
 どの規則のものでもない文書（英語の原本のない日本語の文書を含む）があるとき、
 英語の文書の最初の段落が、その規則の `meta.docs.description` でないとき、

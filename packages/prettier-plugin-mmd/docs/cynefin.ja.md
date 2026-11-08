@@ -478,7 +478,7 @@ colon 後のかっこは行の値として残します。
 
 ```mmd
 cynefin-beta
-  accTitle: Access Title
+  accTitle: Access  Title
   accDescr: Access Description
 ```
 

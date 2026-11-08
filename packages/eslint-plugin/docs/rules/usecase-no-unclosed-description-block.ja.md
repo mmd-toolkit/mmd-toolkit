@@ -40,8 +40,8 @@ since: v0.1.0
 %% eslint @mmd-toolkit/usecase-no-unclosed-description-block: error
 usecase-beta
   accDescr { first
-  A --> B
-  actor C@{ type: hollow }
+    A --> B
+    actor C@{ type: hollow }
   D
 ```
 

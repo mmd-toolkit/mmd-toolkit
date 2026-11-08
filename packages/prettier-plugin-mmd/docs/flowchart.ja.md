@@ -671,10 +671,9 @@ mermaid.js には、接しているときだけ読むトークンがあります
 接するトークンの間に空白を書く規則は、その場所ごとの例外を要するからです。
 [fixture: whitespace-between-tokens/header-and-tabs-collapsed]
 [fixture: whitespace-between-tokens/compat-empty-description-block-own-line]
-subgraph の名前はそのタイトルになり、中の空白とタブの連なりは、
-空白 1 つにして印字します。
+subgraph の名前の中など、値の一部である空白は保ちます。
+subgraph の名前はそのタイトルになり、mermaid.js は HTML のラベルとして描きます。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
-ただし、Markdown 文字列は、折り返してその連なりを描くので除きます。
 [fixture: whitespace-between-tokens/subgraph-name-kept]
 [fixture: subgraph-header/title-runs-kept]
 `style`・`classDef`・`linkStyle` の文では、
@@ -809,7 +808,7 @@ flowchart LR
 ```
 
 入力
-([whitespace-between-tokens/subgraph-name-kept-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-runs-collapsed-input.mmd)):
+([whitespace-between-tokens/subgraph-name-kept-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-kept-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -819,11 +818,11 @@ flowchart LR
 ```
 
 出力
-([whitespace-between-tokens/subgraph-name-kept-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-runs-collapsed-output.mmd)):
+([whitespace-between-tokens/subgraph-name-kept-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-kept-output.mmd)):
 
 ```mmd
 flowchart LR
-  subgraph a b
+  subgraph a   b
     A
   end
 ```
@@ -1303,8 +1302,10 @@ flowchartの通常のアクセシビリティ行に固有の理由はないの�
 [C4](./c4.ja.md#アクセシビリティの行)、[class](./class.ja.md#ラベル)、
 [usecase](./usecase.ja.md#direction-and-accessibility)と同じ短い形にします。
 
-値の中の空白とタブの連なりは、空白 1 つで印字します。
+`accDescr` の値の中の空白とタブの連なりは、空白 1 つで印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+ブラウザーが `accTitle` をツールチップとして表示するので、
+その連なりは書かれたまま残します。
 インラインの`%%`と`#`は値の文字として保ちます。
 [fixture: accessibility-lines/value-runs-collapsed]
 [fixture: accessibility-lines/block-runs-collapsed]

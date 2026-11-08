@@ -1,8 +1,10 @@
 import type { Node, Range } from "@mmd-toolkit/ast"
 import type { Doc } from "prettier"
 import type { Atom, GapRule } from "./atoms.ts"
+import { appendItems } from "./collections.ts"
 import type { TextEdit } from "./layout.ts"
 import { expectToken, expectValue, replaceInAtoms } from "./layout.ts"
+import { collapseRunEdits } from "./text-runs.ts"
 import {
   findLinesWithOwnSemicolons,
   isInsideStyleRuleStretch,
@@ -422,9 +424,11 @@ export function trimTextAfterKeyword(
     (comment) => comment.range[0] === to,
   )
   let position = to
+  let headEnd = to
   for (;;) {
     let blanks = position
     while (blanks > offset && isSpaceOrTab(source.text[blanks - 1])) blanks--
+    headEnd = blanks
     if (blanks < position) {
       // The blanks before a directive that ends the text are the run that the
       // same text has when the directive stands after it: one space.
@@ -436,6 +440,12 @@ export function trimTextAfterKeyword(
     const directive = findDirectiveEndingAt(source, blanks)
     if (directive === undefined || directive.range[0] <= offset) break
     position = directive.range[0]
+  }
+  // A text that directives end holds them, so the collapse of the runs in the
+  // texts does not reach it; the runs before them are the same as when the
+  // directives stand after the text.
+  if (position !== to) {
+    appendItems(edits, collapseRunEdits(source, offset, headEnd))
   }
   replaceInAtoms(source, atoms, edits)
 }

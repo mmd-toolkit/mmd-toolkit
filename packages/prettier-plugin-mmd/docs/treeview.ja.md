@@ -1682,7 +1682,10 @@ treeView-beta
 共有の `accTitle: value` と `accDescr: value` を使います。
 colon は keyword に付け、trim した非空値の前は space 1 個、
 空なら colon までです。
-値の中の空白とタブの連なりは空白 1 つにして印字します。
+`accDescr` の値の中の空白とタブの連なりは空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+`accTitle` はブラウザがツールチップとして表示するので、
+その連なりは書かれたまま残します。
 brace らしい行値と trivia の境界を保ちます。
 共通の converter が許す同等の外側の gap を選びます。
 次の行の文字を値に取りません。

@@ -12,6 +12,7 @@ import {
 } from "./indentation-lines.ts"
 import type { LeadingDirectives } from "./indentation-lines.ts"
 import { keptAsWritten, replaceInAtoms } from "./layout.ts"
+import { collapseRunEdits } from "./text-runs.ts"
 import type { Source } from "./source.ts"
 import {
   findDirectiveEndingAt,
@@ -112,18 +113,16 @@ export function layoutIshikawaLine(
   }
   const atoms: Atom[] = [{ start, end }]
   // Where the literal ends with a directive, as it does when blanks followed
-  // it, the blanks before the directive are those that the same literal has
-  // when the directive stands after it: one space (docs/ishikawa.md, Trailing
-  // whitespace).
+  // it, its runs, the blanks before the directive among them, are those that
+  // the same literal has when the directive stands after it: one space each
+  // (docs/ishikawa.md, Trailing whitespace).
   const directive = findDirectiveEndingAt(source, end)
   if (directive !== undefined && directive.range[0] > start) {
-    let blanks = directive.range[0]
-    while (blanks > start && isSpaceOrTab(source.text[blanks - 1])) blanks--
-    if (blanks < directive.range[0]) {
-      replaceInAtoms(source, atoms, [
-        { range: [blanks, directive.range[0]], replacement: " " },
-      ])
-    }
+    replaceInAtoms(
+      source,
+      atoms,
+      collapseRunEdits(source, start, directive.range[0]),
+    )
   }
   return { ...keptAsWritten(start, end), atoms }
 }

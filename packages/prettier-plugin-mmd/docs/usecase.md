@@ -711,10 +711,16 @@ direction-and-accessibility/a11y-trimmed] [test: usecase: a11y-unicode-exterior]
 Description blocks reuse [class multiline values](./class.md#multi-line-values):
 align body lines one step inside the statement and a separate `}` with the
 statement, including a block whose only content is a comment line. Mermaid
-discards indentation after LF from the description. Put one space between
-`accDescr` and `{`, including when they originally touched, so the keyword and
-body opener have a visible boundary, and put the text of a block on one line
-between one space on each side, as `{ a }`. [fixture:
+discards indentation after LF from the description. A directive that ends the
+value of an `accTitle` or an `accDescr`, with whitespace after it, is read as
+one that stands after the text, and touches the text, without the whitespace
+before it: `accTitle: Column zero  %%{x}%%  ` and
+`accTitle: Column zero  %%{x}%%` are both printed
+`accTitle: Column zero%%{x}%%`. [fixture:
+direction-and-accessibility/acctitle-trailing-directive-touches] Put one space
+between `accDescr` and `{`, including when they originally touched, so the
+keyword and body opener have a visible boundary, and put the text of a block on
+one line between one space on each side, as `{ a }`. [fixture:
 direction-and-accessibility/keyword-brace-touching] [fixture:
 direction-and-accessibility/keyword-brace-space] [fixture:
 direction-and-accessibility/keyword-brace-run] [test: accessibility revisions:

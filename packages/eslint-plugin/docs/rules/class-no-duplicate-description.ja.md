@@ -46,7 +46,7 @@ classDiagram
 %% eslint @mmd-toolkit/class-no-duplicate-description: error
 classDiagram
   accDescr {
-first
+    first
   }
   accDescr: second
   class A

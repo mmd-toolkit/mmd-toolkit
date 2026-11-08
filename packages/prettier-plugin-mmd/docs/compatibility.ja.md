@@ -736,13 +736,13 @@ timeline の event と state の説明は、末尾の空白とタブだけが違
 
 テキスト中の空白とタブの連なりは、
 mermaid.js がその連なりを描かずにテキストを描く場合に、空白 1 つで印字します。
-`title Sales   report` は `title Sales report` と印字し、`accTitle: A`、タブ、
-`B` は `accTitle: A B` と印字し、
+`title Sales   report` は `title Sales report` と印字し、`accDescr: A`、タブ、
+`B` は `accDescr: A B` と印字し、
 `quadrant-1 a    b` は `quadrant-1 a b` と印字します。
-対象は、すべての図種の `title`、`accTitle`、`accDescr` と、
+対象は、すべての図種の `title` と `accDescr` と、
 次の図種が SVG のテキストとして描くテキストです。
 architecture 図、ブロック図、象限チャート、radar チャートのラベル、
-flowchart の subgraph の名前と題、class 図のメンバーと注釈、ER 図の属性の型、
+class 図のメンバーと注釈、ER 図の属性の型、
 requirement 図のフィールドとクラスの並び、sequence 図のテキスト（メッセージ、
 ノート、ブロック、box、`as` の後の説明）、C4 図の引数のうち label、technology、
 type、description、Cynefin 図と ishikawa 図のリテラル、
@@ -781,25 +781,39 @@ railroad 図の文字列と special sequence です。
   [fixture: sequence/whitespace-between-tokens/html-tag-runs-kept]
   [fixture: pie/title/white-space-property-kept]
 - mermaid.js が HTML として描くラベル。
-  flowchart と agentflow 図のノードと辺、state 図の説明、遷移、ノート、
-  mindmap のノード、class 図の関係のラベル、usecase 図のすべてのテキストです。
+  flowchart と agentflow 図のノードと辺と subgraph の題、state 図の説明、遷移、
+  ノート、mindmap のノード、class 図の関係のラベル、
+  usecase 図のすべてのテキストです。
   最大幅に達したラベルは `white-space: break-spaces` で配置され、
   連なりを描きます。
   （[`createText`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/createText.ts#L61-L77)）。
   ラベルがその幅に達するかどうかは、フォントと幅の設定によりますが、
   フォーマッターはそれらを知りません。
   連なりを持つ長いラベルを、連なりがある形とない形で描くと、画素が異なりました。
+  subgraph の題は、subgraph の幅を渡されて同じ関数を通ります。
+  連なりを持つ Markdown 文字列の題は、異なって描かれました。
+  swimlane 図のレーンの Markdown でない題も、題ごとにその関数を呼ぶので、
+  異なって描かれました。
+  通常の subgraph の Markdown でない題は、9 つの場合（長い題、
+  小さい `wrappingWidth`、`htmlLabels: false`、入れ子の subgraph、
+  辺）で同じに描かれましたが、フォーマッターは場合を見分けられないので、
+  ほかのラベルと同じく書かれたまま残します。
+  [fixture: flowchart/subgraph-header/title-runs-kept]
   [fixture: flowchart/label-inner-whitespace/inner-whitespace-kept]
   [fixture: agentflow/labels/labels-padding]
   [fixture: state/descriptions-and-labels/text-kept]
   [fixture: mindmap/node-text/inner-whitespace-kept]
   [fixture: usecase/labels/label-interior-kept] [fixture: class/labels/spaced]
-- markdown 文字列である、flowchart の subgraph の名前または題。
-  ほかの種類の題に対しては、subgraph は題が収まるように広がるので、
-  題は折り返さず、連なりは描かれません。
-  markdown 文字列は、上のラベルと同じく最大幅で配置されます。
-  連なりを持つ長いものを、連なりがある形とない形で描くと、画素が異なりました。
-  [fixture: flowchart/subgraph-header/title-runs-kept]
+- `accTitle`。
+  mermaid.js は SVG の `title` 要素に入れ、
+  ブラウザーは図の上にポインターを止めるとツールチップとして表示します。
+  AGENTS.md はツールチップも比較します。
+  ツールチップが連なりを表示するかは、
+  ヘッドレスブラウザーで確かめられなかったので、テキストは書かれたまま残します。
+  アクセシブルな名前は両方のテキストで同じでしたが、それで判断はしません。
+  `accDescr` は `desc` 要素で、ツールチップとして表示されません。
+  [fixture: pie/accessibility-lines/accessibility-inner-tab]
+  [fixture: quadrant/titles-and-accessibility-statements/text-inner-whitespace-kept]
 - C4 の文の引数のうち、label、technology、type、description でないもの（sprite、
   tags、link）と、本来の位置にない名前付き属性。
   mermaid.js の読み方は、その場所によって変わります。
@@ -820,16 +834,14 @@ mermaid.js は連なりを Db に残します。
 その空白をブラウザーが詰めます。
 （[`drawText`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/svgDraw.js#L259-L303)
 など）。
-アクセシビリティのテキストは `title` と `desc` 要素に入れ、
-アクセシブルな名前でも連なりを詰めます。
+`accDescr` は `desc` 要素に入れ、アクセシブルな説明でも連なりを詰めます。
 各場合の両方のテキストを mermaid.js 12.3.0 で Chromium に描きました。
 書かれた形で 1 回、
 折り返しを見るために連なりの後に約 140 文字を足して 1 回です。
 画素は同じで、生成された id、ランダムに描かれる曲線、
 テキストノードの空白を除いた SVG も同じでした。
-Chromium のアクセシビリティツリーで、
-`title` と `aria-label` が与えるアクセシブルな名前も、
-`desc` が与えるアクセシブルな説明も、両方のテキストで同じでした。
+Chromium のアクセシビリティツリーで、`desc` が与えるアクセシブルな説明は、
+両方のテキストで同じでした。
 ブロック図と requirement 図のクラスの並び（`class="node c   d"`）と、
 sequence 図の色の引数（`fill="rgb(1,   2, 3)"`）だけは、
 SVG の 1 つの属性のテキストが異なります。
@@ -1886,13 +1898,13 @@ Db や字句解析器が読むものは変えません。
   空白やタブではなく、テキストの文字です。
   文字列とその後の単語は、間の空白を保ちます。
   `"a" b` と `"a"b` は別のテキストだからです。
-  引用符なしのテキスト、名前、title、アクセシビリティのテキストの中の、
+  引用符なしのテキスト、名前、title、アクセシビリティの説明の中の、
   空白とタブの連なりは、空白 1 つで印字します。
   （[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)）。
   [fixture: keywords-and-texts/inner-runs-collapsed]
   [fixture: keywords-and-texts/string-then-text-whitespace-kept]
   [fixture: points/name-inner-runs-collapsed]
-  [fixture: titles-and-accessibility-statements/text-inner-runs-collapsed]
+  [fixture: titles-and-accessibility-statements/text-inner-whitespace-kept]
 - キーワード `title` や `classDef` の後に、空白なしで続く単語は、
   それ自身が単語です。
   `title1: [0.3, 0.6]` は名前 `title1` の点で、空白を置くと title になります。

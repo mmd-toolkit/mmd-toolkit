@@ -644,8 +644,10 @@ sequenceDiagram
 `title` and `title:` are followed by one space, and the rest of the line is kept
 as written, except for the whitespace at its start and at its end:
 `title   My diagram  ` is printed `title My diagram`, and a run of spaces and
-tabs inside the text is printed as one space too. The `accTitle` and the
-`accDescr` follow. [fixture: title/accessibility-runs-collapsed] [fixture:
+tabs inside the text is printed as one space too. The `accDescr` follows, and
+the `accTitle` stays as written, since the browser shows it as a tooltip (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+[fixture: title/accessibility-runs-collapsed] [fixture:
 title/text-padding-dropped] [fixture: title/text-padding-dropped-colon] A title
 of spaces and tabs only stays as written. [fixture: title/title-blank-kept] A
 directive between the keyword and the one whitespace character after it stays

@@ -184,7 +184,10 @@ export const c4ArgumentFields: Readonly<
   RelIndex: ["index", "from", "to", "label", "techn", "descr"],
 }
 
-/** The arguments of a C4 statement that are texts, written as a string or bare. */
+/**
+ * The arguments of a C4 statement that are texts, written as a string or
+ * bare.
+ */
 export const c4TextFields: ReadonlySet<string> = new Set([
   "label",
   "techn",

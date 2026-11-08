@@ -58,7 +58,7 @@ treeView-beta
 %% eslint @mmd-toolkit/treeview-no-empty-description-block: error
 treeView-beta
   accDescr {
-%% TODO
+    %% TODO
   }
   root/
 ```

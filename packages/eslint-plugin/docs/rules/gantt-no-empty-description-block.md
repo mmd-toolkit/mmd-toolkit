@@ -36,6 +36,9 @@ An empty block on the line of another statement, as in `accDescr {} a : 1d`, is
 reported too. Inside the text of a title, a setting, or a task, or in task data,
 `accDescr {}` is part of that text and is not reported.
 
+The formatter prints an empty block as `accDescr {}`. The example with
+whitespace inside the braces is shown as written.
+
 Examples of **incorrect** code for this rule:
 
 ```mmd
@@ -46,6 +49,7 @@ gantt
   Design :2024-01-06, 3d
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/gantt-no-empty-description-block: error
 gantt

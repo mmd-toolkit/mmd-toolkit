@@ -339,7 +339,7 @@ Output
 
 ```mmd
 packet
-  accTitle: Access words
+  accTitle: Access  words
   accDescr: Details words
 ```
 

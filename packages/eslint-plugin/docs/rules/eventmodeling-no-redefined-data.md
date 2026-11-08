@@ -46,12 +46,12 @@ Examples of **incorrect** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/eventmodeling-no-redefined-data: error
 eventmodeling
-  tf 01 evt Bought [[Payload]]
-  data Payload {
-first
+tf 01 evt Bought [[Payload]]
+data Payload {
+  first
 }
-  data Payload {
-second
+data Payload {
+  second
 }
 ```
 
@@ -60,13 +60,13 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/eventmodeling-no-redefined-data: error
 eventmodeling
-  tf 01 evt Bought [[Payload01]]
-  tf 02 evt Bought [[Payload02]]
-  data Payload01 {
-first
+tf 01 evt Bought [[Payload01]]
+tf 02 evt Bought [[Payload02]]
+data Payload01 {
+  first
 }
-  data Payload02 {
-second
+data Payload02 {
+  second
 }
 ```
 

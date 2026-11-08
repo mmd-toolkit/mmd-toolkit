@@ -35,8 +35,12 @@ mermaid.js は、何もない閉じたブロックをエラーなしに受理す
 文やヘッダーの後、flow や connector の名前の中、
 `click` 文の URL やツールチップの前にある空のブロックも報告する。
 
+整形ツールは、空のブロックを `accDescr {}` と書く。
+波括弧の中に空白がある例は、書いたまま示している。
+
 この規則に**反する**コードの例:
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/agentflow-no-empty-description-block: error
 agentflow-beta TB

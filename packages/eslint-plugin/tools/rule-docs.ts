@@ -2,14 +2,16 @@
  * Renders the parts of the rule documents that come from the rules of the
  * plugin: the list of the rules in `docs/rules/index.md` and `index.ja.md`,
  * and in each rule document its title, version, and whether the `recommended`
- * configuration enables the rule. The rest of the documents is written by
- * hand. `update-docs.ts` writes the result, and `update-docs.ts --check` checks
- * that the documents hold it.
+ * configuration enables the rule. The examples are written by hand and
+ * printed as the formatter prints them (`formatMarkdown`). The rest of the
+ * documents is written by hand. `update-docs.ts` writes the result, and
+ * `update-docs.ts --check` checks that the documents hold it.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs"
 import { fileURLToPath } from "node:url"
 import type { RuleDefinition } from "@eslint/core"
 import { format, resolveConfig } from "prettier"
+import mermaidPlugin from "prettier-plugin-mmd"
 import { rules } from "../src/rules/index.ts"
 import { appendItems } from "../src/utils/collections.ts"
 
@@ -539,10 +541,17 @@ function renderRuleDocument(
   return `${withVersion.trimEnd()}\n\n${resources}\n`
 }
 
-/** `text` formatted as Prettier formats the Markdown file at `path`. */
+/**
+ * `text` formatted as Prettier formats the Markdown file at `path`. The plugin
+ * for Mermaid makes Prettier format the `mmd` code blocks too, so an example
+ * is what the formatter prints, unless a `<!-- prettier-ignore -->` comment
+ * before its block keeps it as written. The plugin is passed as an object, not
+ * by name: a name would make Prettier load the built package, not the one the
+ * tests of this package use.
+ */
 async function formatMarkdown(text: string, path: string): Promise<string> {
   const options = await resolveConfig(path)
-  return format(text, { ...options, filepath: path })
+  return format(text, { ...options, filepath: path, plugins: [mermaidPlugin] })
 }
 
 /**

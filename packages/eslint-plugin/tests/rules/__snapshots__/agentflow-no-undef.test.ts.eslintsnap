@@ -7,7 +7,7 @@ Filename: agentflow-no-undef-incorrect-1.mmd
 Code:
   1 | agentflow-beta TB
   2 |   A --> B
-  3 |   style C fill:red
+  3 |   style C fill: red
     |         ^ [1]
   4 |
 

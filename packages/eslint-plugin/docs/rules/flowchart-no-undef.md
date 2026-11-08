@@ -32,7 +32,7 @@ defined. A statement before the vertex that it names is not reported, although a
 `class` there does nothing and a `click` there does not make the vertex
 clickable. Once a `style` has created a vertex for an undefined id, a later
 `style`, `class`, or `click` of that id is not reported: after
-`style C fill:red`, `class C foo` gives `C` the class.
+`style C fill: red`, `class C foo` gives `C` the class.
 
 `style` with the id of a link is not reported either, although it does not style
 the link: after the link, it does nothing, and before it, it adds a vertex of
@@ -44,13 +44,13 @@ Examples of **incorrect** code for this rule:
 %% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
   A --> B
-  style C fill:red
+  style C fill: red
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
-  classDef foo fill:#f00
+  classDef foo fill: #f00
   A --> B
   class C foo
 ```
@@ -67,7 +67,7 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
-  style A fill:red
+  style A fill: red
   A --> B
 ```
 
@@ -77,13 +77,13 @@ flowchart LR
   subgraph S
     A
   end
-  style S fill:red
+  style S fill: red
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
-  classDef foo fill:#f00
+  classDef foo fill: #f00
   A e1@--> B
   class e1 foo
 ```

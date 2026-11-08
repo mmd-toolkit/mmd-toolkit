@@ -614,8 +614,11 @@ sequence 図では `:` を前のものに接して書きます（詳しくは、
 折り返すラベルは連なりを描くので、連なりは空白 1 つではないからです。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 [fixture: labels/spaced]
-`accTitle` と `accDescr` のテキストの中の空白とタブの連なりは、
-空白 1 つで印字します。 [fixture: labels/accessibility-text-runs-collapsed]
+`accDescr` のテキストの中の空白とタブの連なりは、空白 1 つで印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+`accTitle` はブラウザがツールチップとして表示するので、
+その連なりは書かれたまま残します。
+[fixture: labels/accessibility-text-runs-collapsed]
 [fixture: labels/acc-block-runs-collapsed]
 クラスや namespace の角括弧の間の文字列は、括弧との間に何も置きません。
 名前と `[` の間にも何も置きません。
@@ -1398,8 +1401,7 @@ mermaid.js はテキストの終わりの空白と改行もその一部として
 
 - 値のテキスト。
   文字列、バッククォートの名前、ラベルのテキスト、
-  スタイル（最初の `:` と `,` の前後の空白を除きます）、
-  `accTitle` と `accDescr` のテキスト。
+  スタイル（最初の `:` と `,` の前後の空白を除きます）、`accTitle` のテキスト。
   [fixture: whitespace-between-tokens/style-colon-and-comma-spaced]
   [fixture: labels/accessibility-text-runs-collapsed]
 - 属性と注釈の中身、メソッドの各フィールドの中身、

@@ -44,10 +44,10 @@ Examples of **incorrect** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-redefined-subgraph: error
 flowchart LR
-  subgraph S [One]
+  subgraph S[One]
     A
   end
-  subgraph S [Two]
+  subgraph S[Two]
     B
   end
 ```
@@ -57,7 +57,7 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-redefined-subgraph: error
 flowchart LR
-  subgraph S [One]
+  subgraph S[One]
     A
   end
   subgraph S
@@ -68,10 +68,10 @@ flowchart LR
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-redefined-subgraph: error
 flowchart LR
-  subgraph S [One]
+  subgraph S[One]
     A
   end
-  subgraph S [One]
+  subgraph S[One]
     B
   end
 ```

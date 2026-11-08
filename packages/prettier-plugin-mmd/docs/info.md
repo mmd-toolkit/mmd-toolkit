@@ -166,7 +166,7 @@ Output
 
 ```mmd
 info
-  accTitle: Access words
+  accTitle: Access  words
   accDescr: Details words
 ```
 

@@ -23,7 +23,7 @@ Code:
   2 |   A --> B
   3 |   accDescr { x
     |   ^~~~~~~~~~ [1]
-  4 |   B --> C
+  4 |     B --> C
   5 |
 
 [1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
@@ -33,7 +33,7 @@ Code:
           1 | flowchart LR
           2 |   A --> B
           3 |   accDescr { x
-          4 |   B --> C
+          4 |     B --> C
           5 | }
           6 |
 ---

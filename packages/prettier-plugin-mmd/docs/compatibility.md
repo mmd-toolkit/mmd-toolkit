@@ -678,20 +678,19 @@ and compare the SVG and the pixels before the exception stays.
 
 A run of spaces and tabs inside a text is printed as one space where mermaid.js
 draws the text without the run: `title Sales   report` is printed
-`title Sales report`, `accTitle: A`, a tab, and `B` is printed `accTitle: A B`,
-and `quadrant-1 a    b` is printed `quadrant-1 a b`. The texts are the `title`,
-the `accTitle`, and the `accDescr` of every diagram type, and the texts that
-these diagram types draw as SVG text: the labels of an architecture diagram, a
-block diagram, a quadrant chart, and a radar chart, the names and titles of the
-subgraphs of a flowchart, the members and annotations of a class diagram, the
-types of the attributes of an ER diagram, the fields and class lists of a
-requirement diagram, the texts of a sequence diagram (the messages, notes,
-blocks, boxes, and descriptions after `as`), the labels, technologies, types,
-and descriptions among the arguments of a C4 diagram, the literals of a Cynefin
-diagram and an ishikawa diagram, the labels of a packet and a Venn diagram, the
-links of a Wardley map, the names of a treemap, and the strings and special
-sequences of a railroad diagram. A string of spaces and tabs only is a string
-like any other: `["   "]` is printed `[" "]`. [fixture:
+`title Sales report`, `accDescr: A`, a tab, and `B` is printed `accDescr: A B`,
+and `quadrant-1 a    b` is printed `quadrant-1 a b`. The texts are the `title`
+and the `accDescr` of every diagram type, and the texts that these diagram types
+draw as SVG text: the labels of an architecture diagram, a block diagram, a
+quadrant chart, and a radar chart, the members and annotations of a class
+diagram, the types of the attributes of an ER diagram, the fields and class
+lists of a requirement diagram, the texts of a sequence diagram (the messages,
+notes, blocks, boxes, and descriptions after `as`), the labels, technologies,
+types, and descriptions among the arguments of a C4 diagram, the literals of a
+Cynefin diagram and an ishikawa diagram, the labels of a packet and a Venn
+diagram, the links of a Wardley map, the names of a treemap, and the strings and
+special sequences of a railroad diagram. A string of spaces and tabs only is a
+string like any other: `["   "]` is printed `[" "]`. [fixture:
 pie/title/title-inner-text] [fixture:
 pie/accessibility-lines/accessibility-inner-tab] [fixture:
 quadrant/keywords-and-texts/inner-runs-collapsed] [fixture:
@@ -719,27 +718,36 @@ These stay as written:
   which a `style` or a `classDef` can use to keep the runs of a label. [fixture:
   sequence/whitespace-between-tokens/html-tag-runs-kept] [fixture:
   pie/title/white-space-property-kept]
-- The labels that mermaid.js draws as HTML: the nodes and the edges of a
-  flowchart and an agentflow diagram, the descriptions, transitions, and notes
-  of a state diagram, the nodes of a mindmap, the labels of a relation of a
-  class diagram, and all texts of a use case diagram. A label that reaches its
-  maximum width is laid out with `white-space: break-spaces`, which draws the
-  runs
+- The labels that mermaid.js draws as HTML: the nodes, the edges, and the titles
+  of the subgraphs of a flowchart and an agentflow diagram, the descriptions,
+  transitions, and notes of a state diagram, the nodes of a mindmap, the labels
+  of a relation of a class diagram, and all texts of a use case diagram. A label
+  that reaches its maximum width is laid out with `white-space: break-spaces`,
+  which draws the runs
   ([`createText`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/createText.ts#L61-L77)),
   and whether a label does depends on the font and on the width setting, which
   the formatter does not know. A long label with runs was drawn with and without
-  them, and the pixels differed. [fixture:
-  flowchart/label-inner-whitespace/inner-whitespace-kept] [fixture:
+  them, and the pixels differed. The title of a subgraph goes through the same
+  function with the width of the subgraph: a title that is a markdown string
+  with runs was drawn differently, and so was a title of another kind in a lane
+  of a swimlane diagram, which calls the function for every title. A title of
+  another kind in an ordinary subgraph was drawn the same in nine cases (a long
+  title, a small `wrappingWidth`, `htmlLabels: false`, nested subgraphs, edges),
+  but it stays as written like the other labels, since the formatter cannot tell
+  the cases apart. [fixture: flowchart/subgraph-header/title-runs-kept]
+  [fixture: flowchart/label-inner-whitespace/inner-whitespace-kept] [fixture:
   agentflow/labels/labels-padding] [fixture:
   state/descriptions-and-labels/text-kept] [fixture:
   mindmap/node-text/inner-whitespace-kept] [fixture:
   usecase/labels/label-interior-kept] [fixture: class/labels/spaced]
-- The name or the title of a subgraph of a flowchart that is a markdown string.
-  A subgraph grows to fit a title of another kind, so that the title does not
-  wrap, and the runs are not drawn; the markdown string is laid out at a maximum
-  width like the labels above, and a long one with runs was drawn with and
-  without them, and the pixels differed. [fixture:
-  flowchart/subgraph-header/title-runs-kept]
+- The `accTitle`. mermaid.js puts it into the `title` element of the SVG, which
+  the browser shows as a tooltip when the pointer rests on the figure, and
+  AGENTS.md compares tooltips. Whether the tooltip shows the runs could not be
+  seen in a headless browser, so the text stays as written; the accessible name,
+  which was the same for both texts, does not decide it. The `accDescr` is a
+  `desc` element, which no tooltip shows. [fixture:
+  pie/accessibility-lines/accessibility-inner-tab] [fixture:
+  quadrant/titles-and-accessibility-statements/text-inner-whitespace-kept]
 - The arguments of a C4 statement that are not a label, a technology, a type, or
   a description (the sprite, the tags, the link), and a named attribute at
   another place than its own, which mermaid.js reads in a way that depends on
@@ -758,13 +766,12 @@ These stay as written:
 mermaid.js keeps the runs in the Db. The renderers put these texts into `text`
 elements of the SVG, whose whitespace the browser collapses
 ([`drawText`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/svgDraw.js#L259-L303)
-is one of them), and the accessibility texts into the `title` and `desc`
-elements, whose runs the accessible name also collapses. Both texts of each case
-were drawn with mermaid.js 12.3.0 in Chromium, once as written and once with
-about 140 characters after the run to see the wrap, and the pixels were the
-same, and so was the SVG without the generated ids, the curves drawn at random,
-and the whitespace in text nodes. The accessible name that a `title` or an
-`aria-label` gives, and the accessible description that a `desc` gives, were the
+is one of them), and the `accDescr` into a `desc` element, whose runs the
+accessible description also collapses. Both texts of each case were drawn with
+mermaid.js 12.3.0 in Chromium, once as written and once with about 140
+characters after the run to see the wrap, and the pixels were the same, and so
+was the SVG without the generated ids, the curves drawn at random, and the
+whitespace in text nodes. The accessible description that a `desc` gives was the
 same for both texts in the accessibility tree of Chromium. The SVG differs in
 the text of one attribute only for the class list of a block diagram and a
 requirement diagram (`class="node c   d"`) and for the arguments of a color of a
@@ -1779,13 +1786,13 @@ around them. What the Db or the lexer reads stays. See
 - A form feed between two words, which is a character of the text and no space
   or tab. A string and the words after it keep the whitespace between them,
   since `"a" b` and `"a"b` are different texts. A run of spaces and tabs inside
-  a text without quotes, a name, a title, or an accessibility text is printed as
-  one space (see
+  a text without quotes, a name, a title, or an accessibility description is
+  printed as one space (see
   [Runs of whitespace in a text that are drawn the same](#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
   [fixture: keywords-and-texts/inner-runs-collapsed] [fixture:
   keywords-and-texts/string-then-text-whitespace-kept] [fixture:
   points/name-inner-runs-collapsed] [fixture:
-  titles-and-accessibility-statements/text-inner-runs-collapsed]
+  titles-and-accessibility-statements/text-inner-whitespace-kept]
 - A word after the keyword `title` or `classDef` with no whitespace between them
   is a word of its own: `title1: [0.3, 0.6]` is a point named `title1`, and a
   space would make a title. [fixture:

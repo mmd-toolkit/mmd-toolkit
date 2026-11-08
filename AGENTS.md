@@ -109,8 +109,8 @@ Correctness is defined by the pinned mermaid.js.
      description of an alias of a state diagram, defined in
      [Texts after a keyword that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#texts-after-a-keyword-that-are-drawn-the-same);
    - the runs of spaces and tabs inside the texts that mermaid.js draws without
-     them: titles, accessibility texts, and the labels of the diagram types that
-     draw them as SVG text, defined in
+     them: titles, accessibility descriptions, and the labels of the diagram
+     types that draw them as SVG text, defined in
      [Runs of whitespace in a text that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same);
    - the whitespace around the arguments of a `click` call in flowchart,
      agentflow, class, and Gantt diagrams, defined in
@@ -183,6 +183,7 @@ same change.
 | Types of the tree (`src/ast.ts`, `src/ast/*.ts`) | ast             | parser, prettier-plugin, eslint-plugin          |
 | The parser API (`parse()`, errors, traversal)    | parser          | prettier-plugin, eslint-plugin, mmdfmt          |
 | The plugin and its language (`src/index.ts`)     | prettier-plugin | mmdfmt                                          |
+| The printed form of the rule documents' examples | prettier-plugin | eslint-plugin                                   |
 
 ## Principles
 

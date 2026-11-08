@@ -34,6 +34,9 @@ since: v0.1.0
 [xychart-no-unclosed-description-block](./xychart-no-unclosed-description-block.ja.md)
 が報告する。
 
+整形ツールは、空のブロックを `accDescr {}` と書く。
+波括弧の中に空白がある例は、書いたまま示している。
+
 この規則に**反する**コードの例:
 
 ```mmd
@@ -43,6 +46,7 @@ xychart
   line [1, 2]
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/xychart-no-empty-description-block: error
 xychart

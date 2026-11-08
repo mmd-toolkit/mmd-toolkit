@@ -22,7 +22,7 @@ Filename: class-no-duplicate-description-incorrect-2.mmd
 Code:
   1 | classDiagram
   2 |   accDescr {
-  3 | first
+  3 |     first
   4 |   }
   5 |   accDescr: second
     |   ^~~~~~~~~~~~~~~~ [1]

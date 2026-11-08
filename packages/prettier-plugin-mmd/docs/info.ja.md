@@ -167,7 +167,7 @@ hidden suffix と保護 gap は保持します。
 
 ```mmd
 info
-  accTitle: Access words
+  accTitle: Access  words
   accDescr: Details words
 ```
 
