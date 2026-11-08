@@ -595,10 +595,14 @@ gantt
 
 A `weekday` or `weekend` statement stands as the keyword, one space, and the
 day, however much whitespace and how many line breaks were written between them.
-The day keeps the case in which it is written; the Db lowers it. [fixture:
-weekday-and-weekend/one-space] [fixture: weekday-and-weekend/day-case-one-form]
-[fixture: weekday-and-weekend/day-on-next-line] The whitespace at the end of the
-line is dropped, after `inclusiveEndDates` too. [fixture:
+The days `monday` and `friday` are printed in lower case, as the examples in the
+documentation of mermaid.js write them (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same));
+any other day keeps the case in which it is written, and the Db lowers it.
+[fixture: weekday-and-weekend/one-space] [fixture:
+weekday-and-weekend/day-case-one-form] [fixture:
+weekday-and-weekend/day-on-next-line] The whitespace at the end of the line is
+dropped, after `inclusiveEndDates` too. [fixture:
 weekday-and-weekend/trailing-whitespace-dropped] A directive between the keyword
 and the day stays where it is. [fixture:
 weekday-and-weekend/directive-between-keyword-and-day]
@@ -646,13 +650,17 @@ gantt
 
 ### Keyword case
 
-Keywords keep the case in which they are written. mermaid.js reads them in any
-case and the Db is the same, so nothing forces the case; it is the author's, and
-the printer does not rewrite it. [fixture: keyword-case/keywords-one-form] [fixture:
-keyword-case/click-keywords-kept] The header `gantt` is detected in lower case
-only, and the tags of a task are read in exactly the case of `active`, `done`,
-`crit`, `milestone`, and `vert`, so `Done` is no tag and is not changed.
-[fixture: keyword-case/tags-case-kept]
+The keywords `axisFormat`, `dateFormat`, `excludes`, `section`, `tickInterval`,
+`title`, `weekday`, and `weekend` are printed in the case that the examples in
+the documentation of mermaid.js use (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+mermaid.js reads them in any case and the Db is the same. Any other keyword
+keeps the case in which it is written (`TodayMarker`, `Includes`,
+`INCLUSIVEENDDATES`, and the accessibility keywords). [fixture:
+keyword-case/keywords-one-form] [fixture: keyword-case/click-keywords-kept] The
+header `gantt` is detected in lower case only, and the tags of a task are read
+in exactly the case of `active`, `done`, `crit`, `milestone`, and `vert`, so
+`Done` is no tag and is not changed. [fixture: keyword-case/tags-case-kept]
 
 Input
 ([keyword-case/keywords-one-form-input.mmd](../tests/fixtures/gantt/keyword-case/keywords-one-form-input.mmd)):

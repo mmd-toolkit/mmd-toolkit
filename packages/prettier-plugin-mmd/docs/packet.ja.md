@@ -9,13 +9,14 @@
 
 ### Header
 
-作者の `packet` または `packet-beta` を第1列に置きます。
+見出しを第1列に置き、`packet-beta` は、mermaid.js の文書の例が使い、
+同じ図に描くキーワード `packet` と印字します
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
 見出しを明確にするため、通常の最初の文は次行へ移します。
 `packet` だけは直後の境界が必要で、接着した綴りを作りません。
 hidden の境界と保護された見出し・本文の組を優先します。
-[gitgraph の checkout 別名](./gitgraph.ja.md#checkout-aliases)と同じく、
-作者の同義語を `packet-beta` から `packet` へ書き換えても、
-整形の利点がないため原綴を保ちます。
+hidden YAML ブロックが接する `packet-beta` は保ちます。
+`packet-beta---` が読まれる所で `packet---` は読まれないためです。 [fixture: packet/hidden-yaml/yaml-beta-header]
 
 [fixture: packet/header/header-packet]
 
@@ -203,12 +204,18 @@ packet
 ### Quotes
 
 StringLiteral の範囲全体を保ちます。
-一重・二重・反対側の引用符、空 label と escape も含みます。
-`singleQuote` では書き換えません。
-再符号化は作者の綴りを失い、escape と前処理の新たな判断を要するためです。
+空 label と escape も含みます。
+`'` で囲まれた文字列は、内容に `'`、`"`、バックスラッシュ、改行、
+U+2028、U+2029、バッククォート、`&`、`#`、`<` がある場合を除き、
+`"` で囲んで印字します
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
+`singleQuote` は読みません。
+その他の再符号化には、escape と前処理の新たな判断が必要です。
 引用符に見える共通値は、再引用する文字列ではなく literal のままです。
 
 [fixture: packet/quotes/quotes-one-form]
+
+[fixture: packet/quotes/single-quote-sensitive-kept]
 
 [fixture: packet/quotes/quotes-single-option]
 

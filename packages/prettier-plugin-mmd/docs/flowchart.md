@@ -2036,27 +2036,35 @@ the examples are written as strings, in which `\n` is a line break:
 
 ### Direction
 
-The direction is kept as written: `TD` is not changed to `TB`, in the header or
-in a `direction` statement. [fixture: direction/header-td-one-form] [fixture:
+The header keyword `graph` is printed `flowchart`, and the header direction `TB`
+is printed `TD`, which the examples in the documentation of mermaid.js use 59
+times against 8 (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+[fixture: direction/header-keyword-one-form] [fixture:
+direction/header-td-one-form] [fixture: direction/header-tb-one-form] The
+direction of a `direction` statement is kept as written: `TD` is not changed to
+`TB`, and `TB` is not changed to `TD`. [fixture:
 direction/statement-td-kept-with-other-header] [fixture:
-direction/statement-values-kept] mermaid.js keeps the `TD` of a `direction`
-statement in a subgraph as written, so changing it there would change the
-diagram, and changing only the header would make the two disagree. In a
-`direction` statement mermaid.js reads the text before `direction` and after the
-value as text, which may hold labels and strings, and a `;` after the value
-belongs to that text and is no separator. The text is kept as written; the
-whitespace between it and `direction`, and between `direction` and the value,
-becomes one space, as between any tokens. A line such as `A[direction TB]` is a
-`direction` statement too, its vertices and links are not read, and it is
-printed so, at the indentation of its level. [fixture:
-direction/statement-holds-text-kept] The direction of the header stands after
-one space, also where a symbol touched the keyword: `graph>` is printed
-`graph >`, and `flowchart^` is printed `flowchart ^`. The whitespace is not in
-the Db, and a letter direction such as `TD` already needs the space. A directive
-between them is placed as under [Directives](#directives), and a U+2028 or
-U+2029 stays where it is. [fixture: direction/header-symbol-touching-spaced]
-[fixture: direction/header-symbol-beside-directive-kept] [test: U+2029 between
-the graph keyword and its direction]
+direction/statement-values-kept] mermaid.js keeps the direction of a `direction`
+statement in a subgraph as written in the Db, so changing it there would change
+the Db. The header of a swimlane diagram is printed with `TB` for `TD`, as the
+header of an agentflow diagram is (see [Header](./agentflow.md#header)).
+[fixture: direction/swimlane-header-td-one-form] In a `direction` statement
+mermaid.js reads the text before `direction` and after the value as text, which
+may hold labels and strings, and a `;` after the value belongs to that text and
+is no separator. The text is kept as written; the whitespace between it and
+`direction`, and between `direction` and the value, becomes one space, as
+between any tokens. A line such as `A[direction TB]` is a `direction` statement
+too, its vertices and links are not read, and it is printed so, at the
+indentation of its level. [fixture: direction/statement-holds-text-kept] The
+direction of the header stands after one space, also where a symbol touched the
+keyword: `graph>` is printed `flowchart >`, and `flowchart^` is printed
+`flowchart ^`. The whitespace is not in the Db, and a letter direction such as
+`TD` already needs the space. A directive between them is placed as under
+[Directives](#directives), and a U+2028 or U+2029 stays where it is. [fixture:
+direction/header-symbol-touching-spaced] [fixture:
+direction/header-symbol-beside-directive-kept] [test: U+2029 between the graph
+keyword and its direction]
 
 Input
 ([direction/kept-input.mmd](../tests/fixtures/flowchart/direction/kept-input.mmd)):
@@ -2431,9 +2439,8 @@ diagram or the input would be rejected:
 - whether there is whitespace around `&`: `A&B` is one vertex, `A & B` two, and
   `A &B` is rejected (a run of whitespace becomes one space, as between tokens);
   [fixture: arrow-spacing/ampersand-spacing-kept]
-- the length of an arrow (`-->` and `--->`), and the header keyword (`graph` or
-  `flowchart`); [fixture: arrow-spacing/arrow-length-kept] [fixture:
-  direction/header-keyword-one-form]
+- the length of an arrow (`-->` and `--->`); [fixture:
+  arrow-spacing/arrow-length-kept]
 - the content of directives and, apart from the uniform indentation and the ends
   of a block on one line in [Data blocks](#data-blocks), of `@{ ... }` blocks,
   which the parser does not read; [fixture:

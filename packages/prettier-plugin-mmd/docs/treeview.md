@@ -37,6 +37,22 @@ treeView-beta
   Root
 ```
 
+### Keyword case
+
+The annotation `icon(` is read in lower case only: `ICON(logos:react)` is a
+name, and stays as written. [fixture: keyword-case/icon-kept]
+
+Input (escaped): `"treeView-beta\n'plain'\nICON(logos:react)"`.
+
+Output
+([keyword-case/icon-kept-output.mmd](../tests/fixtures/treeview/keyword-case/icon-kept-output.mmd)):
+
+```mmd
+treeView-beta
+  "plain"
+  ICON(logos:react)
+```
+
 ### Modes
 
 Keep the original indentation or box-drawing mode. The mode test still examines
@@ -1517,13 +1533,16 @@ treeView-beta
 
 ### Names
 
-Keep complete bare-name and StringLiteral source spans: quote choice, empty
-names, backslashes, internal whitespace, the whitespace inside quotes,
-HTML/entity spelling and directory slashes; only the spaces and tabs at the end
-of a bare name at the end of a line go (see
-[Trailing whitespace](#trailing-whitespace)). singleQuote does not requote them.
-Even Db-equal requoting loses spelling; quoting a padded bare directory can
-change its name and file/directory type.
+Keep complete bare-name and StringLiteral source spans: empty names,
+backslashes, internal whitespace, the whitespace inside quotes, HTML/entity
+spelling and directory slashes; only the spaces and tabs at the end of a bare
+name at the end of a line go (see [Trailing whitespace](#trailing-whitespace)).
+A string between `'` is printed between `"`, unless its text holds a `'`, a `"`,
+a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+and `singleQuote` is not read. Quoting a padded bare directory can change its
+name and file/directory type. [fixture:
+treeview/names/single-quote-sensitive-kept]
 
 [fixture: treeview/names/name-bare-tail]
 

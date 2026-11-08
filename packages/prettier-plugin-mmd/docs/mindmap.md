@@ -684,10 +684,11 @@ mindmap
 
 ### Keyword case
 
-Keywords keep the case in which they are written: mermaid.js reads `::icon(` in
-any case and the Db is the same, so nothing forces the case; it is the author's,
-and the printer does not rewrite it. The header is detected in lower case only.
-[fixture: keyword-case/icon-keyword]
+`::icon(` is printed in lower case, as the examples in the documentation of
+mermaid.js write it (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)):
+mermaid.js reads it in any case and the Db is the same. The header is detected
+in lower case only. [fixture: keyword-case/icon-keyword]
 
 Input
 ([keyword-case/icon-keyword-input.mmd](../tests/fixtures/mindmap/keyword-case/icon-keyword-input.mmd)):
@@ -705,8 +706,8 @@ Output
 ```mmd
 mindmap
   root
-  ::ICON(x)
-  ::Icon(y)
+  ::icon(x)
+  ::icon(y)
 ```
 
 ### Frontmatter YAML

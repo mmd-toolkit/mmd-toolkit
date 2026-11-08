@@ -178,12 +178,15 @@ usecase-beta
 ### Labels
 
 Reuse [C4's authored value forms](./c4.md#argument-forms): bare, single-quoted,
-double-quoted and markdown labels keep their spelling and interior characters,
+double-quoted and markdown labels keep their kind and interior characters,
 including empty quoted values. Plain quotes can be Db-equal to bare text, but
 retaining the author's form avoids unnecessary rewriting; markdown changes the
 label type. Only exterior ASCII HWS outside a bare label's contributing units is
-trimmed. Internal gaps, Unicode padding, backslashes, entities and HTML stay;
-`singleQuote` does not rewrite native strings.
+trimmed. Internal gaps, Unicode padding, backslashes, entities and HTML stay; a
+string between `'` is printed between `"`, unless its text holds a `'`, a `"`, a
+backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+and `singleQuote` is not read. [fixture: labels/single-quote-sensitive-kept]
 
 [fixture: labels/label-quote-kinds] [fixture: labels/label-empty-quotes]
 [fixture: labels/label-quote-rewrite-one-form] [fixture:
@@ -318,17 +321,19 @@ usecase-beta
 ### Arrows
 
 Reuse readable [arrow spacing](./class.md#arrow-spacing): one ordinary gap on
-each side of the actual complete usecase operator. Keep direction, marker, case
-and every dash/dot, including long split closing halves whose Db length is
-fixed. Semantic operators print compact `..>:InClUdE` or the written extend
-case, then one target gap; their colon and keyword are operator syntax.
-[fixture: arrows/semantic-operator-directives] Case normalization can be
-Db-equal, but authored spelling follows the shared keyword policy. Never swap
-endpoints or translate operator families. Direction, marker, case and the dash
-and dot counts stay as written because the printer never prints a normalized Db
-operator: `A---->B` printed as `A --> B` changes the minimum length, and `A<--B`
-printed as `B --> A` changes the order of source and target. A split arrow keeps
-its dash counts even where the Db length is fixed.
+each side of the actual complete usecase operator. Keep direction, marker, and
+every dash/dot, including long split closing halves whose Db length is fixed.
+Semantic operators print compact `..>:include` and `..>:extend`, the keyword in
+lower case, as the examples in the documentation of mermaid.js write it (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+then one target gap; their colon and keyword are operator syntax. [fixture:
+arrows/semantic-operator-directives] [fixture:
+arrows/arrows-semantic-case-one-form] Never swap endpoints or translate operator
+families. Direction, marker, and the dash and dot counts stay as written because
+the printer never prints a normalized Db operator: `A---->B` printed as
+`A --> B` changes the minimum length, and `A<--B` printed as `B --> A` changes
+the order of source and target. A split arrow keeps its dash counts even where
+the Db length is fixed.
 
 [fixture: arrows/arrows-solid] [fixture: arrows/arrows-markers] [fixture:
 arrows/arrows-semantic] [fixture: arrows/arrows-length-kept] [fixture:

@@ -210,13 +210,15 @@ xychart
 
 ### Header and orientation
 
-The header is printed as written: `xychart` or `xychart-beta`, in the case
-written. mermaid.js reads them as the same diagram type, so the spelling is the
-author's, not the printer's. A header after the first stands on a line of its
-own, and none is dropped: a later header with an orientation changes the
-orientation, and one without changes nothing, but the text is the author's. A
-header with a comment or directive in its gap keeps that line break and aligns
-its continuation one level inside the header (see
+The first header is printed `xychart`, whether `xychart` or `xychart-beta` is
+written: mermaid.js reads them as the same diagram type, and the examples in its
+documentation use `xychart` (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+A header in another case stays as written. A header after the first stands on a
+line of its own, and none is dropped: a later header with an orientation changes
+the orientation, and one without changes nothing, but the text is the author's,
+with its spelling. A header with a comment or directive in its gap keeps that
+line break and aligns its continuation one level inside the header (see
 [Multi-line statements](#multi-line-statements)). [fixture:
 header-and-orientation/plain-header] [fixture:
 header-and-orientation/beta-header-one-form] [fixture:
@@ -479,15 +481,16 @@ xychart
 
 ### Numbers
 
-A number is printed as written. A number of a range or of a plot is read by
-value, so `+1`, `007`, `.5`, `-0`, and `1.50` could be written otherwise with
-the same Db; but the same digits in a category or in a title without quotes are
-text (`x-axis [007, .5]` has the categories `007` and `.5`), and changing them
-changes the chart. Normalizing only the numbers would spell the same digits two
-ways in one chart, so the number is the author's text, as the values of a sankey
-diagram are (see [Values](./sankey.md#values)). [fixture:
+A number of a range or of a plot is read by value and printed in the shortest
+form: `+3` is `3`, `1.50` is `1.5`, and `.5` is `0.5` (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+The same digits in a category or in a title without quotes are text
+(`x-axis [007, .5]` has the categories `007` and `.5`), and stay as written, as
+the values of a sankey diagram do (see [Values](./sankey.md#values)); so do a
+number with a zero at the start of its integer part (`007`) and `-0`. [fixture:
 numbers/range-numbers-one-form] [fixture: numbers/values-one-form] [fixture:
-numbers/categories-are-texts] [fixture: numbers/titles-are-texts]
+numbers/forms-kept] [fixture: numbers/categories-are-texts] [fixture:
+numbers/titles-are-texts]
 
 Input
 ([numbers/values-one-form-input.mmd](../tests/fixtures/xychart/numbers/values-one-form-input.mmd)):
@@ -839,11 +842,13 @@ xychart
 
 ### Keyword case
 
-The keywords `title`, `x-axis`, `y-axis`, `line`, `bar`, `accTitle`, and
-`accDescr` are printed in the case written. mermaid.js reads them in any case
-(`Title`, `LINE`, and `ACCTITLE:` start statements), and the Db is the same, so
-the case is the author's and nothing forces one. The Db holds the kind of a
-plot, `line` or `bar`, in lower case whatever the case written. [fixture:
+The keywords `title`, `x-axis`, `y-axis`, `line`, and `bar` are printed in the
+case that the examples in the documentation of mermaid.js use (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+mermaid.js reads them in any case (`Title` and `LINE` start statements), and the
+Db is the same. `accTitle` and `accDescr` are printed in the case written, which
+the examples do not use. The Db holds the kind of a plot, `line` or `bar`, in
+lower case whatever the case written. [fixture:
 keyword-case/statement-keywords-one-form] [fixture:
 keyword-case/accessibility-keywords-kept] [fixture:
 keyword-case/header-spelling-one-form]

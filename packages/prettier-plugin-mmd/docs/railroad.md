@@ -655,13 +655,18 @@ railroad-ebnf-beta
 
 ### Quotes
 
-Keep StringLiteral source spans unchanged: quotes, escapes, empty strings, HTML,
+Keep StringLiteral source spans unchanged: escapes, empty strings, HTML,
 entities and hidden/comment-looking text, with a run of spaces and tabs inside a
 string printed as one space, so a string of spaces and tabs only becomes one
-space. singleQuote does not rewrite these values. IR, EBNF and PEG allow both
-quote forms and backslash escapes; ABNF allows double quotes only and treats
-backslash as ordinary text. Requoting adds no formatting benefit, while trimming
-content or using the wrong escape model changes the Db.
+space. IR, EBNF and PEG allow both quote forms and backslash escapes, and a
+string between `'` is printed between `"`, unless its text holds a `'`, a `"`, a
+backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+and `singleQuote` is not read; ABNF allows double quotes only and treats
+backslash as ordinary text. Trimming content or using the wrong escape model
+changes the Db. [fixture: railroad/quotes/ir-single-quote-sensitive-kept]
+[fixture: railroad/quotes/ebnf-single-quote-sensitive-kept] [fixture:
+railroad/quotes/peg-single-quote-sensitive-kept]
 
 [fixture: railroad/quotes/abnf-backslash]
 
@@ -690,7 +695,7 @@ railroad-beta
   r = sequence(
     terminal(""),
     terminal(" 	 "),
-    nonterminal(''),
+    nonterminal(""),
     special("%%literal --- <b> plain")
   );
 ```

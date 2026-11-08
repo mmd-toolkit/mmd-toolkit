@@ -10,11 +10,14 @@ cases.
 
 ### Header
 
-Keep the exact `gitGraph` word, authored direction and optional colon. Print
-ordinary gaps as `gitGraph LR:` or `gitGraph:`; an ordinary inline first
-statement moves below the header. Direction changes the Db, while its omission
-and colon presence remain author choices. Hidden gaps and protected header/body
-groups retain their source boundaries.
+Keep the exact `gitGraph` word and the authored direction. A colon right after
+the word is removed, as the examples in the documentation of mermaid.js write
+the header without it (33 against 2; see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+while the colon after a direction stays. Print ordinary gaps as `gitGraph LR:`
+or `gitGraph`; an ordinary inline first statement moves below the header.
+Direction changes the Db, while its omission remains an author choice. Hidden
+gaps and protected header/body groups retain their source boundaries.
 
 A hidden form between `gitGraph` and the direction keeps the gap after it as
 written, because a hidden form consumes an immediately following line feed, and
@@ -228,13 +231,16 @@ gitGraph
 
 ### Quotes
 
-Print each StringLiteral as its complete source span, with
-single/double/opposite quotes and escapes unchanged. `singleQuote` does not
-rewrite it. Re-encoding would require new escape and preprocessing decisions and
-would discard the authored form.
+Print each StringLiteral as its complete source span, with escapes unchanged. A
+string between `'` is printed between `"`, unless its text holds a `'`, a `"`, a
+backslash, a line break, a backquote, `&`, `#`, or `<` (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+and `singleQuote` is not read. Other re-encoding would require new escape and
+preprocessing decisions and would discard the authored form.
 
 Fixed cases: [fixture: gitgraph/quotes/quotes-one-form] [corpus fixture:
 gitgraph/lex-string-escapes] [fixture: gitgraph/quotes/single-quote-option]
+[fixture: gitgraph/quotes/single-quote-sensitive-kept]
 
 Input (escaped): `"gitGraph\ncommit id:'A' msg:\"a'b\" tag:'a\"b'\n"`.
 
@@ -248,10 +254,11 @@ gitGraph
 
 ### References
 
-Keep Identifier and StringLiteral reference forms in branch, checkout, switch
-and merge. Preserve empty, whitespace-only, Unicode, reserved-word and
-numeric-looking quoted names. The AST already distinguishes these forms; the
-printer need not decide whether unquoting would parse.
+Keep Identifier and StringLiteral reference forms in branch, checkout and merge
+(a string is printed between `"` as under Quotes). Preserve empty,
+whitespace-only, Unicode, reserved-word and numeric-looking quoted names. The
+AST already distinguishes these forms; the printer need not decide whether
+unquoting would parse.
 
 Fixed cases: [fixture: gitgraph/references/reference-forms] [corpus fixture:
 gitgraph/lex-reference-reserved-quoted] [corpus fixture:
@@ -340,10 +347,11 @@ gitGraph
 
 ### Checkout aliases
 
-Preserve each written `checkout` or `switch`, including their positions among
-later commits. They have the same history effect, but replacing an authored
-synonym adds no formatting benefit. Unknown branches remain failures for either
-word.
+Print each `switch` as `checkout`, keeping its position among later commits:
+they have the same history effect, and the examples in the documentation of
+mermaid.js write `checkout` 160 times and never `switch` (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+Unknown branches remain failures for either word.
 
 Fixed cases: [fixture: gitgraph/checkout-aliases/alias-one-form]
 

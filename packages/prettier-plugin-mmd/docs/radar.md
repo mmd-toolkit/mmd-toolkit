@@ -321,10 +321,16 @@ radar-beta
 
 ### Numbers
 
-Print NumericLiteral source spans in entries and ticks/max/min. Preserve integer
-digits, decimal leading/trailing zeros, rounded precision, subnormals, underflow
-and overflow. Reprinting double values loses spelling and can produce exponents
-or Infinity, which radar's number grammar rejects.
+Print NumericLiteral source spans in entries and ticks/max/min. A plain decimal
+is printed in the shortest form (`1.50` is `1.5`, `5.00` is `5`; see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+Preserve a zero at the start of the integer part, rounded precision, subnormals,
+underflow and overflow. Reprinting double values loses spelling and can produce
+exponents or Infinity, which radar's number grammar rejects.
+
+[fixture: radar/numbers/shortest-form]
+
+[fixture: radar/numbers/forms-kept]
 
 [fixture: radar/numbers/raw-number-forms]
 
@@ -388,13 +394,16 @@ radar-beta
 
 ### Quotes
 
-Keep each label's complete StringLiteral source span: single/double quotes,
-opposite quotes, empty text, escapes, HTML, entities and hidden-looking text,
-with a run of spaces and tabs inside the text printed as one space, so a text of
-spaces and tabs only becomes one space: `["   "]` is printed `[" "]` (see
+Keep each label's complete StringLiteral source span: empty text, escapes, HTML,
+entities and hidden-looking text, with a run of spaces and tabs inside the text
+printed as one space, so a text of spaces and tabs only becomes one space:
+`["   "]` is printed `[" "]` (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
-singleQuote does not re-encode it. Removing an empty label changes the ID
-fallback.
+A string between `'` is printed between `"`, unless its text holds a `'`, a `"`,
+a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+and `singleQuote` is not read. Removing an empty label changes the ID fallback.
+[fixture: radar/quotes/single-quote-sensitive-kept]
 
 [fixture: radar/quotes/quotes-and-empty]
 

@@ -127,14 +127,19 @@ pie
 ### Labels
 
 XY chart の[引用符](./xychart.ja.md#引用符)を再利用します。
-引用符と原文は著者の選択なので、引用符を含む範囲全体を保ちます。
-引用符の種類、逆側の引用符、escape の綴り、空・空白だけのラベル、
+原文は著者の選択なので、引用符を含む範囲全体を保ちます。
+escape は decode せず、空・空白だけのラベル、
 entity・HTML・hidden に見える percent の文字列を残します。
-`singleQuote` でも書き換えません。
+`'` で囲まれた文字列は、内容に `'`、`"`、バックスラッシュ、改行、
+U+2028、U+2029、バッククォート、`&`、`#`、`<` がある場合を除き、
+`"` で囲んで印字します
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
+`singleQuote` は読みません。
 変換後に衝突するラベルも別の出現として残します。
 解決後の Map は原文ではないためです。
 
-固定例: [fixture: pie/labels/label-quotes] [fixture: pie/labels/label-escapes]
+固定例: [fixture: pie/labels/single-quote-sensitive-kept]
+[fixture: pie/labels/label-quotes] [fixture: pie/labels/label-escapes]
 [fixture: pie/labels/label-inner-trim-kept]
 [fixture: pie/labels/label-quote-one-form]
 [fixture: pie/labels/label-hidden-looking] [fixture: pie/labels/div-c4-label]
@@ -161,12 +166,16 @@ pie
 ### Numbers
 
 XY chart の[数](./xychart.ja.md#数)を再利用します。
-変換後の double ではなく NumericLiteral の原文を印字します。
-負のゼロ、小数の先頭ゼロ、末尾ゼロ、長い精度、ゼロや小さい slice を残します。
+普通の十進表記の NumericLiteral は最短の形で印字し、
+`1.50` は `1.5`、`2.0` は `2` にします
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
+その他は、変換後の double ではなく原文の範囲を印字します。
+負のゼロ、整数部の先頭のゼロ、長い精度、ゼロや小さい slice を残します。
 overflow と符号付き underflow は corpus の受理された読みを使い、
 不正な綴りや負の重複値は解析失敗のままです。
 
-固定例: [fixture: pie/numbers/number-spellings]
+固定例: [fixture: pie/numbers/shortest-form] [fixture: pie/numbers/forms-kept]
+[fixture: pie/numbers/number-spellings]
 [fixture: pie/numbers/number-normalize-authored]
 [fixture: pie/numbers/number-zero-small]
 

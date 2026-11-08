@@ -926,6 +926,264 @@ difference, among them a text that became a string, fails. When the pinned
 mermaid.js is updated, draw both texts of each case again and compare the SVG
 and the pixels before the exception stays.
 
+## Spellings that are drawn the same
+
+mermaid.js reads some different spellings of a token as the same token and draws
+the same figure from them: a keyword in another case, a string between `'`
+instead of `"`, a number with a zero at the end, the older keyword of a header.
+The printer writes such a spelling in one form. For the whitespace between
+tokens the form is the one that the other diagram types print for the same kind
+of gap (see the sections above). For a spelling, the form is the one that the
+examples in the documentation of the pinned mermaid.js use at least twice as
+often as any other form. Where no form is used that often, or the examples use
+none, the spelling is kept as written. The examples are the 541 fenced
+`mermaid-example` and `mermaid` blocks of the
+[syntax pages](https://github.com/mermaid-js/mermaid/tree/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax);
+the parser reads 524 of them, and the counts below are counts in those 524.
+
+Each kind was compared with mermaid.js 12.3.0 before the printer wrote its form.
+For each example that holds the spelling, the example was written again in the
+other spelling, and mermaid.js read both texts; a pair whose other spelling
+mermaid.js rejects (a `+` before a number in a pie chart) is not counted. Both
+texts were drawn in Chromium. In every counted pair the Db was the same, and the
+SVG screenshots were the same, pixel for pixel; where the same text drawn twice
+already differs (the strokes of the Agentflow shapes and of the `hourglass` of a
+flowchart are drawn at random, and so are the commit ids and the widths of the
+labels of a gitGraph), the SVG without its numbers, commit ids, and element ids
+was the same. mermaid.js draws from the Db, so the same Db is what makes the
+drawing the same; the drawings are the check that nothing else reads the text.
+
+| Kind                         | Pairs | Same Db | Drawn the same |
+| ---------------------------- | ----: | ------: | -------------: |
+| Keywords in one case         |   445 |     445 |   138 (sample) |
+| Strings between `"`          |    79 |      79 |             79 |
+| Numbers in the shortest form |    37 |      37 |             37 |
+| Header keywords              |   175 |     175 |            175 |
+| Header directions            |    75 |      75 |             75 |
+| `switch` of a gitGraph       |    27 |      27 |             27 |
+| Colon of a gitGraph header   |    31 |      31 |             31 |
+
+Of the keyword pairs a sample was drawn, and a pair whose own text, drawn twice,
+already differs was not counted.
+
+### Keywords in one case
+
+The lexers of these diagram types read a keyword in any case. The printer writes
+the keywords below in the case shown, and every other keyword as written.
+
+- ER diagram: `BT`, `classDef`, `direction`, `end`, `LR`, `many(0)`, `only one`,
+  `optionally to`, `RL`, `style`, `subgraph`, `TB`, `to`, `zero or more`.
+- Gantt chart: `axisFormat`, `dateFormat`, `excludes`, `friday`, `monday`,
+  `section`, `tickInterval`, `title`, `weekday`, `weekend`.
+- User journey: `section`, `title`.
+- Mindmap: `::icon(`.
+- Quadrant chart: `classDef`, `quadrant-1`, `quadrant-2`, `quadrant-3`,
+  `quadrant-4`, `title`, `x-axis`, `y-axis`.
+- Requirement diagram: `analysis`, `class`, `classDef`, `contains`, `copies`,
+  `demonstration`, `derives`, `designConstraint`, `direction`, `docRef`,
+  `element`, `functionalRequirement`, `high`, `id`, `inspection`,
+  `interfaceRequirement`, `low`, `LR`, `medium`, `performanceRequirement`,
+  `physicalRequirement`, `refines`, `requirement`, `risk`, `satisfies`, `style`,
+  `test`, `text`, `traces`, `type`, `verifies`, `verifymethod`.
+- Sequence diagram: `activate`, `actor`, `alt`, `and`, `as`, `autonumber`,
+  `box`, `break`, `create`, `critical`, `deactivate`, `destroy`, `else`, `end`,
+  `link`, `links`, `loop`, `Note`, `of`, `opt`, `option`, `over`, `par`,
+  `participant`, `rect`, `right`.
+- State diagram: `<<choice>>`, `<<fork>>`, `<<join>>`, `accDescr`, `accTitle`,
+  `as`, `class`, `classDef`, `direction`, `end`, `LR`, `note`, `state`, `TB`.
+- Timeline: `section`, `TD`, `title`.
+- Usecase diagram: `extend`, `include`.
+- Venn diagram: `set`, `style`, `text`, `title`, `union`.
+- XY chart: `bar`, `line`, `title`, `x-axis`, `y-axis`.
+
+The examples use the printed case of each keyword at least twice as often as any
+other case: `Note` is written seven times and `note` once, and the other
+keywords are never written in another case. [fixture:
+er/whitespace-between-tokens/keyword-case-one-form] [fixture:
+er/direction/case-one-form] [fixture: er/direction/case-bt-rl-one-form]
+[fixture: er/subgraphs/end-case-one-form] [fixture:
+er/styles-and-classes/keyword-case-one-form] [fixture:
+er/relationship-spacing/cardinality-words-case-one-form] [fixture:
+gantt/keyword-case/keywords-one-form] [fixture:
+gantt/weekday-and-weekend/day-case-one-form] [fixture:
+journey/keyword-case/keywords-one-form] [fixture:
+mindmap/keyword-case/icon-keyword] [fixture:
+quadrant/keyword-case/statement-keywords-one-form] [fixture:
+quadrant/keyword-case/quadrant-3-4-one-form] [fixture:
+quadrant/styles/class-definition-keyword-case-one-form] [fixture:
+requirement/keyword-case/keywords-one-form] [fixture:
+requirement/keyword-case/types-one-form] [fixture:
+requirement/fields/field-keywords-case-one-form] [fixture:
+requirement/fields/keyword-values-case-one-form] [fixture:
+requirement/fields/keyword-values-low-test-analysis-case-one-form] [fixture:
+requirement/relationship-spacing/relation-case-one-form] [fixture:
+requirement/relationship-spacing/relations-case-one-form] [fixture:
+requirement/styles-and-classes/keyword-case-one-form] [fixture:
+requirement/direction/case-one-form] [fixture:
+sequence/whitespace-between-tokens/keyword-case-one-form] [fixture:
+sequence/keyword-case/statements-one-form] [fixture:
+sequence/keyword-case/blocks-one-form] [fixture:
+state/whitespace-between-tokens/keyword-case-one-form] [fixture:
+state/whitespace-between-tokens/keyword-case-more-one-form] [fixture:
+state/keyword-case/pseudo-states-one-form] [fixture:
+state/keyword-case/accessibility-alias-direction-one-form] [fixture:
+timeline/keyword-case/keywords-one-form] [fixture:
+usecase/arrows/arrows-semantic-case-one-form] [fixture:
+venn/keyword-case-and-order/keyword-case-one-form] [fixture:
+xychart/keyword-case/statement-keywords-one-form]
+
+A keyword that the table does not list stays as written: one that the examples
+do not use, or use in no case twice as often as in another (the cardinality
+words `ONE OR MORE` and `MANY` of an ER diagram, the `HIDE EMPTY DESCRIPTION` of
+a state diagram), and one whose other case changes the Db or the drawing. A
+block diagram reads `COLUMNS` and `SPACE` as ids, a state diagram keeps the
+`LEFT`, `RIGHT`, and `OF` of a note in its Db as written, and a note with `LEFT`
+or `OF` was drawn differently, and a treeView reads `ICON(…)` as part of a name.
+[fixture: er/whitespace-between-tokens/keyword-case-one-form] [fixture:
+state/whitespace-between-tokens/keyword-case-one-form] [fixture:
+block/keyword-case/keywords-kept] [fixture: treeview/keyword-case/icon-kept]
+
+In the body of an ER subgraph, mermaid.js lists the keyword of a `class`,
+`classDef`, or `style` statement as a node of the subgraph, as written, so those
+three keywords keep their case there and are printed in the table's case outside
+it. [fixture: er/subgraphs/statement-keywords-case-kept]
+
+gitGraph reads `switch` as `checkout`. The examples write `checkout` 160 times
+and never `switch`, so `switch` is printed `checkout`. [fixture:
+gitgraph/checkout-aliases/alias-one-form]
+
+### Strings between `"`
+
+In cynefin, gitGraph, packet, pie, radar, railroad (the IR, EBNF, and PEG
+notations), treeView, treemap, usecase, and wardley diagrams a string can be
+written between `'` as well as between `"`, and mermaid.js reads both the same.
+The examples write 408 of the 409 strings of these diagram types between `"`;
+the one other is the label of a Wardley flow, which is read between `'` only.
+The printer writes `"`. The Prettier option `singleQuote` is not read: these ten
+diagram types are the only ones that read a string between `'` at all (the
+others reject it or read the quote marks as part of the text), and the examples
+do not use it. [fixture: cynefin/strings/strings-quotes] [fixture:
+gitgraph/quotes/quotes-one-form] [fixture: packet/quotes/quotes-one-form]
+[fixture: pie/labels/label-quote-one-form] [fixture:
+radar/quotes/quotes-and-empty] [fixture: railroad/quotes/ir-empty-and-text]
+[fixture: railroad/quotes/ebnf-empty-and-text] [fixture:
+railroad/quotes/peg-empty-and-text] [fixture: treeview/names/name-empty]
+[fixture: usecase/labels/label-quote-rewrite-one-form] [fixture:
+wardley/names-and-quotes/name-quotes-empty]
+
+A string whose text holds a `'`, a `"`, a backslash, a line break, U+2028,
+U+2029, a backquote, `&`, `#`, or `<` stays as written: it would need an escape
+between `"`, or it holds a character that mermaid.js reads in a second way (an
+entity such as `#35;`, HTML, a Markdown string). The label of a Wardley flow
+(`+'moving'>`) stays between `'`. [fixture:
+cynefin/strings/single-quote-sensitive-kept] [fixture:
+gitgraph/quotes/single-quote-sensitive-kept] [fixture:
+packet/quotes/single-quote-sensitive-kept] [fixture:
+pie/labels/single-quote-sensitive-kept] [fixture:
+radar/quotes/single-quote-sensitive-kept] [fixture:
+railroad/quotes/ir-single-quote-sensitive-kept] [fixture:
+railroad/quotes/ebnf-single-quote-sensitive-kept] [fixture:
+railroad/quotes/peg-single-quote-sensitive-kept] [fixture:
+treeview/names/single-quote-sensitive-kept] [fixture:
+treemap/names/single-quote-sensitive-kept] [fixture:
+usecase/labels/single-quote-sensitive-kept] [fixture:
+wardley/names-and-quotes/single-quote-sensitive-kept] [fixture:
+wardley/flows/flow-forward]
+
+### Numbers in the shortest form
+
+The value of a section of a pie chart, the values and the range of an xychart,
+the value of a treemap leaf, the `max`, `min`, `ticks`, and curve values of a
+radar chart, and the size of a Venn set are numbers that mermaid.js reads as
+numbers. The printer writes them with no `+`, no zero at the end of the
+fraction, no `.` at the end, and a `0` before a `.` at the start: `+1.50` is
+`1.5`, `2.0` is `2`, `3.` is `3`, and `.5` is `0.5`. Of the 213 numbers of these
+diagram types in the examples, 210 are in this form and 3 (all in xychart) have
+a zero at the end of the fraction. [fixture: pie/numbers/shortest-form]
+[fixture: xychart/numbers/range-numbers-one-form] [fixture:
+xychart/numbers/values-one-form] [fixture: treemap/numbers/shortest-form]
+[fixture: treemap/numbers/leading-dot] [fixture: radar/numbers/shortest-form]
+[fixture: radar/numbers/raw-option-numbers] [fixture:
+venn/sizes-and-numbers/absent-zero-signs] [fixture:
+venn/sizes-and-numbers/size-spaces]
+
+These numbers were also drawn with the settings that write a number as text
+(`showData` of a pie chart, `showDataLabel` of an xychart, the value labels of a
+treemap, the ticks of a radar chart), and the drawings were the same. A number
+stays as written where mermaid.js reads it as text (the `text A .5` of a Venn
+diagram, a category `007` of the x-axis of an xychart), where it has a zero at
+the start of its integer part (`007`), more than 15 digits, an exponent (`1e3`),
+or is `-0`, and in a diagram type that this section does not list: the
+coordinates of a Wardley map have a zero at the end of the fraction in 81 of its
+168 decimals. [fixture: venn/sizes-and-numbers/text-number-forms] [fixture:
+xychart/numbers/forms-kept] [fixture: pie/numbers/forms-kept] [fixture:
+radar/numbers/forms-kept] [fixture: treemap/numbers/forms-kept] [fixture:
+wardley/numbers/forms-kept]
+
+### Header keywords
+
+These diagram types read two keywords for the header, and the examples use one
+of them at least twice as often. The printer writes that one. A header that is
+followed by a hidden YAML block keeps its keyword, since `packet---` is not read
+where `packet-beta---` is.
+
+| Written        | Printed         | Examples as printed / the other |
+| -------------- | --------------- | ------------------------------- |
+| `block-beta`   | `block`         | 30 / 0                          |
+| `graph`        | `flowchart`     | 116 / 0                         |
+| `ishikawa`     | `ishikawa-beta` | 1 / 0                           |
+| `packet-beta`  | `packet`        | 4 / 0                           |
+| `sankey-beta`  | `sankey`        | 8 / 0                           |
+| `treemap`      | `treemap-beta`  | 8 / 0                           |
+| `xychart-beta` | `xychart`       | 7 / 1                           |
+
+The `aria-roledescription` of the drawing and its accessibility tree are the
+same for both keywords of each of the seven. `graph` and `flowchart` are both
+drawn as `flowchart-v2`. [fixture: block/header/block-beta-one-form] [fixture:
+flowchart/direction/header-keyword-one-form] [fixture:
+ishikawa/header/header-valid] [fixture: packet/header/header-beta] [fixture:
+packet/hidden-yaml/yaml-beta-header] [fixture: sankey/header/sankey-beta]
+[fixture: treemap/header/common] [fixture:
+xychart/header-and-orientation/beta-header-one-form]
+
+A header in another case (`ISHIKAWA`, `sankey-BETA`, `XYCHART-BETA`) stays as
+written. [fixture: ishikawa/header/header-stable] [fixture:
+sankey/header/upper-case-beta] [fixture:
+xychart/header-and-orientation/second-header-spelling-and-case-kept]
+
+`stateDiagram` and `stateDiagram-v2` stay as written: the examples use `-v2` 17
+times and the other 5 times, and mermaid.js draws a state diagram differently
+under the two. Another header has one keyword only, or the examples use none of
+its other keyword. [fixture: state/header/spellings-kept]
+
+### The direction of a header
+
+The direction `TB` of a flowchart header is printed `TD`, which the examples use
+59 times against 8. The direction `TD` of an agentflow or swimlane header is
+printed `TB`, which the examples use 10 times in agentflow and once in swimlane,
+and `TD` never. A `direction` statement stays as written in all of them:
+mermaid.js keeps the direction of the statement as written in the Db. [fixture:
+flowchart/direction/header-td-one-form] [fixture:
+flowchart/direction/statement-td-kept-with-other-header] [fixture:
+flowchart/direction/statement-values-kept] [fixture:
+agentflow/header/header-direction-spelling] [fixture:
+flowchart/direction/swimlane-header-td-one-form]
+
+### The header of a gitGraph
+
+A `:` right after the header keyword of a gitGraph is removed: the examples
+write `gitGraph` 33 times and `gitGraph:` twice. [fixture:
+gitgraph/header/header-colon]
+
+### What stays as written
+
+A longer link of a flowchart (`--->` for `-->`) draws the same figure in the
+examples that were drawn, but the documentation of mermaid.js says that extra
+dashes ask for a link that spans more ranks
+([Minimum length of a link](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L933-L955)),
+so the length is the author's. [fixture:
+flowchart/arrow-spacing/arrow-length-kept]
+
 ## Whitespace at the start of a label
 
 mermaid.js drops whitespace at the start of a label without quotes, and so does
@@ -1772,9 +2030,11 @@ the Db or the lexer reads stays. See [Text units](./xychart.md#text-units) and
   quotes/strings-runs-collapsed] [fixture:
   multi-line-values/string-with-line-breaks-kept]
 - The digits of a category and of a title, which are text, so `007` and `.5`
-  stay as written, and the numbers of a range and of a plot, which are the
-  author's text as well. [fixture: numbers/categories-are-texts] [fixture:
-  numbers/range-numbers-as-written]
+  stay as written; the numbers of a range and of a plot are printed in the
+  shortest form (see
+  [Spellings that are drawn the same](#spellings-that-are-drawn-the-same)).
+  [fixture: numbers/categories-are-texts] [fixture:
+  numbers/range-numbers-one-form]
 - A block `accDescr {` that is not closed, which runs to the end of the text:
   mermaid.js reads no text for it, and a `}` that the printer wrote would make
   it a description. [fixture:
@@ -2380,12 +2640,15 @@ last-value-padding]
 
 ## Pie hidden boundaries and authored values
 
-The [pie rules](./pie.md) retain written quotes, escapes, number spelling, value
-continuation columns, duplicates and source order. Common title/accessibility
-line edges compact like C4, but pie never joins a next-physical-line value.
-Empty labels and description blocks are real syntax. [fixture:
-pie/labels/label-quotes] [fixture: pie/numbers/number-spellings] [fixture:
-pie/title/title-next-trivia] [fixture: pie/description-blocks/block-empty]
+The [pie rules](./pie.md) print the quotes of a label and the digits of a value
+in one form (see
+[Spellings that are drawn the same](#spellings-that-are-drawn-the-same)) and
+retain escapes, value continuation columns, duplicates and source order. Common
+title/accessibility line edges compact like C4, but pie never joins a
+next-physical-line value. Empty labels and description blocks are real syntax.
+[fixture: pie/labels/label-quotes] [fixture: pie/numbers/number-spellings]
+[fixture: pie/title/title-next-trivia] [fixture:
+pie/description-blocks/block-empty]
 
 Hidden YAML and hidden DIRECTIVE are PieIgnoredText, separate from leading
 frontmatter and Root directives. Their complete hidden source stays in place,
@@ -2421,16 +2684,19 @@ rejected]
 
 ## Gitgraph hidden boundaries and authored history
 
-The [gitgraph rules](./gitgraph.md) keep header direction/colon presence,
-checkout aliases, bare/explicit messages, quotes, reference forms, order digits
-and every source-ordered option/statement occurrence. String/reference padding,
-escapes, HTML, entities and tag order can change the Db, and empty cherry-pick
-tags can suppress a default tag. The summary's omission of messages does not
-permit deleting them. [fixture: gitgraph/header/header-tb] [fixture:
-gitgraph/checkout-aliases/alias-one-form] [fixture: gitgraph/messages/message-forms]
-[fixture: gitgraph/quotes/quotes-one-form] [fixture:
-gitgraph/references/reference-empty] [corpus fixture: gitgraph/number-precision]
-[fixture: gitgraph/authored-values/inner-padding-change] [corpus fixture:
+The [gitgraph rules](./gitgraph.md) keep the header direction, bare/explicit
+messages, reference forms, order digits and every source-ordered
+option/statement occurrence. The colon after the header, `switch` for
+`checkout`, and the quotes of a string are printed in one form (see
+[Spellings that are drawn the same](#spellings-that-are-drawn-the-same)).
+String/reference padding, escapes, HTML, entities and tag order can change the
+Db, and empty cherry-pick tags can suppress a default tag. The summary's
+omission of messages does not permit deleting them. [fixture:
+gitgraph/header/header-tb] [fixture: gitgraph/checkout-aliases/alias-one-form]
+[fixture: gitgraph/messages/message-forms] [fixture:
+gitgraph/quotes/quotes-one-form] [fixture: gitgraph/references/reference-empty]
+[corpus fixture: gitgraph/number-precision] [fixture:
+gitgraph/authored-values/inner-padding-change] [corpus fixture:
 gitgraph/db-cherry-pick-only-empty-tags] [fixture:
 gitgraph/order-and-repetitions/order-reverse-id]
 
@@ -2664,11 +2930,13 @@ preceding whitespace compacted as in gitgraph. NumericLiteral source spans
 preserve leading/trailing decimal zeros, rounded precision, subnormals,
 underflow and overflow rather than printing converted double values. Option
 values remain authored: no tick cap, min/max reorder or replacement from drawing
-configuration. Label StringLiteral spans keep quotes, empty/whitespace-only
-text, escapes, HTML, entities, with a run of spaces and tabs inside a label
-printed as one space; singleQuote does not rewrite them. Deleting an empty label
-changes the ID fallback. [fixture: radar/source-order/declaration-order-kept]
-[fixture: radar/source-order/mixed-curve-forms] [fixture:
+configuration. Label StringLiteral spans keep empty/whitespace-only text,
+escapes, HTML, entities, with a run of spaces and tabs inside a label printed as
+one space; a label between `'` is printed between `"` as under
+[Spellings that are drawn the same](#spellings-that-are-drawn-the-same), and
+`singleQuote` is not read. Deleting an empty label changes the ID fallback.
+[fixture: radar/source-order/declaration-order-kept] [fixture:
+radar/source-order/mixed-curve-forms] [fixture:
 radar/header/join-separated-inline-alternative] [fixture:
 radar/numbers/raw-number-forms] [corpus fixture: radar/db-number-subnormal]
 [corpus fixture: radar/db-number-underflow] [corpus fixture:

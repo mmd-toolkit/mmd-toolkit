@@ -13,9 +13,11 @@ from mermaid.js.
 ### Header
 
 Put the header at column one and an ordinary first statement on the next line,
-making the heading easy to find. Preserve the authored `treemap` or
-`treemap-beta` keyword rather than choosing between Db-equivalent aliases. Add
-no colon; an empty body stays empty.
+making the heading easy to find. The keyword is printed `treemap-beta`, whether
+`treemap` or `treemap-beta` is written, since the examples in the documentation
+of mermaid.js use `treemap-beta` and both draw the same (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+Add no colon; an empty body stays empty.
 
 [fixture: treemap/header/stable]
 
@@ -250,10 +252,16 @@ treemap-beta
 
 ### Numbers
 
-Keep each NumericLiteral source span: separators, underscores, dots,
-leading/trailing zeros and precision. Do not reprint its numeric value. Mermaid
-reads `1_000` as 1; other spellings can round, become NaN, overflow or
-underflow. Re-encoding can change the Db or produce rejected numeric syntax.
+A NumericLiteral that is a plain decimal is printed in the shortest form: no
+`+`, no zero at the end of the fraction, no `.` at the end, and a `0` before a
+`.` at the start (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+Every other source span stays as written: separators, underscores, a second dot,
+a zero at the start of the integer part, and more than 15 digits. Do not reprint
+its numeric value. Mermaid reads `1_000` as 1; other spellings can round, become
+NaN, overflow or underflow. Re-encoding can change the Db or produce rejected
+numeric syntax. [fixture: treemap/numbers/shortest-form] [fixture:
+treemap/numbers/forms-kept]
 
 [fixture: treemap/numbers/comma]
 
@@ -291,12 +299,15 @@ treemap-beta
 
 ### Names
 
-Keep complete StringLiteral source spans: single/double quotes, opposite quotes,
-empty names, padding, backslashes, HTML, entities, percent text and physical
-continuation columns, with a run of spaces and tabs inside the name printed as
-one space, so a name of spaces and tabs only becomes one space. singleQuote does
-not rewrite them. Backslashes do not escape quotes or decode `\n`; these
-authored choices can affect the name or acceptance.
+Keep complete StringLiteral source spans: empty names, padding, backslashes,
+HTML, entities, percent text and physical continuation columns, with a run of
+spaces and tabs inside the name printed as one space, so a name of spaces and
+tabs only becomes one space. A name between `'` is printed between `"`, unless
+it holds a `'`, a `"`, a backslash, a line break, a backquote, `&`, `#`, or `<`
+(see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+and `singleQuote` is not read. Backslashes do not escape quotes or decode `\n`;
+these authored choices can affect the name or acceptance.
 
 [fixture: treemap/names/quotes]
 

@@ -766,12 +766,15 @@ quadrantChart
 
 ### Keyword case
 
-The keywords `title`, `x-axis`, `y-axis`, `quadrant-1` to `quadrant-4`,
-`classDef`, `accTitle`, and `accDescr` are printed in the case written.
-mermaid.js reads them in any case (`Title`, `X-Axis`, `CLASSDEF`, and
-`ACCTITLE:` start statements), and the Db is the same, so the case is the
-author's and nothing forces one. The name of a class keeps its case. [fixture:
-keyword-case/statement-keywords-one-form] [fixture:
+The keywords `title`, `x-axis`, `y-axis`, `quadrant-1` to `quadrant-4`, and
+`classDef` are printed in the case that the examples in the documentation of
+mermaid.js use (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+mermaid.js reads them in any case (`Title`, `X-Axis`, and `CLASSDEF` start
+statements), and the Db is the same. `accTitle` and `accDescr` are printed in
+the case written, which the examples do not use. The name of a class keeps its
+case. [fixture: keyword-case/statement-keywords-one-form] [fixture:
+keyword-case/quadrant-3-4-one-form] [fixture:
 keyword-case/accessibility-keywords-kept]
 
 Input

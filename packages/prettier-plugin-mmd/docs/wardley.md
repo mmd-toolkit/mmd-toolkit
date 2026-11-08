@@ -150,13 +150,18 @@ wardley-beta
 ### Names and quotes
 
 Keep WardleyIdentifier and StringLiteral source spans, including internal
-spaces/tabs, hyphens, parentheses, ampersands, quote styles, escapes, empty
-strings and whitespace-only strings, except for the label of a link, which
-prints a run of spaces and tabs as one space (see
-[Semicolon labels](#semicolon-labels)). singleQuote does not re-encode them.
-Collapsing name whitespace or trimming string contents changes the Db; even
-Db-equal requoting loses the authored spelling and needs another escape
-interpretation.
+spaces/tabs, hyphens, parentheses, ampersands, escapes, empty strings and
+whitespace-only strings, except for the label of a link, which prints a run of
+spaces and tabs as one space (see [Semicolon labels](#semicolon-labels)). A
+string of a name between `'` is printed between `"` unless its text holds a `'`,
+a `"`, a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<`
+(see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+and `singleQuote` is not read. The label of a link (`+'moving'>`) stays between
+`'`, the only quote that mermaid.js reads there. [fixture:
+names-and-quotes/single-quote-sensitive-kept] Collapsing name whitespace or
+trimming string contents changes the Db, and a requoting that needs another
+escape interpretation is not made.
 
 [fixture: wardley/names-and-quotes/name-spaces]
 
@@ -415,7 +420,7 @@ Output
 
 ```mmd
 wardley-beta
-  Alpha +"moving"> Beta
+  Alpha +'moving'> Beta
 ```
 
 ### Semicolon labels

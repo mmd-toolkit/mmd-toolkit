@@ -309,11 +309,15 @@ and
 [three](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L445-L464)).
 [fixture: whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/comma-touching] What stands in the gap beside the `,`
-is treated as in [Arrow spacing](#arrow-spacing). Keywords keep the case in
-which they are written (`PARTICIPANT A`, `Note LEFT OF A`). mermaid.js reads
-them in any case and the Db is the same, so nothing forces the case; it is the
-author's, and the printer does not rewrite it. [fixture:
-whitespace-between-tokens/keyword-case-one-form]
+is treated as in [Arrow spacing](#arrow-spacing). The keywords of the table
+under
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
+are printed in the case shown there (`PARTICIPANT A` is `participant A`, `NOTE`
+is `Note`, `LOOP` is `loop`). mermaid.js reads them in any case and the Db is
+the same. A keyword that the table does not list keeps the case in which it is
+written (`Note LEFT of A`). [fixture:
+whitespace-between-tokens/keyword-case-one-form] [fixture:
+keyword-case/statements-one-form] [fixture: keyword-case/blocks-one-form]
 
 Input
 ([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/sequence/whitespace-between-tokens/collapsed-input.mmd)):
@@ -366,7 +370,7 @@ sequenceDiagram
   participant B as Bob
   loop x
     A ->> B: y
-  END
+  end
 ```
 
 A run of spaces and tabs in the text of a message, a note, a block, a `box`, and
@@ -473,6 +477,41 @@ against the token before it, with one space after it where whitespace was
 written in the gap and none where it was not. [fixture:
 whitespace-between-tokens/ignored-semicolon-before-of-attached] [fixture:
 whitespace-between-tokens/ignored-semicolon-before-of-spaced-after-kept]
+
+### Keyword case
+
+The keywords of the table under
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
+are printed in the case shown there: `ACTOR`, `AUTONUMBER`, `ACTIVATE`,
+`DEACTIVATE`, `BOX`, `CREATE`, `DESTROY`, `LINK`, `LINKS`, `OVER`, `RIGHT`,
+`AS`, and `OF` in the statements, and `ALT`, `ELSE`, `OPT`, `PAR`, `AND`,
+`CRITICAL`, `OPTION`, `BREAK`, `RECT`, `LOOP`, and `END` in the blocks are
+printed in lower case, and `NOTE` is printed `Note`. [fixture:
+keyword-case/statements-one-form] [fixture: keyword-case/statements-one-form-2]
+[fixture: keyword-case/blocks-one-form] [fixture:
+keyword-case/blocks-one-form-2]
+
+Input (escaped):
+`"sequenceDiagram\nACTOR A AS Alice\nparticipant B\nAUTONUMBER\nACTIVATE A\nDEACTIVATE A\nBOX Group\nparticipant C\nEND\nNote OVER A,B: together\nNote RIGHT OF A: side\nLINK A: Docs @ https://example.com\nLINKS B: {\"Docs\":\"https://example.com\"}"`.
+
+Output
+([keyword-case/statements-one-form-output.mmd](../tests/fixtures/sequence/keyword-case/statements-one-form-output.mmd)):
+
+```mmd
+sequenceDiagram
+  actor A as Alice
+  participant B
+  autonumber
+  activate A
+  deactivate A
+  box Group
+    participant C
+  end
+  Note over A,B: together
+  Note right of A: side
+  link A: Docs @ https://example.com
+  links B: {"Docs":"https://example.com"}
+```
 
 ### Arrow spacing
 
@@ -1154,7 +1193,9 @@ because changing it would change the diagram or the input would be rejected:
 - the arrows.
 
 Some text is kept as written by choice, because the Db is the same either way:
-the case of keywords, which is the author's. Whether there is whitespace before
-the mark of a comment, listed above, decides what mermaid.js reads after some
-statements, such as `autonumber 5`; after the others the Db is the same either
-way, and whether there is any is kept so that one rule holds.
+the case of the keywords that the table under
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
+does not list. Whether there is whitespace before the mark of a comment, listed
+above, decides what mermaid.js reads after some statements, such as
+`autonumber 5`; after the others the Db is the same either way, and whether
+there is any is kept so that one rule holds.

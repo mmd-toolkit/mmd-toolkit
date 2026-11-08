@@ -395,11 +395,14 @@ set A[L]:002.00
 ### Sizes and numbers
 
 A size touches the preceding name or label as `:number`, giving both suffixes
-one compact form. Signs, fractions, leading zeros, signed zero and overflow
-retain their spelling; numeric text ids also retain their spelling because
-rewriting them changes the Db. Absent size and written zero remain distinct
-written forms. [fixture: venn/sizes-and-numbers/absent-zero-signs] [corpus
-fixture: venn/db-set-colon-size-inline-directive] [corpus fixture:
+one compact form. A size that is a plain decimal is printed in the shortest form
+(`+5` is `5`, `-.5` is `-0.5`; see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+A zero at the start of the integer part, signed zero and overflow retain their
+spelling; numeric text ids also retain their spelling because rewriting them
+changes the Db. Absent size and written zero remain distinct written forms.
+[fixture: venn/sizes-and-numbers/absent-zero-signs] [corpus fixture:
+venn/db-set-colon-size-inline-directive] [corpus fixture:
 venn/db-set-label-colon-size-inline-directive] [corpus fixture:
 venn/db-size-negative-overflow] [corpus fixture: venn/db-size-negative-zero]
 [corpus fixture: venn/db-size-overflow] [corpus fixture: venn/db-size-zero]
@@ -796,10 +799,14 @@ style A fill:"red
 
 ### Keyword case and order
 
-Written keyword case and every declaration, target and property remain in source
-order, including repeated or Db-ineffective entries, to retain authored choices.
-Names, keys and colors retain case too; the textual semicolon markers have exact
-case even though statement keywords are case-insensitive. [fixture:
+The keywords `set`, `union`, `style`, `text`, and `title` are printed in lower
+case, as the examples in the documentation of mermaid.js write them (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+and every declaration, target and property remain in source order, including
+repeated or Db-ineffective entries, to retain authored choices. Names, keys and
+colors retain case; the textual semicolon markers have exact case even though
+statement keywords are case-insensitive. [fixture:
+venn/keyword-case-and-order/keyword-case-one-form] [fixture:
 venn/keyword-case-and-order/all-written-repeats] [corpus fixture:
 venn/db-style-three-definitions-same-target] [corpus fixture:
 venn/db-text-three-definitions] [corpus fixture: venn/db-three-definitions]

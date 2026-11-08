@@ -266,11 +266,13 @@ block
 
 ### Header
 
-The header, `block-beta` or `block`, is printed as written: mermaid.js reads
-them as the same diagram type, so the spelling is the author's. The whitespace
-before it is dropped, and a statement after it on its line goes to a line of its
-own (see [Rows](#rows)). [fixture: header/block-beta-one-form] [fixture:
-header/block-kept] [fixture:
+The header is printed `block`, whether `block-beta` or `block` is written:
+mermaid.js reads them as the same diagram type, and the examples in its
+documentation use `block` (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+The whitespace before it is dropped, and a statement after it on its line goes
+to a line of its own (see [Rows](#rows)). [fixture: header/block-beta-one-form]
+[fixture: header/block-kept] [fixture:
 header/statement-after-the-header-on-a-line-of-its-own] [fixture:
 header/columns-after-the-header-on-a-line-of-its-own] [fixture:
 header/leading-whitespace-dropped]
@@ -290,6 +292,25 @@ Output
 block
   a b
   c
+```
+
+### Keyword case
+
+A block diagram reads its words in lower case only: `COLUMNS`, `SPACE`, `STYLE`,
+and `CLASSDEF` are ids, not keywords, and stay as written. The header is the
+exception (see [Header](#header)). [fixture: keyword-case/keywords-kept]
+
+Input (escaped): `"block-beta\nCOLUMNS 2\nSPACE\nSTYLE A\nCLASSDEF c"`.
+
+Output
+([keyword-case/keywords-kept-output.mmd](../tests/fixtures/block/keyword-case/keywords-kept-output.mmd)):
+
+```mmd
+block
+  COLUMNS 2
+  SPACE
+  STYLE A
+  CLASSDEF c
 ```
 
 ### Columns and space

@@ -299,9 +299,11 @@ c,d,2
 
 ### Header
 
-The header `sankey` or `sankey-beta` keeps the case in which it is written: Both
-are the same diagram type and give the same Db, so nothing forces either
-spelling, and the printer keeps the one that the author wrote. It stands at the
+The header `sankey-beta` is printed `sankey`: both are the same diagram type and
+give the same Db, and the examples in the documentation of mermaid.js use
+`sankey` (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+A header in another case (`sankey-BETA`) stays as written. It stands at the
 first column, and nothing follows it on its line, since mermaid.js rejects
 anything but a directive or a comment line there. [fixture: header/sankey]
 [fixture: header/sankey-beta] [fixture: header/upper-case-beta] [fixture:

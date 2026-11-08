@@ -30,15 +30,18 @@ syntax repair, and the specification already defines the exceptional readings.
 
 ### Header
 
-[Direction](./flowchart.md#direction) supplies the same column-one header and
-written-direction policy: the header is easy to find, and TD has one spelling
-policy in headers and bodies. Agentflow accepts only exact lower-case
-`agentflow-beta`. An absent direction stays absent, symbol directions stay
-written, and next-line LR remains a vertex. Ordinary header followers move into
-the body; directive attachment follows Directives. [fixture:
-header/header-column] [fixture: header/header-direction-spelling] [fixture:
-header/header-inline-separated] [fixture: header/header-next-line-direction]
-[fixture: header/header-symbol] A symbol direction stands after one space, as in
+[Direction](./flowchart.md#direction) supplies the same column-one header
+policy: the header is easy to find. Unlike the header of a flowchart, a header
+direction `TD` is printed `TB`, the direction that the examples in the
+documentation of mermaid.js use (10 times, and `TD` never; see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+Agentflow accepts only exact lower-case `agentflow-beta`. An absent direction
+stays absent, symbol directions stay written, and next-line LR remains a vertex.
+Ordinary header followers move into the body; directive attachment follows
+Directives. [fixture: header/header-column] [fixture:
+header/header-direction-spelling] [fixture: header/header-inline-separated]
+[fixture: header/header-next-line-direction] [fixture: header/header-symbol] A
+symbol direction stands after one space, as in
 [flowchart](./flowchart.md#direction): `agentflow-beta<` is printed
 `agentflow-beta <`. [fixture: header/header-symbol-touching-spaced] [test:
 agentflow: U+2028 between the header keyword and its direction]

@@ -637,10 +637,12 @@ timeline
 
 ### Keyword case
 
-Keywords keep the case in which they are written. mermaid.js reads them in any
-case and the Db is the same, so nothing forces the case; it is the author's, and
-the printer does not rewrite it. The header `timeline` is detected in lower case
-only. [fixture: keyword-case/keywords-one-form]
+The keywords `section` and `title` are printed in lower case, as the examples in
+the documentation of mermaid.js write them (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+mermaid.js reads them in any case and the Db is the same; the accessibility
+keywords keep the case in which they are written. The header `timeline` is
+detected in lower case only. [fixture: keyword-case/keywords-one-form]
 
 Input
 ([keyword-case/keywords-one-form-input.mmd](../tests/fixtures/timeline/keyword-case/keywords-one-form-input.mmd)):
@@ -669,10 +671,12 @@ timeline
 ### Header and direction
 
 The header may carry a direction, `LR` or `TD` in any case, after whitespace on
-its line. It is printed on the line of the header after one space, in the case
-in which it was written, and the Db reads it in upper case. The space is the one
-of the whitespace between tokens (see Whitespace between tokens), and the case
-is the author's. [fixture: header-and-direction/direction-kept] [fixture:
+its line. It is printed on the line of the header after one space, `td` as `TD`,
+as the examples in the documentation of mermaid.js write it (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+and `lr` in the case in which it was written; the Db reads it in upper case. The
+space is the one of the whitespace between tokens (see Whitespace between
+tokens). [fixture: header-and-direction/direction-kept] [fixture:
 header-and-direction/direction-case-kept] [fixture:
 header-and-direction/spaces-before-the-direction] A second word is a period and
 goes to a line of its own, and so is a direction on a line of its own. [fixture:

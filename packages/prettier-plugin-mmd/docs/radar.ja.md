@@ -330,10 +330,16 @@ radar-beta
 ### Numbers
 
 entry と ticks・max・min の数は NumericLiteral の source span を印字します。
-整数、小数の先行・末尾ゼロ、丸められる精度、subnormal、underflow、
+普通の十進表記は最短の形で印字し、`1.50` は `1.5`、`5.00` は `5` にします
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
+整数部の先頭のゼロ、丸められる精度、subnormal、underflow、
 overflow の綴りを保ちます。
 double 値からの再出力は綴りを失います。
 radar が拒否する指数表記や Infinity を出すこともあるためです。
+
+[fixture: radar/numbers/shortest-form]
+
+[fixture: radar/numbers/forms-kept]
 
 [fixture: radar/numbers/raw-number-forms]
 
@@ -398,13 +404,18 @@ radar-beta
 ### Quotes
 
 ラベルの StringLiteral は完全な source span を保ちます。
-一重・二重・反対側の引用符、空文字列、escape、HTML、entity、
+空文字列、escape、HTML、entity、
 hidden に見える文字を含みます。
 テキストの中の空白とタブの連なりは、空白 1 つにして印字します。
 空白とタブだけの文字列は空白 1 つになり、`["   "]` は `[" "]` と印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
-singleQuote でも再引用しません。
+`'` で囲まれた文字列は、内容に `'`、`"`、バックスラッシュ、改行、
+U+2028、U+2029、バッククォート、`&`、`#`、`<` がある場合を除き、
+`"` で囲んで印字します
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
+`singleQuote` は読みません。
 空ラベルの削除は ID への fallback を変えます。
+[fixture: radar/quotes/single-quote-sensitive-kept]
 
 [fixture: radar/quotes/quotes-and-empty]
 

@@ -108,9 +108,13 @@ multi-line-statements/header-directive-continuation] The `{` stands after one
 space as in an ER attribute block, which is how the documentation of mermaid.js
 writes it; where the name is unquoted a space is needed anyway, so the statement
 has one form. [fixture: bodies/opening-brace-after-one-space] The keyword of a
-requirement is one of six kinds, kept in the case in which it is written.
-[fixture: bodies/kinds] A statement that follows the `}` on its line stands on a
-line of its own. [fixture: bodies/statement-after-closing-brace] [fixture:
+requirement is one of six kinds, printed in the case that the examples in the
+documentation of mermaid.js use (`FUNCTIONALREQUIREMENT` is
+`functionalRequirement`; see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+[fixture: bodies/kinds] [fixture: keyword-case/types-one-form] A statement that
+follows the `}` on its line stands on a line of its own. [fixture:
+bodies/statement-after-closing-brace] [fixture:
 statements-one-per-line/closing-brace-then-statement]
 
 mermaid.js needs a line break after the `{`, so a body without fields is the `{`
@@ -196,12 +200,15 @@ fields/special-characters-in-values]
 The fields keep the order in which they are written, also a field that is
 written twice, of which mermaid.js reads the first. [fixture: fields/order-kept]
 [fixture: fields/same-field-twice] The keywords of the fields, the risks, and
-the verification methods keep the case in which they are written. mermaid.js
-reads them in any case and the Db is the same, so nothing forces the case; it is
-the author's, and the printer does not rewrite it. [fixture:
-fields/field-keywords-case-one-form] [fixture: fields/keyword-values-case-one-form] A
-field written over several lines is printed on one line where the lexer reads
-the line break as whitespace, which it does after whitespace (see
+the verification methods are printed in the case that the examples in the
+documentation of mermaid.js use (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+mermaid.js reads them in any case and the Db is the same. [fixture:
+fields/field-keywords-case-one-form] [fixture:
+fields/keyword-values-case-one-form] [fixture:
+fields/keyword-values-low-test-analysis-case-one-form] A field written over
+several lines is printed on one line where the lexer reads the line break as
+whitespace, which it does after whitespace (see
 [Multi-line statements](#multi-line-statements)). [fixture:
 fields/over-lines-joined]
 
@@ -339,14 +346,17 @@ the `-`, so the space does not change the name. [fixture:
 relationship-spacing/spaces-and-touching] [fixture:
 relationship-spacing/one-space-between-units] [fixture:
 relationship-spacing/string-names] The direction of the arrow is kept, since
-`a - copies -> b` and `b <- copies - a` are written differently, and so is the
-case of the relation. [fixture: relationship-spacing/relation-case-one-form]
-[fixture: relationship-spacing/every-relation] The whitespace inside an unquoted
-name is part of it, and a name that differs by a run is another name, so it
-stays as written. [fixture: relationship-spacing/multi-word-names] A directive
-between the units stays where it is and is placed as under
-[Directives](#directives). [fixture:
-relationship-spacing/directive-between-units] [fixture:
+`a - copies -> b` and `b <- copies - a` are written differently; the relation is
+printed in lower case, as the examples in the documentation of mermaid.js write
+it (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+[fixture: relationship-spacing/relation-case-one-form] [fixture:
+relationship-spacing/relations-case-one-form] [fixture:
+relationship-spacing/every-relation] The whitespace inside an unquoted name is
+part of it, and a name that differs by a run is another name, so it stays as
+written. [fixture: relationship-spacing/multi-word-names] A directive between
+the units stays where it is and is placed as under [Directives](#directives).
+[fixture: relationship-spacing/directive-between-units] [fixture:
 relationship-spacing/directive-between-units-runs] A relationship written over
 several lines, where the line break follows whitespace, is printed on one line
 unless a comment or directive prevents joining. In that case, later structural
@@ -479,8 +489,9 @@ while `stroke-dasharray:  5    5` keeps the four spaces between its values. A
 header or exterior line break that ordinarily joins does not delay this spacing
 until another formatting. Style interiors containing line separators, owned
 trivia, and statements with a kept semicolon on their physical line retain the
-existing style layout. Keyword case stays written. [fixture:
-styles-and-classes/style-unit-padding] [fixture:
+existing style layout. Keyword case is printed as under
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same).
+[fixture: styles-and-classes/style-unit-padding] [fixture:
 styles-and-classes/class-def-names] [fixture: styles-and-classes/style-names]
 [fixture: styles-and-classes/class-lists] [fixture:
 styles-and-classes/styles-as-written] [fixture:
@@ -625,10 +636,12 @@ requirementDiagram
 A direction line is `direction` and its value, with the text that mermaid.js
 does not read before and after them. The text is kept as written. One space
 stands between it and `direction`, where they were written apart, and between
-`direction` and the value; the value is kept in the case in which it is written.
+`direction` and the value; the value `lr` is printed `LR`; the other values keep
+the case in which they are written, since the examples use only `LR` (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
 [fixture: direction/spacing] [fixture: direction/spaces-around] [fixture:
-direction/text-kept] [fixture: direction/case-one-form] A value written on a later
-line is printed after `direction` on one line. [fixture:
+direction/text-kept] [fixture: direction/case-one-form] A value written on a
+later line is printed after `direction` on one line. [fixture:
 direction/value-on-next-line-joined] A direction line with a directive or
 comment keeps its line breaks and indents structural continuations one level
 deeper. [fixture: direction/directive-and-comment-line-kept] The rule of the
@@ -1245,11 +1258,12 @@ requirementDiagram
 
 ### Keyword case
 
-Keywords keep the case in which they are written. mermaid.js reads them in any
-case and the Db is the same, so nothing forces the case; it is the author's, and
-the printer does not rewrite it. [fixture: keyword-case/keywords-one-form] The
-header is detected only when it starts with `requirement` in lower case
-(diagrams/requirement.md, Detection).
+The keywords of the table under
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
+are printed in the case shown there. mermaid.js reads them in any case and the
+Db is the same. [fixture: keyword-case/keywords-one-form] [fixture:
+keyword-case/types-one-form] The header is detected only when it starts with
+`requirement` in lower case (diagrams/requirement.md, Detection).
 
 Input
 ([keyword-case/keywords-one-form-input.mmd](../tests/fixtures/requirement/keyword-case/keywords-one-form-input.mmd)):

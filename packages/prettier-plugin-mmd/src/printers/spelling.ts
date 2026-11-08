@@ -76,7 +76,7 @@ const numberFields: Readonly<Record<string, readonly string[]>> = {
 }
 
 /** The characters in a string that another reading of it could use. */
-const quoteSensitive = "'\"\\\n\r  `&#<"
+const quoteSensitive = "'\"\\\n\r\u2028\u2029`&#<"
 
 interface SourceRespellings {
   readonly byStart: ReadonlyMap<number, Respelling>
@@ -221,6 +221,7 @@ export function findRespellings(
   return respellingsOf(source).byStart
 }
 
+/** The respellings of a source, found once, with their offsets in order. */
 function respellingsOf(source: Source): SourceRespellings {
   let found = respellingsOfSource.get(source)
   if (found === undefined) {

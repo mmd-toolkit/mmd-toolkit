@@ -256,6 +256,55 @@ accDescr {}
   N1
 ```
 
+### Header
+
+The spelling of the header, `stateDiagram` or `stateDiagram-v2`, stays as
+written: the examples in the documentation of mermaid.js use `stateDiagram-v2`
+17 times and `stateDiagram` 5 times, and of the 11 pairs of examples that were
+drawn in both spellings one was drawn differently (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+[fixture: header/spellings-kept] [fixture: indentation/header-without-v2-kept]
+
+Input (escaped): `"stateDiagram\nSTATE \"legacy\" AS old"`.
+
+Output
+([header/spellings-kept-output.mmd](../tests/fixtures/state/header/spellings-kept-output.mmd)):
+
+```mmd
+stateDiagram
+  state "legacy" as old
+```
+
+### Keyword case
+
+The keywords of the table under
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
+are printed in the case shown there, among them `<<CHOICE>>`, `<<FORK>>`, and
+`<<JOIN>>`, which are printed `<<choice>>`, `<<fork>>`, and `<<join>>`,
+`ACCTITLE:` and `ACCDESCR:`, which are printed `accTitle:` and `accDescr:`,
+`AS`, `END`, and `DIRECTION TB`. The position of a note, `LEFT OF` and
+`RIGHT OF`, stays as written. [fixture: keyword-case/pseudo-states-one-form]
+[fixture: keyword-case/accessibility-alias-direction-one-form]
+
+Input (escaped):
+`"stateDiagram-v2\nACCTITLE: title\nACCDESCR: description\nstate \"x\" AS y\nDIRECTION TB\nnote LEFT OF y: left\nnote RIGHT OF y: right\nnote left of y\nbody\nEND NOTE"`.
+
+Output
+([keyword-case/accessibility-alias-direction-one-form-output.mmd](../tests/fixtures/state/keyword-case/accessibility-alias-direction-one-form-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  accTitle: title
+  accDescr: description
+  state "x" as y
+  direction TB
+  note LEFT OF y : left
+  note RIGHT OF y : right
+  note left of y
+    body
+  end note
+```
+
 ### Statements one per line
 
 Each statement stands on a line of its own, as in the other diagram types: two
@@ -425,12 +474,19 @@ U+2029 among the styles stays where it is. [test: U+2028 before the comma of a
 state classDef statement] [test: U+2029 after the comma of a state classDef
 statement] Whether whitespace is written before a `""` is kept: `state x"" {` is
 the composite state `x""`, and `state x "" {` the composite state `x`. [fixture:
-whitespace-between-tokens/quotes-before-brace-kept] Keywords keep the case in
-which they are written. mermaid.js reads them in any case and the Db is the
-same, so nothing forces the case; it is the author's, and the printer does not
-rewrite it. The position of a note, such as `Left Of`, is part of the diagram as
-written. [fixture: whitespace-between-tokens/keyword-case-one-form] [fixture:
-whitespace-between-tokens/keyword-case-more-one-form]
+whitespace-between-tokens/quotes-before-brace-kept] The keywords of the table
+under
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
+are printed in the case shown there (`STATE A {` is `state A {`, `CLASSDEF` is
+`classDef`, `DIRECTION lr` is `direction LR`, `<<CHOICE>>` is `<<choice>>`).
+mermaid.js reads them in any case and the Db is the same. A keyword that the
+table does not list keeps the case in which it is written (`STYLE`,
+`HIDE EMPTY DESCRIPTION`). The position of a note, such as `Left Of`, is part of
+the diagram as written: the Db keeps it as written. [fixture:
+whitespace-between-tokens/keyword-case-one-form] [fixture:
+whitespace-between-tokens/keyword-case-more-one-form] [fixture:
+keyword-case/pseudo-states-one-form] [fixture:
+keyword-case/accessibility-alias-direction-one-form]
 
 The ids of a `class` statement are separated by a `,` that touches the id after
 it: `class A, B c` is printed `class A,B c`, as the lists of ER, requirement,
@@ -1495,11 +1551,13 @@ diagram or the input would be rejected:
   whitespace-between-tokens/direction-line-text-kept]
 - the spelling of the header, `stateDiagram` or `stateDiagram-v2`. [corpus
   fixture: state/header-v1] [fixture: indentation/header-without-v2-kept]
+  [fixture: header/spellings-kept]
 
 Some text is kept as written by choice, because the Db is the same either way:
-the case of keywords, which is the author's, and whether whitespace is written
-before the mark of a comment after a statement, a run of it being printed as one
-space (see
+the case of the keywords that the table under
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
+does not list, and whether whitespace is written before the mark of a comment
+after a statement, a run of it being printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 [fixture: comments/mark-run-one-space] The second is kept because mermaid.js
 reads a comment by what touches it in the places of the known divergences

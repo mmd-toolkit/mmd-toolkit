@@ -535,10 +535,14 @@ erDiagram
 Within a line, a run of spaces and tabs between two tokens becomes one space,
 and tokens that touch keep touching, unless a rule below says otherwise.
 [fixture: whitespace-between-tokens/collapsed] [fixture:
-whitespace-between-tokens/touching-kept] Keywords keep the case in which they
-are written. mermaid.js reads them in any case, so the case is the author's and
-the printer does not rewrite it; the keys of an attribute keep it in the Db.
-[fixture: whitespace-between-tokens/keyword-case-one-form]
+whitespace-between-tokens/touching-kept] A keyword of the table under
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
+is printed in the case shown there (`CLASSDEF` is `classDef`, `SUBGRAPH` is
+`subgraph`, `END` is `end`, and `ZERO OR MORE` is `zero or more`). Any other
+keyword keeps the case in which it is written (`ONE OR MORE`, `CLASS`), and so
+do the keys of an attribute, which the Db keeps. [fixture:
+whitespace-between-tokens/keyword-case-one-form] [fixture:
+relationship-spacing/cardinality-words-case-one-form]
 
 Input
 ([whitespace-between-tokens/touching-kept-input.mmd](../tests/fixtures/er/whitespace-between-tokens/touching-kept-input.mmd)):
@@ -592,7 +596,7 @@ Output
 erDiagram
   subgraph S
     A
-  END
+  end
   classDef a fill: red
   CLASS A a
   style A fill: red
@@ -630,9 +634,13 @@ relationship-spacing/symbols-touch] [fixture: relationship-spacing/words-spaced]
 er/lex-relationship-spaces-in-spec] `many(0)`, `many(1)`, `1+`, `0+`, and `u`
 count as symbols: a space inside `many(0)` is rejected. [corpus fixture:
 er/lex-many-space-before-parenthesis] The spelling of a cardinality is kept,
-symbols or words, in the case in which it is written: it is the author's choice,
-and a symbol has several words that read the same, so no spelling stands for
-another. [fixture: relationship-spacing/words-spaced]
+symbols or words: it is the author's choice, and a symbol has several words that
+read the same, so no spelling stands for another. The case of a word that the
+table under
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
+lists is printed as shown there (`ZERO OR MORE` is `zero or more`); the case of
+any other word is kept. [fixture: relationship-spacing/words-spaced] [fixture:
+relationship-spacing/cardinality-words-case-one-form]
 
 Three cases keep the whitespace as it is written, since another one would make
 mermaid.js read other units. A right cardinality `u`, which is `md-parent` only
@@ -809,8 +817,11 @@ mermaid.js joins them with one space. [fixture: subgraphs/header-spacing]
 [fixture: subgraphs/title-touches-name] [fixture: subgraphs/title-names-spaced]
 [fixture: subgraphs/quoted-and-number-ids] The statements of the body stand one
 level deeper, and `end` stands on a line of its own at the level of the
-subgraph, in the case in which it is written; a statement that follows the `end`
-on its line stands on the line after it. [fixture:
+subgraph, printed `end` in any case; in the body, the keyword of a `class`,
+`classDef`, or `style` statement stays as written, since mermaid.js lists it as
+a node of the subgraph as written. [fixture:
+subgraphs/statement-keywords-case-kept] A statement that follows the `end` on
+its line stands on the line after it. [fixture:
 subgraphs/end-on-the-line-of-a-statement] [fixture: subgraphs/end-case-one-form]
 [fixture: subgraphs/entity-after-end] A subgraph without statements is printed
 with its `end` on the next line. [fixture: subgraphs/empty]
@@ -899,10 +910,12 @@ erDiagram
 A direction line is `direction` and its value, with the text that mermaid.js
 does not read before and after them. The text is kept as written. One space
 stands between it and `direction`, where they were written apart, and between
-`direction` and the value; the value is kept in the case in which it is written,
-since the case is the author's. [fixture: direction/spacing] [fixture:
-direction/text-kept] [fixture: direction/case-one-form] A value written on a later
-line is printed after `direction` on one line. [fixture:
+`direction` and the value; the value is printed in upper case (`lr` is `LR`), as
+the examples in the documentation of mermaid.js write it (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+[fixture: direction/spacing] [fixture: direction/text-kept] [fixture:
+direction/case-one-form] [fixture: direction/case-bt-rl-one-form] A value
+written on a later line is printed after `direction` on one line. [fixture:
 direction/value-on-next-line-joined] [corpus fixture:
 er/lex-direction-value-next-line] A direction line with a directive or comment
 keeps its line breaks and indents structural continuations one level deeper.
@@ -963,8 +976,10 @@ becomes `fill: navy, stroke: black`, while `stroke-dasharray:  5    5` keeps the
 four spaces between its values. A header or exterior line break that ordinarily
 joins does not delay this spacing until another formatting. Style interiors
 containing line separators, owned trivia, and statements with a kept semicolon
-on their physical line retain the existing style layout. Keyword case stays
-written. [fixture: styles-and-classes/style-unit-padding] [fixture:
+on their physical line retain the existing style layout. Keyword case is printed
+as under
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same).
+[fixture: styles-and-classes/style-unit-padding] [fixture:
 styles-and-classes/class-def-names] [fixture: styles-and-classes/style-names]
 [fixture: styles-and-classes/class-lists] [fixture:
 styles-and-classes/styles-as-written] [fixture:

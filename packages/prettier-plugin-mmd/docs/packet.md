@@ -10,12 +10,15 @@ escaped fixed tests.
 
 ### Header
 
-Keep the authored `packet` or `packet-beta` keyword at column one. Move an
-ordinary first statement below it for a visible heading. Only `packet` requires
-a following boundary; never create a glued spelling. Hidden boundaries and
-protected header/body groups take precedence. Keep the authored synonym:
-replacing `packet-beta` with `packet` adds no formatting benefit, as with
-[gitgraph checkout aliases](./gitgraph.md#checkout-aliases).
+Put the header at column one, and print `packet-beta` as `packet`, the keyword
+that the examples in the documentation of mermaid.js use and that draws the same
+(see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+Move an ordinary first statement below it for a visible heading. Only `packet`
+requires a following boundary; never create a glued spelling. Hidden boundaries
+and protected header/body groups take precedence: a `packet-beta` that a hidden
+YAML block touches stays, since `packet---` is not read where `packet-beta---`
+is. [fixture: packet/hidden-yaml/yaml-beta-header]
 
 [fixture: packet/header/header-packet]
 
@@ -201,12 +204,17 @@ packet
 
 ### Quotes
 
-Keep complete StringLiteral source spans with single, double and opposite
-quotes, empty labels and escapes. `singleQuote` does not rewrite labels.
-Re-encoding would lose authored spelling and require new escape/preprocessing
-choices. Quote-looking common values remain literals, not strings to requote.
+Keep complete StringLiteral source spans with empty labels and escapes; a string
+between `'` is printed between `"`, unless its text holds a `'`, a `"`, a
+backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+and `singleQuote` is not read. Other re-encoding would require new
+escape/preprocessing choices. Quote-looking common values remain literals, not
+strings to requote.
 
 [fixture: packet/quotes/quotes-one-form]
+
+[fixture: packet/quotes/single-quote-sensitive-kept]
 
 [fixture: packet/quotes/quotes-single-option]
 

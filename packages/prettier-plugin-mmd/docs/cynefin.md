@@ -282,13 +282,19 @@ cynefin-beta
 ### Strings
 
 Print item and transition-label StringLiteral source spans unchanged, including
-quote choice, escapes, empty values, HTML/entities and native-looking text,
-except that a run of spaces and tabs inside an item is printed as one space (see
-[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
-singleQuote does not requote them. Even Db-equal requoting loses authored
-spelling; trimming or decoding escapes can change the value.
+escapes, empty values, HTML/entities and native-looking text, except that a run
+of spaces and tabs inside an item is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same))
+and a string between `'` is printed between `"`, unless its text holds a `'`, a
+`"`, a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<`
+(see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+and `singleQuote` is not read. Trimming or decoding escapes can change the
+value.
 
 [fixture: cynefin/strings/strings-quotes]
+
+[fixture: cynefin/strings/single-quote-sensitive-kept]
 
 [fixture: cynefin/strings/strings-padding]
 

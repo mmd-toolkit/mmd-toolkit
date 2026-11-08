@@ -118,21 +118,24 @@ pie
 ### Labels
 
 Reuse [XY chart authored strings](./xychart.md#quotes): keep complete quoted
-source spans, because quotes and source text belong to the author. Preserve
-single/double/opposite quotes, escapes without decoding, empty and
-whitespace-only labels, entities/HTML and hidden-looking percent text.
-`singleQuote` does not rewrite labels. Keep converted-label collisions as
-separate occurrences; the resolved Map is not source.
+source spans, because the source text belongs to the author. Preserve escapes
+without decoding, empty and whitespace-only labels, entities/HTML and
+hidden-looking percent text; a string between `'` is printed between `"`, unless
+its text holds a `'`, a `"`, a backslash, a line break, U+2028, U+2029, a
+backquote, `&`, `#`, or `<` (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+and `singleQuote` is not read. Keep converted-label collisions as separate
+occurrences; the resolved Map is not source.
 
-Fixed cases: [fixture: pie/labels/label-quotes] [fixture:
-pie/labels/label-escapes] [fixture: pie/labels/label-inner-trim-kept] [fixture:
-pie/labels/label-quote-one-form] [fixture: pie/labels/label-hidden-looking]
-[fixture: pie/labels/div-c4-label] [fixture: pie/labels/div-c4-eof] [test:
-pie/labels/div-bare-unicode] [test: pie/labels/div-retained-bare-unicode]
-[fixture: pie/labels/div-html-invalid] [fixture:
-pie/labels/label-whitespace-opposite] [fixture: pie/labels/label-html-entities]
-[fixture: pie/labels/label-converted-collisions] [fixture:
-pie/labels/label-quote-option].
+Fixed cases: [fixture: pie/labels/single-quote-sensitive-kept] [fixture:
+pie/labels/label-quotes] [fixture: pie/labels/label-escapes] [fixture:
+pie/labels/label-inner-trim-kept] [fixture: pie/labels/label-quote-one-form]
+[fixture: pie/labels/label-hidden-looking] [fixture: pie/labels/div-c4-label]
+[fixture: pie/labels/div-c4-eof] [test: pie/labels/div-bare-unicode] [test:
+pie/labels/div-retained-bare-unicode] [fixture: pie/labels/div-html-invalid]
+[fixture: pie/labels/label-whitespace-opposite] [fixture:
+pie/labels/label-html-entities] [fixture: pie/labels/label-converted-collisions]
+[fixture: pie/labels/label-quote-option].
 
 Input (escaped): `"pie\n' single  label ':3\n\" double  label \":4\n'':2"`.
 
@@ -148,13 +151,17 @@ pie
 
 ### Numbers
 
-Reuse [XY chart authored numbers](./xychart.md#numbers): print the
-NumericLiteral source rather than its converted double. Keep negative zero,
-fractional leading zeros, trailing zeros, long precision, zero and small slices.
-Overflow and signed underflow follow the accepted corpus readings; invalid
-spellings and negative duplicates remain parser failures.
+Reuse [XY chart authored numbers](./xychart.md#numbers): a NumericLiteral that
+is a plain decimal is printed in the shortest form (`1.50` is `1.5`, `2.0` is
+`2`; see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+and every other source span is printed rather than its converted double. Keep
+negative zero, a zero at the start of the integer part, long precision, zero and
+small slices. Overflow and signed underflow follow the accepted corpus readings;
+invalid spellings and negative duplicates remain parser failures.
 
-Fixed cases: [fixture: pie/numbers/number-spellings] [fixture:
+Fixed cases: [fixture: pie/numbers/shortest-form] [fixture:
+pie/numbers/forms-kept] [fixture: pie/numbers/number-spellings] [fixture:
 pie/numbers/number-normalize-authored] [fixture: pie/numbers/number-zero-small].
 
 [corpus fixture: pie/number-overflow] [corpus fixture:
