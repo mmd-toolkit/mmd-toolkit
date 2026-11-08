@@ -111,11 +111,22 @@ const numberFields: Readonly<Record<string, readonly string[]>> = {
   RadarMinOption: ["value"],
   RadarNumberEntry: ["value"],
   RadarTicksOption: ["value"],
+  SankeyLinkStatement: ["value"],
   TreemapLeaf: ["value"],
   VennSubsetStatement: ["size"],
   XychartRange: ["end", "start"],
   XychartValue: ["value"],
 }
+
+/**
+ * The types of the node that holds a number written as a number: the value of
+ * a link of a sankey diagram is a field of text that mermaid.js reads with
+ * `parseFloat`, so its node has a type of its own.
+ */
+const numberLiteralTypes: ReadonlySet<string> = new Set([
+  "NumericLiteral",
+  "SankeyLiteral",
+])
 
 /**
  * Whether the value of a treemap leaf is digits with an optional fraction, or
@@ -236,7 +247,7 @@ function collectNumbers(
     for (const child of Array.isArray(value) ? value : [value]) {
       if (child === null || child === undefined) continue
       const item = child as Node
-      if (item.type !== "NumericLiteral") {
+      if (!numberLiteralTypes.has(item.type)) {
         collectNumbers(source, item, found)
       } else if (numberFields[node.type]?.includes(key) === true) {
         const text = source.text.slice(...item.range)

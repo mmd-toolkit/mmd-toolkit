@@ -205,10 +205,13 @@ Pumped heat,"Heating and cooling, ""homes""",193.026
 ### Values
 
 The value of a link is printed as written: mermaid.js reads it as a number, so
-`1.0`, `1e0`, `+1`, and `.5` are the same value as `1`, and `abc` is accepted,
-but none is rewritten: the spelling is the author's, and every spelling gives
-the same Db. A `%%` or a `#` after the value is a character of the field, not a
-comment, and stays with it. [fixture: values/value-forms-kept] [fixture:
+`1.0`, `1e0`, and `+1` are the same value as `1`, `.5` is the same value as
+`0.5`, and `abc` is accepted and read as `NaN`. None is rewritten; a sankey
+value is not one of the places where a number is printed in the shortest form
+(see
+[Numbers in the shortest form](./compatibility.md#numbers-in-the-shortest-form)).
+A `%%` or a `#` after the value is a character of the field, not a comment, and
+stays with it. [fixture: values/value-forms-kept] [fixture:
 values/text-after-the-value-kept]
 
 Input
