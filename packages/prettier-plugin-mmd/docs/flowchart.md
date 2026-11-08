@@ -661,9 +661,7 @@ names `swimlane` (see
 subgraph-header/markdown-title-runs-kept] [fixture:
 subgraph-header/collapsed-title-runs-kept] [fixture:
 subgraph-header/swimlane-title-runs-kept] [fixture:
-subgraph-header/layout-swimlane-title-runs-kept] [fixture:
-whitespace-between-tokens/subgraph-name-runs-collapsed] [fixture:
-subgraph-header/markdown-title-runs-kept] In a `style`, `classDef`, or
+subgraph-header/layout-swimlane-title-runs-kept] In a `style`, `classDef`, or
 `linkStyle` statement, each style has no whitespace before its first `:` and one
 space after it where the value is not empty. The `,` between styles has no
 whitespace before it and one space after it: `style A fill :#f00,stroke:  #333`

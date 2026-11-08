@@ -15,7 +15,7 @@ Use the full rule id after `%% eslint`:
 %% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
   A --> B
-  style C fill:red
+  style C fill: red
 ```
 
 This enables `@mmd-toolkit/flowchart-no-undef` as an error for the whole
@@ -36,8 +36,8 @@ Use `eslint-disable-next-line` to suppress one statement. A reason follows `--`:
 flowchart LR
   A --> B
   %% eslint-disable-next-line @mmd-toolkit/flowchart-no-undef -- C is intentionally created here.
-  style C fill:red
-  style D fill:blue
+  style C fill: red
+  style D fill: blue
 ```
 
 The comment suppresses the report for `C` on the next line. The report for `D`
@@ -55,9 +55,9 @@ Use `eslint-disable` and `eslint-enable` to surround a region:
 flowchart LR
   A --> B
   %% eslint-disable @mmd-toolkit/flowchart-no-undef -- C is intentionally created here.
-  style C fill:red
+  style C fill: red
   %% eslint-enable @mmd-toolkit/flowchart-no-undef
-  style D fill:blue
+  style D fill: blue
 ```
 
 Reports for the named rule are suppressed from `eslint-disable` until the

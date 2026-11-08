@@ -742,11 +742,12 @@ mermaid.js がその連なりを描かずにテキストを描く場合に、空
 対象は、すべての図種の `title` と `accDescr` と、
 次の図種が SVG のテキストとして描くテキストです。
 architecture 図、ブロック図、象限チャート、radar チャートのラベル、
-class 図のメンバーと注釈、ER 図の属性の型、
-requirement 図のフィールドとクラスの並び、sequence 図のテキスト（メッセージ、
-ノート、ブロック、box、`as` の後の説明）、C4 図の引数のうち label、technology、
-type、description、Cynefin 図と ishikawa 図のリテラル、
-packet 図と Venn 図のラベル、Wardley マップのリンク、treemap の名前、
+flowchart の subgraph と agentflow 図の flow の題、class 図のメンバーと注釈、
+ER 図の属性の型、requirement 図のフィールドとクラスの並び、
+sequence 図のテキスト（メッセージ、ノート、ブロック、box、`as` の後の説明）、
+C4 図の引数のうち label、technology、type、description、
+Cynefin 図と ishikawa 図のリテラル、packet 図と Venn 図のラベル、
+Wardley マップのリンク、treemap の名前、
 railroad 図の文字列と special sequence です。
 空白とタブだけの文字列は、ほかの文字列と同じ文字列として扱います。
 `["   "]` は `[" "]` と印字します。 [fixture: pie/title/title-inner-text]
@@ -781,29 +782,56 @@ railroad 図の文字列と special sequence です。
   [fixture: sequence/whitespace-between-tokens/html-tag-runs-kept]
   [fixture: pie/title/white-space-property-kept]
 - mermaid.js が HTML として描くラベル。
-  flowchart と agentflow 図のノードと辺と subgraph の題、state 図の説明、遷移、
-  ノート、mindmap のノード、class 図の関係のラベル、
-  usecase 図のすべてのテキストです。
+  flowchart と agentflow 図のノードと辺、state 図の説明、遷移、ノート、
+  mindmap のノード、class 図の関係のラベル、usecase 図のすべてのテキストです。
   最大幅に達したラベルは `white-space: break-spaces` で配置され、
   連なりを描きます。
   （[`createText`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/createText.ts#L61-L77)）。
   ラベルがその幅に達するかどうかは、フォントと幅の設定によりますが、
   フォーマッターはそれらを知りません。
   連なりを持つ長いラベルを、連なりがある形とない形で描くと、画素が異なりました。
-  subgraph の題は、subgraph の幅を渡されて同じ関数を通ります。
-  連なりを持つ Markdown 文字列の題は、異なって描かれました。
-  swimlane 図のレーンの Markdown でない題も、題ごとにその関数を呼ぶので、
-  異なって描かれました。
-  通常の subgraph の Markdown でない題は、9 つの場合（長い題、
-  小さい `wrappingWidth`、`htmlLabels: false`、入れ子の subgraph、
-  辺）で同じに描かれましたが、フォーマッターは場合を見分けられないので、
-  ほかのラベルと同じく書かれたまま残します。
-  [fixture: flowchart/subgraph-header/markdown-title-runs-kept]
   [fixture: flowchart/label-inner-whitespace/inner-whitespace-kept]
   [fixture: agentflow/labels/labels-padding]
   [fixture: state/descriptions-and-labels/text-kept]
   [fixture: mindmap/node-text/inner-whitespace-kept]
   [fixture: usecase/labels/label-interior-kept] [fixture: class/labels/spaced]
+- flowchart の subgraph と agentflow 図の `flow` の題のうち、
+  mermaid.js が subgraph の幅つきで描いて折り返すもの。
+  題が Markdown 文字列の場合は、`rect` と `createContainerGroup` が、
+  Markdown の題を幅つきの `createText` に渡し、
+  それ以外の題は幅を渡さない `createLabel` に渡します。
+  （[`rect`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/clusters.js#L40-L50)、
+  [`createContainerGroup`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/clusters.js#L555-L564)、
+  [`createLabel`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/createLabel.js#L38-L50)）。
+  subgraph にデータブロックがある場合は、`S@{ view: collapsed }` が、
+  subgraph を折り畳んだグループとして描き、
+  `labelHelper` が題を幅つきの `createText` に渡します。
+  flowchart の `getData` と agentflow 図の `getData` が、その形を選びます。
+  （[`labelHelper`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/util.ts#L89-L104)、
+  [flowchart の `getData`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L1288-L1301)、
+  [agentflow 図の `getData`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1794-L1815)）。
+  図がレーンを描く場合は、ヘッダー `swimlane-beta`、
+  またはフロントマターとディレクティブに書ける設定 `layout: swimlane` で、
+  すべてのグループの形がレーンになり、`swimlane` が幅つきで描きます。
+  （[すべてのグループの形をレーンにする](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/layout-algorithms/swimlanes/helpers.ts#L174)、
+  [`swimlane`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/clusters/swimlane.js#L50-L55)）。
+  各場合で、連なりがある題とない題を描き比べると、どの場合も画素が異なりました。
+  それ以外の題は、通常の subgraph の 9 つの場合（長い題、
+  小さい `wrappingWidth`、`htmlLabels: false`、`layout: elk`、`look: neo`、
+  入れ子の subgraph、辺、キーワード `graph`）と agentflow の `flow` で、
+  同じに描かれたので、空白 1 つで印字します。
+  データブロックのキーは読みません。
+  subgraph の id に書かれたブロックは、どれも題を書かれたままにし、
+  mermaid.js が空白を含む名前の subgraph に付ける `subGraph0` のような id に、
+  ブロックが書かれた場合も同じです。
+  どこかに `swimlane` を書く図は、すべての題を書かれたままにします。
+  mermaid.js を使う側の設定は、テキストの外にあるので読みません。
+  [fixture: flowchart/subgraph-header/markdown-title-runs-kept]
+  [fixture: flowchart/subgraph-header/collapsed-title-runs-kept]
+  [fixture: flowchart/subgraph-header/swimlane-title-runs-kept]
+  [fixture: flowchart/subgraph-header/layout-swimlane-title-runs-kept]
+  [fixture: agentflow/containers/flow-title-runs-collapsed]
+  [fixture: agentflow/containers/flow-title-collapsed-runs-kept]
 - `accTitle`。
   mermaid.js は SVG の `title` 要素に入れ、
   ブラウザーは図の上にポインターを止めるとツールチップとして表示します。

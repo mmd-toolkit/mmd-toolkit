@@ -2430,7 +2430,11 @@ mermaid.js は節点の名前と description を trim するので、
 除いても Db と図は同じです。
 空白とタブだけの description、引用符で囲む名前の中の空白、
 独立した comment のテキスト、それ以外の空白文字は、書かれたまま保ちます。
-節点の後に続く directive の前の gap も directive に属するので保ちます。
+名前や description の後に続く directive の前の gap は、
+字下げの形でも罫線の形でも空白 1 つにします。
+mermaid.js は値を読む前に directive を取り除き、
+値の末尾の空白とタブを落とすので、この gap は Db にも図にもありません。
+`R   %%{x}%%` は title と同じ形の `R %%{x}%%` と印字します。
 名前や description の末尾の U+2028 と U+2029 は、
 空白やタブではなくテキストの文字なので、その後の空白は除き、
 その前の空白は残します。
@@ -2448,7 +2452,11 @@ branch 行で値から除外された末尾は削り、持ち越しません。
 
 [fixture: treeview/trailing-whitespace/trailing-description-blank-kept]
 
-[fixture: treeview/trailing-whitespace/trailing-directive-gap-kept]
+[fixture: treeview/trailing-whitespace/trailing-directive-gap-one-space]
+
+[fixture: treeview/carried-indentation/box-redraw-carried-run-directive-gap]
+
+[fixture: treeview/comments/box-redraw-comment-prefix-directive-gap]
 
 [fixture: treeview/trailing-whitespace/trailing-quoted-interior]
 

@@ -23,9 +23,11 @@ import {
   treeviewBranchCharacters,
 } from "./treeview-characters.ts"
 import { lineStartOf } from "./kept-lines.ts"
+import { printAsWritten } from "./lines.ts"
 import type { Source } from "./source.ts"
 import {
   findCoveringRange,
+  findDirectiveEndingAt,
   findStructuralToken,
   findTriviaAt,
   findTriviaBetween,
@@ -242,18 +244,53 @@ function treeviewNodeParts(node: TreeviewNode): readonly Node[] {
  * line. mermaid.js trims the name and the description of a node, so the Db and
  * the figure are the same without them (docs/treeview.md, Trailing whitespace).
  * An atom of whitespace only stays as written. So does an atom that ends with a
- * comment, whose spaces and tabs are its own, and one that a comment or a
- * directive follows, whose gap is the gap of that trivia.
+ * comment, whose spaces and tabs are its own, and one that a comment follows,
+ * whose gap is the gap of that comment. Before a directive, which mermaid.js
+ * removes before it reads the value, the spaces and tabs at the end of the atom
+ * are one space, as before the directive of a title.
  */
 function trimAtomEnd(source: Source, atom: Atom): Atom {
-  if (
-    findTriviaAt(source, atom.end - 1) !== undefined ||
-    findTriviaBetween(source, atom.end, atom.end + 1).length > 0
-  )
-    return atom
+  if (findTriviaAt(source, atom.end - 1) !== undefined) return atom
+  const following = findTriviaBetween(source, atom.end, atom.end + 1)
+  if (following.length > 0) {
+    if (following[0].type !== "Directive" || following[0].range[0] !== atom.end)
+      return atom
+    let blanks = atom.end
+    while (blanks > atom.start && isSpaceOrTab(source.text[blanks - 1]))
+      blanks--
+    return blanks === atom.start ||
+      blanks === atom.end ||
+      source.text.slice(blanks, atom.end) === " "
+      ? atom
+      : { ...atom, doc: [printAsWritten(source, atom.start, blanks), " "] }
+  }
   let end = atom.end
   while (end > atom.start && isSpaceOrTab(source.text[end - 1])) end--
-  return end === atom.start || end === atom.end ? atom : { ...atom, end }
+  if (end === atom.start || end === atom.end) return atom
+  // Where the atom ends with a directive, as it does when blanks followed it,
+  // the blanks before the directive are those of the same atom when the
+  // directive stands after it: one space.
+  const directive = findDirectiveEndingAt(source, end)
+  if (directive !== undefined && directive.range[0] > atom.start) {
+    let blanks = directive.range[0]
+    while (blanks > atom.start && isSpaceOrTab(source.text[blanks - 1]))
+      blanks--
+    if (
+      blanks > atom.start &&
+      source.text.slice(blanks, directive.range[0]) !== " "
+    ) {
+      return {
+        ...atom,
+        end,
+        doc: [
+          printAsWritten(source, atom.start, blanks),
+          " ",
+          printAsWritten(source, directive.range[0], end),
+        ],
+      }
+    }
+  }
+  return { ...atom, end }
 }
 
 /**
@@ -269,18 +306,20 @@ function trimDescriptionPadding(
   texts: Set<number>,
 ): Atom[] {
   return atoms.map((written, index) => {
-    const atom =
-      index === atoms.length - 1 ? trimAtomEnd(source, written) : written
+    let atom = written
     const described = item.annotations.some(
       (annotation) =>
         annotation.type === "TreeviewDescriptionAnnotation" &&
-        annotation.value?.range[0] === atom.start,
+        annotation.value?.range[0] === written.start,
     )
-    if (!described) return atom
-    const start = skipSpacesAndTabs(source, atom.start, atom.end)
-    if (start === atom.end) return atom
-    texts.add(start)
-    return { ...atom, start }
+    if (described) {
+      const start = skipSpacesAndTabs(source, written.start, written.end)
+      if (start !== written.end) {
+        texts.add(start)
+        atom = { ...written, start }
+      }
+    }
+    return index === atoms.length - 1 ? trimAtomEnd(source, atom) : atom
   })
 }
 

@@ -485,6 +485,12 @@ rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の 4 節にある
      該当する例を fixture の `input.mmd` から作り直す（4 節の手順 4）。
      古い印字結果を整形し直しても、fixture のテキストには戻らないからである。
   5. `pnpm run lint:docs` を実行する。
+     続けて、ドキュメントサイトのテストを実行する。
+     このテストは、build したプラグインで、すべての規則の文書の例を表示する。
+     先に `pnpm --filter @mmd-toolkit/eslint-plugin run build` を実行し、
+     そのあと `pnpm --filter @mmd-toolkit/docs run test` を実行する。
+     `packages/docs/pages/linter` のページの例は手で書くので、
+     それもフォーマッターが印字する形に直す。
 - index のうち手で書くもの: 生成する一覧より前の部分で、
   `recommended` が ✅ を付けた規則を有効にすると述べる文を持つ冒頭と、
   規則の id の節である。

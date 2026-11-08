@@ -46,7 +46,7 @@ this diagram:
 %% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
   A --> B
-  style C fill:red
+  style C fill: red
 ```
 
 Run ESLint:
@@ -55,7 +55,7 @@ Run ESLint:
 npx eslint diagram.md
 ```
 
-`@mmd-toolkit/flowchart-no-undef` reports `C` in `style C fill:red`. Mermaid
+`@mmd-toolkit/flowchart-no-undef` reports `C` in `style C fill: red`. Mermaid
 accepts this input and adds a new vertex named `C`; it does not apply the style
 to `A` or `B`.
 
@@ -65,7 +65,7 @@ To style `A`, change the id in the `style` statement:
 %% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
   A --> B
-  style A fill:red
+  style A fill: red
 ```
 
 This input produces no reports with the configuration above.

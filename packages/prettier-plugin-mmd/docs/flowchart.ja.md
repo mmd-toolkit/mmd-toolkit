@@ -671,11 +671,17 @@ mermaid.js には、接しているときだけ読むトークンがあります
 接するトークンの間に空白を書く規則は、その場所ごとの例外を要するからです。
 [fixture: whitespace-between-tokens/header-and-tabs-collapsed]
 [fixture: whitespace-between-tokens/compat-empty-description-block-own-line]
-subgraph の名前の中など、値の一部である空白は保ちます。
-subgraph の名前はそのタイトルになり、mermaid.js は HTML のラベルとして描きます。
+subgraph の名前（タイトルになる）の中の空白とタブの連なりは、
+mermaid.js がタイトルを幅なしで描くときは空白 1 つにして印字し、
+タイトルを折り返すときは書かれたまま残します。
+Markdown 文字列、データブロックがある subgraph、
+`swimlane` を書く図ではタイトルを折り返します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 [fixture: whitespace-between-tokens/subgraph-name-runs-collapsed]
 [fixture: subgraph-header/markdown-title-runs-kept]
+[fixture: subgraph-header/collapsed-title-runs-kept]
+[fixture: subgraph-header/swimlane-title-runs-kept]
+[fixture: subgraph-header/layout-swimlane-title-runs-kept]
 `style`・`classDef`・`linkStyle` の文では、
 各スタイルの最初の `:` の前に空白を置かず、値が空でなければ、
 後ろに空白を 1 つ置きます。

@@ -2439,11 +2439,14 @@ The spaces and tabs at the end of a line are left out where the line ends with a
 bare name or a description: mermaid.js trims the name and the description of a
 node, so the Db and the figure are the same without them. A description of
 spaces and tabs only, the whitespace inside a quoted name, the text of a
-standalone comment, and every other whitespace character stay as written, and so
-does the gap before a directive that follows a node, which belongs to the
-directive. At the end of a name or a description, U+2028 and U+2029 are
-characters of the text and no spaces or tabs: the spaces after one are left out,
-and the spaces before it stay. [test:
+standalone comment, and every other whitespace character stay as written. The
+gap before a directive that follows a name or a description is one space in the
+indented form and in the form with branch characters: mermaid.js removes the
+directive before it reads the value and drops the spaces and tabs at the end of
+the value, so the gap is in neither the Db nor the figure, and `R   %%{x}%%` is
+printed `R %%{x}%%`, the form of a title. At the end of a name or a description,
+U+2028 and U+2029 are characters of the text and no spaces or tabs: the spaces
+after one are left out, and the spaces before it stay. [test:
 treeview/trailing-whitespace/spaces-after-trailing-line-separator] [test:
 treeview/trailing-whitespace/description-spaces-after-trailing-line-separator]
 Move structural carried runs once. Common line values use shared outer trimming;
@@ -2458,7 +2461,11 @@ tails are not shown in code blocks.
 
 [fixture: treeview/trailing-whitespace/trailing-description-blank-kept]
 
-[fixture: treeview/trailing-whitespace/trailing-directive-gap-kept]
+[fixture: treeview/trailing-whitespace/trailing-directive-gap-one-space]
+
+[fixture: treeview/carried-indentation/box-redraw-carried-run-directive-gap]
+
+[fixture: treeview/comments/box-redraw-comment-prefix-directive-gap]
 
 [fixture: treeview/trailing-whitespace/trailing-quoted-interior]
 

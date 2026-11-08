@@ -18,7 +18,7 @@ Markdown本文もlintする場合の方法を説明します。
 %% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
   A --> B
-  style C fill:red
+  style C fill: red
 ```
 
 ```mmd

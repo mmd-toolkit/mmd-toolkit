@@ -449,7 +449,12 @@ renamed, and removed together, as the section "Rules and their documents" of
      change, rebuild the affected examples from the `input.mmd` of their
      fixtures (step 4 of section 4): formatting the old printed example does not
      give back the text of the fixture.
-  5. Run `pnpm run lint:docs`.
+  5. Run `pnpm run lint:docs`. Then run the tests of the documentation site,
+     which render the examples of every rule document with the built plugin:
+     `pnpm --filter @mmd-toolkit/eslint-plugin run build`, then
+     `pnpm --filter @mmd-toolkit/docs run test`. The examples of the pages in
+     `packages/docs/pages/linter` are written by hand; print them as the
+     formatter prints them too.
 - What is written by hand in the index: what comes before the generated list
   (the introduction, with the sentence that says `recommended` enables the rules
   marked ✅, and the section on rule ids). The criteria for `recommended` are in

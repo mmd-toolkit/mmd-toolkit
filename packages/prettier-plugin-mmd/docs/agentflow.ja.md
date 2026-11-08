@@ -98,6 +98,14 @@ LFを名前へ取り込まず、endの後のセミコロンは親の本文の独
 [fixture: containers/containers-empty] [fixture: containers/containers-one-line]
 [fixture: containers/end-name-not-greedy]
 [fixture: containers/global-flatten-unsafe]
+flow のタイトルの中の空白とタブの連なりは、空白 1 つにして印字します。
+ただし、Markdown 文字列、
+データブロックがある flow（`F@{ view: "collapsed" }`）、
+`swimlane` を書く図では、mermaid.js がタイトルを折り返すので、
+書かれたまま残します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+[fixture: containers/flow-title-runs-collapsed]
+[fixture: containers/flow-title-collapsed-runs-kept]
 
 入力（escape 表記）: `"agentflow-beta TB\nglobal\t \nA\nend B"`。
 [fixture: containers/global-tabs]
