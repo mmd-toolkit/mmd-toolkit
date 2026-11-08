@@ -41,7 +41,10 @@ the later style, and the arrowhead, which takes the colour of the first
 of a link are those of its classes, in the order they were given, then those of
 `linkStyle default`, then its own. A class is given to a link by a `class`
 statement or a `:::`, as in `e1:::hot`, that comes after the statement that
-writes the link.
+writes the link. The fix is also not offered when a directive lies inside the
+style, as in `linkStyle 0 stroke %%{init: {}}%%:#f00`, or when mermaid.js leaves
+a `;` out of the style, as in `classDef hot stroke :#f00;fill:none`, whose one
+style is `stroke :#f00fill:none`; the style is still reported.
 
 Examples of **incorrect** code for this rule:
 

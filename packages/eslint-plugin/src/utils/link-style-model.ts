@@ -61,8 +61,8 @@ export class LinkStyleModel<Style extends { readonly value: string }> {
     numbers: readonly number[],
     styles: readonly Style[],
   ): void {
-    for (const number of numbers) {
-      const link = this.links[number]
+    for (const index of numbers) {
+      const link = this.links[index]
       if (link !== undefined) link.styles = styles
     }
   }

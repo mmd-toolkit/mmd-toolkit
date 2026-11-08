@@ -1154,12 +1154,13 @@ flowchart-no-spaced-stroke と agentflow-no-spaced-stroke: (1)
 `linkStyle 0 stroke :#f00` は赤い線とテーマの色の矢じりを描く）。
 2 節の例外により、規則は `linkStyle` と `classDef` のそうした `stroke` を、
 いま何も失われないところでもすべて報告する。
-後の `stroke` が線に色を与えるとき（`linkStyle default stroke :#f00` の後の
-`linkStyle 0 stroke:#00f`。両方が青）、
-前の `stroke:`
-という文字が矢じりに色を与えるとき（`stroke:#00f,stroke :#f00`）、CSS が読む、
-頂点だけが取る `classDef`、
-リンクのない図の `linkStyle default` もそうである（実行）。
+後の `stroke` が線に色を与える場合も報告する。
+`linkStyle default stroke :#f00` の後に `linkStyle 0 stroke:#00f` があると、
+両方が青になる（実行）。
+`stroke:#00f,stroke :#f00` のように、
+前の `stroke:` という文字が矢じりに色を与える場合も報告する。
+CSS が読む、頂点だけが取る `classDef` と、
+リンクのない図の `linkStyle default` も報告する（実行）。
 `style` は報告しない。
 `style` は頂点か subgraph にスタイルを付け、
 リンクには付けない（`addVertex` を読んだ。実行。

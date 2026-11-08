@@ -43,6 +43,12 @@ mermaid.js は、リンクのスタイルの中の `stroke:` を探して矢じ�
 次に `linkStyle default` のスタイル、最後にそのリンク自身のスタイルが並ぶ。
 リンクにクラスを与えるには、リンクを書いた文より後に、`class` の文か、
 `e1:::hot` のような `:::` を置く。
+`linkStyle 0 stroke %%{init: {}}%%:#f00` のように、
+スタイルの中に directive があるときや、
+`classDef hot stroke :#f00;fill:none` のように、
+mermaid.js がスタイルから `;` を落とし、
+`stroke :#f00fill:none` という 1 つのスタイルになるときも、
+そのスタイルは報告するが、自動修正は出さない。
 
 この規則に**反する**コードの例:
 

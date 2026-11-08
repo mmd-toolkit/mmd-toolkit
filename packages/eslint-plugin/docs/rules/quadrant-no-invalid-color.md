@@ -41,6 +41,9 @@ When a `;` follows the colour, directly or with only a directive between, as in
 fix: with the `#` added, mermaid.js reads `#f00;` as the code of a character and
 rejects the diagram.
 
+When a directive lies inside the style, as in `color: f%%{init: {}}%%00`, the
+rule reports it without a fix.
+
 Examples of **incorrect** code for this rule:
 
 ```mmd

@@ -153,6 +153,28 @@ Output: unchanged
 ---
 
 
+Test: quadrant-no-invalid-color >> invalid >>> invalid/quadrant/class-def-color-two-points
+Filename: tests/fixtures/rules/quadrant-no-invalid-color/invalid/quadrant/class-def-color-two-points-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   classDef hot color: f00
+    |                       ^~~ [1]
+  3 |   A:::hot: [0.3, 0.5]
+  4 |   B:::hot: [0.6, 0.4]
+  5 |
+
+Output:
+  1 | quadrantChart
+  2 |   classDef hot color: #f00
+  3 |   A:::hot: [0.3, 0.5]
+  4 |   B:::hot: [0.6, 0.4]
+  5 |
+
+[1] mermaid.js accepts `f00` as a colour but writes it into the drawing as it is, which browsers do not read, so the colour is not drawn.
+---
+
+
 Test: quadrant-no-invalid-color >> invalid >>> invalid/quadrant/class-def-comment-after
 Filename: tests/fixtures/rules/quadrant-no-invalid-color/invalid/quadrant/class-def-comment-after-input.mmd
 
@@ -210,6 +232,28 @@ Output:
   2 |   classDef hot stroke-color: #f00
   3 |   A:::hot: [0.3, 0.5] stroke-width: 3px
   4 |
+
+[1] mermaid.js accepts `f00` as a colour but writes it into the drawing as it is, which browsers do not read, so the colour is not drawn.
+---
+
+
+Test: quadrant-no-invalid-color >> invalid >>> invalid/quadrant/class-def-stroke-color-two-points-with-border
+Filename: tests/fixtures/rules/quadrant-no-invalid-color/invalid/quadrant/class-def-stroke-color-two-points-with-border-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   classDef hot stroke-color: f00, stroke-width: 2px
+    |                              ^~~ [1]
+  3 |   A:::hot: [0.3, 0.5]
+  4 |   B:::hot: [0.6, 0.4]
+  5 |
+
+Output:
+  1 | quadrantChart
+  2 |   classDef hot stroke-color: #f00, stroke-width: 2px
+  3 |   A:::hot: [0.3, 0.5]
+  4 |   B:::hot: [0.6, 0.4]
+  5 |
 
 [1] mermaid.js accepts `f00` as a colour but writes it into the drawing as it is, which browsers do not read, so the colour is not drawn.
 ---

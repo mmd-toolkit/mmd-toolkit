@@ -32,11 +32,8 @@ function lastStyles(
 
 /** Where the value stands in the text of a style: after the first `:` and the whitespace that follows it. */
 function valueRange(text: string, value: string): Range {
-  const afterColon = text.indexOf(":") + 1
-  const start =
-    afterColon +
-    text.slice(afterColon).length -
-    text.slice(afterColon).trimStart().length
+  const afterColon = text.slice(text.indexOf(":") + 1)
+  const start = text.length - afterColon.trimStart().length
   return [start, start + value.length]
 }
 
@@ -121,7 +118,7 @@ export const quadrantNoInvalidColor: MermaidRuleDefinition<{
         classDefs.set(node.name.name, node)
       },
       "QuadrantDiagram:exit"() {
-        const drawn = new Set<KeptStyle>()
+        const drawn = new Set<QuadrantLiteral>()
         for (const point of points) {
           const own = lastStyles(point.styles)
           const inherited = lastStyles(
@@ -136,11 +133,12 @@ export const quadrantNoInvalidColor: MermaidRuleDefinition<{
               source !== undefined &&
               (name === "color" || hasBorder(own, inherited))
             ) {
-              drawn.add(source)
+              drawn.add(source.literal)
             }
           }
         }
-        for (const { literal, value } of drawn) {
+        for (const literal of drawn) {
+          const { value } = styleOf(literal)
           if (typeof value !== "string" || !BARE_HEX_COLOR.test(value)) continue
           const [start, end] = valueRange(literal.value, value)
           const range: Range = [
