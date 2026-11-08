@@ -44,6 +44,13 @@ interface StyleReading {
    * margin; its amount is.
    */
   readonly joinsStyles: boolean
+  /**
+   * The style is one of a node of a block diagram, which sorts the styles that
+   * start with `color:` or `text-align:` into the style of the label, so
+   * whether whitespace stands before such a style, or between its name and the
+   * `:`, is no margin; its amount is.
+   */
+  readonly splitsLabelStyles: boolean
 }
 
 /**
@@ -54,7 +61,7 @@ interface StyleReading {
  */
 function withoutStyleMargins(
   style: string,
-  { readsStroke, readsLinkStyle, joinsStyles }: StyleReading,
+  { readsStroke, readsLinkStyle, joinsStyles, splitsLabelStyles }: StyleReading,
 ): string {
   const trimmed = style.trim()
   const escapedTail =
@@ -63,10 +70,16 @@ function withoutStyleMargins(
   const colon = trimmed.indexOf(":")
   if (colon <= 0) return `${trimmed}${tail}`
   const name = trimmed.slice(0, colon).trimEnd()
-  const gap = readsStroke && name.endsWith("stroke") && name.length < colon
+  const gap =
+    name.length < colon &&
+    ((readsStroke && name.endsWith("stroke")) ||
+      (splitsLabelStyles && (name === "color" || name === "text-align")))
   const startsWithWhitespace = style !== style.trimStart()
   const start =
-    readsLinkStyle && trimmed.startsWith("stroke:") && startsWithWhitespace
+    startsWithWhitespace &&
+    ((readsLinkStyle && trimmed.startsWith("stroke:")) ||
+      (splitsLabelStyles &&
+        (trimmed.startsWith("color:") || trimmed.startsWith("text-align:"))))
   const value = trimmed.slice(colon + 1).trimStart()
   const writtenValue = style.slice(style.indexOf(":") + 1)
   const blank =
@@ -149,6 +162,10 @@ export function styleDbForFormattingComparison(
       readsStroke: linksCanBeStyled && reachesLink(path),
       readsLinkStyle: linksCanBeStyled && key === "style",
       joinsStyles: joinsStylesAt(path, diagramType, linksCanBeStyled),
+      splitsLabelStyles:
+        diagramType === "block" &&
+        key === "styles" &&
+        path.at(-2) === "children",
     }
     return key !== undefined &&
       isStyleKey(key) &&

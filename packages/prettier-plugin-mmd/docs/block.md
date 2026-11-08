@@ -556,10 +556,18 @@ with `;` as they are, and the backslash would escape the `;` (see
 `style A stroke-width: 3px\ , stroke: #0f0`. [fixture:
 styles/style-backslash-space-kept] [fixture: styles/style-backslash-at-end-kept]
 A `classDef` takes the whitespace away first, and is printed in the one form.
-[fixture: styles/class-def-backslash-space-dropped] A statement stays as written
-where it holds a comment or a directive, where a style is all whitespace, or
-where a style holds a line break or its line holds a kept `;`. The whitespace at
-the end of the statement is dropped, as in a flowchart (see
+[fixture: styles/class-def-backslash-space-dropped] A style that starts with
+`color:` or `text-align:` keeps whether whitespace stands before it, and the
+name `color` or `text-align` keeps whether whitespace stands between it and the
+`:`, a run of whitespace becoming one space, since mermaid.js puts such a style
+in the style of the label of a node, and a block arrow takes it as it is (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)):
+`style K fill:#ff0,color:red` is printed `style K fill: #ff0,color: red`, and
+`style K color :red` is printed `style K color : red`. [fixture:
+styles/style-label-styles-kept] A statement stays as written where it holds a
+comment or a directive, where a style is all whitespace, or where a style holds
+a line break or its line holds a kept `;`. The whitespace at the end of the
+statement is dropped, as in a flowchart (see
 [Style trailing whitespace](./flowchart.md#style-trailing-whitespace)).
 [fixture: styles/class-definition-spaces] [fixture: styles/style-spaces]
 [fixture: styles/class-spaces] [fixture: styles/style-commas-spaced] [fixture:

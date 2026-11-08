@@ -379,11 +379,13 @@ export function layoutClassStatement(
   ) {
     // mermaid.js draws the same figure whatever the whitespace around the `:`
     // and the `,` of the styles (docs/class.md, Styles), except after a
-    // backslash that ends a style of a `style`, whose whitespace the last atom
+    // backslash that ends a style of a `style` or a `classDef`, whose whitespace the last atom
     // takes up to `end` (see `findClassPrintedEnd`). A statement with a kept
     // line break keeps its styles as written: printing them changes whether
     // joining its lines is safe, so a second pass would join them.
-    const joinsStyles = statement.type === "ClassStyleStatement"
+    const joinsStyles =
+      statement.type === "ClassStyleStatement" ||
+      statement.type === "ClassClassDefStatement"
     const lastAtom = atoms.at(-1)
     if (joinsStyles && lastAtom && lastAtom.end < end) {
       atoms[atoms.length - 1] = { ...lastAtom, end }
@@ -414,11 +416,12 @@ export function findClassPrintedEnd(
   if (findOpenNameIn(source, statement) !== null) return source.text.length
   const colon = findBlankLabelColon(source, statement)
   if (colon !== null) return findWrittenWhitespaceEnd(source, colon.range[1])
-  // mermaid.js joins the styles of a `style` with `;` as they are, so the
-  // whitespace after a backslash that ends the last one stays (see
-  // `normalizeStyleList`).
+  // mermaid.js joins the styles of a `style`, and of a `classDef` that comes
+  // after the class it is put on, with `;` as they are, so the whitespace
+  // after a backslash that ends the last one stays (see `normalizeStyleList`).
   const lastStyle =
-    statement.type === "ClassStyleStatement"
+    statement.type === "ClassStyleStatement" ||
+    statement.type === "ClassClassDefStatement"
       ? statement.styles.at(-1)
       : undefined
   return lastStyle

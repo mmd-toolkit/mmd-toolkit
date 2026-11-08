@@ -591,6 +591,15 @@ block arrow と group の形が、スタイルを書かれたまま `;` でつ�
 [fixture: styles/style-backslash-at-end-kept]
 `classDef` は先に空白を取り除くので、1 つの形で印字します。
 [fixture: styles/class-def-backslash-space-dropped]
+`color:` か `text-align:` で始まるスタイルは、前に空白があるかないかを保ち、
+名前 `color` か `text-align` は、`:` との間に空白があるかないかを保ち、
+空白の連続は空白 1 つにします。
+mermaid.js がこのようなスタイルをノードのラベルのスタイルに入れ、
+block arrow がそれを書かれたまま使うからです。
+（[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)）。
+`style K fill:#ff0,color:red` は、`style K fill: #ff0,color: red` と印字し、
+`style K color :red` は `style K color : red` と印字します。
+[fixture: styles/style-label-styles-kept]
 コメントやディレクティブがある文、空白だけのスタイルがある文、
 スタイルに改行があるか、行に保つ `;` がある文は、書かれたままにします。
 文の最後の空白は、

@@ -189,9 +189,15 @@ export interface StyleListUse {
   readonly isLinkStyle?: boolean
   /**
    * mermaid.js joins the styles of the statement with `;` as they are: a
-   * `linkStyle`, and the `style` of a block diagram.
+   * `linkStyle`, the `style` of a block diagram, and the `style` and the
+   * `classDef` of a class diagram.
    */
   readonly joinsStyles?: boolean
+  /**
+   * The statement is a `style` of a block diagram: mermaid.js sorts its styles
+   * into those of the label and those of the shape by how they start.
+   */
+  readonly splitsLabelStyles?: boolean
   /** The styles can reach a link: a `linkStyle`, a `classDef`. */
   readonly keepsGapAfterStroke?: boolean
   /**
@@ -246,15 +252,25 @@ export interface StyleListUse {
  *   its value, which reaches up to the `,` after it. The gap after that `,`
  *   follows the rules above.
  *
+ * `splitsLabelStyles` is set for the `style` of a block diagram. mermaid.js
+ * puts a style that starts with `color:` or `text-align:` in the style of the
+ * label of a node and every other style in the style of its shape, and a block
+ * arrow takes the style of its label as it is. A style that starts with
+ * whitespace, or has whitespace between its name and the `:`, does not start
+ * so. So such a style keeps whether whitespace stands before it, and between
+ * `color` or `text-align` and the `:`, a run of whitespace becoming one space.
+ *
  * `joinsStyles` is set for the statements whose styles mermaid.js joins with
  * `;` into one CSS text without taking their whitespace away: a `linkStyle`
- * (the path of a link), and the `style` of a block diagram (a block arrow and a
- * group). A backslash at the end of a style escapes the `;` that follows, and
- * the styles after it are lost. So a style that ends with a backslash (see
- * `endsWithEscape`) keeps whether whitespace stands after it, a run of
- * whitespace becoming its first character. The `style` of a node of the other
- * diagram types and a `classDef` are not joined so: mermaid.js takes the
- * whitespace at their ends away first.
+ * (the path of a link), the `style` of a block diagram (a block arrow and a
+ * group), and the `style` and the `classDef` of a class diagram (the box of a
+ * class: a `classDef` that stands after the class it is put on adds its styles
+ * to those of the class as they are). A backslash at the end of a style
+ * escapes the `;` that follows, and the styles after it are lost. So a style
+ * that ends with a backslash (see `endsWithEscape`) keeps whether whitespace
+ * stands after it, a run of whitespace becoming its first character. The
+ * `style` of a node of the other diagram types and their `classDef` are not
+ * joined so: mermaid.js takes the whitespace at their ends away first.
  *
  * Where `escapesComma` is set, a `,` after a backslash is part of a style, and
  * so is a space after a backslash at the end of one: taking that space away
@@ -275,6 +291,7 @@ export function normalizeStyleList(
     keepsSpaceBeforeFill = false,
     isLinkStyle = false,
     joinsStyles = false,
+    splitsLabelStyles = false,
     keepsGapAfterStroke = false,
     escapesComma = false,
   }: StyleListUse = {},
@@ -316,12 +333,20 @@ export function normalizeStyleList(
     ) {
       core = [core[0], core[1] + 1]
     }
-    if (!keepsValue) addColonEdit(source, core, edits, { keepsGapAfterStroke })
+    if (!keepsValue) {
+      addColonEdit(source, core, edits, {
+        keepsGapAfterStroke,
+        keepsGapAfterLabelName: splitsLabelStyles,
+      })
+    }
     if (previousEnd !== -1) {
       const touchesWord =
         core[0] === start &&
         ((keepsSpaceBeforeFill && source.text.startsWith("fill", core[0])) ||
-          (isLinkStyle && source.text.startsWith("stroke:", core[0])))
+          (isLinkStyle && source.text.startsWith("stroke:", core[0])) ||
+          (splitsLabelStyles &&
+            (source.text.startsWith("color:", core[0]) ||
+              source.text.startsWith("text-align:", core[0]))))
       edits.push(
         { range: [previousEnd, start - 1], replacement: "" },
         { range: [start, core[0]], replacement: touchesWord ? "" : " " },
@@ -593,7 +618,7 @@ function addColonEdit(
   source: Source,
   [start, end]: Range,
   edits: TextEdit[],
-  { keepsGapAfterStroke = false } = {},
+  { keepsGapAfterStroke = false, keepsGapAfterLabelName = false } = {},
 ): void {
   const colon = source.text.indexOf(":", start)
   if (colon <= start || colon >= end) return
@@ -603,10 +628,11 @@ function addColonEdit(
   if (nameEnd < colon && source.text[nameEnd - 1] === "\\") return
   let valueStart = colon + 1
   while (valueStart < end && isSpaceOrTab(source.text[valueStart])) valueStart++
+  const name = source.text.slice(start, nameEnd)
   const spaceBeforeColon =
-    keepsGapAfterStroke &&
     nameEnd < colon &&
-    source.text.slice(start, nameEnd).endsWith("stroke")
+    ((keepsGapAfterStroke && name.endsWith("stroke")) ||
+      (keepsGapAfterLabelName && (name === "color" || name === "text-align")))
   edits.push({
     range: [nameEnd, valueStart],
     replacement: `${spaceBeforeColon ? " " : ""}:${valueStart < end ? " " : ""}`,

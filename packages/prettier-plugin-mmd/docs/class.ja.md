@@ -379,10 +379,15 @@ mermaid.js がクラスのスタイルを書かれたまま `;` でつなぎ、
 `style A fill: abc\ , stroke: green` と印字します。
 [fixture: whitespace-between-tokens/style-backslash-space-kept]
 [fixture: whitespace-between-tokens/style-backslash-at-end-kept]
-`classDef` は先に空白を取り除くので、1 つの形で印字します。
-`classDef c fill:abc\ ,stroke:green` は、
-`classDef c fill: abc\, stroke: green` と印字します。
-[fixture: whitespace-between-tokens/class-def-backslash-space-dropped]
+`classDef` も空白の有無を保ちます。
+適用先のクラスより後に書かれていると、
+mermaid.js はスタイルをクラスのスタイルへ書かれたまま足します。
+前に書かれていると空白を取り除き、画素は同じですが、文の順序で決まるので、
+プリンターはどちらの順序でも書かれたまま保ちます。
+`classDef c fill:abc\  ,stroke:green` は、
+`classDef c fill: abc\ , stroke: green` と印字します。
+[fixture: whitespace-between-tokens/class-def-backslash-space-kept]
+[fixture: whitespace-between-tokens/class-def-backslash-at-end-kept]
 コメントやディレクティブがある文、空白だけのスタイルがある文、
 スタイルに改行があるか、行に保つ `;` がある文は、書かれたままにします。
 [fixture: whitespace-between-tokens/style-comma-before-dropped]

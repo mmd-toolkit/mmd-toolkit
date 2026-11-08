@@ -527,6 +527,10 @@ block arrow と group の形が、それを `style` 属性に入れます。
 class の `style` では、`classBox` が同じ処理を行い、
 各部分の `style` 属性へ入れます。
 （[`classBox`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/classBox.ts#L36)）。
+適用先のクラスより後に書かれた `classDef` にも、同じ処理を行います。
+その場合は、
+`defineClass` がスタイルをクラスのスタイルへ書かれたまま足すからです。
+（[`defineClass`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/classDb.ts#L363-L367)）。
 スタイルの末尾のバックスラッシュは後ろの `;` をエスケープし、
 その後のスタイルが失われます。
 `linkStyle 0 stroke-width:4px\ ,stroke:#0f0` では線が緑で、
@@ -535,20 +539,25 @@ class の `style` では、`classBox` が同じ処理を行い、
 class の `style A fill:abc\ ,stroke:green` でも同じ結果です。
 class では枠が緑になるかどうかが変わります。
 そのため、リンクの番号か `default` を指定した `linkStyle` と、
-block 図と class 図の `style` で、バックスラッシュで終わるスタイルは、
-その後に空白があるかないかを保ち、空白の連続は最初の 1 文字にします。
+block 図の `style` と、class 図の `style` と `classDef` で、
+バックスラッシュで終わるスタイルは、その後に空白があるかないかを保ち、
+空白の連続は最初の 1 文字にします。
 通常ならスタイル文の末尾の空白を落とす文末でも、同じです。
 （[スタイルの行末の空白](./flowchart.ja.md#スタイルの行末の空白)）。
 末尾の 2 つのバックスラッシュは互いにエスケープし、
 `linkStyle 0 stroke-width:4px\\ ,stroke:#0f0` と、
 その空白がないものの画素は同じだったので、その後の空白は落とします。
 ほかのスタイルには影響しません。
-`classDef`、flowchart と agentflow と state 図のノードの `style`、
+ほかの図種の `classDef`、flowchart と agentflow と state 図のノードの `style`、
 block 図のほかの形の `style` です。
 mermaid.js がスタイルを使う前に両端の空白を取り除くからです。
 （[`getCompiledStyles`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L1156-L1168)、
 [`styles2Map`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L44-L51)）。
 両方の書き方の画素は同じでした。
+class 図の `classDef` も、適用先のクラスより前に書かれていれば、
+両端の空白が取り除かれ、画素は同じでした。
+ただし、2 つの扱いは文の順序だけで決まるので、
+フォーマッターはどちらの順序でも書かれたまま保ちます。
 ER、requirement、treemap の図では、スタイルの中のバックスラッシュを拒否します。
 [fixture: flowchart/whitespace-between-tokens/link-style-backslash-space-kept]
 [fixture: agentflow/single-space-gaps/link-style-backslash-space-kept]
@@ -562,7 +571,30 @@ ER、requirement、treemap の図では、スタイルの中のバックスラ�
 [fixture: agentflow/single-space-gaps/style-backslash-space-dropped]
 [fixture: state/whitespace-between-tokens/style-backslash-space-dropped]
 [fixture: block/styles/class-def-backslash-space-dropped]
-[fixture: class/whitespace-between-tokens/class-def-backslash-space-dropped]
+[fixture: class/whitespace-between-tokens/class-def-backslash-space-kept]
+[fixture: class/whitespace-between-tokens/class-def-backslash-at-end-kept]
+
+block 図のノードのスタイルの先頭も読まれます。
+`getStylesFromArray` は、`color:` か `text-align:` で始まるスタイルを、
+ノードのラベルのスタイルに、ほかのスタイルを図形のスタイルに入れます。
+（[`getStylesFromArray`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/utils.ts#L443-L459)）。
+block arrow の形は、ラベルのスタイルを書かれたまま使います。
+（[`blockArrow`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/blockArrow.ts#L205)）。
+空白で始まるスタイルや、`color` と `:` の間に空白があるスタイルは、
+このようには始まりません。
+`style K fill:#ff0,color:red` では block arrow のラベルが赤で、
+`style K fill: #ff0, color: red` では黒なので、画素が異なります。
+`style K color :red` でも、
+ラベルが 2 行の block arrow の `style L fill:#ff0,text-align:left` でも、
+同じ結果です。
+そのため、block 図の `style` では、
+`color:` か `text-align:` で始まるスタイルは、前に空白があるかないかを保ち、
+名前 `color` か `text-align` は、`:` との間に空白があるかないかを保ち、
+空白の連続は空白 1 つにします。
+block 図のほかの形は、スタイルから `styles2String` で、
+ラベルのスタイルを作り直し、空白を取り除きます。
+これらの形でも `classDef` でも、両方の書き方の画素は同じでした。
+[fixture: block/styles/style-label-styles-kept]
 
 次の場合は、文を書かれたまま残します。
 スタイルが改行か U+2028・U+2029 を含む場合、
@@ -582,7 +614,11 @@ ER、requirement、treemap の図では、スタイルの中のバックスラ�
 ほかの違いは、リンクのスタイルの数や、
 リンクにも適用されるスタイルの `stroke` の `:` の前の空白の有無、
 `stroke:` で始まるリンクのスタイルの前の空白の有無、
-リンクの `stroke` の空白だけの値の中の空白の有無も含めて、失敗とします。
+リンクの `stroke` の空白だけの値の中の空白の有無、
+mermaid.js が書かれたままつなぐスタイルの末尾で、
+バックスラッシュの後に空白があるかないか、
+`color:` か `text-align:` で始まる block のスタイルの前や、
+その名前と `:` の間の空白の有無も含めて、失敗とします。
 固定している mermaid.js の版を上げるときは、これらの種類の文を描き直し、
 SVG と画素を比べてから、例外を残します。
 

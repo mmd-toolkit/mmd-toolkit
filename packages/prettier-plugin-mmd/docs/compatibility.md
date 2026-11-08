@@ -482,14 +482,17 @@ and of a group
 put into their `style` attribute, and
 [`classBox`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/classBox.ts#L36)
 does so for the `style` of a class, which it puts into the `style` attribute of
-its parts. A backslash at the end of a style escapes the `;` after it, and the
-styles after it are lost. In `linkStyle 0 stroke-width:4px\ ,stroke:#0f0` the
-line is green, and in `linkStyle 0 stroke-width: 4px\,stroke: #0f0` it is black,
-so the pixels differ, with the same result for `linkStyle default`, in
-agentflow, for a block arrow and a group of a block diagram, and for
-`style A fill:abc\ ,stroke:green` on a class, whose border is green or not. So a
-style of a `linkStyle`, with link numbers or `default`, and of a `style` of a
-block diagram and of a class diagram, that ends with a backslash keeps whether
+its parts, and for a `classDef` that stands after the class it is put on, since
+[`defineClass`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/classDb.ts#L363-L367)
+then adds its styles to those of the class as they are. A backslash at the end
+of a style escapes the `;` after it, and the styles after it are lost. In
+`linkStyle 0 stroke-width:4px\ ,stroke:#0f0` the line is green, and in
+`linkStyle 0 stroke-width: 4px\,stroke: #0f0` it is black, so the pixels differ,
+with the same result for `linkStyle default`, in agentflow, for a block arrow
+and a group of a block diagram, and for `style A fill:abc\ ,stroke:green` on a
+class, whose border is green or not. So a style of a `linkStyle`, with link
+numbers or `default`, and of a `style` of a block diagram, and of a `style` and
+a `classDef` of a class diagram, that ends with a backslash keeps whether
 whitespace stands after it, a run of whitespace becoming its first character,
 also at the end of the statement, where the whitespace at the end of a style
 statement is dropped otherwise (see
@@ -497,13 +500,17 @@ statement is dropped otherwise (see
 backslashes at the end escape each other, and the pixels of
 `linkStyle 0 stroke-width:4px\\ ,stroke:#0f0` and of the same without the space
 were the same, so the whitespace after them is dropped. The other styles are not
-affected: a `classDef`, the `style` of a node of a flowchart, an agentflow, and
-a state diagram, and of the other shapes of a block diagram, since mermaid.js
-takes the whitespace at the ends of their styles away before it uses them
+affected: the `classDef` of the other diagram types, the `style` of a node of a
+flowchart, an agentflow, and a state diagram, and of the other shapes of a block
+diagram, since mermaid.js takes the whitespace at the ends of their styles away
+before it uses them
 ([`getCompiledStyles`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L1156-L1168),
 [`styles2Map`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L44-L51)),
-and the pixels of both spellings were the same. ER, requirement, and treemap
-diagrams reject a backslash in a style. [fixture:
+and the pixels of both spellings were the same. A `classDef` of a class diagram
+that stands before the class it is put on is trimmed too, and the pixels were
+the same, but the formatter keeps it as written either way, since only the order
+of the statements tells the two apart. ER, requirement, and treemap diagrams
+reject a backslash in a style. [fixture:
 flowchart/whitespace-between-tokens/link-style-backslash-space-kept] [fixture:
 agentflow/single-space-gaps/link-style-backslash-space-kept] [fixture:
 flowchart/style-trailing-whitespace/link-style-backslash-at-end-kept] [fixture:
@@ -516,7 +523,28 @@ flowchart/whitespace-between-tokens/style-backslash-space-dropped] [fixture:
 agentflow/single-space-gaps/style-backslash-space-dropped] [fixture:
 state/whitespace-between-tokens/style-backslash-space-dropped] [fixture:
 block/styles/class-def-backslash-space-dropped] [fixture:
-class/whitespace-between-tokens/class-def-backslash-space-dropped]
+class/whitespace-between-tokens/class-def-backslash-space-kept] [fixture:
+class/whitespace-between-tokens/class-def-backslash-at-end-kept]
+
+The start of a style of a node of a block diagram is read too.
+[`getStylesFromArray`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/utils.ts#L443-L459)
+puts a style that starts with `color:` or `text-align:` in the style of the
+label of the node and every other style in the style of its shape, and the shape
+of a block arrow
+([`blockArrow`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/blockArrow.ts#L205))
+takes the style of its label as it is. A style that starts with whitespace, or
+has whitespace between `color` and the `:`, does not start so. In
+`style K fill:#ff0,color:red` the label of the block arrow is red, and in
+`style K fill: #ff0, color: red` it is black, so the pixels differ, with the
+same result for `style K color :red` and `style L fill:#ff0,text-align:left` on
+a block arrow with a label of two lines. So in a `style` of a block diagram a
+style that starts with `color:` or `text-align:` keeps whether whitespace stands
+before it, and a name `color` or `text-align` keeps whether whitespace stands
+between it and the `:`, a run of whitespace becoming one space. The other shapes
+of a block diagram make the style of their label again from their styles with
+`styles2String`, which takes the whitespace away, and the pixels of both
+spellings were the same for them and for a `classDef`. [fixture:
+block/styles/style-label-styles-kept]
 
 A statement stays as written where a style holds a line break or a U+2028 or
 U+2029, where the statement holds a comment or a directive, where a style is all
@@ -535,9 +563,12 @@ other difference, among them the number of styles of a link, the presence of
 whitespace before the `:` of a `stroke` in a style that can reach a link, the
 presence of whitespace before a style of a link that starts with `stroke:`, and
 the presence of whitespace in the value of a `stroke` of a link that is
-whitespace only, fails. When the pinned mermaid.js is updated, draw the
-statements of each of these kinds again and compare the SVG and the pixels
-before the exception stays.
+whitespace only, the presence of whitespace after a backslash that ends a style
+that mermaid.js joins as it is, and the presence of whitespace before a style of
+a block that starts with `color:` or `text-align:`, or between such a name and
+the `:`, fails. When the pinned mermaid.js is updated, draw the statements of
+each of these kinds again and compare the SVG and the pixels before the
+exception stays.
 
 ## Texts after a keyword that are drawn the same
 

@@ -96,6 +96,30 @@ const restored: readonly DbPair[] = [
     before: { classes: [{ id: "c", styles: ["stroke-width:3px\\ "] }] },
     after: { classes: [{ id: "c", styles: ["stroke-width: 3px\\"] }] },
   },
+  {
+    name: "whitespace before the colon and in a color style of a block",
+    diagramType: "block",
+    before: {
+      root: {
+        children: [{ id: "K", styles: ["fill:#ff0", " color :red"] }],
+      },
+    },
+    after: {
+      root: {
+        children: [{ id: "K", styles: ["fill: #ff0", " color : red"] }],
+      },
+    },
+  },
+  {
+    name: "whitespace before a style of a block that is no label style",
+    diagramType: "block",
+    before: {
+      root: { children: [{ id: "K", styles: ["fill:#ff0", "stroke:red"] }] },
+    },
+    after: {
+      root: { children: [{ id: "K", styles: ["fill: #ff0", " stroke: red"] }] },
+    },
+  },
 ]
 
 const kept: readonly DbPair[] = [
@@ -160,6 +184,36 @@ const kept: readonly DbPair[] = [
     diagramType: "classDiagram",
     before: { classes: [{ id: "A", styles: ["fill:abc\\ "] }] },
     after: { classes: [{ id: "A", styles: ["fill: abc\\"] }] },
+  },
+  {
+    name: "whitespace added before a color style of a block",
+    diagramType: "block",
+    before: {
+      root: { children: [{ id: "K", styles: ["color:red"] }] },
+    },
+    after: {
+      root: { children: [{ id: "K", styles: [" color: red"] }] },
+    },
+  },
+  {
+    name: "whitespace added before a text-align style of a block",
+    diagramType: "block",
+    before: {
+      root: { children: [{ id: "K", styles: ["text-align:left"] }] },
+    },
+    after: {
+      root: { children: [{ id: "K", styles: [" text-align: left"] }] },
+    },
+  },
+  {
+    name: "whitespace taken away before the colon of color in a block",
+    diagramType: "block",
+    before: {
+      root: { children: [{ id: "K", styles: ["color :red"] }] },
+    },
+    after: {
+      root: { children: [{ id: "K", styles: ["color: red"] }] },
+    },
   },
   {
     name: "a changed value",

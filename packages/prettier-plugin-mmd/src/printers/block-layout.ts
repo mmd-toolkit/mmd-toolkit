@@ -466,7 +466,10 @@ function addStyledStatementRules(
   // break keeps its styles as written: printing them changes whether joining
   // its lines is safe, so a second pass would join them.
   if (printsStyles) {
-    normalizeStyleList(source, atoms, statement, { joinsStyles })
+    normalizeStyleList(source, atoms, statement, {
+      joinsStyles,
+      splitsLabelStyles: statement.type === "BlockStyleStatement",
+    })
   }
   const doc =
     atoms[0].doc ??

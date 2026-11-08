@@ -339,12 +339,16 @@ and the backslash would escape the `;` (see
 `style A fill:abc\  ,stroke:green` is printed
 `style A fill: abc\ , stroke: green`. [fixture:
 whitespace-between-tokens/style-backslash-space-kept] [fixture:
-whitespace-between-tokens/style-backslash-at-end-kept] A `classDef` takes the
-whitespace away first, and is printed in the one form:
-`classDef c fill:abc\ ,stroke:green` is printed
-`classDef c fill: abc\, stroke: green`. [fixture:
-whitespace-between-tokens/class-def-backslash-space-dropped] A statement stays
-as written where it holds a comment or a directive, where a style is all
+whitespace-between-tokens/style-backslash-at-end-kept] A `classDef` keeps it
+too: where it stands after the class it is put on, mermaid.js adds its styles to
+those of the class as they are, and where it stands before, it takes the
+whitespace away, with the same pixels, so the order of the statements decides
+and the printer keeps it as written either way:
+`classDef c fill:abc\  ,stroke:green` is printed
+`classDef c fill: abc\ , stroke: green`. [fixture:
+whitespace-between-tokens/class-def-backslash-space-kept] [fixture:
+whitespace-between-tokens/class-def-backslash-at-end-kept] A statement stays as
+written where it holds a comment or a directive, where a style is all
 whitespace, or where a style holds a line break or its line holds a kept `;`.
 [fixture: whitespace-between-tokens/style-comma-before-dropped] [fixture:
 whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
