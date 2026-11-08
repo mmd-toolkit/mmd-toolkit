@@ -8,7 +8,10 @@ import { isStrokeDeclaration } from "./spaced-stroke.ts"
  * class only to the links that exist at that point, a `linkStyle` replaces the
  * styles that the same link or `default` had, and a `classDef` adds its styles
  * to the class. The styles of a link are then those of its classes, in the order
- * they were given, then those of `linkStyle default`, then its own.
+ * they were given, then those of `linkStyle default`, then its own. It is a
+ * class because it keeps that state between the calls of the handlers of a rule,
+ * which read the statements one by one, and a function of the statements would
+ * need the whole tree of the diagram to read them again.
  */
 export class LinkStyleModel<Style extends { readonly value: string }> {
   private readonly linkIds: string[] = []
