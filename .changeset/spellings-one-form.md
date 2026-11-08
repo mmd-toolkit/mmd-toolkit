@@ -18,11 +18,12 @@ symbols (`A only one to zero or more B` becomes `A ||--o{ B`), `Rel_Up`,
 `=`, a range of a packet diagram with equal ends (`4-4`) becomes the position
 (`4`), and `switch` of a gitGraph becomes `checkout`. The colon after the header
 of a cynefin or a radar diagram is removed. The direction `TD` of an agentflow
-or swimlane header becomes `TB`, and the label of a link is printed between the
-arrows in an agentflow diagram (`A -->|x| B` becomes `A -- x --> B`) and between
-`|` in a swimlane diagram. The names of a header, the direction of a flowchart
-header, and the colon after the header of a gitGraph stay as written, since
-versions of mermaid.js read or draw them differently. A spelling that the
-examples do not use in one form, or that changes what mermaid.js reads, stays as
-written, and so do the `direction` statements. The option `singleQuote` has no
-effect on these strings.
+or swimlane header becomes `TB` (not when a directive stands between the header
+and the direction), and the label of a link is printed between the arrows in an
+agentflow diagram (`A -->|x| B` becomes `A -- x --> B`) and between `|` in a
+swimlane diagram. The names of a header, the direction of a flowchart header,
+and the colon after the header of a gitGraph stay as written, since versions of
+mermaid.js read or draw them differently. A spelling that the examples do not
+use in one form, or that changes what mermaid.js reads, stays as written, and so
+do the `direction` statements. The option `singleQuote` has no effect on these
+strings.
