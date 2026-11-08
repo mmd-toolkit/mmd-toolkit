@@ -32,15 +32,29 @@ mermaid.jsの読みが違うからと結果を戻しません。
 
 ### Header
 
-[方向](./flowchart.ja.md#方向)と同じく、見出しを第1列に置き、
-方向の綴りを保ちます。
-見出しを見つけやすくし、見出しと本文でTDの方針を揃えるためです。
+[方向](./flowchart.ja.md#方向)と同じく、見出しを第1列に置きます。
+見出しを見つけやすくするためです。
+flowchart の見出しと異なり、見出しの方向 `TD` は `TB` と印字します。
+mermaid.js の文書の例では、`TB` は 10 回、`TD` は 0 回使われているためです。
+（[ヘッダーの向き](./compatibility.ja.md#ヘッダーの向き)を参照）。
+この図種は、
+mermaid.js が `TD` を `TB` と同じように扱うようになった版より後に加わったため、
+これを読むすべての版が 2 つを同じに描きます。
+（[mermaid.js の版](./compatibility.ja.md#mermaidjs-の版)を参照）。
 agentflowが受理する見出しは小文字の`agentflow-beta`だけです。
 方向の省略と記号を保ち、次行のLRは頂点のままです。
+見出しに続く directive の後にある方向は、
+`agentflow-beta%%{init: {}}%% TD` のように書かれたまま残します。
 通常の後続文は本文へ移し、directiveの付着はDirectivesに従います。
 [fixture: header/header-column] [fixture: header/header-direction-spelling]
 [fixture: header/header-inline-separated]
 [fixture: header/header-next-line-direction] [fixture: header/header-symbol]
+[fixture: header/header-direction-after-directive-kept]
+記号の方向は、
+[flowchart](./flowchart.ja.md#方向)と同じく空白 1 つの後に置きます。
+`agentflow-beta<` は `agentflow-beta <` と印字します。
+[fixture: header/header-symbol-touching-spaced]
+[test: agentflow: U+2028 between the header keyword and its direction]
 
 入力（escape 表記）: `"agentflow-beta"`。 [fixture: header/header-only]
 
@@ -93,6 +107,19 @@ LFを名前へ取り込まず、endの後のセミコロンは親の本文の独
 [fixture: containers/containers-empty] [fixture: containers/containers-one-line]
 [fixture: containers/end-name-not-greedy]
 [fixture: containers/global-flatten-unsafe]
+flow のタイトルの中の空白とタブの連なりは、空白 1 つにして印字します。
+ただし、Markdown 文字列、データブロックがある flow（`F@{ view: "collapsed" }`。
+文字列で名前を書く flow の id は、引用符の間の文字から両端の空白を除いたもので、
+Markdown 文字列ではバッククォートの間の文字です。
+`flow "F"` と `flow " F "` の id は `F`）、`swimlane` を書く図では、
+mermaid.js がタイトルを折り返すので、書かれたまま残します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+[fixture: containers/flow-title-runs-collapsed]
+[fixture: containers/flow-title-collapsed-runs-kept]
+[fixture: containers/flow-quoted-name-title-collapsed-runs-kept]
+[fixture: containers/flow-spaced-quoted-name-title-collapsed-runs-kept]
+[fixture: containers/flow-markdown-name-title-collapsed-runs-kept]
+[fixture: containers/flow-two-part-name-title-collapsed-runs-kept]
 
 入力（escape 表記）: `"agentflow-beta TB\nglobal\t \nA\nend B"`。
 [fixture: containers/global-tabs]
@@ -125,10 +152,10 @@ agentflow の文書にあるタイトル付きの見出し 19 件は、すべて
 flowchart と同じ形で、agentflowだけ違う形を選ぶ理由がないためです。
 タイトルが別に読まれる所（`[ /x/ ]`、agentflow の `[ x@ ]`）には、
 空白を 1 つ残します。
-タイトルの端にディレクティブがあれば、その隣の隙間は、
-空白が書かれていれば 1 つにして残します。
-`flow F[ %%{x}%% T ]` は `flow F[ %%{x}%% T]` に、
-`flow G[ T %%{x}%% ]` は `flow G[T %%{x}%% ]` になります。
+タイトルの端にディレクティブがあれば、隙間に空白を置かないので、
+括弧とタイトルに接します。
+`flow F[ %%{x}%% T ]` は `flow F[%%{x}%%T]` に、
+`flow G[ T %%{x}%% ]` は `flow G[T%%{x}%%]` になります。
 `]` と同じ行にある U+2028 と U+2029 は残し、
 継続行の先頭にあるものは字下げとして読まれます。
 [fixture: names-and-headings/heading-title-directive-at-edge]
@@ -151,9 +178,9 @@ flowchart と同じ形で、agentflowだけ違う形を選ぶ理由がないた�
 名前がディレクティブまで続くので、
 書かれたまま残します（`flow F   %%{init: {}}%% [T]` は変わりません）。
 `[` がディレクティブに接していると、名前はディレクティブの前で終わり、
-その前の空白は 1 つになります（`flow H   %%{init: {}}%%[T]` は
-`flow H %%{init: {}}%%[T]` になります）。
-[fixture: names-and-headings/name-heading-title-beside-directive-kept]
+タイトルは名前に接するので、ディレクティブの前の空白は落とします。
+`flow H   %%{init: {}}%%[T]` は `flow H%%{init: {}}%%[T]` になります。
+[fixture: names-and-headings/name-heading-title-beside-directive]
 [fixture: names-and-headings/name-heading-title-gap-run-beside-directive]
 [test: agentflow: a comment and U+2028 between a flow name and its title]
 `:` と `#` の間の隙間は、flowchart と同じく、空白があるかないかを保ちます。
@@ -162,15 +189,43 @@ flowchart と同じ形で、agentflowだけ違う形を選ぶ理由がないた�
 [test: agentflow: U+2028 between a flow name and its title]
 [test: agentflow: U+2029 between a connector name and its title]
 
+データブロックの `@{` は、タイトルがない通常の 1 つの部分からなる名前に、
+タイトルの `[` と同じく接します。
+`connector github @{ protocol: "mcp" }` は
+`connector github@{ protocol: "mcp" }` に、
+`flow F  @{ a: 1 }` は `flow F@{ a: 1 }` と印字します。
+mermaid.js が名前の後の空白を trim するので Db は同じであり、
+その文書ではデータブロックの `@{` を前の id やタイトルに接して書いています
+([`create["create_issue"]@{ ... }`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/agentflow.md#L290))。
+ディレクティブやコメントを含む名前は、上に書いたとおり書かれたまま残します。
+[fixture: names-and-headings/heading-data-touches-name]
+[test: agentflow: U+2029 between a connector name and its data block]
+
+タイトルもデータブロックもない通常の 1 つの部分からなる名前では、
+末尾の空白も同じように落とします。
+`flow F` の後ろに空白が 2 つあれば `flow F` と印字し、
+`flow F ;` の後ろに行が続いて `;` が改行になる場合も同じです。
+mermaid.js が名前を trim するので Db は同じであり、
+空白が続く `flow F` と `flow F` は 1 つの flow になります。
+ディレクティブやコメントを含む名前、複数の部分からなる名前、空白だけの名前は、
+上に書いたとおり書かれたまま残します。
+名前の末尾では、U+2028 と U+2029 は空白やタブではなく名前の文字なので、
+その後の空白は落とし、前の空白は残します。
+[test: agentflow: U+2028 and spaces at the end of a flow name]
+[test: agentflow: U+2029 and spaces at the end of a connector name]
+[fixture: trailing-whitespace/trailing-name-dropped]
+[fixture: containers/end-name-not-greedy]
+[fixture: names-and-headings/heading-word-gap-before-semicolon]
+[fixture: names-and-headings/name-directive-trailing-kept]
+
 `flow`、`connector`、`global` の後ろの空白は、
 空白やタブがいくつ書かれていても空白 1 つにします。
 キーワードが空白を 1 文字取り、残りは mermaid.js が名前から trim するからです。
 `flow   F["T"]` は `flow F["T"]` に、
 空白が続く `global` は `global` になります。
 [fixture: names-and-headings/heading-word-gap-collapsed]
-隙間にディレクティブがあれば、その両側に空白があるかどうかを保ち、
-空白の連なりは空白 1 つにします（[ディレクティブ](#directives)を参照）。
-[fixture: names-and-headings/heading-word-gap-beside-directive-kept]
+隙間のディレクティブは、[ディレクティブ](#directives)のとおりに置きます。
+[fixture: names-and-headings/heading-word-gap-beside-directive]
 ここまでは名前が 1 つの部分のときの規則で、複数の部分からなる名前は、
 上に書いたとおり書かれたまま残します。
 [fixture: names-and-headings/name-heading-title-multi-part-name-kept]
@@ -195,7 +250,15 @@ connectorにも名前がありますが、閉じる`end`はありません。
 [fixture: names-and-headings/directive-after-erased-string]
 
 名前をclickのIDとして読んだ後は、空白1文字だけでその読みを終えます。
-タイトル、データ、区切り、EOFの前でも、そのタブやLFを保ちます。
+タイトル、データ、後続の文の前では、そのタブや LF も含めて保ちます。
+改行になる `;` の後に文が続く場合も同じです。
+その文字がないと、改行が id を終わらせ、次の文が名前の一部として読まれるので、
+Db が異なるからです。
+後ろに空白、改行、区切りだけが続く空白やタブは落とします。
+その文字のない EOF と同じく、テキストが id を終わらせ、Db も図も同じだからです。
+[fixture: names-and-headings/name-exit-space-before-statement-kept]
+[fixture: names-and-headings/name-exit-space-before-separator-statement-kept]
+[fixture: names-and-headings/name-exit-space-before-blank-end-dropped]
 追加の空白は次の名前の断片です。
 空の文字列と空のmarkdown文字列も、この終了文字を消しません。
 消される形と後続の名前の文字の間に空白がすでにあれば、
@@ -271,14 +334,66 @@ tooltipの前の必須の空白1文字の隙間は決して揃えません。
 文法が空白1文字だけを取り、その後の空白は値の文字で、
 トークンを期待する場所に空白が2文字あると拒否されることもあるためです。
 この1文字として使うタブも保ちます。
-directiveを挟む最初のstyleの先頭空白、値内とコンマ脇の空白、
+directiveを挟む最初のstyleの先頭空白、スタイルの値の中の語と語の間の空白、
 空のstyleリスト項目、classDefのエスケープしたコンマ、順序と反復を保ちます。
-style内部を値として保つ理由はflowchartと同じですが、先頭の隙間は揃えません。
-[fixture: single-space-gaps/classdef-first-tab]
+最初のstyleの空白は、flowchart と同じには揃えません。
+各スタイルの最初の `:` の前に空白を置かず、値が空でなければ、
+後ろに空白を 1 つ置きます。
+スタイルの間の `,` の前に空白を置かず、後ろに空白を 1 つ置きます。
+`style A fill :#f00,stroke:  #333` は、
+`style A fill: #f00, stroke: #333` になります。
+[fixture: single-space-gaps/style-colon-spaced]
+番号を指定した `linkStyle` では、`fill` で始まるスタイルの前の `,` の後ろに、
+空白があるかないかを保ち、空白の連続は空白 1 つにします。
+mermaid.js は先頭だけを読むので、`fill-opacity` も含みます。
+[fixture: single-space-gaps/link-style-fill-after-comma-kept]
+[fixture: single-space-gaps/link-style-fill-opacity-after-comma-kept]
+番号か `default` を指定した `linkStyle` では、`stroke:` で始まるスタイルも、
+前に空白があるかないかを保ちます。
+look が `handDrawn` のときは、mermaid.js が先頭の `stroke:` を読むからです。
+[fixture: single-space-gaps/link-style-stroke-after-comma-kept]
+この文のほかのスタイルと `linkStyle default` は、1 つの形で印字します。
+詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+を参照してください。
+リンクにも適用される `linkStyle` と `classDef` では、
+`stroke` で終わる名前と `:` の間の空白の有無を保ち、
+空白の連続は空白 1 つにします。
+詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+を参照してください。
+[fixture: single-space-gaps/link-style-stroke-before-colon-kept]
+[fixture: single-space-gaps/class-def-stroke-before-colon-kept]
+`style` はノードに適用され、1 つの形で印字します。
+[fixture: single-space-gaps/style-stroke-before-colon-spaced]
+[flowchart](./flowchart.ja.md#トークンの間の空白)と同じく、
+`style` のスタイルの末尾のバックスラッシュの後の空白は読まれません。
+[fixture: single-space-gaps/style-backslash-space-dropped]
+[flowchart](./flowchart.ja.md#トークンの間の空白)と同じく、
+`linkStyle` のスタイルのうち、名前が `stroke` で終わり、
+値が空白とタブだけのものは、書かれたまま残します。
+[fixture: single-space-gaps/link-style-blank-stroke-value-kept]
+[flowchart](./flowchart.ja.md#トークンの間の空白)と同じく、
+バックスラッシュで終わる `linkStyle` のスタイルは、
+その後に空白があるかないかを保ち、空白の連続は最初の 1 文字にします。
+[fixture: single-space-gaps/link-style-backslash-space-kept]
+`classDef` では、バックスラッシュの後の `,` はスタイルの一部です。
+バックスラッシュと `,` の間の空白は、
+除くと `,` がスタイルの一部になるので残します。
+`style` と `linkStyle` では、`,` は前に何があってもスタイルを終えます。
+バックスラッシュの後で `:` の前にある空白も、
+除くと `:` がエスケープされるので残します。
+[fixture: single-space-gaps/style-escaped-space-before-comma]
+[fixture: single-space-gaps/style-backslash-before-comma]
+[fixture: single-space-gaps/style-colon-escaped-space-kept]
+ディレクティブやコメントがある文、空白だけのスタイルがある文、
+スタイルに改行か U+2028・U+2029 があるか、行に保つ `;` がある文は、
+書かれたままにします。 [fixture: single-space-gaps/classdef-first-tab]
 [fixture: single-space-gaps/linkstyle-first-spaces]
 [fixture: single-space-gaps/style-directive-gap]
 [fixture: single-space-gaps/style-first-spaces]
 [fixture: single-space-gaps/styles-inner-gaps]
+[fixture: single-space-gaps/style-comma-before-dropped]
+[fixture: single-space-gaps/style-comma-beside-directive-kept]
+[test: agentflow: U+2028 before the comma of a style statement]
 
 linkStyleの後とinterpolate名の前のタブは、
 それぞれ文法が要求する空白1文字なので、両方とも保ちます。
@@ -343,7 +458,19 @@ agentflow-beta TB
 
 [辺のラベルの書き方](./flowchart.ja.md#辺のラベルの書き方)と
 [矢印の前後の空白](./flowchart.ja.md#矢印の前後の空白)を同じ理由で再利用します。
-分割形式の文字はパイプを含められるため、著者の形式を保ちます。
+関係を読みやすくするためです。
+矢印 `-->` または `--x` の通常のテキスト（文字、数字、空白、`_`、`,`、`?`、
+`!`）のラベルは、2 つの矢印の間に印字します。
+mermaid.js の文書の例はこの形を 2 回使い、パイプの間の形は使わないためです。
+（[リンクのラベル](./compatibility.ja.md#リンクのラベル)を参照）。
+`A -->|x| B` は `A -- x --> B` と印字します。
+[fixture: edge-labels/pipes-to-arrows]
+ほかのラベルは、書かれたパイプ形式か分割形式を保ちます。
+分割形式のテキストはパイプを含められますが、`|` や `%%` を含むラベル、文字列、
+Markdown ラベルは矢印の間には印字できず、
+空白だけのラベルは矢印の間では拒否され、
+2 つの矢印の間にラベルを置ける矢印は `-->` と `--x` だけだからです。
+[fixture: edge-labels/blank-pipe-label-kept]
 パイプを矢印とラベルに接し、
 分割した文字の外側と閉じパイプの後を空白1つにします。
 分割形式があるのは通常辺と失敗辺だけです。
@@ -355,6 +482,10 @@ agentflow-beta TB
 パイプの間の文字列は文字を保ち、パイプは矢印と引用符に接します。
 `A  -->  |"x  y"|B` は `A -->|"x  y"| B` と印字します。
 [fixture: edge-labels/pipe-label-string-kept]
+閉じ引用符から離して書かれた閉じパイプも同じで、
+`A-->|"x" |B` は `A -->|"x"| B` と印字します。
+[fixture: edge-labels/pipe-string-closing-touches]
+[test: agentflow: U+2028 between the closing quote and the `|` of an edge label]
 
 入力（escape 表記）: `"agentflow-beta TB\nA --> |x| B"`。
 [fixture: edge-labels/pipe-label-gap]
@@ -364,14 +495,15 @@ agentflow-beta TB
 
 ```mmd
 agentflow-beta TB
-  A -->|x| B
+  A -- x --> B
 ```
 
 ### Labels
 
 [ラベルの内側の空白](./flowchart.ja.md#ラベルの内側の空白)と同じく、
 Mermaidが捨てる通常の裸のラベルの外側空白を取り除きます。
-内部、引用形式、空白だけのラベルの文字は保ちます。
+内部と引用形式・Markdown 形式のラベルの文字は保ちます。
+空白とタブだけのラベルは、空白 1 つに印字します。
 先頭のスラッシュ、逆スラッシュ、ダッシュ、引用符、
 最初の語にある@によって別の構文になるときは、両端に空白1つを残します。
 斜辺の閉じ`?]`と`=]`の前には空白を足しません。
@@ -445,7 +577,7 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 書かれたままにする場合は、
 [データブロック](./flowchart.ja.md#データブロック)に挙げたとおりです。
 [fixture: metadata-blocks/one-line-padded]
-[fixture: metadata-blocks/one-line-space-only-kept]
+[fixture: metadata-blocks/one-line-space-only-padded]
 [fixture: metadata-blocks/one-line-directive-kept]
 [fixture: metadata-blocks/one-line-kept-line-kept]
 [fixture: metadata-blocks/one-line-touching-blocks-kept]
@@ -609,6 +741,7 @@ agentflow-beta TB
 
 実コメントの前に連続する通常の区切りと最上位の空文も取り除きます。
 [fixture: comments/repeated-separators-before-comment]
+[fixture: comments/comment-looking-values] [fixture: comments/comments-align]
 
 [コメント](./flowchart.ja.md#コメント)と同じ理由で、
 独立したコメントを近隣の文に揃え、著者の全文と末尾空白を保ちます。
@@ -640,8 +773,9 @@ agentflow-beta TB
 ### Directives
 
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)と同じ理由です。
-除去で区切りが生まれないため、内容、順序、接触、後続行の桁位置を保ちます。
-独立したdirectiveを揃え、害のない隙間だけを整えます。
+除去で区切りが生まれないため、内容、順序、後続行の桁位置を保ちます。
+独立したdirectiveを揃え、同じ印字行の中のディレクティブは、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 見出しの区切りの後のdirectiveは、後続文との接触の有無を保ち、
 flowchartと同じく本文へ移します。
 Dbは同じで、agentflowだけ見出しに付ける理由がないためです。
@@ -747,9 +881,13 @@ Dbが同じ形から選ぶ場合は、その図種の理由がなければ兄弟
 agentflowの通常のアクセシビリティ行に固有の理由はないので、C4、class、
 usecaseと両方のgraphで、`accTitle: value`と`accDescr: value`に揃えます。
 コロンを語に接し、両端をtrimした値の前にASCII空白1つを置き、
-内部の空白とインラインの`%%`と`#`を値の文字として保ちます。
-[fixture: accessibility/tight-colon] [fixture: accessibility/spaced-colon]
-[fixture: accessibility/value-padding]
+インラインの`%%`と`#`を値の文字として保ちます。
+`accDescr` の値の中の空白とタブの連なりは、空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+`accTitle` はブラウザがツールチップとして表示するので、
+その連なりは書かれたまま残します。 [fixture: accessibility/tight-colon]
+[fixture: accessibility/spaced-colon]
+[fixture: accessibility/value-runs-collapsed]
 [fixture: accessibility/inline-percent-hash]
 空と空白だけの値も`accTitle:`または`accDescr:`の文として保ち、
 後ろに空白を足しません。 [fixture: accessibility/empty-title]
@@ -775,10 +913,13 @@ flowchartの継続行の規則を同じ理由で再利用するためです。
 例外も同じです。
 [Kept lines](#kept-lines)の非区切りの`;`を含む行は、
 アクセシビリティの文字と`;`の脇の空白を保ちます。
-セミコロンが別の文や次行の値にある場合も同じです。
-[fixture: accessibility/semicolon-value-kept]
+セミコロンが別の文にある場合も同じです。
+複数行に書かれた文は、文を区切る `;` を含んでいても、つなぎます。
+ほかの `;` がない行では、プリンタが文を 1 行ずつに分けて置くので、
+その文だけをつなぎます。 [fixture: accessibility/semicolon-value-kept]
 [fixture: accessibility/neighbour-semicolon-kept]
-[fixture: accessibility/next-line-semicolon-kept]
+`;` があるだけでは、行をつなぐ妨げにはなりません。
+[fixture: accessibility/next-line-semicolon-joined]
 方向の文字列がある行は[Direction](#direction)に従い、原文、改行、
 桁位置を保ちます。
 ほかの文書化された保持行の理由も優先します。
@@ -968,7 +1109,7 @@ agentflow-beta TB
 ### Trailing whitespace
 
 [スタイルの行末の空白](./flowchart.ja.md#スタイルの行末の空白) と同じ理由です。
-Db要約はstyleの末尾空白を正規化しますが、
+テストは、末尾の空白を除いたスタイルを比べますが、
 空白だけのstyleには書かれた空白1文字が必要です。
 害のない外側とstyle末尾の空白を落とします。
 コンマ、classDefのエスケープしたコンマ、directive、無視セミコロン、
@@ -979,8 +1120,11 @@ Db要約はstyleの末尾空白を正規化しますが、
 値の後続行の空白も保ちます。
 禁止されるclass/callback/titleの空白は拒否のままで、
 サイズ保護が削除に優先します。 [fixture: trailing-whitespace/trailing-comment]
-[fixture: trailing-whitespace/trailing-name]
+[fixture: trailing-whitespace/trailing-name-dropped]
 [fixture: trailing-whitespace/trailing-null-style]
+[flowchart](./flowchart.ja.md#スタイルの行末の空白)と同じく、
+バックスラッシュで終わる `linkStyle` は、その後の空白も 1 文字として保ちます。
+[fixture: trailing-whitespace/link-style-backslash-at-end-kept]
 
 入力（escape 表記）:
 `"agentflow-beta TB\nA   \nA-->B \t\nstyle A fill:red \t"`。
@@ -993,7 +1137,7 @@ Db要約はstyleの末尾空白を正規化しますが、
 agentflow-beta TB
   A
   A --> B
-  style A fill:red
+  style A fill: red
 ```
 
 ### Line terminators
@@ -1121,6 +1265,17 @@ tooltip/target前に必須の空白1文字を保ち、末尾の空の説明は�
 [fixture: click-statements/target-required-tab]
 [fixture: click-statements/prefix-with-directive]
 
+呼び出しの引数は、[flowchart](./flowchart.ja.md#トークンの間の空白)と同じく、
+両端と `,` の前に空白を置かず、後ろに空白を 1 つ置きます。
+`click A call f(  "x" ,y )` は `click A call f("x", y)` と印字します。
+（[同じに描かれる呼び出しの引数](./compatibility.ja.md#同じに描かれる呼び出しの引数)）。
+[fixture: click-statements/callback-arguments-spaced]
+mermaid.js の行の規則が読むかもしれない引数の間の隙間は、
+空白があるかないかを保ちます。
+`click A call f(style:x,#b;c)` は書かれたまま残します。
+`,` の後に空白を置くと、規則が無視する最後の `;` が変わるからです。
+（[同じに描かれる呼び出しの引数](./compatibility.ja.md#同じに描かれる呼び出しの引数)）。
+[fixture: click-statements/callback-arguments-line-rule-kept]
 引数が空白だけの呼び出しの括弧は、
 [flowchart](./flowchart.ja.md#トークンの間の空白)と同じく互いに接します。
 `click A call f( )` は、

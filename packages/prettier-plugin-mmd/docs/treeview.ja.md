@@ -37,6 +37,23 @@ treeView-beta
   Root
 ```
 
+### Keyword case
+
+注釈の `icon(` は小文字でだけ読まれます。
+`ICON(logos:react)` は名前なので、書かれたままにします。
+[fixture: keyword-case/icon-kept]
+
+Input (escaped): `"treeView-beta\n'plain'\nICON(logos:react)"`.
+
+Output
+([keyword-case/icon-kept-output.mmd](../tests/fixtures/treeview/keyword-case/icon-kept-output.mmd)):
+
+```mmd
+treeView-beta
+  "plain"
+  ICON(logos:react)
+```
+
 ### Modes
 
 字下げと罫線のモードを保ちます。
@@ -461,7 +478,7 @@ treeview/annotation-lines/box-redraw-sole-common-mode-selector-preserved]
 
 [test: treeview/multiline-values/box-redraw-quote-value-ps-keep]
 
-[fixture: treeview/tabs/box-redraw-description-tail-as-value]
+[fixture: treeview/tabs/box-redraw-description-tail-dropped]
 
 [fixture: treeview/multiline-values/box-redraw-value-prefix-width-preserved]
 
@@ -857,7 +874,7 @@ treeView-beta
 
 [fixture: treeview/tabs/box-redraw-branch-excluded-tail-trim]
 
-[fixture: treeview/tabs/box-redraw-description-tail-as-value]
+[fixture: treeview/tabs/box-redraw-description-tail-dropped]
 
 [fixture: treeview/branch-prefixes/box-redraw-arbitrary-and-value-width]
 
@@ -918,7 +935,7 @@ a
 └── b	c
 ```
 
-[fixture: treeview/tabs/box-redraw-description-tail-as-value]
+[fixture: treeview/tabs/box-redraw-description-tail-dropped]
 
 [fixture: treeview/tabs/box-redraw-tab-prefix]
 
@@ -1130,7 +1147,7 @@ directive 間の space と tab を消します。
 treeView-beta
   "A"
   "B"
-  'C'
+  "C"
 ```
 
 [fixture: treeview/branch-prefixes/rounding-half]
@@ -1444,18 +1461,25 @@ marker 後を詰めると class がまとまり、icon の内側の空白は文�
 
 ```mmd
 treeView-beta
-  entry :::%%{wrap}%% X
+  entry :::%%{wrap}%%X
 ```
 
 ### Descriptions
 
-`##` 後の literal は、前後の padding、空白だけの値、LS・PS、
+`##` と description のテキストの間には、元の空白とタブがいくつあっても、
+なくても、空白 1 つを置きます。
+mermaid.js が description からそれらを取り除いて同じ図を描くので、
+`##   text` と `##text` は `## text` と印字します。
+description の末尾の空白とタブも同じ理由で除きます。
+（[Trailing whitespace](#trailing-whitespace)を参照）。
+description の残りの literal は、空白だけの値、LS・PS、
 percent の文字と注釈らしい文字を含めて丸ごと保ちます。
 null は null のままです。
-Db の等しい trim も原文を失い、内部の空白の変更は description を変ええます。
+内部の空白の変更は description を変ええます。
 `##` の前の gap は Annotation gaps に従います。
 
 [fixture: treeview/descriptions/description-padding]
+[fixture: treeview/descriptions/description-touches-marker]
 
 [fixture: treeview/descriptions/description-empty]
 
@@ -1486,11 +1510,17 @@ treeView-beta
 ### Names
 
 裸名と StringLiteral の原文の範囲を丸ごと保ちます。
-引用符の選択、空名、backslash、内部と末尾の空白、HTML と entity の綴り、
+空名、backslash、内部の空白、引用符の中の空白、HTML と entity の綴り、
 directory の slash を含みます。
-singleQuote で引用し直しません。
-Db の等しい引用変更も綴りを失い、
+行末にある裸名の末尾の空白とタブだけを除きます。
+（[Trailing whitespace](#trailing-whitespace)を参照）。
+`'` で囲んだ文字列は `"` で囲んで印字しますが、内容に `'`、`"`、backslash、
+改行、U+2028、U+2029、バッククォート、`&`、`#`、
+`<` が含まれる場合は書かれたままにします。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+`singleQuote` は読みません。
 padding のある裸の directory を引用すると名前と種類が変わりえます。
+[fixture: treeview/names/single-quote-sensitive-kept]
 
 [fixture: treeview/names/name-bare-tail]
 
@@ -1604,10 +1634,20 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 
 共通文は最初のノードの前で原順に保ちます。
 共有の `title value` を使い、外側の共通の空白だけを trim します。
-null と空白だけの値は bare の `title` とし、内部の文字は保ちます。
+null と空白だけの値は bare の `title` とします。
+テキストの中の空白とタブの連なりは、空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: title/title-directives-end-blanks-dropped]
 次の行から値を取らず、Db の等しい一定の外側の配置を選ぶためです。
 `titlex` と `title"node"` は AST の境界に従い、
 summary に出ない title も残します。
+値の最初の文字より前にある、行の規則が無視する `;` は、
+その前の空白が 1 文字でもそれ以上でも、隙間の項目です。
+`title  ;T` と `title ;T` は同じように印字します。
+[fixture: treeview/semicolons/ignored-semicolon-title-value-second-space]
 
 [fixture: treeview/title/title-shared]
 
@@ -1667,10 +1707,17 @@ treeView-beta
 共有の `accTitle: value` と `accDescr: value` を使います。
 colon は keyword に付け、trim した非空値の前は space 1 個、
 空なら colon までです。
-内部の空白、brace らしい行値と trivia の境界を保ちます。
-共通の converter が許す同等の外側の gap を選び、
-Db が等しくても内部まで正規化しません。
+`accDescr` の値の中の空白とタブの連なりは空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+`accTitle` はブラウザがツールチップとして表示するので、
+その連なりは書かれたまま残します。
+brace らしい行値と trivia の境界を保ちます。
+共通の converter が許す同等の外側の gap を選びます。
 次の行の文字を値に取りません。
+値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: treeview/accessibility-lines/acctitle-padding]
 
@@ -2044,7 +2091,10 @@ treeView-beta
 ### Directives
 
 directive の原文と順序を保ちます。
-同じ印字行では両側の接触と分離を保ちます。
+同じ印字行では、title、accessibility の文、
+または `:::` の後のクラスの隙間にあるディレクティブは、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
+それ以外の隙間では、両側の接触と分離を保ちます。
 ただし、
 [Statements one per line](#statements-one-per-line) に従って新しく作る directive
 だけの行へ移す directive の間は例外です。
@@ -2138,7 +2188,22 @@ treeView-beta
 
 ### Semicolons
 
-すべての semicolon を共有の textual prefix と行の保護で残します。
+すべての semicolon を残します。
+保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
+ほかの場所と同じように整形します。
+この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
+`style` か `classDef` の後の最初の `:` から、
+最後の保つ `;` の前の最後の `#` までに空白がない並びを読みます。
+その範囲の隙間と余白は空白の有無を保ち、空白の連続は空白 1 つにします。
+範囲の外は、この図種の通常の規則に従います。
+どの部分の配置も持たないテキストは、書かれたまま残します。
+複数行にわたる文の行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
+書かれたまま残します。
+それ以外の複数行の文は、1 行の文と同じように整形します。
+[fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted]
+[fixture: semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
 treeview に文法上の semicolon はなく、
 style・classDef の語だけでは行を固定しません。
 保護された内容の外側の安全な罫線は描き直し、内部と値の列は原文のまま保ちます。
@@ -2389,17 +2454,42 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 
 ### Trailing whitespace
 
-所有者ごとに判断し、裸名、description、引用内、
-comment と directive の末尾は値として保ちます。
+裸名か description で終わる行では、末尾の空白とタブを除きます。
+mermaid.js は節点の名前と description を trim するので、
+除いても Db と図は同じです。
+空白とタブだけの description、引用符で囲む名前の中の空白、
+独立した comment のテキスト、それ以外の空白文字は、書かれたまま保ちます。
+名前や description の後に続く directive の前の gap は、
+字下げの形でも罫線の形でも空白 1 つにします。
+mermaid.js は値を読む前に directive を取り除き、
+値の末尾の空白とタブを落とすので、この gap は Db にも図にもありません。
+`R   %%{x}%%` は title と同じ形の `R %%{x}%%` と印字します。
+複数の directive も title の末尾と同じように印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+`R   %%{x}%%   %%{y}%%  ` は `R %%{x}%% %%{y}%%` と印字します。
+[fixture: trailing-whitespace/directives-end-blanks-dropped]
+名前や description の末尾の U+2028 と U+2029 は、
+空白やタブではなくテキストの文字なので、その後の空白は除き、
+その前の空白は残します。
+[test: treeview/trailing-whitespace/spaces-after-trailing-line-separator]
+[test: treeview/trailing-whitespace/description-spaces-after-trailing-line-separator]
 構造の持ち越し run は 1 回だけ移し、共通の行値は共有の外側の trim に従います。
 branch 行で値から除外された末尾は削り、持ち越しません。
 枝の追加で値の末尾が新たに trim される図は本文を保ちます。
 値と構造の padding を混同しないためです。
 有意な fixture の末尾はコードブロックには示しません。
 
-[fixture: treeview/trailing-whitespace/trailing-bare-kept]
+[fixture: treeview/trailing-whitespace/trailing-bare-dropped]
 
-[fixture: treeview/trailing-whitespace/trailing-description-kept]
+[fixture: treeview/trailing-whitespace/trailing-description-dropped]
+
+[fixture: treeview/trailing-whitespace/trailing-description-blank-kept]
+
+[fixture: treeview/trailing-whitespace/trailing-directive-gap-one-space]
+
+[fixture: treeview/carried-indentation/box-redraw-carried-run-directive-gap]
+
+[fixture: treeview/comments/box-redraw-comment-prefix-directive-gap]
 
 [fixture: treeview/trailing-whitespace/trailing-quoted-interior]
 
@@ -2409,7 +2499,7 @@ branch 行で値から除外された末尾は削り、持ち越しません。
 
 [corpus fixture: treeview/box-tail-branch-no-carry]
 
-[fixture: treeview/tabs/box-redraw-description-tail-as-value]
+[fixture: treeview/tabs/box-redraw-description-tail-dropped]
 
 [fixture: treeview/tabs/box-redraw-tab-prefix]
 

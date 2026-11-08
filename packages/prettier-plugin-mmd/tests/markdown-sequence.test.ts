@@ -33,11 +33,11 @@ describe("a sequence diagram in a Markdown code block", () => {
     )
   })
 
-  it("keeps the whitespace at the end of a title inside the block", async () => {
+  it("drops the whitespace at the end of a title inside the block", async () => {
     expect(
       await formatTwice(
         "```mermaid\nsequenceDiagram\ntitle Kept  \nA->>B: x\n```\n",
       ),
-    ).toBe("```mermaid\nsequenceDiagram\n  title Kept  \n  A ->> B: x\n```\n")
+    ).toBe("```mermaid\nsequenceDiagram\n  title Kept\n  A ->> B: x\n```\n")
   })
 })

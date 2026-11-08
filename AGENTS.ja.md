@@ -81,13 +81,64 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
    トークンとコメントのテキストは、その範囲の入力と一致する。
    空白と行終端子はノードにしない。
    ソースの文字列と範囲があれば、入力をバイト単位で再現できる。
-4. 整形は冪等で、整形前後で Db が変わらない。
-   ただし formatter の
-   [Data blocks](packages/prettier-plugin-mmd/docs/eventmodeling.ja.md#data-blocks)
-   が定める eventmodeling のブロック本文と、
-   [ノート](packages/prettier-plugin-mmd/docs/state.ja.md#ノート) が定める state
-   のノートの対象となる段落に対する、限定的な ASCII 空白 margin 変更は除く。
-   これらの例外では、描画を保つ場合に限り raw Db 値の差を許容する。
+4. 整形は冪等で、mermaid.js が描くものを変えない。
+   描くものは SVG で、見える図に加えて、リンク先、クリックで呼ぶ関数とその引数、
+   ツールチップ、アクセシビリティの文を含む。
+   生成される id と、描画が無視する空白（CSS の宣言の周り、
+   HTML の文字の連なり）は比べない。
+   描くものが同じになる書き方は、1 つの形で印字する。
+   描くものが変わる書き方は、書かれたまま残す。
+   隙間の形は、ほかの図種が同じ種類の隙間を印字する形である。
+   綴り（キーワードの大文字小文字、文字列の引用符、数の桁、
+   ヘッダーの向き）の形は、固定した mermaid.js の文書の例が、
+   ほかのどの形よりも 2 倍以上多く使う形である。
+   そのように多く使われる形がないとき、または例がその綴りを使わないときは、
+   書かれたまま残す。
+   確かめは固定した mermaid.js だけで行うが、
+   整形した文章はほかの版の mermaid.js でも描かれる。
+   そこで、印字する形が、
+   書かれた形を受け付けるすべての版で受け付けられるとは限らないとき、または、
+   そのうちの版が違う描き方をするときも、書かれたまま残す。
+   ヘッダーの名前（`block-beta` と `block`）は版によって受け付けが違い、
+   gitGraph のヘッダーの後のコロンは古い版が要求し、
+   flowchart のヘッダーの向き（`TB` と `TD`）は 11.10.0
+   より前の版が違う描き方をする。
+   どの版が形を足したか、変えたかは、mermaid.js の CHANGELOG.md か、
+   文法の履歴で分かる。
+   確かめる方法は、整形が Db を変えないことである。
+   Db を変えても描くものを変えない整形は、例外とする。
+   例外は種類ごとに、定義する節と、描画が変わらない理由を示す、
+   固定した mermaid.js のコードへのリンクと、両方のテキストを描いた結果を持つ。
+   テストは、その種類の差を戻した Db で比べる。
+   関数は種類ごとに 1 つで、
+   `packages/prettier-plugin-mmd/tests/db-comparison.ts` が呼ぶ。
+   固定した mermaid.js の版を上げるときは、例外のそれぞれを描画で確かめ直す。
+   種類は次のとおり。
+   - eventmodeling のブロック本文に対する、限定的な ASCII 空白 margin の変更。
+     [Data blocks](packages/prettier-plugin-mmd/docs/eventmodeling.ja.md#data-blocks)
+     が定める。
+   - state のノートの対象となる段落に対する margin の変更。
+     [ノート](packages/prettier-plugin-mmd/docs/state.ja.md#ノート) が定める。
+   - スタイルの最初の `:` と `,` の周りの空白と、スタイルの末尾の空白。
+     [同じに描かれるスタイル](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれるスタイル)
+     が定める。
+   - title、Gantt の日付形式と軸形式、C4 図の説明の先頭と末尾の空白と、
+     timeline の行の最後の event と state 図の別名の 2 つ目の説明の末尾の空白。
+     [同じに描かれるキーワードの後のテキスト](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれるキーワードの後のテキスト)
+     が定める。
+   - mermaid.js が連なりを描かずにテキストを描く場合の、
+     テキスト中の空白とタブの連なり。
+     タイトル、アクセシビリティの説明、
+     SVG のテキストとしてラベルを描く図種のラベルが対象です。
+     [同じに描かれるテキスト中の空白の連なり](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)
+     が定めます。
+   - flowchart、agentflow、class、Gantt の `click` の呼び出しの、
+     引数の周りの空白。
+     [同じに描かれる呼び出しの引数](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれる呼び出しの引数)
+     が定める。
+   - mindmap の節点と kanban のカードのテキストの両端の空白とタブ。
+     [同じに描かれる mindmap のテキスト](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれる-mindmap-のテキスト)
+     が定める。
 
 ## 各パッケージの責務
 
@@ -160,6 +211,7 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
 | 木の型（`src/ast.ts`、`src/ast/*.ts`）       | ast             | parser、prettier-plugin、eslint-plugin          |
 | parser の API（`parse()`、エラー、木の走査） | parser          | prettier-plugin、eslint-plugin、mmdfmt          |
 | プラグインとその言語（`src/index.ts`）       | prettier-plugin | mmdfmt                                          |
+| 規則の文書の例の印字される形                 | prettier-plugin | eslint-plugin                                   |
 
 ## 行動原則
 

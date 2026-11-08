@@ -58,7 +58,7 @@ mermaid.js は、
 ```mmd
 %% eslint @mmd-toolkit/eventmodeling-no-duplicate-description: error
 eventmodeling accDescr: First
-  tf 01 evt Bought accDescr: Second
+tf 01 evt Bought accDescr: Second
 ```
 
 この規則に**従う**コードの例:
@@ -66,7 +66,7 @@ eventmodeling accDescr: First
 ```mmd
 %% eslint @mmd-toolkit/eventmodeling-no-duplicate-description: error
 eventmodeling accDescr: Second
-  tf 01 evt Bought
+tf 01 evt Bought
 ```
 
 ## オプション

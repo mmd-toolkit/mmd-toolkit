@@ -150,11 +150,18 @@ wardley-beta
 ### Names and quotes
 
 Keep WardleyIdentifier and StringLiteral source spans, including internal
-spaces/tabs, hyphens, parentheses, ampersands, quote styles, escapes, empty
-strings and whitespace-only strings. singleQuote does not re-encode them.
-Collapsing name whitespace or trimming string contents changes the Db; even
-Db-equal requoting loses the authored spelling and needs another escape
-interpretation.
+spaces/tabs, hyphens, parentheses, ampersands, escapes, empty strings and
+whitespace-only strings, except for the label of a link, which prints a run of
+spaces and tabs as one space (see [Semicolon labels](#semicolon-labels)). A
+string of a name between `'` is printed between `"` unless its text holds a `'`,
+a `"`, a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<`
+(see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+and `singleQuote` is not read. The label of a link (`+'moving'>`) stays between
+`'`, the only quote that mermaid.js reads there. [fixture:
+names-and-quotes/single-quote-sensitive-kept] Collapsing name whitespace or
+trimming string contents changes the Db, and a requoting that needs another
+escape interpretation is not made.
 
 [fixture: wardley/names-and-quotes/name-spaces]
 
@@ -423,7 +430,13 @@ everything after it through the physical line end as its source span. Choose
 attachment among Db-equal forms to show the delimiter belongs to the link. Do
 not add padding or trim it: ; followed by space is accepted with a
 whitespace-only label, whereas bare ; rejects. Further semicolons use shared
-prefix protection; native-looking forms and percent text remain label text.
+prefix protection; native-looking forms and percent text remain label text. A
+run of spaces and tabs inside the label of a link, after the `;` or between the
+quotes of a flow, is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+while the names of the components stay. [fixture:
+wardley/flows/flow-padding-escapes] [fixture:
+wardley/flows/flow-ports-and-label]
 
 [fixture: wardley/semicolon-labels/label-exterior]
 
@@ -554,7 +567,11 @@ Use the shared common-line layout: one space before a nonempty value, trim
 ordinary outer common whitespace and retain internal text, including unmatched
 quotes. Empty titles stay empty and never take a value from the next line. This
 chooses a compact Db-equal edge without treating the common value as a quoted
-string.
+string. The directives that end a title are printed with one space before each
+that has whitespace before it, and the whitespace after the last one is left
+out, whatever the whitespace at the end of the line (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: title/title-directives-end-blanks-dropped]
 
 [fixture: wardley/title/title-trim]
 
@@ -571,7 +588,7 @@ Output
 
 ```mmd
 wardley-beta
-  title A  subject
+  title A subject
 ```
 
 ### Accessibility
@@ -579,17 +596,21 @@ wardley-beta
 [test: wardley/accessibility/unicode-empty-description]
 
 Use the shared accessibility line layout for accTitle: Value and accDescr:
-Value, retaining empty assignments. Description blocks go through the shared
-description layout: separate the keyword and { by one ordinary space even when
-written touching, put text on one line between one space on each side, compact
-whitespace-only interiors to {}, join plain opener whitespace and align a
-separate closer. Protected trivia and semicolon layouts keep their gaps.
-Ordinary description body and standalone comment lines align one level inside
-the statement: the Db removes indentation after LF. Keep line breaks, internal
-blanks and trailing whitespace. Directives and shared removed comment regions
-keep their complete source. Trivia keeps its shared continuation layout. These
-are the common Db-equal forms; there is no text for whitespace-only block
-interiors to surround.
+Value, retaining empty assignments. The directives that end the value are
+printed with one space before each that has whitespace before it, and the
+whitespace after the last one is left out (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: accessibility/acc-directives-end-blanks-dropped] Description blocks go
+through the shared description layout: separate the keyword and { by one
+ordinary space even when written touching, put text on one line between one
+space on each side, compact whitespace-only interiors to {}, join plain opener
+whitespace and align a separate closer. Protected trivia and semicolon layouts
+keep their gaps. Ordinary description body and standalone comment lines align
+one level inside the statement: the Db removes indentation after LF. Keep line
+breaks, internal blanks and trailing whitespace. Directives and shared removed
+comment regions keep their complete source. Trivia keeps its shared continuation
+layout. These are the common Db-equal forms; there is no text for
+whitespace-only block interiors to surround.
 
 [fixture: wardley/accessibility/access-lines]
 
@@ -617,7 +638,7 @@ Output
 ```mmd
 wardley-beta
   accTitle: A  B
-  accDescr: C  D
+  accDescr: C D
 ```
 
 ### Hidden forms
@@ -793,14 +814,14 @@ wardley-beta
 
 ### Global directives
 
-Keep Root directive source, order and ownership. Within a printed line, keep
-whether each side touches or is separated. When formatting splits units that
-were on the same line, a directive in their gap moves with the following unit:
-its right boundary stays touching or separated, while its left contact is
-broken. Ordinary standalone directives align with their body; multiline
-interiors and EOF-reaching unfinished endings remain written. Do not format
-their JSON or reorder them: common removal joins surrounding text and can change
-acceptance or values. Native hidden directives remain separate nodes.
+Keep Root directive source, order and ownership. Within a printed line, place a
+directive as under [Directives](./flowchart.md#directives). When formatting
+splits units that were on the same line, a directive in their gap moves with the
+following unit: its right boundary stays touching or separated, while its left
+contact is broken. Ordinary standalone directives align with their body;
+multiline interiors and EOF-reaching unfinished endings remain written. Do not
+format their JSON or reorder them: common removal joins surrounding text and can
+change acceptance or values. Native hidden directives remain separate nodes.
 
 [fixture: wardley/global-directives/header-to-body]
 
@@ -831,7 +852,7 @@ Output
 
 ```mmd
 wardley-beta
-  component%%{wrap}%%Glued [0.3, 0.6]
+  component %%{wrap}%%Glued [0.3, 0.6]
 ```
 
 ### Comments
@@ -936,6 +957,12 @@ the last semicolon and whole crossing values/trivia. Words inside removed Root
 directives alone do not trigger complete-line protection. A Root directive
 before the header is omitted in the same way, and the lines of the body after it
 are protected or formatted as before.
+
+The whitespace around a `;` of a word line stays as written, since it changes
+how mermaid.js reads the line: `A -> B;` at the end of a line is rejected, while
+`A -> B;` followed by spaces is accepted, so the printer does not choose a form
+that mermaid.js reads otherwise. [fixture:
+wardley/semicolons/word-line-semicolon-whitespace-kept]
 
 [fixture: wardley/semicolons/style-label]
 

@@ -15,11 +15,15 @@
 
 `radar-beta` を第 1 列に置き、普通の最初の文を次の行へ移します。
 見出しを見つけやすくするためです。
-作者が書いたコロンの有無を保ちます。
-別置コロン前の普通の空白は意味を持たないため、`radar-beta:` に詰めます。
-gitgraph の [Header](./gitgraph.ja.md#header) と同じ選択です。
+見出しの語の直後のコロンは、その前の空白とともに落とします。
+mermaid.js は `radar-beta:` と `radar-beta` を同じ見出しとして読み、
+文書の例はコロンのない見出しを 3 回使い、ある形は使わないためです。
+（[ヘッダーの後のコロン](./compatibility.ja.md#ヘッダーの後のコロン)を参照）。
+コロンと語の間に hidden form か global directive があるときと、
+`;` か hidden YAML ブロックの `---` がコロンに接するときは、コロンを残します。
 hidden form、global trivia、semicolon の保護区間では境界を保ちます。
-空の本文は空のままです。
+空の本文は空のままです。 [fixture: radar/header/colon-removed]
+[fixture: radar/header/colon-yaml-kept]
 
 [fixture: radar/header/joined-empty]
 
@@ -61,7 +65,7 @@ hidden form、global trivia、semicolon の保護区間では境界を保ちま�
 ([header/join-separated-inline-alternative-output.mmd](../tests/fixtures/radar/header/join-separated-inline-alternative-output.mmd)):
 
 ```mmd
-radar-beta:
+radar-beta
   curve trial{4}
 ```
 
@@ -330,10 +334,16 @@ radar-beta
 ### Numbers
 
 entry と ticks・max・min の数は NumericLiteral の source span を印字します。
-整数、小数の先行・末尾ゼロ、丸められる精度、subnormal、underflow、
+普通の十進表記は最短の形で印字し、`1.50` は `1.5`、`5.00` は `5` にします。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
+整数部の先頭のゼロ、丸められる精度、subnormal、underflow、
 overflow の綴りを保ちます。
 double 値からの再出力は綴りを失います。
 radar が拒否する指数表記や Infinity を出すこともあるためです。
+
+[fixture: radar/numbers/shortest-form]
+
+[fixture: radar/numbers/forms-kept]
 
 [fixture: radar/numbers/raw-number-forms]
 
@@ -398,11 +408,16 @@ radar-beta
 ### Quotes
 
 ラベルの StringLiteral は完全な source span を保ちます。
-一重・二重・反対側の引用符、空・空白だけの文字列、escape、HTML、entity、
-内部の空白、hidden に見える文字を含みます。
-singleQuote でも再引用しません。
+空文字列、escape、HTML、entity、hidden に見える文字を含みます。
+テキストの中の空白とタブの連なりは、空白 1 つにして印字します。
+空白とタブだけの文字列は空白 1 つになり、`["   "]` は `[" "]` と印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+`'` で囲まれた文字列は、内容に `'`、`"`、バックスラッシュ、改行、U+2028、
+U+2029、バッククォート、`&`、`#`、`<` がある場合を除き、`"` で囲んで印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
+`singleQuote` は読みません。
 空ラベルの削除は ID への fallback を変えます。
-内側の空白を畳んでも Db が変わりうるためです。
+[fixture: radar/quotes/single-quote-sensitive-kept]
 
 [fixture: radar/quotes/quotes-and-empty]
 
@@ -427,7 +442,7 @@ singleQuote でも再引用しません。
 ```mmd
 radar-beta
   axis North['single "other"'], South["double 'other'"], East[""]
-  curve trial['']{1, 2, 3}
+  curve trial[""]{1, 2, 3}
 ```
 
 ### Title
@@ -436,8 +451,14 @@ radar-beta
 共通空白の外端を除き、非空の値の前は 1 space にします。
 null と空白だけの値は `title` にします。
 同じ意味の外端だけをそろえ、内部の綴り、引用符、見かけの keyword を保ちます。
+ただし、値の中の空白とタブの連なりは空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 コメントや directive を挟んでも、次の物理行から値を取りません。
 trivia のある値と保護区間は原文の間隙を保ちます。
+題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: title/title-directives-end-blanks-dropped]
 
 [fixture: radar/title/title-edge-trim]
 
@@ -456,7 +477,7 @@ trivia のある値と保護区間は原文の間隙を保ちます。
 
 ```mmd
 radar-beta
-  title Topic  words
+  title Topic words
 ```
 
 ### Accessibility lines
@@ -465,8 +486,16 @@ radar-beta
 コロンは keyword に接着し、外端を除いた非空の値の前は 1 space です。
 空の値はコロンで終え、次行の値を結合しません。
 外側をそろえても内部の文字は書き換えません。
+ただし、`accDescr` の値の中の空白とタブの連なりは空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+`accTitle` はブラウザがツールチップとして表示するので、
+その連なりは書かれたまま残します。
 コロン後の波括弧は行値のままです。
 trivia・hidden・semicolon の保護を優先します。
+値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: radar/accessibility-lines/a11y-lines-fixed]
 
@@ -485,7 +514,7 @@ trivia・hidden・semicolon の保護を優先します。
 ```mmd
 radar-beta
   accTitle: Access  words
-  accDescr: Detail  words
+  accDescr: Detail words
 ```
 
 ### Description blocks
@@ -641,7 +670,8 @@ radar-beta
 
 Root directive の内容、順、owner を保ちます。
 部品や値の内部の directive も残します。
-同じ印字行の中では、両側の接触・分離を保ちます。
+同じ印字行の中のディレクティブは、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 元は同じ行にあった単位を別の行へ分けるときは、
 間の directive を次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
@@ -857,9 +887,22 @@ radar-beta
 
 ### Semicolons
 
-すべての authored semicolon を共有の protectSemicolonPrefixes で保ちます。
-文字区間の最初の非空白から最後の semicolon までを保護します。
-交差する値と trivia を全体で含め、安全な後方の間隙を整えます。
+すべての authored semicolon を保ちます。
+保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
+ほかの場所と同じように整形します。
+この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
+`style` か `classDef` の後の最初の `:` から、
+最後の保つ `;` の前の最後の `#` までに空白がない並びを読みます。
+その範囲の隙間と余白は空白の有無を保ち、空白の連続は空白 1 つにします。
+範囲の外は、この図種の通常の規則に従います。
+どの部分の配置も持たないテキストは、書かれたまま残します。
+複数行にわたる文の行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
+書かれたまま残します。
+それ以外の複数行の文は、1 行の文と同じように整形します。
+[fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted]
+[fixture: multi-line-statements/protected-semicolon-written-indentation]
 保護された見出しと最初の文の群はまとめて残します。
 style・classDef の選択、2 回の除去、大小文字・colon・hash の非該当形、
 Unicode の区間境界、directive 除去後の接合を保ちます。

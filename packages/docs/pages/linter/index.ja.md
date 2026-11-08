@@ -49,7 +49,7 @@ Markdownのprocessorが取り出した`mmd`・`mermaid`コードブロックも�
 %% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
   A --> B
-  style C fill:red
+  style C fill: red
 ```
 
 ESLintを実行します。
@@ -58,7 +58,7 @@ ESLintを実行します。
 npx eslint diagram.md
 ```
 
-`@mmd-toolkit/flowchart-no-undef`が、`style C fill:red`の`C`を報告します。
+`@mmd-toolkit/flowchart-no-undef`が、`style C fill: red`の`C`を報告します。
 Mermaidはこの入力を受理し、`C`という新しい頂点を追加します。
 `A`や`B`にスタイルを適用することにはなりません。
 
@@ -68,7 +68,7 @@ Mermaidはこの入力を受理し、`C`という新しい頂点を追加しま�
 %% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
   A --> B
-  style A fill:red
+  style A fill: red
 ```
 
 この入力では、上の設定による報告はありません。

@@ -1,3 +1,6 @@
+import type { Respelling } from "../src/printers/spelling.ts"
+import { findRespellings } from "../src/printers/spelling.ts"
+import { createSource } from "../src/printers/source.ts"
 import { treeviewBoxCharacters } from "../src/printers/treeview-characters.ts"
 /**
  * What formatting must keep, checked without mermaid.js: the Db that the tree
@@ -295,8 +298,14 @@ export function writtenTextKeptUpToSemicolons(
   after: string,
 ): boolean {
   const droppable = droppableSemicolonsOf(before, parse(before))
-  const [input, output] = [before, after].map((text) => {
+  const [input, output] = [before, after].map((text, side) => {
     const root = parse(text)
+    // The spellings that are printed in one form change in the input, not in
+    // the output (docs/compatibility.md, Spellings that are drawn the same).
+    const respellings =
+      side === 0
+        ? findRespellings(createSource(text, root))
+        : new Map<number, Respelling>()
     const structural: Range[] = []
     // Only authored outer box forms may be redrawn. Value-owned box text,
     // arbitrary prefix characters, trivia and every semicolon still compare
@@ -313,6 +322,17 @@ export function writtenTextKeptUpToSemicolons(
     let written = ""
     const offsets: number[] = []
     for (let offset = 0; offset < text.length; offset++) {
+      const respelling = respellings.get(offset)
+      if (respelling !== undefined) {
+        for (const character of respelling.text) {
+          if (character.trim() !== "") {
+            written += character
+            offsets.push(offset)
+          }
+        }
+        offset = respelling.end - 1
+        continue
+      }
       const character = text[offset]
       const frontmatter = root.frontmatter?.range
       if (

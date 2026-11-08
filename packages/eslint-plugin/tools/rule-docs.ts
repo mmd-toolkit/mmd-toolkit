@@ -2,9 +2,10 @@
  * Renders the parts of the rule documents that come from the rules of the
  * plugin: the list of the rules in `docs/rules/index.md` and `index.ja.md`,
  * and in each rule document its title, version, and whether the `recommended`
- * configuration enables the rule. The rest of the documents is written by
- * hand. `update-docs.ts` writes the result, and `update-docs.ts --check` checks
- * that the documents hold it.
+ * configuration enables the rule. The examples are written by hand and
+ * printed as the formatter prints them (`formatMarkdown`). The rest of the
+ * documents is written by hand. `update-docs.ts` writes the result, and
+ * `update-docs.ts --check` checks that the documents hold it.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs"
 import { fileURLToPath } from "node:url"
@@ -22,6 +23,15 @@ export type DocumentLanguage = "en" | "ja"
 /** The directory of the rule documents. */
 export const RULE_DOCS_DIR: string = fileURLToPath(
   new URL("../docs/rules/", import.meta.url),
+)
+
+/**
+ * The Prettier configuration of the rule documents: the root configuration and
+ * the plugin for Mermaid. It is the one place that says the examples are
+ * printed as the formatter prints them.
+ */
+export const DOCS_PRETTIER_CONFIG: string = fileURLToPath(
+  new URL("../docs/prettier.config.js", import.meta.url),
 )
 
 /** The directory of the tests of the rules: `<name>.test.ts` tests the rule `name`. */
@@ -539,10 +549,31 @@ function renderRuleDocument(
   return `${withVersion.trimEnd()}\n\n${resources}\n`
 }
 
-/** `text` formatted as Prettier formats the Markdown file at `path`. */
+/**
+ * `text` formatted as Prettier formats the Markdown file at `path`, with the
+ * configuration of the rule documents (`DOCS_PRETTIER_CONFIG`), which has the
+ * plugin for Mermaid: an example is what the formatter prints, unless a
+ * `<!-- prettier-ignore -->` comment before its block keeps it as written. The
+ * file is named, not looked for from `path`: the tests format documents in
+ * temporary directories, where Prettier finds no configuration.
+ */
 async function formatMarkdown(text: string, path: string): Promise<string> {
-  const options = await resolveConfig(path)
-  return format(text, { ...options, filepath: path })
+  try {
+    // The Prettier CLI and editors read `.editorconfig`; its API does not
+    // unless asked, so a setting there would make them disagree with this.
+    const options = await resolveConfig(path, {
+      config: DOCS_PRETTIER_CONFIG,
+      editorconfig: true,
+    })
+    return await format(text, { ...options, filepath: path })
+  } catch (error) {
+    // Prettier names the document it was formatting, not the cause, which is
+    // often the built parser that the source of the formatter imports.
+    throw new Error(
+      `Prettier could not format ${path} with ${DOCS_PRETTIER_CONFIG}. If the cause is a module missing under packages/parser/lib, run \`pnpm run build:parser\` at the root of the repository.`,
+      { cause: error },
+    )
+  }
 }
 
 /**

@@ -64,10 +64,16 @@
    [fixture: treemap/db-number-overflow]
    [fixture: treemap/config-security-level-other]
 5. class の id は最初の定義順で保ち、再定義では style を末尾に加えます。
-   style 全体の変換済みテキストを読み、null は空文字とします。
+   style 全体の変換済みテキストを読みます。
+   その範囲は末尾の行内空白をすでに含みます。
+   行内空白は JavaScript の `\s` から LF と CR を除いた文字です。
+   style 全体が null なら空文字です。
+   名前の後の最大の空白区切りは、スタイルに属しません。
+   [fixture: treemap/space-style-all-trailing]
+   [fixture: treemap/gram-class-whitespace-style-null]
    各 `\,` を `§§§` に、残る各コンマを `;` に置き換えた後、
    左から重なりのない各 `§§§` をコンマに置き換えます。
-   `;` で分け、各項目の末尾の空白だけを trim します。
+   `;` で分け、各項目の先頭と末尾の空白を残します。
    書かれた記号も同じ置換に加わります。
    `a§§§b` は `a,b`、`a§§§§b` は `a,§b`、`§§\,x` は `,§§x` となり、
    戻したコンマは項目の内部に残ります。

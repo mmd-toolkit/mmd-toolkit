@@ -15,7 +15,7 @@ Markdownでは、コメントは1つのMermaidコードブロックに適用し�
 %% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
   A --> B
-  style C fill:red
+  style C fill: red
 ```
 
 設定ファイルで有効になっていなくても、
@@ -39,8 +39,8 @@ flowchart LR
 flowchart LR
   A --> B
   %% eslint-disable-next-line @mmd-toolkit/flowchart-no-undef -- C is intentionally created here.
-  style C fill:red
-  style D fill:blue
+  style C fill: red
+  style D fill: blue
 ```
 
 このコメントは、次の行の`C`への報告を抑制します。
@@ -59,9 +59,9 @@ flowchart LR
 flowchart LR
   A --> B
   %% eslint-disable @mmd-toolkit/flowchart-no-undef -- C is intentionally created here.
-  style C fill:red
+  style C fill: red
   %% eslint-enable @mmd-toolkit/flowchart-no-undef
-  style D fill:blue
+  style D fill: blue
 ```
 
 指定したルールの報告を、

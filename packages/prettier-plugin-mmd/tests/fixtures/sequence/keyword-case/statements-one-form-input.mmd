@@ -1,0 +1,13 @@
+sequenceDiagram
+ACTOR A AS Alice
+participant B
+AUTONUMBER
+ACTIVATE A
+DEACTIVATE A
+BOX Group
+participant C
+END
+Note OVER A,B: together
+Note RIGHT OF A: side
+LINK A: Docs @ https://example.com
+LINKS B: {"Docs":"https://example.com"}

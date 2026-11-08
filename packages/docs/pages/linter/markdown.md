@@ -17,7 +17,7 @@ Both `mermaid` and `mmd` code blocks are checked. Save this Markdown as
 %% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
   A --> B
-  style C fill:red
+  style C fill: red
 ```
 
 ```mmd

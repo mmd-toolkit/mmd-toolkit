@@ -10,7 +10,13 @@ import type {
 } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
-import { holdsJoiningRegion, isDroppedSemicolon } from "./kept-lines.ts"
+import {
+  findKeptBreaks,
+  gapKeepsLineBreak,
+  holdsJoiningRegion,
+  isDroppedSemicolon,
+  spansKeptBreaks,
+} from "./kept-lines.ts"
 import {
   collectAtoms,
   collectValueNodes,
@@ -19,10 +25,10 @@ import {
   keepFirstGapLineTails,
   keptAsWritten,
   layoutDescriptionBlock,
-  spansLinesThatCannotJoin,
   toAsciiLowerCase,
 } from "./layout.ts"
 import type { Source } from "./source.ts"
+import { printedToken } from "./spelling.ts"
 import {
   accessibilityRules,
   addClassListRules,
@@ -297,18 +303,19 @@ export function layoutErStatement(
       preservesBodyColumns: preservesDescriptionColumns,
     })
   }
-  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
-  if (
-    keepsLineBreaks &&
-    (holdsJoiningRegion(source, start, end) ||
-      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
-  ) {
+  const keptBreaks = findKeptBreaks(source, start, end)
+  const keepsLineBreaks = spansKeptBreaks(source, keptBreaks, start, end)
+  if (keepsLineBreaks && holdsJoiningRegion(source, start, end)) {
     return keptAsWritten(start, end)
   }
   const kept = findKeptStretches(source, statement)
+  // A statement with a kept line break keeps its styles as written: printing
+  // them changes whether joining its lines is safe, so a second pass would
+  // join them.
   const styles =
     (statement.type === "ErStyleStatement" ||
       statement.type === "ErClassDefStatement") &&
+    !keepsLineBreaks &&
     styleUnitsCanCompact(source, start, end, statement.styles)
       ? statement.styles
       : []
@@ -326,10 +333,12 @@ export function layoutErStatement(
     kept,
   )
   return {
-    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+    atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
+      gapKeepsLineBreak(source, keptBreaks, from, to),
+    ),
     rules: statementRules(source, statement, styles.length > 0),
     outdented: new Set(),
-    lineBreaks: keepsLineBreaks ? "kept" : "joined",
+    lineBreaks: "joined",
   }
 }
 
@@ -388,11 +397,10 @@ export function layoutAttribute(
   attribute: ErAttribute,
 ): AtomLayout {
   const [start, end] = attribute.range
-  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  const keptBreaks = findKeptBreaks(source, start, end)
   if (
-    keepsLineBreaks &&
-    (holdsJoiningRegion(source, start, end) ||
-      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
+    spansKeptBreaks(source, keptBreaks, start, end) &&
+    holdsJoiningRegion(source, start, end)
   ) {
     return keptAsWritten(start, end)
   }
@@ -411,16 +419,20 @@ export function layoutAttribute(
     rules.set(attribute.comment.range[0], "space")
   }
   return {
-    atoms: collectAtoms(
+    atoms: keepFirstGapLineTails(
       source,
-      start,
-      end,
-      collectValueNodes(attribute, erValueNodeTypes),
-      [],
+      collectAtoms(
+        source,
+        start,
+        end,
+        collectValueNodes(attribute, erValueNodeTypes),
+        [],
+      ),
+      (from, to) => gapKeepsLineBreak(source, keptBreaks, from, to),
     ),
     rules,
     outdented: new Set(),
-    lineBreaks: keepsLineBreaks ? "kept" : "joined",
+    lineBreaks: "joined",
   }
 }
 
@@ -557,9 +569,9 @@ const symbolSpellings: ReadonlySet<string> = new Set([
   "-.",
 ])
 
-/** Whether a unit of a relationship is spelled with symbols. */
-function isSymbolSpelling(unit: Token): boolean {
-  return symbolSpellings.has(toAsciiLowerCase(unit.value))
+/** Whether a unit of a relationship is printed with symbols. */
+function isSymbolSpelling(source: Source, unit: Token): boolean {
+  return symbolSpellings.has(toAsciiLowerCase(printedToken(source, unit)))
 }
 
 /**
@@ -583,13 +595,16 @@ function relationshipRules(
     rules.set(
       unit.range[0],
       previous === undefined ||
-        !isSymbolSpelling(previous) ||
-        !isSymbolSpelling(unit)
+        !isSymbolSpelling(source, previous) ||
+        !isSymbolSpelling(source, unit)
         ? "space"
         : "none",
     )
   }
-  if (isBareOne(statement.left) && startsLikeWord(units[0].value)) {
+  if (
+    isBareOne(statement.left) &&
+    startsLikeWord(printedToken(source, units[0]))
+  ) {
     // `1`, whitespace, and a letter, a digit, or `_` is the cardinality
     // `only-one` and a name (diagrams/er.md, The cardinalities, numbers, and
     // relationship lines, rule 11), so a `1a` that was written touching, the
@@ -655,7 +670,9 @@ function startsLikeWord(text: string): boolean {
  * `only one`, while `only`, two spaces or a tab, and `one to one` are an
  * entity and a relationship (diagrams/er.md, The statement context,
  * keywords and what follows them), so the whitespace between them is kept
- * as written (docs/er.md, Relationship spacing).
+ * as written (docs/er.md, Relationship spacing). A unit that is printed as
+ * symbols starts with no `one`, and the whitespace before it is an ordinary
+ * gap.
  */
 function findOnlyOneStretches(
   source: Source,
@@ -667,7 +684,7 @@ function findOnlyOneStretches(
     left.cssClasses.length !== 0 ||
     left.name.type !== "ErIdentifier" ||
     toAsciiLowerCase(left.name.name) !== "only" ||
-    !toAsciiLowerCase(first.value).startsWith("one")
+    !toAsciiLowerCase(printedToken(source, first)).startsWith("one")
   ) {
     return []
   }

@@ -55,20 +55,24 @@ Japanese version: [treemap.ja.md](./treemap.ja.md)
    treemap/db-number-multiple-dots] [fixture: treemap/db-number-nan] [fixture:
    treemap/db-number-overflow] [fixture: treemap/config-security-level-other]
 5. Keep class ids in first-definition order and append styles on redefinition.
-   Read the converted whole style, using empty text for null. Replace each `\,`
-   with `§§§`, then each remaining comma with `;`, then each nonoverlapping
-   `§§§` with a comma from left to right. Split at `;` and trim only the
-   trailing whitespace of each entry. Authored signs participate in the same
-   replacement: `a§§§b` becomes `a,b`, `a§§§§b` becomes `a,§b`, and `§§\,x`
-   becomes `,§§x`; these restored commas stay inside the entry. Retain leading
-   whitespace and empty entries: a null style appends one empty entry. Keep
-   unused and prototype-shaped class names. Class definitions do not create
-   rows. [fixture: treemap/db-class-repeat] [fixture:
-   treemap/db-class-empty-final] [fixture: treemap/db-class-escaped-comma]
-   [fixture: treemap/db-style-whitespace] [fixture: treemap/db-class-unused]
-   [fixture: treemap/db-prototype-names] [fixture:
-   treemap/db-class-style-marker] [fixture: treemap/db-class-style-marker-four]
-   [fixture: treemap/db-class-style-marker-escaped-comma]
+   Read the converted whole style, whose range already includes its trailing
+   line whitespace (JavaScript `\s` without LF and CR). A null whole style is
+   empty: the maximal whitespace separator after the name belongs to no style.
+   [fixture: treemap/space-style-all-trailing] [fixture:
+   treemap/gram-class-whitespace-style-null] Replace each `\,` with `§§§`, then
+   each remaining comma with `;`, then each nonoverlapping `§§§` with a comma
+   from left to right. Split at `;`, keeping each entry's leading and trailing
+   whitespace. Authored signs participate in the same replacement: `a§§§b`
+   becomes `a,b`, `a§§§§b` becomes `a,§b`, and `§§\,x` becomes `,§§x`; these
+   restored commas stay inside the entry. Retain leading whitespace and empty
+   entries: a null style appends one empty entry. Keep unused and
+   prototype-shaped class names. Class definitions do not create rows. [fixture:
+   treemap/db-class-repeat] [fixture: treemap/db-class-empty-final] [fixture:
+   treemap/db-class-escaped-comma] [fixture: treemap/db-style-whitespace]
+   [fixture: treemap/db-class-unused] [fixture: treemap/db-prototype-names]
+   [fixture: treemap/db-class-style-marker] [fixture:
+   treemap/db-class-style-marker-four] [fixture:
+   treemap/db-class-style-marker-escaped-comma]
 6. Publish only title, accTitle, accDescr, nodes and classDefs. No treemap
    setting supplies a Db value or acceptance condition. Do not derive compiled
    styles, the artificial root, aggregated values, drawing order, coordinates or

@@ -15,8 +15,8 @@
         "id": "A",
         "labelType": "text",
         "styles": [
-          "fill:#f00",
-          " stroke:#333"
+          "fill:#f00 ",
+          " stroke:#333 "
         ],
         "classes": [],
         "text": "A",

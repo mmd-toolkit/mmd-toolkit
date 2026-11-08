@@ -484,6 +484,22 @@ export class ConvertedText {
     }
   }
 
+  /** Line whitespace from `offset`, excluding the supplied block or trivia ranges. */
+  public whitespaceFrom(
+    offset: number,
+    leftOut: readonly TreeRange[] = [],
+  ): { value: string; end: number } {
+    const excluded = new RangeIndex(leftOut.map((range) => ({ range })))
+    let value = ""
+    for (const { start, codePoint } of this.from(offset)) {
+      if (excluded.hasContaining([start, start + 1])) continue
+      if (codePoint === LINE_FEED || !isWhitespace(codePoint))
+        return { value, end: start }
+      value += String.fromCodePoint(codePoint)
+    }
+    return { value, end: offset }
+  }
+
   /** Tokens inside `range`, indexed once for this converted reading. */
   public tokensIn(range: TreeRange, tokens: readonly TreeToken[]): TreeToken[] {
     let index = this.tokenIndexes.get(tokens)

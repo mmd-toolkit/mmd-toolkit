@@ -7,9 +7,9 @@ Filename: block-no-redefined-style-incorrect-1.mmd
 Code:
   1 | block
   2 |   A
-  3 |   style A fill:#f00
-  4 |   style A stroke:#00f
-    |   ^~~~~~~~~~~~~~~~~~~ [1]
+  3 |   style A fill: #f00
+  4 |   style A stroke: #00f
+    |   ^~~~~~~~~~~~~~~~~~~~ [1]
   5 |
 
 [1] mermaid.js replaces the whole style list of `A`, losing a style set earlier.
@@ -18,13 +18,13 @@ Code:
         Output:
           1 | block
           2 |   A
-          3 |   style A fill:#f00
+          3 |   style A fill: #f00
           4 |
       - Remove the earlier statement.
         Output:
           1 | block
           2 |   A
-          3 |   style A stroke:#00f
+          3 |   style A stroke: #00f
           4 |
 ---
 

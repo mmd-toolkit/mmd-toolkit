@@ -28,6 +28,11 @@ import {
 import { holdsJoiningRegion } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import { findStructuralToken, findTokensBetween } from "./source.ts"
+import {
+  normalizeBlankLabels,
+  normalizeCallArguments,
+  normalizeStyleList,
+} from "./statement-rules.ts"
 
 /**
  * The node types whose text is a value, printed as written. They have no
@@ -134,11 +139,38 @@ export function layoutStatement(
   if (statement.type === "FlowchartClickCallbackStatement") {
     addBlankCallbackRule(source, statement, rules)
   }
+  const atoms = collectAtoms(source, start, end, values, kept)
+  normalizeBlankLabels(source, atoms, values)
+  if (statement.type === "FlowchartClickCallbackStatement") {
+    normalizeCallArguments(source, atoms, statement.arguments?.range ?? null)
+  }
   const layout: AtomLayout = {
-    atoms: collectAtoms(source, start, end, values, kept),
+    atoms,
     rules,
     outdented: findOutdentedAtoms(source, statement),
     lineBreaks: "kept",
+  }
+  if (
+    statement.type === "FlowchartStyleStatement" ||
+    statement.type === "FlowchartClassDefStatement" ||
+    statement.type === "FlowchartLinkStyleStatement" ||
+    statement.type === "FlowchartDefaultLinkStyleStatement"
+  ) {
+    // mermaid.js draws the same figure whatever the whitespace around the `:`
+    // and the `,` of the styles, except before a style that starts with `fill`
+    // in a `linkStyle` with link numbers, in the styles of a `linkStyle` where
+    // mermaid.js reads them as the styles of a link, and between `stroke` and
+    // the `:` in the styles that can reach a link (docs/flowchart.md, Styles).
+    const isLinkStyle =
+      statement.type === "FlowchartLinkStyleStatement" ||
+      statement.type === "FlowchartDefaultLinkStyleStatement"
+    normalizeStyleList(source, atoms, statement, {
+      keepsSpaceBeforeFill: statement.type === "FlowchartLinkStyleStatement",
+      isLinkStyle,
+      joinsStyles: isLinkStyle,
+      keepsGapAfterStroke: statement.type !== "FlowchartStyleStatement",
+      escapesComma: statement.type === "FlowchartClassDefStatement",
+    })
   }
   if (statement.type !== "FlowchartAccDescrBlockStatement") return layout
   return formatDescriptionBlock(

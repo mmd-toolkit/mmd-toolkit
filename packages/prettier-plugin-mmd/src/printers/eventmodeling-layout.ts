@@ -355,8 +355,8 @@ function layoutDataBody(
 /**
  * Align nonblank body lines while keeping the space-separated words of
  * Mermaid's data label. A new space on a later physical line adds a visible
- * nonbreaking space; tabs, markup and padded openers need their authored text
- * (docs/eventmodeling.md, Data blocks).
+ * nonbreaking space; tabs, markup, entity spellings and padded openers need
+ * their authored text (docs/eventmodeling.md, Data blocks).
  */
 function indentedDataBlock(text: string, tabWidth: number): Doc | undefined {
   if (
@@ -365,7 +365,9 @@ function indentedDataBlock(text: string, tabWidth: number): Doc | undefined {
     !text.endsWith("\n}") ||
     text.includes("<") ||
     text.includes("&") ||
-    text.includes("%%{")
+    text.includes("%%{") ||
+    // Mermaid's native entity spellings, such as `#amp;`, end in a `;`.
+    text.includes(";")
   )
     return undefined
 

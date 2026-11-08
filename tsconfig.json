@@ -16,6 +16,12 @@
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedDeclarations": true,
+    // Node runs these sources without a build (the tools and the tests of the
+    // packages, and the Prettier configuration of the rule documents, which
+    // loads the source of prettier-plugin-mmd), and its type stripping takes
+    // only syntax that it can erase, keeping each import as written.
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
     "skipLibCheck": true,
     "noEmit": true,
     "types": ["node"],

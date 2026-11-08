@@ -100,10 +100,17 @@ info
 
 Print `title`, one space and a value trimmed at its common-whitespace edges; a
 null or whitespace-only value prints bare `title`. This gives equivalent
-exterior whitespace one compact form while preserving interior text. Never take
-a value from the next physical line, including across empty, comment or
-directive lines. Trivia-bearing values, hidden suffixes and semicolon protection
-retain their source boundaries.
+exterior whitespace one compact form, and a run of spaces and tabs inside the
+value is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+Never take a value from the next physical line, including across empty, comment
+or directive lines. Trivia-bearing values, hidden suffixes and semicolon
+protection retain their source boundaries. The directives that end a title are
+printed with one space before each that has whitespace before it, and the
+whitespace after the last one is left out, whatever the whitespace at the end of
+the line (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: title/title-directives-end-blanks-dropped]
 
 [fixture: info/title/title-trim]
 
@@ -130,7 +137,7 @@ Output
 
 ```mmd
 info
-  title Topic  words
+  title Topic words
 ```
 
 ### Accessibility lines
@@ -140,7 +147,11 @@ touches `accTitle` or `accDescr`, followed by one space and the trimmed nonempty
 value. Empty values end at the colon. This consistent compact form preserves
 interior text and touching comments. A brace after the colon remains line
 content. Empty values never take the next physical line across
-blank/comment/directive gaps; hidden suffixes and protected gaps remain.
+blank/comment/directive gaps; hidden suffixes and protected gaps remain. The
+directives that end the value are printed with one space before each that has
+whitespace before it, and the whitespace after the last one is left out (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: info/accessibility-lines/a11y-lines]
 
@@ -165,7 +176,7 @@ Output
 ```mmd
 info
   accTitle: Access  words
-  accDescr: Details  words
+  accDescr: Details words
 ```
 
 ### Description blocks
@@ -415,14 +426,15 @@ info
 ### Global directives
 
 Keep opaque Root directive source and order because common removal joins the
-surrounding text. Within a printed line, keep whether each side touches or is
-separated. When formatting splits units that were on the same line, a directive
-in their gap moves with the following unit: its right boundary stays touching or
-separated, while its left contact is broken. Align only an ordinary standalone
-start one body step in. Keep complete component boundaries and value-internal
-directives, multiline contents, malformed init arguments and EOF-reaching
-endings. Do not gather, reformat or delete them: an init directive can change
-configuration even though info’s Db remains empty.
+surrounding text. Within a printed line, place a directive as under
+[Directives](./flowchart.md#directives). When formatting splits units that were
+on the same line, a directive in their gap moves with the following unit: its
+right boundary stays touching or separated, while its left contact is broken.
+Align only an ordinary standalone start one body step in. Keep complete
+component boundaries and value-internal directives, multiline contents,
+malformed init arguments and EOF-reaching endings. Do not gather, reformat or
+delete them: an init directive can change configuration even though info’s Db
+remains empty.
 
 [fixture: info/global-directives/header-to-body]
 
@@ -451,19 +463,28 @@ Output
 ```mmd
 info
   accTitle%%{wrap}%%: Access
-  accDescr%%{wrap}%%{ D }
+  accDescr %%{wrap}%%{ D }
 ```
 
 ### Semicolons
 
-Reuse [shared textual segment protection](./pie.md#directives-and-semicolons)
-and keep every semicolon. Protect from the first non-whitespace character
-through the last semicolon, extending through complete crossing
-values/comments/directives. Keep protected header/body groups together, because
-moving a trigger can change semicolon selection and acceptance. Both
+Keep every semicolon. A segment that holds a kept `;` is formatted as anywhere
+else, except where formatting could change which `;` the line rule ignores. The
+rule reads a segment from the first `:` after `style` or `classDef` to the last
+`#` before its last kept `;`, with no whitespace between the `:` and the `#`
+(see [Semicolons](./flowchart.md#semicolons)), so the gaps and the padding
+inside that stretch keep whether they hold whitespace, a run becoming one space,
+and the rest of the segment follows the ordinary rules of this diagram. Text
+that no part of the layout holds stays as written. A statement over several
+lines whose lines, joined with one space or with nothing, could change which `;`
+the line rule ignores keeps the text of each segment, up to its last kept `;`,
+as written; any other statement over several lines is formatted like one on a
+single line. [fixture: semicolons/stretch-kept-rest-formatted] [fixture:
+semicolons/no-stretch-formatted] Keep protected header/body groups together,
+because moving a trigger can change semicolon selection and acceptance. Both
 style/classDef passes, case and colon/hash whitespace, Unicode segment bounds
-and directive-rejoined triggers retain source; safe exterior/suffix gaps still
-format. A semicolon is not a general info statement separator.
+and directive-rejoined triggers keep their reading. A semicolon is not a general
+info statement separator.
 
 [fixture: info/semicolons/native-description-value]
 

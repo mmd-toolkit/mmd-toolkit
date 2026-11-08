@@ -154,7 +154,7 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
       "%% c",
       "%%{init: {}}%%",
     ],
-    "quadrantChart\n  title Reach\n  x-axis Low --> High\n  quadrant-1 We   should expand\n  A: [0.3, 0.6] radius: 9, color: #f00\n  accDescr {\n    d\n  }\n  %% c\n  %%{init: {}}%%\n",
+    "quadrantChart\n  title Reach\n  x-axis Low --> High\n  quadrant-1 We should expand\n  A: [0.3, 0.6] radius: 9, color: #f00\n  accDescr {\n    d\n  }\n  %% c\n  %%{init: {}}%%\n",
   ],
   [
     "xychart",

@@ -9,7 +9,7 @@ Code:
   2 |   requirement r {
   3 |     id: 1
   4 |   }
-  5 |   style rr fill:red
+  5 |   style rr fill: red
     |         ^~ [1]
   6 |
 

@@ -15,10 +15,12 @@ import {
   collectValueNodes,
   dropPaddings,
   expectToken,
+  findLayoutEnd,
   keptAsWritten,
   layoutDescriptionBlock,
   walk,
   protectSemicolonPrefixes,
+  replaceInAtoms,
 } from "./layout.ts"
 import type { Source } from "./source.ts"
 import {
@@ -34,6 +36,8 @@ import {
   addClassListRules,
   addNameListRules,
   classStatementRules,
+  collectTextEndEdits,
+  endsWithDirectives,
 } from "./statement-rules.ts"
 
 /** Value leaves; accessibility/stereotype padding has its own layout rules. */
@@ -317,10 +321,8 @@ export function layoutUsecaseStatement(
     const index = atoms.findIndex(
       (atom) =>
         atom.start === stereotype.value.range[0] &&
-        atom.end === stereotype.value.range[1] &&
-        !source.text.slice(atom.start, atom.end).includes(";"),
+        atom.end === stereotype.value.range[1],
     )
-    // A prefix that crosses a value keeps its complete written padding too.
     if (index === -1) continue
     atoms[index] = { start: stereotype.range[0], end: stereotype.range[1] }
   }
@@ -332,6 +334,29 @@ export function layoutUsecaseStatement(
     keptBreaksBefore,
     lineBreaks: "kept",
   }
+}
+
+/**
+ * Where a statement is printed to: its range, except for a one-line
+ * accessibility statement, which leaves out the whitespace at the end of its
+ * value. That whitespace is then the gap before a directive that follows the
+ * statement on its line, which a gap rule prints as one space, as in the other
+ * diagram types.
+ */
+export function findUsecasePrintedEnd(
+  source: Source,
+  statement: UsecaseStatement,
+): number {
+  const end = statement.range[1]
+  if (
+    statement.type !== "UsecaseAccTitleStatement" &&
+    statement.type !== "UsecaseAccDescrStatement"
+  )
+    return end
+  return Math.min(
+    end,
+    findLayoutEnd(layoutUsecaseStatement(source, statement, end)),
+  )
 }
 
 /**
@@ -391,6 +416,21 @@ function layoutUsecaseAccessibility(
     atoms.push({ start: valueRange[0], end: valueRange[1] })
     rules.set(valueRange[0], "space")
     joinedBefore.add(valueRange[0])
+    // The directives that end the value are printed as those that end a title
+    // (docs/compatibility.md, Texts after a keyword that are drawn the same).
+    // The runs inside an `accTitle` stay.
+    if (endsWithDirectives(source, valueRange)) {
+      replaceInAtoms(
+        source,
+        atoms,
+        collectTextEndEdits(
+          source,
+          valueRange[0],
+          valueRange[1],
+          statement.type === "UsecaseAccDescrStatement",
+        ),
+      )
+    }
   }
   return {
     atoms: protectSemicolonPrefixes(source, start, end, atoms),

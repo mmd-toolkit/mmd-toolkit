@@ -11,7 +11,14 @@ Formatting rules for cynefin-beta and cynefin-beta:, following the
 
 ### Header
 
-Keep cynefin-beta or cynefin-beta: at column one, retaining the authored colon.
+Put cynefin-beta at column one. A colon right after the header word is removed:
+mermaid.js reads `cynefin-beta:` and `cynefin-beta` as the same header, and the
+examples in its documentation write the header without the colon 3 times against
+none (see
+[The colon after a header](./compatibility.md#the-colon-after-a-header)). The
+colon stays where a hidden form or a global directive lies between it and the
+word, and where a `;` or the `---` of a hidden YAML block touches it. [fixture:
+cynefin/header/colon-removed] [fixture: cynefin/header/colon-semicolon-kept]
 Move an ordinary first statement to the next line so the header is easy to find.
 Global directive contact, hidden neighbors and protected lines use their shared
 rules: a kept header line also keeps its domain and item openings on that line.
@@ -159,7 +166,7 @@ Output
 cynefin-beta
   complex
     "Alpha"
-    'Beta'
+    "Beta"
   clear
     "Gamma'"
 ```
@@ -167,9 +174,10 @@ cynefin-beta
 ### Component spacing
 
 Separate ordinary domain/item components that remain on one line by one space,
-making the components distinct. Global trivia keeps both sides within a printed
-line; split gaps follow [Global directives](#global-directives). Hidden closing
-padding and semicolon prefixes retain their protected text.
+making the components distinct. A global directive within a printed line is
+placed as under [Global directives](#global-directives), and so are split gaps.
+Hidden closing padding retains its protected text. A kept `;` protects no other
+text than the stretch of the line rule (see [Semicolons](#semicolons)).
 
 [fixture: cynefin/component-spacing/domain-hidden-contact]
 
@@ -275,18 +283,25 @@ Output
 
 ```mmd
 cynefin-beta
-  chaotic --> confusion : 'ColonTabs'
+  chaotic --> confusion : "ColonTabs"
 ```
 
 ### Strings
 
 Print item and transition-label StringLiteral source spans unchanged, including
-quote choice, escapes, empty values, interior padding, HTML/entities and
-native-looking text. singleQuote does not requote them. Even Db-equal requoting
-loses authored spelling; trimming or decoding escapes can change the value.
-Shared semicolon protection applies first.
+escapes, empty values, HTML/entities and native-looking text, except that a run
+of spaces and tabs inside an item is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same))
+and a string between `'` is printed between `"`, unless its text holds a `'`, a
+`"`, a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<`
+(see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+and `singleQuote` is not read. Trimming or decoding escapes can change the
+value.
 
 [fixture: cynefin/strings/strings-quotes]
+
+[fixture: cynefin/strings/single-quote-sensitive-kept]
 
 [fixture: cynefin/strings/strings-padding]
 
@@ -317,7 +332,7 @@ Output
 ```mmd
 cynefin-beta
   complex
-    'Single'
+    "Single"
     "Double"
     'opposite " quote'
     "opposite ' quote"
@@ -391,9 +406,9 @@ Output
 
 ```mmd
 cynefin-beta
-  complex --> clear : 'First'
-  complex --> clear : 'Second'
-  complex --> complex : 'Self'
+  complex --> clear : "First"
+  complex --> clear : "Second"
+  complex --> complex : "Self"
   clear --> clear
   confusion --> chaotic : ""
 ```
@@ -404,8 +419,16 @@ Use the shared common-line layout: trim ordinary outer common whitespace, insert
 one space before a nonempty value and retain its internal text. Empty or
 whitespace-only values print as bare title and never take text from the next
 line. This chooses a compact Db-equal edge without interpreting quotes as string
-delimiters. Preserve empty resets and trivia contact. A single separator
-space/tab is outside the range of a null title.
+delimiters. Preserve empty resets and trivia contact. The directives that end a
+title are printed with one space before each that has whitespace before it, and
+the whitespace after the last one is left out, whatever the whitespace at the
+end of the line (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: title/title-directives-end-blanks-dropped] A single separator
+space/tab is outside the range of a null title. A `;` that the line rule ignores
+before the first character of the value is a gap item whether one whitespace
+character or more comes before it: `title  ;T` and `title ;T` are printed alike.
+[fixture: cynefin/semicolons/ignored-semicolon-title-value-second-space]
 
 [fixture: cynefin/title/title-edges]
 
@@ -438,7 +461,7 @@ Output
 
 ```mmd
 cynefin-beta
-  title Title  inside		text
+  title Title inside text
 ```
 
 ### Accessibility lines
@@ -447,7 +470,11 @@ Use shared accTitle: value and accDescr: value layouts, attaching the colon and
 adding one space before a nonempty value. Empty assignments end at the colon and
 never join the next line. Trim ordinary outer whitespace, retain internal text
 and trivia contact, and keep braces after a colon as line-value text. These
-compact common forms do not reinterpret authored values.
+compact common forms do not reinterpret authored values. The directives that end
+the value are printed with one space before each that has whitespace before it,
+and the whitespace after the last one is left out (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: cynefin/accessibility-lines/accessibility-padding]
 
@@ -470,7 +497,7 @@ Output
 ```mmd
 cynefin-beta
   accTitle: Access  Title
-  accDescr: Access		Description
+  accDescr: Access Description
 ```
 
 ### Description blocks
@@ -616,7 +643,7 @@ that line with its children; moving only the children could remove the header's
 protection and change the next formatting. This preserves line placement without
 changing which node owns the form.
 
-Print each semicolon-protected prefix once, even when a native suffix keeps the
+Print each semicolon-protected stretch once, even when a native suffix keeps the
 same line. Retain that suffix at its owner; protection must not duplicate an
 item and change the Db.
 
@@ -760,14 +787,14 @@ cynefin-beta
 
 ### Global directives
 
-Keep Root directive source and order. Within a printed line, keep whether each
-side touches or is separated. When formatting splits units that were on the same
-line, a directive in their gap moves with the following unit: its right boundary
-stays touching or separated, while its left contact is broken. Ordinary
-standalone lines align with their body, including item depth between items.
-Multiline interiors and unfinished EOF endings remain written. Reordering
-directives or editing their JSON can change the text that common removal joins;
-native hidden directives remain separate forms.
+Keep Root directive source and order. Within a printed line, place a directive
+as under [Directives](./flowchart.md#directives). When formatting splits units
+that were on the same line, a directive in their gap moves with the following
+unit: its right boundary stays touching or separated, while its left contact is
+broken. Ordinary standalone lines align with their body, including item depth
+between items. Multiline interiors and unfinished EOF endings remain written.
+Reordering directives or editing their JSON can change the text that common
+removal joins; native hidden directives remain separate forms.
 
 [fixture: cynefin/global-directives/header-to-body]
 
@@ -795,7 +822,7 @@ Output
 
 ```mmd
 cynefin-beta
-  complex%%{wrap}%%-->%%{wrap}%%clear%%{wrap}%%:%%{wrap}%%'GlobalLabel'
+  complex %%{wrap}%%--> %%{wrap}%%clear %%{wrap}%%: %%{wrap}%%"GlobalLabel"
 ```
 
 ### Comments
@@ -899,14 +926,25 @@ cynefin-beta
 
 ### Semicolons
 
-Keep every authored semicolon with shared textual-prefix protection: preserve
-each segment’s prefix through its last semicolon and whole crossing
-values/trivia, formatting only safe suffix gaps. The first protected line uses
-its body depth, including item depth; content and later columns remain written.
-Count segments as Mermaid reads them, including directives and comment-region
-joins. Cynefin has no grammatical semicolon, so verbatimStyleLines is false:
-ordinary style/classDef word lines still format. Deleting semicolons or
-relocating their triggers can change the Db or acceptance.
+Keep every authored semicolon. A segment that holds a kept `;` is formatted as
+anywhere else, except where formatting could change which `;` the line rule
+ignores. The rule reads a segment from the first `:` after `style` or `classDef`
+to the last `#` before its last kept `;`, with no whitespace between the `:` and
+the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps and the
+padding inside that stretch keep whether they hold whitespace, a run becoming
+one space, and the rest of the segment follows the ordinary rules of this
+diagram. Text that no part of the layout holds stays as written. A statement
+over several lines whose lines, joined with one space or with nothing, could
+change which `;` the line rule ignores keeps the text of each segment, up to its
+last kept `;`, as written; any other statement over several lines is formatted
+like one on a single line. [fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted] [fixture:
+semicolons/semi-line-other-value] The first protected line uses its body depth,
+including item depth; content and later columns remain written. Count segments
+as Mermaid reads them, including directives and comment-region joins. Cynefin
+has no grammatical semicolon, so verbatimStyleLines is false: ordinary
+style/classDef word lines still format. Deleting semicolons or relocating their
+triggers can change the Db or acceptance.
 
 [fixture: cynefin/hidden-boundaries/semicolon-hidden-header-directive]
 
@@ -991,6 +1029,16 @@ Output
 cynefin-beta
   complex "a;" clear "b" "c"
 ```
+
+A `;` that the line rule ignores between two statements stands against the token
+before it with one space after it, whatever whitespace was written around it, as
+the gap has one space; the gap right after the keyword keeps its whitespace as
+written. [fixture: semicolons/ignored-semicolon-space-before-attached] [fixture:
+semicolons/ignored-semicolon-space-both-attached] [fixture:
+semicolons/ignored-semicolon-space-after-kept] [fixture:
+semicolons/ignored-semicolon-after-header-keyword-kept] [fixture:
+semicolons/semi-selected-outside-string] [corpus fixture:
+cynefin/semicolon-chaotic-parts]
 
 ### Multiline values
 
@@ -1117,7 +1165,7 @@ cynefin-beta
   clear
     "EarlyClear"
   title EarlyTitle
-  complex --> clear : 'EarlyMove'
+  complex --> clear : "EarlyMove"
   complex
     "LaterComplex"
   accTitle: Accessible
@@ -1225,9 +1273,9 @@ Output:
 
 ````markdown
 ```mermaid
-cynefin-beta:
+cynefin-beta
   complex
     "FencedAlpha"
-    'FencedBeta'
+    "FencedBeta"
 ```
 ````

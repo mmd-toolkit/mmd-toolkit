@@ -40,7 +40,7 @@ Examples of **incorrect** code for this rule:
 %% eslint @mmd-toolkit/state-no-undef: error
 stateDiagram-v2
   A --> B
-  style Z fill:#f00
+  style Z fill: #f00
 ```
 
 ```mmd
@@ -56,7 +56,7 @@ Examples of **correct** code for this rule:
 %% eslint @mmd-toolkit/state-no-undef: error
 stateDiagram-v2
   A --> B
-  style A fill:#f00
+  style A fill: #f00
   note left of B : x
 ```
 

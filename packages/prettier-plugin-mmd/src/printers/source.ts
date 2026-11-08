@@ -113,6 +113,25 @@ export function isWhitespace(character: string): boolean {
   return character.trim() === ""
 }
 
+/** Whether a character is a space or a tab. */
+export function isSpaceOrTab(character: string): boolean {
+  return character === " " || character === "\t"
+}
+
+/**
+ * The offset of the first character from `start` on that is no space and no
+ * tab, or `end` where the range holds nothing else.
+ */
+export function skipSpacesAndTabs(
+  source: Source,
+  start: number,
+  end: number,
+): number {
+  let offset = start
+  while (offset < end && isSpaceOrTab(source.text[offset])) offset++
+  return offset
+}
+
 /**
  * The length of the line terminator that starts at `offset`: 2 for `\r\n`, 1
  * for a lone `\r` or `\n`, and 0 where none starts.
@@ -597,6 +616,45 @@ export function findTriviaBetween(
     (item) => item.range[0] >= end,
   )
   return source.trivia.slice(first, afterLast)
+}
+
+/**
+ * Whether `[start, end)` holds a comment, or a directive that is not part of
+ * the directives at its end: directives that follow each other with spaces and
+ * tabs only between them, the last of them followed by spaces and tabs only up
+ * to `end`. That is the end of a title read to the end of its line, whose last
+ * things are directives.
+ */
+export function hasTriviaBesidesTrailingDirectives(
+  source: Source,
+  start: number,
+  end: number,
+): boolean {
+  let position = end
+  const trivia = findTriviaBetween(source, start, end)
+  for (let index = trivia.length - 1; index >= 0; index--) {
+    const item = trivia[index]
+    if (
+      item.type !== "Directive" ||
+      ![...source.text.slice(item.range[1], position)].every(isSpaceOrTab)
+    )
+      return true
+    position = item.range[0]
+  }
+  return false
+}
+
+/**
+ * Whether the keyword of the diagram ends at `offset`. Diagram detection reads
+ * the text before the `;` that the line rule ignores is removed, so such a `;`
+ * against the keyword is no whitespace after it (docs/cynefin.md,
+ * Semicolons).
+ */
+export function isDiagramKeywordEnd(source: Source, offset: number): boolean {
+  return (
+    source.root.tokens.find((token) => token.type === "Keyword")?.range[1] ===
+    offset
+  )
 }
 
 /**

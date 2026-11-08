@@ -10,6 +10,7 @@ import {
   writtenEmbeddedTexts,
   describeFrontmatterChange,
 } from "./db-reading.ts"
+import { dbForFormattingComparison } from "./db-comparison.ts"
 import { formatMarkdownWithoutPlugin } from "./helpers.ts"
 
 interface MarkdownCase {
@@ -182,9 +183,15 @@ describe("treemap in Markdown", () => {
       ),
     ).toBeNull()
     const embedded = defaultEmbedded()
-    expect(dbOfText(fixture.payloadOutput, embedded)).toEqual(
-      dbOfText(fixture.payloadInput, embedded),
-    )
+    const dbBefore = dbOfText(fixture.payloadInput, embedded)
+    expect(
+      dbForFormattingComparison(
+        dbBefore,
+        dbOfText(fixture.payloadOutput, embedded),
+        fixture.payloadInput,
+        fixture.payloadOutput,
+      ),
+    ).toEqual(dbBefore)
     expect(writtenEmbeddedTexts(fixture.payloadOutput)).toEqual(
       writtenEmbeddedTexts(fixture.payloadInput),
     )

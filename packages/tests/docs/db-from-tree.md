@@ -114,11 +114,13 @@ are read from the tree like this:
   and the type of a written name in **Names** in
   [db-from-tree/class.md](./db-from-tree/class.md)).
 - **Class styles**: the converted form of the texts of the tokens of the
-  `ClassLiteral`, joined, split at each `,` (the rules are **Styles** in
+  `ClassLiteral`, joined and followed by the line whitespace after its range,
+  then split at each `,` (the rules are **Styles** in
   [db-from-tree/class.md](./db-from-tree/class.md)). The tokens of a style carry
   the whitespace that mermaid.js reads as part of the value next to a directive
   (tokens.md, A token that a directive cuts), and not the whitespace between its
-  units, so the texts of the tokens joined are the value.
+  units. The summary also keeps the whitespace following the range. [fixture:
+  class/db-style-trailing-whitespace-eol]
 - **ER styles**: the converted forms of the tokens inside the `ErLiteral` of a
   style, joined, since the whitespace between the units of a style is no part of
   its value (the rule is in [db-from-tree/er.md](./db-from-tree/er.md)).

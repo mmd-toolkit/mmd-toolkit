@@ -12,10 +12,14 @@ import {
   keepFirstGapLineTails,
   keptAsWritten,
   layoutDescriptionBlock,
-  spansLinesThatCannotJoin,
 } from "./layout.ts"
-import { holdsJoiningRegion } from "./kept-lines.ts"
-import { accessibilityRules } from "./statement-rules.ts"
+import {
+  findKeptBreaks,
+  gapKeepsLineBreak,
+  holdsJoiningRegion,
+  spansKeptBreaks,
+} from "./kept-lines.ts"
+import { accessibilityRules, trimTextAfterKeyword } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
 
 /**
@@ -124,7 +128,8 @@ export function layoutJourneyStatement(
   if (statement.type === "JourneyAccDescrBlockStatement") {
     return layoutDescriptionBlock(source, statement, end, journeyValueNodeTypes)
   }
-  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  const keptBreaks = findKeptBreaks(source, start, end)
+  const keepsLineBreaks = spansKeptBreaks(source, keptBreaks, start, end)
   const formatsTriviaLines =
     statement.type === "JourneyAccTitleStatement" ||
     statement.type === "JourneyAccDescrStatement"
@@ -132,9 +137,7 @@ export function layoutJourneyStatement(
   // Value columns, semicolon lines and removed-line regions stay written.
   if (
     keepsLineBreaks &&
-    (!formatsTriviaLines ||
-      holdsJoiningRegion(source, start, end) ||
-      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
+    (!formatsTriviaLines || holdsJoiningRegion(source, start, end))
   ) {
     return keptAsWritten(start, end)
   }
@@ -145,13 +148,21 @@ export function layoutJourneyStatement(
     collectValueNodes(statement, journeyValueNodeTypes),
     [],
   )
+  trimTextAfterKeyword(
+    source,
+    atoms,
+    statement.type === "JourneyTitleStatement" ? statement.value.range : null,
+    true,
+  )
   const remainder = findBlankRemainder(source, statement)
   if (remainder !== null) atoms.push(remainder)
   return {
-    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+    atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
+      gapKeepsLineBreak(source, keptBreaks, from, to),
+    ),
     rules: statementRules(source, statement, atoms, remainder),
     outdented: new Set(),
-    lineBreaks: keepsLineBreaks ? "kept" : "joined",
+    lineBreaks: "joined",
   }
 }
 

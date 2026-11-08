@@ -211,13 +211,15 @@ xychart
 ### Header and orientation
 
 The header is printed as written: `xychart` or `xychart-beta`, in the case
-written. mermaid.js reads them as the same diagram type, so the spelling is the
-author's, not the printer's. A header after the first stands on a line of its
-own, and none is dropped: a later header with an orientation changes the
-orientation, and one without changes nothing, but the text is the author's. A
-header with a comment or directive in its gap keeps that line break and aligns
-its continuation one level inside the header (see
-[Multi-line statements](#multi-line-statements)). [fixture:
+written. mermaid.js 12.3.0 reads them as the same diagram type, but mermaid.js
+11.9.0 detects `xychart-beta` only, so the spelling is the author's, not the
+printer's (see
+[The names of a header](./compatibility.md#the-names-of-a-header)). A header
+after the first stands on a line of its own, and none is dropped: a later header
+with an orientation changes the orientation, and one without changes nothing,
+but the text is the author's. A header with a comment or directive in its gap
+keeps that line break and aligns its continuation one level inside the header
+(see [Multi-line statements](#multi-line-statements)). [fixture:
 header-and-orientation/plain-header] [fixture:
 header-and-orientation/beta-header-kept] [fixture:
 header-and-orientation/header-only] [fixture:
@@ -479,18 +481,19 @@ xychart
 
 ### Numbers
 
-A number is printed as written. A number of a range or of a plot is read by
-value, so `+1`, `007`, `.5`, `-0`, and `1.50` could be written otherwise with
-the same Db; but the same digits in a category or in a title without quotes are
-text (`x-axis [007, .5]` has the categories `007` and `.5`), and changing them
-changes the chart. Normalizing only the numbers would spell the same digits two
-ways in one chart, so the number is the author's text, as the values of a sankey
-diagram are (see [Values](./sankey.md#values)). [fixture:
-numbers/range-numbers-as-written] [fixture: numbers/values-as-written] [fixture:
-numbers/categories-are-texts] [fixture: numbers/titles-are-texts]
+A number of a range or of a plot is read by value and printed in the shortest
+form: `+3` is `3`, `1.50` is `1.5`, and `.5` is `0.5` (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+The same digits in a category or in a title without quotes are text
+(`x-axis [007, .5]` has the categories `007` and `.5`), and stay as written, as
+the values of a sankey diagram do (see [Values](./sankey.md#values)); so do a
+number with a zero at the start of its integer part (`007`) and `-0`. [fixture:
+numbers/range-numbers-one-form] [fixture: numbers/values-one-form] [fixture:
+numbers/forms-kept] [fixture: numbers/categories-are-texts] [fixture:
+numbers/titles-are-texts]
 
 Input
-([numbers/values-as-written-input.mmd](../tests/fixtures/xychart/numbers/values-as-written-input.mmd)):
+([numbers/values-one-form-input.mmd](../tests/fixtures/xychart/numbers/values-one-form-input.mmd)):
 
 ```mmd
 xychart
@@ -498,25 +501,27 @@ line [.5, 007, -0, 1.50, +3]
 ```
 
 Output
-([numbers/values-as-written-output.mmd](../tests/fixtures/xychart/numbers/values-as-written-output.mmd)):
+([numbers/values-one-form-output.mmd](../tests/fixtures/xychart/numbers/values-one-form-output.mmd)):
 
 ```mmd
 xychart
-  line [.5, 007, -0, 1.50, +3]
+  line [0.5, 007, -0, 1.5, 3]
 ```
 
 ### Quotes
 
-A string is printed as written: its quotes, its text, the whitespace inside it,
-and the line breaks inside it stay. A quote is never added or removed. `"Sales"`
-and `Sales` have the same Db, but `"a b"` and `a b` do not (`ab` is the text of
-the second), and the empty string is read as no token by mermaid.js though it is
-the author's text; so the choice of the quotes is left to the author, as in a
-sankey diagram (see [Quotes](./sankey.md#quotes)). An empty string stands where
-the grammar takes one: as the title of a plot, as the title of an axis before
-data, and as the label of a value. [fixture: quotes/strings-as-written]
-[fixture: quotes/quotes-not-removed] [fixture: quotes/quotes-not-added]
-[fixture: quotes/keywords-and-markup-in-strings] [fixture:
+A string is printed as written: its quotes, its text, and the line breaks inside
+it stay, and a run of spaces and tabs inside it is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+A quote is never added or removed. `"Sales"` and `Sales` have the same Db, but
+`"a b"` and `a b` do not (`ab` is the text of the second), and the empty string
+is read as no token by mermaid.js though it is the author's text; so the choice
+of the quotes is left to the author, as in a sankey diagram (see
+[Quotes](./sankey.md#quotes)). An empty string stands where the grammar takes
+one: as the title of a plot, as the title of an axis before data, and as the
+label of a value. [fixture: quotes/strings-runs-collapsed] [fixture:
+quotes/quotes-not-removed] [fixture: quotes/quotes-not-added] [fixture:
+quotes/keywords-and-markup-in-strings] [fixture:
 quotes/comment-mark-in-a-string] [fixture:
 quotes/empty-strings-where-the-grammar-takes-them]
 
@@ -565,16 +570,20 @@ xychart
 The `:` of `accTitle` and `accDescr` touches the keyword and has one space after
 it, as in the other diagrams (see
 [Accessibility statements](./journey.md#accessibility-statements)). The text has
-no whitespace at its ends and keeps the whitespace inside it, which is in the Db
-(`accTitle: a   b` has the title `a   b`). A text written on a later line, a
-colon written on a later line than the keyword, and whitespace before the colon
-are printed on one line: the line breaks are whitespace to the lexer, and the
-text of the statement is the same. An `accTitle:` or `accDescr:` without text,
-at the end of the text, is printed as the keyword and the colon with nothing
-after them. [fixture: accessibility-statements/colon-touches-keyword] [fixture:
+no whitespace at its ends. A run of spaces and tabs inside the text of an
+`accDescr` is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+and that of an `accTitle` stays as written, since the browser shows it as a
+tooltip, which the Db keeps (`accTitle: a  b` has the title `a  b` and is
+printed `accTitle: a  b`). A text written on a later line, a colon written on a
+later line than the keyword, and whitespace before the colon are printed on one
+line: the line breaks are whitespace to the lexer, and the text of the statement
+is the same. An `accTitle:` or `accDescr:` without text, at the end of the text,
+is printed as the keyword and the colon with nothing after them. [fixture:
+accessibility-statements/colon-touches-keyword] [fixture:
 accessibility-statements/colon-without-space-after] [fixture:
 accessibility-statements/text-whitespace-dropped] [fixture:
-accessibility-statements/text-inner-whitespace-kept] [fixture:
+accessibility-statements/text-inner-runs-collapsed] [fixture:
 accessibility-statements/special-characters-in-text] [fixture:
 accessibility-statements/text-on-the-next-line-joined] [fixture:
 accessibility-statements/colon-on-the-next-line-joined] [fixture:
@@ -753,7 +762,9 @@ gaps: titles, headers, axes, plots and accessibility line statements. Place
 later parts and standalone trivia lines one continuation level inside their
 statement. Preserve each gap's first line tail, including complete inline
 directives: its whitespace must start before LF for the statement to continue.
-[fixture: multi-line-statements/structural-trivia-continuations] [fixture:
+[fixture: multi-line-statements/breaks-decided-one-by-one] [fixture:
+multi-line-statements/line-rule-first-hash-after-colon-kept] [fixture:
+multi-line-statements/structural-trivia-continuations] [fixture:
 multi-line-statements/axis-trivia-with-multiline-string] Directive interiors
 stay written. [fixture:
 multi-line-statements/bare-title-multiline-directive-tail] A comment line takes
@@ -762,12 +773,16 @@ the rest of the line it stands on, so the joined `title A %% c B` has the title
 [fixture: multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept] Quoted contents stay whole,
 including their internal line breaks and columns. [fixture:
-multi-line-statements/quoted-title-trivia] A `;` in the statement or on its
-final line keeps the complete original layout, because of the line rule (see
+multi-line-statements/quoted-title-trivia] A line break stays where joining it,
+with one space or with nothing, could change which `;` the line rule ignores,
+and where a `;` ends the last line; any other line break is joined as usual,
+also in a statement that holds a `;`. The same decision applies to a `;` in
+another statement on its final line (see
 [Statements one per line](#statements-one-per-line)). [fixture:
-multi-line-statements/semicolon-inside-kept] [fixture:
-multi-line-statements/semicolon-on-the-last-line-kept] Comment regions that join
-physical lines also keep their original layout. [test:
+multi-line-statements/semicolon-joining-changes-kept] [fixture:
+multi-line-statements/semicolon-inside-joined] [fixture:
+multi-line-statements/semicolon-on-the-last-line-joined] Comment regions that
+join physical lines also keep their original layout. [test:
 xychart/multi-line-statements/bare-title-comment-region-kept] [test:
 xychart/multi-line-statements/header-comment-region-ls] [test:
 xychart/multi-line-statements/header-comment-region-ps]
@@ -827,17 +842,19 @@ xychart
 
 ### Keyword case
 
-The keywords `title`, `x-axis`, `y-axis`, `line`, `bar`, `accTitle`, and
-`accDescr` are printed in the case written. mermaid.js reads them in any case
-(`Title`, `LINE`, and `ACCTITLE:` start statements), and the Db is the same, so
-the case is the author's and nothing forces one. The Db holds the kind of a
-plot, `line` or `bar`, in lower case whatever the case written. [fixture:
-keyword-case/statement-keywords-kept] [fixture:
+The keywords `title`, `x-axis`, `y-axis`, `line`, and `bar` are printed in the
+case that the examples in the documentation of mermaid.js use (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+mermaid.js reads them in any case (`Title` and `LINE` start statements), and the
+Db is the same. `accTitle` and `accDescr` are printed in the case written, which
+the examples do not use. The Db holds the kind of a plot, `line` or `bar`, in
+lower case whatever the case written. [fixture:
+keyword-case/statement-keywords-one-form] [fixture:
 keyword-case/accessibility-keywords-kept] [fixture:
 keyword-case/header-spelling-kept]
 
 Input
-([keyword-case/statement-keywords-kept-input.mmd](../tests/fixtures/xychart/keyword-case/statement-keywords-kept-input.mmd)):
+([keyword-case/statement-keywords-one-form-input.mmd](../tests/fixtures/xychart/keyword-case/statement-keywords-one-form-input.mmd)):
 
 ```mmd
 xychart
@@ -849,15 +866,15 @@ Bar [2]
 ```
 
 Output
-([keyword-case/statement-keywords-kept-output.mmd](../tests/fixtures/xychart/keyword-case/statement-keywords-kept-output.mmd)):
+([keyword-case/statement-keywords-one-form-output.mmd](../tests/fixtures/xychart/keyword-case/statement-keywords-one-form-output.mmd)):
 
 ```mmd
 xychart
-  Title T
-  X-AXIS [a]
-  Y-Axis 0 --> 1
-  LINE [1]
-  Bar [2]
+  title T
+  x-axis [a]
+  y-axis 0 --> 1
+  line [1]
+  bar [2]
 ```
 
 ### Comments
@@ -933,12 +950,11 @@ xychart
 
 ### Directives
 
-Keep directives in their authored gaps. Within a printed line, each side keeps
-whether it touches: one space where whitespace was written beside it, touching
-where it was not. mermaid.js joins the text around a directive in a text without
-quotes and in a string, so retain touching versus separated gaps within a
-statement (see [Directives](./journey.md#directives)). A directive on a line of
-its own stands at the level of the statement after it. [fixture:
+Keep directives in their authored gaps. Within a printed line, a directive is
+placed as under [Directives](./flowchart.md#directives): the gap is printed as
+without the directive, and the directive stands after its space and touches the
+unit that follows it. A directive on a line of its own stands at the level of
+the statement after it. [fixture:
 directives/directive-line-at-the-level-of-the-next-statement] [fixture:
 directives/directive-line-before-the-header] [fixture:
 directives/directive-after-a-statement-spaced] [fixture:
@@ -991,8 +1007,8 @@ Output
 
 ```mmd
 xychart
-  line %%{init: {}}%% [1]
-  x-axis%%{init: {}}%%[a]
+  line %%{init: {}}%%[1]
+  x-axis %%{init: {}}%%[a]
 ```
 
 ### Frontmatter YAML

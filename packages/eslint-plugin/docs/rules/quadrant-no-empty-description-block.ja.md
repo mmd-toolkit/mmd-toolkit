@@ -34,6 +34,9 @@ since: v0.1.0
 
 同じ行の点の前や後の空のブロックも報告する。
 
+整形ツールは、空のブロックを `accDescr {}` と書く。
+波括弧の中に空白がある例は、書いたまま示している。
+
 この規則に**反する**コードの例:
 
 ```mmd
@@ -43,6 +46,7 @@ quadrantChart
   A: [0.3, 0.6]
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/quadrant-no-empty-description-block: error
 quadrantChart

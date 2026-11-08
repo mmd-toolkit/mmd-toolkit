@@ -53,7 +53,7 @@ mermaid.js は、
 
 ```mmd
 %% eslint @mmd-toolkit/treemap-no-duplicate-description: error
-treemap
+treemap-beta
   accDescr: First
   accDescr: Second
   "Revenue": 10
@@ -63,7 +63,7 @@ treemap
 
 ```mmd
 %% eslint @mmd-toolkit/treemap-no-duplicate-description: error
-treemap
+treemap-beta
   accDescr: Second
   "Revenue": 10
 ```

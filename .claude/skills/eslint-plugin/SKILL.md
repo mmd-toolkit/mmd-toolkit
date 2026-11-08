@@ -192,9 +192,11 @@ How each part is written:
   diagnostics of the documentation site; do not add an `eslint-check` fence
   marker. `check:docs` rejects missing or different leading comments in either
   language. After this comment, each code block is the formatted input of a
-  fixture (step 4 of section 4), and the prose quotes an example as the code
-  block writes it (`A --> B`, not `A-->B`, where the formatter prints the
-  spaces), and refers to a line by what it holds, not by counting.
+  fixture (step 4 of section 4): `update` prints it as the formatter prints it,
+  and `check:docs` fails on an example that it would change. The prose quotes an
+  example as the code block writes it (`A --> B`, not `A-->B`, where the
+  formatter prints the spaces), and refers to a line by what it holds, not by
+  counting.
 - The examples are test cases. The tests of the rule read the English document:
   the `mmd` code blocks after the line "Examples of **incorrect** code for this
   rule:" up to the line "Examples of **correct** code for this rule:" are the
@@ -349,30 +351,42 @@ in the background and write its output to a file.
    one (it does not when the text ends inside an unclosed directive). The
    fixture records how mermaid.js reads the example (the skill `conventions`: a
    Mermaid example is written as the formatter prints it). Use the output as it
-   is, also where the formatter leaves a line as written. Compare the example
-   with the output after removing only its leading ESLint configuration comment;
-   keep that comment when checking the published example with the parser or the
+   is, also where the formatter leaves a line as written. `update` does this for
+   the examples of a document (section 6): write an example as the input of its
+   fixture, run it, and read what it printed. Compare the example with the
+   output after removing only its leading ESLint configuration comment; keep
+   that comment when checking the published example with the parser or the
    site's renderer. The snapshot test helper removes only this comment, because
    its tester enables the same rule under `rule-to-test/` and enabling it under
    `@mmd-toolkit/` too would duplicate every report. The comment belongs to the
    published example, not to the corpus fixture: do not change the fixture to
-   add it. An example kept as written on purpose, where the presence or absence
-   of whitespace is the point, is the only exception, and the document says so.
-   Check that the `expected.json` of each fixture used says what the document
-   claims, and use only fixtures whose `accepted` is true, also for the correct
-   examples. For every example and claim without a fixture, add one by the steps
-   of the skill `tests`: give the smallest input that shows it and the claim of
-   the rule document that the fixture answers, and add it with
-   `pnpm run fixtures:add`, which records what mermaid.js does
+   add it. An example kept as written on purpose, where a way of writing that
+   the formatter prints in one form is the point (whitespace, the case of a
+   value or a keyword, quotes, the form of a number), is the only exception.
+   `<!-- prettier-ignore -->` stands directly before its code block, in both
+   languages, and a sentence of Rule Details says that the example is shown as
+   written and why: the formatter prints an empty `accDescr` block as
+   `accDescr {}`, so an example with whitespace between the braces is kept.
+   `check:docs` reads neither that sentence nor whether the mark is still
+   needed; a review does. Check that the `expected.json` of each fixture used
+   says what the document claims, and use only fixtures whose `accepted` is
+   true, also for the correct examples. For every example and claim without a
+   fixture, add one by the steps of the skill `tests`: give the smallest input
+   that shows it and the claim of the rule document that the fixture answers,
+   and add it with `pnpm run fixtures:add`, which records what mermaid.js does
    (`packages/tests/docs/maintaining-fixtures.md`); then record its tree in the
    parser (the skill `parser`). Read its `expected.json` and use it in the tests
    of the rule. The document change is not done until the fixture exists.
 
 ## 5. Checks after writing
 
-1. Run `npx prettier --write` on the documents written, twice; the second run
-   must change nothing.
-2. Run `pnpm --filter @mmd-toolkit/eslint-plugin run update` (section 6).
+1. Run `pnpm run build:parser` at the root (the formatter reads the built
+   parser), then `npx prettier --write` on the documents written, twice; the
+   second run must change nothing.
+2. Run `pnpm --filter @mmd-toolkit/eslint-plugin run update` (section 6). It
+   builds the parser first (the source of the formatter imports it by name), so
+   the examples are printed by the formatter of the working tree; the rule is in
+   `docs/prettier.config.js`.
 3. `pnpm run lint:docs` (the Japanese pairs, and `check:docs`: the generated
    parts, the rules against the documents, and the English first paragraphs
    against `meta.docs.description`), `pnpm run format:check`, and
@@ -391,8 +405,10 @@ in the background and write its output to a file.
    reads: the examples (the code blocks after the two lines of section 3) or the
    rule files. Then run `tests/rule-cases.test.ts` and the test of the rule,
    `tests/rules/<name>.test.ts`, and `pnpm run check:docs` for the first
-   paragraph and the generated parts. Which tests go with which change is in the
-   skill `eslint-plugin-rules`, section 4.
+   paragraph and the generated parts. A changed example changes its snapshot:
+   update it with `pnpm --filter @mmd-toolkit/eslint-plugin run test:update` and
+   read the diff. Which tests go with which change is in the skill
+   `eslint-plugin-rules`, section 4.
 
 ## 6. The rule files and the generated parts
 
@@ -416,8 +432,32 @@ renamed, and removed together, as the section "Rules and their documents" of
   first paragraph of the Japanese document (the English description, with a link
   to the English document, for a rule that has no Japanese document), a ✅ for a
   rule that `recommended` enables, a 🔧 for a rule that has a fix, a 💡 for a
-  rule that offers suggestions. Do not write these parts by hand; after a change
-  of the first paragraph of a Japanese document, run `update`.
+  rule that offers suggestions; and the examples, every `mmd` code block being
+  printed as the formatter prints it, except one that `<!-- prettier-ignore -->`
+  stands directly before. Do not write the generated parts by hand; after a
+  change of the first paragraph of a Japanese document, run `update`.
+- When the formatter (`packages/prettier-plugin-mmd`) changes what it prints,
+  the examples are out of date and `check:docs` fails. Then:
+  1. Run `pnpm --filter @mmd-toolkit/eslint-plugin run update:docs`. It builds
+     the parser and rewrites the examples of both languages.
+  2. Run `pnpm --filter @mmd-toolkit/eslint-plugin run test:update` and read the
+     diff of the snapshots. An incorrect example that is no longer reported, or
+     a correct example that now is, is kept as written (step 4 of section 4) or
+     dropped. An example under `<!-- prettier-ignore -->` that the formatter now
+     prints the same way is no longer kept: remove the mark and its sentence.
+  3. Search the prose of each changed document for the old forms: a code span
+     that quotes a line the formatter changed. Write the new form, in both
+     languages.
+  4. Where the change makes the formatter leave as written what it used to
+     change, rebuild the affected examples from the `input.mmd` of their
+     fixtures (step 4 of section 4): formatting the old printed example does not
+     give back the text of the fixture.
+  5. Run `pnpm run lint:docs`. Then run the tests of the documentation site,
+     which render the examples of every rule document with the built plugin:
+     `pnpm --filter @mmd-toolkit/eslint-plugin run build`, then
+     `pnpm --filter @mmd-toolkit/docs run test`. The examples of the pages in
+     `packages/docs/pages/linter` are written by hand; print them as the
+     formatter prints them too.
 - What is written by hand in the index: what comes before the generated list
   (the introduction, with the sentence that says `recommended` enables the rules
   marked ✅, and the section on rule ids). The criteria for `recommended` are in

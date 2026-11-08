@@ -203,6 +203,8 @@ architecture-beta
 
 StringLiteral の範囲全体を保ちます。
 単引用符・二重引用符・反対側の引用符・空文字・escape・空白・継続行も保持します。
+ただし、テキストの中の空白とタブの連なりは、
+空白 1 つにして印字します（[Label content](#label-content)を参照）。
 `singleQuote` では書き換えません。
 再符号化は作者の綴りを失い、trim や decode は Db を変え得るためです。
 
@@ -294,15 +296,16 @@ architecture-beta
 
 ### Label content
 
-角括弧の内側はそのまま保ちますが、
-group と service のタイトルの括弧に接する空白、タブ、no-break space は例外です。
+角括弧の内側はそのまま保ちますが、group と service のタイトル、
+および矢印のラベル（[Arrow labels](#arrow-labels) を参照）の括弧に接する空白、
+タブ、no-break space は例外です。
 mermaid.js が trim するからです。
 `group a(cloud)[ API ]` は `group a(cloud)[API]` に、
 `service s(server)["x" ]` は `service s(server)["x"]` になります。
 [fixture: architecture/label-content/title-edge-whitespace-dropped]
 保つ `;` のある行でも同じです。
-その行では最後の `;` までのテキストが保護されますが（Semicolons を参照）、
-空白を落としても `;` は動かず、増えも減りもしないので、
+ただし、行の規則が読む範囲は除きます（[Semicolons](#semicolons)を参照）。
+その範囲の外の空白を落としても `;` は動かず、増えも減りもしないので、
 行の規則は同じ `;` を選びます。
 `group g(cloud)[ a;b ]` は `group g(cloud)[a;b]` に、
 `service s(server)[ x; ] in g` は `service s(server)[x;] in g` になります。
@@ -315,7 +318,7 @@ mermaid.js が trim するからです。
 この規則はディレクティブを除いた行を読むので、その中の `style`、`:`、`#`、
 `;` は区間を作りません。
 `service%%{style}%% s0(logos:aws)[ #y; ]` は
-`service%%{style}%% s0(logos:aws)[#y;]` に、
+`service %%{style}%%s0(logos:aws)[#y;]` に、
 `service style1(logos:aws)[ #y ]%%{init:{"a":";"}}%%` は `[#y]` になります。
 `;` がディレクティブの外にある `[ #y; ]` は、空白を残します。
 [fixture: architecture/label-content/title-padding-line-rule-chars-in-directive]
@@ -339,8 +342,12 @@ mermaid.js が trim するからです。
 [test: architecture/label-content/title-u2029]
 [test: architecture/label-content/title-with-semicolon-u2028]
 [test: architecture/label-content/title-with-semicolon-u2029]
-テキストの中の連続空白、タブ、空白だけの値、quoted の空値、escape、HTML、
-entity、hidden に見える文字は保ちます。
+テキストの中の空白とタブの連なりは、図が同じなので、空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+`group labels[A  B]` は `group labels[A B]` と印字します。
+[fixture: label-content/bare-padding]
+空白だけの値、quoted の空値、escape、HTML、entity、
+hidden に見える文字は保ちます。
 Db がこれらを区別するためです。
 コメントやディレクティブのあるタイトルも、そのままです。
 物理 CR・CRLF だけは共有の host 方針に従います。
@@ -376,7 +383,7 @@ Db がこれらを区別するためです。
 
 ```mmd
 architecture-beta
-  group labels[A  B	 C]
+  group labels[A B C]
 ```
 
 ### Port colons
@@ -439,14 +446,29 @@ architecture-beta
 
 ラベル付きの線は `a:R <-[label]-> L:b` と印字します。
 単 dash、角括弧ラベル全体、marker を視覚上の1単位にします。
-通常の外側の隙間だけを除き、空白付きの引用符風の文字や quoted の空値も、
-ラベルの全範囲を保ちます。
+通常の外側の隙間と、ラベルの括弧に接する空白、タブ、no-break space を、
+group や service のタイトルと同じく除きます。
+[Label content](#label-content) を参照してください。
+`a:R -[ Label ]- L:b` は `a:R -[Label]- L:b` に、
+`a:R - [ "x" ] - L:b` は `a:R -["x"]- L:b` と印字します。
+mermaid.js がラベルを trim するので Db は同じです。
+quoted の空値も含め、ラベルの残りの範囲を保ちます。
+コメントやディレクティブがあるラベルと、U+2028 や U+2029 を含む空白は、
+書かれたまま残します。
 
 [fixture: architecture/arrow-labels/edge-label-padded-quote]
 
 [fixture: architecture/arrow-labels/edge-label-quoted]
 
 [fixture: architecture/arrow-labels/labelled-dash-tight]
+
+[fixture: architecture/arrow-labels/edge-label-padding-dropped]
+
+[fixture: architecture/arrow-labels/edge-label-directive-kept]
+
+[test: architecture/arrow-labels/edge-label-padding-u2028]
+
+[test: architecture/arrow-labels/edge-label-padding-u2029]
 
 [corpus fixture: architecture/gram-edge-reversed-labeled-markers]
 
@@ -462,7 +484,7 @@ architecture-beta
 architecture-beta
   service a
   service b
-  a:R -[ "x" ]- L:b
+  a:R -["x"]- L:b
 ```
 
 ### Group modifiers
@@ -530,6 +552,10 @@ null と空白だけの値は `title` とし、同じ意味の外側の空白を
 trivia を挟んでも次の物理行を値にしません。
 architecture の summary が title を公開しなくても、文と内容を保ちます。
 trivia のある値と保護された hidden の境界は source の隙間を保ちます。
+題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: title/title-directives-end-blanks-dropped]
 
 [corpus fixture: architecture/directive-fields]
 
@@ -570,6 +596,10 @@ colon を keyword に付け、trim した非空値の前は空白1個、空な�
 これにより外側の空白を統一します。
 次行の文を取り込まず、colon 後の波括弧は行値のまま保ちます。
 保護された trivia と hidden の隙間を優先します。
+値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: architecture/accessibility-lines/a11y-empty-comment-gap]
 
@@ -736,7 +766,8 @@ architecture-beta
 ### Global directives
 
 Root directive の内容・順序・所有位置を保ちます。
-同じ印字行の中では、両側の接触・分離を保ちます。
+同じ印字行の中のディレクティブは、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 元は同じ行にあった単位を別の行へ分けるときは、
 間の directive を次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
@@ -787,7 +818,7 @@ common の除去は両側を結合するため、
 architecture-beta
   service composite(%%{wrap}%%cloud%%{wrap}%%)
   service target
-  composite{%%{wrap}%%group%%{wrap}%%}:R < %%{wrap}%% --> L:target
+  composite{%%{wrap}%%group%%{wrap}%%}:R <%%{wrap}%%--> L:target
 ```
 
 ### Hidden forms
@@ -1070,9 +1101,22 @@ architecture-beta
 
 ### Semicolons
 
-作者のセミコロンをすべて保ち、共有の `protectSemicolonPrefixes` を使います。
-最後のセミコロンまでの文字区間を、交差する値と trivia 全体まで延ばして保護し、
-安全な後ろの隙間だけを整えます。
+作者のセミコロンをすべて保ちます。
+保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
+ほかの場所と同じように整形します。
+この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
+`style` か `classDef` の後の最初の `:` から、
+最後の保つ `;` の前の最後の `#` までに空白がない並びを読みます。
+その範囲の隙間と余白は空白の有無を保ち、空白の連続は空白 1 つにします。
+範囲の外は、この図種の通常の規則に従います。
+どの部分の配置も持たないテキストは、書かれたまま残します。
+複数行にわたる文の行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
+書かれたまま残します。
+それ以外の複数行の文は、1 行の文と同じように整形します。
+[fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted]
+[fixture: semicolons/crossing-comment]
 保護された見出し・最初の文は一緒に保ちます。
 選択された1個の削除や style・classDef の trigger 移動は、
 別のセミコロンを選んで Db を変え得るため、両 pass、非 trigger、entity、

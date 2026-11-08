@@ -108,9 +108,13 @@ multi-line-statements/header-directive-continuation] The `{` stands after one
 space as in an ER attribute block, which is how the documentation of mermaid.js
 writes it; where the name is unquoted a space is needed anyway, so the statement
 has one form. [fixture: bodies/opening-brace-after-one-space] The keyword of a
-requirement is one of six kinds, kept in the case in which it is written.
-[fixture: bodies/kinds] A statement that follows the `}` on its line stands on a
-line of its own. [fixture: bodies/statement-after-closing-brace] [fixture:
+requirement is one of six kinds, printed in the case that the examples in the
+documentation of mermaid.js use (`FUNCTIONALREQUIREMENT` is
+`functionalRequirement`; see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+[fixture: bodies/kinds] [fixture: keyword-case/types-one-form] A statement that
+follows the `}` on its line stands on a line of its own. [fixture:
+bodies/statement-after-closing-brace] [fixture:
 statements-one-per-line/closing-brace-then-statement]
 
 mermaid.js needs a line break after the `{`, so a body without fields is the `{`
@@ -184,21 +188,27 @@ inside the field. [fixture: fields/comment-and-directive-continuations]
 [fixture: fields/colon-touches-keyword] [fixture:
 fields/spaces-around-colon-and-value] [fixture: fields/value-after-one-space]
 The whitespace at the ends of an unquoted value is not in the Db and is dropped;
-the whitespace inside it is, and so is everything between the quotes of a
-string. [fixture: fields/value-outer-whitespace-dropped] [fixture:
-fields/value-inner-whitespace-kept] [fixture: fields/string-values-kept] A `#`,
-a `%`, and a `;` inside an unquoted value are characters of the value, not the
-start of a comment. [fixture: fields/special-characters-in-values]
+a run of spaces and tabs inside the value, or between the quotes of a string, is
+in the Db and is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+[fixture: fields/value-outer-whitespace-dropped] [fixture:
+fields/value-inner-runs-collapsed] [fixture:
+fields/string-values-runs-collapsed] A `#`, a `%`, and a `;` inside an unquoted
+value are characters of the value, not the start of a comment. [fixture:
+fields/special-characters-in-values]
 
 The fields keep the order in which they are written, also a field that is
 written twice, of which mermaid.js reads the first. [fixture: fields/order-kept]
 [fixture: fields/same-field-twice] The keywords of the fields, the risks, and
-the verification methods keep the case in which they are written. mermaid.js
-reads them in any case and the Db is the same, so nothing forces the case; it is
-the author's, and the printer does not rewrite it. [fixture:
-fields/field-keywords-case-kept] [fixture: fields/keyword-values-case-kept] A
-field written over several lines is printed on one line where the lexer reads
-the line break as whitespace, which it does after whitespace (see
+the verification methods are printed in the case that the examples in the
+documentation of mermaid.js use (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+mermaid.js reads them in any case and the Db is the same. [fixture:
+fields/field-keywords-case-one-form] [fixture:
+fields/keyword-values-case-one-form] [fixture:
+fields/keyword-values-low-test-analysis-case-one-form] A field written over
+several lines is printed on one line where the lexer reads the line break as
+whitespace, which it does after whitespace (see
 [Multi-line statements](#multi-line-statements)). [fixture:
 fields/over-lines-joined]
 
@@ -228,16 +238,16 @@ requirementDiagram
     id: 1
     text: the test text.
     risk: high
-    verifyMethod: inspection
+    verifymethod: inspection
   }
   element e {
     type: t
-    docref: d
+    docRef: d
   }
 ```
 
 Input
-([fields/string-values-kept-input.mmd](../tests/fixtures/requirement/fields/string-values-kept-input.mmd)):
+([fields/string-values-runs-collapsed-input.mmd](../tests/fixtures/requirement/fields/string-values-runs-collapsed-input.mmd)):
 
 ```mmd
 requirementDiagram
@@ -252,17 +262,17 @@ docref: "http://x.test/a-b"
 ```
 
 Output
-([fields/string-values-kept-output.mmd](../tests/fixtures/requirement/fields/string-values-kept-output.mmd)):
+([fields/string-values-runs-collapsed-output.mmd](../tests/fixtures/requirement/fields/string-values-runs-collapsed-output.mmd)):
 
 ```mmd
 requirementDiagram
   requirement r {
     id: "1"
-    text: " a:  b, c "
+    text: " a: b, c "
   }
   element e {
-    type: "a  b"
-    docref: "http://x.test/a-b"
+    type: "a b"
+    docRef: "http://x.test/a-b"
   }
 ```
 
@@ -336,26 +346,31 @@ the `-`, so the space does not change the name. [fixture:
 relationship-spacing/spaces-and-touching] [fixture:
 relationship-spacing/one-space-between-units] [fixture:
 relationship-spacing/string-names] The direction of the arrow is kept, since
-`a - copies -> b` and `b <- copies - a` are written differently, and so is the
-case of the relation. [fixture: relationship-spacing/relation-case-kept]
-[fixture: relationship-spacing/every-relation] The whitespace inside an unquoted
-name is part of it. [fixture: relationship-spacing/multi-word-names] A directive
-between the units stays where it is and keeps whether whitespace was written on
-each side of it, a run of whitespace becoming one space. [fixture:
-relationship-spacing/directive-between-units-kept] [fixture:
-relationship-spacing/directive-between-units-runs-collapsed] A relationship
-written over several lines, where the line break follows whitespace, is printed
-on one line unless a comment or directive prevents joining. In that case, later
-structural parts and standalone trivia stand one level inside the relationship.
-Keep each gap's first line tail, since a whitespace run must start before LF to
-continue the relationship, and retain complete multiline directives and name
-interiors. [fixture: relationship-spacing/over-lines-joined] [fixture:
+`a - copies -> b` and `b <- copies - a` are written differently; the relation is
+printed in lower case, as the examples in the documentation of mermaid.js write
+it (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+[fixture: relationship-spacing/relation-case-one-form] [fixture:
+relationship-spacing/relations-case-one-form] [fixture:
+relationship-spacing/every-relation] The whitespace inside an unquoted name is
+part of it, and a name that differs by a run is another name, so it stays as
+written. [fixture: relationship-spacing/multi-word-names] A directive between
+the units stays where it is and is placed as under [Directives](#directives).
+[fixture: relationship-spacing/directive-between-units] [fixture:
+relationship-spacing/directive-between-units-runs] A relationship written over
+several lines, where the line break follows whitespace, is printed on one line
+unless a comment or directive prevents joining. In that case, later structural
+parts and standalone trivia stand one level inside the relationship. Keep each
+gap's first line tail, since a whitespace run must start before LF to continue
+the relationship, and retain complete multiline directives and name interiors.
+[fixture: relationship-spacing/over-lines-joined] [fixture:
 relationship-spacing/comment-continuation-with-multiline-names] [fixture:
 relationship-spacing/directive-continuation-four-spaces] [fixture:
-relationship-spacing/multiline-directive-line-tail] Semicolon-sensitive lines
-and comment regions that join physical lines keep their original layout.
-[fixture: multi-line-statements/relationship-last-line-semicolon-kept] [test:
-requirement/relationship-spacing/comment-region-continuation-kept]
+relationship-spacing/multiline-directive-line-tail] A line break stays where
+joining it could change which `;` the line rule ignores, and where a `;` ends
+the last line; comment regions that join physical lines keep their original
+layout. [fixture: multi-line-statements/relationship-last-line-semicolon-kept]
+[test: requirement/relationship-spacing/comment-region-continuation-kept]
 
 Input
 ([relationship-spacing/spaces-and-touching-input.mmd](../tests/fixtures/requirement/relationship-spacing/spaces-and-touching-input.mmd)):
@@ -380,7 +395,7 @@ requirementDiagram
 ```
 
 Input
-([relationship-spacing/directive-between-units-kept-input.mmd](../tests/fixtures/requirement/relationship-spacing/directive-between-units-kept-input.mmd)):
+([relationship-spacing/directive-between-units-input.mmd](../tests/fixtures/requirement/relationship-spacing/directive-between-units-input.mmd)):
 
 ```mmd
 requirementDiagram
@@ -389,12 +404,12 @@ a  %%{init: {}}%% - contains -> b
 ```
 
 Output
-([relationship-spacing/directive-between-units-kept-output.mmd](../tests/fixtures/requirement/relationship-spacing/directive-between-units-kept-output.mmd)):
+([relationship-spacing/directive-between-units-output.mmd](../tests/fixtures/requirement/relationship-spacing/directive-between-units-output.mmd)):
 
 ```mmd
 requirementDiagram
-  a -%%{init: {}}%%satisfies -> b
-  a %%{init: {}}%% - contains -> b
+  a - %%{init: {}}%%satisfies -> b
+  a %%{init: {}}%%- contains -> b
 ```
 
 ### Class lists
@@ -408,7 +423,7 @@ of mermaid.js are written. [fixture: class-lists/in-requirement-and-element]
 may hold whitespace between its words, which is part of the class. [fixture:
 class-lists/string-classes] [fixture: class-lists/classes-with-spaces] A
 directive between the parts stays where it is. [fixture:
-class-lists/directive-between-parts-kept]
+class-lists/directive-between-parts]
 
 Input
 ([class-lists/in-requirement-and-element-input.mmd](../tests/fixtures/requirement/class-lists/in-requirement-and-element-input.mmd)):
@@ -474,13 +489,16 @@ while `stroke-dasharray:  5    5` keeps the four spaces between its values. A
 header or exterior line break that ordinarily joins does not delay this spacing
 until another formatting. Style interiors containing line separators, owned
 trivia, and statements with a kept semicolon on their physical line retain the
-existing style layout. Keyword case stays written. [fixture:
+existing style layout. The keywords `style` and `classDef` keep the case in
+which they are written (see
+[Keywords in one case](./compatibility.md#keywords-in-one-case)). [fixture:
 styles-and-classes/style-unit-padding] [fixture:
 styles-and-classes/class-def-names] [fixture: styles-and-classes/style-names]
 [fixture: styles-and-classes/class-lists] [fixture:
 styles-and-classes/styles-as-written] [fixture:
 styles-and-classes/trailing-whitespace-dropped] [fixture:
-styles-and-classes/keyword-case-kept]
+styles-and-classes/keyword-case-kept] [fixture:
+styles-and-classes/keyword-case-semicolon-line-kept]
 
 A `;` at the end of a style that the line rule does not ignore is a character of
 the style; it stays because removing it changes the Db. [fixture:
@@ -502,9 +520,12 @@ reads such a name the same way on one line. [fixture:
 styles-and-classes/class-over-lines-joined] [fixture:
 styles-and-classes/class-uppercase-digit-next-line] Otherwise the line break
 stays, and the later lines stand one level deeper. [fixture:
-styles-and-classes/class-over-lines-kept] A statement with a comment line keeps
-its line breaks, while the comment and structural continuations stand one level
-deeper. [fixture: styles-and-classes/class-over-lines-with-comment-line-kept]
+styles-and-classes/class-over-lines-kept] A name that holds a directive is no
+`style-word`, since the style context rejects a directive inside a unit.
+[fixture: styles-and-classes/class-name-with-directive-kept] A line break next
+to a comment line stays, while the comment and structural continuations stand
+one level deeper. [fixture:
+styles-and-classes/class-over-lines-with-comment-line-kept]
 
 Input
 ([styles-and-classes/class-def-names-input.mmd](../tests/fixtures/requirement/styles-and-classes/class-def-names-input.mmd)):
@@ -617,10 +638,12 @@ requirementDiagram
 A direction line is `direction` and its value, with the text that mermaid.js
 does not read before and after them. The text is kept as written. One space
 stands between it and `direction`, where they were written apart, and between
-`direction` and the value; the value is kept in the case in which it is written.
+`direction` and the value; the value `lr` is printed `LR`; the other values keep
+the case in which they are written, since the examples use only `LR` (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
 [fixture: direction/spacing] [fixture: direction/spaces-around] [fixture:
-direction/text-kept] [fixture: direction/case-kept] A value written on a later
-line is printed after `direction` on one line. [fixture:
+direction/text-kept] [fixture: direction/case-one-form] A value written on a
+later line is printed after `direction` on one line. [fixture:
 direction/value-on-next-line-joined] A direction line with a directive or
 comment keeps its line breaks and indents structural continuations one level
 deeper. [fixture: direction/directive-and-comment-line-kept] The rule of the
@@ -651,7 +674,7 @@ requirementDiagram
 ```
 
 Input
-([direction/case-kept-input.mmd](../tests/fixtures/requirement/direction/case-kept-input.mmd)):
+([direction/case-one-form-input.mmd](../tests/fixtures/requirement/direction/case-one-form-input.mmd)):
 
 ```mmd
 requirementDiagram
@@ -660,12 +683,12 @@ Direction Tb
 ```
 
 Output
-([direction/case-kept-output.mmd](../tests/fixtures/requirement/direction/case-kept-output.mmd)):
+([direction/case-one-form-output.mmd](../tests/fixtures/requirement/direction/case-one-form-output.mmd)):
 
 ```mmd
 requirementDiagram
-  DIRECTION lr
-  Direction Tb
+  direction LR
+  direction Tb
 ```
 
 ### Statements one per line
@@ -939,14 +962,16 @@ requirementDiagram
 ### Accessibility statements
 
 The `:` of `accTitle` and `accDescr` touches the keyword and has one space after
-it; the text has no whitespace at its ends, and the whitespace inside it is part
-of it. [fixture: accessibility-statements/colon-touches-keyword] [fixture:
+it; the text has no whitespace at its ends. A run of spaces and tabs inside the
+text of an `accDescr` is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+and that of an `accTitle` stays as written, since the browser shows it as a
+tooltip. [fixture: accessibility-statements/colon-touches-keyword] [fixture:
 accessibility-statements/title-and-description] [fixture:
-accessibility-statements/inner-whitespace-kept] The text holds `;`, `#`, and
-`%%` as characters. [fixture:
-accessibility-statements/special-characters-in-text] A text written on a later
-line is printed after the `:` on one line, and a comment line before it makes
-the statement kept as written. [fixture:
+accessibility-statements/inner-runs-collapsed] The text holds `;`, `#`, and `%%`
+as characters. [fixture: accessibility-statements/special-characters-in-text] A
+text written on a later line is printed after the `:` on one line, and a comment
+line before it makes the statement kept as written. [fixture:
 accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/text-with-comment-line-kept]
 
@@ -1035,7 +1060,7 @@ Output
 ```mmd
 requirementDiagram
 accTitle: direction LR
-accDescr: direction  TB
+accDescr: direction TB
 accDescr { direction RL }
   accDescr {
     direction BT
@@ -1095,6 +1120,8 @@ between the units of a relationship, around the `:` of a field and of `accTitle`
 and `accDescr`, and between `direction` and its value. The statement that a
 string at the end of a `style`, `classDef`, or `class` statement starts goes on
 after the line break of the style context. [fixture:
+multi-line-statements/breaks-decided-one-by-one] [fixture:
+multi-line-statements/line-rule-first-hash-after-colon-kept] [fixture:
 multi-line-statements/kind-and-name-joined] [fixture:
 multi-line-statements/relationship-joined] [fixture:
 multi-line-statements/direction-value-joined] [fixture:
@@ -1103,30 +1130,36 @@ multi-line-statements/string-continued-joined] Comments and directives keep line
 breaks without freezing structural columns: continuations and intervening trivia
 stand one level deeper. This applies to block headers, fields, relationships and
 other statements. Whitespace inside values and before the first line break of
-each gap stays. Joining regions and statements protected by a semicolon line
-keep their complete source. [test:
+each gap stays. Joining regions keep their complete source. A line break stays
+where joining it, with one space or with nothing, could change which `;` the
+line rule ignores, and where a `;` ends the last line; any other line break is
+joined as usual, also in a statement that holds a `;`. A statement that keeps a
+line break keeps its styles as written. [test:
 requirement/multi-line-statements/header-and-field-comment-regions-ls] [test:
 requirement/multi-line-statements/header-and-field-comment-regions-ps] [fixture:
 multi-line-statements/header-directive-continuation] [fixture:
 fields/comment-and-directive-continuations] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept] [fixture:
-multi-line-statements/semicolon-kept]
+multi-line-statements/semicolon-joined]
 
-A statement whose last line holds a `;` of the statement after it is kept as
-written too, since the joined line is read by the line rule as a whole:
+This also applies when the `;` on the last line belongs to a following
+statement, since the joined line is read by the line rule as a whole:
 `"style:#q" - satisfies`, a line break, and `-> "b" e - satisfies -> f;g` give
 the second relationship the target `f;g`, while the joined line
 `"style:#q" - satisfies -> "b" e - satisfies -> f;g` gives it `fg`. The
 statements of the line stay on it. [fixture:
 multi-line-statements/relationship-last-line-semicolon-kept] [fixture:
-multi-line-statements/class-last-line-semicolon-kept] [fixture:
-multi-line-statements/string-continued-last-line-semicolon-kept] A `;` on the
-first line of the statement, in a statement before it, changes nothing for the
-rule, and the statement is joined. [fixture:
+multi-line-statements/class-last-line-semicolon-kept] A `;` on the first line of
+the statement, in a statement before it, changes nothing for the rule, and the
+statement is joined. [fixture:
 multi-line-statements/relationship-first-line-semicolon-joined] [fixture:
 multi-line-statements/class-first-line-semicolon-joined] [fixture:
-multi-line-statements/accessibility-first-line-semicolon-joined]
+multi-line-statements/accessibility-first-line-semicolon-joined] The printer
+puts the statements of a line without a `;` of its own on lines of their own, so
+the rule reads the statement without them: `style r fill:#q "r"`, a line break,
+and `- satisfies -> "b" e - satisfies -> f;g` is joined too. [fixture:
+multi-line-statements/string-continued-last-line-semicolon-joined]
 
 Input
 ([multi-line-statements/string-continued-joined-input.mmd](../tests/fixtures/requirement/multi-line-statements/string-continued-joined-input.mmd)):
@@ -1227,14 +1260,18 @@ requirementDiagram
 
 ### Keyword case
 
-Keywords keep the case in which they are written. mermaid.js reads them in any
-case and the Db is the same, so nothing forces the case; it is the author's, and
-the printer does not rewrite it. [fixture: keyword-case/keywords-kept] The
+The keywords of the table under
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
+are printed in the case shown there. `style` and `classDef` are not in the table
+and keep the case in which they are written (see
+[Keywords in one case](./compatibility.md#keywords-in-one-case)). mermaid.js
+reads the keywords of the table in any case and the Db is the same. [fixture:
+keyword-case/keywords-one-form] [fixture: keyword-case/types-one-form] The
 header is detected only when it starts with `requirement` in lower case
 (diagrams/requirement.md, Detection).
 
 Input
-([keyword-case/keywords-kept-input.mmd](../tests/fixtures/requirement/keyword-case/keywords-kept-input.mmd)):
+([keyword-case/keywords-one-form-input.mmd](../tests/fixtures/requirement/keyword-case/keywords-one-form-input.mmd)):
 
 ```mmd
 requirementdiagram
@@ -1250,18 +1287,18 @@ STYLE r fill:red
 ```
 
 Output
-([keyword-case/keywords-kept-output.mmd](../tests/fixtures/requirement/keyword-case/keywords-kept-output.mmd)):
+([keyword-case/keywords-one-form-output.mmd](../tests/fixtures/requirement/keyword-case/keywords-one-form-output.mmd)):
 
 ```mmd
 requirementdiagram
-  REQUIREMENT r {
-    ID: 1
-    RISK: HIGH
+  requirement r {
+    id: 1
+    risk: high
   }
-  ELEMENT e {
+  element e {
   }
-  r - SATISFIES -> e
-  DIRECTION lr
+  r - satisfies -> e
+  direction LR
   STYLE r fill: red
 ```
 
@@ -1345,7 +1382,7 @@ Output
 requirementDiagram
   requirement r {
     risk: low %c
-    verifyMethod: test#c
+    verifymethod: test#c
     id: "1" #c
     text: "t"%c
   }
@@ -1379,21 +1416,19 @@ requirementDiagram
 
 A directive on a line of its own stands at the level of the statements around
 it, in a body at the level of the fields, and a directive on the line of a
-statement keeps whether whitespace is written on each side of it: where it is,
-one space stands there, and where it touches a token, it keeps touching.
-[fixture: directives/kept] [fixture: directives/in-body] [fixture:
+statement is placed as in a flowchart: the gap is printed as without the
+directive, and the directive stands after its space and touches the unit that
+follows it. [fixture: directives/kept] [fixture: directives/in-body] [fixture:
 directives/before-header] [fixture: directives/after-header-on-same-line]
-[fixture: directives/whitespace-on-both-sides-collapsed] [fixture:
+[fixture: directives/whitespace-on-both-sides] [fixture:
 directives/after-statement-at-end-of-line]
 
-A directive between two units of a statement stays where it is and keeps whether
-whitespace was written on each side of it, a run of whitespace becoming one
-space, and a directive inside a text is part of the text. [fixture:
-directives/between-units-kept] [fixture:
-directives/between-units-runs-collapsed] [fixture:
-directives/inside-values-kept] A directive that is not closed takes the rest of
-the text, and is kept as written. [fixture:
-directives/unclosed-at-end-of-text-kept] [fixture:
+A directive between two units of a statement stays where it is and is placed as
+under [Directives](#directives), and a directive inside a text is part of the
+text. [fixture: directives/between-units] [fixture:
+directives/between-units-runs] [fixture: directives/inside-values-kept] A
+directive that is not closed takes the rest of the text, and is kept as written.
+[fixture: directives/unclosed-at-end-of-text-kept] [fixture:
 directives/unclosed-after-statement-kept]
 
 Input
@@ -1425,7 +1460,7 @@ requirementDiagram
 ```
 
 Input
-([directives/between-units-kept-input.mmd](../tests/fixtures/requirement/directives/between-units-kept-input.mmd)):
+([directives/between-units-input.mmd](../tests/fixtures/requirement/directives/between-units-input.mmd)):
 
 ```mmd
 requirementDiagram
@@ -1436,13 +1471,13 @@ id:%%{init: {}}%% 1
 ```
 
 Output
-([directives/between-units-kept-output.mmd](../tests/fixtures/requirement/directives/between-units-kept-output.mmd)):
+([directives/between-units-output.mmd](../tests/fixtures/requirement/directives/between-units-output.mmd)):
 
 ```mmd
 requirementDiagram
-  a -%%{init: {}}%% satisfies -> b
-  requirement r%%{init: {}}%%{
-    id:%%{init: {}}%% 1
+  a - %%{init: {}}%%satisfies -> b
+  requirement r %%{init: {}}%%{
+    id: %%{init: {}}%%1
   }
 ```
 

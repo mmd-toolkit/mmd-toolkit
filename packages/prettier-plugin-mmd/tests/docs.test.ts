@@ -549,7 +549,7 @@ async function readCitedTestTitles(): Promise<string[]> {
 /** Reads bracket citations across wrapped lines, including indented lists. */
 async function readCitations(
   document: string,
-  kind: "corpus fixture" | "test",
+  kind: "corpus fixture" | "fixture" | "test",
 ): Promise<string[]> {
   const text = await readFile(new URL(document, packageRoot), "utf8")
   const oneLine = text
@@ -568,42 +568,26 @@ async function readCitations(
   return citations
 }
 
+/** The English documents of the package, which each have a Japanese pair. */
+async function readDocumentNames(): Promise<string[]> {
+  return (await readdir(new URL("docs/", packageRoot)))
+    .filter((name) => name.endsWith(".md") && !name.endsWith(".ja.md"))
+    .toSorted()
+    .map((name) => `docs/${name}`)
+}
+
+/** Whether a file of the package exists. */
+async function exists(path: string): Promise<boolean> {
+  const found = await stat(new URL(path, packageRoot)).catch(() => undefined)
+  return found?.isFile() ?? false
+}
+
 describe("the citations in the documents", async () => {
   const titles = await readCitedTestTitles()
+  const diagramFolders = await readdir(new URL("tests/fixtures/", packageRoot))
   const citations: string[] = []
-  for (const document of [
-    "docs/eventmodeling.md",
-    "docs/cynefin.md",
-    "docs/wardley.md",
-    "docs/radar.md",
-    "docs/architecture.md",
-    "docs/packet.md",
-    "docs/info.md",
-    "docs/gitgraph.md",
-    "docs/pie.md",
-    "docs/usecase.md",
-    "docs/agentflow.md",
-    "docs/flowchart.md",
-    "docs/sequence.md",
-    "docs/class.md",
-    "docs/state.md",
-    "docs/er.md",
-    "docs/gantt.md",
-    "docs/journey.md",
-    "docs/requirement.md",
-    "docs/mindmap.md",
-    "docs/sankey.md",
-    "docs/timeline.md",
-    "docs/xychart.md",
-    "docs/quadrant.md",
-    "docs/block.md",
-    "docs/kanban.md",
-    "docs/c4.md",
-    "docs/venn.md",
-    "docs/ishikawa.md",
-    "docs/treeview.md",
-    "docs/compatibility.md",
-  ]) {
+  for (const document of await readDocumentNames()) {
+    const diagram = document.slice("docs/".length, -".md".length)
     it.each([document, `${document.slice(0, -3)}.ja.md`])(
       "cites existing corpus fixtures in %s",
       async (corpusDocument) => {
@@ -611,13 +595,38 @@ describe("the citations in the documents", async () => {
           corpusDocument,
           "corpus fixture",
         )) {
-          const input = await stat(
-            new URL(`../tests/fixtures/${citation}/input.mmd`, packageRoot),
-          ).catch(() => undefined)
           expect
             .soft(
-              input?.isFile() ?? false,
+              await exists(`../tests/fixtures/${citation}/input.mmd`),
               `${corpusDocument}: corpus fixture ${citation}/input.mmd does not exist`,
+            )
+            .toBe(true)
+        }
+      },
+    )
+
+    // A fixture is cited by its path in the folder of the diagram of the
+    // document, or by its path from the folder of the fixtures.
+    // compatibility.md cites the fixtures of every diagram, and the check looks
+    // for the fixture in the folder of each of them.
+    it.each([document, `${document.slice(0, -3)}.ja.md`])(
+      "cites existing fixtures in %s",
+      async (fixtureDocument) => {
+        const folders = diagram === "compatibility" ? diagramFolders : [diagram]
+        for (const citation of await readCitations(
+          fixtureDocument,
+          "fixture",
+        )) {
+          if (citation.includes("<")) continue
+          const found = await Promise.all(
+            [...folders.map((folder) => `${folder}/`), ""].map((folder) =>
+              exists(`tests/fixtures/${folder}${citation}-input.mmd`),
+            ),
+          )
+          expect
+            .soft(
+              found.includes(true),
+              `${fixtureDocument}: fixture ${citation} does not exist`,
             )
             .toBe(true)
         }

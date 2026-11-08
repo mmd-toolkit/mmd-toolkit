@@ -127,12 +127,14 @@ Db の値のうち、ノードが直接は与えない範囲のテキストを�
   書いた名前の型は [db-from-tree/class.ja.md](./db-from-tree/class.ja.md) の
   **Names** が定めます）。
 - **class の style**: `ClassLiteral` のトークンのテキストの変換した形をつなぎ、
+  範囲の後ろの行内空白を加え、
   `,` で分けたもの（規則は
   [db-from-tree/class.ja.md](./db-from-tree/class.ja.md) の **Styles**）。
   style のトークンは、
   ディレクティブの隣で mermaid.js が値として読む空白を持ち（tokens.md の A token
-  that a directive cuts）、単位の間の空白は持たないので、
-  トークンのテキストをつないだものが値です。
+  that a directive cuts）、単位の間の空白は持ちません。
+  要約は、範囲の後ろの空白も残します。
+  [fixture: class/db-style-trailing-whitespace-eol]
 - **ER の style**: style の `ErLiteral`
   の中にあるトークンの変換した形をつないだもの。
   style の単位の間の空白は値に含まれないためです（規則は

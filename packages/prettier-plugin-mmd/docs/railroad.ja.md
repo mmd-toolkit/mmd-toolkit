@@ -235,7 +235,7 @@ railroad-beta
 ```mmd
 railroad-ebnf-beta
   a = "first";
-  b ::= a;
+  b = a;
 ```
 
 入力（escape 表記）: `"railroad-abnf-beta\nr=\"terminator\" \t;"`。
@@ -262,9 +262,13 @@ railroad-peg-beta
 ### 代入
 
 代入の両側を通常の1 space にし、名前の列は揃えません。
-IR と ABNF の `=`、EBNF の各 `=` または `::=`、PEG の `<-` を保ちます。
-EBNF の2形は同じ Db ですが、原文の記号を置き換える必要はありません。
+IR と ABNF の `=`、PEG の `<-` を保ち、EBNF の `::=` は `=` と印字します。
+EBNF の2形は同じ Db で、mermaid.js の文書の例は `=` を 35 回使い、
+`::=` は使わないためです。
+（[キーワードや記号の別の綴り](./compatibility.ja.md#キーワードや記号の別の綴り)
+を参照）。
 複合記号は1 token のままにします。
+[fixture: railroad/assignment/ebnf-assignment-equals]
 
 [fixture: railroad/assignment/abnf-spaces]
 
@@ -294,7 +298,7 @@ railroad-beta
 
 ```mmd
 railroad-ebnf-beta
-  longName ::= "assignment";
+  longName = "assignment";
   s = "short";
 ```
 
@@ -645,9 +649,10 @@ railroad-ebnf-beta
 ### special sequence の内容
 
 EBNF の special sequence は source span 全体を保ちます。
-両端の疑問符、外端と内部の空白、引用符、backslash、継続行の列も対象です。
+両端の疑問符、外端の空白、引用符、backslash、継続行の列も対象です。
+テキストの中の空白とタブの連なりは、空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 外端だけの trim で Db が同じでも、原文の保持により再解釈を避けます。
-内部空白の圧縮は Db を変えることがあります。
 
 [fixture: railroad/special-sequences/ebnf-content]
 
@@ -660,19 +665,30 @@ EBNF の special sequence は source span 全体を保ちます。
 
 ```mmd
 railroad-ebnf-beta
-  r = ?  first  second	 ?;
+  r = ? first second ?;
 ```
 
 ### 文字列
 
 StringLiteral の source span を保ちます。
-引用符、escape、空文字列、空白だけの値、内部 padding、HTML、entity、
-hidden やコメントに見える文字も対象です。
-singleQuote で値を書き換えません。
+escape、空文字列、HTML、entity、hidden やコメントに見える文字も対象です。
+文字列の中の空白とタブの連なりは、空白 1 つにして印字します。
+空白とタブだけの文字列は空白 1 つになります。
+規則名は空白を含まないため、
+文字列にその連なりを含む nonterminal はどの規則も参照せず、
+その文字列はほかの文字列と同じに印字します。
+[fixture: railroad/quotes/ir-string-runs-collapsed]
 IR、EBNF、PEG は両方の引用符と backslash escape を認めます。
+`'` で囲んだ文字列は `"` で囲んで印字しますが、内容に `'`、`"`、backslash、
+改行、U+2028、U+2029、バッククォート、`&`、`#`、
+`<` が含まれる場合は書かれたままにします。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+`singleQuote` は読みません。
 ABNF は二重引用符だけを認め、backslash を普通の文字として読みます。
-再引用に整形上の利点はなく、
-内容の trim や escape の誤解釈で Db が変わるためです。
+内容の trim や escape の誤解釈で Db が変わります。
+[fixture: railroad/quotes/ir-single-quote-sensitive-kept]
+[fixture: railroad/quotes/ebnf-single-quote-sensitive-kept]
+[fixture: railroad/quotes/peg-single-quote-sensitive-kept]
 
 [fixture: railroad/quotes/abnf-backslash]
 
@@ -700,8 +716,8 @@ ABNF は二重引用符だけを認め、backslash を普通の文字として�
 railroad-beta
   r = sequence(
     terminal(""),
-    terminal(" 	 "),
-    nonterminal(''),
+    terminal(" "),
+    nonterminal(""),
     special("%%literal --- <b> plain")
   );
 ```
@@ -714,7 +730,7 @@ railroad-beta
 
 ```mmd
 railroad-ebnf-beta
-  r = "", '' " 	 " "%%literal --- <b> plain";
+  r = "", "" " " "%%literal --- <b> plain";
 ```
 
 入力（escape 表記）: `"railroad-abnf-beta\nr=\"q\\n\\t\\q\";"`。
@@ -737,7 +753,7 @@ railroad-abnf-beta
 
 ```mmd
 railroad-peg-beta
-  r <- "" '' " 	 " "%%literal --- <b> plain";
+  r <- "" "" " " "%%literal --- <b> plain";
 ```
 
 ### 長い行
@@ -913,7 +929,7 @@ railroad-beta
 
 ```mmd
 railroad-ebnf-beta
-  r ::=
+  r =
     ("joined", other) - "except"+
     | ["tail"];
 ```
@@ -1016,9 +1032,15 @@ last";
 共有の common-line 配置を使います。
 非空値の通常の外端だけを trim して `title value` にし、
 null と空白だけの値は裸の `title` にします。
-引用符に見える内容、escape、内部空白は保ち、次の物理行から値を取りません。
+引用符に見える内容と escape は保ち、
+値の中の空白とタブの連なりは空白 1 つにして印字します。
+次の物理行から値を取りません。
 裸の title prefix と後続の規則は別の文にし、規則を値に取り込みません。
 比較 Db は本文の title を除きますが、内容を書き換える理由にはなりません。
+題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: title/title-directives-end-blanks-dropped]
 
 [fixture: railroad/title/abnf-next-line]
 
@@ -1119,8 +1141,16 @@ railroad-peg-beta
 colon を keyword に付け、非空値の前を通常の1 space にします。
 空値は colon で終えます。
 外端の空白だけを trim し、内部の文字と括弧に見える行の値は保ちます。
+ただし、`accDescr` の値の中の空白とタブの連なりは空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+`accTitle` はブラウザがツールチップとして表示するので、
+その連なりは書かれたまま残します。
 次行の値は join しません。
 他の図種と同じ、簡潔で読みやすい配置にするためです。
+値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: railroad/accessibility-lines/abnf-empty]
 
@@ -1447,7 +1477,8 @@ railroad-peg-beta
 ### 共有 directive
 
 Root directive を source span から元の所有位置に1回印字します。
-通常の IR 呼出しの隙間以外では、同じ印字行の中で両側の接触・分離を保ちます。
+通常の IR 呼出しの隙間以外では、同じ印字行の中のディレクティブは、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 元は同じ行にあった単位を別の行へ分けるときは、
 間の directive を次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
@@ -1490,7 +1521,7 @@ directive は引数のそばに保ち、引用値の leaf 呼出しも複数行�
 
 ```mmd
 railroad-beta
-  r%%{wrap}%% = %%{wrap}%%terminal("a%%{wrap}%%last");
+  r %%{wrap}%%= %%{wrap}%%terminal("a%%{wrap}%%last");
 ```
 
 入力（escape 表記）: `"railroad-ebnf-beta\nr = %%{wrap}%% \"global\";"`。
@@ -1500,7 +1531,7 @@ railroad-beta
 
 ```mmd
 railroad-ebnf-beta
-  r = %%{wrap}%% "global";
+  r = %%{wrap}%%"global";
 ```
 
 入力（escape 表記）:
@@ -1511,7 +1542,7 @@ railroad-ebnf-beta
 
 ```mmd
 railroad-abnf-beta
-  r = 2%%{wrap}%%*%%{wrap}%%4 %%{wrap}%% "global" %x4%%{wrap}%%1;
+  r = 2%%{wrap}%%*%%{wrap}%%4%%{wrap}%%"global" %x4%%{wrap}%%1;
 ```
 
 入力（escape 表記）: `"railroad-peg-beta\nr <- &%%{wrap}%% \"global\";"`。
@@ -1521,7 +1552,7 @@ railroad-abnf-beta
 
 ```mmd
 railroad-peg-beta
-  r <- &%%{wrap}%% "global";
+  r <- &%%{wrap}%%"global";
 ```
 
 ### hidden form の保持
@@ -2939,7 +2970,7 @@ ABNF の終端後に space は加えません。
 
 [corpus fixture: railroad/ebnf-tail-comment]
 
-[corpus fixture: railroad/abnf-tail-comment]
+[corpus fixture: railroad/abnf-tail-percent-comment]
 
 [corpus fixture: railroad/peg-tail-comment]
 

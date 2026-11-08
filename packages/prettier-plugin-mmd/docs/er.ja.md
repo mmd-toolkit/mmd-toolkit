@@ -224,14 +224,16 @@ Db が保つからです。 [fixture: attribute-spacing/keys-comma-space]
 コメントは、名前やキーに接して書かれていても、空白 1 つの後に置きます。
 [fixture: attribute-spacing/comment-one-space]
 型や名前のテキストは書かれたまま残します。
-チルダの語やバッククォートの語の中の空白は型の一部で、
-コメントのテキストもそうです。
+ただし、チルダの語やバッククォートの語の中の空白とタブの連なりは、
+空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+コメントのテキストは保ちます。
 属性は列にそろえません。
 そろえると、属性を 1 つ変えただけでブロックの全行が変わり、
 名前の幅は文字数で数えられず、mermaid.js の文書の例もそろえていないからです。
 空白 1 つと、型に接する `?` は、その例の形です。
-[fixture: attribute-spacing/tilde-word-kept]
-[fixture: attribute-spacing/backquoted-word-kept]
+[fixture: attribute-spacing/tilde-word-runs-collapsed]
+[fixture: attribute-spacing/backquoted-word-runs-collapsed]
 
 複数行に書かれた属性は 1 行に印字します。
 属性ブロックは改行に関係なく読まれるからです。
@@ -246,8 +248,9 @@ Db が保つからです。 [fixture: attribute-spacing/keys-comma-space]
 [fixture: attribute-spacing/directive-inside-kept]
 [fixture: attribute-spacing/comment-continuation-with-multiline-value]
 [fixture: attribute-spacing/directive-continuation-tabs]
-semicolon の読みが関わる行と、物理行を結ぶコメント領域は、元の配置を保ちます。
-[fixture: attribute-spacing/semicolon-continuation-kept]
+セミコロンがあるだけでは、継続行をそろえる妨げにはなりません。
+[fixture: attribute-spacing/semicolon-continuation-aligned]
+物理行を結ぶコメント領域は、元の配置を保ちます。
 [test: er/attribute-spacing/comment-region-continuation-kept]
 属性の部分の間にあるディレクティブは、同じ印字行での接触を保ち、
 2 つの属性の間で行に単独で置かれたディレクティブは、その間に残します。
@@ -545,10 +548,16 @@ erDiagram
 接しているトークンは、以下の規則が別に定めるものを除き、接したままにします。
 [fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/touching-kept]
-キーワードは、書かれた大文字小文字を保ちます。
-mermaid.js はどの大文字小文字でも読み、
-属性のキーは Db がその大文字小文字を保つからです。
-[fixture: whitespace-between-tokens/keyword-case-kept]
+表にあるキーワードは、そこで示す大文字小文字で印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+`SUBGRAPH` は `subgraph`、`END` は `end` です。
+ほかのキーワード（`CLASS`、`CLASSDEF`、`STYLE`）は、
+書かれた大文字小文字を保ちます。
+（[大文字小文字をそろえるキーワード](./compatibility.ja.md#大文字小文字をそろえるキーワード)）。
+Db がそのまま保つ属性のキーも同じです。
+関係の語は記号として印字します（[関係の空白](#関係の空白)を参照）。
+[fixture: whitespace-between-tokens/keyword-case-one-form]
+[fixture: relationship-spacing/cardinality-words-case-one-form]
 
 入力
 ([whitespace-between-tokens/touching-kept-input.mmd](../tests/fixtures/er/whitespace-between-tokens/touching-kept-input.mmd)):
@@ -571,11 +580,11 @@ erDiagram
   p[P]
   accDescr { D }
   A ||--u-B : x
-  1one to one B : x
+  1 ||--|| B : x
 ```
 
 入力
-([whitespace-between-tokens/keyword-case-kept-input.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-kept-input.mmd)):
+([whitespace-between-tokens/keyword-case-one-form-input.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-one-form-input.mmd)):
 
 ```mmd
 erDiagram
@@ -596,21 +605,21 @@ int a PK
 ```
 
 出力
-([whitespace-between-tokens/keyword-case-kept-output.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-kept-output.mmd)):
+([whitespace-between-tokens/keyword-case-one-form-output.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-one-form-output.mmd)):
 
 ```mmd
 erDiagram
-  SUBGRAPH S
+  subgraph S
     A
-  END
+  end
   CLASSDEF a fill: red
   CLASS A a
   STYLE A fill: red
-  DIRECTION lr
+  direction LR
   ACCTITLE: T
   ACCDESCR: D
   ACCDESCR { D }
-  A ONE OR MORE TO MANY B : x
+  A }|--o{ B : x
   A {
     int a PK
   }
@@ -630,48 +639,57 @@ erDiagram
 実体のクラスは、`:::` と、その間の `,` に両側で接します。
 [fixture: relationship-spacing/names-and-classes]
 
-関係の 3 つの単位、つまり両側のカーディナリティとその間の線は、
-両方が記号で書かれているときは互いに接し、
-どちらかが語で書かれているときは空白 1 つで区切ります。
-`A || -- o{ B` は `A ||--o{ B` に、
-`A ||--only one B` は `A ||-- only one B` にします。
-mermaid.js の文書の例は、記号を接し、語の単位を空白で分けているので、
-1 つの規則でどちらも保てるからです。
-[fixture: relationship-spacing/symbols-touch]
+関係のカーディナリティと線は、語と記号のどちらが書かれていても、
+記号で印字します。
+mermaid.js は `only one`、`zero or more`、`many(0)`、`to` などの語を `||`、
+`}o`、`o{`、`--` の記号として読み、その文書の例は記号を 84 回、
+語とほかの形を 6 回使うためです。
+（[ER 図の関係](./compatibility.ja.md#er-図の関係)を参照）。
+[fixture: relationship-spacing/words-to-symbols]
+[fixture: relationship-spacing/cardinality-words-case-one-form]
 [fixture: relationship-spacing/words-spaced]
+関係の 3 つの単位、つまり両側のカーディナリティとその間の線は、互いに接します。
+文書の例は記号を接して書くためです。
+`A || -- o{ B` は `A ||--o{ B` に、`A ||--only one B` は `A ||--|| B` にします。
+[fixture: relationship-spacing/symbols-touch]
 [fixture: relationship-spacing/symbols-and-words]
 [corpus fixture: er/lex-relationship-spaces-in-spec]
-`many(0)`、`many(1)`、`1+`、`0+`、`u` は記号として扱います。
+`u` は記号として扱い、書かれたまま残します。
 `many(0)` の中に空白を置くと拒否されます。
+逆の側に書かれた記号は、その側の記号として印字します。
+左の `o|` は `|o` です。
+[fixture: relationship-spacing/symbols-on-the-other-side]
 [corpus fixture: er/lex-many-space-before-parenthesis]
-カーディナリティの綴りは、記号でも語でも、書かれた大文字小文字のまま残します。
-綴りは作者の選択で、記号には同じに読まれる語が複数あるので、
-どの綴りも別の綴りの代わりにはなりません。
-[fixture: relationship-spacing/words-spaced]
+単位の間にディレクティブがある関係は、書かれた語を保ちます。
+[fixture: relationship-spacing/directive-between-word-units-kept]
 
-3 つの場合は、空白を書かれたまま残します。
-別の空白にすると mermaid.js が別の単位を読むからです。
+3 つの場合は、注意が必要です。
+空白や綴りを変えると mermaid.js が別の単位を読むからです。
 右のカーディナリティ `u` は、名前の直前でだけ `md-parent` なので、
 右の実体に接したままにします。 [fixture: relationship-spacing/md-parent]
 [corpus fixture: er/lex-md-parent-right-glued-name]
-実体 `1` は、文字、数字、
-`_` で始まるカーディナリティに接して書かれていれば接したままにします。
+実体 `1` は、文字、数字、`_` で始まる形で印字するカーディナリティに接します。
 `1` の後に、改行を含む 1 つ以上の空白と、ASCII の文字、`_`、`"`、`'`、
 ASCII の数字が続くと、カーディナリティ `only-one` だからです（diagrams/er.md、
 カーディナリティ、数、関係の線、規則 11）。
+記号として印字する語の前には、空白を置きます。
+`1one to one B` は `1 ||--|| B` と印字します。
 [fixture: relationship-spacing/number-name-before-unit-kept]
 [corpus fixture: er/lex-one-space-letter]
-実体 `only` は、`one` で始まるカーディナリティの前の空白を保ちます。
+実体 `only` は、`one` で始まるカーディナリティの前でも実体のままです。
 空白がちょうど 1 つの `only one` はカーディナリティ `only one`（規則 9）で、
 複数の語のキーワードは語の間の空白がちょうど 1 つなので、
 空白 2 つやタブなら `only` は実体です（diagrams/er.md、文の文脈、
 キーワードとその後ろ）。
+カーディナリティは、その記号として印字します。
+`only  one to one B` は `only ||--|| B` と印字します。
 [fixture: relationship-spacing/entity-only-before-one-kept]
+[fixture: relationship-spacing/entity-only-before-cardinality]
 [corpus fixture: er/lex-only-one-two-spaces]
 関係の単位の間にあるディレクティブは、その位置に残し、
-両側に空白があるかどうかは変えず、空白の連なりは空白 1 つにします。
-[fixture: relationship-spacing/directive-between-units-kept]
-[fixture: relationship-spacing/directive-between-units-runs-collapsed]
+[ディレクティブ](#ディレクティブ)のとおりに置きます。
+[fixture: relationship-spacing/directive-between-units]
+[fixture: relationship-spacing/directive-between-units-runs]
 
 入力
 ([relationship-spacing/symbols-and-words-input.mmd](../tests/fixtures/er/relationship-spacing/symbols-and-words-input.mmd)):
@@ -693,14 +711,14 @@ A many(0) to one B : x
 
 ```mmd
 erDiagram
-  A one or more --|{ B : x
-  A one or more --|{ B : x
-  A ||-- only one B : x
-  A ||-- only one B : x
-  A || to || B : x
-  A || to || B : x
-  A 1 to 1 B : x
-  A many(0) to one B : x
+  A }|--|{ B : x
+  A }|--|{ B : x
+  A ||--|| B : x
+  A ||--|| B : x
+  A ||--|| B : x
+  A ||--|| B : x
+  A ||--|| B : x
+  A }o--|| B : x
 ```
 
 入力
@@ -744,11 +762,11 @@ A many to one B : x
 
 ```mmd
 erDiagram
-  A one or more to zero or more B : x
-  A only one to one B : x
-  A zero or one optionally to one or zero B : x
-  A ONE OR MORE TO MANY B : x
-  A many to one B : x
+  A }|--o{ B : x
+  A ||--|| B : x
+  A |o..o| B : x
+  A }|--o{ B : x
+  A }o--|| B : x
 ```
 
 ### 実体
@@ -763,10 +781,10 @@ erDiagram
 つの後に置きます（[属性ブロック](#属性ブロック)を参照）。
 名前は、引用符の有無も数も含めて、書かれたまま残します。
 [fixture: entities/names-kept]
-実体の部分の間にあるディレクティブは、両側に空白があるかどうかは変えず、
-空白の連なりは空白 1 つにします。
-[fixture: entities/directive-between-parts-kept]
-[fixture: entities/directive-between-parts-runs-collapsed]
+実体の部分の間にあるディレクティブは、
+[ディレクティブ](#ディレクティブ)のとおりに置きます。
+[fixture: entities/directive-between-parts]
+[fixture: entities/directive-between-parts-runs]
 
 入力
 ([entities/alias-tight-input.mmd](../tests/fixtures/er/entities/alias-tight-input.mmd)):
@@ -830,18 +848,22 @@ mermaid.js は、どちらの書き方も同じ subgraph として読みます�
 mermaid.js が空白 1 つで結ぶからです。 [fixture: subgraphs/header-spacing]
 [fixture: subgraphs/title-touches-name] [fixture: subgraphs/title-names-spaced]
 [fixture: subgraphs/quoted-and-number-ids]
-名前と `[` の間にディレクティブがあれば、その両側に空白があるかどうかは変えず、
-空白の連なりは空白 1 つにします（[ディレクティブ](#ディレクティブ)を参照）。
-[fixture: subgraphs/title-beside-directive-kept]
-[fixture: subgraphs/title-beside-directive-runs-collapsed]
+名前と `[` の間のディレクティブは、
+[ディレクティブ](#ディレクティブ)のとおりに置きます。
+[fixture: subgraphs/title-beside-directive]
+[fixture: subgraphs/title-beside-directive-runs]
 そこにある U+2028 と U+2029 は、そのまま残します。
 [test: U+2028 between an ER subgraph name and its title]
 [test: U+2029 between an ER subgraph name and its title]
-本体の文は 1 段深く置き、`end` は、書かれた大文字小文字で、subgraph と同じ段に、
-行に単独で置きます。
+本体の文は 1 段深く置き、`end` は、subgraph と同じ段に行に単独で置き、
+どの大文字小文字でも `end` と印字します。
+本体の `class`、`classDef`、`style` 文のキーワードは、subgraph の外と同じく、
+書かれたまま残します。
+mermaid.js は、それを書かれたまま subgraph のノードに並べます。
+[fixture: subgraphs/statement-keywords-case-kept]
 `end` の後に同じ行で続く文は、次の行に置きます。
 [fixture: subgraphs/end-on-the-line-of-a-statement]
-[fixture: subgraphs/end-case-kept] [fixture: subgraphs/entity-after-end]
+[fixture: subgraphs/end-case-one-form] [fixture: subgraphs/entity-after-end]
 文のない subgraph は、`end` を次の行に置いて印字します。
 [fixture: subgraphs/empty]
 
@@ -924,9 +946,12 @@ erDiagram
 方向の行は、`direction` とその値と、前後の mermaid.js が読まないテキストです。
 テキストは書かれたまま残します。
 テキストと `direction` の間（離して書かれていれば）と、
-`direction` と値の間には空白 1 つを置き、値は書かれた大文字小文字を保ちます。
-大文字小文字は作者のものだからです。 [fixture: direction/spacing]
-[fixture: direction/text-kept] [fixture: direction/case-kept]
+`direction` と値の間には空白 1 つを置き、値は大文字で印字します。
+`lr` は `LR` です。
+mermaid.js の文書の例で使う形です。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+[fixture: direction/spacing] [fixture: direction/text-kept]
+[fixture: direction/case-one-form] [fixture: direction/case-bt-rl-one-form]
 後の行に書かれた値は、`direction` の後に 1 行で印字します。
 [fixture: direction/value-on-next-line-joined]
 [corpus fixture: er/lex-direction-value-next-line]
@@ -959,7 +984,7 @@ erDiagram
 ```
 
 入力
-([direction/case-kept-input.mmd](../tests/fixtures/er/direction/case-kept-input.mmd)):
+([direction/case-one-form-input.mmd](../tests/fixtures/er/direction/case-one-form-input.mmd)):
 
 ```mmd
 erDiagram
@@ -968,12 +993,12 @@ Direction Tb
 ```
 
 出力
-([direction/case-kept-output.mmd](../tests/fixtures/er/direction/case-kept-output.mmd)):
+([direction/case-one-form-output.mmd](../tests/fixtures/er/direction/case-one-form-output.mmd)):
 
 ```mmd
 erDiagram
-  DIRECTION lr
-  Direction Tb
+  direction LR
+  direction TB
 ```
 
 ### スタイルとクラス
@@ -991,7 +1016,8 @@ Mermaid はスタイルの単位をつなげて読むため、
 通常はつなげる見出しや外側の改行があっても、最初の整形で同じ間隔にします。
 スタイル内部の改行区切り、所有する trivia、
 同じ物理行に保持するセミコロンがある場合は、既存のスタイルの配置を保ちます。
-キーワードの大文字小文字は保ちます。
+キーワード `style` と `classDef` は、書かれた大文字小文字を保ちます。
+（[大文字小文字をそろえるキーワード](./compatibility.ja.md#大文字小文字をそろえるキーワード)）。
 [fixture: styles-and-classes/style-unit-padding]
 [fixture: styles-and-classes/class-def-names]
 [fixture: styles-and-classes/style-names]
@@ -1000,6 +1026,7 @@ Mermaid はスタイルの単位をつなげて読むため、
 [fixture: styles-and-classes/style-inner-whitespace-kept]
 
 [fixture: styles-and-classes/keyword-case-kept]
+[fixture: styles-and-classes/keyword-case-semicolon-line-kept]
 
 キーワードや名前の後の空白が改行を取り込んで、
 複数行に書かれた `classDef` と `style` の文は、1 行に印字します。
@@ -1335,13 +1362,14 @@ erDiagram
 ### ディレクティブ
 
 行に単独で置かれたディレクティブは、周りの文と同じ段に置きます。
-同じ印字行の中では、両側に空白が書かれているかどうかを保ちます。
-空白があれば空白 1 つを置き、トークンに接していれば接したままにします。
+同じ印字行の中では、flowchart と同じく、
+隙間をディレクティブがないものとして印字し、
+ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
 [fixture: directives/kept] [fixture: directives/before-header]
 [fixture: directives/after-header-on-same-line]
 [fixture: directives/after-header-touching-kept]
-[fixture: directives/whitespace-on-both-sides-collapsed]
-[fixture: directives/touching-one-side-kept]
+[fixture: directives/whitespace-on-both-sides]
+[fixture: directives/touching-one-side]
 [fixture: directives/after-statement-at-end-of-line]
 [fixture: directives/in-blocks]
 閉じていないディレクティブはテキストの残りを取り込むので、書かれたまま残します。
@@ -1352,7 +1380,7 @@ erDiagram
 間の directive を次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
 
-[fixture: er/directives/whitespace-on-both-sides-collapsed]
+[fixture: er/directives/whitespace-on-both-sides]
 
 入力
 ([directives/kept-input.mmd](../tests/fixtures/er/directives/kept-input.mmd)):
@@ -1377,7 +1405,7 @@ erDiagram
 ```
 
 入力
-([directives/touching-one-side-kept-input.mmd](../tests/fixtures/er/directives/touching-one-side-kept-input.mmd)):
+([directives/touching-one-side-input.mmd](../tests/fixtures/er/directives/touching-one-side-input.mmd)):
 
 ```mmd
 erDiagram
@@ -1386,7 +1414,7 @@ A||--o{ %%{init: {}}%%B : y
 ```
 
 出力
-([directives/touching-one-side-kept-output.mmd](../tests/fixtures/er/directives/touching-one-side-kept-output.mmd)):
+([directives/touching-one-side-output.mmd](../tests/fixtures/er/directives/touching-one-side-output.mmd)):
 
 ```mmd
 erDiagram
@@ -1395,7 +1423,7 @@ erDiagram
 ```
 
 入力
-([directives/whitespace-on-both-sides-collapsed-input.mmd](../tests/fixtures/er/directives/whitespace-on-both-sides-collapsed-input.mmd)):
+([directives/whitespace-on-both-sides-input.mmd](../tests/fixtures/er/directives/whitespace-on-both-sides-input.mmd)):
 
 ```mmd
 erDiagram
@@ -1404,11 +1432,11 @@ C  %%{init: {}}%%  D
 ```
 
 出力
-([directives/whitespace-on-both-sides-collapsed-output.mmd](../tests/fixtures/er/directives/whitespace-on-both-sides-collapsed-output.mmd)):
+([directives/whitespace-on-both-sides-output.mmd](../tests/fixtures/er/directives/whitespace-on-both-sides-output.mmd)):
 
 ```mmd
 erDiagram
-  A %%{init: {}}%% ||--o{ B : x
+  A %%{init: {}}%%||--o{ B : x
   C
   %%{init: {}}%% D
 ```
@@ -1598,14 +1626,21 @@ mermaid.js が複数行にわたって読む文は、
 改行が字句解析器にとって空白である所では 1 行に印字します。
 `accTitle` と `accDescr` の `:` の後、`direction` と値の間、
 空白の後の `classDef` と `style` の文の中です。
+[fixture: multi-line-statements/breaks-decided-one-by-one]
+[fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
 [fixture: multi-line-statements/accessibility-text-joined]
 [fixture: multi-line-statements/direction-value-joined]
 [fixture: multi-line-statements/style-over-lines-joined]
 コメント行やディレクティブがある文は改行を残し、
 構造の続きの行と間の注釈を 1 段深く置きます。
 値の中の空白と、各隙間の最初の改行の前の空白は保ちます。
-コメントで結合される領域とセミコロン行の保護対象では、
-文全体を原文のまま残します。
+コメントで結合される領域では、文全体を原文のまま残します。
+改行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
+その改行を残します。
+それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
+改行が残る文は、スタイルも書かれたままにします。
+[fixture: multi-line-statements/semicolon-joining-changes-kept]
 [fixture: multi-line-statements/style-comment-continuation]
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]

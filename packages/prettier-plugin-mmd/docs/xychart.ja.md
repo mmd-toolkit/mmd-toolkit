@@ -218,10 +218,12 @@ xychart
 
 ### ヘッダーと向き
 
-ヘッダーは書かれたままに印字します。
-`xychart` か `xychart-beta` で、大文字小文字も書かれたままです。
-mermaid.js はどちらも同じ図種として読むので、
-綴りは印字側ではなく書き手のものです。
+ヘッダーは、`xychart` と `xychart-beta` のどちらも、
+書かれた大文字小文字のまま印字します。
+mermaid.js 12.3.0 はどちらも同じ図種として読みますが、
+mermaid.js 11.9.0 は `xychart-beta` だけを検出するため、
+綴りは整形器ではなく書き手が決めます。
+（[ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)を参照）。
 2 つ目以降のヘッダーは自分の行に置き、取り除きません。
 向きを持つ後のヘッダーは向きを変え、向きのないものは何も変えませんが、
 書かれたテキストは書き手のものだからです。
@@ -505,20 +507,19 @@ xychart
 
 ### 数
 
-数は書かれたままに印字します。
-範囲の数とプロットの値は、値として読まれるので、`+1`、`007`、`.5`、`-0`、
-`1.50` は、別の形に書いても Db は同じです。
-ところが、分類や引用符なしの title に書かれた同じ数字は、
-テキストなので（`x-axis [007, .5]` の分類は `007` と `.5`）、
-変えるとチャートが変わります。
-数だけを正規化すると、同じ数字が 1 つのチャートに 2 通りに綴られます。
-そのため、数は書き手のテキストとして残します。
-sankey の値の扱いと同じです（[値](./sankey.ja.md#値)を参照）。
-[fixture: numbers/range-numbers-as-written] [fixture: numbers/values-as-written]
-[fixture: numbers/categories-are-texts] [fixture: numbers/titles-are-texts]
+範囲の数とプロットの値は、値として読まれ、最短の形で印字します。
+`+3` は `3`、`1.50` は `1.5`、`.5` は `0.5` にします。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+分類や引用符なしの title に書かれた同じ数字はテキストで、
+`x-axis [007, .5]` の分類は `007` と `.5` です。
+sankey の値と同じく、書かれたまま残します（[値](./sankey.ja.md#値)を参照）。
+整数部の先頭がゼロの数（`007`）と `-0` も書かれたまま残します。
+[fixture: numbers/range-numbers-one-form] [fixture: numbers/values-one-form]
+[fixture: numbers/forms-kept] [fixture: numbers/categories-are-texts]
+[fixture: numbers/titles-are-texts]
 
 入力
-([numbers/values-as-written-input.mmd](../tests/fixtures/xychart/numbers/values-as-written-input.mmd)):
+([numbers/values-one-form-input.mmd](../tests/fixtures/xychart/numbers/values-one-form-input.mmd)):
 
 ```mmd
 xychart
@@ -526,17 +527,19 @@ line [.5, 007, -0, 1.50, +3]
 ```
 
 出力
-([numbers/values-as-written-output.mmd](../tests/fixtures/xychart/numbers/values-as-written-output.mmd)):
+([numbers/values-one-form-output.mmd](../tests/fixtures/xychart/numbers/values-one-form-output.mmd)):
 
 ```mmd
 xychart
-  line [.5, 007, -0, 1.50, +3]
+  line [0.5, 007, -0, 1.5, 3]
 ```
 
 ### 引用符
 
 文字列は書かれたままに印字します。
-引用符、テキスト、中の空白、中の改行を残します。
+引用符、テキスト、中の改行を残し、
+中の空白とタブの連なりは空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 引用符は、足しも取りもしません。
 `"Sales"` と `Sales` は Db が同じですが、
 `"a b"` と `a b` は違います（後者のテキストは `ab` です）。
@@ -546,7 +549,7 @@ xychart
 sankey と同じです（[引用符](./sankey.ja.md#引用符)を参照）。
 空の文字列は、文法が受け入れる位置にだけ置かれます。
 プロットの title、データの前の軸の title、値のラベルです。
-[fixture: quotes/strings-as-written] [fixture: quotes/quotes-not-removed]
+[fixture: quotes/strings-runs-collapsed] [fixture: quotes/quotes-not-removed]
 [fixture: quotes/quotes-not-added]
 [fixture: quotes/keywords-and-markup-in-strings]
 [fixture: quotes/comment-mark-in-a-string]
@@ -598,8 +601,13 @@ xychart
 後ろに空白 1 つを置きます。
 ほかの図と同じです（[アクセシビリティの文](./journey.ja.md#アクセシビリティの文)
 を参照）。
-テキストの前後に空白は置かず、中の空白は残します。
-中の空白は Db に入るからです（`accTitle: a   b` の title は `a   b`）。
+テキストの前後に空白は置きません。
+`accDescr` のテキストの中の空白とタブの連なりは、空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+`accTitle` はブラウザがツールチップとして表示するので、
+その連なりは書かれたまま残します。
+中の空白は Db に入り、`accTitle: a  b` の title は `a  b` で、
+`accTitle: a  b` と印字します。
 後ろの行に書かれたテキスト、キーワードより後ろの行に書かれたコロン、
 コロンの前の空白は、1 行にして印字します。
 改行は字句解析器にとって空白で、文のテキストは変わりません。
@@ -608,7 +616,7 @@ xychart
 [fixture: accessibility-statements/colon-touches-keyword]
 [fixture: accessibility-statements/colon-without-space-after]
 [fixture: accessibility-statements/text-whitespace-dropped]
-[fixture: accessibility-statements/text-inner-whitespace-kept]
+[fixture: accessibility-statements/text-inner-runs-collapsed]
 [fixture: accessibility-statements/special-characters-in-text]
 [fixture: accessibility-statements/text-on-the-next-line-joined]
 [fixture: accessibility-statements/colon-on-the-next-line-joined]
@@ -792,6 +800,8 @@ title、ヘッダー、軸、plot、アクセシビリティの行の文では�
 後続の部分と独立した trivia 行を、その文より 1 段深くそろえます。
 文を続ける空白は LF より前から始まる必要があるため、各 gap の最初の行の末尾と、
 その中の完全な inline 指令を保ちます。
+[fixture: multi-line-statements/breaks-decided-one-by-one]
+[fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
 [fixture: multi-line-statements/structural-trivia-continuations]
 [fixture: multi-line-statements/axis-trivia-with-multiline-string]
 指令の内部も原文どおりです。
@@ -803,10 +813,15 @@ title、ヘッダー、軸、plot、アクセシビリティの行の文では�
 [fixture: multi-line-statements/directive-inside-kept]
 引用符の内部は、改行と列を含めて、ひとまとまりのまま保ちます。
 [fixture: multi-line-statements/quoted-title-trivia]
-文の内部か最終行に `;` がある場合は、行の規則があるため、
-配置全体を原文のまま保ちます（[1 行 1 文](#1-行-1-文)を参照）。
-[fixture: multi-line-statements/semicolon-inside-kept]
-[fixture: multi-line-statements/semicolon-on-the-last-line-kept]
+改行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
+その改行を残します。
+それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
+最終行の別の文にある `;` も、同じ判定をします。
+[1 行 1 文](#1-行-1-文)を参照してください。
+[fixture: multi-line-statements/semicolon-joining-changes-kept]
+[fixture: multi-line-statements/semicolon-inside-joined]
+[fixture: multi-line-statements/semicolon-on-the-last-line-joined]
 物理行を結ぶコメント領域も、元の配置を保ちます。
 [test: xychart/multi-line-statements/bare-title-comment-region-kept]
 [test: xychart/multi-line-statements/header-comment-region-ls]
@@ -868,18 +883,20 @@ xychart
 
 ### キーワードの大文字小文字
 
-キーワード `title`、`x-axis`、`y-axis`、`line`、`bar`、`accTitle`、
-`accDescr` は、書かれた大文字小文字のまま印字します。
-mermaid.js はどれも大文字小文字を問わずに読み（`Title`、`LINE`、
-`ACCTITLE:` も文を始めます）、Db は同じです。
-そのため、大文字小文字は書き手のもので、強制するものはありません。
+キーワード `title`、`x-axis`、`y-axis`、`line`、`bar` は、
+mermaid.js の文書の例が使う大文字小文字で印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+mermaid.js はどれも大文字小文字を問わずに読み、Db は同じです。
+`Title` と `LINE` も文を始めます。
+`accTitle` と `accDescr` は、例が使わないので、
+書かれた大文字小文字のまま印字します。
 プロットの種類（`line` か `bar`）は、書かれた大文字小文字によらず、
-Db では小文字です。 [fixture: keyword-case/statement-keywords-kept]
+Db では小文字です。 [fixture: keyword-case/statement-keywords-one-form]
 [fixture: keyword-case/accessibility-keywords-kept]
 [fixture: keyword-case/header-spelling-kept]
 
 入力
-([keyword-case/statement-keywords-kept-input.mmd](../tests/fixtures/xychart/keyword-case/statement-keywords-kept-input.mmd)):
+([keyword-case/statement-keywords-one-form-input.mmd](../tests/fixtures/xychart/keyword-case/statement-keywords-one-form-input.mmd)):
 
 ```mmd
 xychart
@@ -891,15 +908,15 @@ Bar [2]
 ```
 
 出力
-([keyword-case/statement-keywords-kept-output.mmd](../tests/fixtures/xychart/keyword-case/statement-keywords-kept-output.mmd)):
+([keyword-case/statement-keywords-one-form-output.mmd](../tests/fixtures/xychart/keyword-case/statement-keywords-one-form-output.mmd)):
 
 ```mmd
 xychart
-  Title T
-  X-AXIS [a]
-  Y-Axis 0 --> 1
-  LINE [1]
-  Bar [2]
+  title T
+  x-axis [a]
+  y-axis 0 --> 1
+  line [1]
+  bar [2]
 ```
 
 ### コメント
@@ -978,12 +995,10 @@ xychart
 ### 指令
 
 指令は元の単位の間に残します。
-同じ印字行の中では、両側の空白の有無を保ちます。
-空白が書かれていれば空白 1 つ、接していれば接したままです。
-mermaid.js は、引用符なしの文字列と文字列の中の指令の前後を結んで読むので、
-文の内部では、指令の隣が接しているか、
-離れているかを保ちます（[ディレクティブ](./journey.ja.md#ディレクティブ)
-を参照）。
+同じ印字行の中では、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
+隙間をディレクティブがないものとして印字し、
+ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
 単独の行にある指令は、後ろの文と同じ段に置きます。
 [fixture: directives/directive-line-at-the-level-of-the-next-statement]
 [fixture: directives/directive-line-before-the-header]
@@ -1037,8 +1052,8 @@ x-axis%%{init: {}}%%[a]
 
 ```mmd
 xychart
-  line %%{init: {}}%% [1]
-  x-axis%%{init: {}}%%[a]
+  line %%{init: {}}%%[1]
+  x-axis %%{init: {}}%%[a]
 ```
 
 ### フロントマターの YAML

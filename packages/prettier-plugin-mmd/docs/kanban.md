@@ -274,9 +274,15 @@ shapes/db-shape-bang-alt] [fixture: shapes/db-shape-cloud] [fixture:
 shapes/db-shape-cloud-alt] [fixture: shapes/db-shape-mismatched] [fixture:
 shapes/lex-shape-dash-bare] [fixture: shapes/lex-shape-dash-string]
 
-The whitespace between a bare id and its shape stays: `S [x]` has the id `S `
-with the space, because the Db keeps the whitespace at the end of a bare id.
-[fixture: shapes/id-before-shape]
+The whitespace between the id of a card and its shape is dropped: `A [x]` is
+printed `A[x]`. The Db keeps it as part of the id, but the card is drawn the
+same (see
+[Mindmap texts that are drawn the same](./compatibility.md#mindmap-texts-that-are-drawn-the-same)).
+The whitespace between the id of a column and its shape stays: `S [x]` has the
+id `S ` with the space, and mermaid.js tells two columns apart by their ids, so
+`todo [A]` and `todo[B]` are two columns, while `todo[A]` and `todo[B]` would be
+one, drawn differently. [fixture: shapes/id-before-shape] [fixture:
+shapes/card-id-before-shape-dropped]
 
 Input
 ([shapes/mismatched-input.mmd](../tests/fixtures/kanban/shapes/mismatched-input.mmd)):
@@ -304,22 +310,24 @@ kanban
 
 A label is printed in the form written: bare (`A[x y]`), quoted (`B["x y"]`), or
 markdown (`C["`x y`"]`). The whitespace inside a label is in the Db and stays,
-whitespace-only labels (`S[ ]`, `A[" "]`) and the whitespace at the ends of a
-bare label (`S[  x  ]`) included. A quote is the start of a string only right
-after the opener, so `D[ "x" ]` has the bare text `"x"` with its quotes and the
-spaces around it, and the printer does not move them. Entities (`a#35;b`) and
-HTML attributes (`<a href="x">`) are text and stay, and so does a node written
-`""` or `"``"` outside a shape. [fixture: labels/forms] [fixture:
-labels/inner-whitespace-trim] [fixture: labels/leading-space-quote] [fixture:
-labels/whitespace-only-forms] [fixture: labels/bare-empty-spellings] [fixture:
-labels/lex-style-entity-two-semicolons] [fixture:
-labels/db-grid-html-attribute-item-label-quoted] [fixture:
+and so do whitespace-only labels (`S[ ]`, `A[" "]`). The spaces and tabs at the
+ends of a bare label are dropped: `S[  x  ]` is printed `S[x]`, since mermaid.js
+draws the same node without them (see
+[Mindmap texts that are drawn the same](./compatibility.md#mindmap-texts-that-are-drawn-the-same)).
+A quote is the start of a string only right after the opener, so `D[ "x" ]` has
+the bare text `"x"` with its quotes and the spaces around it, and the printer
+does not move them. Entities (`a#35;b`) and HTML attributes (`<a href="x">`) are
+text and stay, and so does a node written `""` or `"``"` outside a shape.
+[fixture: labels/forms] [fixture: labels/inner-whitespace-trim] [fixture:
+labels/leading-space-quote] [fixture: labels/whitespace-only-forms] [fixture:
+labels/bare-empty-spellings] [fixture: labels/lex-style-entity-two-semicolons]
+[fixture: labels/db-grid-html-attribute-item-label-quoted] [fixture:
 labels/db-grid-entity-item-label-quoted]
 
-The printer does not quote, unquote, trim, pad, encode, or decode a label.
-`A[x y]` and `A["x y"]` have the same Db, but the form is the author's. A space
-after the closing quote of a string (`S["x" ]`) is rejected, so it is never a
-form to print (see
+The printer does not quote, unquote, pad, encode, or decode a label, and trims
+only the spaces and tabs at the ends of a bare label. `A[x y]` and `A["x y"]`
+have the same Db, but the form is the author's. A space after the closing quote
+of a string (`S["x" ]`) is rejected, so it is never a form to print (see
 [When a diagram is not formatted](../README.md#when-a-diagram-is-not-formatted)).
 [fixture: labels/bare-to-quoted] [fixture: labels/space-after-string-invalid]
 
@@ -365,21 +373,24 @@ icons-and-classes/db-decoration-icon-section] [fixture:
 icons-and-classes/gram-decoration-then-child]
 
 The text of a decoration stays as written: the case of the marker (`::ICON(y)`),
-the whitespace inside an icon (`::icon( x )`) and after a class (`:::c  `, whose
-trailing spaces are part of the class), whitespace-only icons and classes, and a
-second icon or class after the first. The spaces and tabs between the `:::` and
-the class are dropped: `::: hot` is printed `:::hot`. mermaid.js keeps the text
-after `:::` as the class of the node
+the whitespace inside an icon and a class, and a second icon or class after the
+first. The spaces and tabs at the ends of an icon and of a class are dropped:
+`::icon( x )` is printed `::icon(x)`, and `::: hot ` is printed `:::hot`.
+mermaid.js keeps the text after `:::` as the class of the node
 ([`decorateNode`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L202-L214))
 and passes no class on to what it draws
 ([`getData`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L54-L97)),
 so the board is the same, and a space or a tab does not belong to a class name
-in HTML. A class of only whitespace stays as written, and so does a class line
-with a directive anywhere on it (`::: hot %%{x}%%`, `::: h%%{x}%%ot`,
-`%%{x}%%::: hot`): a line with a directive is printed as written (see
-[Directives](#directives)). Only spaces and tabs are dropped: `:::` followed by
-spaces and a U+00A0 is printed with the U+00A0 next to the `:::`, and it stays.
-[fixture: icons-and-classes/class-padding-after-marker-dropped] [fixture:
+in HTML. A class or an icon of only whitespace is printed as one space, which is
+the least that keeps it (an empty one is rejected), so `::icon(  )` is printed
+`::icon( )` and `:::` followed by two spaces is printed `:::` followed by one.
+[fixture: icons-and-classes/gram-whitespace-icon] [fixture:
+icons-and-classes/gram-whitespace-class] A class line with a directive anywhere
+on it (`::: hot %%{x}%%`, `::: h%%{x}%%ot`, `%%{x}%%::: hot`): a line with a
+directive is printed as written (see [Directives](#directives)). Only spaces and
+tabs are dropped: `:::` followed by spaces and a U+00A0 is printed with the
+U+00A0 next to the `:::`, and it stays. [fixture:
+icons-and-classes/class-padding-after-marker-dropped] [fixture:
 icons-and-classes/class-with-directive-kept] [test: kanban:
 class-spaces-then-no-break-space] [test: kanban: class-padding-then-u2028]
 [test: kanban: class-padding-then-u2029] A later icon replaces an earlier one in
@@ -452,7 +463,7 @@ A block on one line is printed with one space inside each end, as in
 [Data blocks](./flowchart.md#data-blocks): `A@{ticket: X}` becomes
 `A@{ ticket: X }`. The block stays as written in the cases listed there.
 [fixture: data-blocks/one-line-padded] [fixture:
-data-blocks/one-line-space-only-kept] [fixture:
+data-blocks/one-line-space-only-padded] [fixture:
 data-blocks/one-line-directive-kept] [fixture:
 data-blocks/one-line-kept-line-kept] [fixture:
 data-blocks/one-line-touching-blocks-kept] [fixture:
@@ -864,17 +875,27 @@ kanban
 
 ### Trailing whitespace
 
-Whitespace at the end of a line is dropped where it is not in the Db: after a
-shape (`S[x]   `), after an icon (`::icon(z)  `), after a data block
-(`A[y]@{ticket: X}   `), and after a closed string (`A["Work"]  `). It stays
-where the Db keeps it: after a bare id (`S   ` is the id `S   `, and so is the
-space before a shape or a data block), in a class (`:::c   `), in a comment, and
-inside labels, icons, data blocks, directives, and the continuation lines of
-multi-line values. This is the distinction of [mindmap](./mindmap.md#node-text),
-with the data block added. On a kept line the same holds. [test: kanban:
-bare-trailing-trim] [test: kanban: closed-trailing-trim] [test: kanban:
-closed-whitespace-trim] [fixture: trailing-whitespace/class-trailing-trim]
-[fixture: trailing-whitespace/lex-after-quoted-spaces] [fixture:
+Whitespace at the end of a line is dropped where the node is drawn the same
+without it (see
+[Mindmap texts that are drawn the same](./compatibility.md#mindmap-texts-that-are-drawn-the-same)):
+after a shape (`S[x]   `), after an icon (`::icon(z)  `), after a data block
+(`A[y]@{ticket: X}   `), after a closed string (`A["Work"]  `), after the bare
+id of a card (`A   ` is printed `A`), and after a class (`:::c   `). It stays
+where the Db keeps it and the figure depends on it: after the bare id of a
+column (`S   ` is the id `S   `, and so is the space before its shape), in a
+comment, and inside labels, icons, data blocks, directives, and the continuation
+lines of multi-line values. This is the distinction of
+[mindmap](./mindmap.md#node-text), with the data block added, and with the id of
+a column kept. On a kept line the same holds. The directives that end the text
+of a card are printed with one space before each that has whitespace before it,
+and the whitespace after the last one is left out (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same));
+those that end the id of a column stay as written, since the figure depends on
+its whitespace. [fixture: trailing-whitespace/directives-end-blanks-dropped]
+[test: kanban: bare-trailing-trim] [test: kanban: closed-trailing-trim] [test:
+kanban: closed-whitespace-trim] [fixture:
+trailing-whitespace/class-trailing-trim] [fixture:
+trailing-whitespace/lex-after-quoted-spaces] [fixture:
 trailing-whitespace/kept-line-kept]
 
 ### Line terminators

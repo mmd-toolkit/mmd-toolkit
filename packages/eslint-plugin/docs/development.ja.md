@@ -25,11 +25,13 @@ pnpm --filter @mmd-toolkit/eslint-plugin run test:update
 
 テストは、`@mmd-toolkit/parser` と `@mmd-toolkit/tests` のビルドではなく、
 ソースを import します（`vitest.config.ts` を参照）。
-そのため、ビルドの手順は要りません。
-プラグインのビルドと、そのソースを import して Node で動かすスクリプトは、
-parser を `lib/` のビルドから読みます。
-parser が変わったら、
-`pnpm --filter @mmd-toolkit/parser run build` で作り直します。
+そのため、ほとんどのテストは、ビルドの手順が要りません。
+文書を生成する `tests/rule-docs.test.ts` のテストは例外です。
+Prettier が Mermaid のプラグインを `docs/prettier.config.js` から読み、
+その読み込みに別名は効かないので、parser を `lib/` のビルドから読みます。
+プラグインのビルドと、そのソースを import して Node で動かすスクリプトも、
+同じです。
+parser が変わったら、`pnpm run build:parser` で作り直します。
 
 ## テスト
 
@@ -347,9 +349,37 @@ pnpm --filter @mmd-toolkit/eslint-plugin run check:docs
 テスターが規則を `rule-to-test/` の下で有効にするため、
 `@mmd-toolkit/` の下でも有効にすると、すべての報告が二重になるからです。
 
+`update` は、例もフォーマッターが印字する形にします。
+その決まりは `docs/prettier.config.js` にあります。
+ルートの Prettier の設定に `prettier-plugin-mmd` を足したもので、Prettier は、
+これで文書の `mmd` コードブロックを整形します。
+プラグインはソースから読むので（Node が `.ts` の型を取り除きます）、
+例は作業ツリーのフォーマッターが印字します。
+`tools/rule-docs.ts` も、`pnpm run format` と `pnpm run format:check` も、
+ESLint（`pnpm run lint:es`。`eslint-plugin-prettier` を通して）も、
+保存時に整形するエディターも、このファイルを読みます。
+`check:docs` は、Prettier が変える文書があると失敗します。
+プラグインのソースは `@mmd-toolkit/parser` を名前で読み込み、
+それは build したパッケージなので、`update`、`update:docs`、`check:docs`、
+`format`、`format:check`、`lint:es`、`eslint-fix` は、
+先に parser を build します（ルートの `pnpm run build:parser`）。
+保存時に整形するエディターには、Node 22.18 以降（ルートの `engines` の版）と、
+build した parser が要り、プラグインや parser が変わったら、
+読み込んだモジュールを持ち続けるので、再読み込みが要ります。
+プラグインは作業ツリーから読むので、
+`packages/prettier-plugin-mmd/src` に書きかけのファイルがあると、
+書き終えるまで、これらのコマンドが失敗します。
+フォーマッターが 1 つの形に印字する書き方（空白、大文字小文字、
+引用符など）が要点で、わざと書いたまま残す例には、コードブロックの直前に、
+英日とも `<!-- prettier-ignore -->` を置き、規則の詳細の文で、
+書いたまま示していることを述べます。
+フォーマッターが印字する形を変えたら、`update:docs` を実行し、
+続けて `test:update` を実行してスナップショットの差分を読み、
+書き換えた文書の本文から、変わった行を引いているコードスパンを探します。
+
 文書のほかの部分は手で書きます。
 `check:docs` は何も書かず、次のときに失敗します。
-`src/rules/index.ts` か生成する部分が最新でないとき、
+`src/rules/index.ts`、生成する部分、例のどれかが最新でないとき、
 規則に英語の文書かテストのファイルがないとき、
 どの規則のものでもない文書（英語の原本のない日本語の文書を含む）があるとき、
 英語の文書の最初の段落が、その規則の `meta.docs.description` でないとき、

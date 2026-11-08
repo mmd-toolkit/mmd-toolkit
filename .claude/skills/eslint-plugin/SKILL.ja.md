@@ -200,7 +200,9 @@ Rule Details は、文の後に、反するコードと従うコードの例を�
   サイトの `twoslash-eslint` の診断を有効にする。
   `eslint-check` の fence マーカーは足さない。
   この先頭のコメントがないか違うと、英日とも `check:docs` が失敗する。
-  このコメントより後は、fixture の入力を整形したもの（4 節の手順 4）にし、
+  このコメントより後は、fixture の入力を整形したもの（4 節の手順 4）にする。
+  `update` が例をフォーマッターの印字する形にし、`check:docs` は、
+  `update` が変える例があると失敗する。
   本文で例を引くときは、コードブロックのとおりに書く。
   フォーマッターが空白を入れるところは、`A-->B` ではなく `A --> B` と書く。
   行を指すときは、数えずに、その行が持つもので指す。
@@ -370,6 +372,8 @@ rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の 4 節にある
    例を mermaid.js がどう読むかを記録している（SKILL `conventions`: Mermaid
    の例はフォーマッターが印字する形で書く）。
    フォーマッターが行を書いたまま残すところも、出力のとおりにする。
+   文書の例については、`update` がそれを行う（6 節）。
+   例を fixture の入力のとおりに書いて `update` を実行し、印字された形を読む。
    例の先頭の ESLint 設定コメントだけを除いて、出力と比べる。
    公開する例を parser やサイトの表示処理で確かめるときは、コメントも残す。
    スナップショットのテストヘルパーだけは、このコメントを除く。
@@ -377,8 +381,16 @@ rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の 4 節にある
    `@mmd-toolkit/` の下でも有効にすると、すべての報告が二重になるからである。
    コメントは公開する例の一部で、コーパスの fixture の一部ではない。
    足すために fixture を変更しない。
-   例外は、空白の有無そのものが要点で、わざと書いたまま残す例だけで、
-   そのときは文書にそう書く。
+   例外は、フォーマッターが 1 つの形に印字する書き方（空白、
+   値やキーワードの大文字小文字、引用符、数の書き方）そのものが要点で、
+   わざと書いたまま残す例だけである。
+   そのコードブロックの直前に、英日とも `<!-- prettier-ignore -->` を置き、
+   規則の詳細の文で、その例を書いたまま示していることと、その理由を述べる。
+   理由は、例えば、
+   フォーマッターが空の `accDescr` のブロックを `accDescr {}` と書くので、
+   波括弧の間に空白がある例を残す、というものである。
+   `check:docs` は、その文も、印がまだ要るかも読まない。
+   確かめるのはレビューである。
    使う fixture の `expected.json` が文書の主張どおりであることを確かめる。
    例にする fixture は、従う例も含めて、`accepted` が true のものだけにする。
    fixture のない例と主張には、SKILL `tests` の手順で fixture を足す。
@@ -392,9 +404,13 @@ rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の 4 節にある
 
 ## 5. 書いた後の検査
 
-1. 書いた文書に `npx prettier --write` を 2 回かけ、
+1. ルートで `pnpm run build:parser` を実行し（フォーマッターは build した parser
+   を読む）、書いた文書に `npx prettier --write` を 2 回かけ、
    2 回目で何も変わらないことを確かめる。
 2. `pnpm --filter @mmd-toolkit/eslint-plugin run update` を実行する（6 節）。
+   先に parser を build する（フォーマッターのソースが名前で読み込むため）ので、
+   例は作業ツリーのフォーマッターが印字する。
+   その決まりは `docs/prettier.config.js` にある。
 3. `pnpm run lint:docs`、`pnpm run format:check`、
    `pnpm run lint:chars` が通ること。
    `lint:docs` は、日本語の対と `check:docs` を確かめる。
@@ -416,6 +432,9 @@ rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の 4 節にある
    そのときは、
    `tests/rule-cases.test.ts` と規則のテスト `tests/rules/<名前>.test.ts`
    を回し、最初の段落と生成する部分のために `pnpm run check:docs` を動かす。
+   例が変わるとスナップショットも変わる。
+   `pnpm --filter @mmd-toolkit/eslint-plugin run test:update` で更新し、
+   差分を読む。
    どの変更にどのテストが対応するかは、
    SKILL `eslint-plugin-rules` の 4 節にある。
 
@@ -445,8 +464,37 @@ rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の 4 節にある
   日本語の文書の最初の段落（日本語の文書のない規則では、
   英語の説明と英語の文書へのリンク）、`recommended` が有効にする規則の ✅、
   自動修正を持つ規則の 🔧、修正候補を出す規則の 💡 を持つ。
-  これらは手で書かない。
+  そして例である。
+  `mmd` のコードブロックは、直前に `<!-- prettier-ignore -->` があるものを除き、
+  フォーマッターが印字する形になる。
+  生成する部分は手で書かない。
   日本語の文書の最初の段落を変えたら、`update` を実行する。
+- フォーマッター（`packages/prettier-plugin-mmd`）が印字する形を変えると、
+  例が古くなり、`check:docs` が失敗する。
+  そのときは次の順にする。
+  1. `pnpm --filter @mmd-toolkit/eslint-plugin run update:docs` を実行する。
+     parser を build し、英日の例を書き換える。
+  2. `pnpm --filter @mmd-toolkit/eslint-plugin run test:update` を実行し、
+     スナップショットの差分を読む。
+     もう報告されなくなった反する例と、報告されるようになった従う例は、
+     書いたまま残す（4 節の手順 4）か、例から外す。
+     `<!-- prettier-ignore -->`
+     を付けた例をフォーマッターが同じ形に印字するようになったら、
+     もう残す理由はないので、印とその文を消す。
+  3. 書き換えた文書の本文から、古い形を探す。
+     フォーマッターが変えた行を引いているコードスパンである。
+     英日とも新しい形に書く。
+  4. フォーマッターが、
+     前は変えていた書き方を書かれたまま残すようになった変更では、
+     該当する例を fixture の `input.mmd` から作り直す（4 節の手順 4）。
+     古い印字結果を整形し直しても、fixture のテキストには戻らないからである。
+  5. `pnpm run lint:docs` を実行する。
+     続けて、ドキュメントサイトのテストを実行する。
+     このテストは、build したプラグインで、すべての規則の文書の例を表示する。
+     先に `pnpm --filter @mmd-toolkit/eslint-plugin run build` を実行し、
+     そのあと `pnpm --filter @mmd-toolkit/docs run test` を実行する。
+     `packages/docs/pages/linter` のページの例は手で書くので、
+     それもフォーマッターが印字する形に直す。
 - index のうち手で書くもの: 生成する一覧より前の部分で、
   `recommended` が ✅ を付けた規則を有効にすると述べる文を持つ冒頭と、
   規則の id の節である。

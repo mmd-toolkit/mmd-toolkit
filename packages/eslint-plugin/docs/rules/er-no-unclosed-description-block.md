@@ -40,7 +40,7 @@ Examples of **incorrect** code for this rule:
 %% eslint @mmd-toolkit/er-no-unclosed-description-block: error
 erDiagram
   accDescr { x
-  A {
+    A {
     string name
   }
   B

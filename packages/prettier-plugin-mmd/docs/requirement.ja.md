@@ -108,8 +108,11 @@ requirement と element の `{` は、種類のキーワード、名前、クラ
 mermaid.js の文書の書き方でもあります。
 引用符のない名前では空白がどのみち要るので、文の形は 1 つになります。
 [fixture: bodies/opening-brace-after-one-space]
-requirement の種類は 6 つあり、書かれた大文字小文字のまま残します。
-[fixture: bodies/kinds]
+requirement の種類のキーワードは 6 つあり、
+mermaid.js の文書の例が使う大文字小文字で印字します。
+`FUNCTIONALREQUIREMENT` は `functionalRequirement` にします。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+[fixture: bodies/kinds] [fixture: keyword-case/types-one-form]
 `}` の後ろに同じ行で続く文は、それぞれの行に移します。
 [fixture: bodies/statement-after-closing-brace]
 [fixture: statements-one-per-line/closing-brace-then-statement]
@@ -187,10 +190,12 @@ mermaid.js の文書がフィールドをそう書き、journey も値の前に�
 [fixture: fields/spaces-around-colon-and-value]
 [fixture: fields/value-after-one-space]
 引用符のない値の両端の空白は Db に入らないので落とします。
-値の中の空白は Db に入り、文字列は引用符の間のすべてが Db に入ります。
+値の中や文字列の引用符の間の空白とタブの連なりは Db に入りますが、
+空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 [fixture: fields/value-outer-whitespace-dropped]
-[fixture: fields/value-inner-whitespace-kept]
-[fixture: fields/string-values-kept]
+[fixture: fields/value-inner-runs-collapsed]
+[fixture: fields/string-values-runs-collapsed]
 引用符のない値の中の `#`、`%`、`;` は値の文字で、
 コメントの始まりではありません。 [fixture: fields/special-characters-in-values]
 
@@ -198,11 +203,12 @@ mermaid.js の文書がフィールドをそう書き、journey も値の前に�
 同じフィールドが 2 回書かれていても同じで、mermaid.js は最初のものを読みます。
 [fixture: fields/order-kept] [fixture: fields/same-field-twice]
 フィールド、risk、verifyMethod の値のキーワードは、
-書かれた大文字小文字のまま残します。
+mermaid.js の文書の例が使う大文字小文字で印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 mermaid.js はどの大文字小文字でも読み、Db は同じです。
-大文字小文字は強制されないので、作者が選んだものとして、書き換えません。
-[fixture: fields/field-keywords-case-kept]
-[fixture: fields/keyword-values-case-kept]
+[fixture: fields/field-keywords-case-one-form]
+[fixture: fields/keyword-values-case-one-form]
+[fixture: fields/keyword-values-low-test-analysis-case-one-form]
 複数行に書かれたフィールドは、
 字句解析器が改行を空白として読む所で 1 行にします。
 空白の後の改行がそうです（[複数行の文](#複数行の文)を参照）。
@@ -234,16 +240,16 @@ requirementDiagram
     id: 1
     text: the test text.
     risk: high
-    verifyMethod: inspection
+    verifymethod: inspection
   }
   element e {
     type: t
-    docref: d
+    docRef: d
   }
 ```
 
 入力
-([fields/string-values-kept-input.mmd](../tests/fixtures/requirement/fields/string-values-kept-input.mmd)):
+([fields/string-values-runs-collapsed-input.mmd](../tests/fixtures/requirement/fields/string-values-runs-collapsed-input.mmd)):
 
 ```mmd
 requirementDiagram
@@ -258,17 +264,17 @@ docref: "http://x.test/a-b"
 ```
 
 出力
-([fields/string-values-kept-output.mmd](../tests/fixtures/requirement/fields/string-values-kept-output.mmd)):
+([fields/string-values-runs-collapsed-output.mmd](../tests/fixtures/requirement/fields/string-values-runs-collapsed-output.mmd)):
 
 ```mmd
 requirementDiagram
   requirement r {
     id: "1"
-    text: " a:  b, c "
+    text: " a: b, c "
   }
   element e {
-    type: "a  b"
-    docref: "http://x.test/a-b"
+    type: "a b"
+    docRef: "http://x.test/a-b"
   }
 ```
 
@@ -346,15 +352,18 @@ ER 図の関係文も単位の間は空白 1 つです。
 [fixture: relationship-spacing/string-names]
 矢印の向きは書かれたまま残します。
 `a - copies -> b` と `b <- copies - a` は書き方が違うからです。
-関係の語の大文字小文字も書かれたままです。
-[fixture: relationship-spacing/relation-case-kept]
+関係の語は、mermaid.js の文書の例と同じく、小文字で印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+[fixture: relationship-spacing/relation-case-one-form]
+[fixture: relationship-spacing/relations-case-one-form]
 [fixture: relationship-spacing/every-relation]
 引用符のない名前の中の空白は名前の一部です。
+空白の連なりが違うと別の名前になるので、書かれたまま残します。
 [fixture: relationship-spacing/multi-word-names]
-単位の間のディレクティブは、その場に残し、両側に空白があるかどうかは変えず、
-空白の連なりは空白 1 つにします。
-[fixture: relationship-spacing/directive-between-units-kept]
-[fixture: relationship-spacing/directive-between-units-runs-collapsed]
+単位の間のディレクティブは、その場に残し、
+[ディレクティブ](#ディレクティブ)のとおりに置きます。
+[fixture: relationship-spacing/directive-between-units]
+[fixture: relationship-spacing/directive-between-units-runs]
 空白の後で改行して複数行に書かれた関係文は、
 コメントやディレクティブが結合を妨げる場合を除き、1 行にします。
 結合しない場合は、
@@ -366,7 +375,9 @@ ER 図の関係文も単位の間は空白 1 つです。
 [fixture: relationship-spacing/comment-continuation-with-multiline-names]
 [fixture: relationship-spacing/directive-continuation-four-spaces]
 [fixture: relationship-spacing/multiline-directive-line-tail]
-semicolon の読みが関わる行と、物理行を結ぶコメント領域は、元の配置を保ちます。
+改行をつなぐと行の規則が無視する `;` が変わりうる場合と、
+最後の行を `;` が終える場合は、その改行を残します。
+物理行を結ぶコメント領域は、元の配置を保ちます。
 [fixture: multi-line-statements/relationship-last-line-semicolon-kept]
 [test: requirement/relationship-spacing/comment-region-continuation-kept]
 
@@ -393,7 +404,7 @@ requirementDiagram
 ```
 
 入力
-([relationship-spacing/directive-between-units-kept-input.mmd](../tests/fixtures/requirement/relationship-spacing/directive-between-units-kept-input.mmd)):
+([relationship-spacing/directive-between-units-input.mmd](../tests/fixtures/requirement/relationship-spacing/directive-between-units-input.mmd)):
 
 ```mmd
 requirementDiagram
@@ -402,12 +413,12 @@ a  %%{init: {}}%% - contains -> b
 ```
 
 出力
-([relationship-spacing/directive-between-units-kept-output.mmd](../tests/fixtures/requirement/relationship-spacing/directive-between-units-kept-output.mmd)):
+([relationship-spacing/directive-between-units-output.mmd](../tests/fixtures/requirement/relationship-spacing/directive-between-units-output.mmd)):
 
 ```mmd
 requirementDiagram
-  a -%%{init: {}}%%satisfies -> b
-  a %%{init: {}}%% - contains -> b
+  a - %%{init: {}}%%satisfies -> b
+  a %%{init: {}}%%- contains -> b
 ```
 
 ### クラスの並び
@@ -422,7 +433,7 @@ requirement、element、名前とクラスだけの文で、`:::` の後に書�
 その空白はクラスの一部です。 [fixture: class-lists/string-classes]
 [fixture: class-lists/classes-with-spaces]
 各部の間のディレクティブは、その場に残します。
-[fixture: class-lists/directive-between-parts-kept]
+[fixture: class-lists/directive-between-parts]
 
 入力
 ([class-lists/in-requirement-and-element-input.mmd](../tests/fixtures/requirement/class-lists/in-requirement-and-element-input.mmd)):
@@ -490,7 +501,8 @@ Mermaid はスタイルの単位をつなげて読むため、
 通常はつなげる見出しや外側の改行があっても、最初の整形で同じ間隔にします。
 スタイル内部の改行区切り、所有する trivia、
 同じ物理行に保持するセミコロンがある場合は、既存のスタイルの配置を保ちます。
-キーワードの大文字小文字は保ちます。
+キーワード `style` と `classDef` は、書かれた大文字小文字を保ちます。
+（[大文字小文字をそろえるキーワード](./compatibility.ja.md#大文字小文字をそろえるキーワード)）。
 [fixture: styles-and-classes/style-unit-padding]
 [fixture: styles-and-classes/class-def-names]
 [fixture: styles-and-classes/style-names]
@@ -498,6 +510,7 @@ Mermaid はスタイルの単位をつなげて読むため、
 [fixture: styles-and-classes/styles-as-written]
 [fixture: styles-and-classes/trailing-whitespace-dropped]
 [fixture: styles-and-classes/keyword-case-kept]
+[fixture: styles-and-classes/keyword-case-semicolon-line-kept]
 
 行の規則が無視しないスタイル末尾の `;` は、スタイルの文字です。
 削除すると Db が変わるので残します。
@@ -524,7 +537,10 @@ The style context、規則 1）。
 [fixture: styles-and-classes/class-uppercase-digit-next-line]
 それ以外のときは改行を残し、続きの行は 1 段深く置きます。
 [fixture: styles-and-classes/class-over-lines-kept]
-コメント行を含む文は改行を残し、コメントと構造の続きの行を 1 段深く置きます。
+ディレクティブを含む名前は `style-word` ではありません。
+style の文脈では、単位の中のディレクティブを拒否するからです。
+[fixture: styles-and-classes/class-name-with-directive-kept]
+コメント行の隣の改行は残し、コメントと構造の続きの行を 1 段深く置きます。
 [fixture: styles-and-classes/class-over-lines-with-comment-line-kept]
 
 入力
@@ -639,9 +655,11 @@ requirementDiagram
 その前後にある mermaid.js が読まないテキストからなります。
 テキストは書かれたまま残します。
 テキストと `direction` の間は、離れて書かれていれば空白 1 つ、
-`direction` と値の間も空白 1 つにし、値は書かれた大文字小文字のまま残します。
+`direction` と値の間も空白 1 つにし、値の `lr` は `LR` と印字します。
+例が `LR` だけを使うので、ほかの値は書かれた大文字小文字のまま残します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 [fixture: direction/spacing] [fixture: direction/spaces-around]
-[fixture: direction/text-kept] [fixture: direction/case-kept]
+[fixture: direction/text-kept] [fixture: direction/case-one-form]
 次の行に書かれた値は、`direction` の後ろに寄せて 1 行にします。
 [fixture: direction/value-on-next-line-joined]
 ディレクティブやコメント行を含む方向の行は改行を残し、
@@ -673,7 +691,7 @@ requirementDiagram
 ```
 
 入力
-([direction/case-kept-input.mmd](../tests/fixtures/requirement/direction/case-kept-input.mmd)):
+([direction/case-one-form-input.mmd](../tests/fixtures/requirement/direction/case-one-form-input.mmd)):
 
 ```mmd
 requirementDiagram
@@ -682,12 +700,12 @@ Direction Tb
 ```
 
 出力
-([direction/case-kept-output.mmd](../tests/fixtures/requirement/direction/case-kept-output.mmd)):
+([direction/case-one-form-output.mmd](../tests/fixtures/requirement/direction/case-one-form-output.mmd)):
 
 ```mmd
 requirementDiagram
-  DIRECTION lr
-  Direction Tb
+  direction LR
+  direction Tb
 ```
 
 ### 1 行に 1 文
@@ -968,10 +986,14 @@ requirementDiagram
 ### アクセシビリティの文
 
 `accTitle` と `accDescr` の `:` はキーワードに接し、後ろに空白 1 つを置きます。
-テキストの両端の空白は落とし、中の空白はテキストの一部なので残します。
+テキストの両端の空白は落とします。
+`accDescr` のテキストの中の空白とタブの連なりは、空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+`accTitle` はブラウザがツールチップとして表示するので、
+その連なりは書かれたまま残します。
 [fixture: accessibility-statements/colon-touches-keyword]
 [fixture: accessibility-statements/title-and-description]
-[fixture: accessibility-statements/inner-whitespace-kept]
+[fixture: accessibility-statements/inner-runs-collapsed]
 テキストの中の `;`、`#`、`%%` は文字です。
 [fixture: accessibility-statements/special-characters-in-text]
 後の行に書かれたテキストは、`:` の後ろに寄せて 1 行にします。
@@ -1066,7 +1088,7 @@ accDescr {
 ```mmd
 requirementDiagram
 accTitle: direction LR
-accDescr: direction  TB
+accDescr: direction TB
 accDescr { direction RL }
   accDescr {
     direction BT
@@ -1127,6 +1149,8 @@ requirement のキーワードと名前の間、関係文の単位の間、フ�
 それにあたります。
 `style`・`classDef`・`class` 文の行末の文字列が始める文は、
 style の文脈の改行の後で続きます。
+[fixture: multi-line-statements/breaks-decided-one-by-one]
+[fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
 [fixture: multi-line-statements/kind-and-name-joined]
 [fixture: multi-line-statements/relationship-joined]
 [fixture: multi-line-statements/direction-value-joined]
@@ -1136,18 +1160,22 @@ style の文脈の改行の後で続きます。
 構造の続きの行と間の注釈を 1 段深く置きます。
 ブロックのヘッダー、フィールド、関係文、ほかの文も同じです。
 値の中の空白と、各隙間の最初の改行の前の空白は保ちます。
-コメントで結合される領域とセミコロン行の保護対象では、
-文全体を原文のまま残します。
+コメントで結合される領域では、文全体を原文のまま残します。
+改行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
+その改行を残します。
+それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
+改行が残る文は、スタイルも書かれたままにします。
 [test: requirement/multi-line-statements/header-and-field-comment-regions-ls]
 [test: requirement/multi-line-statements/header-and-field-comment-regions-ps]
 [fixture: multi-line-statements/header-directive-continuation]
 [fixture: fields/comment-and-directive-continuations]
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
-[fixture: multi-line-statements/semicolon-kept]
+[fixture: multi-line-statements/semicolon-joined]
 
-最後の行に、後ろの文の `;` がある文も、書かれたまま残します。
-1 行にした行を、行の規則が行全体として読むからです。
+最後の行の `;` が後ろの文のものでも、同じ判定をします。
+つないだ行を、行の規則が行全体として読むからです。
 `"style:#q" - satisfies` と、改行の後の `-> "b" e - satisfies -> f;g` では、
 2 つ目の関係の右は `f;g` ですが、
 1 行にした `"style:#q" - satisfies -> "b" e - satisfies -> f;g` では `fg`
@@ -1155,12 +1183,16 @@ style の文脈の改行の後で続きます。
 その行の文は、その行に残します。
 [fixture: multi-line-statements/relationship-last-line-semicolon-kept]
 [fixture: multi-line-statements/class-last-line-semicolon-kept]
-[fixture: multi-line-statements/string-continued-last-line-semicolon-kept]
 文の最初の行にある、前の文の `;` は、規則にとって何も変えないので、
 文は 1 行にします。
 [fixture: multi-line-statements/relationship-first-line-semicolon-joined]
 [fixture: multi-line-statements/class-first-line-semicolon-joined]
 [fixture: multi-line-statements/accessibility-first-line-semicolon-joined]
+`;` のない行の文は、プリンタが 1 行ずつに分けて置くので、規則は、
+ほかの文を除いた文として読みます。
+`style r fill:#q "r"` と、
+改行の後の `- satisfies -> "b" e - satisfies -> f;g` も、1 行にします。
+[fixture: multi-line-statements/string-continued-last-line-semicolon-joined]
 
 入力
 ([multi-line-statements/string-continued-joined-input.mmd](../tests/fixtures/requirement/multi-line-statements/string-continued-joined-input.mmd)):
@@ -1263,16 +1295,18 @@ requirementDiagram
 
 ### キーワードの大文字小文字
 
-キーワードは、書かれた大文字小文字のまま残します。
-mermaid.js はどの大文字小文字でも読み、Db は同じです。
-大文字小文字は強制されないので、作者が選んだものとして、書き換えません。
-[fixture: keyword-case/keywords-kept]
+キーワードは、参照先の表に示す大文字小文字で印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+`style` と `classDef` は表になく、書かれた大文字小文字を保ちます。
+（[大文字小文字をそろえるキーワード](./compatibility.ja.md#大文字小文字をそろえるキーワード)）。
+mermaid.js は表のキーワードをどの大文字小文字でも読み、Db は同じです。
+[fixture: keyword-case/keywords-one-form] [fixture: keyword-case/types-one-form]
 ヘッダーは、
 小文字の `requirement` で始まるときだけ検出されます（diagrams/requirement.md、
 Detection）。
 
 入力
-([keyword-case/keywords-kept-input.mmd](../tests/fixtures/requirement/keyword-case/keywords-kept-input.mmd)):
+([keyword-case/keywords-one-form-input.mmd](../tests/fixtures/requirement/keyword-case/keywords-one-form-input.mmd)):
 
 ```mmd
 requirementdiagram
@@ -1288,18 +1322,18 @@ STYLE r fill:red
 ```
 
 出力
-([keyword-case/keywords-kept-output.mmd](../tests/fixtures/requirement/keyword-case/keywords-kept-output.mmd)):
+([keyword-case/keywords-one-form-output.mmd](../tests/fixtures/requirement/keyword-case/keywords-one-form-output.mmd)):
 
 ```mmd
 requirementdiagram
-  REQUIREMENT r {
-    ID: 1
-    RISK: HIGH
+  requirement r {
+    id: 1
+    risk: high
   }
-  ELEMENT e {
+  element e {
   }
-  r - SATISFIES -> e
-  DIRECTION lr
+  r - satisfies -> e
+  direction LR
   STYLE r fill: red
 ```
 
@@ -1385,7 +1419,7 @@ text: "t"%c
 requirementDiagram
   requirement r {
     risk: low %c
-    verifyMethod: test#c
+    verifymethod: test#c
     id: "1" #c
     text: "t"%c
   }
@@ -1419,19 +1453,18 @@ requirementDiagram
 
 単独の行のディレクティブは、周りの文と同じ段に置き、
 本体の中ではフィールドと同じ段に置きます。
-文の行にあるディレクティブは、両側に空白が書かれているかを残します。
-あれば空白 1 つを置き、トークンに接していれば接したままにします。
+文の行の中では、flowchart と同じく、隙間をディレクティブがないものとして印字し、
+ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
 [fixture: directives/kept] [fixture: directives/in-body]
 [fixture: directives/before-header]
 [fixture: directives/after-header-on-same-line]
-[fixture: directives/whitespace-on-both-sides-collapsed]
+[fixture: directives/whitespace-on-both-sides]
 [fixture: directives/after-statement-at-end-of-line]
 
 文の 2 つの単位の間のディレクティブは、その場に残し、
-両側に空白があるかどうかは変えず、空白の連なりは空白 1 つにします。
+[ディレクティブ](#ディレクティブ)のとおりに置きます。
 テキストの中のディレクティブは、テキストの一部です。
-[fixture: directives/between-units-kept]
-[fixture: directives/between-units-runs-collapsed]
+[fixture: directives/between-units] [fixture: directives/between-units-runs]
 [fixture: directives/inside-values-kept]
 閉じられていないディレクティブはテキストの残りを取り、書かれたまま残します。
 [fixture: directives/unclosed-at-end-of-text-kept]
@@ -1466,7 +1499,7 @@ requirementDiagram
 ```
 
 入力
-([directives/between-units-kept-input.mmd](../tests/fixtures/requirement/directives/between-units-kept-input.mmd)):
+([directives/between-units-input.mmd](../tests/fixtures/requirement/directives/between-units-input.mmd)):
 
 ```mmd
 requirementDiagram
@@ -1477,13 +1510,13 @@ id:%%{init: {}}%% 1
 ```
 
 出力
-([directives/between-units-kept-output.mmd](../tests/fixtures/requirement/directives/between-units-kept-output.mmd)):
+([directives/between-units-output.mmd](../tests/fixtures/requirement/directives/between-units-output.mmd)):
 
 ```mmd
 requirementDiagram
-  a -%%{init: {}}%% satisfies -> b
-  requirement r%%{init: {}}%%{
-    id:%%{init: {}}%% 1
+  a - %%{init: {}}%%satisfies -> b
+  requirement r %%{init: {}}%%{
+    id: %%{init: {}}%%1
   }
 ```
 

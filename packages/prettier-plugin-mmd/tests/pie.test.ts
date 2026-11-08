@@ -8,6 +8,7 @@ import {
   treeProblemsOfText,
   writtenEmbeddedTexts,
 } from "./db-reading.ts"
+import { dbForFormattingComparison } from "./db-comparison.ts"
 import { pieCases } from "./pie-cases.ts"
 
 /** The source Prettier gives the parser, without a leading byte order mark. */
@@ -23,7 +24,15 @@ describe("pie escaped cases", () => {
     const before = parserText(input)
     const after = parserText(output)
     const embedded = defaultEmbedded()
-    expect(dbOfText(after, embedded)).toEqual(dbOfText(before, embedded))
+    const dbBefore = dbOfText(before, embedded)
+    expect(
+      dbForFormattingComparison(
+        dbBefore,
+        dbOfText(after, embedded),
+        before,
+        after,
+      ),
+    ).toEqual(dbBefore)
     expect(writtenEmbeddedTexts(after)).toEqual(writtenEmbeddedTexts(before))
     expect(await describeFrontmatterChange(before, after, options)).toBeNull()
     expect(treeProblemsOfText(before)).toEqual([])

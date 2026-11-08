@@ -127,6 +127,14 @@ The formatting rules of each diagram type are in its document:
 
 - Formatting preserves what mermaid.js reads, apart from the documented
   whitespace changes below.
+- mermaid.js is the reference, at the version recorded in the specification,
+  currently 12.3.0. When the formatter would change how a token is spelled, such
+  as the case of a keyword, it keeps the spelling as written if the history of
+  mermaid.js (its changelog and the grammars of earlier releases) shows that an
+  earlier version reads the new spelling differently or not at all. The rest of
+  its formatting is checked with 12.3.0 only.
+  [Versions of mermaid.js](./docs/compatibility.md#versions-of-mermaidjs) lists
+  what was read for each kind of spelling.
 - Formatting a formatted diagram again changes nothing.
 - Whitespace at the end of a `style`, `classDef`, or `linkStyle` line is
   removed. mermaid.js keeps it at the end of the last style.

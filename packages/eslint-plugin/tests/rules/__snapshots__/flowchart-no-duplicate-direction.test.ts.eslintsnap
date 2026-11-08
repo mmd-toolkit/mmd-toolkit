@@ -5,7 +5,7 @@ Test: flowchart-no-duplicate-direction >> invalid >>> docs/rules/flowchart-no-du
 Filename: flowchart-no-duplicate-direction-incorrect-1.mmd
 
 Code:
-  1 | flowchart TB
+  1 | flowchart TD
   2 |   subgraph S
   3 |     direction LR
   4 |     A --> B
@@ -18,7 +18,7 @@ Code:
     Suggestions:
       - Remove this direction statement.
         Output:
-          1 | flowchart TB
+          1 | flowchart TD
           2 |   subgraph S
           3 |     direction LR
           4 |     A --> B
@@ -26,7 +26,7 @@ Code:
           6 |
       - Remove the earlier direction statement.
         Output:
-          1 | flowchart TB
+          1 | flowchart TD
           2 |   subgraph S
           3 |     A --> B
           4 |     direction BT

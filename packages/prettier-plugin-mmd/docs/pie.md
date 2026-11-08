@@ -95,8 +95,8 @@ Print a section as `"label" : value`, with one space on both sides of the colon
 and no width alignment. This pie-specific choice follows the spelling in
 [Mermaid pie examples](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/pie.md#L68-L73).
 Both quoted label forms and empty labels follow this rule. A gap containing a
-directive keeps its touching/separated sides; a hidden form also keeps its
-physical boundary, since these items supply no separator.
+directive is placed as under [Directives](./flowchart.md#directives); a hidden
+form keeps its physical boundary, since these items supply no separator.
 
 Fixed cases: [fixture: pie/sections/section-colon] [fixture:
 pie/sections/section-colon-tight-authored] [fixture:
@@ -111,28 +111,31 @@ Output
 ```mmd
 pie
   "Wide" : 12
-  'Narrow' : 3
+  "Narrow" : 3
   "" : 1
 ```
 
 ### Labels
 
 Reuse [XY chart authored strings](./xychart.md#quotes): keep complete quoted
-source spans, because quotes and source text belong to the author. Preserve
-single/double/opposite quotes, escapes without decoding, empty and
-whitespace-only labels, entities/HTML and hidden-looking percent text.
-`singleQuote` does not rewrite labels. Keep converted-label collisions as
-separate occurrences; the resolved Map is not source.
+source spans, because the source text belongs to the author. Preserve escapes
+without decoding, empty and whitespace-only labels, entities/HTML and
+hidden-looking percent text; a string between `'` is printed between `"`, unless
+its text holds a `'`, a `"`, a backslash, a line break, U+2028, U+2029, a
+backquote, `&`, `#`, or `<` (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+and `singleQuote` is not read. Keep converted-label collisions as separate
+occurrences; the resolved Map is not source.
 
-Fixed cases: [fixture: pie/labels/label-quotes] [fixture:
-pie/labels/label-escapes] [fixture: pie/labels/label-inner-trim-kept] [fixture:
-pie/labels/label-quote-authored] [fixture: pie/labels/label-hidden-looking]
-[fixture: pie/labels/div-c4-label] [fixture: pie/labels/div-c4-eof] [test:
-pie/labels/div-bare-unicode] [test: pie/labels/div-retained-bare-unicode]
-[fixture: pie/labels/div-html-invalid] [fixture:
-pie/labels/label-whitespace-opposite] [fixture: pie/labels/label-html-entities]
-[fixture: pie/labels/label-converted-collisions] [fixture:
-pie/labels/label-quote-option].
+Fixed cases: [fixture: pie/labels/single-quote-sensitive-kept] [fixture:
+pie/labels/label-quotes] [fixture: pie/labels/label-escapes] [fixture:
+pie/labels/label-inner-trim-kept] [fixture: pie/labels/label-quote-one-form]
+[fixture: pie/labels/label-hidden-looking] [fixture: pie/labels/div-c4-label]
+[fixture: pie/labels/div-c4-eof] [test: pie/labels/div-bare-unicode] [test:
+pie/labels/div-retained-bare-unicode] [fixture: pie/labels/div-html-invalid]
+[fixture: pie/labels/label-whitespace-opposite] [fixture:
+pie/labels/label-html-entities] [fixture: pie/labels/label-converted-collisions]
+[fixture: pie/labels/label-quote-option].
 
 Input (escaped): `"pie\n' single  label ':3\n\" double  label \":4\n'':2"`.
 
@@ -141,20 +144,24 @@ Output
 
 ```mmd
 pie
-  ' single  label ' : 3
+  " single  label " : 3
   " double  label " : 4
-  '' : 2
+  "" : 2
 ```
 
 ### Numbers
 
-Reuse [XY chart authored numbers](./xychart.md#numbers): print the
-NumericLiteral source rather than its converted double. Keep negative zero,
-fractional leading zeros, trailing zeros, long precision, zero and small slices.
-Overflow and signed underflow follow the accepted corpus readings; invalid
-spellings and negative duplicates remain parser failures.
+Reuse [XY chart authored numbers](./xychart.md#numbers): a NumericLiteral that
+is a plain decimal is printed in the shortest form (`1.50` is `1.5`, `2.0` is
+`2`; see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+and every other source span is printed rather than its converted double. Keep
+negative zero, a zero at the start of the integer part, long precision, zero and
+small slices. Overflow and signed underflow follow the accepted corpus readings;
+invalid spellings and negative duplicates remain parser failures.
 
-Fixed cases: [fixture: pie/numbers/number-spellings] [fixture:
+Fixed cases: [fixture: pie/numbers/shortest-form] [fixture:
+pie/numbers/forms-kept] [fixture: pie/numbers/number-spellings] [fixture:
 pie/numbers/number-normalize-authored] [fixture: pie/numbers/number-zero-small].
 
 [corpus fixture: pie/number-overflow] [corpus fixture:
@@ -179,11 +186,18 @@ pie showData
 Reuse the compact common-value reason of
 [C4 accessibility lines](./c4.md#accessibility-lines): equivalent exterior
 whitespace gets one form. Print `title`, one space, and a trimmed nonempty
-value; a null/empty/whitespace-only value prints bare `title`. Preserve internal
-words, tabs, quotes and backslashes, and all repeated assignments, including
+value; a null/empty/whitespace-only value prints bare `title`. Print a run of
+spaces and tabs inside the value as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+and preserve quotes and backslashes, and all repeated assignments, including
 frontmatter fallback. Pie never joins the next physical line into a title: even
 across blank/comment/directive gaps, a following section is a separate
-statement. Protected trivia and semicolon groups take precedence.
+statement. Protected trivia and semicolon groups take precedence. The directives
+that end a title are printed with one space before each that has whitespace
+before it, and the whitespace after the last one is left out, whatever the
+whitespace at the end of the line (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: title/title-directives-end-blanks-dropped]
 
 Fixed cases: [fixture: pie/title/title-trim] [fixture: pie/title/title-empty]
 [fixture: pie/title/title-next-section] [fixture: pie/title/title-next-trivia]
@@ -197,7 +211,7 @@ Output
 
 ```mmd
 pie
-  title Sales  report
+  title Sales report
   "Sales" : 8
 ```
 
@@ -206,11 +220,18 @@ pie
 Reuse [C4 accessibility lines](./c4.md#accessibility-lines), with the same
 compact exterior-whitespace reason: `accTitle: value` and `accDescr: value`,
 with the colon touching the keyword and one space before a trimmed nonempty
-value. Empty values end at the colon. Interior tabs, quotes and line-form braces
-remain text; repeated assignments and percent comment attachment remain. Pie
-never joins next-line values, including after blank/comment/directive gaps,
-because its composite line forms stop at physical EOL. Hidden forms and
-protected textual groups retain their gaps.
+value. Empty values end at the colon. A run of spaces and tabs inside the value
+of an `accDescr` is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+and that of an `accTitle` stays as written, since the browser shows it as a
+tooltip; quotes and line-form braces remain text; repeated assignments and
+percent comment attachment remain. Pie never joins next-line values, including
+after blank/comment/directive gaps, because its composite line forms stop at
+physical EOL. Hidden forms and protected textual groups retain their gaps. The
+directives that end the value are printed with one space before each that has
+whitespace before it, and the whitespace after the last one is left out (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 Fixed cases: [fixture: pie/accessibility-lines/a11y-lines] [fixture:
 pie/accessibility-lines/a11y-empty] [fixture:
@@ -232,7 +253,7 @@ Output
 ```mmd
 pie
   accTitle: Title  words
-  accDescr: Description  text
+  accDescr: Description text
   "Line" : 1
 ```
 
@@ -457,19 +478,29 @@ pie
 
 ### Directives and semicolons
 
-Reuse [global directive opacity](./flowchart.md#directives) and
-[C4 textual semicolon protection](./c4.md#line-rule-and-semicolons), because
-common removal supplies no separator and semicolon selection reads source
-segments. Keep directives in their authored gaps, including multiline contents
-and EOF-reaching endings. Within a printed line, keep whether each side touches
-or is separated. When formatting splits units that were on the same line, a
-directive in their gap moves with the following unit: its right boundary stays
-touching or separated, while its left contact is broken. Protect from the first
-non-whitespace character through the last semicolon, extending through complete
-crossing values/comments/directives; do not split a protected header/body group.
-Keep every semicolon and both style/classDef passes, case/colon-hash whitespace
-distinctions, Unicode segment bounds, directive-rejoined triggers and comment
-semicolons. Format only safe exterior/suffix gaps. Atomic keyword/number cuts
+Reuse [global directive opacity](./flowchart.md#directives): common removal
+supplies no separator, and semicolon selection reads source segments. Keep
+directives in their authored gaps, including multiline contents and EOF-reaching
+endings. Within a printed line, place a directive as under
+[Directives](./flowchart.md#directives). When formatting splits units that were
+on the same line, a directive in their gap moves with the following unit: its
+right boundary stays touching or separated, while its left contact is broken. A
+segment that holds a kept `;` is formatted as anywhere else, except where
+formatting could change which `;` the line rule ignores. The rule reads a
+segment from the first `:` after `style` or `classDef` to the last `#` before
+its last kept `;`, with no whitespace between the `:` and the `#` (see
+[Semicolons](./flowchart.md#semicolons)), so the gaps and the padding inside
+that stretch keep whether they hold whitespace, a run becoming one space, and
+the rest of the segment follows the ordinary rules of this diagram. Text that no
+part of the layout holds stays as written. A statement over several lines whose
+lines, joined with one space or with nothing, could change which `;` the line
+rule ignores keeps the text of each segment, up to its last kept `;`, as
+written; any other statement over several lines is formatted like one on a
+single line. [fixture: directives-and-semicolons/stretch-kept-rest-formatted]
+[fixture: directives-and-semicolons/no-stretch-formatted] Do not split a
+protected header/body group. Keep every semicolon and both style/classDef
+passes, case/colon-hash whitespace distinctions, Unicode segment bounds,
+directive-rejoined triggers and comment semicolons. Atomic keyword/number cuts
 remain specified failures.
 
 [fixture: pie/directives-and-semicolons/native-label-value]
@@ -491,7 +522,7 @@ pie/directives-and-semicolons/selected-comment-tail] [test:
 pie/directives-and-semicolons/selected-ls-segments] [fixture:
 pie/directives-and-semicolons/global-joined-trigger] [fixture:
 pie/directives-and-semicolons/global-header-first-statement] [fixture:
-pie/directives-and-semicolons/global-gap-side-presence] [fixture:
+pie/directives-and-semicolons/global-gap-sides] [fixture:
 pie/directives-and-semicolons/global-value-boundaries] [fixture:
 pie/directives-and-semicolons/selected-one-three-padding] [fixture:
 pie/directives-and-semicolons/selected-comment-semicolon] [fixture:
@@ -622,7 +653,7 @@ pie
   "2" : 4
   "__proto__" : 5
   "constructor" : 6
-  '10' : 8
+  "10" : 8
   "a\n" : 1
   "a
 " : 7

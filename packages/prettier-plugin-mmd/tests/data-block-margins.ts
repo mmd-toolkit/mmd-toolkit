@@ -1,3 +1,5 @@
+import { leadingSpaces } from "./db-values.ts"
+
 /**
  * Exposes the formatter's permitted changes of a data block without changing
  * the raw texts. The formatter moves every line of a multi-line block by the
@@ -17,13 +19,6 @@ export function dataBlockEmbeddedForFormattingComparison(
       ? previous
       : value
   })
-}
-
-/** The number of spaces that start a row. */
-function leadingSpaces(row: string): number {
-  let count = 0
-  while (row[count] === " ") count++
-  return count
 }
 
 /** Whether a row is a `}` with only spaces before it. */
@@ -82,7 +77,22 @@ function isPaddedOneLine(before: string, after: string): boolean {
     start++
   while (end > start && (inside[end - 1] === " " || inside[end - 1] === "\t"))
     end--
-  return start < end && after === `@{ ${inside.slice(start, end)} }`
+  return start < end
+    ? after === `@{ ${inside.slice(start, end)} }`
+    : after === "@{ }"
+}
+
+/**
+ * The block with the spaces and tabs removed between the `@` and the `{` of
+ * its head, which the formatter drops from the JSON table of a use case
+ * diagram (docs/usecase.md, JSON tables). A block with a directive is left
+ * as it is, since the formatter leaves it as written.
+ */
+function withoutHeadPadding(block: string): string {
+  if (!block.startsWith("@") || block.includes("%%{")) return block
+  let brace = "@".length
+  while (block[brace] === " " || block[brace] === "\t") brace++
+  return block[brace] === "{" ? `@${block.slice(brace)}` : block
 }
 
 /**
@@ -94,6 +104,8 @@ function isPaddedOneLine(before: string, after: string): boolean {
  */
 function isAllowedMove(before: string, after: string): boolean {
   if (before === after) return true
+  const head = withoutHeadPadding(before)
+  if (head !== before) return isAllowedMove(head, after)
   if (!before.includes("\n") && !after.includes("\n"))
     return isPaddedOneLine(before, after)
   const rowsBefore = before.split("\n")

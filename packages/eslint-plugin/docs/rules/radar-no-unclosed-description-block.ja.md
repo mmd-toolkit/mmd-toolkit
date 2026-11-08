@@ -44,8 +44,8 @@ mermaid.js はエラーなしにそこでブロックを閉じ、
 %% eslint @mmd-toolkit/radar-no-unclosed-description-block: error
 radar-beta
   accDescr { first
-  axis A, B, C
-  curve sales{1, 2, 3}
+    axis A, B, C
+    curve sales{1, 2, 3}
 ```
 
 この規則に**従う**コードの例:

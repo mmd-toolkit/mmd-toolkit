@@ -579,7 +579,8 @@ body を持つ形の規則が後の閉じまで読む場合は保ちます。
 空でない行の ASCII 空白 prefix の後がタブなどの空白の場合は、
 本文全体を書かれたまま残します。
 HTML、entity、directive 風の text は、字下げで描画が変わる場合があるためです。
-既存の semicolon 保護と既定のサイズ上限の規則も優先します。
+`;` を含む本文も、書かれたまま残します。
+`#amp;` などの Mermaid の native entity の綴りは、`;` で終わるからです。
 
 [fixture: eventmodeling/data-blocks/block-interior-unchanged]
 
@@ -599,6 +600,26 @@ Mermaid は本文内の字下げを受理し、raw value に含めます。
 そのため、この行頭 margin の変更では、描画を保ちながら raw Db 値が変わります。
 これは formatter の明示的な例外で、parser、仕様、
 記録された Mermaid の Db の読みは変えません。
+
+レンダラーは、データブロックの `{` と閉じる `}` の間の本文を取り出し、
+`wrapLabel` に渡します。
+（[`calculateTextProps`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/eventmodeling/db.ts#L358-L371)）。
+`wrapLabel` は半角空白ごとに分け、空の部分を捨てます。
+（[`wrapLabel`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/utils.ts#L559-L594)）。
+そのため、2 行目以降の行頭の連続する半角空白は、
+長さによらず空白 1 つとして描かれ、空白がなければ何も描かれません。
+最初の行の先頭の半角空白は、何も描かれません。
+各場合の両方のテキストを mermaid.js 12.3.0 で Chromium に描きました。
+各行の余白を別の長さにした場合と、最初の行に余白を足した場合は、
+生成された id を除いた SVG と画素が同じでした。
+余白がなかった後続行に余白を足すと図が変わったので、
+そのような本文は書かれたままにします。
+テストは、印字したテキストの Db に、
+書かれたテキストの Db から本文の余白を戻して比べます。
+`tests/eventmodeling-data-margins.ts` の関数、
+`eventmodelingDbForFormattingComparison` を使います。
+固定している mermaid.js の版を上げるときは、
+各場合の両方のテキストを描き直してから、例外を残します。
 
 [fixture: eventmodeling/final-newline/final-block-padding-kept]
 
@@ -984,7 +1005,8 @@ frontmatter の場合も含めて確かめます。
 ### Global directives
 
 共有 directive 配置を使います。
-同じ印字行では両側それぞれの接触・分離を保ちます。
+同じ印字行のディレクティブは、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 文・clause・item を行に分ける場合、間の directive は次の単位へ付け、
 右の接し方を保ちます。
 内容、順序、複数行の内部、値の中の位置、未完 EOF の終端を保ちます。
@@ -1016,14 +1038,27 @@ frontmatter の場合も含めて確かめます。
 
 ```mmd
 eventmodeling
-tf%%{wrap}%% 01 evt Alpha%%{wrap}%%->>%%{wrap}%%02
+tf %%{wrap}%%01 evt Alpha %%{wrap}%%->> %%{wrap}%%02
 ```
 
 ### Semicolons
 
-全 authored semicolon を共有 textual-prefix 保護で残します。
-各 segment の最後の semicolon までと、
-そこを跨ぐ完全な value・trivia を保ちます。
+全 authored semicolon を残します。
+保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
+ほかの場所と同じように整形します。
+この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
+`style` か `classDef` の後の最初の `:` から、
+最後の保つ `;` の前の最後の `#` までに空白がない並びを読みます。
+その範囲の隙間と余白は空白の有無を保ち、空白の連続は空白 1 つにします。
+範囲の外は、この図種の通常の規則に従います。
+どの部分の配置も持たないテキストは、書かれたまま残します。
+複数行にわたる文の行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
+書かれたまま残します。
+それ以外の複数行の文は、1 行の文と同じように整形します。
+[fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted]
+[fixture: semicolons/protected-gwt-title-hidden-gap-remains-zero]
 最初の保護された本文行は所属の段に揃え、内容と後続列は書かれたままです。
 required identifier と共通値の空白は構造上の字下げより優先します。
 子の本文の opening edge も保護行に残し、次の整形で分かれ方が変わるのを防ぎます。
@@ -1065,7 +1100,7 @@ required identifier と共通値の空白は構造上の字下げより優先し
 ([semicolons/selected-external-semicolon-preserved-output.mmd](../tests/fixtures/eventmodeling/semicolons/selected-external-semicolon-preserved-output.mmd)):
 
 ```mmd
-eventmodeling tf 01 evt Alpha "style:#x" ;rf 02 cmd Beta
+eventmodeling tf 01 evt Alpha "style:#x"; rf 02 cmd Beta
 ```
 
 ### Blank lines

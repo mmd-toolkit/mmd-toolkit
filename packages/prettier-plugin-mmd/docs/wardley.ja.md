@@ -149,10 +149,21 @@ wardley-beta
 ### 名前と引用
 
 WardleyIdentifier と StringLiteral は source span のまま印字します。
-内部の空白とタブ、ハイフン、括弧、ampersand、引用符、escape、
-空と空白だけの文字列も保ち、singleQuote では書き換えません。
+内部の空白とタブ、ハイフン、括弧、ampersand、escape、
+空と空白だけの文字列も保ちます。
+ただし、link の label は除き、
+中の空白とタブの連なりは空白 1 つにして印字します。
+（[セミコロンのラベル](#セミコロンのラベル)を参照）。
+名前の文字列が `'` で囲まれていれば、`"` で囲んで印字しますが、内容に `'`、`"`、
+backslash、改行、U+2028、U+2029、バッククォート、`&`、`#`、
+`<` が含まれる場合は書かれたままにします。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+`singleQuote` は読みません。
+link の label（`+'moving'>`）は `'` で囲んだままにします。
+mermaid.js がその場所で読む引用符は、それだけだからです。
+[fixture: names-and-quotes/single-quote-sensitive-kept]
 名前の空白を畳むことと文字列の trim は Db を変えます。
-Db が同じ引用符への変更も、原綴を失い escape の再解釈が必要です。
+escape の別の解釈が必要になる引用符への変更はしません。
 
 [fixture: wardley/names-and-quotes/name-spaces]
 
@@ -426,6 +437,11 @@ padding を足したり trim したりしません。; の後が空白なら、
 空白だけのラベルとして受理され、裸の ; は拒否されます。
 後続のセミコロンには共有の prefix 保護を使います。
 native に見える形と percent テキストもラベルのままです。
+リンクのラベルでは、`;` の後や flow の引用符の間の空白とタブの連なりは、
+空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+component の名前はそのままです。 [fixture: wardley/flows/flow-padding-escapes]
+[fixture: wardley/flows/flow-ports-and-label]
 
 [fixture: wardley/semicolon-labels/label-exterior]
 
@@ -553,6 +569,10 @@ wardley-beta
 普通の外端の共通空白は trim し、閉じない引用符も内部の文字として保ちます。
 空の title は空のままで、次の行を値にしません。
 値を引用文字列として扱わず、Db が同じ端の形を簡潔にします。
+題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: title/title-directives-end-blanks-dropped]
 
 [fixture: wardley/title/title-trim]
 
@@ -569,7 +589,7 @@ wardley-beta
 
 ```mmd
 wardley-beta
-  title A  subject
+  title A subject
 ```
 
 ### アクセシビリティ
@@ -578,6 +598,10 @@ wardley-beta
 
 accTitle: Value と accDescr: Value は共有の行 layout を使います。
 空の代入も残します。
+値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: accessibility/acc-directives-end-blanks-dropped]
 説明ブロックは共有の description layout を通します。
 通常の gap では、接して書かれていても語と { の間に空白 1 つを置きます。
 1 行のテキストは、括弧に接して書かれていても、両側に空白 1 つずつを置きます。
@@ -618,7 +642,7 @@ Db が同じ共通の形を選び、空白だけの内部には囲むテキス�
 ```mmd
 wardley-beta
   accTitle: A  B
-  accDescr: C  D
+  accDescr: C D
 ```
 
 ### hidden form
@@ -797,7 +821,8 @@ wardley-beta
 ### global directive
 
 Root directive の原文、順、owner を保ちます。
-同じ印字行の中では、両側の接触・分離を保ちます。
+同じ印字行の中のディレクティブは、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 元は同じ行にあった単位を別の行へ分けるときは、
 間の directive を次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
@@ -835,7 +860,7 @@ native の hidden directive は別のノードです。
 
 ```mmd
 wardley-beta
-  component%%{wrap}%%Glued [0.3, 0.6]
+  component %%{wrap}%%Glued [0.3, 0.6]
 ```
 
 ### コメント
@@ -941,6 +966,13 @@ mermaid が 1 行として読む範囲で数えます。
 除去される Root directive の内部だけにある語は、行全体を保護する理由にしません。
 ヘッダの前にある Root directive も同じように除かれ、その後の本文の行は、
 従来どおり保護するか整形します。
+
+語の行の `;` の前後の空白は、mermaid.js の行の読み方を変えるので、
+書かれたまま残します。
+行末の `A -> B;` は拒否されますが、
+その後に空白がある `A -> B;` は受理されるので、
+mermaid.js が別の読み方をする形を印字しません。
+[fixture: wardley/semicolons/word-line-semicolon-whitespace-kept]
 
 [fixture: wardley/semicolons/style-label]
 

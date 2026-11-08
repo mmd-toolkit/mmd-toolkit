@@ -54,7 +54,7 @@ sequenceDiagram
 sequenceDiagram
   A ->> B: x
   accDescr { y
-  B ->> A: z
+    B ->> A: z
 ```
 
 Examples of **correct** code for this rule:

@@ -4,6 +4,14 @@ mmd-toolkit uses **[mermaid.js](https://mermaid.js.org/) 12.3.0** as its
 compatibility reference. See [Diagram support](./support.md) for the diagram
 types covered.
 
+When the formatter would change how a token is spelled, such as the case of a
+keyword, it keeps the spelling as written if the history of mermaid.js (its
+changelog and the grammars of earlier releases) shows that an earlier version
+reads the new spelling differently or not at all. The rest of its formatting is
+checked with 12.3.0 only. The formatter's
+[compatibility notes](../../../prettier-plugin-mmd/docs/compatibility.md#versions-of-mermaidjs)
+list what was read for each kind of spelling.
+
 ## Guarantees
 
 - The parser accepts and rejects the same diagram text as mermaid.js and reads

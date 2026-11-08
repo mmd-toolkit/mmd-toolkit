@@ -330,16 +330,17 @@ A bracket label touches its name or text id for a compact suffix; its
 bare/quoted form and every interior character stay as written, except the
 spaces, tabs, and no-break spaces next to the brackets, which mermaid.js trims:
 `set A[ L ]` is printed `set A[L]`. A label that holds a directive stays as
-written. The padding is dropped on a line with a kept `;` too, where the text
-through the last `;` is a protected stretch (see Terms): it moves no `;`, so the
-line rule selects the same one. `set A[ a; ]` is printed `set A[a;]` and
-`set B[ a;b ]` is printed `set B[a;b]`. One space stays where the padding lies
-between a `:` and a `#` of a line that the line rule may read, since whether it
-is there decides which `;` is ignored: `set "style:"[ #x; ]` is printed
-`set "style:"[ #x;]`, while `set "a:b"[ #x; ]` has no `style` before the `:` and
-is printed `set "a:b"[#x;]`. A `style`, a `:`, a `#`, or a `;` inside a
-directive is not read by the rule, so it makes no stretch:
-`set "style:"[ #x ]%%{init:{"a":";"}}%%` is printed
+written. The padding is dropped on a line with a kept `;` too, apart from the
+stretch read by the line rule (see
+[Line rule and kept lines](#line-rule-and-kept-lines)): dropping it outside that
+stretch moves no `;`, so the line rule selects the same one. `set A[ a; ]` is
+printed `set A[a;]` and `set B[ a;b ]` is printed `set B[a;b]`. One space stays
+where the padding lies between a `:` and a `#` of a line that the line rule may
+read, since whether it is there decides which `;` is ignored:
+`set "style:"[ #x; ]` is printed `set "style:"[ #x;]`, while `set "a:b"[ #x; ]`
+has no `style` before the `:` and is printed `set "a:b"[#x;]`. A `style`, a `:`,
+a `#`, or a `;` inside a directive is not read by the rule, so it makes no
+stretch: `set "style:"[ #x ]%%{init:{"a":";"}}%%` is printed
 `set "style:"[#x]%%{init:{"a":";"}}%%`. [fixture:
 labels/bracket-padding-line-rule-chars-in-directive] A `%%` in the middle of a
 line is no comment line, so the rule reads its text: `set "style:b"[ #x ] %% c;`
@@ -351,14 +352,17 @@ labels/bracket-padding-in-style-rule-stretch] [test: U+2028 inside the brackets
 of a venn label] [test: U+2029 inside the brackets of a venn label] [test:
 U+2028 inside the brackets of a venn label with a semicolon] [test: U+2029
 inside the brackets of a venn label with a semicolon] [fixture:
-labels/bare-label-padding-dropped] Whitespace inside quotes belongs to the
-value, and stays: an empty quoted label or bare whitespace label omits the Db
-label, whereas quoted whitespace stores an empty label. Embedded trivia stays
-inside the label, and gap items retain attachment instead of applying tight
-spacing. [fixture: venn/labels/specified-c4-label-title] [fixture:
-venn/labels/all-suffixes] [corpus fixture: venn/db-form-text-string-label]
-[corpus fixture: venn/db-form-union-label] [corpus fixture:
-venn/lex-directive-label-delimiter-gap] [corpus fixture:
+labels/bare-label-padding-dropped] A run of spaces and tabs inside a label is
+printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+also inside quotes. A quoted label of whitespace only stays quoted, with its
+whitespace printed as one space: an empty quoted label or bare whitespace label
+omits the Db label, whereas quoted whitespace stores an empty label. Embedded
+trivia stays inside the label, and gap items retain attachment instead of
+applying tight spacing. [fixture: venn/labels/specified-c4-label-title]
+[fixture: venn/labels/all-suffixes] [corpus fixture:
+venn/db-form-text-string-label] [corpus fixture: venn/db-form-union-label]
+[corpus fixture: venn/lex-directive-label-delimiter-gap] [corpus fixture:
 venn/lex-label-bare-comment-only] [corpus fixture: venn/lex-label-bare-padding]
 [corpus fixture: venn/lex-label-quoted-comment-only] [corpus fixture:
 venn/lex-label-quoted-directive-only] [corpus fixture:
@@ -391,11 +395,17 @@ set A[L]:002.00
 ### Sizes and numbers
 
 A size touches the preceding name or label as `:number`, giving both suffixes
-one compact form. Signs, fractions, leading zeros, signed zero and overflow
-retain their spelling; numeric text ids also retain their spelling because
-rewriting them changes the Db. Absent size and written zero remain distinct
-written forms. [fixture: venn/sizes-and-numbers/absent-zero-signs] [corpus
-fixture: venn/db-set-colon-size-inline-directive] [corpus fixture:
+one compact form. A size that is a plain decimal is printed in the shortest form
+(`+5` is `5`, `-.5` is `-0.5`; see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+A zero at the start of the integer part, signed zero and overflow retain their
+spelling; numeric text ids also retain their spelling because rewriting them
+changes the Db, and so do the numbers of a `text` or `style` statement
+(`text A 1.50`, `opacity:0.50`), which mermaid.js reads as text. Absent size and
+written zero remain distinct written forms. [fixture:
+venn/sizes-and-numbers/absent-zero-signs] [fixture:
+venn/sizes-and-numbers/text-and-style-numbers-kept] [corpus fixture:
+venn/db-set-colon-size-inline-directive] [corpus fixture:
 venn/db-set-label-colon-size-inline-directive] [corpus fixture:
 venn/db-size-negative-overflow] [corpus fixture: venn/db-size-negative-zero]
 [corpus fixture: venn/db-size-overflow] [corpus fixture: venn/db-size-zero]
@@ -418,7 +428,7 @@ Output
 ```mmd
 venn-beta
 set A:+02.50
-set B:-.5
+set B:-0.5
 union A, B:007
   text 007
 ```
@@ -512,15 +522,24 @@ style A fill:#0f0, stroke:#00f
 
 Semicolons never separate Venn statements. Except for
 [Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement),
-they stay as written. The printer keeps the protected stretch from the first
-non-whitespace character through the last kept semicolon, extending through any
-crossing value, comment or directive; this keeps the textual line-rule
-selection, including nonmatches and markers across statements. Indentation and
-exterior trailing whitespace belong to the printer, and a safe suffix formats
-normally. The shared rule's segments can end inside a diagram comment, while the
-printer's protected stretch retains that whole comment. Crossing values appear
-once, and an unclosed directive stopped by a semicolon retains its stopping
-boundary.
+they stay as written. A segment that holds a kept `;` is formatted as anywhere
+else, except where formatting could change which `;` the line rule ignores. The
+rule reads a segment from the first `:` after `style` or `classDef` to the last
+`#` before its last kept `;`, with no whitespace between the `:` and the `#`
+(see [Semicolons](./flowchart.md#semicolons)), so the gaps and the padding
+inside that stretch keep whether they hold whitespace, a run becoming one space,
+and the rest of the segment follows the ordinary rules of this diagram. Text
+that no part of the layout holds stays as written. A statement over several
+lines whose lines, joined with one space or with nothing, could change which `;`
+the line rule ignores keeps the text of each segment, up to its last kept `;`,
+as written; any other statement over several lines is formatted like one on a
+single line. [fixture:
+semicolons-at-the-end-of-a-style-statement/stretch-kept-rest-formatted]
+[fixture: semicolons-at-the-end-of-a-style-statement/no-stretch-formatted]
+[fixture: line-rule-and-kept-lines/crossing-multiline-value] The shared rule's
+segments can end inside a diagram comment, while the printer's protected stretch
+retains that whole comment. Crossing values appear once, and an unclosed
+directive stopped by a semicolon retains its stopping boundary.
 
 [fixture: venn/line-rule-and-kept-lines/crossing-adjacent-values]
 
@@ -585,14 +604,26 @@ set A[style:#x;y] set B:2
 
 ### Title
 
-The consumed first title separator becomes one ASCII space for readability;
-every later value character, including leading/trailing whitespace and
-statement-looking words, stays as written, because everything after the one
-separator is the title value in the tree and in the Db, so trimming or
-collapsing it changes the Db. Indentation on the next source line belongs to the
-value, so `title` LF `  T` prints as `title   T`. LF and the broader accepted
-title separators may normalize, but trivia, joined regions and kept parts
-protect their written boundaries. [corpus fixture:
+The consumed first title separator becomes one ASCII space for readability, and
+so do the spaces and tabs after it, and the spaces and tabs at the end of the
+title are left out: mermaid.js keeps them in the Db, but draws the same title
+without them (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+Every later value character, including statement-looking words, stays as
+written, because everything after the one separator is the title value in the
+tree and in the Db. At the end of the title, U+2028 and U+2029 are characters of
+the title and no spaces or tabs: the spaces after one are left out, and the
+spaces before it stay. [test: venn: title-line-separator-spaces] Indentation on
+the next source line belongs to the value, so `title` LF `  T` prints as
+`title T`. [fixture: venn/title/text-padding-dropped] A title of spaces and tabs
+only stays as written. [fixture: venn/title/title-blank-kept] A title that ends
+with directives and then spaces and tabs is printed as the same title with the
+directives last: `title T  %%{x}%%  ` is printed `title T %%{x}%%`, and
+`title T  %%{x}%%  %%{y}%%  ` is printed `title T %%{x}%% %%{y}%%`. [fixture:
+venn/title/title-trailing-directive-blanks-dropped] [fixture:
+venn/title/title-two-directives-trailing-blanks-dropped] LF and the broader
+accepted title separators may normalize, but trivia, joined regions and kept
+parts protect their written boundaries. [corpus fixture:
 venn/db-frontmatter-title-overridden] [corpus fixture: venn/db-title-on-header]
 [corpus fixture: venn/db-title-only-whitespace] [corpus fixture:
 venn/db-title-padding] [corpus fixture: venn/db-title-value-next-line] [corpus
@@ -600,7 +631,7 @@ fixture: venn/lex-gap-title-comment] [fixture: venn/title/repeated-title]
 [fixture: venn/title/title-directive] [fixture: venn/title/title-inline-percent]
 [fixture: venn/title/title-next-line] [fixture:
 venn/title/title-statement-words] [fixture: venn/title/title-tab-separator]
-[fixture: venn/title/title-trim-unsafe] [fixture:
+[fixture: venn/title/title-ends-dropped-at-end-of-input] [fixture:
 venn/title/title-whitespace-only]
 
 Input (escaped):
@@ -614,14 +645,14 @@ Output
 
 ```mmd
 venn-beta
-title   T
+title T
 ```
 
 ### Directives
 
 Standalone directives align with nearby statements to show their association;
-inline directives retain their containing line, order, contents and touching
-relations, with ordinary spaced gap sides reduced to one space. A leading
+inline directives retain their containing line, order and contents, and are
+placed in their gaps as under [Directives](./flowchart.md#directives). A leading
 directive retains the positive versus zero logical indentation of implicit
 versus explicit text, choosing exterior indentation before the first directive
 while keeping its internal gap relations. Embedded, multiline, semicolon-stopped
@@ -694,7 +725,7 @@ Output
 
 ```mmd
 venn-beta
-set A %%{init: {}}%% [L]:2
+set A%%{init: {}}%%[L]:2
 ```
 
 Input (escaped):
@@ -715,9 +746,12 @@ set A
 
 Exterior ASCII spaces and tabs after completed headers and non-title statements
 disappear for clean line endings, including after kept parts and safe suffixes.
-Spaces inside names, labels, colors, style strings, title values, comments and
-directives remain authored text. [fixture:
-venn/trailing-whitespace/continuation-spaces] [corpus fixture:
+Spaces inside names, colors, style strings, comments and directives remain
+authored text. A run of spaces and tabs inside a label or a title value is
+printed as one space, and the spaces at the end of a title are left out (see
+[Title](#title) and
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+[fixture: venn/trailing-whitespace/continuation-spaces] [corpus fixture:
 venn/db-after-set-label-size-space] [corpus fixture: venn/db-title-padding]
 [corpus fixture: venn/lex-tab-line-end] [fixture:
 venn/trailing-whitespace/kept-prefix-exterior] [fixture:
@@ -725,8 +759,8 @@ venn/trailing-whitespace/trailing-comment] [fixture:
 venn/trailing-whitespace/trailing-exterior] [fixture:
 venn/trailing-whitespace/trailing-in-values]
 
-Input `"venn-beta \nset A \n"` prints `"venn-beta\nset A\n"`; `title T  ` keeps
-its value spaces.
+Input `"venn-beta \nset A \n"` prints `"venn-beta\nset A\n"`; `title T  ` prints
+`title T`.
 
 ### Multiline values
 
@@ -773,10 +807,16 @@ style A fill:"red
 
 ### Keyword case and order
 
-Written keyword case and every declaration, target and property remain in source
-order, including repeated or Db-ineffective entries, to retain authored choices.
-Names, keys and colors retain case too; the textual semicolon markers have exact
-case even though statement keywords are case-insensitive. [fixture:
+The keywords `set`, `union`, `text`, and `title` are printed in lower case, as
+the examples in the documentation of mermaid.js write them (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+and `style` keeps the case in which it is written (see
+[Keywords in one case](./compatibility.md#keywords-in-one-case)), and every
+declaration, target and property remain in source order, including repeated or
+Db-ineffective entries, to retain authored choices. Names, keys and colors
+retain case; the textual semicolon markers have exact case even though statement
+keywords are case-insensitive. [fixture:
+venn/keyword-case-and-order/keyword-case-one-form] [fixture:
 venn/keyword-case-and-order/all-written-repeats] [corpus fixture:
 venn/db-style-three-definitions-same-target] [corpus fixture:
 venn/db-text-three-definitions] [corpus fixture: venn/db-three-definitions]
@@ -784,7 +824,7 @@ venn/db-text-three-definitions] [corpus fixture: venn/db-three-definitions]
 venn/lex-keyword-set-upper] [fixture:
 venn/keyword-case-and-order/declarations-order-keep-control] [fixture:
 venn/keyword-case-and-order/declarations-order-keep] [fixture:
-venn/keyword-case-and-order/keyword-case-kept] [fixture:
+venn/keyword-case-and-order/keyword-case-one-form] [fixture:
 venn/keyword-case-and-order/keyword-lower-equal]
 
 Input (escaped):
@@ -794,14 +834,14 @@ Input (escaped):
 ```
 
 Output
-([keyword-case-and-order/keyword-case-kept-output.mmd](../tests/fixtures/venn/keyword-case-and-order/keyword-case-kept-output.mmd)):
+([keyword-case-and-order/keyword-case-one-form-output.mmd](../tests/fixtures/venn/keyword-case-and-order/keyword-case-one-form-output.mmd)):
 
 ```mmd
 venn-beta
-SET A
-  TeXt item
+set A
+  text item
 STYLE A fill:RED
-Title T
+title T
 ```
 
 ### Line terminators

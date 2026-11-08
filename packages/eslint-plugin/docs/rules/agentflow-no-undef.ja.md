@@ -47,7 +47,7 @@ mermaid.js が同じ id と読むものを、この規則は異なる id とし�
 %% eslint @mmd-toolkit/agentflow-no-undef: error
 agentflow-beta TB
   A --> B
-  style C fill:red
+  style C fill: red
 ```
 
 ```mmd
@@ -65,7 +65,7 @@ agentflow-beta TB
 %% eslint @mmd-toolkit/agentflow-no-undef: error
 agentflow-beta TB
   A --> B
-  style A fill:red
+  style A fill: red
 ```
 
 ```mmd

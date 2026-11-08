@@ -127,11 +127,11 @@ const cases: readonly MarkdownCase[] = [
     input:
       "```mermaid\n%%{wrap}%%\narchitecture-beta title style:#a;b\nservice global_host [style:#c;d]\n```\n",
     output:
-      "```mermaid\n%%{wrap}%%\narchitecture-beta title style:#a;b\n  service global_host [style:#c;d]\n```\n",
+      "```mermaid\n%%{wrap}%%\narchitecture-beta title style:#a;b\n  service global_host[style:#c;d]\n```\n",
     payloadInput:
       "%%{wrap}%%\narchitecture-beta title style:#a;b\nservice global_host [style:#c;d]",
     payloadOutput:
-      "%%{wrap}%%\narchitecture-beta title style:#a;b\n  service global_host [style:#c;d]\n",
+      "%%{wrap}%%\narchitecture-beta title style:#a;b\n  service global_host[style:#c;d]\n",
     options: {},
   },
   {

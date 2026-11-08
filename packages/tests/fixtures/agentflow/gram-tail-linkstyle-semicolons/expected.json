@@ -57,7 +57,7 @@
     "edgeDefaults": {
       "interpolate": null,
       "style": [
-        "color:blue"
+        "color:blue "
       ]
     },
     "classDefs": [],

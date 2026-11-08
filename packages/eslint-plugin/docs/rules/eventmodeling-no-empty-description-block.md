@@ -42,7 +42,7 @@ Examples of **incorrect** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/eventmodeling-no-empty-description-block: error
 eventmodeling accDescr {}
-  tf 01 evt Bought
+tf 01 evt Bought
 ```
 
 Examples of **correct** code for this rule:
@@ -50,7 +50,7 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/eventmodeling-no-empty-description-block: error
 eventmodeling accDescr { Checkout flow }
-  tf 01 evt Bought
+tf 01 evt Bought
 ```
 
 ```mmd
@@ -58,7 +58,7 @@ eventmodeling accDescr { Checkout flow }
 eventmodeling accDescr {
 %% TODO
 }
-  tf 01 evt Bought
+tf 01 evt Bought
 ```
 
 ## Options

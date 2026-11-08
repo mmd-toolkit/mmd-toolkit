@@ -13,8 +13,10 @@ cases.
 Keep the exact `gitGraph` word, authored direction and optional colon. Print
 ordinary gaps as `gitGraph LR:` or `gitGraph:`; an ordinary inline first
 statement moves below the header. Direction changes the Db, while its omission
-and colon presence remain author choices. Hidden gaps and protected header/body
-groups retain their source boundaries.
+and colon presence remain author choices: mermaid.js 8.14.0 reads the header
+with the colon only, and the colon-less header is read from 9.0.0 (see
+[Versions of mermaid.js](./compatibility.md#versions-of-mermaidjs)). Hidden gaps
+and protected header/body groups retain their source boundaries.
 
 A hidden form between `gitGraph` and the direction keeps the gap after it as
 written, because a hidden form consumes an immediately following line feed, and
@@ -63,7 +65,7 @@ gitGraph
   commit
   branch b
   commit
-  switch main
+  checkout main
 ```
 
 ### Statements one per line
@@ -228,30 +230,34 @@ gitGraph
 
 ### Quotes
 
-Print each StringLiteral as its complete source span, with
-single/double/opposite quotes and escapes unchanged. `singleQuote` does not
-rewrite it. Re-encoding would require new escape and preprocessing decisions and
-would discard the authored form.
+Print each StringLiteral as its complete source span, with escapes unchanged. A
+string between `'` is printed between `"`, unless its text holds a `'`, a `"`, a
+backslash, a line break, a backquote, `&`, `#`, or `<` (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+and `singleQuote` is not read. Other re-encoding would require new escape and
+preprocessing decisions and would discard the authored form.
 
-Fixed cases: [fixture: gitgraph/quotes/quotes-kept] [corpus fixture:
+Fixed cases: [fixture: gitgraph/quotes/quotes-one-form] [corpus fixture:
 gitgraph/lex-string-escapes] [fixture: gitgraph/quotes/single-quote-option]
+[fixture: gitgraph/quotes/single-quote-sensitive-kept]
 
 Input (escaped): `"gitGraph\ncommit id:'A' msg:\"a'b\" tag:'a\"b'\n"`.
 
 Output
-([quotes/quotes-kept-output.mmd](../tests/fixtures/gitgraph/quotes/quotes-kept-output.mmd)):
+([quotes/quotes-one-form-output.mmd](../tests/fixtures/gitgraph/quotes/quotes-one-form-output.mmd)):
 
 ```mmd
 gitGraph
-  commit id: 'A' msg: "a'b" tag: 'a"b'
+  commit id: "A" msg: "a'b" tag: 'a"b'
 ```
 
 ### References
 
-Keep Identifier and StringLiteral reference forms in branch, checkout, switch
-and merge. Preserve empty, whitespace-only, Unicode, reserved-word and
-numeric-looking quoted names. The AST already distinguishes these forms; the
-printer need not decide whether unquoting would parse.
+Keep Identifier and StringLiteral reference forms in branch, checkout and merge
+(a string is printed between `"` as under Quotes). Preserve empty,
+whitespace-only, Unicode, reserved-word and numeric-looking quoted names. The
+AST already distinguishes these forms; the printer need not decide whether
+unquoting would parse.
 
 Fixed cases: [fixture: gitgraph/references/reference-forms] [corpus fixture:
 gitgraph/lex-reference-reserved-quoted] [corpus fixture:
@@ -340,22 +346,23 @@ gitGraph
 
 ### Checkout aliases
 
-Preserve each written `checkout` or `switch`, including their positions among
-later commits. They have the same history effect, but replacing an authored
-synonym adds no formatting benefit. Unknown branches remain failures for either
-word.
+Print each `switch` as `checkout`, keeping its position among later commits:
+they have the same history effect, and the examples in the documentation of
+mermaid.js write `checkout` 160 times and never `switch` (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+Unknown branches remain failures for either word.
 
-Fixed cases: [fixture: gitgraph/checkout-aliases/alias-kept]
+Fixed cases: [fixture: gitgraph/checkout-aliases/alias-one-form]
 
 Input (escaped): `"gitGraph\nbranch b\nswitch main\ncheckout b\n"`.
 
 Output
-([checkout-aliases/alias-kept-output.mmd](../tests/fixtures/gitgraph/checkout-aliases/alias-kept-output.mmd)):
+([checkout-aliases/alias-one-form-output.mmd](../tests/fixtures/gitgraph/checkout-aliases/alias-one-form-output.mmd)):
 
 ```mmd
 gitGraph
   branch b
-  switch main
+  checkout main
   checkout b
 ```
 
@@ -393,17 +400,28 @@ gitGraph
 ### Title and common values
 
 Print `title` plus one space and a nonempty value trimmed only at its outer
-ends; empty/whitespace-only titles print bare `title`. Shared accessibility
-layout prints `accTitle: value` / `accDescr: value` and empty blocks as `{}`.
-Put one ordinary space between `accDescr` and `{`, even when written touching;
-protected trivia and semicolon layouts keep their gaps. Text on one line stands
-between one space on each side, whether it touched the braces or not. A separate
-closer aligns with its statement. Ordinary description body and standalone
-comment lines align one level inside it: the Db removes indentation after LF.
-Keep line breaks, internal blanks and trailing whitespace. Directives and shared
-removed comment regions keep their complete source. Whitespace-only interiors
-print `{}` because there is no text for interior whitespace to surround; tabs,
-line breaks and Unicode whitespace follow the same rule. [fixture:
+ends, with a run of spaces and tabs inside it printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same));
+empty/whitespace-only titles print bare `title`. The directives that end a title
+are printed with one space before each that has whitespace before it, and the
+whitespace after the last one is left out, whatever the whitespace at the end of
+the line (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: title-and-common-values/title-directives-end-blanks-dropped] Shared
+accessibility layout prints `accTitle: value` / `accDescr: value` and empty
+blocks as `{}`. The directives that end the value of such a line are printed as
+those that end a title (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: title-and-common-values/acc-directives-end-blanks-dropped] Put one
+ordinary space between `accDescr` and `{`, even when written touching; protected
+trivia and semicolon layouts keep their gaps. Text on one line stands between
+one space on each side, whether it touched the braces or not. A separate closer
+aligns with its statement. Ordinary description body and standalone comment
+lines align one level inside it: the Db removes indentation after LF. Keep line
+breaks, internal blanks and trailing whitespace. Directives and shared removed
+comment regions keep their complete source. Whitespace-only interiors print `{}`
+because there is no text for interior whitespace to surround; tabs, line breaks
+and Unicode whitespace follow the same rule. [fixture:
 title-and-common-values/empty-whitespace-interiors] [test: gitgraph Unicode and
 tab interiors] Comment/directive-only blocks keep their trivia. Keep every
 repeated, empty and interleaved assignment, including frontmatter fallback. Line
@@ -434,7 +452,7 @@ Output
 
 ```mmd
 gitGraph
-  title A  B	 C
+  title A B C
 ```
 
 ### Multiline values
@@ -495,13 +513,13 @@ gitGraph %% header
 ### Global directives
 
 Keep global directive content, order and authored gaps. Within a printed line,
-keep whether each side touches or is separated. When formatting splits units
-that were on the same line, a directive in their gap moves with the following
-unit: its right boundary stays touching or separated, while its left contact is
-broken. Ordinary standalone starting indentation becomes one body step. Preserve
-directives inside strings, word/colon boundaries and EOF-reaching unclosed
-forms. Their opaque text and independent configuration effect must not be
-reconstructed. Atomic cuts remain specified failures.
+place a directive as under [Directives](./flowchart.md#directives). When
+formatting splits units that were on the same line, a directive in their gap
+moves with the following unit: its right boundary stays touching or separated,
+while its left contact is broken. Ordinary standalone starting indentation
+becomes one body step. Preserve directives inside strings, word/colon boundaries
+and EOF-reaching unclosed forms. Their opaque text and independent configuration
+effect must not be reconstructed. Atomic cuts remain specified failures.
 
 [fixture: gitgraph/global-directives/header-to-body]
 
@@ -520,7 +538,7 @@ Output
 ```mmd
 gitGraph
   commit id%%{wrap}%%: "A"
-  commit id:%%{wrap}%% "B"
+  commit id: %%{wrap}%%"B"
 ```
 
 ### Hidden yaml
@@ -658,18 +676,28 @@ Output
 ```mmd
 gitGraph
   commit id:%%{!}%%
-'root'
+"root"
 ```
 
 ### Semicolons
 
-Keep every authored semicolon and reuse shared source-segment protection from
-the first non-whitespace character through the last semicolon, extending through
-whole crossing values/comments/directives. Do not split protected
+Keep every authored semicolon. A segment that holds a kept `;` is formatted as
+anywhere else, except where formatting could change which `;` the line rule
+ignores. The rule reads a segment from the first `:` after `style` or `classDef`
+to the last `#` before its last kept `;`, with no whitespace between the `:` and
+the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps and the
+padding inside that stretch keep whether they hold whitespace, a run becoming
+one space, and the rest of the segment follows the ordinary rules of this
+diagram. Text that no part of the layout holds stays as written. A statement
+over several lines whose lines, joined with one space or with nothing, could
+change which `;` the line rule ignores keeps the text of each segment, up to its
+last kept `;`, as written; any other statement over several lines is formatted
+like one on a single line. [fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted] Do not split protected
 header/first-statement groups. Preserve style/classDef passes, colon/hash
 whitespace, case, repeated semicolons and directive-rejoined triggers; LS/PS
 segment bounds stay distinct. Removing a selected semicolon can select another
-and change the Db. Format safe suffix gaps only; atomic cuts remain failures.
+and change the Db. Atomic cuts remain failures.
 
 Fixed cases: [fixture: gitgraph/semicolons/native-commit-value]
 

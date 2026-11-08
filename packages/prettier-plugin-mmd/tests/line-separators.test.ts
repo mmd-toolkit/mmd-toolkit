@@ -12,6 +12,7 @@ import * as prettier from "prettier"
 import type { Options } from "prettier"
 import plugin from "../src/index.ts"
 import { dataBlockEmbeddedForFormattingComparison } from "./data-block-margins.ts"
+import { dbForFormattingComparison } from "./db-comparison.ts"
 import {
   dbOfText,
   defaultEmbedded,
@@ -62,12 +63,12 @@ const examples: readonly (readonly [string, string, string])[] = [
   [
     "U+2028 after the comma of a state class statement",
     "stateDiagram-v2\nA --> B\nclass A,\u2028B c\nclassDef c fill:#f00\n",
-    "stateDiagram-v2\n  A --> B\n  class A,\u2028B c\n  classDef c fill:#f00\n",
+    "stateDiagram-v2\n  A --> B\n  class A,\u2028B c\n  classDef c fill: #f00\n",
   ],
   [
     "U+2029 after the comma of a state class statement",
     "stateDiagram-v2\nA --> B\nclass A, \u2029 B c\nclassDef c fill:#f00\n",
-    "stateDiagram-v2\n  A --> B\n  class A, \u2029 B c\n  classDef c fill:#f00\n",
+    "stateDiagram-v2\n  A --> B\n  class A, \u2029 B c\n  classDef c fill: #f00\n",
   ],
   [
     "U+00A0 at the start of a later note row",
@@ -208,6 +209,31 @@ const examples: readonly (readonly [string, string, string])[] = [
     "a line that starts with whitespace and U+2028",
     "stateDiagram-v2\nstate a\n  \u2028b <<fork>>\n",
     "stateDiagram-v2\n  state a\n  \u2028b <<fork>>\n",
+  ],
+  [
+    "U+2028 before the `as` of a floating note",
+    'stateDiagram-v2\nstate A\nnote "x"\u2028as N1\n',
+    'stateDiagram-v2\n  state A\n  note "x"\u2028as N1\n',
+  ],
+  [
+    "U+2029 between the `as` and the id of a floating note",
+    'stateDiagram-v2\nstate A\nnote "x" as\u2029N1\n',
+    'stateDiagram-v2\n  state A\n  note "x" as\u2029N1\n',
+  ],
+  [
+    "U+2028 before the comma of a state classDef statement",
+    "stateDiagram-v2\nstate A\nclassDef c fill:#f00\u2028 ,color:white\n",
+    "stateDiagram-v2\n  state A\n  classDef c fill:#f00\u2028 ,color:white\n",
+  ],
+  [
+    "U+2029 after the comma of a state classDef statement",
+    "stateDiagram-v2\nstate A\nclassDef c fill:#f00 ,\u2029color:white\n",
+    "stateDiagram-v2\n  state A\n  classDef c fill:#f00 ,\u2029color:white\n",
+  ],
+  [
+    "a second description of an alias with spaces after a U+2028",
+    'stateDiagram-v2\nstate "d" as A : x  \u2028  \nB\n',
+    'stateDiagram-v2\n  state "d" as A : x  \u2028  \n  B\n',
   ],
 ]
 
@@ -480,6 +506,21 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
     'sequenceDiagram\nparticipant   Z@{ "style": "x:#y" };participant   B;C\u2029 participant D\nA  ->>  B: y\n',
     'sequenceDiagram\n  participant   Z@{ "style": "x:#y" };participant   B;C\u2029 participant D\n  A ->> B: y\n',
   ],
+  [
+    "U+2028 between a block keyword and its text",
+    "sequenceDiagram\nA->>B: x\nloop\u2028x\nA->>B: y\nend\n",
+    "sequenceDiagram\n  A ->> B: x\n  loop\u2028x\n    A ->> B: y\n  end\n",
+  ],
+  [
+    "U+2029 between a wrap prefix and its text",
+    "sequenceDiagram\nA->>B: wrap:\u2029x\n",
+    "sequenceDiagram\n  A ->> B: wrap:\u2029x\n",
+  ],
+  [
+    "U+2028 and spaces at the end of a title",
+    "sequenceDiagram\ntitle T  \u2028  \nA->>B: x\n",
+    "sequenceDiagram\n  title T  \u2028\n  A ->> B: x\n",
+  ],
 ]
 
 /**
@@ -496,6 +537,26 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
  *   the `;` ends it.
  */
 const flowchartExamples: readonly (readonly [string, string, string])[] = [
+  [
+    "U+2028 after a `;` before an edge id",
+    "flowchart LR\nA[style:#x];\u2028e1@-->B\n",
+    "flowchart LR\n  A[style:#x];\u2028e1@-->B\n",
+  ],
+  [
+    "U+2028 after a `;` and a space before an edge id",
+    "flowchart LR\nA[style:#x] ;\u2028 e1@-->B\n",
+    "flowchart LR\n  A[style:#x] ;\u2028 e1@-->B\n",
+  ],
+  [
+    "U+2029 after a `;` before an edge id",
+    "flowchart LR\nA[style:#x];\u2029e1@-->B\n",
+    "flowchart LR\n  A[style:#x];\u2029e1@-->B\n",
+  ],
+  [
+    "U+2029 after a `;` and a space before an edge id",
+    "flowchart LR\nA[style:#x] ;\u2029 e1@-->B\n",
+    "flowchart LR\n  A[style:#x] ;\u2029 e1@-->B\n",
+  ],
   [
     "U+2028 between the closing quote and the bracket of a flowchart label",
     'flowchart LR\nA["x"\u2028]\n',
@@ -602,6 +663,21 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
     "flowchart LR\n  Z[style:#x];\u2029;\n  B\n",
   ],
   [
+    "U+2028 before a directive in the gap of a flowchart",
+    "flowchart LR\nA\u2028%%{init: {}}%% --> B\n",
+    "flowchart LR\n  A\u2028%%{init: {}}%% --> B\n",
+  ],
+  [
+    "U+2029 after a directive in the gap of a flowchart",
+    "flowchart LR\nA %%{init: {}}%%\u2029--> B\n",
+    "flowchart LR\n  A %%{init: {}}%%\u2029--> B\n",
+  ],
+  [
+    "U+2028 beside a directive between a `:` and a `#` of a flowchart",
+    "flowchart LR\nsubgraph style:\u2028%%{init: {}}%%[#x;]\nA\nend\n",
+    "flowchart LR\n  subgraph style:\u2028%%{init: {}}%%[#x;]\n    A\n  end\n",
+  ],
+  [
     "a `;` after a directive that is not closed and U+2028",
     "flowchart LR\nA %%{init: {}\u2028;\nB\n",
     "flowchart LR\n  A %%{init: {}\u2028;\n  B\n",
@@ -630,6 +706,26 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
     "a `style` line with a `;`, U+2029, and a `;`",
     "flowchart LR\nA\n    style   A   fill:#f96;\u2029 ;\nB\n",
     "flowchart LR\n  A\n  style   A   fill:#f96;\u2029 ;\n  B\n",
+  ],
+  [
+    "U+2028 between the closing quote and the `|` of a flowchart edge label",
+    'flowchart TD\nA-->|"x"\u2028|B\n',
+    'flowchart TD\n  A -->|"x"\u2028| B\n',
+  ],
+  [
+    "U+2029 between the graph keyword and its direction",
+    "graph\u2029<\nA\n",
+    "graph\u2029<\n  A\n",
+  ],
+  [
+    "U+2028 before the comma of a flowchart style statement",
+    "flowchart LR\nA-->B\nstyle A fill:#f00\u2028 ,color:white\n",
+    "flowchart LR\n  A --> B\n  style A fill: #f00\u2028, color: white\n",
+  ],
+  [
+    "U+2029 after the comma of a flowchart style statement",
+    "flowchart LR\nA-->B\nstyle A fill:#f00 ,\u2029color:white\n",
+    "flowchart LR\n  A --> B\n  style A fill:#f00 ,\u2029color:white\n",
   ],
 ]
 
@@ -716,12 +812,12 @@ const classLineSeparatorExamples: readonly (readonly [
   [
     "U+2028 after the comma of a classDef statement",
     "classDiagram\nclass A\nclassDef c1,\u2028c2 fill:#f00\n",
-    "classDiagram\n  class A\n  classDef c1,\u2028c2 fill:#f00\n",
+    "classDiagram\n  class A\n  classDef c1,\u2028c2 fill: #f00\n",
   ],
   [
     "U+2029 after the comma of a classDef statement",
     "classDiagram\nclass A\nclassDef c1 ,\u2029 c2 fill:#f00\n",
-    "classDiagram\n  class A\n  classDef c1,\u2029 c2 fill:#f00\n",
+    "classDiagram\n  class A\n  classDef c1,\u2029 c2 fill: #f00\n",
   ],
   [
     "class: ls-comment-in-namespace-opening",
@@ -742,6 +838,66 @@ const classLineSeparatorExamples: readonly (readonly [
     "class: ps-comment-in-relation-statement",
     "classDiagram\nA   -->   B\u2029%% keep\n  : x\nclass C\n",
     "classDiagram\n  A   -->   B\u2029%% keep\n  : x\n  class C\n",
+  ],
+  [
+    "U+2028 between the note keyword and its string",
+    'classDiagram\nclass A\nnote\u2028"x"\n',
+    'classDiagram\n  class A\n  note\u2028"x"\n',
+  ],
+  [
+    "U+2029 between the class of a note and its string",
+    'classDiagram\nclass A\nnote for A\u2029"x"\n',
+    'classDiagram\n  class A\n  note for A\u2029"x"\n',
+  ],
+  [
+    "U+2028 between the class keyword and a backquoted name",
+    "classDiagram\nclass\u2028`A B`\n",
+    "classDiagram\n  class\u2028`A B`\n",
+  ],
+  [
+    "U+2029 between a link and its URL",
+    'classDiagram\nclass A\nlink A\u2029"u"\n',
+    'classDiagram\n  class A\n  link A\u2029"u"\n',
+  ],
+  [
+    "U+2028 between the URL and the tooltip of a link",
+    'classDiagram\nclass A\nlink A "u"\u2028"tip"\n',
+    'classDiagram\n  class A\n  link A "u"\u2028"tip"\n',
+  ],
+  [
+    "U+2029 between the tooltip and the target of a link",
+    'classDiagram\nclass A\nclick A href "u" "tip"\u2029_self\n',
+    'classDiagram\n  class A\n  click A href "u" "tip"\u2029_self\n',
+  ],
+  [
+    "U+2028 between the cssClass keyword and its string",
+    'classDiagram\nclass A\ncssClass\u2028"A" c\n',
+    'classDiagram\n  class A\n  cssClass\u2028"A" c\n',
+  ],
+  [
+    "U+2029 between a callback and its tooltip",
+    'classDiagram\nclass A\nclick A call f()\u2029"tip"\n',
+    'classDiagram\n  class A\n  click A call f()\u2029"tip"\n',
+  ],
+  [
+    "U+2028 between a class name and its label",
+    'classDiagram\nclass A\u2028["x"]\n',
+    'classDiagram\n  class A\u2028["x"]\n',
+  ],
+  [
+    "U+2029 between a class name and its generic type",
+    "classDiagram\nclass A\u2029~T~\n",
+    "classDiagram\n  class A\u2029~T~\n",
+  ],
+  [
+    "U+2028 between a generic type and the call of a callback",
+    "classDiagram\nclass A~T~\nclick A~T~\u2028call f()\n",
+    "classDiagram\n  class A~T~\n  click A~T~\u2028call f()\n",
+  ],
+  [
+    "U+2028 before the comma of a class style statement",
+    "classDiagram\nclass A\nstyle A fill:#f00\u2028 ,color:white\n",
+    "classDiagram\n  class A\n  style A fill:#f00\u2028 ,color:white\n",
   ],
 ]
 
@@ -905,6 +1061,16 @@ const ganttLineSeparatorExamples: readonly (readonly [
     'gantt\na : id1, 1d\nclick id1\u2028href "u"\n',
     'gantt\n  a :id1, 1d\n  click id1\u2028href "u"\n',
   ],
+  [
+    "U+2028 and spaces at the end of a title",
+    "gantt\ntitle T  \u2028  \n",
+    "gantt\n  title T  \u2028\n",
+  ],
+  [
+    "U+2029 and spaces at the end of a date format",
+    "gantt\ndateFormat X  \u2029  \n",
+    "gantt\n  dateFormat X  \u2029\n",
+  ],
 ]
 
 /**
@@ -1030,6 +1196,11 @@ const journeyLineSeparatorExamples: readonly (readonly [
     "U+2028 after the colon of accTitle",
     "journey\naccTitle:\u2028T\n",
     "journey\n  accTitle:\u2028T\n",
+  ],
+  [
+    "U+2028 and spaces at the end of a journey title",
+    "journey\ntitle T  \u2028  \n",
+    "journey\n  title T  \u2028\n",
   ],
 ]
 
@@ -1501,9 +1672,15 @@ async function expectKept(
 ): Promise<void> {
   expect(await format(input, options)).toBe(output)
   expect(await format(output, options)).toBe(output)
-  expect(dbOfText(output, defaultEmbedded())).toEqual(
-    dbOfText(input, defaultEmbedded()),
-  )
+  const dbBefore = dbOfText(input, defaultEmbedded())
+  expect(
+    dbForFormattingComparison(
+      dbBefore,
+      dbOfText(output, defaultEmbedded()),
+      input,
+      output,
+    ),
+  ).toEqual(dbBefore)
 }
 
 /**
@@ -1602,6 +1779,16 @@ const timelineLineSeparatorExamples: readonly (readonly [
     "U+2028 between the header and a direction",
     "timeline\u2028TD\n",
     "timeline\n  TD\n",
+  ],
+  [
+    "U+2029 and spaces at the end of a timeline title",
+    "timeline\ntitle T  \u2029  \n",
+    "timeline\n  title T  \u2029\n",
+  ],
+  [
+    "U+2028 and spaces at the end of the last event of a line",
+    "timeline\n2020 : e  \u2028  \n",
+    "timeline\n  2020 : e  \u2028\n",
   ],
 ]
 
@@ -1997,6 +2184,16 @@ const quadrantLineSeparatorExamples: readonly (readonly [
     "quadrantChart\nclassDef a\u2028b color: #f00\n",
     "quadrantChart\n  classDef a\u2028b color: #f00\n",
   ],
+  [
+    "U+2028 between an axis keyword and its text",
+    "quadrantChart\nx-axis\u2028L --> R\n",
+    "quadrantChart\n  x-axis \u2028L --> R\n",
+  ],
+  [
+    "U+2029 between a quadrant keyword and its text",
+    "quadrantChart\nquadrant-1\u2029Plan\n",
+    "quadrantChart\n  quadrant-1 \u2029Plan\n",
+  ],
 ]
 
 /**
@@ -2197,6 +2394,11 @@ const blockLineSeparatorExamples: readonly (readonly [
     'block-beta\nblock:r\n A["x"]%% c;\u2028 B["x;y"]\nend\n',
     'block-beta\n  block:r\n    A["x"] %% c;\u2028 B["x;y"]\n  end\n',
   ],
+  [
+    "U+2029 before the comma of a block classDef statement",
+    "block-beta\nA\nclassDef c fill:#f00\u2029 ,color:white\n",
+    "block-beta\n  A\n  classDef c fill:#f00\u2029 ,color:white\n",
+  ],
 ]
 
 /**
@@ -2242,12 +2444,12 @@ const blockWhitespaceExamples: readonly (readonly [string, string, string])[] =
     [
       "U+00A0 in a class definition",
       "block-beta\nclassDef\u00a0c1\u00a0fill:#f00\u00a0\n",
-      "block-beta\n  classDef c1 fill:#f00\n",
+      "block-beta\n  classDef c1 fill: #f00\n",
     ],
     [
       "U+00A0 in a style",
       "block-beta\nA\nstyle\u00a0A\u00a0fill:#f00\u00a0\n",
-      "block-beta\n  A\n  style A fill:#f00\n",
+      "block-beta\n  A\n  style A fill: #f00\n",
     ],
     [
       "U+00A0 inside an empty description block",
@@ -2492,7 +2694,7 @@ const kanbanExamples: readonly (readonly [string, string, string, Options?])[] =
     [
       "kanban: bare-trailing-trim",
       "kanban\n S   \n   A\t \n",
-      "kanban\n  S   \n    A\t \n",
+      "kanban\n  S   \n    A\n",
     ],
     [
       "kanban: closed-trailing-trim",
@@ -2685,7 +2887,7 @@ const kanbanExamples: readonly (readonly [string, string, string, Options?])[] =
     [
       "kanban: db-metadata-comment-ls",
       "kanban\n S@{}%% c\u2028   A\n",
-      "kanban\n  S@{}%% c\u2028   A\n",
+      "kanban\n  S@{ }%% c\u2028   A\n",
     ],
     [
       "kanban: shape-comment-ps",
@@ -2920,9 +3122,15 @@ describe("kanban whitespace and line boundaries", () => {
     const output = await format(input, options)
     expect(output).toBe(expected)
     expect(await format(output, options)).toBe(output)
-    expect(dbOfText(output, defaultEmbedded())).toEqual(
-      dbOfText(input, defaultEmbedded()),
-    )
+    const dbBefore = dbOfText(input, defaultEmbedded())
+    expect(
+      dbForFormattingComparison(
+        dbBefore,
+        dbOfText(output, defaultEmbedded()),
+        input,
+        output,
+      ),
+    ).toEqual(dbBefore)
     expect(
       dataBlockEmbeddedForFormattingComparison(
         writtenEmbeddedTexts(input),
@@ -3166,7 +3374,17 @@ const c4Examples: readonly (readonly [string, string, string])[] = [
   [
     "c4: internal-whitespace-kinds",
     'C4Context\nPerson(a,"A\t\u00a0\ufeff\u000b\u000c\u3000B")',
-    'C4Context\n  Person(a, "A\t\u00a0\ufeff\u000b\u000c\u3000B")\n',
+    'C4Context\n  Person(a, "A \u00a0\ufeff\u000b\u000c\u3000B")\n',
+  ],
+  [
+    "c4: ls-inside-label-keeps-runs",
+    'C4Context\nPerson(a,"A  \u2028  B","D  E")',
+    'C4Context\n  Person(a, "A  \u2028  B", "D E")\n',
+  ],
+  [
+    "c4: ps-inside-description-keeps-runs",
+    'C4Context\nPerson(a,"A  B","D  \u2029  E")',
+    'C4Context\n  Person(a, "A B", "D  \u2029  E")\n',
   ],
   [
     "c4: tab-before-quote",
@@ -3226,12 +3444,12 @@ const c4Examples: readonly (readonly [string, string, string])[] = [
   [
     "c4: title-tab-separator",
     'C4Context\ntitle\t  T   \nPerson(a,"A")',
-    'C4Context\n  title   T   \n  Person(a, "A")\n',
+    'C4Context\n  title T\n  Person(a, "A")\n',
   ],
   [
     "c4: accdescription-tab-separator",
     'C4Context\naccDescription\t  D   \nPerson(a,"A")',
-    'C4Context\n  accDescription   D   \n  Person(a, "A")\n',
+    'C4Context\n  accDescription D\n  Person(a, "A")\n',
   ],
   [
     "c4: ls-bare-value",
@@ -3459,14 +3677,24 @@ const c4Examples: readonly (readonly [string, string, string])[] = [
     'C4Context\n  Person(a, "x;y") %%{init:\u2029 {}}%%\n',
   ],
   [
-    "c4: ls-kept-boundary-brace-gap",
+    "c4: ls-joined-boundary-brace-gap",
     'C4Context\nSystem_Boundary(b, "x;")\n\u2028      {\nPerson(a,"A")\n}\n',
-    'C4Context\n  System_Boundary(b, "x;")\n\u2028      {\n    Person(a, "A")\n  }\n',
+    'C4Context\n  System_Boundary(b, "x;") {\n    Person(a, "A")\n  }\n',
   ],
   [
-    "c4: ps-kept-boundary-brace-gap",
+    "c4: ps-joined-boundary-brace-gap",
     'C4Context\nSystem_Boundary(b, "x;")\n\u2029      {\nPerson(a,"A")\n}\n',
-    'C4Context\n  System_Boundary(b, "x;")\n\u2029      {\n    Person(a, "A")\n  }\n',
+    'C4Context\n  System_Boundary(b, "x;") {\n    Person(a, "A")\n  }\n',
+  ],
+  [
+    "c4: title-line-separator-spaces",
+    'C4Context\ntitle T  \u2028  \nPerson(a, "A")\n',
+    'C4Context\n  title T  \u2028\n  Person(a, "A")\n',
+  ],
+  [
+    "c4: accdescription-line-separator-spaces",
+    'C4Context\naccDescription D  \u2029  \nPerson(a, "A")\n',
+    'C4Context\n  accDescription D  \u2029\n  Person(a, "A")\n',
   ],
 ]
 
@@ -3475,9 +3703,15 @@ describe("C4 whitespace and line boundaries", () => {
     const output = await format(input)
     expect(output).toBe(expected)
     expect(await format(output)).toBe(output)
-    expect(dbOfText(output, defaultEmbedded())).toEqual(
-      dbOfText(input, defaultEmbedded()),
-    )
+    const dbBefore = dbOfText(input, defaultEmbedded())
+    expect(
+      dbForFormattingComparison(
+        dbBefore,
+        dbOfText(output, defaultEmbedded()),
+        input,
+        output,
+      ),
+    ).toEqual(dbBefore)
     expect(writtenEmbeddedTexts(output)).toEqual(writtenEmbeddedTexts(input))
     expect(await describeFrontmatterChange(input, output)).toBeNull()
   })
@@ -3587,7 +3821,7 @@ const vennExamples: readonly (readonly [string, string, string])[] = [
   [
     "venn: nbsp-title-separator",
     "venn-beta\ntitle\u00a0 T",
-    "venn-beta\ntitle  T\n",
+    "venn-beta\ntitle T\n",
   ],
   [
     "venn: bom-title-separator",
@@ -3649,6 +3883,11 @@ const vennExamples: readonly (readonly [string, string, string])[] = [
     "venn-beta\nset A[style:#x;y]%% c\u2029tail;",
     "venn-beta\nset A[style:#x;y]%% c\u2029tail;\n",
   ],
+  [
+    "venn: title-line-separator-spaces",
+    "venn-beta\ntitle T  \u2028  \n",
+    "venn-beta\ntitle T  \u2028\n",
+  ],
 ]
 
 describe("Venn whitespace and line boundaries", () => {
@@ -3658,9 +3897,14 @@ describe("Venn whitespace and line boundaries", () => {
     expect(await format(output)).toBe(output)
     const original = input.startsWith("\uFEFF") ? input.slice(1) : input
     const formatted = output.startsWith("\uFEFF") ? output.slice(1) : output
-    expect(dbOfText(formatted, defaultEmbedded())).toEqual(
-      dbOfText(original, defaultEmbedded()),
-    )
+    expect(
+      dbForFormattingComparison(
+        dbOfText(original, defaultEmbedded()),
+        dbOfText(formatted, defaultEmbedded()),
+        original,
+        formatted,
+      ),
+    ).toEqual(dbOfText(original, defaultEmbedded()))
     expect(writtenEmbeddedTexts(formatted)).toEqual(
       writtenEmbeddedTexts(original),
     )
@@ -3744,25 +3988,31 @@ describe("style semicolons", () => {
     [
       "style semicolons: state CRLF terminator",
       "stateDiagram-v2\r\nstyle A fill:red ;\r\n",
-      "stateDiagram-v2\n  style A fill:red\n",
+      "stateDiagram-v2\n  style A fill: red\n",
     ],
     [
       "style semicolons: state trailing tab",
       "stateDiagram-v2\nclassDef c fill:#f00;\t\n",
-      "stateDiagram-v2\n  classDef c fill:#f00\n",
+      "stateDiagram-v2\n  classDef c fill: #f00\n",
     ],
     [
       "style semicolons: class EOF terminator",
       "classDiagram\nclass A\nstyle A fill:#f00;",
-      "classDiagram\n  class A\n  style A fill:#f00\n",
+      "classDiagram\n  class A\n  style A fill: #f00\n",
     ],
   ])("%s", async (_title, input, expected) => {
     const output = await format(input)
     expect(output).toBe(expected)
     expect(await format(output)).toBe(output)
-    expect(dbOfText(output, defaultEmbedded())).toEqual(
-      dbOfText(input, defaultEmbedded()),
-    )
+    const dbBefore = dbOfText(input, defaultEmbedded())
+    expect(
+      dbForFormattingComparison(
+        dbBefore,
+        dbOfText(output, defaultEmbedded()),
+        input,
+        output,
+      ),
+    ).toEqual(dbBefore)
     expect(writtenEmbeddedTexts(output)).toEqual(writtenEmbeddedTexts(input))
     expect(writtenTextKeptUpToSemicolons(input, output)).toBe(true)
     expect(await describeFrontmatterChange(input, output)).toBeNull()

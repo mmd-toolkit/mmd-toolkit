@@ -9,6 +9,7 @@ import {
   treeProblemsOfText,
   writtenEmbeddedTexts,
 } from "./db-reading.ts"
+import { dataBlockEmbeddedForFormattingComparison } from "./data-block-margins.ts"
 import { formatMarkdownWithoutPlugin } from "./helpers.ts"
 
 interface MarkdownCase {
@@ -73,8 +74,8 @@ const cases: readonly MarkdownCase[] = [
       tabWidth: 0,
     },
     output:
-      "```mermaid\nusecase-beta\nactor Reader@{\ntype: normal,\nicon: ''\n}\n```\n",
-    payloadOutput: "usecase-beta\nactor Reader@{\ntype: normal,\nicon: ''\n}\n",
+      '```mermaid\nusecase-beta\nactor Reader@{\ntype: normal,\nicon: ""\n}\n```\n',
+    payloadOutput: 'usecase-beta\nactor Reader@{\ntype: normal,\nicon: ""\n}\n',
     rejected: false,
   },
   {
@@ -96,8 +97,8 @@ const cases: readonly MarkdownCase[] = [
     input: "> ```mermaid\n> usecase-beta\n> json Empty @ {}\n> ```\n",
     payloadInput: "usecase-beta\njson Empty @ {}",
     options: {},
-    output: "> ```mermaid\n> usecase-beta\n>   json Empty @ {}\n> ```\n",
-    payloadOutput: "usecase-beta\n  json Empty @ {}\n",
+    output: "> ```mermaid\n> usecase-beta\n>   json Empty @{}\n> ```\n",
+    payloadOutput: "usecase-beta\n  json Empty @{}\n",
     rejected: false,
   },
   {
@@ -117,9 +118,9 @@ const cases: readonly MarkdownCase[] = [
       "%%{wrap}%%\nusecase-beta %%{init: {}}%%\nactor %%{wrap}%% Reader",
     options: {},
     output:
-      "```mermaid\n%%{wrap}%%\nusecase-beta %%{init: {}}%%\n  actor %%{wrap}%% Reader\n```\n",
+      "```mermaid\n%%{wrap}%%\nusecase-beta %%{init: {}}%%\n  actor %%{wrap}%%Reader\n```\n",
     payloadOutput:
-      "%%{wrap}%%\nusecase-beta %%{init: {}}%%\n  actor %%{wrap}%% Reader\n",
+      "%%{wrap}%%\nusecase-beta %%{init: {}}%%\n  actor %%{wrap}%%Reader\n",
     rejected: false,
   },
   {
@@ -169,9 +170,13 @@ describe("usecase in Markdown", () => {
     expect(dbOfText(fixture.payloadOutput, embedded)).toEqual(
       dbOfText(fixture.payloadInput, embedded),
     )
-    expect(writtenEmbeddedTexts(fixture.payloadOutput)).toEqual(
-      writtenEmbeddedTexts(fixture.payloadInput),
-    )
+    const writtenBefore = writtenEmbeddedTexts(fixture.payloadInput)
+    expect(
+      dataBlockEmbeddedForFormattingComparison(
+        writtenBefore,
+        writtenEmbeddedTexts(fixture.payloadOutput),
+      ),
+    ).toEqual(writtenBefore)
     expect(treeProblemsOfText(fixture.payloadInput)).toEqual([])
     expect(treeProblemsOfText(fixture.payloadOutput)).toEqual([])
   })

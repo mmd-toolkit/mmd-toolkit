@@ -32,6 +32,7 @@ import {
 } from "./layout.ts"
 import type { Source } from "./source.ts"
 import { printAsWritten } from "./lines.ts"
+import { collapsedRunsAtom } from "./text-runs.ts"
 import {
   findStructuralToken,
   findTokenStartingAt,
@@ -291,8 +292,17 @@ function printCall(
   expression: RailroadExpression,
   hidden: readonly RailroadIgnoredText[],
 ): Doc {
-  if (expression.type === "StringLiteral")
-    return printAsWritten(source, ...expression.range)
+  if (expression.type === "StringLiteral") {
+    // A run of spaces and tabs inside a string is drawn as one space, as in
+    // the other syntaxes. A rule name holds no whitespace, so the string of a
+    // nonterminal that holds a run refers to no rule (docs/compatibility.md,
+    // Runs of whitespace in a text that are drawn the same).
+    const [start, end] = expression.range
+    return (
+      collapsedRunsAtom(source, { start, end }).doc ??
+      printAsWritten(source, start, end)
+    )
+  }
   let arguments_: readonly RailroadExpression[],
     members: readonly RailroadExpressionMember[] | undefined
   let valueCall = false

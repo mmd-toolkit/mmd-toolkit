@@ -19,7 +19,7 @@ describe("a quadrant chart in a Markdown code block", () => {
         "# Title\n\n```mermaid\n  quadrantChart\n\n  title   Two  words\nx-axis L-->R\nCampaign A:[0.3,0.6]radius: 9\n```\n",
       ),
     ).toBe(
-      "# Title\n\n```mermaid\nquadrantChart\n  title Two  words\n  x-axis L --> R\n  Campaign A: [0.3, 0.6] radius: 9\n```\n",
+      "# Title\n\n```mermaid\nquadrantChart\n  title Two words\n  x-axis L --> R\n  Campaign A: [0.3, 0.6] radius: 9\n```\n",
     )
   })
 
@@ -33,9 +33,9 @@ describe("a quadrant chart in a Markdown code block", () => {
     )
   })
 
-  it("keeps the whitespace inside a text", async () => {
+  it("prints a run of whitespace inside a text as one space", async () => {
     expect(
       await formatTwice("```mermaid\nquadrantChart\nquadrant-1 a    b\n```\n"),
-    ).toBe("```mermaid\nquadrantChart\n  quadrant-1 a    b\n```\n")
+    ).toBe("```mermaid\nquadrantChart\n  quadrant-1 a b\n```\n")
   })
 })

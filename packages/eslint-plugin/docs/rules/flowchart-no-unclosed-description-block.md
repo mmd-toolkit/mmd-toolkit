@@ -54,7 +54,7 @@ flowchart LR
 flowchart LR
   A --> B
   accDescr { x
-  B --> C
+    B --> C
 ```
 
 Examples of **correct** code for this rule:

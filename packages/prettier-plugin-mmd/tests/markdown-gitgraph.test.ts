@@ -107,11 +107,11 @@ const cases: readonly MarkdownCase[] = [
     input:
       '```mermaid\n%%{wrap}%%\ngitGraph title style:#a;b\ncommit msg:"style:#c;d"\n```\n',
     output:
-      '```mermaid\n%%{wrap}%%\ngitGraph title style:#a;b\n  commit msg:"style:#c;d"\n```\n',
+      '```mermaid\n%%{wrap}%%\ngitGraph title style:#a;b\n  commit msg: "style:#c;d"\n```\n',
     payloadInput:
       '%%{wrap}%%\ngitGraph title style:#a;b\ncommit msg:"style:#c;d"',
     payloadOutput:
-      '%%{wrap}%%\ngitGraph title style:#a;b\n  commit msg:"style:#c;d"\n',
+      '%%{wrap}%%\ngitGraph title style:#a;b\n  commit msg: "style:#c;d"\n',
     options: {},
   },
   {

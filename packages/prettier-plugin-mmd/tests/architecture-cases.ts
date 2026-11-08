@@ -163,4 +163,19 @@ export const architectureCases: readonly ArchitectureCase[] = [
       "\ufeff---\ntitle: Host BOM\n---\narchitecture-beta\n  service frontmatter_bom\n",
     options: {},
   },
+  {
+    name: "architecture/arrow-labels/edge-label-padding-u2028",
+    input: "architecture-beta\nservice a\nservice b\na:R -[\u2028Label]- L:b\n",
+    output:
+      "architecture-beta\n  service a\n  service b\n  a:R -[\u2028Label]- L:b\n",
+    options: {},
+  },
+  {
+    name: "architecture/arrow-labels/edge-label-padding-u2029",
+    input:
+      "architecture-beta\nservice a\nservice b\na:R -[Label \u2029]- L:b\n",
+    output:
+      "architecture-beta\n  service a\n  service b\n  a:R -[Label \u2029]- L:b\n",
+    options: {},
+  },
 ]

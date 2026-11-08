@@ -7,7 +7,7 @@ Filename: flowchart-no-undef-incorrect-1.mmd
 Code:
   1 | flowchart LR
   2 |   A --> B
-  3 |   style C fill:red
+  3 |   style C fill: red
     |         ^ [1]
   4 |
 
@@ -20,7 +20,7 @@ Filename: flowchart-no-undef-incorrect-2.mmd
 
 Code:
   1 | flowchart LR
-  2 |   classDef foo fill:#f00
+  2 |   classDef foo fill: #f00
   3 |   A --> B
   4 |   class C foo
     |         ^ [1]

@@ -8,8 +8,9 @@ prettier-plugin-mmd が象限チャートをどう整形するかを説明しま
 各規則でその条件を説明します。
 象限チャートは、ヘッダーと、その後に続く文でできています。
 XY チャートと違って、引用符なしのテキストの単語の間の空白は Db に入ります。
-そのため、テキストは書かれたままに印字し、規則が形を選ぶのは、
-その周りのものです。
+空白の連なりがなくても図は同じなので、連なりは空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+規則が形を選ぶのは、テキストの周りのものです。
 字下げ、キーワード、矢印、角括弧、コンマです。
 
 各規則では、整形前のテキストと、プラグインが出力するテキストを、例で示します。
@@ -237,33 +238,49 @@ quadrantChart %% c
 
 文のキーワードとテキストは、空白 1 つで離します。
 空白の連なりは空白 1 つにします。
+テキストや文字列に接しているキーワードには、空白を 1 つ加えます。
+`x-axisL --> R` は `x-axis L --> R` に、`quadrant-3C` は `quadrant-3 C` に、
+`title-x` は `title -x` に、`title"T"` は `title "T"` と印字します。
 その間の空白は Db に入りません。
+そのため、形は選べます。
 `x-axisL --> R` と `x-axis L --> R` は同じ軸で、
 `quadrant-10 A` は象限 1 とテキスト `0 A` なので、`quadrant-1 0 A` と同じです。
-接しているキーワードとテキストは、接したままにします。
-ほかの図でも、接しているトークンはそうします。
-空白を足すと、Db では見えない書き換えになります。
-`quadrant-10 A` のように、書き手が別の象限を意図したかもしれない形は、
-mermaid.js の読みを知らせる lint の規則が扱う場所で、
-整形が書き換えるものではありません。 [fixture: keywords-and-texts/title-spaces]
+印字する空白は、その読み方を示します。
+空白はテキストの始まりを示し、キーワードがテキストに接しているとそれが隠れます。
+mermaid.js の文書では、
+すべてのキーワードをテキストから離して書いています
+([`title`、`x-axis`、`y-axis`、`quadrant-1` から `quadrant-4`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/quadrantChart.md#L13-L19))。
+[fixture: keywords-and-texts/title-spaces]
 [fixture: keywords-and-texts/title-tab]
 [fixture: keywords-and-texts/axis-keyword-spaces]
 [fixture: keywords-and-texts/quadrant-keyword-spaces]
-[fixture: keywords-and-texts/keyword-touching-kept]
-[fixture: keywords-and-texts/quadrant-ten-kept]
+[fixture: keywords-and-texts/keyword-touching-spaced]
+[fixture: keywords-and-texts/string-touching-spaced]
+[fixture: keywords-and-texts/quadrant-ten-spaced]
 [fixture: keywords-and-texts/word-after-title-keyword-is-a-point-name]
-[fixture: keywords-and-texts/inner-whitespace-of-a-title-kept]
+[fixture: keywords-and-texts/inner-runs-of-a-title-collapsed]
 
-テキストの中の空白は Db に入るので、書かれたまま残します。
-`quadrant-1 a    b` のテキストは `a    b` で、
-2 つの単語の間のタブはテキストの中のタブで、改ページも同じです。
+キーワードとテキストの間のディレクティブは、[指令](#指令)のとおりに置きます。
+[fixture: keywords-and-texts/directive-beside-keyword]
+軸や象限のキーワードの直後にある U+2028 と U+2029 は、
+テキストの最初の文字なので（[行区切り文字](#行区切り文字)を参照）、
+その前に空白を 1 つ置き、`title` の後にあるものはそのまま残します。
+[test: U+2028 between an axis keyword and its text]
+[test: U+2029 between a quadrant keyword and its text]
+[test: U+2028 after a title keyword]
+
+テキストの中の空白は Db に入りますが、
+空白とタブの連なりは空白 1 つにして印字します。
+`quadrant-1 a    b` のテキストは `a    b` で、`quadrant-1 a b` と印字し、
+2 つの単語の間のタブは空白にします。
+改ページは空白でもタブでもないので残します。
 テキストの両端の空白は、Db が落とすので落とします。
 文字列とその後の単語は、間の空白を保ちます。
 `"a" b` のテキストは `a b` で、`"a"b` のテキストは `ab` だからです。
-[fixture: keywords-and-texts/inner-whitespace-kept]
+[fixture: keywords-and-texts/inner-runs-collapsed]
 [fixture: keywords-and-texts/whitespace-at-the-ends-dropped]
 [fixture: keywords-and-texts/string-then-text-whitespace-kept]
-[fixture: keywords-and-texts/inner-whitespace-of-a-title-kept]
+[fixture: keywords-and-texts/inner-runs-of-a-title-collapsed]
 
 入力
 ([keywords-and-texts/title-spaces-input.mmd](../tests/fixtures/quadrant/keywords-and-texts/title-spaces-input.mmd)):
@@ -282,7 +299,7 @@ quadrantChart
 ```
 
 入力
-([keywords-and-texts/keyword-touching-kept-input.mmd](../tests/fixtures/quadrant/keywords-and-texts/keyword-touching-kept-input.mmd)):
+([keywords-and-texts/keyword-touching-spaced-input.mmd](../tests/fixtures/quadrant/keywords-and-texts/keyword-touching-spaced-input.mmd)):
 
 ```mmd
 quadrantChart
@@ -292,13 +309,13 @@ title-x
 ```
 
 出力
-([keywords-and-texts/keyword-touching-kept-output.mmd](../tests/fixtures/quadrant/keywords-and-texts/keyword-touching-kept-output.mmd)):
+([keywords-and-texts/keyword-touching-spaced-output.mmd](../tests/fixtures/quadrant/keywords-and-texts/keyword-touching-spaced-output.mmd)):
 
 ```mmd
 quadrantChart
-  x-axisL --> R
-  quadrant-3C
-  title-x
+  x-axis L --> R
+  quadrant-3 C
+  title -x
 ```
 
 ### 軸
@@ -314,7 +331,7 @@ mermaid.js は、矢印の周りの空白があってもなくても同じに読
 矢印の長さは Db に入りませんが、書き手が書いたものなので、`--->` は残します。
 [fixture: axes/arrow-touching] [fixture: axes/arrow-with-more-whitespace]
 [fixture: axes/arrow-touching-on-one-side] [fixture: axes/arrow-length-kept]
-[fixture: axes/text-inner-whitespace-kept] [fixture: axes/strings]
+[fixture: axes/text-inner-runs-collapsed] [fixture: axes/strings]
 [fixture: axes/markdown-string] [fixture: axes/axis-only-one-text]
 
 矢印だけで、後ろにテキストのない軸（`x-axis L -->`）は、矢印を残し、
@@ -374,7 +391,7 @@ quadrantChart
 `Campaign B:::class1: [0.8, 0.1]`）。 [fixture: points/colon-touches-the-name]
 [fixture: points/spaces-inside-the-brackets]
 [fixture: points/name-whitespace-at-the-ends-dropped]
-[fixture: points/name-inner-whitespace-kept] [fixture: points/string-names]
+[fixture: points/name-inner-runs-collapsed] [fixture: points/string-names]
 [fixture: points/class-name] [fixture: points/coordinates-as-written]
 [fixture: points/trailing-whitespace-dropped]
 
@@ -463,6 +480,7 @@ trivia、ASCII 空白とタブ以外の空白文字、セミコロン、
 [fixture: styles/class-definition-name-with-a-dash]
 [fixture: styles/class-definition-three-styles]
 [fixture: styles/class-definition-keyword-case-kept]
+[fixture: styles/class-definition-semicolons-case-kept]
 [fixture: styles/class-definition-with-an-ignored-semicolon]
 [fixture: styles/class-definition-space-before-the-comma-dropped]
 
@@ -503,12 +521,13 @@ quadrantChart
 ### 引用符
 
 文字列と markdown 文字列は、書かれたまま印字します。
-引用符、テキスト、中の空白を残し、引用符は足しも取りもしません。
+引用符とテキストを残し、中の空白とタブの連なりは空白 1 つにして印字します。
+引用符は足しも取りもしません。
 mermaid.js は `"L"` と `L`、`"a b"` と `a b` を同じテキストとして読みますが、
 文字列は引用符なしのテキストが持てないものを持てます。
 `"a: b"` はコロンを持ち、引用符なしでは拒否されます。
 そのため、引用符を外せるとは限らず、引用符を付けるかどうかは書き手の選択です。
-[fixture: quotes/strings-as-written] [fixture: quotes/quotes-not-removed]
+[fixture: quotes/strings-runs-collapsed] [fixture: quotes/quotes-not-removed]
 [fixture: quotes/quotes-not-added]
 [fixture: quotes/keywords-and-arrows-in-strings]
 [fixture: quotes/markdown-strings] [fixture: quotes/string-with-a-comment-mark]
@@ -536,6 +555,7 @@ quadrantChart
 `title` は、キーワードとそのテキストを、空白 1 つで離して印字します。
 間に書かれた空白（タブも）はどれも同じです。
 テキストは行の残りで、両端の空白は落とします。
+中の空白とタブの連なりは空白 1 つにして印字します。
 テキストのない `title` は、キーワードだけを印字します。
 title の中の `;`、`#`、`%%`、引用符、キーワードは、そのテキストの文字です。
 [fixture: titles-and-accessibility-statements/title-text]
@@ -547,8 +567,12 @@ title の中の `;`、`#`、`%%`、引用符、キーワードは、そのテキ
 後ろに空白 1 つを置きます。
 ほかの図と同じです（[アクセシビリティの文](./xychart.ja.md#アクセシビリティの文)
 を参照）。
-テキストの前後に空白は置かず、中の空白は残します。
-中の空白は Db に入るからです。
+テキストの前後に空白は置きません。
+`accDescr` のテキストの中の空白とタブの連なりは、空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+`accTitle` はブラウザがツールチップとして表示するので、
+その連なりは書かれたまま残します。
+Db はどちらの連なりも保持します。
 後ろの行に書かれたテキスト、キーワードより後ろの行に書かれたコロン、
 コロンの前の空白は、1 行にして印字します。
 改行は字句解析器にとって空白で、文のテキストは変わりません。
@@ -702,11 +726,21 @@ mermaid.js が複数行にわたって読む文は、
 [fixture: multi-line-statements/accessibility-trivia-continuations]
 
 ほかの文の複数行の trivia は元の配置を保ちます。
-物理行を結ぶコメント領域と、文の内部か最終行の `;` も、
-行の規則があるため元の配置を保ちます（[1 行 1 文](#1-行-1-文)を参照）。
+物理行を結ぶコメント領域も、元の配置を保ちます。
+点とアクセシビリティの文では、改行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
+その改行を残します。
+それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
+それ以外の複数行の文は、改行が残る場合、書かれたままにします。
+最終行の別の文にある `;` も、同じ判定をします。
+[1 行 1 文](#1-行-1-文)を参照してください。
+[fixture: multi-line-statements/breaks-decided-one-by-one]
+[fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
+[fixture: multi-line-statements/semicolon-joining-changes-kept]
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
-[fixture: multi-line-statements/semicolon-on-the-last-line-kept]
+`;` があるだけでは、行をつなぐ妨げにはなりません。
+[fixture: multi-line-statements/semicolon-on-the-last-line-joined]
 
 ### 複数行の値
 
@@ -762,17 +796,22 @@ quadrantChart
 
 ### キーワードの大文字小文字
 
-キーワード `title`、`x-axis`、`y-axis`、`quadrant-1` から `quadrant-4`、
-`classDef`、`accTitle`、`accDescr` は、書かれた大文字小文字のまま印字します。
-mermaid.js はどれも大文字小文字を問わずに読み（`Title`、`X-Axis`、`CLASSDEF`、
-`ACCTITLE:` も文を始めます）、Db は同じです。
-そのため、大文字小文字は書き手のもので、強制するものはありません。
+キーワード `title`、`x-axis`、`y-axis`、`quadrant-1` から `quadrant-4` は、
+mermaid.js の文書の例が使う大文字小文字で印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
+mermaid.js はどれも大文字小文字を問わずに読み、Db は同じです。
+`Title` と `X-Axis` も文を始めます。
+例に使われていない `accTitle` と `accDescr` は、
+書かれた大文字小文字のまま印字します。
+`classDef` も同じです。
+（[大文字小文字をそろえるキーワード](./compatibility.ja.md#大文字小文字をそろえるキーワード)）。
 クラスの名前は、大文字小文字も残します。
-[fixture: keyword-case/statement-keywords-kept]
+[fixture: keyword-case/statement-keywords-one-form]
+[fixture: keyword-case/quadrant-3-4-one-form]
 [fixture: keyword-case/accessibility-keywords-kept]
 
 入力
-([keyword-case/statement-keywords-kept-input.mmd](../tests/fixtures/quadrant/keyword-case/statement-keywords-kept-input.mmd)):
+([keyword-case/statement-keywords-one-form-input.mmd](../tests/fixtures/quadrant/keyword-case/statement-keywords-one-form-input.mmd)):
 
 ```mmd
 quadrantChart
@@ -784,15 +823,15 @@ QUADRANT-2 B
 ```
 
 出力
-([keyword-case/statement-keywords-kept-output.mmd](../tests/fixtures/quadrant/keyword-case/statement-keywords-kept-output.mmd)):
+([keyword-case/statement-keywords-one-form-output.mmd](../tests/fixtures/quadrant/keyword-case/statement-keywords-one-form-output.mmd)):
 
 ```mmd
 quadrantChart
-  Title T
-  X-AXIS L
-  Y-Axis B
-  Quadrant-1 A
-  QUADRANT-2 B
+  title T
+  x-axis L
+  y-axis B
+  quadrant-1 A
+  quadrant-2 B
 ```
 
 ### コメント
@@ -873,12 +912,10 @@ quadrantChart
 ### 指令
 
 指令は元の単位の間に残します。
-同じ印字行の中では、両側の空白の有無を保ちます。
-空白が書かれていれば空白 1 つ、接していれば接したままです。
-mermaid.js は、テキスト、名前、文字列の中の指令の前後を結んで読むので、
-文の内部では、指令の隣が接しているか、
-離れているかを保ちます（[ディレクティブ](./journey.ja.md#ディレクティブ)
-を参照）。
+同じ印字行の中では、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
+隙間をディレクティブがないものとして印字し、
+ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
 単独の行にある指令は、後ろの文と同じ段に置き、
 行の中で 2 つの文の間にある指令は、後ろの文と一緒に動きます。
 [fixture: directives/directive-line-at-the-level-of-the-next-statement]
@@ -930,8 +967,8 @@ x-axis%%{init: {}}%%L
 
 ```mmd
 quadrantChart
-  quadrant-1 %%{init: {}}%% A
-  x-axis%%{init: {}}%%L
+  quadrant-1 %%{init: {}}%%A
+  x-axis %%{init: {}}%%L
 ```
 
 ### フロントマターの YAML

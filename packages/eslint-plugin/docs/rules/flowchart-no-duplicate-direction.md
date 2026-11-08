@@ -42,7 +42,7 @@ Examples of **incorrect** code for this rule:
 
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-duplicate-direction: error
-flowchart TB
+flowchart TD
   subgraph S
     direction LR
     A --> B
@@ -54,7 +54,7 @@ Examples of **correct** code for this rule:
 
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-duplicate-direction: error
-flowchart TB
+flowchart TD
   subgraph S
     direction LR
     A --> B

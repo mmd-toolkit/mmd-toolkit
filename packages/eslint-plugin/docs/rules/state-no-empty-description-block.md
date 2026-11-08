@@ -37,6 +37,9 @@ Empty blocks are also reported after a statement or the header on the same line.
 An empty block before a body's `{` on a later line belongs to no statement and
 is reported by [state-no-ignored-text](./state-no-ignored-text.md) instead.
 
+The formatter prints an empty block as `accDescr {}`. The example with
+whitespace inside the braces is shown as written.
+
 Examples of **incorrect** code for this rule:
 
 ```mmd
@@ -46,6 +49,7 @@ stateDiagram-v2
   accDescr {}
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/state-no-empty-description-block: error
 stateDiagram-v2

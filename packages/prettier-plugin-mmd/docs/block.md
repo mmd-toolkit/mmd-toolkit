@@ -266,10 +266,12 @@ block-beta
 
 ### Header
 
-The header, `block-beta` or `block`, is printed as written: mermaid.js reads
-them as the same diagram type, so the spelling is the author's. The whitespace
-before it is dropped, and a statement after it on its line goes to a line of its
-own (see [Rows](#rows)). [fixture: header/block-beta-kept] [fixture:
+The header, `block-beta` or `block`, is printed as written: mermaid.js 12.3.0
+reads them as the same diagram type, but mermaid.js 11.9.0 detects `block-beta`
+only, so the spelling is the author's (see
+[The names of a header](./compatibility.md#the-names-of-a-header)). The
+whitespace before it is dropped, and a statement after it on its line goes to a
+line of its own (see [Rows](#rows)). [fixture: header/block-beta-kept] [fixture:
 header/block-kept] [fixture:
 header/statement-after-the-header-on-a-line-of-its-own] [fixture:
 header/columns-after-the-header-on-a-line-of-its-own] [fixture:
@@ -290,6 +292,25 @@ Output
 block-beta
   a b
   c
+```
+
+### Keyword case
+
+A block diagram reads its words in lower case only: `COLUMNS`, `SPACE`, `STYLE`,
+and `CLASSDEF` are ids, not keywords, and stay as written. The header is the
+exception (see [Header](#header)). [fixture: keyword-case/keywords-kept]
+
+Input (escaped): `"block-beta\nCOLUMNS 2\nSPACE\nSTYLE A\nCLASSDEF c"`.
+
+Output
+([keyword-case/keywords-kept-output.mmd](../tests/fixtures/block/keyword-case/keywords-kept-output.mmd)):
+
+```mmd
+block-beta
+  COLUMNS 2
+  SPACE
+  STYLE A
+  CLASSDEF c
 ```
 
 ### Columns and space
@@ -393,9 +414,11 @@ shapes/block-arrow-directions-whitespace-kept] [fixture:
 shapes/block-arrow-with-a-width]
 
 A label is a string, between the quotes of the grammar, and is printed as
-written with the whitespace and the line breaks inside it. The quotes are part
-of the syntax: mermaid.js rejects a label without them. [fixture:
-shapes/label-as-written]
+written with the line breaks inside it; a run of spaces and tabs inside it is
+printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+The quotes are part of the syntax: mermaid.js rejects a label without them.
+[fixture: shapes/label-runs-collapsed]
 
 Input
 ([shapes/shape-touches-the-id-input.mmd](../tests/fixtures/block/shapes/shape-touches-the-id-input.mmd)):
@@ -442,7 +465,7 @@ block-beta
 ```
 
 Input
-([shapes/label-as-written-input.mmd](../tests/fixtures/block/shapes/label-as-written-input.mmd)):
+([shapes/label-runs-collapsed-input.mmd](../tests/fixtures/block/shapes/label-runs-collapsed-input.mmd)):
 
 ```mmd
 block-beta
@@ -452,11 +475,11 @@ B["a
 ```
 
 Output
-([shapes/label-as-written-output.mmd](../tests/fixtures/block/shapes/label-as-written-output.mmd)):
+([shapes/label-runs-collapsed-output.mmd](../tests/fixtures/block/shapes/label-runs-collapsed-output.mmd)):
 
 ```mmd
 block-beta
-  A["  two  spaces  "]
+  A[" two spaces "]
   B["a
    b"]
 ```
@@ -523,27 +546,63 @@ block-beta
 
 `classDef`, `style`, and `class` are followed by one space, the name of the
 class or the id, and one space; the whitespace after the keyword and before the
-first style is not in the Db, so it becomes one space. What follows is printed
-as written, apart from the terminators dropped under
+first style is not in the Db, so it becomes one space. The styles of `classDef`
+and `style` use the spacing below; the value of a `class` is printed as written.
+Terminators follow
 [Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement).
 In a `style` and a `class` the whitespace is in the Db.
 `style A fill:#f00 , stroke:#333` has a style `fill:#f00 ` and a style
 ` stroke:#333`; `class A, B c1` looks up the id ` B` with its whitespace, finds
 no block `B`, and gives the class to a new block that the diagram does not show;
 and the class name of `class A c   d` is `c   d`, and that of `class A , B   c1`
-is `, B   c1`, since the whitespace after `A` ends the ids. In a `classDef` it
-is not, but the styles are printed as written too, as in a flowchart (see
-[Whitespace between tokens](./flowchart.md#whitespace-between-tokens)), so that
-the three statements follow one rule and the printer does not take a list of
-styles apart. The whitespace at the end of the statement is dropped, as in a
-flowchart (see
+is `, B   c1`, since the whitespace after `A` ends the ids. In a `classDef` or a
+`style` statement, each style has no whitespace before its first `:` and one
+space after it where the value is not empty. The `,` between styles has no
+whitespace before it and one space after it, as in ER and requirement (see
+[Styles and classes](./er.md#styles-and-classes)):
+`classDef c fill:#f00 , color:white` is printed
+`classDef c fill: #f00, color: white`, and the styles of a `style` statement use
+the same form. The whitespace between the words of a value stays as written. The
+Db changes, but mermaid.js draws the same figure (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
+[fixture: styles/style-colon-spaced] A backslash does not escape a `,` here:
+`fill:a\,b ,stroke:c` is printed `fill: a\, b, stroke: c`. A space after a
+backslash before the `:` stays, since taking it away would escape the `:`.
+[fixture: styles/style-backslash-before-comma] [fixture:
+styles/style-colon-escaped-space-kept] A `style` whose last style ends with a
+backslash keeps whether whitespace stands after it, a run of whitespace becoming
+its first character, also at the end of the statement, since the shapes of a
+block arrow and of a group put the styles into their `style` attribute joined
+with `;` as they are, and the backslash would escape the `;` (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)):
+`style A stroke-width:3px\ ,stroke:#0f0` is printed
+`style A stroke-width: 3px\ , stroke: #0f0`. [fixture:
+styles/style-backslash-space-kept] [fixture: styles/style-backslash-at-end-kept]
+A `classDef` takes the whitespace away first, and is printed in the one form.
+[fixture: styles/class-def-backslash-space-dropped] A style that starts with
+`color:` or `text-align:` keeps whether whitespace stands before it, and the
+name `color` or `text-align` keeps whether whitespace stands between it and the
+`:`, a run of whitespace becoming one space, since mermaid.js puts such a style
+in the style of the label of a node, and a block arrow takes it as it is (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)):
+`style K fill:#ff0,color:red` is printed `style K fill: #ff0,color: red`, and
+`style K color :red` is printed `style K color : red`. [fixture:
+styles/style-label-styles-kept] A statement stays as written where it holds a
+comment or a directive, where a style is all whitespace, or where a style holds
+a line break or its line holds a kept `;`. The whitespace at the end of the
+statement is dropped, as in a flowchart (see
 [Style trailing whitespace](./flowchart.md#style-trailing-whitespace)).
 [fixture: styles/class-definition-spaces] [fixture: styles/style-spaces]
-[fixture: styles/class-spaces] [fixture: styles/style-commas-as-written]
-[fixture: styles/class-definition-commas-as-written] [fixture:
-styles/class-ids-as-written] [fixture:
-styles/class-name-with-a-comma-as-written] [fixture:
-styles/class-name-as-written] [fixture: styles/trailing-whitespace-dropped]
+[fixture: styles/class-spaces] [fixture: styles/style-commas-spaced] [fixture:
+styles/class-definition-commas-spaced] [fixture:
+styles/class-definition-comma-spaced] [fixture:
+styles/class-definition-comma-beside-directive-kept] [fixture:
+styles/style-statement-commas-spaced] [test: U+2029 before the comma of a block
+classDef statement] [fixture: styles/class-ids-as-written] The class name of a
+`class` statement is read as words: a run of spaces and tabs inside it is
+printed as one space, so `class A c   d` is printed `class A c d`. [fixture:
+styles/class-name-with-a-comma-runs-collapsed] [fixture:
+styles/class-name-runs-collapsed] [fixture: styles/trailing-whitespace-dropped]
 [fixture: styles/styles-with-a-directive]
 
 A `style` with no styles is printed as `style A`: the id stands after one space
@@ -552,8 +611,8 @@ block/db-style-none] When the first style is only whitespace, as in
 `classDef c ,fill:#f00`, the Db has an empty first style and the whitespace
 before the `,` belongs to no style, so the styles start at the first `,`: that
 whitespace becomes one space, and the `,` and what follows are printed as
-written, as for any other styles. [fixture: styles/styles-with-a-leading-comma]
-[corpus fixture: block/db-class-def-leading-comma]
+written. [fixture: styles/styles-with-a-leading-comma] [corpus fixture:
+block/db-class-def-leading-comma]
 
 Input
 ([styles/class-definition-spaces-input.mmd](../tests/fixtures/block/styles/class-definition-spaces-input.mmd)):
@@ -570,7 +629,7 @@ Output
 ```mmd
 block-beta
   A
-  classDef c1 color:#fff , fill:#000
+  classDef c1 color: #fff, fill: #000
 ```
 
 Input
@@ -588,7 +647,7 @@ Output
 ```mmd
 block-beta
   A
-  style A fill:#f00 , stroke:#333
+  style A fill: #f00, stroke: #333
 ```
 
 Input
@@ -659,10 +718,10 @@ Output
 ```mmd
 block
   A
-  classDef c fill:#f00
-  style A fill:#f00
-  classDef d fill:#0f0,stroke:#00f
-  style A fill:#0f0,stroke:#00f
+  classDef c fill: #f00
+  style A fill: #f00
+  classDef d fill: #0f0, stroke: #00f
+  style A fill: #0f0, stroke: #00f
 ```
 
 ### Multi-line statements
@@ -681,30 +740,33 @@ whitespace after a `,`. [fixture:
 multi-line-statements/structural-trivia-continuations]
 
 Joining comment regions retain their original layout. [test: block:
-ls-comment-in-composite-head] [test: block: ps-comment-in-composite-head] A kept
-`;` in a statement keeps it as written too, because of the line rule (see
-[Rows](#rows) and
-[A line that a `;` ends](./compatibility.md#a-line-that-a--ends)). The line rule
+ls-comment-in-composite-head] [test: block: ps-comment-in-composite-head] A line
+break stays where joining it, with one space or with nothing, could change which
+`;` the line rule ignores, and where a `;` ends the last line; any other line
+break is joined as usual, also in a statement that holds a `;`. A statement that
+keeps a line break keeps its styles as written. See [Rows](#rows) and
+[A line that a `;` ends](./compatibility.md#a-line-that-a--ends). The line rule
 of mermaid.js removes the last `;` of a line that holds `style` or `classDef`, a
-later `:`, a `#` after that with no whitespace between them, and a later `;`;
-moving a statement away from such a line changes which `;` is the last (in
-`A["style:#a"] B;C D;` the `;` of `D;` is the one removed and the id is `B;C`;
-on a line without `D;`, the `;` of `B;C` would be removed), so the statements of
-such a line stay on it and its kept `;` stays. The exception for a style
-terminator is described in
+later `:`, a `#` after that with no whitespace between them, and a later `;`
+(the first such `#` decides, so `B[":#a;#b"]` matches); moving a statement away
+from such a line changes which `;` is the last (in `A["style:#a"] B;C D;` the
+`;` of `D;` is the one removed and the id is `B;C`; on a line without `D;`, the
+`;` of `B;C` would be removed), so the statements of such a line stay on it and
+its kept `;` stays. The exception for a style terminator is described in
 [Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement).
 The whitespace between the `:` and the `#` stays as well, since it decides
 whether the rule applies: `A["style:"]-->B["#z"];` keeps its arrow touching, and
 with spaces around the arrow the rule does not apply, and the `;` is an id of
-its own. [fixture: multi-line-statements/columns-over-lines-joined] [fixture:
+its own. [fixture: multi-line-statements/breaks-decided-one-by-one] [fixture:
+multi-line-statements/columns-over-lines-joined] [fixture:
 multi-line-statements/edge-over-lines-joined] [fixture:
 multi-line-statements/shape-over-lines-joined] [fixture:
 multi-line-statements/class-definition-line-break-in-the-head] [fixture:
 multi-line-statements/continuation-line-joined-in-a-row] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
-multi-line-statements/directive-inside-kept] [fixture:
-multi-line-statements/semicolon-in-the-statement-kept] [fixture:
-multi-line-statements/line-rule-line-kept] [fixture:
+multi-line-statements/directive-inside-kept] A `;` alone does not prevent
+joining. [fixture: multi-line-statements/semicolon-in-the-statement-joined]
+[fixture: multi-line-statements/line-rule-line-kept] [fixture:
 multi-line-statements/line-rule-line-kept-with-columns] [fixture:
 multi-line-statements/line-rule-line-kept-with-composite] [fixture:
 multi-line-statements/semicolon-in-an-id-kept] [fixture:
@@ -715,6 +777,7 @@ multi-line-statements/semicolon-id-after-columns-kept] [fixture:
 multi-line-statements/semicolon-id-statement-on-its-own-line] [fixture:
 multi-line-statements/line-rule-semicolon-after-touching-arrow-kept] [fixture:
 multi-line-statements/line-rule-semicolon-after-an-id-kept] [fixture:
+multi-line-statements/line-rule-first-hash-after-colon-kept] [fixture:
 multi-line-statements/semicolon-after-spaced-arrow-is-an-id]
 
 ### Comments
@@ -781,14 +844,12 @@ block-beta
 
 ### Directives
 
-Keep directives in their authored gaps. Within a printed line, each side keeps
-whether it touches: one space where whitespace was written beside it, touching
-where it was not. mermaid.js removes a directive before it reads the text, so
-retain touching versus separated gaps within a statement (see
-[Directives](./journey.md#directives)). A directive on a line of its own stands
-at the level of the statement after it, and one before the header stands at the
-first column, as a comment line does. [fixture:
-directives/directive-before-the-header] [fixture:
+Keep directives in their authored gaps. Within a printed line, a directive is
+placed as under [Directives](./flowchart.md#directives): the gap is printed as
+without the directive, and the directive stands after its space and touches the
+unit that follows it. A directive on a line of its own stands at the level of
+the statement after it, and one before the header stands at the first column, as
+a comment line does. [fixture: directives/directive-before-the-header] [fixture:
 directives/directive-line-at-the-level-of-the-next-statement] [fixture:
 directives/directive-between-statements-of-a-row] [fixture:
 directives/directive-between-statements-touching] [fixture:
@@ -824,7 +885,7 @@ Output
 
 ```mmd
 block-beta
-  a %%{init: {}}%% b
+  a %%{init: {}}%%b
 ```
 
 Input

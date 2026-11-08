@@ -2,6 +2,7 @@ import type {
   ClassAnnotation,
   ClassCallbackStatement,
   ClassDeclaration,
+  ClassAttribute,
   ClassMethod,
   ClassName,
   ClassNamespaceStatement,
@@ -18,7 +19,13 @@ import { printAtoms } from "./atoms.ts"
 import { holdsDirection } from "./accessibility-lines.ts"
 import { findWrittenWhitespaceEnd } from "./gap.ts"
 import { findClassSemicolonLines } from "./class-kept-lines.ts"
-import { holdsJoiningRegion, lineStartOf } from "./kept-lines.ts"
+import {
+  findKeptBreaks,
+  gapKeepsLineBreak,
+  holdsJoiningRegion,
+  lineStartOf,
+  spansKeptBreaks,
+} from "./kept-lines.ts"
 import { findOpenString } from "./lines.ts"
 import {
   collectAtoms,
@@ -31,14 +38,16 @@ import {
   formatDescriptionBlock,
   keepFirstGapLineTails,
   layoutCompactEmptyDescriptionBlockWithFallback,
-  spansLinesThatCannotJoin,
   walk,
 } from "./layout.ts"
 import type { Source } from "./source.ts"
 import {
   addCssClassRules,
   addNameListRules,
+  endOfJoinedStyle,
   findCallRangeWithTrivia,
+  normalizeCallArguments,
+  normalizeStyleList,
 } from "./statement-rules.ts"
 import {
   findStructuralToken,
@@ -217,6 +226,7 @@ export function layoutBlockOpening(
   }
   const rules = new Map<number, GapRule>([[opening.range[0], "space"]])
   addDeclarationRules(source, statement, rules)
+  addGenericRules(source, statement, opening.range[0], rules)
   return {
     atoms: collectAtoms(
       source,
@@ -297,11 +307,10 @@ export function layoutClassStatement(
         )
       : layoutExpandedBlock()
   }
-  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  const keptBreaks = findKeptBreaks(source, start, end)
   if (
-    keepsLineBreaks &&
-    (holdsJoiningRegion(source, start, end) ||
-      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
+    spansKeptBreaks(source, keptBreaks, start, end) &&
+    holdsJoiningRegion(source, start, end)
   ) {
     return {
       atoms: [{ start, end }],
@@ -360,11 +369,37 @@ export function layoutClassStatement(
     ),
     kept,
   )
+  if (statement.type === "ClassCallbackStatement") {
+    normalizeCallArguments(source, atoms, statement.arguments?.range ?? null)
+  }
+  if (
+    (statement.type === "ClassClassDefStatement" ||
+      statement.type === "ClassStyleStatement") &&
+    !spansKeptBreaks(source, keptBreaks, start, end)
+  ) {
+    // mermaid.js draws the same figure whatever the whitespace around the `:`
+    // and the `,` of the styles (docs/class.md, Styles), except after a
+    // backslash that ends a style of a `style` or a `classDef`, whose
+    // whitespace the last atom takes up to `end` (see `findClassPrintedEnd`).
+    // A statement with a kept line break keeps its styles as written: printing
+    // them changes whether joining its lines is safe, so a second pass would
+    // join them.
+    const joinsStyles =
+      statement.type === "ClassStyleStatement" ||
+      statement.type === "ClassClassDefStatement"
+    const lastAtom = atoms.at(-1)
+    if (joinsStyles && lastAtom && lastAtom.end < end) {
+      atoms[atoms.length - 1] = { ...lastAtom, end }
+    }
+    normalizeStyleList(source, atoms, statement, { joinsStyles })
+  }
   return {
-    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+    atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
+      gapKeepsLineBreak(source, keptBreaks, from, to),
+    ),
     rules: statementRules(source, statement),
     outdented: new Set(),
-    lineBreaks: keepsLineBreaks || keepsDirectionValue ? "kept" : "joined",
+    lineBreaks: keepsDirectionValue ? "kept" : "joined",
   }
 }
 
@@ -381,8 +416,18 @@ export function findClassPrintedEnd(
 ): number {
   if (findOpenNameIn(source, statement) !== null) return source.text.length
   const colon = findBlankLabelColon(source, statement)
-  if (colon === null) return statement.range[1]
-  return findWrittenWhitespaceEnd(source, colon.range[1])
+  if (colon !== null) return findWrittenWhitespaceEnd(source, colon.range[1])
+  // mermaid.js joins the styles of a `style`, and of a `classDef` that comes
+  // after the class it is put on, with `;` as they are, so the whitespace
+  // after a backslash that ends the last one stays (see `normalizeStyleList`).
+  const lastStyle =
+    statement.type === "ClassStyleStatement" ||
+    statement.type === "ClassClassDefStatement"
+      ? statement.styles.at(-1)
+      : undefined
+  return lastStyle
+    ? Math.max(statement.range[1], endOfJoinedStyle(source, lastStyle.range))
+    : statement.range[1]
 }
 
 /**
@@ -483,27 +528,29 @@ function findMemberStretches(source: Source, statement: Node): Atom[] {
       start: range[0],
       end: range[1],
       doc:
-        statement.member.type === "ClassMethod"
-          ? printClassMethod(source, statement.member)
+        statement.member.type === "ClassMethod" ||
+        statement.member.type === "ClassAttribute"
+          ? printClassMember(source, statement.member)
           : undefined,
     },
   ]
 }
 
 /**
- * Method fields already exclude harmless exterior padding. Keep their contents
- * and classifier tails, formatting only the gaps around the AST fields
+ * Member fields already exclude harmless exterior padding. Keep their contents
+ * and, in a method, its classifier tail and return type, formatting only the
+ * gaps around the AST fields: the classifier of an attribute touches its text
  * (diagrams/class.md, Member lines; docs/class.md, Member lines).
  */
-export function printClassMethod(
+export function printClassMember(
   source: Source,
-  method: ClassMethod,
+  member: ClassMethod | ClassAttribute,
 ): Doc | undefined {
-  const [start, end] = method.range
+  const [start, end] = member.range
   const text = source.text.slice(start, end)
   if (
-    method.textBefore !== null ||
-    method.textAfter !== null ||
+    (member.type === "ClassMethod" &&
+      (member.textBefore !== null || member.textAfter !== null)) ||
     text.includes("\n") ||
     text.includes("\u2028") ||
     text.includes("\u2029") ||
@@ -512,13 +559,16 @@ export function printClassMethod(
     findTriviaBetween(source, start, end).length > 0
   )
     return undefined
-  const values = collectValueNodes(method, classValueNodeTypes)
+  const values = collectValueNodes(member, classValueNodeTypes)
   const atoms = collectAtoms(source, start, end, values, [])
   const rules = new Map<number, GapRule>()
   for (const atom of atoms.slice(1))
     rules.set(
       atom.start,
-      atom.start === method.returnType?.range[0] ? "space" : "none",
+      member.type === "ClassMethod" &&
+        atom.start === member.returnType?.range[0]
+        ? "space"
+        : "none",
     )
   return printAtoms(
     source,
@@ -603,6 +653,11 @@ function addDeclarationRules(
   statement: ClassDeclaration | ClassNamespaceStatement,
   rules: Map<number, GapRule>,
 ): void {
+  const name =
+    statement.type === "ClassDeclaration"
+      ? statement.name
+      : (statement.prefix ?? statement.name)
+  rules.set(name.range[0], "space")
   if (statement.label !== null) {
     addLabelBracketRules(source, statement.label, rules)
   }
@@ -617,21 +672,45 @@ function addDeclarationRules(
 
 /**
  * Adds the rules of the string between the `[` and the `]` of a class or a
- * namespace: nothing stands between the brackets and the quotes, whatever
- * whitespace was written there (docs/class.md, Labels).
+ * namespace: nothing stands between the name and the `[`, nor between the
+ * brackets and the quotes, whatever whitespace was written there
+ * (docs/class.md, Labels).
  */
 function addLabelBracketRules(
   source: Source,
   label: StringLiteral,
   rules: Map<number, GapRule>,
 ): void {
+  const opening = expectToken(
+    findStructuralTokenEndingBefore(source, label.range[0]),
+    "the `[` before the label of a class",
+  )
+  expectValue(opening, "[")
   const closing = expectToken(
     findStructuralToken(source, label.range[1]),
     "the `]` after the label of a class",
   )
   expectValue(closing, "]")
+  rules.set(opening.range[0], "none")
   rules.set(label.range[0], "none")
   rules.set(closing.range[0], "none")
+}
+
+/**
+ * Adds the rule of the first `~` of the generic type of each class name in a
+ * node before `end`: it touches what comes before it, whatever whitespace was
+ * written there, since the whitespace between the name and the `~` is not in
+ * the Db (docs/class.md, Generic types).
+ */
+function addGenericRules(
+  source: Source,
+  node: Node,
+  end: number,
+  rules: Map<number, GapRule>,
+): void {
+  for (const stretch of findGenericStretches(source, node, end)) {
+    rules.set(stretch.start, "none")
+  }
 }
 
 /** The gap rules of a statement. */
@@ -664,7 +743,33 @@ function statementRules(
         rules,
       )
       break
+    case "ClassNoteStatement":
+      if (statement.class !== null) rules.set(statement.class.range[0], "space")
+      rules.set(statement.text.range[0], "space")
+      break
+    case "ClassLinkStatement":
+      rules.set(statement.class.range[0], "space")
+      rules.set(statement.url.range[0], "space")
+      if (statement.tooltip !== null) {
+        rules.set(statement.tooltip.range[0], "space")
+      }
+      if (statement.target !== null) {
+        const target = expectToken(
+          findStructuralToken(
+            source,
+            (statement.tooltip ?? statement.url).range[1],
+          ),
+          "the link target of a link statement",
+        )
+        rules.set(target.range[0], "space")
+      }
+      break
+    case "ClassCssClassStatement":
+      rules.set(statement.idList.range[0], "space")
+      rules.set(statement.cssClass.range[0], "space")
+      break
     case "ClassCallbackStatement":
+      addCallbackRules(source, statement, rules)
       addBlankCallbackRules(source, statement, rules)
       break
     case "ClassDeclaration":
@@ -683,7 +788,33 @@ function statementRules(
     default:
       break
   }
+  addGenericRules(source, statement, statement.range[1], rules)
   return rules
+}
+
+/**
+ * Adds the rules of the units of a callback statement, each after one space:
+ * the class name, the `call` keyword, a function name written as a string,
+ * and the tooltip (docs/class.md, Whitespace between tokens).
+ */
+function addCallbackRules(
+  source: Source,
+  statement: ClassCallbackStatement,
+  rules: Map<number, GapRule>,
+): void {
+  rules.set(statement.class.range[0], "space")
+  if (statement.callback.type === "StringLiteral") {
+    rules.set(statement.callback.range[0], "space")
+  } else {
+    const keyword = expectToken(
+      findStructuralToken(source, statement.class.range[1]),
+      "the `call` of a callback statement",
+    )
+    rules.set(keyword.range[0], "space")
+  }
+  if (statement.tooltip !== null) {
+    rules.set(statement.tooltip.range[0], "space")
+  }
 }
 
 /**

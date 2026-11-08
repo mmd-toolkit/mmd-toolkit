@@ -11,7 +11,15 @@ cynefin-beta と cynefin-beta: の整形規則です。
 
 ### Header
 
-cynefin-beta と cynefin-beta: は第 1 列に置き、colon の有無を保ちます。
+cynefin-beta は第 1 列に置きます。
+見出しの語の直後の colon は削除します。
+mermaid.js は `cynefin-beta:` と `cynefin-beta` を同じ見出しとして読み、
+その文書の例は colon なしを 3 回使い、colon ありは使わないためです。
+（[ヘッダーの後のコロン](./compatibility.ja.md#ヘッダーの後のコロン)を参照）。
+語との間に hidden の形か global directive があるときと、
+`;` か hidden YAML block の `---` が接するときは、colon を保ちます。
+[fixture: cynefin/header/colon-removed]
+[fixture: cynefin/header/colon-semicolon-kept]
 普通の最初の文は次の行へ移し、見出しを見つけやすくします。
 global directive の接触、hidden の隣接、保護行は共有規則に従います。
 見出し行を保つときは、その行の領域と項目の開きも同じ行に保ちます。
@@ -158,7 +166,7 @@ cynefin-beta
 cynefin-beta
   complex
     "Alpha"
-    'Beta'
+    "Beta"
   clear
     "Gamma'"
 ```
@@ -166,9 +174,12 @@ cynefin-beta
 ### Component spacing
 
 同じ行に残る普通の領域と項目の部品は 1 space で分け、部品を見分けやすくします。
-同じ印字行の中の global trivia は両側の接触を保ちます。
-行に分ける所の配置は [Global directives](#global-directives) に従います。
-hidden closer の padding と semicolon の prefix は保護されたままにします。
+同じ印字行の中の global directive は、
+[Global directives](#global-directives) のとおりに置きます。
+行に分ける所も同じです。
+hidden closer の padding は保護されたままにします。
+保持する `;` が保護するのは、
+行の規則が読む範囲だけです（[Semicolons](#semicolons)を参照）。
 
 [fixture: cynefin/component-spacing/domain-hidden-contact]
 
@@ -274,19 +285,24 @@ hidden と global trivia の隙間を普通の空白より優先します。
 
 ```mmd
 cynefin-beta
-  chaotic --> confusion : 'ColonTabs'
+  chaotic --> confusion : "ColonTabs"
 ```
 
 ### Strings
 
 項目と遷移ラベルの StringLiteral は source span のまま印字します。
-引用符、escape、空の値、内部の padding、HTML・entity、
-native form に見える文字を保ち、singleQuote でも引用符は変えません。
-Db が等しい引用符の変更も書かれた形を失い、
-trim や escape の decode は値を変え得るためです。
-共有の semicolon 保護を先に適用します。
+escape、空の値、HTML・entity、native form に見える文字を保ちますが、
+項目の中の空白とタブの連なりは、空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+`'` で囲まれた文字列は、内容に `'`、`"`、バックスラッシュ、改行、U+2028、
+U+2029、バッククォート、`&`、`#`、`<` がある場合を除き、`"` で囲んで印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
+`singleQuote` は読みません。
+trim や escape の decode は値を変え得ます。
 
 [fixture: cynefin/strings/strings-quotes]
+
+[fixture: cynefin/strings/single-quote-sensitive-kept]
 
 [fixture: cynefin/strings/strings-padding]
 
@@ -317,7 +333,7 @@ trim や escape の decode は値を変え得るためです。
 ```mmd
 cynefin-beta
   complex
-    'Single'
+    "Single"
     "Double"
     'opposite " quote'
     "opposite ' quote"
@@ -391,9 +407,9 @@ cynefin-beta
 
 ```mmd
 cynefin-beta
-  complex --> clear : 'First'
-  complex --> clear : 'Second'
-  complex --> complex : 'Self'
+  complex --> clear : "First"
+  complex --> clear : "Second"
+  complex --> complex : "Self"
   clear --> clear
   confusion --> chaotic : ""
 ```
@@ -405,7 +421,15 @@ cynefin-beta
 空または空白だけの値は title だけにし、次行を値にしません。
 引用符を文字列の区切りと解釈せず、Db が等しい簡潔な外端を選びます。
 空の代入によるリセットと trivia の接触を残します。
+題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: title/title-directives-end-blanks-dropped]
 null の title の separator 1 space・tab は範囲の外にあります。
+値の最初の文字より前にある、行の規則が無視する `;` は、
+その前の空白が 1 文字でもそれ以上でも、隙間の項目です。
+`title  ;T` と `title ;T` は同じように印字します。
+[fixture: cynefin/semicolons/ignored-semicolon-title-value-second-space]
 
 [fixture: cynefin/title/title-edges]
 
@@ -438,7 +462,7 @@ null の title の separator 1 space・tab は範囲の外にあります。
 
 ```mmd
 cynefin-beta
-  title Title  inside		text
+  title Title inside text
 ```
 
 ### Accessibility lines
@@ -449,6 +473,10 @@ colon を keyword に付け、非空値の前を 1 space にします。
 普通の外端空白だけを trim し、内部と trivia の接触を保ち、
 colon 後のかっこは行の値として残します。
 共通の簡潔な形で、値を解釈し直さないためです。
+値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: cynefin/accessibility-lines/accessibility-padding]
 
@@ -471,7 +499,7 @@ colon 後のかっこは行の値として残します。
 ```mmd
 cynefin-beta
   accTitle: Access  Title
-  accDescr: Access		Description
+  accDescr: Access Description
 ```
 
 ### Description blocks
@@ -621,7 +649,7 @@ closer の padding が LF を可視のまま残す場合もあります。
 form を所有する node は変えず、行の配置を保ちます。
 
 native の suffix が同じ行を保つ場合も、
-semicolon で保護した prefix は一度だけ印字します。
+semicolon で保護した区間は一度だけ印字します。
 suffix の owner は保ち、項目の重複で Db を変えません。
 
 [fixture: cynefin/hidden-boundaries/semicolon-hidden-header-directive]
@@ -766,7 +794,8 @@ cynefin-beta
 ### Global directives
 
 Root directive の source と順を保ちます。
-同じ印字行の中では、両側の接触・分離を保ちます。
+同じ印字行の中のディレクティブは、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 元は同じ行にあった単位を別の行へ分けるときは、
 間の directive を次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
@@ -801,7 +830,7 @@ native hidden directive は別の形として扱います。
 
 ```mmd
 cynefin-beta
-  complex%%{wrap}%%-->%%{wrap}%%clear%%{wrap}%%:%%{wrap}%%'GlobalLabel'
+  complex %%{wrap}%%--> %%{wrap}%%clear %%{wrap}%%: %%{wrap}%%"GlobalLabel"
 ```
 
 ### Comments
@@ -907,9 +936,22 @@ cynefin-beta
 
 ### Semicolons
 
-共有の textual-prefix 保護で全 semicolon を残します。
-segment の先頭から最後の semicolon までと、交差する値・trivia 全体を保ち、
-安全な suffix の隙間だけを整形します。
+全 semicolon を残します。
+保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
+ほかの場所と同じように整形します。
+この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
+`style` か `classDef` の後の最初の `:` から、
+最後の保つ `;` の前の最後の `#` までに空白がない並びを読みます。
+その範囲の隙間と余白は空白の有無を保ち、空白の連続は空白 1 つにします。
+範囲の外は、この図種の通常の規則に従います。
+どの部分の配置も持たないテキストは、書かれたまま残します。
+複数行にわたる文の行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
+書かれたまま残します。
+それ以外の複数行の文は、1 行の文と同じように整形します。
+[fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted]
+[fixture: semicolons/semi-line-other-value]
 保護した最初の行は所属本文の段にし、項目なら項目の段にします。
 中身と後続行の列は保ちます。
 segment は directive と comment-region の結合を含め、
@@ -1001,6 +1043,17 @@ cynefin-beta
 cynefin-beta
   complex "a;" clear "b" "c"
 ```
+
+2 つの文の間で行の規則が無視する `;` は、書かれた空白によらず、
+直前のトークンに付け、後ろに空白 1 つを置きます。
+文の間の隙間には空白 1 つを置くからです。
+キーワードの直後の隙間は、書かれたままの空白を保ちます。
+[fixture: semicolons/ignored-semicolon-space-before-attached]
+[fixture: semicolons/ignored-semicolon-space-both-attached]
+[fixture: semicolons/ignored-semicolon-space-after-kept]
+[fixture: semicolons/ignored-semicolon-after-header-keyword-kept]
+[fixture: semicolons/semi-selected-outside-string]
+[corpus fixture: cynefin/semicolon-chaotic-parts]
 
 ### Multiline values
 
@@ -1130,7 +1183,7 @@ cynefin-beta
   clear
     "EarlyClear"
   title EarlyTitle
-  complex --> clear : 'EarlyMove'
+  complex --> clear : "EarlyMove"
   complex
     "LaterComplex"
   accTitle: Accessible
@@ -1241,9 +1294,9 @@ cynefin-beta:complex"FencedAlpha"'FencedBeta'
 
 ````markdown
 ```mermaid
-cynefin-beta:
+cynefin-beta
   complex
     "FencedAlpha"
-    'FencedBeta'
+    "FencedBeta"
 ```
 ````

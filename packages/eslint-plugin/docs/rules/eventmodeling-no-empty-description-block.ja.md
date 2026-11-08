@@ -43,7 +43,7 @@ mermaid.js がそのコメント行を説明の文字として保つので、報
 ```mmd
 %% eslint @mmd-toolkit/eventmodeling-no-empty-description-block: error
 eventmodeling accDescr {}
-  tf 01 evt Bought
+tf 01 evt Bought
 ```
 
 この規則に**従う**コードの例:
@@ -51,7 +51,7 @@ eventmodeling accDescr {}
 ```mmd
 %% eslint @mmd-toolkit/eventmodeling-no-empty-description-block: error
 eventmodeling accDescr { Checkout flow }
-  tf 01 evt Bought
+tf 01 evt Bought
 ```
 
 ```mmd
@@ -59,7 +59,7 @@ eventmodeling accDescr { Checkout flow }
 eventmodeling accDescr {
 %% TODO
 }
-  tf 01 evt Bought
+tf 01 evt Bought
 ```
 
 ## オプション

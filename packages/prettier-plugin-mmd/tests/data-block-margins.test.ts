@@ -24,6 +24,16 @@ describe("data blocks' permitted uniform margins", () => {
       after: "@{ --- }",
     },
     {
+      name: "an inline block of spaces and tabs only",
+      before: "@{ \t  }",
+      after: "@{ }",
+    },
+    {
+      name: "an inline block of nothing",
+      before: "@{}",
+      after: "@{ }",
+    },
+    {
       name: "an inline block that starts with a no-break space inside",
       before: "@{\u00a0label: Alpha}",
       after: "@{ \u00a0label: Alpha }",
@@ -187,9 +197,9 @@ describe("data blocks' permitted uniform margins", () => {
       after: "@{ %a: 1 }",
     },
     {
-      name: "an inline block of spaces only",
+      name: "an inline block of spaces only given more spaces",
       before: "@{   }",
-      after: "@{ }",
+      after: "@{  }",
     },
     {
       name: "an inline block of one line made several",

@@ -295,9 +295,14 @@ id のない形（`[S]`）も同じです。 [fixture: shapes/mismatched]
 [fixture: shapes/db-shape-cloud-alt] [fixture: shapes/db-shape-mismatched]
 [fixture: shapes/lex-shape-dash-bare] [fixture: shapes/lex-shape-dash-string]
 
-裸の id と形の間の空白は残します。
-Db は裸の id の末尾の空白を保つので、`S [x]` の id は空白を含む `S ` です。
-[fixture: shapes/id-before-shape]
+カードの id と形の間の空白は落とし、`A [x]` は `A[x]` と印字します。
+Db はその空白を id の一部として保ちますが、カードは同じに描かれます（詳しくは、
+[同じに描かれる mindmap のテキスト](./compatibility.ja.md#同じに描かれる-mindmap-のテキスト)）。
+列の id と形の間の空白は残します。
+`S [x]` の id は空白を含む `S ` で、mermaid.js は id で 2 つの列を区別します。
+そのため、`todo [A]` と `todo[B]` は 2 つの列ですが、
+`todo[A]` と `todo[B]` は 1 つの列になり、描かれ方が変わります。
+[fixture: shapes/id-before-shape] [fixture: shapes/card-id-before-shape-dropped]
 
 入力
 ([shapes/mismatched-input.mmd](../tests/fixtures/kanban/shapes/mismatched-input.mmd)):
@@ -326,8 +331,10 @@ kanban
 ラベルは、書かれた形のまま印字します。
 裸（`A[x y]`）、引用符つき（`B["x y"]`）、markdown（`C["`x y`"]`）です。
 ラベルの中の空白は Db に入るので残します。
-空白だけのラベル（`S[ ]`、`A[" "]`）と、
-裸のラベルの両端の空白（`S[  x  ]`）も同じです。
+空白だけのラベル（`S[ ]`、`A[" "]`）も同じです。
+裸のラベルの両端の空白とタブは落とし、`S[  x  ]` は `S[x]` と印字します。
+mermaid.js はそれらがなくても同じノードを描くからです（詳しくは、
+[同じに描かれる mindmap のテキスト](./compatibility.ja.md#同じに描かれる-mindmap-のテキスト)）。
 引用符が文字列の始まりになるのは、開きの直後だけなので、
 `D[ "x" ]` のテキストは、引用符とその両側の空白を含む裸のテキスト `"x"` で、
 印字はそれらを動かしません。
@@ -339,8 +346,9 @@ kanban
 [fixture: labels/db-grid-html-attribute-item-label-quoted]
 [fixture: labels/db-grid-entity-item-label-quoted]
 
-印字は、ラベルに引用符をつけることも、外すことも、削ることも、足すことも、
-符号化することも、戻すこともしません。
+印字は、ラベルに引用符をつけることも、外すことも、足すことも、符号化することも、
+戻すこともしません。
+削るのは、裸のラベルの両端の空白とタブだけです。
 `A[x y]` と `A["x y"]` の Db は同じですが、書き方は書き手のものです。
 文字列の閉じ引用符の後の空白（`S["x" ]`）は拒否されるので、
 印字する形にはなりません（[整形しない場合](../README.ja.md#整形しない場合)
@@ -390,10 +398,10 @@ kanban
 [fixture: icons-and-classes/gram-decoration-then-child]
 
 飾りのテキストは書かれたまま残します。
-マーカーの大文字小文字（`::ICON(y)`）、アイコンの中の空白（`::icon( x )`）、
-クラスの後ろの空白（`:::c  ` の末尾の空白はクラスの一部です）、
-空白だけのアイコンとクラス、最初の後の 2 つめのアイコンやクラスです。
-`:::` とクラスの間の空白とタブは落とし、`::: hot` は `:::hot` になります。
+マーカーの大文字小文字（`::ICON(y)`）、アイコンとクラスの中の空白、
+最初の後の 2 つめのアイコンやクラスです。
+アイコンとクラスの両端の空白とタブは落とします。
+`::icon( x )` は `::icon(x)`、`::: hot ` は `:::hot` と印字します。
 mermaid.js は `:::` の後のテキストをノードのクラスとして持ちますが、
 描画するデータにクラスは渡しません。
 その箇所は、
@@ -402,7 +410,12 @@ mermaid.js は `:::` の後のテキストをノードのクラスとして持�
 [`getData`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L54-L97)
 にあります。
 そのためボードは変わらず、空白やタブは HTML のクラス名の一部でもありません。
-空白だけのクラスと、
+空白だけのクラスやアイコンは、空白 1 つで印字します。
+空のものは拒否されるので、これがそれを保つ最小の空白です。
+そのため、`::icon(  )` は `::icon( )` と印字し、
+`:::` の後に空白 2 つがあるものは `:::` の後に空白 1 つで印字します。
+[fixture: icons-and-classes/gram-whitespace-icon]
+[fixture: icons-and-classes/gram-whitespace-class]
 行のどこかにディレクティブがあるクラス行（`::: hot %%{x}%%`、`::: h%%{x}%%ot`、
 `%%{x}%%::: hot`）は、書かれたまま残します。
 ディレクティブのある行は書かれたまま印字するからです（Directives を参照）。
@@ -492,7 +505,7 @@ mermaid.js は拒否します（既知の差異
 `A@{ticket: X}` は `A@{ ticket: X }` になります。
 書かれたままにする場合は、そこに挙げたとおりです。
 [fixture: data-blocks/one-line-padded]
-[fixture: data-blocks/one-line-space-only-kept]
+[fixture: data-blocks/one-line-space-only-padded]
 [fixture: data-blocks/one-line-directive-kept]
 [fixture: data-blocks/one-line-kept-line-kept]
 [fixture: data-blocks/one-line-touching-blocks-kept]
@@ -930,18 +943,28 @@ kanban
 
 ### 行末の空白
 
-行末の空白は、Db に入らない所では落とします。
+行末の空白は、なくても同じノードが描かれる所で落とします（詳しくは、
+[同じに描かれる mindmap のテキスト](./compatibility.ja.md#同じに描かれる-mindmap-のテキスト)）。
 形の後（`S[x]   `）、アイコンの後（`::icon(z)  `）、
-データブロックの後（`A[y]@{ticket: X}   `）、
-閉じた文字列の後（`A["Work"]  `）です。
-Db が保つ所では残します。
-裸の id の後（`S   ` は id `S   ` で、形やデータブロックの前の空白も同じです）、
-クラスの中（`:::c   `）、コメントの中、ラベル、アイコン、データブロック、
-ディレクティブの中、複数行の値の続きの行です。
+データブロックの後（`A[y]@{ticket: X}   `）、閉じた文字列の後（`A["Work"]  `）、
+カードの裸の id の後（`A   ` は `A` と印字します）、
+クラスの後（`:::c   `）です。
+Db が保ち、図がその空白に依存する所では残します。
+列の裸の id の後（`S   ` は id `S   ` で、形の前の空白も同じです）、
+コメントの中、ラベル、アイコン、データブロック、ディレクティブの中、
+複数行の値の続きの行です。
 これは [mindmap](./mindmap.ja.md#ノードのテキスト) の区別で、
-データブロックを加えたものです。
-保つ行でも同じです。 [test: kanban: bare-trailing-trim]
-[test: kanban: closed-trailing-trim] [test: kanban: closed-whitespace-trim]
+データブロックを加え、列の id は残します。
+保つ行でも同じです。
+カードのテキストを終えるディレクティブは、
+それぞれの前に空白があれば空白 1 つを置き、
+最後のディレクティブの後の空白は除きます。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+列の id を終えるディレクティブは、図がその空白に依存するので、
+書かれたまま残します。
+[fixture: trailing-whitespace/directives-end-blanks-dropped]
+[test: kanban: bare-trailing-trim] [test: kanban: closed-trailing-trim]
+[test: kanban: closed-whitespace-trim]
 [fixture: trailing-whitespace/class-trailing-trim]
 [fixture: trailing-whitespace/lex-after-quoted-spaces]
 [fixture: trailing-whitespace/kept-line-kept]

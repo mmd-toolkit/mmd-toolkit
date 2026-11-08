@@ -4,7 +4,12 @@ import type { Range } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import type { Gap, ItemRun } from "./gap.ts"
 import type { GapRule } from "./atoms.ts"
-import { endsWithSpaceOrTab, readGap, readGapElement } from "./gap.ts"
+import {
+  endsWithSpaceOrTab,
+  printAbsentItems,
+  readGap,
+  readGapElement,
+} from "./gap.ts"
 import type { KeptLines } from "./kept-lines.ts"
 import {
   holdsJoiningRegion,
@@ -1125,13 +1130,14 @@ interface InlinePlace {
 }
 
 /**
- * Prints a gap within a kept line: its `;` and directives, with one space
- * on each side where the source has whitespace, and nothing where it has
- * none, but no space at the start or the end of the line. Whitespace in
- * `relocatedWhitespace` is not printed: the planned indentation of the next
- * statement supplies it.
+ * Prints a gap within a kept line: its `;` and directives. A directive and a
+ * `;` that the line rule ignores follow the ordinary rule of the gap (see
+ * `printAbsentItems`); the other items have one space on each side where the
+ * source has whitespace, and nothing where it has none, but no space at the
+ * start or the end of the line. Whitespace in `relocatedWhitespace` is not
+ * printed: the planned indentation of the next statement supplies it.
  */
-function printInlineGap(
+export function printInlineGap(
   source: Source,
   start: number,
   end: number,
@@ -1166,6 +1172,11 @@ function printInlineGap(
       [...source.text.slice(start, end)].some(isWhitespace)
     return spaced ? " " : ""
   }
+  // A directive and a `;` that the line rule ignores are removed from the
+  // text: the gap follows its ordinary rule as if they were absent (see
+  // `printAbsentItems`).
+  const absent = printAbsentItems(source, start, end, run, ordinaryRule, place)
+  if (absent !== null) return absent
   return [
     run.spaceBefore && !place.atLineStart ? " " : "",
     run.doc,

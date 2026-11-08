@@ -55,8 +55,8 @@ agentflow-beta TB
 %% eslint @mmd-toolkit/agentflow-no-unclosed-description-block: error
 agentflow-beta TB
   accDescr { first
-  B --> C
-  A{y}
+    B --> C
+    A{y}
   D
 ```
 

@@ -30,12 +30,12 @@ mermaid.js は同じブロックの別の `style` をエラーなしに受理し
 スタイルの並べ替えや追加は報告しない。
 
 id の後に何もない `style` は何も変えず、比べない。
-`style A fill:#f00` の後の `style A ,` は、
+`style A fill: #f00` の後の `style A ,` は、
 空の部分が塗りを置き換えるので報告する。
 比較では、両端とコロンの前後の空白を除き、
 値の中の空白の連なりは 1 つの空白とする。
 ほかの書き方は書いたとおりに比べるので、
-`fill:#f00` の後の `fill:#F00` は報告する。
+`fill: #f00` の後の `fill: #F00` は報告する。
 
 同じブロックの文は、複合ブロックをまたいで比べる。
 `classDef` のスタイルは比べない。
@@ -46,8 +46,8 @@ id の後に何もない `style` は何も変えず、比べない。
 %% eslint @mmd-toolkit/block-no-redefined-style: error
 block
   A
-  style A fill:#f00
-  style A stroke:#00f
+  style A fill: #f00
+  style A stroke: #00f
 ```
 
 この規則に**従う**コードの例:
@@ -56,7 +56,7 @@ block
 %% eslint @mmd-toolkit/block-no-redefined-style: error
 block
   A
-  style A fill:#f00,stroke:#00f
+  style A fill: #f00, stroke: #00f
 ```
 
 ## オプション

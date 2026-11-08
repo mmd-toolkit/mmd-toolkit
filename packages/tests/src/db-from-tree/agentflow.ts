@@ -3,7 +3,8 @@ import {
   classDefStyleOf,
   dbTypeOf,
   diagramDirectionOf,
-  styleValues,
+  emptyDescriptionBlocksOf,
+  graphStyleValuesOf,
 } from "./graph-values.ts"
 import type { DataBlockEffect, EmbeddedValues } from "../mermaid.ts"
 import type { DbSummary, JsonObject } from "../types.ts"
@@ -38,7 +39,7 @@ import {
   lastGraphWithId,
   StringDelimiters,
 } from "./graph.ts"
-import type { Identifier, StringLiteral, TreeRoot } from "./tree.ts"
+import type { Identifier, StringLiteral, TreeRange, TreeRoot } from "./tree.ts"
 import type { TextReplacement } from "./text-replacement.ts"
 import { textReplacementOf } from "./text-replacement.ts"
 import {
@@ -190,6 +191,9 @@ class AgentflowDbBuilder {
   /** The converted form of ranges of the source. */
   private readonly text: ConvertedText
 
+  /** Empty blocks and statement-comment padding do not contribute to style values. */
+  private readonly styleTrivia: readonly TreeRange[]
+
   /** The delimiters of the strings of the tree. */
   private readonly strings: StringDelimiters
 
@@ -204,6 +208,22 @@ class AgentflowDbBuilder {
   ) {
     this.characters = readAgentflowCharacters(source, root)
     this.text = new ConvertedText(this.characters)
+    const styleTrivia = emptyDescriptionBlocksOf(diagram.body)
+    // The statement comment rule takes preceding ASCII spaces and tabs.
+    // Keep this local to styles: label comments retain their padding.
+    for (const comment of root.comments) {
+      let at = this.text.indexAt(comment.range[0]) - 1
+      let start = comment.range[0]
+      while (at >= 0) {
+        const character = this.characters[at]
+        if (character?.codePoint !== 0x20 && character?.codePoint !== 0x09)
+          break
+        start = character.start
+        at--
+      }
+      if (start < comment.range[0]) styleTrivia.push([start, comment.range[0]])
+    }
+    this.styleTrivia = styleTrivia
     this.strings = new StringDelimiters(root, this.characters)
     this.replace = textReplacementOf(embedded.config)
     this.direction = diagramDirectionOf(diagram.direction)
@@ -244,22 +264,17 @@ class AgentflowDbBuilder {
       title: this.replace(title),
       accTitle: this.accTitle,
       accDescr: this.accDescr,
-      vertices: [...this.vertices.values()].map((vertex): JsonObject => ({
-        ...(vertex as JsonObject),
-        styles: styleValues(vertex.styles),
-      })),
-      edges: this.edges.map((edge): JsonObject => ({
-        ...(edge as JsonObject),
-        ...(edge.style === undefined ? {} : { style: styleValues(edge.style) }),
-      })),
+      vertices: [...this.vertices.values()].map(
+        (vertex) => vertex as JsonObject,
+      ),
+      edges: this.edges.map((edge) => edge as JsonObject),
       edgeDefaults: {
         interpolate: this.defaultInterpolate,
-        style:
-          this.defaultStyle === null ? null : styleValues(this.defaultStyle),
+        style: this.defaultStyle,
       },
       classDefs: [...this.classDefs.values()].map((classDef) => ({
         id: classDef.id,
-        styles: styleValues(classDef.styles),
+        styles: classDef.styles,
       })),
       subgraphs: this.subgraphs.map((subgraph) => subgraph as JsonObject),
       tooltips: [...this.tooltips].map(([id, text]) => ({ id, text })),
@@ -445,12 +460,10 @@ class AgentflowDbBuilder {
 
   /**
    * Style statements: the styles of `statement`, in converted form: the
-   * value of each, or the empty text for a null style.
+   * value of each followed by its line whitespace, including a null style's whitespace.
    */
   private stylesOf(statement: StatementWithStyles): string[] {
-    return statement.styles.map((style) =>
-      style === null ? "" : this.text.of(style.range),
-    )
+    return graphStyleValuesOf(statement, this.text, this.styleTrivia)
   }
 
   /** Names concatenate contributing fragments only, without restoring click-context exit whitespace. */

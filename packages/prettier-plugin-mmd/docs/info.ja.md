@@ -98,11 +98,17 @@ info
 
 ### Title
 
-外側の空白に一つの簡潔な形を与え、内部の本文を保つため、`title`、空白1個、
+外側の空白に一つの簡潔な形を与えるため、`title`、空白1個、
 共通空白を外端から除いた値を印字します。
 null または空白だけの値は裸の `title` にします。
+値の中の空白とタブの連なりは、空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 空行、コメント、directive を挟んでも、次の物理行を値に取り込みません。
 trivia を含む値、hidden suffix、semicolon 保護では原文の境界を保ちます。
+題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: title/title-directives-end-blanks-dropped]
 
 [fixture: info/title/title-trim]
 
@@ -129,7 +135,7 @@ trivia を含む値、hidden suffix、semicolon 保護では原文の境界を�
 
 ```mmd
 info
-  title Topic  words
+  title Topic words
 ```
 
 ### Accessibility lines
@@ -142,6 +148,10 @@ info
 colon 後の brace は行の内容です。
 空行、コメント、directive の先の物理行を空値へ取り込みません。
 hidden suffix と保護 gap は保持します。
+値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: info/accessibility-lines/a11y-lines]
 
@@ -166,7 +176,7 @@ hidden suffix と保護 gap は保持します。
 ```mmd
 info
   accTitle: Access  words
-  accDescr: Details  words
+  accDescr: Details words
 ```
 
 ### Description blocks
@@ -418,7 +428,8 @@ info
 
 共通の除去が両側を連結するため、
 opaque な Root directive の原文と順序を保ちます。
-同じ印字行の中では、両側の接触・分離を保ちます。
+同じ印字行の中のディレクティブは、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 元は同じ行にあった単位を別の行へ分けるときは、
 間の directive を次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
@@ -455,18 +466,29 @@ info の Db が空でも init は設定を変えうるためです。
 ```mmd
 info
   accTitle%%{wrap}%%: Access
-  accDescr%%{wrap}%%{ D }
+  accDescr %%{wrap}%%{ D }
 ```
 
 ### Semicolons
 
-[共有の文字列 segment 保護](./pie.ja.md#directives-and-semicolons)を使い、
 すべての semicolon を残します。
-最初の非空白から最後の semicolon までを保護し、交差する値、コメント、
-directive は完全な範囲まで含めます。
+保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
+ほかの場所と同じように整形します。
+この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
+`style` か `classDef` の後の最初の `:` から、
+最後の保つ `;` の前の最後の `#` までに空白がない並びを読みます。
+その範囲の隙間と余白は空白の有無を保ち、空白の連続は空白 1 つにします。
+範囲の外は、この図種の通常の規則に従います。
+どの部分の配置も持たないテキストは、書かれたまま残します。
+複数行にわたる文の行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
+書かれたまま残します。
+それ以外の複数行の文は、1 行の文と同じように整形します。
+[fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted]
 trigger の移動が選択と受理を変えうるため、保護された見出しと本文は分離しません。
 style/classDef の両 pass、大小文字、colon と hash の空白、Unicode 境界、
-directive で再結合する trigger は原文を保ち、安全な外側と suffix は整えます。
+directive で再結合する trigger の読みを保ちます。
 semicolon は info の一般的な文区切りではありません。
 
 [fixture: info/semicolons/native-description-value]

@@ -461,7 +461,7 @@ export const treeviewCases: readonly TreeviewCase[] = [
   {
     name: "treeview/annotation-lines/review159-region-line-rule-semicolon",
     input: "treeView-beta\nroot\n├── a\u2028%% c\n ## style:#x;\n└── z\n",
-    output: "treeView-beta\nroot\n├── a\u2028%% c\n ## style:#x;\n└── z\n",
+    output: "treeView-beta\nroot\n├── a\u2028%% c\n    ## style:#x;\n└── z\n",
     options: {},
   },
   {
@@ -557,6 +557,18 @@ export const treeviewCases: readonly TreeviewCase[] = [
     name: "treeview/comments/comment-ls-semicolon-both",
     input: 'treeView-beta\nRoot\n "A"%% c;\u2028 "B;y"\n Other\n',
     output: 'treeView-beta\n  Root\n    "A"%% c;\u2028 "B;y"\n    Other\n',
+    options: {},
+  },
+  {
+    name: "treeview/trailing-whitespace/spaces-after-trailing-line-separator",
+    input: "treeView-beta\nR  \u2028  \n",
+    output: "treeView-beta\n  R  \u2028\n",
+    options: {},
+  },
+  {
+    name: "treeview/trailing-whitespace/description-spaces-after-trailing-line-separator",
+    input: "treeView-beta\nR ## d  \u2029  \n",
+    output: "treeView-beta\n  R ## d  \u2029\n",
     options: {},
   },
 ]

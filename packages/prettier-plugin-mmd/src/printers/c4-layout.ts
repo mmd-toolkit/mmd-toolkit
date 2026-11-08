@@ -21,14 +21,15 @@ import {
   keepFirstGapLineTails,
   keptAsWritten,
   layoutDescriptionBlock,
+  protectSemicolonPrefixes,
   spansLinesThatCannotJoin,
   spaceDescriptionOpening,
 } from "./layout.ts"
 import {
+  findKeptBreaks,
+  gapKeepsLineBreak,
   holdsJoiningRegion,
-  keptSemicolonPrefixEnd,
   lineStartOf,
-  semicolonSegmentEnd,
 } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import {
@@ -36,10 +37,11 @@ import {
   findTokenStartingAt,
   findTokensBetween,
   findTriviaBetween,
+  hasTriviaBesidesTrailingDirectives,
   isStructural,
   isWhitespace,
 } from "./source.ts"
-import { accessibilityRules } from "./statement-rules.ts"
+import { accessibilityRules, trimTextAfterKeyword } from "./statement-rules.ts"
 
 /** Written leaves, including number-looking text (docs/c4.md, Argument forms). */
 export const c4ValueNodeTypes: ReadonlySet<Node["type"]> = new Set([
@@ -248,22 +250,26 @@ export function layoutC4Call(
       )
     }
   }
-  // Structural LF and trivia stay in their gaps. Only textual semicolon
-  // segments need the whole multiline call kept (diagrams/c4.md, Directives
-  // inside units; docs/c4.md, Argument spacing and Line rule and semicolons).
-  if (spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true })) {
-    return keptAsWritten(start, end)
-  }
   const values = collectValueNodes(statement, c4ValueNodeTypes).filter(
     (value) => value.range[1] <= end,
   )
   const namedAttributes = statement.arguments.filter(
     (argument) => argument?.type === "C4NamedAttribute",
   )
-  const stretches = findC4CallStretches(source, statement, end, values)
   const atoms = splitC4EmptyEntryTokens(
     source,
-    collectAtoms(source, start, end, values, stretches),
+    protectSemicolonPrefixes(
+      source,
+      start,
+      end,
+      collectAtoms(
+        source,
+        start,
+        end,
+        values,
+        findC4NullBlocks(source, statement),
+      ),
+    ),
   )
   const rules = new Map<number, GapRule>()
   const outdented = new Set<number>()
@@ -368,54 +374,16 @@ export function layoutC4Call(
 }
 
 /**
- * Preserve semicolon-bearing null blocks and textual line prefixes through
- * their last semicolon. A prefix can cross a value, which must stay whole
- * (common.md, Style and classDef lines; docs/c4.md, Line rule and semicolons).
+ * Preserve semicolon-bearing null blocks. The text of the line is protected
+ * where formatting it could change which `;` the line rule ignores (common.md,
+ * Style and classDef lines; docs/c4.md, Line rule and semicolons), by
+ * `protectSemicolonPrefixes`.
  */
-function findC4CallStretches(
-  source: Source,
-  statement: C4Call,
-  end: number,
-  values: readonly Node[],
-): Atom[] {
-  const start = statement.range[0]
-  const kept: Atom[] = []
-  if (statement.type === "C4BoundaryStatement") {
-    for (const block of statement.beforeBody) {
-      if (source.text.slice(...block.range).includes(";")) {
-        kept.push({ start: block.range[0], end: block.range[1] })
-      }
-    }
-  }
-  for (let line = lineStartOf(source, start); line < end;) {
-    const lineEnd = semicolonSegmentEnd(source, line)
-    const last = source.text.lastIndexOf(";", Math.min(end, lineEnd) - 1)
-    if (last >= Math.max(start, line)) {
-      let from = Math.max(start, line)
-      let to = last + 1
-      for (const value of values) {
-        if (value.range[0] < to && from < value.range[1]) {
-          from = Math.min(from, value.range[0])
-          to = Math.max(to, value.range[1])
-        }
-      }
-      kept.push({ start: from, end: to })
-    }
-    line = lineEnd + 1
-  }
-  // Prefixes can overlap through values; collectAtoms needs one whole atom.
-  kept.sort((left, right) => left.start - right.start)
-  const stretches: Atom[] = []
-  for (const stretch of kept) {
-    const previous = stretches.at(-1)
-    if (previous !== undefined && stretch.start <= previous.end) {
-      stretches[stretches.length - 1] = {
-        start: previous.start,
-        end: Math.max(previous.end, stretch.end),
-      }
-    } else stretches.push(stretch)
-  }
-  return stretches
+function findC4NullBlocks(source: Source, statement: C4Call): Atom[] {
+  if (statement.type !== "C4BoundaryStatement") return []
+  return statement.beforeBody
+    .filter((block) => source.text.slice(...block.range).includes(";"))
+    .map((block) => ({ start: block.range[0], end: block.range[1] }))
 }
 
 /** Expose the padding in an opening empty-entry token (tokens/c4.md). */
@@ -446,8 +414,6 @@ function splitC4EmptyEntryTokens(
  */
 export function layoutC4Text(source: Source, statement: C4Text): AtomLayout {
   const [start, end] = statement.range
-  if (keptSemicolonPrefixEnd(source, start) > start)
-    return keptAsWritten(start, end)
   if (statement.type === "C4AccDescrBlockStatement") {
     if (source.text.slice(start, end).includes(";"))
       return keptAsWritten(start, end)
@@ -468,17 +434,13 @@ export function layoutC4Text(source: Source, statement: C4Text): AtomLayout {
     statement.type === "C4AccTitleStatement" ||
     statement.type === "C4AccDescrStatement"
   ) {
-    const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+    const keptBreaks = findKeptBreaks(source, start, end)
     // Colon forms trim exterior whitespace; their structural trivia gaps
     // can align while retained LF still shields direction text. Native
     // title forms below instead own their additional separator whitespace
     // (diagrams/c4.md, Title and accessibility contexts; docs/c4.md,
     // Accessibility lines and Direction rejection).
-    if (
-      holdsJoiningRegion(source, start, end) ||
-      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true })
-    )
-      return keptAsWritten(start, end)
+    if (holdsJoiningRegion(source, start, end)) return keptAsWritten(start, end)
     const atoms = collectAtoms(
       source,
       start,
@@ -487,7 +449,9 @@ export function layoutC4Text(source: Source, statement: C4Text): AtomLayout {
       [],
     )
     return {
-      atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+      atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
+        gapKeepsLineBreak(source, keptBreaks, from, to),
+      ),
       rules:
         statement.value === null
           ? new Map()
@@ -496,11 +460,11 @@ export function layoutC4Text(source: Source, statement: C4Text): AtomLayout {
               value: statement.value,
             }),
       outdented: new Set(),
-      lineBreaks: keepsLineBreaks ? "kept" : "joined",
+      lineBreaks: "joined",
     }
   }
   if (
-    findTriviaBetween(source, start, end).length > 0 ||
+    hasTriviaBesidesTrailingDirectives(source, start, end) ||
     spansLinesThatCannotJoin(source, start, end)
   )
     return keptAsWritten(start, end)
@@ -514,11 +478,16 @@ export function layoutC4Text(source: Source, statement: C4Text): AtomLayout {
     source.text[separator] === "\u2029"
   )
     return keptAsWritten(start, end)
+  const atoms: Atom[] = [
+    { start, end: separator },
+    { start: separator + 1, end },
+  ]
+  // The whitespace after the separator is in the Db, and mermaid.js draws the
+  // same text without it (docs/compatibility.md, Texts after a keyword that
+  // are drawn the same).
+  trimTextAfterKeyword(source, atoms, [separator + 1, end], true)
   return {
-    atoms: [
-      { start, end: separator },
-      { start: separator + 1, end },
-    ],
+    atoms,
     rules: new Map([[separator + 1, "space"]]),
     outdented: new Set(),
     lineBreaks: "joined",

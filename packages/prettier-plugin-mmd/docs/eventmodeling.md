@@ -575,8 +575,8 @@ later closer.
 Keep the entire body as written if the opener has padding before LF, the body
 contains `<`, `&` or `%%{`, or a nonblank line starts with a tab or other
 whitespace after its ASCII-space prefix. HTML, entities and directive-looking
-text can make indentation affect rendering. Existing semicolon protection and
-default-size rules also take precedence.
+text can make indentation affect rendering. A body that holds a `;` stays as
+written too: Mermaid's native entity spellings, such as `#amp;`, end in a `;`.
 
 [fixture: eventmodeling/data-blocks/block-interior-unchanged]
 
@@ -596,6 +596,23 @@ Mermaid accepts body indentation and includes it in the raw value. The permitted
 leading-margin adjustment can therefore change raw Db values while preserving
 the rendered diagram. This is an explicit formatter exception; it changes no
 parser, specification or recorded Mermaid Db reading.
+
+The renderer takes the body of a data block between the `{` and the closing `}`
+and passes it to `wrapLabel` in
+[`calculateTextProps`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/eventmodeling/db.ts#L358-L371),
+which splits it at every space and drops the empty pieces
+([`wrapLabel`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/utils.ts#L559-L594)).
+A run of spaces at the start of a line after the first therefore draws as one
+space, whatever its length, and no space at all draws as none. The spaces at the
+start of the first line draw as none. Both texts of each case were drawn with
+mermaid.js 12.3.0 in Chromium, and the SVG, without the generated ids, and the
+pixels were the same for a margin of another length on every line and for a
+margin added to the first line; a margin added to a later line that had none
+changed the figure, which is why such a body stays as written. The tests compare
+the Db of the printed text with the margins of the bodies restored from the Db
+of the written text (`eventmodelingDbForFormattingComparison` in
+`tests/eventmodeling-data-margins.ts`). When the pinned mermaid.js is updated,
+draw both texts of each case again before the exception stays.
 
 [fixture: eventmodeling/final-newline/final-block-padding-kept]
 
@@ -981,13 +998,13 @@ eventmodeling/frontmatter-extra-whitespace-line-boundary]
 
 ### Global directives
 
-Use the shared directive placement: on the same printed line retain contact or
-separation on each side. When statements, clauses or items split into lines,
-attach an intervening directive to the following unit, retaining right contact.
-Keep content, order, multiline interiors, positions inside values and unfinished
-EOF endings. Standalone starts align with the owning body. Common boundaries
-retain the full original gap instead of this ordinary spacing; a removed
-directive cannot replace required whitespace.
+Use the shared directive placement: on the same printed line place a directive
+as under [Directives](./flowchart.md#directives). When statements, clauses or
+items split into lines, attach an intervening directive to the following unit,
+retaining right contact. Keep content, order, multiline interiors, positions
+inside values and unfinished EOF endings. Standalone starts align with the
+owning body. Common boundaries retain the full original gap instead of this
+ordinary spacing; a removed directive cannot replace required whitespace.
 
 [fixture: eventmodeling/global-directives/directive-same-line-contacts]
 
@@ -1016,19 +1033,31 @@ Output
 
 ```mmd
 eventmodeling
-tf%%{wrap}%% 01 evt Alpha%%{wrap}%%->>%%{wrap}%%02
+tf %%{wrap}%%01 evt Alpha %%{wrap}%%->> %%{wrap}%%02
 ```
 
 ### Semicolons
 
-Keep every authored semicolon using shared textual-prefix protection: preserve
-through the last semicolon of each protected segment and every complete crossing
-value or trivia item. The first protected body line aligns with its body;
-contents and later columns remain authored. Required identifier and common-value
-padding takes precedence over structural indentation. Keep a child body's
-opening edge on the protected line too, so a second formatting cannot split it
-differently. This grammar has no grammatical semicolon, so `verbatimStyleLines`
-is false: a `style` or `classDef` word alone does not freeze the whole line.
+Keep every authored semicolon. A segment that holds a kept `;` is formatted as
+anywhere else, except where formatting could change which `;` the line rule
+ignores. The rule reads a segment from the first `:` after `style` or `classDef`
+to the last `#` before its last kept `;`, with no whitespace between the `:` and
+the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps and the
+padding inside that stretch keep whether they hold whitespace, a run becoming
+one space, and the rest of the segment follows the ordinary rules of this
+diagram. Text that no part of the layout holds stays as written. A statement
+over several lines whose lines, joined with one space or with nothing, could
+change which `;` the line rule ignores keeps the text of each segment, up to its
+last kept `;`, as written; any other statement over several lines is formatted
+like one on a single line. [fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted] [fixture:
+semicolons/protected-gwt-title-hidden-gap-remains-zero] The first protected body
+line aligns with its body; contents and later columns remain authored. Required
+identifier and common-value padding takes precedence over structural
+indentation. Keep a child body's opening edge on the protected line too, so a
+second formatting cannot split it differently. This grammar has no grammatical
+semicolon, so `verbatimStyleLines` is false: a `style` or `classDef` word alone
+does not freeze the whole line.
 
 [fixture: eventmodeling/semicolons/native-gwt-value]
 
@@ -1065,7 +1094,7 @@ Output
 ([semicolons/selected-external-semicolon-preserved-output.mmd](../tests/fixtures/eventmodeling/semicolons/selected-external-semicolon-preserved-output.mmd)):
 
 ```mmd
-eventmodeling tf 01 evt Alpha "style:#x" ;rf 02 cmd Beta
+eventmodeling tf 01 evt Alpha "style:#x"; rf 02 cmd Beta
 ```
 
 ### Blank lines

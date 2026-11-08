@@ -16,7 +16,7 @@
         "id": "A",
         "labelType": "text",
         "styles": [
-          "x:y",
+          "x:y ",
           "z:q"
         ],
         "classes": [],

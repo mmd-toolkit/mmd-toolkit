@@ -48,14 +48,6 @@ interface FlowDbLike {
  *   under `securityLevel: loose`, a site setting. The click itself already
  *   shows as the class `clickable`.
  * - Internal bookkeeping (`vertexCounter`, `subCount`, `posCrossRef`, ...).
- * - Whitespace at the end of each style value (`vertices[].styles`,
- *   `classDefs[].styles`, `edges[].style`, `edgeDefaults.style`). The grammar
- *   keeps the whitespace written before a comma or the end of the line in the
- *   value, and `FlowDB` stores it, but nothing in mermaid reads it; the
- *   formatter removes whitespace at the end of these lines, which must not
- *   change the summary. Only the end is trimmed: whitespace at the start of a
- *   value can change the Db (`linkStyle` adds `fill:none` when no value starts
- *   with `fill`).
  *
  * `vertices[].link` is the URL as written (trimmed), not the value mermaid
  * stores after `@braintree/sanitize-url`; see {@link patchFlowDb}.
@@ -94,12 +86,11 @@ export function normalizeFlowchart(dbValue: unknown): DbSummary {
     edges: edges.map(edgeSummary),
     edgeDefaults: {
       interpolate: edges.defaultInterpolate ?? null,
-      style: edges.defaultStyle ? styleValues(edges.defaultStyle) : null,
+      style: edges.defaultStyle ?? null,
     },
-    classDefs: [...db.getClasses().values()].map((classDef) => ({
-      ...omit(toJsonObject(classDef), ["textStyles"]),
-      styles: styleValues((classDef as { styles: string[] }).styles),
-    })),
+    classDefs: [...db.getClasses().values()].map((classDef) =>
+      omit(toJsonObject(classDef), ["textStyles"]),
+    ),
     subgraphs: db.getSubGraphs().map(subgraphSummary),
     tooltips,
     ...clickCallsField(db),
@@ -110,31 +101,14 @@ export function normalizeFlowchart(dbValue: unknown): DbSummary {
  * The summary of one vertex.
  */
 function vertexSummary(vertex: object): JsonObject {
-  return {
-    ...omit(toJsonObject(vertex), ["domId", "haveCallback"]),
-    styles: styleValues((vertex as { styles: string[] }).styles),
-  }
+  return omit(toJsonObject(vertex), ["domId", "haveCallback"])
 }
 
 /**
  * The summary of one edge.
  */
 function edgeSummary(edge: object): JsonObject {
-  const { style } = edge as { style?: string[] }
-  return {
-    ...toJsonObject(edge),
-    ...(style ? { style: styleValues(style) } : {}),
-  }
-}
-
-/**
- * Style values without the whitespace at their end, which is what
- * `String.prototype.trimEnd()` removes: exactly the characters the grammar
- * can leave there (its `SPACE` token matches JavaScript's `\s` except line
- * feed and carriage return).
- */
-function styleValues(values: readonly string[]): string[] {
-  return values.map((value) => value.trimEnd())
+  return toJsonObject(edge)
 }
 
 /**

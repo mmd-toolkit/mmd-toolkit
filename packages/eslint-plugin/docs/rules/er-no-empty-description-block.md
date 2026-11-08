@@ -37,6 +37,9 @@ reported too. Inside the text of `accTitle:`, `accDescr {}` is part of that text
 and is not reported. After a direction,
 [er-no-ignored-text](./er-no-ignored-text.md) reports it.
 
+The formatter prints an empty block as `accDescr {}`. The example with
+whitespace inside the braces is shown as written.
+
 Examples of **incorrect** code for this rule:
 
 ```mmd
@@ -46,6 +49,7 @@ erDiagram
   accDescr {}
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/er-no-empty-description-block: error
 erDiagram

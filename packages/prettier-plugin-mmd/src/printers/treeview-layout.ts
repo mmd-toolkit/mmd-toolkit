@@ -6,7 +6,7 @@ import type {
   TreeviewIgnoredText,
   TreeviewNode,
 } from "@mmd-toolkit/ast"
-import type { AtomLayout, GapRule } from "./atoms.ts"
+import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { layoutCommonDescription, layoutCommonLine } from "./common-layout.ts"
 import type { LeadingDirectives } from "./indentation-lines.ts"
 import { findLeadingDirectives } from "./indentation-lines.ts"
@@ -15,7 +15,9 @@ import {
   collectValueNodes,
   keptAsWritten,
   protectSemicolonPrefixes,
+  replaceInAtoms,
 } from "./layout.ts"
+import { collectTextEndEdits, endsWithDirectives } from "./statement-rules.ts"
 import type { TreeviewBoxPlan } from "./treeview-box.ts"
 import { treeviewContentStart } from "./treeview-box.ts"
 import {
@@ -27,8 +29,11 @@ import type { Source } from "./source.ts"
 import {
   findCoveringRange,
   findStructuralToken,
+  findTriviaAt,
   findTriviaBetween,
+  isSpaceOrTab,
   isWhitespace,
+  skipSpacesAndTabs,
 } from "./source.ts"
 
 /** Values and outer box forms each print once at their authored owner. */
@@ -234,6 +239,65 @@ function treeviewNodeParts(node: TreeviewNode): readonly Node[] {
   ]
 }
 
+/**
+ * The atom without the spaces and tabs at its end, where it is the last of its
+ * line. mermaid.js trims the name and the description of a node, so the Db and
+ * the figure are the same without them (docs/treeview.md, Trailing whitespace).
+ * An atom of whitespace only stays as written. So does an atom that ends with a
+ * comment, whose spaces and tabs are its own, and one that a comment follows,
+ * whose gap is the gap of that comment. An atom that ends with directives,
+ * which mermaid.js removes before it reads the value, prints them as the end
+ * of a title does.
+ */
+function trimAtomEnd(source: Source, atom: Atom): Atom {
+  if (endsWithDirectives(source, [atom.start, atom.end])) {
+    // The atom ends with directives, printed as at the end of a line (see
+    // `collectTextEndEdits`).
+    const atoms = [atom]
+    replaceInAtoms(
+      source,
+      atoms,
+      collectTextEndEdits(source, atom.start, atom.end, false),
+    )
+    return atoms[0]
+  }
+  if (findTriviaAt(source, atom.end - 1) !== undefined) return atom
+  if (findTriviaBetween(source, atom.end, atom.end + 1).length > 0) return atom
+  let end = atom.end
+  while (end > atom.start && isSpaceOrTab(source.text[end - 1])) end--
+  return end === atom.start || end === atom.end ? atom : { ...atom, end }
+}
+
+/**
+ * The atoms of a node with the spaces and tabs after the `##` of a description
+ * left out of the description, which mermaid.js trims (docs/treeview.md,
+ * Descriptions). A description of spaces and tabs only stays as written.
+ * `texts` receives the start of each description whose padding was left out.
+ */
+function trimDescriptionPadding(
+  source: Source,
+  item: TreeviewNode,
+  atoms: readonly Atom[],
+  texts: Set<number>,
+): Atom[] {
+  return atoms.map((written, index) => {
+    let atom = written
+    const described = item.annotations.some(
+      (annotation) =>
+        annotation.type === "TreeviewDescriptionAnnotation" &&
+        annotation.value?.range[0] === written.start,
+    )
+    if (described) {
+      const start = skipSpacesAndTabs(source, written.start, written.end)
+      if (start !== written.end) {
+        texts.add(start)
+        atom = { ...written, start }
+      }
+    }
+    return index === atoms.length - 1 ? trimAtomEnd(source, atom) : atom
+  })
+}
+
 /** Only this item's syntax is printed here; gaps and descendants have lines. */
 export function treeviewStatementRange(item: TreeviewBodyItem): Range {
   if (item.type !== "TreeviewNode") return item.range
@@ -417,16 +481,22 @@ export function layoutTreeviewStatement(
       layout = keptAsWritten(start, end)
       break
     case "TreeviewNode": {
-      const atoms = collectAtoms(
+      const descriptionTexts = new Set<number>()
+      const atoms = trimDescriptionPadding(
         source,
-        start,
-        end,
-        treeviewNodeParts(item).flatMap((part) =>
-          treeviewValueNodeTypes.has(part.type)
-            ? [part]
-            : collectValueNodes(part, treeviewValueNodeTypes),
+        item,
+        collectAtoms(
+          source,
+          start,
+          end,
+          treeviewNodeParts(item).flatMap((part) =>
+            treeviewValueNodeTypes.has(part.type)
+              ? [part]
+              : collectValueNodes(part, treeviewValueNodeTypes),
+          ),
+          [],
         ),
-        [],
+        descriptionTexts,
       )
       const rules = new Map<number, GapRule>()
       const annotationStarts = new Set(
@@ -435,7 +505,9 @@ export function layoutTreeviewStatement(
       for (const atom of atoms.slice(1)) {
         rules.set(
           atom.start,
-          annotationStarts.has(atom.start) ? "space" : "none",
+          annotationStarts.has(atom.start) || descriptionTexts.has(atom.start)
+            ? "space"
+            : "none",
         )
       }
       // An annotation on its own physical line still needs ASCII separation

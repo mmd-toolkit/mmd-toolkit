@@ -208,9 +208,18 @@ mermaid.js の文書の例の書き方と同じです。
 作者が書いたテキストを、印字は落とさないからです。
 [fixture: decorations/second-class-kept]
 
-icon と class のテキストは、両端と中の空白を Db が持つので残します。
+icon と class のテキストは、両端の空白とタブを除いて印字します。
+`::icon( fa fa-book )` は `::icon(fa fa-book)`、
+`::: big red ` は `:::big red` と印字します。
+mermaid.js はその空白を Db に残しますが、同じノードを描きます。
+（[同じに描かれる mindmap のテキスト](./compatibility.ja.md#同じに描かれる-mindmap-のテキスト)）。
+テキストの中の空白は残し、空白とタブだけのテキストは空白 1 つで印字します。
+これが、テキストを保つ最小の空白です。
+空の icon や class は拒否され、mermaid.js は空白とタブの数によらず、
+同じ空のテキストを読むからです。
+[fixture: decorations/padding-in-icon-and-class-dropped]
+[fixture: decorations/blank-icon-and-class-one-space]
 icon の閉じ括弧の後ろの空白は Db に入らないので落とします。
-[fixture: decorations/whitespace-in-icon-and-class-kept]
 [fixture: decorations/trailing-whitespace-after-icon-dropped]
 
 入力
@@ -265,11 +274,17 @@ mindmap
 
 ### ノードのテキスト
 
-ノードのテキストは、末尾の空白を id の一部として Db が持つので残します。
-`root` の後ろに空白 3 つがあれば、ノードは `root   ` で、
-`a (x)` の id は `a ` なので、形の前の空白も残ります。
-[fixture: node-text/trailing-whitespace-kept]
-[fixture: node-text/space-before-a-shape-kept]
+ノードのテキストは、末尾の空白とタブを除いて印字します。
+形の前の id も同じで、形の前の空白も一緒に除きます。
+`root` の後ろに空白 3 つがあれば `root` と印字し、
+`a (x)` は `a(x)` と印字します。
+Db はその空白を id の一部として持ちますが、描かれるノードは同じです。
+形がある場合は id を描かず、ノードのテキストは末尾の空白を描かないからです。
+（[同じに描かれる mindmap のテキスト](./compatibility.ja.md#同じに描かれる-mindmap-のテキスト)）。
+[fixture: node-text/trailing-whitespace-dropped]
+[fixture: node-text/space-before-a-shape-dropped]
+ノードのテキストの中の空白は残します。
+[fixture: node-text/inner-whitespace-kept]
 ノードのテキストは、`]`、`:`、`#`、`"`、`%%`、`:::` を文字として含み、
 単独の `%` で始まる行はコメントではなくノードのテキストです。
 [fixture: node-text/special-characters] [fixture: node-text/percent-in-text]
@@ -302,7 +317,7 @@ mindmap
 ```
 
 入力
-([node-text/space-before-a-shape-kept-input.mmd](../tests/fixtures/mindmap/node-text/space-before-a-shape-kept-input.mmd)):
+([node-text/space-before-a-shape-dropped-input.mmd](../tests/fixtures/mindmap/node-text/space-before-a-shape-dropped-input.mmd)):
 
 ```mmd
 mindmap
@@ -312,13 +327,13 @@ mindmap
 ```
 
 出力
-([node-text/space-before-a-shape-kept-output.mmd](../tests/fixtures/mindmap/node-text/space-before-a-shape-kept-output.mmd)):
+([node-text/space-before-a-shape-dropped-output.mmd](../tests/fixtures/mindmap/node-text/space-before-a-shape-dropped-output.mmd)):
 
 ```mmd
 mindmap
   root
-    a (x)
-    b  [y]
+    a(x)
+    b[y]
 ```
 
 ### 形
@@ -330,12 +345,18 @@ mindmap
 [fixture: shapes/mismatched-closers-kept]
 形はノードのテキストなしに単独でも書けます。 [fixture: shapes/shape-alone]
 
-形のテキストは、空白を Db が持つので残します。
+形のテキストは、両端の空白とタブを除いて印字します。
+`a[ x ]` は `a[x]` と印字します。
+mermaid.js はその空白を Db に残しますが、同じノードを描きます。
 文字列は開きの直後だけが文字列で、
 `a[ "x" ]` のテキストは引用符を含む `"x"` です。
 `a["x"]` と `a[x]` のテキストは同じですが、どちらも書き換えません。
-[fixture: shapes/inner-whitespace-kept] [fixture: shapes/text-and-string-forms]
+余白を除くと引用符で始まるテキストは、その余白を残します。
+文字列、markdown 文字列、複数行にまたがるテキストは、書かれたままにし、
+空白とタブだけのテキストは空白 1 つで印字します。
+[fixture: shapes/inner-padding-dropped] [fixture: shapes/text-and-string-forms]
 [fixture: shapes/markdown-string]
+[fixture: shapes/padding-kept-where-drawn-differently]
 形の後ろの空白は Db に入らないので落とします。
 [fixture: shapes/trailing-whitespace-dropped]
 
@@ -618,7 +639,12 @@ mindmap
 単独の行のディレクティブは、後ろの行と同じ段に置きます。
 ノードの行にあるディレクティブは、両側に空白が書かれているかを残します。
 あれば空白 1 つを置き、接していれば接したままにします。
-他の図種と同じ規則です。 [fixture: directives/kept]
+ノードかクラスのテキストを終えるディレクティブは、
+それぞれの前に空白があれば空白 1 つを置き、
+最後のディレクティブの後の空白は除きます。
+行末の空白の有無で印字は変わりません。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: node-text/directives-end-blanks-dropped] [fixture: directives/kept]
 [fixture: directives/between-nodes] [fixture: directives/before-the-header]
 [fixture: directives/after-the-header-on-the-same-line]
 [fixture: directives/after-the-header-touching]
@@ -683,9 +709,9 @@ mindmap
 
 ### キーワードの大文字小文字
 
-キーワードは、書かれた大文字小文字のまま残します。
+`::icon(` は、mermaid.js の文書の例のとおり、小文字で印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
 mermaid.js は `::icon(` をどの大文字小文字でも読み、Db は同じです。
-大文字小文字は強制されないので、作者が選んだものとして、書き換えません。
 ヘッダーは小文字でだけ検出されます。 [fixture: keyword-case/icon-keyword]
 
 入力
@@ -704,8 +730,8 @@ mindmap
 ```mmd
 mindmap
   root
-  ::ICON(x)
-  ::Icon(y)
+  ::icon(x)
+  ::icon(y)
 ```
 
 ### フロントマターの YAML

@@ -42,10 +42,10 @@ mermaid.js が同じ題として読んでも報告することがある。
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-redefined-subgraph: error
 flowchart LR
-  subgraph S [One]
+  subgraph S[One]
     A
   end
-  subgraph S [Two]
+  subgraph S[Two]
     B
   end
 ```
@@ -55,7 +55,7 @@ flowchart LR
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-redefined-subgraph: error
 flowchart LR
-  subgraph S [One]
+  subgraph S[One]
     A
   end
   subgraph S
@@ -66,10 +66,10 @@ flowchart LR
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-redefined-subgraph: error
 flowchart LR
-  subgraph S [One]
+  subgraph S[One]
     A
   end
-  subgraph S [One]
+  subgraph S[One]
     B
   end
 ```

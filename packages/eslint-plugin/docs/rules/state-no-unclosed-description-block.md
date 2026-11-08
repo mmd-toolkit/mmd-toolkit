@@ -49,7 +49,7 @@ stateDiagram-v2
 %% eslint @mmd-toolkit/state-no-unclosed-description-block: error
 stateDiagram-v2
   accDescr { x
-  state B {
+    state B {
     C
   }
   D --> E

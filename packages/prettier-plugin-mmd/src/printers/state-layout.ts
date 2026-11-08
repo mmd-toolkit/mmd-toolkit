@@ -4,22 +4,29 @@ import type {
   StateAliasDefinitionStatement,
   StateCompositeStatement,
   StateLiteral,
+  StateFloatingNoteStatement,
+  StateClassDefStatement,
   StateNoteStatement,
   StateReference,
   StateStatement,
+  StateStyleStatement,
   Token,
 } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import { Marked, type Token as MarkdownToken } from "marked"
+import type { Doc } from "prettier"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { holdsDirection } from "./accessibility-lines.ts"
 import { findWrittenWhitespaceEnd } from "./gap.ts"
 import {
+  findKeptBreaks,
+  gapKeepsLineBreak,
   holdsJoiningRegion,
   isDroppedSemicolon,
   lineEndOf,
   lineStartOf,
   printedEndOf,
+  spansKeptBreaks,
 } from "./kept-lines.ts"
 import {
   alignBlockOpeningLine,
@@ -34,11 +41,11 @@ import {
   keepFirstGapLineTails,
   keptAsWritten,
   layoutCompactEmptyDescriptionBlockWithFallback,
-  spansLinesThatCannotJoin,
+  replaceInAtoms,
   toAsciiLowerCase,
   walk,
 } from "./layout.ts"
-import { printAsWrittenTrimmed } from "./lines.ts"
+import type { TextEdit } from "./layout.ts"
 import type { Source } from "./source.ts"
 import {
   findStructuralToken,
@@ -46,11 +53,18 @@ import {
   findTokenEndingBefore,
   findTokensBetween,
   findTriviaBetween,
+  isSpaceOrTab,
   isStructural,
   isWhitespace,
 } from "./source.ts"
 import { findStateSemicolonLines } from "./state-kept-lines.ts"
-import { addCssClassRules } from "./statement-rules.ts"
+import {
+  addCssClassRules,
+  collectTextEndEdits,
+  normalizeStyleList,
+  printStyleWithColon,
+  styleUnitsCanCompact,
+} from "./statement-rules.ts"
 
 /**
  * The node types of a state diagram whose text is a value, printed as
@@ -209,10 +223,9 @@ export function layoutBodyOpening(
 ): AtomLayout {
   const start = statement.range[0]
   const end = opening.range[1]
-  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  const keptBreaks = findKeptBreaks(source, start, end)
   if (
     holdsJoiningRegion(source, start, end) ||
-    spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }) ||
     hasReadOtherwiseTextBeforeBody(statement) ||
     followsStateName
   ) {
@@ -234,10 +247,12 @@ export function layoutBodyOpening(
   return alignBlockOpeningLine(
     source,
     {
-      atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+      atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
+        gapKeepsLineBreak(source, keptBreaks, from, to),
+      ),
       rules,
       outdented: new Set([opening.range[0]]),
-      lineBreaks: keepsLineBreaks ? "kept" : "joined",
+      lineBreaks: "joined",
     },
     opening.range[0],
   )
@@ -328,10 +343,9 @@ export function layoutStateStatement(
   ) {
     return layoutNoteOverLines(source, statement, end, noteIndentation)
   }
-  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
+  const keptBreaks = findKeptBreaks(source, start, end)
   if (
     holdsJoiningRegion(source, start, end) ||
-    spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }) ||
     ((statement.type === "StateCompositeStatement" ||
       statement.type === "StateAliasDefinitionStatement") &&
       hasReadOtherwiseTextBeforeBody(statement))
@@ -339,7 +353,8 @@ export function layoutStateStatement(
     return keptAsWritten(start, end)
   }
   const kept = [
-    ...findNoteStretches(statement, end),
+    ...findNoteStretches(source, statement, end),
+    ...findFloatingNoteStretches(source, statement),
     ...findSecondDescriptionStretches(source, statement, end),
     ...findBlankDescriptionStretches(source, statement, end),
     ...findDroppedSemicolonStretches(source, statement),
@@ -369,11 +384,29 @@ export function layoutStateStatement(
     ),
     kept,
   )
+  replaceInAtoms(
+    source,
+    atoms,
+    secondDescriptionEndEdits(source, statement, end),
+  )
+  if (
+    (statement.type === "StateClassDefStatement" ||
+      statement.type === "StateStyleStatement") &&
+    !spansKeptBreaks(source, keptBreaks, start, end)
+  ) {
+    // mermaid.js draws the same figure whatever the whitespace around the `:`
+    // of the styles (docs/state.md, Styles). A statement with a kept line break
+    // keeps its styles as written: printing them changes whether joining its
+    // lines is safe, so a second pass would join them.
+    normalizeStyleList(source, atoms, statement)
+  }
   return {
-    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+    atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
+      gapKeepsLineBreak(source, keptBreaks, from, to),
+    ),
     rules: statementRules(source, statement),
     outdented: new Set(),
-    lineBreaks: keepsLineBreaks || keepsDirectionValue ? "kept" : "joined",
+    lineBreaks: keepsDirectionValue ? "kept" : "joined",
   }
 }
 
@@ -579,12 +612,11 @@ function findBlankDescriptionStretches(
 
 /**
  * The stretch of the second description of an alias definition without a
- * body: from its `:` to the end of the statement, with the whitespace at
- * the end of the line when nothing follows the second description, as
- * written. mermaid.js reads the text between the first `:` and the second
- * `:` or the end, whitespace included: `state "d" as A :x` and
- * `state "d" as A : x` give A different second descriptions
- * (docs/state.md, Aliases).
+ * body: from its `:` to the end of the statement, as written, apart from the
+ * end of the text (see `secondDescriptionEndEdits`). mermaid.js reads the text
+ * between the first `:` and the second `:` or the end, whitespace included:
+ * `state "d" as A :x` and `state "d" as A : x` give A different second
+ * descriptions (docs/state.md, Aliases).
  */
 function findSecondDescriptionStretches(
   source: Source,
@@ -598,8 +630,45 @@ function findSecondDescriptionStretches(
     return []
   }
   const colon = findSecondDescriptionColon(source, statement)
+  return colon === null ? [] : [{ start: colon.range[0], end }]
+}
+
+/**
+ * The edits that print the end of the second description of an alias
+ * definition without a body, unless the text is whitespace only or holds a
+ * `;`: the whitespace at the end of the line is part of what mermaid.js reads
+ * and draws the same without it, and so is the whitespace around the
+ * directives there (docs/compatibility.md, Texts after a keyword that are
+ * drawn the same). A `;` there is read by the line rule, which the end of the
+ * line decides.
+ */
+function secondDescriptionEndEdits(
+  source: Source,
+  statement: StateStatement,
+  end: number,
+): TextEdit[] {
+  if (
+    statement.type !== "StateAliasDefinitionStatement" ||
+    statement.body !== null
+  ) {
+    return []
+  }
+  const colon = findSecondDescriptionColon(source, statement)
   if (colon === null) return []
-  return [{ start: colon.range[0], end }]
+  let contentEnd = end
+  while (
+    contentEnd > colon.range[1] &&
+    isSpaceOrTab(source.text[contentEnd - 1])
+  ) {
+    contentEnd--
+  }
+  if (
+    contentEnd === colon.range[1] ||
+    source.text.slice(colon.range[0], contentEnd).includes(";")
+  ) {
+    return []
+  }
+  return collectTextEndEdits(source, colon.range[1], end, false)
 }
 
 /**
@@ -621,11 +690,17 @@ function findDroppedSemicolonStretches(
   if (style === undefined || style === null) return []
   const semicolon = style.range[1] - 1
   if (!isDroppedSemicolon(source, semicolon)) return []
+  let printedEnd = semicolon
+  while (
+    printedEnd > style.range[0] &&
+    isWhitespace(source.text[printedEnd - 1])
+  )
+    printedEnd--
   return [
     {
       start: style.range[0],
       end: style.range[1],
-      doc: printAsWrittenTrimmed(source, style.range[0], semicolon),
+      doc: printStyleWithColon(source, [style.range[0], printedEnd]),
     },
   ]
 }
@@ -666,11 +741,79 @@ function isNoteOverLines(
  * `note left of%%x A`, touches the position, as written, and stands before
  * the id, one space before it.
  */
-function findNoteStretches(statement: StateStatement, end: number): Atom[] {
+function findNoteStretches(
+  source: Source,
+  statement: StateStatement,
+  end: number,
+): Atom[] {
   if (statement.type !== "StateNoteStatement" || statement.state === null) {
     return []
   }
-  return [{ start: statement.state.range[1], end }]
+  const start = statement.state.range[1]
+  return [{ start, end, doc: printNoteColonAndText(source, start, end) }]
+}
+
+/**
+ * The stretch of a floating note from its opening quote to its closing quote,
+ * as written. The text between the quotes is no value of its own in the tree,
+ * so the gaps around it would be printed as one space, though the whitespace in
+ * quotes is text: flowchart keeps the inside of a quoted label as written, and
+ * so does a floating note (docs/state.md, Notes). A statement without both
+ * quotes has no such stretch.
+ */
+function findFloatingNoteStretches(
+  source: Source,
+  statement: StateStatement,
+): Atom[] {
+  if (statement.type !== "StateFloatingNoteStatement") return []
+  const keyword = findStructuralToken(source, statement.range[0])
+  const asKeyword = findTokenEndingBefore(
+    source,
+    statement.id?.range[0] ?? statement.range[1],
+  )
+  if (keyword === undefined || asKeyword === undefined) return []
+  const opening = findStructuralToken(source, keyword.range[1])
+  const closing = findStructuralTokenEndingBefore(source, asKeyword.range[0])
+  if (
+    opening === undefined ||
+    closing === undefined ||
+    opening.value !== '"' ||
+    closing.value !== '"' ||
+    opening.range[0] >= closing.range[0]
+  ) {
+    return []
+  }
+  return [{ start: opening.range[0], end: closing.range[1] }]
+}
+
+/**
+ * A note on one line whose first two characters after the id are a `:` and a
+ * space or a tab, in either order, is printed with the `:` after one space and
+ * the text after one space: ` : text`. mermaid.js drops those two characters,
+ * trims the rest, and draws the same note whatever the whitespace around the
+ * `:` and the text (docs/state.md, Notes). Any other start, an empty text, a
+ * comment or a directive, or a character other than an ASCII one in the text
+ * stays as written. The whitespace after the text is dropped, as at the end of
+ * any statement.
+ */
+function printNoteColonAndText(
+  source: Source,
+  start: number,
+  end: number,
+): Doc | undefined {
+  const text = source.text.slice(start, end)
+  const colonFirst = text.startsWith(":") && isSpaceOrTab(text[1] ?? "")
+  const spaceFirst = isSpaceOrTab(text[0] ?? "") && text[1] === ":"
+  if (
+    (!colonFirst && !spaceFirst) ||
+    text.includes("%%") ||
+    [...text].some(
+      (character) => character > "~" || (character < " " && character !== "\t"),
+    )
+  )
+    return undefined
+  const body = text.slice(2).trim()
+  return body === "" ? undefined : ` : ${body}`
 }
 
 /**
@@ -985,10 +1128,72 @@ function statementRules(
     case "StateClassStatement":
       addClassIdListRules(source, statement.states, rules)
       break
+    case "StateFloatingNoteStatement":
+      addFloatingNoteRules(source, statement, rules)
+      break
+    case "StateClassDefStatement":
+    case "StateStyleStatement":
+      addStyleCommaRules(source, statement, rules)
+      break
     default:
       break
   }
   return rules
+}
+
+/**
+ * Adds the rules of the `,` between the styles of a `classDef` or a `style`
+ * statement: none before it and one space after it, as in ER and requirement.
+ * mermaid.js reads the whitespace around the `,` as nothing in a state diagram,
+ * so the Db is the same (docs/state.md, Styles). A statement that
+ * `styleUnitsCanCompact` refuses stays as written, as in ER.
+ */
+function addStyleCommaRules(
+  source: Source,
+  statement: StateClassDefStatement | StateStyleStatement,
+  rules: Map<number, GapRule>,
+): void {
+  const styles = statement.styles.filter((style) => style !== null)
+  if (
+    styles.length !== statement.styles.length ||
+    !styleUnitsCanCompact(
+      source,
+      statement.range[0],
+      statement.range[1],
+      styles,
+    )
+  ) {
+    return
+  }
+  for (let index = 1; index < styles.length; index++) {
+    const comma = expectToken(
+      findStructuralToken(source, styles[index - 1].range[1]),
+      "the comma between styles",
+    )
+    expectValue(comma, ",")
+    rules.set(comma.range[0], "none")
+    rules.set(styles[index].range[0], "space")
+  }
+}
+
+/**
+ * Adds the rules of the parts of a floating note after its closing quotes:
+ * one space before the `as` and before the id, as in an alias definition
+ * (docs/state.md, Notes). mermaid.js reads `note "t"as N` as it reads
+ * `note "t" as N`, and `as` needs whitespace after it already, so the spaces
+ * change nothing it reads. The quotes are kept as written.
+ */
+function addFloatingNoteRules(
+  source: Source,
+  statement: StateFloatingNoteStatement,
+  rules: Map<number, GapRule>,
+): void {
+  const asKeyword = expectToken(
+    findTokenEndingBefore(source, statement.id?.range[0] ?? statement.range[1]),
+    "the `as` of a floating note",
+  )
+  rules.set(asKeyword.range[0], "space")
+  if (statement.id !== null) rules.set(statement.id.range[0], "space")
 }
 
 /**

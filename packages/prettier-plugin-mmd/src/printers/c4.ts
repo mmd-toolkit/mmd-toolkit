@@ -6,12 +6,13 @@ import type { AtomLayout } from "./atoms.ts"
 import {
   openingLine,
   printBlock,
+  printInlineGap,
   printClosedBlock,
   printDiagramBlock,
 } from "./blocks.ts"
 import type { BlockBounds, BlockRules, PrintedBlock } from "./blocks.ts"
 import { c4KeptGapEnd, findC4KeptLines } from "./c4-kept-lines.ts"
-import { keptSemicolonPrefixEnd, semicolonSegmentEnd } from "./kept-lines.ts"
+import { semicolonSegmentEnd, styleRuleStretchEnd } from "./kept-lines.ts"
 import {
   c4BoundaryBraces,
   classifyC4Statement,
@@ -24,7 +25,6 @@ import type { C4Unit } from "./c4-layout.ts"
 import { findLayoutEnd } from "./layout.ts"
 import { indentationOf, printAsWritten } from "./lines.ts"
 import type { Source } from "./source.ts"
-import { findTriviaBetween } from "./source.ts"
 
 /** Prints C4's braced statement tree with the shared block machinery. */
 export function printC4(
@@ -77,28 +77,20 @@ function printStatements(
     units.map((unit) =>
       unit.statements.map((statement, index) => {
         const previous = unit.statements[index - 1]
-        const gap =
+        const before =
           previous === undefined
             ? ""
-            : source.text.slice(previous.range[1], statement.range[0])
-        const before =
-          gap.includes("\n") ||
-          (previous !== undefined &&
-            statement.range[0] <=
-              keptSemicolonPrefixEnd(source, previous.range[1])) ||
-          findTriviaBetween(
-            source,
-            previous?.range[1] ?? statement.range[0],
-            statement.range[0],
-          ).length > 0
-            ? printAsWritten(
-                source,
-                previous?.range[1] ?? statement.range[0],
-                statement.range[0],
-              )
-            : gap === ""
-              ? ""
-              : " "
+            : source.text
+                  .slice(previous.range[1], statement.range[0])
+                  .includes("\n")
+              ? printAsWritten(source, previous.range[1], statement.range[0])
+              : printInlineGap(
+                  source,
+                  previous.range[1],
+                  statement.range[0],
+                  { atLineStart: false, atLineEnd: false },
+                  (start) => styleRuleStretchEnd(source, start),
+                )
         const classified = classifyC4Statement(statement)
         if (classified.kind !== "boundary")
           return [
@@ -167,7 +159,7 @@ function blockRules(
     keepsDirectiveLinesUnindented: true,
     keptGapEnd: (start, end, before) =>
       c4KeptGapEnd(source, start, end, before),
-    keptInlineGapEnd: (start) => keptSemicolonPrefixEnd(source, start),
+    keptInlineGapEnd: (start) => styleRuleStretchEnd(source, start),
     keptClosingJoin: "",
     keepsOpeningLine,
     diagramLineEnd: (offset) => semicolonSegmentEnd(source, offset),

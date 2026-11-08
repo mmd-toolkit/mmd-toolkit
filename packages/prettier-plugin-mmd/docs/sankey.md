@@ -87,14 +87,13 @@ without quotes and none before a string. With the commas touching there is one
 rule, and it is the form that the documentation of mermaid.js writes. The
 whitespace inside a field stays. [fixture: commas/spaces-around-commas-dropped]
 [fixture: commas/space-after-comma-dropped] [fixture:
-commas/spaces-inside-fields-kept] A directive next to a comma keeps one space
-where whitespace was written beside it (see [Directives](#directives)), and a
-field of spaces only is printed as one space, so the two together can stand side
-by side: `a,   %%{init: {}}%%,1` is printed `a,  %%{init: {}}%%,1`, with two
-spaces. [fixture: directives/next-to-commas] A space next to a quote is rejected
-by mermaid.js, so a string touches its commas, and the space before a field
-after a string, which is read as the whitespace of that field, is dropped.
-[fixture: commas/quoted-fields-touch-commas]
+commas/spaces-inside-fields-kept] A directive next to a comma touches it, as a
+comma has no space beside it (see [Directives](#directives)), and a field of
+spaces only is printed as one space: `a,   %%{init: {}}%%,1` is printed
+`a, %%{init: {}}%%,1`. [fixture: directives/next-to-commas] A space next to a
+quote is rejected by mermaid.js, so a string touches its commas, and the space
+before a field after a string, which is read as the whitespace of that field, is
+dropped. [fixture: commas/quoted-fields-touch-commas]
 
 A field of spaces only is a field with an empty text, and an empty field is
 rejected, so it is printed as one space: the number of the spaces is not in the
@@ -205,12 +204,19 @@ Pumped heat,"Heating and cooling, ""homes""",193.026
 
 ### Values
 
-The value of a link is printed as written: mermaid.js reads it as a number, so
-`1.0`, `1e0`, `+1`, and `.5` are the same value as `1`, and `abc` is accepted,
-but none is rewritten: the spelling is the author's, and every spelling gives
-the same Db. A `%%` or a `#` after the value is a character of the field, not a
-comment, and stays with it. [fixture: values/value-forms-kept] [fixture:
-values/text-after-the-value-kept]
+The value of a link is printed in the shortest form. mermaid.js makes the value
+a number with `parseFloat`, so `1.0`, `+1`, and `.5` are the same value as `1`,
+`1`, and `0.5`, and the label that shows a value is made from the number, not
+from the text. `1.0` is printed `1`, `+1` is `1`, and `.5` is `0.5` (see
+[Numbers in the shortest form](./compatibility.md#numbers-in-the-shortest-form)).
+A value that is no plain decimal stays as written: an exponent (`1e0`), a zero
+at the start of the integer part (`007`), more than 15 digits, `-0`, `1_0` and
+`0x1`, which mermaid.js reads as `1` and `0`, and a value that is no number,
+such as `abc`, which is read as `NaN`. A value in quotes stays as well. A `%%`
+or a `#` after the value is a character of the field, not a comment, and stays
+with it, so the field is no plain decimal and stays as written. [fixture:
+values/shortest-form] [fixture: values/forms-kept] [fixture:
+values/shortest-form-with-trivia] [fixture: values/text-after-the-value-kept]
 
 Input
 ([values/text-after-the-value-kept-input.mmd](../tests/fixtures/sankey/values/text-after-the-value-kept-input.mmd)):
@@ -301,11 +307,13 @@ c,d,2
 ### Header
 
 The header `sankey` or `sankey-beta` keeps the case in which it is written: Both
-are the same diagram type and give the same Db, so nothing forces either
-spelling, and the printer keeps the one that the author wrote. It stands at the
-first column, and nothing follows it on its line, since mermaid.js rejects
-anything but a directive or a comment line there. [fixture: header/sankey]
-[fixture: header/sankey-beta] [fixture: header/upper-case-beta] [fixture:
+are the same diagram type and give the same Db in mermaid.js 12.3.0, but
+mermaid.js 11.9.0 reads `sankey-beta` only (see
+[The names of a header](./compatibility.md#the-names-of-a-header)), so the
+printer keeps the spelling that the author wrote. It stands at the first column,
+and nothing follows it on its line, since mermaid.js rejects anything but a
+directive or a comment line there. [fixture: header/sankey] [fixture:
+header/sankey-beta] [fixture: header/upper-case-beta] [fixture:
 header/leading-whitespace-dropped] A directive glued to the header stays glued.
 [fixture: header/directive-glued-to-the-header] A comment line or a directive
 line before the header, and comment lines after it, stay where they are.
@@ -391,9 +399,10 @@ touching, as in the other diagram types. A directive at the start of a record
 keeps whether whitespace is written between it and the record: touching stays
 touching, and whitespace becomes one space. [fixture:
 directives/after-the-value] [fixture: directives/at-the-start-of-a-record] A
-directive next to a comma keeps one space where whitespace was written beside
-it, as anywhere (see [Commas](#commas) for a field of spaces only). [fixture:
-directives/next-to-commas]
+directive next to a comma is placed as under
+[Directives](./flowchart.md#directives): a comma has no space beside it, so the
+directive touches it (see [Commas](#commas) for a field of spaces only).
+[fixture: directives/next-to-commas]
 
 A directive inside a field or a string is part of the text and stays. A
 directive that is not closed takes the rest of the text, and is kept as written.

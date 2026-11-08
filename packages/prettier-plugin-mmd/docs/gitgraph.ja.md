@@ -10,10 +10,13 @@ English version: [gitgraph.md](./gitgraph.md)
 
 ### Header
 
-正確な `gitGraph`、書かれた方向、colon の有無を保持します。
+正確な `gitGraph` と書かれた方向と colon の有無を保持します。
 通常の隙間は `gitGraph LR:` または `gitGraph:` とし、
 見出し上の最初の文を次行へ移します。
 方向は Db に影響し、省略と colon の有無は作者の選択です。
+mermaid.js 8.14.0 は colon ありの見出しだけを読み、
+colon なしの見出しは 9.0.0 から読むためです。
+（[mermaid.js の版](./compatibility.ja.md#mermaidjs-の版)を参照）。
 hidden の隙間と保護された見出し・本文の境界は保持します。
 
 `gitGraph` と方向の間にある hidden の形は、直後の改行を取り、
@@ -67,7 +70,7 @@ gitGraph
   commit
   branch b
   commit
-  switch main
+  checkout main
 ```
 
 ### Statements one per line
@@ -235,30 +238,33 @@ gitGraph
 
 ### Quotes
 
-StringLiteral は完全な source span で印字し、
-single・double・反対側の引用符と escape を変えません。
-`singleQuote` でも書き換えません。
-再エンコードには escape と前処理の新たな判断が必要で、
+StringLiteral は完全な source span で印字し、escape を変えません。
+`'` で囲まれた文字列は、内容に `'`、`"`、バックスラッシュ、改行、
+バッククォート、`&`、`#`、`<` がない限り、`"` で囲んで印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+`singleQuote` は読みません。
+それ以外の再エンコードには escape と前処理の新たな判断が必要で、
 作者の書き方も失われるためです。
 
-固定例: [fixture: gitgraph/quotes/quotes-kept]
+固定例: [fixture: gitgraph/quotes/quotes-one-form]
 [corpus fixture: gitgraph/lex-string-escapes]
 [fixture: gitgraph/quotes/single-quote-option]
+[fixture: gitgraph/quotes/single-quote-sensitive-kept]
 
 入力（escape 表記）: `"gitGraph\ncommit id:'A' msg:\"a'b\" tag:'a\"b'\n"`
 
 出力
-([quotes/quotes-kept-output.mmd](../tests/fixtures/gitgraph/quotes/quotes-kept-output.mmd)):
+([quotes/quotes-one-form-output.mmd](../tests/fixtures/gitgraph/quotes/quotes-one-form-output.mmd)):
 
 ```mmd
 gitGraph
-  commit id: 'A' msg: "a'b" tag: 'a"b'
+  commit id: "A" msg: "a'b" tag: 'a"b'
 ```
 
 ### References
 
-branch・checkout・switch・merge の Identifier と、
-StringLiteral の書き方を保持します。
+branch・checkout・merge の Identifier と、StringLiteral の書き方を保持します。
+文字列は Quotes のとおり `"` で囲んで印字します。
 空・空白のみ・Unicode・予約語・数字風の引用名もそのままです。
 木が形を区別しているので、printer が引用符の除去を判断しません。
 
@@ -351,21 +357,23 @@ gitGraph
 
 ### Checkout aliases
 
-`checkout` と `switch` は後続 commit との位置も含めて保持します。
-履歴への効果が同じでも、作者の同義語を置換する必要はありません。
+`switch` は、後続 commit との位置を保ち、`checkout` と印字します。
+履歴への効果は同じで、mermaid.js の文書の例では `checkout` を 160 回使い、
+`switch` は一度も使っていないためです。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 未知の branch はどちらの語でも拒否します。
 
-固定例: [fixture: gitgraph/checkout-aliases/alias-kept]
+固定例: [fixture: gitgraph/checkout-aliases/alias-one-form]
 
 入力（escape 表記）: `"gitGraph\nbranch b\nswitch main\ncheckout b\n"`
 
 出力
-([checkout-aliases/alias-kept-output.mmd](../tests/fixtures/gitgraph/checkout-aliases/alias-kept-output.mmd)):
+([checkout-aliases/alias-one-form-output.mmd](../tests/fixtures/gitgraph/checkout-aliases/alias-one-form-output.mmd)):
 
 ```mmd
 gitGraph
   branch b
-  switch main
+  checkout main
   checkout b
 ```
 
@@ -403,9 +411,19 @@ gitGraph
 ### Title and common values
 
 `title` は空白 1 個と外端だけ trim した非空値を印字します。
+値の中の空白とタブの連なりは、空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 空や空白のみなら裸の `title` です。
+題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: title-and-common-values/title-directives-end-blanks-dropped]
 共通の accessibility 配置で `accTitle: value`・`accDescr: value`、
 空 block は `{}` と印字します。
+これらの行の値の終わりのディレクティブは、
+題の終わりのディレクティブと同じように印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: title-and-common-values/acc-directives-end-blanks-dropped]
 通常の gap では、
 接して書かれていても `accDescr` と `{` の間に空白 1 つを置きます。
 保護対象の trivia やセミコロンの配置では、その gap を保ちます。
@@ -448,7 +466,7 @@ colon 後の波括弧は行値のままです。
 
 ```mmd
 gitGraph
-  title A  B	 C
+  title A B C
 ```
 
 ### Multiline values
@@ -511,7 +529,8 @@ gitGraph %% header
 ### Global directives
 
 global directive の内容・順序・単位の間の位置を保持します。
-同じ印字行の中では、両側の接触・分離を保ちます。
+同じ印字行の中のディレクティブは、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 元は同じ行にあった単位を別の行へ分けるときは、
 間の directive を次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
@@ -538,7 +557,7 @@ atomic な語の分断は仕様どおり拒否します。
 ```mmd
 gitGraph
   commit id%%{wrap}%%: "A"
-  commit id:%%{wrap}%% "B"
+  commit id: %%{wrap}%%"B"
 ```
 
 ### Hidden yaml
@@ -680,19 +699,31 @@ native comment に fallback します。
 ```mmd
 gitGraph
   commit id:%%{!}%%
-'root'
+"root"
 ```
 
 ### Semicolons
 
-すべての semicolon を残し、共通の source segment 保護を使います。
-最初の非空白から最後の semicolon までを、
-交差する値・コメント・directive の全体へ延ばして保持します。
+すべての semicolon を残します。
+保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
+ほかの場所と同じように整形します。
+この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
+`style` か `classDef` の後の最初の `:` から、
+最後の保つ `;` の前の最後の `#` までに空白がない並びを読みます。
+その範囲の隙間と余白は空白の有無を保ち、空白の連続は空白 1 つにします。
+範囲の外は、この図種の通常の規則に従います。
+どの部分の配置も持たないテキストは、書かれたまま残します。
+複数行にわたる文の行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
+書かれたまま残します。
+それ以外の複数行の文は、1 行の文と同じように整形します。
+[fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted]
 保護された見出しと最初の文を分けません。
 style・classDef の pass、colon と hash の空白、大小文字、反復、
 directive が再結合する trigger と LS/PS の境界を残します。
 選ばれた semicolon の削除は別の選択を起こして Db を変えます。
-安全な suffix の隙間だけ整形し、atomic な分断は拒否します。
+atomic な分断は拒否します。
 
 固定例: [fixture: gitgraph/semicolons/native-commit-value]
 

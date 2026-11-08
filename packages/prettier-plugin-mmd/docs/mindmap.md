@@ -203,10 +203,17 @@ second icon line, replaces the first in the Db, and both are kept as written,
 since the printer drops no text that the author wrote. [fixture:
 decorations/second-class-kept]
 
-The text of an icon keeps the whitespace at its ends and inside, and so does a
-class: the Db keeps them. The whitespace after the closing parenthesis of an
-icon is not in the Db, and is dropped. [fixture:
-decorations/whitespace-in-icon-and-class-kept] [fixture:
+The text of an icon and the text of a class are printed without the spaces and
+tabs at their ends: `::icon( fa fa-book )` is printed `::icon(fa fa-book)`, and
+`::: big red ` is printed `:::big red`. mermaid.js keeps them in the Db and
+draws the same node (see
+[Mindmap texts that are drawn the same](./compatibility.md#mindmap-texts-that-are-drawn-the-same)).
+The whitespace inside the text stays, and a text of nothing but spaces and tabs
+is printed as one space, which is the least that keeps the text: an empty icon
+or class is rejected, and mermaid.js reads the same empty text for any number of
+them. [fixture: decorations/padding-in-icon-and-class-dropped] [fixture:
+decorations/blank-icon-and-class-one-space] The whitespace after the closing
+parenthesis of an icon is not in the Db, and is dropped. [fixture:
 decorations/trailing-whitespace-after-icon-dropped]
 
 Input
@@ -261,13 +268,18 @@ mindmap
 
 ### Node text
 
-A node text keeps the whitespace at its end, since the Db keeps it as part of
-the id: `root` followed by three spaces is the node `root   `, and `a (x)` has
-the id `a `, so the space before a shape stays. [fixture:
-node-text/trailing-whitespace-kept] [fixture:
-node-text/space-before-a-shape-kept] A node text holds `]`, `:`, `#`, `"`, `%%`,
-and `:::` as characters, and a line that starts with a single `%` is a node
-text, not a comment. [fixture: node-text/special-characters] [fixture:
+A node text is printed without the spaces and tabs at its end, and so is the id
+before a shape, which takes the space before the shape with it: `root` followed
+by three spaces is printed `root`, and `a (x)` is printed `a(x)`. The Db keeps
+the whitespace as part of the id, but the node is drawn the same: the id is not
+drawn where a shape stands, and the text of a node is drawn without the
+whitespace at its end (see
+[Mindmap texts that are drawn the same](./compatibility.md#mindmap-texts-that-are-drawn-the-same)).
+[fixture: node-text/trailing-whitespace-dropped] [fixture:
+node-text/space-before-a-shape-dropped] The whitespace inside a node text stays.
+[fixture: node-text/inner-whitespace-kept] A node text holds `]`, `:`, `#`, `"`,
+`%%`, and `:::` as characters, and a line that starts with a single `%` is a
+node text, not a comment. [fixture: node-text/special-characters] [fixture:
 node-text/percent-in-text] [fixture: node-text/keywords-in-text]
 
 Input
@@ -297,7 +309,7 @@ mindmap
 ```
 
 Input
-([node-text/space-before-a-shape-kept-input.mmd](../tests/fixtures/mindmap/node-text/space-before-a-shape-kept-input.mmd)):
+([node-text/space-before-a-shape-dropped-input.mmd](../tests/fixtures/mindmap/node-text/space-before-a-shape-dropped-input.mmd)):
 
 ```mmd
 mindmap
@@ -307,13 +319,13 @@ mindmap
 ```
 
 Output
-([node-text/space-before-a-shape-kept-output.mmd](../tests/fixtures/mindmap/node-text/space-before-a-shape-kept-output.mmd)):
+([node-text/space-before-a-shape-dropped-output.mmd](../tests/fixtures/mindmap/node-text/space-before-a-shape-dropped-output.mmd)):
 
 ```mmd
 mindmap
   root
-    a (x)
-    b  [y]
+    a(x)
+    b[y]
 ```
 
 ### Shapes
@@ -324,12 +336,16 @@ closer that matches would change the text the author wrote. [fixture:
 shapes/openers-and-closers-kept] [fixture: shapes/mismatched-closers-kept] A
 shape may stand alone, without a node text. [fixture: shapes/shape-alone]
 
-The text of a shape keeps its whitespace, which the Db keeps. A string is a
-string only right after the opener, so `a[ "x" ]` has the text `"x"` with its
-quotes, and `a["x"]` and `a[x]` have the same text; none is rewritten into
-another. [fixture: shapes/inner-whitespace-kept] [fixture:
-shapes/text-and-string-forms] [fixture: shapes/markdown-string] The whitespace
-after a shape is not in the Db, and is dropped. [fixture:
+The text of a shape is printed without the spaces and tabs at its ends: `a[ x ]`
+is printed `a[x]`. mermaid.js keeps them in the Db and draws the same node. A
+string is a string only right after the opener, so `a[ "x" ]` has the text `"x"`
+with its quotes, and `a["x"]` and `a[x]` have the same text; none is rewritten
+into another, and the padding of a text that would start with a quote once it is
+gone stays. A string, a markdown string, and a text over lines stay as written,
+and a text of nothing but spaces and tabs is printed as one space. [fixture:
+shapes/inner-padding-dropped] [fixture: shapes/text-and-string-forms] [fixture:
+shapes/markdown-string] [fixture: shapes/padding-kept-where-drawn-differently]
+The whitespace after a shape is not in the Db, and is dropped. [fixture:
 shapes/trailing-whitespace-dropped]
 
 Input
@@ -605,9 +621,14 @@ mindmap
 A directive on a line of its own stands at the level of the line after it. A
 directive on the line of a node keeps whether whitespace is written on each side
 of it: where it is, one space stands there, and where it touches, it keeps
-touching, as in the other diagram types. [fixture: directives/kept] [fixture:
-directives/between-nodes] [fixture: directives/before-the-header] [fixture:
-directives/after-the-header-on-the-same-line] [fixture:
+touching. The directives that end the text of a node or of a class are printed
+with one space before each that has whitespace before it, and the whitespace
+after the last one is left out, whatever the whitespace at the end of the line
+(see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: node-text/directives-end-blanks-dropped] [fixture: directives/kept]
+[fixture: directives/between-nodes] [fixture: directives/before-the-header]
+[fixture: directives/after-the-header-on-the-same-line] [fixture:
 directives/after-the-header-touching] [fixture: directives/after-a-shape]
 
 A directive between two units stays where it is, and a directive inside a text
@@ -668,10 +689,11 @@ mindmap
 
 ### Keyword case
 
-Keywords keep the case in which they are written: mermaid.js reads `::icon(` in
-any case and the Db is the same, so nothing forces the case; it is the author's,
-and the printer does not rewrite it. The header is detected in lower case only.
-[fixture: keyword-case/icon-keyword]
+`::icon(` is printed in lower case, as the examples in the documentation of
+mermaid.js write it (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)):
+mermaid.js reads it in any case and the Db is the same. The header is detected
+in lower case only. [fixture: keyword-case/icon-keyword]
 
 Input
 ([keyword-case/icon-keyword-input.mmd](../tests/fixtures/mindmap/keyword-case/icon-keyword-input.mmd)):
@@ -689,8 +711,8 @@ Output
 ```mmd
 mindmap
   root
-  ::ICON(x)
-  ::Icon(y)
+  ::icon(x)
+  ::icon(y)
 ```
 
 ### Frontmatter YAML

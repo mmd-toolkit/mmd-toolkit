@@ -42,7 +42,7 @@ requirementDiagram
   requirement r {
     id: 1
   }
-  style rr fill:red
+  style rr fill: red
 ```
 
 ```mmd
@@ -69,7 +69,7 @@ requirementDiagram
     type: simulation
   }
   r - satisfies -> e
-  style r fill:red
+  style r fill: red
 ```
 
 ## Options

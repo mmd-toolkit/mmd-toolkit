@@ -21,10 +21,13 @@ pnpm --filter @mmd-toolkit/eslint-plugin run test:update
 ```
 
 The tests import the sources of `@mmd-toolkit/parser` and `@mmd-toolkit/tests`,
-not their builds (see `vitest.config.ts`), so they need no build step. The build
-of the plugin, and a script run with Node that imports its sources, get the
-parser from its build in `lib/`: rebuild it with
-`pnpm --filter @mmd-toolkit/parser run build` after the parser changes.
+not their builds (see `vitest.config.ts`), so most of them need no build step.
+The tests of `tests/rule-docs.test.ts` that render documents are the exception:
+Prettier loads the plugin for Mermaid through `docs/prettier.config.js`, which
+the alias does not reach, so they get the parser from its build in `lib/`. The
+same holds for the build of the plugin, and for a script run with Node that
+imports its sources: rebuild the parser with `pnpm run build:parser` after it
+changes.
 
 ## The tests
 
@@ -297,16 +300,40 @@ to enable that rule and show its diagnostics. The snapshot test helper removes
 only this comment: its tester enables the rule under `rule-to-test/`, so
 enabling it under `@mmd-toolkit/` too would duplicate every report.
 
+`update` also prints the examples as the formatter prints them. The rule is in
+`docs/prettier.config.js`: the root Prettier configuration and
+`prettier-plugin-mmd`, with which Prettier formats the `mmd` code blocks of a
+document. The plugin is read from its source (Node strips the types of the `.ts`
+file), so the examples are printed by the formatter of the working tree.
+`tools/rule-docs.ts` reads this file, and so do `pnpm run format`,
+`pnpm run format:check`, ESLint (`pnpm run lint:es`, through
+`eslint-plugin-prettier`), and an editor that formats on save. `check:docs`
+fails on a document that Prettier would change. The source of the plugin imports
+`@mmd-toolkit/parser` by name, which is the built package, so `update`,
+`update:docs`, `check:docs`, `format`, `format:check`, `lint:es`, and
+`eslint-fix` build the parser first (`pnpm run build:parser` at the root). An
+editor that formats on save needs Node 22.18 or later (the versions of the root
+`engines`), a built parser, and a reload after the plugin or the parser changes,
+because it keeps the modules it has loaded. The plugin is read from the working
+tree, so a half-edited file in `packages/prettier-plugin-mmd/src` breaks these
+commands until it is finished. An example kept as written, where a way of
+writing that the formatter prints in one form is the point (whitespace, the case
+of a value, quotes), has `<!-- prettier-ignore -->` directly before its code
+block, in both languages, and a sentence of Rule Details says that it is shown
+as written. When the formatter changes what it prints, run `update:docs`, then
+`test:update` and read the diff of the snapshots, and look in the prose of the
+changed documents for code spans that quote a changed line.
+
 The rest of the documents is written by hand. `check:docs` writes nothing and
-fails when `src/rules/index.ts` or a generated part is out of date, when a rule
-has no English document or no test file, when a document belongs to no rule (a
-Japanese document without its English original is one), when the first paragraph
-of an English document is not `meta.docs.description` of its rule, when a rule
-document links to a document of the same directory that does not exist (a
-Japanese document that links to the Japanese version of a rule that has none),
-when the `mmd` code blocks of a Japanese document are not those of the English
-one, in the same order, when a code block does not start with its rule's
-enabling comment. Line breaks inside a first paragraph do not matter.
+fails when `src/rules/index.ts`, a generated part, or an example is out of date,
+when a rule has no English document or no test file, when a document belongs to
+no rule (a Japanese document without its English original is one), when the
+first paragraph of an English document is not `meta.docs.description` of its
+rule, when a rule document links to a document of the same directory that does
+not exist (a Japanese document that links to the Japanese version of a rule that
+has none), when the `mmd` code blocks of a Japanese document are not those of
+the English one, in the same order, when a code block does not start with its
+rule's enabling comment. Line breaks inside a first paragraph do not matter.
 
 When the rules and the documents do not match in one of these ways, `update`
 writes `src/rules/index.ts` but none of the generated parts of the documents,

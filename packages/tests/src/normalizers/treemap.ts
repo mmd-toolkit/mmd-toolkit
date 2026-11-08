@@ -42,7 +42,7 @@ export function normalizeTreemap(value: unknown): DbSummary {
     nodes: db.getRoot().children.map(summarizeNode),
     classDefs: [...db.getClasses().values()].map(({ id, styles }) => ({
       id,
-      styles: styles.map((style) => style.trimEnd()),
+      styles: [...styles],
     })),
   }
 }

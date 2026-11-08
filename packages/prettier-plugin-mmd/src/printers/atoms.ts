@@ -1,8 +1,12 @@
 import type { Doc } from "prettier"
 import type { Range } from "@mmd-toolkit/ast"
 import { builders } from "prettier/doc"
-import { endsWithSpaceOrTab, readGap } from "./gap.ts"
-import { isInsideStyleRuleStretch } from "./kept-lines.ts"
+import { endsWithSpaceOrTab, printAbsentItems, readGap } from "./gap.ts"
+import {
+  findKeptBreaks,
+  gapKeepsLineBreak,
+  isInsideStyleRuleStretch,
+} from "./kept-lines.ts"
 import type { Line } from "./lines.ts"
 import {
   lineBreakBetween,
@@ -11,6 +15,8 @@ import {
   withTrailing,
 } from "./lines.ts"
 import type { Source } from "./source.ts"
+import { mergeRespelledAtoms } from "./spelling.ts"
+import { collapseTextAtoms } from "./text-runs.ts"
 
 const { indent } = builders
 
@@ -159,7 +165,18 @@ export function printAtoms(
     currentWrittenBreak = undefined
   }
 
-  for (const atom of layout.atoms) {
+  // A layout that joins its line breaks keeps the ones that cannot go: the
+  // statement is not kept whole for them (see `findKeptBreaks`).
+  const keptBreaks: ReadonlySet<number> =
+    layout.lineBreaks === "joined" && layout.atoms.length > 0
+      ? findKeptBreaks(source, layout.atoms[0].start, layout.atoms.at(-1)!.end)
+      : new Set()
+
+  // The runs of spaces and tabs inside a text are drawn as one space.
+  for (const atom of collapseTextAtoms(
+    source,
+    mergeRespelledAtoms(source, layout.atoms),
+  )) {
     const text = source.text.slice(atom.start, atom.end)
     const alignedIndentation =
       atom.statementPadding === undefined
@@ -194,7 +211,12 @@ export function printAtoms(
       if (
         gap.breaksLine &&
         (layout.lineBreaks === "joined" ||
-          layout.joinedBefore?.has(atom.start) === true)
+          layout.joinedBefore?.has(atom.start) === true) &&
+        !(
+          layout.lineBreaks === "joined" &&
+          layout.joinedBefore?.has(atom.start) !== true &&
+          gapKeepsLineBreak(source, keptBreaks, previous.end, atom.start)
+        )
       ) {
         if (
           gap.trailing !== null ||
@@ -241,16 +263,30 @@ export function printAtoms(
           : undefined
         if (gap.leading !== null) current = [withLeading(gap.leading, "")]
       } else if (gap.trailing !== null || gap.leading !== null) {
-        // Items keep the whitespace written on each side of them; the rule
-        // of the gap does not apply (docs/flowchart.md, Directives and
-        // Semicolons).
-        current = [withTrailing(current, gap.trailing)]
-        if (gap.leading !== null) {
-          const spaced =
-            gap.trailing === null
-              ? gap.leading.spaceBefore
-              : gap.trailing.spaceAfter
-          current = [current, spaced ? " " : "", withLeading(gap.leading, "")]
+        // mermaid.js removes a directive and a `;` that the line rule ignores
+        // from the text, so the gap follows its ordinary rule as if they were
+        // absent (see `printAbsentItems`). The other items keep the whitespace
+        // written on each side of them.
+        const absent =
+          gap.trailing === null && gap.leading !== null
+            ? printAbsentItems(
+                source,
+                previous.end,
+                atom.start,
+                gap.leading,
+                layout.rules.get(atom.start),
+              )
+            : null
+        if (absent !== null) current.push(absent)
+        else {
+          current = [withTrailing(current, gap.trailing)]
+          if (gap.leading !== null) {
+            const spaced =
+              gap.trailing === null
+                ? gap.leading.spaceBefore
+                : gap.trailing.spaceAfter
+            current = [current, spaced ? " " : "", withLeading(gap.leading, "")]
+          }
         }
       } else {
         const written = source.text.slice(previous.end, atom.start)

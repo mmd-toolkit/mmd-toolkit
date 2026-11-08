@@ -36,6 +36,9 @@ since: v0.1.0
 
 同じ行の文やヘッダーの後にある空のブロックも報告する。
 
+整形ツールは、空のブロックを `accDescr {}` と書く。
+波括弧の中に空白がある例は、書いたまま示している。
+
 この規則に**反する**コードの例:
 
 ```mmd
@@ -45,6 +48,7 @@ flowchart LR
   accDescr {}
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-empty-description-block: error
 flowchart LR
@@ -52,6 +56,7 @@ flowchart LR
   accDescr { }
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-empty-description-block: error
 flowchart LR

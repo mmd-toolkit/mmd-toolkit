@@ -107,11 +107,21 @@ usecase-beta
 Each native statement keeps its required physical grammar line; semicolons never
 separate statements, and actor lists use commas. Except for
 [Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement),
-keep semicolons as written, following the non-separator
-[C4 kept-prefix policy](./c4.md#line-rule-and-semicolons). Protect text from the
-first non-whitespace character through the last kept semicolon of each segment,
-extending through whole crossing values, CSS declarations, comments and
-directives. Exterior indentation and a safe suffix still format. [fixture:
+keep semicolons as written. A segment that holds a kept `;` is formatted as
+anywhere else, except where formatting could change which `;` the line rule
+ignores. The rule reads a segment from the first `:` after `style` or `classDef`
+to the last `#` before its last kept `;`, with no whitespace between the `:` and
+the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps and the
+padding inside that stretch keep whether they hold whitespace, a run becoming
+one space, and the rest of the segment follows the ordinary rules of this
+diagram. Text that no part of the layout holds stays as written. A statement
+over several lines whose lines, joined with one space or with nothing, could
+change which `;` the line rule ignores keeps the text of each segment, up to its
+last kept `;`, as written; any other statement over several lines is formatted
+like one on a single line. [fixture:
+statements-and-semicolons/stretch-kept-rest-formatted] [fixture:
+statements-and-semicolons/no-stretch-formatted] [fixture:
+json-tables/kept-body-line] [fixture:
 native-metadata/metadata-selected-semicolon-between-properties] Both textual
 passes, colon/hash separation, Unicode segment boundaries and an open
 directive's semicolon stop keep their reading.
@@ -162,21 +172,24 @@ Output
 
 ```mmd
 usecase-beta
-  actor User(Person), Clerk('Desk'), "Guest"
+  actor User(Person), Clerk("Desk"), "Guest"
 ```
 
 ### Labels
 
 Reuse [C4's authored value forms](./c4.md#argument-forms): bare, single-quoted,
-double-quoted and markdown labels keep their spelling and interior characters,
+double-quoted and markdown labels keep their kind and interior characters,
 including empty quoted values. Plain quotes can be Db-equal to bare text, but
 retaining the author's form avoids unnecessary rewriting; markdown changes the
 label type. Only exterior ASCII HWS outside a bare label's contributing units is
-trimmed. Internal gaps, Unicode padding, backslashes, entities and HTML stay;
-`singleQuote` does not rewrite native strings.
+trimmed. Internal gaps, Unicode padding, backslashes, entities and HTML stay; a
+string between `'` is printed between `"`, unless its text holds a `'`, a `"`, a
+backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+and `singleQuote` is not read. [fixture: labels/single-quote-sensitive-kept]
 
 [fixture: labels/label-quote-kinds] [fixture: labels/label-empty-quotes]
-[fixture: labels/label-quote-rewrite-kept] [fixture:
+[fixture: labels/label-quote-rewrite-one-form] [fixture:
 labels/label-quote-remove-kept] [fixture: labels/label-interior-kept] [fixture:
 labels/label-backslash-kept] [fixture: labels/label-html-entities] [fixture:
 labels/div-c4-label] [fixture: labels/label-markdown-remove-kept] [test:
@@ -192,7 +205,7 @@ Output
 ```mmd
 usecase-beta
   A(unquoted  words)
-  B(' single  text ')
+  B(" single  text ")
   C(" double  text ")
   D("` markdown  text `")
 ```
@@ -224,13 +237,14 @@ content; exterior common whitespace follows the padding rule. [fixture:
 stereotypes/stereotype-plain-backslash] [fixture: stereotypes/directive-padding]
 [fixture: stereotypes/directive-gap-sides] [test: usecase:
 stereotype-unicode-exterior-padding] [test: usecase:
-stereotype-unicode-gap-sides] Protected common comment regions and semicolon
-prefixes still retain complete crossing values, including their padding.
-[fixture: stereotypes/semicolon-padding-kept] [test: usecase:
-stereotype-comment-region-padding-kept] Physical multiline, empty and unclosed
-failures are never repaired. [corpus fixture: usecase/gram-stereotype-newline]
-[corpus fixture: usecase/gram-stereotype-empty] [corpus fixture:
-usecase/gram-stereotype-open]
+stereotype-unicode-gap-sides] Protected common comment regions still retain
+complete crossing values, including their padding. [test: usecase:
+stereotype-comment-region-padding-kept] A `;` in the interior is no reason to
+keep the padding: the line rule reads only the stretch from a `:` to a `#`, and
+the padding is outside it. [fixture: stereotypes/semicolon-padding-dropped]
+Physical multiline, empty and unclosed failures are never repaired. [corpus
+fixture: usecase/gram-stereotype-newline] [corpus fixture:
+usecase/gram-stereotype-empty] [corpus fixture: usecase/gram-stereotype-open]
 
 [fixture: stereotypes/stereotype-padding] [fixture:
 stereotypes/stereotype-inner-kept] [fixture: stereotypes/stereotype-punctuation]
@@ -260,27 +274,26 @@ are dropped, since mermaid.js trims them (it keeps a no-break space, which
 stays): `systemBoundary S[ x ]` is printed `systemBoundary S[x]`, and `S("x" )`
 is printed `S("x")`. [fixture: system-boundaries/boundary-title-padding-dropped]
 [fixture: system-boundaries/boundary-title-opener-touches-id] A directive at an
-edge of the title keeps the gap beside it, one space where whitespace was
-written (`S[ %%{x}%% T ]` is printed `S[ %%{x}%% T]`). The padding is dropped on
-a line with a kept `;` too, where the text through the last `;` is protected
-(see Statements and semicolons): dropping it moves no `;`, so the line rule
-selects the same one. `S[ a;b ]` is printed `S[a;b]`, and `S[ a; ]` is printed
-`S[a;]`. One space stays where the padding lies between a `:` and a `#` of a
-line that the line rule may read, as in architecture and venn. A usecase id
-cannot hold a `:`, and a `:` inside a directive is not read by the line rule, so
-no `:` stands before the title for the rule:
-`systemBoundary mystyle%%{init:{}}%%[ #x; ]` is printed
+edge of the title touches the bracket and the title, as the gap has no space
+(`S[ %%{x}%% T ]` is printed `S[%%{x}%%T]`). The padding is dropped on a line
+with a kept `;` too, apart from the stretch read by the line rule (see
+[Statements and semicolons](#statements-and-semicolons)): dropping it outside
+that stretch moves no `;`, so the line rule selects the same one. `S[ a;b ]` is
+printed `S[a;b]`, and `S[ a; ]` is printed `S[a;]`. One space stays where the
+padding lies between a `:` and a `#` of a line that the line rule may read, as
+in architecture and venn. A usecase id cannot hold a `:`, and a `:` inside a
+directive is not read by the line rule, so no `:` stands before the title for
+the rule: `systemBoundary mystyle%%{init:{}}%%[ #x; ]` is printed
 `systemBoundary mystyle%%{init:{}}%%[#x;]`. A padding with a U+2028 or U+2029 in
 it stays. [fixture: system-boundaries/boundary-title-directive-or-semicolon]
 [fixture: system-boundaries/boundary-title-padding-after-directive-colon] [test:
 usecase: U+2028 inside the brackets of a boundary title] [test: usecase: U+2029
 inside the brackets of a boundary title] [test: usecase: U+2028 inside the
 brackets of a boundary title with a semicolon] [test: usecase: U+2029 inside the
-brackets of a boundary title with a semicolon] A directive in the gap keeps
-whether whitespace was written on each side of it, a run of whitespace becoming
-one space, as under flowchart's Directives. [fixture:
+brackets of a boundary title with a semicolon] A directive in the gap is placed
+as under flowchart's Directives. [fixture:
 system-boundaries/boundary-id-title-directed-gap] [fixture:
-system-boundaries/boundary-id-title-directed-gap-runs-collapsed] Preserve native
+system-boundaries/boundary-id-title-directed-gap-runs] Preserve native
 metadata/classes and repeated declarations; body membership comes from the AST's
 single declaration-body level.
 
@@ -299,7 +312,7 @@ Output
 
 ```mmd
 usecase-beta
-  systemBoundary Box[Display]@{ type: 'package' }:::box,group
+  systemBoundary Box[Display]@{ type: "package" }:::box,group
     actor User
     A@{ business: true }
   end
@@ -308,21 +321,23 @@ usecase-beta
 ### Arrows
 
 Reuse readable [arrow spacing](./class.md#arrow-spacing): one ordinary gap on
-each side of the actual complete usecase operator. Keep direction, marker, case
-and every dash/dot, including long split closing halves whose Db length is
-fixed. Semantic operators print compact `..>:InClUdE` or the written extend
-case, then one target gap; their colon and keyword are operator syntax.
-[fixture: arrows/semantic-operator-directives] Case normalization can be
-Db-equal, but authored spelling follows the shared keyword policy. Never swap
-endpoints or translate operator families. Direction, marker, case and the dash
-and dot counts stay as written because the printer never prints a normalized Db
-operator: `A---->B` printed as `A --> B` changes the minimum length, and `A<--B`
-printed as `B --> A` changes the order of source and target. A split arrow keeps
-its dash counts even where the Db length is fixed.
+each side of the actual complete usecase operator. Keep direction, marker, and
+every dash/dot, including long split closing halves whose Db length is fixed.
+Semantic operators print compact `..>:include` and `..>:extend`, the keyword in
+lower case, as the examples in the documentation of mermaid.js write it (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+then one target gap; their colon and keyword are operator syntax. [fixture:
+arrows/semantic-operator-directives] [fixture:
+arrows/arrows-semantic-case-one-form] Never swap endpoints or translate operator
+families. Direction, marker, and the dash and dot counts stay as written because
+the printer never prints a normalized Db operator: `A---->B` printed as
+`A --> B` changes the minimum length, and `A<--B` printed as `B --> A` changes
+the order of source and target. A split arrow keeps its dash counts even where
+the Db length is fixed.
 
 [fixture: arrows/arrows-solid] [fixture: arrows/arrows-markers] [fixture:
 arrows/arrows-semantic] [fixture: arrows/arrows-length-kept] [fixture:
-arrows/arrows-source-order-kept] [fixture: arrows/arrows-semantic-case-kept]
+arrows/arrows-source-order-kept] [fixture: arrows/arrows-semantic-case-one-form]
 [fixture: arrows/arrows-generalization-actors] [fixture:
 arrows/extended-split-lengths]
 
@@ -333,8 +348,8 @@ Output
 
 ```mmd
 usecase-beta
-  A ..>:InClUdE B
-  B ..>:EXTEND C
+  A ..>:include B
+  B ..>:extend C
   C --|> D
 ```
 
@@ -344,8 +359,8 @@ Space the arrow and endpoint exactly as the AST records them: `A --order` prints
 `A --o rder`, while `A -- order` keeps `order`. Forward `--o`/`--x` are tried
 before markerless `--` without a word boundary, so adding or removing a gap
 inside those units changes the reading. Longer markerless dash runs and
-uppercase O/X keep their recorded target; directives at complete boundaries
-retain their gap sides. [fixture:
+uppercase O/X keep their recorded target; a directive in a gap at a complete
+boundary is placed as under [Directives](#directives). [fixture:
 arrow-id-boundaries/arrow-marker-both-gap-sides] This differs from class's
 o-marker boundary. Recovering an apparent intended id belongs to lint, not
 formatting.
@@ -400,7 +415,7 @@ Output
 ```mmd
 usecase-beta
   A -- likes --> B
-  B <-- 'uses' -- C
+  B <-- "uses" -- C
   C o-- part --- D
   D x-- "`blocks`" ---- E
 ```
@@ -501,9 +516,16 @@ usecase-beta
 ### JSON tables
 
 Reuse [opaque data retention](./compatibility.md#embedded-data-is-not-checked):
-keep `@`, its gap before `{`, and the JSON contents, apart from the uniform
-margin movement below. Format exterior json/id gaps and class suffixes; one
-ordinary gap precedes the data. [fixture:
+keep the JSON contents, apart from the uniform margin movement below. Format
+exterior json/id gaps and class suffixes; one ordinary gap precedes the data.
+The `{` touches the `@`: `json A @ {"a":1}` is printed `json A @{"a":1}`, since
+the spaces and tabs between them are not in the Db, and the documentation of
+mermaid.js writes `@{`
+([`json Payload@{`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/usecase.md#L334)).
+A head with a directive between the `@` and the `{` stays as written. [fixture:
+json-tables/head-padding-dropped] [fixture:
+json-tables/empty-head-padding-dropped] [fixture:
+json-tables/head-beside-directive-kept] [fixture:
 json-tables/json-prefix-id-at-multiline-directive] Nested objects, duplicates,
 integer-key order, numbers/escapes and apparent comments stay authored. Sorting
 keys can change `propertyOrder`. Balanced malformed contents follow the
@@ -538,17 +560,17 @@ json-tables/inline-opening-kept] [fixture: json-tables/directive-inside-kept]
 json-tables/surrounding-trivia] [test: data blocks: JSON leading tab kept]
 [test: data blocks: usecase U+2029] [test: data blocks: usecase CRLF]
 
-A JSON table on one line stays as written: its `{` and `}` are the braces of the
-JSON itself, not the ends of a block that mermaid.js wraps in braces, so the
-one-space padding of [Data blocks](./flowchart.md#data-blocks) does not apply to
-it. [fixture: json-tables/one-line-kept]
+A JSON table on one line stays as written, apart from the whitespace between the
+`@` and the `{`: its `{` and `}` are the braces of the JSON itself, not the ends
+of a block that mermaid.js wraps in braces, so the one-space padding of
+[Data blocks](./flowchart.md#data-blocks) does not apply to it. [fixture:
+json-tables/one-line-kept]
 
 [fixture: json-tables/json-opaque] [corpus fixture:
 usecase/gram-json-prefix-id-control] [fixture: json-tables/json-invalid-opaque]
 [fixture: json-tables/json-order-kept] [fixture:
 json-tables/json-directive-opaque] [fixture:
-json-tables/numbers-escapes-and-comment-text] [fixture:
-json-tables/empty-prefix-gap]
+json-tables/numbers-escapes-and-comment-text]
 
 Input (escaped):
 `"usecase-beta\njson  Table  @ {\n \"2\": 2, \"1\": {\"z\":1}, \"2\": 3\n} ::: data , table"`
@@ -558,7 +580,7 @@ Output
 
 ```mmd
 usecase-beta
-  json Table @ {
+  json Table @{
     "2": 2, "1": {"z":1}, "2": 3
   }:::data,table
 ```
@@ -670,7 +692,7 @@ Output
 ```mmd
 usecase-beta
   A
-  note for A 'quoted note'
+  note for A "quoted note"
   note for A bare  note %% literal
 ```
 
@@ -694,10 +716,16 @@ direction-and-accessibility/a11y-trimmed] [test: usecase: a11y-unicode-exterior]
 Description blocks reuse [class multiline values](./class.md#multi-line-values):
 align body lines one step inside the statement and a separate `}` with the
 statement, including a block whose only content is a comment line. Mermaid
-discards indentation after LF from the description. Put one space between
-`accDescr` and `{`, including when they originally touched, so the keyword and
-body opener have a visible boundary, and put the text of a block on one line
-between one space on each side, as `{ a }`. [fixture:
+discards indentation after LF from the description. The directives that end the
+value of an `accTitle` or an `accDescr` are printed as those that end a title
+(see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)):
+`accTitle: Column zero  %%{x}%%  ` and `accTitle: Column zero  %%{x}%%` are both
+printed `accTitle: Column zero %%{x}%%`. [fixture:
+direction-and-accessibility/acctitle-trailing-directive-blanks-dropped] Put one
+space between `accDescr` and `{`, including when they originally touched, so the
+keyword and body opener have a visible boundary, and put the text of a block on
+one line between one space on each side, as `{ a }`. [fixture:
 direction-and-accessibility/keyword-brace-touching] [fixture:
 direction-and-accessibility/keyword-brace-space] [fixture:
 direction-and-accessibility/keyword-brace-run] [test: accessibility revisions:
@@ -809,9 +837,10 @@ usecase-beta
 ### Directives
 
 Reuse [shared directive attachment](./class.md#directives): removal supplies no
-separator. Keep directive contents, order, touching and multiline columns; align
-standalone directives and collapse only harmless exterior HWS gap sides.
-[fixture: system-boundaries/boundary-id-title-directed-gap] [fixture:
+separator. Keep directive contents, order and multiline columns; align
+standalone directives, and place a directive within a printed line as under
+flowchart's Directives. [fixture:
+system-boundaries/boundary-id-title-directed-gap] [fixture:
 arrows/semantic-operator-directives] [fixture:
 arrow-id-boundaries/arrow-marker-both-gap-sides] Header-line directives remain
 with the header. Value-side gaps, CSS name/value spans and opaque JSON remain
@@ -843,7 +872,7 @@ Output
 
 ```mmd
 usecase-beta
-  actor %%{init: {}}%% User
+  actor %%{init: {}}%%User
 ```
 
 ### Multiline values and order

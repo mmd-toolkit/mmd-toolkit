@@ -1,0 +1,14 @@
+sequenceDiagram
+  alt first
+    A ->> B: one
+  else second
+    A ->> B: two
+  end
+  opt maybe
+    A ->> B: three
+  end
+  par first
+    A ->> B: four
+  and second
+    A ->> B: five
+  end

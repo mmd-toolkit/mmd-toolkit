@@ -19,10 +19,17 @@ import {
   formatDescriptionBlock,
   keepFirstGapLineTails,
   layoutCompactEmptyDescriptionBlockWithFallback,
-  spansLinesThatCannotJoin,
   toAsciiLowerCase,
+  walk,
 } from "./layout.ts"
-import { holdsJoiningRegion, printedEndOf } from "./kept-lines.ts"
+import {
+  findKeptBreaks,
+  gapKeepsLineBreak,
+  holdsJoiningRegion,
+  printedEndOf,
+  spansKeptBreaks,
+} from "./kept-lines.ts"
+import { trimTextAfterKeyword } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
 import {
   findStructuralToken,
@@ -198,6 +205,13 @@ export function layoutBlockHeader(
     text?.type === "SequenceBoxText"
       ? [{ start: text.range[0], end: text.range[1] }]
       : []
+  const rules = new Map<number, GapRule>()
+  if (text !== null) {
+    // The text stands after one space, also where it touched the keyword
+    // (docs/sequence.md, Whitespace between tokens).
+    rules.set(text.range[0], "space")
+    addWrapRules(text, rules)
+  }
   return {
     atoms: collectAtoms(
       source,
@@ -206,7 +220,7 @@ export function layoutBlockHeader(
       kept.length === 0 ? valuesOf(text) : [],
       kept,
     ),
-    rules: new Map(),
+    rules,
     outdented: new Set(),
     lineBreaks: "kept",
   }
@@ -238,14 +252,17 @@ export function layoutSequenceStatement(
   end: number,
 ): AtomLayout {
   const start = statement.range[0]
+  const keptBreaks =
+    statement.type === "SequenceAccDescrBlockStatement"
+      ? new Set<number>()
+      : findKeptBreaks(source, start, end)
   const keepsLineBreaks =
     statement.type !== "SequenceAccDescrBlockStatement" &&
-    spansLinesThatCannotJoin(source, start, end)
+    spansKeptBreaks(source, keptBreaks, start, end)
   if (
     keepsLineBreaks &&
     (statement.type === "SequenceTitleStatement" ||
-      holdsJoiningRegion(source, start, end) ||
-      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
+      holdsJoiningRegion(source, start, end))
   ) {
     return {
       atoms: [{ start, end }],
@@ -294,10 +311,12 @@ export function layoutSequenceStatement(
   }
   const atoms = collectAtoms(source, start, end, values, tail)
   return {
-    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+    atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
+      gapKeepsLineBreak(source, keptBreaks, from, to),
+    ),
     rules: statementRules(source, statement),
     outdented: new Set(),
-    lineBreaks: keepsLineBreaks ? "kept" : "joined",
+    lineBreaks: "joined",
   }
 }
 
@@ -320,8 +339,15 @@ function layoutTitle(
   const keepsSeparator =
     source.text[separator] === "\u2028" || source.text[separator] === "\u2029"
   const text: Atom = { start: keepsSeparator ? separator : separator + 1, end }
+  const atoms: Atom[] = [{ start: statement.range[0], end: separator }, text]
+  // mermaid.js keeps the whitespace after the separator in the title, and
+  // draws the same text without it (docs/compatibility.md, Texts after a
+  // keyword that are drawn the same).
+  if (!keepsSeparator) {
+    trimTextAfterKeyword(source, atoms, [text.start, end], true)
+  }
   return {
-    atoms: [{ start: statement.range[0], end: separator }, text],
+    atoms,
     rules: keepsSeparator ? new Map() : new Map([[text.start, "space"]]),
     outdented: new Set(),
     lineBreaks: "joined",
@@ -418,7 +444,22 @@ function statementRules(
     default:
       break
   }
+  addWrapRules(statement, rules)
   return rules
+}
+
+/**
+ * Adds the rule of the text after the prefix `wrap:` or `nowrap:` of each text
+ * in a node: it stands after one space, also where it touched the prefix
+ * (docs/sequence.md, Whitespace between tokens).
+ */
+function addWrapRules(node: Node, rules: Map<number, GapRule>): void {
+  walk(node, (child) => {
+    if (child.type !== "SequenceText") return
+    if (child.wrap !== null && child.value !== null) {
+      rules.set(child.value.range[0], "space")
+    }
+  })
 }
 
 /**

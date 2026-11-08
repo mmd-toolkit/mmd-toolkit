@@ -202,9 +202,10 @@ architecture-beta
 ### Text icons
 
 Keep each StringLiteral source span, including single/double quotes, opposite
-quotes, empty text, escapes, padding and physical continuation lines.
-`singleQuote` does not rewrite it: re-encoding loses authored spelling, and
-trimming or decoding can change the Db.
+quotes, empty text, escapes, padding and physical continuation lines, except
+that a run of spaces and tabs inside the text is printed as one space (see
+[Label content](#label-content)). `singleQuote` does not rewrite it: re-encoding
+loses authored spelling, and trimming or decoding can change the Db.
 
 [fixture: architecture/text-icons/double-quote]
 
@@ -294,14 +295,16 @@ architecture-beta
 ### Label content
 
 Preserve bracket interiors, except the spaces, tabs, and no-break spaces next to
-the brackets of the title of a group or a service: mermaid.js trims them, so
+the brackets of the title of a group or a service and of the label of an arrow
+(see [Arrow labels](#arrow-labels)): mermaid.js trims them, so
 `group a(cloud)[ API ]` is printed `group a(cloud)[API]` and
 `service s(server)["x" ]` is printed `service s(server)["x"]`. [fixture:
 label-content/title-edge-whitespace-dropped] This holds on a line with a kept
-`;` too, where the text through the last `;` is protected (see Semicolons):
-dropping the padding moves no `;`, adds none and removes none, so the line rule
-selects the same `;`. `group g(cloud)[ a;b ]` is printed `group g(cloud)[a;b]`,
-and `service s(server)[ x; ] in g` is printed `service s(server)[x;] in g`. One
+`;` too, apart from the stretch read by the line rule (see
+[Semicolons](#semicolons)): dropping the padding outside that stretch moves no
+`;`, adds none and removes none, so the line rule selects the same `;`.
+`group g(cloud)[ a;b ]` is printed `group g(cloud)[a;b]`, and
+`service s(server)[ x; ] in g` is printed `service s(server)[x;] in g`. One
 space stays where the padding lies between a `:` and a `#` of a line that the
 line rule may read, since whether it is there decides which `;` is ignored:
 `service style(logos:aws)[ #y; ]` is printed `service style(logos:aws)[ #y;]`,
@@ -309,7 +312,7 @@ while `service s(logos:aws)[ #y; ]` has no `style` before the `:` and is printed
 `service s(logos:aws)[#y;]`. The rule reads a line without its directives, so a
 `style`, a `:`, a `#`, or a `;` inside one makes no stretch:
 `service%%{style}%% s0(logos:aws)[ #y; ]` is printed
-`service%%{style}%% s0(logos:aws)[#y;]`,
+`service %%{style}%%s0(logos:aws)[#y;]`,
 `service style1(logos:aws)[ #y ]%%{init:{"a":";"}}%%` is printed with `[#y]`,
 and the same line with a `;` outside the directive, `[ #y; ]`, keeps its space.
 [fixture: label-content/title-padding-line-rule-chars-in-directive] A `%%` in
@@ -331,11 +334,14 @@ label-content/title-padding-after-colon-without-style] [test:
 architecture/label-content/title-u2028] [test:
 architecture/label-content/title-u2029] [test:
 architecture/label-content/title-with-semicolon-u2028] [test:
-architecture/label-content/title-with-semicolon-u2029] Repeated spaces, tabs
-inside the text, whitespace-only and quoted-empty content, escapes, HTML,
-entities and hidden-looking text stay: the Db can distinguish these values, and
-a title with a comment or a directive stays as written. Physical CR/CRLF alone
-follow the shared host policy.
+architecture/label-content/title-with-semicolon-u2029] A run of spaces and tabs
+inside the text is printed as one space, since the figure is the same (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)):
+`group labels[A  B]` is printed `group labels[A B]`. [fixture:
+label-content/bare-padding] Whitespace-only and quoted-empty content, escapes,
+HTML, entities and hidden-looking text stay: the Db can distinguish these
+values, and a title with a comment or a directive stays as written. Physical
+CR/CRLF alone follow the shared host policy.
 
 [fixture: architecture/label-content/bare-padding]
 
@@ -368,7 +374,7 @@ Output
 
 ```mmd
 architecture-beta
-  group labels[A  B	 C]
+  group labels[A B C]
 ```
 
 ### Port colons
@@ -428,15 +434,28 @@ architecture-beta
 ### Arrow labels
 
 Print labelled lines as `a:R <-[label]-> L:b`: the single dashes, whole
-bracketed label and markers form one visual unit. Remove only ordinary exterior
-gaps; preserve the complete label range, including padded quote-looking text and
-empty quoted content.
+bracketed label and markers form one visual unit. Remove the ordinary exterior
+gaps, and the spaces, tabs, and no-break spaces next to the brackets of the
+label, as for the title of a group or a service (see
+[Label content](#label-content)): `a:R -[ Label ]- L:b` is printed
+`a:R -[Label]- L:b`, and `a:R - [ "x" ] - L:b` is printed `a:R -["x"]- L:b`.
+mermaid.js trims the label, so the Db is the same. Preserve the rest of the
+label range, including empty quoted content. A label with a comment or a
+directive stays as written, and so does a padding with a U+2028 or U+2029 in it.
 
 [fixture: architecture/arrow-labels/edge-label-padded-quote]
 
 [fixture: architecture/arrow-labels/edge-label-quoted]
 
 [fixture: architecture/arrow-labels/labelled-dash-tight]
+
+[fixture: architecture/arrow-labels/edge-label-padding-dropped]
+
+[fixture: architecture/arrow-labels/edge-label-directive-kept]
+
+[test: architecture/arrow-labels/edge-label-padding-u2028]
+
+[test: architecture/arrow-labels/edge-label-padding-u2029]
 
 [corpus fixture: architecture/gram-edge-reversed-labeled-markers]
 
@@ -452,7 +471,7 @@ Output
 architecture-beta
   service a
   service b
-  a:R -[ "x" ]- L:b
+  a:R -["x"]- L:b
 ```
 
 ### Group modifiers
@@ -519,7 +538,11 @@ and null or whitespace-only values print `title`. This compacts equivalent outer
 padding. Never read the next physical line as a value, even across trivia. Keep
 occurrences and content even though the architecture summary does not publish
 title. Trivia-bearing values and protected hidden boundaries keep their source
-gaps.
+gaps. The directives that end a title are printed with one space before each
+that has whitespace before it, and the whitespace after the last one is left
+out, whatever the whitespace at the end of the line (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: title/title-directives-end-blanks-dropped]
 
 [corpus fixture: architecture/directive-fields]
 
@@ -559,7 +582,11 @@ Reuse shared `accTitle: value` and `accDescr: value`: the colon touches its
 keyword, with one space before a trimmed nonempty value; empty values end at the
 colon. This keeps consistent outer spacing. Never join a next-line statement.
 Braces after a colon remain line text, and protected trivia/hidden gaps take
-precedence.
+precedence. The directives that end the value are printed with one space before
+each that has whitespace before it, and the whitespace after the last one is
+left out (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: architecture/accessibility-lines/a11y-empty-comment-gap]
 
@@ -723,15 +750,15 @@ architecture-beta
 
 ### Global directives
 
-Keep Root directive content, order and ownership. Within a printed line, keep
-whether each side touches or is separated. When formatting splits units that
-were on the same line, a directive in their gap moves with the following unit:
-its right boundary stays touching or separated, while its left contact is
-broken. Ordinary standalone starts align one body step in; multiline interiors
-and EOF-reaching endings stay written. Common removal joins surrounding text, so
-deleting component-boundary whitespace can reject a declaration. Preserve
-component/value-internal directives rather than treating their opaque text as
-JSON.
+Keep Root directive content, order and ownership. Within a printed line, place a
+directive as under [Directives](./flowchart.md#directives). When formatting
+splits units that were on the same line, a directive in their gap moves with the
+following unit: its right boundary stays touching or separated, while its left
+contact is broken. Ordinary standalone starts align one body step in; multiline
+interiors and EOF-reaching endings stay written. Common removal joins
+surrounding text, so deleting component-boundary whitespace can reject a
+declaration. Preserve component/value-internal directives rather than treating
+their opaque text as JSON.
 
 [fixture: architecture/global-directives/header-to-body]
 
@@ -775,7 +802,7 @@ Output
 architecture-beta
   service composite(%%{wrap}%%cloud%%{wrap}%%)
   service target
-  composite{%%{wrap}%%group%%{wrap}%%}:R < %%{wrap}%% --> L:target
+  composite{%%{wrap}%%group%%{wrap}%%}:R <%%{wrap}%%--> L:target
 ```
 
 ### Hidden forms
@@ -1056,13 +1083,23 @@ architecture-beta
 
 ### Semicolons
 
-Keep every authored semicolon and use shared `protectSemicolonPrefixes`. Protect
-the textual segment through its last semicolon, extending through whole crossing
-values and trivia; format safe suffix gaps only. Protected
-header/first-statement groups stay together. Removing one selected semicolon or
-moving style/classDef triggers can select another and change the Db, so keep
-both passes, nontriggers, entities, physical value lines and global-rejoined
-triggers.
+Keep every authored semicolon. A segment that holds a kept `;` is formatted as
+anywhere else, except where formatting could change which `;` the line rule
+ignores. The rule reads a segment from the first `:` after `style` or `classDef`
+to the last `#` before its last kept `;`, with no whitespace between the `:` and
+the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps and the
+padding inside that stretch keep whether they hold whitespace, a run becoming
+one space, and the rest of the segment follows the ordinary rules of this
+diagram. Text that no part of the layout holds stays as written. A statement
+over several lines whose lines, joined with one space or with nothing, could
+change which `;` the line rule ignores keeps the text of each segment, up to its
+last kept `;`, as written; any other statement over several lines is formatted
+like one on a single line. [fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted] [fixture:
+semicolons/crossing-comment] Protected header/first-statement groups stay
+together. Removing one selected semicolon or moving style/classDef triggers can
+select another and change the Db, so keep both passes, nontriggers, entities,
+physical value lines and global-rejoined triggers.
 
 [fixture: architecture/semicolons/native-service-value]
 

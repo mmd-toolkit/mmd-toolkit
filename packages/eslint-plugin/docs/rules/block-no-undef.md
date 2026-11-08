@@ -40,7 +40,7 @@ Examples of **incorrect** code for this rule:
 %% eslint @mmd-toolkit/block-no-undef: error
 block
   A
-  classDef c fill:#f00
+  classDef c fill: #f00
   class Typo c
 ```
 
@@ -50,7 +50,7 @@ Examples of **correct** code for this rule:
 %% eslint @mmd-toolkit/block-no-undef: error
 block
   A
-  classDef c fill:#f00
+  classDef c fill: #f00
   class A c
 ```
 

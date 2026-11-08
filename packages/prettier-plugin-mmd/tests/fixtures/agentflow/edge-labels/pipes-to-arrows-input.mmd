@@ -1,0 +1,9 @@
+agentflow-beta TB
+A -->|ready_2, go?!| B
+B --x|retry 3| C
+C -->|"quoted text"| D
+D -->|"`markdown`"| E
+E -->|first %% retained
+second| F
+F -->|"left|right"| G
+G -->|" "| H

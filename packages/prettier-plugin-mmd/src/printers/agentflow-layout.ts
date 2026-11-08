@@ -33,8 +33,14 @@ import { readGapElement } from "./gap.ts"
 import { holdsJoiningRegion, lineStartOf } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import {
+  normalizeBlankLabels,
+  normalizeCallArguments,
+  normalizeStyleList,
+} from "./statement-rules.ts"
+import {
   findStructuralToken,
   findTriviaBetween,
+  isSpaceOrTab,
   isWhitespace,
 } from "./source.ts"
 
@@ -59,8 +65,10 @@ function layoutRange(
   rules: ReadonlyMap<number, GapRule>,
 ): AtomLayout {
   if (holdsJoiningRegion(source, start, end)) return keptAsWritten(start, end)
+  const atoms = collectAtoms(source, start, end, values, kept)
+  normalizeBlankLabels(source, atoms, values)
   return {
-    atoms: collectAtoms(source, start, end, values, kept),
+    atoms,
     rules,
     outdented: new Set(),
     lineBreaks: "kept",
@@ -98,8 +106,22 @@ export function layoutContainerHeader(
       else if (isWhitespace(source.text[nameStart])) nameStart++
       else break
     }
-    if (node.title !== null) {
+    // The data block of a heading without a title touches the name, whose
+    // trailing whitespace mermaid.js trims, as the `[` of a title does; the
+    // end of a heading with neither is trimmed the same way, since the flow
+    // is the same flow with or without it. A name that holds a directive or a
+    // comment is kept as written (docs/agentflow.md, Names and headings).
+    const holdsNoTrivia =
+      findTriviaBetween(source, name.range[0], name.range[1]).length === 0
+    const touchesData =
+      node.title === null && node.data.length > 0 && holdsNoTrivia
+    if (node.title !== null || touchesData) {
       while (nameEnd > nameStart && isWhitespace(source.text[nameEnd - 1]))
+        nameEnd--
+    } else if (holdsNoTrivia) {
+      // At the end of the heading only the spaces and tabs go: U+2028 and
+      // U+2029 are characters of the text there.
+      while (nameEnd > nameStart && isSpaceOrTab(source.text[nameEnd - 1]))
         nameEnd--
     }
     // A whitespace-only name still needs its written character.
@@ -107,6 +129,7 @@ export function layoutContainerHeader(
       nameStart = name.range[0]
       nameEnd = name.range[1]
     }
+    if (touchesData) rules.set(node.data[0].range[0], "none")
     if (node.title !== null) {
       // The `[` of the title touches the name, as in a flowchart, unless a
       // directive or comment ends the name: the whitespace after it is kept
@@ -204,8 +227,13 @@ export function findNamePrintedEnd(
     const { element, end } = readGapElement(source, position)
     if (element.kind === "item" && element.item.type !== "Comment")
       position = end
-    else if (element.kind === "whitespace") return end
-    else if (
+    else if (element.kind === "whitespace") {
+      // The space or tab that ends the click id is not needed when nothing
+      // follows it: the text then ends the id, as at EOF without it.
+      return isSpaceOrTab(source.text[position]) && endsTheInput(source, end)
+        ? name.range[1]
+        : end
+    } else if (
       element.kind === "lineTerminator" &&
       source.text.slice(end).trim() !== ""
     )
@@ -213,6 +241,25 @@ export function findNamePrintedEnd(
     else return name.range[1]
   }
   return name.range[1]
+}
+
+/**
+ * Whether nothing but whitespace, line breaks, and `;` that separate statements
+ * follows `offset`, so that the statement before it is the last of the text.
+ */
+function endsTheInput(source: Source, offset: number): boolean {
+  let position = offset
+  while (position < source.text.length) {
+    const { element, end } = readGapElement(source, position)
+    if (
+      element.kind !== "whitespace" &&
+      element.kind !== "lineTerminator" &&
+      element.kind !== "separator"
+    )
+      return false
+    position = end
+  }
+  return true
 }
 
 /**
@@ -364,16 +411,35 @@ export function layoutStatement(
   const rules = new Map<number, GapRule>()
   const kept: Atom[] = []
   switch (statement.type) {
+    case "AgentflowClassStatement":
+      return keptAsWritten(start, end)
     case "AgentflowStyleStatement":
     case "AgentflowClassDefStatement":
-    case "AgentflowClassStatement":
     case "AgentflowLinkStyleStatement":
-    case "AgentflowDefaultLinkStyleStatement":
+    case "AgentflowDefaultLinkStyleStatement": {
       // Exactly one grammar unit precedes a value, and every further space is
       // value text. Preserve these gaps, even across directives, rather than
       // applying flowchart's first-style collapse (diagrams/agentflow.md,
       // Style, classDef, class, and linkStyle; docs/agentflow.md, Single space gaps).
-      return keptAsWritten(start, end)
+      // The whitespace around the `:` and the `,` of the styles does not change
+      // the figure, except before a style that starts with `fill` in a
+      // `linkStyle` with link numbers, in the styles of a `linkStyle` where
+      // mermaid.js reads them as the styles of a link, and between `stroke` and
+      // the `:` in the styles that can reach a link (docs/agentflow.md, Single
+      // space gaps).
+      const atoms: Atom[] = [{ start, end }]
+      const isLinkStyle =
+        statement.type === "AgentflowLinkStyleStatement" ||
+        statement.type === "AgentflowDefaultLinkStyleStatement"
+      normalizeStyleList(source, atoms, statement, {
+        keepsSpaceBeforeFill: statement.type === "AgentflowLinkStyleStatement",
+        isLinkStyle,
+        joinsStyles: isLinkStyle,
+        keepsGapAfterStroke: statement.type !== "AgentflowStyleStatement",
+        escapesComma: statement.type === "AgentflowClassDefStatement",
+      })
+      return { ...keptAsWritten(start, end), atoms }
+    }
     case "AgentflowClickUrlStatement":
     case "AgentflowClickCallbackStatement":
       // Prefix nodes can straddle href or follow a second call. Their gaps and
@@ -443,6 +509,11 @@ export function layoutStatement(
       descriptionLayout,
       preservesDescriptionColumns,
     )
+  }
+  if (statement.type === "AgentflowClickCallbackStatement") {
+    const atoms = [...layout.atoms]
+    normalizeCallArguments(source, atoms, statement.arguments?.range ?? null)
+    return { ...layout, atoms }
   }
   return layout
 }

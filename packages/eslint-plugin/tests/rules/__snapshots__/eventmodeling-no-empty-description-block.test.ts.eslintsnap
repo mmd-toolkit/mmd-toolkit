@@ -7,7 +7,7 @@ Filename: eventmodeling-no-empty-description-block-incorrect-1.mmd
 Code:
   1 | eventmodeling accDescr {}
     |               ^~~~~~~~~~~ [1]
-  2 |   tf 01 evt Bought
+  2 | tf 01 evt Bought
   3 |
 
 [1] mermaid.js uses the text of this empty `accDescr` block as the description, replacing any earlier description.
@@ -15,7 +15,7 @@ Code:
       - Remove the empty block.
         Output:
           1 | eventmodeling
-          2 |   tf 01 evt Bought
+          2 | tf 01 evt Bought
           3 |
 ---
 

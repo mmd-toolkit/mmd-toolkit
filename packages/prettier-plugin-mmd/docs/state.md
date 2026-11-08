@@ -256,6 +256,55 @@ accDescr {}
   N1
 ```
 
+### Header
+
+The spelling of the header, `stateDiagram` or `stateDiagram-v2`, stays as
+written, like the name of any other header (see
+[The names of a header](./compatibility.md#the-names-of-a-header)): the examples
+in the documentation of mermaid.js use `stateDiagram-v2` 17 times and
+`stateDiagram` 5 times, and mermaid.js 12.3.0 draws both with the same diagram.
+[fixture: header/spellings-kept] [fixture: indentation/header-without-v2-kept]
+
+Input (escaped): `"stateDiagram\nSTATE \"legacy\" AS old"`.
+
+Output
+([header/spellings-kept-output.mmd](../tests/fixtures/state/header/spellings-kept-output.mmd)):
+
+```mmd
+stateDiagram
+  state "legacy" as old
+```
+
+### Keyword case
+
+The keywords of the table under
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
+are printed in the case shown there, among them `<<CHOICE>>`, `<<FORK>>`, and
+`<<JOIN>>`, which are printed `<<choice>>`, `<<fork>>`, and `<<join>>`,
+`ACCTITLE:` and `ACCDESCR:`, which are printed `accTitle:` and `accDescr:`,
+`AS`, `END`, and `DIRECTION TB`. The position of a note, `LEFT OF` and
+`RIGHT OF`, stays as written. [fixture: keyword-case/pseudo-states-one-form]
+[fixture: keyword-case/accessibility-alias-direction-one-form]
+
+Input (escaped):
+`"stateDiagram-v2\nACCTITLE: title\nACCDESCR: description\nstate \"x\" AS y\nDIRECTION TB\nnote LEFT OF y: left\nnote RIGHT OF y: right\nnote left of y\nbody\nEND NOTE"`.
+
+Output
+([keyword-case/accessibility-alias-direction-one-form-output.mmd](../tests/fixtures/state/keyword-case/accessibility-alias-direction-one-form-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  accTitle: title
+  accDescr: description
+  state "x" as y
+  direction TB
+  note LEFT OF y : left
+  note RIGHT OF y : right
+  note left of y
+    body
+  end note
+```
+
 ### Statements one per line
 
 Each statement stands on a line of its own, as in the other diagram types: two
@@ -391,21 +440,54 @@ examples of the documentation of mermaid.js write it so
 `state C ::: c {` keep the gap they have, one space where whitespace was
 written, and `state "y" as D:::c` is printed `state "y" as D :::c` by the rule
 of the alias. [fixture: whitespace-between-tokens/css-class-in-definition-kept]
-A directive in the gap keeps whether whitespace was written on each side of it,
-as under [Directives](#directives), and a U+2028 or U+2029 stays where it is.
-[test: U+2028 before the `:::` of a state] [test: U+2029 after the `:::` of a
-state] This holds for the `""` that mermaid.js does not read and the `,` of a
-style statement; the quotes of a floating note are kept as written. [fixture:
-whitespace-between-tokens/comma-kept] [fixture:
-whitespace-between-tokens/floating-note-quotes-kept] Whether whitespace is
-written before a `""` is kept: `state x"" {` is the composite state `x""`, and
-`state x "" {` the composite state `x`. [fixture:
-whitespace-between-tokens/quotes-before-brace-kept] Keywords keep the case in
-which they are written. mermaid.js reads them in any case and the Db is the
-same, so nothing forces the case; it is the author's, and the printer does not
-rewrite it. The position of a note, such as `Left Of`, is part of the diagram as
-written. [fixture: whitespace-between-tokens/keyword-case-kept] [fixture:
-whitespace-between-tokens/keyword-case-more-kept]
+A directive in the gap is placed as under [Directives](#directives), and a
+U+2028 or U+2029 stays where it is. [test: U+2028 before the `:::` of a state]
+[test: U+2029 after the `:::` of a state] This holds for the `""` that
+mermaid.js does not read; the quotes of a floating note are kept as written.
+[fixture: whitespace-between-tokens/floating-note-quotes-kept] In a `classDef`
+or a `style` statement, each style has no whitespace before its first `:` and
+one space after it where the value is not empty. The `,` between styles has no
+whitespace before it and one space after it, as in ER and requirement (see
+[Styles and classes](./er.md#styles-and-classes)):
+`classDef c fill:#f00 , color:white` is printed
+`classDef c fill: #f00, color: white`. The whitespace between the words of a
+value stays as written. mermaid.js reads the whitespace around the `,` as
+nothing in a state diagram, but keeps the whitespace around the `:` in the Db;
+the figure is the same (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
+[fixture: whitespace-between-tokens/style-colon-spaced] A backslash does not
+escape a `,` here: `fill:a\,b ,stroke:c` is printed `fill: a\, b, stroke: c`. A
+space after a backslash before the `:` stays, since taking it away would escape
+the `:`. [fixture: whitespace-between-tokens/style-backslash-before-comma] A
+space after a backslash that ends a style is read as nothing here:
+`style S1 stroke-width:3px\ ,stroke:#0f0` is printed
+`style S1 stroke-width: 3px\, stroke: #0f0`, and the pixels were the same.
+[fixture: whitespace-between-tokens/style-backslash-space-dropped] [fixture:
+whitespace-between-tokens/style-colon-escaped-space-kept] A statement stays as
+written where it holds a comment or a directive, where a style is all
+whitespace, or where a style holds a line break or its line holds a kept `;`.
+[fixture: whitespace-between-tokens/comma-kept] [fixture:
+whitespace-between-tokens/style-comma-spaced] [fixture:
+whitespace-between-tokens/style-comma-beside-directive] [fixture:
+whitespace-between-tokens/style-comma-with-kept-semicolon-kept] A U+2028 or
+U+2029 among the styles stays where it is. [test: U+2028 before the comma of a
+state classDef statement] [test: U+2029 after the comma of a state classDef
+statement] Whether whitespace is written before a `""` is kept: `state x"" {` is
+the composite state `x""`, and `state x "" {` the composite state `x`. [fixture:
+whitespace-between-tokens/quotes-before-brace-kept] The keywords of the table
+under
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
+are printed in the case shown there (`STATE A {` is `state A {`, `DIRECTION lr`
+is `direction LR`, `<<CHOICE>>` is `<<choice>>`). mermaid.js reads them in any
+case and the Db is the same. A keyword that the table does not list keeps the
+case in which it is written (`STYLE`, `CLASSDEF`, and `HIDE EMPTY DESCRIPTION`).
+`STYLE` and `CLASSDEF` are read by mermaid.js with a rule of its own (see
+[Keywords in one case](./compatibility.md#keywords-in-one-case)). The position
+of a note, such as `Left Of`, is part of the diagram as written: the Db keeps it
+as written. [fixture: whitespace-between-tokens/keyword-case-one-form] [fixture:
+whitespace-between-tokens/keyword-case-more-one-form] [fixture:
+keyword-case/pseudo-states-one-form] [fixture:
+keyword-case/accessibility-alias-direction-one-form]
 
 The ids of a `class` statement are separated by a `,` that touches the id after
 it: `class A, B c` is printed `class A,B c`, as the lists of ER, requirement,
@@ -424,11 +506,10 @@ whitespace-between-tokens/comma-kept] A line break after the `,` is joined, so
 `class A,` and `B c` on the next line are printed `class A,B c`, and a directive
 before the `,` does not change that: the id after the `,` touches it. [fixture:
 whitespace-between-tokens/class-ids-line-break-and-directive] A directive in the
-gap after the `,` keeps whether whitespace was written on each side of it, a run
-of whitespace becoming one space, as under [Directives](#directives), and a `;`
-that the line rule ignores keeps its line as written. [fixture:
-whitespace-between-tokens/class-ids-beside-directive-kept] [fixture:
-whitespace-between-tokens/class-ids-beside-directive-runs-collapsed] [fixture:
+gap after the `,` is placed as under [Directives](#directives), and a `;` that
+the line rule ignores keeps its line as written. [fixture:
+whitespace-between-tokens/class-ids-beside-directive] [fixture:
+whitespace-between-tokens/class-ids-beside-directive-runs] [fixture:
 whitespace-between-tokens/class-ids-with-ignored-semicolon] A U+2028 or U+2029
 after the `,` stays where it is. [test: U+2028 after the comma of a state class
 statement] [test: U+2029 after the comma of a state class statement]
@@ -455,14 +536,14 @@ stateDiagram-v2
   A:::highlight
   state f1 <<fork>>
   state "" x
-  classDef c fill:red , stroke:blue
+  classDef c fill: red, stroke: blue
   class A,B c
   scale 350 width
   hide empty description
 ```
 
 Input
-([whitespace-between-tokens/keyword-case-kept-input.mmd](../tests/fixtures/state/whitespace-between-tokens/keyword-case-kept-input.mmd)):
+([whitespace-between-tokens/keyword-case-one-form-input.mmd](../tests/fixtures/state/whitespace-between-tokens/keyword-case-one-form-input.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -474,14 +555,14 @@ HIDE EMPTY DESCRIPTION
 ```
 
 Output
-([whitespace-between-tokens/keyword-case-kept-output.mmd](../tests/fixtures/state/whitespace-between-tokens/keyword-case-kept-output.mmd)):
+([whitespace-between-tokens/keyword-case-one-form-output.mmd](../tests/fixtures/state/whitespace-between-tokens/keyword-case-one-form-output.mmd)):
 
 ```mmd
 stateDiagram-v2
-  STATE A {
+  state A {
     B
   }
-  Note Left Of A : x
+  note Left Of A : x
   HIDE EMPTY DESCRIPTION
 ```
 
@@ -546,25 +627,31 @@ stateDiagram-v2
 ### Descriptions and labels
 
 The `:` after `accTitle` and `accDescr` touches the keyword and has one space
-after it: `accTitle  :  t` becomes `accTitle: t`. [fixture:
-descriptions-and-labels/acc-text-kept] The `:` of a description and of a
-transition label has one space on each side, as mermaid.js's documentation
+after it: `accTitle  :  t` becomes `accTitle: t`, and a run of spaces and tabs
+in the text of an `accDescr` is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+while that of an `accTitle` stays as written, since the browser shows it as a
+tooltip. [fixture: descriptions-and-labels/acc-text-runs-collapsed] [fixture:
+descriptions-and-labels/acc-block-runs-collapsed] The `:` of a description and
+of a transition label has one space on each side, as mermaid.js's documentation
 writes most of its labels: `A-->B:submit` becomes `A --> B : submit`. [fixture:
 descriptions-and-labels/spaced] The `:` of a description after a class spelled
 as a keyword stays touching it: `A:::style:x` becomes `A:::style: x`, because a
 space before the `:` would let the keyword start a statement. [fixture:
-descriptions-and-labels/class-named-style-then-description-kept] The text is
-kept as written. [fixture: descriptions-and-labels/text-kept] A description of
-only whitespace keeps the whitespace after its `:`: `A : ` gives no description,
-while `A :` is rejected. [corpus fixture: state/gram-description-blank] [corpus
-fixture: state/gram-description-colon-only] [fixture:
-descriptions-and-labels/blank-kept] A description or a label that ends with `:`
-keeps the whitespace after it too: `A : x: ` is accepted, while `A : x:` is
-rejected, since a description cannot end with `:`. [fixture:
-descriptions-and-labels/ending-colon-kept] The whitespace is at the end of a
-line, so the examples are written as strings, in which `\n` is a line break:
-`"stateDiagram-v2\nA : \n"` is printed as `"stateDiagram-v2\n  A : \n"`, and
-`"stateDiagram-v2\nA : x: \nA-->B:y:  \n"` as
+descriptions-and-labels/class-named-style-then-description-kept] The text of a
+description and of a transition label is kept as written, with its runs: a label
+that wraps draws them (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+[fixture: descriptions-and-labels/text-kept] A description of only whitespace
+keeps the whitespace after its `:`: `A : ` gives no description, while `A :` is
+rejected. [corpus fixture: state/gram-description-blank] [corpus fixture:
+state/gram-description-colon-only] [fixture: descriptions-and-labels/blank-kept]
+A description or a label that ends with `:` keeps the whitespace after it too:
+`A : x: ` is accepted, while `A : x:` is rejected, since a description cannot
+end with `:`. [fixture: descriptions-and-labels/ending-colon-kept] The
+whitespace is at the end of a line, so the examples are written as strings, in
+which `\n` is a line break: `"stateDiagram-v2\nA : \n"` is printed as
+`"stateDiagram-v2\n  A : \n"`, and `"stateDiagram-v2\nA : x: \nA-->B:y:  \n"` as
 `"stateDiagram-v2\n  A : x: \n  A --> B : y:  \n"` (the fixtures are in the
 [folder](../tests/fixtures/state/descriptions-and-labels): `blank-kept` and
 `ending-colon-kept`).
@@ -613,11 +700,20 @@ stateDiagram-v2
 
 ### Notes
 
-What follows the id of a note on one line, its `:` and its text, is kept as
-written: mermaid.js reads the text from right after the id, without its first
-two characters, so `note left of A:hi` has the text `i`, and
+What follows the id of a note on one line, its `:` and its text, is read by
+mermaid.js from right after the id, without its first two characters, and
+trimmed: `note left of A:hi` has the text `i`, and
 `note right of A  : two spaces` the text `: two spaces`. [fixture: notes/kept]
-In `note left of A:h` the `:` and the `h` are the two characters that mermaid.js
+Where the first two characters are a `:` and a space or a tab, in either order,
+the note is printed with the `:` after one space and the text after one space,
+whatever whitespace was written there: `note right of A: x` and
+`note left of A\t:\tz` are printed `note right of A : x` and
+`note left of A : z`. The whitespace inside the text stays, since a note that
+wraps draws its runs. The Db and the figure are the same. [fixture:
+notes/colon-and-text-spaced] Any other start stays as written, and so does a
+note with an empty text, with a comment or a directive, or with a character
+other than an ASCII one. [fixture: notes/colon-and-text-kept] In
+`note left of A:h` the `:` and the `h` are the two characters that mermaid.js
 drops, so the note has no text, and the whitespace after the `h` is dropped.
 [fixture: notes/one-character-text-kept] [corpus fixture:
 state/lex-note-colon-then-one-character] The whitespace before the id becomes
@@ -691,6 +787,20 @@ source. [fixture: notes/html-note-kept] [fixture: notes/html-pre-first-line]
 [fixture: notes/whitespace-only-body] [fixture: notes/html-break-first-line]
 [fixture: notes/html-first-line-tabs] [fixture:
 notes/html-first-line-zero-width] [fixture: notes/first-tab-markup-margin]
+
+Mermaid keeps the margins in the Db, so the Db of the printed note differs from
+the Db of the written note, but it draws the same figure. Both texts of each
+fixture of this section whose printed note differs from the written one were
+drawn with mermaid.js 12.3.0 in Chromium, after the state that the note refers
+to was declared where the fixture does not declare it, and with `handDrawnSeed`
+set, since the lines of the box of a note are random otherwise. The SVG, without
+the generated ids, and the pixels were the same, except for
+`notes/over-lines-empty-id-kept`, whose note refers to an empty id and which
+mermaid.js 12.3.0 cannot draw in either form. The tests compare the Db of the
+printed text with the margins of the notes restored from the Db of the written
+text (`stateDbForFormattingComparison` in `tests/state-note-margins.ts`). When
+the pinned mermaid.js is updated, draw both texts of each fixture again before
+the exception stays.
 
 For example, the first line of the following note uses the configured four
 spaces. Its blank-separated later paragraphs retain their two spaces: moving
@@ -798,8 +908,20 @@ whitespace after its `:`, as a description does: `note left of A : ` is
 accepted, while `note left of A :` is rejected; so does a note with two
 whitespace characters before the `:` and nothing after it, whose text is the `:`
 alone. [fixture: notes/blank-text-kept] The quotes of a floating note are kept
-as written: `note ""floating" as N` has the text `floating`. [fixture:
-notes/over-lines]
+as written, and so is the text between them with its whitespace, as the inside
+of a quoted label is in flowchart: `note ""floating" as N` has the text
+`floating`, and `note "  floating   text  " as N` stays. mermaid.js reads the
+same text and draws the same note whatever the whitespace there; the Db and the
+pixels were the same. [fixture: notes/floating-note-text-whitespace-kept]
+[fixture: notes/over-lines] The `as` of a floating note stands after one space,
+and so does the id after it, also where they touched: `note "t"as N` and
+`note "t" asN` are printed `note "t" as N`. mermaid.js reads the three spellings
+the same, and the `as` and the id of an alias definition are printed in the same
+way (see [Aliases](#aliases)). A directive in the gap is placed as under
+[Directives](#directives), and a U+2028 or U+2029 stays where it is. [fixture:
+notes/floating-note-as-gaps-spaced] [fixture:
+notes/floating-note-as-beside-directive] [test: U+2028 before the `as` of a
+floating note] [test: U+2029 between the `as` and the id of a floating note]
 
 Input ([notes/kept-input.mmd](../tests/fixtures/state/notes/kept-input.mmd)):
 
@@ -880,11 +1002,22 @@ apart in one form (`asA` is no `as`). [fixture: aliases/second-description-kept]
 [fixture: aliases/tabs-between-parts] [fixture: aliases/id-kept] The `""` that
 it does not read before and after the string stand apart from it in the same
 way. `asA` is no `as`, and is rejected. The second description, the text after
-the `:`, is kept as written: mermaid.js reads it with the whitespace at its
-ends, so `:short` and `: short` give different descriptions. [corpus fixture:
-state/db-alias-colon-spaces-second] [fixture: aliases/second-description-kept]
-[fixture: aliases/second-description-trailing-whitespace-kept] The whitespace
-before the `:` becomes one space.
+the `:`, is kept as written, except for the whitespace at its end: mermaid.js
+reads it with the whitespace at its ends, so `:short` and `: short` give
+different descriptions, and draws it without the whitespace at its end (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+The directives that end it are printed with one space before each that has
+whitespace before it, and the whitespace after the last one is left out:
+`state "d" as A : x   %%{x}%%  ` is printed `state "d" as A : x %%{x}%%`. A
+description of spaces and tabs only, and one that holds a `;`, stay as written.
+[corpus fixture: state/db-alias-colon-spaces-second] [fixture:
+aliases/second-description-kept] [fixture:
+aliases/second-description-trailing-directive-blanks-dropped] [fixture:
+aliases/second-description-two-directives-trailing-blanks-dropped] [fixture:
+aliases/second-description-trailing-whitespace-dropped] [fixture:
+aliases/second-description-blank-kept] [fixture:
+aliases/second-description-semicolon-kept] The whitespace before the `:` becomes
+one space.
 
 Input
 ([aliases/second-description-kept-input.mmd](../tests/fixtures/state/aliases/second-description-kept-input.mmd)):
@@ -992,11 +1125,11 @@ stateDiagram-v2
 ### Directives
 
 As in a flowchart: a directive on a line of its own stands at the level of the
-statements around it, and a directive within a printed line keeps whether
-whitespace is written on each side of it: where it is, one space stands there,
-and where the directive touches a token, it keeps touching. [fixture:
-directives/kept] [fixture: directives/before-header] [fixture:
-directives/after-statement] [fixture: directives/whitespace-on-each-side-kept]
+statements around it, and a directive within a printed line is placed as in a
+flowchart: the gap is printed as without the directive, and the directive stands
+after its space and touches the unit that follows it. [fixture: directives/kept]
+[fixture: directives/before-header] [fixture: directives/after-statement]
+[fixture: directives/whitespace-on-each-side]
 
 When formatting splits units that were on the same line, a directive in their
 gap moves with the following unit. Keep its right-side contact or separation;
@@ -1027,7 +1160,7 @@ stateDiagram-v2
     %%{init: {}}%%
     B
   }
-  Foo%%{init: {}}%% --> B
+  Foo %%{init: {}}%%--> B
 ```
 
 ### Frontmatter YAML
@@ -1185,10 +1318,10 @@ Output
 ```mmd
 stateDiagram-v2
   A --> B
-  classDef c fill:#f00
-  style A fill:#f00
-  classDef d fill:#0f0,stroke:#00f
-  style A fill:#0f0,stroke:#00f
+  classDef c fill: #f00
+  style A fill: #f00
+  classDef d fill: #0f0, stroke: #00f
+  style A fill: #0f0, stroke: #00f
 ```
 
 ### Multi-line statements
@@ -1222,8 +1355,8 @@ NBSP indentation follow the same rule, printed with the configured line ending
 and continuation indentation. [test: accessibility revisions: state
 next-line-direction-crlf] [test: accessibility revisions: state
 next-line-direction-nbsp] So `classDef c` followed by a line `fill:red` is
-printed as `classDef c fill:red`; a line `B --> C` after `classDef a` is a style
-of `a`, not a transition, and the printed text shows it. [fixture:
+printed as `classDef c fill: red`; a line `B --> C` after `classDef a` is a
+style of `a`, not a transition, and the printed text shows it. [fixture:
 multi-line-statements/joined] [fixture:
 multi-line-statements/classdef-takes-next-line] A statement with a comment or
 directive keeps its line breaks, while structural continuations and intervening
@@ -1231,8 +1364,8 @@ trivia stand one level deeper, as in a sequence diagram (see
 [Multi-line statements](./sequence.md#multi-line-statements)). Whitespace inside
 other values remains unchanged. Multiline note paragraph margins follow the
 limited [Notes](#notes) rule. [fixture: notes/payment-prose] The first gap-line
-tails are retained; joining regions, semicolon protections and the
-composite-state exceptions above keep the whole statement as written. [fixture:
+tails are retained; joining regions and the composite-state exceptions above
+keep the whole statement as written. [fixture:
 multi-line-statements/declaration-trivia-continuations] [fixture:
 multi-line-statements/comment-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept] [fixture:
@@ -1265,7 +1398,7 @@ Output
 stateDiagram-v2
   state A
   direction LR
-  classDef c fill:red
+  classDef c fill: red
   note right of A : x
   scale 350 width
   accTitle: A title
@@ -1291,10 +1424,15 @@ stateDiagram-v2
     LR
 ```
 
-A statement written over several lines that holds a kept `;` is kept as written
-too. [corpus fixture: state/db-style-semicolons] [corpus fixture:
-state/db-classdef-semicolons] [fixture: multi-line-statements/semicolon-kept]
-[fixture: multi-line-statements/semicolon-in-id-kept] The line rule of
+A line break stays where joining it, with one space or with nothing, could
+change which `;` the line rule ignores, and where a `;` ends the last line; any
+other line break is joined as usual, also in a statement that holds a `;`. A
+statement that keeps a line break keeps its styles as written. [corpus fixture:
+state/db-style-semicolons] [corpus fixture: state/db-classdef-semicolons]
+[fixture: multi-line-statements/breaks-decided-one-by-one] [fixture:
+multi-line-statements/line-rule-first-hash-after-colon-kept] [fixture:
+multi-line-statements/semicolon-kept] A `;` alone does not prevent joining.
+[fixture: multi-line-statements/semicolon-in-id-joined] The line rule of
 mermaid.js (the specification's
 [`style` and `classDef` lines](../../spec/docs/common.md#style-and-classdef-lines))
 reads the text of one line: in `classDef`, a line break, and `c fill:#f00;` it
@@ -1318,35 +1456,38 @@ Output
 ```mmd
 stateDiagram-v2
   classDef
-  c fill:#f00;
+    c fill:#f00;
 ```
 
 ### Line separators
 
-A line that holds U+2028 or U+2029 is kept as written, except for whitespace
-inside a compact empty description block: no text there needs protecting. A
-separator outside that interior still keeps the line as written. [test: state
-Unicode and tab interiors] [test: state multiline Unicode interior] [test: state
-exterior separator keeps the line] [test: state separator with comment stays
-written] A composite statement whose opening line holds one keeps it, and its
-body is printed as any other body: `state a b`, U+2028, and `{` keeps the
-character and indents the statements of the body. So does one on the closing
-line, as in `state A {`, a body line `B`, and `}` followed by U+2028: the
-whitespace after the `}` stays as written, with the character, and the body is
-indented. [test: U+2028 before the brace of a composite statement] [test: U+2028
-on the closing line of a composite statement] [test: U+2029 and whitespace
-before it on the closing line of a composite statement] [test: U+2028 on the
-closing line of a composite statement in a body] [test: U+2028 after the closing
-brace at the end of the text] [test: U+2028 on the opening and on the closing
-line of a composite statement] A composite statement in the body of another is
-printed so too, whatever the closing lines of the two hold. [test: U+2028 on the
-closing lines of a composite statement and of one in its body] [test: U+2028 on
-the closing lines of three nested composite statements] A composite statement
-whose body has a line that holds one, whose body is empty and whose closing line
-holds one (`state A {`, a line of whitespace, and `}`: the statement has no
-block to indent, and the line stays as written), whose closing `}` does not
-start its line (`B }`, or a directive before it), or whose closing line holds,
-after the character, a comment line or a `;` that another rule keeps (see
+A line that holds U+2028 or U+2029 is kept as written, the second description of
+an alias included, whitespace after the character too: `state "d" as A : x`, two
+spaces, U+2028, and two spaces stays as written. [test: a second description of
+an alias with spaces after a U+2028] Whitespace inside a compact empty
+description block is the exception: no text there needs protecting. A separator
+outside that interior still keeps the line as written. [test: state Unicode and
+tab interiors] [test: state multiline Unicode interior] [test: state exterior
+separator keeps the line] [test: state separator with comment stays written] A
+composite statement whose opening line holds one keeps it, and its body is
+printed as any other body: `state a b`, U+2028, and `{` keeps the character and
+indents the statements of the body. So does one on the closing line, as in
+`state A {`, a body line `B`, and `}` followed by U+2028: the whitespace after
+the `}` stays as written, with the character, and the body is indented. [test:
+U+2028 before the brace of a composite statement] [test: U+2028 on the closing
+line of a composite statement] [test: U+2029 and whitespace before it on the
+closing line of a composite statement] [test: U+2028 on the closing line of a
+composite statement in a body] [test: U+2028 after the closing brace at the end
+of the text] [test: U+2028 on the opening and on the closing line of a composite
+statement] A composite statement in the body of another is printed so too,
+whatever the closing lines of the two hold. [test: U+2028 on the closing lines
+of a composite statement and of one in its body] [test: U+2028 on the closing
+lines of three nested composite statements] A composite statement whose body has
+a line that holds one, whose body is empty and whose closing line holds one
+(`state A {`, a line of whitespace, and `}`: the statement has no block to
+indent, and the line stays as written), whose closing `}` does not start its
+line (`B }`, or a directive before it), or whose closing line holds, after the
+character, a comment line or a `;` that another rule keeps (see
 [A line that a `;` ends](./compatibility.md#a-line-that-a--ends) and
 [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)),
 is printed as written as a whole, and its body is not indented again. [test:
@@ -1396,10 +1537,10 @@ the following text is kept as written because changing it would change the
 diagram or the input would be rejected:
 
 - the text of a value: a description, a label, a note, an id after `as`, a
-  pseudostate name, a style, the CSS class of a `class` statement, and the text
-  of `accTitle` and `accDescr`; [fixture:
-  whitespace-between-tokens/style-text-kept] [fixture:
-  descriptions-and-labels/acc-text-kept] [fixture: aliases/id-kept]
+  pseudostate name, a style, apart from the whitespace around its first `:` and
+  its `,`, the CSS class of a `class` statement, and the text of `accTitle`;
+  [fixture: whitespace-between-tokens/style-text-kept] [fixture:
+  descriptions-and-labels/acc-text-runs-collapsed] [fixture: aliases/id-kept]
 - what follows the id of a note on one line, the second description of an alias
   definition, and the whitespace after the `:` of a description of only
   whitespace;
@@ -1416,10 +1557,15 @@ diagram or the input would be rejected:
   whitespace-between-tokens/direction-line-text-kept]
 - the spelling of the header, `stateDiagram` or `stateDiagram-v2`. [corpus
   fixture: state/header-v1] [fixture: indentation/header-without-v2-kept]
+  [fixture: header/spellings-kept]
 
 Some text is kept as written by choice, because the Db is the same either way:
-the case of keywords, which is the author's, and whether whitespace is written
-before the mark of a comment after a statement. The second is kept because
-mermaid.js reads a comment by what touches it in the places of the known
-divergences (`comment-takes-character`, `percent-brace-after-unit`), and one
-rule is simpler than a list of those places.
+the case of the keywords that the table under
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
+does not list, and whether whitespace is written before the mark of a comment
+after a statement, a run of it being printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+[fixture: comments/mark-run-one-space] The second is kept because mermaid.js
+reads a comment by what touches it in the places of the known divergences
+(`comment-takes-character`, `percent-brace-after-unit`), and one rule is simpler
+than a list of those places.

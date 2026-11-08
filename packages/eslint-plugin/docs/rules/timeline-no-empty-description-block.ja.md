@@ -36,6 +36,9 @@ since: v0.1.0
 タイトル、セクション、年、出来事のテキストの中の `accDescr {}` は、
 そのテキストの一部なので報告しない。
 
+整形ツールは、空のブロックを `accDescr {}` と書く。
+波括弧の中に空白がある例は、書いたまま示している。
+
 この規則に**反する**コードの例:
 
 ```mmd
@@ -45,6 +48,7 @@ timeline
   2020 : Launch
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/timeline-no-empty-description-block: error
 timeline

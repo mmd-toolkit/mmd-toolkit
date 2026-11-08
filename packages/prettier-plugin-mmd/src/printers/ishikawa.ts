@@ -118,7 +118,7 @@ export function printIshikawa(
   const block = printBlock(
     lines.map((line) => [
       placement(line).head,
-      printAtoms(source, layoutIshikawaLine(line), {
+      printAtoms(source, layoutIshikawaLine(source, line), {
         statement: "",
         continuation: "",
       }).doc,

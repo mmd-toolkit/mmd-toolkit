@@ -231,7 +231,7 @@ Output
 ```mmd
 railroad-ebnf-beta
   a = "first";
-  b ::= a;
+  b = a;
 ```
 
 Input (escaped): `"railroad-abnf-beta\nr=\"terminator\" \t;"`.
@@ -258,9 +258,12 @@ railroad-peg-beta
 ### Assignment
 
 Put one ordinary space on either side of the assignment, without aligning names.
-IR and ABNF keep `=`, EBNF keeps each authored `=` or `::=`, and PEG keeps `<-`.
-Both EBNF forms have the same Db, but replacing an authored delimiter adds no
-readability. Compound delimiters remain whole tokens.
+IR and ABNF keep `=`, EBNF prints `::=` as `=`, and PEG keeps `<-`. Both EBNF
+forms have the same Db, and the examples in the documentation of mermaid.js
+write `=` 35 times and `::=` never (see
+[Other spellings of a keyword or of a punctuation mark](./compatibility.md#other-spellings-of-a-keyword-or-of-a-punctuation-mark)).
+Compound delimiters remain whole tokens. [fixture:
+railroad/assignment/ebnf-assignment-equals]
 
 [fixture: railroad/assignment/abnf-spaces]
 
@@ -290,7 +293,7 @@ Output
 
 ```mmd
 railroad-ebnf-beta
-  longName ::= "assignment";
+  longName = "assignment";
   s = "short";
 ```
 
@@ -633,10 +636,11 @@ railroad-ebnf-beta
 ### Special sequences
 
 Keep the entire EBNF special-sequence source span, including both question
-marks, exterior and internal whitespace, quotes, backslashes and physical
-continuation columns. Trimming just its edges may keep the Db, but preserving
-the authored text avoids a second lexical interpretation; collapsing internal
-whitespace can change the Db.
+marks, exterior whitespace, quotes, backslashes and physical continuation
+columns, with a run of spaces and tabs inside the text printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+Trimming just its edges may keep the Db, but preserving the authored text avoids
+a second lexical interpretation.
 
 [fixture: railroad/special-sequences/ebnf-content]
 
@@ -649,17 +653,26 @@ Output
 
 ```mmd
 railroad-ebnf-beta
-  r = ?  first  second	 ?;
+  r = ? first second ?;
 ```
 
 ### Quotes
 
-Keep StringLiteral source spans unchanged: quotes, escapes, empty and
-whitespace-only strings, internal padding, HTML, entities and
-hidden/comment-looking text. singleQuote does not rewrite these values. IR, EBNF
-and PEG allow both quote forms and backslash escapes; ABNF allows double quotes
-only and treats backslash as ordinary text. Requoting adds no formatting
-benefit, while trimming content or using the wrong escape model changes the Db.
+Keep StringLiteral source spans unchanged: escapes, empty strings, HTML,
+entities and hidden/comment-looking text, with a run of spaces and tabs inside a
+string printed as one space, so a string of spaces and tabs only becomes one
+space. The name of a rule holds no whitespace, so a nonterminal whose string
+holds a run refers to no rule, and the string is printed like any other.
+[fixture: railroad/quotes/ir-string-runs-collapsed] IR, EBNF and PEG allow both
+quote forms and backslash escapes, and a string between `'` is printed between
+`"`, unless its text holds a `'`, a `"`, a backslash, a line break, U+2028,
+U+2029, a backquote, `&`, `#`, or `<` (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+and `singleQuote` is not read; ABNF allows double quotes only and treats
+backslash as ordinary text. Trimming content or using the wrong escape model
+changes the Db. [fixture: railroad/quotes/ir-single-quote-sensitive-kept]
+[fixture: railroad/quotes/ebnf-single-quote-sensitive-kept] [fixture:
+railroad/quotes/peg-single-quote-sensitive-kept]
 
 [fixture: railroad/quotes/abnf-backslash]
 
@@ -687,8 +700,8 @@ Output
 railroad-beta
   r = sequence(
     terminal(""),
-    terminal(" 	 "),
-    nonterminal(''),
+    terminal(" "),
+    nonterminal(""),
     special("%%literal --- <b> plain")
   );
 ```
@@ -701,7 +714,7 @@ Output
 
 ```mmd
 railroad-ebnf-beta
-  r = "", '' " 	 " "%%literal --- <b> plain";
+  r = "", "" " " "%%literal --- <b> plain";
 ```
 
 Input (escaped): `"railroad-abnf-beta\nr=\"q\\n\\t\\q\";"`.
@@ -724,7 +737,7 @@ Output
 
 ```mmd
 railroad-peg-beta
-  r <- "" '' " 	 " "%%literal --- <b> plain";
+  r <- "" "" " " "%%literal --- <b> plain";
 ```
 
 ### Long lines
@@ -898,7 +911,7 @@ Output
 
 ```mmd
 railroad-ebnf-beta
-  r ::=
+  r =
     ("joined", other) - "except"+
     | ["tail"];
 ```
@@ -999,11 +1012,16 @@ last";
 
 Use the shared common-line layout: trim ordinary exterior whitespace around a
 nonempty value and print `title value`; null or whitespace-only values print
-bare `title`. Keep quote-looking content, escape spelling and internal
-whitespace. Do not read a value from the next physical line. A bare title prefix
-followed by a rule becomes two statements, keeping the rule out of the title.
-The comparison Db omits body titles, which gives no permission to rewrite their
-contents.
+bare `title`. Keep quote-looking content and escape spelling, and print a run of
+spaces and tabs inside the value as one space. Do not read a value from the next
+physical line. A bare title prefix followed by a rule becomes two statements,
+keeping the rule out of the title. The comparison Db omits body titles, which
+gives no permission to rewrite their contents. The directives that end a title
+are printed with one space before each that has whitespace before it, and the
+whitespace after the last one is left out, whatever the whitespace at the end of
+the line (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: title/title-directives-end-blanks-dropped]
 
 [fixture: railroad/title/abnf-next-line]
 
@@ -1103,8 +1121,16 @@ railroad-peg-beta
 Shared common-line spacing prints `accTitle: value` and `accDescr: value`, with
 the colon attached to the keyword and one ordinary space before a nonempty
 value. Empty values end at the colon. Trim only exterior value whitespace,
-retaining internal text and brace-looking line values. Keep next-line values
-separate. This gives the same compact, readable form as the other diagrams.
+retaining internal text and brace-looking line values, except that a run of
+spaces and tabs inside the value of an `accDescr` is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+and that of an `accTitle` stays as written, since the browser shows it as a
+tooltip. Keep next-line values separate. This gives the same compact, readable
+form as the other diagrams. The directives that end the value are printed with
+one space before each that has whitespace before it, and the whitespace after
+the last one is left out (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: railroad/accessibility-lines/abnf-empty]
 
@@ -1428,13 +1454,14 @@ railroad-peg-beta
 ### Global directives
 
 Print every Root directive from its source span once at its owner position.
-Outside ordinary IR call gaps, keep whether each side touches or is separated
-within a printed line. When formatting splits units that were on the same line,
-a directive in their gap moves with the following unit: its right boundary stays
-touching or separated, while its left contact is broken. Use one body step for
-ordinary standalone directives. Do not format their contents as JSON or collect
-them before the header. Uniform added spaces can change strings, repeat
-components, numeric values and predicate operands after common removal.
+Outside ordinary IR call gaps, place a directive within a printed line as under
+[Directives](./flowchart.md#directives). When formatting splits units that were
+on the same line, a directive in their gap moves with the following unit: its
+right boundary stays touching or separated, while its left contact is broken.
+Use one body step for ordinary standalone directives. Do not format their
+contents as JSON or collect them before the header. Uniform added spaces can
+change strings, repeat components, numeric values and predicate operands after
+common removal.
 
 Ordinary IR call gaps use the same outside spacing and structural placement as
 comments. A directive stays beside its argument and makes a quoted leaf call
@@ -1471,7 +1498,7 @@ Output
 
 ```mmd
 railroad-beta
-  r%%{wrap}%% = %%{wrap}%%terminal("a%%{wrap}%%last");
+  r %%{wrap}%%= %%{wrap}%%terminal("a%%{wrap}%%last");
 ```
 
 Input (escaped): `"railroad-ebnf-beta\nr = %%{wrap}%% \"global\";"`.
@@ -1481,7 +1508,7 @@ Output
 
 ```mmd
 railroad-ebnf-beta
-  r = %%{wrap}%% "global";
+  r = %%{wrap}%%"global";
 ```
 
 Input (escaped):
@@ -1492,7 +1519,7 @@ Output
 
 ```mmd
 railroad-abnf-beta
-  r = 2%%{wrap}%%*%%{wrap}%%4 %%{wrap}%% "global" %x4%%{wrap}%%1;
+  r = 2%%{wrap}%%*%%{wrap}%%4%%{wrap}%%"global" %x4%%{wrap}%%1;
 ```
 
 Input (escaped): `"railroad-peg-beta\nr <- &%%{wrap}%% \"global\";"`.
@@ -1502,7 +1529,7 @@ Output
 
 ```mmd
 railroad-peg-beta
-  r <- &%%{wrap}%% "global";
+  r <- &%%{wrap}%%"global";
 ```
 
 ### Hidden forms
@@ -2900,7 +2927,7 @@ ABNF terminators.
 
 [corpus fixture: railroad/ebnf-tail-comment]
 
-[corpus fixture: railroad/abnf-tail-comment]
+[corpus fixture: railroad/abnf-tail-percent-comment]
 
 [corpus fixture: railroad/peg-tail-comment]
 

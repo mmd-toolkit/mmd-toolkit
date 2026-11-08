@@ -19,7 +19,7 @@ describe("a user journey in a Markdown code block", () => {
         "# Title\n\n```mermaid\njourney\ntitle   T\nsection S\nMake tea:5:Me,You\n```\n",
       ),
     ).toBe(
-      "# Title\n\n```mermaid\njourney\n  title   T\n  section S\n    Make tea: 5: Me, You\n```\n",
+      "# Title\n\n```mermaid\njourney\n  title T\n  section S\n    Make tea: 5: Me, You\n```\n",
     )
   })
 

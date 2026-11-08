@@ -74,14 +74,14 @@ export default [
 
 ## 例
 
-次の図の `style C fill:red` は、何にもスタイルを当てません。
+次の図の `style C fill: red` は、何にもスタイルを当てません。
 mermaid.js はこの文を受け入れ、`C` という新しい頂点を足します。
 `A` と `B` のスタイルは変わりません。
 
 ```mmd
 flowchart LR
   A --> B
-  style C fill:red
+  style C fill: red
 ```
 
 `recommended` の設定が有効にする `@mmd-toolkit/flowchart-no-undef` が、

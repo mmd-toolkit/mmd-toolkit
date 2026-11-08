@@ -413,11 +413,20 @@ journey
 
 ### タイトルとセクション
 
-`title` と `section` は、値を、
-両端の空白も含めて書かれたまま印字します（Db が持ちます）。
-キーワードの後の区切りは、書かれた文字によらず空白 1 つです。
+`title` は、キーワードの後に、書かれた空白によらず空白 1 つを置きます。
 区切りの形を 1 つにするためで、Gantt 図と同じです。
-[fixture: titles-and-sections/value-whitespace-kept]
+値は、先頭と末尾の空白を除いて印字します。
+Db はその空白を持ちますが、図では描かれません。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+`title   My trip  ` は `title My trip` と印字します。
+`section` の名前は、先頭と末尾の空白も含めて書かれたまま印字します。
+その空白で名前が異なる 2 つのセクションは別々に描かれ、
+除くとそうならないからです。
+半角空白とタブだけのタイトルは、書かれたままにします。
+[fixture: titles-and-sections/title-padding-dropped]
+[fixture: titles-and-sections/title-blank-kept]
+[fixture: titles-and-sections/section-padding-kept]
+[fixture: titles-and-sections/title-trailing-dropped-section-kept]
 [fixture: titles-and-sections/one-space-after-keyword]
 後の行に書かれた値は、キーワードの後に寄せて 1 行にします。
 間にコメント行があれば、
@@ -427,11 +436,14 @@ journey
 値は `:`、`%`、`%%` を文字として含み、`#` で終わります。
 [fixture: titles-and-sections/special-characters-in-values]
 [fixture: titles-and-sections/value-ends-at-hash]
-その `#` の前の空白は値の一部で、残ります。
-[fixture: titles-and-sections/whitespace-before-hash-is-the-value]
+その `#` の前の空白は値の一部です。
+`title` では、タイトルのほかの末尾の空白と同じく除き、
+`#` の前に空白 1 つを置きます。
+`section` では残します。
+[fixture: titles-and-sections/title-hash-gap-one-space-section-kept]
 キーワードと値の間のディレクティブは、
 その位置に残します（[ディレクティブ](#ディレクティブ)を参照）。
-[fixture: titles-and-sections/directive-between-keyword-and-value-kept]
+[fixture: titles-and-sections/directive-between-keyword-and-value]
 
 入力
 ([titles-and-sections/special-characters-in-values-input.mmd](../tests/fixtures/journey/titles-and-sections/special-characters-in-values-input.mmd)):
@@ -473,14 +485,15 @@ journey
 
 ### キーワードの大文字小文字
 
-キーワードは書かれた大文字小文字を保ちます。
+キーワード `section` と `title` は、mermaid.js の文書の例のとおり、
+小文字で印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
 mermaid.js はどの大文字小文字でも読み、Db は同じです。
-大文字小文字は強制されないので、作者が選んだものとして、書き換えません。
-[fixture: keyword-case/keywords-kept]
+[fixture: keyword-case/keywords-one-form]
 ヘッダーの `journey` は小文字だけが検出されます。
 
 入力
-([keyword-case/keywords-kept-input.mmd](../tests/fixtures/journey/keyword-case/keywords-kept-input.mmd)):
+([keyword-case/keywords-one-form-input.mmd](../tests/fixtures/journey/keyword-case/keywords-one-form-input.mmd)):
 
 ```mmd
 journey
@@ -492,12 +505,12 @@ ACCDESCR { d }
 ```
 
 出力
-([keyword-case/keywords-kept-output.mmd](../tests/fixtures/journey/keyword-case/keywords-kept-output.mmd)):
+([keyword-case/keywords-one-form-output.mmd](../tests/fixtures/journey/keyword-case/keywords-one-form-output.mmd)):
 
 ```mmd
 journey
-  TITLE T
-  Section S
+  title T
+  section S
     ACCTITLE: T
     AccDescr: d
     ACCDESCR { d }
@@ -528,8 +541,10 @@ Mermaid が説明から LF 後の字下げを除くためです。
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-text-on-opening-line]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
-テキストの中の空白はテキストの一部で、残ります。
-[fixture: accessibility-statements/block-inner-whitespace-kept]
+テキストの中の空白とタブの連なりは、空白 1 つで印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+[fixture: accessibility-statements/block-inner-runs-collapsed]
+[fixture: accessibility-statements/accessibility-lines-runs-collapsed]
 キーワードとコロンや括弧の間と、その後のディレクティブはその位置に残します。
 [fixture: accessibility-statements/directive-around-colon-and-braces-kept]
 
@@ -641,11 +656,17 @@ mermaid.js が複数行にわたって読む文は、
 `title`、`section`、`accTitle:`、`accDescr:` の後と、
 `accTitle` と `accDescr` の `:` の前後が該当します。
 タスクは複数行に書かれることがありません。
+[fixture: multi-line-statements/breaks-decided-one-by-one]
 [fixture: multi-line-statements/value-on-next-line-joined]
 `accTitle` と `accDescr:` の文では、trivia の改行を保ち、
 section の下でも後続の構造部分と独立した trivia 行を文より 1 段深くそろえます。
 各 gap の最初の行の末尾と、指令の内部全体を保ちます。
-`;` のある行と、物理行を結ぶコメント領域は元の配置を保ちます。
+物理行を結ぶコメント領域は、元の配置を保ちます。
+`;` があるだけでは、複数行に書かれた文をつなぐ妨げにはなりません。
+journey では文の区切りに `;` を使えず、
+そのような文の最初の行にはキーワードしかないので、行をつないでも、
+行の規則が無視する `;` は変わりません。
+[fixture: multi-line-statements/semicolon-value-joined]
 [fixture: multi-line-statements/accessibility-trivia-continuations]
 
 title と section では、値の空白が Db の一部なので、
@@ -836,8 +857,9 @@ journey # c
 ### ディレクティブ
 
 単独の行のディレクティブは、その次の文と同じ段に置きます。
-同じ印字行の中では、両側の空白の有無を残します。
-空白がある所には空白 1 つを置き、接している所は接したままにします。
+同じ印字行の中では、flowchart と同じく、
+隙間をディレクティブがないものとして印字し、
+ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
 [fixture: directives/kept] [fixture: directives/levels-around-sections]
 [fixture: directives/before-header]
 [fixture: directives/after-header-on-same-line]
@@ -851,10 +873,10 @@ journey # c
 
 [fixture: journey/directives/split-directive-gap]
 
-文の単位の間の指令は元の gap に残し、同じ行の両側の接触・分離を保ちます。
+文の単位の間の指令は元の gap に残し、
+[ディレクティブ](#ディレクティブ)のとおりに置きます。
 構造部分の続きの列は[複数行の文](#複数行の文)に従います。
-値の中の指令は、そのテキストの一部です。
-[fixture: directives/between-units-kept]
+値の中の指令は、そのテキストの一部です。 [fixture: directives/between-units]
 [fixture: directives/inside-values-kept] [fixture: directives/over-lines-kept]
 閉じられていないディレクティブはテキストの残りを取り、書かれたまま残します。
 [fixture: directives/unclosed-at-end-of-text-kept]
@@ -887,7 +909,7 @@ journey
 ```
 
 入力
-([directives/between-units-kept-input.mmd](../tests/fixtures/journey/directives/between-units-kept-input.mmd)):
+([directives/between-units-input.mmd](../tests/fixtures/journey/directives/between-units-input.mmd)):
 
 ```mmd
 journey
@@ -897,12 +919,12 @@ C: 5%%{init: {}}%%: Me
 ```
 
 出力
-([directives/between-units-kept-output.mmd](../tests/fixtures/journey/directives/between-units-kept-output.mmd)):
+([directives/between-units-output.mmd](../tests/fixtures/journey/directives/between-units-output.mmd)):
 
 ```mmd
 journey
   A %%{init: {}}%%: 5
-  B:%%{init: {}}%% 5
+  B: %%{init: {}}%%5
   C: 5%%{init: {}}%%: Me
 ```
 
@@ -983,6 +1005,9 @@ U+2028 と U+2029 は、journey の単位の間の空白であり、
 [test: U+2028 after a title keyword] [test: U+2029 inside a title]
 [test: U+2028 at the end of a section]
 [test: U+2028 after the colon of accTitle]
+タイトルの末尾では、U+2028 と U+2029 は空白やタブではなくテキストの文字なので、
+その後の空白はタイトル末尾のほかの空白と一緒に除き、前の空白は残します。
+[test: U+2028 and spaces at the end of a journey title]
 
 ### 空白の文字
 

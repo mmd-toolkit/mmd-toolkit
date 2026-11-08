@@ -278,8 +278,11 @@ block-beta
 
 ### ヘッダー
 
-ヘッダー `block-beta` と `block` は書かれたままに印字します。
-mermaid.js はどちらも同じ図種として読むので、綴りは書き手のものです。
+ヘッダーの `block-beta` と `block` は、書かれたまま印字します。
+mermaid.js 12.3.0 はどちらも同じ図種として読みますが、
+mermaid.js 11.9.0 は `block-beta` だけを検出するので、
+綴りは作者の選択だからです。
+（[ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)を参照）。
 前の空白は落とし、同じ行の後ろの文は自分の行に移します（[行](#行)を参照）。
 [fixture: header/block-beta-kept] [fixture: header/block-kept]
 [fixture: header/statement-after-the-header-on-a-line-of-its-own]
@@ -301,6 +304,27 @@ c
 block-beta
   a b
   c
+```
+
+### Keyword case
+
+block 図が語をキーワードとして読むのは、小文字のときだけです。
+`COLUMNS`、`SPACE`、`STYLE`、`CLASSDEF` はキーワードではなく id なので、
+書かれたまま残します。
+ヘッダーは例外です（[ヘッダー](#ヘッダー)を参照）。
+[fixture: keyword-case/keywords-kept]
+
+Input (escaped): `"block-beta\nCOLUMNS 2\nSPACE\nSTYLE A\nCLASSDEF c"`.
+
+出力
+([keyword-case/keywords-kept-output.mmd](../tests/fixtures/block/keyword-case/keywords-kept-output.mmd)):
+
+```mmd
+block-beta
+  COLUMNS 2
+  SPACE
+  STYLE A
+  CLASSDEF c
 ```
 
 ### columns と space
@@ -417,9 +441,12 @@ U+2028 と U+2029 はそのまま残します。 [fixture: shapes/block-arrow-co
 [fixture: shapes/block-arrow-with-a-width]
 
 ラベルは文字列で、文法の引用符の間にあり、
-中の空白と改行を含めて書かれたまま印字します。
+中の改行を含めて書かれたまま印字しますが、中の空白とタブの連なりは、
+空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 引用符は構文の一部です。
-mermaid.js は引用符のないラベルを拒否します。 [fixture: shapes/label-as-written]
+mermaid.js は引用符のないラベルを拒否します。
+[fixture: shapes/label-runs-collapsed]
 
 入力
 ([shapes/shape-touches-the-id-input.mmd](../tests/fixtures/block/shapes/shape-touches-the-id-input.mmd)):
@@ -466,7 +493,7 @@ block-beta
 ```
 
 入力
-([shapes/label-as-written-input.mmd](../tests/fixtures/block/shapes/label-as-written-input.mmd)):
+([shapes/label-runs-collapsed-input.mmd](../tests/fixtures/block/shapes/label-runs-collapsed-input.mmd)):
 
 ```mmd
 block-beta
@@ -476,11 +503,11 @@ B["a
 ```
 
 出力
-([shapes/label-as-written-output.mmd](../tests/fixtures/block/shapes/label-as-written-output.mmd)):
+([shapes/label-runs-collapsed-output.mmd](../tests/fixtures/block/shapes/label-runs-collapsed-output.mmd)):
 
 ```mmd
 block-beta
-  A["  two  spaces  "]
+  A[" two spaces "]
   B["a
    b"]
 ```
@@ -551,9 +578,9 @@ block-beta
 空白 1 つを置きます。
 キーワードの後と最初のスタイルの前の空白は Db に入らないので、
 空白 1 つにします。
-その後は、
-[スタイル文の末尾のセミコロン](#スタイル文の末尾のセミコロン)
-で削除する終端を除き、書かれたまま印字します。
+`classDef` と `style` のスタイルは下の空白の規則に従い、
+`class` の値は書かれたまま印字します。
+終端は[スタイル文の末尾のセミコロン](#スタイル文の末尾のセミコロン)に従います。
 `style` と `class` の空白は Db に入ります。
 `style A fill:#f00 , stroke:#333` のスタイルは、
 `fill:#f00 ` と ` stroke:#333` で、`class A, B c1` は ` B` を空白つきで探し、
@@ -561,20 +588,63 @@ block-beta
 `class A c   d` のクラス名は `c   d` で、
 `class A , B   c1` のクラス名は `, B   c1` です。
 `A` の後の空白が id を終わらせるからです。
-`classDef` の空白は Db に入りませんが、スタイルは同じに書かれたまま印字します。
-flowchart
-と同じ規則で（[トークンの間の空白](./flowchart.ja.md#トークンの間の空白)
-を参照）、3 つの文を 1 つの規則にし、
-印字がスタイルの並びを分けないようにするためです。
+`classDef` 文と `style` 文では、各スタイルの最初の `:` の前に空白を置かず、
+値が空でなければ、後ろに空白を 1 つ置きます。
+スタイルを区切る `,` は、ER と requirement と同じく、
+[スタイルとクラス](./er.ja.md#スタイルとクラス)のとおり、前に空白を置かず、
+後ろに空白を 1 つ置きます。
+`classDef c fill:#f00 , color:white` は、
+`classDef c fill: #f00, color: white` になります。
+`style` 文のスタイルも、同じ形で印字します。
+値の中の語と語の間の空白は、書かれたまま残します。
+Db は変わりますが、mermaid.js が描く図は同じです。
+詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+を参照してください。 [fixture: styles/style-colon-spaced]
+ここではバックスラッシュは `,` をエスケープしません。
+`fill:a\,b ,stroke:c` は `fill: a\, b, stroke: c` と印字します。
+バックスラッシュの後で `:` の前にある空白は、
+除くと `:` がエスケープされるので残します。
+[fixture: styles/style-backslash-before-comma]
+[fixture: styles/style-colon-escaped-space-kept]
+最後のスタイルがバックスラッシュで終わる `style` は、
+その後に空白があるかないかを保ち、空白の連続は最初の 1 文字にします。
+文末でも同じです。
+block arrow と group の形が、スタイルを書かれたまま `;` でつないで、
+`style` 属性へ入れ、バックスラッシュが `;` をエスケープするからです。
+（[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)）。
+`style A stroke-width:3px\ ,stroke:#0f0` は、
+`style A stroke-width: 3px\ , stroke: #0f0` と印字します。
+[fixture: styles/style-backslash-space-kept]
+[fixture: styles/style-backslash-at-end-kept]
+`classDef` は先に空白を取り除くので、1 つの形で印字します。
+[fixture: styles/class-def-backslash-space-dropped]
+`color:` か `text-align:` で始まるスタイルは、前に空白があるかないかを保ち、
+名前 `color` か `text-align` は、`:` との間に空白があるかないかを保ち、
+空白の連続は空白 1 つにします。
+mermaid.js がこのようなスタイルをノードのラベルのスタイルに入れ、
+block arrow がそれを書かれたまま使うからです。
+（[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)）。
+`style K fill:#ff0,color:red` は、`style K fill: #ff0,color: red` と印字し、
+`style K color :red` は `style K color : red` と印字します。
+[fixture: styles/style-label-styles-kept]
+コメントやディレクティブがある文、空白だけのスタイルがある文、
+スタイルに改行があるか、行に保つ `;` がある文は、書かれたままにします。
 文の最後の空白は、
 flowchart の [スタイルの行末の空白](./flowchart.ja.md#スタイルの行末の空白)
 と同じに落とします。 [fixture: styles/class-definition-spaces]
 [fixture: styles/style-spaces] [fixture: styles/class-spaces]
-[fixture: styles/style-commas-as-written]
-[fixture: styles/class-definition-commas-as-written]
+[fixture: styles/style-commas-spaced]
+[fixture: styles/class-definition-commas-spaced]
+[fixture: styles/class-definition-comma-spaced]
+[fixture: styles/class-definition-comma-beside-directive-kept]
+[fixture: styles/style-statement-commas-spaced]
+[test: U+2029 before the comma of a block classDef statement]
 [fixture: styles/class-ids-as-written]
-[fixture: styles/class-name-with-a-comma-as-written]
-[fixture: styles/class-name-as-written]
+`class` 文のクラス名は語として読むので、
+中の空白とタブの連なりは空白 1 つにして印字します。
+`class A c   d` は `class A c d` と印字します。
+[fixture: styles/class-name-with-a-comma-runs-collapsed]
+[fixture: styles/class-name-runs-collapsed]
 [fixture: styles/trailing-whitespace-dropped]
 [fixture: styles/styles-with-a-directive]
 
@@ -584,8 +654,7 @@ flowchart の [スタイルの行末の空白](./flowchart.ja.md#スタイルの
 最初のスタイルが空白だけのとき、たとえば `classDef c ,fill:#f00` では、
 Db の最初のスタイルは空で、`,` の前の空白はどのスタイルにも属しません。
 そのためスタイルは最初の `,` から始まるものとして扱い、
-その空白は 1 つの空白にし、
-`,` とそれ以降はほかのスタイルと同じく書かれたとおりに出力します。
+その空白は 1 つの空白にし、`,` とそれ以降は書かれたとおりに出力します。
 [fixture: styles/styles-with-a-leading-comma]
 [corpus fixture: block/db-class-def-leading-comma]
 
@@ -604,7 +673,7 @@ classDef   c1    color:#fff , fill:#000
 ```mmd
 block-beta
   A
-  classDef c1 color:#fff , fill:#000
+  classDef c1 color: #fff, fill: #000
 ```
 
 入力
@@ -622,7 +691,7 @@ style  A   fill:#f00 , stroke:#333
 ```mmd
 block-beta
   A
-  style A fill:#f00 , stroke:#333
+  style A fill: #f00, stroke: #333
 ```
 
 入力
@@ -694,10 +763,10 @@ U+2028 と U+2029 の前も同じように保護します。
 ```mmd
 block
   A
-  classDef c fill:#f00
-  style A fill:#f00
-  classDef d fill:#0f0,stroke:#00f
-  style A fill:#0f0,stroke:#00f
+  classDef c fill: #f00
+  style A fill: #f00
+  classDef d fill: #0f0, stroke: #00f
+  style A fill: #0f0, stroke: #00f
 ```
 
 ### 複数行の文
@@ -719,11 +788,16 @@ block-arrow の方向は、`,` の後の空白を除いて原文のままです�
 物理行を結ぶコメント領域は、元の配置を保ちます。
 [test: block: ls-comment-in-composite-head]
 [test: block: ps-comment-in-composite-head]
-保持する `;` を含む文も、行の規則があるので、
-書かれたまま残します（[行](#行)を参照。
-[`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)も参照）。
+改行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
+その改行を残します。
+それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
+改行が残る文は、スタイルも書かれたままにします。
+[行](#行)と
+[`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)を参照してください。
 mermaid.js の行の規則は、`style` か `classDef`、その後の `:`、その後の、
 `:` との間に空白のない `#`、その後の `;` を持つ行の、最後の `;` を取り除きます。
+この条件に合う最初の `#` で決まるので、`B[":#a;#b"]` も該当します。
 そのような行から文を動かすと、
 どの `;` が最後かが変わるので（`A["style:#a"] B;C D;` で取り除かれるのは `D;` の
 `;` で、id は `B;C` です。`D;` のない行では、`B;C` の `;` が取り除かれます）、
@@ -733,6 +807,7 @@ mermaid.js の行の規則は、`style` か `classDef`、その後の `:`、そ�
 `:` と `#` の間の空白も、規則が効くかどうかを決めるので、そのままです。
 `A["style:"]-->B["#z"];` は矢印が接したままで、
 矢印の周りに空白があると規則は効かず、`;` はそれだけの id になります。
+[fixture: multi-line-statements/breaks-decided-one-by-one]
 [fixture: multi-line-statements/columns-over-lines-joined]
 [fixture: multi-line-statements/edge-over-lines-joined]
 [fixture: multi-line-statements/shape-over-lines-joined]
@@ -740,7 +815,8 @@ mermaid.js の行の規則は、`style` か `classDef`、その後の `:`、そ�
 [fixture: multi-line-statements/continuation-line-joined-in-a-row]
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
-[fixture: multi-line-statements/semicolon-in-the-statement-kept]
+`;` があるだけでは、行をつなぐ妨げにはなりません。
+[fixture: multi-line-statements/semicolon-in-the-statement-joined]
 [fixture: multi-line-statements/line-rule-line-kept]
 [fixture: multi-line-statements/line-rule-line-kept-with-columns]
 [fixture: multi-line-statements/line-rule-line-kept-with-composite]
@@ -752,6 +828,7 @@ mermaid.js の行の規則は、`style` か `classDef`、その後の `:`、そ�
 [fixture: multi-line-statements/semicolon-id-statement-on-its-own-line]
 [fixture: multi-line-statements/line-rule-semicolon-after-touching-arrow-kept]
 [fixture: multi-line-statements/line-rule-semicolon-after-an-id-kept]
+[fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
 [fixture: multi-line-statements/semicolon-after-spaced-arrow-is-an-id]
 
 ### コメント
@@ -822,11 +899,10 @@ block-beta
 ### 指令
 
 指令は元の単位の間に残します。
-同じ印字行の中では、両側の空白の有無を保ちます。
-空白が書かれていれば空白 1 つ、接していれば接したままです。
-mermaid.js は読む前に指令を取り除くので、文の内部では、指令の隣が接しているか、
-離れているかを保ちます（[ディレクティブ](./journey.ja.md#ディレクティブ)
-を参照）。
+同じ印字行の中では、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
+隙間をディレクティブがないものとして印字し、
+ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
 単独の行にある指令は、後ろの文と同じ段に置き、ヘッダーより前の指令は、
 コメント行と同じに 1 列目に置きます。
 [fixture: directives/directive-before-the-header]
@@ -866,7 +942,7 @@ a %%{init: {}}%% b
 
 ```mmd
 block-beta
-  a %%{init: {}}%% b
+  a %%{init: {}}%%b
 ```
 
 入力

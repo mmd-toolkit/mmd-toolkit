@@ -38,7 +38,7 @@ mermaid.js はそこで説明のブロックを閉じ、
 %% eslint @mmd-toolkit/er-no-unclosed-description-block: error
 erDiagram
   accDescr { x
-  A {
+    A {
     string name
   }
   B

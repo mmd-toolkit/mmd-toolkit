@@ -101,8 +101,9 @@ pie 固有の選択であり、
 [Mermaid の pie の例](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/pie.md#L68-L73)
 の綴りに従います。
 両方の引用符と空ラベルにも適用します。
-directive のある gap は各側の接触の有無を保持し、
-hidden form は物理的な境界も保持します。
+directive のある gap は、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
+hidden form は物理的な境界を保持します。
 これらは区切りを供給しないためです。
 
 固定例: [fixture: pie/sections/section-colon]
@@ -119,23 +120,27 @@ hidden form は物理的な境界も保持します。
 ```mmd
 pie
   "Wide" : 12
-  'Narrow' : 3
+  "Narrow" : 3
   "" : 1
 ```
 
 ### Labels
 
 XY chart の[引用符](./xychart.ja.md#引用符)を再利用します。
-引用符と原文は著者の選択なので、引用符を含む範囲全体を保ちます。
-引用符の種類、逆側の引用符、escape の綴り、空・空白だけのラベル、
+原文は著者の選択なので、引用符を含む範囲全体を保ちます。
+escape は decode せず、空・空白だけのラベル、
 entity・HTML・hidden に見える percent の文字列を残します。
-`singleQuote` でも書き換えません。
+`'` で囲まれた文字列は、内容に `'`、`"`、バックスラッシュ、改行、U+2028、
+U+2029、バッククォート、`&`、`#`、`<` がある場合を除き、`"` で囲んで印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
+`singleQuote` は読みません。
 変換後に衝突するラベルも別の出現として残します。
 解決後の Map は原文ではないためです。
 
-固定例: [fixture: pie/labels/label-quotes] [fixture: pie/labels/label-escapes]
+固定例: [fixture: pie/labels/single-quote-sensitive-kept]
+[fixture: pie/labels/label-quotes] [fixture: pie/labels/label-escapes]
 [fixture: pie/labels/label-inner-trim-kept]
-[fixture: pie/labels/label-quote-authored]
+[fixture: pie/labels/label-quote-one-form]
 [fixture: pie/labels/label-hidden-looking] [fixture: pie/labels/div-c4-label]
 [fixture: pie/labels/div-c4-eof] [test: pie/labels/div-bare-unicode]
 [test: pie/labels/div-retained-bare-unicode]
@@ -152,20 +157,24 @@ entity・HTML・hidden に見える percent の文字列を残します。
 
 ```mmd
 pie
-  ' single  label ' : 3
+  " single  label " : 3
   " double  label " : 4
-  '' : 2
+  "" : 2
 ```
 
 ### Numbers
 
 XY chart の[数](./xychart.ja.md#数)を再利用します。
-変換後の double ではなく NumericLiteral の原文を印字します。
-負のゼロ、小数の先頭ゼロ、末尾ゼロ、長い精度、ゼロや小さい slice を残します。
+普通の十進表記の NumericLiteral は最短の形で印字し、`1.50` は `1.5`、
+`2.0` は `2` にします。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
+その他は、変換後の double ではなく原文の範囲を印字します。
+負のゼロ、整数部の先頭のゼロ、長い精度、ゼロや小さい slice を残します。
 overflow と符号付き underflow は corpus の受理された読みを使い、
 不正な綴りや負の重複値は解析失敗のままです。
 
-固定例: [fixture: pie/numbers/number-spellings]
+固定例: [fixture: pie/numbers/shortest-form] [fixture: pie/numbers/forms-kept]
+[fixture: pie/numbers/number-spellings]
 [fixture: pie/numbers/number-normalize-authored]
 [fixture: pie/numbers/number-zero-small]
 
@@ -192,11 +201,16 @@ C4 の[アクセシビリティの行](./c4.ja.md#アクセシビリティの行
 共通値の同等な外側空白を1つの形にします。
 `title` の後は空白1つと両端を除いた空でない値にし、
 null・空・空白だけなら `title` だけにします。
-内部の語、tab、引用符、backslash、
-重複代入と frontmatter への fallback は残します。
+値の中の空白とタブの連なりは、空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+引用符、backslash、重複代入と frontmatter への fallback は残します。
 pie は次の物理行を title に結合しません。
 空行・コメント・directive を挟んでも次の区分は別文です。
 保持する trivia とセミコロンの group を優先します。
+題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: title/title-directives-end-blanks-dropped]
 
 固定例: [fixture: pie/title/title-trim] [fixture: pie/title/title-empty]
 [fixture: pie/title/title-next-section] [fixture: pie/title/title-next-trivia]
@@ -210,7 +224,7 @@ pie は次の物理行を title に結合しません。
 
 ```mmd
 pie
-  title Sales  report
+  title Sales report
   "Sales" : 8
 ```
 
@@ -221,11 +235,19 @@ C4 の[アクセシビリティの行](./c4.ja.md#アクセシビリティの行
 外側空白を簡潔にするため、コロンを語に付け、
 両端を除いた空でない値の前を空白1つにします。
 空なら `accTitle:` または `accDescr:` で終えます。
-内部の tab・引用符・行形式の波括弧は文字として残し、
+`accDescr` の値の中の空白とタブの連なりは空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+`accTitle` はブラウザがツールチップとして表示するので、
+その連なりは書かれたまま残します。
+引用符・行形式の波括弧は文字として残し、
 重複代入と percent コメントの接続も保ちます。
 pie の行形式は物理的な EOL で終わるため、
 空行・コメント・directive を挟んでも次行の値を結合しません。
 hidden form と保持する文字 group の gap を残します。
+値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 固定例: [fixture: pie/accessibility-lines/a11y-lines]
 [fixture: pie/accessibility-lines/a11y-empty]
@@ -247,7 +269,7 @@ hidden form と保持する文字 group の gap を残します。
 ```mmd
 pie
   accTitle: Title  words
-  accDescr: Description  text
+  accDescr: Description text
   "Line" : 1
 ```
 
@@ -484,21 +506,32 @@ pie
 
 ### Directives and semicolons
 
-[ディレクティブ](./flowchart.ja.md#ディレクティブ)と C4
-の[行規則とセミコロン](./c4.ja.md#行規則とセミコロン)を再利用します。
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)を再利用します。
 共通の削除は区切りを供給せず、セミコロンの選択は原文の区間を読むためです。
 単位の間の位置、複数行の内部、EOF までの末尾を保持します。
-同じ印字行の中では、両側の接触・分離を保ちます。
+同じ印字行の中のディレクティブは、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 元は同じ行にあった単位を別の行へ分けるときは、
 間の directive を次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
-最初の空白以外の文字から最後のセミコロンまでを保護し、
-交差する値・コメント・directive の全体まで広げます。
+保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
+ほかの場所と同じように整形します。
+この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
+`style` か `classDef` の後の最初の `:` から、
+最後の保つ `;` の前の最後の `#` までに空白がない並びを読みます。
+その範囲の隙間と余白は空白の有無を保ち、空白の連続は空白 1 つにします。
+範囲の外は、この図種の通常の規則に従います。
+どの部分の配置も持たないテキストは、書かれたまま残します。
+複数行にわたる文の行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
+書かれたまま残します。
+それ以外の複数行の文は、1 行の文と同じように整形します。
+[fixture: directives-and-semicolons/stretch-kept-rest-formatted]
+[fixture: directives-and-semicolons/no-stretch-formatted]
 保護した header/body を分割しません。
 全セミコロン、style/classDef の両段階、大小文字と colon-hash の空白の区別、
 Unicode の区間境界、directive が再結合する trigger、
 コメント内のセミコロンを残します。
-安全な外側と後続の gap だけ整えます。
 語・数値の内部の切断は指定の解析失敗です。
 
 [fixture: pie/directives-and-semicolons/native-label-value]
@@ -520,7 +553,7 @@ Unicode の区間境界、directive が再結合する trigger、
 [test: pie/directives-and-semicolons/selected-ls-segments]
 [fixture: pie/directives-and-semicolons/global-joined-trigger]
 [fixture: pie/directives-and-semicolons/global-header-first-statement]
-[fixture: pie/directives-and-semicolons/global-gap-side-presence]
+[fixture: pie/directives-and-semicolons/global-gap-sides]
 [fixture: pie/directives-and-semicolons/global-value-boundaries]
 [fixture: pie/directives-and-semicolons/selected-one-three-padding]
 [fixture: pie/directives-and-semicolons/selected-comment-semicolon]
@@ -651,7 +684,7 @@ pie
   "2" : 4
   "__proto__" : 5
   "constructor" : 6
-  '10' : 8
+  "10" : 8
   "a\n" : 1
   "a
 " : 7

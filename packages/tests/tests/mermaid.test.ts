@@ -455,7 +455,7 @@ describe("data block effects", () => {
 })
 
 describe("flowchart summary", () => {
-  it("drops the whitespace at the end of style values, and only there", async () => {
+  it("keeps the whitespace at the end of style values, and only there", async () => {
     const outcome = await runMermaid(
       "flowchart LR\n  A --> B\n  style A fill:#f00 , stroke:#333\t\n  classDef c fill:#f00\u3000\n  linkStyle 0 stroke:#f00 , fill:red \n  linkStyle default stroke:#f00\u00a0\n",
     )
@@ -471,12 +471,12 @@ describe("flowchart summary", () => {
       edges: { style: string[] }[]
       edgeDefaults: { style: string[] }
     }
-    expect(summarized[0]?.styles).toEqual(["fill:#f00", " stroke:#333"])
-    expect(classDefs[0]?.styles).toEqual(["fill:#f00"])
+    expect(summarized[0]?.styles).toEqual(["fill:#f00 ", " stroke:#333\t"])
+    expect(classDefs[0]?.styles).toEqual(["fill:#f00\u3000"])
     // The leading space keeps " fill:red" from counting as a fill, so mermaid
     // adds `fill:none`.
-    expect(edges[0]?.style).toEqual(["stroke:#f00", " fill:red", "fill:none"])
-    expect(edgeDefaults.style).toEqual(["stroke:#f00"])
+    expect(edges[0]?.style).toEqual(["stroke:#f00 ", " fill:red ", "fill:none"])
+    expect(edgeDefaults.style).toEqual(["stroke:#f00\u00a0"])
   })
 
   it("keeps class definitions without the derived textStyles", async () => {
@@ -725,13 +725,13 @@ describe("class summary", () => {
     ])
   })
 
-  it("drops the whitespace at the end of style values", async () => {
+  it("keeps the whitespace at the end of style values", async () => {
     const db = await summary(
       "classDiagram\n  class B\n  style B fill:#0f0 , stroke:#333 \n",
     )
     expect((db.classes as { styles: string[] }[])[0]?.styles).toEqual([
-      "fill:#0f0",
-      " stroke:#333",
+      "fill:#0f0 ",
+      " stroke:#333 ",
     ])
   })
 

@@ -221,10 +221,12 @@ since the Db keeps it. [fixture: attribute-spacing/keys-comma-space] [fixture:
 attribute-spacing/keys-case-kept] A comment stands after one space, also where
 it was written touching its name or its keys. [fixture:
 attribute-spacing/comment-one-space] The text of a type or a name is kept as
-written: the whitespace inside a tilde word or a backquoted word is part of the
-type, and so is the text of a comment. [fixture:
-attribute-spacing/tilde-word-kept] [fixture:
-attribute-spacing/backquoted-word-kept]
+written, except that a run of spaces and tabs inside a tilde word or a
+backquoted word is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+and the text of a comment is kept. [fixture:
+attribute-spacing/tilde-word-runs-collapsed] [fixture:
+attribute-spacing/backquoted-word-runs-collapsed]
 
 An attribute written over several lines is printed on one, since the attribute
 block is read without regard to line breaks. [fixture:
@@ -236,9 +238,10 @@ attribute, also in a subgraph; type, name and quoted-comment interiors stay as
 written. [fixture: attribute-spacing/comment-line-inside-kept] [fixture:
 attribute-spacing/directive-inside-kept] [fixture:
 attribute-spacing/comment-continuation-with-multiline-value] [fixture:
-attribute-spacing/directive-continuation-tabs] Semicolon-sensitive lines and
-comment regions that join physical lines retain their original layout. [fixture:
-attribute-spacing/semicolon-continuation-kept] [test:
+attribute-spacing/directive-continuation-tabs] Semicolons alone do not prevent
+alignment of a continuation. [fixture:
+attribute-spacing/semicolon-continuation-aligned] Comment regions that join
+physical lines retain their original layout. [test:
 er/attribute-spacing/comment-region-continuation-kept] A directive between the
 parts of an attribute retains its contacts within a printed line, and a
 directive on a line of its own between two attributes stays between them. A
@@ -532,10 +535,16 @@ erDiagram
 Within a line, a run of spaces and tabs between two tokens becomes one space,
 and tokens that touch keep touching, unless a rule below says otherwise.
 [fixture: whitespace-between-tokens/collapsed] [fixture:
-whitespace-between-tokens/touching-kept] Keywords keep the case in which they
-are written. mermaid.js reads them in any case, so the case is the author's and
-the printer does not rewrite it; the keys of an attribute keep it in the Db.
-[fixture: whitespace-between-tokens/keyword-case-kept]
+whitespace-between-tokens/touching-kept] A keyword of the table under
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
+is printed in the case shown there (`SUBGRAPH` is `subgraph`, and `END` is
+`end`). Any other keyword keeps the case in which it is written (`CLASS`,
+`CLASSDEF`, and `STYLE`: see
+[Keywords in one case](./compatibility.md#keywords-in-one-case)), and so do the
+keys of an attribute, which the Db keeps. The words of a relationship are
+printed as symbols (see [Relationship spacing](#relationship-spacing)).
+[fixture: whitespace-between-tokens/keyword-case-one-form] [fixture:
+relationship-spacing/cardinality-words-case-one-form]
 
 Input
 ([whitespace-between-tokens/touching-kept-input.mmd](../tests/fixtures/er/whitespace-between-tokens/touching-kept-input.mmd)):
@@ -558,11 +567,11 @@ erDiagram
   p[P]
   accDescr { D }
   A ||--u-B : x
-  1one to one B : x
+  1 ||--|| B : x
 ```
 
 Input
-([whitespace-between-tokens/keyword-case-kept-input.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-kept-input.mmd)):
+([whitespace-between-tokens/keyword-case-one-form-input.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-one-form-input.mmd)):
 
 ```mmd
 erDiagram
@@ -583,21 +592,21 @@ int a PK
 ```
 
 Output
-([whitespace-between-tokens/keyword-case-kept-output.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-kept-output.mmd)):
+([whitespace-between-tokens/keyword-case-one-form-output.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-one-form-output.mmd)):
 
 ```mmd
 erDiagram
-  SUBGRAPH S
+  subgraph S
     A
-  END
+  end
   CLASSDEF a fill: red
   CLASS A a
   STYLE A fill: red
-  DIRECTION lr
+  direction LR
   ACCTITLE: T
   ACCDESCR: D
   ACCDESCR { D }
-  A ONE OR MORE TO MANY B : x
+  A }|--o{ B : x
   A {
     int a PK
   }
@@ -616,42 +625,51 @@ relationship-spacing/role-forms] [corpus fixture: er/lex-relationship-no-spaces]
 `:::` and the `,` between them. [fixture:
 relationship-spacing/names-and-classes]
 
-The three units of the relationship, the cardinality on each side and the line
-between them, touch each other where both are written with symbols, and are
-separated by one space where either is written with a word, since the examples
-in the documentation of mermaid.js write symbols touching and words apart, and
-one rule keeps both: `A || -- o{ B` is printed `A ||--o{ B`, and
-`A ||--only one B` is printed `A ||-- only one B`. [fixture:
-relationship-spacing/symbols-touch] [fixture: relationship-spacing/words-spaced]
-[fixture: relationship-spacing/symbols-and-words] [corpus fixture:
-er/lex-relationship-spaces-in-spec] `many(0)`, `many(1)`, `1+`, `0+`, and `u`
-count as symbols: a space inside `many(0)` is rejected. [corpus fixture:
-er/lex-many-space-before-parenthesis] The spelling of a cardinality is kept,
-symbols or words, in the case in which it is written: it is the author's choice,
-and a symbol has several words that read the same, so no spelling stands for
-another. [fixture: relationship-spacing/words-spaced]
+The cardinalities and the line of a relationship are printed as symbols,
+whatever words or symbols were written: mermaid.js reads `only one`,
+`zero or more`, `many(0)`, `to`, and the other words as the symbols `||`, `}o`,
+`o{`, and `--`, and the examples in its documentation write the symbols 84 times
+and the words and the other forms 6 times (see
+[The relationships of an ER diagram](./compatibility.md#the-relationships-of-an-er-diagram)).
+[fixture: relationship-spacing/words-to-symbols] [fixture:
+relationship-spacing/cardinality-words-case-one-form] [fixture:
+relationship-spacing/words-spaced] The three units of the relationship, the
+cardinality on each side and the line between them, touch each other, since the
+examples write symbols touching: `A || -- o{ B` is printed `A ||--o{ B`, and
+`A ||--only one B` is printed `A ||--|| B`. [fixture:
+relationship-spacing/symbols-touch] [fixture:
+relationship-spacing/symbols-and-words] [corpus fixture:
+er/lex-relationship-spaces-in-spec] `u` counts as a symbol and stays as written,
+and a space inside `many(0)` is rejected. A symbol written on the other side is
+printed as the symbol of its side: `o|` on the left is `|o`. [fixture:
+relationship-spacing/symbols-on-the-other-side] [corpus fixture:
+er/lex-many-space-before-parenthesis] A relationship with a directive between
+its units keeps the words that were written. [fixture:
+relationship-spacing/directive-between-word-units-kept]
 
-Three cases keep the whitespace as it is written, since another one would make
+Three cases need care, since another whitespace or spelling would make
 mermaid.js read other units. A right cardinality `u`, which is `md-parent` only
 right before the name, touches the right entity. [fixture:
 relationship-spacing/md-parent] [corpus fixture:
-er/lex-md-parent-right-glued-name] The entity `1` touches a cardinality that
-starts with a letter, a digit, or `_` where it was written so, since `1`
-followed by one or more whitespace characters, line feeds included, and an ASCII
-letter, `_`, `"`, `'`, or an ASCII digit is the cardinality `only-one`
-(diagrams/er.md, The cardinalities, numbers, and relationship lines, rule 11).
+er/lex-md-parent-right-glued-name] The entity `1` touches a cardinality that is
+printed starting with a letter, a digit, or `_`, since `1` followed by one or
+more whitespace characters, line feeds included, and an ASCII letter, `_`, `"`,
+`'`, or an ASCII digit is the cardinality `only-one` (diagrams/er.md, The
+cardinalities, numbers, and relationship lines, rule 11); a word that is printed
+as a symbol has a space before it: `1one to one B` is printed `1 ||--|| B`.
 [fixture: relationship-spacing/number-name-before-unit-kept] [corpus fixture:
-er/lex-one-space-letter] And the entity `only` keeps the whitespace before a
+er/lex-one-space-letter] And the entity `only` stays an entity before a
 cardinality that starts with `one`: `only one` with exactly one space is the
 cardinality `only one` (rule 9), while a keyword of several words has exactly
 one space between its words, so two spaces or a tab make `only` an entity
-(diagrams/er.md, The statement context, keywords and what follows them).
-[fixture: relationship-spacing/entity-only-before-one-kept] [corpus fixture:
+(diagrams/er.md, The statement context, keywords and what follows them), and the
+cardinality is printed as its symbol: `only  one to one B` is printed
+`only ||--|| B`. [fixture: relationship-spacing/entity-only-before-one-kept]
+[fixture: relationship-spacing/entity-only-before-cardinality] [corpus fixture:
 er/lex-only-one-two-spaces] A directive between the units of a relationship
-stays where it is and keeps whether whitespace was written on each side of it, a
-run of whitespace becoming one space. [fixture:
-relationship-spacing/directive-between-units-kept] [fixture:
-relationship-spacing/directive-between-units-runs-collapsed]
+stays where it is and is placed as under [Directives](#directives). [fixture:
+relationship-spacing/directive-between-units] [fixture:
+relationship-spacing/directive-between-units-runs]
 
 Input
 ([relationship-spacing/symbols-and-words-input.mmd](../tests/fixtures/er/relationship-spacing/symbols-and-words-input.mmd)):
@@ -673,14 +691,14 @@ Output
 
 ```mmd
 erDiagram
-  A one or more --|{ B : x
-  A one or more --|{ B : x
-  A ||-- only one B : x
-  A ||-- only one B : x
-  A || to || B : x
-  A || to || B : x
-  A 1 to 1 B : x
-  A many(0) to one B : x
+  A }|--|{ B : x
+  A }|--|{ B : x
+  A ||--|| B : x
+  A ||--|| B : x
+  A ||--|| B : x
+  A ||--|| B : x
+  A ||--|| B : x
+  A }o--|| B : x
 ```
 
 Input
@@ -724,11 +742,11 @@ Output
 
 ```mmd
 erDiagram
-  A one or more to zero or more B : x
-  A only one to one B : x
-  A zero or one optionally to one or zero B : x
-  A ONE OR MORE TO MANY B : x
-  A many to one B : x
+  A }|--o{ B : x
+  A ||--|| B : x
+  A |o..o| B : x
+  A }|--o{ B : x
+  A }o--|| B : x
 ```
 
 ### Entities
@@ -741,10 +759,9 @@ and are separated by a `,` that touches the classes on both sides:
 [fixture: entities/alias-and-classes] The `{` of an attribute block stands after
 one space (see [Attribute blocks](#attribute-blocks)). The names are kept as
 written, quoted or not, numbers included. [fixture: entities/names-kept] A
-directive between the parts of an entity keeps whether whitespace was written on
-each side of it, a run of whitespace becoming one space. [fixture:
-entities/directive-between-parts-kept] [fixture:
-entities/directive-between-parts-runs-collapsed]
+directive between the parts of an entity is placed as under
+[Directives](#directives). [fixture: entities/directive-between-parts] [fixture:
+entities/directive-between-parts-runs]
 
 Input
 ([entities/alias-tight-input.mmd](../tests/fixtures/er/entities/alias-tight-input.mmd)):
@@ -808,18 +825,20 @@ mermaid.js joins them with one space. [fixture: subgraphs/header-spacing]
 [fixture: subgraphs/title-touches-name] [fixture: subgraphs/title-names-spaced]
 [fixture: subgraphs/quoted-and-number-ids] The statements of the body stand one
 level deeper, and `end` stands on a line of its own at the level of the
-subgraph, in the case in which it is written; a statement that follows the `end`
-on its line stands on the line after it. [fixture:
-subgraphs/end-on-the-line-of-a-statement] [fixture: subgraphs/end-case-kept]
+subgraph, printed `end` in any case; in the body, the keyword of a `class`,
+`classDef`, or `style` statement stays as written, as it does outside a
+subgraph, and mermaid.js lists it as a node of the subgraph as written.
+[fixture: subgraphs/statement-keywords-case-kept] A statement that follows the
+`end` on its line stands on the line after it. [fixture:
+subgraphs/end-on-the-line-of-a-statement] [fixture: subgraphs/end-case-one-form]
 [fixture: subgraphs/entity-after-end] A subgraph without statements is printed
 with its `end` on the next line. [fixture: subgraphs/empty]
 
-A directive between the name and the `[` keeps whether whitespace was written on
-each side of it, a run of whitespace becoming one space, as under
-[Directives](#directives). [fixture: subgraphs/title-beside-directive-kept]
-[fixture: subgraphs/title-beside-directive-runs-collapsed] A U+2028 or U+2029
-there stays as written. [test: U+2028 between an ER subgraph name and its title]
-[test: U+2029 between an ER subgraph name and its title]
+A directive between the name and the `[` is placed as under
+[Directives](#directives). [fixture: subgraphs/title-beside-directive] [fixture:
+subgraphs/title-beside-directive-runs] A U+2028 or U+2029 there stays as
+written. [test: U+2028 between an ER subgraph name and its title] [test: U+2029
+between an ER subgraph name and its title]
 
 Empty description blocks that follow the name or the title on the line of the
 header are the first statements of the body, and stay on the line of the header,
@@ -899,10 +918,12 @@ erDiagram
 A direction line is `direction` and its value, with the text that mermaid.js
 does not read before and after them. The text is kept as written. One space
 stands between it and `direction`, where they were written apart, and between
-`direction` and the value; the value is kept in the case in which it is written,
-since the case is the author's. [fixture: direction/spacing] [fixture:
-direction/text-kept] [fixture: direction/case-kept] A value written on a later
-line is printed after `direction` on one line. [fixture:
+`direction` and the value; the value is printed in upper case (`lr` is `LR`), as
+the examples in the documentation of mermaid.js write it (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+[fixture: direction/spacing] [fixture: direction/text-kept] [fixture:
+direction/case-one-form] [fixture: direction/case-bt-rl-one-form] A value
+written on a later line is printed after `direction` on one line. [fixture:
 direction/value-on-next-line-joined] [corpus fixture:
 er/lex-direction-value-next-line] A direction line with a directive or comment
 keeps its line breaks and indents structural continuations one level deeper.
@@ -933,7 +954,7 @@ erDiagram
 ```
 
 Input
-([direction/case-kept-input.mmd](../tests/fixtures/er/direction/case-kept-input.mmd)):
+([direction/case-one-form-input.mmd](../tests/fixtures/er/direction/case-one-form-input.mmd)):
 
 ```mmd
 erDiagram
@@ -942,12 +963,12 @@ Direction Tb
 ```
 
 Output
-([direction/case-kept-output.mmd](../tests/fixtures/er/direction/case-kept-output.mmd)):
+([direction/case-one-form-output.mmd](../tests/fixtures/er/direction/case-one-form-output.mmd)):
 
 ```mmd
 erDiagram
-  DIRECTION lr
-  Direction Tb
+  direction LR
+  direction TB
 ```
 
 ### Styles and classes
@@ -963,14 +984,17 @@ becomes `fill: navy, stroke: black`, while `stroke-dasharray:  5    5` keeps the
 four spaces between its values. A header or exterior line break that ordinarily
 joins does not delay this spacing until another formatting. Style interiors
 containing line separators, owned trivia, and statements with a kept semicolon
-on their physical line retain the existing style layout. Keyword case stays
-written. [fixture: styles-and-classes/style-unit-padding] [fixture:
+on their physical line retain the existing style layout. The keywords `style`
+and `classDef` keep the case in which they are written (see
+[Keywords in one case](./compatibility.md#keywords-in-one-case)). [fixture:
+styles-and-classes/style-unit-padding] [fixture:
 styles-and-classes/class-def-names] [fixture: styles-and-classes/style-names]
 [fixture: styles-and-classes/class-lists] [fixture:
 styles-and-classes/styles-as-written] [fixture:
 styles-and-classes/style-inner-whitespace-kept]
 
-[fixture: styles-and-classes/keyword-case-kept]
+[fixture: styles-and-classes/keyword-case-kept] [fixture:
+styles-and-classes/keyword-case-semicolon-line-kept]
 
 A `classDef` or `style` statement written over lines, with whitespace after a
 keyword or a name that takes the line break, is printed on one line. [fixture:
@@ -1298,23 +1322,22 @@ erDiagram
 ### Directives
 
 A directive on a line of its own stands at the level of the statements around
-it, and a directive within a printed line keeps whether whitespace is written on
-each side of it: where it is, one space stands there, and where it touches a
-token, it keeps touching. [fixture: directives/kept] [fixture:
+it, and a directive within a printed line is placed as in a flowchart: the gap
+is printed as without the directive, and the directive stands after its space
+and touches the unit that follows it. [fixture: directives/kept] [fixture:
 directives/before-header] [fixture: directives/after-header-on-same-line]
 [fixture: directives/after-header-touching-kept] [fixture:
-directives/whitespace-on-both-sides-collapsed] [fixture:
-directives/touching-one-side-kept] [fixture:
-directives/after-statement-at-end-of-line] [fixture: directives/in-blocks] A
-directive that is not closed takes the rest of the text, and is kept as written.
-[fixture: directives/unclosed-at-end-of-text-kept] [fixture:
-directives/unclosed-after-statement-kept]
+directives/whitespace-on-both-sides] [fixture: directives/touching-one-side]
+[fixture: directives/after-statement-at-end-of-line] [fixture:
+directives/in-blocks] A directive that is not closed takes the rest of the text,
+and is kept as written. [fixture: directives/unclosed-at-end-of-text-kept]
+[fixture: directives/unclosed-after-statement-kept]
 
 When formatting splits units that were on the same line, a directive in their
 gap moves with the following unit. Keep its right-side contact or separation;
 break its left contact.
 
-[fixture: er/directives/whitespace-on-both-sides-collapsed]
+[fixture: er/directives/whitespace-on-both-sides]
 
 Input
 ([directives/kept-input.mmd](../tests/fixtures/er/directives/kept-input.mmd)):
@@ -1339,7 +1362,7 @@ erDiagram
 ```
 
 Input
-([directives/touching-one-side-kept-input.mmd](../tests/fixtures/er/directives/touching-one-side-kept-input.mmd)):
+([directives/touching-one-side-input.mmd](../tests/fixtures/er/directives/touching-one-side-input.mmd)):
 
 ```mmd
 erDiagram
@@ -1348,7 +1371,7 @@ A||--o{ %%{init: {}}%%B : y
 ```
 
 Output
-([directives/touching-one-side-kept-output.mmd](../tests/fixtures/er/directives/touching-one-side-kept-output.mmd)):
+([directives/touching-one-side-output.mmd](../tests/fixtures/er/directives/touching-one-side-output.mmd)):
 
 ```mmd
 erDiagram
@@ -1357,7 +1380,7 @@ erDiagram
 ```
 
 Input
-([directives/whitespace-on-both-sides-collapsed-input.mmd](../tests/fixtures/er/directives/whitespace-on-both-sides-collapsed-input.mmd)):
+([directives/whitespace-on-both-sides-input.mmd](../tests/fixtures/er/directives/whitespace-on-both-sides-input.mmd)):
 
 ```mmd
 erDiagram
@@ -1366,11 +1389,11 @@ C  %%{init: {}}%%  D
 ```
 
 Output
-([directives/whitespace-on-both-sides-collapsed-output.mmd](../tests/fixtures/er/directives/whitespace-on-both-sides-collapsed-output.mmd)):
+([directives/whitespace-on-both-sides-output.mmd](../tests/fixtures/er/directives/whitespace-on-both-sides-output.mmd)):
 
 ```mmd
 erDiagram
-  A %%{init: {}}%% ||--o{ B : x
+  A %%{init: {}}%%||--o{ B : x
   C
   %%{init: {}}%% D
 ```
@@ -1556,13 +1579,19 @@ A statement that mermaid.js reads over several lines is printed on one line
 where the line break is whitespace to the lexer: after the `:` of `accTitle` and
 `accDescr`, between `direction` and its value, and in a `classDef` or `style`
 statement after whitespace. [fixture:
+multi-line-statements/breaks-decided-one-by-one] [fixture:
+multi-line-statements/line-rule-first-hash-after-colon-kept] [fixture:
 multi-line-statements/accessibility-text-joined] [fixture:
 multi-line-statements/direction-value-joined] [fixture:
 multi-line-statements/style-over-lines-joined] A statement with a comment or
 directive keeps its line breaks; structural continuations and intervening trivia
 stand one level deeper. Whitespace inside values and before the first line break
-of each gap stays unchanged. Joining regions and semicolon line protections keep
-the whole statement as written. [fixture:
+of each gap stays unchanged. Joining regions keep the whole statement as
+written. A line break stays where joining it, with one space or with nothing,
+could change which `;` the line rule ignores, and where a `;` ends the last
+line; any other line break is joined as usual, also in a statement that holds a
+`;`. A statement that keeps a line break keeps its styles as written. [fixture:
+multi-line-statements/semicolon-joining-changes-kept] [fixture:
 multi-line-statements/style-comment-continuation] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept]

@@ -14,6 +14,7 @@ import { printAsWritten, significantIndentationOf } from "./lines.ts"
 import type { Source } from "./source.ts"
 import { findTokenStartingAt } from "./source.ts"
 import {
+  findTreemapPrintedEnd,
   layoutTreemapStatement,
   treemapLines,
   treemapStatementRange,
@@ -133,7 +134,7 @@ export function printTreemap(
       relocatedWhitespace,
       indentsOnlyCommentLines: true,
       extraIndentationOf: (line) => placements.get(line)!.indentation,
-      printedEnd: (line) => line.range[1],
+      printedEnd: (line) => findTreemapPrintedEnd(source, line),
       holdsStatements: () => false,
       isDroppedAtTopLevel: () => false,
       joiningRegionsPrintedAsWritten: true,

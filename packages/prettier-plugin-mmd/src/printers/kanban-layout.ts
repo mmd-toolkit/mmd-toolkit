@@ -15,13 +15,21 @@ import {
 import type { LeadingDirectives } from "./indentation-lines.ts"
 import type { AtomLayout } from "./atoms.ts"
 import { expectToken, keptAsWritten } from "./layout.ts"
+import { keptWithDirectiveEnd } from "./statement-rules.ts"
 import { printAsWritten } from "./lines.ts"
+import {
+  isPlainLine,
+  printPaddedLiteral,
+  printShapeWithoutPadding,
+  trimBlanksEnd,
+} from "./padded-text.ts"
 import type { Source } from "./source.ts"
 import {
   findFirstIndex,
   findTokenStartingAt,
   findTriviaBetween,
   isCommentLine,
+  isSpaceOrTab,
   isWhitespace,
 } from "./source.ts"
 
@@ -37,6 +45,8 @@ export const kanbanValueNodeTypes: ReadonlySet<Node["type"]> = new Set([
  * its indentation (docs/kanban.md, Indentation).
  */
 export interface KanbanLine {
+  /** The node, icon line, or class line that the line prints. */
+  readonly node: KanbanNode | KanbanIconStatement | KanbanClassStatement
   readonly range: Range
   /**
    * The step of its indentation: 1 for a section, 2 for an item, and that of
@@ -121,6 +131,7 @@ export function kanbanLines(source: Source): readonly KanbanLine[] {
     )
     if (directives.length === 0) {
       return {
+        node,
         range: [node.range[0], end],
         depth,
         separatorWidth,
@@ -132,6 +143,7 @@ export function kanbanLines(source: Source): readonly KanbanLine[] {
     while (content < node.range[0] && isWhitespace(source.text[content]))
       content++
     return {
+      node,
       range: [content, lineEnd],
       depth,
       separatorWidth,
@@ -143,37 +155,95 @@ export function kanbanLines(source: Source): readonly KanbanLine[] {
 
 /**
  * Every character inside a node, decoration, or opaque suffix is retained,
- * except the spaces and tabs between the `:::` of a class line with no
- * directive and the first other character of its class: the class text is only
- * a class name for the rendering, so ` hot` and `hot` name the same class
- * (docs/kanban.md, Icons and classes). A class of only whitespace stays as
- * written.
+ * except the spaces and tabs at the ends of the text of a class line with no
+ * directive, between the `:::` and the first other character of its class and
+ * after the last: the class text is only a class name for the rendering, so
+ * ` hot ` and `hot` name the same class (docs/kanban.md, Icons and classes). A
+ * class of only whitespace is printed as one space. The spaces and tabs at the
+ * ends of the text of a card, of the text of its shape, and of an icon go too
+ * (see `printKanbanText`).
  */
 export function layoutKanbanLine(source: Source, line: KanbanLine): AtomLayout {
   const start = line.leading?.textStart ?? line.range[0]
   const { cssClass } = line
-  if (cssClass === null) return keptAsWritten(start, line.range[1])
-  let textStart = cssClass.range[0]
-  while (
-    textStart < cssClass.range[1] &&
-    (source.text[textStart] === " " || source.text[textStart] === "\t")
-  )
+  if (cssClass === null) {
+    const printed = printKanbanText(source, line)
+    if (printed === undefined) {
+      // The id of a column is read with the whitespace at its end, which the
+      // figure depends on (see `printKanbanText`), so only a card prints the
+      // end of its text.
+      return line.depth === 2
+        ? keptWithDirectiveEnd(source, start, line.range[1])
+        : keptAsWritten(start, line.range[1])
+    }
+    return {
+      atoms: [{ start, end: line.range[1], doc: printed }],
+      rules: new Map(),
+      outdented: new Set(),
+      lineBreaks: "kept",
+    }
+  }
+  let [textStart, textEnd] = cssClass.range
+  while (textStart < textEnd && isSpaceOrTab(source.text[textStart]))
     textStart++
-  if (textStart === cssClass.range[0] || textStart === cssClass.range[1]) {
-    return keptAsWritten(start, line.range[1])
+  while (textEnd > textStart && isSpaceOrTab(source.text[textEnd - 1]))
+    textEnd--
+  if (textStart === cssClass.range[0] && textEnd === cssClass.range[1]) {
+    return keptWithDirectiveEnd(source, start, line.range[1])
+  }
+  if (textStart === textEnd) {
+    // A class of spaces and tabs only is printed as one space: the grammar
+    // rejects an empty class (docs/kanban.md, Icons and classes).
+    return source.text.slice(...cssClass.range) === " "
+      ? keptAsWritten(start, line.range[1])
+      : {
+          atoms: [{ start, end: line.range[1], doc: [":::", " "] }],
+          rules: new Map(),
+          outdented: new Set(),
+          lineBreaks: "kept",
+        }
   }
   return {
     atoms: [
       {
         start,
         end: line.range[1],
-        doc: [":::", printAsWritten(source, textStart, line.range[1])],
+        doc: [":::", printAsWritten(source, textStart, textEnd)],
       },
     ],
     rules: new Map(),
     outdented: new Set(),
     lineBreaks: "kept",
   }
+}
+
+/**
+ * The text of a line of a card, a column, or an icon without the spaces and
+ * tabs at the ends of its texts, which mermaid.js keeps in the Db and draws
+ * without (docs/compatibility.md, Mindmap texts that are drawn the same);
+ * undefined where the line stays as written: a line that starts with a
+ * directive, one over lines or with a comment or a directive in it or after it,
+ * a node with a data block, and the texts that `printShapeWithoutPadding` and
+ * `printPaddedLiteral` leave. The text of a column before its shape stays as
+ * written, with the space before the shape: mermaid.js tells two columns apart
+ * by it, so `todo [A]` and `todo[B]` are two columns, and not once the space is
+ * gone.
+ */
+function printKanbanText(source: Source, line: KanbanLine): string | undefined {
+  const { node } = line
+  if (line.leading !== null || !isPlainLine(source, ...line.range))
+    return undefined
+  if (node.type === "KanbanIconStatement")
+    return printPaddedLiteral(source, node.range, node.icon.range)
+  if (node.type === "KanbanClassStatement" || node.data.length > 0)
+    return undefined
+  const { id, shape } = node
+  const written = id === null ? "" : source.text.slice(...id.range)
+  const head = line.depth === 2 ? trimBlanksEnd(written) : written
+  if (shape === null) {
+    return line.depth === 2 && head !== "" ? head : undefined
+  }
+  return head + printShapeWithoutPadding(source, shape)
 }
 
 /**

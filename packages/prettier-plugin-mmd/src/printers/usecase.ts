@@ -11,7 +11,7 @@ import {
   printClosedBlock,
   printDiagramBlock,
 } from "./blocks.ts"
-import { keptSemicolonPrefixEnd, semicolonSegmentEnd } from "./kept-lines.ts"
+import { semicolonSegmentEnd } from "./kept-lines.ts"
 import { expectToken, layoutKeywordHeader } from "./layout.ts"
 import { indentationOf } from "./lines.ts"
 import type { Source } from "./source.ts"
@@ -21,6 +21,7 @@ import {
   classifyUsecaseStatement,
   layoutUsecaseStatement,
   usecaseBoundaryHeaderEnd,
+  findUsecasePrintedEnd,
 } from "./usecase-layout.ts"
 
 /** Prints the authored usecase tree using ordinary structural indentation. */
@@ -79,13 +80,12 @@ function printStatements(
 ): PrintedBlock {
   const rules: BlockRules<UsecaseStatement> = {
     kept: findUsecaseKeptLines(source),
-    printedEnd: (statement) => statement.range[1],
+    printedEnd: (statement) => findUsecasePrintedEnd(source, statement),
     holdsStatements: (statement) =>
       classifyUsecaseStatement(statement).kind === "boundary",
     isDroppedAtTopLevel: () => false,
     keepsWhitespaceLineAfterComment: false,
     keepsDirectiveLinesUnindented: false,
-    keptInlineGapEnd: (start) => keptSemicolonPrefixEnd(source, start),
     diagramLineEnd: (offset) => semicolonSegmentEnd(source, offset),
     keepsTrailingWhitespaceInKeptTrivia: true,
   }

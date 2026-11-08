@@ -79,12 +79,59 @@ Correctness is defined by the pinned mermaid.js.
    each token and comment equals the input at its range. Whitespace and line
    terminators are not nodes; with the source text and the ranges, the input is
    reproduced byte for byte.
-4. Formatting is idempotent and does not change the Db, except for the limited
-   ASCII space margin changes to eventmodeling block bodies defined in
-   [Data blocks](packages/prettier-plugin-mmd/docs/eventmodeling.md#data-blocks)
-   and eligible state note paragraphs defined in
-   [Notes](packages/prettier-plugin-mmd/docs/state.md#notes). These exceptions
-   permit raw Db value differences only while preserving the rendering.
+4. Formatting is idempotent and does not change what mermaid.js draws: the SVG,
+   with the figure, the targets of links, the functions that a click calls and
+   their arguments, tooltips, and accessibility texts. Generated ids and
+   whitespace that the drawing ignores (around a CSS declaration, in a run of
+   HTML characters) are not compared. A way of writing that draws the same is
+   printed in one form; a way of writing that draws something else is kept as
+   written. For a gap, the form is the one that the other diagram types print
+   for the same kind of gap. For a spelling (the case of a keyword, the quotes
+   of a string, the digits of a number, the direction of a header), the form is
+   the one that the examples in the documentation of the pinned mermaid.js use
+   at least twice as often as any other; where no form is used that often, or
+   the examples use none, the spelling is kept as written. The check uses the
+   pinned mermaid.js only, while the formatted text is also drawn by other
+   versions of mermaid.js. So a spelling is also kept as written where the form
+   that would be printed is not accepted by every version that accepts the form
+   that was written, or is drawn differently by one of them: the name of a
+   header (`block-beta` and `block`), which the versions accept differently, the
+   colon after the header of a gitGraph, which older versions require, and the
+   direction of the header of a flowchart (`TB` and `TD`), which the versions
+   before 11.10.0 draw differently. The CHANGELOG.md of mermaid.js, or the
+   history of its grammar, shows which version added or changed a form. The
+   check is that formatting does not change the Db. A formatting that changes
+   the Db but not the drawing is an exception. Each kind of exception has a
+   section that defines it, with links to the code of the pinned mermaid.js that
+   shows why the drawing stays the same and the result of drawing both texts,
+   and the tests compare the Db with the differences of that kind restored, one
+   function for each kind, which
+   `packages/prettier-plugin-mmd/tests/db-comparison.ts` calls. When the pinned
+   mermaid.js is updated, each exception is checked again by drawing. The kinds
+   are:
+   - the limited ASCII space margin changes to eventmodeling block bodies,
+     defined in
+     [Data blocks](packages/prettier-plugin-mmd/docs/eventmodeling.md#data-blocks);
+   - the margin changes to eligible state note paragraphs, defined in
+     [Notes](packages/prettier-plugin-mmd/docs/state.md#notes);
+   - the whitespace around the first `:` and the `,` of styles, and at the end
+     of a style, defined in
+     [Styles that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#styles-that-are-drawn-the-same);
+   - the whitespace at the start and at the end of a title, of the date format
+     and the axis format of a Gantt chart, and of a description of a C4 diagram,
+     and at the end of the last event of a line of a timeline and of the second
+     description of an alias of a state diagram, defined in
+     [Texts after a keyword that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#texts-after-a-keyword-that-are-drawn-the-same);
+   - the runs of spaces and tabs inside the texts that mermaid.js draws without
+     them: titles, accessibility descriptions, and the labels of the diagram
+     types that draw them as SVG text, defined in
+     [Runs of whitespace in a text that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same);
+   - the whitespace around the arguments of a `click` call in flowchart,
+     agentflow, class, and Gantt diagrams, defined in
+     [Call arguments that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#call-arguments-that-are-drawn-the-same);
+   - the spaces and tabs at the ends of the texts of a mindmap node and of a
+     kanban card, defined in
+     [Mindmap texts that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#mindmap-texts-that-are-drawn-the-same).
 
 ## What each package is responsible for
 
@@ -150,6 +197,7 @@ same change.
 | Types of the tree (`src/ast.ts`, `src/ast/*.ts`) | ast             | parser, prettier-plugin, eslint-plugin          |
 | The parser API (`parse()`, errors, traversal)    | parser          | prettier-plugin, eslint-plugin, mmdfmt          |
 | The plugin and its language (`src/index.ts`)     | prettier-plugin | mmdfmt                                          |
+| The printed form of the rule documents' examples | prettier-plugin | eslint-plugin                                   |
 
 ## Principles
 

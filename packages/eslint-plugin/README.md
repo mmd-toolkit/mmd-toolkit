@@ -72,13 +72,13 @@ The `recommended` configuration does not enable the second rule.
 
 ## Example
 
-In this diagram, `style C fill:red` styles nothing: mermaid.js accepts the
+In this diagram, `style C fill: red` styles nothing: mermaid.js accepts the
 statement and adds a new vertex named `C`, and `A` and `B` stay unstyled.
 
 ```mmd
 flowchart LR
   A --> B
-  style C fill:red
+  style C fill: red
 ```
 
 ESLint reports it with `@mmd-toolkit/flowchart-no-undef`, which the

@@ -19,7 +19,8 @@ running Mermaid.
 
 The selected written `ishikawa` or `ishikawa-beta` header stands at column one,
 retaining its accepted case and stable/beta spelling. This makes the header easy
-to find without replacing an authored choice with a Db-equal spelling. [fixture:
+to find without replacing an authored choice with a Db-equal spelling (see
+[The names of a header](./compatibility.md#the-names-of-a-header)). [fixture:
 ishikawa/header/header-column] [fixture: ishikawa/header/header-stable]
 [fixture: ishikawa/header/header-case-alternative] [fixture:
 ishikawa/header/header-lowercase] [fixture: ishikawa/header/header-valid]
@@ -373,21 +374,29 @@ ishikawa
 
 ### Trailing whitespace
 
-Every trailing character of `IshikawaLiteral` stays as written on ordinary and
-kept lines alike: spaces, tabs, Unicode whitespace, whitespace after a colon and
-EOF padding are all part of the literal's value. The value is what the author
-wrote; Db equality does not require erasing a value, even though Mermaid trims
-it. This is the same written-value choice as mindmap. [fixture:
-ishikawa/trailing-whitespace/trailing-colon-kept] [fixture:
+The spaces and tabs at the end of an `IshikawaLiteral` are left out, on ordinary
+and kept lines alike, after a colon, and at the end of the input: Mermaid trims
+the literal, so the Db and the figure are the same without them. Any other
+whitespace character at the end, such as a no-break space, a byte order mark, a
+Unicode separator, or an ideographic space, stays as written. [fixture:
+ishikawa/trailing-whitespace/trailing-colon-dropped] [fixture:
 ishikawa/trailing-whitespace/trailing-kept-semicolon] [fixture:
-ishikawa/trailing-whitespace/trailing-value-kept] [fixture:
-ishikawa/trailing-whitespace/trailing-value-drop-alternative] [fixture:
+ishikawa/trailing-whitespace/trailing-value-dropped] [fixture:
 ishikawa/trailing-whitespace/unpadded-values] [test: ishikawa: trailing-nbsp]
 [test: ishikawa: trailing-unicode-separators] [test: ishikawa:
-trailing-unicode-kept-line] Internal whitespace, directive-side gaps and joined
-continuation columns stay too, as do comment spaces and directive contents.
-[fixture: ishikawa/trailing-whitespace/trailing-directive-continuation] Only
-exterior header-line padding is dropped under [Header](#header) and
+trailing-unicode-kept-line] A run of spaces and tabs inside a literal is printed
+as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+while joined continuation columns stay, as do comment spaces and directive
+contents. The directives that end a literal are printed with one space before
+each that has whitespace before it, and the whitespace after the last one is
+left out, with a run in the literal printed as one space, whether whitespace
+follows the last directive or not (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped] [fixture:
+ishikawa/trailing-whitespace/trailing-directive-gap-collapsed] [fixture:
+ishikawa/trailing-whitespace/trailing-directive-continuation] Only exterior
+header-line padding is dropped under [Header](#header) and
 [Blank lines](#blank-lines); it is not a literal value. [fixture:
 ishikawa/trailing-whitespace/trailing-header-div]
 
@@ -397,26 +406,27 @@ Input and output (escaped):
 [
   {
     "input": "ishikawa\nR: \n A:  ",
-    "output": "ishikawa\n  R: \n    A:  \n"
+    "output": "ishikawa\n  R:\n    A:\n"
   },
   {
     "input": "ishikawa\nR style:#abc;;   \n A",
-    "output": "ishikawa\n  R style:#abc;;   \n    A\n"
+    "output": "ishikawa\n  R style:#abc;;\n    A\n"
   },
   {
     "input": "ishikawa\nR   \n A\t  ",
-    "output": "ishikawa\n  R   \n    A\t  \n"
+    "output": "ishikawa\n  R\n    A\n"
   }
 ]
 ```
 
 ### Node text
 
-Node text keeps its written spelling, including trailing characters: quotes,
-backticks, empty-looking strings/brackets/calls, missing closers, numbers,
-punctuation, entities, HTML, prototype names and apparent
-title/accessibility/style/decoration/data syntax are literals. [fixture:
-ishikawa/node-text/values-opaque] [fixture:
+Node text keeps its written spelling, apart from the spaces and tabs at its end
+(see [Trailing whitespace](#trailing-whitespace)) and a run of spaces and tabs
+inside it, which is printed as one space: quotes, backticks, empty-looking
+strings/brackets/calls, missing closers, numbers, punctuation, entities, HTML,
+prototype names and apparent title/accessibility/style/decoration/data syntax
+are literals. [fixture: ishikawa/node-text/values-opaque] [fixture:
 ishikawa/node-text/values-quote-unsafe] [fixture:
 ishikawa/node-text/unquoted-root] [fixture:
 ishikawa/node-text/values-html-entities] No foreign token-spacing or value
@@ -473,8 +483,9 @@ ishikawa/line-rule-and-kept-lines/line-rule-delete-unsafe] [fixture:
 ishikawa/line-rule-and-kept-lines/line-rule-single-semicolon] The shared
 kept-stretch mechanism protects the prefix through the last semicolon, extending
 through whole crossing literals, comments and directives without duplicate
-tails; exterior indentation is printer whitespace, while literal trailing
-characters stay written. [fixture:
+tails; exterior indentation is printer whitespace, while the literal characters
+stay written, apart from the spaces and tabs at the end of a literal (see
+[Trailing whitespace](#trailing-whitespace)). [fixture:
 ishikawa/line-rule-and-kept-lines/line-rule-kept] [fixture:
 ishikawa/line-rule-and-kept-lines/line-rule-double-pass] [fixture:
 ishikawa/line-rule-and-kept-lines/line-rule-directive-trigger] [test: ishikawa:
@@ -587,24 +598,25 @@ Input and output (escaped):
 ### Line separators
 
 LS (`\u2028`) and PS (`\u2029`) inside literals and directives remain
-characters, including trailing literal whitespace. LF uses the
-[Physical lines](#physical-lines) rule and separates ordinary node lines.
-[fixture: ishikawa/line-separators/lf-root-and-cause] [fixture:
-ishikawa/line-separators/lf-sibling-causes] [test: ishikawa: ls-ps-values]
-[test: ishikawa: ls-value-split-unsafe] [test: ishikawa: ps-value-split-unsafe]
-[test: ishikawa: ls-ps-line-rule] Blank-only lines collapse, and leading
-separators normalize as indentation. [test: ishikawa: unicode-blank-lines]
-[corpus fixture: ishikawa/div-header-ls-line-node] [corpus fixture:
-ishikawa/div-header-ps-line-node] An actual diagram-comment ending keeps its
-separator, counting it once toward the next node's chosen depth and supplying
-only the remaining characters. Mermaid counts that separator as one character of
-the next node's indentation, so the printed total must be the node's chosen
-depth indentation: a shallower total makes the node a sibling of the previous
-cause instead of its child, which changes the Db. Keeping the separator, rather
-than replacing it with a line feed (which keeps the tree too), follows kanban's
-boundary-preserving choice and needs no separate policy that repairs Mermaid's
-comment/blank pairing. An LF comment ending instead starts a new line without
-contributing an indentation character. [fixture:
+characters, also at the end of a literal, where the spaces and tabs after one
+are left out and those before it stay. [test: ishikawa: spaces after a trailing
+line separator] LF uses the [Physical lines](#physical-lines) rule and separates
+ordinary node lines. [fixture: ishikawa/line-separators/lf-root-and-cause]
+[fixture: ishikawa/line-separators/lf-sibling-causes] [test: ishikawa:
+ls-ps-values] [test: ishikawa: ls-value-split-unsafe] [test: ishikawa:
+ps-value-split-unsafe] [test: ishikawa: ls-ps-line-rule] Blank-only lines
+collapse, and leading separators normalize as indentation. [test: ishikawa:
+unicode-blank-lines] [corpus fixture: ishikawa/div-header-ls-line-node] [corpus
+fixture: ishikawa/div-header-ps-line-node] An actual diagram-comment ending
+keeps its separator, counting it once toward the next node's chosen depth and
+supplying only the remaining characters. Mermaid counts that separator as one
+character of the next node's indentation, so the printed total must be the
+node's chosen depth indentation: a shallower total makes the node a sibling of
+the previous cause instead of its child, which changes the Db. Keeping the
+separator, rather than replacing it with a line feed (which keeps the tree too),
+follows kanban's boundary-preserving choice and needs no separate policy that
+repairs Mermaid's comment/blank pairing. An LF comment ending instead starts a
+new line without contributing an indentation character. [fixture:
 ishikawa/line-separators/lf-comment-boundary] [test: ishikawa:
 ls-comment-boundary] [test: ishikawa: kept-comment-ls-before] [test: ishikawa:
 kept-comment-ps-after] [test: ishikawa: selected-comment-ls-both] [test:
@@ -672,12 +684,12 @@ ishikawa/lex-nbsp-positions] [corpus fixture: ishikawa/lex-ogham-positions]
 ishikawa/lex-six-per-em-positions] [corpus fixture:
 ishikawa/lex-thin-space-positions] [corpus fixture:
 ishikawa/lex-three-per-em-positions] [corpus fixture: ishikawa/lex-vt-positions]
-[test: ishikawa: unicode-indentation] Internal and trailing literal characters
-stay as written values. NEL, zero-width space, NUL and supplementary text remain
-literal text. [test: ishikawa: unicode-value-kept] [test: ishikawa:
-nel-zero-width-text] File-leading BOM handling and BOM/frontmatter limitations
-are shared with Prettier, as described in compatibility. [test: ishikawa:
-leading-bom]
+[test: ishikawa: unicode-indentation] Internal literal characters, and the
+trailing ones that are no spaces or tabs, stay as written values. NEL,
+zero-width space, NUL and supplementary text remain literal text. [test:
+ishikawa: unicode-value-kept] [test: ishikawa: nel-zero-width-text] File-leading
+BOM handling and BOM/frontmatter limitations are shared with Prettier, as
+described in compatibility. [test: ishikawa: leading-bom]
 
 Input (escaped):
 
@@ -760,7 +772,7 @@ ishikawa/header-only-blank] [corpus fixture: ishikawa/header-only-lf] [fixture:
 ishikawa/final-newline/accepted-spaces-header] [fixture:
 ishikawa/final-newline/multiple-final-lf] Rejected bare headers gain no rescuing
 newline. Complete terminal diagram-comment gaps and open directives reaching EOF
-keep their endings; terminal literal padding stays written under Trailing
+keep their endings; terminal literal padding is left out under Trailing
 whitespace. [fixture: ishikawa/final-newline/final-comment] [corpus fixture:
 ishikawa/directive-open-root-eof] [fixture:
 ishikawa/final-newline/final-value-spaces]
@@ -788,12 +800,11 @@ diagram depth independent of its Markdown container, including tabs and
 zero-width options, while failed parsing declines the payload. [fixture:
 ishikawa/markdown-fences/markdown-top-payload] [fixture:
 ishikawa/markdown-fences/markdown-list-payload] For fences the plugin formats,
-the host strips final-line whitespace, so authored literal padding on that line
-can be lost despite [Trailing whitespace](#trailing-whitespace); Mermaid trims
-ordinary Ishikawa node text, making that host change Db-equal, but byte
-preservation is not promised. Other literal-line endings remain written in
-formatted fences. [fixture: ishikawa/markdown-fences/markdown-last-spaces]
-[fixture: ishikawa/markdown-fences/markdown-unpadded-payload]
+the host strips final-line whitespace, which the plugin leaves out of every
+literal too (see [Trailing whitespace](#trailing-whitespace)), so a literal on
+the final line ends the same way in both. [fixture:
+ishikawa/markdown-fences/markdown-last-spaces] [fixture:
+ishikawa/markdown-fences/markdown-unpadded-payload]
 
 Declined fences are ordinary code to the host, which removes trailing spaces and
 tabs from every line. [test: ishikawa Markdown:

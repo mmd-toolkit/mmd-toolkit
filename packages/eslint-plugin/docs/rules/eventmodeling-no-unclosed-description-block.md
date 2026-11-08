@@ -46,7 +46,7 @@ Examples of **incorrect** code for this rule:
 eventmodeling accDescr { first
   tf 01 ui Cart
   tf 02 cmd Buy { item }
-  tf 03 evt Bought
+tf 03 evt Bought
 ```
 
 Examples of **correct** code for this rule:
@@ -54,9 +54,9 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/eventmodeling-no-unclosed-description-block: error
 eventmodeling accDescr { first }
-  tf 01 ui Cart
-  tf 02 cmd Buy { item }
-  tf 03 evt Bought
+tf 01 ui Cart
+tf 02 cmd Buy { item }
+tf 03 evt Bought
 ```
 
 ```mmd
@@ -64,7 +64,7 @@ eventmodeling accDescr { first }
 eventmodeling accDescr {
   uses { here
 }
-  tf 01 cmd Buy { item }
+tf 01 cmd Buy { item }
 ```
 
 ## Options

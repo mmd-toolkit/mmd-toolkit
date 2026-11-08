@@ -125,19 +125,19 @@ export const treemapCases: readonly TreemapCase[] = [
   {
     name: "treemap/comments/comment-ls-semicolon-before",
     input: 'treemap\n"Root"\n "A":1%% c;\u2028 "B":2\n',
-    output: 'treemap\n  "Root"\n    "A":1%% c;\u2028 "B":2\n',
+    output: 'treemap\n  "Root"\n    "A": 1%% c;\u2028 "B":2\n',
     options: {},
   },
   {
     name: "treemap/comments/comment-ps-semicolon-after",
     input: 'treemap\n"Root"\n "A":1%% c\u2029 "B;y":2\n',
-    output: 'treemap\n  "Root"\n    "A":1%% c\u2029 "B;y":2\n',
+    output: 'treemap\n  "Root"\n    "A": 1%% c\u2029 "B;y":2\n',
     options: {},
   },
   {
     name: "treemap/comments/comment-ls-semicolon-both",
     input: 'treemap\n"Root"\n "A":1%% c;\u2028 "B;y":2\n',
-    output: 'treemap\n  "Root"\n    "A":1%% c;\u2028 "B;y":2\n',
+    output: 'treemap\n  "Root"\n    "A": 1%% c;\u2028 "B;y":2\n',
     options: {},
   },
 ]

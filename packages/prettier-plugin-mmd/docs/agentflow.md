@@ -30,15 +30,26 @@ syntax repair, and the specification already defines the exceptional readings.
 
 ### Header
 
-[Direction](./flowchart.md#direction) supplies the same column-one header and
-written-direction policy: the header is easy to find, and TD has one spelling
-policy in headers and bodies. Agentflow accepts only exact lower-case
-`agentflow-beta`. An absent direction stays absent, symbol directions stay
+[Direction](./flowchart.md#direction) supplies the same column-one header
+policy: the header is easy to find. Unlike the header of a flowchart, a header
+direction `TD` is printed `TB`, the direction that the examples in the
+documentation of mermaid.js use (10 times, and `TD` never; see
+[The direction of a header](./compatibility.md#the-direction-of-a-header)): the
+diagram type is later than the version of mermaid.js that made `TD` behave as
+`TB`, so every version that reads it draws the two the same (see
+[Versions of mermaid.js](./compatibility.md#versions-of-mermaidjs)). Agentflow
+accepts only exact lower-case `agentflow-beta`. An absent direction stays
+absent, symbol directions stay written, a direction that stands after a
+directive which follows the header (`agentflow-beta%%{init: {}}%% TD`) stays as
 written, and next-line LR remains a vertex. Ordinary header followers move into
 the body; directive attachment follows Directives. [fixture:
 header/header-column] [fixture: header/header-direction-spelling] [fixture:
 header/header-inline-separated] [fixture: header/header-next-line-direction]
-[fixture: header/header-symbol]
+[fixture: header/header-symbol] [fixture:
+header/header-direction-after-directive-kept] A symbol direction stands after
+one space, as in [flowchart](./flowchart.md#direction): `agentflow-beta<` is
+printed `agentflow-beta <`. [fixture: header/header-symbol-touching-spaced]
+[test: agentflow: U+2028 between the header keyword and its direction]
 
 Input (escaped): `"agentflow-beta"`. [fixture: header/header-only]
 
@@ -88,7 +99,20 @@ manufacture a name or data. Agentflow end/global consume only ASCII spaces/tabs;
 they do not absorb LF into a name. A semicolon after end is a separate
 EmptyStatement at the containing depth. [fixture: containers/containers-empty]
 [fixture: containers/containers-one-line] [fixture:
-containers/end-name-not-greedy] [fixture: containers/global-flatten-unsafe]
+containers/end-name-not-greedy] [fixture: containers/global-flatten-unsafe] A
+run of spaces and tabs in the title of a flow is printed as one space, except in
+a markdown string, in a flow with a data block (`F@{ view: "collapsed" }`; the
+id of a flow named by a string is the text between the quotes, without the
+whitespace at its ends, and for a markdown string the text between its
+backquotes: `flow "F"` and `flow " F "` have the id `F`), and in a diagram that
+names `swimlane`, where mermaid.js wraps the title (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+[fixture: containers/flow-title-runs-collapsed] [fixture:
+containers/flow-title-collapsed-runs-kept] [fixture:
+containers/flow-quoted-name-title-collapsed-runs-kept] [fixture:
+containers/flow-spaced-quoted-name-title-collapsed-runs-kept] [fixture:
+containers/flow-markdown-name-title-collapsed-runs-kept] [fixture:
+containers/flow-two-part-name-title-collapsed-runs-kept]
 
 Input (escaped): `"agentflow-beta TB\nglobal\t \nA\nend B"`. [fixture:
 containers/global-tabs]
@@ -115,9 +139,9 @@ are written so, and the Db is the same for both forms. The whitespace inside the
 brackets of the title is dropped, so `[ T ]` is printed `[T]` and `["x" ]` is
 printed `["x"]`, as in flowchart; Agentflow has no reason to choose a different
 form. One space stays where the title would be read otherwise (`[ /x/ ]`, and
-`[ x@ ]` in Agentflow). A directive at an edge of the title keeps the gap beside
-it, one space where whitespace was written: `flow F[ %%{x}%% T ]` is printed
-`flow F[ %%{x}%% T]`, and `flow G[ T %%{x}%% ]` is printed `flow G[T %%{x}%% ]`.
+`[ x@ ]` in Agentflow). A directive at an edge of the title touches the bracket
+and the title, as the gap has no space: `flow F[ %%{x}%% T ]` is printed
+`flow F[%%{x}%%T]`, and `flow G[ T %%{x}%% ]` is printed `flow G[T%%{x}%%]`.
 [fixture: names-and-headings/heading-title-directive-at-edge] A U+2028 or U+2029
 on the line of the `]` stays, and one at the start of a continuation line is
 read as its indentation. [test: agentflow: U+2028 inside the brackets of a flow
@@ -137,10 +161,10 @@ whitespace was written after it: that whitespace becomes one space. The
 whitespace before the directive stays as written while the `[` is apart from the
 directive, since the name then runs through the directive
 (`flow F   %%{init: {}}%% [T]` is not changed). When the `[` touches the
-directive, the name ends before the directive, and the whitespace before it
-becomes one space (`flow H   %%{init: {}}%%[T]` is printed
-`flow H %%{init: {}}%%[T]`). [fixture:
-names-and-headings/name-heading-title-beside-directive-kept] [fixture:
+directive, the name ends before the directive and the title touches the name, so
+the whitespace before the directive is dropped (`flow H   %%{init: {}}%%[T]` is
+printed `flow H%%{init: {}}%%[T]`). [fixture:
+names-and-headings/name-heading-title-beside-directive] [fixture:
 names-and-headings/name-heading-title-gap-run-beside-directive] [test:
 agentflow: a comment and U+2028 between a flow name and its title] Between a `:`
 and a `#` of a line that the line rule may read, the gap keeps whether it holds
@@ -150,15 +174,40 @@ U+2029 in the gap stays where it is. [test: agentflow: U+2028 between a flow
 name and its title] [test: agentflow: U+2029 between a connector name and its
 title]
 
+The `@{` of a data block touches an ordinary single-part name that has no title,
+as the `[` of a title does: `connector github @{ protocol: "mcp" }` is printed
+`connector github@{ protocol: "mcp" }`, and `flow F  @{ a: 1 }` is printed
+`flow F@{ a: 1 }`. mermaid.js trims the whitespace after the name, so the Db is
+the same, and the documentation of mermaid.js writes the `@{` of a data block
+touching the id or title before it
+([`create["create_issue"]@{ ... }`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/agentflow.md#L290)).
+A name that holds a directive or a comment is kept as written, as above.
+[fixture: names-and-headings/heading-data-touches-name] [test: agentflow: U+2029
+between a connector name and its data block]
+
+The whitespace at the end of an ordinary single-part name that has neither a
+title nor a data block is dropped in the same way: `flow F` followed by two
+spaces is printed `flow F`, and so is `flow F ;` followed by a line, where the
+`;` becomes a line break. mermaid.js trims the name, so the Db is the same, and
+`flow F` followed by spaces and `flow F` are one flow. A name that holds a
+directive or a comment, a name of several parts, and a name of whitespace only
+are kept as written, as above. At the end of the name, U+2028 and U+2029 are
+characters of the name and no spaces or tabs: the spaces after one go, and the
+spaces before it stay. [test: agentflow: U+2028 and spaces at the end of a flow
+name] [test: agentflow: U+2029 and spaces at the end of a connector name]
+[fixture: trailing-whitespace/trailing-name-dropped] [fixture:
+containers/end-name-not-greedy] [fixture:
+names-and-headings/heading-word-gap-before-semicolon] [fixture:
+names-and-headings/name-directive-trailing-kept]
+
 The whitespace after the word `flow`, `connector`, or `global` is one space,
 however many spaces or tabs were written: the word takes one whitespace
 character, and mermaid.js trims the rest from the name. `flow   F["T"]` is
 printed `flow F["T"]`, and `global` followed by spaces is printed `global`.
 [fixture: names-and-headings/heading-word-gap-collapsed] A directive in the gap
-keeps whether whitespace was written on each side of it, a run of whitespace
-becoming one space, as under [Directives](#directives). [fixture:
-names-and-headings/heading-word-gap-beside-directive-kept] This holds where the
-name is a single part; a name of several parts is kept as written, as above.
+is placed as under [Directives](#directives). [fixture:
+names-and-headings/heading-word-gap-beside-directive] This holds where the name
+is a single part; a name of several parts is kept as written, as above.
 [fixture: names-and-headings/name-heading-title-multi-part-name-kept] A U+2028
 or U+2029 in the gap stays where it is. [test: agentflow: U+2028 after the flow
 word] [test: agentflow: U+2029 after the connector word]
@@ -179,14 +228,22 @@ names-and-headings/name-whitespace-only] [fixture:
 names-and-headings/directive-after-erased-string]
 
 After name text read as a click id, exactly one whitespace character ends that
-reading. Keep that character, including a tab or LF, before a title, data,
-separator or EOF; additional whitespace belongs to the next name part. Empty
-strings and empty markdown strings erase no such ending character. If whitespace
-already separates an erased form from later name text, it has ended the click
-reading: do not take another LF after the name or add a blank line. In connector
-names, text directly after an erased empty string may begin with `;`. When LF
-ends that click-id text, keep it before the statement-separating LF; removing it
-would merge the next statement into the name and can reject it. [fixture:
+reading. Keep that character, including a tab or LF, before a title, data, or a
+statement that follows, also one after a `;` that becomes a line break: without
+it the line break ends the id and the next statement is read as a part of the
+name, so the Db differs. Drop a space or tab where nothing follows it but
+whitespace, line breaks, and separators: the text then ends the id, as at EOF
+without the character, and the Db and the figure are the same. [fixture:
+names-and-headings/name-exit-space-before-statement-kept] [fixture:
+names-and-headings/name-exit-space-before-separator-statement-kept] [fixture:
+names-and-headings/name-exit-space-before-blank-end-dropped] Additional
+whitespace belongs to the next name part. Empty strings and empty markdown
+strings erase no such ending character. If whitespace already separates an
+erased form from later name text, it has ended the click reading: do not take
+another LF after the name or add a blank line. In connector names, text directly
+after an erased empty string may begin with `;`. When LF ends that click-id
+text, keep it before the statement-separating LF; removing it would merge the
+next statement into the name and can reject it. [fixture:
 names-and-headings/connector-empty-string-adjacent-semicolon-exit] [fixture:
 names-and-headings/connector-empty-string-adjacent-text-exit] [fixture:
 names-and-headings/click-empty-string-lf-body] [fixture:
@@ -255,15 +312,58 @@ style/classDef/class/linkStyle, before class values and interpolation names, or
 before tooltips. The grammar consumes exactly one whitespace character;
 following whitespace is value text, and a second character where a token is
 expected can reject. Tabs used as that character remain tabs. Preserve
-first-style leading whitespace even across directives, inner/comma-side style
-whitespace, empty style-list items, escaped classDef commas, order and
-repetition. The flowchart reason for keeping inner styles applies unchanged:
-they are values; its first-style collapse does not. [fixture:
-single-space-gaps/classdef-first-tab] [fixture:
+first-style leading whitespace even across directives, the whitespace between
+the words of a style value, empty style-list items, escaped classDef commas,
+order and repetition. The first-style whitespace does not collapse as in
+flowchart. Each style has no whitespace before its first `:` and one space after
+it where the value is not empty. The `,` between styles has no whitespace before
+it and one space after it: `style A fill :#f00,stroke:  #333` is printed
+`style A fill: #f00, stroke: #333`. [fixture:
+single-space-gaps/style-colon-spaced] A `linkStyle` with link numbers keeps
+whether whitespace follows the `,` before a style that starts with `fill`, a run
+of whitespace becoming one space; `fill-opacity` counts, as mermaid.js reads
+only the start. [fixture: single-space-gaps/link-style-fill-after-comma-kept]
+[fixture: single-space-gaps/link-style-fill-opacity-after-comma-kept] A
+`linkStyle`, with link numbers or `default`, keeps it for a style that starts
+with `stroke:` too, which mermaid.js reads at the start where the look is
+`handDrawn`. [fixture: single-space-gaps/link-style-stroke-after-comma-kept] The
+other styles of such a statement, and `linkStyle default`, use the one form (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
+In a `linkStyle` or a `classDef`, which can reach a link, a name that ends with
+`stroke` keeps whether whitespace stands between it and the `:`, a run of
+whitespace becoming one space (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
+[fixture: single-space-gaps/link-style-stroke-before-colon-kept] [fixture:
+single-space-gaps/class-def-stroke-before-colon-kept] A `style` styles a node,
+and uses the one form. [fixture:
+single-space-gaps/style-stroke-before-colon-spaced] A space after a backslash
+that ends a style of a `style` is read as nothing, as in
+[flowchart](./flowchart.md#whitespace-between-tokens). [fixture:
+single-space-gaps/style-backslash-space-dropped] A style of a `linkStyle` with a
+name that ends with `stroke` and a value of spaces and tabs only stays as
+written, as in [flowchart](./flowchart.md#whitespace-between-tokens). [fixture:
+single-space-gaps/link-style-blank-stroke-value-kept] A style of a `linkStyle`
+that ends with a backslash keeps whether whitespace stands after it, a run of
+whitespace becoming its first character, as in
+[flowchart](./flowchart.md#whitespace-between-tokens). [fixture:
+single-space-gaps/link-style-backslash-space-kept] In a `classDef` a `,` after a
+backslash is part of its style, and a space between the backslash and the `,`
+stays, since taking it away would make the `,` part of the style; in a `style`
+and a `linkStyle` the `,` ends a style whatever stands before it. A space after
+a backslash before the `:` stays as well, since taking it away would escape the
+`:`. [fixture: single-space-gaps/style-escaped-space-before-comma] [fixture:
+single-space-gaps/style-backslash-before-comma] [fixture:
+single-space-gaps/style-colon-escaped-space-kept] A statement stays as written
+where it holds a directive or a comment, where a style is all whitespace, or
+where a style holds a line break, U+2028, or U+2029, or its line holds a kept
+`;`. [fixture: single-space-gaps/classdef-first-tab] [fixture:
 single-space-gaps/linkstyle-first-spaces] [fixture:
 single-space-gaps/style-directive-gap] [fixture:
 single-space-gaps/style-first-spaces] [fixture:
-single-space-gaps/styles-inner-gaps]
+single-space-gaps/styles-inner-gaps] [fixture:
+single-space-gaps/style-comma-before-dropped] [fixture:
+single-space-gaps/style-comma-beside-directive-kept] [test: agentflow: U+2028
+before the comma of a style statement]
 
 The tab after linkStyle and the tab before an interpolation name each supply the
 grammar's required single whitespace character; both remain written. [fixture:
@@ -323,16 +423,28 @@ agentflow-beta TB
 ### Edge labels
 
 Reuse [Link label form](./flowchart.md#link-label-form) and
-[Arrow spacing](./flowchart.md#arrow-spacing) with their reasons: preserve the
-author's pipe/split form, since split text can contain a pipe, and make
-relations readable. Pipes touch the arrow and their label; split text has one
-exterior space. Print one post-pipe gap. Only sequence/failure support split
-labels. Keep string/markdown kind, bare continuation, and split semicolons,
-percent text and line breaks; do not invent another string or split reference
-form. [fixture: edge-labels/edge-label-forms] [fixture:
+[Arrow spacing](./flowchart.md#arrow-spacing) with their reasons: make relations
+readable. A label of plain text (letters, digits, spaces, `_`, `,`, `?`, and
+`!`) on the arrow `-->` or `--x` is printed between two arrows, the form that
+the examples in the documentation of mermaid.js use twice against none for the
+form between pipes (see
+[The label of a link](./compatibility.md#the-label-of-a-link)): `A -->|x| B` is
+printed `A -- x --> B`. [fixture: edge-labels/pipes-to-arrows] Any other label
+keeps the pipe/split form it is written in, since split text can contain a pipe,
+a label with a `|` or a `%%`, a string, and a Markdown label cannot be printed
+between the arrows, a label of blanks only is rejected between the arrows, and
+only the arrows `-->` and `--x` can have a label between two arrows. [fixture:
+edge-labels/blank-pipe-label-kept] Pipes touch the arrow and their label; split
+text has one exterior space. Print one post-pipe gap. Only sequence/failure
+support split labels. Keep string/markdown kind, bare continuation, and split
+semicolons, percent text and line breaks; do not invent another string or split
+reference form. [fixture: edge-labels/edge-label-forms] [fixture:
 edge-labels/split-pipe-content] A string between pipes keeps its text, and the
 pipes touch the arrow and the quotes: `A  -->  |"x  y"|B` is printed as
-`A -->|"x  y"| B`. [fixture: edge-labels/pipe-label-string-kept]
+`A -->|"x  y"| B`. [fixture: edge-labels/pipe-label-string-kept] So does a
+closing pipe that was written apart from the closing quote: `A-->|"x" |B` is
+printed `A -->|"x"| B`. [fixture: edge-labels/pipe-string-closing-touches]
+[test: agentflow: U+2028 between the closing quote and the `|` of an edge label]
 
 Input (escaped): `"agentflow-beta TB\nA --> |x| B"`. [fixture:
 edge-labels/pipe-label-gap]
@@ -342,23 +454,24 @@ Output
 
 ```mmd
 agentflow-beta TB
-  A -->|x| B
+  A -- x --> B
 ```
 
 ### Labels
 
 Reuse [Label inner whitespace](./flowchart.md#label-inner-whitespace): Mermaid
-discards ordinary bare exterior padding, whereas internal, quoted/markdown and
-whitespace-only label text stays. Keep one leading/trailing space for slash,
-backslash, dash, quote characters, and when `@` in the first word would make it
-read as an edge id; put no space before slanted ?]/=] closers. Agentflow label
-comments are different: their preceding spaces/tabs are label content, so
-preserve that padding, the comment and its LF/continuation columns, including a
-closing bracket that belongs to the comment rather than closing the shape.
-Tildes remain content. Shape spellings, entities and HTML remain authored.
-[fixture: labels/labels-closers] [fixture: labels/labels-leading-sensitive]
-[fixture: labels/labels-leading-at-sign] [fixture: labels/labels-padding]
-[fixture: labels/labels-tilde] [fixture: labels/labels-trim-sensitive-unsafe]
+discards ordinary bare exterior padding, whereas internal and quoted/markdown
+label text stays, and a label of spaces and tabs only is printed as one space.
+Keep one leading/trailing space for slash, backslash, dash, quote characters,
+and when `@` in the first word would make it read as an edge id; put no space
+before slanted ?]/=] closers. Agentflow label comments are different: their
+preceding spaces/tabs are label content, so preserve that padding, the comment
+and its LF/continuation columns, including a closing bracket that belongs to the
+comment rather than closing the shape. Tildes remain content. Shape spellings,
+entities and HTML remain authored. [fixture: labels/labels-closers] [fixture:
+labels/labels-leading-sensitive] [fixture: labels/labels-leading-at-sign]
+[fixture: labels/labels-padding] [fixture: labels/labels-tilde] [fixture:
+labels/labels-trim-sensitive-unsafe]
 
 Flow/connector heading titles follow
 [Subgraph header](./flowchart.md#subgraph-header) instead: drop the whitespace
@@ -416,7 +529,7 @@ metadata-blocks/metadata-multiline]
 A block on one line is printed with one space inside each end, and stays as
 written in the cases listed under [Data blocks](./flowchart.md#data-blocks).
 [fixture: metadata-blocks/one-line-padded] [fixture:
-metadata-blocks/one-line-space-only-kept] [fixture:
+metadata-blocks/one-line-space-only-padded] [fixture:
 metadata-blocks/one-line-directive-kept] [fixture:
 metadata-blocks/one-line-kept-line-kept] [fixture:
 metadata-blocks/one-line-touching-blocks-kept] [fixture:
@@ -603,14 +716,14 @@ agentflow-beta TB
 ### Directives
 
 Reuse [Directives](./flowchart.md#directives) for the same reason: removal
-supplies no separator. Keep contents, order, touching and continuation columns,
-align standalone directives, and collapse only harmless gap sides. A directive
-after a header separator moves into the body with its following statement,
-keeping whether they touch, just as in flowchart: the Db is the same, and no
-reason specific to Agentflow calls for attaching it to the header instead. A
-line already kept under Kept lines stays together. [fixture:
-directives/header-directive-before-body] [fixture:
-directives/header-directive-touching-body] [fixture:
+supplies no separator. Keep contents, order and continuation columns, align
+standalone directives, and place a directive within a printed line as under
+[Directives](./flowchart.md#directives). A directive after a header separator
+moves into the body with its following statement, keeping whether they touch,
+just as in flowchart: the Db is the same, and no reason specific to Agentflow
+calls for attaching it to the header instead. A line already kept under Kept
+lines stays together. [fixture: directives/header-directive-before-body]
+[fixture: directives/header-directive-touching-body] [fixture:
 directives/header-touching-kept-line] [fixture: directives/directive-gap]
 [fixture: directives/directive-header] [fixture: directives/directive-multiline]
 [fixture: directives/directive-touch] [fixture: directives/directive-value]
@@ -708,11 +821,14 @@ reason: among Db-equal forms, follow the sibling diagram types unless there is a
 reason of this diagram's own. Agentflow has none for an ordinary accessibility
 line, so C4, class, usecase and both graph types share `accTitle: value` and
 `accDescr: value`. The colon touches the keyword, one ASCII space precedes the
-trimmed value, and internal whitespace, inline `%%` and `#` remain value text.
-[fixture: accessibility/tight-colon] [fixture: accessibility/spaced-colon]
-[fixture: accessibility/value-padding] [fixture:
-accessibility/inline-percent-hash] Empty and whitespace-only values keep
-`accTitle:` or `accDescr:` without a following space. [fixture:
+trimmed value, and inline `%%` and `#` remain value text. A run of spaces and
+tabs inside the value of an `accDescr` is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+and that of an `accTitle` stays as written, since the browser shows it as a
+tooltip. [fixture: accessibility/tight-colon] [fixture:
+accessibility/spaced-colon] [fixture: accessibility/value-runs-collapsed]
+[fixture: accessibility/inline-percent-hash] Empty and whitespace-only values
+keep `accTitle:` or `accDescr:` without a following space. [fixture:
 accessibility/empty-title] [fixture: accessibility/empty-description] [fixture:
 accessibility/accessibility-empty-null] [corpus fixture:
 agentflow/db-acctitle-eof] [corpus fixture: agentflow/db-accdescr-eof]
@@ -733,12 +849,15 @@ agentflow/lex-directive-acctitle-next-line]
 
 The same exceptions apply: non-separator `;` lines under
 [Kept lines](#kept-lines) retain the accessibility text and whitespace beside
-`;`, including when the semicolon is in another statement or a next-line value.
-[fixture: accessibility/semicolon-value-kept] [fixture:
-accessibility/neighbour-semicolon-kept] [fixture:
-accessibility/next-line-semicolon-kept] Direction-text lines keep their text,
-line breaks and columns under [Direction](#direction), and other documented
-kept-line reasons still take priority. [fixture:
+`;`, including when the semicolon is in another statement. A statement written
+over several lines is joined also when it holds a `;` that separates statements:
+on a line that holds no other `;`, the printer puts the statements on lines of
+their own, so only the statement itself is joined. [fixture:
+accessibility/semicolon-value-kept] [fixture:
+accessibility/neighbour-semicolon-kept] A `;` alone does not prevent joining.
+[fixture: accessibility/next-line-semicolon-joined] Direction-text lines keep
+their text, line breaks and columns under [Direction](#direction), and other
+documented kept-line reasons still take priority. [fixture:
 accessibility/direction-text-kept] [fixture:
 accessibility/next-line-direction-kept] Ordinary indentation uses the same
 positive minimum at `tabWidth: 0` and the same `useTabs` step; both options keep
@@ -915,8 +1034,8 @@ agentflow-beta TB
 ### Trailing whitespace
 
 Reuse [Style trailing whitespace](./flowchart.md#style-trailing-whitespace): the
-Db summary normalizes trailing style padding, while an all-whitespace style
-still needs a written whitespace character. Remove harmless exterior and
+tests compare styles without their trailing whitespace, while an all-whitespace
+style still needs a written whitespace character. Remove harmless exterior and
 trailing style padding; keep all-whitespace styles, including the last style
 after commas (including escaped classDef commas), directives, ignored semicolons
 and split empty-description groups. Extra first-style whitespace is leading
@@ -924,8 +1043,11 @@ value text and stays. Name endings follow Names and headings. Label-comment
 padding, strings, data, comments, directives and later value columns stay.
 Forbidden class/callback/title padding remains rejected; the size guard
 overrides trimming. [fixture: trailing-whitespace/trailing-comment] [fixture:
-trailing-whitespace/trailing-name] [fixture:
-trailing-whitespace/trailing-null-style]
+trailing-whitespace/trailing-name-dropped] [fixture:
+trailing-whitespace/trailing-null-style] A `linkStyle` that ends with a
+backslash keeps the whitespace after it too, as one character, as in
+[flowchart](./flowchart.md#style-trailing-whitespace). [fixture:
+trailing-whitespace/link-style-backslash-at-end-kept]
 
 Input (escaped): `"agentflow-beta TB\nA   \nA-->B \t\nstyle A fill:red \t"`.
 [fixture: trailing-whitespace/trailing-exterior]
@@ -937,7 +1059,7 @@ Output
 agentflow-beta TB
   A
   A --> B
-  style A fill:red
+  style A fill: red
 ```
 
 ### Line terminators
@@ -1059,7 +1181,17 @@ retained click prefix keep their touching gaps. [fixture:
 click-statements/target-required-tab] [fixture:
 click-statements/prefix-with-directive]
 
-The parentheses of a call with blank arguments touch each other, as in
+The arguments of a call have no whitespace at their ends or before a `,`, and
+one space after it, as in [flowchart](./flowchart.md#whitespace-between-tokens):
+`click A call f(  "x" ,y )` is printed `click A call f("x", y)` (see
+[Call arguments that are drawn the same](./compatibility.md#call-arguments-that-are-drawn-the-same)).
+[fixture: click-statements/callback-arguments-spaced] A gap between the
+arguments that the line rule of mermaid.js may read keeps whether it holds
+whitespace: `click A call f(style:x,#b;c)` stays as written, since a space after
+the `,` would change the last `;` that the rule ignores (see
+[Call arguments that are drawn the same](./compatibility.md#call-arguments-that-are-drawn-the-same)).
+[fixture: click-statements/callback-arguments-line-rule-kept] The parentheses of
+a call with blank arguments touch each other, as in
 [flowchart](./flowchart.md#whitespace-between-tokens): `click A call f( )` is
 printed `click A call f()`, also before a tooltip or an erased prefix, since
 mermaid.js reads both spellings as the same call. `f ()`, with whitespace before

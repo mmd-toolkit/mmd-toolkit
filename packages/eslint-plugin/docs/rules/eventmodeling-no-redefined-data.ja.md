@@ -46,12 +46,12 @@ mermaid.js は、
 ```mmd
 %% eslint @mmd-toolkit/eventmodeling-no-redefined-data: error
 eventmodeling
-  tf 01 evt Bought [[Payload]]
-  data Payload {
-first
+tf 01 evt Bought [[Payload]]
+data Payload {
+  first
 }
-  data Payload {
-second
+data Payload {
+  second
 }
 ```
 
@@ -60,13 +60,13 @@ second
 ```mmd
 %% eslint @mmd-toolkit/eventmodeling-no-redefined-data: error
 eventmodeling
-  tf 01 evt Bought [[Payload01]]
-  tf 02 evt Bought [[Payload02]]
-  data Payload01 {
-first
+tf 01 evt Bought [[Payload01]]
+tf 02 evt Bought [[Payload02]]
+data Payload01 {
+  first
 }
-  data Payload02 {
-second
+data Payload02 {
+  second
 }
 ```
 

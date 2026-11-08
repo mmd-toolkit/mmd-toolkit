@@ -15,6 +15,7 @@ import { findLeadingDirectives } from "./indentation-lines.ts"
 import {
   collectAtoms,
   collectValueNodes,
+  findLayoutEnd,
   protectSemicolonPrefixes,
 } from "./layout.ts"
 import {
@@ -209,6 +210,29 @@ function hasTrailingIndentation(
     offset = next
   }
   return false
+}
+
+/**
+ * Where a line of the body is printed to: its range, except for a title, which
+ * leaves out the whitespace at its end. That whitespace is then the gap before
+ * a directive or a comment that follows the title on its line, which a gap rule
+ * prints as one space, as in the other diagram types.
+ */
+export function findTreemapPrintedEnd(
+  source: Source,
+  line: TreemapLine,
+): number {
+  const last = line.statements.at(-1)!
+  if (
+    last.type !== "TreemapTitleStatement" &&
+    last.type !== "TreemapAccTitleStatement" &&
+    last.type !== "TreemapAccDescrStatement"
+  )
+    return line.range[1]
+  return Math.min(
+    line.range[1],
+    findLayoutEnd(layoutTreemapStatement(source, last, "", "")),
+  )
 }
 
 /** Ordinary row components join; trivia and protected segments keep their lines. */

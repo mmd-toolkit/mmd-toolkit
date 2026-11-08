@@ -398,23 +398,33 @@ journey
 
 ### Titles and sections
 
-`title` and `section` are printed with the value as written, the whitespace at
-its ends included, which the Db keeps, and one space as the separator after the
-keyword, whatever character was written there, so that the separator has one
-form, as in a Gantt chart. [fixture: titles-and-sections/value-whitespace-kept]
-[fixture: titles-and-sections/one-space-after-keyword] A value written on a
-later line is printed after the keyword on one line; a comment line between them
-makes the statement printed as written (see
+A `title` is printed with one space after the keyword, so that the separator has
+one form, as in a Gantt chart, and the value without the whitespace at its start
+or at its end, which the Db keeps and which is drawn without (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+`title   My trip  ` is printed `title My trip`. The name of a `section` is
+printed as written, the whitespace at its start and at its end included: two
+sections whose names differ by it are drawn apart, and would not be once it is
+left out. A title of spaces and tabs only stays as written. [fixture:
+titles-and-sections/title-padding-dropped] [fixture:
+titles-and-sections/title-blank-kept] [fixture:
+titles-and-sections/section-padding-kept] [fixture:
+titles-and-sections/title-trailing-dropped-section-kept] [fixture:
+titles-and-sections/one-space-after-keyword] A value written on a later line is
+printed after the keyword on one line; a comment line between them makes the
+statement printed as written (see
 [Multi-line statements](#multi-line-statements)). [fixture:
 titles-and-sections/value-on-next-line] [fixture:
 titles-and-sections/comment-line-inside-kept] The value holds `:`, `%`, and `%%`
 as characters, and ends at a `#`. [fixture:
 titles-and-sections/special-characters-in-values] [fixture:
 titles-and-sections/value-ends-at-hash] The whitespace before that `#` is part
-of the value, and stays. [fixture:
-titles-and-sections/whitespace-before-hash-is-the-value] A directive between the
-keyword and the value stays where it is (see [Directives](#directives)).
-[fixture: titles-and-sections/directive-between-keyword-and-value-kept]
+of the value. For a `title` it is left out like the other whitespace at the end
+of a title, and one space stands before the `#`; for a `section` it stays.
+[fixture: titles-and-sections/title-hash-gap-one-space-section-kept] A directive
+between the keyword and the value stays where it is (see
+[Directives](#directives)). [fixture:
+titles-and-sections/directive-between-keyword-and-value]
 
 Input
 ([titles-and-sections/special-characters-in-values-input.mmd](../tests/fixtures/journey/titles-and-sections/special-characters-in-values-input.mmd)):
@@ -456,13 +466,15 @@ journey
 
 ### Keyword case
 
-Keywords keep the case in which they are written. mermaid.js reads them in any
-case and the Db is the same, so nothing forces the case; it is the author's, and
-the printer does not rewrite it. [fixture: keyword-case/keywords-kept] The
-header `journey` is detected in lower case only.
+The keywords `section` and `title` are printed in lower case, as the examples in
+the documentation of mermaid.js write them (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+mermaid.js reads them in any case and the Db is the same. [fixture:
+keyword-case/keywords-one-form] The header `journey` is detected in lower case
+only.
 
 Input
-([keyword-case/keywords-kept-input.mmd](../tests/fixtures/journey/keyword-case/keywords-kept-input.mmd)):
+([keyword-case/keywords-one-form-input.mmd](../tests/fixtures/journey/keyword-case/keywords-one-form-input.mmd)):
 
 ```mmd
 journey
@@ -474,12 +486,12 @@ ACCDESCR { d }
 ```
 
 Output
-([keyword-case/keywords-kept-output.mmd](../tests/fixtures/journey/keyword-case/keywords-kept-output.mmd)):
+([keyword-case/keywords-one-form-output.mmd](../tests/fixtures/journey/keyword-case/keywords-one-form-output.mmd)):
 
 ```mmd
 journey
-  TITLE T
-  Section S
+  title T
+  section S
     ACCTITLE: T
     AccDescr: d
     ACCDESCR { d }
@@ -506,11 +518,13 @@ of its statement; a text on the line of the `{` has one space inside each brace,
 also where the braces touched it. [fixture:
 accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-text-on-opening-line] [fixture:
-accessibility-statements/block-comment-and-empty-lines-kept] Whitespace inside
-the text is part of it, and stays. [fixture:
-accessibility-statements/block-inner-whitespace-kept] A directive between the
-keyword and the colon or the brace, or after them, stays where it is. [fixture:
-accessibility-statements/directive-around-colon-and-braces-kept]
+accessibility-statements/block-comment-and-empty-lines-kept] A run of spaces and
+tabs inside the text is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+[fixture: accessibility-statements/block-inner-runs-collapsed] [fixture:
+accessibility-statements/accessibility-lines-runs-collapsed] A directive between
+the keyword and the colon or the brace, or after them, stays where it is.
+[fixture: accessibility-statements/directive-around-colon-and-braces-kept]
 
 Input
 ([accessibility-statements/text-on-next-line-joined-input.mmd](../tests/fixtures/journey/accessibility-statements/text-on-next-line-joined-input.mmd)):
@@ -617,12 +631,17 @@ A statement that mermaid.js reads over several lines is printed on one line
 where the line break is whitespace to the lexer: after `title`, `section`,
 `accTitle:`, and `accDescr:`, and around the `:` of `accTitle` and `accDescr`. A
 task is never written over several lines. [fixture:
+multi-line-statements/breaks-decided-one-by-one] [fixture:
 multi-line-statements/value-on-next-line-joined] In `accTitle` and `accDescr:`
 statements, keep trivia line breaks and align later structural parts and
 standalone trivia one continuation level inside the statement, also under a
 section. Preserve each first gap-line tail and complete directive interiors.
-Semicolon lines and joining comment regions keep their original layout.
-[fixture: multi-line-statements/accessibility-trivia-continuations]
+Joining comment regions keep their original layout. A `;` does not keep a
+statement over several lines from being joined: no `;` separates statements in a
+journey, and the first line of such a statement holds only its keyword, so
+joining its lines cannot change which `;` the line rule ignores. [fixture:
+multi-line-statements/semicolon-value-joined] [fixture:
+multi-line-statements/accessibility-trivia-continuations]
 
 Titles and sections keep their original multiline trivia layout, because their
 value padding belongs to the Db. [fixture:
@@ -810,9 +829,9 @@ journey # c
 ### Directives
 
 A directive on a line of its own stands at the level of the statement after it,
-and a directive within a printed line keeps whether whitespace is written on
-each side of it: where it is, one space stands there, and where it touches a
-token, it keeps touching. [fixture: directives/kept] [fixture:
+and a directive within a printed line is placed as in a flowchart: the gap is
+printed as without the directive, and the directive stands after its space and
+touches the unit that follows it. [fixture: directives/kept] [fixture:
 directives/levels-around-sections] [fixture: directives/before-header] [fixture:
 directives/after-header-on-same-line] [fixture:
 directives/after-header-touching-kept] [fixture:
@@ -825,10 +844,10 @@ break its left contact.
 
 [fixture: journey/directives/split-directive-gap]
 
-A directive between two units stays in its authored gap; same-line contact or
-separation on either side stays. Structural continuation columns follow
+A directive between two units stays in its authored gap, placed as under
+[Directives](#directives). Structural continuation columns follow
 [Multi-line statements](#multi-line-statements). A directive inside a value is
-part of that text. [fixture: directives/between-units-kept] [fixture:
+part of that text. [fixture: directives/between-units] [fixture:
 directives/inside-values-kept] [fixture: directives/over-lines-kept] A directive
 that is not closed takes the rest of the text, and is kept as written. [fixture:
 directives/unclosed-at-end-of-text-kept] [fixture:
@@ -861,7 +880,7 @@ journey
 ```
 
 Input
-([directives/between-units-kept-input.mmd](../tests/fixtures/journey/directives/between-units-kept-input.mmd)):
+([directives/between-units-input.mmd](../tests/fixtures/journey/directives/between-units-input.mmd)):
 
 ```mmd
 journey
@@ -871,12 +890,12 @@ C: 5%%{init: {}}%%: Me
 ```
 
 Output
-([directives/between-units-kept-output.mmd](../tests/fixtures/journey/directives/between-units-kept-output.mmd)):
+([directives/between-units-output.mmd](../tests/fixtures/journey/directives/between-units-output.mmd)):
 
 ```mmd
 journey
   A %%{init: {}}%%: 5
-  B:%%{init: {}}%% 5
+  B: %%{init: {}}%%5
   C: 5%%{init: {}}%%: Me
 ```
 
@@ -952,7 +971,10 @@ U+2028 before the colon of a task] [test: U+2028 before the second colon of a
 task] [test: U+2028 between the people of a task] [test: U+2028 in the ignored
 data of a task] [test: U+2028 after a title keyword] [test: U+2029 inside a
 title] [test: U+2028 at the end of a section] [test: U+2028 after the colon of
-accTitle]
+accTitle] At the end of a title, U+2028 and U+2029 are characters of the text
+and no spaces or tabs: the spaces after one are left out with the other
+whitespace at the end of the title, and the spaces before it stay. [test: U+2028
+and spaces at the end of a journey title]
 
 ### Whitespace characters
 

@@ -76,4 +76,35 @@ export const agentflowCases: readonly AgentflowCase[] = [
     input: "agentflow-beta TB\nconnector G \u2029[T]",
     output: "agentflow-beta TB\n  connector G \u2029[T]\n",
   },
+  {
+    name: "agentflow: U+2028 between the header keyword and its direction",
+    input: "agentflow-beta\u2028<\nA",
+    output: "agentflow-beta\u2028<\n  A\n",
+  },
+  {
+    name: "agentflow: U+2029 between a connector name and its data block",
+    input: "agentflow-beta TB\nconnector c\u2029@{ a: 1 }",
+    output: "agentflow-beta TB\n  connector c\u2029@{ a: 1 }\n",
+  },
+  {
+    name: "agentflow: U+2028 between the closing quote and the `|` of an edge label",
+    input: 'agentflow-beta TB\nA-->|"x"\u2028|B',
+    output: 'agentflow-beta TB\n  A -->|"x"\u2028| B\n',
+  },
+  {
+    name: "agentflow: U+2028 before the comma of a style statement",
+    input: "agentflow-beta TB\nA-->B\nstyle A fill:#f00\u2028 ,color:white",
+    output:
+      "agentflow-beta TB\n  A --> B\n  style A fill: #f00\u2028, color: white\n",
+  },
+  {
+    name: "agentflow: U+2028 and spaces at the end of a flow name",
+    input: "agentflow-beta TB\nflow F  \u2028  \nA\nend\n",
+    output: "agentflow-beta TB\n  flow F  \u2028\n    A\n  end\n",
+  },
+  {
+    name: "agentflow: U+2029 and spaces at the end of a connector name",
+    input: "agentflow-beta TB\nconnector F  \u2029  \n",
+    output: "agentflow-beta TB\n  connector F  \u2029\n",
+  },
 ]

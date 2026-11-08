@@ -597,14 +597,15 @@ class ClassDbBuilder {
   /**
    * Styles: the style values of `styles`: the converted form of the value
    * of each style (the written texts of its units joined, ast/class.md,
-   * ClassLiteral), split at each `,`, without the whitespace at the end of
-   * each value, which the summary leaves out.
+   * ClassLiteral), followed by the line whitespace after its range, then
+   * split at each `,`. The summary keeps trailing whitespace.
    */
   private styleValuesOf(styles: readonly ClassLiteral[]): string[] {
     return styles.flatMap((style) =>
-      this.convertedTokensOf(style.range)
-        .split(",")
-        .map((value) => value.trimEnd()),
+      (
+        this.convertedTokensOf(style.range) +
+        this.text.whitespaceFrom(style.range[1]).value
+      ).split(","),
     )
   }
 

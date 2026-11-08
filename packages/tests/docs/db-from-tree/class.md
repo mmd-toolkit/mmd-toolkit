@@ -287,32 +287,38 @@ no class changes nothing. [fixture: class/db-css-class-undefined-class] That
 holds for a class that is added later: `cssClass "A" c` before `class A` changes
 nothing. [fixture: class/db-css-class-before-class]
 
-**Styles.** The text of a style is its value (see
-[ClassLiteral](../../../spec/docs/ast/class.md#classliteral)). The **style
-values** of a style statement are the texts of its styles split at each `,`, so
-a style that ends with a `,` has the empty text as its last value:
-`style A fill:red,` has the values `fill:red` and the empty text. [fixture:
-class/db-style-empty-value] `style` appends them to the `styles` of the class
-whose id is the word, when it exists, after the styles that the class has, so a
-`style` statement before the statement that adds the class changes nothing. A
-word that starts with an ASCII digit is not looked up with `classId-`. [fixture:
-class/db-style-before-class] [fixture: class/db-style-twice] [fixture:
-class/db-style-digit-id] That holds when the statement that adds the class lies
-in a namespace; a class that a relation or a member statement declares is a
-class from then on, and a `style` after it, or after a `class` statement in a
-namespace, applies. [fixture: class/db-style-before-class-in-namespace]
-[fixture: class/db-style-after-relation] [fixture:
-class/db-style-after-member-statement] [fixture:
-class/db-style-after-class-in-namespace] `classDef` appends them, for each of
-its names in order, to the `styles` of each class whose `cssClasses` contain
-that name anywhere, also inside a longer CSS class: `classDef fo fill:red`
-applies to a class with the CSS class `foo`, and `classDef default fill:red` to
-every class. A class that has two of the names gets the values twice. It applies
-only to the classes that have the CSS class at that point: a class that gets it
-later gets no styles. [fixture: class/db-style-spaces] [fixture:
-class/db-style-undefined-class] [fixture: class/db-class-def-substring]
-[fixture: class/db-class-def-default] [fixture: class/db-class-def-order]
-[fixture: class/db-class-def-names]
+**Styles.** Read a style's converted token texts joined, as its value (see
+[ClassLiteral](../../../spec/docs/ast/class.md#classliteral)), then append the
+line whitespace after its range: JavaScript `\s` without LF and CR, up to the
+first non-whitespace character or physical line terminator. Directives, comment
+regions and ignored semicolons contribute no characters in this converted
+reading. Split the result at each `,`, keeping leading and trailing whitespace
+in each Db value. [fixture: class/db-style-trailing-whitespace-eol] [fixture:
+class/db-class-def-trailing-whitespace] [fixture: class/db-style-spaces]
+[fixture: class/tokens-style-label-space-before-directive] [fixture:
+class/tokens-style-space-ignored-semicolon] Thus a style that ends with a `,`
+has the empty text as its last value: `style A fill:red,` has the values
+`fill:red` and the empty text. [fixture: class/db-style-empty-value] `style`
+appends them to the `styles` of the class whose id is the word, when it exists,
+after the styles that the class has, so a `style` statement before the statement
+that adds the class changes nothing. A word that starts with an ASCII digit is
+not looked up with `classId-`. [fixture: class/db-style-before-class] [fixture:
+class/db-style-twice] [fixture: class/db-style-digit-id] That holds when the
+statement that adds the class lies in a namespace; a class that a relation or a
+member statement declares is a class from then on, and a `style` after it, or
+after a `class` statement in a namespace, applies. [fixture:
+class/db-style-before-class-in-namespace] [fixture:
+class/db-style-after-relation] [fixture: class/db-style-after-member-statement]
+[fixture: class/db-style-after-class-in-namespace] `classDef` appends them, for
+each of its names in order, to the `styles` of each class whose `cssClasses`
+contain that name anywhere, also inside a longer CSS class:
+`classDef fo fill:red` applies to a class with the CSS class `foo`, and
+`classDef default fill:red` to every class. A class that has two of the names
+gets the values twice. It applies only to the classes that have the CSS class at
+that point: a class that gets it later gets no styles. [fixture:
+class/db-style-spaces] [fixture: class/db-style-undefined-class] [fixture:
+class/db-class-def-substring] [fixture: class/db-class-def-default] [fixture:
+class/db-class-def-order] [fixture: class/db-class-def-names]
 
 **Other statements.** A direction statement sets `direction` to its value, a
 later one replacing an earlier one. [fixture: class/db-direction-bt] [fixture:

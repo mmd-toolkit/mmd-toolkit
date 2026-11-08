@@ -33,9 +33,9 @@ describe("a block diagram in a Markdown code block", () => {
     )
   })
 
-  it("keeps the whitespace inside a label", async () => {
+  it("prints a run of whitespace inside a label as one space", async () => {
     expect(
       await formatTwice('```mermaid\nblock-beta\nA["a    b"]\n```\n'),
-    ).toBe('```mermaid\nblock-beta\n  A["a    b"]\n```\n')
+    ).toBe('```mermaid\nblock-beta\n  A["a b"]\n```\n')
   })
 })

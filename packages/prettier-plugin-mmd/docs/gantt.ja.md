@@ -394,12 +394,22 @@ gantt
 
 ### 設定
 
-`dateFormat`、`axisFormat`、`tickInterval`、`todayMarker` は、値を、
-両端の空白も含めて書かれたまま印字します。
-Db は値をそのまま持つので、
-空白 2 つの `dateFormat  YYYY-MM-DD` は空白と `YYYY-MM-DD` の書式を持ち、
-末尾に空白 2 つがある `todayMarker off` は別のマーカーです。
-[fixture: settings/value-whitespace-kept]
+`dateFormat` と `axisFormat` は、キーワードの後に空白を 1 つ置き、その後に値を、
+先頭と末尾の空白を除いて印字します。
+mermaid.js はその空白を Db に残しますが、その空白がなくても同じ図を描きます。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+`dateFormat   YYYY-MM-DD  ` は `dateFormat YYYY-MM-DD` と印字します。
+[fixture: settings/format-padding-dropped]
+半角空白とタブだけの日付書式は、書かれたままにします。
+[fixture: settings/format-blank-kept]
+`D` の日付書式は、前後に空白がないときだけ日単位の軸を描くので、
+書かれたままにします。
+`tickInterval` も、値全体を読んでいて、
+前か後に空白があると目盛りが既定のものになるので、書かれたままにします。
+[fixture: settings/format-padding-kept-where-drawn-differently]
+`todayMarker` の値は、両端の空白も含めて書かれたまま印字します。
+末尾に空白 2 つがある `todayMarker off` は別のマーカーで、今日の線を描きます。
+[fixture: settings/trailing-whitespace-by-setting]
 `todayMarker` の値は `#` を含み、どの値も `%%` をテキストの文字として含みます。
 `todayMarker` の値は `;` で終わり、`dateFormat`、`axisFormat`、
 `tickInterval` の値は、
@@ -413,7 +423,7 @@ Db は値をそのまま持つので、
 [fixture: settings/value-on-next-line]
 キーワードと値の間のディレクティブは、
 その位置に残します（[ディレクティブ](#ディレクティブ)を参照）。
-[fixture: settings/directive-between-keyword-and-value-kept]
+[fixture: settings/directive-between-keyword-and-value]
 
 入力
 ([settings/value-on-next-line-input.mmd](../tests/fixtures/gantt/settings/value-on-next-line-input.mmd)):
@@ -432,7 +442,7 @@ axisFormat
 ```mmd
 gantt
   dateFormat YYYY-MM-DD
-  axisFormat  %m
+  axisFormat %m
 ```
 
 入力
@@ -455,17 +465,30 @@ gantt
 
 ### タイトルとセクション
 
-`title` と `section` も設定と同じに印字します。
-値は両端の空白も含めて書かれたまま（Db が持つ）で、
-キーワードの後の区切りは空白 1 つです。
-[fixture: titles-and-sections/value-whitespace-kept]
+`title` も設定と同じに印字します。
+キーワードの後の区切りは空白 1 つで、値の先頭と末尾の空白は除きます。
+Db はその空白を持ちますが、図では描かれません。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+`title   Plan  ` は `title Plan` と印字します。
+中の空白とタブの連なりも空白 1 つで印字するので、
+`title Plan  of   work` は `title Plan of work` と印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+`section` の名前は、先頭と末尾の空白も含めて書かれたまま印字します。
+その空白で名前が異なる 2 つのセクションは別々に描かれ、
+除くとそうならないからです。
+`section A` の後の `section  A` は、そのまま残します。
+半角空白とタブだけのタイトルは、書かれたままにします。
+[fixture: titles-and-sections/title-padding-dropped]
+[fixture: titles-and-sections/title-blank-kept]
+[fixture: titles-and-sections/section-padding-kept]
+[fixture: titles-and-sections/title-trailing-dropped-section-kept]
 [fixture: titles-and-sections/one-space-after-keyword]
 [fixture: titles-and-sections/value-on-next-line]
 値は `:`、`#`、`;`、`%%` を文字として含みます。
 [fixture: titles-and-sections/special-characters-in-values]
 キーワードと値の間のディレクティブは、
 その位置に残します（[ディレクティブ](#ディレクティブ)を参照）。
-[fixture: titles-and-sections/directive-between-keyword-and-value-kept]
+[fixture: titles-and-sections/directive-between-keyword-and-value]
 後の行に書かれた値は、キーワードの後に寄せて 1 行にします。
 間にコメント行があれば、
 文は書かれたまま印字します（[複数行の文](#複数行の文)を参照）。
@@ -522,10 +545,9 @@ Db はどの区切りでも同じなので、区切りの種類は作者のも�
 項目の大文字小文字は残します（mermaid.js が小文字にします）。
 [fixture: lists/items-case-kept]
 キーワードと最初の項目の間と、項目の間のディレクティブは、その位置に残し、
-両側に空白があるかどうかは変えず、空白の連なりは空白 1 つにします。
-[fixture: lists/directive-after-keyword-kept]
-[fixture: lists/directive-between-items-kept]
-[fixture: lists/directive-in-list-runs-collapsed]
+[ディレクティブ](#ディレクティブ)のとおりに置きます。
+[fixture: lists/directive-after-keyword]
+[fixture: lists/directive-between-items] [fixture: lists/directive-in-list-runs]
 
 項目のない `,` はそのまま残します。 [fixture: lists/empty-items-kept]
 リストの末尾の空白は落とします。 [fixture: lists/trailing-whitespace-dropped]
@@ -586,18 +608,20 @@ gantt
 
 `weekday` と `weekend` の文は、キーワード、空白 1 つ、日の順に印字します。
 間の空白や改行がどれだけ書かれていても同じです。
-日は書かれた大文字小文字を保ちます（Db が小文字にします）。
+`monday` と `friday` は、mermaid.js の文書の例のとおり、小文字で印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
+それ以外の日は、書かれた大文字小文字を保ち、Db が小文字にします。
 [fixture: weekday-and-weekend/one-space]
-[fixture: weekday-and-weekend/day-case-kept]
+[fixture: weekday-and-weekend/day-case-one-form]
 [fixture: weekday-and-weekend/day-on-next-line]
 行末の空白は落とします。
 `inclusiveEndDates` の後も同じです。
 [fixture: weekday-and-weekend/trailing-whitespace-dropped]
 キーワードと日の間のディレクティブはその位置に残します。
-[fixture: weekday-and-weekend/directive-between-keyword-and-day-kept]
+[fixture: weekday-and-weekend/directive-between-keyword-and-day]
 
 入力
-([weekday-and-weekend/day-case-kept-input.mmd](../tests/fixtures/gantt/weekday-and-weekend/day-case-kept-input.mmd)):
+([weekday-and-weekend/day-case-one-form-input.mmd](../tests/fixtures/gantt/weekday-and-weekend/day-case-one-form-input.mmd)):
 
 ```mmd
 gantt
@@ -607,13 +631,13 @@ WEEKDAY Tuesday
 ```
 
 出力
-([weekday-and-weekend/day-case-kept-output.mmd](../tests/fixtures/gantt/weekday-and-weekend/day-case-kept-output.mmd)):
+([weekday-and-weekend/day-case-one-form-output.mmd](../tests/fixtures/gantt/weekday-and-weekend/day-case-one-form-output.mmd)):
 
 ```mmd
 gantt
-  weekday MONDAY
-  weekend Friday
-  WEEKDAY Tuesday
+  weekday monday
+  weekend friday
+  weekday Tuesday
 ```
 
 入力
@@ -639,17 +663,21 @@ gantt
 
 ### キーワードの大文字小文字
 
-キーワードは書かれた大文字小文字を保ちます。
+キーワード `axisFormat`、`dateFormat`、`excludes`、`section`、`tickInterval`、
+`title`、`weekday`、`weekend` は、
+mermaid.js の文書の例が使う大文字小文字で印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
 mermaid.js はどの大文字小文字でも読み、Db は同じです。
-大文字小文字は強制されないので、作者が選んだものとして、書き換えません。
-[fixture: keyword-case/keywords-kept]
+それ以外のキーワード（`TodayMarker`、`Includes`、`INCLUSIVEENDDATES`、
+アクセシビリティのキーワード）は、書かれた大文字小文字を保ちます。
+[fixture: keyword-case/keywords-one-form]
 [fixture: keyword-case/click-keywords-kept]
 ヘッダーの `gantt` は小文字だけが検出され、タスクのタグは `active`、`done`、
 `crit`、`milestone`、`vert` の大文字小文字のとおりに読まれるので、
 `Done` はタグではなく、変えません。 [fixture: keyword-case/tags-case-kept]
 
 入力
-([keyword-case/keywords-kept-input.mmd](../tests/fixtures/gantt/keyword-case/keywords-kept-input.mmd)):
+([keyword-case/keywords-one-form-input.mmd](../tests/fixtures/gantt/keyword-case/keywords-one-form-input.mmd)):
 
 ```mmd
 gantt
@@ -670,21 +698,21 @@ ACCDESCR { d }
 ```
 
 出力
-([keyword-case/keywords-kept-output.mmd](../tests/fixtures/gantt/keyword-case/keywords-kept-output.mmd)):
+([keyword-case/keywords-one-form-output.mmd](../tests/fixtures/gantt/keyword-case/keywords-one-form-output.mmd)):
 
 ```mmd
 gantt
-  DATEFORMAT YYYY
-  AxisFormat %m
-  TICKINTERVAL 1week
+  dateFormat YYYY
+  axisFormat %m
+  tickInterval 1week
   TodayMarker off
-  TITLE T
-  Section S
-    EXCLUDES weekends
+  title T
+  section S
+    excludes weekends
     Includes monday
     INCLUSIVEENDDATES
-    WEEKDAY Monday
-    WEEKEND FRIDAY
+    weekday monday
+    weekend friday
     ACCTITLE: T
     AccDescr: d
     ACCDESCR { d }
@@ -705,20 +733,32 @@ ID の間の `,` は両側の ID に接します。
 文は、ID が指すタスクに依存しません。
 [fixture: click-statements/ids-unknown-and-duplicate]
 
-呼び出しの名前と引数は、中の空白と改行も含めて書かれたまま印字しますが、
-空白だけの引数は落とします（[トークンの間の空白](#トークンの間の空白)を参照）。
-`f ()` の名前は `f` と空白で、`f( 1, 2 )` の引数は空白、`1, 2`、空白であり、
-Db が持ちます。
-リンクの文字列も書かれたままです。
-[fixture: click-statements/call-name-and-arguments-kept]
-[fixture: click-statements/href-string-kept]
+呼び出しの名前は、中の空白と改行も含めて書かれたまま印字します。
+（[トークンの間の空白](#トークンの間の空白)を参照）。
+`f ()` の名前は `f` と空白です。
+引数の両端と `,` の前には空白を置かず、後ろに空白を 1 つ置きます。
+`f( 1,2 )` は `f(1, 2)` と印字します。
+mermaid.js は引用符の外の `,` で引数を分け、各部分の両端の空白を除き、
+同じ引数で関数を呼ぶからです。
+（[同じに描かれる呼び出しの引数](./compatibility.ja.md#同じに描かれる呼び出しの引数)）。
+引用符の中の空白は残し、空の部分を含む引数も書かれたままにします。
+空白だけの引数は落とします。
+[fixture: click-statements/call-name-kept-arguments-spaced]
+[fixture: click-statements/call-arguments-spaced]
+mermaid.js の行の規則が読むかもしれない引数の間の隙間は、
+空白があるかないかを保ちます。
+`click t1 call f(style:x,#b;c)` は書かれたまま残します。
+`,` の後に空白を置くと、規則が無視する最後の `;` が変わるからです。
+（[同じに描かれる呼び出しの引数](./compatibility.ja.md#同じに描かれる呼び出しの引数)）。
+[fixture: click-statements/call-arguments-line-rule-kept]
+リンクの文字列も書かれたままです。 [fixture: click-statements/href-string-kept]
 複数行に書かれた文字列や引数は、
 書かれたまま印字します（[複数行の値](#複数行の値)を参照）。
 [fixture: click-statements/string-over-lines-kept]
 部分の間にコメント行かディレクティブがあると、その改行を保ち、
 [複数行の文](#複数行の文)に従って構造部分の続きの列をそろえます。
 [fixture: click-statements/comment-line-between-parts-kept]
-[fixture: click-statements/directive-between-parts-kept]
+[fixture: click-statements/directive-between-parts]
 
 入力
 ([click-statements/ids-touch-commas-input.mmd](../tests/fixtures/gantt/click-statements/ids-touch-commas-input.mmd)):
@@ -769,7 +809,7 @@ gantt
 ```
 
 入力
-([click-statements/call-name-and-arguments-kept-input.mmd](../tests/fixtures/gantt/click-statements/call-name-and-arguments-kept-input.mmd)):
+([click-statements/call-name-kept-arguments-spaced-input.mmd](../tests/fixtures/gantt/click-statements/call-name-kept-arguments-spaced-input.mmd)):
 
 ```mmd
 gantt
@@ -782,14 +822,14 @@ click id1 call   f()
 ```
 
 出力
-([click-statements/call-name-and-arguments-kept-output.mmd](../tests/fixtures/gantt/click-statements/call-name-and-arguments-kept-output.mmd)):
+([click-statements/call-name-kept-arguments-spaced-output.mmd](../tests/fixtures/gantt/click-statements/call-name-kept-arguments-spaced-output.mmd)):
 
 ```mmd
 gantt
   a :id1, 1d
   click id1 call f ()
-  click id1 call f( 1, 2 )
-  click id1 call f(1,2)
+  click id1 call f(1, 2)
+  click id1 call f(1, 2)
   click id1 call f()
   click id1 call f()
 ```
@@ -818,8 +858,10 @@ Mermaid が説明から LF 後の字下げを除くためです。
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-text-on-opening-line]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
-テキストの中の空白はテキストの一部で、残ります。
-[fixture: accessibility-statements/block-inner-whitespace-kept]
+テキストの中の空白とタブの連なりは、空白 1 つで印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+[fixture: accessibility-statements/block-inner-runs-collapsed]
+[fixture: accessibility-statements/accessibility-lines-runs-collapsed]
 キーワードとコロンや括弧の間と、その後のディレクティブはその位置に残します。
 [fixture: accessibility-statements/directive-around-colon-and-braces-kept]
 
@@ -946,10 +988,20 @@ trivia の改行を保ちます。
 
 title、section、設定、タスクでは、値の空白が Db の一部なので、
 複数行の trivia を含む配置を元のまま保ちます。
-文の内部か最終行の `;`、物理行を結ぶコメント領域、リスト区切りの U+FEFF も、
-元の配置を保ちます。 [fixture: multi-line-statements/comment-line-inside-kept]
+click 文などの trivia 行を整形する文では、
+改行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
+その改行を残します。
+それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
+最終行の別の文にある `;` も、同じ判定をします。
+物理行を結ぶコメント領域とリスト区切りの U+FEFF も、元の配置を保ちます。
+[fixture: multi-line-statements/breaks-decided-one-by-one]
+[fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
+[fixture: multi-line-statements/semicolon-joining-changes-kept]
+[fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
-[fixture: multi-line-statements/semicolon-inside-kept]
+`;` があるだけでは、行をつなぐ妨げにはなりません。
+[fixture: multi-line-statements/semicolon-inside-joined]
 
 入力
 ([multi-line-statements/value-on-next-line-joined-input.mmd](../tests/fixtures/gantt/multi-line-statements/value-on-next-line-joined-input.mmd)):
@@ -1068,7 +1120,8 @@ gantt
 説明ブロックの括弧が該当します。
 引数が空白だけの呼び出しの括弧は互いに接し、`f(    )` は `f()` になります。
 mermaid.js はどちらも同じ呼び出しとして読むからです。
-括弧の間にディレクティブがあれば、その両側の空白の有無を保ちます。
+括弧の間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおり、
+両側の括弧に接します。
 括弧の間に改行があっても同じで、そこにあるコメント行は 1 行のまま残ります。
 [fixture: whitespace-between-tokens/blank-arguments]
 [fixture: click-statements/callback-blank-parentheses-touch]
@@ -1229,13 +1282,14 @@ gantt
 ### ディレクティブ
 
 単独の行のディレクティブは周りの文と同じ段に置きます。
-同じ印字行の中では、両側の空白の有無を残します。
-空白がある所には空白 1 つを置き、接している所は接したままにします。
+同じ印字行の中では、flowchart と同じく、
+隙間をディレクティブがないものとして印字し、
+ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
 [fixture: directives/kept] [fixture: directives/before-header]
 [fixture: directives/after-header-on-same-line]
 [fixture: directives/after-header-touching-kept]
 [fixture: directives/whitespace-on-both-sides-collapsed]
-[fixture: directives/touching-one-side-kept]
+[fixture: directives/touching-one-side]
 [fixture: directives/after-statement-at-end-of-line]
 [fixture: directives/statement-after-directive-line]
 
@@ -1245,10 +1299,10 @@ gantt
 
 [fixture: gantt/directives/split-directive-gap]
 
-文の単位の間の指令は元の gap に残し、同じ行の両側の接触・分離を保ちます。
+文の単位の間の指令は元の gap に残し、
+[ディレクティブ](#ディレクティブ)のとおりに置きます。
 構造部分の続きの列は[複数行の文](#複数行の文)に従います。
-値の中の指令は、そのテキストの一部です。
-[fixture: directives/between-units-kept]
+値の中の指令は、そのテキストの一部です。 [fixture: directives/between-units]
 [fixture: directives/between-task-parts-kept]
 [fixture: directives/inside-values-kept] [fixture: directives/over-lines-kept]
 閉じられていないディレクティブはテキストの残りを取り、書かれたまま残します。
@@ -1278,7 +1332,7 @@ gantt
 ```
 
 入力
-([directives/touching-one-side-kept-input.mmd](../tests/fixtures/gantt/directives/touching-one-side-kept-input.mmd)):
+([directives/touching-one-side-input.mmd](../tests/fixtures/gantt/directives/touching-one-side-input.mmd)):
 
 ```mmd
 gantt
@@ -1287,16 +1341,16 @@ title%%{init: {}}%% T
 ```
 
 出力
-([directives/touching-one-side-kept-output.mmd](../tests/fixtures/gantt/directives/touching-one-side-kept-output.mmd)):
+([directives/touching-one-side-output.mmd](../tests/fixtures/gantt/directives/touching-one-side-output.mmd)):
 
 ```mmd
 gantt
   weekday monday %%{init: {}}%%
-  title%%{init: {}}%% T
+  title %%{init: {}}%%T
 ```
 
 入力
-([directives/between-units-kept-input.mmd](../tests/fixtures/gantt/directives/between-units-kept-input.mmd)):
+([directives/between-units-input.mmd](../tests/fixtures/gantt/directives/between-units-input.mmd)):
 
 ```mmd
 gantt
@@ -1307,11 +1361,11 @@ click id1 call f%%{init: {}}%%()
 ```
 
 出力
-([directives/between-units-kept-output.mmd](../tests/fixtures/gantt/directives/between-units-kept-output.mmd)):
+([directives/between-units-output.mmd](../tests/fixtures/gantt/directives/between-units-output.mmd)):
 
 ```mmd
 gantt
-  weekday %%{init: {}}%% monday
+  weekday %%{init: {}}%%monday
   a :id1, 1d
   click %%{init: {}}%%id1 href "u"
   click id1 call f%%{init: {}}%%()
@@ -1395,6 +1449,11 @@ U+2028 と U+2029 は、Gantt 図の単位の間の空白であり、
 [test: U+2028 between weekday and its day]
 [test: U+2028 after the colon of accTitle]
 [test: U+2028 between a click id and its part]
+タイトル、日付書式、軸の書式の末尾では、
+U+2028 と U+2029 は空白やタブではなくテキストの文字なので、
+その後の空白はテキスト末尾のほかの空白と一緒に除き、前の空白は残します。
+[test: U+2028 and spaces at the end of a title]
+[test: U+2029 and spaces at the end of a date format]
 
 ### 空白の文字
 

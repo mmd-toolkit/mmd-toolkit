@@ -1,11 +1,13 @@
 import type {
   AgentflowClickCallbackStatement,
+  AgentflowDiagram,
   AgentflowLabel,
   Node,
   Range,
   AgentflowLink,
   AgentflowShape,
   FlowchartClickCallbackStatement,
+  FlowchartDiagram,
   FlowchartLabel,
   FlowchartLink,
   FlowchartShape,
@@ -25,7 +27,11 @@ import {
 } from "./layout.ts"
 import type { KeptLines } from "./kept-lines.ts"
 import { holdsJoiningRegion, lineStartOf } from "./kept-lines.ts"
-import { accessibilityRules } from "./statement-rules.ts"
+import {
+  accessibilityRules,
+  endOfJoinedStyle,
+  hasBlankStrokeValue,
+} from "./statement-rules.ts"
 import { findWrittenWhitespaceEnd } from "./gap.ts"
 import type { Source } from "./source.ts"
 import {
@@ -35,6 +41,7 @@ import {
   findTokenEndingBefore,
   findTriviaBetween,
   isWhitespace,
+  skipSpacesAndTabs,
 } from "./source.ts"
 
 type GraphLabel = AgentflowLabel | FlowchartLabel
@@ -118,14 +125,19 @@ export function addLinkRules(
   )
   expectValue(opening, "|")
   rules.set(opening.range[0], "none")
-  if (link.label.kind !== "text") return
-  const edge = labelEdgeRule(source, link.label)
-  rules.set(link.label.range[0], edge)
   const closing = expectToken(
     findStructuralToken(source, link.label.range[1]),
     "the second `|` of a link label",
   )
   expectValue(closing, "|")
+  if (link.label.kind !== "text") {
+    // The closing `|` touches the closing quote, as the closing bracket of a
+    // shape does (docs/flowchart.md, Label inner whitespace).
+    rules.set(closing.range[0], "none")
+    return
+  }
+  const edge = labelEdgeRule(source, link.label)
+  rules.set(link.label.range[0], edge)
   rules.set(closing.range[0], edge)
 }
 
@@ -241,23 +253,46 @@ function keepsLeadingWhitespace(label: GraphLabel, opening: Token): boolean {
   return label.value.slice(0, wordEnd).includes("@")
 }
 
-/** Graph headers share the authored keyword/direction layout. */
+/**
+ * Graph headers share the authored keyword/direction layout. The direction
+ * stands after one space, also where a symbol such as `<` touched the keyword
+ * (docs/flowchart.md, Direction).
+ */
 export function layoutGraphHeader(
   source: Source,
-  diagram: Node,
+  diagram: AgentflowDiagram | FlowchartDiagram,
   end: number,
 ): AtomLayout {
   if (holdsJoiningRegion(source, diagram.range[0], end))
     return keptAsWritten(diagram.range[0], end)
+  const rules = new Map<number, GapRule>()
+  if (diagram.direction !== null) {
+    const keyword = expectToken(
+      findStructuralToken(source, diagram.range[0]),
+      "the keyword of a header",
+    )
+    const direction = expectToken(
+      findStructuralToken(source, keyword.range[1]),
+      "the direction of a header",
+    )
+    expectValue(direction, diagram.direction)
+    rules.set(direction.range[0], "space")
+  }
   return {
     atoms: collectAtoms(source, diagram.range[0], end, [], []),
-    rules: new Map(),
+    rules,
     outdented: new Set(),
     lineBreaks: "kept",
   }
 }
 
-/** The required null-style whitespace can extend past a statement's range. */
+/**
+ * The required null-style whitespace can extend past a statement's range, and
+ * so can the whitespace that makes the value of the last `stroke` of a
+ * `linkStyle` blank: mermaid.js draws no colour of an arrowhead from a
+ * `stroke:` with a blank value and does not try the next one
+ * (docs/flowchart.md, Style trailing whitespace).
+ */
 export function findStyleStatementEnd(
   source: Source,
   statement: Node & { readonly styles: readonly (Node | null)[] },
@@ -266,9 +301,18 @@ export function findStyleStatementEnd(
     findTokenEndingBefore(source, statement.range[1]),
     "the end of a style statement",
   )
-  return statement.styles.at(-1) !== null && !last.value.endsWith(",")
-    ? statement.range[1]
-    : findWrittenWhitespaceEnd(source, statement.range[1])
+  const written = findWrittenWhitespaceEnd(source, statement.range[1])
+  if (statement.styles.at(-1) === null || last.value.endsWith(",")) {
+    return written
+  }
+  if (!statement.type.endsWith("LinkStyleStatement")) return statement.range[1]
+  // The whitespace after the last style of a `linkStyle` that mermaid.js reads
+  // (see `normalizeStyleList`).
+  const tail = skipSpacesAndTabs(source, last.range[1], written)
+  if (hasBlankStrokeValue(source.text.slice(last.range[0], tail))) {
+    return written
+  }
+  return Math.max(statement.range[1], endOfJoinedStyle(source, last.range))
 }
 
 /** The end of a graph header's keyword and optional authored direction. */

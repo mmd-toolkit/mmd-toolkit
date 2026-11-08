@@ -27,10 +27,10 @@ const cases: readonly MarkdownCase[] = [
     name: "cynefin Markdown: top-level",
     input: "```mermaid\ncynefin-beta:complex\"FencedAlpha\"'FencedBeta'\n```\n",
     output:
-      "```mermaid\ncynefin-beta:\n  complex\n    \"FencedAlpha\"\n    'FencedBeta'\n```\n",
+      '```mermaid\ncynefin-beta\n  complex\n    "FencedAlpha"\n    "FencedBeta"\n```\n',
     payloadInput: "cynefin-beta:complex\"FencedAlpha\"'FencedBeta'",
     payloadOutput:
-      "cynefin-beta:\n  complex\n    \"FencedAlpha\"\n    'FencedBeta'\n",
+      'cynefin-beta\n  complex\n    "FencedAlpha"\n    "FencedBeta"\n',
     options: {},
   },
   {
@@ -92,10 +92,10 @@ const cases: readonly MarkdownCase[] = [
     input:
       '```mermaid\ncynefin-beta:%%{!host-header}%%\ncomplex "HostHidden"\n```\n',
     output:
-      '```mermaid\ncynefin-beta:%%{!host-header}%%\n  complex\n    "HostHidden"\n```\n',
+      '```mermaid\ncynefin-beta%%{!host-header}%%\n  complex\n    "HostHidden"\n```\n',
     payloadInput: 'cynefin-beta:%%{!host-header}%%\ncomplex "HostHidden"',
     payloadOutput:
-      'cynefin-beta:%%{!host-header}%%\n  complex\n    "HostHidden"\n',
+      'cynefin-beta%%{!host-header}%%\n  complex\n    "HostHidden"\n',
     options: {},
   },
   {

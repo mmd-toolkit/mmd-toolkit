@@ -38,7 +38,7 @@ mermaid.js はコンマの後の空白を次の id の一部として読むた�
 %% eslint @mmd-toolkit/block-no-spaced-class-id: error
 block
   A B
-  classDef c fill:#f00
+  classDef c fill: #f00
   class A, B c
 ```
 
@@ -48,7 +48,7 @@ block
 %% eslint @mmd-toolkit/block-no-spaced-class-id: error
 block
   A B
-  classDef c fill:#f00
+  classDef c fill: #f00
   class A,B c
 ```
 

@@ -15,7 +15,9 @@ semicolon の保護は普通の整形より優先します。
 
 見出しを第 1 列に置き、普通の最初の文を次行に移します。
 見出しを見つけやすくするためです。
-Db が等しい別名へ統一せず、作者が書いた `treemap` と `treemap-beta` を保ちます。
+Db が同じになる別名から一つを選ばず、
+書かれたキーワード `treemap` または `treemap-beta`
+を保ちます（[ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)を参照）。
 コロンは足さず、空本文も保ちます。
 
 [fixture: treemap/header/stable]
@@ -250,12 +252,20 @@ treemap
 
 ### Numbers
 
-NumericLiteral の source span を保ちます。
-区切り、underscore、dot、先頭と末尾のゼロ、桁を残します。
+NumericLiteral が数字の並びに任意の小数部を続けた形か、小数部だけの形なら、
+最短の形で印字します。
+小数部の末尾のゼロを除き、先頭の `.` の前には `0` を置きます。
+`1.50` は `1.5`、`.5` は `0.5` になります。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+それ以外の source span はすべて書かれたままにします。
+符号、末尾の `.`、区切り、underscore、2 つ目の dot、整数部の先頭のゼロ、
+15 桁を超えるものが対象です。
 数値 field から印字し直しません。
 Mermaid は `1_000` を 1 と読みます。
 ほかの綴りも丸め、NaN、overflow、underflow になりえます。
 再符号化すると Db が変わったり、拒否される構文になったりします。
+[fixture: treemap/numbers/shortest-form] [fixture: treemap/numbers/forms-kept]
+[fixture: treemap/numbers/trailing-dot-kept]
 
 [fixture: treemap/numbers/comma]
 
@@ -294,9 +304,13 @@ treemap
 ### Names
 
 StringLiteral の source span 全体を保ちます。
-引用符、反対側の引用符、空名、空白だけの名、padding、backslash、HTML、entity、
-percent の文字と物理継続列を残します。
-singleQuote では書き換えません。
+空名、padding、backslash、HTML、entity、percent の文字と物理継続列を残します。
+名前の中の空白とタブの連なりは空白 1 つにして印字します。
+空白とタブだけの名前は空白 1 つになります。
+`'` で囲んだ名前は `"` で囲んで印字しますが、内容に `'`、`"`、backslash、改行、
+バッククォート、`&`、`#`、`<` が含まれる場合は書かれたままにします。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+`singleQuote` は読みません。
 backslash は引用符を escape せず、`\n` も decode しません。
 これらの書き方は名前や受理を変えうるためです。
 
@@ -325,7 +339,7 @@ backslash は引用符を escape せず、`\n` も decode しません。
 
 ```mmd
 treemap
-  '  Other "quote"  ': 1
+  ' Other "quote" ': 1
 ```
 
 ### Class definitions
@@ -365,7 +379,7 @@ AST が既に style として所有しているためです。
 style がその定義に属することを見分けやすくするためです。
 最大 separator はこの字下げを取り除き、style 値そのものは変えません。
 すでに字下げの run を供給する native の inline コメントと、
-semicolon で保護する prefix は、従来の列を保ちます。
+複数行にわたる文の semicolon で保護する区間は、従来の列を保ちます。
 
 [fixture: treemap/style-gaps/spaces]
 
@@ -513,8 +527,22 @@ style のない `classDef` でも同じです。
 
 それ以外の書かれた semicolon は保ちます。
 選ばれて無視されるもの、別の `;` の隣にあるもの、値の文字です。
-共有の行と prefix の保護を使い、区間の原文と列を保ちます。
-保護区間の内部の行に字下げを足しません。
+保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
+ほかの場所と同じように整形します。
+この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
+`style` か `classDef` の後の最初の `:` から、
+最後の保つ `;` の前の最後の `#` までに空白がない並びを読みます。
+その範囲の隙間と余白は空白の有無を保ち、空白の連続は空白 1 つにします。
+範囲の外は、この図種の通常の規則に従います。
+どの部分の配置も持たないテキストは、書かれたまま残します。
+複数行にわたる文の行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
+書かれたまま残します。
+それ以外の複数行の文は、1 行の文と同じように整形します。
+[fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted]
+[fixture: semicolons/protected-class-column]
+複数行にわたる文の保護区間は元の列を保ち、内部の行に字下げを足しません。
 保持する行が row の境界を拘束する場合は、本文を原文保持します。
 一部の行の indent だけを固定して残りをそろえません。
 親子と semicolon の選択を、保護された末尾も含めて保つためです。
@@ -556,10 +584,15 @@ treemap
 共有の common line 配置を使います。
 普通の common 空白の外端を除き、非空値の前を space 1 個にします。
 null と空白だけの値は `title` だけにします。
-Db の等しい外側の空白から 1 つを選び、
-内側の空白や引用符に見える文字を保つためです。
+Db の等しい外側の空白から 1 つを選び、引用符に見える文字を保ち、
+内側の空白とタブの連なりは空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 コメントや directive を越えて次の物理行から値を取りません。
 trivia を持つ値は書かれた境界を保ちます。
+題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: title/title-directives-end-blanks-dropped]
 
 空の title の次のコメント行は次の文にそろえ、title の値にはしません。
 [fixture: treemap/title/empty-next-comment]
@@ -581,7 +614,7 @@ trivia を持つ値は書かれた境界を保ちます。
 
 ```mmd
 treemap
-  title Topic  words
+  title Topic words
   "AfterTitle": 3
 ```
 
@@ -593,6 +626,10 @@ colon を keyword に付け、trim した非空値の前を space 1 個にし、
 内側の文字を保ち、colon 後の波括弧は行の文字として残します。
 同じ読みの外側の空白を、ほかの図種とそろえるためです。
 trivia の境界を保ち、次行の値を連結しません。
+値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: treemap/accessibility-lines/title-padding]
 

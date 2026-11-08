@@ -35,7 +35,7 @@ mermaid.js が名前のないリンクに付ける `L_A_B_0` のような id は
 
 定義のない id に `style` が頂点を作った後は、その id の後の `style`、`class`、
 `click` を報告しない。
-`style C fill:red` の後の `class C foo` は、`C` にクラスを付ける。
+`style C fill: red` の後の `class C foo` は、`C` にクラスを付ける。
 
 リンクの id を指す `style` も報告しない。
 それはリンクにスタイルを付けず、リンクの後では何もせず、
@@ -47,13 +47,13 @@ mermaid.js が名前のないリンクに付ける `L_A_B_0` のような id は
 %% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
   A --> B
-  style C fill:red
+  style C fill: red
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
-  classDef foo fill:#f00
+  classDef foo fill: #f00
   A --> B
   class C foo
 ```
@@ -70,7 +70,7 @@ flowchart LR
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
-  style A fill:red
+  style A fill: red
   A --> B
 ```
 
@@ -80,13 +80,13 @@ flowchart LR
   subgraph S
     A
   end
-  style S fill:red
+  style S fill: red
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
-  classDef foo fill:#f00
+  classDef foo fill: #f00
   A e1@--> B
   class e1 foo
 ```

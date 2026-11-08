@@ -26,7 +26,7 @@ import {
   layoutBlockOpening,
   layoutClassHeader,
   layoutClassStatement,
-  printClassMethod,
+  printClassMember,
 } from "./class-layout.ts"
 import { expectToken, expectValue } from "./layout.ts"
 import { narrowPath } from "./paths.ts"
@@ -78,13 +78,13 @@ export function printClass(
         options,
       )
     case "ClassMethod":
+    case "ClassAttribute":
       return (
-        printClassMethod(source, node) ??
+        printClassMember(source, node) ??
         printAsWritten(source, node.range[0], node.range[1])
       )
-    case "ClassAttribute":
     case "ClassAnnotation":
-      // A member line of a body, kept as written (docs/class.md, Member
+      // An annotation line of a body, kept as written (docs/class.md, Member
       // lines).
       return printAsWritten(source, node.range[0], node.range[1])
     default:

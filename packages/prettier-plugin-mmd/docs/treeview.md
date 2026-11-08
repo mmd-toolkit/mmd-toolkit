@@ -37,6 +37,22 @@ treeView-beta
   Root
 ```
 
+### Keyword case
+
+The annotation `icon(` is read in lower case only: `ICON(logos:react)` is a
+name, and stays as written. [fixture: keyword-case/icon-kept]
+
+Input (escaped): `"treeView-beta\n'plain'\nICON(logos:react)"`.
+
+Output
+([keyword-case/icon-kept-output.mmd](../tests/fixtures/treeview/keyword-case/icon-kept-output.mmd)):
+
+```mmd
+treeView-beta
+  "plain"
+  ICON(logos:react)
+```
+
 ### Modes
 
 Keep the original indentation or box-drawing mode. The mode test still examines
@@ -466,7 +482,7 @@ treeview/annotation-lines/box-redraw-sole-common-mode-selector-preserved]
 
 [test: treeview/multiline-values/box-redraw-quote-value-ps-keep]
 
-[fixture: treeview/tabs/box-redraw-description-tail-as-value]
+[fixture: treeview/tabs/box-redraw-description-tail-dropped]
 
 [fixture: treeview/multiline-values/box-redraw-value-prefix-width-preserved]
 
@@ -859,7 +875,7 @@ treeView-beta
 
 [fixture: treeview/tabs/box-redraw-branch-excluded-tail-trim]
 
-[fixture: treeview/tabs/box-redraw-description-tail-as-value]
+[fixture: treeview/tabs/box-redraw-description-tail-dropped]
 
 [fixture: treeview/branch-prefixes/box-redraw-arbitrary-and-value-width]
 
@@ -920,7 +936,7 @@ a
 └── b	c
 ```
 
-[fixture: treeview/tabs/box-redraw-description-tail-as-value]
+[fixture: treeview/tabs/box-redraw-description-tail-dropped]
 
 [fixture: treeview/tabs/box-redraw-tab-prefix]
 
@@ -1150,7 +1166,7 @@ Output
 treeView-beta
   "A"
   "B"
-  'C'
+  "C"
 ```
 
 [fixture: treeview/branch-prefixes/rounding-half]
@@ -1472,18 +1488,22 @@ Output
 
 ```mmd
 treeView-beta
-  entry :::%%{wrap}%% X
+  entry :::%%{wrap}%%X
 ```
 
 ### Descriptions
 
-Keep the full description literal after `##`, including leading/trailing
-padding, whitespace-only text, LS/PS, percent text and apparent annotation
-syntax. Null stays null. Db-equal trimming would still erase authored text;
-internal whitespace changes can change the description. The gap before `##`
-follows Annotation gaps.
+One space stands between `##` and the text of a description, whether the spaces
+and tabs there were many, or none: `##   text` and `##text` are printed
+`## text`, since mermaid.js trims them from the description and draws the same
+figure. The spaces and tabs at the end of the description go for the same reason
+(see [Trailing whitespace](#trailing-whitespace)). Keep the rest of the
+description literal, including whitespace-only text, LS/PS, percent text and
+apparent annotation syntax. Null stays null. Internal whitespace changes can
+change the description. The gap before `##` follows Annotation gaps.
 
-[fixture: treeview/descriptions/description-padding]
+[fixture: treeview/descriptions/description-padding] [fixture:
+treeview/descriptions/description-touches-marker]
 
 [fixture: treeview/descriptions/description-empty]
 
@@ -1513,11 +1533,16 @@ treeView-beta
 
 ### Names
 
-Keep complete bare-name and StringLiteral source spans: quote choice, empty
-names, backslashes, internal and trailing whitespace, HTML/entity spelling and
-directory slashes. singleQuote does not requote them. Even Db-equal requoting
-loses spelling; quoting a padded bare directory can change its name and
-file/directory type.
+Keep complete bare-name and StringLiteral source spans: empty names,
+backslashes, internal whitespace, the whitespace inside quotes, HTML/entity
+spelling and directory slashes; only the spaces and tabs at the end of a bare
+name at the end of a line go (see [Trailing whitespace](#trailing-whitespace)).
+A string between `'` is printed between `"`, unless its text holds a `'`, a `"`,
+a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+and `singleQuote` is not read. Quoting a padded bare directory can change its
+name and file/directory type. [fixture:
+treeview/names/single-quote-sensitive-kept]
 
 [fixture: treeview/names/name-bare-tail]
 
@@ -1633,10 +1658,20 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 
 Keep common statements in their preamble and source order. Use shared
 `title value` with trimmed exterior common whitespace, or bare `title` for
-null/whitespace-only values, preserving internal text. This chooses consistent
+null/whitespace-only values, printing a run of spaces and tabs inside the text
+as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+The directives that end a title are printed with one space before each that has
+whitespace before it, and the whitespace after the last one is left out,
+whatever the whitespace at the end of the line (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: title/title-directives-end-blanks-dropped] This chooses consistent
 Db-equivalent outer spacing without taking a next-line value. Follow AST
 boundaries for `titlex` and `title"node"`; title still stays written when the
-summary omits it.
+summary omits it. A `;` that the line rule ignores before the first character of
+the value is a gap item whether one whitespace character or more comes before
+it: `title  ;T` and `title ;T` are printed alike. [fixture:
+treeview/semicolons/ignored-semicolon-title-value-second-space]
 
 [fixture: treeview/title/title-shared]
 
@@ -1695,9 +1730,16 @@ treeView-beta
 
 Use shared `accTitle: value` and `accDescr: value`: colon touching the keyword,
 one space before trimmed nonempty values, no trailing space for empty values.
-Retain internal whitespace, brace-looking line values and trivia boundaries. The
-common converter permits these equivalent outer gaps; internal Db-equal
-normalization is unnecessary. Never borrow text from the next line.
+Print a run of spaces and tabs inside the value of an `accDescr` as one space
+(see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+but not that of an `accTitle`, which the browser shows as a tooltip, and retain
+brace-looking line values and trivia boundaries. The common converter permits
+these equivalent outer gaps. Never borrow text from the next line. The
+directives that end the value are printed with one space before each that has
+whitespace before it, and the whitespace after the last one is left out (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: treeview/accessibility-lines/acctitle-padding]
 
@@ -2062,7 +2104,9 @@ treeView-beta
 
 ### Directives
 
-Keep directive text and order. Within one printed line retain contact or
+Keep directive text and order. Within one printed line a directive in the gap of
+a title, an accessibility statement, or the class after `:::` is placed as under
+[Directives](./flowchart.md#directives); in the other gaps it retains contact or
 separation on each side, except between directives moved to a new directive-only
 line as described in [Statements one per line](#statements-one-per-line). When
 units split, attach the directive to the following unit and retain its right
@@ -2155,14 +2199,27 @@ treeView-beta
 
 ### Semicolons
 
-Keep every authored semicolon through shared textual-prefix and kept-line
-protection; treeview has no grammatical semicolon and style/classDef words alone
-do not freeze a line. Draw a safe outer box head around protected content, while
-protected interiors and value columns remain written. Retain the whole body when
-protected source row boundaries constrain parentage or when another Branch
-prefixes condition applies. These protections compose with unchanged value-owned
-prefixes on the same line or elsewhere in the diagram; they are not permission
-to discard a semicolon or partially redraw an unsafe body.
+Keep every authored semicolon. A segment that holds a kept `;` is formatted as
+anywhere else, except where formatting could change which `;` the line rule
+ignores. The rule reads a segment from the first `:` after `style` or `classDef`
+to the last `#` before its last kept `;`, with no whitespace between the `:` and
+the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps and the
+padding inside that stretch keep whether they hold whitespace, a run becoming
+one space, and the rest of the segment follows the ordinary rules of this
+diagram. Text that no part of the layout holds stays as written. A statement
+over several lines whose lines, joined with one space or with nothing, could
+change which `;` the line rule ignores keeps the text of each segment, up to its
+last kept `;`, as written; any other statement over several lines is formatted
+like one on a single line. [fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted] [fixture:
+semicolons/box-redraw-protected-value-on-enclosed-prefix-line] Treeview has no
+grammatical semicolon and style/classDef words alone do not freeze a line. Draw
+a safe outer box head around protected content, while protected interiors and
+value columns remain written. Retain the whole body when protected source row
+boundaries constrain parentage or when another Branch prefixes condition
+applies. These protections compose with unchanged value-owned prefixes on the
+same line or elsewhere in the diagram; they are not permission to discard a
+semicolon or partially redraw an unsafe body.
 
 [corpus fixture: treeview/semicolon-selected]
 
@@ -2406,16 +2463,41 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 
 ### Trailing whitespace
 
-Decide by owner: keep bare-name, description, quoted-interior, comment and
-directive tails as authored values. Move structural carried runs once. Common
-line values use shared outer trimming; a branch-line tail already excluded from
-the value is removed rather than carried. Adding a branch that would newly trim
-an owned tail retains the body. This avoids confusing value text with structural
-padding; significant fixture tails are not shown in code blocks.
+The spaces and tabs at the end of a line are left out where the line ends with a
+bare name or a description: mermaid.js trims the name and the description of a
+node, so the Db and the figure are the same without them. A description of
+spaces and tabs only, the whitespace inside a quoted name, the text of a
+standalone comment, and every other whitespace character stay as written. The
+gap before a directive that follows a name or a description is one space in the
+indented form and in the form with branch characters: mermaid.js removes the
+directive before it reads the value and drops the spaces and tabs at the end of
+the value, so the gap is in neither the Db nor the figure, and `R   %%{x}%%` is
+printed `R %%{x}%%`, the form of a title. Several directives are printed as at
+the end of a title (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)):
+`R   %%{x}%%   %%{y}%%  ` is printed `R %%{x}%% %%{y}%%`. [fixture:
+trailing-whitespace/directives-end-blanks-dropped] At the end of a name or a
+description, U+2028 and U+2029 are characters of the text and no spaces or tabs:
+the spaces after one are left out, and the spaces before it stay. [test:
+treeview/trailing-whitespace/spaces-after-trailing-line-separator] [test:
+treeview/trailing-whitespace/description-spaces-after-trailing-line-separator]
+Move structural carried runs once. Common line values use shared outer trimming;
+a branch-line tail already excluded from the value is removed rather than
+carried. Adding a branch that would newly trim an owned tail retains the body.
+This avoids confusing value text with structural padding; significant fixture
+tails are not shown in code blocks.
 
-[fixture: treeview/trailing-whitespace/trailing-bare-kept]
+[fixture: treeview/trailing-whitespace/trailing-bare-dropped]
 
-[fixture: treeview/trailing-whitespace/trailing-description-kept]
+[fixture: treeview/trailing-whitespace/trailing-description-dropped]
+
+[fixture: treeview/trailing-whitespace/trailing-description-blank-kept]
+
+[fixture: treeview/trailing-whitespace/trailing-directive-gap-one-space]
+
+[fixture: treeview/carried-indentation/box-redraw-carried-run-directive-gap]
+
+[fixture: treeview/comments/box-redraw-comment-prefix-directive-gap]
 
 [fixture: treeview/trailing-whitespace/trailing-quoted-interior]
 
@@ -2425,7 +2507,7 @@ padding; significant fixture tails are not shown in code blocks.
 
 [corpus fixture: treeview/box-tail-branch-no-carry]
 
-[fixture: treeview/tabs/box-redraw-description-tail-as-value]
+[fixture: treeview/tabs/box-redraw-description-tail-dropped]
 
 [fixture: treeview/tabs/box-redraw-tab-prefix]
 

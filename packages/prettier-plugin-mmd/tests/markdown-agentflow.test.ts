@@ -57,9 +57,9 @@ const cases: readonly MarkdownAgentflowCase[] = [
     input:
       "```mermaid\nagentflow-beta TB\nA@{ custom: x }%%{init: {}}%%-->B\n```\n",
     output:
-      "```mermaid\nagentflow-beta TB\n  A@{ custom: x }%%{init: {}}%%--> B\n```\n",
+      "```mermaid\nagentflow-beta TB\n  A@{ custom: x } %%{init: {}}%%--> B\n```\n",
     before: "agentflow-beta TB\nA@{ custom: x }%%{init: {}}%%-->B\n",
-    after: "agentflow-beta TB\n  A@{ custom: x }%%{init: {}}%%--> B\n",
+    after: "agentflow-beta TB\n  A@{ custom: x } %%{init: {}}%%--> B\n",
   },
   {
     name: "agentflow Markdown: interior trailing value and comment spaces",

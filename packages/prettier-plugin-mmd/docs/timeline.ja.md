@@ -298,17 +298,30 @@ timeline
 
 ### period と event
 
-period と event は、テキストと `:` の間の空白も含め、書かれたまま印字します。
+period と event は、行の最後の event の末尾の空白を除き、
+テキストと `:` の間の空白も含め、書かれたまま印字します。
+mermaid.js はその空白を Db に持ちますが、空白がなくても同じ event を描きます。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 Db は、period の末尾の空白（`:` の前の空白）と、
 event の `:` の後ろの 1 文字を除いた両端の空白を、値として持ちます。
 `2004 : a` と `2004: a` は別の period で、`a :   e` の event は `  e`、
 `a : e   ` の event は `e   ` です。
 そのため、timeline の `:` をそろえるための空白は残し、
 period に接した `:` は接したままにします。
+行末の `a : e   ` は `a : e` と印字し、`c : g   : h` は書かれたままにします。
+次の `:` との間に改行がある event も、行の最後の event です。
+`2020 : e1  ` の次に `: e2` の行が続くとき、`e1` の後ろの空白は除きます。
+このような event の末尾の directive は、前に空白があれば空白 1 つを置き、
+最後の directive の後ろの空白は除きます。
+`2020 : e1   %%{x}%%  ` は `2020 : e1 %%{x}%%` と印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)）。
+[fixture: periods-and-events/event-trailing-directive-blanks-dropped]
+[fixture: periods-and-events/event-two-directives-trailing-blanks-dropped]
 [fixture: periods-and-events/period-whitespace-kept]
-[fixture: periods-and-events/event-whitespace-kept]
+[fixture: periods-and-events/event-padding-kept-end-dropped]
 [fixture: periods-and-events/whitespace-only-event]
-[fixture: periods-and-events/trailing-whitespace-kept]
+[fixture: periods-and-events/period-trailing-kept-event-end-dropped]
+[fixture: periods-and-events/event-end-before-continuation-dropped]
 event の中の `:`、`#`、`%%` はテキストの文字で、
 後ろに空白が続かない `:` も同じです。
 [fixture: periods-and-events/colon-inside-event]
@@ -583,11 +596,22 @@ timeline
 
 ### title と section
 
-`title` と `section` は、値を書かれたまま印字します。
-両端の空白も Db が持つので残します。
-キーワードの後ろの区切りは、書かれた文字が何であっても空白 1 つにします。
+`title` は、キーワードの後ろに空白 1 つを置いて印字します。
 この形は journey と同じです。
-[fixture: titles-and-sections/value-whitespace-kept]
+値の先頭と末尾の空白は除きます。
+Db はその空白を持ちますが、図では描かれません。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+`title   History  ` は `title History` と印字します。
+中の空白とタブの連なりも、空白 1 つで印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+`section` の名前は、先頭と末尾の空白も含めて書かれたまま印字します。
+その空白で名前が異なる 2 つのセクションは別々に描かれ、
+除くとそうならないからです。
+半角空白とタブだけのタイトルは、書かれたままにします。
+[fixture: titles-and-sections/title-padding-dropped]
+[fixture: titles-and-sections/title-blank-kept]
+[fixture: titles-and-sections/section-padding-kept]
+[fixture: titles-and-sections/title-trailing-dropped-section-kept]
 [fixture: titles-and-sections/one-space-after-keyword]
 後ろの行に書かれた値は、キーワードの後ろに寄せて 1 行にします。
 間にコメント行があるときは、
@@ -599,7 +623,7 @@ timeline
 [fixture: titles-and-sections/special-characters-in-values]
 [fixture: titles-and-sections/section-ends-at-colon]
 キーワードと値の間の指令は、その場所に残します（[指令](#指令)を参照）。
-[fixture: titles-and-sections/directive-between-keyword-and-value-kept]
+[fixture: titles-and-sections/directive-between-keyword-and-value]
 
 入力
 ([titles-and-sections/special-characters-in-values-input.mmd](../tests/fixtures/timeline/titles-and-sections/special-characters-in-values-input.mmd)):
@@ -641,14 +665,16 @@ timeline
 
 ### キーワードの大文字小文字
 
-キーワードは、書かれた大文字小文字のまま残します。
+キーワード `section` と `title` は、mermaid.js の文書の例のとおり、
+小文字で印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
 mermaid.js はどの大文字小文字でも読み、Db は同じです。
-大文字小文字は強制されないので、作者が選んだものとして、書き換えません。
+アクセシビリティのキーワードは、書かれた大文字小文字のまま残します。
 ヘッダーの `timeline` は、小文字のものだけが検出されます。
-[fixture: keyword-case/keywords-kept]
+[fixture: keyword-case/keywords-one-form]
 
 入力
-([keyword-case/keywords-kept-input.mmd](../tests/fixtures/timeline/keyword-case/keywords-kept-input.mmd)):
+([keyword-case/keywords-one-form-input.mmd](../tests/fixtures/timeline/keyword-case/keywords-one-form-input.mmd)):
 
 ```mmd
 timeline
@@ -660,12 +686,12 @@ ACCDESCR { d }
 ```
 
 出力
-([keyword-case/keywords-kept-output.mmd](../tests/fixtures/timeline/keyword-case/keywords-kept-output.mmd)):
+([keyword-case/keywords-one-form-output.mmd](../tests/fixtures/timeline/keyword-case/keywords-one-form-output.mmd)):
 
 ```mmd
 timeline
-  TITLE T
-  Section S
+  title T
+  section S
     ACCTITLE: T
     AccDescr: d
     ACCDESCR { d }
@@ -675,11 +701,14 @@ timeline
 
 ヘッダーには、同じ行の空白の後ろに、
 方向 `LR` か `TD` を書けます（大文字小文字は問いません）。
-方向は、ヘッダーの行に空白 1 つの後ろに、書かれた大文字小文字のまま印字します。
+方向は、ヘッダーの行に空白 1 つの後ろに印字します。
+`td` は、mermaid.js の文書の例のとおり、`TD` と印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
+`lr` は、書かれた大文字小文字のまま印字します。
 Db は大文字にして読みます。
 空白 1 つは、
 トークンの間の空白（[トークンの間の空白](#トークンの間の空白)）と同じです。
-大文字小文字は作者のものです。 [fixture: header-and-direction/direction-kept]
+[fixture: header-and-direction/direction-kept]
 [fixture: header-and-direction/direction-case-kept]
 [fixture: header-and-direction/spaces-before-the-direction]
 2 つ目の語は period なので、自分の行に移します。
@@ -688,8 +717,7 @@ Db は大文字にして読みます。
 [fixture: header-and-direction/direction-on-its-own-line-is-a-period]
 
 方向の後ろのコメントは行に残します（[コメント](#コメント)を参照）。
-方向の前後の指令は、ほかと同じく、
-両側に空白 1 つを残します（[指令](#指令)を参照）。
+方向の前後の指令は、ほかと同じように置きます（[指令](#指令)を参照）。
 行末の空白は落とします。
 [fixture: header-and-direction/comment-after-the-direction]
 [fixture: header-and-direction/directive-before-the-direction]
@@ -725,7 +753,7 @@ title T
 ([header-and-direction/directive-before-the-direction-output.mmd](../tests/fixtures/timeline/header-and-direction/directive-before-the-direction-output.mmd)):
 
 ```mmd
-timeline %%{init: {}}%% TD
+timeline %%{init: {}}%%TD
   title T
 ```
 
@@ -734,8 +762,13 @@ timeline %%{init: {}}%% TD
 `accTitle` と `accDescr` の `:` はキーワードに接し、後ろに空白 1 つを置きます。
 journey と同じ形です。
 テキストの両端の空白は Db が持たないので落とします。
+`accDescr` のテキストの中の空白とタブの連なりは、空白 1 つで印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+`accTitle` はブラウザがツールチップとして表示するので、
+その連なりは書かれたまま残します。
 [fixture: accessibility-statements/colon-touches-keyword]
 [fixture: accessibility-statements/text-whitespace-dropped]
+[fixture: accessibility-statements/title-and-accessibility-runs-collapsed]
 テキストと `:` が後ろの行にあるときは、キーワードの行に寄せます。
 [fixture: accessibility-statements/text-on-next-line-joined]
 [fixture: accessibility-statements/keyword-and-colon-over-lines-joined]
@@ -750,7 +783,7 @@ journey と同じ形です。
 後ろのテキスト行はその文より 1 段深く置き、
 `}` はその文の段に置きます（[複数行の値](#複数行の値)を参照）。
 [fixture: accessibility-statements/block-text-on-opening-line]
-[fixture: accessibility-statements/block-inner-whitespace-kept]
+[fixture: accessibility-statements/block-inner-runs-collapsed]
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
 `:` や波括弧の周りの指令は、その場所に残します。
@@ -872,21 +905,30 @@ period と event は、後ろの行の行頭に `:` を書く別の形で複数�
 `accTitle` と `accDescr:` の文では、trivia の改行を保ち、
 section の下でも後続の構造部分と独立した trivia 行を文より 1 段深くそろえます。
 各 gap の最初の行の末尾と、指令の内部全体を保ちます。
-`;` のある行と、物理行を結ぶコメント領域は元の配置を保ちます。
+物理行を結ぶコメント領域は、元の配置を保ちます。
+セミコロンの保護は、後述の行をつなぐ判定に従います。
 [fixture: multi-line-statements/accessibility-trivia-continuations]
 
 title と section、event テキストの続きでは、値の空白が Db の一部なので、
 複数行の trivia を含む配置を元のまま保ちます。
+[fixture: multi-line-statements/breaks-decided-one-by-one]
+[fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 event の `:` の後ろにある、字下げされた指令だけの行は、
 event の始まりの空白です。
 そのため event は `:` の行に、その空白と、後ろの指令とともに印字します。
 [fixture: multi-line-statements/directive-line-after-the-colon-is-the-text]
-そのような文に `;` があるときも、書かれたまま残します。
-連結した行を、mermaid.js の行の規則が、
-別に読むことがあるからです（[1 行 1 文](#1-行-1-文)を参照）。
-[fixture: multi-line-statements/text-on-next-line-with-semicolon-kept]
+アクセシビリティの文では、改行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
+その改行を残します。
+それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
+title、section、period、event は、改行が残る場合、書かれたままにします。
+Db がそれらの先頭の空白を持つからです。
+[1 行 1 文](#1-行-1-文)を参照してください。
+[fixture: multi-line-statements/semicolon-joining-changes-kept]
+`;` があるだけでは、行をつなぐ妨げにはなりません。
+[fixture: multi-line-statements/text-on-next-line-with-semicolon-joined]
 
 入力
 ([multi-line-statements/value-on-next-line-joined-input.mmd](../tests/fixtures/timeline/multi-line-statements/value-on-next-line-joined-input.mmd)):
@@ -1122,11 +1164,12 @@ timeline
 
 ### 指令
 
-単独の行にある指令は、後ろの文と同じ段に置きます。
-同じ印字行の中では、両側に空白が書かれているかを残します。
-空白があればそこに空白 1 つを置き、トークンに接していれば接したままにします。
-journey と同じ規則です。 [fixture: directives/kept]
-[fixture: directives/levels-around-sections] [fixture: directives/before-header]
+単独の行にある指令は、journey と同じく、後ろの文と同じ段に置きます。
+同じ印字行の中では、flowchart と同じく、
+隙間をディレクティブがないものとして印字し、
+ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
+[fixture: directives/kept] [fixture: directives/levels-around-sections]
+[fixture: directives/before-header]
 [fixture: directives/after-header-on-same-line]
 [fixture: directives/after-header-touching-kept]
 [fixture: directives/whitespace-on-both-sides-collapsed]
@@ -1138,10 +1181,9 @@ journey と同じ規則です。 [fixture: directives/kept]
 
 [fixture: timeline/directives/whitespace-on-both-sides-collapsed]
 
-文の単位の間の指令は元の gap に残し、同じ行の両側の接触・分離を保ちます。
+文の単位の間の指令は元の gap に残し、[指令](#指令)のとおりに置きます。
 構造部分の続きの列は[複数行の文](#複数行の文)に従います。
-値の中の指令は、そのテキストの一部です。
-[fixture: directives/between-units-kept]
+値の中の指令は、そのテキストの一部です。 [fixture: directives/between-units]
 [fixture: directives/inside-values-kept] [fixture: directives/over-lines-kept]
 閉じていない指令はテキストの残りを取り、書かれたまま残します。
 [fixture: directives/unclosed-at-end-of-text-kept]
@@ -1174,7 +1216,7 @@ timeline
 ```
 
 入力
-([directives/between-units-kept-input.mmd](../tests/fixtures/timeline/directives/between-units-kept-input.mmd)):
+([directives/between-units-input.mmd](../tests/fixtures/timeline/directives/between-units-input.mmd)):
 
 ```mmd
 timeline
@@ -1184,12 +1226,12 @@ c : e%%{init: {}}%%: f
 ```
 
 出力
-([directives/between-units-kept-output.mmd](../tests/fixtures/timeline/directives/between-units-kept-output.mmd)):
+([directives/between-units-output.mmd](../tests/fixtures/timeline/directives/between-units-output.mmd)):
 
 ```mmd
 timeline
   a %%{init: {}}%%: e
-  b:%%{init: {}}%% e
+  b: %%{init: {}}%%e
   c : e%%{init: {}}%%: f
 ```
 
@@ -1272,6 +1314,11 @@ period、event、title、section の名前、accessibility のテキストは、
 [test: U+2029 inside a title] [test: U+2028 at the end of a section name]
 [test: U+2028 after the colon of an accessibility title]
 [test: U+2028 between the header and a direction]
+タイトルの末尾と行の最後の event の末尾では、
+U+2028 と U+2029 は空白やタブではなくテキストの文字なので、
+その後の空白はテキスト末尾のほかの空白と一緒に除き、前の空白は残します。
+[test: U+2029 and spaces at the end of a timeline title]
+[test: U+2028 and spaces at the end of the last event of a line]
 
 ### 空白文字
 

@@ -14,8 +14,9 @@ from mermaid.js.
 
 Put the header at column one and an ordinary first statement on the next line,
 making the heading easy to find. Preserve the authored `treemap` or
-`treemap-beta` keyword rather than choosing between Db-equivalent aliases. Add
-no colon; an empty body stays empty.
+`treemap-beta` keyword rather than choosing between Db-equivalent aliases (see
+[The names of a header](./compatibility.md#the-names-of-a-header)). Add no
+colon; an empty body stays empty.
 
 [fixture: treemap/header/stable]
 
@@ -250,10 +251,17 @@ treemap
 
 ### Numbers
 
-Keep each NumericLiteral source span: separators, underscores, dots,
-leading/trailing zeros and precision. Do not reprint its numeric value. Mermaid
-reads `1_000` as 1; other spellings can round, become NaN, overflow or
-underflow. Re-encoding can change the Db or produce rejected numeric syntax.
+A NumericLiteral that is digits with an optional fraction, or a fraction alone,
+is printed in the shortest form: no zero at the end of the fraction and a `0`
+before a `.` at the start (`1.50` is `1.5`, and `.5` is `0.5`; see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+Every other source span stays as written: a sign, a `.` at the end, separators,
+underscores, a second dot, a zero at the start of the integer part, and more
+than 15 digits. Do not reprint its numeric value. Mermaid reads `1_000` as 1;
+other spellings can round, become NaN, overflow or underflow. Re-encoding can
+change the Db or produce rejected numeric syntax. [fixture:
+treemap/numbers/shortest-form] [fixture: treemap/numbers/forms-kept] [fixture:
+treemap/numbers/trailing-dot-kept]
 
 [fixture: treemap/numbers/comma]
 
@@ -291,11 +299,15 @@ treemap
 
 ### Names
 
-Keep complete StringLiteral source spans: single/double quotes, opposite quotes,
-empty/whitespace-only names, padding, backslashes, HTML, entities, percent text
-and physical continuation columns. singleQuote does not rewrite them.
-Backslashes do not escape quotes or decode `\n`; these authored choices can
-affect the name or acceptance.
+Keep complete StringLiteral source spans: empty names, padding, backslashes,
+HTML, entities, percent text and physical continuation columns, with a run of
+spaces and tabs inside the name printed as one space, so a name of spaces and
+tabs only becomes one space. A name between `'` is printed between `"`, unless
+it holds a `'`, a `"`, a backslash, a line break, a backquote, `&`, `#`, or `<`
+(see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+and `singleQuote` is not read. Backslashes do not escape quotes or decode `\n`;
+these authored choices can affect the name or acceptance.
 
 [fixture: treemap/names/quotes]
 
@@ -322,7 +334,7 @@ Output
 
 ```mmd
 treemap
-  '  Other "quote"  ': 1
+  ' Other "quote" ': 1
 ```
 
 ### Class definitions
@@ -360,8 +372,8 @@ the line breaks in separator gaps containing comments/directives and align their
 standalone trivia and style continuation one level inside `classDef`, so the
 style remains visibly attached to its definition. The maximal separator discards
 this indentation; the style value itself is unchanged. Inline native comments
-that already supply an indentation run and semicolon-protected prefixes retain
-their existing columns.
+that already supply an indentation run and semicolon-protected segments of a
+statement over several lines retain their existing columns.
 
 [fixture: treemap/style-gaps/spaces]
 
@@ -495,12 +507,25 @@ whitespace stays: `classDef zz a:#b ; %% c` keeps its line. [fixture:
 semicolons/class-terminator-ignored-text-after-kept]
 
 Keep every other authored semicolon: selected ignored semicolons, a `;` beside
-another `;`, and value characters. Use shared kept-line and protected-prefix
-rules; protected segments retain their source text and columns, with no extra
-indentation on their inner lines. If a kept line constrains a row boundary,
-preserve the body as written rather than fixing some row indents and normalizing
-others. This keeps parentage and semicolon selection together, including the
-protected ending; it takes precedence over ordinary line and spacing choices.
+another `;`, and value characters. A segment that holds a kept `;` is formatted
+as anywhere else, except where formatting could change which `;` the line rule
+ignores. The rule reads a segment from the first `:` after `style` or `classDef`
+to the last `#` before its last kept `;`, with no whitespace between the `:` and
+the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps and the
+padding inside that stretch keep whether they hold whitespace, a run becoming
+one space, and the rest of the segment follows the ordinary rules of this
+diagram. Text that no part of the layout holds stays as written. A statement
+over several lines whose lines, joined with one space or with nothing, could
+change which `;` the line rule ignores keeps the text of each segment, up to its
+last kept `;`, as written; any other statement over several lines is formatted
+like one on a single line. [fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted] [fixture:
+semicolons/protected-class-column] Protected segments of a statement over
+several lines retain their source columns, with no extra indentation on their
+inner lines. If a kept line constrains a row boundary, preserve the body as
+written rather than fixing some row indents and normalizing others. This keeps
+parentage and semicolon selection together, including the protected ending; it
+takes precedence over ordinary line and spacing choices.
 
 [fixture: treemap/semicolons/terminator]
 
@@ -537,10 +562,16 @@ treemap
 
 Use shared common-line placement: trim ordinary common-whitespace edges and
 print one space before a nonempty value, or bare `title` for
-null/whitespace-only text. This selects one Db-equivalent outer spacing without
-rewriting internal spaces or quote-looking text. Never take a value from the
-next physical line, across comments or directives. Trivia-bearing values retain
-their written boundaries.
+null/whitespace-only text. This selects one Db-equivalent outer spacing and
+prints a run of spaces and tabs inside the text as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+without rewriting quote-looking text. Never take a value from the next physical
+line, across comments or directives. Trivia-bearing values retain their written
+boundaries. The directives that end a title are printed with one space before
+each that has whitespace before it, and the whitespace after the last one is
+left out, whatever the whitespace at the end of the line (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: title/title-directives-end-blanks-dropped]
 
 A comment line after an empty title aligns with the next statement without
 becoming the title's value. [fixture: treemap/title/empty-next-comment]
@@ -562,7 +593,7 @@ Output
 
 ```mmd
 treemap
-  title Topic  words
+  title Topic words
   "AfterTitle": 3
 ```
 
@@ -572,7 +603,11 @@ Use the shared `accTitle: value` and `accDescr: value` layout: colon touching
 the keyword, one space before a trimmed nonempty value, and no space after an
 empty colon. Keep internal text; braces after a colon remain line text. These
 equivalent outer gaps follow the other diagrams. Trivia retains boundaries and
-no next-line value is joined.
+no next-line value is joined. The directives that end the value are printed with
+one space before each that has whitespace before it, and the whitespace after
+the last one is left out (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: treemap/accessibility-lines/title-padding]
 

@@ -9,6 +9,7 @@ import {
   writtenEmbeddedTexts,
   writtenTextKeptUpToSemicolons,
 } from "./db-reading.ts"
+import { dbForFormattingComparison } from "./db-comparison.ts"
 import { treemapCases } from "./treemap-cases.ts"
 
 /** The source Prettier gives the parser, without a leading byte order mark. */
@@ -24,7 +25,15 @@ describe("treemap escaped cases", () => {
     const before = parserText(input)
     const after = parserText(output)
     const embedded = defaultEmbedded()
-    expect(dbOfText(after, embedded)).toEqual(dbOfText(before, embedded))
+    const dbBefore = dbOfText(before, embedded)
+    expect(
+      dbForFormattingComparison(
+        dbBefore,
+        dbOfText(after, embedded),
+        before,
+        after,
+      ),
+    ).toEqual(dbBefore)
     expect(writtenEmbeddedTexts(after)).toEqual(writtenEmbeddedTexts(before))
     expect(await describeFrontmatterChange(before, after, options)).toBeNull()
     expect(writtenTextKeptUpToSemicolons(before, after)).toBe(true)

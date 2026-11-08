@@ -14,8 +14,8 @@ Keep the authored `packet` or `packet-beta` keyword at column one. Move an
 ordinary first statement below it for a visible heading. Only `packet` requires
 a following boundary; never create a glued spelling. Hidden boundaries and
 protected header/body groups take precedence. Keep the authored synonym:
-replacing `packet-beta` with `packet` adds no formatting benefit, as with
-[gitgraph checkout aliases](./gitgraph.md#checkout-aliases).
+mermaid.js before 11.9.0 reads `packet-beta` only (see
+[The names of a header](./compatibility.md#the-names-of-a-header)).
 
 [fixture: packet/header/header-packet]
 
@@ -100,11 +100,18 @@ packet
 
 ### Block forms and order
 
-Keep `start-end`, `start` and `+count` as their three authored AST forms,
-including equal endpoints. Keep every occurrence in order, repeated labels and
-empty common assignments. Never merge or reconstruct statements from the Db: row
-splitting and the publication cap lose authored structure, and deleting empty
-assignments can change the final value.
+Keep `start-end`, `start` and `+count` as their three authored AST forms, except
+that a range whose two ends are written the same is printed as the position
+alone: `3-3` is `3`, since mermaid.js reads both the same and the examples in
+its documentation write the position alone 7 times against none of the range
+with equal ends (see
+[Spellings that are drawn the same](./compatibility.md#other-spellings-of-a-keyword-or-of-a-punctuation-mark)).
+A range with something other than whitespace and the `-` between its ends stays
+as written. [fixture: packet/block-forms-and-order/equal-range-single] Keep
+every occurrence in order, repeated labels and empty common assignments. Never
+merge or reconstruct statements from the Db: row splitting and the publication
+cap lose authored structure, and deleting empty assignments can change the final
+value.
 
 [fixture: packet/block-forms-and-order/block-three-forms]
 
@@ -124,7 +131,7 @@ Output
 packet
   +2: "relative"
   2: "single"
-  3-3: "equal range"
+  3: "equal range"
 ```
 
 ### Range dash
@@ -195,18 +202,23 @@ Output
 ```mmd
 packet
   0-2: "Range"
-  3: 'Single'
+  3: "Single"
   +2: "Relative"
 ```
 
 ### Quotes
 
-Keep complete StringLiteral source spans with single, double and opposite
-quotes, empty labels and escapes. `singleQuote` does not rewrite labels.
-Re-encoding would lose authored spelling and require new escape/preprocessing
-choices. Quote-looking common values remain literals, not strings to requote.
+Keep complete StringLiteral source spans with empty labels and escapes; a string
+between `'` is printed between `"`, unless its text holds a `'`, a `"`, a
+backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+and `singleQuote` is not read. Other re-encoding would require new
+escape/preprocessing choices. Quote-looking common values remain literals, not
+strings to requote.
 
-[fixture: packet/quotes/quotes-authored]
+[fixture: packet/quotes/quotes-one-form]
+
+[fixture: packet/quotes/single-quote-sensitive-kept]
 
 [fixture: packet/quotes/quotes-single-option]
 
@@ -214,22 +226,24 @@ Input (escaped):
 `"packet\n0:'single \"quote\"'\n1:\"double 'quote'\"\n2:''\n3:\"\"\n"`.
 
 Output
-([quotes/quotes-authored-output.mmd](../tests/fixtures/packet/quotes/quotes-authored-output.mmd)):
+([quotes/quotes-one-form-output.mmd](../tests/fixtures/packet/quotes/quotes-one-form-output.mmd)):
 
 ```mmd
 packet
   0: 'single "quote"'
   1: "double 'quote'"
-  2: ''
+  2: ""
   3: ""
 ```
 
 ### Label content
 
-Keep label padding, repeated spaces, tabs, escapes, HTML, entities and
-hidden-looking text as the complete source range, including internal common
-trivia. Trimming, collapsing or decoding this text can change the Db. Physical
-line endings alone follow the shared host policy.
+Keep label padding, escapes, HTML, entities and hidden-looking text as the
+complete source range, including internal common trivia. A run of spaces and
+tabs inside the label is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+Decoding this text can change the Db. Physical line endings alone follow the
+shared host policy.
 
 [fixture: packet/label-content/label-padding]
 
@@ -246,8 +260,8 @@ Output
 
 ```mmd
 packet
-  0: "  A  B	 C  "
-  1: " 	 "
+  0: " A B C "
+  1: " "
 ```
 
 ### Numbers
@@ -281,17 +295,25 @@ Output
 
 ```mmd
 packet
-  0-0: "Zero"
+  0: "Zero"
 ```
 
 ### Title
 
 Print `title`, one space and a nonempty value trimmed at common-whitespace
 edges; null or whitespace-only values print bare `title`. This compacts
-equivalent exterior whitespace while keeping interior text, quotes and escapes.
+equivalent exterior whitespace while keeping interior text, quotes and escapes,
+apart from a run of spaces and tabs inside the value, which is printed as one
+space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 Never take a value from the next physical line, even across
 blank/comment/directive gaps. Keep empty final assignments and frontmatter
-fallback; protected trivia/hidden boundaries take precedence.
+fallback; protected trivia/hidden boundaries take precedence. The directives
+that end a title are printed with one space before each that has whitespace
+before it, and the whitespace after the last one is left out, whatever the
+whitespace at the end of the line (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: title/title-directives-end-blanks-dropped]
 
 [fixture: packet/title/title-trim]
 
@@ -310,7 +332,7 @@ Output
 
 ```mmd
 packet
-  title Topic  words
+  title Topic words
 ```
 
 ### Accessibility lines
@@ -318,8 +340,16 @@ packet
 Reuse the shared compact form `accTitle: value` / `accDescr: value`: the colon
 touches its keyword, with one space before a trimmed nonempty value; empty
 values end at the colon. This keeps consistent exterior spacing without changing
-interior text or comment attachment. Braces after the colon are line text. Never
-join a next-line value; hidden suffixes and protected groups keep their gaps.
+interior text or comment attachment, except that a run of spaces and tabs inside
+the value of an `accDescr` is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+and that of an `accTitle` stays as written, since the browser shows it as a
+tooltip. Braces after the colon are line text. Never join a next-line value;
+hidden suffixes and protected groups keep their gaps. The directives that end
+the value are printed with one space before each that has whitespace before it,
+and the whitespace after the last one is left out (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: packet/accessibility-lines/a11y-lines]
 
@@ -338,7 +368,7 @@ Output
 ```mmd
 packet
   accTitle: Access  words
-  accDescr: Details  words
+  accDescr: Details words
 ```
 
 ### Description blocks
@@ -454,14 +484,14 @@ packet
 ### Global directives
 
 Use shared Root directive attachment and preserve opaque content, order,
-component boundaries and value-internal text. Within a printed line, keep
-whether each side touches or is separated. When formatting splits units that
-were on the same line, a directive in their gap moves with the following unit:
-its right boundary stays touching or separated, while its left contact is
-broken. Ordinary standalone starts align one body step in; multiline interiors
-and EOF-reaching endings stay written. Common removal supplies no separator, and
-deleting init can change row configuration. Native hidden DIRECTIVE stays a
-separate owned node.
+component boundaries and value-internal text. Within a printed line, place a
+directive as under [Directives](./flowchart.md#directives). When formatting
+splits units that were on the same line, a directive in their gap moves with the
+following unit: its right boundary stays touching or separated, while its left
+contact is broken. Ordinary standalone starts align one body step in; multiline
+interiors and EOF-reaching endings stay written. Common removal supplies no
+separator, and deleting init can change row configuration. Native hidden
+DIRECTIVE stays a separate owned node.
 
 [fixture: packet/global-directives/header-to-body]
 
@@ -485,7 +515,7 @@ Output
 packet
   0%%{wrap}%%: "Global"
   accTitle%%{wrap}%%: Access
-  accDescr%%{wrap}%%{ Detail }
+  accDescr %%{wrap}%%{ Detail }
 ```
 
 ### Hidden yaml
@@ -643,13 +673,23 @@ packet
 
 ### Semicolons
 
-Keep every semicolon and reuse shared textual segment protection: protect from
-the first non-whitespace character through the last semicolon, extending through
-whole crossing values/comments/directives. Keep protected header/first-statement
-groups together, formatting only safe exterior/suffix gaps. Both style/classDef
-passes, case, colon/hash whitespace, repetitions, Unicode segment bounds and
-directive-rejoined triggers stay written. Removing one selected semicolon can
-select another and change the Db; atomic cuts remain failures.
+Keep every semicolon. A segment that holds a kept `;` is formatted as anywhere
+else, except where formatting could change which `;` the line rule ignores. The
+rule reads a segment from the first `:` after `style` or `classDef` to the last
+`#` before its last kept `;`, with no whitespace between the `:` and the `#`
+(see [Semicolons](./flowchart.md#semicolons)), so the gaps and the padding
+inside that stretch keep whether they hold whitespace, a run becoming one space,
+and the rest of the segment follows the ordinary rules of this diagram. Text
+that no part of the layout holds stays as written. A statement over several
+lines whose lines, joined with one space or with nothing, could change which `;`
+the line rule ignores keeps the text of each segment, up to its last kept `;`,
+as written; any other statement over several lines is formatted like one on a
+single line. [fixture: semicolons/stretch-kept-rest-formatted] [fixture:
+semicolons/no-stretch-formatted] Keep protected header/first-statement groups
+together. Both style/classDef passes, case, colon/hash whitespace, repetitions,
+Unicode segment bounds and directive-rejoined triggers keep their reading.
+Removing one selected semicolon can select another and change the Db; atomic
+cuts remain failures.
 
 [fixture: packet/semicolons/native-field-value]
 
@@ -680,7 +720,7 @@ packet
   title Text;;
   accTitle: Access;
   accDescr: Detail;;
-  0:"Label;"
+  0: "Label;"
 ```
 
 ### Blank lines

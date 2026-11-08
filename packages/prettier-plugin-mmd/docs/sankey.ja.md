@@ -91,10 +91,10 @@ mermaid.js は引用符の隣の空白を拒否するので、
 欄の中の空白は残します。 [fixture: commas/spaces-around-commas-dropped]
 [fixture: commas/space-after-comma-dropped]
 [fixture: commas/spaces-inside-fields-kept]
-コンマの隣の指令は、
-隣に空白が書かれていれば空白 1 つを残し（[指令](#指令)を参照）、
-空白だけの欄は空白 1 つにするので、2 つが並ぶことがあります。
-`a,   %%{init: {}}%%,1` は `a,  %%{init: {}}%%,1` になり、空白は 2 つです。
+コンマの隣には空白を置かないので、
+コンマの隣の指令はコンマに接します（[指令](#指令)を参照）。
+空白だけの欄は空白 1 つにします。
+`a,   %%{init: {}}%%,1` は `a, %%{init: {}}%%,1` になります。
 [fixture: directives/next-to-commas]
 mermaid.js は引用符の隣の空白を拒否するので、文字列はコンマに接します。
 文字列の後のコンマの後の空白は、次の欄の空白として読まれるので、落とします。
@@ -212,12 +212,22 @@ Pumped heat,"Heating and cooling, ""homes""",193.026
 
 ### 値
 
-リンクの値は、書かれたまま印字します。
-mermaid.js は値を数として読むので、`1.0`、`1e0`、`+1`、`.5` は `1` と同じ値で、
-`abc` も受理されますが、どれも書き換えません。
-綴りは作者のもので、どの綴りでも Db は同じだからです。
+リンクの値は、最短の形で印字します。
+mermaid.js は `parseFloat` で値を数にするので、`1.0`、`+1`、`.5` は、
+それぞれ `1`、`1`、`0.5` と同じ値で、値を示すラベルは、
+テキストではなく数から作られます。
+`1.0` は `1`、`+1` は `1`、`.5` は `0.5` と印字します。
+（[最短の形の数](./compatibility.ja.md#最短の形の数)を参照）。
+単純な十進表記でない値は、書かれたまま残します。
+指数のある数（`1e0`）、整数部の先頭にゼロがある数（`007`）、15 桁より多い数、
+`-0`、mermaid.js がそれぞれ `1` と `0` として読む `1_0` と `0x1`、
+`NaN` として読む `abc` のような数でない値です。
+引用符で囲まれた値も、そのまま残します。
 値の後ろの `%%` や `#` は、コメントではなく欄の文字で、欄と一緒に残します。
-[fixture: values/value-forms-kept] [fixture: values/text-after-the-value-kept]
+そのため、その欄は単純な十進表記ではなく、書かれたまま残します。
+[fixture: values/shortest-form] [fixture: values/forms-kept]
+[fixture: values/shortest-form-with-trivia]
+[fixture: values/text-after-the-value-kept]
 
 入力
 ([values/text-after-the-value-kept-input.mmd](../tests/fixtures/sankey/values/text-after-the-value-kept-input.mmd)):
@@ -308,10 +318,10 @@ c,d,2
 
 ### ヘッダー
 
-ヘッダーの `sankey` と `sankey-beta` は、書かれた大文字小文字のまま残します。
-mermaid.js はどちらも同じ図種として読みます。
-どちらの綴りも同じ図種で Db が同じなので、強制はなく、
-作者が書いた綴りを残します。
+ヘッダーの `sankey` と `sankey-beta` は、書かれた大文字小文字を保ちます。
+mermaid.js 12.3.0 ではどちらも同じ図種で、Db も同じですが、
+mermaid.js 11.9.0 は `sankey-beta` だけを読むため、作者が書いた綴りを保ちます。
+（[ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)を参照）。
 ヘッダーは 1 列目に置き、その行には何も続けません。
 mermaid.js は、指令とコメント行以外が続くと拒否します。 [fixture: header/sankey]
 [fixture: header/sankey-beta] [fixture: header/upper-case-beta]
@@ -403,8 +413,10 @@ mermaid.js に拒否されるからです。 [fixture: directives/kept]
 接していれば接したまま、空白があれば空白 1 つにします。
 [fixture: directives/after-the-value]
 [fixture: directives/at-the-start-of-a-record]
-コンマの隣の指令は、隣に空白が書かれていれば、
-空白 1 つを残します（空白だけの欄は[コンマ](#コンマ)を参照）。
+コンマの隣の指令は、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
+コンマの隣には空白を置かないので、
+指令はコンマに接します（空白だけの欄は[コンマ](#コンマ)を参照）。
 [fixture: directives/next-to-commas]
 
 欄や文字列の中の指令は、テキストの一部なので残します。

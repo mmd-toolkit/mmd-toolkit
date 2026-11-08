@@ -7,13 +7,20 @@ import type {
   Node,
 } from "@mmd-toolkit/ast"
 import type { AtomLayout } from "./atoms.ts"
-import { keptAsWritten } from "./layout.ts"
 import {
   findLeadingDirectives,
   findNodeLineTextStart,
 } from "./indentation-lines.ts"
+import {
+  isPlainLine,
+  printPaddedLiteral,
+  printShapeWithoutPadding,
+  trimBlanksEnd,
+} from "./padded-text.ts"
 import type { Source } from "./source.ts"
 import { isWhitespace } from "./source.ts"
+import { printedStretch } from "./spelling.ts"
+import { keptWithDirectiveEnd } from "./statement-rules.ts"
 
 /**
  * The node types of a mindmap whose text is a value, printed as written: the
@@ -90,14 +97,58 @@ export function findMindmapPrintedEnd(line: MindmapLine): number {
 }
 
 /**
- * The layout of a line: its text from its start to its printed end, as
- * written. A node text, a shape, an icon, and a class keep the whitespace
- * that mermaid.js reads in them, and a shape, a markdown string, and an icon
- * may go over lines, with the whitespace at the start of the later lines part
- * of the text (docs/mindmap.md, Node text and Multi-line texts).
+ * The layout of a line: its text from its start to its printed end, without
+ * the spaces and tabs at the ends of its texts (see `printMindmapText`), and
+ * as written where that does not apply. A shape, a markdown string, and an
+ * icon may go over lines, with the whitespace at the start of the later lines
+ * part of the text (docs/mindmap.md, Node text and Multi-line texts).
  */
-export function layoutMindmapLine(line: MindmapLine): AtomLayout {
-  return keptAsWritten(line.range[0], findMindmapPrintedEnd(line))
+export function layoutMindmapLine(
+  source: Source,
+  line: MindmapLine,
+): AtomLayout {
+  const end = findMindmapPrintedEnd(line)
+  const printed = printMindmapText(source, line, end)
+  if (printed === undefined)
+    return keptWithDirectiveEnd(source, line.range[0], end)
+  return {
+    atoms: [{ start: line.range[0], end, doc: printed }],
+    rules: new Map(),
+    outdented: new Set(),
+    lineBreaks: "kept",
+  }
+}
+
+/**
+ * The text of a line printed without the spaces and tabs at the ends of its
+ * node text, of the text of its shape, of its icon, and of its class, which
+ * mermaid.js keeps in the Db and draws without
+ * (docs/compatibility.md, Mindmap texts that are drawn the same); undefined
+ * where the line stays as written: a line over lines, one with a comment or a
+ * directive in it or after it, and the texts that `printShapeWithoutPadding`
+ * and `printPaddedLiteral` leave. The space between the node text and its shape
+ * goes with the node text.
+ */
+function printMindmapText(
+  source: Source,
+  line: MindmapLine,
+  end: number,
+): string | undefined {
+  if (!isPlainLine(source, line.range[0], end)) return undefined
+  if (line.type === "MindmapIconStatement") {
+    return printedStretch(
+      source,
+      line.range[0],
+      line.range[1],
+      printPaddedLiteral(source, line.range, line.icon.range),
+    )
+  }
+  if (line.type === "MindmapClassStatement")
+    return printPaddedLiteral(source, line.range, line.cssClass.range)
+  const { id, shape } = line
+  const head = id === null ? "" : trimBlanksEnd(source.text.slice(...id.range))
+  if (shape === null) return head === "" ? undefined : head
+  return head + printShapeWithoutPadding(source, shape)
 }
 
 /**

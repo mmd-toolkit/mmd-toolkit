@@ -8,8 +8,12 @@ import {
   protectSemicolonPrefixes,
   trimBracketedText,
 } from "./layout.ts"
+import { trimTextAfterKeyword } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
-import { findTriviaBetween } from "./source.ts"
+import {
+  findTriviaBetween,
+  hasTriviaBesidesTrailingDirectives,
+} from "./source.ts"
 
 /** Written leaves, including complete bare styles (docs/venn.md, Style properties). */
 export const vennValueNodeTypes: ReadonlySet<Node["type"]> = new Set([
@@ -83,7 +87,7 @@ export function layoutVennStatement(
   if (
     statement.type === "VennIgnoredText" ||
     (statement.type === "VennTitleStatement" &&
-      findTriviaBetween(source, start, end).length > 0)
+      hasTriviaBesidesTrailingDirectives(source, start, end))
   )
     return keptAsWritten(start, end)
   const values = collectValueNodes(statement, vennValueNodeTypes)
@@ -96,6 +100,9 @@ export function layoutVennStatement(
   // (docs/venn.md, Labels).
   if ("label" in statement && statement.label !== null) {
     trimBracketedText(source, atoms, statement.label.range)
+  }
+  if (statement.type === "VennTitleStatement") {
+    trimTextAfterKeyword(source, atoms, statement.value.range, true)
   }
   const rules = new Map<number, GapRule>()
   for (let index = 1; index < atoms.length; index++) {

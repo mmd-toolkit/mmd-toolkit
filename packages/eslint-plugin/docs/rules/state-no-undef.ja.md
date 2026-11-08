@@ -41,7 +41,7 @@ mermaid.js がその状態を作り、後のノートはそれを指すからで
 %% eslint @mmd-toolkit/state-no-undef: error
 stateDiagram-v2
   A --> B
-  style Z fill:#f00
+  style Z fill: #f00
 ```
 
 ```mmd
@@ -57,7 +57,7 @@ stateDiagram-v2
 %% eslint @mmd-toolkit/state-no-undef: error
 stateDiagram-v2
   A --> B
-  style A fill:#f00
+  style A fill: #f00
   note left of B : x
 ```
 

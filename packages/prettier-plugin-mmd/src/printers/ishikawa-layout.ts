@@ -4,16 +4,17 @@ import type {
   Node,
   Range,
 } from "@mmd-toolkit/ast"
-import type { AtomLayout } from "./atoms.ts"
+import type { Atom, AtomLayout } from "./atoms.ts"
 import {
   findLeadingDirectives,
   findNodeLineStart,
   isCommentEnd,
 } from "./indentation-lines.ts"
 import type { LeadingDirectives } from "./indentation-lines.ts"
-import { keptAsWritten } from "./layout.ts"
+import { keptAsWritten, replaceInAtoms } from "./layout.ts"
+import { collectTextEndEdits, endsWithDirectives } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
-import { isWhitespace } from "./source.ts"
+import { findTriviaBetween, isSpaceOrTab, isWhitespace } from "./source.ts"
 
 /** All Ishikawa values are literals, including numbers and apparent strings. */
 export const ishikawaValueNodeTypes: ReadonlySet<Node["type"]> = new Set([
@@ -85,7 +86,36 @@ export function ishikawaLines(
   return lines
 }
 
-/** Literals retain embedded regions and every physical continuation column. */
-export function layoutIshikawaLine(line: IshikawaLine): AtomLayout {
-  return keptAsWritten(line.leading?.textStart ?? line.range[0], line.range[1])
+/**
+ * Literals retain embedded regions and every physical continuation column. The
+ * spaces and tabs at the end of a literal are left out: mermaid.js trims the
+ * literal, so the Db and the figure are the same without them
+ * (docs/ishikawa.md, Trailing whitespace).
+ */
+export function layoutIshikawaLine(
+  source: Source,
+  line: IshikawaLine,
+): AtomLayout {
+  const start = line.leading?.textStart ?? line.range[0]
+  let end = line.range[1]
+  const atoms: Atom[] = []
+  if (endsWithDirectives(source, [start, end])) {
+    // The literal ends with directives, which are printed as at the end of a
+    // line, with the whitespace before them as the same literal has when the
+    // directives stand after it: one space each (docs/ishikawa.md, Trailing
+    // whitespace).
+    atoms.push({ start, end })
+    replaceInAtoms(source, atoms, collectTextEndEdits(source, start, end, true))
+  } else {
+    // The gap before a directive that follows the literal is that of the
+    // directive, so the literal keeps its end there.
+    const directiveFollows = findTriviaBetween(source, end, end + 1).some(
+      (item) => item.type === "Directive" && item.range[0] === end,
+    )
+    if (!directiveFollows) {
+      while (end > start + 1 && isSpaceOrTab(source.text[end - 1])) end--
+    }
+    atoms.push({ start, end })
+  }
+  return { ...keptAsWritten(start, end), atoms }
 }

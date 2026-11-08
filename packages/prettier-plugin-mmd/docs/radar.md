@@ -12,11 +12,16 @@ preserved text and differences from mermaid.js.
 ### Header
 
 Print `radar-beta` at column one and put an ordinary first statement on the next
-line so the heading is easy to find. Keep the author's colon presence; compact
-ordinary whitespace before a separate colon to `radar-beta:`, as in gitgraph's
-[Header](./gitgraph.md#header). That whitespace has no meaning. Hidden forms,
-global trivia and protected semicolon segments keep their source boundaries
-instead. Empty bodies remain empty.
+line so the heading is easy to find. A colon right after the header word is
+removed, together with the whitespace before it: mermaid.js reads `radar-beta:`
+and `radar-beta` as the same header, and the examples in its documentation write
+the header without the colon 3 times against none (see
+[The colon after a header](./compatibility.md#the-colon-after-a-header)). The
+colon stays where a hidden form or a global directive lies between it and the
+word, and where a `;` or the `---` of a hidden YAML block touches it. Hidden
+forms, global trivia and protected semicolon segments keep their source
+boundaries instead. Empty bodies remain empty. [fixture:
+radar/header/colon-removed] [fixture: radar/header/colon-yaml-kept]
 
 [fixture: radar/header/joined-empty]
 
@@ -58,7 +63,7 @@ Output
 ([header/join-separated-inline-alternative-output.mmd](../tests/fixtures/radar/header/join-separated-inline-alternative-output.mmd)):
 
 ```mmd
-radar-beta:
+radar-beta
   curve trial{4}
 ```
 
@@ -321,10 +326,16 @@ radar-beta
 
 ### Numbers
 
-Print NumericLiteral source spans in entries and ticks/max/min. Preserve integer
-digits, decimal leading/trailing zeros, rounded precision, subnormals, underflow
-and overflow. Reprinting double values loses spelling and can produce exponents
-or Infinity, which radar's number grammar rejects.
+Print NumericLiteral source spans in entries and ticks/max/min. A plain decimal
+is printed in the shortest form (`1.50` is `1.5`, `5.00` is `5`; see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+Preserve a zero at the start of the integer part, rounded precision, subnormals,
+underflow and overflow. Reprinting double values loses spelling and can produce
+exponents or Infinity, which radar's number grammar rejects.
+
+[fixture: radar/numbers/shortest-form]
+
+[fixture: radar/numbers/forms-kept]
 
 [fixture: radar/numbers/raw-number-forms]
 
@@ -388,11 +399,16 @@ radar-beta
 
 ### Quotes
 
-Keep each label's complete StringLiteral source span: single/double quotes,
-opposite quotes, empty/whitespace-only text, escapes, HTML, entities, internal
-padding and hidden-looking text. singleQuote does not re-encode it. Removing an
-empty label changes the ID fallback, and collapsing interior whitespace can
-change the Db.
+Keep each label's complete StringLiteral source span: empty text, escapes, HTML,
+entities and hidden-looking text, with a run of spaces and tabs inside the text
+printed as one space, so a text of spaces and tabs only becomes one space:
+`["   "]` is printed `[" "]` (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+A string between `'` is printed between `"`, unless its text holds a `'`, a `"`,
+a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+and `singleQuote` is not read. Removing an empty label changes the ID fallback.
+[fixture: radar/quotes/single-quote-sensitive-kept]
 
 [fixture: radar/quotes/quotes-and-empty]
 
@@ -417,7 +433,7 @@ Output
 ```mmd
 radar-beta
   axis North['single "other"'], South["double 'other'"], East[""]
-  curve trial['']{1, 2, 3}
+  curve trial[""]{1, 2, 3}
 ```
 
 ### Title
@@ -425,9 +441,16 @@ radar-beta
 Use the shared common-line layout: trim common-whitespace edges and put one
 space before a nonempty value; null/whitespace-only values print `title`. This
 removes equivalent exterior padding while retaining internal spelling, quotes
-and apparent keywords. Never take a value from the next physical line, including
-across comments or directives. Trivia-bearing values and protected segments keep
-their source gaps.
+and apparent keywords, apart from a run of spaces and tabs inside the value,
+which is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+Never take a value from the next physical line, including across comments or
+directives. Trivia-bearing values and protected segments keep their source gaps.
+The directives that end a title are printed with one space before each that has
+whitespace before it, and the whitespace after the last one is left out,
+whatever the whitespace at the end of the line (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: title/title-directives-end-blanks-dropped]
 
 [fixture: radar/title/title-edge-trim]
 
@@ -446,7 +469,7 @@ Output
 
 ```mmd
 radar-beta
-  title Topic  words
+  title Topic words
 ```
 
 ### Accessibility lines
@@ -454,8 +477,16 @@ radar-beta
 Reuse shared `accTitle: value` and `accDescr: value`: the colon touches its
 keyword, and one space precedes a trimmed nonempty value. Empty values end at
 the colon; never join a next-line value. Consistent outer spacing does not
-rewrite internal text. Braces after a colon remain line text. Trivia/hidden and
-semicolon protection take precedence.
+rewrite internal text, except that a run of spaces and tabs inside the value of
+an `accDescr` is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+and that of an `accTitle` stays as written, since the browser shows it as a
+tooltip. Braces after a colon remain line text. Trivia/hidden and semicolon
+protection take precedence. The directives that end the value are printed with
+one space before each that has whitespace before it, and the whitespace after
+the last one is left out (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: radar/accessibility-lines/a11y-lines-fixed]
 
@@ -474,7 +505,7 @@ Output
 ```mmd
 radar-beta
   accTitle: Access  words
-  accDescr: Detail  words
+  accDescr: Detail words
 ```
 
 ### Description blocks
@@ -627,15 +658,15 @@ radar-beta
 ### Global directives
 
 Keep Root directive content, order and ownership, including
-component/value-internal directives. Within a printed line, keep whether each
-side touches or is separated. When formatting splits units that were on the same
-line, a directive in their gap moves with the following unit: its right boundary
-stays touching or separated, while its left contact is broken. Ordinary
-standalone starts use one body step; multiline interiors and EOF-reaching
-unfinished endings remain written. Never format these as JSON or gather them
-elsewhere: removal joins surrounding text, so deleting a component-boundary
-space can reject an accepted keyword/value pair. Native RadarIgnoredText
-directives are separate authored nodes.
+component/value-internal directives. Within a printed line, place a directive as
+under [Directives](./flowchart.md#directives). When formatting splits units that
+were on the same line, a directive in their gap moves with the following unit:
+its right boundary stays touching or separated, while its left contact is
+broken. Ordinary standalone starts use one body step; multiline interiors and
+EOF-reaching unfinished endings remain written. Never format these as JSON or
+gather them elsewhere: removal joins surrounding text, so deleting a
+component-boundary space can reject an accepted keyword/value pair. Native
+RadarIgnoredText directives are separate authored nodes.
 
 [fixture: radar/global-directives/header-to-body]
 
@@ -838,10 +869,21 @@ radar-beta
 
 ### Semicolons
 
-Keep every authored semicolon using shared protectSemicolonPrefixes. Protect a
-textual segment from its first non-whitespace through its last semicolon,
-extending through whole crossing values/trivia, and format safe suffix gaps.
-Protected header/first-statement groups remain together. Preserve style/classDef
+Keep every authored semicolon. A segment that holds a kept `;` is formatted as
+anywhere else, except where formatting could change which `;` the line rule
+ignores. The rule reads a segment from the first `:` after `style` or `classDef`
+to the last `#` before its last kept `;`, with no whitespace between the `:` and
+the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps and the
+padding inside that stretch keep whether they hold whitespace, a run becoming
+one space, and the rest of the segment follows the ordinary rules of this
+diagram. Text that no part of the layout holds stays as written. A statement
+over several lines whose lines, joined with one space or with nothing, could
+change which `;` the line rule ignores keeps the text of each segment, up to its
+last kept `;`, as written; any other statement over several lines is formatted
+like one on a single line. [fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted] [fixture:
+multi-line-statements/protected-semicolon-written-indentation] Protected
+header/first-statement groups remain together. Preserve style/classDef
 selection, both removal passes, case/colon/hash nontriggers, Unicode segment
 boundaries and directive-rejoined triggers. Removing even a selected semicolon
 can select another and change a value; radar has no ordinary semicolon

@@ -22,11 +22,8 @@ import {
   writtenTextKeptUpToSemicolons,
 } from "./db-reading.ts"
 import { dataBlockEmbeddedForFormattingComparison } from "./data-block-margins.ts"
-import {
-  eventmodelingDbForFormattingComparison,
-  eventmodelingEmbeddedForFormattingComparison,
-} from "./eventmodeling-data-margins.ts"
-import { stateDbForFormattingComparison } from "./state-note-margins.ts"
+import { dbForFormattingComparison } from "./db-comparison.ts"
+import { eventmodelingEmbeddedForFormattingComparison } from "./eventmodeling-data-margins.ts"
 
 /**
  * Whether the plugin formats the input, rather than printing it as written
@@ -117,16 +114,7 @@ export async function testCorpus(diagram: DiagramType): Promise<void> {
         return
       const formattedDb = dbOfText(formatted, embedded)
       expect(
-        isEventmodeling
-          ? eventmodelingDbForFormattingComparison(recorded.db, formattedDb)
-          : fixture.diagram === "state"
-            ? stateDbForFormattingComparison(
-                recorded.db,
-                formattedDb,
-                input,
-                formatted,
-              )
-            : formattedDb,
+        dbForFormattingComparison(recorded.db, formattedDb, input, formatted),
         output,
       ).toEqual(recorded.db)
     })

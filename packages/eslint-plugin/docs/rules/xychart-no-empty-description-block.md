@@ -33,6 +33,9 @@ An empty block before or after another statement on the same line is reported
 too. An unclosed block, even an empty one, is reported by
 [xychart-no-unclosed-description-block](./xychart-no-unclosed-description-block.md).
 
+The formatter prints an empty block as `accDescr {}`. The example with
+whitespace inside the braces is shown as written.
+
 Examples of **incorrect** code for this rule:
 
 ```mmd
@@ -42,6 +45,7 @@ xychart
   line [1, 2]
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/xychart-no-empty-description-block: error
 xychart

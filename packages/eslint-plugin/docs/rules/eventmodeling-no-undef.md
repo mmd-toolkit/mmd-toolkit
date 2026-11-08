@@ -43,16 +43,16 @@ Examples of **incorrect** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/eventmodeling-no-undef: error
 eventmodeling
-  tf 01 ui Cart
-  tf 02 cmd Buy ->> 99
+tf 01 ui Cart
+tf 02 cmd Buy ->> 99
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/eventmodeling-no-undef: error
 eventmodeling
-  tf 01 evt Bought [[Paylod]]
-  data Payload {
-items
+tf 01 evt Bought [[Paylod]]
+data Payload {
+  items
 }
 ```
 
@@ -61,16 +61,16 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/eventmodeling-no-undef: error
 eventmodeling
-  tf 01 ui Cart
-  tf 02 cmd Buy ->> 01
+tf 01 ui Cart
+tf 02 cmd Buy ->> 01
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/eventmodeling-no-undef: error
 eventmodeling
-  tf 01 evt Bought [[Payload]]
-  data Payload {
-items
+tf 01 evt Bought [[Payload]]
+data Payload {
+  items
 }
 ```
 

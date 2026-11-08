@@ -43,8 +43,8 @@ Examples of **incorrect** code for this rule:
 %% eslint @mmd-toolkit/radar-no-unclosed-description-block: error
 radar-beta
   accDescr { first
-  axis A, B, C
-  curve sales{1, 2, 3}
+    axis A, B, C
+    curve sales{1, 2, 3}
 ```
 
 Examples of **correct** code for this rule:

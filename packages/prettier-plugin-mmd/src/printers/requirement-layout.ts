@@ -14,7 +14,12 @@ import type {
 } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import type { AtomLayout, GapRule } from "./atoms.ts"
-import { holdsJoiningRegion } from "./kept-lines.ts"
+import {
+  findKeptBreaks,
+  gapKeepsLineBreak,
+  holdsJoiningRegion,
+  spansKeptBreaks,
+} from "./kept-lines.ts"
 import {
   alignBlockOpeningLine,
   collectAtoms,
@@ -27,13 +32,13 @@ import {
   layoutCompactEmptyDescriptionBlockWithFallback,
   layoutDescriptionBlock,
   layoutEmptyDescriptionBlock,
-  spansLinesThatCannotJoin,
 } from "./layout.ts"
 import type { Source } from "./source.ts"
 import {
   findStructuralToken,
   findTokenEndingBefore,
   findTokensBetween,
+  findTriviaBetween,
   isStructural,
 } from "./source.ts"
 import {
@@ -156,11 +161,8 @@ export function layoutBlockOpening(
 ): AtomLayout {
   const start = statement.range[0]
   const end = opening.range[1]
-  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
-  if (
-    holdsJoiningRegion(source, start, end) ||
-    spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true })
-  ) {
+  const keptBreaks = findKeptBreaks(source, start, end)
+  if (holdsJoiningRegion(source, start, end)) {
     return keptAsWritten(start, end)
   }
   const rules = new Map<number, GapRule>([
@@ -185,10 +187,12 @@ export function layoutBlockOpening(
   return alignBlockOpeningLine(
     source,
     {
-      atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+      atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
+        gapKeepsLineBreak(source, keptBreaks, from, to),
+      ),
       rules,
       outdented: new Set(),
-      lineBreaks: keepsLineBreaks ? "kept" : "joined",
+      lineBreaks: "joined",
     },
     opening.range[0],
   )
@@ -222,11 +226,8 @@ export function layoutBodyItem(
         ),
     )
   }
-  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
-  if (
-    holdsJoiningRegion(source, start, end) ||
-    spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true })
-  ) {
+  const keptBreaks = findKeptBreaks(source, start, end)
+  if (holdsJoiningRegion(source, start, end)) {
     return keptAsWritten(start, end)
   }
   const keyword = expectToken(findStructuralToken(source, start), "a field")
@@ -247,13 +248,15 @@ export function layoutBodyItem(
     [],
   )
   return {
-    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+    atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
+      gapKeepsLineBreak(source, keptBreaks, from, to),
+    ),
     rules: new Map<number, GapRule>([
       [colon.range[0], "none"],
       [value.range[0], "space"],
     ]),
     outdented: new Set(),
-    lineBreaks: keepsLineBreaks ? "kept" : "joined",
+    lineBreaks: "joined",
   }
 }
 
@@ -290,17 +293,18 @@ export function layoutRequirementStatement(
       requirementValueNodeTypes,
     )
   }
-  const keepsLineBreaks = spansLinesThatCannotJoin(source, start, end)
-  if (
-    keepsLineBreaks &&
-    (holdsJoiningRegion(source, start, end) ||
-      spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }))
-  ) {
+  const keptBreaks = findKeptBreaks(source, start, end)
+  const keepsLineBreaks = spansKeptBreaks(source, keptBreaks, start, end)
+  if (keepsLineBreaks && holdsJoiningRegion(source, start, end)) {
     return keptAsWritten(start, end)
   }
+  // A statement with a kept line break keeps its styles as written: printing
+  // them changes whether joining its lines is safe, so a second pass would
+  // join them.
   const styles =
     (statement.type === "RequirementStyleStatement" ||
       statement.type === "RequirementClassDefStatement") &&
+    !keepsLineBreaks &&
     styleUnitsCanCompact(source, start, end, statement.styles)
       ? statement.styles
       : []
@@ -316,13 +320,14 @@ export function layoutRequirementStatement(
     })),
   )
   return {
-    atoms: keepsLineBreaks ? keepFirstGapLineTails(source, atoms) : atoms,
+    atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
+      gapKeepsLineBreak(source, keptBreaks, from, to),
+    ),
     rules: statementRules(source, statement, styles.length > 0),
     outdented: new Set(),
     lineBreaks:
-      keepsLineBreaks ||
-      (statement.type === "RequirementClassStatement" &&
-        !joinsClassStatement(source, statement))
+      statement.type === "RequirementClassStatement" &&
+      !joinsClassStatement(source, statement)
         ? "kept"
         : "joined",
   }
@@ -347,13 +352,25 @@ function joinsClassStatement(
   if (lineBreak === -1 || lineBreak >= statement.range[1]) return true
   return [...statement.names, ...statement.cssClasses]
     .filter((name) => name.range[0] > lineBreak)
-    .every((name) => name.type !== "RequirementIdentifier" || isStyleWord(name))
+    .every(
+      (name) =>
+        name.type !== "RequirementIdentifier" || isStyleWord(source, name),
+    )
 }
 
-/** Whether an unquoted name reads as a `style-word` unit: ASCII word characters only. */
-function isStyleWord(name: RequirementIdentifier): boolean {
+/**
+ * Whether an unquoted name reads as a `style-word` unit: ASCII word
+ * characters only, and no `;` that the line rule ignores and no directive
+ * inside it, which the parser rejects inside a unit of the style context
+ * (diagrams/requirement.md, Known divergences).
+ */
+function isStyleWord(source: Source, name: RequirementIdentifier): boolean {
   return (
     name.name !== "" &&
+    findTriviaBetween(source, name.range[0], name.range[1]).length === 0 &&
+    ![...source.ignoredSemicolons].some(
+      (offset) => name.range[0] <= offset && offset < name.range[1],
+    ) &&
     [...name.name].every(
       (character) =>
         (character >= "a" && character <= "z") ||

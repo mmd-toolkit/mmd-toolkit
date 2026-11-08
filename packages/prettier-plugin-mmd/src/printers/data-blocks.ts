@@ -81,7 +81,8 @@ export interface DataBlockPlacement {
  * `padDataBlock`), and, where the statement holds no other block, a block of
  * several lines printed one level inside the statement, with its closing `}`
  * on a line of its own at the column of the statement, in spaces (see
- * `moveDataBlock`).
+ * `moveDataBlock`). The `{` of a JSON table of a use case diagram is printed
+ * right after its `@` (see `findJsonTableBrace`).
  */
 export function formatDataBlocks(
   source: Source,
@@ -97,11 +98,16 @@ export function formatDataBlocks(
   let changed = false
   for (let index = first; index < afterLast; index++) {
     const block = all[index]
-    const doc = isOneLine(source.text.slice(...block.range))
-      ? padDataBlock(source, all, index, placement.kept)
-      : afterLast - first === 1 && placement.tabWidth !== 0
-        ? moveDataBlock(source, block, range, placement)
-        : undefined
+    const brace = findJsonTableBrace(source, block, placement.kept)
+    const doc =
+      (isOneLine(source.text.slice(...block.range))
+        ? padDataBlock(source, all, index, placement.kept)
+        : afterLast - first === 1 && placement.tabWidth !== 0
+          ? moveDataBlock(source, block, range, placement, brace)
+          : undefined) ??
+      (brace === null
+        ? undefined
+        : ["@", printAsWritten(source, brace, block.range[1])])
     if (doc === undefined) continue
     // The atoms are in source order and do not overlap, so the first one that
     // ends at or after the block is the one that holds it, if any does.
@@ -130,6 +136,33 @@ export function formatDataBlocks(
   return changed ? { ...layout, atoms } : layout
 }
 
+/**
+ * The offset of the `{` of a JSON table of a use case diagram that spaces or
+ * tabs separate from its `@`, or null: the printer puts the `{` right after
+ * the `@`, as the other data blocks have their `@{`, and the whitespace
+ * between them is not in the Db (docs/usecase.md, JSON tables). A block that
+ * holds a directive, or that lies on a kept line, stays as written.
+ */
+function findJsonTableBrace(
+  source: Source,
+  block: Node,
+  kept: KeptLines,
+): number | null {
+  if (block.type !== "UsecaseJsonDataBlock") return null
+  const text = source.text.slice(...block.range)
+  const brace = text.indexOf("{")
+  if (
+    brace <= "@".length ||
+    text.includes("%%{") ||
+    holdsKeptLine(source, block.range, kept) ||
+    !Array.from(text.slice("@".length, brace)).every(
+      (character) => character === " " || character === "\t",
+    )
+  )
+    return null
+  return block.range[0] + brace
+}
+
 /** Whether a text holds no line break: LF, CR, U+2028 or U+2029. */
 function isOneLine(text: string): boolean {
   return (
@@ -142,7 +175,8 @@ function isOneLine(text: string): boolean {
 
 /**
  * The block of one line printed with one space inside each end, `@{ shape:
- * circle }`; undefined where it stays as written. These diagram types read the
+ * circle }`, and a block of nothing but spaces and tabs, or of nothing, as
+ * `@{ }`; undefined where it stays as written. These diagram types read the
  * text inside `@{` and `}` as the lines of a YAML flow mapping
  * (docs/flowchart.md, Data blocks), so the spaces and tabs at its ends carry no
  * meaning. A block is padded only if
@@ -150,8 +184,6 @@ function isOneLine(text: string): boolean {
  * - it is one of `paddedTypes`;
  * - no `%%{` lies in it: a directive in the block is written as it stands;
  * - it is on no kept line (see `KeptLines`);
- * - something other than spaces and tabs stands in it: of a block that holds
- *   none, `@{}` is rejected while `@{   }` is accepted;
  * - its text does not start at the first column with `---`, `...`, or `%`: a
  *   space before `---` or `...` makes a document marker an ordinary string, so
  *   `@{---}` is rejected while `@{ --- }` is accepted; the starts that are no
@@ -187,7 +219,7 @@ function padDataBlock(
   let end = text.length - 1
   while (start < end && (text[start] === " " || text[start] === "\t")) start++
   while (end > start && (text[end - 1] === " " || text[end - 1] === "\t")) end--
-  if (start === end) return undefined
+  if (start === end) return "@{ }"
   return ["@{ ", text.slice(start, end), " }"]
 }
 
@@ -249,6 +281,7 @@ function moveDataBlock(
   block: Node,
   statement: Range,
   placement: DataBlockPlacement,
+  brace: number | null,
 ): Doc | undefined {
   const text = source.text.slice(...block.range)
   if (
@@ -258,7 +291,8 @@ function moveDataBlock(
   )
     return undefined
   const rows = text.split("\n")
-  const opening = rows[0]
+  const opening =
+    brace === null ? rows[0] : `@${rows[0].slice(brace - block.range[0])}`
   const last = rows.at(-1) as string
   if (
     rows.length < 2 ||

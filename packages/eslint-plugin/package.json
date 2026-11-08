@@ -38,9 +38,9 @@
     "build": "tsdown",
     "clean": "rimraf lib",
     "test": "vitest run",
-    "update": "node tools/update-rules.ts && node tools/update-docs.ts",
-    "update:docs": "node tools/update-docs.ts",
-    "check:docs": "node tools/update-rules.ts --check && node tools/update-docs.ts --check",
+    "update": "pnpm --workspace-root run build:parser && node tools/update-rules.ts && node tools/update-docs.ts",
+    "update:docs": "pnpm --workspace-root run build:parser && node tools/update-docs.ts",
+    "check:docs": "pnpm --workspace-root run build:parser && node tools/update-rules.ts --check && node tools/update-docs.ts --check",
     "test:update": "rimraf --glob \"tests/**/__snapshots__\" && UPDATE_SNAPSHOTS=true vitest run"
   },
   "peerDependencies": {

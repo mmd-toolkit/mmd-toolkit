@@ -19,7 +19,7 @@ describe("a timeline in a Markdown code block", () => {
         "# Title\n\n```mermaid\ntimeline TD\ntitle   T\nsection S\n2004: Facebook\n  : Google\n```\n",
       ),
     ).toBe(
-      "# Title\n\n```mermaid\ntimeline TD\n  title   T\n  section S\n    2004: Facebook\n        : Google\n```\n",
+      "# Title\n\n```mermaid\ntimeline TD\n  title T\n  section S\n    2004: Facebook\n        : Google\n```\n",
     )
   })
 
@@ -33,10 +33,10 @@ describe("a timeline in a Markdown code block", () => {
     )
   })
 
-  it("keeps the whitespace at the end of an event", async () => {
+  it("drops the whitespace at the end of the last event of a line", async () => {
     expect(
-      await formatTwice("```mermaid\ntimeline\na : e  \nb : f\n```\n"),
-    ).toBe("```mermaid\ntimeline\n  a : e  \n  b : f\n```\n")
+      await formatTwice("```mermaid\ntimeline\na : e  \nb : f  : g  \n```\n"),
+    ).toBe("```mermaid\ntimeline\n  a : e\n  b : f  : g\n```\n")
   })
 
   it("indents description text in a list item and keeps its trailing spaces", async () => {

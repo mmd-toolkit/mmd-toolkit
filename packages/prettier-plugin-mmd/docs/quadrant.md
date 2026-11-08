@@ -6,9 +6,11 @@ How prettier-plugin-mmd formats a quadrant chart. Each rule below keeps what
 mermaid.js reads from the diagram; where a change would alter it, the text is
 kept as written, and the rule says where. A quadrant chart is a header followed
 by statements. Unlike in an XY chart, the whitespace between the words of a text
-without quotes is in the Db, so the texts are printed as written, and the rules
-choose the form of what lies around them: the indentation, the keywords, the
-arrow, the brackets, and the commas.
+without quotes is in the Db, and the figure is the same without a run of it, so
+a run is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+and the rules choose the form of what lies around the texts: the indentation,
+the keywords, the arrow, the brackets, and the commas.
 
 Each rule below shows its formatting with examples: the text before formatting,
 and the text that the plugin prints. The examples are the fixtures that the
@@ -229,31 +231,45 @@ quadrantChart %% c
 
 ### Keywords and texts
 
-The keyword of a statement and its text are separated by one space; a run of
-whitespace becomes one space. Whitespace between them is not in the Db:
+The keyword of a statement and its text are separated by one space. A run of
+whitespace becomes one space, and a keyword that touches its text or string gets
+one: `x-axisL --> R` is printed `x-axis L --> R`, `quadrant-3C` is printed
+`quadrant-3 C`, `title-x` is printed `title -x`, and `title"T"` is printed
+`title "T"`. Whitespace between them is not in the Db, so the form is a choice:
 `x-axisL --> R` and `x-axis L --> R` are the same axis, and `quadrant-10 A` is
-the quadrant 1 with the text `0 A`, the same as `quadrant-1 0 A`. A keyword and
-a text that touch keep touching, as tokens that touch do in the other diagrams.
-Writing a space between them would be a change that the author cannot see in the
-Db, and a form like `quadrant-10 A`, which mermaid.js reads as another quadrant
-than the author may have meant, is for a lint rule to report, not for the
-formatter to rewrite. [fixture: keywords-and-texts/title-spaces] [fixture:
+the quadrant 1 with the text `0 A`, the same as `quadrant-1 0 A`, which the
+printed space shows. A space marks where the text starts, which a keyword glued
+to its text hides, and the documentation of mermaid.js writes every keyword
+apart from its text
+([`title`, `x-axis`, `y-axis`, and `quadrant-1` to `quadrant-4`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/quadrantChart.md#L13-L19)).
+[fixture: keywords-and-texts/title-spaces] [fixture:
 keywords-and-texts/title-tab] [fixture: keywords-and-texts/axis-keyword-spaces]
 [fixture: keywords-and-texts/quadrant-keyword-spaces] [fixture:
-keywords-and-texts/keyword-touching-kept] [fixture:
-keywords-and-texts/quadrant-ten-kept] [fixture:
+keywords-and-texts/keyword-touching-spaced] [fixture:
+keywords-and-texts/string-touching-spaced] [fixture:
+keywords-and-texts/quadrant-ten-spaced] [fixture:
 keywords-and-texts/word-after-title-keyword-is-a-point-name] [fixture:
-keywords-and-texts/inner-whitespace-of-a-title-kept]
+keywords-and-texts/inner-runs-of-a-title-collapsed]
 
-The whitespace inside a text is in the Db and stays as written:
-`quadrant-1 a    b` has the text `a    b`, a tab between two words is a tab in
-the text, and so is a form feed. The whitespace at the ends of a text is
-dropped, since the Db drops it. A string and the words after it keep the
-whitespace between them, as `"a" b` is the text `a b` and `"a"b` the text `ab`.
-[fixture: keywords-and-texts/inner-whitespace-kept] [fixture:
+A directive between the keyword and its text is placed as under
+[Directives](#directives). [fixture:
+keywords-and-texts/directive-beside-keyword] A U+2028 or U+2029 right after an
+axis or quadrant keyword is the first character of the text (see
+[Line separators](#line-separators)), so one space is put before it, while one
+after `title` stays where it is. [test: U+2028 between an axis keyword and its
+text] [test: U+2029 between a quadrant keyword and its text] [test: U+2028 after
+a title keyword]
+
+The whitespace inside a text is in the Db, and a run of spaces and tabs in it is
+printed as one space: `quadrant-1 a    b` has the text `a    b` and is printed
+`quadrant-1 a b`, and a tab between two words is a space; a form feed is no
+space or tab, and stays. The whitespace at the ends of a text is dropped, since
+the Db drops it. A string and the words after it keep the whitespace between
+them, as `"a" b` is the text `a b` and `"a"b` the text `ab`. [fixture:
+keywords-and-texts/inner-runs-collapsed] [fixture:
 keywords-and-texts/whitespace-at-the-ends-dropped] [fixture:
 keywords-and-texts/string-then-text-whitespace-kept] [fixture:
-keywords-and-texts/inner-whitespace-of-a-title-kept]
+keywords-and-texts/inner-runs-of-a-title-collapsed]
 
 Input
 ([keywords-and-texts/title-spaces-input.mmd](../tests/fixtures/quadrant/keywords-and-texts/title-spaces-input.mmd)):
@@ -272,7 +288,7 @@ quadrantChart
 ```
 
 Input
-([keywords-and-texts/keyword-touching-kept-input.mmd](../tests/fixtures/quadrant/keywords-and-texts/keyword-touching-kept-input.mmd)):
+([keywords-and-texts/keyword-touching-spaced-input.mmd](../tests/fixtures/quadrant/keywords-and-texts/keyword-touching-spaced-input.mmd)):
 
 ```mmd
 quadrantChart
@@ -282,13 +298,13 @@ title-x
 ```
 
 Output
-([keywords-and-texts/keyword-touching-kept-output.mmd](../tests/fixtures/quadrant/keywords-and-texts/keyword-touching-kept-output.mmd)):
+([keywords-and-texts/keyword-touching-spaced-output.mmd](../tests/fixtures/quadrant/keywords-and-texts/keyword-touching-spaced-output.mmd)):
 
 ```mmd
 quadrantChart
-  x-axisL --> R
-  quadrant-3C
-  title-x
+  x-axis L --> R
+  quadrant-3 C
+  title -x
 ```
 
 ### Axes
@@ -303,7 +319,7 @@ ends, which the whitespace inside the texts (see
 the arrow is not in the Db, but it is what the author wrote, so `--->` stays.
 [fixture: axes/arrow-touching] [fixture: axes/arrow-with-more-whitespace]
 [fixture: axes/arrow-touching-on-one-side] [fixture: axes/arrow-length-kept]
-[fixture: axes/text-inner-whitespace-kept] [fixture: axes/strings] [fixture:
+[fixture: axes/text-inner-runs-collapsed] [fixture: axes/strings] [fixture:
 axes/markdown-string] [fixture: axes/axis-only-one-text]
 
 An axis with the arrow and no second text, as in `x-axis L -->`, is printed with
@@ -360,7 +376,7 @@ drops it. The form is the one of the documentation of mermaid.js
 (`Campaign A: [0.3, 0.6]`, `Campaign B:::class1: [0.8, 0.1]`). [fixture:
 points/colon-touches-the-name] [fixture: points/spaces-inside-the-brackets]
 [fixture: points/name-whitespace-at-the-ends-dropped] [fixture:
-points/name-inner-whitespace-kept] [fixture: points/string-names] [fixture:
+points/name-inner-runs-collapsed] [fixture: points/string-names] [fixture:
 points/class-name] [fixture: points/coordinates-as-written] [fixture:
 points/trailing-whitespace-dropped]
 
@@ -445,6 +461,7 @@ styles/class-definition-tabs] [fixture:
 styles/class-definition-name-with-a-dash] [fixture:
 styles/class-definition-three-styles] [fixture:
 styles/class-definition-keyword-case-kept] [fixture:
+styles/class-definition-semicolons-case-kept] [fixture:
 styles/class-definition-with-an-ignored-semicolon] [fixture:
 styles/class-definition-space-before-the-comma-dropped]
 
@@ -484,15 +501,16 @@ quadrantChart
 
 ### Quotes
 
-A string and a markdown string are printed as written: their quotes, their text,
-and the whitespace inside them. A quote is never added or removed. mermaid.js
-reads `"L"` and `L`, and `"a b"` and `a b`, as the same text, but a string can
-hold what a text without quotes cannot (`"a: b"` has a colon, which a text
-without quotes is rejected for), so removing the quotes is not always possible,
-and whether a text is in quotes is the author's choice. [fixture:
-quotes/strings-as-written] [fixture: quotes/quotes-not-removed] [fixture:
-quotes/quotes-not-added] [fixture: quotes/keywords-and-arrows-in-strings]
-[fixture: quotes/markdown-strings] [fixture: quotes/string-with-a-comment-mark]
+A string and a markdown string are printed as written: their quotes and their
+text, with a run of spaces and tabs inside them printed as one space. A quote is
+never added or removed. mermaid.js reads `"L"` and `L`, and `"a b"` and `a b`,
+as the same text, but a string can hold what a text without quotes cannot
+(`"a: b"` has a colon, which a text without quotes is rejected for), so removing
+the quotes is not always possible, and whether a text is in quotes is the
+author's choice. [fixture: quotes/strings-runs-collapsed] [fixture:
+quotes/quotes-not-removed] [fixture: quotes/quotes-not-added] [fixture:
+quotes/keywords-and-arrows-in-strings] [fixture: quotes/markdown-strings]
+[fixture: quotes/string-with-a-comment-mark]
 
 Input
 ([quotes/quotes-not-removed-input.mmd](../tests/fixtures/quadrant/quotes/quotes-not-removed-input.mmd)):
@@ -516,9 +534,10 @@ quadrantChart
 
 A `title` is printed as the keyword and its text, after one space, whatever
 whitespace separates them (a tab too). The text is the rest of the line without
-the whitespace at its ends. A `title` with no text is printed as the keyword
-alone. `;`, `#`, `%%`, quotes, and keywords in a title are characters of it.
-[fixture: titles-and-accessibility-statements/title-text] [fixture:
+the whitespace at its ends, and a run of spaces and tabs inside it is printed as
+one space. A `title` with no text is printed as the keyword alone. `;`, `#`,
+`%%`, quotes, and keywords in a title are characters of it. [fixture:
+titles-and-accessibility-statements/title-text] [fixture:
 titles-and-accessibility-statements/title-without-text] [fixture:
 titles-and-accessibility-statements/title-with-special-characters] [fixture:
 titles-and-accessibility-statements/title-keyword-case]
@@ -526,11 +545,15 @@ titles-and-accessibility-statements/title-keyword-case]
 The `:` of `accTitle` and `accDescr` touches the keyword and has one space after
 it, as in the other diagrams (see
 [Accessibility statements](./xychart.md#accessibility-statements)). The text has
-no whitespace at its ends and keeps the whitespace inside it, which is in the
-Db. A text written on a later line, a colon written on a later line than the
-keyword, and whitespace before the colon are printed on one line: the line
-breaks are whitespace to the lexer, and the text of the statement is the same.
-[fixture: titles-and-accessibility-statements/colon-touches-keyword] [fixture:
+no whitespace at its ends. A run of spaces and tabs inside the text of an
+`accDescr` is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+and that of an `accTitle` stays as written, since the browser shows it as a
+tooltip; the Db keeps both. A text written on a later line, a colon written on a
+later line than the keyword, and whitespace before the colon are printed on one
+line: the line breaks are whitespace to the lexer, and the text of the statement
+is the same. [fixture:
+titles-and-accessibility-statements/colon-touches-keyword] [fixture:
 titles-and-accessibility-statements/colon-without-space-after] [fixture:
 titles-and-accessibility-statements/text-whitespace-dropped] [fixture:
 titles-and-accessibility-statements/text-inner-whitespace-kept] [fixture:
@@ -677,12 +700,19 @@ multi-line-statements/point-trivia-with-multiline-label] [fixture:
 multi-line-statements/accessibility-trivia-continuations]
 
 Other statements with multiline trivia retain their layout. Joining comment
-regions and a `;` in the statement or on its final line keep the original layout
-too, because of the line rule (see
-[Statements one per line](#statements-one-per-line)). [fixture:
+regions keep the original layout too. In a point and in an accessibility
+statement, a line break stays where joining it, with one space or with nothing,
+could change which `;` the line rule ignores, and where a `;` ends the last
+line; any other line break is joined as usual, also in a statement that holds a
+`;`. Any other statement over several lines is kept as written when a line break
+of it stays. The same decision applies to a `;` in another statement on its
+final line (see [Statements one per line](#statements-one-per-line)). [fixture:
+multi-line-statements/breaks-decided-one-by-one] [fixture:
+multi-line-statements/line-rule-first-hash-after-colon-kept] [fixture:
+multi-line-statements/semicolon-joining-changes-kept] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
-multi-line-statements/directive-inside-kept] [fixture:
-multi-line-statements/semicolon-on-the-last-line-kept]
+multi-line-statements/directive-inside-kept] A `;` alone does not prevent
+joining. [fixture: multi-line-statements/semicolon-on-the-last-line-joined]
 
 ### Multi-line values
 
@@ -737,16 +767,20 @@ quadrantChart
 
 ### Keyword case
 
-The keywords `title`, `x-axis`, `y-axis`, `quadrant-1` to `quadrant-4`,
-`classDef`, `accTitle`, and `accDescr` are printed in the case written.
-mermaid.js reads them in any case (`Title`, `X-Axis`, `CLASSDEF`, and
-`ACCTITLE:` start statements), and the Db is the same, so the case is the
-author's and nothing forces one. The name of a class keeps its case. [fixture:
-keyword-case/statement-keywords-kept] [fixture:
+The keywords `title`, `x-axis`, `y-axis`, and `quadrant-1` to `quadrant-4` are
+printed in the case that the examples in the documentation of mermaid.js use
+(see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+mermaid.js reads them in any case (`Title` and `X-Axis` start statements), and
+the Db is the same. `accTitle` and `accDescr` are printed in the case written,
+which the examples do not use, and so is `classDef` (see
+[Keywords in one case](./compatibility.md#keywords-in-one-case)). The name of a
+class keeps its case. [fixture: keyword-case/statement-keywords-one-form]
+[fixture: keyword-case/quadrant-3-4-one-form] [fixture:
 keyword-case/accessibility-keywords-kept]
 
 Input
-([keyword-case/statement-keywords-kept-input.mmd](../tests/fixtures/quadrant/keyword-case/statement-keywords-kept-input.mmd)):
+([keyword-case/statement-keywords-one-form-input.mmd](../tests/fixtures/quadrant/keyword-case/statement-keywords-one-form-input.mmd)):
 
 ```mmd
 quadrantChart
@@ -758,15 +792,15 @@ QUADRANT-2 B
 ```
 
 Output
-([keyword-case/statement-keywords-kept-output.mmd](../tests/fixtures/quadrant/keyword-case/statement-keywords-kept-output.mmd)):
+([keyword-case/statement-keywords-one-form-output.mmd](../tests/fixtures/quadrant/keyword-case/statement-keywords-one-form-output.mmd)):
 
 ```mmd
 quadrantChart
-  Title T
-  X-AXIS L
-  Y-Axis B
-  Quadrant-1 A
-  QUADRANT-2 B
+  title T
+  x-axis L
+  y-axis B
+  quadrant-1 A
+  quadrant-2 B
 ```
 
 ### Comments
@@ -842,13 +876,12 @@ quadrantChart
 
 ### Directives
 
-Keep directives in their authored gaps. Within a printed line, each side keeps
-whether it touches: one space where whitespace was written beside it, touching
-where it was not. mermaid.js joins the text around a directive in a text, a
-name, and a string, so retain touching versus separated gaps within a statement
-(see [Directives](./journey.md#directives)). A directive on a line of its own
-stands at the level of the statement after it, and a directive between two
-statements on a line moves with the statement after it. [fixture:
+Keep directives in their authored gaps. Within a printed line, a directive is
+placed as under [Directives](./flowchart.md#directives): the gap is printed as
+without the directive, and the directive stands after its space and touches the
+unit that follows it. A directive on a line of its own stands at the level of
+the statement after it, and a directive between two statements on a line moves
+with the statement after it. [fixture:
 directives/directive-line-at-the-level-of-the-next-statement] [fixture:
 directives/directive-line-before-the-header] [fixture:
 directives/directive-after-a-statement-spaced] [fixture:
@@ -899,8 +932,8 @@ Output
 
 ```mmd
 quadrantChart
-  quadrant-1 %%{init: {}}%% A
-  x-axis%%{init: {}}%%L
+  quadrant-1 %%{init: {}}%%A
+  x-axis %%{init: {}}%%L
 ```
 
 ### Frontmatter YAML

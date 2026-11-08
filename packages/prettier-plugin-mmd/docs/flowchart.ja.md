@@ -381,7 +381,7 @@ flowchart LR
   subgraph "S" end;
     B
   end
-  style B fill:click;
+  style B fill: click;
   C
   classDef c href;D
   subgraph T end
@@ -518,9 +518,9 @@ style B   fill:#0f0 ;
 ```mmd
 flowchart LR
   A --> B
-  style A fill:#f00
-  classDef c fill:#fff,stroke:#333
-  style B fill:#0f0
+  style A fill: #f00
+  classDef c fill: #fff, stroke: #333
+  style B fill: #0f0
 ```
 
 入力
@@ -588,6 +588,26 @@ flowchart LR
   D
 ```
 
+文の 2 つのトークンの間か同じ行の 2 つの文の間で、行の規則が無視する `;` は、
+ないものとして読まれます。
+そのため、その周りの空白は、`;` がないものとして隙間の通常の規則に従います。
+空白 1 つを置く隙間では、書かれた空白によらず、`;` を直前のトークンに付け、
+後ろに空白 1 つを置きます。
+空白を置かない隙間では、`;` は両側のトークンに接します。
+規則のない隙間では、隙間のどこかに空白が書かれていれば後ろに空白 1 つを置き、
+なければ接したままにします。
+行の規則が読む範囲の中の隙間と、U+2028 か U+2029 を含む隙間、
+図種のキーワードの直後の隙間は、書かれたままの空白を保ちます。
+図種の検出は、`;` を取り除く前のテキストを読むためです。
+`cynefin-beta ;complex` は検出され、`cynefin-beta; complex` は検出されません。
+行の末尾の `;` は、直前のトークンに付けます。
+[fixture: semicolons/ignored-semicolon-before-edge-id-touching]
+[fixture: semicolons/ignored-semicolon-before-edge-id-spaced]
+[test: U+2028 after a `;` before an edge id]
+[test: U+2028 after a `;` and a space before an edge id]
+[test: U+2029 after a `;` before an edge id]
+[test: U+2029 after a `;` and a space before an edge id]
+
 ### 空行
 
 連続する空行は 1 つの空行にします。
@@ -651,21 +671,107 @@ mermaid.js には、接しているときだけ読むトークンがあります
 接するトークンの間に空白を書く規則は、その場所ごとの例外を要するからです。
 [fixture: whitespace-between-tokens/header-and-tabs-collapsed]
 [fixture: whitespace-between-tokens/compat-empty-description-block-own-line]
-値の一部である空白は保ちます。
-スタイルの並びの `,` の前後の空白は mermaid.js がスタイルに残し、
-subgraph の名前の中の空白はそのタイトルになります。
+subgraph の名前（タイトルになる）の中の空白とタブの連なりは、
+mermaid.js がタイトルを幅なしで描くときは空白 1 つにして印字し、
+タイトルを折り返すときは書かれたまま残します。
+Markdown 文字列、
+データブロックがある subgraph（文字列で名前を書く subgraph の id は、
+引用符の間の文字から両端の空白を除いたもので、
+Markdown 文字列ではバッククォートの間の文字です。
+`subgraph "S"` と `subgraph " S "` の id は `S`）、
+`swimlane` を書く図ではタイトルを折り返します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+[fixture: whitespace-between-tokens/subgraph-name-runs-collapsed]
+[fixture: subgraph-header/markdown-title-runs-kept]
+[fixture: subgraph-header/collapsed-title-runs-kept]
+[fixture: subgraph-header/collapsed-quoted-name-title-runs-kept]
+[fixture: subgraph-header/collapsed-markdown-name-title-runs-kept]
+[fixture: subgraph-header/collapsed-spaced-name-title-runs-kept]
+[fixture: subgraph-header/collapsed-generated-id-title-runs-kept]
+[fixture: subgraph-header/swimlane-title-runs-kept]
+[fixture: subgraph-header/layout-swimlane-title-runs-kept]
+`style`・`classDef`・`linkStyle` の文では、
+各スタイルの最初の `:` の前に空白を置かず、値が空でなければ、
+後ろに空白を 1 つ置きます。
+スタイルの間の `,` の前に空白を置かず、後ろに空白を 1 つ置きます。
+`style A fill :#f00,stroke:  #333` は、
+`style A fill: #f00, stroke: #333` になります。
+[fixture: whitespace-between-tokens/style-colon-spaced]
+[fixture: whitespace-between-tokens/style-colon-empty-value-kept]
+[fixture: whitespace-between-tokens/style-comma-before-dropped]
+番号を指定した `linkStyle` では、`fill` で始まるスタイルの前の `,` の後ろに、
+空白があるかないかを保ち、空白の連続は空白 1 つにします。
+mermaid.js は先頭だけを読むので、`fill-opacity` で始まるスタイルも含みます。
+[fixture: whitespace-between-tokens/link-style-fill-after-comma-kept]
+[fixture: whitespace-between-tokens/link-style-fill-opacity-after-comma-kept]
+番号か `default` を指定した `linkStyle` では、`stroke:` で始まるスタイルも、
+前に空白があるかないかを保ちます。
+look が `handDrawn` のときは、mermaid.js が先頭の `stroke:` を読むからです。
+[fixture: whitespace-between-tokens/link-style-stroke-after-comma-kept]
+この文のほかのスタイルと `linkStyle default` は、1 つの形で印字します。
+[fixture: whitespace-between-tokens/link-style-other-after-comma-spaced]
+[fixture: whitespace-between-tokens/link-style-default-after-comma-spaced]
+リンクにも適用される `linkStyle` と `classDef` では、
+`stroke` で終わる名前と `:` の間の空白の有無を保ち、
+空白の連続は空白 1 つにします。
+mermaid.js はリンクのスタイルから `stroke:` を探し、
+矢印の頭の色を決めるからです。
+[fixture: whitespace-between-tokens/link-style-stroke-before-colon-kept]
+[fixture: whitespace-between-tokens/class-def-stroke-before-colon-kept]
+`style` はノードに適用され、1 つの形で印字します。
+[fixture: whitespace-between-tokens/style-stroke-before-colon-spaced]
+`style` のスタイルの末尾のバックスラッシュの後の空白は読まれません。
+`style A stroke-width:3px\ ,stroke:#0f0` は、
+`style A stroke-width: 3px\, stroke: #0f0` と印字します。
+[fixture: whitespace-between-tokens/style-backslash-space-dropped]
+`linkStyle` のスタイルのうち、名前が `stroke` で終わり、
+値が空白とタブだけのものは、書かれたまま残します。
+mermaid.js はそれから矢印の頭に色を付けず、後の `stroke:` も試さないからです。
+`linkStyle 0 stroke: ,   stroke:#f00` は、
+`linkStyle 0 stroke: , stroke: #f00` と印字します。
+[fixture: whitespace-between-tokens/link-style-blank-stroke-value-kept]
+バックスラッシュで終わる `linkStyle` のスタイルは、
+その後に空白があるかないかを保ち、空白の連続は最初の 1 文字にします。
+mermaid.js はリンクのスタイルを書かれたまま `;` でつなぐので、
+バックスラッシュが `;` をエスケープするからです。
+`linkStyle 0 stroke-width:4px\ ,stroke:#0f0` は、
+`linkStyle 0 stroke-width: 4px\ ,stroke: #0f0` と印字します。
+（[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)）。
+[fixture: whitespace-between-tokens/link-style-backslash-space-kept]
+`classDef` では、バックスラッシュの後の `,` はスタイルの一部です。
+バックスラッシュと `,` の間の空白は、
+除くと `,` がスタイルの一部になるので残します。
+`classDef c fill:a\ ,stroke:b` は、
+`classDef c fill: a\ , stroke: b` と印字します。
+`style` と `linkStyle` では、`,` は前に何があってもスタイルを終えます。
+[fixture: whitespace-between-tokens/style-backslash-before-comma]
+バックスラッシュの後で `:` の前にある空白も、
+除くと `:` がエスケープされるので残します。
+コメントやディレクティブがある文、空白だけのスタイルがある文、
+スタイルに改行があるか、行に保つ `;` がある文は、書かれたまま残します。
+[fixture: whitespace-between-tokens/style-blank-style-kept]
+[fixture: whitespace-between-tokens/style-colon-escaped-space-kept]
+[fixture: whitespace-between-tokens/style-escaped-space-before-comma]
+[fixture: whitespace-between-tokens/style-comma-beside-directive-kept]
+[fixture: whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
+U+2028 と U+2029 は、その場所に残します。
+[test: U+2028 before the comma of a flowchart style statement]
+[test: U+2029 after the comma of a flowchart style statement]
 `direction` の文の、`direction` の前と値の後のテキストは例外で、
 書かれたまま残します（[方向](#方向)を参照）。
-[fixture: whitespace-between-tokens/style-values-in-class-def-and-link-style-kept]
-[fixture: whitespace-between-tokens/subgraph-quoted-name-kept]
+[fixture: whitespace-between-tokens/class-def-and-link-style-spaced]
+[fixture: whitespace-between-tokens/subgraph-quoted-name-runs-collapsed]
 `style`・`classDef`・`linkStyle` の文では、最初のスタイルの前の空白は、
-mermaid.js の文の規則が読むものなので、そこにディレクティブがあるときも、
-空白 1 つにします。
-`style A %%{init: {}}%%  fill:red` と `style A %%{init: {}}%% fill:red` は、
-Db が同じです。
-最初のスタイルの始まりから最後のスタイルまでは、書かれたまま残します。
-mermaid.js はそれをスタイルの一部として読むからです。
+mermaid.js の文の規則が読むものなので、空白 1 つにします。
+そこにディレクティブがあれば、[ディレクティブ](#ディレクティブ)のとおり、
+その空白をディレクティブの前に置きます。
+`style A %%{init: {}}%%  fill:red` は、
+`style A %%{init: {}}%%fill:red` と印字し、両者の Db は同じです。
+スタイルの値の中の語と語の間の空白は、書かれたまま残します。
 [fixture: whitespace-between-tokens/style-inner-whitespace-kept]
+`linkStyle default`、`classDef`、`style` の形は、ER と requirement と同じです。
+[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+を参照してください。
 
 subgraph の `end` の後の U+2028 と U+2029 は mermaid.js にとって空白なので、
 行末の空白と一緒に落とします。
@@ -692,13 +798,13 @@ flowchart   LR
 flowchart LR
   A --> B
   C & D --> E
-  style A fill:#f00
+  style A fill: #f00
   class A c
   F --> G
 ```
 
 入力
-([whitespace-between-tokens/style-values-kept-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-values-kept-input.mmd)):
+([whitespace-between-tokens/style-colon-and-comma-spaced-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-colon-and-comma-spaced-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -707,16 +813,16 @@ flowchart LR
 ```
 
 出力
-([whitespace-between-tokens/style-values-kept-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-values-kept-output.mmd)):
+([whitespace-between-tokens/style-colon-and-comma-spaced-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-colon-and-comma-spaced-output.mmd)):
 
 ```mmd
 flowchart LR
   A
-  style A fill:#f00 , stroke:#333
+  style A fill: #f00, stroke: #333
 ```
 
 入力
-([whitespace-between-tokens/subgraph-name-kept-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-kept-input.mmd)):
+([whitespace-between-tokens/subgraph-name-runs-collapsed-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-runs-collapsed-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -726,17 +832,17 @@ flowchart LR
 ```
 
 出力
-([whitespace-between-tokens/subgraph-name-kept-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-kept-output.mmd)):
+([whitespace-between-tokens/subgraph-name-runs-collapsed-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-runs-collapsed-output.mmd)):
 
 ```mmd
 flowchart LR
-  subgraph a   b
+  subgraph a b
     A
   end
 ```
 
 入力
-([whitespace-between-tokens/style-after-directives-collapsed-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-after-directives-collapsed-input.mmd)):
+([whitespace-between-tokens/style-after-directives-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-after-directives-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -749,28 +855,40 @@ linkStyle default interpolate   basis   %%{init: {}}%%  %%{init: {}}%%stroke:red
 ```
 
 出力
-([whitespace-between-tokens/style-after-directives-collapsed-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-after-directives-collapsed-output.mmd)):
+([whitespace-between-tokens/style-after-directives-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-after-directives-output.mmd)):
 
 ```mmd
 flowchart LR
   A
-  style A %%{init: {}}%% %%{init: {}}%%fill:red
-  classDef a,b %%{init: {}}%% %%{init: {}}%% fill:red
+  style A %%{init: {}}%%%%{init: {}}%%fill:red
+  classDef a,b %%{init: {}}%%%%{init: {}}%%fill:red
   A --> A
-  linkStyle 0 %%{init: {}}%% fill:red
-  linkStyle default interpolate basis %%{init: {}}%% %%{init: {}}%%stroke:red
+  linkStyle 0 %%{init: {}}%%fill:red
+  linkStyle default interpolate basis %%{init: {}}%%%%{init: {}}%%stroke:red
 ```
 
-`call` の後の関数名と、その後の `(` の間の空白は、括弧と引数と一緒に、
-書かれたまま残します。
+`call` の後の関数名と、その後の `(` の間の空白は、書かれたまま残します。
 mermaid.js は、名前を `(` の前まで、空白も含めて読むので、
 `click A call fn  ()` は、`fn` と 2 つの空白を名前とする関数を呼びます。
 [fixture: whitespace-between-tokens/callback-name-arguments-forms-kept]
+引数の両端と `,` の前には空白を置かず、後ろに空白を 1 つ置きます。
+`click A call f(  "x" ,y )` は `click A call f("x", y)` と印字します。
+mermaid.js は引用符の外の `,` で引数を分け、各部分の両端の空白を除き、
+同じ引数で関数を呼ぶからです。
+（[同じに描かれる呼び出しの引数](./compatibility.ja.md#同じに描かれる呼び出しの引数)）。
+引用符の中の空白は残し、空の部分を含む引数も書かれたままにします。
+[fixture: whitespace-between-tokens/callback-arguments-spaced]
+mermaid.js の行の規則が読むかもしれない引数の間の隙間は、
+空白があるかないかを保ちます。
+`click A call f(style:x,#b;c)` は書かれたまま残します。
+`,` の後に空白を置くと、規則が無視する最後の `;` が変わるからです。
+（[同じに描かれる呼び出しの引数](./compatibility.ja.md#同じに描かれる呼び出しの引数)）。
+[fixture: whitespace-between-tokens/callback-arguments-line-rule-kept]
 引数が空白だけの呼び出しの括弧は互いに接し、
 `click A call f( )` は `click A call f()` になります。
 mermaid.js はどちらも引数のない同じ呼び出しとして読むからです。
-括弧の間にディレクティブがあれば、
-その両側の空白の有無を保ちます（[ディレクティブ](#ディレクティブ)を参照）。
+括弧の間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおり、
+両側の括弧に接します。
 [fixture: whitespace-between-tokens/callback-blank-parentheses-touch]
 複数行に書かれた文は書かれたまま残すので、括弧の間の改行とコメント行も残ります。
 [fixture: whitespace-between-tokens/callback-blank-parentheses-lines]
@@ -804,7 +922,7 @@ click B call gn   (y, z)
 flowchart LR
   A
   B
-  click A call fn  ( x )
+  click A call fn  (x)
   click B call gn   (y, z)
 ```
 
@@ -841,10 +959,14 @@ flowchart LR
 [fixture: arrow-spacing/edge-id-arrow-like-after-whitespace-is-link-text]
 それ以外の辺の id の前には、空白を 1 つ置きます（`=a`、`~~a`、`.a`、`x-a`、
 `x~~~a` など）。 [fixture: arrow-spacing/edge-id-not-arrow-like-gets-one-space]
-形と辺の id の間にディレクティブか無視される `;` があるときは、
-その両側に空白があるかどうかは変えず、空白の連なりは空白 1 つにします。
+形と辺の id の間の隙間は、その空白で辺の id と読まれるかどうかが決まるので、
+規則のない隙間です。
+ディレクティブや無視される `;` の前後や、その間など、
+隙間のどこかに空白が書かれていれば、ディレクティブの前に空白 1 つを置き、
+書かれていなければ、空白を置きません。
+ディレクティブと `;` は、[ディレクティブ](#ディレクティブ)のとおりに置きます。
 [fixture: arrow-spacing/edge-id-arrow-like-after-directive]
-[fixture: arrow-spacing/edge-id-arrow-like-after-directive-runs-collapsed]
+[fixture: arrow-spacing/edge-id-arrow-like-after-directive-runs]
 [fixture: arrow-spacing/edge-id-arrow-like-after-ignored-semicolon]
 [fixture: arrow-spacing/edge-id-arrow-like-after-ignored-semicolon-runs-collapsed]
 
@@ -950,8 +1072,15 @@ flowchart LR
 
 引用符のないラベルの両端の空白は、mermaid.js が取り除くのと同じく取り除きます。
 [fixture: label-inner-whitespace/trimmed-every-shape]
-ラベルの中の空白は保ち、空白だけのラベルも保ちます（`A[]` は拒否されます）。
-[fixture: label-inner-whitespace/all-whitespace-every-shape-kept]
+ラベルの中の空白は保ちます。
+空白とタブだけのラベルは、空白 1 つに印字します。
+mermaid.js は空白とタブがいくつあっても同じ空のテキストとして読み、
+同じ図を描きます。
+文字が 0 個のラベル（`A[]`）は拒否されるので、
+ラベルを保つ最小の空白は 1 つです。
+`A[   ]` は `A[ ]` と印字し、ほかのすべての形と、
+`|` の間のリンクのラベルも同じです。
+[fixture: label-inner-whitespace/all-whitespace-every-shape]
 引用符で囲んだラベルは書かれたまま残しますが、
 閉じの引用符と閉じ括弧の間の空白は落とします。
 `A["x" ]` は `A["x"]` に、`B{"x" }`、`C(("x" ))`、`D[/"t" /]` も同じです。
@@ -965,6 +1094,11 @@ flowchart LR
 [fixture: label-inner-whitespace/string-closing-break-and-directive-kept]
 [test: U+2028 between the closing quote and the bracket of a flowchart label]
 [test: U+2029 between the closing quote and the bracket of a flowchart label]
+接続のラベルを閉じる `|` も同じく閉じ引用符に接します。
+`A-->|"x" |B` は `A -->|"x"| B` と印字し、引用符と `|` の間のディレクティブ、
+U+2028、U+2029 は残します。
+[fixture: label-inner-whitespace/pipe-string-closing-touches]
+[test: U+2028 between the closing quote and the `|` of a flowchart edge label]
 
 ラベルの先頭の空白は、それがないとラベルの読み方が変わるときは、
 空白 1 つとして残します。
@@ -1099,10 +1233,21 @@ flowchart LR
 
 辺のラベルは、書かれた形を保ちます。
 2 つの矢印の間のテキストか、矢印の後の `|` の間のテキストです。
+mermaid.js の文書の例は前者を 14 回、後者を 8 回使い、2 倍にはならないためです。
+（[リンクのラベル](./compatibility.ja.md#リンクのラベル)を参照）。
 [fixture: link-label-form/other-link-kinds-kept]
+[fixture: link-label-form/flowchart-header-both-forms-kept]
 一方の形をもう一方に変えるには、`|` を含むラベルの規則が要ります。
 `A -- a|b --> B` は受理されますが、`A -->|a|b| B` は拒否されます。
 [fixture: link-label-form/pipe-in-text-between-arrows-kept]
+
+swimlane 図の辺のラベルは、`|` の間に印字します。
+mermaid.js の文書の例はこの形を 12 回使い、もう一方の形は使わないためです。
+通常のテキスト（文字、数字、空白、`_`、`,`、`?`、`!`）のラベルと、
+8 つの矢印 `-->`、`---`、`--o`、`--x`、`-.->`、`-.-`、`==>`、`===` が対象です。
+`A -- text --> B` は `A -->|text| B` と印字します。
+`|` や `%%` を含むラベル、文字列、Markdown ラベルは書かれたまま残します。
+[fixture: link-label-form/swimlane-arrows-to-pipes]
 
 入力
 ([link-label-form/kept-input.mmd](../tests/fixtures/flowchart/link-label-form/kept-input.mmd)):
@@ -1176,13 +1321,19 @@ flowchart LR
 コロンを語に接し、値の前にASCII空白1つを置き、値の両端の空白を落とします。
 [fixture: accessibility-lines/tight-colon]
 [fixture: accessibility-lines/spaced-colon]
-[fixture: accessibility-lines/value-padding]
+[fixture: accessibility-lines/value-runs-collapsed]
 Dbが同じ形から選ぶ場合は、その図種の理由がなければ兄弟の図種に揃えます。
 flowchartの通常のアクセシビリティ行に固有の理由はないので、
 [C4](./c4.ja.md#アクセシビリティの行)、[class](./class.ja.md#ラベル)、
 [usecase](./usecase.ja.md#direction-and-accessibility)と同じ短い形にします。
 
-値の内部の空白、インラインの`%%`と`#`は値の文字として保ちます。
+`accDescr` の値の中の空白とタブの連なりは、空白 1 つで印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+ブラウザーが `accTitle` をツールチップとして表示するので、
+その連なりは書かれたまま残します。
+インラインの`%%`と`#`は値の文字として保ちます。
+[fixture: accessibility-lines/value-runs-collapsed]
+[fixture: accessibility-lines/block-runs-collapsed]
 [fixture: accessibility-lines/inline-percent-hash]
 値が空または空白だけでも文の形を保ち、`accTitle:`または`accDescr:`とし、
 後ろに空白を足しません。 [fixture: accessibility-lines/empty-title]
@@ -1207,10 +1358,13 @@ flowchartはコロンの後のコメントを読み飛ばして後の値を読�
 この短い形は[1行に1文](#1-行に-1-文)の規則に優先しません。
 値や別の文にある非区切りの`;`を含む行では、
 アクセシビリティの文字と`;`の両側の空白を保ちます。
-`;`を含む次行の値も改行を保ちます。
+複数行に書かれた文は、その行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合に、書かれたまま残します。
+それ以外の複数行の文は、`;` を含んでいても通常どおりつなぎます。
 [fixture: accessibility-lines/semicolon-value-kept]
 [fixture: accessibility-lines/neighbour-semicolon-kept]
-[fixture: accessibility-lines/next-line-semicolon-kept]
+`;` があるだけでは、行をつなぐ妨げにはなりません。
+[fixture: accessibility-lines/next-line-semicolon-joined]
 方向の文字列がある行は[字下げ](#字下げ)に従い、原文、改行、桁位置を保ちます。
 ほかの文書化された保持行の理由も優先します。
 [fixture: accessibility-lines/direction-text-kept]
@@ -1257,7 +1411,7 @@ mermaid.js の文書には、1 行のブロックの例がありません。
 文字に `%%{` があるブロックも同じです。
 `accDescr {A%%{}%% B` では最初の `}` がブロックを閉じるので、
 空白を足すとディレクティブが変わります。
-[fixture: accessibility-lines/block-text-beside-directive-kept]
+[fixture: accessibility-lines/block-text-beside-directive]
 [fixture: pie/description-blocks/block-first-brace]
 `;` を残す行にあるブロックは、文字が何であっても、空白を足しません。
 mermaid.js の line rule
@@ -1476,11 +1630,14 @@ mermaid.js は 1 行のブロックの文字列を、前に `{` と改行、
 取り除くのは半角空白とタブだけで、
 U+00A0 などの空白は文字列の一部として残します。
 [test: data blocks: flowchart one line with no-break spaces at the ends]
+半角空白とタブしか含まないブロックや何も含まないブロックは、
+`@{ }` と印字します。
+mermaid.js は空の flow mapping として読むので、`A@{}`、`A@{   }`、
+`A@{ }` の Db と図は同じです。
+sequence 図では、`@{}` は拒否され、`@{   }` は受理されます。
+[fixture: data-blocks/one-line-space-only-padded]
 次の場合、ブロックは書かれたままにします。
 
-- 半角空白とタブしか含まないとき。
-  `A@{}` は拒否され、`A@{   }` は受理されます。
-  [fixture: data-blocks/one-line-space-only-kept]
 - `%%{` を含むとき。
   directive は、複数行のブロックと同じく、文字と桁を保ちます。
   [fixture: data-blocks/one-line-directive-kept]
@@ -1835,12 +1992,51 @@ flowchart LR
 [fixture: directives/after-header-on-same-line]
 [fixture: directives/after-end-on-same-line]
 [fixture: directives/after-last-statement-without-line-break]
-ディレクティブの側に空白が書かれていればそこに空白 1 つを置き、
-トークンに接していれば接したまま残します。
-[fixture: directives/whitespace-on-both-sides-collapsed]
+
+mermaid.js はテキストを読む前にディレクティブを取り除くので、残る空白は、
+ディレクティブの両側の空白を合わせたものです。
+`note for` のような単位や `title` の後のテキストは、
+空白をちょうど 1 文字読みます。
+ディレクティブの両側に空白 1 つずつを置くと、空白が 2 つ残ります。
+そのため、隙間をディレクティブがないものとして、隙間の通常の規則どおりに印字し、
+ディレクティブをその規則の空白の後ろに置いて、後ろの単位に接します。
+`A  %%{init: {}}%%  --> B`、`A %%{init: {}}%%--> B`、`A%%{init: {}}%%-->B` は、
+どれも `A %%{init: {}}%%--> B` と印字します。
+[fixture: directives/whitespace-on-both-sides]
+[fixture: directives/whitespace-on-each-side]
+[fixture: directives/touching-token]
+[fixture: directives/header-keyword-touching]
 [fixture: directives/meets-empty-description-block]
-mermaid.js はディレクティブを除いたテキストを読むので、
-2 つのトークンが離れているかどうかを変えてはいけないからです。
+[fixture: class/directives/count-sensitive-unit]
+規則が空白を置かない隙間では、ディレクティブは両側の単位に接します。
+`click C call m( %%{x}%%  )` は `click C call m(%%{x}%%)` と印字します。
+[fixture: whitespace-between-tokens/callback-blank-parentheses-touch]
+1 つの隙間のディレクティブどうしは接します。
+[fixture: directives/several-in-gap]
+
+mermaid.js の行の規則が空白を読む可能性のある隙間では、
+ディレクティブの両側に書かれた空白の有無を保ち、
+空白の連なりは空白 1 つにします。
+[セミコロン](#セミコロン)を参照してください。
+[fixture: directives/in-line-rule-stretch]
+印字する行の初めや終わりのディレクティブは、
+隣の単位との隙間に空白があるかないかを保ち、空白の連続は空白 1 つにします。
+反対側には単位がなく、隙間に固有の規則は要らないからです。
+[fixture: directives/line-edge-whitespace]
+U+2028 か U+2029 を含む隙間は、書かれたまま残します。
+その文字を置き換えると、行の規則が読む 2 つの区間をつないでしまうからです。
+[test: U+2028 before a directive in the gap of a flowchart]
+[test: U+2029 after a directive in the gap of a flowchart]
+[test: U+2028 beside a directive between a `:` and a `#` of a flowchart]
+ディレクティブの隙間に行の規則が無視する `;` があれば、
+`;` とディレクティブは書かれた順のままにし、
+通常の規則の空白を最初のディレクティブの前に置きます。
+[セミコロン](#セミコロン)を参照してください。
+`A[style:#x] --> B ;%%{init: {}}%% --> C` は、
+`A[style:#x] --> B; %%{init: {}}%%--> C` と印字します。
+`A[style:#x] --> B %%{init: {}}%% ; --> C` は、
+`A[style:#x] --> B %%{init: {}}%%;--> C` と印字します。
+[fixture: directives/ignored-semicolon-and-directive-in-gap]
 ディレクティブの中身は書かれたまま残します。 [fixture: directives/content-kept]
 [fixture: directives/compat-malformed-directive-kept]
 
@@ -1890,7 +2086,7 @@ flowchart LR
 ```
 
 入力
-([directives/touching-token-kept-input.mmd](../tests/fixtures/flowchart/directives/touching-token-kept-input.mmd)):
+([directives/touching-token-input.mmd](../tests/fixtures/flowchart/directives/touching-token-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -1898,15 +2094,15 @@ flowchart LR
 ```
 
 出力
-([directives/touching-token-kept-output.mmd](../tests/fixtures/flowchart/directives/touching-token-kept-output.mmd)):
+([directives/touching-token-output.mmd](../tests/fixtures/flowchart/directives/touching-token-output.mmd)):
 
 ```mmd
 flowchart LR
-  A%%{init: {}}%%--> B
+  A %%{init: {}}%%--> B
 ```
 
 入力
-([directives/whitespace-on-each-side-kept-input.mmd](../tests/fixtures/flowchart/directives/whitespace-on-each-side-kept-input.mmd)):
+([directives/whitespace-on-each-side-input.mmd](../tests/fixtures/flowchart/directives/whitespace-on-each-side-input.mmd)):
 
 ```mmd
 flowchart %%{init: {}}%%LR
@@ -1917,14 +2113,14 @@ B%%{init: {}}%% --> C
 ```
 
 出力
-([directives/whitespace-on-each-side-kept-output.mmd](../tests/fixtures/flowchart/directives/whitespace-on-each-side-kept-output.mmd)):
+([directives/whitespace-on-each-side-output.mmd](../tests/fixtures/flowchart/directives/whitespace-on-each-side-output.mmd)):
 
 ```mmd
 flowchart %%{init: {}}%%LR
   A
   style A %%{init: {}}%%fill:red
   click A %%{init: {}}%%href "u"
-  B%%{init: {}}%% --> C
+  B %%{init: {}}%%--> C
 ```
 
 閉じていないディレクティブは、mermaid.js が読むとおり、
@@ -1948,14 +2144,29 @@ flowchart %%{init: {}}%%LR
 
 ### 方向
 
-方向は書かれたまま残します。
-ヘッダーでも `direction` の文でも、`TD` を `TB` に変えません。
-[fixture: direction/header-td-kept]
+ヘッダーでも `direction` の文でも、方向は書かれたまま残します。
+`TD` を `TB` に変えず、`TB` も `TD` に変えません。
+mermaid.js 12.3.0 は 2 つを同じに描きますが、mermaid.js 11.9.0 は、
+ヘッダーに `TB` がある flowchart を、
+同じテキストで `TD` があるものとは違って描きます。
+ヘッダーのキーワードも書かれたまま残します。
+（[mermaid.js の版](./compatibility.ja.md#mermaidjs-の版)と
+[ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)を参照）。
+[fixture: direction/header-td-kept] [fixture: direction/header-tb-kept]
+[fixture: direction/header-keyword-kept]
 [fixture: direction/statement-td-kept-with-other-header]
 [fixture: direction/statement-values-kept]
-mermaid.js は subgraph の中の `direction` の文の `TD`
-を書かれたとおりに保つので、そこを変えると図が変わり、
-ヘッダーだけを変えると両者が揃わなくなるからです。
+mermaid.js は subgraph の中の `direction` の文の `TD` を、
+書かれたとおりに保つので、そこで変えると図が変わり、
+ヘッダーだけを変えると両者が食い違います。
+swimlane 図のヘッダーでは、agentflow 図のヘッダーと同じく、
+`TD` を `TB` と印字します（[Header](./agentflow.ja.md#header)を参照）。
+どちらの図種も、
+`TD` が `TB` と同じように振る舞うようになった版より後のものです。
+ヘッダーに続く directive の後にある `TD` は、
+`swimlane-beta%%{init: {}}%% TD` のように書かれたまま残します。
+[fixture: direction/swimlane-header-td-one-form]
+[fixture: direction/swimlane-header-td-after-directive-kept]
 `direction` の文では、mermaid.js は `direction` の前と値の後を、
 ラベルや文字列を含みうるテキストとして読み、値の後の `;` はそのテキストに属し、
 区切りではありません。
@@ -1964,6 +2175,14 @@ mermaid.js は subgraph の中の `direction` の文の `TD`
 `A[direction TB]` のような行も `direction` の文で、頂点も接続も読まれず、
 そのように、その段の字下げで印字します。
 [fixture: direction/statement-holds-text-kept]
+ヘッダーの方向は、記号がキーワードに接していても空白 1 つの後に置きます。
+`graph>` は `graph >` に、`flowchart^` は `flowchart ^` と印字します。
+この空白は Db に入らず、`TD` のような文字の方向には、もともと空白が必要です。
+その間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
+U+2028 と U+2029 はそのまま残します。
+[fixture: direction/header-symbol-touching-spaced]
+[fixture: direction/header-symbol-beside-directive-kept]
+[test: U+2029 between the graph keyword and its direction]
 
 入力
 ([direction/kept-input.mmd](../tests/fixtures/flowchart/direction/kept-input.mmd)):
@@ -2040,10 +2259,9 @@ flowchart の文書にあるタイトル付きの subgraph は 2 件で、
 その隙間は空白があるかないかを保ちます（[セミコロン](#セミコロン)と同じです）。
 `subgraph a: [#x;]` と `subgraph style: [#x]` にはその `;` がないので、
 接します。 [fixture: subgraph-header/title-after-colon-before-hash]
-隙間にディレクティブがあれば、その両側に空白があるかどうかは変えず、
-空白の連なりは空白 1 つにします（[ディレクティブ](#ディレクティブ)を参照）。
-[fixture: subgraph-header/title-beside-directive-kept]
-[fixture: subgraph-header/title-beside-directive-runs-collapsed]
+隙間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
+[fixture: subgraph-header/title-beside-directive]
+[fixture: subgraph-header/title-beside-directive-runs]
 隙間の U+2028 と U+2029 は、そのまま残します。
 [test: U+2028 between a subgraph name and its title]
 [test: U+2029 and spaces between a subgraph name and its title]
@@ -2051,7 +2269,7 @@ flowchart の文書にあるタイトル付きの subgraph は 2 件で、
 [fixture: subgraph-header/title-before-empty-description-block]
 タイトルなしで書かれた名前は、その後の空白を保ちます。
 mermaid.js はその空白を名前の一部として読みます。
-[fixture: subgraph-header/name-trailing-run-kept]
+[fixture: subgraph-header/name-trailing-run-collapsed]
 [fixture: subgraph-header/name-trailing-whitespace-kept]
 [fixture: subgraph-header/name-whitespace-before-directive-kept]
 [fixture: subgraph-header/name-whitespace-after-directive-kept]
@@ -2175,8 +2393,19 @@ flowchart LR
 [fixture: style-trailing-whitespace/removed-tab]
 [fixture: style-trailing-whitespace/removed-after-directive]
 mermaid.js はその空白を最後のスタイルの末尾に残すので、
-この規則だけは mermaid.js が保存するものを変えます。
+この規則は mermaid.js が保存するものを変える規則の 1
+つです（ [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+を参照してください）。
 テストは、末尾の空白を除いたスタイルを比べます。
+`linkStyle` の `stroke:` の後の空白も保ちます。
+（[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)）。
+`linkStyle default stroke: ` の後に `linkStyle 0 stroke:#f00` がある場合も、
+その空白を保ちます。
+[fixture: style-trailing-whitespace/link-style-blank-stroke-value-at-end-kept]
+バックスラッシュで終わる `linkStyle` は、その後の空白も 1 文字として保ちます。
+`linkStyle default stroke-width:4px\ ` の後に、
+`linkStyle 0 stroke:#0f0` がある場合も、その空白を保ちます。
+[fixture: style-trailing-whitespace/link-style-backslash-at-end-kept]
 mermaid.js がその空白を、
 並びの末尾の `,` の後の 1 つのスタイルとして読むときは、空白を保ちます。
 取り除くと文が拒否されるからです。
@@ -2193,7 +2422,7 @@ mermaid.js がその空白を、
 
 空白が行末にあるので、例は、`\n` を改行とする文字列で書きます。
 `"flowchart LR\n  A --> B\n  style A fill:#f00   \n"` は
-`"flowchart LR\n  A --> B\n  style A fill:#f00\n"` と印字し、
+`"flowchart LR\n  A --> B\n  style A fill: #f00\n"` と印字し、
 `"flowchart LR\n  A\n  style A fill:#f00, \n"` はそのまま印字します（fixture
 `removed` と `whitespace-only-value-kept` は
 [フォルダー](../tests/fixtures/flowchart/style-trailing-whitespace)

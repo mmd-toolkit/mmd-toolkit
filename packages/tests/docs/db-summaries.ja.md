@@ -78,23 +78,27 @@ mermaid.js の Db の要約が何を持ち、図種ごとに何を捨てるか�
   [fixture: flowchart/tokens-callback-name-trailing-space]
   [fixture: flowchart/tokens-callback-arguments-spaces-at-ends]
 - 内部の管理用の値（`vertexCounter`、`subCount`、`posCrossRef` など）。
-- style の各値の末尾の空白。
-  対象は、`vertices[].styles`、`classDefs[].styles`、`edges[].style`、
-  `edgeDefaults.style`。
-  文法は、カンマや行末の前に書いた空白を値に含めるが、
-  mermaid.js はそれをどこでも読まず、整形はこれらの行の末尾の空白を消す。
-  消す文字は `String.prototype.trimEnd()` が消すもので、
-  文法がそこに残しうる文字とちょうど一致する。
-  木では、その空白は style の範囲の外にある。
-  [db-from-tree/flowchart.ja.md](./db-from-tree/flowchart.ja.md) の
-  **スタイルの文** を参照。
-  値の先頭の空白は残す。
-  Db を変えることがあるため（`linkStyle` は、
-  `fill` で始まる値がないときに `fill:none` を足す）。
-  [fixture: flowchart/db-style-trailing-whitespace-characters]
-  [fixture: flowchart/db-linkstyle-default-trailing-whitespace]
 
 要約のそのほかの値:
+
+- style の各値の両端の空白を残す。
+  対象は `vertices[].styles`、`classDefs[].styles`、`edges[].style`、
+  `edgeDefaults.style`。
+  辺の描画では、
+  [edges.js](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L953-L957)
+  がスタイル文字列の最初の `/stroke:([^;]+)/` の一致を読み、
+  [edgeMarker.ts](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edgeMarker.ts#L104-L108)
+  が色を `trim()` で検査する。
+  一致が空白だけなら矢じりに色を付けないため、
+  `linkStyle 0 stroke: ,stroke:#f00` と `linkStyle 0 stroke:,stroke:#f00` は、
+  矢じりの色が異なる。
+  木では末尾の空白は style の範囲の外にある。
+  [db-from-tree/flowchart.ja.md](./db-from-tree/flowchart.ja.md) の
+  **スタイルの文**を参照。
+  先頭の空白も意味を持つ。
+  `linkStyle` は、`fill` で始まる値がないときに `fill:none` を足す。
+  [fixture: flowchart/db-style-trailing-whitespace-characters]
+  [fixture: flowchart/db-linkstyle-default-trailing-whitespace]
 
 - テキスト（ラベル、subgraph と図の題、`accTitle`、`accDescr`、
   ツールチップ）は HTML の無害化の前の値で、
@@ -301,12 +305,26 @@ lollipop の関係が作るインターフェース（描画が描く）です�
   クラスでない名前についても記録します。
   [fixture: class/db-callback-names-comma]
   [fixture: class/tokens-callback-name-trailing-space]
-- style の各値の末尾の空白（`classes[].styles`）: flowchart の要約と同じ。
-  文法はコンマや行末の前に書いた空白を値に残すが、何もそれを読まない。
-  [fixture: class/db-style-trailing-whitespace-eol]
-  [fixture: class/db-class-def-trailing-whitespace]
 
 要約のそのほかの値:
+
+- style の各値（`classes[].styles`）の両端の空白を、
+  flowchart の要約と同じく残す。
+  flowchart で述べた矢じりの色は、ここには当てはまらない。
+  class には `linkStyle` が無く、
+  [関係は自分の `style` で描かれる](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/classDb.ts#L845-L872)。
+  class の箱を描くコードは、
+  class の styles を
+  [`;` でつなぎ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/classBox.ts#L34-L36)、
+  その結果を箱の `style` 属性に入れる。
+  同じ結果から、
+  [`color` を正規表現で取る](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/classBox.ts#L239-L262)。
+  使うキーについては、
+  [各 style を `:` で分けてキーと値を trim する](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L44-L51)。
+  これらのどれも末尾の空白を読まないとは示せておらず、
+  空白は書かれたまま `style` 属性に届くので、残す。
+  [fixture: class/db-style-trailing-whitespace-eol]
+  [fixture: class/db-class-def-trailing-whitespace]
 
 - `classes[].text` は保つ。
   ラベルと型から作られるが、`addClass` は型を `&lt;T&gt;` と、
@@ -17473,7 +17491,8 @@ DOM id、`haveCallback`、派生した class の `textStyles`、
 [fixture: agentflow/db-all-fields]
 [fixture: agentflow/db-diagnostic-position-variant]
 
-style 末尾の空白は除く。
+style 末尾の空白は、flowchart と同じく残す。
+スタイル文字列は、その空白によって矢じりの色が変わりうる。
 テキストは DOMPurify の前、URL は trim して sanitizer の前、
 callback は security 検査の前に記録する。
 対応する四つの security level の要約は一致する。
@@ -20921,7 +20940,7 @@ class style は `\,` を `§§§` に、残るコンマを `;` に置き換え�
 書かれた `§§§` も項目内のコンマになる。
 `a§§§b` は `a,b`、`a§§§§b` は `a,§b`、`§§\,x` は `,§§x` になる。
 空の項目も残す。
-各 style は `trimEnd()` で末尾の空白だけを除き、先頭の空白は残す。
+各 style は、ほかのスタイルの要約と同じく、先頭と末尾の空白を残す。
 [fixture: treemap/db-class-forward] [fixture: treemap/db-class-repeat]
 [fixture: treemap/db-class-unused] [fixture: treemap/db-class-missing]
 [fixture: treemap/db-prototype-names] [fixture: treemap/db-class-empty-final]
@@ -21285,10 +21304,14 @@ underflow は注入された converter の既定の数値変換に従う。
 次の値は要約から除く。
 
 - node の `inPipeline` は renderer が読まない。
-  `isPipelineParent` は `pipelines[].nodeId` から決まる。
+  `isPipelineParent` は renderer が
+  [pipeline の親として node を描く](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L733-L773)
+  ために読むが、`pipelines[].nodeId` が名指す node でだけ true になるので、
+  変われば `pipelines` に出る。
   これらは builder が
   [設定するフラグ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L112-L133)
   である。 [fixture: wardley/db-pipeline-duplicates]
+  [fixture: wardley/db-pipeline-forward-parent]
 - trend の `targetY` は全 node の公開後に node の `y` を複製する。
   [adapter](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L189-L197)
   は、その後 node を変更しない。 [fixture: wardley/db-all-fields]

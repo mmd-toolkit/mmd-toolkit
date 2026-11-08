@@ -359,8 +359,10 @@ mermaid.js が trim するからです。
 `set A[ L ]` は `set A[L]` になります。
 ディレクティブを含むラベルは、書かれたまま残します。
 保つ `;` のある行でも空白は落とします。
-その行では最後の `;` までのテキストが保護された範囲ですが（Terms を参照）、
-空白を落としても `;` は動かないので、行の規則は同じ `;` を選びます。
+ただし、[Line rule and kept lines](#line-rule-and-kept-lines)のとおり、
+行の規則が読む範囲は除きます。
+その範囲の外の空白を落としても `;` は動かないので、
+行の規則は同じ `;` を選びます。
 `set A[ a; ]` は `set A[a;]` に、`set B[ a;b ]` は `set B[a;b]` になります。
 空白が、行の規則が読むかもしれない行の `:` と `#` の間にあるときは、
 空白 1 つを残します。
@@ -371,11 +373,11 @@ mermaid.js が trim するからです。
 規則が読まないので区間を作りません。
 `set "style:"[ #x ]%%{init:{"a":";"}}%%` は
 `set "style:"[#x]%%{init:{"a":";"}}%%` になります。
-[fixture: venn/labels/bracket-padding-line-rule-chars-in-directive]
+[fixture: labels/bracket-padding-line-rule-chars-in-directive]
 行の途中の `%%` はコメント行ではないので、規則はそのテキストを読みます。
 `set "style:b"[ #x ] %% c;` は `set "style:b"[ #x] %% c;` になり、
 `set "classDef:#a;style:"[ x ]%%#c;` は変わりません。
-[fixture: venn/labels/bracket-padding-line-rule-chars-in-comment]
+[fixture: labels/bracket-padding-line-rule-chars-in-comment]
 U+2028 や U+2029 を含む空白は、書かれたまま残します。
 [fixture: labels/bracket-padding-with-directive-or-semicolon]
 [fixture: labels/bracket-padding-in-style-rule-stretch]
@@ -384,7 +386,9 @@ U+2028 や U+2029 を含む空白は、書かれたまま残します。
 [test: U+2028 inside the brackets of a venn label with a semicolon]
 [test: U+2029 inside the brackets of a venn label with a semicolon]
 [fixture: labels/bare-label-padding-dropped]
-引用符の中の空白は値の一部なので、保ちます。
+ラベルの中の空白とタブの連なりは、引用符の中でも、空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+引用符つきの空白だけのラベルは引用符を保ち、空白は 1 つにして印字します。
 空の引用符つきラベルと裸の空白ラベルは Db のラベルを省き、
 引用符内の空白は空のラベルを保存します。
 内部の項目はラベル内に保ち、隙間の項目は接触関係を優先します。
@@ -429,11 +433,17 @@ set A[L]:002.00
 ### Sizes and numbers
 
 サイズは名前かラベルに `:number` と接し、接尾部を一貫して短い形にします。
-符号、小数、先頭のゼロ、符号つきゼロ、桁あふれの綴りを保ちます。
+通常の十進数のサイズは、最短の形で印字します。
+`+5` は `5`、`-.5` は `-0.5` にします。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+整数部の先頭のゼロ、符号つきゼロ、桁あふれの綴りを保ちます。
 数値の text id も綴りを保ちます。
 書き換えると Db が変わるためです。
+`text` 文と `style` 文の数（`text A 1.50`、`opacity:0.50`）も、
+mermaid.js がテキストとして読むため、綴りを保ちます。
 サイズの省略と書かれたゼロは別の形として保ちます。
 [fixture: venn/sizes-and-numbers/absent-zero-signs]
+[fixture: venn/sizes-and-numbers/text-and-style-numbers-kept]
 [corpus fixture: venn/db-set-colon-size-inline-directive]
 [corpus fixture: venn/db-set-label-colon-size-inline-directive]
 [corpus fixture: venn/db-size-negative-overflow]
@@ -458,7 +468,7 @@ set A[L]:002.00
 ```mmd
 venn-beta
 set A:+02.50
-set B:-.5
+set B:-0.5
 union A, B:007
   text 007
 ```
@@ -558,10 +568,21 @@ style A fill:#0f0, stroke:#00f
 セミコロンは Venn の文を区切りません。
 [スタイル文の末尾のセミコロン](#semicolons-at-the-end-of-a-style-statement)
 の例外を除き、書かれたまま保ちます。
-最初の非空白から最後の保持するセミコロンまでの範囲を保護し、端にかかる値、
-コメント、ディレクティブの末尾まで延ばします。
-不一致や文をまたぐ印も含め、同じテキストの行規則の選択を保つためです。
-字下げと外側の末尾空白はプリンターが決め、安全な接尾部は通常どおり整形します。
+保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
+ほかの場所と同じように整形します。
+この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
+`style` か `classDef` の後の最初の `:` から、
+最後の保つ `;` の前の最後の `#` までに空白がない並びを読みます。
+その範囲の隙間と余白は空白の有無を保ち、空白の連続は空白 1 つにします。
+範囲の外は、この図種の通常の規則に従います。
+どの部分の配置も持たないテキストは、書かれたまま残します。
+複数行にわたる文の行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
+書かれたまま残します。
+それ以外の複数行の文は、1 行の文と同じように整形します。
+[fixture: semicolons-at-the-end-of-a-style-statement/stretch-kept-rest-formatted]
+[fixture: semicolons-at-the-end-of-a-style-statement/no-stretch-formatted]
+[fixture: line-rule-and-kept-lines/crossing-multiline-value]
 共通の行規則の区間は図コメントの途中でも終わりますが、
 プリンターはそのコメント全体を保護します。
 端をまたぐ値は一度だけ出力し、
@@ -634,11 +655,26 @@ set A[style:#x;y] set B:2
 ### Title
 
 読みやすいように title の最初の区切りを ASCII 空白1つにします。
-その後の値の全ての文字は、前後の空白と文に見える単語も含めて保ちます。
-最初の区切りの後は全て title の値で、木でも Db でもそうなので、
-除いたりまとめたりすると Db が変わるためです。
+その後の空白とタブも含めて、ASCII 空白 1 つにします。
+タイトルの末尾の空白とタブは除きます。
+mermaid.js はそれらを Db に残しますが、それらがなくても同じタイトルを描きます。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+それより後の値の全ての文字は、文に見える単語も含めて保ちます。
+最初の区切りの後は全て title の値で、木でも Db でもそうだからです。
+タイトルの末尾の U+2028 と U+2029 は、空白やタブではなくタイトルの文字なので、
+その後の空白は除き、その前の空白は残します。
+[test: venn: title-line-separator-spaces]
 次のソース行の字下げは値の一部なので、
-`title` の LF と `  T` は `title   T` と印字されます。
+`title` の LF と `  T` は `title T` と印字されます。
+[fixture: venn/title/text-padding-dropped]
+半角空白とタブだけのタイトルは、書かれたままにします。
+[fixture: venn/title/title-blank-kept]
+タイトルが 1 つ以上のディレクティブとその後の空白とタブで終わる場合は、
+ディレクティブを最後にして印字します。
+`title T  %%{x}%%  ` は `title T %%{x}%%` と印字し、
+`title T  %%{x}%%  %%{y}%%  ` は `title T %%{x}%% %%{y}%%` と印字します。
+[fixture: venn/title/title-trailing-directive-blanks-dropped]
+[fixture: venn/title/title-two-directives-trailing-blanks-dropped]
 LF と title で受理する広い種類の区切りは正規化します。
 ただし項目、結合領域、保持部分の境界は保ちます。
 [corpus fixture: venn/db-frontmatter-title-overridden]
@@ -652,7 +688,7 @@ LF と title で受理する広い種類の区切りは正規化します。
 [fixture: venn/title/title-statement-words]
 [fixture: venn/title/title-tab-separator]
 
-[fixture: venn/title/title-trim-unsafe]
+[fixture: venn/title/title-ends-dropped-at-end-of-input]
 [fixture: venn/title/title-whitespace-only]
 
 入力（escape 表記）:
@@ -666,14 +702,14 @@ LF と title で受理する広い種類の区切りは正規化します。
 
 ```mmd
 venn-beta
-title   T
+title T
 ```
 
 ### Directives
 
 単独のディレクティブは近くの文にそろえて対応を示します。
-行内のディレクティブは行、順序、内容と接触関係を保ち、
-通常の空白の隙間は1つにします。
+行内のディレクティブは行、順序、内容を保ち、隙間の中では、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 先頭のディレクティブは暗黙と明示の text を分ける、
 論理的な字下げの正とゼロを保ちます。
 内部の隙間の関係を保ち、最初のディレクティブの前の字下げを決めます。
@@ -751,7 +787,7 @@ Venn のヘッダー行の文にはその役割がありません。
 
 ```mmd
 venn-beta
-set A %%{init: {}}%% [L]:2
+set A%%{init: {}}%%[L]:2
 ```
 
 入力（escape 表記）:
@@ -773,8 +809,11 @@ set A
 完結したヘッダーと title 以外の文の後の外側の ASCII 空白とタブは除き、
 行末をそろえます。
 保持部分と安全な接尾部の後も同じです。
-名前、ラベル、色、style の文字列、title の値、
+名前、色、style の文字列、
 コメントとディレクティブ内の空白は書かれたテキストとして保ちます。
+ラベルや title の値の中の空白とタブの連なりは空白 1 つにして印字し、
+タイトルの末尾の空白は除きます（[Title](#title)、
+[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 [fixture: venn/trailing-whitespace/continuation-spaces]
 [corpus fixture: venn/db-after-set-label-size-space]
 [corpus fixture: venn/db-title-padding] [corpus fixture: venn/lex-tab-line-end]
@@ -785,7 +824,7 @@ set A
 [fixture: venn/trailing-whitespace/trailing-in-values]
 
 入力 `"venn-beta \nset A \n"` は `"venn-beta\nset A\n"` になり、
-`title T  ` の値の空白は保ちます。
+`title T  ` は `title T` と印字します。
 
 ### Multiline values
 
@@ -834,11 +873,16 @@ style A fill:"red
 
 ### Keyword case and order
 
-書かれた選択を保つため、キーワードの大小文字と全ての宣言、対象、
-プロパティの順序を保ちます。
+キーワード `set`、`union`、`text`、`title` は、mermaid.js の文書の例と同じく、
+小文字で印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+`style` は書かれた大小文字を保ちます。
+（[大文字小文字をそろえるキーワード](./compatibility.ja.md#大文字小文字をそろえるキーワード)）。
+書かれた選択を保つため、全ての宣言、対象、プロパティの順序を保ちます。
 重複と Db に効果のない項目も含みます。
-名前、キーと色の大小文字も保ちます。
+名前、キーと色の大小文字は保ちます。
 文のキーワードと異なり、セミコロンのテキストの印は大小文字を区別します。
+[fixture: venn/keyword-case-and-order/keyword-case-one-form]
 [fixture: venn/keyword-case-and-order/all-written-repeats]
 [corpus fixture: venn/db-style-three-definitions-same-target]
 [corpus fixture: venn/db-text-three-definitions]
@@ -847,7 +891,7 @@ style A fill:"red
 [corpus fixture: venn/lex-keyword-set-upper]
 [fixture: venn/keyword-case-and-order/declarations-order-keep-control]
 [fixture: venn/keyword-case-and-order/declarations-order-keep]
-[fixture: venn/keyword-case-and-order/keyword-case-kept]
+[fixture: venn/keyword-case-and-order/keyword-case-one-form]
 
 [fixture: venn/keyword-case-and-order/keyword-lower-equal]
 
@@ -858,14 +902,14 @@ style A fill:"red
 ```
 
 出力
-([keyword-case-and-order/keyword-case-kept-output.mmd](../tests/fixtures/venn/keyword-case-and-order/keyword-case-kept-output.mmd)):
+([keyword-case-and-order/keyword-case-one-form-output.mmd](../tests/fixtures/venn/keyword-case-and-order/keyword-case-one-form-output.mmd)):
 
 ```mmd
 venn-beta
-SET A
-  TeXt item
+set A
+  text item
 STYLE A fill:RED
-Title T
+title T
 ```
 
 ### Line terminators

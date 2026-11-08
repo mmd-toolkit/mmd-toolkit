@@ -189,7 +189,7 @@ classDiagram
   class C:::c { }
   class D { }
   class E { }
-  class F { %%{init: {}}%% }
+  class F { %%{init: {}}%%}
 ```
 
 ### 空行
@@ -243,7 +243,11 @@ classDiagram
 
 行の中で、2 つのトークンの間の空白とタブの連続は空白 1 つにし、
 接しているトークンは接したまま残します。
-flowchart と同じです。 [fixture: whitespace-between-tokens/collapsed]
+flowchart と同じです。
+ただし、以下に挙げる場合は例外です。
+前のものに続く文字列、バッククォートで囲んだ名前、`call` キーワードと、
+ラベルの `[`、ジェネリック型の `~` がそれに当たります。
+[fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/tabs-collapsed]
 [fixture: empty-description-blocks/touching-kept]
 [fixture: empty-description-blocks/inner-whitespace-collapsed]
@@ -264,8 +268,7 @@ mermaid.js の文書の例 4 件は、本体なしと本体ありで `class Anim
 その範囲は、
 [ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L780-L833)
 にあります。 [fixture: whitespace-between-tokens/css-class-touches-separator]
-隙間にディレクティブがあれば、
-その両側の空白の有無を保ちます（[ディレクティブ](#ディレクティブ)を参照）。
+隙間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
 U+2028 と U+2029 は、そのまま残します。
 [test: U+2028 before the `:::` of a class]
 [test: U+2029 after the `:::` of a class]
@@ -284,9 +287,8 @@ mermaid.js の文書は、両方の置き場所をこの空白で書いていま
 `<<interface>> Shape` は、
 [ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L552)
 にあります。 [fixture: whitespace-between-tokens/annotation-spaced-once]
-隙間にディレクティブがあれば、その両側に空白があるかどうかは変えず、
-空白の連なりは空白 1 つにします（[ディレクティブ](#ディレクティブ)を参照）。
-[fixture: whitespace-between-tokens/annotation-beside-directive-runs-collapsed]
+隙間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
+[fixture: whitespace-between-tokens/annotation-beside-directive-runs]
 本体の中の注釈の行は、この種類の注釈ではありません。
 文字が Db に入るので、
 書かれたままにします（[メンバーの行](#メンバーの行)を参照）。
@@ -302,8 +304,40 @@ U+2028 と U+2029 は、そのまま残します。
 [fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/tabs-collapsed]
 
+`class`、`namespace`、`note`、`link`、`click`、`cssClass` の文では、文字列、
+バッククォートで囲んだ名前、`call` キーワードが前のものに接していても、
+間に空白を 1 つ置きます。
+`note"n"` は `note "n"` に、`note for A"n"` は `note for A "n"` に、
+`` class`C D` `` と ``namespace`N M` {`` はキーワードの後に空白を置いて、
+`link A"u""t"` は `link A "u" "t"` に、
+`click B href"u""t"_self` は `click B href "u" "t" _self` に、
+`cssClass"A,B"c` は `cssClass "A,B" c` に、
+`click C call f()"t"` は `click C call f() "t"` に、
+`click C~T~call f()` は `click C~T~ call f()` と印字します。
+mermaid.js はどの書き方も同じ文として読むので、形を強いるものはありません。
+その文書では、
+各文字列の前に空白を書いています
+([`note "…"` と `note for MyClass "…"`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L639-L640)、
+[`link Shape "…" "…"` と `click Shape2 href "…" "…"`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L650-L652)、
+[`cssClass "nodeId1,nodeId2" className`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L773))。
+[fixture: whitespace-between-tokens/note-and-name-strings-touching-spaced]
+[fixture: whitespace-between-tokens/link-strings-touching-spaced]
+[fixture: whitespace-between-tokens/call-after-generic-touching-spaced]
+隙間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
+U+2028 と U+2029 はそのまま残します。
+[fixture: whitespace-between-tokens/strings-beside-directive]
+[test: U+2028 between the note keyword and its string]
+[test: U+2029 between the class of a note and its string]
+[test: U+2028 between the class keyword and a backquoted name]
+[test: U+2029 between a link and its URL]
+[test: U+2028 between the URL and the tooltip of a link]
+[test: U+2029 between the tooltip and the target of a link]
+[test: U+2028 between the cssClass keyword and its string]
+[test: U+2029 between a callback and its tooltip]
+[test: U+2028 between a generic type and the call of a callback]
+
 `classDef` 文の名前を区切る `,` は、両側の名前に接します。
-`classDef c1 , c2 fill:#f00` は `classDef c1,c2 fill:#f00` になります。
+`classDef c1 , c2 fill:#f00` は `classDef c1,c2 fill: #f00` になります。
 ER、requirement、
 usecase
 の一覧と同じです（[スタイルとクラス](./er.ja.md#スタイルとクラス)を参照）。
@@ -312,17 +346,55 @@ mermaid.js の文書にある例 1 件は、接する形で書かれています
 その例は、
 [`classDef firstClassName,secondClassName`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L761)
 です。 [fixture: whitespace-between-tokens/classdef-names-touching]
-隙間にディレクティブがあれば、その両側に空白があるかどうかは変えず、
-空白の連なりは空白 1 つにします（[ディレクティブ](#ディレクティブ)を参照）。
-`,` の前の空白は、ディレクティブがなくても落とします。
-[fixture: whitespace-between-tokens/classdef-names-beside-directive-kept]
-[fixture: whitespace-between-tokens/classdef-names-beside-directive-runs-collapsed]
+隙間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
+`,` の隣の隙間には空白を置かないので、ディレクティブは名前と `,` に接します。
+[fixture: whitespace-between-tokens/classdef-names-beside-directive]
+[fixture: whitespace-between-tokens/classdef-names-beside-directive-runs]
 文を終わらせる `;` や `#` は、
 [スタイル文の末尾のセミコロン](#スタイル文の末尾のセミコロン)に従います。
 [fixture: whitespace-between-tokens/classdef-names-touching-before-terminator]
 `,` の後ろの U+2028 と U+2029 は、そのまま残します。
 [test: U+2028 after the comma of a classDef statement]
 [test: U+2029 after the comma of a classDef statement]
+
+`classDef` 文と `style` 文では、各スタイルの最初の `:` の前に空白を置かず、
+値が空でなければ、後ろに空白を 1 つ置きます。
+スタイルの間の `,` の前に空白を置かず、後ろに空白を 1 つ置きます。
+`style C fill:#f9f  ,  stroke:#333` は、
+`style C fill: #f9f, stroke: #333` になります。
+値の中の語と語の間の空白は、書かれたまま残します。
+mermaid.js は余白を Db に残しますが、描かれる図は同じです。
+詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+を参照してください。 [fixture: whitespace-between-tokens/style-colon-spaced]
+ここではバックスラッシュは `,` をエスケープしません。
+`fill:a\,b ,stroke:c` は `fill: a\, b, stroke: c` と印字します。
+[fixture: whitespace-between-tokens/style-backslash-before-comma]
+最後のスタイルがバックスラッシュで終わる `style` は、
+その後に空白があるかないかを保ち、空白の連続は最初の 1 文字にします。
+文末でも同じです。
+mermaid.js がクラスのスタイルを書かれたまま `;` でつなぎ、
+バックスラッシュが `;` をエスケープするからです。
+（[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)）。
+`style A fill:abc\  ,stroke:green` は、
+`style A fill: abc\ , stroke: green` と印字します。
+[fixture: whitespace-between-tokens/style-backslash-space-kept]
+[fixture: whitespace-between-tokens/style-backslash-at-end-kept]
+`classDef` も空白の有無を保ちます。
+適用先のクラスより後に書かれていると、
+mermaid.js はスタイルをクラスのスタイルへ書かれたまま足します。
+前に書かれていると空白を取り除き、画素は同じですが、文の順序で決まるので、
+プリンターはどちらの順序でも書かれたまま保ちます。
+`classDef c fill:abc\  ,stroke:green` は、
+`classDef c fill: abc\ , stroke: green` と印字します。
+[fixture: whitespace-between-tokens/class-def-backslash-space-kept]
+[fixture: whitespace-between-tokens/class-def-backslash-at-end-kept]
+コメントやディレクティブがある文、空白だけのスタイルがある文、
+スタイルに改行があるか、行に保つ `;` がある文は、書かれたままにします。
+[fixture: whitespace-between-tokens/style-comma-before-dropped]
+[fixture: whitespace-between-tokens/style-comma-beside-directive-kept]
+[fixture: whitespace-between-tokens/style-colon-and-comma-spaced]
+スタイルの間に U+2028 や U+2029 があれば、文を書かれたままにします。
+[test: U+2028 before the comma of a class style statement]
 
 クラスの本体や namespace を閉じる `}` の後の U+2028 と U+2029 は、
 mermaid.js にとって空白なので、行末の空白と一緒に落とします。
@@ -357,22 +429,34 @@ classDiagram
   class C:::highlight
   note for C "a note"
   click C href "https://example.com" "tip"
-  style C fill:#f9f
+  style C fill: #f9f
   cssClass "A,B" highlight
   Foo Bar
   A - B --> C
 ```
 
-`call` の後の関数名と、その後の `(` の間の空白は、括弧と引数と一緒に、
-書かれたまま残します。
+`call` の後の関数名と、その後の `(` の間の空白は、書かれたまま残します。
 mermaid.js は、名前を `(` の前まで、空白も含めて読むので、
 `click A call fn  ()` は、`fn` と 2 つの空白を名前とする関数を呼びます。
 そこにある改行も残り、文は 2 行のままです。
+引数の両端と `,` の前には空白を置かず、後ろに空白を 1 つ置きます。
+`click A call f(  "x" ,y )` は `click A call f("x", y)` と印字します。
+mermaid.js は引用符の外の `,` で引数を分け、各部分の両端の空白を除き、
+同じ引数で関数を呼ぶからです。
+（[同じに描かれる呼び出しの引数](./compatibility.ja.md#同じに描かれる呼び出しの引数)）。
+引用符の中の空白は残し、空の部分を含む引数も書かれたままにします。
+[fixture: whitespace-between-tokens/callback-arguments-spaced]
+mermaid.js の行の規則が読むかもしれない引数の間の隙間は、
+空白があるかないかを保ちます。
+`click A call f(style:x,#b;c)` は書かれたまま残します。
+`,` の後に空白を置くと、規則が無視する最後の `;` が変わるからです。
+（[同じに描かれる呼び出しの引数](./compatibility.ja.md#同じに描かれる呼び出しの引数)）。
+[fixture: whitespace-between-tokens/callback-arguments-line-rule-kept]
 引数が空白だけの呼び出しの括弧は互いに接し、
 `click A call f( )` は `click A call f()` になります。
 mermaid.js はどちらも引数のない同じ呼び出しとして読むからです。
-括弧の間にディレクティブがあれば、
-その両側の空白の有無を保ちます（[ディレクティブ](#ディレクティブ)を参照）。
+括弧の間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおり、
+両側の括弧に接します。
 [fixture: whitespace-between-tokens/callback-blank-parentheses-touch]
 括弧の間に改行があっても同じで、そこにあるコメント行は 1 行のまま残ります。
 [fixture: whitespace-between-tokens/callback-blank-parentheses-lines]
@@ -409,7 +493,7 @@ click B call hn   ()
 classDiagram
   class A
   class B
-  click A call fn  ( x )
+  click A call fn  (x)
   click B call gn
 (y)
   click B call hn   ()
@@ -426,7 +510,7 @@ mermaid.js のドキュメントの書き方のとおり、空白を 1 つずつ
 1 つの矢印として接した形で印字します。
 `A <|  --  * B` は `A <|--* B` になります。 [fixture: arrow-spacing/spaced]
 [fixture: arrow-spacing/end-or-line-apart-joined]
-[fixture: arrow-spacing/directive-between-arrow-tokens-kept]
+[fixture: arrow-spacing/directive-between-arrow-tokens]
 
 入力
 ([arrow-spacing/spaced-input.mmd](../tests/fixtures/class/arrow-spacing/spaced-input.mmd)):
@@ -517,29 +601,44 @@ classDiagram
 関係やクラス名の後のラベルの `:` の両側には、
 mermaid.js のドキュメントの書き方のとおり、空白を 1 つずつ置きます。
 `A-->B:x` は `A --> B : x` に、`A:+int x` は `A : +int x` になります。
-[fixture: labels/spaced] [fixture: labels/directive-around-colon-kept]
+[fixture: labels/spaced] [fixture: labels/directive-around-colon]
 sequence 図では `:` を前のものに接して書きます（詳しくは、
 [sequence 図の整形規則のコロン](./sequence.ja.md#コロン) を参照）。
 どちらも、その図種のドキュメントの書き方に従っています。
 `accTitle` と `accDescr` の後の `:` は、他の図種と mermaid.js の文書と同じく、
 キーワードに接し、後に空白を 1 つ置きます。
-[fixture: labels/accessibility-text-kept]
+[fixture: labels/accessibility-text-runs-collapsed]
 [fixture: multi-line-statements/joined]
 [fixture: multi-line-statements/acc-descr-joined]
-ラベルのテキストは書かれたまま残します。 [fixture: labels/spaced]
+関係の後のラベルのテキストは書かれたまま残します。
+折り返すラベルは連なりを描くので、連なりは空白 1 つではないからです。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+[fixture: labels/spaced]
+`accDescr` のテキストの中の空白とタブの連なりは、空白 1 つで印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+`accTitle` はブラウザがツールチップとして表示するので、
+その連なりは書かれたまま残します。
+[fixture: labels/accessibility-text-runs-collapsed]
+[fixture: labels/acc-block-runs-collapsed]
 クラスや namespace の角括弧の間の文字列は、括弧との間に何も置きません。
+名前と `[` の間にも何も置きません。
+`namespace Auth ["x"]` は `namespace Auth["x"]` に、
 `namespace Auth[ "x" ]` は `namespace Auth["x"]` に、
 `class A["x" ]` は `class A["x"]` になります。
 mermaid.js はどの書き方も同じラベルとして読みます。
-文字列の隣にディレクティブがあれば、その隣の隙間は、
-空白が書かれていれば 1 つにして残します。
-`class D[ %%{x}%% "x" ]` は `class D[ %%{x}%% "x"]` になります。
+その文書では `[` を名前に接して書いており、
+flowchart の subgraph や agentflow の見出しも同じ形で印字します
+([`namespace Auth["Authentication Service"]`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L404))。
+[fixture: labels/bracket-touches-name]
+文字列の隣にディレクティブがあれば、隙間に空白を置かないので、
+括弧と文字列に接します。
+`class D[ %%{x}%% "x" ]` は `class D[%%{x}%%"x"]` になります。
 `]` の前の U+2028 と U+2029 は残します。
 [fixture: labels/bracket-directive-at-edge]
 [test: U+2028 inside the brackets of a class label]
 [test: U+2029 inside the brackets of a class label]
+[test: U+2028 between a class name and its label]
 [fixture: labels/bracket-padding-dropped]
-[fixture: labels/accessibility-text-kept]
 
 入力
 ([labels/spaced-input.mmd](../tests/fixtures/class/labels/spaced-input.mmd)):
@@ -604,30 +703,36 @@ classDiagram
 
 通常のメソッドでは、括弧の直前と内側の外周の空白を除き、
 空でない戻り値型の前に空白を 1 つ置きます。
-可視性記号の後の名前の空白を含め、各 AST フィールドの中身は保ちます。
+フィールドの中の空白とタブの連なりは、空白 1 つで印字します。
+可視性記号の後の空白 1 つは、名前の一部なので残します。
 trivia、無視される文字、物理・Unicode の改行、
 セミコロン行の保護があるメソッドは原文全体を保ちます。
 [fixture: member-lines/method-padding]
-[fixture: member-lines/method-values-and-classifiers-kept]
+[fixture: member-lines/method-values-and-classifiers-runs-collapsed]
 [fixture: member-lines/method-trivia-and-semicolon-kept]
 
-属性と注釈の行は、本体内でもクラス名の `:` の後でも、中身を保ちます。
-メソッドの名前・引数・戻り値の中身も保ちます。
+mermaid.js の文書と同じく、属性の classifier はそのテキストに接します。
+`+attr string *` は `+attr string*` と印字します。
+[fixture: member-lines/attribute-classifier-touches]
+属性と注釈の行は、本体内でもクラス名の `:` の後でも、
+内部の空白とタブの連なりを除き、中身を保ちます。
+メソッドの名前・引数・戻り値の中身も、連なりを除いて保ちます。
 generic のつづりと classifier に伴う末尾も保ちます。
-[fixture: member-lines/kept] [fixture: member-lines/percent-text-kept]
+[fixture: member-lines/runs-collapsed]
+[fixture: member-lines/percent-text-runs-collapsed]
 [fixture: member-lines/trailing-whitespace-dropped]
 [fixture: member-lines/directive-inside-kept]
 [corpus fixture: class/lex-member-percent]
 mermaid.js はメンバーの行をそのテキストで部分に分け、
 可視性の印の後の空白は名前の一部になるからです。
 `+ foo()` の名前は空白の付いた ` foo` で、`+foo()` の名前は `foo` です。
-[fixture: member-lines/kept]
+[fixture: member-lines/runs-collapsed]
 [corpus fixture: class/gram-member-visibility-whitespace-body-0184dca2]
 注釈の行 `<< y z >>` は、テキストの周りの空白も Db に残ります。
-[fixture: member-lines/kept]
+[fixture: member-lines/runs-collapsed]
 
 入力
-([member-lines/kept-input.mmd](../tests/fixtures/class/member-lines/kept-input.mmd)):
+([member-lines/runs-collapsed-input.mmd](../tests/fixtures/class/member-lines/runs-collapsed-input.mmd)):
 
 ```mmd
 classDiagram
@@ -640,16 +745,16 @@ A :  -  bar()
 ```
 
 出力
-([member-lines/kept-output.mmd](../tests/fixtures/class/member-lines/kept-output.mmd)):
+([member-lines/runs-collapsed-output.mmd](../tests/fixtures/class/member-lines/runs-collapsed-output.mmd)):
 
 ```mmd
 classDiagram
   class A {
-    + spaced  name
-    +foo(a ,  b) int$
+    + spaced name
+    +foo(a , b) int$
     << y  z >>
   }
-  A : -  bar()
+  A : - bar()
 ```
 
 ### ジェネリック型
@@ -662,6 +767,16 @@ classDiagram
 [fixture: generic-types/directive-inside-kept]
 [fixture: generic-types/whitespace-before-collapsed-inside-kept]
 [fixture: generic-types/empty-kept]
+ジェネリック型の最初の `~` は、そこにどんな空白が書かれていても、
+前の名前に接します。
+`class A ~T~` は `class A~T~` に、
+`A ~T~ --> B ~U~` は `A~T~ --> B~U~` と印字します。
+名前と `~` の間の空白は Db に入らず、
+mermaid.js の文書ではどのジェネリック型も名前に接して書いています
+([`class Square~Shape~{` と `List~int~ position`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L227-L231))。
+[fixture: generic-types/touches-name]
+[fixture: generic-types/whitespace-before-collapsed-inside-kept]
+[test: U+2029 between a class name and its generic type]
 
 入力
 ([generic-types/kept-input.mmd](../tests/fixtures/class/generic-types/kept-input.mmd)):
@@ -755,18 +870,19 @@ mermaid.js は、文の後のコメントの後の改行をコメントの一部
 ### ディレクティブ
 
 flowchart と同じです。
-行に単独のディレクティブは周りの文と同じ段に置き、文の行にあるディレクティブは、
-両側に空白が書かれているかどうかを保ちます。
-書かれていればそこに空白 1 つを置き、トークンに接していれば接したまま残します。
+行に単独のディレクティブは周りの文と同じ段に置きます。
+文の行の中では、flowchart と同じく、隙間をディレクティブがないものとして印字し、
+ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
 [fixture: directives/kept] [fixture: directives/before-header]
 [fixture: directives/in-namespace]
 [fixture: directives/after-header-on-same-line]
-[fixture: directives/whitespace-on-both-sides-collapsed]
+[fixture: directives/whitespace-on-both-sides]
 [fixture: directives/whitespace-before-collapsed-at-end]
-[fixture: directives/touching-one-side-kept]
+[fixture: directives/touching-one-side]
+[fixture: directives/count-sensitive-unit]
 [fixture: directives/after-braces-on-same-line]
 [fixture: member-bodies/directive-only-over-lines-kept]
-[fixture: arrow-spacing/directive-between-arrow-tokens-kept]
+[fixture: arrow-spacing/directive-between-arrow-tokens]
 
 入力
 ([directives/kept-input.mmd](../tests/fixtures/class/directives/kept-input.mmd)):
@@ -1006,10 +1122,10 @@ U+2028 と U+2029 の前も同じように保護します。
 ```mmd
 classDiagram
   class A
-  classDef c fill:#f00
-  style A fill:#f00
-  classDef d fill:#0f0,stroke:#00f
-  style A fill:#0f0,stroke:#00f
+  classDef c fill: #f00
+  style A fill: #f00
+  classDef d fill: #0f0, stroke: #00f
+  style A fill: #0f0, stroke: #00f
 ```
 
 ### 複数行の文
@@ -1023,13 +1139,18 @@ class 図では、改行は文を終えます。
 [fixture: multi-line-statements/acc-descr-joined]
 [fixture: multi-line-statements/empty-line-inside-joined]
 [corpus fixture: class/lex-direction-line-value-next-line]
-コメントかディレクティブを含む文は改行を残し、
+コメントかディレクティブの隣の改行は残し、
 構造の続きの行と間の注釈を 1
 段深く置きます（[複数行の文](./sequence.ja.md#複数行の文)を参照）。
+[fixture: multi-line-statements/breaks-decided-one-by-one]
 値の中の空白は変えません。
 各隙間の最初の改行の前の空白は保ちます。
-コメントで結合される領域とセミコロン行の保護対象では、
-文全体を原文のまま残します。
+コメントで結合される領域では、文全体を原文のまま残します。
+`;` があるだけでは、複数行に書かれた文をつなぐ妨げにはなりません。
+class では文の区切りに `;` を使えず、
+そのような文の最初の行にはキーワードしかないので、行をつないでも、
+行の規則が無視する `;` は変わりません。
+[fixture: multi-line-statements/semicolon-value-joined]
 [fixture: multi-line-statements/comment-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 [fixture: multi-line-statements/comment-inside-title-kept]
@@ -1134,10 +1255,15 @@ mermaid.js は `direction` の前のテキストと値の後のテキストを�
 [fixture: direction-lines/text-before-collapsed]
 [fixture: direction-lines/in-namespace]
 [fixture: direction-lines/values-and-tabs]
-[fixture: direction-lines/directive-around-value-kept]
+[fixture: direction-lines/directive-around-value]
 [fixture: direction-lines/comment-after-value-kept]
 [corpus fixture: class/lex-direction-in-namespace]
 [corpus fixture: class/lex-direction-in-member-body]
+`directionLR` のように `direction` で始まり値に接している語は、
+方向の行ではなくクラスの名前です。
+mermaid.js が `direction` をキーワードとして読むのは、
+後ろに空白がある場合だけなので、書かれたまま残します。
+[fixture: direction-lines/no-whitespace-is-a-class-kept]
 
 入力
 ([direction-lines/text-kept-input.mmd](../tests/fixtures/class/direction-lines/text-kept-input.mmd)):
@@ -1274,10 +1400,10 @@ mermaid.js はテキストの終わりの空白と改行もその一部として
 変えると図が変わるか、入力が拒否されるからです。
 
 - 値のテキスト。
-  文字列、バッククォートの名前、ラベルのテキスト、スタイル、
-  `accTitle` と `accDescr` のテキスト。
-  [fixture: whitespace-between-tokens/style-values-kept]
-  [fixture: labels/accessibility-text-kept]
+  文字列、バッククォートの名前、ラベルのテキスト、
+  スタイル（最初の `:` と `,` の前後の空白を除きます）、`accTitle` のテキスト。
+  [fixture: whitespace-between-tokens/style-colon-and-comma-spaced]
+  [fixture: labels/accessibility-text-runs-collapsed]
 - 属性と注釈の中身、メソッドの各フィールドの中身、
   `~` から `~` までのジェネリック型。
 - 空白だけのラベルの `:` の後の空白と、
@@ -1293,7 +1419,10 @@ mermaid.js はテキストの終わりの空白と改行もその一部として
   `classDiagram` か `classDiagram-v2`。 [fixture: indentation/header-v2-kept]
 
 次のものは、どちらの形でも Db が同じなので、選択として書かれたまま残します。
-文の後のコメントの印の前に空白が書かれているかどうかは、
+文の後のコメントの印の前に空白が書かれているかどうかです。
+その空白の連なりは、空白 1 つで印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+[fixture: comments/mark-run-one-space]
 既知の差異（`comment-takes-character`、`percent-brace-after-unit`）の場所では、
 mermaid.js がコメントを、接するものによって読むからです。
 場所の一覧よりも、1 つの規則のほうが単純です。

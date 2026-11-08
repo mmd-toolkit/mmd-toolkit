@@ -9,13 +9,13 @@
 
 ### Header
 
-作者の `packet` または `packet-beta` を第1列に置きます。
+書かれたキーワード `packet` または `packet-beta` を第1列に置きます。
 見出しを明確にするため、通常の最初の文は次行へ移します。
 `packet` だけは直後の境界が必要で、接着した綴りを作りません。
 hidden の境界と保護された見出し・本文の組を優先します。
-[gitgraph の checkout 別名](./gitgraph.ja.md#checkout-aliases)と同じく、
-作者の同義語を `packet-beta` から `packet` へ書き換えても、
-整形の利点がないため原綴を保ちます。
+同義の名前は、書かれたまま保ちます。
+11.9.0 より前の mermaid.js は `packet-beta` だけを読むためです。
+（[ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)を参照）。
 
 [fixture: packet/header/header-packet]
 
@@ -100,8 +100,15 @@ packet
 
 ### Block forms and order
 
-`start-end`、`start`、`+count` の3つの AST 形式を保ちます。
-両端が等しい範囲もそのままです。
+`start-end`、`start`、`+count` の3つの AST 形式を保ちますが、
+両端が同じ綴りの範囲は、位置だけで印字します。
+`3-3` は `3` になります。
+mermaid.js は両方を同じに読み、文書の例は位置だけを 7 回使い、
+両端が等しい範囲は使わないためです。
+（[同じに描かれる綴り](./compatibility.ja.md#キーワードや記号の別の綴り)
+を参照）。
+両端の間に空白と `-` 以外がある範囲は、書かれたままにします。
+[fixture: packet/block-forms-and-order/equal-range-single]
 同じ label と空の共通代入を含め、全出現を順に残します。
 Db から文を再構成したり併合したりしません。
 行分割と公開上限は作者の構造を失い、空代入の削除は最終値を変えるためです。
@@ -124,7 +131,7 @@ Db から文を再構成したり併合したりしません。
 packet
   +2: "relative"
   2: "single"
-  3-3: "equal range"
+  3: "equal range"
 ```
 
 ### Range dash
@@ -196,19 +203,24 @@ trivia がある隙間は境界を保ちます。
 ```mmd
 packet
   0-2: "Range"
-  3: 'Single'
+  3: "Single"
   +2: "Relative"
 ```
 
 ### Quotes
 
 StringLiteral の範囲全体を保ちます。
-一重・二重・反対側の引用符、空 label と escape も含みます。
-`singleQuote` では書き換えません。
-再符号化は作者の綴りを失い、escape と前処理の新たな判断を要するためです。
+空 label と escape も含みます。
+`'` で囲まれた文字列は、内容に `'`、`"`、バックスラッシュ、改行、U+2028、
+U+2029、バッククォート、`&`、`#`、`<` がある場合を除き、`"` で囲んで印字します。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
+`singleQuote` は読みません。
+その他の再符号化には、escape と前処理の新たな判断が必要です。
 引用符に見える共通値は、再引用する文字列ではなく literal のままです。
 
-[fixture: packet/quotes/quotes-authored]
+[fixture: packet/quotes/quotes-one-form]
+
+[fixture: packet/quotes/single-quote-sensitive-kept]
 
 [fixture: packet/quotes/quotes-single-option]
 
@@ -216,21 +228,23 @@ StringLiteral の範囲全体を保ちます。
 `"packet\n0:'single \"quote\"'\n1:\"double 'quote'\"\n2:''\n3:\"\"\n"`
 
 出力
-([quotes/quotes-authored-output.mmd](../tests/fixtures/packet/quotes/quotes-authored-output.mmd)):
+([quotes/quotes-one-form-output.mmd](../tests/fixtures/packet/quotes/quotes-one-form-output.mmd)):
 
 ```mmd
 packet
   0: 'single "quote"'
   1: "double 'quote'"
-  2: ''
+  2: ""
   3: ""
 ```
 
 ### Label content
 
-label の padding、連続空白、タブ、escape、HTML、entity、
-hidden に見える文字列を、内部の共通 trivia を含む範囲全体として保ちます。
-trim、圧縮、decode は Db を変え得るためです。
+label の padding、escape、HTML、entity、hidden に見える文字列を、
+内部の共通 trivia を含む範囲全体として保ちます。
+label の中の空白とタブの連なりは、空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+このテキストの decode は Db を変え得ます。
 物理改行だけは共有の host 方針に従います。
 
 [fixture: packet/label-content/label-padding]
@@ -248,8 +262,8 @@ trim、圧縮、decode は Db を変え得るためです。
 
 ```mmd
 packet
-  0: "  A  B	 C  "
-  1: " 	 "
+  0: " A B C "
+  1: " "
 ```
 
 ### Numbers
@@ -282,7 +296,7 @@ double は原綴を失い、拒否される指数や Infinity の構文にもな
 
 ```mmd
 packet
-  0-0: "Zero"
+  0: "Zero"
 ```
 
 ### Title
@@ -290,9 +304,15 @@ packet
 `title` の後を空白1個とし、非空値の共通空白の外端を trim します。
 null または空白だけの値は裸の `title` にします。
 等価な外側の空白を統一し、内部文字列、引用符、escape を保つためです。
+ただし、値の中の空白とタブの連なりは空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 空行・コメント・directive を挟んでも、次の物理行から値を取りません。
 空の最終代入と frontmatter への fallback を残します。
 保護された trivia と hidden の境界を優先します。
+題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: title/title-directives-end-blanks-dropped]
 
 [fixture: packet/title/title-trim]
 
@@ -311,7 +331,7 @@ null または空白だけの値は裸の `title` にします。
 
 ```mmd
 packet
-  title Topic  words
+  title Topic words
 ```
 
 ### Accessibility lines
@@ -320,8 +340,16 @@ packet
 colon は語に接し、trim した非空値の前を空白1個にします。
 空値は colon までです。
 内部文字列とコメントの接触を変えず、外側の空白を統一するためです。
+ただし、`accDescr` の値の中の空白とタブの連なりは空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+`accTitle` はブラウザがツールチップとして表示するので、
+その連なりは書かれたまま残します。
 colon 後の brace は行値です。
 次行の値は結合せず、hidden suffix と保護された組の隙間を保ちます。
+値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: packet/accessibility-lines/a11y-lines]
 
@@ -340,7 +368,7 @@ colon 後の brace は行値です。
 ```mmd
 packet
   accTitle: Access  words
-  accDescr: Details  words
+  accDescr: Details words
 ```
 
 ### Description blocks
@@ -457,7 +485,8 @@ packet
 
 共有の Root directive の配置規則を使い、opaque な内容、順序、
 component の境界と値内部の文字列を保ちます。
-同じ印字行の中では、両側の接触・分離を保ちます。
+同じ印字行の中のディレクティブは、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 元は同じ行にあった単位を別の行へ分けるときは、
 間の directive を次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
@@ -488,7 +517,7 @@ native hidden DIRECTIVE は別の所有ノードのままです。
 packet
   0%%{wrap}%%: "Global"
   accTitle%%{wrap}%%: Access
-  accDescr%%{wrap}%%{ Detail }
+  accDescr %%{wrap}%%{ Detail }
 ```
 
 ### Hidden yaml
@@ -648,12 +677,24 @@ packet
 
 ### Semicolons
 
-全セミコロンを残し、共有の文字列 segment 保護を使います。
-最初の非空白から最後のセミコロンまで、
-交差する値・コメント・ directive 全体へ延ばして保護します。
-保護された見出しと最初の文は分離せず、安全な外側と suffix のみ整えます。
+全セミコロンを残します。
+保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
+ほかの場所と同じように整形します。
+この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
+`style` か `classDef` の後の最初の `:` から、
+最後の保つ `;` の前の最後の `#` までに空白がない並びを読みます。
+その範囲の隙間と余白は空白の有無を保ち、空白の連続は空白 1 つにします。
+範囲の外は、この図種の通常の規則に従います。
+どの部分の配置も持たないテキストは、書かれたまま残します。
+複数行にわたる文の行を空白 1 つか何も挟まずにつなぐと、
+行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
+書かれたまま残します。
+それ以外の複数行の文は、1 行の文と同じように整形します。
+[fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/no-stretch-formatted]
+保護された見出しと最初の文は分離しません。
 style・classDef の両 pass、大文字小文字、colon・hash の空白、反復、
-Unicode の境界と directive で再結合する trigger を保ちます。
+Unicode の境界と directive で再結合する trigger の読みを保ちます。
 選ばれた1個の削除が別の1個を選び、Db を変え得るためです。
 atomic cut は失敗のままです。
 
@@ -686,7 +727,7 @@ packet
   title Text;;
   accTitle: Access;
   accDescr: Detail;;
-  0:"Label;"
+  0: "Label;"
 ```
 
 ### Blank lines

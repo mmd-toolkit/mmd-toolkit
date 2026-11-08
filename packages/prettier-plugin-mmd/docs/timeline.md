@@ -290,18 +290,32 @@ timeline
 ### Periods and events
 
 A period and its events are printed as written, with the whitespace between
-their texts and their colons. The Db keeps the whitespace at the end of a
-period, which is the whitespace before its colon, and the whitespace at both
-ends of an event beyond the one character after its colon: `2004 : a` and
-`2004: a` are different periods, `a :   e` has the event `  e`, and `a : e   `
-the event `e   `. So the padding that aligns the colons of a timeline stays, and
-a colon that touches its period keeps touching it. [fixture:
+their texts and their colons, except for the whitespace at the end of the last
+event of a line: mermaid.js keeps it in the Db, but draws the same event without
+it (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+The Db keeps the whitespace at the end of a period, which is the whitespace
+before its colon, and the whitespace at both ends of an event beyond the one
+character after its colon: `2004 : a` and `2004: a` are different periods,
+`a :   e` has the event `  e`, and `a : e   ` the event `e   `. So the padding
+that aligns the colons of a timeline stays, and a colon that touches its period
+keeps touching it; `a : e   ` at the end of a line is printed `a : e`, and
+`c : g   : h` stays as written. An event that a line break separates from the
+next colon ends its line too: in `2020 : e1  ` followed by a line `: e2`, the
+whitespace after `e1` is left out. The directives that end such an event are
+printed with one space before each that has whitespace before it, and the
+whitespace after the last one is left out: `2020 : e1   %%{x}%%  ` is printed
+`2020 : e1 %%{x}%%` (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: periods-and-events/event-trailing-directive-blanks-dropped] [fixture:
+periods-and-events/event-two-directives-trailing-blanks-dropped] [fixture:
 periods-and-events/period-whitespace-kept] [fixture:
-periods-and-events/event-whitespace-kept] [fixture:
+periods-and-events/event-padding-kept-end-dropped] [fixture:
 periods-and-events/whitespace-only-event] [fixture:
-periods-and-events/trailing-whitespace-kept] A colon, a `#`, and a `%%` in an
-event are characters of its text, and so are the colons that no whitespace
-follows. [fixture: periods-and-events/colon-inside-event] [fixture:
+periods-and-events/period-trailing-kept-event-end-dropped] [fixture:
+periods-and-events/event-end-before-continuation-dropped] A colon, a `#`, and a
+`%%` in an event are characters of its text, and so are the colons that no
+whitespace follows. [fixture: periods-and-events/colon-inside-event] [fixture:
 periods-and-events/special-characters-in-events] A `;` is a character of a text
 too (see [Statements one per line](#statements-one-per-line)). [fixture:
 periods-and-events/semicolons-in-texts-kept] [fixture:
@@ -563,10 +577,20 @@ timeline
 
 ### Titles and sections
 
-`title` and `section` are printed with the value as written, the whitespace at
-its ends included, which the Db keeps, and one space as the separator after the
-keyword, whatever character was written there, as in a user journey. [fixture:
-titles-and-sections/value-whitespace-kept] [fixture:
+A `title` is printed with one space after the keyword, as in a user journey, and
+the value without the whitespace at its start or at its end, which the Db keeps
+and which is drawn without (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+`title   History  ` is printed `title History`, and a run of spaces and tabs
+inside it is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+The name of a `section` is printed as written, the whitespace at its start and
+at its end included: two sections whose names differ by it are drawn apart, and
+would not be once it is left out. A title of spaces and tabs only stays as
+written. [fixture: titles-and-sections/title-padding-dropped] [fixture:
+titles-and-sections/title-blank-kept] [fixture:
+titles-and-sections/section-padding-kept] [fixture:
+titles-and-sections/title-trailing-dropped-section-kept] [fixture:
 titles-and-sections/one-space-after-keyword] A value written on a later line is
 printed after the keyword on one line; a comment line between them makes the
 statement printed as written (see
@@ -577,7 +601,7 @@ titles-and-sections/comment-line-inside-kept] The value holds `:`, `#`, `%`, and
 starts an event. [fixture: titles-and-sections/special-characters-in-values]
 [fixture: titles-and-sections/section-ends-at-colon] A directive between the
 keyword and the value stays where it is (see [Directives](#directives)).
-[fixture: titles-and-sections/directive-between-keyword-and-value-kept]
+[fixture: titles-and-sections/directive-between-keyword-and-value]
 
 Input
 ([titles-and-sections/special-characters-in-values-input.mmd](../tests/fixtures/timeline/titles-and-sections/special-characters-in-values-input.mmd)):
@@ -619,13 +643,15 @@ timeline
 
 ### Keyword case
 
-Keywords keep the case in which they are written. mermaid.js reads them in any
-case and the Db is the same, so nothing forces the case; it is the author's, and
-the printer does not rewrite it. The header `timeline` is detected in lower case
-only. [fixture: keyword-case/keywords-kept]
+The keywords `section` and `title` are printed in lower case, as the examples in
+the documentation of mermaid.js write them (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+mermaid.js reads them in any case and the Db is the same; the accessibility
+keywords keep the case in which they are written. The header `timeline` is
+detected in lower case only. [fixture: keyword-case/keywords-one-form]
 
 Input
-([keyword-case/keywords-kept-input.mmd](../tests/fixtures/timeline/keyword-case/keywords-kept-input.mmd)):
+([keyword-case/keywords-one-form-input.mmd](../tests/fixtures/timeline/keyword-case/keywords-one-form-input.mmd)):
 
 ```mmd
 timeline
@@ -637,12 +663,12 @@ ACCDESCR { d }
 ```
 
 Output
-([keyword-case/keywords-kept-output.mmd](../tests/fixtures/timeline/keyword-case/keywords-kept-output.mmd)):
+([keyword-case/keywords-one-form-output.mmd](../tests/fixtures/timeline/keyword-case/keywords-one-form-output.mmd)):
 
 ```mmd
 timeline
-  TITLE T
-  Section S
+  title T
+  section S
     ACCTITLE: T
     AccDescr: d
     ACCDESCR { d }
@@ -651,10 +677,12 @@ timeline
 ### Header and direction
 
 The header may carry a direction, `LR` or `TD` in any case, after whitespace on
-its line. It is printed on the line of the header after one space, in the case
-in which it was written, and the Db reads it in upper case. The space is the one
-of the whitespace between tokens (see Whitespace between tokens), and the case
-is the author's. [fixture: header-and-direction/direction-kept] [fixture:
+its line. It is printed on the line of the header after one space, `td` as `TD`,
+as the examples in the documentation of mermaid.js write it (see
+[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
+and `lr` in the case in which it was written; the Db reads it in upper case. The
+space is the one of the whitespace between tokens (see Whitespace between
+tokens). [fixture: header-and-direction/direction-kept] [fixture:
 header-and-direction/direction-case-kept] [fixture:
 header-and-direction/spaces-before-the-direction] A second word is a period and
 goes to a line of its own, and so is a direction on a line of its own. [fixture:
@@ -662,9 +690,9 @@ header-and-direction/second-word-is-a-period] [fixture:
 header-and-direction/direction-on-its-own-line-is-a-period]
 
 A comment after the direction stays on the line (see [Comments](#comments)), and
-a directive before it or after it keeps one space on each side, as everywhere
-else (see [Directives](#directives)). The whitespace at the end of the line is
-dropped. [fixture: header-and-direction/comment-after-the-direction] [fixture:
+a directive before it or after it is placed as everywhere else (see
+[Directives](#directives)). The whitespace at the end of the line is dropped.
+[fixture: header-and-direction/comment-after-the-direction] [fixture:
 header-and-direction/directive-before-the-direction] [fixture:
 header-and-direction/directive-after-the-direction] [fixture:
 header-and-direction/trailing-whitespace-dropped]
@@ -698,7 +726,7 @@ Output
 ([header-and-direction/directive-before-the-direction-output.mmd](../tests/fixtures/timeline/header-and-direction/directive-before-the-direction-output.mmd)):
 
 ```mmd
-timeline %%{init: {}}%% TD
+timeline %%{init: {}}%%TD
   title T
 ```
 
@@ -706,9 +734,14 @@ timeline %%{init: {}}%% TD
 
 The `:` of `accTitle` and `accDescr` touches the keyword and has one space after
 it, as in a user journey; the text has no whitespace at its ends, which the Db
-does not keep. [fixture: accessibility-statements/colon-touches-keyword]
-[fixture: accessibility-statements/text-whitespace-dropped] The text and the
-colon may stand on later lines, and are printed on the line of the keyword.
+does not keep, and a run of spaces and tabs inside the text of an `accDescr` is
+printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+while that of an `accTitle` stays as written, since the browser shows it as a
+tooltip. [fixture: accessibility-statements/colon-touches-keyword] [fixture:
+accessibility-statements/text-whitespace-dropped] [fixture:
+accessibility-statements/title-and-accessibility-runs-collapsed] The text and
+the colon may stand on later lines, and are printed on the line of the keyword.
 [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/keyword-and-colon-over-lines-joined] The text holds
 `:`, `;`, `#`, `%`, and `%%` as characters. [fixture:
@@ -721,7 +754,7 @@ side, also where the braces touched it, and the `}` after it; later text lines
 stand one level inside the statement and the `}` stands at its level (see
 [Multi-line values](#multi-line-values)). [fixture:
 accessibility-statements/block-text-on-opening-line] [fixture:
-accessibility-statements/block-inner-whitespace-kept] [fixture:
+accessibility-statements/block-inner-runs-collapsed] [fixture:
 accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept] A directive around
 the colon or the braces stays where it is. [fixture:
@@ -842,22 +875,29 @@ start of a later line, and keep their line breaks (see
 In `accTitle` and `accDescr:` statements, keep trivia line breaks and align
 later structural parts and standalone trivia one continuation level inside the
 statement, also under a section. Preserve each first gap-line tail and complete
-directive interiors. Semicolon lines and joining comment regions keep their
-original layout. [fixture:
+directive interiors. Joining comment regions keep their original layout;
+semicolon protection follows the joining decision below. [fixture:
 multi-line-statements/accessibility-trivia-continuations]
 
 Titles and sections, and event-text continuations, keep their original multiline
 trivia layout, because their value padding belongs to the Db. [fixture:
+multi-line-statements/breaks-decided-one-by-one] [fixture:
+multi-line-statements/line-rule-first-hash-after-colon-kept] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept] After the colon of an event, an
 indented line of only a directive is the whitespace that starts the event, so
 the event is printed on the line of the colon, with that whitespace, and the
 directive after it. [fixture:
-multi-line-statements/directive-line-after-the-colon-is-the-text] A `;` in such
-a statement keeps it as written too, because the joined line could be read by
-the line rule of mermaid.js differently (see
-[Statements one per line](#statements-one-per-line)). [fixture:
-multi-line-statements/text-on-next-line-with-semicolon-kept]
+multi-line-statements/directive-line-after-the-colon-is-the-text] In an
+accessibility statement, a line break stays where joining it, with one space or
+with nothing, could change which `;` the line rule ignores, and where a `;` ends
+the last line; any other line break is joined as usual, also in a statement that
+holds a `;`. A title, a section, a period and an event are kept as written when
+a line break of them stays: the Db keeps the whitespace at their start. See
+[Statements one per line](#statements-one-per-line). [fixture:
+multi-line-statements/semicolon-joining-changes-kept] A `;` alone does not
+prevent joining. [fixture:
+multi-line-statements/text-on-next-line-with-semicolon-joined]
 
 Input
 ([multi-line-statements/value-on-next-line-joined-input.mmd](../tests/fixtures/timeline/multi-line-statements/value-on-next-line-joined-input.mmd)):
@@ -1086,9 +1126,9 @@ timeline
 ### Directives
 
 A directive on a line of its own stands at the level of the statement after it,
-as in a user journey, and a directive within a printed line keeps whether
-whitespace is written on each side of it: where it is, one space stands there,
-and where it touches a token, it keeps touching. [fixture: directives/kept]
+as in a user journey, and a directive within a printed line is placed as in a
+flowchart: the gap is printed as without the directive, and the directive stands
+after its space and touches the unit that follows it. [fixture: directives/kept]
 [fixture: directives/levels-around-sections] [fixture: directives/before-header]
 [fixture: directives/after-header-on-same-line] [fixture:
 directives/after-header-touching-kept] [fixture:
@@ -1101,10 +1141,10 @@ break its left contact.
 
 [fixture: timeline/directives/whitespace-on-both-sides-collapsed]
 
-A directive between two units stays in its authored gap; same-line contact or
-separation on either side stays. Structural continuation columns follow
+A directive between two units stays in its authored gap, placed as under
+[Directives](#directives). Structural continuation columns follow
 [Multi-line statements](#multi-line-statements). A directive inside a value is
-part of that text. [fixture: directives/between-units-kept] [fixture:
+part of that text. [fixture: directives/between-units] [fixture:
 directives/inside-values-kept] [fixture: directives/over-lines-kept] A directive
 that is not closed takes the rest of the text, and is kept as written. [fixture:
 directives/unclosed-at-end-of-text-kept] [fixture:
@@ -1137,7 +1177,7 @@ timeline
 ```
 
 Input
-([directives/between-units-kept-input.mmd](../tests/fixtures/timeline/directives/between-units-kept-input.mmd)):
+([directives/between-units-input.mmd](../tests/fixtures/timeline/directives/between-units-input.mmd)):
 
 ```mmd
 timeline
@@ -1147,12 +1187,12 @@ c : e%%{init: {}}%%: f
 ```
 
 Output
-([directives/between-units-kept-output.mmd](../tests/fixtures/timeline/directives/between-units-kept-output.mmd)):
+([directives/between-units-output.mmd](../tests/fixtures/timeline/directives/between-units-output.mmd)):
 
 ```mmd
 timeline
   a %%{init: {}}%%: e
-  b:%%{init: {}}%% e
+  b: %%{init: {}}%%e
   c : e%%{init: {}}%%: f
 ```
 
@@ -1228,7 +1268,12 @@ U+2028 between a description block and a period] [test: U+2028 inside a period]
 [test: U+2028 before the second colon of an event] [test: U+2028 after the colon
 of an event] [test: U+2028 after a title keyword] [test: U+2029 inside a title]
 [test: U+2028 at the end of a section name] [test: U+2028 after the colon of an
-accessibility title] [test: U+2028 between the header and a direction]
+accessibility title] [test: U+2028 between the header and a direction] At the
+end of a title and at the end of the last event of a line, U+2028 and U+2029 are
+characters of the text and no spaces or tabs: the spaces after one are left out
+with the other whitespace at the end of the text, and the spaces before it stay.
+[test: U+2029 and spaces at the end of a timeline title] [test: U+2028 and
+spaces at the end of the last event of a line]
 
 ### Whitespace characters
 

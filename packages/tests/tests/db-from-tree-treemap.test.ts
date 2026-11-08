@@ -158,7 +158,14 @@ describe("treemap Db from hand-built trees", () => {
     expect(result.classDefs).toEqual([
       {
         id: "__proto__",
-        styles: ["fill:rgb(1,2,3)", " color:red", "", "", "stroke:black", ""],
+        styles: [
+          "fill:rgb(1,2,3)",
+          " color:red ",
+          "",
+          "",
+          "stroke:black  ",
+          "",
+        ],
       },
       { id: "unused", styles: [""] },
     ])

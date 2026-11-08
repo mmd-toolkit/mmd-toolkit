@@ -1,0 +1,29 @@
+sequenceDiagram
+A->>B: x
+loop$$\frac{1}{2}+1=2$$
+A->>B: y
+end
+alt-:<>,;# comment
+A->>B: z
+else,<>:-#; comment
+A->>B: w
+end
+par"p"
+A->>B: q
+and-r
+A->>B: s
+end
+opt(t)
+A->>B: u
+end
+critical*c
+A->>B: v
+option:o
+A->>B: v2
+end
+break[b]
+A->>B: v3
+end
+rect<r>
+A->>B: v4
+end

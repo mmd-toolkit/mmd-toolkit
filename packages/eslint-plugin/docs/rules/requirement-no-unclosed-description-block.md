@@ -36,7 +36,7 @@ Examples of **incorrect** code for this rule:
 %% eslint @mmd-toolkit/requirement-no-unclosed-description-block: error
 requirementDiagram
   accDescr { x
-  requirement r {
+    requirement r {
     id: 1
   }
   element e {

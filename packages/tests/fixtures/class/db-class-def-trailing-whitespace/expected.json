@@ -22,8 +22,8 @@
         "members": [],
         "annotations": [],
         "styles": [
-          "fill:red",
-          "stroke:#333"
+          "fill:red ",
+          "stroke:#333 "
         ]
       }
     ],

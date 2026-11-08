@@ -21,11 +21,8 @@ import {
   writtenTextKeptUpToSemicolons,
 } from "./db-reading.ts"
 import { dataBlockEmbeddedForFormattingComparison } from "./data-block-margins.ts"
-import {
-  eventmodelingDbForFormattingComparison,
-  eventmodelingEmbeddedForFormattingComparison,
-} from "./eventmodeling-data-margins.ts"
-import { stateDbForFormattingComparison } from "./state-note-margins.ts"
+import { dbForFormattingComparison } from "./db-comparison.ts"
+import { eventmodelingEmbeddedForFormattingComparison } from "./eventmodeling-data-margins.ts"
 
 /** Formats a fixture text with the fixture's options. */
 function format(fixture: FormatFixture, text: string): Promise<string> {
@@ -65,16 +62,7 @@ describe("formatting fixtures", () => {
       const writtenAfter = writtenEmbeddedTexts(output)
       const isEventmodeling = fixture.id.startsWith("eventmodeling/")
       expect(
-        isEventmodeling
-          ? eventmodelingDbForFormattingComparison(dbBefore, dbAfter)
-          : fixture.id.startsWith("state/")
-            ? stateDbForFormattingComparison(
-                dbBefore,
-                dbAfter,
-                fixture.input,
-                output,
-              )
-            : dbAfter,
+        dbForFormattingComparison(dbBefore, dbAfter, fixture.input, output),
       ).toEqual(dbBefore)
       expect(
         isEventmodeling

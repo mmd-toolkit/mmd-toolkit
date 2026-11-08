@@ -132,7 +132,7 @@ export const pieCases: readonly PieCase[] = [
     name: "pie/line-terminators-and-unicode/unicode-line-edges-and-internal",
     input:
       "pie\ntitle \u00a0A\tB\u2028\naccTitle:\ufeffC\tD\u2029\naccDescr: \u00a0E\tF\ufeff",
-    output: "pie\n  title A\tB\n  accTitle: C\tD\n  accDescr: E\tF\n",
+    output: "pie\n  title A B\n  accTitle: C\tD\n  accDescr: E F\n",
     options: {},
   },
   {

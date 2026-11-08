@@ -16,7 +16,7 @@
         "labelType": "text",
         "styles": [
           "fill:red",
-          "color:blue",
+          "color:blue ",
           "stroke:black"
         ],
         "classes": [],
