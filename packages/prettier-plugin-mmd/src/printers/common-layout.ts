@@ -1,6 +1,5 @@
 import type {
   Node,
-  Range,
   CynefinTitleStatement,
   CynefinAccTitleStatement,
   CynefinAccDescrStatement,
@@ -135,7 +134,7 @@ export function layoutCommonLine(
   const value = statement.value
   const hasTrivia =
     value !== null && findTriviaBetween(source, ...value.range).length > 0
-  const endsWithDirectives =
+  const endsInDirectives =
     hasTrivia &&
     (statement.textAfter?.length ?? 0) === 0 &&
     endsWithDirectives(source, value.range)
@@ -154,11 +153,11 @@ export function layoutCommonLine(
       valueStart++
     while (valueStart < valueEnd && source.text[valueEnd - 1].trim() === "")
       valueEnd--
-  } else if (endsWithDirectives) {
+  } else if (endsInDirectives) {
     while (valueStart < valueEnd && source.text[valueStart].trim() === "")
       valueStart++
   }
-  const holdsTrivia = hasTrivia && !endsWithDirectives
+  const holdsTrivia = hasTrivia && !endsInDirectives
   if (holdsTrivia) valueStart = delimiter.range[1]
   const printedValue =
     valueStart < valueEnd
@@ -195,7 +194,7 @@ export function layoutCommonLine(
   // A text that ends with directives prints them as at the end of a line, and
   // leaves out the whitespace at its end (docs/compatibility.md, Texts after a
   // keyword that are drawn the same). The runs inside an `accTitle` stay.
-  if (endsWithDirectives) {
+  if (endsInDirectives) {
     trimTextAfterKeyword(
       source,
       atoms,

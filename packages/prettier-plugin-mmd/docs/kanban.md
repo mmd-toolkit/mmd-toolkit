@@ -886,9 +886,15 @@ column (`S   ` is the id `S   `, and so is the space before its shape), in a
 comment, and inside labels, icons, data blocks, directives, and the continuation
 lines of multi-line values. This is the distinction of
 [mindmap](./mindmap.md#node-text), with the data block added, and with the id of
-a column kept. On a kept line the same holds. [test: kanban: bare-trailing-trim]
-[test: kanban: closed-trailing-trim] [test: kanban: closed-whitespace-trim]
-[fixture: trailing-whitespace/class-trailing-trim] [fixture:
+a column kept. On a kept line the same holds. The directives that end the text
+of a card are printed with one space before each that has whitespace before it,
+and the whitespace after the last one is left out (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same));
+those that end the id of a column stay as written, since the figure depends on
+its whitespace. [fixture: trailing-whitespace/directives-end-blanks-dropped]
+[test: kanban: bare-trailing-trim] [test: kanban: closed-trailing-trim] [test:
+kanban: closed-whitespace-trim] [fixture:
+trailing-whitespace/class-trailing-trim] [fixture:
 trailing-whitespace/lex-after-quoted-spaces] [fixture:
 trailing-whitespace/kept-line-kept]
 

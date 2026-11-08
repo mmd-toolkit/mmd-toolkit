@@ -7,7 +7,6 @@ import type {
   Node,
 } from "@mmd-toolkit/ast"
 import type { AtomLayout } from "./atoms.ts"
-import { keptAsWritten } from "./layout.ts"
 import {
   findLeadingDirectives,
   findNodeLineTextStart,
@@ -21,6 +20,7 @@ import {
 import type { Source } from "./source.ts"
 import { isWhitespace } from "./source.ts"
 import { printedStretch } from "./spelling.ts"
+import { keptWithDirectiveEnd } from "./statement-rules.ts"
 
 /**
  * The node types of a mindmap whose text is a value, printed as written: the
@@ -109,7 +109,8 @@ export function layoutMindmapLine(
 ): AtomLayout {
   const end = findMindmapPrintedEnd(line)
   const printed = printMindmapText(source, line, end)
-  if (printed === undefined) return keptAsWritten(line.range[0], end)
+  if (printed === undefined)
+    return keptWithDirectiveEnd(source, line.range[0], end)
   return {
     atoms: [{ start: line.range[0], end, doc: printed }],
     rules: new Map(),

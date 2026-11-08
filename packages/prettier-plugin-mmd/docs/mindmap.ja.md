@@ -639,8 +639,13 @@ mindmap
 単独の行のディレクティブは、後ろの行と同じ段に置きます。
 ノードの行にあるディレクティブは、両側に空白が書かれているかを残します。
 あれば空白 1 つを置き、接していれば接したままにします。
-[fixture: directives/kept] [fixture: directives/between-nodes]
-[fixture: directives/before-the-header]
+ノードかクラスのテキストを終えるディレクティブは、
+それぞれの前に空白があれば空白 1 つを置き、
+最後のディレクティブの後の空白は除きます。
+行末の空白の有無で印字は変わりません。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: node-text/directives-end-blanks-dropped] [fixture: directives/kept]
+[fixture: directives/between-nodes] [fixture: directives/before-the-header]
 [fixture: directives/after-the-header-on-the-same-line]
 [fixture: directives/after-the-header-touching]
 [fixture: directives/after-a-shape]

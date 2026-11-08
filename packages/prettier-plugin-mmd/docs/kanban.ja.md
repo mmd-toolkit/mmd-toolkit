@@ -955,8 +955,16 @@ Db が保ち、図がその空白に依存する所では残します。
 複数行の値の続きの行です。
 これは [mindmap](./mindmap.ja.md#ノードのテキスト) の区別で、
 データブロックを加え、列の id は残します。
-保つ行でも同じです。 [test: kanban: bare-trailing-trim]
-[test: kanban: closed-trailing-trim] [test: kanban: closed-whitespace-trim]
+保つ行でも同じです。
+カードのテキストを終えるディレクティブは、
+それぞれの前に空白があれば空白 1 つを置き、
+最後のディレクティブの後の空白は除きます。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+列の id を終えるディレクティブは、図がその空白に依存するので、
+書かれたまま残します。
+[fixture: trailing-whitespace/directives-end-blanks-dropped]
+[test: kanban: bare-trailing-trim] [test: kanban: closed-trailing-trim]
+[test: kanban: closed-whitespace-trim]
 [fixture: trailing-whitespace/class-trailing-trim]
 [fixture: trailing-whitespace/lex-after-quoted-spaces]
 [fixture: trailing-whitespace/kept-line-kept]

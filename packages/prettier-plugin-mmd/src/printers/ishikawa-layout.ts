@@ -12,14 +12,9 @@ import {
 } from "./indentation-lines.ts"
 import type { LeadingDirectives } from "./indentation-lines.ts"
 import { keptAsWritten, replaceInAtoms } from "./layout.ts"
-import { collapseRunEdits } from "./text-runs.ts"
+import { collectTextEndEdits, endsWithDirectives } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
-import {
-  findDirectiveEndingAt,
-  findTriviaBetween,
-  isSpaceOrTab,
-  isWhitespace,
-} from "./source.ts"
+import { findTriviaBetween, isSpaceOrTab, isWhitespace } from "./source.ts"
 
 /** All Ishikawa values are literals, including numbers and apparent strings. */
 export const ishikawaValueNodeTypes: ReadonlySet<Node["type"]> = new Set([
@@ -103,26 +98,24 @@ export function layoutIshikawaLine(
 ): AtomLayout {
   const start = line.leading?.textStart ?? line.range[0]
   let end = line.range[1]
-  // The gap before a directive that follows the literal is that of the
-  // directive, so the literal keeps its end there.
-  const directiveFollows = findTriviaBetween(source, end, end + 1).some(
-    (item) => item.type === "Directive" && item.range[0] === end,
-  )
-  if (!directiveFollows) {
-    while (end > start + 1 && isSpaceOrTab(source.text[end - 1])) end--
-  }
-  const atoms: Atom[] = [{ start, end }]
-  // Where the literal ends with a directive, as it does when blanks followed
-  // it, its runs, the blanks before the directive among them, are those that
-  // the same literal has when the directive stands after it: one space each
-  // (docs/ishikawa.md, Trailing whitespace).
-  const directive = findDirectiveEndingAt(source, end)
-  if (directive !== undefined && directive.range[0] > start) {
-    replaceInAtoms(
-      source,
-      atoms,
-      collapseRunEdits(source, start, directive.range[0]),
+  const atoms: Atom[] = []
+  if (endsWithDirectives(source, [start, end])) {
+    // The literal ends with directives, which are printed as at the end of a
+    // line, with the whitespace before them as the same literal has when the
+    // directives stand after it: one space each (docs/ishikawa.md, Trailing
+    // whitespace).
+    atoms.push({ start, end })
+    replaceInAtoms(source, atoms, collectTextEndEdits(source, start, end, true))
+  } else {
+    // The gap before a directive that follows the literal is that of the
+    // directive, so the literal keeps its end there.
+    const directiveFollows = findTriviaBetween(source, end, end + 1).some(
+      (item) => item.type === "Directive" && item.range[0] === end,
     )
+    if (!directiveFollows) {
+      while (end > start + 1 && isSpaceOrTab(source.text[end - 1])) end--
+    }
+    atoms.push({ start, end })
   }
   return { ...keptAsWritten(start, end), atoms }
 }

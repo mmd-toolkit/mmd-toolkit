@@ -598,12 +598,15 @@ whatever it is. This holds for the title of a Gantt chart, a user journey, a
 timeline, a sequence diagram, a Venn diagram, a C4 diagram, a pie chart, a radar
 chart, a packet diagram, an architecture diagram, a gitGraph, a cynefin diagram,
 a treemap, a Wardley map, a treeView, an info diagram, and a railroad diagram,
-for the `accTitle:` and `accDescr:` lines of those diagram types, for the date
-format and the axis format of a Gantt chart, for the `accDescription` of a C4
-diagram, for the last event of a line of a timeline, and for the second
-description of a state alias. The runs of spaces and tabs inside a date format,
-an axis format, or the value of an `accTitle:` line stay as written before the
-directives as they do without them. [fixture:
+for the `accTitle:` and `accDescr:` lines of those diagram types, for the text
+of a node of an ishikawa diagram and of a mindmap, and of a card of a kanban
+board (not the id of a column, which the figure depends on), for the date format
+and the axis format of a Gantt chart, for the `accDescription` of a C4 diagram,
+for the last event of a line of a timeline, and for the second description of a
+state alias. The runs of spaces and tabs inside a date format, an axis format,
+or the value of an `accTitle:` line stay as written before the directives as
+they do without them. [fixture:
+ishikawa/trailing-whitespace/directives-end-blanks-dropped] [fixture:
 gantt/settings/format-runs-kept-before-directives] [fixture:
 gantt/titles-and-sections/title-two-directives-trailing-blanks-dropped]
 [fixture: pie/title/title-directives-end-blanks-dropped] [fixture:
@@ -953,8 +956,13 @@ that wraps draws its runs (see
 A shape text that would start with a quote once its padding is gone (`a[ "x" ]`
 is a text with its quotes, `a["x"]` a string), a string, a markdown string, a
 text over lines, and a line with a comment or a directive in it or after it stay
-as written. A text of nothing but spaces and tabs is printed as one space.
-[fixture: mindmap/node-text/trailing-whitespace-dropped] [fixture:
+as written, except that the directives that end the text of a node, of a class,
+or of a card are printed as in
+[Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same).
+A text of nothing but spaces and tabs is printed as one space. [fixture:
+mindmap/node-text/directives-end-blanks-dropped] [fixture:
+kanban/trailing-whitespace/directives-end-blanks-dropped] [fixture:
+mindmap/node-text/trailing-whitespace-dropped] [fixture:
 mindmap/node-text/space-before-a-shape-dropped] [fixture:
 mindmap/shapes/inner-padding-dropped] [fixture:
 mindmap/decorations/padding-in-icon-and-class-dropped] [fixture:

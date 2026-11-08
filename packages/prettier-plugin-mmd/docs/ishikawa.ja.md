@@ -424,12 +424,14 @@ Mermaid が literal を trim するので、除いても Db と図は同じで�
 
 literal の中の空白とタブの連なりは、空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
-directive の両側の隙間、結合した継続列は保ちます。
+結合した継続列は保ちます。
 コメントの空白と directive の内容も同じです。
-literal の後に続く directive の前の隙間は directive に属するので、
-そこでの literal の末尾は保ちます。
-その中の連なりは、directive の後に空白が続くときも続かないときも、
-空白 1 つにして印字します。
+literal を終える directive は、それぞれの前に空白があれば空白 1 つを置き、
+最後の directive の後の空白は除きます。
+最後の directive の後に空白が続くときも続かないときも、
+literal の中の連なりは空白 1 つにして印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped]
 [fixture: ishikawa/trailing-whitespace/trailing-directive-gap-collapsed]
 [fixture: ishikawa/trailing-whitespace/trailing-directive-continuation]
 

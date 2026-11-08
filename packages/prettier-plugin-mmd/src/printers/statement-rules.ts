@@ -1,9 +1,14 @@
 import type { Node, Range } from "@mmd-toolkit/ast"
 import type { Doc } from "prettier"
-import type { Atom, GapRule } from "./atoms.ts"
+import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { appendItems } from "./collections.ts"
 import type { TextEdit } from "./layout.ts"
-import { expectToken, expectValue, replaceInAtoms } from "./layout.ts"
+import {
+  expectToken,
+  expectValue,
+  keptAsWritten,
+  replaceInAtoms,
+} from "./layout.ts"
 import { collapseRunEdits } from "./text-runs.ts"
 import {
   findLinesWithOwnSemicolons,
@@ -394,6 +399,24 @@ export function endsWithDirectives(source: Source, [from, to]: Range): boolean {
   )
   if (first === undefined && !follows) return false
   return source.text.slice(from, first?.range[0] ?? to).trim() !== ""
+}
+
+/**
+ * The layout of a line that stays as written, apart from the end of its text
+ * where directives end it: the whitespace after the last directive is left out,
+ * and each directive keeps whether whitespace precedes it, a run becoming one
+ * space (see `collectTextEndEdits`). The runs inside the text stay.
+ */
+export function keptWithDirectiveEnd(
+  source: Source,
+  start: number,
+  end: number,
+): AtomLayout {
+  const layout = keptAsWritten(start, end)
+  if (!endsWithDirectives(source, [start, end])) return layout
+  const atoms = [...layout.atoms]
+  replaceInAtoms(source, atoms, collectTextEndEdits(source, start, end, false))
+  return { ...layout, atoms }
 }
 
 /**

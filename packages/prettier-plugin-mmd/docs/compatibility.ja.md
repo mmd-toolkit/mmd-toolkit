@@ -653,11 +653,14 @@ mermaid.js はテキストを読む前にディレクティブを除くので、
 これは、Gantt、user journey、timeline、sequence、Venn、C4、pie、radar、packet、
 architecture、gitGraph、cynefin、treemap、Wardley、treeView、info、
 railroad の図のタイトル、それらの図種の `accTitle:` と `accDescr:` の行、
+ishikawa 図と mindmap のノードのテキスト、
+kanban ボードのカードのテキスト（図が依存する列の id は除く）、
 Gantt 図の日付書式と軸の書式、C4 図の `accDescription`、
 timeline の行の最後の event、別名を持つ state の 2 つ目の説明に当てはまります。
 日付書式、軸の書式、`accTitle:` の行の値の中の空白とタブの連続は、
 ディレクティブの前でも、
 ディレクティブがない場合と同じように書かれたままにします。
+[fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped]
 [fixture: gantt/settings/format-runs-kept-before-directives] [fixture:
 gantt/titles-and-sections/title-two-directives-trailing-blanks-dropped]
 [fixture: pie/title/title-directives-end-blanks-dropped]
@@ -805,9 +808,10 @@ sequence 図のテキスト（メッセージ、ノート、ブロック、box�
 C4 図の引数のうち label、technology、type、description、
 Cynefin 図と ishikawa 図のリテラル、packet 図と Venn 図のラベル、
 Wardley マップのリンク、treemap の名前、
-railroad 図の文字列と special sequence です。
+railroad 図の terminal の文字列と special sequence です。
 空白とタブだけの文字列は、ほかの文字列と同じ文字列として扱います。
 `["   "]` は `[" "]` と印字します。 [fixture: pie/title/title-inner-text]
+[fixture: railroad/quotes/ir-string-runs-collapsed]
 [fixture: pie/accessibility-lines/accessibility-inner-tab]
 [fixture: quadrant/keywords-and-texts/inner-runs-collapsed]
 [fixture: sequence/whitespace-between-tokens/values-runs-collapsed]
@@ -1023,7 +1027,12 @@ mindmap のノードのテキスト、形のテキスト、icon、class は、
 余白を除くと引用符で始まる形のテキスト（`a[ "x" ]` は引用符を含むテキストで、
 `a["x"]` は文字列）、文字列、markdown 文字列、複数行にまたがるテキスト、
 行の中か後ろにコメントやディレクティブがある行は、書かれたままにします。
+ただし、ノード、class、カードのテキストを終えるディレクティブは、
+キーワードの後のテキストと同じに印字します。
+（[同じに描かれるキーワードの後のテキスト](#同じに描かれるキーワードの後のテキスト)）。
 空白とタブだけのテキストは、空白 1 つで印字します。
+[fixture: mindmap/node-text/directives-end-blanks-dropped]
+[fixture: kanban/trailing-whitespace/directives-end-blanks-dropped]
 [fixture: mindmap/node-text/trailing-whitespace-dropped]
 [fixture: mindmap/node-text/space-before-a-shape-dropped]
 [fixture: mindmap/shapes/inner-padding-dropped]

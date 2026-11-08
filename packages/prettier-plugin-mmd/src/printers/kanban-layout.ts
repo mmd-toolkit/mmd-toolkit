@@ -15,6 +15,7 @@ import {
 import type { LeadingDirectives } from "./indentation-lines.ts"
 import type { AtomLayout } from "./atoms.ts"
 import { expectToken, keptAsWritten } from "./layout.ts"
+import { keptWithDirectiveEnd } from "./statement-rules.ts"
 import { printAsWritten } from "./lines.ts"
 import {
   isPlainLine,
@@ -167,7 +168,14 @@ export function layoutKanbanLine(source: Source, line: KanbanLine): AtomLayout {
   const { cssClass } = line
   if (cssClass === null) {
     const printed = printKanbanText(source, line)
-    if (printed === undefined) return keptAsWritten(start, line.range[1])
+    if (printed === undefined) {
+      // The id of a column is read with the whitespace at its end, which the
+      // figure depends on (see `printKanbanText`), so only a card prints the
+      // end of its text.
+      return line.depth === 2
+        ? keptWithDirectiveEnd(source, start, line.range[1])
+        : keptAsWritten(start, line.range[1])
+    }
     return {
       atoms: [{ start, end: line.range[1], doc: printed }],
       rules: new Map(),
@@ -181,7 +189,7 @@ export function layoutKanbanLine(source: Source, line: KanbanLine): AtomLayout {
   while (textEnd > textStart && isSpaceOrTab(source.text[textEnd - 1]))
     textEnd--
   if (textStart === cssClass.range[0] && textEnd === cssClass.range[1]) {
-    return keptAsWritten(start, line.range[1])
+    return keptWithDirectiveEnd(source, start, line.range[1])
   }
   if (textStart === textEnd) {
     // A class of spaces and tabs only is printed as one space: the grammar

@@ -387,10 +387,13 @@ ishikawa/trailing-whitespace/unpadded-values] [test: ishikawa: trailing-nbsp]
 trailing-unicode-kept-line] A run of spaces and tabs inside a literal is printed
 as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
-while directive-side gaps and joined continuation columns stay, as do comment
-spaces and directive contents: the gap before a directive that follows a literal
-belongs to the directive, so the literal keeps its end there, with a run in it
-printed as one space, whether whitespace follows the directive or not. [fixture:
+while joined continuation columns stay, as do comment spaces and directive
+contents. The directives that end a literal are printed with one space before
+each that has whitespace before it, and the whitespace after the last one is
+left out, with a run in the literal printed as one space, whether whitespace
+follows the last directive or not (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped] [fixture:
 ishikawa/trailing-whitespace/trailing-directive-gap-collapsed] [fixture:
 ishikawa/trailing-whitespace/trailing-directive-continuation] Only exterior
 header-line padding is dropped under [Header](#header) and
