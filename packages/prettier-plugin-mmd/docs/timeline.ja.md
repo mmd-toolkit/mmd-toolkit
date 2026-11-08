@@ -309,10 +309,13 @@ event の `:` の後ろの 1 文字を除いた両端の空白を、値として
 そのため、timeline の `:` をそろえるための空白は残し、
 period に接した `:` は接したままにします。
 行末の `a : e   ` は `a : e` と印字し、`c : g   : h` は書かれたままにします。
+次の `:` との間に改行がある event も、行の最後の event です。
+`2020 : e1  ` の次に `: e2` の行が続くとき、`e1` の後ろの空白は除きます。
 [fixture: periods-and-events/period-whitespace-kept]
 [fixture: periods-and-events/event-padding-kept-end-dropped]
 [fixture: periods-and-events/whitespace-only-event]
 [fixture: periods-and-events/period-trailing-kept-event-end-dropped]
+[fixture: periods-and-events/event-end-before-continuation-dropped]
 event の中の `:`、`#`、`%%` はテキストの文字で、
 後ろに空白が続かない `:` も同じです。
 [fixture: periods-and-events/colon-inside-event]

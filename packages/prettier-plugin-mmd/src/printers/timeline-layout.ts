@@ -33,7 +33,11 @@ import {
 } from "./layout.ts"
 import { accessibilityRules, trimTextAfterKeyword } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
-import { findStructuralToken, isSpaceOrTab } from "./source.ts"
+import {
+  findStructuralToken,
+  findTriviaBetween,
+  isSpaceOrTab,
+} from "./source.ts"
 
 /**
  * The node types of a timeline whose text is a value, printed as written:
@@ -298,6 +302,15 @@ function trimEventEnds(
   const edits: TextEdit[] = []
   for (const event of events) {
     const [from, to] = event.range
+    // The gap before a directive that starts at the end stays, as for a title
+    // (docs/compatibility.md, Texts after a keyword that are drawn the same).
+    if (
+      findTriviaBetween(source, to, to + 1).some(
+        (item) => item.type === "Directive" && item.range[0] === to,
+      )
+    ) {
+      continue
+    }
     let contentEnd = to
     while (contentEnd > from && isSpaceOrTab(source.text[contentEnd - 1])) {
       contentEnd--

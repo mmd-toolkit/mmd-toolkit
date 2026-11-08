@@ -213,7 +213,10 @@ icon と class のテキストは、両端の空白とタブを除いて印字�
 `::: big red ` は `:::big red` と印字します。
 mermaid.js はその空白を Db に残しますが、同じノードを描きます。
 （[同じに描かれる mindmap のテキスト](./compatibility.ja.md#同じに描かれる-mindmap-のテキスト)）。
-テキストの中の空白は残し、空白とタブだけのテキストも残します。
+テキストの中の空白は残し、空白とタブだけのテキストは空白 1 つで印字します。
+これが、テキストを保つ最小の空白です。
+空の icon や class は拒否され、mermaid.js は空白とタブの数によらず、
+同じ空のテキストを読むからです。
 [fixture: decorations/padding-in-icon-and-class-dropped]
 [fixture: decorations/blank-icon-and-class-one-space]
 icon の閉じ括弧の後ろの空白は Db に入らないので落とします。
@@ -349,9 +352,10 @@ mermaid.js はその空白を Db に残しますが、同じノードを描き�
 `a[ "x" ]` のテキストは引用符を含む `"x"` です。
 `a["x"]` と `a[x]` のテキストは同じですが、どちらも書き換えません。
 余白を除くと引用符で始まるテキストは、その余白を残します。
-文字列、markdown 文字列、空白とタブだけのテキスト、複数行にまたがるテキストは、
-書かれたままにします。 [fixture: shapes/inner-padding-dropped]
-[fixture: shapes/text-and-string-forms] [fixture: shapes/markdown-string]
+文字列、markdown 文字列、複数行にまたがるテキストは、書かれたままにし、
+空白とタブだけのテキストは空白 1 つで印字します。
+[fixture: shapes/inner-padding-dropped] [fixture: shapes/text-and-string-forms]
+[fixture: shapes/markdown-string]
 [fixture: shapes/padding-kept-where-drawn-differently]
 形の後ろの空白は Db に入らないので落とします。
 [fixture: shapes/trailing-whitespace-dropped]

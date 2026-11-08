@@ -388,7 +388,9 @@ as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 while directive-side gaps and joined continuation columns stay, as do comment
 spaces and directive contents: the gap before a directive that follows a literal
-belongs to the directive, so the literal keeps its end there. [fixture:
+belongs to the directive, so the literal keeps its end there, with a run in it
+printed as one space, whether whitespace follows the directive or not. [fixture:
+ishikawa/trailing-whitespace/trailing-directive-gap-collapsed] [fixture:
 ishikawa/trailing-whitespace/trailing-directive-continuation] Only exterior
 header-line padding is dropped under [Header](#header) and
 [Blank lines](#blank-lines); it is not a literal value. [fixture:

@@ -398,9 +398,10 @@ radar-beta
 ### Quotes
 
 ラベルの StringLiteral は完全な source span を保ちます。
-一重・二重・反対側の引用符、空・空白だけの文字列、escape、HTML、entity、
+一重・二重・反対側の引用符、空文字列、escape、HTML、entity、
 hidden に見える文字を含みます。
 テキストの中の空白とタブの連なりは、空白 1 つにして印字します。
+空白とタブだけの文字列は空白 1 つになり、`["   "]` は `[" "]` と印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 singleQuote でも再引用しません。
 空ラベルの削除は ID への fallback を変えます。

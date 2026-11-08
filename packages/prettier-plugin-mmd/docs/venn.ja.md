@@ -373,11 +373,11 @@ mermaid.js が trim するからです。
 規則が読まないので区間を作りません。
 `set "style:"[ #x ]%%{init:{"a":";"}}%%` は
 `set "style:"[#x]%%{init:{"a":";"}}%%` になります。
-[fixture: venn/labels/bracket-padding-line-rule-chars-in-directive]
+[fixture: labels/bracket-padding-line-rule-chars-in-directive]
 行の途中の `%%` はコメント行ではないので、規則はそのテキストを読みます。
 `set "style:b"[ #x ] %% c;` は `set "style:b"[ #x] %% c;` になり、
 `set "classDef:#a;style:"[ x ]%%#c;` は変わりません。
-[fixture: venn/labels/bracket-padding-line-rule-chars-in-comment]
+[fixture: labels/bracket-padding-line-rule-chars-in-comment]
 U+2028 や U+2029 を含む空白は、書かれたまま残します。
 [fixture: labels/bracket-padding-with-directive-or-semicolon]
 [fixture: labels/bracket-padding-in-style-rule-stretch]
@@ -388,7 +388,7 @@ U+2028 や U+2029 を含む空白は、書かれたまま残します。
 [fixture: labels/bare-label-padding-dropped]
 ラベルの中の空白とタブの連なりは、引用符の中でも、空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
-引用符つきの空白だけのラベルは保ちます。
+引用符つきの空白だけのラベルは引用符を保ち、空白は 1 つにして印字します。
 空の引用符つきラベルと裸の空白ラベルは Db のラベルを省き、
 引用符内の空白は空のラベルを保存します。
 内部の項目はラベル内に保ち、隙間の項目は接触関係を優先します。

@@ -627,12 +627,19 @@ function findSecondDescriptionStretches(
   if (colon === null) return []
   // The whitespace at the end of the line is part of what mermaid.js reads
   // and draws the same without it, unless it is all there is after the `:`.
+  // The gap before a directive that follows the text is that of the directive,
+  // so the text keeps its end there.
   let contentEnd = end
-  while (
-    contentEnd > colon.range[1] &&
-    isSpaceOrTab(source.text[contentEnd - 1])
-  ) {
-    contentEnd--
+  const directiveFollows = findTriviaBetween(source, end, end + 1).some(
+    (item) => item.type === "Directive" && item.range[0] === end,
+  )
+  if (!directiveFollows) {
+    while (
+      contentEnd > colon.range[1] &&
+      isSpaceOrTab(source.text[contentEnd - 1])
+    ) {
+      contentEnd--
+    }
   }
   // A `;` there is read by the line rule, which the end of the line decides.
   const holdsSemicolon = source.text

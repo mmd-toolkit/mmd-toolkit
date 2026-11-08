@@ -294,9 +294,10 @@ treemap
 ### Names
 
 StringLiteral の source span 全体を保ちます。
-引用符、反対側の引用符、空名、空白だけの名、padding、backslash、HTML、entity、
+引用符、反対側の引用符、空名、padding、backslash、HTML、entity、
 percent の文字と物理継続列を残します。
 名前の中の空白とタブの連なりは空白 1 つにして印字します。
+空白とタブだけの名前は空白 1 つになります。
 singleQuote では書き換えません。
 backslash は引用符を escape せず、`\n` も decode しません。
 これらの書き方は名前や受理を変えうるためです。

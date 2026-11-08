@@ -639,6 +639,12 @@ timeline の行の最後の event と、別名を持つ state の 2 つ目の説
 `state "d" as A : x   ` は `state "d" as A : x` と印字します。
 同じ行のテキストの後にコメントがある場合は、空白 1 つでテキストと隔てます。
 ディレクティブがある場合は、その前の隙間を保ちます。
+ディレクティブが行の最後にあっても、その後に空白が続いていても同じで、
+その空白は行末の空白と同じように除きます。
+`title T  %%{x}%%  ` も `title T  %%{x}%%` も `title T %%{x}%%` と印字します。
+[fixture: gantt/titles-and-sections/title-trailing-directive-blanks-dropped]
+[fixture: timeline/periods-and-events/event-trailing-directive-gap-kept]
+[fixture: state/aliases/second-description-trailing-directive-gap-kept]
 [fixture: gantt/titles-and-sections/title-padding-dropped]
 [fixture: gantt/titles-and-sections/title-blank-kept]
 [fixture: gantt/settings/format-padding-dropped]
@@ -650,6 +656,7 @@ timeline の行の最後の event と、別名を持つ state の 2 つ目の説
 [fixture: timeline/titles-and-sections/title-padding-dropped]
 [fixture: timeline/titles-and-sections/title-blank-kept]
 [fixture: timeline/periods-and-events/event-padding-kept-end-dropped]
+[fixture: timeline/periods-and-events/event-end-before-continuation-dropped]
 [fixture: sequence/title/text-padding-dropped]
 [fixture: sequence/title/text-padding-dropped-colon]
 [fixture: sequence/title/trailing-whitespace-dropped]
@@ -735,12 +742,14 @@ mermaid.js がその連なりを描かずにテキストを描く場合に、空
 対象は、すべての図種の `title`、`accTitle`、`accDescr` と、
 次の図種が SVG のテキストとして描くテキストです。
 architecture 図、ブロック図、象限チャート、radar チャートのラベル、
-class 図のメンバーと注釈、ER 図の属性の型、
+flowchart の subgraph の名前と題、class 図のメンバーと注釈、ER 図の属性の型、
 requirement 図のフィールドとクラスの並び、sequence 図のテキスト（メッセージ、
-ノート、ブロック、box、`as` の後の説明）、Cynefin 図と ishikawa 図のリテラル、
+ノート、ブロック、box、`as` の後の説明）、C4 図の引数のうち label、technology、
+type、description、Cynefin 図と ishikawa 図のリテラル、
 packet 図と Venn 図のラベル、Wardley マップのリンク、treemap の名前、
 railroad 図の文字列と special sequence です。
-[fixture: pie/title/title-inner-text]
+空白とタブだけの文字列は、ほかの文字列と同じ文字列として扱います。
+`["   "]` は `[" "]` と印字します。 [fixture: pie/title/title-inner-text]
 [fixture: pie/accessibility-lines/accessibility-inner-tab]
 [fixture: quadrant/keywords-and-texts/inner-runs-collapsed]
 [fixture: sequence/whitespace-between-tokens/values-runs-collapsed]
@@ -750,10 +759,16 @@ railroad 図の文字列と special sequence です。
 [fixture: requirement/fields/value-inner-runs-collapsed]
 [fixture: radar/quotes/padding-label]
 [fixture: railroad/quotes/ebnf-empty-and-text]
+[fixture: radar/quotes/whitespace-only-labels]
+[fixture: treemap/names/whitespace]
+[fixture: c4/argument-forms/text-places-element-runs-collapsed]
 
 次のものは、書かれたまま残します。
 
-- 空白とタブだけのテキスト。
+- 文字列でない、空白とタブだけのテキスト。
+  ただし、mindmap のノードと kanban のカードの icon、class、形のテキストは、
+  空白 1 つで印字します。
+  （[同じに描かれる mindmap のテキスト](#同じに描かれる-mindmap-のテキスト)）。
   [fixture: gantt/titles-and-sections/title-blank-kept]
 - 複数行のテキストと、コメント、ディレクティブ、
   U+2028 か U+2029 を含むテキスト。
@@ -779,6 +794,17 @@ railroad 図の文字列と special sequence です。
   [fixture: state/descriptions-and-labels/text-kept]
   [fixture: mindmap/node-text/inner-whitespace-kept]
   [fixture: usecase/labels/label-interior-kept] [fixture: class/labels/spaced]
+- markdown 文字列である、flowchart の subgraph の名前または題。
+  ほかの種類の題に対しては、subgraph は題が収まるように広がるので、
+  題は折り返さず、連なりは描かれません。
+  markdown 文字列は、上のラベルと同じく最大幅で配置されます。
+  連なりを持つ長いものを、連なりがある形とない形で描くと、画素が異なりました。
+  [fixture: flowchart/subgraph-header/markdown-title-runs-kept]
+- C4 の文の引数のうち、label、technology、type、description でないもの（sprite、
+  tags、link）と、本来の位置にない名前付き属性。
+  mermaid.js の読み方は、その場所によって変わります。
+  （[引数の形](./c4.ja.md#引数の形)を参照してください）。
+  [fixture: c4/named-attributes/named-text-places-runs-collapsed]
 - ほかの文が参照する名前。
   連なりで異なる 2 つの名前は別のもので、連なりがなくなると 1 つになります。
   円グラフのラベル、Sankey 図のノード、requirement 図の名前、
@@ -886,9 +912,10 @@ mindmap のノードのテキスト、形のテキスト、icon、class は、
 折り返すノードは連なりを描くからです。
 （[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)）。
 余白を除くと引用符で始まる形のテキスト（`a[ "x" ]` は引用符を含むテキストで、
-`a["x"]` は文字列）、文字列、markdown 文字列、空白とタブだけのテキスト、
-複数行にまたがるテキスト、行の中か後ろにコメントやディレクティブがある行は、
-書かれたままにします。 [fixture: mindmap/node-text/trailing-whitespace-dropped]
+`a["x"]` は文字列）、文字列、markdown 文字列、複数行にまたがるテキスト、
+行の中か後ろにコメントやディレクティブがある行は、書かれたままにします。
+空白とタブだけのテキストは、空白 1 つで印字します。
+[fixture: mindmap/node-text/trailing-whitespace-dropped]
 [fixture: mindmap/node-text/space-before-a-shape-dropped]
 [fixture: mindmap/shapes/inner-padding-dropped]
 [fixture: mindmap/decorations/padding-in-icon-and-class-dropped]
@@ -1707,8 +1734,9 @@ mermaid.js は、timeline の period、event、section の名前の空白を保�
   そのため `2004 : a` と `2004: a` は別の period で、
   `:` をそろえる空白は残ります。
   period の末尾の空白もテキストの一部で、
-  後ろに別のコロンが続く event の末尾の空白も同じです。
+  同じ行で後ろに別のコロンが続く event の末尾の空白も同じです。
   行の最後の event の末尾の空白は除きます。
+  改行で次のコロンと隔てられた event も含みます。
   （[同じに描かれるキーワードの後のテキスト](#同じに描かれるキーワードの後のテキスト)）。
   [fixture: timeline/periods-and-events/period-whitespace-kept]
   [fixture: timeline/periods-and-events/event-padding-kept-end-dropped]

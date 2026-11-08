@@ -584,7 +584,13 @@ whitespace at their end in the same way, not the whitespace at their start,
 which aligns the colons of a timeline: `2020 : e   ` is printed `2020 : e`, and
 `state "d" as A : x   ` is printed `state "d" as A : x`. Where a comment follows
 the text on its line, one space separates it from the text, and where a
-directive does, the gap before the directive stays. [fixture:
+directive does, the gap before the directive stays, whether the directive is the
+last thing on the line or whitespace follows it, which is dropped like any
+whitespace at the end of the line: `title T  %%{x}%%  ` and `title T  %%{x}%%`
+are both printed `title T %%{x}%%`. [fixture:
+gantt/titles-and-sections/title-trailing-directive-blanks-dropped] [fixture:
+timeline/periods-and-events/event-trailing-directive-gap-kept] [fixture:
+state/aliases/second-description-trailing-directive-gap-kept] [fixture:
 gantt/titles-and-sections/title-padding-dropped] [fixture:
 gantt/titles-and-sections/title-blank-kept] [fixture:
 gantt/settings/format-padding-dropped] [fixture:
@@ -680,11 +686,13 @@ block diagram, a quadrant chart, and a radar chart, the names and titles of the
 subgraphs of a flowchart, the members and annotations of a class diagram, the
 types of the attributes of an ER diagram, the fields and class lists of a
 requirement diagram, the texts of a sequence diagram (the messages, notes,
-blocks, boxes, and descriptions after `as`), the literals of a Cynefin diagram
-and an ishikawa diagram, the labels of a packet and a Venn diagram, the links of
-a Wardley map, the names of a treemap, and the strings and special sequences of
-a railroad diagram. A string of spaces and tabs only is a string like any other:
-`["   "]` is printed `[" "]`. [fixture: pie/title/title-inner-text] [fixture:
+blocks, boxes, and descriptions after `as`), the labels, technologies, types,
+and descriptions among the arguments of a C4 diagram, the literals of a Cynefin
+diagram and an ishikawa diagram, the labels of a packet and a Venn diagram, the
+links of a Wardley map, the names of a treemap, and the strings and special
+sequences of a railroad diagram. A string of spaces and tabs only is a string
+like any other: `["   "]` is printed `[" "]`. [fixture:
+pie/title/title-inner-text] [fixture:
 pie/accessibility-lines/accessibility-inner-tab] [fixture:
 quadrant/keywords-and-texts/inner-runs-collapsed] [fixture:
 sequence/whitespace-between-tokens/values-runs-collapsed] [fixture:
@@ -693,7 +701,8 @@ class/member-lines/runs-collapsed] [fixture: block/shapes/label-runs-collapsed]
 requirement/fields/value-inner-runs-collapsed] [fixture:
 radar/quotes/padding-label] [fixture: railroad/quotes/ebnf-empty-and-text]
 [fixture: radar/quotes/whitespace-only-labels] [fixture:
-treemap/names/whitespace]
+treemap/names/whitespace] [fixture:
+c4/argument-forms/text-places-element-runs-collapsed]
 
 These stay as written:
 
@@ -731,6 +740,11 @@ These stay as written:
   width like the labels above, and a long one with runs was drawn with and
   without them, and the pixels differed. [fixture:
   flowchart/subgraph-header/markdown-title-runs-kept]
+- The arguments of a C4 statement that are not a label, a technology, a type, or
+  a description (the sprite, the tags, the link), and a named attribute at
+  another place than its own, which mermaid.js reads in a way that depends on
+  the place (see [Argument forms](./c4.md#argument-forms)). [fixture:
+  c4/named-attributes/named-text-places-runs-collapsed]
 - The names that other statements refer to: two names that differ by a run are
   two things, and are one once the run is gone. A pair of such names was drawn
   for the labels of a pie chart, the nodes of a Sankey diagram, the names of a

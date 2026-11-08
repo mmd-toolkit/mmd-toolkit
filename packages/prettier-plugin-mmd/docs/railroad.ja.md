@@ -667,9 +667,10 @@ railroad-ebnf-beta
 ### 文字列
 
 StringLiteral の source span を保ちます。
-引用符、escape、空文字列、空白だけの値、HTML、entity、
+引用符、escape、空文字列、HTML、entity、
 hidden やコメントに見える文字も対象です。
 文字列の中の空白とタブの連なりは空白 1 つにして印字します。
+空白とタブだけの文字列は空白 1 つになります。
 singleQuote で値を書き換えません。
 IR、EBNF、PEG は両方の引用符と backslash escape を認めます。
 ABNF は二重引用符だけを認め、backslash を普通の文字として読みます。

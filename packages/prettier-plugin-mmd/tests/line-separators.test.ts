@@ -3374,7 +3374,7 @@ const c4Examples: readonly (readonly [string, string, string])[] = [
   [
     "c4: internal-whitespace-kinds",
     'C4Context\nPerson(a,"A\t\u00a0\ufeff\u000b\u000c\u3000B")',
-    'C4Context\n  Person(a, "A\t\u00a0\ufeff\u000b\u000c\u3000B")\n',
+    'C4Context\n  Person(a, "A \u00a0\ufeff\u000b\u000c\u3000B")\n',
   ],
   [
     "c4: tab-before-quote",

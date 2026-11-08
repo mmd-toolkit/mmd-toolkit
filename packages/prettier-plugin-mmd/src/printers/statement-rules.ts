@@ -11,6 +11,7 @@ import {
 import { printAsWritten } from "./lines.ts"
 import type { Source } from "./source.ts"
 import {
+  findDirectiveEndingAt,
   findStructuralToken,
   findStructuralTokenEndingBefore,
   findTokensBetween,
@@ -425,14 +426,14 @@ export function trimTextAfterKeyword(
     let blanks = position
     while (blanks > offset && isSpaceOrTab(source.text[blanks - 1])) blanks--
     if (blanks < position) {
+      // The blanks before a directive that ends the text are the run that the
+      // same text has when the directive stands after it: one space.
       edits.push({
         range: [blanks, position],
-        replacement: position === to && commentFollows ? " " : "",
+        replacement: position !== to || commentFollows ? " " : "",
       })
     }
-    const directive = findTriviaBetween(source, blanks - 1, blanks).find(
-      (item) => item.type === "Directive" && item.range[1] === blanks,
-    )
+    const directive = findDirectiveEndingAt(source, blanks)
     if (directive === undefined || directive.range[0] <= offset) break
     position = directive.range[0]
   }

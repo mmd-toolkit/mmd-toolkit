@@ -150,7 +150,11 @@ wardley-beta
 
 WardleyIdentifier と StringLiteral は source span のまま印字します。
 内部の空白とタブ、ハイフン、括弧、ampersand、引用符、escape、
-空と空白だけの文字列も保ち、singleQuote では書き換えません。
+空と空白だけの文字列も保ちます。
+ただし、link の label は除き、
+中の空白とタブの連なりは空白 1 つにして印字します。
+（[セミコロンのラベル](#セミコロンのラベル)を参照）。
+singleQuote では書き換えません。
 名前の空白を畳むことと文字列の trim は Db を変えます。
 Db が同じ引用符への変更も、原綴を失い escape の再解釈が必要です。
 
