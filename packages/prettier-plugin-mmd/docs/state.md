@@ -1006,9 +1006,14 @@ the `:`, is kept as written, except for the whitespace at its end: mermaid.js
 reads it with the whitespace at its ends, so `:short` and `: short` give
 different descriptions, and draws it without the whitespace at its end (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-A description of spaces and tabs only, and one that holds a `;`, stay as
-written. [corpus fixture: state/db-alias-colon-spaces-second] [fixture:
+The directives that end it are printed with one space before each that has
+whitespace before it, and the whitespace after the last one is left out:
+`state "d" as A : x   %%{x}%%  ` is printed `state "d" as A : x %%{x}%%`. A
+description of spaces and tabs only, and one that holds a `;`, stay as written.
+[corpus fixture: state/db-alias-colon-spaces-second] [fixture:
 aliases/second-description-kept] [fixture:
+aliases/second-description-trailing-directive-blanks-dropped] [fixture:
+aliases/second-description-two-directives-trailing-blanks-dropped] [fixture:
 aliases/second-description-trailing-whitespace-dropped] [fixture:
 aliases/second-description-blank-kept] [fixture:
 aliases/second-description-semicolon-kept] The whitespace before the `:` becomes

@@ -617,11 +617,13 @@ spaces before it stay. [test: venn: title-line-separator-spaces] Indentation on
 the next source line belongs to the value, so `title` LF `  T` prints as
 `title T`. [fixture: venn/title/text-padding-dropped] A title of spaces and tabs
 only stays as written. [fixture: venn/title/title-blank-kept] A title that ends
-with a directive and then spaces and tabs is printed as the same title with the
-directive last: `title T  %%{x}%%  ` is printed `title T %%{x}%%`. [fixture:
-venn/title/title-trailing-directive-blanks-dropped] LF and the broader accepted
-title separators may normalize, but trivia, joined regions and kept parts
-protect their written boundaries. [corpus fixture:
+with directives and then spaces and tabs is printed as the same title with the
+directives last: `title T  %%{x}%%  ` is printed `title T %%{x}%%`, and
+`title T  %%{x}%%  %%{y}%%  ` is printed `title T %%{x}%% %%{y}%%`. [fixture:
+venn/title/title-trailing-directive-blanks-dropped] [fixture:
+venn/title/title-two-directives-trailing-blanks-dropped] LF and the broader
+accepted title separators may normalize, but trivia, joined regions and kept
+parts protect their written boundaries. [corpus fixture:
 venn/db-frontmatter-title-overridden] [corpus fixture: venn/db-title-on-header]
 [corpus fixture: venn/db-title-only-whitespace] [corpus fixture:
 venn/db-title-padding] [corpus fixture: venn/db-title-value-next-line] [corpus

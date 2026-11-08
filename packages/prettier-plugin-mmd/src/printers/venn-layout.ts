@@ -12,7 +12,7 @@ import { trimTextAfterKeyword } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
 import {
   findTriviaBetween,
-  hasTriviaBesidesTrailingDirective,
+  hasTriviaBesidesTrailingDirectives,
 } from "./source.ts"
 
 /** Written leaves, including complete bare styles (docs/venn.md, Style properties). */
@@ -87,7 +87,7 @@ export function layoutVennStatement(
   if (
     statement.type === "VennIgnoredText" ||
     (statement.type === "VennTitleStatement" &&
-      hasTriviaBesidesTrailingDirective(source, start, end))
+      hasTriviaBesidesTrailingDirectives(source, start, end))
   )
     return keptAsWritten(start, end)
   const values = collectValueNodes(statement, vennValueNodeTypes)

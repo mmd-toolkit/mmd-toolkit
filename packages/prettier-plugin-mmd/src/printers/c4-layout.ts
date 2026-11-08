@@ -37,7 +37,7 @@ import {
   findTokenStartingAt,
   findTokensBetween,
   findTriviaBetween,
-  hasTriviaBesidesTrailingDirective,
+  hasTriviaBesidesTrailingDirectives,
   isStructural,
   isWhitespace,
 } from "./source.ts"
@@ -464,7 +464,7 @@ export function layoutC4Text(source: Source, statement: C4Text): AtomLayout {
     }
   }
   if (
-    hasTriviaBesidesTrailingDirective(source, start, end) ||
+    hasTriviaBesidesTrailingDirectives(source, start, end) ||
     spansLinesThatCannotJoin(source, start, end)
   )
     return keptAsWritten(start, end)

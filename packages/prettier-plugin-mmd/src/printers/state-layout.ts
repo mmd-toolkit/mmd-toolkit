@@ -41,9 +41,11 @@ import {
   keepFirstGapLineTails,
   keptAsWritten,
   layoutCompactEmptyDescriptionBlockWithFallback,
+  replaceInAtoms,
   toAsciiLowerCase,
   walk,
 } from "./layout.ts"
+import type { TextEdit } from "./layout.ts"
 import type { Source } from "./source.ts"
 import {
   findStructuralToken,
@@ -55,10 +57,10 @@ import {
   isStructural,
   isWhitespace,
 } from "./source.ts"
-import { printAsWritten } from "./lines.ts"
 import { findStateSemicolonLines } from "./state-kept-lines.ts"
 import {
   addCssClassRules,
+  collectTextEndEdits,
   normalizeStyleList,
   printStyleWithColon,
   styleUnitsCanCompact,
@@ -382,6 +384,11 @@ export function layoutStateStatement(
     ),
     kept,
   )
+  replaceInAtoms(
+    source,
+    atoms,
+    secondDescriptionEndEdits(source, statement, end),
+  )
   if (
     (statement.type === "StateClassDefStatement" ||
       statement.type === "StateStyleStatement") &&
@@ -605,9 +612,8 @@ function findBlankDescriptionStretches(
 
 /**
  * The stretch of the second description of an alias definition without a
- * body: from its `:` to the end of the statement, as written, without the
- * whitespace at the end of the line when nothing follows the second
- * description and the text is not whitespace only. mermaid.js reads the text
+ * body: from its `:` to the end of the statement, as written, apart from the
+ * end of the text (see `secondDescriptionEndEdits`). mermaid.js reads the text
  * between the first `:` and the second `:` or the end, whitespace included:
  * `state "d" as A :x` and `state "d" as A : x` give A different second
  * descriptions (docs/state.md, Aliases).
@@ -624,36 +630,45 @@ function findSecondDescriptionStretches(
     return []
   }
   const colon = findSecondDescriptionColon(source, statement)
-  if (colon === null) return []
-  // The whitespace at the end of the line is part of what mermaid.js reads
-  // and draws the same without it, unless it is all there is after the `:`.
-  // The gap before a directive that follows the text is that of the directive,
-  // so the text keeps its end there.
-  let contentEnd = end
-  const directiveFollows = findTriviaBetween(source, end, end + 1).some(
-    (item) => item.type === "Directive" && item.range[0] === end,
-  )
-  if (!directiveFollows) {
-    while (
-      contentEnd > colon.range[1] &&
-      isSpaceOrTab(source.text[contentEnd - 1])
-    ) {
-      contentEnd--
-    }
+  return colon === null ? [] : [{ start: colon.range[0], end }]
+}
+
+/**
+ * The edits that print the end of the second description of an alias
+ * definition without a body, unless the text is whitespace only or holds a
+ * `;`: the whitespace at the end of the line is part of what mermaid.js reads
+ * and draws the same without it, and so is the whitespace around the
+ * directives there (docs/compatibility.md, Texts after a keyword that are
+ * drawn the same). A `;` there is read by the line rule, which the end of the
+ * line decides.
+ */
+function secondDescriptionEndEdits(
+  source: Source,
+  statement: StateStatement,
+  end: number,
+): TextEdit[] {
+  if (
+    statement.type !== "StateAliasDefinitionStatement" ||
+    statement.body !== null
+  ) {
+    return []
   }
-  // A `;` there is read by the line rule, which the end of the line decides.
-  const holdsSemicolon = source.text
-    .slice(colon.range[0], contentEnd)
-    .includes(";")
-  return [
-    contentEnd > colon.range[1] && !holdsSemicolon
-      ? {
-          start: colon.range[0],
-          end,
-          doc: printAsWritten(source, colon.range[0], contentEnd),
-        }
-      : { start: colon.range[0], end },
-  ]
+  const colon = findSecondDescriptionColon(source, statement)
+  if (colon === null) return []
+  let contentEnd = end
+  while (
+    contentEnd > colon.range[1] &&
+    isSpaceOrTab(source.text[contentEnd - 1])
+  ) {
+    contentEnd--
+  }
+  if (
+    contentEnd === colon.range[1] ||
+    source.text.slice(colon.range[0], contentEnd).includes(";")
+  ) {
+    return []
+  }
+  return collectTextEndEdits(source, colon.range[1], end, false)
 }
 
 /**

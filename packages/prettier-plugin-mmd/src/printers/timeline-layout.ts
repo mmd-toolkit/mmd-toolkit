@@ -11,6 +11,7 @@ import type {
 } from "@mmd-toolkit/ast"
 import { util } from "prettier"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
+import { appendItems } from "./collections.ts"
 import { readGap } from "./gap.ts"
 import {
   findKeptBreaks,
@@ -31,9 +32,14 @@ import {
   layoutDescriptionBlock,
   toAsciiLowerCase,
 } from "./layout.ts"
-import { accessibilityRules, trimTextAfterKeyword } from "./statement-rules.ts"
+import {
+  accessibilityRules,
+  collectTextEndEdits,
+  trimTextAfterKeyword,
+} from "./statement-rules.ts"
 import type { Source } from "./source.ts"
 import {
+  findDirectiveEndingAt,
   findStructuralToken,
   findTriviaBetween,
   isSpaceOrTab,
@@ -302,20 +308,23 @@ function trimEventEnds(
   const edits: TextEdit[] = []
   for (const event of events) {
     const [from, to] = event.range
-    // The gap before a directive that starts at the end stays, as for a title
-    // (docs/compatibility.md, Texts after a keyword that are drawn the same).
-    if (
-      findTriviaBetween(source, to, to + 1).some(
-        (item) => item.type === "Directive" && item.range[0] === to,
-      )
-    ) {
-      continue
-    }
     let contentEnd = to
     while (contentEnd > from && isSpaceOrTab(source.text[contentEnd - 1])) {
       contentEnd--
     }
-    if (contentEnd !== from && contentEnd !== to) {
+    if (contentEnd === from) continue
+    // The directives at the end of the event, and the whitespace around them,
+    // are printed as at the end of a title, except that the runs inside the
+    // event stay (docs/compatibility.md, Texts after a keyword that are drawn
+    // the same).
+    if (
+      findTriviaBetween(source, to, to + 1).some(
+        (item) => item.type === "Directive" && item.range[0] === to,
+      ) ||
+      findDirectiveEndingAt(source, contentEnd) !== undefined
+    ) {
+      appendItems(edits, collectTextEndEdits(source, from, to, false))
+    } else if (contentEnd !== to) {
       edits.push({ range: [contentEnd, to], replacement: "" })
     }
   }

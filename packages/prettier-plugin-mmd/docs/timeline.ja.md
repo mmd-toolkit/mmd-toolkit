@@ -311,6 +311,12 @@ period に接した `:` は接したままにします。
 行末の `a : e   ` は `a : e` と印字し、`c : g   : h` は書かれたままにします。
 次の `:` との間に改行がある event も、行の最後の event です。
 `2020 : e1  ` の次に `: e2` の行が続くとき、`e1` の後ろの空白は除きます。
+このような event の末尾の directive は、前に空白があれば空白 1 つを置き、
+最後の directive の後ろの空白は除きます。
+`2020 : e1   %%{x}%%  ` は `2020 : e1 %%{x}%%` と印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)）。
+[fixture: periods-and-events/event-trailing-directive-blanks-dropped]
+[fixture: periods-and-events/event-two-directives-trailing-blanks-dropped]
 [fixture: periods-and-events/period-whitespace-kept]
 [fixture: periods-and-events/event-padding-kept-end-dropped]
 [fixture: periods-and-events/whitespace-only-event]

@@ -383,7 +383,12 @@ export function normalizeStyleList(
  * `title %%{x}%% T` are read as the title `T` with the same blanks before it.
  * The spaces and tabs at its end are left out too: mermaid.js keeps them in the
  * Db, and draws the same text without them. A text of spaces and tabs and
- * directives only stays as written.
+ * directives only stays as written. Where directives stand after the text,
+ * each keeps whether whitespace precedes it, a run becoming one space, and the
+ * whitespace after the last one is left out, whether the last one is read as
+ * part of the statement or not: the figure is the same whatever the whitespace
+ * at the end of the line, and a directive at the end of a line is printed so
+ * elsewhere (docs/flowchart.md, Directives).
  */
 export function trimTextAfterKeyword(
   source: Source,
@@ -405,24 +410,50 @@ export function trimTextAfterKeyword(
     if (directive === undefined) break
     offset = directive.range[1]
   }
-  // The end is read the same way: a directive there is removed from the text,
-  // so the spaces and tabs before it are at the end too. The gap before a
-  // directive is that of the directive, though (see `isInsideStyleRuleStretch`
-  // and Directives in docs/compatibility.md), so where a directive starts at
-  // the end of the text, the end stays as written.
-  if (
-    findTriviaBetween(source, to, to + 1).some(
-      (item) => item.type === "Directive" && item.range[0] === to,
-    )
-  ) {
-    replaceInAtoms(source, atoms, edits)
-    return
+  appendItems(edits, collectTextEndEdits(source, offset, to, true))
+  replaceInAtoms(source, atoms, edits)
+}
+
+/**
+ * The edits that print the end of a text that holds its last line of spaces and
+ * tabs and directives: the spaces and tabs at its end are left out, and each
+ * directive that ends it keeps whether whitespace precedes it, a run becoming
+ * one space. `offset` is where the text starts, after the spaces, tabs and
+ * directives that precede its content. `collapsesRuns` tells that the runs of
+ * spaces and tabs in the text are printed as one space as well (a title), which
+ * the general rule of the texts prints for a text that no directive ends.
+ *
+ * mermaid.js removes a directive from the text before it reads it, so the
+ * spaces and tabs before a directive that ends the text are at the end too, and
+ * the figure is the same whatever they are. The last directive of the line is
+ * read as part of the text only where whitespace follows it; where it does not,
+ * it starts at the end of the text, and its gap is that of a directive at the
+ * end of a line, the same as in the other case (docs/flowchart.md, Directives).
+ */
+export function collectTextEndEdits(
+  source: Source,
+  offset: number,
+  to: number,
+  collapsesRuns: boolean,
+): TextEdit[] {
+  const edits: TextEdit[] = []
+  const directiveFollows = findTriviaBetween(source, to, to + 1).some(
+    (item) => item.type === "Directive" && item.range[0] === to,
+  )
+  if (directiveFollows && collapsesRuns) {
+    // With no directive among the spaces and tabs at the end of the text, the
+    // gap before the directive is the only one, and the rules of the texts
+    // print it.
+    let blanks = to
+    while (blanks > offset && isSpaceOrTab(source.text[blanks - 1])) blanks--
+    const last = findDirectiveEndingAt(source, blanks)
+    if (last === undefined || last.range[0] <= offset) return edits
   }
   // A comment that starts right after the text stays on its line, one space
   // after it.
-  const commentFollows = source.root.comments.some(
-    (comment) => comment.range[0] === to,
-  )
+  const commentFollows =
+    directiveFollows ||
+    source.root.comments.some((comment) => comment.range[0] === to)
   let position = to
   let headEnd = to
   for (;;) {
@@ -444,10 +475,10 @@ export function trimTextAfterKeyword(
   // A text that directives end holds them, so the collapse of the runs in the
   // texts does not reach it; the runs before them are the same as when the
   // directives stand after the text.
-  if (position !== to) {
+  if (collapsesRuns && position !== to) {
     appendItems(edits, collapseRunEdits(source, offset, headEnd))
   }
-  replaceInAtoms(source, atoms, edits)
+  return edits
 }
 
 /**

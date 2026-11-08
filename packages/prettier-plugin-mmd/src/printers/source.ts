@@ -619,23 +619,29 @@ export function findTriviaBetween(
 }
 
 /**
- * Whether `[start, end)` holds a comment or a directive other than one
- * directive that is followed by spaces and tabs only up to `end`: the end of a
- * title read to the end of its line, whose last thing is a directive.
+ * Whether `[start, end)` holds a comment, or a directive that is not part of
+ * the directives at its end: directives that follow each other with spaces and
+ * tabs only between them, the last of them followed by spaces and tabs only up
+ * to `end`. That is the end of a title read to the end of its line, whose last
+ * things are directives.
  */
-export function hasTriviaBesidesTrailingDirective(
+export function hasTriviaBesidesTrailingDirectives(
   source: Source,
   start: number,
   end: number,
 ): boolean {
+  let position = end
   const trivia = findTriviaBetween(source, start, end)
-  if (trivia.length === 0) return false
-  const last = trivia[trivia.length - 1]
-  return !(
-    trivia.length === 1 &&
-    last.type === "Directive" &&
-    [...source.text.slice(last.range[1], end)].every(isSpaceOrTab)
-  )
+  for (let index = trivia.length - 1; index >= 0; index--) {
+    const item = trivia[index]
+    if (
+      item.type !== "Directive" ||
+      ![...source.text.slice(item.range[1], position)].every(isSpaceOrTab)
+    )
+      return true
+    position = item.range[0]
+  }
+  return false
 }
 
 /**

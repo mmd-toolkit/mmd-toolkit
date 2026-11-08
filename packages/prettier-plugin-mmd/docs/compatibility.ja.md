@@ -638,35 +638,43 @@ timeline の行の最後の event と、別名を持つ state の 2 つ目の説
 `2020 : e   ` は `2020 : e` と印字し、
 `state "d" as A : x   ` は `state "d" as A : x` と印字します。
 同じ行のテキストの後にコメントがある場合は、空白 1 つでテキストと隔てます。
-ディレクティブがある場合は、その前の隙間を保ちます。
-ディレクティブが行の最後にあっても、その後に空白が続いていても同じで、
-その空白は行末の空白と同じように除きます。
-`title T  %%{x}%%  ` も `title T  %%{x}%%` も `title T %%{x}%%` と印字します。
-この文は、ディレクティブが 1 つの場合について述べています。
-テキストの後にディレクティブが 2 つ以上ある場合は、
-最後のディレクティブの後の空白による変化が、図種によって異なります。
-Gantt 図の `title` は、書かれたまま（`title T  %%{x}%%  %%{y}%%`）にしますが、
-最後のディレクティブの後に空白があると、
-各ディレクティブの前に空白を 1 つ置いて（`title T %%{x}%% %%{y}%%`）印字します。
-timeline の行の最後の event と、別名を持つ state の 2 つ目の説明は、
-最後のディレクティブの後の空白を除き、残りは書かれたままにします。
-Venn 図の `title` と、C4 図の `title` と `accDescription` は、
-最後のディレクティブの後の空白も含め、書かれたままにします。
-[fixture: gantt/titles-and-sections/title-two-directives-gap-kept] [fixture:
-gantt/titles-and-sections/title-two-directives-trailing-blanks-gaps-collapsed]
+ディレクティブがある場合は、それぞれの前に空白があるかないかを保ち、
+空白の連続は空白 1 つにします。
+最後のディレクティブの後の空白は、ほかの行末の空白と同じように除くので、
+その空白の有無で印字は変わりません。
+ほかの図種の行末のディレクティブも同じです。
+（[ディレクティブ](./flowchart.md#directives)を参照してください）。
+`title T  %%{x}%%  %%{y}%%` も `title T  %%{x}%%  %%{y}%%  ` も
+`title T %%{x}%% %%{y}%%` と印字し、
+`title T%%{x}%%%%{y}%%  ` は `title T%%{x}%%%%{y}%%` と印字し、
+`state "d" as A : x  %%{x}%%  ` は `state "d" as A : x %%{x}%%` と印字します。
+mermaid.js はテキストを読む前にディレクティブを除くので、
+その周りの空白はテキストの末尾の空白になり、どのような空白でも同じに描きます。
+これは、Gantt、user journey、timeline、sequence、Venn、C4 の図のタイトル、
+Gantt 図の日付書式と軸の書式、C4 図の `accDescription`、
+timeline の行の最後の event、別名を持つ state の 2 つ目の説明に当てはまります。
+[fixture:
+gantt/titles-and-sections/title-two-directives-trailing-blanks-dropped]
+[fixture: gantt/settings/format-two-directives-trailing-blanks-dropped]
+[fixture:
+journey/titles-and-sections/title-two-directives-trailing-blanks-dropped]
+[fixture:
+timeline/titles-and-sections/title-two-directives-trailing-blanks-dropped]
+[fixture: sequence/title/title-two-directives-trailing-blanks-dropped]
+[fixture: venn/title/title-two-directives-trailing-blanks-dropped]
+[fixture: c4/title-and-accdescription/title-two-directives-trailing-blanks-dropped]
+[fixture:
+c4/title-and-accdescription/description-two-directives-trailing-blanks-dropped]
 [fixture:
 timeline/periods-and-events/event-two-directives-trailing-blanks-dropped]
 [fixture:
 state/aliases/second-description-two-directives-trailing-blanks-dropped]
-[fixture: venn/title/title-two-directives-trailing-blanks-kept]
-[fixture: c4/title-and-accdescription/title-two-directives-trailing-blanks-kept]
-[fixture: c4/title-and-accdescription/description-two-directives-trailing-blanks-kept]
 [fixture: gantt/titles-and-sections/title-trailing-directive-blanks-dropped]
 [fixture: venn/title/title-trailing-directive-blanks-dropped]
 [fixture: c4/title-and-accdescription/title-trailing-directive-blanks-dropped]
 [fixture: c4/title-and-accdescription/description-trailing-directive-blanks-dropped]
-[fixture: timeline/periods-and-events/event-trailing-directive-gap-kept]
-[fixture: state/aliases/second-description-trailing-directive-gap-kept]
+[fixture: timeline/periods-and-events/event-trailing-directive-blanks-dropped]
+[fixture: state/aliases/second-description-trailing-directive-blanks-dropped]
 [fixture: gantt/titles-and-sections/title-padding-dropped]
 [fixture: gantt/titles-and-sections/title-blank-kept]
 [fixture: gantt/settings/format-padding-dropped]

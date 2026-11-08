@@ -1075,9 +1075,14 @@ mermaid.js は、それを両端の空白ごと読むので、
 `:short` と `: short` は違う説明になります。
 図では、末尾の空白を除いて描きます。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+説明の末尾の directive は、前に空白があれば空白 1 つを置き、
+最後の directive の後ろの空白は除きます。
+`state "d" as A : x   %%{x}%%  ` は `state "d" as A : x %%{x}%%` と印字します。
 空白とタブだけの説明と、`;` を含む説明は、書かれたままにします。
 [corpus fixture: state/db-alias-colon-spaces-second]
 [fixture: aliases/second-description-kept]
+[fixture: aliases/second-description-trailing-directive-blanks-dropped]
+[fixture: aliases/second-description-two-directives-trailing-blanks-dropped]
 [fixture: aliases/second-description-trailing-whitespace-dropped]
 [fixture: aliases/second-description-blank-kept]
 [fixture: aliases/second-description-semicolon-kept]

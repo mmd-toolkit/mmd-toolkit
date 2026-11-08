@@ -302,7 +302,13 @@ that aligns the colons of a timeline stays, and a colon that touches its period
 keeps touching it; `a : e   ` at the end of a line is printed `a : e`, and
 `c : g   : h` stays as written. An event that a line break separates from the
 next colon ends its line too: in `2020 : e1  ` followed by a line `: e2`, the
-whitespace after `e1` is left out. [fixture:
+whitespace after `e1` is left out. The directives that end such an event are
+printed with one space before each that has whitespace before it, and the
+whitespace after the last one is left out: `2020 : e1   %%{x}%%  ` is printed
+`2020 : e1 %%{x}%%` (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: periods-and-events/event-trailing-directive-blanks-dropped] [fixture:
+periods-and-events/event-two-directives-trailing-blanks-dropped] [fixture:
 periods-and-events/period-whitespace-kept] [fixture:
 periods-and-events/event-padding-kept-end-dropped] [fixture:
 periods-and-events/whitespace-only-event] [fixture:
