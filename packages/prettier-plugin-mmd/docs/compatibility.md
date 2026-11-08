@@ -745,10 +745,11 @@ lists of a requirement diagram, the texts of a sequence diagram (the messages,
 notes, blocks, boxes, and descriptions after `as`), the labels, technologies,
 types, and descriptions among the arguments of a C4 diagram, the literals of a
 Cynefin diagram and an ishikawa diagram, the labels of a packet and a Venn
-diagram, the links of a Wardley map, the names of a treemap, and the strings and
-special sequences of a railroad diagram. A string of spaces and tabs only is a
-string like any other: `["   "]` is printed `[" "]`. [fixture:
-pie/title/title-inner-text] [fixture:
+diagram, the links of a Wardley map, the names of a treemap, and the strings of
+the terminals and the special sequences of a railroad diagram. A string of
+spaces and tabs only is a string like any other: `["   "]` is printed `[" "]`.
+[fixture: pie/title/title-inner-text] [fixture:
+railroad/quotes/ir-string-runs-collapsed] [fixture:
 pie/accessibility-lines/accessibility-inner-tab] [fixture:
 quadrant/keywords-and-texts/inner-runs-collapsed] [fixture:
 sequence/whitespace-between-tokens/values-runs-collapsed] [fixture:

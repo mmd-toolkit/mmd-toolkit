@@ -18,6 +18,7 @@ import {
   findStructuralTokenEndingBefore,
   findTokensBetween,
   findTriviaBetween,
+  hasTriviaBesidesTrailingDirectives,
   isSpaceOrTab,
   isStructural,
   skipSpacesAndTabs,
@@ -370,6 +371,29 @@ export function normalizeStyleList(
       ),
     ),
   )
+}
+
+/**
+ * Whether the text in `range` ends with directives: its content, then
+ * directives with spaces and tabs between them and after the last, and nothing
+ * else, no `;`, line break, or line separator. The last directive may start at
+ * the end of the range, where the directives of a line that end with a
+ * directive, with no whitespace after it, stand. A text printed so leaves out
+ * the whitespace at its end, and prints the whitespace around the directives
+ * as the end of a line (see `trimTextAfterKeyword`).
+ */
+export function endsWithDirectives(source: Source, [from, to]: Range): boolean {
+  const text = source.text.slice(from, to)
+  if ([";", "\n", "\r", "\u2028", "\u2029"].some((c) => text.includes(c))) {
+    return false
+  }
+  if (hasTriviaBesidesTrailingDirectives(source, from, to)) return false
+  const first = findTriviaBetween(source, from, to)[0]
+  const follows = findTriviaBetween(source, to, to + 1).some(
+    (item) => item.type === "Directive" && item.range[0] === to,
+  )
+  if (first === undefined && !follows) return false
+  return source.text.slice(from, first?.range[0] ?? to).trim() !== ""
 }
 
 /**

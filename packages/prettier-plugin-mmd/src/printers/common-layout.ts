@@ -48,14 +48,17 @@ import type {
 } from "@mmd-toolkit/ast"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { collectAtoms, expectToken, layoutDescriptionBlock } from "./layout.ts"
-import { accessibilityRules, trimTextAfterKeyword } from "./statement-rules.ts"
+import {
+  accessibilityRules,
+  endsWithDirectives,
+  trimTextAfterKeyword,
+} from "./statement-rules.ts"
 import { collapsedRunsAtom } from "./text-runs.ts"
 import type { Source } from "./source.ts"
 import {
   findStructuralToken,
   findTokensBetween,
   findTriviaBetween,
-  hasTriviaBesidesTrailingDirectives,
   isStructural,
 } from "./source.ts"
 
@@ -110,24 +113,6 @@ type CommonStatement = (
 }
 
 /**
- * Whether the text of a title or of an accessibility line ends with
- * directives: its content, then directives with spaces and tabs between them
- * and after the last, and nothing else, no `;`, line break, or line separator.
- * A text printed so leaves out the whitespace at its end and prints the
- * whitespace around the directives as the end of a line (see
- * `trimTextAfterKeyword`).
- */
-function endsWithDirectivesOnly(source: Source, [from, to]: Range): boolean {
-  const text = source.text.slice(from, to)
-  if ([";", "\n", "\r", "\u2028", "\u2029"].some((c) => text.includes(c))) {
-    return false
-  }
-  if (hasTriviaBesidesTrailingDirectives(source, from, to)) return false
-  const first = findTriviaBetween(source, from, to)[0]
-  return source.text.slice(from, first.range[0]).trim() !== ""
-}
-
-/**
  * Shared compact line forms never read the next physical line (docs/pie.md,
  * Accessibility lines; docs/gitgraph.md, Title and common values).
  */
@@ -153,7 +138,7 @@ export function layoutCommonLine(
   const endsWithDirectives =
     hasTrivia &&
     (statement.textAfter?.length ?? 0) === 0 &&
-    endsWithDirectivesOnly(source, value.range)
+    endsWithDirectives(source, value.range)
   let valueStart = value?.range[0] ?? delimiter.range[1]
   let valueEnd = value?.range[1] ?? valueStart
   if (!hasTrivia) {

@@ -11,6 +11,25 @@ import { withoutBlanks } from "./db-values.ts"
  * gone (docs/compatibility.md, Runs of whitespace in a text that are drawn the
  * same).
  */
+/**
+ * The places of the Db of a railroad diagram that hold the string of a terminal
+ * (`value`) or of a special sequence (`text`): the definition of a rule, or an
+ * expression inside the alternatives, the elements, or the element of another
+ * one. The name of a nonterminal refers to a rule, and is no such place.
+ */
+const railroadStringPaths: readonly string[] = [
+  "",
+  "alternatives.",
+  "elements.",
+  "element.",
+  "alternatives.elements.",
+  "alternatives.element.",
+  "elements.element.",
+  "alternatives.elements.element.",
+].flatMap((inside) =>
+  ["value", "text"].map((leaf) => `rules.definition.${inside}${leaf}`),
+)
+
 const textRunPaths: ReadonlyMap<string, ReadonlySet<string>> = new Map([
   ["agentflow", new Set(["accDescr", "subgraphs.title"])],
   [
@@ -70,12 +89,7 @@ const textRunPaths: ReadonlyMap<string, ReadonlySet<string>> = new Map([
   ...["railroad", "railroadAbnf", "railroadEbnf", "railroadPeg"].map(
     (type): [string, ReadonlySet<string>] => [
       type,
-      new Set([
-        "accDescr",
-        "rules.definition.elements.value",
-        "rules.definition.text",
-        "title",
-      ]),
+      new Set(["accDescr", ...railroadStringPaths, "title"]),
     ],
   ),
   [

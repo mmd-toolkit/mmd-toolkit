@@ -32,6 +32,7 @@ import {
 } from "./layout.ts"
 import type { Source } from "./source.ts"
 import { printAsWritten } from "./lines.ts"
+import { collapsedRunsAtom } from "./text-runs.ts"
 import {
   findStructuralToken,
   findTokenStartingAt,
@@ -290,9 +291,19 @@ function printCall(
   source: Source,
   expression: RailroadExpression,
   hidden: readonly RailroadIgnoredText[],
+  collapsesRuns = false,
 ): Doc {
-  if (expression.type === "StringLiteral")
-    return printAsWritten(source, ...expression.range)
+  if (expression.type === "StringLiteral") {
+    // A run of spaces and tabs inside the string of a terminal or a special
+    // sequence is drawn as one space, as in the other syntaxes. The name of a
+    // nonterminal refers to a rule, and stays as written (docs/
+    // compatibility.md, Runs of whitespace in a text that are drawn the same).
+    const [start, end] = expression.range
+    return collapsesRuns
+      ? (collapsedRunsAtom(source, { start, end }).doc ??
+          printAsWritten(source, start, end))
+      : printAsWritten(source, start, end)
+  }
   let arguments_: readonly RailroadExpression[],
     members: readonly RailroadExpressionMember[] | undefined
   let valueCall = false
@@ -399,7 +410,13 @@ function printCall(
         breaksArguments ? (index === 0 ? softline : line) : "",
         "leading",
       ),
-      printCall(source, argument, hidden),
+      printCall(
+        source,
+        argument,
+        hidden,
+        expression.type === "RailroadTerminalCall" ||
+          expression.type === "RailroadSpecialCall",
+      ),
     )
     previousEnd = argument.range[1]
   }

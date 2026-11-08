@@ -712,7 +712,7 @@ ABNF は二重引用符だけを認め、backslash を普通の文字として�
 railroad-beta
   r = sequence(
     terminal(""),
-    terminal(" 	 "),
+    terminal(" "),
     nonterminal(""),
     special("%%literal --- <b> plain")
   );
@@ -1137,6 +1137,10 @@ railroad-peg-beta
 colon を keyword に付け、非空値の前を通常の1 space にします。
 空値は colon で終えます。
 外端の空白だけを trim し、内部の文字と括弧に見える行の値は保ちます。
+ただし、`accDescr` の値の中の空白とタブの連なりは空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+`accTitle` はブラウザがツールチップとして表示するので、
+その連なりは書かれたまま残します。
 次行の値は join しません。
 他の図種と同じ、簡潔で読みやすい配置にするためです。
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、

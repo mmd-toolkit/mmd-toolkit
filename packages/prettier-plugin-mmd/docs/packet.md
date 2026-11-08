@@ -302,7 +302,10 @@ packet
 
 Print `title`, one space and a nonempty value trimmed at common-whitespace
 edges; null or whitespace-only values print bare `title`. This compacts
-equivalent exterior whitespace while keeping interior text, quotes and escapes.
+equivalent exterior whitespace while keeping interior text, quotes and escapes,
+apart from a run of spaces and tabs inside the value, which is printed as one
+space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 Never take a value from the next physical line, even across
 blank/comment/directive gaps. Keep empty final assignments and frontmatter
 fallback; protected trivia/hidden boundaries take precedence. The directives
@@ -337,10 +340,14 @@ packet
 Reuse the shared compact form `accTitle: value` / `accDescr: value`: the colon
 touches its keyword, with one space before a trimmed nonempty value; empty
 values end at the colon. This keeps consistent exterior spacing without changing
-interior text or comment attachment. Braces after the colon are line text. Never
-join a next-line value; hidden suffixes and protected groups keep their gaps.
-The directives that end the value are printed with one space before each that
-has whitespace before it, and the whitespace after the last one is left out (see
+interior text or comment attachment, except that a run of spaces and tabs inside
+the value of an `accDescr` is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+and that of an `accTitle` stays as written, since the browser shows it as a
+tooltip. Braces after the colon are line text. Never join a next-line value;
+hidden suffixes and protected groups keep their gaps. The directives that end
+the value are printed with one space before each that has whitespace before it,
+and the whitespace after the last one is left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 

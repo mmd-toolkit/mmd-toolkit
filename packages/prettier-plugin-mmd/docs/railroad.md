@@ -659,11 +659,14 @@ railroad-ebnf-beta
 ### Quotes
 
 Keep StringLiteral source spans unchanged: escapes, empty strings, HTML,
-entities and hidden/comment-looking text, with a run of spaces and tabs inside a
-string printed as one space, so a string of spaces and tabs only becomes one
-space. IR, EBNF and PEG allow both quote forms and backslash escapes, and a
-string between `'` is printed between `"`, unless its text holds a `'`, a `"`, a
-backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
+entities and hidden/comment-looking text, with a run of spaces and tabs inside
+the string of a terminal or of a special sequence printed as one space, so such
+a string of spaces and tabs only becomes one space. The name of a nonterminal
+refers to a rule, and stays as written. [fixture:
+railroad/quotes/ir-string-runs-collapsed] IR, EBNF and PEG allow both quote
+forms and backslash escapes, and a string between `'` is printed between `"`,
+unless its text holds a `'`, a `"`, a backslash, a line break, U+2028, U+2029, a
+backquote, `&`, `#`, or `<` (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
 and `singleQuote` is not read; ABNF allows double quotes only and treats
 backslash as ordinary text. Trimming content or using the wrong escape model
@@ -697,7 +700,7 @@ Output
 railroad-beta
   r = sequence(
     terminal(""),
-    terminal(" 	 "),
+    terminal(" "),
     nonterminal(""),
     special("%%literal --- <b> plain")
   );
@@ -1118,10 +1121,14 @@ railroad-peg-beta
 Shared common-line spacing prints `accTitle: value` and `accDescr: value`, with
 the colon attached to the keyword and one ordinary space before a nonempty
 value. Empty values end at the colon. Trim only exterior value whitespace,
-retaining internal text and brace-looking line values. Keep next-line values
-separate. This gives the same compact, readable form as the other diagrams. The
-directives that end the value are printed with one space before each that has
-whitespace before it, and the whitespace after the last one is left out (see
+retaining internal text and brace-looking line values, except that a run of
+spaces and tabs inside the value of an `accDescr` is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+and that of an `accTitle` stays as written, since the browser shows it as a
+tooltip. Keep next-line values separate. This gives the same compact, readable
+form as the other diagrams. The directives that end the value are printed with
+one space before each that has whitespace before it, and the whitespace after
+the last one is left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
