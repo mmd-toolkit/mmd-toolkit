@@ -650,13 +650,38 @@ timeline の行の最後の event と、別名を持つ state の 2 つ目の説
 `state "d" as A : x  %%{x}%%  ` は `state "d" as A : x %%{x}%%` と印字します。
 mermaid.js はテキストを読む前にディレクティブを除くので、
 その周りの空白はテキストの末尾の空白になり、どのような空白でも同じに描きます。
-これは、Gantt、user journey、timeline、sequence、Venn、C4 の図のタイトル、
+これは、Gantt、user journey、timeline、sequence、Venn、C4、pie、radar、packet、
+architecture、gitGraph、cynefin、treemap、Wardley、treeView、info、
+railroad の図のタイトル、それらの図種の `accTitle:` と `accDescr:` の行、
 Gantt 図の日付書式と軸の書式、C4 図の `accDescription`、
 timeline の行の最後の event、別名を持つ state の 2 つ目の説明に当てはまります。
-日付書式や軸の書式の中の空白とタブの連続は、ディレクティブの前でも、
+日付書式、軸の書式、`accTitle:` の行の値の中の空白とタブの連続は、
+ディレクティブの前でも、
 ディレクティブがない場合と同じように書かれたままにします。
 [fixture: gantt/settings/format-runs-kept-before-directives] [fixture:
 gantt/titles-and-sections/title-two-directives-trailing-blanks-dropped]
+[fixture: pie/title/title-directives-end-blanks-dropped]
+[fixture: radar/title/title-directives-end-blanks-dropped]
+[fixture: packet/title/title-directives-end-blanks-dropped]
+[fixture: architecture/title/title-directives-end-blanks-dropped]
+[fixture: gitgraph/title-and-common-values/title-directives-end-blanks-dropped]
+[fixture: cynefin/title/title-directives-end-blanks-dropped]
+[fixture: treemap/title/title-directives-end-blanks-dropped]
+[fixture: wardley/title/title-directives-end-blanks-dropped]
+[fixture: treeview/title/title-directives-end-blanks-dropped]
+[fixture: info/title/title-directives-end-blanks-dropped]
+[fixture: railroad/title/title-directives-end-blanks-dropped]
+[fixture: pie/accessibility-lines/acc-directives-end-blanks-dropped]
+[fixture: radar/accessibility-lines/acc-directives-end-blanks-dropped]
+[fixture: packet/accessibility-lines/acc-directives-end-blanks-dropped]
+[fixture: architecture/accessibility-lines/acc-directives-end-blanks-dropped]
+[fixture: gitgraph/title-and-common-values/acc-directives-end-blanks-dropped]
+[fixture: cynefin/accessibility-lines/acc-directives-end-blanks-dropped]
+[fixture: treemap/accessibility-lines/acc-directives-end-blanks-dropped]
+[fixture: wardley/accessibility/acc-directives-end-blanks-dropped]
+[fixture: treeview/accessibility-lines/acc-directives-end-blanks-dropped]
+[fixture: info/accessibility-lines/acc-directives-end-blanks-dropped]
+[fixture: railroad/accessibility-lines/acc-directives-end-blanks-dropped]
 [fixture: gantt/settings/format-two-directives-trailing-blanks-dropped]
 [fixture:
 journey/titles-and-sections/title-two-directives-trailing-blanks-dropped]

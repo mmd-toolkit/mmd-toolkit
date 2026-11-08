@@ -1661,11 +1661,16 @@ Keep common statements in their preamble and source order. Use shared
 null/whitespace-only values, printing a run of spaces and tabs inside the text
 as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
-This chooses consistent Db-equivalent outer spacing without taking a next-line
-value. Follow AST boundaries for `titlex` and `title"node"`; title still stays
-written when the summary omits it. A `;` that the line rule ignores before the
-first character of the value is a gap item whether one whitespace character or
-more comes before it: `title  ;T` and `title ;T` are printed alike. [fixture:
+The directives that end a title are printed with one space before each that has
+whitespace before it, and the whitespace after the last one is left out,
+whatever the whitespace at the end of the line (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: title/title-directives-end-blanks-dropped] This chooses consistent
+Db-equivalent outer spacing without taking a next-line value. Follow AST
+boundaries for `titlex` and `title"node"`; title still stays written when the
+summary omits it. A `;` that the line rule ignores before the first character of
+the value is a gap item whether one whitespace character or more comes before
+it: `title  ;T` and `title ;T` are printed alike. [fixture:
 treeview/semicolons/ignored-semicolon-title-value-second-space]
 
 [fixture: treeview/title/title-shared]
@@ -1730,7 +1735,11 @@ Print a run of spaces and tabs inside the value of an `accDescr` as one space
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 but not that of an `accTitle`, which the browser shows as a tooltip, and retain
 brace-looking line values and trivia boundaries. The common converter permits
-these equivalent outer gaps. Never borrow text from the next line.
+these equivalent outer gaps. Never borrow text from the next line. The
+directives that end the value are printed with one space before each that has
+whitespace before it, and the whitespace after the last one is left out (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: treeview/accessibility-lines/acctitle-padding]
 

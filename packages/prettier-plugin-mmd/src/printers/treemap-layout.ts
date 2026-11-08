@@ -223,7 +223,12 @@ export function findTreemapPrintedEnd(
   line: TreemapLine,
 ): number {
   const last = line.statements.at(-1)!
-  if (last.type !== "TreemapTitleStatement") return line.range[1]
+  if (
+    last.type !== "TreemapTitleStatement" &&
+    last.type !== "TreemapAccTitleStatement" &&
+    last.type !== "TreemapAccDescrStatement"
+  )
+    return line.range[1]
   return Math.min(
     line.range[1],
     findLayoutEnd(layoutTreemapStatement(source, last, "", "")),

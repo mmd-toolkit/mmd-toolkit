@@ -443,7 +443,11 @@ space before a nonempty value; null/whitespace-only values print `title`. This
 removes equivalent exterior padding while retaining internal spelling, quotes
 and apparent keywords. Never take a value from the next physical line, including
 across comments or directives. Trivia-bearing values and protected segments keep
-their source gaps.
+their source gaps. The directives that end a title are printed with one space
+before each that has whitespace before it, and the whitespace after the last one
+is left out, whatever the whitespace at the end of the line (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: title/title-directives-end-blanks-dropped]
 
 [fixture: radar/title/title-edge-trim]
 
@@ -471,7 +475,11 @@ Reuse shared `accTitle: value` and `accDescr: value`: the colon touches its
 keyword, and one space precedes a trimmed nonempty value. Empty values end at
 the colon; never join a next-line value. Consistent outer spacing does not
 rewrite internal text. Braces after a colon remain line text. Trivia/hidden and
-semicolon protection take precedence.
+semicolon protection take precedence. The directives that end the value are
+printed with one space before each that has whitespace before it, and the
+whitespace after the last one is left out (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: radar/accessibility-lines/a11y-lines-fixed]
 

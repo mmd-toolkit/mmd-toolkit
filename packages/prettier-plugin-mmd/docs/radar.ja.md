@@ -453,6 +453,10 @@ null と空白だけの値は `title` にします。
 同じ意味の外端だけをそろえ、内部の綴り、引用符、見かけの keyword を保ちます。
 コメントや directive を挟んでも、次の物理行から値を取りません。
 trivia のある値と保護区間は原文の間隙を保ちます。
+題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: title/title-directives-end-blanks-dropped]
 
 [fixture: radar/title/title-edge-trim]
 
@@ -482,6 +486,10 @@ radar-beta
 外側をそろえても内部の文字は書き換えません。
 コロン後の波括弧は行値のままです。
 trivia・hidden・semicolon の保護を優先します。
+値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: radar/accessibility-lines/a11y-lines-fixed]
 

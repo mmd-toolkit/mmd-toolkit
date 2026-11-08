@@ -1013,7 +1013,12 @@ bare `title`. Keep quote-looking content and escape spelling, and print a run of
 spaces and tabs inside the value as one space. Do not read a value from the next
 physical line. A bare title prefix followed by a rule becomes two statements,
 keeping the rule out of the title. The comparison Db omits body titles, which
-gives no permission to rewrite their contents.
+gives no permission to rewrite their contents. The directives that end a title
+are printed with one space before each that has whitespace before it, and the
+whitespace after the last one is left out, whatever the whitespace at the end of
+the line (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: title/title-directives-end-blanks-dropped]
 
 [fixture: railroad/title/abnf-next-line]
 
@@ -1114,7 +1119,11 @@ Shared common-line spacing prints `accTitle: value` and `accDescr: value`, with
 the colon attached to the keyword and one ordinary space before a nonempty
 value. Empty values end at the colon. Trim only exterior value whitespace,
 retaining internal text and brace-looking line values. Keep next-line values
-separate. This gives the same compact, readable form as the other diagrams.
+separate. This gives the same compact, readable form as the other diagrams. The
+directives that end the value are printed with one space before each that has
+whitespace before it, and the whitespace after the last one is left out (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: railroad/accessibility-lines/abnf-empty]
 

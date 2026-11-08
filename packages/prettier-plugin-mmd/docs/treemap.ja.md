@@ -589,6 +589,10 @@ Db の等しい外側の空白から 1 つを選び、引用符に見える文�
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 コメントや directive を越えて次の物理行から値を取りません。
 trivia を持つ値は書かれた境界を保ちます。
+題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: title/title-directives-end-blanks-dropped]
 
 空の title の次のコメント行は次の文にそろえ、title の値にはしません。
 [fixture: treemap/title/empty-next-comment]
@@ -622,6 +626,10 @@ colon を keyword に付け、trim した非空値の前を space 1 個にし、
 内側の文字を保ち、colon 後の波括弧は行の文字として残します。
 同じ読みの外側の空白を、ほかの図種とそろえるためです。
 trivia の境界を保ち、次行の値を連結しません。
+値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: treemap/accessibility-lines/title-padding]
 

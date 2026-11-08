@@ -105,6 +105,10 @@ null または空白だけの値は裸の `title` にします。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 空行、コメント、directive を挟んでも、次の物理行を値に取り込みません。
 trivia を含む値、hidden suffix、semicolon 保護では原文の境界を保ちます。
+題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: title/title-directives-end-blanks-dropped]
 
 [fixture: info/title/title-trim]
 
@@ -144,6 +148,10 @@ info
 colon 後の brace は行の内容です。
 空行、コメント、directive の先の物理行を空値へ取り込みません。
 hidden suffix と保護 gap は保持します。
+値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: info/accessibility-lines/a11y-lines]
 

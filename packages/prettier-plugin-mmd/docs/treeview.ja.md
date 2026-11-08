@@ -1637,6 +1637,10 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 null と空白だけの値は bare の `title` とします。
 テキストの中の空白とタブの連なりは、空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: title/title-directives-end-blanks-dropped]
 次の行から値を取らず、Db の等しい一定の外側の配置を選ぶためです。
 `titlex` と `title"node"` は AST の境界に従い、
 summary に出ない title も残します。
@@ -1710,6 +1714,10 @@ colon は keyword に付け、trim した非空値の前は space 1 個、
 brace らしい行値と trivia の境界を保ちます。
 共通の converter が許す同等の外側の gap を選びます。
 次の行の文字を値に取りません。
+値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: treeview/accessibility-lines/acctitle-padding]
 

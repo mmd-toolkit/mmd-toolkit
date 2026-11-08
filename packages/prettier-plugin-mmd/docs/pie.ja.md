@@ -207,6 +207,10 @@ null・空・空白だけなら `title` だけにします。
 pie は次の物理行を title に結合しません。
 空行・コメント・directive を挟んでも次の区分は別文です。
 保持する trivia とセミコロンの group を優先します。
+題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: title/title-directives-end-blanks-dropped]
 
 固定例: [fixture: pie/title/title-trim] [fixture: pie/title/title-empty]
 [fixture: pie/title/title-next-section] [fixture: pie/title/title-next-trivia]
@@ -240,6 +244,10 @@ C4 の[アクセシビリティの行](./c4.ja.md#アクセシビリティの行
 pie の行形式は物理的な EOL で終わるため、
 空行・コメント・directive を挟んでも次行の値を結合しません。
 hidden form と保持する文字 group の gap を残します。
+値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 固定例: [fixture: pie/accessibility-lines/a11y-lines]
 [fixture: pie/accessibility-lines/a11y-empty]

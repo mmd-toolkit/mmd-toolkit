@@ -567,7 +567,11 @@ Use the shared common-line layout: one space before a nonempty value, trim
 ordinary outer common whitespace and retain internal text, including unmatched
 quotes. Empty titles stay empty and never take a value from the next line. This
 chooses a compact Db-equal edge without treating the common value as a quoted
-string.
+string. The directives that end a title are printed with one space before each
+that has whitespace before it, and the whitespace after the last one is left
+out, whatever the whitespace at the end of the line (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: title/title-directives-end-blanks-dropped]
 
 [fixture: wardley/title/title-trim]
 
@@ -592,17 +596,21 @@ wardley-beta
 [test: wardley/accessibility/unicode-empty-description]
 
 Use the shared accessibility line layout for accTitle: Value and accDescr:
-Value, retaining empty assignments. Description blocks go through the shared
-description layout: separate the keyword and { by one ordinary space even when
-written touching, put text on one line between one space on each side, compact
-whitespace-only interiors to {}, join plain opener whitespace and align a
-separate closer. Protected trivia and semicolon layouts keep their gaps.
-Ordinary description body and standalone comment lines align one level inside
-the statement: the Db removes indentation after LF. Keep line breaks, internal
-blanks and trailing whitespace. Directives and shared removed comment regions
-keep their complete source. Trivia keeps its shared continuation layout. These
-are the common Db-equal forms; there is no text for whitespace-only block
-interiors to surround.
+Value, retaining empty assignments. The directives that end the value are
+printed with one space before each that has whitespace before it, and the
+whitespace after the last one is left out (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: accessibility/acc-directives-end-blanks-dropped] Description blocks go
+through the shared description layout: separate the keyword and { by one
+ordinary space even when written touching, put text on one line between one
+space on each side, compact whitespace-only interiors to {}, join plain opener
+whitespace and align a separate closer. Protected trivia and semicolon layouts
+keep their gaps. Ordinary description body and standalone comment lines align
+one level inside the statement: the Db removes indentation after LF. Keep line
+breaks, internal blanks and trailing whitespace. Directives and shared removed
+comment regions keep their complete source. Trivia keeps its shared continuation
+layout. These are the common Db-equal forms; there is no text for
+whitespace-only block interiors to surround.
 
 [fixture: wardley/accessibility/access-lines]
 

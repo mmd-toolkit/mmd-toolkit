@@ -307,6 +307,10 @@ null または空白だけの値は裸の `title` にします。
 空行・コメント・directive を挟んでも、次の物理行から値を取りません。
 空の最終代入と frontmatter への fallback を残します。
 保護された trivia と hidden の境界を優先します。
+題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: title/title-directives-end-blanks-dropped]
 
 [fixture: packet/title/title-trim]
 
@@ -336,6 +340,10 @@ colon は語に接し、trim した非空値の前を空白1個にします。
 内部文字列とコメントの接触を変えず、外側の空白を統一するためです。
 colon 後の brace は行値です。
 次行の値は結合せず、hidden suffix と保護された組の隙間を保ちます。
+値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: packet/accessibility-lines/a11y-lines]
 

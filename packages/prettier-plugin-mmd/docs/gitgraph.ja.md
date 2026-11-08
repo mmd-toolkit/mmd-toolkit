@@ -414,8 +414,16 @@ gitGraph
 値の中の空白とタブの連なりは、空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 空や空白のみなら裸の `title` です。
+題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: title-and-common-values/title-directives-end-blanks-dropped]
 共通の accessibility 配置で `accTitle: value`・`accDescr: value`、
 空 block は `{}` と印字します。
+これらの行の値の終わりのディレクティブは、
+題の終わりのディレクティブと同じように印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: title-and-common-values/acc-directives-end-blanks-dropped]
 通常の gap では、
 接して書かれていても `accDescr` と `{` の間に空白 1 つを置きます。
 保護対象の trivia やセミコロンの配置では、その gap を保ちます。

@@ -192,7 +192,12 @@ spaces and tabs inside the value as one space (see
 and preserve quotes and backslashes, and all repeated assignments, including
 frontmatter fallback. Pie never joins the next physical line into a title: even
 across blank/comment/directive gaps, a following section is a separate
-statement. Protected trivia and semicolon groups take precedence.
+statement. Protected trivia and semicolon groups take precedence. The directives
+that end a title are printed with one space before each that has whitespace
+before it, and the whitespace after the last one is left out, whatever the
+whitespace at the end of the line (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: title/title-directives-end-blanks-dropped]
 
 Fixed cases: [fixture: pie/title/title-trim] [fixture: pie/title/title-empty]
 [fixture: pie/title/title-next-section] [fixture: pie/title/title-next-trivia]
@@ -222,7 +227,11 @@ and that of an `accTitle` stays as written, since the browser shows it as a
 tooltip; quotes and line-form braces remain text; repeated assignments and
 percent comment attachment remain. Pie never joins next-line values, including
 after blank/comment/directive gaps, because its composite line forms stop at
-physical EOL. Hidden forms and protected textual groups retain their gaps.
+physical EOL. Hidden forms and protected textual groups retain their gaps. The
+directives that end the value are printed with one space before each that has
+whitespace before it, and the whitespace after the last one is left out (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 Fixed cases: [fixture: pie/accessibility-lines/a11y-lines] [fixture:
 pie/accessibility-lines/a11y-empty] [fixture:

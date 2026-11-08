@@ -402,8 +402,17 @@ gitGraph
 Print `title` plus one space and a nonempty value trimmed only at its outer
 ends, with a run of spaces and tabs inside it printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same));
-empty/whitespace-only titles print bare `title`. Shared accessibility layout
-prints `accTitle: value` / `accDescr: value` and empty blocks as `{}`. Put one
+empty/whitespace-only titles print bare `title`. The directives that end a title
+are printed with one space before each that has whitespace before it, and the
+whitespace after the last one is left out, whatever the whitespace at the end of
+the line (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: title-and-common-values/title-directives-end-blanks-dropped] Shared
+accessibility layout prints `accTitle: value` / `accDescr: value` and empty
+blocks as `{}`. The directives that end the value of such a line are printed as
+those that end a title (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: title-and-common-values/acc-directives-end-blanks-dropped] Put one
 ordinary space between `accDescr` and `{`, even when written touching; protected
 trivia and semicolon layouts keep their gaps. Text on one line stands between
 one space on each side, whether it touched the braces or not. A separate closer

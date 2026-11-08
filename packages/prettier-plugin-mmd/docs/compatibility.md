@@ -595,15 +595,40 @@ directive, as a directive at the end of a line is in the other diagrams (see
 mermaid.js removes the directives before it reads the text, so the whitespace
 around them is whitespace at the end of the text, which it draws the same
 whatever it is. This holds for the title of a Gantt chart, a user journey, a
-timeline, a sequence diagram, a Venn diagram, and a C4 diagram, for the date
+timeline, a sequence diagram, a Venn diagram, a C4 diagram, a pie chart, a radar
+chart, a packet diagram, an architecture diagram, a gitGraph, a cynefin diagram,
+a treemap, a Wardley map, a treeView, an info diagram, and a railroad diagram,
+for the `accTitle:` and `accDescr:` lines of those diagram types, for the date
 format and the axis format of a Gantt chart, for the `accDescription` of a C4
 diagram, for the last event of a line of a timeline, and for the second
-description of a state alias. The runs of spaces and tabs inside a date format
-or an axis format stay as written before the directives as they do without them.
-[fixture: gantt/settings/format-runs-kept-before-directives] [fixture:
+description of a state alias. The runs of spaces and tabs inside a date format,
+an axis format, or the value of an `accTitle:` line stay as written before the
+directives as they do without them. [fixture:
+gantt/settings/format-runs-kept-before-directives] [fixture:
 gantt/titles-and-sections/title-two-directives-trailing-blanks-dropped]
-[fixture: gantt/settings/format-two-directives-trailing-blanks-dropped]
-[fixture:
+[fixture: pie/title/title-directives-end-blanks-dropped] [fixture:
+radar/title/title-directives-end-blanks-dropped] [fixture:
+packet/title/title-directives-end-blanks-dropped] [fixture:
+architecture/title/title-directives-end-blanks-dropped] [fixture:
+gitgraph/title-and-common-values/title-directives-end-blanks-dropped] [fixture:
+cynefin/title/title-directives-end-blanks-dropped] [fixture:
+treemap/title/title-directives-end-blanks-dropped] [fixture:
+wardley/title/title-directives-end-blanks-dropped] [fixture:
+treeview/title/title-directives-end-blanks-dropped] [fixture:
+info/title/title-directives-end-blanks-dropped] [fixture:
+railroad/title/title-directives-end-blanks-dropped] [fixture:
+pie/accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
+radar/accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
+packet/accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
+architecture/accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
+gitgraph/title-and-common-values/acc-directives-end-blanks-dropped] [fixture:
+cynefin/accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
+treemap/accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
+wardley/accessibility/acc-directives-end-blanks-dropped] [fixture:
+treeview/accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
+info/accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
+railroad/accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
+gantt/settings/format-two-directives-trailing-blanks-dropped] [fixture:
 journey/titles-and-sections/title-two-directives-trailing-blanks-dropped]
 [fixture:
 timeline/titles-and-sections/title-two-directives-trailing-blanks-dropped]

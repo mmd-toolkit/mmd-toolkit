@@ -552,6 +552,10 @@ null と空白だけの値は `title` とし、同じ意味の外側の空白を
 trivia を挟んでも次の物理行を値にしません。
 architecture の summary が title を公開しなくても、文と内容を保ちます。
 trivia のある値と保護された hidden の境界は source の隙間を保ちます。
+題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: title/title-directives-end-blanks-dropped]
 
 [corpus fixture: architecture/directive-fields]
 
@@ -592,6 +596,10 @@ colon を keyword に付け、trim した非空値の前は空白1個、空な�
 これにより外側の空白を統一します。
 次行の文を取り込まず、colon 後の波括弧は行値のまま保ちます。
 保護された trivia と hidden の隙間を優先します。
+値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: architecture/accessibility-lines/a11y-empty-comment-gap]
 

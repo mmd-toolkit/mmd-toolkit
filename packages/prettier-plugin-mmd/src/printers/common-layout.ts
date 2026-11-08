@@ -110,11 +110,12 @@ type CommonStatement = (
 }
 
 /**
- * Whether the text of a title ends with directives: its content, then
- * directives with spaces and tabs between them and after the last, and
- * nothing else, no `;`, line break, or line separator. A title printed so
- * leaves out the whitespace at its end and prints the whitespace around the
- * directives as the end of a line (see `trimTextAfterKeyword`).
+ * Whether the text of a title or of an accessibility line ends with
+ * directives: its content, then directives with spaces and tabs between them
+ * and after the last, and nothing else, no `;`, line break, or line separator.
+ * A text printed so leaves out the whitespace at its end and prints the
+ * whitespace around the directives as the end of a line (see
+ * `trimTextAfterKeyword`).
  */
 function endsWithDirectivesOnly(source: Source, [from, to]: Range): boolean {
   const text = source.text.slice(from, to)
@@ -150,7 +151,6 @@ export function layoutCommonLine(
   const hasTrivia =
     value !== null && findTriviaBetween(source, ...value.range).length > 0
   const endsWithDirectives =
-    isTitle &&
     hasTrivia &&
     (statement.textAfter?.length ?? 0) === 0 &&
     endsWithDirectivesOnly(source, value.range)
@@ -207,11 +207,16 @@ export function layoutCommonLine(
       end: item.range[1],
     })),
   ]
-  // A title that ends with directives prints them as at the end of a line,
-  // and leaves out the whitespace at its end (docs/compatibility.md, Texts
-  // after a keyword that are drawn the same).
+  // A text that ends with directives prints them as at the end of a line, and
+  // leaves out the whitespace at its end (docs/compatibility.md, Texts after a
+  // keyword that are drawn the same). The runs inside an `accTitle` stay.
   if (endsWithDirectives) {
-    trimTextAfterKeyword(source, atoms, [valueStart, valueEnd], true)
+    trimTextAfterKeyword(
+      source,
+      atoms,
+      [valueStart, valueEnd],
+      !statement.type.includes("AccTitle"),
+    )
   }
   let layout: AtomLayout = {
     atoms,

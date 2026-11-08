@@ -419,7 +419,12 @@ Use the shared common-line layout: trim ordinary outer common whitespace, insert
 one space before a nonempty value and retain its internal text. Empty or
 whitespace-only values print as bare title and never take text from the next
 line. This chooses a compact Db-equal edge without interpreting quotes as string
-delimiters. Preserve empty resets and trivia contact. A single separator
+delimiters. Preserve empty resets and trivia contact. The directives that end a
+title are printed with one space before each that has whitespace before it, and
+the whitespace after the last one is left out, whatever the whitespace at the
+end of the line (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: title/title-directives-end-blanks-dropped] A single separator
 space/tab is outside the range of a null title. A `;` that the line rule ignores
 before the first character of the value is a gap item whether one whitespace
 character or more comes before it: `title  ;T` and `title ;T` are printed alike.
@@ -465,7 +470,11 @@ Use shared accTitle: value and accDescr: value layouts, attaching the colon and
 adding one space before a nonempty value. Empty assignments end at the colon and
 never join the next line. Trim ordinary outer whitespace, retain internal text
 and trivia contact, and keep braces after a colon as line-value text. These
-compact common forms do not reinterpret authored values.
+compact common forms do not reinterpret authored values. The directives that end
+the value are printed with one space before each that has whitespace before it,
+and the whitespace after the last one is left out (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: cynefin/accessibility-lines/accessibility-padding]
 

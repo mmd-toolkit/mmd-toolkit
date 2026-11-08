@@ -421,6 +421,10 @@ cynefin-beta
 空または空白だけの値は title だけにし、次行を値にしません。
 引用符を文字列の区切りと解釈せず、Db が等しい簡潔な外端を選びます。
 空の代入によるリセットと trivia の接触を残します。
+題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: title/title-directives-end-blanks-dropped]
 null の title の separator 1 space・tab は範囲の外にあります。
 値の最初の文字より前にある、行の規則が無視する `;` は、
 その前の空白が 1 文字でもそれ以上でも、隙間の項目です。
@@ -469,6 +473,10 @@ colon を keyword に付け、非空値の前を 1 space にします。
 普通の外端空白だけを trim し、内部と trivia の接触を保ち、
 colon 後のかっこは行の値として残します。
 共通の簡潔な形で、値を解釈し直さないためです。
+値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: cynefin/accessibility-lines/accessibility-padding]
 

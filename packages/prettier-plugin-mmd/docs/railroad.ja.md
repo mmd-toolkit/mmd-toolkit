@@ -1033,6 +1033,10 @@ null と空白だけの値は裸の `title` にします。
 次の物理行から値を取りません。
 裸の title prefix と後続の規則は別の文にし、規則を値に取り込みません。
 比較 Db は本文の title を除きますが、内容を書き換える理由にはなりません。
+題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: title/title-directives-end-blanks-dropped]
 
 [fixture: railroad/title/abnf-next-line]
 
@@ -1135,6 +1139,10 @@ colon を keyword に付け、非空値の前を通常の1 space にします。
 外端の空白だけを trim し、内部の文字と括弧に見える行の値は保ちます。
 次行の値は join しません。
 他の図種と同じ、簡潔で読みやすい配置にするためです。
+値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 [fixture: railroad/accessibility-lines/abnf-empty]
 

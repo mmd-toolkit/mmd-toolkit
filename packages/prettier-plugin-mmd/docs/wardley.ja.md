@@ -569,6 +569,10 @@ wardley-beta
 普通の外端の共通空白は trim し、閉じない引用符も内部の文字として保ちます。
 空の title は空のままで、次の行を値にしません。
 値を引用文字列として扱わず、Db が同じ端の形を簡潔にします。
+題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: title/title-directives-end-blanks-dropped]
 
 [fixture: wardley/title/title-trim]
 
@@ -594,6 +598,10 @@ wardley-beta
 
 accTitle: Value と accDescr: Value は共有の行 layout を使います。
 空の代入も残します。
+値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
+最後のディレクティブの後の空白を除いて印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: accessibility/acc-directives-end-blanks-dropped]
 説明ブロックは共有の description layout を通します。
 通常の gap では、接して書かれていても語と { の間に空白 1 つを置きます。
 1 行のテキストは、括弧に接して書かれていても、両側に空白 1 つずつを置きます。
