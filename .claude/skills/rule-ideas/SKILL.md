@@ -60,7 +60,11 @@ its scope, and whether `recommended` enables it. The adoption criteria are in
   with the label `fa fa-book`.
 - The package holds no rule of these kinds:
   - A stylistic rule: mermaid.js reads the text as written, and only a later
-    edit would break it.
+    edit would break it. One exception: writing that relies on a form the
+    documentation of mermaid.js does not show is avoided, so a `stroke` written
+    with whitespace before its `:` in a `linkStyle` or a `classDef` of a
+    flowchart or an agentflow is reported also where nothing is lost now
+    (section 7). In a `style`, the formatter prints it without the whitespace.
   - A rule for text that is obscure on purpose.
   - A rule for a defect of mermaid.js: the author writes correct, meaningful
     text and mermaid.js misreads it (`subgraph Front end`, CSS in a label). The
@@ -107,7 +111,7 @@ Kept (an author's mistake that mermaid accepts silently):
 | `accDescr: second` after `accDescr: first`                                                           | The description is replaced by `second` without a word                                          | flowchart-no-duplicate-description                                                                                                                          |
 | `accTitle: second` after `accTitle: first`                                                           | The title is replaced by `second` without a word                                                | flowchart-no-duplicate-title                                                                                                                                |
 | `A-->B; direction TB` in a subgraph (the same with or without the `;`)                               | The rest of the direction line is dropped: A, B, and the edge disappear                         | flowchart-no-ignored-text (a direction statement is written on a line of its own; mermaid drops the statements written on the same line without a word)     |
-| `linkStyle 0 stroke :#f00` (whitespace before the `:` of `stroke`)                                   | The line is red, and the arrowhead keeps the colour of the theme                                | flowchart-no-spaced-link-stroke                                                                                                                             |
+| `linkStyle 0 stroke :#f00` (whitespace before the `:` of `stroke`)                                   | The line is red, and the arrowhead keeps the colour of the theme                                | flowchart-no-spaced-stroke                                                                                                                                  |
 | In a quadrant chart, `color: f00` on a point (no `#`)                                                | The point is drawn in the default colour                                                        | quadrant-no-invalid-color                                                                                                                                   |
 
 Dropped:
@@ -680,7 +684,7 @@ Decisions:
 | flowchart-no-undef                          | yes     |                                                                              |
 | flowchart-no-duplicate-direction            | yes     |                                                                              |
 | flowchart-no-redefined-subgraph             | yes     |                                                                              |
-| flowchart-no-spaced-link-stroke             | no      | Criterion 3: [#7974](https://github.com/mermaid-js/mermaid/pull/7974) (open) |
+| flowchart-no-spaced-stroke                  | no      | Criteria 1, 3: [#7974](https://github.com/mermaid-js/mermaid/pull/7974)      |
 | no-unclosed-directive                       | yes     |                                                                              |
 | no-invalid-init-directive                   | yes     |                                                                              |
 | no-duplicate-init-key                       | yes     |                                                                              |
@@ -796,7 +800,7 @@ Decisions:
 | agentflow-no-redefined-flow                 | yes     |                                                                              |
 | agentflow-no-duplicate-direction            | yes     |                                                                              |
 | agentflow-no-undef                          | yes     |                                                                              |
-| agentflow-no-spaced-link-stroke             | no      | Criterion 3: [#7974](https://github.com/mermaid-js/mermaid/pull/7974) (open) |
+| agentflow-no-spaced-stroke                  | no      | Criteria 1, 3: [#7974](https://github.com/mermaid-js/mermaid/pull/7974)      |
 | usecase-no-duplicate-title                  | yes     |                                                                              |
 | usecase-no-duplicate-description            | yes     |                                                                              |
 | usecase-no-empty-description-block          | yes     |                                                                              |
@@ -1059,17 +1063,33 @@ version) make every layout merge the declarations, as dagre and 11.x did, so
 writing a subgraph again to add members is a way of writing; (4) write the title
 in the first declaration, or use another id.
 
-flowchart-no-spaced-link-stroke and agentflow-no-spaced-link-stroke: (1) a
-`stroke` of a link written with whitespace before its `:` colours the line,
-since CSS reads it, while the arrowhead keeps the colour of the theme, since
-mermaid.js looks for the colour of the arrowhead with `/stroke:([^;]+)/` in the
-style of the path (read in
+flowchart-no-spaced-stroke and agentflow-no-spaced-stroke: (1) the styles that
+reach a link are those of its classes, then those of `linkStyle default`, then
+those of its own `linkStyle`; the line takes the last declaration named
+`stroke`, as CSS does, while mermaid.js takes the colour of the arrowhead from
+the first text `stroke:` in them, also one inside a longer name such as
+`text-stroke:`, and gives the arrowhead no colour when that text has nothing but
+whitespace after it (read in
 [`edges.js`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L956-L957)
 and
 [`edgeMarker.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edgeMarker.ts#L105-L127);
-run); this holds for `linkStyle` with link numbers or `default`, and for a
-`classDef` that a link takes, while a `classDef` that only vertices take loses
-nothing and is not reported; another case of the name (`Stroke`) and the styles
+run). So a `stroke` in lower case, written with whitespace before its `:`, that
+gives the line of a link its colour while no text `stroke:` stands before it in
+the styles of that link, leaves the arrowhead without that colour (run:
+`linkStyle 0 stroke :#f00` draws a red line and an arrowhead in the colour of
+the theme). By the exception in section 2, the rules report every such `stroke`
+in a `linkStyle` or a `classDef`, also where nothing is lost now: where a later
+`stroke` gives the line its colour (`linkStyle default stroke :#f00`, then
+`linkStyle 0 stroke:#00f`: both are blue), where a text `stroke:` before it
+gives the arrowhead its colour (`stroke:#00f,stroke :#f00`), in a `classDef`
+that only vertices take, which CSS reads and which the formatter keeps as
+written, as in every `classDef`, and in `linkStyle default` of a diagram with no
+link (run). A `style` of a vertex is not reported: there the formatter prints
+`stroke`, as every other name, without whitespace before the `:`, and no rule
+reports that whitespace after the other names. Not reported are another name
+that ends with `stroke` (`text-stroke :#f00` colours no line, and without the
+whitespace it would colour only the arrowhead; run) and another case of the name
+(`Stroke :#f00`, which removing the whitespace does not help; read). The styles
 of the relationships of a usecase diagram are only read and are not included;
 (2) none: the documentation of mermaid.js writes
 `linkStyle 3 stroke:#ff3,stroke-width:4px,color:red;`, with no whitespace there,
@@ -1077,9 +1097,11 @@ as for `note left of A:hi`; (3) "linkStyle stroke arrowhead color", "arrowhead
 color linkStyle", "marker color stroke linkStyle", "edge marker stroke color":
 [#7974](https://github.com/mermaid-js/mermaid/pull/7974) (open) gives the
 markers `context-stroke`, with which the arrowhead takes the stroke of the line
-in the browsers that support it, so the rules are not enabled, and
+in the browsers that support it, and
 [#1236](https://github.com/mermaid-js/mermaid/issues/1236) (open) asks for the
-same; (4) remove the whitespace.
+same; the rules are not enabled, since they report what mermaid.js reads as
+meant (criterion 1) and since that change is open (criterion 3); (4) remove the
+whitespace.
 
 class-no-redefined-class: (1) the earlier label is lost; (2) none; (3) "class
 label redefine"; (4) use another name, or write the label once.
@@ -1321,15 +1343,23 @@ ranges of the axes.
   the coordinates as numbers from 0 to 1 with a decimal point; (3) #7608 asks
   for other ranges, which would not make `0,3` a number; (4) write the decimal
   point.
-- quadrant-no-invalid-color: (1) a `color` of three or six hexadecimal digits
-  without `#`, on a point or in a `classDef`, passes the check of mermaid.js,
-  which lets the `#` be left out, and is drawn as `fill="f00"`, which the
-  browser does not read as a colour, so the point keeps the default colour (read
-  in `validateHexCode` and `parseStyles`; run); `color: red` is rejected;
-  `stroke-color` passes the same check, but it is only read and is not included;
-  (2) none: the documentation of mermaid.js writes every colour with `#`; (3)
-  "quadrant point color hex", "quadrant color without #", "validateHexCode",
-  "quadrantChart point color"; (4) write the `#`.
+- quadrant-no-invalid-color: (1) a point takes its own styles, then those of the
+  last `classDef` of its class, and is drawn with the theme's colour where
+  neither gives one and with a border 0px wide where neither gives a width (read
+  in `quadrantBuilder.ts`). A `color` or a `stroke-color` of three or six
+  hexadecimal digits without `#` passes the check of mermaid.js, which lets the
+  `#` be left out, and is drawn as `fill="f00"` or `stroke="f00"`, which the
+  browser does not read as a colour, so the point keeps the colour of the theme,
+  or its border has none (read in `validateHexCode` and `parseStyles`; run,
+  `stroke-color` with `stroke-width: 4px`); `color: red` is rejected. Such a
+  value is reported where a point is drawn with it: not where a later value of
+  the same name in its statement replaces it (quadrant-no-duplicate-style
+  reports that), not in a `classDef` that no point takes or whose value the
+  point's own style replaces (run), and, for `stroke-color`, only where the
+  point is drawn with a border wider than 0px; (2) none: the documentation of
+  mermaid.js writes every colour with `#`; (3) "quadrant point color hex",
+  "quadrant color without #", "validateHexCode", "quadrantChart point color";
+  (4) write the `#`.
 
 The block diagram rules. Searches: "block" in titles and in the text, also with
 the words chain, composite, class, styles, columns, shape, arrow, redefined,
@@ -2206,9 +2236,13 @@ above; a rule named with none offers nothing.
   back lines). flowchart-no-redefined-vertex gets none: the likely fix is a new
   id (criterion 1). flowchart-no-undef gets none: which id was meant is not
   known (criterion 1). flowchart-no-redefined-subgraph gets none: the likely fix
-  is one title or another id (criterion 1). flowchart-no-spaced-link-stroke and
-  agentflow-no-spaced-link-stroke remove the whitespace before the `:` of
-  `stroke` (run).
+  is one title or another id (criterion 1). flowchart-no-spaced-stroke and
+  agentflow-no-spaced-stroke remove the whitespace before the `:` of `stroke`
+  (run), only when no `stroke` stands after it in the styles of any link that it
+  reaches, which no fix changes; otherwise the arrowhead of such a link would
+  take this colour while its line takes the later one (run), and no edit is
+  offered. Where no link takes the style, the edit changes nothing that is
+  drawn.
 - flowchart, agentflow, and usecase: the three
   `<diagram>-no-duplicate-direction` rules remove this statement or the one
   whose direction it differs from (in flowchart, in a later subgraph of an id,
@@ -2290,8 +2324,10 @@ above; a rule named with none offers nothing.
   same name before it in the list, with a `,` next to it;
   quadrant-no-redefined-class and quadrant-no-redefined-quadrant remove this
   statement or the one before it (run). quadrant-no-invalid-color writes `#`
-  before the value (run). quadrant-no-invalid-coordinate writes `.` for a
-  decimal `,` (run). A coordinate with a `,` is always `0`, the `,`, and digits
+  before the value (run), but not when a `;` follows the value, where `#f00;`
+  would be read as a character reference and the input rejected (run).
+  quadrant-no-invalid-coordinate writes `.` for a decimal `,` (run). A
+  coordinate with a `,` is always `0`, the `,`, and digits
   (`packages/spec/docs/diagrams/quadrant.md`, the coordinate: `1,5` is
   rejected), so the result is always a number from 0 to 1 and the edit needs no
   condition. Fixture: `A: [0,3, 0,6]` (offered for both coordinates).
@@ -2406,8 +2442,8 @@ again get the two removals.
   - gantt-no-invalid-tag, gantt-no-unknown-exclude (only one word of `excludes`
     starts with the item), quadrant-no-invalid-color (the `#`),
     quadrant-no-invalid-coordinate, and xychart-no-invalid-orientation;
-  - flowchart-no-spaced-link-stroke and agentflow-no-spaced-link-stroke (the
-    whitespace before the `:` removed);
+  - flowchart-no-spaced-stroke and agentflow-no-spaced-stroke (the whitespace
+    before the `:` removed);
   - no-invalid-init-directive (all three edits), sequence-no-invalid-json,
     sequence-no-ignored-text, sequence-no-link-without-separator, and
     state-no-ignored-text (the space after the `:` of a note);

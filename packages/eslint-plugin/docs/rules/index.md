@@ -44,7 +44,7 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 | [flowchart-no-ignored-text](./flowchart-no-ignored-text.md)                             | Disallow text on a direction line that mermaid.js drops.                                             | ✅  |     |     |
 | [flowchart-no-redefined-subgraph](./flowchart-no-redefined-subgraph.md)                 | Disallow a subgraph declaration whose title differs from the title kept for its id.                  | ✅  |     |     |
 | [flowchart-no-redefined-vertex](./flowchart-no-redefined-vertex.md)                     | Disallow writing a vertex again, differently or in a subgraph that does not get it.                  | ✅  |     |     |
-| [flowchart-no-spaced-link-stroke](./flowchart-no-spaced-link-stroke.md)                 | Disallow whitespace before the `:` of a `stroke` style of a link.                                    |     | 🔧  |     |
+| [flowchart-no-spaced-stroke](./flowchart-no-spaced-stroke.md)                           | Disallow whitespace before the `:` of a `stroke` style.                                              |     | 🔧  |     |
 | [flowchart-no-unclosed-description-block](./flowchart-no-unclosed-description-block.md) | Disallow an `accDescr {` block without its closing `}`.                                              |     |     | 💡  |
 | [flowchart-no-undef](./flowchart-no-undef.md)                                           | Disallow a `style`, `class`, or `click` statement that names an id that the diagram does not define. | ✅  |     |     |
 
@@ -358,7 +358,7 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 | [agentflow-no-redefined-connector](./agentflow-no-redefined-connector.md)               | Disallow a connector declaration that replaces the title or the vertex written for its id before, or that a later flow does not get. | ✅  |     |     |
 | [agentflow-no-redefined-flow](./agentflow-no-redefined-flow.md)                         | Disallow a flow declaration that replaces the title written for its id before.                                                       | ✅  |     |     |
 | [agentflow-no-redefined-vertex](./agentflow-no-redefined-vertex.md)                     | Disallow a vertex that replaces the label or the shape written for its id before, or that a later flow does not get.                 | ✅  |     |     |
-| [agentflow-no-spaced-link-stroke](./agentflow-no-spaced-link-stroke.md)                 | Disallow whitespace before the `:` of a `stroke` style of a link.                                                                    |     | 🔧  |     |
+| [agentflow-no-spaced-stroke](./agentflow-no-spaced-stroke.md)                           | Disallow whitespace before the `:` of a `stroke` style.                                                                              |     | 🔧  |     |
 | [agentflow-no-unclosed-description-block](./agentflow-no-unclosed-description-block.md) | Disallow an `accDescr {` block that is not closed by `}`.                                                                            |     |     | 💡  |
 | [agentflow-no-undef](./agentflow-no-undef.md)                                           | Disallow a `style`, `class`, or `click` statement for an id that nothing declares.                                                   | ✅  |     |     |
 

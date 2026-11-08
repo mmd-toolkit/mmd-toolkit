@@ -49,7 +49,7 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | [flowchart-no-ignored-text](./flowchart-no-ignored-text.ja.md)                             | 方向の行にあって、mermaid.js が捨てるテキストを禁止する。                              | ✅  |     |     |
 | [flowchart-no-redefined-subgraph](./flowchart-no-redefined-subgraph.ja.md)                 | 同じ id に保たれる題と違う題を持つ subgraph の宣言を禁止する。                         | ✅  |     |     |
 | [flowchart-no-redefined-vertex](./flowchart-no-redefined-vertex.ja.md)                     | 頂点を、違う形やラベルで、または後の subgraph が取らない形で、書き直すことを禁止する。 | ✅  |     |     |
-| [flowchart-no-spaced-link-stroke](./flowchart-no-spaced-link-stroke.ja.md)                 | リンクの `stroke` スタイルの `:` の前に空白を書くことを禁止する。                      |     | 🔧  |     |
+| [flowchart-no-spaced-stroke](./flowchart-no-spaced-stroke.ja.md)                           | `stroke` スタイルの `:` の前に空白を書くことを禁止する。                               |     | 🔧  |     |
 | [flowchart-no-unclosed-description-block](./flowchart-no-unclosed-description-block.ja.md) | 閉じる `}` のない `accDescr {` のブロックを禁止する。                                  |     |     | 💡  |
 | [flowchart-no-undef](./flowchart-no-undef.ja.md)                                           | 図が定義していない id を指す `style`、`class`、`click` の文を禁止する。                | ✅  |     |     |
 
@@ -363,7 +363,7 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | [agentflow-no-redefined-connector](./agentflow-no-redefined-connector.ja.md)               | その id に前に書いたタイトルや頂点を置き換える connector の宣言と、後の flow が取らない宣言を禁止する。 | ✅  |     |     |
 | [agentflow-no-redefined-flow](./agentflow-no-redefined-flow.ja.md)                         | その id に前に書いたタイトルを置き換える flow の宣言を禁止する。                                        | ✅  |     |     |
 | [agentflow-no-redefined-vertex](./agentflow-no-redefined-vertex.ja.md)                     | その id に前に書いたラベルや形を置き換える頂点と、後の flow が取らない頂点を禁止する。                  | ✅  |     |     |
-| [agentflow-no-spaced-link-stroke](./agentflow-no-spaced-link-stroke.ja.md)                 | リンクの `stroke` スタイルの `:` の前に空白を書くことを禁止する。                                       |     | 🔧  |     |
+| [agentflow-no-spaced-stroke](./agentflow-no-spaced-stroke.ja.md)                           | `stroke` スタイルの `:` の前に空白を書くことを禁止する。                                                |     | 🔧  |     |
 | [agentflow-no-unclosed-description-block](./agentflow-no-unclosed-description-block.ja.md) | `}` で閉じていない `accDescr {` のブロックを禁止する。                                                  |     |     | 💡  |
 | [agentflow-no-undef](./agentflow-no-undef.ja.md)                                           | どこにも宣言されていない id を指す `style`、`class`、`click` の文を禁止する。                           | ✅  |     |     |
 

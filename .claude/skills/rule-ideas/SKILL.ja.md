@@ -66,6 +66,12 @@ description:
   - 文体の規則。
     mermaid.js が書かれたとおりに読んでいて、
     後の編集で壊れることだけを防ぐもの。
+    例外が 1 つある。
+    mermaid.js の文書が示さない形に頼る書き方は避ける。
+    そのため、flowchart と agentflow の `linkStyle` と `classDef` で、
+    `:` の前に空白を置いて書いた `stroke` は、
+    いま何も失われないところでも報告する（7 節）。
+    `style` のものは、整形ツールが空白なしで印字する。
   - 意図して分かりにくく書いたテキストのための規則。
   - mermaid.js の不具合のための規則。
     書き手が正しく意味の通る書き方をしているのに、
@@ -118,7 +124,7 @@ description:
 | `accDescr: first` の後の `accDescr: second`                             | 説明が黙って `second` に置き換わる                                                         | flowchart-no-duplicate-description                                                                                                      |
 | `accTitle: first` の後の `accTitle: second`                             | タイトルが黙って `second` に置き換わる                                                     | flowchart-no-duplicate-title                                                                                                            |
 | subgraph の中の `A-->B; direction TB`（`;` で区切っても同じ）           | 方向の文の行のほかのテキストが捨てられ、A、B、辺が消える                                   | flowchart-no-ignored-text（方向の文は単独の行に書くもの。同じ行に書いた文を mermaid が黙って捨てる）                                    |
-| `linkStyle 0 stroke :#f00`（`stroke` の `:` の前の空白）                | 線は赤く、矢じりはテーマの色のまま                                                         | flowchart-no-spaced-link-stroke                                                                                                         |
+| `linkStyle 0 stroke :#f00`（`stroke` の `:` の前の空白）                | 線は赤く、矢じりはテーマの色のまま                                                         | flowchart-no-spaced-stroke                                                                                                              |
 | 四象限チャートの点の `color: f00`（`#` がない）                         | 点は既定の色で描かれる                                                                     | quadrant-no-invalid-color                                                                                                               |
 
 落としたもの:
@@ -695,7 +701,7 @@ mermaid.js はそのテキストも捨て（基準 1）、
 | flowchart-no-undef                          | 入れる   |                                                                          |
 | flowchart-no-duplicate-direction            | 入れる   |                                                                          |
 | flowchart-no-redefined-subgraph             | 入れる   |                                                                          |
-| flowchart-no-spaced-link-stroke             | 入れない | 基準 3: [#7974](https://github.com/mermaid-js/mermaid/pull/7974)（open） |
+| flowchart-no-spaced-stroke                  | 入れない | 基準 1、3: [#7974](https://github.com/mermaid-js/mermaid/pull/7974)      |
 | no-unclosed-directive                       | 入れる   |                                                                          |
 | no-invalid-init-directive                   | 入れる   |                                                                          |
 | no-duplicate-init-key                       | 入れる   |                                                                          |
@@ -811,7 +817,7 @@ mermaid.js はそのテキストも捨て（基準 1）、
 | agentflow-no-redefined-flow                 | 入れる   |                                                                          |
 | agentflow-no-duplicate-direction            | 入れる   |                                                                          |
 | agentflow-no-undef                          | 入れる   |                                                                          |
-| agentflow-no-spaced-link-stroke             | 入れない | 基準 3: [#7974](https://github.com/mermaid-js/mermaid/pull/7974)（open） |
+| agentflow-no-spaced-stroke                  | 入れない | 基準 1、3: [#7974](https://github.com/mermaid-js/mermaid/pull/7974)      |
 | usecase-no-duplicate-title                  | 入れる   |                                                                          |
 | usecase-no-duplicate-description            | 入れる   |                                                                          |
 | usecase-no-empty-description-block          | 入れる   |                                                                          |
@@ -1129,19 +1135,60 @@ title overwritten」。
 そのため、メンバーを足すために subgraph をもう一度書くのは、1 つの書き方である。
 (4) 題を最初の宣言に書くか、別の id を使う。
 
-flowchart-no-spaced-link-stroke と agentflow-no-spaced-link-stroke: (1) `:`
-の前に空白を置いて書いたリンクの `stroke` は、CSS が読むので線に色を付ける。
-一方、
-mermaid.js は矢じりの色をパスのスタイルから `/stroke:([^;]+)/` で探すので、
-矢じりはテーマの色のままである（読んだのは、
+flowchart-no-spaced-stroke と agentflow-no-spaced-stroke: (1)
+リンクに届くスタイルは、そのクラスのもの、`linkStyle default` のもの、
+そのリンク自身の `linkStyle` のものの順である。
+線は、CSS のとおり、`stroke` という名前の最後の宣言を取る。
+一方、mermaid.js は矢じりの色を、
+それらの中の最初の `stroke:` という文字から取り、
+`text-stroke:` のような長い名前の中のものも数える。
+その文字の後が空白だけなら、矢じりに色を付けない（読んだのは、
 [`edges.js`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L956-L957)
 と
 [`edgeMarker.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edgeMarker.ts#L105-L127)。
 実行）。
-これは番号か `default` の `linkStyle` と、リンクが取る `classDef` で成り立つ。
-頂点だけが取る `classDef` は何も失わないので報告しない。
-名前の大文字小文字の違い（`Stroke`）と、usecase の図の関係のスタイルは、
-読んだだけなので含めない。
+そのため、`:` の前に空白を置いて書いた小文字の `stroke` で、
+リンクの線に色を与え、
+そのリンクのスタイルでそれより前に `stroke:` という文字がないものは、
+矢じりにその色を付けさせない（実行。
+`linkStyle 0 stroke :#f00` は赤い線とテーマの色の矢じりを描く）。
+2 節の例外により、規則は `linkStyle` と `classDef` のそうした `stroke` を、
+いま何も失われないところでもすべて報告する。
+後の `stroke` が線に色を与えるとき（`linkStyle default stroke :#f00` の後の
+`linkStyle 0 stroke:#00f`。両方が青）、
+前の `stroke:`
+という文字が矢じりに色を与えるとき（`stroke:#00f,stroke :#f00`）、
+頂点だけが取る `classDef`（CSS が読み、
+整形ツールはほかの `classDef` と同じく書いたとおりに残す）、
+リンクのない図の `linkStyle default` もそうである（実行）。
+頂点の `style` は報告しない。
+そこでは整形ツールが、
+ほかの名前と同じく `stroke` を `:` の前の空白なしで印字し、
+ほかの名前の後のその空白はどの規則も報告しないからである。
+`stroke` で終わる別の名前（`text-stroke :#f00` はどの線にも色を付けず、
+空白なしなら矢じりだけに色を付ける。実行）と、
+名前の大文字小文字の違い（`Stroke :#f00`。空白を消しても助けにならない。
+読んだ）は報告しない。
+usecase の図の関係のスタイルは、読んだだけなので含めない。
+(2) なし。
+mermaid.js の文書は `linkStyle 3 stroke:#ff3,stroke-width:4px,color:red;` と、
+`note left of A:hi` と同じく、そこに空白を置かずに書く。
+(3) 「linkStyle stroke arrowhead color」「arrowhead color linkStyle」「marker
+color stroke linkStyle」「edge marker stroke color」。
+[#7974](https://github.com/mermaid-js/mermaid/pull/7974)（open）は印に
+`context-stroke` を与え、対応するブラウザでは矢じりが線の stroke を取る。
+同じことを、
+[#1236](https://github.com/mermaid-js/mermaid/issues/1236)（open）も求めている。
+規則は、mermaid.js がつもりどおりに読むものも報告し（基準 1）、
+その変更が開いている（基準 3）ので、入れない。
+(4) 空白を取り除く。
+
+`stroke` で終わる別の名前（`text-stroke :#f00` はどの線にも色を付けず、
+空白なしなら矢じりだけに色を付ける）も報告しない（実行）。
+リンクのない図の `linkStyle default`、どのリンクも取らない `classDef`、
+名前の大文字小文字の違い（`Stroke :#f00`。
+空白を消しても助けにならない）も報告しない（読んだ）。
+usecase の図の関係のスタイルは、読んだだけなので含めない。
 (2) なし。
 mermaid.js の文書は `linkStyle 3 stroke:#ff3,stroke-width:4px,color:red;` と、
 `note left of A:hi` と同じく、そこに空白を置かずに書く。
@@ -1465,14 +1512,23 @@ open の [#8084](https://github.com/mermaid-js/mermaid/pull/8084) は、
   mermaid.js の文書は、座標を小数点のある 0 から 1 の数で書く。
   (3) #7608 はほかの範囲を求めているが、それで `0,3` が数になることはない。
   (4) 小数点を書く。
-- quadrant-no-invalid-color: (1) 点や `classDef` の、
-  `#` のない 3 桁か 6 桁の 16 進の `color` は、
-  `#` を省いてよい mermaid.js の検査を通り、`fill="f00"` と描かれる。
-  ブラウザはそれを色として読まないので、
-  点は既定の色のままである（`validateHexCode` と `parseStyles` を読んだ。
-  実行）。
+- quadrant-no-invalid-color: (1) 点は自分のスタイルを取り、
+  次にそのクラスの最後の `classDef` のスタイルを取る。
+  どちらも色を与えなければテーマの色で、
+  どちらも幅を与えなければ幅 0px の縁で描かれる（`quadrantBuilder.ts`
+  を読んだ）。
+  `#` のない 3 桁か 6 桁の 16 進の `color` や `stroke-color` は、
+  `#` を省いてよい mermaid.js の検査を通り、
+  `fill="f00"` や `stroke="f00"` と描かれる。
+  ブラウザはそれを色として読まないので、点はテーマの色のままで、
+  縁は色を持たない（`validateHexCode` と `parseStyles` を読んだ。実行。
+  `stroke-color` は `stroke-width: 4px` と一緒に）。
   `color: red` は受理されない。
-  `stroke-color` も同じ検査を通るが、読んだだけなので含めない。
+  そうした値は、点がそれで描かれるところで報告する。
+  文の中の同じ名前の後の値が置き換えるとき（それは quadrant-no-duplicate-style
+  が報告する）、どの点も取らない `classDef` の値と、
+  点自身のスタイルが置き換える `classDef` の値は報告しない（実行）。
+  `stroke-color` は、点が 0px より広い縁で描かれるときだけ報告する。
   (2) なし。
   mermaid.js の文書は、どの色も `#` で書く。
   (3) 「quadrant point color hex」「quadrant color without #」、
@@ -2502,8 +2558,13 @@ fixture: 上の sankey の値（出さない）と、
   どの id のつもりかが分からない（基準 1）。
   flowchart-no-redefined-subgraph は提案を付けない。
   ありうる直しは 1 つの題か別の id である（基準 1）。
-  flowchart-no-spaced-link-stroke と agentflow-no-spaced-link-stroke は、
+  flowchart-no-spaced-stroke と agentflow-no-spaced-stroke は、
   `stroke` の `:` の前の空白を消す（実行）。
+  ただし、それが届くどのリンクのスタイルでも、後に `stroke` がないときに限る。
+  これはどの修正も変えない。
+  そうでないと、そのリンクの矢じりはこの色を取り、線は後の色を取るので（実行）、
+  書き換えを出さない。
+  どのリンクも取らないスタイルでは、この書き換えは描かれるものを何も変えない。
 - flowchart、agentflow、usecase: 3 つの `<diagram>-no-duplicate-direction` は、
   この文か、方向が違う相手の文を消す（flowchart の、
   同じ id の後の subgraph では、最初の subgraph の最後のもの）。
@@ -2606,6 +2667,8 @@ fixture: 上の sankey の値（出さない）と、
   quadrant-no-redefined-class と quadrant-no-redefined-quadrant は、
   この文か前の文を消す（実行）。
   quadrant-no-invalid-color は、値の前に `#` を書く（実行）。
+  ただし、値の後に `;` が続くときは出さない。
+  `#f00;` は文字参照として読まれ、入力が受理されないからである（実行）。
   quadrant-no-invalid-coordinate は、小数の `,` の代わりに `.` を書く（実行）。
   `,` を持つ座標はいつも `0`、`,`、
   数字である（`packages/spec/docs/diagrams/quadrant.ja.md` の座標。
@@ -2746,7 +2809,7 @@ fixture: 上の sankey の値（出さない）と、
     gantt-no-unknown-exclude（項目で始まる `excludes` の語は 1 つだけである）、
     quadrant-no-invalid-color（`#`）、quadrant-no-invalid-coordinate、
     xychart-no-invalid-orientation。
-  - flowchart-no-spaced-link-stroke と agentflow-no-spaced-link-stroke（`:`
+  - flowchart-no-spaced-stroke と agentflow-no-spaced-stroke（`:`
     の前の空白を消す）。
   - no-invalid-init-directive（3 つの書き換えすべて）、
     sequence-no-invalid-json、sequence-no-ignored-text、

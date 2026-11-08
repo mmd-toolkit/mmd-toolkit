@@ -14,19 +14,31 @@ Disallow a hexadecimal colour without `#` in the style of a point or a class.
 
 <!-- end auto-generated rule notice -->
 
-A point takes the colour of its `color` style. mermaid.js accepts three or six
-hexadecimal digits without `#` there without an error, but writes the text into
-the drawing as it is, and a browser does not read `f00` as a colour. The point
-is not drawn in the colour written.
+A point is drawn in the colour of its `color` style, and its border in the
+colour of its `stroke-color` style. mermaid.js accepts three or six hexadecimal
+digits without `#` in both without an error, but writes the text into the
+drawing as it is, and a browser does not read `f00` as a colour. The point or
+its border is not drawn in the colour written.
 
 ## Rule Details
 
 This rule applies to quadrant charts (`quadrantChart`). It reports the `color`
-style of a point or of a `classDef` when it is three or six hexadecimal digits
-without `#`.
+or `stroke-color` style of a point or of a `classDef` when it is three or six
+hexadecimal digits without `#` and a point is drawn with it: it is the last
+style of its name in the styles of the point or, where the point has none, in
+the last `classDef` of its class. A `stroke-color` is reported only where the
+point is drawn with a border wider than 0px, by a `stroke-width` of the point or
+of its class.
 
-`color: red` is not reported, because mermaid.js gives an error for a value that
-is not a hexadecimal code. The `stroke-color` style is not checked.
+A style that a later style of the same name in the same list overwrites, a
+`classDef` that no point takes, a `classDef` value that a style of the point
+overwrites, and a `classDef` that a later `classDef` of the same class replaces
+are not reported. `color: red` is not reported, because mermaid.js gives an
+error for a value that is not a hexadecimal code.
+
+When a `;` follows the colour directly, as in `color: f00;`, the rule reports it
+without a fix: with the `#` added, mermaid.js reads `#f00;` as the code of a
+character and rejects the diagram.
 
 Examples of **incorrect** code for this rule:
 
@@ -41,6 +53,12 @@ quadrantChart
 quadrantChart
   classDef hot color: f00
   Point A:::hot: [0.3, 0.5]
+```
+
+```mmd
+%% eslint @mmd-toolkit/quadrant-no-invalid-color: error
+quadrantChart
+  Point A: [0.3, 0.5] stroke-color: f00, stroke-width: 2px
 ```
 
 Examples of **correct** code for this rule:

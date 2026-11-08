@@ -10,7 +10,8 @@ interface StyleLiteral {
 }
 
 /** A `stroke` with whitespace before its `:`, and the edit that removes it. */
-export interface SpacedStroke {
+export interface SpacedStroke<Style extends StyleLiteral> {
+  readonly style: Style
   readonly range: Range
   readonly fix: RuleFixer | null
 }
@@ -20,23 +21,35 @@ function isCssWhitespace(character: string): boolean {
   return " \t\n\r\f".includes(character)
 }
 
-/**
- * The whitespace between the name of a style and its `:`, when the name ends
- * with `stroke`. The arrowhead of a link takes its colour from the first
- * `stroke:` in the style of the path, which `stroke :` does not contain, while
- * CSS reads the name without the whitespace.
- */
-function spaceBeforeColon(text: string): Range | null {
+/** The text of a style before its first `:` without the whitespace around it, with where that whitespace ends. */
+function declarationName(text: string): { name: string; end: number } | null {
   const colon = text.indexOf(":")
   if (colon < 0) return null
   let end = colon
   while (end > 0 && isCssWhitespace(text[end - 1])) end--
-  if (end === colon) return null
   let start = 0
   while (start < end && isCssWhitespace(text[start])) start++
-  const name = text.slice(start, end)
-  if (!name.endsWith("stroke") || [...name].some(isCssWhitespace)) return null
-  return [end, colon]
+  return { name: text.slice(start, end), end }
+}
+
+/** Whether the style is named `stroke`, whatever its case and the whitespace around the name. */
+export function isStrokeDeclaration(style: {
+  readonly value: string
+}): boolean {
+  return declarationName(style.value)?.name.toLowerCase() === "stroke"
+}
+
+/**
+ * The whitespace between the name of a style and its `:`, when the name is
+ * `stroke` in lower case. The mermaid.js documentation writes the name directly
+ * before the `:`, and mermaid.js finds the colour of the arrowhead of a link by
+ * looking for `stroke:`, which `stroke :` does not contain.
+ */
+function spaceBeforeColon(text: string): Range | null {
+  const declaration = declarationName(text)
+  if (declaration === null || declaration.name !== "stroke") return null
+  const colon = text.indexOf(":")
+  return declaration.end === colon ? null : [declaration.end, colon]
 }
 
 /**
@@ -45,21 +58,22 @@ function spaceBeforeColon(text: string): Range | null {
  * written text of the style is not the text of the source (a directive lies
  * inside it), the range is the style and there is no fix.
  */
-export function spacedStrokesOf(
+export function spacedStrokesOf<Style extends StyleLiteral>(
   sourceCode: MermaidSourceCode,
-  styles: readonly (StyleLiteral | null)[],
-): SpacedStroke[] {
-  const spaced: SpacedStroke[] = []
+  styles: readonly (Style | null)[],
+): SpacedStroke<Style>[] {
+  const spaced: SpacedStroke<Style>[] = []
   for (const style of styles) {
     if (style === null) continue
     const space = spaceBeforeColon(style.value)
     if (space === null) continue
     if (sourceCode.text.slice(...style.range) !== style.value) {
-      spaced.push({ range: style.range, fix: null })
+      spaced.push({ style, range: style.range, fix: null })
       continue
     }
     const range: Range = [style.range[0] + space[0], style.range[0] + space[1]]
     spaced.push({
+      style,
       range,
       fix: canEditRange(sourceCode, range)
         ? (fixer) => fixer.removeRange(range)

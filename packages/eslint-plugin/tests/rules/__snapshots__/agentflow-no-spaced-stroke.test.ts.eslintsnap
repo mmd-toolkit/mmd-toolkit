@@ -1,0 +1,1210 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> docs/rules/agentflow-no-spaced-stroke.md incorrect 1
+Filename: agentflow-no-spaced-stroke-incorrect-1.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke :#f00,stroke-width:4px
+    |                     ^ [1]
+  4 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke:#f00,stroke-width:4px
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> docs/rules/agentflow-no-spaced-stroke.md incorrect 2
+Filename: agentflow-no-spaced-stroke-incorrect-2.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  4 |   class A hot
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   classDef hot stroke:#f00
+  4 |   class A hot
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-after-other-class-stroke
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-after-other-class-stroke-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef cold stroke:#00f
+  4 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  5 |   class e1 cold
+  6 |   class e1 hot
+  7 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef cold stroke:#00f
+  4 |   classDef hot stroke:#f00
+  5 |   class e1 cold
+  6 |   class e1 hot
+  7 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-comment-after
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-comment-after-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot stroke :#f00 %% c
+    |                      ^ [1]
+  4 |   class e1 hot
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot stroke:#f00 %% c
+  4 |   class e1 hot
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-default-link-style-too
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-default-link-style-too-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   linkStyle default stroke :#00f
+    |                           ^ [1]
+  4 |   classDef hot stroke :#f00
+    |                      ^ [2]
+  5 |   class e1 hot
+  6 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   linkStyle default stroke:#00f
+  4 |   classDef hot stroke :#f00
+  5 |   class e1 hot
+  6 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+[2] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-escaped-comma-after
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-escaped-comma-after-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot stroke :#f00\,fill:none
+    |                      ^ [1]
+  4 |   class e1 hot
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot stroke:#f00\,fill:none
+  4 |   class e1 hot
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-other-class-taken-by-link
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-other-class-taken-by-link-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  4 |   classDef cold stroke:#00f
+  5 |   class e1 cold
+  6 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot stroke:#f00
+  4 |   classDef cold stroke:#00f
+  5 |   class e1 cold
+  6 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-redefined-with-stroke
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-redefined-with-stroke-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  4 |   classDef hot stroke:#00f
+  5 |   class e1 hot
+  6 |
+
+Output: unchanged
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-several-names
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-several-names-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot,cold stroke :#f00
+    |                           ^ [1]
+  4 |   class e1 cold
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot,cold stroke:#f00
+  4 |   class e1 cold
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-taken-before-link-generated-id
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-taken-before-link-generated-id-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  3 |   class L_A_B_0 hot
+  4 |   A --> B
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   classDef hot stroke:#f00
+  3 |   class L_A_B_0 hot
+  4 |   A --> B
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-taken-before-link
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-taken-before-link-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  3 |   class e1 hot
+  4 |   A e1@--> B
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   classDef hot stroke:#f00
+  3 |   class e1 hot
+  4 |   A e1@--> B
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-taken-by-generated-link-id
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-taken-by-generated-link-id-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  4 |   class L_A_B_0 hot
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   classDef hot stroke:#f00
+  4 |   class L_A_B_0 hot
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-taken-by-link-after
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-taken-by-link-after-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  4 |   class e1 hot
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot stroke:#f00
+  4 |   class e1 hot
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-taken-by-link-before
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-taken-by-link-before-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   class e1 hot
+  4 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   class e1 hot
+  4 |   classDef hot stroke:#f00
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-taken-by-triple-colon-before-class-def
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-taken-by-triple-colon-before-class-def-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   e1:::hot
+  4 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   e1:::hot
+  4 |   classDef hot stroke:#f00
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-taken-by-triple-colon-generated-link-id
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-taken-by-triple-colon-generated-link-id-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  4 |   L_A_B_0:::hot
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   classDef hot stroke:#f00
+  4 |   L_A_B_0:::hot
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-taken-by-triple-colon-in-chain
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-taken-by-triple-colon-in-chain-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  4 |   C --> e1:::hot
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot stroke:#f00
+  4 |   C --> e1:::hot
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-taken-by-triple-colon
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-taken-by-triple-colon-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  4 |   e1:::hot
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot stroke:#f00
+  4 |   e1:::hot
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-taken-by-triple-colon-with-comma-id
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-taken-by-triple-colon-with-comma-id-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  4 |   A,e1:::hot
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot stroke:#f00
+  4 |   A,e1:::hot
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-taken-by-vertex-and-link
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-taken-by-vertex-and-link-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  4 |   class A,e1 hot
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot stroke:#f00
+  4 |   class A,e1 hot
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-taken-by-vertex
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-taken-by-vertex-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  4 |   class A hot
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   classDef hot stroke:#f00
+  4 |   class A hot
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-taken-by-vertex-link-style-stroke
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-taken-by-vertex-link-style-stroke-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  4 |   class A hot
+  5 |   linkStyle 0 stroke:#00f
+  6 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot stroke:#f00
+  4 |   class A hot
+  5 |   linkStyle 0 stroke:#00f
+  6 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-taken-by-vertex-shorthand
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-taken-by-vertex-shorthand-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A:::hot --> B
+  3 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  4 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A:::hot --> B
+  3 |   classDef hot stroke:#f00
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-then-default-link-style-stroke
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-then-default-link-style-stroke-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  4 |   class e1 hot
+  5 |   linkStyle default stroke:#00f
+  6 |
+
+Output: unchanged
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-then-link-style-stroke
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-then-link-style-stroke-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  4 |   class e1 hot
+  5 |   linkStyle 0 stroke:#00f
+  6 |
+
+Output: unchanged
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-then-other-class-stroke
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-then-other-class-stroke-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  4 |   classDef cold stroke:#00f
+  5 |   class e1 hot
+  6 |   class e1 cold
+  7 |
+
+Output: unchanged
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-triple-colon-before-link
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-triple-colon-before-link-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  3 |   e1:::hot
+  4 |   A e1@--> B
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   classDef hot stroke:#f00
+  3 |   e1:::hot
+  4 |   A e1@--> B
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-triple-colon-on-vertex
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-triple-colon-on-vertex-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  4 |   A:::hot
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot stroke:#f00
+  4 |   A:::hot
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-triple-colon-several-classes
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-triple-colon-several-classes-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot,cold stroke :#f00
+    |                           ^ [1]
+  4 |   e1:::hot,cold
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A e1@--> B
+  3 |   classDef hot,cold stroke:#f00
+  4 |   e1:::hot,cold
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/class-def-unused
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/class-def-unused-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  4 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   classDef hot stroke:#f00
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-after-comment-line
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-after-comment-line-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   %% note
+  4 |   linkStyle 0 stroke :#f00
+    |                     ^ [1]
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   %% note
+  4 |   linkStyle 0 stroke:#f00
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-after-directive-line
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-after-directive-line-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   %%{init: {}}%%
+  4 |   linkStyle 0 stroke :#f00
+    |                     ^ [1]
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   %%{init: {}}%%
+  4 |   linkStyle 0 stroke:#f00
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-after-empty-line
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-after-empty-line-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |
+  4 |   linkStyle 0 stroke :#f00
+    |                     ^ [1]
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |
+  4 |   linkStyle 0 stroke:#f00
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-comment-adjacent
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-comment-adjacent-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke :#f00%% c
+    |                     ^ [1]
+  4 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke:#f00%% c
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-comment-after
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-comment-after-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke :#f00 %% c
+    |                     ^ [1]
+  4 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke:#f00 %% c
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-default-comment-after
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-default-comment-after-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle default stroke :#f00 %% c
+    |                           ^ [1]
+  4 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle default stroke:#f00 %% c
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-default
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-default-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle default stroke :#f00
+    |                           ^ [1]
+  4 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle default stroke:#f00
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-default-replaced-by-default
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-default-replaced-by-default-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle default stroke :#f00
+    |                           ^ [1]
+  4 |   linkStyle default stroke:#00f
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle default stroke:#f00
+  4 |   linkStyle default stroke:#00f
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-default-then-link-style-other-style
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-default-then-link-style-other-style-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle default stroke :#f00
+    |                           ^ [1]
+  4 |   linkStyle 0 stroke-width:4px
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle default stroke:#f00
+  4 |   linkStyle 0 stroke-width:4px
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-default-then-link-style-stroke
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-default-then-link-style-stroke-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle default stroke :#f00
+    |                           ^ [1]
+  4 |   linkStyle 0 stroke:#00f
+  5 |
+
+Output: unchanged
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-default-then-link-style-text-stroke
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-default-then-link-style-text-stroke-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle default stroke :#f00
+    |                           ^ [1]
+  4 |   linkStyle 0 text-stroke:#00f
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle default stroke:#f00
+  4 |   linkStyle 0 text-stroke:#00f
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-default-without-links
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-default-without-links-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A
+  3 |   linkStyle default stroke :#f00
+    |                           ^ [1]
+  4 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A
+  3 |   linkStyle default stroke:#f00
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-directive-inside-style
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-directive-inside-style-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke %%{init: {}}%%:#f00
+    |               ^~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+Output: unchanged
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-escaped-comma-after
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-escaped-comma-after-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke :#f00\,stroke-width:4px
+    |                     ^ [1]
+  4 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke:#f00\,stroke-width:4px
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-escaped-comma-before
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-escaped-comma-before-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke-width:4px\, stroke :#f00
+    |                                        ^ [1]
+  4 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke-width:4px\, stroke:#f00
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-ignored-semicolon
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-ignored-semicolon-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke :red;
+    |                     ^ [1]
+  4 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke:red;
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-many-spaces
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-many-spaces-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke   :#f00
+    |                     ^~~ [1]
+  4 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke:#f00
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-replaced-by-link-style
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-replaced-by-link-style-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke :#f00
+    |                     ^ [1]
+  4 |   linkStyle 0 stroke:#00f
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke:#f00
+  4 |   linkStyle 0 stroke:#00f
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-second-style
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-second-style-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 fill:none, stroke :#f00
+    |                                ^ [1]
+  4 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 fill:none, stroke:#f00
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-several-links
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-several-links-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   B --> C
+  4 |   linkStyle 0,1 stroke :#f00
+    |                       ^ [1]
+  5 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   B --> C
+  4 |   linkStyle 0,1 stroke:#f00
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-spaced-stroke
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-spaced-stroke-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke :#f00,stroke-width:4px
+    |                     ^ [1]
+  4 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke:#f00,stroke-width:4px
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-spaced-stroke-then-capital-stroke
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-spaced-stroke-then-capital-stroke-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke :#f00,Stroke:#00f
+    |                     ^ [1]
+  4 |
+
+Output: unchanged
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-spaced-stroke-then-spaced-capital-stroke
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-spaced-stroke-then-spaced-capital-stroke-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke :#f00, STROKE :#00f
+    |                     ^ [1]
+  4 |
+
+Output: unchanged
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-spaced-stroke-then-stroke
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-spaced-stroke-then-stroke-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke :#f00,stroke:#00f
+    |                     ^ [1]
+  4 |
+
+Output: unchanged
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-spaces-both-sides-of-colon
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-spaces-both-sides-of-colon-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke : #f00
+    |                     ^ [1]
+  4 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke: #f00
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-stroke-then-spaced-stroke
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-stroke-then-spaced-stroke-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke:#00f,stroke :#f00
+    |                                 ^ [1]
+  4 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke:#00f,stroke:#f00
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-trailing-spaces
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-trailing-spaces-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke :#f00  
+    |                     ^ [1]
+  4 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke:#f00  
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-two-spaced-strokes
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-two-spaced-strokes-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke :#f00, stroke :#0f0
+    |                     ^ [1]         ^ [2]
+  4 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke :#f00, stroke:#0f0
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+[2] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---

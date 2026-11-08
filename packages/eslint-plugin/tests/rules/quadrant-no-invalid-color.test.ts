@@ -43,6 +43,18 @@ new RuleTester(LANGUAGE_CONFIG).run(
       },
 
       {
+        name: "invalid/quadrant/point-color-semicolon-after-crlf",
+        filename: "point-color-semicolon-after-crlf.mmd",
+        code: `quadrantChart\r
+  Point A: [0.3, 0.5] color: f00;\r
+`,
+        errors: [
+          { message: BARE, line: 2, column: 30, endLine: 2, endColumn: 33 },
+        ],
+        output: null,
+      },
+
+      {
         name: "invalid/quadrant/point-color-tab-after-colon",
         filename: "point-color-tab-after-colon.mmd",
         code: `quadrantChart
