@@ -8,6 +8,7 @@ import type {
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import type { MermaidSourceCode } from "../source-code.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
+import { positionsOfValue } from "../utils/directive-free-text.ts"
 import { styleOf, type QuadrantStyle } from "../utils/quadrant-styles.ts"
 
 /** Three or six hexadecimal digits, which `validateHexCode` of mermaid.js accepts without a `#`. */
@@ -30,7 +31,7 @@ function lastStyles(
   return last
 }
 
-/** Where the value stands in the text of a style: after the first `:` and the whitespace that follows it. */
+/** Where the value stands in the value of a style: after the first `:` and the whitespace that follows it. */
 function valueRange(text: string, value: string): Range {
   const afterColon = text.slice(text.indexOf(":") + 1)
   const start = text.length - afterColon.trimStart().length
@@ -140,25 +141,27 @@ export const quadrantNoInvalidColor: MermaidRuleDefinition<{
         for (const literal of drawn) {
           const { value } = styleOf(literal)
           if (typeof value !== "string" || !BARE_HEX_COLOR.test(value)) continue
-          const [start, end] = valueRange(literal.value, value)
-          const range: Range = [
-            literal.range[0] + start,
-            literal.range[0] + end,
-          ]
-          // Where a directive lies inside the style, the written text is not
-          // the value: the report covers the style and has no fix.
-          const written =
-            sourceCode.text.slice(...literal.range) === literal.value
+          // Where the written text of the style is not its value, the report
+          // covers the style and has no fix.
+          const positions = positionsOfValue(
+            sourceCode,
+            literal.range,
+            literal.value,
+          )
+          const [from, to] = valueRange(literal.value, value)
+          const range: Range | null =
+            positions === null ? null : [positions[from], positions[to - 1] + 1]
           context.report({
-            loc: written
-              ? {
-                  start: sourceCode.getLocFromIndex(range[0]),
-                  end: sourceCode.getLocFromIndex(range[1]),
-                }
-              : literal.loc,
+            loc:
+              range === null
+                ? literal.loc
+                : {
+                    start: sourceCode.getLocFromIndex(range[0]),
+                    end: sourceCode.getLocFromIndex(range[1]),
+                  },
             messageId: "bare",
             data: { color: value },
-            fix: written ? hashFix(sourceCode, range) : null,
+            fix: range === null ? null : hashFix(sourceCode, range),
           })
         }
       },

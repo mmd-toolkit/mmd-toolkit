@@ -33,19 +33,6 @@ for the form to affect, and a browser reads `stroke :#f00` there as it reads
 `stroke:#f00`. A name that only ends with `stroke`, such as `text-stroke`, and a
 name in another case, such as `Stroke`, are not reported.
 
-The fix removes the whitespace. It is not offered when a style named `stroke`,
-in any case and with or without whitespace before its `:`, follows the style in
-the styles of a link that the style reaches: the line then takes the colour of
-the later style, and the arrowhead, which takes the colour of the first
-`stroke:`, would take the colour of this style or of an earlier one. The styles
-of a link are those of its classes, in the order they were given, then those of
-`linkStyle default`, then its own. A class is given to a link by a `class`
-statement or a `:::`, as in `e1:::hot`, that comes after the statement that
-writes the link. The fix is also not offered when a directive lies inside the
-style, as in `linkStyle 0 stroke %%{init: {}}%%:#f00`, or when mermaid.js leaves
-a `;` out of the style, as in `classDef hot stroke :#f00;fill:none`, whose one
-style is `stroke :#f00fill:none`; the style is still reported.
-
 Examples of **incorrect** code for this rule:
 
 ```mmd

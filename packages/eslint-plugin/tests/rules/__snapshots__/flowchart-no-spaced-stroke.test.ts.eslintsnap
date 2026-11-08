@@ -117,6 +117,26 @@ Output:
 ---
 
 
+Test: flowchart-no-spaced-stroke >> invalid >>> invalid/flowchart/class-def-directive-inside-style
+Filename: tests/fixtures/rules/flowchart-no-spaced-stroke/invalid/flowchart/class-def-directive-inside-style-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   classDef hot stroke %%{init: {}}%%:#f00
+    |                      ^ [1]
+  4 |
+
+Output:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   classDef hot stroke%%{init: {}}%%:#f00
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
 Test: flowchart-no-spaced-stroke >> invalid >>> invalid/flowchart/class-def-escaped-comma-after
 Filename: tests/fixtures/rules/flowchart-no-spaced-stroke/invalid/flowchart/class-def-escaped-comma-after-input.mmd
 
@@ -1115,6 +1135,86 @@ Output:
 ---
 
 
+Test: flowchart-no-spaced-stroke >> invalid >>> invalid/flowchart/link-style-directive-before-style
+Filename: tests/fixtures/rules/flowchart-no-spaced-stroke/invalid/flowchart/link-style-directive-before-style-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 %%{init: {}}%%stroke :#f00
+    |                                   ^ [1]
+  4 |
+
+Output:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 %%{init: {}}%%stroke:#f00
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: flowchart-no-spaced-stroke >> invalid >>> invalid/flowchart/link-style-directive-in-name
+Filename: tests/fixtures/rules/flowchart-no-spaced-stroke/invalid/flowchart/link-style-directive-in-name-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 s%%{init: {}}%%troke :#f00
+    |                                   ^ [1]
+  4 |
+
+Output:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 s%%{init: {}}%%troke:#f00
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: flowchart-no-spaced-stroke >> invalid >>> invalid/flowchart/link-style-directive-in-value
+Filename: tests/fixtures/rules/flowchart-no-spaced-stroke/invalid/flowchart/link-style-directive-in-value-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke :#f%%{init: {}}%%00
+    |                     ^ [1]
+  4 |
+
+Output:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke:#f%%{init: {}}%%00
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: flowchart-no-spaced-stroke >> invalid >>> invalid/flowchart/link-style-directive-inside-space
+Filename: tests/fixtures/rules/flowchart-no-spaced-stroke/invalid/flowchart/link-style-directive-inside-space-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke %%{init: {}}%% :#f00
+    |                     ^~~~~~~~~~~~~~~~ [1]
+  4 |
+
+Output:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke%%{init: {}}%%:#f00
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
 Test: flowchart-no-spaced-stroke >> invalid >>> invalid/flowchart/link-style-directive-inside-style
 Filename: tests/fixtures/rules/flowchart-no-spaced-stroke/invalid/flowchart/link-style-directive-inside-style-input.mmd
 
@@ -1122,10 +1222,14 @@ Code:
   1 | flowchart LR
   2 |   A --> B
   3 |   linkStyle 0 stroke %%{init: {}}%%:#f00
-    |               ^~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                     ^ [1]
   4 |
 
-Output: unchanged
+Output:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke%%{init: {}}%%:#f00
+  4 |
 
 [1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
 ---

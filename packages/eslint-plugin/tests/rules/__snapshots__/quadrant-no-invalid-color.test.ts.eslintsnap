@@ -97,6 +97,26 @@ Output:
 ---
 
 
+Test: quadrant-no-invalid-color >> invalid >>> invalid/quadrant/class-def-color-directive-inside
+Filename: tests/fixtures/rules/quadrant-no-invalid-color/invalid/quadrant/class-def-color-directive-inside-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   classDef hot color: f%%{init: {}}%%00
+    |                       ^~~~~~~~~~~~~~~~~ [1]
+  3 |   Point A:::hot: [0.3, 0.5]
+  4 |
+
+Output:
+  1 | quadrantChart
+  2 |   classDef hot color: #f%%{init: {}}%%00
+  3 |   Point A:::hot: [0.3, 0.5]
+  4 |
+
+[1] mermaid.js accepts `f00` as a colour but writes it into the drawing as it is, which browsers do not read, so the colour is not drawn.
+---
+
+
 Test: quadrant-no-invalid-color >> invalid >>> invalid/quadrant/class-def-color
 Filename: tests/fixtures/rules/quadrant-no-invalid-color/invalid/quadrant/class-def-color-input.mmd
 
@@ -468,13 +488,85 @@ Output: unchanged
 ---
 
 
+Test: quadrant-no-invalid-color >> invalid >>> invalid/quadrant/point-color-directive-after-value
+Filename: tests/fixtures/rules/quadrant-no-invalid-color/invalid/quadrant/point-color-directive-after-value-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   Point A: [0.3, 0.5] color: f00%%{init: {}}%%, radius: 12
+    |                              ^~~ [1]
+  3 |
+
+Output:
+  1 | quadrantChart
+  2 |   Point A: [0.3, 0.5] color: #f00%%{init: {}}%%, radius: 12
+  3 |
+
+[1] mermaid.js accepts `f00` as a colour but writes it into the drawing as it is, which browsers do not read, so the colour is not drawn.
+---
+
+
+Test: quadrant-no-invalid-color >> invalid >>> invalid/quadrant/point-color-directive-before-value
+Filename: tests/fixtures/rules/quadrant-no-invalid-color/invalid/quadrant/point-color-directive-before-value-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   Point A: [0.3, 0.5] color: %%{init: {}}%%f00
+    |                                            ^~~ [1]
+  3 |
+
+Output:
+  1 | quadrantChart
+  2 |   Point A: [0.3, 0.5] color: %%{init: {}}%%#f00
+  3 |
+
+[1] mermaid.js accepts `f00` as a colour but writes it into the drawing as it is, which browsers do not read, so the colour is not drawn.
+---
+
+
+Test: quadrant-no-invalid-color >> invalid >>> invalid/quadrant/point-color-directive-in-name
+Filename: tests/fixtures/rules/quadrant-no-invalid-color/invalid/quadrant/point-color-directive-in-name-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   Point A: [0.3, 0.5] co%%{init: {}}%%lor: f00
+    |                                            ^~~ [1]
+  3 |
+
+Output:
+  1 | quadrantChart
+  2 |   Point A: [0.3, 0.5] co%%{init: {}}%%lor: #f00
+  3 |
+
+[1] mermaid.js accepts `f00` as a colour but writes it into the drawing as it is, which browsers do not read, so the colour is not drawn.
+---
+
+
 Test: quadrant-no-invalid-color >> invalid >>> invalid/quadrant/point-color-directive-inside
 Filename: tests/fixtures/rules/quadrant-no-invalid-color/invalid/quadrant/point-color-directive-inside-input.mmd
 
 Code:
   1 | quadrantChart
   2 |   Point A: [0.3, 0.5] color: f%%{init: {}}%%00
-    |                       ^~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    |                              ^~~~~~~~~~~~~~~~~ [1]
+  3 |
+
+Output:
+  1 | quadrantChart
+  2 |   Point A: [0.3, 0.5] color: #f%%{init: {}}%%00
+  3 |
+
+[1] mermaid.js accepts `f00` as a colour but writes it into the drawing as it is, which browsers do not read, so the colour is not drawn.
+---
+
+
+Test: quadrant-no-invalid-color >> invalid >>> invalid/quadrant/point-color-directive-inside-then-semicolon
+Filename: tests/fixtures/rules/quadrant-no-invalid-color/invalid/quadrant/point-color-directive-inside-then-semicolon-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   Point A: [0.3, 0.5] color: f%%{init: {}}%%00;
+    |                              ^~~~~~~~~~~~~~~~~ [1]
   3 |
 
 Output: unchanged

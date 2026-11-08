@@ -2242,8 +2242,31 @@ above; a rule named with none offers nothing.
   (run), only when no `stroke` stands after it in the styles of any link that it
   reaches, which no fix changes; otherwise the arrowhead of such a link would
   take this colour while its line takes the later one (run), and no edit is
-  offered. Where no link takes the style, the edit changes nothing that is
-  drawn.
+  offered. Nor is one offered where mermaid.js leaves a `;` out of the style, as
+  in `classDef hot stroke :#f00;fill:none`, whose one style is
+  `stroke :#f00fill:none`: without the whitespace it is `stroke:#f00fill:none`,
+  which colours neither the line nor the arrowhead, as before (run), so the edit
+  would only silence the rule (criterion 2). A directive inside the style stays
+  where it is: the edit removes the whitespace between the name and the `:` and
+  keeps a directive that stands between them, so
+  `linkStyle 0 stroke %%{init: {}}%%:#f00` becomes
+  `linkStyle 0 stroke%%{init: {}}%%:#f00`, and a directive in the name or in the
+  value, as in `s%%{init: {}}%%troke :#f00` and `stroke :#f%%{init: {}}%%00`, is
+  left as it is; each result gives the arrowhead the colour of the line (run,
+  flowchart and agentflow). Where no text `stroke:` stands before the style in
+  the styles of a link, the edit gives the arrowhead of that link the colour of
+  its line in place of the colour of the theme (run:
+  `linkStyle 0 stroke :#f00`); elsewhere, including where no link takes the
+  style, it changes nothing that is drawn (run: `stroke:#00f,stroke :#f00`). The
+  edit is a fix (listed under Fixes) on the premise that the author did not mean
+  the arrowhead to keep the colour of the theme, which rests on two facts: in
+  the styles of a link, the form that the documentation of mermaid.js shows
+  gives the arrowhead the colour of the line (run:
+  `linkStyle 0 stroke:#ff3,stroke-width:4px,color:red;`, the example of the
+  documentation on the first link), so a coloured line with an arrowhead in the
+  colour of the theme is written there only in a form that the documentation
+  does not show, such as this one; and the rule document says to turn the rule
+  off where the form is written on purpose.
 - flowchart, agentflow, and usecase: the three
   `<diagram>-no-duplicate-direction` rules remove this statement or the one
   whose direction it differs from (in flowchart, in a later subgraph of an id,
@@ -2325,8 +2348,14 @@ above; a rule named with none offers nothing.
   same name before it in the list, with a `,` next to it;
   quadrant-no-redefined-class and quadrant-no-redefined-quadrant remove this
   statement or the one before it (run). quadrant-no-invalid-color writes `#`
-  before the value (run), but not when a `;` follows the value, where `#f00;`
-  would be read as a character reference and the input rejected (run).
+  before the value (run), but not when a `;` follows the value, directly or with
+  only directives between (`color: f00%%{init: {}}%%;`), where `#f00;` would be
+  read as a character reference and the input rejected (run, both). A directive
+  inside the style stays where it is, and the `#` goes directly before the first
+  character of the value: `color: f%%{init: {}}%%00`,
+  `color: %%{init: {}}%%f00`, and `co%%{init: {}}%%lor: f00` become
+  `color: #f%%{init: {}}%%00`, `color: %%{init: {}}%%#f00`, and
+  `co%%{init: {}}%%lor: #f00`, which draw the point in that colour (run).
   quadrant-no-invalid-coordinate writes `.` for a decimal `,` (run). A
   coordinate with a `,` is always `0`, the `,`, and digits
   (`packages/spec/docs/diagrams/quadrant.md`, the coordinate: `1,5` is

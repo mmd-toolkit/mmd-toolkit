@@ -2549,7 +2549,35 @@ fixture: 上の sankey の値（出さない）と、
   これはどの修正も変えない。
   そうでないと、そのリンクの矢じりはこの色を取り、線は後の色を取るので（実行）、
   書き換えを出さない。
-  どのリンクも取らないスタイルでは、この書き換えは描かれるものを何も変えない。
+  mermaid.js がスタイルから `;` を落とすときも、書き換えを出さない。
+  `classDef hot stroke :#f00;fill:none` の 1 つのスタイルは
+  `stroke :#f00fill:none` である。
+  空白を消すと `stroke:#f00fill:none` になり、前と同じく、
+  線にも矢じりにも色を付けない（実行）。
+  そのため、この書き換えは規則を黙らせるだけである（基準 2）。
+  スタイルの中の directive は、その場に残す。
+  名前と `:` の間の空白を消し、その間の directive は残すので、
+  `linkStyle 0 stroke %%{init: {}}%%:#f00` は
+  `linkStyle 0 stroke%%{init: {}}%%:#f00` になる。
+  名前や値の中の directive（`s%%{init: {}}%%troke :#f00`、
+  `stroke :#f%%{init: {}}%%00`）も、そのまま残す。
+  どの結果も、矢じりに線の色を与える（実行。flowchart と agentflow）。
+  リンクのスタイルで、このスタイルの前に `stroke:` という文字がないとき、
+  この書き換えはそのリンクの矢じりに、テーマの色の代わりに線の色を与える（実行。
+  `linkStyle 0 stroke :#f00`）。
+  それ以外では、どのリンクも取らないスタイルを含め、
+  描かれるものを何も変えない（実行。`stroke:#00f,stroke :#f00`）。
+  この書き換えを自動修正にする（「自動修正」の項に挙げる）のは、
+  書き手が矢じりをテーマの色のままにするつもりではなかった、という前提による。
+  この前提は 2 つの事実に拠る。
+  1 つは、リンクのスタイルでは、mermaid.js の文書が示す形が、
+  矢じりに線の色を与えることである（実行。
+  文書の例を最初のリンクにした
+  `linkStyle 0 stroke:#ff3,stroke-width:4px,color:red;`）。
+  そのため、色を付けた線とテーマの色の矢じりは、そこでは、この形のような、
+  文書が示さない形でしか書けない。
+  もう 1 つは、この形を意図して書くときは規則を無効にする、
+  と規則の文書が書いていることである。
 - flowchart、agentflow、usecase: 3 つの `<diagram>-no-duplicate-direction` は、
   この文か、方向が違う相手の文を消す（flowchart の、
   同じ id の後の subgraph では、最初の subgraph の最後のもの）。
@@ -2652,8 +2680,14 @@ fixture: 上の sankey の値（出さない）と、
   quadrant-no-redefined-class と quadrant-no-redefined-quadrant は、
   この文か前の文を消す（実行）。
   quadrant-no-invalid-color は、値の前に `#` を書く（実行）。
-  ただし、値の後に `;` が続くときは出さない。
-  `#f00;` は文字参照として読まれ、入力が受理されないからである（実行）。
+  ただし、値の後に `;` が続くときは、
+  間に directive だけがあるとき（`color: f00%%{init: {}}%%;`）も含め、出さない。
+  `#f00;` は文字参照として読まれ、入力が受理されないからである（実行。両方）。
+  スタイルの中の directive はその場に残し、`#` は値の最初の文字の直前に書く。
+  `color: f%%{init: {}}%%00`、`color: %%{init: {}}%%f00`、
+  `co%%{init: {}}%%lor: f00` は、`color: #f%%{init: {}}%%00`、
+  `color: %%{init: {}}%%#f00`、`co%%{init: {}}%%lor: #f00` になり、
+  点はその色で描かれる（実行）。
   quadrant-no-invalid-coordinate は、小数の `,` の代わりに `.` を書く（実行）。
   `,` を持つ座標はいつも `0`、`,`、
   数字である（`packages/spec/docs/diagrams/quadrant.ja.md` の座標。

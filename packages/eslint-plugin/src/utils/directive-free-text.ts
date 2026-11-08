@@ -1,4 +1,29 @@
+import type { Range } from "@mmd-toolkit/ast"
 import type { MermaidSourceCode } from "../source-code.ts"
+
+/** The positions from `start` to `end` that are not in a directive. */
+function positionsWithoutDirectives(
+  sourceCode: MermaidSourceCode,
+  start: number,
+  end: number,
+): number[] {
+  const positions: number[] = []
+  for (let at = start; at < end; at++) {
+    const inDirective = sourceCode.ast.directives.some(
+      (directive) => directive.range[0] <= at && at < directive.range[1],
+    )
+    if (!inDirective) positions.push(at)
+  }
+  return positions
+}
+
+/** The characters of the source at `positions`. */
+function textAt(
+  sourceCode: MermaidSourceCode,
+  positions: readonly number[],
+): string {
+  return positions.map((at) => sourceCode.text[at]).join("")
+}
 
 /**
  * The text of `sourceCode` from `start` to `end` (UTF-16 positions) without the
@@ -11,12 +36,20 @@ export function textWithoutDirectives(
   start: number,
   end: number,
 ): string {
-  let text = ""
-  for (let at = start; at < end; at++) {
-    const inDirective = sourceCode.ast.directives.some(
-      (directive) => directive.range[0] <= at && at < directive.range[1],
-    )
-    if (!inDirective) text += sourceCode.text[at]
-  }
-  return text
+  return textAt(sourceCode, positionsWithoutDirectives(sourceCode, start, end))
+}
+
+/**
+ * The positions in the source of the characters of `value`, which the tree
+ * holds as the written text of `range` without its directives. It is `null`
+ * where the value is not that text: mermaid.js leaves a `;` out of a style in
+ * a `classDef`, so the written text and the value differ.
+ */
+export function positionsOfValue(
+  sourceCode: MermaidSourceCode,
+  [start, end]: Range,
+  value: string,
+): number[] | null {
+  const positions = positionsWithoutDirectives(sourceCode, start, end)
+  return textAt(sourceCode, positions) === value ? positions : null
 }

@@ -1,7 +1,7 @@
 import type { RuleFixer } from "@eslint/core"
 import type { Range } from "@mmd-toolkit/ast"
 import type { MermaidSourceCode } from "../source-code.ts"
-import { canEditRange } from "./edit-range.ts"
+import { positionsOfValue } from "./directive-free-text.ts"
 
 /** A style of a statement, as the tree holds it: the written text and where it stands. */
 interface StyleLiteral {
@@ -48,12 +48,27 @@ function spaceBeforeColon(text: string): Range | null {
 }
 
 /**
+ * Removes the characters at `positions`: one range for each run of positions
+ * that touch. A directive between two runs stays where it is.
+ */
+function removal(positions: readonly number[]): RuleFixer {
+  const ranges: Range[] = []
+  for (const at of positions) {
+    const last = ranges.at(-1)
+    if (last !== undefined && last[1] === at) last[1] = at + 1
+    else ranges.push([at, at + 1])
+  }
+  return (fixer) => ranges.map((range) => fixer.removeRange(range))
+}
+
+/**
  * The `stroke` styles of `styles` that have whitespace before the `:`. The
- * range is that whitespace in the source, and the fix removes it. Where the
- * written text of the style is not the text of the source, the range is the
- * style and there is no fix: a directive lies inside the style, or a `;` is
- * left out of its value, as in `classDef hot stroke :#f00;fill:none`, whose one
- * style is `stroke :#f00fill:none`.
+ * range is that whitespace in the source, from its first to its last character,
+ * and the fix removes it; a directive that lies in the whitespace is not part
+ * of the edit and stays. Where the written text of the style is not the value,
+ * the range is the style and there is no fix: mermaid.js leaves a `;` out of
+ * the value, as in `classDef hot stroke :#f00;fill:none`, whose one style is
+ * `stroke :#f00fill:none`.
  */
 export function spacedStrokesOf<Style extends StyleLiteral>(
   sourceCode: MermaidSourceCode,
@@ -64,17 +79,16 @@ export function spacedStrokesOf<Style extends StyleLiteral>(
     if (style === null) continue
     const space = spaceBeforeColon(style.value)
     if (space === null) continue
-    if (sourceCode.text.slice(...style.range) !== style.value) {
+    const positions = positionsOfValue(sourceCode, style.range, style.value)
+    if (positions === null) {
       spaced.push({ style, range: style.range, fix: null })
       continue
     }
-    const range: Range = [style.range[0] + space[0], style.range[0] + space[1]]
+    const whitespace = positions.slice(space[0], space[1])
     spaced.push({
       style,
-      range,
-      fix: canEditRange(sourceCode, range)
-        ? (fixer) => fixer.removeRange(range)
-        : null,
+      range: [whitespace[0], whitespace[whitespace.length - 1] + 1],
+      fix: removal(whitespace),
     })
   }
   return spaced
