@@ -343,7 +343,9 @@ function layoutTitle(
   // mermaid.js keeps the whitespace after the separator in the title, and
   // draws the same text without it (docs/compatibility.md, Texts after a
   // keyword that are drawn the same).
-  if (!keepsSeparator) trimTextAfterKeyword(source, atoms, [text.start, end])
+  if (!keepsSeparator) {
+    trimTextAfterKeyword(source, atoms, [text.start, end], true)
+  }
   return {
     atoms,
     rules: keepsSeparator ? new Map() : new Map([[text.start, "space"]]),

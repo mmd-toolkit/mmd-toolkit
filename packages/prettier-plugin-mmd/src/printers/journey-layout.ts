@@ -152,6 +152,7 @@ export function layoutJourneyStatement(
     source,
     atoms,
     statement.type === "JourneyTitleStatement" ? statement.value.range : null,
+    true,
   )
   const remainder = findBlankRemainder(source, statement)
   if (remainder !== null) atoms.push(remainder)

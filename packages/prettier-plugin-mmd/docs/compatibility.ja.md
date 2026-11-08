@@ -653,7 +653,9 @@ mermaid.js はテキストを読む前にディレクティブを除くので、
 これは、Gantt、user journey、timeline、sequence、Venn、C4 の図のタイトル、
 Gantt 図の日付書式と軸の書式、C4 図の `accDescription`、
 timeline の行の最後の event、別名を持つ state の 2 つ目の説明に当てはまります。
-[fixture:
+日付書式や軸の書式の中の空白とタブの連続は、ディレクティブの前でも、
+ディレクティブがない場合と同じように書かれたままにします。
+[fixture: gantt/settings/format-runs-kept-before-directives] [fixture:
 gantt/titles-and-sections/title-two-directives-trailing-blanks-dropped]
 [fixture: gantt/settings/format-two-directives-trailing-blanks-dropped]
 [fixture:

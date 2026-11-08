@@ -217,6 +217,7 @@ export function layoutGanttStatement(
     source,
     atoms,
     textAfterKeyword(source, statement)?.range ?? null,
+    statement.type === "GanttTitleStatement",
   )
   if (statement.type === "GanttClickStatement") {
     normalizeCallArguments(source, atoms, statement.call?.args?.range ?? null)

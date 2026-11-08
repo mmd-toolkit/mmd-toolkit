@@ -1,5 +1,6 @@
 import type {
   Node,
+  Range,
   CynefinTitleStatement,
   CynefinAccTitleStatement,
   CynefinAccDescrStatement,
@@ -45,15 +46,16 @@ import type {
   TreemapAccDescrStatement,
   TreemapAccDescrBlockStatement,
 } from "@mmd-toolkit/ast"
-import type { AtomLayout, GapRule } from "./atoms.ts"
+import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { collectAtoms, expectToken, layoutDescriptionBlock } from "./layout.ts"
-import { accessibilityRules } from "./statement-rules.ts"
+import { accessibilityRules, trimTextAfterKeyword } from "./statement-rules.ts"
 import { collapsedRunsAtom } from "./text-runs.ts"
 import type { Source } from "./source.ts"
 import {
   findStructuralToken,
   findTokensBetween,
   findTriviaBetween,
+  hasTriviaBesidesTrailingDirectives,
   isStructural,
 } from "./source.ts"
 
@@ -108,6 +110,23 @@ type CommonStatement = (
 }
 
 /**
+ * Whether the text of a title ends with directives: its content, then
+ * directives with spaces and tabs between them and after the last, and
+ * nothing else, no `;`, line break, or line separator. A title printed so
+ * leaves out the whitespace at its end and prints the whitespace around the
+ * directives as the end of a line (see `trimTextAfterKeyword`).
+ */
+function endsWithDirectivesOnly(source: Source, [from, to]: Range): boolean {
+  const text = source.text.slice(from, to)
+  if ([";", "\n", "\r", "\u2028", "\u2029"].some((c) => text.includes(c))) {
+    return false
+  }
+  if (hasTriviaBesidesTrailingDirectives(source, from, to)) return false
+  const first = findTriviaBetween(source, from, to)[0]
+  return source.text.slice(from, first.range[0]).trim() !== ""
+}
+
+/**
  * Shared compact line forms never read the next physical line (docs/pie.md,
  * Accessibility lines; docs/gitgraph.md, Title and common values).
  */
@@ -130,6 +149,11 @@ export function layoutCommonLine(
   const value = statement.value
   const hasTrivia =
     value !== null && findTriviaBetween(source, ...value.range).length > 0
+  const endsWithDirectives =
+    isTitle &&
+    hasTrivia &&
+    (statement.textAfter?.length ?? 0) === 0 &&
+    endsWithDirectivesOnly(source, value.range)
   let valueStart = value?.range[0] ?? delimiter.range[1]
   let valueEnd = value?.range[1] ?? valueStart
   if (!hasTrivia) {
@@ -145,8 +169,12 @@ export function layoutCommonLine(
       valueStart++
     while (valueStart < valueEnd && source.text[valueEnd - 1].trim() === "")
       valueEnd--
+  } else if (endsWithDirectives) {
+    while (valueStart < valueEnd && source.text[valueStart].trim() === "")
+      valueStart++
   }
-  if (hasTrivia) valueStart = delimiter.range[1]
+  const holdsTrivia = hasTrivia && !endsWithDirectives
+  if (holdsTrivia) valueStart = delimiter.range[1]
   const printedValue =
     valueStart < valueEnd
       ? { ...value!, range: [valueStart, valueEnd] as [number, number] }
@@ -158,35 +186,42 @@ export function layoutCommonLine(
         value: printedValue,
       })
   if (printedValue !== null)
-    lineRules.set(valueStart, hasTrivia ? "none" : "space")
+    lineRules.set(valueStart, holdsTrivia ? "none" : "space")
   // Collect only the keyword/delimiter and the trimmed value. The original
   // RawText token includes padding and must not be collected a second time.
+  const atoms: Atom[] = [
+    ...collectAtoms(source, start, delimiter.range[1], [], []),
+    ...(printedValue === null
+      ? []
+      : [
+          // The runs inside the text are drawn as one space (docs/
+          // compatibility.md, Runs of whitespace in a text that are drawn
+          // the same), except in an `accTitle`, which the browser shows as
+          // a tooltip.
+          statement.type.includes("AccTitle")
+            ? { start: valueStart, end: valueEnd }
+            : collapsedRunsAtom(source, { start: valueStart, end: valueEnd }),
+        ]),
+    ...(statement.textAfter ?? []).map((item) => ({
+      start: item.range[0],
+      end: item.range[1],
+    })),
+  ]
+  // A title that ends with directives prints them as at the end of a line,
+  // and leaves out the whitespace at its end (docs/compatibility.md, Texts
+  // after a keyword that are drawn the same).
+  if (endsWithDirectives) {
+    trimTextAfterKeyword(source, atoms, [valueStart, valueEnd], true)
+  }
   let layout: AtomLayout = {
-    atoms: [
-      ...collectAtoms(source, start, delimiter.range[1], [], []),
-      ...(printedValue === null
-        ? []
-        : [
-            // The runs inside the text are drawn as one space (docs/
-            // compatibility.md, Runs of whitespace in a text that are drawn
-            // the same), except in an `accTitle`, which the browser shows as
-            // a tooltip.
-            statement.type.includes("AccTitle")
-              ? { start: valueStart, end: valueEnd }
-              : collapsedRunsAtom(source, { start: valueStart, end: valueEnd }),
-          ]),
-      ...(statement.textAfter ?? []).map((item) => ({
-        start: item.range[0],
-        end: item.range[1],
-      })),
-    ],
+    atoms,
     rules: lineRules,
     outdented: new Set(),
     lineBreaks: "kept",
     // Common line-value edges trim Unicode whitespace too. These forms never
     // read a next-line value (docs/pie.md and docs/gitgraph.md).
     joinedBefore: new Set(
-      printedValue !== null && !hasTrivia ? [valueStart] : [],
+      printedValue !== null && !holdsTrivia ? [valueStart] : [],
     ),
   }
   // Null values can still contain common directives outside their range.

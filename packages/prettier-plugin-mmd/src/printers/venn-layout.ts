@@ -102,7 +102,7 @@ export function layoutVennStatement(
     trimBracketedText(source, atoms, statement.label.range)
   }
   if (statement.type === "VennTitleStatement") {
-    trimTextAfterKeyword(source, atoms, statement.value.range)
+    trimTextAfterKeyword(source, atoms, statement.value.range, true)
   }
   const rules = new Map<number, GapRule>()
   for (let index = 1; index < atoms.length; index++) {

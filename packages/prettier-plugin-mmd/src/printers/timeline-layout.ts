@@ -164,6 +164,7 @@ export function layoutTimelineStatement(
     source,
     atoms,
     statement.type === "TimelineTitleStatement" ? statement.value.range : null,
+    true,
   )
   return {
     atoms: keepFirstGapLineTails(source, atoms, (from, to) =>

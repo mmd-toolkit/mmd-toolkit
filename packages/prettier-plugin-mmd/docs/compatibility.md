@@ -598,7 +598,9 @@ whatever it is. This holds for the title of a Gantt chart, a user journey, a
 timeline, a sequence diagram, a Venn diagram, and a C4 diagram, for the date
 format and the axis format of a Gantt chart, for the `accDescription` of a C4
 diagram, for the last event of a line of a timeline, and for the second
-description of a state alias. [fixture:
+description of a state alias. The runs of spaces and tabs inside a date format
+or an axis format stay as written before the directives as they do without them.
+[fixture: gantt/settings/format-runs-kept-before-directives] [fixture:
 gantt/titles-and-sections/title-two-directives-trailing-blanks-dropped]
 [fixture: gantt/settings/format-two-directives-trailing-blanks-dropped]
 [fixture:

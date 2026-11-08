@@ -485,7 +485,7 @@ export function layoutC4Text(source: Source, statement: C4Text): AtomLayout {
   // The whitespace after the separator is in the Db, and mermaid.js draws the
   // same text without it (docs/compatibility.md, Texts after a keyword that
   // are drawn the same).
-  trimTextAfterKeyword(source, atoms, [separator + 1, end])
+  trimTextAfterKeyword(source, atoms, [separator + 1, end], true)
   return {
     atoms,
     rules: new Map([[separator + 1, "space"]]),

@@ -388,12 +388,15 @@ export function normalizeStyleList(
  * whitespace after the last one is left out, whether the last one is read as
  * part of the statement or not: the figure is the same whatever the whitespace
  * at the end of the line, and a directive at the end of a line is printed so
- * elsewhere (docs/flowchart.md, Directives).
+ * elsewhere (docs/flowchart.md, Directives). `collapsesRuns` tells that the
+ * runs of spaces and tabs inside the text are printed as one space (a title),
+ * and not kept as written (a date format).
  */
 export function trimTextAfterKeyword(
   source: Source,
   atoms: Atom[],
   text: Range | null,
+  collapsesRuns: boolean,
 ): void {
   if (text === null) return
   const [from, to] = text
@@ -410,7 +413,7 @@ export function trimTextAfterKeyword(
     if (directive === undefined) break
     offset = directive.range[1]
   }
-  appendItems(edits, collectTextEndEdits(source, offset, to, true))
+  appendItems(edits, collectTextEndEdits(source, offset, to, collapsesRuns))
   replaceInAtoms(source, atoms, edits)
 }
 
