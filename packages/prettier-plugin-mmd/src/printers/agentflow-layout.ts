@@ -397,11 +397,13 @@ export function layoutStatement(
       // the `:` in the styles that can reach a link (docs/agentflow.md, Single
       // space gaps).
       const atoms: Atom[] = [{ start, end }]
+      const isLinkStyle =
+        statement.type === "AgentflowLinkStyleStatement" ||
+        statement.type === "AgentflowDefaultLinkStyleStatement"
       normalizeStyleList(source, atoms, statement, {
         keepsSpaceBeforeFill: statement.type === "AgentflowLinkStyleStatement",
-        isLinkStyle:
-          statement.type === "AgentflowLinkStyleStatement" ||
-          statement.type === "AgentflowDefaultLinkStyleStatement",
+        isLinkStyle,
+        joinsStyles: isLinkStyle,
         keepsGapAfterStroke: statement.type !== "AgentflowStyleStatement",
         escapesComma: statement.type === "AgentflowClassDefStatement",
       })

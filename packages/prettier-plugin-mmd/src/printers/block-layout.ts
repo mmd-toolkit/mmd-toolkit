@@ -35,7 +35,7 @@ import {
 } from "./kept-lines.ts"
 import { printAsWrittenTrimmed } from "./lines.ts"
 import type { Source } from "./source.ts"
-import { normalizeStyleList } from "./statement-rules.ts"
+import { endOfJoinedStyle, normalizeStyleList } from "./statement-rules.ts"
 import {
   findStructuralToken,
   findTokenEndingBefore,
@@ -131,7 +131,11 @@ export function groupBlockUnits(
     units.push(
       statement.type === "BlockCompositeStatement"
         ? { kind: "composite", range: statement.range, statement }
-        : { kind: "line", range: statement.range, statement },
+        : {
+            kind: "line",
+            range: [statement.range[0], findLinePrintedEnd(source, statement)],
+            statement,
+          },
     )
   }
   endRow()
@@ -448,18 +452,32 @@ function addStyledStatementRules(
       printedEnd--
     }
   }
+  // mermaid.js joins the styles of a `style` with `;` as they are, so the
+  // whitespace after a backslash that ends the last one stays (see
+  // `normalizeStyleList`, and `findLinePrintedEnd` for the end).
+  const joinsStyles = statement.type === "BlockStyleStatement"
+  if (printsStyles && joinsStyles) {
+    printedEnd = findLinePrintedEnd(source, statement)
+  }
   const atoms: Atom[] = [{ start, end: printedEnd }]
   // mermaid.js draws the same figure whatever the whitespace around the `:`
-  // and the `,` of the styles (docs/block.md, Styles). A statement with a kept
-  // line break keeps its styles as written: printing them changes whether
-  // joining its lines is safe, so a second pass would join them.
-  if (printsStyles) normalizeStyleList(source, atoms, statement)
+  // and the `,` of the styles (docs/block.md, Styles), except after a
+  // backslash that ends a style of a `style`. A statement with a kept line
+  // break keeps its styles as written: printing them changes whether joining
+  // its lines is safe, so a second pass would join them.
+  if (printsStyles) {
+    normalizeStyleList(source, atoms, statement, { joinsStyles })
+  }
   const doc =
     atoms[0].doc ??
     (dropsSemicolon
       ? printAsWrittenTrimmed(source, start, semicolon)
       : undefined)
-  kept.push({ start, end: statement.range[1], ...(doc && { doc }) })
+  kept.push({
+    start,
+    end: Math.max(statement.range[1], printedEnd),
+    ...(doc && { doc }),
+  })
 }
 
 /**
@@ -502,6 +520,23 @@ function addClassRules(
   if (statement.cssClass !== null) {
     rules.set(statement.cssClass.range[0], "space")
   }
+}
+
+/**
+ * Where the printed text of a statement that is a unit of its own ends: at its
+ * last token, and one character further where it is the `style` that
+ * mermaid.js joins with `;` as it is and a backslash ends its last style (see
+ * `normalizeStyleList`, `joinsStyles`).
+ */
+function findLinePrintedEnd(
+  source: Source,
+  statement: BlockLineStatement,
+): number {
+  const last =
+    statement.type === "BlockStyleStatement"
+      ? statement.styles.at(-1)
+      : undefined
+  return last ? endOfJoinedStyle(source, last.range) : statement.range[1]
 }
 
 /** Where the printed text of a unit ends: at its last token. */

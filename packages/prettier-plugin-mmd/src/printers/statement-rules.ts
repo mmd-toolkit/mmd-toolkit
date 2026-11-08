@@ -187,6 +187,11 @@ export interface StyleListUse {
    * styles of a node.
    */
   readonly isLinkStyle?: boolean
+  /**
+   * mermaid.js joins the styles of the statement with `;` as they are: a
+   * `linkStyle`, and the `style` of a block diagram.
+   */
+  readonly joinsStyles?: boolean
   /** The styles can reach a link: a `linkStyle`, a `classDef`. */
   readonly keepsGapAfterStroke?: boolean
   /**
@@ -224,7 +229,7 @@ export interface StyleListUse {
  * (docs/compatibility.md, Styles that are drawn the same).
  *
  * `isLinkStyle` is set for a `linkStyle`, whose styles mermaid.js reads as the
- * styles of a link in three more ways (docs/compatibility.md, Styles that are
+ * styles of a link in two more ways (docs/compatibility.md, Styles that are
  * drawn the same):
  *
  * - Where the look is `handDrawn`, it takes the first style of a link that
@@ -240,11 +245,16 @@ export interface StyleListUse {
  *   only stays as written (see `hasBlankStrokeValue`), with the whitespace of
  *   its value, which reaches up to the `,` after it. The gap after that `,`
  *   follows the rules above.
- * - It joins the styles of a link with `;` into one CSS text without taking
- *   their whitespace away, so a backslash at the end of a style escapes the
- *   `;` that follows, and the styles after it are lost. So a style that ends
- *   with a backslash (see `endsWithEscape`) keeps whether whitespace stands
- *   after it, a run of whitespace becoming its first character.
+ *
+ * `joinsStyles` is set for the statements whose styles mermaid.js joins with
+ * `;` into one CSS text without taking their whitespace away: a `linkStyle`
+ * (the path of a link), and the `style` of a block diagram (a block arrow and a
+ * group). A backslash at the end of a style escapes the `;` that follows, and
+ * the styles after it are lost. So a style that ends with a backslash (see
+ * `endsWithEscape`) keeps whether whitespace stands after it, a run of
+ * whitespace becoming its first character. The `style` of a node of the other
+ * diagram types and a `classDef` are not joined so: mermaid.js takes the
+ * whitespace at their ends away first.
  *
  * Where `escapesComma` is set, a `,` after a backslash is part of a style, and
  * so is a space after a backslash at the end of one: taking that space away
@@ -264,6 +274,7 @@ export function normalizeStyleList(
   {
     keepsSpaceBeforeFill = false,
     isLinkStyle = false,
+    joinsStyles = false,
     keepsGapAfterStroke = false,
     escapesComma = false,
   }: StyleListUse = {},
@@ -298,7 +309,7 @@ export function normalizeStyleList(
       : trimStyle(source, [start, comma], { keepsEscapedSpace: escapesComma })
     if (core[0] === core[1]) return
     if (
-      isLinkStyle &&
+      joinsStyles &&
       !keepsValue &&
       core[1] < comma &&
       endsWithEscape(source.text.slice(core[0], core[1]))
@@ -541,6 +552,20 @@ export function endsWithEscape(text: string): boolean {
   let backslashes = 0
   while (text[text.length - 1 - backslashes] === "\\") backslashes++
   return backslashes % 2 === 1
+}
+
+/**
+ * The end of the printed text of the last style of a statement whose styles
+ * mermaid.js joins as they are (see `StyleListUse`, `joinsStyles`): `range` is
+ * the style, and its end moves one character where a backslash that escapes
+ * ends the style and a space or tab follows, since that character stays.
+ */
+export function endOfJoinedStyle(source: Source, range: Range): number {
+  const [start, end] = range
+  return isSpaceOrTab(source.text[end]) &&
+    endsWithEscape(source.text.slice(start, end))
+    ? end + 1
+    : end
 }
 
 /**

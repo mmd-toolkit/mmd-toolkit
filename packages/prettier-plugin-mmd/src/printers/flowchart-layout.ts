@@ -161,11 +161,13 @@ export function layoutStatement(
     // in a `linkStyle` with link numbers, in the styles of a `linkStyle` where
     // mermaid.js reads them as the styles of a link, and between `stroke` and
     // the `:` in the styles that can reach a link (docs/flowchart.md, Styles).
+    const isLinkStyle =
+      statement.type === "FlowchartLinkStyleStatement" ||
+      statement.type === "FlowchartDefaultLinkStyleStatement"
     normalizeStyleList(source, atoms, statement, {
       keepsSpaceBeforeFill: statement.type === "FlowchartLinkStyleStatement",
-      isLinkStyle:
-        statement.type === "FlowchartLinkStyleStatement" ||
-        statement.type === "FlowchartDefaultLinkStyleStatement",
+      isLinkStyle,
+      joinsStyles: isLinkStyle,
       keepsGapAfterStroke: statement.type !== "FlowchartStyleStatement",
       escapesComma: statement.type === "FlowchartClassDefStatement",
     })

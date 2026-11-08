@@ -29,7 +29,7 @@ import type { KeptLines } from "./kept-lines.ts"
 import { holdsJoiningRegion, lineStartOf } from "./kept-lines.ts"
 import {
   accessibilityRules,
-  endsWithEscape,
+  endOfJoinedStyle,
   hasBlankStrokeValue,
 } from "./statement-rules.ts"
 import { findWrittenWhitespaceEnd } from "./gap.ts"
@@ -312,9 +312,7 @@ export function findStyleStatementEnd(
   if (hasBlankStrokeValue(source.text.slice(last.range[0], tail))) {
     return written
   }
-  return tail > last.range[1] && endsWithEscape(last.value)
-    ? last.range[1] + 1
-    : statement.range[1]
+  return Math.max(statement.range[1], endOfJoinedStyle(source, last.range))
 }
 
 /** The end of a graph header's keyword and optional authored direction. */
