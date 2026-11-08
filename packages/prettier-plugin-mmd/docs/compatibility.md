@@ -391,8 +391,9 @@ flowchart/whitespace-between-tokens/link-style-fill-after-comma-kept] [fixture:
 flowchart/whitespace-between-tokens/link-style-fill-opacity-after-comma-kept]
 [fixture: agentflow/single-space-gaps/link-style-fill-after-comma-kept]
 [fixture: agentflow/single-space-gaps/link-style-fill-opacity-after-comma-kept]
-The other styles of such a statement, and `linkStyle default`, are printed in
-the one form. [fixture:
+The other styles of such a statement, and the styles of `linkStyle default`, are
+printed in the one form, except for a style that starts with `stroke:` (see
+below). [fixture:
 flowchart/whitespace-between-tokens/link-style-other-after-comma-spaced]
 [fixture:
 flowchart/whitespace-between-tokens/link-style-default-after-comma-spaced]
@@ -417,6 +418,20 @@ flowchart/whitespace-between-tokens/class-def-stroke-before-colon-kept]
 [fixture: flowchart/whitespace-between-tokens/style-stroke-before-colon-spaced]
 [fixture: agentflow/single-space-gaps/link-style-stroke-before-colon-kept]
 
+Where the look is `handDrawn`, the start of a style of a link is read too.
+[`insertEdge`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L899)
+takes the first style of the link that starts with `stroke:` whole as the colour
+of the arrowheads and does not look further, and a style with whitespace before
+it does not start with `stroke:`. The pixels of
+`linkStyle 0 fill:none,stroke:#f00` and `linkStyle 0 fill:none, stroke:#f00`
+with that look were the same, and the SVG of the first held one more definition
+of an arrowhead, of the colour `stroke:#f00`. So in flowchart and agentflow a
+style of a `linkStyle` with link numbers or `default` that starts with `stroke:`
+keeps whether whitespace stands before it, as a style that starts with `fill`
+does, a run of whitespace becoming one space. [fixture:
+flowchart/whitespace-between-tokens/link-style-stroke-after-comma-kept]
+[fixture: agentflow/single-space-gaps/link-style-stroke-after-comma-kept]
+
 A `stroke:` whose value is whitespace only is read too. mermaid.js takes the
 colour from the characters after the first `stroke:` up to a `;`, and draws no
 colour where they are whitespace only, without trying the next `stroke:`. In
@@ -426,9 +441,12 @@ style of a `linkStyle` with a name that ends with `stroke` and a value of spaces
 and tabs only stays as written, with its whitespace, also at the end of the
 statement, where the whitespace at the end of a style statement is dropped
 otherwise (see
-[Style trailing whitespace](./flowchart.md#style-trailing-whitespace)). A
-`classDef` is not affected: the pixels of `classDef c stroke: ,stroke:#f00` put
-on a link and of `classDef c stroke:, stroke: #f00` were the same. [fixture:
+[Style trailing whitespace](./flowchart.md#style-trailing-whitespace)). A style
+after it that starts with `stroke:` follows the rule above for such a style:
+`linkStyle 0 stroke: ,stroke:#f00` is printed
+`linkStyle 0 stroke: ,stroke: #f00`. A `classDef` is not affected: the pixels of
+`classDef c stroke: ,stroke:#f00` put on a link and of
+`classDef c stroke:, stroke: #f00` were the same. [fixture:
 flowchart/whitespace-between-tokens/link-style-blank-stroke-value-kept]
 [fixture:
 flowchart/style-trailing-whitespace/link-style-blank-stroke-value-at-end-kept]
@@ -463,12 +481,13 @@ The tests compare the Db of the printed text with the margins of its styles
 restored from the Db of the written text (`styleDbForFormattingComparison` in
 `tests/style-margins.ts`): a style that differs from the written one only by the
 whitespace at its ends and around its first `:` takes the written text, and any
-other difference, among them the number of styles of a link and the presence of
-whitespace before the `:` of a `stroke` in a style that can reach a link, fails.
-The Db summary of the tests trims the end of the value of a style, so only the
-fixtures guard the whitespace-only value of a `stroke`. When the pinned
-mermaid.js is updated, draw the statements of each of these kinds again and
-compare the SVG and the pixels before the exception stays.
+other difference, among them the number of styles of a link, the presence of
+whitespace before the `:` of a `stroke` in a style that can reach a link, the
+presence of whitespace before a style of a link that starts with `stroke:`, and
+the presence of whitespace in the value of a `stroke` of a link that is
+whitespace only, fails. When the pinned mermaid.js is updated, draw the
+statements of each of these kinds again and compare the SVG and the pixels
+before the exception stays.
 
 ## Texts after a keyword that are drawn the same
 

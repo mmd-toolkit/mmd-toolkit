@@ -436,7 +436,8 @@ mermaid.js はその空白を Db に残しますが、同じ図を描きます�
 [fixture: flowchart/whitespace-between-tokens/link-style-fill-opacity-after-comma-kept]
 [fixture: agentflow/single-space-gaps/link-style-fill-after-comma-kept]
 [fixture: agentflow/single-space-gaps/link-style-fill-opacity-after-comma-kept]
-この文のほかのスタイルと `linkStyle default` は、1 つの形で印字します。
+この文のほかのスタイルと `linkStyle default` のスタイルは、
+`stroke:` で始まるスタイルを除き、1 つの形で印字します（後述）。
 [fixture: flowchart/whitespace-between-tokens/link-style-other-after-comma-spaced]
 [fixture: flowchart/whitespace-between-tokens/link-style-default-after-comma-spaced]
 
@@ -460,6 +461,21 @@ mermaid.js はその空白を Db に残しますが、同じ図を描きます�
 [fixture: flowchart/whitespace-between-tokens/style-stroke-before-colon-spaced]
 [fixture: agentflow/single-space-gaps/link-style-stroke-before-colon-kept]
 
+look が `handDrawn` のときは、リンクのスタイルの先頭も読まれます。
+[`insertEdge`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L899)
+は、リンクのスタイルのうち、
+`stroke:` で始まる最初のもの全体を矢印の頭の色として使い、それ以上は探しません。
+前に空白があるスタイルは `stroke:` で始まりません。
+この look での `linkStyle 0 fill:none,stroke:#f00` と、
+`linkStyle 0 fill:none, stroke:#f00` の画素は同じで、前者の SVG には、
+色が `stroke:#f00` の矢印の頭の定義が 1 つ多くありました。
+そのため、flowchart と agentflow では、
+番号か `default` を指定した `linkStyle` で、
+スタイルが `stroke:` で始まるときは、`fill` で始まるスタイルと同じく、
+前に空白があるかないかを保ち、空白の連続は空白 1 つにします。
+[fixture: flowchart/whitespace-between-tokens/link-style-stroke-after-comma-kept]
+[fixture: agentflow/single-space-gaps/link-style-stroke-after-comma-kept]
+
 値が空白だけの `stroke:` も読まれます。
 mermaid.js は、最初の `stroke:` の後から `;` までの文字から色を取り、
 その文字が空白だけなら、次の `stroke:` を試さず、色を付けません。
@@ -469,6 +485,9 @@ mermaid.js は、最初の `stroke:` の後から `;` までの文字から色�
 値が空白とタブだけのものは、その空白も含めて書かれたままにします。
 通常ならスタイル文の末尾の空白を落とす文末でも、同じです。
 （[スタイルの行末の空白](./flowchart.ja.md#スタイルの行末の空白)）。
+その後の `stroke:` で始まるスタイルは、上の規則に従います。
+`linkStyle 0 stroke: ,stroke:#f00` は、
+`linkStyle 0 stroke: ,stroke: #f00` と印字します。
 `classDef` には影響しません。
 リンクに付けた `classDef c stroke: ,stroke:#f00` と、
 `classDef c stroke:, stroke: #f00` の画素は同じでした。
@@ -512,10 +531,9 @@ flowchart と agentflow の `classDef` では、
 スタイルが書かれたものと、両端と最初の `:` の前後の空白だけが違うときは、
 書かれた方を採ります。
 ほかの違いは、リンクのスタイルの数や、
-リンクにも適用されるスタイルの `stroke` の `:` の前の空白の有無も含めて、
-失敗とします。
-テストの Db 要約はスタイルの値の末尾の空白を取り除くので、
-`stroke` の空白だけの値は fixture だけが守ります。
+リンクにも適用されるスタイルの `stroke` の `:` の前の空白の有無、
+`stroke:` で始まるリンクのスタイルの前の空白の有無、
+リンクの `stroke` の空白だけの値の中の空白の有無も含めて、失敗とします。
 固定している mermaid.js の版を上げるときは、これらの種類の文を描き直し、
 SVG と画素を比べてから、例外を残します。
 

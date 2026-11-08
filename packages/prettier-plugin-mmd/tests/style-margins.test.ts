@@ -46,6 +46,29 @@ const restored: readonly DbPair[] = [
     before: { edges: [{ id: "L", style: ["stroke:#f00", " color:red"] }] },
     after: { edges: [{ id: "L", style: ["stroke: #f00", " color: red"] }] },
   },
+  {
+    name: "a run of whitespace before a style of a link that starts with stroke:",
+    before: { edges: [{ id: "L", style: ["fill:none", "  stroke:#f00"] }] },
+    after: { edges: [{ id: "L", style: ["fill: none", " stroke: #f00"] }] },
+  },
+  {
+    name: "the whitespace before a style of a link that does not start with stroke:",
+    before: { edges: [{ id: "L", style: ["stroke:#f00", "color:red"] }] },
+    after: { edges: [{ id: "L", style: ["stroke: #f00", " color: red"] }] },
+  },
+  {
+    name: "the amount of whitespace in a value of a stroke that is whitespace only",
+    before: { edges: [{ id: "L", style: ["stroke:\t", " stroke:#f00"] }] },
+    after: { edges: [{ id: "L", style: ["stroke: ", " stroke: #f00"] }] },
+  },
+  {
+    name: "the whitespace before a style that starts with stroke: in a class",
+    diagramType: "agentflow",
+    before: { classDefs: [{ id: "c", styles: ["fill:none", "stroke:#f00"] }] },
+    after: {
+      classDefs: [{ id: "c", styles: ["fill: none", " stroke: #f00"] }],
+    },
+  },
 ]
 
 const kept: readonly DbPair[] = [
@@ -64,6 +87,26 @@ const kept: readonly DbPair[] = [
     diagramType: "agentflow",
     before: { classDefs: [{ id: "c", styles: ["stroke :#f00"] }] },
     after: { classDefs: [{ id: "c", styles: ["stroke: #f00"] }] },
+  },
+  {
+    name: "whitespace taken away before a style of a link that starts with stroke:",
+    before: { edges: [{ id: "L", style: [" stroke:#f00"] }] },
+    after: { edges: [{ id: "L", style: ["stroke: #f00"] }] },
+  },
+  {
+    name: "whitespace added before a style of a link that starts with stroke:",
+    before: { edges: [{ id: "L", style: ["stroke:#f00"] }] },
+    after: { edges: [{ id: "L", style: [" stroke: #f00"] }] },
+  },
+  {
+    name: "whitespace added before a style of the default of the links that starts with stroke:",
+    before: { edgeDefaults: { style: ["stroke:#f00"] } },
+    after: { edgeDefaults: { style: [" stroke: #f00"] } },
+  },
+  {
+    name: "whitespace taken away from a value of a stroke that is whitespace only",
+    before: { edges: [{ id: "L", style: ["stroke: "] }] },
+    after: { edges: [{ id: "L", style: ["stroke:"] }] },
   },
   {
     name: "a changed value",

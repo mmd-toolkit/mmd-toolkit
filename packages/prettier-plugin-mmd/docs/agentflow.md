@@ -279,8 +279,11 @@ single-space-gaps/style-colon-spaced] A `linkStyle` with link numbers keeps
 whether whitespace follows the `,` before a style that starts with `fill`, a run
 of whitespace becoming one space; `fill-opacity` counts, as mermaid.js reads
 only the start. [fixture: single-space-gaps/link-style-fill-after-comma-kept]
-[fixture: single-space-gaps/link-style-fill-opacity-after-comma-kept] The other
-styles of such a statement, and `linkStyle default`, use the one form (see
+[fixture: single-space-gaps/link-style-fill-opacity-after-comma-kept] A
+`linkStyle`, with link numbers or `default`, keeps it for a style that starts
+with `stroke:` too, which mermaid.js reads at the start where the look is
+`handDrawn`. [fixture: single-space-gaps/link-style-stroke-after-comma-kept] The
+other styles of such a statement, and `linkStyle default`, use the one form (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 In a `linkStyle` or a `classDef`, which can reach a link, a name that ends with
 `stroke` keeps whether whitespace stands between it and the `:`, a run of

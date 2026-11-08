@@ -392,15 +392,18 @@ export function layoutStatement(
       // Style, classDef, class, and linkStyle; docs/agentflow.md, Single space gaps).
       // The whitespace around the `:` and the `,` of the styles does not change
       // the figure, except before a style that starts with `fill` in a
-      // `linkStyle` with link numbers, and between `stroke` and the `:` in the
+      // `linkStyle` with link numbers, before a style that starts with
+      // `stroke:` in a `linkStyle`, and between `stroke` and the `:` in the
       // styles that can reach a link (docs/agentflow.md, Single space gaps).
       const atoms: Atom[] = [{ start, end }]
+      const isLinkStyle =
+        statement.type === "AgentflowLinkStyleStatement" ||
+        statement.type === "AgentflowDefaultLinkStyleStatement"
       normalizeStyleList(source, atoms, statement, {
         keepsSpaceBeforeFill: statement.type === "AgentflowLinkStyleStatement",
+        keepsSpaceBeforeStroke: isLinkStyle,
         keepsGapAfterStroke: statement.type !== "AgentflowStyleStatement",
-        keepsBlankStrokeValue:
-          statement.type === "AgentflowLinkStyleStatement" ||
-          statement.type === "AgentflowDefaultLinkStyleStatement",
+        keepsBlankStrokeValue: isLinkStyle,
         escapesComma: statement.type === "AgentflowClassDefStatement",
       })
       return { ...keptAsWritten(start, end), atoms }

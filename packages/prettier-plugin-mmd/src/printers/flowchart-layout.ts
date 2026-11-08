@@ -158,14 +158,17 @@ export function layoutStatement(
   ) {
     // mermaid.js draws the same figure whatever the whitespace around the `:`
     // and the `,` of the styles, except before a style that starts with `fill`
-    // in a `linkStyle` with link numbers, and between `stroke` and the `:` in
-    // the styles that can reach a link (docs/flowchart.md, Styles).
+    // in a `linkStyle` with link numbers, before a style that starts with
+    // `stroke:` in a `linkStyle`, and between `stroke` and the `:` in the
+    // styles that can reach a link (docs/flowchart.md, Styles).
+    const isLinkStyle =
+      statement.type === "FlowchartLinkStyleStatement" ||
+      statement.type === "FlowchartDefaultLinkStyleStatement"
     normalizeStyleList(source, atoms, statement, {
       keepsSpaceBeforeFill: statement.type === "FlowchartLinkStyleStatement",
+      keepsSpaceBeforeStroke: isLinkStyle,
       keepsGapAfterStroke: statement.type !== "FlowchartStyleStatement",
-      keepsBlankStrokeValue:
-        statement.type === "FlowchartLinkStyleStatement" ||
-        statement.type === "FlowchartDefaultLinkStyleStatement",
+      keepsBlankStrokeValue: isLinkStyle,
       escapesComma: statement.type === "FlowchartClassDefStatement",
     })
   }

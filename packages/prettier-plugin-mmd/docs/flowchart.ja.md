@@ -687,6 +687,10 @@ subgraph の名前の中の空白はそのタイトルになります。
 mermaid.js は先頭だけを読むので、`fill-opacity` で始まるスタイルも含みます。
 [fixture: whitespace-between-tokens/link-style-fill-after-comma-kept]
 [fixture: whitespace-between-tokens/link-style-fill-opacity-after-comma-kept]
+番号か `default` を指定した `linkStyle` では、`stroke:` で始まるスタイルも、
+前に空白があるかないかを保ちます。
+look が `handDrawn` のときは、mermaid.js が先頭の `stroke:` を読むからです。
+[fixture: whitespace-between-tokens/link-style-stroke-after-comma-kept]
 この文のほかのスタイルと `linkStyle default` は、1 つの形で印字します。
 [fixture: whitespace-between-tokens/link-style-other-after-comma-spaced]
 [fixture: whitespace-between-tokens/link-style-default-after-comma-spaced]
@@ -702,7 +706,7 @@ mermaid.js はリンクのスタイルから `stroke:` を探し、
 `linkStyle` のスタイルのうち、名前が `stroke` で終わり、
 値が空白とタブだけのものは、書かれたまま残します。
 mermaid.js はそれから矢印の頭に色を付けず、後の `stroke:` も試さないからです。
-`linkStyle 0 stroke: ,stroke:#f00` は、
+`linkStyle 0 stroke: ,   stroke:#f00` は、
 `linkStyle 0 stroke: , stroke: #f00` と印字します。
 [fixture: whitespace-between-tokens/link-style-blank-stroke-value-kept]
 `classDef` では、バックスラッシュの後の `,` はスタイルの一部です。

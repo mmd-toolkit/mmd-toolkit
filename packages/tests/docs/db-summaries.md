@@ -19417,9 +19417,13 @@ wardley/db-number-int-precision] [fixture: wardley/db-number-subnormal]
 The summary drops:
 
 - Node `inPipeline`, which the renderer never reads, and `isPipelineParent`,
-  which is determined by `pipelines[].nodeId`. The builder
+  which the renderer reads to
+  [draw the node as the parent of a pipeline](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L733-L773)
+  but which is true for exactly the nodes that `pipelines[].nodeId` names, so a
+  change of it shows in `pipelines`. The builder
   [sets those flags](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L112-L133).
-  [fixture: wardley/db-pipeline-duplicates]
+  [fixture: wardley/db-pipeline-duplicates] [fixture:
+  wardley/db-pipeline-forward-parent]
 - Trend `targetY`, copied from its node after all nodes are published. The
   [adapter](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L189-L197)
   never changes nodes afterward. [fixture: wardley/db-all-fields]

@@ -665,8 +665,12 @@ numbers keeps whether whitespace follows the `,` before a style that starts with
 `fill`, a run of whitespace becoming one space; a style that starts with
 `fill-opacity` counts, as mermaid.js reads only the start. [fixture:
 whitespace-between-tokens/link-style-fill-after-comma-kept] [fixture:
-whitespace-between-tokens/link-style-fill-opacity-after-comma-kept] The other
-styles of such a statement, and `linkStyle default`, use the one form. [fixture:
+whitespace-between-tokens/link-style-fill-opacity-after-comma-kept] A
+`linkStyle`, with link numbers or `default`, keeps it for a style that starts
+with `stroke:` too, which mermaid.js reads at the start where the look is
+`handDrawn`. [fixture:
+whitespace-between-tokens/link-style-stroke-after-comma-kept] The other styles
+of such a statement, and `linkStyle default`, use the one form. [fixture:
 whitespace-between-tokens/link-style-other-after-comma-spaced] [fixture:
 whitespace-between-tokens/link-style-default-after-comma-spaced] In a
 `linkStyle` or a `classDef`, which can reach a link, a name that ends with
@@ -679,7 +683,7 @@ node, and uses the one form. [fixture:
 whitespace-between-tokens/style-stroke-before-colon-spaced] A style of a
 `linkStyle` with a name that ends with `stroke` and a value of spaces and tabs
 only stays as written, since mermaid.js draws no colour of the arrowheads from
-it and does not try a later `stroke:`: `linkStyle 0 stroke: ,stroke:#f00` is
+it and does not try a later `stroke:`: `linkStyle 0 stroke: ,   stroke:#f00` is
 printed `linkStyle 0 stroke: , stroke: #f00`. [fixture:
 whitespace-between-tokens/link-style-blank-stroke-value-kept] In a `classDef` a
 `,` after a backslash is part of its style, and a space between the backslash

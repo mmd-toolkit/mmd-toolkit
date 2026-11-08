@@ -301,6 +301,10 @@ directiveを挟む最初のstyleの先頭空白、スタイルの値の中の語
 mermaid.js は先頭だけを読むので、`fill-opacity` も含みます。
 [fixture: single-space-gaps/link-style-fill-after-comma-kept]
 [fixture: single-space-gaps/link-style-fill-opacity-after-comma-kept]
+番号か `default` を指定した `linkStyle` では、`stroke:` で始まるスタイルも、
+前に空白があるかないかを保ちます。
+look が `handDrawn` のときは、mermaid.js が先頭の `stroke:` を読むからです。
+[fixture: single-space-gaps/link-style-stroke-after-comma-kept]
 この文のほかのスタイルと `linkStyle default` は、1 つの形で印字します。
 詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
 を参照してください。

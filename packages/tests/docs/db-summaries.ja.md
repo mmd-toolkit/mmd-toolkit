@@ -21292,10 +21292,14 @@ underflow は注入された converter の既定の数値変換に従う。
 次の値は要約から除く。
 
 - node の `inPipeline` は renderer が読まない。
-  `isPipelineParent` は `pipelines[].nodeId` から決まる。
+  `isPipelineParent` は renderer が
+  [pipeline の親として node を描く](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L733-L773)
+  ために読むが、`pipelines[].nodeId` が名指す node でだけ true になるので、
+  変われば `pipelines` に出る。
   これらは builder が
   [設定するフラグ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L112-L133)
   である。 [fixture: wardley/db-pipeline-duplicates]
+  [fixture: wardley/db-pipeline-forward-parent]
 - trend の `targetY` は全 node の公開後に node の `y` を複製する。
   [adapter](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L189-L197)
   は、その後 node を変更しない。 [fixture: wardley/db-all-fields]

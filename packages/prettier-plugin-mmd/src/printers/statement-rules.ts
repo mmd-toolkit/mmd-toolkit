@@ -177,6 +177,8 @@ export function styleUnitsCanCompact(
 export interface StyleListUse {
   /** The statement is a `linkStyle` with link numbers. */
   readonly keepsSpaceBeforeFill?: boolean
+  /** The statement is a `linkStyle`, with link numbers or `default`. */
+  readonly keepsSpaceBeforeStroke?: boolean
   /** The styles can reach a link: a `linkStyle`, a `classDef`. */
   readonly keepsGapAfterStroke?: boolean
   /** The statement is a `linkStyle`, with link numbers or `default`. */
@@ -209,6 +211,13 @@ export interface StyleListUse {
  * start with `fill`, so a style that starts with `fill` keeps whether
  * whitespace stands before it, a run of whitespace becoming one space.
  *
+ * `keepsSpaceBeforeStroke` is set for a `linkStyle`. Where the look is
+ * `handDrawn`, mermaid.js takes the first style of a link that starts with
+ * `stroke:` as the colour of its arrowheads and defines an arrowhead of that
+ * colour; a style that starts with whitespace does not start with `stroke:`.
+ * So a style that starts with `stroke:` keeps whether whitespace stands before
+ * it, as for `fill`, a run of whitespace becoming one space.
+ *
  * `keepsGapAfterStroke` is set for the statements whose styles can reach a
  * link. mermaid.js looks for `stroke:` in the styles of a link to colour its
  * arrowheads, so a name that ends with `stroke` keeps whether whitespace stands
@@ -220,7 +229,8 @@ export interface StyleListUse {
  * the characters after it up to a `;`, and draws no colour where they are
  * whitespace only: the next `stroke:` is not tried. So a style with a name that
  * ends with `stroke` and a value of spaces and tabs only stays as written, with
- * the whitespace of its value, and the gap before the next style.
+ * the whitespace of its value, which reaches up to the `,` after it. The gap
+ * after that `,` follows the rules above.
  *
  * Where `escapesComma` is set, a `,` after a backslash is part of a style, and
  * so is a space after a backslash at the end of one: taking that space away
@@ -239,6 +249,7 @@ export function normalizeStyleList(
   },
   {
     keepsSpaceBeforeFill = false,
+    keepsSpaceBeforeStroke = false,
     keepsGapAfterStroke = false,
     keepsBlankStrokeValue = false,
     escapesComma = false,
@@ -275,13 +286,14 @@ export function normalizeStyleList(
     if (core[0] === core[1]) return
     if (!keepsValue) addColonEdit(source, core, edits, { keepsGapAfterStroke })
     if (previousEnd !== -1) {
-      const touchesFill =
-        keepsSpaceBeforeFill &&
+      const touchesWord =
         core[0] === start &&
-        source.text.startsWith("fill", core[0])
+        ((keepsSpaceBeforeFill && source.text.startsWith("fill", core[0])) ||
+          (keepsSpaceBeforeStroke &&
+            source.text.startsWith("stroke:", core[0])))
       edits.push(
         { range: [previousEnd, start - 1], replacement: "" },
-        { range: [start, core[0]], replacement: touchesFill ? "" : " " },
+        { range: [start, core[0]], replacement: touchesWord ? "" : " " },
       )
     }
     previousEnd = core[1]
