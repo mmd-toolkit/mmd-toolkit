@@ -808,7 +808,7 @@ sequence 図のテキスト（メッセージ、ノート、ブロック、box�
 C4 図の引数のうち label、technology、type、description、
 Cynefin 図と ishikawa 図のリテラル、packet 図と Venn 図のラベル、
 Wardley マップのリンク、treemap の名前、
-railroad 図の terminal の文字列と special sequence です。
+railroad 図の文字列と special sequence です。
 空白とタブだけの文字列は、ほかの文字列と同じ文字列として扱います。
 `["   "]` は `[" "]` と印字します。 [fixture: pie/title/title-inner-text]
 [fixture: railroad/quotes/ir-string-runs-collapsed]

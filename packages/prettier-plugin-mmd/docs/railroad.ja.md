@@ -672,10 +672,11 @@ railroad-ebnf-beta
 
 StringLiteral の source span を保ちます。
 escape、空文字列、HTML、entity、hidden やコメントに見える文字も対象です。
-terminal の文字列と special sequence の文字列の中の空白とタブの連なりは、
-空白 1 つにして印字します。
-そのような空白とタブだけの文字列は空白 1 つになります。
-nonterminal の名前は規則への参照なので、書かれたままにします。
+文字列の中の空白とタブの連なりは、空白 1 つにして印字します。
+空白とタブだけの文字列は空白 1 つになります。
+規則名は空白を含まないため、
+文字列にその連なりを含む nonterminal はどの規則も参照せず、
+その文字列はほかの文字列と同じに印字します。
 [fixture: railroad/quotes/ir-string-runs-collapsed]
 IR、EBNF、PEG は両方の引用符と backslash escape を認めます。
 `'` で囲んだ文字列は `"` で囲んで印字しますが、内容に `'`、`"`、backslash、
