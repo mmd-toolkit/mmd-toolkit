@@ -292,8 +292,11 @@ whitespace becoming one space (see
 [fixture: single-space-gaps/link-style-stroke-before-colon-kept] [fixture:
 single-space-gaps/class-def-stroke-before-colon-kept] A `style` styles a node,
 and uses the one form. [fixture:
-single-space-gaps/style-stroke-before-colon-spaced] A style of a `linkStyle`
-with a name that ends with `stroke` and a value of spaces and tabs only stays as
+single-space-gaps/style-stroke-before-colon-spaced] A space after a backslash
+that ends a style of a `style` is read as nothing, as in
+[flowchart](./flowchart.md#whitespace-between-tokens). [fixture:
+single-space-gaps/style-backslash-space-dropped] A style of a `linkStyle` with a
+name that ends with `stroke` and a value of spaces and tabs only stays as
 written, as in [flowchart](./flowchart.md#whitespace-between-tokens). [fixture:
 single-space-gaps/link-style-blank-stroke-value-kept] A style of a `linkStyle`
 that ends with a backslash keeps whether whitespace stands after it, a run of

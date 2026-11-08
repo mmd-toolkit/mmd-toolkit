@@ -32,13 +32,18 @@ interface StyleReading {
   /**
    * The style is one of a link. Where the look is `handDrawn`, it reads
    * whether a style starts with `stroke:`, so whether whitespace stands before
-   * such a style is no margin; it draws no colour from a `stroke` with a value
-   * of whitespace only, so whether such a value has whitespace in it is no
-   * margin; and it joins the styles of a link with `;` as they are, so a style
-   * that ends with a backslash escapes the `;`, and whether whitespace stands
-   * after the backslash is no margin. Where whitespace stands, its amount is.
+   * such a style is no margin; and it draws no colour from a `stroke` with a
+   * value of whitespace only, so whether such a value has whitespace in it is
+   * no margin. Where whitespace stands, its amount is.
    */
   readonly readsLinkStyle: boolean
+  /**
+   * It joins the styles with `;` as they are: the styles of a link, of a block
+   * of a block diagram, and of a class. A style that ends with a backslash
+   * escapes the `;`, so whether whitespace stands after the backslash is no
+   * margin; its amount is.
+   */
+  readonly joinsStyles: boolean
 }
 
 /**
@@ -49,11 +54,11 @@ interface StyleReading {
  */
 function withoutStyleMargins(
   style: string,
-  { readsStroke, readsLinkStyle }: StyleReading,
+  { readsStroke, readsLinkStyle, joinsStyles }: StyleReading,
 ): string {
   const trimmed = style.trim()
   const escapedTail =
-    readsLinkStyle && escapesNext(trimmed) && style !== style.trimEnd()
+    joinsStyles && escapesNext(trimmed) && style !== style.trimEnd()
   const tail = escapedTail ? " " : ""
   const colon = trimmed.indexOf(":")
   if (colon <= 0) return `${trimmed}${tail}`
@@ -95,6 +100,26 @@ function reachesLink(path: DbPath): boolean {
 }
 
 /**
+ * Whether mermaid.js joins the styles at a place of the Db with `;` as they are
+ * (see `StyleReading`): the styles of a link, the styles of a block of a block
+ * diagram, and the styles of a class of a class diagram. The styles of the
+ * other nodes and of a `classDef` are trimmed before they are used.
+ */
+function joinsStylesAt(
+  path: DbPath,
+  diagramType: string,
+  linksCanBeStyled: boolean,
+): boolean {
+  const [key, owner] = [path.at(-1), path.at(-2)]
+  if (key === "style") return linksCanBeStyled
+  if (key !== "styles") return false
+  return (
+    (diagramType === "block" && owner === "children") ||
+    (diagramType === "classDiagram" && owner === "classes")
+  )
+}
+
+/**
  * Checks the styles of a formatted diagram even though their text changed.
  * The formatter puts no whitespace before the first `:` of a style or before a
  * `,` and one space after them (docs/compatibility.md, Styles that are drawn
@@ -107,8 +132,9 @@ function reachesLink(path: DbPath): boolean {
  * `stroke:` in the styles of the link to colour its arrowheads, so whether
  * whitespace stands before the `:` of a name that ends with `stroke` is no
  * margin there, and neither is the whitespace before a style of a link that
- * starts with `stroke:`, or the value of a `stroke` that is whitespace only
- * (see `StyleReading`).
+ * starts with `stroke:`, or the value of a `stroke` that is whitespace only,
+ * and where mermaid.js joins the styles as they are, neither is the
+ * whitespace after a backslash that ends a style (see `StyleReading`).
  */
 export function styleDbForFormattingComparison(
   before: DbSummary | null,
@@ -122,6 +148,7 @@ export function styleDbForFormattingComparison(
     const reading: StyleReading = {
       readsStroke: linksCanBeStyled && reachesLink(path),
       readsLinkStyle: linksCanBeStyled && key === "style",
+      joinsStyles: joinsStylesAt(path, diagramType, linksCanBeStyled),
     }
     return key !== undefined &&
       isStyleKey(key) &&

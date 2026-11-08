@@ -428,6 +428,10 @@ mermaid.js は state 図では `,` の前後の空白を何もないものとし
 バックスラッシュの後で `:` の前にある空白は、
 除くと `:` がエスケープされるので残します。
 [fixture: whitespace-between-tokens/style-backslash-before-comma]
+ここでは、スタイルの末尾のバックスラッシュの後の空白は読まれません。
+`style S1 stroke-width:3px\ ,stroke:#0f0` は、
+`style S1 stroke-width: 3px\, stroke: #0f0` と印字し、画素は同じでした。
+[fixture: whitespace-between-tokens/style-backslash-space-dropped]
 [fixture: whitespace-between-tokens/style-colon-escaped-space-kept]
 コメントやディレクティブがある文、空白だけのスタイルがある文、
 スタイルに改行があるか、行に保つ `;` がある文は、書かれたままにします。

@@ -318,6 +318,9 @@ look が `handDrawn` のときは、mermaid.js が先頭の `stroke:` を読む�
 `style` はノードに適用され、1 つの形で印字します。
 [fixture: single-space-gaps/style-stroke-before-colon-spaced]
 [flowchart](./flowchart.ja.md#トークンの間の空白)と同じく、
+`style` のスタイルの末尾のバックスラッシュの後の空白は読まれません。
+[fixture: single-space-gaps/style-backslash-space-dropped]
+[flowchart](./flowchart.ja.md#トークンの間の空白)と同じく、
 `linkStyle` のスタイルのうち、名前が `stroke` で終わり、
 値が空白とタブだけのものは、書かれたまま残します。
 [fixture: single-space-gaps/link-style-blank-stroke-value-kept]

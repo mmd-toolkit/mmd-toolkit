@@ -546,10 +546,20 @@ Db changes, but mermaid.js draws the same figure (see
 `fill:a\,b ,stroke:c` is printed `fill: a\, b, stroke: c`. A space after a
 backslash before the `:` stays, since taking it away would escape the `:`.
 [fixture: styles/style-backslash-before-comma] [fixture:
-styles/style-colon-escaped-space-kept] A statement stays as written where it
-holds a comment or a directive, where a style is all whitespace, or where a
-style holds a line break or its line holds a kept `;`. The whitespace at the end
-of the statement is dropped, as in a flowchart (see
+styles/style-colon-escaped-space-kept] A `style` whose last style ends with a
+backslash keeps whether whitespace stands after it, a run of whitespace becoming
+its first character, also at the end of the statement, since the shapes of a
+block arrow and of a group put the styles into their `style` attribute joined
+with `;` as they are, and the backslash would escape the `;` (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)):
+`style A stroke-width:3px\ ,stroke:#0f0` is printed
+`style A stroke-width: 3px\ , stroke: #0f0`. [fixture:
+styles/style-backslash-space-kept] [fixture: styles/style-backslash-at-end-kept]
+A `classDef` takes the whitespace away first, and is printed in the one form.
+[fixture: styles/class-def-backslash-space-dropped] A statement stays as written
+where it holds a comment or a directive, where a style is all whitespace, or
+where a style holds a line break or its line holds a kept `;`. The whitespace at
+the end of the statement is dropped, as in a flowchart (see
 [Style trailing whitespace](./flowchart.md#style-trailing-whitespace)).
 [fixture: styles/class-definition-spaces] [fixture: styles/style-spaces]
 [fixture: styles/class-spaces] [fixture: styles/style-commas-spaced] [fixture:

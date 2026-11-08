@@ -406,7 +406,8 @@ mermaid.js はこの空白を Db に残すので、印字したテキストの D
 [`styles2Map`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L44-L51)
 は、図形の CSS を作る前に、スタイルの名前と値の前後の空白を取り除きます。
 class の図形と flowchart のリンクは、スタイルを CSS の `style` 属性に入れ、
-`:` や `;` の前後の空白は読まれません。
+スタイルの末尾のバックスラッシュの後を除き、
+`:` や `;` の前後の空白は読まれません（後述）。
 それぞれの文について、両方のテキストを mermaid.js 12.3.0 で Chromium に描き、
 画素が同じで、
 生成された id とその空白を除いた SVG も同じであることを確かめました。
@@ -514,32 +515,54 @@ flowchart と agentflow の `classDef` では、
 [fixture: class/whitespace-between-tokens/style-backslash-before-comma]
 [fixture: state/whitespace-between-tokens/style-backslash-before-comma]
 
-リンクのスタイルの末尾のバックスラッシュの後の空白も読まれます。
-mermaid.js はリンクのスタイルの空白を取り除かず、
-書かれたまま `;` でつないで path の CSS テキストにするので、
+スタイルの末尾のバックスラッシュの後の空白は、mermaid.js が空白を取り除かず、
+スタイルを書かれたままつなぐ箇所で読まれます。
+リンクのスタイルは、`;` でつないで path の CSS テキストにします。
+（[`insertEdge`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L936-L954)）。
+`getStylesFromArray` は block 図のノードの `style` に同じ処理を行い、
+block arrow と group の形が、それを `style` 属性に入れます。
+（[`getStylesFromArray`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/utils.ts#L443-L459)、
+[`blockArrow`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/blockArrow.ts#L217)、
+[`composite`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/composite.ts#L29)）。
+class の `style` では、`classBox` が同じ処理を行い、
+各部分の `style` 属性へ入れます。
+（[`classBox`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/classBox.ts#L36)）。
 スタイルの末尾のバックスラッシュは後ろの `;` をエスケープし、
 その後のスタイルが失われます。
-（[`insertEdge`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L936-L954)）。
 `linkStyle 0 stroke-width:4px\ ,stroke:#0f0` では線が緑で、
 `linkStyle 0 stroke-width: 4px\,stroke: #0f0` では黒なので、画素が異なります。
-`linkStyle default` と agentflow でも同じ結果です。
-そのため、リンクの番号か `default` を指定した `linkStyle` で、
-バックスラッシュで終わるスタイルは、その後に空白があるかないかを保ち、
-空白の連続は最初の 1 文字にします。
+`linkStyle default`、agentflow、block 図の block arrow と group、
+class の `style A fill:abc\ ,stroke:green` でも同じ結果です。
+class では枠が緑になるかどうかが変わります。
+そのため、リンクの番号か `default` を指定した `linkStyle` と、
+block 図と class 図の `style` で、バックスラッシュで終わるスタイルは、
+その後に空白があるかないかを保ち、空白の連続は最初の 1 文字にします。
 通常ならスタイル文の末尾の空白を落とす文末でも、同じです。
 （[スタイルの行末の空白](./flowchart.ja.md#スタイルの行末の空白)）。
 末尾の 2 つのバックスラッシュは互いにエスケープし、
 `linkStyle 0 stroke-width:4px\\ ,stroke:#0f0` と、
 その空白がないものの画素は同じだったので、その後の空白は落とします。
-リンクに付けた `classDef` と `style` には影響しません。
+ほかのスタイルには影響しません。
+`classDef`、flowchart と agentflow と state 図のノードの `style`、
+block 図のほかの形の `style` です。
 mermaid.js がスタイルを使う前に両端の空白を取り除くからです。
 （[`getCompiledStyles`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L1156-L1168)、
 [`styles2Map`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L44-L51)）。
 両方の書き方の画素は同じでした。
+ER、requirement、treemap の図では、スタイルの中のバックスラッシュを拒否します。
 [fixture: flowchart/whitespace-between-tokens/link-style-backslash-space-kept]
 [fixture: agentflow/single-space-gaps/link-style-backslash-space-kept]
 [fixture: flowchart/style-trailing-whitespace/link-style-backslash-at-end-kept]
 [fixture: agentflow/trailing-whitespace/link-style-backslash-at-end-kept]
+[fixture: block/styles/style-backslash-space-kept]
+[fixture: block/styles/style-backslash-at-end-kept]
+[fixture: class/whitespace-between-tokens/style-backslash-space-kept]
+[fixture: class/whitespace-between-tokens/style-backslash-at-end-kept]
+[fixture: flowchart/whitespace-between-tokens/style-backslash-space-dropped]
+[fixture: agentflow/single-space-gaps/style-backslash-space-dropped]
+[fixture: state/whitespace-between-tokens/style-backslash-space-dropped]
+[fixture: block/styles/class-def-backslash-space-dropped]
+[fixture: class/whitespace-between-tokens/class-def-backslash-space-dropped]
 
 次の場合は、文を書かれたまま残します。
 スタイルが改行か U+2028・U+2029 を含む場合、

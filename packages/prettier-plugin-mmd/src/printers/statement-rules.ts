@@ -522,10 +522,6 @@ function endsStyle(
 }
 
 /**
- * Whether a style has a name that ends with `stroke` and a value of spaces and
- * tabs only, with at least one of them (see `normalizeStyleList`).
- */
-/**
  * Whether a style of a link has a `stroke` with a value of spaces and tabs
  * only, which mermaid.js reads as a colour that is blank and so draws no
  * colour (see `StyleListUse`, `isLinkStyle`): the name ends with `stroke`, the

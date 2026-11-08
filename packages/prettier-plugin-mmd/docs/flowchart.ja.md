@@ -703,6 +703,10 @@ mermaid.js はリンクのスタイルから `stroke:` を探し、
 [fixture: whitespace-between-tokens/class-def-stroke-before-colon-kept]
 `style` はノードに適用され、1 つの形で印字します。
 [fixture: whitespace-between-tokens/style-stroke-before-colon-spaced]
+`style` のスタイルの末尾のバックスラッシュの後の空白は読まれません。
+`style A stroke-width:3px\ ,stroke:#0f0` は、
+`style A stroke-width: 3px\, stroke: #0f0` と印字します。
+[fixture: whitespace-between-tokens/style-backslash-space-dropped]
 `linkStyle` のスタイルのうち、名前が `stroke` で終わり、
 値が空白とタブだけのものは、書かれたまま残します。
 mermaid.js はそれから矢印の頭に色を付けず、後の `stroke:` も試さないからです。

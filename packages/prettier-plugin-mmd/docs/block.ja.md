@@ -579,6 +579,18 @@ Db は変わりますが、mermaid.js が描く図は同じです。
 除くと `:` がエスケープされるので残します。
 [fixture: styles/style-backslash-before-comma]
 [fixture: styles/style-colon-escaped-space-kept]
+最後のスタイルがバックスラッシュで終わる `style` は、
+その後に空白があるかないかを保ち、空白の連続は最初の 1 文字にします。
+文末でも同じです。
+block arrow と group の形が、スタイルを書かれたまま `;` でつないで、
+`style` 属性へ入れ、バックスラッシュが `;` をエスケープするからです。
+（[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)）。
+`style A stroke-width:3px\ ,stroke:#0f0` は、
+`style A stroke-width: 3px\ , stroke: #0f0` と印字します。
+[fixture: styles/style-backslash-space-kept]
+[fixture: styles/style-backslash-at-end-kept]
+`classDef` は先に空白を取り除くので、1 つの形で印字します。
+[fixture: styles/class-def-backslash-space-dropped]
 コメントやディレクティブがある文、空白だけのスタイルがある文、
 スタイルに改行があるか、行に保つ `;` がある文は、書かれたままにします。
 文の最後の空白は、

@@ -409,9 +409,13 @@ the figure is the same (see
 [fixture: whitespace-between-tokens/style-colon-spaced] A backslash does not
 escape a `,` here: `fill:a\,b ,stroke:c` is printed `fill: a\, b, stroke: c`. A
 space after a backslash before the `:` stays, since taking it away would escape
-the `:`. [fixture: whitespace-between-tokens/style-backslash-before-comma]
-[fixture: whitespace-between-tokens/style-colon-escaped-space-kept] A statement
-stays as written where it holds a comment or a directive, where a style is all
+the `:`. [fixture: whitespace-between-tokens/style-backslash-before-comma] A
+space after a backslash that ends a style is read as nothing here:
+`style S1 stroke-width:3px\ ,stroke:#0f0` is printed
+`style S1 stroke-width: 3px\, stroke: #0f0`, and the pixels were the same.
+[fixture: whitespace-between-tokens/style-backslash-space-dropped] [fixture:
+whitespace-between-tokens/style-colon-escaped-space-kept] A statement stays as
+written where it holds a comment or a directive, where a style is all
 whitespace, or where a style holds a line break or its line holds a kept `;`.
 [fixture: whitespace-between-tokens/comma-kept] [fixture:
 whitespace-between-tokens/style-comma-spaced] [fixture:

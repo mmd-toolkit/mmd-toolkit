@@ -44,6 +44,7 @@ import type { Source } from "./source.ts"
 import {
   addCssClassRules,
   addNameListRules,
+  endOfJoinedStyle,
   findCallRangeWithTrivia,
   normalizeCallArguments,
   normalizeStyleList,
@@ -377,10 +378,17 @@ export function layoutClassStatement(
     !spansKeptBreaks(source, keptBreaks, start, end)
   ) {
     // mermaid.js draws the same figure whatever the whitespace around the `:`
-    // and the `,` of the styles (docs/class.md, Styles). A statement with a
-    // kept line break keeps its styles as written: printing them changes
-    // whether joining its lines is safe, so a second pass would join them.
-    normalizeStyleList(source, atoms, statement)
+    // and the `,` of the styles (docs/class.md, Styles), except after a
+    // backslash that ends a style of a `style`, whose whitespace the last atom
+    // takes up to `end` (see `findClassPrintedEnd`). A statement with a kept
+    // line break keeps its styles as written: printing them changes whether
+    // joining its lines is safe, so a second pass would join them.
+    const joinsStyles = statement.type === "ClassStyleStatement"
+    const lastAtom = atoms.at(-1)
+    if (joinsStyles && lastAtom && lastAtom.end < end) {
+      atoms[atoms.length - 1] = { ...lastAtom, end }
+    }
+    normalizeStyleList(source, atoms, statement, { joinsStyles })
   }
   return {
     atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
@@ -405,8 +413,17 @@ export function findClassPrintedEnd(
 ): number {
   if (findOpenNameIn(source, statement) !== null) return source.text.length
   const colon = findBlankLabelColon(source, statement)
-  if (colon === null) return statement.range[1]
-  return findWrittenWhitespaceEnd(source, colon.range[1])
+  if (colon !== null) return findWrittenWhitespaceEnd(source, colon.range[1])
+  // mermaid.js joins the styles of a `style` with `;` as they are, so the
+  // whitespace after a backslash that ends the last one stays (see
+  // `normalizeStyleList`).
+  const lastStyle =
+    statement.type === "ClassStyleStatement"
+      ? statement.styles.at(-1)
+      : undefined
+  return lastStyle
+    ? Math.max(statement.range[1], endOfJoinedStyle(source, lastStyle.range))
+    : statement.range[1]
 }
 
 /**

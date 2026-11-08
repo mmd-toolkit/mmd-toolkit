@@ -680,7 +680,11 @@ styles of a link to colour its arrowheads. [fixture:
 whitespace-between-tokens/link-style-stroke-before-colon-kept] [fixture:
 whitespace-between-tokens/class-def-stroke-before-colon-kept] A `style` styles a
 node, and uses the one form. [fixture:
-whitespace-between-tokens/style-stroke-before-colon-spaced] A style of a
+whitespace-between-tokens/style-stroke-before-colon-spaced] A space after a
+backslash that ends a style of a `style` is read as nothing:
+`style A stroke-width:3px\ ,stroke:#0f0` is printed
+`style A stroke-width: 3px\, stroke: #0f0`. [fixture:
+whitespace-between-tokens/style-backslash-space-dropped] A style of a
 `linkStyle` with a name that ends with `stroke` and a value of spaces and tabs
 only stays as written, since mermaid.js draws no colour of the arrowheads from
 it and does not try a later `stroke:`: `linkStyle 0 stroke: ,   stroke:#f00` is

@@ -365,11 +365,12 @@ differs from the Db of the written text, but it draws the same figure.
 takes the whitespace around the name and the value of a style away before it
 makes the CSS of a shape, and the shapes of class diagrams and the links of
 flowcharts put the styles into the CSS `style` attribute, in which the
-whitespace around `:` and `;` is not read. Both texts of each kind of statement
-were drawn with mermaid.js 12.3.0 in Chromium, and the pixels were the same, and
-so was the SVG, without the generated ids and without that whitespace: for
-`style` and `classDef` in the five diagram types, and for the styles of a
-`linkStyle`, with link numbers or `default`, except for the cases below.
+whitespace around `:` and `;` is not read, except after a backslash that ends a
+style (see below). Both texts of each kind of statement were drawn with
+mermaid.js 12.3.0 in Chromium, and the pixels were the same, and so was the SVG,
+without the generated ids and without that whitespace: for `style` and
+`classDef` in the five diagram types, and for the styles of a `linkStyle`, with
+link numbers or `default`, except for the cases below.
 
 A `classDef` in a treemap drops the whitespace at the end of its styles:
 `classDef zz color:red  ` is printed `classDef zz color:red`. mermaid.js keeps
@@ -468,31 +469,54 @@ block/styles/style-backslash-before-comma] [fixture:
 class/whitespace-between-tokens/style-backslash-before-comma] [fixture:
 state/whitespace-between-tokens/style-backslash-before-comma]
 
-The whitespace after a backslash at the end of a style of a link is read too.
+The whitespace after a backslash at the end of a style is read where mermaid.js
+joins the styles as they are, without taking their whitespace away.
 [`insertEdge`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L936-L954)
-joins the styles of a link with `;` into the CSS text of its path as they are,
-without taking their whitespace away, so a backslash at the end of a style
-escapes the `;` after it, and the styles after it are lost. In
-`linkStyle 0 stroke-width:4px\ ,stroke:#0f0` the line is green, and in
-`linkStyle 0 stroke-width: 4px\,stroke: #0f0` it is black, so the pixels differ,
-with the same result for `linkStyle default` and in agentflow. So a style of a
-`linkStyle`, with link numbers or `default`, that ends with a backslash keeps
-whether whitespace stands after it, a run of whitespace becoming its first
-character, also at the end of the statement, where the whitespace at the end of
-a style statement is dropped otherwise (see
+joins the styles of a link with `;` into the CSS text of its path,
+[`getStylesFromArray`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/utils.ts#L443-L459)
+does so for the `style` of a node of a block diagram, which the shapes of a
+block arrow
+([`blockArrow`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/blockArrow.ts#L217))
+and of a group
+([`composite`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/composite.ts#L29))
+put into their `style` attribute, and
+[`classBox`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/classBox.ts#L36)
+does so for the `style` of a class, which it puts into the `style` attribute of
+its parts. A backslash at the end of a style escapes the `;` after it, and the
+styles after it are lost. In `linkStyle 0 stroke-width:4px\ ,stroke:#0f0` the
+line is green, and in `linkStyle 0 stroke-width: 4px\,stroke: #0f0` it is black,
+so the pixels differ, with the same result for `linkStyle default`, in
+agentflow, for a block arrow and a group of a block diagram, and for
+`style A fill:abc\ ,stroke:green` on a class, whose border is green or not. So a
+style of a `linkStyle`, with link numbers or `default`, and of a `style` of a
+block diagram and of a class diagram, that ends with a backslash keeps whether
+whitespace stands after it, a run of whitespace becoming its first character,
+also at the end of the statement, where the whitespace at the end of a style
+statement is dropped otherwise (see
 [Style trailing whitespace](./flowchart.md#style-trailing-whitespace)). Two
 backslashes at the end escape each other, and the pixels of
 `linkStyle 0 stroke-width:4px\\ ,stroke:#0f0` and of the same without the space
-were the same, so the whitespace after them is dropped. A `classDef` that is put
-on a link and a `style` are not affected: mermaid.js takes the whitespace at the
-ends of their styles away before it uses them
+were the same, so the whitespace after them is dropped. The other styles are not
+affected: a `classDef`, the `style` of a node of a flowchart, an agentflow, and
+a state diagram, and of the other shapes of a block diagram, since mermaid.js
+takes the whitespace at the ends of their styles away before it uses them
 ([`getCompiledStyles`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L1156-L1168),
 [`styles2Map`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L44-L51)),
-and the pixels of both spellings were the same. [fixture:
+and the pixels of both spellings were the same. ER, requirement, and treemap
+diagrams reject a backslash in a style. [fixture:
 flowchart/whitespace-between-tokens/link-style-backslash-space-kept] [fixture:
 agentflow/single-space-gaps/link-style-backslash-space-kept] [fixture:
 flowchart/style-trailing-whitespace/link-style-backslash-at-end-kept] [fixture:
-agentflow/trailing-whitespace/link-style-backslash-at-end-kept]
+agentflow/trailing-whitespace/link-style-backslash-at-end-kept] [fixture:
+block/styles/style-backslash-space-kept] [fixture:
+block/styles/style-backslash-at-end-kept] [fixture:
+class/whitespace-between-tokens/style-backslash-space-kept] [fixture:
+class/whitespace-between-tokens/style-backslash-at-end-kept] [fixture:
+flowchart/whitespace-between-tokens/style-backslash-space-dropped] [fixture:
+agentflow/single-space-gaps/style-backslash-space-dropped] [fixture:
+state/whitespace-between-tokens/style-backslash-space-dropped] [fixture:
+block/styles/class-def-backslash-space-dropped] [fixture:
+class/whitespace-between-tokens/class-def-backslash-space-dropped]
 
 A statement stays as written where a style holds a line break or a U+2028 or
 U+2029, where the statement holds a comment or a directive, where a style is all

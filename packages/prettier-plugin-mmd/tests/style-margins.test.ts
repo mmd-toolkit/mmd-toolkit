@@ -90,6 +90,12 @@ const restored: readonly DbPair[] = [
     before: { classDefs: [{ id: "c", styles: ["stroke-width:4px\\ "] }] },
     after: { classDefs: [{ id: "c", styles: ["stroke-width: 4px\\"] }] },
   },
+  {
+    name: "whitespace after a backslash that ends a style of a block class",
+    diagramType: "block",
+    before: { classes: [{ id: "c", styles: ["stroke-width:3px\\ "] }] },
+    after: { classes: [{ id: "c", styles: ["stroke-width: 3px\\"] }] },
+  },
 ]
 
 const kept: readonly DbPair[] = [
@@ -138,6 +144,22 @@ const kept: readonly DbPair[] = [
     name: "whitespace taken away after a backslash that ends a style of the default of the links",
     before: { edgeDefaults: { style: ["stroke-width:4px\\ "] } },
     after: { edgeDefaults: { style: ["stroke-width: 4px\\"] } },
+  },
+  {
+    name: "whitespace taken away after a backslash that ends a style of a block",
+    diagramType: "block",
+    before: {
+      root: { children: [{ id: "A", styles: ["stroke-width:3px\\ "] }] },
+    },
+    after: {
+      root: { children: [{ id: "A", styles: ["stroke-width: 3px\\"] }] },
+    },
+  },
+  {
+    name: "whitespace taken away after a backslash that ends a style of a class",
+    diagramType: "classDiagram",
+    before: { classes: [{ id: "A", styles: ["fill:abc\\ "] }] },
+    after: { classes: [{ id: "A", styles: ["fill: abc\\"] }] },
   },
   {
     name: "a changed value",

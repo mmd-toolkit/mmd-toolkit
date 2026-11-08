@@ -369,6 +369,20 @@ mermaid.js は余白を Db に残しますが、描かれる図は同じです�
 ここではバックスラッシュは `,` をエスケープしません。
 `fill:a\,b ,stroke:c` は `fill: a\, b, stroke: c` と印字します。
 [fixture: whitespace-between-tokens/style-backslash-before-comma]
+最後のスタイルがバックスラッシュで終わる `style` は、
+その後に空白があるかないかを保ち、空白の連続は最初の 1 文字にします。
+文末でも同じです。
+mermaid.js がクラスのスタイルを書かれたまま `;` でつなぎ、
+バックスラッシュが `;` をエスケープするからです。
+（[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)）。
+`style A fill:abc\  ,stroke:green` は、
+`style A fill: abc\ , stroke: green` と印字します。
+[fixture: whitespace-between-tokens/style-backslash-space-kept]
+[fixture: whitespace-between-tokens/style-backslash-at-end-kept]
+`classDef` は先に空白を取り除くので、1 つの形で印字します。
+`classDef c fill:abc\ ,stroke:green` は、
+`classDef c fill: abc\, stroke: green` と印字します。
+[fixture: whitespace-between-tokens/class-def-backslash-space-dropped]
 コメントやディレクティブがある文、空白だけのスタイルがある文、
 スタイルに改行があるか、行に保つ `;` がある文は、書かれたままにします。
 [fixture: whitespace-between-tokens/style-comma-before-dropped]

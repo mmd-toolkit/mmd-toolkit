@@ -330,8 +330,21 @@ figure (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 [fixture: whitespace-between-tokens/style-colon-spaced] A backslash does not
 escape a `,` here: `fill:a\,b ,stroke:c` is printed `fill: a\, b, stroke: c`.
-[fixture: whitespace-between-tokens/style-backslash-before-comma] A statement
-stays as written where it holds a comment or a directive, where a style is all
+[fixture: whitespace-between-tokens/style-backslash-before-comma] A `style`
+whose last style ends with a backslash keeps whether whitespace stands after it,
+a run of whitespace becoming its first character, also at the end of the
+statement, since mermaid.js joins the styles of a class with `;` as they are,
+and the backslash would escape the `;` (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)):
+`style A fill:abc\  ,stroke:green` is printed
+`style A fill: abc\ , stroke: green`. [fixture:
+whitespace-between-tokens/style-backslash-space-kept] [fixture:
+whitespace-between-tokens/style-backslash-at-end-kept] A `classDef` takes the
+whitespace away first, and is printed in the one form:
+`classDef c fill:abc\ ,stroke:green` is printed
+`classDef c fill: abc\, stroke: green`. [fixture:
+whitespace-between-tokens/class-def-backslash-space-dropped] A statement stays
+as written where it holds a comment or a directive, where a style is all
 whitespace, or where a style holds a line break or its line holds a kept `;`.
 [fixture: whitespace-between-tokens/style-comma-before-dropped] [fixture:
 whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
