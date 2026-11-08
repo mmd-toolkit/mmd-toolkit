@@ -655,13 +655,17 @@ whitespace-between-tokens/header-and-tabs-collapsed] A run of spaces and tabs
 inside the name of a subgraph, which becomes its title, is printed as one space
 where mermaid.js draws the title without a width, and kept where it wraps the
 title: in a markdown string, a subgraph with a data block (the id of a subgraph
-named by a string is the text between the quotes: `subgraph "S"` has the id
-`S`), and a diagram that names `swimlane` (see
+named by a string is the text between the quotes, without the whitespace at its
+ends, and for a markdown string the text between its backquotes: `subgraph "S"`
+and `subgraph " S "` have the id `S`), and a diagram that names `swimlane` (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 [fixture: whitespace-between-tokens/subgraph-name-runs-collapsed] [fixture:
 subgraph-header/markdown-title-runs-kept] [fixture:
 subgraph-header/collapsed-title-runs-kept] [fixture:
 subgraph-header/collapsed-quoted-name-title-runs-kept] [fixture:
+subgraph-header/collapsed-markdown-name-title-runs-kept] [fixture:
+subgraph-header/collapsed-spaced-name-title-runs-kept] [fixture:
+subgraph-header/collapsed-generated-id-title-runs-kept] [fixture:
 subgraph-header/swimlane-title-runs-kept] [fixture:
 subgraph-header/layout-swimlane-title-runs-kept] In a `style`, `classDef`, or
 `linkStyle` statement, each style has no whitespace before its first `:` and one

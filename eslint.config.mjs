@@ -32,6 +32,10 @@ export default [
       "**/coverage/",
       "**/test-results/",
       "**/playwright-report/",
+      // What VitePress writes when the documentation site is built or served,
+      // ignored by Git too.
+      "**/.vitepress/cache/",
+      "**/.vitepress/dist/",
       // The corpus and the inputs of the plugins' own tests: option files that
       // the tests read as Prettier options, and Markdown inputs of the markdown
       // tests. Their content is what a test needs, not source or documentation.

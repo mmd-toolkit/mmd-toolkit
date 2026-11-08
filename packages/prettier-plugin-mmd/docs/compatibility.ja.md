@@ -642,12 +642,17 @@ timeline の行の最後の event と、別名を持つ state の 2 つ目の説
 ディレクティブが行の最後にあっても、その後に空白が続いていても同じで、
 その空白は行末の空白と同じように除きます。
 `title T  %%{x}%%  ` も `title T  %%{x}%%` も `title T %%{x}%%` と印字します。
-ただし、C4 図の説明 `accDescription` は例外で、
-テキストの後にディレクティブがある場合は、書かれたまま残します。
+この文は、ディレクティブが 1 つの場合について述べています。
+テキストの後にディレクティブが 2 つ以上ある場合は、
+その間と最後のディレクティブの後の空白は、
+ディレクティブの規則に従って印字するので、
+最後のディレクティブの後に空白があるテキストとないテキストでは、
+印字する形が変わることがあります。
+（[ディレクティブ](./flowchart.ja.md#ディレクティブ)を参照してください）。
 [fixture: gantt/titles-and-sections/title-trailing-directive-blanks-dropped]
 [fixture: venn/title/title-trailing-directive-blanks-dropped]
 [fixture: c4/title-and-accdescription/title-trailing-directive-blanks-dropped]
-[fixture: c4/title-and-accdescription/description-trailing-directive-kept]
+[fixture: c4/title-and-accdescription/description-trailing-directive-blanks-dropped]
 [fixture: timeline/periods-and-events/event-trailing-directive-gap-kept]
 [fixture: state/aliases/second-description-trailing-directive-gap-kept]
 [fixture: gantt/titles-and-sections/title-padding-dropped]
@@ -828,7 +833,9 @@ railroad 図の文字列と special sequence です。
   データブロックのキーは読みません。
   subgraph の id に書かれたブロックは、
   どれも題を書かれたままにし（文字列で名前を書く subgraph や flow の id は、
-  引用符の間の文字で、`subgraph "S"` の id は `S`）、
+  引用符の間の文字から両端の空白を除いたもので、
+  Markdown 文字列ではバッククォートの間の文字です。
+  `subgraph "S"` も `subgraph " S "` も id は `S`）、
   mermaid.js が空白を含む名前の subgraph に付ける `subGraph0` のような id に、
   ブロックが書かれた場合も同じです。
   どこかに `swimlane` を書く図は、すべての題を書かれたままにします。
@@ -840,7 +847,13 @@ railroad 図の文字列と special sequence です。
   [fixture: agentflow/containers/flow-title-runs-collapsed]
   [fixture: agentflow/containers/flow-title-collapsed-runs-kept]
   [fixture: flowchart/subgraph-header/collapsed-quoted-name-title-runs-kept]
+  [fixture: flowchart/subgraph-header/collapsed-markdown-name-title-runs-kept]
+  [fixture: flowchart/subgraph-header/collapsed-spaced-name-title-runs-kept]
+  [fixture: flowchart/subgraph-header/collapsed-generated-id-title-runs-kept]
   [fixture: agentflow/containers/flow-quoted-name-title-collapsed-runs-kept]
+  [fixture: agentflow/containers/flow-spaced-quoted-name-title-collapsed-runs-kept]
+  [fixture: agentflow/containers/flow-markdown-name-title-collapsed-runs-kept]
+  [fixture: agentflow/containers/flow-two-part-name-title-collapsed-runs-kept]
 - `accTitle`。
   mermaid.js は SVG の `title` 要素に入れ、
   ブラウザーは図の上にポインターを止めるとツールチップとして表示します。
@@ -1083,29 +1096,28 @@ mermaid.js は Db から描くので、同じ Db が同じ描画の根拠です�
 印字は、以下のキーワードを示した大文字小文字にし、
 それ以外のキーワードは書かれたままにします。
 
-- ER 図: `BT`、`classDef`、`direction`、`end`、`LR`、`RL`、`style`、`subgraph`、
-  `TB`。
+- ER 図: `BT`、`direction`、`end`、`LR`、`RL`、`subgraph`、`TB`。
 - Gantt 図: `axisFormat`、`dateFormat`、`excludes`、`friday`、`monday`、
   `section`、`tickInterval`、`title`、`weekday`、`weekend`。
 - ユーザージャーニー: `section`、`title`。
 - マインドマップ: `::icon(`。
-- 象限図: `classDef`、`quadrant-1`、`quadrant-2`、`quadrant-3`、`quadrant-4`、
-  `title`、`x-axis`、`y-axis`。
-- 要件図: `analysis`、`class`、`classDef`、`contains`、`copies`、
-  `demonstration`、`derives`、`designConstraint`、`direction`、`docRef`、
-  `element`、`functionalRequirement`、`high`、`id`、`inspection`、
-  `interfaceRequirement`、`low`、`LR`、`medium`、`performanceRequirement`、
-  `physicalRequirement`、`refines`、`requirement`、`risk`、`satisfies`、
-  `style`、`test`、`text`、`traces`、`type`、`verifies`、`verifymethod`。
+- 象限図: `quadrant-1`、`quadrant-2`、`quadrant-3`、`quadrant-4`、`title`、
+  `x-axis`、`y-axis`。
+- 要件図: `analysis`、`class`、`contains`、`copies`、`demonstration`、
+  `derives`、`designConstraint`、`direction`、`docRef`、`element`、
+  `functionalRequirement`、`high`、`id`、`inspection`、`interfaceRequirement`、
+  `low`、`LR`、`medium`、`performanceRequirement`、`physicalRequirement`、
+  `refines`、`requirement`、`risk`、`satisfies`、`test`、`text`、`traces`、
+  `type`、`verifies`、`verifymethod`。
 - シーケンス図: `activate`、`actor`、`alt`、`and`、`as`、`autonumber`、`box`、
   `break`、`create`、`critical`、`deactivate`、`destroy`、`else`、`end`、
   `link`、`links`、`loop`、`Note`、`of`、`opt`、`option`、`over`、`par`、
   `participant`、`rect`、`right`。
 - 状態遷移図: `<<choice>>`、`<<fork>>`、`<<join>>`、`accDescr`、`accTitle`、
-  `as`、`class`、`classDef`、`direction`、`end`、`LR`、`note`、`state`、`TB`。
+  `as`、`class`、`direction`、`end`、`LR`、`note`、`state`、`TB`。
 - タイムライン: `section`、`TD`、`title`。
 - ユースケース図: `extend`、`include`。
-- Venn 図: `set`、`style`、`text`、`title`、`union`。
+- Venn 図: `set`、`text`、`title`、`union`。
 - XY チャート: `bar`、`line`、`title`、`x-axis`、`y-axis`。
 
 例は、各キーワードの印字する大文字小文字を、
@@ -1116,14 +1128,12 @@ mermaid.js は Db から描くので、同じ Db が同じ描画の根拠です�
 [fixture: er/direction/case-one-form]
 [fixture: er/direction/case-bt-rl-one-form]
 [fixture: er/subgraphs/end-case-one-form]
-[fixture: er/styles-and-classes/keyword-case-one-form]
 [fixture: gantt/keyword-case/keywords-one-form]
 [fixture: gantt/weekday-and-weekend/day-case-one-form]
 [fixture: journey/keyword-case/keywords-one-form]
 [fixture: mindmap/keyword-case/icon-keyword]
 [fixture: quadrant/keyword-case/statement-keywords-one-form]
 [fixture: quadrant/keyword-case/quadrant-3-4-one-form]
-[fixture: quadrant/styles/class-definition-keyword-case-one-form]
 [fixture: requirement/keyword-case/keywords-one-form]
 [fixture: requirement/keyword-case/types-one-form]
 [fixture: requirement/fields/field-keywords-case-one-form]
@@ -1131,7 +1141,6 @@ mermaid.js は Db から描くので、同じ Db が同じ描画の根拠です�
 [fixture: requirement/fields/keyword-values-low-test-analysis-case-one-form]
 [fixture: requirement/relationship-spacing/relation-case-one-form]
 [fixture: requirement/relationship-spacing/relations-case-one-form]
-[fixture: requirement/styles-and-classes/keyword-case-one-form]
 [fixture: requirement/direction/case-one-form]
 [fixture: sequence/whitespace-between-tokens/keyword-case-one-form]
 [fixture: sequence/keyword-case/statements-one-form]
@@ -1157,31 +1166,36 @@ ER 図は属性のキー `PK` と `FK` を Db に書かれたまま保ち、
 Gantt 図はタスクのタグ `done` と `crit` と `after` を保ち、
 XY チャートは `horizontal` を保ち、
 treeView は `ICON(…)` を名前の一部として読みます。
-mermaid.js は、ここに挙げた大文字小文字の `style` か `classDef` があり、
+ER 図、要件図、Venn 図の `style` と、ER 図、状態遷移図、要件図、
+象限チャートの `classDef` も書かれたまま残します。
+mermaid.js は、正確にこの大文字小文字の `style` か `classDef` があり、
 その後に `:`、空白以外の文字だけをはさんで `#`、その後に `;` がある行では、
 テキストを読む前に、最後の `;` を取り除きます。
 キーワードの大文字小文字が異なる行では、その `;` も含めて読むので、
 `STYLE A fill:#f00;` と `style A fill:#f00;` の Db は異なります。
-そのため、同じ行に `:`、`#`、`;` がこの順である `style` と `classDef` は、
-一覧に挙げるすべての図種で、書かれたまま残します。
-ただし、象限チャートは、2 つの大文字小文字で読みが異なるテキストを拒否するので、
-この限りではありません。
+この規則は、ディレクティブとコメントを取り除いた後の行に当たるので、
+複数行にまたがるディレクティブは両側を 1 行につなぎ、キーワードの行だけでは、
+別の大文字小文字で行が同じに読まれるかは分かりません。
+象限チャートは、2 つの大文字小文字で読みが異なるテキストの一部を拒否し、
+ほかは同じに読みますが、これも書かれたまま残します。
 [fixture: er/whitespace-between-tokens/keyword-case-one-form]
 [fixture: state/whitespace-between-tokens/keyword-case-one-form]
 [fixture: block/keyword-case/keywords-kept]
 [fixture: treeview/keyword-case/icon-kept]
 [fixture: er/attribute-spacing/keys-case-kept]
 [fixture: gantt/keyword-case/tags-case-kept]
+[fixture: er/styles-and-classes/keyword-case-kept]
 [fixture: er/styles-and-classes/keyword-case-semicolon-line-kept]
+[fixture: requirement/styles-and-classes/keyword-case-kept]
 [fixture: requirement/styles-and-classes/keyword-case-semicolon-line-kept]
 [fixture: state/keyword-case/classdef-semicolon-line-kept]
 [fixture: venn/keyword-case-and-order/style-semicolon-line-kept]
-[fixture: quadrant/styles/class-definition-semicolons-case-one-form]
+[fixture: quadrant/styles/class-definition-keyword-case-kept]
+[fixture: quadrant/styles/class-definition-semicolons-case-kept]
 
 ER のサブグラフの本文で、mermaid.js は `class`、`classDef`、
 `style` の文のキーワードを、サブグラフのノードとして書かれたまま列挙します。
-そのため、この 3 つのキーワードは、そこでは大文字小文字を保ち、
-その外では一覧の大文字小文字で印字します。
+これは、この 3 つのキーワードの大文字小文字を保つ、もう 1 つの理由です。
 [fixture: er/subgraphs/statement-keywords-case-kept]
 
 ### `"` で囲む文字列

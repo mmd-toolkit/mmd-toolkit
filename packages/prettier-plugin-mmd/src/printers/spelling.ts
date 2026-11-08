@@ -5,7 +5,6 @@ import { keywordSpellings } from "./keyword-spellings.ts"
 import { childrenOf } from "./layout.ts"
 import { findLinkLabelRespellings } from "./link-label-form.ts"
 import type { Source } from "./source.ts"
-import { findFirstIndex } from "./source.ts"
 
 /** The text to print in place of the token or node at an offset. */
 export interface Respelling {
@@ -203,39 +202,6 @@ function collectRanges(
   }
 }
 
-/**
- * Records the keywords that start a `class`, `classDef`, or `style` statement
- * in the body of a subgraph of an ER diagram: mermaid.js lists them in the
- * `nodes` of the subgraph as written (diagrams/er.md, Subgraphs).
- */
-function collectListedKeywords(
-  source: Source,
-  node: Node,
-  found: Set<number>,
-): void {
-  for (const child of childrenOf(node)) {
-    if (child.type === "ErSubgraphStatement") {
-      for (const statement of child.body) {
-        if (
-          statement.type === "ErClassDefStatement" ||
-          statement.type === "ErClassStatement" ||
-          statement.type === "ErStyleStatement"
-        ) {
-          const keyword =
-            source.root.tokens[
-              findFirstIndex(
-                source.root.tokens,
-                (token) => token.range[0] >= statement.range[0],
-              )
-            ]
-          if (keyword !== undefined) found.add(keyword.range[0])
-        }
-      }
-    }
-    collectListedKeywords(source, child, found)
-  }
-}
-
 /** Records the respelling of the numbers below `node` that have a field above. */
 function collectNumbers(
   source: Source,
@@ -296,24 +262,6 @@ function respellingsOf(source: Source): SourceRespellings {
 }
 
 /**
- * Whether mermaid.js may remove the last `;` of the line from a position on
- * before it reads the text: it does so for a line with a `style` or a
- * `classDef` in this case, then a `:`, then a `#` after non-blank characters
- * only, then a `;` (`encodeEntities` in utils.ts), and a text with the keyword
- * in another case is read with that `;`. The check takes the line from the
- * keyword on and asks for a `:`, a `#`, and a `;` in this order, which holds
- * wherever the exact rule holds.
- */
-function mayLoseSemicolon(text: string, from: number): boolean {
-  let end = from
-  while (end < text.length && !"\n\r\u2028\u2029".includes(text[end])) end++
-  const line = text.slice(from, end)
-  const colon = line.indexOf(":")
-  const hash = colon === -1 ? -1 : line.indexOf("#", colon + 1)
-  return hash !== -1 && line.slice(hash + 1).includes(";")
-}
-
-/**
  * Records the respelling of the tokens that are respelled one by one: a
  * keyword, the direction of a header, the assignment of the EBNF notation, the
  * colon after the header of a cynefin or a radar diagram, and a string.
@@ -339,8 +287,6 @@ function findTokenRespellings(
   // The label of a flow of a Wardley map is between `'` only (`+'moving'>`).
   const arrows: Range[] = []
   collectRanges(source.root, (name) => name === "WardleyArrow", arrows)
-  const listed = new Set<number>()
-  if (type === "er") collectListedKeywords(source, source.root, listed)
   tokens.forEach((token, index) => {
     const text = source.text.slice(...token.range)
     let respelled: string | undefined
@@ -349,21 +295,10 @@ function findTokenRespellings(
       // names of a header from different versions on.
       respelled = undefined
     } else if (token.type === "Keyword") {
-      respelled = listed.has(token.range[0])
-        ? undefined
-        : index === directionIndex
+      respelled =
+        index === directionIndex
           ? directionSpellings[type]?.[text]
           : (keywordAliases[type]?.[text] ?? spellings[text.toLowerCase()])
-      // A quadrant chart rejects the text that mermaid.js reads differently in
-      // the two cases (`#f00;` with `CLASSDEF`), and its printer drops the `;`
-      // that ends a statement, so it is not asked.
-      if (
-        (respelled === "style" || respelled === "classDef") &&
-        type !== "quadrantChart" &&
-        mayLoseSemicolon(source.text, token.range[0])
-      ) {
-        respelled = undefined
-      }
     } else if (token.type === "Punctuator") {
       respelled =
         headerColonTypes.has(type) &&

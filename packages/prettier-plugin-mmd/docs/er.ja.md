@@ -550,8 +550,10 @@ erDiagram
 [fixture: whitespace-between-tokens/touching-kept]
 表にあるキーワードは、そこで示す大文字小文字で印字します。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
-`CLASSDEF` は `classDef`、`SUBGRAPH` は `subgraph`、`END` は `end` です。
-ほかのキーワード（`CLASS`）は、書かれた大文字小文字を保ちます。
+`SUBGRAPH` は `subgraph`、`END` は `end` です。
+ほかのキーワード（`CLASS`、`CLASSDEF`、`STYLE`）は、
+書かれた大文字小文字を保ちます。
+（[大文字小文字をそろえるキーワード](./compatibility.ja.md#大文字小文字をそろえるキーワード)）。
 Db がそのまま保つ属性のキーも同じです。
 関係の語は記号として印字します（[関係の空白](#関係の空白)を参照）。
 [fixture: whitespace-between-tokens/keyword-case-one-form]
@@ -610,9 +612,9 @@ erDiagram
   subgraph S
     A
   end
-  classDef a fill: red
+  CLASSDEF a fill: red
   CLASS A a
-  style A fill: red
+  STYLE A fill: red
   direction LR
   ACCTITLE: T
   ACCDESCR: D
@@ -855,8 +857,9 @@ mermaid.js が空白 1 つで結ぶからです。 [fixture: subgraphs/header-sp
 [test: U+2029 between an ER subgraph name and its title]
 本体の文は 1 段深く置き、`end` は、subgraph と同じ段に行に単独で置き、
 どの大文字小文字でも `end` と印字します。
-本体の `class`、`classDef`、`style` 文のキーワードは、書かれたまま残します。
-mermaid.js が、それを書かれたまま subgraph のノードに並べるからです。
+本体の `class`、`classDef`、`style` 文のキーワードは、subgraph の外と同じく、
+書かれたまま残します。
+mermaid.js は、それを書かれたまま subgraph のノードに並べます。
 [fixture: subgraphs/statement-keywords-case-kept]
 `end` の後に同じ行で続く文は、次の行に置きます。
 [fixture: subgraphs/end-on-the-line-of-a-statement]
@@ -1013,8 +1016,8 @@ Mermaid はスタイルの単位をつなげて読むため、
 通常はつなげる見出しや外側の改行があっても、最初の整形で同じ間隔にします。
 スタイル内部の改行区切り、所有する trivia、
 同じ物理行に保持するセミコロンがある場合は、既存のスタイルの配置を保ちます。
-キーワードの大文字小文字は、綴りの表のとおりに印字します。
-（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+キーワード `style` と `classDef` は、書かれた大文字小文字を保ちます。
+（[大文字小文字をそろえるキーワード](./compatibility.ja.md#大文字小文字をそろえるキーワード)）。
 [fixture: styles-and-classes/style-unit-padding]
 [fixture: styles-and-classes/class-def-names]
 [fixture: styles-and-classes/style-names]
@@ -1022,7 +1025,8 @@ Mermaid はスタイルの単位をつなげて読むため、
 [fixture: styles-and-classes/styles-as-written]
 [fixture: styles-and-classes/style-inner-whitespace-kept]
 
-[fixture: styles-and-classes/keyword-case-one-form]
+[fixture: styles-and-classes/keyword-case-kept]
+[fixture: styles-and-classes/keyword-case-semicolon-line-kept]
 
 キーワードや名前の後の空白が改行を取り込んで、
 複数行に書かれた `classDef` と `style` の文は、1 行に印字します。

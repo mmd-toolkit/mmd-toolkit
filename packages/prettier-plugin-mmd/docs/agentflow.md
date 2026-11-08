@@ -102,13 +102,17 @@ EmptyStatement at the containing depth. [fixture: containers/containers-empty]
 containers/end-name-not-greedy] [fixture: containers/global-flatten-unsafe] A
 run of spaces and tabs in the title of a flow is printed as one space, except in
 a markdown string, in a flow with a data block (`F@{ view: "collapsed" }`; the
-id of a flow named by a string is the text between the quotes: `flow "F"` has
-the id `F`), and in a diagram that names `swimlane`, where mermaid.js wraps the
-title (see
+id of a flow named by a string is the text between the quotes, without the
+whitespace at its ends, and for a markdown string the text between its
+backquotes: `flow "F"` and `flow " F "` have the id `F`), and in a diagram that
+names `swimlane`, where mermaid.js wraps the title (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 [fixture: containers/flow-title-runs-collapsed] [fixture:
 containers/flow-title-collapsed-runs-kept] [fixture:
-containers/flow-quoted-name-title-collapsed-runs-kept]
+containers/flow-quoted-name-title-collapsed-runs-kept] [fixture:
+containers/flow-spaced-quoted-name-title-collapsed-runs-kept] [fixture:
+containers/flow-markdown-name-title-collapsed-runs-kept] [fixture:
+containers/flow-two-part-name-title-collapsed-runs-kept]
 
 Input (escaped): `"agentflow-beta TB\nglobal\t \nA\nend B"`. [fixture:
 containers/global-tabs]

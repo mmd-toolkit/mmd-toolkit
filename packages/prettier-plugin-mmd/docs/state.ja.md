@@ -496,11 +496,13 @@ mermaid.js は state 図では `,` の前後の空白を何もないものとし
 [fixture: whitespace-between-tokens/quotes-before-brace-kept]
 表にあるキーワードは、そこで示す大文字小文字で印字します。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
-`STATE A {` は `state A {`、`CLASSDEF` は `classDef`、
-`DIRECTION lr` は `direction LR`、`<<CHOICE>>` は `<<choice>>` です。
+`STATE A {` は `state A {`、`DIRECTION lr` は `direction LR`、
+`<<CHOICE>>` は `<<choice>>` です。
 mermaid.js は大文字小文字にかかわらず読み、Db は同じです。
-表にないキーワード（`STYLE`、`HIDE EMPTY DESCRIPTION`）は、
+表にないキーワード（`STYLE`、`CLASSDEF`、`HIDE EMPTY DESCRIPTION`）は、
 書かれた大文字小文字を保ちます。
+`STYLE` と `CLASSDEF` は、mermaid.js が独自の規則で読みます。
+（[大文字小文字をそろえるキーワード](./compatibility.ja.md#大文字小文字をそろえるキーワード)）。
 `Left Of` のようなノートの位置は、書かれたまま図の一部になります。
 Db が書かれたまま保つからです。
 [fixture: whitespace-between-tokens/keyword-case-one-form]

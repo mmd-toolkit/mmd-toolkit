@@ -587,16 +587,18 @@ the text on its line, one space separates it from the text, and where a
 directive does, the gap before the directive stays, whether the directive is the
 last thing on the line or whitespace follows it, which is dropped like any
 whitespace at the end of the line: `title T  %%{x}%%  ` and `title T  %%{x}%%`
-are both printed `title T %%{x}%%`; the description `accDescription` of a C4
-diagram is the exception, which stays as written where a directive follows its
-text. [fixture:
+are both printed `title T %%{x}%%`. The sentence is about one directive: with
+two or more directives after the text, the whitespace between them and after the
+last one is printed by the rules of directives (see
+[Directives](./flowchart.md#directives)), and a text with whitespace after the
+last directive can be printed in another form than one without. [fixture:
 gantt/titles-and-sections/title-trailing-directive-blanks-dropped] [fixture:
 venn/title/title-trailing-directive-blanks-dropped] [fixture:
 c4/title-and-accdescription/title-trailing-directive-blanks-dropped] [fixture:
-c4/title-and-accdescription/description-trailing-directive-kept] [fixture:
-timeline/periods-and-events/event-trailing-directive-gap-kept] [fixture:
-state/aliases/second-description-trailing-directive-gap-kept] [fixture:
-gantt/titles-and-sections/title-padding-dropped] [fixture:
+c4/title-and-accdescription/description-trailing-directive-blanks-dropped]
+[fixture: timeline/periods-and-events/event-trailing-directive-gap-kept]
+[fixture: state/aliases/second-description-trailing-directive-gap-kept]
+[fixture: gantt/titles-and-sections/title-padding-dropped] [fixture:
 gantt/titles-and-sections/title-blank-kept] [fixture:
 gantt/settings/format-padding-dropped] [fixture:
 gantt/settings/trailing-whitespace-by-setting] [fixture:
@@ -767,19 +769,26 @@ These stay as written:
   subgraphs, edges, the keyword `graph`) and in an agentflow `flow`, so it is
   printed with one space. A data block is not read for its keys: any block
   written for the id of the subgraph keeps its title (the id of a subgraph or a
-  flow named by a string is the text between the quotes: `subgraph "S"` has the
-  id `S`), and so does a block written for an id like `subGraph0`, which
-  mermaid.js gives to a subgraph whose name holds whitespace; a diagram that
-  names `swimlane` anywhere keeps every title. A setting of the host of
-  mermaid.js, outside the text, is not read. [fixture:
-  flowchart/subgraph-header/markdown-title-runs-kept] [fixture:
+  flow named by a string is the text between the quotes, without the whitespace
+  at its ends, and for a markdown string the text between its backquotes:
+  `subgraph "S"` and `subgraph " S "` have the id `S`), and so does a block
+  written for an id like `subGraph0`, which mermaid.js gives to a subgraph whose
+  name holds whitespace; a diagram that names `swimlane` anywhere keeps every
+  title. A setting of the host of mermaid.js, outside the text, is not read.
+  [fixture: flowchart/subgraph-header/markdown-title-runs-kept] [fixture:
   flowchart/subgraph-header/collapsed-title-runs-kept] [fixture:
   flowchart/subgraph-header/swimlane-title-runs-kept] [fixture:
   flowchart/subgraph-header/layout-swimlane-title-runs-kept] [fixture:
   agentflow/containers/flow-title-runs-collapsed] [fixture:
   agentflow/containers/flow-title-collapsed-runs-kept] [fixture:
   flowchart/subgraph-header/collapsed-quoted-name-title-runs-kept] [fixture:
-  agentflow/containers/flow-quoted-name-title-collapsed-runs-kept]
+  flowchart/subgraph-header/collapsed-markdown-name-title-runs-kept] [fixture:
+  flowchart/subgraph-header/collapsed-spaced-name-title-runs-kept] [fixture:
+  flowchart/subgraph-header/collapsed-generated-id-title-runs-kept] [fixture:
+  agentflow/containers/flow-quoted-name-title-collapsed-runs-kept] [fixture:
+  agentflow/containers/flow-spaced-quoted-name-title-collapsed-runs-kept]
+  [fixture: agentflow/containers/flow-markdown-name-title-collapsed-runs-kept]
+  [fixture: agentflow/containers/flow-two-part-name-title-collapsed-runs-kept]
 - The `accTitle`. mermaid.js puts it into the `title` element of the SVG, which
   the browser shows as a tooltip when the pointer rests on the figure, and
   AGENTS.md compares tooltips. Whether the tooltip shows the runs could not be
@@ -1006,29 +1015,28 @@ each kind is compared again.
 The lexers of these diagram types read a keyword in any case. The printer writes
 the keywords below in the case shown, and every other keyword as written.
 
-- ER diagram: `BT`, `classDef`, `direction`, `end`, `LR`, `RL`, `style`,
-  `subgraph`, `TB`.
+- ER diagram: `BT`, `direction`, `end`, `LR`, `RL`, `subgraph`, `TB`.
 - Gantt chart: `axisFormat`, `dateFormat`, `excludes`, `friday`, `monday`,
   `section`, `tickInterval`, `title`, `weekday`, `weekend`.
 - User journey: `section`, `title`.
 - Mindmap: `::icon(`.
-- Quadrant chart: `classDef`, `quadrant-1`, `quadrant-2`, `quadrant-3`,
-  `quadrant-4`, `title`, `x-axis`, `y-axis`.
-- Requirement diagram: `analysis`, `class`, `classDef`, `contains`, `copies`,
+- Quadrant chart: `quadrant-1`, `quadrant-2`, `quadrant-3`, `quadrant-4`,
+  `title`, `x-axis`, `y-axis`.
+- Requirement diagram: `analysis`, `class`, `contains`, `copies`,
   `demonstration`, `derives`, `designConstraint`, `direction`, `docRef`,
   `element`, `functionalRequirement`, `high`, `id`, `inspection`,
   `interfaceRequirement`, `low`, `LR`, `medium`, `performanceRequirement`,
-  `physicalRequirement`, `refines`, `requirement`, `risk`, `satisfies`, `style`,
-  `test`, `text`, `traces`, `type`, `verifies`, `verifymethod`.
+  `physicalRequirement`, `refines`, `requirement`, `risk`, `satisfies`, `test`,
+  `text`, `traces`, `type`, `verifies`, `verifymethod`.
 - Sequence diagram: `activate`, `actor`, `alt`, `and`, `as`, `autonumber`,
   `box`, `break`, `create`, `critical`, `deactivate`, `destroy`, `else`, `end`,
   `link`, `links`, `loop`, `Note`, `of`, `opt`, `option`, `over`, `par`,
   `participant`, `rect`, `right`.
 - State diagram: `<<choice>>`, `<<fork>>`, `<<join>>`, `accDescr`, `accTitle`,
-  `as`, `class`, `classDef`, `direction`, `end`, `LR`, `note`, `state`, `TB`.
+  `as`, `class`, `direction`, `end`, `LR`, `note`, `state`, `TB`.
 - Timeline: `section`, `TD`, `title`.
 - Usecase diagram: `extend`, `include`.
-- Venn diagram: `set`, `style`, `text`, `title`, `union`.
+- Venn diagram: `set`, `text`, `title`, `union`.
 - XY chart: `bar`, `line`, `title`, `x-axis`, `y-axis`.
 
 The examples use the printed case of each keyword at least twice as often as any
@@ -1037,14 +1045,12 @@ keywords are never written in another case. [fixture:
 er/whitespace-between-tokens/keyword-case-one-form] [fixture:
 er/direction/case-one-form] [fixture: er/direction/case-bt-rl-one-form]
 [fixture: er/subgraphs/end-case-one-form] [fixture:
-er/styles-and-classes/keyword-case-one-form] [fixture:
 gantt/keyword-case/keywords-one-form] [fixture:
 gantt/weekday-and-weekend/day-case-one-form] [fixture:
 journey/keyword-case/keywords-one-form] [fixture:
 mindmap/keyword-case/icon-keyword] [fixture:
 quadrant/keyword-case/statement-keywords-one-form] [fixture:
 quadrant/keyword-case/quadrant-3-4-one-form] [fixture:
-quadrant/styles/class-definition-keyword-case-one-form] [fixture:
 requirement/keyword-case/keywords-one-form] [fixture:
 requirement/keyword-case/types-one-form] [fixture:
 requirement/fields/field-keywords-case-one-form] [fixture:
@@ -1052,7 +1058,6 @@ requirement/fields/keyword-values-case-one-form] [fixture:
 requirement/fields/keyword-values-low-test-analysis-case-one-form] [fixture:
 requirement/relationship-spacing/relation-case-one-form] [fixture:
 requirement/relationship-spacing/relations-case-one-form] [fixture:
-requirement/styles-and-classes/keyword-case-one-form] [fixture:
 requirement/direction/case-one-form] [fixture:
 sequence/whitespace-between-tokens/keyword-case-one-form] [fixture:
 sequence/keyword-case/statements-one-form] [fixture:
@@ -1075,29 +1080,36 @@ and `OF` of a note in its Db as written, and a note with `LEFT` or `OF` was
 drawn differently, an ER diagram keeps the key `PK` or `FK` of an attribute in
 its Db as written, a Gantt chart keeps the tags `done` and `crit` and the
 `after` of a task, an xychart keeps `horizontal`, and a treeView reads `ICON(…)`
-as part of a name. mermaid.js removes the last `;` of a line that has a `style`
-or a `classDef` in this case, then a `:`, then a `#` after non-blank characters
-only, then a `;`, before it reads the text, and it reads a line with the keyword
-in another case with that `;`, so `STYLE A fill:#f00;` has another Db than
-`style A fill:#f00;`. A `style` or a `classDef` whose line has a `:`, a `#`, and
-a `;` in this order stays as written for that reason, in every diagram type that
-the table lists except the quadrant chart, which rejects the text that the two
-cases would read differently. [fixture:
+as part of a name. The `style` of an ER diagram, a requirement diagram, and a
+Venn diagram, and the `classDef` of an ER diagram, a state diagram, a
+requirement diagram, and a quadrant chart stay as written too. Before it reads a
+text, mermaid.js removes the last `;` of a line that has a `style` or a
+`classDef` in exactly this case, then a `:`, then a `#` after non-blank
+characters only, then a `;`. It reads a line with the keyword in another case
+with that `;`, so `STYLE A fill:#f00;` has another Db than `style A fill:#f00;`.
+The rule reads the line after the directives and the comments are removed, so a
+directive that spans lines joins its two sides into one line, and whether
+another case reads a line the same cannot be told from the line of the keyword
+alone. The quadrant chart rejects some texts that the two cases would read
+differently and reads the others the same, and stays as written too. [fixture:
 er/whitespace-between-tokens/keyword-case-one-form] [fixture:
 state/whitespace-between-tokens/keyword-case-one-form] [fixture:
 block/keyword-case/keywords-kept] [fixture: treeview/keyword-case/icon-kept]
 [fixture: er/attribute-spacing/keys-case-kept] [fixture:
 gantt/keyword-case/tags-case-kept] [fixture:
+er/styles-and-classes/keyword-case-kept] [fixture:
 er/styles-and-classes/keyword-case-semicolon-line-kept] [fixture:
+requirement/styles-and-classes/keyword-case-kept] [fixture:
 requirement/styles-and-classes/keyword-case-semicolon-line-kept] [fixture:
 state/keyword-case/classdef-semicolon-line-kept] [fixture:
 venn/keyword-case-and-order/style-semicolon-line-kept] [fixture:
-quadrant/styles/class-definition-semicolons-case-one-form]
+quadrant/styles/class-definition-keyword-case-kept] [fixture:
+quadrant/styles/class-definition-semicolons-case-kept]
 
 In the body of an ER subgraph, mermaid.js lists the keyword of a `class`,
-`classDef`, or `style` statement as a node of the subgraph, as written, so those
-three keywords keep their case there and are printed in the table's case outside
-it. [fixture: er/subgraphs/statement-keywords-case-kept]
+`classDef`, or `style` statement as a node of the subgraph, as written, which is
+one more reason why those three keywords keep their case. [fixture:
+er/subgraphs/statement-keywords-case-kept]
 
 ### Strings between `"`
 

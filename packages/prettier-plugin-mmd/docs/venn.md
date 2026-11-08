@@ -805,13 +805,15 @@ style A fill:"red
 
 ### Keyword case and order
 
-The keywords `set`, `union`, `style`, `text`, and `title` are printed in lower
-case, as the examples in the documentation of mermaid.js write them (see
+The keywords `set`, `union`, `text`, and `title` are printed in lower case, as
+the examples in the documentation of mermaid.js write them (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
-and every declaration, target and property remain in source order, including
-repeated or Db-ineffective entries, to retain authored choices. Names, keys and
-colors retain case; the textual semicolon markers have exact case even though
-statement keywords are case-insensitive. [fixture:
+and `style` keeps the case in which it is written (see
+[Keywords in one case](./compatibility.md#keywords-in-one-case)), and every
+declaration, target and property remain in source order, including repeated or
+Db-ineffective entries, to retain authored choices. Names, keys and colors
+retain case; the textual semicolon markers have exact case even though statement
+keywords are case-insensitive. [fixture:
 venn/keyword-case-and-order/keyword-case-one-form] [fixture:
 venn/keyword-case-and-order/all-written-repeats] [corpus fixture:
 venn/db-style-three-definitions-same-target] [corpus fixture:
@@ -836,7 +838,7 @@ Output
 venn-beta
 set A
   text item
-style A fill:RED
+STYLE A fill:RED
 title T
 ```
 

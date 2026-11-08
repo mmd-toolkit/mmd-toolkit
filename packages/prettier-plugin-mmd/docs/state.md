@@ -477,13 +477,14 @@ the composite state `x""`, and `state x "" {` the composite state `x`. [fixture:
 whitespace-between-tokens/quotes-before-brace-kept] The keywords of the table
 under
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
-are printed in the case shown there (`STATE A {` is `state A {`, `CLASSDEF` is
-`classDef`, `DIRECTION lr` is `direction LR`, `<<CHOICE>>` is `<<choice>>`).
-mermaid.js reads them in any case and the Db is the same. A keyword that the
-table does not list keeps the case in which it is written (`STYLE`,
-`HIDE EMPTY DESCRIPTION`). The position of a note, such as `Left Of`, is part of
-the diagram as written: the Db keeps it as written. [fixture:
-whitespace-between-tokens/keyword-case-one-form] [fixture:
+are printed in the case shown there (`STATE A {` is `state A {`, `DIRECTION lr`
+is `direction LR`, `<<CHOICE>>` is `<<choice>>`). mermaid.js reads them in any
+case and the Db is the same. A keyword that the table does not list keeps the
+case in which it is written (`STYLE`, `CLASSDEF`, and `HIDE EMPTY DESCRIPTION`).
+`STYLE` and `CLASSDEF` are read by mermaid.js with a rule of its own (see
+[Keywords in one case](./compatibility.md#keywords-in-one-case)). The position
+of a note, such as `Left Of`, is part of the diagram as written: the Db keeps it
+as written. [fixture: whitespace-between-tokens/keyword-case-one-form] [fixture:
 whitespace-between-tokens/keyword-case-more-one-form] [fixture:
 keyword-case/pseudo-states-one-form] [fixture:
 keyword-case/accessibility-alias-direction-one-form]

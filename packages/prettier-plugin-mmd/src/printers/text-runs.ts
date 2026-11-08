@@ -314,8 +314,9 @@ function collectSubgraphTexts(
 
 /**
  * The id that mermaid.js reads from the name of a subgraph or of a flow: the
- * name, and the text between the quotes where the name is a string (`"S"` is
- * the id `S`).
+ * name without the whitespace at its ends, and the text between the quotes
+ * where the name is a string or a markdown string (`"S"`, `" S "`, and
+ * `"`S`"` are the id `S`).
  */
 function subgraphId(
   source: Source,
@@ -327,8 +328,8 @@ function subgraphId(
         ? name.parts[0]
         : undefined
       : name
-  return label?.kind === "string"
-    ? label.value
+  return label !== undefined && label.kind !== "text"
+    ? label.value.trim()
     : source.text.slice(...name.range).trim()
 }
 

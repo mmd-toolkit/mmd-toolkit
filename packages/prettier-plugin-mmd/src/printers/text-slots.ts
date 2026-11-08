@@ -93,6 +93,7 @@ export const textSlots: TextSlots = {
   CynefinDomainItem: ["label"],
   // the title and the accessibility statements of the other diagram types
   AgentflowAccDescrBlockStatement: ["value"],
+  C4AccDescriptionStatement: ["value"],
   C4TitleStatement: ["value"],
   ClassAccDescrBlockStatement: ["value"],
   ErAccDescrBlockStatement: ["value"],

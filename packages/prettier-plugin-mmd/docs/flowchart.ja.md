@@ -676,13 +676,18 @@ mermaid.js がタイトルを幅なしで描くときは空白 1 つにして印
 タイトルを折り返すときは書かれたまま残します。
 Markdown 文字列、
 データブロックがある subgraph（文字列で名前を書く subgraph の id は、
-引用符の間の文字で、`subgraph "S"` の id は `S`）、
+引用符の間の文字から両端の空白を除いたもので、
+Markdown 文字列ではバッククォートの間の文字です。
+`subgraph "S"` と `subgraph " S "` の id は `S`）、
 `swimlane` を書く図ではタイトルを折り返します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 [fixture: whitespace-between-tokens/subgraph-name-runs-collapsed]
 [fixture: subgraph-header/markdown-title-runs-kept]
 [fixture: subgraph-header/collapsed-title-runs-kept]
 [fixture: subgraph-header/collapsed-quoted-name-title-runs-kept]
+[fixture: subgraph-header/collapsed-markdown-name-title-runs-kept]
+[fixture: subgraph-header/collapsed-spaced-name-title-runs-kept]
+[fixture: subgraph-header/collapsed-generated-id-title-runs-kept]
 [fixture: subgraph-header/swimlane-title-runs-kept]
 [fixture: subgraph-header/layout-swimlane-title-runs-kept]
 `style`・`classDef`・`linkStyle` の文では、

@@ -479,7 +479,8 @@ trivia、ASCII 空白とタブ以外の空白文字、セミコロン、
 [fixture: styles/class-definition-tabs]
 [fixture: styles/class-definition-name-with-a-dash]
 [fixture: styles/class-definition-three-styles]
-[fixture: styles/class-definition-keyword-case-one-form]
+[fixture: styles/class-definition-keyword-case-kept]
+[fixture: styles/class-definition-semicolons-case-kept]
 [fixture: styles/class-definition-with-an-ignored-semicolon]
 [fixture: styles/class-definition-space-before-the-comma-dropped]
 
@@ -795,13 +796,15 @@ quadrantChart
 
 ### キーワードの大文字小文字
 
-キーワード `title`、`x-axis`、`y-axis`、`quadrant-1` から `quadrant-4`、
-`classDef` は、mermaid.js の文書の例が使う大文字小文字で印字します。
+キーワード `title`、`x-axis`、`y-axis`、`quadrant-1` から `quadrant-4` は、
+mermaid.js の文書の例が使う大文字小文字で印字します。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
-mermaid.js はどれも大文字小文字を問わずに読み（`Title`、`X-Axis`、
-`CLASSDEF` も文を始めます）、Db は同じです。
+mermaid.js はどれも大文字小文字を問わずに読み、Db は同じです。
+`Title` と `X-Axis` も文を始めます。
 例に使われていない `accTitle` と `accDescr` は、
 書かれた大文字小文字のまま印字します。
+`classDef` も同じです。
+（[大文字小文字をそろえるキーワード](./compatibility.ja.md#大文字小文字をそろえるキーワード)）。
 クラスの名前は、大文字小文字も残します。
 [fixture: keyword-case/statement-keywords-one-form]
 [fixture: keyword-case/quadrant-3-4-one-form]

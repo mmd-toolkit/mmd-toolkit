@@ -460,7 +460,8 @@ styles/class-definition] [fixture: styles/class-definition-spaces] [fixture:
 styles/class-definition-tabs] [fixture:
 styles/class-definition-name-with-a-dash] [fixture:
 styles/class-definition-three-styles] [fixture:
-styles/class-definition-keyword-case-one-form] [fixture:
+styles/class-definition-keyword-case-kept] [fixture:
+styles/class-definition-semicolons-case-kept] [fixture:
 styles/class-definition-with-an-ignored-semicolon] [fixture:
 styles/class-definition-space-before-the-comma-dropped]
 
@@ -766,15 +767,16 @@ quadrantChart
 
 ### Keyword case
 
-The keywords `title`, `x-axis`, `y-axis`, `quadrant-1` to `quadrant-4`, and
-`classDef` are printed in the case that the examples in the documentation of
-mermaid.js use (see
+The keywords `title`, `x-axis`, `y-axis`, and `quadrant-1` to `quadrant-4` are
+printed in the case that the examples in the documentation of mermaid.js use
+(see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
-mermaid.js reads them in any case (`Title`, `X-Axis`, and `CLASSDEF` start
-statements), and the Db is the same. `accTitle` and `accDescr` are printed in
-the case written, which the examples do not use. The name of a class keeps its
-case. [fixture: keyword-case/statement-keywords-one-form] [fixture:
-keyword-case/quadrant-3-4-one-form] [fixture:
+mermaid.js reads them in any case (`Title` and `X-Axis` start statements), and
+the Db is the same. `accTitle` and `accDescr` are printed in the case written,
+which the examples do not use, and so is `classDef` (see
+[Keywords in one case](./compatibility.md#keywords-in-one-case)). The name of a
+class keeps its case. [fixture: keyword-case/statement-keywords-one-form]
+[fixture: keyword-case/quadrant-3-4-one-form] [fixture:
 keyword-case/accessibility-keywords-kept]
 
 Input

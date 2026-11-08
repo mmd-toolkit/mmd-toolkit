@@ -871,9 +871,11 @@ style A fill:"red
 
 ### Keyword case and order
 
-キーワード `set`、`union`、`style`、`text`、`title` は、
-mermaid.js の文書の例と同じく、小文字で印字します。
+キーワード `set`、`union`、`text`、`title` は、mermaid.js の文書の例と同じく、
+小文字で印字します。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+`style` は書かれた大小文字を保ちます。
+（[大文字小文字をそろえるキーワード](./compatibility.ja.md#大文字小文字をそろえるキーワード)）。
 書かれた選択を保つため、全ての宣言、対象、プロパティの順序を保ちます。
 重複と Db に効果のない項目も含みます。
 名前、キーと色の大小文字は保ちます。
@@ -904,7 +906,7 @@ mermaid.js の文書の例と同じく、小文字で印字します。
 venn-beta
 set A
   text item
-style A fill:RED
+STYLE A fill:RED
 title T
 ```
 

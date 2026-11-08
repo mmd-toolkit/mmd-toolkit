@@ -537,12 +537,13 @@ and tokens that touch keep touching, unless a rule below says otherwise.
 [fixture: whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/touching-kept] A keyword of the table under
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
-is printed in the case shown there (`CLASSDEF` is `classDef`, `SUBGRAPH` is
-`subgraph`, and `END` is `end`). Any other keyword keeps the case in which it is
-written (`CLASS`), and so do the keys of an attribute, which the Db keeps. The
-words of a relationship are printed as symbols (see
-[Relationship spacing](#relationship-spacing)). [fixture:
-whitespace-between-tokens/keyword-case-one-form] [fixture:
+is printed in the case shown there (`SUBGRAPH` is `subgraph`, and `END` is
+`end`). Any other keyword keeps the case in which it is written (`CLASS`,
+`CLASSDEF`, and `STYLE`: see
+[Keywords in one case](./compatibility.md#keywords-in-one-case)), and so do the
+keys of an attribute, which the Db keeps. The words of a relationship are
+printed as symbols (see [Relationship spacing](#relationship-spacing)).
+[fixture: whitespace-between-tokens/keyword-case-one-form] [fixture:
 relationship-spacing/cardinality-words-case-one-form]
 
 Input
@@ -598,9 +599,9 @@ erDiagram
   subgraph S
     A
   end
-  classDef a fill: red
+  CLASSDEF a fill: red
   CLASS A a
-  style A fill: red
+  STYLE A fill: red
   direction LR
   ACCTITLE: T
   ACCDESCR: D
@@ -825,10 +826,10 @@ mermaid.js joins them with one space. [fixture: subgraphs/header-spacing]
 [fixture: subgraphs/quoted-and-number-ids] The statements of the body stand one
 level deeper, and `end` stands on a line of its own at the level of the
 subgraph, printed `end` in any case; in the body, the keyword of a `class`,
-`classDef`, or `style` statement stays as written, since mermaid.js lists it as
-a node of the subgraph as written. [fixture:
-subgraphs/statement-keywords-case-kept] A statement that follows the `end` on
-its line stands on the line after it. [fixture:
+`classDef`, or `style` statement stays as written, as it does outside a
+subgraph, and mermaid.js lists it as a node of the subgraph as written.
+[fixture: subgraphs/statement-keywords-case-kept] A statement that follows the
+`end` on its line stands on the line after it. [fixture:
 subgraphs/end-on-the-line-of-a-statement] [fixture: subgraphs/end-case-one-form]
 [fixture: subgraphs/entity-after-end] A subgraph without statements is printed
 with its `end` on the next line. [fixture: subgraphs/empty]
@@ -983,16 +984,17 @@ becomes `fill: navy, stroke: black`, while `stroke-dasharray:  5    5` keeps the
 four spaces between its values. A header or exterior line break that ordinarily
 joins does not delay this spacing until another formatting. Style interiors
 containing line separators, owned trivia, and statements with a kept semicolon
-on their physical line retain the existing style layout. Keyword case is printed
-as under
-[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same).
-[fixture: styles-and-classes/style-unit-padding] [fixture:
+on their physical line retain the existing style layout. The keywords `style`
+and `classDef` keep the case in which they are written (see
+[Keywords in one case](./compatibility.md#keywords-in-one-case)). [fixture:
+styles-and-classes/style-unit-padding] [fixture:
 styles-and-classes/class-def-names] [fixture: styles-and-classes/style-names]
 [fixture: styles-and-classes/class-lists] [fixture:
 styles-and-classes/styles-as-written] [fixture:
 styles-and-classes/style-inner-whitespace-kept]
 
-[fixture: styles-and-classes/keyword-case-one-form]
+[fixture: styles-and-classes/keyword-case-kept] [fixture:
+styles-and-classes/keyword-case-semicolon-line-kept]
 
 A `classDef` or `style` statement written over lines, with whitespace after a
 keyword or a name that takes the line break, is printed on one line. [fixture:

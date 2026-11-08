@@ -489,14 +489,16 @@ while `stroke-dasharray:  5    5` keeps the four spaces between its values. A
 header or exterior line break that ordinarily joins does not delay this spacing
 until another formatting. Style interiors containing line separators, owned
 trivia, and statements with a kept semicolon on their physical line retain the
-existing style layout. Keyword case is printed as under
-[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same).
-[fixture: styles-and-classes/style-unit-padding] [fixture:
+existing style layout. The keywords `style` and `classDef` keep the case in
+which they are written (see
+[Keywords in one case](./compatibility.md#keywords-in-one-case)). [fixture:
+styles-and-classes/style-unit-padding] [fixture:
 styles-and-classes/class-def-names] [fixture: styles-and-classes/style-names]
 [fixture: styles-and-classes/class-lists] [fixture:
 styles-and-classes/styles-as-written] [fixture:
 styles-and-classes/trailing-whitespace-dropped] [fixture:
-styles-and-classes/keyword-case-one-form]
+styles-and-classes/keyword-case-kept] [fixture:
+styles-and-classes/keyword-case-semicolon-line-kept]
 
 A `;` at the end of a style that the line rule does not ignore is a character of
 the style; it stays because removing it changes the Db. [fixture:
@@ -1260,10 +1262,13 @@ requirementDiagram
 
 The keywords of the table under
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
-are printed in the case shown there. mermaid.js reads them in any case and the
-Db is the same. [fixture: keyword-case/keywords-one-form] [fixture:
-keyword-case/types-one-form] The header is detected only when it starts with
-`requirement` in lower case (diagrams/requirement.md, Detection).
+are printed in the case shown there. `style` and `classDef` are not in the table
+and keep the case in which they are written (see
+[Keywords in one case](./compatibility.md#keywords-in-one-case)). mermaid.js
+reads the keywords of the table in any case and the Db is the same. [fixture:
+keyword-case/keywords-one-form] [fixture: keyword-case/types-one-form] The
+header is detected only when it starts with `requirement` in lower case
+(diagrams/requirement.md, Detection).
 
 Input
 ([keyword-case/keywords-one-form-input.mmd](../tests/fixtures/requirement/keyword-case/keywords-one-form-input.mmd)):
@@ -1294,7 +1299,7 @@ requirementdiagram
   }
   r - satisfies -> e
   direction LR
-  style r fill: red
+  STYLE r fill: red
 ```
 
 ### Comments

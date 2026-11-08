@@ -501,15 +501,16 @@ Mermaid はスタイルの単位をつなげて読むため、
 通常はつなげる見出しや外側の改行があっても、最初の整形で同じ間隔にします。
 スタイル内部の改行区切り、所有する trivia、
 同じ物理行に保持するセミコロンがある場合は、既存のスタイルの配置を保ちます。
-キーワードの大文字小文字は、参照先の規則のとおりに印字します。
-（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+キーワード `style` と `classDef` は、書かれた大文字小文字を保ちます。
+（[大文字小文字をそろえるキーワード](./compatibility.ja.md#大文字小文字をそろえるキーワード)）。
 [fixture: styles-and-classes/style-unit-padding]
 [fixture: styles-and-classes/class-def-names]
 [fixture: styles-and-classes/style-names]
 [fixture: styles-and-classes/class-lists]
 [fixture: styles-and-classes/styles-as-written]
 [fixture: styles-and-classes/trailing-whitespace-dropped]
-[fixture: styles-and-classes/keyword-case-one-form]
+[fixture: styles-and-classes/keyword-case-kept]
+[fixture: styles-and-classes/keyword-case-semicolon-line-kept]
 
 行の規則が無視しないスタイル末尾の `;` は、スタイルの文字です。
 削除すると Db が変わるので残します。
@@ -1296,7 +1297,9 @@ requirementDiagram
 
 キーワードは、参照先の表に示す大文字小文字で印字します。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
-mermaid.js はどの大文字小文字でも読み、Db は同じです。
+`style` と `classDef` は表になく、書かれた大文字小文字を保ちます。
+（[大文字小文字をそろえるキーワード](./compatibility.ja.md#大文字小文字をそろえるキーワード)）。
+mermaid.js は表のキーワードをどの大文字小文字でも読み、Db は同じです。
 [fixture: keyword-case/keywords-one-form] [fixture: keyword-case/types-one-form]
 ヘッダーは、
 小文字の `requirement` で始まるときだけ検出されます（diagrams/requirement.md、
@@ -1331,7 +1334,7 @@ requirementdiagram
   }
   r - satisfies -> e
   direction LR
-  style r fill: red
+  STYLE r fill: red
 ```
 
 ### コメント
