@@ -199,7 +199,7 @@ written twice, of which mermaid.js reads the first. [fixture: fields/order-kept]
 the verification methods keep the case in which they are written. mermaid.js
 reads them in any case and the Db is the same, so nothing forces the case; it is
 the author's, and the printer does not rewrite it. [fixture:
-fields/field-keywords-case-kept] [fixture: fields/keyword-values-case-kept] A
+fields/field-keywords-case-one-form] [fixture: fields/keyword-values-case-one-form] A
 field written over several lines is printed on one line where the lexer reads
 the line break as whitespace, which it does after whitespace (see
 [Multi-line statements](#multi-line-statements)). [fixture:
@@ -231,11 +231,11 @@ requirementDiagram
     id: 1
     text: the test text.
     risk: high
-    verifyMethod: inspection
+    verifymethod: inspection
   }
   element e {
     type: t
-    docref: d
+    docRef: d
   }
 ```
 
@@ -265,7 +265,7 @@ requirementDiagram
   }
   element e {
     type: "a b"
-    docref: "http://x.test/a-b"
+    docRef: "http://x.test/a-b"
   }
 ```
 
@@ -340,7 +340,7 @@ relationship-spacing/spaces-and-touching] [fixture:
 relationship-spacing/one-space-between-units] [fixture:
 relationship-spacing/string-names] The direction of the arrow is kept, since
 `a - copies -> b` and `b <- copies - a` are written differently, and so is the
-case of the relation. [fixture: relationship-spacing/relation-case-kept]
+case of the relation. [fixture: relationship-spacing/relation-case-one-form]
 [fixture: relationship-spacing/every-relation] The whitespace inside an unquoted
 name is part of it, and a name that differs by a run is another name, so it
 stays as written. [fixture: relationship-spacing/multi-word-names] A directive
@@ -485,7 +485,7 @@ styles-and-classes/class-def-names] [fixture: styles-and-classes/style-names]
 [fixture: styles-and-classes/class-lists] [fixture:
 styles-and-classes/styles-as-written] [fixture:
 styles-and-classes/trailing-whitespace-dropped] [fixture:
-styles-and-classes/keyword-case-kept]
+styles-and-classes/keyword-case-one-form]
 
 A `;` at the end of a style that the line rule does not ignore is a character of
 the style; it stays because removing it changes the Db. [fixture:
@@ -627,7 +627,7 @@ does not read before and after them. The text is kept as written. One space
 stands between it and `direction`, where they were written apart, and between
 `direction` and the value; the value is kept in the case in which it is written.
 [fixture: direction/spacing] [fixture: direction/spaces-around] [fixture:
-direction/text-kept] [fixture: direction/case-kept] A value written on a later
+direction/text-kept] [fixture: direction/case-one-form] A value written on a later
 line is printed after `direction` on one line. [fixture:
 direction/value-on-next-line-joined] A direction line with a directive or
 comment keeps its line breaks and indents structural continuations one level
@@ -659,7 +659,7 @@ requirementDiagram
 ```
 
 Input
-([direction/case-kept-input.mmd](../tests/fixtures/requirement/direction/case-kept-input.mmd)):
+([direction/case-one-form-input.mmd](../tests/fixtures/requirement/direction/case-one-form-input.mmd)):
 
 ```mmd
 requirementDiagram
@@ -668,12 +668,12 @@ Direction Tb
 ```
 
 Output
-([direction/case-kept-output.mmd](../tests/fixtures/requirement/direction/case-kept-output.mmd)):
+([direction/case-one-form-output.mmd](../tests/fixtures/requirement/direction/case-one-form-output.mmd)):
 
 ```mmd
 requirementDiagram
-  DIRECTION lr
-  Direction Tb
+  direction LR
+  direction Tb
 ```
 
 ### Statements one per line
@@ -1247,12 +1247,12 @@ requirementDiagram
 
 Keywords keep the case in which they are written. mermaid.js reads them in any
 case and the Db is the same, so nothing forces the case; it is the author's, and
-the printer does not rewrite it. [fixture: keyword-case/keywords-kept] The
+the printer does not rewrite it. [fixture: keyword-case/keywords-one-form] The
 header is detected only when it starts with `requirement` in lower case
 (diagrams/requirement.md, Detection).
 
 Input
-([keyword-case/keywords-kept-input.mmd](../tests/fixtures/requirement/keyword-case/keywords-kept-input.mmd)):
+([keyword-case/keywords-one-form-input.mmd](../tests/fixtures/requirement/keyword-case/keywords-one-form-input.mmd)):
 
 ```mmd
 requirementdiagram
@@ -1268,19 +1268,19 @@ STYLE r fill:red
 ```
 
 Output
-([keyword-case/keywords-kept-output.mmd](../tests/fixtures/requirement/keyword-case/keywords-kept-output.mmd)):
+([keyword-case/keywords-one-form-output.mmd](../tests/fixtures/requirement/keyword-case/keywords-one-form-output.mmd)):
 
 ```mmd
 requirementdiagram
-  REQUIREMENT r {
-    ID: 1
-    RISK: HIGH
+  requirement r {
+    id: 1
+    risk: high
   }
-  ELEMENT e {
+  element e {
   }
-  r - SATISFIES -> e
-  DIRECTION lr
-  STYLE r fill: red
+  r - satisfies -> e
+  direction LR
+  style r fill: red
 ```
 
 ### Comments
@@ -1363,7 +1363,7 @@ Output
 requirementDiagram
   requirement r {
     risk: low %c
-    verifyMethod: test#c
+    verifymethod: test#c
     id: "1" #c
     text: "t"%c
   }

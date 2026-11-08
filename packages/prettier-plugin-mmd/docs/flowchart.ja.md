@@ -72,7 +72,7 @@ end
 ([indentation/nested-subgraphs-output.mmd](../tests/fixtures/flowchart/indentation/nested-subgraphs-output.mmd)):
 
 ```mmd
-flowchart TB
+flowchart TD
   subgraph outer
     subgraph inner
       A --> B
@@ -2127,7 +2127,7 @@ flowchart %%{init: {}}%%LR
 
 方向は書かれたまま残します。
 ヘッダーでも `direction` の文でも、`TD` を `TB` に変えません。
-[fixture: direction/header-td-kept]
+[fixture: direction/header-td-one-form]
 [fixture: direction/statement-td-kept-with-other-header]
 [fixture: direction/statement-values-kept]
 mermaid.js は subgraph の中の `direction` の文の `TD`
@@ -2551,7 +2551,7 @@ flowchart LR
 - 矢印の長さ（`-->` と `--->`）と、
   ヘッダーのキーワード（`graph` か `flowchart`）。
   [fixture: arrow-spacing/arrow-length-kept]
-  [fixture: direction/header-keyword-kept]
+  [fixture: direction/header-keyword-one-form]
 - ディレクティブの中身と、
   [データブロック](#データブロック)の一定量の字下げと 1 行のブロックの両端を除く
   `@{ ... }` の中身。

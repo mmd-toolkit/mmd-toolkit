@@ -2427,8 +2427,8 @@ and every source-ordered option/statement occurrence. String/reference padding,
 escapes, HTML, entities and tag order can change the Db, and empty cherry-pick
 tags can suppress a default tag. The summary's omission of messages does not
 permit deleting them. [fixture: gitgraph/header/header-tb] [fixture:
-gitgraph/checkout-aliases/alias-kept] [fixture: gitgraph/messages/message-forms]
-[fixture: gitgraph/quotes/quotes-kept] [fixture:
+gitgraph/checkout-aliases/alias-one-form] [fixture: gitgraph/messages/message-forms]
+[fixture: gitgraph/quotes/quotes-one-form] [fixture:
 gitgraph/references/reference-empty] [corpus fixture: gitgraph/number-precision]
 [fixture: gitgraph/authored-values/inner-padding-change] [corpus fixture:
 gitgraph/db-cherry-pick-only-empty-tags] [fixture:

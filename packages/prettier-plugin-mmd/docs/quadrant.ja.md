@@ -479,7 +479,7 @@ trivia、ASCII 空白とタブ以外の空白文字、セミコロン、
 [fixture: styles/class-definition-tabs]
 [fixture: styles/class-definition-name-with-a-dash]
 [fixture: styles/class-definition-three-styles]
-[fixture: styles/class-definition-keyword-case-kept]
+[fixture: styles/class-definition-keyword-case-one-form]
 [fixture: styles/class-definition-with-an-ignored-semicolon]
 [fixture: styles/class-definition-space-before-the-comma-dropped]
 
@@ -801,11 +801,11 @@ mermaid.js はどれも大文字小文字を問わずに読み（`Title`、`X-Ax
 `ACCTITLE:` も文を始めます）、Db は同じです。
 そのため、大文字小文字は書き手のもので、強制するものはありません。
 クラスの名前は、大文字小文字も残します。
-[fixture: keyword-case/statement-keywords-kept]
+[fixture: keyword-case/statement-keywords-one-form]
 [fixture: keyword-case/accessibility-keywords-kept]
 
 入力
-([keyword-case/statement-keywords-kept-input.mmd](../tests/fixtures/quadrant/keyword-case/statement-keywords-kept-input.mmd)):
+([keyword-case/statement-keywords-one-form-input.mmd](../tests/fixtures/quadrant/keyword-case/statement-keywords-one-form-input.mmd)):
 
 ```mmd
 quadrantChart
@@ -817,15 +817,15 @@ QUADRANT-2 B
 ```
 
 出力
-([keyword-case/statement-keywords-kept-output.mmd](../tests/fixtures/quadrant/keyword-case/statement-keywords-kept-output.mmd)):
+([keyword-case/statement-keywords-one-form-output.mmd](../tests/fixtures/quadrant/keyword-case/statement-keywords-one-form-output.mmd)):
 
 ```mmd
 quadrantChart
-  Title T
-  X-AXIS L
-  Y-Axis B
-  Quadrant-1 A
-  QUADRANT-2 B
+  title T
+  x-axis L
+  y-axis B
+  quadrant-1 A
+  quadrant-2 B
 ```
 
 ### コメント

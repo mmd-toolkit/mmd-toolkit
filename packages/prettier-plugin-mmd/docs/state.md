@@ -429,8 +429,8 @@ whitespace-between-tokens/quotes-before-brace-kept] Keywords keep the case in
 which they are written. mermaid.js reads them in any case and the Db is the
 same, so nothing forces the case; it is the author's, and the printer does not
 rewrite it. The position of a note, such as `Left Of`, is part of the diagram as
-written. [fixture: whitespace-between-tokens/keyword-case-kept] [fixture:
-whitespace-between-tokens/keyword-case-more-kept]
+written. [fixture: whitespace-between-tokens/keyword-case-one-form] [fixture:
+whitespace-between-tokens/keyword-case-more-one-form]
 
 The ids of a `class` statement are separated by a `,` that touches the id after
 it: `class A, B c` is printed `class A,B c`, as the lists of ER, requirement,
@@ -486,7 +486,7 @@ stateDiagram-v2
 ```
 
 Input
-([whitespace-between-tokens/keyword-case-kept-input.mmd](../tests/fixtures/state/whitespace-between-tokens/keyword-case-kept-input.mmd)):
+([whitespace-between-tokens/keyword-case-one-form-input.mmd](../tests/fixtures/state/whitespace-between-tokens/keyword-case-one-form-input.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -498,14 +498,14 @@ HIDE EMPTY DESCRIPTION
 ```
 
 Output
-([whitespace-between-tokens/keyword-case-kept-output.mmd](../tests/fixtures/state/whitespace-between-tokens/keyword-case-kept-output.mmd)):
+([whitespace-between-tokens/keyword-case-one-form-output.mmd](../tests/fixtures/state/whitespace-between-tokens/keyword-case-one-form-output.mmd)):
 
 ```mmd
 stateDiagram-v2
-  STATE A {
+  state A {
     B
   }
-  Note Left Of A : x
+  note Left Of A : x
   HIDE EMPTY DESCRIPTION
 ```
 

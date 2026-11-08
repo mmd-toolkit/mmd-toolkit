@@ -330,7 +330,7 @@ mermaid.js の文書にある、2 人の参加者にまたがるノート 5 件�
 キーワードは、書かれた大文字小文字のまま残します。
 例えば `PARTICIPANT A`、`Note LEFT OF A` です。
 mermaid.js は大文字小文字にかかわらず読むからです。
-[fixture: whitespace-between-tokens/keyword-case-kept]
+[fixture: whitespace-between-tokens/keyword-case-one-form]
 
 入力
 ([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/sequence/whitespace-between-tokens/collapsed-input.mmd)):
@@ -355,13 +355,13 @@ sequenceDiagram
   autonumber 10 5
   create participant C
   A ->> C: x
-  note over A,C: n
+  Note over A,C: n
   A ->> B: wrap: x
   A ->> B: wrap: y
 ```
 
 入力
-([whitespace-between-tokens/keyword-case-kept-input.mmd](../tests/fixtures/sequence/whitespace-between-tokens/keyword-case-kept-input.mmd)):
+([whitespace-between-tokens/keyword-case-one-form-input.mmd](../tests/fixtures/sequence/whitespace-between-tokens/keyword-case-one-form-input.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -374,14 +374,14 @@ END
 ```
 
 出力
-([whitespace-between-tokens/keyword-case-kept-output.mmd](../tests/fixtures/sequence/whitespace-between-tokens/keyword-case-kept-output.mmd)):
+([whitespace-between-tokens/keyword-case-one-form-output.mmd](../tests/fixtures/sequence/whitespace-between-tokens/keyword-case-one-form-output.mmd)):
 
 ```mmd
 sequenceDiagram
-  PARTICIPANT A
-  Note LEFT OF A: x
-  participant B AS Bob
-  LOOP x
+  participant A
+  Note LEFT of A: x
+  participant B as Bob
+  loop x
     A ->> B: y
   END
 ```
@@ -671,7 +671,7 @@ sequenceDiagram
   A ->> B: x
   A ->> B: y
   A ->> B:
-  note over A: n
+  Note over A: n
   links A: {"a": "b"}
   accTitle: t
   A ->> B: :nowrap: z

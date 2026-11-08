@@ -462,7 +462,7 @@ set A[L]:002.00
 ```mmd
 venn-beta
 set A:+02.50
-set B:-.5
+set B:-0.5
 union A, B:007
   text 007
 ```
@@ -874,7 +874,7 @@ style A fill:"red
 [corpus fixture: venn/lex-keyword-set-upper]
 [fixture: venn/keyword-case-and-order/declarations-order-keep-control]
 [fixture: venn/keyword-case-and-order/declarations-order-keep]
-[fixture: venn/keyword-case-and-order/keyword-case-kept]
+[fixture: venn/keyword-case-and-order/keyword-case-one-form]
 
 [fixture: venn/keyword-case-and-order/keyword-lower-equal]
 
@@ -885,14 +885,14 @@ style A fill:"red
 ```
 
 出力
-([keyword-case-and-order/keyword-case-kept-output.mmd](../tests/fixtures/venn/keyword-case-and-order/keyword-case-kept-output.mmd)):
+([keyword-case-and-order/keyword-case-one-form-output.mmd](../tests/fixtures/venn/keyword-case-and-order/keyword-case-one-form-output.mmd)):
 
 ```mmd
 venn-beta
-SET A
-  TeXt item
-STYLE A fill:RED
-Title T
+set A
+  text item
+style A fill:RED
+title T
 ```
 
 ### Line terminators

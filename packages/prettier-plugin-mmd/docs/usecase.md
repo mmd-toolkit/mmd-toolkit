@@ -172,7 +172,7 @@ Output
 
 ```mmd
 usecase-beta
-  actor User(Person), Clerk('Desk'), "Guest"
+  actor User(Person), Clerk("Desk"), "Guest"
 ```
 
 ### Labels
@@ -186,7 +186,7 @@ trimmed. Internal gaps, Unicode padding, backslashes, entities and HTML stay;
 `singleQuote` does not rewrite native strings.
 
 [fixture: labels/label-quote-kinds] [fixture: labels/label-empty-quotes]
-[fixture: labels/label-quote-rewrite-kept] [fixture:
+[fixture: labels/label-quote-rewrite-one-form] [fixture:
 labels/label-quote-remove-kept] [fixture: labels/label-interior-kept] [fixture:
 labels/label-backslash-kept] [fixture: labels/label-html-entities] [fixture:
 labels/div-c4-label] [fixture: labels/label-markdown-remove-kept] [test:
@@ -202,7 +202,7 @@ Output
 ```mmd
 usecase-beta
   A(unquoted  words)
-  B(' single  text ')
+  B(" single  text ")
   C(" double  text ")
   D("` markdown  text `")
 ```
@@ -309,7 +309,7 @@ Output
 
 ```mmd
 usecase-beta
-  systemBoundary Box[Display]@{ type: 'package' }:::box,group
+  systemBoundary Box[Display]@{ type: "package" }:::box,group
     actor User
     A@{ business: true }
   end
@@ -332,7 +332,7 @@ its dash counts even where the Db length is fixed.
 
 [fixture: arrows/arrows-solid] [fixture: arrows/arrows-markers] [fixture:
 arrows/arrows-semantic] [fixture: arrows/arrows-length-kept] [fixture:
-arrows/arrows-source-order-kept] [fixture: arrows/arrows-semantic-case-kept]
+arrows/arrows-source-order-kept] [fixture: arrows/arrows-semantic-case-one-form]
 [fixture: arrows/arrows-generalization-actors] [fixture:
 arrows/extended-split-lengths]
 
@@ -343,8 +343,8 @@ Output
 
 ```mmd
 usecase-beta
-  A ..>:InClUdE B
-  B ..>:EXTEND C
+  A ..>:include B
+  B ..>:extend C
   C --|> D
 ```
 
@@ -410,7 +410,7 @@ Output
 ```mmd
 usecase-beta
   A -- likes --> B
-  B <-- 'uses' -- C
+  B <-- "uses" -- C
   C o-- part --- D
   D x-- "`blocks`" ---- E
 ```
@@ -687,7 +687,7 @@ Output
 ```mmd
 usecase-beta
   A
-  note for A 'quoted note'
+  note for A "quoted note"
   note for A bare  note %% literal
 ```
 

@@ -41,7 +41,7 @@ beta の境界に合わない接尾辞は根のテキストに残します。
 ([header/header-beta-fallback-output.mmd](../tests/fixtures/ishikawa/header/header-beta-fallback-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   -betaX
     A
 ```
@@ -84,7 +84,7 @@ clamp された原因や相対レベル 0 の原因も、普通の根の子に�
 ([indentation/indent-clamped-output.mmd](../tests/fixtures/ishikawa/indentation/indent-clamped-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   R
     A
     B
@@ -119,7 +119,7 @@ Ishikawa の見出しは、
 ([root-on-header-line/header-root-output.mmd](../tests/fixtures/ishikawa/root-on-header-line/header-root-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   R
     A
       B
@@ -152,7 +152,7 @@ ishikawa
 ([root-indentation/root-alone-output.mmd](../tests/fixtures/ishikawa/root-indentation/root-alone-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   R
 ```
 
@@ -215,7 +215,7 @@ ishikawa
 ([blank-lines/blank-around-trivia-output.mmd](../tests/fixtures/ishikawa/blank-lines/blank-around-trivia-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   R
 
     %% c
@@ -265,7 +265,7 @@ Unicode の終端と共通領域の結合は、
 ([comments/comment-detach-unsafe-output.mmd](../tests/fixtures/ishikawa/comments/comment-detach-unsafe-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   R %% literal
 ```
 
@@ -334,7 +334,7 @@ ishikawa/standalone-directives/header-touching-prefix-spaced-directive]
 ([standalone-directives/directive-before-header-glued-output.mmd](../tests/fixtures/ishikawa/standalone-directives/directive-before-header-glued-output.mmd)):
 
 ```mmd
-%%{init: {}}%%ishikawa
+%%{init: {}}%%ishikawa-beta
   R
 ```
 
@@ -348,7 +348,7 @@ ishikawa/standalone-directives/header-touching-prefix-spaced-directive]
 ([standalone-directives/header-spaced-directive-output.mmd](../tests/fixtures/ishikawa/standalone-directives/header-spaced-directive-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
  %%{init: {}}%% R
     A
 ```
@@ -363,7 +363,7 @@ ishikawa
 ([standalone-directives/header-spaced-multiline-directive-output.mmd](../tests/fixtures/ishikawa/standalone-directives/header-spaced-multiline-directive-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
  %%{init: {
      }}%% R
     A
@@ -403,7 +403,7 @@ kanban の配分を再利用し、複数行の内容と継続列を保ち、
 ([inline-directives/directive-gap-trim-unsafe-output.mmd](../tests/fixtures/ishikawa/inline-directives/directive-gap-trim-unsafe-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   R  %%{init: {}}%%   X
 ```
 
@@ -491,7 +491,7 @@ Mermaid がソース全体から C4 を検出して拒否する入力も同じ�
 ([node-text/values-html-entities-output.mmd](../tests/fixtures/ishikawa/node-text/values-html-entities-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   R <a x="y">#amp;</a>
     A#35;#x41;
 ```
@@ -506,7 +506,7 @@ ishikawa
 ([node-text/div-c4-output.mmd](../tests/fixtures/ishikawa/node-text/div-c4-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   R
     C4Container
 ```
@@ -552,7 +552,7 @@ colon と hash の隙間、不一致、entity、Unicode の区間境界、
 ([line-rule-and-kept-lines/line-rule-colon-unsafe-output.mmd](../tests/fixtures/ishikawa/line-rule-and-kept-lines/line-rule-colon-unsafe-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   R style:#abc;
 ```
 
@@ -586,7 +586,7 @@ ishikawa
 ([physical-lines/long-no-wrap-output.mmd](../tests/fixtures/ishikawa/physical-lines/long-no-wrap-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   R
     A deliberately long cause remains one literal line even when printWidth is twenty
 ```
@@ -769,7 +769,7 @@ compatibility にある Prettier の共有の処理に従います。
 ([whitespace-characters/tab-visual-expansion-unsafe-output.mmd](../tests/fixtures/ishikawa/whitespace-characters/tab-visual-expansion-unsafe-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   R
     A
     B
@@ -833,7 +833,7 @@ accessibility の metadata は Ishikawa の文を作りません。
 --- !!map
 title: T
 ---
-ishikawa
+ishikawa-beta
   R
 ```
 
@@ -866,7 +866,7 @@ ishikawa
 ([final-newline/final-comment-output.mmd](../tests/fixtures/ishikawa/final-newline/final-comment-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   R
   %% c
 ```
@@ -902,7 +902,7 @@ parse に失敗した本文は整形を辞退するためです。
 ([markdown-fences/markdown-top-payload-output.mmd](../tests/fixtures/ishikawa/markdown-fences/markdown-top-payload-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   R
     A
       B

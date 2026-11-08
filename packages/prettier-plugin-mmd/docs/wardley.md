@@ -415,7 +415,7 @@ Output
 
 ```mmd
 wardley-beta
-  Alpha +'moving'> Beta
+  Alpha +"moving"> Beta
 ```
 
 ### Semicolon labels

@@ -610,7 +610,7 @@ gantt
 間の空白や改行がどれだけ書かれていても同じです。
 日は書かれた大文字小文字を保ちます（Db が小文字にします）。
 [fixture: weekday-and-weekend/one-space]
-[fixture: weekday-and-weekend/day-case-kept]
+[fixture: weekday-and-weekend/day-case-one-form]
 [fixture: weekday-and-weekend/day-on-next-line]
 行末の空白は落とします。
 `inclusiveEndDates` の後も同じです。
@@ -619,7 +619,7 @@ gantt
 [fixture: weekday-and-weekend/directive-between-keyword-and-day]
 
 入力
-([weekday-and-weekend/day-case-kept-input.mmd](../tests/fixtures/gantt/weekday-and-weekend/day-case-kept-input.mmd)):
+([weekday-and-weekend/day-case-one-form-input.mmd](../tests/fixtures/gantt/weekday-and-weekend/day-case-one-form-input.mmd)):
 
 ```mmd
 gantt
@@ -629,13 +629,13 @@ WEEKDAY Tuesday
 ```
 
 出力
-([weekday-and-weekend/day-case-kept-output.mmd](../tests/fixtures/gantt/weekday-and-weekend/day-case-kept-output.mmd)):
+([weekday-and-weekend/day-case-one-form-output.mmd](../tests/fixtures/gantt/weekday-and-weekend/day-case-one-form-output.mmd)):
 
 ```mmd
 gantt
-  weekday MONDAY
-  weekend Friday
-  WEEKDAY Tuesday
+  weekday monday
+  weekend friday
+  weekday Tuesday
 ```
 
 入力
@@ -664,14 +664,14 @@ gantt
 キーワードは書かれた大文字小文字を保ちます。
 mermaid.js はどの大文字小文字でも読み、Db は同じです。
 大文字小文字は強制されないので、作者が選んだものとして、書き換えません。
-[fixture: keyword-case/keywords-kept]
+[fixture: keyword-case/keywords-one-form]
 [fixture: keyword-case/click-keywords-kept]
 ヘッダーの `gantt` は小文字だけが検出され、タスクのタグは `active`、`done`、
 `crit`、`milestone`、`vert` の大文字小文字のとおりに読まれるので、
 `Done` はタグではなく、変えません。 [fixture: keyword-case/tags-case-kept]
 
 入力
-([keyword-case/keywords-kept-input.mmd](../tests/fixtures/gantt/keyword-case/keywords-kept-input.mmd)):
+([keyword-case/keywords-one-form-input.mmd](../tests/fixtures/gantt/keyword-case/keywords-one-form-input.mmd)):
 
 ```mmd
 gantt
@@ -692,21 +692,21 @@ ACCDESCR { d }
 ```
 
 出力
-([keyword-case/keywords-kept-output.mmd](../tests/fixtures/gantt/keyword-case/keywords-kept-output.mmd)):
+([keyword-case/keywords-one-form-output.mmd](../tests/fixtures/gantt/keyword-case/keywords-one-form-output.mmd)):
 
 ```mmd
 gantt
-  DATEFORMAT YYYY
-  AxisFormat %m
-  TICKINTERVAL 1week
+  dateFormat YYYY
+  axisFormat %m
+  tickInterval 1week
   TodayMarker off
-  TITLE T
-  Section S
-    EXCLUDES weekends
+  title T
+  section S
+    excludes weekends
     Includes monday
     INCLUSIVEENDDATES
-    WEEKDAY Monday
-    WEEKEND FRIDAY
+    weekday monday
+    weekend friday
     ACCTITLE: T
     AccDescr: d
     ACCDESCR { d }

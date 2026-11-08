@@ -663,10 +663,10 @@ timeline
 mermaid.js はどの大文字小文字でも読み、Db は同じです。
 大文字小文字は強制されないので、作者が選んだものとして、書き換えません。
 ヘッダーの `timeline` は、小文字のものだけが検出されます。
-[fixture: keyword-case/keywords-kept]
+[fixture: keyword-case/keywords-one-form]
 
 入力
-([keyword-case/keywords-kept-input.mmd](../tests/fixtures/timeline/keyword-case/keywords-kept-input.mmd)):
+([keyword-case/keywords-one-form-input.mmd](../tests/fixtures/timeline/keyword-case/keywords-one-form-input.mmd)):
 
 ```mmd
 timeline
@@ -678,12 +678,12 @@ ACCDESCR { d }
 ```
 
 出力
-([keyword-case/keywords-kept-output.mmd](../tests/fixtures/timeline/keyword-case/keywords-kept-output.mmd)):
+([keyword-case/keywords-one-form-output.mmd](../tests/fixtures/timeline/keyword-case/keywords-one-form-output.mmd)):
 
 ```mmd
 timeline
-  TITLE T
-  Section S
+  title T
+  section S
     ACCTITLE: T
     AccDescr: d
     ACCDESCR { d }

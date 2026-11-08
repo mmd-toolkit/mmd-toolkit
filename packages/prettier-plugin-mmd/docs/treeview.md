@@ -1150,7 +1150,7 @@ Output
 treeView-beta
   "A"
   "B"
-  'C'
+  "C"
 ```
 
 [fixture: treeview/branch-prefixes/rounding-half]

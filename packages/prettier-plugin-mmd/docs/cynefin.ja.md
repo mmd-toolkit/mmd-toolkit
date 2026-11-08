@@ -158,7 +158,7 @@ cynefin-beta
 cynefin-beta
   complex
     "Alpha"
-    'Beta'
+    "Beta"
   clear
     "Gamma'"
 ```
@@ -277,7 +277,7 @@ hidden と global trivia の隙間を普通の空白より優先します。
 
 ```mmd
 cynefin-beta
-  chaotic --> confusion : 'ColonTabs'
+  chaotic --> confusion : "ColonTabs"
 ```
 
 ### Strings
@@ -321,7 +321,7 @@ trim や escape の decode は値を変え得るためです。
 ```mmd
 cynefin-beta
   complex
-    'Single'
+    "Single"
     "Double"
     'opposite " quote'
     "opposite ' quote"
@@ -395,9 +395,9 @@ cynefin-beta
 
 ```mmd
 cynefin-beta
-  complex --> clear : 'First'
-  complex --> clear : 'Second'
-  complex --> complex : 'Self'
+  complex --> clear : "First"
+  complex --> clear : "Second"
+  complex --> complex : "Self"
   clear --> clear
   confusion --> chaotic : ""
 ```
@@ -810,7 +810,7 @@ native hidden directive は別の形として扱います。
 
 ```mmd
 cynefin-beta
-  complex %%{wrap}%%--> %%{wrap}%%clear %%{wrap}%%: %%{wrap}%%'GlobalLabel'
+  complex %%{wrap}%%--> %%{wrap}%%clear %%{wrap}%%: %%{wrap}%%"GlobalLabel"
 ```
 
 ### Comments
@@ -1163,7 +1163,7 @@ cynefin-beta
   clear
     "EarlyClear"
   title EarlyTitle
-  complex --> clear : 'EarlyMove'
+  complex --> clear : "EarlyMove"
   complex
     "LaterComplex"
   accTitle: Accessible

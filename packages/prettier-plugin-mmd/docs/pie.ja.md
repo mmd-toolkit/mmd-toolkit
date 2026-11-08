@@ -120,7 +120,7 @@ hidden form は物理的な境界を保持します。
 ```mmd
 pie
   "Wide" : 12
-  'Narrow' : 3
+  "Narrow" : 3
   "" : 1
 ```
 
@@ -136,7 +136,7 @@ entity・HTML・hidden に見える percent の文字列を残します。
 
 固定例: [fixture: pie/labels/label-quotes] [fixture: pie/labels/label-escapes]
 [fixture: pie/labels/label-inner-trim-kept]
-[fixture: pie/labels/label-quote-authored]
+[fixture: pie/labels/label-quote-one-form]
 [fixture: pie/labels/label-hidden-looking] [fixture: pie/labels/div-c4-label]
 [fixture: pie/labels/div-c4-eof] [test: pie/labels/div-bare-unicode]
 [test: pie/labels/div-retained-bare-unicode]
@@ -153,9 +153,9 @@ entity・HTML・hidden に見える percent の文字列を残します。
 
 ```mmd
 pie
-  ' single  label ' : 3
+  " single  label " : 3
   " double  label " : 4
-  '' : 2
+  "" : 2
 ```
 
 ### Numbers
@@ -668,7 +668,7 @@ pie
   "2" : 4
   "__proto__" : 5
   "constructor" : 6
-  '10' : 8
+  "10" : 8
   "a\n" : 1
   "a
 " : 7

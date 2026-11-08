@@ -429,7 +429,7 @@ singleQuote でも再引用しません。
 ```mmd
 radar-beta
   axis North['single "other"'], South["double 'other'"], East[""]
-  curve trial['']{1, 2, 3}
+  curve trial[""]{1, 2, 3}
 ```
 
 ### Title

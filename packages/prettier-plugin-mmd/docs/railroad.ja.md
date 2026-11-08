@@ -717,7 +717,7 @@ railroad-beta
 
 ```mmd
 railroad-ebnf-beta
-  r = "", '' " " "%%literal --- <b> plain";
+  r = "", "" " " "%%literal --- <b> plain";
 ```
 
 入力（escape 表記）: `"railroad-abnf-beta\nr=\"q\\n\\t\\q\";"`。
@@ -740,7 +740,7 @@ railroad-abnf-beta
 
 ```mmd
 railroad-peg-beta
-  r <- "" '' " " "%%literal --- <b> plain";
+  r <- "" "" " " "%%literal --- <b> plain";
 ```
 
 ### 長い行

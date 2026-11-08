@@ -184,7 +184,7 @@ stereotype の隙間は、[class に揃えた規則](#stereotypes)に従いま�
 
 ```mmd
 usecase-beta
-  actor User(Person), Clerk('Desk'), "Guest"
+  actor User(Person), Clerk("Desk"), "Guest"
 ```
 
 ### Labels
@@ -200,7 +200,7 @@ markdown はラベルの種類も変えます。
 `singleQuote` で native 文字列を書き換えません。
 
 [fixture: labels/label-quote-kinds] [fixture: labels/label-empty-quotes]
-[fixture: labels/label-quote-rewrite-kept]
+[fixture: labels/label-quote-rewrite-one-form]
 [fixture: labels/label-quote-remove-kept] [fixture: labels/label-interior-kept]
 [fixture: labels/label-backslash-kept] [fixture: labels/label-html-entities]
 [fixture: labels/div-c4-label] [fixture: labels/label-markdown-remove-kept]
@@ -217,7 +217,7 @@ markdown はラベルの種類も変えます。
 ```mmd
 usecase-beta
   A(unquoted  words)
-  B(' single  text ')
+  B(" single  text ")
   C(" double  text ")
   D("` markdown  text `")
 ```
@@ -347,7 +347,7 @@ native metadata、class、繰り返しの宣言を保ち、
 
 ```mmd
 usecase-beta
-  systemBoundary Box[Display]@{ type: 'package' }:::box,group
+  systemBoundary Box[Display]@{ type: "package" }:::box,group
     actor User
     A@{ business: true }
   end
@@ -375,7 +375,7 @@ Db の長さが固定される分割矢印の長い右半分も同じです。
 [fixture: arrows/arrows-solid] [fixture: arrows/arrows-markers]
 [fixture: arrows/arrows-semantic] [fixture: arrows/arrows-length-kept]
 [fixture: arrows/arrows-source-order-kept]
-[fixture: arrows/arrows-semantic-case-kept]
+[fixture: arrows/arrows-semantic-case-one-form]
 [fixture: arrows/arrows-generalization-actors]
 [fixture: arrows/extended-split-lengths]
 
@@ -386,8 +386,8 @@ Db の長さが固定される分割矢印の長い右半分も同じです。
 
 ```mmd
 usecase-beta
-  A ..>:InClUdE B
-  B ..>:EXTEND C
+  A ..>:include B
+  B ..>:extend C
   C --|> D
 ```
 
@@ -455,7 +455,7 @@ actor の開始キーワード、二つの端点の出現を保ちます。
 ```mmd
 usecase-beta
   A -- likes --> B
-  B <-- 'uses' -- C
+  B <-- "uses" -- C
   C o-- part --- D
   D x-- "`blocks`" ---- E
 ```
@@ -749,7 +749,7 @@ class の[トークンの間の空白](./class.ja.md#トークンの間の空白
 ```mmd
 usecase-beta
   A
-  note for A 'quoted note'
+  note for A "quoted note"
   note for A bare  note %% literal
 ```
 

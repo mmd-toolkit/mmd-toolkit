@@ -640,10 +640,10 @@ timeline
 Keywords keep the case in which they are written. mermaid.js reads them in any
 case and the Db is the same, so nothing forces the case; it is the author's, and
 the printer does not rewrite it. The header `timeline` is detected in lower case
-only. [fixture: keyword-case/keywords-kept]
+only. [fixture: keyword-case/keywords-one-form]
 
 Input
-([keyword-case/keywords-kept-input.mmd](../tests/fixtures/timeline/keyword-case/keywords-kept-input.mmd)):
+([keyword-case/keywords-one-form-input.mmd](../tests/fixtures/timeline/keyword-case/keywords-one-form-input.mmd)):
 
 ```mmd
 timeline
@@ -655,12 +655,12 @@ ACCDESCR { d }
 ```
 
 Output
-([keyword-case/keywords-kept-output.mmd](../tests/fixtures/timeline/keyword-case/keywords-kept-output.mmd)):
+([keyword-case/keywords-one-form-output.mmd](../tests/fixtures/timeline/keyword-case/keywords-one-form-output.mmd)):
 
 ```mmd
 timeline
-  TITLE T
-  Section S
+  title T
+  section S
     ACCTITLE: T
     AccDescr: d
     ACCDESCR { d }

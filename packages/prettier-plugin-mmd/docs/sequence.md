@@ -313,7 +313,7 @@ is treated as in [Arrow spacing](#arrow-spacing). Keywords keep the case in
 which they are written (`PARTICIPANT A`, `Note LEFT OF A`). mermaid.js reads
 them in any case and the Db is the same, so nothing forces the case; it is the
 author's, and the printer does not rewrite it. [fixture:
-whitespace-between-tokens/keyword-case-kept]
+whitespace-between-tokens/keyword-case-one-form]
 
 Input
 ([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/sequence/whitespace-between-tokens/collapsed-input.mmd)):
@@ -338,13 +338,13 @@ sequenceDiagram
   autonumber 10 5
   create participant C
   A ->> C: x
-  note over A,C: n
+  Note over A,C: n
   A ->> B: wrap: x
   A ->> B: wrap: y
 ```
 
 Input
-([whitespace-between-tokens/keyword-case-kept-input.mmd](../tests/fixtures/sequence/whitespace-between-tokens/keyword-case-kept-input.mmd)):
+([whitespace-between-tokens/keyword-case-one-form-input.mmd](../tests/fixtures/sequence/whitespace-between-tokens/keyword-case-one-form-input.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -357,14 +357,14 @@ END
 ```
 
 Output
-([whitespace-between-tokens/keyword-case-kept-output.mmd](../tests/fixtures/sequence/whitespace-between-tokens/keyword-case-kept-output.mmd)):
+([whitespace-between-tokens/keyword-case-one-form-output.mmd](../tests/fixtures/sequence/whitespace-between-tokens/keyword-case-one-form-output.mmd)):
 
 ```mmd
 sequenceDiagram
-  PARTICIPANT A
-  Note LEFT OF A: x
-  participant B AS Bob
-  LOOP x
+  participant A
+  Note LEFT of A: x
+  participant B as Bob
+  loop x
     A ->> B: y
   END
 ```
@@ -633,7 +633,7 @@ sequenceDiagram
   A ->> B: x
   A ->> B: y
   A ->> B:
-  note over A: n
+  Note over A: n
   links A: {"a": "b"}
   accTitle: t
   A ->> B: :nowrap: z

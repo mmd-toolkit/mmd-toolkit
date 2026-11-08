@@ -538,7 +538,7 @@ and tokens that touch keep touching, unless a rule below says otherwise.
 whitespace-between-tokens/touching-kept] Keywords keep the case in which they
 are written. mermaid.js reads them in any case, so the case is the author's and
 the printer does not rewrite it; the keys of an attribute keep it in the Db.
-[fixture: whitespace-between-tokens/keyword-case-kept]
+[fixture: whitespace-between-tokens/keyword-case-one-form]
 
 Input
 ([whitespace-between-tokens/touching-kept-input.mmd](../tests/fixtures/er/whitespace-between-tokens/touching-kept-input.mmd)):
@@ -565,7 +565,7 @@ erDiagram
 ```
 
 Input
-([whitespace-between-tokens/keyword-case-kept-input.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-kept-input.mmd)):
+([whitespace-between-tokens/keyword-case-one-form-input.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-one-form-input.mmd)):
 
 ```mmd
 erDiagram
@@ -586,21 +586,21 @@ int a PK
 ```
 
 Output
-([whitespace-between-tokens/keyword-case-kept-output.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-kept-output.mmd)):
+([whitespace-between-tokens/keyword-case-one-form-output.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-one-form-output.mmd)):
 
 ```mmd
 erDiagram
-  SUBGRAPH S
+  subgraph S
     A
   END
-  CLASSDEF a fill: red
+  classDef a fill: red
   CLASS A a
-  STYLE A fill: red
-  DIRECTION lr
+  style A fill: red
+  direction LR
   ACCTITLE: T
   ACCDESCR: D
   ACCDESCR { D }
-  A ONE OR MORE TO MANY B : x
+  A ONE OR MORE to MANY B : x
   A {
     int a PK
   }
@@ -729,7 +729,7 @@ erDiagram
   A one or more to zero or more B : x
   A only one to one B : x
   A zero or one optionally to one or zero B : x
-  A ONE OR MORE TO MANY B : x
+  A ONE OR MORE to MANY B : x
   A many to one B : x
 ```
 
@@ -811,7 +811,7 @@ mermaid.js joins them with one space. [fixture: subgraphs/header-spacing]
 level deeper, and `end` stands on a line of its own at the level of the
 subgraph, in the case in which it is written; a statement that follows the `end`
 on its line stands on the line after it. [fixture:
-subgraphs/end-on-the-line-of-a-statement] [fixture: subgraphs/end-case-kept]
+subgraphs/end-on-the-line-of-a-statement] [fixture: subgraphs/end-case-one-form]
 [fixture: subgraphs/entity-after-end] A subgraph without statements is printed
 with its `end` on the next line. [fixture: subgraphs/empty]
 
@@ -901,7 +901,7 @@ does not read before and after them. The text is kept as written. One space
 stands between it and `direction`, where they were written apart, and between
 `direction` and the value; the value is kept in the case in which it is written,
 since the case is the author's. [fixture: direction/spacing] [fixture:
-direction/text-kept] [fixture: direction/case-kept] A value written on a later
+direction/text-kept] [fixture: direction/case-one-form] A value written on a later
 line is printed after `direction` on one line. [fixture:
 direction/value-on-next-line-joined] [corpus fixture:
 er/lex-direction-value-next-line] A direction line with a directive or comment
@@ -933,7 +933,7 @@ erDiagram
 ```
 
 Input
-([direction/case-kept-input.mmd](../tests/fixtures/er/direction/case-kept-input.mmd)):
+([direction/case-one-form-input.mmd](../tests/fixtures/er/direction/case-one-form-input.mmd)):
 
 ```mmd
 erDiagram
@@ -942,12 +942,12 @@ Direction Tb
 ```
 
 Output
-([direction/case-kept-output.mmd](../tests/fixtures/er/direction/case-kept-output.mmd)):
+([direction/case-one-form-output.mmd](../tests/fixtures/er/direction/case-one-form-output.mmd)):
 
 ```mmd
 erDiagram
-  DIRECTION lr
-  Direction Tb
+  direction LR
+  direction TB
 ```
 
 ### Styles and classes
@@ -970,7 +970,7 @@ styles-and-classes/class-def-names] [fixture: styles-and-classes/style-names]
 styles-and-classes/styles-as-written] [fixture:
 styles-and-classes/style-inner-whitespace-kept]
 
-[fixture: styles-and-classes/keyword-case-kept]
+[fixture: styles-and-classes/keyword-case-one-form]
 
 A `classDef` or `style` statement written over lines, with whitespace after a
 keyword or a name that takes the line break, is printed on one line. [fixture:

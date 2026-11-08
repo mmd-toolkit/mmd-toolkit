@@ -460,7 +460,7 @@ styles/class-definition] [fixture: styles/class-definition-spaces] [fixture:
 styles/class-definition-tabs] [fixture:
 styles/class-definition-name-with-a-dash] [fixture:
 styles/class-definition-three-styles] [fixture:
-styles/class-definition-keyword-case-kept] [fixture:
+styles/class-definition-keyword-case-one-form] [fixture:
 styles/class-definition-with-an-ignored-semicolon] [fixture:
 styles/class-definition-space-before-the-comma-dropped]
 
@@ -771,11 +771,11 @@ The keywords `title`, `x-axis`, `y-axis`, `quadrant-1` to `quadrant-4`,
 mermaid.js reads them in any case (`Title`, `X-Axis`, `CLASSDEF`, and
 `ACCTITLE:` start statements), and the Db is the same, so the case is the
 author's and nothing forces one. The name of a class keeps its case. [fixture:
-keyword-case/statement-keywords-kept] [fixture:
+keyword-case/statement-keywords-one-form] [fixture:
 keyword-case/accessibility-keywords-kept]
 
 Input
-([keyword-case/statement-keywords-kept-input.mmd](../tests/fixtures/quadrant/keyword-case/statement-keywords-kept-input.mmd)):
+([keyword-case/statement-keywords-one-form-input.mmd](../tests/fixtures/quadrant/keyword-case/statement-keywords-one-form-input.mmd)):
 
 ```mmd
 quadrantChart
@@ -787,15 +787,15 @@ QUADRANT-2 B
 ```
 
 Output
-([keyword-case/statement-keywords-kept-output.mmd](../tests/fixtures/quadrant/keyword-case/statement-keywords-kept-output.mmd)):
+([keyword-case/statement-keywords-one-form-output.mmd](../tests/fixtures/quadrant/keyword-case/statement-keywords-one-form-output.mmd)):
 
 ```mmd
 quadrantChart
-  Title T
-  X-AXIS L
-  Y-Axis B
-  Quadrant-1 A
-  QUADRANT-2 B
+  title T
+  x-axis L
+  y-axis B
+  quadrant-1 A
+  quadrant-2 B
 ```
 
 ### Comments

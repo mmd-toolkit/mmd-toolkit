@@ -551,7 +551,7 @@ erDiagram
 キーワードは、書かれた大文字小文字を保ちます。
 mermaid.js はどの大文字小文字でも読み、
 属性のキーは Db がその大文字小文字を保つからです。
-[fixture: whitespace-between-tokens/keyword-case-kept]
+[fixture: whitespace-between-tokens/keyword-case-one-form]
 
 入力
 ([whitespace-between-tokens/touching-kept-input.mmd](../tests/fixtures/er/whitespace-between-tokens/touching-kept-input.mmd)):
@@ -578,7 +578,7 @@ erDiagram
 ```
 
 入力
-([whitespace-between-tokens/keyword-case-kept-input.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-kept-input.mmd)):
+([whitespace-between-tokens/keyword-case-one-form-input.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-one-form-input.mmd)):
 
 ```mmd
 erDiagram
@@ -599,21 +599,21 @@ int a PK
 ```
 
 出力
-([whitespace-between-tokens/keyword-case-kept-output.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-kept-output.mmd)):
+([whitespace-between-tokens/keyword-case-one-form-output.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-one-form-output.mmd)):
 
 ```mmd
 erDiagram
-  SUBGRAPH S
+  subgraph S
     A
   END
-  CLASSDEF a fill: red
+  classDef a fill: red
   CLASS A a
-  STYLE A fill: red
-  DIRECTION lr
+  style A fill: red
+  direction LR
   ACCTITLE: T
   ACCDESCR: D
   ACCDESCR { D }
-  A ONE OR MORE TO MANY B : x
+  A ONE OR MORE to MANY B : x
   A {
     int a PK
   }
@@ -750,7 +750,7 @@ erDiagram
   A one or more to zero or more B : x
   A only one to one B : x
   A zero or one optionally to one or zero B : x
-  A ONE OR MORE TO MANY B : x
+  A ONE OR MORE to MANY B : x
   A many to one B : x
 ```
 
@@ -844,7 +844,7 @@ mermaid.js が空白 1 つで結ぶからです。 [fixture: subgraphs/header-sp
 行に単独で置きます。
 `end` の後に同じ行で続く文は、次の行に置きます。
 [fixture: subgraphs/end-on-the-line-of-a-statement]
-[fixture: subgraphs/end-case-kept] [fixture: subgraphs/entity-after-end]
+[fixture: subgraphs/end-case-one-form] [fixture: subgraphs/entity-after-end]
 文のない subgraph は、`end` を次の行に置いて印字します。
 [fixture: subgraphs/empty]
 
@@ -929,7 +929,7 @@ erDiagram
 テキストと `direction` の間（離して書かれていれば）と、
 `direction` と値の間には空白 1 つを置き、値は書かれた大文字小文字を保ちます。
 大文字小文字は作者のものだからです。 [fixture: direction/spacing]
-[fixture: direction/text-kept] [fixture: direction/case-kept]
+[fixture: direction/text-kept] [fixture: direction/case-one-form]
 後の行に書かれた値は、`direction` の後に 1 行で印字します。
 [fixture: direction/value-on-next-line-joined]
 [corpus fixture: er/lex-direction-value-next-line]
@@ -962,7 +962,7 @@ erDiagram
 ```
 
 入力
-([direction/case-kept-input.mmd](../tests/fixtures/er/direction/case-kept-input.mmd)):
+([direction/case-one-form-input.mmd](../tests/fixtures/er/direction/case-one-form-input.mmd)):
 
 ```mmd
 erDiagram
@@ -971,12 +971,12 @@ Direction Tb
 ```
 
 出力
-([direction/case-kept-output.mmd](../tests/fixtures/er/direction/case-kept-output.mmd)):
+([direction/case-one-form-output.mmd](../tests/fixtures/er/direction/case-one-form-output.mmd)):
 
 ```mmd
 erDiagram
-  DIRECTION lr
-  Direction Tb
+  direction LR
+  direction TB
 ```
 
 ### スタイルとクラス
@@ -1002,7 +1002,7 @@ Mermaid はスタイルの単位をつなげて読むため、
 [fixture: styles-and-classes/styles-as-written]
 [fixture: styles-and-classes/style-inner-whitespace-kept]
 
-[fixture: styles-and-classes/keyword-case-kept]
+[fixture: styles-and-classes/keyword-case-one-form]
 
 キーワードや名前の後の空白が改行を取り込んで、
 複数行に書かれた `classDef` と `style` の文は、1 行に印字します。

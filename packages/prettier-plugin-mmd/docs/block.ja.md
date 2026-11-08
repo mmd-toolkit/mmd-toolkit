@@ -62,7 +62,7 @@ d
 ([indentation/composite-body-one-level-deeper-end-at-the-level-of-block-output.mmd](../tests/fixtures/block/indentation/composite-body-one-level-deeper-end-at-the-level-of-block-output.mmd)):
 
 ```mmd
-block-beta
+block
   columns 3
   a
   block:group1:2
@@ -114,7 +114,7 @@ end
 ([composites/colon-touches-the-node-output.mmd](../tests/fixtures/block/composites/colon-touches-the-node-output.mmd)):
 
 ```mmd
-block-beta
+block
   block:G
     a
   end
@@ -132,7 +132,7 @@ block:G a b end
 ([composites/composite-on-one-line-split-output.mmd](../tests/fixtures/block/composites/composite-on-one-line-split-output.mmd)):
 
 ```mmd
-block-beta
+block
   block:G
     a b
   end
@@ -202,7 +202,7 @@ d   e   f
 ([rows/rows-kept-output.mmd](../tests/fixtures/block/rows/rows-kept-output.mmd)):
 
 ```mmd
-block-beta
+block
   columns 3
   a b c
   d e f
@@ -220,7 +220,7 @@ columns 3 a b c
 ([rows/columns-then-row-split-output.mmd](../tests/fixtures/block/rows/columns-then-row-split-output.mmd)):
 
 ```mmd
-block-beta
+block
   columns 3
   a b c
 ```
@@ -237,7 +237,7 @@ columns 3 a %%x b
 ([rows/percent-id-keeps-columns-with-it-output.mmd](../tests/fixtures/block/rows/percent-id-keeps-columns-with-it-output.mmd)):
 
 ```mmd
-block-beta
+block
   columns 3 a %%x b
 ```
 
@@ -270,7 +270,7 @@ b
 ([blank-lines/runs-become-one-output.mmd](../tests/fixtures/block/blank-lines/runs-become-one-output.mmd)):
 
 ```mmd
-block-beta
+block
   a
 
   b
@@ -281,7 +281,7 @@ block-beta
 ヘッダー `block-beta` と `block` は書かれたままに印字します。
 mermaid.js はどちらも同じ図種として読むので、綴りは書き手のものです。
 前の空白は落とし、同じ行の後ろの文は自分の行に移します（[行](#行)を参照）。
-[fixture: header/block-beta-kept] [fixture: header/block-kept]
+[fixture: header/block-beta-one-form] [fixture: header/block-kept]
 [fixture: header/statement-after-the-header-on-a-line-of-its-own]
 [fixture: header/columns-after-the-header-on-a-line-of-its-own]
 [fixture: header/leading-whitespace-dropped]
@@ -298,7 +298,7 @@ c
 ([header/statement-after-the-header-on-a-line-of-its-own-output.mmd](../tests/fixtures/block/header/statement-after-the-header-on-a-line-of-its-own-output.mmd)):
 
 ```mmd
-block-beta
+block
   a b
   c
 ```
@@ -336,7 +336,7 @@ columns
 ([columns-and-space/line-break-after-columns-output.mmd](../tests/fixtures/block/columns-and-space/line-break-after-columns-output.mmd)):
 
 ```mmd
-block-beta
+block
   columns 3
 ```
 
@@ -355,7 +355,7 @@ d
 ([columns-and-space/last-columns-kept-where-written-output.mmd](../tests/fixtures/block/columns-and-space/last-columns-kept-where-written-output.mmd)):
 
 ```mmd
-block-beta
+block
   columns 2
   a b c
   columns 3
@@ -438,7 +438,7 @@ D {"d"}
 ([shapes/shape-touches-the-id-output.mmd](../tests/fixtures/block/shapes/shape-touches-the-id-output.mmd)):
 
 ```mmd
-block-beta
+block
   A("x")
   B[["y"]]
   D{"d"}
@@ -460,7 +460,7 @@ E<["e"]>(rightdown)
 ([shapes/block-arrow-directions-as-written-output.mmd](../tests/fixtures/block/shapes/block-arrow-directions-as-written-output.mmd)):
 
 ```mmd
-block-beta
+block
   A<["a"]>(right, down)
   B<["b"]>(right down)
   C<["c"]>( up)
@@ -482,7 +482,7 @@ B["a
 ([shapes/label-runs-collapsed-output.mmd](../tests/fixtures/block/shapes/label-runs-collapsed-output.mmd)):
 
 ```mmd
-block-beta
+block
   A[" two spaces "]
   B["a
    b"]
@@ -527,7 +527,7 @@ C  --  "x"  -->  D
 ([edges/spaces-around-a-label-output.mmd](../tests/fixtures/block/edges/spaces-around-a-label-output.mmd)):
 
 ```mmd
-block-beta
+block
   A -- "x" --> B
   C -- "x" --> D
 ```
@@ -544,7 +544,7 @@ A-->B-->C
 ([edges/chain-on-one-line-output.mmd](../tests/fixtures/block/edges/chain-on-one-line-output.mmd)):
 
 ```mmd
-block-beta
+block
   A --> B --> C
 ```
 
@@ -647,7 +647,7 @@ classDef   c1    color:#fff , fill:#000
 ([styles/class-definition-spaces-output.mmd](../tests/fixtures/block/styles/class-definition-spaces-output.mmd)):
 
 ```mmd
-block-beta
+block
   A
   classDef c1 color: #fff, fill: #000
 ```
@@ -665,7 +665,7 @@ style  A   fill:#f00 , stroke:#333
 ([styles/style-spaces-output.mmd](../tests/fixtures/block/styles/style-spaces-output.mmd)):
 
 ```mmd
-block-beta
+block
   A
   style A fill: #f00, stroke: #333
 ```
@@ -685,7 +685,7 @@ class   A, B   c1
 ([styles/class-ids-as-written-output.mmd](../tests/fixtures/block/styles/class-ids-as-written-output.mmd)):
 
 ```mmd
-block-beta
+block
   A
   B
   class A,B c1
@@ -842,7 +842,7 @@ a b
 ([comments/comment-line-at-the-level-of-the-next-statement-output.mmd](../tests/fixtures/block/comments/comment-line-at-the-level-of-the-next-statement-output.mmd)):
 
 ```mmd
-block-beta
+block
   %% a
   columns 2
   %% b
@@ -868,7 +868,7 @@ a
 %% a
 
 %% b
-block-beta
+block
   a
 ```
 
@@ -917,7 +917,7 @@ a %%{init: {}}%% b
 ([directives/directive-between-statements-of-a-row-output.mmd](../tests/fixtures/block/directives/directive-between-statements-of-a-row-output.mmd)):
 
 ```mmd
-block-beta
+block
   a %%{init: {}}%%b
 ```
 
@@ -936,7 +936,7 @@ a b
 ([directives/directive-line-at-the-level-of-the-next-statement-output.mmd](../tests/fixtures/block/directives/directive-line-at-the-level-of-the-next-statement-output.mmd)):
 
 ```mmd
-block-beta
+block
   %%{init: {}}%%
   columns 2
   %%{init: {}}%%
@@ -982,7 +982,7 @@ accDescr {   } a
 ([empty-description-blocks/whitespace-removed-output.mmd](../tests/fixtures/block/empty-description-blocks/whitespace-removed-output.mmd)):
 
 ```mmd
-block-beta
+block
   accDescr {}
   a
 ```
@@ -999,7 +999,7 @@ a accDescr {} b
 ([empty-description-blocks/between-two-nodes-output.mmd](../tests/fixtures/block/empty-description-blocks/between-two-nodes-output.mmd)):
 
 ```mmd
-block-beta
+block
   a
   accDescr {}
   b
@@ -1033,7 +1033,7 @@ a
 title: T
 config: { a: 1 }
 ---
-block-beta
+block
   a
 ```
 

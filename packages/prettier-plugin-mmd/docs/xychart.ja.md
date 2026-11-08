@@ -228,7 +228,7 @@ mermaid.js はどちらも同じ図種として読むので、
 gap にコメント行か指令があるヘッダーは、その改行を保ち、
 続きの列をヘッダーより 1 段深くそろえます（[複数行の文](#複数行の文)を参照）。
 [fixture: header-and-orientation/plain-header]
-[fixture: header-and-orientation/beta-header-kept]
+[fixture: header-and-orientation/beta-header-one-form]
 [fixture: header-and-orientation/header-only]
 [fixture: header-and-orientation/vertical-kept]
 [fixture: header-and-orientation/second-header-on-its-own-line]
@@ -256,7 +256,7 @@ mermaid.js は向きを、あらゆる種類の空白の後でも、空白と改
 [fixture: header-and-orientation/orientation-on-the-next-line-joined]
 [fixture: header-and-orientation/orientation-on-the-next-line-after-a-tab]
 [fixture: header-and-orientation/orientation-case-kept]
-[fixture: header-and-orientation/orientation-upper-case-kept]
+[fixture: header-and-orientation/orientation-upper-case-one-form]
 [fixture: header-and-orientation/orientation-and-comment]
 
 入力
@@ -514,11 +514,11 @@ xychart
 数だけを正規化すると、同じ数字が 1 つのチャートに 2 通りに綴られます。
 そのため、数は書き手のテキストとして残します。
 sankey の値の扱いと同じです（[値](./sankey.ja.md#値)を参照）。
-[fixture: numbers/range-numbers-as-written] [fixture: numbers/values-as-written]
+[fixture: numbers/range-numbers-one-form] [fixture: numbers/values-one-form]
 [fixture: numbers/categories-are-texts] [fixture: numbers/titles-are-texts]
 
 入力
-([numbers/values-as-written-input.mmd](../tests/fixtures/xychart/numbers/values-as-written-input.mmd)):
+([numbers/values-one-form-input.mmd](../tests/fixtures/xychart/numbers/values-one-form-input.mmd)):
 
 ```mmd
 xychart
@@ -526,11 +526,11 @@ line [.5, 007, -0, 1.50, +3]
 ```
 
 出力
-([numbers/values-as-written-output.mmd](../tests/fixtures/xychart/numbers/values-as-written-output.mmd)):
+([numbers/values-one-form-output.mmd](../tests/fixtures/xychart/numbers/values-one-form-output.mmd)):
 
 ```mmd
 xychart
-  line [.5, 007, -0, 1.50, +3]
+  line [0.5, 007, -0, 1.5, 3]
 ```
 
 ### 引用符
@@ -888,12 +888,12 @@ mermaid.js はどれも大文字小文字を問わずに読み（`Title`、`LINE
 `ACCTITLE:` も文を始めます）、Db は同じです。
 そのため、大文字小文字は書き手のもので、強制するものはありません。
 プロットの種類（`line` か `bar`）は、書かれた大文字小文字によらず、
-Db では小文字です。 [fixture: keyword-case/statement-keywords-kept]
+Db では小文字です。 [fixture: keyword-case/statement-keywords-one-form]
 [fixture: keyword-case/accessibility-keywords-kept]
-[fixture: keyword-case/header-spelling-kept]
+[fixture: keyword-case/header-spelling-one-form]
 
 入力
-([keyword-case/statement-keywords-kept-input.mmd](../tests/fixtures/xychart/keyword-case/statement-keywords-kept-input.mmd)):
+([keyword-case/statement-keywords-one-form-input.mmd](../tests/fixtures/xychart/keyword-case/statement-keywords-one-form-input.mmd)):
 
 ```mmd
 xychart
@@ -905,15 +905,15 @@ Bar [2]
 ```
 
 出力
-([keyword-case/statement-keywords-kept-output.mmd](../tests/fixtures/xychart/keyword-case/statement-keywords-kept-output.mmd)):
+([keyword-case/statement-keywords-one-form-output.mmd](../tests/fixtures/xychart/keyword-case/statement-keywords-one-form-output.mmd)):
 
 ```mmd
 xychart
-  Title T
-  X-AXIS [a]
-  Y-Axis 0 --> 1
-  LINE [1]
-  Bar [2]
+  title T
+  x-axis [a]
+  y-axis 0 --> 1
+  line [1]
+  bar [2]
 ```
 
 ### コメント

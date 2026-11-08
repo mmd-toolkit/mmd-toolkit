@@ -422,7 +422,7 @@ Output
 ```mmd
 venn-beta
 set A:+02.50
-set B:-.5
+set B:-0.5
 union A, B:007
   text 007
 ```
@@ -807,7 +807,7 @@ venn/db-text-three-definitions] [corpus fixture: venn/db-three-definitions]
 venn/lex-keyword-set-upper] [fixture:
 venn/keyword-case-and-order/declarations-order-keep-control] [fixture:
 venn/keyword-case-and-order/declarations-order-keep] [fixture:
-venn/keyword-case-and-order/keyword-case-kept] [fixture:
+venn/keyword-case-and-order/keyword-case-one-form] [fixture:
 venn/keyword-case-and-order/keyword-lower-equal]
 
 Input (escaped):
@@ -817,14 +817,14 @@ Input (escaped):
 ```
 
 Output
-([keyword-case-and-order/keyword-case-kept-output.mmd](../tests/fixtures/venn/keyword-case-and-order/keyword-case-kept-output.mmd)):
+([keyword-case-and-order/keyword-case-one-form-output.mmd](../tests/fixtures/venn/keyword-case-and-order/keyword-case-one-form-output.mmd)):
 
 ```mmd
 venn-beta
-SET A
-  TeXt item
-STYLE A fill:RED
-Title T
+set A
+  text item
+style A fill:RED
+title T
 ```
 
 ### Line terminators

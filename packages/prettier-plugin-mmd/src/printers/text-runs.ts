@@ -13,6 +13,7 @@ import type { Atom } from "./atoms.ts"
 import type { TextEdit } from "./layout.ts"
 import type { Source } from "./source.ts"
 import { findCoveringRange, findTriviaBetween, isSpaceOrTab } from "./source.ts"
+import { writtenWithRespellings } from "./spelling.ts"
 import {
   blankTextSlots,
   c4ArgumentFields,
@@ -67,7 +68,7 @@ export function collapsedRunsAtom(
   atom: Atom,
   options: { readonly printsBlankAsOne?: boolean } = {},
 ): Atom {
-  const text = source.text.slice(atom.start, atom.end)
+  const text = writtenWithRespellings(source, atom.start, atom.end)
   if (collapseRuns(text) === " ") {
     return options.printsBlankAsOne === true &&
       text !== " " &&

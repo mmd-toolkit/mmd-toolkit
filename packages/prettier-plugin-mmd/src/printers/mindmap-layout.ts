@@ -20,6 +20,7 @@ import {
 } from "./padded-text.ts"
 import type { Source } from "./source.ts"
 import { isWhitespace } from "./source.ts"
+import { printedStretch } from "./spelling.ts"
 
 /**
  * The node types of a mindmap whose text is a value, printed as written: the
@@ -133,8 +134,14 @@ function printMindmapText(
   end: number,
 ): string | undefined {
   if (!isPlainLine(source, line.range[0], end)) return undefined
-  if (line.type === "MindmapIconStatement")
-    return printPaddedLiteral(source, line.range, line.icon.range)
+  if (line.type === "MindmapIconStatement") {
+    return printedStretch(
+      source,
+      line.range[0],
+      line.range[1],
+      printPaddedLiteral(source, line.range, line.icon.range),
+    )
+  }
   if (line.type === "MindmapClassStatement")
     return printPaddedLiteral(source, line.range, line.cssClass.range)
   const { id, shape } = line

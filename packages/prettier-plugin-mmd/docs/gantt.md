@@ -596,7 +596,7 @@ gantt
 A `weekday` or `weekend` statement stands as the keyword, one space, and the
 day, however much whitespace and how many line breaks were written between them.
 The day keeps the case in which it is written; the Db lowers it. [fixture:
-weekday-and-weekend/one-space] [fixture: weekday-and-weekend/day-case-kept]
+weekday-and-weekend/one-space] [fixture: weekday-and-weekend/day-case-one-form]
 [fixture: weekday-and-weekend/day-on-next-line] The whitespace at the end of the
 line is dropped, after `inclusiveEndDates` too. [fixture:
 weekday-and-weekend/trailing-whitespace-dropped] A directive between the keyword
@@ -604,7 +604,7 @@ and the day stays where it is. [fixture:
 weekday-and-weekend/directive-between-keyword-and-day]
 
 Input
-([weekday-and-weekend/day-case-kept-input.mmd](../tests/fixtures/gantt/weekday-and-weekend/day-case-kept-input.mmd)):
+([weekday-and-weekend/day-case-one-form-input.mmd](../tests/fixtures/gantt/weekday-and-weekend/day-case-one-form-input.mmd)):
 
 ```mmd
 gantt
@@ -614,13 +614,13 @@ WEEKDAY Tuesday
 ```
 
 Output
-([weekday-and-weekend/day-case-kept-output.mmd](../tests/fixtures/gantt/weekday-and-weekend/day-case-kept-output.mmd)):
+([weekday-and-weekend/day-case-one-form-output.mmd](../tests/fixtures/gantt/weekday-and-weekend/day-case-one-form-output.mmd)):
 
 ```mmd
 gantt
-  weekday MONDAY
-  weekend Friday
-  WEEKDAY Tuesday
+  weekday monday
+  weekend friday
+  weekday Tuesday
 ```
 
 Input
@@ -648,14 +648,14 @@ gantt
 
 Keywords keep the case in which they are written. mermaid.js reads them in any
 case and the Db is the same, so nothing forces the case; it is the author's, and
-the printer does not rewrite it. [fixture: keyword-case/keywords-kept] [fixture:
+the printer does not rewrite it. [fixture: keyword-case/keywords-one-form] [fixture:
 keyword-case/click-keywords-kept] The header `gantt` is detected in lower case
 only, and the tags of a task are read in exactly the case of `active`, `done`,
 `crit`, `milestone`, and `vert`, so `Done` is no tag and is not changed.
 [fixture: keyword-case/tags-case-kept]
 
 Input
-([keyword-case/keywords-kept-input.mmd](../tests/fixtures/gantt/keyword-case/keywords-kept-input.mmd)):
+([keyword-case/keywords-one-form-input.mmd](../tests/fixtures/gantt/keyword-case/keywords-one-form-input.mmd)):
 
 ```mmd
 gantt
@@ -676,21 +676,21 @@ ACCDESCR { d }
 ```
 
 Output
-([keyword-case/keywords-kept-output.mmd](../tests/fixtures/gantt/keyword-case/keywords-kept-output.mmd)):
+([keyword-case/keywords-one-form-output.mmd](../tests/fixtures/gantt/keyword-case/keywords-one-form-output.mmd)):
 
 ```mmd
 gantt
-  DATEFORMAT YYYY
-  AxisFormat %m
-  TICKINTERVAL 1week
+  dateFormat YYYY
+  axisFormat %m
+  tickInterval 1week
   TodayMarker off
-  TITLE T
-  Section S
-    EXCLUDES weekends
+  title T
+  section S
+    excludes weekends
     Includes monday
     INCLUSIVEENDDATES
-    WEEKDAY Monday
-    WEEKEND FRIDAY
+    weekday monday
+    weekend friday
     ACCTITLE: T
     AccDescr: d
     ACCDESCR { d }

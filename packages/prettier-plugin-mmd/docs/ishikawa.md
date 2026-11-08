@@ -37,7 +37,7 @@ Output
 ([header/header-beta-fallback-output.mmd](../tests/fixtures/ishikawa/header/header-beta-fallback-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   -betaX
     A
 ```
@@ -76,7 +76,7 @@ Output
 ([indentation/indent-clamped-output.mmd](../tests/fixtures/ishikawa/indentation/indent-clamped-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   R
     A
     B
@@ -109,7 +109,7 @@ Output
 ([root-on-header-line/header-root-output.mmd](../tests/fixtures/ishikawa/root-on-header-line/header-root-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   R
     A
       B
@@ -140,7 +140,7 @@ Output
 ([root-indentation/root-alone-output.mmd](../tests/fixtures/ishikawa/root-indentation/root-alone-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   R
 ```
 
@@ -198,7 +198,7 @@ Output
 ([blank-lines/blank-around-trivia-output.mmd](../tests/fixtures/ishikawa/blank-lines/blank-around-trivia-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   R
 
     %% c
@@ -241,7 +241,7 @@ Output
 ([comments/comment-detach-unsafe-output.mmd](../tests/fixtures/ishikawa/comments/comment-detach-unsafe-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   R %% literal
 ```
 
@@ -300,7 +300,7 @@ Output
 ([standalone-directives/directive-before-header-glued-output.mmd](../tests/fixtures/ishikawa/standalone-directives/directive-before-header-glued-output.mmd)):
 
 ```mmd
-%%{init: {}}%%ishikawa
+%%{init: {}}%%ishikawa-beta
   R
 ```
 
@@ -314,7 +314,7 @@ Output
 ([standalone-directives/header-spaced-directive-output.mmd](../tests/fixtures/ishikawa/standalone-directives/header-spaced-directive-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
  %%{init: {}}%% R
     A
 ```
@@ -329,7 +329,7 @@ Output
 ([standalone-directives/header-spaced-multiline-directive-output.mmd](../tests/fixtures/ishikawa/standalone-directives/header-spaced-multiline-directive-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
  %%{init: {
      }}%% R
     A
@@ -367,7 +367,7 @@ Output
 ([inline-directives/directive-gap-trim-unsafe-output.mmd](../tests/fixtures/ishikawa/inline-directives/directive-gap-trim-unsafe-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   R  %%{init: {}}%%   X
 ```
 
@@ -448,7 +448,7 @@ Output
 ([node-text/values-html-entities-output.mmd](../tests/fixtures/ishikawa/node-text/values-html-entities-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   R <a x="y">#amp;</a>
     A#35;#x41;
 ```
@@ -463,7 +463,7 @@ Output
 ([node-text/div-c4-output.mmd](../tests/fixtures/ishikawa/node-text/div-c4-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   R
     C4Container
 ```
@@ -504,7 +504,7 @@ Output
 ([line-rule-and-kept-lines/line-rule-colon-unsafe-output.mmd](../tests/fixtures/ishikawa/line-rule-and-kept-lines/line-rule-colon-unsafe-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   R style:#abc;
 ```
 
@@ -536,7 +536,7 @@ Output
 ([physical-lines/long-no-wrap-output.mmd](../tests/fixtures/ishikawa/physical-lines/long-no-wrap-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   R
     A deliberately long cause remains one literal line even when printWidth is twenty
 ```
@@ -697,7 +697,7 @@ Output
 ([whitespace-characters/tab-visual-expansion-unsafe-output.mmd](../tests/fixtures/ishikawa/whitespace-characters/tab-visual-expansion-unsafe-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   R
     A
     B
@@ -755,7 +755,7 @@ Output
 --- !!map
 title: T
 ---
-ishikawa
+ishikawa-beta
   R
 ```
 
@@ -783,7 +783,7 @@ Output
 ([final-newline/final-comment-output.mmd](../tests/fixtures/ishikawa/final-newline/final-comment-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   R
   %% c
 ```
@@ -817,7 +817,7 @@ Output
 ([markdown-fences/markdown-top-payload-output.mmd](../tests/fixtures/ishikawa/markdown-fences/markdown-top-payload-output.mmd)):
 
 ```mmd
-ishikawa
+ishikawa-beta
   R
     A
       B

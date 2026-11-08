@@ -67,7 +67,7 @@ gitGraph
   commit
   branch b
   commit
-  switch main
+  checkout main
 ```
 
 ### Statements one per line
@@ -88,7 +88,7 @@ gitgraph に区切りの semicolon はありません。
 ([statements-one-per-line/eol-header-inline-output.mmd](../tests/fixtures/gitgraph/statements-one-per-line/eol-header-inline-output.mmd)):
 
 ```mmd
-gitGraph:
+gitGraph
   commit id: "a"
 ```
 
@@ -241,18 +241,18 @@ single・double・反対側の引用符と escape を変えません。
 再エンコードには escape と前処理の新たな判断が必要で、
 作者の書き方も失われるためです。
 
-固定例: [fixture: gitgraph/quotes/quotes-kept]
+固定例: [fixture: gitgraph/quotes/quotes-one-form]
 [corpus fixture: gitgraph/lex-string-escapes]
 [fixture: gitgraph/quotes/single-quote-option]
 
 入力（escape 表記）: `"gitGraph\ncommit id:'A' msg:\"a'b\" tag:'a\"b'\n"`
 
 出力
-([quotes/quotes-kept-output.mmd](../tests/fixtures/gitgraph/quotes/quotes-kept-output.mmd)):
+([quotes/quotes-one-form-output.mmd](../tests/fixtures/gitgraph/quotes/quotes-one-form-output.mmd)):
 
 ```mmd
 gitGraph
-  commit id: 'A' msg: "a'b" tag: 'a"b'
+  commit id: "A" msg: "a'b" tag: 'a"b'
 ```
 
 ### References
@@ -325,7 +325,7 @@ order を使って branch を並べ替えません。
 ([order-numbers/precision-digits-output.mmd](../tests/fixtures/gitgraph/order-numbers/precision-digits-output.mmd)):
 
 ```mmd
-gitGraph:
+gitGraph
   branch release order: 9007199254740993
 ```
 
@@ -355,17 +355,17 @@ gitGraph
 履歴への効果が同じでも、作者の同義語を置換する必要はありません。
 未知の branch はどちらの語でも拒否します。
 
-固定例: [fixture: gitgraph/checkout-aliases/alias-kept]
+固定例: [fixture: gitgraph/checkout-aliases/alias-one-form]
 
 入力（escape 表記）: `"gitGraph\nbranch b\nswitch main\ncheckout b\n"`
 
 出力
-([checkout-aliases/alias-kept-output.mmd](../tests/fixtures/gitgraph/checkout-aliases/alias-kept-output.mmd)):
+([checkout-aliases/alias-one-form-output.mmd](../tests/fixtures/gitgraph/checkout-aliases/alias-one-form-output.mmd)):
 
 ```mmd
 gitGraph
   branch b
-  switch main
+  checkout main
   checkout b
 ```
 
@@ -683,7 +683,7 @@ native comment に fallback します。
 ```mmd
 gitGraph
   commit id:%%{!}%%
-'root'
+"root"
 ```
 
 ### Semicolons

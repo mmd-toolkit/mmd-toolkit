@@ -63,7 +63,7 @@ gitGraph
   commit
   branch b
   commit
-  switch main
+  checkout main
 ```
 
 ### Statements one per line
@@ -84,7 +84,7 @@ Output
 ([statements-one-per-line/eol-header-inline-output.mmd](../tests/fixtures/gitgraph/statements-one-per-line/eol-header-inline-output.mmd)):
 
 ```mmd
-gitGraph:
+gitGraph
   commit id: "a"
 ```
 
@@ -233,17 +233,17 @@ single/double/opposite quotes and escapes unchanged. `singleQuote` does not
 rewrite it. Re-encoding would require new escape and preprocessing decisions and
 would discard the authored form.
 
-Fixed cases: [fixture: gitgraph/quotes/quotes-kept] [corpus fixture:
+Fixed cases: [fixture: gitgraph/quotes/quotes-one-form] [corpus fixture:
 gitgraph/lex-string-escapes] [fixture: gitgraph/quotes/single-quote-option]
 
 Input (escaped): `"gitGraph\ncommit id:'A' msg:\"a'b\" tag:'a\"b'\n"`.
 
 Output
-([quotes/quotes-kept-output.mmd](../tests/fixtures/gitgraph/quotes/quotes-kept-output.mmd)):
+([quotes/quotes-one-form-output.mmd](../tests/fixtures/gitgraph/quotes/quotes-one-form-output.mmd)):
 
 ```mmd
 gitGraph
-  commit id: 'A' msg: "a'b" tag: 'a"b'
+  commit id: "A" msg: "a'b" tag: 'a"b'
 ```
 
 ### References
@@ -313,7 +313,7 @@ Output
 ([order-numbers/precision-digits-output.mmd](../tests/fixtures/gitgraph/order-numbers/precision-digits-output.mmd)):
 
 ```mmd
-gitGraph:
+gitGraph
   branch release order: 9007199254740993
 ```
 
@@ -345,17 +345,17 @@ later commits. They have the same history effect, but replacing an authored
 synonym adds no formatting benefit. Unknown branches remain failures for either
 word.
 
-Fixed cases: [fixture: gitgraph/checkout-aliases/alias-kept]
+Fixed cases: [fixture: gitgraph/checkout-aliases/alias-one-form]
 
 Input (escaped): `"gitGraph\nbranch b\nswitch main\ncheckout b\n"`.
 
 Output
-([checkout-aliases/alias-kept-output.mmd](../tests/fixtures/gitgraph/checkout-aliases/alias-kept-output.mmd)):
+([checkout-aliases/alias-one-form-output.mmd](../tests/fixtures/gitgraph/checkout-aliases/alias-one-form-output.mmd)):
 
 ```mmd
 gitGraph
   branch b
-  switch main
+  checkout main
   checkout b
 ```
 
@@ -660,7 +660,7 @@ Output
 ```mmd
 gitGraph
   commit id:%%{!}%%
-'root'
+"root"
 ```
 
 ### Semicolons

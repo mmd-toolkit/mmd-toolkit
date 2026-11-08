@@ -2586,9 +2586,9 @@ option と文の全出現の原順序を保持します。
 cherry-pick の空 tag は既定 tag を抑止します。
 summary に message がなくても削除はしません。
 [fixture: gitgraph/header/header-tb]
-[fixture: gitgraph/checkout-aliases/alias-kept]
+[fixture: gitgraph/checkout-aliases/alias-one-form]
 [fixture: gitgraph/messages/message-forms]
-[fixture: gitgraph/quotes/quotes-kept]
+[fixture: gitgraph/quotes/quotes-one-form]
 [fixture: gitgraph/references/reference-empty]
 [corpus fixture: gitgraph/number-precision]
 [fixture: gitgraph/authored-values/inner-padding-change]

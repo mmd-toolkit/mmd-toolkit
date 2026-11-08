@@ -9,6 +9,7 @@ import type {
   Token,
 } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
+import { printedToken } from "./spelling.ts"
 import type { AtomLayout } from "./atoms.ts"
 import { printAtoms } from "./atoms.ts"
 import type { BlockRules } from "./blocks.ts"
@@ -199,7 +200,13 @@ function printSubgraph(
     block,
     false,
   )
-  return printClosedBlock(header, block, closing.value, depth, options)
+  return printClosedBlock(
+    header,
+    block,
+    printedToken(source, closing),
+    depth,
+    options,
+  )
 }
 
 /**

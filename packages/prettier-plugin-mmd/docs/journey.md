@@ -468,11 +468,11 @@ journey
 
 Keywords keep the case in which they are written. mermaid.js reads them in any
 case and the Db is the same, so nothing forces the case; it is the author's, and
-the printer does not rewrite it. [fixture: keyword-case/keywords-kept] The
+the printer does not rewrite it. [fixture: keyword-case/keywords-one-form] The
 header `journey` is detected in lower case only.
 
 Input
-([keyword-case/keywords-kept-input.mmd](../tests/fixtures/journey/keyword-case/keywords-kept-input.mmd)):
+([keyword-case/keywords-one-form-input.mmd](../tests/fixtures/journey/keyword-case/keywords-one-form-input.mmd)):
 
 ```mmd
 journey
@@ -484,12 +484,12 @@ ACCDESCR { d }
 ```
 
 Output
-([keyword-case/keywords-kept-output.mmd](../tests/fixtures/journey/keyword-case/keywords-kept-output.mmd)):
+([keyword-case/keywords-one-form-output.mmd](../tests/fixtures/journey/keyword-case/keywords-one-form-output.mmd)):
 
 ```mmd
 journey
-  TITLE T
-  Section S
+  title T
+  section S
     ACCTITLE: T
     AccDescr: d
     ACCDESCR { d }

@@ -195,7 +195,7 @@ Output
 ```mmd
 packet
   0-2: "Range"
-  3: 'Single'
+  3: "Single"
   +2: "Relative"
 ```
 
@@ -206,7 +206,7 @@ quotes, empty labels and escapes. `singleQuote` does not rewrite labels.
 Re-encoding would lose authored spelling and require new escape/preprocessing
 choices. Quote-looking common values remain literals, not strings to requote.
 
-[fixture: packet/quotes/quotes-authored]
+[fixture: packet/quotes/quotes-one-form]
 
 [fixture: packet/quotes/quotes-single-option]
 
@@ -214,13 +214,13 @@ Input (escaped):
 `"packet\n0:'single \"quote\"'\n1:\"double 'quote'\"\n2:''\n3:\"\"\n"`.
 
 Output
-([quotes/quotes-authored-output.mmd](../tests/fixtures/packet/quotes/quotes-authored-output.mmd)):
+([quotes/quotes-one-form-output.mmd](../tests/fixtures/packet/quotes/quotes-one-form-output.mmd)):
 
 ```mmd
 packet
   0: 'single "quote"'
   1: "double 'quote'"
-  2: ''
+  2: ""
   3: ""
 ```
 

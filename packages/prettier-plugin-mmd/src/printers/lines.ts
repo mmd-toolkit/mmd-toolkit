@@ -6,6 +6,7 @@ import type { ItemRun } from "./gap.ts"
 import { walk } from "./layout.ts"
 import type { Source } from "./source.ts"
 import { isWhitespace } from "./source.ts"
+import { writtenWithRespellings } from "./spelling.ts"
 
 const { align, hardline, literalline } = builders
 const { mapDoc, replaceEndOfLine } = utils
@@ -181,15 +182,16 @@ export function significantIndentationOf(
 }
 
 /**
- * Prints the source between two offsets as written. Its inner lines keep
- * their source columns.
+ * Prints the source between two offsets as written, with the spellings that
+ * are printed in one form replaced (docs/compatibility.md, Spellings that are
+ * drawn the same). Its inner lines keep their source columns.
  */
 export function printAsWritten(
   source: Source,
   start: number,
   end: number,
 ): Doc {
-  return replaceEndOfLine(source.text.slice(start, end))
+  return replaceEndOfLine(writtenWithRespellings(source, start, end))
 }
 
 /**

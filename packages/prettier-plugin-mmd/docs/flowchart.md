@@ -68,7 +68,7 @@ Output
 ([indentation/nested-subgraphs-output.mmd](../tests/fixtures/flowchart/indentation/nested-subgraphs-output.mmd)):
 
 ```mmd
-flowchart TB
+flowchart TD
   subgraph outer
     subgraph inner
       A --> B
@@ -2037,7 +2037,7 @@ the examples are written as strings, in which `\n` is a line break:
 ### Direction
 
 The direction is kept as written: `TD` is not changed to `TB`, in the header or
-in a `direction` statement. [fixture: direction/header-td-kept] [fixture:
+in a `direction` statement. [fixture: direction/header-td-one-form] [fixture:
 direction/statement-td-kept-with-other-header] [fixture:
 direction/statement-values-kept] mermaid.js keeps the `TD` of a `direction`
 statement in a subgraph as written, so changing it there would change the
@@ -2433,7 +2433,7 @@ diagram or the input would be rejected:
   [fixture: arrow-spacing/ampersand-spacing-kept]
 - the length of an arrow (`-->` and `--->`), and the header keyword (`graph` or
   `flowchart`); [fixture: arrow-spacing/arrow-length-kept] [fixture:
-  direction/header-keyword-kept]
+  direction/header-keyword-one-form]
 - the content of directives and, apart from the uniform indentation and the ends
   of a block on one line in [Data blocks](#data-blocks), of `@{ ... }` blocks,
   which the parser does not read; [fixture:

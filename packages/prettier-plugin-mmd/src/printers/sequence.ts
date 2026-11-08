@@ -6,6 +6,7 @@ import type {
   Token,
 } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
+import { printedToken } from "./spelling.ts"
 import { printAtoms } from "./atoms.ts"
 import { formatDataBlocks } from "./data-blocks.ts"
 import type { BlockRules, PrintedBlock } from "./blocks.ts"
@@ -174,7 +175,7 @@ function printBodyBlock(
   return printClosedBlock(
     opened.header,
     opened.block,
-    endKeyword.value,
+    printedToken(source, endKeyword),
     depth,
     options,
   )
@@ -212,7 +213,7 @@ function printSectionBlock(
       depth,
     )
   }, "sections")
-  let closing: Doc = endKeyword.value
+  let closing: Doc = printedToken(source, endKeyword)
   for (const { header, block } of opened.toReversed()) {
     closing = printClosedBlock(header, block, closing, depth, options)
   }

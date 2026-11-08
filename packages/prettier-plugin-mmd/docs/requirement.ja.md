@@ -203,8 +203,8 @@ mermaid.js の文書がフィールドをそう書き、journey も値の前に�
 書かれた大文字小文字のまま残します。
 mermaid.js はどの大文字小文字でも読み、Db は同じです。
 大文字小文字は強制されないので、作者が選んだものとして、書き換えません。
-[fixture: fields/field-keywords-case-kept]
-[fixture: fields/keyword-values-case-kept]
+[fixture: fields/field-keywords-case-one-form]
+[fixture: fields/keyword-values-case-one-form]
 複数行に書かれたフィールドは、
 字句解析器が改行を空白として読む所で 1 行にします。
 空白の後の改行がそうです（[複数行の文](#複数行の文)を参照）。
@@ -236,11 +236,11 @@ requirementDiagram
     id: 1
     text: the test text.
     risk: high
-    verifyMethod: inspection
+    verifymethod: inspection
   }
   element e {
     type: t
-    docref: d
+    docRef: d
   }
 ```
 
@@ -270,7 +270,7 @@ requirementDiagram
   }
   element e {
     type: "a b"
-    docref: "http://x.test/a-b"
+    docRef: "http://x.test/a-b"
   }
 ```
 
@@ -349,7 +349,7 @@ ER 図の関係文も単位の間は空白 1 つです。
 矢印の向きは書かれたまま残します。
 `a - copies -> b` と `b <- copies - a` は書き方が違うからです。
 関係の語の大文字小文字も書かれたままです。
-[fixture: relationship-spacing/relation-case-kept]
+[fixture: relationship-spacing/relation-case-one-form]
 [fixture: relationship-spacing/every-relation]
 引用符のない名前の中の空白は名前の一部です。
 空白の連なりが違うと別の名前になるので、書かれたまま残します。
@@ -502,7 +502,7 @@ Mermaid はスタイルの単位をつなげて読むため、
 [fixture: styles-and-classes/class-lists]
 [fixture: styles-and-classes/styles-as-written]
 [fixture: styles-and-classes/trailing-whitespace-dropped]
-[fixture: styles-and-classes/keyword-case-kept]
+[fixture: styles-and-classes/keyword-case-one-form]
 
 行の規則が無視しないスタイル末尾の `;` は、スタイルの文字です。
 削除すると Db が変わるので残します。
@@ -649,7 +649,7 @@ requirementDiagram
 テキストと `direction` の間は、離れて書かれていれば空白 1 つ、
 `direction` と値の間も空白 1 つにし、値は書かれた大文字小文字のまま残します。
 [fixture: direction/spacing] [fixture: direction/spaces-around]
-[fixture: direction/text-kept] [fixture: direction/case-kept]
+[fixture: direction/text-kept] [fixture: direction/case-one-form]
 次の行に書かれた値は、`direction` の後ろに寄せて 1 行にします。
 [fixture: direction/value-on-next-line-joined]
 ディレクティブやコメント行を含む方向の行は改行を残し、
@@ -681,7 +681,7 @@ requirementDiagram
 ```
 
 入力
-([direction/case-kept-input.mmd](../tests/fixtures/requirement/direction/case-kept-input.mmd)):
+([direction/case-one-form-input.mmd](../tests/fixtures/requirement/direction/case-one-form-input.mmd)):
 
 ```mmd
 requirementDiagram
@@ -690,12 +690,12 @@ Direction Tb
 ```
 
 出力
-([direction/case-kept-output.mmd](../tests/fixtures/requirement/direction/case-kept-output.mmd)):
+([direction/case-one-form-output.mmd](../tests/fixtures/requirement/direction/case-one-form-output.mmd)):
 
 ```mmd
 requirementDiagram
-  DIRECTION lr
-  Direction Tb
+  direction LR
+  direction Tb
 ```
 
 ### 1 行に 1 文
@@ -1288,13 +1288,13 @@ requirementDiagram
 キーワードは、書かれた大文字小文字のまま残します。
 mermaid.js はどの大文字小文字でも読み、Db は同じです。
 大文字小文字は強制されないので、作者が選んだものとして、書き換えません。
-[fixture: keyword-case/keywords-kept]
+[fixture: keyword-case/keywords-one-form]
 ヘッダーは、
 小文字の `requirement` で始まるときだけ検出されます（diagrams/requirement.md、
 Detection）。
 
 入力
-([keyword-case/keywords-kept-input.mmd](../tests/fixtures/requirement/keyword-case/keywords-kept-input.mmd)):
+([keyword-case/keywords-one-form-input.mmd](../tests/fixtures/requirement/keyword-case/keywords-one-form-input.mmd)):
 
 ```mmd
 requirementdiagram
@@ -1310,19 +1310,19 @@ STYLE r fill:red
 ```
 
 出力
-([keyword-case/keywords-kept-output.mmd](../tests/fixtures/requirement/keyword-case/keywords-kept-output.mmd)):
+([keyword-case/keywords-one-form-output.mmd](../tests/fixtures/requirement/keyword-case/keywords-one-form-output.mmd)):
 
 ```mmd
 requirementdiagram
-  REQUIREMENT r {
-    ID: 1
-    RISK: HIGH
+  requirement r {
+    id: 1
+    risk: high
   }
-  ELEMENT e {
+  element e {
   }
-  r - SATISFIES -> e
-  DIRECTION lr
-  STYLE r fill: red
+  r - satisfies -> e
+  direction LR
+  style r fill: red
 ```
 
 ### コメント
@@ -1407,7 +1407,7 @@ text: "t"%c
 requirementDiagram
   requirement r {
     risk: low %c
-    verifyMethod: test#c
+    verifymethod: test#c
     id: "1" #c
     text: "t"%c
   }

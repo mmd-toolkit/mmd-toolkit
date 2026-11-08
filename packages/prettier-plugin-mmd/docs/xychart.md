@@ -219,7 +219,7 @@ header with a comment or directive in its gap keeps that line break and aligns
 its continuation one level inside the header (see
 [Multi-line statements](#multi-line-statements)). [fixture:
 header-and-orientation/plain-header] [fixture:
-header-and-orientation/beta-header-kept] [fixture:
+header-and-orientation/beta-header-one-form] [fixture:
 header-and-orientation/header-only] [fixture:
 header-and-orientation/vertical-kept] [fixture:
 header-and-orientation/second-header-on-its-own-line] [fixture:
@@ -247,7 +247,7 @@ header-and-orientation/orientation-after-a-tab] [fixture:
 header-and-orientation/orientation-on-the-next-line-joined] [fixture:
 header-and-orientation/orientation-on-the-next-line-after-a-tab] [fixture:
 header-and-orientation/orientation-case-kept] [fixture:
-header-and-orientation/orientation-upper-case-kept] [fixture:
+header-and-orientation/orientation-upper-case-one-form] [fixture:
 header-and-orientation/orientation-and-comment]
 
 Input
@@ -486,11 +486,11 @@ text (`x-axis [007, .5]` has the categories `007` and `.5`), and changing them
 changes the chart. Normalizing only the numbers would spell the same digits two
 ways in one chart, so the number is the author's text, as the values of a sankey
 diagram are (see [Values](./sankey.md#values)). [fixture:
-numbers/range-numbers-as-written] [fixture: numbers/values-as-written] [fixture:
+numbers/range-numbers-one-form] [fixture: numbers/values-one-form] [fixture:
 numbers/categories-are-texts] [fixture: numbers/titles-are-texts]
 
 Input
-([numbers/values-as-written-input.mmd](../tests/fixtures/xychart/numbers/values-as-written-input.mmd)):
+([numbers/values-one-form-input.mmd](../tests/fixtures/xychart/numbers/values-one-form-input.mmd)):
 
 ```mmd
 xychart
@@ -498,11 +498,11 @@ line [.5, 007, -0, 1.50, +3]
 ```
 
 Output
-([numbers/values-as-written-output.mmd](../tests/fixtures/xychart/numbers/values-as-written-output.mmd)):
+([numbers/values-one-form-output.mmd](../tests/fixtures/xychart/numbers/values-one-form-output.mmd)):
 
 ```mmd
 xychart
-  line [.5, 007, -0, 1.50, +3]
+  line [0.5, 007, -0, 1.5, 3]
 ```
 
 ### Quotes
@@ -844,12 +844,12 @@ The keywords `title`, `x-axis`, `y-axis`, `line`, `bar`, `accTitle`, and
 (`Title`, `LINE`, and `ACCTITLE:` start statements), and the Db is the same, so
 the case is the author's and nothing forces one. The Db holds the kind of a
 plot, `line` or `bar`, in lower case whatever the case written. [fixture:
-keyword-case/statement-keywords-kept] [fixture:
+keyword-case/statement-keywords-one-form] [fixture:
 keyword-case/accessibility-keywords-kept] [fixture:
-keyword-case/header-spelling-kept]
+keyword-case/header-spelling-one-form]
 
 Input
-([keyword-case/statement-keywords-kept-input.mmd](../tests/fixtures/xychart/keyword-case/statement-keywords-kept-input.mmd)):
+([keyword-case/statement-keywords-one-form-input.mmd](../tests/fixtures/xychart/keyword-case/statement-keywords-one-form-input.mmd)):
 
 ```mmd
 xychart
@@ -861,15 +861,15 @@ Bar [2]
 ```
 
 Output
-([keyword-case/statement-keywords-kept-output.mmd](../tests/fixtures/xychart/keyword-case/statement-keywords-kept-output.mmd)):
+([keyword-case/statement-keywords-one-form-output.mmd](../tests/fixtures/xychart/keyword-case/statement-keywords-one-form-output.mmd)):
 
 ```mmd
 xychart
-  Title T
-  X-AXIS [a]
-  Y-Axis 0 --> 1
-  LINE [1]
-  Bar [2]
+  title T
+  x-axis [a]
+  y-axis 0 --> 1
+  line [1]
+  bar [2]
 ```
 
 ### Comments

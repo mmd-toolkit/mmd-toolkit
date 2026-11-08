@@ -488,11 +488,11 @@ journey
 キーワードは書かれた大文字小文字を保ちます。
 mermaid.js はどの大文字小文字でも読み、Db は同じです。
 大文字小文字は強制されないので、作者が選んだものとして、書き換えません。
-[fixture: keyword-case/keywords-kept]
+[fixture: keyword-case/keywords-one-form]
 ヘッダーの `journey` は小文字だけが検出されます。
 
 入力
-([keyword-case/keywords-kept-input.mmd](../tests/fixtures/journey/keyword-case/keywords-kept-input.mmd)):
+([keyword-case/keywords-one-form-input.mmd](../tests/fixtures/journey/keyword-case/keywords-one-form-input.mmd)):
 
 ```mmd
 journey
@@ -504,12 +504,12 @@ ACCDESCR { d }
 ```
 
 出力
-([keyword-case/keywords-kept-output.mmd](../tests/fixtures/journey/keyword-case/keywords-kept-output.mmd)):
+([keyword-case/keywords-one-form-output.mmd](../tests/fixtures/journey/keyword-case/keywords-one-form-output.mmd)):
 
 ```mmd
 journey
-  TITLE T
-  Section S
+  title T
+  section S
     ACCTITLE: T
     AccDescr: d
     ACCDESCR { d }

@@ -448,7 +448,7 @@ mermaid.js は state 図では `,` の前後の空白を何もないものとし
 キーワードは、書かれた大文字小文字のまま残します。
 mermaid.js は大文字小文字にかかわらず読み、`Left Of` のようなノートの位置は、
 書かれたまま図に入るからです。
-[fixture: whitespace-between-tokens/keyword-case-kept]
+[fixture: whitespace-between-tokens/keyword-case-one-form]
 
 `class` 文の id を区切る `,` は、後ろの id に接します。
 `class A, B c` は `class A,B c` になります。
@@ -481,7 +481,7 @@ mermaid.js の文書は、この文の例 2 件を `,` の後ろに空白を置�
 `,` の後ろの U+2028 と U+2029 は、そのまま残します。
 [test: U+2028 after the comma of a state class statement]
 [test: U+2029 after the comma of a state class statement]
-[fixture: whitespace-between-tokens/keyword-case-more-kept]
+[fixture: whitespace-between-tokens/keyword-case-more-one-form]
 
 入力
 ([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/state/whitespace-between-tokens/collapsed-input.mmd)):
@@ -512,7 +512,7 @@ stateDiagram-v2
 ```
 
 入力
-([whitespace-between-tokens/keyword-case-kept-input.mmd](../tests/fixtures/state/whitespace-between-tokens/keyword-case-kept-input.mmd)):
+([whitespace-between-tokens/keyword-case-one-form-input.mmd](../tests/fixtures/state/whitespace-between-tokens/keyword-case-one-form-input.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -524,14 +524,14 @@ HIDE EMPTY DESCRIPTION
 ```
 
 出力
-([whitespace-between-tokens/keyword-case-kept-output.mmd](../tests/fixtures/state/whitespace-between-tokens/keyword-case-kept-output.mmd)):
+([whitespace-between-tokens/keyword-case-one-form-output.mmd](../tests/fixtures/state/whitespace-between-tokens/keyword-case-one-form-output.mmd)):
 
 ```mmd
 stateDiagram-v2
-  STATE A {
+  state A {
     B
   }
-  Note Left Of A : x
+  note Left Of A : x
   HIDE EMPTY DESCRIPTION
 ```
 

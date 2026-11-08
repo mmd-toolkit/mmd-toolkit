@@ -196,7 +196,7 @@ trivia がある隙間は境界を保ちます。
 ```mmd
 packet
   0-2: "Range"
-  3: 'Single'
+  3: "Single"
   +2: "Relative"
 ```
 
@@ -208,7 +208,7 @@ StringLiteral の範囲全体を保ちます。
 再符号化は作者の綴りを失い、escape と前処理の新たな判断を要するためです。
 引用符に見える共通値は、再引用する文字列ではなく literal のままです。
 
-[fixture: packet/quotes/quotes-authored]
+[fixture: packet/quotes/quotes-one-form]
 
 [fixture: packet/quotes/quotes-single-option]
 
@@ -216,13 +216,13 @@ StringLiteral の範囲全体を保ちます。
 `"packet\n0:'single \"quote\"'\n1:\"double 'quote'\"\n2:''\n3:\"\"\n"`
 
 出力
-([quotes/quotes-authored-output.mmd](../tests/fixtures/packet/quotes/quotes-authored-output.mmd)):
+([quotes/quotes-one-form-output.mmd](../tests/fixtures/packet/quotes/quotes-one-form-output.mmd)):
 
 ```mmd
 packet
   0: 'single "quote"'
   1: "double 'quote'"
-  2: ''
+  2: ""
   3: ""
 ```
 

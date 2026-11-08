@@ -418,7 +418,7 @@ flow の優先順位で見えなくても、両 port とセミコロンラベル
 
 ```mmd
 wardley-beta
-  Alpha +'moving'> Beta
+  Alpha +"moving"> Beta
 ```
 
 ### セミコロンのラベル
