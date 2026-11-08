@@ -1,3 +1,7 @@
+---
+since: v0.4.0
+---
+
 # @mmd-toolkit/flowchart-no-spaced-stroke
 
 英語版: [flowchart-no-spaced-stroke.md](./flowchart-no-spaced-stroke.md)
@@ -94,7 +98,7 @@ mermaid.js のプルリクエストには、対応するブラウザーで、
 
 ## バージョン
 
-この規則は、まだリリースされていない。
+この規則は、`@mmd-toolkit/eslint-plugin` v0.4.0 で追加された。
 
 <!-- end auto-generated rule version -->
 

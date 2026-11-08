@@ -1,5 +1,19 @@
 # @mmd-toolkit/spec
 
+## 0.4.0
+
+### Minor Changes
+
+- [#63](https://github.com/mmd-toolkit/mmd-toolkit/pull/63) [`dd2658b`](https://github.com/mmd-toolkit/mmd-toolkit/commit/dd2658b2c36a1406aeb5c49a922f724820ebb151) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Reject whitespace between the `(` of a `block` arrow's directions and a `,`
+  before the first direction, as mermaid.js does: `a<["L"]>( ,x)` is rejected
+  (Block arrows).
+
+### Patch Changes
+
+- [#66](https://github.com/mmd-toolkit/mmd-toolkit/pull/66) [`102b660`](https://github.com/mmd-toolkit/mmd-toolkit/commit/102b660aad8f3b19fef0e2b0022427c121830da9) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Remove the stray spaces after `、` and `。` in the Japanese documents.
+
+- [#64](https://github.com/mmd-toolkit/mmd-toolkit/pull/64) [`b817905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/b8179056e2aebd764c260fbd7fee9a65fe27d00d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Link the Mermaid site from the README.
+
 ## 0.3.1
 
 ### Patch Changes
