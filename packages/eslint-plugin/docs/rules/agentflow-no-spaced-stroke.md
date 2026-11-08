@@ -26,19 +26,22 @@ that colour.
 This rule applies to agentflow diagrams (`agentflow-beta`). It reports a style
 named `stroke` in lower case when whitespace stands between the name and the
 `:`, in a `linkStyle` statement with link numbers, in `linkStyle default`, and
-in a `classDef`, whether or not a link takes it. A `style` statement is not
-reported, because the formatter prints its `stroke :` without the whitespace. A
-name that only ends with `stroke`, such as `text-stroke`, and a name in another
-case, such as `Stroke`, are not reported.
+in a `classDef`, whether or not a link takes it. A `stroke` in a `style`
+statement is not reported: `style` gives a style to a vertex or a subgraph and
+never to a link, so there is no arrowhead for the form to affect, and a browser
+reads `stroke :#f00` there as it reads `stroke:#f00`. A name that only ends with
+`stroke`, such as `text-stroke`, and a name in another case, such as `Stroke`,
+are not reported.
 
 The fix removes the whitespace. It is not offered when a style named `stroke`,
 in any case and with or without whitespace before its `:`, follows the style in
-the styles of a link that the style reaches, because the arrowhead would take
-the colour of this style while the line takes the colour of the later one. The
-styles of a link are those of its classes, in the order they were given, then
-those of `linkStyle default`, then its own. A class is given to a link by a
-`class` statement or a `:::`, as in `e1:::hot`, that comes after the statement
-that writes the link.
+the styles of a link that the style reaches: the line then takes the colour of
+the later style, and the arrowhead, which takes the colour of the first
+`stroke:`, would take the colour of this style or of an earlier one. The styles
+of a link are those of its classes, in the order they were given, then those of
+`linkStyle default`, then its own. A class is given to a link by a `class`
+statement or a `:::`, as in `e1:::hot`, that comes after the statement that
+writes the link.
 
 Examples of **incorrect** code for this rule:
 

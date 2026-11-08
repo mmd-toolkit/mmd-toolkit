@@ -22,7 +22,9 @@ function isCssWhitespace(character: string): boolean {
 }
 
 /** The text of a style before its first `:` without the whitespace around it, with where that whitespace ends. */
-function declarationName(text: string): { name: string; end: number } | null {
+export function declarationName(
+  text: string,
+): { name: string; end: number } | null {
   const colon = text.indexOf(":")
   if (colon < 0) return null
   let end = colon
@@ -30,13 +32,6 @@ function declarationName(text: string): { name: string; end: number } | null {
   let start = 0
   while (start < end && isCssWhitespace(text[start])) start++
   return { name: text.slice(start, end), end }
-}
-
-/** Whether the style is named `stroke`, whatever its case and the whitespace around the name. */
-export function isStrokeDeclaration(style: {
-  readonly value: string
-}): boolean {
-  return declarationName(style.value)?.name.toLowerCase() === "stroke"
 }
 
 /**
@@ -54,9 +49,11 @@ function spaceBeforeColon(text: string): Range | null {
 
 /**
  * The `stroke` styles of `styles` that have whitespace before the `:`. The
- * range is that whitespace in the source, and the fix removes it; where the
- * written text of the style is not the text of the source (a directive lies
- * inside it), the range is the style and there is no fix.
+ * range is that whitespace in the source, and the fix removes it. Where the
+ * written text of the style is not the text of the source, the range is the
+ * style and there is no fix: a directive lies inside the style, or a `;` is
+ * left out of its value, as in `classDef hot stroke :#f00;fill:none`, whose one
+ * style is `stroke :#f00fill:none`.
  */
 export function spacedStrokesOf<Style extends StyleLiteral>(
   sourceCode: MermaidSourceCode,

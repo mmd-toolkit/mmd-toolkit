@@ -8,42 +8,14 @@ import type {
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import type { MermaidSourceCode } from "../source-code.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
-import { canEditRange } from "../utils/edit-range.ts"
-
-/** A `:` with the whitespace around it, where mermaid.js splits a style into the name, the value, and the rest. */
-const SEPARATOR = /\s*:\s*/u
+import { styleOf, type QuadrantStyle } from "../utils/quadrant-styles.ts"
 
 /** Three or six hexadecimal digits, which `validateHexCode` of mermaid.js accepts without a `#`. */
 const BARE_HEX_COLOR = /^(?:[\da-f]{6}|[\da-f]{3})$/iu
 
-/** A style as mermaid.js reads it, with where its value stands in the text of the style. */
-interface ReadStyle {
-  readonly name: string
-  readonly value: string
-  readonly valueRange: Range
-}
-
-/** A style of a list and what mermaid.js reads from it. */
-interface KeptStyle {
+/** A style of a list with the name and the value that mermaid.js reads from it. */
+interface KeptStyle extends QuadrantStyle {
   readonly literal: QuadrantLiteral
-  readonly read: ReadStyle
-}
-
-/**
- * The name and the value of a style: mermaid.js splits the trimmed text at each
- * `:` with the whitespace around it, and takes the first two parts.
- */
-function readStyle(text: string): ReadStyle | null {
-  const lead = text.length - text.trimStart().length
-  const first = SEPARATOR.exec(text.slice(lead))
-  if (first === null) return null
-  const start = lead + first.index + first[0].length
-  const value = text.slice(start).split(SEPARATOR)[0].trimEnd()
-  return {
-    name: text.slice(lead, lead + first.index),
-    value,
-    valueRange: [start, start + value.length],
-  }
 }
 
 /** The last style of each name in a list, which is the one that mermaid.js keeps. */
@@ -52,10 +24,30 @@ function lastStyles(
 ): ReadonlyMap<string, KeptStyle> {
   const last = new Map<string, KeptStyle>()
   for (const literal of styles) {
-    const read = readStyle(literal.value)
-    if (read !== null) last.set(read.name, { literal, read })
+    const style = styleOf(literal)
+    last.set(style.name, { ...style, literal })
   }
   return last
+}
+
+/** Where the value stands in the text of a style: after the first `:` and the whitespace that follows it. */
+function valueRange(text: string, value: string): Range {
+  const afterColon = text.indexOf(":") + 1
+  const start =
+    afterColon +
+    text.slice(afterColon).length -
+    text.slice(afterColon).trimStart().length
+  return [start, start + value.length]
+}
+
+/** Whether a point is drawn with a border wider than 0px: its `stroke-width`, or else that of its class. */
+function hasBorder(
+  own: ReadonlyMap<string, KeptStyle>,
+  inherited: ReadonlyMap<string, KeptStyle>,
+): boolean {
+  const width = (own.get("stroke-width") ?? inherited.get("stroke-width"))
+    ?.value
+  return typeof width === "string" && Number.parseFloat(width) > 0
 }
 
 /**
@@ -74,22 +66,17 @@ function semicolonFollows(sourceCode: MermaidSourceCode, at: number): boolean {
 }
 
 /**
- * Writes the `#` before the value, where the text of the style is the text of
- * the source and no `;` follows the value. A fix is a function of its own, apart
- * from `create`, and is offered only where the edit keeps the diagram accepted.
+ * Writes the `#` before the value, where no `;` follows the value. A fix is a
+ * function of its own, apart from `create`, and is offered only where the edit
+ * keeps the diagram accepted.
  */
 function hashFix(
   sourceCode: MermaidSourceCode,
-  style: QuadrantLiteral,
   [start, end]: Range,
 ): RuleFixer | null {
-  if (
-    sourceCode.text.slice(...style.range) !== style.value ||
-    !canEditRange(sourceCode, [start, start]) ||
-    semicolonFollows(sourceCode, end)
-  )
-    return null
-  return (fixer) => fixer.insertTextBeforeRange([start, start], "#")
+  return semicolonFollows(sourceCode, end)
+    ? null
+    : (fixer) => fixer.insertTextBeforeRange([start, start], "#")
 }
 
 /**
@@ -126,16 +113,6 @@ export const quadrantNoInvalidColor: MermaidRuleDefinition<{
     const points: QuadrantPointStatement[] = []
     const classDefs = new Map<string, QuadrantClassDefStatement>()
 
-    /** Whether a point is drawn with a border wider than 0px: its `stroke-width`, or else that of its class. */
-    function hasBorder(
-      own: ReadonlyMap<string, KeptStyle>,
-      inherited: ReadonlyMap<string, KeptStyle>,
-    ): boolean {
-      const width = (own.get("stroke-width") ?? inherited.get("stroke-width"))
-        ?.read.value
-      return width !== undefined && Number.parseFloat(width) > 0
-    }
-
     return {
       QuadrantPointStatement(node) {
         points.push(node)
@@ -144,7 +121,7 @@ export const quadrantNoInvalidColor: MermaidRuleDefinition<{
         classDefs.set(node.name.name, node)
       },
       "QuadrantDiagram:exit"() {
-        const drawn = new Set<QuadrantLiteral>()
+        const drawn = new Set<KeptStyle>()
         for (const point of points) {
           const own = lastStyles(point.styles)
           const inherited = lastStyles(
@@ -159,17 +136,19 @@ export const quadrantNoInvalidColor: MermaidRuleDefinition<{
               source !== undefined &&
               (name === "color" || hasBorder(own, inherited))
             ) {
-              drawn.add(source.literal)
+              drawn.add(source)
             }
           }
         }
-        for (const literal of drawn) {
-          const read = readStyle(literal.value)
-          if (read === null || !BARE_HEX_COLOR.test(read.value)) continue
+        for (const { literal, value } of drawn) {
+          if (typeof value !== "string" || !BARE_HEX_COLOR.test(value)) continue
+          const [start, end] = valueRange(literal.value, value)
           const range: Range = [
-            literal.range[0] + read.valueRange[0],
-            literal.range[0] + read.valueRange[1],
+            literal.range[0] + start,
+            literal.range[0] + end,
           ]
+          // Where a directive lies inside the style, the written text is not
+          // the value: the report covers the style and has no fix.
           const written =
             sourceCode.text.slice(...literal.range) === literal.value
           context.report({
@@ -180,8 +159,8 @@ export const quadrantNoInvalidColor: MermaidRuleDefinition<{
                 }
               : literal.loc,
             messageId: "bare",
-            data: { color: read.value },
-            fix: hashFix(sourceCode, literal, range),
+            data: { color: value },
+            fix: written ? hashFix(sourceCode, range) : null,
           })
         }
       },

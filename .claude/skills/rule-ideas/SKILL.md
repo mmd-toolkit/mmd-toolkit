@@ -64,7 +64,7 @@ its scope, and whether `recommended` enables it. The adoption criteria are in
     documentation of mermaid.js does not show is avoided, so a `stroke` written
     with whitespace before its `:` in a `linkStyle` or a `classDef` of a
     flowchart or an agentflow is reported also where nothing is lost now
-    (section 7). In a `style`, the formatter prints it without the whitespace.
+    (section 7). A `stroke` in a `style`, which styles no link, is not reported.
   - A rule for text that is obscure on purpose.
   - A rule for a defect of mermaid.js: the author writes correct, meaningful
     text and mermaid.js misreads it (`subgraph Front end`, CSS in a label). The
@@ -1082,16 +1082,17 @@ in a `linkStyle` or a `classDef`, also where nothing is lost now: where a later
 `stroke` gives the line its colour (`linkStyle default stroke :#f00`, then
 `linkStyle 0 stroke:#00f`: both are blue), where a text `stroke:` before it
 gives the arrowhead its colour (`stroke:#00f,stroke :#f00`), in a `classDef`
-that only vertices take, which CSS reads and which the formatter keeps as
-written, as in every `classDef`, and in `linkStyle default` of a diagram with no
-link (run). A `style` of a vertex is not reported: there the formatter prints
-`stroke`, as every other name, without whitespace before the `:`, and no rule
-reports that whitespace after the other names. Not reported are another name
-that ends with `stroke` (`text-stroke :#f00` colours no line, and without the
-whitespace it would colour only the arrowhead; run) and another case of the name
-(`Stroke :#f00`, which removing the whitespace does not help; read). The styles
-of the relationships of a usecase diagram are only read and are not included;
-(2) none: the documentation of mermaid.js writes
+that only vertices take, which CSS reads, and in `linkStyle default` of a
+diagram with no link (run). A `style` is not reported: it styles a vertex or a
+subgraph and never a link (read in `addVertex`; run: after `A e1@--> B`,
+`style e1 stroke:#f00` leaves the link as it was), so mermaid.js does not read
+its text `stroke:`, CSS reads `stroke :#f00` there as `stroke:#f00` (run), and
+no rule reports whitespace before the `:` of the other names there. Not reported
+are another name that ends with `stroke` (`text-stroke :#f00` colours no line,
+and without the whitespace it would colour only the arrowhead; run) and another
+case of the name (`Stroke :#f00`, which removing the whitespace does not help;
+read). The styles of the relationships of a usecase diagram are only read and
+are not included; (2) none: the documentation of mermaid.js writes
 `linkStyle 3 stroke:#ff3,stroke-width:4px,color:red;`, with no whitespace there,
 as for `note left of A:hi`; (3) "linkStyle stroke arrowhead color", "arrowhead
 color linkStyle", "marker color stroke linkStyle", "edge marker stroke color":

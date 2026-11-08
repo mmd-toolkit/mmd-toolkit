@@ -16,10 +16,11 @@ import { spacedStrokesOf } from "../utils/spaced-stroke.ts"
  * The rule `flowchart-no-spaced-stroke`, described in
  * `docs/rules/flowchart-no-spaced-stroke.md`: a style named `stroke` in lower
  * case with whitespace before its `:`, in `linkStyle`, `linkStyle default`, and
- * `classDef`. A `style` statement is not read, because the formatter
- * (`prettier-plugin-mmd`) prints its `stroke :` without the whitespace. The fix
- * removes the whitespace, except where a style named `stroke` follows it in the
- * styles of a link that it reaches, which {@link LinkStyleModel} finds.
+ * `classDef`. A `style` statement is not read: it styles a vertex or a
+ * subgraph and never a link, so there is no arrowhead for the form to affect.
+ * The fix removes the whitespace, except where a style named `stroke` follows
+ * it in the styles of a link that it reaches, which {@link LinkStyleModel}
+ * finds.
  */
 export const flowchartNoSpacedStroke: MermaidRuleDefinition<{
   RuleOptions: []
@@ -46,7 +47,7 @@ export const flowchartNoSpacedStroke: MermaidRuleDefinition<{
     const styleLists: (readonly (FlowchartLiteral | null)[])[] = []
 
     /** Keeps the written styles for the report, and returns those that are not null. */
-    function take(
+    function recordStyles(
       styles: readonly (FlowchartLiteral | null)[],
     ): FlowchartLiteral[] {
       styleLists.push(styles)
@@ -76,19 +77,19 @@ export const flowchartNoSpacedStroke: MermaidRuleDefinition<{
       FlowchartClassDefStatement(node: FlowchartClassDefStatement) {
         model.defineClasses(
           node.cssClasses.flatMap((name) => (name === null ? [] : [name.name])),
-          take(node.styles),
+          recordStyles(node.styles),
         )
       },
       FlowchartLinkStyleStatement(node: FlowchartLinkStyleStatement) {
         model.setLinkStyles(
           node.indices.map((index) => index.value),
-          take(node.styles),
+          recordStyles(node.styles),
         )
       },
       FlowchartDefaultLinkStyleStatement(
         node: FlowchartDefaultLinkStyleStatement,
       ) {
-        model.setDefaultStyles(take(node.styles))
+        model.setDefaultStyles(recordStyles(node.styles))
       },
       "FlowchartDiagram:exit"() {
         const beforeLaterStroke = model.stylesBeforeLaterStroke()

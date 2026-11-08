@@ -255,6 +255,28 @@ Output:
 ---
 
 
+Test: quadrant-no-invalid-color >> invalid >>> invalid/quadrant/class-def-two-points-one-with-border
+Filename: tests/fixtures/rules/quadrant-no-invalid-color/invalid/quadrant/class-def-two-points-one-with-border-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   classDef hot stroke-color: f00
+    |                              ^~~ [1]
+  3 |   A:::hot: [0.3, 0.5] stroke-width: 2px
+  4 |   B:::hot: [0.6, 0.4]
+  5 |
+
+Output:
+  1 | quadrantChart
+  2 |   classDef hot stroke-color: #f00
+  3 |   A:::hot: [0.3, 0.5] stroke-width: 2px
+  4 |   B:::hot: [0.6, 0.4]
+  5 |
+
+[1] mermaid.js accepts `f00` as a colour but writes it into the drawing as it is, which browsers do not read, so the colour is not drawn.
+---
+
+
 Test: quadrant-no-invalid-color >> invalid >>> invalid/quadrant/point-color-after-comment-line
 Filename: tests/fixtures/rules/quadrant-no-invalid-color/invalid/quadrant/point-color-after-comment-line-input.mmd
 
@@ -534,6 +556,24 @@ Output:
 ---
 
 
+Test: quadrant-no-invalid-color >> invalid >>> invalid/quadrant/point-color-semicolon-in-comment
+Filename: tests/fixtures/rules/quadrant-no-invalid-color/invalid/quadrant/point-color-semicolon-in-comment-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   Point A: [0.3, 0.5] color: f00 %% a;b
+    |                              ^~~ [1]
+  3 |
+
+Output:
+  1 | quadrantChart
+  2 |   Point A: [0.3, 0.5] color: #f00 %% a;b
+  3 |
+
+[1] mermaid.js accepts `f00` as a colour but writes it into the drawing as it is, which browsers do not read, so the colour is not drawn.
+---
+
+
 Test: quadrant-no-invalid-color >> invalid >>> invalid/quadrant/point-color-semicolon-then-comment
 Filename: tests/fixtures/rules/quadrant-no-invalid-color/invalid/quadrant/point-color-semicolon-then-comment-input.mmd
 
@@ -740,6 +780,24 @@ Code:
 Output:
   1 | quadrantChart
   2 |   Point A: [0.3, 0.5] stroke-color: #f00, stroke-width: 2px
+  3 |
+
+[1] mermaid.js accepts `f00` as a colour but writes it into the drawing as it is, which browsers do not read, so the colour is not drawn.
+---
+
+
+Test: quadrant-no-invalid-color >> invalid >>> invalid/quadrant/point-stroke-color-zero-padded-width
+Filename: tests/fixtures/rules/quadrant-no-invalid-color/invalid/quadrant/point-stroke-color-zero-padded-width-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   Point A: [0.3, 0.5] stroke-color: f00, stroke-width: 003px
+    |                                     ^~~ [1]
+  3 |
+
+Output:
+  1 | quadrantChart
+  2 |   Point A: [0.3, 0.5] stroke-color: #f00, stroke-width: 003px
   3 |
 
 [1] mermaid.js accepts `f00` as a colour but writes it into the drawing as it is, which browsers do not read, so the colour is not drawn.

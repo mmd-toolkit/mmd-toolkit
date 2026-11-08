@@ -36,9 +36,10 @@ overwrites, and a `classDef` that a later `classDef` of the same class replaces
 are not reported. `color: red` is not reported, because mermaid.js gives an
 error for a value that is not a hexadecimal code.
 
-When a `;` follows the colour directly, as in `color: f00;`, the rule reports it
-without a fix: with the `#` added, mermaid.js reads `#f00;` as the code of a
-character and rejects the diagram.
+When a `;` follows the colour, directly or with only a directive between, as in
+`color: f00;` and `color: f00%%{init: {}}%%;`, the rule reports it without a
+fix: with the `#` added, mermaid.js reads `#f00;` as the code of a character and
+rejects the diagram.
 
 Examples of **incorrect** code for this rule:
 

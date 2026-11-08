@@ -163,6 +163,30 @@ Output:
 ---
 
 
+Test: flowchart-no-spaced-stroke >> invalid >>> invalid/flowchart/class-def-redefined-after-stroke
+Filename: tests/fixtures/rules/flowchart-no-spaced-stroke/invalid/flowchart/class-def-redefined-after-stroke-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A e1@--> B
+  3 |   classDef hot stroke:#00f
+  4 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  5 |   class e1 hot
+  6 |
+
+Output:
+  1 | flowchart LR
+  2 |   A e1@--> B
+  3 |   classDef hot stroke:#00f
+  4 |   classDef hot stroke:#f00
+  5 |   class e1 hot
+  6 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
 Test: flowchart-no-spaced-stroke >> invalid >>> invalid/flowchart/class-def-redefined-with-stroke
 Filename: tests/fixtures/rules/flowchart-no-spaced-stroke/invalid/flowchart/class-def-redefined-with-stroke-input.mmd
 
@@ -174,6 +198,45 @@ Code:
   4 |   classDef hot stroke:#00f
   5 |   class e1 hot
   6 |
+
+Output: unchanged
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: flowchart-no-spaced-stroke >> invalid >>> invalid/flowchart/class-def-semicolon-after
+Filename: tests/fixtures/rules/flowchart-no-spaced-stroke/invalid/flowchart/class-def-semicolon-after-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A e1@--> B
+  3 |   classDef hot stroke :#f00;
+    |                      ^ [1]
+  4 |   class e1 hot
+  5 |
+
+Output:
+  1 | flowchart LR
+  2 |   A e1@--> B
+  3 |   classDef hot stroke:#f00;
+  4 |   class e1 hot
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: flowchart-no-spaced-stroke >> invalid >>> invalid/flowchart/class-def-semicolon-then-style
+Filename: tests/fixtures/rules/flowchart-no-spaced-stroke/invalid/flowchart/class-def-semicolon-then-style-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A e1@--> B
+  3 |   classDef hot stroke :#f00;fill:none
+    |                ^~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |   class e1 hot
+  5 |
 
 Output: unchanged
 
@@ -377,28 +440,6 @@ Output:
   2 |   A --> B
   3 |   classDef hot stroke:#f00
   4 |   L_A_B_0:::hot
-  5 |
-
-[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
----
-
-
-Test: flowchart-no-spaced-stroke >> invalid >>> invalid/flowchart/class-def-taken-by-triple-colon-in-chain
-Filename: tests/fixtures/rules/flowchart-no-spaced-stroke/invalid/flowchart/class-def-taken-by-triple-colon-in-chain-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 |   A e1@--> B
-  3 |   classDef hot stroke :#f00
-    |                      ^ [1]
-  4 |   C --> e1:::hot
-  5 |
-
-Output:
-  1 | flowchart LR
-  2 |   A e1@--> B
-  3 |   classDef hot stroke:#f00
-  4 |   C --> e1:::hot
   5 |
 
 [1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
@@ -658,6 +699,25 @@ Output:
 ---
 
 
+Test: flowchart-no-spaced-stroke >> invalid >>> invalid/flowchart/class-def-two-links-one-later-stroke
+Filename: tests/fixtures/rules/flowchart-no-spaced-stroke/invalid/flowchart/class-def-two-links-one-later-stroke-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A e1@--> B
+  3 |   C e2@--> D
+  4 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  5 |   class e1,e2 hot
+  6 |   linkStyle 1 stroke:#00f
+  7 |
+
+Output: unchanged
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
 Test: flowchart-no-spaced-stroke >> invalid >>> invalid/flowchart/class-def-unused
 Filename: tests/fixtures/rules/flowchart-no-spaced-stroke/invalid/flowchart/class-def-unused-input.mmd
 
@@ -718,6 +778,30 @@ Output:
 ---
 
 
+Test: flowchart-no-spaced-stroke >> invalid >>> invalid/flowchart/link-style-after-class-stroke
+Filename: tests/fixtures/rules/flowchart-no-spaced-stroke/invalid/flowchart/link-style-after-class-stroke-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A e1@--> B
+  3 |   classDef hot stroke:#00f
+  4 |   class e1 hot
+  5 |   linkStyle 0 stroke :#f00
+    |                     ^ [1]
+  6 |
+
+Output:
+  1 | flowchart LR
+  2 |   A e1@--> B
+  3 |   classDef hot stroke:#00f
+  4 |   class e1 hot
+  5 |   linkStyle 0 stroke:#f00
+  6 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
 Test: flowchart-no-spaced-stroke >> invalid >>> invalid/flowchart/link-style-after-comment-line
 Filename: tests/fixtures/rules/flowchart-no-spaced-stroke/invalid/flowchart/link-style-after-comment-line-input.mmd
 
@@ -733,6 +817,28 @@ Output:
   1 | flowchart LR
   2 |   A --> B
   3 |   %% note
+  4 |   linkStyle 0 stroke:#f00
+  5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: flowchart-no-spaced-stroke >> invalid >>> invalid/flowchart/link-style-after-default-stroke
+Filename: tests/fixtures/rules/flowchart-no-spaced-stroke/invalid/flowchart/link-style-after-default-stroke-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle default stroke:#00f
+  4 |   linkStyle 0 stroke :#f00
+    |                     ^ [1]
+  5 |
+
+Output:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle default stroke:#00f
   4 |   linkStyle 0 stroke:#f00
   5 |
 
@@ -819,6 +925,30 @@ Output:
   2 |   A --> B
   3 |   linkStyle 0 stroke:#f00 %% c
   4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: flowchart-no-spaced-stroke >> invalid >>> invalid/flowchart/link-style-default-after-class-stroke
+Filename: tests/fixtures/rules/flowchart-no-spaced-stroke/invalid/flowchart/link-style-default-after-class-stroke-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A e1@--> B
+  3 |   classDef hot stroke:#00f
+  4 |   class e1 hot
+  5 |   linkStyle default stroke :#f00
+    |                           ^ [1]
+  6 |
+
+Output:
+  1 | flowchart LR
+  2 |   A e1@--> B
+  3 |   classDef hot stroke:#00f
+  4 |   class e1 hot
+  5 |   linkStyle default stroke:#f00
+  6 |
 
 [1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
 ---
@@ -942,6 +1072,24 @@ Output:
   3 |   linkStyle default stroke:#f00
   4 |   linkStyle 0 text-stroke:#00f
   5 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: flowchart-no-spaced-stroke >> invalid >>> invalid/flowchart/link-style-default-two-links-one-later-stroke
+Filename: tests/fixtures/rules/flowchart-no-spaced-stroke/invalid/flowchart/link-style-default-two-links-one-later-stroke-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   C --> D
+  4 |   linkStyle default stroke :#f00
+    |                           ^ [1]
+  5 |   linkStyle 1 stroke:#00f
+  6 |
+
+Output: unchanged
 
 [1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
 ---
@@ -1190,6 +1338,26 @@ Code:
   4 |
 
 Output: unchanged
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: flowchart-no-spaced-stroke >> invalid >>> invalid/flowchart/link-style-spaced-stroke-then-text-stroke
+Filename: tests/fixtures/rules/flowchart-no-spaced-stroke/invalid/flowchart/link-style-spaced-stroke-then-text-stroke-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke :#f00,text-stroke:#00f
+    |                     ^ [1]
+  4 |
+
+Output:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke:#f00,text-stroke:#00f
+  4 |
 
 [1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
 ---

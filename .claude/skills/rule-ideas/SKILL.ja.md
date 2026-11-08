@@ -71,7 +71,7 @@ description:
     そのため、flowchart と agentflow の `linkStyle` と `classDef` で、
     `:` の前に空白を置いて書いた `stroke` は、
     いま何も失われないところでも報告する（7 節）。
-    `style` のものは、整形ツールが空白なしで印字する。
+    `style` はリンクにスタイルを付けないので、その `stroke` は報告しない。
   - 意図して分かりにくく書いたテキストのための規則。
   - mermaid.js の不具合のための規則。
     書き手が正しく意味の通る書き方をしているのに、
@@ -1157,14 +1157,16 @@ flowchart-no-spaced-stroke と agentflow-no-spaced-stroke: (1)
 後の `stroke` が線に色を与えるとき（`linkStyle default stroke :#f00` の後の
 `linkStyle 0 stroke:#00f`。両方が青）、
 前の `stroke:`
-という文字が矢じりに色を与えるとき（`stroke:#00f,stroke :#f00`）、
-頂点だけが取る `classDef`（CSS が読み、
-整形ツールはほかの `classDef` と同じく書いたとおりに残す）、
+という文字が矢じりに色を与えるとき（`stroke:#00f,stroke :#f00`）、CSS が読む、
+頂点だけが取る `classDef`、
 リンクのない図の `linkStyle default` もそうである（実行）。
-頂点の `style` は報告しない。
-そこでは整形ツールが、
-ほかの名前と同じく `stroke` を `:` の前の空白なしで印字し、
-ほかの名前の後のその空白はどの規則も報告しないからである。
+`style` は報告しない。
+`style` は頂点か subgraph にスタイルを付け、
+リンクには付けない（`addVertex` を読んだ。実行。
+`A e1@--> B` の後の `style e1 stroke:#f00` はリンクを変えない）。
+そのため mermaid.js はその `stroke:` という文字を読まない。
+CSS はそこの `stroke :#f00` を `stroke:#f00` と同じに読む（実行）。
+そこのほかの名前の `:` の前の空白は、どの規則も報告しない。
 `stroke` で終わる別の名前（`text-stroke :#f00` はどの線にも色を付けず、
 空白なしなら矢じりだけに色を付ける。実行）と、
 名前の大文字小文字の違い（`Stroke :#f00`。空白を消しても助けにならない。
@@ -1181,24 +1183,6 @@ color stroke linkStyle」「edge marker stroke color」。
 [#1236](https://github.com/mermaid-js/mermaid/issues/1236)（open）も求めている。
 規則は、mermaid.js がつもりどおりに読むものも報告し（基準 1）、
 その変更が開いている（基準 3）ので、入れない。
-(4) 空白を取り除く。
-
-`stroke` で終わる別の名前（`text-stroke :#f00` はどの線にも色を付けず、
-空白なしなら矢じりだけに色を付ける）も報告しない（実行）。
-リンクのない図の `linkStyle default`、どのリンクも取らない `classDef`、
-名前の大文字小文字の違い（`Stroke :#f00`。
-空白を消しても助けにならない）も報告しない（読んだ）。
-usecase の図の関係のスタイルは、読んだだけなので含めない。
-(2) なし。
-mermaid.js の文書は `linkStyle 3 stroke:#ff3,stroke-width:4px,color:red;` と、
-`note left of A:hi` と同じく、そこに空白を置かずに書く。
-(3) 「linkStyle stroke arrowhead color」「arrowhead color linkStyle」「marker
-color stroke linkStyle」「edge marker stroke color」。
-[#7974](https://github.com/mermaid-js/mermaid/pull/7974)（open）は印に
-`context-stroke` を与え、対応するブラウザでは矢じりが線の stroke を取るので、
-規則は入れない。
-同じことを、
-[#1236](https://github.com/mermaid-js/mermaid/issues/1236)（open）も求めている。
 (4) 空白を取り除く。
 
 class-no-redefined-class: (1) 前のラベルは失われる。
