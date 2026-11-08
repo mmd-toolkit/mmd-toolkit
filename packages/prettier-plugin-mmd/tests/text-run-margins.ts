@@ -12,23 +12,16 @@ import { withoutBlanks } from "./db-values.ts"
  * same).
  */
 const textRunPaths: ReadonlyMap<string, ReadonlySet<string>> = new Map([
-  ["agentflow", new Set(["accDescr", "accTitle"])],
+  ["agentflow", new Set(["accDescr"])],
   [
     "architecture",
-    new Set([
-      "accDescr",
-      "accTitle",
-      "groups.title",
-      "nodes.iconText",
-      "nodes.title",
-    ]),
+    new Set(["accDescr", "groups.title", "nodes.iconText", "nodes.title"]),
   ],
   ["block", new Set(["root.children.classes", "root.children.label"])],
   [
     "c4",
     new Set([
       "accDescr",
-      "accTitle",
       "boundaries.descr.text",
       "boundaries.label.text",
       "boundaries.type.text",
@@ -45,30 +38,25 @@ const textRunPaths: ReadonlyMap<string, ReadonlySet<string>> = new Map([
     "classDiagram",
     new Set([
       "accDescr",
-      "accTitle",
       "classes.annotations",
       "classes.members.id",
       "classes.methods.parameters",
     ]),
   ],
-  [
-    "cynefin",
-    new Set(["accDescr", "accTitle", "domains.items.label", "title"]),
-  ],
-  ["er", new Set(["accDescr", "accTitle", "entities.attributes.type"])],
-  ["flowchart-v2", new Set(["accDescr", "accTitle", "subgraphs.title"])],
-  ["gantt", new Set(["accDescr", "accTitle", "title"])],
+  ["cynefin", new Set(["accDescr", "domains.items.label", "title"])],
+  ["er", new Set(["accDescr", "entities.attributes.type"])],
+  ["flowchart-v2", new Set(["accDescr"])],
+  ["gantt", new Set(["accDescr", "title"])],
   ["ishikawa", new Set(["root.children.text", "root.text", "title"])],
-  ["journey", new Set(["accDescr", "accTitle", "title"])],
-  ["packet", new Set(["accDescr", "accTitle", "packet.label", "title"])],
-  ["info", new Set(["accDescr", "accTitle", "title"])],
-  ["gitGraph", new Set(["accDescr", "accTitle", "title"])],
-  ["pie", new Set(["accDescr", "accTitle", "title"])],
+  ["journey", new Set(["accDescr", "title"])],
+  ["packet", new Set(["accDescr", "packet.label", "title"])],
+  ["info", new Set(["accDescr", "title"])],
+  ["gitGraph", new Set(["accDescr", "title"])],
+  ["pie", new Set(["accDescr", "title"])],
   [
     "quadrantChart",
     new Set([
       "accDescr",
-      "accTitle",
       "points.text",
       "quadrants",
       "title",
@@ -78,16 +66,12 @@ const textRunPaths: ReadonlyMap<string, ReadonlySet<string>> = new Map([
       "yAxis.top",
     ]),
   ],
-  [
-    "radar",
-    new Set(["accDescr", "accTitle", "axes.label", "curves.label", "title"]),
-  ],
+  ["radar", new Set(["accDescr", "axes.label", "curves.label", "title"])],
   ...["railroad", "railroadAbnf", "railroadEbnf", "railroadPeg"].map(
     (type): [string, ReadonlySet<string>] => [
       type,
       new Set([
         "accDescr",
-        "accTitle",
         "rules.definition.elements.value",
         "rules.definition.text",
         "title",
@@ -98,7 +82,6 @@ const textRunPaths: ReadonlyMap<string, ReadonlySet<string>> = new Map([
     "requirement",
     new Set([
       "accDescr",
-      "accTitle",
       "elements.type",
       "requirements.classes",
       "requirements.requirementId",
@@ -109,7 +92,6 @@ const textRunPaths: ReadonlyMap<string, ReadonlySet<string>> = new Map([
     "sequence",
     new Set([
       "accDescr",
-      "accTitle",
       "actors.description",
       "boxes.fill",
       "boxes.name",
@@ -117,23 +99,17 @@ const textRunPaths: ReadonlyMap<string, ReadonlySet<string>> = new Map([
       "title",
     ]),
   ],
-  ["stateDiagram", new Set(["accDescr", "accTitle"])],
-  ["timeline", new Set(["accDescr", "accTitle", "title"])],
+  ["stateDiagram", new Set(["accDescr"])],
+  ["timeline", new Set(["accDescr", "title"])],
   [
     "treemap",
-    new Set([
-      "accDescr",
-      "accTitle",
-      "nodes.children.name",
-      "nodes.name",
-      "title",
-    ]),
+    new Set(["accDescr", "nodes.children.name", "nodes.name", "title"]),
   ],
-  ["treeView", new Set(["accDescr", "accTitle", "title"])],
-  ["usecase", new Set(["accDescr", "accTitle"])],
+  ["treeView", new Set(["accDescr", "title"])],
+  ["usecase", new Set(["accDescr"])],
   ["venn", new Set(["subsets.label", "title"])],
-  ["wardley", new Set(["accDescr", "accTitle", "links.label", "title"])],
-  ["xychart", new Set(["accDescr", "accTitle", "title"])],
+  ["wardley", new Set(["accDescr", "links.label", "title"])],
+  ["xychart", new Set(["accDescr", "title"])],
 ])
 
 /** The diagram types whose texts the formatter prints without runs. */

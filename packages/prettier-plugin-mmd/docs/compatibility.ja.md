@@ -799,7 +799,7 @@ railroad 図の文字列と special sequence です。
   題は折り返さず、連なりは描かれません。
   markdown 文字列は、上のラベルと同じく最大幅で配置されます。
   連なりを持つ長いものを、連なりがある形とない形で描くと、画素が異なりました。
-  [fixture: flowchart/subgraph-header/markdown-title-runs-kept]
+  [fixture: flowchart/subgraph-header/title-runs-kept]
 - C4 の文の引数のうち、label、technology、type、description でないもの（sprite、
   tags、link）と、本来の位置にない名前付き属性。
   mermaid.js の読み方は、その場所によって変わります。

@@ -675,8 +675,8 @@ subgraph の名前はそのタイトルになり、中の空白とタブの連�
 空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 ただし、Markdown 文字列は、折り返してその連なりを描くので除きます。
-[fixture: whitespace-between-tokens/subgraph-name-runs-collapsed]
-[fixture: subgraph-header/markdown-title-runs-kept]
+[fixture: whitespace-between-tokens/subgraph-name-kept]
+[fixture: subgraph-header/title-runs-kept]
 `style`・`classDef`・`linkStyle` の文では、
 各スタイルの最初の `:` の前に空白を置かず、値が空でなければ、
 後ろに空白を 1 つ置きます。
@@ -747,7 +747,7 @@ U+2028 と U+2029 は、その場所に残します。
 `direction` の文の、`direction` の前と値の後のテキストは例外で、
 書かれたまま残します（[方向](#方向)を参照）。
 [fixture: whitespace-between-tokens/class-def-and-link-style-spaced]
-[fixture: whitespace-between-tokens/subgraph-quoted-name-runs-collapsed]
+[fixture: whitespace-between-tokens/subgraph-quoted-name-kept]
 `style`・`classDef`・`linkStyle` の文では、最初のスタイルの前の空白は、
 mermaid.js の文の規則が読むものなので、空白 1 つにします。
 そこにディレクティブがあれば、[ディレクティブ](#ディレクティブ)のとおり、
@@ -809,7 +809,7 @@ flowchart LR
 ```
 
 入力
-([whitespace-between-tokens/subgraph-name-runs-collapsed-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-runs-collapsed-input.mmd)):
+([whitespace-between-tokens/subgraph-name-kept-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-runs-collapsed-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -819,7 +819,7 @@ flowchart LR
 ```
 
 出力
-([whitespace-between-tokens/subgraph-name-runs-collapsed-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-runs-collapsed-output.mmd)):
+([whitespace-between-tokens/subgraph-name-kept-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-runs-collapsed-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -2228,7 +2228,7 @@ flowchart の文書にあるタイトル付きの subgraph は 2 件で、
 [fixture: subgraph-header/title-before-empty-description-block]
 タイトルなしで書かれた名前は、その後の空白を保ちます。
 mermaid.js はその空白を名前の一部として読みます。
-[fixture: subgraph-header/name-trailing-run-collapsed]
+[fixture: subgraph-header/name-trailing-run-kept]
 [fixture: subgraph-header/name-trailing-whitespace-kept]
 [fixture: subgraph-header/name-whitespace-before-directive-kept]
 [fixture: subgraph-header/name-whitespace-after-directive-kept]

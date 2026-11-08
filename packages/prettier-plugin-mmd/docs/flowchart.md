@@ -656,8 +656,8 @@ inside the name of a subgraph, which becomes its title, is printed as one space
 (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 except in a markdown string, which wraps and then draws the run. [fixture:
-whitespace-between-tokens/subgraph-name-runs-collapsed] [fixture:
-subgraph-header/markdown-title-runs-kept] In a `style`, `classDef`, or
+whitespace-between-tokens/subgraph-name-kept] [fixture:
+subgraph-header/title-runs-kept] In a `style`, `classDef`, or
 `linkStyle` statement, each style has no whitespace before its first `:` and one
 space after it where the value is not empty. The `,` between styles has no
 whitespace before it and one space after it: `style A fill :#f00,stroke:  #333`
@@ -720,7 +720,7 @@ statement] [test: U+2029 after the comma of a flowchart style statement] The
 text of a `direction` statement before `direction` and after the value is the
 exception, kept as written (see [Direction](#direction)). [fixture:
 whitespace-between-tokens/class-def-and-link-style-spaced] [fixture:
-whitespace-between-tokens/subgraph-quoted-name-runs-collapsed] In a `style`,
+whitespace-between-tokens/subgraph-quoted-name-kept] In a `style`,
 `classDef`, or `linkStyle` statement, the whitespace before the first style,
 which the statement rule of mermaid.js reads, becomes one space, which stands
 before a directive there, as under [Directives](#directives):
@@ -779,7 +779,7 @@ flowchart LR
 ```
 
 Input
-([whitespace-between-tokens/subgraph-name-runs-collapsed-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-runs-collapsed-input.mmd)):
+([whitespace-between-tokens/subgraph-name-kept-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-runs-collapsed-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -789,7 +789,7 @@ flowchart LR
 ```
 
 Output
-([whitespace-between-tokens/subgraph-name-runs-collapsed-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-runs-collapsed-output.mmd)):
+([whitespace-between-tokens/subgraph-name-kept-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/subgraph-name-runs-collapsed-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -2123,7 +2123,7 @@ and spaces between a subgraph name and its title] An empty description block
 that follows the title is the first statement of the body, as before. [fixture:
 subgraph-header/title-before-empty-description-block] A name written without a
 title keeps the whitespace after it, which mermaid.js reads as part of the name.
-[fixture: subgraph-header/name-trailing-run-collapsed] [fixture:
+[fixture: subgraph-header/name-trailing-run-kept] [fixture:
 subgraph-header/name-trailing-whitespace-kept] [fixture:
 subgraph-header/name-whitespace-before-directive-kept] [fixture:
 subgraph-header/name-whitespace-after-directive-kept] So does the whitespace

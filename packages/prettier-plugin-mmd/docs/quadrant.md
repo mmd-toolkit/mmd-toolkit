@@ -552,7 +552,7 @@ statement is the same. [fixture:
 titles-and-accessibility-statements/colon-touches-keyword] [fixture:
 titles-and-accessibility-statements/colon-without-space-after] [fixture:
 titles-and-accessibility-statements/text-whitespace-dropped] [fixture:
-titles-and-accessibility-statements/text-inner-runs-collapsed] [fixture:
+titles-and-accessibility-statements/text-inner-whitespace-kept] [fixture:
 titles-and-accessibility-statements/text-on-the-next-line-joined] [fixture:
 titles-and-accessibility-statements/colon-on-the-next-line-joined] [fixture:
 titles-and-accessibility-statements/text-that-looks-like-a-statement]

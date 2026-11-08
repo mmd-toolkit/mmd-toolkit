@@ -739,7 +739,7 @@ These stay as written:
   wrap, and the runs are not drawn; the markdown string is laid out at a maximum
   width like the labels above, and a long one with runs was drawn with and
   without them, and the pixels differed. [fixture:
-  flowchart/subgraph-header/markdown-title-runs-kept]
+  flowchart/subgraph-header/title-runs-kept]
 - The arguments of a C4 statement that are not a label, a technology, a type, or
   a description (the sprite, the tags, the link), and a named attribute at
   another place than its own, which mermaid.js reads in a way that depends on

@@ -15,7 +15,6 @@ import {
   c4ArgumentFields,
   c4NamedTextFields,
   c4TextFields,
-  plainTextSlots,
   textSlots,
 } from "./text-slots.ts"
 
@@ -123,9 +122,9 @@ interface Texts {
 const textsOfSource = new WeakMap<Source, Texts>()
 
 /**
- * The texts of the tree that `textSlots`, `plainTextSlots`, and
- * `blankTextSlots` list: of two nested texts, the outer one, and none over
- * several lines, whose lines keep their columns.
+ * The texts of the tree that `textSlots` and `blankTextSlots` list: of two
+ * nested texts, the outer one, and none over several lines, whose lines keep
+ * their columns.
  */
 function findTexts(source: Source): Texts {
   let texts = textsOfSource.get(source)
@@ -148,11 +147,6 @@ function findTexts(source: Source): Texts {
     textsOfSource.set(source, texts)
   }
   return texts
-}
-
-/** Whether the node is a markdown string, which a `kind` field tells. */
-function isMarkdownString(node: Node): boolean {
-  return (node as { readonly kind?: unknown }).kind === "markdown"
 }
 
 /**
@@ -197,7 +191,6 @@ function collectTexts(
   }
   const fields = textSlots[node.type] ?? []
   const blankFields = blankTextSlots[node.type] ?? []
-  const plainFields = plainTextSlots[node.type] ?? []
   for (const key of visitorKeys[node.type]) {
     const value = (node as unknown as Record<string, unknown>)[key]
     for (const child of Array.isArray(value) ? value : [value]) {
@@ -206,8 +199,6 @@ function collectTexts(
       if (fields.includes(key)) found.push({ range: item.range, blank: false })
       else if (blankFields.includes(key))
         found.push({ range: item.range, blank: true })
-      else if (plainFields.includes(key) && !isMarkdownString(item))
-        found.push({ range: item.range, blank: false })
       collectTexts(item, found)
     }
   }

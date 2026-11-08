@@ -169,8 +169,11 @@ export function layoutCommonLine(
         : [
             // The runs inside the text are drawn as one space (docs/
             // compatibility.md, Runs of whitespace in a text that are drawn
-            // the same).
-            collapsedRunsAtom(source, { start: valueStart, end: valueEnd }),
+            // the same), except in an `accTitle`, which the browser shows as
+            // a tooltip.
+            statement.type.includes("AccTitle")
+              ? { start: valueStart, end: valueEnd }
+              : collapsedRunsAtom(source, { start: valueStart, end: valueEnd }),
           ]),
       ...(statement.textAfter ?? []).map((item) => ({
         start: item.range[0],

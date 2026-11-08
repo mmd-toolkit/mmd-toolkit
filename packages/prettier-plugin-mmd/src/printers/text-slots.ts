@@ -10,26 +10,23 @@ import type { TextSlots } from "./text-runs.ts"
  * prints as one space, by the type of the node that has the field
  * (docs/compatibility.md, Runs of whitespace in a text that are drawn the
  * same). The names that other statements refer to are left out: two names that
- * differ by a run are two things. A type belongs to one diagram type.
+ * differ by a run are two things. So is the `accTitle`, which the browser shows
+ * as a tooltip, and the title of a subgraph, which mermaid.js draws as an HTML
+ * label. A type belongs to one diagram type.
  */
 export const textSlots: TextSlots = {
   // flowchart
   FlowchartAccDescrStatement: ["value"],
-  FlowchartAccTitleStatement: ["value"],
   // agentflow
   AgentflowAccDescrStatement: ["value"],
-  AgentflowAccTitleStatement: ["value"],
   // class
   ClassAccDescrStatement: ["value"],
-  ClassAccTitleStatement: ["value"],
   ClassAnnotation: ["name"],
   ClassAttribute: ["name"],
   ClassMethod: ["name", "parameters"],
   // state
   StateAccDescrStatement: ["value"],
-  StateAccTitleStatement: ["value"],
   // er
-  ErAccTitleStatement: ["value"],
   ErAccDescrStatement: ["value"],
   ErAttribute: ["dataType"],
   // sequence
@@ -45,19 +42,16 @@ export const textSlots: TextSlots = {
   // timeline
   TimelineAccDescrBlockStatement: ["value"],
   // quadrant
-  QuadrantAccTitleStatement: ["value"],
   QuadrantAxisStatement: ["start", "end"],
   QuadrantPointStatement: ["name"],
   QuadrantQuadrantStatement: ["text"],
   QuadrantTitleStatement: ["value"],
   // xychart
   XychartAccDescrStatement: ["value"],
-  XychartAccTitleStatement: ["value"],
   XychartTitleStatement: ["value"],
   // requirement
   RequirementAccDescrBlockStatement: ["value"],
   RequirementAccDescrStatement: ["value"],
-  RequirementAccTitleStatement: ["value"],
   RequirementClassShorthandStatement: ["cssClasses"],
   RequirementElementField: ["value"],
   RequirementRequirementStatement: ["cssClasses"],
@@ -99,27 +93,21 @@ export const textSlots: TextSlots = {
   CynefinDomainItem: ["label"],
   // the title and the accessibility statements of the other diagram types
   AgentflowAccDescrBlockStatement: ["value"],
-  C4AccTitleStatement: ["value"],
   C4TitleStatement: ["value"],
   ClassAccDescrBlockStatement: ["value"],
   ErAccDescrBlockStatement: ["value"],
   FlowchartAccDescrBlockStatement: ["value"],
   GanttAccDescrStatement: ["value"],
-  GanttAccTitleStatement: ["value"],
   JourneyAccDescrStatement: ["value"],
-  JourneyAccTitleStatement: ["value"],
   QuadrantAccDescrBlockStatement: ["value"],
   QuadrantAccDescrStatement: ["value"],
   SequenceAccDescrBlockStatement: ["value"],
   SequenceAccDescrStatement: ["value"],
-  SequenceAccTitleStatement: ["value"],
   StateAccDescrBlockStatement: ["value"],
   TimelineAccDescrStatement: ["value"],
-  TimelineAccTitleStatement: ["value"],
   TimelineTitleStatement: ["value"],
   UsecaseAccDescrBlockStatement: ["value"],
   UsecaseAccDescrStatement: ["value"],
-  UsecaseAccTitleStatement: ["value"],
   XychartAccDescrBlockStatement: ["value"],
 }
 
@@ -135,19 +123,6 @@ export const blankTextSlots: TextSlots = {
   MindmapClassStatement: ["cssClass"],
   MindmapIconStatement: ["icon"],
   MindmapShape: ["label"],
-}
-
-/**
- * The fields that hold a text whose runs of spaces and tabs the formatter
- * prints as one space, unless the node is a markdown string (its `kind` is
- * `"markdown"`): mermaid.js lays out a markdown string at a maximum width, and
- * where it wraps, `white-space: break-spaces` draws the runs of its first line
- * (docs/compatibility.md, Runs of whitespace in a text that are drawn the
- * same). A subgraph that has a title of another kind grows to fit it, so that
- * the title does not wrap.
- */
-export const plainTextSlots: TextSlots = {
-  FlowchartSubgraphStatement: ["name", "title"],
 }
 
 const c4PersonOrSystem = ["alias", "label", "descr"]
