@@ -8,5 +8,6 @@ with one space after the first `:` of a style and after each `,`, and none
 before them: `style A fill:#f9f,stroke:#333` becomes
 `style A fill: #f9f, stroke: #333`. The spacing stays as written where
 whitespace decides what mermaid.js reads: the `fill` and the `stroke:` of a
-`linkStyle`, the whitespace between `stroke` and its `:` in a `classDef`, a
-backslash in a style, and the `color:` and `text-align:` of a `block` `style`.
+`linkStyle`, the whitespace between `stroke` and its `:` in a `classDef` or a
+`linkStyle` of `flowchart` and `agentflow`, a backslash in a style, and the
+`color:` and `text-align:` of a `block` `style`.
