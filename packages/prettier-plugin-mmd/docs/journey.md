@@ -399,18 +399,17 @@ journey
 ### Titles and sections
 
 A `title` is printed with one space after the keyword, so that the separator has
-one form, as in a Gantt chart, and the value as written, the whitespace at its
-end included, which the Db keeps; the whitespace at the start of the value is
-left out (see
+one form, as in a Gantt chart, and the value without the whitespace at its start
+or at its end, which the Db keeps and which is drawn without (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-`title   My trip` is printed `title My trip`. The name of a `section` is printed
-as written, the whitespace at its start included: two sections whose names
-differ by it are drawn apart, and would not be once it is left out. A title of
-spaces and tabs only stays as written. [fixture:
+`title   My trip  ` is printed `title My trip`. The name of a `section` is
+printed as written, the whitespace at its start and at its end included: two
+sections whose names differ by it are drawn apart, and would not be once it is
+left out. A title of spaces and tabs only stays as written. [fixture:
 titles-and-sections/title-padding-dropped] [fixture:
 titles-and-sections/title-blank-kept] [fixture:
 titles-and-sections/section-padding-kept] [fixture:
-titles-and-sections/value-whitespace-kept] [fixture:
+titles-and-sections/title-trailing-dropped-section-kept] [fixture:
 titles-and-sections/one-space-after-keyword] A value written on a later line is
 printed after the keyword on one line; a comment line between them makes the
 statement printed as written (see

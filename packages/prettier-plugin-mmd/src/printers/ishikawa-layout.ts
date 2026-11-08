@@ -13,7 +13,7 @@ import {
 import type { LeadingDirectives } from "./indentation-lines.ts"
 import { keptAsWritten } from "./layout.ts"
 import type { Source } from "./source.ts"
-import { isWhitespace } from "./source.ts"
+import { findTriviaBetween, isSpaceOrTab, isWhitespace } from "./source.ts"
 
 /** All Ishikawa values are literals, including numbers and apparent strings. */
 export const ishikawaValueNodeTypes: ReadonlySet<Node["type"]> = new Set([
@@ -85,7 +85,29 @@ export function ishikawaLines(
   return lines
 }
 
-/** Literals retain embedded regions and every physical continuation column. */
-export function layoutIshikawaLine(line: IshikawaLine): AtomLayout {
-  return keptAsWritten(line.leading?.textStart ?? line.range[0], line.range[1])
+/**
+ * Literals retain embedded regions and every physical continuation column. The
+ * spaces and tabs at the end of a literal are left out: mermaid.js trims the
+ * literal, so the Db and the figure are the same without them
+ * (docs/ishikawa.md, Trailing whitespace).
+ */
+export function layoutIshikawaLine(
+  source: Source,
+  line: IshikawaLine,
+): AtomLayout {
+  const start = line.leading?.textStart ?? line.range[0]
+  let end = line.range[1]
+  // The gap before a directive that follows the literal is that of the
+  // directive, so the literal keeps its end there.
+  const directiveFollows = findTriviaBetween(source, end, end + 1).some(
+    (item) => item.type === "Directive" && item.range[0] === end,
+  )
+  while (
+    !directiveFollows &&
+    end > start + 1 &&
+    isSpaceOrTab(source.text[end - 1])
+  ) {
+    end--
+  }
+  return keptAsWritten(start, end)
 }

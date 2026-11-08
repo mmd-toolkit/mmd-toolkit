@@ -415,12 +415,21 @@ export function trimTextAfterKeyword(
     replaceInAtoms(source, atoms, edits)
     return
   }
+  // A comment that starts right after the text stays on its line, one space
+  // after it.
+  const commentFollows = source.root.comments.some(
+    (comment) => comment.range[0] === to,
+  )
   let position = to
   for (;;) {
     let blanks = position
     while (blanks > offset && isSpaceOrTab(source.text[blanks - 1])) blanks--
-    if (blanks < position)
-      edits.push({ range: [blanks, position], replacement: "" })
+    if (blanks < position) {
+      edits.push({
+        range: [blanks, position],
+        replacement: position === to && commentFollows ? " " : "",
+      })
+    }
     const directive = findTriviaBetween(source, blanks - 1, blanks).find(
       (item) => item.type === "Directive" && item.range[1] === blanks,
     )

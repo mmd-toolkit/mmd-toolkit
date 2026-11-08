@@ -1001,7 +1001,7 @@ mermaid.js は、それを両端の空白ごと読むので、
 `:short` と `: short` は違う説明になるからです。
 [corpus fixture: state/db-alias-colon-spaces-second]
 [fixture: aliases/second-description-kept]
-[fixture: aliases/second-description-trailing-whitespace-kept]
+[fixture: aliases/second-description-trailing-whitespace-dropped]
 `:` の前の空白は空白 1 つにします。
 
 入力

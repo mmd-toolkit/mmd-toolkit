@@ -573,28 +573,44 @@ exception stays.
 ## Texts after a keyword that are drawn the same
 
 A title, and the date format and the axis format of a Gantt chart, are printed
-with one space after their keyword and without the whitespace at the start of
-their text, in Gantt, user journey, timeline, sequence, and Venn diagrams:
-`title   Plan` is printed `title Plan`, and `dateFormat   YYYY-MM-DD` is printed
-`dateFormat YYYY-MM-DD`. The whitespace inside the text and at its end stays as
-written, and so does a text of spaces and tabs only. [fixture:
+with one space after their keyword and without the whitespace at the start or at
+the end of their text, in Gantt, user journey, timeline, sequence, Venn, and C4
+diagrams (the description `accDescription` of a C4 diagram too):
+`title   Plan  ` is printed `title Plan`, and `dateFormat   YYYY-MM-DD` is
+printed `dateFormat YYYY-MM-DD`. The whitespace inside the text stays as
+written, and so does a text of spaces and tabs only. The last event of a line of
+a timeline and the second description of a state with an alias lose the
+whitespace at their end in the same way, not the whitespace at their start,
+which aligns the colons of a timeline: `2020 : e   ` is printed `2020 : e`, and
+`state "d" as A : x   ` is printed `state "d" as A : x`. Where a comment follows
+the text on its line, one space separates it from the text, and where a
+directive does, the gap before the directive stays. [fixture:
 gantt/titles-and-sections/title-padding-dropped] [fixture:
 gantt/titles-and-sections/title-blank-kept] [fixture:
 gantt/settings/format-padding-dropped] [fixture:
+gantt/settings/trailing-whitespace-by-setting] [fixture:
 gantt/settings/format-blank-kept] [fixture:
 journey/titles-and-sections/title-padding-dropped] [fixture:
 journey/titles-and-sections/title-blank-kept] [fixture:
+journey/titles-and-sections/whitespace-before-hash-is-the-value] [fixture:
 timeline/titles-and-sections/title-padding-dropped] [fixture:
 timeline/titles-and-sections/title-blank-kept] [fixture:
+timeline/periods-and-events/event-padding-kept-end-dropped] [fixture:
 sequence/title/text-padding-dropped] [fixture:
 sequence/title/text-padding-dropped-colon] [fixture:
+sequence/title/trailing-whitespace-dropped] [fixture:
 sequence/title/title-blank-kept] [fixture: venn/title/text-padding-dropped]
-[fixture: venn/title/title-blank-kept]
+[fixture: venn/title/title-blank-kept] [fixture:
+c4/title-and-accdescription/title] [fixture:
+c4/title-and-accdescription/accdescription] [fixture:
+c4/title-and-accdescription/title-white-only] [fixture:
+state/aliases/second-description-trailing-whitespace-dropped]
 
 mermaid.js reads one whitespace character after the keyword and keeps the rest
 in the Db, so the Db of the printed text differs from the Db of the written
 text, but it draws the same figure. Each renderer puts the text into an SVG
-`text` element with `text()`, which draws no whitespace at its start:
+`text` element with `text()`, which draws no whitespace at its start or at its
+end:
 [Gantt](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttRenderer.js#L194-L199),
 [user journey](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/user-journey/journeyRenderer.ts#L166-L176),
 [timeline](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/timeline/timelineRenderer.ts#L209-L216),
@@ -606,7 +622,9 @@ The date format is trimmed before the dates are read
 and the axis format is only the format of the labels of the axis. Both texts of
 each kind were drawn with mermaid.js 12.3.0 in Chromium, and the pixels were the
 same, and so was the SVG, without the generated ids and without the whitespace
-at the start of a text.
+at the ends of a text. The same holds for the events of a timeline, the second
+description of a state, and the title and the description of a C4 diagram, which
+were drawn in the same way.
 
 The name of a section is not printed in this form. The renderers tell two
 sections apart by their names, so two names that differ only by the whitespace
@@ -624,23 +642,30 @@ gantt/titles-and-sections/section-padding-kept] [fixture:
 journey/titles-and-sections/section-padding-kept] [fixture:
 timeline/titles-and-sections/section-padding-kept]
 
-Two settings of a Gantt chart are drawn differently where whitespace stands
-before the value, and stay as written. A tick interval is matched as a whole
+Three settings of a Gantt chart are drawn differently where whitespace stands
+around the value, and stay as written. A tick interval is matched as a whole
 against the intervals that it names
 ([`makeGrid`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttRenderer.js#L665-L668)),
-so a space before `1day` turns its ticks into the default ones. A date format of
-`D` has the axis of days only where it has no whitespace around it
+so a space before or after `1day` turns its ticks into the default ones. A date
+format of `D` has the axis of days only where it has no whitespace around it
 ([`makeGrid`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttRenderer.js#L650-L659)).
-[fixture: gantt/settings/format-padding-kept-where-drawn-differently]
+A today marker hides the line only where it is `off` as a whole
+([`draw`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttRenderer.js#L861-L878)),
+so `todayMarker off` followed by two spaces draws the line where the chart holds
+today, and the pixels differ. [fixture:
+gantt/settings/format-padding-kept-where-drawn-differently] [fixture:
+gantt/settings/trailing-whitespace-by-setting]
 
-The tests compare the Db of the printed text with the whitespace at the start of
+The tests compare the Db of the printed text with the whitespace at the ends of
 its texts restored from the Db of the written text
 (`keywordTextDbForFormattingComparison` in `tests/keyword-text-margins.ts`): a
 title, a date format, or an axis format that differs from the written one only
-by the spaces and tabs at its start takes the written text, and any other
-difference, among them one in the name of a section, fails. When the pinned
-mermaid.js is updated, draw both texts of each kind again and compare the SVG
-and the pixels before the exception stays.
+by the spaces and tabs at its ends takes the written text, and so does the title
+and the description of a C4 diagram; an event of a timeline and a description of
+a state, only by the spaces and tabs at their end. Any other difference, among
+them one in the name of a section, in a tick interval, or in a today marker,
+fails. When the pinned mermaid.js is updated, draw both texts of each kind again
+and compare the SVG and the pixels before the exception stays.
 
 ## Call arguments that are drawn the same
 
@@ -1312,8 +1337,8 @@ See [Task data](./gantt.md#task-data), [Settings](./gantt.md#settings),
   a task description and its colon. The Db keeps it, so `dateFormat  YYYY-MM-DD`
   with two spaces and `A task           :a1` with padding are not the same as
   their trimmed forms, and the padding that aligns the colons stays. [fixture:
-  gantt/settings/value-whitespace-kept] [fixture:
-  gantt/titles-and-sections/value-whitespace-kept] [fixture:
+  gantt/settings/trailing-whitespace-by-setting] [fixture:
+  gantt/titles-and-sections/title-trailing-dropped-section-kept] [fixture:
   gantt/task-data/description-padding-kept]
 - The whitespace inside an item of task data, the number of its items, and the
   case of its tags: `after   a1` is one item as written, `a : 1d,` has an empty
@@ -1369,7 +1394,7 @@ See [Task data](./journey.md#task-data) and
   the text of a task description and its colon. The Db keeps it, so `title  T`
   with two spaces and `Make tea  : 5` with padding are not the same as their
   trimmed forms, and the padding that aligns the colons stays. [fixture:
-  journey/titles-and-sections/value-whitespace-kept] [fixture:
+  journey/titles-and-sections/title-trailing-dropped-section-kept] [fixture:
   journey/task-data/description-padding-kept]
 - The whitespace before a `#` after a `title` or a `section`: it is part of the
   value, while after the data of a task it is not. [fixture:
@@ -1479,8 +1504,8 @@ formatting keeps them as they are written. See
   periods, and the padding that aligns the colons stays. The whitespace at the
   end of a line is part of the text too. [fixture:
   timeline/periods-and-events/period-whitespace-kept] [fixture:
-  timeline/periods-and-events/event-whitespace-kept] [fixture:
-  timeline/periods-and-events/trailing-whitespace-kept]
+  timeline/periods-and-events/event-padding-kept-end-dropped] [fixture:
+  timeline/periods-and-events/period-trailing-kept-event-end-dropped]
 - The line on which an event stands. Joining the event on a later line to the
   line of the period with a space would add the space to the text of the event
   before it, and splitting an event off its line would leave the space at the
@@ -1995,7 +2020,7 @@ kept-stretch path.
 
 [fixture: ishikawa/node-text/values-opaque] [fixture:
 ishikawa/inline-directives/directive-in-value] [fixture:
-ishikawa/trailing-whitespace/trailing-value-kept] [test: ishikawa:
+ishikawa/trailing-whitespace/trailing-value-dropped] [test: ishikawa:
 joined-common-region] [fixture:
 ishikawa/line-rule-and-kept-lines/line-rule-kept]
 

@@ -2425,9 +2425,9 @@ branch 行で値から除外された末尾は削り、持ち越しません。
 値と構造の padding を混同しないためです。
 有意な fixture の末尾はコードブロックには示しません。
 
-[fixture: treeview/trailing-whitespace/trailing-bare-kept]
+[fixture: treeview/trailing-whitespace/trailing-bare-dropped]
 
-[fixture: treeview/trailing-whitespace/trailing-description-kept]
+[fixture: treeview/trailing-whitespace/trailing-description-dropped]
 
 [fixture: treeview/trailing-whitespace/trailing-quoted-interior]
 

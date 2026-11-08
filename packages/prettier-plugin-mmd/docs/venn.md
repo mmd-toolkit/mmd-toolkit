@@ -596,25 +596,26 @@ set A[style:#x;y] set B:2
 ### Title
 
 The consumed first title separator becomes one ASCII space for readability, and
-so do the spaces and tabs after it: mermaid.js keeps them in the Db, but draws
-the same title without them (see
+so do the spaces and tabs after it, and the spaces and tabs at the end of the
+title are left out: mermaid.js keeps them in the Db, but draws the same title
+without them (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-Every later value character, including trailing whitespace and statement-looking
-words, stays as written, because everything after the one separator is the title
-value in the tree and in the Db, so trimming or collapsing it changes the Db.
-Indentation on the next source line belongs to the value, so `title` LF `  T`
-prints as `title T`. [fixture: venn/title/text-padding-dropped] A title of
-spaces and tabs only stays as written. [fixture: venn/title/title-blank-kept] LF
-and the broader accepted title separators may normalize, but trivia, joined
-regions and kept parts protect their written boundaries. [corpus fixture:
-venn/db-frontmatter-title-overridden] [corpus fixture: venn/db-title-on-header]
-[corpus fixture: venn/db-title-only-whitespace] [corpus fixture:
-venn/db-title-padding] [corpus fixture: venn/db-title-value-next-line] [corpus
-fixture: venn/lex-gap-title-comment] [fixture: venn/title/repeated-title]
-[fixture: venn/title/title-directive] [fixture: venn/title/title-inline-percent]
-[fixture: venn/title/title-next-line] [fixture:
-venn/title/title-statement-words] [fixture: venn/title/title-tab-separator]
-[fixture: venn/title/title-trim-unsafe] [fixture:
+Every later value character, including statement-looking words, stays as
+written, because everything after the one separator is the title value in the
+tree and in the Db. Indentation on the next source line belongs to the value, so
+`title` LF `  T` prints as `title T`. [fixture: venn/title/text-padding-dropped]
+A title of spaces and tabs only stays as written. [fixture:
+venn/title/title-blank-kept] LF and the broader accepted title separators may
+normalize, but trivia, joined regions and kept parts protect their written
+boundaries. [corpus fixture: venn/db-frontmatter-title-overridden] [corpus
+fixture: venn/db-title-on-header] [corpus fixture:
+venn/db-title-only-whitespace] [corpus fixture: venn/db-title-padding] [corpus
+fixture: venn/db-title-value-next-line] [corpus fixture:
+venn/lex-gap-title-comment] [fixture: venn/title/repeated-title] [fixture:
+venn/title/title-directive] [fixture: venn/title/title-inline-percent] [fixture:
+venn/title/title-next-line] [fixture: venn/title/title-statement-words]
+[fixture: venn/title/title-tab-separator] [fixture:
+venn/title/title-ends-dropped-at-end-of-input] [fixture:
 venn/title/title-whitespace-only]
 
 Input (escaped):
@@ -729,8 +730,9 @@ set A
 
 Exterior ASCII spaces and tabs after completed headers and non-title statements
 disappear for clean line endings, including after kept parts and safe suffixes.
-Spaces inside names, labels, colors, style strings, title values, comments and
-directives remain authored text. [fixture:
+Spaces inside names, labels, colors, style strings, comments and directives
+remain authored text, and so do the spaces inside a title value; the spaces at
+its ends are left out (see [Title](#title)). [fixture:
 venn/trailing-whitespace/continuation-spaces] [corpus fixture:
 venn/db-after-set-label-size-space] [corpus fixture: venn/db-title-padding]
 [corpus fixture: venn/lex-tab-line-end] [fixture:
@@ -739,8 +741,8 @@ venn/trailing-whitespace/trailing-comment] [fixture:
 venn/trailing-whitespace/trailing-exterior] [fixture:
 venn/trailing-whitespace/trailing-in-values]
 
-Input `"venn-beta \nset A \n"` prints `"venn-beta\nset A\n"`; `title T  ` keeps
-its value spaces.
+Input `"venn-beta \nset A \n"` prints `"venn-beta\nset A\n"`; `title T  ` prints
+`title T`.
 
 ### Multiline values
 

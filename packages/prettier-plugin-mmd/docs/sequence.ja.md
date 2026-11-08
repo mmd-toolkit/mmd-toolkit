@@ -700,7 +700,7 @@ mermaid.js はそのように読みます。 [fixture: title/separator]
 [corpus fixture: sequence/lex-title-line-break]
 [corpus fixture: sequence/db-title-next-line-indented]
 [fixture: title/tab-and-colon-line-break] [fixture: title/line-break-indented]
-タイトルの末尾の空白は残します。 [fixture: title/trailing-whitespace-kept]
+タイトルの末尾の空白は残します。 [fixture: title/trailing-whitespace-dropped]
 [fixture: title/semicolon-after-whitespace-dropped]
 空白が行末にあるので、例は、`\n` を改行とする文字列で書きます。
 `"sequenceDiagram\ntitle Kept   \nA->>B: x\n"` は

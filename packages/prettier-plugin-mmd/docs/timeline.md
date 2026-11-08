@@ -290,18 +290,23 @@ timeline
 ### Periods and events
 
 A period and its events are printed as written, with the whitespace between
-their texts and their colons. The Db keeps the whitespace at the end of a
-period, which is the whitespace before its colon, and the whitespace at both
-ends of an event beyond the one character after its colon: `2004 : a` and
-`2004: a` are different periods, `a :   e` has the event `  e`, and `a : e   `
-the event `e   `. So the padding that aligns the colons of a timeline stays, and
-a colon that touches its period keeps touching it. [fixture:
+their texts and their colons, except for the whitespace at the end of the last
+event of a line: mermaid.js keeps it in the Db, but draws the same event without
+it (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+The Db keeps the whitespace at the end of a period, which is the whitespace
+before its colon, and the whitespace at both ends of an event beyond the one
+character after its colon: `2004 : a` and `2004: a` are different periods,
+`a :   e` has the event `  e`, and `a : e   ` the event `e   `. So the padding
+that aligns the colons of a timeline stays, and a colon that touches its period
+keeps touching it; `a : e   ` at the end of a line is printed `a : e`, and
+`c : g   : h` stays as written. [fixture:
 periods-and-events/period-whitespace-kept] [fixture:
-periods-and-events/event-whitespace-kept] [fixture:
+periods-and-events/event-padding-kept-end-dropped] [fixture:
 periods-and-events/whitespace-only-event] [fixture:
-periods-and-events/trailing-whitespace-kept] A colon, a `#`, and a `%%` in an
-event are characters of its text, and so are the colons that no whitespace
-follows. [fixture: periods-and-events/colon-inside-event] [fixture:
+periods-and-events/period-trailing-kept-event-end-dropped] A colon, a `#`, and a
+`%%` in an event are characters of its text, and so are the colons that no
+whitespace follows. [fixture: periods-and-events/colon-inside-event] [fixture:
 periods-and-events/special-characters-in-events] A `;` is a character of a text
 too (see [Statements one per line](#statements-one-per-line)). [fixture:
 periods-and-events/semicolons-in-texts-kept] [fixture:
@@ -564,17 +569,17 @@ timeline
 ### Titles and sections
 
 A `title` is printed with one space after the keyword, as in a user journey, and
-the value as written, the whitespace at its end included, which the Db keeps;
-the whitespace at the start of the value is left out (see
+the value without the whitespace at its start or at its end, which the Db keeps
+and which is drawn without (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-`title   History` is printed `title History`. The name of a `section` is printed
-as written, the whitespace at its start included: two sections whose names
-differ by it are drawn apart, and would not be once it is left out. A title of
-spaces and tabs only stays as written. [fixture:
+`title   History  ` is printed `title History`. The name of a `section` is
+printed as written, the whitespace at its start and at its end included: two
+sections whose names differ by it are drawn apart, and would not be once it is
+left out. A title of spaces and tabs only stays as written. [fixture:
 titles-and-sections/title-padding-dropped] [fixture:
 titles-and-sections/title-blank-kept] [fixture:
 titles-and-sections/section-padding-kept] [fixture:
-titles-and-sections/value-whitespace-kept] [fixture:
+titles-and-sections/title-trailing-dropped-section-kept] [fixture:
 titles-and-sections/one-space-after-keyword] A value written on a later line is
 printed after the keyword on one line; a comment line between them makes the
 statement printed as written (see

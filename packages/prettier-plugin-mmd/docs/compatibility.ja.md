@@ -1402,8 +1402,8 @@ mermaid.js は、Gantt 図の一部の値の空白を持ち、一部の行を、
   Db が持つので、空白 2 つの `dateFormat  YYYY-MM-DD` や、
   桁をそろえた `A task           :a1` は、空白を落とした形とは別のものです。
   コロンをそろえる空白も残ります。
-  [fixture: gantt/settings/value-whitespace-kept]
-  [fixture: gantt/titles-and-sections/value-whitespace-kept]
+  [fixture: gantt/settings/trailing-whitespace-by-setting]
+  [fixture: gantt/titles-and-sections/title-trailing-dropped-section-kept]
   [fixture: gantt/task-data/description-padding-kept]
 - タスクのデータの項目の中の空白、項目の数、タグの大文字小文字。
   `after   a1` は書かれたままの 1 つの項目で、
@@ -1462,7 +1462,7 @@ mermaid.js は、journey の一部の値の空白を持ち、一部の行を、
   Db が持つので、空白 2 つの `title  T` や、桁をそろえた `Make tea  : 5` は、
   空白を落とした形とは別のものです。
   コロンをそろえる空白も残ります。
-  [fixture: journey/titles-and-sections/value-whitespace-kept]
+  [fixture: journey/titles-and-sections/title-trailing-dropped-section-kept]
   [fixture: journey/task-data/description-padding-kept]
 - `title` と `section` の後の `#` の前の空白。
   値の一部ですが、タスクのデータの後では値に入りません。
@@ -1572,8 +1572,8 @@ mermaid.js は、timeline の period、event、title、section の名前の空�
   `:` をそろえる空白は残ります。
   行末の空白もテキストの一部です。
   [fixture: timeline/periods-and-events/period-whitespace-kept]
-  [fixture: timeline/periods-and-events/event-whitespace-kept]
-  [fixture: timeline/periods-and-events/trailing-whitespace-kept]
+  [fixture: timeline/periods-and-events/event-padding-kept-end-dropped]
+  [fixture: timeline/periods-and-events/period-trailing-kept-event-end-dropped]
 - event を書く行。
   後ろの行の event を period の行に空白 1 つで寄せると、
   前の event のテキストに空白が加わります。
@@ -2132,7 +2132,7 @@ semicolon は全て残し、共有の区間保持の経路で、
 
 [fixture: ishikawa/node-text/values-opaque]
 [fixture: ishikawa/inline-directives/directive-in-value]
-[fixture: ishikawa/trailing-whitespace/trailing-value-kept]
+[fixture: ishikawa/trailing-whitespace/trailing-value-dropped]
 [test: ishikawa: joined-common-region]
 [fixture: ishikawa/line-rule-and-kept-lines/line-rule-kept]
 

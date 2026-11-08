@@ -2435,9 +2435,9 @@ the value is removed rather than carried. Adding a branch that would newly trim
 an owned tail retains the body. This avoids confusing value text with structural
 padding; significant fixture tails are not shown in code blocks.
 
-[fixture: treeview/trailing-whitespace/trailing-bare-kept]
+[fixture: treeview/trailing-whitespace/trailing-bare-dropped]
 
-[fixture: treeview/trailing-whitespace/trailing-description-kept]
+[fixture: treeview/trailing-whitespace/trailing-description-dropped]
 
 [fixture: treeview/trailing-whitespace/trailing-quoted-interior]
 

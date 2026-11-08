@@ -40,7 +40,7 @@ import {
   isStructural,
   isWhitespace,
 } from "./source.ts"
-import { accessibilityRules } from "./statement-rules.ts"
+import { accessibilityRules, trimTextAfterKeyword } from "./statement-rules.ts"
 
 /** Written leaves, including number-looking text (docs/c4.md, Argument forms). */
 export const c4ValueNodeTypes: ReadonlySet<Node["type"]> = new Set([
@@ -477,11 +477,16 @@ export function layoutC4Text(source: Source, statement: C4Text): AtomLayout {
     source.text[separator] === "\u2029"
   )
     return keptAsWritten(start, end)
+  const atoms: Atom[] = [
+    { start, end: separator },
+    { start: separator + 1, end },
+  ]
+  // The whitespace after the separator is in the Db, and mermaid.js draws the
+  // same text without it (docs/compatibility.md, Texts after a keyword that
+  // are drawn the same).
+  trimTextAfterKeyword(source, atoms, [separator + 1, end])
   return {
-    atoms: [
-      { start, end: separator },
-      { start: separator + 1, end },
-    ],
+    atoms,
     rules: new Map([[separator + 1, "space"]]),
     outdented: new Set(),
     lineBreaks: "joined",

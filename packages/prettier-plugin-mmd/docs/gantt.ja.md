@@ -411,7 +411,7 @@ mermaid.js は値の先頭の空白を Db に残しますが、
 それ以外は、値を、両端の空白も含めて書かれたまま印字します。
 Db は値をそのまま持つので、
 末尾に空白 2 つがある `todayMarker off` は別のマーカーです。
-[fixture: settings/value-whitespace-kept]
+[fixture: settings/trailing-whitespace-by-setting]
 `todayMarker` の値は `#` を含み、どの値も `%%` をテキストの文字として含みます。
 `todayMarker` の値は `;` で終わり、`dateFormat`、`axisFormat`、
 `tickInterval` の値は、
@@ -481,7 +481,7 @@ gantt
 [fixture: titles-and-sections/title-padding-dropped]
 [fixture: titles-and-sections/title-blank-kept]
 [fixture: titles-and-sections/section-padding-kept]
-[fixture: titles-and-sections/value-whitespace-kept]
+[fixture: titles-and-sections/title-trailing-dropped-section-kept]
 [fixture: titles-and-sections/one-space-after-keyword]
 [fixture: titles-and-sections/value-on-next-line]
 値は `:`、`#`、`;`、`%%` を文字として含みます。

@@ -47,7 +47,7 @@ export function dbForFormattingComparison(
       afterSource,
     )
   if (keywordTextDiagramTypes.has(type))
-    compared = keywordTextDbForFormattingComparison(before, compared)
+    compared = keywordTextDbForFormattingComparison(before, compared, type)
   if (styleDiagramTypes.has(type))
     compared = styleDbForFormattingComparison(before, compared, type)
   if (clickCallDiagramTypes.has(type))

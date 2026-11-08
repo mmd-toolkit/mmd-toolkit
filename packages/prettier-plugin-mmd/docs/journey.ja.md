@@ -426,7 +426,7 @@ journey
 [fixture: titles-and-sections/title-padding-dropped]
 [fixture: titles-and-sections/title-blank-kept]
 [fixture: titles-and-sections/section-padding-kept]
-[fixture: titles-and-sections/value-whitespace-kept]
+[fixture: titles-and-sections/title-trailing-dropped-section-kept]
 [fixture: titles-and-sections/one-space-after-keyword]
 後の行に書かれた値は、キーワードの後に寄せて 1 行にします。
 間にコメント行があれば、

@@ -27,7 +27,9 @@ import type { Source } from "./source.ts"
 import {
   findCoveringRange,
   findStructuralToken,
+  findTriviaAt,
   findTriviaBetween,
+  isSpaceOrTab,
   isWhitespace,
   skipSpacesAndTabs,
 } from "./source.ts"
@@ -236,6 +238,25 @@ function treeviewNodeParts(node: TreeviewNode): readonly Node[] {
 }
 
 /**
+ * The atom without the spaces and tabs at its end, where it is the last of its
+ * line. mermaid.js trims the name and the description of a node, so the Db and
+ * the figure are the same without them (docs/treeview.md, Trailing whitespace).
+ * An atom of whitespace only stays as written. So does an atom that ends with a
+ * comment, whose spaces and tabs are its own, and one that a comment or a
+ * directive follows, whose gap is the gap of that trivia.
+ */
+function trimAtomEnd(source: Source, atom: Atom): Atom {
+  if (
+    findTriviaAt(source, atom.end - 1) !== undefined ||
+    findTriviaBetween(source, atom.end, atom.end + 1).length > 0
+  )
+    return atom
+  let end = atom.end
+  while (end > atom.start && isSpaceOrTab(source.text[end - 1])) end--
+  return end === atom.start || end === atom.end ? atom : { ...atom, end }
+}
+
+/**
  * The atoms of a node with the spaces and tabs after the `##` of a description
  * left out of the description, which mermaid.js trims (docs/treeview.md,
  * Descriptions). A description of spaces and tabs only stays as written.
@@ -247,7 +268,8 @@ function trimDescriptionPadding(
   atoms: readonly Atom[],
   texts: Set<number>,
 ): Atom[] {
-  return atoms.map((atom) => {
+  return atoms.map((atom, index) => {
+    if (index === atoms.length - 1) atom = trimAtomEnd(source, atom)
     const described = item.annotations.some(
       (annotation) =>
         annotation.type === "TreeviewDescriptionAnnotation" &&

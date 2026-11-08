@@ -25,13 +25,14 @@ import {
   expectValue,
   keepFirstGapLineTails,
   keptAsWritten,
+  replaceInAtoms,
   spansLinesThatCannotJoin,
   layoutDescriptionBlock,
   toAsciiLowerCase,
 } from "./layout.ts"
 import { accessibilityRules, trimTextAfterKeyword } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
-import { findStructuralToken } from "./source.ts"
+import { findStructuralToken, isSpaceOrTab } from "./source.ts"
 
 /**
  * The node types of a timeline whose text is a value, printed as written:
@@ -258,6 +259,7 @@ function layoutEvents(
   if (joinedBefore.size > 0 && spansLinesThatCannotJoin(source, start, end)) {
     return keptAsWritten(start, end)
   }
+  trimLastEventEnd(source, atoms, statement.events.at(-1))
   return {
     atoms: atoms.map((atom) =>
       alignedColons.has(atom.start) ? { ...atom, statementPadding } : atom,
@@ -267,4 +269,26 @@ function layoutEvents(
     lineBreaks: "kept",
     joinedBefore,
   }
+}
+
+/**
+ * Leaves the spaces and tabs at the end of the last event of a line out of what
+ * is printed. mermaid.js keeps them in the Db as the end of the event and draws
+ * the same text without them; the whitespace before the next `:` of a line is
+ * padding of the colons and stays (docs/timeline.md, Periods and events). An
+ * event of whitespace only stays as written.
+ */
+function trimLastEventEnd(
+  source: Source,
+  atoms: Atom[],
+  event: Node | undefined,
+): void {
+  if (event === undefined) return
+  const [from, to] = event.range
+  let contentEnd = to
+  while (contentEnd > from && isSpaceOrTab(source.text[contentEnd - 1])) {
+    contentEnd--
+  }
+  if (contentEnd === from || contentEnd === to) return
+  replaceInAtoms(source, atoms, [{ range: [contentEnd, to], replacement: "" }])
 }

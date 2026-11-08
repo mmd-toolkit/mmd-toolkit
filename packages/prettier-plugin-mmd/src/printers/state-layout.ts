@@ -55,6 +55,7 @@ import {
   isStructural,
   isWhitespace,
 } from "./source.ts"
+import { printAsWritten } from "./lines.ts"
 import { findStateSemicolonLines } from "./state-kept-lines.ts"
 import {
   addCssClassRules,
@@ -604,9 +605,9 @@ function findBlankDescriptionStretches(
 
 /**
  * The stretch of the second description of an alias definition without a
- * body: from its `:` to the end of the statement, with the whitespace at
- * the end of the line when nothing follows the second description, as
- * written. mermaid.js reads the text between the first `:` and the second
+ * body: from its `:` to the end of the statement, as written, without the
+ * whitespace at the end of the line when nothing follows the second
+ * description and the text is not whitespace only. mermaid.js reads the text between the first `:` and the second
  * `:` or the end, whitespace included: `state "d" as A :x` and
  * `state "d" as A : x` give A different second descriptions
  * (docs/state.md, Aliases).
@@ -624,7 +625,28 @@ function findSecondDescriptionStretches(
   }
   const colon = findSecondDescriptionColon(source, statement)
   if (colon === null) return []
-  return [{ start: colon.range[0], end }]
+  // The whitespace at the end of the line is part of what mermaid.js reads
+  // and draws the same without it, unless it is all there is after the `:`.
+  let contentEnd = end
+  while (
+    contentEnd > colon.range[1] &&
+    isSpaceOrTab(source.text[contentEnd - 1])
+  ) {
+    contentEnd--
+  }
+  // A `;` there is read by the line rule, which the end of the line decides.
+  const holdsSemicolon = source.text
+    .slice(colon.range[0], contentEnd)
+    .includes(";")
+  return [
+    contentEnd > colon.range[1] && !holdsSemicolon
+      ? {
+          start: colon.range[0],
+          end,
+          doc: printAsWritten(source, colon.range[0], contentEnd),
+        }
+      : { start: colon.range[0], end },
+  ]
 }
 
 /**

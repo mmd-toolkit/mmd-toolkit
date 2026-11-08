@@ -671,7 +671,7 @@ LF と title で受理する広い種類の区切りは正規化します。
 [fixture: venn/title/title-statement-words]
 [fixture: venn/title/title-tab-separator]
 
-[fixture: venn/title/title-trim-unsafe]
+[fixture: venn/title/title-ends-dropped-at-end-of-input]
 [fixture: venn/title/title-whitespace-only]
 
 入力（escape 表記）:

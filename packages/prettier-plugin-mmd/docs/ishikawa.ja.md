@@ -415,9 +415,9 @@ EOF の余白も literal の値の一部です。
 値は作者が書いたものであり、Mermaid が trim しても、
 Db が等しいことは値を消す理由になりません。
 mindmap と同じ、書かれた値を保つ選択です。
-[fixture: ishikawa/trailing-whitespace/trailing-colon-kept]
+[fixture: ishikawa/trailing-whitespace/trailing-colon-dropped]
 [fixture: ishikawa/trailing-whitespace/trailing-kept-semicolon]
-[fixture: ishikawa/trailing-whitespace/trailing-value-kept]
+[fixture: ishikawa/trailing-whitespace/trailing-value-dropped]
 [fixture: ishikawa/trailing-whitespace/trailing-value-drop-alternative]
 [fixture: ishikawa/trailing-whitespace/unpadded-values]
 [test: ishikawa: trailing-nbsp] [test: ishikawa: trailing-unicode-separators]

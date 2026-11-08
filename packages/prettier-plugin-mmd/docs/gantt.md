@@ -387,20 +387,21 @@ gantt
 ### Settings
 
 `dateFormat` and `axisFormat` are printed with one space after the keyword and
-the value after it: mermaid.js keeps the whitespace at the start of the value in
-the Db, but draws the same figure without it (see
+the value after it, without the whitespace at the start or at the end of the
+value: mermaid.js keeps that whitespace in the Db, but draws the same figure
+without it (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-`dateFormat   YYYY-MM-DD` is printed `dateFormat YYYY-MM-DD`. [fixture:
+`dateFormat   YYYY-MM-DD  ` is printed `dateFormat YYYY-MM-DD`. [fixture:
 settings/format-padding-dropped] A date format of spaces and tabs only stays as
 written. [fixture: settings/format-blank-kept] A date format of `D` stays as
 written, since the axis of days is drawn only where `D` has no whitespace around
 it, and so does `tickInterval`, which is read as a whole, so that whitespace
-before it turns its ticks into the default ones. [fixture:
-settings/format-padding-kept-where-drawn-differently] The values are otherwise
-printed as written, the whitespace at their ends included: the Db keeps the
-value as it is, so `todayMarker off` followed by two spaces is another marker.
-[fixture: settings/value-whitespace-kept] The value of `todayMarker` holds `#`,
-and every value holds `%%`, as characters of the text; the value of
+before or after it turns its ticks into the default ones. [fixture:
+settings/format-padding-kept-where-drawn-differently] The value of `todayMarker`
+is printed as written, the whitespace at its ends included: `todayMarker off`
+followed by two spaces is another marker, which draws the line of today.
+[fixture: settings/trailing-whitespace-by-setting] The value of `todayMarker`
+holds `#`, and every value holds `%%`, as characters of the text; the value of
 `todayMarker` ends at a `;`, and the value of `dateFormat`, `axisFormat`, and
 `tickInterval` ends at a `#` or a `;` (see
 [Statements one per line](#statements-one-per-line)). [fixture:
@@ -455,17 +456,17 @@ gantt
 ### Titles and sections
 
 A `title` is printed as the settings are: one space after the keyword, and the
-value as written, the whitespace at its end included, which the Db keeps; the
-whitespace at the start of the value is left out (see
+value without the whitespace at its start or at its end, which the Db keeps and
+which is drawn without (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-`title   Plan` is printed `title Plan`. The name of a `section` is printed as
-written, the whitespace at its start included: two sections whose names differ
-by it are drawn apart, and would not be once it is left out. `section  A` after
-`section A` stays so. A title of spaces and tabs only stays as written.
-[fixture: titles-and-sections/title-padding-dropped] [fixture:
+`title   Plan  ` is printed `title Plan`. The name of a `section` is printed as
+written, the whitespace at its start and at its end included: two sections whose
+names differ by it are drawn apart, and would not be once it is left out.
+`section  A` after `section A` stays so. A title of spaces and tabs only stays
+as written. [fixture: titles-and-sections/title-padding-dropped] [fixture:
 titles-and-sections/title-blank-kept] [fixture:
 titles-and-sections/section-padding-kept] [fixture:
-titles-and-sections/value-whitespace-kept] [fixture:
+titles-and-sections/title-trailing-dropped-section-kept] [fixture:
 titles-and-sections/one-space-after-keyword] [fixture:
 titles-and-sections/value-on-next-line] The value holds `:`, `#`, `;`, and `%%`
 as characters. [fixture: titles-and-sections/special-characters-in-values] A

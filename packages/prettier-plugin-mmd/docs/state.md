@@ -938,11 +938,17 @@ apart in one form (`asA` is no `as`). [fixture: aliases/second-description-kept]
 [fixture: aliases/tabs-between-parts] [fixture: aliases/id-kept] The `""` that
 it does not read before and after the string stand apart from it in the same
 way. `asA` is no `as`, and is rejected. The second description, the text after
-the `:`, is kept as written: mermaid.js reads it with the whitespace at its
-ends, so `:short` and `: short` give different descriptions. [corpus fixture:
-state/db-alias-colon-spaces-second] [fixture: aliases/second-description-kept]
-[fixture: aliases/second-description-trailing-whitespace-kept] The whitespace
-before the `:` becomes one space.
+the `:`, is kept as written, except for the whitespace at its end: mermaid.js
+reads it with the whitespace at its ends, so `:short` and `: short` give
+different descriptions, and draws it without the whitespace at its end (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+A description of spaces and tabs only, and one that holds a `;`, stay as
+written. [corpus fixture: state/db-alias-colon-spaces-second] [fixture:
+aliases/second-description-kept] [fixture:
+aliases/second-description-trailing-whitespace-dropped] [fixture:
+aliases/second-description-blank-kept] [fixture:
+aliases/second-description-semicolon-kept] The whitespace before the `:` becomes
+one space.
 
 Input
 ([aliases/second-description-kept-input.mmd](../tests/fixtures/state/aliases/second-description-kept-input.mmd)):
