@@ -1,0 +1,550 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: flowchart-no-spaced-link-stroke >> invalid >>> docs/rules/flowchart-no-spaced-link-stroke.md incorrect 1
+Filename: flowchart-no-spaced-link-stroke-incorrect-1.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke :#f00,stroke-width:4px
+    |                     ^ [1]
+  4 |
+
+Output:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke:#f00,stroke-width:4px
+  4 |
+
+[1] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+---
+
+
+Test: flowchart-no-spaced-link-stroke >> invalid >>> docs/rules/flowchart-no-spaced-link-stroke.md incorrect 2
+Filename: flowchart-no-spaced-link-stroke-incorrect-2.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A e1@--> B
+  3 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  4 |   class e1 hot
+  5 |
+
+Output:
+  1 | flowchart LR
+  2 |   A e1@--> B
+  3 |   classDef hot stroke:#f00
+  4 |   class e1 hot
+  5 |
+
+[1] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+---
+
+
+Test: flowchart-no-spaced-link-stroke >> invalid >>> invalid/flowchart/class-def-default-link-style-too
+Filename: tests/fixtures/rules/flowchart-no-spaced-link-stroke/invalid/flowchart/class-def-default-link-style-too-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A e1@--> B
+  3 |   linkStyle default stroke :#00f
+    |                           ^ [1]
+  4 |   classDef hot stroke :#f00
+    |                      ^ [2]
+  5 |   class e1 hot
+  6 |
+
+Output:
+  1 | flowchart LR
+  2 |   A e1@--> B
+  3 |   linkStyle default stroke:#00f
+  4 |   classDef hot stroke:#f00
+  5 |   class e1 hot
+  6 |
+
+[1] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+[2] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+---
+
+
+Test: flowchart-no-spaced-link-stroke >> invalid >>> invalid/flowchart/class-def-several-names
+Filename: tests/fixtures/rules/flowchart-no-spaced-link-stroke/invalid/flowchart/class-def-several-names-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A e1@--> B
+  3 |   classDef hot,cold stroke :#f00
+    |                           ^ [1]
+  4 |   class e1 cold
+  5 |
+
+Output:
+  1 | flowchart LR
+  2 |   A e1@--> B
+  3 |   classDef hot,cold stroke:#f00
+  4 |   class e1 cold
+  5 |
+
+[1] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+---
+
+
+Test: flowchart-no-spaced-link-stroke >> invalid >>> invalid/flowchart/class-def-taken-by-generated-link-id
+Filename: tests/fixtures/rules/flowchart-no-spaced-link-stroke/invalid/flowchart/class-def-taken-by-generated-link-id-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  4 |   class L_A_B_0 hot
+  5 |
+
+Output:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   classDef hot stroke:#f00
+  4 |   class L_A_B_0 hot
+  5 |
+
+[1] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+---
+
+
+Test: flowchart-no-spaced-link-stroke >> invalid >>> invalid/flowchart/class-def-taken-by-link-after
+Filename: tests/fixtures/rules/flowchart-no-spaced-link-stroke/invalid/flowchart/class-def-taken-by-link-after-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A e1@--> B
+  3 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  4 |   class e1 hot
+  5 |
+
+Output:
+  1 | flowchart LR
+  2 |   A e1@--> B
+  3 |   classDef hot stroke:#f00
+  4 |   class e1 hot
+  5 |
+
+[1] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+---
+
+
+Test: flowchart-no-spaced-link-stroke >> invalid >>> invalid/flowchart/class-def-taken-by-link-before
+Filename: tests/fixtures/rules/flowchart-no-spaced-link-stroke/invalid/flowchart/class-def-taken-by-link-before-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A e1@--> B
+  3 |   class e1 hot
+  4 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  5 |
+
+Output:
+  1 | flowchart LR
+  2 |   A e1@--> B
+  3 |   class e1 hot
+  4 |   classDef hot stroke:#f00
+  5 |
+
+[1] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+---
+
+
+Test: flowchart-no-spaced-link-stroke >> invalid >>> invalid/flowchart/class-def-taken-by-link-in-subgraph
+Filename: tests/fixtures/rules/flowchart-no-spaced-link-stroke/invalid/flowchart/class-def-taken-by-link-in-subgraph-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   subgraph s
+  3 |     A e1@--> B
+  4 |   end
+  5 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  6 |   class e1 hot
+  7 |
+
+Output:
+  1 | flowchart LR
+  2 |   subgraph s
+  3 |     A e1@--> B
+  4 |   end
+  5 |   classDef hot stroke:#f00
+  6 |   class e1 hot
+  7 |
+
+[1] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+---
+
+
+Test: flowchart-no-spaced-link-stroke >> invalid >>> invalid/flowchart/class-def-taken-by-vertex-and-link
+Filename: tests/fixtures/rules/flowchart-no-spaced-link-stroke/invalid/flowchart/class-def-taken-by-vertex-and-link-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A e1@--> B
+  3 |   classDef hot stroke :#f00
+    |                      ^ [1]
+  4 |   class A,e1 hot
+  5 |
+
+Output:
+  1 | flowchart LR
+  2 |   A e1@--> B
+  3 |   classDef hot stroke:#f00
+  4 |   class A,e1 hot
+  5 |
+
+[1] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+---
+
+
+Test: flowchart-no-spaced-link-stroke >> invalid >>> invalid/flowchart/flowchart-elk-link-style-spaced-stroke
+Filename: tests/fixtures/rules/flowchart-no-spaced-link-stroke/invalid/flowchart/flowchart-elk-link-style-spaced-stroke-input.mmd
+
+Code:
+  1 | flowchart-elk LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke :#f00
+    |                     ^ [1]
+  4 |
+
+Output:
+  1 | flowchart-elk LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke:#f00
+  4 |
+
+[1] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+---
+
+
+Test: flowchart-no-spaced-link-stroke >> invalid >>> invalid/flowchart/graph-link-style-spaced-stroke
+Filename: tests/fixtures/rules/flowchart-no-spaced-link-stroke/invalid/flowchart/graph-link-style-spaced-stroke-input.mmd
+
+Code:
+  1 | graph LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke :#f00
+    |                     ^ [1]
+  4 |
+
+Output:
+  1 | graph LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke:#f00
+  4 |
+
+[1] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+---
+
+
+Test: flowchart-no-spaced-link-stroke >> invalid >>> invalid/flowchart/link-style-after-comment-line
+Filename: tests/fixtures/rules/flowchart-no-spaced-link-stroke/invalid/flowchart/link-style-after-comment-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   %% note
+  4 |   linkStyle 0 stroke :#f00
+    |                     ^ [1]
+  5 |
+
+Output:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   %% note
+  4 |   linkStyle 0 stroke:#f00
+  5 |
+
+[1] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+---
+
+
+Test: flowchart-no-spaced-link-stroke >> invalid >>> invalid/flowchart/link-style-after-directive-line
+Filename: tests/fixtures/rules/flowchart-no-spaced-link-stroke/invalid/flowchart/link-style-after-directive-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   %%{init: {}}%%
+  4 |   linkStyle 0 stroke :#f00
+    |                     ^ [1]
+  5 |
+
+Output:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   %%{init: {}}%%
+  4 |   linkStyle 0 stroke:#f00
+  5 |
+
+[1] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+---
+
+
+Test: flowchart-no-spaced-link-stroke >> invalid >>> invalid/flowchart/link-style-after-empty-line
+Filename: tests/fixtures/rules/flowchart-no-spaced-link-stroke/invalid/flowchart/link-style-after-empty-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |
+  4 |   linkStyle 0 stroke :#f00
+    |                     ^ [1]
+  5 |
+
+Output:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |
+  4 |   linkStyle 0 stroke:#f00
+  5 |
+
+[1] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+---
+
+
+Test: flowchart-no-spaced-link-stroke >> invalid >>> invalid/flowchart/link-style-default
+Filename: tests/fixtures/rules/flowchart-no-spaced-link-stroke/invalid/flowchart/link-style-default-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle default stroke :#f00
+    |                           ^ [1]
+  4 |
+
+Output:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle default stroke:#f00
+  4 |
+
+[1] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+---
+
+
+Test: flowchart-no-spaced-link-stroke >> invalid >>> invalid/flowchart/link-style-directive-inside-style
+Filename: tests/fixtures/rules/flowchart-no-spaced-link-stroke/invalid/flowchart/link-style-directive-inside-style-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke %%{init: {}}%%:#f00
+    |               ^~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+Output: unchanged
+
+[1] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+---
+
+
+Test: flowchart-no-spaced-link-stroke >> invalid >>> invalid/flowchart/link-style-ignored-semicolon
+Filename: tests/fixtures/rules/flowchart-no-spaced-link-stroke/invalid/flowchart/link-style-ignored-semicolon-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke :red;
+    |                     ^ [1]
+  4 |
+
+Output:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke:red;
+  4 |
+
+[1] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+---
+
+
+Test: flowchart-no-spaced-link-stroke >> invalid >>> invalid/flowchart/link-style-many-spaces
+Filename: tests/fixtures/rules/flowchart-no-spaced-link-stroke/invalid/flowchart/link-style-many-spaces-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke   :#f00
+    |                     ^~~ [1]
+  4 |
+
+Output:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke:#f00
+  4 |
+
+[1] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+---
+
+
+Test: flowchart-no-spaced-link-stroke >> invalid >>> invalid/flowchart/link-style-name-ends-with-stroke
+Filename: tests/fixtures/rules/flowchart-no-spaced-link-stroke/invalid/flowchart/link-style-name-ends-with-stroke-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 text-stroke :#f00
+    |                          ^ [1]
+  4 |
+
+Output:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 text-stroke:#f00
+  4 |
+
+[1] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+---
+
+
+Test: flowchart-no-spaced-link-stroke >> invalid >>> invalid/flowchart/link-style-second-style
+Filename: tests/fixtures/rules/flowchart-no-spaced-link-stroke/invalid/flowchart/link-style-second-style-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 fill:none, stroke :#f00
+    |                                ^ [1]
+  4 |
+
+Output:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 fill:none, stroke:#f00
+  4 |
+
+[1] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+---
+
+
+Test: flowchart-no-spaced-link-stroke >> invalid >>> invalid/flowchart/link-style-several-links
+Filename: tests/fixtures/rules/flowchart-no-spaced-link-stroke/invalid/flowchart/link-style-several-links-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   B --> C
+  4 |   linkStyle 0,1 stroke :#f00
+    |                       ^ [1]
+  5 |
+
+Output:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   B --> C
+  4 |   linkStyle 0,1 stroke:#f00
+  5 |
+
+[1] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+---
+
+
+Test: flowchart-no-spaced-link-stroke >> invalid >>> invalid/flowchart/link-style-spaced-stroke
+Filename: tests/fixtures/rules/flowchart-no-spaced-link-stroke/invalid/flowchart/link-style-spaced-stroke-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke :#f00,stroke-width:4px
+    |                     ^ [1]
+  4 |
+
+Output:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke:#f00,stroke-width:4px
+  4 |
+
+[1] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+---
+
+
+Test: flowchart-no-spaced-link-stroke >> invalid >>> invalid/flowchart/link-style-spaces-both-sides-of-colon
+Filename: tests/fixtures/rules/flowchart-no-spaced-link-stroke/invalid/flowchart/link-style-spaces-both-sides-of-colon-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke : #f00
+    |                     ^ [1]
+  4 |
+
+Output:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke: #f00
+  4 |
+
+[1] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+---
+
+
+Test: flowchart-no-spaced-link-stroke >> invalid >>> invalid/flowchart/link-style-trailing-spaces
+Filename: tests/fixtures/rules/flowchart-no-spaced-link-stroke/invalid/flowchart/link-style-trailing-spaces-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke :#f00  
+    |                     ^ [1]
+  4 |
+
+Output:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke:#f00  
+  4 |
+
+[1] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+---
+
+
+Test: flowchart-no-spaced-link-stroke >> invalid >>> invalid/flowchart/link-style-two-spaced-strokes
+Filename: tests/fixtures/rules/flowchart-no-spaced-link-stroke/invalid/flowchart/link-style-two-spaced-strokes-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke :#f00, stroke :#0f0
+    |                     ^ [1]         ^ [2]
+  4 |
+
+Output:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke:#f00, stroke:#0f0
+  4 |
+
+[1] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+[2] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+---
+
+
+Test: flowchart-no-spaced-link-stroke >> invalid >>> invalid/flowchart/swimlane-beta-link-style-spaced-stroke
+Filename: tests/fixtures/rules/flowchart-no-spaced-link-stroke/invalid/flowchart/swimlane-beta-link-style-spaced-stroke-input.mmd
+
+Code:
+  1 | swimlane-beta LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke :#f00
+    |                     ^ [1]
+  4 |
+
+Output:
+  1 | swimlane-beta LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke:#f00
+  4 |
+
+[1] mermaid.js draws the line with this style but finds the colour of the arrowhead by `stroke:`, so the whitespace before the `:` leaves the arrowhead in the colour of the theme.
+---

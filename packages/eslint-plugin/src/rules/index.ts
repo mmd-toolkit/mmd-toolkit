@@ -9,6 +9,7 @@ import { agentflowNoIgnoredText } from "./agentflow-no-ignored-text.ts"
 import { agentflowNoRedefinedConnector } from "./agentflow-no-redefined-connector.ts"
 import { agentflowNoRedefinedFlow } from "./agentflow-no-redefined-flow.ts"
 import { agentflowNoRedefinedVertex } from "./agentflow-no-redefined-vertex.ts"
+import { agentflowNoSpacedLinkStroke } from "./agentflow-no-spaced-link-stroke.ts"
 import { agentflowNoUnclosedDescriptionBlock } from "./agentflow-no-unclosed-description-block.ts"
 import { agentflowNoUndef } from "./agentflow-no-undef.ts"
 import { architectureNoDuplicateDescription } from "./architecture-no-duplicate-description.ts"
@@ -66,6 +67,7 @@ import { flowchartNoEmptyDescriptionBlock } from "./flowchart-no-empty-descripti
 import { flowchartNoIgnoredText } from "./flowchart-no-ignored-text.ts"
 import { flowchartNoRedefinedSubgraph } from "./flowchart-no-redefined-subgraph.ts"
 import { flowchartNoRedefinedVertex } from "./flowchart-no-redefined-vertex.ts"
+import { flowchartNoSpacedLinkStroke } from "./flowchart-no-spaced-link-stroke.ts"
 import { flowchartNoUnclosedDescriptionBlock } from "./flowchart-no-unclosed-description-block.ts"
 import { flowchartNoUndef } from "./flowchart-no-undef.ts"
 import { ganttNoDuplicateDescription } from "./gantt-no-duplicate-description.ts"
@@ -104,6 +106,7 @@ import { quadrantNoDuplicateDescription } from "./quadrant-no-duplicate-descript
 import { quadrantNoDuplicateStyle } from "./quadrant-no-duplicate-style.ts"
 import { quadrantNoDuplicateTitle } from "./quadrant-no-duplicate-title.ts"
 import { quadrantNoEmptyDescriptionBlock } from "./quadrant-no-empty-description-block.ts"
+import { quadrantNoInvalidColor } from "./quadrant-no-invalid-color.ts"
 import { quadrantNoInvalidCoordinate } from "./quadrant-no-invalid-coordinate.ts"
 import { quadrantNoRedefinedAxis } from "./quadrant-no-redefined-axis.ts"
 import { quadrantNoRedefinedClass } from "./quadrant-no-redefined-class.ts"
@@ -204,6 +207,7 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "agentflow-no-redefined-connector": agentflowNoRedefinedConnector,
   "agentflow-no-redefined-flow": agentflowNoRedefinedFlow,
   "agentflow-no-redefined-vertex": agentflowNoRedefinedVertex,
+  "agentflow-no-spaced-link-stroke": agentflowNoSpacedLinkStroke,
   "agentflow-no-unclosed-description-block":
     agentflowNoUnclosedDescriptionBlock,
   "agentflow-no-undef": agentflowNoUndef,
@@ -265,6 +269,7 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "flowchart-no-ignored-text": flowchartNoIgnoredText,
   "flowchart-no-redefined-subgraph": flowchartNoRedefinedSubgraph,
   "flowchart-no-redefined-vertex": flowchartNoRedefinedVertex,
+  "flowchart-no-spaced-link-stroke": flowchartNoSpacedLinkStroke,
   "flowchart-no-unclosed-description-block":
     flowchartNoUnclosedDescriptionBlock,
   "flowchart-no-undef": flowchartNoUndef,
@@ -304,6 +309,7 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "quadrant-no-duplicate-style": quadrantNoDuplicateStyle,
   "quadrant-no-duplicate-title": quadrantNoDuplicateTitle,
   "quadrant-no-empty-description-block": quadrantNoEmptyDescriptionBlock,
+  "quadrant-no-invalid-color": quadrantNoInvalidColor,
   "quadrant-no-invalid-coordinate": quadrantNoInvalidCoordinate,
   "quadrant-no-redefined-axis": quadrantNoRedefinedAxis,
   "quadrant-no-redefined-class": quadrantNoRedefinedClass,

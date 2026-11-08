@@ -44,6 +44,7 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 | [flowchart-no-ignored-text](./flowchart-no-ignored-text.md)                             | Disallow text on a direction line that mermaid.js drops.                                             | ✅  |     |     |
 | [flowchart-no-redefined-subgraph](./flowchart-no-redefined-subgraph.md)                 | Disallow a subgraph declaration whose title differs from the title kept for its id.                  | ✅  |     |     |
 | [flowchart-no-redefined-vertex](./flowchart-no-redefined-vertex.md)                     | Disallow writing a vertex again, differently or in a subgraph that does not get it.                  | ✅  |     |     |
+| [flowchart-no-spaced-link-stroke](./flowchart-no-spaced-link-stroke.md)                 | Disallow whitespace before the `:` of a `stroke` style of a link.                                    |     | 🔧  |     |
 | [flowchart-no-unclosed-description-block](./flowchart-no-unclosed-description-block.md) | Disallow an `accDescr {` block without its closing `}`.                                              |     |     | 💡  |
 | [flowchart-no-undef](./flowchart-no-undef.md)                                           | Disallow a `style`, `class`, or `click` statement that names an id that the diagram does not define. | ✅  |     |     |
 
@@ -131,17 +132,18 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 
 ## quadrant
 
-| Rule                                                                            | Description                                                            | ✅  | 🔧  | 💡  |
-| ------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | --- | --- | --- |
-| [quadrant-no-duplicate-description](./quadrant-no-duplicate-description.md)     | Disallow a statement that sets the description of the chart again.     | ✅  |     | 💡  |
-| [quadrant-no-duplicate-style](./quadrant-no-duplicate-style.md)                 | Disallow a style that a point or a class gives again.                  | ✅  |     | 💡  |
-| [quadrant-no-duplicate-title](./quadrant-no-duplicate-title.md)                 | Disallow a `title` or `accTitle` statement that sets its title again.  | ✅  |     | 💡  |
-| [quadrant-no-empty-description-block](./quadrant-no-empty-description-block.md) | Disallow a description block that holds no description.                | ✅  |     | 💡  |
-| [quadrant-no-invalid-coordinate](./quadrant-no-invalid-coordinate.md)           | Disallow a coordinate of a point that is not a number from 0 to 1.     | ✅  | 🔧  |     |
-| [quadrant-no-redefined-axis](./quadrant-no-redefined-axis.md)                   | Disallow an axis statement that replaces a text of the axis.           | ✅  |     |     |
-| [quadrant-no-redefined-class](./quadrant-no-redefined-class.md)                 | Disallow a `classDef` statement that replaces the styles of its class. | ✅  |     | 💡  |
-| [quadrant-no-redefined-quadrant](./quadrant-no-redefined-quadrant.md)           | Disallow a quadrant statement that replaces the text of its quadrant.  | ✅  |     | 💡  |
-| [quadrant-no-undef](./quadrant-no-undef.md)                                     | Disallow a class of a point that no `classDef` defines.                | ✅  |     |     |
+| Rule                                                                            | Description                                                                   | ✅  | 🔧  | 💡  |
+| ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | --- | --- | --- |
+| [quadrant-no-duplicate-description](./quadrant-no-duplicate-description.md)     | Disallow a statement that sets the description of the chart again.            | ✅  |     | 💡  |
+| [quadrant-no-duplicate-style](./quadrant-no-duplicate-style.md)                 | Disallow a style that a point or a class gives again.                         | ✅  |     | 💡  |
+| [quadrant-no-duplicate-title](./quadrant-no-duplicate-title.md)                 | Disallow a `title` or `accTitle` statement that sets its title again.         | ✅  |     | 💡  |
+| [quadrant-no-empty-description-block](./quadrant-no-empty-description-block.md) | Disallow a description block that holds no description.                       | ✅  |     | 💡  |
+| [quadrant-no-invalid-color](./quadrant-no-invalid-color.md)                     | Disallow a hexadecimal colour without `#` in the style of a point or a class. | ✅  | 🔧  |     |
+| [quadrant-no-invalid-coordinate](./quadrant-no-invalid-coordinate.md)           | Disallow a coordinate of a point that is not a number from 0 to 1.            | ✅  | 🔧  |     |
+| [quadrant-no-redefined-axis](./quadrant-no-redefined-axis.md)                   | Disallow an axis statement that replaces a text of the axis.                  | ✅  |     |     |
+| [quadrant-no-redefined-class](./quadrant-no-redefined-class.md)                 | Disallow a `classDef` statement that replaces the styles of its class.        | ✅  |     | 💡  |
+| [quadrant-no-redefined-quadrant](./quadrant-no-redefined-quadrant.md)           | Disallow a quadrant statement that replaces the text of its quadrant.         | ✅  |     | 💡  |
+| [quadrant-no-undef](./quadrant-no-undef.md)                                     | Disallow a class of a point that no `classDef` defines.                       | ✅  |     |     |
 
 ## requirement
 
@@ -356,6 +358,7 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 | [agentflow-no-redefined-connector](./agentflow-no-redefined-connector.md)               | Disallow a connector declaration that replaces the title or the vertex written for its id before, or that a later flow does not get. | ✅  |     |     |
 | [agentflow-no-redefined-flow](./agentflow-no-redefined-flow.md)                         | Disallow a flow declaration that replaces the title written for its id before.                                                       | ✅  |     |     |
 | [agentflow-no-redefined-vertex](./agentflow-no-redefined-vertex.md)                     | Disallow a vertex that replaces the label or the shape written for its id before, or that a later flow does not get.                 | ✅  |     |     |
+| [agentflow-no-spaced-link-stroke](./agentflow-no-spaced-link-stroke.md)                 | Disallow whitespace before the `:` of a `stroke` style of a link.                                                                    |     | 🔧  |     |
 | [agentflow-no-unclosed-description-block](./agentflow-no-unclosed-description-block.md) | Disallow an `accDescr {` block that is not closed by `}`.                                                                            |     |     | 💡  |
 | [agentflow-no-undef](./agentflow-no-undef.md)                                           | Disallow a `style`, `class`, or `click` statement for an id that nothing declares.                                                   | ✅  |     |     |
 
