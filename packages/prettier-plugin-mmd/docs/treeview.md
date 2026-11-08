@@ -2472,9 +2472,13 @@ gap before a directive that follows a name or a description is one space in the
 indented form and in the form with branch characters: mermaid.js removes the
 directive before it reads the value and drops the spaces and tabs at the end of
 the value, so the gap is in neither the Db nor the figure, and `R   %%{x}%%` is
-printed `R %%{x}%%`, the form of a title. At the end of a name or a description,
-U+2028 and U+2029 are characters of the text and no spaces or tabs: the spaces
-after one are left out, and the spaces before it stay. [test:
+printed `R %%{x}%%`, the form of a title. Several directives are printed as at
+the end of a title (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)):
+`R   %%{x}%%   %%{y}%%  ` is printed `R %%{x}%% %%{y}%%`. [fixture:
+trailing-whitespace/directives-end-blanks-dropped] At the end of a name or a
+description, U+2028 and U+2029 are characters of the text and no spaces or tabs:
+the spaces after one are left out, and the spaces before it stay. [test:
 treeview/trailing-whitespace/spaces-after-trailing-line-separator] [test:
 treeview/trailing-whitespace/description-spaces-after-trailing-line-separator]
 Move structural carried runs once. Common line values use shared outer trimming;

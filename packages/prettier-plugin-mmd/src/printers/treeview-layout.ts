@@ -15,7 +15,9 @@ import {
   collectValueNodes,
   keptAsWritten,
   protectSemicolonPrefixes,
+  replaceInAtoms,
 } from "./layout.ts"
+import { collectTextEndEdits, endsWithDirectives } from "./statement-rules.ts"
 import type { TreeviewBoxPlan } from "./treeview-box.ts"
 import { treeviewContentStart } from "./treeview-box.ts"
 import {
@@ -23,11 +25,9 @@ import {
   treeviewBranchCharacters,
 } from "./treeview-characters.ts"
 import { lineStartOf } from "./kept-lines.ts"
-import { printAsWritten } from "./lines.ts"
 import type { Source } from "./source.ts"
 import {
   findCoveringRange,
-  findDirectiveEndingAt,
   findStructuralToken,
   findTriviaAt,
   findTriviaBetween,
@@ -245,52 +245,27 @@ function treeviewNodeParts(node: TreeviewNode): readonly Node[] {
  * the figure are the same without them (docs/treeview.md, Trailing whitespace).
  * An atom of whitespace only stays as written. So does an atom that ends with a
  * comment, whose spaces and tabs are its own, and one that a comment follows,
- * whose gap is the gap of that comment. Before a directive, which mermaid.js
- * removes before it reads the value, the spaces and tabs at the end of the atom
- * are one space, as before the directive of a title.
+ * whose gap is the gap of that comment. An atom that ends with directives,
+ * which mermaid.js removes before it reads the value, prints them as the end
+ * of a title does.
  */
 function trimAtomEnd(source: Source, atom: Atom): Atom {
-  if (findTriviaAt(source, atom.end - 1) !== undefined) return atom
-  const following = findTriviaBetween(source, atom.end, atom.end + 1)
-  if (following.length > 0) {
-    if (following[0].type !== "Directive" || following[0].range[0] !== atom.end)
-      return atom
-    let blanks = atom.end
-    while (blanks > atom.start && isSpaceOrTab(source.text[blanks - 1]))
-      blanks--
-    return blanks === atom.start ||
-      blanks === atom.end ||
-      source.text.slice(blanks, atom.end) === " "
-      ? atom
-      : { ...atom, doc: [printAsWritten(source, atom.start, blanks), " "] }
+  if (endsWithDirectives(source, [atom.start, atom.end])) {
+    // The atom ends with directives, printed as at the end of a line (see
+    // `collectTextEndEdits`).
+    const atoms = [atom]
+    replaceInAtoms(
+      source,
+      atoms,
+      collectTextEndEdits(source, atom.start, atom.end, false),
+    )
+    return atoms[0]
   }
+  if (findTriviaAt(source, atom.end - 1) !== undefined) return atom
+  if (findTriviaBetween(source, atom.end, atom.end + 1).length > 0) return atom
   let end = atom.end
   while (end > atom.start && isSpaceOrTab(source.text[end - 1])) end--
-  if (end === atom.start || end === atom.end) return atom
-  // Where the atom ends with a directive, as it does when blanks followed it,
-  // the blanks before the directive are those of the same atom when the
-  // directive stands after it: one space.
-  const directive = findDirectiveEndingAt(source, end)
-  if (directive !== undefined && directive.range[0] > atom.start) {
-    let blanks = directive.range[0]
-    while (blanks > atom.start && isSpaceOrTab(source.text[blanks - 1]))
-      blanks--
-    if (
-      blanks > atom.start &&
-      source.text.slice(blanks, directive.range[0]) !== " "
-    ) {
-      return {
-        ...atom,
-        end,
-        doc: [
-          printAsWritten(source, atom.start, blanks),
-          " ",
-          printAsWritten(source, directive.range[0], end),
-        ],
-      }
-    }
-  }
-  return { ...atom, end }
+  return end === atom.start || end === atom.end ? atom : { ...atom, end }
 }
 
 /**

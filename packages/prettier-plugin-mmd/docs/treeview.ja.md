@@ -2464,6 +2464,10 @@ mermaid.js は節点の名前と description を trim するので、
 mermaid.js は値を読む前に directive を取り除き、
 値の末尾の空白とタブを落とすので、この gap は Db にも図にもありません。
 `R   %%{x}%%` は title と同じ形の `R %%{x}%%` と印字します。
+複数の directive も title の末尾と同じように印字します。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+`R   %%{x}%%   %%{y}%%  ` は `R %%{x}%% %%{y}%%` と印字します。
+[fixture: trailing-whitespace/directives-end-blanks-dropped]
 名前や description の末尾の U+2028 と U+2029 は、
 空白やタブではなくテキストの文字なので、その後の空白は除き、
 その前の空白は残します。

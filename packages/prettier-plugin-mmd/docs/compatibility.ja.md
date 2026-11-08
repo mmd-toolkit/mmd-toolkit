@@ -653,7 +653,7 @@ mermaid.js はテキストを読む前にディレクティブを除くので、
 これは、Gantt、user journey、timeline、sequence、Venn、C4、pie、radar、packet、
 architecture、gitGraph、cynefin、treemap、Wardley、treeView、info、
 railroad の図のタイトル、それらの図種の `accTitle:` と `accDescr:` の行、
-ishikawa 図と mindmap のノードのテキスト、
+ishikawa 図、mindmap、treeView のノードのテキスト、
 kanban ボードのカードのテキスト（図が依存する列の id は除く）、
 Gantt 図の日付書式と軸の書式、C4 図の `accDescription`、
 timeline の行の最後の event、別名を持つ state の 2 つ目の説明に当てはまります。
@@ -661,6 +661,7 @@ timeline の行の最後の event、別名を持つ state の 2 つ目の説明�
 ディレクティブの前でも、
 ディレクティブがない場合と同じように書かれたままにします。
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped]
+[fixture: treeview/trailing-whitespace/directives-end-blanks-dropped]
 [fixture: gantt/settings/format-runs-kept-before-directives] [fixture:
 gantt/titles-and-sections/title-two-directives-trailing-blanks-dropped]
 [fixture: pie/title/title-directives-end-blanks-dropped]

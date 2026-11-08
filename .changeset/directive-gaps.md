@@ -11,4 +11,5 @@ stays against the unit before it. A gap that the line rule of mermaid.js may
 read, and a directive at the start or the end of a line, keep whether the gap
 holds whitespace, a run becoming one space. A gap with a U+2028 or U+2029 keeps
 the whitespace written, and so do the gaps of `kanban`, `mindmap`, `treemap` and
-`ishikawa`, where that whitespace is indentation.
+`ishikawa`, where that whitespace is indentation, apart from the directives at
+the end of a text.

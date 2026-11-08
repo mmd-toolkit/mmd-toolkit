@@ -12,4 +12,5 @@ wraps draws them, and so do a markdown title of a subgraph, a text with a `<`, a
 text of spaces and tabs only that is not a string, the names that other
 statements refer to, and every text of a diagram that holds `white-space`. The
 label, the technology, the type, and the description of a C4 statement are texts
-of the first kind.
+of the first kind, and so are the strings of a `railroad` diagram:
+`terminal("a   b")` becomes `terminal("a b")`.
