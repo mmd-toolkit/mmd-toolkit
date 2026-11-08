@@ -19,7 +19,7 @@ describe("a block diagram in a Markdown code block", () => {
         "# Title\n\n```mermaid\n  block-beta\n\n  columns   3 a b\nblock:G c end\nd-->e\n```\n",
       ),
     ).toBe(
-      "# Title\n\n```mermaid\nblock\n  columns 3\n  a b\n  block:G\n    c\n  end\n  d --> e\n```\n",
+      "# Title\n\n```mermaid\nblock-beta\n  columns 3\n  a b\n  block:G\n    c\n  end\n  d --> e\n```\n",
     )
   })
 
@@ -28,12 +28,14 @@ describe("a block diagram in a Markdown code block", () => {
       await formatTwice(
         "- item\n\n  ```mermaid\n  block-beta\n    columns 2 a b\n  ```\n",
       ),
-    ).toBe("- item\n\n  ```mermaid\n  block\n    columns 2\n    a b\n  ```\n")
+    ).toBe(
+      "- item\n\n  ```mermaid\n  block-beta\n    columns 2\n    a b\n  ```\n",
+    )
   })
 
   it("prints a run of whitespace inside a label as one space", async () => {
     expect(
       await formatTwice('```mermaid\nblock-beta\nA["a    b"]\n```\n'),
-    ).toBe('```mermaid\nblock\n  A["a b"]\n```\n')
+    ).toBe('```mermaid\nblock-beta\n  A["a b"]\n```\n')
   })
 })

@@ -28,6 +28,7 @@ import {
   toAsciiLowerCase,
 } from "./layout.ts"
 import type { Source } from "./source.ts"
+import { printedToken } from "./spelling.ts"
 import {
   accessibilityRules,
   addClassListRules,
@@ -568,9 +569,9 @@ const symbolSpellings: ReadonlySet<string> = new Set([
   "-.",
 ])
 
-/** Whether a unit of a relationship is spelled with symbols. */
-function isSymbolSpelling(unit: Token): boolean {
-  return symbolSpellings.has(toAsciiLowerCase(unit.value))
+/** Whether a unit of a relationship is printed with symbols. */
+function isSymbolSpelling(source: Source, unit: Token): boolean {
+  return symbolSpellings.has(toAsciiLowerCase(printedToken(source, unit)))
 }
 
 /**
@@ -594,13 +595,16 @@ function relationshipRules(
     rules.set(
       unit.range[0],
       previous === undefined ||
-        !isSymbolSpelling(previous) ||
-        !isSymbolSpelling(unit)
+        !isSymbolSpelling(source, previous) ||
+        !isSymbolSpelling(source, unit)
         ? "space"
         : "none",
     )
   }
-  if (isBareOne(statement.left) && startsLikeWord(units[0].value)) {
+  if (
+    isBareOne(statement.left) &&
+    startsLikeWord(printedToken(source, units[0]))
+  ) {
     // `1`, whitespace, and a letter, a digit, or `_` is the cardinality
     // `only-one` and a name (diagrams/er.md, The cardinalities, numbers, and
     // relationship lines, rule 11), so a `1a` that was written touching, the
@@ -666,7 +670,9 @@ function startsLikeWord(text: string): boolean {
  * `only one`, while `only`, two spaces or a tab, and `one to one` are an
  * entity and a relationship (diagrams/er.md, The statement context,
  * keywords and what follows them), so the whitespace between them is kept
- * as written (docs/er.md, Relationship spacing).
+ * as written (docs/er.md, Relationship spacing). A unit that is printed as
+ * symbols starts with no `one`, and the whitespace before it is an ordinary
+ * gap.
  */
 function findOnlyOneStretches(
   source: Source,
@@ -678,7 +684,7 @@ function findOnlyOneStretches(
     left.cssClasses.length !== 0 ||
     left.name.type !== "ErIdentifier" ||
     toAsciiLowerCase(left.name.name) !== "only" ||
-    !toAsciiLowerCase(first.value).startsWith("one")
+    !toAsciiLowerCase(printedToken(source, first)).startsWith("one")
   ) {
     return []
   }

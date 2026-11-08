@@ -26,9 +26,9 @@ const cases: readonly MarkdownCase[] = [
   {
     name: "packet Markdown: top-level",
     input: '```mermaid\npacket-beta0:"Fence"\n```\n',
-    output: '```mermaid\npacket\n  0: "Fence"\n```\n',
+    output: '```mermaid\npacket-beta\n  0: "Fence"\n```\n',
     payloadInput: 'packet-beta0:"Fence"',
-    payloadOutput: 'packet\n  0: "Fence"\n',
+    payloadOutput: 'packet-beta\n  0: "Fence"\n',
     options: {},
   },
   {

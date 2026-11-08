@@ -18,15 +18,10 @@ export const keywordSpellings: Readonly<
     direction: "direction",
     end: "end",
     lr: "LR",
-    "many(0)": "many(0)",
-    "only one": "only one",
-    "optionally to": "optionally to",
     rl: "RL",
     style: "style",
     subgraph: "subgraph",
     tb: "TB",
-    to: "to",
-    "zero or more": "zero or more",
   },
   gantt: {
     axisformat: "axisFormat",
@@ -39,9 +34,6 @@ export const keywordSpellings: Readonly<
     title: "title",
     weekday: "weekday",
     weekend: "weekend",
-  },
-  gitGraph: {
-    switch: "checkout",
   },
   journey: {
     section: "section",

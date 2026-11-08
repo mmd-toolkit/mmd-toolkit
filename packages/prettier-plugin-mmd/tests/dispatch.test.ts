@@ -105,7 +105,7 @@ describe("dispatch to diagram printers", () => {
     )
     parse.mockImplementation(actual.parse)
     expect(await formatMermaid('packet-beta0 - 2 :"Dispatch"')).toBe(
-      'packet\n  0-2: "Dispatch"\n',
+      'packet-beta\n  0-2: "Dispatch"\n',
     )
   })
   it("registers the info body printer", async () => {
@@ -159,7 +159,7 @@ describe("dispatch to diagram printers", () => {
     )
     parse.mockImplementation(actual.parse)
     expect(await formatMermaid("ishikawa R\n A\n   B")).toBe(
-      "ishikawa-beta\n  R\n    A\n      B\n",
+      "ishikawa\n  R\n    A\n      B\n",
     )
   })
   it("registers the Venn body printer", async () => {
