@@ -38,10 +38,9 @@
     "build": "tsdown",
     "clean": "rimraf lib",
     "test": "vitest run",
-    "build:docs-deps": "pnpm --filter @mmd-toolkit/parser --filter prettier-plugin-mmd run build",
-    "update": "pnpm run build:docs-deps && node tools/update-rules.ts && node tools/update-docs.ts",
-    "update:docs": "pnpm run build:docs-deps && node tools/update-docs.ts",
-    "check:docs": "pnpm run build:docs-deps && node tools/update-rules.ts --check && node tools/update-docs.ts --check",
+    "update": "pnpm --workspace-root run build:parser && node tools/update-rules.ts && node tools/update-docs.ts",
+    "update:docs": "pnpm --workspace-root run build:parser && node tools/update-docs.ts",
+    "check:docs": "pnpm --workspace-root run build:parser && node tools/update-rules.ts --check && node tools/update-docs.ts --check",
     "test:update": "rimraf --glob \"tests/**/__snapshots__\" && UPDATE_SNAPSHOTS=true vitest run"
   },
   "peerDependencies": {
@@ -65,8 +64,7 @@
     "@mmd-toolkit/tests": "workspace:*",
     "eslint": "^10.0.0",
     "eslint-snapshot-rule-tester": "^0.1.0",
-    "prettier": "^3.9.0",
-    "prettier-plugin-mmd": "workspace:*"
+    "prettier": "^3.9.0"
   },
   "publishConfig": {
     "access": "public"

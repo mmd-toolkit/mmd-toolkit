@@ -60,7 +60,7 @@ Output
 ([indentation/composite-body-one-level-deeper-end-at-the-level-of-block-output.mmd](../tests/fixtures/block/indentation/composite-body-one-level-deeper-end-at-the-level-of-block-output.mmd)):
 
 ```mmd
-block
+block-beta
   columns 3
   a
   block:group1:2
@@ -109,7 +109,7 @@ Output
 ([composites/colon-touches-the-node-output.mmd](../tests/fixtures/block/composites/colon-touches-the-node-output.mmd)):
 
 ```mmd
-block
+block-beta
   block:G
     a
   end
@@ -127,7 +127,7 @@ Output
 ([composites/composite-on-one-line-split-output.mmd](../tests/fixtures/block/composites/composite-on-one-line-split-output.mmd)):
 
 ```mmd
-block
+block-beta
   block:G
     a b
   end
@@ -191,7 +191,7 @@ Output
 ([rows/rows-kept-output.mmd](../tests/fixtures/block/rows/rows-kept-output.mmd)):
 
 ```mmd
-block
+block-beta
   columns 3
   a b c
   d e f
@@ -209,7 +209,7 @@ Output
 ([rows/columns-then-row-split-output.mmd](../tests/fixtures/block/rows/columns-then-row-split-output.mmd)):
 
 ```mmd
-block
+block-beta
   columns 3
   a b c
 ```
@@ -226,7 +226,7 @@ Output
 ([rows/percent-id-keeps-columns-with-it-output.mmd](../tests/fixtures/block/rows/percent-id-keeps-columns-with-it-output.mmd)):
 
 ```mmd
-block
+block-beta
   columns 3 a %%x b
 ```
 
@@ -258,7 +258,7 @@ Output
 ([blank-lines/runs-become-one-output.mmd](../tests/fixtures/block/blank-lines/runs-become-one-output.mmd)):
 
 ```mmd
-block
+block-beta
   a
 
   b
@@ -289,7 +289,7 @@ Output
 ([header/statement-after-the-header-on-a-line-of-its-own-output.mmd](../tests/fixtures/block/header/statement-after-the-header-on-a-line-of-its-own-output.mmd)):
 
 ```mmd
-block
+block-beta
   a b
   c
 ```
@@ -306,7 +306,7 @@ Output
 ([keyword-case/keywords-kept-output.mmd](../tests/fixtures/block/keyword-case/keywords-kept-output.mmd)):
 
 ```mmd
-block
+block-beta
   COLUMNS 2
   SPACE
   STYLE A
@@ -343,7 +343,7 @@ Output
 ([columns-and-space/line-break-after-columns-output.mmd](../tests/fixtures/block/columns-and-space/line-break-after-columns-output.mmd)):
 
 ```mmd
-block
+block-beta
   columns 3
 ```
 
@@ -362,7 +362,7 @@ Output
 ([columns-and-space/last-columns-kept-where-written-output.mmd](../tests/fixtures/block/columns-and-space/last-columns-kept-where-written-output.mmd)):
 
 ```mmd
-block
+block-beta
   columns 2
   a b c
   columns 3
@@ -434,7 +434,7 @@ Output
 ([shapes/shape-touches-the-id-output.mmd](../tests/fixtures/block/shapes/shape-touches-the-id-output.mmd)):
 
 ```mmd
-block
+block-beta
   A("x")
   B[["y"]]
   D{"d"}
@@ -456,7 +456,7 @@ Output
 ([shapes/block-arrow-directions-as-written-output.mmd](../tests/fixtures/block/shapes/block-arrow-directions-as-written-output.mmd)):
 
 ```mmd
-block
+block-beta
   A<["a"]>(right, down)
   B<["b"]>(right down)
   C<["c"]>( up)
@@ -478,7 +478,7 @@ Output
 ([shapes/label-runs-collapsed-output.mmd](../tests/fixtures/block/shapes/label-runs-collapsed-output.mmd)):
 
 ```mmd
-block
+block-beta
   A[" two spaces "]
   B["a
    b"]
@@ -521,7 +521,7 @@ Output
 ([edges/spaces-around-a-label-output.mmd](../tests/fixtures/block/edges/spaces-around-a-label-output.mmd)):
 
 ```mmd
-block
+block-beta
   A -- "x" --> B
   C -- "x" --> D
 ```
@@ -538,7 +538,7 @@ Output
 ([edges/chain-on-one-line-output.mmd](../tests/fixtures/block/edges/chain-on-one-line-output.mmd)):
 
 ```mmd
-block
+block-beta
   A --> B --> C
 ```
 
@@ -627,7 +627,7 @@ Output
 ([styles/class-definition-spaces-output.mmd](../tests/fixtures/block/styles/class-definition-spaces-output.mmd)):
 
 ```mmd
-block
+block-beta
   A
   classDef c1 color: #fff, fill: #000
 ```
@@ -645,7 +645,7 @@ Output
 ([styles/style-spaces-output.mmd](../tests/fixtures/block/styles/style-spaces-output.mmd)):
 
 ```mmd
-block
+block-beta
   A
   style A fill: #f00, stroke: #333
 ```
@@ -665,7 +665,7 @@ Output
 ([styles/class-ids-as-written-output.mmd](../tests/fixtures/block/styles/class-ids-as-written-output.mmd)):
 
 ```mmd
-block
+block-beta
   A
   B
   class A,B c1
@@ -812,7 +812,7 @@ Output
 ([comments/comment-line-at-the-level-of-the-next-statement-output.mmd](../tests/fixtures/block/comments/comment-line-at-the-level-of-the-next-statement-output.mmd)):
 
 ```mmd
-block
+block-beta
   %% a
   columns 2
   %% b
@@ -838,7 +838,7 @@ Output
 %% a
 
 %% b
-block
+block-beta
   a
 ```
 
@@ -884,7 +884,7 @@ Output
 ([directives/directive-between-statements-of-a-row-output.mmd](../tests/fixtures/block/directives/directive-between-statements-of-a-row-output.mmd)):
 
 ```mmd
-block
+block-beta
   a %%{init: {}}%%b
 ```
 
@@ -903,7 +903,7 @@ Output
 ([directives/directive-line-at-the-level-of-the-next-statement-output.mmd](../tests/fixtures/block/directives/directive-line-at-the-level-of-the-next-statement-output.mmd)):
 
 ```mmd
-block
+block-beta
   %%{init: {}}%%
   columns 2
   %%{init: {}}%%
@@ -947,7 +947,7 @@ Output
 ([empty-description-blocks/whitespace-removed-output.mmd](../tests/fixtures/block/empty-description-blocks/whitespace-removed-output.mmd)):
 
 ```mmd
-block
+block-beta
   accDescr {}
   a
 ```
@@ -964,7 +964,7 @@ Output
 ([empty-description-blocks/between-two-nodes-output.mmd](../tests/fixtures/block/empty-description-blocks/between-two-nodes-output.mmd)):
 
 ```mmd
-block
+block-beta
   a
   accDescr {}
   b
@@ -998,7 +998,7 @@ Output
 title: T
 config: { a: 1 }
 ---
-block
+block-beta
   a
 ```
 

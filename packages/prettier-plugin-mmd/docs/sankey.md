@@ -51,7 +51,7 @@ Output
 ([indentation/header-and-records-at-the-first-column-output.mmd](../tests/fixtures/sankey/indentation/header-and-records-at-the-first-column-output.mmd)):
 
 ```mmd
-sankey
+sankey-beta
 a,b,1
 c,d,2
 ```

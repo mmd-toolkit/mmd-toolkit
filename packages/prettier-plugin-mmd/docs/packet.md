@@ -127,7 +127,7 @@ Output
 packet
   +2: "relative"
   2: "single"
-  3-3: "equal range"
+  3: "equal range"
 ```
 
 ### Range dash
@@ -291,7 +291,7 @@ Output
 
 ```mmd
 packet
-  0-0: "Zero"
+  0: "Zero"
 ```
 
 ### Title

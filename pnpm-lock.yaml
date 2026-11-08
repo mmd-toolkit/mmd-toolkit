@@ -304,9 +304,6 @@ importers:
       prettier:
         specifier: ^3.9.0
         version: 3.9.9
-      prettier-plugin-mmd:
-        specifier: workspace:*
-        version: link:../prettier-plugin-mmd
 
   packages/mmdfmt:
     dependencies:

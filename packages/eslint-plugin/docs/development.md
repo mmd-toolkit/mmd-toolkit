@@ -297,18 +297,23 @@ to enable that rule and show its diagnostics. The snapshot test helper removes
 only this comment: its tester enables the rule under `rule-to-test/`, so
 enabling it under `@mmd-toolkit/` too would duplicate every report.
 
-`update` also prints the examples as the formatter prints them.
-`tools/rule-docs.ts` gives `prettier-plugin-mmd` to Prettier, which then formats
-the `mmd` code blocks of a document, and `check:docs` fails on a document that
-it would change. These commands build the parser and the plugin first
-(`build:docs-deps`), so the examples are printed by the formatter of the working
-tree. An example kept as written, where a way of writing that the formatter
-prints in one form is the point (whitespace, the case of a value, quotes), has
-`<!-- prettier-ignore -->` directly before its code block, in both languages,
-and a sentence of Rule Details says that it is shown as written. When the
-formatter changes what it prints, run `update:docs`, then `test:update` and read
-the diff of the snapshots, and look in the prose of the changed documents for
-code spans that quote a changed line.
+`update` also prints the examples as the formatter prints them. The rule is in
+`docs/prettier.config.js`: the root Prettier configuration and
+`prettier-plugin-mmd`, with which Prettier formats the `mmd` code blocks of a
+document. The plugin is read from its source (Node strips the types of the `.ts`
+file), so the examples are printed by the formatter of the working tree.
+`tools/rule-docs.ts` reads this file, and so do `pnpm run format`,
+`pnpm run format:check`, and an editor that formats on save. `check:docs` fails
+on a document that Prettier would change. The source of the plugin imports
+`@mmd-toolkit/parser` by name, which is the built package, so `update`,
+`update:docs`, `check:docs`, `format`, and `format:check` build the parser first
+(`pnpm run build:parser` at the root). An example kept as written, where a way
+of writing that the formatter prints in one form is the point (whitespace, the
+case of a value, quotes), has `<!-- prettier-ignore -->` directly before its
+code block, in both languages, and a sentence of Rule Details says that it is
+shown as written. When the formatter changes what it prints, run `update:docs`,
+then `test:update` and read the diff of the snapshots, and look in the prose of
+the changed documents for code spans that quote a changed line.
 
 The rest of the documents is written by hand. `check:docs` writes nothing and
 fails when `src/rules/index.ts`, a generated part, or an example is out of date,

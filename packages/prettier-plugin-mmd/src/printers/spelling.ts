@@ -1,6 +1,9 @@
 import type { Node, Range, Token } from "@mmd-toolkit/ast"
 import { visitorKeys } from "@mmd-toolkit/parser"
+import type { Atom } from "./atoms.ts"
 import { keywordSpellings } from "./keyword-spellings.ts"
+import { childrenOf } from "./layout.ts"
+import { findLinkLabelRespellings } from "./link-label-form.ts"
 import type { Source } from "./source.ts"
 import { findFirstIndex } from "./source.ts"
 
@@ -175,16 +178,6 @@ function shortestNumber(text: string): string | undefined {
   return negative && value === "0" ? undefined : (negative ? "-" : "") + value
 }
 
-/** The children of a node, in the order of its visitor keys. */
-function childrenOf(node: Node): Node[] {
-  return visitorKeys[node.type].flatMap((key) => {
-    const value = (node as unknown as Record<string, unknown>)[key]
-    return (Array.isArray(value) ? value : [value]).filter(
-      (child) => child !== null && child !== undefined,
-    ) as Node[]
-  })
-}
-
 /** Records the ranges of the outermost nodes below `node` of a wanted type. */
 function collectRanges(
   node: Node,
@@ -281,6 +274,7 @@ function respellingsOf(source: Source): SourceRespellings {
     if (source.root.diagramType === "packet") {
       findEqualRangeRespellings(source, source.root, map)
     }
+    findLinkLabelRespellings(source, map)
     collectNumbers(source, source.root, map)
     found = { byStart: map, starts: [...map.keys()].sort((a, b) => a - b) }
     respellingsOfSource.set(source, found)
@@ -479,4 +473,41 @@ export function writtenWithRespellings(
     at = respelling.end
   }
   return text + source.text.slice(at, end)
+}
+
+/**
+ * The atoms with each respelling that spans several atoms (a label of a link
+ * written in the other form) replaced by one atom that holds the respelled
+ * text, for the atoms that have no planned layout of their own.
+ */
+export function mergeRespelledAtoms(
+  source: Source,
+  atoms: readonly Atom[],
+): readonly Atom[] {
+  const { byStart } = respellingsOf(source)
+  const merged: Atom[] = []
+  for (let index = 0; index < atoms.length; index++) {
+    const respelling = byStart.get(atoms[index].start)
+    let last = index
+    while (last < atoms.length && atoms[last].end < (respelling?.end ?? 0)) {
+      last++
+    }
+    const spanned = atoms.slice(index, last + 1)
+    if (
+      respelling !== undefined &&
+      last > index &&
+      atoms[last].end === respelling.end &&
+      spanned.every((atom) => atom.doc === undefined)
+    ) {
+      merged.push({
+        start: atoms[index].start,
+        end: respelling.end,
+        doc: respelling.text,
+      })
+      index = last
+    } else {
+      merged.push(atoms[index])
+    }
+  }
+  return merged
 }

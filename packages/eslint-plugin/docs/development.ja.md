@@ -348,12 +348,18 @@ pnpm --filter @mmd-toolkit/eslint-plugin run check:docs
 `@mmd-toolkit/` の下でも有効にすると、すべての報告が二重になるからです。
 
 `update` は、例もフォーマッターが印字する形にします。
-`tools/rule-docs.ts` が `prettier-plugin-mmd` を Prettier に渡すので、
-Prettier は文書の `mmd` コードブロックを整形し、`check:docs` は、
-Prettier が変える文書があると失敗します。
-これらのコマンドは、
-先に parser とプラグインを build する（`build:docs-deps`）ので、
+その決まりは `docs/prettier.config.js` にあります。
+ルートの Prettier の設定に `prettier-plugin-mmd` を足したもので、Prettier は、
+これで文書の `mmd` コードブロックを整形します。
+プラグインはソースから読むので（Node が `.ts` の型を取り除きます）、
 例は作業ツリーのフォーマッターが印字します。
+`tools/rule-docs.ts` も、`pnpm run format` と `pnpm run format:check` も、
+保存時に整形するエディターも、このファイルを読みます。
+`check:docs` は、Prettier が変える文書があると失敗します。
+プラグインのソースは `@mmd-toolkit/parser` を名前で読み込み、
+それは build したパッケージなので、`update`、`update:docs`、`check:docs`、
+`format`、`format:check` は、
+先に parser を build します（ルートの `pnpm run build:parser`）。
 フォーマッターが 1 つの形に印字する書き方（空白、大文字小文字、
 引用符など）が要点で、わざと書いたまま残す例には、コードブロックの直前に、
 英日とも `<!-- prettier-ignore -->` を置き、規則の詳細の文で、

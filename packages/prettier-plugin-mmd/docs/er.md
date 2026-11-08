@@ -565,7 +565,7 @@ erDiagram
   p[P]
   accDescr { D }
   A ||--u-B : x
-  1one to one B : x
+  1 ||--|| B : x
 ```
 
 Input
@@ -604,7 +604,7 @@ erDiagram
   ACCTITLE: T
   ACCDESCR: D
   ACCDESCR { D }
-  A ONE OR MORE to MANY B : x
+  A }|--o{ B : x
   A {
     int a PK
   }
@@ -683,14 +683,14 @@ Output
 
 ```mmd
 erDiagram
-  A one or more --|{ B : x
-  A one or more --|{ B : x
-  A ||-- only one B : x
-  A ||-- only one B : x
-  A || to || B : x
-  A || to || B : x
-  A 1 to 1 B : x
-  A many(0) to one B : x
+  A }|--|{ B : x
+  A }|--|{ B : x
+  A ||--|| B : x
+  A ||--|| B : x
+  A ||--|| B : x
+  A ||--|| B : x
+  A ||--|| B : x
+  A }o--|| B : x
 ```
 
 Input
@@ -734,11 +734,11 @@ Output
 
 ```mmd
 erDiagram
-  A one or more to zero or more B : x
-  A only one to one B : x
-  A zero or one optionally to one or zero B : x
-  A ONE OR MORE to MANY B : x
-  A many to one B : x
+  A }|--o{ B : x
+  A ||--|| B : x
+  A |o..o| B : x
+  A }|--o{ B : x
+  A }o--|| B : x
 ```
 
 ### Entities

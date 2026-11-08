@@ -407,8 +407,9 @@ rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の 4 節にある
 1. 書いた文書に `npx prettier --write` を 2 回かけ、
    2 回目で何も変わらないことを確かめる。
 2. `pnpm --filter @mmd-toolkit/eslint-plugin run update` を実行する（6 節）。
-   先にフォーマッターの parser とプラグインを build するので、
+   先に parser を build する（フォーマッターのソースが名前で読み込むため）ので、
    例は作業ツリーのフォーマッターが印字する。
+   その決まりは `docs/prettier.config.js` にある。
 3. `pnpm run lint:docs`、`pnpm run format:check`、
    `pnpm run lint:chars` が通ること。
    `lint:docs` は、日本語の対と `check:docs` を確かめる。
@@ -471,7 +472,7 @@ rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の 4 節にある
   例が古くなり、`check:docs` が失敗する。
   そのときは次の順にする。
   1. `pnpm --filter @mmd-toolkit/eslint-plugin run update:docs` を実行する。
-     parser とプラグインを build し、英日の例を書き換える。
+     parser を build し、英日の例を書き換える。
   2. `pnpm --filter @mmd-toolkit/eslint-plugin run test:update` を実行し、
      スナップショットの差分を読む。
      もう報告されなくなった反する例と、報告されるようになった従う例は、

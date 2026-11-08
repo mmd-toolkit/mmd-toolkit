@@ -33,7 +33,7 @@ Output
 ([header/stable-output.mmd](../tests/fixtures/treemap/header/stable-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "HeadingRoot"
     "HeadingChild": 3
 ```
@@ -82,7 +82,7 @@ Output
 ([indentation/irregular-output.mmd](../tests/fixtures/treemap/indentation/irregular-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "Top"
     "Branch"
       "Tip": 3
@@ -129,7 +129,7 @@ Output
 ([carried-indentation/section-space-output.mmd](../tests/fixtures/treemap/carried-indentation/section-space-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "Top"
     "Tip": 2
 ```
@@ -153,7 +153,7 @@ Output
 ([tabs/mixed-output.mmd](../tests/fixtures/treemap/tabs/mixed-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "TabRoot"
     "Branch"
       "Tip": 3
@@ -189,7 +189,7 @@ Output
 ([statements-one-per-line/adjacent-output.mmd](../tests/fixtures/treemap/statements-one-per-line/adjacent-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "Top"
     "Left": 1
     "Right", 2
@@ -217,7 +217,7 @@ Output
 ([separators/colon-output.mmd](../tests/fixtures/treemap/separators/colon-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "Colon": 1,234.5
 ```
 
@@ -246,7 +246,7 @@ Output
 ([selectors/section-newlines-output.mmd](../tests/fixtures/treemap/selectors/section-newlines-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "Section":::zz
 ```
 
@@ -293,7 +293,7 @@ Output
 ([numbers/underscore-output.mmd](../tests/fixtures/treemap/numbers/underscore-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "Underscore": 1_000
 ```
 
@@ -333,7 +333,7 @@ Output
 ([names/quotes-output.mmd](../tests/fixtures/treemap/names/quotes-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   ' Other "quote" ': 1
 ```
 
@@ -359,7 +359,7 @@ Output
 ([class-definitions/keyword-newline-output.mmd](../tests/fixtures/treemap/class-definitions/keyword-newline-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   classDef zz
 ```
 
@@ -399,7 +399,7 @@ Output
 ([style-gaps/row-on-next-line-output.mmd](../tests/fixtures/treemap/style-gaps/row-on-next-line-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   classDef zz "Apparent":2
 ```
 
@@ -428,7 +428,7 @@ Output
 ([styles/written-output.mmd](../tests/fixtures/treemap/styles/written-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   classDef zz color:red , fill:blue,stroke:rgb(1\,2\,3),
 ```
 
@@ -553,7 +553,7 @@ Output
 ([semicolons/protected-class-column-output.mmd](../tests/fixtures/treemap/semicolons/protected-class-column-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   classDef zz
    color:#navy;;
 ```
@@ -588,7 +588,7 @@ Output
 ([title/padding-output.mmd](../tests/fixtures/treemap/title/padding-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   title Topic words
   "AfterTitle": 3
 ```
@@ -621,7 +621,7 @@ Output
 ([accessibility-lines/title-padding-output.mmd](../tests/fixtures/treemap/accessibility-lines/title-padding-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   accTitle: Access  words
 ```
 
@@ -675,7 +675,7 @@ Output
 ([description-blocks/continuation-output.mmd](../tests/fixtures/treemap/description-blocks/continuation-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   accDescr {
     first
 
@@ -703,7 +703,7 @@ Output
 ([long-lines/name-and-number-output.mmd](../tests/fixtures/treemap/long-lines/name-and-number-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "A deliberately long name preserves every word and its internal spaces": 12345678901234567890
 ```
 
@@ -739,7 +739,7 @@ Output
 ([component-newlines/selector-comment-output.mmd](../tests/fixtures/treemap/component-newlines/selector-comment-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "Selector": 2%% gap
 :::zz
 ```
@@ -808,7 +808,7 @@ Output
 ([comments/standalone-output.mmd](../tests/fixtures/treemap/comments/standalone-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "Top"
     %% before child
     "Tip": 2
@@ -857,7 +857,7 @@ Output
 ([directives/leading-output.mmd](../tests/fixtures/treemap/directives/leading-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "Top"
    %%{wrap}%% "Tip": 2
 ```
@@ -886,7 +886,7 @@ Output
 
 ```mmd
 %% leading note
-treemap-beta
+treemap
   "Prefix": 2
 ```
 
@@ -915,7 +915,7 @@ Output
 ([blank-lines/ordinary-output.mmd](../tests/fixtures/treemap/blank-lines/ordinary-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "Top"
 
     "Tip": 2
@@ -1001,7 +1001,7 @@ title: |
  Second
 config: { treemap: { padding: 3 } }
 ---
-treemap-beta
+treemap
  "YamlZero": 2
 ```
 
@@ -1030,7 +1030,7 @@ Output
 ([source-order/repetitions-output.mmd](../tests/fixtures/treemap/source-order/repetitions-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "Top"
     "Right": 2
     "Left": 1
@@ -1067,7 +1067,7 @@ Output
 ([final-newline/comment-output.mmd](../tests/fixtures/treemap/final-newline/comment-output.mmd)):
 
 ```mmd
-treemap-beta
+treemap
   "FinalComment": 2
   %% final
 ```

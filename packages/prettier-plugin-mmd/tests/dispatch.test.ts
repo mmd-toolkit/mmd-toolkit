@@ -58,7 +58,7 @@ describe("dispatch to diagram printers", () => {
       'cynefin-beta\n  clear\n    "DispatchBare"\n',
     )
     expect(await formatMermaid('cynefin-beta:clear "DispatchColon"')).toBe(
-      'cynefin-beta:\n  clear\n    "DispatchColon"\n',
+      'cynefin-beta\n  clear\n    "DispatchColon"\n',
     )
   })
   it("registers the railroad body printer for all four dialects", async () => {
@@ -70,7 +70,7 @@ describe("dispatch to diagram printers", () => {
       'railroad-beta\n  r = terminal("dispatch");\n',
     )
     expect(await formatMermaid('railroad-ebnf-beta r::="dispatch";')).toBe(
-      'railroad-ebnf-beta\n  r ::= "dispatch";\n',
+      'railroad-ebnf-beta\n  r = "dispatch";\n',
     )
     expect(await formatMermaid('railroad-abnf-beta r="dispatch";')).toBe(
       'railroad-abnf-beta\n  r = "dispatch";\n',
@@ -85,7 +85,7 @@ describe("dispatch to diagram printers", () => {
     )
     parse.mockImplementation(actual.parse)
     expect(await formatMermaid('radar-beta : axis Dispatch [ "Label" ]')).toBe(
-      'radar-beta:\n  axis Dispatch["Label"]\n',
+      'radar-beta\n  axis Dispatch["Label"]\n',
     )
   })
   it("registers the architecture body printer", async () => {
@@ -123,7 +123,7 @@ describe("dispatch to diagram printers", () => {
     )
     parse.mockImplementation(actual.parse)
     expect(await formatMermaid('gitGraph:commit id:"Dispatch"')).toBe(
-      'gitGraph\n  commit id: "Dispatch"\n',
+      'gitGraph:\n  commit id: "Dispatch"\n',
     )
   })
   it("registers the pie body printer", async () => {

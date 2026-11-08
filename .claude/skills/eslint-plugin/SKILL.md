@@ -383,8 +383,9 @@ in the background and write its output to a file.
 1. Run `npx prettier --write` on the documents written, twice; the second run
    must change nothing.
 2. Run `pnpm --filter @mmd-toolkit/eslint-plugin run update` (section 6). It
-   builds the parser and the plugin of the formatter first, so the examples are
-   printed by the formatter of the working tree.
+   builds the parser first (the source of the formatter imports it by name), so
+   the examples are printed by the formatter of the working tree; the rule is in
+   `docs/prettier.config.js`.
 3. `pnpm run lint:docs` (the Japanese pairs, and `check:docs`: the generated
    parts, the rules against the documents, and the English first paragraphs
    against `meta.docs.description`), `pnpm run format:check`, and
@@ -437,7 +438,7 @@ renamed, and removed together, as the section "Rules and their documents" of
 - When the formatter (`packages/prettier-plugin-mmd`) changes what it prints,
   the examples are out of date and `check:docs` fails. Then:
   1. Run `pnpm --filter @mmd-toolkit/eslint-plugin run update:docs`. It builds
-     the parser and the plugin and rewrites the examples of both languages.
+     the parser and rewrites the examples of both languages.
   2. Run `pnpm --filter @mmd-toolkit/eslint-plugin run test:update` and read the
      diff of the snapshots. An incorrect example that is no longer reported, or
      a correct example that now is, is kept as written (step 4 of section 4) or

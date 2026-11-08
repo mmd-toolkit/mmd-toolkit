@@ -433,7 +433,7 @@ Output
 
 ```mmd
 agentflow-beta TB
-  A -->|x| B
+  A -- x --> B
 ```
 
 ### Labels

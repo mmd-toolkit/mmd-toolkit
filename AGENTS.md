@@ -87,10 +87,17 @@ Correctness is defined by the pinned mermaid.js.
    printed in one form; a way of writing that draws something else is kept as
    written. For a gap, the form is the one that the other diagram types print
    for the same kind of gap. For a spelling (the case of a keyword, the quotes
-   of a string, the digits of a number, the keyword of a header), the form is
+   of a string, the digits of a number, the direction of a header), the form is
    the one that the examples in the documentation of the pinned mermaid.js use
    at least twice as often as any other; where no form is used that often, or
-   the examples use none, the spelling is kept as written. The check is that
+   the examples use none, the spelling is kept as written. The check uses the
+   pinned mermaid.js only, while the formatted text is also drawn by other
+   versions of mermaid.js. So a spelling is also kept as written where the form
+   that would be printed is not accepted by every version that accepts the form
+   that was written: the name of a header (`block-beta` and `block`), which the
+   versions accept differently, and the colon after the header of a gitGraph,
+   which older versions require. The CHANGELOG.md of mermaid.js, or the history
+   of its grammar, shows which version added a form. The check is that
    formatting does not change the Db. A formatting that changes the Db but not
    the drawing is an exception. Each kind of exception has a section that
    defines it, with links to the code of the pinned mermaid.js that shows why

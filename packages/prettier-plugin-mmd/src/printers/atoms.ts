@@ -15,6 +15,7 @@ import {
   withTrailing,
 } from "./lines.ts"
 import type { Source } from "./source.ts"
+import { mergeRespelledAtoms } from "./spelling.ts"
 import { collapseTextAtoms } from "./text-runs.ts"
 
 const { indent } = builders
@@ -172,7 +173,10 @@ export function printAtoms(
       : new Set()
 
   // The runs of spaces and tabs inside a text are drawn as one space.
-  for (const atom of collapseTextAtoms(source, layout.atoms)) {
+  for (const atom of collapseTextAtoms(
+    source,
+    mergeRespelledAtoms(source, layout.atoms),
+  )) {
     const text = source.text.slice(atom.start, atom.end)
     const alignedIndentation =
       atom.statementPadding === undefined

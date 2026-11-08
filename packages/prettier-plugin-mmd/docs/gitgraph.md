@@ -87,7 +87,7 @@ Output
 ([statements-one-per-line/eol-header-inline-output.mmd](../tests/fixtures/gitgraph/statements-one-per-line/eol-header-inline-output.mmd)):
 
 ```mmd
-gitGraph
+gitGraph:
   commit id: "a"
 ```
 
@@ -320,7 +320,7 @@ Output
 ([order-numbers/precision-digits-output.mmd](../tests/fixtures/gitgraph/order-numbers/precision-digits-output.mmd)):
 
 ```mmd
-gitGraph
+gitGraph:
   branch release order: 9007199254740993
 ```
 

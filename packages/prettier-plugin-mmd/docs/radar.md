@@ -58,7 +58,7 @@ Output
 ([header/join-separated-inline-alternative-output.mmd](../tests/fixtures/radar/header/join-separated-inline-alternative-output.mmd)):
 
 ```mmd
-radar-beta:
+radar-beta
   curve trial{4}
 ```
 

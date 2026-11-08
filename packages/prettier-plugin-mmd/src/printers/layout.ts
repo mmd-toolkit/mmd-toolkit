@@ -43,6 +43,16 @@ export function collectValueNodes(
   return values
 }
 
+/** The children of a node, in the order of its visitor keys. */
+export function childrenOf(node: Node): Node[] {
+  return visitorKeys[node.type].flatMap((key) => {
+    const value = (node as unknown as Record<string, unknown>)[key]
+    return (Array.isArray(value) ? value : [value]).filter(
+      (child) => child !== null && child !== undefined,
+    ) as Node[]
+  })
+}
+
 /**
  * Calls `visit` for every node below `node`, not for `node` itself, in the
  * order of the parser's `visitorKeys`. Value nodes have no child fields.

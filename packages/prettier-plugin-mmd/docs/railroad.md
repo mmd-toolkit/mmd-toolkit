@@ -231,7 +231,7 @@ Output
 ```mmd
 railroad-ebnf-beta
   a = "first";
-  b ::= a;
+  b = a;
 ```
 
 Input (escaped): `"railroad-abnf-beta\nr=\"terminator\" \t;"`.
@@ -290,7 +290,7 @@ Output
 
 ```mmd
 railroad-ebnf-beta
-  longName ::= "assignment";
+  longName = "assignment";
   s = "short";
 ```
 
@@ -905,7 +905,7 @@ Output
 
 ```mmd
 railroad-ebnf-beta
-  r ::=
+  r =
     ("joined", other) - "except"+
     | ["tail"];
 ```
