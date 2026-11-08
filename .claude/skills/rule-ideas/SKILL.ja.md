@@ -66,6 +66,12 @@ description:
   - 文体の規則。
     mermaid.js が書かれたとおりに読んでいて、
     後の編集で壊れることだけを防ぐもの。
+    例外が 1 つある。
+    mermaid.js の文書が示さない形に頼る書き方は避ける。
+    そのため、flowchart と agentflow の `linkStyle` と `classDef` で、
+    `:` の前に空白を置いて書いた `stroke` は、
+    いま何も失われないところでも報告する（7 節）。
+    `style` はリンクにスタイルを付けないので、その `stroke` は報告しない。
   - 意図して分かりにくく書いたテキストのための規則。
   - mermaid.js の不具合のための規則。
     書き手が正しく意味の通る書き方をしているのに、
@@ -118,6 +124,8 @@ description:
 | `accDescr: first` の後の `accDescr: second`                             | 説明が黙って `second` に置き換わる                                                         | flowchart-no-duplicate-description                                                                                                      |
 | `accTitle: first` の後の `accTitle: second`                             | タイトルが黙って `second` に置き換わる                                                     | flowchart-no-duplicate-title                                                                                                            |
 | subgraph の中の `A-->B; direction TB`（`;` で区切っても同じ）           | 方向の文の行のほかのテキストが捨てられ、A、B、辺が消える                                   | flowchart-no-ignored-text（方向の文は単独の行に書くもの。同じ行に書いた文を mermaid が黙って捨てる）                                    |
+| `linkStyle 0 stroke :#f00`（`stroke` の `:` の前の空白）                | 線は赤く、矢じりはテーマの色のまま                                                         | flowchart-no-spaced-stroke                                                                                                              |
+| 四象限チャートの点の `color: f00`（`#` がない）                         | 点は既定の色で描かれる                                                                     | quadrant-no-invalid-color                                                                                                               |
 
 落としたもの:
 
@@ -142,13 +150,16 @@ description:
 | `box red-team`（箱が赤くなり、名前が `-team` になる）                                                                                                                                     | mermaid の不具合のように見える。文書は色のない名前だけの書き方を認めており、その名前が `-` で分けられる                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | `link A: Dash@https://x.example`（ラベルが `Das` になる）                                                                                                                                 | mermaid の不具合のように見える。空白が 1 つないだけで、ラベルの最後の文字が落ちる。事実: 文書は `<ラベル> @ <URL>` の形だけを示す                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | `subgraph a `（行末の空白で id が subGraph0 になる）                                                                                                                                      | mermaid の不具合のように見える。見えない行末の空白で id が変わる。事実: メンテナーは [#3252](https://github.com/mermaid-js/mermaid/issues/3252)（closed。Type: Bug / Error、Status: Approved、P1）で不具合と認めており、固定版でも起きる（実行）                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `class 1A:::c`（数字で始まる名前）、`class C` より前の `style C fill:red`、CSS クラス `foo` に効く `classDef fo`                                                                          | この道具の範囲の外。CSS クラスやスタイルが付くかどうかは描かれた図にしか現れず、この道具は図を描かない。mermaid の不具合かどうかは判定せず、mermaid にも報告しない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| class 図で、`class 1A:::c` や `cssClass "1A" c`（数字で始まる名前）                                                                                                                       | mermaid.js の不具合である。文書は文字と数字のクラス名を認めるが、文書のどちらの書き方でも `1A` は CSS クラスを得ない。`1A` は `c` のスタイルなしで描かれ、`class B:::c` はそれを得る（実行）。`style 1A fill:#f00` は描画を失敗させ、黙ってはいない（実行）。検索の「classDiagram class name starting with number」「class diagram cssClass number id」「classId digit class」で、それについてのものはなかった                                                                                                                                                                                                                                              |
+| class 図で、`class C` より前の `style C fill:red`                                                                                                                                         | 上の flowchart の、頂点 `A` より前の `class A foo` と同じく、mermaid の不具合に見える。名前は正しく書かれ、文の位置だけがスタイルを効かなくし、`class C` の後の `style` は効く（実行）。class の文書はクラスを先に書くが、順を述べない。更新を最後に書くと述べる C4 の文書とは違う。検索は「classDiagram style before class」「class diagram style not applied order」「classDiagram style statement before class definition」で、[#8651](https://github.com/mermaid-js/mermaid/pull/8651)（open）はブロック図でそうした文を効かせる                                                                                                                        |
+| class 図で、CSS クラス `foo` に効く `classDef fo`                                                                                                                                         | CSS クラス `foo` を持つ箱にスタイルが付くかは、テキストにないページのスタイルによる。[#8624](https://github.com/mermaid-js/mermaid/pull/8624)（open）は、`classDef` をちょうどそのクラスを持つクラスだけに当てる                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | `` class `a~b` ``（id `a`、型 `b`。図では `a<b>`）                                                                                                                                        | 文書から見て mermaid の不具合。バッククォートは特別な文字を逃がすとされる（[syntax/classDiagram.md](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L165-L172)）が、その中の `~` も総称型を始める。ふつうの書き方ではまれ                                                                                                                                                                                                                                                                                                                                              |
 | `class A~T~` の後の `note for A~T~ "x"`（総称型つきで書いたクラスへのノート）                                                                                                             | mermaid の不具合のように見える。ノートは名前 `A~T~` を持ち、クラスは `A` なので、線なしで描かれる。`note for A "x"` ならクラスが見つかる                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | `+foo(a(b)) int`（Db ではメソッドの名前が `foo(a`、引数が `b)`）                                                                                                                          | 利用者に見える誤りがない。描かれた図は `+foo(a(b)) : int` を示す                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | `A x-->B`、`A o-- t -->B`（始まりの印が終わりの印と違う）                                                                                                                                 | mermaid の不具合で、すでに認められている。mermaid-js/mermaid#1665（Open、Approved）が、両端の印が違う矢印は動かないとしている。`A x-->B` は長いふつうの矢印、`A o-- t -->B` はふつうの矢印として描かれる                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | `A x-- t x--x B`（始まりの印を開く矢印と閉じる矢印の両方に書く）                                                                                                                          | 構文を知らないことから起きる。仕様は、この辺を `INVALID`（ふつうの矢印として描く）としている。書き方は `A x-- t --x B`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | subgraph や flow が `A` を持った後の、どの subgraph や flow の外の `A` と、同じ `A[x]`（`A` はその中に残る）                                                                              | 何も失われない。外の行は何も置かない。`subgraph a` より前に書いた外の `A` も同じく出力を変えず、`A` は a に入る。外に 2 度書いた `A` も同じである（実行）。そのため、この行は mermaid.js が失いうる場所を書いておらず、場所のつもりと言うのは推定である。`subgraph b` の中では、同じ行が頂点を b に入れる                                                                                                                                                                                                                                                                                                                                                   |
+| 空白だけの最初の `stroke` の後の別の `stroke`（`linkStyle 0 stroke: ,stroke:#f00`。矢じりに色が付かない）                                                                                 | 普通の書き方ではない。図を描く人は、つもりの `stroke` の前に空の `stroke` を書かない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | リンクの id `e1` を指す `style e1 fill:red`                                                                                                                                               | 構文を知らないことから来る。`style` は頂点と subgraph に当たり、mermaid.js はそれに何もしない。リンクには `linkStyle` かクラスでスタイルを付ける                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | 頂点 `A` を書く前の `class A foo` や `click A …`                                                                                                                                          | mermaid のバグに見える。id は正しく書かれていて、mermaid.js は文の位置だけを理由に何もしない（頂点の前の `style` は効く）。「class before node」「class statement order node」「classes not applied node defined after」で探したが、issue は見つからなかった                                                                                                                                                                                                                                                                                                                                                                                                |
 | state の図の `A,B --> C` や `A,B:::e --> C`（遷移で状態を `,` で並べる）                                                                                                                  | 構文を知らないことから起きる。文書は `,` で並べる書き方を `class` の文だけに書き、遷移は状態を 1 つ取る。mermaid.js は 1 つの状態 `A,B` を描く。`A,:::e` は図を描く人が書く形でなく、`A, --> B` の余計な `,` はふつうの打ち間違いでない                                                                                                                                                                                                                                                                                                                                                                                                                     |
@@ -175,13 +186,12 @@ description:
 | 四象限チャートで、`quadrant-10 A`（1 つ目の象限で、テキストは `0 A`）                                                                                                                     | 構文を知らないことから起きる。mermaid.js の文書は `quadrant-1` から `quadrant-4` だけを挙げ、`quadrant-0` と `quadrant-5` は拒否される。前に `quadrant-1` があれば、quadrant-no-redefined-quadrant がその行を報告する                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | 四象限チャートで、矢印があり 2 つ目のテキストがない軸（`x-axis Low -->`。左のテキストは `Low ⟶`）                                                                                         | mermaid.js は文法どおりに読み、何も失わない。矢印はテキストの後に描かれる。2 つ目のテキストの書き忘れと言うのは推定である                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | 四象限チャートで、`stroke-width` のない `stroke-color`（枠は幅 `0px` で描かれる）                                                                                                         | mermaid.js の文書は、幅がなければ色は役に立たないと書くが、その例自身がそう書いている（`Point C`、`Campaign C`）。規則は、文書が示す書き方を報告することになる                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| 四象限チャートで、`#` のない色（`color: f00`。書いたとおりに持つ）                                                                                                                        | 上の `classDef fo` と同じく、このツールキットの範囲の外である。色が描かれるかは、描いたチャートにしか表れない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | 四象限チャートで、同じ名前か同じ位置の 2 つの点と、どの点も使わない `classDef`                                                                                                            | 何も失われない。点は両方残り、クラスは一覧にある。どちらも誤りと言うのは推定である                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | 四象限チャートで、タイトルの行の `;` の後の文（`title Sales; x-axis Low --> High`。タイトルが行の残りを持つ）                                                                             | チャートを描く人が書くものではない。タイトルは 1 行に書き、mermaid.js の文書は `;` を示さない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | ブロック図で、どの `classDef` も定義しないクラスの `class` の文（`class A blue`）                                                                                                         | 何も失われない。クラスはブロックに残り、描画はそれを CSS のクラスとしてブロックに与え、ページのスタイルが使える（`getNodeFromBlock()` を読んだ）。点のクラス名を描かない四象限チャートとは違う                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | ブロック図で、`title` などほかの図の語（`title Sales` はブロック `title` と `Sales` を与える）                                                                                            | mermaid.js は文法どおりにブロックとして読み、何も失わない。ブロック図にタイトルはない。タイトルと言うのは推定である                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | ブロック図で、行の文の後の `%%`（`A --> B %% note` はブロック `%%` と `note` を与える）                                                                                                   | flowchart の `subgraph S %% group` と同じく、構文を知らないことから起きる                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| ブロック図で、性質を 2 度与える `style` や `classDef` の並び（`fill:#f00,fill:#00f`）と、2 度書いた `classDef`                                                                            | mermaid.js はどのスタイルも書いたとおりに持つ。描画がどれを使うかは CSS が決め、このツールキットは描かない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| ブロック図で、性質を 2 度与える `style` や `classDef` の並び（`fill:#f00,fill:#00f`）と、2 度書いた `classDef`                                                                            | mermaid.js はどのスタイルも書いたとおりに持ち、描画は CSS のとおり性質の後の宣言を使う。性質を 2 度与えるのは、下の usecase と同じく、正しい CSS のフォールバックである。もう一度書いた `classDef` はスタイルを足す（`addStyleClass` を読んだ）                                                                                                                                                                                                                                                                                                                                                                                                             |
 | ブロック図で、`columns 1.5`、0 の幅や空き、数が持てない桁数の幅                                                                                                                           | `1.5` は数 1 とブロック `.5` であり、整形は `.5` を別の行に印字する。0 は書いたとおりに持つ。持てないほど大きな数は通常の書き方ではない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | ブロック図で、HTML のラベルの正しい CSS の宣言が `;` を失うもの                                                                                                                           | 上の flowchart の同じラベルと同じく、mermaid.js の不具合である                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | ブロック図で、ブロック `A` を宣言する前の `class A c`（`A` は置かれず、クラスは図の外のブロックに行く）                                                                                   | 上の flowchart の、頂点 `A` より前の `class A foo` と同じく、mermaid の不具合に見える。id は正しく書かれ、文の位置だけが結果を変える。図の型ごとに判断を分けないよう、flowchart と同じに判断する。block-no-undef は後で宣言する id を報告しない                                                                                                                                                                                                                                                                                                                                                                                                             |
@@ -691,6 +701,7 @@ mermaid.js はそのテキストも捨て（基準 1）、
 | flowchart-no-undef                          | 入れる   |                                                                          |
 | flowchart-no-duplicate-direction            | 入れる   |                                                                          |
 | flowchart-no-redefined-subgraph             | 入れる   |                                                                          |
+| flowchart-no-spaced-stroke                  | 入れない | 基準 1、3: [#7974](https://github.com/mermaid-js/mermaid/pull/7974)      |
 | no-unclosed-directive                       | 入れる   |                                                                          |
 | no-invalid-init-directive                   | 入れる   |                                                                          |
 | no-duplicate-init-key                       | 入れる   |                                                                          |
@@ -768,6 +779,7 @@ mermaid.js はそのテキストも捨て（基準 1）、
 | quadrant-no-undef                           | 入れる   |                                                                          |
 | quadrant-no-duplicate-style                 | 入れる   |                                                                          |
 | quadrant-no-invalid-coordinate              | 入れる   |                                                                          |
+| quadrant-no-invalid-color                   | 入れる   |                                                                          |
 | block-no-edge-chain                         | 入れる   |                                                                          |
 | block-no-edge-in-composite-head             | 入れる   |                                                                          |
 | block-no-duplicate-block                    | 入れる   |                                                                          |
@@ -805,6 +817,7 @@ mermaid.js はそのテキストも捨て（基準 1）、
 | agentflow-no-redefined-flow                 | 入れる   |                                                                          |
 | agentflow-no-duplicate-direction            | 入れる   |                                                                          |
 | agentflow-no-undef                          | 入れる   |                                                                          |
+| agentflow-no-spaced-stroke                  | 入れない | 基準 1、3: [#7974](https://github.com/mermaid-js/mermaid/pull/7974)      |
 | usecase-no-duplicate-title                  | 入れる   |                                                                          |
 | usecase-no-duplicate-description            | 入れる   |                                                                          |
 | usecase-no-empty-description-block          | 入れる   |                                                                          |
@@ -1122,6 +1135,57 @@ title overwritten」。
 そのため、メンバーを足すために subgraph をもう一度書くのは、1 つの書き方である。
 (4) 題を最初の宣言に書くか、別の id を使う。
 
+flowchart-no-spaced-stroke と agentflow-no-spaced-stroke: (1)
+リンクに届くスタイルは、そのクラスのもの、`linkStyle default` のもの、
+そのリンク自身の `linkStyle` のものの順である。
+線は、CSS のとおり、`stroke` という名前の最後の宣言を取る。
+一方、mermaid.js は矢じりの色を、
+それらの中の最初の `stroke:` という文字から取り、
+`text-stroke:` のような長い名前の中のものも数える。
+その文字の後が空白だけなら、矢じりに色を付けない（読んだのは、
+[`edges.js`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L956-L957)
+と
+[`edgeMarker.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edgeMarker.ts#L105-L127)。
+実行）。
+そのため、`:` の前に空白を置いて書いた小文字の `stroke` で、
+リンクの線に色を与え、
+そのリンクのスタイルでそれより前に `stroke:` という文字がないものは、
+矢じりにその色を付けさせない（実行。
+`linkStyle 0 stroke :#f00` は赤い線とテーマの色の矢じりを描く）。
+2 節の例外により、規則は `linkStyle` と `classDef` のそうした `stroke` を、
+いま何も失われないところでもすべて報告する。
+後の `stroke` が線に色を与える場合も報告する。
+`linkStyle default stroke :#f00` の後に `linkStyle 0 stroke:#00f` があると、
+両方が青になる（実行）。
+`stroke:#00f,stroke :#f00` のように、
+前の `stroke:` という文字が矢じりに色を与える場合も報告する。
+CSS が読む、頂点だけが取る `classDef` と、
+リンクのない図の `linkStyle default` も報告する（実行）。
+`style` は報告しない。
+`style` は頂点か subgraph にスタイルを付け、
+リンクには付けない（`addVertex` を読んだ。実行。
+`A e1@--> B` の後の `style e1 stroke:#f00` はリンクを変えない）。
+そのため mermaid.js はその `stroke:` という文字を読まない。
+CSS はそこの `stroke :#f00` を `stroke:#f00` と同じに読む（実行）。
+そこのほかの名前の `:` の前の空白は、どの規則も報告しない。
+`stroke` で終わる別の名前（`text-stroke :#f00` はどの線にも色を付けず、
+空白なしなら矢じりだけに色を付ける。実行）と、
+名前の大文字小文字の違い（`Stroke :#f00`。空白を消しても助けにならない。
+読んだ）は報告しない。
+usecase の図の関係のスタイルは、読んだだけなので含めない。
+(2) なし。
+mermaid.js の文書は `linkStyle 3 stroke:#ff3,stroke-width:4px,color:red;` と、
+`note left of A:hi` と同じく、そこに空白を置かずに書く。
+(3) 「linkStyle stroke arrowhead color」「arrowhead color linkStyle」「marker
+color stroke linkStyle」「edge marker stroke color」。
+[#7974](https://github.com/mermaid-js/mermaid/pull/7974)（open）は印に
+`context-stroke` を与え、対応するブラウザでは矢じりが線の stroke を取る。
+同じことを、
+[#1236](https://github.com/mermaid-js/mermaid/issues/1236)（open）も求めている。
+規則は、mermaid.js がつもりどおりに読むものも報告し（基準 1）、
+その変更が開いている（基準 3）ので、入れない。
+(4) 空白を取り除く。
+
 class-no-redefined-class: (1) 前のラベルは失われる。
 (2) なし。
 (3) 「class label redefine」。
@@ -1433,6 +1497,28 @@ open の [#8084](https://github.com/mermaid-js/mermaid/pull/8084) は、
   mermaid.js の文書は、座標を小数点のある 0 から 1 の数で書く。
   (3) #7608 はほかの範囲を求めているが、それで `0,3` が数になることはない。
   (4) 小数点を書く。
+- quadrant-no-invalid-color: (1) 点は自分のスタイルを取り、
+  次にそのクラスの最後の `classDef` のスタイルを取る。
+  どちらも色を与えなければテーマの色で、
+  どちらも幅を与えなければ幅 0px の縁で描かれる（`quadrantBuilder.ts`
+  を読んだ）。
+  `#` のない 3 桁か 6 桁の 16 進の `color` や `stroke-color` は、
+  `#` を省いてよい mermaid.js の検査を通り、
+  `fill="f00"` や `stroke="f00"` と描かれる。
+  ブラウザはそれを色として読まないので、点はテーマの色のままで、
+  縁は色を持たない（`validateHexCode` と `parseStyles` を読んだ。実行。
+  `stroke-color` は `stroke-width: 4px` と一緒に）。
+  `color: red` は受理されない。
+  そうした値は、点がそれで描かれるところで報告する。
+  文の中の同じ名前の後の値が置き換えるとき（それは quadrant-no-duplicate-style
+  が報告する）、どの点も取らない `classDef` の値と、
+  点自身のスタイルが置き換える `classDef` の値は報告しない（実行）。
+  `stroke-color` は、点が 0px より広い縁で描かれるときだけ報告する。
+  (2) なし。
+  mermaid.js の文書は、どの色も `#` で書く。
+  (3) 「quadrant point color hex」「quadrant color without #」、
+  「validateHexCode」「quadrantChart point color」。
+  (4) `#` を書く。
 
 ブロック図の規則。
 検索は題名と本文の「block」で、chain、composite、class、styles、columns、shape、
@@ -2457,6 +2543,41 @@ fixture: 上の sankey の値（出さない）と、
   どの id のつもりかが分からない（基準 1）。
   flowchart-no-redefined-subgraph は提案を付けない。
   ありうる直しは 1 つの題か別の id である（基準 1）。
+  flowchart-no-spaced-stroke と agentflow-no-spaced-stroke は、
+  `stroke` の `:` の前の空白を消す（実行）。
+  ただし、それが届くどのリンクのスタイルでも、後に `stroke` がないときに限る。
+  これはどの修正も変えない。
+  そうでないと、そのリンクの矢じりはこの色を取り、線は後の色を取るので（実行）、
+  書き換えを出さない。
+  mermaid.js がスタイルから `;` を落とすときも、書き換えを出さない。
+  `classDef hot stroke :#f00;fill:none` の 1 つのスタイルは
+  `stroke :#f00fill:none` である。
+  空白を消すと `stroke:#f00fill:none` になり、前と同じく、
+  線にも矢じりにも色を付けない（実行）。
+  そのため、この書き換えは規則を黙らせるだけである（基準 2）。
+  スタイルの中の directive は、その場に残す。
+  名前と `:` の間の空白を消し、その間の directive は残すので、
+  `linkStyle 0 stroke %%{init: {}}%%:#f00` は
+  `linkStyle 0 stroke%%{init: {}}%%:#f00` になる。
+  名前や値の中の directive（`s%%{init: {}}%%troke :#f00`、
+  `stroke :#f%%{init: {}}%%00`）も、そのまま残す。
+  どの結果も、矢じりに線の色を与える（実行。flowchart と agentflow）。
+  リンクのスタイルで、このスタイルの前に `stroke:` という文字がないとき、
+  この書き換えはそのリンクの矢じりに、テーマの色の代わりに線の色を与える（実行。
+  `linkStyle 0 stroke :#f00`）。
+  それ以外では、どのリンクも取らないスタイルを含め、
+  描かれるものを何も変えない（実行。`stroke:#00f,stroke :#f00`）。
+  この書き換えを自動修正にする（「自動修正」の項に挙げる）のは、
+  書き手が矢じりをテーマの色のままにするつもりではなかった、という前提による。
+  この前提は 2 つの事実に拠る。
+  1 つは、リンクのスタイルでは、mermaid.js の文書が示す形が、
+  矢じりに線の色を与えることである（実行。
+  文書の例を最初のリンクにした
+  `linkStyle 0 stroke:#ff3,stroke-width:4px,color:red;`）。
+  そのため、色を付けた線とテーマの色の矢じりは、そこでは、この形のような、
+  文書が示さない形でしか書けない。
+  もう 1 つは、この形を意図して書くときは規則を無効にする、
+  と規則の文書が書いていることである。
 - flowchart、agentflow、usecase: 3 つの `<diagram>-no-duplicate-direction` は、
   この文か、方向が違う相手の文を消す（flowchart の、
   同じ id の後の subgraph では、最初の subgraph の最後のもの）。
@@ -2558,6 +2679,15 @@ fixture: 上の sankey の値（出さない）と、
   前の同じ名前のものを、隣の `,` と一緒に消す。
   quadrant-no-redefined-class と quadrant-no-redefined-quadrant は、
   この文か前の文を消す（実行）。
+  quadrant-no-invalid-color は、値の前に `#` を書く（実行）。
+  ただし、値の後に `;` が続くときは、
+  間に directive だけがあるとき（`color: f00%%{init: {}}%%;`）も含め、出さない。
+  `#f00;` は文字参照として読まれ、入力が受理されないからである（実行。両方）。
+  スタイルの中の directive はその場に残し、`#` は値の最初の文字の直前に書く。
+  `color: f%%{init: {}}%%00`、`color: %%{init: {}}%%f00`、
+  `co%%{init: {}}%%lor: f00` は、`color: #f%%{init: {}}%%00`、
+  `color: %%{init: {}}%%#f00`、`co%%{init: {}}%%lor: #f00` になり、
+  点はその色で描かれる（実行）。
   quadrant-no-invalid-coordinate は、小数の `,` の代わりに `.` を書く（実行）。
   `,` を持つ座標はいつも `0`、`,`、
   数字である（`packages/spec/docs/diagrams/quadrant.ja.md` の座標。
@@ -2696,7 +2826,10 @@ fixture: 上の sankey の値（出さない）と、
   - class-no-inline-comment（コメントをそれだけの行に移す）。
   - gantt-no-invalid-tag、
     gantt-no-unknown-exclude（項目で始まる `excludes` の語は 1 つだけである）、
-    quadrant-no-invalid-coordinate、xychart-no-invalid-orientation。
+    quadrant-no-invalid-color（`#`）、quadrant-no-invalid-coordinate、
+    xychart-no-invalid-orientation。
+  - flowchart-no-spaced-stroke と agentflow-no-spaced-stroke（`:`
+    の前の空白を消す）。
   - no-invalid-init-directive（3 つの書き換えすべて）、
     sequence-no-invalid-json、sequence-no-ignored-text、
     sequence-no-link-without-separator、
