@@ -12,10 +12,13 @@ import { withoutBlanks } from "./db-values.ts"
  * same).
  */
 /**
- * The places of the Db of a railroad diagram that hold the string of a terminal
- * (`value`) or of a special sequence (`text`): the definition of a rule, or an
- * expression inside the alternatives, the elements, or the element of another
- * one. The name of a nonterminal refers to a rule, and is no such place.
+ * The places of the Db of a railroad diagram that hold a string: the `value` of
+ * a terminal, the `text` of a special sequence, and the `name` of a
+ * nonterminal, in the definition of a rule, or in an expression inside the
+ * alternatives, the elements, or the element of another one. A rule name holds
+ * no whitespace (`RR_ID` of the grammar of mermaid.js), so the name of a
+ * nonterminal that holds a run refers to no rule, and is a text like the other
+ * two.
  */
 const railroadStringPaths: readonly string[] = [
   "",
@@ -27,7 +30,7 @@ const railroadStringPaths: readonly string[] = [
   "elements.element.",
   "alternatives.elements.element.",
 ].flatMap((inside) =>
-  ["value", "text"].map((leaf) => `rules.definition.${inside}${leaf}`),
+  ["value", "text", "name"].map((leaf) => `rules.definition.${inside}${leaf}`),
 )
 
 const textRunPaths: ReadonlyMap<string, ReadonlySet<string>> = new Map([

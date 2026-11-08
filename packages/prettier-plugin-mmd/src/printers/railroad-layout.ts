@@ -291,18 +291,17 @@ function printCall(
   source: Source,
   expression: RailroadExpression,
   hidden: readonly RailroadIgnoredText[],
-  collapsesRuns = false,
 ): Doc {
   if (expression.type === "StringLiteral") {
-    // A run of spaces and tabs inside the string of a terminal or a special
-    // sequence is drawn as one space, as in the other syntaxes. The name of a
-    // nonterminal refers to a rule, and stays as written (docs/
-    // compatibility.md, Runs of whitespace in a text that are drawn the same).
+    // A run of spaces and tabs inside a string is drawn as one space, as in
+    // the other syntaxes. A rule name holds no whitespace, so the string of a
+    // nonterminal that holds a run refers to no rule (docs/compatibility.md,
+    // Runs of whitespace in a text that are drawn the same).
     const [start, end] = expression.range
-    return collapsesRuns
-      ? (collapsedRunsAtom(source, { start, end }).doc ??
-          printAsWritten(source, start, end))
-      : printAsWritten(source, start, end)
+    return (
+      collapsedRunsAtom(source, { start, end }).doc ??
+      printAsWritten(source, start, end)
+    )
   }
   let arguments_: readonly RailroadExpression[],
     members: readonly RailroadExpressionMember[] | undefined
@@ -410,13 +409,7 @@ function printCall(
         breaksArguments ? (index === 0 ? softline : line) : "",
         "leading",
       ),
-      printCall(
-        source,
-        argument,
-        hidden,
-        expression.type === "RailroadTerminalCall" ||
-          expression.type === "RailroadSpecialCall",
-      ),
+      printCall(source, argument, hidden),
     )
     previousEnd = argument.range[1]
   }

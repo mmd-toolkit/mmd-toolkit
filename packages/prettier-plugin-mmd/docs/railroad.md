@@ -659,14 +659,14 @@ railroad-ebnf-beta
 ### Quotes
 
 Keep StringLiteral source spans unchanged: escapes, empty strings, HTML,
-entities and hidden/comment-looking text, with a run of spaces and tabs inside
-the string of a terminal or of a special sequence printed as one space, so such
-a string of spaces and tabs only becomes one space. The name of a nonterminal
-refers to a rule, and stays as written. [fixture:
-railroad/quotes/ir-string-runs-collapsed] IR, EBNF and PEG allow both quote
-forms and backslash escapes, and a string between `'` is printed between `"`,
-unless its text holds a `'`, a `"`, a backslash, a line break, U+2028, U+2029, a
-backquote, `&`, `#`, or `<` (see
+entities and hidden/comment-looking text, with a run of spaces and tabs inside a
+string printed as one space, so a string of spaces and tabs only becomes one
+space. The name of a rule holds no whitespace, so a nonterminal whose string
+holds a run refers to no rule, and the string is printed like any other.
+[fixture: railroad/quotes/ir-string-runs-collapsed] IR, EBNF and PEG allow both
+quote forms and backslash escapes, and a string between `'` is printed between
+`"`, unless its text holds a `'`, a `"`, a backslash, a line break, U+2028,
+U+2029, a backquote, `&`, `#`, or `<` (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
 and `singleQuote` is not read; ABNF allows double quotes only and treats
 backslash as ordinary text. Trimming content or using the wrong escape model
