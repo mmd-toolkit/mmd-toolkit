@@ -1559,8 +1559,10 @@ cb
 ### Data blocks
 
 Keep each `@{ ... }` attached to its vertex, without formatting its YAML or
-changing its keys, values, delimiters, or line count. Two things change: the
-ends of a block on one line, and the margin of an eligible multiline block.
+changing its keys and values. Three things change: the ends of a block on one
+line, the margin of an eligible multiline block, and a block on one line whose
+line is too long, which prints on several lines. Only whitespace, line breaks
+and the `,` between entries change.
 
 A block on one line is printed with one space inside each end:
 `A@{shape: circle}` and `A@{   shape: circle   }` become `A@{ shape: circle }`.
@@ -1611,6 +1613,85 @@ blank lines, empty description blocks and a discarded statement `;` beside the
 block keep their own rules, and CRLF and CR follow `endOfLine`. [fixture:
 data-blocks/one-line-surrounding-trivia] [test: data blocks: flowchart one line
 CRLF] [test: data blocks: flowchart one line CR]
+
+A block on one line whose line is longer than `printWidth` prints on several
+lines where that reads better: one entry on each line, one level inside the
+statement, with the `}` alone on a line at the column of the statement, as in a
+block of several lines that moves (see below). Prettier chooses between the two
+forms: the block stays on its line where the line fits, and where the line would
+still be too long up to the `{` (a long text of the node stands before it), the
+lines would not shorten what is too long, so the block stays. [fixture:
+data-blocks/long-split] [fixture: data-blocks/long-split-use-tabs] [fixture:
+data-blocks/long-prefix-too-long-kept] mermaid.js reads the text of a block on
+one line as a YAML flow mapping, whose entries a `,` separates, and the text of
+a block of several lines as a block mapping, whose entries stand on lines of
+their own (the sources above). Both read the same where every entry is a key and
+a value that the two readings read alike, which the conditions below ensure. The
+entries print as written, without the spaces and tabs at their ends: only the
+whitespace, the line breaks and the `,` between entries change, and the Db is
+the same. The block splits only if
+
+- it belongs to a flowchart, an agentflow or a kanban diagram. A sequence
+  diagram rejects the lines of a block mapping, and the `@{` of a use case
+  diagram holds its own syntax (see
+  [Multi-line values](./sequence.md#multi-line-values) and
+  [Native metadata](./usecase.md#native-metadata)); [fixture:
+  sequence/whitespace-between-tokens/data-block-long-kept] [fixture:
+  usecase/native-metadata/long-block-kept]
+- `tabWidth` is not zero, as for a block of several lines; [fixture:
+  data-blocks/long-zero-width-kept]
+- it is the only block of its statement and the last thing in it, on the first
+  line of the statement: text after its `}` would stand after the `}` on a line
+  of its own, which reads worse than the block on its line, and the first line
+  supplies the level of the statement; [fixture:
+  data-blocks/long-text-after-kept] [fixture: data-blocks/long-two-blocks-kept]
+- it has at least two entries: the lines of a single entry would not shorten the
+  line, and only add lines; [fixture: data-blocks/long-one-entry-kept]
+- every entry is a key and a value separated by a colon and whitespace, the
+  value being a quoted scalar that ends the entry or a plain scalar. A plain
+  scalar starts with none of the characters YAML gives a meaning (`&`, `*`, `!`,
+  `|`, `>`, `%`, `@`, a backquote, and `-`, `?` or `:` before whitespace), and
+  holds no `:` before whitespace or at its end, since a block mapping reads
+  those differently from a flow mapping. An entry without a value (`pos` in
+  `{ pos, h: 60 }`), an empty entry (after a trailing `,`), a value that is an
+  anchor or an alias, and an entry such as `pos:t` are none of these; [fixture:
+  data-blocks/long-entry-without-value-kept] [fixture:
+  data-blocks/long-trailing-comma-kept] [fixture:
+  data-blocks/long-indicator-value-kept] [fixture:
+  data-blocks/long-colon-without-space-kept]
+- no `[`, `]`, `{` or `}` stands outside the quotes, and no comment (a `#` at
+  the start or after whitespace): a flow collection in a value reads as one
+  entry that is not one line, and a comment ends the line in a block mapping;
+  [fixture: data-blocks/long-nested-kept] [fixture:
+  data-blocks/long-comment-kept]
+- the conditions of the padding hold: no directive in the block, no kept line,
+  no block that touches it. [fixture: data-blocks/long-kept-line-kept]
+
+A value with a `:` that no whitespace follows, as in a URL, splits. [fixture:
+data-blocks/long-url-value-split] A block that was split is a block of several
+lines, which keeps its form when formatted again.
+
+Input
+([data-blocks/long-split-input.mmd](../tests/fixtures/flowchart/data-blocks/long-split-input.mmd)):
+
+```mmd
+flowchart LR
+A@{ shape: rect, label: "A process step with a long label", pos: "t", h: 60, constraint: "on" }
+```
+
+Output
+([data-blocks/long-split-output.mmd](../tests/fixtures/flowchart/data-blocks/long-split-output.mmd)):
+
+```mmd
+flowchart LR
+  A@{
+    shape: rect
+    label: "A process step with a long label"
+    pos: "t"
+    h: 60
+    constraint: "on"
+  }
+```
 
 For an eligible multiline block, move every body line by the same number of
 ASCII spaces until the shallowest line with text stands one level inside its

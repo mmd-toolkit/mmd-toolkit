@@ -10,10 +10,12 @@ import type { Source } from "./source.ts"
 import {
   findDirectiveEndingAt,
   findFirstIndex,
+  isSpaceOrTab,
   isWhitespace,
 } from "./source.ts"
 
-const { literalline } = builders
+const { conditionalGroup, literalline, literallineWithoutBreakParent } =
+  builders
 
 /**
  * The data blocks that print moved: a `@{` or `{` that a line break follows,
@@ -39,6 +41,18 @@ const paddedTypes: ReadonlySet<string> = new Set([
   "AgentflowDataBlock",
   "KanbanDataBlock",
   "SequenceDataBlock",
+])
+
+/**
+ * The blocks of one line that print on several lines when the line is too long:
+ * the diagram types that read the text of a block as YAML and accept the lines
+ * of a block mapping in place of a flow mapping. A sequence diagram rejects the
+ * lines, and a JSON table is JSON.
+ */
+const splitTypes: ReadonlySet<string> = new Set([
+  "FlowchartDataBlock",
+  "AgentflowDataBlock",
+  "KanbanDataBlock",
 ])
 
 /** The movable data blocks of each source, in source order, found once. */
@@ -99,12 +113,24 @@ export function formatDataBlocks(
   for (let index = first; index < afterLast; index++) {
     const block = all[index]
     const brace = findJsonTableBrace(source, block, placement.kept)
+    const padded = isOneLine(source.text.slice(...block.range))
+      ? padDataBlock(source, all, index, placement.kept)
+      : undefined
     const doc =
-      (isOneLine(source.text.slice(...block.range))
-        ? padDataBlock(source, all, index, placement.kept)
-        : afterLast - first === 1 && placement.tabWidth !== 0
-          ? moveDataBlock(source, block, range, placement, brace)
-          : undefined) ??
+      (padded !== undefined
+        ? (splitDataBlock(
+            source,
+            block,
+            range,
+            placement,
+            padded,
+            afterLast - first === 1,
+          ) ?? padded)
+        : isOneLine(source.text.slice(...block.range))
+          ? undefined
+          : afterLast - first === 1 && placement.tabWidth !== 0
+            ? moveDataBlock(source, block, range, placement, brace)
+            : undefined) ??
       (brace === null
         ? undefined
         : ["@", printAsWritten(source, brace, block.range[1])])
@@ -243,6 +269,214 @@ function startsWithYamlMark(text: string): boolean {
   return (
     text.startsWith("---") || text.startsWith("...") || text.startsWith("%")
   )
+}
+
+/**
+ * The block of one line, `@{ a: 1, b: 2 }`, printed as the lines of a block
+ * mapping where its line is too long, one entry on each line, one level inside
+ * the statement, with the `}` alone on a line at the column of the statement
+ * (see `moveDataBlock`); `padded` where it fits or does not split. Prettier
+ * chooses: the block stays on its line if the line fits; otherwise it prints
+ * on lines if the line of the `{` fits then, and as `padded` if it does not,
+ * since the lines would not shorten the line that is too long. mermaid.js
+ * reads the text of a block on one line as a YAML flow mapping, and the text of
+ * a block of several lines as the lines of a block mapping, which reads the
+ * same where each entry is a key and a value that read the same in both (see
+ * `splitEntries`) (docs/flowchart.md, Data blocks). A block splits only if
+ *
+ * - it is one of `splitTypes` and `tabWidth` is not 0, as a block of several
+ *   lines moves only then;
+ * - it is the only block of its statement, and the last thing in it, on the
+ *   first line of the statement: the text after its `}` would stand after the
+ *   `}` on a line of its own, and the statement level is the level of that
+ *   first line;
+ * - it has at least two entries: with one, the lines would not shorten the
+ *   line, and add lines.
+ */
+function splitDataBlock(
+  source: Source,
+  block: Node,
+  statement: Range,
+  placement: DataBlockPlacement,
+  padded: Doc,
+  alone: boolean,
+): Doc | undefined {
+  if (
+    !splitTypes.has(block.type) ||
+    !alone ||
+    placement.tabWidth === 0 ||
+    block.range[1] !== statement[1] ||
+    source.text.slice(statement[0], block.range[0]).includes("\n")
+  )
+    return undefined
+  const entries = splitEntries(
+    source.text.slice(block.range[0] + 2, -1 + block.range[1]),
+  )
+  if (entries === null) return undefined
+  const column = columnsOf(placement.statement, placement.tabWidth)
+  const lines: Doc[] = []
+  for (const entry of entries)
+    lines.push(
+      literallineWithoutBreakParent,
+      " ".repeat(column + placement.tabWidth),
+      entry,
+    )
+  return conditionalGroup([
+    padded,
+    ["@{", ...lines, literallineWithoutBreakParent, " ".repeat(column), "}"],
+    padded,
+  ])
+}
+
+/**
+ * The entries of the text inside a block of one line, or null where the block
+ * does not split. An entry is a key and a value separated by a colon and
+ * whitespace, which read the same in a flow mapping, where a `,` ends an entry,
+ * and in a block mapping, where a line break does:
+ *
+ * - the key is a plain or a quoted scalar, and the value a quoted scalar that
+ *   ends the entry, or a plain scalar that starts with no indicator of YAML
+ *   (`&`, `*`, `!`, `|`, `>`, `%`, `@`, a backquote, `-`, `?` or `:` before
+ *   whitespace) and holds no colon before whitespace or at its end;
+ * - the text holds no nested `{}` or `[]` and no comment (a `#` after
+ *   whitespace or at the start), outside the quotes: a flow collection in a
+ *   value, and a comment, read differently over lines, and a value that holds
+ *   a nested collection is not a line to read one entry at a time;
+ * - an entry without a value, as the `a` of `{a, b}`, or an empty entry,
+ *   as after a trailing `,`, is a key without a value in a flow mapping and
+ *   no mapping in a block;
+ * - at least two entries.
+ *
+ * An entry is printed as it is written, without the spaces and tabs at its
+ * ends; the characters of its key and value stay.
+ */
+function splitEntries(inside: string): readonly string[] | null {
+  const text = trimSpacesAndTabs(inside)
+  if (text.includes("%%")) return null
+  const entries: string[] = []
+  let start = 0
+  let quote = ""
+  // Whether a quote here would start a quoted scalar: at the start of an entry
+  // or after the colon of its key.
+  let startsScalar = true
+  for (let index = 0; index < text.length; index++) {
+    const character = text[index]
+    if (quote !== "") {
+      if (quote === '"' && character === "\\") index++
+      else if (character === quote) {
+        if (quote === "'" && text[index + 1] === "'") index++
+        else {
+          quote = ""
+          startsScalar = false
+        }
+      }
+      continue
+    }
+    if (
+      character === "{" ||
+      character === "}" ||
+      character === "[" ||
+      character === "]" ||
+      (character === "#" && (index === 0 || isSpaceOrTab(text[index - 1])))
+    )
+      return null
+    if (character === ",") {
+      entries.push(text.slice(start, index))
+      start = index + 1
+      startsScalar = true
+    } else if (startsScalar && (character === '"' || character === "'")) {
+      quote = character
+    } else if (character === ":") {
+      startsScalar =
+        text[index + 1] === undefined || isSpaceOrTab(text[index + 1])
+    } else if (!isSpaceOrTab(character)) {
+      startsScalar = false
+    }
+  }
+  if (quote !== "") return null
+  entries.push(text.slice(start))
+  const trimmed = entries.map(trimSpacesAndTabs)
+  return trimmed.length >= 2 && trimmed.every(readsAsEntry) ? trimmed : null
+}
+
+/** Whether an entry is a key and a value as `splitEntries` describes. */
+function readsAsEntry(entry: string): boolean {
+  const key =
+    entry.startsWith('"') || entry.startsWith("'")
+      ? quotedScalarEnd(entry, 0)
+      : plainKeyEnd(entry)
+  if (key === -1) return false
+  let colon = key
+  while (isSpaceOrTab(entry[colon])) colon++
+  if (entry[colon] !== ":" || !isSpaceOrTab(entry[colon + 1])) return false
+  const value = trimSpacesAndTabs(entry.slice(colon + 1))
+  if (value === "") return false
+  if (value.startsWith('"') || value.startsWith("'"))
+    return quotedScalarEnd(value, 0) === value.length
+  return isPlainScalar(value)
+}
+
+/**
+ * The offset after a quoted scalar that starts at `start`, or -1 where it is
+ * not closed. A double-quoted scalar escapes with a backslash, a single-quoted
+ * one doubles its quote.
+ */
+function quotedScalarEnd(text: string, start: number): number {
+  const quote = text[start]
+  for (let index = start + 1; index < text.length; index++) {
+    if (quote === '"' && text[index] === "\\") index++
+    else if (text[index] === quote) {
+      if (quote === "'" && text[index + 1] === "'") index++
+      else return index + 1
+    }
+  }
+  return -1
+}
+
+/**
+ * The offset of the end of a plain key, before the whitespace and the colon
+ * that follow it, or -1 where the entry starts with an indicator or has no
+ * colon before whitespace.
+ */
+function plainKeyEnd(entry: string): number {
+  if (startsWithIndicator(entry)) return -1
+  for (let index = 0; index < entry.length; index++) {
+    if (
+      entry[index] === ":" &&
+      (entry[index + 1] === undefined || isSpaceOrTab(entry[index + 1]))
+    ) {
+      let end = index
+      while (end > 0 && isSpaceOrTab(entry[end - 1])) end--
+      return end === 0 ? -1 : end
+    }
+  }
+  return -1
+}
+
+/** Whether a plain scalar value reads the same in a flow mapping and a block. */
+function isPlainScalar(value: string): boolean {
+  if (startsWithIndicator(value) || value.endsWith(":")) return false
+  for (let index = 0; index < value.length; index++)
+    if (value[index] === ":" && isSpaceOrTab(value[index + 1])) return false
+  return true
+}
+
+/** Whether a text starts with a character that YAML gives a meaning. */
+function startsWithIndicator(text: string): boolean {
+  const [first, second] = [text[0], text[1]]
+  return (
+    "&*!|>%@`\"'".includes(first) ||
+    ("-?:".includes(first) && (second === undefined || isSpaceOrTab(second)))
+  )
+}
+
+/** The text without the spaces and tabs at its ends. */
+function trimSpacesAndTabs(text: string): string {
+  let start = 0
+  let end = text.length
+  while (start < end && isSpaceOrTab(text[start])) start++
+  while (end > start && isSpaceOrTab(text[end - 1])) end--
+  return text.slice(start, end)
 }
 
 /**

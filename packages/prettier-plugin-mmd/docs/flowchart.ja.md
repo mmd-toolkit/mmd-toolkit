@@ -1611,9 +1611,10 @@ cb
 
 ### データブロック
 
-各 `@{ ... }` の頂点への付着を保ち、YAML の整形や、キー、値、区切り、
-行数の変更はしません。
-変えるのは、1 行のブロックの両端と、移動できる複数行ブロックの余白の 2 つです。
+各 `@{ ... }` の頂点への付着を保ち、YAML の整形やキーと値の変更はしません。
+変えるのは、1 行のブロックの両端、移動できる複数行ブロックの余白、
+長すぎる行にある 1 行のブロックを複数行に分けることの 3 つです。
+変わるのは空白、改行、項目間の `,` だけです。
 
 1 行のブロックは、両端の内側に空白を 1 つずつ置いて印字します。
 `A@{shape: circle}` も `A@{   shape: circle   }` も `A@{ shape: circle }`
@@ -1676,6 +1677,91 @@ CRLF と CR は `endOfLine` に従います。
 [fixture: data-blocks/one-line-surrounding-trivia]
 [test: data blocks: flowchart one line CRLF]
 [test: data blocks: flowchart one line CR]
+
+1 行のブロックがある行が `printWidth` より長いときは、
+読みやすくなる場合に複数行に分けて印字します。
+1 行に 1 項目ずつ文の 1 段内側に置き、`}` は文と同じ桁の単独行に置きます。
+移動できる複数行のブロックと同じです（後述）。
+Prettier が 2 つの形から選び、行が収まる場合は 1 行のままにします。
+`{` までの行も長すぎる場合（前にノードの長いテキストがある場合）は、
+複数行にしても長すぎる部分は短くならないので、1 行のままにします。
+[fixture: data-blocks/long-split] [fixture: data-blocks/long-split-use-tabs]
+[fixture: data-blocks/long-prefix-too-long-kept]
+mermaid.js は、1 行のブロックのテキストを、
+`,` で項目を区切る YAML の flow mapping として読み、
+複数行のブロックのテキストを、
+項目ごとに行を分ける block mapping として読みます（上のソースを参照）。
+どの項目も両方の読み方で同じに読まれるキーと値であれば、両者は同じに読まれます。
+下の条件がこれを保証します。
+各項目は、両端の空白とタブを除いて書かれたまま印字します。
+変わるのは空白、改行、項目間の `,` だけで、Db は同じです。
+次の条件をすべて満たす場合だけ、ブロックを分けます。
+
+- flowchart、agentflow、kanban のいずれかの図のブロックであること。
+  sequence 図は block mapping の行を拒否し、usecase 図の `@{` は、
+  独自の構文を持ちます（[複数行の値](./sequence.ja.md#複数行の値)と
+  [Native metadata](./usecase.ja.md#native-metadata)を参照）。
+  [fixture: sequence/whitespace-between-tokens/data-block-long-kept]
+  [fixture: usecase/native-metadata/long-block-kept]
+- 複数行のブロックと同じく、`tabWidth` が 0 でないこと。
+  [fixture: data-blocks/long-zero-width-kept]
+- 文の最初の行にあり、その文の唯一のブロックで、文の最後にあること。
+  `}` の後にテキストがあると、単独行の `}` の後にそのテキストが置かれ、
+  ブロックが 1 行のときより読みづらくなります。
+  最初の行は文の段を決めるために使います。
+  [fixture: data-blocks/long-text-after-kept]
+  [fixture: data-blocks/long-two-blocks-kept]
+- 項目が 2 つ以上あること。
+  1 項目を複数行にしても行は短くならず、行数が増えるだけです。
+  [fixture: data-blocks/long-one-entry-kept]
+- どの項目も、コロンと空白で区切られたキーと値であり、
+  値が項目の末尾までを占める引用符付きのスカラーか、plain scalar であること。
+  plain scalar は、YAML が意味を与える文字（`&`、`*`、`!`、`|`、`>`、`%`、`@`、
+  バッククォート、および直後に空白がある `-`、`?`、`:`）で始まらず、末尾にも、
+  直後に空白がある位置にも `:` を含まないものです。
+  block mapping は、これらを flow mapping とは違って読むためです。
+  値がない項目（`{ pos, h: 60 }` の `pos`）、空の項目（末尾の `,` の後）、
+  anchor や alias である値、`pos:t` のような項目は、どれもこれに当たりません。
+  [fixture: data-blocks/long-entry-without-value-kept]
+  [fixture: data-blocks/long-trailing-comma-kept]
+  [fixture: data-blocks/long-indicator-value-kept]
+  [fixture: data-blocks/long-colon-without-space-kept]
+- 引用符の外に `[`、`]`、`{`、`}` がなく、
+  コメント（先頭か空白の後の `#`）がないこと。
+  値の flow collection は 1 行ではない 1 項目として読まれ、
+  コメントは block mapping の行を終わらせるためです。
+  [fixture: data-blocks/long-nested-kept]
+  [fixture: data-blocks/long-comment-kept]
+- 両端を整える条件を満たすこと。
+  ブロック内に directive がなく、行全体を保つ行でなく、
+  ほかのブロックと接していないことです。
+  [fixture: data-blocks/long-kept-line-kept]
+
+URL のように、直後に空白がない `:` を持つ値は分けます。
+[fixture: data-blocks/long-url-value-split]
+分けたブロックは複数行のブロックなので、もう一度整形してもその形を保ちます。
+
+入力
+([data-blocks/long-split-input.mmd](../tests/fixtures/flowchart/data-blocks/long-split-input.mmd)):
+
+```mmd
+flowchart LR
+A@{ shape: rect, label: "A process step with a long label", pos: "t", h: 60, constraint: "on" }
+```
+
+出力
+([data-blocks/long-split-output.mmd](../tests/fixtures/flowchart/data-blocks/long-split-output.mmd)):
+
+```mmd
+flowchart LR
+  A@{
+    shape: rect
+    label: "A process step with a long label"
+    pos: "t"
+    h: 60
+    constraint: "on"
+  }
+```
 
 移動できる複数行ブロックでは、本文の全行を同じ数の半角空白だけ動かし、
 文字がある最も浅い行を文の 1 段内側に置きます。

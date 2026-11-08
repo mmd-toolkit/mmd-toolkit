@@ -528,7 +528,9 @@ metadata-blocks/metadata-multiline]
 
 A block on one line is printed with one space inside each end, and stays as
 written in the cases listed under [Data blocks](./flowchart.md#data-blocks).
-[fixture: metadata-blocks/one-line-padded] [fixture:
+Where its line is too long it prints on lines, one entry on each, under the
+conditions listed there. [fixture: metadata-blocks/long-split] [fixture:
+metadata-blocks/one-line-padded] [fixture:
 metadata-blocks/one-line-space-only-padded] [fixture:
 metadata-blocks/one-line-directive-kept] [fixture:
 metadata-blocks/one-line-kept-line-kept] [fixture:

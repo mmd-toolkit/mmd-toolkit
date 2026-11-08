@@ -74,6 +74,16 @@ describe("data blocks' permitted uniform margins", () => {
       before: "@{\n    label: Alpha\n}",
       after: "@{\n    label: Alpha\n  }",
     },
+    {
+      name: "an inline block split into one entry on each line",
+      before: '@{ shape: rect, label: "A, B", h: 60 }',
+      after: '@{\n    shape: rect\n    label: "A, B"\n    h: 60\n  }',
+    },
+    {
+      name: "an inline block split, with no space after its commas",
+      before: "@{a: 1,b: 2}",
+      after: "@{\n    a: 1\n    b: 2\n  }",
+    },
   ])("accepts $name", ({ before, after }) => {
     expect(dataBlockEmbeddedForFormattingComparison([before], [after])).toEqual(
       [before],
@@ -81,6 +91,26 @@ describe("data blocks' permitted uniform margins", () => {
   })
 
   it.each([
+    {
+      name: "a split block with a changed entry",
+      before: "@{ a: 1, b: 2 }",
+      after: "@{\n    a: 1\n    b: 3\n  }",
+    },
+    {
+      name: "a split block with a dropped entry",
+      before: "@{ a: 1, b: 2 }",
+      after: "@{\n    a: 1\n    b: 2\n    c: 3\n  }",
+    },
+    {
+      name: "a split block whose entries are not as deep",
+      before: "@{ a: 1, b: 2 }",
+      after: "@{\n    a: 1\n   b: 2\n  }",
+    },
+    {
+      name: "a split block with a space changed inside an entry",
+      before: "@{ a: x y, b: 2 }",
+      after: "@{\n    a: x  y\n    b: 2\n  }",
+    },
     {
       name: "a closer with a tab before it",
       before: "@{\nlabel: |+\n  alpha\n}",

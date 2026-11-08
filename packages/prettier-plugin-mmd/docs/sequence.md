@@ -406,7 +406,9 @@ stay written except for the eligible margins in
 block on one line, which become one space each, as in
 [Data blocks](./flowchart.md#data-blocks): `participant A@{"type":"queue"}`
 becomes `participant A@{ "type":"queue" }`. [fixture:
-whitespace-between-tokens/data-block-padded] The block stays as written where
+whitespace-between-tokens/data-block-padded] A long block is not split over
+lines, since mermaid.js rejects the lines of a block mapping there. [fixture:
+whitespace-between-tokens/data-block-long-kept] The block stays as written where
 that rule says so. [fixture:
 whitespace-between-tokens/data-block-space-only-padded] [fixture:
 whitespace-between-tokens/data-block-directive-kept] [fixture:

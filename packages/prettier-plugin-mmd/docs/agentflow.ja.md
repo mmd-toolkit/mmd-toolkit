@@ -576,7 +576,9 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 1 行のブロックは、両端の内側に空白を 1 つずつ置いて印字します。
 書かれたままにする場合は、
 [データブロック](./flowchart.ja.md#データブロック)に挙げたとおりです。
-[fixture: metadata-blocks/one-line-padded]
+行が長すぎるときは、そこに挙げた条件のもとで、
+1 行に 1 項目ずつ複数行に分けて印字します。
+[fixture: metadata-blocks/long-split] [fixture: metadata-blocks/one-line-padded]
 [fixture: metadata-blocks/one-line-space-only-padded]
 [fixture: metadata-blocks/one-line-directive-kept]
 [fixture: metadata-blocks/one-line-kept-line-kept]

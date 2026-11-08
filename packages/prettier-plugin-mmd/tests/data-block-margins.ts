@@ -4,8 +4,9 @@ import { leadingSpaces } from "./db-values.ts"
  * Exposes the formatter's permitted changes of a data block without changing
  * the raw texts. The formatter moves every line of a multi-line block by the
  * same number of spaces and puts a closing `}` that stands on a line of its
- * own at the column of its statement, in spaces, and prints a block of one
- * line with one space inside each end (docs/flowchart.md, Data blocks); every
+ * own at the column of its statement, in spaces, prints a block of one
+ * line with one space inside each end, and prints a block of one line that is
+ * too long on lines, one entry on each (docs/flowchart.md, Data blocks); every
  * other character stays. A text that is not such a change stays as it is, so
  * that the comparison reports it.
  */
@@ -83,6 +84,49 @@ function isPaddedOneLine(before: string, after: string): boolean {
 }
 
 /**
+ * Whether `after` is the block `before` of one line printed on lines: `@{`, one
+ * entry on each row, all rows as deep, and a `}` alone on the last row, where
+ * the entries are the text inside `before` cut at its `,`. The formatter
+ * changes the whitespace, the line breaks and the `,` between the entries and
+ * nothing else (docs/flowchart.md, Data blocks). The text inside `before` and
+ * the entries joined by `,` are compared without the spaces and tabs after a
+ * `,`, which the split removes.
+ */
+function isSplitOneLine(before: string, after: string): boolean {
+  if (!before.startsWith("@{") || !before.endsWith("}")) return false
+  if (before.includes("\n") || before.includes("\r")) return false
+  const rows = after.split("\n")
+  if (rows.length < 4 || rows[0] !== "@{" || !isSpacesThenBrace(rows.at(-1)!))
+    return false
+  const entries = rows.slice(1, -1)
+  const margin = leadingSpaces(entries[0])
+  if (
+    margin === 0 ||
+    entries.some(
+      (row) =>
+        leadingSpaces(row) !== margin || isBlank(row) || row !== row.trimEnd(),
+    )
+  )
+    return false
+  const joined = entries.map((row) => row.slice(margin)).join(",")
+  return (
+    withoutSpacesAfterCommas(joined) ===
+    withoutSpacesAfterCommas(before.slice(2, -1).trim())
+  )
+}
+
+/** The text without the spaces and tabs that stand after a `,`. */
+function withoutSpacesAfterCommas(text: string): string {
+  let result = ""
+  for (let index = 0; index < text.length; index++) {
+    result += text[index]
+    if (text[index] === ",")
+      while (text[index + 1] === " " || text[index + 1] === "\t") index++
+  }
+  return result
+}
+
+/**
  * The block with the spaces and tabs removed between the `@` and the `{` of
  * its head, which the formatter drops from the JSON table of a use case
  * diagram (docs/usecase.md, JSON tables). A block with a directive is left
@@ -108,6 +152,7 @@ function isAllowedMove(before: string, after: string): boolean {
   if (head !== before) return isAllowedMove(head, after)
   if (!before.includes("\n") && !after.includes("\n"))
     return isPaddedOneLine(before, after)
+  if (isSplitOneLine(before, after)) return true
   const rowsBefore = before.split("\n")
   const rowsAfter = after.split("\n")
   if (rowsBefore.length !== rowsAfter.length || rowsBefore[0] !== rowsAfter[0])

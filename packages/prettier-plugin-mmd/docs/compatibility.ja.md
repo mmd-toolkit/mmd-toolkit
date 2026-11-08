@@ -85,6 +85,12 @@ flowchart、agentflow、kanban、sequence の 1 行のデータブロックは�
 [fixture: flowchart/data-blocks/one-line-space-only-padded]
 [fixture: flowchart/data-blocks/one-line-touching-blocks-kept]
 [fixture: flowchart/data-blocks/one-line-separate-blocks-padded]
+flowchart、agentflow、kanban では、
+その行が `printWidth` より長い 1 行のデータブロックは、
+すべての項目が単純なキーと値なら、1 行に 1 項目ずつ複数行に分けて印字します。
+変わるのは、空白、改行、項目の間の `,` だけで、キーと値の文字は保ちます。
+条件は[データブロック](./flowchart.ja.md#データブロック)にあります。
+[fixture: flowchart/data-blocks/long-split]
 flowchart、agentflow、kanban、sequence の対象となる複数行のデータブロックと、
 usecase の JSON table は、本文の全行を一定数の半角空白だけ動かします。
 行どうしの字下げの差と末尾空白を保ち、単独行の `}` は文の段に揃えます。

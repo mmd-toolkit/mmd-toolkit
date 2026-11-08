@@ -441,13 +441,14 @@ kanban
 
 A data block `@{ ... }` is embedded text that mermaid.js reads as YAML for the
 properties of a node, such as `ticket` and `assigned`. The printer keeps it
-opaque, with its delimiters, its content and its line breaks retained, apart
-from the uniform indentation below and the spaces at the ends of a block on one
-line: it does not format the YAML, and it does not merge, split, reorder, wrap,
-or repair blocks, whether a block is empty (`A@{}`), has an unknown or duplicate
-key (`A@{ticket: X, ticket: Y}`), is not valid YAML (`A@{assigned: [a}`), or
-runs over several lines. The parser accepts a block whose YAML is invalid,
-although mermaid.js rejects it (known divergence
+opaque, with its delimiters and its content retained, apart from the uniform
+indentation below, the spaces at the ends of a block on one line, and the
+printing of a block on one line on lines where its line is too long: it does not
+format the YAML, and it does not merge, reorder, or repair blocks, whether a
+block is empty (`A@{}`), has an unknown or duplicate key
+(`A@{ticket: X, ticket: Y}`), is not valid YAML (`A@{assigned: [a}`), or runs
+over several lines. The parser accepts a block whose YAML is invalid, although
+mermaid.js rejects it (known divergence
 [`embedded-data-opaque`](../../spec/docs/known-divergences/embedded-data-opaque.md)),
 because the block is embedded text that the specification reads as opaque.
 [fixture: data-blocks/data-opaque] [fixture: data-blocks/empty-data] [fixture:
@@ -461,9 +462,12 @@ data-blocks/db-metadata-quoted-brace] [fixture: data-blocks/data-line-rule-gap]
 
 A block on one line is printed with one space inside each end, as in
 [Data blocks](./flowchart.md#data-blocks): `A@{ticket: X}` becomes
-`A@{ ticket: X }`. The block stays as written in the cases listed there.
-[fixture: data-blocks/one-line-padded] [fixture:
-data-blocks/one-line-space-only-padded] [fixture:
+`A@{ ticket: X }`. Where its line is too long it prints on lines, one entry on
+each, under the conditions listed there, which a node text that fills the line
+before the block does not meet. The block stays as written in the cases listed
+there. [fixture: data-blocks/long-split] [fixture:
+data-blocks/long-prefix-too-long-kept] [fixture: data-blocks/one-line-padded]
+[fixture: data-blocks/one-line-space-only-padded] [fixture:
 data-blocks/one-line-directive-kept] [fixture:
 data-blocks/one-line-kept-line-kept] [fixture:
 data-blocks/one-line-touching-blocks-kept] [fixture:

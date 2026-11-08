@@ -7,8 +7,8 @@ Filename: usecase-no-redefined-class-incorrect-1.mmd
 Code:
   1 | usecase-beta
   2 |   A:::hot
-  3 |   classDef hot fill:red
-  4 |   classDef hot stroke:blue
+  3 |   classDef hot fill: red
+  4 |   classDef hot stroke: blue
     |            ^~~ [1]
   5 |
 
@@ -18,13 +18,13 @@ Code:
         Output:
           1 | usecase-beta
           2 |   A:::hot
-          3 |   classDef hot fill:red
+          3 |   classDef hot fill: red
           4 |
       - Remove the earlier class definition.
         Output:
           1 | usecase-beta
           2 |   A:::hot
-          3 |   classDef hot stroke:blue
+          3 |   classDef hot stroke: blue
           4 |
 ---
 

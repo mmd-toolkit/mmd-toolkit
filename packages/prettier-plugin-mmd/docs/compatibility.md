@@ -73,16 +73,22 @@ written where [Data blocks](./flowchart.md#data-blocks) says so. [fixture:
 flowchart/data-blocks/one-line-padded] [fixture:
 flowchart/data-blocks/one-line-space-only-padded] [fixture:
 flowchart/data-blocks/one-line-touching-blocks-kept] [fixture:
-flowchart/data-blocks/one-line-separate-blocks-padded] Eligible multiline data
-blocks in flowchart, agentflow, kanban and sequence, and usecase JSON tables,
-move their body lines by one uniform number of ASCII spaces, preserving relative
-indentation and trailing whitespace; a separate `}` aligns with its statement.
-Inline-opening blocks, leading non-space whitespace, embedded directives,
-column-zero YAML markers, kept lines, blocks after the statement's first line
-and `tabWidth: 0` prevent movement. Sequence additionally requires a single
-text-bearing body line because Mermaid trims the whole block. The conditions and
-their reasons are in [Data blocks](./flowchart.md#data-blocks); other blocks
-keep their columns. [fixture: flowchart/data-blocks/deep-nested-yaml] [fixture:
+flowchart/data-blocks/one-line-separate-blocks-padded] In flowchart, agentflow
+and kanban, a data block on one line whose line is longer than `printWidth`
+prints on lines, one entry on each, where every entry is a simple key and value:
+only the whitespace, the line breaks and the `,` between its entries change, and
+the characters of the keys and values stay. The conditions are in
+[Data blocks](./flowchart.md#data-blocks). [fixture:
+flowchart/data-blocks/long-split] Eligible multiline data blocks in flowchart,
+agentflow, kanban and sequence, and usecase JSON tables, move their body lines
+by one uniform number of ASCII spaces, preserving relative indentation and
+trailing whitespace; a separate `}` aligns with its statement. Inline-opening
+blocks, leading non-space whitespace, embedded directives, column-zero YAML
+markers, kept lines, blocks after the statement's first line and `tabWidth: 0`
+prevent movement. Sequence additionally requires a single text-bearing body line
+because Mermaid trims the whole block. The conditions and their reasons are in
+[Data blocks](./flowchart.md#data-blocks); other blocks keep their columns.
+[fixture: flowchart/data-blocks/deep-nested-yaml] [fixture:
 flowchart/data-blocks/scalar-blank-lines] [fixture:
 sequence/multi-line-values/data-multiple-lines-kept] [fixture:
 usecase/json-tables/tab-statement-space-body]

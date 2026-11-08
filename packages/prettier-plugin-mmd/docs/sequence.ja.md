@@ -427,6 +427,9 @@ id と `@{` の間のディレクティブは、
 空白 1 つずつにします。
 `participant A@{"type":"queue"}` は `participant A@{ "type":"queue" }`
 になります。 [fixture: whitespace-between-tokens/data-block-padded]
+長いブロックも複数行には分けません。
+mermaid.js がその位置で block mapping の行を拒否するためです。
+[fixture: whitespace-between-tokens/data-block-long-kept]
 その規則が書かれたままにする場合は、このブロックも書かれたままにします。
 [fixture: whitespace-between-tokens/data-block-space-only-padded]
 [fixture: whitespace-between-tokens/data-block-directive-kept]
