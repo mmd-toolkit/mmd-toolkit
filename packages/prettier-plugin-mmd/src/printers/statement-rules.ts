@@ -9,7 +9,7 @@ import {
   keptAsWritten,
   replaceInAtoms,
 } from "./layout.ts"
-import { collapseRunEdits } from "./text-runs.ts"
+import { collapseRunEdits, runEdits } from "./text-runs.ts"
 import {
   findLinesWithOwnSemicolons,
   isInsideStyleRuleStretch,
@@ -134,29 +134,74 @@ export function styleStatementRules(
   return rules
 }
 
-/** Keep property and value text, changing only the first colon's padding. */
+/**
+ * Keep property and value text, changing only the first colon's padding and
+ * the runs of spaces and tabs between the words of a style, which are printed
+ * as one space (docs/er.md and docs/requirement.md, Styles and classes). A
+ * style with a `:` at its start stays as written.
+ */
 export function printStyleUnitSpacing(source: Source, style: Node): Doc {
-  const colon = source.text.indexOf(":", style.range[0])
-  if (colon <= style.range[0] || colon >= style.range[1])
-    return printAsWritten(source, ...style.range)
+  const [start, end] = style.range
+  const colon = source.text.indexOf(":", start)
+  if (colon === -1 || colon >= end) return printWordGaps(source, start, end)
+  if (colon === start) return printAsWritten(source, start, end)
   let propertyEnd = colon
-  while (
-    source.text[propertyEnd - 1] === " " ||
-    source.text[propertyEnd - 1] === "\t"
-  )
-    propertyEnd--
-  if (propertyEnd === style.range[0])
-    return printAsWritten(source, ...style.range)
+  while (isSpaceOrTab(source.text[propertyEnd - 1])) propertyEnd--
   let valueStart = colon + 1
-  while (source.text[valueStart] === " " || source.text[valueStart] === "\t")
-    valueStart++
+  while (isSpaceOrTab(source.text[valueStart])) valueStart++
   return [
-    printAsWritten(source, style.range[0], propertyEnd),
+    printWordGaps(source, start, propertyEnd),
     ":",
-    valueStart < style.range[1]
-      ? [" ", printAsWritten(source, valueStart, style.range[1])]
-      : "",
+    valueStart < end ? [" ", printWordGaps(source, valueStart, end)] : "",
   ]
+}
+
+/**
+ * The text at `[start, end)`, with each run of spaces and tabs printed as one
+ * space.
+ */
+function printWordGaps(source: Source, start: number, end: number): Doc {
+  const parts: Doc[] = []
+  let position = start
+  for (const { range } of runEdits(source, start, end)) {
+    parts.push(printAsWritten(source, position, range[0]), " ")
+    position = range[1]
+  }
+  parts.push(printAsWritten(source, position, end))
+  return parts
+}
+
+/**
+ * Adds the edits that print each run of spaces and tabs between the words of a
+ * style as one space, where the Db of mermaid.js either does not hold the
+ * whitespace (it joins the words of a style that has no `:`) or holds it and
+ * draws the figure without it (docs/compatibility.md, Styles that are drawn
+ * the same). The whitespace around the first `:` is the business of
+ * `addColonEdit`, called before this, and a style with a `:` that edit leaves
+ * as written stays as written. Only the runs inside the text of `range` change:
+ * the whitespace at its ends is the business of the caller, which keeps the
+ * whitespace after a backslash that ends a style.
+ */
+export function addWordGapEdits(
+  source: Source,
+  [start, end]: Range,
+  edits: TextEdit[],
+): void {
+  const colon = source.text.indexOf(":", start)
+  const edited = (offset: number): boolean =>
+    edits.some((edit) => edit.range[0] <= offset && offset < edit.range[1])
+  if (colon !== -1 && colon < end && !edited(colon)) return
+  for (const edit of runEdits(source, start, end)) {
+    const [from, to] = edit.range
+    if (
+      from === start ||
+      to === end ||
+      (to - from === 1 && source.text[from] === " ") ||
+      edits.some((other) => other.range[0] < to && from < other.range[1])
+    )
+      continue
+    edits.push(edit)
+  }
 }
 
 /**
@@ -216,6 +261,12 @@ export interface StyleListUse {
    * `,`.
    */
   readonly escapesComma?: boolean
+  /**
+   * The statement is a `style` or a `classDef` of a class diagram: a run of
+   * spaces and tabs between the words of a style is printed as one space (see
+   * `addWordGapEdits`).
+   */
+  readonly collapsesWordGaps?: boolean
 }
 
 /**
@@ -281,6 +332,10 @@ export interface StyleListUse {
  * `style` of a node of the other diagram types and their `classDef` are not
  * joined so: mermaid.js takes the whitespace at their ends away first.
  *
+ * Where `collapsesWordGaps` is set, a run of spaces and tabs between the words
+ * of a style is printed as one space, whether the style has a `:` or not
+ * (`addWordGapEdits`).
+ *
  * Where `escapesComma` is set, a `,` after a backslash is part of a style, and
  * so is a space after a backslash at the end of one: taking that space away
  * would make the `,` part of the style. A space after a backslash before the
@@ -303,6 +358,7 @@ export function normalizeStyleList(
     splitsLabelStyles = false,
     keepsGapAfterStroke = false,
     escapesComma = false,
+    collapsesWordGaps = false,
   }: StyleListUse = {},
 ): void {
   const styles = statement.styles.filter((style) => style !== null)
@@ -347,6 +403,7 @@ export function normalizeStyleList(
         keepsGapAfterStroke,
         keepsGapAfterLabelName: splitsLabelStyles,
       })
+      if (collapsesWordGaps) addWordGapEdits(source, core, edits)
     }
     if (previousEnd !== -1) {
       const touchesWord =

@@ -1008,11 +1008,18 @@ erDiagram
 `style` と `classDef` の、通常の 1 行のプロパティと値からなるスタイルでは、
 最初の `:` の前を詰め、空でない値の前に空白を 1 つ置きます。
 スタイル間は `,` とその後の空白 1 つで区切ります。
-プロパティと値の内部は、値の語の間の連続空白も含めて保ちます。
-Mermaid はスタイルの単位をつなげて読むため、
-`stroke-dasharray: 5 5` は引き続き `stroke-dasharray:55` です。
+`:` のあるスタイルでも、ないスタイルでも、語と語の間の空白の連続は、
+空白 1 つで印字します。
+`stroke-dasharray:  5    5` は `stroke-dasharray: 5 5` に、
+`4px    wide` は `4px wide` になります。
+語と語の間に空白があるかどうかは、書かれたまま残します。
+ほかの隙間と同じように、接する語は接したままです。
+そのため、`fill #f00` と `fill#f00` は区別して残します。
+[ディレクティブ](#ディレクティブ)を参照してください。
+語をつなぐと、どこで語が終わるかが見えなくなるからです。
+Mermaid は、区切る空白にかかわらずスタイルの単位をつなげて読むため、
+`stroke-dasharray: 5 5` は引き続き `stroke-dasharray:55` で、Db は変わりません。
 `fill   : navy, stroke  : black` は `fill: navy, stroke: black` にします。
-`stroke-dasharray:  5    5` は、値の間の空白 4 つを保ちます。
 通常はつなげる見出しや外側の改行があっても、最初の整形で同じ間隔にします。
 スタイル内部の改行区切り、所有する trivia、
 同じ物理行に保持するセミコロンがある場合は、既存のスタイルの配置を保ちます。
@@ -1023,7 +1030,10 @@ Mermaid はスタイルの単位をつなげて読むため、
 [fixture: styles-and-classes/style-names]
 [fixture: styles-and-classes/class-lists]
 [fixture: styles-and-classes/styles-as-written]
-[fixture: styles-and-classes/style-inner-whitespace-kept]
+[fixture: styles-and-classes/style-inner-whitespace-collapsed]
+[fixture: styles-and-classes/style-words-run-spaced]
+[fixture: styles-and-classes/style-words-touching-kept]
+[fixture: styles-and-classes/style-words-directive-kept]
 
 [fixture: styles-and-classes/keyword-case-kept]
 [fixture: styles-and-classes/keyword-case-semicolon-line-kept]

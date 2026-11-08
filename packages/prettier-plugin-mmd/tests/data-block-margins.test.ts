@@ -84,6 +84,11 @@ describe("data blocks' permitted uniform margins", () => {
       before: "@{a: 1,b: 2}",
       after: "@{\n    a: 1\n    b: 2\n  }",
     },
+    {
+      name: "an inline block split, with spaces and tabs around its commas",
+      before: "@{ a: 1 \t,\t b: 2 }",
+      after: "@{\n    a: 1\n    b: 2\n  }",
+    },
   ])("accepts $name", ({ before, after }) => {
     expect(dataBlockEmbeddedForFormattingComparison([before], [after])).toEqual(
       [before],
@@ -105,6 +110,21 @@ describe("data blocks' permitted uniform margins", () => {
       name: "a split block whose entries are not as deep",
       before: "@{ a: 1, b: 2 }",
       after: "@{\n    a: 1\n   b: 2\n  }",
+    },
+    {
+      name: "a split block whose last entry had a comma after it",
+      before: "@{ a: 1, b: 2, }",
+      after: "@{\n    a: 1\n    b: 2\n  }",
+    },
+    {
+      name: "a split block of one entry",
+      before: "@{ a: 1 }",
+      after: "@{\n    a: 1\n  }",
+    },
+    {
+      name: "a split block whose entries were in another order",
+      before: "@{ a: 1, b: 2 }",
+      after: "@{\n    b: 2\n    a: 1\n  }",
     },
     {
       name: "a split block with a space changed inside an entry",

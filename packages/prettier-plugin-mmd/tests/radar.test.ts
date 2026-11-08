@@ -7,7 +7,7 @@ import {
   describeFrontmatterChange,
   treeProblemsOfText,
   writtenEmbeddedTexts,
-  writtenTextKeptUpToSemicolons,
+  writtenTextKeptUpToSeparators,
 } from "./db-reading.ts"
 import { radarCases } from "./radar-cases.ts"
 
@@ -27,7 +27,7 @@ describe("radar escaped cases", () => {
     expect(dbOfText(after, embedded)).toEqual(dbOfText(before, embedded))
     expect(writtenEmbeddedTexts(after)).toEqual(writtenEmbeddedTexts(before))
     expect(await describeFrontmatterChange(before, after, options)).toBeNull()
-    expect(writtenTextKeptUpToSemicolons(before, after)).toBe(true)
+    expect(writtenTextKeptUpToSeparators(before, after)).toBe(true)
     expect(treeProblemsOfText(before)).toEqual([])
     expect(treeProblemsOfText(after)).toEqual([])
   })

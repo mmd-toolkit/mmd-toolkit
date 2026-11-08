@@ -391,7 +391,10 @@ export function layoutClassStatement(
     if (joinsStyles && lastAtom && lastAtom.end < end) {
       atoms[atoms.length - 1] = { ...lastAtom, end }
     }
-    normalizeStyleList(source, atoms, statement, { joinsStyles })
+    normalizeStyleList(source, atoms, statement, {
+      joinsStyles,
+      collapsesWordGaps: true,
+    })
   }
   return {
     atoms: keepFirstGapLineTails(source, atoms, (from, to) =>

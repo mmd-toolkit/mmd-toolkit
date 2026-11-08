@@ -399,7 +399,9 @@ flowchart、agentflow、class、state、block、usecase の `style`、`classDef`
 スタイルの間の `,` の前にも空白を置かず、後ろに空白を 1 つ置きます。
 `style A fill :#f00,stroke:  #333` は `style A fill: #f00, stroke: #333`
 になります。
-値の中の語と語の間の空白は、書かれたままです。
+flowchart、agentflow、state、block、usecase では、値の中の語と語の間の空白は、
+書かれたままです。
+class、ER、requirement では、その連続を空白 1 つで印字します（後述）。
 [fixture: flowchart/whitespace-between-tokens/style-colon-spaced]
 [fixture: flowchart/whitespace-between-tokens/style-colon-empty-value-kept]
 [fixture: agentflow/single-space-gaps/style-colon-spaced]
@@ -639,6 +641,33 @@ block 図のほかの形は、スタイルから `styles2String` で、
 これらの形でも `classDef` でも、両方の書き方の画素は同じでした。
 [fixture: block/styles/style-label-styles-kept]
 
+class、ER、requirement の図では、`:` のあるスタイルでも、ないスタイルでも、
+語と語の間の空白とタブの連続を空白 1 つで印字し、
+語と語の間に空白があるかどうかは、書かれたまま残します。
+`style A fill   #f00` は `style A fill #f00` と印字し、
+`style A fill#f00` はそのままです。
+mermaid.js は、class 図では `:` のないスタイルの語を、
+ER と requirement の図ではすべてのスタイルの単位をつなげて読むため、
+そこで Db は変わりません。
+`stroke-dasharray: 5   5` と `stroke-dasharray: 5 5` は、
+ER と requirement の図では、どちらも `stroke-dasharray:55` と読みます。
+class 図は、`:` の前後の空白と同じように、
+`:` のあるスタイルの空白の連続を Db に残しますが、描かれる図は同じです。
+`style A border:2px   solid   red`、`style A font:20px   serif`、
+`style A fill:#f00   stroke:blue`、`style A fill:#f00,   x   y` と、
+語の間をタブで区切った `style A border:2px solid red` のそれぞれを、
+空白の連続を書かれたままにした形と空白 1 つで印字した形で、
+mermaid.js 12.3.0 を使い Chromium に描きました。
+画素は同じでした。
+生成された id と `style` 属性・`fill` 属性の空白の連続を除くと、
+SVG も同じでした。
+クラスに適用した `classDef` も同じです。
+[fixture: class/whitespace-between-tokens/style-value-words-spaced]
+[fixture: class/whitespace-between-tokens/style-words-run-spaced]
+[fixture: er/styles-and-classes/style-words-run-spaced]
+[fixture: requirement/styles-and-classes/style-words-run-spaced]
+[fixture: class/whitespace-between-tokens/style-words-directive-kept]
+
 次の場合は、文を書かれたまま残します。
 スタイルが改行か U+2028・U+2029 を含む場合、
 文がコメントかディレクティブを含む場合、スタイルが全部空白の場合、
@@ -652,9 +681,10 @@ block 図のほかの形は、スタイルから `styles2String` で、
 書かれたテキストの Db
 からスタイルの余白を戻して比べます（`tests/style-margins.ts` の
 `styleDbForFormattingComparison`）。
-スタイルが書かれたものと、両端と最初の `:` の前後の空白だけが違うときは、
-書かれた方を採ります。
-ほかの違いは、リンクのスタイルの数や、
+スタイルが書かれたものと、両端と最初の `:` の前後の空白や、
+class 図での語の間の空白の連続だけが違うときは、書かれた方を採ります。
+ほかの違いは、class 図のスタイルの語と語の間の空白の有無、
+リンクのスタイルの数や、
 リンクにも適用されるスタイルの `stroke` の `:` の前の空白の有無、
 `stroke:` で始まるリンクのスタイルの前の空白の有無、
 リンクの `stroke` の空白だけの値の中の空白の有無、

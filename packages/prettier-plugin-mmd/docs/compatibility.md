@@ -356,11 +356,12 @@ flowchart, agentflow, class, state, block, and usecase diagrams, as it does in
 ER and requirement diagrams: no whitespace before the first `:` of a style, one
 space after it where the value is not empty, no whitespace before the `,`
 between two styles, and one space after it. `style A fill :#f00,stroke:  #333`
-is printed `style A fill: #f00, stroke: #333`. The whitespace between the words
-of a value stays as written. [fixture:
-flowchart/whitespace-between-tokens/style-colon-spaced] [fixture:
-flowchart/whitespace-between-tokens/style-colon-empty-value-kept] [fixture:
-agentflow/single-space-gaps/style-colon-spaced] [fixture:
+is printed `style A fill: #f00, stroke: #333`. In flowchart, agentflow, state,
+block, and usecase diagrams the whitespace between the words of a value stays as
+written; class, ER, and requirement diagrams print a run of it as one space (see
+below). [fixture: flowchart/whitespace-between-tokens/style-colon-spaced]
+[fixture: flowchart/whitespace-between-tokens/style-colon-empty-value-kept]
+[fixture: agentflow/single-space-gaps/style-colon-spaced] [fixture:
 class/whitespace-between-tokens/style-colon-spaced] [fixture:
 state/whitespace-between-tokens/style-colon-spaced] [fixture:
 block/styles/style-colon-spaced] [fixture:
@@ -588,6 +589,29 @@ of a block diagram make the style of their label again from their styles with
 spellings were the same for them and for a `classDef`. [fixture:
 block/styles/style-label-styles-kept]
 
+In class, ER, and requirement diagrams a run of spaces and tabs between the
+words of a style is printed as one space, in a style with a `:` and in one
+without, and whether whitespace stands between two words stays as written:
+`style A fill   #f00` is printed `style A fill #f00`, and `style A fill#f00`
+stays. mermaid.js joins the words of a style that has no `:` in a class diagram,
+and the native style units of ER and requirement diagrams in every style, so the
+Db does not change there: `stroke-dasharray: 5   5` and `stroke-dasharray: 5 5`
+are both read as `stroke-dasharray:55` in an ER or a requirement diagram. A
+class diagram keeps the runs of a style with a `:` in the Db, as it keeps the
+whitespace around the `:`, and draws the same figure. Each of
+`style A border:2px   solid   red`, `style A font:20px   serif`,
+`style A fill:#f00   stroke:blue`, `style A fill:#f00,   x   y`, and
+`style A border:2px solid red` written with tabs between its words was drawn
+with mermaid.js 12.3.0 in Chromium, with the runs as written and printed as one
+space: the pixels were the same, and so was the SVG, without the generated ids
+and without the runs in its `style` and `fill` attributes. The same holds for a
+`classDef` put on a class. [fixture:
+class/whitespace-between-tokens/style-value-words-spaced] [fixture:
+class/whitespace-between-tokens/style-words-run-spaced] [fixture:
+er/styles-and-classes/style-words-run-spaced] [fixture:
+requirement/styles-and-classes/style-words-run-spaced] [fixture:
+class/whitespace-between-tokens/style-words-directive-kept]
+
 A statement stays as written where a style holds a line break or a U+2028 or
 U+2029, where the statement holds a comment or a directive, where a style is all
 whitespace, and where its line holds a `;` of its own (see
@@ -600,17 +624,18 @@ flowchart/whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
 The tests compare the Db of the printed text with the margins of its styles
 restored from the Db of the written text (`styleDbForFormattingComparison` in
 `tests/style-margins.ts`): a style that differs from the written one only by the
-whitespace at its ends and around its first `:` takes the written text, and any
-other difference, among them the number of styles of a link, the presence of
-whitespace before the `:` of a `stroke` in a style that can reach a link, the
-presence of whitespace before a style of a link that starts with `stroke:`, and
-the presence of whitespace in the value of a `stroke` of a link that is
-whitespace only, the presence of whitespace after a backslash that ends a style
-that mermaid.js joins as it is, and the presence of whitespace before a style of
-a block that starts with `color:` or `text-align:`, or between such a name and
-the `:`, fails. When the pinned mermaid.js is updated, draw the statements of
-each of these kinds again and compare the SVG and the pixels before the
-exception stays.
+whitespace at its ends and around its first `:`, and in a class diagram by the
+runs between its words, takes the written text, and any other difference, among
+them the presence of whitespace between two words of a style in a class diagram,
+the number of styles of a link, the presence of whitespace before the `:` of a
+`stroke` in a style that can reach a link, the presence of whitespace before a
+style of a link that starts with `stroke:`, and the presence of whitespace in
+the value of a `stroke` of a link that is whitespace only, the presence of
+whitespace after a backslash that ends a style that mermaid.js joins as it is,
+and the presence of whitespace before a style of a block that starts with
+`color:` or `text-align:`, or between such a name and the `:`, fails. When the
+pinned mermaid.js is updated, draw the statements of each of these kinds again
+and compare the SVG and the pixels before the exception stays.
 
 ## Texts after a keyword that are drawn the same
 

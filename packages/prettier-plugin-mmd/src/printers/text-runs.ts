@@ -117,7 +117,21 @@ export function collapseRunEdits(
   start: number,
   end: number,
 ): TextEdit[] {
-  if (staysAsWritten(source, start, end)) return []
+  return staysAsWritten(source, start, end)
+    ? []
+    : runEdits(source, start, end)
+}
+
+/**
+ * The edits that print each run of spaces and tabs at `[start, end)` as one
+ * space, whatever the text is: the caller decides whether the runs of its text
+ * may change (see `collapseRunEdits` for the texts of a label).
+ */
+export function runEdits(
+  source: Source,
+  start: number,
+  end: number,
+): TextEdit[] {
   const edits: TextEdit[] = []
   let position = start
   while (position < end) {

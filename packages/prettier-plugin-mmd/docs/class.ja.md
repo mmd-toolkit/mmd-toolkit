@@ -362,18 +362,26 @@ mermaid.js の文書にある例 1 件は、接する形で書かれています
 スタイルの間の `,` の前に空白を置かず、後ろに空白を 1 つ置きます。
 `style C fill:#f9f  ,  stroke:#333` は、
 `style C fill: #f9f, stroke: #333` になります。
-値の中の語と語の間の空白は、書かれたまま残します。
-mermaid.js は余白を Db に残しますが、描かれる図は同じです。
+スタイルの語と語の間の空白とタブの連続は、空白 1 つで印字します。
+`style C border:1px   solid` は `style C border: 1px solid` と印字します。
+mermaid.js は余白と語の間の空白の連続を Db に残しますが、描かれる図は同じです。
 詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
 を参照してください。 [fixture: whitespace-between-tokens/style-colon-spaced]
+[fixture: whitespace-between-tokens/style-value-words-spaced]
 `:` のない語だけのスタイルでも同じです。
 mermaid.js はこれらを独立したトークンとして読み、
-`style A bold ,italic` は `style A bold, italic` と印字します。
-そのようなスタイルの語は、値の語と同じように書かれたまま残します。
-mermaid.js は語をつなぐので、`fill #f00` と `fill#f00` は同じスタイルになり、
-どちらも書かれたまま印字します。
+`style A bold ,italic` は `style A bold, italic` と印字し、
+`style A fill   #f00` は `style A fill #f00` と印字します。
+語と語の間に空白があるかどうかは、書かれたまま残します。
+mermaid.js は語をつなぐので、`fill #f00` と `fill#f00` は同じスタイルです。
+接する語は、ほかの隙間と同じように接したままです。
+[ディレクティブ](#ディレクティブ)を参照してください。
+語をつなぐと、どこで語が終わるかが見えなくなるからです。
 [fixture: whitespace-between-tokens/style-words-comma-spaced]
 [fixture: whitespace-between-tokens/style-words-as-written]
+[fixture: whitespace-between-tokens/style-words-run-spaced]
+語の間にコメントやディレクティブがある文は、書かれたまま残します。
+[fixture: whitespace-between-tokens/style-words-directive-kept]
 ここではバックスラッシュは `,` をエスケープしません。
 `fill:a\,b ,stroke:c` は `fill: a\, b, stroke: c` と印字します。
 [fixture: whitespace-between-tokens/style-backslash-before-comma]

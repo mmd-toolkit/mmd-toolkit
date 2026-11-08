@@ -1,6 +1,7 @@
 import type { DbSummary } from "@mmd-toolkit/tests"
 import type { DbPath } from "./db-restore.ts"
 import { restoreStrings } from "./db-restore.ts"
+import { withoutRuns } from "./text-run-margins.ts"
 
 /** The diagram types whose styles the formatter prints in one form. */
 export const styleDiagramTypes: ReadonlySet<string> = new Set([
@@ -53,6 +54,13 @@ interface StyleReading {
    * `:`, is no margin; its amount is.
    */
   readonly splitsLabelStyles: boolean
+  /**
+   * The style is one of a class of a class diagram, which keeps the runs of
+   * spaces and tabs between the words of a style in the Db and draws the
+   * figure without them, so a run is no margin; whether whitespace stands
+   * there is.
+   */
+  readonly collapsesWordGaps: boolean
 }
 
 /**
@@ -62,9 +70,16 @@ interface StyleReading {
  * `StyleReading`.
  */
 function withoutStyleMargins(
-  style: string,
-  { readsStroke, readsLinkStyle, joinsStyles, splitsLabelStyles }: StyleReading,
+  written: string,
+  {
+    readsStroke,
+    readsLinkStyle,
+    joinsStyles,
+    splitsLabelStyles,
+    collapsesWordGaps,
+  }: StyleReading,
 ): string {
+  const style = collapsesWordGaps ? withoutRuns(written) : written
   const trimmed = style.trim()
   const escapedTail =
     joinsStyles && escapesNext(trimmed) && style !== style.trimEnd()
@@ -152,7 +167,9 @@ function joinsStylesAt(
  * margin there, and neither is the whitespace before a style of a link that
  * starts with `stroke:`, or the value of a `stroke` that is whitespace only,
  * and where mermaid.js joins the styles as they are, neither is the
- * whitespace after a backslash that ends a style (see `StyleReading`).
+ * whitespace after a backslash that ends a style, and in a class diagram a
+ * run of spaces and tabs between the words of a style is no margin (see
+ * `StyleReading`).
  */
 export function styleDbForFormattingComparison(
   before: DbSummary | null,
@@ -171,6 +188,7 @@ export function styleDbForFormattingComparison(
         diagramType === "block" &&
         key === "styles" &&
         path.at(-2) === "children",
+      collapsesWordGaps: diagramType === "classDiagram",
     }
     return key !== undefined &&
       isStyleKey(key) &&

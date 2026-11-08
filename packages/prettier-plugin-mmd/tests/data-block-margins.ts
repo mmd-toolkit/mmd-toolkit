@@ -83,21 +83,34 @@ function isPaddedOneLine(before: string, after: string): boolean {
     : after === "@{ }"
 }
 
+/** The offset of the first character at or after `from` that is not a space or a tab. */
+function afterSpacesAndTabs(text: string, from: number): number {
+  let position = from
+  while (text[position] === " " || text[position] === "\t") position++
+  return position
+}
+
 /**
- * Whether `after` is the block `before` of one line printed on lines: `@{`, one
- * entry on each row, all rows as deep, and a `}` alone on the last row, where
- * the entries are the text inside `before` cut at its `,`. The formatter
- * changes the whitespace, the line breaks and the `,` between the entries and
- * nothing else (docs/flowchart.md, Data blocks). The text inside `before` and
- * the entries joined by `,` are compared without the spaces and tabs after a
- * `,`, which the split removes.
+ * The offsets in `before` of the `,` that `after` has dropped, when `after` is
+ * the block `before` of one line printed on lines: `@{`, at least two entries
+ * with one on each row, all rows as deep, and a `}` alone on the last row. The
+ * text of each entry stands in `before` as printed, in order, with nothing
+ * between two entries but spaces and tabs around one `,`, and nothing before
+ * the first entry or after the last but spaces and tabs: the formatter changes
+ * the whitespace, the line breaks and the `,` between the entries and nothing
+ * else (docs/flowchart.md, Data blocks). Whether such a `,` separates entries
+ * and not the text of a string is what the fixtures check by mermaid.js; this
+ * function compares characters. Undefined when `after` is not such a block.
  */
-function isSplitOneLine(before: string, after: string): boolean {
-  if (!before.startsWith("@{") || !before.endsWith("}")) return false
-  if (before.includes("\n") || before.includes("\r")) return false
+export function splitSeparatorOffsets(
+  before: string,
+  after: string,
+): readonly number[] | undefined {
+  if (!before.startsWith("@{") || !before.endsWith("}")) return undefined
+  if (before.includes("\n") || before.includes("\r")) return undefined
   const rows = after.split("\n")
   if (rows.length < 4 || rows[0] !== "@{" || !isSpacesThenBrace(rows.at(-1)!))
-    return false
+    return undefined
   const entries = rows.slice(1, -1)
   const margin = leadingSpaces(entries[0])
   if (
@@ -107,23 +120,19 @@ function isSplitOneLine(before: string, after: string): boolean {
         leadingSpaces(row) !== margin || isBlank(row) || row !== row.trimEnd(),
     )
   )
-    return false
-  const joined = entries.map((row) => row.slice(margin)).join(",")
-  return (
-    withoutSpacesAfterCommas(joined) ===
-    withoutSpacesAfterCommas(before.slice(2, -1).trim())
-  )
-}
-
-/** The text without the spaces and tabs that stand after a `,`. */
-function withoutSpacesAfterCommas(text: string): string {
-  let result = ""
-  for (let index = 0; index < text.length; index++) {
-    result += text[index]
-    if (text[index] === ",")
-      while (text[index + 1] === " " || text[index + 1] === "\t") index++
+    return undefined
+  const separators: number[] = []
+  let position = afterSpacesAndTabs(before, "@{".length)
+  for (const [index, row] of entries.entries()) {
+    const entry = row.slice(margin)
+    if (!before.startsWith(entry, position)) return undefined
+    position = afterSpacesAndTabs(before, position + entry.length)
+    if (index === entries.length - 1) break
+    if (before[position] !== ",") return undefined
+    separators.push(position)
+    position = afterSpacesAndTabs(before, position + ",".length)
   }
-  return result
+  return position === before.length - "}".length ? separators : undefined
 }
 
 /**
@@ -152,7 +161,7 @@ function isAllowedMove(before: string, after: string): boolean {
   if (head !== before) return isAllowedMove(head, after)
   if (!before.includes("\n") && !after.includes("\n"))
     return isPaddedOneLine(before, after)
-  if (isSplitOneLine(before, after)) return true
+  if (splitSeparatorOffsets(before, after) !== undefined) return true
   const rowsBefore = before.split("\n")
   const rowsAfter = after.split("\n")
   if (rowsBefore.length !== rowsAfter.length || rowsBefore[0] !== rowsAfter[0])
