@@ -328,13 +328,19 @@ styles has no whitespace before it and one space after it:
 stays as written. mermaid.js keeps the margins in the Db but draws the same
 figure (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
-[fixture: whitespace-between-tokens/style-colon-spaced] A backslash does not
-escape a `,` here: `fill:a\,b ,stroke:c` is printed `fill: a\, b, stroke: c`.
-[fixture: whitespace-between-tokens/style-backslash-before-comma] A `style`
-whose last style ends with a backslash keeps whether whitespace stands after it,
-a run of whitespace becoming its first character, also at the end of the
-statement, since mermaid.js joins the styles of a class with `;` as they are,
-and the backslash would escape the `;` (see
+[fixture: whitespace-between-tokens/style-colon-spaced] The same holds for
+styles that are words without a `:`, which mermaid.js reads as tokens of their
+own: `style A bold ,italic` is printed `style A bold, italic`. The words of such
+a style stay as written, as the words of a value do: mermaid.js joins them, so
+`fill #f00` and `fill#f00` are the same style, and both are printed as written.
+[fixture: whitespace-between-tokens/style-words-comma-spaced] [fixture:
+whitespace-between-tokens/style-words-as-written] A backslash does not escape a
+`,` here: `fill:a\,b ,stroke:c` is printed `fill: a\, b, stroke: c`. [fixture:
+whitespace-between-tokens/style-backslash-before-comma] A `style` whose last
+style ends with a backslash keeps whether whitespace stands after it, a run of
+whitespace becoming its first character, also at the end of the statement, since
+mermaid.js joins the styles of a class with `;` as they are, and the backslash
+would escape the `;` (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)):
 `style A fill:abc\  ,stroke:green` is printed
 `style A fill: abc\ , stroke: green`. [fixture:

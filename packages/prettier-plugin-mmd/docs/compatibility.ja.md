@@ -386,7 +386,7 @@ eventmodeling の [Data blocks](./eventmodeling.ja.md#data-blocks)
 
 ## 同じに描かれるスタイル
 
-flowchart、agentflow、class、state、block の `style`、`classDef`、
+flowchart、agentflow、class、state、block、usecase の `style`、`classDef`、
 `linkStyle` の文は、ER や requirement と同じ形でスタイルを印字します。
 スタイルの最初の `:` の前に空白を置かず、値が空でなければ、
 後ろに空白を 1 つ置きます。
@@ -400,6 +400,7 @@ flowchart、agentflow、class、state、block の `style`、`classDef`、
 [fixture: class/whitespace-between-tokens/style-colon-spaced]
 [fixture: state/whitespace-between-tokens/style-colon-spaced]
 [fixture: block/styles/style-colon-spaced]
+[fixture: usecase/classes-and-styles/css-colon-padding]
 
 mermaid.js はこの空白を Db に残すので、印字したテキストの Db は、
 書かれたテキストの Db と違いますが、描かれる図は同じです。
@@ -414,6 +415,29 @@ class の図形と flowchart のリンクは、スタイルを CSS の `style` �
 対象は、5 つの図種の `style` と `classDef`、
 それに番号か `default` を指定した `linkStyle` のスタイルですが、
 次の場合を除きます。
+
+usecase 図も同じ仕組みで図を描きます。
+actor、use case、境界、JSON の表のスタイルは、`cssStyles` として図形に届きます。
+（[`usecaseDb`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L354-L355)）。
+図形は、それらとクラスのスタイルから `styles2String` で CSS を作り、
+`styles2Map` を通してスタイルの名前と値の前後の空白を取り除きます。
+（[`usecaseEllipse`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/usecaseEllipse.ts#L14)、
+[`usecaseActor`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/usecaseActor.ts#L160)、
+[`usecaseJsonTable`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/usecaseJsonTable.ts#L62-L63)）。
+クラスのスタイルは、その前に前後の空白を取り除きます。
+（[`getCompiledStyles`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L118-L135)）。
+関係のスタイルは `style` として辺に渡り、path の `style` 属性に入ります。
+（[`usecaseDb`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L472-L473)）。
+actor に付けた `style A stroke:#d33,fill:#fee` と
+`style A   stroke  :  #d33 ,  fill : #fee` の両方のテキストを、use case、境界、
+JSON の表に付けたものも含め、mermaid.js 12.3.0 で Chromium に描いたところ、
+SVG は同じでした。
+actor に付けた `classDef c stroke:#d33,fill:#fee` と
+`classDef c stroke: #d33, fill  :  #fee` も同じでした。
+関係に付けた `style e1 stroke-width:3px,fill:none` と
+`style e1 stroke-width: 3px, fill  :  none`、
+それに関係に付けた `classDef` では、画素が同じで、
+path の `style` 属性の `:` と `;` の前後の空白を除いた SVG も同じでした。
 
 treemap の `classDef` は、スタイルの末尾の空白を落とします。
 `classDef zz color:red  ` は `classDef zz color:red` と印字します。
@@ -461,6 +485,19 @@ mermaid.js はその空白を Db に残しますが、同じ図を描きます�
 [fixture: flowchart/whitespace-between-tokens/class-def-stroke-before-colon-kept]
 [fixture: flowchart/whitespace-between-tokens/style-stroke-before-colon-spaced]
 [fixture: agentflow/single-space-gaps/link-style-stroke-before-colon-kept]
+
+usecase 図の `style` と `classDef` は、明示的な id を持つ関係に適用できるため、
+どちらもこの空白の有無を保ちます。
+`A e1@--> B` の `e1` に `classDef c stroke:#d33` を付けると矢印の頭が赤になり、
+`classDef c stroke :#d33` を付けるとテーマの色を保ちます。
+`style e1 stroke :#d33` も同じで、画素が異なります。
+`style` でも、`stroke` で終わる名前と `:` の間の空白の有無を保ち、
+空白の連続は空白 1 つにします。
+`style A stroke  :#d33` は `style A stroke : #d33` と印字し、
+`style A stroke:#d33` は `style A stroke: #d33` と印字します。
+[fixture: usecase/classes-and-styles/css-stroke-before-colon-kept]
+[fixture: usecase/classes-and-styles/css-stroke-before-colon-run-collapsed]
+[fixture: usecase/classes-and-styles/css-stroke-before-colon-touching]
 
 look が `handDrawn` のときは、リンクのスタイルの先頭も読まれます。
 [`insertEdge`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L899)
@@ -2034,6 +2071,26 @@ Mermaid が説明から LF 後の先頭の空白とタブを除くためです�
 引用符付きの文字列と不透明なデータブロックは、それぞれの値の保持規則に従います。
 [fixture: flowchart/multi-line-values/accdescr-block-kept]
 
+本文が `{` の次の行以降で始まる場合は、本文の列を原文のまま保つときも、
+`{` とその改行の間の空白を落とします。
+mermaid.js は `{` の後の空白を改行も含めて `{` と一緒に読むため、
+本文はその後で始まり、Db は同じです。
+`accDescr { ` の後に改行が続くときは、`accDescr {` と印字します。
+`{` の後のコメントやディレクティブは残し、その前の隙間は、
+[トークンの間のディレクティブ](#トークンの間のディレクティブ)に従います。
+行末のディレクティブの後の空白は、`{` の後の空白と同じく落とします。
+コメントの後の空白はコメントの一部なので残します。
+`{` の行にある本文は、ほかのトークンと同じように空白を整えます。
+これは、このブロックを持つすべての図種に適用します。
+[fixture: flowchart/multi-line-values/accdescr-block-opener-whitespace-dropped]
+[fixture: flowchart/multi-line-values/accdescr-block-opener-tab-dropped]
+[fixture: flowchart/multi-line-values/accdescr-block-opener-directive-trailing-dropped]
+[fixture: flowchart/multi-line-values/accdescr-block-opener-comment-trailing-kept]
+[fixture: flowchart/multi-line-values/accdescr-block-subgraph-opener-whitespace-dropped]
+[fixture: pie/description-blocks/opener-whitespace-dropped]
+[fixture: c4/description-blocks/opener-whitespace-dropped]
+[fixture: agentflow/accessibility/global-description-opener-whitespace-dropped]
+
 原文がメンバーの決定にも使われる場合は、説明本文の列を保ちます。
 flowchart の subgraph、Agentflow の flow/global 本文、
 ER の subgraph が対象です。
@@ -3052,7 +3109,9 @@ JSON の表データは不透明で、数とエスケープの綴り、プロパ
 対象となる余白は [JSON tables](./usecase.ja.md#json-tables) に従います。
 効果を渡さない整形 fixture では、共有の Db 比較を null とし、原文を比較します。
 コーパスは存在する記録済みの効果を使います。
-CSS 宣言全体は、Mermaid が保存するコロンの両側と `--` の隙間を保ちます。
+CSS 宣言の最初のコロンの前後の空白は、
+[同じに描かれるスタイル](#同じに描かれるスタイル)に従います。
+カスタムプロパティの `--` の名前の隙間は、Mermaid が保存するため保ちます。
 [fixture: usecase/native-metadata/metadata-inline]
 [fixture: usecase/native-metadata/metadata-blank-lines-kept]
 [fixture: usecase/json-tables/json-opaque]

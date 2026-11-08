@@ -120,6 +120,18 @@ const restored: readonly DbPair[] = [
       root: { children: [{ id: "K", styles: ["fill: #ff0", " stroke: red"] }] },
     },
   },
+  {
+    name: "the whitespace around the first colon of a style of a usecase actor",
+    diagramType: "usecase",
+    before: { actors: [{ id: "A", styles: ["fill   :  red"] }] },
+    after: { actors: [{ id: "A", styles: ["fill: red"] }] },
+  },
+  {
+    name: "a run of whitespace before the colon of stroke in a usecase relationship",
+    diagramType: "usecase",
+    before: { relationships: [{ id: "e1", styles: ["stroke\t :#d33"] }] },
+    after: { relationships: [{ id: "e1", styles: ["stroke : #d33"] }] },
+  },
 ]
 
 const kept: readonly DbPair[] = [
@@ -241,6 +253,18 @@ const kept: readonly DbPair[] = [
     name: "the whitespace of a text that is no style",
     before: { vertices: [{ id: "A", text: "a:b" }] },
     after: { vertices: [{ id: "A", text: "a: b" }] },
+  },
+  {
+    name: "the whitespace before the colon of stroke in a usecase class",
+    diagramType: "usecase",
+    before: { classDefs: [{ id: "c", styles: ["stroke:#d33"] }] },
+    after: { classDefs: [{ id: "c", styles: ["stroke : #d33"] }] },
+  },
+  {
+    name: "the whitespace before the colon of stroke in a usecase relationship",
+    diagramType: "usecase",
+    before: { relationships: [{ id: "e1", styles: ["stroke:#d33"] }] },
+    after: { relationships: [{ id: "e1", styles: ["stroke : #d33"] }] },
   },
 ]
 

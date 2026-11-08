@@ -366,6 +366,14 @@ mermaid.js の文書にある例 1 件は、接する形で書かれています
 mermaid.js は余白を Db に残しますが、描かれる図は同じです。
 詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
 を参照してください。 [fixture: whitespace-between-tokens/style-colon-spaced]
+`:` のない語だけのスタイルでも同じです。
+mermaid.js はこれらを独立したトークンとして読み、
+`style A bold ,italic` は `style A bold, italic` と印字します。
+そのようなスタイルの語は、値の語と同じように書かれたまま残します。
+mermaid.js は語をつなぐので、`fill #f00` と `fill#f00` は同じスタイルになり、
+どちらも書かれたまま印字します。
+[fixture: whitespace-between-tokens/style-words-comma-spaced]
+[fixture: whitespace-between-tokens/style-words-as-written]
 ここではバックスラッシュは `,` をエスケープしません。
 `fill:a\,b ,stroke:c` は `fill: a\, b, stroke: c` と印字します。
 [fixture: whitespace-between-tokens/style-backslash-before-comma]

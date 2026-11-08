@@ -2,10 +2,12 @@ import type {
   Node,
   Range,
   UsecaseActor,
+  UsecaseClassDefStatement,
   UsecaseEntity,
   UsecaseMetadata,
   UsecaseLiteral,
   UsecaseStatement,
+  UsecaseStyleStatement,
   UsecaseSystemBoundaryStatement,
 } from "@mmd-toolkit/ast"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
@@ -22,6 +24,7 @@ import {
   protectSemicolonPrefixes,
   replaceInAtoms,
 } from "./layout.ts"
+import type { TextEdit } from "./layout.ts"
 import type { Source } from "./source.ts"
 import {
   findStructuralToken,
@@ -34,10 +37,12 @@ import {
 } from "./source.ts"
 import {
   addClassListRules,
+  addColonEdit,
   addNameListRules,
   classStatementRules,
   collectTextEndEdits,
   endsWithDirectives,
+  styleUnitsCanCompact,
 } from "./statement-rules.ts"
 
 /** Value leaves; accessibility/stereotype padding has its own layout rules. */
@@ -317,6 +322,11 @@ export function layoutUsecaseStatement(
   // as a gap outside the prefix is by its rule (docs/usecase.md, System
   // boundaries).
   dropPaddings(source, atoms, titlePads)
+  if (
+    statement.type === "UsecaseClassDefStatement" ||
+    statement.type === "UsecaseStyleStatement"
+  )
+    replaceInAtoms(source, atoms, styleColonEdits(source, statement, end))
   for (const stereotype of stereotypes) {
     const index = atoms.findIndex(
       (atom) =>
@@ -334,6 +344,33 @@ export function layoutUsecaseStatement(
     keptBreaksBefore,
     lineBreaks: "kept",
   }
+}
+
+/**
+ * The edits that print the styles of a `classDef` or a `style` in the form of
+ * the other diagram types: no whitespace before the first `:` of a style and
+ * one space after it, where the value is not empty. The Db keeps the
+ * whitespace, so it changes, but mermaid.js draws the same figure: it trims
+ * each style before it reads its name, and the whitespace around `:` is not
+ * read in the CSS of the figure (docs/compatibility.md, Styles that are drawn
+ * the same). A style can reach a link, as an explicit relationship id can be
+ * the target of a `classDef` or a `style`, so a name that ends with `stroke`
+ * keeps whether whitespace stands between it and the `:` (see
+ * `addColonEdit`). A statement with a comment or a directive, a line break in
+ * a style, or on a line with a `;` of its own stays as written (see
+ * `styleUnitsCanCompact`).
+ */
+function styleColonEdits(
+  source: Source,
+  statement: UsecaseClassDefStatement | UsecaseStyleStatement,
+  end: number,
+): TextEdit[] {
+  const styles = statement.styles.filter((style) => style.range[1] <= end)
+  if (!styleUnitsCanCompact(source, statement.range[0], end, styles)) return []
+  const edits: TextEdit[] = []
+  for (const style of styles)
+    addColonEdit(source, style.range, edits, { keepsGapAfterStroke: true })
+  return edits
 }
 
 /**

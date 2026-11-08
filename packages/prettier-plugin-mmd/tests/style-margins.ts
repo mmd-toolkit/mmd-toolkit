@@ -12,6 +12,7 @@ export const styleDiagramTypes: ReadonlySet<string> = new Set([
   "stateDiagram",
   "swimlane",
   "treemap",
+  "usecase",
 ])
 
 /** The diagram types whose styles can reach a link. */
@@ -20,6 +21,7 @@ const linkStyleDiagramTypes: ReadonlySet<string> = new Set([
   "flowchart-elk",
   "flowchart-v2",
   "swimlane",
+  "usecase",
 ])
 
 /** What mermaid.js reads of a style besides its text. */
@@ -109,7 +111,10 @@ function isStyleKey(key: string): boolean {
  */
 function reachesLink(path: DbPath): boolean {
   const [key, owner] = [path.at(-1), path.at(-2)]
-  return key === "style" || (key === "styles" && owner === "classDefs")
+  return (
+    key === "style" ||
+    (key === "styles" && (owner === "classDefs" || owner === "relationships"))
+  )
 }
 
 /**

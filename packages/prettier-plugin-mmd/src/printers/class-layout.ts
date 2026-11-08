@@ -43,11 +43,11 @@ import {
 import type { Source } from "./source.ts"
 import {
   addCssClassRules,
-  addNameListRules,
   endOfJoinedStyle,
   findCallRangeWithTrivia,
   normalizeCallArguments,
   normalizeStyleList,
+  styleStatementRules,
 } from "./statement-rules.ts"
 import {
   findStructuralToken,
@@ -732,8 +732,24 @@ function statementRules(
       break
     case "ClassClassDefStatement":
       // The `,` between the names touches both of them (docs/class.md,
-      // Styles).
-      addNameListRules(source, statement.cssClasses, rules)
+      // Styles). The `,` between styles that are words without a `:` stands
+      // as in ER: nothing before it, one space after it.
+      for (const [offset, rule] of styleStatementRules(
+        source,
+        statement.cssClasses,
+        statement.styles,
+        true,
+      ))
+        rules.set(offset, rule)
+      break
+    case "ClassStyleStatement":
+      for (const [offset, rule] of styleStatementRules(
+        source,
+        [],
+        statement.styles,
+        true,
+      ))
+        rules.set(offset, rule)
       break
     case "ClassAnnotationStatement":
       addAnnotationRules(

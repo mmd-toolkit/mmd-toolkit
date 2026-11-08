@@ -23,7 +23,9 @@ import {
   findTokenEndingBefore,
   findTokenStartingAt,
   findTokensBetween,
+  findTriviaAt,
   findTriviaBetween,
+  isSpaceOrTab,
   isStructural,
   isWhitespace,
 } from "./source.ts"
@@ -673,10 +675,62 @@ export function formatDescriptionBlock(
   return padOneLineDescription(
     source,
     block,
-    preservesBodyColumns
-      ? layout
-      : indentDescriptionLines(source, block, layout),
+    dropOpeningLineWhitespace(
+      source,
+      block,
+      preservesBodyColumns
+        ? layout
+        : indentDescriptionLines(source, block, layout),
+    ),
   )
+}
+
+/**
+ * Leaves out the whitespace at the end of the line of the `{` of an `accDescr`
+ * block whose text starts on a later line: after the `{`, or after a directive
+ * that follows it. mermaid.js reads the whitespace after the `{`, line feeds
+ * included, with the `{`, so the text starts after it and the Db is the same
+ * (docs/compatibility.md, Description block indentation). The whitespace after
+ * a comment is part of the comment and stays, as does a removed line feed.
+ */
+function dropOpeningLineWhitespace(
+  source: Source,
+  block: AccDescrBlock,
+  layout: AtomLayout,
+): AtomLayout {
+  const keyword = expectToken(
+    findTokenStartingAt(source, block.range[0]),
+    "the description keyword",
+  )
+  const opening = expectToken(
+    findDescriptionOpening(source, keyword, block.opening),
+    "the description opener",
+  )
+  let lineEnd = opening.range[1]
+  let itemEnd = opening.range[1]
+  for (;;) {
+    while (isSpaceOrTab(source.text[lineEnd])) lineEnd++
+    const item = findTriviaAt(source, lineEnd)
+    if (item === undefined) break
+    lineEnd = itemEnd = item.range[1]
+  }
+  let dropFrom = lineEnd
+  while (dropFrom > itemEnd && isSpaceOrTab(source.text[dropFrom - 1]))
+    dropFrom--
+  if (
+    dropFrom === lineEnd ||
+    source.text[lineEnd] !== "\n" ||
+    source.removedLineFeeds.has(lineEnd) ||
+    !layout.atoms.some(
+      (atom) => atom.start <= opening.range[0] && lineEnd <= atom.end,
+    )
+  )
+    return layout
+  const atoms = [...layout.atoms]
+  replaceInAtoms(source, atoms, [
+    { range: [dropFrom, lineEnd], replacement: "" },
+  ])
+  return { ...layout, atoms }
 }
 
 /**

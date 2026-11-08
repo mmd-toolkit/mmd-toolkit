@@ -2158,10 +2158,19 @@ subgraph-header/title-beside-directive-runs] A U+2028 or U+2029 in the gap stays
 where it is. [test: U+2028 between a subgraph name and its title] [test: U+2029
 and spaces between a subgraph name and its title] An empty description block
 that follows the title is the first statement of the body, as before. [fixture:
-subgraph-header/title-before-empty-description-block] A name written without a
-title keeps the whitespace after it, which mermaid.js reads as part of the name.
+subgraph-header/title-before-empty-description-block] A name of one word,
+written without a title, keeps the whitespace after it, which mermaid.js reads
+as part of the name: `subgraph S` has the id `S`, and `subgraph S ` has a
+generated id, since mermaid.js makes the name the id only where the text of the
+name holds no whitespace. A name of several words, as `subgraph S1 S2` or
+`subgraph "o p"`, has a generated id with or without whitespace after it, so the
+whitespace at the end of its line is left out, but not the whitespace that
+separates it from a block, a `;` that stays or a directive on its line.
 [fixture: subgraph-header/name-trailing-run-collapsed] [fixture:
 subgraph-header/name-trailing-whitespace-kept] [fixture:
+subgraph-header/name-quoted-trailing-whitespace-kept] [fixture:
+subgraph-header/name-several-words-trailing-dropped] [fixture:
+subgraph-header/name-several-words-before-block-kept] [fixture:
 subgraph-header/name-whitespace-before-directive-kept] [fixture:
 subgraph-header/name-whitespace-after-directive-kept] So does the whitespace
 around the empty description blocks written on the line of the header: before a

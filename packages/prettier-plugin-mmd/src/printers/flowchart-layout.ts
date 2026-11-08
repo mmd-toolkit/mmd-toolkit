@@ -1,4 +1,5 @@
 import type {
+  FlowchartLabel,
   FlowchartStatement,
   FlowchartSubgraphStatement,
   Node,
@@ -25,9 +26,17 @@ import {
   keptAsWritten,
   walk,
 } from "./layout.ts"
-import { holdsJoiningRegion } from "./kept-lines.ts"
+import {
+  holdsJoiningRegion,
+  isDroppedSemicolon,
+  lineStartOf,
+} from "./kept-lines.ts"
 import type { Source } from "./source.ts"
-import { findStructuralToken, findTokensBetween } from "./source.ts"
+import {
+  findStructuralToken,
+  findTokensBetween,
+  isSpaceOrTab,
+} from "./source.ts"
 import {
   normalizeBlankLabels,
   normalizeCallArguments,
@@ -64,8 +73,49 @@ function startsInside(kept: readonly Atom[], atom: Atom): boolean {
 }
 
 /**
- * The layout of the `subgraph` line. A name without a title is printed
- * with the whitespace after it, which mermaid.js reads as part of the name.
+ * Whether the name of a subgraph without a title is one word: mermaid.js makes
+ * the name the id of the subgraph, unless the text of the name holds
+ * whitespace, which it reads with the trailing whitespace of the name. So the
+ * whitespace after a name of one word decides whether the subgraph has the
+ * name as its id or a generated id, while a name of several words has a
+ * generated id either way (docs/flowchart.md, Subgraph header).
+ */
+function isOneWord(name: FlowchartLabel): boolean {
+  return ![...name.value.trimEnd()].some((character) => character.trim() === "")
+}
+
+/**
+ * Whether the line of the header of `subgraph` ends at `offset`, apart from a
+ * `;` that is dropped: an ignored one, or the one that ends the header, on a
+ * line that is not kept with its `;` (see `findFlowchartKeptLines`).
+ */
+function endsLine(
+  source: Source,
+  subgraph: FlowchartSubgraphStatement,
+  offset: number,
+): boolean {
+  let next = offset
+  while (isSpaceOrTab(source.text[next])) next++
+  const character = source.text[next]
+  if (character === undefined || character === "\n" || character === "\r")
+    return true
+  if (character !== ";") return false
+  const kept = findFlowchartKeptLines(source)
+  const line = lineStartOf(source, next)
+  return (
+    !kept.joined.has(line) &&
+    !kept.verbatim.has(line) &&
+    (isDroppedSemicolon(source, next) ||
+      subgraph.body[0] === undefined ||
+      next < subgraph.body[0].range[0])
+  )
+}
+
+/**
+ * The layout of the `subgraph` line. A name of one word without a title is
+ * printed with the whitespace after it, which mermaid.js reads as part of the
+ * name; the whitespace at the end of the line of a name of several words
+ * decides nothing and is left out.
  */
 export function layoutSubgraphHeader(
   source: Source,
@@ -75,9 +125,24 @@ export function layoutSubgraphHeader(
   if (holdsJoiningRegion(source, subgraph.range[0], headerEnd)) {
     return keptAsWritten(subgraph.range[0], headerEnd)
   }
+  // A block, a `;` that stays or a directive on the line stands after the
+  // whitespace, which then separates them from the name: only the whitespace
+  // at the end of the line is left out, before a `;` that is dropped too.
+  let keptEnd = headerEnd
+  if (
+    subgraph.title === null &&
+    !isOneWord(subgraph.name) &&
+    endsLine(source, subgraph, headerEnd)
+  ) {
+    while (
+      keptEnd > subgraph.name.range[0] &&
+      isSpaceOrTab(source.text[keptEnd - 1])
+    )
+      keptEnd--
+  }
   const kept: Atom[] =
     subgraph.title === null
-      ? [{ start: subgraph.name.range[0], end: headerEnd }]
+      ? [{ start: subgraph.name.range[0], end: keptEnd }]
       : []
   const values: Node[] =
     subgraph.title === null ? [] : [subgraph.name, subgraph.title]
@@ -97,7 +162,7 @@ export function layoutSubgraphHeader(
     atoms: collectAtoms(
       source,
       subgraph.range[0],
-      headerEnd,
+      keptEnd,
       values,
       kept,
     ).filter((atom) => kept.includes(atom) || !startsInside(kept, atom)),

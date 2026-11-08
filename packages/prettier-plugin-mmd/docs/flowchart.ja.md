@@ -2267,10 +2267,19 @@ flowchart の文書にあるタイトル付きの subgraph は 2 件で、
 [test: U+2029 and spaces between a subgraph name and its title]
 タイトルの後ろの空の説明ブロックは、これまでどおり本体の最初の文になります。
 [fixture: subgraph-header/title-before-empty-description-block]
-タイトルなしで書かれた名前は、その後の空白を保ちます。
+タイトルなしで書かれた 1 語の名前は、その後の空白を保ちます。
 mermaid.js はその空白を名前の一部として読みます。
+`subgraph S` の id は `S` で、`subgraph S ` の id は生成されます。
+mermaid.js は、名前のテキストに空白がないときだけ名前を id にするためです。
+`subgraph S1 S2` や `subgraph "o p"` のように複数の語からなる名前は、
+後ろに空白があってもなくても id が生成されるため、行末の空白を除きます。
+ただし、名前をブロック、保持する `;`、
+または同じ行のディレクティブから区切る空白は残します。
 [fixture: subgraph-header/name-trailing-run-collapsed]
 [fixture: subgraph-header/name-trailing-whitespace-kept]
+[fixture: subgraph-header/name-quoted-trailing-whitespace-kept]
+[fixture: subgraph-header/name-several-words-trailing-dropped]
+[fixture: subgraph-header/name-several-words-before-block-kept]
 [fixture: subgraph-header/name-whitespace-before-directive-kept]
 [fixture: subgraph-header/name-whitespace-after-directive-kept]
 ヘッダーと同じ行に書かれた空の説明ブロックの周りの空白も同じです。

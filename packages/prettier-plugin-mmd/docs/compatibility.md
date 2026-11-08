@@ -346,18 +346,19 @@ statement: after a `,` at the end of the list, as in `style A fill:#f00, `.
 ## Styles that are drawn the same
 
 A `style`, `classDef`, or `linkStyle` statement prints its styles in one form in
-flowchart, agentflow, class, state, and block diagrams, as it does in ER and
-requirement diagrams: no whitespace before the first `:` of a style, one space
-after it where the value is not empty, no whitespace before the `,` between two
-styles, and one space after it. `style A fill :#f00,stroke:  #333` is printed
-`style A fill: #f00, stroke: #333`. The whitespace between the words of a value
-stays as written. [fixture:
+flowchart, agentflow, class, state, block, and usecase diagrams, as it does in
+ER and requirement diagrams: no whitespace before the first `:` of a style, one
+space after it where the value is not empty, no whitespace before the `,`
+between two styles, and one space after it. `style A fill :#f00,stroke:  #333`
+is printed `style A fill: #f00, stroke: #333`. The whitespace between the words
+of a value stays as written. [fixture:
 flowchart/whitespace-between-tokens/style-colon-spaced] [fixture:
 flowchart/whitespace-between-tokens/style-colon-empty-value-kept] [fixture:
 agentflow/single-space-gaps/style-colon-spaced] [fixture:
 class/whitespace-between-tokens/style-colon-spaced] [fixture:
 state/whitespace-between-tokens/style-colon-spaced] [fixture:
-block/styles/style-colon-spaced]
+block/styles/style-colon-spaced] [fixture:
+usecase/classes-and-styles/css-colon-padding]
 
 mermaid.js keeps this whitespace in the Db, so the Db of the printed text
 differs from the Db of the written text, but it draws the same figure.
@@ -371,6 +372,29 @@ mermaid.js 12.3.0 in Chromium, and the pixels were the same, and so was the SVG,
 without the generated ids and without that whitespace: for `style` and
 `classDef` in the five diagram types, and for the styles of a `linkStyle`, with
 link numbers or `default`, except for the cases below.
+
+A usecase diagram makes its figure the same way. The styles of an actor, a use
+case, a boundary, and a JSON table reach their shape as `cssStyles`
+([`usecaseDb`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L354-L355)),
+and the shapes make their CSS from them and from the styles of their classes
+with `styles2String`, which takes the whitespace around the name and the value
+of a style away through `styles2Map`
+([`usecaseEllipse`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/usecaseEllipse.ts#L14),
+[`usecaseActor`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/usecaseActor.ts#L160),
+[`usecaseJsonTable`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/usecaseJsonTable.ts#L62-L63)).
+The styles of a class are trimmed first
+([`getCompiledStyles`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L118-L135)).
+The styles of a relationship go to its edge as `style`
+([`usecaseDb`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L472-L473)),
+which puts them into the `style` attribute of its path. Both texts of
+`style A stroke:#d33,fill:#fee` and `style A   stroke  :  #d33 ,  fill : #fee`
+on an actor, and likewise on a use case, a boundary, and a JSON table, and of
+`classDef c stroke:#d33,fill:#fee` and `classDef c stroke: #d33, fill  :  #fee`
+put on an actor, were drawn with mermaid.js 12.3.0 in Chromium, and the SVG was
+the same. For a relationship (`style e1 stroke-width:3px,fill:none` and
+`style e1 stroke-width: 3px, fill  :  none`, and a `classDef` put on it) the
+pixels were the same, and so was the SVG without the whitespace around `:` and
+`;` in the `style` attribute of its path.
 
 A `classDef` in a treemap drops the whitespace at the end of its styles:
 `classDef zz color:red  ` is printed `classDef zz color:red`. mermaid.js keeps
@@ -418,6 +442,18 @@ flowchart/whitespace-between-tokens/link-style-stroke-before-colon-kept]
 flowchart/whitespace-between-tokens/class-def-stroke-before-colon-kept]
 [fixture: flowchart/whitespace-between-tokens/style-stroke-before-colon-spaced]
 [fixture: agentflow/single-space-gaps/link-style-stroke-before-colon-kept]
+
+In a usecase diagram a `style` and a `classDef` can reach a relationship that
+has an explicit id, so both keep it. The arrowheads of `A e1@--> B` with
+`classDef c stroke:#d33` put on `e1` are red, and with `classDef c stroke :#d33`
+they keep their theme colour, and so it is for `style e1 stroke :#d33`; the
+pixels differ. A name that ends with `stroke` keeps whether whitespace stands
+between it and the `:`, a run of whitespace becoming one space, in a `style`
+too: `style A stroke  :#d33` is printed `style A stroke : #d33`, while
+`style A stroke:#d33` is printed `style A stroke: #d33`. [fixture:
+usecase/classes-and-styles/css-stroke-before-colon-kept] [fixture:
+usecase/classes-and-styles/css-stroke-before-colon-run-collapsed] [fixture:
+usecase/classes-and-styles/css-stroke-before-colon-touching]
 
 Where the look is `handDrawn`, the start of a style of a link is read too.
 [`insertEdge`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L899)
@@ -1909,6 +1945,28 @@ line breaks, trailing whitespace and directive contents. Quoted strings and
 opaque data blocks retain their separate value-preservation rules. [fixture:
 flowchart/multi-line-values/accdescr-block-kept]
 
+Where the text starts on a line after the `{`, the whitespace between the `{`
+and that line break is left out, also where the raw body columns stay:
+mermaid.js reads the whitespace after the `{`, line breaks included, with the
+`{`, so the text starts after it and the Db is the same. `accDescr { ` followed
+by a line break is printed `accDescr {`. A comment or a directive after the `{`
+stays, with the gap before it as under
+[Directives between tokens](#directives-between-tokens); the whitespace after a
+directive at the end of the line is left out like the whitespace after the `{`,
+and the whitespace after a comment is part of the comment, so it stays. Text on
+the line of the `{` is spaced as any other token. This holds in every diagram
+type that has the block. [fixture:
+flowchart/multi-line-values/accdescr-block-opener-whitespace-dropped] [fixture:
+flowchart/multi-line-values/accdescr-block-opener-tab-dropped] [fixture:
+flowchart/multi-line-values/accdescr-block-opener-directive-trailing-dropped]
+[fixture:
+flowchart/multi-line-values/accdescr-block-opener-comment-trailing-kept]
+[fixture:
+flowchart/multi-line-values/accdescr-block-subgraph-opener-whitespace-dropped]
+[fixture: pie/description-blocks/opener-whitespace-dropped] [fixture:
+c4/description-blocks/opener-whitespace-dropped] [fixture:
+agentflow/accessibility/global-description-opener-whitespace-dropped]
+
 Keep authored description columns when the raw text also determines membership:
 inside flowchart subgraphs, Agentflow flow/global bodies and ER subgraphs.
 Changing a global body's text can change a later flow's members. Treeview box
@@ -2863,9 +2921,11 @@ and duplicates retained. JSON table data is opaque, including its number/escape
 spelling and property order, but the `{` of its head touches the `@`; eligible
 margins follow [JSON tables](./usecase.md#json-tables). Formatting fixtures
 without supplied effects use the shared null Db comparison and written-source
-check; the corpus uses recorded effects where available. Full CSS declarations
-keep both colon padding sides and the `--` name gap, which Mermaid stores.
-[fixture: usecase/native-metadata/metadata-inline] [fixture:
+check; the corpus uses recorded effects where available. The padding of a CSS
+declaration around its first colon follows
+[Styles that are drawn the same](#styles-that-are-drawn-the-same); the `--` name
+gap of a custom property stays, which Mermaid stores. [fixture:
+usecase/native-metadata/metadata-inline] [fixture:
 usecase/native-metadata/metadata-blank-lines-kept] [fixture:
 usecase/json-tables/json-opaque] [fixture:
 usecase/classes-and-styles/css-colon-padding] [fixture:

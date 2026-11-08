@@ -742,11 +742,17 @@ function trimStyle(
  * `keepsGapAfterStroke` is set and the name ends with `stroke`, one space
  * stays before the `:` if whitespace stood there.
  */
-function addColonEdit(
+export function addColonEdit(
   source: Source,
   [start, end]: Range,
   edits: TextEdit[],
-  { keepsGapAfterStroke = false, keepsGapAfterLabelName = false } = {},
+  {
+    keepsGapAfterStroke = false,
+    keepsGapAfterLabelName = false,
+  }: {
+    readonly keepsGapAfterStroke?: boolean
+    readonly keepsGapAfterLabelName?: boolean
+  } = {},
 ): void {
   const colon = source.text.indexOf(":", start)
   if (colon <= start || colon >= end) return

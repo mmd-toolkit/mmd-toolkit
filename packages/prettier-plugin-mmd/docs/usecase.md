@@ -621,28 +621,38 @@ Output
 ```mmd
 usecase-beta
   A
-  classDef c fill:#f00
-  style A fill:#f00
-  classDef d fill:#0f0, stroke:#00f
-  style A fill:#0f0, stroke:#00f
+  classDef c fill: #f00
+  style A fill: #f00
+  classDef d fill: #0f0, stroke: #00f
+  style A fill: #0f0, stroke: #00f
 ```
 
 ### Classes and styles
 
 Reuse [ER's tight class lists](./er.md#styles-and-classes): commas touch target
 and class names, with one gap between lists and before the first declaration;
-CSS declarations use comma-space. Each CSS declaration stays exactly as written
-from its name's start through its last value component. Mermaid stores padding
-before and after the colon and inside `--  color`, so this is not ER's
-whitespace-discarding CSS reading. Tabs, directives in the dash gap, quoted or
-escaped commas, empty string components, functions, order and repetition stay.
-[fixture: classes-and-styles/css-name-multiline-directive] Only exterior HWS
-after the last component can disappear; prefixes with kept semicolons override
-ordinary list layout.
+CSS declarations use comma-space. A declaration has no whitespace before its
+first colon and one space after it, as in the other diagram types (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
+Mermaid stores the padding before and after the colon, so the Db changes, but it
+draws the same figure. A name that ends with `stroke` is the exception, since a
+`classDef` or a `style` can reach a relationship with an explicit id, and
+mermaid.js colours its arrowheads from `stroke:` only: such a name keeps whether
+whitespace stands before the colon, a run becoming one space. The text of a
+declaration from its name's start through its last value component otherwise
+stays as written: the `--  color` gap of a custom property, tabs, directives in
+the dash gap, quoted or escaped commas, empty string components, functions,
+order and repetition. [fixture: classes-and-styles/css-name-multiline-directive]
+Only exterior HWS after the last component can disappear; prefixes with kept
+semicolons, a comment or a directive in the statement, and a declaration over
+lines override ordinary list layout.
 
 [fixture: classes-and-styles/class-lists] [fixture:
 classes-and-styles/css-colon-padding] [fixture:
-classes-and-styles/css-post-colon-trim-kept] [fixture:
+classes-and-styles/css-post-colon-run-collapsed] [fixture:
+classes-and-styles/css-stroke-before-colon-kept] [fixture:
+classes-and-styles/css-stroke-before-colon-run-collapsed] [fixture:
+classes-and-styles/css-stroke-before-colon-touching] [fixture:
 classes-and-styles/css-custom-gap] [fixture:
 classes-and-styles/css-custom-gap-remove-kept] [fixture:
 classes-and-styles/css-value-internal] [corpus fixture:
@@ -650,7 +660,7 @@ usecase/gram-css-empty-string-component] [fixture:
 classes-and-styles/css-gap-directive] [fixture:
 classes-and-styles/css-semicolon-gap] [corpus fixture:
 usecase/lex-style-hash-semicolon] [fixture:
-classes-and-styles/css-pre-colon-trim-kept] [fixture:
+classes-and-styles/css-pre-colon-whitespace-dropped] [fixture:
 classes-and-styles/css-classdef-gap] [fixture:
 classes-and-styles/css-line-rule-colon-gap-kept] [fixture:
 classes-and-styles/css-both-passes] [test: usecase: css-other-case-segment]
@@ -668,7 +678,7 @@ Output
 ```mmd
 usecase-beta
   A
-  style A fill   :  red, stroke-width : 2px
+  style A fill: red, stroke-width: 2px
 ```
 
 ### Notes
@@ -914,8 +924,9 @@ usecase-beta
 ### Trailing whitespace
 
 Reuse [exterior cleanup](./c4.md#trailing-whitespace): remove harmless ASCII
-spaces/tabs after completed structural forms and final CSS components. CSS colon
-padding is inside its declaration and stays. Accessibility lines and stereotype
+spaces/tabs after completed structural forms and final CSS components. The
+padding around the colon of a CSS declaration follows
+[Classes and styles](#classes-and-styles). Accessibility lines and stereotype
 boundaries normalize exterior whitespace by their sibling rules. [fixture:
 stereotypes/side-padding] Quoted/markdown values, JSON, native property strings,
 comments and directive contents keep their trailing characters. [test: usecase:
@@ -938,7 +949,7 @@ usecase-beta
   actor U
   A --> B
   A@{ }
-  style A fill:red
+  style A fill: red
 ```
 
 ### Line terminators

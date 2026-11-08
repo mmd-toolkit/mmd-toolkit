@@ -680,10 +680,10 @@ U+2028 と U+2029 の前も同じように保護します。
 ```mmd
 usecase-beta
   A
-  classDef c fill:#f00
-  style A fill:#f00
-  classDef d fill:#0f0, stroke:#00f
-  style A fill:#0f0, stroke:#00f
+  classDef c fill: #f00
+  style A fill: #f00
+  classDef d fill: #0f0, stroke: #00f
+  style A fill: #0f0, stroke: #00f
 ```
 
 ### Classes and styles
@@ -692,18 +692,30 @@ ER の[スタイルとクラス](./er.ja.md#スタイルとクラス)を再利�
 対象名と class 名の間のコンマは詰め、
 一覧同士と最初の宣言の前は空白 1 個にします。
 CSS 宣言同士はコンマと空白で区切ります。
-各 CSS 宣言は、名前の始まりから最後の値の成分まで書かれたままです。
-Mermaid はコロンの前後と `--  color` 内の余白を保存するため、
-空白を捨てる ER の CSS の読みとは異なります。
-タブ、ダッシュの隙間の directive、引用またはエスケープしたコンマ、空文字の成分、
-関数、順序、繰り返しを保ちます。
+宣言の最初のコロンの前には空白を置かず、後ろには空白を 1 つ置きます。
+ほかの図種と同じです。
+（[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)）。
+Mermaid はコロンの前後の余白を保存するため Db は変わりますが、
+描かれる図は同じです。
+`stroke` で終わる名前は例外です。
+`classDef` や `style` は明示的な id がある関係に届き、
+mermaid.js は `stroke:` だけでその矢印の先端を着色するため、
+そのような名前はコロンの前に空白があるかないかを保ち、
+連続する空白を 1 つにします。
+宣言の名前の始まりから最後の値の成分までのテキストは、
+それ以外は書かれたままです。
+カスタムプロパティの `--  color` の隙間、タブ、ダッシュの隙間の directive、
+引用またはエスケープしたコンマ、空文字の成分、関数、順序、繰り返しを保ちます。
 [fixture: classes-and-styles/css-name-multiline-directive]
-最後の成分の外側の水平空白だけを除き、
-保持するセミコロンを含む接頭部は通常の一覧配置より優先します。
+最後の成分の外側の水平空白だけを除き、保持するセミコロンを含む接頭部、
+文中のコメントや directive、複数行にわたる宣言は通常の一覧配置より優先します。
 
 [fixture: classes-and-styles/class-lists]
 [fixture: classes-and-styles/css-colon-padding]
-[fixture: classes-and-styles/css-post-colon-trim-kept]
+[fixture: classes-and-styles/css-post-colon-run-collapsed]
+[fixture: classes-and-styles/css-stroke-before-colon-kept]
+[fixture: classes-and-styles/css-stroke-before-colon-run-collapsed]
+[fixture: classes-and-styles/css-stroke-before-colon-touching]
 [fixture: classes-and-styles/css-custom-gap]
 [fixture: classes-and-styles/css-custom-gap-remove-kept]
 [fixture: classes-and-styles/css-value-internal]
@@ -711,7 +723,7 @@ Mermaid はコロンの前後と `--  color` 内の余白を保存するため�
 [fixture: classes-and-styles/css-gap-directive]
 [fixture: classes-and-styles/css-semicolon-gap]
 [corpus fixture: usecase/lex-style-hash-semicolon]
-[fixture: classes-and-styles/css-pre-colon-trim-kept]
+[fixture: classes-and-styles/css-pre-colon-whitespace-dropped]
 [fixture: classes-and-styles/css-classdef-gap]
 [fixture: classes-and-styles/css-line-rule-colon-gap-kept]
 [fixture: classes-and-styles/css-both-passes]
@@ -730,7 +742,7 @@ Mermaid はコロンの前後と `--  color` 内の余白を保存するため�
 ```mmd
 usecase-beta
   A
-  style A fill   :  red, stroke-width : 2px
+  style A fill: red, stroke-width: 2px
 ```
 
 ### Notes
@@ -995,7 +1007,8 @@ usecase-beta
 
 [末尾空白](./c4.ja.md#末尾空白)を再利用します。
 完了した構造と CSS の最後の成分の後の、無害な ASCII 空白とタブを除きます。
-CSS のコロンの余白は宣言の内部なので保ちます。
+CSS 宣言のコロンの前後の余白は、
+[Classes and styles](#classes-and-styles) に従います。
 accessibility 行と stereotype の両端の空白は、兄弟の規則に従って整えます。
 [fixture: stereotypes/side-padding]
 引用と markdown の値、JSON、native プロパティの文字列、コメント、
@@ -1019,7 +1032,7 @@ usecase-beta
   actor U
   A --> B
   A@{ }
-  style A fill:red
+  style A fill: red
 ```
 
 ### Line terminators
