@@ -40,8 +40,7 @@ export const ishikawaCases: readonly IshikawaCase[] = [
     rule: "line-separators",
     name: "ishikawa: ps-comment-leading-directive-kept-zero",
     input: "ishikawa\nR\n A\n%%{}%%\u2029 %%{a}%%  B style:#x;y;  \n   C",
-    output:
-      "ishikawa\n R\n  A\n   %%{}%%\u2029%%{a}%%  B style:#x;y;  \n   C\n",
+    output: "ishikawa\n R\n  A\n   %%{}%%\u2029%%{a}%%  B style:#x;y;\n   C\n",
     options: { tabWidth: 0 },
     rejected: false,
   },

@@ -1056,7 +1056,7 @@ agentflow-beta TB
 値の後続行の空白も保ちます。
 禁止されるclass/callback/titleの空白は拒否のままで、
 サイズ保護が削除に優先します。 [fixture: trailing-whitespace/trailing-comment]
-[fixture: trailing-whitespace/trailing-name]
+[fixture: trailing-whitespace/trailing-name-dropped]
 [fixture: trailing-whitespace/trailing-null-style]
 [flowchart](./flowchart.ja.md#スタイルの行末の空白)と同じく、
 バックスラッシュで終わる `linkStyle` は、その後の空白も 1 文字として保ちます。

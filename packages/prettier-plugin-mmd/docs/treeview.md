@@ -466,7 +466,7 @@ treeview/annotation-lines/box-redraw-sole-common-mode-selector-preserved]
 
 [test: treeview/multiline-values/box-redraw-quote-value-ps-keep]
 
-[fixture: treeview/tabs/box-redraw-description-tail-as-value]
+[fixture: treeview/tabs/box-redraw-description-tail-dropped]
 
 [fixture: treeview/multiline-values/box-redraw-value-prefix-width-preserved]
 
@@ -859,7 +859,7 @@ treeView-beta
 
 [fixture: treeview/tabs/box-redraw-branch-excluded-tail-trim]
 
-[fixture: treeview/tabs/box-redraw-description-tail-as-value]
+[fixture: treeview/tabs/box-redraw-description-tail-dropped]
 
 [fixture: treeview/branch-prefixes/box-redraw-arbitrary-and-value-width]
 
@@ -920,7 +920,7 @@ a
 └── b	c
 ```
 
-[fixture: treeview/tabs/box-redraw-description-tail-as-value]
+[fixture: treeview/tabs/box-redraw-description-tail-dropped]
 
 [fixture: treeview/tabs/box-redraw-tab-prefix]
 
@@ -1480,11 +1480,11 @@ treeView-beta
 One space stands between `##` and the text of a description, whether the spaces
 and tabs there were many, or none: `##   text` and `##text` are printed
 `## text`, since mermaid.js trims them from the description and draws the same
-figure. Keep the rest of the description literal, including its trailing
-padding, whitespace-only text, LS/PS, percent text and apparent annotation
-syntax. Null stays null. Db-equal trimming of the rest would still erase
-authored text; internal whitespace changes can change the description. The gap
-before `##` follows Annotation gaps.
+figure. The spaces and tabs at the end of the description go for the same reason
+(see [Trailing whitespace](#trailing-whitespace)). Keep the rest of the
+description literal, including whitespace-only text, LS/PS, percent text and
+apparent annotation syntax. Null stays null. Internal whitespace changes can
+change the description. The gap before `##` follows Annotation gaps.
 
 [fixture: treeview/descriptions/description-padding] [fixture:
 treeview/descriptions/description-touches-marker]
@@ -1518,10 +1518,12 @@ treeView-beta
 ### Names
 
 Keep complete bare-name and StringLiteral source spans: quote choice, empty
-names, backslashes, internal and trailing whitespace, HTML/entity spelling and
-directory slashes. singleQuote does not requote them. Even Db-equal requoting
-loses spelling; quoting a padded bare directory can change its name and
-file/directory type.
+names, backslashes, internal whitespace, the whitespace inside quotes,
+HTML/entity spelling and directory slashes; only the spaces and tabs at the end
+of a bare name at the end of a line go (see
+[Trailing whitespace](#trailing-whitespace)). singleQuote does not requote them.
+Even Db-equal requoting loses spelling; quoting a padded bare directory can
+change its name and file/directory type.
 
 [fixture: treeview/names/name-bare-tail]
 
@@ -2428,16 +2430,25 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 
 ### Trailing whitespace
 
-Decide by owner: keep bare-name, description, quoted-interior, comment and
-directive tails as authored values. Move structural carried runs once. Common
-line values use shared outer trimming; a branch-line tail already excluded from
-the value is removed rather than carried. Adding a branch that would newly trim
-an owned tail retains the body. This avoids confusing value text with structural
-padding; significant fixture tails are not shown in code blocks.
+The spaces and tabs at the end of a line are left out where the line ends with a
+bare name or a description: mermaid.js trims the name and the description of a
+node, so the Db and the figure are the same without them. A description of
+spaces and tabs only, the whitespace inside a quoted name, the text of a
+standalone comment, and every other whitespace character stay as written, and so
+does the gap before a directive that follows a node, which belongs to the
+directive. Move structural carried runs once. Common line values use shared
+outer trimming; a branch-line tail already excluded from the value is removed
+rather than carried. Adding a branch that would newly trim an owned tail retains
+the body. This avoids confusing value text with structural padding; significant
+fixture tails are not shown in code blocks.
 
 [fixture: treeview/trailing-whitespace/trailing-bare-dropped]
 
 [fixture: treeview/trailing-whitespace/trailing-description-dropped]
+
+[fixture: treeview/trailing-whitespace/trailing-description-blank-kept]
+
+[fixture: treeview/trailing-whitespace/trailing-directive-gap-kept]
 
 [fixture: treeview/trailing-whitespace/trailing-quoted-interior]
 
@@ -2447,7 +2458,7 @@ padding; significant fixture tails are not shown in code blocks.
 
 [corpus fixture: treeview/box-tail-branch-no-carry]
 
-[fixture: treeview/tabs/box-redraw-description-tail-as-value]
+[fixture: treeview/tabs/box-redraw-description-tail-dropped]
 
 [fixture: treeview/tabs/box-redraw-tab-prefix]
 

@@ -268,8 +268,9 @@ function trimDescriptionPadding(
   atoms: readonly Atom[],
   texts: Set<number>,
 ): Atom[] {
-  return atoms.map((atom, index) => {
-    if (index === atoms.length - 1) atom = trimAtomEnd(source, atom)
+  return atoms.map((written, index) => {
+    const atom =
+      index === atoms.length - 1 ? trimAtomEnd(source, written) : written
     const described = item.annotations.some(
       (annotation) =>
         annotation.type === "TreeviewDescriptionAnnotation" &&

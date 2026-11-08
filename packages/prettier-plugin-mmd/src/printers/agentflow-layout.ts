@@ -106,14 +106,15 @@ export function layoutContainerHeader(
       else break
     }
     // The data block of a heading without a title touches the name, whose
-    // trailing whitespace mermaid.js trims, as the `[` of a title does; a name
-    // that holds a directive or a comment is kept as written
-    // (docs/agentflow.md, Names and headings).
-    const touchesData =
-      node.title === null &&
-      node.data.length > 0 &&
+    // trailing whitespace mermaid.js trims, as the `[` of a title does; the
+    // end of a heading with neither is trimmed the same way, since the flow
+    // is the same flow with or without it. A name that holds a directive or a
+    // comment is kept as written (docs/agentflow.md, Names and headings).
+    const holdsNoTrivia =
       findTriviaBetween(source, name.range[0], name.range[1]).length === 0
-    if (node.title !== null || touchesData) {
+    const touchesData =
+      node.title === null && node.data.length > 0 && holdsNoTrivia
+    if (node.title !== null || holdsNoTrivia) {
       while (nameEnd > nameStart && isWhitespace(source.text[nameEnd - 1]))
         nameEnd--
     }

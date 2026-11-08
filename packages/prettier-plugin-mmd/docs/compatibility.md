@@ -592,7 +592,7 @@ gantt/settings/trailing-whitespace-by-setting] [fixture:
 gantt/settings/format-blank-kept] [fixture:
 journey/titles-and-sections/title-padding-dropped] [fixture:
 journey/titles-and-sections/title-blank-kept] [fixture:
-journey/titles-and-sections/whitespace-before-hash-is-the-value] [fixture:
+journey/titles-and-sections/title-hash-gap-one-space-section-kept] [fixture:
 timeline/titles-and-sections/title-padding-dropped] [fixture:
 timeline/titles-and-sections/title-blank-kept] [fixture:
 timeline/periods-and-events/event-padding-kept-end-dropped] [fixture:
@@ -1332,12 +1332,15 @@ See [Task data](./gantt.md#task-data), [Settings](./gantt.md#settings),
 [Titles and sections](./gantt.md#titles-and-sections), and
 [Lists](./gantt.md#lists).
 
-- The whitespace at the ends of the value of `dateFormat`, `axisFormat`,
-  `tickInterval`, `todayMarker`, `title`, and `section`, and between the text of
-  a task description and its colon. The Db keeps it, so `dateFormat  YYYY-MM-DD`
-  with two spaces and `A task           :a1` with padding are not the same as
-  their trimmed forms, and the padding that aligns the colons stays. [fixture:
-  gantt/settings/trailing-whitespace-by-setting] [fixture:
+- The whitespace at the ends of the value of `tickInterval`, `todayMarker`, and
+  `section`, and between the text of a task description and its colon. The Db
+  keeps it, and it is drawn: `tickInterval  1week` with two spaces turns the
+  ticks into the default ones, `section  A` is another section than `section A`,
+  and `A task           :a1` with padding is not the same as its trimmed form,
+  and the padding that aligns the colons stays. The whitespace at the ends of
+  `dateFormat`, `axisFormat`, and `title` is left out (see
+  [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same)).
+  [fixture: gantt/settings/trailing-whitespace-by-setting] [fixture:
   gantt/titles-and-sections/title-trailing-dropped-section-kept] [fixture:
   gantt/task-data/description-padding-kept]
 - The whitespace inside an item of task data, the number of its items, and the
@@ -1390,15 +1393,18 @@ lines by the whitespace on them, so formatting keeps them as they are written.
 See [Task data](./journey.md#task-data) and
 [Titles and sections](./journey.md#titles-and-sections).
 
-- The whitespace at the ends of the value of `title` and `section`, and between
-  the text of a task description and its colon. The Db keeps it, so `title  T`
-  with two spaces and `Make tea  : 5` with padding are not the same as their
-  trimmed forms, and the padding that aligns the colons stays. [fixture:
-  journey/titles-and-sections/title-trailing-dropped-section-kept] [fixture:
-  journey/task-data/description-padding-kept]
-- The whitespace before a `#` after a `title` or a `section`: it is part of the
-  value, while after the data of a task it is not. [fixture:
-  journey/titles-and-sections/whitespace-before-hash-is-the-value] [fixture:
+- The whitespace at the ends of the name of a `section`, and between the text of
+  a task description and its colon. The Db keeps it, so `section  S` with two
+  spaces and `Make tea  : 5` with padding are not the same as their trimmed
+  forms, and the padding that aligns the colons stays. The whitespace at the
+  ends of a `title` is left out (see
+  [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same)).
+  [fixture: journey/titles-and-sections/title-trailing-dropped-section-kept]
+  [fixture: journey/task-data/description-padding-kept]
+- The whitespace before a `#` after a `section`: it is part of the name, while
+  after the data of a task it is not. After a `title` it is left out too, and
+  one space stands before the `#`. [fixture:
+  journey/titles-and-sections/title-hash-gap-one-space-section-kept] [fixture:
   journey/task-data/hash-ends-the-data]
 - The whitespace inside a person, and the number of the people: `Me  Two` is one
   person as written, and `a,` has an empty person that `a` does not. [fixture:
@@ -1491,9 +1497,10 @@ what the Db reads and does not repair what mermaid.js rejects. See
 
 ## Timeline lines that the whitespace decides
 
-mermaid.js keeps the whitespace in the periods, events, titles, and section
-names of a timeline, and reads a few lines by the place they stand in, so
-formatting keeps them as they are written. See
+mermaid.js keeps the whitespace in the periods, events, and section names of a
+timeline, and reads a few lines by the place they stand in, so formatting keeps
+them as they are written, except for the whitespace at the ends of a title and
+at the end of the last event of a line. See
 [Periods and events](./timeline.md#periods-and-events),
 [Event statements](./timeline.md#event-statements), and
 [Statements one per line](./timeline.md#statements-one-per-line).
@@ -1502,8 +1509,11 @@ formatting keeps them as they are written. See
   whitespace before the colon of a period and the whitespace of an event beyond
   the one character after its colon, so `2004 : a` and `2004: a` are different
   periods, and the padding that aligns the colons stays. The whitespace at the
-  end of a line is part of the text too. [fixture:
-  timeline/periods-and-events/period-whitespace-kept] [fixture:
+  end of a period is part of the text too, and so is that at the end of an event
+  that another colon follows; the whitespace at the end of the last event of a
+  line is left out (see
+  [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same)).
+  [fixture: timeline/periods-and-events/period-whitespace-kept] [fixture:
   timeline/periods-and-events/event-padding-kept-end-dropped] [fixture:
   timeline/periods-and-events/period-trailing-kept-event-end-dropped]
 - The line on which an event stands. Joining the event on a later line to the

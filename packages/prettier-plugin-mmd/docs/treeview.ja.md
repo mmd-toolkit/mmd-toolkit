@@ -461,7 +461,7 @@ treeview/annotation-lines/box-redraw-sole-common-mode-selector-preserved]
 
 [test: treeview/multiline-values/box-redraw-quote-value-ps-keep]
 
-[fixture: treeview/tabs/box-redraw-description-tail-as-value]
+[fixture: treeview/tabs/box-redraw-description-tail-dropped]
 
 [fixture: treeview/multiline-values/box-redraw-value-prefix-width-preserved]
 
@@ -857,7 +857,7 @@ treeView-beta
 
 [fixture: treeview/tabs/box-redraw-branch-excluded-tail-trim]
 
-[fixture: treeview/tabs/box-redraw-description-tail-as-value]
+[fixture: treeview/tabs/box-redraw-description-tail-dropped]
 
 [fixture: treeview/branch-prefixes/box-redraw-arbitrary-and-value-width]
 
@@ -918,7 +918,7 @@ a
 └── b	c
 ```
 
-[fixture: treeview/tabs/box-redraw-description-tail-as-value]
+[fixture: treeview/tabs/box-redraw-description-tail-dropped]
 
 [fixture: treeview/tabs/box-redraw-tab-prefix]
 
@@ -1453,10 +1453,11 @@ treeView-beta
 なくても、空白 1 つを置きます。
 mermaid.js が description からそれらを取り除いて同じ図を描くので、
 `##   text` と `##text` は `## text` と印字します。
-description の残りの literal は、末尾の padding、空白だけの値、LS・PS、
+description の末尾の空白とタブも同じ理由で除きます。
+（[Trailing whitespace](#trailing-whitespace)を参照）。
+description の残りの literal は、空白だけの値、LS・PS、
 percent の文字と注釈らしい文字を含めて丸ごと保ちます。
 null は null のままです。
-残りの部分の Db の等しい trim も原文を失い、
 内部の空白の変更は description を変ええます。
 `##` の前の gap は Annotation gaps に従います。
 
@@ -1492,8 +1493,10 @@ treeView-beta
 ### Names
 
 裸名と StringLiteral の原文の範囲を丸ごと保ちます。
-引用符の選択、空名、backslash、内部と末尾の空白、HTML と entity の綴り、
-directory の slash を含みます。
+引用符の選択、空名、backslash、内部の空白、引用符の中の空白、
+HTML と entity の綴り、directory の slash を含みます。
+行末にある裸名の末尾の空白とタブだけを除きます。
+（[Trailing whitespace](#trailing-whitespace)を参照）。
 singleQuote で引用し直しません。
 Db の等しい引用変更も綴りを失い、
 padding のある裸の directory を引用すると名前と種類が変わりえます。
@@ -2417,8 +2420,12 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 
 ### Trailing whitespace
 
-所有者ごとに判断し、裸名、description、引用内、
-comment と directive の末尾は値として保ちます。
+裸名か description で終わる行では、末尾の空白とタブを除きます。
+mermaid.js は節点の名前と description を trim するので、
+除いても Db と図は同じです。
+空白とタブだけの description、引用符で囲む名前の中の空白、
+独立した comment のテキスト、それ以外の空白文字は、書かれたまま保ちます。
+節点の後に続く directive の前の gap も directive に属するので保ちます。
 構造の持ち越し run は 1 回だけ移し、共通の行値は共有の外側の trim に従います。
 branch 行で値から除外された末尾は削り、持ち越しません。
 枝の追加で値の末尾が新たに trim される図は本文を保ちます。
@@ -2429,6 +2436,10 @@ branch 行で値から除外された末尾は削り、持ち越しません。
 
 [fixture: treeview/trailing-whitespace/trailing-description-dropped]
 
+[fixture: treeview/trailing-whitespace/trailing-description-blank-kept]
+
+[fixture: treeview/trailing-whitespace/trailing-directive-gap-kept]
+
 [fixture: treeview/trailing-whitespace/trailing-quoted-interior]
 
 [fixture: treeview/trailing-whitespace/trailing-comment-kept]
@@ -2437,7 +2448,7 @@ branch 行で値から除外された末尾は削り、持ち越しません。
 
 [corpus fixture: treeview/box-tail-branch-no-carry]
 
-[fixture: treeview/tabs/box-redraw-description-tail-as-value]
+[fixture: treeview/tabs/box-redraw-description-tail-dropped]
 
 [fixture: treeview/tabs/box-redraw-tab-prefix]
 

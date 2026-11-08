@@ -902,8 +902,13 @@ id が空の場合も同じです。
 `note left of A : ` は受理され、`note left of A :` は拒否されます。
 `:` の前に空白が 2 つあり、後ろに何もないノートも同じです。
 その本文は `:` だけです。 [fixture: notes/blank-text-kept]
-独立したノートの引用符は書かれたまま残します。
-`note ""floating" as N` の本文は `floating` です。 [fixture: notes/over-lines]
+独立したノートの引用符は書かれたまま残し、その間の本文も空白ごと残します。
+flowchart の引用符で囲むラベルの内部と同じです。
+`note ""floating" as N` の本文は `floating` で、
+`note "  floating   text  " as N` はそのまま残します。
+mermaid.js は、その空白によらず同じテキストを読み、同じノートを描きます。
+Db と画素が同じであることを確かめました。
+[fixture: notes/floating-note-text-whitespace-kept] [fixture: notes/over-lines]
 浮遊ノートの `as` とその後の id は、前のものに接していても、
 それぞれ空白 1 つの後に置きます。
 `note "t"as N` と `note "t" asN` は `note "t" as N` と印字します。
@@ -996,12 +1001,18 @@ mermaid.js は `"d"as A` を `"d" as A` と同じに読むからです。
 [fixture: aliases/id-kept]
 文字列の前後の、mermaid.js が読まない `""` も、同じように離します。
 `asA` は `as` ではなく、拒否されます。
-2 つ目の説明、つまり `:` の後のテキストは、書かれたまま残します。
+2 つ目の説明、つまり `:` の後のテキストは、末尾の空白を除き、
+書かれたまま残します。
 mermaid.js は、それを両端の空白ごと読むので、
-`:short` と `: short` は違う説明になるからです。
+`:short` と `: short` は違う説明になります。
+図では、末尾の空白を除いて描きます。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+空白とタブだけの説明と、`;` を含む説明は、書かれたままにします。
 [corpus fixture: state/db-alias-colon-spaces-second]
 [fixture: aliases/second-description-kept]
 [fixture: aliases/second-description-trailing-whitespace-dropped]
+[fixture: aliases/second-description-blank-kept]
+[fixture: aliases/second-description-semicolon-kept]
 `:` の前の空白は空白 1 つにします。
 
 入力

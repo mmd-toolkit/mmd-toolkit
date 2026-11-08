@@ -648,11 +648,11 @@ set A[style:#x;y] set B:2
 
 読みやすいように title の最初の区切りを ASCII 空白1つにします。
 その後の空白とタブも含めて、ASCII 空白 1 つにします。
+タイトルの末尾の空白とタブは除きます。
 mermaid.js はそれらを Db に残しますが、それらがなくても同じタイトルを描きます。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-それより後の値の全ての文字は、末尾の空白と文に見える単語も含めて保ちます。
-最初の区切りの後は全て title の値で、木でも Db でもそうなので、
-除いたりまとめたりすると Db が変わるためです。
+それより後の値の全ての文字は、文に見える単語も含めて保ちます。
+最初の区切りの後は全て title の値で、木でも Db でもそうだからです。
 次のソース行の字下げは値の一部なので、
 `title` の LF と `  T` は `title T` と印字されます。
 [fixture: venn/title/text-padding-dropped]
@@ -792,8 +792,10 @@ set A
 完結したヘッダーと title 以外の文の後の外側の ASCII 空白とタブは除き、
 行末をそろえます。
 保持部分と安全な接尾部の後も同じです。
-名前、ラベル、色、style の文字列、title の値、
+名前、ラベル、色、style の文字列、
 コメントとディレクティブ内の空白は書かれたテキストとして保ちます。
+title の値の中の空白も同じですが、
+両端の空白は除きます（[Title](#title)を参照）。
 [fixture: venn/trailing-whitespace/continuation-spaces]
 [corpus fixture: venn/db-after-set-label-size-space]
 [corpus fixture: venn/db-title-padding] [corpus fixture: venn/lex-tab-line-end]
@@ -804,7 +806,7 @@ set A
 [fixture: venn/trailing-whitespace/trailing-in-values]
 
 入力 `"venn-beta \nset A \n"` は `"venn-beta\nset A\n"` になり、
-`title T  ` の値の空白は保ちます。
+`title T  ` は `title T` と印字します。
 
 ### Multiline values
 

@@ -409,26 +409,26 @@ ishikawa
 
 ### Trailing whitespace
 
-`IshikawaLiteral` の末尾の文字は、普通の行でも保持する行でも全て保ちます。
-空白、タブ、Unicode の空白、colon の後の空白、
-EOF の余白も literal の値の一部です。
-値は作者が書いたものであり、Mermaid が trim しても、
-Db が等しいことは値を消す理由になりません。
-mindmap と同じ、書かれた値を保つ選択です。
+`IshikawaLiteral` の末尾の空白とタブは、普通の行でも保持する行でも、
+コロンの後でも入力の末尾でも除きます。
+Mermaid が literal を trim するので、除いても Db と図は同じです。
+改行しない空白、バイト順マーク、Unicode の区切り文字、全角空白など、
+それ以外の末尾の空白文字は書かれたまま保ちます。
 [fixture: ishikawa/trailing-whitespace/trailing-colon-dropped]
 [fixture: ishikawa/trailing-whitespace/trailing-kept-semicolon]
 [fixture: ishikawa/trailing-whitespace/trailing-value-dropped]
-[fixture: ishikawa/trailing-whitespace/trailing-value-drop-alternative]
 [fixture: ishikawa/trailing-whitespace/unpadded-values]
 [test: ishikawa: trailing-nbsp] [test: ishikawa: trailing-unicode-separators]
 [test: ishikawa: trailing-unicode-kept-line]
 
 内部の空白、directive の両側の隙間、結合した継続列も保ちます。
 コメントの空白と directive の内容も同じです。
+literal の後に続く directive の前の隙間は directive に属するので、
+そこでの literal の末尾は保ちます。
 [fixture: ishikawa/trailing-whitespace/trailing-directive-continuation]
 
-除くのは [Header](#header) と [Blank lines](#blank-lines)
-が定める見出し行の外側の余白だけで、それは literal の値ではありません。
+[Header](#header) と [Blank lines](#blank-lines) の規則で除くのは、
+見出し行の外側の余白だけで、それは literal の値ではありません。
 [fixture: ishikawa/trailing-whitespace/trailing-header-div]
 
 入力と出力（escape 表記）:
@@ -437,22 +437,23 @@ mindmap と同じ、書かれた値を保つ選択です。
 [
   {
     "input": "ishikawa\nR: \n A:  ",
-    "output": "ishikawa\n  R: \n    A:  \n"
+    "output": "ishikawa\n  R:\n    A:\n"
   },
   {
     "input": "ishikawa\nR style:#abc;;   \n A",
-    "output": "ishikawa\n  R style:#abc;;   \n    A\n"
+    "output": "ishikawa\n  R style:#abc;;\n    A\n"
   },
   {
     "input": "ishikawa\nR   \n A\t  ",
-    "output": "ishikawa\n  R   \n    A\t  \n"
+    "output": "ishikawa\n  R\n    A\n"
   }
 ]
 ```
 
 ### Node text
 
-節点テキストは、末尾の文字も含めて書かれた綴りを保ちます。
+節点テキストは、末尾の空白とタブを除いて書かれた綴りを保ちます。
+（[Trailing whitespace](#trailing-whitespace)を参照）。
 引用符、backtick、空に見える文字列や括弧や call、閉じ忘れ、数、句読点、entity、
 HTML、prototype の名前も literal です。
 title、accessibility、style、装飾、データらしい形も同じです。
@@ -518,7 +519,9 @@ Ishikawa の節点を分ける semicolon はありません。
 共有の区間保持機構で最後の semicolon までの接頭部を保ち、交差する literal、
 コメント、directive は全体を含めます。
 末尾を二重に印字しません。
-外側の字下げは printer の空白ですが、literal の末尾の文字は保ちます。
+外側の字下げは printer の空白ですが、literal の文字は、
+末尾の空白とタブを除いて書かれたまま保ちます。
+（[Trailing whitespace](#trailing-whitespace)を参照）。
 [fixture: ishikawa/line-rule-and-kept-lines/line-rule-kept]
 [fixture: ishikawa/line-rule-and-kept-lines/line-rule-double-pass]
 [fixture: ishikawa/line-rule-and-kept-lines/line-rule-directive-trigger]
@@ -638,7 +641,7 @@ LS と PS は別の文脈による規則に従います。
 ### Line separators
 
 literal や directive 内の LS (`\u2028`) と PS (`\u2029`) は文字です。
-literal の末尾の空白であっても保ちます。
+literal の末尾でも保ちます。
 LF は [Physical lines](#physical-lines) の規則で、普通の節点の行を分けます。
 [fixture: ishikawa/line-separators/lf-root-and-cause]
 [fixture: ishikawa/line-separators/lf-sibling-causes]
@@ -739,7 +742,8 @@ Mermaid は字下げの文字を 1 文字ずつ数えるので、
 [corpus fixture: ishikawa/lex-vt-positions]
 [test: ishikawa: unicode-indentation]
 
-literal の内部と末尾の文字は、書かれた値として保ちます。
+literal の内部の文字と、空白でもタブでもない末尾の文字は、
+書かれた値として保ちます。
 NEL、ゼロ幅空白、NUL、補助平面の文字も literal です。
 [test: ishikawa: unicode-value-kept] [test: ishikawa: nel-zero-width-text]
 
@@ -839,7 +843,7 @@ ishikawa
 拒否される裸の見出しを、改行の追加で救済しません。
 最後の図コメントの隙間全体と EOF までの開いた directive は、
 書かれた終わりを保ちます。
-末尾の literal の余白は、Trailing whitespace に従い保ちます。
+末尾の literal の余白は、Trailing whitespace に従い除きます。
 [fixture: ishikawa/final-newline/final-comment]
 [corpus fixture: ishikawa/directive-open-root-eof]
 [fixture: ishikawa/final-newline/final-value-spaces]
@@ -868,12 +872,10 @@ parse に失敗した本文は整形を辞退するためです。
 [fixture: ishikawa/markdown-fences/markdown-top-payload]
 [fixture: ishikawa/markdown-fences/markdown-list-payload]
 
-プラグインが整形する fence では、ホストが最終行の空白を除くため、
-[Trailing whitespace](#trailing-whitespace) にかかわらず、
-その行の literal の余白が失われることがあります。
-Mermaid は普通の節点テキストを trim するので、この変更の Db は等しく、
-バイトの保持は保証しません。
-整形する fence の他の literal の行末は書かれたとおり保ちます。
+プラグインが整形する fence では、ホストが最終行の空白を除きます。
+プラグインも全ての literal からその空白を除くので、
+最終行の literal はどちらも同じ終わり方になります。
+（[Trailing whitespace](#trailing-whitespace)を参照）。
 [fixture: ishikawa/markdown-fences/markdown-last-spaces]
 [fixture: ishikawa/markdown-fences/markdown-unpadded-payload]
 

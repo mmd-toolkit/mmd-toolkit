@@ -102,8 +102,10 @@ Correctness is defined by the pinned mermaid.js.
    - the whitespace around the first `:` and the `,` of styles, and at the end
      of a style, defined in
      [Styles that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#styles-that-are-drawn-the-same);
-   - the whitespace at the start of a title, and of the date format and the axis
-     format of a Gantt chart, defined in
+   - the whitespace at the start and at the end of a title, of the date format
+     and the axis format of a Gantt chart, and of a description of a C4 diagram,
+     and at the end of the last event of a line of a timeline and of the second
+     description of an alias of a state diagram, defined in
      [Texts after a keyword that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#texts-after-a-keyword-that-are-drawn-the-same);
    - the whitespace around the arguments of a `click` call in flowchart,
      agentflow, class, and Gantt diagrams, defined in

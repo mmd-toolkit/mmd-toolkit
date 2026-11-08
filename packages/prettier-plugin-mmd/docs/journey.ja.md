@@ -413,13 +413,13 @@ journey
 
 ### タイトルとセクション
 
-`title` は、値を、末尾の空白も含めて書かれたまま印字します（Db が持ちます）。
-キーワードの後の区切りは、書かれた空白によらず空白 1 つです。
+`title` は、キーワードの後に、書かれた空白によらず空白 1 つを置きます。
 区切りの形を 1 つにするためで、Gantt 図と同じです。
-値の先頭の空白は除きます。
+値は、先頭と末尾の空白を除いて印字します。
+Db はその空白を持ちますが、図では描かれません。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-`title   My trip` は `title My trip` と印字します。
-`section` の名前は、先頭の空白も含めて書かれたまま印字します。
+`title   My trip  ` は `title My trip` と印字します。
+`section` の名前は、先頭と末尾の空白も含めて書かれたまま印字します。
 その空白で名前が異なる 2 つのセクションは別々に描かれ、
 除くとそうならないからです。
 半角空白とタブだけのタイトルは、書かれたままにします。
@@ -436,8 +436,11 @@ journey
 値は `:`、`%`、`%%` を文字として含み、`#` で終わります。
 [fixture: titles-and-sections/special-characters-in-values]
 [fixture: titles-and-sections/value-ends-at-hash]
-その `#` の前の空白は値の一部で、残ります。
-[fixture: titles-and-sections/whitespace-before-hash-is-the-value]
+その `#` の前の空白は値の一部です。
+`title` では、タイトルのほかの末尾の空白と同じく除き、
+`#` の前に空白 1 つを置きます。
+`section` では残します。
+[fixture: titles-and-sections/title-hash-gap-one-space-section-kept]
 キーワードと値の間のディレクティブは、
 その位置に残します（[ディレクティブ](#ディレクティブ)を参照）。
 [fixture: titles-and-sections/directive-between-keyword-and-value]

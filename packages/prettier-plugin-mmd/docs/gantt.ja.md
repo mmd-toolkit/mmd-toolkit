@@ -394,23 +394,21 @@ gantt
 
 ### 設定
 
-`dateFormat` と `axisFormat` は、キーワードの後に空白を 1 つ置き、
-その後に値を印字します。
-mermaid.js は値の先頭の空白を Db に残しますが、
-その空白がなくても同じ図を描きます。
+`dateFormat` と `axisFormat` は、キーワードの後に空白を 1 つ置き、その後に値を、
+先頭と末尾の空白を除いて印字します。
+mermaid.js はその空白を Db に残しますが、その空白がなくても同じ図を描きます。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-`dateFormat   YYYY-MM-DD` は `dateFormat YYYY-MM-DD` と印字します。
+`dateFormat   YYYY-MM-DD  ` は `dateFormat YYYY-MM-DD` と印字します。
 [fixture: settings/format-padding-dropped]
 半角空白とタブだけの日付書式は、書かれたままにします。
 [fixture: settings/format-blank-kept]
 `D` の日付書式は、前後に空白がないときだけ日単位の軸を描くので、
 書かれたままにします。
 `tickInterval` も、値全体を読んでいて、
-前に空白があると目盛りが既定のものになるので、書かれたままにします。
+前か後に空白があると目盛りが既定のものになるので、書かれたままにします。
 [fixture: settings/format-padding-kept-where-drawn-differently]
-それ以外は、値を、両端の空白も含めて書かれたまま印字します。
-Db は値をそのまま持つので、
-末尾に空白 2 つがある `todayMarker off` は別のマーカーです。
+`todayMarker` の値は、両端の空白も含めて書かれたまま印字します。
+末尾に空白 2 つがある `todayMarker off` は別のマーカーで、今日の線を描きます。
 [fixture: settings/trailing-whitespace-by-setting]
 `todayMarker` の値は `#` を含み、どの値も `%%` をテキストの文字として含みます。
 `todayMarker` の値は `;` で終わり、`dateFormat`、`axisFormat`、
@@ -468,12 +466,11 @@ gantt
 ### タイトルとセクション
 
 `title` も設定と同じに印字します。
-値は末尾の空白も含めて書かれたまま（Db が持つ）で、
-キーワードの後の区切りは空白 1 つです。
-値の先頭の空白は除きます。
+キーワードの後の区切りは空白 1 つで、値の先頭と末尾の空白は除きます。
+Db はその空白を持ちますが、図では描かれません。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-`title   Plan` は `title Plan` と印字します。
-`section` の名前は、先頭の空白も含めて書かれたまま印字します。
+`title   Plan  ` は `title Plan` と印字します。
+`section` の名前は、先頭と末尾の空白も含めて書かれたまま印字します。
 その空白で名前が異なる 2 つのセクションは別々に描かれ、
 除くとそうならないからです。
 `section A` の後の `section  A` は、そのまま残します。

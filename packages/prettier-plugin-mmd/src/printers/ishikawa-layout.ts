@@ -102,12 +102,8 @@ export function layoutIshikawaLine(
   const directiveFollows = findTriviaBetween(source, end, end + 1).some(
     (item) => item.type === "Directive" && item.range[0] === end,
   )
-  while (
-    !directiveFollows &&
-    end > start + 1 &&
-    isSpaceOrTab(source.text[end - 1])
-  ) {
-    end--
+  if (!directiveFollows) {
+    while (end > start + 1 && isSpaceOrTab(source.text[end - 1])) end--
   }
   return keptAsWritten(start, end)
 }

@@ -298,13 +298,17 @@ timeline
 
 ### period と event
 
-period と event は、テキストと `:` の間の空白も含め、書かれたまま印字します。
+period と event は、行の最後の event の末尾の空白を除き、
+テキストと `:` の間の空白も含め、書かれたまま印字します。
+mermaid.js はその空白を Db に持ちますが、空白がなくても同じ event を描きます。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 Db は、period の末尾の空白（`:` の前の空白）と、
 event の `:` の後ろの 1 文字を除いた両端の空白を、値として持ちます。
 `2004 : a` と `2004: a` は別の period で、`a :   e` の event は `  e`、
 `a : e   ` の event は `e   ` です。
 そのため、timeline の `:` をそろえるための空白は残し、
 period に接した `:` は接したままにします。
+行末の `a : e   ` は `a : e` と印字し、`c : g   : h` は書かれたままにします。
 [fixture: periods-and-events/period-whitespace-kept]
 [fixture: periods-and-events/event-padding-kept-end-dropped]
 [fixture: periods-and-events/whitespace-only-event]
@@ -583,14 +587,13 @@ timeline
 
 ### title と section
 
-`title` は、値を書かれたまま印字します。
-末尾の空白も Db が持つので残します。
-キーワードの後ろの区切りは、書かれた空白が何であっても空白 1 つにします。
+`title` は、キーワードの後ろに空白 1 つを置いて印字します。
 この形は journey と同じです。
-値の先頭の空白は除きます。
+値の先頭と末尾の空白は除きます。
+Db はその空白を持ちますが、図では描かれません。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-`title   History` は `title History` と印字します。
-`section` の名前は、先頭の空白も含めて書かれたまま印字します。
+`title   History  ` は `title History` と印字します。
+`section` の名前は、先頭と末尾の空白も含めて書かれたまま印字します。
 その空白で名前が異なる 2 つのセクションは別々に描かれ、
 除くとそうならないからです。
 半角空白とタブだけのタイトルは、書かれたままにします。

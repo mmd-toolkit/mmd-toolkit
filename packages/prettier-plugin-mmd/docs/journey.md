@@ -419,10 +419,12 @@ titles-and-sections/comment-line-inside-kept] The value holds `:`, `%`, and `%%`
 as characters, and ends at a `#`. [fixture:
 titles-and-sections/special-characters-in-values] [fixture:
 titles-and-sections/value-ends-at-hash] The whitespace before that `#` is part
-of the value, and stays. [fixture:
-titles-and-sections/whitespace-before-hash-is-the-value] A directive between the
-keyword and the value stays where it is (see [Directives](#directives)).
-[fixture: titles-and-sections/directive-between-keyword-and-value]
+of the value. For a `title` it is left out like the other whitespace at the end
+of a title, and one space stands before the `#`; for a `section` it stays.
+[fixture: titles-and-sections/title-hash-gap-one-space-section-kept] A directive
+between the keyword and the value stays where it is (see
+[Directives](#directives)). [fixture:
+titles-and-sections/directive-between-keyword-and-value]
 
 Input
 ([titles-and-sections/special-characters-in-values-input.mmd](../tests/fixtures/journey/titles-and-sections/special-characters-in-values-input.mmd)):

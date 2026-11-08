@@ -624,32 +624,48 @@ SVG と画素を比べてから、例外を残します。
 
 ## 同じに描かれるキーワードの後のテキスト
 
-Gantt、user journey、timeline、sequence、Venn の図では、タイトル、
+Gantt、user journey、timeline、sequence、Venn、C4 の図では、タイトル、
 Gantt 図の日付書式と軸の書式を、キーワードの後に空白を 1 つ置き、
-テキストの先頭の空白を除いて印字します。
-`title   Plan` は `title Plan` と印字し、
+テキストの先頭と末尾の空白を除いて印字します。
+C4 図の説明 `accDescription` も同じです。
+`title   Plan  ` は `title Plan` と印字し、
 `dateFormat   YYYY-MM-DD` は `dateFormat YYYY-MM-DD` と印字します。
-テキストの中と末尾の空白は書かれたままにし、
+テキストの中の空白は書かれたままにし、
 空白とタブだけのテキストも書かれたままにします。
+timeline の行の最後の event と、別名を持つ state の 2 つ目の説明も、
+同じように末尾の空白を除きますが、先頭の空白は除きません。
+その空白は timeline のコロンをそろえます。
+`2020 : e   ` は `2020 : e` と印字し、
+`state "d" as A : x   ` は `state "d" as A : x` と印字します。
+同じ行のテキストの後にコメントがある場合は、空白 1 つでテキストと隔てます。
+ディレクティブがある場合は、その前の隙間を保ちます。
 [fixture: gantt/titles-and-sections/title-padding-dropped]
 [fixture: gantt/titles-and-sections/title-blank-kept]
 [fixture: gantt/settings/format-padding-dropped]
+[fixture: gantt/settings/trailing-whitespace-by-setting]
 [fixture: gantt/settings/format-blank-kept]
 [fixture: journey/titles-and-sections/title-padding-dropped]
 [fixture: journey/titles-and-sections/title-blank-kept]
+[fixture: journey/titles-and-sections/title-hash-gap-one-space-section-kept]
 [fixture: timeline/titles-and-sections/title-padding-dropped]
 [fixture: timeline/titles-and-sections/title-blank-kept]
+[fixture: timeline/periods-and-events/event-padding-kept-end-dropped]
 [fixture: sequence/title/text-padding-dropped]
 [fixture: sequence/title/text-padding-dropped-colon]
+[fixture: sequence/title/trailing-whitespace-dropped]
 [fixture: sequence/title/title-blank-kept]
 [fixture: venn/title/text-padding-dropped]
 [fixture: venn/title/title-blank-kept]
+[fixture: c4/title-and-accdescription/title]
+[fixture: c4/title-and-accdescription/accdescription]
+[fixture: c4/title-and-accdescription/title-white-only]
+[fixture: state/aliases/second-description-trailing-whitespace-dropped]
 
 mermaid.js はキーワードの後の空白 1 文字を読み、残りを Db に残すので、
 印字したテキストの Db は、書かれたテキストの Db と違いますが、
 描かれる図は同じです。
 各レンダラーは `text()` でテキストを SVG の `text` 要素に入れ、
-先頭の空白を描きません。
+先頭と末尾の空白を描きません。
 （[Gantt](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttRenderer.js#L194-L199)、
 [user journey](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/user-journey/journeyRenderer.ts#L166-L176)、
 [timeline](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/timeline/timelineRenderer.ts#L209-L216)、
@@ -659,8 +675,10 @@ mermaid.js はキーワードの後の空白 1 文字を読み、残りを Db �
 （[`getStartDate`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttDb.js#L305-L359)）。
 軸の書式は、軸のラベルの書式だけです。
 それぞれの種類について、両方のテキストを mermaid.js 12.3.0 で Chromium に描き、
-画素が同じで、生成された id とテキストの先頭の空白を除いた SVG も、
+画素が同じで、生成された id とテキストの両端の空白を除いた SVG も、
 同じであることを確かめました。
+timeline の event、state の 2 つ目の説明、C4 図のタイトルと説明も、
+同じ方法で描いて、同じであることを確かめました。
 
 セクション名は、この形では印字しません。
 レンダラーは名前でセクションを区別するので、
@@ -678,22 +696,31 @@ timeline は同じ名前のセクションのイベントを集めます。
 [fixture: journey/titles-and-sections/section-padding-kept]
 [fixture: timeline/titles-and-sections/section-padding-kept]
 
-Gantt 図の 2 つの設定は、値の前に空白があると描かれる図が変わるので、
+Gantt 図の 3 つの設定は、値の前後に空白があると描かれる図が変わるので、
 書かれたままにします。
 目盛りの間隔は、指定された間隔と値全体を照合するので、
-`1day` の前に空白があると目盛りが既定のものになります。
+`1day` の前か後に空白があると目盛りが既定のものになります。
 （[`makeGrid`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttRenderer.js#L665-L668)）。
 `D` の日付書式は、前後に空白がないときだけ日単位の軸を描きます。
 （[`makeGrid`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttRenderer.js#L650-L659)）。
+今日のマーカーは、値全体が `off` のときだけ線を隠します。
+（[`draw`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttRenderer.js#L861-L878)）。
+そのため、`todayMarker off` の後に空白が 2 つあると、
+チャートに今日が含まれる場合に線を描き、画素が異なります。
 [fixture: gantt/settings/format-padding-kept-where-drawn-differently]
+[fixture: gantt/settings/trailing-whitespace-by-setting]
 
 テストは、印字したテキストの Db に、
-書かれたテキストの Db から各テキストの先頭の空白を戻して比べます。
+書かれたテキストの Db から各テキストの両端の空白を戻して比べます。
 `tests/keyword-text-margins.ts` の関数、
 `keywordTextDbForFormattingComparison` を使います。
 タイトル、日付書式、軸の書式が、書かれたものと、
-先頭の空白とタブだけが違うときは、書かれた方を採ります。
-ほかの違いは、セクション名の違いも含めて失敗とします。
+両端の空白とタブだけが違うときは、書かれた方を採ります。
+C4 図のタイトルと説明も同じです。
+timeline の event と state の説明は、末尾の空白とタブだけが違うときに、
+書かれた方を採ります。
+ほかの違いは、セクション名、目盛りの間隔、今日のマーカーの違いも含めて、
+失敗とします。
 固定している mermaid.js の版を上げるときは、
 それぞれの種類の両方のテキストを描き直し、SVG と画素を比べてから、
 例外を残します。
@@ -1397,11 +1424,14 @@ mermaid.js は、Gantt 図の一部の値の空白を持ち、一部の行を、
 [タイトルとセクション](./gantt.ja.md#タイトルとセクション)、
 [リスト](./gantt.ja.md#リスト)を参照してください。
 
-- `dateFormat`、`axisFormat`、`tickInterval`、`todayMarker`、`title`、
-  `section` の値の両端の空白と、タスクの説明のテキストとコロンの間の空白。
-  Db が持つので、空白 2 つの `dateFormat  YYYY-MM-DD` や、
+- `tickInterval`、`todayMarker`、`section` の値の両端の空白と、
+  タスクの説明のテキストとコロンの間の空白。
+  Db が持ち、図にも描かれるので、空白 2 つの `tickInterval  1week` は、
+  目盛りが既定のものになり、`section  A` は `section A` とは別のセクションで、
   桁をそろえた `A task           :a1` は、空白を落とした形とは別のものです。
   コロンをそろえる空白も残ります。
+  `dateFormat`、`axisFormat`、`title` の両端の空白は除きます。
+  （[同じに描かれるキーワードの後のテキスト](#同じに描かれるキーワードの後のテキスト)）。
   [fixture: gantt/settings/trailing-whitespace-by-setting]
   [fixture: gantt/titles-and-sections/title-trailing-dropped-section-kept]
   [fixture: gantt/task-data/description-padding-kept]
@@ -1457,16 +1487,18 @@ mermaid.js は、journey の一部の値の空白を持ち、一部の行を、
 [タスクのデータ](./journey.ja.md#タスクのデータ)と
 [タイトルとセクション](./journey.ja.md#タイトルとセクション)を参照してください。
 
-- `title` と `section` の値の両端の空白と、
-  タスクの説明のテキストとコロンの間の空白。
-  Db が持つので、空白 2 つの `title  T` や、桁をそろえた `Make tea  : 5` は、
+- `section` の名前の両端の空白と、タスクの説明のテキストとコロンの間の空白。
+  Db が持つので、空白 2 つの `section  S` や、桁をそろえた `Make tea  : 5` は、
   空白を落とした形とは別のものです。
   コロンをそろえる空白も残ります。
+  `title` の両端の空白は除きます。
+  （[同じに描かれるキーワードの後のテキスト](#同じに描かれるキーワードの後のテキスト)）。
   [fixture: journey/titles-and-sections/title-trailing-dropped-section-kept]
   [fixture: journey/task-data/description-padding-kept]
-- `title` と `section` の後の `#` の前の空白。
-  値の一部ですが、タスクのデータの後では値に入りません。
-  [fixture: journey/titles-and-sections/whitespace-before-hash-is-the-value]
+- `section` の後の `#` の前の空白。
+  名前の一部ですが、タスクのデータの後では値に入りません。
+  `title` の後でも除き、`#` の前に空白 1 つを置きます。
+  [fixture: journey/titles-and-sections/title-hash-gap-one-space-section-kept]
   [fixture: journey/task-data/hash-ends-the-data]
 - 人の中の空白と、人の数。
   `Me  Two` は書かれたままの 1 人で、`a,` は `a` にない空の人を持ちます。
@@ -1558,9 +1590,10 @@ mindmap の Db は、ノードの字下げを level として読みます。
 
 ## 空白で決まる timeline の行
 
-mermaid.js は、timeline の period、event、title、section の名前の空白を保ち、
+mermaid.js は、timeline の period、event、section の名前の空白を保ち、
 いくつかの行を、置かれた場所で読みます。
-そのため、整形はそれらを書かれたまま残します。
+そのため、整形は、title の両端の空白と行の最後の event の末尾の空白を除き、
+それらを書かれたまま残します。
 [period と event](./timeline.ja.md#period-と-event)、
 [event の文](./timeline.ja.md#event-の文)、
 [1 行 1 文](./timeline.ja.md#1-行-1-文)を参照してください。
@@ -1570,7 +1603,10 @@ mermaid.js は、timeline の period、event、title、section の名前の空�
   event の `:` の後ろの 1 文字を除く空白を保ちます。
   そのため `2004 : a` と `2004: a` は別の period で、
   `:` をそろえる空白は残ります。
-  行末の空白もテキストの一部です。
+  period の末尾の空白もテキストの一部で、
+  後ろに別のコロンが続く event の末尾の空白も同じです。
+  行の最後の event の末尾の空白は除きます。
+  （[同じに描かれるキーワードの後のテキスト](#同じに描かれるキーワードの後のテキスト)）。
   [fixture: timeline/periods-and-events/period-whitespace-kept]
   [fixture: timeline/periods-and-events/event-padding-kept-end-dropped]
   [fixture: timeline/periods-and-events/period-trailing-kept-event-end-dropped]

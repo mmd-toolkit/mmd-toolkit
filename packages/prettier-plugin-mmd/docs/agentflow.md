@@ -164,6 +164,18 @@ A name that holds a directive or a comment is kept as written, as above.
 [fixture: names-and-headings/heading-data-touches-name] [test: agentflow: U+2029
 between a connector name and its data block]
 
+The whitespace at the end of an ordinary single-part name that has neither a
+title nor a data block is dropped in the same way: `flow F` followed by two
+spaces is printed `flow F`, and so is `flow F ;` followed by a line, where the
+`;` becomes a line break. mermaid.js trims the name, so the Db is the same, and
+`flow F` followed by spaces and `flow F` are one flow. A name that holds a
+directive or a comment, a name of several parts, and a name of whitespace only
+are kept as written, as above. [fixture:
+trailing-whitespace/trailing-name-dropped] [fixture:
+containers/end-name-not-greedy] [fixture:
+names-and-headings/heading-word-gap-before-semicolon] [fixture:
+names-and-headings/name-directive-trailing-kept]
+
 The whitespace after the word `flow`, `connector`, or `global` is one space,
 however many spaces or tabs were written: the word takes one whitespace
 character, and mermaid.js trims the rest from the name. `flow   F["T"]` is
@@ -987,7 +999,7 @@ value text and stays. Name endings follow Names and headings. Label-comment
 padding, strings, data, comments, directives and later value columns stay.
 Forbidden class/callback/title padding remains rejected; the size guard
 overrides trimming. [fixture: trailing-whitespace/trailing-comment] [fixture:
-trailing-whitespace/trailing-name] [fixture:
+trailing-whitespace/trailing-name-dropped] [fixture:
 trailing-whitespace/trailing-null-style] A `linkStyle` that ends with a
 backslash keeps the whitespace after it too, as one character, as in
 [flowchart](./flowchart.md#style-trailing-whitespace). [fixture:

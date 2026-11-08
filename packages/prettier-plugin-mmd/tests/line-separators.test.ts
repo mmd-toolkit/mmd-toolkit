@@ -3399,12 +3399,12 @@ const c4Examples: readonly (readonly [string, string, string])[] = [
   [
     "c4: title-tab-separator",
     'C4Context\ntitle\t  T   \nPerson(a,"A")',
-    'C4Context\n  title   T   \n  Person(a, "A")\n',
+    'C4Context\n  title T\n  Person(a, "A")\n',
   ],
   [
     "c4: accdescription-tab-separator",
     'C4Context\naccDescription\t  D   \nPerson(a,"A")',
-    'C4Context\n  accDescription   D   \n  Person(a, "A")\n',
+    'C4Context\n  accDescription D\n  Person(a, "A")\n',
   ],
   [
     "c4: ls-bare-value",
@@ -3648,9 +3648,15 @@ describe("C4 whitespace and line boundaries", () => {
     const output = await format(input)
     expect(output).toBe(expected)
     expect(await format(output)).toBe(output)
-    expect(dbOfText(output, defaultEmbedded())).toEqual(
-      dbOfText(input, defaultEmbedded()),
-    )
+    const dbBefore = dbOfText(input, defaultEmbedded())
+    expect(
+      dbForFormattingComparison(
+        dbBefore,
+        dbOfText(output, defaultEmbedded()),
+        input,
+        output,
+      ),
+    ).toEqual(dbBefore)
     expect(writtenEmbeddedTexts(output)).toEqual(writtenEmbeddedTexts(input))
     expect(await describeFrontmatterChange(input, output)).toBeNull()
   })

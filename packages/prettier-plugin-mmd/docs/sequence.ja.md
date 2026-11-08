@@ -677,8 +677,8 @@ sequenceDiagram
 ### タイトル
 
 `title` と `title:` の後には空白を 1 つ置き、
-行の残りは先頭の空白を除いて書かれたまま残します。
-`title   My diagram` は `title My diagram` と印字します。
+行の残りは先頭と末尾の空白を除いて書かれたまま残します。
+`title   My diagram  ` は `title My diagram` と印字します。
 [fixture: title/text-padding-dropped]
 [fixture: title/text-padding-dropped-colon]
 半角空白とタブだけのタイトルは、書かれたままにします。
@@ -692,7 +692,7 @@ sequenceDiagram
 [fixture: title/directive-after-keyword-kept]
 mermaid.js はキーワードの後の空白 1 文字を読み、それは改行でもよく、
 その後のすべてを、先頭と末尾の空白も含めてタイトルに入れ、
-先頭の空白を除いてタイトルを描きます。
+先頭と末尾の空白を除いてタイトルを描きます。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 そのため、`title`、改行、`A->>B: x` は `title A->>B: x` と印字し、
 次の行がタイトルになることが見えます。
@@ -700,13 +700,12 @@ mermaid.js はそのように読みます。 [fixture: title/separator]
 [corpus fixture: sequence/lex-title-line-break]
 [corpus fixture: sequence/db-title-next-line-indented]
 [fixture: title/tab-and-colon-line-break] [fixture: title/line-break-indented]
-タイトルの末尾の空白は残します。 [fixture: title/trailing-whitespace-dropped]
+タイトルの末尾の空白は、後ろに `;` がある場合も除きます。
+[fixture: title/trailing-whitespace-dropped]
 [fixture: title/semicolon-after-whitespace-dropped]
 空白が行末にあるので、例は、`\n` を改行とする文字列で書きます。
 `"sequenceDiagram\ntitle Kept   \nA->>B: x\n"` は
-`"sequenceDiagram\n  title Kept   \n  A ->> B: x\n"` と印字し、
-`Kept` の後の 3 つの空白は残ります（fixture `trailing-whitespace-kept` は
-[フォルダー](../tests/fixtures/sequence/title) にあります）。
+`"sequenceDiagram\n  title Kept\n  A ->> B: x\n"` と印字します。
 
 入力
 ([title/separator-input.mmd](../tests/fixtures/sequence/title/separator-input.mmd)):

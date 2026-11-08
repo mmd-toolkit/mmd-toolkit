@@ -105,7 +105,8 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
    - スタイルの最初の `:` と `,` の周りの空白と、スタイルの末尾の空白。
      [同じに描かれるスタイル](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれるスタイル)
      が定める。
-   - title と、Gantt の日付形式と軸形式の先頭の空白。
+   - title、Gantt の日付形式と軸形式、C4 図の説明の先頭と末尾の空白と、
+     timeline の行の最後の event と state 図の別名の 2 つ目の説明の末尾の空白。
      [同じに描かれるキーワードの後のテキスト](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれるキーワードの後のテキスト)
      が定める。
    - flowchart、agentflow、class、Gantt の `click` の呼び出しの、
