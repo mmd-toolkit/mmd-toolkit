@@ -735,15 +735,16 @@ elements, whose runs the accessible name also collapses. Both texts of each case
 were drawn with mermaid.js 12.3.0 in Chromium, once as written and once with
 about 140 characters after the run to see the wrap, and the pixels were the
 same, and so was the SVG without the generated ids, the curves drawn at random,
-and the whitespace in text nodes. The accessible names of the `title`, `desc`,
-and `aria-label` of both texts were the same in the accessibility tree of
-Chromium. The SVG differs in the text of one attribute only for the class list
-of a block diagram and a requirement diagram (`class="node c   d"`) and for the
-arguments of a color of a sequence diagram (`fill="rgb(1,   2, 3)"`): the
-browser reads the `class` attribute as words and ignores whitespace in the
-arguments of a CSS color, like the whitespace around a CSS declaration, which
-AGENTS.md does not compare. [fixture: block/styles/class-name-runs-collapsed]
-[fixture: requirement/class-lists/classes-with-spaces] [fixture:
+and the whitespace in text nodes. The accessible name that a `title` or an
+`aria-label` gives, and the accessible description that a `desc` gives, were the
+same for both texts in the accessibility tree of Chromium. The SVG differs in
+the text of one attribute only for the class list of a block diagram and a
+requirement diagram (`class="node c   d"`) and for the arguments of a color of a
+sequence diagram (`fill="rgb(1,   2, 3)"`): the browser reads the `class`
+attribute as words and ignores whitespace in the arguments of a CSS color, like
+the whitespace around a CSS declaration, which AGENTS.md does not compare.
+[fixture: block/styles/class-name-runs-collapsed] [fixture:
+requirement/class-lists/classes-with-spaces] [fixture:
 sequence/whitespace-between-tokens/values-of-other-statements-runs-collapsed]
 
 The tests compare the Db of the printed text with the runs restored from the Db
