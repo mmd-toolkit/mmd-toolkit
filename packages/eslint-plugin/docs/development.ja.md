@@ -361,10 +361,8 @@ ESLint（`pnpm run lint:es`。`eslint-plugin-prettier` を通して）も、
 `check:docs` は、Prettier が変える文書があると失敗します。
 プラグインのソースは `@mmd-toolkit/parser` を名前で読み込み、
 それは build したパッケージなので、`update`、`update:docs`、`check:docs`、
-`format`、`format:check` は、
+`format`、`format:check`、`lint:es`、`eslint-fix` は、
 先に parser を build します（ルートの `pnpm run build:parser`）。
-`pnpm run lint:es` は build しないので、
-先に parser を build します（CI の lint のジョブは build します）。
 保存時に整形するエディターには、Node 22.18 以降（ルートの `engines` の版）と、
 build した parser が要り、プラグインや parser が変わったら、
 読み込んだモジュールを持ち続けるので、再読み込みが要ります。

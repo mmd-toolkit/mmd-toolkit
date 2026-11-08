@@ -310,20 +310,19 @@ file), so the examples are printed by the formatter of the working tree.
 `eslint-plugin-prettier`), and an editor that formats on save. `check:docs`
 fails on a document that Prettier would change. The source of the plugin imports
 `@mmd-toolkit/parser` by name, which is the built package, so `update`,
-`update:docs`, `check:docs`, `format`, and `format:check` build the parser first
-(`pnpm run build:parser` at the root). `pnpm run lint:es` does not build it, so
-build the parser before it (the lint job of CI does). An editor that formats on
-save needs Node 22.18 or later (the versions of the root `engines`), a built
-parser, and a reload after the plugin or the parser changes, because it keeps
-the modules it has loaded. The plugin is read from the working tree, so a
-half-edited file in `packages/prettier-plugin-mmd/src` breaks these commands
-until it is finished. An example kept as written, where a way of writing that
-the formatter prints in one form is the point (whitespace, the case of a value,
-quotes), has `<!-- prettier-ignore -->` directly before its code block, in both
-languages, and a sentence of Rule Details says that it is shown as written. When
-the formatter changes what it prints, run `update:docs`, then `test:update` and
-read the diff of the snapshots, and look in the prose of the changed documents
-for code spans that quote a changed line.
+`update:docs`, `check:docs`, `format`, `format:check`, `lint:es`, and
+`eslint-fix` build the parser first (`pnpm run build:parser` at the root). An
+editor that formats on save needs Node 22.18 or later (the versions of the root
+`engines`), a built parser, and a reload after the plugin or the parser changes,
+because it keeps the modules it has loaded. The plugin is read from the working
+tree, so a half-edited file in `packages/prettier-plugin-mmd/src` breaks these
+commands until it is finished. An example kept as written, where a way of
+writing that the formatter prints in one form is the point (whitespace, the case
+of a value, quotes), has `<!-- prettier-ignore -->` directly before its code
+block, in both languages, and a sentence of Rule Details says that it is shown
+as written. When the formatter changes what it prints, run `update:docs`, then
+`test:update` and read the diff of the snapshots, and look in the prose of the
+changed documents for code spans that quote a changed line.
 
 The rest of the documents is written by hand. `check:docs` writes nothing and
 fails when `src/rules/index.ts`, a generated part, or an example is out of date,

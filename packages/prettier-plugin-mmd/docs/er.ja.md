@@ -654,6 +654,9 @@ mermaid.js は `only one`、`zero or more`、`many(0)`、`to` などの語を `|
 [corpus fixture: er/lex-relationship-spaces-in-spec]
 `u` は記号として扱い、書かれたまま残します。
 `many(0)` の中に空白を置くと拒否されます。
+逆の側に書かれた記号は、その側の記号として印字します。
+左の `o|` は `|o` です。
+[fixture: relationship-spacing/symbols-on-the-other-side]
 [corpus fixture: er/lex-many-space-before-parenthesis]
 単位の間にディレクティブがある関係は、書かれた語を保ちます。
 [fixture: relationship-spacing/directive-between-word-units-kept]

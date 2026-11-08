@@ -296,6 +296,24 @@ function respellingsOf(source: Source): SourceRespellings {
 }
 
 /**
+ * Whether mermaid.js may remove the last `;` of the line from a position on
+ * before it reads the text: it does so for a line with a `style` or a
+ * `classDef` in this case, then a `:`, then a `#` after non-blank characters
+ * only, then a `;` (`encodeEntities` in utils.ts), and a text with the keyword
+ * in another case is read with that `;`. The check takes the line from the
+ * keyword on and asks for a `:`, a `#`, and a `;` in this order, which holds
+ * wherever the exact rule holds.
+ */
+function mayLoseSemicolon(text: string, from: number): boolean {
+  let end = from
+  while (end < text.length && !"\n\r\u2028\u2029".includes(text[end])) end++
+  const line = text.slice(from, end)
+  const colon = line.indexOf(":")
+  const hash = colon === -1 ? -1 : line.indexOf("#", colon + 1)
+  return hash !== -1 && line.slice(hash + 1).includes(";")
+}
+
+/**
  * Records the respelling of the tokens that are respelled one by one: a
  * keyword, the direction of a header, the assignment of the EBNF notation, the
  * colon after the header of a cynefin or a radar diagram, and a string.
@@ -336,6 +354,16 @@ function findTokenRespellings(
         : index === directionIndex
           ? directionSpellings[type]?.[text]
           : (keywordAliases[type]?.[text] ?? spellings[text.toLowerCase()])
+      // A quadrant chart rejects the text that mermaid.js reads differently in
+      // the two cases (`#f00;` with `CLASSDEF`), and its printer drops the `;`
+      // that ends a statement, so it is not asked.
+      if (
+        (respelled === "style" || respelled === "classDef") &&
+        type !== "quadrantChart" &&
+        mayLoseSemicolon(source.text, token.range[0])
+      ) {
+        respelled = undefined
+      }
     } else if (token.type === "Punctuator") {
       respelled =
         headerColonTypes.has(type) &&

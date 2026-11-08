@@ -587,8 +587,13 @@ the text on its line, one space separates it from the text, and where a
 directive does, the gap before the directive stays, whether the directive is the
 last thing on the line or whitespace follows it, which is dropped like any
 whitespace at the end of the line: `title T  %%{x}%%  ` and `title T  %%{x}%%`
-are both printed `title T %%{x}%%`. [fixture:
+are both printed `title T %%{x}%%`; the description `accDescription` of a C4
+diagram is the exception, which stays as written where a directive follows its
+text. [fixture:
 gantt/titles-and-sections/title-trailing-directive-blanks-dropped] [fixture:
+venn/title/title-trailing-directive-blanks-dropped] [fixture:
+c4/title-and-accdescription/title-trailing-directive-blanks-dropped] [fixture:
+c4/title-and-accdescription/description-trailing-directive-kept] [fixture:
 timeline/periods-and-events/event-trailing-directive-gap-kept] [fixture:
 state/aliases/second-description-trailing-directive-gap-kept] [fixture:
 gantt/titles-and-sections/title-padding-dropped] [fixture:
@@ -761,16 +766,20 @@ These stay as written:
   `wrappingWidth`, `htmlLabels: false`, `layout: elk`, `look: neo`, nested
   subgraphs, edges, the keyword `graph`) and in an agentflow `flow`, so it is
   printed with one space. A data block is not read for its keys: any block
-  written for the id of the subgraph keeps its title, and so does a block
-  written for an id like `subGraph0`, which mermaid.js gives to a subgraph whose
-  name holds whitespace; a diagram that names `swimlane` anywhere keeps every
-  title. A setting of the host of mermaid.js, outside the text, is not read.
-  [fixture: flowchart/subgraph-header/markdown-title-runs-kept] [fixture:
+  written for the id of the subgraph keeps its title (the id of a subgraph or a
+  flow named by a string is the text between the quotes: `subgraph "S"` has the
+  id `S`), and so does a block written for an id like `subGraph0`, which
+  mermaid.js gives to a subgraph whose name holds whitespace; a diagram that
+  names `swimlane` anywhere keeps every title. A setting of the host of
+  mermaid.js, outside the text, is not read. [fixture:
+  flowchart/subgraph-header/markdown-title-runs-kept] [fixture:
   flowchart/subgraph-header/collapsed-title-runs-kept] [fixture:
   flowchart/subgraph-header/swimlane-title-runs-kept] [fixture:
   flowchart/subgraph-header/layout-swimlane-title-runs-kept] [fixture:
   agentflow/containers/flow-title-runs-collapsed] [fixture:
-  agentflow/containers/flow-title-collapsed-runs-kept]
+  agentflow/containers/flow-title-collapsed-runs-kept] [fixture:
+  flowchart/subgraph-header/collapsed-quoted-name-title-runs-kept] [fixture:
+  agentflow/containers/flow-quoted-name-title-collapsed-runs-kept]
 - The `accTitle`. mermaid.js puts it into the `title` element of the SVG, which
   the browser shows as a tooltip when the pointer rests on the figure, and
   AGENTS.md compares tooltips. Whether the tooltip shows the runs could not be
@@ -1066,11 +1075,24 @@ and `OF` of a note in its Db as written, and a note with `LEFT` or `OF` was
 drawn differently, an ER diagram keeps the key `PK` or `FK` of an attribute in
 its Db as written, a Gantt chart keeps the tags `done` and `crit` and the
 `after` of a task, an xychart keeps `horizontal`, and a treeView reads `ICON(…)`
-as part of a name. [fixture: er/whitespace-between-tokens/keyword-case-one-form]
-[fixture: state/whitespace-between-tokens/keyword-case-one-form] [fixture:
+as part of a name. mermaid.js removes the last `;` of a line that has a `style`
+or a `classDef` in this case, then a `:`, then a `#` after non-blank characters
+only, then a `;`, before it reads the text, and it reads a line with the keyword
+in another case with that `;`, so `STYLE A fill:#f00;` has another Db than
+`style A fill:#f00;`. A `style` or a `classDef` whose line has a `:`, a `#`, and
+a `;` in this order stays as written for that reason, in every diagram type that
+the table lists except the quadrant chart, which rejects the text that the two
+cases would read differently. [fixture:
+er/whitespace-between-tokens/keyword-case-one-form] [fixture:
+state/whitespace-between-tokens/keyword-case-one-form] [fixture:
 block/keyword-case/keywords-kept] [fixture: treeview/keyword-case/icon-kept]
 [fixture: er/attribute-spacing/keys-case-kept] [fixture:
-gantt/keyword-case/tags-case-kept]
+gantt/keyword-case/tags-case-kept] [fixture:
+er/styles-and-classes/keyword-case-semicolon-line-kept] [fixture:
+requirement/styles-and-classes/keyword-case-semicolon-line-kept] [fixture:
+state/keyword-case/classdef-semicolon-line-kept] [fixture:
+venn/keyword-case-and-order/style-semicolon-line-kept] [fixture:
+quadrant/styles/class-definition-semicolons-case-one-form]
 
 In the body of an ER subgraph, mermaid.js lists the keyword of a `class`,
 `classDef`, or `style` statement as a node of the subgraph, as written, so those
@@ -1166,9 +1188,13 @@ xychart/numbers/category-trailing-zero-kept] [fixture: pie/numbers/forms-kept]
 
 The direction `TD` of an agentflow or swimlane header is printed `TB`, which the
 examples use 10 times in agentflow and once in swimlane, and `TD` never; the
-swimlane count is a single example. A `direction` statement stays as written in
-all of them: mermaid.js keeps the direction of the statement as written in the
-Db. [fixture: agentflow/header/header-direction-spelling] [fixture:
+swimlane count is a single example. A direction that stands after a directive
+which follows the header (`agentflow-beta%%{x}%% TD`) stays as written. A
+`direction` statement stays as written in all of them: mermaid.js keeps the
+direction of the statement as written in the Db. [fixture:
+agentflow/header/header-direction-spelling] [fixture:
+agentflow/header/header-direction-after-directive-kept] [fixture:
+flowchart/direction/swimlane-header-td-after-directive-kept] [fixture:
 flowchart/direction/swimlane-header-td-one-form] [fixture:
 flowchart/direction/statement-td-kept-with-other-header] [fixture:
 flowchart/direction/statement-values-kept]
@@ -1182,21 +1208,24 @@ flowchart/link-label-form/flowchart-header-both-forms-kept]
 ### The relationships of an ER diagram
 
 The cardinalities and the line of a relationship are printed as the symbols that
-mermaid.js reads the same, whatever the case of the words: `only one` and `1`
-are `||`; `zero or one` and `one or zero` are `|o` on the left and `o|` on the
-right; `zero or more`, `zero or many`, `many(0)`, and `0+` are `}o` on the left
-and `o{` on the right; `one or more`, `one or many`, `many(1)`, and `1+` are
-`}|` on the left and `|{` on the right. The line `to` is `--`, and the lines
-`optionally to`, `.-`, and `-.` are `..`. The cardinality `u` has no symbol and
-stays as written, and so does a relationship with a directive between its units.
-The examples write the symbols 84 times and the words and the other forms 6
-times (`only one` once, `zero or more` twice, `many(0)` once, `0+` once, and `1`
-once), and the line as `--` 39 times against `to` twice and as `..` 3 times
-against `optionally to` once. [fixture:
+mermaid.js reads the same, whatever the case of the words, and each cardinality
+as the symbol of its side. `only one`, `one`, and `1` are `||`; `zero or one`
+and `one or zero` are `|o` on the left and `o|` on the right; `zero or more`,
+`zero or many`, `many`, `many(0)`, and `0+` are `}o` on the left and `o{` on the
+right; `one or more`, `one or many`, `many(1)`, and `1+` are `}|` on the left
+and `|{` on the right. A symbol written on the other side is printed as the
+symbol of its side: `o|` on the left is `|o`, and `o{` on the left is `}o`. The
+line `to` is `--`, and the lines `optionally to`, `.-`, and `-.` are `..`. The
+cardinality `u` has no symbol and stays as written, and so does a relationship
+with a directive between its units. The examples write the symbols 84 times and
+the words and the other forms 6 times (`only one` once, `zero or more` twice,
+`many(0)` once, `0+` once, and `1` once), and the line as `--` 39 times against
+`to` twice and as `..` 3 times against `optionally to` once. [fixture:
 er/relationship-spacing/words-to-symbols] [fixture:
 er/relationship-spacing/cardinality-words-case-one-form] [fixture:
 er/relationship-spacing/entity-only-before-cardinality] [fixture:
-er/relationship-spacing/directive-between-word-units-kept]
+er/relationship-spacing/directive-between-word-units-kept] [fixture:
+er/relationship-spacing/symbols-on-the-other-side]
 
 ### Other spellings of a keyword or of a punctuation mark
 
@@ -1267,8 +1296,8 @@ mermaid.js, show which form each version reads:
 - The symbols of an ER relationship: the grammars of 8.8.0, 8.14.0, and 9.0.0
   have the symbols and no word, and the grammar of 9.4.3 has the words as well.
   A text printed with the symbols is read by every version that reads the words.
-- `Rel_Up` and the like of C4: the first tag with a C4 grammar is 9.1.7, and
-  that grammar has `Rel_Up` and `Rel_U` both.
+- `Rel_Up` and the like of C4: the first tag with a C4 grammar is 9.1.2 (9.1.0
+  and 9.1.1 have none), and that grammar has `Rel_Up` and `Rel_U` both.
 - `::=` of EBNF: the CHANGELOG.md adds the railroad diagrams in 11.16.0
   ([the entry](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L601)),
   and the grammar of 11.16.0 has `=` and `::=` both.

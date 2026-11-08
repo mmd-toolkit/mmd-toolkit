@@ -669,6 +669,10 @@ mermaid.js はそれらを Db に残しますが、それらがなくても同�
 [fixture: venn/title/text-padding-dropped]
 半角空白とタブだけのタイトルは、書かれたままにします。
 [fixture: venn/title/title-blank-kept]
+タイトルがディレクティブとその後の空白とタブで終わる場合は、
+ディレクティブを最後にして印字します。
+`title T  %%{x}%%  ` は `title T %%{x}%%` と印字します。
+[fixture: venn/title/title-trailing-directive-blanks-dropped]
 LF と title で受理する広い種類の区切りは正規化します。
 ただし項目、結合領域、保持部分の境界は保ちます。
 [corpus fixture: venn/db-frontmatter-title-overridden]

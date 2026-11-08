@@ -619,6 +619,26 @@ export function findTriviaBetween(
 }
 
 /**
+ * Whether `[start, end)` holds a comment or a directive other than one
+ * directive that is followed by spaces and tabs only up to `end`: the end of a
+ * title read to the end of its line, whose last thing is a directive.
+ */
+export function hasTriviaBesidesTrailingDirective(
+  source: Source,
+  start: number,
+  end: number,
+): boolean {
+  const trivia = findTriviaBetween(source, start, end)
+  if (trivia.length === 0) return false
+  const last = trivia[trivia.length - 1]
+  return !(
+    trivia.length === 1 &&
+    last.type === "Directive" &&
+    [...source.text.slice(last.range[1], end)].every(isSpaceOrTab)
+  )
+}
+
+/**
  * Whether the keyword of the diagram ends at `offset`. Diagram detection reads
  * the text before the `;` that the line rule ignores is removed, so such a `;`
  * against the keyword is no whitespace after it (docs/cynefin.md,

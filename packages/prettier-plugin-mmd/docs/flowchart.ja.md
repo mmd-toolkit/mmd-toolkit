@@ -674,12 +674,15 @@ mermaid.js には、接しているときだけ読むトークンがあります
 subgraph の名前（タイトルになる）の中の空白とタブの連なりは、
 mermaid.js がタイトルを幅なしで描くときは空白 1 つにして印字し、
 タイトルを折り返すときは書かれたまま残します。
-Markdown 文字列、データブロックがある subgraph、
+Markdown 文字列、
+データブロックがある subgraph（文字列で名前を書く subgraph の id は、
+引用符の間の文字で、`subgraph "S"` の id は `S`）、
 `swimlane` を書く図ではタイトルを折り返します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 [fixture: whitespace-between-tokens/subgraph-name-runs-collapsed]
 [fixture: subgraph-header/markdown-title-runs-kept]
 [fixture: subgraph-header/collapsed-title-runs-kept]
+[fixture: subgraph-header/collapsed-quoted-name-title-runs-kept]
 [fixture: subgraph-header/swimlane-title-runs-kept]
 [fixture: subgraph-header/layout-swimlane-title-runs-kept]
 `style`・`classDef`・`linkStyle` の文では、
@@ -2155,7 +2158,10 @@ swimlane 図のヘッダーでは、agentflow 図のヘッダーと同じく、
 `TD` を `TB` と印字します（[Header](./agentflow.ja.md#header)を参照）。
 どちらの図種も、
 `TD` が `TB` と同じように振る舞うようになった版より後のものです。
+ヘッダーに続く directive の後にある `TD` は、
+`swimlane-beta%%{init: {}}%% TD` のように書かれたまま残します。
 [fixture: direction/swimlane-header-td-one-form]
+[fixture: direction/swimlane-header-td-after-directive-kept]
 `direction` の文では、mermaid.js は `direction` の前と値の後を、
 ラベルや文字列を含みうるテキストとして読み、値の後の `;` はそのテキストに属し、
 区切りではありません。

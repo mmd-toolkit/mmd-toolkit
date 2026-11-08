@@ -639,7 +639,9 @@ examples write symbols touching: `A || -- o{ B` is printed `A ||--o{ B`, and
 relationship-spacing/symbols-touch] [fixture:
 relationship-spacing/symbols-and-words] [corpus fixture:
 er/lex-relationship-spaces-in-spec] `u` counts as a symbol and stays as written,
-and a space inside `many(0)` is rejected. [corpus fixture:
+and a space inside `many(0)` is rejected. A symbol written on the other side is
+printed as the symbol of its side: `o|` on the left is `|o`. [fixture:
+relationship-spacing/symbols-on-the-other-side] [corpus fixture:
 er/lex-many-space-before-parenthesis] A relationship with a directive between
 its units keeps the words that were written. [fixture:
 relationship-spacing/directive-between-word-units-kept]

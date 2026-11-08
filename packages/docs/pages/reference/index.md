@@ -4,6 +4,11 @@ mmd-toolkit uses **[mermaid.js](https://mermaid.js.org/) 12.3.0** as its
 compatibility reference. See [Diagram support](./support.md) for the diagram
 types covered.
 
+When mermaid.js releases a new version, the specification and the tools are
+updated to follow it. The formatter changes a way of writing only to one that
+every earlier version reading the original also reads the same way, so formatted
+text still works where an older mermaid.js draws it.
+
 ## Guarantees
 
 - The parser accepts and rejects the same diagram text as mermaid.js and reads

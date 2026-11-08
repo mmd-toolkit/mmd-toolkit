@@ -1,8 +1,10 @@
 import type {
   AgentflowFlowStatement,
+  AgentflowName,
   C4BoundaryStatement,
   C4ElementStatement,
   C4RelationshipStatement,
+  FlowchartLabel,
   FlowchartSubgraphStatement,
   Node,
   Range,
@@ -304,11 +306,30 @@ function collectSubgraphTexts(
       : node.title
   if (title === null || title.kind === "markdown") return
   if (node.type === "AgentflowFlowStatement" && node.data.length > 0) return
-  if (node.name !== null) {
-    const id = source.text.slice(...node.name.range).trim()
-    if (facts.dataIds.has(id)) return
+  if (node.name !== null && facts.dataIds.has(subgraphId(source, node.name))) {
+    return
   }
   found.push({ range: title.range, blank: false })
+}
+
+/**
+ * The id that mermaid.js reads from the name of a subgraph or of a flow: the
+ * name, and the text between the quotes where the name is a string (`"S"` is
+ * the id `S`).
+ */
+function subgraphId(
+  source: Source,
+  name: FlowchartLabel | AgentflowName,
+): string {
+  const label =
+    name.type === "AgentflowName"
+      ? name.parts.length === 1
+        ? name.parts[0]
+        : undefined
+      : name
+  return label?.kind === "string"
+    ? label.value
+    : source.text.slice(...name.range).trim()
 }
 
 /** Records the ranges of the texts below `node` in the fields of the slots. */

@@ -39,15 +39,17 @@ diagram type is later than the version of mermaid.js that made `TD` behave as
 `TB`, so every version that reads it draws the two the same (see
 [Versions of mermaid.js](./compatibility.md#versions-of-mermaidjs)). Agentflow
 accepts only exact lower-case `agentflow-beta`. An absent direction stays
-absent, symbol directions stay written, and next-line LR remains a vertex.
-Ordinary header followers move into the body; directive attachment follows
-Directives. [fixture: header/header-column] [fixture:
-header/header-direction-spelling] [fixture: header/header-inline-separated]
-[fixture: header/header-next-line-direction] [fixture: header/header-symbol] A
-symbol direction stands after one space, as in
-[flowchart](./flowchart.md#direction): `agentflow-beta<` is printed
-`agentflow-beta <`. [fixture: header/header-symbol-touching-spaced] [test:
-agentflow: U+2028 between the header keyword and its direction]
+absent, symbol directions stay written, a direction that stands after a
+directive which follows the header (`agentflow-beta%%{init: {}}%% TD`) stays as
+written, and next-line LR remains a vertex. Ordinary header followers move into
+the body; directive attachment follows Directives. [fixture:
+header/header-column] [fixture: header/header-direction-spelling] [fixture:
+header/header-inline-separated] [fixture: header/header-next-line-direction]
+[fixture: header/header-symbol] [fixture:
+header/header-direction-after-directive-kept] A symbol direction stands after
+one space, as in [flowchart](./flowchart.md#direction): `agentflow-beta<` is
+printed `agentflow-beta <`. [fixture: header/header-symbol-touching-spaced]
+[test: agentflow: U+2028 between the header keyword and its direction]
 
 Input (escaped): `"agentflow-beta"`. [fixture: header/header-only]
 
@@ -99,11 +101,14 @@ EmptyStatement at the containing depth. [fixture: containers/containers-empty]
 [fixture: containers/containers-one-line] [fixture:
 containers/end-name-not-greedy] [fixture: containers/global-flatten-unsafe] A
 run of spaces and tabs in the title of a flow is printed as one space, except in
-a markdown string, in a flow with a data block (`F@{ view: "collapsed" }`), and
-in a diagram that names `swimlane`, where mermaid.js wraps the title (see
+a markdown string, in a flow with a data block (`F@{ view: "collapsed" }`; the
+id of a flow named by a string is the text between the quotes: `flow "F"` has
+the id `F`), and in a diagram that names `swimlane`, where mermaid.js wraps the
+title (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 [fixture: containers/flow-title-runs-collapsed] [fixture:
-containers/flow-title-collapsed-runs-kept]
+containers/flow-title-collapsed-runs-kept] [fixture:
+containers/flow-quoted-name-title-collapsed-runs-kept]
 
 Input (escaped): `"agentflow-beta TB\nglobal\t \nA\nend B"`. [fixture:
 containers/global-tabs]

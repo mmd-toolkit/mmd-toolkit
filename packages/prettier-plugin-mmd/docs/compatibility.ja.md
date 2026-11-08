@@ -642,7 +642,12 @@ timeline の行の最後の event と、別名を持つ state の 2 つ目の説
 ディレクティブが行の最後にあっても、その後に空白が続いていても同じで、
 その空白は行末の空白と同じように除きます。
 `title T  %%{x}%%  ` も `title T  %%{x}%%` も `title T %%{x}%%` と印字します。
+ただし、C4 図の説明 `accDescription` は例外で、
+テキストの後にディレクティブがある場合は、書かれたまま残します。
 [fixture: gantt/titles-and-sections/title-trailing-directive-blanks-dropped]
+[fixture: venn/title/title-trailing-directive-blanks-dropped]
+[fixture: c4/title-and-accdescription/title-trailing-directive-blanks-dropped]
+[fixture: c4/title-and-accdescription/description-trailing-directive-kept]
 [fixture: timeline/periods-and-events/event-trailing-directive-gap-kept]
 [fixture: state/aliases/second-description-trailing-directive-gap-kept]
 [fixture: gantt/titles-and-sections/title-padding-dropped]
@@ -821,7 +826,9 @@ railroad 図の文字列と special sequence です。
   入れ子の subgraph、辺、キーワード `graph`）と agentflow の `flow` で、
   同じに描かれたので、空白 1 つで印字します。
   データブロックのキーは読みません。
-  subgraph の id に書かれたブロックは、どれも題を書かれたままにし、
+  subgraph の id に書かれたブロックは、
+  どれも題を書かれたままにし（文字列で名前を書く subgraph や flow の id は、
+  引用符の間の文字で、`subgraph "S"` の id は `S`）、
   mermaid.js が空白を含む名前の subgraph に付ける `subGraph0` のような id に、
   ブロックが書かれた場合も同じです。
   どこかに `swimlane` を書く図は、すべての題を書かれたままにします。
@@ -832,6 +839,8 @@ railroad 図の文字列と special sequence です。
   [fixture: flowchart/subgraph-header/layout-swimlane-title-runs-kept]
   [fixture: agentflow/containers/flow-title-runs-collapsed]
   [fixture: agentflow/containers/flow-title-collapsed-runs-kept]
+  [fixture: flowchart/subgraph-header/collapsed-quoted-name-title-runs-kept]
+  [fixture: agentflow/containers/flow-quoted-name-title-collapsed-runs-kept]
 - `accTitle`。
   mermaid.js は SVG の `title` 要素に入れ、
   ブラウザーは図の上にポインターを止めるとツールチップとして表示します。
@@ -1148,12 +1157,26 @@ ER 図は属性のキー `PK` と `FK` を Db に書かれたまま保ち、
 Gantt 図はタスクのタグ `done` と `crit` と `after` を保ち、
 XY チャートは `horizontal` を保ち、
 treeView は `ICON(…)` を名前の一部として読みます。
+mermaid.js は、ここに挙げた大文字小文字の `style` か `classDef` があり、
+その後に `:`、空白以外の文字だけをはさんで `#`、その後に `;` がある行では、
+テキストを読む前に、最後の `;` を取り除きます。
+キーワードの大文字小文字が異なる行では、その `;` も含めて読むので、
+`STYLE A fill:#f00;` と `style A fill:#f00;` の Db は異なります。
+そのため、同じ行に `:`、`#`、`;` がこの順である `style` と `classDef` は、
+一覧に挙げるすべての図種で、書かれたまま残します。
+ただし、象限チャートは、2 つの大文字小文字で読みが異なるテキストを拒否するので、
+この限りではありません。
 [fixture: er/whitespace-between-tokens/keyword-case-one-form]
 [fixture: state/whitespace-between-tokens/keyword-case-one-form]
 [fixture: block/keyword-case/keywords-kept]
 [fixture: treeview/keyword-case/icon-kept]
 [fixture: er/attribute-spacing/keys-case-kept]
 [fixture: gantt/keyword-case/tags-case-kept]
+[fixture: er/styles-and-classes/keyword-case-semicolon-line-kept]
+[fixture: requirement/styles-and-classes/keyword-case-semicolon-line-kept]
+[fixture: state/keyword-case/classdef-semicolon-line-kept]
+[fixture: venn/keyword-case-and-order/style-semicolon-line-kept]
+[fixture: quadrant/styles/class-definition-semicolons-case-one-form]
 
 ER のサブグラフの本文で、mermaid.js は `class`、`classDef`、
 `style` の文のキーワードを、サブグラフのノードとして書かれたまま列挙します。
@@ -1258,9 +1281,13 @@ Wardley マップの座標は、小数 168 個のうち 81 個で小数部の末
 agentflow と swimlane のヘッダーの向き `TD` は `TB` と印字します。
 例は `TB` を agentflow で 10 回、swimlane で 1 回使い、`TD` は使いません。
 swimlane の数は、1 つの例で数えたものです。
+ヘッダーに続くディレクティブの後にある方向は、
+`agentflow-beta%%{x}%% TD` のように書かれたまま残します。
 どの図でも `direction` の文は書かれたまま残します。
 mermaid.js が文の向きを Db に書かれたまま保つからです。
 [fixture: agentflow/header/header-direction-spelling]
+[fixture: agentflow/header/header-direction-after-directive-kept]
+[fixture: flowchart/direction/swimlane-header-td-after-directive-kept]
 [fixture: flowchart/direction/swimlane-header-td-one-form]
 [fixture: flowchart/direction/statement-td-kept-with-other-header]
 [fixture: flowchart/direction/statement-values-kept]
@@ -1274,11 +1301,14 @@ flowchart のヘッダーは、`TB` も `TD` も書かれたまま残します�
 ### ER 図の関係
 
 関係のカーディナリティと線は、語の大文字小文字にかかわらず、
-mermaid.js が同じに読む記号で印字します。
-`only one` と `1` は `||`、`zero or one` と `one or zero` は、左では `|o`、
-右では `o|`、`zero or more`、`zero or many`、`many(0)`、`0+` は、左では `}o`、
-右では `o{`、`one or more`、`one or many`、`many(1)`、`1+` は、左では `}|`、
-右では `|{` です。
+mermaid.js が同じに読む記号で印字し、各カーディナリティは、
+その側の記号にします。
+`only one`、`one`、`1` は `||`、`zero or one` と `one or zero` は、左では `|o`、
+右では `o|`、`zero or more`、`zero or many`、`many`、`many(0)`、`0+` は、
+左では `}o`、右では `o{`、`one or more`、`one or many`、`many(1)`、`1+` は、
+左では `}|`、右では `|{` です。
+逆の側に書かれた記号は、その側の記号として印字します。
+左の `o|` は `|o`、左の `o{` は `}o` です。
 線の `to` は `--`、`optionally to`、`.-`、`-.` は `..` です。
 カーディナリティ `u` には記号がなく、書かれたまま残し、
 単位の間にディレクティブがある関係も残します。
@@ -1289,6 +1319,7 @@ mermaid.js が同じに読む記号で印字します。
 [fixture: er/relationship-spacing/cardinality-words-case-one-form]
 [fixture: er/relationship-spacing/entity-only-before-cardinality]
 [fixture: er/relationship-spacing/directive-between-word-units-kept]
+[fixture: er/relationship-spacing/symbols-on-the-other-side]
 
 ### キーワードや記号の別の綴り
 
@@ -1365,7 +1396,8 @@ flowchart は最初の形が 14 個、もう一方が 8 個で、2 倍以上で�
 - ER の関係の記号: 8.8.0、8.14.0、9.0.0 の文法は記号があり、語はなく、
   9.4.3 の文法は語もあります。
   記号で印字したテキストは、語を読むすべての版で読めます。
-- C4 の `Rel_Up` など: C4 の文法がある最初のタグは 9.1.7 で、
+- C4 の `Rel_Up` など: C4 の文法がある最初のタグは 9.1.2 で、
+  9.1.0 と 9.1.1 にはありません。
   その文法には `Rel_Up` と `Rel_U` の両方があります。
 - EBNF の `::=`: CHANGELOG.md は 11.16.0 に railroad 図を追加し、
   （[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L601)）、

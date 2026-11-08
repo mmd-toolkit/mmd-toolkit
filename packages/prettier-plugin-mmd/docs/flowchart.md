@@ -654,12 +654,14 @@ whitespace-between-tokens/compat-empty-description-block-own-line] [fixture:
 whitespace-between-tokens/header-and-tabs-collapsed] A run of spaces and tabs
 inside the name of a subgraph, which becomes its title, is printed as one space
 where mermaid.js draws the title without a width, and kept where it wraps the
-title: in a markdown string, a subgraph with a data block, and a diagram that
-names `swimlane` (see
+title: in a markdown string, a subgraph with a data block (the id of a subgraph
+named by a string is the text between the quotes: `subgraph "S"` has the id
+`S`), and a diagram that names `swimlane` (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 [fixture: whitespace-between-tokens/subgraph-name-runs-collapsed] [fixture:
 subgraph-header/markdown-title-runs-kept] [fixture:
 subgraph-header/collapsed-title-runs-kept] [fixture:
+subgraph-header/collapsed-quoted-name-title-runs-kept] [fixture:
 subgraph-header/swimlane-title-runs-kept] [fixture:
 subgraph-header/layout-swimlane-title-runs-kept] In a `style`, `classDef`, or
 `linkStyle` statement, each style has no whitespace before its first `:` and one
@@ -2063,11 +2065,13 @@ statement in a subgraph as written, so changing it there would change the
 diagram, and changing only the header would make the two disagree. The header of
 a swimlane diagram is printed with `TB` for `TD`, as the header of an agentflow
 diagram is (see [Header](./agentflow.md#header)); both diagram types are later
-than the version that made `TD` behave as `TB`. [fixture:
-direction/swimlane-header-td-one-form] In a `direction` statement mermaid.js
-reads the text before `direction` and after the value as text, which may hold
-labels and strings, and a `;` after the value belongs to that text and is no
-separator. The text is kept as written; the whitespace between it and
+than the version that made `TD` behave as `TB`. A `TD` that stands after a
+directive which follows the header (`swimlane-beta%%{init: {}}%% TD`) stays as
+written. [fixture: direction/swimlane-header-td-one-form] [fixture:
+direction/swimlane-header-td-after-directive-kept] In a `direction` statement
+mermaid.js reads the text before `direction` and after the value as text, which
+may hold labels and strings, and a `;` after the value belongs to that text and
+is no separator. The text is kept as written; the whitespace between it and
 `direction`, and between `direction` and the value, becomes one space, as
 between any tokens. A line such as `A[direction TB]` is a `direction` statement
 too, its vertices and links are not read, and it is printed so, at the

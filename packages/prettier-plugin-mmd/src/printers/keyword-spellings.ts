@@ -3,11 +3,14 @@
  * documentation of the pinned mermaid.js (docs/compatibility.md, Spellings that
  * are drawn the same), by the diagram type and the keyword in lower case.
  * mermaid.js reads these keywords in any case, and a text with the keyword in
- * another case has the same Db and draws the same figure. A keyword is listed
- * where the examples use one form at least twice as often as any other; a
- * keyword that the examples do not use, and one that another case changes the
- * Db or the figure of (`left` and `right` of a note in a state diagram, `class`
- * in a class diagram), are not listed and stay as written.
+ * another case has the same Db and draws the same figure, except for `style`
+ * and `classDef` on a line with a `:`, a `#`, and a `;` in this order, from
+ * which mermaid.js removes the last `;` only when the keyword has this case
+ * (`spelling.ts` leaves them as written). A keyword is listed where the
+ * examples use one form at least twice as often as any other; a keyword that
+ * the examples do not use, and one that another case changes the Db or the
+ * figure of (`left` and `right` of a note in a state diagram, `class` in a class
+ * diagram), are not listed and stay as written.
  */
 export const keywordSpellings: Readonly<
   Record<string, Readonly<Record<string, string>>>

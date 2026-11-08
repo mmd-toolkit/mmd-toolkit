@@ -37,6 +37,7 @@ import {
   findTokenStartingAt,
   findTokensBetween,
   findTriviaBetween,
+  hasTriviaBesidesTrailingDirective,
   isStructural,
   isWhitespace,
 } from "./source.ts"
@@ -462,10 +463,14 @@ export function layoutC4Text(source: Source, statement: C4Text): AtomLayout {
       lineBreaks: "joined",
     }
   }
-  if (
-    findTriviaBetween(source, start, end).length > 0 ||
-    spansLinesThatCannotJoin(source, start, end)
-  )
+  // The description of a C4 diagram with a directive stays as written; a
+  // title ends with a directive and the blanks after it in the same way as
+  // when the directive stands after it.
+  const holdsTrivia =
+    statement.type === "C4TitleStatement"
+      ? hasTriviaBesidesTrailingDirective(source, start, end)
+      : findTriviaBetween(source, start, end).length > 0
+  if (holdsTrivia || spansLinesThatCannotJoin(source, start, end))
     return keptAsWritten(start, end)
   const keyword = expectToken(
     findTokenStartingAt(source, start),

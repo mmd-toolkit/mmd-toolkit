@@ -43,10 +43,13 @@ mermaid.js が `TD` を `TB` と同じように扱うようになった版より
 （[mermaid.js の版](./compatibility.ja.md#mermaidjs-の版)を参照）。
 agentflowが受理する見出しは小文字の`agentflow-beta`だけです。
 方向の省略と記号を保ち、次行のLRは頂点のままです。
+見出しに続く directive の後にある方向は、
+`agentflow-beta%%{init: {}}%% TD` のように書かれたまま残します。
 通常の後続文は本文へ移し、directiveの付着はDirectivesに従います。
 [fixture: header/header-column] [fixture: header/header-direction-spelling]
 [fixture: header/header-inline-separated]
 [fixture: header/header-next-line-direction] [fixture: header/header-symbol]
+[fixture: header/header-direction-after-directive-kept]
 記号の方向は、
 [flowchart](./flowchart.ja.md#方向)と同じく空白 1 つの後に置きます。
 `agentflow-beta<` は `agentflow-beta <` と印字します。
@@ -105,13 +108,14 @@ LFを名前へ取り込まず、endの後のセミコロンは親の本文の独
 [fixture: containers/end-name-not-greedy]
 [fixture: containers/global-flatten-unsafe]
 flow のタイトルの中の空白とタブの連なりは、空白 1 つにして印字します。
-ただし、Markdown 文字列、
-データブロックがある flow（`F@{ view: "collapsed" }`）、
+ただし、Markdown 文字列、データブロックがある flow（`F@{ view: "collapsed" }`。
+文字列で名前を書く flow の id は引用符の間の文字で、`flow "F"` の id は `F`）、
 `swimlane` を書く図では、mermaid.js がタイトルを折り返すので、
 書かれたまま残します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 [fixture: containers/flow-title-runs-collapsed]
 [fixture: containers/flow-title-collapsed-runs-kept]
+[fixture: containers/flow-quoted-name-title-collapsed-runs-kept]
 
 入力（escape 表記）: `"agentflow-beta TB\nglobal\t \nA\nend B"`。
 [fixture: containers/global-tabs]
