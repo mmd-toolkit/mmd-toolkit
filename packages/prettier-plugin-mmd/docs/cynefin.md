@@ -1264,9 +1264,9 @@ Output:
 
 ````markdown
 ```mermaid
-cynefin-beta:
+cynefin-beta
   complex
     "FencedAlpha"
-    'FencedBeta'
+    "FencedBeta"
 ```
 ````

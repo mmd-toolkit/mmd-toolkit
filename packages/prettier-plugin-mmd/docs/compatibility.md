@@ -1331,18 +1331,19 @@ CHANGELOG.md removes the suffix of these three diagrams in 11.10.0
 It moves the packet diagram out of beta in 11.9.0
 ([the entry](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L1087)),
 and the grammars of 11.1.0 and 11.3.0 read `packet-beta` only. So a text printed
-without the suffix is not drawn by the versions before them. mermaid.js 11.9.0
-reads `graph` and `flowchart`, and `treemap-beta` and `treemap`, both, and the
-CHANGELOG.md records no change of the names of the flowchart, treemap, and
-ishikawa diagrams. The version that draws a text is known to its writer and not
-to the formatter, so none of the names is rewritten. A header in another case
-(`ISHIKAWA`, `sankey-BETA`, `XYCHART-BETA`) stays as written as well. [fixture:
-block/header/block-beta-kept] [fixture: flowchart/direction/header-keyword-kept]
-[fixture: flowchart/direction/header-td-kept] [fixture:
-ishikawa/header/header-valid] [fixture: ishikawa/header/header-stable] [fixture:
-packet/header/header-beta] [fixture: packet/hidden-yaml/yaml-beta-header]
-[fixture: sankey/header/sankey-beta] [fixture: sankey/header/upper-case-beta]
-[fixture: treemap/header/common] [fixture:
+without the suffix is not drawn by the versions before the release that removed
+it. mermaid.js 11.9.0 reads `graph` and `flowchart`, and `treemap-beta` and
+`treemap`, both, and the CHANGELOG.md records no change of the names of the
+flowchart, treemap, and ishikawa diagrams. The version that draws a text is
+known to its writer and not to the formatter, so none of the names is rewritten.
+A header in another case (`ISHIKAWA`, `sankey-BETA`, `XYCHART-BETA`) stays as
+written as well. [fixture: block/header/block-beta-kept] [fixture:
+flowchart/direction/header-keyword-kept] [fixture:
+flowchart/direction/header-td-kept] [fixture: ishikawa/header/header-valid]
+[fixture: ishikawa/header/header-stable] [fixture: packet/header/header-beta]
+[fixture: packet/hidden-yaml/yaml-beta-header] [fixture:
+sankey/header/sankey-beta] [fixture: sankey/header/upper-case-beta] [fixture:
+treemap/header/common] [fixture:
 xychart/header-and-orientation/beta-header-kept] [fixture:
 xychart/keyword-case/header-spelling-kept] [fixture:
 xychart/header-and-orientation/second-header-spelling-and-case-kept]

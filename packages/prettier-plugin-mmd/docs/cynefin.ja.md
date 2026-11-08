@@ -1286,9 +1286,9 @@ cynefin-beta:complex"FencedAlpha"'FencedBeta'
 
 ````markdown
 ```mermaid
-cynefin-beta:
+cynefin-beta
   complex
     "FencedAlpha"
-    'FencedBeta'
+    "FencedBeta"
 ```
 ````

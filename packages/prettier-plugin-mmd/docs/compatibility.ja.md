@@ -1424,17 +1424,19 @@ Db も描画も同じでした。
 もう一方は使わず、`ishikawa-beta` を 1 回、もう一方は使いません。
 
 しかし、ほかの版は名前の受理が異なります。
-mermaid.js 11.9.0 は、`-beta` のない `block`、`sankey`、
-`xychart` から図を検出せず、
-CHANGELOG.md は 11.10.0 にこの 3 図種の接尾辞を除きます。
+mermaid.js 11.9.0 は、`-beta` のない `block`、`sankey`、`xychart` から、
+図の種類を検出しません。
+CHANGELOG.md は、11.10.0 でこの 3 図種の接尾辞を除いています。
 （[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L1020)）。
-11.9.0 では packet 図が beta を外れ、
-（[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L1087)）、
+packet 図は 11.9.0 で beta を外れています。
+（[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L1087)）。
 11.1.0 と 11.3.0 の文法は `packet-beta` だけを読みます。
-そのため、接尾辞なしで印字したテキストは、それらより前の版では描かれません。
+そのため、接尾辞なしで印字したテキストは、
+接尾辞を外したリリースより前の版では描かれません。
 mermaid.js 11.9.0 は、`graph` と `flowchart`、`treemap-beta` と `treemap` を、
-どちらも読み、CHANGELOG.md は flowchart、treemap、ishikawa の図の名前の変更を、
-記録していません。
+どちらも読みます。
+CHANGELOG.md は、flowchart、treemap、
+ishikawa の図の名前の変更を記録していません。
 テキストを描く版を知っているのは作者で、フォーマッターは知らないので、
 どの名前も書き換えません。
 別の大文字小文字のヘッダー（`ISHIKAWA`、`sankey-BETA`、`XYCHART-BETA`）も、
