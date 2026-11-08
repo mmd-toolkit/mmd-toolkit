@@ -1,3 +1,7 @@
+---
+since: v0.4.0
+---
+
 # @mmd-toolkit/quadrant-no-invalid-color
 
 英語版: [quadrant-no-invalid-color.md](./quadrant-no-invalid-color.md)
@@ -77,7 +81,7 @@ quadrantChart
 
 ## バージョン
 
-この規則は、まだリリースされていない。
+この規則は、`@mmd-toolkit/eslint-plugin` v0.4.0 で追加された。
 
 <!-- end auto-generated rule version -->
 

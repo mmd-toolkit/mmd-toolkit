@@ -1,5 +1,27 @@
 # @mmd-toolkit/eslint-plugin
 
+## 0.4.0
+
+### Minor Changes
+
+- [#71](https://github.com/mmd-toolkit/mmd-toolkit/pull/71) [`e3072f6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/e3072f69acf8774766bb51eab514a3d3ab43eb12) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Add `quadrant-no-invalid-color`, which reports a `color` or `stroke-color`
+  written without `#` (`color: f00`, which browsers do not read) and adds the `#`
+  with a fix. It is in `recommended`.
+
+- [#71](https://github.com/mmd-toolkit/mmd-toolkit/pull/71) [`e3072f6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/e3072f69acf8774766bb51eab514a3d3ab43eb12) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Add `flowchart-no-spaced-stroke` and `agentflow-no-spaced-stroke`, which report
+  whitespace before the `:` of a `stroke` style (`linkStyle 0 stroke :#f00`), a
+  form that the mermaid.js documentation does not show and that mermaid.js does
+  not read for the colour of an arrowhead. They remove the whitespace with a fix
+  unless that would give a link's arrowhead and line different colours, and they
+  are not in `recommended`.
+
+### Patch Changes
+
+- [#64](https://github.com/mmd-toolkit/mmd-toolkit/pull/64) [`b817905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/b8179056e2aebd764c260fbd7fee9a65fe27d00d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Link the pages of the documentation site from the README.
+- Updated dependencies [[`b817905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/b8179056e2aebd764c260fbd7fee9a65fe27d00d), [`dd2658b`](https://github.com/mmd-toolkit/mmd-toolkit/commit/dd2658b2c36a1406aeb5c49a922f724820ebb151), [`b817905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/b8179056e2aebd764c260fbd7fee9a65fe27d00d)]:
+  - @mmd-toolkit/ast@0.3.1
+  - @mmd-toolkit/parser@0.3.1
+
 ## 0.3.2
 
 ### Patch Changes

@@ -1,3 +1,7 @@
+---
+since: v0.4.0
+---
+
 # @mmd-toolkit/quadrant-no-invalid-color
 
 Japanese version:
@@ -77,7 +81,7 @@ This rule has no options.
 
 ## Version
 
-This rule has not been released yet.
+This rule was introduced in `@mmd-toolkit/eslint-plugin` v0.4.0.
 
 <!-- end auto-generated rule version -->
 

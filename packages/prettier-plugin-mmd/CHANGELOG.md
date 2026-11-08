@@ -1,5 +1,203 @@
 # prettier-plugin-mmd
 
+## 0.6.0
+
+### Minor Changes
+
+- [#63](https://github.com/mmd-toolkit/mmd-toolkit/pull/63) [`dd2658b`](https://github.com/mmd-toolkit/mmd-toolkit/commit/dd2658b2c36a1406aeb5c49a922f724820ebb151) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print `:::` without spaces in `class`, `state`, and `kanban`: `A :::c --> B`
+  becomes `A:::c --> B`, and `::: hot` becomes `:::hot`.
+
+- [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Attach a title bracket, a generic type, or a data block to the name before it in
+  `class`, `agentflow`, and `usecase`: `namespace Auth ["x"]` becomes
+  `namespace Auth["x"]`.
+
+- [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print a data block on one line that holds nothing but spaces and tabs, or
+  nothing, as `@{ }` in `flowchart`, `agentflow`, `kanban` and `sequence`: `A@{}`
+  and `A@{   }` become `A@{ }`. mermaid.js reads an empty mapping for `@{}`,
+  `@{   }`, and `@{ }` alike and draws the same figure.
+
+- [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print a label of spaces and tabs only as one space in `flowchart` and
+  `agentflow`: `A[   ]` becomes `A[ ]`.
+
+- [#63](https://github.com/mmd-toolkit/mmd-toolkit/pull/63) [`dd2658b`](https://github.com/mmd-toolkit/mmd-toolkit/commit/dd2658b2c36a1406aeb5c49a922f724820ebb151) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print one space after the comma between the directions of a `block` arrow:
+  `a<["L"]>(x,down)` becomes `a<["L"]>(x, down)`.
+
+- [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the classifier of a `class` attribute against its text: `+attr string *`
+  becomes `+attr string*`.
+
+- [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the arguments of a `click` call in `flowchart`, `agentflow`, `class` and
+  `gantt` without whitespace at their ends or before a `,`, and with one space
+  after it: `click A call f(  "x" ,y )` becomes `click A call f("x", y)`.
+  mermaid.js splits the arguments at the `,` outside quotes and trims each part,
+  so the function is called with the same arguments. The whitespace inside quotes
+  stays. Where the line holds `style` or `classDef`, a `:`, a `#`, and a `;` in
+  this order, whether whitespace stands between that `:` and the last `#` stays as
+  written: `click A call f(style:x,#b;c)` is unchanged, since mermaid.js drops the
+  last `;` of such a line, and a space after the `,` would change which one.
+
+- [#63](https://github.com/mmd-toolkit/mmd-toolkit/pull/63) [`dd2658b`](https://github.com/mmd-toolkit/mmd-toolkit/commit/dd2658b2c36a1406aeb5c49a922f724820ebb151) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Format a `flowchart` or `agentflow` `click` statement whose only line breaks are
+  inside a string or in the arguments of a call: `click   A "/u"` followed by a
+  tooltip over two lines now has one space after `click`.
+
+- [#63](https://github.com/mmd-toolkit/mmd-toolkit/pull/63) [`dd2658b`](https://github.com/mmd-toolkit/mmd-toolkit/commit/dd2658b2c36a1406aeb5c49a922f724820ebb151) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print one space after `flow`, `connector`, and `global` in `agentflow`:
+  `flow   F["T"]` becomes `flow F["T"]`.
+
+- [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print a directive in a gap as the gap prints without it, with the space of the
+  gap before the directive and the directive touching the unit after it:
+  `A%%{init: {}}%%-->B` and `A  %%{init: {}}%%  --> B` become
+  `A %%{init: {}}%%--> B`, and `note%%{init: {}}%% for A "t"` becomes
+  `note %%{init: {}}%%for A "t"`. A `;` that mermaid.js ignores in the same gap
+  stays against the unit before it. A directive at the start or the end of a line,
+  and one in a line that holds `style` or `classDef`, a `:`, a `#`, and a `;` in
+  this order (mermaid.js drops the last `;` of such a line), keep whether the gap
+  holds whitespace, a run becoming one space. A gap with a U+2028 or U+2029 keeps
+  the whitespace written, and so do the gaps of `kanban`, `mindmap`, `treemap` and
+  `ishikawa`, where that whitespace is indentation, apart from the directives at
+  the end of a text.
+
+- [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the directives that end a text in one form, whatever the whitespace at the
+  end of the line: `title T  %%{init: {}}%%  %%{init: {}}%%  ` becomes
+  `title T %%{init: {}}%% %%{init: {}}%%`. This holds for the `title`, the
+  `accTitle:` line, and the `accDescr:` line of every diagram type, for a node of
+  `ishikawa`, `mindmap`, and `treeview`, for a card of `kanban`, and for the
+  `dateFormat` and `axisFormat` of `gantt`, the last event of a line of
+  `timeline`, and the second description of an alias in `stateDiagram`.
+
+- [#63](https://github.com/mmd-toolkit/mmd-toolkit/pull/63) [`dd2658b`](https://github.com/mmd-toolkit/mmd-toolkit/commit/dd2658b2c36a1406aeb5c49a922f724820ebb151) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print empty call parentheses without spaces in `flowchart`, `agentflow`,
+  `class`, and `gantt`: `click A call f( )` becomes `click A call f()`.
+
+- [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Format a statement that holds a `;` in `architecture`, `c4`, `cynefin`,
+  `eventmodeling`, `gitgraph`, `info`, `packet`, `pie`, `radar`, `treemap`,
+  `treeview`, `usecase` and `venn` like any other statement, keeping only the
+  whitespace that decides which `;` mermaid.js ignores: `commit msg:"style:#x;"`
+  becomes `commit msg: "style:#x;"`. A statement over several lines is joined
+  unless joining would change which `;` is ignored, and the whitespace beside an
+  ignored `;` follows the rule of its gap: `complex "style:#x";"A"` becomes
+  `complex "style:#x"; "A"` in `cynefin`.
+
+- [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the text of an `ishikawa` node, and the name and the description of a
+  `treeview` node, without the spaces and tabs at the end of the line: `R   `
+  becomes `R`, and `R ## note  ` becomes `R ## note`. mermaid.js trims these texts
+  and draws the same figure. The inside of a quoted name and a description of
+  spaces and tabs only stay as written.
+
+- [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print a `title` in `gantt`, `journey`, `timeline`, `sequence`, `venn` and `c4`,
+  the `accDescription` of a `c4`, and the `dateFormat` and `axisFormat` of a
+  `gantt`, without the whitespace at the start and at the end of the text:
+  `title   Plan  ` becomes `title Plan`. The last event of a line of a `timeline`
+  and the second description of an alias in a `stateDiagram` lose the whitespace
+  at their end in the same way. mermaid.js draws both the same. The name of a
+  `section` keeps its whitespace, since two sections whose names differ by it are
+  two sections, and so do a `tickInterval`, a `todayMarker`, and a `dateFormat` of
+  `D`, which are drawn differently with whitespace around them.
+
+- [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Decide each line break of a statement on its own in `sequence`, `class`,
+  `block`, `er`, `gantt`, `journey`, `quadrant`, `timeline` and `xychart`: a line
+  break next to a comment or a directive, or one that joining would change what
+  mermaid.js reads, stays, and the others become whitespace. In a `sequence`,
+  `autonumber` with a space at the end of its line, and `5` on the next line,
+  become `autonumber 5`. A statement that keeps a line break keeps its styles as
+  written.
+
+- [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the text of a `mindmap` node, the text of its shape, its icon, and its
+  class without the spaces and tabs at their ends: `a (x)` becomes `a(x)`,
+  `b[ y ]` becomes `b[y]`, and `::icon( fa )` becomes `::icon(fa)`. The same holds
+  for the cards, labels, icons and classes of a `kanban` board, but not for the id
+  of a column, which mermaid.js tells apart from another by its text. mermaid.js
+  draws the same node. An icon, a class, or a shape text of spaces and tabs only
+  becomes one space, since the grammar rejects an empty one. A string, a text that
+  would start a string without its padding, and a text over lines stay as written.
+
+- [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print one space between a keyword and the text or string after it in `quadrant`,
+  `sequence`, `state`, and `class`: `x-axisUrgent --> Not Urgent` becomes
+  `x-axis Urgent --> Not Urgent`.
+
+- [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print one space between the header of a `flowchart` or an `agentflow` and a
+  direction written as a symbol: `graph<` becomes `graph <`.
+
+- [#63](https://github.com/mmd-toolkit/mmd-toolkit/pull/63) [`dd2658b`](https://github.com/mmd-toolkit/mmd-toolkit/commit/dd2658b2c36a1406aeb5c49a922f724820ebb151) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print one space outside `<<...>>` and none inside it in `class` and `usecase`:
+  `class S<< i >>` becomes `class S <<i>>`.
+
+- [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the spellings that mermaid.js reads the same and draws the same in the
+  form that the examples in its documentation use at least twice as often as any
+  other, unless a version of mermaid.js reads or draws that form differently. A
+  keyword is printed in the case of the examples (`PARTICIPANT A` becomes
+  `participant A`), except `style` and `classDef`, which stay as written because
+  mermaid.js reads a line with them in another case differently when a `;` ends
+  it. A string between `'` is printed between `"` in the ten diagram types that
+  read both (`'a'` becomes `"a"`), and a number of a pie chart, an xychart, a
+  treemap, a radar chart, a sankey diagram, and a Venn diagram is printed in the
+  shortest form (`1.50` becomes `1.5`). The words of an ER relationship become
+  symbols (`A only one to zero or more B` becomes `A ||--o{ B`), `Rel_Up`,
+  `Rel_Down`, `Rel_Left`, and `Rel_Right` of a C4 diagram become `Rel_U`, `Rel_D`,
+  `Rel_L`, and `Rel_R`, `::=` of the EBNF notation of a railroad diagram becomes
+  `=`, a range of a packet diagram with equal ends (`4-4`) becomes the position
+  (`4`), and `switch` of a gitGraph becomes `checkout`. The colon after the header
+  of a cynefin or a radar diagram is removed. The direction `TD` of an agentflow
+  or swimlane header becomes `TB` (not when a directive stands between the header
+  and the direction), and the label of a link is printed between the arrows in an
+  agentflow diagram (`A -->|x| B` becomes `A -- x --> B`) and between `|` in a
+  swimlane diagram. The names of a header, the direction of a flowchart header,
+  and the colon after the header of a gitGraph stay as written, since versions of
+  mermaid.js read or draw them differently. A spelling that the examples do not
+  use in one form, or that changes what mermaid.js reads, stays as written, and so
+  do the `direction` statements. The option `singleQuote` has no effect on these
+  strings.
+
+- [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the `:` and the text of a one-line `note` in `stateDiagram` with one space
+  before the `:` and one after it where mermaid.js drops them:
+  `note right of A: x` becomes `note right of A : x`. mermaid.js reads the same
+  text and draws the same note. A note whose first two characters after the id are
+  not a `:` and a space or a tab stays as written.
+  
+  Keep the text between the quotes of a floating `note` in `stateDiagram` as
+  written, whitespace included, as the inside of a quoted label in `flowchart` is:
+  `note "  a  " as N` stays.
+
+- [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the styles of `style`, `classDef` and `linkStyle` in `flowchart`,
+  `agentflow`, `class`, `state` and `block` as `ER` and `requirement` print them,
+  with one space after the first `:` of a style and after each `,`, and none
+  before them: `style A fill:#f9f,stroke:[#333](https://github.com/mmd-toolkit/mmd-toolkit/issues/333)` becomes
+  `style A fill: #f9f, stroke: [#333](https://github.com/mmd-toolkit/mmd-toolkit/issues/333)`. The spacing stays as written where
+  whitespace decides what mermaid.js reads: whether a space follows the `,` before
+  a `fill` or a `stroke:` style of a `linkStyle`, and a `stroke:` with no value
+  there, the whitespace between `stroke` and its `:` in a `classDef` or a
+  `linkStyle` of `flowchart` and `agentflow`, a backslash in a style, and the
+  `color:` and `text-align:` of a `block` `style`.
+
+- [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print a run of spaces and tabs inside a title, an `accDescr`, and the labels
+  that mermaid.js draws as SVG text (the texts of a C4 statement, the strings of a
+  `railroad` diagram, and others) as one space: `title Sales   report` becomes
+  `title Sales report`, and `quadrant-1 a    b` becomes `quadrant-1 a b`. These
+  keep their runs: the labels that it draws as HTML (the nodes and edges of
+  `flowchart` and `agentflow`, the descriptions, transitions, and notes of
+  `stateDiagram`, the nodes of `mindmap`, the cards of `kanban`, the labels of a
+  `class` relation, and every text of `usecase`), the title of a subgraph or a
+  `flow` that wraps (a markdown title, a group with a data block, a `swimlane`
+  lane), an `accTitle`, the arguments of a C4 statement that are not a label, a
+  technology, a type, or a description, the names that other statements refer to,
+  a text of spaces and tabs only that is not a string, a text over several lines
+  or with a comment, a directive, or a U+2028 or U+2029, and a text with a `<` or
+  in a diagram that holds `white-space`.
+
+- [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print one space between the `##` of a `treeview` description and its text:
+  `R ##   note` and `R ##note` become `R ## note`.
+
+- [#63](https://github.com/mmd-toolkit/mmd-toolkit/pull/63) [`dd2658b`](https://github.com/mmd-toolkit/mmd-toolkit/commit/dd2658b2c36a1406aeb5c49a922f724820ebb151) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Remove the spaces just inside the brackets of titles and labels, including the
+  edge labels of `architecture` and the closing `|` of a quoted edge label:
+  `subgraph foo[ T ]` becomes `subgraph foo[T]`, and `A["x" ]` becomes `A["x"]`.
+
+### Patch Changes
+
+- [#63](https://github.com/mmd-toolkit/mmd-toolkit/pull/63) [`dd2658b`](https://github.com/mmd-toolkit/mmd-toolkit/commit/dd2658b2c36a1406aeb5c49a922f724820ebb151) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep the arguments of a call as written in `class` and `gantt` when a comment
+  line stands in them, so that formatting no longer changes what mermaid.js reads.
+
+- [#64](https://github.com/mmd-toolkit/mmd-toolkit/pull/64) [`b817905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/b8179056e2aebd764c260fbd7fee9a65fe27d00d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Rewrite the README for users: it links to the documentation site, and one list
+  leads to the formatting rules of each diagram type.
+- Updated dependencies [[`b817905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/b8179056e2aebd764c260fbd7fee9a65fe27d00d), [`dd2658b`](https://github.com/mmd-toolkit/mmd-toolkit/commit/dd2658b2c36a1406aeb5c49a922f724820ebb151), [`b817905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/b8179056e2aebd764c260fbd7fee9a65fe27d00d)]:
+  - @mmd-toolkit/ast@0.3.1
+  - @mmd-toolkit/parser@0.3.1
+
 ## 0.5.0
 
 ### Minor Changes
